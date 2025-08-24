@@ -1,149 +1,168 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053A615DBC1
-	for <netdev@vger.kernel.org>; Sun, 24 Aug 2025 08:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.205.26])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79DB11712;
+	Sun, 24 Aug 2025 08:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.205.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756023105; cv=none; b=DlYzwKv+71oqAhMEUwgRyTCFaf9sSLiWw6FuEuXfK0BsRsoFZbHcwlYt3LHLHm15eL7IfbxVeQkGyHupAD8H8iUw+hfR36p0JTFYKPO37tIx/A8RE1ddn6DUkeIfmfrgHxZQ8JOI6kjQ9A4FZlR67P75YgIy0mQ1+aEtX+anavg=
+	t=1756024637; cv=none; b=KMdiSIRN6U/jDXorpy+lBVki8t3L8pS8tIW0qjTUWLJZgWZXhMSL42C7N8BF3YoG0JLkiMjIXrnpubvRnqczwhIS0Czt6yul8VGoQGPyK2UTDYdt4uBDgRKQQtt4B2gqiZ0pOz3kpilMMj/W9lMOaNS5iJcVGrmpHzucI71AJpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756023105; c=relaxed/simple;
-	bh=ul0IsjUDFsISjShCNiRq6tbem1Qonz9NW/U6PGV3QOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LfHSmspJu98HQKzf+AnLne6htnZ8o689452KA4sv3KztJYOYUScj+G6/OQ8EPeTdrNLqG9131iCimaFUY+vVAHAcfVByK1Rxz42haetn5fskV03MYAK5PRZ+cANORalvWk5lR9mu0XobPl0WC3/cXyZs33tj4gy7mzkGxs5ylSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uq5oT-0006qR-Nx; Sun, 24 Aug 2025 10:10:53 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uq5oJ-001sF8-2g;
-	Sun, 24 Aug 2025 10:10:43 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uq5oJ-00EEAb-2D;
-	Sun, 24 Aug 2025 10:10:43 +0200
-Date: Sun, 24 Aug 2025 10:10:43 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Lukasz Majewski <lukma@denx.de>, Jonathan Corbet <corbet@lwn.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>, Divya.Koppera@microchip.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Subject: Re: [PATCH net-next v3 2/3] net: ynl: add generated kdoc to UAPI
- headers
-Message-ID: <aKrJAzMdgGcNiRUC@pengutronix.de>
-References: <20250820131023.855661-1-o.rempel@pengutronix.de>
- <20250820131023.855661-3-o.rempel@pengutronix.de>
- <7e948eb9-2704-433e-9b51-fd83716e37d1@oracle.com>
+	s=arc-20240116; t=1756024637; c=relaxed/simple;
+	bh=lZp2Cl0qc6wb8coserP5WWmHbjV72Qo/rkklVqayqQc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TvkBeCkYnULv0cJy9Vr0V4LC0qdY3EJIdwOksUAIAEdgn6G2pjgbzZsYlXtZgtDPs4+g6yMkT+8ZyeuY08wuI7ia5FbWkeX6HavMll2sOY4F/QJMLM2P///MtpzuNJvaa96s/jRnn36A+Wco56GUXd35xi/8ONNx9vvcUVjRu8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=SyLxoB3m; arc=none smtp.client-ip=52.229.205.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="SyLxoB3m"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:MIME-Version:Content-Transfer-Encoding; bh=jHWpd
+	ARc43w4tAS2FUEDvn/HU28I0sReMTwTlphHACk=; b=SyLxoB3m5zHK+aGgQnCP3
+	SPUBvsnQDkz7sM9obKcYn5PMkpWwQDsDbIa9WPMR+YwTO/HBqKkhgWLClpnabKBY
+	G36EjReSws0azMCCqHrIWydII/N2XwOz7wAQj2fJwDaPi85PafDSBVT5i2yMM9Zn
+	N2PcB0BWM+MnNKBCJxPm4E=
+Received: from estar-Super-Server.. (unknown [103.233.162.254])
+	by web3 (Coremail) with SMTP id ygQGZQBXbCIlz6poet8KGg--.37470S2;
+	Sun, 24 Aug 2025 16:37:00 +0800 (CST)
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+To: netdev@vger.kernel.org
+Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net/dccp: validate Reset/Close/CloseReq in DCCP_REQUESTING
+Date: Sun, 24 Aug 2025 16:36:53 +0800
+Message-Id: <20250824083653.1227318-1-zhaoyz24@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <7e948eb9-2704-433e-9b51-fd83716e37d1@oracle.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-CM-TRANSID:ygQGZQBXbCIlz6poet8KGg--.37470S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrWktFyUuryxWry5Jry7KFg_yoWrJw4Upa
+	4xKFZ8Kr4DJFyxtFnayw4kXr1Ykr48AryfGFnFqrW8ZF1DJryfZ390krWjvry3CFZ3C342
+	93y7WFWrCw47Xa7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr0_Cr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCY02Avz4vE14v_GFyl42xK82IYc2Ij64vIr41l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
+	1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUjZXOUUUUU=
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQQEAWiqNtp+LgAAs+
 
-On Fri, Aug 22, 2025 at 07:41:39PM +0530, ALOK TIWARI wrote:
-> 
-> 
-> On 8/20/2025 6:40 PM, Oleksij Rempel wrote:
-> > Run the ynl regeneration script to apply the kdoc generation
-> > support added in the previous commit.
-> > 
-> > This updates the generated UAPI headers for dpll, ethtool, team,
-> > net_shaper, netdev, and ovpn with documentation parsed from their
-> > respective YAML specifications.
-> > 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > ---
-> >   include/uapi/linux/dpll.h                     |  30 ++++
-> >   .../uapi/linux/ethtool_netlink_generated.h    |  29 +++
-> >   include/uapi/linux/if_team.h                  |  11 ++
-> >   include/uapi/linux/net_shaper.h               |  50 ++++++
-> >   include/uapi/linux/netdev.h                   | 165 ++++++++++++++++++
-> >   include/uapi/linux/ovpn.h                     |  62 +++++++
-> >   tools/include/uapi/linux/netdev.h             | 165 ++++++++++++++++++
-> >   7 files changed, 512 insertions(+)
-> > 
-> > diff --git a/include/uapi/linux/dpll.h b/include/uapi/linux/dpll.h
-> > index 37b438ce8efc..23a4e3598650 100644
-> > --- a/include/uapi/linux/dpll.h
-> > +++ b/include/uapi/linux/dpll.h
-> > @@ -203,6 +203,18 @@ enum dpll_feature_state {
-> >   	DPLL_FEATURE_STATE_ENABLE,
-> >   };
-> > +/**
-> > + * enum dpll_dpll
-> > + * @DPLL_A_CLOCK_QUALITY_LEVEL: Level of quality of a clock device. This mainly
-> > + *   applies when the dpll lock-status is DPLL_LOCK_STATUS_HOLDOVER. This could
-> > + *   be put to message multiple times to indicate possible parallel quality
-> > + *   levels (e.g. one specified by ITU option 1 and another one specified by
-> > + *   option 2).
-> > + * @DPLL_A_PHASE_OFFSET_MONITOR: Receive or request state of phase offset
-> > + *   monitor feature. If enabled, dpll device shall monitor and notify all
-> > + *   currently available inputs for changes of their phase offset against the
-> > + *   dpll device.
-> > + */
-> >   enum dpll_a {
-> >   	DPLL_A_ID = 1,
-> >   	DPLL_A_MODULE_NAME,
-> > @@ -221,6 +233,24 @@ enum dpll_a {
-> >   	DPLL_A_MAX = (__DPLL_A_MAX - 1)
-> >   };
-> > +/**
-> > + * enum dpll_pin
-> > + * @DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET: The FFO (Fractional Frequency
-> > + *   Offset) between the RX and TX symbol rate on the media associated with the
-> > + *   pin: (rx_frequency-tx_frequency)/rx_frequency Value is in PPM (parts per
-> 
-> spacing for clarity (rx_frequency - tx_frequency) / rx_frequency
+DCCP sockets in DCCP_REQUESTING state do not check the sequence number
+or acknowledgment number for incoming Reset, CloseReq, and Close packets.
 
-Thank you for the review. The comments you refer to are autogenerated
-from the YAML specs. Extending my patch to adjust or clean up those
-generated comments would mean adding side-quests outside the scope of
-the actual change. I’d rather keep this series focused, otherwise I risk
-not being able to complete it.
+As a result, an attacker can send a spoofed Reset packet while the client
+is in the requesting state. The client will accept the packet without
+verification and immediately close the connection, causing a denial of
+service (DoS) attack.
 
-Best Regards,
-Oleksij
+This patch moves the processing of Reset, Close, and CloseReq packets
+into dccp_rcv_request_sent_state_process() and validates the ack number
+before accepting them.
+
+This fix should apply to Linux 5.x and 6.x, including stable versions.
+Note that DCCP was removed in Linux 6.16, so this patch is only relevant
+for older versions. We tested it on Ubuntu 24.04 LTS (Linux 6.8) and
+it worked as expected.
+
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: stable@vger.kernel.org
+---
+ net/dccp/input.c | 54 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
+
+diff --git a/net/dccp/input.c b/net/dccp/input.c
+index 2cbb757a8..0b1ffb044 100644
+--- a/net/dccp/input.c
++++ b/net/dccp/input.c
+@@ -397,21 +397,22 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 	 *	     / * Response processing continues in Step 10; Reset
+ 	 *		processing continues in Step 9 * /
+ 	*/
++	struct dccp_sock *dp = dccp_sk(sk);
++
++	if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
++				dp->dccps_awl, dp->dccps_awh)) {
++		dccp_pr_debug("invalid ackno: S.AWL=%llu, "
++					"P.ackno=%llu, S.AWH=%llu\n",
++					(unsigned long long)dp->dccps_awl,
++			(unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
++					(unsigned long long)dp->dccps_awh);
++		goto out_invalid_packet;
++	}
++
+ 	if (dh->dccph_type == DCCP_PKT_RESPONSE) {
+ 		const struct inet_connection_sock *icsk = inet_csk(sk);
+-		struct dccp_sock *dp = dccp_sk(sk);
+-		long tstamp = dccp_timestamp();
+-
+-		if (!between48(DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-			       dp->dccps_awl, dp->dccps_awh)) {
+-			dccp_pr_debug("invalid ackno: S.AWL=%llu, "
+-				      "P.ackno=%llu, S.AWH=%llu\n",
+-				      (unsigned long long)dp->dccps_awl,
+-			   (unsigned long long)DCCP_SKB_CB(skb)->dccpd_ack_seq,
+-				      (unsigned long long)dp->dccps_awh);
+-			goto out_invalid_packet;
+-		}
+ 
++		long tstamp = dccp_timestamp();
+ 		/*
+ 		 * If option processing (Step 8) failed, return 1 here so that
+ 		 * dccp_v4_do_rcv() sends a Reset. The Reset code depends on
+@@ -496,6 +497,13 @@ static int dccp_rcv_request_sent_state_process(struct sock *sk,
+ 		}
+ 		dccp_send_ack(sk);
+ 		return -1;
++	} else if (dh->dccph_type == DCCP_PKT_RESET) {
++		dccp_rcv_reset(sk, skb);
++		return 0;
++	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {
++		return dccp_rcv_closereq(sk, skb);
++	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {
++		return dccp_rcv_close(sk, skb);
+ 	}
+ 
+ out_invalid_packet:
+@@ -658,17 +666,19 @@ int dccp_rcv_state_process(struct sock *sk, struct sk_buff *skb,
+ 	 *		Set TIMEWAIT timer
+ 	 *		Drop packet and return
+ 	 */
+-	if (dh->dccph_type == DCCP_PKT_RESET) {
+-		dccp_rcv_reset(sk, skb);
+-		return 0;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
+-		if (dccp_rcv_closereq(sk, skb))
+-			return 0;
+-		goto discard;
+-	} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
+-		if (dccp_rcv_close(sk, skb))
++	if (sk->sk_state != DCCP_REQUESTING) {
++		if (dh->dccph_type == DCCP_PKT_RESET) {
++			dccp_rcv_reset(sk, skb);
+ 			return 0;
+-		goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSEREQ) {	/* Step 13 */
++			if (dccp_rcv_closereq(sk, skb))
++				return 0;
++			goto discard;
++		} else if (dh->dccph_type == DCCP_PKT_CLOSE) {		/* Step 14 */
++			if (dccp_rcv_close(sk, skb))
++				return 0;
++			goto discard;
++		}
+ 	}
+ 
+ 	switch (sk->sk_state) {
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.34.1
+
