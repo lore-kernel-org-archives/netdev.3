@@ -1,135 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D98F35963;
-	Sun, 24 Aug 2025 16:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D404413959D
+	for <netdev@vger.kernel.org>; Sun, 24 Aug 2025 17:58:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756053662; cv=none; b=irzlFlr1/vrd7w6NTH8W0nLX8EH294ktPOXRluq0gDVyXDfVf4r+o11RpLL9kYaJUrisy0jDrqHMB7S1DHnUn8sp/vkjkYeZbbnA4+uUBKd3TuNq2z4cv9TQZxOvI5Zv9LFTEF5fpLpxOYETMtouybr4qSXyhC/GKGmz1vdkBqU=
+	t=1756058282; cv=none; b=bHjXd+5gGiZBMBeFKXwL0pMB7aKjkfO5Zqk1skq0GQRbM+Ep4KfvKf4IAQv7zz43Xr++SIZt6hokpbf7p+naamoRANLF7AnFG6thfxhWIz+s5ehrMD77SL8O+afFAMV7J6tsvxgad1Dnsf1crjr9ReUuOARlu78qdnq38rYKPfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756053662; c=relaxed/simple;
-	bh=T0Xh8r2YCTqxv1vEbjm0Y0dC1Af3oWo4iIuijEyUQAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6uKnU0Td4x7AObSLHYcmkiTrkEJk00cjT9PzYGzqwL+gl8WsIDAuFpjenvat5wEf0WuasTXpenE4C7e91Y4RYUsFZWr8faoRQArlNCm1ImMUP+cY2YXyiGMK46qp3fnLBwADaqk2s5Q2W21kiRTlWaOSLmeGxvULEwssiNGCg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F4zSpVou; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756058282; c=relaxed/simple;
+	bh=oWO76e1aLw3HEUKBlQb3yx7LJvlqYqffct57GCnu/xw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WgRSomeupGP0HT70pZ+C9/mEk/R3MJMkD5s9kFFLhQb1IBgJQ2pgGBxSvZCcPF1c82L2tfwMzzcEw3uftRJySEyZ7qtitCQ3Lo4hwJ5u6473/2HaI89Qv/rYH+kGy0D/r/OLBvoThcStE6u/l8mL3dez6z9tm5489o8P7EtsJcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQMVdgVk; arc=none smtp.client-ip=209.85.166.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F4zSpVou"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756053661; x=1787589661;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T0Xh8r2YCTqxv1vEbjm0Y0dC1Af3oWo4iIuijEyUQAg=;
-  b=F4zSpVouIeLyiR4mrg0D1fYwJcmadfVJz2YKiXOnx3/hA/2S2heu5jhx
-   FwX9uzlV/PWm0g39HsHxp0etxCnHZxNPHfZy9JSku6t2utVBLrl+xgyb+
-   9GOvXHWNGhEtjGJ7AxvUAxxFl7u2Xu8Sl9FhAaVwBG9uD0avmsGXkta/w
-   l6RxNZ8nbqdf95cNNoeeOj9axNVRJnKKO7CfaM7AX6XA3U8Vd+grIHcVZ
-   j0jnv4feFwjbXh+OiR+0tNH0H7eKEl8IZBUoM5aAyG3h0Hzj4HVKJVUwg
-   TUcOckhTTXQ++eVeVnHvbqr1MFK/z/q3ePOCcy1NAkB+WHQhsulG7h9h9
-   A==;
-X-CSE-ConnectionGUID: lOx58MRtR3K8QZ2IKFAkuA==
-X-CSE-MsgGUID: 5Bh0ULSzRYiEfqP0nNYWIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11532"; a="69382466"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="69382466"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2025 09:41:00 -0700
-X-CSE-ConnectionGUID: ZXX6juDMRLScDZOFidyRMw==
-X-CSE-MsgGUID: qczmWVd4S5+NKxb4zEUCBg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="169937558"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 24 Aug 2025 09:40:57 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uqDm3-000N5v-0g;
-	Sun, 24 Aug 2025 16:40:55 +0000
-Date: Mon, 25 Aug 2025 00:40:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 3/3] net: dsa: yt921x: Add support for
- Motorcomm YT921x
-Message-ID: <202508250002.afAgRCmk-lkp@intel.com>
-References: <20250824005116.2434998-4-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQMVdgVk"
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-3eaff77982eso15294905ab.1
+        for <netdev@vger.kernel.org>; Sun, 24 Aug 2025 10:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756058280; x=1756663080; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oWO76e1aLw3HEUKBlQb3yx7LJvlqYqffct57GCnu/xw=;
+        b=WQMVdgVkKiYT1MOKXbO2gTfLjeNSBfExmqWuOGeWkjB5RZt9cx/VZkLZuiLwyJkIpT
+         yWtSfgz5lFTwIqeTdWXPF9GnUgZbX8CPP54fNvSyCz83PJXZsx073QUJZ+iu+vXFZRuh
+         bA7uwNYIiGN3ZitKSYGa9RLJdF50SDKvsVNM5n5kZnkaK5VLrmskEUdBuypBRQ+ztXrH
+         Jn+Yk7vt+d4dctCmd+Nw4KvhSRF/2Vcf7YBlrZKEPsTNPUdM0Mw9LpIFi23IHkvbKGsz
+         o5za5KWOZYoh6CLqET00rtEaUnx0zhLK85LRTSVPLdBYZHBOo1+jo8RbA9Em0UxwLHy0
+         8O7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756058280; x=1756663080;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oWO76e1aLw3HEUKBlQb3yx7LJvlqYqffct57GCnu/xw=;
+        b=imEm5almKQ+Ql0AkwNncf1L7PZh6gYMtkfHC5t1eyPH6bAJYRRystNocXsFWHYxauO
+         oPQaRqCnuGEFH47f6EZowDdrgzz7iVrewjYWD7/v2BfNy+YHS+YbWme7WH8pzW0gURCG
+         AsRKAXtpTkIqPtB7XFA8ED3eloEbmsHFODkaxcWVUsfo9SjC6L86RXhfGAr/RO6obMei
+         Mq02iRgqBPKonHABVxL/a7XmNkW6bhdNjz6nI3I61WEF4uvJ0xsxf/bGBTFc2IrpDAfU
+         uIheqHtIY9aQlxClnldi8tGTF9W2V5qPkzui0ybcFwfDjPjo3ZBOJp5Lm8Cyt/EYEumV
+         J71g==
+X-Gm-Message-State: AOJu0Ywh5/KiNXYBT5fS/UYm8ltn47W8nZx7KH7rv69W1lrlIvBlF0bB
+	YfMpMaJOJnmV3pi83JOLajABDf6FPS3ClvYW3dpA/YUtkF99u6lkQ4mKW/SyHKrAPMwE1XxF3uC
+	dy3fQrDFlXUkprqvHjigdTd1jyrXarv0=
+X-Gm-Gg: ASbGncs4+Rju8pCdKHgqQDUTodUYoJ2y6JgR+rCmyauggv74vIIe2sLOQrz23zpreyK
+	V/MzoBIL9jg5uXsidgS5/ZR9JH97YOns6pr2K2Z9Shh5wZCE+t9xIneu4y/3fRlHmMxezbThAo+
+	OYyqrKOowP7DisIv+bi/wwC4LKJlNuoiHia27gVkaqMTBa0TPBxkvoezH91AL0ab6HqOYuwvVsZ
+	0UwvBpGgQ==
+X-Google-Smtp-Source: AGHT+IGBOV29qleVzkamd6i+YW/4W469UQcR6Gw8ApcifRy0J3Ys3Ad8SI/KyO5oFwbnC1kzi+hk4yM9yE72iCos3bg=
+X-Received: by 2002:a05:6e02:19c7:b0:3e5:6a2e:e3cf with SMTP id
+ e9e14a558f8ab-3e9203e6ef4mr138237865ab.10.1756058279737; Sun, 24 Aug 2025
+ 10:57:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250824005116.2434998-4-mmyangfl@gmail.com>
+References: <cover.1755525878.git.lucien.xin@gmail.com> <cb74facd-aa28-4c9d-b05f-84be3a135b20@app.fastmail.com>
+In-Reply-To: <cb74facd-aa28-4c9d-b05f-84be3a135b20@app.fastmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Sun, 24 Aug 2025 13:57:48 -0400
+X-Gm-Features: Ac12FXzDJGyjE62gGAfbygYFmkOBVBkIQpXbiCPP4Om7erTA8QBe7gCdmbbkrxo
+Message-ID: <CADvbK_f4v916nbx4t0fnkCj44S-buTytj_Paurd3j3Ro2tLDsQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 00/15] net: introduce QUIC infrastructure and
+ core subcomponents
+To: John Ericson <mail@johnericson.me>
+Cc: network dev <netdev@vger.kernel.org>, draft-lxin-quic-socket-apis@ietf.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+On Sat, Aug 23, 2025 at 11:21=E2=80=AFAM John Ericson <mail@johnericson.me>=
+ wrote:
+>
+> (Note: This is an interface more than implementation question --- apologi=
+es in advanced if this is not the right place to ask. I originally sent thi=
+s message to [0] about the IETF internet draft [1], but then I realized tha=
+t is just an alias for the draft authors, and not a public mailing list, so=
+ I figured this would be better in order to have something in the public re=
+cord.)
+>
+> ---
+>
+> I was surprised to see that (if I understand correctly) in the current de=
+sign, all communication over one connection must happen with the same socke=
+t, and instead stream ids are the sole mechanism to distinguish between dif=
+ferent streams (e.g. for sending and receiving).
+>
+> This does work, but it is bad for application programming which wants to =
+take advantage of separate streams while being transport-agnostic. For exam=
+ple, it would be very nice to run an arbitrary program with stdout and stde=
+rr hooked up to separate QUIC streams. This can be elegantly accomplished i=
+f there is an option to create a fresh socket / file descriptor which is ju=
+st associated with a single stream. Then "regular" send/rescv, or even read=
+/write, can be used with multiple streams.
+>
+> I see that the SCTP socket interface has sctp_peeloff [2] for this purpos=
+e. Could something similar be included in this specification?
+Hi, John,
 
-kernel test robot noticed the following build warnings:
+That is a bit different. In SCTP, sctp_peeloff() detaches an
+association/connection from a one-to-many socket and returns it as a
+new socket. It does not peel off a stream. Stream send/receive
+operations in SCTP are actually quite similar to how QUIC handles
+streams in the proposed QUIC socket API.
 
-[auto build test WARNING on net-next/main]
+For QUIC, supporting 'stream peeloff' might mean creating a new socket
+type that carries a stream ID and maps its sendmsg/recvmsg to the
+'parent' QUIC socket. But there are details to sort out, like whether
+the 'parent-child relationship' should be maintained. We also need to
+consider whether this is worth implementing in the kernel, or if a
+similar API could be provided in libquic.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Yang/dt-bindings-net-dsa-yt921x-Add-Motorcomm-YT921x-switch-support/20250824-085750
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20250824005116.2434998-4-mmyangfl%40gmail.com
-patch subject: [PATCH net-next v6 3/3] net: dsa: yt921x: Add support for Motorcomm YT921x
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20250825/202508250002.afAgRCmk-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 15.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250825/202508250002.afAgRCmk-lkp@intel.com/reproduce)
+I=E2=80=99ll be requesting a mailing list for QUIC development and new
+interfaces, and this would be a good topic to continue there.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508250002.afAgRCmk-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/net/dsa/yt921x.c: In function 'yt921x_port_down':
->> drivers/net/dsa/yt921x.c:2683:13: warning: variable 'mask' set but not used [-Wunused-but-set-variable]
-    2683 |         u32 mask;
-         |             ^~~~
-
-
-vim +/mask +2683 drivers/net/dsa/yt921x.c
-
-  2680	
-  2681	static int yt921x_port_down(struct yt921x_priv *priv, int port)
-  2682	{
-> 2683		u32 mask;
-  2684		u32 ctrl;
-  2685		int res;
-  2686	
-  2687		ctrl = YT921X_PORT_LINK | YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_MAC_EN;
-  2688		res = yt921x_smi_clear_bits(priv, YT921X_PORTn_CTRL(port), ctrl);
-  2689		if (res)
-  2690			return res;
-  2691	
-  2692		if (yt921x_port_is_external(port)) {
-  2693			ctrl = YT921X_SGMII_LINK;
-  2694			res = yt921x_smi_clear_bits(priv, YT921X_SGMIIn(port), ctrl);
-  2695			if (res)
-  2696				return res;
-  2697	
-  2698			mask = YT921X_XMII_LINK;
-  2699			res = yt921x_smi_clear_bits(priv, YT921X_XMIIn(port), ctrl);
-  2700			if (res)
-  2701				return res;
-  2702		}
-  2703	
-  2704		return 0;
-  2705	}
-  2706	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks for your comment.
