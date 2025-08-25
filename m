@@ -1,63 +1,63 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BB82874FA
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370C3285C8F
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152093; cv=none; b=tl/DKKDiAo+fxjF6cN3PSX2KaY814R8FSGugvfxlieT0OIc1BYFfoNMwKups0hi/NXPUU1ugDFgk2sLfNuUjOHCtkPtYpLzkT1lNNepLKcaa0ZNSafwESOVIbqNUGlGnBJ198zfS/1UpOPYTaaHSMz4cawM2Y3o18GuVeVcLOfk=
+	t=1756152094; cv=none; b=UKWAbXfGfBk1ZBpcYyCFJNxXsitNvE14Y/0lk+Vp/Rvujb/iQQAWtFP95wy1r8WjnW0wtGWGMtwan6FJTn33s/23X31Rch09elT/sPKvxUF1J7JFQz+Vjd26upPbxrKQdyF7y2QH+A47R7rfLoa0zqD85SrOQvitCiVtbqVqltI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756152093; c=relaxed/simple;
-	bh=7OHamNe80vMy1JfT5X5HsbgZ0A1AzwbxRhldJWA8UW0=;
+	s=arc-20240116; t=1756152094; c=relaxed/simple;
+	bh=rPRgzNL4bPU/i06ENpnBmYg7okrE/jti2fQ3NNQNN/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuQuu9ItpNrDlbDLm1vL7Rarq3vq2W3vdZ4f85+uUCkv3sNisSh+49x/a6lpxBd5NymBJ7p+vgonnoZAN+NhyZF1jrgI0whHRpK8DwB6yQU7KjLgw8hi6ccqLnPLPDxZI8nj98q0/G2l6dt7OugCkjXC8S0iLuOQVWQ07O9VfwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QAk0AbK9; arc=none smtp.client-ip=209.85.219.171
+	 MIME-Version; b=lLmKCHkdbm4RPjXMAsF+fS96rTrfM9axbkNnK8bJoSi1gQbRrcFMXSi6JDxNew0jYXwa5ZykEU4kPLlS6Mx6RLJc4871/HbQaKwCzw+gScd5KMHowP6hEsIXb55Qult5a1D0wbDyk9Fi34TAaxEld+gZ4fWdTlWKlTWiF4J9tjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LT0OHVSm; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QAk0AbK9"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e931cad1fd8so4110755276.1
-        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LT0OHVSm"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e952f877d67so1965248276.3
+        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756152075; x=1756756875; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756152088; x=1756756888; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DIBNm5paeiAnQo3yS59NcdyWincUwPqnjjEngtvb/fE=;
-        b=QAk0AbK93FHlNK8CdyWGnoQCCgWdLX6KOEuBZrwXcVe5gUa2o1bKYR1/cMKNbNYB77
-         8TGKrRaL4m6Xy+fjKYklY28OMJl3hTFOhS8FkV0K5TCKx/ana1ZcH6gmZISzzS/g6X96
-         ae9thEi8IwE3MeN0oUzkFR3THcFELXfce1+eV6QWcMSrpzat/0YnvljUt8VEmdxypoTZ
-         za+gFig6tCD+9o8K2xJR712uHTmGKcyTnwjvEtFgykGmqWMnMghVhVXZxWvNDt5yTMZ/
-         JGF71StHvgg+sRDfrSdyuV1sh88+DhL8nAXY4zzjRNXN2DbC7hNAE7mZVq3bx8Hmqw00
-         CTSg==
+        bh=B/qzcyKs6Sijhx5eKCyG5tFaY81xPaszktH0lekGR70=;
+        b=LT0OHVSmad4HCL1F1x66ebPD8DuEeiIv5L1csRfIzrfCdjQYSLKrICInUBeYOQmcqO
+         2gc6oSbTABAycWQ4sQ9lzLJz0G3uqUQKz5ysMrwhq+ILGsS2Y7VhaFkAmbZOZIz7Rknx
+         l5k7bNxpyjl2axjDz5rnXrWjrXUT2dcY0U/Tg+S5PBUv+VBXB1/G8peGyp7GOUVa/1v7
+         8+tKcklP740QYA1wwHqcJJF99s+v48kqPb/tc1JcnM5EGHJYXAlynYEQ/TLx6JbtQN8P
+         8NAPh5pq9CjYT8f8Wgv5d8YqwfJ9890ZcSOrtFPFy+S3n+tWGOVbWOkd695iz5LqjDc4
+         bw0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756152075; x=1756756875;
+        d=1e100.net; s=20230601; t=1756152088; x=1756756888;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DIBNm5paeiAnQo3yS59NcdyWincUwPqnjjEngtvb/fE=;
-        b=O2IMJTdkUFSM+KVeESvUeQoFzMIRVXg2SPz6bgKOfkaVD5N2qGxkC8mosfusRozXLJ
-         ERPgl7FMJ8AJCRHjVexmgGA+gxREV7Qk/c8KYqs20TCclMZ49ra3EUifwHlqRo4YUvNE
-         AhToEKReXJdZquHNQ6Y1XKPGoJxIcUaqe5pDnQHCYN/qGiwAWdmoYNEae1CEp5j7+Wfz
-         2zzXA4r4ZJKGzCnQ7RaDeKEoH2k+Or9+4rVHyLpAviMJE08wSBdBsR+6QjUOp+uaGvWz
-         /JODDFT1fRv6qF8Q7PDAL8gqtuE32xM1wcFMAOUBopVlkLtzz2l31QypcfmU2B+C2r4J
-         ZA5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVvny04M1jLjHVZth62JE5AkwDcOtUA47ct6rWeMPq5AV5yP9uN2/2XJ0qrrYu2ULD5d6U+220=@vger.kernel.org
-X-Gm-Message-State: AOJu0YythWte8d9FYtXljJfLr0Dz4qDdTG9JpFTx47A4jri/+8vWZyRs
-	Vjhbcf2lcLEdvPeUwwTVyN94pEaVzPPkg6SJBgvN3oMgBSbD4yu5Xdi1
-X-Gm-Gg: ASbGncsUx4c6Sot/rXsnn42wf1Pgf6yBdsh4i7ugtxifxrlOJ7WTdJ5ukLZKSeBc2Rz
-	8H+AUJbn1RL92uF3AaiVHNoahagU6YHKftVAlq7N29gU0l1jlAxHVToVjjfCbeIPE4yOxKnkCFw
-	E1soikprDGotP1ER0eth1PsOQzbGVIJ7ZHqgWJdB9RrF8IfwMgfcsWNRt+YM5OM6rsoswxDCioJ
-	Qc5G6VcYE3CafVEOgsyGgZ49C0sckp+7uE4T1rfZaUfw2X6EDQ42PpQSkZEBreLlFnx27/e8epc
-	iYkxyYpRpKHEwS2jkWkhO/j0KBbxVCkNYjcmey3wVp6l77bPbPSykR5DbVL8/3zTARff3UierhM
-	IlEzpE39Z8smUanbL3Dezd1q1Hfea7g==
-X-Google-Smtp-Source: AGHT+IGToGzbw2Sgg9fN227BJnk7sI17kIayRvkuu5ZynORl3tT10A1S1xVx3/VgPvvvhu+45WcqAg==
-X-Received: by 2002:a05:6902:2886:b0:e95:803:59ba with SMTP id 3f1490d57ef6-e951c2a55f9mr13884782276.32.1756152075239;
-        Mon, 25 Aug 2025 13:01:15 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:c::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e952c367241sm2623107276.28.2025.08.25.13.01.14
+        bh=B/qzcyKs6Sijhx5eKCyG5tFaY81xPaszktH0lekGR70=;
+        b=kXzN8cBl5l4RKcCWKRswWXxXbQnLiOzF1FrMQPk2p1A1WOn/5f8fHWu3u41dGx/gmH
+         C+d9QeoweCOeZNnoOYxlKSJuzYW10RW4otx5jgS6ZjKk+/HxJctBU1xqlAFLv1vAGzBt
+         t0D5fKuZz7EqmLzdmfdyO2KFilPv+UV8iyWyjSZvRDyghsBOzoc1dBcq9z2+ty07Zzv1
+         rUNa5CbcgI0iJNwXPvgkQUywH90InR6+o95p+x4dgbfhOT6wiWVVirMo6lnzzWaKhZZu
+         2+v0vEB0SqlD0lGnhrMIZ/292bXN1+IIGYj/iya2jl6oJJK3aNRLA4R733+kcJDVNy/o
+         6e3A==
+X-Forwarded-Encrypted: i=1; AJvYcCW2v7G+6tbO+Yv41uKtWxqeIBv0MJ7UvpiLUGGHCDSetSpLarx5tBGLfGX4j+VaH2YqBzm+Vpc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxK0PFTzXTevRFK0bVb3HXXShWlygCt6kfSIog/lQSWfKBlbwGi
+	WoGxG18zjaPObGf2iZBAOTkpe0Mwjv331UCxE7vPxCfHS5YDDlzNwYdB
+X-Gm-Gg: ASbGncuNB5YW0t3QYb2aAuPSONl5sdm7FsRoTwTcYll7SdREO1x3y3n1OKZ2ie/MJJH
+	SEEarydZ5rU5zSNZRiyA6mQ+ob9ZWFhGxZ/7/eI6ZixJ8YJ1W0yhEGzAuX1CetejlR/nB+gsgoT
+	aotZ2PDJ7u0tkKOQzh8Pu6DPX2mKY4w4K3FSlKeAc2NHLgEMxGWzGjI77zf4RYFbzfvH/C+xvZr
+	Pjp0CKCJrK2CdiZIF10dapEt4s8i7WHs4s/g4KtDPFuJPXyIfHAWZ2t0y2J7w+muK/MjsqinmGZ
+	Evvo5c5xiX3cxVxZ0avnHz8/c5taqxpRYIHiledfPBTA/CjjTizexCc7yoV0QQk1o65z33DbSlE
+	1mTJ+sKXSNGcp81sDNlIoUJZTh05Nl7o=
+X-Google-Smtp-Source: AGHT+IH0x+204sZOxkgkC7l+kY60o1cz8jHTBBWajab3lB2pg9HVDJk4e/6HniXgf+YgngKBzkHWeQ==
+X-Received: by 2002:a05:6902:3102:b0:e91:7b14:4d7d with SMTP id 3f1490d57ef6-e951c27ddd1mr13019252276.15.1756152087682;
+        Mon, 25 Aug 2025 13:01:27 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:47::])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e96dcf11652sm83562276.3.2025.08.25.13.01.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 13:01:14 -0700 (PDT)
+        Mon, 25 Aug 2025 13:01:27 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -86,9 +86,9 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v8 01/19] psp: add documentation
-Date: Mon, 25 Aug 2025 13:00:49 -0700
-Message-ID: <20250825200112.1750547-2-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v8 10/19] psp: track generations of device key
+Date: Mon, 25 Aug 2025 13:00:58 -0700
+Message-ID: <20250825200112.1750547-11-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250825200112.1750547-1-daniel.zahka@gmail.com>
 References: <20250825200112.1750547-1-daniel.zahka@gmail.com>
@@ -102,8 +102,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-Add documentation of things which belong in the docs rather
-than commit messages.
+There is a (somewhat theoretical in absence of multi-host support)
+possibility that another entity will rotate the key and we won't
+know. This may lead to accepting packets with matching SPI but
+which used different crypto keys than we expected.
+
+The PSP Architecture specification mentions that an implementation
+should track device key generation when device keys are managed by the
+NIC. Some PSP implementations may opt to include this key generation
+state in decryption metadata each time a device key is used to decrypt
+a packet. If that is the case, that key generation counter can also be
+used when policy checking a decrypted skb against a psp_assoc. This is
+an optional feature that is not explicitly part of the PSP spec, but
+can provide additional security in the case where an attacker may have
+the ability to force key rotations faster than rekeying can occur.
+
+Since we're tracking "key generations" more explicitly now,
+maintain different lists for associations from different generations.
+This way we can catch stale associations (the user space should
+listen to rotation notifications and change the keys).
+
+Drivers can "opt out" of generation tracking by setting
+the generation value to 0.
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
@@ -111,222 +131,155 @@ Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 
 Notes:
-    v3:
-    - reword driver requirement about double rotating keys when the device
-      supports requesting arbitrary spi key pairs.
-    v2:
-    - add note about MITM deletion attack, and expectation from userspace
-    - add information about accepting clear text ACKs, RSTs, and FINs to
-      `Securing Connections` section.
     v1:
-    - https://lore.kernel.org/netdev/20240510030435.120935-2-kuba@kernel.org/
+    - https://lore.kernel.org/netdev/20240510030435.120935-9-kuba@kernel.org/
 
- Documentation/networking/index.rst |   1 +
- Documentation/networking/psp.rst   | 183 +++++++++++++++++++++++++++++
- 2 files changed, 184 insertions(+)
- create mode 100644 Documentation/networking/psp.rst
+ include/net/psp/types.h | 10 ++++++++++
+ net/psp/psp.h           |  1 +
+ net/psp/psp_main.c      |  6 +++++-
+ net/psp/psp_nl.c        | 10 ++++++++++
+ net/psp/psp_sock.c      | 16 ++++++++++++++++
+ 5 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/networking/index.rst b/Documentation/networking/index.rst
-index b7a4969e9bc9..c775cababc8c 100644
---- a/Documentation/networking/index.rst
-+++ b/Documentation/networking/index.rst
-@@ -101,6 +101,7 @@ Contents:
-    ppp_generic
-    proc_net_tcp
-    pse-pd/index
-+   psp
-    radiotap-headers
-    rds
-    regulatory
-diff --git a/Documentation/networking/psp.rst b/Documentation/networking/psp.rst
-new file mode 100644
-index 000000000000..4ac09e64e95a
---- /dev/null
-+++ b/Documentation/networking/psp.rst
-@@ -0,0 +1,183 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
+diff --git a/include/net/psp/types.h b/include/net/psp/types.h
+index f93ad0e6c04f..ec218747ced0 100644
+--- a/include/net/psp/types.h
++++ b/include/net/psp/types.h
+@@ -50,8 +50,12 @@ struct psp_dev_config {
+  * @lock:	instance lock, protects all fields
+  * @refcnt:	reference count for the instance
+  * @id:		instance id
++ * @generation:	current generation of the device key
+  * @config:	current device configuration
+  * @active_assocs:	list of registered associations
++ * @prev_assocs:	associations which use old (but still usable)
++ *			device key
++ * @stale_assocs:	associations which use a rotated out key
+  *
+  * @rcu:	RCU head for freeing the structure
+  */
+@@ -67,13 +71,19 @@ struct psp_dev {
+ 
+ 	u32 id;
+ 
++	u8 generation;
 +
-+=====================
-+PSP Security Protocol
-+=====================
+ 	struct psp_dev_config config;
+ 
+ 	struct list_head active_assocs;
++	struct list_head prev_assocs;
++	struct list_head stale_assocs;
+ 
+ 	struct rcu_head rcu;
+ };
+ 
++#define PSP_GEN_VALID_MASK	0x7f
 +
-+Protocol
-+========
+ /**
+  * struct psp_dev_caps - PSP device capabilities
+  */
+diff --git a/net/psp/psp.h b/net/psp/psp.h
+index defd3e3fd5e7..0f34e1a23fdd 100644
+--- a/net/psp/psp.h
++++ b/net/psp/psp.h
+@@ -27,6 +27,7 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
+ int psp_sock_assoc_set_tx(struct sock *sk, struct psp_dev *psd,
+ 			  u32 version, struct psp_key_parsed *key,
+ 			  struct netlink_ext_ack *extack);
++void psp_assocs_key_rotated(struct psp_dev *psd);
+ 
+ static inline void psp_dev_get(struct psp_dev *psd)
+ {
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index a1ae3c8920c3..98ad8c85b58e 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -72,6 +72,8 @@ psp_dev_create(struct net_device *netdev,
+ 
+ 	mutex_init(&psd->lock);
+ 	INIT_LIST_HEAD(&psd->active_assocs);
++	INIT_LIST_HEAD(&psd->prev_assocs);
++	INIT_LIST_HEAD(&psd->stale_assocs);
+ 	refcount_set(&psd->refcnt, 1);
+ 
+ 	mutex_lock(&psp_devs_lock);
+@@ -125,7 +127,9 @@ void psp_dev_unregister(struct psp_dev *psd)
+ 	xa_store(&psp_devs, psd->id, NULL, GFP_KERNEL);
+ 	mutex_unlock(&psp_devs_lock);
+ 
+-	list_for_each_entry_safe(pas, next, &psd->active_assocs, assocs_list)
++	list_splice_init(&psd->active_assocs, &psd->prev_assocs);
++	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
++	list_for_each_entry_safe(pas, next, &psd->stale_assocs, assocs_list)
+ 		psp_dev_tx_key_del(psd, pas);
+ 
+ 	rcu_assign_pointer(psd->main_netdev->psp_dev, NULL);
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index 1b1d08fce637..8aaca62744c3 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -230,6 +230,7 @@ int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
+ 	struct psp_dev *psd = info->user_ptr[0];
+ 	struct genl_info ntf_info;
+ 	struct sk_buff *ntf, *rsp;
++	u8 prev_gen;
+ 	int err;
+ 
+ 	rsp = psp_nl_reply_new(info);
+@@ -249,10 +250,19 @@ int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
+ 		goto err_free_ntf;
+ 	}
+ 
++	/* suggest the next gen number, driver can override */
++	prev_gen = psd->generation;
++	psd->generation = (prev_gen + 1) & PSP_GEN_VALID_MASK;
 +
-+PSP Security Protocol (PSP) was defined at Google and published in:
+ 	err = psd->ops->key_rotate(psd, info->extack);
+ 	if (err)
+ 		goto err_free_ntf;
+ 
++	WARN_ON_ONCE((psd->generation && psd->generation == prev_gen) ||
++		     psd->generation & ~PSP_GEN_VALID_MASK);
 +
-+https://raw.githubusercontent.com/google/psp/main/doc/PSP_Arch_Spec.pdf
++	psp_assocs_key_rotated(psd);
 +
-+This section briefly covers protocol aspects crucial for understanding
-+the kernel API. Refer to the protocol specification for further details.
+ 	nlmsg_end(ntf, (struct nlmsghdr *)ntf->data);
+ 	genlmsg_multicast_netns(&psp_nl_family, dev_net(psd->main_netdev), ntf,
+ 				0, PSP_NLGRP_USE, GFP_KERNEL);
+diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+index 66abf160e16c..d74c86437e9b 100644
+--- a/net/psp/psp_sock.c
++++ b/net/psp/psp_sock.c
+@@ -60,6 +60,7 @@ struct psp_assoc *psp_assoc_create(struct psp_dev *psd)
+ 
+ 	pas->psd = psd;
+ 	pas->dev_id = psd->id;
++	pas->generation = psd->generation;
+ 	psp_dev_get(psd);
+ 	refcount_set(&pas->refcnt, 1);
+ 
+@@ -248,6 +249,21 @@ int psp_sock_assoc_set_tx(struct sock *sk, struct psp_dev *psd,
+ 	return err;
+ }
+ 
++void psp_assocs_key_rotated(struct psp_dev *psd)
++{
++	struct psp_assoc *pas, *next;
 +
-+Note that the kernel implementation and documentation uses the term
-+"device key" in place of "master key", it is both less confusing
-+to an average developer and is less likely to run afoul any naming
-+guidelines.
++	/* Mark the stale associations as invalid, they will no longer
++	 * be able to Rx any traffic.
++	 */
++	list_for_each_entry_safe(pas, next, &psd->prev_assocs, assocs_list)
++		pas->generation |= ~PSP_GEN_VALID_MASK;
++	list_splice_init(&psd->prev_assocs, &psd->stale_assocs);
++	list_splice_init(&psd->active_assocs, &psd->prev_assocs);
 +
-+Derived Rx keys
-+---------------
++	/* TODO: we should inform the sockets that got shut down */
++}
 +
-+PSP borrows some terms and mechanisms from IPsec. PSP was designed
-+with HW offloads in mind. The key feature of PSP is that Rx keys for every
-+connection do not have to be stored by the receiver but can be derived
-+from device key and information present in packet headers.
-+This makes it possible to implement receivers which require a constant
-+amount of memory regardless of the number of connections (``O(1)`` scaling).
-+
-+Tx keys have to be stored like with any other protocol, but Tx is much
-+less latency sensitive than Rx, and delays in fetching keys from slow
-+memory is less likely to cause packet drops. Preferably, the Tx keys
-+should be provided with the packet (e.g. as part of the descriptors).
-+
-+Key rotation
-+------------
-+
-+The device key known only to the receiver is fundamental to the design.
-+Per specification this state cannot be directly accessible (it must be
-+impossible to read it out of the hardware of the receiver NIC).
-+Moreover, it has to be "rotated" periodically (usually daily). Rotation
-+means that new device key gets generated (by a random number generator
-+of the device), and used for all new connections. To avoid disrupting
-+old connections the old device key remains in the NIC. A phase bit
-+carried in the packet headers indicates which generation of device key
-+the packet has been encrypted with.
-+
-+User facing API
-+===============
-+
-+PSP is designed primarily for hardware offloads. There is currently
-+no software fallback for systems which do not have PSP capable NICs.
-+There is also no standard (or otherwise defined) way of establishing
-+a PSP-secured connection or exchanging the symmetric keys.
-+
-+The expectation is that higher layer protocols will take care of
-+protocol and key negotiation. For example one may use TLS key exchange,
-+announce the PSP capability, and switch to PSP if both endpoints
-+are PSP-capable.
-+
-+All configuration of PSP is performed via the PSP netlink family.
-+
-+Device discovery
-+----------------
-+
-+The PSP netlink family defines operations to retrieve information
-+about the PSP devices available on the system, configure them and
-+access PSP related statistics.
-+
-+Securing a connection
-+---------------------
-+
-+PSP encryption is currently only supported for TCP connections.
-+Rx and Tx keys are allocated separately. First the ``rx-assoc``
-+Netlink command needs to be issued, specifying a target TCP socket.
-+Kernel will allocate a new PSP Rx key from the NIC and associate it
-+with given socket. At this stage socket will accept both PSP-secured
-+and plain text TCP packets.
-+
-+Tx keys are installed using the ``tx-assoc`` Netlink command.
-+Once the Tx keys are installed, all data read from the socket will
-+be PSP-secured. In other words act of installing Tx keys has a secondary
-+effect on the Rx direction.
-+
-+There is an intermediate period after ``tx-assoc`` successfully
-+returns and before the TCP socket encounters it's first PSP
-+authenticated packet, where the TCP stack will allow certain nondata
-+packets, i.e. ACKs, FINs, and RSTs, to enter TCP receive processing
-+even if not PSP authenticated. During the ``tx-assoc`` call, the TCP
-+socket's ``rcv_nxt`` field is recorded. At this point, ACKs and RSTs
-+will be accepted with any sequence number, while FINs will only be
-+accepted at the latched value of ``rcv_nxt``. Once the TCP stack
-+encounters the first TCP packet containing PSP authenticated data, the
-+other end of the connection must have executed the ``tx-assoc``
-+command, so any TCP packet, including those without data, will be
-+dropped before receive processing if it is not successfully
-+authenticated. This is summarized in the table below. The
-+aforementioned state of rejecting all non-PSP packets is labeled "PSP
-+Full".
-+
-++----------------+------------+------------+-------------+-------------+
-+| Event          | Normal TCP | Rx PSP     | Tx PSP      | PSP Full    |
-++================+============+============+=============+=============+
-+| Rx plain       | accept     | accept     | drop        | drop        |
-+| (data)         |            |            |             |             |
-++----------------+------------+------------+-------------+-------------+
-+| Rx plain       | accept     | accept     | accept      | drop        |
-+| (ACK|FIN|RST)  |            |            |             |             |
-++----------------+------------+------------+-------------+-------------+
-+| Rx PSP (good)  | drop       | accept     | accept      | accept      |
-++----------------+------------+------------+-------------+-------------+
-+| Rx PSP (bad    | drop       | drop       | drop        | drop        |
-+| crypt, !=SPI)  |            |            |             |             |
-++----------------+------------+------------+-------------+-------------+
-+| Tx             | plain text | plain text | encrypted   | encrypted   |
-+|                |            |            | (excl. rtx) | (excl. rtx) |
-++----------------+------------+------------+-------------+-------------+
-+
-+To ensure that any data read from the socket after the ``tx-assoc``
-+call returns success has been authenticated, the kernel will scan the
-+receive and ofo queues of the socket at ``tx-assoc`` time. If any
-+enqueued packet was received in clear text, the Tx association will
-+fail, and the application should retry installing the Tx key after
-+draining the socket (this should not be necessary if both endpoints
-+are well behaved).
-+
-+Because TCP sequence numbers are not integrity protected prior to
-+upgrading to PSP, it is possible that a MITM could offset sequence
-+numbers in a way that deletes a prefix of the PSP protected part of
-+the TCP stream. If userspace cares to mitigate this type of attack, a
-+special "start of PSP" message should be exchanged after ``tx-assoc``.
-+
-+Rotation notifications
-+----------------------
-+
-+The rotations of device key happen asynchronously and are usually
-+performed by management daemons, not under application control.
-+The PSP netlink family will generate a notification whenever keys
-+are rotated. The applications are expected to re-establish connections
-+before keys are rotated again.
-+
-+Kernel implementation
-+=====================
-+
-+Driver notes
-+------------
-+
-+Drivers are expected to start with no PSP enabled (``psp-versions-ena``
-+in ``dev-get`` set to ``0``) whenever possible. The user space should
-+not depend on this behavior, as future extension may necessitate creation
-+of devices with PSP already enabled, nonetheless drivers should not enable
-+PSP by default. Enabling PSP should be the responsibility of the system
-+component which also takes care of key rotation.
-+
-+Note that ``psp-versions-ena`` is expected to be used only for enabling
-+receive processing. The device is not expected to reject transmit requests
-+after ``psp-versions-ena`` has been disabled. User may also disable
-+``psp-versions-ena`` while there are active associations, which will
-+break all PSP Rx processing.
-+
-+Drivers are expected to ensure that a device key is usable and secure
-+upon init, without explicit key rotation by the user space. It must be
-+possible to allocate working keys, and that no duplicate keys must be
-+generated. If the device allows the host to request the key for an
-+arbitrary SPI - driver should discard both device keys (rotate the
-+device key twice), to avoid potentially using a SPI+key which previous
-+OS instance already had access to.
-+
-+Drivers must use ``psp_skb_get_assoc_rcu()`` to check if PSP Tx offload
-+was requested for given skb. On Rx drivers should allocate and populate
-+the ``SKB_EXT_PSP`` skb extension, and set the skb->decrypted bit to 1.
-+
-+Kernel implementation notes
-+---------------------------
-+
-+PSP implementation follows the TLS offload more closely than the IPsec
-+offload, with per-socket state, and the use of skb->decrypted to prevent
-+clear text leaks.
-+
-+PSP device is separate from netdev, to make it possible to "delegate"
-+PSP offload capabilities to software devices (e.g. ``veth``).
+ void psp_twsk_init(struct inet_timewait_sock *tw, const struct sock *sk)
+ {
+ 	struct psp_assoc *pas = psp_sk_assoc(sk);
 -- 
 2.47.3
 
