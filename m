@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D272989BC
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9BF293B75
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152156; cv=none; b=Ao+zcoGIEfNhgxLTDi5nIHjk7Q6fuJ/UB52btcIGF1rr6fAvPM5M/QwkpkpKUfH7nmds+Es9fo7xFtTMt3c8Rn4n+oF+wA7QJTgSRb+fYbcmU1FxvwvPhI8hcJexu7htovWpoZ0F2G6HULSMnOD/6oxukeCgyAdPWEcy0JjNlCY=
+	t=1756152158; cv=none; b=hz79l4Q9+ayFOc6BoF9Jir9qYx1Oqbfv3LKc8eVwk8p43HBSh5kHc2J7IETOKlRzKBu3NjL+YokWR09fa5uNdLsAE/616wsBMwVgKGjQ+UjrN/9j4ATlwscLmZ2en0P5hNZZB3qBMwFqM/nEKNlU/A6MW5dr2pMDtsbm8HidYNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756152156; c=relaxed/simple;
-	bh=GQrx84Z91K28efwrE9jpwSxOwBnsobXPb1cKXl6/ECQ=;
+	s=arc-20240116; t=1756152158; c=relaxed/simple;
+	bh=9lmt/qPzUzFQzSf+G2nmgdmqEKGqReRq3FV7Ja3nZOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYp62QKpO4gOruymcVgOlNCcceMGYh96+ACRwx4HZyON29XA+8ZqyIlVw8YICOH9BTtwjIm6MOnDcfekdSn1DtiZXjovMwS/hvJTbuF4WTMGxyhs5EBz/3cK+gWq0fyv6KqTQ7dxYXEb+c3/fnct+4WXRVuO15hn0ejW2lyanLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CunOHdid; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=eWccDJLEBwZmNefkOwDBeCUEJ/PZwSHUgDRsfRaJGfh7f3yMnh7IkK7Q7L6RNxmpmvd5F1k6nBOTkWdePH2K+dq/YYMvc/GVBDHif2wlmjZndxGUQ0Vda74Uagh3E+vKoUY+p/0L5+nMiEmLJXHxj7XBwImR4/AwPHg2lyvoCFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/UAov6w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CunOHdid"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C369C116B1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/UAov6w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F332AC4CEED;
 	Mon, 25 Aug 2025 20:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756152156;
-	bh=GQrx84Z91K28efwrE9jpwSxOwBnsobXPb1cKXl6/ECQ=;
+	s=k20201202; t=1756152157;
+	bh=9lmt/qPzUzFQzSf+G2nmgdmqEKGqReRq3FV7Ja3nZOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CunOHdidkLJ++LXNlI9NTclTmvz4ET3BiZ9oej0af9u6flZ3jyyGA08qKb46fZzcp
-	 nX3V0lQKf7dEVZWfNoHe1Dtcki73n2mAEmVvP4hHgBVg2HdGjICibC4rpQ5Elleqn8
-	 NwLb1ezRzgvnvgw1ZFbwQ4P6685/5KnTYX55MTAKJFP0nRka7bd2DIUJ+GMcXYqfLA
-	 90dDMdIadgayfp1AlqoLBjWCVIPqVNfeUQQAflb8ujsAdK5Ah0zX1kjjC2o9Y27Akc
-	 xh3zmKSMkpeaYXb/UrNI9F46fsGdMx4H+6WeHMvmWUg24PLSY7+cXbQaaIEqLDQmyM
-	 MNhJqgVdlo6/Q==
+	b=D/UAov6wm6uoKHqde8mTsMAbgc5jtG2aiYFk/u1/X5HX5O7Yp6kwVRLuXOf9RjnAQ
+	 FLfY7qosnDHmn8XfbM5d1OTNMo175lDJ2CXIzX29G66B2lHmox4bllam95mYSbGzQk
+	 HfrmrrHgkB7EfSoFLHD918Be+RVfpTMQtIp8d4hn1lwaonscD8g2Ypz7lsard1afZ/
+	 PMqcm3bDa+xmpTnHqlS6KmZFzMHj3LPpQYqvdqMBRzLAIyzV4afaZ1S0C70tMQNM38
+	 ZyX0QoSHqOHUgug49Nrc9OMsUT/DYqv5Q2TF5VMbPUbIH3hJdn+eV6BHyoeAq/h8F2
+	 SeWnmEg4+XhYA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	vadim.fedorenko@linux.dev,
 	jacob.e.keller@intel.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 4/6] eth: fbnic: Fetch PHY stats from device
-Date: Mon, 25 Aug 2025 13:02:04 -0700
-Message-ID: <20250825200206.2357713-5-kuba@kernel.org>
+Subject: [PATCH net-next v2 6/6] eth: fbnic: Add pause stats support
+Date: Mon, 25 Aug 2025 13:02:06 -0700
+Message-ID: <20250825200206.2357713-7-kuba@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250825200206.2357713-1-kuba@kernel.org>
 References: <20250825200206.2357713-1-kuba@kernel.org>
@@ -53,216 +53,160 @@ Content-Transfer-Encoding: 8bit
 
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 
-Add support to fetch PHY stats consisting of PCS and FEC stats from the
-device. When reading the stats counters, the lo part is read first, which
-latches the hi part to ensure consistent reading of the stats counter.
+Add support to read pause stats for fbnic. Unlike FEC and PCS stats,
+pause stats won't wrap, do not fetch them under the service task. Since,
+they are exclusively accessed via the ethtool API, don't include them in
+fbnic_get_hw_stats().
 
-FEC and PCS stats can wrap depending on the access frequency. To prevent
-wrapping, fetch these stats periodically under the service task. Also to
-maintain consistency fetch these stats along with other 32b stats under
-__fbnic_get_hw_stats32().
+]# ethtool -I -a eth0
+Pause parameters for eth0:
+Autonegotiate:	on
+RX:		off
+TX:		off
+Statistics:
+  tx_pause_frames: 0
+  rx_pause_frames: 0
 
 Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   | 15 ++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  | 16 +++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  4 ++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.c  | 20 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 46 +++++++++++++++++++
- 5 files changed, 101 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h     |  4 ++++
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.h    |  7 +++++++
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h     |  2 ++
+ drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c | 17 +++++++++++++++++
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.c    |  1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c     | 11 +++++++++++
+ 6 files changed, 42 insertions(+)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index a81db842aa53..69cb73ca8bca 100644
+index 69cb73ca8bca..e2fffe1597e9 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -790,6 +790,21 @@ enum {
- #define FBNIC_CSR_END_PCS		0x10668 /* CSR section delimiter */
+@@ -844,6 +844,10 @@ enum {
+ #define FBNIC_CSR_END_SIG		0x1184e /* CSR section delimiter */
  
- #define FBNIC_CSR_START_RSFEC		0x10800 /* CSR section delimiter */
-+
-+/* We have 4 RSFEC engines present in our part, however we are only using 1.
-+ * As such only CCW(0) and NCCW(0) will never be non-zero and the other
-+ * registers can be ignored.
-+ */
-+#define FBNIC_RSFEC_CCW_LO(n)	(0x10802 + 8 * (n))	/* 0x42008 + 32*n */
-+#define FBNIC_RSFEC_CCW_HI(n)	(0x10803 + 8 * (n))	/* 0x4200c + 32*n */
-+#define FBNIC_RSFEC_NCCW_LO(n)	(0x10804 + 8 * (n))	/* 0x42010 + 32*n */
-+#define FBNIC_RSFEC_NCCW_HI(n)	(0x10805 + 8 * (n))	/* 0x42014 + 32*n */
-+
-+#define FBNIC_PCS_MAX_LANES			4
-+#define FBNIC_PCS_SYMBLERR_LO(n) \
-+				(0x10880 + 2 * (n))	/* 0x42200 + 8*n */
-+#define FBNIC_PCS_SYMBLERR_HI(n) \
-+				(0x10881 + 2 * (n))	/* 0x42204 + 8*n */
- #define FBNIC_CSR_END_RSFEC		0x108c8 /* CSR section delimiter */
- 
- /* MAC MAC registers (ASIC only) */
+ #define FBNIC_CSR_START_MAC_STAT	0x11a00
++#define FBNIC_MAC_STAT_RX_XOFF_STB_L	0x11a00		/* 0x46800 */
++#define FBNIC_MAC_STAT_RX_XOFF_STB_H	0x11a01		/* 0x46804 */
++#define FBNIC_MAC_STAT_TX_XOFF_STB_L	0x11a04		/* 0x46810 */
++#define FBNIC_MAC_STAT_TX_XOFF_STB_H	0x11a05		/* 0x46814 */
+ #define FBNIC_MAC_STAT_RX_BYTE_COUNT_L	0x11a08		/* 0x46820 */
+ #define FBNIC_MAC_STAT_RX_BYTE_COUNT_H	0x11a09		/* 0x46824 */
+ #define FBNIC_MAC_STAT_RX_ALIGN_ERROR_L	0x11a0a		/* 0x46828 */
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-index 2fc25074a5e6..baffae1868a6 100644
+index baffae1868a6..aa3f429a9aed 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-@@ -23,6 +23,16 @@ struct fbnic_hw_stat {
- 	struct fbnic_stat_counter bytes;
+@@ -50,6 +50,12 @@ struct fbnic_rmon_stats {
+ 	struct fbnic_stat_counter hist_tx[ETHTOOL_RMON_HIST_MAX];
  };
  
-+struct fbnic_fec_stats {
-+	struct fbnic_stat_counter corrected_blocks, uncorrectable_blocks;
++/* Note: not updated by fbnic_get_hw_stats() */
++struct fbnic_pause_stats {
++	struct fbnic_stat_counter tx_pause_frames;
++	struct fbnic_stat_counter rx_pause_frames;
 +};
 +
-+struct fbnic_pcs_stats {
-+	struct {
-+		struct fbnic_stat_counter lanes[FBNIC_PCS_MAX_LANES];
-+	} SymbolErrorDuringCarrier;
-+};
-+
- /* Note: not updated by fbnic_get_hw_stats() */
- struct fbnic_eth_ctrl_stats {
- 	struct fbnic_stat_counter MACControlFramesTransmitted;
-@@ -56,6 +66,11 @@ struct fbnic_eth_mac_stats {
- 	struct fbnic_stat_counter FrameTooLongErrors;
- };
+ struct fbnic_eth_mac_stats {
+ 	struct fbnic_stat_counter FramesTransmittedOK;
+ 	struct fbnic_stat_counter FramesReceivedOK;
+@@ -73,6 +79,7 @@ struct fbnic_phy_stats {
  
-+struct fbnic_phy_stats {
-+	struct fbnic_fec_stats fec;
-+	struct fbnic_pcs_stats pcs;
-+};
-+
  struct fbnic_mac_stats {
  	struct fbnic_eth_mac_stats eth_mac;
++	struct fbnic_pause_stats pause;
  	struct fbnic_eth_ctrl_stats eth_ctrl;
-@@ -116,6 +131,7 @@ struct fbnic_pcie_stats {
+ 	struct fbnic_rmon_stats rmon;
  };
- 
- struct fbnic_hw_stats {
-+	struct fbnic_phy_stats phy;
- 	struct fbnic_mac_stats mac;
- 	struct fbnic_tmi_stats tmi;
- 	struct fbnic_tti_stats tti;
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
-index 86fa06da2b3e..92dd6efb920a 100644
+index 92dd6efb920a..ede5ff0dae22 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.h
-@@ -79,6 +79,10 @@ struct fbnic_mac {
- 	bool (*pcs_get_link)(struct fbnic_dev *fbd);
- 	int (*pcs_get_link_event)(struct fbnic_dev *fbd);
- 
-+	void (*get_fec_stats)(struct fbnic_dev *fbd, bool reset,
-+			      struct fbnic_fec_stats *fec_stats);
-+	void (*get_pcs_stats)(struct fbnic_dev *fbd, bool reset,
-+			      struct fbnic_pcs_stats *pcs_stats);
+@@ -85,6 +85,8 @@ struct fbnic_mac {
+ 			      struct fbnic_pcs_stats *pcs_stats);
  	void (*get_eth_mac_stats)(struct fbnic_dev *fbd, bool reset,
  				  struct fbnic_eth_mac_stats *mac_stats);
++	void (*get_pause_stats)(struct fbnic_dev *fbd, bool reset,
++				struct fbnic_pause_stats *pause_stats);
  	void (*get_eth_ctrl_stats)(struct fbnic_dev *fbd, bool reset,
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 8aa9a0e286bb..9e7becba7386 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -512,6 +512,24 @@ static void fbnic_get_pcie_stats_asic64(struct fbnic_dev *fbd,
- 			   &pcie->ob_rd_no_np_cred);
- }
- 
-+static void fbnic_reset_phy_stats(struct fbnic_dev *fbd,
-+				  struct fbnic_phy_stats *phy_stats)
-+{
-+	const struct fbnic_mac *mac = fbd->mac;
-+
-+	mac->get_fec_stats(fbd, true, &phy_stats->fec);
-+	mac->get_pcs_stats(fbd, true, &phy_stats->pcs);
-+}
-+
-+static void fbnic_get_phy_stats32(struct fbnic_dev *fbd,
-+				  struct fbnic_phy_stats *phy_stats)
-+{
-+	const struct fbnic_mac *mac = fbd->mac;
-+
-+	mac->get_fec_stats(fbd, false, &phy_stats->fec);
-+	mac->get_pcs_stats(fbd, false, &phy_stats->pcs);
-+}
-+
- static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
- 				     struct fbnic_mac_stats *mac_stats)
- {
-@@ -525,6 +543,7 @@ static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
- void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
- {
- 	spin_lock(&fbd->hw_stats.lock);
-+	fbnic_reset_phy_stats(fbd, &fbd->hw_stats.phy);
- 	fbnic_reset_tmi_stats(fbd, &fbd->hw_stats.tmi);
- 	fbnic_reset_tti_stats(fbd, &fbd->hw_stats.tti);
- 	fbnic_reset_rpc_stats(fbd, &fbd->hw_stats.rpc);
-@@ -553,6 +572,7 @@ void fbnic_init_hw_stats(struct fbnic_dev *fbd)
- 
- static void __fbnic_get_hw_stats32(struct fbnic_dev *fbd)
- {
-+	fbnic_get_phy_stats32(fbd, &fbd->hw_stats.phy);
- 	fbnic_get_tmi_stats32(fbd, &fbd->hw_stats.tmi);
- 	fbnic_get_tti_stats32(fbd, &fbd->hw_stats.tti);
- 	fbnic_get_rpc_stats32(fbd, &fbd->hw_stats.rpc);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-index fd8d67f9048e..ffdaebd4002a 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-@@ -631,6 +631,50 @@ static void fbnic_mac_link_up_asic(struct fbnic_dev *fbd,
- 	wr32(fbd, FBNIC_MAC_COMMAND_CONFIG, cmd_cfg);
+ 				   struct fbnic_eth_ctrl_stats *ctrl_stats);
+ 	void (*get_rmon_stats)(struct fbnic_dev *fbd, bool reset,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+index 4194b30f1074..b4ff98ee2051 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+@@ -1641,6 +1641,22 @@ static void fbnic_set_counter(u64 *stat, struct fbnic_stat_counter *counter)
+ 		*stat = counter->value;
  }
  
 +static void
-+fbnic_pcs_rsfec_stat_rd32(struct fbnic_dev *fbd, u32 reg, bool reset,
-+			  struct fbnic_stat_counter *stat)
++fbnic_get_pause_stats(struct net_device *netdev,
++		      struct ethtool_pause_stats *pause_stats)
 +{
-+	u32 pcs_rsfec_stat;
++	struct fbnic_net *fbn = netdev_priv(netdev);
++	struct fbnic_mac_stats *mac_stats;
++	struct fbnic_dev *fbd = fbn->fbd;
 +
-+	/* The PCS/RFSEC registers are only 16b wide each. So what we will
-+	 * have after the 64b read is 0x0000xxxx0000xxxx. To make it usable
-+	 * as a full stat we will shift the upper bits into the lower set of
-+	 * 0s and then mask off the math at 32b.
-+	 *
-+	 * Read ordering must be lower reg followed by upper reg.
-+	 */
-+	pcs_rsfec_stat = rd32(fbd, reg) & 0xffff;
-+	pcs_rsfec_stat |= rd32(fbd, reg + 1) << 16;
++	mac_stats = &fbd->hw_stats.mac;
 +
-+	/* RFSEC registers clear themselves upon being read so there is no
-+	 * need to store the old_reg_value.
-+	 */
-+	if (!reset)
-+		stat->value += pcs_rsfec_stat;
-+}
++	fbd->mac->get_pause_stats(fbd, false, &mac_stats->pause);
 +
-+static void
-+fbnic_mac_get_fec_stats(struct fbnic_dev *fbd, bool reset,
-+			struct fbnic_fec_stats *s)
-+{
-+	fbnic_pcs_rsfec_stat_rd32(fbd, FBNIC_RSFEC_CCW_LO(0), reset,
-+				  &s->corrected_blocks);
-+	fbnic_pcs_rsfec_stat_rd32(fbd, FBNIC_RSFEC_NCCW_LO(0), reset,
-+				  &s->uncorrectable_blocks);
-+}
-+
-+static void
-+fbnic_mac_get_pcs_stats(struct fbnic_dev *fbd, bool reset,
-+			struct fbnic_pcs_stats *s)
-+{
-+	int i;
-+
-+	for (i = 0; i < FBNIC_PCS_MAX_LANES; i++)
-+		fbnic_pcs_rsfec_stat_rd32(fbd, FBNIC_PCS_SYMBLERR_LO(i), reset,
-+					  &s->SymbolErrorDuringCarrier.lanes[i]);
++	pause_stats->tx_pause_frames = mac_stats->pause.tx_pause_frames.value;
++	pause_stats->rx_pause_frames = mac_stats->pause.rx_pause_frames.value;
 +}
 +
  static void
- fbnic_mac_get_eth_mac_stats(struct fbnic_dev *fbd, bool reset,
- 			    struct fbnic_eth_mac_stats *mac_stats)
-@@ -809,6 +853,8 @@ static const struct fbnic_mac fbnic_mac_asic = {
- 	.pcs_disable = fbnic_pcs_disable_asic,
- 	.pcs_get_link = fbnic_pcs_get_link_asic,
- 	.pcs_get_link_event = fbnic_pcs_get_link_event_asic,
-+	.get_fec_stats = fbnic_mac_get_fec_stats,
-+	.get_pcs_stats = fbnic_mac_get_pcs_stats,
+ fbnic_get_fec_stats(struct net_device *netdev,
+ 		    struct ethtool_fec_stats *fec_stats)
+@@ -1801,6 +1817,7 @@ static const struct ethtool_ops fbnic_ethtool_ops = {
+ 	.set_coalesce			= fbnic_set_coalesce,
+ 	.get_ringparam			= fbnic_get_ringparam,
+ 	.set_ringparam			= fbnic_set_ringparam,
++	.get_pause_stats		= fbnic_get_pause_stats,
+ 	.get_pauseparam			= fbnic_phylink_get_pauseparam,
+ 	.set_pauseparam			= fbnic_phylink_set_pauseparam,
+ 	.get_strings			= fbnic_get_strings,
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
+index 9e7becba7386..8b9b2076beec 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
+@@ -536,6 +536,7 @@ static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
+ 	const struct fbnic_mac *mac = fbd->mac;
+ 
+ 	mac->get_eth_mac_stats(fbd, true, &mac_stats->eth_mac);
++	mac->get_pause_stats(fbd, true, &mac_stats->pause);
+ 	mac->get_eth_ctrl_stats(fbd, true, &mac_stats->eth_ctrl);
+ 	mac->get_rmon_stats(fbd, true, &mac_stats->rmon);
+ }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
+index ffdaebd4002a..8f998d26b9a3 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
+@@ -709,6 +709,16 @@ fbnic_mac_get_eth_mac_stats(struct fbnic_dev *fbd, bool reset,
+ 			    MAC_STAT_TX_BROADCAST);
+ }
+ 
++static void
++fbnic_mac_get_pause_stats(struct fbnic_dev *fbd, bool reset,
++			  struct fbnic_pause_stats *pause_stats)
++{
++	fbnic_mac_stat_rd64(fbd, reset, pause_stats->tx_pause_frames,
++			    MAC_STAT_TX_XOFF_STB);
++	fbnic_mac_stat_rd64(fbd, reset, pause_stats->rx_pause_frames,
++			    MAC_STAT_RX_XOFF_STB);
++}
++
+ static void
+ fbnic_mac_get_eth_ctrl_stats(struct fbnic_dev *fbd, bool reset,
+ 			     struct fbnic_eth_ctrl_stats *ctrl_stats)
+@@ -856,6 +866,7 @@ static const struct fbnic_mac fbnic_mac_asic = {
+ 	.get_fec_stats = fbnic_mac_get_fec_stats,
+ 	.get_pcs_stats = fbnic_mac_get_pcs_stats,
  	.get_eth_mac_stats = fbnic_mac_get_eth_mac_stats,
++	.get_pause_stats = fbnic_mac_get_pause_stats,
  	.get_eth_ctrl_stats = fbnic_mac_get_eth_ctrl_stats,
  	.get_rmon_stats = fbnic_mac_get_rmon_stats,
+ 	.link_down = fbnic_mac_link_down_asic,
 -- 
 2.51.0
 
