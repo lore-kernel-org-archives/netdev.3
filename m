@@ -1,87 +1,165 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56433239E6C
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 17:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D552FCBFF;
+	Mon, 25 Aug 2025 17:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756144675; cv=none; b=lOYTM6VMTxQEVlB4ymzlhm0636h4zXeMjF606qi0D21L3I1eSWTSlCYH67mNYp6PRz6pBSXKU8qWT08iBdSWAXV5WHrfUXi2c/KvsG6OjuYZ9bzBYsPnDuNjekFZROotDYsXmKZ+bmlT14XTGCnj9tsw6yH5kW9GKiRFprUUs14=
+	t=1756144791; cv=none; b=BqoufWllwD8vOELT/ZP3azgF/5lqvD+Qi8tnhgJatf3Zjef+589EBf1/WvI7kOAfc+Tj8FAZwRpaWx5Gd8BKUeaEG0mkP/j/YyYIvIat2JtBGZ6Y70oAwjemLztHEcWyQaFmGHGptUxhbWPvFlXUJp3kV/C7Vi9ISpcQ+yte1bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756144675; c=relaxed/simple;
-	bh=rZ1gVlHVC2LtswozWTAknTdiVP4jlIX2acbTjgdNq2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c7sSSft+2MBdBt+UszpOr+JDcuNnTD1R5yUm3nNCMad6TiiHA30K/Sb0CQvSDAm0T0QXuW5v2nbQUbL7fdAjHANwqTBD83WOofE2JLf832EFwJMP68Iz5S7+74SmKK91bScpAcIC3czKuhGxuNYccXIL5g34phhSw9FIdLTXodc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nF9yWOVO; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1756144791; c=relaxed/simple;
+	bh=cgdUKiDYO0SJj5WsCQxEnKBO+Z8SG/sFL/42Ma9eE8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YYvG9/QfFBAd7lZAFvfmwlQQw9m1EqBHcxyepGgeyvL98EuzN+LbXPmbS/mkpH9Ff+/8n5kElBrRwgzMLdVV5beu/kyz/9IENdpy3VHnkZv2GQxioOx7MeTHXl4zkIhFpZj8HCiOBm0mbxLfSV+K8uoGFH+WrpJ1AvyYWHuxi6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLfip6ot; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nF9yWOVO"
-Message-ID: <daa73a77-3366-45b4-a770-fde87d4f50d8@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756144661;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UunViqkcj2OvVIMREzKdT5BwO3vN56/qvu8uu6ah+VY=;
-	b=nF9yWOVOcjDUmy/9Stb1563tEnFTyokVcKO+F8ZJrE/RvCdzkPIS7zwjdoCGn+RM6z2iVG
-	f5wMT6PYQ274/eOGhHOBEG75LOSupJs0EJ5URR9pH6xXJSl2Re507b7M9IuFA0WMsKaqU4
-	TM/5FhPj/52an7N21WrqkIeJSkdns80=
-Date: Mon, 25 Aug 2025 10:57:30 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLfip6ot"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E1C4CEED;
+	Mon, 25 Aug 2025 17:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756144790;
+	bh=cgdUKiDYO0SJj5WsCQxEnKBO+Z8SG/sFL/42Ma9eE8c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mLfip6ot7EjidE/AaKRhwQoMoOLem2UvcR9r7hLej+FNqaSuFoX+bwE2gzcb/8ESV
+	 P2XZGIgfu0+WViVQ5xaWViRijeU2QrrYqiFSZis1QSu7ROx7ND54gdEye4gYMdQlLG
+	 GwNVItUQbSD5/o7GC+T+cC25bFvpKnBNQOYeTccp40FubyzC0OZZU8hZ3LGeBsNoq1
+	 PeKq1VhgPMqe5wMYBQWvHao36lRzNnDif1cnvpkrLokYqTGWqXuKBHMIm82ixHx5DD
+	 d08C96WgD5O0DFxe7SxOB1owddLrOCb3cUhUpLZWJZa+kwl+JN92IsxSFx7zln+q6l
+	 2Q3oRGs/1rY3g==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next v2] selftests: drv-net: hds: restore hds settings
+Date: Mon, 25 Aug 2025 10:59:39 -0700
+Message-ID: <20250825175939.2249165-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 bpf-next/net 2/8] bpf: Add a bpf hook in
- __inet_accept().
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
- Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima
- <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-References: <20250822221846.744252-1-kuniyu@google.com>
- <20250822221846.744252-3-kuniyu@google.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20250822221846.744252-3-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 8/22/25 3:17 PM, Kuniyuki Iwashima wrote:
-> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-> index ae83ecda3983..ab613abdfaa4 100644
-> --- a/net/ipv4/af_inet.c
-> +++ b/net/ipv4/af_inet.c
-> @@ -763,6 +763,8 @@ void __inet_accept(struct socket *sock, struct socket *newsock, struct sock *new
->   		kmem_cache_charge(newsk, gfp);
->   	}
->   
-> +	BPF_CGROUP_RUN_PROG_INET_SOCK_ACCEPT(newsk);
-> +
->   	if (mem_cgroup_sk_enabled(newsk)) {
->   		int amt;
->   
-> diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-> index 233de8677382..80df246d4741 100644
-> --- a/tools/include/uapi/linux/bpf.h
-> +++ b/tools/include/uapi/linux/bpf.h
-> @@ -1133,6 +1133,7 @@ enum bpf_attach_type {
->   	BPF_NETKIT_PEER,
->   	BPF_TRACE_KPROBE_SESSION,
->   	BPF_TRACE_UPROBE_SESSION,
-> +	BPF_CGROUP_INET_SOCK_ACCEPT,
+The test currently modifies the HDS settings and doesn't restore them.
+This may cause subsequent tests to fail (or pass when they should not).
+Add defer()ed reset handling.
 
-Instead of adding another hook, can the SK_BPF_MEMCG_SOCK_ISOLATED bit be 
-inherited from the listener?
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+v2:
+ - fix type hints for older Python
+v1: https://lore.kernel.org/20250822195735.1673744-1-kuba@kernel.org
+---
+ tools/testing/selftests/drivers/net/hds.py | 39 ++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/tools/testing/selftests/drivers/net/hds.py b/tools/testing/selftests/drivers/net/hds.py
+index 7c90a040ce45..a2011474e625 100755
+--- a/tools/testing/selftests/drivers/net/hds.py
++++ b/tools/testing/selftests/drivers/net/hds.py
+@@ -3,6 +3,7 @@
+ 
+ import errno
+ import os
++from typing import Union
+ from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_raises, KsftSkipEx
+ from lib.py import CmdExitFailure, EthtoolFamily, NlError
+ from lib.py import NetDrvEnv
+@@ -58,7 +59,39 @@ from lib.py import defer, ethtool, ip, random
+     if 'hds-thresh' not in rings:
+         raise KsftSkipEx('hds-thresh not supported by device')
+ 
++
++def _hds_reset(cfg, netnl, rings) -> None:
++    cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++
++    arg = {'header': {'dev-index': cfg.ifindex}}
++    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
++        # Try to reset to "unknown" first, we don't know if the setting
++        # was the default or user chose it. Default seems more likely.
++        arg['tcp-data-split'] = "unknown"
++        netnl.rings_set(arg)
++        cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++        if cur['tcp-data-split'] == rings['tcp-data-split']:
++            del arg['tcp-data-split']
++        else:
++            # Try the explicit setting
++            arg['tcp-data-split'] = rings['tcp-data-split']
++    if cur.get('hds-thresh') != rings.get('hds-thresh'):
++        arg['hds-thresh'] = rings['hds-thresh']
++    if len(arg) > 1:
++        netnl.rings_set(arg)
++
++
++def _defer_reset_hds(cfg, netnl) -> Union[dict, None]:
++    try:
++        rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
++        if 'hds-thresh' in rings or 'tcp-data-split' in rings:
++            defer(_hds_reset, cfg, netnl, rings)
++    except NlError as e:
++        pass
++
++
+ def set_hds_enable(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'enabled'})
+     except NlError as e:
+@@ -76,6 +109,7 @@ from lib.py import defer, ethtool, ip, random
+     ksft_eq('enabled', rings['tcp-data-split'])
+ 
+ def set_hds_disable(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'tcp-data-split': 'disabled'})
+     except NlError as e:
+@@ -93,6 +127,7 @@ from lib.py import defer, ethtool, ip, random
+     ksft_eq('disabled', rings['tcp-data-split'])
+ 
+ def set_hds_thresh_zero(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex}, 'hds-thresh': 0})
+     except NlError as e:
+@@ -110,6 +145,7 @@ from lib.py import defer, ethtool, ip, random
+     ksft_eq(0, rings['hds-thresh'])
+ 
+ def set_hds_thresh_random(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -140,6 +176,7 @@ from lib.py import defer, ethtool, ip, random
+     ksft_eq(hds_thresh, rings['hds-thresh'])
+ 
+ def set_hds_thresh_max(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -157,6 +194,7 @@ from lib.py import defer, ethtool, ip, random
+     ksft_eq(rings['hds-thresh'], rings['hds-thresh-max'])
+ 
+ def set_hds_thresh_gt(cfg, netnl) -> None:
++    _defer_reset_hds(cfg, netnl)
+     try:
+         rings = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
+     except NlError as e:
+@@ -178,6 +216,7 @@ from lib.py import defer, ethtool, ip, random
+     """
+     mode = _get_hds_mode(cfg, netnl)
+     if mode == 'enabled':
++        _defer_reset_hds(cfg, netnl)
+         netnl.rings_set({'header': {'dev-index': cfg.ifindex},
+                          'tcp-data-split': 'unknown'})
+ 
+-- 
+2.51.0
 
