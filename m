@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FA0293B75
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E3628DF36
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152156; cv=none; b=DPeMEcLaCMTyWOIYX2iDRWlmyohyuOPKxE96voDN6FydnvMytpES4+kcOryJuXrck4KeWIjEzdzTmkOzElMFAZ49/W1J018364YgLrZ3E4SnRCZLXj0hj+0O/HfcfQCG+QRCVyU2di0vEfg4P5DFQIWbLKvWQ0LAd//n6P7eT9k=
+	t=1756152156; cv=none; b=IIvQD0EBe5ozViBunFgjJT7UCLDvs5UK1z4nlLbIRNoEDTB12XQihKMT6LeZTwGto7xxChJqLAau4kJGx11nUWxiYitGpEQOFits2C0PvadHA3/fL761aqeD5IhoZ/ivBdYCEe8Rr4J1pGXRRC2O2f7KkUCgWtvVQPXEBomILr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756152156; c=relaxed/simple;
-	bh=n7mku523LKgs9KKGesF9tJnhZLDczMbwuiQf1KNgoPc=;
+	bh=8AQ8CSTwaEsG+BVIT05Sqb4uhCtzlGJ4/RTfQYphKnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WczV0ud3tjjIlCZAPKRcDShb7Es7+Zxjm6Apd/+j7FKKyHmBSkmupIeSW7vi/ZnXqwrQ44XGXl5edC5Woxm4QRfUPVfg6gzkgKqNyfEAvWwPJyW+R0oxVNECpLXtnGA1dp3UOrGARv40NmWltkqmO2ZWJfnm/+OLWcXssN1o898=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f5LmbZ1h; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=heQlgMRmnzFwjSDXE6eSGwJXGQkcCqvjLX4roAwGvCnmPJS2VX0vtjdLf3pc2wBEg/stzvsk+53+QXtw5DC9VgMSmKxQQT+GumqiyWV9gNtOyWv+Et01PoP3bSRjSmz6Um4t0bmHnqWxEKNsZZf2nqOzhytvDtLzV6dCg7FngJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oe03IC52; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f5LmbZ1h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F37C113D0;
-	Mon, 25 Aug 2025 20:02:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oe03IC52"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA76C4CEED;
+	Mon, 25 Aug 2025 20:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756152154;
-	bh=n7mku523LKgs9KKGesF9tJnhZLDczMbwuiQf1KNgoPc=;
+	s=k20201202; t=1756152155;
+	bh=8AQ8CSTwaEsG+BVIT05Sqb4uhCtzlGJ4/RTfQYphKnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5LmbZ1hfF4yLBaLob4+O88Cjq4FtfKZgrSK9UO3DZ3uyrXQ0C4oHUaisPs99xuh9
-	 GEqXDMa3oPeYEkPN+OrKYeMd6kWSQ6RsQLL+kfzMQMeOhGYob+6WEOGU+75en4OW7Q
-	 DrrGxEvE9ffzK5M0frdCtPbaoGcqKlni+M2GNCwzzd7wd5KMySG3M/Ya+kJj46rjSk
-	 RHz1lCKAOS2SsqRTfP54rH3QrxkSCfDK2YbLwfglkzN9Nqdl4a+16YWF09c6MaL9RH
-	 YoQ8pmYRqUapFx7FHCtsvGhnHhWFEcLYha25eopNvqXWsr+RMc0MkPGH7iTFUp12ll
-	 AiRkXAbqrd1Ng==
+	b=Oe03IC52E0e3uVm/NwXKgTIdCDO2w/rTau94MBrDiNZBaUVkZJztT9gOfqxmv+u9m
+	 zh2jzgrKFcISFy4Mvkjqh+tQ1XA7K14urGhKmz3VXU0BOqZ7vthFJEBYeQAlubAqW/
+	 M4DJhu5ep6VFqndHg8NK36Hw54EjPDLxEwNUQE5KkhbNSoBAZtef8UmdgsSM/70rU4
+	 X63kiy1T/h+5i4WJjB/+gARKFWcsRnunbx5QIzwQj6DCOekO3u1rmz4c62SdusK8tm
+	 voyEcpFtoAIyonC/hb862xloredd0iwq/aGIOMHq6EMEocbFKaivU1ze5EGrUDcEyr
+	 A1ui+3iu/nGSw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	vadim.fedorenko@linux.dev,
 	jacob.e.keller@intel.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 1/6] eth: fbnic: Move hw_stats_lock out of fbnic_dev
-Date: Mon, 25 Aug 2025 13:02:01 -0700
-Message-ID: <20250825200206.2357713-2-kuba@kernel.org>
+Subject: [PATCH net-next v2 3/6] eth: fbnic: Reset MAC stats
+Date: Mon, 25 Aug 2025 13:02:03 -0700
+Message-ID: <20250825200206.2357713-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250825200206.2357713-1-kuba@kernel.org>
 References: <20250825200206.2357713-1-kuba@kernel.org>
@@ -53,218 +53,91 @@ Content-Transfer-Encoding: 8bit
 
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 
-Move hw_stats_lock out of fbnic_dev to a more appropriate struct
-fbnic_hw_stats since the only use of this lock is to protect access to
-the hardware stats. While at it, enclose the lock and stats
-initialization in a single init call.
+Reset the MAC stats as part of the hardware stats reset to ensure
+consistency. Currently, hardware stats are reset during device bring-up
+and upon experiencing PCI errors; however, MAC stats are being skipped
+during these resets.
+
+When fbnic_reset_hw_stats() is called upon recovering from PCI error,
+MAC stats are accessed outside the rtnl_lock. The only other access to
+MAC stats is via the ethtool API, which is protected by rtnl_lock. This
+can result in concurrent access to MAC stats and a potential race. Protect
+the fbnic_reset_hw_stats() call in __fbnic_pm_attach() with rtnl_lock to
+avoid this.
+
+Note that fbnic_reset_hw_mac_stats() is called outside the hardware
+stats lock which protects access to the fbnic_hw_stats. This is intentional
+because MAC stats are fetched from the device outside this lock and are
+exclusively read via the ethtool API.
 
 Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic.h       |  3 ---
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |  5 ++++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  4 ++--
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.c  | 23 ++++++++++++-------
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 12 +++++-----
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  3 +--
- 6 files changed, 29 insertions(+), 21 deletions(-)
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.c  | 22 +++++++++++++++++++
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  2 ++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic.h b/drivers/net/ethernet/meta/fbnic/fbnic.h
-index c376e06880c9..311c7dda911a 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic.h
-@@ -84,9 +84,6 @@ struct fbnic_dev {
- 	/* Local copy of hardware statistics */
- 	struct fbnic_hw_stats hw_stats;
- 
--	/* Lock protecting access to hw_stats */
--	spinlock_t hw_stats_lock;
--
- 	struct fbnic_fw_log fw_log;
- };
- 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-index 4fe239717497..2fc25074a5e6 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.h
-@@ -5,6 +5,7 @@
- #define _FBNIC_HW_STATS_H_
- 
- #include <linux/ethtool.h>
-+#include <linux/spinlock.h>
- 
- #include "fbnic_csr.h"
- 
-@@ -122,11 +123,15 @@ struct fbnic_hw_stats {
- 	struct fbnic_rxb_stats rxb;
- 	struct fbnic_hw_q_stats hw_q[FBNIC_MAX_QUEUES];
- 	struct fbnic_pcie_stats pcie;
-+
-+	/* Lock protecting the access to hw stats */
-+	spinlock_t lock;
- };
- 
- u64 fbnic_stat_rd64(struct fbnic_dev *fbd, u32 reg, u32 offset);
- 
- void fbnic_reset_hw_stats(struct fbnic_dev *fbd);
-+void fbnic_init_hw_stats(struct fbnic_dev *fbd);
- void fbnic_get_hw_q_stats(struct fbnic_dev *fbd,
- 			  struct fbnic_hw_q_stats *hw_q);
- void fbnic_get_hw_stats32(struct fbnic_dev *fbd);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index a758f510f886..e6a60d7ea864 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -518,7 +518,7 @@ static void fbnic_get_ethtool_stats(struct net_device *dev,
- 
- 	fbnic_get_hw_stats(fbn->fbd);
- 
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbnic_report_hw_stats(fbnic_gstrings_hw_stats, &fbd->hw_stats,
- 			      FBNIC_HW_FIXED_STATS_LEN, &data);
- 
-@@ -555,7 +555,7 @@ static void fbnic_get_ethtool_stats(struct net_device *dev,
- 		fbnic_report_hw_stats(fbnic_gstrings_hw_q_stats, hw_q,
- 				      FBNIC_HW_Q_STATS_LEN, &data);
- 	}
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- 
- 	for (i = 0; i < FBNIC_MAX_XDPQS; i++)
- 		fbnic_get_xdp_queue_stats(fbn->tx[i + FBNIC_MAX_TXQS], &data);
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-index 4223d8100e64..77182922f018 100644
+index 77182922f018..8aa9a0e286bb 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hw_stats.c
-@@ -421,9 +421,9 @@ static void fbnic_get_hw_rxq_stats32(struct fbnic_dev *fbd,
- void fbnic_get_hw_q_stats(struct fbnic_dev *fbd,
- 			  struct fbnic_hw_q_stats *hw_q)
- {
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbnic_get_hw_rxq_stats32(fbd, hw_q);
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright (c) Meta Platforms, Inc. and affiliates. */
+ 
++#include <linux/rtnetlink.h>
++
+ #include "fbnic.h"
+ 
+ static void fbnic_hw_stat_rst32(struct fbnic_dev *fbd, u32 reg,
+@@ -510,6 +512,16 @@ static void fbnic_get_pcie_stats_asic64(struct fbnic_dev *fbd,
+ 			   &pcie->ob_rd_no_np_cred);
  }
  
- static void fbnic_reset_pcie_stats_asic(struct fbnic_dev *fbd,
-@@ -512,14 +512,21 @@ static void fbnic_get_pcie_stats_asic64(struct fbnic_dev *fbd,
- 
- void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
- {
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	fbnic_reset_tmi_stats(fbd, &fbd->hw_stats.tmi);
- 	fbnic_reset_tti_stats(fbd, &fbd->hw_stats.tti);
- 	fbnic_reset_rpc_stats(fbd, &fbd->hw_stats.rpc);
- 	fbnic_reset_rxb_stats(fbd, &fbd->hw_stats.rxb);
- 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
- 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
++static void fbnic_reset_hw_mac_stats(struct fbnic_dev *fbd,
++				     struct fbnic_mac_stats *mac_stats)
++{
++	const struct fbnic_mac *mac = fbd->mac;
++
++	mac->get_eth_mac_stats(fbd, true, &mac_stats->eth_mac);
++	mac->get_eth_ctrl_stats(fbd, true, &mac_stats->eth_ctrl);
++	mac->get_rmon_stats(fbd, true, &mac_stats->rmon);
 +}
 +
-+void fbnic_init_hw_stats(struct fbnic_dev *fbd)
-+{
-+	spin_lock_init(&fbd->hw_stats.lock);
+ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+ {
+ 	spin_lock(&fbd->hw_stats.lock);
+@@ -520,6 +532,16 @@ void fbnic_reset_hw_stats(struct fbnic_dev *fbd)
+ 	fbnic_reset_hw_rxq_stats(fbd, fbd->hw_stats.hw_q);
+ 	fbnic_reset_pcie_stats_asic(fbd, &fbd->hw_stats.pcie);
+ 	spin_unlock(&fbd->hw_stats.lock);
 +
-+	fbnic_reset_hw_stats(fbd);
++	/* Once registered, the only other access to MAC stats is via the
++	 * ethtool API which is protected by the rtnl_lock. The call to
++	 * fbnic_reset_hw_stats() during PCI recovery is also protected
++	 * by the rtnl_lock hence, we don't need the spinlock to access
++	 * the MAC stats.
++	 */
++	if (fbd->netdev)
++		ASSERT_RTNL();
++	fbnic_reset_hw_mac_stats(fbd, &fbd->hw_stats.mac);
  }
  
- static void __fbnic_get_hw_stats32(struct fbnic_dev *fbd)
-@@ -533,19 +540,19 @@ static void __fbnic_get_hw_stats32(struct fbnic_dev *fbd)
- 
- void fbnic_get_hw_stats32(struct fbnic_dev *fbd)
- {
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	__fbnic_get_hw_stats32(fbd);
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- }
- 
- void fbnic_get_hw_stats(struct fbnic_dev *fbd)
- {
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	__fbnic_get_hw_stats32(fbd);
- 
- 	fbnic_get_tmi_stats(fbd, &fbd->hw_stats.tmi);
- 	fbnic_get_tti_stats(fbd, &fbd->hw_stats.tti);
- 	fbnic_get_rxb_stats(fbd, &fbd->hw_stats.rxb);
- 	fbnic_get_pcie_stats_asic64(fbd, &fbd->hw_stats.pcie);
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- }
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-index b8b684ad376b..98602bc3b39f 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-@@ -424,12 +424,12 @@ static void fbnic_get_stats64(struct net_device *dev,
- 	tx_dropped = stats->dropped;
- 
- 	/* Record drops from Tx HW Datapath */
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	tx_dropped += fbd->hw_stats.tmi.drop.frames.value +
- 		      fbd->hw_stats.tti.cm_drop.frames.value +
- 		      fbd->hw_stats.tti.frame_drop.frames.value +
- 		      fbd->hw_stats.tti.tbi_drop.frames.value;
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- 
- 	stats64->tx_bytes = tx_bytes;
- 	stats64->tx_packets = tx_packets;
-@@ -460,7 +460,7 @@ static void fbnic_get_stats64(struct net_device *dev,
- 	rx_packets = stats->packets;
- 	rx_dropped = stats->dropped;
- 
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	/* Record drops for the host FIFOs.
- 	 * 4: network to Host,	6: BMC to Host
- 	 * Exclude the BMC and MC FIFOs as those stats may contain drops
-@@ -480,7 +480,7 @@ static void fbnic_get_stats64(struct net_device *dev,
- 		/* Report packets with errors */
- 		rx_errors += fbd->hw_stats.hw_q[i].rde_pkt_err.value;
- 	}
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- 
- 	stats64->rx_bytes = rx_bytes;
- 	stats64->rx_packets = rx_packets;
-@@ -608,12 +608,12 @@ static void fbnic_get_queue_stats_rx(struct net_device *dev, int idx,
- 
- 	fbnic_get_hw_q_stats(fbd, fbd->hw_stats.hw_q);
- 
--	spin_lock(&fbd->hw_stats_lock);
-+	spin_lock(&fbd->hw_stats.lock);
- 	rx->hw_drop_overruns = fbd->hw_stats.hw_q[idx].rde_pkt_cq_drop.value +
- 			       fbd->hw_stats.hw_q[idx].rde_pkt_bdq_drop.value;
- 	rx->hw_drops = fbd->hw_stats.hw_q[idx].rde_pkt_err.value +
- 		       rx->hw_drop_overruns;
--	spin_unlock(&fbd->hw_stats_lock);
-+	spin_unlock(&fbd->hw_stats.lock);
- }
- 
- static void fbnic_get_queue_stats_tx(struct net_device *dev, int idx,
+ void fbnic_init_hw_stats(struct fbnic_dev *fbd)
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-index b70e4cadb37b..8190f49e1426 100644
+index 953297f667a2..ef7928b18ac0 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-@@ -304,10 +304,9 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -491,7 +491,9 @@ static void __fbnic_pm_attach(struct device *dev)
+ 	struct net_device *netdev = fbd->netdev;
+ 	struct fbnic_net *fbn;
  
- 	fbnic_devlink_register(fbd);
- 	fbnic_dbg_fbd_init(fbd);
--	spin_lock_init(&fbd->hw_stats_lock);
++	rtnl_lock();
+ 	fbnic_reset_hw_stats(fbd);
++	rtnl_unlock();
  
- 	/* Capture snapshot of hardware stats so netdev can calculate delta */
--	fbnic_reset_hw_stats(fbd);
-+	fbnic_init_hw_stats(fbd);
- 
- 	fbnic_hwmon_register(fbd);
- 
+ 	if (fbnic_init_failure(fbd))
+ 		return;
 -- 
 2.51.0
 
