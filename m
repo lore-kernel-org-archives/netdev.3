@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA162275AFC
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EEE28F948
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152155; cv=none; b=dyTTMwI117Etc6uDYnj0n34ZT6mOHfg4fPWZhrnewgPQFWzcuUXGib99Z14Kg4dAu9oT9XDe1POuag70r3h0+lQs877l/jZntCVM2bPwpXH4zOUh+ifqwqXhfWmgfL2Zej4zkrGTdutpnFTSYNlMQ4b0pDmlMuBDzvC156xLrlg=
+	t=1756152156; cv=none; b=SbwyVd+qYghmf7IGSiCnEoBKBN+js7vXb9pkHuw1DGIZbu3SFZoI1qOe4RvrGEkVY5C7AZbPglzJsYpp/BtIgiw00pDnYByikG3jMYa66gMUoB35dlcOlR6LCZr6bX7RN/PObqVrbLu9xRDxntjYvCc+vPnwj43h9/xDUKqze0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756152155; c=relaxed/simple;
-	bh=3lJzgC59dbZzAFt2Zi032Zx7J482fMWvIjJ610sshhU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N1pdlK+5Gu/7Dr/1Qhr182UOVP2E+2WgEpE0C3Vopvuk8tBlzINrOTtoYqrLNq80tKfxK+n5onk0H0jfwdaZeglqgnjf+am+n9ZKNP8YvveS9m9FPEItBcJtoFMjud+q9HJIRwf0Pw5xyfuvixui1RGEIBAE1uRAAkaGORrHMZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKkvish/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756152156; c=relaxed/simple;
+	bh=3k7UeT4IbCxDiP+OuntyRVrkJjhlPNiuVztCIJg1vfE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XMrQ6xZJ2H8xMyQmle/kck7LGdk+mF9fjRLF/AdJ7AP8IFTD9uixr3V05rpbpEyZs9dJzbsyNlfPlQqBNgMf0hs/B7klw/AOyZqkaJrZL1F0mIh4ymOMBBj7FAgQwyY+AgPr8HsY5InJNdar98fLhT8EzSmzJr0JBTnjtZU2v3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DP2PEF7d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKkvish/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19979C4CEED;
-	Mon, 25 Aug 2025 20:02:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DP2PEF7d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18328C116C6;
+	Mon, 25 Aug 2025 20:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756152154;
-	bh=3lJzgC59dbZzAFt2Zi032Zx7J482fMWvIjJ610sshhU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sKkvish/q+y/2BIvIDGOrbc5OcZXjkg8FaiH2BHSpfhQTf3IbAdnKwHSn9LjFwC2f
-	 mnmQYiDW1uJuIgEuKiCWvjyy7KREnMBSY2I96o/kRO3f7m+dq1DlTLbOm3Rmfk+r0w
-	 gX/PAGzk/zAF9Hfo0YUE9WdmGkmhyVzd55QFPfUdMRIi47ct9aUD0Fidp9opAm3TVR
-	 YXu/UFZWX14TOQfELwNfPpUta1CPBEjHz3wGYujUS0BrFCsyEcNo4tq7F6wH4zHw2G
-	 7/BexkJDGD5dcpWF7qWq6uw2eSKd0pmtWmi9mndhCWzLWe6CxkqvB5YijZhiGUKPsl
-	 ly1PPK8AMLB6w==
+	s=k20201202; t=1756152155;
+	bh=3k7UeT4IbCxDiP+OuntyRVrkJjhlPNiuVztCIJg1vfE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DP2PEF7dgYw2onYIVMPqv+pLCkhuR4fseNNRY6Q6uOdpS6vVGINvfrk++eC8IiHrl
+	 IMFlL80BampmyEGD2e7ie7Dx75UzkwQn78nyaUX7q4Q4PUBxwS8xCGmO8dICAAOtCn
+	 sj69QZ6338CiNNMq8MuLU6E/4kxYk0XhS2AhxgqFQnevuaHCYpSkBKdT3b5UXjAv66
+	 js/aWu4qcjnXbDiVGteMkSFKRgqbIMEA09OO4dw5rBKy8OoFd0TvkCzCYYAKqLvEso
+	 Eq4eNudLBVu10eI95SZKuzX0432Liw8V8+BwCqExxDYfU4D8SLE53Kh3vfy6uLUZTe
+	 pqGUIVHEmDagw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,10 +37,12 @@ Cc: netdev@vger.kernel.org,
 	vadim.fedorenko@linux.dev,
 	jacob.e.keller@intel.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 0/6] eth: fbnic: Extend hw stats support
-Date: Mon, 25 Aug 2025 13:02:00 -0700
-Message-ID: <20250825200206.2357713-1-kuba@kernel.org>
+Subject: [PATCH net-next v2 2/6] eth: fbnic: Reset hw stats upon PCI error
+Date: Mon, 25 Aug 2025 13:02:02 -0700
+Message-ID: <20250825200206.2357713-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250825200206.2357713-1-kuba@kernel.org>
+References: <20250825200206.2357713-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,37 +51,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Mohsin says:
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
 
-Extend hardware stats support for fbnic by adding the ability to reset
-hardware stats when the device experience a reset due to a PCI error and
-include MAC stats in the hardware stats reset. Additionally, expand
-hardware stats coverage to include FEC, PHY, and Pause stats.
+Upon experiencing a PCI error, fbnic reset the device to recover from
+the failure. Reset the hardware stats as part of the device reset to
+ensure accurate stats reporting.
 
-v2:
- - [patch 3] make ASSERT_RTNL() conditional, at init stats are flushed
-   without rtnl_lock, before netdev is allocated
-v1: https://lore.kernel.org/20250822164731.1461754-1-kuba@kernel.org
+Note that the reset is not really resetting the aggregate value to 0,
+which may result in a spike for a system collecting deltas in stats.
+Rather, the reset re-latches the current value as previous, in case HW
+got reset.
 
-Mohsin Bashir (6):
-  eth: fbnic: Move hw_stats_lock out of fbnic_dev
-  eth: fbnic: Reset hw stats upon PCI error
-  eth: fbnic: Reset MAC stats
-  eth: fbnic: Fetch PHY stats from device
-  eth: fbnic: Read PHY stats via the ethtool API
-  eth: fbnic: Add pause stats support
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/net/ethernet/meta/fbnic/fbnic.h       |  3 -
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   | 19 ++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  | 28 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  6 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   | 63 +++++++++++++++++-
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.c  | 66 ++++++++++++++++---
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 57 ++++++++++++++++
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 12 ++--
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  7 +-
- 9 files changed, 240 insertions(+), 21 deletions(-)
-
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 8190f49e1426..953297f667a2 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -491,6 +491,8 @@ static void __fbnic_pm_attach(struct device *dev)
+ 	struct net_device *netdev = fbd->netdev;
+ 	struct fbnic_net *fbn;
+ 
++	fbnic_reset_hw_stats(fbd);
++
+ 	if (fbnic_init_failure(fbd))
+ 		return;
+ 
 -- 
 2.51.0
 
