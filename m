@@ -1,63 +1,63 @@
 Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEBB2874FC
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4623A1991D2
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152102; cv=none; b=NX2OuqxcQijcp6jD5IUC6svENTMWLx5du59oEqJso+LGXO7S1ejJayVb5NhZlWOeQqk+d9MMjU/mHWyuifEq6ueHX2gY4pxx9HSMjDl/QwSrFWkIvL/CBvOu8r5xTHa8OFwK3FuNTiGJOMVwzpEc11aZM5nzRtVrhfF4+X+0COA=
+	t=1756152103; cv=none; b=j79Mq4n13Iy6lXOETcQKaxc+ItiG5WHZtbO3ac662/G6N6FuOCOjBykJR6/kV3bMiq/OZ8UXQ77TdHp2coOImTiUlngLpsuyJmuRFgVEMjF+q+XiId2TS2EIYmO7YLVPtoJihRweMqAaL8uSNgqZK2MWoLC4a1ldwflyBojrlYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756152102; c=relaxed/simple;
-	bh=XuN+6CCt6cPxnSzJbpL8GnrHtHFh6xquhBYp8pHWAws=;
+	s=arc-20240116; t=1756152103; c=relaxed/simple;
+	bh=L3LoxzZ4PROtWS84UwW1svVSY4DgQPd/IdVh/5u4s18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFV2DVFy2RAmdoPWPNc8QqYXfRWhCoGMih26k36m02InWIcrA4wk1ByDgII033RKTG4m8RiUTSlrHcYnv9M9q2VH7YOhJUYg1WHYuZgKOzOG10Ji9uvnE8destHbKLw8IwyEBakHIPXTBvzmW1FdjODuDA57bZwdAypZpsC05zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FHJ0Uw9J; arc=none smtp.client-ip=209.85.128.178
+	 MIME-Version; b=mEvb5VdF5HA2OQ6zQBzvp4GzaOLxdK4q5ADur40/o9JYiukTgCYYPBP5LZeY3FksUKUVriu8aiwoY484GBrIhiOQqIjclpH27w0dKgAfklc58/cgFuLR0+hAkjnQMkYaSrW+6I5gDjq3twt2PSwZK3qBKfuekxovZt8fTjYCszM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E52CXQTl; arc=none smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FHJ0Uw9J"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d5fb5e34cso42565727b3.0
-        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E52CXQTl"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-71d60150590so37119527b3.0
+        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756152100; x=1756756900; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756152081; x=1756756881; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=939Nx6uVLvw4l3lvlfanPraTohmmdWkgrL+mk0f9MXQ=;
-        b=FHJ0Uw9JfWvY44gFt/yCmMDe6uRHeHnzg4ZMAoXkyZKkodabvfVW3rc4FTLeVULdIU
-         sQiFafO8G8tYetSmGV/kaHCyyeZJaD7p4HadQ8RcbKczdVZKskMjcgkU0pVqFSWox3HY
-         UISkD6rfJiJOGlZg9xPebqMxMMT/b5V96o7uJ3UHpg+B5FOLwFRAtNKJeE9Ku7l3jJnJ
-         ItBBIpeA7qeNQUwtmBKn8cwG5QWL5oMERm2jnkd3p73qxMxmQe3A5mhIqEV0i3ZQQqr9
-         lahA6wr0MjmdbWGL75KKwobhtv4UndiqHyVABM9MPOeBUs33cEnOOcsCgDHqaMBtLi/A
-         EjzQ==
+        bh=pSdxdAknGMeWd2XIOB9nzII/aKO1TRQ9r3btsivLsPE=;
+        b=E52CXQTl0kyGhYl8mYU5P+qphhV5jcIQbmokY0vlhjPZ4DHLAbHUC7jZ8mPb/yq7DX
+         oBHCQh9+zKnJyzmEKhf5OR/8JG4MoyUQ2VH83gnLbZIeQ2fmdoTSGejv3HLrabCjmFnd
+         NgmozGTSXT4oKGZhUhhmz14kcdXp1RQbZlfa4mcQxCpRXdQdbkbYEAlA+dXW0NhujrfL
+         6IJlxCCrWpyvYyHlzVefYt4OoVVjW5kQ40i3of7WT3Fn5T5Pt30FJEQsEvPDtU8VIXR6
+         lsN4Mfjt/ZNtl0T7pEybP7mC+ewUf/ULxFusIGSlbiAY5BilJDRPHp3ZLGyDKFM9RYiU
+         L7Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756152100; x=1756756900;
+        d=1e100.net; s=20230601; t=1756152081; x=1756756881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=939Nx6uVLvw4l3lvlfanPraTohmmdWkgrL+mk0f9MXQ=;
-        b=he1WtGfR48ZQBjpF/muptADxl3lVLsCGcrcGMzvURZbAr1+BCdMfdehrxEv3z2cpg2
-         EkAIA8xl8sPXIGSzMe7BgP4vI7u/cYrEZOuWvVqeIcwJiGleClgsLstol6mOZi10Fa51
-         r9+iWYgAuFow+67m31KoKf1SYcBCdo77tZnt63GcAe98DjJKr81pi+pygVrW6SPvRn8L
-         lD+9dS4V1BENfLvuv+luGM+efV0QMxgBYDIgzI+3LXJfwg8IfUfhz8AoF0WZ4hYdxC09
-         ++HdCdWkhjOBRquK9s3byFjweVL8hXNOlSUM1LX+MEO+cRe/9ScWEDxXKMX2iY2aPMwz
-         lw0w==
-X-Forwarded-Encrypted: i=1; AJvYcCVmSMVxDKw4XZhMRVuab2FEpS2svRTXfTcjZsHtNNq4O096wXyHKdXMRfCJb24c8+NEG2FSBXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxId3RJRp2cMvm7pcAThL7SIKqelaCBE1+CLpBZTsFpY7kdg4vf
-	y5V0SQoics3D27w5YLpED80/geaCh3PUPTKwysYs9MZ8tNUb0GN4HMqP
-X-Gm-Gg: ASbGncv8/Ccf5noMN/COe8jHUoEQFxoRm0wP0A34qndRccXmJY6ve4Gt9RVWWozt8q0
-	R6/sLHCluyqMn2Xl18oxQLzo3RfeiWlTifP0wgI6LC64aTLvOLVvI8Xg8fzvzbpWBQXisDcYEJS
-	O+sjOGy+EUe65reSlatUg0kgAeQXeQDYEO2CdJTfrJ5TOB6utURS/ahbhtEO55Xl8OPBuJmhmpo
-	JJ87wYIgGLIlmbrob2/EfQjhEAq++dcWQqQJTldVlcP+lNsyNkLY2PpNRsPPsFQWA0UEqqxBUnU
-	GH04BZh0dy36OYWaAWcG83GQhzKlPQ5QzOox2xDOreGC+SrktHfzoeiTXUPNnpSrW1RqQvwIE0r
-	GIbClaAi+tim10W8R4iAF
-X-Google-Smtp-Source: AGHT+IGq7yuONnpIXjwBOu/AyKKn8sd09nQxdcekXdtOQRcY+OZvb7B1o7XxROueBsWqkx/Zg8Zrhg==
-X-Received: by 2002:a05:690c:6d88:b0:71b:f46e:691 with SMTP id 00721157ae682-72126b7b763mr11699777b3.11.1756152099945;
-        Mon, 25 Aug 2025 13:01:39 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:71::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff1881f07sm19412027b3.50.2025.08.25.13.01.39
+        bh=pSdxdAknGMeWd2XIOB9nzII/aKO1TRQ9r3btsivLsPE=;
+        b=ba2kVMnuulHt0UU1qvdPayjuZBnxvgnio+QmjtaAbXBdsT4DZg4Xb50DEavIKLMZzm
+         NGoXxT+Cj2PkSXRKDJIU6uaWrWbYhe89UeNGKfQvdaVT7izjqdSpQqm/WqxebiAPbgZL
+         +4B1UZElybQHMV4CZITamjBhFgA8csNqumBswCV2dqKsP8RDuPgfwxbVOYfB0qjoeO2s
+         9NrIwtKQ0uTuCcZzf3rKeeFxwa5ELJcKiHo43jHJ1sXRrTVQx7fqbrdaIDeyy5jEM+Y4
+         5al/9EcqUidmD74uI8efqT00xcKCeBf7aF1qMMN/PuV16qPC2b6PP+W8IYu9hBkKazYp
+         XdFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyzaxTulhf41xnH5Ox4hm3sosIcRhcEZ2dwsgX8oxQvuVYLRtetJXm2mUTBZtHZ6XM9tocMaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSGpqIpC9IsYpfMQfFQGcHfwip1FdU7NyiLQGPvifyiU0A9kiR
+	lmiJC34NeABPULcqGf7A1fSZShKCfbd8sQxAhve0dYmbPyNZJMnqTkdj
+X-Gm-Gg: ASbGnctzGQNViHLTt6BZkI/dI2a8IL9NnMJWKMXsBVPCauxbo33pcbJXi3REM02QeOQ
+	iys/yyMMurhQ/DsMEBSbtVT8mbKbLoTclS0CLTz0Oo7IICAn358VHrbHscFC/Bhfm2/GOSv/jV+
+	GDoJjgTPzooHXrpblCQ9cTj72lQl7Orq0yqiiaqcFqatwQ4ud0V1ASnbvGq36sNvR7pPW91w+uI
+	nyq0zh34AZ6mEMoBo483IAOk+wx30Y6Sn30Rm0hvsc9HBVkVq2ZUUhpr8jFEBxWQUcYL2otnpQb
+	HFn39gplOU45d0EZJ035ksGQiBuR3QqoFYFam8aTN4qWxWJV1cQgxtILI4j8DkUblT9NKnlbkoj
+	jGI7pf0ncyNQBEQzKEx9NZM+caGkccrZ8iUlAaMDz
+X-Google-Smtp-Source: AGHT+IFGogGxfJ4EGx7qgitt9mjJ7JmAs7JHsZyTN3IQvz7Vt88kk4s56C7rgljcFIQyf2wp4eZaeQ==
+X-Received: by 2002:a05:690c:4b08:b0:720:5f0:6f52 with SMTP id 00721157ae682-72005f0709bmr81830977b3.12.1756152081033;
+        Mon, 25 Aug 2025 13:01:21 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:3::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71ff170330csm19551977b3.5.2025.08.25.13.01.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 13:01:39 -0700 (PDT)
+        Mon, 25 Aug 2025 13:01:20 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -86,9 +86,9 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v8 19/19] net/mlx5e: Implement PSP key_rotate operation
-Date: Mon, 25 Aug 2025 13:01:07 -0700
-Message-ID: <20250825200112.1750547-20-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v8 05/19] psp: add op for rotation of device key
+Date: Mon, 25 Aug 2025 13:00:53 -0700
+Message-ID: <20250825200112.1750547-6-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250825200112.1750547-1-daniel.zahka@gmail.com>
 References: <20250825200112.1750547-1-daniel.zahka@gmail.com>
@@ -100,51 +100,220 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Raed Salem <raeds@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-Implement .key_rotate operation where when invoked will cause the HW to use
-a new master key to derive PSP spi/key pairs with complience with PSP spec.
+Rotating the device key is a key part of the PSP protocol design.
+Some external daemon needs to do it once a day, or so.
+Add a netlink op to perform this operation.
+Add a notification group for informing users that key has been
+rotated and they should rekey (next rotation will cut them off).
 
-Signed-off-by: Raed Salem <raeds@nvidia.com>
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 
 Notes:
+    v6:
+    - use PSP_CMD_KEY_ROTATE_NTF instead of PSP_CMD_KEY_ROTATE as arg to
+      genl_info_init_ntf()
     v1:
-    - https://lore.kernel.org/netdev/20240510030435.120935-16-kuba@kernel.org/
+    - https://lore.kernel.org/netdev/20240510030435.120935-6-kuba@kernel.org/
 
- .../net/ethernet/mellanox/mlx5/core/en_accel/psp.c    | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ Documentation/netlink/specs/psp.yaml | 21 +++++++++++++++
+ include/net/psp/types.h              |  5 ++++
+ include/uapi/linux/psp.h             |  3 +++
+ net/psp/psp-nl-gen.c                 | 15 +++++++++++
+ net/psp/psp-nl-gen.h                 |  2 ++
+ net/psp/psp_main.c                   |  3 ++-
+ net/psp/psp_nl.c                     | 40 ++++++++++++++++++++++++++++
+ 7 files changed, 88 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
-index 56f39f452bc8..406fe351cd28 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
-@@ -82,11 +82,22 @@ static void mlx5e_psp_assoc_del(struct psp_dev *psd, struct psp_assoc *pas)
- 	atomic_dec(&psp->tx_key_cnt);
- }
+diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
+index 706f4baf8764..054cc02b65ad 100644
+--- a/Documentation/netlink/specs/psp.yaml
++++ b/Documentation/netlink/specs/psp.yaml
+@@ -88,9 +88,30 @@ operations:
+       notify: dev-get
+       mcgrp: mgmt
  
-+static int mlx5e_psp_key_rotate(struct psp_dev *psd, struct netlink_ext_ack *exack)
-+{
-+	struct mlx5e_priv *priv = netdev_priv(psd->main_netdev);
++    -
++      name: key-rotate
++      doc: Rotate the device key.
++      attribute-set: dev
++      do:
++        request:
++          attributes:
++            - id
++        reply:
++          attributes:
++            - id
++        pre: psp-device-get-locked
++        post: psp-device-unlock
++    -
++      name: key-rotate-ntf
++      doc: Notification about device key getting rotated.
++      notify: key-rotate
++      mcgrp: use
 +
-+	/* no support for protecting against external rotations */
-+	psd->generation = 0;
+ mcast-groups:
+   list:
+     -
+       name: mgmt
++    -
++      name: use
+ 
+ ...
+diff --git a/include/net/psp/types.h b/include/net/psp/types.h
+index 4922fc8d42fd..66327fa80c92 100644
+--- a/include/net/psp/types.h
++++ b/include/net/psp/types.h
+@@ -102,6 +102,11 @@ struct psp_dev_ops {
+ 	 */
+ 	int (*set_config)(struct psp_dev *psd, struct psp_dev_config *conf,
+ 			  struct netlink_ext_ack *extack);
 +
-+	return mlx5e_psp_rotate_key(priv->mdev);
-+}
-+
- static struct psp_dev_ops mlx5_psp_ops = {
- 	.set_config   = mlx5e_psp_set_config,
- 	.rx_spi_alloc = mlx5e_psp_rx_spi_alloc,
- 	.tx_key_add   = mlx5e_psp_assoc_add,
- 	.tx_key_del   = mlx5e_psp_assoc_del,
-+	.key_rotate   = mlx5e_psp_key_rotate,
++	/**
++	 * @key_rotate: rotate the device key
++	 */
++	int (*key_rotate)(struct psp_dev *psd, struct netlink_ext_ack *extack);
  };
  
- void mlx5e_psp_unregister(struct mlx5e_priv *priv)
+ #endif /* __NET_PSP_H */
+diff --git a/include/uapi/linux/psp.h b/include/uapi/linux/psp.h
+index 4a404f085190..cbfbf3f0f364 100644
+--- a/include/uapi/linux/psp.h
++++ b/include/uapi/linux/psp.h
+@@ -32,11 +32,14 @@ enum {
+ 	PSP_CMD_DEV_DEL_NTF,
+ 	PSP_CMD_DEV_SET,
+ 	PSP_CMD_DEV_CHANGE_NTF,
++	PSP_CMD_KEY_ROTATE,
++	PSP_CMD_KEY_ROTATE_NTF,
+ 
+ 	__PSP_CMD_MAX,
+ 	PSP_CMD_MAX = (__PSP_CMD_MAX - 1)
+ };
+ 
+ #define PSP_MCGRP_MGMT	"mgmt"
++#define PSP_MCGRP_USE	"use"
+ 
+ #endif /* _UAPI_LINUX_PSP_H */
+diff --git a/net/psp/psp-nl-gen.c b/net/psp/psp-nl-gen.c
+index 859712e7c2c1..7f49577ac72f 100644
+--- a/net/psp/psp-nl-gen.c
++++ b/net/psp/psp-nl-gen.c
+@@ -21,6 +21,11 @@ static const struct nla_policy psp_dev_set_nl_policy[PSP_A_DEV_PSP_VERSIONS_ENA
+ 	[PSP_A_DEV_PSP_VERSIONS_ENA] = NLA_POLICY_MASK(NLA_U32, 0xf),
+ };
+ 
++/* PSP_CMD_KEY_ROTATE - do */
++static const struct nla_policy psp_key_rotate_nl_policy[PSP_A_DEV_ID + 1] = {
++	[PSP_A_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
++};
++
+ /* Ops table for psp */
+ static const struct genl_split_ops psp_nl_ops[] = {
+ 	{
+@@ -46,10 +51,20 @@ static const struct genl_split_ops psp_nl_ops[] = {
+ 		.maxattr	= PSP_A_DEV_PSP_VERSIONS_ENA,
+ 		.flags		= GENL_CMD_CAP_DO,
+ 	},
++	{
++		.cmd		= PSP_CMD_KEY_ROTATE,
++		.pre_doit	= psp_device_get_locked,
++		.doit		= psp_nl_key_rotate_doit,
++		.post_doit	= psp_device_unlock,
++		.policy		= psp_key_rotate_nl_policy,
++		.maxattr	= PSP_A_DEV_ID,
++		.flags		= GENL_CMD_CAP_DO,
++	},
+ };
+ 
+ static const struct genl_multicast_group psp_nl_mcgrps[] = {
+ 	[PSP_NLGRP_MGMT] = { "mgmt", },
++	[PSP_NLGRP_USE] = { "use", },
+ };
+ 
+ struct genl_family psp_nl_family __ro_after_init = {
+diff --git a/net/psp/psp-nl-gen.h b/net/psp/psp-nl-gen.h
+index a099686cab5d..00a2d4ec59e4 100644
+--- a/net/psp/psp-nl-gen.h
++++ b/net/psp/psp-nl-gen.h
+@@ -20,9 +20,11 @@ psp_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
+ int psp_nl_dev_get_doit(struct sk_buff *skb, struct genl_info *info);
+ int psp_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
+ int psp_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info);
++int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info);
+ 
+ enum {
+ 	PSP_NLGRP_MGMT,
++	PSP_NLGRP_USE,
+ };
+ 
+ extern struct genl_family psp_nl_family;
+diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+index e09499b7b14a..f60155493afc 100644
+--- a/net/psp/psp_main.c
++++ b/net/psp/psp_main.c
+@@ -54,7 +54,8 @@ psp_dev_create(struct net_device *netdev,
+ 	int err;
+ 
+ 	if (WARN_ON(!psd_caps->versions ||
+-		    !psd_ops->set_config))
++		    !psd_ops->set_config ||
++		    !psd_ops->key_rotate))
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	psd = kzalloc(sizeof(*psd), GFP_KERNEL);
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index fda5ce800f82..75f2702c1029 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -221,3 +221,43 @@ int psp_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info)
+ 	nlmsg_free(rsp);
+ 	return err;
+ }
++
++int psp_nl_key_rotate_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct psp_dev *psd = info->user_ptr[0];
++	struct genl_info ntf_info;
++	struct sk_buff *ntf, *rsp;
++	int err;
++
++	rsp = psp_nl_reply_new(info);
++	if (!rsp)
++		return -ENOMEM;
++
++	genl_info_init_ntf(&ntf_info, &psp_nl_family, PSP_CMD_KEY_ROTATE_NTF);
++	ntf = psp_nl_reply_new(&ntf_info);
++	if (!ntf) {
++		err = -ENOMEM;
++		goto err_free_rsp;
++	}
++
++	if (nla_put_u32(rsp, PSP_A_DEV_ID, psd->id) ||
++	    nla_put_u32(ntf, PSP_A_DEV_ID, psd->id)) {
++		err = -EMSGSIZE;
++		goto err_free_ntf;
++	}
++
++	err = psd->ops->key_rotate(psd, info->extack);
++	if (err)
++		goto err_free_ntf;
++
++	nlmsg_end(ntf, (struct nlmsghdr *)ntf->data);
++	genlmsg_multicast_netns(&psp_nl_family, dev_net(psd->main_netdev), ntf,
++				0, PSP_NLGRP_USE, GFP_KERNEL);
++	return psp_nl_reply_send(rsp, info);
++
++err_free_ntf:
++	nlmsg_free(ntf);
++err_free_rsp:
++	nlmsg_free(rsp);
++	return err;
++}
 -- 
 2.47.3
 
