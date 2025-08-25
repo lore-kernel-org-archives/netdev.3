@@ -1,61 +1,63 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725FE28D829
-	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801E61DE8BB
+	for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 20:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756152100; cv=none; b=k6AW7a8n0GVYkt6+xLjdS7w9EF2BErNhVf7+1Lva+l4HSgzXGM1bKBr5dpiPJM8XkP6H000Xb8t7hpKmVJzv7kHQzCxf4CmI1+vMDkEkNRHFt0Gr9tQ6P7rZdd+O4BHsFcjv/p5GUvs/bvPCisqDn36m+dDinrfVOpjwS9JkjgM=
+	t=1756152100; cv=none; b=pr4PbtqiymCS+9Yatk8lw/EKx/y9xLD9ZMRYM1qbp9+ILnNA3RH/bZrUQZmVZX39D6uMKwZ05VAt1pNlz+jCfcsT47k8FqKw9leXiyUpzmyrU2YQDXUvTJw1jfLj8DarbRd/rCPMf2p5a9hTHeWuefXDATMUKrcwyPdKoUtrDpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756152100; c=relaxed/simple;
-	bh=Mh0JiGJVDfLn03giVtHWmMTBn8ivU/DJfnkkW/oIefo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pRF3p3EFDQs6xjz8A/MZT/bTrQY5G7Nl0zNwFENU8HzRI62V3kVLjSletx2CZ5CmO2Z97d3BcwVmBiObYXsZNt2O/jGkXpCbx9jEK/Clg5S2kY0HzyI8fvZLzeU8J6ByfxhEEnUnzTDWu4Xb3vmGLOgdO+282S2fzSqj5jGg2Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCZszt0G; arc=none smtp.client-ip=209.85.219.177
+	bh=EIMEr+Rr5HUz4JJNT1e3C6WK/ZU6RSeHw4jPCn+q+Vk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pkto9mFTpKUmlxEdZBIjmbDJLqKh5jp6C/LaxLiwEA8nkStdMqFFg7G/WSUOkBzhCvd5kLwCr+cs2APuv+iybBMjShcNZxl0te5nTBezCj8O41FtwKCWKnik3ytqwMC08MJ2fWeYu8ZH6tvDYHX/Hpx1Cle0fxyLMX1xsJqjpK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lkdo9dKy; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCZszt0G"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e96c77b8dc1so1052529276.1
-        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lkdo9dKy"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e951dd0689bso3130389276.2
+        for <netdev@vger.kernel.org>; Mon, 25 Aug 2025 13:01:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756152074; x=1756756874; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdZFm6yc+D3wCRZIdUGbgttcq+5XP5QbEtN3yUQA2bQ=;
-        b=LCZszt0GxFM+EwuaQNsxXEEiWREiatwDTM3gkiLfl86YVx+dEXGYu5HXM/z7Exsod+
-         8b6nMg3LWRKGLOSVDCvg9FKrWY+wwUS4J8MjPinvf/2Vhq2rfeZi11O+zcSmGLIgHkzC
-         ItB5AZGuNuYom13vl9B/Am8DF4LBbaWWaB1+n/pD9MjuxjAiggNzEu5BDl3vw82/GirO
-         El5R9fI89B/zWsz0cuY5nmhm+XiqZ/dELAsZwOr0czLM3RCtN7sxCXjhdpMSUzQ9e82i
-         ev+HZyVFHODIbToaqDcNV0HH5AAKmae6ELY0MKHaiTks5S1fHam+ypyRSx8cEuowMxTn
-         d8rg==
+        d=gmail.com; s=20230601; t=1756152089; x=1756756889; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8fpEiq5Qnep1fvIhuV4WkShBUQtrfYorDQsZJqSyepI=;
+        b=Lkdo9dKyyNDMjEMRU9XWo9qSAa7fGW/78MjddGo6BLiRUlbIizqfJLuKfrqS9jgBJ7
+         6NsCU9T38zheq53OJ81fRIBCFlCzU83eyNtn1FDW48UCWphWwuGEnF2BC/mpuWMyBqvu
+         l4O1922KkilsaWQTd19OD72se0FuBusXjgNpONS9DLoMb/V6hNqXBCkS7aLzavQM0nzG
+         13a8CWsNgxJX5RRNi6XxZ6L2IYrMnUN8MkU4S3p21E6CVU1JZ/fNcr2Y2GjFRmk0I3J/
+         9ETtN/awkxMWGIe+eQeNdIJ2pdtUhFXvB8hMNZhKRkmDvwuiJMtKKHWhYDBDxvDiNmRG
+         hbsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756152074; x=1756756874;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hdZFm6yc+D3wCRZIdUGbgttcq+5XP5QbEtN3yUQA2bQ=;
-        b=wpRE7OXhVeCLZq5bhYbOb+/7p5+i4GGmAfCfOZcATOwxkJXM5V/0P1gg+87z6NU1S0
-         dq3kIj7JD+98zZUUGwq+Grj+Er3/Bklh8/sYrcTAsCf/nW44qXyl1dk7Zc7DzG3z4bQ/
-         H68ub3q9UaYQNxQfp70xoKrUP4UR90tZeK5h7iF5JMrtAOPAjocfltMy5XH2qD6tDBI9
-         0renaLdm066uasI187ncRfS/IIbksHzI1kyo1k3PBs0laezK/1nuP3uuD1RnRC+k04DM
-         Li3inITqWF21oiWbMmW/w21Nd9z5Ez/myf2Zxbiwehr3+yzhNppnblDW6aEz49scwvvO
-         eQmw==
-X-Forwarded-Encrypted: i=1; AJvYcCXaM9A6p+A5rNAhMQj/xLyR8W6bcqrd3zv/4+i878t2e5xZHIisq3NsnBhuADE+GUMaew/Ibzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmwbmuAPjXy8d5CUhbA9EHXdN/krOtp6OWVwuuy/mwjKvDFHdE
-	wuIpOwFojw/xwBPmTaNyPM4fuYlQb309VMEyTioIhyoKeNjounrcWjNn
-X-Gm-Gg: ASbGncuB4mesVwxq03E1fo4WTnpdIOj2DRJ9X0RJteDrq366DovOtxRobKHnBqO4gKc
-	yLFblXWDgQapZ0ben39O+MR27jMGtiXWqVpst6DRV1WZtIqoBdF30JKTtqrDrcrjgk4WGELSkk7
-	A+wIxDl62GIyD/cwGHwtMdfpYmjWt5NNP/Z3jLni6Stc+UR82qV2ddkkMI/3fe0vg/wkIanoh/A
-	ennQfB955cpc4In2EZtgx3pKFyOauaXjApE7T5NAuO2Bq2loZwlnAnXwjYpWCaUwVowvT4qwsRV
-	pEsjm9umhEayV0YADq5Ffgj8IW/iKWKdC8yMC08w5ukbI9+FH4+/DGpL/BrZpvJJZB4s3/6Ozgz
-	5Y/gqaKoFa3r47e7XYfrVJjjPfH0Dplg=
-X-Google-Smtp-Source: AGHT+IFgO//6GpRGi2ik9kUzqmulHND4tSTBZEYEN3VUV2Jor2J7xQsBAjdFvCKJSJHaZqb/M2x4QQ==
-X-Received: by 2002:a05:6902:4a88:b0:e95:32ad:eb26 with SMTP id 3f1490d57ef6-e9532adee0dmr7436156276.40.1756152073854;
-        Mon, 25 Aug 2025 13:01:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:70::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e952c3762aasm2614037276.35.2025.08.25.13.01.13
+        d=1e100.net; s=20230601; t=1756152089; x=1756756889;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8fpEiq5Qnep1fvIhuV4WkShBUQtrfYorDQsZJqSyepI=;
+        b=aQOuIxnv3o7n8RKR65UPpc6SM9+etxHxzmabmrrjXNw3MWq9/FJNcuyDIK9RyY0X6y
+         k6kpXTmfjw2NijbGzbMAsEB7SmJpmleravQp88bhzZ65PShTcJJ651JTfUT/V5ny6dy7
+         P4/23RlfLANZ238e351l90ExY37+MX6K5+hMOtB3+9Mw0HR/it8If+rDrai/9jF5xq0I
+         hKgycaAw9iW6LTr8oEUzC+AKwtqEAqnZdglH9oJgplumhd+kU8e1qkBP80ygeQdAUsC7
+         YcGeUxdayH3gXxHG8R31HfKcRlx6fG7i8h8Le/W88TGQtwjrgRjv3EQkUJtZvuJ/rveU
+         D1zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAzokY+MALZpk2pa19hXb01a/ugXuWekyWM5Vem/dfy3dByD1iwPK+1N1t6VwLQzl8orDfRkI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDvuVuszIFuXWrMAfTLNT0ZykjOLNul45yEcTXYLKSNDg5NZFm
+	sPRwJQhiT8p49cbbb0aBNx6WoedzHX0q59jiuzljNOgLzL5WCIJp+Cl7
+X-Gm-Gg: ASbGncsHqpLbr33X8qVDf/gglR3h5a227n8xfPAsX+O06gC1dXir2dLZ3Y8ybcNETwX
+	WJR+8m3hsV89+BIQLz5RSD/MpOStO3pcBUictNvE5DTE83aOXTqb69XiU+2hD9TkdMAa/7zr9JB
+	XWFLJC8Fdk5oZPzbZTI7ICFVXDhtAWRt/9nN0QSkO4Z6unofvbMCPDbDH5q1AXSbs7Q3v1RVr0p
+	NBJjlYNsg6byg+SrQQZLjSJ3Y7drPqaeX+gFgaBY41fobymRWH4oIr2oRaiEDIetjEkCe3zHtdW
+	pIlDY6oioj1VZ7HDm48MUTiyEjAioUmAXB4XxYM9UCpv+9GRVSe4CMtVKkq1yNqTNEFVFEHwlDZ
+	SEy1NM+RZAMdsSdc8TKLFTT854ainPg==
+X-Google-Smtp-Source: AGHT+IEXI9rR9vcZDEb/LPL2hpD6UzU7XS7t4cEYcwLzwd9tuOEdJD3amnNrKOyzUuQBVoSuMhYY/g==
+X-Received: by 2002:a05:6902:6c13:b0:e94:ffa6:177a with SMTP id 3f1490d57ef6-e951c2428f4mr14084715276.23.1756152089063;
+        Mon, 25 Aug 2025 13:01:29 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:4::])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e952c354b23sm2642849276.22.2025.08.25.13.01.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Aug 2025 13:01:13 -0700 (PDT)
+        Mon, 25 Aug 2025 13:01:28 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -84,10 +86,12 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v8 00/19] add basic PSP encryption for TCP connections
-Date: Mon, 25 Aug 2025 13:00:48 -0700
-Message-ID: <20250825200112.1750547-1-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v8 11/19] net/mlx5e: Support PSP offload functionality
+Date: Mon, 25 Aug 2025 13:00:59 -0700
+Message-ID: <20250825200112.1750547-12-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250825200112.1750547-1-daniel.zahka@gmail.com>
+References: <20250825200112.1750547-1-daniel.zahka@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,258 +100,671 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is v8 of the PSP RFC [1] posted by Jakub Kicinski one year
-ago. General developments since v1 include a fork of packetdrill [2]
-with support for PSP added, as well as some test cases, and an
-implementation of PSP key exchange and connection upgrade [3]
-integrated into the fbthrift RPC library. Both [2] and [3] have been
-tested on server platforms with PSP-capable CX7 NICs. Below is the
-cover letter from the original RFC:
+From: Raed Salem <raeds@nvidia.com>
 
-Add support for PSP encryption of TCP connections.
+Add PSP offload related IFC structs, layouts, and enumerations. Implement
+.set_config and .rx_spi_alloc PSP device operations. Driver does not need
+to make use of the .set_config operation. Stub .assoc_add and .assoc_del
+PSP operations.
 
-PSP is a protocol out of Google:
-https://github.com/google/psp/blob/main/doc/PSP_Arch_Spec.pdf
-which shares some similarities with IPsec. I added some more info
-in the first patch so I'll keep it short here.
+Introduce the MLX5_EN_PSP configuration option for enabling PSP offload
+support on mlx5 devices.
 
-The protocol can work in multiple modes including tunneling.
-But I'm mostly interested in using it as TLS replacement because
-of its superior offload characteristics. So this patch does three
-things:
+Signed-off-by: Raed Salem <raeds@nvidia.com>
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+---
 
- - it adds "core" PSP code
-   PSP is offload-centric, and requires some additional care and
-   feeding, so first chunk of the code exposes device info.
-   This part can be reused by PSP implementations in xfrm, tunneling etc.
-
- - TCP integration TLS style
-   Reuse some of the existing concepts from TLS offload, such as
-   attaching crypto state to a socket, marking skbs as "decrypted",
-   egress validation. PSP does not prescribe key exchange protocols.
-   To use PSP as a more efficient TLS offload we intend to perform
-   a TLS handshake ("inline" in the same TCP connection) and negotiate
-   switching to PSP based on capabilities of both endpoints.
-   This is also why I'm not including a software implementation.
-   Nobody would use it in production, software TLS is faster,
-   it has larger crypto records.
-
- - mlx5 implementation
-   That's mostly other people's work, not 100% sure those folks
-   consider it ready hence the RFC in the title. But it works :)
-
-Not posted, queued a branch [4] are follow up pieces:
- - standard stats
- - netdevsim implementation and tests
-
-[1] https://lore.kernel.org/netdev/20240510030435.120935-1-kuba@kernel.org/ 
-[2] https://github.com/danieldzahka/packetdrill
-[3] https://github.com/danieldzahka/fbthrift/tree/dzahka/psp
-[4] https://github.com/kuba-moo/linux/tree/psp
-
-Comments we intend to defer to future series:
-   - we prefer to keep the version field in the tx-assoc netlink
-     request, because it makes parsing keys require less state early
-     on, but we are willing to change in the next version of this
-     series.
-   - using a static branch to wrap psp_enqueue_set_decrypted() and
-     other functions called from tcp.
-   - using INDIRECT_CALL for tls/psp in sk_validate_xmit_skb(). We
-     prefer to address this in a dedicated patch series, so that this
-     series does not need to modify the way tls_validate_xmit_skb() is
-     declared and stubbed out.
-
-CHANGES:
-v8:
-    - rebase series
-v7: https://lore.kernel.org/netdev/20250820113120.992829-1-daniel.zahka@gmail.com/
+Notes:
+    v7:
     - use flexible array declaration instead of 0-length array declaration
       in struct mlx5_ifc_psp_gen_spi_out_bits
-    - check that 31 LSBs of the SPI are non-zero in psp_nl_parse_key()
-    - add details about GRO and TCP coalescing in commit message of
-      fourth patch.
-    - add comment explaining use of xa_store()/xa_erase() in
-      psp_dev_unregister()/psp_dev_destroy().
-v6: https://lore.kernel.org/netdev/20250812003009.2455540-1-daniel.zahka@gmail.com/
-    - make psp_sk_overhead() add 40B of encapsulation overhead.
-    - use PSP_CMD_KEY_ROTATE_NTF instead of PSP_CMD_KEY_ROTATE as arg to
-      genl_info_init_ntf()
-    - fix errors reported by static analysis
-v5: https://lore.kernel.org/netdev/20250723203454.519540-1-daniel.zahka@gmail.com/
-    - rebase series
-v4: https://lore.kernel.org/netdev/20250716144551.3646755-1-daniel.zahka@gmail.com/
-    - rename psp_rcv() to psp_dev_rcv()
-    - add strip_icv param psp_dev_rcv() to make trailer stripping optional
-    - replace memcpy in mlx5e_psp_set_state()
-    - rename psp_encapsulate() to psp_dev_encapsulate()
-    - delete unused struct mlx5e_psp_sa_entry declaration
-    - use psp_key_size() instead of pas->key_sz in mlx5e_psp_assoc_add()
-    - remove unneeded psp.c/psp.h files in mlx5
-    - remove unneeded struct psp_key_spi usage in mlx5
-    - fix EXPORT_IPV6_MOD_GPL(psp_reply_set_decrypted) semicolon
-    - remove version from netlink rx-assoc reply
-    - remove key_sz field from struct psp_assoc
-    - rename psd_get_for_sock() to psp_dev_get_for_sock()
-    - use sk_is_tcp() to check sock in psp_assoc_device_get_locked()
-    - add comment to tcp_timewait_state_process() explaining TCP_TW_SYN
-      case.
-    - psp_twsk_init() accepts const pointer, so caller does not need to
-      cast const away.
-    - add missing psp_twsk_rx_policy_check() to TCP_TW_SYN case of
-      do_timewait in tcp_v4_rcv().
-    - remove unused PSP_KEY_V0/PSP_KEY_V1 defines
+    v4:
+    - remove unneeded psp.c/psp.h files
+    - remove unneeded struct psp_key_spi usage
+    v1:
+    - https://lore.kernel.org/netdev/20240510030435.120935-10-kuba@kernel.org/
 
-v3: https://lore.kernel.org/netdev/20250702171326.3265825-1-daniel.zahka@gmail.com/
-    - move psp_rcv() and psp_encapsulate() driver helpers into
-      psp_main.c
-    - lift pse/pas comparison code into new function:
-      psp_pse_matches_pas()
-    - explicitly mark rcu critical section psp_reply_set_decrypted()
-    - use rcu_dereference_proteced() instead of rcu_read_lock() in
-      psp_sk_assoc_free() and psp_twsk_assoc_free()
-    - rename psp_is_nondata() to psp_is_allowed_nondata()
-    - psp_reply_set_decrypted() should not call psp_sk_assoc(). Call
-      psp_sk_get_assoc_rcu() instead.
-    - lift common code from timewait and regular socks into new
-      function psp_sk_get_assoc_rcu()
-    - export symbols in psp_sock.c with EXPORT_IPV6_MOD_GPL()
-    - check for sk_is_inet() before casting to inet_twsk() in
-      sk_validate_xmit() and in psp_get_assoc_rcu()
-    - psp_reply_set_decrypted() does not use stuct sock* arg. Drop it.
-    - reword driver requirement about double rotating keys when the device
-      supports requesting arbitrary spi key pairs.
-    
-v2: https://lore.kernel.org/netdev/20250625135210.2975231-1-daniel.zahka@gmail.com/
-    - add pas->dev_id == pse->dev_id to policy checks
-    - __psp_sk_rx_policy_check() now allows pure ACKs, FINs, and RSTs to
-      be non-psp authenticated before "PSP Full" state.
-    - assign tw_validate_skb funtion during psp_twsk_init()
-    - psp_skb_get_rcu() also checks if sk is a tcp timewait sock when
-      looking for psp assocs.
-    - scan ofo queue non-psp data during psp_sock_recv_queue_check()
-    - add tcp_write_collapse_fence() to psp_sock_assoc_set_tx()
-    - Add psp_reply_set_decrypted() to encapsulate ACKs, FINs, and RSTs
-      sent from control socks on behalf of full or timewait socks with PSP
-      state.
-    - Add dev_id field to psp_skb_ext
-    - Move psp_assoc from struct tcp_timewait_sock to struct
-      inet_timewait_sock
-    - Move psp_sk_assoc_free() from sk_common_release() to
-      inet_sock_destruct()
-    - add documentation about MITM deletion attack, and expectation
-      from userspace
-    - add information about accepting clear text ACKs, RSTs, and FINs
-      to `Securing Connections` section.
-
-v1: https://lore.kernel.org/netdev/20240510030435.120935-1-kuba@kernel.org/
-
-Daniel Zahka (2):
-  net: move sk_validate_xmit_skb() to net/core/dev.c
-  net: tcp: allow tcp_timewait_sock to validate skbs before handing to
-    device
-
-Jakub Kicinski (8):
-  psp: add documentation
-  psp: base PSP device support
-  net: modify core data structures for PSP datapath support
-  tcp: add datapath logic for PSP with inline key exchange
-  psp: add op for rotation of device key
-  net: psp: add socket security association code
-  net: psp: update the TCP MSS to reflect PSP packet overhead
-  psp: track generations of device key
-
-Raed Salem (9):
-  net/mlx5e: Support PSP offload functionality
-  net/mlx5e: Implement PSP operations .assoc_add and .assoc_del
-  psp: provide encapsulation helper for drivers
-  net/mlx5e: Implement PSP Tx data path
-  net/mlx5e: Add PSP steering in local NIC RX
-  net/mlx5e: Configure PSP Rx flow steering rules
-  psp: provide decapsulation and receive helper for drivers
-  net/mlx5e: Add Rx data path offload
-  net/mlx5e: Implement PSP key_rotate operation
-
- Documentation/netlink/specs/psp.yaml          | 187 +++++
- Documentation/networking/index.rst            |   1 +
- Documentation/networking/psp.rst              | 183 +++++
- .../net/ethernet/mellanox/mlx5/core/Kconfig   |  11 +
- .../net/ethernet/mellanox/mlx5/core/Makefile  |   3 +
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |   6 +-
- .../net/ethernet/mellanox/mlx5/core/en/fs.h   |   2 +-
+ .../net/ethernet/mellanox/mlx5/core/Kconfig   |  11 ++
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  |   3 +
  .../ethernet/mellanox/mlx5/core/en/params.c   |   4 +-
- .../mellanox/mlx5/core/en_accel/en_accel.h    |  50 +-
- .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h  |   2 +-
- .../mellanox/mlx5/core/en_accel/psp.c         | 195 +++++
- .../mellanox/mlx5/core/en_accel/psp.h         |  49 ++
- .../mellanox/mlx5/core/en_accel/psp_fs.c      | 736 ++++++++++++++++++
- .../mellanox/mlx5/core/en_accel/psp_fs.h      |  30 +
- .../mellanox/mlx5/core/en_accel/psp_offload.c |  44 ++
- .../mellanox/mlx5/core/en_accel/psp_rxtx.c    | 200 +++++
- .../mellanox/mlx5/core/en_accel/psp_rxtx.h    | 121 +++
- .../net/ethernet/mellanox/mlx5/core/en_main.c |   9 +
- .../net/ethernet/mellanox/mlx5/core/en_rx.c   |  49 +-
- .../net/ethernet/mellanox/mlx5/core/en_tx.c   |  10 +-
+ .../mellanox/mlx5/core/en_accel/psp.c         | 140 ++++++++++++++++++
+ .../mellanox/mlx5/core/en_accel/psp.h         |  47 ++++++
+ .../mellanox/mlx5/core/en_accel/psp_offload.c |  44 ++++++
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |   9 ++
  drivers/net/ethernet/mellanox/mlx5/core/fw.c  |   6 +
- .../ethernet/mellanox/mlx5/core/lib/crypto.h  |   1 +
  .../net/ethernet/mellanox/mlx5/core/main.c    |   1 +
  .../mellanox/mlx5/core/steering/hws/definer.c |   2 +-
  include/linux/mlx5/device.h                   |   4 +
- include/linux/mlx5/mlx5_ifc.h                 |  95 ++-
- include/linux/netdevice.h                     |   4 +
- include/linux/skbuff.h                        |   3 +
- include/net/dropreason-core.h                 |   6 +
- include/net/inet_timewait_sock.h              |   8 +
- include/net/psp.h                             |  12 +
- include/net/psp/functions.h                   | 206 +++++
- include/net/psp/types.h                       | 184 +++++
- include/net/sock.h                            |  26 +-
- include/uapi/linux/psp.h                      |  66 ++
- net/Kconfig                                   |   1 +
- net/Makefile                                  |   1 +
- net/core/dev.c                                |  32 +
- net/core/gro.c                                |   2 +
- net/core/skbuff.c                             |   4 +
- net/ipv4/af_inet.c                            |   2 +
- net/ipv4/inet_timewait_sock.c                 |   6 +-
- net/ipv4/ip_output.c                          |   5 +-
- net/ipv4/tcp.c                                |   2 +
- net/ipv4/tcp_ipv4.c                           |  18 +-
- net/ipv4/tcp_minisocks.c                      |  20 +
- net/ipv4/tcp_output.c                         |  17 +-
- net/ipv6/ipv6_sockglue.c                      |   6 +-
- net/ipv6/tcp_ipv6.c                           |  17 +-
- net/psp/Kconfig                               |  15 +
- net/psp/Makefile                              |   5 +
- net/psp/psp-nl-gen.c                          | 119 +++
- net/psp/psp-nl-gen.h                          |  39 +
- net/psp/psp.h                                 |  54 ++
- net/psp/psp_main.c                            | 278 +++++++
- net/psp/psp_nl.c                              | 505 ++++++++++++
- net/psp/psp_sock.c                            | 302 +++++++
- tools/net/ynl/Makefile.deps                   |   1 +
- 58 files changed, 3905 insertions(+), 62 deletions(-)
- create mode 100644 Documentation/netlink/specs/psp.yaml
- create mode 100644 Documentation/networking/psp.rst
+ include/linux/mlx5/mlx5_ifc.h                 |  95 +++++++++++-
+ 13 files changed, 361 insertions(+), 7 deletions(-)
  create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
  create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.h
  create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_offload.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
- create mode 100644 include/net/psp.h
- create mode 100644 include/net/psp/functions.h
- create mode 100644 include/net/psp/types.h
- create mode 100644 include/uapi/linux/psp.h
- create mode 100644 net/psp/Kconfig
- create mode 100644 net/psp/Makefile
- create mode 100644 net/psp/psp-nl-gen.c
- create mode 100644 net/psp/psp-nl-gen.h
- create mode 100644 net/psp/psp.h
- create mode 100644 net/psp/psp_main.c
- create mode 100644 net/psp/psp_nl.c
- create mode 100644 net/psp/psp_sock.c
 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
+index 6ec7d6e0181d..79a64489da89 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
++++ b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
+@@ -208,3 +208,14 @@ config MLX5_DPLL
+ 	help
+ 	  DPLL support in Mellanox Technologies ConnectX NICs.
+ 
++config MLX5_EN_PSP
++	bool "Mellanox Technologies support for PSP cryptography-offload acceleration"
++	depends on INET_PSP
++	depends on MLX5_CORE_EN
++	default y
++	help
++	  mlx5 device offload support for Google PSP Security Protocol offload.
++	  Adds support for PSP encryption offload and for SPI and key generation
++	  interfaces to PSP Stack which supports PSP crypto offload.
++
++	  If unsure, say Y.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Makefile b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
+index a253c73db9e5..22bbf6f8e2d5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/Makefile
++++ b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
+@@ -110,6 +110,8 @@ mlx5_core-$(CONFIG_MLX5_EN_TLS) += en_accel/ktls_stats.o \
+ 				   en_accel/fs_tcp.o en_accel/ktls.o en_accel/ktls_txrx.o \
+ 				   en_accel/ktls_tx.o en_accel/ktls_rx.o
+ 
++mlx5_core-$(CONFIG_MLX5_EN_PSP) += en_accel/psp.o en_accel/psp_offload.o
++
+ #
+ # SW Steering
+ #
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+index 0dd3bc0f4caa..32e7b791dd6a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -936,6 +936,9 @@ struct mlx5e_priv {
+ #ifdef CONFIG_MLX5_EN_IPSEC
+ 	struct mlx5e_ipsec        *ipsec;
+ #endif
++#ifdef CONFIG_MLX5_EN_PSP
++	struct mlx5e_psp          *psp;
++#endif
+ #ifdef CONFIG_MLX5_EN_TLS
+ 	struct mlx5e_tls          *tls;
+ #endif
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index 3cca06a74cf9..9975a9d8945b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -6,6 +6,7 @@
+ #include "en/port.h"
+ #include "en_accel/en_accel.h"
+ #include "en_accel/ipsec.h"
++#include "en_accel/psp.h"
+ #include <linux/dim.h>
+ #include <net/page_pool/types.h>
+ #include <net/xdp_sock_drv.h>
+@@ -1003,7 +1004,8 @@ void mlx5e_build_sq_param(struct mlx5_core_dev *mdev,
+ 	bool allow_swp;
+ 
+ 	allow_swp = mlx5_geneve_tx_allowed(mdev) ||
+-		    (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO);
++		    (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO) ||
++		    mlx5_is_psp_device(mdev);
+ 	mlx5e_build_sq_param_common(mdev, param);
+ 	MLX5_SET(wq, wq, log_wq_sz, params->log_sq_size);
+ 	MLX5_SET(sqc, sqc, allow_swp, allow_swp);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+new file mode 100644
+index 000000000000..096dc4180aaa
+--- /dev/null
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
++/* Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
++#include <linux/mlx5/device.h>
++#include <net/psp.h>
++#include <linux/psp.h>
++#include "mlx5_core.h"
++#include "psp.h"
++#include "lib/crypto.h"
++#include "en_accel/psp.h"
++
++static int
++mlx5e_psp_set_config(struct psp_dev *psd, struct psp_dev_config *conf,
++		     struct netlink_ext_ack *extack)
++{
++	return 0; /* TODO: this should actually do things to the device */
++}
++
++static int
++mlx5e_psp_rx_spi_alloc(struct psp_dev *psd, u32 version,
++		       struct psp_key_parsed *assoc,
++		       struct netlink_ext_ack *extack)
++{
++	struct mlx5e_priv *priv = netdev_priv(psd->main_netdev);
++	enum mlx5_psp_gen_spi_in_key_size keysz;
++	u8 keysz_bytes;
++
++	switch (version) {
++	case PSP_VERSION_HDR0_AES_GCM_128:
++		keysz = MLX5_PSP_GEN_SPI_IN_KEY_SIZE_128;
++		keysz_bytes = 16;
++		break;
++	case PSP_VERSION_HDR0_AES_GCM_256:
++		keysz = MLX5_PSP_GEN_SPI_IN_KEY_SIZE_256;
++		keysz_bytes = 32;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return mlx5e_psp_generate_key_spi(priv->mdev, keysz, keysz_bytes, assoc);
++}
++
++static int mlx5e_psp_assoc_add(struct psp_dev *psd, struct psp_assoc *pas,
++			       struct netlink_ext_ack *extack)
++{
++	struct mlx5e_priv *priv = netdev_priv(psd->main_netdev);
++
++	mlx5_core_dbg(priv->mdev, "PSP assoc add: rx: %u, tx: %u\n",
++		      be32_to_cpu(pas->rx.spi), be32_to_cpu(pas->tx.spi));
++
++	return -EINVAL;
++}
++
++static void mlx5e_psp_assoc_del(struct psp_dev *psd, struct psp_assoc *pas)
++{
++}
++
++static struct psp_dev_ops mlx5_psp_ops = {
++	.set_config   = mlx5e_psp_set_config,
++	.rx_spi_alloc = mlx5e_psp_rx_spi_alloc,
++	.tx_key_add   = mlx5e_psp_assoc_add,
++	.tx_key_del   = mlx5e_psp_assoc_del,
++};
++
++void mlx5e_psp_unregister(struct mlx5e_priv *priv)
++{
++	if (!priv->psp || !priv->psp->psp)
++		return;
++
++	psp_dev_unregister(priv->psp->psp);
++}
++
++void mlx5e_psp_register(struct mlx5e_priv *priv)
++{
++	/* FW Caps missing */
++	if (!priv->psp)
++		return;
++
++	priv->psp->caps.assoc_drv_spc = sizeof(u32);
++	priv->psp->caps.versions = 1 << PSP_VERSION_HDR0_AES_GCM_128;
++	if (MLX5_CAP_PSP(priv->mdev, psp_crypto_esp_aes_gcm_256_encrypt) &&
++	    MLX5_CAP_PSP(priv->mdev, psp_crypto_esp_aes_gcm_256_decrypt))
++		priv->psp->caps.versions |= 1 << PSP_VERSION_HDR0_AES_GCM_256;
++
++	priv->psp->psp = psp_dev_create(priv->netdev, &mlx5_psp_ops,
++					&priv->psp->caps, NULL);
++	if (IS_ERR(priv->psp->psp))
++		mlx5_core_err(priv->mdev, "PSP failed to register due to %pe\n",
++			      priv->psp->psp);
++}
++
++int mlx5e_psp_init(struct mlx5e_priv *priv)
++{
++	struct mlx5_core_dev *mdev = priv->mdev;
++	struct mlx5e_psp *psp;
++
++	if (!mlx5_is_psp_device(mdev)) {
++		mlx5_core_dbg(mdev, "PSP offload not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (!MLX5_CAP_ETH(mdev, swp)) {
++		mlx5_core_dbg(mdev, "SWP not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (!MLX5_CAP_ETH(mdev, swp_csum)) {
++		mlx5_core_dbg(mdev, "SWP checksum not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (!MLX5_CAP_ETH(mdev, swp_csum_l4_partial)) {
++		mlx5_core_dbg(mdev, "SWP L4 partial checksum not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	if (!MLX5_CAP_ETH(mdev, swp_lso)) {
++		mlx5_core_dbg(mdev, "PSP LSO not supported\n");
++		return -EOPNOTSUPP;
++	}
++
++	psp = kzalloc(sizeof(*psp), GFP_KERNEL);
++	if (!psp)
++		return -ENOMEM;
++
++	priv->psp = psp;
++	mlx5_core_dbg(priv->mdev, "PSP attached to netdevice\n");
++	return 0;
++}
++
++void mlx5e_psp_cleanup(struct mlx5e_priv *priv)
++{
++	struct mlx5e_psp *psp = priv->psp;
++
++	if (!psp)
++		return;
++
++	priv->psp = NULL;
++	kfree(psp);
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.h
+new file mode 100644
+index 000000000000..a94530f79f6a
+--- /dev/null
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.h
+@@ -0,0 +1,47 @@
++/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
++/* Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
++
++#ifndef __MLX5E_ACCEL_PSP_H__
++#define __MLX5E_ACCEL_PSP_H__
++#if IS_ENABLED(CONFIG_MLX5_EN_PSP)
++#include <net/psp/types.h>
++#include "en.h"
++
++struct mlx5e_psp {
++	struct psp_dev *psp;
++	struct psp_dev_caps caps;
++};
++
++static inline bool mlx5_is_psp_device(struct mlx5_core_dev *mdev)
++{
++	if (!MLX5_CAP_GEN(mdev, psp))
++		return false;
++
++	if (!MLX5_CAP_PSP(mdev, psp_crypto_esp_aes_gcm_128_encrypt) ||
++	    !MLX5_CAP_PSP(mdev, psp_crypto_esp_aes_gcm_128_decrypt))
++		return false;
++
++	return true;
++}
++
++void mlx5e_psp_register(struct mlx5e_priv *priv);
++void mlx5e_psp_unregister(struct mlx5e_priv *priv);
++int mlx5e_psp_init(struct mlx5e_priv *priv);
++void mlx5e_psp_cleanup(struct mlx5e_priv *priv);
++int mlx5e_psp_rotate_key(struct mlx5_core_dev *mdev);
++int mlx5e_psp_generate_key_spi(struct mlx5_core_dev *mdev,
++			       enum mlx5_psp_gen_spi_in_key_size keysz,
++			       unsigned int keysz_bytes,
++			       struct psp_key_parsed *key);
++#else
++static inline bool mlx5_is_psp_device(struct mlx5_core_dev *mdev)
++{
++	return false;
++}
++
++static inline void mlx5e_psp_register(struct mlx5e_priv *priv) { }
++static inline void mlx5e_psp_unregister(struct mlx5e_priv *priv) { }
++static inline int mlx5e_psp_init(struct mlx5e_priv *priv) { return 0; }
++static inline void mlx5e_psp_cleanup(struct mlx5e_priv *priv) { }
++#endif /* CONFIG_MLX5_EN_PSP */
++#endif /* __MLX5E_ACCEL_PSP_H__ */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_offload.c
+new file mode 100644
+index 000000000000..5a85fd67d59e
+--- /dev/null
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_offload.c
+@@ -0,0 +1,44 @@
++// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
++/* Copyright (c) 2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
++#include <linux/workqueue.h>
++#include <net/psp/types.h>
++#include "mlx5_core.h"
++#include "en_accel/psp.h"
++
++int mlx5e_psp_rotate_key(struct mlx5_core_dev *mdev)
++{
++	u32 in[MLX5_ST_SZ_DW(psp_rotate_key_in)] = {};
++	u32 out[MLX5_ST_SZ_DW(psp_rotate_key_out)];
++
++	MLX5_SET(psp_rotate_key_in, in, opcode,
++		 MLX5_CMD_OP_PSP_ROTATE_KEY);
++
++	return mlx5_cmd_exec(mdev, in, sizeof(in), out, sizeof(out));
++}
++
++int mlx5e_psp_generate_key_spi(struct mlx5_core_dev *mdev,
++			       enum mlx5_psp_gen_spi_in_key_size keysz,
++			       unsigned int keysz_bytes,
++			       struct psp_key_parsed *key)
++{
++	u32 out[MLX5_ST_SZ_DW(psp_gen_spi_out) + MLX5_ST_SZ_DW(key_spi)] = {};
++	u32 in[MLX5_ST_SZ_DW(psp_gen_spi_in)] = {};
++	void *outkey;
++	int err;
++
++	WARN_ON_ONCE(keysz_bytes > PSP_MAX_KEY);
++
++	MLX5_SET(psp_gen_spi_in, in, opcode, MLX5_CMD_OP_PSP_GEN_SPI);
++	MLX5_SET(psp_gen_spi_in, in, key_size, keysz);
++	MLX5_SET(psp_gen_spi_in, in, num_of_spi, 1);
++	err = mlx5_cmd_exec(mdev, in, sizeof(in), out, sizeof(out));
++	if (err)
++		return err;
++
++	outkey = MLX5_ADDR_OF(psp_gen_spi_out, out, key_spi);
++	key->spi = cpu_to_be32(MLX5_GET(key_spi, outkey, spi));
++	memcpy(key->key, MLX5_ADDR_OF(key_spi, outkey, key) + 32 - keysz_bytes,
++	       keysz_bytes);
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 21bb88c5d3dc..c4cd3ae1dc5c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -52,6 +52,7 @@
+ #include "en_tc.h"
+ #include "en_rep.h"
+ #include "en_accel/ipsec.h"
++#include "en_accel/psp.h"
+ #include "en_accel/macsec.h"
+ #include "en_accel/en_accel.h"
+ #include "en_accel/ktls.h"
+@@ -5870,6 +5871,7 @@ static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
+ 	if (take_rtnl)
+ 		rtnl_lock();
+ 
++	mlx5e_psp_register(priv);
+ 	/* update XDP supported features */
+ 	mlx5e_set_xdp_feature(netdev);
+ 
+@@ -5882,6 +5884,7 @@ static int mlx5e_nic_init(struct mlx5_core_dev *mdev,
+ static void mlx5e_nic_cleanup(struct mlx5e_priv *priv)
+ {
+ 	mlx5e_health_destroy_reporters(priv);
++	mlx5e_psp_unregister(priv);
+ 	mlx5e_ktls_cleanup(priv);
+ 	mlx5e_fs_cleanup(priv->fs);
+ 	debugfs_remove_recursive(priv->dfs_root);
+@@ -6009,6 +6012,10 @@ static void mlx5e_nic_enable(struct mlx5e_priv *priv)
+ 	if (err)
+ 		mlx5_core_err(mdev, "MACsec initialization failed, %d\n", err);
+ 
++	err = mlx5e_psp_init(priv);
++	if (err)
++		mlx5_core_err(mdev, "PSP initialization failed, %d\n", err);
++
+ 	/* Marking the link as currently not needed by the Driver */
+ 	if (!netif_running(netdev))
+ 		mlx5e_modify_admin_state(mdev, MLX5_PORT_DOWN);
+@@ -6072,6 +6079,7 @@ static void mlx5e_nic_disable(struct mlx5e_priv *priv)
+ 	mlx5e_disable_async_events(priv);
+ 	mlx5_lag_remove_netdev(mdev, priv->netdev);
+ 	mlx5_vxlan_reset_to_default(mdev->vxlan);
++	mlx5e_psp_cleanup(priv);
+ 	mlx5e_macsec_cleanup(priv);
+ 	mlx5e_ipsec_cleanup(priv);
+ }
+@@ -6730,6 +6738,7 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ 	 * is already unregistered before changing to NIC profile.
+ 	 */
+ 	if (priv->netdev->reg_state == NETREG_REGISTERED) {
++		mlx5e_psp_unregister(priv);
+ 		unregister_netdev(priv->netdev);
+ 		_mlx5e_suspend(adev, false);
+ 	} else {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw.c b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+index 57476487e31f..eeb4437975f2 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw.c
+@@ -294,6 +294,12 @@ int mlx5_query_hca_caps(struct mlx5_core_dev *dev)
+ 			return err;
+ 	}
+ 
++	if (MLX5_CAP_GEN(dev, psp)) {
++		err = mlx5_core_get_caps(dev, MLX5_CAP_PSP);
++		if (err)
++			return err;
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 8517d4e5d5ef..0951c7cc1b5f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -1798,6 +1798,7 @@ static const int types[] = {
+ 	MLX5_CAP_VDPA_EMULATION,
+ 	MLX5_CAP_IPSEC,
+ 	MLX5_CAP_PORT_SELECTION,
++	MLX5_CAP_PSP,
+ 	MLX5_CAP_MACSEC,
+ 	MLX5_CAP_ADV_VIRTUALIZATION,
+ 	MLX5_CAP_CRYPTO,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
+index c6436c3a7a83..c4bb6967f74d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
+@@ -1280,7 +1280,7 @@ hws_definer_conv_misc2(struct mlx5hws_definer_conv_data *cd,
+ 	struct mlx5hws_definer_fc *fc = cd->fc;
+ 	struct mlx5hws_definer_fc *curr_fc;
+ 
+-	if (HWS_IS_FLD_SET_SZ(match_param, misc_parameters_2.reserved_at_1a0, 0x8) ||
++	if (HWS_IS_FLD_SET_SZ(match_param, misc_parameters_2.psp_syndrome, 0x8) ||
+ 	    HWS_IS_FLD_SET_SZ(match_param,
+ 			      misc_parameters_2.ipsec_next_header, 0x8) ||
+ 	    HWS_IS_FLD_SET_SZ(match_param, misc_parameters_2.reserved_at_1c0, 0x40) ||
+diff --git a/include/linux/mlx5/device.h b/include/linux/mlx5/device.h
+index 9d2467f982ad..72a83666e67f 100644
+--- a/include/linux/mlx5/device.h
++++ b/include/linux/mlx5/device.h
+@@ -1248,6 +1248,7 @@ enum mlx5_cap_type {
+ 	MLX5_CAP_IPSEC,
+ 	MLX5_CAP_CRYPTO = 0x1a,
+ 	MLX5_CAP_SHAMPO = 0x1d,
++	MLX5_CAP_PSP = 0x1e,
+ 	MLX5_CAP_MACSEC = 0x1f,
+ 	MLX5_CAP_GENERAL_2 = 0x20,
+ 	MLX5_CAP_PORT_SELECTION = 0x25,
+@@ -1487,6 +1488,9 @@ enum mlx5_qcam_feature_groups {
+ #define MLX5_CAP_SHAMPO(mdev, cap) \
+ 	MLX5_GET(shampo_cap, mdev->caps.hca[MLX5_CAP_SHAMPO]->cur, cap)
+ 
++#define MLX5_CAP_PSP(mdev, cap)\
++	MLX5_GET(psp_cap, (mdev)->caps.hca[MLX5_CAP_PSP]->cur, cap)
++
+ enum {
+ 	MLX5_CMD_STAT_OK			= 0x0,
+ 	MLX5_CMD_STAT_INT_ERR			= 0x1,
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 44d497272162..1f9e0e47dc91 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -314,6 +314,8 @@ enum {
+ 	MLX5_CMD_OP_CREATE_UMEM                   = 0xa08,
+ 	MLX5_CMD_OP_DESTROY_UMEM                  = 0xa0a,
+ 	MLX5_CMD_OP_SYNC_STEERING                 = 0xb00,
++	MLX5_CMD_OP_PSP_GEN_SPI                   = 0xb10,
++	MLX5_CMD_OP_PSP_ROTATE_KEY                = 0xb11,
+ 	MLX5_CMD_OP_QUERY_VHCA_STATE              = 0xb0d,
+ 	MLX5_CMD_OP_MODIFY_VHCA_STATE             = 0xb0e,
+ 	MLX5_CMD_OP_SYNC_CRYPTO                   = 0xb12,
+@@ -489,12 +491,14 @@ struct mlx5_ifc_flow_table_prop_layout_bits {
+ 	u8         execute_aso[0x1];
+ 	u8         reserved_at_47[0x19];
+ 
+-	u8         reserved_at_60[0x2];
++	u8         reformat_l2_to_l3_psp_tunnel[0x1];
++	u8         reformat_l3_psp_tunnel_to_l2[0x1];
+ 	u8         reformat_insert[0x1];
+ 	u8         reformat_remove[0x1];
+ 	u8         macsec_encrypt[0x1];
+ 	u8         macsec_decrypt[0x1];
+-	u8         reserved_at_66[0x2];
++	u8         psp_encrypt[0x1];
++	u8         psp_decrypt[0x1];
+ 	u8         reformat_add_macsec[0x1];
+ 	u8         reformat_remove_macsec[0x1];
+ 	u8         reparse[0x1];
+@@ -703,7 +707,7 @@ struct mlx5_ifc_fte_match_set_misc2_bits {
+ 
+ 	u8         metadata_reg_a[0x20];
+ 
+-	u8         reserved_at_1a0[0x8];
++	u8         psp_syndrome[0x8];
+ 	u8         macsec_syndrome[0x8];
+ 	u8         ipsec_syndrome[0x8];
+ 	u8         ipsec_next_header[0x8];
+@@ -1511,6 +1515,19 @@ struct mlx5_ifc_macsec_cap_bits {
+ 	u8    reserved_at_40[0x7c0];
+ };
+ 
++struct mlx5_ifc_psp_cap_bits {
++	u8         reserved_at_0[0x1];
++	u8         psp_crypto_offload[0x1]; /* Set by the driver */
++	u8         reserved_at_2[0x1];
++	u8         psp_crypto_esp_aes_gcm_256_encrypt[0x1];
++	u8         psp_crypto_esp_aes_gcm_128_encrypt[0x1];
++	u8         psp_crypto_esp_aes_gcm_256_decrypt[0x1];
++	u8         psp_crypto_esp_aes_gcm_128_decrypt[0x1];
++	u8         reserved_at_7[0x4];
++	u8         log_max_num_of_psp_spi[0x5];
++	u8         reserved_at_10[0x7f0];
++};
++
+ enum {
+ 	MLX5_WQ_TYPE_LINKED_LIST  = 0x0,
+ 	MLX5_WQ_TYPE_CYCLIC       = 0x1,
+@@ -1650,7 +1667,7 @@ struct mlx5_ifc_cmd_hca_cap_bits {
+ 	u8         reg_c_preserve[0x1];
+ 	u8         reserved_at_aa[0x1];
+ 	u8         log_max_srq[0x5];
+-	u8         reserved_at_b0[0x1];
++	u8	   reserved_at_b0[0x1];
+ 	u8         uplink_follow[0x1];
+ 	u8         ts_cqe_to_dest_cqn[0x1];
+ 	u8         reserved_at_b3[0x6];
+@@ -1876,7 +1893,9 @@ struct mlx5_ifc_cmd_hca_cap_bits {
+ 
+ 	u8         reserved_at_2a0[0x7];
+ 	u8         mkey_pcie_tph[0x1];
+-	u8         reserved_at_2a8[0x3];
++	u8         reserved_at_2a8[0x2];
++
++	u8         psp[0x1];
+ 	u8         shampo[0x1];
+ 	u8         reserved_at_2ac[0x4];
+ 	u8         max_wqe_sz_rq[0x10];
+@@ -3803,6 +3822,7 @@ union mlx5_ifc_hca_cap_union_bits {
+ 	struct mlx5_ifc_macsec_cap_bits macsec_cap;
+ 	struct mlx5_ifc_crypto_cap_bits crypto_cap;
+ 	struct mlx5_ifc_ipsec_cap_bits ipsec_cap;
++	struct mlx5_ifc_psp_cap_bits psp_cap;
+ 	u8         reserved_at_0[0x8000];
+ };
+ 
+@@ -3832,6 +3852,7 @@ enum {
+ enum {
+ 	MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_IPSEC   = 0x0,
+ 	MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_MACSEC  = 0x1,
++	MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_PSP     = 0x2,
+ };
+ 
+ struct mlx5_ifc_vlan_bits {
+@@ -7159,6 +7180,8 @@ enum mlx5_reformat_ctx_type {
+ 	MLX5_REFORMAT_TYPE_DEL_ESP_TRANSPORT_OVER_UDP = 0xa,
+ 	MLX5_REFORMAT_TYPE_ADD_ESP_TRANSPORT_OVER_IPV6 = 0xb,
+ 	MLX5_REFORMAT_TYPE_ADD_ESP_TRANSPORT_OVER_UDPV6 = 0xc,
++	MLX5_REFORMAT_TYPE_ADD_PSP_TUNNEL = 0xd,
++	MLX5_REFORMAT_TYPE_DEL_PSP_TUNNEL = 0xe,
+ 	MLX5_REFORMAT_TYPE_INSERT_HDR = 0xf,
+ 	MLX5_REFORMAT_TYPE_REMOVE_HDR = 0x10,
+ 	MLX5_REFORMAT_TYPE_ADD_MACSEC = 0x11,
+@@ -7285,6 +7308,7 @@ enum {
+ 	MLX5_ACTION_IN_FIELD_IPSEC_SYNDROME    = 0x5D,
+ 	MLX5_ACTION_IN_FIELD_OUT_EMD_47_32     = 0x6F,
+ 	MLX5_ACTION_IN_FIELD_OUT_EMD_31_0      = 0x70,
++	MLX5_ACTION_IN_FIELD_PSP_SYNDROME      = 0x71,
+ };
+ 
+ struct mlx5_ifc_alloc_modify_header_context_out_bits {
+@@ -13079,6 +13103,7 @@ enum {
+ 	MLX5_GENERAL_OBJECT_TYPE_ENCRYPTION_KEY_PURPOSE_TLS = 0x1,
+ 	MLX5_GENERAL_OBJECT_TYPE_ENCRYPTION_KEY_PURPOSE_IPSEC = 0x2,
+ 	MLX5_GENERAL_OBJECT_TYPE_ENCRYPTION_KEY_PURPOSE_MACSEC = 0x4,
++	MLX5_GENERAL_OBJECT_TYPE_ENCRYPTION_KEY_PURPOSE_PSP = 0x6,
+ };
+ 
+ struct mlx5_ifc_tls_static_params_bits {
+@@ -13496,4 +13521,64 @@ enum mlx5e_pcie_cong_event_mod_field {
+ 	MLX5_PCIE_CONG_EVENT_MOD_THRESH   = BIT(2),
+ };
+ 
++struct mlx5_ifc_psp_rotate_key_in_bits {
++	u8         opcode[0x10];
++	u8         uid[0x10];
++
++	u8         reserved_at_20[0x10];
++	u8         op_mod[0x10];
++
++	u8         reserved_at_40[0x40];
++};
++
++struct mlx5_ifc_psp_rotate_key_out_bits {
++	u8         status[0x8];
++	u8         reserved_at_8[0x18];
++
++	u8         syndrome[0x20];
++
++	u8         reserved_at_40[0x40];
++};
++
++enum mlx5_psp_gen_spi_in_key_size {
++	MLX5_PSP_GEN_SPI_IN_KEY_SIZE_128 = 0x0,
++	MLX5_PSP_GEN_SPI_IN_KEY_SIZE_256 = 0x1,
++};
++
++struct mlx5_ifc_key_spi_bits {
++	u8         spi[0x20];
++
++	u8         reserved_at_20[0x60];
++
++	u8         key[8][0x20];
++};
++
++struct mlx5_ifc_psp_gen_spi_in_bits {
++	u8         opcode[0x10];
++	u8         uid[0x10];
++
++	u8         reserved_at_20[0x10];
++	u8         op_mod[0x10];
++
++	u8         reserved_at_40[0x20];
++
++	u8         key_size[0x2];
++	u8         reserved_at_62[0xe];
++	u8         num_of_spi[0x10];
++};
++
++struct mlx5_ifc_psp_gen_spi_out_bits {
++	u8         status[0x8];
++	u8         reserved_at_8[0x18];
++
++	u8         syndrome[0x20];
++
++	u8         reserved_at_40[0x10];
++	u8         num_of_spi[0x10];
++
++	u8         reserved_at_60[0x20];
++
++	struct mlx5_ifc_key_spi_bits key_spi[];
++};
++
+ #endif /* MLX5_IFC_H */
 -- 
 2.47.3
 
