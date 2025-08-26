@@ -1,106 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954442AE8D;
-	Tue, 26 Aug 2025 08:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5672F746F;
+	Tue, 26 Aug 2025 08:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756196195; cv=none; b=k6/Vxm5kbqTl3G2rbwtxckke8VhRp+lvX1DwXTjTwQBo5eDJEZRmaf2W2XIf49/PiUOddF/nFlitU7nHbqL9V9fRhJpGEnX9fFKAACEiGmj2egduyccOdzU/H9r63KPQ9dhsnObuTjZCq0uBcluvgGOSS1FjnVxa1nbbZDnyCOg=
+	t=1756196552; cv=none; b=NAUHI/cfSRrMbjNd2tbwaw/mhn5njiJZwLAyaZkOcC/kIwRpDaawEZurxlen/d3KZ2n2/fq1qFyzsBd5qIyDfEMAUNGRetx8+gk1N3ojvPO8qmGmHm0NlIKYY6iWlEjVrb1eNRhvOKn6KPITQTZhHMnm/jWOjRZJ0XGSWzNTrGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756196195; c=relaxed/simple;
-	bh=h2NxbrgJBQR29RfVk9bwviTzfNZxmQs4Ox8mmcosnwI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VCuAHDcG5+AyfYQv3Tf4XPIMNvFwMoYZ5TUrciwXPFvpNpNc0QaQc6mAdl6KOG085JDYrfp2eoUXmr1gyWZ3YbGv9SCpck/gCMh/eXOtVTWC7kpebzcC0/DKUOQ+vPEgZN4L9Wvsvy1ckCYyfMy3CEqctpB5ISQWETwsFBy5L7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/x1rqW7; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/x1rqW7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C52C4CEF1;
-	Tue, 26 Aug 2025 08:16:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756196195;
-	bh=h2NxbrgJBQR29RfVk9bwviTzfNZxmQs4Ox8mmcosnwI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N/x1rqW7RHpd/kpvUeDtvVcYpM8cVh8HEbvdmXvgpkRUqG4WEP0nA/LO6ZzZDiOqi
-	 wlkj8l5rJsc8e+AP+Z/XzxtXbzrpYSfR47R0FAwaZmwXViXY4w5JTdLPDS//vySIYa
-	 SoXYVoaR/fBllSxOOdqSGQ9PneNEg+SxEfSuYoGvf8YlZt5nFMmUqj75GvXFNAF0AS
-	 zZlRxmW24guTFV7BiwPL390YC/YPcNV6gUdyippYF8AR/a059HM09mR8YKfDMBVWvm
-	 lTLCroZvF8jHACGliTwsCKc2XxvY2Ev9CHAQGm8ZMRg6XRVrgOtahzaYDskfpyBN+g
-	 raTZ3bnaYI08w==
-Message-ID: <d7d56ede-adf2-47f1-8886-0a5969e29eb9@kernel.org>
-Date: Tue, 26 Aug 2025 10:16:32 +0200
+	s=arc-20240116; t=1756196552; c=relaxed/simple;
+	bh=paTBoj9DCUhl33v0IoUbRwFxDjdcIXIy94zu1Z1jVGg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ccd7sRZPPTwDXyzmLdsY+wBuinhm10z445l7t26tWd9WAaYpD4Z0K0dsKeOOBUEhFqCfxxC4eASwSJ2LV7Igq+ezWvfxOICwFYYabPGxx5WyMw8oaQ3YofnDUsaTQ901OvQUratky6c0ksP5KigeWQigMpim4jn7Fbks2+GJ1Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cB0v60bh9z1R96x;
+	Tue, 26 Aug 2025 16:19:30 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id D36CE1402CA;
+	Tue, 26 Aug 2025 16:22:25 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500015.china.huawei.com
+ (7.185.36.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 26 Aug
+ 2025 16:22:24 +0800
+From: Liu Jian <liujian56@huawei.com>
+To: <alibuda@linux.alibaba.com>, <dust.li@linux.alibaba.com>,
+	<sidraya@linux.ibm.com>, <wenjia@linux.ibm.com>, <mjambigi@linux.ibm.com>,
+	<tonylu@linux.alibaba.com>, <guwen@linux.alibaba.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<horms@kernel.org>, <guangguan.wang@linux.alibaba.com>
+CC: <linux-rdma@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+Subject: [PATCH net] net/smc: fix one NULL pointer dereference in smc_ib_is_sg_need_sync()
+Date: Tue, 26 Aug 2025 16:44:42 +0800
+Message-ID: <20250826084442.322587-1-liujian56@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: nfc: ti,trf7970a: Restrict the
- ti,rx-gain-reduction-db values
-To: Fabio Estevam <festevam@gmail.com>
-Cc: mgreer@animalcreek.com, robh@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250825161059.496903-1-festevam@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250825161059.496903-1-festevam@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500015.china.huawei.com (7.185.36.143)
 
-On 25/08/2025 18:10, Fabio Estevam wrote:
-> Instead of stating the supported values for the ti,rx-gain-reduction-db
-> property in free text format, add an enum entry that can help validating
-> the devicetree files.
-> 
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+BUG: kernel NULL pointer dereference, address: 00000000000002ec
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 28 UID: 0 PID: 343 Comm: kworker/28:1 Kdump: loaded Tainted: G        OE       6.17.0-rc2+ #9 NONE
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+Workqueue: smc_hs_wq smc_listen_work [smc]
+RIP: 0010:smc_ib_is_sg_need_sync+0x9e/0xd0 [smc]
+...
+Call Trace:
+ <TASK>
+ smcr_buf_map_link+0x211/0x2a0 [smc]
+ __smc_buf_create+0x522/0x970 [smc]
+ smc_buf_create+0x3a/0x110 [smc]
+ smc_find_rdma_v2_device_serv+0x18f/0x240 [smc]
+ ? smc_vlan_by_tcpsk+0x7e/0xe0 [smc]
+ smc_listen_find_device+0x1dd/0x2b0 [smc]
+ smc_listen_work+0x30f/0x580 [smc]
+ process_one_work+0x18c/0x340
+ worker_thread+0x242/0x360
+ kthread+0xe7/0x220
+ ret_from_fork+0x13a/0x160
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
+If the software RoCE device is used, ibdev->dma_device is a null pointer.
+As a result, the problem occurs. Null pointer detection is added to
+prevent problems.
 
-This should have net-next subject prefix.
+Fixes: 0ef69e788411c ("net/smc: optimize for smc_sndbuf_sync_sg_for_device and smc_rmb_sync_sg_for_cpu")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+---
+ net/smc/smc_ib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 53828833a3f7..85501d2c1f1b 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -747,6 +747,8 @@ bool smc_ib_is_sg_need_sync(struct smc_link *lnk,
+ 		    buf_slot->sgt[lnk->link_idx].nents, i) {
+ 		if (!sg_dma_len(sg))
+ 			break;
++		if (!lnk->smcibdev->ibdev->dma_device)
++			break;
+ 		if (dma_need_sync(lnk->smcibdev->ibdev->dma_device,
+ 				  sg_dma_address(sg))) {
+ 			ret = true;
+-- 
+2.34.1
 
-Best regards,
-Krzysztof
