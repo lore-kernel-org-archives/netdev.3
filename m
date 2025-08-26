@@ -1,130 +1,136 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C074B111BF;
-	Tue, 26 Aug 2025 03:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFDB111BF;
+	Tue, 26 Aug 2025 03:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756178299; cv=none; b=T2Io7EcLiQ9YuTJEFmw/N5b4/RC6ATLXQ0An3w9rtORx1W0E0DxKFsNHZPmpbuSJBYvcJ34o5fzBdYHvKfbewwfSQoRNCNXUmp6djaDS9z6+VOw/PWEhZJiQaItFDIOjR6ZP5O2nFOeq4RheQD9+sbawkWSmV6qsa1tQDbbwVcc=
+	t=1756178364; cv=none; b=FJB96T5616dHu7bdY6gSpQ8l2KCYB8KTwa3K2boNKEMmUu8vViqzQuQmRmrArNCd5NSy5Yr3xSoolBS3X5oNebYGi9DYYqN7tJSMh2pQJBIqYJuxrpfuoTKpfJr7u5lEHifPgmvQoLvhlDOYZZKSmChLyY07CsaGSDyN4YG9hRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756178299; c=relaxed/simple;
-	bh=+fdzLlFTbMhC+AEjdMzctmVl1NBXABvqWY7Th2eYHI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vCvVpIaOl5JlxYqggbt177gn8GPZTYewpS1NffvLM9t3fljGsDjkpVnG+ZaRjFQduw4ub5WcubEmyuUNkEEKK1BOQrxC1dXnAm6nFuKUcx2QxSlKgMHoU9SqLiVUc3coCVVMefEPsP1It2Ft6B+CIeZCtiO1xa9+2X2+G/sYqkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WEgzZL61; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1756178364; c=relaxed/simple;
+	bh=wi8sbdKRlrXo0kWBOE2JRx8vCNBDwrKiFlY3fNVuc3E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jIMwPtYRRiDf+/02zjn3s5FBuNpTSkWYLYb5xb7IHkyk1Gl8BXNgmyaeTjyIov4JUPo8pBPLFSDSwtLt2dTgUWVFiBlyPnXYFxtI4lFS6Uz9Mi2SPTLl30uXRSDl2zpMtWS9AQa4qxfDBn1Plt+ay6y3i4HtpJg2SrCFKcjE3F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FvpEa0SX; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WEgzZL61"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Fs6pzcFRfuk1HEj3n7YIn4AqvWgvz9+8/2xjZTxmZoY=; b=WEgzZL61kJnw32A5oSkohRl/ER
-	OgcFmeG2v/j2w/acUPDqQIctI4nkAWMcJoaGoJTN+DRFJNCd1VLKq9Ks/CLfkD4PsZUuYsGQPNNfJ
-	W1JLMEPpQ1EkC2fJRJnXSKTOjdJEA7RBEVkpZ4fhsGFbBUTgWUlYnExfEz/fOtY6EbjY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uqkC1-0061wJ-02; Tue, 26 Aug 2025 05:17:53 +0200
-Date: Tue, 26 Aug 2025 05:17:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	Po-Yu Chuang <ratbert@faraday-tech.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
-	"taoren@meta.com" <taoren@meta.com>
-Subject: Re: [net-next v2 0/4] Add AST2600 RGMII delay into ftgmac100
-Message-ID: <0c3ab6ae-a013-4d22-a05d-2760c8bca7ff@lunn.ch>
-References: <20250813063301.338851-1-jacky_chou@aspeedtech.com>
- <a9ef3c51-fe35-4949-a041-81af59314522@lunn.ch>
- <SEYPR06MB513431EE31303E834E05704B9D33A@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <3966765c-876e-4433-9c82-8d89c6910490@lunn.ch>
- <SEYPR06MB51342BAA627D12DA4DC32D6E9D39A@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FvpEa0SX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8U
+	KRPKWH6JXfLDs9LyaWay1d2b/APYWFOa54QlGQgsU=; b=FvpEa0SX45Kdz2xu7W
+	6JFmFOSi27E1gUhtUyZ4XnpJiptQ8/SwL1gBvS9hSL8zKTR6yYn/fpxVhr/ahD0A
+	12sPrA890JOhaZ3LioUNw5nJZcE/+46A9z23ShPnlsbJJs1CeYI+FwryD8cdoNhK
+	B22oBGjXA2im/gsYQiO/UMWK0=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wAn7zcAJK1oxxy_Dw--.24255S2;
+	Tue, 26 Aug 2025 11:03:30 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: willemdebruijn.kernel@gmail.com,
+	edumazet@google.com,
+	ferenc@fejes.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v7] net: af_packet: Use hrtimer to do the retire operation
+Date: Tue, 26 Aug 2025 11:03:28 +0800
+Message-Id: <20250826030328.878001-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB51342BAA627D12DA4DC32D6E9D39A@SEYPR06MB5134.apcprd06.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAn7zcAJK1oxxy_Dw--.24255S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF1fuF47XryDWFyDGw17Wrg_yoWrGw4kpa
+	yaq347Jr1kZrWIvF1xZa1kXFy5J393AF47Gr1fGF1FywnrCFyxtFWjqFWFgFW7C395twsF
+	vw48XrnxAwnYk37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UqZXrUUUUU=
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/1tbibgO1CmitIq0lPwAAsC
 
-> I would like to discuss with you how we fix the RGMII of AST2600 in this thread.
-> And thank you for your patience in reviewing our code.
+On Tue, 2025-08-25 at 0:20 +0800, Willem wrote:
+
+> > We cannot use hrtimer_set_expires/hrtimer_forward_now when a hrtimer is
+> > already enqueued.  
+> > The WARN_ON(timer->state & HRTIMER_STATE_ENQUEUED) in hrtimer_forward
+> > already clearly indicates this point. The reason for not adding this
+> > WARN_ON in hrtimer_set_expires is that hrtimer_set_expires is an inline
+> > function, wory about increase code size.
+> > The implementation of perf_mux_hrtimer_restart actually checks whether
+> > the hrtimer is active when restarting the hrtimer.
 > 
-> Currently, the RGMII delay in AST2600 is configured in U-boot stage, not in Linux.
-> The ftgmac driver will not use the phy-mode to configure the RGMII delay on MAC side.
+> Perhaps we need to simplify and stop trying to adjust the timer from
+> tpacket_rcv once scheduled. Let the callback handle that.
 > 
-> I list the parts that I think need to be modified.
-> 1. Change the phy-mode to "rgmii-id" in aspeed-ast2600-evb.dts.
-> 2. Add the tx/rx-internal-delay-ps in dts.
-> 3. Add RGMII delay configuration in ftgmac driver. If the tx/rx-internal-delay-ps has not existed,
->   according to the phy-mode to configure default value.
+
+Okay, I would also like to modify the timeout only within the callback,
+so I think PATCH v7 might be a better solution. Additionally, in terms of
+performance, it should be more efficient than frequently calling
+hrtimer_cancel/hrtimer_start functions to change the timeout outside the
+callback.
+
+Why do I add the pkc->expire_ktime in PATCH v7?
+
+For example 8ms retire timeout.
+T means the time callback/tpacket_rcv call _prb_refresh_rx_retire_blk_timer.
+T1 means time T plus 1ms, T2 means time T plus 2ms...
+
+timeline: past -----------> -----------> -----------> future
+callback:      T	           T8
+tpacket_rcv:                 T7
+
+Considering the situation in the above diagram, at time T7, the tpacket_rcv
+function processes the network and finds that a new block needs to be opened,
+which requires setting a timeout of T7 + 8ms which is T15ms. However, we
+cannot directly set the timeout within tpacket_rcv, so we use a variable
+expire_ktime to record this value. At time T8, in the hrtimer callback, we
+check that expire_ktime which is T15 is greater than the current timeout of
+the hrtimer, which is T8. Therefore, we simply return from the hrtimer
+callback at T8, the next execution time of the hrtimer callback will be T15.
+This achieves the same effect as executing hrtimer_start in tpacket_rcv
+using a "one shot" approach.
+
+
+> > Do you agree with adding a callback variable to distinguish between
+> > scheduled from tpacket_rcv and scheduled from the callback? I really
+> > couldn't think of a better solution.
 > 
-> These are the fix items I can think of.
-> Could you point out what I miss or a clear direction to correct the RGMII mode on AST2600?
+> Yes, no objections to that if necessary.
 
-We have to be careful with the assumption u-boot is configuring
-delays. I've seen DT blobs which use 'rgmii-id', which suggests
-something is disabling the MAC delays, maybe because they are using a
-different version of u-boot, or barebox etc.
+So it seems that the logic of 'adding a callback variable to distinguish' in 
+PATCH v7 is OK?
 
-You should be able to read what the MAC is doing with delays. You can
-compare this with what the phy-mode is.
 
-* If the MAC is adding delays, and the phy-mode is rgmii-id, disable
-  the MAC delays, pass rgmii-id to the PHY.
+> > So, a possible solution may be?
+> > 1. Continue to keep the callback parameter to strictly ensure whether it
+> > is within the callback.
+> > 2. Use hrtimer_set_expires within the callback to update the timeout (the
+> > hrtimer module will enqueue the hrtimer when callback return)
+> > 3. If it is not in callback, call hrtimer_cancel + hrtimer_start to restart
+> > the timer.
+>
+> Instead, I would use an in_scheduled param, as in my previous reply and
+> simply skip trying to schedule if already scheduled.
 
-* If the MAC is adding delays, and the phy-mode is rgmii, issue a
-  warning the DT blob is out of date, disable the MAC delays, and pass
-  rgmii-id to the PHY.
+I understand that the additional in_scheduled variable is meant to prevent
+multiple calls to hrtimer_start. However, based on the current logic
+implementation, the only scenario that would cancel the hrtimer is after calling
+prb_shutdown_retire_blk_timer. Therefore, once we have called hrtimer_start in
+prb_setup_retire_blk_timer, we don't need to worry about the hrtimer stopping,
+and we don't need to execute hrtimer_start again or check if the hrtimer is in
+an active state. We can simply update the timeout in the callback.
+Additionally, we don't need to worry about the situation where packet_set_ring
+is entered twice, leading to multiple calls to hrtimer_start, because there is
+a check for pg_vec before executing init_prb_bdqc in packet_set_ring. If pg_vec
+is non-zero, it will go to the out label.
 
-* If the MAC is not adding delays, and the phy-mode is rgmii-id, pass
-  rmgii-id to the PHY.
+So is PATCH v7 good to go? Besides I think that ktime_after should be used
+instead of ktime_compare, I haven't noticed any other areas in PATCH v7 that
+need modification. What do you think?
 
-* If the MAC is not adding delays, and the phy-mode is rgmii, that
-  suggests the PCB has extra long clock lines, and the board is using
-  a U-boot which has been modified to not enable MAC delays. Pass
-  rgmii to the PHY.
 
-I would also suggest you review all DT blobs in mainline and see if
-any are using rgmii-rxid or rgmii-txid. If not, i would go with KISS
-and return -EINVAL for these, with a comment. Support for these can be
-added when somebody actually needs them.
+Thanks
+Xin Zhao
 
-Most boards today will be the second bullet point. With time, they can
-transition to the first. New boards should hopefully be directly the
-first bullet point.
-
-Backwards compatibility is however an issue. Anybody with a new DT
-blob won't have working Ethernet with an old kernel if they are using
-the first bullet point. So we should not edit every DT blob in
-mainline and change rgmii to rgmii-id. We want to leave it to the
-board owner to decide it is time to make the warning go away.
-
-tx/rx-internal-delay-ps are optional. I would not add them yet,
-because it makes the logic more complex. As far as i understand, no
-board has required them so far, so there does not appear to be a need
-for them.
-
-You need good commit messages with these changes. Make it clear there
-could be backwards compatibility issues, but that is the cost of
-fixing up a broken implementation.
-
-	Andrew
