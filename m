@@ -1,136 +1,117 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFDB111BF;
-	Tue, 26 Aug 2025 03:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05211F4191;
+	Tue, 26 Aug 2025 03:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756178364; cv=none; b=FJB96T5616dHu7bdY6gSpQ8l2KCYB8KTwa3K2boNKEMmUu8vViqzQuQmRmrArNCd5NSy5Yr3xSoolBS3X5oNebYGi9DYYqN7tJSMh2pQJBIqYJuxrpfuoTKpfJr7u5lEHifPgmvQoLvhlDOYZZKSmChLyY07CsaGSDyN4YG9hRM=
+	t=1756180044; cv=none; b=UONdsQrk7HTilMMUFfTocLRKLMHL8KinFfw6AaK2vjv8/qklscckrn/ElHfxL+0HvCVCf7UW/JaoT8SRvAdIYriSsqbEvbjxwlevgl+Go/5nU1gIwq/PqaOMaZp945rhDOML780zJT+AQuRPA9/p16N/wcs6VIpHwFn/K8D5P7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756178364; c=relaxed/simple;
-	bh=wi8sbdKRlrXo0kWBOE2JRx8vCNBDwrKiFlY3fNVuc3E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jIMwPtYRRiDf+/02zjn3s5FBuNpTSkWYLYb5xb7IHkyk1Gl8BXNgmyaeTjyIov4JUPo8pBPLFSDSwtLt2dTgUWVFiBlyPnXYFxtI4lFS6Uz9Mi2SPTLl30uXRSDl2zpMtWS9AQa4qxfDBn1Plt+ay6y3i4HtpJg2SrCFKcjE3F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FvpEa0SX; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1756180044; c=relaxed/simple;
+	bh=k+7yizfovCBjqyr67T5WBtYGeOcnZ1OX5JkfkELb1h0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=nNwBfhIaXFAV0Vlgu0D1DkxcvbkVQDxf+KoNz7h/RBtXLJVhsamtHtVa9i7q75AOSTcC1Zk4GVYoFftFe8ejl5Wrr3Ptbet6KyzdGrmvha0h1h65HPULCeEqhAZj+GR7jlw0H+PNKoZjRaCdyvc4hn0Ikw6LP7xzKzF2ytxoPd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=be3BWdCy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FvpEa0SX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8U
-	KRPKWH6JXfLDs9LyaWay1d2b/APYWFOa54QlGQgsU=; b=FvpEa0SX45Kdz2xu7W
-	6JFmFOSi27E1gUhtUyZ4XnpJiptQ8/SwL1gBvS9hSL8zKTR6yYn/fpxVhr/ahD0A
-	12sPrA890JOhaZ3LioUNw5nJZcE/+46A9z23ShPnlsbJJs1CeYI+FwryD8cdoNhK
-	B22oBGjXA2im/gsYQiO/UMWK0=
-Received: from zhaoxin-MS-7E12.. (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wAn7zcAJK1oxxy_Dw--.24255S2;
-	Tue, 26 Aug 2025 11:03:30 +0800 (CST)
-From: Xin Zhao <jackzxcui1989@163.com>
-To: willemdebruijn.kernel@gmail.com,
-	edumazet@google.com,
-	ferenc@fejes.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v7] net: af_packet: Use hrtimer to do the retire operation
-Date: Tue, 26 Aug 2025 11:03:28 +0800
-Message-Id: <20250826030328.878001-1-jackzxcui1989@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="be3BWdCy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9472EC113CF;
+	Tue, 26 Aug 2025 03:47:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756180043;
+	bh=k+7yizfovCBjqyr67T5WBtYGeOcnZ1OX5JkfkELb1h0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=be3BWdCyqOFR5hU0LMQblQ+kw7JlvzUWu99lkLxoZfzo7IgOQoZSUj0YFL9NT7G0Y
+	 BwyUQzFiCqSyuJsD5XW1ky34bjbVC9OL+jVfEuRcx91jzGZaFKrtquUQeQ1atWwRkB
+	 osEiZMC5pdjRLyJIuaLWX6Uk0iCBaKlq7X/NwuVGS4/3mZ6ubAnja5YUw30+ps6XaF
+	 mTfDrYn/i1TrlyEocII6I+Ja9nZg5plYs+saTbbqDs2AYpthgMYdXWSZwXnik+uU4p
+	 Sx2wxZDA3/R4hIcfViSUJA6q0bHeO60tUqQg2m6rNJsg1sbFN1v+2jyZ4OMEeCpgra
+	 hkgburfCit41w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8187DCA0FE7;
+	Tue, 26 Aug 2025 03:47:23 +0000 (UTC)
+From: Christoph Paasch via B4 Relay <devnull+cpaasch.openai.com@kernel.org>
+Subject: [PATCH net-next v3 0/2] net/mlx5: Avoid payload in skb's linear
+ part for better GRO-processing
+Date: Mon, 25 Aug 2025 20:47:11 -0700
+Message-Id: <20250825-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v3-0-5527e9eb6efc@openai.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAn7zcAJK1oxxy_Dw--.24255S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCF1fuF47XryDWFyDGw17Wrg_yoWrGw4kpa
-	yaq347Jr1kZrWIvF1xZa1kXFy5J393AF47Gr1fGF1FywnrCFyxtFWjqFWFgFW7C395twsF
-	vw48XrnxAwnYk37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UqZXrUUUUU=
-X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/1tbibgO1CmitIq0lPwAAsC
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD8urWgC/62OwWrEIBRFf2Vw3VfUxCTTVf+jdPGibyZCoqIiC
+ UP+fUQGSvezPFy45zxYomgpsa/Lg0UqNlnvKnQfF6YXdHcCayozyaXio5CgA2LSC4QbXOUIjvK
+ 27gqweGtA+3BYd4e8EAQ8Vo8Gsm+44bp6TQYwEsKgZH8VY68UDqy6QqSb3VvHD6uf9XfP7Lcui
+ 03Zx6MFFtH2V0v3ppYigANpJDNpOfU9fftADu2n9ltLKPJPO4nhXVpZtbMQc8dnLY3g/7TneT4
+ BzeSZdpwBAAA=
+X-Change-ID: 20250712-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-6524917455a6
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Gal Pressman <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Cc: linux-rdma@vger.kernel.org, netdev@vger.kernel.org, 
+ Christoph Paasch <cpaasch@openai.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756180043; l=2117;
+ i=cpaasch@openai.com; s=20250712; h=from:subject:message-id;
+ bh=k+7yizfovCBjqyr67T5WBtYGeOcnZ1OX5JkfkELb1h0=;
+ b=3tiuDdElYpLSKjZVLFiCbNxYu7fGhXcZA4R52YnDxXXGxuUlKQ02zoVrC+FytHQ2AnrgoCInP
+ DAFDhiRlxSpA9PCELUXcKg2Dg1lX2SiDPNFbQ0sn46/xW3/joD8HVDn
+X-Developer-Key: i=cpaasch@openai.com; a=ed25519;
+ pk=1HRHZlVUZPziMZvsAQFvP7n5+uEosTDAjXmNXykdxdg=
+X-Endpoint-Received: by B4 Relay for cpaasch@openai.com/20250712 with
+ auth_id=459
+X-Original-From: Christoph Paasch <cpaasch@openai.com>
+Reply-To: cpaasch@openai.com
 
-On Tue, 2025-08-25 at 0:20 +0800, Willem wrote:
+When LRO is enabled on the MLX, mlx5e_skb_from_cqe_mpwrq_nonlinear
+copies parts of the payload to the linear part of the skb.
 
-> > We cannot use hrtimer_set_expires/hrtimer_forward_now when a hrtimer is
-> > already enqueued.  
-> > The WARN_ON(timer->state & HRTIMER_STATE_ENQUEUED) in hrtimer_forward
-> > already clearly indicates this point. The reason for not adding this
-> > WARN_ON in hrtimer_set_expires is that hrtimer_set_expires is an inline
-> > function, wory about increase code size.
-> > The implementation of perf_mux_hrtimer_restart actually checks whether
-> > the hrtimer is active when restarting the hrtimer.
-> 
-> Perhaps we need to simplify and stop trying to adjust the timer from
-> tpacket_rcv once scheduled. Let the callback handle that.
-> 
+This triggers suboptimal processing in GRO, causing slow throughput,...
 
-Okay, I would also like to modify the timeout only within the callback,
-so I think PATCH v7 might be a better solution. Additionally, in terms of
-performance, it should be more efficient than frequently calling
-hrtimer_cancel/hrtimer_start functions to change the timeout outside the
-callback.
+This patch series addresses this by copying a lower-bound estimate of
+the protocol headers - trying to avoid the payload part. This results in
+a significant throughput improvement (detailled results in the specific
+patch).
 
-Why do I add the pkc->expire_ktime in PATCH v7?
+Signed-off-by: Christoph Paasch <cpaasch@openai.com>
+---
+Changes in v3:
+- Avoid computing headlen when it is not absolutely necessary (e.g., xdp
+  decides to "consume" the packet) (Dragos Tatulea <dtatulea@nvidia.com> & Jakub Kicinski <kuba@kernel.org>)
+- Given the above change, consolidate the check for min3(...) in the new
+  function to avoid code duplication.
+- Make sure local variables are in reverse xmas-tree order.
+- Refine comment about why the check for l4_type worsk as is.
+- Link to v2: https://lore.kernel.org/r/20250816-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v2-0-b11b30bc2d10@openai.com
 
-For example 8ms retire timeout.
-T means the time callback/tpacket_rcv call _prb_refresh_rx_retire_blk_timer.
-T1 means time T plus 1ms, T2 means time T plus 2ms...
+Changes in v2:
+- Refine commit-message with more info and testing data
+- Make mlx5e_cqe_get_min_hdr_len() return MLX5E_RX_MAX_HEAD when l3_type
+  is neither IPv4 nor IPv6. Same for the l4_type. That way behavior is
+  unchanged for other traffic types.
+- Rename mlx5e_cqe_get_min_hdr_len to mlx5e_cqe_estimate_hdr_len
+- Link to v1: https://lore.kernel.org/r/20250713-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v1-0-ecaed8c2844e@openai.com
 
-timeline: past -----------> -----------> -----------> future
-callback:      T	           T8
-tpacket_rcv:                 T7
+---
+Christoph Paasch (2):
+      net/mlx5: Bring back get_cqe_l3_hdr_type
+      net/mlx5: Avoid copying payload to the skb's linear part
 
-Considering the situation in the above diagram, at time T7, the tpacket_rcv
-function processes the network and finds that a new block needs to be opened,
-which requires setting a timeout of T7 + 8ms which is T15ms. However, we
-cannot directly set the timeout within tpacket_rcv, so we use a variable
-expire_ktime to record this value. At time T8, in the hrtimer callback, we
-check that expire_ktime which is T15 is greater than the current timeout of
-the hrtimer, which is T8. Therefore, we simply return from the hrtimer
-callback at T8, the next execution time of the hrtimer callback will be T15.
-This achieves the same effect as executing hrtimer_start in tpacket_rcv
-using a "one shot" approach.
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 49 ++++++++++++++++++++++++-
+ include/linux/mlx5/device.h                     | 12 +++++-
+ 2 files changed, 59 insertions(+), 2 deletions(-)
+---
+base-commit: 6e8e6baf16ce7d2310959ae81d0194a56874e0d2
+change-id: 20250712-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-6524917455a6
 
+Best regards,
+-- 
+Christoph Paasch <cpaasch@openai.com>
 
-> > Do you agree with adding a callback variable to distinguish between
-> > scheduled from tpacket_rcv and scheduled from the callback? I really
-> > couldn't think of a better solution.
-> 
-> Yes, no objections to that if necessary.
-
-So it seems that the logic of 'adding a callback variable to distinguish' in 
-PATCH v7 is OK?
-
-
-> > So, a possible solution may be?
-> > 1. Continue to keep the callback parameter to strictly ensure whether it
-> > is within the callback.
-> > 2. Use hrtimer_set_expires within the callback to update the timeout (the
-> > hrtimer module will enqueue the hrtimer when callback return)
-> > 3. If it is not in callback, call hrtimer_cancel + hrtimer_start to restart
-> > the timer.
->
-> Instead, I would use an in_scheduled param, as in my previous reply and
-> simply skip trying to schedule if already scheduled.
-
-I understand that the additional in_scheduled variable is meant to prevent
-multiple calls to hrtimer_start. However, based on the current logic
-implementation, the only scenario that would cancel the hrtimer is after calling
-prb_shutdown_retire_blk_timer. Therefore, once we have called hrtimer_start in
-prb_setup_retire_blk_timer, we don't need to worry about the hrtimer stopping,
-and we don't need to execute hrtimer_start again or check if the hrtimer is in
-an active state. We can simply update the timeout in the callback.
-Additionally, we don't need to worry about the situation where packet_set_ring
-is entered twice, leading to multiple calls to hrtimer_start, because there is
-a check for pg_vec before executing init_prb_bdqc in packet_set_ring. If pg_vec
-is non-zero, it will go to the out label.
-
-So is PATCH v7 good to go? Besides I think that ktime_after should be used
-instead of ktime_compare, I haven't noticed any other areas in PATCH v7 that
-need modification. What do you think?
-
-
-Thanks
-Xin Zhao
 
