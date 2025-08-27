@@ -1,125 +1,96 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5CF31CA42
-	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 07:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4041D514B;
+	Wed, 27 Aug 2025 07:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756281043; cv=none; b=BF6XkiSp/p5/HPBI3bwgRX7/JLngceNgggCOTo6nzj/lRTLWNA/k1p9Ouo0MccsCIyMpD/ZtZURFcMrw5hKoQIgdiKl6Xt+1r1mzHUuceACCg2TryW86sDCIZiLDlCHnM2nCBH+3II8NPX3Q6oLKFCfshUSouP6gsyyBPGkqXPE=
+	t=1756281110; cv=none; b=rm/sP0qNM4S40LZa6PjbvFZN5YSo7yG8Nb0D5VrObroP+IduUTabWXfMAhLKR5fUTwoZqih1kdTJKnh0ZGD4+Fy1WQmQN39qXu5Ltx3bx7Q/HqY16x+8c4nsAeTbitYmiCLxLcYYVsiOYeavYvDHecBElMsWVw4G5tajwxHpgrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756281043; c=relaxed/simple;
-	bh=rKzArrpjxa/Lq0kefQY0MeR2/PKN5QtZoFTBYUdkchM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jnyEojWqKRdl94lqQCgqr1jFUjyLIFtN7La+q6f0m5URdaCwXyXz6OrlZPFHfusQm8uwOhUpQRELIU1xHZRDRPYn2ClwZPEnBjmomlNv8LqYynP7B5Fw42dHe1GKPZqsNIKMg0xZx+oTZvbndkQnsydkDSjUkjH8x1a9LDqCn7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b/6jqAYJ; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b/6jqAYJ"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4b1258a3d71so72400721cf.2
-        for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 00:50:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756281040; x=1756885840; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vazTG+jUIqFROmWwd6b3nHdEYOXrR8g9m3k15ZXCIZw=;
-        b=b/6jqAYJq6L8dEUSiDJl6R91ZNMVZKaBE9y9plVJBcd/bYbuoQHWvx07tgKGwAJcr0
-         g00VwkR1y3c9U5r8cUY1+B9IY1zCczhaDV+RGuXxo9L0DOEbNLOwQePPZRlJiFqAj1Oz
-         ehaBSxJ0H57AW3ZLHk1zAUWKtSbdmkGUAOPnh9Uz8+HlddBTVuus1Qoon25kHTIco2YR
-         ve6CzRuDgJ0ecTk3btYOVkwMzREvTMI+KQu02ILkaT5XhTAt5jQ1UQIrapayUsxxbvQe
-         1rNCn136ARUnEpD/9vLrHsXF2W0p1uM1v84i2mezoKs5eSyc/7KLnSlkrJgYSnkJTh+l
-         v0tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756281040; x=1756885840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vazTG+jUIqFROmWwd6b3nHdEYOXrR8g9m3k15ZXCIZw=;
-        b=PHBKPYUDkBoieEakhRBe9yYrEC0GqD7qp+ON5LHStgHwujfD/1WdqF5ZAbGQgENBOQ
-         ynIA5mk19P2H50G/ZujIZbvnGjotQLhpN6H8t4zpdIv2AwdlWsT84hvQ+qJgIBoRPzHF
-         X5ZUnMHrr9ghZkiSGhjB8+tjn/rM6LVDOEUjrfSsPkqET1CaPEbhzyaov5vAIjkOXvDK
-         4X0FxB75u5lujrVtaL2QluDo3M22VrpddqLApMIn17bAn9n5mHHJ1wvWoQP5Rez7Wrrq
-         wr4Nrof+J6YcNNHOHds+lIgObDm6bV7m+NSCwyiaCJ/nGw7BcNB3z1FVzTCB585p69yo
-         zz9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXQatbHgsmTbG7/T4g6bLuyGa5kicCXuk0S1Fd+xemRtvu5fvdqlSER3W6srDQ2LuhZU5ZwRMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywjj9y3Ti1l2D0p06IDQsg3051PZ3WL1bLUJ6IKNuQraUEtfIIv
-	hxfs1YmB+QeECULmcKCy2Ppbz1Ykf2+p3vruU0hiLJwyrz0m0d6QQqu7GSV/ACZMKYv9mjyZKAp
-	tjTM3+TEvCo6WCzFzRjYJf5eVckMf2LZWgb6+46Xe
-X-Gm-Gg: ASbGncuiny1CSaH8Gl3/b3IHbQlKn4A0U0n/oE+LpPcmRuTPc5w6NxdvbK4DxekyBkD
-	q81ugPvMC6z4a9sis7feg1h+UV17HYs3Uk+sKdQU4nEgeHI6UrsTMG2bC/AcRX7kZkSBLa8aeEC
-	UfbIAoqQm0Plb47BNWu2llw09fGZYJPPS8WBLnGAWjd76OxF2HaGFswZUWA0YcSpF9FZrEAFgzm
-	zYRy7/ow0I/SA==
-X-Google-Smtp-Source: AGHT+IGntaJmdIqvh+6j7/jxL3REciPKkOKmbPQVXlTso2X7mImO23KWb5HDF9Ug45l2zI1Y+TwLyOjxL3xSnAvzq0g=
-X-Received: by 2002:ac8:584d:0:b0:4b2:83d8:4e19 with SMTP id
- d75a77b69052e-4b2aab2f2b4mr222861061cf.67.1756281040226; Wed, 27 Aug 2025
- 00:50:40 -0700 (PDT)
+	s=arc-20240116; t=1756281110; c=relaxed/simple;
+	bh=u0mH3ZFUJZIxa+X6JbQQclYaJ4VJc7Ol7j47zzz8YQM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KralQzJwRo7dDSs0rvHDj03C87doW7nBUxINyi6nBTkzwr5PqtnLwnpAUjeWQqtaUoIM9oU+25RQN/T+mXgMrUlzh+o81o301SItZ6U7aGp4zjBlgLIiX29Ig2iyAC5uhc+6IAfo9r0AY6uRNPbUb1PEYZqL1Bb3vS+pE4XrwIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cBc9C45F4z1R8yW;
+	Wed, 27 Aug 2025 15:48:47 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id C0ADD140144;
+	Wed, 27 Aug 2025 15:51:43 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 Aug
+ 2025 15:51:42 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<kuniyu@google.com>, <alex.aring@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>
+Subject: [PATCH v2 net-next] ipv6: annotate data-races around devconf->rpl_seg_enabled
+Date: Wed, 27 Aug 2025 16:12:43 +0800
+Message-ID: <20250827081243.1701760-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250825-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v3-0-5527e9eb6efc@openai.com>
- <20250825-cpaasch-pf-927-netmlx5-avoid-copying-the-payload-to-the-malloced-area-v3-2-5527e9eb6efc@openai.com>
- <CANn89iJ5brG-tSdyEPYH67BL1rkU5CKfvUO4Jc03twfVFKFPqQ@mail.gmail.com>
- <CADg4-L9GdJUVcGBoR3+jAt5QsSEwtiQptx2KY7UF8ga1yA7SWQ@mail.gmail.com> <b5k5gan4nwyrjm5pm76oeyll55u2om2chnvx4tekgsw2y3zqpm@pa3e3hhfbpjf>
-In-Reply-To: <b5k5gan4nwyrjm5pm76oeyll55u2om2chnvx4tekgsw2y3zqpm@pa3e3hhfbpjf>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 27 Aug 2025 00:50:29 -0700
-X-Gm-Features: Ac12FXzfaI2TRnCMsm7MgToJl9Ml2QUToSzADe4M1Wh9cAdCZ7NW7drK6Q4jWXk
-Message-ID: <CANn89iJnUDCfjeDg91jomVmiFSTDSoSc-mPiSS+opTEB-7+A_g@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 2/2] net/mlx5: Avoid copying payload to the
- skb's linear part
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Christoph Paasch <cpaasch@openai.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Gal Pressman <gal@nvidia.com>, 
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Wed, Aug 27, 2025 at 12:08=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.co=
-m> wrote:
+devconf->rpl_seg_enabled can be changed concurrently from
+/proc/sys/net/ipv6/conf, annotate lockless reads on it.
+Also initializes extra1 and extra2 to SYSCTL_ZERO and SYSCTL_ONE
+respectively to avoid negative value writes, which may lead to
+unexpected results in ipv6_rpl_srh_rcv().
 
-> What are the advantages of using eth_get_headlen() besides the fact that
-> it is more exhaustive? It seems quite expensive compared to reading some
-> bits in the CQE and doing a few comparisons. Even if this cost is amortiz=
-ed
-> by the benefits in the good cases, in the non-aggregation cases it seems
-> more costly. What am I missing here?
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+v2: add extra1/2 check
+---
+ net/ipv6/addrconf.c | 4 +++-
+ net/ipv6/exthdrs.c  | 6 ++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-Let's not reinvent the wheel, and add more potential bugs. Please ?
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 1c1d5cb6a7c1..265238574aab 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -7240,7 +7240,9 @@ static const struct ctl_table addrconf_sysctl[] = {
+ 		.data		= &ipv6_devconf.rpl_seg_enabled,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "ioam6_enabled",
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index d1ef9644f826..a23eb8734e15 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -494,10 +494,8 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 
+ 	idev = __in6_dev_get(skb->dev);
+ 
+-	accept_rpl_seg = net->ipv6.devconf_all->rpl_seg_enabled;
+-	if (accept_rpl_seg > idev->cnf.rpl_seg_enabled)
+-		accept_rpl_seg = idev->cnf.rpl_seg_enabled;
+-
++	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
++			     READ_ONCE(idev->cnf.rpl_seg_enabled));
+ 	if (!accept_rpl_seg) {
+ 		kfree_skb(skb);
+ 		return -1;
+-- 
+2.34.1
 
-Why spending hours and ending with some ugly/wrong things like 'TCP
-headers have at least 12 bytes of options'
-
-  } else if (l4_type & (CQE_L4_HDR_TYPE_TCP_NO_ACK |
-+                             CQE_L4_HDR_TYPE_TCP_ACK_NO_DATA |
-+                             CQE_L4_HDR_TYPE_TCP_ACK_AND_DATA)) {
-+               /* ACK_NO_ACK | ACK_NO_DATA | ACK_AND_DATA =3D=3D 0x7, but
-+                * the previous condition checks for _UDP which is 0x2.
-+                *
-+                * As we know that l4_type !=3D 0x2, we can simply check
-+                * if any of the bits of 0x7 is set.
-+                */
-+               hdr_len +=3D sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED=
-;
-
-Either do not pull anything and let upper stacks pull one header at a time,
-or call the generic helper to make a single memcpy()
-
-Real costs are the cache line misses, analyzing the 'CQE' will not help at =
-all.
-
-Really vendors need to stop adding useless stuff in their receive descripto=
-rs,
-there is no way they can cover all encapsulations in modern networking.
-
-I find it very annoying that Mellanox in 2025 still doed the overpull
-thing in mlx5, considering
-I fixed mlx4 driver in 2014.
-
-This is the major and well known issue.
