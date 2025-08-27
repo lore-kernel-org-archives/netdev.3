@@ -1,96 +1,89 @@
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4041D514B;
-	Wed, 27 Aug 2025 07:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021ED2F617A;
+	Wed, 27 Aug 2025 07:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756281110; cv=none; b=rm/sP0qNM4S40LZa6PjbvFZN5YSo7yG8Nb0D5VrObroP+IduUTabWXfMAhLKR5fUTwoZqih1kdTJKnh0ZGD4+Fy1WQmQN39qXu5Ltx3bx7Q/HqY16x+8c4nsAeTbitYmiCLxLcYYVsiOYeavYvDHecBElMsWVw4G5tajwxHpgrc=
+	t=1756281356; cv=none; b=ntR0hDVMOoUcaJM0g90AqUnocW02hI/ngLRVfknxty9PrY3neeRseREijXcoDY7Nu5SaIzGhwwibD0D8j4xECzzn0hNKy8kUyw9C6xLyUVp6d2o66VIZy++fHSfd2l8flyPr3SeqbGkOpOtCBncNDTs/PdRO+USt4Mm1OoH1HRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756281110; c=relaxed/simple;
-	bh=u0mH3ZFUJZIxa+X6JbQQclYaJ4VJc7Ol7j47zzz8YQM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KralQzJwRo7dDSs0rvHDj03C87doW7nBUxINyi6nBTkzwr5PqtnLwnpAUjeWQqtaUoIM9oU+25RQN/T+mXgMrUlzh+o81o301SItZ6U7aGp4zjBlgLIiX29Ig2iyAC5uhc+6IAfo9r0AY6uRNPbUb1PEYZqL1Bb3vS+pE4XrwIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cBc9C45F4z1R8yW;
-	Wed, 27 Aug 2025 15:48:47 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id C0ADD140144;
-	Wed, 27 Aug 2025 15:51:43 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 Aug
- 2025 15:51:42 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-	<kuniyu@google.com>, <alex.aring@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>
-Subject: [PATCH v2 net-next] ipv6: annotate data-races around devconf->rpl_seg_enabled
-Date: Wed, 27 Aug 2025 16:12:43 +0800
-Message-ID: <20250827081243.1701760-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756281356; c=relaxed/simple;
+	bh=V/k3PlEhOV5Q5JNh16qCP66g14IOSN3k+JYedNywBUs=;
+	h=Date:Message-ID:Mime-Version:From:To:Cc:Subject:Content-Type; b=E6/lz7pxWJyl7AaDf0gquYVdP52zyAgiFXba9Cr/4qAMmBwrT60OM1dK7K6GxiAELxK4G0sy2mlNKXET978gHVw66P/cY9tOUQZ90xsxu6FzyIgyMSFglDuy6SjKoX09yjFT55Idqu6wDzmG/kGEkknn19r+gorukX97K7OoDw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4cBcKH0Nfgz8Xs6v;
+	Wed, 27 Aug 2025 15:55:47 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl2.zte.com.cn with SMTP id 57R7srfU085184;
+	Wed, 27 Aug 2025 15:54:53 +0800 (+08)
+	(envelope-from zhang.enpei@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Wed, 27 Aug 2025 15:54:55 +0800 (CST)
+Date: Wed, 27 Aug 2025 15:54:55 +0800 (CST)
+X-Zmail-TransId: 2af968aeb9cf00e-edb33
+X-Mailer: Zmail v1.0
+Message-ID: <20250827155455583-PdvmDYA9SD3J37_XRza5@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Mime-Version: 1.0
+From: <zhang.enpei@zte.com.cn>
+To: <chessman@tux.org>
+Cc: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIIHYzXSBldGhlcm5ldDogdGxhbjogQ29udmVydCB0byB1c2UgamlmZmllcyBtYWNybw==?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 57R7srfU085184
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: zhang.enpei@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Wed, 27 Aug 2025 15:55:47 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 68AEBA03.001/4cBcKH0Nfgz8Xs6v
 
-devconf->rpl_seg_enabled can be changed concurrently from
-/proc/sys/net/ipv6/conf, annotate lockless reads on it.
-Also initializes extra1 and extra2 to SYSCTL_ZERO and SYSCTL_ONE
-respectively to avoid negative value writes, which may lead to
-unexpected results in ipv6_rpl_srh_rcv().
+From: Zhang Enpei <zhang.enpei@zte.com.cn>
 
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Use time_is_before_eq_jiffies macro instead of using jiffies directly to
+handle wraparound.
+
+Signed-off-by: Zhang Enpei <zhang.enpei@zte.com.cn>
 ---
-v2: add extra1/2 check
----
- net/ipv6/addrconf.c | 4 +++-
- net/ipv6/exthdrs.c  | 6 ++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/ti/tlan.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 1c1d5cb6a7c1..265238574aab 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -7240,7 +7240,9 @@ static const struct ctl_table addrconf_sysctl[] = {
- 		.data		= &ipv6_devconf.rpl_seg_enabled,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_ONE,
- 	},
- 	{
- 		.procname	= "ioam6_enabled",
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index d1ef9644f826..a23eb8734e15 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -494,10 +494,8 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
- 
- 	idev = __in6_dev_get(skb->dev);
- 
--	accept_rpl_seg = net->ipv6.devconf_all->rpl_seg_enabled;
--	if (accept_rpl_seg > idev->cnf.rpl_seg_enabled)
--		accept_rpl_seg = idev->cnf.rpl_seg_enabled;
--
-+	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
-+			     READ_ONCE(idev->cnf.rpl_seg_enabled));
- 	if (!accept_rpl_seg) {
- 		kfree_skb(skb);
- 		return -1;
+diff --git a/drivers/net/ethernet/ti/tlan.c b/drivers/net/ethernet/ti/tlan.c
+index a55b0f951181..7c5e51284942 100644
+--- a/drivers/net/ethernet/ti/tlan.c
++++ b/drivers/net/ethernet/ti/tlan.c
+@@ -1817,7 +1817,6 @@ static void tlan_timer(struct timer_list *t)
+ {
+ 	struct tlan_priv	*priv = timer_container_of(priv, t, timer);
+ 	struct net_device	*dev = priv->dev;
+-	u32		elapsed;
+ 	unsigned long	flags = 0;
+
+ 	priv->timer.function = NULL;
+@@ -1844,8 +1843,7 @@ static void tlan_timer(struct timer_list *t)
+ 	case TLAN_TIMER_ACTIVITY:
+ 		spin_lock_irqsave(&priv->lock, flags);
+ 		if (priv->timer.function == NULL) {
+-			elapsed = jiffies - priv->timer_set_at;
+-			if (elapsed >= TLAN_TIMER_ACT_DELAY) {
++			if (time_is_before_eq_jiffies(priv->timer_set_at + TLAN_TIMER_ACT_DELAY)) {
+ 				tlan_dio_write8(dev->base_addr,
+ 						TLAN_LED_REG, TLAN_LED_LINK);
+ 			} else  {
 -- 
-2.34.1
-
+2.25.1
