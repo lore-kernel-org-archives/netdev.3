@@ -1,71 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819E81C5496;
-	Wed, 27 Aug 2025 10:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CD734A334;
+	Wed, 27 Aug 2025 10:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756291705; cv=none; b=QHkkj9TV8ZdYGTVxSs2GB3/KXF0qFT/5rLrQju2UdfRfxEIxfyN4GN44eBVml08PuULbDAbxfARaFce2HXyAVn7DApR/5LLBzJrnqtLUSeXUUWJZgCt/NfzsY+PD7dbIobEi30KjtFXg66sWogBmIfTQnMZ+GdGXX3x3TQjOUVQ=
+	t=1756291725; cv=none; b=E5/GxLLPGt8btHHzRXSap/kKINZy8zmS4ZO52bGUm5eBH921IYcunRiixKtpJmt1M7PijDX3UyvvshaUFv1XAH4jEfW/7V+FfsMIu5jsloW909/SpZdqYQ+YGBBvUMwVf8hq569gjCGgzC8eNvixVIS/gzfkcSaL+dU/loleHj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756291705; c=relaxed/simple;
-	bh=DMYmWN61KVuMj6xHJA0q9m7MIXo+ETDqqJfxsWK/v8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ci1WY3uqfcOGrGcFVh+4sI4S0BFm341SVCJN+f9dcnw5gPe2CDHqUEpweai/fxmoyfJPG3R9jSzGdfcRSrhxpwPUqdNHFJp2YRUYwmT1wtRwge9I1vvjEUywUVrZldZGIr1QHbohbNLZ4GcirXc5DUDwZd/xDnqncM89OH7L/Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIN265ez; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIN265ez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E99C4CEEB;
-	Wed, 27 Aug 2025 10:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756291705;
-	bh=DMYmWN61KVuMj6xHJA0q9m7MIXo+ETDqqJfxsWK/v8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eIN265ezV7OiJZQP/8z192KwoDESRoFkVRGNGA9a/STF00PtCzS/5OHXgbs8/YI4k
-	 1j2bJeEK2rotLlJMMzkgAggFhG0pkNrctucTijjgb/mRZER84h5oI2upOK/LuVQhjB
-	 ypFdsAEMranyGAlnpm3nkx193EoYlhjViFh1nbgAtQlni2Jb6BgT6bT1dPQuPspNZd
-	 rG6NmjxasuowJzzKr6QNndOyGsQM4DKTHt4JzwyKU50Nlieb2Ii1X9GVETzxB2zZEM
-	 rncuCk3QASYaan4UHD6pvL+Y41xzTdOWCzEKDzIUdwi+GmBkf1uAPPlG3gdeleKEJP
-	 8HwDep3xAjQzg==
-Date: Wed, 27 Aug 2025 11:48:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>, Julian Anastasov <ja@ssi.bg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>, netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org
-Subject: Re: [PATCH net] ipvs: Fix estimator kthreads preferred affinity
-Message-ID: <20250827104819.GA26074@horms.kernel.org>
-References: <20250729120659.201095-1-frederic@kernel.org>
+	s=arc-20240116; t=1756291725; c=relaxed/simple;
+	bh=4QChEoRjqWHTne5COgEK+7FgPenEtjJhU59F2PQTz28=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UeRi9ek2SeGM1oW/onmGJjfu/g490kh5co9BUQbDQ5n3KXaZfd4ZmGxip5PXXTkCUCTuUbOejS526hzypxwJKMpqj6HKpuF3GHauyPJLzs1b8JTLzDiXAU12Yf2y8rFEymvNaQas3ufhkOEn30ATZ7Hpi7wr2cz3wSuhH2fRSXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4cBh5L2d6nz24htl;
+	Wed, 27 Aug 2025 18:45:42 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0588B140109;
+	Wed, 27 Aug 2025 18:48:40 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (7.185.36.143) by
+ dggpemf500015.china.huawei.com (7.185.36.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 27 Aug 2025 18:48:39 +0800
+Received: from dggpemf500015.china.huawei.com ([7.185.36.143]) by
+ dggpemf500015.china.huawei.com ([7.185.36.143]) with mapi id 15.02.1544.011;
+ Wed, 27 Aug 2025 18:48:39 +0800
+From: "liujian (CE)" <liujian56@huawei.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+CC: "dust.li@linux.alibaba.com" <dust.li@linux.alibaba.com>,
+	"sidraya@linux.ibm.com" <sidraya@linux.ibm.com>, "wenjia@linux.ibm.com"
+	<wenjia@linux.ibm.com>, "mjambigi@linux.ibm.com" <mjambigi@linux.ibm.com>,
+	"tonylu@linux.alibaba.com" <tonylu@linux.alibaba.com>,
+	"guwen@linux.alibaba.com" <guwen@linux.alibaba.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>, "guangguan.wang@linux.alibaba.com"
+	<guangguan.wang@linux.alibaba.com>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "linux-s390@vger.kernel.org"
+	<linux-s390@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH net] net/smc: fix one NULL pointer dereference in
+ smc_ib_is_sg_need_sync()
+Thread-Topic: [PATCH net] net/smc: fix one NULL pointer dereference in
+ smc_ib_is_sg_need_sync()
+Thread-Index: AQHcFmKWx5M9zwvyZkS3sfn5/yfKorR0KFsAgAIq2qA=
+Date: Wed, 27 Aug 2025 10:48:39 +0000
+Message-ID: <9ae4d764df69431cb77f5c5c32eaa911@huawei.com>
+References: <20250826084442.322587-1-liujian56@huawei.com>
+ <20250826094138.GA67990@j66a10360.sqa.eu95>
+In-Reply-To: <20250826094138.GA67990@j66a10360.sqa.eu95>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250729120659.201095-1-frederic@kernel.org>
 
-On Tue, Jul 29, 2025 at 02:06:59PM +0200, Frederic Weisbecker wrote:
-> The estimator kthreads' affinity are defined by sysctl overwritten
-> preferences and applied through a plain call to the scheduler's affinity
-> API.
-> 
-> However since the introduction of managed kthreads preferred affinity,
-> such a practice shortcuts the kthreads core code which eventually
-> overwrites the target to the default unbound affinity.
-> 
-> Fix this with using the appropriate kthread's API which will carry the
-> desired affinity and maintain it across CPU hotplug events and CPU
-> isolation constraints.
-> 
-> Fixes: d1a89197589c ("kthread: Default affine kthread to its preferred NUMA node")
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 
-Acked-by: Simon Horman <horms@kernel.org>
+
+> -----Original Message-----
+> From: D. Wythe [mailto:alibuda@linux.alibaba.com]
+> Sent: Tuesday, August 26, 2025 5:42 PM
+> To: liujian (CE) <liujian56@huawei.com>
+> Cc: alibuda@linux.alibaba.com; dust.li@linux.alibaba.com;
+> sidraya@linux.ibm.com; wenjia@linux.ibm.com; mjambigi@linux.ibm.com;
+> tonylu@linux.alibaba.com; guwen@linux.alibaba.com;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; horms@kernel.org;
+> guangguan.wang@linux.alibaba.com; linux-rdma@vger.kernel.org; linux-
+> s390@vger.kernel.org; netdev@vger.kernel.org
+> Subject: Re: [PATCH net] net/smc: fix one NULL pointer dereference in
+> smc_ib_is_sg_need_sync()
+>=20
+> On Tue, Aug 26, 2025 at 04:44:42PM +0800, Liu Jian wrote:
+> > BUG: kernel NULL pointer dereference, address: 00000000000002ec PGD 0
+> > P4D 0
+> > Oops: Oops: 0000 [#1] SMP PTI
+> > CPU: 28 UID: 0 PID: 343 Comm: kworker/28:1 Kdump: loaded Tainted: G
+> OE       6.17.0-rc2+ #9 NONE
+> > Tainted: [O]=3DOOT_MODULE, [E]=3DUNSIGNED_MODULE Hardware name:
+> QEMU
+> > Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+> > Workqueue: smc_hs_wq smc_listen_work [smc]
+> > RIP: 0010:smc_ib_is_sg_need_sync+0x9e/0xd0 [smc]
+> >
+> > diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c index
+> > 53828833a3f7..85501d2c1f1b 100644
+> > --- a/net/smc/smc_ib.c
+> > +++ b/net/smc/smc_ib.c
+> > @@ -747,6 +747,8 @@ bool smc_ib_is_sg_need_sync(struct smc_link *lnk,
+> >  		    buf_slot->sgt[lnk->link_idx].nents, i) {
+> >  		if (!sg_dma_len(sg))
+> >  			break;
+> > +		if (!lnk->smcibdev->ibdev->dma_device)
+> > +			break;
+>=20
+> Why check it inside the loop?
+Ok, will send v2, move the check outside of loop.
+Thanks.
 
