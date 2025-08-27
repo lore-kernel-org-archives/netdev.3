@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CAE13AD3F;
-	Wed, 27 Aug 2025 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF8F30CD93
+	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 00:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756255207; cv=none; b=sFiqxTzrp3G4cxvnSdMDjNaCm2THvPbUD06QOiYGkHvoumj7O1JUqThWSSXHGreADbqTe5125KfOUBoRpNGbYqRfX0Qv6/H923qiJmQTLvbn7OsqtKS2Wu9ula0lkk44Mtv4AuN7CxcTE+nb61k08PQ/ma86qb+Djvyh6fRkg6k=
+	t=1756255208; cv=none; b=uYYtDU5DlPsUOnil1k6YugLOmF/8eFgnqpfF8kGMLpzJJCt18S70hvFB6hJmJr5Qd9XO5M945ZRE7foQ+vA/05oXTKmKMMyLc9BJhVXKQ75tGmIClLP2iggyKPjeW5qxiGYU2KX8p3E3m/8+QD20odsLM1nQDsDuP/mqLjbOvhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756255207; c=relaxed/simple;
-	bh=9WDRBs9n5VYIz6RH6M4wgnsTs3yVOwevT+fGZyxRKco=;
+	s=arc-20240116; t=1756255208; c=relaxed/simple;
+	bh=rOWd0dad/JaZgS9UaS6gp7tqvB0WK7HHN/V7LN1DzOA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MlAD4Ue7cdnYRnrJB6T5Qk3Po7sSbR2r0cFS0/DXASxXOsBOQPI1uwgphvEeX4oZeNuJg32f1QFLbig7S2x5qBJhccQ+OTOgLST8/TVGoySRKa11GDOOCbp+sM1hr1TVLtGzn6/nsELlXN3jkcVHchzHau1fam7dPaeHciHwti4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUMVylDn; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=MiMImmAyV67WfvTkwBAzfeFGoKRevVoY3cVTJNEpt9KhBnh95X30qa2fFKDWJ4g2vtP++GdghrsEbEoZeVQ0g3FlqAyYUF6G7aTm97WDqbYa5CxlCzPJVC2jWCrgkDAQRNgmTmlg5lO+rLdnmzkEWn2GS+Sox4hhnz9u0VEcVOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdOZGNqI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUMVylDn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27982C4CEF1;
-	Wed, 27 Aug 2025 00:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdOZGNqI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07D5C4CEF1;
+	Wed, 27 Aug 2025 00:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756255207;
-	bh=9WDRBs9n5VYIz6RH6M4wgnsTs3yVOwevT+fGZyxRKco=;
+	s=k20201202; t=1756255208;
+	bh=rOWd0dad/JaZgS9UaS6gp7tqvB0WK7HHN/V7LN1DzOA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jUMVylDnMh2nroT1KeVXKFVownx4SCIwDCc9Bi8nn05Ydp6GNEKKBIl65lj5mkles
-	 ZbQ+d7cg4KyxtreMy2zC/hvrHr7NSrRbDZ09vMUiMqh6ntiw5t0ZoK8AZjKKA98rYK
-	 74NJS1pV2tx2CBsM2IFd16da36KxCly86sAKoO5gmEwUgpCHnjDt1wpZHnRUNO6zXL
-	 VH0uddkrNAGd7KjBoraJp5RhO6SBWr2ZPzY1suE68VoujLIiDiVIxe3R3EM7GgA/Lj
-	 5uBUQHyt3pjKjifnCpuOIZmb4rTkM6MBt6CZibM9SSXMEGYz/+Q3N9AFzC7Z1h08ne
-	 Fv9H7rh/+V0NA==
+	b=TdOZGNqIQLOXj0+uDLvXJg4L3Zx0KgmU2Y+eUPmTHGAsGUQFEQHrAnsvvPSTZ/r7Y
+	 P1JUdW3ZKlpOQrCPvQ+8YZQUA1hQ3xdFYtKWiM4GAiUMgl1Y7K4WBvvbtSlVHV/XoA
+	 3yT5fpu32oDQiYQ12CpGo+N8DV64CXsnI32k8bPRLqbrmBN2RlopYnJ8nL99uyL0is
+	 I0kYHLj+W2SzTB4jIrqkUgi++11E+p6Ic8bgLpUPy0r2V3/i8jlgrEQzzFsCe7Wsse
+	 HV5Mc8GhvIXE1bfNnLodM4ESfDHC7dM3xn+5dNULlba7P1axowmVYygSWu1KHLB6gL
+	 yHQAoZ8s0Y/7A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE3A383BF70;
-	Wed, 27 Aug 2025 00:40:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DEF383BF70;
+	Wed, 27 Aug 2025 00:40:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,49 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V4 0/5] Expose burst period for devlink health
- reporter
+Subject: Re: [PATCH net-next] net: phy: fixed_phy: let fixed_phy_unregister
+ free
+ the phy_device
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175625521452.151180.8535021510500656720.git-patchwork-notify@kernel.org>
-Date: Wed, 27 Aug 2025 00:40:14 +0000
-References: <20250824084354.533182-1-mbloch@nvidia.com>
-In-Reply-To: <20250824084354.533182-1-mbloch@nvidia.com>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, tariqt@nvidia.com,
- leon@kernel.org, saeedm@nvidia.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, gal@nvidia.com
+ <175625521599.151180.8772997408710007776.git-patchwork-notify@kernel.org>
+Date: Wed, 27 Aug 2025 00:40:15 +0000
+References: <ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com>
+In-Reply-To: <ad8dda9a-10ed-4060-916b-3f13bdbb899d@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: olteanv@gmail.com, andrew@lunn.ch, andrew+netdev@lunn.ch,
+ linux@armlinux.org.uk, kuba@kernel.org, pabeni@redhat.com,
+ davem@davemloft.net, edumazet@google.com, netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 24 Aug 2025 11:43:49 +0300 you wrote:
-> Hi,
+On Sat, 23 Aug 2025 23:25:05 +0200 you wrote:
+> fixed_phy_register() creates and registers the phy_device. To be
+> symmetric, we should not only unregister, but also free the phy_device
+> in fixed_phy_unregister(). This allows to simplify code in users.
 > 
-> This series by Shahar implements burst period in devlink health
-> reporter, and use it in mlx5e driver.
-> 
-> This is V4. Find previous versions here:
-> v3: https://lore.kernel.org/all/1755111349-416632-1-git-send-email-tariqt@nvidia.com/
-> v2: https://lore.kernel.org/all/1753390134-345154-1-git-send-email-tariqt@nvidia.com/
-> v1: https://lore.kernel.org/all/1752768442-264413-1-git-send-email-tariqt@nvidia.com/
+> Note wrt of_phy_deregister_fixed_link():
+> put_device(&phydev->mdio.dev) and phy_device_free(phydev) are identical.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,V4,1/5] devlink: Move graceful period parameter to reporter ops
-    https://git.kernel.org/netdev/net-next/c/d2b007374551
-  - [net-next,V4,2/5] devlink: Move health reporter recovery abort logic to a separate function
-    https://git.kernel.org/netdev/net-next/c/20597fb9436e
-  - [net-next,V4,3/5] devlink: Introduce burst period for health reporter
-    https://git.kernel.org/netdev/net-next/c/6a06d8c40510
-  - [net-next,V4,4/5] devlink: Make health reporter burst period configurable
-    https://git.kernel.org/netdev/net-next/c/da0e2197645c
-  - [net-next,V4,5/5] net/mlx5e: Set default burst period for TX and RX reporters
-    https://git.kernel.org/netdev/net-next/c/2d5ccb93bbb4
+  - [net-next] net: phy: fixed_phy: let fixed_phy_unregister free the phy_device
+    https://git.kernel.org/netdev/net-next/c/a0f849c1cc6d
 
 You are awesome, thank you!
 -- 
