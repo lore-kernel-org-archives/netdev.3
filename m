@@ -1,86 +1,111 @@
-Received: from mail-m1973179.qiye.163.com (mail-m1973179.qiye.163.com [220.197.31.79])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D2A1FECAB
-	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 03:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782E25557
+	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 04:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756267175; cv=none; b=M0eF0Fs4oUw2muod1B88fWxUYUaKlfv46d/zE2WpjhLb1xuMobMdwoQaTdDUNy6nPs46gU6QK41U5kVxLqwyMNXfV5ZZ17Y7PW2Yif3U+EK5/QMPlIiQ5mzC91fCXG8RV70Ux2PrMgOKTB7RecSsva4IplFTmAyA0+pM4u3kHtQ=
+	t=1756269927; cv=none; b=WqppiyioPAWfhVcLzGlNI90UlQ/EyCHLdlOLvdnVq5RvxsUi5UluTvQtGzh914qJ6Prw+f9Y2bubCiIzoOn5C5RpCcik1LLOBYnohnHaVwut3OLFJVPWyk5XI4y9TF8npB+zoOcq0Lh6a8Z8KedNAAdQb+M5wH0k04TpA5ea+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756267175; c=relaxed/simple;
-	bh=8KVOZo9eOdBc5GENtXAE9CNsvSsU6XoxIkTPlL22kas=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GXM15S05hQvxtuUSWHsg317shkmHEaUUlkcJxE3cC0NA/xGi2Adp/Y0sRQo5jEyeyga6Ly4HZs3GNvJzoxcj0f6+joiDLJgIlPj0DHP8GLEhtvxBzc82IVhBpwPg0oDssbbDAaLVWnKVhANh038HKbIwtkDciZnXgqZzAE4Cutc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=220.197.31.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id f401266f;
-	Wed, 27 Aug 2025 11:23:56 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: intel-wired-lan@lists.osuosl.org,
+	s=arc-20240116; t=1756269927; c=relaxed/simple;
+	bh=DVKE5txmBRxRC438YchfOWX93hU/m1WNzh3VxAHL19E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ANUVRcujJyY+VoGUjJ/QGq72L4Eu+tnxQ9dTwoILue8z9V1YuTg9hxoZnP7+e8O2m+uB13SOLsKQWquTywUwk2ktLtqRp+BADQvWmDkMfpsdXYk4jpiN3OutM5SYGobHLhAXnTZfKLgCpqlU2i6IV0xXCvANGEBmDM9XPy0ewQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WeDruA/K; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WeDruA/K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FD2C4CEEB;
+	Wed, 27 Aug 2025 04:45:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756269926;
+	bh=DVKE5txmBRxRC438YchfOWX93hU/m1WNzh3VxAHL19E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WeDruA/KWQ+bsNx0ONbPArjUDXKjSOcUZCIjcXkTc7S16co/LPskgOrBrSGarNiOb
+	 UtpHV1bNDT1QI7LrPs3GHV8JhCV9NutNV5fFktq8DF75RTM0FwWd155M1+jWNfsD1L
+	 C2pdmHQ0UVJn8qfbbGGK6jNUSdSXH4uo310l1b6q77bDWO8L+4VXT03OGmsn77suF2
+	 cAkrlZtGL8tmRyR9dbcuyvuJOsq975ZmZcC6iwpW3GC//+AeAbNReaxpu7ymbWlFMF
+	 Ib9QAoQZRW0Va40HC4SUuHCdMChIbpkgkN0qvxYStDCom5GPJTsf9x/aQ3rWXZUBFU
+	 8yNHDaMsq3RRA==
+From: Saeed Mahameed <saeed@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	netdev@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH] i40e: Fix potential invalid access when MAC list is empty
-Date: Wed, 27 Aug 2025 11:23:48 +0800
-Message-Id: <20250827032348.1374048-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	mbloch@nvidia.com
+Subject: [PATCH net-next V2 0/7] E-Switch vport sharing & delegation
+Date: Tue, 26 Aug 2025 21:45:09 -0700
+Message-ID: <20250827044516.275267-1-saeed@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a98e98dbb2b022akunm24051186c08aa
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlCQ0JIVk8YHkJPHhhKH0oaHVYVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
-	VKQktLWQY+
 
-list_first_entry() never returns NULL — if the list is empty, it still
-returns a pointer to an invalid object, leading to potential invalid
-memory access when dereferenced.
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-Fix this by checking list_empty() before calling list_first_entry(),
-and only copying the MAC address when the list is not empty.
+v1->v2:
+ - rename goto labels after targets. Jakub.
 
-Fixes: e3219ce6a775 ("i40e: Add support for client interface for IWARP driver")
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
- drivers/net/ethernet/intel/i40e/i40e_client.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+An mlx5 E-Switch FDB table can manage vports belonging to other sibling
+physical functions, such as ECPF (ARM embedded cores) and Host PF (x86).
+This enables a single source of truth for SDN software to manage network
+pipelines from one host. While such functionality already exists in mlx5,
+it is currently limited by static vport allocation,
+meaning the number of vports shared between multi-host functions
+must be known pre-boot.
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
-index 5f1a405cbbf8..0a72157aee0e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_client.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
-@@ -359,12 +359,13 @@ static void i40e_client_add_instance(struct i40e_pf *pf)
- 	if (i40e_client_get_params(vsi, &cdev->lan_info.params))
- 		goto free_cdev;
- 
--	mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
--			       struct netdev_hw_addr, list);
--	if (mac)
-+	if (!list_empty(&cdev->lan_info.netdev->dev_addrs.list)) {
-+		mac = list_first_entry(&cdev->lan_info.netdev->dev_addrs.list,
-+				       struct netdev_hw_addr, list);
- 		ether_addr_copy(cdev->lan_info.lanmac, mac->addr);
--	else
-+	} else {
- 		dev_err(&pf->pdev->dev, "MAC address list is empty!\n");
-+	}
- 
- 	pf->cinst = cdev;
- 
+This patchset enables delegated/external vports to be discovered
+dynamically when switchdev mode is enabled, leveraging new firmware
+capabilities for dynamic vport creation.
+
+Adjacent functions that delegate their SR-IOV VFs to sibling PFs, can be
+dynamically discovered on the sibling PF's switchdev mode enabling,
+after sriov was enabled on the originating PF, allowing for more
+flexible and scalable management in multi-host and ECPF-to-host
+scenarios.
+
+The patchset consists of the following changes:
+
+- Refactoring of ACL root namespace handling: The storage of vport ACL root
+  namespaces is converted from a linear array to an xarray, allowing dynamic
+  creation of ACLs per individual vport.
+- Improvements for vhca_id to vport mapping.
+- Dynamic querying and creation of delegated functions/vports.
+
+
+Adithya Jayachandran (2):
+  net/mlx5: E-Switch, Add support for adjacent functions vports
+    discovery
+  net/mlx5: E-switch, Set representor attributes for adjacent VFs
+
+Saeed Mahameed (5):
+  net/mlx5: FS, Convert vport acls root namespaces to xarray
+  net/mlx5: E-Switch, Move vport acls root namespaces creation to
+    eswitch
+  net/mlx5: E-Switch, Create acls root namespace for adjacent vports
+  net/mlx5: E-Switch, Register representors for adjacent vports
+  net/mlx5: {DR,HWS}, Use the cached vhca_id for this device
+
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
+ .../mellanox/mlx5/core/esw/adj_vport.c        | 209 ++++++++++++++++++
+ .../mellanox/mlx5/core/esw/devlink_port.c     |  11 +-
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 131 ++++++++++-
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  17 ++
+ .../mellanox/mlx5/core/eswitch_offloads.c     |  37 +++-
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 183 ++++++++-------
+ .../net/ethernet/mellanox/mlx5/core/fs_core.h |  18 +-
+ .../mellanox/mlx5/core/steering/hws/cmd.c     |  34 +--
+ .../mellanox/mlx5/core/steering/sws/dr_cmd.c  |  34 +--
+ 10 files changed, 500 insertions(+), 176 deletions(-)
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
+
 -- 
-2.20.1
+2.50.1
 
