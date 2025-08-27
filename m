@@ -1,77 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f201.google.com (mail-oi1-f201.google.com [209.85.167.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102062D6418;
-	Wed, 27 Aug 2025 17:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00D12D6E59
+	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 17:28:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756315716; cv=none; b=NHxDvVnRrDsIQk/dtq3uRTT/tC7cgL7aTRPpQ794yJtHwSdqbdoPLovtA7Gni/MVmuP+Ty0vjkuO2ftgcAOoEgTIpKbs0fzKx7WkTDOm6K0cHNfryTlKujmE2hEx745lsxrBm55sUM1z2sstFLd3sJ28XwUeNUfnUkSuAqMPxQU=
+	t=1756315735; cv=none; b=ly5yoo4uBXXw3xVStv81kuzBkSM1xR/5CSm9QynS6RNm/Y8DCtdks4HlNolQ4pVfE32zqtgs5naPr0lY8T2gvtz4CTRwuD9KcjWp5y9IU/x32wbhXgUWvcJ31my/Sr8XImSb71LgYMGoImj63xzUdJ1xDOzRd0NS1VW9Z6P9jRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756315716; c=relaxed/simple;
-	bh=UtrbolA1HHDmLzgsn3xYeflYPsigIkwUh0momqKEeHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=btFvVokbSZxUuWLbSRwoWgNyDucski/lHF9pLv49hElHS4JVUqhbppVJCCFHVDVgoyoVEdXilExvWaysshsuKQqZiMQhTNmb0Fobsdvxv81/8tfRKv7AHdBqgQ8PFp88+OH2sYxSGHVWdAgvzJlePdKmoo+iYN2gNPY0hxwjCMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PqU8HTMS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756315735; c=relaxed/simple;
+	bh=XK6LtB1QQhJCrSXd5VoKx0nnfJw6jgGQb7gLsDaxnuY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KoJPstNhJ8gurjl2ZYJ+MUdaNDLGBC7/Jt92LqRMv48ffsJzsaBff6FePBwtoYNeu1uNFZalVYCGL3U5+OafXxbVmfW6cZH6reG8EM9qYBcTicBmqPYAG4wjZLJBcDdp0zKLJQif53Ik+CZRn1AQNNF35HwUCAPHIa3uJG3AuOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wlNAsNc6; arc=none smtp.client-ip=209.85.167.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqU8HTMS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620B1C4CEEB;
-	Wed, 27 Aug 2025 17:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756315713;
-	bh=UtrbolA1HHDmLzgsn3xYeflYPsigIkwUh0momqKEeHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PqU8HTMSa5I6ObcVPSD4d6fKFh1wfzdb23B3poxfHNfoGUDbJCIqkxP6+I4ROQbd2
-	 Z6xA07kdpSE/mdfKDSKk+ea2P5RvKDCmcmk9GQ2e/M41195zoHe20Yc4cCoRhjrmQm
-	 GN3g9T4c7il6y5uFDmLbfIqONUInMwlXcDlgfcdS5ZMSBmP/S6CmkvquFnzYZMdtHx
-	 gRKpt14RcBAfZ1nR9UYvuLDLQ8L+tVLj7CopjeLh4i31juvpj2ak2NT2vwh/nUL3Wr
-	 w+x0MN175xpyHRzneD8cpnC70V4KmE74o56eLhzuUlFhYrxaL0+6necozhXfn6n/V6
-	 nBOgBoF20lxwg==
-Date: Wed, 27 Aug 2025 18:28:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	nxne.cnse.osdt.itp.upstreaming@intel.com, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH iwl-next v5 00/13] idpf: add XDP support
-Message-ID: <20250827172828.GP10519@horms.kernel.org>
-References: <20250826155507.2138401-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wlNAsNc6"
+Received: by mail-oi1-f201.google.com with SMTP id 5614622812f47-435de7cd311so162428b6e.2
+        for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 10:28:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756315733; x=1756920533; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NAwS44FuOei0l/zf312DIWNuCiLxP1KGIqa6f2mojLo=;
+        b=wlNAsNc6PcgO5in/71VoObyLR/0GCBZ+Rv1n5xcdyoLs8x6Wqsiis+HrkE8fkI2QmL
+         dRLEfL/ydynqoK8W+gPQmZEx6YwWpwZJitd4LhEr4gpGlV7n1Puw8366/j3JpTUMs37Y
+         txtHjAmMN8N6kWYfe2EbC9ge8Fyi5vvA9tplVu1pmlhLS+hSQMWGzLJ1K7mbhrNh9ItJ
+         BLv7Y0RswQ9dYWljQMTlJCrcGBXlz1UvpWPAYtTRc6AxfZtXEjBh4P2xOHvMbK3srMup
+         1QhFo7C3Lssk2Okw9anCjbAgmFcefKLiLRQBRHiV18xzzmWDKWLEds+LLzs3zmDfnsl5
+         UxeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756315733; x=1756920533;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NAwS44FuOei0l/zf312DIWNuCiLxP1KGIqa6f2mojLo=;
+        b=bm2sS9zS982GjhcVs6+jWVZMy3aJ+DeWFnE9+Pq6gP6JDYvVHvPTQA551TH8x0yw4N
+         MWHru1RTBYRLTopa9v+gf6Kk1GWyODk6uTyJ46owNxe+DWsQMvLEMZU65SQx5ulqYVAF
+         ioI5viAFaRe/4geaj+yFFwUk5fd7K9vt123+FscNoGbfBrwOr9BXjCeHxl6wueIP44Np
+         FjD6Kbde+mhWUM9om9C/+3RnLBnOc0op0fLMtIi110KXP4ht+vAaU2KPL6HH1o5H2+xM
+         w76X5WJWYdXCLRq6Dg/TyWIj95fyHV+ScnaF8sGdY+x2f42mXWYM0St5dlGeTerS6ZOb
+         3wMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWYyDM3CSk0Os2CR8V1e9arXUE5+M5VK57qgDOHn/HdIDNWXZ/A8ezCBXSn6f2dpuO7R0s0KA8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUjpTfYyfjN1sq6JeYDhP18u4q3oVTChNAfvqGBOzK6yB4IBBp
+	0iS5fMSPtJ3yzPw16nkxalyfIDEqmfFFPdKo500mi0/z+rZ9jrwm8ZdZL/bSI1KEqp9xSMpPgUJ
+	VUQqPbg7P2lpAvg==
+X-Google-Smtp-Source: AGHT+IHAmznMJnzH1A9NF9MxA4oVKtQvp6BGhHPeSlLGnqTBG9OWmdpLJa4cyaQ19jvNdyHVhXEwKJOZN3PsZg==
+X-Received: from ybey66.prod.google.com ([2002:a25:dc45:0:b0:e95:3868:192])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6902:2b06:b0:e93:3b3c:bd3f with SMTP id 3f1490d57ef6-e951c3f12a4mr18201966276.46.1756315310860;
+ Wed, 27 Aug 2025 10:21:50 -0700 (PDT)
+Date: Wed, 27 Aug 2025 17:21:49 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250826155507.2138401-1-aleksander.lobakin@intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
+Message-ID: <20250827172149.5359-1-edumazet@google.com>
+Subject: [PATCH net] net: rose: fix a typo in rose_clear_routes()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+2eb8d1719f7cfcfa6840@syzkaller.appspotmail.com, 
+	Takamitsu Iwai <takamitz@amazon.co.jp>, Kuniyuki Iwashima <kuniyu@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Aug 26, 2025 at 05:54:54PM +0200, Alexander Lobakin wrote:
-> Add XDP support (w/o XSk for now) to the idpf driver using the libeth_xdp
-> sublib. All possible verdicts, .ndo_xdp_xmit(), multi-buffer etc. are here.
-> In general, nothing outstanding comparing to ice, except performance --
-> let's say, up to 2x for .ndo_xdp_xmit() on certain platforms and
-> scenarios.
-> idpf doesn't support VLAN Rx offload, so only the hash hint is
-> available for now.
-> 
-> Patches 1-7 are prereqs, without which XDP would either not work at all or
-> work slower/worse/...
+syzbot crashed in rose_clear_routes(), after a recent patch typo.
 
-Hi Alexander,
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+CPU: 0 UID: 0 PID: 10591 Comm: syz.3.1856 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+ RIP: 0010:rose_clear_routes net/rose/rose_route.c:565 [inline]
+ RIP: 0010:rose_rt_ioctl+0x162/0x1250 net/rose/rose_route.c:760
+ <TASK>
+  rose_ioctl+0x3ce/0x8b0 net/rose/af_rose.c:1381
+  sock_do_ioctl+0xd9/0x300 net/socket.c:1238
+  sock_ioctl+0x576/0x790 net/socket.c:1359
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:598 [inline]
+  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:584
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-I'm wondering if you could give a hash that this patch-set applies to.
-Or a branch where it has been applied.
+Fixes: da9c9c877597 ("net: rose: include node references in rose_neigh refcount")
+Reported-by: syzbot+2eb8d1719f7cfcfa6840@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68af3e29.a70a0220.3cafd4.002e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Takamitsu Iwai <takamitz@amazon.co.jp>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/rose/rose_route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I suspect it's terribly obvious how to do this, but I'm drawing a blank here.
+diff --git a/net/rose/rose_route.c b/net/rose/rose_route.c
+index 1adee1fbc2ed1d04345c6340b717eae1f6a0305c..a1e9b05ef6f5f6f09ee17927c4a4aba50a156adb 100644
+--- a/net/rose/rose_route.c
++++ b/net/rose/rose_route.c
+@@ -562,7 +562,7 @@ static int rose_clear_routes(void)
+ 		rose_node = rose_node->next;
+ 
+ 		if (!t->loopback) {
+-			for (i = 0; i < rose_node->count; i++)
++			for (i = 0; i < t->count; i++)
+ 				rose_neigh_put(t->neighbour[i]);
+ 			rose_remove_node(t);
+ 		}
+-- 
+2.51.0.268.g9569e192d0-goog
 
-Thanks!
