@@ -1,207 +1,203 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF14283FF7;
-	Wed, 27 Aug 2025 06:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AF61EEF9;
+	Wed, 27 Aug 2025 06:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756275862; cv=none; b=fL7Oy7qgNkmZ6FkC+YB3qS/mVCyHOjQqG7b6OC7dV4/p9ivs241TpXRspdclIk8SezR4jtg/Ym4jPyYrODrv6KpZPwU4nrNVIaYTu1wbYjJfKYjHVxgY3oLdishW/NzMZ9e7kjL6SSYtNxsb306AiIzT2Qtn2RrYWRM81/+P06c=
+	t=1756276456; cv=none; b=p+Brz3ewcVSJIggBUT5OKFH0/2Ag8FzezdwrfDcFRurq2nd8JLwzRXzBiMgzS/3yZAd1tbEd1rhe8KwMtYHnEdZzZu0wLr7CSr4QGiOCtfbVqxPvBmrkr4IIdUNsBvwz/vQcEETyy5teiNctF8TNDITRW3bp8DgNwRZu4ssPIRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756275862; c=relaxed/simple;
-	bh=o3fJsDxjcT+pYmkEs+fcR3uJijtyNsAylt/fN04Mq+s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oO4CBslCgAwzxnDbMd0uP5Q/g+YvyInc/tectUSIVj1HnB1K3mf0ffKwOIp0RNCf6Iq1Qv1fZ4ia8P9ZVUjTjEDCR6vwGQCbM2SGxOnwL9W64Sub7Bi7LF12aX1Q9lFWcpYmf+cAuMiXVDVqYK+TYMVkomrDadxveETYfYvl68E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E7glTEmL; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E7glTEmL"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-45b618b7d33so23428395e9.1;
-        Tue, 26 Aug 2025 23:24:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756275858; x=1756880658; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r9wleIvMe0ym3Qd7+HMCQnFYyO0M6VbPyNnWDavGhvg=;
-        b=E7glTEmLcaFskjJP9Hpdii89tGtnDMQcQYld0jk6H+EV4ZKPlK2u75jVPPoadsY99F
-         P4DmvMIBZ5P8xkWoh5Vs9BpmCsbe+jEW/WvF0sB5bOs5GuEx6Xn8vPKihHS79Br9rAeU
-         WxnW8oaqntfhKqZXEmSk+/Z7rh4jWm3vCgwEnIaqghXCtZ2vcs7dlGnRu5mMcgS1sRIk
-         8NTTspSHH+JaIyCse0m8grpx6ZeIecDD8Z0tRMIiUPn4DDBhZxg/59PawBt8aZDFZkQh
-         RGrItjN+82RYb9pk2F6EpLiTAD4z6XTIvZy8UubMtJiISixIbVj9fTwOHncjXJ8/jIOg
-         KpTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756275858; x=1756880658;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r9wleIvMe0ym3Qd7+HMCQnFYyO0M6VbPyNnWDavGhvg=;
-        b=RxbAvutLvMndr6tI9Cu8EivkKRTGrhSYqUmDSWyLS5fJng2DyC9Fn9ePCe7z5vF6ND
-         SOy5i0Rx814hnmyDqIhUO9JmOjBlqN1xRr/DmP1homGVvNbSZHTz4YFCXlnSAMiewGZi
-         SmRSi/HCbXLfV0YqfESP9oGEqCUK1IsDPMQZnAdPTJcioVbbYJn5Tq5UlsNYVmawH1BM
-         0q011w555NU9avEmzs9epvmyXcRqntM/04ZxytY5E5TdEKBkqzCZ9q9XqhrH/nKl6ukh
-         jFd+sUWpAE1BCgW+iwq3aHxsQwJqPp1oC8Bs/BjrtOZFLvbrO73y2h62GYm9K88slGco
-         zskQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjj1sbAufoKA1ho0a+7Z2prgGmMe3D93rwpLVvagGzztsQBESAdl/lvc3mLD0C4rDCy3EqVfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPqe8o5DIHsTkehUXnyNvlQ4kb9VmlB5wSl/Yuo1BAZm0TqDSx
-	f48j3Kc/yvP/qQLaFy6nzeMYvK/8YZLGHTVyWDU56O+jUGJZv/utvMQc3r1gmA==
-X-Gm-Gg: ASbGnctzgjDo4cbqmUvAQFX+ekZsJbkvnsJwcwopiH2H781C88tpDDZQqYyeO0oMy0g
-	JLl3PzWNBc2p6D616RRyNOam3PUrRNYAdicvzGQcG2sdXHOhpwH7uCtuDk/beYcDImq9r4FYaOl
-	aNRMaid6mHB89dpCWjkJjK9uSVLieBFQtmFtNWC3aBuxViBcQ+ZdQobaSQpX9zDstHG/LMh3A6U
-	5Vq05IJqePhDUgxUm07DM4SfzkvFkUc/te3X95bOrmUnZfNC1V4TNg9DdIP4vXD5ODafb6HNqE6
-	6JySaoSW12LZggjh/DCobLzv78TjSVe8fn2AYPtykCJTNmNvdgCo3f8unYWkT/QD7zTJYbmtRqY
-	ikB3NEUGW5e4PR2tZnoiOQspJDCqepoBFDnPt
-X-Google-Smtp-Source: AGHT+IETtphtb7cnxUtM++p+wBtWizOrRU+EkeyiDMIFTiAZ8GkOFL96kRLhi57Ve27XcASOnpr/UQ==
-X-Received: by 2002:a05:600c:4fc7:b0:456:25aa:e9b0 with SMTP id 5b1f17b1804b1-45b517ad57emr236095245e9.16.1756275857616;
-        Tue, 26 Aug 2025 23:24:17 -0700 (PDT)
-Received: from oscar-xps.. ([45.128.133.230])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b66c383b1sm29749875e9.3.2025.08.26.23.24.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Aug 2025 23:24:17 -0700 (PDT)
-From: Oscar Maes <oscmaes92@gmail.com>
-To: netdev@vger.kernel.org,
-	bacs@librecast.net,
-	brett@librecast.net,
-	kuba@kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org,
-	Oscar Maes <oscmaes92@gmail.com>
-Subject: [PATCH net v3 2/2] selftests: net: add test for destination in broadcast packets
-Date: Wed, 27 Aug 2025 08:23:22 +0200
-Message-Id: <20250827062322.4807-2-oscmaes92@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250827062322.4807-1-oscmaes92@gmail.com>
-References: <20250827062322.4807-1-oscmaes92@gmail.com>
+	s=arc-20240116; t=1756276456; c=relaxed/simple;
+	bh=08Bdfu7Abb5AyaLDYLBrHXSveiS/oZksGtOGJHCmkk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mrGRfuhoKo4vJLF0FmwHwJO+knwalCR7XF23flEIkRL6i0RLFX9aVtvNcd17ycmYhL+pWc/mQD5bqv6Mcneece8OMg516TO9bHcW80HL3vK0kO1jYimhxuqZNGGtQSIjsOHyWq8/jB2HCRBRHxfiEu0eenKZ0xatPs0mz3TnCr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: zesmtpgz3t1756276443te96eac14
+X-QQ-Originating-IP: z93O1aUXQO9wJtNI9JgSSX/YEPfi2+9tuQMK75xB46U=
+Received: from localhost ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 27 Aug 2025 14:34:01 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 17250008978444675294
+Date: Wed, 27 Aug 2025 14:34:01 +0800
+From: Yibo Dong <dong100@mucse.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	corbet@lwn.net, gur.stavi@huawei.com, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
+	gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
+	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
+	alexanderduyck@fb.com, richardcochran@gmail.com, kees@kernel.org,
+	gustavoars@kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v8 4/5] net: rnpgbe: Add basic mbx_fw support
+Message-ID: <4E0FB703028E42A8+20250827063401.GA504899@nic-Precision-5820-Tower>
+References: <20250827034509.501980-1-dong100@mucse.com>
+ <20250827034509.501980-5-dong100@mucse.com>
+ <4b6eb676-10f5-4438-9457-6aeda0ee7fb0@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4b6eb676-10f5-4438-9457-6aeda0ee7fb0@infradead.org>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: ORqNQdnYjakC0GymvZaT7wSRhIi1hzcMqJ3OYYj+gj4GsX77VOLGWp48
+	dGRpeSGHKgEK5z9Hy5HXCY58NBa74URD4BN5x6/gse3Rb7ADjevC+kCKIAodB4cRSmpmPqK
+	2Rtsbt3n98XeM3WNuCZSIaxwJuupE7081p7XRlh55KlaOiERDDtxwJqGtGiFt1LAy1UvF/v
+	nm6eCYKXAdlROy4GhlVswM2AxLO22wGXwhitGONrgEq1NRydAWJJKkmSKg1jEEG08bn/oIS
+	zFVgXw+xhAYd9COuZ+oRUtioe9RqXAuYhzcHZvMq/Z9yFGj5d0PlIQjsJqStfdOwMMgsNZX
+	K86NhzhAE5g71hLCWthslSz9A5Vt37B+/++F/xmNzfwgGeSzy9f1vHgYJYIx5VieRZkwQ9Y
+	paSr4//YXp45OtyBGFMWZ9l86KAI++9LqpUGSSSBUysBfVbvuZLnqD8Bsgc8pX1bFi2NtY6
+	x8MoXHdRay/jZOCzlDRosyka2akuyu8DvRCuFb+KoozvEgkPJRiDTopSQuw2l6aZdHCFYSF
+	BP9M2niaMeFuUq3bnacaI6l8HAc6UpRAnaiVXKDnXdz+zNcwLOj1kd09iz/mPUR/FkiCTfp
+	eFdcPpJ+71vnsjgzM7F2MoSXurU8HOGra4M6Ne3EKQECTh9DqL3Pn93/E7VTmj2ENDg/pSM
+	lvOpJcMt3bAc2xGXkDyUGmBE5K2jiSb7kql9gCQT/pg1s8mgy8BhPQHot6bWIQrsoXu+ZCP
+	4/uBApBfSAtPuyyGVtggY8S3Zo3ESvvBqbQF3uThdWWN96DyDr+url2H0gRmqou/34EahIv
+	vDCCyMjFqt4E5HxfSU2yYkIqMUC8KM3/lzI8Q4LnaZfb+4cJ/ivDXh+x3zarxjW3v6FZWn0
+	RqTa6Ut5kXA+Ex+eL5/+pXiK7hignroVPCJqa9BKcSkksaUKFITlP6cbmq3GXAafGPGPuDc
+	3v/dnOWz0ehS00gV/OMo02PW8XvREtiNTD6dxjQMAKWoRxH8bKI/ArCkitGqq0BOJzVK3VX
+	Z8kgfcmw==
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+X-QQ-RECHKSPAM: 0
 
-Add test to check the broadcast ethernet destination field is set
-correctly.
+On Tue, Aug 26, 2025 at 10:26:38PM -0700, Randy Dunlap wrote:
+> On 8/26/25 8:45 PM, Dong Yibo wrote:
+> > Initialize basic mbx_fw ops, such as get_capability, reset phy
+> > and so on.
+> > 
+> > Signed-off-by: Dong Yibo <dong100@mucse.com>
+> > ---
+> >  drivers/net/ethernet/mucse/rnpgbe/Makefile    |   3 +-
+> >  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |   1 +
+> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c | 253 ++++++++++++++++++
+> >  .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h | 126 +++++++++
+> >  4 files changed, 382 insertions(+), 1 deletion(-)
+> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> >  create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+> > 
+> 
+> 
+> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> > new file mode 100644
+> > index 000000000000..d3b323760708
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+> > @@ -0,0 +1,253 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/* Copyright(c) 2020 - 2025 Mucse Corporation. */
+> > +
+> > +#include <linux/pci.h>
+> > +#include <linux/if_ether.h>
+> > +
+> > +#include "rnpgbe.h"
+> > +#include "rnpgbe_hw.h"
+> > +#include "rnpgbe_mbx.h"
+> > +#include "rnpgbe_mbx_fw.h"
+> > +
+> > +/**
+> > + * mucse_fw_send_cmd_wait - Send cmd req and wait for response
+> > + * @hw: pointer to the HW structure
+> > + * @req: pointer to the cmd req structure
+> > + * @reply: pointer to the fw reply structure
+> > + *
+> > + * mucse_fw_send_cmd_wait sends req to pf-fw mailbox and wait
+> > + * reply from fw.
+> > + *
+> > + * @return: 0 on success, negative on failure
+> 
+> Use of @return: is not a documented feature although kernel-doc does accept it.
+> I prefer that people don't use it, but I can't insist since it does work.
+> 
+> 
 
-This test sends a broadcast ping, captures it using tcpdump and
-ensures that all bits of the 6 octet ethernet destination address
-are correctly set by examining the output capture file.
+Maybe change it like this?
+Return: 0 on success, negative errno on failure
 
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
----
-Link to discussion:
-https://lore.kernel.org/netdev/20250822165231.4353-4-bacs@librecast.net/
+> > + **/
+> > +static int mucse_fw_send_cmd_wait(struct mucse_hw *hw,
+> > +				  struct mbx_fw_cmd_req *req,
+> > +				  struct mbx_fw_cmd_reply *reply)
+> > +{
+> > +	int len = le16_to_cpu(req->datalen);
+> > +	int retry_cnt = 3;
+> > +	int err;
+> > +
+> > +	err = mutex_lock_interruptible(&hw->mbx.lock);
+> > +	if (err)
+> > +		return err;
+> > +	err = mucse_write_posted_mbx(hw, (u32 *)req, len);
+> > +	if (err)
+> > +		goto out;
+> > +	do {
+> > +		err = mucse_read_posted_mbx(hw, (u32 *)reply,
+> > +					    sizeof(*reply));
+> > +		if (err)
+> > +			goto out;
+> > +		/* mucse_write_posted_mbx return 0 means fw has
+> > +		 * received request, wait for the expect opcode
+> > +		 * reply with 'retry_cnt' times.
+> > +		 */
+> > +	} while (--retry_cnt >= 0 && reply->opcode != req->opcode);
+> > +out:
+> > +	mutex_unlock(&hw->mbx.lock);
+> > +	if (!err && retry_cnt < 0)
+> > +		return -ETIMEDOUT;
+> > +	if (!err && reply->error_code)
+> > +		return -EIO;
+> > +	return err;
+> > +}
+> 
+> 
+> [snip]
+> 
+> > +
+> > +/**
+> > + * mucse_fw_get_capability - Get hw abilities from fw
+> > + * @hw: pointer to the HW structure
+> > + * @abil: pointer to the hw_abilities structure
+> > + *
+> > + * mucse_fw_get_capability tries to get hw abilities from
+> > + * hw.
+> > + *
+> > + * @return: 0 on success, negative on failure
+> 
+> negative errno or just some negative number?
+> 
 
-Thanks to Brett Sheffield for writing the initial version of this
-selftest!
+errno, -EINTR, -EIO, -ETIMEDOUT
+Maybe update it like this?
 
- tools/testing/selftests/net/Makefile          |  1 +
- .../selftests/net/broadcast_ether_dst.sh      | 82 +++++++++++++++++++
- 2 files changed, 83 insertions(+)
- create mode 100755 tools/testing/selftests/net/broadcast_ether_dst.sh
+Return: 0 on success, negative errno on failure
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index b31a71f2b372..56ad10ea6628 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -115,6 +115,7 @@ TEST_PROGS += skf_net_off.sh
- TEST_GEN_FILES += skf_net_off
- TEST_GEN_FILES += tfo
- TEST_PROGS += tfo_passive.sh
-+TEST_PROGS += broadcast_ether_dst.sh
- TEST_PROGS += broadcast_pmtu.sh
- TEST_PROGS += ipv6_force_forwarding.sh
- 
-diff --git a/tools/testing/selftests/net/broadcast_ether_dst.sh b/tools/testing/selftests/net/broadcast_ether_dst.sh
-new file mode 100755
-index 000000000000..865b5c7c8c8a
---- /dev/null
-+++ b/tools/testing/selftests/net/broadcast_ether_dst.sh
-@@ -0,0 +1,82 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Author: Brett A C Sheffield <bacs@librecast.net>
-+# Author: Oscar Maes <oscmaes92@gmail.com>
-+#
-+# Ensure destination ethernet field is correctly set for
-+# broadcast packets
-+
-+source lib.sh
-+
-+CLIENT_IP4="192.168.0.1"
-+GW_IP4="192.168.0.2"
-+
-+setup() {
-+	setup_ns CLIENT_NS SERVER_NS
-+
-+	ip -net "${SERVER_NS}" link add link1 type veth \
-+		peer name link0 netns "${CLIENT_NS}"
-+
-+	ip -net "${CLIENT_NS}" link set link0 up
-+	ip -net "${CLIENT_NS}" addr add "${CLIENT_IP4}"/24 dev link0
-+
-+	ip -net "${SERVER_NS}" link set link1 up
-+
-+	ip -net "${CLIENT_NS}" route add default via "${GW_IP4}"
-+	ip netns exec "${CLIENT_NS}" arp -s "${GW_IP4}" 00:11:22:33:44:55
-+}
-+
-+cleanup() {
-+	rm -f "${CAPFILE}"
-+	ip -net "${SERVER_NS}" link del link1
-+	cleanup_ns "${CLIENT_NS}" "${SERVER_NS}"
-+}
-+
-+test_broadcast_ether_dst() {
-+	local rc=0
-+	CAPFILE=$(mktemp -u cap.XXXXXXXXXX)
-+
-+	echo "Testing ethernet broadcast destination"
-+
-+	# start tcpdump listening for icmp
-+	# tcpdump will exit after receiving a single packet
-+	# timeout will kill tcpdump if it is still running after 2s
-+	timeout 2s ip netns exec "${CLIENT_NS}" \
-+		tcpdump -i link0 -c 1 -w "${CAPFILE}" icmp &> /dev/null &
-+	pid=$!
-+	sleep 0.1 # let tcpdump wake up
-+
-+	# send broadcast ping
-+	ip netns exec "${CLIENT_NS}" \
-+		ping -W0.01 -c1 -b 255.255.255.255 &> /dev/null
-+
-+	# wait for tcpdump for exit after receiving packet
-+	wait "${pid}"
-+
-+	# compare ethernet destination field to ff:ff:ff:ff:ff:ff
-+	ether_dst=$(tcpdump -r "${CAPFILE}" -tnne 2>/dev/null | \
-+			awk '{sub(/,/,"",$3); print $3}')
-+	if [[ "${ether_dst}" == "ff:ff:ff:ff:ff:ff" ]]; then
-+		echo "[ OK ]"
-+		rc="${ksft_pass}"
-+	else
-+		echo "[FAIL] expected dst ether addr to be ff:ff:ff:ff:ff:ff," \
-+			"got ${ether_dst}"
-+		rc="${ksft_fail}"
-+	fi
-+
-+	return "${rc}"
-+}
-+
-+if [ ! -x "$(command -v tcpdump)" ]; then
-+	echo "SKIP: Could not run test without tcpdump tool"
-+	exit "${ksft_skip}"
-+fi
-+
-+trap cleanup EXIT
-+
-+setup
-+test_broadcast_ether_dst
-+
-+exit $?
--- 
-2.39.5
+> > + **/
+> > +static int mucse_fw_get_capability(struct mucse_hw *hw,
+> > +				   struct hw_abilities *abil)
+> > +{
+> > +	struct mbx_fw_cmd_reply reply = {};
+> > +	struct mbx_fw_cmd_req req = {};
+> > +	int err;
+> > +
+> > +	build_phy_abilities_req(&req);
+> > +	err = mucse_fw_send_cmd_wait(hw, &req, &reply);
+> > +	if (!err)
+> > +		memcpy(abil, &reply.hw_abilities, sizeof(*abil));
+> > +	return err;
+> > +}
+> 
+> -- 
+> ~Randy
+> 
+> 
+
+Thanks for your feedback.
 
