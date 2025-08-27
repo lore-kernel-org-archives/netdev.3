@@ -1,65 +1,52 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9710434A328
-	for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 10:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9FB72610;
+	Wed, 27 Aug 2025 11:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756291733; cv=none; b=c1Ptz1ILWz0iB5PH9YsXpD0iW9kWG/MpgZrbalXPISm6Xt4AzQU6a0+BsWwUhOH5yTvSyyITswmjrZ/Gy0+ClXu/RCQBNUBMpqXytZQd3eaegIsRSLtI8XgKq8DXQB7OttoRKIAZwWCgxQI8u3L+On9yW41aOwXC5qBzx/g4+w0=
+	t=1756292864; cv=none; b=i7KiF/ZypPRjV+xGY/o8ugRC02APv52FFW9E5p0vfntx/+M5136O6CApM9wi7HK87ioo2VRLQtfD57Xub16u3ZG8hoq+pjW+B+kDh1wiLVpvSr+HeEWBqUZuawSjU0elwGhZbtrSeMoL/P0eow1o9J7mAY8GaUrkc/TtBdJTe9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756291733; c=relaxed/simple;
-	bh=hUoasQnCGasuL2bHEECdPbjoocMmyF4EX7JMYC3YOH4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OEiaTEy2DbitpyOUZDnt1GaIoRchnOh6bp7DCdJ6bYgLk0Sx7zW8TP2//mUWPx12vERvVKFECr3lbilUdsG/72LKVvjgaP9z3zKnLGuuh2HqQSRHsq4Cfipj1OWgNdd4m6EEijcQg2el/modP9LuEXeQVwsUe23MR849e/6T+FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=JrwxX8bL; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1756292864; c=relaxed/simple;
+	bh=2BFwwk6Oa0P/ezRqVcFlJunKKCnXQeE1OIsUdA4NEXs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=r664KynzTSQCzj4NvYMIzmXvLhIhmqUsjMYrjTbXuYZxxhXYv56HPsBiPsUlZvW0jy/4I7n9k0Gb/CGF586MF2YI/3J6oKsT/cBF1F/PnJA+p+PLCyFe7VEU68dHS5F9XgnN+fg1RedPuLh45UbBc0mOZK8kZmyW0AqAkaKGBac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=iFV2ErZM; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="JrwxX8bL"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-afcb7a8dd3dso1008866966b.3
-        for <netdev@vger.kernel.org>; Wed, 27 Aug 2025 03:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1756291728; x=1756896528; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lL19xfHMBfEDs48X3K+oV8VPfeHvbok1+JBxYOZS28U=;
-        b=JrwxX8bL2YcdBz5x0AOh+CA+Ane56S2aUbd+YdY3PyY7Ikj2v/RHA0O2bwTvwc000c
-         G40Y57Mb6WpeZ6c+fzTNsqHhM5zZCjqMxOjYMhPNIrFpVCPoFU3uKWtBktiPj0h6qjB8
-         hnvnuyrtjrnjJuYHGyFKo352O20VH74oD4S2B5jgGYgKCrtotEipd27Yww4t8GUOHRIN
-         v5o3FIxbriFx/IZ0iFT0Re5tm03s7nw8OD2ZWtiVysOa49mh5YJZJigU4pQTyHb2Ya3e
-         B1b81sp1g4NTjYSPAzcMMStq+oIVLgf0wXI9geBI8WAuOkfQuXN2A5jtCCA1BdN6KqtN
-         GU/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756291729; x=1756896529;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lL19xfHMBfEDs48X3K+oV8VPfeHvbok1+JBxYOZS28U=;
-        b=KGzgLKVb7PWK+ZpcjfcB4OZnx9lzCgMAyznz5sxuYDiV1MRZFcvB9Usi78xrV6XNXa
-         gq8O1AZauCRKvDxcExDc8OCJKLTVfih3Y80AwPlkaM0Ax75riN7oq2pHVNRplAOT4raT
-         0+8d9/lh5MjI60ncnDzKDS8ga7MSwN/SIjTw4qIdxRrvXLn+QBGbdqQtrx0xwGwij9H+
-         kvYTx9VSIZklIfJUVLW0CGSxi7z+K2K5NQQaSwseOdb+PGWjH62ccQf6mRe+MGLBeRPa
-         XPE6WvpZ4CJTWrb8YfNdXTp/0RPQfPKrfEOpYQRLsDHPz9Sjkw9qEq9ihcqgXjX2i3ZR
-         YSUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7BpLGrmRadPxzohX+CFwb7UtYR06VkhlaBe2YHtr5tgNpqxggNYI/hgF3+A7EUyaPbPrPxJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyhjl26Kj79j7nIch9u8VXtjCdRtyUA9C2aGEUT2UTfTciQBUE7
-	zRULjgHx0eoPwpNHMk35m0cJSv7b6MLEN276cPd8ttoVyyup1R/SGP4XHCeZGDuhS+s=
-X-Gm-Gg: ASbGncthkPkoFwT2aWz93kFMyvomAPQ6e0WsmIt2/1l56WoDJZI9Ze6snaj9IDY44zn
-	nEVgea1Q2qpdylvjLXTADxgHSc+kGxPnvLidfCL1zB2UUCdQiFb501BCFF0TQJU3gslS2fnEBOI
-	vl4q8wpIY1kZsIZm/YKCmgT39IuGmYDw1jEQMQNoqFwrMTIjQi4talCBFRT7Y4w3118iT4Zt16k
-	XE+T1Vc48suO9i0sGAwjHGfuiP9WkuW0RROKr16RTPsRLV8MLnngVbctcr+8mR/6vS7EkJy4FwO
-	c/if1ezEGQi2aDpdbVQndWtaIw60ykKuearbdbx+CRZJubxOiGSnaIzf/8ccClBbOD9ARFvi9t0
-	epRy9OoI/0uDLmtjFso/RnSqtlORuqO6LDZ9kePI2zfb47BrXCRXasoJrMEDS5QEt8833
-X-Google-Smtp-Source: AGHT+IEVADrPJMUJPey3grHp2K9MK686lufQkO5QVcW/tIjMAy10SkXHsy6F5Gw27EFMbLCTtMlK5w==
-X-Received: by 2002:a17:907:d06:b0:af9:6065:fc84 with SMTP id a640c23a62f3a-afe29437cafmr2078631166b.27.1756291728550;
-        Wed, 27 Aug 2025 03:48:48 -0700 (PDT)
-Received: from cloudflare.com (79.191.55.218.ipv4.supernova.orange.pl. [79.191.55.218])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afe8c74194dsm534171166b.35.2025.08.27.03.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Aug 2025 03:48:47 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Wed, 27 Aug 2025 12:48:29 +0200
-Subject: [PATCH bpf-next] bpf: stub out skb metadata dynptr read/write ops
- when CONFIG_NET=n
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="iFV2ErZM"
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RA4cGa026189;
+	Wed, 27 Aug 2025 13:07:13 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	x/3NINU/K2c7qUKU5f+2zWn2uCGFvhWDC/0NFKmcgbI=; b=iFV2ErZMbwdc2f5o
+	4993XzK2tFEEM3WIt/vW0XWwybINZvj8IUWKlWdTL4Aw9r6TswXkWDMeUAL2lfrY
+	vm0qx9YiwaSJGSRzBA1z5rfXL0w/mp+JXqX44zsOGxdv+4VHo+WvI/OpLOT4bod5
+	sYtn6QHoHzzv/ObeylxvXefStXzU1kOCnAZbuySJQbqxMpwKxvtZO6vhY4NSfyf3
+	KBbS1osRlYXk1PgWmJmzJKisKDgG6AjT9sVUNIrfIgGOmdHCPWmPGBJiVXhvE67J
+	dT5tRdEYdokp8pI8pkuD4gC73c5g/620To8zSSz0D7xffFd3b61D6KKHsHyfchYV
+	g4b54g==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48qq745m99-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Aug 2025 13:07:13 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 47B634002D;
+	Wed, 27 Aug 2025 13:05:58 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 27E915FDD5F;
+	Wed, 27 Aug 2025 13:05:05 +0200 (CEST)
+Received: from localhost (10.252.21.245) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Wed, 27 Aug
+ 2025 13:05:04 +0200
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Date: Wed, 27 Aug 2025 13:04:59 +0200
+Subject: [PATCH net-next v3 2/2] ARM: dts: stm32: add missing PTP reference
+ clocks on stm32mp13x SoCs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,107 +55,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250827-dynptr-skb-meta-no-net-v1-1-42695c402b16@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIAHzirmgC/x2MQQqEMAwAvyI5G9CAWvcr4kHbqEE2lrYsLuLfL
- R4HZuaCyEE4wqe4IPBPohyaoS4LsNukK6O4zEAVNZWhDt1ffQoY9xm/nCbUA5UT2o4s2dYY1zP
- k2Ade5HzHA8x+ydKZYLzvB4W+AihyAAAA
-X-Change-ID: 20250827-dynptr-skb-meta-no-net-c72c2c688d9e
-To: bpf@vger.kernel.org, Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, 
- Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- kernel-team@cloudflare.com, netdev@vger.kernel.org, 
- kernel test robot <lkp@intel.com>
-X-Mailer: b4 0.15-dev-07fe9
+Message-ID: <20250827-relative_flex_pps-v3-2-673e77978ba2@foss.st.com>
+References: <20250827-relative_flex_pps-v3-0-673e77978ba2@foss.st.com>
+In-Reply-To: <20250827-relative_flex_pps-v3-0-673e77978ba2@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        Gatien Chevallier
+	<gatien.chevallier@foss.st.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-27_02,2025-08-26_01,2025-03-28_01
 
-Kernel Test Robot reported a compiler warning - a null pointer may be
-passed to memmove in __bpf_dynptr_{read,write} when building without
-networking support.
+ETH1/2 miss their PTP reference clock in the SoC device tree. Add them
+as the fallback is not correctly handled for PPS generation and it seems
+there's no reason to not add them.
 
-The warning is correct from a static analysis standpoint, but not actually
-reachable. Without CONFIG_NET, creating dynptrs to skb metadata is
-impossible since the constructor kfunc is missing.
-
-Fix this the same way as for skb and xdp data dynptrs. Add wrappers for
-loading and storing bytes to skb metadata, and stub them out to return an
-error when CONFIG_NET=n.
-
-Fixes: 6877cd392bae ("bpf: Enable read/write access to skb metadata through a dynptr")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202508212031.ir9b3B6Q-lkp@intel.com/
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
 ---
- include/linux/filter.h | 26 ++++++++++++++++++++++++++
- kernel/bpf/helpers.c   |  6 ++----
- 2 files changed, 28 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/st/stm32mp131.dtsi | 2 ++
+ arch/arm/boot/dts/st/stm32mp133.dtsi | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 9092d8ea95c8..5b0d7c5824ac 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1779,6 +1779,20 @@ void *bpf_xdp_pointer(struct xdp_buff *xdp, u32 offset, u32 len);
- void bpf_xdp_copy_buf(struct xdp_buff *xdp, unsigned long off,
- 		      void *buf, unsigned long len, bool flush);
- void *bpf_skb_meta_pointer(struct sk_buff *skb, u32 offset);
-+
-+static inline int __bpf_skb_meta_load_bytes(struct sk_buff *skb,
-+					    u32 offset, void *to, u32 len)
-+{
-+	memmove(to, bpf_skb_meta_pointer(skb, offset), len);
-+	return 0;
-+}
-+
-+static inline int __bpf_skb_meta_store_bytes(struct sk_buff *skb, u32 offset,
-+					     const void *from, u32 len)
-+{
-+	memmove(bpf_skb_meta_pointer(skb, offset), from, len);
-+	return 0;
-+}
- #else /* CONFIG_NET */
- static inline int __bpf_skb_load_bytes(const struct sk_buff *skb, u32 offset,
- 				       void *to, u32 len)
-@@ -1818,6 +1832,18 @@ static inline void *bpf_skb_meta_pointer(struct sk_buff *skb, u32 offset)
- {
- 	return NULL;
- }
-+
-+static inline int __bpf_skb_meta_load_bytes(struct sk_buff *skb, u32 offset,
-+					    void *to, u32 len)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int __bpf_skb_meta_store_bytes(struct sk_buff *skb, u32 offset,
-+					     const void *from, u32 len)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif /* CONFIG_NET */
- 
- #endif /* __LINUX_FILTER_H__ */
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 401b4932cc49..85761e347190 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1778,8 +1778,7 @@ static int __bpf_dynptr_read(void *dst, u32 len, const struct bpf_dynptr_kern *s
- 	case BPF_DYNPTR_TYPE_XDP:
- 		return __bpf_xdp_load_bytes(src->data, src->offset + offset, dst, len);
- 	case BPF_DYNPTR_TYPE_SKB_META:
--		memmove(dst, bpf_skb_meta_pointer(src->data, src->offset + offset), len);
--		return 0;
-+		return __bpf_skb_meta_load_bytes(src->data, src->offset + offset, dst, len);
- 	default:
- 		WARN_ONCE(true, "bpf_dynptr_read: unknown dynptr type %d\n", type);
- 		return -EFAULT;
-@@ -1839,8 +1838,7 @@ int __bpf_dynptr_write(const struct bpf_dynptr_kern *dst, u32 offset, void *src,
- 	case BPF_DYNPTR_TYPE_SKB_META:
- 		if (flags)
- 			return -EINVAL;
--		memmove(bpf_skb_meta_pointer(dst->data, dst->offset + offset), src, len);
--		return 0;
-+		return __bpf_skb_meta_store_bytes(dst->data, dst->offset + offset, src, len);
- 	default:
- 		WARN_ONCE(true, "bpf_dynptr_write: unknown dynptr type %d\n", type);
- 		return -EFAULT;
+diff --git a/arch/arm/boot/dts/st/stm32mp131.dtsi b/arch/arm/boot/dts/st/stm32mp131.dtsi
+index ace9495b9b062e9f96437681cc526fed7f9eac5e..b88953485e597dc89c48ea2e3ffd382d1de5de92 100644
+--- a/arch/arm/boot/dts/st/stm32mp131.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp131.dtsi
+@@ -1602,11 +1602,13 @@ ethernet1: ethernet@5800a000 {
+ 					      "mac-clk-tx",
+ 					      "mac-clk-rx",
+ 					      "ethstp",
++					      "ptp_ref",
+ 					      "eth-ck";
+ 				clocks = <&rcc ETH1MAC>,
+ 					 <&rcc ETH1TX>,
+ 					 <&rcc ETH1RX>,
+ 					 <&rcc ETH1STP>,
++					 <&rcc ETH1PTP_K>,
+ 					 <&rcc ETH1CK_K>;
+ 				st,syscon = <&syscfg 0x4 0xff0000>;
+ 				snps,mixed-burst;
+diff --git a/arch/arm/boot/dts/st/stm32mp133.dtsi b/arch/arm/boot/dts/st/stm32mp133.dtsi
+index 49583137b5972572d1feaa699c0c3a822a1b6f6d..053fc669120513c7d2812a0aabe8186fe1f4fe58 100644
+--- a/arch/arm/boot/dts/st/stm32mp133.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp133.dtsi
+@@ -81,11 +81,13 @@ ethernet2: ethernet@5800e000 {
+ 			      "mac-clk-tx",
+ 			      "mac-clk-rx",
+ 			      "ethstp",
++			      "ptp_ref",
+ 			      "eth-ck";
+ 		clocks = <&rcc ETH2MAC>,
+ 			 <&rcc ETH2TX>,
+ 			 <&rcc ETH2RX>,
+ 			 <&rcc ETH2STP>,
++			 <&rcc ETH2PTP_K>,
+ 			 <&rcc ETH2CK_K>;
+ 		st,syscon = <&syscfg 0x4 0xff000000>;
+ 		snps,mixed-burst;
 
-
+-- 
+2.25.1
 
