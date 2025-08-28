@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D391A256B
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 00:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EC318BC0C;
+	Thu, 28 Aug 2025 00:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756341004; cv=none; b=cRuPM7T6tdgxoQGicnImW15INNIEDguId9Mq+uXihzH3LE5FxOE00B+IjZ+ddjxWHLgpUQX/P8UhdMpd5FcoBjp8X2AbmJfjMB4n/uORiqfedXd6fKx/kCMekVjU0RJfGna2ElW/d8WXwzpZkBGBpziNIO264UZ3hEUb4YoqUjs=
+	t=1756341008; cv=none; b=TpzNajtXIawZDuwZqxjwCD6LSSHTOfuPp1hm9NORR3SS4aGSBTtcaF+UHZjhSh9TPBKS8N98uSP7b0v42uC2PpX+HNIJLtixc6g1OZtM+qHoy0YrTFCiUciOs07LoXUTzUoRYcqaBdVg3PB2tchVQdBKS3uTkwE7yRx0BlXAJX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756341004; c=relaxed/simple;
-	bh=YsQrY14JqCbf4Yz3Fm54MlzqbEGi5Nw6dKAmsf5mIV0=;
+	s=arc-20240116; t=1756341008; c=relaxed/simple;
+	bh=2YNvnxkE6opOiJzQKg9rDytLgUPiH/j/1tXwTT64WCQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Pfzf43hCTMK8SCixLcpwNF+el/UNhxhthry7asFH01PT+pgreWJ/iR7iQ4nMd5WA4G6jbaOWNYxTro/ITNwl/WJ7uHqXJkd3Oep3erEYBLo+rO/0EfPW0Zt/c1X93/RtZg4y3JE3cJH9asVO9DvbevV0U0BQNiVO0i2Sih9T6os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ueCfxH7k; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=raD4ViHiM4k0vfeYTXDPPweuUXcXbV4FOQ2d3ZWB84IYmPth5AWIk5TwFJHJDlFj0I5+pQAd3TSDkf4FbJT5o3LMheOWRo2GtUMYa3gP5sO9FkNYYEhINv59QFM1Gqcg8r1jc82r7ShSI3r/eZB6P5pD3a6qcWldG8Q2nEpY7RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTrO9iDC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ueCfxH7k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4460C4CEF5;
-	Thu, 28 Aug 2025 00:30:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTrO9iDC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDACFC4CEEB;
+	Thu, 28 Aug 2025 00:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756341003;
-	bh=YsQrY14JqCbf4Yz3Fm54MlzqbEGi5Nw6dKAmsf5mIV0=;
+	s=k20201202; t=1756341008;
+	bh=2YNvnxkE6opOiJzQKg9rDytLgUPiH/j/1tXwTT64WCQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ueCfxH7kPkCUoQJ2dufmIrGWmNb06hoM50OjoaBOmDC2nQOEHNwdKzXjy/cEktzJo
-	 y8G9J3WcD0K80tEtGWm8XXsgkDqnFKqrTUpxDginDphcYNOFzHlEJnkmlCWvu02c49
-	 u3OSTXQAaL0021wYVJwoZ0WUiiG4rgK/J2fknSJ1XrLDibQCC9M9DXZdGP4xqPQMsu
-	 EhfVbzL3d6imE7tdiE2NluwwkgqGLjFWfsh3plE+WzUijcuWzr47+bQdMypQIL7azl
-	 y4i2lCyaHX4l4KXQo7X3znlzzfbsi7mohzDx/+OPsDVTanjJu6MxXpmBtZ0C02+sIb
-	 7xXnNCbfYlqig==
+	b=FTrO9iDCpeSPtZT5P9WpfiTE2esTw2r6mDptqM4rsfrdc399xJxKGwDUc+R1dXoPx
+	 1bvLD4Dy2U5LvDLzFHGMwhSgKNyKr51PDybpYWScNPIva3dRfzln9pU9xW5/6JDztP
+	 dULhfEtElsgv5uWvjJ2/AtbyPgvhU3uNOX1EhhrbMzoaWS6fUSwBVsMW/w91Wi39cv
+	 qtga0lWMLFadOllhyTJoqVtrJO23gjukSjxE8Mc5+BjRRhhBzuh9mLG32etppuzJb/
+	 7dPGuzn3cxCP4epXEe3E409+aL4SqeIQTHjFo1jZdTBAdwD4/gJ8e9V/ghkINbyqRm
+	 /eEVtoI3tJYlA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710B9383BF76;
-	Thu, 28 Aug 2025 00:30:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F48383BF76;
+	Thu, 28 Aug 2025 00:30:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] l2tp: do not use sock_hold() in
- pppol2tp_session_get_sock()
+Subject: Re: [PATCH v2 net-next] dt-bindings: nfc: ti,trf7970a: Restrict the
+ ti,rx-gain-reduction-db values
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175634101099.886655.13279428145281475261.git-patchwork-notify@kernel.org>
-Date: Thu, 28 Aug 2025 00:30:10 +0000
-References: <20250826134435.1683435-1-edumazet@google.com>
-In-Reply-To: <20250826134435.1683435-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, jchapman@katalix.com,
- gnault@redhat.com
+ <175634101500.886655.10640391041483861056.git-patchwork-notify@kernel.org>
+Date: Thu, 28 Aug 2025 00:30:15 +0000
+References: <20250826141736.712827-1-festevam@gmail.com>
+In-Reply-To: <20250826141736.712827-1-festevam@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: krzk@kernel.org, mgreer@animalcreek.com, robh@kernel.org,
+ conor+dt@kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ conor.dooley@microchip.com, krzysztof.kozlowski@linaro.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 26 Aug 2025 13:44:35 +0000 you wrote:
-> pppol2tp_session_get_sock() is using RCU, it must be ready
-> for sk_refcnt being zero.
+On Tue, 26 Aug 2025 11:17:36 -0300 you wrote:
+> Instead of stating the supported values for the ti,rx-gain-reduction-db
+> property in free text format, add an enum entry that can help validating
+> the devicetree files.
 > 
-> Commit ee40fb2e1eb5 ("l2tp: protect sock pointer of
-> struct pppol2tp_session with RCU") was correct because it
-> had a call_rcu(..., pppol2tp_put_sk) which was later removed in blamed commit.
+> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] l2tp: do not use sock_hold() in pppol2tp_session_get_sock()
-    https://git.kernel.org/netdev/net/c/9b8c88f875c0
+  - [v2,net-next] dt-bindings: nfc: ti,trf7970a: Restrict the ti,rx-gain-reduction-db values
+    https://git.kernel.org/netdev/net-next/c/40fb9751ccc6
 
 You are awesome, thank you!
 -- 
