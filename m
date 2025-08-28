@@ -1,149 +1,117 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4A11C01
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66974EEBB
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756371834; cv=none; b=kXEOyc/KSRss8Iqbf7dkQla+9To9oIN4yE3MdvpP7iGQyaTibVSj8X8spHMdIBzaW04ope1g+AdolPVrS8vyb5ccj4FninxEKwmHUd3qSc1pWZ2+P53qiQVYhe3/Q0SHpaPGoFt6YqpRtRx8uJZxCkEMa4IcD9qfN5fMB38wwTI=
+	t=1756372250; cv=none; b=i1Rm/kWsA0CT/b3ORMNqPMk1KZmamjc2jVudQFkYf632FTjvY/SresBJ0JxyUPVtwGmZivwYWqWO5aZtgLKimNacNGGA/SZKPG8MSdvUrGP1Hw7SFefC3gGfS7Ra1p9/6EygF+LzX5xsEOGR4zMYoTSMZfqShw5xpp8LauEr/u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756371834; c=relaxed/simple;
-	bh=P1Km7viXNhdxwdjmJkd8eGWJ5f9QqWJPyNfjEulm+ro=;
+	s=arc-20240116; t=1756372250; c=relaxed/simple;
+	bh=w6SANh9M41Cz/FJdilTI2rNWrEJavLzRaQZtNc9gy9E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uINndGcodDeuxwjSQ8UJJmdYZvNoUtyR3Z0+enj56tAuh4FlhSgR6gfBiKFXuGTWPvB111tdJ+0YYofONYs/zl6NjSW4NLkc4EgjZnXeFHHXWEmhyoaLxKvJ3OTr7a51z6i6dxa0CWD2yiYKEZ1dAYvgJQP22JhCfvgwwkO6bo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=R/MFZaLv; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	 Content-Type:Content-Disposition:In-Reply-To; b=YWlBS2HcB/WR9nDgGPIoE93sjhOr9/DctKOt5t4WLUEbSdLTbEWz7gZ18UE1BaGolzi3t+NF2rmYWVFxemz992+Xk8iaM6yDlG0iKLPZxnFEAxEgDmdUEl83XVdNwCF6CRb7OE7SciUCkZymk4pr2hxN1hv0QYcqFyc3rJGA/vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HOp7+ne1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="R/MFZaLv"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45b7722ea37so1722655e9.1
-        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 02:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1756371830; x=1756976630; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=k/tMGPUR6oWh2VD+AseVEvZ/r11JVAy4s+xORZuZrac=;
-        b=R/MFZaLvBWrTDIPMhHquzrtw1ZWJRiEQj4DzXH3tVklmvs/YUYsMTX8XwU2/IOJymG
-         YmI305UI8aXxmjF5Gf1aCbvavcyGv2SNxZZJgRlFBv06k98j9ZDHkJUZ3XRyTs4uvr/K
-         wn8aCDet6WLVlHu/b2tcDrfxYEX6tY0sN24rXH5KXEMQQyeMomXSu73grJm8FJhpBXIH
-         r4qrLFujyVxvPXjkT5c7ogt3i6W3kadKn+7yuMZ/6kmr8ptmvOx/VYlJo2p2G7Eea1p2
-         WqK1WbEe/uzn95WZlueXT+ZHAU6Eq0PQVjegDluVBB6a2BZwKYZqmxzr203Mm7RJdQzk
-         KuSw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HOp7+ne1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756372248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nKlwPKezbuO9xwAGZFmpWVmFnAyIOSinJ2mEOrJ9HXU=;
+	b=HOp7+ne1UuIug9gUp5+AqQKsKNuNSs56RQV8FdlPUKgG9JfT9Hj37dMWDe+Nwszs913UZu
+	48v8XxjzHZzsh2RcKivOqIzvbE5XzGAbAUDJ/7gt1agJO+RcprV8tK+pJGCMGYVgBVAG9W
+	dZ2H3SygqSeO0T6QA/SSyUjSNicF6EI=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-38-Hr5bkH_VPZODPgTBInTCLQ-1; Thu, 28 Aug 2025 05:10:46 -0400
+X-MC-Unique: Hr5bkH_VPZODPgTBInTCLQ-1
+X-Mimecast-MFC-AGG-ID: Hr5bkH_VPZODPgTBInTCLQ_1756372246
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-71fb88c78afso5241857b3.0
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 02:10:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756371830; x=1756976630;
+        d=1e100.net; s=20230601; t=1756372246; x=1756977046;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=k/tMGPUR6oWh2VD+AseVEvZ/r11JVAy4s+xORZuZrac=;
-        b=LlXNmnMfofv2Y7fQwxWctxQac1rBHjD8reVYvB3c5pAtEhQ9rjGCC5Ns4zFQHeAQep
-         j3IV0aAb145syRXetLj44KqnlI/VrxHN9Xtwl5O8Sgt2VHRAIAePI1fdUiqbwEgDCf34
-         4yD+CEWvX/psUflwe/9oB4/HL53aV/JJR27IQeta3Wlynu++3vIIzVoaB28dcWDRBrMi
-         xzR3LYimCPC6FgXM9mgWFHVqi+zdGsTc4MEo0/ud0B5qkXJ8FZr5Yy9SBwE0fxutQVRx
-         zcqP0RFltfzcr9BpuB0uNIuPzTlr1gA+fuQCxog/dgWiUZvJsUThFsQ1pro9lvrmDmFE
-         p6EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVr4wbPJK0lKo9enAs+/dK3O2USl1HL9q7RyjzI8ozKS44AStq90MVg2pjtIxpa9MAkg5f+X2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkziC90qsQKrhdCYlbcrGaij7qQl9fsrEI3fNzC1771AIqav/+
-	ASYhkwAc4cgjDUEeOHasYYIUt7FpxM9HyX6m/Jjc3fK1/gS9l81R2c3ZUHIQ6z3eQvg=
-X-Gm-Gg: ASbGnctadGJfqHJ8SUTiwT6HLNB3M57aGN4VTnhgWTMj6hgzZKB62uAThGMJlhqrI5Q
-	YnsgEcNbu3AtT+j+iL+7sP4gO6jGbArzL4CwybBqiWJF7z0Si7292fj0+XjTfclQlEc/Bvr0rOz
-	vhzdT6yHXU0TGGe5xpd/GIvmv0SG0b8DFNgE2F8XDjVh5JCzXbiKENSeO18tQAPTusT82gwMZDY
-	ZGSX2YZJesjimQFgT32D9cuu4SaUGkNTAerMmbVOdS5nyc7e1JZ/9m+VHpnE8fvCY9uEY6Yq2pH
-	+f4WYSB+smNGruWyJnuorlARaP0meDiMW/E8uRHILf98T/9K8L3Q8A5H9BoU0zd9pFAGnUiLrwl
-	9zX/dRckZi0QDrzxwRsClypVl0+AZfPiZfSU=
-X-Google-Smtp-Source: AGHT+IEQkb3N/KBo8fFYG98LYdWj+YzrY4TyITmKn1kxcqsHzLx+fbBxRmb0Q2QgmqZTikTM5/a1lw==
-X-Received: by 2002:a05:600c:19ca:b0:45b:47e1:ef7b with SMTP id 5b1f17b1804b1-45b6870e3dfmr83816435e9.17.1756371830191;
-        Thu, 28 Aug 2025 02:03:50 -0700 (PDT)
-Received: from jiri-mlt ([193.47.165.251])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c70e4ba390sm25342324f8f.12.2025.08.28.02.03.45
+        bh=nKlwPKezbuO9xwAGZFmpWVmFnAyIOSinJ2mEOrJ9HXU=;
+        b=ZM3EJjXaQxjYehwDtwHFtrHOAha+G0MtfAmse2jyvsNXNZVrHAe4ba8j4dyJRD2p0h
+         Yj49qikMSOLFuBeoYc0bCfD9C6wYmrftyHB7FKlSHrSlkb2dJnxNF1cpA5/dHCDCaXCs
+         aUzSik+JwMmzsYjfkV4vL8dpXSo85baTzINDOhmbX090F75eXjj55o4DZ4eKJHbLFvX6
+         tOA6WbEX7tuauoGoFcUGo0bk5NalfvIa2KDZaMBMQxgYVIo8rKwqymD3gK/Fciq+sJx5
+         rjA66JMbxsYt8FNxpZ2vXyjAfLrOcHbNvnHvT/Aan42d1F6+Uc3ozgqRZi6zVo6EVWnB
+         otRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUCelBUVmdISGsFpqvzs/O3xqLDsswYBiqmGtma/lLWcnx57pm9U3LPkd+oMJwPebl/U43EPk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQVliiukXsSGPCIj8pSQh0T7uGbIVEVlLLQllBbuufKC0cm+sm
+	y3CWD2RFzUopjNLziyaRmoKALIvyEyJEKwM5VseJ+V6Duc+uwa8aQ45+mtXEdTx+282tli+Fjrc
+	s6IToHS1XqOw2Pb3kAJRZsay2Ho0ln6Ptq2k4dmd4zgJIqQ1P+vh0pCFZ8A==
+X-Gm-Gg: ASbGncsA9D58uQzThyrzYUSZags3Wmgzs0+DIqZmip4mCU0H6waObvxNjY90olXiab6
+	d59gb2R4UBNVb+NB4oGza7nT/mx2IeTMKP82n/Lr4h8Rub8HhbhlDSpncExvCyUpsfJJFZvN2OO
+	utz2sNS4ZZjpqPbb/jXLlx1xxzOqyJUydHt1kZPDKflwkZzko9KMMRRHs214jzBKQM9CQqlJdUi
+	hik4KZYNcZXPAW8EGh1K7Vig/z98QPULyelHW9g5ifp3C6H4Hm93zN3fRU2eZYltzLNn31x4ZAJ
+	Z1L64xVO1JA0lIeBfbkcqQNws3r2Js9XkUd5NWCwBGdJvcJYfWzh9ntL4cDcM0+6NFKBhDDWabz
+	GeNnpkRyhRjsRdUY=
+X-Received: by 2002:a05:690c:ec8:b0:71e:7ee9:839a with SMTP id 00721157ae682-71fdc2f17e3mr254131077b3.2.1756372246201;
+        Thu, 28 Aug 2025 02:10:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6sWncGKqn1v4/1RP9QN/2CTRKrNYh1qBsv09tOJjEFxNBC/SRSbycXZhflbiMWoycIj9R3Q==
+X-Received: by 2002:a05:690c:ec8:b0:71e:7ee9:839a with SMTP id 00721157ae682-71fdc2f17e3mr254130717b3.2.1756372245672;
+        Thu, 28 Aug 2025 02:10:45 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-45-205-118.retail.telecomitalia.it. [79.45.205.118])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-721583892efsm5988377b3.2.2025.08.28.02.10.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 02:03:49 -0700 (PDT)
-Date: Thu, 28 Aug 2025 11:03:41 +0200
-From: Jiri Pirko <jiri@resnulli.us>
-To: Shay Drory <shayd@nvidia.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ozsh@nvidia.com, mbloch@nvidia.com, tariqt@nvidia.com, 
-	saeedm@nvidia.com
-Subject: Re: [RFC net-next] net: devlink: add port function =?utf-8?Q?attr?=
- =?utf-8?Q?_for_vport_=E2=86=94?= eswitch metadata forwarding
-Message-ID: <ilh6xgancwvjyeoqmekaemqodbwtr6qfl7npyey5tnw5jb5qt2@oqce6b5jajl2>
-References: <20250828065229.528417-1-shayd@nvidia.com>
+        Thu, 28 Aug 2025 02:10:45 -0700 (PDT)
+Date: Thu, 28 Aug 2025 11:10:18 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Liao Yuanhong <liaoyuanhong@vivo.com>
+Cc: "open list:VM SOCKETS (AF_VSOCK)" <virtualization@lists.linux.dev>, 
+	"open list:VM SOCKETS (AF_VSOCK)" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v2] vsock/test: Remove redundant semicolons
+Message-ID: <rz5brbahjthbpdl7k4g47zugrofw3wj4fijl5aejwteumtsjiu@3nl2sfyvbp24>
+References: <20250828083938.400872-1-liaoyuanhong@vivo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250828065229.528417-1-shayd@nvidia.com>
+In-Reply-To: <20250828083938.400872-1-liaoyuanhong@vivo.com>
 
-:q
-Thu, Aug 28, 2025 at 08:52:29AM +0200, shayd@nvidia.com wrote:
->In some product architectures, the eswitch manager and the exception
->handler run as separate user space processes. The eswitch manager uses
->the physical uplink device, while the slow path handler uses a virtual
->device.
+On Thu, Aug 28, 2025 at 04:39:38PM +0800, Liao Yuanhong wrote:
+>Remove unnecessary semicolons.
 >
->In this architectures, the eswitch manager application program the HW to
->send the exception packets to specific vport, and on top this vport
->virtual device, the exception application is running and handling these
->packets.
->
->Currently, when packets are forwarded between the eswitch and a vport,
->no per-packet metadata is preserved. As a result, the slow path handler
->cannot implement features that require visibility into the packet's
->hardware context.
+>Signed-off-by: Liao Yuanhong <liaoyuanhong@vivo.com>
+>---
+>Changes in v2:
+>	- Remove fixes tag.
+>---
+> tools/testing/vsock/util.c | 1 -
+> 1 file changed, 1 deletion(-)
 
-A vendor-specific slow path. Basically you provide a possibility for
-user to pass a binary blob to hw along with every TX'ed packet and
-vice versa. That looks quite odd tbh. I mean, isn't this horribly
-breaking the socket abstraction? Also, isn't this horribly breaking the
-forwarding offloading model when HW should just mimic the behaviour of
-the kernel?
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-
+Thanks,
+Stefano
 
 >
->This RFC introduces two optional devlink port-function attributes. When
->these two capabilities are enable for a function of the port, the device
->is making the necessary preparations for the function to exchange
->metadata with the eswitch.
+>diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+>index 7b861a8e997a..d843643ced6b 100644
+>--- a/tools/testing/vsock/util.c
+>+++ b/tools/testing/vsock/util.c
+>@@ -756,7 +756,6 @@ void setsockopt_ull_check(int fd, int level, int optname,
+> fail:
+> 	fprintf(stderr, "%s  val %llu\n", errmsg, val);
+> 	exit(EXIT_FAILURE);
+>-;
+> }
 >
->rx_metadata
->When enabled, packets received by the vport from the eswitch will be
->prepended with a device-specific metadata header. This allows the slow
->path application to receive the full context of the packet as seen by
->the hardware.
->
->tx_metadata
->When enabled, the vport can send a packet prepended with a metadata
->header. The eswitch hardware consumes this metadata to steer the packet.
->
->Together they allow the said app to process slow-path events in
->user-space at line rate while still leaving the common fast-path in
->hardware.
->
->User-space interface
->Enable / disable is done with existing devlink port-function syntax:
->
->$ devlink port function set pci/0000:06:00.0/3 rx_metadata enable
->$ devlink port function set pci/0000:06:00.0/3 tx_metadata enable
->
->Querying the state shows the new knobs:
->
->$ devlink port function show pci/0000:06:00.0/3
->  pci/0000:06:00.0/3:
->   roce enabled rx_metadata enabled tx_metadata enabled
->
->Disabling is symmetrical:
->
->$ devlink port function set pci/0000:06:00.0/3 rx_metadata disable
->$ devlink port function set pci/0000:06:00.0/3 tx_metadata disable
->
->Signed-off-by: Shay Drory <shayd@nvidia.com>
->
->
+> /* Set "int" socket option and check that it's indeed set */
 >-- 
->2.38.1
+>2.34.1
 >
+
