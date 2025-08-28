@@ -1,138 +1,115 @@
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE7F23D7D3;
-	Thu, 28 Aug 2025 06:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056032797B7;
+	Thu, 28 Aug 2025 06:51:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756363746; cv=none; b=NG82Ea8L62UQtAZlhzIkHdx+jpyEHFFsBkfZzmHIKVPVQhsDBmwDl6Z5DZ9IjYJIo9tzS14Z6wNhZ80o7ZmJtRxyZPB1eml6hTX7LAia58VFz3fF6S0HVEEJpfdnA7lpXgPMvgKt+YO/dj1JgBDALJovdMqdVIFWBU7WasnBv1s=
+	t=1756363869; cv=none; b=QpYz/E8h4Hrc7uF3pJEbVGm/daEbhN8DVY8MrWSx+d1QLJ+3bN0MPadqedrD+fjivnOXnHnZLTsq3R+XAT2i+QEY5wySWF1MB1p17JGA1oU2gr728OKtHX8BLql6kmLz7ev5nZT9iBtkAURQgo1EuUX+rjI9sqGDg0gkrKkwGiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756363746; c=relaxed/simple;
-	bh=JdQdj8/quONTRyAY1rYDuGFUboEOavKxJa5vBtUfRBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DIBn0MCGBmtcK84a6nWK/7PsrGH7+AfUHl/uYTO2yz2NuIFSTV+pv1uc+PDYPwKjl14JVyhivGG1WK+XwlQzsePJOV8yUZf5t5tSfxbNrGXh0DDTARSWExaSma8k1HCcegNs5PCtDCmsocWTXJ810Vc/7DFPb848uO1Nq8lA3Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HHeluEfn; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756363869; c=relaxed/simple;
+	bh=UAo3JV7GcRkxO2b2K9+QuSbEAtC0O3QgoXSeSZ5al4A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tEGs1c6IpGHyUflvRWW7gk+yaWFKkvk8q0YrHgjLRBqTdbuHx2nqm6PNlGaL6NxB8CsG/tlIoWGc1BO5Bo4D0n0oESK5yUE3Xp+4eeZqkKNDVtqNPiSbx5RY4TJJEV6MXVlV72lhxirGtCM9I1wotMF4xCiS015+sH6vBfrdLaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8BwCKXl; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HHeluEfn"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57S6m3xH1922557;
-	Thu, 28 Aug 2025 01:48:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756363683;
-	bh=bRbLC9YRMEiIy0hEue35yrv0+2UC5iBSB3Rlj7DldO0=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=HHeluEfnSghIj47SW6dN2IgVyuEECGnUGjUUhsyilUOcFtY3Hgtmp/PNv2UJZuNKJ
-	 FFIgS8xsdyevy22IB/ohdZXxDMNj0n8OkFhxBjgYhPFHHdCyQn1sDbYdKFJJIcF5EO
-	 Bl4ixkep5MOY6YCmNJDUAjMg+1X+WR4HQjgR6BJU=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57S6m3Gu3038278
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 28 Aug 2025 01:48:03 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 28
- Aug 2025 01:48:02 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 28 Aug 2025 01:48:02 -0500
-Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57S6lsTv182199;
-	Thu, 28 Aug 2025 01:47:55 -0500
-Message-ID: <37a7ce7d-f34b-4734-8c05-722f6d369193@ti.com>
-Date: Thu, 28 Aug 2025 12:17:54 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8BwCKXl"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-323267bc2eeso494583a91.1;
+        Wed, 27 Aug 2025 23:51:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756363867; x=1756968667; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CIMdp+BGDSNuOjdemBoiNkjyZntQ+XVi4yTlgnNJQek=;
+        b=O8BwCKXlTMOyV2DjnvC1WTRQn7emkMjL8MamXT91L6yntUEl9hL7lYaDLKyLAKlAzo
+         vWZCI5x2/KePafAKGz1MYfqOVbrRSxA7haZDAMhKor6eknsv2iSsz+FxjdEx2XVJjowI
+         WeqJZkva+twaErv+MPUsWtrc/0eWuhKOoXzatz/7iO16CHRq9IyOxwoOCjTI7Z8ocO6y
+         +9z/W7jnrELPp+tiLfugsiWvpMqZG5ixxT6DUXK4l/2JaqXKAcrA4TiwANd11P/+JdBc
+         T2Ip8fxDmCZwucrxblluSQ1ps4h/lBfTqlF7Re7PKoocCZZjc95wqVEBw5O/bGedU2Io
+         Rhnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756363867; x=1756968667;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CIMdp+BGDSNuOjdemBoiNkjyZntQ+XVi4yTlgnNJQek=;
+        b=deGhWjJ88aq8971ZOYwCmU7+G6x/NKGPF9+I5wmRX22JM2Zctd8Pa5o7HSVJPCh5l+
+         DXmLC0bkReAPhNzRSYwrTP1TVDJiE/ZGMy3hmif2VT40uthPDOflQVrAY2z+3MXUZ4xH
+         h7N0nWEbsu9h7H59xtE42jweSPpb9hhr5KWfDhU948bMw/3xSwPdMHtld4M7RkfshP6D
+         nhnWvBZp0bucLH+zLMyMnprJuitZIC3+BQSCUy2z4sx/vAa/PICKRe/SSrtpeXETnXmG
+         48o6vJefBAV720/BhCFCaAyvtR9nXTqbEGfhdbd8TMHx3hC6LeREgScsOydQO2HH/F4+
+         tnew==
+X-Forwarded-Encrypted: i=1; AJvYcCUbXYiuY+5k4BQrOZFugpNzh2s7D6LAjub0n3e1kSy+yMIgTrCDi1TfMVKS7mLTKzmzYVRjxJrVam4I+Q==@vger.kernel.org, AJvYcCVlJiYAwtMjyAmCAFeYm+QjDGi1GhEByH3gFSEm7F8xNes9v31QxUHmXYKZlp2682E6PxaAnOqXwoYXQe8=@vger.kernel.org, AJvYcCVrFvRNedX2nU0eG5OEyIClVEGT5liG1dAcoeIGVisgSqACf/fIRvOsognPCy/a8cTuAwdj0b08@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9glAFVrF3gWa4WQLP80+uPAFn7nmvyhdCuS5H9hVTnI9fySfy
+	kfpVTc1GLFhPU0ut9cFv2FEZJh8fAxdR2dLBYIyKsrAV89oaoJh3gxQx
+X-Gm-Gg: ASbGnctl9PPWzRDPBfUVeDho5EICogspeGW8vgDOPyk2Y2++ZBeUIvgV7cvkrZRGTAS
+	B+greG9BkKD/VoGxgdDiAyo4wH9eAiGwxJPsZymuPwtnz/Bu8+KgzGrToiG466CNeMMEo+7M5Xi
+	Qrhc1SBJmT442Te8ZV213oyIX67a4GSMaSeV7dxmz9U6xNhitBcRvfSmPkJLsjFmtRmKQ6j2vqq
+	Rq4I7bQ6I7pWo37Bo0V/dRcUe76WSDRVThueyKtUtw9Jxfae0+Fe/y5kaVKSY3hXCBrb7LclDYl
+	m9h+7xXAHY72JVmqGt4JRej1NzdgpXucrZq5pG48q2RCnRZcMBbXSX1kN4dLiIchh+Yua1XKeXH
+	1wxuaugVaJ/wz31UxxT3uRgMZrKjRZ6qlIsRgGxTHKK9Aq4HqLol0RtQuFYU2rzfe836B1gRlwG
+	HUDYyXk462ooKJ/BStmb0qbQ==
+X-Google-Smtp-Source: AGHT+IGfOtD167eT2rfVxdwTsipYluXjtiJ+7zWRk+PvDr4kGjQIu1tk2hHrrYSKDlWpn9+KTJC/JQ==
+X-Received: by 2002:a17:90b:2f87:b0:31f:8723:d128 with SMTP id 98e67ed59e1d1-32517b2db8fmr28547178a91.34.1756363867201;
+        Wed, 27 Aug 2025 23:51:07 -0700 (PDT)
+Received: from localhost.localdomain ([112.97.57.188])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-32753e58618sm2642250a91.2.2025.08.27.23.50.57
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 27 Aug 2025 23:51:06 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com
+Subject: [PATCH v2] eth: mlx4: Fix IS_ERR() vs NULL check bug in mlx4_en_create_rx_ring
+Date: Thu, 28 Aug 2025 14:50:50 +0800
+Message-Id: <20250828065050.21954-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 0/5] Add driver for 1Gbe network chips from
- MUCSE
-To: Yibo Dong <dong100@mucse.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <corbet@lwn.net>, <gur.stavi@huawei.com>, <maddy@linux.ibm.com>,
-        <mpe@ellerman.id.au>, <lee@trager.us>, <gongfan1@huawei.com>,
-        <lorenzo@kernel.org>, <geert+renesas@glider.be>,
-        <Parthiban.Veerasooran@microchip.com>, <lukas.bulwahn@redhat.com>,
-        <alexanderduyck@fb.com>, <richardcochran@gmail.com>, <kees@kernel.org>,
-        <gustavoars@kernel.org>, <rdunlap@infradead.org>,
-        <vadim.fedorenko@linux.dev>, <netdev@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>
-References: <20250828025547.568563-1-dong100@mucse.com>
- <0651d5a9-dd02-4936-94b8-834bd777003c@ti.com>
- <BC262E8E0C675110+20250828053659.GA645649@nic-Precision-5820-Tower>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <BC262E8E0C675110+20250828053659.GA645649@nic-Precision-5820-Tower>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
 
+Replace NULL check with IS_ERR() check after calling page_pool_create()
+since this function returns error pointers (ERR_PTR).
+Using NULL check could lead to invalid pointer dereference.
 
+Fixes: 8533b14b3d65 ("eth: mlx4: create a page pool for Rx")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+----
+Changes in v2:
+use err = PTR_ERR(ring->pp);
+v1 link: https://lore.kernel.org/all/20250805025057.3659898-1-linmq006@gmail.com
+---
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 28/08/25 11:06 am, Yibo Dong wrote:
-> On Thu, Aug 28, 2025 at 10:52:21AM +0530, MD Danish Anwar wrote:
->> Hi Dong Yibo,
->>
->> On 28/08/25 8:25 am, Dong Yibo wrote:
->>> Hi maintainers,
->>>
->>> This patch series is v9 to introduce support for MUCSE N500/N210 1Gbps
->>> Ethernet controllers. I divide codes into multiple series, this is the
->>> first one which only register netdev without true tx/rx functions.
->>>
->>> Changelog:
->>> v8 -> v9:
->>> 1. update function description format '@return' to 'Return' 
->>> 2. update 'negative on failure' to 'negative errno on failure'
->>>
->>> links:
->>> v8: https://lore.kernel.org/netdev/20250827034509.501980-1-dong100@mucse.com/
->>> v7: https://lore.kernel.org/netdev/20250822023453.1910972-1-dong100@mucse.com
->>> v6: https://lore.kernel.org/netdev/20250820092154.1643120-1-dong100@mucse.com/
->>> v5: https://lore.kernel.org/netdev/20250818112856.1446278-1-dong100@mucse.com/
->>> v4: https://lore.kernel.org/netdev/20250814073855.1060601-1-dong100@mucse.com/
->>> v3: https://lore.kernel.org/netdev/20250812093937.882045-1-dong100@mucse.com/
->>> v2: https://lore.kernel.org/netdev/20250721113238.18615-1-dong100@mucse.com/
->>> v1: https://lore.kernel.org/netdev/20250703014859.210110-1-dong100@mucse.com/
->>
->> Please wait for at least 24 hours before posting a new version. You
->> posted v8 yesterday and most folks won't have noticed v8 by now or they
->> maybe looking to give comments on v8. But before they could do that you
->> posted v9.
->>
->> Keep good amount of gaps between the series so that more folks can look
->> at it. 24 hours is the minimum.
->>
->> -- 
->> Thanks and Regards,
->> Danish
->>
->>
-> 
-> Got it, I found the v8 pathes state in websit:
-> https://patchwork.kernel.org/project/netdevbpf/list/
-> It is 'Changes Requested'. 
-> I mistakenly thought that a new version needed to be sent. I will wait
-
-That's correct. 'Changes Requested' means that version will no longer be
-accepted and you have to send a newer one. But that doesn't mean you
-have to send it immediately.
-
-https://www.kernel.org/doc/html/v6.1/process/maintainer-netdev.html#i-have-received-review-feedback-when-should-i-post-a-revised-version-of-the-patches
-
-
-> more time in the next time.
-> 
-> Thanks for you feedback.
-
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+index 92a16ddb7d86..4728960c2c4e 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+@@ -267,8 +267,10 @@ int mlx4_en_create_rx_ring(struct mlx4_en_priv *priv,
+ 	pp.dma_dir = priv->dma_dir;
+ 
+ 	ring->pp = page_pool_create(&pp);
+-	if (!ring->pp)
++	if (!ring->pp) {
++		err = PTR_ERR(ring->pp);
+ 		goto err_ring;
++	}
+ 
+ 	if (xdp_rxq_info_reg(&ring->xdp_rxq, priv->dev, queue_index, 0) < 0)
+ 		goto err_pp;
 -- 
-Thanks and Regards,
-Danish
+2.39.5 (Apple Git-154)
 
