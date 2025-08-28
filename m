@@ -1,228 +1,94 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD723081CC;
-	Thu, 28 Aug 2025 10:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BB13090E5
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 10:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756375775; cv=none; b=HkJwA0nwq+eFwPqs/8GlbNO4MfFzdGWWSvF7IpuSNhdhO8Vuv7/jyajOewpMbfZKxCTIbCHFtr5mGQZR2C6dLgNbB34+AEK/EEPG6KHGiEwkYho8e8bgsUUwQ4WsaHw09MfGRbkzS8Mdo8LxsQrW1M0THNdKZbXl6t7mZM5Sum0=
+	t=1756375920; cv=none; b=Qqcv2Q5nremtEWDY8Sq0ZAXfq0KPsnN0y52ONPx5RNJPIY6fqNIvfLumec7/cPUbKv+9XKwHbuT0rOCs4bH9/oQ7pj8sVuXAsACh0n99GG5hQWtvmzlZ4OCmZBv2jBxpQbsenv53JqjUlmr3SuVr1s7uP0mpGIF0+HHQjB7XpNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756375775; c=relaxed/simple;
-	bh=BuV6sy7akWwvmoQthUGtP+SjNRnorhCutIFVwVeEMFI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nyl95g7eVurLVu047zTU5kuSlal3I12lDTCOelRTB25Cf9gjXVY+eGemUu0lz6z2QhnzUd31/JPJnQ4cOo3JCWyRca5jG0lD8jklg2E6yKcoG0MJcBGcb0cmZLwvH16pfXqWvaTEhi0bmRN7VyX8p329gZFff535opdF4OO6Miw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BgEGeRci; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756375920; c=relaxed/simple;
+	bh=VbNEku4Tnssfygf2im1Mm5nS1uoVc6ry8cQso1aNxoM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uo5WpqxiG/cU74E3QD5PRTfcdp3BuxW6ELr0i8yCaTMXslPy1AYI2vhB6zKLug+pgFtSimAdLlxKxiti77L5Q1hA9o7sYEfuArg8ZgsfbMOwjxzeCtI3vRT6mmw9NnZmkeIhmrmSnUdFz/+pl1dlirUL8KnuFicMFSh/PisEOrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IvV7cpB3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BgEGeRci"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756375774; x=1787911774;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BuV6sy7akWwvmoQthUGtP+SjNRnorhCutIFVwVeEMFI=;
-  b=BgEGeRcibgRTXE1AiA49rp1wYOGgBccxWULsRYK4hsDMf/20u7W/PHFt
-   Og5gr7+45efQwBSjx+IHoNCdU7+UjYxbc1R8IK3QPW6He76TLQmraXS/x
-   sONmythNzi6ZAw0heqlJlvAK+l42NAkOVkuGleHq/prvCw9gm9E0hjBsf
-   rEmgdpjbJLztNfKynMplZJSNZw/wCxz5zjgWAADAmR07PVz5KGSoEYsMA
-   lwp8uHP9c2bXiNV/enZ44fU8WMU9Mj+VcFtBsD6Jva5vGQ3r5E8UfmGz2
-   thslSAZf8I0oVWtzOe60fGLf17LN29VzMONaYFktT5fU5YNTkjnBEvU8B
-   g==;
-X-CSE-ConnectionGUID: zQ1agZL2T4eJ6HRDFmylYg==
-X-CSE-MsgGUID: c5ZJQ7zmQdOH+KKtv6aRDw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="61274914"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="61274914"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 03:09:33 -0700
-X-CSE-ConnectionGUID: cYLf9I0CSrmDdf3nrjOuJA==
-X-CSE-MsgGUID: F7U3BY01RVKBMdTqdkGklA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="169972387"
-Received: from os-delivery.igk.intel.com ([10.102.18.218])
-  by orviesa007.jf.intel.com with ESMTP; 28 Aug 2025 03:09:31 -0700
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH iwl-net v1 4/4] ixgbe: handle IXGBE_VF_FEATURES_NEGOTIATE mbox cmd
-Date: Thu, 28 Aug 2025 11:52:27 +0200
-Message-Id: <20250828095227.1857066-5-jedrzej.jagielski@intel.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20250828095227.1857066-1-jedrzej.jagielski@intel.com>
-References: <20250828095227.1857066-1-jedrzej.jagielski@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IvV7cpB3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756375917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LebI/sztpWCwrov95WsSE/6NigzFhH6ySTmwoHd0X5k=;
+	b=IvV7cpB3rVlutZr628sl/X2hDhdYFTX906zQUlUdxwUpaNltNHWLcUsa0PwS8TbzYESwRB
+	OJn4dZAr1qQhQZ5wXJs5w1R2zG5ERQOm3ySommMq7yR0maJHVhc8dSOAGr94cQgrYi8nrN
+	8wDTZJxWEe6hoJn2x1e3yNAMM2mFVa8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-WM-4akCwOTq0yceF6t_Wog-1; Thu,
+ 28 Aug 2025 06:11:54 -0400
+X-MC-Unique: WM-4akCwOTq0yceF6t_Wog-1
+X-Mimecast-MFC-AGG-ID: WM-4akCwOTq0yceF6t_Wog_1756375913
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 35FBF195C27B;
+	Thu, 28 Aug 2025 10:11:53 +0000 (UTC)
+Received: from localhost (unknown [10.43.135.229])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6292E1800447;
+	Thu, 28 Aug 2025 10:11:51 +0000 (UTC)
+Date: Thu, 28 Aug 2025 12:11:48 +0200
+From: Miroslav Lichvar <mlichvar@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Stultz <jstultz@google.com>, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH RESEND net-next] ptp: Limit time setting of PTP clocks
+Message-ID: <aLArZFRxZ0AjKoRk@localhost>
+References: <20250825111117.3846097-1-mlichvar@redhat.com>
+ <20250827173708.398bdb99@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827173708.398bdb99@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Send to VF information about features supported by the PF driver.
+On Wed, Aug 27, 2025 at 05:37:08PM -0700, Jakub Kicinski wrote:
+> On Mon, 25 Aug 2025 13:11:13 +0200 Miroslav Lichvar wrote:
+> > -		if ((unsigned long) ts.tv_nsec >= NSEC_PER_SEC)
+> > +		/* Make sure the offset is valid */
+> > +		err = ptp_clock_gettime(pc, &ts2);
+> > +		if (err)
+> > +			return err;
+> > +		ts2 = timespec64_add(ts2, ts);
+> > +
+> > +		if ((unsigned long) ts.tv_nsec >= NSEC_PER_SEC ||
+> > +		    !timespec64_valid_settod(&ts2))
+> >  			return -EINVAL;
+> 
+> Please leave the input validation (tv_nsec >= NSEC_PER_SEC)
+> separate and before we call gettime. It's easy to miss that
+> on part of the condition is checking ts and the other ts2.
 
-Increase API version to 1.7.
+Ok, I'll send a v2.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h  | 10 +++++
- .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    | 37 +++++++++++++++++++
- 2 files changed, 47 insertions(+)
+> Do we not need to apply the same treatment to adjphase?
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-index be452856531a..8a2ba77d1493 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
-@@ -52,6 +52,7 @@ enum ixgbe_pfvf_api_rev {
- 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
- 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
- 	ixgbe_mbox_api_16,	/* API version 1.6, linux/freebsd VF driver */
-+	ixgbe_mbox_api_17,	/* API version 1.7, linux/freebsd VF driver */
- 	/* This value should always be last */
- 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
- };
-@@ -91,6 +92,9 @@ enum ixgbe_pfvf_api_rev {
- /* mailbox API, version 1.6 VF requests */
- #define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
- 
-+/* mailbox API, version 1.7 VF requests */
-+#define IXGBE_VF_FEATURES_NEGOTIATE	0x12 /* get features supported by PF */
-+
- /* length of permanent address message returned from PF */
- #define IXGBE_VF_PERMADDR_MSG_LEN 4
- /* word in permanent address message with the current multicast type */
-@@ -101,6 +105,12 @@ enum ixgbe_pfvf_api_rev {
- #define IXGBE_VF_MBX_INIT_TIMEOUT 2000 /* number of retries on mailbox */
- #define IXGBE_VF_MBX_INIT_DELAY   500  /* microseconds between retries */
- 
-+/* features negotiated between PF/VF */
-+#define IXGBEVF_PF_SUP_IPSEC		BIT(0)
-+#define IXGBEVF_PF_SUP_ESX_MBX		BIT(1)
-+
-+#define IXGBE_SUPPORTED_FEATURES	IXGBEVF_PF_SUP_IPSEC
-+
- struct ixgbe_hw;
- 
- int ixgbe_read_mbx(struct ixgbe_hw *, u32 *, u16, u16);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 2d5584c36cd0..39cd0a9c9480 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -511,6 +511,7 @@ static int ixgbe_set_vf_lpe(struct ixgbe_adapter *adapter, u32 max_frame, u32 vf
- 		case ixgbe_mbox_api_13:
- 		case ixgbe_mbox_api_14:
- 		case ixgbe_mbox_api_16:
-+		case ixgbe_mbox_api_17:
- 			/* Version 1.1 supports jumbo frames on VFs if PF has
- 			 * jumbo frames enabled which means legacy VFs are
- 			 * disabled
-@@ -1048,6 +1049,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		adapter->vfinfo[vf].vf_api = api;
- 		return 0;
- 	default:
-@@ -1075,6 +1077,7 @@ static int ixgbe_get_vf_queues(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -1;
-@@ -1115,6 +1118,7 @@ static int ixgbe_get_vf_reta(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
- 
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
-@@ -1149,6 +1153,7 @@ static int ixgbe_get_vf_rss_key(struct ixgbe_adapter *adapter,
- 
- 	/* verify the PF is supporting the correct API */
- 	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
- 	case ixgbe_mbox_api_16:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_13:
-@@ -1180,6 +1185,7 @@ static int ixgbe_update_vf_xcast_mode(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1251,6 +1257,7 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
- 	case ixgbe_mbox_api_13:
- 	case ixgbe_mbox_api_14:
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -1278,6 +1285,7 @@ static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
- 
- 	switch (adapter->vfinfo[vf].vf_api) {
- 	case ixgbe_mbox_api_16:
-+	case ixgbe_mbox_api_17:
- 		if (hw->mac.type != ixgbe_mac_e610)
- 			return -EOPNOTSUPP;
- 		break;
-@@ -1293,6 +1301,32 @@ static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
- 	return 0;
- }
- 
-+/**
-+ * ixgbe_negotiate_vf_features -  negotiate supported features with VF driver
-+ * @adapter: pointer to adapter struct
-+ * @msgbuf: pointer to message buffers
-+ * @vf: VF identifier
-+ *
-+ * Return: 0 on success or -EOPNOTSUPP when operation is not supported.
-+ */
-+static int ixgbe_negotiate_vf_features(struct ixgbe_adapter *adapter,
-+				       u32 *msgbuf, u32 vf)
-+{
-+	u32 features = msgbuf[1];
-+
-+	switch (adapter->vfinfo[vf].vf_api) {
-+	case ixgbe_mbox_api_17:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	features &= IXGBE_SUPPORTED_FEATURES;
-+	msgbuf[1] = features;
-+
-+	return 0;
-+}
-+
- static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
- {
- 	u32 mbx_size = IXGBE_VFMAILBOX_SIZE;
-@@ -1370,6 +1404,9 @@ static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
- 	case IXGBE_VF_GET_PF_LINK_STATE:
- 		retval = ixgbe_send_vf_link_status(adapter, msgbuf, vf);
- 		break;
-+	case IXGBE_VF_FEATURES_NEGOTIATE:
-+		retval = ixgbe_negotiate_vf_features(adapter, msgbuf, vf);
-+		break;
- 	default:
- 		e_err(drv, "Unhandled Msg %8.8x\n", msgbuf[0]);
- 		retval = -EIO;
+No, those phase adjustments are very small (sub-second) and slow. They
+don't cause a step in time, only the frequency. The value is already
+checked against the maximum provided by the driver.
+
+Thanks,
+
 -- 
-2.31.1
+Miroslav Lichvar
 
