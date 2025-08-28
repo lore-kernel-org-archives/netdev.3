@@ -1,213 +1,159 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F055530F559
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 10:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C67B30AD1B;
+	Thu, 28 Aug 2025 10:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756376872; cv=none; b=FAI7U+RtEJwj/EcqZl20o/1nK5/SpBsxUhDHxIzYYs9y83NfI8ZRHLDXkPE7mdH6EqjK7akFt6LAp6NjVOlbrsVGLms5cFEQCoFbsZZmJeHQEme8OVVap70mYV9HQkQgBYn5csbYzEYs98SRRVCWI59ORZLpxxaOf9IiCTxx3sg=
+	t=1756376916; cv=none; b=ev+W2ifJ+fxI87mNUOM95JPbDRRhxTREIF7lpp3Tsb2dllbJzM+gBWBFMzZ2/5ou+fDQwL2ms76shBjLeF88Q67kYza2WOmolL0oZnmNemwKrhGWDzk9JfaTNaHKccbO7C2sJY8ZMpxirQXw3GyEUyJGePAG9fMmT3NO3mhRIg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756376872; c=relaxed/simple;
-	bh=4TtNelkUjlH0tUFjiXW91Z6vtVX2uLozVmg7La8/Q3U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eqm6b2YVs8/dfGbckEO19/L083WRuaTWyPLElKj066bqWsoArcaw9DD8rRSKMau2NC8w9BytRHHsbfqQC9WDLyaUsPlf9fCKLZSTIts5Sd4grZB8bJt+34mlHlb2gzVxWpDUaxPZm0O4KJ7Y9oF/wOHfE8TA/2Y3F4Q9MY5u3G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yj2PLTpH; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yj2PLTpH"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7f7ff7acb97so135500485a.0
-        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 03:27:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756376870; x=1756981670; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m9DxzgnAnz7BGjpOcStz/nAZu/+W7i8+pyAs5dRRYDQ=;
-        b=yj2PLTpHaIq1jPll41CcjxGsIQfPgG33TuFN/GYkXNaHYssdAwZwVMVTUqlfVi9l7Z
-         WxwYCVbRVXyqE7lxm8gqkWgVJdjN7bQ6rdQyYphdwJ6WiHs5vjRECsvsLhXTkyZbfYNK
-         9+a3/lPg1fysc1vCPxr0jggWJNjzEr8WD4+/2Faut5/ZApNpoK4eDaREsC7to55JP2pJ
-         SF9hTWyo+xexiUr3+4GKu44SRUt2Q/bNg5/4Dl+XDwDx06foHmwuFshcNVNYzh6vKMAR
-         hOB9eulbfrVb7Xf+XVAonFHhLQtZfbA3UnswXuyLaro3Pi0ivj8GdJ04yk2A8mOZ7VZX
-         Qjyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756376870; x=1756981670;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m9DxzgnAnz7BGjpOcStz/nAZu/+W7i8+pyAs5dRRYDQ=;
-        b=E3m8C3zRR4iIzZOPMNkpm9phEm2sX8qIBGNFW7uK+CJKjm5mz4terA1mcIshRtxo9m
-         SSorqiXGs4XjK3Kh+FQf4VfhrazURYk6JOEkLOMcJbBI8AFGRBzM2Drfu+faE0FCZVAr
-         KtcSDfWbiBm/YtxXG5Bs3LcX/uBA0llnRSJ6hgyh7iQtuLnJZ3jJ6M8pG6nTVMq4c8fb
-         C8t0yAIIkYCzWRuApzJhMCaNxVuY5dsPRBewt61ydDKZbgA0bv/Tj9+ofExBwca05CyS
-         ExM06GvQOQ3LNohUwzOAT2PJ0RxE7QZdGZU2C9eK94WGzIMdBA0CpmumHPXRmetHv8M+
-         9tWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsdvdgW9BvZfufK4jPo2FOOKaUn+nD5+kryHQDMvWCbALOsprP/oD+BUG3fypm+MjWh57VMbE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyW7TQA9xsuYz0qpxk+rosQ3MGxAoYtNVm0qSBUt3xX3gbbvBs
-	fzo9hWEb+LTOeSEhgZfxX6YEdfb+zgLOV1KB2dhwgjuz6IL1MWErvPFMSEC5KSlo+17RXs1T/wE
-	M4mqSyibj2yKuHw==
-X-Google-Smtp-Source: AGHT+IGxi7a5xVybIFMRwxaCxcV7hcBeMwFNQPTLzATy7q+s7n5fvmp4SAJbind3+MaavoBddYIBB19vGjlFwg==
-X-Received: from qkntz8.prod.google.com ([2002:a05:620a:6908:b0:7e6:2365:6c9c])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:d6a:b0:70d:b3de:ced3 with SMTP id 6a1803df08f44-70db3dedb2amr228053336d6.25.1756376869842;
- Thu, 28 Aug 2025 03:27:49 -0700 (PDT)
-Date: Thu, 28 Aug 2025 10:27:38 +0000
-In-Reply-To: <20250828102738.2065992-1-edumazet@google.com>
+	s=arc-20240116; t=1756376916; c=relaxed/simple;
+	bh=q1Klpjwv/WnXJATJN/W7Z/cWbQNEimJhGYE1d/lZ/Qk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=d/uOUBgkPU6/Y2tQKfrN5cR5hc5kHk3Jtpk92FRpPKUgHokGU4Gl/+i7eEHlqsBcSo8kfsbX6qnxgfg1Zvd3Z7Xl77jlnUtvT9LUp63mQrSrhIiPSLvxR6y54A4Lfm2CuaSc+j3M2xOtN6ecvg8gfx4Yc46BJ0KCUF/ucoeFljo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+X-CSE-ConnectionGUID: WPSssH9bSzu9vfYLfgaPPg==
+X-CSE-MsgGUID: emr7/kHSTwGdJnRrpRCXoQ==
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 28 Aug 2025 19:23:24 +0900
+Received: from [127.0.1.1] (unknown [10.226.78.19])
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 3C7ED417D5AC;
+	Thu, 28 Aug 2025 19:23:20 +0900 (JST)
+From: Michael Dege <michael.dege@renesas.com>
+Subject: [net-next PATCH v4 0/4] net: renesas: rswitch: R-Car S4 add HW
+ offloading for layer 2 switching
+Date: Thu, 28 Aug 2025 12:23:11 +0200
+Message-Id: <20250828-add_l2_switching-v4-0-89d7108c8592@renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250828102738.2065992-1-edumazet@google.com>
-X-Mailer: git-send-email 2.51.0.268.g9569e192d0-goog
-Message-ID: <20250828102738.2065992-6-edumazet@google.com>
-Subject: [PATCH net-next 5/5] inet_diag: avoid cache line misses in inet_diag_bc_sk()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAA8usGgC/23NQQ6CMBCF4auQrq3pTClUV97DGFLaAk0UTEtQQ
+ 7i7BTcYWP4vmW9GEqx3NpBzMhJvBxdc18ZIDwnRjWprS52JTZChYBlkVBlT3LEIL9frxrU15ak
+ AyIEJwwyJZ09vK/deyOstduNC3/nP8mGAef1hOUu32ACU0aqSEpXSJQp58ba1QYWj7h5k5gZcE
+ 3KHwJk4QSWEyDLI1ZbgKwLYDsEjoZniKDnmZcr/iWmavlpGxGo4AQAA
+X-Change-ID: 20250616-add_l2_switching-345117105d0d
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+ Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>, 
+ Nikita Yushchenko <nikita.yoush@cogentembedded.com>, 
+ Andrew Lunn <andrew@lunn.ch>, 
+ =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756376599; l=3855;
+ i=michael.dege@renesas.com; s=20250523; h=from:subject:message-id;
+ bh=q1Klpjwv/WnXJATJN/W7Z/cWbQNEimJhGYE1d/lZ/Qk=;
+ b=Ukyt9Am6bv1y1r6saelj5rEnny8d+QkgPg3Jdx3B04brn3XkeU5xyAnjA/xvQ3V7mKigofY9J
+ h3IIRAPN4IrAY33Kq+VRafswAQNJY1gBveHF7wUHMEWrWrwvjEG28bm
+X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
+ pk=+gYTlVQ3/MlOju88OuKnXA7MlapP4lYqJn1F81HZGSo=
 
-inet_diag_bc_sk() pulls five cache lines per socket,
-while most filters only need the two first ones.
+Hello!
 
-Add three booleans to struct inet_diag_dump_data,
-that are selectively set if a filter needs specific socket fields.
+The current R-Car S4 rswitch driver only supports port based fowarding.
+This patch set adds HW offloading for L2 switching/bridgeing. The driver
+hooks into switchdev.
 
-- mark_needed       /* INET_DIAG_BC_MARK_COND present. */
-- cgroup_needed     /* INET_DIAG_BC_CGROUP_COND present. */
-- userlocks_needed  /* INET_DIAG_BC_AUTO present. */
+1. Rename the base driver file to keep the driver name (rswitch.ko)
 
-This removes millions of cache lines misses per ss invocation
-when simple filters are specified on busy servers.
+2. Add setting of default MAC ageing time in hardware.
 
-offsetof(struct sock, sk_userlocks) = 0xf3
-offsetof(struct sock, sk_mark) = 0x20c
-offsetof(struct sock, sk_cgrp_data) = 0x298
+3. Add the L2 driver extension in a separate file. The HW offloading
+is automatically configured when a port is added to the bridge device.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Usage example:
+ip link add name br0 type bridge
+ip link set dev tsn0 master br0
+ip link set dev tsn1 master br0
+ip link set dev br0 up
+ip link set dev tsn0 up
+ip link set dev tsn1 up
+
+Layer 2 traffic is now fowarded by HW from port TSN0 to port TSN1.
+
+4. Provides the functionality to set the MAC table ageing time in the
+Rswitch.
+
+Usage example:
+ip link change dev br0 type bridge ageing 100
+
+Changes in v4:
+- Added target tree to subject prefix.
+- refactored rswitch_update_l2_hw_learning() and
+  rswitch_update_l2_hw_forwarding() to remove duplicate code. 
+- In function rswitch_update_offload_brdev() removed unused
+  force_update_l2_offload parameter.
+- Link to v3: https://lore.kernel.org/r/20250710-add_l2_switching-v3-0-c0a328327b43@renesas.com
+
+Changes in v3:
+- Split void rswitch_update_l2_offload(struct rswitch_private *priv) 
+  into two functions to reduce the complexity.
+- In rswitch_switchdev_blocking_event() returning -EOPNOTSUPP directly
+  for unsupported events intead of calling function which returned
+  -EOPNOTSUPP.
+- Retuning result from rswitch_reg_wait() directly instead of using
+  local variable at end of function.
+- Restructured rswitch_update_offload_brdev() to fix smatch
+  false-positive report.  
+- Fixed reviewed-by tags in [1/4]
+- Fixed oder of signed-off-by tags in [2/4]
+- Removed magic number in [2/4]
+- Link to v2: https://lore.kernel.org/r/20250708-add_l2_switching-v2-0-f91f5556617a@renesas.com
+
+Changes in v2:
+- Pulled default ageing setting into separate patch.
+- Changed logging priority from info to dbg.
+- Updated usage examples.
+- Fixed passing of ageing parameter. Parameter is already in seconds
+  no need to convert. Parameter checking improved.
+- Updated commit message of [3/4] to point out that the switch hardware
+  only supports the offloading of one bridge device. 
+- Link to v1: https://lore.kernel.org/r/20250704-add_l2_switching-v1-0-ff882aacb258@renesas.com
+
+Thanks,
+
+Michael
+
+Signed-off-by: Michael Dege <michael.dege@renesas.com>
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 ---
- include/linux/inet_diag.h |  5 ++++
- net/ipv4/inet_diag.c      | 52 +++++++++++++++++++++++----------------
- 2 files changed, 36 insertions(+), 21 deletions(-)
+To: Niklas Söderlund <niklas.soderlund@ragnatech.se>
+To: Paul Barker <paul@pbarker.dev>
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-diff --git a/include/linux/inet_diag.h b/include/linux/inet_diag.h
-index 86a0641ec36e1bf25483a8e6c3412073b9893d36..704fd415c2b497dfba591a7ef46009dec7824d75 100644
---- a/include/linux/inet_diag.h
-+++ b/include/linux/inet_diag.h
-@@ -38,6 +38,11 @@ struct inet_diag_dump_data {
- #define inet_diag_nla_bpf_stgs req_nlas[INET_DIAG_REQ_SK_BPF_STORAGES]
- 
- 	struct bpf_sk_storage_diag *bpf_stg_diag;
-+	bool mark_needed;	/* INET_DIAG_BC_MARK_COND present. */
-+#ifdef CONFIG_SOCK_CGROUP_DATA
-+	bool cgroup_needed;	/* INET_DIAG_BC_CGROUP_COND present. */
-+#endif
-+	bool userlocks_needed;	/* INET_DIAG_BC_AUTO present. */
- };
- 
- struct inet_connection_sock;
-diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-index 11710304268781581b3559aca770d50dc0090ef3..f0b6c5a411a2008e2a039ed37e262f3f132e58ac 100644
---- a/net/ipv4/inet_diag.c
-+++ b/net/ipv4/inet_diag.c
-@@ -605,18 +605,22 @@ int inet_diag_bc_sk(const struct inet_diag_dump_data *cb_data, struct sock *sk)
- 	entry.sport = READ_ONCE(inet->inet_num);
- 	entry.dport = ntohs(READ_ONCE(inet->inet_dport));
- 	entry.ifindex = READ_ONCE(sk->sk_bound_dev_if);
--	entry.userlocks = sk_fullsock(sk) ? READ_ONCE(sk->sk_userlocks) : 0;
--	if (sk_fullsock(sk))
--		entry.mark = READ_ONCE(sk->sk_mark);
--	else if (sk->sk_state == TCP_NEW_SYN_RECV)
--		entry.mark = inet_rsk(inet_reqsk(sk))->ir_mark;
--	else if (sk->sk_state == TCP_TIME_WAIT)
--		entry.mark = inet_twsk(sk)->tw_mark;
--	else
--		entry.mark = 0;
-+	if (cb_data->userlocks_needed)
-+		entry.userlocks = sk_fullsock(sk) ? READ_ONCE(sk->sk_userlocks) : 0;
-+	if (cb_data->mark_needed) {
-+		if (sk_fullsock(sk))
-+			entry.mark = READ_ONCE(sk->sk_mark);
-+		else if (sk->sk_state == TCP_NEW_SYN_RECV)
-+			entry.mark = inet_rsk(inet_reqsk(sk))->ir_mark;
-+		else if (sk->sk_state == TCP_TIME_WAIT)
-+			entry.mark = inet_twsk(sk)->tw_mark;
-+		else
-+			entry.mark = 0;
-+	}
- #ifdef CONFIG_SOCK_CGROUP_DATA
--	entry.cgroup_id = sk_fullsock(sk) ?
--		cgroup_id(sock_cgroup_ptr(&sk->sk_cgrp_data)) : 0;
-+	if (cb_data->cgroup_needed)
-+		entry.cgroup_id = sk_fullsock(sk) ?
-+			cgroup_id(sock_cgroup_ptr(&sk->sk_cgrp_data)) : 0;
- #endif
- 
- 	return inet_diag_bc_run(bc, &entry);
-@@ -716,16 +720,21 @@ static bool valid_cgroupcond(const struct inet_diag_bc_op *op, int len,
- }
- #endif
- 
--static int inet_diag_bc_audit(const struct nlattr *attr,
-+static int inet_diag_bc_audit(struct inet_diag_dump_data *cb_data,
- 			      const struct sk_buff *skb)
- {
--	bool net_admin = netlink_net_capable(skb, CAP_NET_ADMIN);
-+	const struct nlattr *attr = cb_data->inet_diag_nla_bc;
- 	const void *bytecode, *bc;
- 	int bytecode_len, len;
-+	bool net_admin;
-+
-+	if (!attr)
-+		return 0;
- 
--	if (!attr || nla_len(attr) < sizeof(struct inet_diag_bc_op))
-+	if (nla_len(attr) < sizeof(struct inet_diag_bc_op))
- 		return -EINVAL;
- 
-+	net_admin = netlink_net_capable(skb, CAP_NET_ADMIN);
- 	bytecode = bc = nla_data(attr);
- 	len = bytecode_len = nla_len(attr);
- 
-@@ -757,14 +766,18 @@ static int inet_diag_bc_audit(const struct nlattr *attr,
- 				return -EPERM;
- 			if (!valid_markcond(bc, len, &min_len))
- 				return -EINVAL;
-+			cb_data->mark_needed = true;
- 			break;
- #ifdef CONFIG_SOCK_CGROUP_DATA
- 		case INET_DIAG_BC_CGROUP_COND:
- 			if (!valid_cgroupcond(bc, len, &min_len))
- 				return -EINVAL;
-+			cb_data->cgroup_needed = true;
- 			break;
- #endif
- 		case INET_DIAG_BC_AUTO:
-+			cb_data->userlocks_needed = true;
-+			fallthrough;
- 		case INET_DIAG_BC_JMP:
- 		case INET_DIAG_BC_NOP:
- 			break;
-@@ -841,13 +854,10 @@ static int __inet_diag_dump_start(struct netlink_callback *cb, int hdrlen)
- 		kfree(cb_data);
- 		return err;
- 	}
--	nla = cb_data->inet_diag_nla_bc;
--	if (nla) {
--		err = inet_diag_bc_audit(nla, skb);
--		if (err) {
--			kfree(cb_data);
--			return err;
--		}
-+	err = inet_diag_bc_audit(cb_data, skb);
-+	if (err) {
-+		kfree(cb_data);
-+		return err;
- 	}
- 
- 	nla = cb_data->inet_diag_nla_bpf_stgs;
+---
+Michael Dege (4):
+      net: renesas: rswitch: rename rswitch.c to rswitch_main.c
+      net: renesas: rswitch: configure default ageing time
+      net: renesas: rswitch: add offloading for L2 switching
+      net: renesas: rswitch: add modifiable ageing time
+
+ drivers/net/ethernet/renesas/Makefile              |   1 +
+ drivers/net/ethernet/renesas/rswitch.h             |  43 ++-
+ drivers/net/ethernet/renesas/rswitch_l2.c          | 317 +++++++++++++++++++++
+ drivers/net/ethernet/renesas/rswitch_l2.h          |  15 +
+ .../ethernet/renesas/{rswitch.c => rswitch_main.c} |  86 +++++-
+ 5 files changed, 456 insertions(+), 6 deletions(-)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250616-add_l2_switching-345117105d0d
+
+Best regards,
 -- 
-2.51.0.268.g9569e192d0-goog
+Michael Dege <michael.dege@renesas.com>
 
