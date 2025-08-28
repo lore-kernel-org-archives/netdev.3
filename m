@@ -1,59 +1,146 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E936232C302;
-	Thu, 28 Aug 2025 17:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA68245006;
+	Thu, 28 Aug 2025 17:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756400830; cv=none; b=HBr06NXZntugvtSji+Ywtn+Al7ytNrGf5FHitLFLeGTMoZw3wN0avTYfdYmD2AGdW6HbRuVNMfFSWgeBZfhpoEH/mxvjsclrnv/RhZ10MFuQZ80RALbDgKK2olrUfJC7kdaVGB4ELDizfuUq30eEpS8/imOAUQKOMsMtw7DRlQo=
+	t=1756401164; cv=none; b=R7ohoiCmpopSPLmSdM7n4G0ob4NM5WLQCgTtyKvI2oqRM+5mEwveye2uMeHwQB39KC5qkE5YRWmG6GiBSBn27u+MdKcS0+ksklXS3UND0ee0QFrzae5juX18ifGZJKEQbYQrQF7rzT2clkzac/v15tscfTuByyzSt0mk2yVflT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756400830; c=relaxed/simple;
-	bh=kE8RjZBkM6Uryl5yEmHVladAIfVXfO8evEUiDa2e4Ss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aVbM93Sf4ZPJsIhbePrHhzA4F+yNE+YDmGYyL8lLhjUFWv1w3XQm/JgKI4PS4KhXchBAGDIPaK/cpW87PqS1beACVdjetjKUawOlP6co4CwdHoz242vUpMDAceCdQOvw5wiuFYkTmRT5DtrSbzyN6fR3jM8iz3GI8GKubmXZxFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=d7GPMDya; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1756401164; c=relaxed/simple;
+	bh=607nQO2d/RCimAs/OiQ2CTUxEUa/slx1dU3exOvrtZ4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=TqtAkcxH8lO3cpGE6GvdM50dwDvDHacia+m8WYVqLuHgQ+gVKosPEewLSZ9T7GIvcGwcoBawg1lmrLQwTc/Ohra/qlUHICqwdSmmR644thaS+UmQU7wiSgmG8q8uXzo3ASrbtUuigLzCnScRM7ahuOIVJIrB5qLjcid1tzieiKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=mQpbwAPY; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="d7GPMDya"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=OvXV0aoXbSw/DhaHwzMZIvHkpdlUIBQo0SQJA3MINc4=; b=d7GPMDyacaIs77+63ehM2z0Eu2
-	tUYhUDUf95yDD+w92h1ikQDjtG2N6NfGaOO0RvOSroTindthnKxeJ8QcdQhnOVKmjuNCgU9us7JLG
-	TRS0nhNE1gTXFP3sPsqYYu4UB6/KTsz94CnsHHauTtUGa29ENlO5V4tkziBSCXSSdxxQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1urg5H-006NEb-Je; Thu, 28 Aug 2025 19:06:47 +0200
-Date: Thu, 28 Aug 2025 19:06:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	sdf@fomichev.me, almasrymina@google.com, asml.silence@gmail.com,
-	leitao@debian.org, kuniyu@google.com, jiri@resnulli.us,
-	aleksandr.loktionov@intel.com, ivecera@redhat.com,
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Subject: Re: [RFC PATCH v2] net: add net-device TX clock source selection
- framework
-Message-ID: <013d723e-ac62-4207-ae66-31126f890429@lunn.ch>
-References: <20250828164345.116097-1-arkadiusz.kubalewski@intel.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="mQpbwAPY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=3w+R1zOuJPY71/KjLfkxWemnLW1oSrZqC7s9lCEBRtY=; b=mQpbwAPYB1wWBpiNJnJ3ZURQRE
+	g9G72BFuIZwI3WmiDEtPaj4u0YDZGLQ31Eo2Kv7TzHKJoJLg7xygkX+Tr2FerBdNV5G73iaGTx1Ar
+	iZWNExlCxfCOSs8Fj2HiTADJ5OL8mL/969t6raSzp94ImYL9Bwm6YfX5wWgoRtS5Eu2MGi8yWL8uO
+	IeCZGM58IQO8A2Tz/XKnMRIM77rwwDpxOnDgzGaBU1I8kxnf8cITNdyDYX/p+Lw96tNepoBx6bV7Q
+	LCT3CQXb3/3OmY0VmPerkJ5tw4FvAbuYP3a+TG24osxDVFfkGgyDYtI6l7kJwjpndFmMHFlDRhl5f
+	V9gxXWOw==;
+Received: from [122.175.9.182] (port=8338 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1urgAi-00000006HIe-3TIO;
+	Thu, 28 Aug 2025 13:12:25 -0400
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 1C3841781C63;
+	Thu, 28 Aug 2025 22:42:18 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id D57421781F94;
+	Thu, 28 Aug 2025 22:42:17 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 33U0h1areI3V; Thu, 28 Aug 2025 22:42:17 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 796361781C63;
+	Thu, 28 Aug 2025 22:42:17 +0530 (IST)
+Date: Thu, 28 Aug 2025 22:42:17 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: kuba <kuba@kernel.org>
+Cc: danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>, 
+	andrew+netdev <andrew+netdev@lunn.ch>, davem <davem@davemloft.net>, 
+	edumazet <edumazet@google.com>, pabeni <pabeni@redhat.com>, 
+	robh <robh@kernel.org>, krzk+dt <krzk+dt@kernel.org>, 
+	conor+dt <conor+dt@kernel.org>, ssantosh <ssantosh@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	m-malladi <m-malladi@ti.com>, s hauer <s.hauer@pengutronix.de>, 
+	afd <afd@ti.com>, jacob e keller <jacob.e.keller@intel.com>, 
+	horms <horms@kernel.org>, johan <johan@kernel.org>, 
+	m-karicheri2 <m-karicheri2@ti.com>, s-anna <s-anna@ti.com>, 
+	glaroque <glaroque@baylibre.com>, 
+	saikrishnag <saikrishnag@marvell.com>, 
+	kory maincent <kory.maincent@bootlin.com>, 
+	diogo ivo <diogo.ivo@siemens.com>, 
+	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
+	basharath <basharath@couthit.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	ALOK TIWARI <alok.a.tiwari@oracle.com>, 
+	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1892122434.246137.1756401137255.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250827090820.12a58d22@kernel.org>
+References: <20250822132758.2771308-1-parvathi@couthit.com> <20250822144023.2772544-5-parvathi@couthit.com> <20250827090820.12a58d22@kernel.org>
+Subject: Re: [PATCH net-next v14 4/5] net: ti: icssm-prueth: Adds link
+ detection, RX and TX support.
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250828164345.116097-1-arkadiusz.kubalewski@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC138 (Linux)/8.8.15_GA_3968)
+Thread-Topic: icssm-prueth: Adds link detection, RX and TX support.
+Thread-Index: 04+NkdyMJsTY7VdcDfyHFa/DcZsalw==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> - use netlink instead of sysfs
+Hi,
 
-ethtool is netlink. Why is this not part of the ethtool API?
+> On Fri, 22 Aug 2025 20:09:16 +0530 Parvathi Pudi wrote:
+>> +	struct net_device_stats *ndevstats;
+> 
+>> +	ndevstats = &emac->ndev->stats;
+> 
+> Please don't use netdev stats, quoting the header:
+> 
+>	struct net_device_stats	stats; /* not used by modern drivers */
+> 
+> Store the counters you need in driver's private struct and implement
+> .ndo_get_stats64
+> 
 
-	Andrew
+sure, we will verify and use the suggested approach.
+
+>> +	if (!pkt_info->sv_frame) {
+> 
+> sv_frame seems to always be false at this stage?
+> Maybe delete this diff if that's the case, otherwise it feels like
+> the skb_free below should be accompanied by some stat increment.
+> 
+
+Yes, We will remove this for now.
+
+>> +		skb_put(skb, actual_pkt_len);
+>> +
+>> +		/* send packet up the stack */
+>> +		skb->protocol = eth_type_trans(skb, ndev);
+>> +		netif_receive_skb(skb);
+>> +	} else {
+>> +		dev_kfree_skb_any(skb);
+>> +	}
+> 
+> The rest LGTM.
+
+
+Thanks and Regards
+Parvathi.
