@@ -1,167 +1,164 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E32ED141;
-	Thu, 28 Aug 2025 07:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AFF30CD89
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 07:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756364984; cv=none; b=r4l/HkptwptWXeBBsOfnRX/e4P5f3+66YjoNbUx5qYfZpsaOkZO9Vam+piNqohhjT5pWN34a0FQR3S5yklhHnvaoouF/QZZDwuBr8wt9uwqStYtw1vrNxGRchWC44WV28uHv+4eGmxPHTAKqM8U+Yj/0uHkSKnmHf+1zzL0O300=
+	t=1756365375; cv=none; b=ju9w2yta8IEaMBgESwDsdWRb/LcC/kquT79EcExWBz7mainhRR9NNeMgpOjLzTonFmGVjd8JuAR7Vf5uPAkLfM5RHh3PexBv4zNbOSctuct4KEqIy0PguCEXIYIzJH/Rm6F9pjmhMwmeXjcGmeDzXjRlh2Rtuy+tYYo8RatMsds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756364984; c=relaxed/simple;
-	bh=SPpp1RH7FHS64BgwJSfDV6et5//09GHoAwf6X9+I1DE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Abz8pDUG0x7mzoN1Y83+ugiZPmTn5PcOAT0Yw0kH1TfyufHNNJxzOTC/NccwNdM2nyCup6MZnrzwmZz8/K9nzx5x7n7eezadUSVvgzsNhxUj4a2wZKeNo4LGLJYdPtXpBh5oAD6x79SfinmKrUpPP9cNriL7CPbW0E7QJVKhOUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vrC87pxx; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756365375; c=relaxed/simple;
+	bh=EP5LAkVGPHYBWFNWQT51n48XaZ8vkDl7dsaHJY9cEpw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XgTvKYsJVIVcfDVb2CoNstjCoUNqmaHFULs3+bsiuXVFvDBCxdcojRZYpdQrd0fedD/R0KaTBlLdECv487yLq44p2iT996niTY44jgxax5BWOEUtOnS0Q5d+K6UfjUMH+DgCP/hq3LmFOuhI1nEbGNItemAuIY62Gf62F+kQRy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=cAajJqN8; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vrC87pxx"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57S78ocR1469076;
-	Thu, 28 Aug 2025 02:08:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756364930;
-	bh=ihg1BqVIXwVeX9/5XhJYutDohKn1RcCO31Zmkb28TWc=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=vrC87pxxwnmX9RRUWlyB+u8ioWabgUci7PEOqwdSoGj0irRa8c/0JtiI+yVNgUh0/
-	 YGX8K+ShW9zZVi0OUwNGG9g9F97Ihp5HHxTjRXl020k7MwXfY3/7F8uxDmb7IjyIf6
-	 aXsl/3I7QOJ973cI8RD2HXZXzxo/Z+X6/B9++OAI=
-Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57S78od32715100
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 28 Aug 2025 02:08:50 -0500
-Received: from DLEE111.ent.ti.com (157.170.170.22) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 28
- Aug 2025 02:08:50 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE111.ent.ti.com
- (157.170.170.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 28 Aug 2025 02:08:50 -0500
-Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57S78hLu209555;
-	Thu, 28 Aug 2025 02:08:44 -0500
-Message-ID: <da2a0a37-8334-477a-8468-c4baebadf6df@ti.com>
-Date: Thu, 28 Aug 2025 12:38:43 +0530
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="cAajJqN8"
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A155B3F7BB
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 07:16:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1756365364;
+	bh=EP5LAkVGPHYBWFNWQT51n48XaZ8vkDl7dsaHJY9cEpw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=cAajJqN8qt566q2SGECHt7e9WfVAfUSpYtPpHn+uPrNB43h/5WG+S2yBQcAU4t89M
+	 XQS59NVayZN0+ecAnNPNe4gTePWYTfZTyY8bN+o6Yupfkmj8wiVzWidUs0nTo20Ok7
+	 sgVLyg7glqxW21HiaJd2B0pjKWF2oDkuWDMT+3lItF0zToHA7TehZXefrdgpNb7GYc
+	 CvcYSnqbsJ/SxMqon+z9snsaSMHpGknnoa4iRBgLAjV/If+fsiDdbFQPOZk5d7Hue8
+	 XSi4TfLnm8daPyIxbxjA5JzMIqrxStcXawboUq+wVwmW6W0q/8UDihZkI70Un9Ar8g
+	 kig4vQ3QctqBQ==
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45a1b0cc989so4612665e9.3
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 00:16:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756365364; x=1756970164;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EP5LAkVGPHYBWFNWQT51n48XaZ8vkDl7dsaHJY9cEpw=;
+        b=okyg0xpTzYdDhnl7CQX+QsdC+eTNw8+JXXeOHSAgXH0V3FcAmPaIvpjjtikbOuiyM3
+         JI3oZOC6ArwCGo1dkLJepCk7X7yZ2GcZV+PQu5w9ahX+K+xYU4977Z7uZN8qPp3BFQRB
+         GuvUrsYL8zF1jHCZjbGlgv44yqs6cqOTHvJcZVevjvp5DRRly1Ip+thk96zrZU14WUqm
+         3S/WdbBMRDo3JpAVilSdSu8GR0Fpak0j/v0g67jzlDgEojai/K7MnLt7aTKJOWjmN2Nd
+         0uxFvq/dDhHMv/0vKaGj1Asj8XBS43Eiz1CFm5Iet84CAaFT9HMPWq+g5muhNzPXq5bx
+         rFxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxAE1fZDQg7L7TtOffeoCZyGy34gugNZk5UFMoNG/ulYvBGDQ6AQCHb/zajvOkhjFUTHz6ocY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTBO2Qtm61vlkus0kG8pSTIek/0957giODa6XRSjCUqNeeieIq
+	an2rohE3EpZD3lo31fMhzKB/X8i9BUN8/LJj9Q9WRkDgo7gvFsAC0QrLSUhFGvmwIA5GnxqfqWD
+	UjSkrm8j3Tcarhoby5Wm8oNoHn10lSR4AiutcoxLEzGfzy46ZljY7EjDMzixgYCVDi2EJh4c1Mm
+	WKUktu3ek+Rk3aoEpg2jiTvAur2VUQ6PMWKnCZdO2FVh2EL4Ds
+X-Gm-Gg: ASbGncuJ7uehdN8ngAPKQpT9cDulM09MlHAOsy+2+wus64oXf+MxMV5/xp69DidgXIN
+	fgM+GY6NGI4dFM0nic+hUwn+b5fyilnv9pgfeqX+eVgMM+k0ecVxS5E1oR8Zr8GvoHiOTSYjfws
+	1/Z8LdR2ssJQ1eBhdc00HBTA==
+X-Received: by 2002:a05:6000:2281:b0:3cd:4ff9:c487 with SMTP id ffacd0b85a97d-3cd4ff9c926mr2620668f8f.45.1756365363829;
+        Thu, 28 Aug 2025 00:16:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfuC2ElMmFlTZiiutii9/xomw0gubj1uQZfa6woHQEtKq8aJkUR/KAMbs3OKEPrupW13u7FOwjSrGKvNtXbv4=
+X-Received: by 2002:a05:6000:2281:b0:3cd:4ff9:c487 with SMTP id
+ ffacd0b85a97d-3cd4ff9c926mr2620642f8f.45.1756365363423; Thu, 28 Aug 2025
+ 00:16:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/5] net: rpmsg-eth: Add Documentation for
- RPMSG-ETH Driver
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Jonathan Corbet
-	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        Mengyuan Lou
-	<mengyuanlou@net-swift.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Madhavan
- Srinivasan <maddy@linux.ibm.com>,
-        Fan Gong <gongfan1@huawei.com>, Lee Trager
-	<lee@trager.us>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Geert Uytterhoeven
-	<geert+renesas@glider.be>,
-        Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-        Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-        <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250723080322.3047826-1-danishanwar@ti.com>
- <20250723080322.3047826-2-danishanwar@ti.com>
- <81273487-a450-4b28-abcc-c97273ca7b32@lunn.ch>
- <b61181e5-0872-402c-b91b-3626302deaeb@ti.com>
- <0a002a5b-9f1a-4972-8e1c-fa9244cec180@lunn.ch>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <0a002a5b-9f1a-4972-8e1c-fa9244cec180@lunn.ch>
+References: <20250710092455.1742136-1-vitaly.lifshits@intel.com>
+ <20250714165505.GR721198@horms.kernel.org> <CO1PR11MB5089BDD57F90FE7BEBE824F5D654A@CO1PR11MB5089.namprd11.prod.outlook.com>
+ <b7265975-d28c-4081-811c-bf7316954192@intel.com> <f44bfb41-d3bd-471c-916e-53fd66b04f27@intel.com>
+ <20250730152848.GJ1877762@horms.kernel.org> <20250730134213.36f1f625@kernel.org>
+ <55570ac6-8cd7-4a00-804e-7164f374f8ae@intel.com> <20250730170641.208bbce5@kernel.org>
+ <e04d3835-6870-4b82-a9a5-cb2e0b8342f5@intel.com> <20250731071900.5513e432@kernel.org>
+ <f27620c4-479b-4028-8055-448855991e6a@intel.com> <a9794885-5801-401b-b892-f1fed4157a4f@intel.com>
+In-Reply-To: <a9794885-5801-401b-b892-f1fed4157a4f@intel.com>
+From: En-Wei WU <en-wei.wu@canonical.com>
+Date: Thu, 28 Aug 2025 15:15:52 +0800
+X-Gm-Features: Ac12FXwi4D0akiHpvcavQrToyonQCdZbd76txj77rnkAuclerfTJUE2K51gEfxs
+Message-ID: <CAMqyJG2Kv90bzJNu10mPrmHQrfi5FL1eQPCufD3n=CNcDNMYkA@mail.gmail.com>
+Subject: Re: [RFC net-next v1 1/1] e1000e: Introduce private flag and module
+ param to disable K1
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"Ruinskiy, Dima" <dima.ruinskiy@intel.com>, Simon Horman <horms@kernel.org>, 
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: quoted-printable
 
+> Regarding the SKUs: the issues we've encountered aren't tied to specific =
+SKUs
 
+From our side, the issue is only specific to an SKU. If that's also
+the case from other sides, I'm wondering if it's possible to add a
+quirk table for enabling/disabling K1 configuration.
+The upside would be:
+1. There is no need for a user to bother giving the module parameter
+2. Let the kernel problem leave in the kernel
 
-On 24/07/25 10:07 pm, Andrew Lunn wrote:
->> Linux first send a rpmsg request with msg type = RPMSG_ETH_REQ_SHM_INFO
->> i.e. requesting for the shared memory info.
->>
->> Once firmware recieves this request it sends response with below fields,
->>
->> 	num_pkt_bufs, buff_slot_size, base_addr, tx_offset, rx_offset
->>
->> In the device tree, while reserving the shared memory for rpmsg_eth
->> driver, the base address and the size of the shared memory block is
->> mentioned. I have mentioned that in the documentation as well
-> 
-> If it is in device tree, why should Linux ask for the base address and
-> length? That just seems like a source of errors, and added complexity.
-> 
-> In general, we just trust DT. It is a source of truth. So i would
-> delete all this backwards and forwards and just use the values from
-> DT. Just check the magic numbers are in place.
-> 
+Thanks for your time. Please let me know your concern.
 
-Sure. I will make this change in v2.
-
->> The same `base_addr` is used by firmware for the shared memory. During
->> the rpmsg callback, firmware shares this `base_addr` and during
->> rpmsg_eth_validate_handshake() driver checks if the base_addr shared by
->> firmware is same as the one described in DT or not. Driver only proceeds
->> if it's same.
-> 
-> So there is a big assumption here. That both are sharing the same MMU,
-> or maybe IOMMU. Or both CPUs have configured their MMU/IOMMU so that
-> the pages appear at the same physical address. I think this is a
-> problem, and the design should avoid anything which makes this
-> assumptions. The data structures within the share memory should only
-> refer to offsets from the base of the shared memory, not absolute
-> values. Or an index into the table of buffers, 0..N.
-> 
->>>> +2. **HEAD Pointer**:
->>>> +
->>>> +   - Tracks the start of the buffer for packet transmission or reception.
->>>> +   - Updated by the producer (host or remote processor) after writing a packet.
->>>
->>> Is this a pointer, or an offset from the base address? Pointers get
->>> messy when you have multiple address spaces involved. An offset is
->>> simpler to work with. Given that the buffers are fixed size, it could
->>> even be an index.
->>>
->>
->> Below are the structure definitions.
->>
->> struct rpmsg_eth_shared_mem {
->> 	struct rpmsg_eth_shm_index *head;
->> 	struct rpmsg_eth_shm_buf *buf;
->> 	struct rpmsg_eth_shm_index *tail;
->> } __packed;
->>
->> struct rpmsg_eth_shm_index {
->> 	u32 magic_num;
->> 	u32 index;
->> }  __packed;
-> 
-> So index is the index into the array of fixed size buffers. That is
-> fine, it is not a pointer, so you don't need to worry about address
-> spaces. However, head and tail are pointers, so for those you do need
-> to worry about address spaces. But why do you even need them? Just put
-> the indexes directly into rpmsg_eth_shared_mem. The four index values
-> can be in the first few words of the shared memory, fixed offset from
-> the beginning, KISS.
-> 
-
-I will drop all these pointers and use a offset based approach in v2.
-
-Thanks for the feedback.
-
--- 
-Thanks and Regards,
-Danish
-
+On Sun, 3 Aug 2025 at 20:39, Lifshits, Vitaly <vitaly.lifshits@intel.com> w=
+rote:
+>
+>
+>
+> On 7/31/2025 6:51 PM, Jacob Keller wrote:
+> >
+> >
+> > On 7/31/2025 7:19 AM, Jakub Kicinski wrote:
+> >> On Thu, 31 Jul 2025 10:00:44 +0300 Ruinskiy, Dima wrote:
+> >>> My concern here is not as much as how to set the private flag
+> >>> automatically at each boot (I leave this to the system administrator)=
+.
+> >>>
+> >>> The concern is whether it can be set early enough during probe() to b=
+e
+> >>> effective. There is a good deal of HW access that happens during
+> >>> probe(). If it takes place before the flag is set, the HW can enter a
+> >>> bad state and changing K1 behavior later on does not always recover i=
+t.
+> >>>
+> >>> With the module parameter, adapter->flags2 |=3D FLAG2_DISABLE_K1 gets=
+ set
+> >>> inside e1000e_check_options(), which is before any HW access takes
+> >>> place. If the private flag method can give similar guarantees, then i=
+t
+> >>> would be sufficient.
+>
+> This was precisely the intention behind introducing the module parameter
+> initially. The private flag isn't a comprehensive solution=E2=80=94it's m=
+ore of
+> a mechanism to allow configuration changes without unloading the e1000e
+> module.
+>
+> >>
+> >> Presumably you are going to detect all the bad SKUs in the driver to
+> >> the best of your ability. So we're talking about a workaround that let=
+s
+> >> the user tweak things until a relevant patch reaches stable..
+>
+> Regarding the SKUs: the issues we've encountered aren't tied to specific
+> SKUs. Instead, they stem from broader environmental configurations that
+> the driver cannot address directly. For instance, misconfigurations in
+> the BIOS can only be resolved by the BIOS vendor, assuming they choose
+> to do so. Until such fixes are available to end users, the module
+> parameter provides a practical workaround for these system firmware issue=
+s.
+> >>
+> >
+> > I think you could just default to K1 disabled, and have the parameter
+> > for turning it on/off available. Ideally you'd default to disabled only
+> > on known SKUs that are problematic?
+>
+> As mentioned earlier, defaulting to K1 disabled isn't ideal. While it
+> might help avoid certain issues on specific units, it would negatively
+> impact the device's power consumption across all systems, the
+> overwhelming majority of which would never experience any problem.
+> Therefore, it's preferable to keep K1 enabled by default and allow users
+> to disable it only when necessary.
+>
