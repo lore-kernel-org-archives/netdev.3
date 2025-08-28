@@ -1,63 +1,63 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6154A3375AA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DA53375CD
 	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 16:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756398620; cv=none; b=XkVfG8Mjx8/jgVuohT/uQ+vFTYb+ivBbMtvnl4U6VsWRAP7nTdPsoYNNl7vlKrfjWFuIpy9jwbXKwEOI2+Lhio502JD7uVsoSV1lX/mjjQ8kS5JouQslzo2CeEYZ91M+DDgmW6KZzjApStC/1ad1RoGVPTutcgZ2a4dFHxuSoEk=
+	t=1756398620; cv=none; b=hThKxe/ed/J8sizewo5dCWzliVIyQSllZrsj+ZmGu4XQBPHBTckCqcisoCTC011PLG+RBv1k9VwJ0fFYOc50OKzohs1M4V7qZnjgy8foNDfL/DB9ve4yqEhikVv3rZ3WU3IevuSq5cJs8eduofpipkl/PgY9t5Tt+uBiRcJsT2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756398620; c=relaxed/simple;
-	bh=QJXQlXMQtc7697yuRontgX6xpHqEo/+owih5wyGE7Cc=;
+	bh=XuN+6CCt6cPxnSzJbpL8GnrHtHFh6xquhBYp8pHWAws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTu2GfAjaJV3Ne797QPBfn5sWMvxRuCn79giZx6TsgzWz8GGTUq0YbalPatmgoABdvylajj+RGWoeYXO3khzGPm+msVkojKq/3i7xb+IsLzgDyCBWS6J+d4v/NORaifmN7lDCyZiNkuURX93iTaIjVI8rhQb2LzpBYaJUbShR0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=moGlryzg; arc=none smtp.client-ip=209.85.219.178
+	 MIME-Version; b=XkUyuu2UpVEdxFHI2S9kutZIwso4vSKFv7BvBVDSh/Js3kcWL9WhhgtBUcYOdFW7yOQJDjdj32Op9GdHda/ClnytCnfd8iQFkqRGgCt0AhtKPaDpTh793mCTF/M5lwUMjODLkmYeZJ22MbizcEoLvAU0xN3/sKpAHHdDjlTCge0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e90lso6p; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="moGlryzg"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e970f3c06b5so313744276.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e90lso6p"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-71d603b674aso7521847b3.1
         for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:30:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756398617; x=1757003417; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756398618; x=1757003418; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2PRig1kLxU/AtNaCmh+qK3P9/4BBv4caazgCMc7Z2tI=;
-        b=moGlryzg8q6zIKweyRgBCT0EA4SgiV3shgvZHWwQy+1vrLTS94CfGatijfqaS9lLwe
-         +qMOStROUBCPg1YmMtkfEgwrwzuNzVKiuq27Ov5GQSI143KHVnS1G2IqpNPN2dot8R5U
-         GlGturjEeL20U8zFxsm73y9pr18m1XBBw2AgmQbbPT/WiSecD4c7FokOzBoQ/gnm5h/Y
-         9ISD06gOgmqzDBPxv5ujuDZ+aLsVGyYDcDJtq00ccqdw5q28xHOp+C2AXBEna2U12jhW
-         431OPDVFikpxien7I6pJxFk7A8HbxvPmXMYbzW84Eio4GCAK20Pzc5FjW9M60IgIV8CO
-         rRGA==
+        bh=939Nx6uVLvw4l3lvlfanPraTohmmdWkgrL+mk0f9MXQ=;
+        b=e90lso6pMFBngJKbrOhpmA2WNI8jl50jh0Qmwg1TE5nnVyxru5bn7uTvBz0PTJrgVj
+         /Je4LejeAQf37HazfPdQY2vuigpFAS/4IRNno3RoWMg/hspdLPerLQoZMa6MwB9LiZ1J
+         LJMkBzgQtqGAXpTl7PZKD6imgqRbEIBY6b2Zyvz+Mc/X+7b7uxy60yzE/C6TEqKcYW0W
+         dd058ttD9aYNlz7tQO8RH+M5B4ABDLDO088WY0yMQenulHKIegZ8Dv9qaLuuPbSjJ68h
+         bvDy4pmJ+KyLF4SsKL6TRAXZETHCYqn1zOcdOas8LaFql0o0YDgT5yEtbEWRuK4qM0pR
+         ONXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756398617; x=1757003417;
+        d=1e100.net; s=20230601; t=1756398618; x=1757003418;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2PRig1kLxU/AtNaCmh+qK3P9/4BBv4caazgCMc7Z2tI=;
-        b=lOgzVfTeMp35W8cGaTdz0HAiud6DstJtvWVGrWLb96FU/QBzlM1M/ehNpj0lftseyC
-         eatxfLhRV7IzXJNDNxzuPzjKgFA/kSOuhIPqZjiFaAiJ0ep9ET/JJQd4+ghQbX4cm0v2
-         MD+YU3I6R5yJVuZu4Enf/O3pf7Bxa8TsVmbQ7M3+8ekMCcOygxDG9kCV8B9LM/5UQcnL
-         xKFY2Ei07/uUAxRbQ/jevtaPgQqTW5a5wtR083gYyRQV+4zTQKhNsY8A8KnmuJgd0fSI
-         LgcN3cxLWWBjK/kmAG90DNY3FENh17rMuq+rkFzEB6W3bXIfbFljl0PMjqKNZwcmTxoX
-         7fcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBDJI0LKaRz62CN5YbCCEfavYRxloFUjjEofGF3Ac4bZggHAv3mmKQsamy5gUFTcaGl7XynFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzohFCIyJFXIFnSSYFYwYF0uTs6eozv6Kf7u76fQBFaTc2fEKE5
-	dQnwzXG0hKdzg0P30h5wNx2/hvgq4cjUl3VdkEjhENj+hhq1nepFSVfn
-X-Gm-Gg: ASbGncuerH7ua+iAjWC/i8BKJZ7JS4wzblXf8rgA3AhRylh2aCQgr7boQfHDHvxpn6K
-	gJmSfOsW6rCSIF1HMAbcxaiyiIykOrg6BExLl7iJeqoU7ISgGgnuyOvf2P7CjNBCA2adEIJfob1
-	7ayG3UTA87dU62STq9yChCYNJQHH0V1ML3XINHncCZGLQWKpIvN8HiLCArjuyN+uyYIxj4Nqwa4
-	SuutuTycyElONeNS0qy1HKFJ8ZEAVBUcyF/Sr7ZiJ2NzwDX9kTTwyLOj5D5TkH15ujqQItU6ezL
-	ASaH60RHCoJglC4qbLJAlAGy4Sf5TBdrLFtdhqWD8VkiAez9e6Yf4nU97D6mtlcScMU+8Fo71g5
-	olVsy1Eof6gz+rovv2mWK
-X-Google-Smtp-Source: AGHT+IEzNDGkdFNJciYXaNQoIWYXHSUv3p61hL+/GgHd0+7Y8Qpe5OpT9T1pUGq1YVVa9Kr1MhHuyQ==
-X-Received: by 2002:a05:6902:33c5:b0:e93:36f3:5720 with SMTP id 3f1490d57ef6-e951c3c4649mr23642029276.29.1756398615436;
-        Thu, 28 Aug 2025 09:30:15 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:51::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e952c2591ddsm5129445276.5.2025.08.28.09.30.14
+        bh=939Nx6uVLvw4l3lvlfanPraTohmmdWkgrL+mk0f9MXQ=;
+        b=oF05WpF33kCTGTBA5DovEuViAcMPq7lKXTZV+DrzPhgsVgfap5twJON75jj9NpcS6G
+         UymiOLD47xvN/V3WnkuwneCrVyJsh/lzzrtydTMVvKI2hvd+Mx/jHLEKykg6IeTc5n8s
+         9PdHmEVxSsAKKs3AhOFVH42iWwYuVf2voiLCP4yge2YLSh9uBKjldvN4CPs71vljeqFT
+         rQ+8G/9sG3E2gKeP3Z7K8YVawI3qJVyw19oYfjaFUU6Z+4CNAs7DrgJbccHsfFvTEN2M
+         dm3NyFB7WJgPksXfAQFJ19NVza3Grft19OBpK07d/gnyqvhTqeM8HbegPiIJyS59xyp7
+         i3Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCV75/mh2+y9JJkq9E+enhCg55eCi+Z4/rAC3gqOmDZgzn8lu/xkdlIf7LICLx1zAG1pRIgPhK4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YznMzlRWoeT1BMSB6zcAVqsAKgsE8Mgv3L8+WoMrtghbgyRtyUK
+	/dr6/2x9Ny64HuPefydvctSYzE8xpe3OLNcXXH3KnQnkSJRC5jAQbFda
+X-Gm-Gg: ASbGnctf47LcQvi+s3mBvEeYRK/HVklF2dvc0FmWAFja4iqtU0sHRoOILvOAAGZO3Aq
+	wB2oVAcmxNb7z+cL7CbAs5NP4LWNlvPUVT1TgmLgcvepAVq5DZEoNBjmdvWBEpouh6LmPG85TLg
+	4BILOXMoq3D7Oqtc+F2P4w6XxmZvLckkX686Je3IrfpuGHlR195M4MPRd5oiIKZ4SiozO1hkaDD
+	qRMxoBxc61AsD7w5qeJi8434vw1aPoKOz4tRb0nphgWdyHMjxvbiE8CfVPdiV+jpWGWliqr3o8N
+	3EPkFmbkVnzEpgSN/tnk43PUXhvUnsW2JPAHpjlsmqMpCDuKq2Dcfcpdqf5TxaFVSCT9KX5Wl65
+	9+TqvTA==
+X-Google-Smtp-Source: AGHT+IF6udwo7jHjUCQvH4W4JgkQsqy2TseMQ6uSiVMQae5Si8ds434nepbtLjoaq/+37gLCG12l7A==
+X-Received: by 2002:a05:690c:f92:b0:721:67c7:936e with SMTP id 00721157ae682-72167c79487mr21277617b3.50.1756398617342;
+        Thu, 28 Aug 2025 09:30:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:46::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-721ce5cd204sm411457b3.59.2025.08.28.09.30.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 09:30:15 -0700 (PDT)
+        Thu, 28 Aug 2025 09:30:16 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -86,9 +86,9 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v10 17/19] psp: provide decapsulation and receive helper for drivers
-Date: Thu, 28 Aug 2025 09:29:43 -0700
-Message-ID: <20250828162953.2707727-18-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v10 19/19] net/mlx5e: Implement PSP key_rotate operation
+Date: Thu, 28 Aug 2025 09:29:45 -0700
+Message-ID: <20250828162953.2707727-20-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250828162953.2707727-1-daniel.zahka@gmail.com>
 References: <20250828162953.2707727-1-daniel.zahka@gmail.com>
@@ -102,15 +102,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Raed Salem <raeds@nvidia.com>
 
-Create psp_rcv(), which drivers can call to psp decapsulate and attach
-a psp_skb_ext to an skb.
+Implement .key_rotate operation where when invoked will cause the HW to use
+a new master key to derive PSP spi/key pairs with complience with PSP spec.
 
-psp_rcv() only supports what the PSP architecture specification refers
-to as "transport mode" packets, where the L3 header is IPv6. psp_rcv()
-also assumes that a psp trailer is present and should be pulled from
-the skb.
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Raed Salem <raeds@nvidia.com>
 Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
@@ -118,92 +112,39 @@ Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 
 Notes:
-    v4:
-    - rename psp_rcv() to psp_dev_rcv()
-    - add strip_icv param psp_dev_rcv() to make trailer stripping optional
-    v3:
-    - patch introduced
+    v1:
+    - https://lore.kernel.org/netdev/20240510030435.120935-16-kuba@kernel.org/
 
- include/net/psp/functions.h |  1 +
- net/psp/psp_main.c          | 53 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 54 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en_accel/psp.c    | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
-index e8c2201814d5..1075e236dcc1 100644
---- a/include/net/psp/functions.h
-+++ b/include/net/psp/functions.h
-@@ -19,6 +19,7 @@ psp_dev_create(struct net_device *netdev, struct psp_dev_ops *psd_ops,
- void psp_dev_unregister(struct psp_dev *psd);
- bool psp_dev_encapsulate(struct net *net, struct sk_buff *skb,
- 			 __be32 spi, u8 ver, __be16 sport);
-+int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv);
- 
- /* Kernel-facing API */
- void psp_assoc_put(struct psp_assoc *pas);
-diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 40eb0b396b0e..a2e79a245571 100644
---- a/net/psp/psp_main.c
-+++ b/net/psp/psp_main.c
-@@ -215,6 +215,59 @@ bool psp_dev_encapsulate(struct net *net, struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+index 56f39f452bc8..406fe351cd28 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+@@ -82,11 +82,22 @@ static void mlx5e_psp_assoc_del(struct psp_dev *psd, struct psp_assoc *pas)
+ 	atomic_dec(&psp->tx_key_cnt);
  }
- EXPORT_SYMBOL(psp_dev_encapsulate);
  
-+/* Receive handler for PSP packets.
-+ *
-+ * Presently it accepts only already-authenticated packets and does not
-+ * support optional fields, such as virtualization cookies.
-+ */
-+int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, u8 generation, bool strip_icv)
++static int mlx5e_psp_key_rotate(struct psp_dev *psd, struct netlink_ext_ack *exack)
 +{
-+	const struct psphdr *psph;
-+	int depth = 0, end_depth;
-+	struct psp_skb_ext *pse;
-+	struct ipv6hdr *ipv6h;
-+	struct ethhdr *eth;
-+	int encap_bytes;
-+	__be16 proto;
++	struct mlx5e_priv *priv = netdev_priv(psd->main_netdev);
 +
-+	eth = (struct ethhdr *)(skb->data);
-+	proto = __vlan_get_protocol(skb, eth->h_proto, &depth);
-+	if (proto != htons(ETH_P_IPV6))
-+		return -EINVAL;
++	/* no support for protecting against external rotations */
++	psd->generation = 0;
 +
-+	ipv6h = (struct ipv6hdr *)(skb->data + depth);
-+	depth += sizeof(*ipv6h);
-+	end_depth = depth + sizeof(struct udphdr) + sizeof(struct psphdr);
-+
-+	if (unlikely(end_depth > skb_headlen(skb)))
-+		return -EINVAL;
-+
-+	pse = skb_ext_add(skb, SKB_EXT_PSP);
-+	if (!pse)
-+		return -EINVAL;
-+
-+	psph = (const struct psphdr *)(skb->data + depth + sizeof(struct udphdr));
-+	pse->spi = psph->spi;
-+	pse->dev_id = dev_id;
-+	pse->generation = generation;
-+	pse->version = FIELD_GET(PSPHDR_VERFL_VERSION, psph->verfl);
-+
-+	ipv6h->nexthdr = psph->nexthdr;
-+
-+	encap_bytes = PSP_ENCAP_HLEN;
-+	encap_bytes += strip_icv ? PSP_TRL_SIZE : 0;
-+	ipv6h->payload_len = htons(ntohs(ipv6h->payload_len) - encap_bytes);
-+
-+	memmove(skb->data + PSP_ENCAP_HLEN, skb->data, depth);
-+	skb_pull(skb, PSP_ENCAP_HLEN);
-+
-+	if (strip_icv)
-+		pskb_trim(skb, skb->len - PSP_TRL_SIZE);
-+
-+	return 0;
++	return mlx5e_psp_rotate_key(priv->mdev);
 +}
-+EXPORT_SYMBOL(psp_dev_rcv);
 +
- static int __init psp_init(void)
- {
- 	mutex_init(&psp_devs_lock);
+ static struct psp_dev_ops mlx5_psp_ops = {
+ 	.set_config   = mlx5e_psp_set_config,
+ 	.rx_spi_alloc = mlx5e_psp_rx_spi_alloc,
+ 	.tx_key_add   = mlx5e_psp_assoc_add,
+ 	.tx_key_del   = mlx5e_psp_assoc_del,
++	.key_rotate   = mlx5e_psp_key_rotate,
+ };
+ 
+ void mlx5e_psp_unregister(struct mlx5e_priv *priv)
 -- 
 2.47.3
 
