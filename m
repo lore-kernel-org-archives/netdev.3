@@ -1,111 +1,109 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962823043D9;
-	Thu, 28 Aug 2025 16:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77BE32C30F
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 16:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756399892; cv=none; b=qSWNZbVwbmybEJsRp0y0YX27o6HvJbcPUlpJocRr1ii/2cyRxYNZnjwaFA7CZco8H2R3VDexO29go/ng0DIJ1joe8q9Ejy6rJ5O1kgh2Ad9a+7J9LrxjBEUdiKMc7f8iry3MvwJblfvEG3DXMktgEoYyI8G+QlAYIKgRLC0eiDg=
+	t=1756400273; cv=none; b=NlhbmBM71nF91wvpIufUvUeZLNaweBNCJaWWbnyATylPIIV+35U1Pe/zUNc7FE8qJhm2hhj37zT93fhoDM06DC8Tfwm77+HHP+y2JqtA3bNq+BUEw8eZQgGr3/JUKMmgB/Ka4q0fHyvxPCtXs05hGWVkPhqVTQ7DvV0EbyLvr7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756399892; c=relaxed/simple;
-	bh=PVupvUbljqqv0l5EpslMuDT5j7QU3Ufuil+d3qdB5eA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ol2PGLoY+s/BmD/liaOQG9LREab5n6GwJkopSssU803o3vBICx7NgeCyxtuIdYmCxkVDYj6UPVEgT0IGYWgsmVTCXOPiqL76GXm5zREz8t1Rq4chlVufM3choiIKKSLKDwpRxVXzI7tYHF5RfU4iEWpXNABVzYvjst0+bvwpKTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LF+gGwKi; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756400273; c=relaxed/simple;
+	bh=nCg2nwi14+lPzAfgGbrrAYpMMC6kupWYt2gn0gu1knw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TvDWKJR9dovDKf+HnghjPAvqxAF6rRofYFRB1jl4MoYEPHsTF2bGHof+lWf3XwoB3OWEnQ1MfCw0eHPYuwQDIfQ5k8M2ON/HXnjwdWueInp5rKmTVGids1DMblLT7R9kYPfQ2wAbs8U3L3G6nIjnhTwFdd5pK2JKJF3EIaMN8hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jqsx+q2z; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LF+gGwKi"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 111BA4E40BB1;
-	Thu, 28 Aug 2025 16:51:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BCAB960303;
-	Thu, 28 Aug 2025 16:51:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6EEC81C22DDE9;
-	Thu, 28 Aug 2025 18:50:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756399881; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=01CLvL+opovfhfkSRyspjEXFZkfbj0TTItWEljkWyHE=;
-	b=LF+gGwKiR4u1aF8x9V/r/FYoaEYM5yIMM4utgdSxggzuD4ceJXDH52EapVHz1dRavntVmb
-	Z/4leyNDKQ3csKFk80uvyyd/e5syNpIg1IV1Xyf2kelhcKowKrG3NfsAdB9M+WJVPpnYd+
-	d85Egg6pS5815TGmco9Nynhhhkjzgm1QF9rqUeHeBm59SlAjT1Fupc4Mnn5VODa3tirg8U
-	n8wDXL4666720TL3hBZMVmYjB9PvgYgev95Id+9yn+IXQE2JDHZq4nbJ8lDujkGkQ/M/oF
-	+wZyBzXCBG/NU6Lt30oQqy+shG9EVxYj5ClTuzgIhroq74/O8htu/GlXU16KSA==
-Date: Thu, 28 Aug 2025 18:50:37 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Message-ID :" <cover.1752076293.git.mchehab+huawei@kernel.org>, Linux
- Doc Mailing List <linux-doc@vger.kernel.org>, "Akira Yokosawa"
- <akiyks@gmail.com>, "Breno Leitao" <leitao@debian.org>, "David S. Miller"
- <davem@davemloft.net>, "Donald Hunter" <donald.hunter@gmail.com>, "Eric
- Dumazet" <edumazet@google.com>, "Ignacio Encinas Rubio"
- <ignacio@iencinas.com>, "Jakub Kicinski" <kuba@kernel.org>, "Jan Stancek"
- <jstancek@redhat.com>, "Jonathan Corbet" <corbet@lwn.net>, "Marco Elver"
- <elver@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Randy Dunlap"
- <rdunlap@infradead.org>, "Ruben Wauters" <rubenru09@aol.com>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Simon Horman" <horms@kernel.org>,
- joel@joelfernandes.org, linux-kernel-mentees@lists.linux.dev,
- linux-kernel@vger.kernel.org, lkmm@lists.linux.dev, netdev@vger.kernel.org,
- peterz@infradead.org, stern@rowland.harvard.edu
-Subject: Re: [PATCH v10 06/14] docs: use parser_yaml extension to handle
- Netlink specs
-Message-ID: <20250828185037.07873d04@kmaincent-XPS-13-7390>
-In-Reply-To: <4c97889f0674b69f584dedc543a879d227ef5de0.1753718185.git.mchehab+huawei@kernel.org>
-References: <cover.1753718185.git.mchehab+huawei@kernel.org>
-	<4c97889f0674b69f584dedc543a879d227ef5de0.1753718185.git.mchehab+huawei@kernel.org>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jqsx+q2z"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-55f4468326aso184e87.1
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:57:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756400270; x=1757005070; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hUlxTvNnxWvVbwi4g/Jm8/uE0pr83dkev1JUOpqywAU=;
+        b=Jqsx+q2z1/wIo0bt8Hi4q8xHj4xjEYWVOF2t+wyeqz7ErYYHJg19vNwwpy6kAJjelr
+         aE4QUfYK3E69mZ1AbBxrvvfVQdHidgMz2wHN8eLerkmksqPXm0FSDhSkTGH70Mp+widb
+         CAerc56TozjwD3M/DRaD5V3ZUW+m/ftaTK8/qjGb/m0Dbe6YYmJci9tD3AjXTIgElU+0
+         7yKTxFzhcPCh/7Is4k0Gg65yuWSsL25gvVceU4zQNeZq4Zm0QIev2LULfxyAOqWfPJ19
+         6JDo0dE70Yd6f51nGO7sfuWTsgzie7uwh+7htqHB2WDXwObBd+i1br8/AsVjnjkm+bzr
+         /wYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756400270; x=1757005070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hUlxTvNnxWvVbwi4g/Jm8/uE0pr83dkev1JUOpqywAU=;
+        b=Ub2GIjwywym1pwNA6ikSLef2loDKt9TlQAiOrVrh4IBqcNus62AKhfEVSzf3GpJOe3
+         YsvQs+MNW/P/Dn4YMD86sKkozM/IybaRR49ndFcYAiFAaZhvHAHlD8dQpoEd7RA8+Mn6
+         B6RSjvSUmXqmLWh3+ejNZCdqfWqL6TgtCPr/b30m4dS/WKkYpf8heIGbqcl2TfIN7kMl
+         xob1mY7lklDZIcOFaNhMnVzI8kiNItjJbAk213nymbVZ9YZGBOEVXJygHdZHKiST7Fcc
+         kBBuPcoB+9Pu6HOU8fFfyZ2ErbtLZIhUdkhYzi0s72g09BxPry73Pe93DmtyYXP0q9nk
+         e4WA==
+X-Forwarded-Encrypted: i=1; AJvYcCXljmLxPcjkIiXhdaQN0LTDU8yzIp4BjmBUuPO/6N3klD05FJ+8zj1bYpuffsVybkZv/smnpLw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymZt7oQDEu2XveuLoMWBxJjCmj2ae0bhSrPIuwRaMfRuKlEYQG
+	fQA+aT9kJ8H2ryX0zPlTD+u2+J790vcJCY/6XO/cayrBUbdJfKWg6cs2DFvbYafuB1NK0jYrxt7
+	5VcPMahQMUZL79tc77601mPGEuaoUoMXrvQgabVBy
+X-Gm-Gg: ASbGnctF0SSzkz/U3uEYu2MmX0CTY+4w0sBAFSkoiKJQnLGBO2IUQ5ygzUZ14jaxdHW
+	PK1w6f6WzHVU97xF0a9OnMDxSJkDJ6Gw2TviqcJFmBNnFjYAUK1UR0bvApmEx/JGhl5SfwyOn26
+	XL83wnSdymNmeHaZ6AV81/Fd6ZpzcBbQmkGDQCAYaXA7EtZ+iPBZ5+gKhuxch+QbEnoICig47TW
+	m2HbFVZTxGL5MJIViET53gmjA==
+X-Google-Smtp-Source: AGHT+IEA+x+JHJGxAKqi3gf39h+cXrxl4F1cPaRjmHzOLyzmMNWf5vB8Aw2K6CCK2muVk+ohncKOBj10rKhlESV29Zs=
+X-Received: by 2002:a05:6512:609b:b0:55b:7c73:c5f0 with SMTP id
+ 2adb3069b0e04-55f4d3263a2mr1010554e87.2.1756400269844; Thu, 28 Aug 2025
+ 09:57:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20250828164345.116097-1-arkadiusz.kubalewski@intel.com>
+In-Reply-To: <20250828164345.116097-1-arkadiusz.kubalewski@intel.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 28 Aug 2025 09:57:37 -0700
+X-Gm-Features: Ac12FXyD8odEoc9_-KKAReVcf86GdG5H51-cMjxY6Bgpf4RvXSnT7vL1DpsIvFs
+Message-ID: <CAHS8izPU7beTCQ+nKAU=P=i1nF--DcYMcH0wM1OygpvAYi5MiA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2] net: add net-device TX clock source selection framework
+To: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, 
+	asml.silence@gmail.com, leitao@debian.org, kuniyu@google.com, 
+	jiri@resnulli.us, aleksandr.loktionov@intel.com, ivecera@redhat.com, 
+	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-Le Mon, 28 Jul 2025 18:01:59 +0200,
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> a =C3=A9crit :
+On Thu, Aug 28, 2025 at 9:50=E2=80=AFAM Arkadiusz Kubalewski
+<arkadiusz.kubalewski@intel.com> wrote:
+> ---
+>  Documentation/netlink/specs/netdev.yaml     |  61 +++++
+>  drivers/net/ethernet/intel/ice/Makefile     |   1 +
+>  drivers/net/ethernet/intel/ice/ice.h        |   5 +
+>  drivers/net/ethernet/intel/ice/ice_lib.c    |   6 +
+>  drivers/net/ethernet/intel/ice/ice_main.c   |   6 +
+>  drivers/net/ethernet/intel/ice/ice_tx_clk.c | 100 +++++++
+>  drivers/net/ethernet/intel/ice/ice_tx_clk.h |  17 ++
+>  include/linux/netdev_tx_clk.h               |  92 +++++++
+>  include/linux/netdevice.h                   |   4 +
+>  include/uapi/linux/netdev.h                 |  18 ++
+>  net/Kconfig                                 |  21 ++
+>  net/core/Makefile                           |   1 +
+>  net/core/netdev-genl-gen.c                  |  37 +++
+>  net/core/netdev-genl-gen.h                  |   4 +
+>  net/core/netdev-genl.c                      | 287 ++++++++++++++++++++
+>  net/core/tx_clk.c                           | 218 +++++++++++++++
+>  net/core/tx_clk.h                           |  36 +++
+>  tools/include/uapi/linux/netdev.h           |  18 ++
+>  18 files changed, 932 insertions(+)
 
-> Instead of manually calling ynl_gen_rst.py, use a Sphinx extension.
-> This way, no .rst files would be written to the Kernel source
-> directories.
->=20
-> We are using here a toctree with :glob: property. This way, there
-> is no need to touch the netlink/specs/index.rst file every time
-> a new Netlink spec is added/renamed/removed.
+Consider breaking up a change of this size in a patch series to make
+it a bit easier for reviewers, if it makes sense to you.
 
-...
-
-> diff --git a/Documentation/networking/index.rst
-> b/Documentation/networking/index.rst index ac90b82f3ce9..b7a4969e9bc9 100=
-644
-> --- a/Documentation/networking/index.rst
-> +++ b/Documentation/networking/index.rst
-> @@ -57,7 +57,7 @@ Contents:
->     filter
->     generic-hdlc
->     generic_netlink
-> -   netlink_spec/index
-> +   ../netlink/specs/index
-
-Faced a doc build warning that say netlink_spec/index.rst is not used.
-
-$ git grep netlink_spec
-Documentation/networking/mptcp.rst:netlink_spec/mptcp_pm.rst.
-Documentation/translations/zh_CN/networking/index.rst:*   netlink_spec/index
-
-I think we can remove the whole directory and change these, right?
-
-Also got a doc build warning that says netlink/specs/index is not existing =
-even
-if it exists. Maybe a sphinx parsing issue ?!
-
-Regards,
 --=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Thanks,
+Mina
