@@ -1,107 +1,264 @@
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.237.72.81])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C872BB13;
-	Thu, 28 Aug 2025 08:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.237.72.81
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FDC27A927;
+	Thu, 28 Aug 2025 08:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756369834; cv=none; b=J9GvELWewY5S4uQcpSfSEcFJ7Txtmg7LtA0fHUlyzBZkkP82t/cVJRBUvqptAJNpzuh/H/aHF/riXiSQsL743yxz8cnzVyxUsKRDwzRGd/WUlziKaJnQvrCMQpqWJ/Wle2vMeg03Dy8QXVGape4i6teT/YLGMtepb+ZAb2erHcc=
+	t=1756369908; cv=none; b=p98QCBRYbOAIubvWgEV5Mi75Mw4MoSf+GtCTSC3Z+QbdP6A8+bLgt7aGfnCzZ76jDKfKLFFJuTocB9TagRmmJKUCemaZT5Vgu7wCgZ9GjvNjaGQKwj0bWtvRssT2v2kxhxjyzh7cZPoM4DrxN5qCsmrlcg4VRLK5PfvbXKxt5yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756369834; c=relaxed/simple;
-	bh=lYvOkaqSmiPB3fPDePClMUAcE7IkORIZ2YlXR6J25JE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JunvWI14VZ+ztyDD7fEUqgx1o4IELkuRgS2mFICZmaTmUFIDAwGv9hiREOkePJ0BhZI6wwXR8tgAZc51dT6+agIg2ryJWhuTqjnn+sTfwflElS+7bxGwh8NQxPgqSBISQ6EtonWtVbEL/A3Ig4ocuCERuXlc0MMr3gfYDjmG/Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=52.237.72.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from zju.edu.cn (unknown [218.12.22.77])
-	by mtasvr (Coremail) with SMTP id _____wBXo0GFE7BoaXOmAQ--.35203S3;
-	Thu, 28 Aug 2025 16:29:58 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [218.12.22.77])
-	by mail-app3 (Coremail) with SMTP id zS_KCgC3uGt_E7Bo4vgRAg--.32381S2;
-	Thu, 28 Aug 2025 16:29:56 +0800 (CST)
-From: Duoming Zhou <duoming@zju.edu.cn>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	vadim.fedorenko@linux.dev,
-	jonathan.lemon@gmail.com,
-	richardcochran@gmail.com,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH net] ptp: ocp: fix use-after-free bugs causing by ptp_ocp_watchdog
-Date: Thu, 28 Aug 2025 16:29:49 +0800
-Message-Id: <20250828082949.28189-1-duoming@zju.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756369908; c=relaxed/simple;
+	bh=OH+tiuZhRc7zBGjnfTEQrtm5HNLz2ea/O1IUH/tbp4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hjFufEbfDh2ZwTPoaaMUSdPhNaETeZGqMVrn9P/ButxzEF1IXlJ7pR+53QdRAjUlbLtKyS9JcCww/ajQnZkgVsDlvgvjkeJf4LSfoHaWF2VZbOO0TgQ31wyvQLTIPff4xR8/TVCgjkJD+VuPd2cUDZpBamfVHDVtH8IxppdvWR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com; spf=none smtp.mailfrom=linux.spacemit.com; dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b=CMRJJUQ3; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.spacemit.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.spacemit.com header.i=@linux.spacemit.com header.b="CMRJJUQ3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.spacemit.com;
+	s=mxsw2412; t=1756369896;
+	bh=31kdvkUcjKbhPvlFzt+kjJ6mau02w/DFORYHNaO+fTQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version;
+	b=CMRJJUQ3dN4GSfAF0FsiEkYszHcNgQGbL3yqPY0/auNs3YpBFqn2qaoX1cZnpNEgs
+	 CGZzy0qVCEPQo1oNDg4chqymbIjZGabGoTva7YkkGCIm7wSicXUCJtXQ/hndgCVRIH
+	 H/7mC9ugGjgJGk2h4UequIJQzLOkdscyDqhtubjM=
+X-QQ-mid: zesmtpsz3t1756369894taa63037f
+X-QQ-Originating-IP: 74a9wFgC2VtntaDe04tPl510lmwJye9e6Dxfwjn/SmU=
+Received: from = ( [14.123.253.129])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 28 Aug 2025 16:31:32 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16767505359158184548
+EX-QQ-RecipientCnt: 26
+Date: Thu, 28 Aug 2025 16:31:31 +0800
+From: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+To: Vivian Wang <wangruikang@iscas.ac.cn>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>
+Cc: Vivian Wang <uwu@dram.page>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Junhui Liu <junhui.liu@pigmoral.tech>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v7 2/5] net: spacemit: Add K1 Ethernet MAC
+Message-ID: <D1B3E8CA05947AC1+aLAT40m4VCtlL2Yk@LT-Guozexi>
+References: <20250826-net-k1-emac-v7-0-5bc158d086ae@iscas.ac.cn>
+ <20250826-net-k1-emac-v7-2-5bc158d086ae@iscas.ac.cn>
+ <193454B6B44560D1+aK-x9J2EIB5aA9yr@LT-Guozexi>
+ <6c221dcf-4310-4e31-b3e8-a8a3b68c3734@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zS_KCgC3uGt_E7Bo4vgRAg--.32381S2
-X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwYMAWivX3kKvwA9sh
-X-CM-DELIVERINFO: =?B?tDe5dwXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
-	CR14rLicSpEjZUZiR0XyfQpfqCNvLUJpn3cUPDpJvueWGVIASmmDqvMev1Dccqs2H3z1uh
-	i0RlUb/Ldsdi21hmwFQW6Se2hnaYR5/2T5LD0dLogoMhDa3yq0Flmth1VeHgmA==
-X-Coremail-Antispam: 1Uk129KBj93XoW7WFy7KFW8try3Kr15CrW8Zrc_yoW8XFy5pr
-	WkGw43Ar1jqr4UCa1vqr1kJFyruayvvFy0yw4rKwn8Z3Z8WF1SqF4rKw4jgayqkrWDWr1S
-	yF4Fq3y5AFnYk3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9Kb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
-	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
-	AKI48G6xCjnVAKz4kxM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI7VAKI48JMxC2
-	0s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
-	0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
-	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20x
-	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWU
-	JVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7xwIDUUUU
+In-Reply-To: <6c221dcf-4310-4e31-b3e8-a8a3b68c3734@iscas.ac.cn>
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:linux.spacemit.com:qybglogicsvrsz:qybglogicsvrsz3a-0
+X-QQ-XMAILINFO: MExkIg7Bfu69z7AfItWMTNu1jYT6WkMpE/y15+NVNxHnru1+wpOx879x
+	4m0FKPPDyALE7dSqsVMGepCmiZUY1aELXFky+XWFh2keLBV0aQCLLrWbz4LQdfibB9LOM13
+	Qtb1c8D4p9j45/wlKkLbnP+upD/jQyiDTHggXxSKR0Tw7ObdgvJpmURaHKlLLAE7FT8fMwc
+	lcg03Po6AyHtOcQqANBnGIYLNJ79N6TK9ohUdNF597FmZM53QsO8zcXEp+nSDfS5gvkR6yf
+	u9Awxyp+9RH69nri6GT7JK90tipaJVadwAbPlZaYeHwI+rh/V6swNMNt/GS25XDcuRisKjF
+	g6HqfMRZC/Td5WaeeZlFLGupVjJc/gyQGPFAVlOais6lPvFgE/MyUalBXAy0AitQBxfXCX/
+	N0c23KrkRaPL6aqBJoVOHlL25TT5q9ezC+qQVJlU/nVxmlssxqua4D5gODocfGt6vQJ+Bxu
+	sjySJ+LH3fJw9LEMMc4RwcX5lddyfdJvwSoG8ZtDGgRvf3s1IPYAYlzPw+QWY5kQDeOOE2C
+	xSSRrJa1/7RKXIaidVjchXxcAMtVVLXlsTZ+CPIVroZKYMhqzN3BngZ4xBH8lUyslNiKvFY
+	2uTswIahFlKoatI5Rm/0BNkPQKbXkGDWJCcnVoIPPBoBIXu2vzHIcn7r22m3/HJmrBSG7Ck
+	lpYS7l5zDiPni/kBIj/sLdOjD695SFvrkdT562Sx/+z0jIAHDWeIzHLotcThMbTtKq3JQEy
+	U2VmJcIW1YkwPbh4IwkFnLVd6EFYH2AjuRcjpYuoCnzK+Sr5xjV7CRlO/3rGkdKbohi7HVv
+	OEpzzMRyIsefEYfcu3b3h6zR3l7RX51IcbpMZ3xicNb4fEmIIsWatB7sOAaOPdNy0BNiO4r
+	cpoVXzeKvY/VCkuSWQAnIfHrfx9seLmxL3m2aUtMFE83mmpBVBLVRwmaNZyzVYnmfZdpjnq
+	bsxrnYp6ls9jngqejQTlEjOlnB92wjXzBK+Rsfk85uWU0eHR1cSmSXu0B8w8PHzg9QMR6aA
+	m+o6EzwKmNoYwVBKv70pi6mFBxx4J4YS/yKs04B2ASC0oVaSAoD4zu5fQ/mPpIeieA0fzhC
+	tTjgUYrqQcziXcHV/7BwaV+bGW80NooEBYvtvyzmr3D
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-The ptp_ocp_detach() only shuts down the watchdog timer if it is
-pending. However, if the timer handler is already running, the
-timer_delete_sync() is not called. This leads to race conditions
-where the devlink that contains the ptp_ocp is deallocated while
-the timer handler is still accessing it, resulting in use-after-free
-bugs. The following details one of the race scenarios.
+On Thu, Aug 28, 2025 at 04:06:58PM +0800, Vivian Wang wrote:
+> Hi Troy,
+> 
+> On 8/28/25 09:33, Troy Mitchell wrote:
+> > On Tue, Aug 26, 2025 at 02:23:47PM +0800, Vivian Wang wrote:
+> >> The Ethernet MACs found on SpacemiT K1 appears to be a custom design
+> >> that only superficially resembles some other embedded MACs. SpacemiT
+> >> refers to them as "EMAC", so let's just call the driver "k1_emac".
+> >>
+> >> Supports RGMII and RMII interfaces. Includes support for MAC hardware
+> >> statistics counters. PTP support is not implemented.
+> >>
+> >> Tested-by: Junhui Liu <junhui.liu@pigmoral.tech>
+> >> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+> >> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> >> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> >> ---
+> > Hi Vivian,
+> > I have tested your patch on MUSE-PI.
+> > So here:
+> >
+> > Tested-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
+> >
+> > But I still have a minor style comment on the code.
+> Thanks for your Tested-by and review.
+> >>  drivers/net/ethernet/Kconfig            |    1 +
+> >>  drivers/net/ethernet/Makefile           |    1 +
+> >>  drivers/net/ethernet/spacemit/Kconfig   |   29 +
+> >>  drivers/net/ethernet/spacemit/Makefile  |    6 +
+> >>  drivers/net/ethernet/spacemit/k1_emac.c | 2193 +++++++++++++++++++++++++++++++
+> >>  drivers/net/ethernet/spacemit/k1_emac.h |  426 ++++++
+> >>  6 files changed, 2656 insertions(+)
+> >>
+> >> diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+> >> new file mode 100644
+> >> index 0000000000000000000000000000000000000000..9e558d5893cfbbda0baa7ad21a7209dadda9487e
+> >> --- /dev/null
+> >> +++ b/drivers/net/ethernet/spacemit/k1_emac.c
+> >> @@ -0,0 +1,2193 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +/*
+> >> + * SpacemiT K1 Ethernet driver
+> >> + *
+> >> + * Copyright (C) 2023-2025 SpacemiT (Hangzhou) Technology Co. Ltd
+> >> + * Copyright (C) 2025 Vivian Wang <wangruikang@iscas.ac.cn>
+> >> + */
+> >> +
+> > [...]
+> >> +
+> >> +static void emac_wr(struct emac_priv *priv, u32 reg, u32 val)
+> >> +{
+> >> +	writel(val, priv->iobase + reg);
+> >> +}
+> > basically short and obvious code like this:
+> >
+> > writel(val, priv->iobase + reg)
+> >
+> > you replace:
+> >
+> > emac_wr(priv, reg, val)
+> >
+> > It's not helpful..You could just use writel/readl directly
+> >> +
+> >> +static int emac_rd(struct emac_priv *priv, u32 reg)
+> >> +{
+> >> +	return readl(priv->iobase + reg);
+> >> +}
+> > ditto.
+> 
+> I have decided against inlining these wrappers.
+> 
+> Firstly, the wrappers being mostly trivial is not it being "not
+> helpful". In long blocks of register access code, especially, having
+> just emac_rd(priv,...) or emac_wr(priv,...) repeated is easier to
+> recognize and harder to mess up (e.g. precedence of "priv->iomem + ...").
+> 
+> Secondly, they serve as documentation that a normal register access for
+> this driver is a 32-bit read or write. This is despite the fact that the
+> registers all "look like" they each only have the low 16 bits.
+Alright, you’ve convinced me.
+I did wrap it like this before, but it was opposed—I guess it really depends on
+whether the maintainer likes it.
 
-(thread 1)                           | (thread 2)
-ptp_ocp_remove()                     |
-  ptp_ocp_detach()                   | ptp_ocp_watchdog()
-    if (timer_pending(&bp->watchdog))|   bp = timer_container_of()
-      timer_delete_sync()            |
-                                     |
-  devlink_free(devlink) //free       |
-                                     |   bp-> //use
+[...]
+> >> +static void emac_free_tx_buf(struct emac_priv *priv, int i)
+> >> +{
+> >> +	struct emac_tx_desc_buffer *tx_buf;
+> >> +	struct emac_desc_ring *tx_ring;
+> >> +	struct desc_buf *buf;
+> >> +	int j;
+> >> +
+> >> +	tx_ring = &priv->tx_ring;
+> >> +	tx_buf = &tx_ring->tx_desc_buf[i];
+> >> +
+> >> +	for (j = 0; j < 2; j++) {
+> >> +		buf = &tx_buf->buf[j];
+> >> +		if (buf->dma_addr) {
+> >> +			if (buf->map_as_page)
+> >> +				dma_unmap_page(&priv->pdev->dev, buf->dma_addr,
+> >> +					       buf->dma_len, DMA_TO_DEVICE);
+> >> +			else
+> >> +				dma_unmap_single(&priv->pdev->dev,
+> >> +						 buf->dma_addr, buf->dma_len,
+> >> +						 DMA_TO_DEVICE);
+> >> +
+> >> +			buf->dma_addr = 0;
+> >> +			buf->map_as_page = false;
+> >> +			buf->buff_addr = NULL;
+> >> +		}
+> > if (!buf->dma_addr)
+> >   continue;
+> >
+> > Best regards,
+> > Troy
+> You tricked me! There's one more review comment below :P
+Haha, You are so cute, Vivian.
+I'm surprised you were able to find it, because I went back to check after
+writing the last comment. So I wasn't able to find the final one myself.
 
-Resolve this by unconditionally calling timer_delete_sync() to ensure
-the timer is reliably deactivated, preventing any access after free.
+                - Troy
 
-Fixes: 773bda964921 ("ptp: ocp: Expose various resources on the timecard.")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
----
- drivers/ptp/ptp_ocp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index d39073dc4072..4e1286ce05c9 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4557,8 +4557,7 @@ ptp_ocp_detach(struct ptp_ocp *bp)
- 	ptp_ocp_debugfs_remove_device(bp);
- 	ptp_ocp_detach_sysfs(bp);
- 	ptp_ocp_attr_group_del(bp);
--	if (timer_pending(&bp->watchdog))
--		timer_delete_sync(&bp->watchdog);
-+	timer_delete_sync(&bp->watchdog);
- 	if (bp->ts0)
- 		ptp_ocp_unregister_ext(bp->ts0);
- 	if (bp->ts1)
--- 
-2.34.1
-
+(This really is the final one this time.)
+> >> +	}
+> >> +
+> >> +	if (tx_buf->skb) {
+> >> +		dev_kfree_skb_any(tx_buf->skb);
+> >> +		tx_buf->skb = NULL;
+> >> +	}
+> >> +}
+> >> +
+> >> +static void emac_clean_tx_desc_ring(struct emac_priv *priv)
+> >> +{
+> >> +	struct emac_desc_ring *tx_ring = &priv->tx_ring;
+> >> +	u32 i;
+> >> +
+> >> +	/* Free all the TX ring skbs */
+> >> +	for (i = 0; i < tx_ring->total_cnt; i++)
+> >> +		emac_free_tx_buf(priv, i);
+> >> +
+> >> +	tx_ring->head = 0;
+> >> +	tx_ring->tail = 0;
+> >> +}
+> >> +
+> >> +static void emac_clean_rx_desc_ring(struct emac_priv *priv)
+> >> +{
+> >> +	struct emac_rx_desc_buffer *rx_buf;
+> >> +	struct emac_desc_ring *rx_ring;
+> >> +	u32 i;
+> >> +
+> >> +	rx_ring = &priv->rx_ring;
+> >> +
+> >> +	/* Free all the RX ring skbs */
+> >> +	for (i = 0; i < rx_ring->total_cnt; i++) {
+> >> +		rx_buf = &rx_ring->rx_desc_buf[i];
+> >> +		if (rx_buf->skb) {
+> >> +			dma_unmap_single(&priv->pdev->dev, rx_buf->dma_addr,
+> >> +					 rx_buf->dma_len, DMA_FROM_DEVICE);
+> >> +
+> >> +			dev_kfree_skb(rx_buf->skb);
+> >> +			rx_buf->skb = NULL;
+> >> +		}
+> > if (!rx_buf->skb)
+> >   continue;
+> 
+> I will change both of these to "if (...) continue;" in the next version.
+> 
+> Thanks,
+> Vivian "dramforever" Wang
+> 
+> 
