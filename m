@@ -1,63 +1,63 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBF832A3C5
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 16:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5274322DC1
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 16:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756398619; cv=none; b=ozRHQmlMd2yJ/DTytdAy///KOynTzzurLDshlwDenptOZyQC0f8X8y4skv0G7OMMC8DjhOa1p9UokOf6CHpOPQo6mULsUTWFqVW76mfHzcORHmolByGsJEaJZ6DeaDXdGZLxYkXDhiYQLLrHMMTOSXIw/ViTKe/RG+N+LKIRJto=
+	t=1756398619; cv=none; b=rWFxW5Ex8EN6Eg1rpvyNz5EZoRJI07W/98Samhi/nh9Kuei6KFfJDptHRPBcNm83JSfV3AOrLZJ5tI4nrjPTrkbxxaiXqzlsURyp0DjbgXryRd1fj/aKweFreLrhUdS0ZE3xipLwK5TvCjioV0kxN42AcFBpU0Nh96uBS+G46WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756398619; c=relaxed/simple;
-	bh=JFlh8IFAX6P6s2rGPz7XX4v9NOCsAuRerFpYCGXCZ+A=;
+	bh=IdxgJZCrGw6r3AbOSvergTiRAFtwh1SAGbMKM/tjFDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FJqW7fFMcDYP/OVzIcNnObCwK9eeKxVE9HG9VSSOoyduku94hKr81KpxNRxpDkjh3uC2C+F4wilIawcPzvBvRJgQVd63e3sGsGN1nL9uICODIoHuwk3ZzJ8aioFwsmJiXCENZk9RYQEBRPULpq3PJQHAiABBJ3EERog32NSjIRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIUswZTo; arc=none smtp.client-ip=209.85.128.173
+	 MIME-Version; b=a9+Tf/xtD4hl8Vsuo3s5+Mg4QGB8SsiEZY5NzFzn1uY69Ng8naNNLwm3hJZHK/iHXM4UIYjjk/90eauS3psdslwO9I3f3yXH93mfCOeGUi1qmDtbCxyxS27pcZFg6wBZINgFKG2DoBGtL+cF+ySzLwPra+s0PgI1JKs+RTkyNjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bFP4tOj5; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIUswZTo"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-71d601859f5so9266027b3.0
-        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:30:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bFP4tOj5"
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-71e6f84b77eso8460857b3.2
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756398616; x=1757003416; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756398617; x=1757003417; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fHZTltHpHac+2N0Ut7U/5EQqA25GtUwNdIcLRaQF6Ok=;
-        b=TIUswZTo1qLjwz174lZZy0hyxPkH9O6imRo3UEhWBqsPs/rUXVPGmkHAUnNOCtC+5C
-         KoYBEVtpIwEFsoC/uCqSepSL80mUSuFaJL4Z7fxzC7yc4gIb6hQAK1YH0oC0psXBBt8R
-         dmj+CzMgANBJVBu5OU1NKQYMu+/qxHPVchbB2wwpNWyMTOABzMettXbawx1zKZ1DvY/s
-         JjhoR9g9SkpprBa1S8GsksN6MCRZUele9hoEc57oLoFvvTlg/ySoOh3Tame3c1uWF4FY
-         8qD6ZFr6hTE0awTOfs42LGWx9NEKSVLMmZs1zk1BenZDjzMYczcRpKLA+l+XU1xit/AH
-         wjYA==
+        bh=SXzeSxEhO+TL4hVEiijBY1pcbn8eYrbaSU1+DUXJzdU=;
+        b=bFP4tOj52biW2gAb53xgVqUbHhF8X9bGydel6eWopY+0wnoBqbozBENRngt7D0QP4d
+         OWdQDIaI9oj+NKn+CVituh1bgGBa0LopGd0MNMbCVcSS0PfN8hNjooTtNG76t5xZwARj
+         b/PSkBh7gi1v97eCxvfu/8XdawJRBVTZpENbthquQvMBmTuAeaP1uthAZ7uSXXgqE9ni
+         w0dnR8joY6W24UYy3OUFFd6bnNfhcQ2qJs7Uz7AtLWR90R9Akb3t+2Ry7cF2u8QtCmVh
+         MFkcFGyhelCpiYmtm2G3O5D32XAfDXWtn6afiigNlXYOIbCxjMlNPBLQ2fZSWgU2p09n
+         12dQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756398616; x=1757003416;
+        d=1e100.net; s=20230601; t=1756398617; x=1757003417;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fHZTltHpHac+2N0Ut7U/5EQqA25GtUwNdIcLRaQF6Ok=;
-        b=dVHuAk6Rl73wQ+T0wIgUF4eMeilc3FLeL/TOiDxrF07pV6FktuK2GqiFnqPMRKyFel
-         9BNrK1/VrcpvuYqBEK+xb76D9wOHCUSDDtcI5XJwQ6x9gZ+VLK7LvIcTHiD1xcWMspQ2
-         7Jl0NSHqls2N71A53qwCi23XT911Ip8fLSO1y8eoWg9BoQHIQMeeTR5+Ywst5FiS19nY
-         GnZAX6DjA1UGBG+ylWsrABuv2eUmTWfRGGNHIhDyiwcEaqQAxdvocTVeaR39t2A1Uuay
-         t8cbgfKqE00xukq1BLbNGvzrSgWVpB3aiCqpKYU3Y26e9DXvuE/tzDrHo2iiB0xPt4+R
-         Htdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWyTs98RssQo7LmUPBsRQY0lV91kZjnHdF6KPoRQ9Bwz1Kdfc37Nablexq2JlkIlF2VePcqeRw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvULlSMMiK0uwPmOBNSuyHRaYEIiUu5rq85CO1hcPx/Gs5SkCE
-	6m3c6qJNKEErnNWyjVd17AEKCg+kSXyNr3y2SW1Hpa9nqe3JDCBrVgZR
-X-Gm-Gg: ASbGncva8pxcuD1e9tvaVEEOqym4GQM7dokuSQMIRWPzLkOTDMMWoSWZ7M2OtDcreUX
-	Nn8XvhoG0X4U/FOAbWFNLPArb5txk1EopGRTSg6eypf3m/5cwoECkKq97Dwnf5C61hNFF194Rat
-	oOmSnIXlKKI1vX9cxbgKGZ/fGpMAds2tymVhPkRh07dys9zT9YPuj5I7FKC1/5Do0gTh+MWGyaH
-	EY3P7+hvMKPEssI8CyGwc4YLvNuZ5pmJ8f0ZSoO6TR+msYx3Znke1JYIeWdW+t53FHyo01fOv1w
-	3x2AKnQKEB8uXyVWffYCtL/e1aFxAT/1u9z0fTBHVwsUmpJJDHOkMSEpWH2DWydLfLdYCbuG4RC
-	6Xe6X7/V8k6jxwo8V260a2ReN/tcgn2o=
-X-Google-Smtp-Source: AGHT+IHgtAfUF0jN2tjsjP0Oi2AiQ807+w5Qo1D2b6uXCVY/vkHsuqWup1ktElK3c+rNsYIBGywkNQ==
-X-Received: by 2002:a05:690c:600d:b0:721:562c:381e with SMTP id 00721157ae682-721562c43a0mr53471447b3.3.1756398614592;
-        Thu, 28 Aug 2025 09:30:14 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:48::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-5ff8f22624asm15963d50.8.2025.08.28.09.30.13
+        bh=SXzeSxEhO+TL4hVEiijBY1pcbn8eYrbaSU1+DUXJzdU=;
+        b=ZP3Z3d45vcOakbD7CslUH28aPPyCLv5sUVwJZAG7WXn6lDgFkAbZm1sTuGx6U3zSOM
+         x+mf7zles+Cj+PqLfm1sjp4R8GJeksYtPkxcNMa/xbtr8nJCBuSTm0NJRXMCHHT76TKi
+         jubCUORGxQPYyTiwRERK2XMYaeEoW3gNdHGJwivKD9ARf/1J9AFGmcjsN/NcO/KXGoj1
+         n2cNu6fbj+Xx3X+9LzEjR/EpV3JQ9lXbE7Pphynh3KHqgPVZD/i5OE0jCwB2G3P6dZ1S
+         yN0Tx2e3x3EkJhj+PmcRVmLK6H+ljWAgqxNSUxeb5iCOzZ3+ewyDdL+jpA0ksJuMB3P2
+         Mfbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCfp/lm1A8KFozPaWpb4DTaRuLOjK/XCRvEpGQLI6qgni+lj+UN5lM5sj2OmcR1p3XWCsQXiA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkjL+yh+oc5tFVa2pyldXu/XRwWFBoMQv3cnWzpk4+hzYnQMEP
+	rAIQPG0Zsa/3np0AxlCNOxfaosQgQjMdVWeZ4R7D9zrityhHqlvj4XaI
+X-Gm-Gg: ASbGncs/wU51dTa9qAMEMmG+StwaL/a2ryUj6JnxdQ6Y5SBoDjg7igJygmtOmiGuhyl
+	wqOt93JqA8jMEnfk20+ugkiSRxsXVSSBdQhpU4INAk8Yzyt7ztCPLMNEFOcWPeDRQxVDMt7MHIp
+	HnS4IAkChcDU6x3HOZfmijB4VVyiy6aVJY33JRRpHrBEr1qXXK9ppvmSAy61gV/Mho8uRZ5H6Aw
+	P5FKad4p7UQNZUxMizqzDqqZ+peoxf13XLS0YVJ4JK29GgJ3/ztlYgWFwKR5pzt642rBoaWK7NL
+	rkw3lTFRN4O6O8dgEFU0QIgrP1Fofh2/zAtc8OZVZfv23A4+mNUauEZ/PfeYi4LQ2BC/2MZ+EgG
+	sDXjC3qPgM7mKgtUOsp5O
+X-Google-Smtp-Source: AGHT+IHrSW1qdEmi8p7J8KEdOvfg83syHfFFGFG+4WlhftSjL6W5SFEWWFXPXRm5EUIaxDoJ8cp6cg==
+X-Received: by 2002:a05:690c:6e12:b0:71f:b944:1041 with SMTP id 00721157ae682-71fdc542caemr259565987b3.50.1756398616458;
+        Thu, 28 Aug 2025 09:30:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:5c::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-721ce497fafsm427677b3.47.2025.08.28.09.30.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 09:30:14 -0700 (PDT)
+        Thu, 28 Aug 2025 09:30:15 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -86,9 +86,9 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v10 16/19] net/mlx5e: Configure PSP Rx flow steering rules
-Date: Thu, 28 Aug 2025 09:29:42 -0700
-Message-ID: <20250828162953.2707727-17-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v10 18/19] net/mlx5e: Add Rx data path offload
+Date: Thu, 28 Aug 2025 09:29:44 -0700
+Message-ID: <20250828162953.2707727-19-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250828162953.2707727-1-daniel.zahka@gmail.com>
 References: <20250828162953.2707727-1-daniel.zahka@gmail.com>
@@ -102,12 +102,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Raed Salem <raeds@nvidia.com>
 
-Set the Rx PSP flow steering rule where PSP packet is identified and
-decrypted using the dedicated UDP destination port number 1000. If packet
-is decrypted then a PSP marker and syndrome are added to metadata so SW can
-use it later on in Rx data path.
-
-The rule is set as part of init_rx netdev profile implementation.
+On receive flow inspect received packets for PSP offload indication using
+the cqe, for PSP offloaded packets set SKB PSP metadata i.e spi, header
+length and key generation number to stack for further processing.
 
 Signed-off-by: Raed Salem <raeds@nvidia.com>
 Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
@@ -116,135 +113,286 @@ Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 
 Notes:
-    v6:
-    - change loop index in mlx5_accel_psp_fs_init_rx_tables() to int to
-      avoid relying on udefined behavior.
+    v4:
+    - remove mlx5e_psp_csum_complete() because stripping psp_icv can be
+      done in psp_dev_rcv() now
+    - fix MLX5_PSP_METADATA_SYNDROME typo
+    v3:
+    - move psp_rcv() into psp_main.c in a separate commit
+    v2:
+    - fill out new pse::dev_id field in psp_rcv()
     v1:
-    - https://lore.kernel.org/netdev/20240510030435.120935-14-kuba@kernel.org/
+    - https://lore.kernel.org/netdev/20240510030435.120935-15-kuba@kernel.org/
 
- .../mellanox/mlx5/core/en_accel/en_accel.h    | 14 +++++-
- .../mellanox/mlx5/core/en_accel/psp_fs.c      | 43 ++++++++++++++++---
- .../mellanox/mlx5/core/en_accel/psp_fs.h      |  7 +++
- 3 files changed, 58 insertions(+), 6 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_rxtx.h  |  2 +-
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.c    | 30 ++++++++++++
+ .../mellanox/mlx5/core/en_accel/psp_rxtx.h    | 25 ++++++++++
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 49 ++++++++++++++-----
+ 4 files changed, 93 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-index 86496e332b03..f1ff79c863d0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/en_accel.h
-@@ -237,12 +237,24 @@ static inline void mlx5e_accel_tx_finish(struct mlx5e_txqsq *sq,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+index 3cc640669247..45b0d19e735c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_rxtx.h
+@@ -40,7 +40,7 @@
+ #include "en/txrx.h"
  
- static inline int mlx5e_accel_init_rx(struct mlx5e_priv *priv)
- {
--	return mlx5e_ktls_init_rx(priv);
-+	int err;
+ /* Bit31: IPsec marker, Bit30: reserved, Bit29-24: IPsec syndrome, Bit23-0: IPsec obj id */
+-#define MLX5_IPSEC_METADATA_MARKER(metadata)  (((metadata) >> 31) & 0x1)
++#define MLX5_IPSEC_METADATA_MARKER(metadata)  ((((metadata) >> 30) & 0x3) == 0x2)
+ #define MLX5_IPSEC_METADATA_SYNDROM(metadata) (((metadata) >> 24) & GENMASK(5, 0))
+ #define MLX5_IPSEC_METADATA_HANDLE(metadata)  ((metadata) & GENMASK(23, 0))
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+index 2ae5dafcc43f..828bff1137af 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.c
+@@ -14,6 +14,12 @@
+ #include "en_accel/psp_rxtx.h"
+ #include "en_accel/psp.h"
+ 
++enum {
++	MLX5E_PSP_OFFLOAD_RX_SYNDROME_DECRYPTED,
++	MLX5E_PSP_OFFLOAD_RX_SYNDROME_AUTH_FAILED,
++	MLX5E_PSP_OFFLOAD_RX_SYNDROME_BAD_TRAILER,
++};
 +
-+	err = mlx5_accel_psp_fs_init_rx_tables(priv);
-+	if (err)
-+		goto out;
-+
-+	err = mlx5e_ktls_init_rx(priv);
-+	if (err)
-+		mlx5_accel_psp_fs_cleanup_rx_tables(priv);
-+
-+out:
-+	return err;
+ static void mlx5e_psp_set_swp(struct sk_buff *skb,
+ 			      struct mlx5e_accel_tx_psp_state *psp_st,
+ 			      struct mlx5_wqe_eth_seg *eseg)
+@@ -113,6 +119,30 @@ static bool mlx5e_psp_set_state(struct mlx5e_priv *priv,
+ 	return ret;
  }
  
- static inline void mlx5e_accel_cleanup_rx(struct mlx5e_priv *priv)
++bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev, struct sk_buff *skb,
++				     struct mlx5_cqe64 *cqe)
++{
++	u32 psp_meta_data = be32_to_cpu(cqe->ft_metadata);
++	struct mlx5e_priv *priv = netdev_priv(netdev);
++	u16 dev_id = priv->psp->psp->id;
++	bool strip_icv = true;
++	u8 generation = 0;
++
++	/* TBD: report errors as SW counters to ethtool, any further handling ? */
++	if (MLX5_PSP_METADATA_SYNDROME(psp_meta_data) != MLX5E_PSP_OFFLOAD_RX_SYNDROME_DECRYPTED)
++		goto drop;
++
++	if (psp_dev_rcv(skb, dev_id, generation, strip_icv))
++		goto drop;
++
++	skb->decrypted = 1;
++	return false;
++
++drop:
++	kfree_skb(skb);
++	return true;
++}
++
+ void mlx5e_psp_tx_build_eseg(struct mlx5e_priv *priv, struct sk_buff *skb,
+ 			     struct mlx5e_accel_tx_psp_state *psp_st,
+ 			     struct mlx5_wqe_eth_seg *eseg)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+index 521b2c3620e6..70289c921bd6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_rxtx.h
+@@ -10,6 +10,11 @@
+ #include "en.h"
+ #include "en/txrx.h"
+ 
++/* Bit30: PSP marker, Bit29-23: PSP syndrome, Bit22-0: PSP obj id */
++#define MLX5_PSP_METADATA_MARKER(metadata)  ((((metadata) >> 30) & 0x3) == 0x3)
++#define MLX5_PSP_METADATA_SYNDROME(metadata) (((metadata) >> 23) & GENMASK(6, 0))
++#define MLX5_PSP_METADATA_HANDLE(metadata)  ((metadata) & GENMASK(22, 0))
++
+ struct mlx5e_accel_tx_psp_state {
+ 	u32 tailen;
+ 	u32 keyid;
+@@ -75,6 +80,14 @@ static inline unsigned int mlx5e_psp_tx_ids_len(struct mlx5e_accel_tx_psp_state
  {
- 	mlx5e_ktls_cleanup_rx(priv);
-+	mlx5_accel_psp_fs_cleanup_rx_tables(priv);
+ 	return psp_st->tailen;
+ }
++
++static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
++{
++	return MLX5_PSP_METADATA_MARKER(be32_to_cpu(cqe->ft_metadata));
++}
++
++bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev, struct sk_buff *skb,
++				     struct mlx5_cqe64 *cqe);
+ #else
+ static inline bool mlx5e_psp_is_offload_state(struct mlx5e_accel_tx_psp_state *psp_state)
+ {
+@@ -92,5 +105,17 @@ static inline bool mlx5e_psp_txwqe_build_eseg_csum(struct mlx5e_txqsq *sq, struc
+ {
+ 	return false;
+ }
++
++static inline bool mlx5e_psp_is_rx_flow(struct mlx5_cqe64 *cqe)
++{
++	return false;
++}
++
++static inline bool mlx5e_psp_offload_handle_rx_skb(struct net_device *netdev,
++						   struct sk_buff *skb,
++						   struct mlx5_cqe64 *cqe)
++{
++	return false;
++}
+ #endif /* CONFIG_MLX5_EN_PSP */
+ #endif /* __MLX5E_PSP_RXTX_H__ */
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index b8c609d91d11..f4dbdeb27821 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -51,6 +51,7 @@
+ #include "ipoib/ipoib.h"
+ #include "en_accel/ipsec.h"
+ #include "en_accel/macsec.h"
++#include "en_accel/psp_rxtx.h"
+ #include "en_accel/ipsec_rxtx.h"
+ #include "en_accel/ktls_txrx.h"
+ #include "en/xdp.h"
+@@ -1521,6 +1522,11 @@ static inline void mlx5e_handle_csum(struct net_device *netdev,
+ 		skb->ip_summed = CHECKSUM_COMPLETE;
+ 		skb->csum = csum_unfold((__force __sum16)cqe->check_sum);
+ 
++		if (unlikely(mlx5e_psp_is_rx_flow(cqe))) {
++			/* TBD: PSP csum complete corrections for now chose csum_unnecessary path */
++			goto csum_unnecessary;
++		}
++
+ 		if (test_bit(MLX5E_RQ_STATE_CSUM_FULL, &rq->state))
+ 			return; /* CQE csum covers all received bytes */
+ 
+@@ -1549,7 +1555,7 @@ static inline void mlx5e_handle_csum(struct net_device *netdev,
+ 
+ #define MLX5E_CE_BIT_MASK 0x80
+ 
+-static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
++static inline bool mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
+ 				      u32 cqe_bcnt,
+ 				      struct mlx5e_rq *rq,
+ 				      struct sk_buff *skb)
+@@ -1563,6 +1569,11 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
+ 	if (unlikely(get_cqe_tls_offload(cqe)))
+ 		mlx5e_ktls_handle_rx_skb(rq, skb, cqe, &cqe_bcnt);
+ 
++	if (unlikely(mlx5e_psp_is_rx_flow(cqe))) {
++		if (mlx5e_psp_offload_handle_rx_skb(netdev, skb, cqe))
++			return true;
++	}
++
+ 	if (unlikely(mlx5_ipsec_is_rx_flow(cqe)))
+ 		mlx5e_ipsec_offload_handle_rx_skb(netdev, skb,
+ 						  be32_to_cpu(cqe->ft_metadata));
+@@ -1608,9 +1619,11 @@ static inline void mlx5e_build_rx_skb(struct mlx5_cqe64 *cqe,
+ 
+ 	if (unlikely(mlx5e_skb_is_multicast(skb)))
+ 		stats->mcast_packets++;
++
++	return false;
  }
  
- static inline int mlx5e_accel_init_tx(struct mlx5e_priv *priv)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.c
-index 22809fbc5b43..f3b05c4f2fc0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.c
-@@ -469,9 +469,6 @@ static void accel_psp_fs_cleanup_rx(struct mlx5e_psp_fs *fs)
- 	if (!fs->rx_fs)
- 		return;
+-static void mlx5e_shampo_complete_rx_cqe(struct mlx5e_rq *rq,
++static bool mlx5e_shampo_complete_rx_cqe(struct mlx5e_rq *rq,
+ 					 struct mlx5_cqe64 *cqe,
+ 					 u32 cqe_bcnt,
+ 					 struct sk_buff *skb)
+@@ -1620,16 +1633,20 @@ static void mlx5e_shampo_complete_rx_cqe(struct mlx5e_rq *rq,
+ 	stats->packets++;
+ 	stats->bytes += cqe_bcnt;
+ 	if (NAPI_GRO_CB(skb)->count != 1)
+-		return;
+-	mlx5e_build_rx_skb(cqe, cqe_bcnt, rq, skb);
++		return false;
++
++	if (mlx5e_build_rx_skb(cqe, cqe_bcnt, rq, skb))
++		return true;
++
+ 	skb_reset_network_header(skb);
+ 	if (!skb_flow_dissect_flow_keys(skb, &rq->hw_gro_data->fk, 0)) {
+ 		napi_gro_receive(rq->cq.napi, skb);
+ 		rq->hw_gro_data->skb = NULL;
+ 	}
++	return false;
+ }
  
--	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++)
--		accel_psp_fs_rx_ft_put(fs, i);
--
- 	accel_psp = fs->rx_fs;
- 	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++) {
- 		fs_prot = &accel_psp->fs_prot[i];
-@@ -497,11 +494,47 @@ static int accel_psp_fs_init_rx(struct mlx5e_psp_fs *fs)
- 		mutex_init(&fs_prot->prot_mutex);
+-static inline void mlx5e_complete_rx_cqe(struct mlx5e_rq *rq,
++static inline bool mlx5e_complete_rx_cqe(struct mlx5e_rq *rq,
+ 					 struct mlx5_cqe64 *cqe,
+ 					 u32 cqe_bcnt,
+ 					 struct sk_buff *skb)
+@@ -1638,7 +1655,7 @@ static inline void mlx5e_complete_rx_cqe(struct mlx5e_rq *rq,
+ 
+ 	stats->packets++;
+ 	stats->bytes += cqe_bcnt;
+-	mlx5e_build_rx_skb(cqe, cqe_bcnt, rq, skb);
++	return mlx5e_build_rx_skb(cqe, cqe_bcnt, rq, skb);
+ }
+ 
+ static inline
+@@ -1855,7 +1872,8 @@ static void mlx5e_handle_rx_cqe(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+ 		goto wq_cyc_pop;
  	}
  
-+	fs->rx_fs = accel_psp;
-+
-+	return 0;
-+}
-+
-+void mlx5_accel_psp_fs_cleanup_rx_tables(struct mlx5e_priv *priv)
-+{
-+	int i;
-+
-+	if (!priv->psp)
-+		return;
-+
- 	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++)
--		accel_psp_fs_rx_ft_get(fs, ACCEL_FS_PSP4);
-+		accel_psp_fs_rx_ft_put(priv->psp->fs, i);
-+}
-+
-+int mlx5_accel_psp_fs_init_rx_tables(struct mlx5e_priv *priv)
-+{
-+	struct mlx5e_psp_fs *fs;
-+	int err, i;
-+
-+	if (!priv->psp)
-+		return 0;
-+
-+	fs = priv->psp->fs;
-+	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++) {
-+		err = accel_psp_fs_rx_ft_get(fs, i);
-+		if (err)
-+			goto out_err;
+-	mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb);
++	if (mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb))
++		goto wq_cyc_pop;
+ 
+ 	if (mlx5e_cqe_regb_chain(cqe))
+ 		if (!mlx5e_tc_update_skb_nic(cqe, skb)) {
+@@ -1902,7 +1920,8 @@ static void mlx5e_handle_rx_cqe_rep(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe)
+ 		goto wq_cyc_pop;
+ 	}
+ 
+-	mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb);
++	if (mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb))
++		goto wq_cyc_pop;
+ 
+ 	if (rep->vlan && skb_vlan_tag_present(skb))
+ 		skb_vlan_pop(skb);
+@@ -1951,7 +1970,8 @@ static void mlx5e_handle_rx_cqe_mpwrq_rep(struct mlx5e_rq *rq, struct mlx5_cqe64
+ 	if (!skb)
+ 		goto mpwrq_cqe_out;
+ 
+-	mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb);
++	if (mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb))
++		goto mpwrq_cqe_out;
+ 
+ 	mlx5e_rep_tc_receive(cqe, rq, skb);
+ 
+@@ -2388,7 +2408,10 @@ static void mlx5e_handle_rx_cqe_mpwrq_shampo(struct mlx5e_rq *rq, struct mlx5_cq
+ 		stats->hds_nosplit_bytes += data_bcnt;
+ 	}
+ 
+-	mlx5e_shampo_complete_rx_cqe(rq, cqe, cqe_bcnt, *skb);
++	if (mlx5e_shampo_complete_rx_cqe(rq, cqe, cqe_bcnt, *skb)) {
++		*skb = NULL;
++		goto free_hd_entry;
 +	}
+ 	if (flush && rq->hw_gro_data->skb)
+ 		mlx5e_shampo_flush_skb(rq, cqe, match);
+ free_hd_entry:
+@@ -2446,7 +2469,8 @@ static void mlx5e_handle_rx_cqe_mpwrq(struct mlx5e_rq *rq, struct mlx5_cqe64 *cq
+ 	if (!skb)
+ 		goto mpwrq_cqe_out;
  
--	fs->rx_fs = accel_psp;
- 	return 0;
-+
-+out_err:
-+	i--;
-+	while (i >= 0) {
-+		accel_psp_fs_rx_ft_put(fs, i);
-+		--i;
-+	}
-+
-+	return err;
- }
+-	mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb);
++	if (mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb))
++		goto mpwrq_cqe_out;
  
- static int accel_psp_fs_tx_create_ft_table(struct mlx5e_psp_fs *fs)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.h
-index d81aeea43505..02215ea67a2d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp_fs.h
-@@ -12,6 +12,8 @@ struct mlx5e_psp_fs *mlx5e_accel_psp_fs_init(struct mlx5e_priv *priv);
- void mlx5e_accel_psp_fs_cleanup(struct mlx5e_psp_fs *fs);
- int mlx5_accel_psp_fs_init_tx_tables(struct mlx5e_priv *priv);
- void mlx5_accel_psp_fs_cleanup_tx_tables(struct mlx5e_priv *priv);
-+int mlx5_accel_psp_fs_init_rx_tables(struct mlx5e_priv *priv);
-+void mlx5_accel_psp_fs_cleanup_rx_tables(struct mlx5e_priv *priv);
- #else
- static inline int mlx5_accel_psp_fs_init_tx_tables(struct mlx5e_priv *priv)
- {
-@@ -19,5 +21,10 @@ static inline int mlx5_accel_psp_fs_init_tx_tables(struct mlx5e_priv *priv)
- }
+ 	if (mlx5e_cqe_regb_chain(cqe))
+ 		if (!mlx5e_tc_update_skb_nic(cqe, skb)) {
+@@ -2779,7 +2803,8 @@ static void mlx5e_trap_handle_rx_cqe(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe
+ 	if (!skb)
+ 		goto wq_cyc_pop;
  
- static inline void mlx5_accel_psp_fs_cleanup_tx_tables(struct mlx5e_priv *priv) { }
-+static inline int mlx5_accel_psp_fs_init_rx_tables(struct mlx5e_priv *priv)
-+{
-+	return 0;
-+}
-+static inline void mlx5_accel_psp_fs_cleanup_rx_tables(struct mlx5e_priv *priv) { }
- #endif /* CONFIG_MLX5_EN_PSP */
- #endif /* __MLX5_PSP_FS_H__ */
+-	mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb);
++	if (mlx5e_complete_rx_cqe(rq, cqe, cqe_bcnt, skb))
++		goto wq_cyc_pop;
+ 	skb_push(skb, ETH_HLEN);
+ 
+ 	mlx5_devlink_trap_report(rq->mdev, trap_id, skb,
 -- 
 2.47.3
 
