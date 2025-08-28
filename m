@@ -1,86 +1,140 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34272459E1
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 08:46:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FDF2874E7;
+	Thu, 28 Aug 2025 08:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756370810; cv=none; b=pdySjuYBFZ7QCHPQNRw/26U9MZJrrmprZxo6+Ofco/d3zRed4EpiYn4Fs7uEG+iId3shBnY2S/tV1RYTy/DMsCD6nN8g9r/uhhm5X0b5pWv4vNE+esyLXF23D3lMhMJtT5/e54zAaqqnVj8nSBztyLmVh0Ws8S3Mj5hGXz7poCg=
+	t=1756370901; cv=none; b=Fy+4YKIcyTTKFSG8PC04HFQJWrQ/DApJdwjzVsM9mcIIlBJgFDLHzdS+UXdlr9UsM9pyx49SsT7WsgKaySAMHa4Smn+FiozPgmld0L7LaQkPIJOW0V7ur+Cm5OLjM1oEH3GkjE5GDNgIOGPyaWV800he1A8C+zSsknJsU54NldU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756370810; c=relaxed/simple;
-	bh=de2J3MJTaqYoEKquhyWV2Kxi2khjcmqfXABnAiwZOQo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EJv1gIV1nahfFNgAGpQvD3j+4n54iYYxQsSo4e55Oe30UjSLf4bcSFHY3N5VL2Aae38hUKSH3pVWWYjTLJlhncBuzQUw9y+IkdRlNDp0OVII8o49iBqH8pO4vm7x+L4C9l2v0xE4cAJNOrww6UVNRy4DGacbXM2ANTciZgo6yL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bTpvSap6; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bTpvSap6"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id EB3B51A0E47;
-	Thu, 28 Aug 2025 08:46:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C49D160303;
-	Thu, 28 Aug 2025 08:46:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 494A61C228428;
-	Thu, 28 Aug 2025 10:46:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756370798; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=fcQ9JtxCmzdFu9rK24Fv5CgRvuqX3Rs7LR5peXvP4UY=;
-	b=bTpvSap6WG8UAFepu/5oFZ8X+VsjtKBuj5bDxTx2AyqMNuF0HqLVu93q2tlXWAbFxHA5M8
-	4FYeC5Alhs+RIusSLHDmKfLcG4jMhNkJPf/R+Aw1Dcl+b0ghdbIQtF1mlpd4Bxy/YzdM1Q
-	t0DYbZJlMzSCrTtcz4SH6PY9nTZVjW/O0vWb2mNJ0cqz7Nj74zrj54sT5rd3QtVBcL/FDF
-	TrYTOeYuwG03plHjGPTZC18loxqrEYA2ZFK0nRl0ynDnopidcq524HhdbXEvTlt5wb/fb1
-	/4ujEeXVNX88OcWqb/rteCsHOhZu0aKjFwU9qBYzPPRKC6uBQTW/XwTogJQVNw==
-Date: Thu, 28 Aug 2025 10:46:12 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- kernel@pengutronix.de, Dent Project <dentproject@linuxfoundation.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Maxime Chevallier
- <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next 1/2] net: pse-pd: pd692x0: Separate
- configuration parsing from hardware setup
-Message-ID: <20250828104612.6b47301b@kmaincent-XPS-13-7390>
-In-Reply-To: <20250825151001.38af758c@kernel.org>
-References: <20250822-feature_poe_permanent_conf-v1-0-dcd41290254d@bootlin.com>
-	<20250822-feature_poe_permanent_conf-v1-1-dcd41290254d@bootlin.com>
-	<20250825151001.38af758c@kernel.org>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1756370901; c=relaxed/simple;
+	bh=5uErrrV3rp6pA/pHEkzJKprTkfL5j3WOFyZrL2Ec1jM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=DS27suJ7Dn50F7YrtTAjEn0XupghttLr8A1GnVWmy9ZITkd8pQGsFGS8zGthGKvG3dk25+kOF2/GpUCAWpx7UTKyIdT9epDdxdo2v7jkoul6cIhyIR+e8vF6cHY1KiEy1+ctdJu/RAj+jsmeT8basBAkWVg7CQ+NFm77DKVyAOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [114.241.87.235])
+	by APP-01 (Coremail) with SMTP id qwCowADHt6u4F7BoPuLFDw--.34750S7;
+	Thu, 28 Aug 2025 16:47:55 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Date: Thu, 28 Aug 2025 16:47:53 +0800
+Subject: [PATCH net-next v8 5/5] riscv: dts: spacemit: Add Ethernet support
+ for Jupiter
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250828-net-k1-emac-v8-5-e9075dd2ca90@iscas.ac.cn>
+References: <20250828-net-k1-emac-v8-0-e9075dd2ca90@iscas.ac.cn>
+In-Reply-To: <20250828-net-k1-emac-v8-0-e9075dd2ca90@iscas.ac.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>
+Cc: Vivian Wang <uwu@dram.page>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-CM-TRANSID:qwCowADHt6u4F7BoPuLFDw--.34750S7
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw43Gw1ftrWfAF43Cr45Jrb_yoW8WFW8pa
+	y3CFsaqFZ7Cr1fKw43Zr9F9F13Ga95GrWkC3y3uF1rJ3yIvFZ0vw1ftw1xtr1DGrW5X34Y
+	vr1IyFyxurnFkw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
+	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
+	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
+	daVFxhVjvjDU0xZFpf9x0pRJ3kZUUUUU=
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-Le Mon, 25 Aug 2025 15:10:01 -0700,
-Jakub Kicinski <kuba@kernel.org> a =C3=A9crit :
+Milk-V Jupiter uses an RGMII PHY for each port and uses GPIO for PHY
+reset.
 
-> On Fri, 22 Aug 2025 17:37:01 +0200 Kory Maincent wrote:
-> >  	manager =3D kcalloc(PD692X0_MAX_MANAGERS, sizeof(*manager),
-> > GFP_KERNEL); if (!manager)
-> >  		return -ENOMEM;
-> > =20
-> > +	port_matrix =3D devm_kcalloc(&priv->client->dev, PD692X0_MAX_PIS,
-> > +				   sizeof(*port_matrix), GFP_KERNEL);
-> > +	if (!port_matrix)
-> > +		return -ENOMEM; =20
->=20
-> Leaking manager..
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Reviewed-by: Yixun Lan <dlan@gentoo.org>
+---
+ arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts | 46 +++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-I don't think so, as manager is declared like the following it should not.
-struct pd692x0_manager *manager __free(kfree) =3D NULL;
+diff --git a/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts b/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
+index 4483192141049caa201c093fb206b6134a064f42..c5933555c06b66f40e61fe2b9c159ba0770c2fa1 100644
+--- a/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
++++ b/arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts
+@@ -20,6 +20,52 @@ chosen {
+ 	};
+ };
+ 
++&eth0 {
++	phy-handle = <&rgmii0>;
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac0_cfg>;
++	rx-internal-delay-ps = <0>;
++	tx-internal-delay-ps = <0>;
++	status = "okay";
++
++	mdio-bus {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++
++		reset-gpios = <&gpio K1_GPIO(110) GPIO_ACTIVE_LOW>;
++		reset-delay-us = <10000>;
++		reset-post-delay-us = <100000>;
++
++		rgmii0: phy@1 {
++			reg = <0x1>;
++		};
++	};
++};
++
++&eth1 {
++	phy-handle = <&rgmii1>;
++	phy-mode = "rgmii-id";
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac1_cfg>;
++	rx-internal-delay-ps = <0>;
++	tx-internal-delay-ps = <250>;
++	status = "okay";
++
++	mdio-bus {
++		#address-cells = <0x1>;
++		#size-cells = <0x0>;
++
++		reset-gpios = <&gpio K1_GPIO(115) GPIO_ACTIVE_LOW>;
++		reset-delay-us = <10000>;
++		reset-post-delay-us = <100000>;
++
++		rgmii1: phy@1 {
++			reg = <0x1>;
++		};
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_2_cfg>;
 
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+-- 
+2.50.1
+
