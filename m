@@ -1,124 +1,68 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADA83314CE
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 17:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAD82BE04D;
+	Thu, 28 Aug 2025 17:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756400586; cv=none; b=K/c+iQQ6RBWbwgUFMDkxgAfrkNIxULRNKmxFn2Nlz56Dvkk5WhkBNFaymfuseYXL4lh9gEtYjgzgxCYXnN4slecijFQ/HMWA3qIJtYmMLfp2XAA1gzup0YXAKCOG6aF48V6zmmEAGc7hZArm/JjJDXJ3YRWTwyvjDYRZNkXeecI=
+	t=1756400830; cv=none; b=uQe7+YszZGGqRNe2rb9oQHJhTtQ726ZFMv2QdMQfMWd0qJeC+7Xtm17N3ZoPwdaUD3QDGvKuG/qgT27iXfFkEWv/GBStIyb5Fiaa6Qx1ZTDtvghccvfVbf6sl0EkzSuWMQhLn498djuK6z5QWvpOEgXFDJKI1PqK8LD25cXOCxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756400586; c=relaxed/simple;
-	bh=lc4yQLlGQ1ALDQQJS7QLyBBBdQD7Q9TQBdMpceMI9hk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nvcb8cBt/zj0ZulNVq+30sqo6Y63/UkaoVz9n1j9WlDNF2SG9eUY49cNMmfC3On0JfTbJNaHkinmYa0mMlBaFhVySm2wEnqeD5kCk5TPXqirWAyw3g+jd7oUvI64vaCI+6oiCOEd7GWpFYDxklxNTGdVzToi2WKX2IXxiC9HBBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=K88uUqBi; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756400830; c=relaxed/simple;
+	bh=3gTzFS2mfkWv9GDGZCaEYaViGLlDDzJmcWrY8AgI1ZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qEHwtU3Gr+0tCbVHMQqtA+T/pyG+2U6AoMZ0juhvpHObQnseijR9MUx4GpGiKk5FsZaMxBkzFhIpwHL/stKr07+FFNSNhgEahhhkaxBmcc6gU/DefjkmamqQeLlb+6XJCf0kkqDYxRAlplCYZZXqEXJqjFiQ5suqk7Pirt/3src=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KjASwD8F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="K88uUqBi"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DA5A31A0E42;
-	Thu, 28 Aug 2025 17:03:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AA3DF60303;
-	Thu, 28 Aug 2025 17:03:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 21CAF1C22DD92;
-	Thu, 28 Aug 2025 19:02:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756400580; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4Vex+Mkvb0GemWYHmwN2TZzE127JKaTead6sfS0g/BY=;
-	b=K88uUqBiCBmZYOXjE7eaX15VQS5Y/Ibuox7+bHeNP1PTVBAlgYC+/JcBeCy6VcGGzpV4pj
-	5No3PKiewSUFyztDWjZSg+SYBIXI2j0TZhjP3cxfVJ88Mx+1bo5P2g9YaAF61MGTFZZkxo
-	D2ihndxTq0UfY28cIyiTH2qPn9Dq1nbuknrDK7XN/4dT/MWkC/sxPuZtqKHDnhflmMF3pn
-	yTMwbfDlvSzkX1GmcMlpSQ1ooW/TrcLB+VoyYLFDB6P4uBwurHDppwCnHU9e7cVR/409Wg
-	JE73AvIf6jwNIVWuXKZmfeRuk+M/VLeO/ev5PyXFvCOiExR3xWCLmP/Cwl9+kQ==
-Date: Thu, 28 Aug 2025 19:02:43 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: "Message-ID :" <cover.1752076293.git.mchehab+huawei@kernel.org>, Linux
- Doc Mailing List <linux-doc@vger.kernel.org>, "Akira Yokosawa"
- <akiyks@gmail.com>, "Breno Leitao" <leitao@debian.org>, "David S. Miller"
- <davem@davemloft.net>, "Donald Hunter" <donald.hunter@gmail.com>, "Eric
- Dumazet" <edumazet@google.com>, "Ignacio Encinas Rubio"
- <ignacio@iencinas.com>, "Jakub Kicinski" <kuba@kernel.org>, "Jan Stancek"
- <jstancek@redhat.com>, "Jonathan Corbet" <corbet@lwn.net>, "Marco Elver"
- <elver@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Randy Dunlap"
- <rdunlap@infradead.org>, "Ruben Wauters" <rubenru09@aol.com>, "Shuah Khan"
- <skhan@linuxfoundation.org>, "Simon Horman" <horms@kernel.org>,
- joel@joelfernandes.org, linux-kernel-mentees@lists.linux.dev,
- linux-kernel@vger.kernel.org, lkmm@lists.linux.dev, netdev@vger.kernel.org,
- peterz@infradead.org, stern@rowland.harvard.edu
-Subject: Re: [PATCH v10 06/14] docs: use parser_yaml extension to handle
- Netlink specs
-Message-ID: <20250828190243.0d3f74f6@kmaincent-XPS-13-7390>
-In-Reply-To: <20250828185037.07873d04@kmaincent-XPS-13-7390>
-References: <cover.1753718185.git.mchehab+huawei@kernel.org>
-	<4c97889f0674b69f584dedc543a879d227ef5de0.1753718185.git.mchehab+huawei@kernel.org>
-	<20250828185037.07873d04@kmaincent-XPS-13-7390>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KjASwD8F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57763C4CEEB;
+	Thu, 28 Aug 2025 17:07:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756400829;
+	bh=3gTzFS2mfkWv9GDGZCaEYaViGLlDDzJmcWrY8AgI1ZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KjASwD8Fod9VpVIWomPQqQjZ/3XcCfNtZ3yQnC31pSOb5j18UBt2ZT0nX266J+Qs7
+	 G7cIfaqPNNlxAxQoBFTUf1/J8ajG3hBNWn6gqLn7EY7qKxNpD6LEtgkYojoqfOmjpG
+	 VH2zHLXuNjx1hLNVbgIPorddi+5hYWPhg8g+aAPBuFHaRHY3L0AK/EHTOmwSQhIzkh
+	 hLyfst1/UOFOUt69nZljsOeezCxPu7tDpj/q7tBgejRpR24pmnc0GqzN4wMXSe3Vfe
+	 NSkAkDn7meUtCWikvReJMxYGr1n8PWN61VG1UOtOzVqFcL1oum8Grw1X7kJDNRpOY4
+	 wr2vsacJd/7Vg==
+Date: Thu, 28 Aug 2025 18:07:05 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, shuah@kernel.org,
+	ecree.xilinx@gmail.com, gal@nvidia.com,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next] selftests: drv-net: rss_ctx: fix the queue
+ count check
+Message-ID: <20250828170705.GB31759@horms.kernel.org>
+References: <20250827173558.3259072-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250827173558.3259072-1-kuba@kernel.org>
 
-Le Thu, 28 Aug 2025 18:50:37 +0200,
-Kory Maincent <kory.maincent@bootlin.com> a =C3=A9crit :
+On Wed, Aug 27, 2025 at 10:35:58AM -0700, Jakub Kicinski wrote:
+> Commit 0d6ccfe6b319 ("selftests: drv-net: rss_ctx: check for all-zero keys")
+> added a skip exception if NIC has fewer than 3 queues enabled,
+> but it's just constructing the object, it's not actually rising
+> this exception.
+> 
+> Before:
+> 
+>   # Exception| net.lib.py.utils.CmdExitFailure: Command failed: ethtool -X enp1s0 equal 3 hkey d1:cc:77:47:9d:ea:15:f2:b9:6c:ef:68:62:c0:45:d5:b0:99:7d:cf:29:53:40:06:3d:8e:b9:bc:d4:70:89:b8:8d:59:04:ea:a9:c2:21:b3:55:b8:ab:6b:d9:48:b4:bd:4c:ff:a5:f0:a8:c2
+>   not ok 1 rss_ctx.test_rss_key_indir
+> 
+> After:
+> 
+>   ok 1 rss_ctx.test_rss_key_indir # SKIP Device has fewer than 3 queues (or doesn't support queue stats)
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-> Le Mon, 28 Jul 2025 18:01:59 +0200,
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> a =C3=A9crit :
->=20
-> > Instead of manually calling ynl_gen_rst.py, use a Sphinx extension.
-> > This way, no .rst files would be written to the Kernel source
-> > directories.
-> >=20
-> > We are using here a toctree with :glob: property. This way, there
-> > is no need to touch the netlink/specs/index.rst file every time
-> > a new Netlink spec is added/renamed/removed. =20
->=20
-> ...
->=20
-> > diff --git a/Documentation/networking/index.rst
-> > b/Documentation/networking/index.rst index ac90b82f3ce9..b7a4969e9bc9 1=
-00644
-> > --- a/Documentation/networking/index.rst
-> > +++ b/Documentation/networking/index.rst
-> > @@ -57,7 +57,7 @@ Contents:
-> >     filter
-> >     generic-hdlc
-> >     generic_netlink
-> > -   netlink_spec/index
-> > +   ../netlink/specs/index =20
->=20
-> Faced a doc build warning that say netlink_spec/index.rst is not used.
->=20
-> $ git grep netlink_spec
-> Documentation/networking/mptcp.rst:netlink_spec/mptcp_pm.rst.
-> Documentation/translations/zh_CN/networking/index.rst:*   netlink_spec/in=
-dex
->=20
-> I think we can remove the whole directory and change these, right?
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Oops just saw that is was some local leftover. This first warning get remov=
-ed
-with a clean tree.
-=20
-> Also got a doc build warning that says netlink/specs/index is not existing
-> even if it exists. Maybe a sphinx parsing issue ?!
-
-
->=20
-> Regards,
-
-
-
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
