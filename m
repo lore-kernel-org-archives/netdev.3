@@ -1,165 +1,100 @@
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66882D0612;
-	Thu, 28 Aug 2025 07:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F732E3709
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 07:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756364884; cv=none; b=ZVzPNkHx2ifxR/X8QaopFJ4oF/Z057cHXUVZauDE1Cxt5xzY6kScGuMxARRGhrkun3wwOmzO7kJyR2gSE487vLopZzLE9TaozXMVSva0Xdyxl+Jmdv28jIRUBLJO+HNAJacIP9xOZGAxmLAshcM2zWjAmBweI9eywn4Oiwba3ks=
+	t=1756364979; cv=none; b=CGE9QLigdmlkerNQYmcaBWlKuTRw7T0UmNO7WVRbiftZmSRzXwLSd8yNHhiclPxEJEPsOlNbjh6v4ksDkmh2fi3hoDAoeOylB8Gnp3wWO2MWfPNlyQBRkVVmaav48CrBDchF/oQkPZmAH0tA42sN/eJMoUq5prxvGEgA2rXxSDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756364884; c=relaxed/simple;
-	bh=JrMEMAIN72PQSLuM09hZkye0UtP7yWfTIz0Vd16Rgc0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=IrUvcanBCtazAQN28oMg5328ucbmMZaaZqVOp2Yds2BtiJjrW5paJHrf3N4LNExMGU6+F//mL8Qc8ICZJVmL8F2aSYR/+Cx0lm2ha5qoKiDymsEaxekGmUTwKjpT1l8UNmflsokTY4I58vRlIioetiUd1pTO9wVwOFH773FT/NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=WRrEeBUO; arc=none smtp.client-ip=198.47.19.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756364979; c=relaxed/simple;
+	bh=lURPkYJzF21xY2QquL/oWnteDlCb4vfGHfOnzqSwApQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EOoMM6VY0o3ZVX4bxOvwZP/2vnor1CniDRCTJXocvjVENAh16PLIYsjVHZzB/qW0Mg9Jn8sguY24w6WBnBNPA5K2yitHJ998AF8JdtfKZiswyoDe3cpj1U4duZO6tyf5yez1yfILQUC79norXmy0urijJyfjFTuUKZk1/tO8WQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f1Z4dyhz; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="WRrEeBUO"
-Received: from fllvem-sh03.itg.ti.com ([10.64.41.86])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 57S77LrX1926333;
-	Thu, 28 Aug 2025 02:07:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756364841;
-	bh=4jNlY0U4kVd90go0mP1NgI2AJgnZ0N8e4hHUy/MOZEg=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=WRrEeBUOqqYzIYufYa2h80gdOjGilk4M/qXtYLRADYiK4KW8MhwJhICLJGRwnaC7R
-	 lSQ4EcdKbABGa2vMs8xWNKa2HN+4JUhgZKJuGtBIxIAzAcgyoT9TXrY7SGemH2i8nh
-	 CWkIRE1uIDUX4TaNR8dwUUqH/u7qKScWpZ9LQd0s=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-	by fllvem-sh03.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 57S77Ldh3049105
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 28 Aug 2025 02:07:21 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 28
- Aug 2025 02:07:20 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Thu, 28 Aug 2025 02:07:20 -0500
-Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 57S77Etn4120830;
-	Thu, 28 Aug 2025 02:07:15 -0500
-Message-ID: <dab8033d-e7d7-4522-b832-eaf58efaad68@ti.com>
-Date: Thu, 28 Aug 2025 12:37:14 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f1Z4dyhz"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7f77c66f13bso70669185a.0
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 00:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756364976; x=1756969776; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jvs5njM1wOnHzJ4hzbLuwCvVNmJOa7dYI9qPuTJeAVg=;
+        b=f1Z4dyhzXv5ADmSboyQ7Wn+9L+xknDiw6NrUHNrkgDKKxereJq9Muvz0qnM+gJQq76
+         0DaXprhdL/kruFypknzsyO9mbeL2jFhrhQfdqAzzZJgQvc5nah9e2LZRXpYeevQZJCb2
+         QiU0jclssmi4nlrMb9umZUJrv/k3WNPvNfvvLCfRC4P3GdZ6AiTV3YYSjzqcaDnccUvN
+         CGV8BP1git/TrFlAgUF1a1HUbCNGL8OcYXvlJ7LZ4T1jXraKQcTnshZLz2tZJ8/4RU5R
+         k9uljz/G/qCAkWcZnXhdJvgV9GEl8M+YY9HAD4gcGHfKsSA+WIwc3iNg8KJlhPS4AAUe
+         MwDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756364976; x=1756969776;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jvs5njM1wOnHzJ4hzbLuwCvVNmJOa7dYI9qPuTJeAVg=;
+        b=TFUTMhxkLtZ/ydAtyAEPZK0cOMHyO2X+qzLtEoVAoIHkTmiAXEhioIXCW2/Tdc1GWG
+         7I6QSq+c3DhCRPCZg156FHd3DfbYjM4qZc9LzI6uTZ6pfzSJC/cKEWQFb2p6w0m+VsLF
+         Ql1SfLX4mOxqmey9p4fNgRULrA+R5Qh9/9jf9TYrkrEMmburPbkN8/k/1VX8uIfQnSpd
+         aZylhop4QY7A9xmTJhrxy8+M8F2I/rh8Yb1ELNlz8+RqZiBYpd1ZgSZxSawhJ2mZmGXx
+         vFr9Fx+urIBhpFiOamrsMz3eKknT0UaB/f8caHKIVVJZBx1+dafDI7OkHhhk88HFLVhR
+         ZZcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWHCbqLE97HhRbrS7gQA/Z1kFMJBHYi9Z7QMj58TqeXptl3J7Re7yfkhnix2hS6wMV9fUWFBfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ7DWVymLDQcljBRXzhp0EzAkvuINCQfC9voCAYuhbNMAd23vm
+	gDmWFJRiYDMYO3L83M9r3+AMPyG1Z/gxIQ5CnL4tmCZtoP7TF2MJAqkCM6aeyUZVg1sHpbPKq33
+	vvJyZBnpy9R/el1RdnEAcCsviNIQ3mBc35ipzAlBH
+X-Gm-Gg: ASbGncsG2x4T0378CfCzZLGYOUbtf1V6D5Hva5AmiMqVjZRMA040/Qwj1uHKldCiySc
+	y2AB5fwRkgCyoEDsIS0AMc45GX+m2ScC8jxj256AtbjP+Mjr5i4ywJga7/XVgP0oznhWtAoAYfG
+	bCEdX0pBUb8Q/5pag8FaelsOOILQWcu0s8v1/JCjhwpN95tby58mOPeRLlBte9VwC7PuEZFenhE
+	D6/csrapEBHx/5RsmqwHg==
+X-Google-Smtp-Source: AGHT+IHxSqNH/ftHbBJ+fPHtJwYAGqsLTp8xOivDx1VKWMe0sNYk7sTPD/n4Agil+b9tyPi+N2/KpIicDTDhJp0h0hI=
+X-Received: by 2002:a05:620a:1a27:b0:7d2:1953:a410 with SMTP id
+ af79cd13be357-7ea10fa1344mr2611829885a.17.1756364976094; Thu, 28 Aug 2025
+ 00:09:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/5] net: rpmsg-eth: Add basic rpmsg skeleton
-To: "Anwar, Md Danish" <a0501179@ti.com>,
-        Krzysztof Kozlowski
-	<krzk@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Jonathan Corbet
-	<corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        Mengyuan Lou
-	<mengyuanlou@net-swift.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Madhavan
- Srinivasan <maddy@linux.ibm.com>,
-        Fan Gong <gongfan1@huawei.com>, Lee Trager
-	<lee@trager.us>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Geert Uytterhoeven
-	<geert+renesas@glider.be>,
-        Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-        Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20250723080322.3047826-1-danishanwar@ti.com>
- <20250723080322.3047826-3-danishanwar@ti.com>
- <296d6846-6a28-4e53-9e62-3439ac57d9c1@kernel.org>
- <5f4e1f99-ff71-443f-ba34-39396946e5b4@ti.com>
- <cabacd59-7cbf-403a-938f-371026980cc7@kernel.org>
- <66377d5d-b967-451f-99d9-8aea5f8875d3@ti.com>
- <bc30805a-d785-432f-be0f-97cea35abd51@kernel.org>
- <4bb1339a-ead6-4a33-b2bf-c55874bab352@ti.com>
- <0e85bda4-9ac2-4587-b8bb-550bea1728dc@kernel.org>
- <fab2a856-e3b0-4d25-9ce4-72f1f57e3115@ti.com>
-Content-Language: en-US
-From: MD Danish Anwar <danishanwar@ti.com>
-In-Reply-To: <fab2a856-e3b0-4d25-9ce4-72f1f57e3115@ti.com>
+References: <20250828012018.15922-1-dqfext@gmail.com> <20250828012018.15922-2-dqfext@gmail.com>
+In-Reply-To: <20250828012018.15922-2-dqfext@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 28 Aug 2025 00:09:24 -0700
+X-Gm-Features: Ac12FXzCOHbY-0cZG_DPV4Isb0S8nmhFOKMxM0fnoaIGHxRJ38be9HGtCcgGyWA
+Message-ID: <CANn89iJ7DDA4gM2vDAwhOyc5KGXPmOBGATMQfXD8FHUAFbVDvQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/2] pppoe: drop sock reference counting on
+ fast path
+To: Qingfang Deng <dqfext@gmail.com>
+Cc: Michal Ostrowski <mostrows@earthlink.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: quoted-printable
 
-Hi Krzysztof, Andrew,
+On Wed, Aug 27, 2025 at 6:20=E2=80=AFPM Qingfang Deng <dqfext@gmail.com> wr=
+ote:
+>
+> Now that PPPoE sockets are freed via RCU (SOCK_RCU_FREE), it is no longer
+> necessary to take a reference count when looking up sockets on the receiv=
+e
+> path. Readers are protected by RCU, so the socket memory remains valid
+> until after a grace period.
+>
+> Convert fast-path lookups to avoid refcounting:
+>  - Replace get_item() and sk_receive_skb() in pppoe_rcv() with
+>    __get_item() and __sk_receive_skb().
+>  - Rework get_item_by_addr() into __get_item_by_addr() (no refcount and
+>    move RCU lock into pppoe_ioctl)
+>  - Remove unnecessary sock_put() calls.
+>
+> This avoids cacheline bouncing from atomic reference counting and improve=
+s
+> performance on the receive fast path.
+>
+> Signed-off-by: Qingfang Deng <dqfext@gmail.com>
 
-On 30/07/25 8:41 pm, Anwar, Md Danish wrote:
-> 
-> 
-> On 7/30/2025 11:43 AM, Krzysztof Kozlowski wrote:
->> On 30/07/2025 08:01, MD Danish Anwar wrote:
->>>>
->>>>> `reserved-memory`. I am not creating a completely new undocumented node.
->>>>> Instead I am creating a new node under reserved-memory as the shared
->>>>> memory used by rpmsg-eth driver needs to be reserved first. This memory
->>>>> is reserved by the ti_k3_r5_remoteproc driver by k3_reserved_mem_init().
->>>>>
->>>>> It's just that I am naming this node as "virtual-eth-shm@a0400000" and
->>>>> then using the same name in driver to get the base_address and size
->>>>> mentioned in this node.
->>>>
->>>> And how your driver will work with:
->>>>
->>>> s/virtual-eth-shm@a0400000/whatever@a0400000/
->>>>
->>>
->>>
->>> It won't. The driver imposes a restriction with the node name. The node
->>> name should always be "virtual-eth-shm"
->>
->> Drivers cannot impose the restriction. I don't think you understand the
->> problem. What stops me from renaming the node? Nothing.
->>
->> You keep explaining this broken code, but sorry, this is a no-go. Shall
->> I NAK it to make it obvious?
->>
-> 
-> Krzysztof, I understand this can't be accepted. This wasn't my first
-> approach. The first approach was that the firmware running on the
-> remotecore will share the base-address using rpmsg. But that was
-> discouraged by Andrew.
-> 
-> So I came up with this DT approach to read the base-address from linux only.
-> 
-> Andrew, Since rpmsg-eth is a virtual device and we can't have DT node
-> for it. Using the reserved memory node and then search the same using
-> node name in the driver is also not acceptable as per Krzysztof. What do
-> you suggest should be done here?
-> 
-> Can we revisit the first approach (firmware sharing the address)? Can we
-> use module params to pass the base-address? or Do you have any other
-> ideas on how to handle this?
-> 
-> Please let me know.
-> 
-
-This is what I came up with after few discussions offline with Andrew. I
-will post v2 soon with the below changes
-
-1. Similar to qcom,glink-edge.yaml and google,cros-ec.yaml - I will
-create a new binding named ti,rpmsg-eth.yaml this binding will describe
-the rpmsg eth node. This node will have a memory region.
-2. The rpmsg-eth node will be a child node of the rproc device. In this
-case `r5f@78000000`. I will modify the rproc binding
-`ti,k3-r5f-rproc.yaml` to describe the same.
-3. Other vendors who wish to use RPMSG_ETH, can create a rpmsg-eth node
-as a child of their rproc device.
-
-This approach is very similar to what's done by qcom,glink-edge.yaml
-/google,cros-ec.yaml and their users.
-
--- 
-Thanks and Regards,
-Danish
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
