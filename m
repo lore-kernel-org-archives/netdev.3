@@ -1,35 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF681CD215
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 02:00:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5530E6FC5;
+	Thu, 28 Aug 2025 02:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756346428; cv=none; b=KeALSFZKgcGZ6ai424KvwXh134Q0LWDN85X6LHCmG2iopA4bNiRNxcupqWbIzHPNFl+wWD+kOz3gpKo64jVJMk/QDRcTWG+nHnujSeskIYpTYqoWBpBCqp+J9rWshV4Ld+ANeKnfvn0FCBXfgUAEM+otI9+gnUegXATZKqYLp1c=
+	t=1756346564; cv=none; b=cHc8ZTMInJAb9mCelQHnQwAM3N3Iro+FhsQ95ckwrc9u96VS1vNPcZeqReQHgmkogHTkBnHYdt3cU5EDVvWEL8PmPUwTQQxNk8tqj0x8vZn2jVyLQ3cH/KBj5v5wTp+cm3JZvw3vyFqfe3QivYz4xJbaVGGktzPDFsP5swx7fLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756346428; c=relaxed/simple;
-	bh=R4ElHzzIQAcVHSTK92vjmTdqAsOi5LZdoMCEciWgWQs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PK6L00ogDlgGhBRRLxjhWHQym4M0qRAI1k78VJMptqFYu0bSQ6R1yqm8/YjajimpIihLyi8EL3zPgzHv/4EMR5QV6T4L4Ak6UJCSmcfGP0sMWL04DbV1SZvJwW3d2vXm0PBngLj4qFmccTvjWQZ/HqkgdWFIJ+syl3Muk7mNLbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvlrhiHR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756346564; c=relaxed/simple;
+	bh=K+BvfHQ6GZvUzePGxTv1JATYJz5TFKaeSY5EJziNkPA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bG5L8G2j5MUYbtg3zzDzNFrOIjQsJEZ1qgsgxvszHGTqPhTY+Xfw9iJqDKpqrxIakTNavUrSew1xlg2wr+/hM/47oPmNLDCjnMj7MIsGe5mdZh23lAUBxQRPVL0TkmpHNyqR2s6PATCaxvtkE+lbLY1tlCMba5iliVZPqDaab0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pZfbwDAf; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvlrhiHR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E43C4CEF0;
-	Thu, 28 Aug 2025 02:00:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756346428;
-	bh=R4ElHzzIQAcVHSTK92vjmTdqAsOi5LZdoMCEciWgWQs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=TvlrhiHRWbi3usfKahofSdxdXAoxhztbUOkvr4UnvfjUJgQMqkWoUQH/pRJ0nw3EM
-	 AGQDbXbhwUUtYx/TT4b/qDJjOnIgpy11a92J8G7H2hdMo38P40NJhe4z4xP5SOYKPe
-	 y6dUCYBqJlGzG9KwEnQvEbai/MDWQWjZtOdU/4eYcW589Nh02CKQ1OaatyfqzqAyGO
-	 wP6N7zcxc1LNDBzmvKXKNAMyz6V3fKl9qmefkMI6odPh4x0Gj8Ci9Ev9NpFoC6s43X
-	 GkpXR7iMW5kJ1AmBfeEWAmXXBXSAYvfp9A3YFvXxcgOfn3ZIwagskDi2JmSU3x0n1u
-	 b4GHlFS6Wk4Mw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADB31383BF76;
-	Thu, 28 Aug 2025 02:00:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pZfbwDAf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=HH
+	aZaXSsQmUrUGFer1hYYAyBe53nx4+hk+JxbYQnGQo=; b=pZfbwDAf1uOSgD9kOs
+	7uXZ3whjN5RsCu1xC9aCWzHtd9dNqLONgWKQrFD+Ds/wtQmfWOfJJTqlP2PsWJF+
+	Ypgs2Z8E0O88yQB0yMaq9agOUGPbXmrZMoAVsmthciVIj5PuhIcJUu8f1U9gs+2D
+	VBEc/72aKY2HVkM3/g6EIFg68=
+Received: from thinkpadx13gen2i.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDHXVakuK9o58F6EQ--.39153S2;
+	Thu, 28 Aug 2025 10:02:13 +0800 (CST)
+From: Zongmin Zhou <min_halo@163.com>
+To: horms@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>
+Subject: [PATCH v2] selftests: net: avoid memory leak
+Date: Thu, 28 Aug 2025 10:02:10 +0800
+Message-Id: <20250828020210.25475-1-min_halo@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250827161230.GB10519@horms.kernel.org>
+References: <20250827161230.GB10519@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,50 +47,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/6] eth: fbnic: Extend hw stats support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175634643523.908900.2000854189315078878.git-patchwork-notify@kernel.org>
-Date: Thu, 28 Aug 2025 02:00:35 +0000
-References: <20250825200206.2357713-1-kuba@kernel.org>
-In-Reply-To: <20250825200206.2357713-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- mohsin.bashr@gmail.com, vadim.fedorenko@linux.dev, jacob.e.keller@intel.com
+X-CM-TRANSID:_____wDHXVakuK9o58F6EQ--.39153S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr4xXFW3trWrXrWrArW8JFb_yoW8Gr15pa
+	yI9w1fKr48Ka17JFs8trsYgF4YkwsayF409F17Jrn5Awn8Jr9Yqr4fKF45KF12grZ2qwnx
+	ZF9xuF1Y9an5J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U6CJdUUUUU=
+X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbBzRe3q2ivtepWZAAAss
 
-Hello:
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The buffer be used without free,fix it to avoid memory leak.
 
-On Mon, 25 Aug 2025 13:02:00 -0700 you wrote:
-> Mohsin says:
-> 
-> Extend hardware stats support for fbnic by adding the ability to reset
-> hardware stats when the device experience a reset due to a PCI error and
-> include MAC stats in the hardware stats reset. Additionally, expand
-> hardware stats coverage to include FEC, PHY, and Pause stats.
-> 
-> [...]
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+---
+Changes in v2:
+- add the label to use instead of directly to use on each case.
+---
+ tools/testing/selftests/net/cmsg_sender.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Here is the summary with links:
-  - [net-next,v2,1/6] eth: fbnic: Move hw_stats_lock out of fbnic_dev
-    https://git.kernel.org/netdev/net-next/c/2ee5c8c0c28e
-  - [net-next,v2,2/6] eth: fbnic: Reset hw stats upon PCI error
-    https://git.kernel.org/netdev/net-next/c/b1161b1863c5
-  - [net-next,v2,3/6] eth: fbnic: Reset MAC stats
-    https://git.kernel.org/netdev/net-next/c/bcf54e5d7cd0
-  - [net-next,v2,4/6] eth: fbnic: Fetch PHY stats from device
-    https://git.kernel.org/netdev/net-next/c/df4c5d9a290e
-  - [net-next,v2,5/6] eth: fbnic: Read PHY stats via the ethtool API
-    https://git.kernel.org/netdev/net-next/c/33c493791bc0
-  - [net-next,v2,6/6] eth: fbnic: Add pause stats support
-    https://git.kernel.org/netdev/net-next/c/e9faf4db5f26
-
-You are awesome, thank you!
+diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
+index a825e628aee7..71984e0a44e2 100644
+--- a/tools/testing/selftests/net/cmsg_sender.c
++++ b/tools/testing/selftests/net/cmsg_sender.c
+@@ -491,7 +491,8 @@ int main(int argc, char *argv[])
+ 	if (err) {
+ 		fprintf(stderr, "Can't resolve address [%s]:%s\n",
+ 			opt.host, opt.service);
+-		return ERN_SOCK_CREATE;
++		err = ERN_SOCK_CREATE;
++		goto err_free_buff;
+ 	}
+ 
+ 	if (ai->ai_family == AF_INET6 && opt.sock.proto == IPPROTO_ICMP)
+@@ -501,7 +502,8 @@ int main(int argc, char *argv[])
+ 	if (fd < 0) {
+ 		fprintf(stderr, "Can't open socket: %s\n", strerror(errno));
+ 		freeaddrinfo(ai);
+-		return ERN_RESOLVE;
++		err = ERN_RESOLVE;
++		goto err_free_buff;
+ 	}
+ 
+ 	if (opt.sock.proto == IPPROTO_ICMP) {
+@@ -575,5 +577,7 @@ int main(int argc, char *argv[])
+ err_out:
+ 	close(fd);
+ 	freeaddrinfo(ai);
++err_free_buff:
++	free(buf);
+ 	return err;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
