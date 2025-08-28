@@ -1,181 +1,287 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFD32877FE
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 22:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A492E2641F9
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 22:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756419579; cv=none; b=ixQzfg4Uqg/9AixXDVaHTGPDaGlHnqYNHhKiJjIpw9qh47W7Q3BV8WBLZ62iEQ9kqnXyt7A0D4BLyy2DHwR8M/vV53iafiG8GZAGpBlI7qic0OeoFZ5GMWWAjynV9+I/LfyG9MFpH9BbEhgZTba9KzBfhIzdCzRASJsAesUbqqA=
+	t=1756419838; cv=none; b=CQnTfLSrLWjgDglNvZiUDrNNUUtr3TSMDEEvyZ6grcfAwT6iLKy88byqHzbJ9uPakQg2ey/M5g3QBEjFM+2pqJYoBBubE+NKeMPD2hYNqPeZYxrB23YVc/El1s2I53LQD+oftjsK8EIPzW2LqmBNMw1AOpVoaei1vcmPXTbbajg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756419579; c=relaxed/simple;
-	bh=x6tX6nu91SYmevBuzLc9GegifWHbFz1pKTFs2oYCmA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXHq8gjzE7Fk843QIkq0CWG3BLtOk4CvyTzV0cwMbm98n9uzAWor/i/8dbNiYocPKSJbJlJpAnkRYTq1fkPF4VFCJWp7NYcamEZcUbFX72vQ5aCi2+5iZzjImYHRJjpV8n2/FgwoC/jePzhXwEQjCuSdUQr/xjiw0rwIWYPyDXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=G0u+hEap; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
+	s=arc-20240116; t=1756419838; c=relaxed/simple;
+	bh=zxftWkFsaYEboWfyBV6TvSIjUVTHG6ofQuPshS170ig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JGIqAVn5eTZR5qeTVTEI877+bBhcr5s3zW90W+zGEVOlrkpDFrGYLrbaCmdrhZxKabpC9cnXBNgdVmnCfvMp1xsjXUcXYxaxYpF0yOhHHZlQf3GtbmCVDmdEMeMiAR4H6cjgN8GcrgBf/tVjDgNbhzoTN26okxBbjGbDKPnYeTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ng1W2zaJ; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="G0u+hEap"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SFY0hJ012269;
-	Thu, 28 Aug 2025 22:19:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=+QtwAtGi+lUeG9MX/
-	6kY5OE1Y/lXcKLRMncePf4XB3M=; b=G0u+hEap5uFw5vD7X5Ca5NKFeEb/ZtOsW
-	NCJH1f09xpqSkcd+kdH99lwHXl0ijid5dMLvcY3u5jorIP7DH3B88PP9Pu3ZXoDO
-	xx4oRKPOW5SEEFsW6iVb0Mx4v+y+752xR+HYTLnJh5RT/NilHS0hMehj6xq02Unq
-	uyMXHqvB+Z3VrvgtqXmbrGf2wW1Jk8EdArPVltGwVvyRTVwC8OftpLCl13jGHGpD
-	2KNcnFo4oaPfds/xIYZir+udzyFsfTNFI1pflzYrS9v2a7aW4V7YzGn64pY+w4mS
-	psflDUwXhTGLo0piE9sYLbgllmX7J8xyQijGHlivEPqfRuTKFQg1g==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv99rem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 22:19:28 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57SKUSRx002492;
-	Thu, 28 Aug 2025 22:19:27 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrypy4a0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 22:19:27 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57SMJOM820185820
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 22:19:24 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3655B58053;
-	Thu, 28 Aug 2025 22:19:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C472058043;
-	Thu, 28 Aug 2025 22:19:23 +0000 (GMT)
-Received: from localhost (unknown [9.61.155.164])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2025 22:19:23 +0000 (GMT)
-From: David Wilder <wilder@us.ibm.com>
-To: netdev@vger.kernel.org
-Cc: jv@jvosburgh.net, wilder@us.ibm.com, pradeeps@linux.vnet.ibm.com,
-        pradeep@us.ibm.com, i.maximets@ovn.org, amorenoz@redhat.com,
-        haliu@redhat.com, stephen@networkplumber.org, horms@kernel.org
-Subject: [PATCH net-next v8 5/7] bonding: Update to bond_arp_send_all() to use supplied vlan tags
-Date: Thu, 28 Aug 2025 15:18:07 -0700
-Message-ID: <20250828221859.2712197-6-wilder@us.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250828221859.2712197-1-wilder@us.ibm.com>
-References: <20250828221859.2712197-1-wilder@us.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ng1W2zaJ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-24611734e18so33745ad.1
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 15:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756419836; x=1757024636; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7sy+mqUkO1lhCHoO8nxgunBNTEODVzvgX+xmF1vSkwM=;
+        b=ng1W2zaJ91TUSJCLazThxlXrFT25Q6BuM/jPjaaBtbN697OP4VFBtt1o3TMob7MJp3
+         rbU2Xo833vbL9i/lwbj7dVJsEU9Hy+yfS9RAX6ObZM3aTk6bDMc7bi/Oc63LWantWnqX
+         MTCMnTBCjh7Jgg36+pZYHjUTu5kT/XmT6rWnZidFO3AVpEeWopgbgC3ByIENVHA5HzlN
+         WdCSOqJADgCq6v/I1RNro50yz+rgI+2fM7IVtbE9pgRTJrCFMcA1+0BXOI1zcZUJ0+N+
+         Mzvbcwy2ZceLz/HN8JmhUYaVnx180oYCAdPh/5RhjbfSVr4UT1Mk4mCOqsT6EzuBgOBg
+         fUBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756419836; x=1757024636;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7sy+mqUkO1lhCHoO8nxgunBNTEODVzvgX+xmF1vSkwM=;
+        b=CHbHvdGw6NN7gFV00/hwjh85XaPfBB34FjBD/gsZbnYCvK0lydTVK91grcBoA/Qdgz
+         XjOklxVR8sxR6f07fOxrJrngZC0zPXY806CufUqPY3XMbjD9wQaea+hVu0vmvTdVNACL
+         U2glXh+DmYhoa6GbBvM2A34RqF+mfjtgMGmp5tiG6UTuRKzV4yMgUlN2wM521dhFVvuo
+         sG5I4GP5V8qcDvTOFm/2OnGb1Yzey1i6Nmmolvsat2J5rY+FwwPHvka8+ivd7VMgwuIx
+         Nqap2azZQ7mP5hb0x499yxRWKbaWuPUDttqnMTqwr5MqGw3C0vNkfb9EqLz1PVVzdVu9
+         jOHg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtLurUHCzFHDVFbnnHTjkAf68jl2v9mmUJ9BDQwaZU38bEuNcR6XCEgLAXU1J2IsHeqXgmHOo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwellD5x5Ad0SQDrPIdzifAexRMS6pQu0GwwSqzW4HMS0LBZY9b
+	MaGPViGMs2D/OPPKLwZ9hBivNDIGNZMnuMiUthTpDvZ+SHFyWON0sUQ0ai9tpxQ6EddVXwkOngI
+	kSSb7rVp57bBayzm3SY2U/WZCXhzHh8I3vNO9bZO0
+X-Gm-Gg: ASbGncvadBbnMBfr2kOZCEfxmaFsAEYa6+JXbE/B9I1f1yT0mkykQOcUiipfuJalSzf
+	aLb3P/dJAIN8ODKZpCI7dcAbsV0+cv6qxuL0LlkUQ0HgXQZel0dZosN+hya4WrSBa3hf0h58Kdr
+	zuP3XXR3BLUrCEmOsB4o2IKF8SufltahD0rkFofOdlWiE1TdzOeIP2bdBs1J0KUtB8ij/y/YNVr
+	tWkqWqwZQf3GXS0vWhvl/EFmwgFM99BC0sSKJD+KRP+AlOIRcTPFVKh
+X-Google-Smtp-Source: AGHT+IGAIj5tngB1H4vLJixMnNFd5blyYU41UglpcmbDlis7gV7fv8nw1NQbmImRfOLKY+j9vmt3Fjxul4pKYIDQUgE=
+X-Received: by 2002:a17:902:ecd2:b0:246:1f3e:4973 with SMTP id
+ d9443c01a7336-2485ba3d4femr17226815ad.6.1756419835428; Thu, 28 Aug 2025
+ 15:23:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=GqtC+l1C c=1 sm=1 tr=0 ts=68b0d5f0 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=ZKn5ET9WYz78Zcf0JJ0A:9
-X-Proofpoint-GUID: 15Ebr-5rKd3VPqPhe8HW-0EgEH5gJB7z
-X-Proofpoint-ORIG-GUID: 15Ebr-5rKd3VPqPhe8HW-0EgEH5gJB7z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDEyNyBTYWx0ZWRfX/6jZdd2wu5e3
- JG2v9GWWAp+zbtOIWlyXRzC+cGhkQuApxV0OD5C2BdsfCMk3sKt5Waa+akELhFAVV9+BEexR0V4
- HjCSP87rkbbwzKkJRhOYr5BNrlIF3jHgPUv9aCPpSMiNzxjL2yocwH9XrzoxCfydJBhe8KUECOs
- Qnhk+mAFK3LoEwAKJUo0fWnR9v3uq+n29JP0Eg1SWP7SzeDhDGHh3NVamOThjltHH3mJ57ynVp+
- PAA9XQNqhjWAUOx8xVabSbXE6qWg+4KHjeJjZ23X0OjMtl/JHllXlf/NyPE5jc3vNIGhHHwKNaj
- 4yOLJiynQRUqK/hkMWJ0wWIpiO1KYA9zsKqv49HCIjc7cMqltALBpVl+mMMgA8Mw/sdaK/EgIGk
- 5yIcJ5oc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
- adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280127
+References: <20250824215418.257588-1-skhawaja@google.com> <8407a1e5-c6ad-47da-9b41-978730cd5420@uwaterloo.ca>
+ <CAAywjhT-CEvHUSpjyXQkpkGRN0iX7qMc1p=QOn-iCNQxdycr2A@mail.gmail.com>
+ <d2b52ee5-d7a7-4a97-ba9a-6c99e1470d9b@uwaterloo.ca> <CAAywjhStweQXMcc5LoDssLaXYpHRp7Pend2R-h_N16Q_Xa++yQ@mail.gmail.com>
+ <fe42bbef-047c-49da-b9ff-a7806820ae0e@uwaterloo.ca>
+In-Reply-To: <fe42bbef-047c-49da-b9ff-a7806820ae0e@uwaterloo.ca>
+From: Samiullah Khawaja <skhawaja@google.com>
+Date: Thu, 28 Aug 2025 15:23:43 -0700
+X-Gm-Features: Ac12FXy5Hc5QNZk2XUXng0brN2dN2_KOIt60V2ZXtX1hUVec-sbqqa0F3Lt9t3w
+Message-ID: <CAAywjhQfiWWqE-tpwrVGR9a3uVLbVrSTq7_n_dJGE7c27io7MQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 0/2] Add support to do threaded napi busy poll
+To: Martin Karsten <mkarsten@uwaterloo.ca>
+Cc: Jakub Kicinski <kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
+	willemb@google.com, Joe Damato <joe@dama.to>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-bond_arp_send_all() will pass the vlan tags supplied by
-the user to bond_arp_send(). If vlan tags have not been
-supplied the vlans in the path to the target will be
-discovered by bond_verify_device_path(). The discovered
-vlan tags are then saved to be used on future calls to
-bond_arp_send().
-
-bond_uninit() is also updated to free vlan tags when a
-bond is destroyed.
-
-Signed-off-by: David Wilder <wilder@us.ibm.com>
----
- drivers/net/bonding/bond_main.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a095ca4e14a7..0096535b521b 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3161,18 +3161,19 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
- 
- static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- {
--	struct rtable *rt;
--	struct bond_vlan_tag *tags;
- 	struct bond_arp_target *targets = bond->params.arp_targets;
-+	char pbuf[BOND_OPTION_STRING_MAX_SIZE];
-+	struct bond_vlan_tag *tags;
- 	__be32 target_ip, addr;
-+	struct rtable *rt;
- 	int i;
- 
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS && targets[i].target_ip; i++) {
- 		target_ip = targets[i].target_ip;
- 		tags = targets[i].tags;
- 
--		slave_dbg(bond->dev, slave->dev, "%s: target %pI4\n",
--			  __func__, &target_ip);
-+		slave_dbg(bond->dev, slave->dev, "%s: target %s\n", __func__,
-+			  bond_arp_target_to_string(&targets[i], pbuf, sizeof(pbuf)));
- 
- 		/* Find out through which dev should the packet go */
- 		rt = ip_route_output(dev_net(bond->dev), target_ip, 0, 0, 0,
-@@ -3194,9 +3195,13 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- 		if (rt->dst.dev == bond->dev)
- 			goto found;
- 
--		rcu_read_lock();
--		tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
--		rcu_read_unlock();
-+		if (!tags) {
-+			rcu_read_lock();
-+			tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
-+			/* cache the tags */
-+			targets[i].tags = tags;
-+			rcu_read_unlock();
-+		}
- 
- 		if (!IS_ERR_OR_NULL(tags))
- 			goto found;
-@@ -3212,7 +3217,6 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- 		addr = bond_confirm_addr(rt->dst.dev, target_ip, 0);
- 		ip_rt_put(rt);
- 		bond_arp_send(slave, ARPOP_REQUEST, target_ip, addr, tags);
--		kfree(tags);
- 	}
- }
- 
-@@ -6145,6 +6149,7 @@ static void bond_uninit(struct net_device *bond_dev)
- 	bond_for_each_slave(bond, slave, iter)
- 		__bond_release_one(bond_dev, slave->dev, true, true);
- 	netdev_info(bond_dev, "Released all slaves\n");
-+	bond_free_vlan_tags(bond->params.arp_targets);
- 
- #ifdef CONFIG_XFRM_OFFLOAD
- 	mutex_destroy(&bond->ipsec_lock);
-@@ -6732,7 +6737,6 @@ static void __exit bonding_exit(void)
- 
- 	bond_netlink_fini();
- 	unregister_pernet_subsys(&bond_net_ops);
--
- 	bond_destroy_debugfs();
- 
- #ifdef CONFIG_NET_POLL_CONTROLLER
--- 
-2.50.1
-
+On Mon, Aug 25, 2025 at 12:45=E2=80=AFPM Martin Karsten <mkarsten@uwaterloo=
+.ca> wrote:
+>
+> On 2025-08-25 14:53, Samiullah Khawaja wrote:
+> > On Mon, Aug 25, 2025 at 10:41=E2=80=AFAM Martin Karsten <mkarsten@uwate=
+rloo.ca> wrote:
+> >>
+> >> On 2025-08-25 13:20, Samiullah Khawaja wrote:
+> >>> On Sun, Aug 24, 2025 at 5:03=E2=80=AFPM Martin Karsten <mkarsten@uwat=
+erloo.ca> wrote:
+> >>>>
+> >>>> On 2025-08-24 17:54, Samiullah Khawaja wrote:
+> >>>>> Extend the already existing support of threaded napi poll to do con=
+tinuous
+> >>>>> busy polling.
+> >>>>>
+> >>>>> This is used for doing continuous polling of napi to fetch descript=
+ors
+> >>>>> from backing RX/TX queues for low latency applications. Allow enabl=
+ing
+> >>>>> of threaded busypoll using netlink so this can be enabled on a set =
+of
+> >>>>> dedicated napis for low latency applications.
+> >>>>>
+> >>>>> Once enabled user can fetch the PID of the kthread doing NAPI polli=
+ng
+> >>>>> and set affinity, priority and scheduler for it depending on the
+> >>>>> low-latency requirements.
+> >>>>>
+> >>>>> Currently threaded napi is only enabled at device level using sysfs=
+. Add
+> >>>>> support to enable/disable threaded mode for a napi individually. Th=
+is
+> >>>>> can be done using the netlink interface. Extend `napi-set` op in ne=
+tlink
+> >>>>> spec that allows setting the `threaded` attribute of a napi.
+> >>>>>
+> >>>>> Extend the threaded attribute in napi struct to add an option to en=
+able
+> >>>>> continuous busy polling. Extend the netlink and sysfs interface to =
+allow
+> >>>>> enabling/disabling threaded busypolling at device or individual nap=
+i
+> >>>>> level.
+> >>>>>
+> >>>>> We use this for our AF_XDP based hard low-latency usecase with usec=
+s
+> >>>>> level latency requirement. For our usecase we want low jitter and s=
+table
+> >>>>> latency at P99.
+> >>>>>
+> >>>>> Following is an analysis and comparison of available (and compatibl=
+e)
+> >>>>> busy poll interfaces for a low latency usecase with stable P99. Ple=
+ase
+> >>>>> note that the throughput and cpu efficiency is a non-goal.
+> >>>>>
+> >>>>> For analysis we use an AF_XDP based benchmarking tool `xdp_rr`. The
+> >>>>> description of the tool and how it tries to simulate the real workl=
+oad
+> >>>>> is following,
+> >>>>>
+> >>>>> - It sends UDP packets between 2 machines.
+> >>>>> - The client machine sends packets at a fixed frequency. To maintai=
+n the
+> >>>>>      frequency of the packet being sent, we use open-loop sampling.=
+ That is
+> >>>>>      the packets are sent in a separate thread.
+> >>>>> - The server replies to the packet inline by reading the pkt from t=
+he
+> >>>>>      recv ring and replies using the tx ring.
+> >>>>> - To simulate the application processing time, we use a configurabl=
+e
+> >>>>>      delay in usecs on the client side after a reply is received fr=
+om the
+> >>>>>      server.
+> >>>>>
+> >>>>> The xdp_rr tool is posted separately as an RFC for tools/testing/se=
+lftest.
+> >>>>>
+> >>>>> We use this tool with following napi polling configurations,
+> >>>>>
+> >>>>> - Interrupts only
+> >>>>> - SO_BUSYPOLL (inline in the same thread where the client receives =
+the
+> >>>>>      packet).
+> >>>>> - SO_BUSYPOLL (separate thread and separate core)
+> >>> This one uses separate thread and core for polling the napi.
+> >>
+> >> That's not what I am referring to below.
+> >>
+> >> [snip]
+> >>
+> >>>>> | Experiment | interrupts | SO_BUSYPOLL | SO_BUSYPOLL(separate) | N=
+API threaded |
+> >>>>> |---|---|---|---|---|
+> >>>>> | 12 Kpkt/s + 0us delay | | | | |
+> >>>>> |  | p5: 12700 | p5: 12900 | p5: 13300 | p5: 12800 |
+> >>>>> |  | p50: 13100 | p50: 13600 | p50: 14100 | p50: 13000 |
+> >>>>> |  | p95: 13200 | p95: 13800 | p95: 14400 | p95: 13000 |
+> >>>>> |  | p99: 13200 | p99: 13800 | p99: 14400 | p99: 13000 |
+> >>>>> | 32 Kpkt/s + 30us delay | | | | |
+> >>>>> |  | p5: 19900 | p5: 16600 | p5: 13100 | p5: 12800 |
+> >>>>> |  | p50: 21100 | p50: 17000 | p50: 13700 | p50: 13000 |
+> >>>>> |  | p95: 21200 | p95: 17100 | p95: 14000 | p95: 13000 |
+> >>>>> |  | p99: 21200 | p99: 17100 | p99: 14000 | p99: 13000 |
+> >>>>> | 125 Kpkt/s + 6us delay | | | | |
+> >>>>> |  | p5: 14600 | p5: 17100 | p5: 13300 | p5: 12900 |
+> >>>>> |  | p50: 15400 | p50: 17400 | p50: 13800 | p50: 13100 |
+> >>>>> |  | p95: 15600 | p95: 17600 | p95: 14000 | p95: 13100 |
+> >>>>> |  | p99: 15600 | p99: 17600 | p99: 14000 | p99: 13100 |
+> >>>>> | 12 Kpkt/s + 78us delay | | | | |
+> >>>>> |  | p5: 14100 | p5: 16700 | p5: 13200 | p5: 12600 |
+> >>>>> |  | p50: 14300 | p50: 17100 | p50: 13900 | p50: 12800 |
+> >>>>> |  | p95: 14300 | p95: 17200 | p95: 14200 | p95: 12800 |
+> >>>>> |  | p99: 14300 | p99: 17200 | p99: 14200 | p99: 12800 |
+> >>>>> | 25 Kpkt/s + 38us delay | | | | |
+> >>>>> |  | p5: 19900 | p5: 16600 | p5: 13000 | p5: 12700 |
+> >>>>> |  | p50: 21000 | p50: 17100 | p50: 13800 | p50: 12900 |
+> >>>>> |  | p95: 21100 | p95: 17100 | p95: 14100 | p95: 12900 |
+> >>>>> |  | p99: 21100 | p99: 17100 | p99: 14100 | p99: 12900 |
+> >>>>>
+> >>>>>     ## Observations
+> >>>>
+> >>>> Hi Samiullah,
+> >>>>
+> >>> Thanks for the review
+> >>>> I believe you are comparing apples and oranges with these experiment=
+s.
+> >>>> Because threaded busy poll uses two cores at each end (at 100%), you
+> >>> The SO_BUSYPOLL(separate) column is actually running in a separate
+> >>> thread and using two cores. So this is actually comparing apples to
+> >>> apples.
+> >>
+> >> I am not referring to SO_BUSYPOLL, but to the column labelled
+> >> "interrupts". This is single-core, yes?
+Not really. The interrupts are pinned to a different CPU and the
+process (and it's threads) run a different CPU. Please check the cover
+letter for interrupt and process affinity configurations..
+> >>
+> >>>> should compare with 2 pairs of xsk_rr processes using interrupt mode=
+,
+> >>>> but each running at half the rate. I am quite certain you would then=
+ see
+> >>>> the same latency as in the baseline experiment - at much reduced cpu
+> >>>> utilization.
+> >>>>
+> >>>> Threaded busy poll reduces p99 latency by just 100 nsec, while
+> >>> The table in the experiments show much larger differences in latency.
+> >>
+> >> Yes, because all but the first experiment add processing delay to
+> >> simulate 100% load and thus most likely show queuing effects.
+> >>
+> >> Since "interrupts" uses just one core and "NAPI threaded" uses two, a
+> >> fair comparison would be for "interrupts" to run two pairs of xsk_rr a=
+t
+> >> half the rate each. Then the load would be well below 100%, no queuein=
+g,
+> >> and latency would probably go back to the values measured in the "0us
+> >> delay" experiments. At least that's what I would expect.
+> > Two set of xsk_rr will go to two different NIC queues with two
+> > different interrupts (I think). That would be comparing apples to
+> > oranges, as all the other columns use a single NIC queue. Having
+> > (Forcing user to have) two xsk sockets to deliver packets at a certain
+> > rate is a completely different use case.
+>
+> I don't think a NIC queue is a more critical resource than a CPU core?
+>
+> And the rest depends on the actual application that would be using the
+> service. The restriction to xsk_rr and its particulars is because that's
+> the benchmark you provided.
+> >> Reproduction is getting a bit difficult, because you haven't updated t=
+he
+> >> xsk_rr RFC and judging from the compilation error, maybe not built/run
+> >> these experiments for a while now? It would be nice to have a working
+> >> reproducible setup.
+> > Oh. Let me check the xsk_rr and see whether it is outdated. I will
+> > send out another RFC for it if it's outdated.
+I checked this, it seems the last xsk_rr needs to be rebased. Will be
+sending it out shortly.
+> >>
+> >>>> busy-spinning two cores, at each end - not more not less. I continue=
+ to
+> >>>> believe that this trade-off and these limited benefits need to be
+> >>>> clearly and explicitly spelled out in the cover letter.
+> >>> Yes, if you just look at the first row of the table then there is
+> >>> virtually no difference.
+> >> I'm not sure what you mean by this. I compare "interrupts" with "NAPI
+> >> threaded" for the case "12 Kpkt/s + 0us delay" and I have explained wh=
+y
+> >> I believe the other experiments are not meaningful.
+> > Yes that is exactly what I am disagreeing with. I don't think other
+> > rows are "not meaningful". The xsk_rr is trying to "simulate the
+> > application processing" by adding a cpu delay and the table clearly
+> > shows the comparison between various mechanisms and how they perform
+> > with in load.
+>
+> But these experiments only look at cases with almost exactly 100% load.
+> As I mentioned in a previous round, this is highly unlikely for a
+> latency-critical service and thus it seems contrived. Once you go to
+> 100% load and see queueing effects, you also need to look left and right
+> to investigate other load and system settings.
+>
+> Maybe this means the xsk_rr tool is not a good enough benchmark?
+>
+> Thanks,
+> Martin
+>
