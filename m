@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AC830EF61
-	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDB930F940
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 12:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756384868; cv=none; b=K85WerFJEsTEx2pg5QO9PhqQlS7mqZ82ZEr+kWOufwYyCsHSx3rKk7UkjbuOODZsNzo4VB3mO2zSS3FhrmOUK9HgWzaQ7qY0uk4BBrMJ7+5NgT9zj4M27hvfg4U6htsUndGiokyxCReboB5hqsoO4uNEcCzfemdhjiQXri7vDrs=
+	t=1756384883; cv=none; b=E+cUsufs88umgQTFeRMgyyVopcAuqhepupcTQUMVjBZ98vIuVv7NZzRg1WiNywLbxRoIvLDw3KEd5AFPmyWa9H7bEt5fbFBZ9YQgubp1YW614Y9WG31/vipEhgi1R2blYxGDJeETwsiCVjSrYNwgmhTnpsRa2HRhoAnQs+0+lKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756384868; c=relaxed/simple;
-	bh=HhpWUf2/JIcXUEaQbrh4Z+AC8CaOO2eSqSs2OqJmLJo=;
+	s=arc-20240116; t=1756384883; c=relaxed/simple;
+	bh=U4whXLIBxXZUBK60jMsmHVBJudPyhO1Q5uErtKyTrtA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PcwWht4yMamoN9NgEg9e41T5f5bwVxQJcb6b2OMINGYUM77Q2AXAv9f9ook/ZOUawQUC4xTvondX0RP0fRgcT/TpiDGagyWXOGkB1jyK2CjIXQPiIILGwBxo8H5yKbc/J38SN382SzF3rMRJrU31GvngNcGoS8mJmnoxZKT0bwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a85YRoex; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JIo1EYnTTH7N9J5rXkA1+gD3a/rCQJN80uhsU1H4Q/ZKnE+B+LHlGlFuHeoNMulvKT5FgYysz8/9vL1B00VqXC5UTh8gzrtHC5e38oqh4eBF3MiXS4Vi1BccU7icsslW16Y5Ngw8d0V2HvAY829tUEZOh2WQpf9xt61pS6y0luI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZVpIPZA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a85YRoex"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC53C4CEEB;
-	Thu, 28 Aug 2025 12:41:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZVpIPZA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C01EC4CEEB;
+	Thu, 28 Aug 2025 12:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756384868;
-	bh=HhpWUf2/JIcXUEaQbrh4Z+AC8CaOO2eSqSs2OqJmLJo=;
+	s=k20201202; t=1756384882;
+	bh=U4whXLIBxXZUBK60jMsmHVBJudPyhO1Q5uErtKyTrtA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a85YRoexEpt6Z06clpnflJLsSmqmAT0ht4ipVDj9PSos6hEqNSDA6sVCeyzr9l1PH
-	 sPqTYHv/f7OHIbDoTVQRKUgL3RG0xPkowsGjmU4htwebNMHBP6LSYLnSfQVcVmnBHm
-	 6XLyhyhYLdR+Ur7CiAvJ6bgXZFgjD1QjAr21P/1+tbLLU53PnHB5h5DFI+PZhUDVWn
-	 A+np+P5jr6JZv0MaPPt7HasFnpwTYOrwk9L10X7/2yeuwuJ+aX4O1SEICNB10ifSma
-	 1fb3h8uKf7TANKv7ykV+tl0PnIYiCihQAyvX7UMNO7TCKb8x7ZnOVmVcb+YXa6B5Ma
-	 5USh7w0Pz99pw==
-Date: Thu, 28 Aug 2025 13:41:03 +0100
+	b=HZVpIPZAlOaMccuJAtoxwaqW3kbQ0LwsrON57ROyYBhmgvMunDiqUkLyxYjT+x4NS
+	 0acbj2pSma2E3k9XXFhfwfiyjBY/bOn0xkq7sQY+vrkBO70aF0n9MbHSmRPImsxjaA
+	 8ZtvX5uKvsAYiS/ekzZH7ogczZtUpigE/tdBb4bGNbOtblCAOT0/knLHOx0oKzENZw
+	 NSCFphFtrzN3H+lI2ovRXHpitv6syNeKPabUs0lEqNVQ9Fvw/katW+GGO1QzNE3Vzs
+	 Twsj2Ja6tY+R+iXneAILYOHg+u2fcQ059e+hJUyS+axWw6ehiLagTdr1ACVT1XbomP
+	 sjLJnLQYBjrvg==
+Date: Thu, 28 Aug 2025 13:41:18 +0100
 From: Simon Horman <horms@kernel.org>
 To: Saeed Mahameed <saeed@kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -34,13 +34,12 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
 	Tariq Toukan <tariqt@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, mbloch@nvidia.com,
-	Adithya Jayachandran <ajayachandra@nvidia.com>
-Subject: Re: [PATCH net-next V2 6/7] net/mlx5: E-switch, Set representor
- attributes for adjacent VFs
-Message-ID: <20250828124103.GG10519@horms.kernel.org>
+	Leon Romanovsky <leonro@nvidia.com>, mbloch@nvidia.com
+Subject: Re: [PATCH net-next V2 7/7] net/mlx5: {DR,HWS}, Use the cached
+ vhca_id for this device
+Message-ID: <20250828124118.GH10519@horms.kernel.org>
 References: <20250827044516.275267-1-saeed@kernel.org>
- <20250827044516.275267-7-saeed@kernel.org>
+ <20250827044516.275267-8-saeed@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,28 +48,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250827044516.275267-7-saeed@kernel.org>
+In-Reply-To: <20250827044516.275267-8-saeed@kernel.org>
 
-On Tue, Aug 26, 2025 at 09:45:15PM -0700, Saeed Mahameed wrote:
-> From: Adithya Jayachandran <ajayachandra@nvidia.com>
+On Tue, Aug 26, 2025 at 09:45:16PM -0700, Saeed Mahameed wrote:
+> From: Saeed Mahameed <saeedm@nvidia.com>
 > 
-> Adjacent vfs get their devlink port information from firmware,
-> use the information (pfnum, function id) from FW when populating the
-> devlink port attributes.
+> The mlx5 driver caches many capabilities to be used by mlx5 layers.
 > 
-> Before:
-> $ devlink port show
-> pci/0000:00:03.0/180225: type eth netdev eth0 flavour pcivf controller 0 pfnum 0 vfnum 49152 external false splittable false
->   function:
->     hw_addr 00:00:00:00:00:00
+> In SW and HW steering we can use the cached vhca_id instead of invoking
+> FW commands.
 > 
-> After:
-> $ devlink port show
-> pci/0000:00:03.0/180225: type eth netdev enp0s3npf0vf2 flavour pcivf controller 0 pfnum 0 vfnum 2 external false splittable false
->   function:
->     hw_addr 00:00:00:00:00:00
-> 
-> Signed-off-by: Adithya Jayachandran <ajayachandra@nvidia.com>
 > Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 
 Reviewed-by: Simon Horman <horms@kernel.org>
