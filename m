@@ -1,220 +1,184 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F40F2ECEA6;
-	Thu, 28 Aug 2025 09:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756374431; cv=fail; b=aPID/XWGhZYd41ZQTpYh1wROy1Uhzqg5Z/BZpUScGjY54N1Z3ZC9d1+uwJJ8bpEOh6i59eHan4xb2LHQdaDyirr62vIWNEE8bLGiv1GlxOfU5ZvD0Q3fXjfBtIhLJBwyzB4q01w3VamnZumgjcHDSlRlxqM5u5pNnKHLogAVhrs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756374431; c=relaxed/simple;
-	bh=6phb6ApcFtscGWltEhIs1e9nltCKu0rKHxjssfvA7xA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gpSAlymGtSplymr/BhaCmj6LmSuuyMspKOPaTWOdbVf1LIXpZ0eHrdZakBLt73rEs2/nAlB+Hgghz7wIS+hMXEYBt/r+n0/Imf2lE1HuhjWq6/MM0yeoW6mqAnDlin9jcza1K6zSpbs5IwkI63uSEcwV748VCG4T8w8zGKYLVSU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hhOh9q4I; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200302ED159
+	for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 09:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756374779; cv=none; b=DcAuKDSC8isH1A+rvVutjWf+tPPJgSZdOLYq/Q88XuP2RMZsEih1Hvy0hnm3J1l4bQAxI3/T6nnvOODafIqVyMULSEHJJOKGm2Buc5uxsdYA/Uyc9TMD/viCk3TBYupqFJXW3k6poMotnWMIEfhRm9Sb5fbek4joEZCr6mQVIa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756374779; c=relaxed/simple;
+	bh=e3uvFNMj8thW/jyNdz19qyU4r6RCtepK7W4bh7/hqCw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P/aU7y3zyT+IybuKwaWs3nVGTgmLTLDUiEVJlh3AF/gtzxlRX486nK8eiAseEkmd5Xf5Qvoipa0qelJoU+DRKJVOfgauzeCRuzj3HmyluO9r1fUdu9sJEYcidR9qOLTdrvKSPWJsGb06f7h20MyxMNOKaq8ucr5sAIFa3wOxkng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ulc1opzH; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hhOh9q4I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756374431; x=1787910431;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=6phb6ApcFtscGWltEhIs1e9nltCKu0rKHxjssfvA7xA=;
-  b=hhOh9q4I/8FGGtARDP1OG6kaN/6EL0+ANZkd1yH48S1U6mydMxqLeDeA
-   SMJ9hS3ck8qsRM3TZTUaDjgvpOQAO4htnwLy6rbctK/pjAwxhL20feuRr
-   Q5I2EEKRZjivcvY2romiiKz9nBHZLQsMcNLjwJibh5nTM7C5Hdluxk673
-   DEoNZkXyxa1jDqqh2tGNxXl/M8d5rg+2a0noZZFNDyuISyIxBEJDWHs3K
-   HO9lQk026stHRfJnk7DHR7EMiuKEkzOzh6UjlNP5RBwjrQ2b9kQE8jQar
-   F8Gch4h0BepZt73edsThOyaEt6o+C8zARlH6wdDSUVKvaxB9hEjeUlYM1
-   w==;
-X-CSE-ConnectionGUID: vGZ7bj8sTK2BlxexsGt4GQ==
-X-CSE-MsgGUID: WzToC8GHTnOxx72mBhpMuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="81231916"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="81231916"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 02:47:10 -0700
-X-CSE-ConnectionGUID: slCVMdXTSqqKzd+bBF6qEg==
-X-CSE-MsgGUID: CiMELWWpRfW189aoQ7mBCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="200980507"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2025 02:47:09 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 02:47:08 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Thu, 28 Aug 2025 02:47:08 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.89)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Thu, 28 Aug 2025 02:47:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XoE8xZNrdLhtDA+hTJHAAlol3aM/Fqls58RCDGejL0VXB8NEjWrWbYfEXo09VRZo0YnTa/+iEFhL+SpKkSLsNsC7Qkm5CM+zrFqpWLXiVwuELUDd4/rDpgadxnZAuwL4Kk05/VO94ovcler+xGxMWYmZ75rAIIHFHMC6rFUQEXiHEnHdNW4q9FgvDG8428MjmBhcWLlvR3tlKCvzAhTOj+6jN+8tLPrI3+FK2uq3w9vaicuNA+d26fCxQhnIONQDVTXzzBlOjhChZbp5eFD40o8KxDYLpiHDCHqX3665FtoSbcNfOTnDs7yIfUOkychlM9shNjWzKwSrt3ukO9rXig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y6VC12gkXjTC3BzxfaZ/VrT6NwOfA4yv3nzjYTSkKHs=;
- b=ZPac2xvyfYskcF9qNKY4hxgpJ/++7ebuUHwO7h+5WJupCqRoIZPAxpnaSfdOiv/uRbfFXrgR+d56tJPJtGc1laeBh75j/BY6dWy8Jkkris7Ud7lPL0JplZIY+Gn8lrdiOp7UKxnwFH9R5RUWArOUuLyHRL8ocj9SfnLlcgsYRajUItP5Bx0bswU+Ouu0eOBLhAkP/34NZPVz6OQ3aoCOKFaMiLVEnmEi87kBZMzjTT4EftAd8TMrMeEl39MJOcMgQmg6/oj/3drkBOhdbS9yGKbQYAXTbO7tYf9oLrb89gzbaozKB5i0kKmgZnaqXYUn0bCQhTUIsmUSKF/SErrRBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB6443.namprd11.prod.outlook.com (2603:10b6:208:3a8::16)
- by DM3PPFAB693A2AC.namprd11.prod.outlook.com (2603:10b6:f:fc00::f43) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.13; Thu, 28 Aug
- 2025 09:47:03 +0000
-Received: from IA1PR11MB6443.namprd11.prod.outlook.com
- ([fe80::7e9f:7976:bf62:ec10]) by IA1PR11MB6443.namprd11.prod.outlook.com
- ([fe80::7e9f:7976:bf62:ec10%7]) with mapi id 15.20.9052.014; Thu, 28 Aug 2025
- 09:47:03 +0000
-Message-ID: <4fc29d26-14a0-4295-b82f-48e21b376f49@intel.com>
-Date: Thu, 28 Aug 2025 11:46:58 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 7/7] net: stmmac: add TC flower filter support
- for IP EtherType
-To: Simon Horman <horms@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Rojewski,
- Cezary" <cezary.rojewski@intel.com>, "Basierski, Sebastian"
-	<sebastian.basierski@intel.com>, "Jurczenia, Karol"
-	<Karol.Jurczenia@intel.com>
-References: <20250826113247.3481273-1-konrad.leszczynski@intel.com>
- <20250826113247.3481273-8-konrad.leszczynski@intel.com>
- <20250827193710.GT10519@horms.kernel.org>
-Content-Language: en-US
-From: Konrad Leszczynski <konrad.leszczynski@intel.com>
-In-Reply-To: <20250827193710.GT10519@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA2P291CA0027.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1f::18) To IA1PR11MB6443.namprd11.prod.outlook.com
- (2603:10b6:208:3a8::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ulc1opzH"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32597b88f0dso699114a91.3
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 02:52:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756374777; x=1756979577; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4hJznQap30ATxMczeU/BzQVuO1TgIiqR0Ob0+SNztQ=;
+        b=Ulc1opzHc1kBZ75mvL02UooLlAnuxZ2zSGUfF95bJtEmOWTj5BTHFDD7oiWq7E+d+K
+         +u33aYxox/2lWxn8k1xGKkKyad7fn9HgHwhSt2yDMU7A7MiCH9YzgwJxVdiBnQeDtOPg
+         q/AOrY8qeHCFO+CN4hgOcyyoNqZZNSGWNQyTmhndwc7ZSvOJKnXL2sPVMN0TFBw/pc8i
+         q8yEHSbmkoGAZ/8oIDj/QKLlF+bzjU+G0+Ub9CxieGN0fJ0jVa9G93/qRFsvoR1XluDQ
+         XpSU6xdcvBsIEMCD30ooKfGSBMMXDbgnzvSujgwMsq/fC9QvAla5WXxmvegtBzbtu6cy
+         FOsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756374777; x=1756979577;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d4hJznQap30ATxMczeU/BzQVuO1TgIiqR0Ob0+SNztQ=;
+        b=DUpmJCcP2e+yZg/VnqWi63FN8JZ7KEDDs5Cs2iGESo959GQU1xrpiIeeWpPej6GAv7
+         +f0bjjb3ZjcElbo0Bpj9EY4DVMRpczdrQ8pSwjwn2RixL6MlweV/Q/gqR1rkDhLt83Xr
+         6ahCoAL1Rrdf8POc6latdajwp0whnR0rIConLkfxbqsKKEOIj14OF0Cs7X0ifI5KGeU7
+         4RK4DMrUcu783ZUViJCVTSvzI0yNuqD4CC2qXV1AtxevQkahtcUZGZ5qxCJjwR6wR7rO
+         XwW08D6TCryx7KdJktI7Uh4fHPI7414h0UDin8V/KZw82qSQXaaebGh12KhFz9DSrv4j
+         zTGQ==
+X-Gm-Message-State: AOJu0Yxlt1B1QCn+iQlbuMR6z3iKOD6i2IH/IH28zvJh/EFEwSVwH34G
+	azocT00RoM1CQms9uBdikG3kHCwOUZRF0+AwRkBLNnq2XViG6q8QU7OF
+X-Gm-Gg: ASbGncsBxEbE4hp5TORb18y9mvzx5fHSd6Z7MxR1shKm+VtTWKmnvO2v0QYfwrC1Dey
+	gKiYmiJXb9YsVV40ga34AnI39L2geQHb3n/Q6G5EOAalwKgcsu9JBW4LdMSsBg6L9AOWvlpxNhV
+	3VbnKm0gVXLenUujD67GUzlvxnu1RSweOHPFmtXgv5e4C5c/J6xm7d9XaH45DqcYxoO0MBX9e+w
+	fWXI9NDYPU7KBVhdM1nTx5rQ6vLc1FUzviyGyy9FTPbFP4f0jDycyjF6cdrkUrLkp4Lrwg/Zvov
+	D/06hFl21n8nZzPjRNN2aV70V6tQ+gwyYqCq+TTF0NnNt6ut5qIvxyd53AKHGPEkZe26/ZG4scT
+	2Frq1YtBTpgWZIcyd52BbB93fyqY=
+X-Google-Smtp-Source: AGHT+IEjeFFb28UfVBKfHAlddzJzq2SpeXPquDDyB5hAloSkhIPzb8TQaiRB5Zv42aOdwz7SFV0WHA==
+X-Received: by 2002:a17:90b:48c5:b0:325:c120:931c with SMTP id 98e67ed59e1d1-325c1209375mr16104546a91.8.1756374777166;
+        Thu, 28 Aug 2025 02:52:57 -0700 (PDT)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-771e39cb4b8sm10706021b3a.92.2025.08.28.02.52.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 02:52:56 -0700 (PDT)
+Date: Thu, 28 Aug 2025 09:52:48 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jaakko Karrenpalo <jkarrenpalo@gmail.com>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Murali Karicheri <m-karicheri2@ti.com>,
+	WingMan Kwok <w-kwok2@ti.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCHv2 net] hsr: use proper locking when iterating over ports
+Message-ID: <aLAm8Fka8E19JOay@fedora>
+References: <20250827093323.432414-1-liuhangbin@gmail.com>
+ <147f016f-bf5e-4cb6-80a7-192db0ff62c4@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB6443:EE_|DM3PPFAB693A2AC:EE_
-X-MS-Office365-Filtering-Correlation-Id: bdd91c8d-857e-43a5-17bf-08dde617d767
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|42112799006|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Rkl5eURVSE50Qk92ejR3L2FGYStQZGhtbVhxQk9sSlY0ZEtnRi9tMnA1Znp1?=
- =?utf-8?B?d2ZQaDh0cVhXYmIzcTlnMW1FQXR4UXk1dmlJVWpZL1NvSEp3UllUQ0NGWjB5?=
- =?utf-8?B?VXMxM1M4QVNqQjNMS1JIOEgzMFlzQ0VsdkU2Y2xyOTVzNXA4b3dyRU5xN0F0?=
- =?utf-8?B?OW1KalNjWVRVcW1BK211SHY3OUU1U2RyWUxqWldDZmVYV0ptbUNEdHhZdjlN?=
- =?utf-8?B?R3dhUzlWeWJjNHUyMlRWNFdjNndYQzBkS3JUQWhXWlNvTWF1QWVGV1pVOGlN?=
- =?utf-8?B?OHp5djcybkQ2cE9jaTM4YzRWV2hubTZBb3pjRzJYczBtOWkwelhIZ0FhYmZJ?=
- =?utf-8?B?QkNJdDlZOWxORDFQaG9SWkEvU1hvSC9YU3JiaGtBY1Yzei95SkxhZTRSVm1O?=
- =?utf-8?B?ZUZ4Y0Q1dlBKYklGVzl3UXFUY3JhVkFVenRkU2tubHczU3BkYzBNSDhWdjQx?=
- =?utf-8?B?a2JXYXRJdFptWDI4am5nb0d0bzdrdWhyWUFkUVJlNnVDWHV6dUs3TkJ3MjJD?=
- =?utf-8?B?RTZMTG80dUYrTnd4eHlCckV4am9NR2J0VXZiMUthd1FyVjhyQkNPNEd4d1lU?=
- =?utf-8?B?SUxCd3F5OHo0M21wQWlPMXRUaWd4Wk5rWEVFa1RvNGxmL0hIT2RVODFkOFhp?=
- =?utf-8?B?MWJreDNzV2owSTd6OEhqR3FjeEFTSjc4WXVKQ3V3L2F2Q0VGbjl0T3JIbmhY?=
- =?utf-8?B?cE5JOHc3QmJXa3B2Qk9hK3lIeWNyOXVpb0JwbW1KQWIzSHpRZnVGRG52cFJR?=
- =?utf-8?B?MTVuZVh4Zm9RRllsOVBvaGR6T1k5dEFLOVRlcEZXQTk1dHcxRkl6ZnluQkdZ?=
- =?utf-8?B?MXE2ZUxWSG1DVWtVSnNRRGJldUJpblZyTFdtUmdYUlFMeVFRemVsa3FKVWdR?=
- =?utf-8?B?QnRLVUJiQjZhYWM0TTBPNnMzeTNYazhmd3ZPeG9QMU9zaTJrdzNmS2IyZjJO?=
- =?utf-8?B?R3lIbTByRk9qVkJpSWczVHJZNWo5Mmp2MDBzSThyVktybFI1MVl6UHpVdXFJ?=
- =?utf-8?B?SnFxT0paY2RBR3ROWFhZRWgzYlN6ZEJQd1NCV1pZR0puZHR0RENFSWJDbWtl?=
- =?utf-8?B?VDE0eDRkZXppTUVxelhHWEZVOTJoZ3FYZEp5VDIvVlk3TTd4QjhKWHhkRHRh?=
- =?utf-8?B?VkdNc1pZWUZYZExjN0xSR242WFF6WTlsTjYzN0FWaEt4VzMxUFhCc2sydDds?=
- =?utf-8?B?clRoYVpKMHZUbWovbDBqUWtmdzhDYllydy8zb2hmOWVRV0k0bjRYcndZbFJJ?=
- =?utf-8?B?WFBRcHp3bllxVjdydzEybTlkaTBpQnVoWTdJTFZpSmhnaFY1ZzFlM09DUGNK?=
- =?utf-8?B?Qy8zMjR1L2lCU2RSTGdSeXpZbUF5a0F0UUxzaUl1cUJhWVAzaE9KWWpSdTlH?=
- =?utf-8?B?Y3lDOEx1NWVXWER6OFJWay9ESGJwblB4ckhjcmRucHZrZGRtdUtRTHh2R2ZO?=
- =?utf-8?B?aFZxU1FOYWZpU0U5YVNJdXJSaDRsTEdKSHY1b0hYcDBpNkUzOThKeExLVTI5?=
- =?utf-8?B?NW5xMlJ4UFZPZHNUdEpjNXNhVW1Ga3VUcmMzclRCYTI4OTJsSE5ENTBqcGVw?=
- =?utf-8?B?Z0lFSERMbEh0YStyNEN5ODZHOHZlbFBsTHY5ODMwVmlXUzQyQlVESjZTRXRN?=
- =?utf-8?B?UEpqcWpIR0JvYjRkcHJZVTlLc05HU3pTSU1TZDVhRm9yamhsN1dvdVBacnp2?=
- =?utf-8?B?dlllNnNaMHNmS2NwSXgxMnN3akROSE5ucW54dE5Id21PREVzeWVwekJSdVl1?=
- =?utf-8?B?QXB5M0xXYU5QTGVZeWhyRGxlME5IWXd0V0k3Z0pZTFBGbktGdzdYR3Y1M3pw?=
- =?utf-8?B?ZU51SEFaME41NkVPTkVxQVV4V3lkc3M4M2ZPaDViU3prMFBHN1AyYnlzaTUv?=
- =?utf-8?B?UFpSTkgwa2VNQWhxRUI3ZGlNck5ieUZ5VTRvanIvcmEzckE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6443.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(42112799006)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cXMvVy9ZYk1raDJDaWo0U2I1RHBkWVB2eDFxRFpKZUgwM1ZrWFZqMG5vK3Fu?=
- =?utf-8?B?SklTZUxhOUxxN3B2Y29zVUtZYjI3ZzZheHh4TzJNeE9WSTFCT08xMThlRG0v?=
- =?utf-8?B?R2NMemZqeGE0NzFHa0lJRkZyTVFWdXBxZ1QyTEl1MlRCN1B0b1lZRFAwbXhU?=
- =?utf-8?B?dWxvaWNsWmZMZ3lkb1NQQlUzNldCMXlRM01lNk1KaVEyN0lMODdIbnJ5SE02?=
- =?utf-8?B?QXAyQVoxZVpsVlR5TGpWdmVXNGhkMFB1dVJ0VWs3c2hSeFNzWjFWVUxUaDJD?=
- =?utf-8?B?Z1NLNjIraWtoV1IvL2Vrb2duaU9qa3BGTmZwc0ltYnBBR00rQWtjY3JFeXgy?=
- =?utf-8?B?MVpiRzIxSFc4YjcxOGx1dzVFTHFpa3dBV1E5TU1zWUV1ZlZPakhlcERTdSsv?=
- =?utf-8?B?T1FiZmhyZFN6ODRaaDR0bFdNMVpITGNTbnRkd3gxVmVUSFhrZERPUCtPdjVE?=
- =?utf-8?B?c3FRSkhmOVZXQVR5Mktkc1I1MU8zZHpDUXNQNVRYM0Q5R1djbXdQWkdtQlQ1?=
- =?utf-8?B?OVg4OU9hVnRsM0VibU5idjBETzVWeWkyYnhXLzY2eHZ3NnUwcU45Ty80b0d1?=
- =?utf-8?B?MEtqc21MRC9YSy83R2lDdFM4V29yWU1qN2ZyMFR4LzZxMktyU0NmY1dzZnkz?=
- =?utf-8?B?TldMMjhvTkN3L281Nm0yTEdYdXZoL0VhSTBBVG9YZ2VkY3dYQjNqWTVUb0Mw?=
- =?utf-8?B?cXhLVFJSVElldndGUnFPVGEvUC9VK2t1WnZtankxY0ZuWDU4dm1NeWxRSGNJ?=
- =?utf-8?B?UjJodFcvTjhQMzhDSlJlSzVqbkdZb2pYa2poZVhBRVJkbG5XVC9tZDdyU1VW?=
- =?utf-8?B?M2F3d3NnU1doUmYvQmVWR01yUlJLa2crRW1jaTRxY2p2QW10YmZHNmdGNWZa?=
- =?utf-8?B?bzM0NndDcXFscXBhSHYyMXdkVEhsQzdqdW9OaG1qd0pxUlBEY0VnSmh2L1I5?=
- =?utf-8?B?RFdQMExQMHJ4Mlg2NmI2MnNSbE1mcU80Y1MyOGU1NUg2bDJSTUZncmNaNlZv?=
- =?utf-8?B?ZG1Sa08rUEc2cytvMWRjOVJRY3JDNHZBMlRvRk40MWt6eEZPV3U5b0ZCL2pX?=
- =?utf-8?B?cEkwbmtoOFJxZS90Qmd1cXpzNTc5MjdzdzVvcEN2WnMxbWtOOXgybFV6djd4?=
- =?utf-8?B?VGhnNHRSTVVHN1lUSEIxeHhYdVhtVGpCanA2cjRzQkhGZTRpV1RsWHhBc3BG?=
- =?utf-8?B?MlU2THNkQXc2SnhuUDAya2xDYmRUKzZJNFRObU5ncDAyd2UyU3lpVElNczVp?=
- =?utf-8?B?WEc5Y2FsUEpaNndXN3hkeDl1ZlFQQ3ZleVZ3RDNCdVp5ODFjMXBncDhYNXYx?=
- =?utf-8?B?dXRuU0pvM1V1YXR5clNkWVI2eEExa2N4QUw4dHVPOEZPaGhIQzF5ODBBbTF4?=
- =?utf-8?B?U1NHMHVFc3dmTVcvZVZtYjJOeUJiYVJrN24wWU5qSFUwbEs2MThSbVd4dnZJ?=
- =?utf-8?B?ODMzTkU3UEJzM2xJSmlGWVd0bU9pRjE2M08wZUNCL0dRNmZoNjRNQy90MndT?=
- =?utf-8?B?TVFVY0JjM2h0TGlWd0ZhZmFmT3AyVnZvcnBkUHc2ZVI0Z25tVUxuUFdES0tj?=
- =?utf-8?B?WEFwbzV2QWhJQXZ5YTJTZGczTWR2NExEbjNGSVdaTlRPUXJjZGRPNlNiTG8r?=
- =?utf-8?B?VmRiak9NNFVWVHc4bGpndlQ5ZlZJMHNrRmxXSjZncS9JZTlaSTJBaHlpVWJo?=
- =?utf-8?B?ZHRxNGlya0xFdmJ3cHljOVNjbElQWlpkdW1LWXJ4VXJubUQxd2E5Q0JVTmtm?=
- =?utf-8?B?ODV0aEtGNnFVelJqUjhIcEtmckgyYy9wSGxhSDNDR0NBR3NVVGNjajdkdHBG?=
- =?utf-8?B?TE5DK3RRZ1MwL2dFS0d4elJpMkp0aGVYMENxK2xjWm9SV01rbEpTa3hHT0Fw?=
- =?utf-8?B?d3h6Q0FXYThkSzkxci8ybzVENFZWYTQvdG1oMVJDZW5uR0VRR0pXQiswTDIy?=
- =?utf-8?B?a0xGOUNmbDFlZnRNOFRSUlR2ZjE5TDB2aFlsVTY5d1RUYU1DS2FHVk1PT29Y?=
- =?utf-8?B?Zm9Lc1BuN3ZMdUw2NzBmKzQ4cDJTdkE4MzQxNi9jalloL2QrZFNranJrSlpH?=
- =?utf-8?B?M2h3SFJDclMzRE0wUGNTWHNSNkprOSt3UmFPTG1VU1RIS0N3MUk0U0w1QVZB?=
- =?utf-8?B?Ty9FVW1Jek9DczhVbjgzWlRxcnZvOGtYeVJ4T1pxOUg0THA3UGg0aTVRdUly?=
- =?utf-8?B?MXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: bdd91c8d-857e-43a5-17bf-08dde617d767
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6443.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 09:47:03.1163
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nah7fXKBEMivJowBp0YsJneKZwtxT9l1obc6VZNe0Umtz1MFPvGVEG6U5m0cBVuVl/Riyq4LbQK5x5FGykECuLhTZL+mJViwHqq1c0aIS2I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFAB693A2AC
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <147f016f-bf5e-4cb6-80a7-192db0ff62c4@redhat.com>
+
+On Thu, Aug 28, 2025 at 11:19:11AM +0200, Paolo Abeni wrote:
+> On 8/27/25 11:33 AM, Hangbin Liu wrote:
+> > @@ -672,9 +672,13 @@ struct net_device *hsr_get_port_ndev(struct net_device *ndev,
+> >  	struct hsr_priv *hsr = netdev_priv(ndev);
+> >  	struct hsr_port *port;
+> >  
+> > +	rcu_read_lock();
+> >  	hsr_for_each_port(hsr, port)
+> > -		if (port->type == pt)
+> > +		if (port->type == pt) {
+> > +			rcu_read_unlock();
+> >  			return port->dev;
+> 
+> This is not good enough. At this point accessing `port` could still
+> cause UaF;
+> 
+> The only callers, in icssg_prueth_hsr_{add,del}_mcast(), can be either
+> under the RTNL lock or not. A safer option would be acquiring a
+> reference on dev before releasing the rcu lock and let the caller drop
+> such reference
+
+OK, thanks for the suggestion.
+
+> 
+> > +		}
+> > +	rcu_read_unlock();
+> >  	return NULL;
+> >  }
+> >  EXPORT_SYMBOL(hsr_get_port_ndev);
+> > diff --git a/net/hsr/hsr_main.c b/net/hsr/hsr_main.c
+> > index 192893c3f2ec..eec6e20a8494 100644
+> > --- a/net/hsr/hsr_main.c
+> > +++ b/net/hsr/hsr_main.c
+> > @@ -22,9 +22,13 @@ static bool hsr_slave_empty(struct hsr_priv *hsr)
+> >  {
+> >  	struct hsr_port *port;
+> >  
+> > +	rcu_read_lock();
+> >  	hsr_for_each_port(hsr, port)
+> > -		if (port->type != HSR_PT_MASTER)
+> > +		if (port->type != HSR_PT_MASTER) {
+> > +			rcu_read_unlock();
+> >  			return false;
+> > +		}
+> > +	rcu_read_unlock();
+> >  	return true;
+> >  }
+> 
+> AFAICS the only caller of this helper is under the RTNL lock
+
+Thanks, sometimes I not very sure if the caller is under RTNL lock or not.
+Is there a good way to check this?
+
+> 
+> > @@ -134,9 +138,13 @@ struct hsr_port *hsr_port_get_hsr(struct hsr_priv *hsr, enum hsr_port_type pt)
+> >  {
+> >  	struct hsr_port *port;
+> >  
+> > +	rcu_read_lock();
+> >  	hsr_for_each_port(hsr, port)
+> > -		if (port->type == pt)
+> > +		if (port->type == pt) {
+> > +			rcu_read_unlock();
+> >  			return port;
+> 
+> The above is not enough.
+> 
+> AFAICS some/most caller are already either under the RTNL lock or the
+> rcu lock.
+> 
+> I think it would be better rename the hsr_for_each_port_rtnl() helper to
+> hsr_for_each_port_rcu(), retaining the current semantic, use it here,
+> and fix the caller as needed.
+
+Do you mean to modify like
+
+ #define hsr_for_each_port(hsr, port) \
+        list_for_each_entry_rcu((port), &(hsr)->ports, port_list)
+
++#define hsr_for_each_port_rcu(hsr, port) \
++       list_for_each_entry_rcu((port), &(hsr)->ports, port_list, lockdep_rtnl_is_held())
 
 
-On 27-Aug-25 21:37, Simon Horman wrote:
-> On Tue, Aug 26, 2025 at 01:32:47PM +0200, Konrad Leszczynski wrote:
->> From: Karol Jurczenia <karol.jurczenia@intel.com>
->>
->> Add missing Traffic Control (TC) offload for flower filters matching the
->> IP EtherType (ETH_P_IP).
->>
->> Reviewed-by: Konrad Leszczynski <konrad.leszczynski@intel.com>
->> Reviewed-by: Sebastian Basierski <sebastian.basierski@intel.com>
->> Signed-off-by: Karol Jurczenia <karol.jurczenia@intel.com>
-> Konrad,
->
-> As per my comment on an earlier patch, your SoB line needs to go here.
->
-> Otherwise, this looks good to me.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
+I'm not sure if the naming is clear. e.g. rcu_dereference_rtnl() also use rtnl
+suffix to check if rtnl is held.
 
-Hi Simon, thanks for the review. I'll split the patchset into two to and 
-address all your comments.
+> 
+> It will be useful to somehow split the patch in a series, as it's
+> already quite big and will increase even more.
 
+OK.
+
+Thanks
+Hangbin
+> 
+> /P
+> 
