@@ -1,109 +1,100 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3339631E113
-	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 14:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BA03218DF;
+	Fri, 29 Aug 2025 14:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756479208; cv=none; b=h1m2gjeb6oCDRbOFLVc1U9uFbSoxKX7UtzwmdGRQ6MjO3WJ7p/Eq3tPFypBJfJ/BtXFS7f58BbCXVgj6qYpazMBkOhXwlgvbVhXmgLfc3syO/zeTTJxUKjNH7o48/Ja8FnBIriwYyrmdZgCM5kQ5O1j0xl2zZ0IVVnEBhFtgR2s=
+	t=1756479507; cv=none; b=CIIqtGpvhbUP06gywQE+mBjxjTMUw99UqNmkwnyCrulfn/OmBFFAWNpglOwMWuehj71dmEhihpLEqpHZU9sZVV96hHdqT+WKncAiOl8WAn557IhPbLRg9MrKFD12NaeMS9ewww0wuWurNW4BuENowaUXOBwlXdy3Voa7rFBZkhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756479208; c=relaxed/simple;
-	bh=kBmhdY41MuuGaErU9JOcCvqTMBfBCKMYKyDrfB8dQvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ai2MrWVVWuRhs2zBFj2JAENlifWvccSqVeUhD+mOLNbLvtYep+BqCFkZuzK2yW3KPEHrb/V5uPVNNXOhx5SnSkgo8X9vvUIu1o+wKQHP97n7B3M/tC9TDk2dKZAagwdHEwYYJoGpVa+6cvSSaTx18xeHYmL/OG3B66gceolMNiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wkhBkg+A; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1756479507; c=relaxed/simple;
+	bh=onFqY4hAxMFMBuN8j/TBQNxlKRQzUK0qi6Le9OMjaX4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BF0ucxNPvRW0e2Bo9GLs22cEezW8tTT8fZtbAtOSHeKrvQoPUV2f3U7tG5g3C2J0v+OE7+39bUsChBFH4LvwwV9by/QXUfuiT6RvWtUejSvKVQii28sxKbGo95K6BpKDLLTsUfksQdgoWqYcE/lK/4Vq8xhro2jXwDAfXI8oVYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i/hlEKKR; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wkhBkg+A"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C7E4BC8F1CD;
-	Fri, 29 Aug 2025 14:53:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 143EE605F1;
-	Fri, 29 Aug 2025 14:53:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BC74D1C22D7F6;
-	Fri, 29 Aug 2025 16:53:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1756479202; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=4ckzePFQYp/N4R7lFdjnp5WArUDphEJKP4hsZQnN0IY=;
-	b=wkhBkg+AG4oSLegWFI1ccpS8UjAid+4QPBuZQb/T7MxcTtIrdaFKiXGWgkVF1APhb365H6
-	r8x704yeFX5la1/WFPXq0PigKF//1A0loE4JlCJaMFaM5D1iApbJrBbnaN82oqlK8jaPfH
-	y4ouRHsCpzjPri/34rNmuRv8fckvKzRko8WlD6u8nvGo0VuhaCf9Yzita0fF5xV01yHEMW
-	GcaQ3Pf64xZwrYB4N+LmMDrOolgbCdXuL/lwWskRhOhw4T1c7O6oLYmlt2VIz+qOnQMy7t
-	SbAHMZhMTbCrStdGsIyZZFK2xb+AZH/wodikL+B/5C474jqRVTdcV1fcKKXNpQ==
-Date: Fri, 29 Aug 2025 16:53:10 +0200
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <richardcochran@gmail.com>,
- <Parthiban.Veerasooran@microchip.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v5 2/2] net: phy: micrel: Add PTP support for
- lan8842
-Message-ID: <20250829165310.2b97569b@kmaincent-XPS-13-7390>
-In-Reply-To: <20250829134836.1024588-3-horatiu.vultur@microchip.com>
-References: <20250829134836.1024588-1-horatiu.vultur@microchip.com>
-	<20250829134836.1024588-3-horatiu.vultur@microchip.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i/hlEKKR"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1756479493; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=jmm7ekTMsGSF5XYrucl/oT/K7r0Y6mSHpLrRn6c9gpE=;
+	b=i/hlEKKRrFFp+9mTXVtDWl2GTfquIufNMZuTO4zzpQC5BXVfviGfUqR+lct1lGawYd0qRP6trkpUPtVmcrigvWzOrDmJz4OVHJ+QHlSW5LqjmUhEszGzhXYDVGNRgkF7cHvK6FbjnEIvU3n/fBTIemTWZjOUkB1J7VktDB2chOU=
+Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0Wms2ysr_1756479492 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 29 Aug 2025 22:58:12 +0800
+Date: Fri, 29 Aug 2025 22:58:11 +0800
+From: Dust Li <dust.li@linux.alibaba.com>
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
+	wenjia@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+	guwen@linux.alibaba.com, netdev@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+	Alexandra Winter <wintera@linux.ibm.com>
+Subject: Re: [PATCH net] net/smc: Remove validation of reserved bits in CLC
+ Decline message
+Message-ID: <aLHAAy-S_1_Ud7l-@linux.alibaba.com>
+Reply-To: dust.li@linux.alibaba.com
+References: <20250829102626.3271637-1-mjambigi@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250829102626.3271637-1-mjambigi@linux.ibm.com>
 
-On Fri, 29 Aug 2025 15:48:36 +0200
-Horatiu Vultur <horatiu.vultur@microchip.com> wrote:
+On 2025-08-29 12:26:26, Mahanta Jambigi wrote:
+>Currently SMC code is validating the reserved bits while parsing the incoming
+>CLC decline message & when this validation fails, its treated as a protocol
+>error. As a result, the SMC connection is terminated instead of falling back to
+>TCP. As per RFC7609[1] specs we shouldn't be validating the reserved bits that
+>is part of CLC message. This patch fixes this issue.
+>
+>CLC Decline message format can viewed here[2].
+>
+>[1] https://datatracker.ietf.org/doc/html/rfc7609#page-92
+>[2] https://datatracker.ietf.org/doc/html/rfc7609#page-105
+>
+>Fixes: 8ade200(net/smc: add v2 format of CLC decline message)
+>
+>Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>Reference-ID: LTC214332
 
-> It has the same PTP IP block as lan8814, only the number of GPIOs is
-> different, all the other functionality is the same. So reuse the same
-> functions as lan8814 for lan8842.
-> There is a revision of lan8842 called lan8832 which doesn't have the PTP
-> IP block. So make sure in that case the PTP is not initialized.
+I think this is your internal ID ? It's better not to leave that
+in the upstream patches.
 
-...
-=20
-> @@ -5817,6 +5831,43 @@ static int lan8842_probe(struct phy_device *phydev)
->  	if (ret < 0)
->  		return ret;
-> =20
-> +	/* Revision lan8832 doesn't have support for PTP, therefore don't add
-> +	 * any PTP clocks
-> +	 */
-> +	ret =3D lanphy_read_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-> +				   LAN8842_SKU_REG);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	priv->rev =3D ret;
-> +	if (priv->rev =3D=3D 0x8832)
-> +		return 0;
+>Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
+>Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+>
+>---
+> net/smc/smc_clc.c | 2 --
+> 1 file changed, 2 deletions(-)
+>
+>diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+>index 5a4db151fe95..08be56dfb3f2 100644
+>--- a/net/smc/smc_clc.c
+>+++ b/net/smc/smc_clc.c
+>@@ -426,8 +426,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
+> {
+> 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
+> 
+>-	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
+>-		return false;
 
-Is the lan8832 PHY ID the same as the lan8842? This would be surprising.
-If they have different PHY ID, it will never enter the lan8842 probe functi=
-on as
-it is not added to mdio_device_id.
-Also you should add a define instead of using several time 0x8832.
+Here it's checking the typev1 in smc_clc_msg_hdr, but your commit message
+says it's validating the reserved bits:
 
-...
+  Currently SMC code is validating the reserved bits while parsing the incoming
+  CLC decline message & when this validation fails, its treated as a protocol
+  error.
 
-> @@ -5912,6 +5989,26 @@ static irqreturn_t lan8842_handle_interrupt(struct
-> phy_device *phydev) ret =3D IRQ_HANDLED;
->  	}
-> =20
-> +	/* Phy revision lan8832 doesn't have support for PTP threrefore
+Did I miss something ?
 
-nitpick: therefore
-
-Regards,
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Best regards,
+Dust
