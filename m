@@ -1,78 +1,78 @@
-Received: from mail-il1-f225.google.com (mail-il1-f225.google.com [209.85.166.225])
+Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93ECB31A057
-	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 12:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23338317700
+	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 12:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756470707; cv=none; b=Q2FedbftuaYABHTb2PkaBlB4+xbLFbT1pyuQJiyKMWiomya7N8MUk9a2Vl9euSWomPdAKq+0NKBzsvDqjcVyrcrfS3FTydVZClFpojMsUqfLx4rtaobuPldFrtlmBHvy0XPtKyJSLX0WWlEVO9R37CchjHNCEJyQN30l1w5zA/c=
+	t=1756470710; cv=none; b=sgkAx6T8F9DO57RWcFoQVV5VsKQhZ9sj7BCF1NS8ZlbwwrUWlhcbh1lp48LqThGn85SPd3KVaQLZpdMUTMfi+rfrsmIGVPWHPdPE5pErGEa8GKvkJTFBpCEyXgvHtY6d3ajRCCrb+KSbypE882V1VR2ZrdXgOpgNu5GRsQrIZUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756470707; c=relaxed/simple;
-	bh=+tkMoEl2JTWyhdbhKqg7f4fwMDEyddaAjWeI0Osozqg=;
+	s=arc-20240116; t=1756470710; c=relaxed/simple;
+	bh=RIFRi3MNJGSSdjQM1Ui6VxpUsWC/b8GxminKx27eVwc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c59887E7UraKg1JP7tiP79hyXLOD1mQn9uZrK4YE57uwLnZdYU0F26rueIajUhQ+FTLi5xVQYH38VPewTDNqs8HCcM4GvdAsuD9LjWGf/Pi7n+MvEJu/sEAHnHKuLra4l3XarMLcibPkNCNDAgECWrq5/jcFwyyhCHIIvfOLvr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NhMqTK5c; arc=none smtp.client-ip=209.85.166.225
+	 MIME-Version; b=JUAS87r0SVvMGdf/8ZKAh65N+KK1EZsG8+PlLvuVG0oZGKC99pOPGz2Ufqb3VS5Q6GwnLXrd9Pw1OZKLL62vkSscRkDScbwXQ3M42M1qjqSG7g39WEWrqX1iJLhUCfL3lib2wNcTOdDxOFHzlPMCPZGSdl2IHS/QAwTex2qqOdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=eroPlF02; arc=none smtp.client-ip=209.85.210.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NhMqTK5c"
-Received: by mail-il1-f225.google.com with SMTP id e9e14a558f8ab-3ecbe06f849so11870995ab.2
-        for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 05:31:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="eroPlF02"
+Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-771fa8e4190so1454275b3a.1
+        for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 05:31:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756470705; x=1757075505;
+        d=1e100.net; s=20230601; t=1756470707; x=1757075507;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F9+/a9hcq6wE5bnYT6NSRvJASliFdVnT0YARrBoP9Qw=;
-        b=d/CWj2/Mv+mZk5jNc90O9gzwrcw4dJwn6/WSbbA6TbOmAdbhKIH0MnikQlTxBdvmuz
-         WFBVX3WxHMEhZRVjavlLRg5yBMuaWEcxsba3fH7+G8S0ADe0DTipYYDY7RMgAsFG7mms
-         b7jvrYQSp0Tqas9LjiuaNUqaxhL3qLE4wlKuVPVtoe+1Fwf9T91TZabwGaQjwehiK/HG
-         zIvM1ZjiRInkffSABcJbG6oM2MqLOB3ylsl2wh2eSHrUd5br/4N4qum6+lQzst4U8+77
-         cHpNzde6iX58NK7DlYw5+jcB2dRMAGR3si7ltnaPlcywfPbQX9Q2I+9OfPRb7EBBjc15
-         UNXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKXooDT1dDf0DRuKI2UU9tijUJGrIpWrL+iYmSMLh1duDvqILgAYayCIMFPlsyLk88xMA3Ck4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIGbsCM6fNOT3lpsukxJCNVm6yA3rtncblo9LhaZOP4wRh7Fce
-	0/q9fmCEggCPar6IN3kkj5PLU7qIEKdNBC+nEVDQ18LZwBaTl7cqipT5TfDuGb+4CD/RFoDSrwk
-	dPhX+/mu9s98LVD+MjwyqFkuF03De6rAs+Nz6VjICGaTPhGFA280tzkadajvKByiYqJaD+Aq4/y
-	mFFm5+KvcUdVtpObDYhirXz6HjO92H2dUX7oiw+TZmzoyRc8k+HB+jMSRtY9suw48RxS5C+RRNL
-	Kx/iTmLIOm9
-X-Gm-Gg: ASbGncvy4HT7YzUbqvXqONyJaZQSbmW7ZG+cZckN8Tf/jfGMkJeCQGlM0xwF4UO4V8P
-	w067luybSWNyUVeeiWYyfiA+/beUEjEM52nCjbdWskKmvyQ5c2wDG2bEfsUBPl0E7D7BMyfGNl1
-	QYgVqeA9E4GdrqGgKVUO86trS2C0cmEraSwDC966cWZTp8d0xpLeEhdny/exMHOBJrrcgE3ONvR
-	Sq+DJaNdlGJcZHFuC451yoD2kA+ZeuERHrDT/qkKBPeXdrmUYmjBkKQDd217z5CUkpqOAG7Eicd
-	1yfSgB8qR+6ln/VOftyzolY6sUNG1C4KlgHIwc6GM+g8PqGBgJIHzCCuXXYLGd1Nlq9tk8brg0G
-	i9pGVsR4iA+06zlPiWbkxX1KBDSuDi6FWajwLdqiRh9FYjCMGG4R+Y3cu754GOB9pD3aZInTW4w
+        bh=ocs1O7M+XeHOMJsN32xtyWTZCKjfIDggqthostXpTY0=;
+        b=dvVRdnp5eJBIhAuDUbyRh508/4Tt8OjvLO3a9JhB1rCzMiR8Vt9KEGwzER1a2GLu9Z
+         KrO9Mg21jTg0NV9vupluwJSUj394LbGf684nycFTl2uXbyLviO4cviPhBQ1y+nUHMBw+
+         tGDote36w1Ou6q3bKOlmmIINavExirEwrqBjS7y4nvbT2hkr+GzcZ1dvfBi4MrimvpPr
+         wZanh0IkFCvKof5ZMDDjuI2mDFuebKv5dJ/DaePnRn8LQ5NHd1yY19SmwSX69IkJYOnZ
+         CaxhqRyp8XHMcfHWh6eK6b+1rygGgkpMCvMgiosUMAyNFZX9MYW3EkmxVHzgoO1jEFrs
+         YANw==
+X-Forwarded-Encrypted: i=1; AJvYcCW7lqV8caVGQv2VuoeKaKLGZrw1jRoHhtpa41YYAMEP9Bkctrj3fTfTmKanIwscIhgsTMPhAo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeR6EgQmTHm3LluXsxF947FGPn0iDyhSUi/DGMka2YHRsvfqO8
+	H7V1ayrv7eqs7Vu4t5GCEAy8nCx7XXtw6jDNyseU+62KNPhSx5kU7yA+JxEI9nAc8chO0elt/+3
+	RITLKxs6fkBTzmtk8TshHSG2qxssoBsNrWkeKkXK/eW6nIAEBS13b3YDjMg0GDoGB2NVL9jTaeY
+	nBatlABR7Gwt1DWFpMANOloFoRuWL0bHNLfEXaQDeuDH2OyDOEmHE9OHVoob/HRRTbrkK2wFlWU
+	O34KHlqY6Eb
+X-Gm-Gg: ASbGncvmzB7stuSE+yGOr8lZYe96tVHWVM83uJyF89ImenClFVgusdAO16UODNtQ6EJ
+	A+AH9WlufgMZ9K5dk8Ns7kxskBRjY849u2y89c9xgrQCROrLEmVJJudvMyfJqx2h9XDqdQ3sX4h
+	sIN4y9FTJx1n1/OFiEl9qWldYNv7vuKYmp19k7viWVZT65AyXCQDzlC3HpW5dEWhrtjkq5VPuYL
+	2fWzrVCk9i4K8YNfhRmmzn5IMySyIGGjgXhCC4IMT/QNGI0uerZaRc0P4m1OrrWGrmRYneTG3se
+	QKHvUXZipoMLoLHKsfwgxgTS0CVCd0uGzpYERv1UMAhuTvUTBxVm8pQGMUAL4AQ84XpTwji9UqE
+	TxWFUJfUKhjkKHJGL72243gaNxN46HAPbuT6c5C0L6DwoqyeYbD2ZvQTioV1dKu6Q3AJGZjwMGQ
 	==
-X-Google-Smtp-Source: AGHT+IEyIqJU66sB3hby+pfKnKr+TEFdRQ6rspAY0cLoaaNGhxbS/TLUno1XkU2nlWeehIqICM7i/4cohO09
-X-Received: by 2002:a05:6e02:194d:b0:3f1:dd7:24a7 with SMTP id e9e14a558f8ab-3f10dd7250emr103922275ab.29.1756470663805;
-        Fri, 29 Aug 2025 05:31:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGBwyupqB2b+hNheHEdfjJEkkDBbA0UH+6Y7PMQObv855jTwal/8MFZpvOv8ezfEOof2WA8fhY+w1wG
+X-Received: by 2002:a05:6a20:9389:b0:243:99c8:c0da with SMTP id adf61e73a8af0-24399c8c69fmr14480458637.11.1756470707379;
+        Fri, 29 Aug 2025 05:31:47 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-11.dlp.protect.broadcom.com. [144.49.247.11])
-        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-50d7bff868esm115463173.31.2025.08.29.05.31.03
+        by smtp-relay.gmail.com with ESMTPS id 41be03b00d2f7-b4cd26ae354sm153136a12.14.2025.08.29.05.31.47
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 29 Aug 2025 05:31:03 -0700 (PDT)
+        Fri, 29 Aug 2025 05:31:47 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7f737071bebso472997285a.2
-        for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 05:31:03 -0700 (PDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b10993f679so45768541cf.0
+        for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 05:31:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1756470663; x=1757075463; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1756470706; x=1757075506; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=F9+/a9hcq6wE5bnYT6NSRvJASliFdVnT0YARrBoP9Qw=;
-        b=NhMqTK5cMwddP4jp49kFRW18s/dqgTukZwuzBgUlMzkdHcHW55+m1iCw22+YUafbAa
-         k4EBYigx54j5I6NcU9I+c/8N28mXoKGnOpJ1bls2pCRn+YUYCR7zeCW0WCf0537ozNRl
-         HNIv8X8MHZ3unTazuFdKifsjC00PNfmi4tfSw=
-X-Forwarded-Encrypted: i=1; AJvYcCViDsDfa1gJfcRLpMaxL7wy6Ezi2VFpk8b5Hddugjg6zLWyY6SOAjGUiB2OfF08c9oXP4rgQkQ=@vger.kernel.org
-X-Received: by 2002:a05:620a:2888:b0:7e8:72d3:22ad with SMTP id af79cd13be357-7ea10f72357mr3029250385a.1.1756470662641;
-        Fri, 29 Aug 2025 05:31:02 -0700 (PDT)
-X-Received: by 2002:a05:620a:2888:b0:7e8:72d3:22ad with SMTP id af79cd13be357-7ea10f72357mr3029246085a.1.1756470661990;
-        Fri, 29 Aug 2025 05:31:01 -0700 (PDT)
+        bh=ocs1O7M+XeHOMJsN32xtyWTZCKjfIDggqthostXpTY0=;
+        b=eroPlF02U/MdI2GZnv5mTnA1ENp6pVRWbXOViPrbDAHLIYIcWX/wnpShakdlx4nrSB
+         q8wpqQJNuw4c4wtUkqI67WAMypn/Fen28Gb4JTANEuXzC+/umqDXs2RlFUG3DSTLlVlT
+         kGrIzZrz71cqCMxCoFUNd8o1Q33AlpNYhDesc=
+X-Forwarded-Encrypted: i=1; AJvYcCUEBoLBE+fL3nzZbNFHZLzlOrM41vEyiLQnGt8EbObwt1BbhgX2MbXV+094tyCAW83On4DAuuU=@vger.kernel.org
+X-Received: by 2002:a05:622a:211:b0:4b2:a07c:d728 with SMTP id d75a77b69052e-4b2aaa2b1d3mr340921451cf.27.1756470706067;
+        Fri, 29 Aug 2025 05:31:46 -0700 (PDT)
+X-Received: by 2002:a05:622a:211:b0:4b2:a07c:d728 with SMTP id d75a77b69052e-4b2aaa2b1d3mr340920941cf.27.1756470705437;
+        Fri, 29 Aug 2025 05:31:45 -0700 (PDT)
 Received: from sjs-csg-thor3-swe-29.lvn.broadcom.net044broadcom.net ([192.19.224.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7fc16536012sm162384585a.66.2025.08.29.05.31.00
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7fc16536012sm162384585a.66.2025.08.29.05.31.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 05:31:01 -0700 (PDT)
+        Fri, 29 Aug 2025 05:31:45 -0700 (PDT)
 From: Siva Reddy Kallam <siva.kallam@broadcom.com>
 To: leonro@nvidia.com,
 	jgg@nvidia.com
@@ -81,10 +81,11 @@ Cc: linux-rdma@vger.kernel.org,
 	vikas.gupta@broadcom.com,
 	selvin.xavier@broadcom.com,
 	anand.subramanian@broadcom.com,
-	Siva Reddy Kallam <siva.kallam@broadcom.com>
-Subject: [PATCH 1/8] bng_en: Add RoCE aux device support
-Date: Fri, 29 Aug 2025 12:30:35 +0000
-Message-Id: <20250829123042.44459-2-siva.kallam@broadcom.com>
+	Siva Reddy Kallam <siva.kallam@broadcom.com>,
+	Usman Ansari <usman.ansari@broadcom.com>
+Subject: [PATCH 7/8] RDMA/bng_re: Add basic debugfs infrastructure
+Date: Fri, 29 Aug 2025 12:30:41 +0000
+Message-Id: <20250829123042.44459-8-siva.kallam@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250829123042.44459-1-siva.kallam@broadcom.com>
 References: <20250829123042.44459-1-siva.kallam@broadcom.com>
@@ -97,589 +98,162 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Vikas Gupta <vikas.gupta@broadcom.com>
+Add basic debugfs infrastructure for Broadcom next generation
+controller.
 
-Add an auxiliary (aux) device to support RoCE. The base driver is
-responsible for creating the auxiliary device and allocating the
-required resources to it, which will be owned by the bnge RoCE
-driver in future patches.
-
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
+Signed-off-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
+Reviewed-by: Usman Ansari <usman.ansari@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnge/Makefile   |   3 +-
- drivers/net/ethernet/broadcom/bnge/bnge.h     |  10 +
- .../net/ethernet/broadcom/bnge/bnge_auxr.c    | 258 ++++++++++++++++++
- .../net/ethernet/broadcom/bnge/bnge_auxr.h    |  84 ++++++
- .../net/ethernet/broadcom/bnge/bnge_core.c    |  18 +-
- .../net/ethernet/broadcom/bnge/bnge_hwrm.c    |  40 +++
- .../net/ethernet/broadcom/bnge/bnge_hwrm.h    |   2 +
- .../net/ethernet/broadcom/bnge/bnge_resc.c    |  12 +
- .../net/ethernet/broadcom/bnge/bnge_resc.h    |   1 +
- 9 files changed, 426 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
+ drivers/infiniband/hw/bng_re/Makefile      |  3 +-
+ drivers/infiniband/hw/bng_re/bng_debugfs.c | 39 ++++++++++++++++++++++
+ drivers/infiniband/hw/bng_re/bng_debugfs.h | 12 +++++++
+ drivers/infiniband/hw/bng_re/bng_dev.c     | 12 +++++++
+ drivers/infiniband/hw/bng_re/bng_re.h      |  1 +
+ 5 files changed, 66 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/infiniband/hw/bng_re/bng_debugfs.c
+ create mode 100644 drivers/infiniband/hw/bng_re/bng_debugfs.h
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/Makefile b/drivers/net/ethernet/broadcom/bnge/Makefile
-index 6142d9c57f49..ea6596854e5c 100644
---- a/drivers/net/ethernet/broadcom/bnge/Makefile
-+++ b/drivers/net/ethernet/broadcom/bnge/Makefile
-@@ -9,4 +9,5 @@ bng_en-y := bnge_core.o \
- 	    bnge_rmem.o \
- 	    bnge_resc.o \
- 	    bnge_netdev.o \
--	    bnge_ethtool.o
-+	    bnge_ethtool.o \
-+	    bnge_auxr.o
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge.h b/drivers/net/ethernet/broadcom/bnge/bnge.h
-index 6fb3683b6b04..703e25ec37ef 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge.h
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge.h
-@@ -11,6 +11,7 @@
- #include <linux/bnxt/hsi.h>
- #include "bnge_rmem.h"
- #include "bnge_resc.h"
-+#include "bnge_auxr.h"
+diff --git a/drivers/infiniband/hw/bng_re/Makefile b/drivers/infiniband/hw/bng_re/Makefile
+index 556b763b43f9..c6aaaf853c77 100644
+--- a/drivers/infiniband/hw/bng_re/Makefile
++++ b/drivers/infiniband/hw/bng_re/Makefile
+@@ -4,4 +4,5 @@ ccflags-y := -I $(srctree)/drivers/net/ethernet/broadcom/bnge -I $(srctree)/driv
+ obj-$(CONFIG_INFINIBAND_BNG_RE) += bng_re.o
  
- #define DRV_VER_MAJ	1
- #define DRV_VER_MIN	15
-@@ -22,6 +23,12 @@ enum board_idx {
- 	BCM57708,
- };
- 
-+struct bnge_auxr_priv {
-+	struct auxiliary_device aux_dev;
-+	struct bnge_auxr_dev *auxr_dev;
-+	int id;
-+};
-+
- struct bnge_pf_info {
- 	u16	fw_fid;
- 	u16	port_id;
-@@ -191,6 +198,9 @@ struct bnge_dev {
- 
- 	struct bnge_irq		*irq_tbl;
- 	u16			irqs_acquired;
-+
-+	struct bnge_auxr_priv	*aux_priv;
-+	struct bnge_auxr_dev	*auxr_dev;
- };
- 
- static inline bool bnge_is_roce_en(struct bnge_dev *bd)
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
+ bng_re-y := bng_dev.o bng_fw.o \
+-	    bng_res.o bng_sp.o
++	    bng_res.o bng_sp.o \
++	    bng_debugfs.o
+diff --git a/drivers/infiniband/hw/bng_re/bng_debugfs.c b/drivers/infiniband/hw/bng_re/bng_debugfs.c
 new file mode 100644
-index 000000000000..d64592b64e17
+index 000000000000..9ec5a8785250
 --- /dev/null
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
-@@ -0,0 +1,258 @@
++++ b/drivers/infiniband/hw/bng_re/bng_debugfs.c
+@@ -0,0 +1,39 @@
 +// SPDX-License-Identifier: GPL-2.0
 +// Copyright (c) 2025 Broadcom.
-+
-+#include <linux/module.h>
-+
-+#include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <linux/interrupt.h>
++#include <linux/debugfs.h>
 +#include <linux/pci.h>
-+#include <linux/netdevice.h>
-+#include <linux/rtnetlink.h>
-+#include <linux/bitops.h>
-+#include <linux/irq.h>
-+#include <asm/byteorder.h>
-+#include <linux/bitmap.h>
-+#include <linux/auxiliary_bus.h>
-+#include <linux/bnxt/hsi.h>
 +
++#include <rdma/ib_verbs.h>
++
++#include "bng_res.h"
++#include "bng_fw.h"
 +#include "bnge.h"
-+#include "bnge_hwrm.h"
 +#include "bnge_auxr.h"
++#include "bng_re.h"
++#include "bng_debugfs.h"
 +
-+static DEFINE_IDA(bnge_aux_dev_ids);
++static struct dentry *bng_re_debugfs_root;
 +
-+static void bnge_fill_msix_vecs(struct bnge_dev *bd,
-+				struct bnge_msix_info *info)
++void bng_re_debugfs_add_pdev(struct bng_re_dev *rdev)
 +{
-+	struct bnge_auxr_dev *auxr_dev = bd->auxr_dev;
-+	int num_msix, i;
++	struct pci_dev *pdev = rdev->aux_dev->pdev;
 +
-+	if (!auxr_dev->auxr_info->msix_requested) {
-+		dev_warn(bd->dev, "Requested MSI-X vectors not allocated\n");
-+		return;
-+	}
-+	num_msix = auxr_dev->auxr_info->msix_requested;
-+	for (i = 0; i < num_msix; i++) {
-+		info[i].vector = bd->irq_tbl[i].vector;
-+		info[i].db_offset = bd->db_offset;
-+		info[i].ring_idx = i;
-+	}
++	rdev->dbg_root =
++		debugfs_create_dir(dev_name(&pdev->dev), bng_re_debugfs_root);
 +}
 +
-+int bnge_register_dev(struct bnge_auxr_dev *auxr_dev,
-+		      void *handle)
++void bng_re_debugfs_rem_pdev(struct bng_re_dev *rdev)
 +{
-+	struct bnge_dev *bd = pci_get_drvdata(auxr_dev->pdev);
-+	struct bnge_auxr_info *auxr_info;
-+	int rc = 0;
-+
-+	netdev_lock(bd->netdev);
-+	mutex_lock(&auxr_dev->auxr_dev_lock);
-+	if (!bd->irq_tbl) {
-+		rc = -ENODEV;
-+		goto exit;
-+	}
-+
-+	if (!bnge_aux_has_enough_resources(bd)) {
-+		rc = -ENOMEM;
-+		goto exit;
-+	}
-+
-+	auxr_info = auxr_dev->auxr_info;
-+	auxr_info->handle = handle;
-+
-+	auxr_info->msix_requested = bd->aux_num_msix;
-+
-+	bnge_fill_msix_vecs(bd, bd->auxr_dev->msix_info);
-+	auxr_dev->flags |= BNGE_ARDEV_MSIX_ALLOC;
-+
-+exit:
-+	mutex_unlock(&auxr_dev->auxr_dev_lock);
-+	netdev_unlock(bd->netdev);
-+	return rc;
-+}
-+EXPORT_SYMBOL(bnge_register_dev);
-+
-+void bnge_unregister_dev(struct bnge_auxr_dev *auxr_dev)
-+{
-+	struct bnge_dev *bd = pci_get_drvdata(auxr_dev->pdev);
-+	struct bnge_auxr_info *auxr_info;
-+
-+	auxr_info = auxr_dev->auxr_info;
-+	netdev_lock(bd->netdev);
-+	mutex_lock(&auxr_dev->auxr_dev_lock);
-+	if (auxr_info->msix_requested)
-+		auxr_dev->flags &= ~BNGE_ARDEV_MSIX_ALLOC;
-+	auxr_info->msix_requested = 0;
-+
-+	mutex_unlock(&auxr_dev->auxr_dev_lock);
-+	netdev_unlock(bd->netdev);
-+}
-+EXPORT_SYMBOL(bnge_unregister_dev);
-+
-+int bnge_send_msg(struct bnge_auxr_dev *auxr_dev, struct bnge_fw_msg *fw_msg)
-+{
-+	struct bnge_dev *bd = pci_get_drvdata(auxr_dev->pdev);
-+	struct output *resp;
-+	struct input *req;
-+	u32 resp_len;
-+	int rc;
-+
-+	rc = bnge_hwrm_req_init(bd, req, 0 /* don't care */);
-+	if (rc)
-+		return rc;
-+
-+	rc = bnge_hwrm_req_replace(bd, req, fw_msg->msg, fw_msg->msg_len);
-+	if (rc)
-+		goto drop_req;
-+
-+	bnge_hwrm_req_timeout(bd, req, fw_msg->timeout);
-+	resp = bnge_hwrm_req_hold(bd, req);
-+	rc = bnge_hwrm_req_send(bd, req);
-+	resp_len = le16_to_cpu(resp->resp_len);
-+	if (resp_len) {
-+		if (fw_msg->resp_max_len < resp_len)
-+			resp_len = fw_msg->resp_max_len;
-+
-+		memcpy(fw_msg->resp, resp, resp_len);
-+	}
-+drop_req:
-+	bnge_hwrm_req_drop(bd, req);
-+	return rc;
-+}
-+EXPORT_SYMBOL(bnge_send_msg);
-+
-+void bnge_rdma_aux_device_uninit(struct bnge_dev *bd)
-+{
-+	struct bnge_auxr_priv *aux_priv;
-+	struct auxiliary_device *adev;
-+
-+	/* Skip if no auxiliary device init was done. */
-+	if (!bd->aux_priv)
-+		return;
-+
-+	aux_priv = bd->aux_priv;
-+	adev = &aux_priv->aux_dev;
-+	auxiliary_device_uninit(adev);
++	debugfs_remove_recursive(rdev->dbg_root);
++	rdev->dbg_root = NULL;
 +}
 +
-+static void bnge_aux_dev_release(struct device *dev)
++void bng_re_register_debugfs(void)
 +{
-+	struct bnge_auxr_priv *aux_priv =
-+			container_of(dev, struct bnge_auxr_priv, aux_dev.dev);
-+	struct bnge_dev *bd = pci_get_drvdata(aux_priv->auxr_dev->pdev);
-+
-+	ida_free(&bnge_aux_dev_ids, aux_priv->id);
-+	kfree(aux_priv->auxr_dev->auxr_info);
-+	bd->auxr_dev = NULL;
-+	kfree(aux_priv->auxr_dev);
-+	kfree(aux_priv);
-+	bd->aux_priv = NULL;
++	bng_re_debugfs_root = debugfs_create_dir("bng_re", NULL);
 +}
 +
-+void bnge_rdma_aux_device_del(struct bnge_dev *bd)
++void bng_re_unregister_debugfs(void)
 +{
-+	if (!bd->auxr_dev)
-+		return;
-+
-+	auxiliary_device_delete(&bd->aux_priv->aux_dev);
++	debugfs_remove(bng_re_debugfs_root);
 +}
-+
-+static void bnge_set_auxr_dev_info(struct bnge_auxr_dev *auxr_dev,
-+				   struct bnge_dev *bd)
-+{
-+	auxr_dev->pdev = bd->pdev;
-+	auxr_dev->l2_db_size = bd->db_size;
-+	auxr_dev->l2_db_size_nc = bd->db_size;
-+	auxr_dev->l2_db_offset = bd->db_offset;
-+	mutex_init(&auxr_dev->auxr_dev_lock);
-+
-+	if (bd->flags & BNGE_EN_ROCE_V1)
-+		auxr_dev->flags |= BNGE_ARDEV_ROCEV1_SUPP;
-+	if (bd->flags & BNGE_EN_ROCE_V2)
-+		auxr_dev->flags |= BNGE_ARDEV_ROCEV2_SUPP;
-+
-+	auxr_dev->chip_num = bd->chip_num;
-+	auxr_dev->hw_ring_stats_size = bd->hw_ring_stats_size;
-+	auxr_dev->pf_port_id = bd->pf.port_id;
-+	auxr_dev->en_state = bd->state;
-+	auxr_dev->bar0 = bd->bar0;
-+}
-+
-+void bnge_rdma_aux_device_add(struct bnge_dev *bd)
-+{
-+	struct auxiliary_device *aux_dev;
-+	int rc;
-+
-+	if (!bd->auxr_dev)
-+		return;
-+
-+	aux_dev = &bd->aux_priv->aux_dev;
-+	rc = auxiliary_device_add(aux_dev);
-+	if (rc) {
-+		dev_warn(bd->dev, "Failed to add auxiliary device for ROCE\n");
-+		auxiliary_device_uninit(aux_dev);
-+		bd->flags &= ~BNGE_EN_ROCE;
-+	}
-+
-+	bd->auxr_dev->net = bd->netdev;
-+}
-+
-+void bnge_rdma_aux_device_init(struct bnge_dev *bd)
-+{
-+	struct auxiliary_device *aux_dev;
-+	struct bnge_auxr_info *auxr_info;
-+	struct bnge_auxr_priv *aux_priv;
-+	struct bnge_auxr_dev *auxr_dev;
-+	int rc;
-+
-+	if (!bnge_is_roce_en(bd))
-+		return;
-+
-+	aux_priv = kzalloc(sizeof(*aux_priv), GFP_KERNEL);
-+	if (!aux_priv)
-+		goto exit;
-+
-+	aux_priv->id = ida_alloc(&bnge_aux_dev_ids, GFP_KERNEL);
-+	if (aux_priv->id < 0) {
-+		dev_warn(bd->dev, "ida alloc failed for aux device\n");
-+		kfree(aux_priv);
-+		goto exit;
-+	}
-+
-+	aux_dev = &aux_priv->aux_dev;
-+	aux_dev->id = aux_priv->id;
-+	aux_dev->name = "rdma";
-+	aux_dev->dev.parent = &bd->pdev->dev;
-+	aux_dev->dev.release = bnge_aux_dev_release;
-+
-+	rc = auxiliary_device_init(aux_dev);
-+	if (rc) {
-+		ida_free(&bnge_aux_dev_ids, aux_priv->id);
-+		kfree(aux_priv);
-+		goto exit;
-+	}
-+	bd->aux_priv = aux_priv;
-+
-+	auxr_dev = kzalloc(sizeof(*auxr_dev), GFP_KERNEL);
-+	if (!auxr_dev)
-+		goto aux_dev_uninit;
-+
-+	aux_priv->auxr_dev = auxr_dev;
-+
-+	auxr_info = kzalloc(sizeof(*auxr_info), GFP_KERNEL);
-+	if (!auxr_info)
-+		goto aux_dev_uninit;
-+
-+	auxr_dev->auxr_info = auxr_info;
-+	bd->auxr_dev = auxr_dev;
-+	bnge_set_auxr_dev_info(auxr_dev, bd);
-+
-+	return;
-+
-+aux_dev_uninit:
-+	auxiliary_device_uninit(aux_dev);
-+exit:
-+	bd->flags &= ~BNGE_EN_ROCE;
-+}
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
+diff --git a/drivers/infiniband/hw/bng_re/bng_debugfs.h b/drivers/infiniband/hw/bng_re/bng_debugfs.h
 new file mode 100644
-index 000000000000..6c5c15ef2b0a
+index 000000000000..baef71df4242
 --- /dev/null
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
-@@ -0,0 +1,84 @@
++++ b/drivers/infiniband/hw/bng_re/bng_debugfs.h
+@@ -0,0 +1,12 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright (c) 2025 Broadcom */
++// Copyright (c) 2025 Broadcom.
 +
-+#ifndef _BNGE_AUXR_H_
-+#define _BNGE_AUXR_H_
++#ifndef __BNG_RE_DEBUGFS__
++#define __BNG_RE_DEBUGFS__
 +
-+#include <linux/auxiliary_bus.h>
++void bng_re_debugfs_add_pdev(struct bng_re_dev *rdev);
++void bng_re_debugfs_rem_pdev(struct bng_re_dev *rdev);
 +
-+#define BNGE_MIN_ROCE_CP_RINGS	2
-+#define BNGE_MIN_ROCE_STAT_CTXS	1
-+
-+#define BNGE_MAX_ROCE_MSIX	64
-+
-+struct hwrm_async_event_cmpl;
-+struct bnge;
-+
-+struct bnge_msix_info {
-+	u32	vector;
-+	u32	ring_idx;
-+	u32	db_offset;
-+};
-+
-+struct bnge_fw_msg {
-+	void	*msg;
-+	int	msg_len;
-+	void	*resp;
-+	int	resp_max_len;
-+	int	timeout;
-+};
-+
-+struct bnge_auxr_info {
-+	void		*handle;
-+	u16		msix_requested;
-+};
-+
-+enum {
-+	BNGE_ARDEV_ROCEV1_SUPP		= BIT(0),
-+	BNGE_ARDEV_ROCEV2_SUPP		= BIT(1),
-+	BNGE_ARDEV_MSIX_ALLOC		= BIT(2),
-+};
-+
-+#define BNGE_ARDEV_ROCE_SUPP	(BNGE_ARDEV_ROCEV1_SUPP | \
-+				 BNGE_ARDEV_ROCEV2_SUPP)
-+
-+struct bnge_auxr_dev {
-+	struct net_device	*net;
-+	struct pci_dev		*pdev;
-+	void __iomem		*bar0;
-+
-+	struct bnge_msix_info	msix_info[BNGE_MAX_ROCE_MSIX];
-+
-+	u32 flags;
-+
-+	struct bnge_auxr_info	*auxr_info;
-+
-+	/* Doorbell BAR size in bytes mapped by L2 driver. */
-+	int	l2_db_size;
-+	/* Doorbell BAR size in bytes mapped as non-cacheable. */
-+	int	l2_db_size_nc;
-+	/* Doorbell offset in bytes within l2_db_size_nc. */
-+	int	l2_db_offset;
-+
-+	u16		chip_num;
-+	u16		hw_ring_stats_size;
-+	u16		pf_port_id;
-+	unsigned long	en_state;
-+
-+	u16	auxr_num_msix_vec;
-+	u16	auxr_num_ctxs;
-+
-+	/* serialize auxr operations */
-+	struct mutex	auxr_dev_lock;
-+};
-+
-+void bnge_rdma_aux_device_uninit(struct bnge_dev *bdev);
-+void bnge_rdma_aux_device_del(struct bnge_dev *bdev);
-+void bnge_rdma_aux_device_add(struct bnge_dev *bdev);
-+void bnge_rdma_aux_device_init(struct bnge_dev *bdev);
-+int bnge_register_dev(struct bnge_auxr_dev *adev,
-+		      void *handle);
-+void bnge_unregister_dev(struct bnge_auxr_dev *adev);
-+int bnge_send_msg(struct bnge_auxr_dev *adev, struct bnge_fw_msg *fw_msg);
-+
-+#endif /* _BNGE_AUXR_H_ */
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_core.c b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-index 68da656f2894..8b98112600c3 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_core.c
-@@ -41,6 +41,11 @@ static void bnge_print_device_info(struct pci_dev *pdev, enum board_idx idx)
++void bng_re_register_debugfs(void);
++void bng_re_unregister_debugfs(void);
++#endif
+diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
+index 9faa64af3047..773121682bbe 100644
+--- a/drivers/infiniband/hw/bng_re/bng_dev.c
++++ b/drivers/infiniband/hw/bng_re/bng_dev.c
+@@ -14,6 +14,7 @@
+ #include "bnge_auxr.h"
+ #include "bng_re.h"
+ #include "bnge_hwrm.h"
++#include "bng_debugfs.h"
  
- bool bnge_aux_registered(struct bnge_dev *bd)
+ static char version[] =
+ 		BNG_RE_DESC "\n";
+@@ -219,6 +220,7 @@ static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ 
+ static void bng_re_dev_uninit(struct bng_re_dev *rdev)
  {
-+	struct bnge_auxr_dev *ba_dev = bd->auxr_dev;
-+
-+	if (ba_dev && ba_dev->auxr_info->msix_requested)
-+		return true;
-+
- 	return false;
- }
- 
-@@ -296,16 +301,20 @@ static int bnge_probe_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_config_uninit;
- 	}
- 
-+	bnge_rdma_aux_device_init(bd);
-+
- 	rc = bnge_alloc_irqs(bd);
- 	if (rc) {
- 		dev_err(&pdev->dev, "Error IRQ allocation rc = %d\n", rc);
--		goto err_config_uninit;
-+		goto err_uninit_auxr;
- 	}
- 
- 	rc = bnge_netdev_alloc(bd, max_irqs);
++	bng_re_debugfs_rem_pdev(rdev);
+ 	bng_re_disable_rcfw_channel(&rdev->rcfw);
+ 	bng_re_net_ring_free(rdev, rdev->rcfw.creq.ring_id,
+ 			     RING_ALLOC_REQ_RING_TYPE_NQ);
+@@ -318,6 +320,9 @@ static int bng_re_dev_init(struct bng_re_dev *rdev)
+ 	rc = bng_re_get_dev_attr(&rdev->rcfw);
  	if (rc)
- 		goto err_free_irq;
- 
-+	bnge_rdma_aux_device_add(bd);
+ 		goto disable_rcfw;
 +
- 	pci_save_state(pdev);
- 
++	bng_re_debugfs_add_pdev(rdev);
++
  	return 0;
-@@ -313,6 +322,9 @@ static int bnge_probe_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- err_free_irq:
- 	bnge_free_irqs(bd);
+ disable_rcfw:
+ 	bng_re_disable_rcfw_channel(&rdev->rcfw);
+@@ -424,17 +429,24 @@ static int __init bng_re_mod_init(void)
  
-+err_uninit_auxr:
-+	bnge_rdma_aux_device_uninit(bd);
-+
- err_config_uninit:
- 	bnge_net_uninit_dflt_config(bd);
+ 	pr_info("%s: %s", BNG_ROCE_DRV_MODULE_NAME, version);
  
-@@ -338,10 +350,14 @@ static void bnge_remove_one(struct pci_dev *pdev)
- {
- 	struct bnge_dev *bd = pci_get_drvdata(pdev);
- 
-+	bnge_rdma_aux_device_del(bd);
++	bng_re_register_debugfs();
 +
- 	bnge_netdev_free(bd);
- 
- 	bnge_free_irqs(bd);
- 
-+	bnge_rdma_aux_device_uninit(bd);
-+
- 	bnge_net_uninit_dflt_config(bd);
- 
- 	bnge_devlink_unregister(bd);
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.c
-index 0f971af24142..c3087e5cd875 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.c
-@@ -98,6 +98,46 @@ void bnge_hwrm_req_alloc_flags(struct bnge_dev *bd, void *req, gfp_t gfp)
- 		ctx->gfp = gfp;
- }
- 
-+int bnge_hwrm_req_replace(struct bnge_dev *bd, void *req, void *new_req,
-+			  u32 len)
-+{
-+	struct bnge_hwrm_ctx *ctx = __hwrm_ctx_get(bd, req);
-+	struct input *internal_req = req;
-+	u16 req_type;
-+
-+	if (!ctx)
-+		return -EINVAL;
-+
-+	if (len > BNGE_HWRM_CTX_OFFSET)
-+		return -E2BIG;
-+
-+	/* free any existing slices */
-+	ctx->allocated = BNGE_HWRM_DMA_SIZE - BNGE_HWRM_CTX_OFFSET;
-+	if (ctx->slice_addr) {
-+		dma_free_coherent(bd->dev, ctx->slice_size,
-+				  ctx->slice_addr, ctx->slice_handle);
-+		ctx->slice_addr = NULL;
-+	}
-+	ctx->gfp = GFP_KERNEL;
-+
-+	if ((bd->fw_cap & BNGE_FW_CAP_SHORT_CMD) || len > BNGE_HWRM_MAX_REQ_LEN) {
-+		memcpy(internal_req, new_req, len);
-+	} else {
-+		internal_req->req_type = ((struct input *)new_req)->req_type;
-+		ctx->req = new_req;
-+	}
-+
-+	ctx->req_len = len;
-+	ctx->req->resp_addr = cpu_to_le64(ctx->dma_handle +
-+					  BNGE_HWRM_RESP_OFFSET);
-+
-+	/* update sentinel for potentially new request type */
-+	req_type = le16_to_cpu(internal_req->req_type);
-+	ctx->sentinel = bnge_cal_sentinel(ctx, req_type);
-+
+ 	rc = auxiliary_driver_register(&bng_re_driver);
+ 	if (rc) {
+ 		pr_err("%s: Failed to register auxiliary driver\n",
+ 		       BNG_ROCE_DRV_MODULE_NAME);
++		goto unreg_debugfs;
+ 	}
 +	return 0;
-+}
-+
- void bnge_hwrm_req_flags(struct bnge_dev *bd, void *req,
- 			 enum bnge_hwrm_ctx_flags flags)
- {
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.h b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.h
-index 83794a12cc81..6df629761d95 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.h
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm.h
-@@ -107,4 +107,6 @@ int bnge_hwrm_req_send_silent(struct bnge_dev *bd, void *req);
- void bnge_hwrm_req_alloc_flags(struct bnge_dev *bd, void *req, gfp_t flags);
- void *bnge_hwrm_req_dma_slice(struct bnge_dev *bd, void *req, u32 size,
- 			      dma_addr_t *dma);
-+int bnge_hwrm_req_replace(struct bnge_dev *bd, void *req, void *new_req,
-+			  u32 len);
- #endif /* _BNGE_HWRM_H_ */
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-index c79a3607a1b7..719be3d74043 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-@@ -34,6 +34,18 @@ static unsigned int bnge_get_max_func_stat_ctxs(struct bnge_dev *bd)
- 	return bd->hw_resc.max_stat_ctxs;
++unreg_debugfs:
++	bng_re_unregister_debugfs();
+ 	return rc;
  }
  
-+bool bnge_aux_has_enough_resources(struct bnge_dev *bd)
-+{
-+	unsigned int max_stat_ctxs;
-+
-+	max_stat_ctxs = bnge_get_max_func_stat_ctxs(bd);
-+	if (max_stat_ctxs <= BNGE_MIN_ROCE_STAT_CTXS ||
-+	    bd->nq_nr_rings == max_stat_ctxs)
-+		return false;
-+
-+	return true;
-+}
-+
- static unsigned int bnge_get_max_func_cp_rings(struct bnge_dev *bd)
+ static void __exit bng_re_mod_exit(void)
  {
- 	return bd->hw_resc.max_cp_rings;
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.h b/drivers/net/ethernet/broadcom/bnge/bnge_resc.h
-index 54ef1c7d8822..bb9363df3727 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.h
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.h
-@@ -72,6 +72,7 @@ void bnge_free_irqs(struct bnge_dev *bd);
- int bnge_net_init_dflt_config(struct bnge_dev *bd);
- void bnge_net_uninit_dflt_config(struct bnge_dev *bd);
- void bnge_aux_init_dflt_config(struct bnge_dev *bd);
-+bool bnge_aux_has_enough_resources(struct bnge_dev *bd);
+ 	auxiliary_driver_unregister(&bng_re_driver);
++	bng_re_unregister_debugfs();
+ }
  
- static inline u32
- bnge_adjust_pow_two(u32 total_ent, u16 ent_per_blk)
+ module_init(bng_re_mod_init);
+diff --git a/drivers/infiniband/hw/bng_re/bng_re.h b/drivers/infiniband/hw/bng_re/bng_re.h
+index 7598dd91043b..76837f17f12d 100644
+--- a/drivers/infiniband/hw/bng_re/bng_re.h
++++ b/drivers/infiniband/hw/bng_re/bng_re.h
+@@ -76,6 +76,7 @@ struct bng_re_dev {
+ 	struct bng_re_nq_record		*nqr;
+ 	/* Device Resources */
+ 	struct bng_re_dev_attr		*dev_attr;
++	struct dentry			*dbg_root;
+ };
+ 
+ #endif
 -- 
 2.34.1
 
