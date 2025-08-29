@@ -1,21 +1,21 @@
 Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4982E339E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E397B2E3AFE;
 	Fri, 29 Aug 2025 09:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756458292; cv=none; b=KQ9veVWdaOro7gJDgZTb2/O5igYBnhxU2rHdIE1O0rlirIUc2latw/s9ftdJDHr3XP2ERK+882Hg2wAukfGcSoQr4IYUOHHWGcFsjTDn2ZyMuAIqhST2FAjB6UymlfKFyinptCxiZ6JUtQ0xk4aeExWlsag9BFEz5hjo5Kna10o=
+	t=1756458292; cv=none; b=inLKd2WM3zdurC/Dqgp5u/F0M2elQFi4WN8TTlPUXhqwMfEzcrnUnDjTmKpwqURSu41rtGnLRywen0lEUjxySnBxgLRmRiKFo69BVd+Vv5r5B9aI8cdJmwhg3UnOUrvUW6dG+wVmlVCkCAArwOQP53XC14pLOgqxZpRo7fFEHeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756458292; c=relaxed/simple;
-	bh=fbBKMw9IBF47m/JGG1gdhqS6Y0eNHz+HO0O98UFQ5Dw=;
+	bh=r+3rfB+WbGku9OYPkoNsOw1s2NBUXdF0N5hjuZ+9264=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=reZG/bje34e/iWUH0/PfnxVMLCT4QrJBvlfTemoj8o3ldlYA+VVm8I9xzIr/O7srZDc2MIkasAYVyh3wetbAunWVqTdLV6V+Q6WjD/kA2cQOSmGD7QEUWiNlNIu+Sb+gG/KEVA/JMAUkQd/eCrhodKjaSVWUH1dc9kGvEWvkNIs=
+	 MIME-Version:Content-Type; b=Ti2cq9enrcGRk9/Tsz/jMsSUy2t3ToPD8hSWizd5ZbCvO6V9JtVrdjvNCc0lQE2aUD6av0jL8Xd75qS9WP30TQaj6RyCa4yUgelhudaUHz+nnXI0quqJWJyf4T5EIhM8JPAwuorGOZanjWX96dRpWawsmdv6j8I/RsS1tIl/mfA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5D25054F683;
-	Fri, 29 Aug 2025 10:57:35 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D18A054F6AB;
+	Fri, 29 Aug 2025 10:57:39 +0200 (CEST)
 From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
 To: bridge@lists.linux.dev
 Cc: netdev@vger.kernel.org,
@@ -32,9 +32,9 @@ Cc: netdev@vger.kernel.org,
 	Stanislav Fomichev <sdf@fomichev.me>,
 	Xiao Liang <shaw.leon@gmail.com>,
 	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-Subject: [PATCH 2/9] net: bridge: mcast: track active state, foreign IGMP/MLD querier disappearance
-Date: Fri, 29 Aug 2025 10:53:43 +0200
-Message-ID: <20250829085724.24230-3-linus.luessing@c0d3.blue>
+Subject: [PATCH 4/9] net: bridge: mcast: track active state, own MLD querier disappearance
+Date: Fri, 29 Aug 2025 10:53:45 +0200
+Message-ID: <20250829085724.24230-5-linus.luessing@c0d3.blue>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250829085724.24230-1-linus.luessing@c0d3.blue>
 References: <20250829085724.24230-1-linus.luessing@c0d3.blue>
@@ -48,34 +48,35 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-This change ensures that the new multicast active state variable is unset
-again after a foreign IGMP/MLD querier has disappeared (default: 255
-seconds). If no new, other IGMP/MLD querier took over then we can't
-reliably receive IGMP/MLD reports anymore and in turn can't ensure the
-completeness of our MDB anymore either.
+This change ensures that the new multicast active state variable is
+immediately unset if our internal IGMP/MLD querier was elected and
+now disabled.
 
-No functional change for the fast/data path yet.
+If no IGMP/MLD querier exists on the link then we can't reliably receive
+IGMP/MLD reports and in turn can't ensure the completeness of our MDB
+anymore either.
+
+No functional change for the fast/data path yet. This is the last
+necessary check before using the new multicast active state variable
+in the fast/data path, too.
 
 Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
 ---
- net/bridge/br_multicast.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/bridge/br_multicast.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 5cc713adcf9b..2e5b5281e484 100644
+index b689e62b9e74..13840f8f2e5f 100644
 --- a/net/bridge/br_multicast.c
 +++ b/net/bridge/br_multicast.c
-@@ -1800,6 +1800,10 @@ static void br_multicast_querier_expired(struct net_bridge_mcast *brmctx,
- 	br_multicast_start_querier(brmctx, query);
+@@ -4849,6 +4849,7 @@ int br_multicast_set_querier(struct net_bridge_mcast *brmctx, unsigned long val)
+ #endif
  
- out:
-+	/* another IGMP/MLD querier disappeared, set multicast state to inactive
-+	 * if our own querier is disabled, too
-+	 */
+ unlock:
 +	br_multicast_update_active(brmctx);
- 	spin_unlock(&brmctx->br->multicast_lock);
- }
+ 	spin_unlock_bh(&brmctx->br->multicast_lock);
  
+ 	return 0;
 -- 
 2.50.1
 
