@@ -1,48 +1,43 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2638450F2;
-	Fri, 29 Aug 2025 13:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482211AA1D2;
+	Fri, 29 Aug 2025 13:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756472516; cv=none; b=Aj5rCykvg9T+uTDiXK87krPxOItMIYb/LiXmLYeJmMeq68JUc3Bou4pnBtAcAH1BWgDmgsTsgpshS1JdUt3VicHXueRGaZQyjoYpLOLhGternY7M7GUTvu4f50ZS0MLtKMWRoaS7xc0gImzqNQ+Gblu4QQ11ImkCTSNrYUoimqg=
+	t=1756472520; cv=none; b=rrdxZM8Irspjl/VcK0pOZYdMolsAhWccjb6hkbsYXmPCWOGO1/YE2KrmDrO2eFaxHTcGz8sJmLVCg7jktg3GStmqtvaHCEOzjPeFPfDGxHYS/Yk3F3LXI7AB56jIPkpYlmAafQWyPpjUw/OWt+NeK87ZZ1cssMmRpNBEo2gSk2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756472516; c=relaxed/simple;
-	bh=6mCyP9ycVz2l52iv3gKYBywGi/86jjyHion1BbTuELQ=;
+	s=arc-20240116; t=1756472520; c=relaxed/simple;
+	bh=ases17tLv74igGgvIHHpXvVVktOQs8stMw7rFcVzXxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U7E3Btkwd3X/ZY3SWNxJXkxEHEwVKiFnevm/xZ4KRuKgb9zVRDX1jiBSD4iH4uduNj1yioEkAezPJhsVi0W/bh2X9gyu2LKJqY+wZ/oSxJGXA/BNFjOR0eg5Ah5bVVBcm867cUMnqcK3GuoU40zBTHCsTjfJUeGGKQu6wnyPvW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1uryjk-0000000029R-3ET6;
-	Fri, 29 Aug 2025 13:01:48 +0000
-Date: Fri, 29 Aug 2025 14:01:45 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Andreas Schirm <andreas.schirm@siemens.com>,
-	Lukas Stockmann <lukas.stockmann@siemens.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Peter Christen <peter.christen@siemens.com>,
-	Avinash Jayaraman <ajayaraman@maxlinear.com>,
-	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
-	Juraj Povazanec <jpovazanec@maxlinear.com>,
-	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	"Livia M. Rosu" <lrosu@maxlinear.com>,
-	John Crispin <john@phrozen.org>
-Subject: [PATCH v3 1/6] net: dsa: lantiq_gswip: move to dedicated folder
-Message-ID: <bd28b1612893a3ad5d78d4b7e3caaf0dae0e1254.1756472076.git.daniel@makrotopia.org>
-References: <cover.1756472076.git.daniel@makrotopia.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=spH6+3V8HKeNM3BKS1p36QHQxjIvm46TOCYd04+fKUTSkkGwz1FQ5uME1m29n1m84UtC2UqwddBg9eGskiJZFqr1vFdHwfiz4DK5z89EPsU67UVBWJf+GuUADToOy+AbUDP/FpmsGMawFD64lY0x6P4ZBYe/3y+SUJviH/jyYHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhtRTQBK; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhtRTQBK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2067C4CEF0;
+	Fri, 29 Aug 2025 13:01:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756472519;
+	bh=ases17tLv74igGgvIHHpXvVVktOQs8stMw7rFcVzXxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AhtRTQBK8GUJDTMZU6bdVKfE9UQPIln9PR3DMIXKAOfxXAh6NeX7AYB/8F/9eF2Mp
+	 1vX85ywJu/uV8YbSL1NYScF+iT58MDA/s+Tx2v6OI5j8G4Nv7NlCAy0GPR0izIzhEg
+	 r0zocJhvUck6VWmQWJTTDkzUQkYjcpXtgr0l5cLdgvDN/p5ZYc2hnk4I7qZJemM7kK
+	 ZNXNf44XLPd/EADTYvODUyIBVCAbE/QGSyLytx7nOSaZYX+ZNmg0ubb+X0BF/Eq0/m
+	 b+aiCBTZpuZ8XK6cMkwPL/mWdAqBktImVxSfhJmQdG15NgWJOz6pJ1JyoexxRcNZdo
+	 sLdIwfFb+RDmw==
+Date: Fri, 29 Aug 2025 14:01:54 +0100
+From: Simon Horman <horms@kernel.org>
+To: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
+	dev@openvswitch.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev
+Subject: Re: [PATCH] selftests: net: fix spelling and grammar mistakes
+Message-ID: <20250829130154.GJ31759@horms.kernel.org>
+References: <20250828211100.51019-1-praveen.balakrishnan@magd.ox.ac.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,119 +46,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1756472076.git.daniel@makrotopia.org>
+In-Reply-To: <20250828211100.51019-1-praveen.balakrishnan@magd.ox.ac.uk>
 
-Move the lantiq_gswip driver to its own folder and update
-MAINTAINERS file accordingly.
-This is done ahead of extending the driver to support the MaxLinear
-GSW1xx series of standalone switch ICs, which includes adding a bunch
-of files.
+On Thu, Aug 28, 2025 at 10:11:00PM +0100, Praveen Balakrishnan wrote:
+> Fix several spelling and grammatical mistakes in output messages from
+> the net selftests to improve readability.
+> 
+> Only the message strings for the test output have been modified. No
+> changes to the functional logic of the tests have been made.
+> 
+> Signed-off-by: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Hauke Mehrtens <hauke@hauke-m.de>
----
-v3: no changes
-v2: move driver to its own folder
+Reviewed-by: Simon Horman <horms@kernel.org>
 
- MAINTAINERS                                 | 3 +--
- drivers/net/dsa/Kconfig                     | 8 +-------
- drivers/net/dsa/Makefile                    | 2 +-
- drivers/net/dsa/lantiq/Kconfig              | 7 +++++++
- drivers/net/dsa/lantiq/Makefile             | 1 +
- drivers/net/dsa/{ => lantiq}/lantiq_gswip.c | 0
- drivers/net/dsa/{ => lantiq}/lantiq_gswip.h | 0
- drivers/net/dsa/{ => lantiq}/lantiq_pce.h   | 0
- 8 files changed, 11 insertions(+), 10 deletions(-)
- create mode 100644 drivers/net/dsa/lantiq/Kconfig
- create mode 100644 drivers/net/dsa/lantiq/Makefile
- rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.c (100%)
- rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.h (100%)
- rename drivers/net/dsa/{ => lantiq}/lantiq_pce.h (100%)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index bce96dd254b8..e86bdad15919 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13801,8 +13801,7 @@ M:	Hauke Mehrtens <hauke@hauke-m.de>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/lantiq,gswip.yaml
--F:	drivers/net/dsa/lantiq_gswip.c
--F:	drivers/net/dsa/lantiq_pce.h
-+F:	drivers/net/dsa/lantiq/*
- F:	drivers/net/ethernet/lantiq_xrx200.c
- F:	net/dsa/tag_gswip.c
- 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index 202a35d8d061..4d9af691b989 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -26,13 +26,7 @@ config NET_DSA_LOOP
- 
- source "drivers/net/dsa/hirschmann/Kconfig"
- 
--config NET_DSA_LANTIQ_GSWIP
--	tristate "Lantiq / Intel GSWIP"
--	depends on HAS_IOMEM
--	select NET_DSA_TAG_GSWIP
--	help
--	  This enables support for the Lantiq / Intel GSWIP 2.1 found in
--	  the xrx200 / VR9 SoC.
-+source "drivers/net/dsa/lantiq/Kconfig"
- 
- config NET_DSA_MT7530
- 	tristate "MediaTek MT7530 and MT7531 Ethernet switch support"
-diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-index 23dbdf1a36a8..c0a534fe6eaf 100644
---- a/drivers/net/dsa/Makefile
-+++ b/drivers/net/dsa/Makefile
-@@ -6,7 +6,6 @@ ifdef CONFIG_NET_DSA_LOOP
- obj-$(CONFIG_FIXED_PHY)		+= dsa_loop_bdinfo.o
- endif
- obj-$(CONFIG_NET_DSA_KS8995) 	+= ks8995.o
--obj-$(CONFIG_NET_DSA_LANTIQ_GSWIP) += lantiq_gswip.o
- obj-$(CONFIG_NET_DSA_MT7530)	+= mt7530.o
- obj-$(CONFIG_NET_DSA_MT7530_MDIO) += mt7530-mdio.o
- obj-$(CONFIG_NET_DSA_MT7530_MMIO) += mt7530-mmio.o
-@@ -20,6 +19,7 @@ obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX_PLATFORM) += vitesse-vsc73xx-platform.o
- obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX_SPI) += vitesse-vsc73xx-spi.o
- obj-y				+= b53/
- obj-y				+= hirschmann/
-+obj-y				+= lantiq/
- obj-y				+= microchip/
- obj-y				+= mv88e6xxx/
- obj-y				+= ocelot/
-diff --git a/drivers/net/dsa/lantiq/Kconfig b/drivers/net/dsa/lantiq/Kconfig
-new file mode 100644
-index 000000000000..1cb053c823f7
---- /dev/null
-+++ b/drivers/net/dsa/lantiq/Kconfig
-@@ -0,0 +1,7 @@
-+config NET_DSA_LANTIQ_GSWIP
-+	tristate "Lantiq / Intel GSWIP"
-+	depends on HAS_IOMEM
-+	select NET_DSA_TAG_GSWIP
-+	help
-+	  This enables support for the Lantiq / Intel GSWIP 2.1 found in
-+	  the xrx200 / VR9 SoC.
-diff --git a/drivers/net/dsa/lantiq/Makefile b/drivers/net/dsa/lantiq/Makefile
-new file mode 100644
-index 000000000000..849f85ebebd6
---- /dev/null
-+++ b/drivers/net/dsa/lantiq/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_NET_DSA_LANTIQ_GSWIP) += lantiq_gswip.o
-diff --git a/drivers/net/dsa/lantiq_gswip.c b/drivers/net/dsa/lantiq/lantiq_gswip.c
-similarity index 100%
-rename from drivers/net/dsa/lantiq_gswip.c
-rename to drivers/net/dsa/lantiq/lantiq_gswip.c
-diff --git a/drivers/net/dsa/lantiq_gswip.h b/drivers/net/dsa/lantiq/lantiq_gswip.h
-similarity index 100%
-rename from drivers/net/dsa/lantiq_gswip.h
-rename to drivers/net/dsa/lantiq/lantiq_gswip.h
-diff --git a/drivers/net/dsa/lantiq_pce.h b/drivers/net/dsa/lantiq/lantiq_pce.h
-similarity index 100%
-rename from drivers/net/dsa/lantiq_pce.h
-rename to drivers/net/dsa/lantiq/lantiq_pce.h
--- 
-2.51.0
