@@ -1,94 +1,169 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD641C5F39
-	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 21:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012E1276030
+	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 21:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756504650; cv=none; b=b7s9drLRI8CNez189PtNLkfR4HRqOEo6sQByMS9TCNXlhXW6GKrYlZXv3nS29Vdx09anLFLZ9ZvAiIyM8j+jAaw1PwzTHa0EbjsKlfebB7x9VV9WI/T43yFs3GiY9YUKQcRFWXbwb/ym4DIA2g1OZ2rDcNoMKgr/CAg1u+k6+q8=
+	t=1756504800; cv=none; b=OLkrCSS4tWkjHAUolpSpee/pMHi6X401qNHAPRJ9sEn6vms8genzCFL7s+rmMUzFZI2u9oUBa4+zub4Yej+UmtVVHeO2J3VY7CCpgQEXOrE1ZjvldGrAn9wP69EKJV1a8S2qkt2jCND+LdyyQhIt3W2sinYXYGNz2RXoWlSaYoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756504650; c=relaxed/simple;
-	bh=Z2XUfDI9VlUUgvuoH5C7vNxFCTABucAPevIMu68XIjs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ummVNbs202pqJ1dCurayKWibtKCdn/RXYrvOI1RRH8PcPI/r/GlTCPk0kWgdpSo/XDxdsvRTuJmZlEBQ5G7u36K7SaWgOXlLy0xfM8Vj+6aCYeGWVeS5810hVFYfvFOOrQrJX5kbxiCbuuZqViXv2McS1XMvmiAQQtoJ9WCN834=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xf89aXU7; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756504800; c=relaxed/simple;
+	bh=ddg/AuK2hE8P8Wmd7l+DCNAk55W3qQCpgP+MK/HfjRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F+fmCYYTganQtQRMWF6OXM3Ol41LNL/3lXzOBCrfenvWW8tN9c2KJjB5Hqkci9S1yTyLFZSU+g5gqygMMVbNY+4ciF6++aDr3EohlEHFPHOlg2aHERGErHj6DyxeKHOdrB3fRHlCro6MdSN5PM3a0tMAnf89FyBu+Z9gyUzuTXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOXdmBCP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xf89aXU7"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-55f61de53a9so2653e87.0
-        for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 14:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756504647; x=1757109447; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z2XUfDI9VlUUgvuoH5C7vNxFCTABucAPevIMu68XIjs=;
-        b=Xf89aXU7YsE98KPa68tKMaxf/665Wte87Ysdt4i6aRMlX4AzBaWCJKHMzrj2yzor/v
-         AbWHpT3XiMKHG8JfrDdwCBOG3hmF9fzc15ESpl+GZjPnR2MRATwbxr4xNVwmIP5IKu2g
-         rxAHhqKkjV14XMg0q38rEu7DgVhFzStAJuLcLGp9Wlftn+w9XUtxGeo8eCRwYP99iBX7
-         vwBz0ArGEQUO9X+a6xk+zvTq6QOh9gl0+rCTijKefMBNTjhdeA9XaMTRLvYUXDIUxyb6
-         Mr6DA4yta4rSLkUuuh2+1v3a8hnZ+PSNW9vRk6vkQW+4FrTJ/hxCrbwcurXEbtvcxgId
-         Cw6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756504647; x=1757109447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z2XUfDI9VlUUgvuoH5C7vNxFCTABucAPevIMu68XIjs=;
-        b=VSiD8RBvKBrYC2ZLCsIh2WtmfjhJni667E8mwtjyTlC/dgs9OSYb8jbqjfUbM/96oq
-         v7P8C6DNsV0Xd4LhD8Bv7s7drrHrGoMBZOIhGH4sSv/5SWvI5C+7pMRKIvGPL/DHEUn4
-         AbUUt0Ac+pSQiH5DS4uUP9UQ9GbjcuZ+8zGJZXRCVimgtIZrnKI5/i+rREwFGw9S3nT4
-         ZE7HlP2ZT4s3YVgx+sZn4DvfdJBl8RoY7eR3fLlxOUucqb0TyOxxwrbsSmanIGvL3ha5
-         hi0BzovvpDVhO2JAl0bRVGYJ0L6Df0GPDx/BILYFaf2VfJZ+oIHTIudVPtLxjjYEo7gS
-         Cs+w==
-X-Forwarded-Encrypted: i=1; AJvYcCVdJ1zsWWPufQjMoWLr9KU26hHLZct76zKJinDl9sqCKWW40lM9rBOKI/aIwojxOBpN6t2fPio=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzkk0R3vSh/SBGVM+xz3OrUXVGfmDwNyIMCQb5PAQlEIx2axAlf
-	h/qeSGs3+4gg0Opqr5i1Zr1g8sITHQkQ7OSs+ym5akAWPvnofIZjPXZXKEXKXWJXMKJFAlSBLQf
-	6RyYG71/bEGX32PQGNP9G6fnFxjCpLdtp8XOe/kBD
-X-Gm-Gg: ASbGncvOt7dCbzbJx1pmle/H98lkokAtDjDnGr4nXoR9gnZjPjPFRQvg22oEw3XDqO6
-	yXpvZBjf72wsfHk9mGKhAbNV+px2rayyOubXNKOKMp/3RHExSO8xF7wxt9JjIJdNZCduYxbmKjO
-	2uWd8K52iBf5jajuloCGJbSebXpjizmNcwPN3aMWjCgNtlWZ+OdjmUnjJY/D+4jEEcFvfIdkq7Z
-	DvMYiXrSFOCmruUaNoXX+D1HZjGbQ96pdYIeRcECCto
-X-Google-Smtp-Source: AGHT+IEfbc2Zxwzi1GfEz6ew9yL4Efpexul3klRQqzXkM8MVE9K6KCS7KLXZUWTrMyqQbkg52RokMCN3/rGwOF5Bl14=
-X-Received: by 2002:a05:6512:3ca9:b0:55f:6762:c35d with SMTP id
- 2adb3069b0e04-55f6f512b5dmr106398e87.6.1756504647152; Fri, 29 Aug 2025
- 14:57:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOXdmBCP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901A4C4CEF0;
+	Fri, 29 Aug 2025 21:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756504799;
+	bh=ddg/AuK2hE8P8Wmd7l+DCNAk55W3qQCpgP+MK/HfjRA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rOXdmBCPoc4a1DJStqgHtGNyHwJo0KYJ3V3of4DiKFItt0GeqOYO0OA0zzPlkkN13
+	 t6VTfPaj+izCgEhJ/5ObfrTdQ46N/II0c4yP5VZQk/XMTkHgEtjcIn7RikFD+EO7Su
+	 rrfzX5fE/cG1nWsztPITBb1uVINnhu0RVK5FdwCCIkDXaHyoMbjAPsRtlx3XsNQice
+	 QZpCcPmb3tzADfqZ1ARHvjq4sBXK5oRlFfutbGJj5CyDUSyCULBK3g62WUkHySZNhr
+	 0Fos5l0AJtScgmzWXdE2qaon98DcWwfAJ/uzaD/HrPbtsGOGWkMqBf+mEFpnxxiXwr
+	 pFE8KOQXbm3qw==
+Date: Fri, 29 Aug 2025 14:59:57 -0700
+From: Saeed Mahameed <saeed@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
+	Tariq Toukan <tariqt@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, mbloch@nvidia.com,
+	Adithya Jayachandran <ajayachandra@nvidia.com>
+Subject: Re: [PATCH net-next V2 3/7] net/mlx5: E-Switch, Add support for
+ adjacent functions vports discovery
+Message-ID: <aLIi3ToMmFXNO0V5@x130>
+References: <20250827044516.275267-1-saeed@kernel.org>
+ <20250827044516.275267-4-saeed@kernel.org>
+ <20250828113417.GB10519@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250829012304.4146195-1-kuba@kernel.org> <20250829012304.4146195-13-kuba@kernel.org>
-In-Reply-To: <20250829012304.4146195-13-kuba@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 29 Aug 2025 14:57:15 -0700
-X-Gm-Features: Ac12FXyV6niJxKruYU1CUX8aMg8h6zpdn03nfN2GgoA6U946ENXumcSOWBvq5wE
-Message-ID: <CAHS8izPgBw++BGnfJsR3eAsnOvp=N8sov3hPsYgcsdGdo+0vcw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 12/14] eth: fbnic: defer page pool recycling
- activation to queue start
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, tariqt@nvidia.com, 
-	dtatulea@nvidia.com, hawk@kernel.org, ilias.apalodimas@linaro.org, 
-	alexanderduyck@fb.com, sdf@fomichev.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250828113417.GB10519@horms.kernel.org>
 
-On Thu, Aug 28, 2025 at 6:23=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On 28 Aug 12:34, Simon Horman wrote:
+>On Tue, Aug 26, 2025 at 09:45:12PM -0700, Saeed Mahameed wrote:
+>> From: Adithya Jayachandran <ajayachandra@nvidia.com>
+>>
+>> Adding driver support to query adjacent functions vports, AKA
+>> delegated vports.
+>>
+>> Adjacent functions can delegate their sriov vfs to other sibling PF in
+>> the system, to be managed by the eswitch capable sibling PF.
+>> E.g, ECPF to Host PF, multi host PF between each other, etc.
+>>
+>> Only supported in switchdev mode.
+>>
+>> Signed-off-by: Adithya Jayachandran <ajayachandra@nvidia.com>
+>> Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 >
-> We need to be more careful about when direct page pool recycling
-> is enabled in preparation for queue ops support. Don't set the
-> NAPI pointer, call page_pool_enable_direct_recycling() from
-> the function that activates the queue (once the config can
-> no longer fail).
+>...
 >
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+>
+>...
+>
+>> +static int
+>> +mlx5_eswitch_load_adj_vf_vports(struct mlx5_eswitch *esw,
+>> +				enum mlx5_eswitch_vport_event enabled_events)
+>> +{
+>> +	struct mlx5_vport *vport;
+>> +	unsigned long i;
+>> +	int err;
+>> +
+>> +	mlx5_esw_for_each_vf_vport(esw, i, vport, U16_MAX) {
+>> +		if (!vport->adjacent)
+>> +			continue;
+>> +		err = mlx5_eswitch_load_pf_vf_vport(esw, vport->vport,
+>> +						    enabled_events);
+>> +		if (err)
+>> +			goto unload_adj_vf_vport;
+>> +	}
+>> +
+>> +	return 0;
+>> +
+>> +unload_adj_vf_vport:
+>> +	mlx5_eswitch_unload_adj_vf_vports(esw);
+>> +	return err;
+>> +}
+>> +
+>>  int mlx5_eswitch_load_vf_vports(struct mlx5_eswitch *esw, u16 num_vfs,
+>>  				enum mlx5_eswitch_vport_event enabled_events)
+>>  {
+>> @@ -1345,7 +1382,15 @@ mlx5_eswitch_enable_pf_vf_vports(struct mlx5_eswitch *esw,
+>>  					  enabled_events);
+>>  	if (ret)
+>>  		goto vf_err;
+>> +
+>> +	/* Enable adjacent VF vports */
+>> +	ret = mlx5_eswitch_load_adj_vf_vports(esw, enabled_events);
+>> +	if (ret)
+>> +		goto unload_adj_vf_vports;
+>> +
+>>  	return 0;
+>> +unload_adj_vf_vports:
+>> +	mlx5_eswitch_unload_adj_vf_vports(esw);
+>>
+>
+>Hi Adithya and Saeed,
+>
+>mlx5_eswitch_load_adj_vf_vports() already unwinds on error,
+>calling mlx5_eswitch_unload_adj_vf_vports().
+>
+>While resources allocated by the preceding call to
+>mlx5_eswitch_load_vf_vports() (just before this hunk) seem to be leaked.
+>
+>So I wonder if the above two lines should be:
+>
+>unload_vf_vports:
+>	mlx5_eswitch_unload_vf_vports(esw, num_vfs);
+>
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
+Yep, looks incorrect, let me double check and submit v3.
 
---=20
-Thanks,
-Mina
+>>  vf_err:
+>>  	if (mlx5_core_ec_sriov_enabled(esw->dev))
+>
+>...
+>
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+>> index cfd6b1b8c6f4..9f8bb397eae5 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+>> @@ -216,6 +216,7 @@ struct mlx5_vport {
+>>  	u32                     metadata;
+>>  	int                     vhca_id;
+>>
+>> +	bool adjacent; /* delegated vhca from adjacent function */
+>>  	struct mlx5_vport_info  info;
+>>
+>>  	/* Protected with the E-Switch qos domain lock. The Vport QoS can
+>> @@ -384,6 +385,7 @@ struct mlx5_eswitch {
+>>
+>>  	struct mlx5_esw_bridge_offloads *br_offloads;
+>>  	struct mlx5_esw_offload offloads;
+>> +	u32 last_vport_idx; /* ++ every time a vport is created */
+>
+>The comment above documents one operation that can occur
+>on this field. But the code also performs others: decrement and set.
+>
+>So perhaps this is more appropriate?
+>
+>	u32 last_vport_idx; /* Number of vports created */
+>
+>Or dropping the comment entirely: it seems obvious enough.
+>
+
+Agreed, will drop.
+
