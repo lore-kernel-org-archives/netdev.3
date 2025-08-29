@@ -1,103 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740F023ED75
-	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 01:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E351DFF7
+	for <netdev@vger.kernel.org>; Fri, 29 Aug 2025 01:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756430603; cv=none; b=PqW7y9SXew0lwiVZnVHEGBdPiaEDL0ab9VgucMdEozlUIRa+qrlF4L94Jpy34y0O9Sa3GL/2QOZhaAXE9/MFdvbgkQ8k/Y13GKhsDCAMmixV8HDDvwf7BTYfVyC00jY65+fhza9O7EVwqMTrLP0nHZ9MLmX0puyXR9Qj8K0/LA0=
+	t=1756431232; cv=none; b=ifyKUUqpZ6RKfcu5SJKNSCMIzxrAQp80L5RU6BYHenVLEBOB6EEZ7yykPsnGYwgGXptQ/DsE4CF963hVKAUp+OOxHwLjwHKpOWNvzd0HAbqGbGJ5/PSUWAusT88+AbsdP9Stmd4kcQGL4yhEhaQlcUGOTzKkDvmAaN6NE5/WSdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756430603; c=relaxed/simple;
-	bh=MXpBFHHKDhIEqbjOHfnjlvioFfrwvBPTnEi8Wcd8MiI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cijeeTVdOCc8djnOnRHN36X4taXiKrOwYVXJWEeN1eZWDEYPji2MhqeGrRbJ6mXTYdzMIrFG6pkhjaIPP0VFnOmfphY1OHdVTfqKOyHpnzhbMQJPm54e9qfCsx2EhEVgtq81z2+Mzxq+bovofw4SpELOXXs2rvaaOxTQcs11DE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJh9f5ja; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756431232; c=relaxed/simple;
+	bh=DPh7cT5+mSJIgSo5SrL13D9bfkqnE+2Fq1ol2kgxtCY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f17qfh9j+GieE+d2scSYWD6Ug8/+9cPFsDj+LXBJm5QcTh161EMSrvi0dEFgbUyLazfRP8PuclvUU0VUpChwkvp42AsB9xUTjG9IYJFiuMuMB87Mkz3vmS8WLmQm8XiMgvxkNap+SzjCYqNXhklRJtG0CDNC6u+noguqKLxoK+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FWBg3Lrf; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJh9f5ja"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4BCC4CEF8;
-	Fri, 29 Aug 2025 01:23:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756430602;
-	bh=MXpBFHHKDhIEqbjOHfnjlvioFfrwvBPTnEi8Wcd8MiI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJh9f5jau3J+XtJjVeL4ZqcnGtu6YQs74n6ATJ2lIGMYEIn3GM29WXYd5yZsQHqM2
-	 QLuX5DVbclZuqhrby2j6w9oMYEb4QUNNscAZoeLtjNndLMIbCzDve/b/oS0L7e8TaU
-	 SAQ9qljXdkz1OfHMrlVG0LfkTCFtvMx9EzFJTr1drW/40GpGneO7D2V7wchZIw+YjB
-	 f4ENrOY3sDtKbS750Azy/9osOxUQ//5msJTcb6j2vhl6MuhdoTaWT2+T6mST/rNHPy
-	 AFcBktK1mvm4RyD/GMdsgenulK68zJHvLATJzllG+EvLLUu17y0q5VMQgvbG6g/G0i
-	 7M1MnrbwZhjyA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	almasrymina@google.com,
-	tariqt@nvidia.com,
-	dtatulea@nvidia.com,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org,
-	alexanderduyck@fb.com,
-	sdf@fomichev.me,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 13/14] eth: fbnic: don't pass NAPI into pp alloc
-Date: Thu, 28 Aug 2025 18:23:03 -0700
-Message-ID: <20250829012304.4146195-14-kuba@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250829012304.4146195-1-kuba@kernel.org>
-References: <20250829012304.4146195-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FWBg3Lrf"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b4c645aaa58so1032216a12.2
+        for <netdev@vger.kernel.org>; Thu, 28 Aug 2025 18:33:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756431230; x=1757036030; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uoJ0d/w6UnUNtl7ys0E4IAYSwymS8wk+0JNV0D2OiCs=;
+        b=FWBg3LrfIPXM/p05GBIxOai5xhI6yb8PxzoYSibeuiyp0cnNFtJrRcZk/toYe8asXG
+         KAQK6NzqWQCrQH3LJ6Fm7G45Fi5FCbPaVhCC11rI7WTpa2pkIl+MgToQZ1iWZycbQAGb
+         ARwiRifi01wHoaj5A8ctJwbypsIlue9cPPMbzimnUgjNSwoKxiuqHLJqiAO1vc7+oesX
+         5sNRbmWceKGuMdMSmJFaHeOiYnXboVM+WSPjua3/m9pTmYAK8ESGoZ/HwQxmgj0X5cU3
+         +rQHnEilMq5YLhgX5Om7yuFWx5BaQKqPdMvqSrHwlCjlBgQRqzfEno5qf0ZzqznQkxSX
+         b9mg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756431230; x=1757036030;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uoJ0d/w6UnUNtl7ys0E4IAYSwymS8wk+0JNV0D2OiCs=;
+        b=krtHK9+MiOxBdb1H0p9IdjePdxxYVNEWmLXmAG2KnBZaCeKP0yrLfF2rplRgwEllTO
+         3E0S3IoFpVSkBcUlgOmpRw6UEeADbhwldPUpTow/8nn/zoQnDXL45sVAGsvhiKYzxwON
+         tHVfOBGDQN83tnOlMY3sF38rR5IvSbcDcTSKAc3EGCkpnmbl2amBy37OVqOc9v1tsVwA
+         9tOEoIXjtPX/F8kKctXRKZXtyg5IKy9j9APHsFYZ+kdOdUDD70KRqZ4CxWGQ+sRrdHlt
+         8H5oZDcEtDWsfWQSWOzU1Ej05CfoYr6/qFKHNOU7Mq+ShzWRgDkxJUhSX9iGqhd2lZL0
+         VxaA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2w3OvQz/7zbIhATGKjz/H27KBemIHwYer1Nn60YgIq6grVOsHZ/WamaWXU7RfZryyHlJX5uo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvJD1OLgpE4+e7VJCc3Ocro/duYhrBtVOrhvlmSUK3v+RqjM4J
+	2urJlFghEnm1Fi0KymcyzoAaGsymOXCDhLsSLITetucy8/JuGaS8J0nIa5FyRIdulCB1J2tYuIV
+	dpbHzS+9qdwKLSiqMNMDW+AoC8NRmkjDBD7ctXGYa
+X-Gm-Gg: ASbGncvw3LZC8wlQ88eV5CarXpG/EJVQiAOSQTaRI/MhGMG1NamU/V7a0mIGnhtTRmG
+	iOWNwyUdmfPGFSmfa2W5MckatSLvQz7fw0R8aluvgkaiNVbVoPQoBNmmo+xIqI5iXlv/QMY75vG
+	6X0h2ylYkcfhvicuXlrUTNpOmSWugwFXYsXPFYxDL1rYoRezWuPpt/02hAX1AYK0U0t6wTTDJ+G
+	46EJKjpP1VaBzD5F/FGnkir9/bpqAWHnaePoVdVtnK8nnti5hasiD3aEY9JNJVrb0hKgRDCkTp7
+	eNk=
+X-Google-Smtp-Source: AGHT+IGzJ7zluIdgfpcR9NREs72zU4TaZpGyrCNDXuLPLWxusMxFDic4R0/yxQzOh/LTnc4pBxJwS2R3jBcIXWDHIS4=
+X-Received: by 2002:a17:903:3885:b0:240:6aad:1c43 with SMTP id
+ d9443c01a7336-2462ef70541mr296230635ad.48.1756431230289; Thu, 28 Aug 2025
+ 18:33:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250828102738.2065992-1-edumazet@google.com> <20250828102738.2065992-6-edumazet@google.com>
+In-Reply-To: <20250828102738.2065992-6-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 28 Aug 2025 18:33:39 -0700
+X-Gm-Features: Ac12FXynCaGPSINlb6hgSgmkryYO_9tSnbZj_ufma4NCG2USyN7HOYpGcVQyFVQ
+Message-ID: <CAAVpQUDkRWs8D-PY-pGDC=Wyz1FLd9UKZTFM=msOjdG1FEb9-A@mail.gmail.com>
+Subject: Re: [PATCH net-next 5/5] inet_diag: avoid cache line misses in inet_diag_bc_sk()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>, 
+	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Queue API may ask us to allocate page pools when the device
-is down, to validate that we ingested a memory provider binding.
-Don't require NAPI to be passed to fbnic_alloc_qt_page_pools(),
-to make calling fbnic_alloc_qt_page_pools() without NAPI possible.
+On Thu, Aug 28, 2025 at 3:27=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> inet_diag_bc_sk() pulls five cache lines per socket,
+> while most filters only need the two first ones.
+>
+> Add three booleans to struct inet_diag_dump_data,
+> that are selectively set if a filter needs specific socket fields.
+>
+> - mark_needed       /* INET_DIAG_BC_MARK_COND present. */
+> - cgroup_needed     /* INET_DIAG_BC_CGROUP_COND present. */
+> - userlocks_needed  /* INET_DIAG_BC_AUTO present. */
+>
+> This removes millions of cache lines misses per ss invocation
+> when simple filters are specified on busy servers.
+>
+> offsetof(struct sock, sk_userlocks) =3D 0xf3
+> offsetof(struct sock, sk_mark) =3D 0x20c
+> offsetof(struct sock, sk_cgrp_data) =3D 0x298
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index f5b83b6e1cc3..2e8ea3e01eba 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -1515,8 +1515,8 @@ void fbnic_free_napi_vectors(struct fbnic_net *fbn)
- }
- 
- static int
--fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, struct fbnic_napi_vector *nv,
--			  struct fbnic_q_triad *qt, unsigned int rxq_idx)
-+fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, struct fbnic_q_triad *qt,
-+			  unsigned int rxq_idx)
- {
- 	struct page_pool_params pp_params = {
- 		.order = 0,
-@@ -1524,7 +1524,7 @@ fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, struct fbnic_napi_vector *nv,
- 			 PP_FLAG_DMA_SYNC_DEV,
- 		.pool_size = fbn->hpq_size + fbn->ppq_size,
- 		.nid = NUMA_NO_NODE,
--		.dev = nv->dev,
-+		.dev = fbn->netdev->dev.parent,
- 		.dma_dir = DMA_BIDIRECTIONAL,
- 		.offset = 0,
- 		.max_len = PAGE_SIZE,
-@@ -1971,7 +1971,7 @@ static int fbnic_alloc_rx_qt_resources(struct fbnic_net *fbn,
- 	struct device *dev = fbn->netdev->dev.parent;
- 	int err;
- 
--	err = fbnic_alloc_qt_page_pools(fbn, nv, qt, qt->cmpl.q_idx);
-+	err = fbnic_alloc_qt_page_pools(fbn, qt, qt->cmpl.q_idx);
- 	if (err)
- 		return err;
- 
--- 
-2.51.0
-
+Thanks!
