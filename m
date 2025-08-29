@@ -1,21 +1,21 @@
 Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4062BE63A;
-	Fri, 29 Aug 2025 08:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984941EEA40;
+	Fri, 29 Aug 2025 08:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756457869; cv=none; b=c0tWvP2R8av4zLT+8hdGbGg0UJY9c1+z3YOGVLF/2Wm8VT4y7hSsz+YBA8cq5qLUKz5mxODgP+N8GN4bmdBWfilRE4wMGdtTmoeeZiReGMhzE8Pa8giq2St0+ncnCLWnA7maV+BwQlyRWilvpvA34G3JQ23360H/rMRhWvVt0KE=
+	t=1756457869; cv=none; b=ewAVqvYA+JrlydjjMLrPi/a22+LgdzGR34BSfBivWTg5/iUMHTjV2hhy5qHgYzSkKtNyTNjvSeh7xpBdrV9DNjFIPudoO4AavhlM8yjGqzFxzI3/U/RZVH0OQVYM5FejyzXLMOgKwb5v3fLTaAk+jIQ9nq7M/WH/Dv5Q/uSnJpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756457869; c=relaxed/simple;
-	bh=bQOvgOoppceBzTNV4VcTZG5BOPE1ySioEcjDqcVOOkc=;
+	bh=hIcmWdt6oCUpiVjncW8Q9KsvVg1CUjk/pioAO7KtjR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ohCtOUT1a5ZF3FgWRNXv94o5wCD+HqbscFFqRo9RpCqFcLYiVztF/EIkxxjvZZgsWSLkuvkNz2MyWyHn+wkySauiqYy2HUgq0+B+3S2R+7DLxPftgx6sd8bMTKg9UvInwgFaFWlydM5wXnjsV7S3CpCPcnddoo3zWicnPkis88I=
+	 MIME-Version:Content-Type; b=K2aJgM1F65IxHx9YZ7LxGJzP3+Cm4YynXO3CArz9q1M7avH2hYCsD2N0iMYahmm+hw+xg8xCx2K+eYokKkNBSQZMTVOVNaKiijprwXf9VOsymC+7uudLM4OKAy0xVaBvTpE2Y7w3tcZs2AI/GEke4mtmlmVd+wWONiDxyaar9qA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 60F9454F6B8;
-	Fri, 29 Aug 2025 10:57:41 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC37A54F6CA;
+	Fri, 29 Aug 2025 10:57:43 +0200 (CEST)
 From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
 To: bridge@lists.linux.dev
 Cc: netdev@vger.kernel.org,
@@ -32,9 +32,9 @@ Cc: netdev@vger.kernel.org,
 	Stanislav Fomichev <sdf@fomichev.me>,
 	Xiao Liang <shaw.leon@gmail.com>,
 	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-Subject: [PATCH 5/9] net: bridge: mcast: export ip{4,6}_active state to netlink
-Date: Fri, 29 Aug 2025 10:53:46 +0200
-Message-ID: <20250829085724.24230-6-linus.luessing@c0d3.blue>
+Subject: [PATCH 7/9] net: bridge: mcast: active state, if snooping is enabled
+Date: Fri, 29 Aug 2025 10:53:48 +0200
+Message-ID: <20250829085724.24230-8-linus.luessing@c0d3.blue>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250829085724.24230-1-linus.luessing@c0d3.blue>
 References: <20250829085724.24230-1-linus.luessing@c0d3.blue>
@@ -48,162 +48,115 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Export the new ip{4,6}_active variables to netlink, to be able to
-check from userspace that they are updated as intended.
+To be able to use the upcoming SWITCHDEV_ATTR_ID_BRIDGE_MC_ACTIVE
+as a potential replacement for SWITCHDEV_ATTR_ID_BRIDGE_MC_DISABLED
+also check and toggle the active state if multicast snooping is enabled
+or disabled. So that MC_ACTIVE not only checks the querier state, but
+also if multicast snooping is enabled in general.
+
+No functional change for the fast/data path yet.
 
 Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
 ---
- include/uapi/linux/if_bridge.h |  2 ++
- include/uapi/linux/if_link.h   | 12 ++++++++++++
- net/bridge/br_netlink.c        | 10 +++++++++-
- net/bridge/br_vlan_options.c   | 10 +++++++++-
- net/core/rtnetlink.c           |  2 +-
- 5 files changed, 33 insertions(+), 3 deletions(-)
+ include/uapi/linux/if_link.h |  6 ++++--
+ net/bridge/br_multicast.c    | 21 +++++++++++++++++++--
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/if_bridge.h b/include/uapi/linux/if_bridge.h
-index 73876c0e2bba..c4d92df8d374 100644
---- a/include/uapi/linux/if_bridge.h
-+++ b/include/uapi/linux/if_bridge.h
-@@ -584,6 +584,8 @@ enum {
- 	BRIDGE_VLANDB_GOPTS_MCAST_ROUTER_PORTS,
- 	BRIDGE_VLANDB_GOPTS_MCAST_QUERIER_STATE,
- 	BRIDGE_VLANDB_GOPTS_MSTI,
-+	BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4,
-+	BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6,
- 	__BRIDGE_VLANDB_GOPTS_MAX
- };
- #define BRIDGE_VLANDB_GOPTS_MAX (__BRIDGE_VLANDB_GOPTS_MAX - 1)
 diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
-index 784ace3a519c..fcf2c42aa6c4 100644
+index fcf2c42aa6c4..ef686ea17afe 100644
 --- a/include/uapi/linux/if_link.h
 +++ b/include/uapi/linux/if_link.h
-@@ -742,6 +742,16 @@ enum in6_addr_gen_mode {
-  * @IFLA_BR_FDB_MAX_LEARNED
-  *   Set the number of max dynamically learned FDB entries for the current
-  *   bridge.
-+ *
-+ * @IFLA_BR_MCAST_ACTIVE_V4
-+ *   Bridge IPv4 mcast active state, read only.
-+ *
-+ *   1 if an IGMP querier is present, 0 otherwise.
-+ *
-+ * @IFLA_BR_MCAST_ACTIVE_V6
-+ *   Bridge IPv6 mcast active state, read only.
-+ *
-+ *   1 if an MLD querier is present, 0 otherwise.
+@@ -746,12 +746,14 @@ enum in6_addr_gen_mode {
+  * @IFLA_BR_MCAST_ACTIVE_V4
+  *   Bridge IPv4 mcast active state, read only.
+  *
+- *   1 if an IGMP querier is present, 0 otherwise.
++ *   1 if *IFLA_BR_MCAST_SNOOPING* is enabled and an IGMP querier is present,
++ *   0 otherwise.
+  *
+  * @IFLA_BR_MCAST_ACTIVE_V6
+  *   Bridge IPv6 mcast active state, read only.
+  *
+- *   1 if an MLD querier is present, 0 otherwise.
++ *   1 if *IFLA_BR_MCAST_SNOOPING* is enabled and an MLD querier is present,
++ *   0 otherwise.
   */
  enum {
  	IFLA_BR_UNSPEC,
-@@ -794,6 +804,8 @@ enum {
- 	IFLA_BR_MCAST_QUERIER_STATE,
- 	IFLA_BR_FDB_N_LEARNED,
- 	IFLA_BR_FDB_MAX_LEARNED,
-+	IFLA_BR_MCAST_ACTIVE_V4,
-+	IFLA_BR_MCAST_ACTIVE_V6,
- 	__IFLA_BR_MAX,
- };
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 54163c74b9a9..53720337a1e3 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1145,6 +1145,7 @@ static void br_ip6_multicast_update_active(struct net_bridge_mcast *brmctx,
+  *
+  * The multicast active state is set, per protocol family, if:
+  *
++ * - multicast snooping is enabled
+  * - an IGMP/MLD querier is present
+  * - for own IPv6 MLD querier: an IPv6 address is configured on the bridge
+  *
+@@ -1159,6 +1160,13 @@ static void br_multicast_update_active(struct net_bridge_mcast *brmctx)
  
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 4e2d53b27221..5aa1721830d6 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1264,7 +1264,9 @@ static const struct nla_policy br_policy[IFLA_BR_MAX + 1] = {
- 	[IFLA_BR_VLAN_STATS_ENABLED] = { .type = NLA_U8 },
- 	[IFLA_BR_MCAST_STATS_ENABLED] = { .type = NLA_U8 },
- 	[IFLA_BR_MCAST_IGMP_VERSION] = { .type = NLA_U8 },
-+	[IFLA_BR_MCAST_ACTIVE_V4] = { .type = NLA_REJECT },
- 	[IFLA_BR_MCAST_MLD_VERSION] = { .type = NLA_U8 },
-+	[IFLA_BR_MCAST_ACTIVE_V6] = { .type = NLA_REJECT },
- 	[IFLA_BR_VLAN_STATS_PER_PORT] = { .type = NLA_U8 },
- 	[IFLA_BR_MULTI_BOOLOPT] =
- 		NLA_POLICY_EXACT_LEN(sizeof(struct br_boolopt_multi)),
-@@ -1625,7 +1627,9 @@ static size_t br_get_size(const struct net_device *brdev)
- 	       nla_total_size_64bit(sizeof(u64)) + /* IFLA_BR_MCAST_QUERY_RESPONSE_INTVL */
- 	       nla_total_size_64bit(sizeof(u64)) + /* IFLA_BR_MCAST_STARTUP_QUERY_INTVL */
- 	       nla_total_size(sizeof(u8)) +	/* IFLA_BR_MCAST_IGMP_VERSION */
-+	       nla_total_size(sizeof(u8)) +     /* IFLA_BR_MCAST_ACTIVE_V4 */
- 	       nla_total_size(sizeof(u8)) +	/* IFLA_BR_MCAST_MLD_VERSION */
-+	       nla_total_size(sizeof(u8)) +     /* IFLA_BR_MCAST_ACTIVE_V6 */
- 	       br_multicast_querier_state_size() + /* IFLA_BR_MCAST_QUERIER_STATE */
- #endif
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
-@@ -1717,12 +1721,16 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
- 			br->multicast_ctx.multicast_startup_query_count) ||
- 	    nla_put_u8(skb, IFLA_BR_MCAST_IGMP_VERSION,
- 		       br->multicast_ctx.multicast_igmp_version) ||
-+	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V4,
-+		       br->multicast_ctx.ip4_active) ||
- 	    br_multicast_dump_querier_state(skb, &br->multicast_ctx,
- 					    IFLA_BR_MCAST_QUERIER_STATE))
- 		return -EMSGSIZE;
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (nla_put_u8(skb, IFLA_BR_MCAST_MLD_VERSION,
--		       br->multicast_ctx.multicast_mld_version))
-+		       br->multicast_ctx.multicast_mld_version) ||
-+	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V6,
-+		       br->multicast_ctx.ip6_active))
- 		return -EMSGSIZE;
- #endif
- 	clockval = jiffies_to_clock_t(br->multicast_ctx.multicast_last_member_interval);
-diff --git a/net/bridge/br_vlan_options.c b/net/bridge/br_vlan_options.c
-index 8fa89b04ee94..33f055d3a304 100644
---- a/net/bridge/br_vlan_options.c
-+++ b/net/bridge/br_vlan_options.c
-@@ -369,6 +369,8 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 		       !!(v_opts->priv_flags & BR_VLFLAG_GLOBAL_MCAST_ENABLED)) ||
- 	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION,
- 		       v_opts->br_mcast_ctx.multicast_igmp_version) ||
-+	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4,
-+		       v_opts->br_mcast_ctx.ip4_active) ||
- 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT,
- 			v_opts->br_mcast_ctx.multicast_last_member_count) ||
- 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT,
-@@ -423,7 +425,9 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
+ 	lockdep_assert_held_once(&brmctx->br->multicast_lock);
  
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION,
--		       v_opts->br_mcast_ctx.multicast_mld_version))
-+		       v_opts->br_mcast_ctx.multicast_mld_version) ||
-+	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6,
-+		       v_opts->br_mcast_ctx.ip4_active))
- 		goto out_err;
- #endif
- #endif
-@@ -448,7 +452,9 @@ static size_t rtnl_vlan_global_opts_nlmsg_size(const struct net_bridge_vlan *v)
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
- 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_SNOOPING */
- 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION */
-+		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4 */
- 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION */
-+		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6 */
- 		+ nla_total_size(sizeof(u32)) /* BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT */
- 		+ nla_total_size(sizeof(u32)) /* BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT */
- 		+ nla_total_size(sizeof(u64)) /* BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_INTVL */
-@@ -630,9 +636,11 @@ static const struct nla_policy br_vlan_db_gpol[BRIDGE_VLANDB_GOPTS_MAX + 1] = {
- 	[BRIDGE_VLANDB_GOPTS_RANGE]	= { .type = NLA_U16 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_SNOOPING]	= { .type = NLA_U8 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION]	= { .type = NLA_U8 },
-+	[BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6]	= { .type = NLA_REJECT },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_QUERY_INTVL]	= { .type = NLA_U64 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_QUERIER]	= { .type = NLA_U8 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION]	= { .type = NLA_U8 },
-+	[BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4]	= { .type = NLA_REJECT },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT]	= { .type = NLA_U32 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT]	= { .type = NLA_U32 },
- 	[BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_INTVL]	= { .type = NLA_U64 },
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 094b085cff20..cb24370b719f 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -62,7 +62,7 @@
++	if (!br_opt_get(brmctx->br, BROPT_MULTICAST_ENABLED))
++		force_inactive = true;
++
++	if (br_opt_get(brmctx->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
++	    br_multicast_ctx_vlan_disabled(brmctx))
++		force_inactive = true;
++
+ 	br_ip4_multicast_update_active(brmctx, force_inactive);
+ 	br_ip6_multicast_update_active(brmctx, force_inactive);
+ }
+@@ -1371,6 +1379,12 @@ static struct sk_buff *br_multicast_alloc_query(struct net_bridge_mcast *brmctx,
+ 	return NULL;
+ }
  
- #include "dev.h"
++static void br_multicast_toggle_enabled(struct net_bridge *br, bool on)
++{
++	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, on);
++	br_multicast_update_active(&br->multicast_ctx);
++}
++
+ struct net_bridge_mdb_entry *br_multicast_new_group(struct net_bridge *br,
+ 						    struct br_ip *group)
+ {
+@@ -1384,7 +1398,7 @@ struct net_bridge_mdb_entry *br_multicast_new_group(struct net_bridge *br,
+ 	if (atomic_read(&br->mdb_hash_tbl.nelems) >= br->hash_max) {
+ 		trace_br_mdb_full(br->dev, group);
+ 		br_mc_disabled_update(br->dev, false, NULL);
+-		br_opt_toggle(br, BROPT_MULTICAST_ENABLED, false);
++		br_multicast_toggle_enabled(br, false);
+ 		return ERR_PTR(-E2BIG);
+ 	}
  
--#define RTNL_MAX_TYPE		50
-+#define RTNL_MAX_TYPE		52
- #define RTNL_SLAVE_MAX_TYPE	44
+@@ -4452,6 +4466,7 @@ void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
  
- struct rtnl_link {
+ 		spin_lock_bh(&br->multicast_lock);
+ 		vlan->priv_flags ^= BR_VLFLAG_MCAST_ENABLED;
++		br_multicast_update_active(&vlan->br_mcast_ctx);
+ 		spin_unlock_bh(&br->multicast_lock);
+ 
+ 		if (on)
+@@ -4472,6 +4487,7 @@ void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
+ 			__br_multicast_enable_port_ctx(&vlan->port_mcast_ctx);
+ 		else
+ 			__br_multicast_disable_port_ctx(&vlan->port_mcast_ctx);
++		br_multicast_update_active(brmctx);
+ 		spin_unlock_bh(&br->multicast_lock);
+ 	}
+ }
+@@ -4792,7 +4808,8 @@ int br_multicast_toggle(struct net_bridge *br, unsigned long val,
+ 	if (err)
+ 		goto unlock;
+ 
+-	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, !!val);
++	br_multicast_toggle_enabled(br, !!val);
++
+ 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED)) {
+ 		change_snoopers = true;
+ 		goto unlock;
 -- 
 2.50.1
 
