@@ -1,178 +1,264 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4102BEC32;
-	Fri, 29 Aug 2025 07:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756454265; cv=none; b=tdjVVXzK0xTpdES/AigLzO2B+zLXK+gUgFe5juUwizsEfH81qntllQj7kUm/QMDI+D5+nAIZRGzAthb5oS/1xTszfOKdqASWnaaZF9P2uFztk8+zix4THU/s/jXn1mA1wIyTEpw40dcEYD+9PEGsnFZVcx30vJPu3p95eLhZa3c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756454265; c=relaxed/simple;
-	bh=SjQQL7M+fnCTuiR4j1x063LYMCgkGU/f9QXVhvCVaTE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nMzBpQ6j0PB3+/h4y+1d9H4ZAUNiOCrc0IZyz5dAjOk1Q2eyCzqFTyzmd1RS8E8K/gJfj/pc+vJZMa8s8JhPfTTMfT9kVYmGG/jAZBuPGwdB+oYq6IlhFBj+UNd15OSjgJBQO10O3RlvJguKlqQkDSZr+ZYJIOs4yVmdpO18vO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=n3IyQOUI; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E80C2D24A0;
+	Fri, 29 Aug 2025 07:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756454307; cv=fail; b=L1+1+ULgpBMG+roEhQ4nWaVnf61L2ASTk2BsskOiQkAYYqjphFaRYXqUMNSPW6hghjoqEDfct1ySftLpF4frYiX6Ailx+l26TZ03+945E7KeVIieZa8NwsRIK575uXDJ3PWrJP7yaixpxHmPJ7zFEhD4ycOCk8XgsBSI6pd34n4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756454307; c=relaxed/simple;
+	bh=H7ELDKYLfVdQ9IjQeSglN91N5TPz9Ira3hAV7xKQAnk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fDLGiXAuzdakdgB9h2ByOnvcJgLuUx3Dlqu2fC/6MDD2Ijjw6Fq2cEg9iizwI2ELwryCOG07a3B753I5cAjv5D+H0+vRbUyDY2RwehjS7EZmRfoEgdx5B0X7m1vvbGLhgTzavTls/GUfIwmPHeNFEbrHi3UG5M8ywuDdyMSyokg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QNAREpX2; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="n3IyQOUI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QNAREpX2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1756454264; x=1787990264;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SjQQL7M+fnCTuiR4j1x063LYMCgkGU/f9QXVhvCVaTE=;
-  b=n3IyQOUIfN9EYniKMT+/uycF3LkCVbCrZ4OO7ZaJH+nncwMrR4XNNOmv
-   REyxnpXChiOJrYOJ5Z6ALJP9zeZTP2VtaVqFOefnk3idLjA5Z76TL1LBk
-   xFRr+XEVrw83vdIjcZ7d2bK72byIYoODcTSKpeiz3sXMbGsayloeDYSYP
-   tDlRNRW9HFTr3UtJNwTwPtR5tDysrg3b8lsH8BfG4Pw0qrrtRPP6wOdrd
-   tbM8+ryp6/1GWlw8Xuh8LJpfn8oKabl5hO0ywMcHqbqaI4ziNBX3qakjP
-   x4gpYc3E0si9uYQQKWY0wbaFsDBqPK4sAPMdiDfg7bEaMFMJF4zuvcvjE
-   w==;
-X-CSE-ConnectionGUID: +ONr1VLDQ0ik60pDu2SRtg==
-X-CSE-MsgGUID: KlnBwLBgT1WFbXYxMPur2A==
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756454305; x=1787990305;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=H7ELDKYLfVdQ9IjQeSglN91N5TPz9Ira3hAV7xKQAnk=;
+  b=QNAREpX2S8htzSD1cJmqV/8+LtE8KaNTiLRIdBWgDJolSHgu7j5PFYzg
+   ANNWlnHpxEKgivgKUIa2GExoNg0yohRjWGFWEM0v/OgfrArzBNCV1D78l
+   zS1Z0nBW5H78+H/RKRiftqNYyOtXLt+tuEkFGJIeaZ9vWBUSENmsFxwfy
+   H8C6V3cU0x4FyVjaj+XWtgxjL4PzxTJ7mkJLq71I6G2/drWsxwyIlbt70
+   ECtckghzf37oSVIWitcPolq7ftARNRrUa+ARZUNN3lZNrWZtJSlf+pHwK
+   jZCwkPnIJi2vGGYpYubuJa2e7VDuMLOi28N+FoOBQWHpsX/FKVAAwelKj
+   Q==;
+X-CSE-ConnectionGUID: Q7PQIg1UQh6Mh6a08zfFAw==
+X-CSE-MsgGUID: ltJSo3KQSW23YBOZkgjFyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11536"; a="58444794"
 X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
-   d="scan'208";a="45800780"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Aug 2025 00:57:43 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Fri, 29 Aug 2025 00:57:11 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.44 via Frontend Transport; Fri, 29 Aug 2025 00:57:09 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <vadim.fedorenko@linux.dev>,
-	<viro@zeniv.linux.org.uk>, <atenart@kernel.org>, <quentin.schulz@bootlin.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
-Date: Fri, 29 Aug 2025 09:50:07 +0200
-Message-ID: <20250829075007.214431-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+   d="scan'208";a="58444794"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 00:58:24 -0700
+X-CSE-ConnectionGUID: lF3XJaOJSkymL892R/+KZw==
+X-CSE-MsgGUID: +Rby6yWJRYSc7v6Myq02qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,221,1751266800"; 
+   d="scan'208";a="174678878"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2025 00:58:24 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 29 Aug 2025 00:58:23 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Fri, 29 Aug 2025 00:58:23 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.51) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Fri, 29 Aug 2025 00:58:22 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bqnDSBJLjZ8fyo0in+TH/PAu/W7TyFwob2qA8PILw+sWEzidgJVSPBk7mcEtSNg78fZICMGn5DWF1yArEREl5wv8u+m8+I8QTlmOezATYItoVzI6iTS1+vuBam1Xc0OgseZWY/h2aO74DjJzzF3u6zD+SsnwGxZgkgYXiVbLpMKmswY21dXcj5KaAKFJc9ci+fcjr7h7S094vKP11Kns7eBn1t2qN73SKbrIDXQLNUkHWvwSeQrTSJhgjGVJFNlAOXL74dR65+mRalF8z1dhvF63yyVsNfpx0N2IPdame4kguNgEZKid5aeRm+RiUwQHbF8tPcATaVt1bsXsFSVMmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=We/Smkev+7cPuX5U1VYgDdLE31PsdxqHAtSbmSUMgBM=;
+ b=jl67Bjw3KtX2nnMe7MmG5tMWvXJRO5p/POVG5e7WP8rXhkXNrzQtaLkREYjUHufb5KjsO8RXkqBorDXxfurbABUfhKBpd4UDZZ+CbntQVpG8olvlRYmign5hqDysS21ns7APzE57NnhTbe6lQokGYA7HRH+QNNAb3p98UP/iHVq3PJ3rBSwr4kfDixSqWovUJP65RMN7EHocLuhmbqL29rzeBoKnsJuxat7mQy7CdZC8NbOzSqdhSaNEW79etvncj8H1CQidZCaRd0nDdjqd3/ODlF2i8GLJGj+rUgQoggnzSfDX/yJ+WCFOk4h7eaK3To673IMiOgQAXS/OHm4mSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ2PR11MB8452.namprd11.prod.outlook.com (2603:10b6:a03:574::22)
+ by CH2PR11MB8777.namprd11.prod.outlook.com (2603:10b6:610:283::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.20; Fri, 29 Aug
+ 2025 07:58:16 +0000
+Received: from SJ2PR11MB8452.namprd11.prod.outlook.com
+ ([fe80::d200:bfac:918a:1a38]) by SJ2PR11MB8452.namprd11.prod.outlook.com
+ ([fe80::d200:bfac:918a:1a38%4]) with mapi id 15.20.9073.016; Fri, 29 Aug 2025
+ 07:58:16 +0000
+From: "Kubalewski, Arkadiusz" <arkadiusz.kubalewski@intel.com>
+To: Simon Horman <horms@kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>
+Subject: RE: [PATCH iwl-next v1] ice: add support for unmanaged dpll on E830
+ NIC
+Thread-Topic: [PATCH iwl-next v1] ice: add support for unmanaged dpll on E830
+ NIC
+Thread-Index: AQHcFp9iGCnCyumMAk2pU9WPyeV8BLR34QQAgAFmfmA=
+Date: Fri, 29 Aug 2025 07:58:16 +0000
+Message-ID: <SJ2PR11MB8452A51ACFB84741F38B01569B3AA@SJ2PR11MB8452.namprd11.prod.outlook.com>
+References: <20250826153118.2129807-1-arkadiusz.kubalewski@intel.com>
+ <20250828103302.GZ10519@horms.kernel.org>
+In-Reply-To: <20250828103302.GZ10519@horms.kernel.org>
+Accept-Language: pl-PL, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR11MB8452:EE_|CH2PR11MB8777:EE_
+x-ms-office365-filtering-correlation-id: db3de5ab-7f5d-43ef-d2e7-08dde6d1cff2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?LgOaz0ZYd/NxrAlOAk18gKnojL9GUJgwinsCchKf3Ci3ngLmRCB4IFSpy4C5?=
+ =?us-ascii?Q?Kp+Q2Ss2A319J/qzLkUgGX5b1PIIM0DzlPFVzVIr9Yvsq0hHWk025efgahda?=
+ =?us-ascii?Q?6Vy66PEcJnabA9dWHGzq99FNV5GsQN3yxvpHVhSPuL7LOZjke6zwW8K/6cdK?=
+ =?us-ascii?Q?b8F+d2i3oiY+j0OsgVDikwG5WX6/DHvsyt6e7tm8Vv4r9zjhF/yIWu3vzacq?=
+ =?us-ascii?Q?ddw7W70cNt9pV5I398/yVJfox1hV4Q9XchVJsLHLEBFie3TBtOqHDECTmwzU?=
+ =?us-ascii?Q?F2nSod4ebdbTViWg4l94VD4BH2S0OCgml0ZbCE7a3s2hFzkOj12jv4P5Mu3a?=
+ =?us-ascii?Q?dp3Vvq+IPBNIMkhKIRHEtR4M1Siz5mZyNl7xOimo+DCMt9hgEitOvH06NNPQ?=
+ =?us-ascii?Q?FUkk5zGuYleRl2rAK6M2NZtTjMC09wQuGoYhkFiKDBDK2jht1WTpp2EGld28?=
+ =?us-ascii?Q?8mxkDXofzg9lrKdQLROJH11CZojV6jWiUKLVnhlgtojd7bQnikR6cBGDS7/H?=
+ =?us-ascii?Q?AK/wD0oAE0WvXMFlhRCkvlXMbu1YkESzKNS0/XCfFTAV0hq+NMblxV993EKq?=
+ =?us-ascii?Q?IBHYOvbzwAxn6BcssOvUDYsm0Ec8jxbFXs8tlg2HgZF76If4a9ksBzk8BMVv?=
+ =?us-ascii?Q?L6/qKTVFuAKO1rv3IQKj7veoxjRX5z3Uruhh8KYI4GFoTF8q932gR0Mwe+g4?=
+ =?us-ascii?Q?CCDi4KTzwEWEoaZyGpp/RxfXH3uqWOgwQhL8LkUCPaMJ7+0nqWPKMyoqn7F3?=
+ =?us-ascii?Q?L+wHtDIHW3DaaSnBQ/Iy399wbI5CD+If7HMe6+iPxW95glTY2QYouqKRRAx5?=
+ =?us-ascii?Q?3k/U83S/OBum7ZlMm1GvVwsPFIZk7D+na1pA67+znYRvml/nA2MoKBTdW70r?=
+ =?us-ascii?Q?0ye/1PKdP9nFn/y8f4DJc2CRBguJ3x64q2Mn98siWYG4qh0zElb/oZQtPM5U?=
+ =?us-ascii?Q?p35wf1gtzIOqrCy8pHdL5O6MDjvURy1h1wVAhWzQJ6HcN2wRNYDy8Wl+PmR5?=
+ =?us-ascii?Q?jk7cecZbPVddXfaLVCEtSj8Jk0bGNmHxtr+oDWMywYASFwNSzzU5jUNuh3kF?=
+ =?us-ascii?Q?STSZvfJ+ZOOAeA7Fv1DS71kX+gNIHNolmIrLndkrzHgYs9t7LKWW/xaybmVP?=
+ =?us-ascii?Q?3hOXevve7l8a8XIuJJgD4gyQ9iFqSYyEm7cFZEEm0dYiZZTAqdNmlvj6v8aq?=
+ =?us-ascii?Q?R73hn1H6yomG/Qzdz+GSBKE4XnvP7jCGiCsWm51FrLDucXmaYQD23CEHKKdT?=
+ =?us-ascii?Q?eYOUqLjhNZq4QDhR8r8qf9wBKNKdH+3OVrBtoU7EEG3gLMR5mLJJeaF0hqdV?=
+ =?us-ascii?Q?JunVFNQxvmGX6ySPrQpBiv/nLoELsctTmIAhk9Tpg3a2ntWnbDz1dsFNa9nK?=
+ =?us-ascii?Q?ak0fC5451rpDlNj3MtpC7J/mZqimBUj/KuPbmX59V8TXw2ft2SNA+npTehAR?=
+ =?us-ascii?Q?Qx6ZXP8T89xAlHDOreUb82Qga5lfZhzPuFhE9hN/JYi5jhJTCqHf8g=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB8452.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?XOrCGtIdkVmYEcDq4c8t2946fZOy0J75xiidDERZihmCTgCzEehhOEUdSoF8?=
+ =?us-ascii?Q?tSMoi+SxrSIER9eQwZNRNRHBKRrYjbcuOZGcrND4hUoEo4n59dmKUyYC/WDb?=
+ =?us-ascii?Q?jac1vEUF2fxwkFZlPg2BVE6A8KWFnD4i6rIovYGc+jsy1ipU1OF3U6flLC3Q?=
+ =?us-ascii?Q?Sy2oSVY9GwBBJfmX4OocGaWQ+FtqRzmfqX7igdb8hvAD5NDZRcbGprw5u/JA?=
+ =?us-ascii?Q?+IHsTcp9HbRYLL3hrL1DTYJVVNahl4DfNWSAr6vGNajBgz+00G1Cbf65cgYQ?=
+ =?us-ascii?Q?5eG7NtgRHbyhQKU0OhiUZyk3MKcL5xIzPIPdo2f1kmzoYainL9CB3OQHSzXQ?=
+ =?us-ascii?Q?zvyse2zbTCYCF5zijLNQrfHM6Uu5SmlGTVDxi3oVIxjq0niU+FPoiWpZkTHv?=
+ =?us-ascii?Q?256s1iHifiwOwqovKsqfqgNPznJmJCjrIqv4noO1Ym+bnl0qE0LbSa8xlVpU?=
+ =?us-ascii?Q?giq3J+uc36WiYffvsl2FXfiH3duJS48+lGEd/UQYWBdhvswYtSrSk9J9YBww?=
+ =?us-ascii?Q?UQ7NqzrDE36YhaZ2kimmM5n5MC+BC4tIWpFnwybz5Gq4uSIF5bON2TTEbaDY?=
+ =?us-ascii?Q?Hlm3182uPwBU2YVmhj1bIY8dfZxaVzpqvtvzBg+RFPA4rUlcf42X/069A73F?=
+ =?us-ascii?Q?JTYlz7NhLvBZSGMv4aiD6fOCEBFvW4kjdyIsoUH6N58g4CcTIDt8c6y1MHAx?=
+ =?us-ascii?Q?xqThWDuIY1oQ1rEUVwxqVbve4oSNUARvpVRT1udVXMN+Z2/xuRddxqGI33Ov?=
+ =?us-ascii?Q?CFNHQRz1lEBGvudQIiFqAusKfLVPqDqOBy5K3M/UGRaFSVNL6Tn/D5hjGr6f?=
+ =?us-ascii?Q?YSuL5cJWoFvm3Ii0tDmguW83+F9OD8oJ0X07aNwi8dCafhTPSAB0lAxlJ/43?=
+ =?us-ascii?Q?IoFeTzlrjE0E1xMe68+1TVorycrdYU1wiY/ObZ/4yMa95Bp8aOqj6b0Cz9l9?=
+ =?us-ascii?Q?72emAoG7+f3KZ0yETorAVtGFLJDRxB5M3EEFmXNdwW2PQVjJ3/mMxiPqs+JP?=
+ =?us-ascii?Q?3ymOxf8LKWMOXe7ZzsGeQdp9XAAqomUxg7dblCTqsDObiwI/p86/hIZJs6WF?=
+ =?us-ascii?Q?57QbJMq6AagUYUWsqQcE5S4wf6qn8qGdYs7So4hddxG9ti1DGj7l8i07gCmQ?=
+ =?us-ascii?Q?bYYtOX2aM+5KjCi9bNXypHz4SUVBeR2Go45R/qMx1p9pukOM83W0g+p/n5Ce?=
+ =?us-ascii?Q?y1pRPTRh1QCXfilXb4Ugx3hlDScDu7UrlyyUUjV2HdXt0tSLR/DyJ4oFieZA?=
+ =?us-ascii?Q?7VrBE8VU7Rywq/c3/PyC/IpLPRlFJcOZRJNWee2j8VuHPBut6dVuQFdV1/U7?=
+ =?us-ascii?Q?/LFVq1TfSxUf6A9PDfyUHPLF/yy4tzJ+wFIdv1tAVw00eE+V/clisPC5OvJO?=
+ =?us-ascii?Q?D98z1vLm/+YeTwrELuUMInMp7zPxGFozsu2CA7FMw9Tr2zJs4O/icl9cK1Ua?=
+ =?us-ascii?Q?Tomhsl1K+QiJp+u4bAYCXGLB7WYzk1uHJjh+x7mhXzHK7Uw7fK5dSM3duQ2P?=
+ =?us-ascii?Q?FDWhuunnL0I/xClncfdFAbhh/T7ag+zwhYW3dtOs17pG1J+U9AZONi5xuI6m?=
+ =?us-ascii?Q?VJ8gQ0UKy8lVrTFdGclPZPuaToR0ZxgGzUeV7autB+i2tz3nAvt8g5mikDsi?=
+ =?us-ascii?Q?oA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8452.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db3de5ab-7f5d-43ef-d2e7-08dde6d1cff2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Aug 2025 07:58:16.7768
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: by4f2kk2fXXZUt4wpJLbxyBWLKEzrwTO/0oRAFiMR2FT3UDxAOceThn8oYH9gIYC7tVqlrgn9q3kX9Da2+xgoyiuTPhKKxQpnGfrZUI/BgU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8777
+X-OriginatorOrg: intel.com
 
-When transmitting a PTP frame which is timestamp using 2 step, the
-following warning appears if CONFIG_PROVE_LOCKING is enabled:
-=============================
-[ BUG: Invalid wait context ]
-6.17.0-rc1-00326-ge6160462704e #427 Not tainted
------------------------------
-ptp4l/119 is trying to lock:
-c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
-other info that might help us debug this:
-context-{4:4}
-4 locks held by ptp4l/119:
- #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
- #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
- #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
- #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
-stack backtrace:
-CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
-Hardware name: Generic DT based system
-Call trace:
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x7c/0xac
- dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
- __lock_acquire from lock_acquire+0x108/0x38c
- lock_acquire from __mutex_lock+0xb0/0xe78
- __mutex_lock from mutex_lock_nested+0x1c/0x24
- mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
- vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
- lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
- lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
- dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
- sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
- __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
- packet_sendmsg from __sys_sendto+0x110/0x19c
- __sys_sendto from sys_send+0x18/0x20
- sys_send from ret_fast_syscall+0x0/0x1c
-Exception stack(0xf0b05fa8 to 0xf0b05ff0)
-5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
-5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
-5fe0: 00000001 bee9d420 00025a10 b6e75c7c
+>From: Simon Horman <horms@kernel.org>
+>Sent: Thursday, August 28, 2025 12:33 PM
+>
+>On Tue, Aug 26, 2025 at 05:31:18PM +0200, Arkadiusz Kubalewski wrote:
+>
+>...
+>
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c
+>> b/drivers/net/ethernet/intel/ice/ice_dpll.c
+>
+>...
+>
+>> +/**
+>> + * ice_dpll_init_info_unmanaged - init dpll information for unmanaged
+>> +dpll
+>> + * @pf: board private structure
+>> + *
+>> + * Acquire (from HW) and set basic dpll information (on pf->dplls
+>>struct).
+>> + * For unmanaged dpll mode.
+>> + *
+>> + * Return:
+>> + * * 0 - success
+>> + * * negative - init failure reason
+>> + */
+>> +static int ice_dpll_init_info_unmanaged(struct ice_pf *pf) {
+>> +	struct ice_dplls *d =3D &pf->dplls;
+>> +	struct ice_dpll *de =3D &d->eec;
+>> +	int ret =3D 0;
+>> +
+>> +	d->clock_id =3D ice_generate_clock_id(pf);
+>> +	d->num_inputs =3D ice_cgu_get_pin_num(&pf->hw, true);
+>> +	d->num_outputs =3D ice_cgu_get_pin_num(&pf->hw, false);
+>> +	ice_dpll_lock_state_init_unmanaged(pf);
+>> +
+>> +	d->inputs =3D kcalloc(d->num_inputs, sizeof(*d->inputs), GFP_KERNEL);
+>> +	if (!d->inputs)
+>> +		return -ENOMEM;
+>> +
+>> +	ret =3D ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT);
+>> +	if (ret)
+>> +		goto deinit_info;
+>> +
+>> +	d->outputs =3D kcalloc(d->num_outputs, sizeof(*d->outputs),
+>>GFP_KERNEL);
+>> +	if (!d->outputs)
+>
+>Hi Arkadiusz,
+>
+>I think the following is needed here:
+>
+>		err =3D -ENOMEM;
+>
+>Flagged by Smatch.
+>
 
-So, instead of using the ts_lock for tx_queue, use the spinlock that
-skb_buff_head has.
+Hi Simon,
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
----
- drivers/net/phy/mscc/mscc_ptp.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+Correct, will fix.
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index 72847320cb652..d2277b3393fad 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -461,7 +461,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		return;
- 
- 	while (len--) {
--		skb = __skb_dequeue(&ptp->tx_queue);
-+		skb = skb_dequeue(&ptp->tx_queue);
- 		if (!skb)
- 			return;
- 
-@@ -486,7 +486,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
- 		 * packet in the FIFO right now, reschedule it for later
- 		 * packets.
- 		 */
--		__skb_queue_tail(&ptp->tx_queue, skb);
-+		skb_queue_tail(&ptp->tx_queue, skb);
- 	}
- }
- 
-@@ -1059,6 +1059,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
- 		container_of(mii_ts, struct vsc8531_private, mii_ts);
- 	struct phy_device *phydev = vsc8531->ptp->phydev;
- 	bool one_step = false;
-+	unsigned long flags;
- 	u32 val;
- 
- 	switch (cfg->tx_type) {
-@@ -1092,8 +1093,11 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
- 
- 	mutex_lock(&vsc8531->ts_lock);
- 
-+	spin_lock_init(&vsc8531->ptp->tx_queue.lock);
-+	spin_lock_irqsave(&vsc8531->ptp->tx_queue.lock, flags);
- 	__skb_queue_purge(&vsc8531->ptp->tx_queue);
- 	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
-+	spin_unlock_irqrestore(&vsc8531->ptp->tx_queue.lock, flags);
- 
- 	/* Disable predictor while configuring the 1588 block */
- 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
-@@ -1180,9 +1184,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
- 
- 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 
--	mutex_lock(&vsc8531->ts_lock);
--	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
--	mutex_unlock(&vsc8531->ts_lock);
-+	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
- 	return;
- 
- out:
-@@ -1571,7 +1573,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
- 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
- 		vsc85xx_get_tx_ts(priv->ptp);
- 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
--		__skb_queue_purge(&priv->ptp->tx_queue);
-+		skb_queue_purge(&priv->ptp->tx_queue);
- 		vsc85xx_ts_reset_fifo(phydev);
- 	}
- 
--- 
-2.34.1
+Thank you!
+Arkadiusz
 
+>> +		goto deinit_info;
+>> +
+>> +	ret =3D ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_OUTPUT);
+>> +	if (ret)
+>> +		goto deinit_info;
+>> +
+>> +	de->mode =3D DPLL_MODE_AUTOMATIC;
+>> +	dev_dbg(ice_pf_to_dev(pf), "%s - success, inputs:%u, outputs:%u\n",
+>> +		__func__, d->num_inputs, d->num_outputs);
+>> +	return 0;
+>> +deinit_info:
+>> +	dev_err(ice_pf_to_dev(pf), "%s - fail: d->inputs:%p, d-
+>>outputs:%p\n",
+>> +		__func__, d->inputs, d->outputs);
+>> +	ice_dpll_deinit_info(pf);
+>> +	return ret;
+>> +}
+>
+>...
