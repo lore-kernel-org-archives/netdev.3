@@ -1,117 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7D023ED5E;
-	Sat, 30 Aug 2025 02:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1528547F4A;
+	Sat, 30 Aug 2025 02:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756521015; cv=none; b=UQAnEbQvF2mXt8N8hFljbiYYuEpyuXeq2hkofQ1okwpzrhfUmhxXpoNtSaCiFSfWSIwv2O08lSGTJtSGmP0RZPswN1vEVVib1P1a0z7Cnra56YXdoaTQZtCJLpoRx8URIgYx6bvH0rqdJj1d5ri0cImqhlYkV2rN+4yc2vyJ058=
+	t=1756521150; cv=none; b=b8h9BGBn/VhvnkcHjY5upsN7bSS+n3asd7635CbmrrOF35bxzQ71+/XKK1OHDA5bvxQew/cLdxv4FPDwIrZBFnD/9+JhxtNxSA/pcS951KlVvsX3u+PoJ+N0mbjXomiqlhgwcXaBADXotTGVBCU+6HhrajsP5N4yFu7kIKIniZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756521015; c=relaxed/simple;
-	bh=D5gt15k78aHffTEzhKrTPz95Mjin89dpWbHlnRGerss=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CvlQR0oe8FRldlFfgJ4Yx0YANaak18aXfxKDzmMseNaOhebqtR8+R8dl8MZtXU+Ngqafh0oaOOV9ifiLb1AMiKY+qIk5vWPvD6suihiroacFOPK2gqi7vp0fknMyp14k3vZ9GblFDQakEOOJH8eTminM7aDM0nnDGi6Sf0vfne8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fNDU22+y; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fNDU22+y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=OnwhoC0SsZmmVunPqr+tDslY/DJMsLPr1yvnJgJ3Mek=; b=fN
-	DU22+yNhWuKk2c9vEZuWSKSiuGLMVYg4FNYgaxd/8q2ZcayCrTEymITZh1BMfDvXvkoAVB8cPPXcK
-	8tEAGx4O3Xfy0x+qwG81Q2LJBnckaj8YBWqYiBKFHAhW65WRQ3iBvbyrWJS6NbilCBPIlqd2q6P7e
-	wVZ+JNOAVP+sVhA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1usBLl-006XyV-K0; Sat, 30 Aug 2025 04:29:53 +0200
-Date: Sat, 30 Aug 2025 04:29:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: mohammad Hosseini <moahmmad.hosseinii@gmail.com>
-Cc: nic_swsd@realtek.com, hkallweit1@gmail.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] r8169: hardening and stability improvements
-Message-ID: <02d0999c-af6b-4bc1-846a-7da7f88e3f6a@lunn.ch>
-References: <CAG_zHVWVqe-TXXB8XJQrJiim5uWinzuTQysVnJ8EC5UopktWkg@mail.gmail.com>
+	s=arc-20240116; t=1756521150; c=relaxed/simple;
+	bh=is9IEKpIaITjTCAHFls/RTPC03IfKxoVzptUDCFAHtU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=u2mwZuHH7/UJsrAgwJHCq+2VoMGwH9bdy4S486YAnK2znu3Nc/Qiw7m/fiUkN+GgwsQQJEGC+V8p4xJL4A2eaD9oS5bgfRo/6yeNsZGQYExAWBcCzUEWKiSzH56l1y6zH+pOSpdaYHHxrKJT434CbsMiSqp+Wva5XorRajuPYIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1usBNy-000000005ug-2ZYU;
+	Sat, 30 Aug 2025 02:32:10 +0000
+Date: Sat, 30 Aug 2025 03:32:06 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Andreas Schirm <andreas.schirm@siemens.com>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Peter Christen <peter.christen@siemens.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next v4 0/6] net: dsa: lantiq_gswip: prepare for
+ supporting MaxLinear GSW1xx
+Message-ID: <cover.1756520811.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG_zHVWVqe-TXXB8XJQrJiim5uWinzuTQysVnJ8EC5UopktWkg@mail.gmail.com>
 
-On Sat, Aug 30, 2025 at 02:21:18AM +0330, mohammad Hosseini wrote:
-> From 40b549f1f955a177729374b73b58ec89d40f37a7 Mon Sep 17 00:00:00 2001
-> From: mohammad amin hosseini <moahmmad.hosseinii@gmail.com>
-> Date: Fri, 29 Aug 2025 21:18:21 +0000
-> Subject: [PATCH 1/1] r8169: hardening and stability improvements
-> 
-> This patch improves robustness and reliability of the r8169 driver. The
-> changes cover buffer management, interrupt handling, parameter validation,
-> and resource cleanup.
-> 
-> While the updates touch multiple areas, they are interdependent parts of a
-> cohesive hardening effort. Splitting them would leave intermediate states
-> with incomplete validation.
-> 
-> Key changes:
-> - Buffer handling: add packet length checks, NUMA-aware fallback allocation,
->   descriptor zero-initialization, and memory barriers.
-> - Interrupt handling: fix return codes, selective NAPI scheduling, and
->   improved SYSErr handling for RTL_GIGA_MAC_VER_52.
-> - Parameter validation: stricter RX/TX bounds checking and consistent
->   error codes.
-> - Resource management: safer workqueue shutdown, proper clock lifecycle,
->   WARN_ON for unexpected device states.
-> - Logging: use severity-appropriate levels, add rate limiting, and extend
->   statistics tracking.
-> 
-> Testing:
-> - Kernel builds and module loads without warnings.
-> - Runtime tested in QEMU (rtl8139 emulation).
-> - Hardware validation requested from community due to lack of local device.
-> 
-> Signed-off-by: Mohammad Amin Hosseini <moahmmad.hosseinii@gmail.com>
-> ---
->  drivers/net/ethernet/realtek/r8169_main.c | 150 ++++++++++++++++++----
->  1 file changed, 123 insertions(+), 27 deletions(-)
-> 
-> rtl8169_private *tp,
->   int node = dev_to_node(d);
->   dma_addr_t mapping;
->   struct page *data;
-> + gfp_t gfp_flags = GFP_KERNEL;
->  
-> - data = alloc_pages_node(node, GFP_KERNEL, get_order(R8169_RX_BUF_SIZE));
-> - if (!data)
-> - return NULL;
-> + /* Use atomic allocation in interrupt/atomic context */
-> + if (in_atomic() || irqs_disabled())
-> + gfp_flags = GFP_ATOMIC;
-> +
-> + data = alloc_pages_node(node, gfp_flags, get_order(R8169_RX_BUF_SIZE));
-> + if (unlikely(!data)) {
-> + /* Try fallback allocation on any node if local node fails */
-> + data = alloc_pages(gfp_flags | __GFP_NOWARN, get_order(R8169_RX_BUF_SIZE));
-> + if (unlikely(!data)) {
-> + if (net_ratelimit())
-> + netdev_err(tp->dev, "Failed to allocate RX buffer\n");
-> + return NULL;
-> + }
+Continue to prepare for supporting the newer standalone MaxLinear GSW1xx
+switch family by extending the existing lantiq_gswip driver to allow it
+to support MII interfaces and MDIO bus of the GSW1xx.
 
-As you can see, your patch is whitespace damaged. Please try to use
-"get send-email", or "b4 send" to avoid these issues.
+This series has been preceded by an RFC series which covers everything
+needed to support the MaxLinear GSW1xx family of switches. Andrew Lunn
+had suggested to split it into a couple of smaller series and start
+with the changes which don't yet make actual functional changes or
+support new features.
 
-    Andrew
+Everything has been compile and runtime tested on AVM Fritz!Box 7490
+(GSWIP version 2.1, VR9 v1.2)
 
----
-pw-bot: cr
+Link: https://lore.kernel.org/netdev/aKDhFCNwjDDwRKsI@pidgin.makrotopia.org/
+
+v4: fix newly introduced syntax error in struct initializer
+v3: explicitly initialize mii_port_reg_offset to 0
+v2: move lantiq_gswip driver to its own folder
+
+Daniel Golle (6):
+  net: dsa: lantiq_gswip: move to dedicated folder
+  net: dsa: lantiq_gswip: support model-specific mac_select_pcs()
+  net: dsa: lantiq_gswip: ignore SerDes modes in phylink_mac_config()
+  net: dsa: lantiq_gswip: support offset of MII registers
+  net: dsa: lantiq_gswip: support standard MDIO node name
+  net: dsa: lantiq_gswip: move MDIO bus registration to .setup()
+
+ MAINTAINERS                                 |  3 +-
+ drivers/net/dsa/Kconfig                     |  8 +--
+ drivers/net/dsa/Makefile                    |  2 +-
+ drivers/net/dsa/lantiq/Kconfig              |  7 +++
+ drivers/net/dsa/lantiq/Makefile             |  1 +
+ drivers/net/dsa/{ => lantiq}/lantiq_gswip.c | 54 ++++++++++++++++-----
+ drivers/net/dsa/{ => lantiq}/lantiq_gswip.h |  4 ++
+ drivers/net/dsa/{ => lantiq}/lantiq_pce.h   |  0
+ 8 files changed, 57 insertions(+), 22 deletions(-)
+ create mode 100644 drivers/net/dsa/lantiq/Kconfig
+ create mode 100644 drivers/net/dsa/lantiq/Makefile
+ rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.c (98%)
+ rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.h (98%)
+ rename drivers/net/dsa/{ => lantiq}/lantiq_pce.h (100%)
+
+-- 
+2.51.0
