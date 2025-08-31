@@ -1,122 +1,142 @@
-Received: from mail3-163.sinamail.sina.com.cn (mail3-163.sinamail.sina.com.cn [202.108.3.163])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695C31A9FBA
-	for <netdev@vger.kernel.org>; Sun, 31 Aug 2025 09:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B491E3DC8
+	for <netdev@vger.kernel.org>; Sun, 31 Aug 2025 10:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756634381; cv=none; b=uOa1yqf8b6A+8cB/6ZuQ9DB4sZLoI7kPvMynr9Z7z97vpKVFU6ha7hIJtyjcg+1yYtRxalxkAzljrWg84lYUJ7U72Zdko3+x8IvaHXdmy9o2j2g2djiW6f+XePqdqZ62elYoszWP3ERgLQw4Myia9uVlxEno9Q6feTqNWcZD7Do=
+	t=1756634932; cv=none; b=FmlYI9pFty/iUJhm/8ejs0sslCXGZYueOr/Z/wtvbnh7wJk0jxBLNtWlzpVTVn9Ikz0nnwMW+vZFy5/om6qJFDQ5jBumSQQdjYuHKVgbqzUKsnMKhqe4E6UL1qONS4kcKzU5FSv2gaLjn50d8R7hXiyEPeEDkN4olia1ziD237o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756634381; c=relaxed/simple;
-	bh=0KkjeJy5JVJeESV08AjM2dcetdJEMfhjNI6FtNSH/3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsUrdjZiauBykf50v5pFPDL0lxGhSD5mUCHC6bLmTkrmrLDobUC4RqE5BsRaufHptOeNz3Dxl4X/gZ6SLyLA/9/Voy2lNzpCe1dzoVN2mnm+avEAXRdo4w/5ka6qXMInxNkf1Mkja0I+/7Y6cmWS9VryemDpcPpfJIQHmFqFa0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=pczittn8; arc=none smtp.client-ip=202.108.3.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	s=arc-20240116; t=1756634932; c=relaxed/simple;
+	bh=jd01UooJkWZMmXC+19yDRLdonl6SC/V4bqQpVZXgQGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u4CV0FWnxc29Ihah+ix3Vj1od5g0uUHkuHGp7zuoH78NeekzRDkBLdF5QrNpWDqykFptNA3A3Whl6DdSd3sabgINM1ClG17efMWJmBGDCBS+Vj8EWifB+tM16yFaDs/bAzPDEx4e2PMJVyGfTslSdJ/wvYOvbj/qO+DL1iwsRsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=s+aUE1IA; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="pczittn8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1756634376;
-	bh=Loz27QVYNzLeCVfjJCj4j3wpQlM+hqvyO/PA6Ks0kqQ=;
-	h=From:Subject:Date:Message-ID;
-	b=pczittn8x0tMgW3FVfYCZyNrvAuUl+W2UIEy6kaHkqESO3SuUzOjPK+4Ll9uX44oA
-	 o7kZdLjh4Dg28f30migt4NJWes9yJIpi0FJMcMQnE3iSJ1gFKWZwiqsLTq0gM5YyDx
-	 d4krA/NRXKET0z9QqyB2im+L9DKsTs6mmVV3Q0ZE=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.58.236])
-	by sina.com (10.54.253.34) with ESMTP
-	id 68B41CFD00007605; Sun, 31 Aug 2025 17:59:27 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 244656291923
-X-SMAIL-UIID: 9199A7AECE71468597CE2A563C8960A6-20250831-175927-1
-From: Hillf Danton <hdanton@sina.com>
-To: syzbot <syzbot+535bbe83dfc3ae8d4be3@syzkaller.appspotmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Yunseong Kim <ysk@kzalloc.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] [nfc?] WARNING in nfc_rfkill_set_block
-Date: Sun, 31 Aug 2025 17:59:14 +0800
-Message-ID: <20250831095915.6269-1-hdanton@sina.com>
-In-Reply-To: <68b3f389.a00a0220.1337b0.002e.GAE@google.com>
-References: 
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="s+aUE1IA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1J2NCpThMNdOFpRgxZE0V/aCFXipAMunh3VihrLCjfQ=; b=s+aUE1IAL6ERvH+l85sIJJ7+L7
+	1y8FLWzz1GoxR0118jQgQXr3CpnrWrMuQiAFmb7DrpFDrD9Orfs3nsT6pMu8vu+yuUYiLws9MDXP3
+	KP72aaEKXoosIKmDAYhYMyCddBCBb5Knt5nst2d/UASe7BqXMzhEZ3g7VzlC0tOMdx0NO3kBu9qIZ
+	Lo31M8BU8mZvSwTN+hhP6pzJ7C0QgxWC3ox1pOGmgmRLGayAwR9+rhlDZMFXJHgnqGbT34yvOh42F
+	ame7+mJwxGxk7HvHQEazHYZwo++vH6NGKRuIt9NfQTyNuNIYtnGBG/JV4DvB4IbJcT5i/IOQ5gOMI
+	0xWEzSyQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41774)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1usez9-000000004on-0Du0;
+	Sun, 31 Aug 2025 11:08:32 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1usez4-000000005xr-1IfH;
+	Sun, 31 Aug 2025 11:08:26 +0100
+Date: Sun, 31 Aug 2025 11:08:26 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: markus.stockhausen@gmx.de
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, jan@3e8.eu,
+	'Chris Packham' <chris.packham@alliedtelesis.co.nz>
+Subject: Re: C22/C45 decision in phy_restart_aneg()
+Message-ID: <aLQfGgYfTdcCFHtC@shell.armlinux.org.uk>
+References: <009a01dc1a4b$45452120$cfcf6360$@gmx.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <009a01dc1a4b$45452120$cfcf6360$@gmx.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-> Date: Sun, 31 Aug 2025 00:02:33 -0700
-> syzbot has found a reproducer for the following issue on:
+On Sun, Aug 31, 2025 at 09:45:46AM +0200, markus.stockhausen@gmx.de wrote:
+> @Russell: Sorry for the inconvenience of my first mail. After a lengthy
+> analysis session, I focused too much on the initial C45 enhancement 
+> of the below function that you wrote. I sent it off too hastily.
+
+It's important to send messages to the right people for a proper
+discussion. Andrew may have some input on this - maybe as a result
+of my ideas below.
+
+> So, once again, here is some interesting finding regarding the 
+> limitations of the Realtek MDIO driver. Remember that it can only run 
+> in either C22 or C45. This time it is about autonegotiation restart.
 > 
-> HEAD commit:    c8bc81a52d5a Merge tag 'arm64-fixes' of git://git.kernel.o..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1508ce34580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=bd9738e00c1bbfb4
-> dashboard link: https://syzkaller.appspot.com/bug?extid=535bbe83dfc3ae8d4be3
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11019a62580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1308ce34580000
+> int phy_restart_aneg(struct phy_device *phydev) {
+>   int ret;
+> 
+>   if (phydev->is_c45 && !(phydev->c45_ids.devices_in_package & BIT(0))
+>     ret = genphy_c45_restart_aneg(phydev);
+>   else
+>     ret = genphy_restart_aneg(phydev);
+> 
+>   return ret;
+> }
+> 
+> I assume that BIT(0) means MDIO_DEVS_C22_PRESENT. As I understand it,
+> this basically uses C22 commands for C45 PHYs if C22 support is detected.
+> Currently, I have no reasonable explanation for this additional check.
 
-Test Kim's patch.
+There was discussion and delving into the spec when this was added.
+See https://lore.kernel.org/all/20170601102327.GF27796@n2100.armlinux.org.uk/
 
-#syz test
+(side note: google is now useless for finding that, searching for "hook
+up clause 45 autonegotiation restart" returns very few results, none of
+them with the full history. I've had to search my mailboxes for it, find
+the message ID, and then look it up on lore. We now have various web
+high-bandwidth crawlers that do not respect robots.txt to thank for this
+as sites have ended up blocking all crawlers using stuff like Anubis
+proof of work.)
 
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -1154,6 +1154,7 @@ EXPORT_SYMBOL(nfc_register_device);
- void nfc_unregister_device(struct nfc_dev *dev)
- {
- 	int rc;
-+	struct rfkill *rfk = NULL;
- 
- 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
- 
-@@ -1163,14 +1164,18 @@ void nfc_unregister_device(struct nfc_dev *dev)
- 			 "was removed\n", dev_name(&dev->dev));
- 
- 	device_lock(&dev->dev);
-+	dev->shutting_down = true;
- 	if (dev->rfkill) {
--		rfkill_unregister(dev->rfkill);
--		rfkill_destroy(dev->rfkill);
-+		rfk = dev->rfkill;
- 		dev->rfkill = NULL;
- 	}
--	dev->shutting_down = true;
- 	device_unlock(&dev->dev);
- 
-+	if (rfk) {
-+		rfkill_unregister(rfk);
-+		rfkill_destroy(rfk);
-+	}
-+
- 	if (dev->ops->check_presence) {
- 		timer_delete_sync(&dev->check_pres_timer);
- 		cancel_work_sync(&dev->check_pres_work);
---- x/net/bluetooth/hci_core.c
-+++ y/net/bluetooth/hci_core.c
-@@ -1476,8 +1476,14 @@ static void hci_cmd_timeout(struct work_
- 	if (hdev->reset)
- 		hdev->reset(hdev);
- 
-+	rcu_read_lock();
-+	if (hci_dev_test_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE)) {
-+		rcu_read_unlock();
-+		return;
-+	}
- 	atomic_set(&hdev->cmd_cnt, 1);
- 	queue_work(hdev->workqueue, &hdev->cmd_work);
-+	rcu_read_unlock();
- }
- 
- /* HCI ncmd timer function */
---
+It's been a long time, and so I've forgotten the details now, so all
+there is to go on are the above emails.
+
+You may notice that the initial version I submitted just used
+phydev->is_c45.
+
+> In our case, this function fails for C45 PHYs because the bus and PHY are 
+> locked down to this single mode. It's stupid, of course, but that's how 
+> it is. I see two options for fixing the issue:
+> 
+> 1) Mask the C22 presence in the bus for all PHYs when running in C45.
+> 2) Drop the C22 condition check in the above function.
+
+I guess we also need to make these kinds of tests conditional on
+whether the bus supports C45 or not.
+
+static bool mdiobus_supports_c22(struct mii_bus *bus)
+{
+	return bus->read && bus->write;
+}
+
+static bool mdiobus_supports_c45(struct mii_bus *bus)
+{
+	return bus->read_c45 && bus->write_c45;
+}
+
+This should be fine, because we already require MII bus drivers to only
+populate these methods only when they're supported (see commit
+fbfe97597c77 ("net: phy: Decide on C45 capabilities based on presence
+of method").
+
+	if (phydev->is_c45 && !(phydev->c45_ids.devices_in_package & BIT(0))
+
+can then become:
+
+	if (phydev->is_c45 &&
+	    !(mdiobus_supports_c22(phydev->mdio.bus) &&
+	      phydev->c45_ids.devices_in_package & MDIO_DEVS_C22PRESENT))
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
