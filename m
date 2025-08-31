@@ -1,135 +1,105 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3BC1DDC2B;
-	Sun, 31 Aug 2025 10:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD5F155C82
+	for <netdev@vger.kernel.org>; Sun, 31 Aug 2025 10:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756635485; cv=none; b=D8VxA8h92xhXaUaeDxf8mnzJKYBAAZvW0VRL/qXfTCOEJKeP5BnFXa4KYC8fhCo7F/th01iMvVsI1bhbIK9P6X9ArtrcwZ2lrH0antYFiBtYsc8cWJUNb86OvL8E34xvj69x1mW/oMhLqxQQgir+PmiLT37L+j341hgbn3NfNPs=
+	t=1756635544; cv=none; b=NxaMpMOC8l1438+nzl4IURj+4cSxgenhSB7HKxGF1gy42Pa+6DrvimBZHrrxNd8fG1TF3fVViR82XnHoiiJBtKN5DMWa6UKMbZQ+exxvbvc7NE8Ic6/07/2Hz0S4a/1V8xtYdwFHdmJ+Sgm3VHdh77LlT0POmek8t5QyLOU98No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756635485; c=relaxed/simple;
-	bh=IjTYrbBQSPkwxsasV3ZlplpdpKXrOFp0IayCgXtPes0=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Ehit2rwNuRMCi56l6ifmfQZUIsg0TyJe98MsNw8U2r3wtNtB3TAxY1IO2jwL1oxbTlhPBIrjXQq1Xh6JmVuFA6yiOIGcqSJWIHc8ETcIpInG5lemVVMt6cloIvf6fSg+enVgOnQtOL2HjOtUyhUUVfUOq0OlJV3sH1Ir8Kb3MR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=EB9G+bU0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XogKtSbF; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="EB9G+bU0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XogKtSbF"
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 549CB7A006D;
-	Sun, 31 Aug 2025 06:18:02 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-06.internal (MEProxy); Sun, 31 Aug 2025 06:18:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1756635482;
-	 x=1756721882; bh=cBqMVR6uqZHT5hLteGW5CLt4CXa6io3Ge5VLQmeY+u8=; b=
-	EB9G+bU0aZue6wB8MyHS9YXRsGUbpXMTlon/5WAEFj0g5Wrt/WhOx3xohoT6jPo8
-	KT6fC1xsOhLddjjs5Ag2BMPLLHAI8VNwlMGIhhg05LRtyruFeDq098VMgWagGkj5
-	THrtJL4KLpizjYmBujoFqqnNv+MH80rIoEwdBqRgZKwA2YQUmY1SrPh36Vfm4tiE
-	Euvm+6mllOSRF0u6myIkqj4mogYhA6IZGXp6sWmsqi/92UYIGHiLREbR5VNSXseE
-	JDks9PCyrS72VpCRVnhfCXaDn781KrXWV2UVXr+YVLnORL1LZ9bnpSvfpPLvGbK0
-	mCaYOKn7aZO36zfk8rPyXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756635482; x=
-	1756721882; bh=cBqMVR6uqZHT5hLteGW5CLt4CXa6io3Ge5VLQmeY+u8=; b=X
-	ogKtSbFudSgjAPdHjAn2kLy5FMwAk7AzNzZvVnm07lZvRWQqFfFV5JDxVm+Bznpg
-	tdKk+sZ1Yzj2mxrW6H8M5gdyxM6vsTnQYh+5ETddmU5xqynQOa2baNkm1B+LbNeG
-	Bf2poVDlNiCLxVqZ7DcR59CRttBUOanhZRHSfX51aPChrp9JCrPOCL3mX1VEKO/r
-	KRSALavb4zPs0ulqOT13fzVBOIonfhkkAX/qZV16/HvTCXjswa/4Nxae3Lbfh5kV
-	rxE1FO10KbkWxVnPDA+XP8RnX0ApGWxgZAE4uXmLuPHwHKEMzsVL45CfZvqKZsOt
-	0hFxzpDRdRu72EPO1HOsw==
-X-ME-Sender: <xms:WCG0aGN_fcKVIQyvjYDeeFl1yGAUG6V99bblBc93iuCTvcLzLCY0dA>
-    <xme:WCG0aE9LHCHNPVN1LuZIU_5eCQSYIyecm66Pjwq67b4uS7WBmZ1Owjrg7_4WqYQsS
-    bO6RlPmM-n3NwpphOI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddukeeltdduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpeflrghmvghs
-    uceosgholhgurdiiohhnvgdvfeejfeesfhgrshhtmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeffleeuffekgfefhfejudetheevgfduudefffeifeetveekteefhefffffg
-    heejhfenucffohhmrghinhepthgvshhtvggurdhnvghtnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsgholhgurdiiohhnvgdvfeejfeesfhgr
-    shhtmhgrihhlrdgtohhmpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouh
-    htpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthho
-    pegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohephhhorhhmsheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegrlhhisghuuggrsehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpth
-    htohepughushhtrdhliheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthho
-    pehguhifvghnsehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtohepthhonh
-    ihlhhusehlihhnuhigrdgrlhhisggrsggrrdgtohhmpdhrtghpthhtohepmhhjrghmsghi
-    ghhisehlihhnuhigrdhisghmrdgtohhm
-X-ME-Proxy: <xmx:WCG0aOLkjOXqN6rJoVKA1UQ0LIwRZDTHjPwShOCxSeA9E7iwqUaNPw>
-    <xmx:WCG0aO-Nss1w1J_AnXJrQk6RCw1sUI85vFgf0Zb6j2wX-GDsxzsgxw>
-    <xmx:WCG0aADasLgMO_F620l24tlGg7ikE1K8906AILzr9hWBoWsyfqeAXg>
-    <xmx:WCG0aIrWVxpToHIWq8VYCSqG1GC5zn8FTP5-QR-6Moff--9cSXntkg>
-    <xmx:WiG0aIp52qlhtzLh-iwA4EcGo62o8__piBmuviB6sp2AE6X5t_SiEgE_>
-Feedback-ID: ibd7e4881:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id C1F277840CC; Sun, 31 Aug 2025 06:18:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1756635544; c=relaxed/simple;
+	bh=RwQHnRYjV/1vKZ1PuwPUfN2604MKwMBwks15ba2icVE=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=BFiaZH9y0cukICMf5Sq4yEPn0YetEKKuVfj7h1r6c76gYrkUX5UAXC9yP0p4Z29c5bFCogtPtOkD+ZD66GnvTMn9MSw9q6WhgL665fsskGJ82rtLvGvBpB29fuBgTMv5Nk4TOEJ7FCGPlCmNUYXas3AUt9j3THIyLXQUcxKgQkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3ed0ba44c8fso43092825ab.0
+        for <netdev@vger.kernel.org>; Sun, 31 Aug 2025 03:19:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756635542; x=1757240342;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5wUanWJ9TFUpM54ILEtXgfjoYDPHC9UXWO0NyRChwpE=;
+        b=KXWksCo5WNCjlPiMZdNP9zVBzI1T4mHBEWcOZMjgijUj4SEaZ2Qr+TFWmNSgqDYc02
+         OzPwU3Oc/ISVqeoYMe1bUCnpIH6tcqXJ6zMTXEMUeqElmqPj+rEVoLcv3gOk4eqPWQCf
+         HeoVZZbl/ON6xDfEeL7U9k4FMDh4U8T357DpVZv5xaE5gfG3TlFzu/d0uss4POLOgj7P
+         +s40XWb58xKPk9XDV466Xlve/xIbIjeIL3k17mM8h4n0AnkUwIKjF/Ctmi8+hDynuj/l
+         q41pjFU2BXylXYyQda9x9MvP8AFir/UoiopIDz0kO4TnFoY3x2HJoXKozSjL2SP4N3Ug
+         1K5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVBnYtnz4E62EbO993aJTAtq/egluQT/UFE3buVMsngBXFkIbKDAqw8bxwciysYMVB3LI+GUYM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5d9NS2t3rjNCVfOzRd6K/fjq2yosiE8hSa1ogVA4bLFiqTQKo
+	QW/lY9ksSuhYmSt9vuTQOFOiqjoUt/vkH8iCCEasIQdnq034fJI3msaZ659qdxkpMZtG6ivxiAT
+	+4riwOEBxsYjQCjQQiHMvTAzJvkA3qe8wTxdx7HowdwsDzvZTeVhMCh41f/g=
+X-Google-Smtp-Source: AGHT+IGlSESnK/xm1j4DJ0slXKrny4chuiUI7BV8fgeneqMMUxjfgz2lGWrCoGYpAMuCBzA+5PNrTUDu+7WhgNc9Bq6d/287EMK/
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AJv3-LmMGI5N
-Date: Sun, 31 Aug 2025 03:17:40 -0700
-From: James <bold.zone2373@fastmail.com>
-To: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
- sidraya@linux.ibm.com, wenjia@linux.ibm.com, mjambigi@linux.ibm.com,
- tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- "Shuah Khan" <skhan@linuxfoundation.org>
-Cc: linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kernel-mentees@lists.linux.dev
-Message-Id: <4919e89e-cf4c-4ef1-af9a-0a94e92614ac@app.fastmail.com>
-In-Reply-To: <20250831095535.176554-1-bold.zone2373@fastmail.com>
-References: <20250831095535.176554-1-bold.zone2373@fastmail.com>
-Subject: Re: [PATCH] net/smc: Replace use of strncpy on NUL-terminated string with
- strscpy
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:cd8e:0:b0:3f2:9344:6f9e with SMTP id
+ e9e14a558f8ab-3f400284ceemr104024655ab.13.1756635541987; Sun, 31 Aug 2025
+ 03:19:01 -0700 (PDT)
+Date: Sun, 31 Aug 2025 03:19:01 -0700
+In-Reply-To: <20250831095915.6269-1-hdanton@sina.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68b42195.a00a0220.1337b0.0034.GAE@google.com>
+Subject: Re: [syzbot] [net?] [nfc?] WARNING in nfc_rfkill_set_block
+From: syzbot <syzbot+535bbe83dfc3ae8d4be3@syzkaller.appspotmail.com>
+To: hdanton@sina.com, krzk@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, ysk@kzalloc.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+BUG: MAX_LOCKDEP_KEYS too low!
+
+BUG: MAX_LOCKDEP_KEYS too low!
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 25225 Comm: syz.0.3616 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ register_lock_class+0x2e8/0x320 kernel/locking/lockdep.c:1332
+ __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ touch_wq_lockdep_map+0xcb/0x180 kernel/workqueue.c:3907
+ __flush_workqueue+0x121/0x14b0 kernel/workqueue.c:3949
+ drain_workqueue+0xd3/0x390 kernel/workqueue.c:4113
+ destroy_workqueue+0xbb/0xc70 kernel/workqueue.c:5869
+ nci_unregister_device+0xb1/0x240 net/nfc/nci/core.c:1316
+ virtual_ncidev_close+0x59/0x90 drivers/nfc/virtual_ncidev.c:172
+ __fput+0x45b/0xa80 fs/file_table.c:468
+ task_work_run+0x1d4/0x260 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop+0xec/0x110 kernel/entry/common.c:43
+ exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+ do_syscall_64+0x2bd/0x3b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f9bb98aebe9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fffc624e4c8 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 0000000000063d39 RCX: 00007f9bb98aebe9
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 00007f9bb9ae7da0 R08: 0000000000000001 R09: 00000003c624e7bf
+R10: 0000001b2c520000 R11: 0000000000000246 R12: 00007f9bb9ae5fac
+R13: 00007f9bb9ae5fa0 R14: ffffffffffffffff R15: 00007fffc624e5e0
+ </TASK>
 
 
+Tested on:
 
-On Sun, Aug 31, 2025, at 2:49 AM, James Flowers wrote:
-> strncpy is deprecated for use on NUL-terminated strings, as indicated in
-> Documentation/process/deprecated.rst. strncpy NUL-pads the destination
-> buffer and doesn't guarantee the destination buffer will be NUL
-> terminated.
->
-> Signed-off-by: James Flowers <bold.zone2373@fastmail.com>
-> ---
-> Note: this has only been compile tested.
->
->  net/smc/smc_pnet.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
-> index 76ad29e31d60..5cfde2b9cad8 100644
-> --- a/net/smc/smc_pnet.c
-> +++ b/net/smc/smc_pnet.c
-> @@ -450,7 +450,7 @@ static int smc_pnet_add_ib(struct smc_pnettable 
-> *pnettable, char *ib_name,
->  		return -ENOMEM;
->  	new_pe->type = SMC_PNET_IB;
->  	memcpy(new_pe->pnet_name, pnet_name, SMC_MAX_PNETID_LEN);
-> -	strncpy(new_pe->ib_name, ib_name, IB_DEVICE_NAME_MAX);
-> +	strscpy(new_pe->ib_name, ib_name, IB_DEVICE_NAME_MAX);
->  	new_pe->ib_port = ib_port;
-> 
->  	new_ibdev = true;
-> -- 
-> 2.50.1
+commit:         c8bc81a5 Merge tag 'arm64-fixes' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1226c1f0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=bd9738e00c1bbfb4
+dashboard link: https://syzkaller.appspot.com/bug?extid=535bbe83dfc3ae8d4be3
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=12dac1f0580000
 
-Please disregard. Sorry, just noticed I should have used the two argument version of strscpy. I will send a V2. 
