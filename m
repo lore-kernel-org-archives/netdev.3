@@ -1,152 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840663101DB;
-	Mon,  1 Sep 2025 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756719620; cv=none; b=ernCfy9/XlfGGcJ8vB+c4ll8HEASY8lM2E8lcz49yy6ibMgpzjDiFYWjFA0udm7gLqkZ4w7smP9JFDMxPcVWYjvYtITATpJB+FmTCjSb4engowsNkACMD0BJ1HukGOFazh5oQvpKWLQaJX2vqCVUWpsLx9B5zw/orE3wuShILoc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756719620; c=relaxed/simple;
-	bh=xXUKa/ahfEA+dPigVdk1wYHJYq2Hcf1En5xC3FDAHjM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Gwd2lgS50WOnof/kqvGKC7HmbGa0Iclq4ocQYzoxaxdm5fCq7I1K88XedNSaJ3YJ+5Xb/ltCu7tkK4MSCUj/768DiDZfQcI3ySoGfJwpZkUTt1VNSA4d5DUCcVjGqmHU+dZB0/WZLtcVa2NweUmTWY3a7Lo+L+zpAVpgY+satCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rjQ0rv7+; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCC71862A
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 09:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756719938; cv=fail; b=IIhfFW8un/1Un4Nc93DRJALrhE4MA/vhZlKiCp5tPK1cXefEu+NMkYnwNa2OWdMLgW20pVjdXqT7IO/jGA2ZHLqRn09Bsk4E5HRZouVgnj2/TbGsPRkd8wRvJIPxbVFEWgAZLl76JcP5+6nO2NWf7yxI0jDlZxkVBx3am+gvvuU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756719938; c=relaxed/simple;
+	bh=bHknzxS9xlq0gqp0OOyEn2NwmLuFXPpRHEViPpJyAgY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RvEgr4crhobqFRUHBfJW/DIjT2gUrUfegLOJKeHweyz2T5XCU+3MnieGzKhP9QJfg4D+eulb17AUcIhmFzuKSsxua12wkGl7TVKolu4OtqNC6vMcqlbX53L2xu3SDjV3HYTVqn70sMIk564GWsaDnyhDGDBcQOOi7IMYMpubUJY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YSkNLX8T; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rjQ0rv7+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B93C4CEF7;
-	Mon,  1 Sep 2025 09:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756719620;
-	bh=xXUKa/ahfEA+dPigVdk1wYHJYq2Hcf1En5xC3FDAHjM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=rjQ0rv7+GecG8W/iYX14MaA2yBXstI7q3rKUFQ66j7uBiWVR31v1sluzWxo0WYj3E
-	 GCPaHBNB78gf8ExRdW8sSFk9ySZhU2cludGgYO2GOfD8uXckj6ne/mnpOi3I6KunRn
-	 51C/IP9brrZ1MP0a1SfKeAMA5kLjTaSe2h48TGApvNuAp62zKYq8RDhSbEo46dDziC
-	 G9kx66wYKHuq5f9m5zQyT5GH3Kdv0gqRdYZ5eoXlaw45tG6aTEtAn6It1fskyhHE/U
-	 PB0mDZ0wR+FNv+3fphW0lYYbO5MrOCMC4iB6KWiI8ivU2xb1drVpYGf/Hh4LqVGgnY
-	 OfyQXpCX+8kvA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 01 Sep 2025 11:39:15 +0200
-Subject: [PATCH net-next 6/6] mptcp: record subflows in RPS table
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YSkNLX8T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756719937; x=1788255937;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=bHknzxS9xlq0gqp0OOyEn2NwmLuFXPpRHEViPpJyAgY=;
+  b=YSkNLX8TZ+Un/PriiPMg9RSqTlu1qA59svNOMgeKiWovPlsZn5PCudzk
+   /EVY0T7NbQkqxTzmVZvIUT3Bg+SFNzI3EalIKHYrAwRZi5Mb0SpyPF0ue
+   KBZoC/vBbskLCz3EeyxlwHPy4YlU8oJKXHso7CPJAxgcozUZ/W4tQHZeD
+   c6sR3Z2sArYRQAOyvO5NUqsjM/ZcI1E6Hmz4Zl8eiVorUJKBRH9JJ2YZG
+   qAsrlCo3vBvoCjMYK8iYLtqN7VF5f11YmGRqjRmtmRChxn5SMcwUOG/7k
+   gjTeXb4ok5YqgST87flLHfQRfz9DFxBCDnGHWK31H64QqBIdKifvbGv2W
+   A==;
+X-CSE-ConnectionGUID: 1YTh0pm9TJqbZ9+kX+gHvA==
+X-CSE-MsgGUID: 9e4iSEiLRbWi0SnOgnQmdA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11539"; a="69237694"
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="69237694"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:45:36 -0700
+X-CSE-ConnectionGUID: 1nMke42FTmWudaI5ECHrmA==
+X-CSE-MsgGUID: fINUUklST0uaFlIcNRhwtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="208170453"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2025 02:45:34 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 1 Sep 2025 02:45:33 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Mon, 1 Sep 2025 02:45:33 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (40.107.212.81)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Mon, 1 Sep 2025 02:45:33 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yXO1e4ujG+O5Ohb/Eo7+CaQbhrBR8mej2faeLwp9rl2r8JI7BujAUZyC2N1ZxzmV4RRtufdW0e3tN2RGRrCb36b5QeHAywD6yzytwTh8A6EYFHETRVEmRcOtEz6hoZGXoCqfITMK5A/AdvLkWr2OsKr0r5bQPyRPda8cxFr+8x52Xg7jBXXtq+Pq+CqvReI70gwtDD5Bjwb2g5DA8qoeH7YcTM8nsN571ZPP/Unc8MDQ4dxLaZ7CP6JEnwk958Z1XpCjHmoyxnEUQSppGXbgobBniaVBXr2Xm7fAq5PDMiQ2hRVCbG8rdnVWrlMKj135yVf36TC2Bbhyn/hbGSh5Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qb1w5BomNDAbgg8+o5r4Jsaq6qXErWYy0wND63rloEA=;
+ b=M9r1E1jTkoGKTfRsygsR9PPHIKrLC/NkvZXODGCcLIPLJI8TWVRS2GTD5iAe3K8EPLHP+1o02mEiCRpv1PQT0AVfohBkpz0CXuqbk2xZQ/jIpzMt+eIw0bMkf7oZlIm4iRUjkgX2HFcqaWoWz0+WEtfgfZU007hFSEvJm9VRIq7DcocABVSNLtRK2cawne+a+elRfFYMdj6RCSjqhGClNpfVaXrb7Bb2mHCullU2h4/Qb7sQACpn9II+IMMSBJAksYRhahbKLZXKOl3Lf3uJMsCppCTnzmD314ajdlRnd/njHFwcKPnXw3/OJ/ySb8cv6bwRG7VFN4JZKxt0buSyXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com (2603:10b6:510:14d::19)
+ by CY5PR11MB6113.namprd11.prod.outlook.com (2603:10b6:930:2e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.21; Mon, 1 Sep
+ 2025 09:45:30 +0000
+Received: from PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::4a8e:9ecf:87d:f4ca]) by PH0PR11MB5902.namprd11.prod.outlook.com
+ ([fe80::4a8e:9ecf:87d:f4ca%4]) with mapi id 15.20.9073.026; Mon, 1 Sep 2025
+ 09:45:28 +0000
+From: "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>
+To: Kohei Enju <enjuk@amazon.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Wegrzyn,
+ Stefan" <stefan.wegrzyn@intel.com>, "kohei.enju@gmail.com"
+	<kohei.enju@gmail.com>, Koichiro Den <den@valinux.co.jp>
+Subject: RE: [PATCH iwl-net v1] ixgbe: fix memory leak and use-after-free in
+ ixgbe_recovery_probe()
+Thread-Topic: [PATCH iwl-net v1] ixgbe: fix memory leak and use-after-free in
+ ixgbe_recovery_probe()
+Thread-Index: AQHcGraQu0KFgNb5V06YW9XuCrRFB7R+FMFQ
+Date: Mon, 1 Sep 2025 09:45:26 +0000
+Message-ID: <PH0PR11MB5902D5AF8F99D96C0DCB73F9F007A@PH0PR11MB5902.namprd11.prod.outlook.com>
+References: <20250831203327.53155-1-enjuk@amazon.com>
+In-Reply-To: <20250831203327.53155-1-enjuk@amazon.com>
+Accept-Language: pl-PL, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB5902:EE_|CY5PR11MB6113:EE_
+x-ms-office365-filtering-correlation-id: 79c30c17-a175-4e31-2b4d-08dde93c48d0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?SptCHlp/okv7KN5aADch1Y4x1/GFpUoGJz40LpasJ23SF1InQ7g+S2/sW+Ug?=
+ =?us-ascii?Q?ywzbiKrFOeEGMt0EQW9/6AupLLcCeTL1vdhmQzgRDKFF4Ib/VhRMXckRznZc?=
+ =?us-ascii?Q?tsXtGnNyLDPi0n2YHKg36/7rUhteK3dyFPg0b3bAQg3e2Fx5N8/a2wxX4cKb?=
+ =?us-ascii?Q?BqlQQx/ZeQ1X6A4ghH2YZJ9KWVoU8qZB/cvRITcC1v8Luxxw7TU+o6ExTE/2?=
+ =?us-ascii?Q?TBjg8g/65MaoZS/2Fqos4iRZ+6t6gbftaRPQS8KHmNPfxBrkyanhuGlod78o?=
+ =?us-ascii?Q?0QDjcMBpdPDZsosIOHRUJFsAALpBL8IGKn4TQbc/hn8kn9N7Hztki8qnumyM?=
+ =?us-ascii?Q?0z1jyjSnrH7rA4o542Ol0H1vIwOdaWI7UsJnGy6DkjDrw6QlqwkDENymAS0J?=
+ =?us-ascii?Q?rmX35xonoJ13kmCjrP6THP0iQbO18+ZIhwJ/rTlPJyIYVqVfX9B2wAZLP+rC?=
+ =?us-ascii?Q?QmlphifgdF2XqTBSIhkkK28LvONj2oIV4P2tvSVNDv59olqfLeeDE3/MgaDV?=
+ =?us-ascii?Q?b1vwYZFFxCjdK/+f/2t/47lzxMKPRUpRdHAx/WpMAhHRXDLXi3iDSBete2r8?=
+ =?us-ascii?Q?whlTrEI2lux/ymkQMvFsc2ZlGSR3761lZghV5h2d+RfHiuhzQ05rnnzvGEJ1?=
+ =?us-ascii?Q?82VLWGUcS/vrjP6RqCwqu35VjFMPb5UqS10UWOvb6ftqFhuXJfvXMJzBhkeI?=
+ =?us-ascii?Q?ts+F8DgmekftJcVkbn+UaCY7kq8zb8jRFMS8i8HfgkOHk7fOkaReWWtrI3YF?=
+ =?us-ascii?Q?jSV/saA1AbtDEq9z4CEIrwFF1H7hAzpjUyws5Ub+AZfBK3I6BojtAbKRG17D?=
+ =?us-ascii?Q?r78FuhF6B4/JvhO1toCaIrzeVgPZswsLPW/Et1HuibZHPjooy9B0KeRpsLMJ?=
+ =?us-ascii?Q?BsFAIyGS5qXsaGAcYx5fUYCjCeJkBIhC6xrSkbZ/+6usSFCr+USIdsD7i9gL?=
+ =?us-ascii?Q?Z4HUl/E92NpNSBdDQK3Ulg/0n8FsSrGs+Oamvsob4rzGBIrNlgNQqPYBOIzA?=
+ =?us-ascii?Q?Rvee3FF9TYzJlFVeNpuXmgSTaE7MVa4mNIIXmyvjlrLoHhEdwXydnmC/Ydfp?=
+ =?us-ascii?Q?NB+H+hpvOX2aElt66lwqfo9rJtEnJ/cD/zXkEkuUWIAYna+Od7w4eH6lY6Mw?=
+ =?us-ascii?Q?nyVxXZEZFehRIkZI83Lj2Jv18IGbokgyPXZOpG4RdLqYqKVKxTcIsqOrRFrF?=
+ =?us-ascii?Q?pSW7fl+Ad1PBr5TmGgl6baOC5b9MDC7KcFWC7lFWKrYhQ0fQQJb9eklEQXO4?=
+ =?us-ascii?Q?PR/6H2q05iuyeF/gFkJjispXsLTTdhB0WoQoUzQOYfRksjWPOz/Yemt2uZjk?=
+ =?us-ascii?Q?n3ANVb6LKP5PKARCEPI6nFd35FLIvrCImeH7P3/XPDv5zvzukfo8G7lZi3tN?=
+ =?us-ascii?Q?2FqK3tAidGXjGuJgSglAIh0bhVAe9gJHaxZ955KKckmZz+6i5THHaGgnOmK9?=
+ =?us-ascii?Q?mx9y1e4W7hyXBNzcbFbjbDmaoM3XfC8eyCfHSAucTPAfWZGrVmjXfQ=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5902.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?drRGocZUwCGFI4Vfg/8Z2T9StnbZy+Et0WjcKNFqkQOFYHG2/v4qe5aZ5VK9?=
+ =?us-ascii?Q?qxGj4aYE9cnROwG2EA7Qkj6ZE5vhGLrQKT+1NHybU8OIXXCyBNaHkzzviN7C?=
+ =?us-ascii?Q?XzZttuQvHLhaIo3tVmvzFwb+fY2DI5TPoqg5Jv64ZjSLRiWowArucy3m+h1x?=
+ =?us-ascii?Q?Pu/eOsyN9v56AFSS0mJMpn/+DIEVw8yXRqgHQZJ24ya9UkZXqN7nv7Qk5/2H?=
+ =?us-ascii?Q?JoNfg9oexeCcjM1m5NcT8bXYe1BzWvIkV8CUgNz001oX9wX5hOMZp5RCiDgZ?=
+ =?us-ascii?Q?Y4BwKXKUAxUX1GA/f/e+MM0ZeqeSRkmLuhPWq7G5SYSiXVK626FG2pTYEVyW?=
+ =?us-ascii?Q?cp+CigIhggmT03n9GmURrCHcUqAA5nW+LFpWEYorxPnBoMvQcVxJsZVzZ/Np?=
+ =?us-ascii?Q?YHVRjOZNBpL/rD9XVeP3JX8rmrqdddgSc7jj414hXpowGSslt+r95NaE9FYJ?=
+ =?us-ascii?Q?4I2mbGKe+mU/xi/8XUkuBkZxKHML5suj0l2kL1zEwFgt7mc/AFbESc3ars2e?=
+ =?us-ascii?Q?cxBP1AGaIPTl+ePVh7qP34EY5dnxisRw/yK/daNHEzk3IKegkU+FngE9ohYH?=
+ =?us-ascii?Q?cGnqS6qnntBBskIafKTE3weehYRiuqnYLAHfVB+R63NWzf7FwlkdO6U8tWsE?=
+ =?us-ascii?Q?Uia9BGb+AeZWEAv5P1elRqaMF+XVpw6GFrQLP21nwgNk/4v4VM6OSuasvpMZ?=
+ =?us-ascii?Q?3bDi/gZCIZMj29//hvqrtE/6/mdOdD5N9yP/0oXuq0BxTvlhtaFqfMGbPq9H?=
+ =?us-ascii?Q?Hh26TELVJZU1Ow99xs7P2TNYl/IC9HM51nynvrs7Pfrj61EFRJwpsDSiNQZ6?=
+ =?us-ascii?Q?jS3ARrCEhU1bKqIBGDncxYPAagqINQ9mbAAG411dmVXFTsxPpTMdSTt0qSu0?=
+ =?us-ascii?Q?u7TLJO004RsjQvERRagf/8G28mciVMcX1x3C6GD/oSFlgUmRw4APIPS/vbTu?=
+ =?us-ascii?Q?5/PcIotxnvtkvoz4YkSU59nvUsxxX8UAbLZYDIm9G5Y8hxbokzbfT9jbkIG1?=
+ =?us-ascii?Q?x9IQNjbRRHSAcmSJwM06niekHsL2mGCIRWMXHN+vrgs9C1g2ybzuiYcA5+uM?=
+ =?us-ascii?Q?t7an5muCVL7rVSjQaFc6spQ9jJ3enfOhcIBwJqr5VyanxwPUAlXomenzbUD7?=
+ =?us-ascii?Q?t4Xb0dnvnxmNrEpMEAH3Lj0JRK8FoePh3CoL9BIaPYsz5IH4BKOR0UzgPcD+?=
+ =?us-ascii?Q?iSVTJeBa/d+hEPTngtsCTjgx5OM3344IDMJgN6AAvqZCd0uZNaCmRFHItrGF?=
+ =?us-ascii?Q?4CvpBikpGROvKAvnMqbZsC5ddfs1+SsFGaUqgu5WmV2vDHtdsoT/NPROu/ZJ?=
+ =?us-ascii?Q?eYITt+nv9b2oRtdKfoLkjrisvmnL+q7MFhBqDqTf1P9IP3+Wtu/w1qc2BK2i?=
+ =?us-ascii?Q?IB/qykF1gwFWI46LjqzixD66BXH3kbvT/7VLMM5uqwgL2hNepJWgUDEOKaGj?=
+ =?us-ascii?Q?jIrEtWweSfUxCKjI3/WToOVNMuzd7NzFVkPnv80uAsWm0GifFWk0+QgEznOM?=
+ =?us-ascii?Q?zxMqG29hbR36lsbuQBfmR2fexHS08pa/1YVoAIHfdRIAYBGl/4ieNIvXagTh?=
+ =?us-ascii?Q?+/EGwHTmUgBsIL1NX67rrxka8Jq/o40q/VaLNO3l/zRoxdruHsvCpWi6zofd?=
+ =?us-ascii?Q?2g=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250901-net-next-mptcp-misc-feat-6-18-v1-6-80ae80d2b903@kernel.org>
-References: <20250901-net-next-mptcp-misc-feat-6-18-v1-0-80ae80d2b903@kernel.org>
-In-Reply-To: <20250901-net-next-mptcp-misc-feat-6-18-v1-0-80ae80d2b903@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Christoph Paasch <cpaasch@openai.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2920; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=FVq/DLjkSiShyfNhu4andsIboYNo8KQGQUci1ShMrjQ=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDK2Zr5JihI/W+L0RoHdca+w9oaamE9iKa9LBfNNXrXWT
- eR/vlu2o5SFQYyLQVZMkUW6LTJ/5vMq3hIvPwuYOaxMIEMYuDgFYCI2Nxj+Cv5N73Bx1OaVsvLc
- s/RQTum6yqms0qkm09pvdh+RSnbQZWTo6GPbVFH5WNMmK2P+J9mcpm8ZfxobdH8tuKBy4LLCcls
- mAA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5902.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 79c30c17-a175-4e31-2b4d-08dde93c48d0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2025 09:45:28.5348
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: p9f+Bj4CccJAbP7Krrov+3qjiwMAWXP/D6lIUoO+AliT/3/6SYi77AXaC1hbcRgaXFJ95Z+N/P87eFN0blohu9Zb4qQ273cCz949jqcb9i4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6113
+X-OriginatorOrg: intel.com
 
-From: Christoph Paasch <cpaasch@openai.com>
+From: Kohei Enju <enjuk@amazon.com>=20
+Sent: Sunday, August 31, 2025 10:33 PM
 
-Accelerated Receive Flow Steering (aRFS) relies on sockets recording
-their RX flow hash into the rps_sock_flow_table so that incoming packets
-are steered to the CPU where the application runs.
+>The error path of ixgbe_recovery_probe() has two memory bugs.
+>
+>For non-E610 adapters, the function jumps to clean_up_probe without
+>calling devlink_free(), leaking the devlink instance and its embedded
+>adapter structure.
+>
+>For E610 adapters, devlink_free() is called at shutdown_aci, but
+>clean_up_probe then accesses adapter->state, sometimes triggering
+>use-after-free because adapter is embedded in devlink. This UAF is
+>similar to the one recently reported in ixgbe_remove(). (Link)
+>
+>Fix both issues by moving devlink_free() after adapter->state access,
+>aligning with the cleanup order in ixgbe_probe().
+>
+>Link: https://lore.kernel.org/intel-wired-lan/20250828020558.1450422-1-den=
+@valinux.co.jp/
+>Fixes: 29cb3b8d95c7 ("ixgbe: add E610 implementation of FW recovery mode")
+>Signed-off-by: Kohei Enju <enjuk@amazon.com>
+>---
+>Cc: Koichiro Den <den@valinux.co.jp>
+>---
+> drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/e=
+thernet/intel/ixgbe/ixgbe_main.c
+>index ff6e8ebda5ba..08368e2717c2 100644
+>--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>@@ -11510,10 +11510,10 @@ static int ixgbe_recovery_probe(struct ixgbe_ada=
+pter *adapter)
+> shutdown_aci:
+> 	mutex_destroy(&adapter->hw.aci.lock);
+> 	ixgbe_release_hw_control(adapter);
+>-	devlink_free(adapter->devlink);
+> clean_up_probe:
+> 	disable_dev =3D !test_and_set_bit(__IXGBE_DISABLED, &adapter->state);
+> 	free_netdev(netdev);
+>+	devlink_free(adapter->devlink);
+> 	pci_release_mem_regions(pdev);
+> 	if (disable_dev)
+> 		pci_disable_device(pdev);
+>--=20
+>2.51.0
 
-With MPTCP, the application interacts with the parent MPTCP socket while
-data is carried over per-subflow TCP sockets. Without recording these
-subflows, aRFS cannot steer interrupts and RX processing for the flows
-to the desired CPU.
 
-Record all subflows in the RPS table by calling sock_rps_record_flow()
-for each subflow at the start of mptcp_sendmsg(), mptcp_recvmsg() and
-mptcp_stream_accept(), by using the new helper
-mptcp_rps_record_subflows().
+Much thanks for finding and fixing it!
 
-It does not by itself improve throughput, but ensures that IRQ and RX
-processing are directed to the right CPU, which is a
-prerequisite for effective aRFS.
+Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Signed-off-by: Christoph Paasch <cpaasch@openai.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index ad41c48126e44fda646f1ec1c81957db1407a6cc..a8d57b88578dfea807d3d55e430849aa8005c637 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -12,6 +12,7 @@
- #include <linux/sched/signal.h>
- #include <linux/atomic.h>
- #include <net/aligned_data.h>
-+#include <net/rps.h>
- #include <net/sock.h>
- #include <net/inet_common.h>
- #include <net/inet_hashtables.h>
-@@ -1740,6 +1741,20 @@ static u32 mptcp_send_limit(const struct sock *sk)
- 	return limit - not_sent;
- }
- 
-+static void mptcp_rps_record_subflows(const struct mptcp_sock *msk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+
-+	if (!rfs_is_needed())
-+		return;
-+
-+	mptcp_for_each_subflow(msk, subflow) {
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+
-+		sock_rps_record_flow(ssk);
-+	}
-+}
-+
- static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
-@@ -1753,6 +1768,8 @@ static int mptcp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 
- 	lock_sock(sk);
- 
-+	mptcp_rps_record_subflows(msk);
-+
- 	if (unlikely(inet_test_bit(DEFER_CONNECT, sk) ||
- 		     msg->msg_flags & MSG_FASTOPEN)) {
- 		int copied_syn = 0;
-@@ -2131,6 +2148,8 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		goto out_err;
- 	}
- 
-+	mptcp_rps_record_subflows(msk);
-+
- 	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
- 
- 	len = min_t(size_t, len, INT_MAX);
-@@ -3922,6 +3941,8 @@ static int mptcp_stream_accept(struct socket *sock, struct socket *newsock,
- 				mptcp_sock_graft(ssk, newsock);
- 		}
- 
-+		mptcp_rps_record_subflows(msk);
-+
- 		/* Do late cleanup for the first subflow as necessary. Also
- 		 * deal with bad peers not doing a complete shutdown.
- 		 */
-
--- 
-2.50.1
 
