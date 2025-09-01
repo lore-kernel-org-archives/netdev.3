@@ -1,36 +1,37 @@
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3B3235355;
-	Mon,  1 Sep 2025 11:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3D425F7A5;
+	Mon,  1 Sep 2025 11:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756725799; cv=none; b=Z6ILxu+l7/+0K1dUMLwZgJIJFeG3dentTRqHzx/1Xzj5yV2KdLnpUKpXZszKq5exp+4oQRcNHf/x6MTXNIzA3Ak0QfbhsaokzT19keiVA5mjTLDBBABbPE0juwQmXW/WziqIJNDkWMQYlithDfDKV9IbHlcCeJHyfK81J4PVv/k=
+	t=1756726084; cv=none; b=Cz44P8zH2018lMwzT1F2k6lkTfz9MvGykN6jj4mLPISw755G9XBzVor6BqWc+s1qjW81q0NYH+jefl+DFNZuijG5yOI55EY2Fwtudrm8LLktNZE2szCI1nlp0v/nsj128odFrzeC7kM/A9ohRD85UyjRkizug24CAs1fayerdSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756725799; c=relaxed/simple;
-	bh=2yrlKyqof5LDPIj0Vs/tEk/Nwq7r83V7ktLAyBXBrKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HyqOsVUh9aM/sSmQvqDi3iVV8acWR4kaex4+f8x0e/igf1En3qXQeWLYNJkx09OcI7+dAU5FnyBxuw0CzFPrfzdBWjUXa1A5j6wXIuW2TZX8feS5WfyiorbcMxgPsDZLX8pb6cM4lJqVxp2O4XDGHU0O5d/0dAu6UdaoYSDYfGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: willemdebruijn.kernel@gmail.com
-Cc: bacs@librecast.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	gregkh@linuxfoundation.org,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	willemb@google.com
-Subject: [PATCH net-next v3] selftests: net: add test for ipv6 fragmentation
-Date: Mon,  1 Sep 2025 11:22:23 +0000
-Message-ID: <20250901112248.5218-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.49.1
+	s=arc-20240116; t=1756726084; c=relaxed/simple;
+	bh=OmTetXE5ocst2keGv5Wx00aNa3FJGSFgN7qZOOKvQvY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WMvVYq7LLNXJf6oaTilZ6yzpFlGQo6QS+I0OIQUoHuosfl2QySU9Fi9yWKX9vLtMj75qHuf5jtXnWVts83v8LbSV+wyd7/udCJ2BCGTbeEwp5SH3fUqyNt62LQfVtE/5EXCjYGtY6h2M4nn86Nx4l/r4F+kAVCx0RoYoQGOnTes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cFmjQ6X8qz13NKb;
+	Mon,  1 Sep 2025 19:24:10 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id C2C3A1402CD;
+	Mon,  1 Sep 2025 19:27:59 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Sep
+ 2025 19:27:58 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <aleksander.lobakin@intel.com>
+Subject: [PATCH v3 net-next] ipv6: sit: Add ipip6_tunnel_dst_find() for cleanup
+Date: Mon, 1 Sep 2025 19:48:57 +0800
+Message-ID: <20250901114857.1968513-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,229 +39,179 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-Add selftest for the IPv6 fragmentation regression which affected
-several stable kernels.
+Extract the dst lookup logic from ipip6_tunnel_xmit() into new helper
+ipip6_tunnel_dst_find() to reduce code duplication and enhance readability.
+No functional change intended.
 
-Commit a18dfa9925b9 ("ipv6: save dontfrag in cork") was backported to
-stable without some prerequisite commits.  This caused a regression when
-sending IPv6 UDP packets by preventing fragmentation and instead
-returning -1 (EMSGSIZE).
+On a x86_64, with allmodconfig object size is also reduced:
 
-Add selftest to check for this issue by attempting to send a packet
-larger than the interface MTU. The packet will be fragmented on a
-working kernel, with sendmsg(2) correctly returning the expected number
-of bytes sent.  When the regression is present, sendmsg returns -1 and
-sets errno to EMSGSIZE.
+./scripts/bloat-o-meter net/ipv6/sit.o net/ipv6/sit-new.o
+add/remove: 5/3 grow/shrink: 3/4 up/down: 1841/-2275 (-434)
+Function                                     old     new   delta
+ipip6_tunnel_dst_find                          -    1697   +1697
+__pfx_ipip6_tunnel_dst_find                    -      64     +64
+__UNIQUE_ID_modinfo2094                        -      43     +43
+ipip6_tunnel_xmit.isra.cold                   79      88      +9
+__UNIQUE_ID_modinfo2096                       12      20      +8
+__UNIQUE_ID___addressable_init_module2092       -       8      +8
+__UNIQUE_ID___addressable_cleanup_module2093       -       8      +8
+__func__                                      55      59      +4
+__UNIQUE_ID_modinfo2097                       20      18      -2
+__UNIQUE_ID___addressable_init_module2093       8       -      -8
+__UNIQUE_ID___addressable_cleanup_module2094       8       -      -8
+__UNIQUE_ID_modinfo2098                       18       -     -18
+__UNIQUE_ID_modinfo2095                       43      12     -31
+descriptor                                   112      56     -56
+ipip6_tunnel_xmit.isra                      9910    7758   -2152
+Total: Before=72537, After=72103, chg -0.60%
 
-Link: https://lore.kernel.org/stable/aElivdUXqd1OqgMY@karahi.gladserv.com
-Signed-off-by: Brett A C Sheffield <bacs@librecast.net>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 ---
-Thanks again Willem for the prompt review. I've incorporated your suggested
-changes into v3.
+v3: flatten if conditions of ipip6_tunnel_dst_find()
+v2: add newlines before return in ipip6_tunnel_dst_find()
+    add bloat-o-meter info in commit log
+---
+ net/ipv6/sit.c | 104 +++++++++++++++++++++++--------------------------
+ 1 file changed, 48 insertions(+), 56 deletions(-)
 
-v3 changes:
- - add usleep instead of busy polling on sendmsg
- - simplify error handling by using error() and leaving cleanup to O/S
- - use loopback interface - don't bother creating TAP
- - send to localhost (::1)
-
-v2 changes:
- - remove superfluous namespace calls - unshare(2) suffices
- - remove usleep(). Don't wait for the interface to be ready, just send, and
-   handle the (less likely) error case by retrying.
- - set destination address only once
- - document our use of the IPv6 link-local source address
- - send to port 9 (DISCARD) instead of 4242 (DONT PANIC)
- - ensure sockets are closed on failure paths
- - use KSFT exit codes for clarity
-
-v2: https://lore.kernel.org/netdev/20250831102908.14655-1-bacs@librecast.net
-v1: https://lore.kernel.org/netdev/20250825092548.4436-3-bacs@librecast.net
-
- tools/testing/selftests/net/.gitignore        |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- .../selftests/net/ipv6_fragmentation.c        | 145 ++++++++++++++++++
- 3 files changed, 147 insertions(+)
- create mode 100644 tools/testing/selftests/net/ipv6_fragmentation.c
-
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index 47c293c2962f..3d4b4a53dfda 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -16,6 +16,7 @@ ip_local_port_range
- ipsec
- ipv6_flowlabel
- ipv6_flowlabel_mgr
-+ipv6_fragmentation
- log.txt
- msg_oob
- msg_zerocopy
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index eef0b8f8a7b0..276e0481d996 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -117,6 +117,7 @@ TEST_GEN_FILES += tfo
- TEST_PROGS += tfo_passive.sh
- TEST_PROGS += broadcast_pmtu.sh
- TEST_PROGS += ipv6_force_forwarding.sh
-+TEST_GEN_PROGS += ipv6_fragmentation
- TEST_PROGS += route_hint.sh
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 12496ba1b7d4..cf37ad9686e6 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -848,6 +848,49 @@ static inline __be32 try_6rd(struct ip_tunnel *tunnel,
+ 	return dst;
+ }
  
- # YNL files, must be before "include ..lib.mk"
-diff --git a/tools/testing/selftests/net/ipv6_fragmentation.c b/tools/testing/selftests/net/ipv6_fragmentation.c
-new file mode 100644
-index 000000000000..be79a0340826
---- /dev/null
-+++ b/tools/testing/selftests/net/ipv6_fragmentation.c
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Author: Brett A C Sheffield <bacs@librecast.net>
-+ *
-+ * Kernel selftest for the IPv6 fragmentation regression which affected stable
-+ * kernels:
-+ *
-+ *   https://lore.kernel.org/stable/aElivdUXqd1OqgMY@karahi.gladserv.com
-+ *
-+ * Commit: a18dfa9925b9 ("ipv6: save dontfrag in cork") was backported to stable
-+ * without some prerequisite commits.
-+ *
-+ * This caused a regression when sending IPv6 UDP packets by preventing
-+ * fragmentation and instead returning -1 (EMSGSIZE).
-+ *
-+ * This selftest demonstrates the issue by sending an IPv6 UDP packet to
-+ * localhost (::1) on the loopback interface from the autoconfigured link-local
-+ * address.
-+ *
-+ * sendmsg(2) returns bytes sent correctly on a working kernel, and returns -1
-+ * (EMSGSIZE) when the regression is present.
-+ *
-+ * The regression was not present in the mainline kernel, but add this test to
-+ * catch similar breakage in future.
-+ */
-+
-+#define _GNU_SOURCE
-+
-+#include <error.h>
-+#include <fcntl.h>
-+#include <linux/if_tun.h>
-+#include <net/if.h>
-+#include <netinet/in.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/socket.h>
-+#include <unistd.h>
-+#include "../kselftest.h"
-+
-+#define MTU 1500
-+#define LARGER_THAN_MTU 8192
-+
-+/* bring up interface */
-+static int interface_up(int ctl, struct ifreq *ifr)
++static bool ipip6_tunnel_dst_find(struct sk_buff *skb, __be32 *dst,
++				  bool is_isatap)
 +{
-+	if (ioctl(ctl, SIOCGIFFLAGS, ifr) == -1)
-+		error(KSFT_FAIL, errno, "ioctl SIOCGIFFLAGS");
-+	ifr->ifr_flags = ifr->ifr_flags | IFF_UP;
-+	return ioctl(ctl, SIOCSIFFLAGS, ifr);
-+}
++	const struct ipv6hdr *iph6 = ipv6_hdr(skb);
++	struct neighbour *neigh = NULL;
++	const struct in6_addr *addr6;
++	bool found = false;
++	int addr_type;
 +
-+/* no need to wait for DAD in our namespace */
-+static int disable_dad(char *ifname)
-+{
-+	char sysvar[] = "/proc/sys/net/ipv6/conf/%s/accept_dad";
-+	char fname[IFNAMSIZ + sizeof(sysvar)];
-+	int fd;
++	if (skb_dst(skb))
++		neigh = dst_neigh_lookup(skb_dst(skb), &iph6->daddr);
 +
-+	snprintf(fname, sizeof(fname), sysvar, ifname);
-+	fd = open(fname, O_WRONLY);
-+	if (fd == -1)
-+		error(KSFT_FAIL, errno, "open accept_dad");
-+	if (write(fd, "0", 1) != 1)
-+		error(KSFT_FAIL, errno, "write accept_dad");
++	if (!neigh) {
++		net_dbg_ratelimited("nexthop == NULL\n");
++		return false;
++	}
 +
-+	return close(fd);
-+}
++	addr6 = (const struct in6_addr *)&neigh->primary_key;
++	addr_type = ipv6_addr_type(addr6);
 +
-+static int setup(void)
-+{
-+	struct ifreq ifr = {
-+		.ifr_name = "lo"
-+	};
-+	int fd = -1;
-+	int ctl;
-+
-+	/* we need to set MTU, so do this in a namespace to play nicely */
-+	if (unshare(CLONE_NEWNET) == -1)
-+		error(KSFT_FAIL, errno, "unshare");
-+
-+	ctl = socket(AF_LOCAL, SOCK_STREAM, 0);
-+	if (ctl == -1)
-+		error(KSFT_FAIL, errno, "socket");
-+
-+	/* ensure MTU is smaller than what we plan to send */
-+	ifr.ifr_mtu = MTU;
-+	if (ioctl(ctl, SIOCSIFMTU, &ifr) == -1)
-+		error(KSFT_FAIL, errno, "ioctl: set MTU");
-+
-+	disable_dad("lo");
-+	interface_up(ctl, &ifr);
-+
-+	close(ctl);
-+	return fd;
-+}
-+
-+int main(void)
-+{
-+	struct in6_addr addr = {
-+		.s6_addr[15] = 0x01, /* ::1 */
-+	};
-+	struct sockaddr_in6 sa = {
-+		.sin6_family = AF_INET6,
-+		.sin6_addr = addr,
-+		.sin6_port = 9      /* port 9/udp (DISCARD) */
-+	};
-+	char buf[LARGER_THAN_MTU] = {0};
-+	struct iovec iov = { .iov_base = buf, .iov_len = sizeof(buf)};
-+	struct msghdr msg = {
-+		.msg_iov = &iov,
-+		.msg_iovlen = 1,
-+		.msg_name = (struct sockaddr *)&sa,
-+		.msg_namelen = sizeof(sa),
-+	};
-+	ssize_t rc;
-+	int ns_fd;
-+	int err = KSFT_FAIL;
-+	int s;
-+
-+	printf("Testing IPv6 fragmentation\n");
-+	ns_fd = setup();
-+	s = socket(AF_INET6, SOCK_DGRAM, 0);
-+send_again:
-+	rc = sendmsg(s, &msg, 0);
-+	if (rc == -1) {
-+		/* if interface wasn't ready, try again */
-+		if (errno == EADDRNOTAVAIL) {
-+			usleep(1000);
-+			goto send_again;
++	if (is_isatap) {
++		if ((addr_type & IPV6_ADDR_UNICAST) &&
++		    ipv6_addr_is_isatap(addr6)) {
++			*dst = addr6->s6_addr32[3];
++			found = true;
 +		}
-+		printf("[FAIL] sendmsg: %s\n", strerror(errno));
-+	} else if (rc != LARGER_THAN_MTU) {
-+		printf("[FAIL] sendmsg() returned %zi, expected %i\n", rc, LARGER_THAN_MTU);
++	} else {
++		if (addr_type == IPV6_ADDR_ANY) {
++			addr6 = &ipv6_hdr(skb)->daddr;
++			addr_type = ipv6_addr_type(addr6);
++		}
++
++		if ((addr_type & IPV6_ADDR_COMPATv4) != 0) {
++			*dst = addr6->s6_addr32[3];
++			found = true;
++		}
 +	}
-+	else {
-+		printf("[PASS] sendmsg() returned %zi\n", rc);
-+		err = KSFT_PASS;
-+	}
-+	close(s);
-+	close(ns_fd);
-+	return err;
++
++	neigh_release(neigh);
++
++	return found;
 +}
-
-base-commit: 864ecc4a6dade82d3f70eab43dad0e277aa6fc78
++
+ /*
+  *	This function assumes it is being called from dev_queue_xmit()
+  *	and that skb is filled properly by that function.
+@@ -867,8 +910,6 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 	__be32 dst = tiph->daddr;
+ 	struct flowi4 fl4;
+ 	int    mtu;
+-	const struct in6_addr *addr6;
+-	int addr_type;
+ 	u8 ttl;
+ 	u8 protocol = IPPROTO_IPV6;
+ 	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+@@ -877,64 +918,15 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 		tos = ipv6_get_dsfield(iph6);
+ 
+ 	/* ISATAP (RFC4214) - must come before 6to4 */
+-	if (dev->priv_flags & IFF_ISATAP) {
+-		struct neighbour *neigh = NULL;
+-		bool do_tx_error = false;
+-
+-		if (skb_dst(skb))
+-			neigh = dst_neigh_lookup(skb_dst(skb), &iph6->daddr);
+-
+-		if (!neigh) {
+-			net_dbg_ratelimited("nexthop == NULL\n");
+-			goto tx_error;
+-		}
+-
+-		addr6 = (const struct in6_addr *)&neigh->primary_key;
+-		addr_type = ipv6_addr_type(addr6);
+-
+-		if ((addr_type & IPV6_ADDR_UNICAST) &&
+-		     ipv6_addr_is_isatap(addr6))
+-			dst = addr6->s6_addr32[3];
+-		else
+-			do_tx_error = true;
+-
+-		neigh_release(neigh);
+-		if (do_tx_error)
+-			goto tx_error;
+-	}
++	if ((dev->priv_flags & IFF_ISATAP) &&
++	    !ipip6_tunnel_dst_find(skb, &dst, true))
++		goto tx_error;
+ 
+ 	if (!dst)
+ 		dst = try_6rd(tunnel, &iph6->daddr);
+ 
+-	if (!dst) {
+-		struct neighbour *neigh = NULL;
+-		bool do_tx_error = false;
+-
+-		if (skb_dst(skb))
+-			neigh = dst_neigh_lookup(skb_dst(skb), &iph6->daddr);
+-
+-		if (!neigh) {
+-			net_dbg_ratelimited("nexthop == NULL\n");
+-			goto tx_error;
+-		}
+-
+-		addr6 = (const struct in6_addr *)&neigh->primary_key;
+-		addr_type = ipv6_addr_type(addr6);
+-
+-		if (addr_type == IPV6_ADDR_ANY) {
+-			addr6 = &ipv6_hdr(skb)->daddr;
+-			addr_type = ipv6_addr_type(addr6);
+-		}
+-
+-		if ((addr_type & IPV6_ADDR_COMPATv4) != 0)
+-			dst = addr6->s6_addr32[3];
+-		else
+-			do_tx_error = true;
+-
+-		neigh_release(neigh);
+-		if (do_tx_error)
+-			goto tx_error;
+-	}
++	if (!dst && !ipip6_tunnel_dst_find(skb, &dst, false))
++		goto tx_error;
+ 
+ 	flowi4_init_output(&fl4, tunnel->parms.link, tunnel->fwmark,
+ 			   tos & INET_DSCP_MASK, RT_SCOPE_UNIVERSE,
 -- 
-2.49.1
+2.34.1
 
