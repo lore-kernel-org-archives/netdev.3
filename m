@@ -1,186 +1,292 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2054.outbound.protection.outlook.com [40.107.95.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7472B255F22;
-	Mon,  1 Sep 2025 09:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718641; cv=fail; b=swI+yGX8Ea81zZvRx1JYtnwD90XKqWhseAMPxq0XqHx2OhhsGwiRQaRzngFDY9m+ffstenMDoGg0XeAwDoy51Au75whMLhRbLL6Zdt5gUYWX0XHKZQ0JaGxUMhfrBUTpEzgvWKdkh1guoQkpyPksyi9a9kTwm81u4PPTZP0lS1A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718641; c=relaxed/simple;
-	bh=Emkoq4LHyNK7VrijZR8b82iM9haXMRBYvQT2b4FnYXE=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=TSdD40XnQDak7+P4TSguJ78lwA5f/L0ly1AbjMTdbeIGMcaGKpR9iasREtWjfrruFi71/5B5OBgbutwVI9It6z7djs3Z9A2WVfIx0bGw/X/M2Q+V3+ASVdOCE9DPlltmqWIHkbUpNSf0SJJgmCbMWhzYUxFjtoKnvhV1kicpp0I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ARI7/L0N; arc=fail smtp.client-ip=40.107.95.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE4A30E0D9
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 09:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756718773; cv=none; b=nXLIINO4OrCilwJo5mgM5R3maTEo67xoEJasO7sWdRydpGRCK7Vpl5b7MiiimR/s4jWcSaLK+8Ywz2BwLKW+ayrFiIHROGUHsEF4v7DGq260uLp20yEaqz7MurEUnGeNFSDqb93kD51Xv4Heza2sqFLSqZTwDEgSPdw1NH4nEf4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756718773; c=relaxed/simple;
+	bh=G9PfaWDZdD/GtP3yqiDSk+HOqVC4Z40vbHjTCmLx+V0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jL13MJcgOKodP05BcwXGZXmToSg2+vakMYrUcpjrux92jFavpwKa39keMsEACy5LJ7PNyCmXyb39IezGlrZAUORBuADmTPl1dlIgQqWguYCA9RIiXqteVwOYuChA/mhOBnDq9YperCfkU+9LnMYX6Mywz6eiRpkHRWrCVnvFjp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vzv03FpF; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ARI7/L0N"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yZXnMWwUPdHSY2XOrwYResNtF4SkNvACDJw5udgSCtQdi8aR2YwzgTz3rsgytBK/lpJonfJ/h5lbZkOqLGNhSaIqDDpw5/xBbsUdFNoVDbFWuYVoXfZf8+zG5YR3O59XjrYJEna4XURS4kC3A1PGvcddv+xh/PgkENRHNrA4tfbTbaiwDF2eFFY/5dLCiK9ejKhtdzC1ujn3OFN3CwP87VuKP3hK2kaEkWbrO2v+oq00GaviU8yYoQdWyaxMpQxvzCz6nDfK5L8j4fJa0HhsB1311wNUGusNfn48pyxg7Njb67vCI+Ji1sGvgf+dITxmOqWyzPlFJQ6j7OyVHgArEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8OMcF43yrhlJjbMyfKnvTi1UqAo64I4/QB0EhGrYGw8=;
- b=diAm6zCmhUDGgU6n08qwk3oqbL2hpd7svEOEWQXqDBSHzD7IFS6k31M0QxRkbIWFn0gOMyZenaTmjEiqLHBQZ18EESxDsl6KF3vjEfL9EGHcyS5ovojvaBZmJAzQ98iM5htv/THzSYxuf4/zb2oBeCNfU/GmhlDuet6aTrGcOvf8s7kHy+fqx1IXrGGldtxhf7dm/EDyFj4PHvBGB5/yeCgwlskMAv3XDqmRdPZCkGP+eFEWf9sj9iU89POliRM7ttE6pFHyeyV0cfbe+Q8QU4Ei3CbVVLFPNXj9HkFW+t6Mpf5rlk9h1b09dSq4y06R8wO9bjiyxQLMx1JsMkVLuA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8OMcF43yrhlJjbMyfKnvTi1UqAo64I4/QB0EhGrYGw8=;
- b=ARI7/L0NmBOAy0onDhcS3h9W0ZMRJBfeNoVdO3w0F9M4DiWDglXitbeV13pXQzKJNnQxR+OCtcm0AIm5mErGzWnwOwT/Wn065d76j2Q0SBXV+u3wSyfZ3j5dvpLSsUSRLjoe4LewXYfpQ43E/XgOIBbQyfR5cm48VFwVhS9fYGXj6KfqEfSEuiX/gqU4442YM4/k6iFVeT9LT2pgseD6hzkMWCT36VQTjgk1Bi2GRz2RPPE8mvVxcltX+QWnXqGZ5I3Eg2rzBE5qpfI1k6bLNsRBLcL8oHyXhw5R+BRrFIBgEgsDvNTZqhLIldNKdWMnX7J4IWWzWOOGJHEJZ8gvpQ==
-Received: from SJ0PR03CA0333.namprd03.prod.outlook.com (2603:10b6:a03:39c::8)
- by MW4PR12MB7032.namprd12.prod.outlook.com (2603:10b6:303:1e9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Mon, 1 Sep
- 2025 09:23:55 +0000
-Received: from CO1PEPF000066ED.namprd05.prod.outlook.com
- (2603:10b6:a03:39c:cafe::9c) by SJ0PR03CA0333.outlook.office365.com
- (2603:10b6:a03:39c::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.26 via Frontend Transport; Mon,
- 1 Sep 2025 09:23:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000066ED.mail.protection.outlook.com (10.167.249.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.14 via Frontend Transport; Mon, 1 Sep 2025 09:23:54 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 1 Sep
- 2025 02:23:35 -0700
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 1 Sep
- 2025 02:23:29 -0700
-References: <20250830081123.31033-1-linmq006@gmail.com>
- <aLQps4-Fq21R7N4c@shredder>
-User-agent: mu4e 1.8.14; emacs 30.1
-From: Petr Machata <petrm@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-CC: Miaoqian Lin <linmq006@gmail.com>, Petr Machata <petrm@nvidia.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vadim Pasternak
-	<vadimp@nvidia.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mlxsw: core_env: Fix stack info leak in
- mlxsw_env_linecard_modules_power_mode_apply
-Date: Mon, 1 Sep 2025 11:10:19 +0200
-In-Reply-To: <aLQps4-Fq21R7N4c@shredder>
-Message-ID: <87plcav86o.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vzv03FpF"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4b32d323297so20953611cf.1
+        for <netdev@vger.kernel.org>; Mon, 01 Sep 2025 02:26:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756718770; x=1757323570; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pJYPoBQUInG6z+9C6LI1Q2eM+QtWM/gk1TicRzuaN2k=;
+        b=vzv03FpFHk/QPz+b6Z5PISdQWbcuE5qBXFxbrnQTozmz09NcC4Apjta60NFL6bsK/k
+         /E4kr76FF4HGi4zgRtkYnQFJz1I5+pKjHKKs3eimjqwEVpGjvdM4BwMvQeQph1lLSANV
+         hSQuo7/l1iuyyfumBQohGxXrZZpOM4vSpym7ZMIA50v92s0aTwYdXJm9K7NQDsyAJLsI
+         bcvmcpcFjzT5voJr8BRZnDqqTy6TCwlKIIAn0RW/XnVlC5dc2gMBuduvLpwyrR5dTT3N
+         5UK6PdhKO6dp+GNqD3gbJ4ePUwjrrNTwaczFfNwF9JLRzx0ISMtEpeIyYFdrjHiKCevB
+         +5vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756718770; x=1757323570;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pJYPoBQUInG6z+9C6LI1Q2eM+QtWM/gk1TicRzuaN2k=;
+        b=t5SAEMQR48iFWacy7tHn4e4vfcC9tHMvO1N39A9MH/WxPQN81pUhuPrk7KQL4y6Z+7
+         6/RjuWYwR6ZEnFB2IkDylV/gsz6PAbzc4VxNRdiFV9SocQ3Uq2meLO7+Dd2FPO0rn5vd
+         hLLPjZCKA963eZDTEDyrqPXiEpx3QdqDKdMkvMRCXIsF5VjpItQHbTtKrZm+9XMFOlZR
+         7WrJl9Qp1omptwc+zCTHtRDR+ugcchlg5+klGr+Yk0FGXtXEwtX1q6I/mtcF3wk15rFw
+         LYULSlTuKzijNNOiRucVXqYYRhJ01xUI4yRnMb4lJvm74RkG8qD8BdvwD4bxujFM5kaJ
+         81Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUk18RhODM5DO8mc47lfbZdqEuuDZMWyy22x8xCOSWzwoljp0hgjt/nPO90zO3UDDw6Qzv3hzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8G9I52UHUgGA7SeHzumLm3R1esa8frDUereEKRzNwmMHwIRee
+	rFXgFRHw+JCRN3C38PQC/dQw24Itfdzzv9Yjmmvsx0seQWjXKICbE/z7Vzuez2ZLsW5xiT00jsg
+	dDOQlV6OpF7+pwA==
+X-Google-Smtp-Source: AGHT+IFnT5mVD3HhsWR8vUlxg4mqlAiLH/rsGcfx3XffnYwBf2EYufIQnlUy5CEdJSVUdVwOf968HsclI+HHdg==
+X-Received: from qtbne14.prod.google.com ([2002:a05:622a:830e:b0:4ab:6375:3dda])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:1812:b0:4b2:94e5:9847 with SMTP id d75a77b69052e-4b31dcac538mr96926221cf.74.1756718770325;
+ Mon, 01 Sep 2025 02:26:10 -0700 (PDT)
+Date: Mon,  1 Sep 2025 09:26:07 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000066ED:EE_|MW4PR12MB7032:EE_
-X-MS-Office365-Filtering-Correlation-Id: f205646d-6166-4f6e-f09a-08dde93945d0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rvMJoxKurN3699FKt5K5/24CNAUVRB6j+jTY7WJN5ppzUPY8GM2sQjTE6mMf?=
- =?us-ascii?Q?aYoDha32H5EBbPp21N00Y38YNMLZlSqNRZIZm2bDfuBkfAjf1KKt2X2FjQYd?=
- =?us-ascii?Q?VO9HaEKKYO0czh5flMfaaFmWYxAOcyj/FrE+urYBb4rMVTrjzo56j+dx1utU?=
- =?us-ascii?Q?VDXNRoRfB7VV5Ld1VC+VoHCr5J/nNA5lSZQ7QsJ+ylHj8wClJPxJOEYhdeaG?=
- =?us-ascii?Q?nFrk8UdkZoeYiqP3ozH/Xp/eP8NdNS89/+G5dRfCjJtVpiSkXEVoiwYHJ9H8?=
- =?us-ascii?Q?xFdSpUNIXPdgRGvxuXHLd4EmpqvqaniUGHBAh/R3GPCgBXMb652Gvgu+eqUH?=
- =?us-ascii?Q?004WP8DyLH3fh+ZQzPkMLgbpIlIJL8JKVu+zydIrLuHAfAOoMUbj0ofbDOgr?=
- =?us-ascii?Q?WH0uz8QYzxWjUS8eDKVlr0IGE0IMhuX7mrG0VSoXkDvB6sSmi6/IoIl+UQ55?=
- =?us-ascii?Q?+f3+G/wKWL7L0WytTNQwwfStNd99BMZBp0xzPA349WaXnLy75Zbew3xzPlr3?=
- =?us-ascii?Q?afvzrFDBo/I18JdlcufypNXfbVE32aZhhWBc86M+KLAHwSP+S7PBj3iVzBFZ?=
- =?us-ascii?Q?p9cmKtyS0Bnrdr6tJd6Bc81re8PqCuTBSpimlUsHEytHBZW53dueR/70ioTM?=
- =?us-ascii?Q?oXE0fcY43/wcuZTUSdeq0zQZWJVl1WYHjP03DfkV6CNHx/IO9rRcDV34cslh?=
- =?us-ascii?Q?wd1RU1QAPrfRK5LXS+Q+r1uJA1AZsYQ5eQG1Y2GXRxTsMc2yOn6eu6oT0Usz?=
- =?us-ascii?Q?vN2+ApJ9JI3/a4x0MPkpPMR8KNXI1vutEN3i2ctCFZKIFl+iK8Q75qJ2oE2b?=
- =?us-ascii?Q?gjYzf7ae43R9Z15oTlGbzaTrypdRLnp7ijGS8ipeQ2DD/B8pHIwLs8SbBVGf?=
- =?us-ascii?Q?zOlaE/DhOp6Rp9U5DSMy7QqWij3uN9Y1xjCkYYKsQKZTGQPhTe6LW2eKKoZk?=
- =?us-ascii?Q?+wOrKU54cyPqkR2NSPKCPuHmZ+OcE5rslpM8J9cbWAdpC80IHPsHMT8Wwe4b?=
- =?us-ascii?Q?7/XOgA1LB4iddgX8Ut1w0RX8G1uA2uVJiFe1AezpqOFP7dhWoA0DyJw73OUc?=
- =?us-ascii?Q?SXlWqk8OE04txndb2bFphnMZrqypzLCBpOjxgKknPrDDEDrh1pAUhZk0hHj5?=
- =?us-ascii?Q?2YPI5SAyOD9GwmSm2iEJ3j9erseaBML8MvzhmPl77kx1MgE6OdvD9XCH1q+D?=
- =?us-ascii?Q?OdMeRjEZ+l4LxN2eblNlbCTnUl7aECXKILqGQyhZwSEmoudM5lCBPbPQe3LF?=
- =?us-ascii?Q?MEXNfxMl+Mjmj2yoAl7T7q/0r3aMsRUgbY6rRlTL++VO0amgApS1v4QGlyAo?=
- =?us-ascii?Q?/K28SJb265lFtfeJIFGMScYdpd2gUS+bUcl+Jq4BuF2ekdslMpR+wnegMHsD?=
- =?us-ascii?Q?Wsu4LWDbs52rzaLC8V21v5S29oTjNigylPB+AJfTF9KTFFNEHU+gexJgJp74?=
- =?us-ascii?Q?gTA6T7VxwAQiO7B8rAuYwnbRk1jvtBZE0UitJlBQej5A7hFgUnFjDirJYF3x?=
- =?us-ascii?Q?KJ/uxE24+0JWVgJktQpwXLrNntwfvC+EKsPB?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 09:23:54.9248
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f205646d-6166-4f6e-f09a-08dde93945d0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000066ED.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7032
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.318.gd7df087d1a-goog
+Message-ID: <20250901092608.2032473-1-edumazet@google.com>
+Subject: [PATCH net-next] net_sched: add back BH safety to tcf_lock
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Jamal reported that we had to use BH safety after all,
+because stats can be updated from BH handler.
 
-Ido Schimmel <idosch@nvidia.com> writes:
+Fixes: 3133d5c15cb5 ("net_sched: remove BH blocking in eight actions")
+Fixes: 53df77e78590 ("net_sched: act_skbmod: use RCU in tcf_skbmod_dump()")
+Fixes: e97ae742972f ("net_sched: act_tunnel_key: use RCU in tunnel_key_dump()")
+Fixes: 48b5e5dbdb23 ("net_sched: act_vlan: use RCU in tcf_vlan_dump()")
+Reported-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Closes: https://lore.kernel.org/netdev/CAM0EoMmhq66EtVqDEuNik8MVFZqkgxFbMu=fJtbNoYD7YXg4bA@mail.gmail.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/sched/act_connmark.c   | 4 ++--
+ net/sched/act_csum.c       | 4 ++--
+ net/sched/act_ct.c         | 4 ++--
+ net/sched/act_ctinfo.c     | 4 ++--
+ net/sched/act_mpls.c       | 4 ++--
+ net/sched/act_nat.c        | 4 ++--
+ net/sched/act_pedit.c      | 4 ++--
+ net/sched/act_skbedit.c    | 4 ++--
+ net/sched/act_skbmod.c     | 4 ++--
+ net/sched/act_tunnel_key.c | 4 ++--
+ net/sched/act_vlan.c       | 4 ++--
+ 11 files changed, 22 insertions(+), 22 deletions(-)
 
-> On Sat, Aug 30, 2025 at 04:11:22PM +0800, Miaoqian Lin wrote:
->> The extack was declared on the stack without initialization.
->> If mlxsw_env_set_module_power_mode_apply() fails to set extack,
->> accessing extack._msg could leak information.
->
-> Unless I'm missing something, I don't see a case where
-> mlxsw_env_set_module_power_mode_apply() returns an error without setting
-> extack. IOW, I don't see how this info leak can happen with existing
-> code.
-
-Yeah, I agree it all looks initialized.
-
-The patch still makes sense to me, it will make the code less prone to
-footguns in the future. The expectation with extack is that it's
-optional, though functions that take the argument typically also take
-care to set it (or propagate further). But here it is mandatory to
-initialize it, or else things break. With the patch we'd get a
-"(null)\n" instead of garbage. Not great, but better.
-
->
->> 
->> Fixes: 06a0fc43bb10 ("mlxsw: core_env: Add interfaces for line card initialization and de-initialization")
-
-Yeah, it doesn't really fix anything, it's a cleanup if anything, so
-this tag should go away.
-
->> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
->> ---
->>  drivers/net/ethernet/mellanox/mlxsw/core_env.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_env.c b/drivers/net/ethernet/mellanox/mlxsw/core_env.c
->> index 294e758f1067..38941c1c35d3 100644
->> --- a/drivers/net/ethernet/mellanox/mlxsw/core_env.c
->> +++ b/drivers/net/ethernet/mellanox/mlxsw/core_env.c
->> @@ -1332,7 +1332,7 @@ mlxsw_env_linecard_modules_power_mode_apply(struct mlxsw_core *mlxsw_core,
->>  	for (i = 0; i < env->line_cards[slot_index]->module_count; i++) {
->>  		enum ethtool_module_power_mode_policy policy;
->>  		struct mlxsw_env_module_info *module_info;
->> -		struct netlink_ext_ack extack;
->> +		struct netlink_ext_ack extack = {};
->>  		int err;
->>  
->>  		module_info = &env->line_cards[slot_index]->module_info[i];
->> -- 
->> 2.39.5 (Apple Git-154)
->> 
+diff --git a/net/sched/act_connmark.c b/net/sched/act_connmark.c
+index bf2d6b6da042..3e89927d7116 100644
+--- a/net/sched/act_connmark.c
++++ b/net/sched/act_connmark.c
+@@ -169,10 +169,10 @@ static int tcf_connmark_init(struct net *net, struct nlattr *nla,
+ 
+ 	nparms->action = parm->action;
+ 
+-	spin_lock(&ci->tcf_lock);
++	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(ci->parms, nparms, lockdep_is_held(&ci->tcf_lock));
+-	spin_unlock(&ci->tcf_lock);
++	spin_unlock_bh(&ci->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
+index 8bad91753615..0939e6b2ba4d 100644
+--- a/net/sched/act_csum.c
++++ b/net/sched/act_csum.c
+@@ -101,11 +101,11 @@ static int tcf_csum_init(struct net *net, struct nlattr *nla,
+ 	params_new->update_flags = parm->update_flags;
+ 	params_new->action = parm->action;
+ 
+-	spin_lock(&p->tcf_lock);
++	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	params_new = rcu_replace_pointer(p->params, params_new,
+ 					 lockdep_is_held(&p->tcf_lock));
+-	spin_unlock(&p->tcf_lock);
++	spin_unlock_bh(&p->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 6d2355e73b0f..6749a4a9a9cd 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1410,11 +1410,11 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
+ 		goto cleanup;
+ 
+ 	params->action = parm->action;
+-	spin_lock(&c->tcf_lock);
++	spin_lock_bh(&c->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	params = rcu_replace_pointer(c->params, params,
+ 				     lockdep_is_held(&c->tcf_lock));
+-	spin_unlock(&c->tcf_lock);
++	spin_unlock_bh(&c->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_ctinfo.c b/net/sched/act_ctinfo.c
+index 6f79eed9a544..71efe04d00b5 100644
+--- a/net/sched/act_ctinfo.c
++++ b/net/sched/act_ctinfo.c
+@@ -258,11 +258,11 @@ static int tcf_ctinfo_init(struct net *net, struct nlattr *nla,
+ 
+ 	cp_new->action = actparm->action;
+ 
+-	spin_lock(&ci->tcf_lock);
++	spin_lock_bh(&ci->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, actparm->action, goto_ch);
+ 	cp_new = rcu_replace_pointer(ci->params, cp_new,
+ 				     lockdep_is_held(&ci->tcf_lock));
+-	spin_unlock(&ci->tcf_lock);
++	spin_unlock_bh(&ci->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_mpls.c b/net/sched/act_mpls.c
+index ed7bdaa23f0d..6654011dcd2b 100644
+--- a/net/sched/act_mpls.c
++++ b/net/sched/act_mpls.c
+@@ -296,10 +296,10 @@ static int tcf_mpls_init(struct net *net, struct nlattr *nla,
+ 					     htons(ETH_P_MPLS_UC));
+ 	p->action = parm->action;
+ 
+-	spin_lock(&m->tcf_lock);
++	spin_lock_bh(&m->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	p = rcu_replace_pointer(m->mpls_p, p, lockdep_is_held(&m->tcf_lock));
+-	spin_unlock(&m->tcf_lock);
++	spin_unlock_bh(&m->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_nat.c b/net/sched/act_nat.c
+index 9cc2a1772cf8..26241d80ebe0 100644
+--- a/net/sched/act_nat.c
++++ b/net/sched/act_nat.c
+@@ -95,10 +95,10 @@ static int tcf_nat_init(struct net *net, struct nlattr *nla, struct nlattr *est,
+ 
+ 	p = to_tcf_nat(*a);
+ 
+-	spin_lock(&p->tcf_lock);
++	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparm = rcu_replace_pointer(p->parms, nparm, lockdep_is_held(&p->tcf_lock));
+-	spin_unlock(&p->tcf_lock);
++	spin_unlock_bh(&p->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 8fc8f577cb7a..4b65901397a8 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -280,10 +280,10 @@ static int tcf_pedit_init(struct net *net, struct nlattr *nla,
+ 
+ 	p = to_pedit(*a);
+ 	nparms->action = parm->action;
+-	spin_lock(&p->tcf_lock);
++	spin_lock_bh(&p->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	oparms = rcu_replace_pointer(p->parms, nparms, 1);
+-	spin_unlock(&p->tcf_lock);
++	spin_unlock_bh(&p->tcf_lock);
+ 
+ 	if (oparms)
+ 		call_rcu(&oparms->rcu, tcf_pedit_cleanup_rcu);
+diff --git a/net/sched/act_skbedit.c b/net/sched/act_skbedit.c
+index aa6b1744de21..8c1d1554f657 100644
+--- a/net/sched/act_skbedit.c
++++ b/net/sched/act_skbedit.c
+@@ -261,11 +261,11 @@ static int tcf_skbedit_init(struct net *net, struct nlattr *nla,
+ 		params_new->mask = *mask;
+ 
+ 	params_new->action = parm->action;
+-	spin_lock(&d->tcf_lock);
++	spin_lock_bh(&d->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	params_new = rcu_replace_pointer(d->params, params_new,
+ 					 lockdep_is_held(&d->tcf_lock));
+-	spin_unlock(&d->tcf_lock);
++	spin_unlock_bh(&d->tcf_lock);
+ 	if (params_new)
+ 		kfree_rcu(params_new, rcu);
+ 	if (goto_ch)
+diff --git a/net/sched/act_skbmod.c b/net/sched/act_skbmod.c
+index fce625eafcb2..a9e0c1326e2a 100644
+--- a/net/sched/act_skbmod.c
++++ b/net/sched/act_skbmod.c
+@@ -194,7 +194,7 @@ static int tcf_skbmod_init(struct net *net, struct nlattr *nla,
+ 	p->flags = lflags;
+ 	p->action = parm->action;
+ 	if (ovr)
+-		spin_lock(&d->tcf_lock);
++		spin_lock_bh(&d->tcf_lock);
+ 	/* Protected by tcf_lock if overwriting existing action. */
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	p_old = rcu_dereference_protected(d->skbmod_p, 1);
+@@ -208,7 +208,7 @@ static int tcf_skbmod_init(struct net *net, struct nlattr *nla,
+ 
+ 	rcu_assign_pointer(d->skbmod_p, p);
+ 	if (ovr)
+-		spin_unlock(&d->tcf_lock);
++		spin_unlock_bh(&d->tcf_lock);
+ 
+ 	if (p_old)
+ 		kfree_rcu(p_old, rcu);
+diff --git a/net/sched/act_tunnel_key.c b/net/sched/act_tunnel_key.c
+index e1c8b48c217c..876b30c5709e 100644
+--- a/net/sched/act_tunnel_key.c
++++ b/net/sched/act_tunnel_key.c
+@@ -531,11 +531,11 @@ static int tunnel_key_init(struct net *net, struct nlattr *nla,
+ 	params_new->tcft_enc_metadata = metadata;
+ 
+ 	params_new->action = parm->action;
+-	spin_lock(&t->tcf_lock);
++	spin_lock_bh(&t->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	params_new = rcu_replace_pointer(t->params, params_new,
+ 					 lockdep_is_held(&t->tcf_lock));
+-	spin_unlock(&t->tcf_lock);
++	spin_unlock_bh(&t->tcf_lock);
+ 	tunnel_key_release_params(params_new);
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+diff --git a/net/sched/act_vlan.c b/net/sched/act_vlan.c
+index b46f980f3b2a..a74621797d69 100644
+--- a/net/sched/act_vlan.c
++++ b/net/sched/act_vlan.c
+@@ -253,10 +253,10 @@ static int tcf_vlan_init(struct net *net, struct nlattr *nla,
+ 	}
+ 
+ 	p->action = parm->action;
+-	spin_lock(&v->tcf_lock);
++	spin_lock_bh(&v->tcf_lock);
+ 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+ 	p = rcu_replace_pointer(v->vlan_p, p, lockdep_is_held(&v->tcf_lock));
+-	spin_unlock(&v->tcf_lock);
++	spin_unlock_bh(&v->tcf_lock);
+ 
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+-- 
+2.51.0.318.gd7df087d1a-goog
 
