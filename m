@@ -1,163 +1,110 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4C8248F5C;
-	Mon,  1 Sep 2025 06:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105EE243387;
+	Mon,  1 Sep 2025 06:13:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756707184; cv=none; b=jjggaravbrBiAtxC0op2s0Ayf5KIeJZ+lILUQatsvfyKOWsnJuEHr4ZjRwCmQBTdg7FArP0LWOpu6kY736bygNPToIP6L+yaL4t1wHAR9XQkoyfun9AZ5Z0Oe4W4QLEZI/a0KcWtTvzQWD7BV89NyB/rnfqqRXmFZg2O5ePMWt4=
+	t=1756707227; cv=none; b=JS1p7TvFYo8mK7ql1f8MLSchLpEDP6igJNLM+enHLl6s1loRRGcIJHwYIBFBtb2vNCAgJ0Fb0HiKDwfsz3XCkUkORWVjmCPrcfoBo44qhCDUTjTAD7a3WP0GcrZC7mq7Vusb1IPvLTEwG9R93z4n4bH2BxjtfGrcI440pbpWDxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756707184; c=relaxed/simple;
-	bh=EyK1bT+mD7QqA4C8Ly35wKowNy38n2wAvW7UnVG7R+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=elBmOviVoDu/xEwjliOnnRCM7myXcysW+22+5qVG0o4TXPM8LeoKmexGfkNVxHj5SFj0mcl3iIwXs5NLGWnXhq5tPHL5RNguRwt4LE6cMbqIIV/0HtvofodDCtgBY4yWS0N9Mt4SnU8FH220eBB2DhGnjxMx37pjhj/a46Fgqpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fcjr+P7B; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fcjr+P7B"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57VHeBXu017937;
-	Mon, 1 Sep 2025 06:12:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jNIpxH
-	qNy+03Qh0iAc58609OkLAG2uxslj/3KXqMdZ0=; b=fcjr+P7Bb7jM0fkaR3MxDm
-	4OEme6f8DG7I+R3ME0jIago7Mak7QAwr7HbDNyg+zQVQitGyYdzcD5wmIqGJD5dI
-	GX6a+OZyiVKN6qW7XCQidqMTvZTNzn/efWou4QPQ4DYHMhp9O4CD+XZjUItxQoPR
-	QEz5itcxne0mJrEHv+JNFpmkphRYJrgB9cuwAmp8RlnCwZpGyrtGhgpDCb/Fgbpw
-	w2HLgVqa7rqF79hmWgN7Sdjvjo3Jnm+Y+6YD6UUf/nkK+9lrfgcNe7mimzOa9DuR
-	jrm1NJUTH2stCbEk2j0ikQbukXK986b9HX+84IItgYw16ARAJeoT0tP22FxiY8NA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usuqq7g0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Sep 2025 06:12:48 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5815ugol028220;
-	Mon, 1 Sep 2025 06:12:48 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usuqq7fr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Sep 2025 06:12:48 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5815Jw3c021191;
-	Mon, 1 Sep 2025 06:12:46 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vcmpch87-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Sep 2025 06:12:46 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5816Cj3E20054598
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 1 Sep 2025 06:12:45 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 499BF5805D;
-	Mon,  1 Sep 2025 06:12:45 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2186558059;
-	Mon,  1 Sep 2025 06:12:40 +0000 (GMT)
-Received: from [9.39.27.54] (unknown [9.39.27.54])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  1 Sep 2025 06:12:39 +0000 (GMT)
-Message-ID: <57c2976e-8b6c-4cee-803f-ca5b0636f30b@linux.ibm.com>
-Date: Mon, 1 Sep 2025 11:42:38 +0530
+	s=arc-20240116; t=1756707227; c=relaxed/simple;
+	bh=iWksOuz81IN6BV5iTCJjwMYDhRNOajjO5thlNpVHR2o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bt9bR6+H/JWvZLFZRVw16oFGr/AZTFlKygdo4Vv4WzHLrUf/mFpt4rV+t7wLLETaoEzGSFGXpH4JhWIDsa0hLy0KqfmKP1lEuaXKBoNZ88WSVtJKaE9btRUr/tVWsHusIbs4H9eNo5NR4JUGwmm5psExRT8q6oAUoaMXyVGSsLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cFdkh3qbpz13NGc;
+	Mon,  1 Sep 2025 14:09:48 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0A972180064;
+	Mon,  1 Sep 2025 14:13:37 +0800 (CST)
+Received: from huawei.com (10.50.159.234) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Sep
+ 2025 14:13:35 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@google.com>,
+	<wangliang74@huawei.com>, <kay.sievers@vrfy.org>, <gregkh@suse.de>
+CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net] net: atm: fix memory leak in atm_register_sysfs when device_register fail
+Date: Mon, 1 Sep 2025 14:35:37 +0800
+Message-ID: <20250901063537.1472221-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: Remove validation of reserved bits in CLC
- Decline message
-To: dust.li@linux.alibaba.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alibuda@linux.alibaba.com, sidraya@linux.ibm.com, wenjia@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-        Alexandra Winter <wintera@linux.ibm.com>
-References: <20250829102626.3271637-1-mjambigi@linux.ibm.com>
- <aLHAAy-S_1_Ud7l-@linux.alibaba.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <aLHAAy-S_1_Ud7l-@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMCBTYWx0ZWRfXx9SSJ6arYZfv
- ruSP7JB4eBGBRSV3Lia6GzO1GIZvE49Fl9hlkSueGF4mcZ2rBrELD1mzj3y/KpLHcYC6jCoaeeD
- heeTTVEpoDEOrhbg8HAS2SZCg/y7IQjmdiQAklGlU1R+p3+nmekqngO9HipSt2LO+1jhrjzEQsn
- 3873l2jcDU0kN1ZmVUJgggWlisECDEpmsFAIHZG8MmyqqYxzDgRhZsswb82yWbO4/XnQeGM/oYl
- 1ydM4rhO7+lrB0LjUadzJx8pR950FcYpt7dYGGW9dUG4yWlkwEJL50hbAnTBtsJbqZ28eG17xdd
- vSavgMw4vx0SpBRaR6joWgx+O31weaqPcCYFU7aucoQzJGx5ePdYeNwmiO7ZFo5dnTW400Iteqm
- sdsJtBOL
-X-Proofpoint-GUID: 5rFtGuwiZUjpsOH3REx7kx-heydPPQes
-X-Proofpoint-ORIG-GUID: a_8F3YUUV6fYQj9kKPBg5gPUWY6h7mUg
-X-Authority-Analysis: v=2.4 cv=Ao/u3P9P c=1 sm=1 tr=0 ts=68b53960 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=48vgC7mUAAAA:8 a=VnNF1IyMAAAA:8
- a=K1W8qsRnxZmegyINkbYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-01_03,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300030
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
+When device_register() return error in atm_register_sysfs(), which can be
+triggered by kzalloc fail in device_private_init() or other reasons,
+kmemleak reports the following memory leaks:
 
+unreferenced object 0xffff88810182fb80 (size 8):
+  comm "insmod", pid 504, jiffies 4294852464
+  hex dump (first 8 bytes):
+    61 64 75 6d 6d 79 30 00                          adummy0.
+  backtrace (crc 14dfadaf):
+    __kmalloc_node_track_caller_noprof+0x335/0x450
+    kvasprintf+0xb3/0x130
+    kobject_set_name_vargs+0x45/0x120
+    dev_set_name+0xa9/0xe0
+    atm_register_sysfs+0xf3/0x220
+    atm_dev_register+0x40b/0x780
+    0xffffffffa000b089
+    do_one_initcall+0x89/0x300
+    do_init_module+0x27b/0x7d0
+    load_module+0x54cd/0x5ff0
+    init_module_from_file+0xe4/0x150
+    idempotent_init_module+0x32c/0x610
+    __x64_sys_finit_module+0xbd/0x120
+    do_syscall_64+0xa8/0x270
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-On 29/08/25 8:28 pm, Dust Li wrote:
->>
->> Fixes: 8ade200(net/smc: add v2 format of CLC decline message)
->>
->> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
->> Reference-ID: LTC214332
-> 
-> I think this is your internal ID ? It's better not to leave that
-> in the upstream patches.
+When device_create_file() return error in atm_register_sysfs(), the same
+issue also can be triggered.
 
-Oops, I missed to remove it. Sure, I'll remove it.
+Function put_device() should be called to release kobj->name memory and
+other device resource, instead of kfree().
 
-> 
->> Reviewed-by: Sidraya Jayagond <sidraya@linux.ibm.com>
->> Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
->>
->> ---
->> net/smc/smc_clc.c | 2 --
->> 1 file changed, 2 deletions(-)
->>
->> diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
->> index 5a4db151fe95..08be56dfb3f2 100644
->> --- a/net/smc/smc_clc.c
->> +++ b/net/smc/smc_clc.c
->> @@ -426,8 +426,6 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
->> {
->> 	struct smc_clc_msg_hdr *hdr = &dclc->hdr;
->>
->> -	if (hdr->typev1 != SMC_TYPE_R && hdr->typev1 != SMC_TYPE_D)
->> -		return false;
-> 
-> Here it's checking the typev1 in smc_clc_msg_hdr, but your commit message
-> says it's validating the reserved bits:
-> 
->    Currently SMC code is validating the reserved bits while parsing the incoming
->    CLC decline message & when this validation fails, its treated as a protocol
->    error.
-> 
-> Did I miss something ?
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+---
+ net/atm/resources.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-If you refer to struct *smc_clc_msg_hdr* in smc_clc.h file, typev1 
-member represents bits 4 & 5 at offset 7. If we compare it with the CLC 
-Decline message header, it represents one of the reserved(5-7 bits) at 
-offset 7. You can refer to below link for reserved bits.
-
-https://datatracker.ietf.org/doc/html/rfc7609#page-105
-
-> 
-> Best regards,
-> Dust
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index b19d851e1f44..7c6fdedbcf4e 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -112,7 +112,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+ 
+ 	if (atm_proc_dev_register(dev) < 0) {
+ 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
+-		goto out_fail;
++		mutex_unlock(&atm_dev_mutex);
++		kfree(dev);
++		return NULL;
+ 	}
+ 
+ 	if (atm_register_sysfs(dev, parent) < 0) {
+@@ -128,7 +130,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
+ 	return dev;
+ 
+ out_fail:
+-	kfree(dev);
++	put_device(&dev->class_dev);
+ 	dev = NULL;
+ 	goto out;
+ }
+-- 
+2.34.1
 
