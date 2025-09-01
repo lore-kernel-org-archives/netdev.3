@@ -1,36 +1,35 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B631B4F2C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE57A276027;
 	Mon,  1 Sep 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756738340; cv=none; b=iGOF/efoDMQ/JQZLqwZVJnB0+Jvbzr/GVz/tgjaW2stY6oiUbJ+ttKSs1oJIOqPi3wvHjKu6co0fA6RQ/ICeM4ZfIskq2qOu7HOMDM7A74yXs5AbhNLBzZeNAFOEnVdt1Ml+rB73Vwj/yCla+eKk2virWKp21++xS2hEUwoN/UQ=
+	t=1756738340; cv=none; b=SoTgow3p7HXWSPPy2S7np5eH64beb/jPP9t2bn12jnth2riY7rlNIk4X1N4zhLmWy3M37AGXzigXw3ykuhs9uGEbl1GyF86+ovB1dmCH5Dgc1A6QQWiDkEKFCFwu+q3xDAH81ZENlHbBJl8FEp8qXfl2KZn/q1ndhugm1P3rT3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756738340; c=relaxed/simple;
-	bh=APyzJaKTB6ST0FmLzhCiqv/pck8FVVt3+BQEdNx2Pcg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HggNurqjDPfauYMYGqn5ojxAsHcCZj1aBjN8c8ojyyNvwlBx5fvwC1ZzMklF/v+Nrx+P8CCrUPmI8Cig3bKjI32PE31H0JOBFQNyTP+mh51o/sekLn28jBfKZ59zDvnuo2wX9F2e+tWQ29O5AHwiUycjAqJAi60870LqQ93FO/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=R6g1/hga; arc=none smtp.client-ip=193.104.135.124
+	bh=7AacMuB4EgHFQr+FzPApSSfG+3ILvt7xvDy7ny/dTcQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MwHO/iw6EPCj1YnKJ9I+Ct/iR2IGW/2PUv4gaNsuA2u4kvSzeUo4rxz+0DY+bLhPZMJx44kYhn9a4EC6vAOWQMjzcKjaWamyxG7736ZTlQ0mf3tQ224pgWG5xEDRHe2lY7jz36JPqeqd3KuqlyqJ7hJX415j95H9SODDl0n7YY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=FYQO9LIn; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="R6g1/hga"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="FYQO9LIn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1756738334;
-	bh=APyzJaKTB6ST0FmLzhCiqv/pck8FVVt3+BQEdNx2Pcg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6g1/hga27RqGOi1Hn35l6Z9Os5REV0aAX34b2TJmLJAy7sMy5DeyPgDzFMA/kVd4
-	 MPI3/YGcwRc0xey3IsjZkPsOpNf74oc+YOXJxGmIPBWyafs4gfGYuVFuv6kzI+SrVs
-	 3gkUmnSEf0rqQ37E5sQ+EAJLf7zi43bUqXNNtCwFXEKNzC5ukQsh0/pkRxwG416Y+X
-	 9tpNoox0nHLEv7BU8dvHf3o8FHP1PB8mP0Un8ai9p21/pqBEJrIDIkCA/xFibG8Yfw
-	 4g1MX/7RxhWyCu1OXj+Ji/V5p7LsAF9tdDdIiNi2+A63K0USYwacMwrVwVHSoTszBB
-	 8ZzAt9O8aazBQ==
+	bh=7AacMuB4EgHFQr+FzPApSSfG+3ILvt7xvDy7ny/dTcQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FYQO9LInj2Drr2C3M+KIi06JA41U6vM9JUR40TOJWho7B2AeYnz7RZxmGZbAUqUSG
+	 sU37L4eemwbf1FchcHgGX20FbYduuUq1UfI3F4d+LwSVbF25BVvOv9RcovUe72T43b
+	 oo527N/ARmvGk741WIqxHwmJD5/r+4DLKiWyUlKRicN3mZPDBLnjW+tNygdx5748OQ
+	 XT3ulUn69NZN2rIgOC6/SthA2rX1GfpaiZjaoFz+WArEAnTSTyViFUgwJ/7pRHeTEh
+	 f9ZfRTR8Hg1W8Pln9HbCCnUASXgbHby7cwGDDn5UA88UyIer0htMK3z1lGLWrCJ9C1
+	 be3VGoGijfYPA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id D8E986000C;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id DF0BD600C4;
 	Mon,  1 Sep 2025 14:51:16 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id BFCD72022B0; Mon, 01 Sep 2025 14:50:56 +0000 (UTC)
+	id 9360D2021C5; Mon, 01 Sep 2025 14:50:52 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -47,12 +46,10 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 3/4] tools: ynl-gen: fix nested array counting
-Date: Mon,  1 Sep 2025 14:50:22 +0000
-Message-ID: <20250901145034.525518-4-ast@fiberby.net>
+Subject: [PATCH net 0/4] tools: ynl-gen: misc fixes + wireguard ynl plan
+Date: Mon,  1 Sep 2025 14:50:19 +0000
+Message-ID: <20250901145034.525518-1-ast@fiberby.net>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250901145034.525518-1-ast@fiberby.net>
-References: <20250901145034.525518-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,48 +59,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The blamed commit introduced the concept of split attribute
-counting, and later allocating an array to hold them, however
-TypeArrayNest wasn't updated to use the new counting variable.
+Hi,
 
-Abbreviated example from tools/net/ynl/generated/nl80211-user.c:
-nl80211_if_combination_attributes_parse(...):
-  unsigned int n_limits = 0;
-  [...]
-  ynl_attr_for_each(attr, nlh, yarg->ys->family->hdr_len)
-	if (type == NL80211_IFACE_COMB_LIMITS)
-		ynl_attr_for_each_nested(attr2, attr)
-			dst->_count.limits++;
-  if (n_limits) {
-	dst->_count.limits = n_limits;
-	/* allocate and parse attributes */
-  }
+This is the first batch of changes related to converting
+the netlink around wireguard, to be based on an YNL spec,
+with the focus on making it a 1-to-1 replacement.
 
-In the above example n_limits is guaranteed to always be 0,
-hence the conditional is unsatisfiable and is optimized out.
+I will post these 28 patches in 3 batches.
 
-This patch changes the attribute counting to use n_limits++ in the
-attribute counting loop in the above example.
+This 1st series with some misc fixes for net.
 
-Fixes: 58da455b31ba ("tools: ynl-gen: improve unwind on parsing errors")
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- tools/net/ynl/pyynl/ynl_gen_c.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Once this 1st series makes its way to net-next, then I plan
+to post the 2nd series with YNL improvements for net-next,
+and the 3rd series with the wireguard changes as RFC at
+the same time, as many of the patches in the 2nd series is
+using the 3rd series for justification, so they should be
+available for reviewers.
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 52f955ed84a7f..fb7e03805a113 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -830,7 +830,7 @@ class TypeArrayNest(Type):
-                      'ynl_attr_for_each_nested(attr2, attr) {',
-                      '\tif (ynl_attr_validate(yarg, attr2))',
-                      '\t\treturn YNL_PARSE_CB_ERROR;',
--                     f'\t{var}->_count.{self.c_name}++;',
-+                     f'\tn_{self.c_name}++;',
-                      '}']
-         return get_lines, None, local_vars
- 
+Once the 2nd series is accepted into net-next, then
+I will post the 3rd series in v1 for net-next.
+
+Below are the diff stats for each series:
+
+1st series (this) - misc fixes (4 patches):
+ Documentation/netlink/specs/fou.yaml     | 4 ++--
+ include/net/genetlink.h                  | 2 +-
+ net/ipv4/fou_nl.c                        | 4 ++--
+ tools/net/ynl/pyynl/ynl_gen_c.py         | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+2nd series - ynl improvements (10 patches):
+ Doc../netlink/genetlink-legacy.yaml      |  2 +-
+ tools/net/ynl/pyynl/lib/ynl.py           | 36 ++++++++++++---
+ tools/net/ynl/pyynl/ynl_gen_c.py         | 34 ++++++++------
+ 3 files changed, 52 insertions(+), 20 deletions(-)
+
+3rd series - wireguard changes (14 patches):
+ Doc../netlink/specs/wireguard.yaml       | 321 ++++++++++++++
+ MAINTAINERS                              |   3 +
+ drivers/net/wireguard/Makefile           |   1 +
+ drivers/net/wireguard/netlink.c          |  73 +--
+ drivers/net/wireguard/netlink_gen.c      |  72 +++
+ drivers/net/wireguard/netlink_gen.h      |  30 ++
+ include/uapi/linux/wireguard.h           | 202 ++-------
+ include/uapi/linux/wireguard_params.h    |  18 +
+ tools/net/ynl/samples/.gitignore         |   1 +
+ tools/net/ynl/samples/wireguard.c        | 104 +++++
+ 10 files changed, 605 insertions(+), 220 deletions(-)
+
+Asbjørn Sloth Tønnesen (4):
+  netlink: specs: fou: change local-v6/peer-v6 check
+  tools: ynl-gen: use macro for binary min-len check
+  tools: ynl-gen: fix nested array counting
+  genetlink: fix typo in comment
+
+ Documentation/netlink/specs/fou.yaml | 4 ++--
+ include/net/genetlink.h              | 2 +-
+ net/ipv4/fou_nl.c                    | 4 ++--
+ tools/net/ynl/pyynl/ynl_gen_c.py     | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
 -- 
 2.50.1
 
