@@ -1,108 +1,90 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98536145355;
-	Mon,  1 Sep 2025 05:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8CB239E8A;
+	Mon,  1 Sep 2025 05:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756705631; cv=none; b=Jlv+3QJZpKM3ISYW3ZeHcH4mFotODTvII9rhiFPZlsOBm4HiLwMGhw49sOfMw0czP+zzPUxLrUKaZ/NXQ/Tbdkcl4KyVhODA4t64yuhd1HicZxHxk2AxELEEl69qUEjDjjphYUMr5EUcPktTYowlR2ZsUuMjT2BhzwQFkKu1CoM=
+	t=1756706332; cv=none; b=sIFK+GKxKoxg5er+Z07lDWkMWRgmCQiU8IrMudsfXag60WlS4DOfutllw4vinH8itEDESzbzL/MqS7r01M7sI16FOwV8ccIwJabYh5cBJpHyoREP+lxaBDMYF6G1hlR73MLSI/4/aIq3NF8tpT5ZkIltYxerf1m/jr878HWE/H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756705631; c=relaxed/simple;
-	bh=p2YwKn1uWr8JFJ6dvzsKi+Ai+re4eghtL2UZZHVDuUQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HonDjq6LfhK4hQW/7AFxdAGPNJZR5b++A7IA3z9Y0dFP1BebVIgy1pg1kiIUPV98526byCJ0tyrg5RkVhYIN9D1J7CsbfWv3XFtKrSyo/Rxx1JBk1GbTXLMM0nJhq5/bIEnb/BAGQmLRqpyAhwYOKGMDL/1UZJsTOeSorXJWzNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=m+Y48VMk; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1756706332; c=relaxed/simple;
+	bh=l7TYveTQiAGcaWLaoAz3d4DyCiFfthjfGnGuYoioYg0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=GFJc1rwi/51aRiNQv885cxjzoTN48i9/+syS/klaOJlC/Z0MUmyJMarvLUmjSfzYn7EXWjoVIHkKgc6+2mvUY64COd00WMaiaasw2PunV8CyCS6/rXHfy54Bkbxco/WFzt6fYicgMFtS5N7N+w6fsO6Htl102AdV5FhTEgL3fUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IVZUhPAc; arc=none smtp.client-ip=220.197.31.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="m+Y48VMk"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IVZUhPAc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=s4
-	nzgbEshNl3izTVy/ttU4qOpJei9HBJMzHxZa30VA4=; b=m+Y48VMkkRPA/KvgfW
-	1orPJfBCFmZhkP2+cMW6f4CFXKY75ndJGi/Xls0S9ElSYeTrH9J5GYIbDukK6OnV
-	uIBck4Akqgp3NpkWchYWXqya9Q454hPXylv560VHSVV4nrY/FTfqZzjUFghyrWnm
-	2HNl7DLigwQ+rjdOlvvSNqVhc=
-Received: from thinkpadx13gen2i.. (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDX98EYM7Vo9LrPFw--.40947S2;
-	Mon, 01 Sep 2025 13:46:02 +0800 (CST)
-From: Zongmin Zhou <min_halo@163.com>
-To: kuba@kernel.org,
-	horms@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=3Mq98t2htBIwnw6/bYZGfhhwwQsQntgsCLuT01Wv9DE=;
+	b=IVZUhPAcEl+85CHQbjc+c//jj2tj3mIenkGF0S663XlOFXUaQYJeymX24Y1/dH
+	GXabl1X0vrN0YuPIVMACaKPc2GKSoCFjjQ61VwqOnx3YAupQLTQFFU+Wr4u1cYpc
+	Swj4k5Xlc4MFEMFyxIOEnXrAQhURuZA9kx/rnW8CuDGcU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wC3VU3uNbVo9KMEFg--.9191S2;
+	Mon, 01 Sep 2025 13:58:07 +0800 (CST)
+From: mysteryli <m13940358460@163.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Eric Biggers <ebiggers@google.com>,
 	netdev@vger.kernel.org,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>
-Subject: [PATCH v3] selftests: net: avoid memory leak
-Date: Mon,  1 Sep 2025 13:45:57 +0800
-Message-Id: <20250901054557.32811-1-min_halo@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250829191537.4618f815@kernel.org>
-References: <20250829191537.4618f815@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Mystery Li <929916200@qq.com>
+Subject: [PATCH v2] net/core: Replace offensive comment in skbuff.c
+Date: Mon,  1 Sep 2025 13:58:02 +0800
+Message-Id: <20250901055802.727743-1-m13940358460@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX98EYM7Vo9LrPFw--.40947S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF4xuw1kCF18Cr48Kw17ZFb_yoW8XryrpF
-	WxGw1fKr48Ca17JFs8KrsYgF4Ykws3tF48ur17tr1kAw15Jr9Yqr4fKF48tFnFgrZ2qwnx
-	ZF9xu3WY9a18J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07USiigUUUUU=
-X-CM-SenderInfo: pplqsxxdorqiywtou0bp/xtbBzQK7q2i1KxbD7gAAsS
+X-CM-TRANSID:_____wC3VU3uNbVo9KMEFg--.9191S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrur4ktryrJr4xZr45Zw17trb_yoWDKrX_Za
+	y0vFZ7Cw4xJFy2kw43Aws3WrZ0v3y8CFyvkayvqrWUta4kJan5Ca4kAFy3ur9xWFyjqwn8
+	WasIgrykurnI9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU0jLvtUUUUU==
+X-CM-SenderInfo: jprtmkaqtvmkiwq6il2tof0z/1tbisgq7Omi1LcjBkQAAsR
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+From: Mystery Li <929916200@qq.com>
 
-The buffer be used without free,fix it to avoid memory leak.
+The original comment contained profanity to express the frustration of
+dealing with a complex and resource-constrained code path. While the
+sentiment is understandable, the language is unprofessional and
+unnecessary.
+Replace it with a more neutral and descriptive comment that maintains
+the original technical context and conveys the difficulty of the
+situation without the use of offensive language.
 
-Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Signed-off-by: “mystery” <929916200@qq.com>
 ---
-Changes in v3:
-- move freeaddrinfo() to a separate label.
-Changes in v2:
-- add the label to use instead of directly to use on each case.
----
- tools/testing/selftests/net/cmsg_sender.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/core/skbuff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
-index a825e628aee7..ded9b925865e 100644
---- a/tools/testing/selftests/net/cmsg_sender.c
-+++ b/tools/testing/selftests/net/cmsg_sender.c
-@@ -491,7 +491,8 @@ int main(int argc, char *argv[])
- 	if (err) {
- 		fprintf(stderr, "Can't resolve address [%s]:%s\n",
- 			opt.host, opt.service);
--		return ERN_SOCK_CREATE;
-+		err = ERN_SOCK_CREATE;
-+		goto err_free_buff;
- 	}
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index ee0274417948..202c25a01f22 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5333,7 +5333,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
+ 		    skb_has_frag_list(skb1)) {
+ 			struct sk_buff *skb2;
  
- 	if (ai->ai_family == AF_INET6 && opt.sock.proto == IPPROTO_ICMP)
-@@ -500,8 +501,8 @@ int main(int argc, char *argv[])
- 	fd = socket(ai->ai_family, opt.sock.type, opt.sock.proto);
- 	if (fd < 0) {
- 		fprintf(stderr, "Can't open socket: %s\n", strerror(errno));
--		freeaddrinfo(ai);
--		return ERN_RESOLVE;
-+		err = ERN_RESOLVE;
-+		goto err_free_info;
- 	}
- 
- 	if (opt.sock.proto == IPPROTO_ICMP) {
-@@ -574,6 +575,9 @@ int main(int argc, char *argv[])
- 
- err_out:
- 	close(fd);
-+err_free_info:
- 	freeaddrinfo(ai);
-+err_free_buff:
-+	free(buf);
- 	return err;
- }
+-			/* Fuck, we are miserable poor guys... */
++			/* This is a painfully difficult situation with limited resources... */
+ 			if (ntail == 0)
+ 				skb2 = skb_copy(skb1, GFP_ATOMIC);
+ 			else
 -- 
-2.34.1
+2.25.1
 
