@@ -1,59 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149B121C163;
-	Mon,  1 Sep 2025 20:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92A7269B1C
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 20:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756758366; cv=none; b=NpsnDBRc0QfBTwbP4/YZNoF2sHIiN8jysZ1D4Juv/NGImEr7vqum5RWEvDMVzlqSV993ctNrDo7eW4FYNumLn9S4mqHXVKp/CjcT1cXRrsjKjFxnApvB5F8yGH27CW21JLkF5tzDXwctxUhTyogxo41OB0InH9MclmJr85kzHT8=
+	t=1756758605; cv=none; b=dE4cy6beeHKgjahnhMSq1xsZY7XviEeDB3qUIoizDI6y82ilXjDCxwiF01WwvR3+zWWGMCqA/LDL9rRo+VQ66KBKZmuDlCPoewyrW7uxBkQ8g5v24W5uvWbjBS8enUKNkamb2dgOzO5ZFrZxjo/fpvEB5wIAzlB26smbJd9QqEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756758366; c=relaxed/simple;
-	bh=HSzKTvbAycoKDXCL84Xg2m4JzusqkGWLVEio6LmMQq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rIwN/qsQzUAVvxeCro+3uTaq/12VtHbsfsMSA8fVT2LJfZ3lhkXpVeRilSkxKb1J7kvjtrZeqFT+UMBPqsE3DlgUqbijCkFvaPTrZeGejdvCczYVygLWfLcxqSk7jtT+jQ4FYlMMWwHgUEsAEOLL/6LU3jP/2B0uzBQiVGDOiNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hK+4NMdy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756758605; c=relaxed/simple;
+	bh=gC50AQnblGHrosXwFFRvF7PoHUvBbyXQy8nN3YZ+pz8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZKLm0wzFi7riijMas0Id4aVh+aLSCD+gkrHEuZH8l5So/s4SbZD4NAdCrpogy1vA7v7WrudyL+uuc+FSdBk2h6HfGqbRDWVCFZ2jPTmdtZz06L57Fe0K80FEwrJ4RMlt23cN5l/COpX/1inUs8tboXXEtHQnu9rnLT0jC4njito=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZsVS90W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hK+4NMdy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CCCC4CEF0;
-	Mon,  1 Sep 2025 20:26:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZsVS90W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819B6C4CEF7;
+	Mon,  1 Sep 2025 20:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756758365;
-	bh=HSzKTvbAycoKDXCL84Xg2m4JzusqkGWLVEio6LmMQq8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hK+4NMdy0WH06e7/xNoWbkHEuYGIRdXCdQje7+86O+/EtOuX4VsHsTeIuY4QSG86s
-	 bJ87dabIqpegLVQMJ2KBkaZWTe9qdJ7pzfOZ9BPItd7wy59yeWYcWyH31raVzlK8gY
-	 CurBAVpYYkitLDOxeqK7BjibdeO0lX5drMYB8yaEhiT6QMDGkCMHfL0juYKRUdHnVP
-	 ZU5l3j3tw2YVIyJcGBMgkSCHddPqfF2F4Pj6x1DwQiEuaNZS1ygAWn7f7ETVMooEwR
-	 y77lm6VmB9G16W9qfF5nxiZT9aMSo2/l3s3y9lk0lhVGryuEjQzwwmq6G5Gwudkis/
-	 C5e+1NtCYW3mw==
-Date: Mon, 1 Sep 2025 13:26:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xichao Zhao <zhao.xichao@vivo.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [net-next v2] net: stmmac: use us_to_ktime function to replace
- STMMAC_COAL_TIMER macro
-Message-ID: <20250901132604.6706ac82@kernel.org>
-In-Reply-To: <20250829064722.521577-1-zhao.xichao@vivo.com>
-References: <20250829064722.521577-1-zhao.xichao@vivo.com>
+	s=k20201202; t=1756758605;
+	bh=gC50AQnblGHrosXwFFRvF7PoHUvBbyXQy8nN3YZ+pz8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=AZsVS90WYitUmTxot+VmnMD6XnnRUZXqgvsdFzDJAe9slyASXPEEHigz4ylNopmKm
+	 T+JepsSU49+cyz0+Wnz+/Qowl8uKEpXCBxA2SOTKnID1HnNtftwz+yn2Zkkxeg3R1m
+	 SMJH/QoAFr5hWsRf4/4O7G21vERzqUUlDEYR1jPP9yNImRgEWNMfEIyHkblHiRJbDE
+	 o11HDcfmW5OrJgGJ5W1CfSCqkcvhOT9ykKC82dyVfAvLsn8FQkKYTeBhZbSulyynaq
+	 3IA3FIr/LVjvyrbOa6RjxZa+b7/Ke0q9x+9MNZvNSqBb8qbfzahsbv5qbxFm5Io825
+	 XbITM8T0maAxA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 717AE383BF4E;
+	Mon,  1 Sep 2025 20:30:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 0/4] inet: ping: misc changes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175675861129.3875131.12167630134349327525.git-patchwork-notify@kernel.org>
+Date: Mon, 01 Sep 2025 20:30:11 +0000
+References: <20250829153054.474201-1-edumazet@google.com>
+In-Reply-To: <20250829153054.474201-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ dsahern@kernel.org, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
-On Fri, 29 Aug 2025 14:47:22 +0800 Xichao Zhao wrote:
-> -#define STMMAC_COAL_TIMER(x) (ns_to_ktime((x) * NSEC_PER_USEC))
-> -
->  int stmmac_bus_clks_config(struct stmmac_priv *priv, bool enabled)
->  {
->  	int ret = 0;
+Hello:
 
-There has been another change here in the meantime.
-Please rebase and repost.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 29 Aug 2025 15:30:50 +0000 you wrote:
+> First and third patches improve security a bit.
+> 
+> Second patch (ping_hash removal) is a cleanup.
+> 
+> Fourth patch uses EXPORT_IPV6_MOD[_GPL].
+> 
+> Eric Dumazet (4):
+>   inet: ping: check sock_net() in ping_get_port() and ping_lookup()
+>   inet: ping: remove ping_hash()
+>   inet: ping: make ping_port_rover per netns
+>   inet: ping: use EXPORT_IPV6_MOD[_GPL]()
+> 
+> [...]
+
+Here is the summary with links:
+  - [v3,net-next,1/4] inet: ping: check sock_net() in ping_get_port() and ping_lookup()
+    https://git.kernel.org/netdev/net-next/c/59f26d86b2a1
+  - [v3,net-next,2/4] inet: ping: remove ping_hash()
+    https://git.kernel.org/netdev/net-next/c/10343e7e6c7c
+  - [v3,net-next,3/4] inet: ping: make ping_port_rover per netns
+    https://git.kernel.org/netdev/net-next/c/689adb36bd43
+  - [v3,net-next,4/4] inet: ping: use EXPORT_IPV6_MOD[_GPL]()
+    https://git.kernel.org/netdev/net-next/c/51ba2d26bcc6
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
