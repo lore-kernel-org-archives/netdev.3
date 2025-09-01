@@ -1,80 +1,35 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F284627A44A;
-	Mon,  1 Sep 2025 20:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0371627B4E4;
+	Mon,  1 Sep 2025 20:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756758014; cv=none; b=WS8bxe48TVY8kFO2dN4czndWml1XgV86Ht9+usAdiufab0J4dytLuLP6+R/D3kBPWt27pjT2wOmKkgh4ANTmc6ZGWqCeHFkpehwZRcdu2SkyQIOMON7Q4kXligTRf9yRJZhMoc+8w98W/AXZE8dx7gHN1M634gLPvJL/XILuVnw=
+	t=1756758015; cv=none; b=cwMbsEAfC5Tq675U+pNaTCgOjGKLN1rleAA2+bCydAow61aLCdFgfCxL5wYZyxlaarKXteiAfmdupB/HF7cY2cxrqaxfkhBzAi5j+1HsV1vYIkCQX66uN7F3q6Ee0dMJejHheaolCwQUYtoEM5Q7HV3selWVx2ccwr2rdZNtffs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756758014; c=relaxed/simple;
-	bh=HbJ30dCazZc+WvSIXQMk2/8w4kjWLWDIFAkrSuu0ASw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IThQA/jn4vvhqleuPvPnrMpm7wwvOVpkfasw4j2RU5m2lxI7Zs6N6CeYR7A4X5KQRbTN2zKmWkHK3NVxjSXwBEKXkdgrUbVCgdEiXB/dl/qyxy3j1aTTi8edpNBA3ae8KuMBYgw2O7tvGYfnfREbYCukqs5/3XjBrFANA01KTDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvVC3iKo; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756758015; c=relaxed/simple;
+	bh=/wHKmb5x4dVF5LLmkd2vR6bUl0B5d3Y3KDThI8+gBEM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MfqltI9TvwRXy3PKON73TI0nczGAA30bHv5QjXTBc57ILsfyTjzF40qNjStXfGTHpTM5vT9bYyvPBU6SnHcsLwRZvAOJrIS9UqTjLkDL5gbkcfzCdgfhgMfafAaCPZDGHXSzFZgjpHuRALya4WIS3iaapH/QQrOQIrZlGQ0TwNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TvH9qRFv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvVC3iKo"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7725de6b57dso1323416b3a.0;
-        Mon, 01 Sep 2025 13:20:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756758012; x=1757362812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LeRSf9JRvQDMG1wF1dhz0wFZHyy96BAve4rAFav5LgU=;
-        b=WvVC3iKoAUtE/82cJ4uEdrZ+sa10tlA0HOR+xTgEOpmrLFuK3UTmVb8HWrk9v6tq2v
-         Zurnxqoi1I1dZ2fH/NMg/txKgkTwtst0uyeevTlrrurNkm5verZV987VTOj1rg2os/n/
-         b8gjHJqMSUNyzQDqYVKGtJpNuw/1O48HvbVKkukALo6wIADezO24iQwlWgPWmETzf6dA
-         yNu7hQJVddi3cbfcumSrMmYulCuaZYJah7/h5GlfEXFdU3/kFbLNiz+UmeQYEB6mDbR/
-         VLLvmwxLuuVAvjAuaYSQ6Ws4pp/cFjY5dcXHIooXl/Omb0axddtz5HsRzOcGGpVvv/fR
-         ZijA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756758012; x=1757362812;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LeRSf9JRvQDMG1wF1dhz0wFZHyy96BAve4rAFav5LgU=;
-        b=CkVdLChKkmG65R9O6fJgepaI4UjcA93mABa04gUxfcN9huAD4sTwfsqmsP+MftXwfo
-         HMopI3WSwdBTs4G/sHGL23++iyRGgI0pTJYsA/KUeLWXegD7w1puJu2wgvyUFqhwGpy6
-         b43Kh32u4D20ltaXkeDCa6aT3OH0SwYe687PqvUjSkSZfyyGZW5vKWgmnDozKUUTx7Gb
-         ZXOHxh+Yb3OyA8l3kAvmB/hlNc5eACqF5hsM0PbsZUc3ue7EGVqiDSm3kMxYkKMToLVQ
-         t5jc/sEAUAiLFnzDxrs+cZewBV+nQ1fNP9JR5kppWgWmicFPFc3Z0i68oK22LqPJyMhe
-         wRpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4JAkQ1P/3bTDJUegXu5HVcRxDMV31jzrYZVj/u5zbIAqNNS75n4wEfyMWDng5vA13vwCXGBnM9hBQiaU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFUHfbrb39zDowXAoXKI3ZMYiI5h+KyZhsDmNrzYQvaS7SjUhP
-	novZa7fUH2r/hO7OIzI6qdFTZGsWyDxAxCzYQd/YXiOal53WosGuirtkDv8BYg==
-X-Gm-Gg: ASbGncu8cFZQNH2/139DjVhtopjzHCjkUStDb/j6lYT8dHVTU+RjP9PboReCjJZROgZ
-	ITw4DSSVp/fwmKZjTUygim99HRcYPfL0QcTrZhiddVRK4T6DetqEiT9NPFBbCFUMvsJtTI9ZEBx
-	SF9meokaz0Vs5nV3RtQeOmscKRzq7odwy5etdLOngxI6r/87AyF0+3T/kKxsx9AhRF4kocrGork
-	AWC2Uag+ZpGsIT5fqBYy8Cz0uTBW4JWc+IUYUm0m4HJdA5wTRXtJ22KLLO6epVDYj0E82hKgCdw
-	y7CutMXUAzlHC7jBCz04mcxiCgddwZA4Zywv9q1NohJjV8TBm5N5rORMrkxVvdE5NZb7wo1f2Vy
-	hP8Hwp+QMR8o4AbXa/VNo5q2uBhha8YJo2kWN7QK0JMuHx4EY0d1bw3R5WGmN
-X-Google-Smtp-Source: AGHT+IE3xtASVy2SdxROSTGYMDf6f7CkIF6iF535o+i76CjRImTngY9vMHJCWvxziqWiKHC7hydYcQ==
-X-Received: by 2002:a05:6a21:6d86:b0:240:406b:194c with SMTP id adf61e73a8af0-243d6f2fad3mr13073254637.41.1756758012083;
-        Mon, 01 Sep 2025 13:20:12 -0700 (PDT)
-Received: from archlinux ([2601:644:8200:acc7::9ec])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd007026esm10118256a12.9.2025.09.01.13.20.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 13:20:11 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Horatiu Vultur <horatiu.vultur@microchip.com>,
-	UNGLinuxDriver@microchip.com (maintainer:MICROCHIP LAN966X ETHERNET DRIVER),
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk> (maintainer:SFF/SFP/SFP+ MODULE SUPPORT:Keyword:phylink\.h|struct\s+phylink|\.phylink|>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2 net-next 1/2] net: lan966x: use of_get_mac_address
-Date: Mon,  1 Sep 2025 13:20:00 -0700
-Message-ID: <20250901202001.27024-2-rosenp@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250901202001.27024-1-rosenp@gmail.com>
-References: <20250901202001.27024-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TvH9qRFv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74026C4CEF8;
+	Mon,  1 Sep 2025 20:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756758013;
+	bh=/wHKmb5x4dVF5LLmkd2vR6bUl0B5d3Y3KDThI8+gBEM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TvH9qRFvETPxVNMAuRj/0xEkXPg+k3OdaDqncr4D14qlHBgnqucaVSUyuOZCbEhoA
+	 EMAatoVfYDb+Rgwx+2XFzLnIKJWB2KQPuhTMoemnoXTenXAkZm1DnFr/kWg+WBzRqU
+	 jF0V4XzKbL8hjW4WhSe/aCnbs3uGGPMVaStKg3AVIRA2gAOPfbC18t6RBSDh1rTIuN
+	 lgXhf851oE/ZCD6NHAdHpvzPoEuHMNYngqTvfqXnEzPq2GG/+suZe2N688DcuWv73v
+	 IZVVS+1WAPimsLNvgrhUIARrFkEFF8S+o3l1PNT4pNStSJryHwjDkuDwlJcrerp9Iz
+	 uq1CLW7nYZK+w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E4B383BF4E;
+	Mon,  1 Sep 2025 20:20:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,44 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] selftests: net: fix spelling and grammar mistakes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175675801899.3872744.1239896650395115620.git-patchwork-notify@kernel.org>
+Date: Mon, 01 Sep 2025 20:20:18 +0000
+References: <20250828211100.51019-1-praveen.balakrishnan@magd.ox.ac.uk>
+In-Reply-To: <20250828211100.51019-1-praveen.balakrishnan@magd.ox.ac.uk>
+To: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, netdev@vger.kernel.org,
+ dev@openvswitch.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ linux-kernel-mentees@lists.linux.dev
 
-As lan966x is an OF driver, switching to the OF version allows usage of
-NVMEM to override the MAC address of the interface.
+Hello:
 
-Handle EPROBE_DEFER in the case that NVMEM loads after lan966x.
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/ethernet/microchip/lan966x/lan966x_main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+On Thu, 28 Aug 2025 22:11:00 +0100 you wrote:
+> Fix several spelling and grammatical mistakes in output messages from
+> the net selftests to improve readability.
+> 
+> Only the message strings for the test output have been modified. No
+> changes to the functional logic of the tests have been made.
+> 
+> Signed-off-by: Praveen Balakrishnan <praveen.balakrishnan@magd.ox.ac.uk>
+> 
+> [...]
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 7001584f1b7a..8bf28915c030 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -1083,7 +1083,6 @@ static int lan966x_probe(struct platform_device *pdev)
- {
- 	struct fwnode_handle *ports, *portnp;
- 	struct lan966x *lan966x;
--	u8 mac_addr[ETH_ALEN];
- 	int err;
- 
- 	lan966x = devm_kzalloc(&pdev->dev, sizeof(*lan966x), GFP_KERNEL);
-@@ -1093,9 +1092,11 @@ static int lan966x_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, lan966x);
- 	lan966x->dev = &pdev->dev;
- 
--	if (!device_get_mac_address(&pdev->dev, mac_addr)) {
--		ether_addr_copy(lan966x->base_mac, mac_addr);
--	} else {
-+	err = of_get_mac_address(pdev->dev.of_node, lan966x->base_mac);
-+	if (err == -EPROBE_DEFER)
-+		return err;
-+
-+	if (err) {
- 		pr_info("MAC addr was not set, use random MAC\n");
- 		eth_random_addr(lan966x->base_mac);
- 		lan966x->base_mac[5] &= 0xf0;
+Here is the summary with links:
+  - selftests: net: fix spelling and grammar mistakes
+    https://git.kernel.org/netdev/net-next/c/c85ae0240ee9
+
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
