@@ -1,80 +1,35 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A98A26E70E;
-	Mon,  1 Sep 2025 20:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4171427FD51
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 20:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756758016; cv=none; b=DoXz2in9CHof5IY99nZF5dFhVX3TH8qdBUw9BZY5utBepY8j84ZrGSKna8avZU3988vkQSfVnUxIuIa646ucwS9eMELQ69wMDgAjiNvfs4F5bS1iSFREuyyiHbwX/7Zb0yAcA+ZpFBhgq1gWZWUvtn3UCAef9Wp1FFjM6NnaklA=
+	t=1756758020; cv=none; b=EBEgUjIvhZpaKLhfd9b4EKMDKsqh1ngRDD3SsaaAiiOCuZLeKvWjRHBixCw/vuPTKsElRVrmTne9IXqh7LEM8dLj4dwRLRfWsomTVeO7l12McaeJ7TXKzZChAKTYtWKQCM9kBW5+qTM0Vkf0A8hYvxR7kkkDQD14PdE/2uVhmeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756758016; c=relaxed/simple;
-	bh=uEg15OibvvWYTNHSOey/Ib5tVfECjgYt6Y6y/EwMQPs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCo04qX7QWM4rp1t9z7MFbMeGs29twf3HnH4QQ8zpR910fsd6l1tH7wL75B5ErH1D823jUYXIBkcRunbyiFghJtkAFgh2l8/kCLTCjty+/YXnEC4QLMYCb5BF1Qkoxu7kdMM7mvoT6z5pLjOjeu5a6kce2SeCI1QNyES5VAfidw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/FFlf5Z; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756758020; c=relaxed/simple;
+	bh=b+CTfrXwA9iq3oHu9AuIj6WOquP0sdHtMd5L2jfSAxM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lH80YwOEGfbTC/i7A+GVqBsgksSrSE18rseZZypepZ781Dt2O2pMnloRpAgZMcf3yGCwh5JtVqLoxJreaHmbCaDByAmNTu4IQNmeBZ8cbJwVtmV4rw/5NmG8nXKykaVzlwIAkYxdV1e7xG66He2/Xh35NZTvUU1sUR9vmrDXuBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTjx7sdH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/FFlf5Z"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-77250e45d36so1182031b3a.0;
-        Mon, 01 Sep 2025 13:20:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756758013; x=1757362813; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fFXwRwPxCKeJGOhkMF7DyDw5Gt2GrTpsqldARicJoTk=;
-        b=Y/FFlf5Z+wb4p3C74MxjyBXJwDYWHnM0Gpj+qEqVZrTZ/ixX4e86V7uYYn91o/xu5g
-         khlttoEO2+pGZFv0L+Ckf88g1RCTPJNktirzfMzOHM/2S/4jNMpBWhCg23SMCCyFMqFo
-         LuihTV984t3PO477cU06ATD3o6N3GlJCnaYrd372ALth4++hpH05CrTsjnfY/JUBxuG5
-         6fMDtzWeOtWH9wdHQrxnxndWV7/LfMjUzPbRMnYT6DCZHi5SsV6V9MxENKcF65j6rysE
-         OTlckaYmZCai5mgQc80WtAvHrjSrIkslCXur9T3JUGrN2y2435Jtw1zdaob3zCOqBLnM
-         On5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756758013; x=1757362813;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fFXwRwPxCKeJGOhkMF7DyDw5Gt2GrTpsqldARicJoTk=;
-        b=JNZ7/2S85pSUTQR4vAxxcgG5fRSHZLtulG1k/G+W+kQ1y1jHRby9lpvhOkeyvKTh3z
-         soOkRM5KjdA4Skhl5VOZo5q2ixEuTyDiMoo4pHgB/HigY0rkXxp/DzLPgeZLUBt4xaAo
-         M8LQ2c9LxI6On9+rz8rbHmoOWnCzln0+T87/5kPpMoEAQfAQXOTZkd0phb5VEdicKNkc
-         l+O0athVJKSuuREBWXTIREakibXwS8bfVhVnihcdSoIPYpVtjf6/VOTbAJIvBxNKoe0U
-         rxaEgth52TZ6+T4ZwMEyChPIavpUsnRIsQJWqTRMV+C5TvSa2KY3R+LbTU5qaU2Rhscj
-         JMzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWL2eOCaYtaPXSqxf3Z0NwZNfb8RUF4JfbZ9c73sYhD5szUQkMT+iW1mrSip3RdJdd4/4dzE6vw3JM7gpw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8kW6aH3HrT1zAWP3ixV+tRvOOBn5G1ZSKFjtvKdsRcZRjxPUl
-	OeLkLPxxQBrrFFIyxmdrWWBbPM6ETQukzC8P4Mrj8xYm9KDLvlxcbK9f5r2tig==
-X-Gm-Gg: ASbGnctaJ6c4qNikWUCZmU1a+xAjWMHT1cXe9p4Ds2dBgDspjvOGHpQteT0+9rwHlRv
-	uuPlHTwUMYCdfivnQ7fHo8ksQRDxmAE+e/G/IMPOl9HhsjtbpJyQU7/Avna4pbhp4bjr4jq9rjO
-	CEYUCA0NB+EPrmrxSkCOrCggWFGXYsaX4/keuefZvSNUC//ABsadbe22YCuxD0z/GJbLGX6F1LU
-	uYVGE02/7TIDGSg+AKGYveFFPi8gSpt8jmAhOMMYQfbu+ngvCnUPVjSfXpTz59kRv8M9xTQby68
-	VbPb6ZI3ayM+5Dd8P4iaCRl+WTSX5sUCklkLUWBIzA+TWzp+R4DV7Gq3OIbTEwxqtczeeFxloyg
-	mF2llo5xoCreDrKH2USZSt21HAbjnxCRp1KQxe2BBqAVpsDdO79dqmWi0Dpho
-X-Google-Smtp-Source: AGHT+IEs66TrW9+nVCTr2EnWHb+auIr/jJFi81Q/FnfoXfN9IbkWLLcEQy8N3XeeZA0Ddp2w4LDACg==
-X-Received: by 2002:a05:6a20:7349:b0:243:c36f:6a71 with SMTP id adf61e73a8af0-243d6e07ac3mr12170485637.21.1756758013344;
-        Mon, 01 Sep 2025 13:20:13 -0700 (PDT)
-Received: from archlinux ([2601:644:8200:acc7::9ec])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd007026esm10118256a12.9.2025.09.01.13.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 13:20:12 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Horatiu Vultur <horatiu.vultur@microchip.com>,
-	UNGLinuxDriver@microchip.com (maintainer:MICROCHIP LAN966X ETHERNET DRIVER),
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk> (maintainer:SFF/SFP/SFP+ MODULE SUPPORT:Keyword:phylink\.h|struct\s+phylink|\.phylink|>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCHv2 net-next 2/2] net: lan966x: convert fwnode to of
-Date: Mon,  1 Sep 2025 13:20:01 -0700
-Message-ID: <20250901202001.27024-3-rosenp@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250901202001.27024-1-rosenp@gmail.com>
-References: <20250901202001.27024-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTjx7sdH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B526DC4CEF0;
+	Mon,  1 Sep 2025 20:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756758016;
+	bh=b+CTfrXwA9iq3oHu9AuIj6WOquP0sdHtMd5L2jfSAxM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ZTjx7sdHI81a8UjX9R+dyR6cLXTuRipnmdXqZLRnYgq5n/o6cZQRUp5kvQ5PDk5Aw
+	 vwbibTrTJRszJiAAAPJiRB9WW1Fb/6zInJGWg7QfVnhvHZX8nVJWpmKnAVopTGAzEs
+	 5i/OapC15ltlCkg/yFtueqAg5cZdZdGWmp43mfSXHpLSz2HjBXxSYgNyvUT3AecRdl
+	 TtBpreoRMIybgEFrtIhCSyhU4VoTaAjammkp1ZyzBe43zoxyzT+whiMaZPP+y2/caS
+	 MawuCsPYyjlGRDPB1g4n84SHxUrYzsS3KAsDQIZkGCxXK4No8Wfih6tfObJf6Bt0Bt
+	 Vi8dWHYLKBPhA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCB7383BF4E;
+	Mon,  1 Sep 2025 20:20:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,144 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: stmmac: mdio: update runtime PM
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175675802230.3872744.15747918532068269574.git-patchwork-notify@kernel.org>
+Date: Mon, 01 Sep 2025 20:20:22 +0000
+References: <E1urv09-00000000gJ1-3SxO@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1urv09-00000000gJ1-3SxO@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com
 
-This is a purely OF driver. There's no need for fwnode to handle any of
-this, with the exception being phylik_create. Use of_fwnode_handle for
-that.
+Hello:
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- .../ethernet/microchip/lan966x/lan966x_main.c | 34 ++++++++++---------
- .../ethernet/microchip/lan966x/lan966x_main.h |  2 +-
- 2 files changed, 19 insertions(+), 17 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 8bf28915c030..98937830e74b 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -183,7 +183,7 @@ static int lan966x_port_open(struct net_device *dev)
- 		ANA_PORT_CFG_PORTID_VAL,
- 		lan966x, ANA_PORT_CFG(port->chip_port));
- 
--	err = phylink_fwnode_phy_connect(port->phylink, port->fwnode, 0);
-+	err = phylink_of_phy_connect(port->phylink, port->dnode, 0);
- 	if (err) {
- 		netdev_err(dev, "Could not attach to PHY\n");
- 		return err;
-@@ -767,8 +767,8 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
- 			port->phylink = NULL;
- 		}
- 
--		if (port->fwnode)
--			fwnode_handle_put(port->fwnode);
-+		if (port->dnode)
-+			of_node_put(port->dnode);
- 	}
- 
- 	disable_irq(lan966x->xtr_irq);
-@@ -791,7 +791,7 @@ static void lan966x_cleanup_ports(struct lan966x *lan966x)
- 
- static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 			      phy_interface_t phy_mode,
--			      struct fwnode_handle *portnp)
-+			      struct device_node *portnp)
- {
- 	struct lan966x_port *port;
- 	struct phylink *phylink;
-@@ -855,7 +855,7 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 		  port->phylink_config.supported_interfaces);
- 
- 	phylink = phylink_create(&port->phylink_config,
--				 portnp,
-+				 of_fwnode_handle(portnp),
- 				 phy_mode,
- 				 &lan966x_phylink_mac_ops);
- 	if (IS_ERR(phylink)) {
-@@ -1081,7 +1081,7 @@ static int lan966x_reset_switch(struct lan966x *lan966x)
- 
- static int lan966x_probe(struct platform_device *pdev)
- {
--	struct fwnode_handle *ports, *portnp;
-+	struct device_node *ports, *portnp;
- 	struct lan966x *lan966x;
- 	int err;
- 
-@@ -1179,7 +1179,7 @@ static int lan966x_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	ports = device_get_named_child_node(&pdev->dev, "ethernet-ports");
-+	ports = of_get_child_by_name(pdev->dev.of_node, "ethernet-ports");
- 	if (!ports)
- 		return dev_err_probe(&pdev->dev, -ENODEV,
- 				     "no ethernet-ports child found\n");
-@@ -1191,25 +1191,27 @@ static int lan966x_probe(struct platform_device *pdev)
- 	lan966x_stats_init(lan966x);
- 
- 	/* go over the child nodes */
--	fwnode_for_each_available_child_node(ports, portnp) {
-+	for_each_available_child_of_node(ports, portnp) {
- 		phy_interface_t phy_mode;
- 		struct phy *serdes;
- 		u32 p;
- 
--		if (fwnode_property_read_u32(portnp, "reg", &p))
-+		if (of_property_read_u32(portnp, "reg", &p))
- 			continue;
- 
--		phy_mode = fwnode_get_phy_mode(portnp);
-+		err = of_get_phy_mode(portnp, &phy_mode);
-+		if (err)
-+			goto cleanup_ports;
-+
- 		err = lan966x_probe_port(lan966x, p, phy_mode, portnp);
- 		if (err)
- 			goto cleanup_ports;
- 
- 		/* Read needed configuration */
- 		lan966x->ports[p]->config.portmode = phy_mode;
--		lan966x->ports[p]->fwnode = fwnode_handle_get(portnp);
-+		lan966x->ports[p]->dnode = of_node_get(portnp);
- 
--		serdes = devm_of_phy_optional_get(lan966x->dev,
--						  to_of_node(portnp), NULL);
-+		serdes = devm_of_phy_optional_get(lan966x->dev, portnp, NULL);
- 		if (IS_ERR(serdes)) {
- 			err = PTR_ERR(serdes);
- 			goto cleanup_ports;
-@@ -1222,7 +1224,7 @@ static int lan966x_probe(struct platform_device *pdev)
- 			goto cleanup_ports;
- 	}
- 
--	fwnode_handle_put(ports);
-+	of_node_put(ports);
- 
- 	lan966x_mdb_init(lan966x);
- 	err = lan966x_fdb_init(lan966x);
-@@ -1255,8 +1257,8 @@ static int lan966x_probe(struct platform_device *pdev)
- 	lan966x_fdb_deinit(lan966x);
- 
- cleanup_ports:
--	fwnode_handle_put(ports);
--	fwnode_handle_put(portnp);
-+	of_node_put(ports);
-+	of_node_put(portnp);
- 
- 	lan966x_cleanup_ports(lan966x);
- 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-index 4f75f0688369..bafb8f5ee64d 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-@@ -407,7 +407,7 @@ struct lan966x_port {
- 	struct lan966x_port_config config;
- 	struct phylink *phylink;
- 	struct phy *serdes;
--	struct fwnode_handle *fwnode;
-+	struct device_node *dnode;
- 
- 	u8 ptp_tx_cmd;
- 	bool ptp_rx_cmd;
+On Fri, 29 Aug 2025 10:02:29 +0100 you wrote:
+> Commit 3c7826d0b106 ("net: stmmac: Separate C22 and C45 transactions
+> for xgmac") missed a change that happened in commit e2d0acd40c87
+> ("net: stmmac: using pm_runtime_resume_and_get instead of
+> pm_runtime_get_sync").
+> 
+> Update the two clause 45 functions that didn't get switched to
+> pm_runtime_resume_and_get().
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: stmmac: mdio: update runtime PM
+    https://git.kernel.org/netdev/net-next/c/ec0b1eeece28
+
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
