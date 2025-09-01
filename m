@@ -1,89 +1,88 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CFD32F757
-	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 20:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E2226281;
+	Mon,  1 Sep 2025 20:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756758645; cv=none; b=hndsfLpL57+kv2eseFiTjifeCrhnvh8rDRWO6QtZEzuGACeYCBNfwa3zvtE4mIe/t38B+qDPIcyNGuWTURvi5+m/pkzzoLue/sw+lVRTmGovrpEsy4bDZDYv403awB5slEYGQgc0oWufF6RMsoz1mQYgx4kgmisrhQqJlHwZaPY=
+	t=1756758662; cv=none; b=MaP4ScFSxkXzflxqkJIVfckzhzuuIqa/MbMBDb4Z77pxikMlh/EEn4jAHtxQb0dEIo8QCHXFtFAhgy9MXHxSJWGgHbZXHX/W7BLkheSC7yxCqL9lsBeuwfklK25yBv5JV28ZlER/ovVWOVVmO6jFBxBWoMCziQ4LImiJ7gubcqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756758645; c=relaxed/simple;
-	bh=F6/InM3xRGl4+7YTkrpsNTusB9D0eVDADebN8uUb7HU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=laI/TkP43nlXAiak9kKnG0rbsbQ5Z9PNSUz7lRGypljmv6BBvccuRlBw587IxfeInbmfqGjQku+Jy2negg8rZc/xTAHaMpjBp/DLBDtXTAhsc9Rt3OgDQChgRq0S9qCs7Yt5xRK2YAHc35WMIj5ikW6BisP22ppKG1aCijPUmeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=npv/mn4V; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1756758662; c=relaxed/simple;
+	bh=o1ifKcPsvn2MDOy5ZM3uMxa2Jwl6bMXiXquuke3efXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eciM25+73PSnLf/ArTq3iqlZ83I1XD6YmASfeaSuAwZdGQkQKRwHVMiTR24znvANAY2YbWNoFzJUzuNjT3iSWJrfK2BosXK/OmUsngBw9P9Cl/lb4200YV6lRvoEaibglt3k9I3lONl1kCOu8scp7iBq/PM4yL5XLczzWBwsrXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UL3lR5Oz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="npv/mn4V"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=3ZzfJipirZUzmDyKZf2yBnJ4hPSkV9Md5ill2XLbmO8=; t=1756758644; x=1757622644; 
-	b=npv/mn4VR5DxIWiC/WPwSd9oihPaNMsFFs+EQCHirLqa8c2JSbkdE9VXB54jVu6Utfxlo4gsQbl
-	60UPGMqGnwugI7Mstq/lhq1BhRozXaGE56LWNEAA6fD8pxBZ5e8686aabGYK1wJLSqay59WalZlEa
-	o4/hh4bGvbBIYtXz0yQvJt6hTMyJPVOyrCpGxSs3vxcOPOjQRczBICs9MaMbJi7JASFzFsiVAoTS2
-	nXNCzstSHvgP7s/DrtLTi40VakXTCX0RCNyXcHS849EA6yDDic5+4nfooFCy4OPSyvh0AMl501/6n
-	jHdk0XncLwyujTVEPGLOKBsp6r9VlJjqGfqQ==;
-Received: from mail-oi1-f175.google.com ([209.85.167.175]:57765)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1utBAo-0005Ai-SX
-	for netdev@vger.kernel.org; Mon, 01 Sep 2025 13:30:43 -0700
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-437d293d2f4so243825b6e.3
-        for <netdev@vger.kernel.org>; Mon, 01 Sep 2025 13:30:42 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yxa8jWBfSrms9loaBmezoJAU1ikbSRwwv4aDtqiN+XpTzhcN6Ik
-	yr9FvUpmdJUivshf8cHizr4oNdHgLiryNSAIncQFn7zqRlZBUXKGY7fxJv5xCXBksjNlCuWytjZ
-	YlydjuJn1FIFEuep97g72ymDwzWjvNq8=
-X-Google-Smtp-Source: AGHT+IFHb/2JJ9g+Z08NjA6kk+vvm2ho/mjRg6rXRVoW4p93rr2xHQ4VyW03cykUpDjkLGy+OgES2YTAPIoMdI7Jgmk=
-X-Received: by 2002:a05:6808:318e:b0:437:e743:cc9d with SMTP id
- 5614622812f47-437f7ce6601mr5176652b6e.11.1756758642299; Mon, 01 Sep 2025
- 13:30:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UL3lR5Oz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AA7C4CEF5;
+	Mon,  1 Sep 2025 20:31:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756758662;
+	bh=o1ifKcPsvn2MDOy5ZM3uMxa2Jwl6bMXiXquuke3efXw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=UL3lR5OzH+TCiL96WCUm0pOyyjFwjmGkDEis71rAtLmNjO0pu2vEKVOcwpW1IodW7
+	 kgmAwqwppHJfAdAu7c4a9X3UF1urmvy2L3tn0odXOQCe/ec8XWLBSWU4NXN6EKCqst
+	 gam80LHpp2Ny1IpQUSRIg73ZkieXY4DB95XyXIWRja9LYV3S0+NIiGUEFYGAT4ynSn
+	 KqPbY2KvIULi2nOXLBqZhi2hvKdvsi3AFVHFcxcCgI1AmpBDnbVLGtiuKtmaVuxKQD
+	 s+juAUShvLhQPmghzQbGfgQTpMXM3Ibc/5ucCJ8UHiA1oeMc8DsBp3hgTk0d7pDsTx
+	 WxwhEtOpcGphA==
+Date: Mon, 1 Sep 2025 13:31:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko
+ <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>, kernel@pengutronix.de, Dent Project
+ <dentproject@linuxfoundation.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v2 4/4] net: pse-pd: pd692x0: Add devlink
+ interface for configuration save/reset
+Message-ID: <20250901133100.3108c817@kernel.org>
+In-Reply-To: <20250829-feature_poe_permanent_conf-v2-4-8bb6f073ec23@bootlin.com>
+References: <20250829-feature_poe_permanent_conf-v2-0-8bb6f073ec23@bootlin.com>
+	<20250829-feature_poe_permanent_conf-v2-4-8bb6f073ec23@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250818205551.2082-1-ouster@cs.stanford.edu> <20250818205551.2082-12-ouster@cs.stanford.edu>
- <7c990c8a-9546-4bab-9438-9760090978c0@redhat.com>
-In-Reply-To: <7c990c8a-9546-4bab-9438-9760090978c0@redhat.com>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Mon, 1 Sep 2025 13:30:06 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmzBfv94FyCmAuekLHEDRbBf+_=YpHQHFtDoQb-qTcqZNA@mail.gmail.com>
-X-Gm-Features: Ac12FXydWllTX7Q1ZIpdl3g_I8GxeRgwKCh0fIhsxNJwA4PSfJDBWcqOVdnxXbQ
-Message-ID: <CAGXJAmzBfv94FyCmAuekLHEDRbBf+_=YpHQHFtDoQb-qTcqZNA@mail.gmail.com>
-Subject: Re: [PATCH net-next v15 11/15] net: homa: create homa_utils.c
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Scan-Signature: 764eb63bb4c91aa8ddbf2de6f9e489d2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 26, 2025 at 4:53=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 8/18/25 10:55 PM, John Ousterhout wrote:
-> +/**
-> > + * homa_spin() - Delay (without sleeping) for a given time interval.
-> > + * @ns:   How long to delay (in nanoseconds)
-> > + */
-> > +void homa_spin(int ns)
-> > +{
-> > +     u64 end;
-> > +
-> > +     end =3D homa_clock() + homa_ns_to_cycles(ns);
-> > +     while (homa_clock() < end)
-> > +             /* Empty loop body.*/
->
->                 cpu_relax();
+On Fri, 29 Aug 2025 18:28:46 +0200 Kory Maincent wrote:
+> +The ``PD692x0`` drivers implement the following driver-specific parameters.
+> +
+> +.. list-table:: Driver-specific parameters implemented
+> +   :widths: 5 5 5 85
+> +
+> +   * - Name
+> +     - Type
+> +     - Mode
+> +     - Description
+> +   * - ``save_conf``
+> +     - bool
+> +     - runtime
+> +     - Save the current configuration to non-volatile memory using ``1``
+> +       attribute value.
+> +   * - ``reset_conf``
+> +     - bool
+> +     - runtime
+> +     - Reset the current and saved configuration using ``1`` attribute
+> +       value.
 
-Done; I have found at least one other place to use this as well.
+Sorry for not offering a clear alternative, but I'm not aware of any
+precedent for treating devlink params as action triggers. devlink params
+should be values that can be set and read, which is clearly not
+the case here:
 
--John-
+> +static int pd692x0_dl_dummy_get(struct devlink *devlink, u32 id,
+> +				struct devlink_param_gset_ctx *ctx)
+> +{
+> +	return 0;
+> +}
+-- 
+pw-bot: cr
