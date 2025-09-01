@@ -1,93 +1,91 @@
-Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A933043B0;
-	Mon,  1 Sep 2025 09:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A6A307482
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 09:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756717766; cv=none; b=tzmkd8H68Cdef9pA8/2OP+95AyE8A0sFwHcHwI+bMZWAh8goKBUcLo02LZBr5Aa7SqPsUkQE5vjkbivV9cxc/sa8iuzKvpyoYiIJSqqMx/F1ipJLUk3QDUpFcj2Q9lSa3f3xOQfrIcpn+qCVlUO7cYHU17ppvu35QwQwPZC12fs=
+	t=1756717775; cv=none; b=ImH4q/QAN0P7kFZFn+26DcMhVUaVTvItcjrdoYNxUu2ZwjdA6jJcZHlbyjKtj5JmVohJp2QypX4JcIXbXC0VgDSsgjFBZKOxYVjPKjNXutuiZz0iVPyxyGBasgN9aouQMECIdYz6TgZE574Z0vhUjIlMqQqb/hF5UQNe2r8wVjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756717766; c=relaxed/simple;
-	bh=T8ihf112g9u2f1A9yPNf17Zec+yVLlF4arukt8xeoQs=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=rtdTKIjep/1TyDtlOeLbTDleVUgyKjHGT77hLwjnHnYkAFjYEGNQf7gztt83y228Gy0WrSD0j83ChMALcW2B/GgbUv9EnEOTn52MWtx2IMhm72Nw8YB//AqfJM/Sn5S/I5lsaAg2MoUmJza4L134laH5+fDmtEqWXphXlzURDTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=cljPwtmr; arc=none smtp.client-ip=203.205.221.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1756717775; c=relaxed/simple;
+	bh=I5b8D0GdAZMDVlDz0GQJl8d0IIpFPKyALN5Gl4CLH/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BmN3njncTPZX3AAJvftYtZd3PI/61fAToYRpTVIBotjVAfJ7ej6ayO+ErUhmQX2BsHW6g0k1le6LVnokUm5vR0e8PnSlTH7CFCyKmYhHXwLM0HrpvZowdvoWClnWpMCarCR7NC06weg+zcgWY33CMFufc0aNIW6EiId+Ieqj6j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=RsrJFg+K; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="cljPwtmr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1756717455;
-	bh=yaTeFtLRO5tvXwPuK3rKpMfJKgvbP8eLKfJv8XhYE/E=;
-	h=From:To:Cc:Subject:Date;
-	b=cljPwtmrAkZeg8IkGCVBuGqJPAgyLgrV6xteO5Jd2rdpEwZVwqjx4d/rOQ/7UJ+fm
-	 dU4lDMh/0QHzqKGIPDMG9r88STauudtDsjU5p5n+YgEqd+UyzipY/Hkc3fz3WQ28Mv
-	 eTcNagklQwIxyt1dAKuz5OZgLBKnqRAdVw2Z+Upw=
-Received: from localhost.localdomain ([112.94.77.11])
-	by newxmesmtplogicsvrsza36-0.qq.com (NewEsmtp) with SMTP
-	id 10D1883F; Mon, 01 Sep 2025 17:04:13 +0800
-X-QQ-mid: xmsmtpt1756717453t5ocrcnwm
-Message-ID: <tencent_64909A540A8CD9063D28DEFD0A684AF9B709@qq.com>
-X-QQ-XMAILINFO: NRYSeI3Ux+UPKBqenge/iM5apnt4JgNSf6hICTmL6hwIFOvHFwQt6jEpO5mfZ7
-	 ff7W+zARH/K2ohCTAQtNOZ9K/+dzervwNbcHVb7ZOPLd7PFftSOx24rKqtKjN+SI/46ipWyJp+mf
-	 N3Vw6kZdPI4mUdaLfxCn+zYw1OSGkXo3qA/OwlYGCwxG91UYkF3Cy1JKiXIKAyo20QP36SsvL0ed
-	 tQFXw+789q+0a+vxtOOjcO6tatqpp0YuagsZ8T32dJvGzouFltZSPd2V3hpo0+F9s4ltPnnkbJ/n
-	 aXqtwu6CUGo8ihauxjnGFUKOePrn0m008hP4OBzwYE6/ZCb+d4RiuwfLymeh7VllGN1tGTCIA+Fb
-	 bIvDpbgBCz2zZdxUZh3IO0gxHZGK9wssu6IfrSi/NC6ocMWQkqI3oAHnEjwwnAB/pWr/vCQbYKTw
-	 4l8FPj2hLZ/TJU8jaNnfWyiyt9PGFwZOYiGbuZoI+CbqC8gTSFodeRYfl5jmRcv2JX/BjNDXCtpN
-	 UwBeMQqqVwn8IXoFrkFZFWBlozXZt0cEkaB6axoiIAA/5Q1FD4mJJvugXIaT7EJjP+SvF/yq32FS
-	 LeocQal7ou8z3QjpOcPDH4OXXRNmJr7d42lY3tl1sC+b+Dy7WKdekCzJ0It5GumRrocnY4XEytUe
-	 ux78PRYagET3mDYgss9ymWWPySrgAAQJy4U26Q5NEJLvxAfwCr4omlw3m+5hsez52WvPj6KpRBan
-	 3quRgn7OWzmeMGfxM0hcpX5i75UBVnGquZfJP/TQQ5fcAswl0X4ioJj6cGPADKxMu39Q8Q5DulYE
-	 rOa7nDnNzIcF0qYoxlJRs/zSd3DsxjQhvEgwE5zbE2+YqF/TCM5J06JlKgrzDQ1ULxkewBgMXQSn
-	 LRqY5L7U+FK+w6pFRr83xq+rDeKAgaQJV+txukzFb1nEzRnU8hvFEgK8Wpzp0mMjUHV0nDa+XtcT
-	 5ehyRPrRKcKkW14IUAaGrNdTGrZOAPY6NsT2JaevrDdeiH5NrQ/3tIA5Yzz9O9zu8923LMv+h8PR
-	 ktlx0pYv/6fKaJI8SqHQ7rc1dXt6w=
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
-From: Conley Lee <conleylee@foxmail.com>
-To: kuba@kernel.org,
-	davem@davemloft.net,
-	wens@csie.org,
-	mripard@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	Conley Lee <conleylee@foxmail.com>
-Subject: [PATCH] arm: dts: sun4i-emac enable dma rx in sun4i
-Date: Mon,  1 Sep 2025 17:04:03 +0800
-X-OQ-MSGID: <20250901090403.533184-1-conleylee@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="RsrJFg+K"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4EoKJaje4rOK95X+Pl3q/RbauYYMDscRw8oP35k7rJk=; b=RsrJFg+KnbSa0ouMj3A3t3JrrO
+	qz0ygsCounR6YdLhQ23jfcl7Tiu3i9Hxz2PQwC8ahDMlRzkwdBIcKCzjX51SyYCHwfr1GLE5xNFHU
+	KpyMgyNGXTvPrN5hyLEHQ2G+4V2Deh7ae4nlLSnpCscshVwU9BmhORS/Z8nFuplNbPsBhi3uDqtZY
+	yFNeR+2rB1r0wu2oSHl7w2Ukcm6HawZKDK4gWwC/ZcrMTV6kf+p6v3Uycu8Gul4dEw5SGJDrDeGo5
+	rtC1c4cgRbm1/sTWo2SpeCG12c+0E/Fj2Q6EyGZcrIGdStqBIJMPpTbixZ+GN2CfOokc3lZH54dx1
+	FwCseCKQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43572)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1ut0XV-000000005st-24Ao;
+	Mon, 01 Sep 2025 10:09:25 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1ut0XO-000000006tL-0yL7;
+	Mon, 01 Sep 2025 10:09:18 +0100
+Date: Mon, 1 Sep 2025 10:09:17 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net] net: phy: fix phy_uses_state_machine()
+Message-ID: <aLVivd71G4P4pU0U@shell.armlinux.org.uk>
+References: <E1usl4F-00000001M0g-1rHO@rmk-PC.armlinux.org.uk>
+ <20250901084225.pmkcmn3xa7fngxvp@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901084225.pmkcmn3xa7fngxvp@skbuf>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The current sun4i-emac driver supports receiving data packets using DMA,
-but this feature is not enabled in the device tree (dts) configuration.
-This patch enables the DMA receive option in the dts file.
+On Mon, Sep 01, 2025 at 11:42:25AM +0300, Vladimir Oltean wrote:
+> On Sun, Aug 31, 2025 at 05:38:11PM +0100, Russell King (Oracle) wrote:
+> > phydev->phy_link_change is initialised by phy_attach_direct(), and
+> > overridden by phylink. This means that a never-connected PHY will
+> > have phydev->phy_link_change set to NULL, which causes
+> > phy_uses_state_machine() to return true. This is incorrect.
+> 
+> Another nitpick regarding phrasing here: the never-connected PHY doesn't
+> _cause_ phy_uses_state_machine() to return true. It returns true _in
+> spite_ of the PHY never being connected: the non-NULL quality of
+> phydev->phy_link_change is not something that phy_uses_state_machine()
+> tests for.
 
-Signed-off-by: Conley Lee <conleylee@foxmail.com>
----
- arch/arm/boot/dts/allwinner/sun4i-a10.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+No. What I'm saying is that if phydev->phy_link_change is set to NULL,
+_this_ causes phy_uses_state_machine() to return true and that
+behaviour incorrect.
 
-diff --git a/arch/arm/boot/dts/allwinner/sun4i-a10.dtsi b/arch/arm/boot/dts/allwinner/sun4i-a10.dtsi
-index 51a6464aa..b20ef5841 100644
---- a/arch/arm/boot/dts/allwinner/sun4i-a10.dtsi
-+++ b/arch/arm/boot/dts/allwinner/sun4i-a10.dtsi
-@@ -317,6 +317,8 @@ emac: ethernet@1c0b000 {
- 			allwinner,sram = <&emac_sram 1>;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&emac_pins>;
-+			dmas = <&dma SUN4I_DMA_DEDICATED 7>;
-+			dma-names = "rx";
- 			status = "disabled";
- 		};
- 
+The first part is describing _when_ phydev->phy_link_change is set to
+NULL.
+
+It is not saying that a never-connected PHY directly causes
+phy_uses_state_machine() to return true.
+
+I think my phrasing of this is totally fine, even re-reading it now.
+
 -- 
-2.25.1
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
