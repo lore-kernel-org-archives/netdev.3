@@ -1,35 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF8027932B;
-	Mon,  1 Sep 2025 20:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB89426E173;
+	Mon,  1 Sep 2025 20:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756758008; cv=none; b=UcD3kR/WONfPO6k5y1H/gCwM7eF4qfudf55i04mpab2zKWzz+LwOfzoBXr75VicT2BY6sWjx3a6DVkkw45L1GqD+INpIz+MvmDOUJ6yMlK41x8Mb/ea3LHgPo3Ky9GDFGb2QjuUBF5nkItmYhPWYI/VtR8/h57gpncZkA5D2NBo=
+	t=1756758013; cv=none; b=M7mZauBvGvAjDcNKbmeClLP/dm0Kyrp7E77h1utiMnlOFrOJqcMMk5Uakf3sf6M892SuPfTGvQoEMjRGM5ZbhpnJsQUs856LiJZJLcheWuUW9uoHJSG/06Vl4rZB7nT1e+N4FfpOVho62rVJ82gZYq7HpR72Zs6KVBi+w0YbKAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756758008; c=relaxed/simple;
-	bh=BGOwdNbU9vLIZz1WdKyL/3bVlxvLn2EyzqwMGkmJxqk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KoRshKo4M/+lA6ra4BHCtxlcl7Vf5eDueVmylmzWUIF3aLXT3KLvjZvyxWNt5jEcSuuVIzWPt7/3J5fr/13FMo6S9lQEum/B543FCDvDJh49nOdH0KGdHk72p5KQqbJCve+Em79VLSeLskprv872EvNcXczFBA80CzlEui2ACzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bUG3Xef/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756758013; c=relaxed/simple;
+	bh=i4R0WYNIpJra40HzvtT/fuWtFvBHAv8PQ4HpyrG7pwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XELiQ3Awgj3zBz3ZBpPBsFUoMWCXdbt57alnQ0LVZlVsd/tE7989ceu802bSA3DXvGwqF2r0eySZGfnIqJkZwYYVPfm0qEEhfDUJ95uPSx7V3uhwhK3eCa7r2uF638UvICJR6Pchq7a2IswufYbcMU3bDmTDWYdwxsaDwlr0cZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XnJHHzaV; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bUG3Xef/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B7CC4CEF8;
-	Mon,  1 Sep 2025 20:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756758008;
-	bh=BGOwdNbU9vLIZz1WdKyL/3bVlxvLn2EyzqwMGkmJxqk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bUG3Xef/eDpl/IXdli9dAvk71PYqnnQqEz+ljhabRRaFWis1ElvZqqCY9atB5fY0U
-	 eNbh9rgQy0We+RTkJvwUbFEMcK9N4YyqhCD7GKW6ozJeZyEPYlyMXVQtQLsX/bZt6v
-	 35lknuBXx2qiB+3B5l2VYemx+AJzugmPXk7DoTmPy43Syzd+KzjjnsTz5o9QMzIhuT
-	 cfbU+MkSeTC9RD/cviggziX6vizZhl92GbajC/U/0NtUUkYKVroQGt4CtZgS3ZARuu
-	 4erFImM+fS7+Dt66BEBpWP3b1zqDfXCyYfQXd79pKZnytef+JCbyksTtPwTUV4MXkM
-	 AACv2qXxyfL2g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E7F383BF4E;
-	Mon,  1 Sep 2025 20:20:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XnJHHzaV"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-77251d7cca6so1296232b3a.3;
+        Mon, 01 Sep 2025 13:20:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756758011; x=1757362811; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGgGJBLmvwy32xPENRiFS3qwE0ooBptuWQGSNvoH1tM=;
+        b=XnJHHzaV1jynX0NQdQdsJjfFyljYrA0w3XR46LyXTXK2s/Vc4j7qj4IwmiQR7Xbi71
+         KXN96yrJtvIEvh+2mcGEZjJclqlf4QbsnPBvRn9Wnz2eQp9ZXfwM/U6ThdT+eYdu2qpF
+         ZSA+kuZINLrUEgnOo7QNyvvdrNLXV8KKBl/2Ho7U0txpAr8av06r8I0u8bQt5Iq4+e5N
+         VXCucg3yaE8JH9nfMi+GatQTX5NdDqdZdkFksfpmAKtvyQqhgOfgmZKZG8EXF5Xz+ThJ
+         q0Jm06vU9G3XrtrgemGq6afTlfCLDTNfOVIPXZmPJeiCeq/kSls3nAcPsCNvX/ub94ma
+         lZlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756758011; x=1757362811;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YGgGJBLmvwy32xPENRiFS3qwE0ooBptuWQGSNvoH1tM=;
+        b=pEeEZN2/UYQBUrFLmxzNb+Rfq61jqbW8nweY0bXbMZR49+OcmaNuRPF/lky1DVWAwf
+         68HCsdGY39zmJ4/jZSJfBPBcAsd6/kFXP1klwEJhqWUjC7T1gUtYXMrZMkNXrIW08H7Z
+         yp23rjXE6ceWKeB7uJNTzWCjUagarmIaf7jhPPsJnKbhRTsU/aK5Wf981qLPhH7TeJH3
+         nKEnvrbPuPQA6lYkJKB8TWgoWOXPzUVsfoqINISKQSLBFQt6op8SSD2zY6Izzh+pk1k4
+         dQawMdQVnpnCkqux/GYHHNHXOKc8PNr+8asMLZhVEeXFYFdisguHuUQ0+mgTfXiCUZiR
+         EdLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpCIiA3+Z124OkvqdsJ650HnyR64VemOroVng6IXqAOJ8G7cFBhF8oczPZWcUsfbMcuSJBInEItqngb3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylrLPjDTkIqbnufIKMvSphFsILchZGIECqxxHpsquYQPHQYHCu
+	0137taKlPzF5YF9Tz+dFgymrFz25gbFLRyer/gZEQAqfjHKrklwAhEjur+k25g==
+X-Gm-Gg: ASbGncvfRQZWg80ATvBEvfp09eL7u1vxLi1pacRvKKKWdgiCojpTd1xoYNgfJm+cD+u
+	aTR+sXKHIxv7wEA8Huk7XF6cYeNEZSmS2wZ9bhZI0SDlTdPd8FSZW7zvF3FLptSI/yUs0zkOAwU
+	61wFqlFcu57gy7+RlZ5VK4COUzh2ikcVp7sXn83/3X7wP9WqCEUuZ19r++EulnJOX8WPZZMuNt4
+	adZunmJLU86AKwnUbu2z23R4Tm9I6vCI/1NGdaudjK4268WYlAMjJz1e5EYLn7PrhIop3fqK6LL
+	Nny8AtD2U+92lhPuPyRnBTEKhijjsSeaQZlF/uE3qHQzFvy6oaWPyQZiXbEvJSP+tYpNDT4LbSQ
+	l+gBExe7keLGgppKdjIKK07lcBjIDN4WBTHdnw1uceyHyDBKSzS/x4zI7KcgX0rBIXNE1snc=
+X-Google-Smtp-Source: AGHT+IE0STkyvfSBEF9UUxFIDXrzq53dcCxMYlGphH+TvBHamqobMm8fLwwwRN8JegPcqnRMJhnhMg==
+X-Received: by 2002:a05:6a20:1093:b0:244:58:c159 with SMTP id adf61e73a8af0-2440058c3d1mr508763637.22.1756758010791;
+        Mon, 01 Sep 2025 13:20:10 -0700 (PDT)
+Received: from archlinux ([2601:644:8200:acc7::9ec])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4cd007026esm10118256a12.9.2025.09.01.13.20.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 13:20:10 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Horatiu Vultur <horatiu.vultur@microchip.com>,
+	UNGLinuxDriver@microchip.com (maintainer:MICROCHIP LAN966X ETHERNET DRIVER),
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk> (maintainer:SFF/SFP/SFP+ MODULE SUPPORT:Keyword:phylink\.h|struct\s+phylink|\.phylink|>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCHv2 net-next 0/2] net: lan966x: some OF cleanups
+Date: Mon,  1 Sep 2025 13:19:59 -0700
+Message-ID: <20250901202001.27024-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +78,20 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: macb: Fix tx_ptr_lock locking
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175675801374.3872744.14092876974796053119.git-patchwork-notify@kernel.org>
-Date: Mon, 01 Sep 2025 20:20:13 +0000
-References: <20250829143521.1686062-1-sean.anderson@linux.dev>
-In-Reply-To: <20250829143521.1686062-1-sean.anderson@linux.dev>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- claudiu.beznea@tuxon.dev, linux-kernel@vger.kernel.org,
- nicolas.ferre@microchip.com, efault@gmx.de, robert.hancock@calian.com
 
-Hello:
+First commit basically adds NVMEM support and second one removes a lot
+of fwnode usage.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+v2: change signature of lan966x_probe_port
 
-On Fri, 29 Aug 2025 10:35:21 -0400 you wrote:
-> macb_start_xmit and macb_tx_poll can be called with bottom-halves
-> disabled (e.g. from softirq) as well as with interrupts disabled (with
-> netpoll). Because of this, all other functions taking tx_ptr_lock must
-> use spin_lock_irqsave.
-> 
-> Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
-> Reported-by: Mike Galbraith <efault@gmx.de>
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> 
-> [...]
+Rosen Penev (2):
+  net: lan966x: use of_get_mac_address
+  net: lan966x: convert fwnode to of
 
-Here is the summary with links:
-  - [net,v2] net: macb: Fix tx_ptr_lock locking
-    https://git.kernel.org/netdev/net/c/6bc8a5098bf4
+ .../ethernet/microchip/lan966x/lan966x_main.c | 43 ++++++++++---------
+ .../ethernet/microchip/lan966x/lan966x_main.h |  2 +-
+ 2 files changed, 24 insertions(+), 21 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.51.0
 
