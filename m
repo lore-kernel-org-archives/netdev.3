@@ -1,224 +1,151 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C5A30DEC0;
-	Mon,  1 Sep 2025 10:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53162E0402
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 10:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756721021; cv=none; b=GXbDw6Ks90sVfa9R4Tbfp+wOSNSJKHswjf8HLZvCtYpvlye3IgVhr1M/az5jXD3s7dZZM2ikpQPIQ1uIxXCLoqyEjlJFterXEw7oblEghnV9ALx3r9S/mdrCZQNhOa24QsoVryBc7NrQrf+cTLjRgqNJk0jeMwhVtDrFlCA7K28=
+	t=1756721166; cv=none; b=rQ6CKbERNmk1R7uw+e9UbzKb6mJBDV9XWo1g8B3tRuO7YF3+YJxpIj7IyvYJUhv/EjWXjmOfMSl92IG8LAXrH+R0VZJnclzkSyjjTrzHniZSbHbCBo5y+L0O25Gef/a3oyDnlcfb85+OpvFxLdNLmWa3MK07gGCrc+UcdOQH35g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756721021; c=relaxed/simple;
-	bh=M2z8vbFDM9NyYD0Bv0Vu1l9ERk+YMPT29wbpqNGHaMs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aUxhGqwkJWWRKten+J7WA2vuBYS02zjf5zuW87OB14XoGWySUos97kMJHi0hEk/Z6n8ERXxZaCU1kJ8jD5YwexBkJppNL6Q9y3vFvTvvImLHGKSTqdBGKpfEdMYruEIaAw5Op7WN8UKhAThr42F4ruj/qkRrBTeGcZ+JsZ9/bwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=uD2YItbg; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756721166; c=relaxed/simple;
+	bh=xNtOD3U1Ets//MfQBdDrw8D9/+Y8XKoiAWD3u8Vu+o4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRuFsRDkx7hmqv34vzPYkRLB2m4E3y9fmbazZ2pgAycb/rinaqS98KJOf7EC24xct5pTaP+AVdBqqhyKnfIawvXgjQNEKwOKVGEjJQLhtTQTt/TmBzifM+ghL8kwpAKpRRJfm6euXogbB+E1aHTKC7gizeaVru1y1/QtSZ8+qiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=E6h3BwFP; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="uD2YItbg"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 581A2j9c2291725;
-	Mon, 1 Sep 2025 05:02:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756720965;
-	bh=l4BEtC2iiTf9PgfSAlq1KXiyiD3sXjre9TgCdb6pzZw=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=uD2YItbgYuh2QxdAvNKiToKMu0I1rMesDjGmnKudIDGqc6ADTpZqVod8qkmAJon+8
-	 deL3IZ63hRGCP7Kz1zdGv5zTbPHbDRh01EPzqu/6rcFCil2/bXzrO+GhnTvxTv9UYK
-	 u1Lj3AAFnkuNBeCXLDjbo+2lthQycvldOysrlPl8=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 581A2jvU1467229
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 1 Sep 2025 05:02:45 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 1
- Sep 2025 05:02:44 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 1 Sep 2025 05:02:44 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 581A2iKc2020985;
-	Mon, 1 Sep 2025 05:02:44 -0500
-Received: from localhost (meghana-pc.dhcp.ti.com [10.24.69.13] (may be forged))
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 581A2hRB011184;
-	Mon, 1 Sep 2025 05:02:44 -0500
-From: Meghana Malladi <m-malladi@ti.com>
-To: <namcao@linutronix.de>, <jacob.e.keller@intel.com>, <m-malladi@ti.com>,
-        <christian.koenig@amd.com>, <sumit.semwal@linaro.org>,
-        <sdf@fomichev.me>, <john.fastabend@gmail.com>, <hawk@kernel.org>,
-        <daniel@iogearbox.net>, <ast@kernel.org>, <pabeni@redhat.com>,
-        <kuba@kernel.org>, <edumazet@google.com>, <davem@davemloft.net>,
-        <andrew+netdev@lunn.ch>
-CC: <linaro-mm-sig@lists.linaro.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-media@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Roger Quadros <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: [PATCH net-next v2 4/6] net: ti: icssg-prueth: Make emac_run_xdp function independent of page
-Date: Mon, 1 Sep 2025 15:32:25 +0530
-Message-ID: <20250901100227.1150567-5-m-malladi@ti.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250901100227.1150567-1-m-malladi@ti.com>
-References: <20250901100227.1150567-1-m-malladi@ti.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="E6h3BwFP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XX14nK70MLICWN1TU2yynkZ6LntdcPtCl9EB2sloICo=; b=E6h3BwFPRDE/wgThwj1DZK/FpB
+	5//37F4F0XdSDlow5SqYGB/7v+vXfRm3B8xx1xtJxbKOCkp5caRuTI9cNm+9W2F5a5wKR0S9rGh73
+	Pvl35uRsvPwfT2la26ieFTDQWpowR8CC7W56Ju/VObJIGbLeSnUQ8srdGymLqbCsquVerorf8c5GA
+	4pIh7oQVO9A9rU6lUD2LtlBAoSQRV9KLtZ39kDoIlUhbPQWDpX/hUKpxsuLmqK1Sy7SdyOJRIuD3N
+	T5vkvThAHqNh3t+bKttW4p7icoSlpQRCOEWcSvdgVg4+shllpF3rSCOZDStmDnn+qzFp0j+tMlbBQ
+	Zg3A+Rfw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51864)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1ut1QC-000000005zC-1c9K;
+	Mon, 01 Sep 2025 11:05:57 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1ut1QA-000000006vT-2Pet;
+	Mon, 01 Sep 2025 11:05:54 +0100
+Date: Mon, 1 Sep 2025 11:05:54 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net] net: phy: fix phy_uses_state_machine()
+Message-ID: <aLVwAn87GhFHMjEE@shell.armlinux.org.uk>
+References: <E1usl4F-00000001M0g-1rHO@rmk-PC.armlinux.org.uk>
+ <20250901084225.pmkcmn3xa7fngxvp@skbuf>
+ <aLVivd71G4P4pU0U@shell.armlinux.org.uk>
+ <20250901093530.v5surl2wgpusedph@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901093530.v5surl2wgpusedph@skbuf>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-emac_run_xdp function runs xdp program, at a given hook point
-in the Rx path of the driver in NAPI context and returns
-XDP return codes. In zero copy mode the driver receives
-packets using UMEM frames instead of pages (native XDP).
-Decouple the usage of page in this function.
+On Mon, Sep 01, 2025 at 12:35:30PM +0300, Vladimir Oltean wrote:
+> On Mon, Sep 01, 2025 at 10:09:17AM +0100, Russell King (Oracle) wrote:
+> > On Mon, Sep 01, 2025 at 11:42:25AM +0300, Vladimir Oltean wrote:
+> > > On Sun, Aug 31, 2025 at 05:38:11PM +0100, Russell King (Oracle) wrote:
+> > > > phydev->phy_link_change is initialised by phy_attach_direct(), and
+> > > > overridden by phylink. This means that a never-connected PHY will
+> > > > have phydev->phy_link_change set to NULL, which causes
+> > > > phy_uses_state_machine() to return true. This is incorrect.
+> > > 
+> > > Another nitpick regarding phrasing here: the never-connected PHY doesn't
+> > > _cause_ phy_uses_state_machine() to return true. It returns true _in
+> > > spite_ of the PHY never being connected: the non-NULL quality of
+> > > phydev->phy_link_change is not something that phy_uses_state_machine()
+> > > tests for.
+> > 
+> > No. What I'm saying is that if phydev->phy_link_change is set to NULL,
+> > _this_ causes phy_uses_state_machine() to return true and that
+> > behaviour incorrect.
+> > 
+> > The first part is describing _when_ phydev->phy_link_change is set to
+> > NULL.
+> > 
+> > It is not saying that a never-connected PHY directly causes
+> > phy_uses_state_machine() to return true.
+> > 
+> > I think my phrasing of this is totally fine, even re-reading it now.
+> > 
+> > -- 
+> > RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> > FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> 
+> I think the language is sufficiently flexible for us to find a phrasing
+> that avoids all ambiguity. What about:
+> 
+> "It was assumed the only two valid values for phydev->phy_link_change
+> are phy_link_change() and phylink_phy_change(), thus phy_uses_state_machine()
+> was oversimplified to only compare with one of these values. There is a
+> third possible value (NULL), meaning that the PHY is unconnected, and
+> does not use the state machine. This logic misinterprets this case as
+> phy_uses_state_machine() == true, but in reality it should return false."
 
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
----
- drivers/net/ethernet/ti/icssg/icssg_common.c | 28 +++++++++++++-------
- drivers/net/ethernet/ti/icssg/icssg_prueth.c |  3 ++-
- drivers/net/ethernet/ti/icssg/icssg_prueth.h |  9 +++++--
- 3 files changed, 27 insertions(+), 13 deletions(-)
+Well, having spent considerable time writing and rewriting the damn
+commit message, this is what I'm now using, which I think covers the
+problem in sufficient detail.
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-index 8ff1707a2328..529172e231dc 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-@@ -647,15 +647,15 @@ void emac_rx_timestamp(struct prueth_emac *emac,
-  * emac_xmit_xdp_frame - transmits an XDP frame
-  * @emac: emac device
-  * @xdpf: data to transmit
-- * @page: page from page pool if already DMA mapped
-  * @q_idx: queue id
-+ * @buff_type: Type of buffer to be transmitted
-  *
-  * Return: XDP state
-  */
- u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
- 			struct xdp_frame *xdpf,
--			struct page *page,
--			unsigned int q_idx)
-+			unsigned int q_idx,
-+			enum prueth_tx_buff_type buff_type)
- {
- 	struct cppi5_host_desc_t *first_desc;
- 	struct net_device *ndev = emac->ndev;
-@@ -663,6 +663,7 @@ u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
- 	struct prueth_tx_chn *tx_chn;
- 	dma_addr_t desc_dma, buf_dma;
- 	struct prueth_swdata *swdata;
-+	struct page *page;
- 	u32 *epib;
- 	int ret;
- 
-@@ -679,7 +680,12 @@ u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
- 		return ICSSG_XDP_CONSUMED;	/* drop */
- 	}
- 
--	if (page) { /* already DMA mapped by page_pool */
-+	if (buff_type == PRUETH_TX_BUFF_TYPE_XDP_TX) { /* already DMA mapped by page_pool */
-+		page = virt_to_head_page(xdpf->data);
-+		if (unlikely(!page)) {
-+			netdev_err(ndev, "xdp tx: failed to get page from xdpf\n");
-+			goto drop_free_descs;
-+		}
- 		buf_dma = page_pool_get_dma_addr(page);
- 		buf_dma += xdpf->headroom + sizeof(struct xdp_frame);
- 	} else { /* Map the linear buffer */
-@@ -734,13 +740,11 @@ EXPORT_SYMBOL_GPL(emac_xmit_xdp_frame);
-  * emac_run_xdp - run an XDP program
-  * @emac: emac device
-  * @xdp: XDP buffer containing the frame
-- * @page: page with RX data if already DMA mapped
-  * @len: Rx descriptor packet length
-  *
-  * Return: XDP state
-  */
--static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
--			struct page *page, u32 *len)
-+static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp, u32 *len)
- {
- 	struct net_device *ndev = emac->ndev;
- 	struct netdev_queue *netif_txq;
-@@ -767,7 +771,8 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
- 		q_idx = cpu % emac->tx_ch_num;
- 		netif_txq = netdev_get_tx_queue(ndev, q_idx);
- 		__netif_tx_lock(netif_txq, cpu);
--		result = emac_xmit_xdp_frame(emac, xdpf, page, q_idx);
-+		result = emac_xmit_xdp_frame(emac, xdpf, q_idx,
-+					     PRUETH_TX_BUFF_TYPE_XDP_TX);
- 		__netif_tx_unlock(netif_txq);
- 		if (result == ICSSG_XDP_CONSUMED) {
- 			ndev->stats.tx_dropped++;
-@@ -792,7 +797,6 @@ static u32 emac_run_xdp(struct prueth_emac *emac, struct xdp_buff *xdp,
- 		fallthrough; /* handle aborts by dropping packet */
- 	case XDP_DROP:
- 		ndev->stats.rx_dropped++;
--		page_pool_recycle_direct(emac->rx_chns.pg_pool, page);
- 		return ICSSG_XDP_CONSUMED;
- 	}
- }
-@@ -859,7 +863,11 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id, u32 *xdp_state)
- 		xdp_init_buff(&xdp, PAGE_SIZE, &rx_chn->xdp_rxq);
- 		xdp_prepare_buff(&xdp, pa, PRUETH_HEADROOM, pkt_len, false);
- 
--		*xdp_state = emac_run_xdp(emac, &xdp, page, &pkt_len);
-+		*xdp_state = emac_run_xdp(emac, &xdp, &pkt_len);
-+		if (*xdp_state == ICSSG_XDP_CONSUMED) {
-+			page_pool_recycle_direct(pool, page);
-+			goto requeue;
-+		}
- 		if (*xdp_state != ICSSG_XDP_PASS)
- 			goto requeue;
- 		headroom = xdp.data - xdp.data_hard_start;
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 5d2896f74987..6d31a13d9f2a 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -1154,7 +1154,8 @@ static int emac_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frame
- 	__netif_tx_lock(netif_txq, cpu);
- 	for (i = 0; i < n; i++) {
- 		xdpf = frames[i];
--		err = emac_xmit_xdp_frame(emac, xdpf, NULL, q_idx);
-+		err = emac_xmit_xdp_frame(emac, xdpf, q_idx,
-+					  PRUETH_TX_BUFF_TYPE_XDP_NDO);
- 		if (err != ICSSG_XDP_TX) {
- 			ndev->stats.tx_dropped++;
- 			break;
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index d8b068194fb6..eb76df7b5187 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -153,6 +153,11 @@ enum prueth_swdata_type {
- 	PRUETH_SWDATA_XSK,
- };
- 
-+enum prueth_tx_buff_type {
-+	PRUETH_TX_BUFF_TYPE_XDP_TX,
-+	PRUETH_TX_BUFF_TYPE_XDP_NDO,
-+};
-+
- struct prueth_swdata {
- 	enum prueth_swdata_type type;
- 	union prueth_data {
-@@ -501,8 +506,8 @@ void prueth_put_cores(struct prueth *prueth, int slice);
- u64 icssg_ts_to_ns(u32 hi_sw, u32 hi, u32 lo, u32 cycle_time_ns);
- u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
- 			struct xdp_frame *xdpf,
--			struct page *page,
--			unsigned int q_idx);
-+			unsigned int q_idx,
-+			enum prueth_tx_buff_type buff_type);
- void prueth_rx_cleanup(void *data, dma_addr_t desc_dma);
- void prueth_tx_cleanup(void *data, dma_addr_t desc_dma);
- static inline bool prueth_xdp_is_enabled(struct prueth_emac *emac)
+>>>>>>
+net: phy: fix phy_uses_state_machine()
+
+The blamed commit changed the conditions which phylib uses to stop
+and start the state machine in the suspend and resume paths, and
+while improving it, has caused two issues.
+
+The original code used this test:
+
+        phydev->attached_dev && phydev->adjust_link
+
+and if true, the paths would handle the PHY state machine. This test
+evaluates true for normal drivers that are using phylib directly
+while the PHY is attached to the network device, but false in all
+other cases, which include the following cases:
+
+- when the PHY has never been attached to a network device.
+- when the PHY has been detached from a network device (as phy_detach()
+   sets phydev->attached_dev to NULL, phy_disconnect() calls
+   phy_detach() and additionally sets phydev->adjust_link NULL.)
+- when phylink is using the driver (as phydev->adjust_link is NULL.)
+
+Only the third case was incorrect, and the blamed commit attempted to
+fix this by changing this test to (simplified for brevity, see
+phy_uses_state_machine()):
+
+        phydev->phy_link_change == phy_link_change ?
+                phydev->attached_dev && phydev->adjust_link : true
+
+However, this also incorrectly evaluates true in the first two cases.
+
+Fix the first case by ensuring that phy_uses_state_machine() returns
+false when phydev->phy_link_change is NULL.
+
+Fix the second case by ensuring that phydev->phy_link_change is set to
+NULL when phy_detach() is called.
+<<<<<<
+
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
