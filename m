@@ -1,110 +1,97 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105EE243387;
-	Mon,  1 Sep 2025 06:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8590218EB0;
+	Mon,  1 Sep 2025 06:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756707227; cv=none; b=JS1p7TvFYo8mK7ql1f8MLSchLpEDP6igJNLM+enHLl6s1loRRGcIJHwYIBFBtb2vNCAgJ0Fb0HiKDwfsz3XCkUkORWVjmCPrcfoBo44qhCDUTjTAD7a3WP0GcrZC7mq7Vusb1IPvLTEwG9R93z4n4bH2BxjtfGrcI440pbpWDxQ=
+	t=1756707636; cv=none; b=Jvvay8U2+fmKT3ZNtg3VQl6aWtMZCcR4hBYk+d1h4r+IUlsy+BkVcaMuvox0t1AILC3dqHBM8fjLnnZPpyWNOUIOTgsZt6wZdlUaK4C/mcJ1oykz5jW/xnW6cVdHhkMrS4TCYOu18UO6LfaUaV/K1zPaBOlyiH2My3TmXC0fEt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756707227; c=relaxed/simple;
-	bh=iWksOuz81IN6BV5iTCJjwMYDhRNOajjO5thlNpVHR2o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bt9bR6+H/JWvZLFZRVw16oFGr/AZTFlKygdo4Vv4WzHLrUf/mFpt4rV+t7wLLETaoEzGSFGXpH4JhWIDsa0hLy0KqfmKP1lEuaXKBoNZ88WSVtJKaE9btRUr/tVWsHusIbs4H9eNo5NR4JUGwmm5psExRT8q6oAUoaMXyVGSsLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cFdkh3qbpz13NGc;
-	Mon,  1 Sep 2025 14:09:48 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0A972180064;
-	Mon,  1 Sep 2025 14:13:37 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 1 Sep
- 2025 14:13:35 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <kuniyu@google.com>,
-	<wangliang74@huawei.com>, <kay.sievers@vrfy.org>, <gregkh@suse.de>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: atm: fix memory leak in atm_register_sysfs when device_register fail
-Date: Mon, 1 Sep 2025 14:35:37 +0800
-Message-ID: <20250901063537.1472221-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1756707636; c=relaxed/simple;
+	bh=FYMe2bEyQnHgG7oiRFnq7nlgkYuj3AThOUClM2uvShE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hfl3h7DXZjPHYhNoUZ0br9MBINNw2A1MXNBVr9zoYj7YFZDpjg41pDPdoeU64t3ltjF4Wqq4LW0bbtvqxSoLFL0GDvKup8iljyuZv5nTI9TfSBQMs03wy5BtIoZESL/ISqSrWav7YTtf8N0Z8jrvJ/9C0qiqRjnmWni8uNnvjRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=eIoyUcYt; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="eIoyUcYt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1756707634; x=1788243634;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=FYMe2bEyQnHgG7oiRFnq7nlgkYuj3AThOUClM2uvShE=;
+  b=eIoyUcYtF2dUHFbcsbmiAaLBy24/Hl5zemgMm4nJg99bXtl6zt0e2u9A
+   e6ABPo2hTcislw7H1SjIEB1vrCPuX4MAagzOLHFCJwY82DIm9SQqY/A0L
+   jy2nyXqBg5XdVvKo5xtIHMz6tmZdO5hGPsjl+NFDP4rg/WOi+gg39Q93j
+   CUl/AS4CtTmo74Xf0njZFgc3ByeZDjNqPayjDEEnuFIcww6SEdm1arB5r
+   dmS2rY+P4CNP7nyepiHLbsAy2Uns6Iu45ezBEacGVP3rnbEExWGB/hyYm
+   F01cGJsXwlCeZh1xUJHtOFNDUJIf2VfZTwMjmd1slp8g7i2fRlE/6WKAj
+   w==;
+X-CSE-ConnectionGUID: XhbRIGuUQGKz55BN2RxhtQ==
+X-CSE-MsgGUID: M1AGaSGDRY20lkXyt/N5RQ==
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="45874794"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 31 Aug 2025 23:20:27 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Sun, 31 Aug 2025 23:20:08 -0700
+Received: from localhost (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.44 via Frontend
+ Transport; Sun, 31 Aug 2025 23:20:08 -0700
+Date: Mon, 1 Sep 2025 08:16:30 +0200
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: Kory Maincent <kory.maincent@bootlin.com>
+CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>,
+	<Parthiban.Veerasooran@microchip.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v5 1/2] net: phy: micrel: Introduce function
+ __lan8814_ptp_probe_once
+Message-ID: <20250901061630.rddeuz7yclmxl6w3@DEN-DL-M31836.microchip.com>
+References: <20250829134836.1024588-1-horatiu.vultur@microchip.com>
+ <20250829134836.1024588-2-horatiu.vultur@microchip.com>
+ <20250829163341.17712e59@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+In-Reply-To: <20250829163341.17712e59@kmaincent-XPS-13-7390>
 
-When device_register() return error in atm_register_sysfs(), which can be
-triggered by kzalloc fail in device_private_init() or other reasons,
-kmemleak reports the following memory leaks:
+The 08/29/2025 16:33, Kory Maincent wrote:
+> 
+> On Fri, 29 Aug 2025 15:48:35 +0200
+> Horatiu Vultur <horatiu.vultur@microchip.com> wrote:
+> 
+> > Introduce the function __lan8814_ptp_probe_once as this function will be
+> > used also by lan8842 driver. This change doesn't have any functional
+> > changes.
+> 
+> It would have been nice to add the fact that the lan8842 has a different number
+> GPIO in the commit message. It would have explained more the why.
 
-unreferenced object 0xffff88810182fb80 (size 8):
-  comm "insmod", pid 504, jiffies 4294852464
-  hex dump (first 8 bytes):
-    61 64 75 6d 6d 79 30 00                          adummy0.
-  backtrace (crc 14dfadaf):
-    __kmalloc_node_track_caller_noprof+0x335/0x450
-    kvasprintf+0xb3/0x130
-    kobject_set_name_vargs+0x45/0x120
-    dev_set_name+0xa9/0xe0
-    atm_register_sysfs+0xf3/0x220
-    atm_dev_register+0x40b/0x780
-    0xffffffffa000b089
-    do_one_initcall+0x89/0x300
-    do_init_module+0x27b/0x7d0
-    load_module+0x54cd/0x5ff0
-    init_module_from_file+0xe4/0x150
-    idempotent_init_module+0x32c/0x610
-    __x64_sys_finit_module+0xbd/0x120
-    do_syscall_64+0xa8/0x270
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Yes, I will update this in the next version.
+Thanks.
 
-When device_create_file() return error in atm_register_sysfs(), the same
-issue also can be triggered.
+> 
+> Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+> 
+> Thank you!
+> 
+> --
+> Köry Maincent, Bootlin
+> Embedded Linux and kernel engineering
+> https://bootlin.com
 
-Function put_device() should be called to release kobj->name memory and
-other device resource, instead of kfree().
-
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- net/atm/resources.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index b19d851e1f44..7c6fdedbcf4e 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -112,7 +112,9 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 
- 	if (atm_proc_dev_register(dev) < 0) {
- 		pr_err("atm_proc_dev_register failed for dev %s\n", type);
--		goto out_fail;
-+		mutex_unlock(&atm_dev_mutex);
-+		kfree(dev);
-+		return NULL;
- 	}
- 
- 	if (atm_register_sysfs(dev, parent) < 0) {
-@@ -128,7 +130,7 @@ struct atm_dev *atm_dev_register(const char *type, struct device *parent,
- 	return dev;
- 
- out_fail:
--	kfree(dev);
-+	put_device(&dev->class_dev);
- 	dev = NULL;
- 	goto out;
- }
 -- 
-2.34.1
-
+/Horatiu
