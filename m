@@ -1,173 +1,199 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E123101D5
-	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 09:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9040D155C82;
+	Mon,  1 Sep 2025 09:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718874; cv=none; b=Gxb41pRHkLSpkEGNv0bSxP0Wi2VXrOihXZ6AsW3CeHI2XroZAtw74TsmuTuCwmUBia6YBJljhjWI/xh/UwcoAjfBNHP+mImFKO8OUskLy2ygvfYgij6AIaG5qLk8GoCE1ip1j58pzYw3Lzth/VTlHFR6PeXLh8h/uxsFSMPNSl0=
+	t=1756718899; cv=none; b=InQ6fOAIn5SHYi0RflgsBZ0Ba8gBDlZXxTkcyP+JdD/de9l18Q26h2S6KW/VYsZhp8odamO755RpD6I7EKOToEWRjcAdpYJxaviwVHt1NxY1pOIHBFHm7s6dGeJNQZO36DgvBuYe04l6MDrE9cYddHf/2RF7VTT/ghr1CcyWAoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718874; c=relaxed/simple;
-	bh=pxQMSu6dX1cCKNbLSP+l++80EfmSBr72xvrQWh5zGbk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cCQ1limMukr0wf+hZD+1UTGRCkYi0YcVDqdbsE1GzTcRPWD3cRwHwZG45ZDAe8UyjYlFro3SQNhIyLGdjv3f/CyOGE6h08/Mnv/s1rUOl9FJkiWzykCPKVrVT0RSCzSOOCldxzo74K6PEe8VocmOE5EpZg79tMS1nP7s3kmj3w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=L4Af9Udn; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1756718899; c=relaxed/simple;
+	bh=DUPSs7T3pM9N+lJG7lVauIe6l9wTs6lShmFMvpw03O4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ofqRqo6R3Eh1W5zHEEwTK6QTo6yZAx3YWwjcYqL6/73t8Lg0wGh8MPju95d1cmToSQfpla4VevmEUc5esvv8Y+Nx+B2QyVYHXdcLBqp20sq/BPhHEq++7r1BUeo71ZsqIWzD7JTof5gn/zUrqz6I07TgG/PtUrAviiqkd0GSxqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=a/5wo1uq; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="L4Af9Udn"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afec56519c8so688374966b.2
-        for <netdev@vger.kernel.org>; Mon, 01 Sep 2025 02:27:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1756718869; x=1757323669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v2bX7K172EAX0v9QdDM45QX7qnW31zLAa+k2k6RxGSg=;
-        b=L4Af9UdnSkB/QeHYdU5JSGORvwf+xFrJ5vgyNi1fgQ8PEupgj1kPBO3OfT2DgEnuOc
-         SGYn4ZP4yL/ktUVkIRfZlD2e/DoMx9D/KgCVLugVKBNEtbjbccHWLqD1I64AxlmwW3xW
-         8kjG8+b/eWG6fylv4EOX2IGd6h6y5XstCWp+gSfmv189pOYpcYaNfk8ZEANDrV2wNXxJ
-         rjiJhMJXkzaw7uzqi5ORFWHrqHmaukhcHmRLH2IAaduSMvnin+4xP2JPsdifbxutCmqY
-         T/f1u1ix1+LPNg0Lr3Z6uQnz/WdrX+XggKmQBbhPsvO1JZvV+kfAlW0WAmABuxqePv3r
-         CjIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756718869; x=1757323669;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v2bX7K172EAX0v9QdDM45QX7qnW31zLAa+k2k6RxGSg=;
-        b=u9FIfExT7f4izpLFHVXXy0t3/QIDVnAppO59+wz5Henqsvwiy7K6EKrRhIhcVhxAQs
-         c7McY2jIxix7/pwfqZ0M4j42RW6dHoPzeAd6MTbxTrSztakx0vTInfZfD0GVZ5IeGWOD
-         PIWFe6vm89tTXV/u3B7xZALskAKy2M/3NxQCbsRybpdACn5C9IE3u9dSDjf6L8wqqnLz
-         69aslyaMmpLMsYWNwGPm2JDERtYpiam6HqF/8n8dp+AESuAMA7xvnwyO0K/cOJeHCZcS
-         0ufuZWAoLo3aSYY0HI8toWO0C1nWeZw9MbqVt5UILaKPHkayTStz/knTreqBvB2mEaY3
-         EOZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTWcN1E7W/5kyX/OTQWHk1W2L3ZmrTO4O2lUbS4AhevK8j66g6qARZ3z8lbkYp6TMA+KxyA0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8u6gujKhjgXhjttBHvJKLUpJOZtLes5sX1nkRPySacmZxavDk
-	Gnwx9hmDmukGTSR8TPh3mv3ZDRrUQJxQx12vgI/B0ASyI0oSyLmXRBbyiR2iy8Mxfsk=
-X-Gm-Gg: ASbGncvGj5mk80ajuNxNKzvSGWIxHuDPBE3Yi2j+IQFs0jE8+ZI2x3K12BCwMGZdpIo
-	jqT+KeX4cUhXunyI9uKJueVTRqD2zIrXsrOC8YZsyEmoxOIWInrC8iEHAC+Mm8QJE9XIrRUReHT
-	TvFKqVOiQvJiorAzQ45CLrHYAbxX25e6R1koyvd7e1WPHa0lEL2lhAJZqSFsTlUQAXNxeneISjV
-	R/aSR74bRQ/ElYMDoSgoudI6WNscysLxQ+KVfx86sBAT7Nea8lnZHI9S3KL0C9qGDace6PGsE0F
-	IY9pxpKIIoI2p7i3OmZE9iDUmTyUU1X/oUrCjX368nWHR774VBps/RtaEoEe9lV9W7BzuOXyVev
-	Q12N31I5v248XA3REdfkhw+Lj3w==
-X-Google-Smtp-Source: AGHT+IG1Z7XOr1oPLlEpDF1RLiGTEBx087MJzn2tzoiyFYDQPnfivbRGt2IX7Taj3bVJGrG/hGOXqg==
-X-Received: by 2002:a17:907:60d5:b0:afe:ef08:7638 with SMTP id a640c23a62f3a-b01d97544d6mr832308266b.33.1756718869394;
-        Mon, 01 Sep 2025 02:27:49 -0700 (PDT)
-Received: from cloudflare.com ([2a09:bac5:5063:295f::41f:42])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b042dcb9105sm186430166b.2.2025.09.01.02.27.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 02:27:48 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf <bpf@vger.kernel.org>,  Martin KaFai Lau <martin.lau@linux.dev>,
-  Alexei Starovoitov <ast@kernel.org>,  Andrii Nakryiko
- <andrii@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>,  kernel-team
- <kernel-team@cloudflare.com>,  Network Development
- <netdev@vger.kernel.org>,  kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH bpf-next] bpf: stub out skb metadata dynptr read/write
- ops when CONFIG_NET=n
-In-Reply-To: <CAADnVQL_8guWC9io1P5jhTgnyD3u=0WvTnHM3DJFVvE_Sy7DBw@mail.gmail.com>
-	(Alexei Starovoitov's message of "Wed, 27 Aug 2025 09:05:06 -0700")
-References: <20250827-dynptr-skb-meta-no-net-v1-1-42695c402b16@cloudflare.com>
-	<CAADnVQL_8guWC9io1P5jhTgnyD3u=0WvTnHM3DJFVvE_Sy7DBw@mail.gmail.com>
-Date: Mon, 01 Sep 2025 11:27:47 +0200
-Message-ID: <87plca5xpo.fsf@cloudflare.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="a/5wo1uq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1756718897; x=1788254897;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DUPSs7T3pM9N+lJG7lVauIe6l9wTs6lShmFMvpw03O4=;
+  b=a/5wo1uqOuWipDu2vUZJ8PP9eVilXbUNjnqQD2FYgQTYlSU6qodp5AQq
+   gpuyXJi2ejpQ9ojW2M2Wnpzxi9HqQ0sboj8JXsvMsq6hJuCIIb6D6PLJd
+   QjfxRl0iMpzpO64AOT2KiCYEmYeYgUKIZDpb3FBfQZvLJxW8BDqc9Bl06
+   IqFETaUYdeNjnbaAJop0F4LhBkpfDXvOO9O9yfOenS9Zz4YbZ8olJ4L59
+   nCQF54xal+MUWG+8F95tdqh8M5mpYSUwqpLd7wj3+H+5SDk5j7DspQ4Tj
+   zBhD40MhxbVHFPavEoJi+eK16H//q1fisuiJgEW0Y5sUOFzV4ueFuDOeu
+   w==;
+X-CSE-ConnectionGUID: GCHXHv5qSAmReGJH6Y8DgA==
+X-CSE-MsgGUID: Fl1omcU3Q4mtbSCeKhLiSQ==
+X-IronPort-AV: E=Sophos;i="6.18,225,1751266800"; 
+   d="scan'208";a="213300962"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 01 Sep 2025 02:28:15 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 1 Sep 2025 02:27:46 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Mon, 1 Sep 2025 02:27:43 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>, <vadim.fedorenko@linux.dev>,
+	<vladimir.oltean@nxp.com>, <viro@zeniv.linux.org.uk>, <atenart@kernel.org>,
+	<quentin.schulz@bootlin.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net v2] phy: mscc: Stop taking ts_lock for tx_queue and use its own lock
+Date: Mon, 1 Sep 2025 11:23:04 +0200
+Message-ID: <20250901092304.1312787-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, Aug 27, 2025 at 09:05 AM -07, Alexei Starovoitov wrote:
-> On Wed, Aug 27, 2025 at 3:48=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.=
-com> wrote:
->>
->> Kernel Test Robot reported a compiler warning - a null pointer may be
->> passed to memmove in __bpf_dynptr_{read,write} when building without
->> networking support.
->>
->> The warning is correct from a static analysis standpoint, but not actual=
-ly
->> reachable. Without CONFIG_NET, creating dynptrs to skb metadata is
->> impossible since the constructor kfunc is missing.
->>
->> Fix this the same way as for skb and xdp data dynptrs. Add wrappers for
->> loading and storing bytes to skb metadata, and stub them out to return an
->> error when CONFIG_NET=3Dn.
->>
->> Fixes: 6877cd392bae ("bpf: Enable read/write access to skb metadata thro=
-ugh a dynptr")
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202508212031.ir9b3B6Q-lkp@=
-intel.com/
->> Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
->> ---
->>  include/linux/filter.h | 26 ++++++++++++++++++++++++++
->>  kernel/bpf/helpers.c   |  6 ++----
->>  2 files changed, 28 insertions(+), 4 deletions(-)
->>
->> diff --git a/include/linux/filter.h b/include/linux/filter.h
->> index 9092d8ea95c8..5b0d7c5824ac 100644
->> --- a/include/linux/filter.h
->> +++ b/include/linux/filter.h
->> @@ -1779,6 +1779,20 @@ void *bpf_xdp_pointer(struct xdp_buff *xdp, u32 o=
-ffset, u32 len);
->>  void bpf_xdp_copy_buf(struct xdp_buff *xdp, unsigned long off,
->>                       void *buf, unsigned long len, bool flush);
->>  void *bpf_skb_meta_pointer(struct sk_buff *skb, u32 offset);
->> +
->> +static inline int __bpf_skb_meta_load_bytes(struct sk_buff *skb,
->> +                                           u32 offset, void *to, u32 le=
-n)
->> +{
->> +       memmove(to, bpf_skb_meta_pointer(skb, offset), len);
->> +       return 0;
->> +}
->> +
->> +static inline int __bpf_skb_meta_store_bytes(struct sk_buff *skb, u32 o=
-ffset,
->> +                                            const void *from, u32 len)
->> +{
->> +       memmove(bpf_skb_meta_pointer(skb, offset), from, len);
->> +       return 0;
->> +}
->>  #else /* CONFIG_NET */
->>  static inline int __bpf_skb_load_bytes(const struct sk_buff *skb, u32 o=
-ffset,
->>                                        void *to, u32 len)
->> @@ -1818,6 +1832,18 @@ static inline void *bpf_skb_meta_pointer(struct s=
-k_buff *skb, u32 offset)
->>  {
->>         return NULL;
->>  }
->> +
->> +static inline int __bpf_skb_meta_load_bytes(struct sk_buff *skb, u32 of=
-fset,
->> +                                           void *to, u32 len)
->> +{
->> +       return -EOPNOTSUPP;
->> +}
->> +
->> +static inline int __bpf_skb_meta_store_bytes(struct sk_buff *skb, u32 o=
-ffset,
->> +                                            const void *from, u32 len)
->> +{
->> +       return -EOPNOTSUPP;
->> +}
->
-> imo that's too much to shut up the warn.
-> Maybe make:
-> static inline void *bpf_skb_meta_pointer(struct sk_buff *skb, u32 offset)
-> {
->         return NULL;
-> }
->
-> to return ERR_PTR(-EOPNOTSUPP);
->
-> instead?
+When transmitting a PTP frame which is timestamp using 2 step, the
+following warning appears if CONFIG_PROVE_LOCKING is enabled:
+=============================
+[ BUG: Invalid wait context ]
+6.17.0-rc1-00326-ge6160462704e #427 Not tainted
+-----------------------------
+ptp4l/119 is trying to lock:
+c2a44ed4 (&vsc8531->ts_lock){+.+.}-{3:3}, at: vsc85xx_txtstamp+0x50/0xac
+other info that might help us debug this:
+context-{4:4}
+4 locks held by ptp4l/119:
+ #0: c145f068 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x58/0x1440
+ #1: c29df974 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock){+...}-{2:2}, at: __dev_queue_xmit+0x5c4/0x1440
+ #2: c2aaaad0 (_xmit_ETHER#2){+.-.}-{2:2}, at: sch_direct_xmit+0x108/0x350
+ #3: c2aac170 (&lan966x->tx_lock){+.-.}-{2:2}, at: lan966x_port_xmit+0xd0/0x350
+stack backtrace:
+CPU: 0 UID: 0 PID: 119 Comm: ptp4l Not tainted 6.17.0-rc1-00326-ge6160462704e #427 NONE
+Hardware name: Generic DT based system
+Call trace:
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x7c/0xac
+ dump_stack_lvl from __lock_acquire+0x8e8/0x29dc
+ __lock_acquire from lock_acquire+0x108/0x38c
+ lock_acquire from __mutex_lock+0xb0/0xe78
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from vsc85xx_txtstamp+0x50/0xac
+ vsc85xx_txtstamp from lan966x_fdma_xmit+0xd8/0x3a8
+ lan966x_fdma_xmit from lan966x_port_xmit+0x1bc/0x350
+ lan966x_port_xmit from dev_hard_start_xmit+0xc8/0x2c0
+ dev_hard_start_xmit from sch_direct_xmit+0x8c/0x350
+ sch_direct_xmit from __dev_queue_xmit+0x680/0x1440
+ __dev_queue_xmit from packet_sendmsg+0xfa4/0x1568
+ packet_sendmsg from __sys_sendto+0x110/0x19c
+ __sys_sendto from sys_send+0x18/0x20
+ sys_send from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf0b05fa8 to 0xf0b05ff0)
+5fa0:                   00000001 0000000e 0000000e 0004b47a 0000003a 00000000
+5fc0: 00000001 0000000e 00000000 00000121 0004af58 00044874 00000000 00000000
+5fe0: 00000001 bee9d420 00025a10 b6e75c7c
 
-Much nicer. Thanks for the suggestion.
+So, instead of using the ts_lock for tx_queue, use the spinlock that
+skb_buff_head has.
+
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+
+---
+v1->v2:
+- initialize tx_queue in ptp_probe
+- purge the tx_queue when the driver is removed or when TX timestamping
+  is OFF
+---
+ drivers/net/phy/mscc/mscc_ptp.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index 72847320cb652..e866a1d865f8b 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -461,7 +461,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		return;
+ 
+ 	while (len--) {
+-		skb = __skb_dequeue(&ptp->tx_queue);
++		skb = skb_dequeue(&ptp->tx_queue);
+ 		if (!skb)
+ 			return;
+ 
+@@ -486,7 +486,7 @@ static void vsc85xx_dequeue_skb(struct vsc85xx_ptp *ptp)
+ 		 * packet in the FIFO right now, reschedule it for later
+ 		 * packets.
+ 		 */
+-		__skb_queue_tail(&ptp->tx_queue, skb);
++		skb_queue_tail(&ptp->tx_queue, skb);
+ 	}
+ }
+ 
+@@ -1068,6 +1068,7 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
+ 	case HWTSTAMP_TX_ON:
+ 		break;
+ 	case HWTSTAMP_TX_OFF:
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 		break;
+ 	default:
+ 		return -ERANGE;
+@@ -1092,9 +1093,6 @@ static int vsc85xx_hwtstamp(struct mii_timestamper *mii_ts,
+ 
+ 	mutex_lock(&vsc8531->ts_lock);
+ 
+-	__skb_queue_purge(&vsc8531->ptp->tx_queue);
+-	__skb_queue_head_init(&vsc8531->ptp->tx_queue);
+-
+ 	/* Disable predictor while configuring the 1588 block */
+ 	val = vsc85xx_ts_read_csr(phydev, PROCESSOR,
+ 				  MSCC_PHY_PTP_INGR_PREDICTOR);
+@@ -1180,9 +1178,7 @@ static void vsc85xx_txtstamp(struct mii_timestamper *mii_ts,
+ 
+ 	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+ 
+-	mutex_lock(&vsc8531->ts_lock);
+-	__skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+-	mutex_unlock(&vsc8531->ts_lock);
++	skb_queue_tail(&vsc8531->ptp->tx_queue, skb);
+ 	return;
+ 
+ out:
+@@ -1548,6 +1544,7 @@ void vsc8584_ptp_deinit(struct phy_device *phydev)
+ 	if (vsc8531->ptp->ptp_clock) {
+ 		ptp_clock_unregister(vsc8531->ptp->ptp_clock);
+ 		skb_queue_purge(&vsc8531->rx_skbs_list);
++		skb_queue_purge(&vsc8531->ptp->tx_queue);
+ 	}
+ }
+ 
+@@ -1571,7 +1568,7 @@ irqreturn_t vsc8584_handle_ts_interrupt(struct phy_device *phydev)
+ 	if (rc & VSC85XX_1588_INT_FIFO_ADD) {
+ 		vsc85xx_get_tx_ts(priv->ptp);
+ 	} else if (rc & VSC85XX_1588_INT_FIFO_OVERFLOW) {
+-		__skb_queue_purge(&priv->ptp->tx_queue);
++		skb_queue_purge(&priv->ptp->tx_queue);
+ 		vsc85xx_ts_reset_fifo(phydev);
+ 	}
+ 
+@@ -1591,6 +1588,7 @@ int vsc8584_ptp_probe(struct phy_device *phydev)
+ 	mutex_init(&vsc8531->phc_lock);
+ 	mutex_init(&vsc8531->ts_lock);
+ 	skb_queue_head_init(&vsc8531->rx_skbs_list);
++	skb_queue_head_init(&vsc8531->ptp->tx_queue);
+ 
+ 	/* Retrieve the shared load/save GPIO. Request it as non exclusive as
+ 	 * the same GPIO can be requested by all the PHYs of the same package.
+-- 
+2.34.1
+
