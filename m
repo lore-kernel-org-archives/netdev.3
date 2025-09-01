@@ -1,42 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB97E2327A3;
-	Mon,  1 Sep 2025 13:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CED33A003
+	for <netdev@vger.kernel.org>; Mon,  1 Sep 2025 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756734613; cv=none; b=FpJ+sAn5o5A4YUOlF7SqvG6GCJbxqH/5AEyPceeapqZ028zuQ/GxcvwaGvJDyT54hGIWLs8p7AtOv5qSR2aA/y0OnwybB40lv30XV4VowVFtW2jofiUWiQ/+ocjZwlslJLUjjTbiV+kWI3+oIeHRgb/uv0nFrLNgZlKoHlfnhh0=
+	t=1756734998; cv=none; b=QHykBFfNs5/urRFTUuSUsWnL/lKzIafjYykZw1eBr0r9SZfNiteK7vUvasBsNyH4Ciktkd3XWkLPxs/vqFMULgyt+8CMcyWokz8kDiKH4EBBXeJTp5NdBFElHlDPCl3pcDkbKIV+UT+7WWfaZJhip6aG8KLQ4aRJ8of/7WNyRKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756734613; c=relaxed/simple;
-	bh=jGIDM6obL+9eY84QltDCoL1pALb6doR94h6nUuX618I=;
+	s=arc-20240116; t=1756734998; c=relaxed/simple;
+	bh=asAQ1rU9wQg5Jw8z/zz8HqbStFkcokLIB+1C8gbNlTQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=giK6xaOrdBLUhPZaDFWnBnMw3ZQ0gNSrurklxOlCWKHK7LbA0adS7p62sVJITSlfyn8yP9jrjDBSowmFMr2ABUk8pCreYL30w1I8tS7s0quW6PidJYrIPWbGGaKeaEnjDTaYfvlSs8tdLHtoIgVLyB7XNeRCr7bEru75xPgx3hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zyle+fcC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7JDbWygwUmNwXh/SNVri1ATMiZ27uithapcWI+QYGdxQ6aVNhRfFWcWGC9om3v5gbf15ZMD1ashHJWYyJDp++m3f90MBfuEC9jLkZQ7nIer53ZrROTSKq6y894kJ1rHms2RH3wDLloraepp4Pa0ljzFwUZri9T7gqLSQdEcP9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwx9lZUN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zyle+fcC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47170C4CEF1;
-	Mon,  1 Sep 2025 13:50:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwx9lZUN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A7FC4CEF1;
+	Mon,  1 Sep 2025 13:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756734612;
-	bh=jGIDM6obL+9eY84QltDCoL1pALb6doR94h6nUuX618I=;
+	s=k20201202; t=1756734998;
+	bh=asAQ1rU9wQg5Jw8z/zz8HqbStFkcokLIB+1C8gbNlTQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zyle+fcCf79Ug4opxaUokSYrLVFoQCkEIBgyqYG6oZ1S05muuk5IOnI5KFm+YNbSq
-	 G/Wi69fFjkml9tCGkwWOikDE6T+L7gY+WWH9vB5kMk/JQrYNgll52do5eRFncN4V0p
-	 Syf6WHjA1HO+j2IDtyRrzKsfDu+2Ytl5wTMIZ5f1wRdT/YmmBBrIPf42O4ZUmmHfCU
-	 6XMm1ajOV8vzh4f3u+F8V6P+j1PUHqemt8tbM02WD0gLpD9Jv2+dPr8ppJTFx4/OEy
-	 4eF/5S5m1iVIGCVCLeDoA3a0dKqG8qQLdNIIHI5agdI8IFJAiedn+HhtLVz0YKc/+W
-	 +heRGDXpSdauw==
-Date: Mon, 1 Sep 2025 14:50:08 +0100
+	b=jwx9lZUNn5ud6c3n50UvP8qILOvFaDF9ecgpIMT+IhtAE1GICx2ncUFL52zwD52QR
+	 RNIkVrYh20XkvqT9qPl5Fb3DNbz2bF+xbEEcOPkcu4zaeVMUl/YQdIgURBelQIrctk
+	 w9mm3LClKEAKppAfjjBuvZAZY4LsIC+jwdHONqtpbZZEP2CcgR0neVI1KCB81hxDeI
+	 bVKW52nrJyFnN1yIXDeA+iAHkQEGt3bJtn3KpNFmP6A/TqYJFdOhJOnB+9Cg2ngn34
+	 gl7GKWREc8ILb+LhZBgHdIyZvAF4eWwAWy06pDQXh4g5Hs8Kx6tF+TAnRiXtXdHHpr
+	 739dR6kWtkLCQ==
+Date: Mon, 1 Sep 2025 14:56:35 +0100
 From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, ecree.xilinx@gmail.com,
-	gal@nvidia.com, joe@dama.to, linux-kselftest@vger.kernel.org,
-	shuah@kernel.org
-Subject: Re: [PATCH net-next 1/2] selftests: drv-net: rss_ctx: use Netlink
- for timed reconfig
-Message-ID: <20250901135008.GC15473@horms.kernel.org>
-References: <20250829220712.327920-1-kuba@kernel.org>
+To: Madhu Chittim <madhu.chittim@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3] idpf: add support for IDPF PCI programming
+ interface
+Message-ID: <20250901135635.GD15473@horms.kernel.org>
+References: <20250829172453.2059973-1-madhu.chittim@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,72 +42,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250829220712.327920-1-kuba@kernel.org>
+In-Reply-To: <20250829172453.2059973-1-madhu.chittim@intel.com>
 
-On Fri, Aug 29, 2025 at 03:07:11PM -0700, Jakub Kicinski wrote:
-> The rss_ctx test has gotten pretty flaky after I increased
-> the queue count in NIPA 2->3. Not 100% clear why. We get
-> a lot of failures in the rss_ctx.test_hitless_key_update case.
+On Fri, Aug 29, 2025 at 10:24:53AM -0700, Madhu Chittim wrote:
+> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
 > 
-> Looking closer it appears that the failures are mostly due
-> to startup costs. I measured the following timing for ethtool -X:
->  - python cmd(shell=True)  : 150-250msec
->  - python cmd(shell=False) :  50- 70msec
->  - timed in bash           :  45- 55msec
->  - YNL Netlink call        :   2-  4msec
->  - .set_rxfh callback      :   1-  2msec
+> At present IDPF supports only 0x1452 and 0x145C as PF and VF device IDs
+> on our current generation hardware. Future hardware exposes a new set of
+> device IDs for each generation. To avoid adding a new device ID for each
+> generation and to make the driver forward and backward compatible,
+> make use of the IDPF PCI programming interface to load the driver.
 > 
-> The target in the test was set to 200msec. We were mostly measuring
-> ethtool startup cost it seems. Switch to YNL since it's 100x faster.
+> Write and read the VF_ARQBAL mailbox register to find if the current
+> device is a PF or a VF.
 > 
-> Lower the pass criteria to ~75msec, no real science behind this number
-> but we removed ~150msec of overhead, and the old target was 200msec.
-> So any driver that was passing previously should still pass with 75msec.
+> PCI SIG allocated a new programming interface for the IDPF compliant
+> ethernet network controller devices. It can be found at:
+> https://members.pcisig.com/wg/PCI-SIG/document/20113
+> with the document titled as 'PCI Code and ID Assignment Revision 1.16'
+> or any latest revisions.
 > 
-> Separately we should probably follow up on defaulting to shell=False,
-> when script doesn't explicitly ask for True, because the overhead
-> is rather significant.
-
-+1
-
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+> Signed-off-by: Madhu Chittim <madhu.chittim@intel.com>
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  tools/testing/selftests/drivers/net/hw/rss_ctx.py | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-> index 9838b8457e5a..3fc5688605b5 100755
-> --- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-> +++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-> @@ -335,19 +335,20 @@ from lib.py import ethtool, ip, defer, GenerateTraffic, CmdExitFailure
->      data = get_rss(cfg)
->      key_len = len(data['rss-hash-key'])
->  
-> -    key = _rss_key_rand(key_len)
-> +    ethnl = EthtoolFamily()
-> +    key = random.randbytes(key_len)
+> v3:
+> - reworked logic to avoid gotos
 
-Is the update to the generation of key intended?
-It's not clear to me how it relates to the rest of the patch.
+Thanks,
 
->  
->      tgen = GenerateTraffic(cfg)
->      try:
->          errors0, carrier0 = get_drop_err_sum(cfg)
->          t0 = datetime.datetime.now()
-> -        ethtool(f"-X {cfg.ifname} hkey " + _rss_key_str(key))
-> +        ethnl.rss_set({"header": {"dev-index": cfg.ifindex}, "hkey": key})
->          t1 = datetime.datetime.now()
->          errors1, carrier1 = get_drop_err_sum(cfg)
->      finally:
->          tgen.wait_pkts_and_stop(5000)
->  
-> -    ksft_lt((t1 - t0).total_seconds(), 0.2)
-> +    ksft_lt((t1 - t0).total_seconds(), 0.075)
->      ksft_eq(errors1 - errors1, 0)
->      ksft_eq(carrier1 - carrier0, 0)
->  
-> -- 
-> 2.51.0
-> 
+I see that Paul has provided some review, which I don't disagree with.
+But overall this looks good to me. Feel free to add.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+...
