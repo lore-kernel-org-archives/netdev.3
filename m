@@ -1,161 +1,109 @@
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421B22FABF9;
-	Mon,  1 Sep 2025 09:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B953009FD;
+	Mon,  1 Sep 2025 09:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756718211; cv=none; b=ZPqHkcrOXb9tfq16I9IVIjq/JnUTDrh/9RPqaWuULSSt5Z91fWLEU7W9vU/Fu0jJz13E0HnasPvpeq55ykLpf+zNClwbFG/osrMm8s7L37jgvU3J5m+wAdgcbnKM+/SczIjFRE2AmkhSeIiqlGLQ5dqBqMrxow5nCcbUPl1ygvo=
+	t=1756718376; cv=none; b=Hgvhy3Kt8sqUmMT/LYZ8QWNZNLLHTCt8wHYu7ghREd9feP3KaUXFahYzEifUORti0UdGFGdQN17YzAzfShLVc1X3zsQ6G8ecCLeVteCEEus7OyomZX/zhkdSwVFf0ow0pQ4SiOGVUKy5dVbn6DoYfHmVvG0GzFJEa2YKpxN0PUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756718211; c=relaxed/simple;
-	bh=OftSgiL4UTkgXN7i1XR2xvfUsGm52/F6zYUJU4C9dlo=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=i9rS6yzIXULrZ/q6znUmf6A8eCAmj203lBIekCl2bmTeF2N4xN/553ZPjsOWQSKDlIQGbioJoAiI+zOHqeXQubi0XFh2V//pS7LxyOgRcRqgYXFJ3JTq72eGQhMnEJGtwq7ZL3l6sdXjVpDCxwlFCTO62f9HE7H1rqz2KFhqZOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=gr6i08uh; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1756718376; c=relaxed/simple;
+	bh=x9+qStFH3vhT6vgaL7AtTnwgZk8Tdmt87ijVQfufUtM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=rheALd4IEO56pk1qharP4tOI9hLxMCLcOztAj5gGvY2pr5NkJ3mU1WXwCn5DdHt2Nnl3z14SydWal6UE2ZM62Xb9Y7VUG8mVhLEIbVIGC14cf59FwlN2pjxFCtX1zMc8k9JQfNso2uifMpePXtf+U2TNDTF7ycWVO02fHbmv/nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=EtZkLnMT; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="gr6i08uh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1756717896;
-	bh=39FAD1QerJTJ2wPDicB9GX9umyPWc2w9EF21fWNdZbI=;
-	h=From:To:Cc:Subject:Date;
-	b=gr6i08uh+u+JSOiWQFZ0kR2D3J9VIOk2B83/oOpNiit5i89bzV083vCTKluRmavm7
-	 qp72TfcP/Ab/2IpiuaArr/tZPo9qysheurgB3doG0K6JI1gfU5Vyd9j5P/rAjFKpQO
-	 j9LGIcO5/V6uAFApM8OTgwLuhAJH/YmaIjnx0dqM=
-Received: from localhost.localdomain ([112.94.77.11])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 15734035; Mon, 01 Sep 2025 17:05:23 +0800
-X-QQ-mid: xmsmtpt1756717523tsm2mneqs
-Message-ID: <tencent_57056C4B1E98EF5C0517A5685B2E4D060508@qq.com>
-X-QQ-XMAILINFO: OZsapEVPoiO63+vEsiWKluVtiIBpWewsVodXuXNWp0lHvtfnS4+Vm87kD/r3Bc
-	 mjc6f8ekkcGEW4icjagtQHy81zLTTjkvjLddFHuPZndRa0A8LWmQoF/Kbjtda+R3ofzOmXRLgmAO
-	 oqJ0EMYzUMBh1ctrX5RBzYs/hQ4cPfFkPXqWm9NqNagz1IRYnKvYa2k9J14nb8UEldzrdAnbLiU6
-	 E5j3y4pGCwTZNnn+9MoB6CwpbTr8OS33PVB1s3+qRlbM9ABvRxwDjDY34LraRL7UueSLo3NpyV6x
-	 uQCWUeO1qH1lvpxdVS305wEa+yxSiYwrZuNyBozNdZNyS1fGTDy7JJjembuK4tVOmaK9Op3LHfh3
-	 jd0rfJ7au5NvskOH8h2vwz1sQZtYcKorr/U6E/fyFEkl+75YvFxQJUINKtAcJfByxgL0cY6Bpxgk
-	 PM47gjuv3kQryFJ8N/f2B+Z6Byzv4OzGhHcZcY0GtcYG3P6y+Ri1fIptaQx6PUNaI2x2aI3TT4dA
-	 //J/fRe0FWCrUJJf+6VejxIi56CuNKQouNwdUlz8H6s5xUCB69nvvZ9vATzlfU/QyA6ZMI9QY639
-	 w5/cljq1pV3G5NKksm4ggDB0Gv6R9HTH2tgNeCuoJqEyUGsQqfC8MMRf57Vo0395ddmsQCC3g4v9
-	 5pM5GdGxK49xJFO9QO8C3Zr/6HOPu0unvmyvYlcb3spk2oCT5DTwJ+HcMZSO666HcP7prRQzCnsX
-	 NugM8H4NPlexqiQBOaprITLJ9JqZWR+3s5evsDMXUIPZGE5fV1wY5chaRn25NePhwjrlZiZuaBj2
-	 fPYMBQx/GnrqwBIHieVumdRTbZ5+ScCQV5agE4TcM1eotn/s6+X1mMtxcGY7Gl4BQw73IDxhCGo2
-	 sK7ZoFMAM8eClZrrMKqt3UddMshgRozo9C+PRzsjG7jUATC+9lgOxuIRVanrQzLWaeirH3Lu9uYL
-	 TZaV4KuW6eacif1Y/DWSzT/HrxLCg+SPS8SL4hKnWSsTphdGEvnMXaqDdetRSPVZ5ckcK+/ZC01U
-	 cKVLfteP3R2AAvB55eJCUH9nMt5FOtMvjfm7Ebyw==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-From: Conley Lee <conleylee@foxmail.com>
-To: andrew@lunn.ch,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	wens@csie.org,
-	mripard@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	Conley Lee <conleylee@foxmail.com>
-Subject: [PATCH] arm: dts: add nand device in sun7i-a20-haoyu-marsboard.dts
-Date: Mon,  1 Sep 2025 17:05:21 +0800
-X-OQ-MSGID: <20250901090521.533710-1-conleylee@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="EtZkLnMT"
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5818RZ5O025349;
+	Mon, 1 Sep 2025 11:18:50 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	ZOIIyAi/+GlYEL6Pahn/kWUROmPQ14HPEuftxMS5fFg=; b=EtZkLnMTGcZVaH/F
+	7lMVN1cMkh4fc3S0pg0tlGW5h42V8oK+o3GJGFGzYbMGNyX+G1NdqD70kbIWkYVR
+	8qHunwkZDuwtBXdXJ5XxRP2g45dET0liMaq0iuWeH9ZbSVf7a6t/Abdp+o/IhbP+
+	TSe9/kqh65CZkMLJMUxSPzl01CL1LM2HbNOPyRdnFhEJAZibOdD+gC6yrcEwECw5
+	9teqcU3aa0mI6zLqc4mHFV8oKIwJumDxnRFtYG5pZiN69ODC8Wl194sp43kGkE4v
+	BmxziaJkv0L2D8oL0Gh+oF/eP7aQCW6hcnwHqDC4vsvrw2z3O70y22BOivJnvIUG
+	va5qrA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 48upqk6jtd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Sep 2025 11:18:50 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id EB4EC4004F;
+	Mon,  1 Sep 2025 11:17:29 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 43BAB765CFA;
+	Mon,  1 Sep 2025 11:16:37 +0200 (CEST)
+Received: from localhost (10.48.87.141) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Mon, 1 Sep
+ 2025 11:16:36 +0200
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Date: Mon, 1 Sep 2025 11:16:27 +0200
+Subject: [PATCH net-next v4 1/3] time: export timespec64_add_safe() symbol
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250901-relative_flex_pps-v4-1-b874971dfe85@foss.st.com>
+References: <20250901-relative_flex_pps-v4-0-b874971dfe85@foss.st.com>
+In-Reply-To: <20250901-relative_flex_pps-v4-0-b874971dfe85@foss.st.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, John Stultz <jstultz@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Stephen Boyd <sboyd@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        Gatien Chevallier
+	<gatien.chevallier@foss.st.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-01_04,2025-08-28_01,2025-03-28_01
 
-The Haoyu MarsBoard-A20 comes with an 8G Hynix NAND flash,
-and this commit adds this NAND device in the device tree.
+Export the timespec64_add_safe() symbol so that this function can be used
+in modules where computation of time related is done.
 
-Signed-off-by: Conley Lee <conleylee@foxmail.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
 ---
- .../allwinner/sun7i-a20-haoyu-marsboard.dts   | 67 +++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ kernel/time/time.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/allwinner/sun7i-a20-haoyu-marsboard.dts b/arch/arm/boot/dts/allwinner/sun7i-a20-haoyu-marsboard.dts
-index 097e479c2..62d775c4f 100644
---- a/arch/arm/boot/dts/allwinner/sun7i-a20-haoyu-marsboard.dts
-+++ b/arch/arm/boot/dts/allwinner/sun7i-a20-haoyu-marsboard.dts
-@@ -118,6 +118,58 @@ gmac_txerr: gmac-txerr-pin {
- 		pins = "PA17";
- 		function = "gmac";
- 	};
-+
-+	nand_pins_a: nand_base0@0 {
-+		pins = "PC0", "PC1", "PC2",
-+		"PC5", "PC8", "PC9", "PC10",
-+		"PC11", "PC12", "PC13", "PC14",
-+		"PC15", "PC16";
-+		function = "nand0";
-+		drive-strength = <10>;
-+	};
-+
-+	nand_cs0_pins_a: nand_cs@0 {
-+		pins = "PC4";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
-+	nand_cs1_pins_a: nand_cs@1 {
-+		pins = "PC3";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
-+	nand_cs2_pins_a: nand_cs@2 {
-+		pins = "PC17";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
-+	nand_cs3_pins_a: nand_cs@3 {
-+		pins = "PC18";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
-+	nand_rb0_pins_a: nand_rb@0 {
-+		pins = "PC6";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
-+	nand_rb1_pins_a: nand_rb@1 {
-+		pins = "PC7";
-+		function = "nand0";
-+		drive-strength = <10>;
-+		bias-pull-up;
-+	};
-+
- };
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 1b69caa87480e7615d44ef409b96c081f2d15395..0ba8e3c50d62570d7248dd02a80395cb0c51c42e 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -858,6 +858,7 @@ struct timespec64 timespec64_add_safe(const struct timespec64 lhs,
  
- &reg_ahci_5v {
-@@ -180,3 +232,18 @@ &usbphy {
- 	usb2_vbus-supply = <&reg_usb2_vbus>;
- 	status = "okay";
- };
-+
-+&nfc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&nand_pins_a>, <&nand_cs0_pins_a>, <&nand_rb0_pins_a>, <&nand_cs1_pins_a>, <&nand_rb1_pins_a>;
-+	status = "okay";
-+
-+	nand@0 {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		reg = <0>;
-+		allwinner,rb = <0>;
-+		nand-ecc-mode = "hw";
-+		nand-on-flash-bbt;
-+	};
-+};
+ 	return res;
+ }
++EXPORT_SYMBOL_GPL(timespec64_add_safe);
+ 
+ /**
+  * get_timespec64 - get user's time value into kernel space
+
 -- 
 2.25.1
 
