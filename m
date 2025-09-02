@@ -1,148 +1,253 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145F730E852;
-	Tue,  2 Sep 2025 13:18:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756819115; cv=none; b=CMdVhw4AyTTyWsbv7yxBqc+9ZD16G3lkntd9gJvf6rgvhUfXBUdC9RzEMCoMrlA+xf9iI3kBvU4U8SAwWuK9HJ0Yv8UZoq4mqllV+QMCFYb6PzaH5e+CyJAR3pV9FEIuB2DPpmqFwdMRU08bhfxYLZDR0bNJgyadC4dZ2EDdwJs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756819115; c=relaxed/simple;
-	bh=wcXHNkBQtrgjmA0wflq1a15s3Jy/DqxokYOrMmypoVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BNiw4E2+bq/YUwrO+xTpmJ57cKDNokmWFwi9Y4e9b2hv7ZqDiLDw51aXwf0J7ql0NnKAlGxwruBofJXG0+dyftUUSGy/zYkohK23tTiPFiD3o+vYHQAaVVF3c5ceJsFwTmi1MQYbjHr4LkW04GJXxC5n6LWvkANDYsvk64yM2/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 4BC8F606DC; Tue,  2 Sep 2025 15:18:31 +0200 (CEST)
-Date: Tue, 2 Sep 2025 15:18:26 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Eric Woudstra <ericwouds@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH v14 nf-next 3/3] netfilter: nft_chain_filter: Add bridge
- double vlan and pppoe
-Message-ID: <aLbuokOe9zcN27sd@strlen.de>
-References: <20250708151209.2006140-1-ericwouds@gmail.com>
- <20250708151209.2006140-4-ericwouds@gmail.com>
- <aG2Vfqd779sIK1eL@strlen.de>
- <6e12178f-e5f8-4202-948b-bdc421d5a361@gmail.com>
- <aHEcYTQ2hK1GWlpG@strlen.de>
- <2d207282-69da-401e-b637-c12f67552d8d@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AE430F94D
+	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 13:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756819565; cv=fail; b=kbZ9ahMkz4vtobrJiA29dZbBVKAFYrDHAzzfe99t4gp61Sh9Tyy2re+ATBXLgx5Ylzjc+psbwaiko6yjyqXHljQ+XyANnoqO8hE02DQwQhP+c3KNOCUfINBLUU9lD6EpgQn/s+qyo79Srh/hnp2P3qWdDvJKUgLbldZ+TiOMIIc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756819565; c=relaxed/simple;
+	bh=t1Ug5AHgfloNAdtuXZ3+88EtgjjQGGmzUhlEhSo7vbI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lHFqvrlY818/GcLRx99IeJT0NGfJduJ8YunZIthHqRuSea2chaYnx5wgaJZ2ol2ME1uinv0ONA3dqHzmJY3XKY0qPiPnvkhBlPr0MotIJyap6pZvzoHonsksKTGOy4z8FRNQqGAQBVf3QCHDgvfCczh5baLly3yKLu7+c1ojU2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DSix0R5s; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DSix0R5s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756819561; x=1788355561;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=t1Ug5AHgfloNAdtuXZ3+88EtgjjQGGmzUhlEhSo7vbI=;
+  b=DSix0R5sEwBquv6KYsfK1eTB17ROKq27o4llD2+x4qnHZCxOY16sgfJp
+   5g4DseD4e0V4u/qiKqoaL8R4zU+2i3++82ME26fac9hSQo2a/FCAWbfLy
+   +W2kv3CO3PJeZQYNRQ8RjGal6P2Pnf/+XwP+s+tRI5WSBFSwe7rBmb4hM
+   KCjN1JWxl7cfUmry4WjEAauevD7vZP7it1lGP5zECkOrINQWwuBXHYwNp
+   ezSKPqjXeIcPYkMBHEnI0fiLqt6Hr3gQkK7A6CQo0yCMvdh6cZoZxbqp7
+   MR/S2Rf+Ycs5DRU2voyCxRlQiI6eJQIurilHrQ708w1/kRSPbIkhPoyE7
+   Q==;
+X-CSE-ConnectionGUID: Vvcxesx0T2WkqX00j72j3w==
+X-CSE-MsgGUID: H68XClJoSOqo9JmyjZeOtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11541"; a="84512724"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="84512724"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:26:00 -0700
+X-CSE-ConnectionGUID: w87JWhObRe6E8Ol2Ms2sXA==
+X-CSE-MsgGUID: /FD3mgVnRcGgADZkNa+u6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="194920302"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 06:26:00 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 2 Sep 2025 06:25:59 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Tue, 2 Sep 2025 06:25:59 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (40.107.223.45)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Tue, 2 Sep 2025 06:25:59 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZwWocv8Lt2BospC7aoTw5qvfHglC1Xik1h88SedS0qyy/5NQw/BpMbS37n9eKQoZVwUHYJNws/xbHws7/OBuTChryk8v+MoFuuE9hzoeWBUnEv3nV+XIfdkBy3IbPlNFU6E5s5s7mIYvElBgKp8Sl/wb/WizrCzfwtSvUld+iRWqzJaoEBljDvFklq1BwSltbCwr5SZaSeTb10p/Wd80xNddQmkTms274cKMB6roe/RILJysGNA183zM/YUGVdEHuSub57gWNlP3z6KY1g6huQ/DMWKd8xUK4LN6xRN6ZA9OaEGBPUXuU2/P6PWVgjEvxRAGuSDbvY3IHX8PBSnDFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i9ASS+cxQNFhMJf7TWAWdczSCbAuBzq7bPyujWBFVDE=;
+ b=OmmX6wGlrx/seAersto/6TX8p42z9QaEDIwsQIkiwRfcOcRrlDZEHcSrE9exb3gy9H98b5h09ULPPmlpMSp/twelJftbwDrlV501uibr1kRcrFmnry6UXjDzVV7Wl1XaGuYFyGlGaoUWShAf6SfaIkJKSDGGvm4AA6vkkUTRgoaKbRf4Ff/0wZ3thnF/Ds3+n2ls7rhwaa2u8Nh6Ur+XLmBnI1fpNGwGkQ1ZpoXMygyQQQuaJKJDt8Kb9o1INPWW3TScNyVhBcYakYJDPy/mJLp/Dm/qp+10Hf7dW+V8U8NNz7qudenYQUH4jvQy1SLsb5oXQgFmS4BdBmejpMALNw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by LV1PR11MB8790.namprd11.prod.outlook.com (2603:10b6:408:2b1::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Tue, 2 Sep
+ 2025 13:25:56 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408%4]) with mapi id 15.20.9094.015; Tue, 2 Sep 2025
+ 13:25:56 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Kohei Enju <enjuk@amazon.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"kohei.enju@gmail.com" <kohei.enju@gmail.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next v3] ixgbe: preserve RSS
+ indirection table across admin down/up
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v3] ixgbe: preserve RSS
+ indirection table across admin down/up
+Thread-Index: AQHcHALqHCOGVcm6xkqBr/9dXuH277R/30aw
+Date: Tue, 2 Sep 2025 13:25:56 +0000
+Message-ID: <IA3PR11MB8986AD639F3395B5BFCC2C38E506A@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20250902121203.12454-1-enjuk@amazon.com>
+In-Reply-To: <20250902121203.12454-1-enjuk@amazon.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|LV1PR11MB8790:EE_
+x-ms-office365-filtering-correlation-id: 62bde376-a744-4f88-25b1-08ddea243fd6
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?bkSbRlKZRQwk76LpeK8Fv4BKg5j9M3xsS5grSVr3lvosYN3lLsjKyKL5lJfJ?=
+ =?us-ascii?Q?eCx4sDmhe+CSFLu3noCY5s0sCsejasSJ7BAwrrGUSOuUq53p6rs1S49MgAEm?=
+ =?us-ascii?Q?wbGgCrQuMR0swF3pm3RgpM97aVFJBsl3z5dPaNQHjmDG2BPp8gb4p996Kpzn?=
+ =?us-ascii?Q?klAK+j0Uftl965lB9ljx01/4dwBbwcUZarBKr86+a2bVEODm/c96IW1zQwLQ?=
+ =?us-ascii?Q?fyRY6Wn3ieEAs2O8qzJijvXFQXisGs0XvUqthmvykFwmhO2uLXxwO9/lbitc?=
+ =?us-ascii?Q?m186L0Y2CSS4n8xyE9cJE84E5XVk4uAvj361zV3htriiIkqvS6Uuy5/DAhPb?=
+ =?us-ascii?Q?41VNaQFE51gM6dLacGkwuGzPI3aSHmqw1cGHJTMbsjKfev0rZNYHlgwmF5e9?=
+ =?us-ascii?Q?t721Q+btYQAosw7mlcdgBXNvEqgK7nl0a412jDjgw8O0V7CN5nmgnj2taKp1?=
+ =?us-ascii?Q?jc6SAtziH/pJCsMNMqCIv2ZH4+8A0F0kZOr+QIfCQUBuIi2RnxOqKr1QOnhq?=
+ =?us-ascii?Q?1QKtRQuaVDP6rgc/g/7zmEYGb0iEY7qTrYEckV9E38BZwjtx15bt+gXQM38w?=
+ =?us-ascii?Q?FwF1nl7eFqHnqHIBB+kL27Wjn4VqmS4kgxj7BxDtLHGFjG1+UPKpVMoaaYWj?=
+ =?us-ascii?Q?EawKIh8lD+QYAkuGjKbGS6FYQ5xAC7k7zXkjJEuUENDyJOaSBaiWXYG7FJpa?=
+ =?us-ascii?Q?8TzAy/t3qigk/z2SVs7j2RX9WPgIllVSilh1kzB9l4DwzoXEvfZVHpv9XfPr?=
+ =?us-ascii?Q?xA2iUCblZehrXg5uslWcBTw7d2P9S9nzn0xqihYQz7WCHJp2DMKNUpXXFR/t?=
+ =?us-ascii?Q?PASu7ujY7LcYT9jLf1NXUT9x1bmzVtoN2TlK2alQYQHpTR1618EwLYHg91N6?=
+ =?us-ascii?Q?dYszbOm1Cv6Idu1NWyREB1T7tka/U7SkuC1GI2KWS6J8hoQ63WxiFlYKFLS0?=
+ =?us-ascii?Q?+6Q3tw7Lt+qg3yB5VwzH5ZtG6WGVWihZ0rGM52ShmQvfKN0EJ/3m53rGY8Be?=
+ =?us-ascii?Q?UwU+yh8nC/i/4/Q9GzOYLNgHSYQyBV1ktoO2lDJ250Fbqnq3ZlbCa3Kj7GV4?=
+ =?us-ascii?Q?2TGg7hamt95KfaRBt7BpDBpFAsjve76UBrLPD4N6FuknAC6vrTsnlhDCsrZS?=
+ =?us-ascii?Q?/vDznPcmAUb2VKVrQbY/nUdj/Iq1dZ6D44w3TpkMW+vlALPaudMXljn+qmNC?=
+ =?us-ascii?Q?g/0QpvGyxAW5vC6fAR1nfHPwjkfrSt7+wnmqmM1w906GfmyED571aPeOs0w/?=
+ =?us-ascii?Q?Cj6rn8bqjvBpDTQ2bOGqB72yJDnCmVt5YpmfWXCYpBEONp2/lrOjqwQ5MzF1?=
+ =?us-ascii?Q?NR7abdC9pnWX10xdK8RdWmtgEZ+GUQoXvXmuGdKnY3eO5dossa7Juc3Nkwg4?=
+ =?us-ascii?Q?5dmV7u0H/xTahdML7VQkabyd+SR7vZtmozisAYaT7PZWcECp9skYf+50ha3d?=
+ =?us-ascii?Q?Lifog16txQx9zMyzOiWIQHCVSAU35nk02bRHg6pfFRH+rt638N267Fgmzrfc?=
+ =?us-ascii?Q?5vWsa2cTN62cvSs=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?tNNVhzVFRwJctOOfdHeJi76MwGbEEUWbln3VERFmQ4Wq3lMZiF5ryOPP2mkL?=
+ =?us-ascii?Q?zTXyd/qBojq/7p8mqytBVBW+n9F24pqpb0LDxsyrlF9wElQaeohlyH6ZYPwg?=
+ =?us-ascii?Q?oZ2FFTgT2C5gM9QQez2mtXJ4Y9WegCaKSWCf1u0Cht3eolJV0fXyg4cR0Q4k?=
+ =?us-ascii?Q?pOd3HYkufxQy3Z0zcqiLbwmUF47L5kuTG7TrjogFs1UlyM1x3kUOfd9N53AV?=
+ =?us-ascii?Q?1MxiIMH2zIKn+5xDii2yodSQAig+9HedOFxJ/whdStkL5DN6BEEa9gKhQpM7?=
+ =?us-ascii?Q?UPzNJaIENU3uAlStiOFcwlrmaug0pZJ0HdUv/3/D2Vo0RvHCPafXJBMifWh5?=
+ =?us-ascii?Q?kTcOPOGhR80W3tVCMdgrO51MRh9eSnPkDFWrNNLspC+BV39JVqGukrl3J9hr?=
+ =?us-ascii?Q?aT6hH/+TVyQ3kg9ZkOhZsHt9mfH/v/40N16AWhzFvuyoyhiNc9QGfqyKlR8C?=
+ =?us-ascii?Q?cdk99uzs3NaqV2OB5HSxcr357H9xLSL2WFHkvHFUyfiuix7PLd5H0bLGpCli?=
+ =?us-ascii?Q?xzF9gG2LM75iauyBdD+oVO15DaS/euvrtuL5sY7unF3M/3L0cqFzuRB1PDIM?=
+ =?us-ascii?Q?GS9PegqQo/oJSQhzrlA/W6O3tdcaIV/0MPD5XKlKfTpqBp9vTzCLdJ2J27OX?=
+ =?us-ascii?Q?CJRh9m6DX8LYa6jFTtTNRlVC7B8JXlA0H60m61OkUJAp5U+dnQE+cpu6YPA2?=
+ =?us-ascii?Q?VGqLnw1/emMR8+7AKqvSENr6l3d/SWmqNjdxR4tf+TmCNuDzgPMIDhtwz8GU?=
+ =?us-ascii?Q?ZOqwt+X46zEVtEQKwa8DHHFqMyCbBJjxzXOwuFi9KrAkx1FOP8lB1T2joAVt?=
+ =?us-ascii?Q?UWnOX4Z9GLbUbm4sMHGEOBC3erfNMBr5kFygyT0zJJQThSdrXpQWPppKDJhT?=
+ =?us-ascii?Q?+zUUQZ8n+KsrJl6VssjqW5jsDO6I5Tmz6vRdFYlsZemDXhpezOwJr9eufhwm?=
+ =?us-ascii?Q?RrnbaEKWI1u/Aj9gdhDRnR3uA75aCWUomzMk9rSvkt3sUZkZkcynXCecZAt+?=
+ =?us-ascii?Q?zbgwgy8GwW4GezTVrqEurYLFCcy8GXWdayudH2E5yaYM9wMBqNVqo+7qDZRz?=
+ =?us-ascii?Q?JcE4Hfh6CcISrSNp23g8TE8nBukwn0o4JlF2pgBoG3m2/yD5LF/g6TmVc0gX?=
+ =?us-ascii?Q?t1/xQztbctnu/0GZMfx2od/rl0TiH8WbzaGu3RgPK20PyRqCQ9/fndN1nehw?=
+ =?us-ascii?Q?S+lGu9NCCeH5jH5gSi6n7j+1JyEo+WKyf+mPGKhDRZtpfanZFawzmHsmP2TV?=
+ =?us-ascii?Q?MJ7Qt6Olz3GWGL9QKWemonLA68Ei9M0RLfg6K3FP1JMKx4aFT2o8ikh7anJj?=
+ =?us-ascii?Q?flEiOacdILtwN3LWIJWS8RbTWDLCWC34fOzooU/C8Gzfi6Z3rdFPFyfT0Yoc?=
+ =?us-ascii?Q?85+Ehel3cOXSaIfTETRA+q2Ll/tuc0THxybHs07m4LAIgaMy1Q9Z6yxQLLVe?=
+ =?us-ascii?Q?sgx/6LQTrk7k12Pl9OtsZQlY2RChUtc2Z0f3w3AvRYCMORbnMh3GdgD6R+Q2?=
+ =?us-ascii?Q?gGtv7xGsqV6Lth3+N1qFvrBdDmB6k4ztu/DFJwyqsdYiOVXNRQll00rOW+1Q?=
+ =?us-ascii?Q?UjdvT2pGp6grlCVaTBUJGmSwLdXzrpZHjIAJyYgp69PIssAuK/kzBNyMoMoD?=
+ =?us-ascii?Q?Vw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d207282-69da-401e-b637-c12f67552d8d@gmail.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62bde376-a744-4f88-25b1-08ddea243fd6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2025 13:25:56.6583
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: H3G4L46XkSyssWHTt9LJLFWdU/mca1iw+qVVmekFthFmY/b26Tjf+duK2sigW09KzkebctHgpFnhowvEt6ybRnTLff+0vvzco67o9rBHZ1w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8790
+X-OriginatorOrg: intel.com
 
-Eric Woudstra <ericwouds@gmail.com> wrote:
-> > Thats because of implicit dependency insertion on userspace side:
-> > # ip saddr 1.2.3.4 counter ip daddr 3.4.5.6
-> > bridge test-bridge input
-> >   [ meta load protocol => reg 1 ]
-> >   [ cmp eq reg 1 0x00000008 ]
-> >   [ payload load 4b @ network header + 12 => reg 1 ]
-> >   ...
-> > 
-> > So, if userspace would NOT do that it would 'just work'.
-> > 
-> > Pablo, whats your take on this?
-> > We currently don't have a 'nhproto' field in nft_pktinfo
-> > and there is no space to add one.
-> > 
-> > We could say that things work as expected, and that
-> >  ip saddr 1.2.3.4
-> > 
-> > should not magically match packets in e.g. pppoe encap.
 
-FTR, I think 'ip saddr 1.2.3.4' (standalone with no other info),
-should NOT match inside a random l2 tunnel.
 
-> > I suspect it will start to work if you force it to match in pppoe, e.g.
-> > ether type 0x8864 ip saddr ...
-> > 
-> > so nft won't silently add the skb->protocol dependency.
-> > 
-> > Its not a technical issue but about how matching is supposed to work
-> > in a bridge.
-> > 
-> > If its supposed to work automatically we need to either:
-> > 1. munge skb->protocol in kernel, even tough its wrong (we don't strip
-> >    the l2 headers).
-> > 2. record the real l3 protocol somewhere and make it accessible, then
-> >    fix the dependency generation in userspace to use the 'new way' (meta
-> >    l3proto)?
-> > 3. change the dependency generation to something else.
-> >    But what? 'ether type ip' won't work either for 8021ad etc.
-> >    'ip version' can't be used for arp.
-> > 
-> 
-> Hi Florian,
-> 
-> Did you get any information on how to handle this issue?
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Kohei Enju
+> Sent: Tuesday, September 2, 2025 2:11 PM
+> To: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org
+> Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
+> Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> Abeni <pabeni@redhat.com>; kohei.enju@gmail.com; Kohei Enju
+> <enjuk@amazon.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-next v3] ixgbe: preserve RSS
+> indirection table across admin down/up
+>=20
+> Currently, the RSS indirection table configured by user via ethtool is
+> reinitialized to default values during interface resets (e.g., admin
+> down/up, MTU change). As for RSS hash key, commit 3dfbfc7ebb95
+> ("ixgbe:
+> Check for RSS key before setting value") made it persistent across
+> interface resets.
+>=20
+> Adopt the same approach used in igc and igb drivers which
+> reinitializes
+> the RSS indirection table only when the queue count changes. Since the
+> number of RETA entries can also change in ixgbe, let's make user
+> configuration persistent as long as both queue count and the number of
+> RETA entries remain unchanged.
+>=20
+> Tested on Intel Corporation 82599ES 10-Gigabit SFI/SFP+ Network
+> Connection.
+>=20
 
-Did you check if you can get it to match if you add the relevant
-l3 dependency in the rule?
+...
 
-I don't think we should (or can) change how the rules get evaluated by
-making 'ip saddr' match on other l2 tunnel protocols by default.
+>  static void ixgbe_setup_reta(struct ixgbe_adapter *adapter)
+>  {
+> -	u32 i, j;
+>  	u32 reta_entries =3D ixgbe_rss_indir_tbl_entries(adapter);
+>  	u16 rss_i =3D adapter->ring_feature[RING_F_RSS].indices;
+> +	u32 i;
+>=20
+>  	/* Program table for at least 4 queues w/ SR-IOV so that VFs
+> can
+>  	 * make full use of any rings they may have.  We will use the
+> @@ -4323,14 +4323,17 @@ static void ixgbe_setup_reta(struct
+> ixgbe_adapter *adapter)
+>  	/* Fill out hash function seeds */
+>  	ixgbe_store_key(adapter);
+>=20
+> -	/* Fill out redirection table */
+> -	memset(adapter->rss_indir_tbl, 0, sizeof(adapter-
+> >rss_indir_tbl));
+> -
+> -	for (i =3D 0, j =3D 0; i < reta_entries; i++, j++) {
+> -		if (j =3D=3D rss_i)
+> -			j =3D 0;
+> +	/* Update redirection table in memory on first init, queue
+> count change,
+> +	 * or reta entries change, otherwise preserve user
+> configurations. Then
+> +	 * always write to hardware.
+> +	 */
+> +	if (adapter->last_rss_indices !=3D rss_i ||
+> +	    adapter->last_reta_entries !=3D reta_entries) {
+> +		for (i =3D 0; i < reta_entries; i++)
+> +			adapter->rss_indir_tbl[i] =3D i % rss_i;
+Are you sure rss_i never ever can be a 0?
+This is the only thing I'm worrying about.
 
-It is even incompatible with any exiting rulesets, consider e.g.
-"ip daddr 1.2.3.4 drop" on a bridge, now this address becomes
-unreachable but it works before your patch (if the address is found in
-e.g. pppoe header).
-
-'ip/ip6' should work as expected as long as userspace provides
-the correct ether type and dependencies.
-
-I.e., what this patch adds as C code should work if being provided
-as part of the rule.
-
-What might make sense is to add the ppp(oe) header to src/proto.c
-in nftables so users that want to match the header following ppp
-one don't have to use raw payload match syntax.
-
-What might also make sense is to either add a way to force a call
-to nft_set_pktinfo_ipv4_validate() from the ruleset, or take your
-patch but WITHOUT the skb->protocol munging.
-
-However, due to the number of possible l2 header chain combinations
-I'm not sure we should bother with trying to add all of them.
-
-I worry we would end up turning nft_do_chain_bridge() preamble or
-nft_set_pktinfo() into some kind of l2 packet dissector.
-
-Maybe one way forward is to introduce
-
-	NFT_META_BRI_INET_VALIDATE
-
-nft add rule ... meta inet validate ...
-(just an idea, come up with better names...)
-
-We'd have to add NFT_PKTINFO_L3PROTO flag to
-include/net/netfilter/nf_tables.h.
-(or, alternatively NFT_PKTINFO_UNSPEC).
-
-Then, set this flag in struct nft_pktinfo, from
-nft_set_pktinfo_ipv4|6_validate (or from nft_set_pktinfo_unspec).
-
-NFT_META_BRI_INET_VALIDATE, would call nft_set_pktinfo_ipv4_validate
-or nft_set_pktinfo_ipv6_validate depending on iph->version and set
-NFT_BREAK verdict if the flag is still absent.
-
-**USERSPACE IS RESPONSIBLE** to prevent arp packets from entering
-this expression. If they do, then header validation should fail
-but there would be an off-chance that the garbage is also a valid
-ipv4 or ipv6 packet.
