@@ -1,88 +1,246 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CA27E07E;
-	Tue,  2 Sep 2025 07:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739CE2E6CAD;
+	Tue,  2 Sep 2025 07:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756798004; cv=none; b=m1U4z1IzL3xYiVSAEvWP2edK6DL5AaI08Adt0/Ejk9BpYhMD4M4D9fS6tY2LPWTSIAFRArgfreYZ4Zkd0AinHsY4dRuQIVtc1XFzQbljC53XZYk2YtIzD/4wphzD/q/9cg9QV8VnG2I6DEkwxVmEYfiGsff1nPeEd7Dm/JFIaLQ=
+	t=1756798008; cv=none; b=G++NOmmXEMX+wQa1NZOTHuP4DdtegyIpTanDhQswOHTQ6D6Pp8mD0hO3EOaOiuJ80iaU09WtBSBviaVaeoo95qZ86hhrlucPyf6+/ibVEcKMVtd+RsYiF5e8z9VpL8OyHMVXwyKHdRl6IqVYoKvQNk9RI4kswt2wDAF8pLHCPxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756798004; c=relaxed/simple;
-	bh=7jHm6j33a2ViG9Q+G5wx5wkVkZAAuyV8jZR74yhX5ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cp5zQluYjvUHEn6P0VZM5Ap5adNLS/4IWvubIxvFPydFVaGSdb6gYs5dbtPQLbK5/UP5bwUr43hLCly66zyMXrI6FluhEJcuE/0KubmfcUt7UB4UKdDEYy0aiYbL5koz1n/ZciYWeeQQXe8XHorKPNLYwHHUZGemnQK8KARuaYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=XyALqZ9M; arc=none smtp.client-ip=115.124.30.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1756798008; c=relaxed/simple;
+	bh=fpxAMTh1DHFN9bdroAryNzz1TbRNMH5pMcaPuAnjYMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gzkTlJnRyiUeH0b2YGAjRyEo+MX0YsZZlomSW0ZrfF3KJ2PMSKkmCmemL4IiuhTKdco940/47lvb0q2jx6S4UEc68AS2rp1QzZX8INBet1XdnFP+wfX5cyJgDGEI6YQ/Kuur1NKgUU8DRcxwPUNs23XUyGseLlAsBW4K7MT56VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bIESf+HV; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="XyALqZ9M"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1756797993; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=vKvlNitfpyMxHm4rPf6dKP8hVqbhYaMwj3B9Uj/9Xmc=;
-	b=XyALqZ9MqipZKfhOZUN7oP/SkuszHGensU/rutKSnkMcLjN+CjNx/9fLzGeB58+vftxRv222SpJhq3NTBy0Dt3lo0rD76NIcMlOy/dmzXOIjnrcK2vwlZAicwUDk2Xq56ntlrOav5fDDHQnmc3LARpft2oYnPwrBVrERTNnuN1M=
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0Wn6wIYS_1756797992 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 02 Sep 2025 15:26:32 +0800
-Date: Tue, 2 Sep 2025 15:26:32 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com,
-	wenjia@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
-	Alexandra Winter <wintera@linux.ibm.com>
-Subject: Re: [PATCH net] net/smc: Remove validation of reserved bits in CLC
- Decline message
-Message-ID: <aLacKAOIo63U9sLl@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20250829102626.3271637-1-mjambigi@linux.ibm.com>
- <aLHAAy-S_1_Ud7l-@linux.alibaba.com>
- <57c2976e-8b6c-4cee-803f-ca5b0636f30b@linux.ibm.com>
- <aLZtraICmwOQAtsO@linux.alibaba.com>
- <8a795b8c-5613-4952-a5fc-59cead205e59@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bIESf+HV"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-32753ef4e33so3719255a91.0;
+        Tue, 02 Sep 2025 00:26:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756798005; x=1757402805; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H6NPvT6bQ/Fm1Ox6j1QOMXLS7IgmyQZhMktUnB9yevI=;
+        b=bIESf+HV/+6JsKepdCJpZYZNJjUz9+dZfGgTkon+zF60+fLWy68ADjngP5MiG0gyWk
+         lzuZjVag2X9zWOKtK7EcnKcE2FXePHQYbKCozvWgGdtveXUdy0O8nP8tPNPXutr3SRow
+         Ea7lUKni2XyRH79xrqGfGcVSSZv7Ww9+rL10dBglZpClOag4MWkS6/BAc4tmQh7vEQAi
+         CmNCYb4xU9TVM8Ei8P1/M2mxPZikNNxJ41MQVYkpPZ37dbBvNQq9PYh353ahWHOebNxb
+         Hrl8u4S+tNR0cITa67br7mf97PaGHW3Az8UHrMenxFDNbHOP6eDfJN0p4g697Ikgxhp7
+         wJmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756798005; x=1757402805;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H6NPvT6bQ/Fm1Ox6j1QOMXLS7IgmyQZhMktUnB9yevI=;
+        b=C4splFLcSMagEtM2eGLnR1ICBjcwsSp9Ggzt5rYDItHNDGJfXAhoQuSQZrbHkPpomS
+         mPOjkYAKUPdQoy4sVqjj+SU0IID+/euqTg78nMoqB/xiqYZ3Fb1hxWdwD26aHSAD8+tK
+         6qZez9Xqg+pNkQog7sEMChBrAv0NoZ78Gvwsz5B0fCz+1bSTxgZhmm6IWSaXAaHEJvMi
+         EPmpGa99pCG4jr83yGA8RHij8tdpqABDCyoFJ/uV/wI+BriPaYsEnXOuDqywFyZ1f8vu
+         faFWeOvqgjrmCGNcZMuV54/CF1TkP08FU/fxKeCHbcu0PFC0c1WYUqycVWu4djV2i/5V
+         VP2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVNEhemOA1ROEZ4uN9TwpbTobbIvFQs3Vt63ufUd49/6eEKJtRhvnT1EXrhVM6jTybgcfzsU7Cy0iHBtXQ7eE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGjLJ2FyPAGHHFgYjDp/1FNVadBiM/UWCAuZQoxCS/sAjPukFi
+	dExi/DUYRk4c27hZBOvFooNvdD4Sbtw9E+fMDykpMQgf9C3avDKhCddu36nHeZrbTmQ=
+X-Gm-Gg: ASbGncv2LOLSXvelZ58Du7hjdyBXgeITs7PV9HAtSCgyAuLPU/t3zsi7QSQR/XPWnAk
+	0Osqhheu4GbAacjGZ/2Vx8Baq1ChoIGRDuIheuWFeJWKoF6RiCFRtjk1fbab26b9T87hDpkTUPr
+	BtlHoVd+mvpruh1JPslFTESDG2rR9Wle3BROu4+1MuRFO3Vd2u+zNJYhth6Gq0GZzzBKJcmFlV4
+	s/r7MmC54WMw4k3E8NNHaDib9V8n4FpRYLixw6jGmLJhQNIqUH0Pzymn138Dd0ZvlEGwQUMdFOV
+	N7iZ3Ua1Ni1OPNzBj3vFBjGz+qEE+N95POC2eSl9M4vk0hyXtoz+rERy43VdG2YAP5i9+hl5Ms5
+	+ouEVmeHtStJ2quLmVlvHZ0CznbWJo56Gef48vUHZOw==
+X-Google-Smtp-Source: AGHT+IGdU/ZAXvhK+gb4+6xvuoWstmZphUO60Sh4mLhsd+VaRlO2+ZRrPNUFkcLVJ4111t7W01Yt3g==
+X-Received: by 2002:a17:90b:55c8:b0:314:2892:b1e0 with SMTP id 98e67ed59e1d1-328156e55d5mr13525247a91.34.1756798005409;
+        Tue, 02 Sep 2025 00:26:45 -0700 (PDT)
+Received: from fedora.redhat.com ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327d9347189sm13416648a91.9.2025.09.02.00.26.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Sep 2025 00:26:45 -0700 (PDT)
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sdubroca@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	bridge@lists.linux.dev,
+	linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: [PATCHv2 net-next 3/5] team: use common function to compute the features
+Date: Tue,  2 Sep 2025 07:26:00 +0000
+Message-ID: <20250902072602.361122-4-liuhangbin@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250902072602.361122-1-liuhangbin@gmail.com>
+References: <20250902072602.361122-1-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8a795b8c-5613-4952-a5fc-59cead205e59@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On 2025-09-02 11:35:34, Mahanta Jambigi wrote:
->
->On 02/09/25 9:38 am, Dust Li wrote:
->>>>
->>>> Did I miss something ?
->>>
->>> If you refer to struct *smc_clc_msg_hdr* in smc_clc.h file, typev1 member
->>> represents bits 4 & 5 at offset 7. If we compare it with the CLC Decline
->>> message header, it represents one of the reserved(5-7 bits) at offset 7. You
->>> can refer to below link for reserved bits.
->>>
->>> https://datatracker.ietf.org/doc/html/rfc7609#page-105
->> 
->> Oh, I see, thanks! The patch looks good to me.
->> 
->> 
->> BTW, I checked the rfc7609 and SMCv2.1 spec:
->> https://www.ibm.com/support/pages/system/files/inline-files/IBM%20Shared%20Memory%20Communications%20Version%202.1_0.pdf
->> 
->> I think the name type1/type2 in smc_clc_msg_hdr is confusing, as it doesn't sync
->> with the spec for decline message.
->
->I agree with you. We can address them in future. Since they are part of
->reserved bits, we can ignore parsing them for now. May I add your R-b
->for this patch?
+Use the new helper netdev_compute_features_from_lowers() to compute the
+team device features. This helper performs both the feature computation
+and the netdev_change_features() call.
 
-Yes. Once the issues in the commit log are addressed, you can add my
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Note that such change replace the lower layer traversing currently done
+using team->port_list with netdev_for_each_lower_dev(). Such change is
+safe as `port_list` contains exactly the same elements as
+`team->dev->adj_list.lower` and the helper is always invoked under the
+RTNL lock.
 
-Best regards,
-Dust
+With this change, the explicit netdev_change_features() in
+team_add_slave() can be safely removed, as team_port_add()
+already takes care of the notification via
+netdev_compute_features_from_lowers(), and same thing for team_del_slave()
 
+This also fixes missing computations for MPLS, XFRM, and TSO/GSO partial
+features.
+
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+---
+ drivers/net/team/team_core.c | 73 ++----------------------------------
+ 1 file changed, 4 insertions(+), 69 deletions(-)
+
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index 17f07eb0ee52..018d876e140a 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -982,63 +982,6 @@ static void team_port_disable(struct team *team,
+ 	team_lower_state_changed(port);
+ }
+ 
+-#define TEAM_VLAN_FEATURES (NETIF_F_HW_CSUM | NETIF_F_SG | \
+-			    NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
+-			    NETIF_F_HIGHDMA | NETIF_F_LRO | \
+-			    NETIF_F_GSO_ENCAP_ALL)
+-
+-#define TEAM_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+-				 NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE)
+-
+-static void __team_compute_features(struct team *team)
+-{
+-	struct team_port *port;
+-	netdev_features_t vlan_features = TEAM_VLAN_FEATURES;
+-	netdev_features_t enc_features  = TEAM_ENC_FEATURES;
+-	unsigned short max_hard_header_len = ETH_HLEN;
+-	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
+-					IFF_XMIT_DST_RELEASE_PERM;
+-
+-	rcu_read_lock();
+-	if (list_empty(&team->port_list))
+-		goto done;
+-
+-	vlan_features = netdev_base_features(vlan_features);
+-	enc_features = netdev_base_features(enc_features);
+-
+-	list_for_each_entry_rcu(port, &team->port_list, list) {
+-		vlan_features = netdev_increment_features(vlan_features,
+-					port->dev->vlan_features,
+-					TEAM_VLAN_FEATURES);
+-		enc_features =
+-			netdev_increment_features(enc_features,
+-						  port->dev->hw_enc_features,
+-						  TEAM_ENC_FEATURES);
+-
+-		dst_release_flag &= port->dev->priv_flags;
+-		if (port->dev->hard_header_len > max_hard_header_len)
+-			max_hard_header_len = port->dev->hard_header_len;
+-	}
+-done:
+-	rcu_read_unlock();
+-
+-	team->dev->vlan_features = vlan_features;
+-	team->dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
+-				     NETIF_F_HW_VLAN_CTAG_TX |
+-				     NETIF_F_HW_VLAN_STAG_TX;
+-	team->dev->hard_header_len = max_hard_header_len;
+-
+-	team->dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
+-	if (dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
+-		team->dev->priv_flags |= IFF_XMIT_DST_RELEASE;
+-}
+-
+-static void team_compute_features(struct team *team)
+-{
+-	__team_compute_features(team);
+-	netdev_change_features(team->dev);
+-}
+-
+ static int team_port_enter(struct team *team, struct team_port *port)
+ {
+ 	int err = 0;
+@@ -1300,7 +1243,7 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 	port->index = -1;
+ 	list_add_tail_rcu(&port->list, &team->port_list);
+ 	team_port_enable(team, port);
+-	__team_compute_features(team);
++	netdev_compute_features_from_lowers(team->dev);
+ 	__team_port_change_port_added(port, !!netif_oper_up(port_dev));
+ 	__team_options_change_check(team);
+ 
+@@ -1382,7 +1325,7 @@ static int team_port_del(struct team *team, struct net_device *port_dev)
+ 	dev_set_mtu(port_dev, port->orig.mtu);
+ 	kfree_rcu(port, rcu);
+ 	netdev_info(dev, "Port device %s removed\n", portname);
+-	__team_compute_features(team);
++	netdev_compute_features_from_lowers(team->dev);
+ 
+ 	return 0;
+ }
+@@ -1976,9 +1919,6 @@ static int team_add_slave(struct net_device *dev, struct net_device *port_dev,
+ 
+ 	err = team_port_add(team, port_dev, extack);
+ 
+-	if (!err)
+-		netdev_change_features(dev);
+-
+ 	return err;
+ }
+ 
+@@ -1991,11 +1931,6 @@ static int team_del_slave(struct net_device *dev, struct net_device *port_dev)
+ 
+ 	err = team_port_del(team, port_dev);
+ 
+-	if (err)
+-		return err;
+-
+-	netdev_change_features(dev);
+-
+ 	return err;
+ }
+ 
+@@ -2190,7 +2125,7 @@ static void team_setup(struct net_device *dev)
+ 
+ 	dev->features |= NETIF_F_GRO;
+ 
+-	dev->hw_features = TEAM_VLAN_FEATURES |
++	dev->hw_features = VIRTUAL_DEV_VLAN_FEATURES |
+ 			   NETIF_F_HW_VLAN_CTAG_RX |
+ 			   NETIF_F_HW_VLAN_CTAG_FILTER |
+ 			   NETIF_F_HW_VLAN_STAG_RX |
+@@ -2994,7 +2929,7 @@ static int team_device_event(struct notifier_block *unused,
+ 	case NETDEV_FEAT_CHANGE:
+ 		if (!port->team->notifier_ctx) {
+ 			port->team->notifier_ctx = true;
+-			team_compute_features(port->team);
++			netdev_compute_features_from_lowers(port->team->dev);
+ 			port->team->notifier_ctx = false;
+ 		}
+ 		break;
+-- 
+2.50.1
 
