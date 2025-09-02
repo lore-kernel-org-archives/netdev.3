@@ -1,83 +1,57 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EAF283680
-	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 10:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829EC2F532E;
+	Tue,  2 Sep 2025 10:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756810047; cv=none; b=qB6dQM8Fr1J4yL7uytHZRgwlDCoPDE3+xZOC0VzquGhoIGAv5NYvtUYFoynvLzKPFoXsTtDSyW+l5RJRgSQ0LIp03rYaCEsFmlFHyC7nBMj3iFqJxsBJPmDSKY/PlAoUzWxa8XNu9slzLgiBcHoiUm0f4OTMtEQ5u+iHhdvi540=
+	t=1756810443; cv=none; b=YiasggoD5gw/UaWk+VlHAqKW8aJEZgSNioKmqEn3pavKqTdeqtZKO8UweXTYKYxFvesOIPomOycC9IsB+Xs76GWRnJoBa0iAmH/CB7hvWI9n/fjjsfeY08weIHmrJ65bYzGwpBph0n+1mruowgRVaSo0A7aciBXkvv1A3r51djU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756810047; c=relaxed/simple;
-	bh=LnJizG7XhZQVsn+enC0vl5CQ2axfJ3gHWyHyB/bX++s=;
+	s=arc-20240116; t=1756810443; c=relaxed/simple;
+	bh=4/vikKvdgd7eTjjeRQiOGUprXV9G2onUs3UuoX29Uzc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rZhF7A0Mf8MBgGSkNurNlOu7yUAr81z58CYwY5MxI9cu6sA1O5M7fJWtLMk3AM92iiSMF3/VD+iifJjzaV9f0Omjeqn/jLdIjCQO0AxSP4idlNQz5F520Vto+ugOxQzgj3zRTeXoUCS4/IWxaxyOAu0sUBU72K+4Jx4ofVo+I08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=wXfarb3+; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="wXfarb3+"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4cGMrQ21snz9tQ2;
-	Tue,  2 Sep 2025 12:47:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1756810038;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lV+l/abgmHpQqmeGSBvsTCuokZnuY1jXVG9xt6N9/rg=;
-	b=wXfarb3+X1eSJg3DUEtiHXAviwGIcCABPRUQHzI9dmwGqo2CStl1aGBJSPFrvUw89ARXUI
-	g/DGvr34anPxAZjGqw62gT/SgdMqSWzJ0sIQq7meyJp36iaS7ReKAjgh90Vq7+sGJcBhs6
-	l4tvIHSCZshf+uCKe6IJAzPyqtGu3wcabMlsAhKum4I+Q/2lBPKBGxNxlQhkC9QgKOk5Yy
-	OBJwXFXFsALybvALsPT1CDtM1Hz/1kM/NVje1g0iM972GY9Rcq1d0VCJB45ZXc9DEc4iHv
-	6+w7g/PvgWmuKoV8tmw57nuoD5NF8w98LptEb6oAVk2xdvLpLSMH2O60MzFHpw==
-Date: Tue, 2 Sep 2025 16:17:11 +0530
-From: Brahmajit Das <listout@listout.xyz>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com, davem@davemloft.net, 
-	intel-wired-lan@lists.osuosl.org, kuba@kernel.org, netdev@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com
-Subject: Re: [PATCH v2] net: intel: fm10k: Fix parameter idx set but not used
-Message-ID: <crnofgnchveaeduom44nzbq26m2zudy4wut3pl7xgf3fwar46n@tzvxk3nwlgmq>
-References: <e13abc99-fb35-4bc4-b110-9ddfa8cdb442@linux.dev>
- <20250902072422.603237-1-listout@listout.xyz>
- <c7005c02-63dc-4316-905c-e02283e398c5@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MoBuapvq7kTbE8msFTK3WR7fnN3Pv6dL7GYx7EaD60GANQm9h/3odeuPXbNsl4RFQanJ1rk/05B9RQQAVAp0YbmzIBugaCIIdB1CDagUeq4HTG2M170etjqEMSoZPL6QRqV8pefSUgNc2sfZfaiwXLOmXZydEZmBpmo+F/yjRM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 1DD8B6046B; Tue,  2 Sep 2025 12:53:58 +0200 (CEST)
+Date: Tue, 2 Sep 2025 12:53:57 +0200
+From: Florian Westphal <fw@strlen.de>
+To: netdev@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org,
+	pablo@netfilter.org
+Subject: Re: [PATCH net-next 0/8] netfilter: updates for net-next
+Message-ID: <aLbMxUF4J2BrFqR5@strlen.de>
+References: <20250901080843.1468-1-fw@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c7005c02-63dc-4316-905c-e02283e398c5@linux.dev>
+In-Reply-To: <20250901080843.1468-1-fw@strlen.de>
 
-On 02.09.2025 11:34, Vadim Fedorenko wrote:
-> On 02/09/2025 08:24, Brahmajit Das wrote:
-> > Variable idx is set in the loop, but is never used resulting in dead
-> > code. Building with GCC 16, which enables
-> > -Werror=unused-but-set-parameter= by default results in build error.
-> > This patch removes the idx parameter, since all the callers of the
-> > fm10k_unbind_hw_stats_q as 0 as idx anyways.
-> > 
-> > Suggested-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> > Signed-off-by: Brahmajit Das <listout@listout.xyz>
-> > ---
-> > changes in v2:
-> > 	- Removed the idx parameter, since all callers of
-> > 	fm10k_unbind_hw_stats_q passes idx as 0 anyways.
-> Just a reminder that you shouldn't send another version of the patch
-> as a reply to the previous version. And you have to wait for at least
-> 24h before sending next version to let other reviewers look at the code.
-> Current submission looks OK in patchwork, so no action is needed from
-> you right now.
+Florian Westphal <fw@strlen.de> wrote:
+> The following patchset contains Netfilter fixes for *net-next*:
 > 
-> Thanks,
-> Vadim
+> 1) prefer vmalloc_array in ebtables, from  Qianfeng Rong.
+> 2) Use csum_replace4 instead of open-coding it, from Christophe Leroy.
+> 3+4) Get rid of GFP_ATOMIC in transaction object allocations, those
+>      cause silly failures with large sets under memory pressure, from
+>      myself.
+> 5) Introduce new NFTA_DEVICE_PREFIX attribute in nftables netlink api,
+>    re-using old NFTA_DEVICE_NAME led to confusion with different
+>    kernel/userspace versions.  This refines the wildcard interface
+>    support added in 6.16 release.  From Phil Sutter.
 
-Noted, thank you.
--- 
-Regards,
-listout
+As per discussion I'll route patch 5 via net tree instead, so:
+
+pw-bot: changes-requested
+
+A new nf-next -> net-next MR will follow.
