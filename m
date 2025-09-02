@@ -1,71 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735AC28C011;
-	Tue,  2 Sep 2025 12:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F5F28CF4A;
+	Tue,  2 Sep 2025 12:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756816876; cv=none; b=a5q5Vsv/lY9HLtLa/qSvc7K2EuCgAunj3Vi7y8D84Ove/NWR+a7/NaDeHS3rYM0Io0z+4QncUCooIXvKYuTzQUUt/mWb+B+Y4r8OF/cvJTydRE1qivwp+hH7baUaLs1g2XglFS2ltD7GB/XZ/sracQBp+kCNPKTkZPl4vyCYiT0=
+	t=1756816895; cv=none; b=Y+1xBQSNsnTdYVHn0s70xZ1bNwRR+OcMZCxDGux2mcUAj+pcDkdRiAsAfhgDSh3kj8FD4uNPmIHT6s8gDPfLoIV1C/0CPl4/vSHRkm7B+fMim/Dz3F6349LNVdaweFyzCipgFxEaibOOU4z6oFd+gQOzkxDI3dqT+XI39bSmqvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756816876; c=relaxed/simple;
-	bh=chLF2nlQTy4Kpvo2bXrIx+leLqO+VioC8WiW4UtGceU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sj9gG/Sfpj89j47SAee0YIzbbm9Jc2Ci+3yzX7a6lFHPEg0sC5fAGdfub90gSr/FhD0+CVYccEnAJvxtDRQquqYU2cAyJh4uJx58JWbtcNsHGOGoFIkF8mNHJQ65/Mf4FwbhlQ4Pvj7iCSz3iwPhIh4FESZiKTu2fhoWjE0d5x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qG0KUtAn; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1756816895; c=relaxed/simple;
+	bh=M4uI8aFAFfvb6PvO1EZR0WydjlQUd8lvqrrz0abedd4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LB7rM7r3My6bwvJ+d1VLj3E6BnZupuARUyTYiKC5dB8il5ywkOIkLCm5eaZwsXX1evnoxjbcf+fdZaov8ycOGHxy9O2UcKX81Wm9st6nt1t88c+we1fsUwsY8syeopdN6QXWiiyMBSdLZFNMtQTA2c4k6PocA9yzjnr2VhAYzuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=AWfOKPLH; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qG0KUtAn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=bqMz1bhGC904dYzAluW4uQ3RkfYk6nuO3qGuIBL/alw=; b=qG0KUtAnicsr8K9ndh/X1WMezO
-	n2qI2cZKqaaEQeG5pue+0lnkeBCyvhDzIqLa97+XkkmeHdZTPGJ9mIcRMxN+8QHZFEYVzagoDFHMF
-	EcZiDncaojNfus08Q9XkK9esSZO91SXwYljRxPngi450hhF79gNg9LOKdYB3yQOgl+qQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1utQJt-006t1f-7H; Tue, 02 Sep 2025 14:41:05 +0200
-Date: Tue, 2 Sep 2025 14:41:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: rohan.g.thomas@altera.com
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matthew Gerlach <matthew.gerlach@altera.com>
-Subject: Re: [PATCH net-next] net: phy: marvell: Fix 88e1510 downshift
- counter errata
-Message-ID: <b1501674-5a24-4ebb-829b-4f2972f7e886@lunn.ch>
-References: <20250902-marvell_fix-v1-1-9fba7a6147dd@altera.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="AWfOKPLH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1756816894; x=1788352894;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=M4uI8aFAFfvb6PvO1EZR0WydjlQUd8lvqrrz0abedd4=;
+  b=AWfOKPLHdzxkjtcjnrgv2kQy1tYMJhVYLaYxsof4QLfgaiEF2Pvx4lL7
+   BnRgr08tJ6Gye+3AsOUAjm3myT5mJEiY7ifof8CbmEI0Y7C7oe/jbxkEN
+   ECxcWpc2hLxhYovPNAn9pF6gnCoFxw19bEbEZfdKo6nbHq3GF5b9KBCuQ
+   yEE+tLhM3kZyHwmk4y283eLAY5A08Tzoda0B39Fbar3N6VcIOpon8Q3dw
+   +vzqLnPJWkQ6IWTE7iZKhH0bafM2BzeuIAVN6U+XWkHmNjkNDshsIqfp3
+   fyu4Vx4Bg38rhB3XHv3VsVRLry97TOdFWf1J4pKhQ8hREbo8FzQrEyX+B
+   Q==;
+X-CSE-ConnectionGUID: uSbTBh14QEunAdjSx76qwQ==
+X-CSE-MsgGUID: M5dpYUY/Sd2bRQfknAEXmw==
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="213345453"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Sep 2025 05:41:32 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 2 Sep 2025 05:41:29 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.44 via Frontend Transport; Tue, 2 Sep 2025 05:41:27 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>,
+	<Parthiban.Veerasooran@microchip.com>, <kory.maincent@bootlin.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net-next v7 0/2] net: phy: micrel: Add PTP support for lan8842
+Date: Tue, 2 Sep 2025 14:18:30 +0200
+Message-ID: <20250902121832.3258544-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902-marvell_fix-v1-1-9fba7a6147dd@altera.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Tue, Sep 02, 2025 at 01:59:57PM +0800, Rohan G Thomas via B4 Relay wrote:
-> From: Rohan G Thomas <rohan.g.thomas@altera.com>
-> 
-> The 88e1510 PHY has an erratum where the phy downshift counter is not
-> cleared on a link power down/up. This can cause the gigabit link to
-> intermittently downshift to a lower speed.
-> 
-> Disabling and re-enabling the downshift feature clears the counter,
-> allowing the PHY to retry gigabit link negotiation up to the programmed
-> retry count times before downshifting. This behavior has been observed
-> on copper links.
-> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
-> Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+The PTP block in lan8842 is the same as lan8814 so reuse all these
+functions.  The first patch of the series just does cosmetic changes such
+that lan8842 can reuse the function lan8814_ptp_probe. There should not be
+any functional changes here. While the second patch adds the PTP support
+to lan8842.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+v6->v7:
+- the v6 was not sent by mistake to mailing lists, so this version just
+  sends also to the mailing list
 
-    Andrew
+v5->v6:
+- update commit message of the first commit to say that lan8842 had a
+  different number of GPIOs
+- add define for 0x8832
+- threrefore -> therefore
+
+v4->v5:
+- remove phydev from lan8842_priv as is not used
+- change type for rev to be u16 and fix holes in the struct
+- assign ret to priv->rev only after it is checked
+
+v3->v4:
+- when reading PHY addr first check return value and then mask it
+- change the type of gpios in the declration of __lan8814_ptp_probe_once
+
+v2->v3:
+- check return value of function devm_phy_package_join
+
+v1->v2:
+- use reverse x-mas notation
+- replace hardcoded value with define
+
+Horatiu Vultur (2):
+  net: phy: micrel: Introduce function __lan8814_ptp_probe_once
+  net: phy: micrel: Add PTP support for lan8842
+
+ drivers/net/phy/micrel.c | 116 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 111 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
