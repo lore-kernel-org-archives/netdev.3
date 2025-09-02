@@ -1,191 +1,123 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6409135690C;
-	Tue,  2 Sep 2025 21:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7AB26980F
+	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 21:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.13.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756847601; cv=none; b=dDobtOUFF9pSqbROnC8//SBNXk3rZhv2rAzET1eHS7EL1yatXnyff0VxCc1C85mCT+OsVnOgvU0cvnt5M/FhfKvsk4jUSDYjCgt5iVMro+Se7ufFvUtVGcBOR8a2bvg6O+iD/T73q6AipXTRMU4VcESvITfRMvl2WcyhTnUJgqQ=
+	t=1756847814; cv=none; b=c0hTbnxF56w895f6TQBeLdceOjiXe6DMKQ+gX2q+w/ndzWE9IQ0Qyd+b4/buqZNxV0dYiVfwTFAPluKibxvkXPLF6YEOP1fyHv1K6usvj54LJb7kz4PE9zc4EqVa/HMlxDzLn6i5rECwyQHbfhPlhPvfTDvvUgMsS2mZEUwH7DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756847601; c=relaxed/simple;
-	bh=pyDdBcVW0v9+xpIUz0AG9q7DuTI1Ozvq1geLOWJVPxI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=ZeGpE/VzaLwqFaRHn1OwMOiIDOcxb3qvEiW+qH8FGp1ysPxjbak/AYyvtaG1bGsiXh6gGFsaKFKbC9SAf3eEVmHX2ZS70+qRYAX+Yxcng/zw7xGycgzzgjx5rugRRwIqiFtu67fMpH/3Ju/0uEirnG78iWRK7ebPuWgGlQsuD6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bXaLC+Cc; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756847814; c=relaxed/simple;
+	bh=+/E9mth86gm390fQbsX4t8LOzHdMC2rqEHjLi6DTZrI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YGABbG8mJkTRsp4urc4NiXjb2f0EHoJBoe/sVpodF9be23hC0aMPx5lSmOtlZmPa003j/bovW7mstHI4ARVw2L4amJq5fAVgZRXR8EgxVf8COKXn6Z6/GKXCD/BwiqwDo0iJaGd6ITQn48bXEmDhq3KETvdzOkq7tsg2s+Xcpts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=k+xME/i5; arc=none smtp.client-ip=52.13.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bXaLC+Cc"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7e8704da966so368365585a.1;
-        Tue, 02 Sep 2025 14:13:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="k+xME/i5"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756847598; x=1757452398; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CILSsYdSSQh7NUkrEKe1sZhsPfN00oaTeV/5x25EmIk=;
-        b=bXaLC+Cc+eMadTQgwN+tlr7GmH5ED/39h5D5rp6DuRqMS5eGOvx1QO2pPwsB1NChKN
-         UU5y1lu9p9inq2jkRJYz42MIeLO3/rdZjOOoys6Qq1ylTHOdzFgtVc4OPeaFhDJT03lV
-         KzzC+IEAdjl5PTicjfiaK1lv6xJClMNFzlILdpouXf2L3PzVk0VsT9E57p9sAdbQJZAJ
-         kG2l5sk7U3a5UMpz+xo5xZv75zdnwjgplEzHjIhvwZ33YPytJZOreT9DdhAHKY3w/BG6
-         izht17CmKGipVDSte9zeRcyTxqRznjVpvKHXy9CzNKXgVTfbfvOcJ50w9zHW4gE+5TJJ
-         wqFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756847598; x=1757452398;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CILSsYdSSQh7NUkrEKe1sZhsPfN00oaTeV/5x25EmIk=;
-        b=XSWi88wxZhVCjyqcjyOTNWGwzd90Ku2tNPmvXSuku7+WS1O1ZTfIM55bbwL5d5xt9p
-         FfTnc6TTM2g8qBnBNt0xQhEeJnS+I27m1YpoaY4Fc7umknnVuS8r7LrJyWhKO7wvI1iJ
-         URPfWozSyUnmMK5VBkrVx8Pm5cI7jk5oatzEG0YDdpehcuMHoO34fuY6LpGCGtWqu0ep
-         ZvB4efWjoo56LEuRR01Sr1/Vbz/JLJK6s4/N+aZbi8d6/lf8RURaX9MkC1yNn/rQiGI6
-         utW4jaMh0PFSP67llx2XGZIWXcK6mJHJ4mAJyespKBc//G+3Ra7ctXPL7LNdieRgHBE8
-         WmIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK3vlEWa6hwzSCEuXUaE6qlp9MRlXvzM7IQhw99Ww7IzquNxKexYHFnB8DUkXlg4fvZCqz4n9Z@vger.kernel.org, AJvYcCWcqqNoaVgmLMs8CHU4YICdeTmzJze40wZm1yLHkoqfIH6ut4bMmN2ZsTZJdL8ogah7JOU=@vger.kernel.org, AJvYcCXQpWmVDpEJFy3U6HD7J23Q1BTa3XTfx+qtqp6Z4HnXdvPROT1Zr3YeONhZuJTwn9SBu41sU8KBphWzpt39@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0j6M7cYOpk7Dks2tj6hNhkhV+Ya3kxJ5fm2MpoyNzK6fx5Fp/
-	xrpnEaMttcslCWIy66J690HvFO7v/tOKm7TZlnd24TtVahC/kUGj6nI129wiDQ==
-X-Gm-Gg: ASbGncu7y0KyfoTNEw65DVEcfK2TDsA+Z5750AHPAphNutDz4p05Cs28xfXTZoO/uCp
-	8DQE69g9If7Vnu6+ycUAgzR6aXfOtCUfRSSfcoTV71KPKJcj9512pOl+31ZYcavFq+DuPGIZOy6
-	qqkrwdzaKPG2ear5dnoOQ5tAikrPaUx7T1cq8am0gBhqviHAc5fA5zWxMV8mqeAzVyaOAZchb4v
-	LXBBPcAprNofzE4ft5NtMWAA6p8cj3IrxrBbnCIem1SCM04GzLtGf+99gilqOa95LT/3anpkMc5
-	9pamzxFmm5NeXnpiP5UDvBMtCFcY5QIKndGtlFWFcy2k24eOOhedteVbgkESCUDsJ29XP7+etJW
-	aapvizPGhR+t7+/Dg8PHZgA8mqTOvqBr97JBuywBPalaCOoYZWxQgYkFFV8EQN5pN52MrNslyT6
-	tqQykvCnQbaWiY
-X-Google-Smtp-Source: AGHT+IGfwGyYEQSsZhuRIBBjRHJpONNrkZUKk6/vfwU6F4j3sS0Cahrn3/lz445Kl8YoSSsb3MXbyw==
-X-Received: by 2002:a05:620a:6919:b0:7e8:902c:7f90 with SMTP id af79cd13be357-7ff26f9fdc9mr1389884185a.15.1756847597958;
-        Tue, 02 Sep 2025 14:13:17 -0700 (PDT)
-Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-4b48f652814sm1143791cf.12.2025.09.02.14.13.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 14:13:17 -0700 (PDT)
-Date: Tue, 02 Sep 2025 17:13:17 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>, 
- willemdebruijn.kernel@gmail.com, 
- jasowang@redhat.com, 
- mst@redhat.com, 
- eperezma@redhat.com, 
- stephen@networkplumber.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- virtualization@lists.linux.dev, 
- kvm@vger.kernel.org
-Cc: Simon Schippers <simon.schippers@tu-dortmund.de>, 
- Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Message-ID: <willemdebruijn.kernel.6b96c721c235@gmail.com>
-In-Reply-To: <20250902080957.47265-2-simon.schippers@tu-dortmund.de>
-References: <20250902080957.47265-1-simon.schippers@tu-dortmund.de>
- <20250902080957.47265-2-simon.schippers@tu-dortmund.de>
-Subject: Re: [PATCH 1/4] ptr_ring_spare: Helper to check if spare capacity of
- size cnt is available
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1756847812; x=1788383812;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=EfyEBkR+gvRPfwnPvyneq20sNdtyH4J+bGD9qod/GG4=;
+  b=k+xME/i55DX414TqaURnZki4hzgxxQeVUuVYdFX24kVjnZGYQAVwrEfn
+   G12w9IsQB/KKA7T9tcqFW/5KEo6mRWLdB0H2/oFRhbd1FD7xoNq9beKTz
+   Ix4iATRcprBvseY4fVk3CTR3SjmblXRZ2A9FS6vwaREKurlkP/QPhZ1bI
+   LT0GZ+hM8QaECJq9VzT/70YjQYgfp7kEaxsemGDsIiu2TjT6mnl5Bp/bZ
+   eDKL2DKsineHJa5yJYwGWKsVaB0D75R6B5XxK7HJteF9aWyyxvVKfC78M
+   KHKDh24KHS/i/7563bwI+W/A4qJlGI7tEyZM2mEBCaBP9zts65poTQdXt
+   Q==;
+X-CSE-ConnectionGUID: jFFlNh1pS++I9zet7HJ2FQ==
+X-CSE-MsgGUID: gdsx5nXcSFGBV9jzl+xSYg==
+X-IronPort-AV: E=Sophos;i="6.18,233,1751241600"; 
+   d="scan'208";a="2250860"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 21:16:50 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:37188]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.88:2525] with esmtp (Farcaster)
+ id 2d6dc524-f91c-4acd-be1b-9e11261f00e8; Tue, 2 Sep 2025 21:16:50 +0000 (UTC)
+X-Farcaster-Flow-ID: 2d6dc524-f91c-4acd-be1b-9e11261f00e8
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 2 Sep 2025 21:16:50 +0000
+Received: from b0be8375a521.amazon.com (10.37.245.8) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Tue, 2 Sep 2025 21:16:48 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: <enjuk@amazon.com>
+CC: <aleksandr.loktionov@intel.com>, <andrew+netdev@lunn.ch>,
+	<anthony.l.nguyen@intel.com>, <davem@davemloft.net>, <edumazet@google.com>,
+	<intel-wired-lan@lists.osuosl.org>, <kohei.enju@gmail.com>,
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<przemyslaw.kitszel@intel.com>
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v3] ixgbe: preserve RSS indirection table across admin down/up
+Date: Wed, 3 Sep 2025 06:16:39 +0900
+Message-ID: <20250902211640.85359-1-enjuk@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250902210447.77961-2-enjuk@amazon.com>
+References: <20250902210447.77961-2-enjuk@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWA001.ant.amazon.com (10.13.139.83) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Simon Schippers wrote:
-> The implementation is inspired by ptr_ring_empty.
-> 
-> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
-> ---
->  include/linux/ptr_ring.h | 71 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 71 insertions(+)
-> 
-> diff --git a/include/linux/ptr_ring.h b/include/linux/ptr_ring.h
-> index 551329220e4f..6b8cfaecf478 100644
-> --- a/include/linux/ptr_ring.h
-> +++ b/include/linux/ptr_ring.h
-> @@ -243,6 +243,77 @@ static inline bool ptr_ring_empty_bh(struct ptr_ring *r)
->  	return ret;
->  }
->  
-> +/*
-> + * Check if a spare capacity of cnt is available without taking any locks.
-> + *
-> + * If cnt==0 or cnt > r->size it acts the same as __ptr_ring_empty.
+On Wed, 3 Sep 2025 06:04:43 +0900, Kohei Enju wrote:
 
-cnt >= r->size?
+>On Tue, 2 Sep 2025 13:25:56 +0000, Loktionov, Aleksandr wrote:
+>
+>> [...]
+>>> -
+>>> -	for (i = 0, j = 0; i < reta_entries; i++, j++) {
+>>> -		if (j == rss_i)
+>>> -			j = 0;
+>>> +	/* Update redirection table in memory on first init, queue
+>>> count change,
+>>> +	 * or reta entries change, otherwise preserve user
+>>> configurations. Then
+>>> +	 * always write to hardware.
+>>> +	 */
+>>> +	if (adapter->last_rss_indices != rss_i ||
+>>> +	    adapter->last_reta_entries != reta_entries) {
+>>> +		for (i = 0; i < reta_entries; i++)
+>>> +			adapter->rss_indir_tbl[i] = i % rss_i;
+>>Are you sure rss_i never ever can be a 0?
+>>This is the only thing I'm worrying about.
+>
+>Oops, you're exactly right. Good catch!
+>
+>I see the original code assigns 0 to rss_indir_tbl[i] when rss_i is 0,
+>like:
+>  adapter->rss_indir_tbl[i] = 0;
 
-> + *
-> + * The same requirements apply as described for __ptr_ring_empty.
-> + */
-> +static inline bool __ptr_ring_spare(struct ptr_ring *r, int cnt)
-> +{
-> +	int size = r->size;
-> +	int to_check;
-> +
-> +	if (unlikely(!size || cnt < 0))
-> +		return true;
+Ahh, that's not true, my brain was not working... Sorry for messing up.
+Anyway, in a situation where rss_i == 0, we should handle it somehow to
+avoid zero-divisor.
 
-Does !size ever happen. Also no need for preconditions for trivial
-errors that never happen, like passing negative values. Or prefer
-an unsigned type.
-
-> +
-> +	if (cnt > size)
-> +		cnt = 0;
-> +
-> +	to_check = READ_ONCE(r->consumer_head) - cnt;
-> +
-> +	if (to_check < 0)
-> +		to_check += size;
-> +
-> +	return !r->queue[to_check];
-> +}
-> +
-> +static inline bool ptr_ring_spare(struct ptr_ring *r, int cnt)
-> +{
-> +	bool ret;
-> +
-> +	spin_lock(&r->consumer_lock);
-> +	ret = __ptr_ring_spare(r, cnt);
-> +	spin_unlock(&r->consumer_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static inline bool ptr_ring_spare_irq(struct ptr_ring *r, int cnt)
-> +{
-> +	bool ret;
-> +
-> +	spin_lock_irq(&r->consumer_lock);
-> +	ret = __ptr_ring_spare(r, cnt);
-> +	spin_unlock_irq(&r->consumer_lock);
-> +
-> +	return ret;
-> +}
-> +
-> +static inline bool ptr_ring_spare_any(struct ptr_ring *r, int cnt)
-> +{
-> +	unsigned long flags;
-> +	bool ret;
-> +
-> +	spin_lock_irqsave(&r->consumer_lock, flags);
-> +	ret = __ptr_ring_spare(r, cnt);
-> +	spin_unlock_irqrestore(&r->consumer_lock, flags);
-> +
-> +	return ret;
-> +}
-> +
-> +static inline bool ptr_ring_spare_bh(struct ptr_ring *r, int cnt)
-> +{
-> +	bool ret;
-> +
-> +	spin_lock_bh(&r->consumer_lock);
-> +	ret = __ptr_ring_spare(r, cnt);
-> +	spin_unlock_bh(&r->consumer_lock);
-> +
-> +	return ret;
-> +}
-
-Please only introduce the variants actually used.
-
-
+>
+>To handle this with keeping the behavior when rss_i == 0, I'm
+>considering
+>Option 1:
+>  adapter->rss_indir_tbl[i] = rss_i ? i % rss_i : 0;
+>
+>Option 2:
+>  if (rss_i)
+>      for (i = 0; i < reta_entries; i++)
+>          adapter->rss_indir_tbl[i] = i % rss_i;
+>  else
+>      memset(adapter->rss_indir_tbl, 0, reta_entries);
+>
+>Since this is not in the data path, the overhead of checking rss_i in
+>each iteration might be acceptable. Therefore I'd like to adopt the
+>option 1 for simplicity.
+>
+>Do you have any preference or other suggestions?
