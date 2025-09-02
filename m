@@ -1,181 +1,183 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D62258CF9
-	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 20:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708AC2253EB
+	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 20:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756845850; cv=none; b=Ke2OXlpSfJU4v7wADIYO5MTD08kvIFnEMBSLsjV1SiQcVmWHDaSGt67Plw3aSbJibYYU1Bp7pPNUWOxGq8Tr+l5vqD/tY4nCJ5/g+XoTKAChKSibsvR+bN6or5Cdc/0qjdD7vNEcAU2s3CjFowSMKRXMHkkXJX+sWrfDJZmckIQ=
+	t=1756845974; cv=none; b=LCYdjnp/iG9Z0XLH5N9fsL+L3K2dHMzoP9J0qIxfCYXDrvIVgEuf0aOdXbP+aPnmzAha1ezUsRHlbE0htP128DBR2FdMk68cTViBhHAdgkk+N7eVXq0smur9/JbeZ58QD6vOyKoGFUSYx1H5q13Lqvrdr13Ri6+iffexyjRMbTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756845850; c=relaxed/simple;
-	bh=x6tX6nu91SYmevBuzLc9GegifWHbFz1pKTFs2oYCmA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Igq7rcX8vI4KB8Cpaw199l2DVDczNkbVweIsDWUwirtGFjhZ6+vBdDSCuR/O3gIUiVN7QbXeBgJoYJeLWrJNeYOHCOJ0GBh+9MPg8VlRg5FXfl0ga7hkDJWRN2PeG8gX37BUTWWdeGXxdv256wwmWvw5FoZu72PYGdqfHdieqZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=idGzAKCP; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
+	s=arc-20240116; t=1756845974; c=relaxed/simple;
+	bh=MoKvuoV994xpyClECQK7AzVdCQxgT/CjSBm4UEsY9Dc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tFQFHzOEIolg9LSe/JkFRPYZzuktJ2hYYF0KW/f0xUE21BUvIVie2dZ085wC+c+cv1y8Os8y3XR8nSeXvAn7wYFTTnzxz61MMuyRBxXUpjg/u4BgEg/LTIcBt9KZw5APljbBmd1y+QA5m2D/e2GWmgN3bkKeHGzhsduf264HTJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xT4F4/mG; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="idGzAKCP"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 582Dvcf5020786;
-	Tue, 2 Sep 2025 20:44:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=+QtwAtGi+lUeG9MX/
-	6kY5OE1Y/lXcKLRMncePf4XB3M=; b=idGzAKCPv6JOF/AcfPFhZ+DubOnxAXzTp
-	BMkkYzQ2BKiHB52dLxX7LmjgMOnlyuI0LDiUh7ardW151Yh/a6dv9nOai2XeI2za
-	NJsZUTeEj3tccXR+fMq0Khk2MqkksfwPuRfkInDu/pokMTd/pvR6v1FmG2Gb2vrM
-	8nv6KamPOxoEyn+tlPgs8DKA4JlGM+GGvNns7cWbuTR9hAi9f8CIRS8oRseMQ8b2
-	gJnCSLCMr8fymCa/mMmD6WfK2vO6ON+kTAosdhPVhfnZii8VAoM3K+9x2ekB6k2b
-	0/0icAFkhNJE8BiSKye1Nb7rlTahxjo0sDFioQDpk2KXcjSkwGZOA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usv30nf3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Sep 2025 20:43:59 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 582K3ITZ017205;
-	Tue, 2 Sep 2025 20:43:58 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vc10mgg8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Sep 2025 20:43:58 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 582KhsoP26280672
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 2 Sep 2025 20:43:54 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FA155806A;
-	Tue,  2 Sep 2025 20:43:54 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CB0558068;
-	Tue,  2 Sep 2025 20:43:54 +0000 (GMT)
-Received: from localhost (unknown [9.61.19.179])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  2 Sep 2025 20:43:54 +0000 (GMT)
-From: David Wilder <wilder@us.ibm.com>
-To: netdev@vger.kernel.org
-Cc: jv@jvosburgh.net, wilder@us.ibm.com, pradeeps@linux.vnet.ibm.com,
-        pradeep@us.ibm.com, i.maximets@ovn.org, amorenoz@redhat.com,
-        haliu@redhat.com, stephen@networkplumber.org, horms@kernel.org
-Subject: [PATCH net-next v9 5/7] bonding: Update to bond_arp_send_all() to use supplied vlan tags
-Date: Tue,  2 Sep 2025 13:43:01 -0700
-Message-ID: <20250902204340.2315079-6-wilder@us.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250902204340.2315079-1-wilder@us.ibm.com>
-References: <20250902204340.2315079-1-wilder@us.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xT4F4/mG"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-248d5074ff7so2297985ad.0
+        for <netdev@vger.kernel.org>; Tue, 02 Sep 2025 13:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756845972; x=1757450772; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q08TyIut9dm+xELvPQIMTkd2TmfIIb+xZ+XCxWQOLOc=;
+        b=xT4F4/mGczkiY+CeWCybD+13BCq9e5Fv7s3DTsnGSUnn/fW+BtR1fW/wPFNIfEFYy0
+         PPwSLHeZDgl3CGsj/uSuKHobsJZnyRTDCxwBF9sdqr113Pz85HTxnPaOlqRaQHej7OA2
+         b4dTjfm0MZByjFhikMujywzXEoGMYzvTQUtGsVG0g2SFahvwHMMOAQdTtI+sbqFNJkzM
+         G9c3L/7BTIbuiszXmlpaeMtTHMZ1ZgyeJhqFcwp9qk9PmQ1eMIB4VI86g3b7lH/s4L++
+         dAv5HW/5s5htVu0228upO6GfZE0i5nt0gdAsus8rjENu8zqsY9zcxFMQ/B94gRCNxzZJ
+         +gEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756845972; x=1757450772;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q08TyIut9dm+xELvPQIMTkd2TmfIIb+xZ+XCxWQOLOc=;
+        b=h3BqnYQVsn74z+mgjd8NsW9fqegoWbJLgWq0VBUywdE1PDjrYEgANmo3X/wuG38YYc
+         IYxCiq6rz61SHTydZHPdZyr8KtR3b/2osiGWr3JxIdKIo96HHo3KEVhadiS7+gJf8410
+         leSu+cpj+XnlWjfhwncJJs845wE/GQONIQx4H47NxqOYu4eDpfAeFH+Tmn7YEGHczWyg
+         HBuyt3LN1RwIzYM5uOhgMUa4qkZQ1Y/3oREnePUR0x2xGWwsiD5ZyKNJcQuL1Ecgoxgx
+         H2V2RXvl2xAJxxWKrmYa6T7SGFi84HaaBbP5MItwR+m8foQ8U4u00OSy6JOo+HThRNH9
+         qmTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLnNsqzbWtmZsDGqYWPg69XYYkatJobCISKuJEVpVF9GAGbMiUvgF2uo4/L5I2ILoOm8VwD7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT8N1Y6uFc2IejN++EqqPEzPGOEAb2B1m/SFl1fAgR178lMlTc
+	neJqmkwaBAb19sobMS0Cz+0cbpuzchQ6aatWNwAnkwU3I4ei4d2Y9tMgIRopLUOXhcFmAT4Iy9M
+	olfTVUbf4i8gSa6dFXV+yYaamGHHqJCUlCkOCs0GU
+X-Gm-Gg: ASbGncvvwkNNY+DqyOqAkUxN0Y/enxTtWgOvcYhOuhEhCFQCj+kOjYcMjFpdlFLs30t
+	XnMUWL7aZePZPnmMoY2IiZtMXGskF6QU/8gTFy4I7iFxhSOWNYllO44eGvPMRWmH7Y4JnqhRowK
+	3eT1VfK8+QlZOb3z6mrLSQpn+6iMrA9OO1GbQQZH0A1zlUPn/UCGmy87b82O6yty2I7oL8Dcm/J
+	KOifxWMxfJs54WDUTTvKGIDD0EHJvOtehDMjAsqONXKkeWiQN0couqm3ipvfWMjzFEKjwl5/J6S
+	mw==
+X-Google-Smtp-Source: AGHT+IGv1tEkpI0Ipz6B/OKk8d17BVJiPdbD/i+LdBvURGy8fHGkZZlgbhRqABCAKLKjS+Pcz3jJke/9zkeAhUuHU0I=
+X-Received: by 2002:a17:903:2b8f:b0:246:e235:49d7 with SMTP id
+ d9443c01a7336-24944ac2518mr118431055ad.15.1756845970857; Tue, 02 Sep 2025
+ 13:46:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8hllmvu01yV8KNelr2grCe9svlsqGoM9
-X-Authority-Analysis: v=2.4 cv=FPMbx/os c=1 sm=1 tr=0 ts=68b7570f cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=ZKn5ET9WYz78Zcf0JJ0A:9
-X-Proofpoint-GUID: 8hllmvu01yV8KNelr2grCe9svlsqGoM9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX1AxFm4Uiqo2B
- G866XTRPmX5kbKEs1Pu8bRaiTl3LZAKAbAPT2BM3NmqsX/0gzTK1qD3oZhCRqJvejpztDO4JCkM
- uFzt4D0I0+sq83ApBj4EBDo+IfOlxvW6tLzf1SkOgP1YlursWYW3BQrZsw1Qo/Awh5sHbNdo2+R
- OJ9jYip+pFuMacLh6yIaRbjIjd3qxwn7N76KcIPvmeacydhKq2GXErHsymMamfvT8T+pkfuEODh
- 79FuQC5LcP2Vg/nf+UEMlyZEu2X3tzjBqKe3wn3Q5cHusG3wDDihYUY5uMe8DcIsATeiFBPC612
- cfACCIXRImyFPiSqGUnmVnU7Laq4OdGgZTWSF6MlMdl+gMoY0G4gbYpUSPaxSBACB9+Ecp/kwrl
- 04/4KZHg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-02_06,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 phishscore=0 clxscore=1015 bulkscore=0
- spamscore=0 adultscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300034
+References: <20250829010026.347440-1-kuniyu@google.com> <20250829010026.347440-5-kuniyu@google.com>
+ <4334e29b-1cd0-48ba-9afa-54d01b1b7143@linux.dev>
+In-Reply-To: <4334e29b-1cd0-48ba-9afa-54d01b1b7143@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 2 Sep 2025 13:45:59 -0700
+X-Gm-Features: Ac12FXzssOMNg3ot4aB-drIIH7wvvzsyyy2W23cFszc0gJNhvYno7vmjPVYVb4o
+Message-ID: <CAAVpQUAAVF==Db=1xj7bbrbiu-tPNxt3Y43CPhy6=X7-+huc7A@mail.gmail.com>
+Subject: Re: [PATCH v4 bpf-next/net 4/5] net-memcg: Allow decoupling memcg
+ from global protocol memory accounting.
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-bond_arp_send_all() will pass the vlan tags supplied by
-the user to bond_arp_send(). If vlan tags have not been
-supplied the vlans in the path to the target will be
-discovered by bond_verify_device_path(). The discovered
-vlan tags are then saved to be used on future calls to
-bond_arp_send().
+On Tue, Sep 2, 2025 at 1:17=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.d=
+ev> wrote:
+>
+> On 8/28/25 6:00 PM, Kuniyuki Iwashima wrote:
+> > +static inline bool sk_should_enter_memory_pressure(struct sock *sk)
+> > +{
+> > +     return !mem_cgroup_sk_enabled(sk) || !mem_cgroup_sk_isolated(sk);
+> > +}
+> > +
+> >   static inline long
+> >   proto_memory_allocated(const struct proto *prot)
+> >   {
+>
+> > @@ -3154,8 +3158,11 @@ bool sk_page_frag_refill(struct sock *sk, struct=
+ page_frag *pfrag)
+> >       if (likely(skb_page_frag_refill(32U, pfrag, sk->sk_allocation)))
+> >               return true;
+> >
+> > -     sk_enter_memory_pressure(sk);
+> > +     if (sk_should_enter_memory_pressure(sk))
+> > +             sk_enter_memory_pressure(sk);
+> > +
+> >       sk_stream_moderate_sndbuf(sk);
+> > +
+> >       return false;
+> >   }
+>
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 71a956fbfc55..dcbd49e2f8af 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -908,7 +908,8 @@ struct sk_buff *tcp_stream_alloc_skb(struct sock *s=
+k, gfp_t gfp,
+> >               }
+> >               __kfree_skb(skb);
+> >       } else {
+> > -             sk->sk_prot->enter_memory_pressure(sk);
+> > +             if (sk_should_enter_memory_pressure(sk))
+> > +                     tcp_enter_memory_pressure(sk);
+>
+> This change from sk_prot->enter_memory_pressure to tcp_enter_memory_press=
+ure
+> looks fine. A qq / nit, have you thought about checking
+> sk_should_enter_memory_pressure inside the tcp_enter_memory_pressure(sk) =
+/
+> sk_enter_memory_pressure(sk) ?
 
-bond_uninit() is also updated to free vlan tags when a
-bond is destroyed.
+Yes, I wanted to centralise the check to sk_enter_memory_pressure(),
+but it calls tcp_enter_memory_pressure() (or sctp one) and they are also
+called directly, so I finally placed the check outside of the functions.
 
-Signed-off-by: David Wilder <wilder@us.ibm.com>
----
- drivers/net/bonding/bond_main.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a095ca4e14a7..0096535b521b 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -3161,18 +3161,19 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
- 
- static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- {
--	struct rtable *rt;
--	struct bond_vlan_tag *tags;
- 	struct bond_arp_target *targets = bond->params.arp_targets;
-+	char pbuf[BOND_OPTION_STRING_MAX_SIZE];
-+	struct bond_vlan_tag *tags;
- 	__be32 target_ip, addr;
-+	struct rtable *rt;
- 	int i;
- 
- 	for (i = 0; i < BOND_MAX_ARP_TARGETS && targets[i].target_ip; i++) {
- 		target_ip = targets[i].target_ip;
- 		tags = targets[i].tags;
- 
--		slave_dbg(bond->dev, slave->dev, "%s: target %pI4\n",
--			  __func__, &target_ip);
-+		slave_dbg(bond->dev, slave->dev, "%s: target %s\n", __func__,
-+			  bond_arp_target_to_string(&targets[i], pbuf, sizeof(pbuf)));
- 
- 		/* Find out through which dev should the packet go */
- 		rt = ip_route_output(dev_net(bond->dev), target_ip, 0, 0, 0,
-@@ -3194,9 +3195,13 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- 		if (rt->dst.dev == bond->dev)
- 			goto found;
- 
--		rcu_read_lock();
--		tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
--		rcu_read_unlock();
-+		if (!tags) {
-+			rcu_read_lock();
-+			tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
-+			/* cache the tags */
-+			targets[i].tags = tags;
-+			rcu_read_unlock();
-+		}
- 
- 		if (!IS_ERR_OR_NULL(tags))
- 			goto found;
-@@ -3212,7 +3217,6 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
- 		addr = bond_confirm_addr(rt->dst.dev, target_ip, 0);
- 		ip_rt_put(rt);
- 		bond_arp_send(slave, ARPOP_REQUEST, target_ip, addr, tags);
--		kfree(tags);
- 	}
- }
- 
-@@ -6145,6 +6149,7 @@ static void bond_uninit(struct net_device *bond_dev)
- 	bond_for_each_slave(bond, slave, iter)
- 		__bond_release_one(bond_dev, slave->dev, true, true);
- 	netdev_info(bond_dev, "Released all slaves\n");
-+	bond_free_vlan_tags(bond->params.arp_targets);
- 
- #ifdef CONFIG_XFRM_OFFLOAD
- 	mutex_destroy(&bond->ipsec_lock);
-@@ -6732,7 +6737,6 @@ static void __exit bonding_exit(void)
- 
- 	bond_netlink_fini();
- 	unregister_pernet_subsys(&bond_net_ops);
--
- 	bond_destroy_debugfs();
- 
- #ifdef CONFIG_NET_POLL_CONTROLLER
--- 
-2.50.1
 
+
+>
+> Other changes of patch 4 lgtm.
+>
+> Shakeel, you have ack-ed patch 1. Will you take a look at patch 3 and pat=
+ch 4 also?
+>
+> >               sk_stream_moderate_sndbuf(sk);
+> >       }
+>
+> > @@ -1016,7 +1017,7 @@ static void mptcp_enter_memory_pressure(struct so=
+ck *sk)
+> >       mptcp_for_each_subflow(msk, subflow) {
+> >               struct sock *ssk =3D mptcp_subflow_tcp_sock(subflow);
+> >
+> > -             if (first)
+> > +             if (first && sk_should_enter_memory_pressure(ssk))
+> >                       tcp_enter_memory_pressure(ssk);
+> >               sk_stream_moderate_sndbuf(ssk);
+> >
+> > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> > index f672a62a9a52..6696ef837116 100644
+> > --- a/net/tls/tls_device.c
+> > +++ b/net/tls/tls_device.c
+> > @@ -35,6 +35,7 @@
+> >   #include <linux/netdevice.h>
+> >   #include <net/dst.h>
+> >   #include <net/inet_connection_sock.h>
+> > +#include <net/proto_memory.h>
+> >   #include <net/tcp.h>
+> >   #include <net/tls.h>
+> >   #include <linux/skbuff_ref.h>
+> > @@ -371,7 +372,8 @@ static int tls_do_allocation(struct sock *sk,
+> >       if (!offload_ctx->open_record) {
+> >               if (unlikely(!skb_page_frag_refill(prepend_size, pfrag,
+> >                                                  sk->sk_allocation))) {
+> > -                     READ_ONCE(sk->sk_prot)->enter_memory_pressure(sk)=
+;
+> > +                     if (sk_should_enter_memory_pressure(sk))
+> > +                             READ_ONCE(sk->sk_prot)->enter_memory_pres=
+sure(sk);
+> >                       sk_stream_moderate_sndbuf(sk);
+> >                       return -ENOMEM;
+> >               }
+>
