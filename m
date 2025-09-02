@@ -1,87 +1,114 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DC52FFDFC
-	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 12:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B711A3165;
+	Tue,  2 Sep 2025 12:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756815500; cv=none; b=I1/Rzd9kf5355vex4CGhs+3Qwdhs4+HnWte7wJpJOuRjr7DmiQsdwxZ9Glju+T+Oalu7QMg57DvKiMPTYEzK+FmFponowXhDemmd9r437cD/U+B8hbpZOU4kwOTDn0C+egZd41NQVt+xBAKNkB9w3myXZflLb8AOy/+Kf/uSc30=
+	t=1756815552; cv=none; b=obGK5soL65EH4y0s9wmIqPYwztCrCQKEQ/wGUWGZoAdAa/cjyXFRP7xZdJB7ooSk09CFSsX4Haxf9clsIv/MUCjX2Givihwi1fpoP7e+Dj6ujqfQNU0Mjd/Sgxwe8dda629yWCYwmRBCNty5dotlDhdNdTmZlTdE5BOcgGOtHzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756815500; c=relaxed/simple;
-	bh=NTUciYP4qkVSP3Ids2cPJKg/b3yW1qYXyRE6W2+YvyM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a5WYduAFiZs0IhxuBwqYkdj6Dq2mGqobfBT7ptaU8HI9ksfksnPC9r9h5r3wZNgXBQqg6i8No0FaMgzCgUD0bH0+mfe/Gr36T2AAeEl11R4ohgq37ZdzzA1a6fvHilnKr0L9OTpP5uoIDMcOLTNO3L+yIS/gT/JI0p7yeAzdpvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PzLvHWK1; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1756815552; c=relaxed/simple;
+	bh=4cQJpJiSmH7L4G141bXjSx+04YOuTBt9WhjwQ9ojNAI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mn1NPEdP0Scx700zc6UsUU9morK5ClFdW8cae5SlQYIn6uANn5J65Fy4BaqLi9JgWxHa+uPQMWiTteyckY87xg4tGnxDoqHUMOY1eNpuFrIMT9RUUcmiRgVUfMSOlyRucSeSXOMlosUW4Ev6ElSsEgccBBw1EmuSCJhue6kWGEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+4Y08xb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PzLvHWK1"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4b338d7a540so19057271cf.1
-        for <netdev@vger.kernel.org>; Tue, 02 Sep 2025 05:18:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756815496; x=1757420296; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0BtHVQVngraHXwyztIS7rS2FP0vL/znas/2GvCizYvA=;
-        b=PzLvHWK1Pbj6WlpmabFlATKlg//2jKQcWFwDO4mh/b2dlSdxKBjbpmonyVzeAuJ7rI
-         VQWlfOtS0GKss+npbDB/bsePPacjgaKOmF6ls2gWRa834PXhpzBGVXMhE68Zj9WgQhdM
-         St1lWOqyJKaGhZ93OcLYJvivxqHKuHpFwRGNvBOqTUtmrJqayUOEGitfkU6Z+fOKcs2R
-         3+60MEz6IvqSvXCJSPmVkx5Iu/RYKeAgAKI3/qTAVKQxSCw6Lp8wDVcZ3iasJQMAEC+Y
-         iudGaxk5lAA7bQTYgN8oumhoWT59votstdkrd4PXS2uAjZ4KQVrMlEW08bKqV9A5pdap
-         kEVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756815496; x=1757420296;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0BtHVQVngraHXwyztIS7rS2FP0vL/znas/2GvCizYvA=;
-        b=Y8+QmVVRFOqHNhi+ae2VvPeLn/guEfodma6EE3Kgk1zXdRrljy0Xj+pD/quQyOSiOf
-         74XbEU3BczivMr5+Ja6/aMj9dhPuE1Jxb6MN4hlQWfoogKKg7d08/VwWSU1smG21I77B
-         wo3d8tNgJ2LxdnFKgs754Mh4VZF12huElv4MafdY/6it3GSEEsFjbjhdz/Ki7ozVpUi7
-         vPG6CbFsUusux5Lcr9Tt4J0Q5Tq146rCPXcyKEn8VZENyd2bbOVBAJJ7pm7t5EI3LZXu
-         RmiZDN3daDaPFybqgXR4WDZGLY7qRwREsB5qvuZZbti6dAxxCFoPMGDLbimzLsejEHbt
-         92pw==
-X-Forwarded-Encrypted: i=1; AJvYcCUx3vnhPYi7D3yEd6g9O4uCBeDGw/Abb5uVQcp9VWBP5i/G4uqN3XtV/z6HcAccI44so2pBaV0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpbKRh11GLFOnz6PbM/hp85+aqljJ5nnc/EXxvLsCeC5fc9iOZ
-	mSsL6VKt9yG88IComZJmmwmPhzSq2f8oOdhqzphrphMiE9v1QCgLQbOT7hYAXeEdFY+CvbHkGmE
-	qUnyFL7Nyb82y2u+08tZLp8di3VLylroPsL7SxNIl
-X-Gm-Gg: ASbGncsgZVB8vQOlgGo5K5l8tRtSvzkMSS5+Ssm90O6K+3A0tVVbfe/R/BQz59Xm+P7
-	9kMZJAMjx8vw/kNzf663aYAK8MwUlQNyS27FMylLX98jRCyp9rYcQz2Tsf+BOouTL0/oNZonlZq
-	YKm0pBuaY8Dh+nUoe1VKtrmvtZW/155gf5i7vuw5pjBFKuMhZfbzPVBOH7ntwD1QrRFvxD5cF9S
-	qcqJiEZtk2KNA==
-X-Google-Smtp-Source: AGHT+IH5vzEO1QHxkAoblS7kriJ2318EF1KTzHsAZLiCGeoig9qB+yVEkkECgxfzHSgXCz6G9dwSrH92f7veZprPEl4=
-X-Received: by 2002:a05:622a:5b09:b0:4b3:140c:ef9d with SMTP id
- d75a77b69052e-4b31d844993mr129778201cf.17.1756815495331; Tue, 02 Sep 2025
- 05:18:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+4Y08xb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1E6C4CEED;
+	Tue,  2 Sep 2025 12:19:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756815552;
+	bh=4cQJpJiSmH7L4G141bXjSx+04YOuTBt9WhjwQ9ojNAI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f+4Y08xbkPlDuXd39+vQdmBmZ+o4Xopyp3RoA9DgKYoJn365ffFrI3WtiTaNy1jba
+	 6mZeqgD7YpRN+3qMivtTrNqBUGHfX9T6465LzygPB4btmetLxytSFfRfnBafCT1lZ4
+	 6ikW0SvfhHnTyH9DK7iraakKeX8armz2SQdRbpoZbnM0v4bnazvr9jAOT08BCUOPJv
+	 vM32NJaGNNHeIEjHXDUHTW0u5ScU22ouf2Dq2J/G/ZTX5fX7GEelQEfz56jPXuuqGP
+	 avE3A233hEUU8OylSG7ffLQTdcGlS2+i53jEXRn1R+nBDeOns8llA3XIaKEaTIHl/x
+	 d464JQ7+XUgfA==
+Message-ID: <55c512d6-6be4-41c2-b417-9f803c1c118d@kernel.org>
+Date: Tue, 2 Sep 2025 14:19:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aLaQWL9NguWmeM1i@stanley.mountain>
-In-Reply-To: <aLaQWL9NguWmeM1i@stanley.mountain>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 2 Sep 2025 05:18:03 -0700
-X-Gm-Features: Ac12FXwI4CvJS6_vLUukiLiLi6nGCSauJpahGMDDKoEk8R4QGC_U6PfE1GF1EBA
-Message-ID: <CANn89iK9FBmqC78Fn95Aa99+TA128xXSvSsLe408zkk1DG2Ojg@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: Fix NULL vs error pointer check in inet_blackhole_dev_init()
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Xin Long <lucien.xin@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: nfc: nci: Increase NCI_DATA_TIMEOUT to
+ 3000 ms
+To: =?UTF-8?Q?Juraj_=C5=A0arinay?= <juraj@sarinay.com>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mingo@kernel.org,
+ tglx@linutronix.de
+References: <20250902113630.62393-1-juraj@sarinay.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250902113630.62393-1-juraj@sarinay.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 1, 2025 at 11:36=E2=80=AFPM Dan Carpenter <dan.carpenter@linaro=
-.org> wrote:
->
-> The inetdev_init() function never returns NULL.  Check for error
-> pointers instead.
->
-> Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+On 02/09/2025 13:36, Juraj Šarinay wrote:
+> An exchange with a NFC target must complete within NCI_DATA_TIMEOUT.
+> A delay of 700 ms is not sufficient for cryptographic operations on smart
+> cards. CardOS 6.0 may need up to 1.3 seconds to perform 256-bit ECDH
+> or 3072-bit RSA. To prevent brute-force attacks, passports and similar
+> documents introduce even longer delays into access control protocols
+> (BAC/PACE).
+> 
+> The timeout should be higher, but not too much. The expiration allows
+> us to detect that a NFC target has disappeared.
+> 
+> Signed-off-by: Juraj Šarinay <juraj@sarinay.com>
+> ---
+> v3:
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Thanks!
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
