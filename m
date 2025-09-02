@@ -1,68 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7E12EA15B;
-	Tue,  2 Sep 2025 09:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1572EA14A;
+	Tue,  2 Sep 2025 09:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756803721; cv=none; b=oZsXLGvsuPJmUNwj4iMTTNhvqXBdDlkXjpGGzKQdeNfscOEK0/2TF3s2iV9Ko2h0DkLCpjBPc0aZBsMm6PRqqGTpRLnWYVNmsKHGwX593BX/na15fNwpDNP46zz3Gf95m364geMUvg9fsgOQlVK9TR53qTR/jEj7fGbBUQ7RdV4=
+	t=1756803747; cv=none; b=hTTvCKIfiC8Y5F+0sCBEibKog0PlTREHPmX2a4NpEQqgjY4sY0HFquwij08nU7FSY8UCBrtn9UdCNgLIyoh4Nuhzxtl+rdaHja+i/AQDUH+a2YsksUi3diQ1zTd4ShLUxyHEdtR1bv7PM76BME1toEOPJmqBBU/MI4oBnWXldHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756803721; c=relaxed/simple;
-	bh=eCLSgjYU55k0sLoytGfD8EJNOWh2cJntMasrdZh4/gs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AWJLoVEmMxJEZF8eFzZBayWU3S325ji81NpDaChZC3X+zVtbUNiVpJuCTScCdG1FA1v97PFKpZQq32SRuzYZ/xqrPGhLWAlSsJVBhFYYYyreoQqISzrfUg7RYqnWw+fbPvh4xi2ZYW8EZW/Hhsu8w6GED44mOa4HwZ/btKTOOKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGNpSS9W; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGNpSS9W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900ACC4CEED;
-	Tue,  2 Sep 2025 09:01:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756803720;
-	bh=eCLSgjYU55k0sLoytGfD8EJNOWh2cJntMasrdZh4/gs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oGNpSS9WYtLS54U+nu/921I+K2rMjoAn3hXO+vRB2KYb6LBv57DEQED0457rZnEar
-	 WcokcEom3Q+nGHSb21jWQg4Hf4KtCkwY1M5nyAWZ7i674j2s6wTFXVc3vDsw7k24o9
-	 47YMRrUUHhM4pTz5NikqRJEHxk96E3Yr0LjeTIvPJhlrBl2cS55zvjjKkSIZC+IHdF
-	 UB1ufWqIdOO9Yjv+UP8/0G5YgAd3gGznDJQeGDT57sWJSTuYRZuOoEK0QZzvaB+zCH
-	 6cteAfD4EvtC87/7pDjmub2FbcNefc5fv4HkKLSkzyfLh6tIJX0KBC3xQNzgUlTyIe
-	 YnnRRh49zzoNQ==
-Date: Tue, 2 Sep 2025 10:01:56 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, ecree.xilinx@gmail.com,
-	gal@nvidia.com, joe@dama.to, linux-kselftest@vger.kernel.org,
-	shuah@kernel.org
-Subject: Re: [PATCH net-next 1/2] selftests: drv-net: rss_ctx: use Netlink
- for timed reconfig
-Message-ID: <20250902090156.GU15473@horms.kernel.org>
-References: <20250829220712.327920-1-kuba@kernel.org>
- <20250901135008.GC15473@horms.kernel.org>
- <20250901102607.0ee14e3c@kernel.org>
+	s=arc-20240116; t=1756803747; c=relaxed/simple;
+	bh=Qo8o4X1vIJhxz9EjQvGCY/ZX8gplKQ/64Th+DZCktBM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=b8iGFh3OIXuGwKTa4/3jFL5xVMZ1A1XprtYgh3veEsk8uikMhTgtPO+M6XJw29iHc2Ag/8+7oUF35z5wz5+9Qp08iX+fJCP0JBwfFIgMl0I+S24mAmphBWwF87O7KdYWp+2DJcw6Ak7/mYn1h7oO5useNfUyli8bAes1HZp5Lxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
+Received: from jtjnmail201610.home.langchao.com
+        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id 202509021702091558;
+        Tue, 02 Sep 2025 17:02:09 +0800
+Received: from localhost.localdomain.com (10.94.12.93) by
+ jtjnmail201610.home.langchao.com (10.100.2.10) with Microsoft SMTP Server id
+ 15.1.2507.57; Tue, 2 Sep 2025 17:02:09 +0800
+From: chuguangqing <chuguangqing@inspur.com>
+To: <horms@kernel.org>, Antonio Quartulli <antonio@openvpn.net>, Sabrina
+ Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, chuguangqing
+	<chuguangqing@inspur.com>
+Subject: PATCH v2 Re: Re: [PATCH 1/1] ovpn: use kmalloc_array() for array space allocation
+Date: Tue, 2 Sep 2025 17:00:50 +0800
+Message-ID: <20250902090051.1451-1-chuguangqing@inspur.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250901112136.2919-1-chuguangqing@inspur.com>
+References: <20250901112136.2919-1-chuguangqing@inspur.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901102607.0ee14e3c@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+tUid: 20259021702099217d4ed3cb39d2b8944c47b299f51f8
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 
-On Mon, Sep 01, 2025 at 10:26:07AM -0700, Jakub Kicinski wrote:
-> On Mon, 1 Sep 2025 14:50:08 +0100 Simon Horman wrote:
-> > > -    key = _rss_key_rand(key_len)
-> > > +    ethnl = EthtoolFamily()
-> > > +    key = random.randbytes(key_len)  
-> > 
-> > Is the update to the generation of key intended?
-> > It's not clear to me how it relates to the rest of the patch.
+v1 -> v2:
+Unnecessary parentheses have been removed and line alignment has been adjusted to 80 characters in width.
+
 > 
-> _rss_key_rand() gives us an array of integers in the range 0-255 while
-> randomg.randbytes() gives us a bytearray. Difference in return type.
-
-Thanks, it is clear now :)
-
-> Let me respin and add this to the commit msg. Looks like I was too
-> aggressive with the decrease in 75msec timing, CI hit a 120msec run :(
+> On Mon, Sep 01, 2025 at 07:21:36PM +0800, chuguangqing wrote:
+> > Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
+> > allocation and overflow prevention.
+> >
+> > Signed-off-by: chuguangqing <chuguangqing@inspur.com>
+> > ---
+> >  drivers/net/ovpn/crypto_aead.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/net/ovpn/crypto_aead.c
+> > b/drivers/net/ovpn/crypto_aead.c index 2cca759feffa..8274c3ae8d0b
+> > 100644
+> > --- a/drivers/net/ovpn/crypto_aead.c
+> > +++ b/drivers/net/ovpn/crypto_aead.c
+> > @@ -72,8 +72,8 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct
+> ovpn_crypto_key_slot *ks,
+> >  		return -ENOSPC;
+> >
+> >  	/* sg may be required by async crypto */
+> > -	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
+> > -				       (nfrags + 2), GFP_ATOMIC);
+> > +	ovpn_skb_cb(skb)->sg = kmalloc_array((nfrags + 2),
+> sizeof(*ovpn_skb_cb(skb)->sg),
+> > +					     GFP_ATOMIC);
 > 
+> I think this could benefit from:
+> a) Removal of unnecessary parentheses
+> b) Line wrapping to 80 columns wide or less,
+>    as is still preferred for Networking code
+> 
+> (Completely untested!)
+> 
+> 	ovpn_skb_cb(skb)->sg = kmalloc_array(nfrags + 2,
+> 					     sizeof(*ovpn_skb_cb(skb)->sg),
+> 					     GFP_ATOMIC);
+> 
+> >  	if (unlikely(!ovpn_skb_cb(skb)->sg))
+> >  		return -ENOMEM;
+> >
+> > @@ -185,8 +185,8 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer,
+> struct ovpn_crypto_key_slot *ks,
+> >  		return -ENOSPC;
+> >
+> >  	/* sg may be required by async crypto */
+> > -	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
+> > -				       (nfrags + 2), GFP_ATOMIC);
+> > +	ovpn_skb_cb(skb)->sg = kmalloc_array((nfrags + 2),
+> sizeof(*ovpn_skb_cb(skb)->sg),
+> > +					     GFP_ATOMIC);
+> 
+> Likewise here.
+> 
+> >  	if (unlikely(!ovpn_skb_cb(skb)->sg))
+> >  		return -ENOMEM;
+> >
+> 
+> --
+> pw-bot: changes-requested
+
+
+chuguangqing (1):
+  ovpn: use kmalloc_array() for array space allocation
+
+ drivers/net/ovpn/crypto_aead.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+-- 
+2.43.5
+
