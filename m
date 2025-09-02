@@ -1,278 +1,166 @@
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7BF2EC09F;
-	Tue,  2 Sep 2025 09:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011562E8E03
+	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 09:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756804132; cv=none; b=F3rFObDapliVxgYfPYI1OTYCR4W82zfFsj2nVSpd6YVS5WubMwlMW8S76HDKLihvEUUFt06qfTehd3VSf6fGkm+lISVt9mvW8NnIa2aO5CtM9jLoPleUt+Zr0Zmjq1CRW3xqkYWpvnkUwyeFdG0keUaAWSXPPBAW1L0stgNzcCk=
+	t=1756804494; cv=none; b=eHexmIAuEEnJVub8mJQFD2ElC4f8vEZ5rYg2gZ3NAp6dG1IQygzt1UhGALjHiCC2eFIwt4b+TDYWW6KtfauA80hN+ZRys+8FTrVT/YbJgR7FEMoQPrnlhqrzHrDP+MfTSO2K5/KFx4GuNT3OjFV/YXgtXFe4ksE4pVK6dQum8r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756804132; c=relaxed/simple;
-	bh=GoqG+js8Bso3OAhdRLX47AIgtC/jd/1rcs6aDYOeNF8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G1nlWoeGL6ciwTZ6gATbKGnexIdqm8jasAVMaT/wvqpzrsTM63V+pyzKFfyWa4wpIviXJF6LiBansjz/VjxmUvYB3My3KbrrpQ38s066UBo6hfqnU9RNPs+3JwiIrdYkK82jyfsBnB/xlw4kyaWMq1RUg6gxqdiKtt0OX4LI8rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=BeTwCjg8; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1756804494; c=relaxed/simple;
+	bh=Sv5rjcMW0XRL3T4QTlzK6bGt+YKcn27Pk+A4Io6DRG4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ckyYcMWZT0qjJfEhXL7ohxKo265wQVclpaGjFnTOwmYx73Ki6bu/RW0MQtfmzN5GCMnATlQIIJ5TCVlEyleRyvI0MSotBVbKboPB2C7vpl8Su2Gj92URGJ7cBYQb0rKd3LnGr/qFd9kUHqZVLECfqpB6oyiNJcEicZac7Jxpkf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=lqJ89l/X; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="BeTwCjg8"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 582988s62494770;
-	Tue, 2 Sep 2025 04:08:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1756804088;
-	bh=tq1NRKi34cA0e6Ep6vk7B9+kUXvmNAQEESfZcvg/Ffc=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=BeTwCjg8ENHYkfjJ3yfKyKAzTFgO2wyPzcCYCaLDv9AAjDrNibth1FNz6Z/GEhpcr
-	 ePKKUJrwYfgvK5eTJFsfQP+jJKEAGSjATnkKLM2DNHYhHZZiIpHCDc9shHQdyHQNII
-	 mMPPozCsaiO15HIWPuxsRhLJcG28kmVoMG0m/cNU=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 582987AV3375343
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Tue, 2 Sep 2025 04:08:08 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Tue, 2
- Sep 2025 04:08:06 -0500
-Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Tue, 2 Sep 2025 04:08:06 -0500
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 582986cE1061793;
-	Tue, 2 Sep 2025 04:08:06 -0500
-Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 582985Z8020892;
-	Tue, 2 Sep 2025 04:08:06 -0500
-From: MD Danish Anwar <danishanwar@ti.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu
- Poirier <mathieu.poirier@linaro.org>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-        Nishanth Menon <nm@ti.com>, Vignesh
- Raghavendra <vigneshr@ti.com>,
-        Mengyuan Lou <mengyuanlou@net-swift.com>,
-        MD
- Danish Anwar <danishanwar@ti.com>, Xin Guo <guoxin09@huawei.com>,
-        Lei Wei
-	<quic_leiwei@quicinc.com>, Lee Trager <lee@trager.us>,
-        Michael Ellerman
-	<mpe@ellerman.id.au>, Fan Gong <gongfan1@huawei.com>,
-        Lorenzo Bianconi
-	<lorenzo@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lukas
- Bulwahn <lukas.bulwahn@redhat.com>,
-        Parthiban Veerasooran
-	<Parthiban.Veerasooran@microchip.com>,
-        Suman Anna <s-anna@ti.com>
-CC: Tero Kristo <kristo@kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>,
-        Roger Quadros
-	<rogerq@kernel.org>
-Subject: [PATCH net-next v2 7/8] net: rpmsg-eth: Add support for multicast filtering
-Date: Tue, 2 Sep 2025 14:37:45 +0530
-Message-ID: <20250902090746.3221225-8-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250902090746.3221225-1-danishanwar@ti.com>
-References: <20250902090746.3221225-1-danishanwar@ti.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="lqJ89l/X"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5822TH59027558
+	for <netdev@vger.kernel.org>; Tue, 2 Sep 2025 09:14:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	JO1ghtzbf6msdOeC9Wq7UpFQnYphPOPa6N9e0whQQw4=; b=lqJ89l/XL7eohyXm
+	B8/rx5P7wR+PqB9DzMZasnXgDSPmlEoK0i6/51pgt12C+LHKoT0bJF/KkQyXl9U5
+	/j3cmOREMAt54FT0DhrgbglP+buY+m6sudUohFCofhElnTMcSRVAvRFXIVmEHoWh
+	MVQVFJSCboTZr8znRg0t9C7Ey52df/8ukG8fFVbYGBts2SpLHlxo9yMaT5ufsWsK
+	gj9vNI3vMtbR0GZ/ExiSL2nmQ5bgBHeT/Ar25Y0+CQIvigpZuC2KmD5cCgMugjr6
+	7QdNBXVkGEubRGSogx2YmIHaqTnk8m09pdDdlL6QtWXrEoXbfhxNe4mzDq2XJjvD
+	sn72Nw==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48uscuy975-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 02 Sep 2025 09:14:51 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7f7e24d88acso99226085a.0
+        for <netdev@vger.kernel.org>; Tue, 02 Sep 2025 02:14:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756804491; x=1757409291;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JO1ghtzbf6msdOeC9Wq7UpFQnYphPOPa6N9e0whQQw4=;
+        b=eZxgaXs7QF9mCjFpLI80v8fQD8fTgtA+5ncDT2OSTUUsRC45rGXA6ZcR3buXbz9wGb
+         CTXVx5aiz6n7m3PFQm/COrr2R3grS5+nxOOf/vWLQqXDhC3clgZFvTKkZ0ioX/gd4zfs
+         CV15xhQh76IH4znKh96Irjs03fiW0x+Qa9YQhmMt8miVCO+aifKx8+E1hvCUUCK8FXbZ
+         JORb26VHI9ZIAjuVzMriivI4pyP9YtAcSTwT3XECKMmNXlo3GdPAVM8rzXwA1LYhNKOs
+         5o6ZF9g7nETc9nQkNiBX0HFn45LvRKHOQdX9FuFk1dZO42MX9MNqo0MvyaYdvKKeiX3m
+         k/Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWCu6V7W1tPhfNi4vZyJuIuaUf9EngARUGZqy5mwKyX1Tz4atlgeXiocxxGQVcqJmiph6/k14M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaWI6KTgd+IkaZAtYmWWXoyBSc6RUG8H4jpOxVUKF9jcgkC0nU
+	kRGKoNsvkxlHmr/1ZRh7eJj7KNjO3qXmRrrAd/7BJTTvUmipd2Z7lbr08+9OmMvIXMnnAsXOtvu
+	h4AH9ilWGZQhZyGCp+t8hy240LM1uYY5oSqbfFAGcKfH0NLW3f/7ipBtk2PE=
+X-Gm-Gg: ASbGncvgRAcH5piNkxkzHghRa7HZ2DGkogKV+AInRC9kHmoKclEu/YdTJC+3GCqyDDx
+	ojIzP574+J7i3VCL8QfDElna+noyu3NUOanXH/pV+GLe5MHPfgptFJrFGawZoOjcf58cYdNPogV
+	ou77xgqLsATamaIvN04KbE0vPYA+iNGt/HGLLEvdSSnl6oseC7nLjIj30LCjKrPOXZcrAz5kcHk
+	tElM6+/PCKMB7TtJeGp6ordL2Iqzuudktl9EzjkP9J4yMe7QYEa7HHNKRdxdl2HOAdlodzgGYTH
+	2YgS2aKQ6A54AQK5BF9Gp/nIcleYslRYrHmKzCIRfRgi1IMvC26104rLQvdCJuS6DKbimNSxQdR
+	26ONeZPigDeIbPLT9q7J5Og==
+X-Received: by 2002:a05:6214:5083:b0:70d:dcc0:75e with SMTP id 6a1803df08f44-70fa1e3755cmr93720556d6.4.1756804490119;
+        Tue, 02 Sep 2025 02:14:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdxjzG5x24toM7rERz1x8tefpoUw5nxnJ08BKoZmfBLD2lh1HYnUpQ1tPf3aK4LYj/wz/d7A==
+X-Received: by 2002:a05:6214:5083:b0:70d:dcc0:75e with SMTP id 6a1803df08f44-70fa1e3755cmr93720336d6.4.1756804489632;
+        Tue, 02 Sep 2025 02:14:49 -0700 (PDT)
+Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61ec8516621sm192683a12.26.2025.09.02.02.14.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Sep 2025 02:14:49 -0700 (PDT)
+Message-ID: <16698a59-1a2f-4816-98fe-56b125be669b@oss.qualcomm.com>
+Date: Tue, 2 Sep 2025 11:14:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] bus: mhi: host: Update the Time sync logic to read 64
+ bit register value
+To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>
+Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        taniya.das@oss.qualcomm.com, imran.shaik@oss.qualcomm.com,
+        quic_vbadigan@quicinc.com, quic_mrana@quicinc.com
+References: <20250818-tsc_time_sync-v1-0-2747710693ba@oss.qualcomm.com>
+ <20250818-tsc_time_sync-v1-4-2747710693ba@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250818-tsc_time_sync-v1-4-2747710693ba@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMSBTYWx0ZWRfX6okCVR6ul2Vt
+ gfZXu5TI0HSLgoj0iXZamFSmq50SJFYDmgEkc1wwtPUFMgu3zzT5+3hnNUQP+gSDKldIbHJ5Ad9
+ rqxSN+3BTbGgJbjfdits5AIOKe6wtsoWzRpI4Xhsbymj7nHMciJ0fMvrxYjOpXTjDQdAowvdNRS
+ 2h7SW8z7c5UwcioJMrWk110gc8LiYpk61Za3x0Nd4ZJu82clK28kCqHV2DgJfJhE4bzqRHgpK80
+ Qir2jOsxo4z4VCIc64igCXDnHFU6+RQrQ+m/n9ie9sgPXqU7KH5ljT/33KLHPiiwZLbO4CnK7j3
+ kJr38rWOInqKbCJfpbZusf2x8fS7wk5n0eeUJdB9lfugpaXI370qquJT1kp5ENLsRzTP0gOl3Zh
+ HNn9xZkG
+X-Authority-Analysis: v=2.4 cv=A8xsP7WG c=1 sm=1 tr=0 ts=68b6b58b cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8 a=YtfURPx0HkL0cCzLSeoA:9
+ a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-ORIG-GUID: 3ruS34STF0o7mQgqxEO-d_kwK3ow751R
+X-Proofpoint-GUID: 3ruS34STF0o7mQgqxEO-d_kwK3ow751R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-02_02,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
+ suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300031
 
-Add support for multicast filtering for RPMSG ETH driver. Implement the
-ndo_set_rx_mode callback as icve_set_rx_mode() API. rx_mode_workqueue is
-initialized in rpmsg_eth_probe() and queued in rpmsg_eth_set_rx_mode().
+On 8/18/25 8:55 AM, Krishna Chaitanya Chundru wrote:
+> Instead of reading low and high of the mhi registers twice use 64 bit
+> register value to avoid any time penality.
+> 
+> Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+> ---
+>  drivers/bus/mhi/host/main.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+> index b7ceeb7261b708d46572d1f68dc277b6e1186b6e..f628198218ef9dc760bbfc3ec496603d1a45dfc1 100644
+> --- a/drivers/bus/mhi/host/main.c
+> +++ b/drivers/bus/mhi/host/main.c
+> @@ -1719,6 +1719,7 @@ static int mhi_get_remote_time(struct mhi_controller *mhi_cntrl, struct mhi_time
+>  			       struct mhi_timesync_info *time)
+>  {
+>  	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+> +	u64 val = U64_MAX;
+>  	int ret, i;
+>  
+>  	if (!mhi_tsync && !mhi_tsync->time_reg) {
+> @@ -1756,15 +1757,25 @@ static int mhi_get_remote_time(struct mhi_controller *mhi_cntrl, struct mhi_time
+>  	 * transition to L0.
+>  	 */
+>  	for (i = 0; i < MHI_NUM_BACK_TO_BACK_READS; i++) {
+> -		ret = mhi_read_reg(mhi_cntrl, mhi_tsync->time_reg,
+> -				   TSC_TIMESYNC_TIME_LOW_OFFSET, &time->t_dev_lo);
+> +		if (mhi_cntrl->read_reg64) {
+> +			ret = mhi_read_reg64(mhi_cntrl, mhi_tsync->time_reg,
+> +					     TSC_TIMESYNC_TIME_LOW_OFFSET, &val);
 
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- drivers/net/ethernet/rpmsg_eth.c | 63 ++++++++++++++++++++++++++++++++
- drivers/net/ethernet/rpmsg_eth.h | 12 ++++++
- 2 files changed, 75 insertions(+)
+Since you're passing mhi_cntrl to the read_reg64 function anyway,
+perhaps this could remove some verbosity:
 
-diff --git a/drivers/net/ethernet/rpmsg_eth.c b/drivers/net/ethernet/rpmsg_eth.c
-index a2248e21cf22..e26b1d8f1752 100644
---- a/drivers/net/ethernet/rpmsg_eth.c
-+++ b/drivers/net/ethernet/rpmsg_eth.c
-@@ -67,6 +67,11 @@ static int create_request(struct rpmsg_eth_common *common,
- 		ether_addr_copy(msg->req_msg.mac_addr.addr,
- 				common->port->ndev->dev_addr);
- 		break;
-+	case RPMSG_ETH_REQ_ADD_MC_ADDR:
-+	case RPMSG_ETH_REQ_DEL_MC_ADDR:
-+		ether_addr_copy(msg->req_msg.mac_addr.addr,
-+				common->mcast_addr);
-+		break;
- 	case RPMSG_ETH_NOTIFY_PORT_UP:
- 	case RPMSG_ETH_NOTIFY_PORT_DOWN:
- 		msg->msg_hdr.msg_type = RPMSG_ETH_NOTIFY_MSG;
-@@ -118,6 +123,22 @@ static int rpmsg_eth_create_send_request(struct rpmsg_eth_common *common,
- 	return ret;
- }
- 
-+static int rpmsg_eth_add_mc_addr(struct net_device *ndev, const u8 *addr)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+
-+	ether_addr_copy(common->mcast_addr, addr);
-+	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_ADD_MC_ADDR, true);
-+}
-+
-+static int rpmsg_eth_del_mc_addr(struct net_device *ndev, const u8 *addr)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+
-+	ether_addr_copy(common->mcast_addr, addr);
-+	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_DEL_MC_ADDR, true);
-+}
-+
- static void rpmsg_eth_state_machine(struct work_struct *work)
- {
- 	struct delayed_work *dwork = to_delayed_work(work);
-@@ -200,6 +221,10 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 			break;
- 		case RPMSG_ETH_RESP_SET_MAC_ADDR:
- 			break;
-+		case RPMSG_ETH_RESP_ADD_MC_ADDR:
-+		case RPMSG_ETH_RESP_DEL_MC_ADDR:
-+			complete(&common->sync_msg);
-+			break;
- 		}
- 		break;
- 	case RPMSG_ETH_NOTIFY_MSG:
-@@ -399,10 +424,15 @@ static int rpmsg_eth_ndo_stop(struct net_device *ndev)
- 
- 	netif_carrier_off(port->ndev);
- 
-+	__dev_mc_unsync(ndev, rpmsg_eth_del_mc_addr);
-+	__hw_addr_init(&common->mc_list);
-+
- 	cancel_delayed_work_sync(&common->state_work);
- 	timer_delete_sync(&port->rx_timer);
- 	napi_disable(&port->rx_napi);
- 
-+	cancel_work_sync(&common->rx_mode_work);
-+
- 	return 0;
- }
- 
-@@ -459,10 +489,35 @@ static int rpmsg_eth_set_mac_address(struct net_device *ndev, void *addr)
- 	return ret;
- }
- 
-+static void rpmsg_eth_ndo_set_rx_mode_work(struct work_struct *work)
-+{
-+	struct rpmsg_eth_common *common;
-+	struct net_device *ndev;
-+
-+	common = container_of(work, struct rpmsg_eth_common, rx_mode_work);
-+	ndev = common->port->ndev;
-+
-+	/* make a mc list copy */
-+	netif_addr_lock_bh(ndev);
-+	__hw_addr_sync(&common->mc_list, &ndev->mc, ndev->addr_len);
-+	netif_addr_unlock_bh(ndev);
-+
-+	__hw_addr_sync_dev(&common->mc_list, ndev, rpmsg_eth_add_mc_addr,
-+			   rpmsg_eth_del_mc_addr);
-+}
-+
-+static void rpmsg_eth_set_rx_mode(struct net_device *ndev)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+
-+	queue_work(common->cmd_wq, &common->rx_mode_work);
-+}
-+
- static const struct net_device_ops rpmsg_eth_netdev_ops = {
- 	.ndo_open = rpmsg_eth_ndo_open,
- 	.ndo_stop = rpmsg_eth_ndo_stop,
- 	.ndo_start_xmit = rpmsg_eth_start_xmit,
-+	.ndo_set_rx_mode = rpmsg_eth_set_rx_mode,
- 	.ndo_set_mac_address = rpmsg_eth_set_mac_address,
- };
- 
-@@ -537,6 +592,13 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
- 	INIT_DELAYED_WORK(&common->state_work, rpmsg_eth_state_machine);
- 	init_completion(&common->sync_msg);
- 
-+	__hw_addr_init(&common->mc_list);
-+	INIT_WORK(&common->rx_mode_work, rpmsg_eth_ndo_set_rx_mode_work);
-+	common->cmd_wq = create_singlethread_workqueue("rpmsg_eth_rx_work");
-+	if (!common->cmd_wq) {
-+		dev_err(dev, "Failure requesting workqueue\n");
-+		return -ENOMEM;
-+	}
- 	/* Register the network device */
- 	ret = rpmsg_eth_init_ndev(common);
- 	if (ret)
-@@ -552,6 +614,7 @@ static void rpmsg_eth_remove(struct rpmsg_device *rpdev)
- 
- 	netif_napi_del(&port->rx_napi);
- 	timer_delete_sync(&port->rx_timer);
-+	destroy_workqueue(common->cmd_wq);
- 
- 	dev_dbg(&rpdev->dev, "rpmsg-eth client driver is removed\n");
- }
-diff --git a/drivers/net/ethernet/rpmsg_eth.h b/drivers/net/ethernet/rpmsg_eth.h
-index 992d05bd9386..995c5a9c1034 100644
---- a/drivers/net/ethernet/rpmsg_eth.h
-+++ b/drivers/net/ethernet/rpmsg_eth.h
-@@ -57,10 +57,14 @@ enum rpmsg_eth_rpmsg_type {
- 	/* Request types */
- 	RPMSG_ETH_REQ_SHM_INFO = 0,
- 	RPMSG_ETH_REQ_SET_MAC_ADDR,
-+	RPMSG_ETH_REQ_ADD_MC_ADDR,
-+	RPMSG_ETH_REQ_DEL_MC_ADDR,
- 
- 	/* Response types */
- 	RPMSG_ETH_RESP_SHM_INFO,
- 	RPMSG_ETH_RESP_SET_MAC_ADDR,
-+	RPMSG_ETH_RESP_ADD_MC_ADDR,
-+	RPMSG_ETH_RESP_DEL_MC_ADDR,
- 
- 	/* Notification types */
- 	RPMSG_ETH_NOTIFY_PORT_UP,
-@@ -210,6 +214,10 @@ enum rpmsg_eth_state {
-  * @state: Interface state
-  * @state_work: Delayed work for state machine
-  * @sync_msg: Completion for synchronous message
-+ * @rx_mode_work: Work structure for rx mode
-+ * @cmd_wq: Workqueue for commands
-+ * @mc_list: List of multicast addresses
-+ * @mcast_addr: Multicast address filter
-  */
- struct rpmsg_eth_common {
- 	struct rpmsg_device *rpdev;
-@@ -226,6 +234,10 @@ struct rpmsg_eth_common {
- 	struct mutex state_lock;
- 	struct delayed_work state_work;
- 	struct completion sync_msg;
-+	struct work_struct rx_mode_work;
-+	struct workqueue_struct *cmd_wq;
-+	struct netdev_hw_addr_list mc_list;
-+	u8 mcast_addr[ETH_ALEN];
- };
- 
- /**
--- 
-2.34.1
+int mhi_read_reg64(...) {
+	u32 val_hi, val_lo;
+	u64 val;
 
+	if (mhi_cntrl->read_reg64) {
+		...
+	} else {
+		...
+		val = FIELD_PREP(GENMASK(63, 32), val_hi)) |
+		      FIELD_PREP(GENMASK(31, 0), val_lo));
+	}
+
+	return val
+}
+
+
+Konrad
