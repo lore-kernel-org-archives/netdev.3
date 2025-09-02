@@ -1,261 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A216D26FA46;
-	Tue,  2 Sep 2025 09:01:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3324A4409
+	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 09:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756803668; cv=none; b=r8OQlT7j49mbuznTz3MDhOpEltg+D5iiBsg6AF5JlnfNS8r60/9r+NI0lzQjMHK93mq5edceuxy5RL16FNt9fPJYiyMlNclqdFv+Z5KV+Za26vu/cJ2hL8uRlM5y2Ee/+w5Z2A8w1qNbqTv2jdy6rzBZeJx8+LghJzLRI9APVVs=
+	t=1756803686; cv=none; b=ob0gNtZP+v7eS0xiyAzOXYZ3jiGpzQ2yY+ZGlvCKyIIfxWw1ZPBjXLKNpEXv6jNWTlWgP9BqlzH2uhjzhk009Icao01eVydYF/7u7j999ghpGAn5DceEYQ2oaekwXzz1oH9j7dpn9tSFg4Xbhp3AAh6r+HIWTNSn1nfowNCHCFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756803668; c=relaxed/simple;
-	bh=mN5alaCamYFIsOV5DNqhwizhf2rPGa+oUFPBFZxEPYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QpAmAyFPUWBQztjwJuOt0ujI0U8xQXQWubMR2NKfJYM0K98Xt5btEkt80qwDxcI1WIU+gsrvMJFkSgnWTeD6INMOK2U513yn+2F+gsmN/+9zKmX/ONOAxq+kKBDnbZBc920Hniw4+ouEmfjfmTDVo+6dvvHx43GaXvXCWy3D3Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9EC+SXL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756803686; c=relaxed/simple;
+	bh=2TpnP1AXNCPV0dg1xc5N/Ez8GtG6w45MaCkHZBvSIg4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sqIxmgbZymVMZa4HwPa3u3X22X9w8FraAs4cl8/KnG9mcA/W4soGohbcmaUHImuYDLyRNDjIjG8be3uTyYoA43Viyg6mpPzqpRqtwe1WQmOeLcfS80vKZaRFrwKrpQo0cHenXtIdY6xrw+/O1jTxMIX3jvhvIxlDMkaSehBVuwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dypgPSQj; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9EC+SXL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B9BC4CEED;
-	Tue,  2 Sep 2025 09:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756803668;
-	bh=mN5alaCamYFIsOV5DNqhwizhf2rPGa+oUFPBFZxEPYY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t9EC+SXLly+Vx+79G57ZJem3FcxzZXJyPpX9DupmeAU5doHELqySn32k5H3OGMJx2
-	 qGqCX3b9GHQ8otVWjup3BhFcGsFfqwMjZpIHR8D5WDxmC6NJtZobScVVGnuN38Ggst
-	 tpd9w9eJpUyEVaIJvvwnn01I9DzIZ6LysK3vzDUq6wEkVQgE+pXXCXLWKbEQigzmXt
-	 cmycjbwyUnnDQNiHBrvB1wRlI9V+zCWL6EViyWV7QmY8bHsTcHZEBS5SzpC2H6Ar+r
-	 UeEoTrwjt9igTHLYLNMdNiM00GNms+D4swv38K1yF5952+TiIaU9kNBWSYhkcipmp5
-	 1FAVoLcyHaqVA==
-Date: Tue, 2 Sep 2025 11:01:05 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Prabhakar <prabhakar.csengg@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Russell King <linux@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Biju Das <biju.das.jz@bp.renesas.com>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH net-next 2/4] dt-bindings: net: renesas,rzv2h-gbeth:
- Document Renesas RZ/T2H and RZ/N2H SoCs
-Message-ID: <20250902-gainful-meerkat-of-prestige-dd4952@kuoka>
-References: <20250902001302.3823418-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <20250902001302.3823418-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dypgPSQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756803684; x=1788339684;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2TpnP1AXNCPV0dg1xc5N/Ez8GtG6w45MaCkHZBvSIg4=;
+  b=dypgPSQjdFyw+Q9MI3qPy3umJuJ6e+mZhL1Dbmn01MIa/P225/qkg47Q
+   i7KyhCSaJWqopc/UNgBTmwkfagbLk90oCIc+FuNJvrnT1xmJ4cjj9YSk1
+   Nc2p0A79QcLuh6oLB3xaWpfL1SVtgYVQ1Hycv3Bk+3YO2mRoroMe3/XfU
+   zs6QdDVLlhDJoi4O6UBHZ/xhe9Ckl7dnwy9hd09+mo6hGuTObPPFeiV/h
+   l3qGqpX8o0ZiVwFbN4JOjtcPpWC4oA/z0amK3PzjonUfEqCLxNH1PHH8b
+   ehIPpNn7Ucx2fhh/X/8GMN6m24uB0N0CofGg+6j4JhZcHChC4vW8uQWHT
+   w==;
+X-CSE-ConnectionGUID: PldiitJMTLiKYA1pY3FomQ==
+X-CSE-MsgGUID: rtdo37+rSQeieNL2gvn61A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="76666690"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="76666690"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 02:01:20 -0700
+X-CSE-ConnectionGUID: NMHMv1t8Tquknduml+jNZA==
+X-CSE-MsgGUID: LEAmQg/iTN2U6OzvcLu+Tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="176494110"
+Received: from host59.igk.intel.com ([10.123.220.59])
+  by fmviesa004.fm.intel.com with ESMTP; 02 Sep 2025 02:01:18 -0700
+From: Anton Nadezhdin <anton.nadezhdin@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	richardcochran@gmail.com,
+	Anton Nadezhdin <anton.nadezhdin@intel.com>
+Subject: [PATCH iwl-next 0/2] idpf: add direct access for PHC control
+Date: Tue,  2 Sep 2025 06:50:22 -0400
+Message-ID: <20250902105321.5750-1-anton.nadezhdin@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250902001302.3823418-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 02, 2025 at 01:13:00AM +0100, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> Document the Ethernet MAC (GMAC) IP present on the Renesas RZ/T2H
-> (R9A09G077) and RZ/N2H (R9A09G087) SoCs. The GMAC IP on RZ/N2H is
-> identical to that found on the RZ/T2H SoC.
-> 
-> While the RZ/V2H(P), RZ/T2H, and RZ/N2H SoCs all integrate the Synopsys
-> DesignWare MAC (version 5.20), the hardware is synthesized with different
-> options compared to the RZ/V2H(P):
->   - RZ/T2H requires only 3 clocks instead of 7
->   - RZ/T2H supports 8 RX/TX queue pairs instead of 4
->   - RZ/T2H needs 2 reset controls with reset-names property, vs. a single
->     unnamed reset
->   - RZ/T2H has the split header feature enabled, while it is disabled on
->     RZ/V2H(P)
-> 
-> To accommodate these differences, introduce a new generic compatible
-> string `renesas,rzt2h-gbeth`, used as a fallback for both RZ/T2H and
-> RZ/N2H SoCs.
-> 
-> The DT schema is updated to validate the clocks, resets, reset-names,
-> interrupts, and interrupt-names properties accordingly. Also extend
-> `snps,dwmac.yaml` with the new `renesas,rzt2h-gbeth` compatible.
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> ---
->  .../bindings/net/renesas,rzv2h-gbeth.yaml     | 177 ++++++++++++++----
->  .../devicetree/bindings/net/snps,dwmac.yaml   |   1 +
->  2 files changed, 138 insertions(+), 40 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-> index 23e39bcea96b..e01763389164 100644
-> --- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-> +++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-> @@ -17,63 +17,112 @@ select:
->            - renesas,r9a09g047-gbeth
->            - renesas,r9a09g056-gbeth
->            - renesas,r9a09g057-gbeth
-> +          - renesas,r9a09g077-gbeth
-> +          - renesas,r9a09g087-gbeth
->            - renesas,rzv2h-gbeth
->    required:
->      - compatible
->  
->  properties:
->    compatible:
-> -    items:
-> -      - enum:
-> -          - renesas,r9a09g047-gbeth # RZ/G3E
-> -          - renesas,r9a09g056-gbeth # RZ/V2N
-> -          - renesas,r9a09g057-gbeth # RZ/V2H(P)
-> -      - const: renesas,rzv2h-gbeth
-> -      - const: snps,dwmac-5.20
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - renesas,r9a09g047-gbeth # RZ/G3E
-> +              - renesas,r9a09g056-gbeth # RZ/V2N
-> +              - renesas,r9a09g057-gbeth # RZ/V2H(P)
-> +          - const: renesas,rzv2h-gbeth
-> +          - const: snps,dwmac-5.20
-> +
-> +      - items:
-> +          - enum:
-> +              - renesas,r9a09g077-gbeth # RZ/T2H
-> +              - renesas,r9a09g087-gbeth # RZ/N2H
-> +          - const: renesas,rzt2h-gbeth
-> +          - const: snps,dwmac-5.20
->  
->    reg:
->      maxItems: 1
->  
->    clocks:
-> -    items:
-> -      - description: CSR clock
-> -      - description: AXI system clock
-> -      - description: PTP clock
-> -      - description: TX clock
-> -      - description: RX clock
-> -      - description: TX clock phase-shifted by 180 degrees
-> -      - description: RX clock phase-shifted by 180 degrees
-> +    oneOf:
-> +      - items:
-> +          - description: CSR clock
-> +          - description: AXI system clock
-> +          - description: PTP clock
-> +          - description: TX clock
-> +          - description: RX clock
-> +          - description: TX clock phase-shifted by 180 degrees
-> +          - description: RX clock phase-shifted by 180 degrees
-> +
+IDPF allows to access the clock through virtchnl messages, or directly,
+through PCI BAR registers. Registers offsets are negotiated with the
+Control Plane during driver initialization process.
+This series add support for direct operations to modify the clock as 
+well as to read TX timestamp
 
-Drop blank line
+Milena Olech (2):
+  idpf: add direct access to discipline the main timer
+  idpf: add direct method for disciplining Tx timestamping
 
-> +      - items:
-> +          - description: CSR clock
-> +          - description: AXI system clock
-> +          - description: TX clock
->  
->    clock-names:
-> -    items:
-> -      - const: stmmaceth
-> -      - const: pclk
-> -      - const: ptp_ref
-> -      - const: tx
-> -      - const: rx
-> -      - const: tx-180
-> -      - const: rx-180
-> -
-> -  interrupts:
-> -    minItems: 11
-> +    oneOf:
-> +      - items:
-> +          - const: stmmaceth
-> +          - const: pclk
-> +          - const: ptp_ref
-> +          - const: tx
-> +          - const: rx
-> +          - const: tx-180
-> +          - const: rx-180
-> +
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |   4 +-
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 295 +++++++++++++++---
+ drivers/net/ethernet/intel/idpf/idpf_ptp.h    | 103 ++++--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  85 +++--
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   4 +
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   |   3 +-
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   | 139 ++++-----
+ drivers/net/ethernet/intel/idpf/virtchnl2.h   |   6 +-
+ 8 files changed, 451 insertions(+), 188 deletions(-)
 
-Drop blank line
 
-> +      - items:
-> +          - const: stmmaceth
-> +          - const: pclk
-> +          - const: tx
-> +
->  
-
-Just one blank line
-
->    interrupt-names:
-> -    items:
-> -      - const: macirq
-> -      - const: eth_wake_irq
-> -      - const: eth_lpi
-> -      - const: rx-queue-0
-> -      - const: rx-queue-1
-> -      - const: rx-queue-2
-> -      - const: rx-queue-3
-> -      - const: tx-queue-0
-> -      - const: tx-queue-1
-> -      - const: tx-queue-2
-> -      - const: tx-queue-3
-> +    oneOf:
-> +      - items:
-> +          - const: macirq
-> +          - const: eth_wake_irq
-> +          - const: eth_lpi
-> +          - const: rx-queue-0
-> +          - const: rx-queue-1
-> +          - const: rx-queue-2
-> +          - const: rx-queue-3
-> +          - const: tx-queue-0
-> +          - const: tx-queue-1
-> +          - const: tx-queue-2
-> +          - const: tx-queue-3
-> +
-> +      - items:
-> +          - const: macirq
-> +          - const: eth_wake_irq
-> +          - const: eth_lpi
-> +          - const: rx-queue-0
-> +          - const: rx-queue-1
-> +          - const: rx-queue-2
-> +          - const: rx-queue-3
-> +          - const: rx-queue-4
-> +          - const: rx-queue-5
-> +          - const: rx-queue-6
-> +          - const: rx-queue-7
-> +          - const: tx-queue-0
-> +          - const: tx-queue-1
-> +          - const: tx-queue-2
-> +          - const: tx-queue-3
-> +          - const: tx-queue-4
-> +          - const: tx-queue-5
-> +          - const: tx-queue-6
-> +          - const: tx-queue-7
->  
->    resets:
-> -    items:
-> -      - description: AXI power-on system reset
-> +    oneOf:
-> +      - items:
-> +          - description: AXI power-on system reset
-> +
-> +      - items:
-> +          - description: GMAC stmmaceth reset
-
-That's the same as before, no?
-
-> +          - description: AHB reset
-> +
-> +  reset-names: true
-
-Does not look needed.
-
-Best regards,
-Krzysztof
+base-commit: 1235d14de922bc4367c24553bc6b278d56dc3433
+-- 
+2.42.0
 
