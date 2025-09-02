@@ -1,151 +1,117 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57A432A828
-	for <netdev@vger.kernel.org>; Tue,  2 Sep 2025 15:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2462FC019;
+	Tue,  2 Sep 2025 15:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756827662; cv=none; b=PhG/7Y/QBGQBGKkpOw4Gkc5exOiK8LcsJGnw8JzrQNPuAq56FjoXo7zOC9/QpPcKzSNUU8hZyYSvFtDWUgli0Zjbu5TuiX4W66RcU5u5RzJPZ+3SM3r+6jdXS458qqq6v1dlthG1CCxynHzfJEbvcB+PH7I2KWKnUYutTXXgv+E=
+	t=1756827841; cv=none; b=PGq++boUXqV4N8LCgBzwHTAIuwcJkj3JKi9hjkviYxdKuOBJY8UcdHFuxhMBUc7Ji9QQuga+p98wLgM+T9fVQzK8wpSxoY2p36y6RUuCS0O/YU41UFOH+KvBuOIv9G1CQUbg8gvhgioUtfMNKv1t0cSWr/tCxVJxwVjampAwRTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756827662; c=relaxed/simple;
-	bh=DD9yXaeypA2hr9FO3qZZJC8IuicCgOmdBNpfeVcWoM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p813wiLpfNOiNOJm5YixgE09pF5+OgWvhoWLW6Q035D0KZffwFmhGQZQah8ur0G05d9orBYVL5h5WDgLblrCVydc4ZeyDor4piowBXYUE7JAXFFv054cOladVkvtUD4iNx4GH59svh94vzUTSeQAWuxzoz2JPgzCJw/WotgbQfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xQAszpdQ; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1756827841; c=relaxed/simple;
+	bh=IPqqn0GnguGU5cSP0RswoQ1BZy2RQuhjSXsG1srLe9w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tHi+Ng4a3Ut0r3vpBIgvWUAvPIN4mQG2nEqGud29P8yzuW4cv8zksnVhDsRVzEDwUyUxwRqLK+nDXgnNxXX6avIiHv+FalMPMZ3C0VjdDe11C4LrcknQvFuBVzR85rNlnWu+RijvVqAqZpgeemZlS4zfmiAnZOC+JDCKyijq1Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhEz28da; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xQAszpdQ"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aff17215facso30335366b.2
-        for <netdev@vger.kernel.org>; Tue, 02 Sep 2025 08:41:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhEz28da"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-afeec747e60so900257966b.0;
+        Tue, 02 Sep 2025 08:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756827659; x=1757432459; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1756827838; x=1757432638; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=biM7Bjny+oEtW4RIbzxutTWTNB6Z2cdc0+Z2iihTXdU=;
-        b=xQAszpdQCiziZSpbmFDVGRIH5/EtRyUnGg/S1FWhz5MTaSHyjZ+c/a0iLhESQZkij7
-         ROPABJWhW8uoQeTCz106KSGUwby8K8RGcarV3QHxwnViqjwuln+N6MHVX5+JGQcphVGf
-         4mD9D1cYcJeOIHBn94hvSQ4VyKahPy9Te/f/D+tS5/QZSwMhpum9rOv7BQBJb9SwHGwq
-         H+VSnMfpKyW7m61CWdrtkjXOCXQh3Di+zMXch5S/C+ty2oKWpFsZqeQL6dQnFjVrRAwl
-         OqL7iZow9GiokgBJlSBHAS22xswMww5upS/SLH7jri8fbTg8D0j2jhRoKfnEhAN3BNGr
-         IiqQ==
+        bh=IPqqn0GnguGU5cSP0RswoQ1BZy2RQuhjSXsG1srLe9w=;
+        b=DhEz28da4fpmOtTT7JX+H/lyUKvamNefxPs9yt5YT0z0ih1EPanbYtjJqsd/CAn1pz
+         UeXq6LGWz6mKmoYn7HSF15l66UjN9C3eTIvixNuSgLb6fgQjyx+wqjZvEoyTsb54kops
+         e2lr3bdbdp02F0rWS9iRMhIVGd5Ny6dZk+pfT61pmfEFpksJOjQEJOaOxwtJVvD/StWx
+         WKaoxoAxqT3BMC5JuicnBwsH8nsbM2PE2Gs2Pbg9mtQXINQi5Ww1Q1stek3vzbWhBV/H
+         1DbDDE54R+YxRiX9AHH8xVUMWyhA6R4mVx49AhaPk9QK7ppwCWxR2kwLyU7eZqfdYegW
+         lrzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756827659; x=1757432459;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1756827838; x=1757432638;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=biM7Bjny+oEtW4RIbzxutTWTNB6Z2cdc0+Z2iihTXdU=;
-        b=Fp0C0xxZ1OeZ9QcjtMVZDAkB5z5q9kq8RkiA1fP578T89Rj5W87GwNEaEUJb+pvIK7
-         CS0F8+xbURthMIw2msZKrOb5qzzWRKydyFZKHpbdKP2mifiHYHotaTVFIdrHvSNbl+ox
-         psXZBkuZ1ldri0u+Zv6YLDuU7j004PTkRzFOj2XvuZ5970fTlsCAAUeHEqIAPJXTJOjj
-         sKHS4VuxseqWbiIDOBUSK8MjD8MpR2skUFDq/ub47e2ql0u+tBJgTfS+4p8jKgDEIsSd
-         oK96Z4lvJ43lbFYoHgzRcI4oXqr7LF+ca9NfAbpRYRJAD2EsWQ3ob+qE2wcElu/k9nUf
-         NHdw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/keJrHcglg/5s7hCrpir3mMEFLEvRRWhYSWJi4XTvIlW8Hgtm6k6ONzVo1gJvcycNTa53Fpk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywlw1aOqmF9TD77l20FE8zd+FIvySIpM1vpy58f9CTk079C0d3S
-	nsG/kF+mm4z0YTb8QqnF45noEEbtwf97chImU2zrPMGhZ0wxSonUk31rNpkFEHMempk=
-X-Gm-Gg: ASbGncvgOW66rjiu1h33jjI8bAken5yP41jG0QnAfeHJ++R8QKqGt0YzVotDiIksQAM
-	ygw3L3mBow5X56UGwTn3K8QAb5njwtfCaheqb3dF/382YlUAoPy+xp7mbU3TgFJiWMgFRcj9es6
-	K77jC3M5Orn5RcrH18ZMaHYQ39Zoz/ZsTo04fdKcvECT4Fh7S14iMHt7zZ6o9kymL+zQd8xScz4
-	oOtiWwqWPHuyEvMNso4vWFy82U+yJJK+sddlWltubRxo0i+EhFVP6f8iwYrNfbwMbc7ERMXofCf
-	AEhPnzgrW38+GVx/MbRLCMk9xhBf4SrOJ4tZUkALZJQRd4Bjd1c6wmIF3CiQ0+bF+QiMwMAy3Kd
-	QKLNVlrzivKuS6tTsAM2kYAHHVjPpK1pcPQ==
-X-Google-Smtp-Source: AGHT+IHqvfJxZqJi2NLaX1BO2h75+SQL5o+3GXCX6kDD5SLJWDWl9iQlkkXuKU07JA390ij54jHTOw==
-X-Received: by 2002:a17:906:161b:b0:b04:3333:7e64 with SMTP id a640c23a62f3a-b04333384c4mr332760066b.4.1756827658993;
-        Tue, 02 Sep 2025 08:40:58 -0700 (PDT)
-Received: from kuoka.. ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b0438102debsm418746666b.66.2025.09.02.08.40.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 08:40:58 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Matthew Gerlach <matthew.gerlach@altera.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH v2 2/2] dt-bindings: net: renesas,rzn1-gmac: Constrain interrupts
-Date: Tue,  2 Sep 2025 17:40:53 +0200
-Message-ID: <20250902154051.263156-4-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250902154051.263156-3-krzysztof.kozlowski@linaro.org>
-References: <20250902154051.263156-3-krzysztof.kozlowski@linaro.org>
+        bh=IPqqn0GnguGU5cSP0RswoQ1BZy2RQuhjSXsG1srLe9w=;
+        b=WohBhkI2O2GNE3Y0PwXu+0FururTBzBxhE+JTEedLkDHJuQk2EFHZEtbRbjvwzQ3Yp
+         m0K7yBgwr4kAg2g+joA+B/eOrMrg5BWdZL5s38ef6X/O40wldJ7bA9Ql4609k9BtZdBV
+         odjavXwasbItBu7uC/FBgLUR3xnu7TSefjCpLX4rvBEvoSO1zSuEOJsvXq/STSI0j+5N
+         Rv3eXLMWULmz9OmVrBvoACNF5gLo3oMvNKawjdPshrH3s/l3Gw95dhcps0jzbfZYfAGP
+         i3eN4vxD+nbm3IBEjdc0nIotgtCFWILFLsr76KvAjXUfj/lzYjMT+REWVxdv6idoTys7
+         3SKg==
+X-Forwarded-Encrypted: i=1; AJvYcCV1paKepklpm/H0+4bdXoGjGXrivkhlssH3oaVOpqk7iFMVYlIE94Q3eivWa5R1aJAw5KK25DLeNQPh@vger.kernel.org, AJvYcCVqGvemTv1FfG1z3pRIB61mO5FPtI9Oqkp9YjCu2nOp+oQZT9K7cjhg1yvJaed0RhLeLn8AzlUlZNJuXhR1@vger.kernel.org, AJvYcCW9O+fgEMSMnJ9NNAPCvahpPddRfVWqXAUnGoVWeTFzrsEkm+lsybX+Wp66HJ1md4DEzxGoB2r++ColQml4P0i6/uQ=@vger.kernel.org, AJvYcCWAu0vW69ZK/B98eV/bwEJNFJjITRktHKDRcDmKiTVUENaRmZaYHaT488D256FrkwNouWN/lWWY@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw21nHjPTHukP6yy0uKDTgcdNjH5oiMpWxY+P1qjT/QgYJ+XY9L
+	6XAEKSVhvdpJEzzKVwsSOc5Brr0pM3houmRWoC1MHuMSIIEEVF4hNbFJE9TajvwBC03G5kN1emI
+	KNLFGqiID/5Cnjyv0Qeug0/zdyqMPwic=
+X-Gm-Gg: ASbGncv2drg4iMTVaaWCuQtkIS8MnawZn3OOXyRTbWb92w7qO4ZfzYUzpC/KpT5Ok9L
+	5z87hUcOtb/5fA74BvQJ5zDpH1LOuQk2iLUUPEHetY9cwVCr+a0zNcMK2F7bBtZcK4Ha+EkXQCg
+	yRh7YmDiSFR1bc/eWhZHgv+LxAq/PtPfJ9knPA0R5GJWFt9Trv0NJ+oTIAA3qPWwlpORDdXuAJE
+	L/XPbWc7pX2HDRKh8M/MUju3L7CBLRL1pwf2Hy1KdCWADu7H80=
+X-Google-Smtp-Source: AGHT+IGjVz9zqn8BbtmRC26R4QSkX6A4Q84g3hbk2BHW4+6JnnTvFG+jS17Ww+dxP48t8AY/g3mKnA0lZtUe2mcohUY=
+X-Received: by 2002:a17:906:4786:b0:afe:e7f1:28a2 with SMTP id
+ a640c23a62f3a-b01d8c7835emr1258659066b.23.1756827837577; Tue, 02 Sep 2025
+ 08:43:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1188; i=krzysztof.kozlowski@linaro.org;
- h=from:subject; bh=DD9yXaeypA2hr9FO3qZZJC8IuicCgOmdBNpfeVcWoM0=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBotxAE2AXqGVkkvcoMa6jmHyX5xtJs6fM/mG12F
- ql3xWH2zgmJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaLcQBAAKCRDBN2bmhouD
- 104RD/9almm968xEPzjvlHGWaEROIstSx2O4TtT+LEnIzl7A7LlYbWUS1bQsIK2CPEsYTNsT5NU
- bxVJoFKk5YoPO3EubhPUUgfdCfiLbkA0AdQwi+sEsXd7HRh6fRyzxZND7F5zC07LZsS0UfpPZpD
- nECB2+rLdtwaN3qCuLT0YlPBFgNeGrf7j8tRuCtVg3VyL8cu9Dw0Xn+/l6K0Tw1z2Sy6x9qY/LL
- uxrDCVCHFkv99Z99VRTIeRo/C20Fr6xq6/NUatv72p5vFaGujQpJLIgXEopsTV62Pr8ljFLfabD
- tecCrVnC6YN4rhQRd4cN4iSYmKbgan5OIlnSneFdXA26T8gunnV9pq8flDPk+C3Pe0UQF5dEgrd
- 0hrv/TLGmDsJuxK7375AwcweBBgfao8BlJkWRQoieTDkuI1SkYPbfy+bImFD7FyWLIEuSpiesP/
- KG4Heoz8S8AdFqjFJ8AWAp4z1fhS28qO7ZkOX2mHVujftP3JxueVaIvQ4daAP9PSySXjmrCmPco
- phxcZ753X5HLZ02B+63d30c9Iew0UnRuor9xudACczVOG+PUngW0Kxsj9tX+I6cKZyHUT+akTmV
- Z7OkHSHslLZopuyqVL8FLpyyJkv9aME8QmyaHYmymzjwPjCsK50Ii+ARGaCL42LVETwBhjo227f OwbKy7oAP+avSig==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
+References: <20250902001302.3823418-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <20250902001302.3823418-2-prabhakar.mahadev-lad.rj@bp.renesas.com> <20250902-spirited-congenial-stingray-f8aff7@kuoka>
+In-Reply-To: <20250902-spirited-congenial-stingray-f8aff7@kuoka>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Tue, 2 Sep 2025 16:43:31 +0100
+X-Gm-Features: Ac12FXzIsq1sQ-x5uMFEMxBzln58PfPIlzCTK000OG7RlVhFny-x7C12oPVK8qY
+Message-ID: <CA+V-a8uy++vzYh5956X2Dpv2Low5uAK+FRTONaP4Nc3FMty6Bw@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: dwmac: Increase 'maxItems'
+ for 'interrupts' and 'interrupt-names'
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Russell King <linux@armlinux.org.uk>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Renesas RZN1 GMAC uses three interrupts in in-kernel DTS and common
-snps,dwmac.yaml binding is flexible, so define precise constraint for
-this device.
+Hi Krzysztof,
 
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Thank you for the review.
 
----
+On Tue, Sep 2, 2025 at 9:49=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
+> wrote:
+>
+> On Tue, Sep 02, 2025 at 01:12:59AM +0100, Prabhakar wrote:
+> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >
+> > Increase the `maxItems` value for the `interrupts` and `interrupt-names=
+`
+> > properties to 19 to support additional per-channel Tx/Rx completion
+> > interrupts on the Renesas RZ/T2H SoC, which features the
+> > `snps,dwmac-5.20` IP with 8 Rx queues and 8 Tx queues.
+>
+> This alone makes no sense. Why would we need more interrupts here if
+> there is no user of it at all? Squash patches.
+>
+Ok, I will squash the changes.
 
-Changes in v2:
-1. Minor typo in commit msg.
-2. one->three interrupts in commit msg
-3. Rb tag
----
- .../devicetree/bindings/net/renesas,rzn1-gmac.yaml       | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> You also need to constrain other devices, because now one Renesas
+> binding gets 19 interrupts without any explanation. Please rethink how
+> you split your patches...
+>
+I see you have already taken care of this, thank you.
 
-diff --git a/Documentation/devicetree/bindings/net/renesas,rzn1-gmac.yaml b/Documentation/devicetree/bindings/net/renesas,rzn1-gmac.yaml
-index d9a8d586e260..16dd7a2631ab 100644
---- a/Documentation/devicetree/bindings/net/renesas,rzn1-gmac.yaml
-+++ b/Documentation/devicetree/bindings/net/renesas,rzn1-gmac.yaml
-@@ -30,6 +30,15 @@ properties:
-       - const: renesas,rzn1-gmac
-       - const: snps,dwmac
- 
-+  interrupts:
-+    maxItems: 3
-+
-+  interrupt-names:
-+    items:
-+      - const: macirq
-+      - const: eth_wake_irq
-+      - const: eth_lpi
-+
-   pcs-handle:
-     description:
-       phandle pointing to a PCS sub-node compatible with
--- 
-2.48.1
-
+Cheers,
+Prabhakar
