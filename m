@@ -1,89 +1,85 @@
-Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B419B2EA15B;
-	Tue,  2 Sep 2025 09:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFA1DDD2;
+	Tue,  2 Sep 2025 09:03:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756803748; cv=none; b=AQoBYycr31m95JUiVH+lQohOdJiXMVarzzv1mOQcnqLQLxQ4uQfyCjdifNG9I15eVbfOdrpBaxTSBl2ZLT/QDGXls8ZVrOz2bVpC0sJcLG2MVSshSW5nxQt/XQD51RLoCKJ21m1NF/BAtKWZ7Lri3hQA9JHMYuCwlGw1ncuW39E=
+	t=1756803830; cv=none; b=M244URbpIsd4U0o1t3X8kAaJAMRBNLRsGXbC52+hDkWFeXSidVBotghwitolzmvSjhjpl4BAmphqnOe5qiZt0JE3cYb1wnUuAw62Nx80PrYSSl/nnVakKewGC6kGS++uv5kZrrjFpr5Z0eJJtNdxYhQo3Gz3rbctKXqCqt85D1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756803748; c=relaxed/simple;
-	bh=nqXYIcCLVEvwlm470tHgTXgM1l86YTqL6LD6ikaFPh0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s2CehhHbumyC97c8NDdC+DTVKPxiNrBgox7oToqif50m9lpdMG5Irs543m3dPN7GKYRPoQmvM2z0WXhEruvT0e7vOgN7QbPkCC4KAxuJXi82/KsSuDrCNPZl63KEphB3AY9cO8p+sGdPFJxucLRtnXIt9PkYMKgsofqI1av1Wpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
-Received: from jtjnmail201610.home.langchao.com
-        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id 202509021702111607;
-        Tue, 02 Sep 2025 17:02:11 +0800
-Received: from localhost.localdomain.com (10.94.12.93) by
- jtjnmail201610.home.langchao.com (10.100.2.10) with Microsoft SMTP Server id
- 15.1.2507.57; Tue, 2 Sep 2025 17:02:10 +0800
-From: chuguangqing <chuguangqing@inspur.com>
-To: <horms@kernel.org>, Antonio Quartulli <antonio@openvpn.net>, Sabrina
- Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, chuguangqing
-	<chuguangqing@inspur.com>
-Subject: [PATCH v2 1/1] ovpn: use kmalloc_array() for array space allocation
-Date: Tue, 2 Sep 2025 17:00:51 +0800
-Message-ID: <20250902090051.1451-2-chuguangqing@inspur.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250902090051.1451-1-chuguangqing@inspur.com>
-References: <20250901112136.2919-1-chuguangqing@inspur.com>
- <20250902090051.1451-1-chuguangqing@inspur.com>
+	s=arc-20240116; t=1756803830; c=relaxed/simple;
+	bh=XSGx5WcjG6DtHmHu+mXlygkptZCaYu11n470dQLZtrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m9nUJuK8bmMJvRhPfFGMZwyKnrNDayazF/Qwocwlj/D3SMkUInVV+6nxj7pax9cUWsukL+iufAu0ogz0iv4NOUwI4pI47Drcj2H4tNUXNUR8m2jaPZfP/mVaeqnC+lgtNjMBDaufxnfKc6MeR+xSqx1cFr04dR1TpzTnnmFIcXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDoF4F1d; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDoF4F1d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783ACC4CEED;
+	Tue,  2 Sep 2025 09:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756803829;
+	bh=XSGx5WcjG6DtHmHu+mXlygkptZCaYu11n470dQLZtrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pDoF4F1dlQJzNzeAOE+nPxgGph3Af8zNLZjnysoRvmJvJRZY7pHhSZNfABBhtFoEr
+	 OeFRyv1qr/XSOUtz+ujVBH30cibIlbPXwGvIRiqNKhyOjQKpTDKO9WMr2E1ferofKp
+	 LodSlw+81TM1NJhLGjMLb5CEO5v6tHSFBcEEAtGoyuzsnXEj2fX/a4AFdC/rszk6+p
+	 ho3khiUqUy2X87s+qoejMRaHNEkGEICVrWmBauy3LqdLRAlP4pP1rbUhV/TE44cYk8
+	 MKSUnRAgObq5D8OYj0ndGEl38SjjRrsN3XcdHPOcvMEEJLi0xs4vdF9zTUWlHsvJMg
+	 Zh9Cj5r7FrPqg==
+Date: Tue, 2 Sep 2025 10:03:45 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, ecree.xilinx@gmail.com,
+	gal@nvidia.com, joe@dama.to, linux-kselftest@vger.kernel.org,
+	shuah@kernel.org
+Subject: Re: [PATCH net-next v2 1/2] selftests: drv-net: rss_ctx: use Netlink
+ for timed reconfig
+Message-ID: <20250902090345.GV15473@horms.kernel.org>
+References: <20250901173139.881070-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-tUid: 2025902170211c59a6c2fcb8a334e1ed1cddd8932d453
-X-Abuse-Reports-To: service@corp-email.com
-Abuse-Reports-To: service@corp-email.com
-X-Complaints-To: service@corp-email.com
-X-Report-Abuse-To: service@corp-email.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250901173139.881070-1-kuba@kernel.org>
 
-Replace kmalloc(size * sizeof) with kmalloc_array() for safer memory
-allocation and overflow prevention.
+On Mon, Sep 01, 2025 at 10:31:38AM -0700, Jakub Kicinski wrote:
+> The rss_ctx test has gotten pretty flaky after I increased
+> the queue count in NIPA 2->3. Not 100% clear why. We get
+> a lot of failures in the rss_ctx.test_hitless_key_update case.
+> 
+> Looking closer it appears that the failures are mostly due
+> to startup costs. I measured the following timing for ethtool -X:
+>  - python cmd(shell=True)  : 150-250msec
+>  - python cmd(shell=False) :  50- 70msec
+>  - timed in bash           :  45- 55msec
+>  - YNL Netlink call        :   2-  4msec
+>  - .set_rxfh callback      :   1-  2msec
+> 
+> The target in the test was set to 200msec. We were mostly measuring
+> ethtool startup cost it seems. Switch to YNL since it's 100x faster.
+> 
+> Lower the pass criteria to 150msec, no real science behind this number
+> but we removed some overhead, drivers which previously passed 200msec
+> should easily pass 150msec now.
+> 
+> Separately we should probably follow up on defaulting to shell=False,
+> when script doesn't explicitly ask for True, because the overhead
+> is rather significant.
+> 
+> Switch from _rss_key_rand() to random.randbytes(), YNL takes a binary
+> array rather than array of ints.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> v2:
+>  - increase the threshold to safer 150msec
+>  - mention change away from _rss_key_rand()
+> v1: https://lore.kernel.org/20250829220712.327920-1-kuba@kernel.org
 
-Signed-off-by: chuguangqing <chuguangqing@inspur.com>
----
- drivers/net/ovpn/crypto_aead.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ovpn/crypto_aead.c b/drivers/net/ovpn/crypto_aead.c
-index 2cca759feffa..da0ce4f348e6 100644
---- a/drivers/net/ovpn/crypto_aead.c
-+++ b/drivers/net/ovpn/crypto_aead.c
-@@ -72,8 +72,9 @@ int ovpn_aead_encrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
- 		return -ENOSPC;
- 
- 	/* sg may be required by async crypto */
--	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
--				       (nfrags + 2), GFP_ATOMIC);
-+	ovpn_skb_cb(skb)->sg = kmalloc_array(nfrags + 2,
-+					     sizeof(*ovpn_skb_cb(skb)->sg),
-+					     GFP_ATOMIC);
- 	if (unlikely(!ovpn_skb_cb(skb)->sg))
- 		return -ENOMEM;
- 
-@@ -185,8 +186,9 @@ int ovpn_aead_decrypt(struct ovpn_peer *peer, struct ovpn_crypto_key_slot *ks,
- 		return -ENOSPC;
- 
- 	/* sg may be required by async crypto */
--	ovpn_skb_cb(skb)->sg = kmalloc(sizeof(*ovpn_skb_cb(skb)->sg) *
--				       (nfrags + 2), GFP_ATOMIC);
-+	ovpn_skb_cb(skb)->sg = kmalloc_array(nfrags + 2,
-+					     sizeof(*ovpn_skb_cb(skb)->sg),
-+					     GFP_ATOMIC);
- 	if (unlikely(!ovpn_skb_cb(skb)->sg))
- 		return -ENOMEM;
- 
--- 
-2.43.5
+Reviewed-by: Simon Horman <horms@kernel.org>
 
