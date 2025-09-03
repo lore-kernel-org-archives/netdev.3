@@ -1,167 +1,461 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA82E2C2AA2
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 19:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B458369321
+	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 19:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756926169; cv=none; b=qG+JbH5KhoECUX3ecEOEwunrjCa/QOU6MbKZ+2ItwX02Rek22MIEza+lyGb49jvC/e4Efok+BZkka7xCuSvQqB1k/ksvQfbsp9uiABZCL2WJmXKg01cA0HH49C6P4FMFbJsfHZWFkmIcBOUwwKkwxZYXzQvoQkBpzE1B+/9c1oQ=
+	t=1756926169; cv=none; b=khJBzUNrrvyc4uYyA9F5Bjy0KHOBVLlj0Ou6MGpu8Duagy5Ert6BHZX27y61NkjvcizD7h3jH5x6irAWj+UDid2QtvSGPiFth49LPWUoQcbytdJ4rpEuZgqo/zkxZCJ7Uwa3WkrZP2BI2BSJBqYT2/kS3Qm8sddQPhf8QIdJoEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1756926169; c=relaxed/simple;
-	bh=xTtxSXE1yvDONysLDA9KqzBNgxSs0B2LZNlNuY0JSO4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OH+2TOU1wlbAe6wL8/YKjooARNiCtuw4pHCGMbXb4BIOe9vl1WMCMO+V96uKhYUrS49x7YmNrLLlpMxD+3oyuyMyxeuwkwlyMzI3o++fhvXtbAb4uF7nAIc8xfwGCMmPKhsEMLs3O8FQgt8FogQUovwtgeNZKAGFRXZwaBvQ+0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a3+ggaHG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	bh=BmAnJa7FBVpby2CUEpc10cH538q25fBG6+XYot54FXc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=CkASg+cWMDxZN2I2Ke8ylCpdOncHNp3i1ypcmPMMupo0N1183yUcebpY6papuueAxapP8lU1TJR+jbm+06d68ODGKgvJ0OvBpctGuEjLqR8aEaTGSl/UEk4G+M1WTSIZ8XSCoazEr7xR7zzyjRq6sMc0uc4oSJAxj1uEgGqehTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D4LeWQD4; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a3+ggaHG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756926165;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YRc9qQhtPu4aJgrWe6QIrpHXB4Ut/KhAlfEhBqE7V54=;
-	b=a3+ggaHGJNThzghQzQ5y5JSHDBOZASzUDpVLUOAD9oo+9YqzGdc0EOiP9cyQAPq9W1VqY6
-	nf3O0tZd7hY36G2UM6NlpbCT3UAtdH2/P/sjconKsFWD5zo+KjNKmXnjTdHd/0hxsvi7RT
-	cbOqOfnTkayrNdnkNS6J9jZRRwS/eM4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-680-joMlbTwsPGCM0ErbIFOjOg-1; Wed, 03 Sep 2025 15:02:44 -0400
-X-MC-Unique: joMlbTwsPGCM0ErbIFOjOg-1
-X-Mimecast-MFC-AGG-ID: joMlbTwsPGCM0ErbIFOjOg_1756926163
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb612d362so1362895e9.3
-        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 12:02:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D4LeWQD4"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-325ce1082bcso192191a91.0
+        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 12:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756926167; x=1757530967; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yp3jcrPFjpI724eSyu4nFnoZrbSWnkgwQghA+Z3SHT4=;
+        b=D4LeWQD4PaReGEvG8J4ABEtsjqKKet+pfKUQsi6ABF3JU1aqMRn/MJYlH3Kcx0u8LD
+         Um2jXHzadI79MRRfUgtqerMUVu5skBP20YHQ3hQDa5fKYXktnlxQtBW0JirRh1ll28mC
+         vHM8a8nJJ6dKHEsPV+YmH/5CwticCmuVHvttdwlkzT0FgkfuRlzlTtRhPapQzLZjzpTV
+         lQH1fI4OmGRlpsojjd6uvXD1GAXpXPrQ8+Vwo5SriAWLhElEsxHpU6W5O6hfjRrmJ9ST
+         DaGpfxT0yfcdwIz6fYlyyifWGW8A5SIHQEjF1RfMv/1B6/tENvGzbpv55H7k/qFPWKxM
+         elTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756926163; x=1757530963;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YRc9qQhtPu4aJgrWe6QIrpHXB4Ut/KhAlfEhBqE7V54=;
-        b=auXnYtkU/IeivZJ3yVEP51LTMc0oPJFsCb+HFo9BV++hdCOxSXEzrw10k2VD3Mr5Q/
-         PX5YIlR23VVEtXVLjwyi100DT090W7damhYfwXMoz3T2WZIWCGfPxeBvaUKMWsnevXMM
-         o7QVRG4zKH5SqABZIpis5W1mZcsCPOIb7enfMgs+iyvyHkPFbpnHFaJ3ghHkXsH2oAPb
-         wo/MIDjCq/3TTWSh6ZMMiDUnIsS54nv4U+rrBuQPgW0kuk1dj95Gm95JBjMdJuaGj3dG
-         jNyrcqDKu1u6eHZo51diF75g1by/xOAgKZDb1iMEyu3SLSyQ0W36HVHv885AzPGLBNRE
-         ZqOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnSUm+spXyTBeXvXj+Ayj69hw3Oj/CmsrTjH2DJQE2y5Xrlbj7KpruqWwskCfXrJrQcWiunoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxfwk0QKti0ng5vxj1WeJPIvgL7nMj79Xwd0x696eg+rjnKm7Ad
-	q1oj4Bwx6HHtnx9ZgwylXivk/oLN1Al5VCG3ctQEKASHCY5oYk4uuywOl/4gSy6OIySL9LIvGfS
-	btklHJ5TMoA/lmjuPK5kvL1QNH+uvzvyljqMDO0c+2m8el7f/R7HVnSfVGA==
-X-Gm-Gg: ASbGnctxp8EiQc1Td24UgYbbUXRXlxC9oBUH2OviiRcJ1lCxfoHEwfYY3bFcCFPYpBP
-	K2cQDjERw9CjsM3x+7BeeaSjjpnjOL5XA6JDZl63YQAjBUEqXDu2HTobCKG1p5oU+ycsgDhVJoE
-	B9YGRyPCYzU0iFbwevMh6h7fi2P7GJJlYQwcoqwoyn7lLwVV8l9xbomyZGp0Bk9vBmA9Fx7oz+A
-	rg2WdVBC5J4P9g5e0UprTZNzw4qQ+PE104esC7+8knOTcIBpSrCt9LUqACW18zQGgDrB5zT+Kkj
-	tnEE1DJ9CaXe+zK4pq5nG8WnMqKxzejr/jSr5JmlKI/bcAc=
-X-Received: by 2002:a05:600c:3b14:b0:45b:9c93:d237 with SMTP id 5b1f17b1804b1-45cfc8a9d32mr15316605e9.14.1756926162961;
-        Wed, 03 Sep 2025 12:02:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlZeBDIpo6ChshSjx9wt03zDRLgVFsNe6iBStfpel8EqkMRCiAdP47I2pV+o8YyqRg2cs+qw==
-X-Received: by 2002:a05:600c:3b14:b0:45b:9c93:d237 with SMTP id 5b1f17b1804b1-45cfc8a9d32mr15316305e9.14.1756926162511;
-        Wed, 03 Sep 2025 12:02:42 -0700 (PDT)
-Received: from fedora.redhat.com ([2001:4df4:5814:7700:7fb2:f956:4fb9:7689])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6b99sm331978655e9.4.2025.09.03.12.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 12:02:42 -0700 (PDT)
-From: mheib@redhat.com
-To: intel-wired-lan@lists.osuosl.org
-Cc: przemyslawx.patynowski@intel.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	aleksandr.loktionov@intel.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Mohammad Heib <mheib@redhat.com>
-Subject: [PATCH net-next,v2,1/2] devlink: Add new "max_mac_per_vf" generic device param
-Date: Wed,  3 Sep 2025 22:02:28 +0300
-Message-ID: <20250903190229.49193-1-mheib@redhat.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1756926167; x=1757530967;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yp3jcrPFjpI724eSyu4nFnoZrbSWnkgwQghA+Z3SHT4=;
+        b=fEqd840F9oj4KhvD2IpHnZMEW+jEuNHLz3qwro/HInOnrorlUhrbR0GgV6vrjMQSe7
+         ZloKdYfiP0KTPUtDUstcSrIeTmwG7UXZUZsjHLMhax+LkSrhY5m1aawb4FT5zstbrvpF
+         xUqIv7TbF5PgzuSEc1xTwW7hIKXTy3SVOe9qQep3o9iGY6hFoAXXchKAa0DW7RdtIPAh
+         Gsb5o7exEkYerVUGp8jX0V5ojdVwjuVh6PU9xgm3yHc3E7r+isBgf+1RTjZoX28r/OCb
+         QeQc6W9QYzJdPPayzJKh5JygnfS4/OrYm7A/5eFCwwEqN/e4p5uPs9XxyNnV9Kbr8Gze
+         MTIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcvkR836H6eyR25y6Zs0ilWCObKNRdxXwAm/gWZHSNzuemMKzy/wPVpy3gKZ6eSqXc9COUXo0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzIHrT9Jkgjs60ozwnA1EMsQik//Ojk4PcF4wSTIlOmN+UEdho
+	xQZLLkd+bSI8mJmT1fOCz+B7KRGTRu2XaOth12zVPOlWaQTphHLRvtl6R+lVL2QtuKmnHgzDKEB
+	z9nw2jw==
+X-Google-Smtp-Source: AGHT+IGA547nghki5qAe25a33tsVku2EP9V4fEjlTHSg7VdyHkBqS254Ln0CZuGZtg3aA+7grJlzosPABWA=
+X-Received: from pjbqj14.prod.google.com ([2002:a17:90b:28ce:b0:32b:5f64:7608])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e70f:b0:327:e0f4:e33e
+ with SMTP id 98e67ed59e1d1-32815706d69mr20205485a91.34.1756926167290; Wed, 03
+ Sep 2025 12:02:47 -0700 (PDT)
+Date: Wed,  3 Sep 2025 19:02:03 +0000
+In-Reply-To: <20250903190238.2511885-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250903190238.2511885-1-kuniyu@google.com>
+X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
+Message-ID: <20250903190238.2511885-5-kuniyu@google.com>
+Subject: [PATCH v5 bpf-next/net 4/5] net-memcg: Allow decoupling memcg from
+ global protocol memory accounting.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>
+Cc: John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Mohammad Heib <mheib@redhat.com>
+Some protocols (e.g., TCP, UDP) implement memory accounting for socket
+buffers and charge memory to per-protocol global counters pointed to by
+sk->sk_proto->memory_allocated.
 
-Add a new device generic parameter to controls the maximum
-number of MAC filters allowed per VF.
+When running under a non-root cgroup, this memory is also charged to the
+memcg as "sock" in memory.stat.
 
-While this parameter is named `max_mac_per_vf`, the exact enforcement
-policy may vary between drivers. For example, i40e applies this limit
-only to trusted VFs, whereas other drivers may choose to apply it
-uniformly across all VFs. The goal is to provide a consistent devlink
-interface, while allowing flexibility for driver-specific behavior.
+Even when a memcg controls memory usage, sockets of such protocols are
+still subject to global limits (e.g., /proc/sys/net/ipv4/tcp_mem).
 
-For example, to limit a VF to 3 MAC addresses:
- $ devlink dev param set pci/0000:3b:00.0 name max_mac_per_vf \
-        value 3 \
-        cmode runtime
+This makes it difficult to accurately estimate and configure appropriate
+global limits, especially in multi-tenant environments.
 
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
+If all workloads were guaranteed to be controlled under memcg, the issue
+could be worked around by setting tcp_mem[0~2] to UINT_MAX.
+
+In reality, this assumption does not always hold, and processes not
+controlled by memcg lose the seatbelt and can consume memory up to
+the global limit, becoming noisy neighbour.
+
+Let's decouple sockets in memcg from the global per-protocol memory
+accounting if sockets have SK_BPF_MEMCG_SOCK_ISOLATED in sk->sk_memcg.
+
+This simplifies memcg configuration while keeping the global limits
+within a reasonable range.
+
+If mem_cgroup_sk_isolated(sk) returns true, the per-protocol memory
+accounting is skipped.
+
+In __inet_accept(), we need to reclaim counts that are already charged
+for child sockets because we do not allocate sk->sk_memcg until accept().
+
+Note that trace_sock_exceed_buf_limit() will always show 0 as accounted
+for the isolated sockets, but this can be obtained via memory.stat.
+
+Tested with a script that creates local socket pairs and send()s a
+bunch of data without recv()ing.
+
+Setup:
+
+  # mkdir /sys/fs/cgroup/test
+  # echo $$ >> /sys/fs/cgroup/test/cgroup.procs
+  # sysctl -q net.ipv4.tcp_mem="1000 1000 1000"
+
+Without bpf prog:
+
+  # prlimit -n=524288:524288 bash -c "python3 pressure.py" &
+  # cat /sys/fs/cgroup/test/memory.stat | grep sock
+  sock 22642688
+  # cat /proc/net/sockstat| grep TCP
+  TCP: inuse 2006 orphan 0 tw 0 alloc 2008 mem 5376
+  # ss -tn | head -n 5
+  State Recv-Q Send-Q Local Address:Port  Peer Address:Port
+  ESTAB 2000   0          127.0.0.1:34479    127.0.0.1:53188
+  ESTAB 2000   0          127.0.0.1:34479    127.0.0.1:49972
+  ESTAB 2000   0          127.0.0.1:34479    127.0.0.1:53868
+  ESTAB 2000   0          127.0.0.1:34479    127.0.0.1:53554
+  # nstat | grep Pressure || echo no pressure
+  TcpExtTCPMemoryPressures        1                  0.0
+
+With bpf prog in the next patch:
+
+  # bpftool prog load sk_memcg.bpf.o /sys/fs/bpf/sk_memcg type cgroup/sock_create
+  # bpftool cgroup attach /sys/fs/cgroup/test cgroup_inet_sock_create pinned /sys/fs/bpf/sk_memcg
+  # prlimit -n=524288:524288 bash -c "python3 pressure.py" &
+  # cat /sys/fs/cgroup/test/memory.stat | grep sock
+  sock 2757468160
+  # cat /proc/net/sockstat | grep TCP
+  TCP: inuse 2006 orphan 0 tw 0 alloc 2008 mem 0
+  # ss -tn | head -n 5
+  State Recv-Q Send-Q  Local Address:Port  Peer Address:Port
+  ESTAB 111000 0           127.0.0.1:36019    127.0.0.1:49026
+  ESTAB 110000 0           127.0.0.1:36019    127.0.0.1:45630
+  ESTAB 110000 0           127.0.0.1:36019    127.0.0.1:44870
+  ESTAB 111000 0           127.0.0.1:36019    127.0.0.1:45274
+  # nstat | grep Pressure || echo no pressure
+  no pressure
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- Documentation/networking/devlink/devlink-params.rst | 8 ++++++++
- include/net/devlink.h                               | 4 ++++
- net/devlink/param.c                                 | 5 +++++
- 3 files changed, 17 insertions(+)
+ include/net/proto_memory.h      | 15 ++++++--
+ include/net/tcp.h               | 10 ++++--
+ net/core/sock.c                 | 64 ++++++++++++++++++++++-----------
+ net/ipv4/af_inet.c              | 12 ++++++-
+ net/ipv4/inet_connection_sock.c |  1 +
+ net/ipv4/tcp.c                  |  3 +-
+ net/ipv4/tcp_output.c           | 10 ++++--
+ net/mptcp/protocol.c            |  3 +-
+ net/tls/tls_device.c            |  4 ++-
+ 9 files changed, 90 insertions(+), 32 deletions(-)
 
-diff --git a/Documentation/networking/devlink/devlink-params.rst b/Documentation/networking/devlink/devlink-params.rst
-index 211b58177e12..2bc9995fd849 100644
---- a/Documentation/networking/devlink/devlink-params.rst
-+++ b/Documentation/networking/devlink/devlink-params.rst
-@@ -143,3 +143,11 @@ own name.
-    * - ``clock_id``
-      - u64
-      - Clock ID used by the device for registering DPLL devices and pins.
-+   * - ``max_mac_per_vf``
-+     - u32
-+     - Controls the maximum number of MAC address filters that can be assigned
-+       to a Virtual Function (VF).
-+       The exact enforcement may depend on driver capabilities. For example,
-+       some drivers may apply this limit only to *trusted* VFs, while others may
-+       apply it to all VFs uniformly. This allows a consistent parameter across
-+       devices while leaving flexibility for driver-specific behavior.
-diff --git a/include/net/devlink.h b/include/net/devlink.h
-index b32c9ceeb81d..dde5dcbca625 100644
---- a/include/net/devlink.h
-+++ b/include/net/devlink.h
-@@ -530,6 +530,7 @@ enum devlink_param_generic_id {
- 	DEVLINK_PARAM_GENERIC_ID_EVENT_EQ_SIZE,
- 	DEVLINK_PARAM_GENERIC_ID_ENABLE_PHC,
- 	DEVLINK_PARAM_GENERIC_ID_CLOCK_ID,
-+	DEVLINK_PARAM_GENERIC_ID_MAX_MAC_PER_VF,
+diff --git a/include/net/proto_memory.h b/include/net/proto_memory.h
+index 8e91a8fa31b5..8e8432b13515 100644
+--- a/include/net/proto_memory.h
++++ b/include/net/proto_memory.h
+@@ -31,13 +31,22 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
+ 	if (!sk->sk_prot->memory_pressure)
+ 		return false;
  
- 	/* add new param generic ids above here*/
- 	__DEVLINK_PARAM_GENERIC_ID_MAX,
-@@ -594,6 +595,9 @@ enum devlink_param_generic_id {
- #define DEVLINK_PARAM_GENERIC_CLOCK_ID_NAME "clock_id"
- #define DEVLINK_PARAM_GENERIC_CLOCK_ID_TYPE DEVLINK_PARAM_TYPE_U64
- 
-+#define DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME "max_mac_per_vf"
-+#define DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE DEVLINK_PARAM_TYPE_U32
+-	if (mem_cgroup_sk_enabled(sk) &&
+-	    mem_cgroup_sk_under_memory_pressure(sk))
+-		return true;
++	if (mem_cgroup_sk_enabled(sk)) {
++		if (mem_cgroup_sk_under_memory_pressure(sk))
++			return true;
 +
- #define DEVLINK_PARAM_GENERIC(_id, _cmodes, _get, _set, _validate)	\
- {									\
- 	.id = DEVLINK_PARAM_GENERIC_ID_##_id,				\
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index 41dcc86cfd94..62fd789ae01c 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -102,6 +102,11 @@ static const struct devlink_param devlink_param_generic[] = {
- 		.name = DEVLINK_PARAM_GENERIC_CLOCK_ID_NAME,
- 		.type = DEVLINK_PARAM_GENERIC_CLOCK_ID_TYPE,
- 	},
-+	{
-+		.id = DEVLINK_PARAM_GENERIC_ID_MAX_MAC_PER_VF,
-+		.name = DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_NAME,
-+		.type = DEVLINK_PARAM_GENERIC_MAX_MAC_PER_VF_TYPE,
-+	},
- };
++		if (mem_cgroup_sk_isolated(sk))
++			return false;
++	}
  
- static int devlink_param_generic_verify(const struct devlink_param *param)
+ 	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
+ }
+ 
++static inline bool sk_should_enter_memory_pressure(struct sock *sk)
++{
++	return !mem_cgroup_sk_enabled(sk) || !mem_cgroup_sk_isolated(sk);
++}
++
+ static inline long
+ proto_memory_allocated(const struct proto *prot)
+ {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 2936b8175950..0191a4585bba 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -275,9 +275,13 @@ extern unsigned long tcp_memory_pressure;
+ /* optimized version of sk_under_memory_pressure() for TCP sockets */
+ static inline bool tcp_under_memory_pressure(const struct sock *sk)
+ {
+-	if (mem_cgroup_sk_enabled(sk) &&
+-	    mem_cgroup_sk_under_memory_pressure(sk))
+-		return true;
++	if (mem_cgroup_sk_enabled(sk)) {
++		if (mem_cgroup_sk_under_memory_pressure(sk))
++			return true;
++
++		if (mem_cgroup_sk_isolated(sk))
++			return false;
++	}
+ 
+ 	return READ_ONCE(tcp_memory_pressure);
+ }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index ae30d7d54498..bda1655fa9bf 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1046,17 +1046,21 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+ 	if (!charged)
+ 		return -ENOMEM;
+ 
+-	/* pre-charge to forward_alloc */
+-	sk_memory_allocated_add(sk, pages);
+-	allocated = sk_memory_allocated(sk);
+-	/* If the system goes into memory pressure with this
+-	 * precharge, give up and return error.
+-	 */
+-	if (allocated > sk_prot_mem_limits(sk, 1)) {
+-		sk_memory_allocated_sub(sk, pages);
+-		mem_cgroup_sk_uncharge(sk, pages);
+-		return -ENOMEM;
++	if (!mem_cgroup_sk_isolated(sk)) {
++		/* pre-charge to forward_alloc */
++		sk_memory_allocated_add(sk, pages);
++		allocated = sk_memory_allocated(sk);
++
++		/* If the system goes into memory pressure with this
++		 * precharge, give up and return error.
++		 */
++		if (allocated > sk_prot_mem_limits(sk, 1)) {
++			sk_memory_allocated_sub(sk, pages);
++			mem_cgroup_sk_uncharge(sk, pages);
++			return -ENOMEM;
++		}
+ 	}
++
+ 	sk_forward_alloc_add(sk, pages << PAGE_SHIFT);
+ 
+ 	WRITE_ONCE(sk->sk_reserved_mem,
+@@ -3154,8 +3158,11 @@ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag)
+ 	if (likely(skb_page_frag_refill(32U, pfrag, sk->sk_allocation)))
+ 		return true;
+ 
+-	sk_enter_memory_pressure(sk);
++	if (sk_should_enter_memory_pressure(sk))
++		sk_enter_memory_pressure(sk);
++
+ 	sk_stream_moderate_sndbuf(sk);
++
+ 	return false;
+ }
+ EXPORT_SYMBOL(sk_page_frag_refill);
+@@ -3268,18 +3275,30 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ {
+ 	bool memcg_enabled = false, charged = false;
+ 	struct proto *prot = sk->sk_prot;
+-	long allocated;
+-
+-	sk_memory_allocated_add(sk, amt);
+-	allocated = sk_memory_allocated(sk);
++	long allocated = 0;
+ 
+ 	if (mem_cgroup_sk_enabled(sk)) {
++		bool isolated = mem_cgroup_sk_isolated(sk);
++
+ 		memcg_enabled = true;
+ 		charged = mem_cgroup_sk_charge(sk, amt, gfp_memcg_charge());
+-		if (!charged)
++
++		if (isolated && charged)
++			return 1;
++
++		if (!charged) {
++			if (!isolated) {
++				sk_memory_allocated_add(sk, amt);
++				allocated = sk_memory_allocated(sk);
++			}
++
+ 			goto suppress_allocation;
++		}
+ 	}
+ 
++	sk_memory_allocated_add(sk, amt);
++	allocated = sk_memory_allocated(sk);
++
+ 	/* Under limit. */
+ 	if (allocated <= sk_prot_mem_limits(sk, 0)) {
+ 		sk_leave_memory_pressure(sk);
+@@ -3358,7 +3377,8 @@ int __sk_mem_raise_allocated(struct sock *sk, int size, int amt, int kind)
+ 
+ 	trace_sock_exceed_buf_limit(sk, prot, allocated, kind);
+ 
+-	sk_memory_allocated_sub(sk, amt);
++	if (allocated)
++		sk_memory_allocated_sub(sk, amt);
+ 
+ 	if (charged)
+ 		mem_cgroup_sk_uncharge(sk, amt);
+@@ -3397,11 +3417,15 @@ EXPORT_SYMBOL(__sk_mem_schedule);
+  */
+ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
+ {
+-	sk_memory_allocated_sub(sk, amount);
+-
+-	if (mem_cgroup_sk_enabled(sk))
++	if (mem_cgroup_sk_enabled(sk)) {
+ 		mem_cgroup_sk_uncharge(sk, amount);
+ 
++		if (mem_cgroup_sk_isolated(sk))
++			return;
++	}
++
++	sk_memory_allocated_sub(sk, amount);
++
+ 	if (sk_under_global_memory_pressure(sk) &&
+ 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
+ 		sk_leave_memory_pressure(sk);
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 9b62f1ae13ba..adbc8bcb760b 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -95,6 +95,7 @@
+ #include <net/checksum.h>
+ #include <net/ip.h>
+ #include <net/protocol.h>
++#include <net/proto_memory.h>
+ #include <net/arp.h>
+ #include <net/route.h>
+ #include <net/ip_fib.h>
+@@ -773,8 +774,17 @@ void __inet_accept(struct socket *sock, struct socket *newsock, struct sock *new
+ 			 */
+ 			amt = sk_mem_pages(newsk->sk_forward_alloc +
+ 					   atomic_read(&newsk->sk_rmem_alloc));
+-			if (amt)
++			if (amt) {
++				/* This amt is already charged globally to
++				 * sk_prot->memory_allocated due to lack of
++				 * sk_memcg until accept(), thus we need to
++				 * reclaim it here if newsk is isolated.
++				 */
++				if (mem_cgroup_sk_isolated(newsk))
++					sk_memory_allocated_sub(newsk, amt);
++
+ 				mem_cgroup_sk_charge(newsk, amt, gfp);
++			}
+ 		}
+ 
+ 		kmem_cache_charge(newsk, gfp);
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index ed10b959a906..f8dd53d40dcf 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -22,6 +22,7 @@
+ #include <net/tcp.h>
+ #include <net/sock_reuseport.h>
+ #include <net/addrconf.h>
++#include <net/proto_memory.h>
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+ /* match_sk*_wildcard == true:  IPV6_ADDR_ANY equals to any IPv6 addresses
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 71a956fbfc55..dcbd49e2f8af 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -908,7 +908,8 @@ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, gfp_t gfp,
+ 		}
+ 		__kfree_skb(skb);
+ 	} else {
+-		sk->sk_prot->enter_memory_pressure(sk);
++		if (sk_should_enter_memory_pressure(sk))
++			tcp_enter_memory_pressure(sk);
+ 		sk_stream_moderate_sndbuf(sk);
+ 	}
+ 	return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index dfbac0876d96..f7aa86661219 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -3574,12 +3574,18 @@ void sk_forced_mem_schedule(struct sock *sk, int size)
+ 	delta = size - sk->sk_forward_alloc;
+ 	if (delta <= 0)
+ 		return;
++
+ 	amt = sk_mem_pages(delta);
+ 	sk_forward_alloc_add(sk, amt << PAGE_SHIFT);
+-	sk_memory_allocated_add(sk, amt);
+ 
+-	if (mem_cgroup_sk_enabled(sk))
++	if (mem_cgroup_sk_enabled(sk)) {
+ 		mem_cgroup_sk_charge(sk, amt, gfp_memcg_charge() | __GFP_NOFAIL);
++
++		if (mem_cgroup_sk_isolated(sk))
++			return;
++	}
++
++	sk_memory_allocated_add(sk, amt);
+ }
+ 
+ /* Send a FIN. The caller locks the socket for us.
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 9a287b75c1b3..f7487e22a3f8 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -16,6 +16,7 @@
+ #include <net/inet_common.h>
+ #include <net/inet_hashtables.h>
+ #include <net/protocol.h>
++#include <net/proto_memory.h>
+ #include <net/tcp_states.h>
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+ #include <net/transp_v6.h>
+@@ -1016,7 +1017,7 @@ static void mptcp_enter_memory_pressure(struct sock *sk)
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 
+-		if (first)
++		if (first && sk_should_enter_memory_pressure(ssk))
+ 			tcp_enter_memory_pressure(ssk);
+ 		sk_stream_moderate_sndbuf(ssk);
+ 
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index f672a62a9a52..6696ef837116 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -35,6 +35,7 @@
+ #include <linux/netdevice.h>
+ #include <net/dst.h>
+ #include <net/inet_connection_sock.h>
++#include <net/proto_memory.h>
+ #include <net/tcp.h>
+ #include <net/tls.h>
+ #include <linux/skbuff_ref.h>
+@@ -371,7 +372,8 @@ static int tls_do_allocation(struct sock *sk,
+ 	if (!offload_ctx->open_record) {
+ 		if (unlikely(!skb_page_frag_refill(prepend_size, pfrag,
+ 						   sk->sk_allocation))) {
+-			READ_ONCE(sk->sk_prot)->enter_memory_pressure(sk);
++			if (sk_should_enter_memory_pressure(sk))
++				READ_ONCE(sk->sk_prot)->enter_memory_pressure(sk);
+ 			sk_stream_moderate_sndbuf(sk);
+ 			return -ENOMEM;
+ 		}
 -- 
-2.50.1
+2.51.0.338.gd7d06c2dae-goog
 
