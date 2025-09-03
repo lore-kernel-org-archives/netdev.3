@@ -1,101 +1,128 @@
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448542EB87C;
-	Wed,  3 Sep 2025 08:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81412D77E8
+	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 08:35:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756888162; cv=none; b=Uk1voNy6hL/xWkBCRexOXZ+YGV9y6ZZlryJnTMPbizCbiW2A/v7HAlipEUos2PnAS3kS3cefCnMUumZJw+WDmuqOa97VnY9AvtfXJjFsehTOd/PMbkplG1wowfq4cA0jQW9tAm6VBiy9x5Z9dlEK6MxbMccNRIBmt+lYlwVsEUU=
+	t=1756888523; cv=none; b=COfJTdJOqgt0Mf1JIJ9Upw2KDynCU1fZ6uiyQWnjvwfopvu4bNmAdvs0/cTraAOgYZ6MeuNK8oJwDasV/B8WDR+nng8jguVtm9ULrfDi+53A0XhHjhdOgWhqxE+hARzSzccxNd2SYrVNO+ZzxmeUeP3DyPrti65Y0uq7Gwna4yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756888162; c=relaxed/simple;
-	bh=eO11k6Ra2QsH1VCzI4Q5SU2ncwi5FG6M3i44nrlIkm4=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=k5ILvfT4ggy6/jrkEp3C6OVtLtTncPAeLJbI5uiy6WNHjbeNdDJq/ip8+/0hUKkdoU/qIMDX1qVbV5rWyfNCCswhtuOfr2aOYouwV0n3YyjFwYx4GO6fsLOK9SdekFhrkr2LFxiR2Mq8AwwX5/oQqhTHx8HZDcAZ+XFWZydiQr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ehgPpuo1; arc=none smtp.client-ip=203.205.221.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1756888523; c=relaxed/simple;
+	bh=R2N9spdLU9NDJo/nKcHKtiGIcW8ZX4PMkuXiFvh55Kc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IRRwYWyWJvgtju8Q0EPnbuv5da7RgukYSOcj11e5ezFYKVPaHt+TG3vBGLVzKU8HUw1Q4pcuELS9+qQD+s1wIIRC6sfRKuHYVp6203IhedvXe8Favo0Tmy3/dgsZtbFbWowEkjXDwmdigu7vbULxhPR+W0Gdqejn2PIBeJ2S2uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=viEOOW+s; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ehgPpuo1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1756888146;
-	bh=rxwbLt1/3yvtFHhZm8ytyPfgkNtAZ83DcuhmIdUSo48=;
-	h=From:To:Cc:Subject:Date;
-	b=ehgPpuo1SK7OsPIWRjezuADbf08ya+hTOBXAChke4Q5Rlo5YZ3uTWB31LLBlbyspa
-	 MCjdmx+GxSBrt1TvniBBuYBBblz+XqDaXjWB73TDIdDPEXWC8QJmObYxIGGV8osH+5
-	 sDmBMdMsplvT952Pch4bSt2WeqNGfQEU4kH6xQ5I=
-Received: from localhost.localdomain ([112.94.77.11])
-	by newxmesmtplogicsvrszc41-0.qq.com (NewEsmtp) with SMTP
-	id 5A933850; Wed, 03 Sep 2025 16:22:41 +0800
-X-QQ-mid: xmsmtpt1756887761tvydu8a21
-Message-ID: <tencent_4E434174E9D516431365413D1B8047C6BB06@qq.com>
-X-QQ-XMAILINFO: MZtEYADUG4AgcVOcqUEsC/Rrco1gqWxRo27AXcUx2WkW06jJpes6cEcTIRCdk7
-	 8AqyusGrgbY7Ukwxej1hCZxZK9RM1lmEPhQTNz6mI+N7ypKbAZ6H6g++gVse98wMu/q2f+b4M9u0
-	 RNT3AEbxhe4pTrfG+09IeGuzziFGBc2kw8zWDkBKCT1ykdzy6ss4d9H2HgGLPoWugzqbDwllHx74
-	 GRe5uvwzjXPXRw1uSkyF/FIKd1xIwf1IURvAGZpObkXYT8W+t5XRsc1+z/klQzw5r8+kSqTIe9bm
-	 N9O8BK0/DxoObnbKGT9tuGtljWOiICl2nHOokZcZzahjAw6CLUEFsudQp92FauqWPC1iK3OkhyJT
-	 0/67kMYwscJE4SPiX/XXtA0OuiwAHW2qgpFji5e4NRrZuBGwDzP8ORoRPYkMjmBgIK9u/mWxOXgz
-	 oxWoZ/lAU9gEc31erSu2RpBijHa4J7giDCed8yK9i9yHe96dIwOEx/tYz2Diet/lXIBDpJ2Bny2y
-	 IPFCd/K3u3I6IUSeGVIcI3JtYTFCRpADFaHDECTGh0aWLBwtYjL89xoXqLKDQtM9eTUvFns46cSI
-	 ZIXUFE1iK03y/w4uBMjz9NFvAz/+87qllwA+GyVuiY5RdwiH6iozFMgsitX65FgA0pCFNtDkFEgA
-	 naIM3PWpVsj6iNo1qU3m17Nq1hmDlgnl08BDxQdsuIiAjyICw4q/1oxKC+wK/W4PN1M5pGBOH9a/
-	 g3BjNPohPOvWYpKh1+fCikISnXECbRPU0bMzMJ3KrSWY1cJEIpkLkzIC2xv/aKlwaCWgC0CVXIdL
-	 HZJgz1zSU0xwImTrCIQVO5Cd8UswgrB136d6cmwT6DmDDCceuYZBbhrztoG7WlbzHEvYLXCxsxRd
-	 cJEUvtTM15v0ZmXPj6CQffEhRB1+0QJXIKGKVEi3AdR9wIFc2vnhqjHkwpUADZVYMXtL58qdJ6gi
-	 ogyP7yVJw7QmETVcga7MSLapXbuqvOOIWyxD+9XaIavdx/HBIOdliaUmlsiPgJmr6SX9WVno6ZxA
-	 KRFo4Qv+FitPVJxgemQXH2+4YcBYD0SEsee5S55oKCP4iH4pOv+OEnAqr0+0ocw3i+ood4yac8xj
-	 rKTVjf
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-From: Conley Lee <conleylee@foxmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	wens@csie.org,
-	mripard@kernel.org
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Conley Lee <conleylee@foxmail.com>
-Subject: [PATCH] dt-bindings: net: sun4i-emac: add dma support
-Date: Wed,  3 Sep 2025 16:22:38 +0800
-X-OQ-MSGID: <20250903082238.513066-1-conleylee@foxmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="viEOOW+s"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4b30d24f686so6938321cf.1
+        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 01:35:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756888520; x=1757493320; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wd3MZy7ytHCCFLjEgD8JYRORuypNow1ky2mT/O++Gu4=;
+        b=viEOOW+sAAd4VQCVGmHS4lfURm3HpRBYtI2fr+db8RS4HkL1/jSxCErVNVnPZAd4Po
+         ACroq8JH8fVyt5ky6fbJ+S81terYhBF2/VEvZJuNe654VTgVnbMBXn2yloVOf7y8qgmQ
+         DLYYrxirrujiM3iEHIWGH8K1GqikiN/TmVycut0gkaWv78Pvmu1IgWDNcQZqcU91dj5L
+         ePgWyljmsXpxrGTXVaWRkkmYvZ7ZAIbjfuewQPQZpiNwY2HJIeeIN85GAeSM/5NPm2hN
+         GaLN9VqfsfayZNxzvhbS1tcmOmgeMMV6iqY+Qd+Ut7n3dSRTePnhlR8H5eP49RVF8noO
+         bYjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756888520; x=1757493320;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wd3MZy7ytHCCFLjEgD8JYRORuypNow1ky2mT/O++Gu4=;
+        b=lDNytOb6Cd/bmfQ1xKb8p1ZOqvJF7kWYBqVHjBNiBKGcPrph5f9eUPpkZG0Rb7d7dt
+         s23oqmyt5cGyp0yPupDfJocUGKhqxk2Y6xitkYKY7PeQUVb+Zk2uM2wctiFDb4uJBE0E
+         9S+gcXKz8HAd6yHxys6X6q76ydZd7oKds3o/dXxCgQHglIRZPDzZzToQ6FMHYxBdUA+b
+         rkH78fOsL2V/eraGiW4R1bbfTmbWhwYh5/flFlHUSnfhpWbv8myAbhBsXzq5WLD3L5N/
+         1+xUlK/Qks5rB4MO8c7VinFDaSl6fuYjUGPw13RzWISQGESc1nluNJVKZDsBrdtm5vpA
+         qrag==
+X-Forwarded-Encrypted: i=1; AJvYcCXclYoA+zJOKyA8XNkdv2FfRuHidwb01jQ4An7/io2M8lNH7hVFT/zhAzcHvzUVPS6Z4ES1W/Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdlXDIpke09n5Pbb7wZ0TFT77i9qcnLmByv3xu/B9/Evge7inf
+	9UAwTdk5AsrcSmbE46TsDwGRA5/K8xfa5TAKg4zRYAGhSAw3q4o1hpxCuzHExlh4l/dPpjJTWKH
+	QYCPtBS0afwBGYv+w2eP8nsrAq/2/2gjVJz+uZLlG
+X-Gm-Gg: ASbGncv2l2C7DE2fhLzPZvYx71QWP5maT/TMRI/cMXRMqwJpmTA69UPcfUE9+JR87WK
+	zrCFtVjXb64F2BkBwP0lSfjEMSXJQZXG4Sdpeuo6tpplJoqYvWD7wpTguDeaEm2u4DmYaSJVIVx
+	5Tp6Nezp4uzpB/vmePFWYPPGZjOO55W5IM8mplxv14nUAXebFZefvQNG7Pt/CX89EQyM+jm8CnH
+	1pRg2EDC2uPt+Nsfrqu95wL
+X-Google-Smtp-Source: AGHT+IGbvDOSDCQ/4PJr/B7CKPjOPOnfqMSCE15+0FaFcZBeenWNWBxrhjYrJLZpNi+8mOlrBc/kdOWTOcAPufBS1zI=
+X-Received: by 2002:a05:622a:4116:b0:4b2:ec43:3de4 with SMTP id
+ d75a77b69052e-4b31dcb27f5mr196466861cf.75.1756888520296; Wed, 03 Sep 2025
+ 01:35:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250903024406.2418362-1-xuanqiang.luo@linux.dev>
+ <CANn89i+XH95h4UANWpR-39LSRkvM3LL=_pRL0+6fp6dwTZxn_g@mail.gmail.com> <CAL+tcoAPdLYPu+HE=pA=T9T7J+b19Mg2BRgP3PM2d8_z6iXgYQ@mail.gmail.com>
+In-Reply-To: <CAL+tcoAPdLYPu+HE=pA=T9T7J+b19Mg2BRgP3PM2d8_z6iXgYQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 3 Sep 2025 01:35:08 -0700
+X-Gm-Features: Ac12FXx2qrJTucXvUQQDb7aw_L-yjCfH8KD01n_ZyyD-39DwUTy2Hz4kmXQNEw8
+Message-ID: <CANn89i+AMitXNYNo6h7GPBHsk2sVSbmH-8BQLRFDeihEd9-oQQ@mail.gmail.com>
+Subject: Re: [PATCH net] inet: Avoid established lookup missing active sk
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: Xuanqiang Luo <xuanqiang.luo@linux.dev>, kuniyu@google.com, davem@davemloft.net, 
+	kuba@kernel.org, kernelxing@tencent.com, netdev@vger.kernel.org, 
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The sun4i EMAC supports DMA for data transmission,
-so it is necessary to add DMA options to the device tree bindings.
+On Tue, Sep 2, 2025 at 11:53=E2=80=AFPM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> On Wed, Sep 3, 2025 at 2:40=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > On Tue, Sep 2, 2025 at 7:46=E2=80=AFPM Xuanqiang Luo <xuanqiang.luo@lin=
+ux.dev> wrote:
+> > >
+> > > From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> > >
+> > > Since the lookup of sk in ehash is lockless, when one CPU is performi=
+ng a
+> > > lookup while another CPU is executing delete and insert operations
+> > > (deleting reqsk and inserting sk), the lookup CPU may miss either of
+> > > them, if sk cannot be found, an RST may be sent.
+> > >
+> > > The call trace map is drawn as follows:
+> > >    CPU 0                           CPU 1
+> > >    -----                           -----
+> > >                                 spin_lock()
+> > >                                 sk_nulls_del_node_init_rcu(osk)
+> > > __inet_lookup_established()
+> > >                                 __sk_nulls_add_node_rcu(sk, list)
+> > >                                 spin_unlock()
+> > >
+> > > We can try using spin_lock()/spin_unlock() to wait for ehash updates
+> > > (ensuring all deletions and insertions are completed) after a failed
+> > > lookup in ehash, then lookup sk again after the update. Since the sk
+> > > expected to be found is unlikely to encounter the aforementioned scen=
+ario
+> > > multiple times consecutively, we only need one update.
+> >
+> > No need for a lock really...
+> > - add the new node (with a temporary 'wrong' nulls value),
+> > - delete the old node
+> > - replace the nulls value by the expected one.
+>
+> Yes. The plan is simple enough to fix this particular issue and I
+> verified in production long ago. Sadly the following patch got
+> reverted...
+> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=
+=3D3f4ca5fafc08881d7a57daa20449d171f2887043
 
-Signed-off-by: Conley Lee <conleylee@foxmail.com>
----
- .../bindings/net/allwinner,sun4i-a10-emac.yaml           | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Please read again what I wrote, and compare it to your old patch.
 
-diff --git a/Documentation/devicetree/bindings/net/allwinner,sun4i-a10-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun4i-a10-emac.yaml
-index eb26623da..d4d8f3a79 100644
---- a/Documentation/devicetree/bindings/net/allwinner,sun4i-a10-emac.yaml
-+++ b/Documentation/devicetree/bindings/net/allwinner,sun4i-a10-emac.yaml
-@@ -33,6 +33,15 @@ properties:
-       - items:
-           - description: phandle to SRAM
-           - description: register value for device
-+  dmas:
-+    items:
-+      - description: RX DMA Channel
-+      - description: TX DMA Channel
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
- 
- required:
-   - compatible
--- 
-2.25.1
+- add the new node (with a temporary 'wrong' nulls value),
+- delete the old node
+- replace the nulls value by the expected one.
 
+Can you see a difference ?
