@@ -1,120 +1,108 @@
-Received: from beige.elm.relay.mailchannels.net (beige.elm.relay.mailchannels.net [23.83.212.16])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00EF350D7E;
-	Wed,  3 Sep 2025 17:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756922233; cv=pass; b=UDwRyiwDXMDRtR/gXIHZsuZgxn5W22BUUzErMwelVq5dXDP0B8jk+fNFAgwRHjoRKb9AtgJx44m096vAT0BAg11Kr9jcsUrdW4Hg9sArJ24oAiJgtrvsgjCU+kLEa0ymWy4XrvyWkQsfVsMjXLSbvnscleksnoKHUJeOG1JoT8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756922233; c=relaxed/simple;
-	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E772EBDC0;
+	Wed,  3 Sep 2025 18:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756922768; cv=none; b=JCkmNr32uysVAyyjPOI21hk6FSHsD9tHa104QXMyWyqw8WNJxTSkosGflq0HqtBAslUgBQnoNb5YiQbelVVq00L48MYex7g57Tn+zybTZGJsepU24MojQPdfab5FoH9UjozGVASOeG3iZEiq2MqwGBnodAdTVwz261SS7eXQ8zc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756922768; c=relaxed/simple;
+	bh=fww3ehX4//bBypexZT3unOOmv4CPVi/DOuYiuvac4Jk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VFzqAzKLJ/Q0au05QAGYnlwIbbz0SkraddXDUbLOj61Ge3AgJrvGArSQSOEX4jdPYtPDtLKMABV2fbXaghnIh3zQtYudF7KOut5SbeWOpCB2WR5RMUqIQRwqNhKRB6mqQy9+5PpQR1lUluBK+JFReIjyyDrSf/ucjsu6iyp9U44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=lt5XZwrz; arc=pass smtp.client-ip=23.83.212.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="lt5XZwrz"
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 6B452849FF;
-	Wed,  3 Sep 2025 17:20:37 +0000 (UTC)
-Received: from pdx1-sub0-mail-a267.dreamhost.com (100-102-90-158.trex-nlb.outbound.svc.cluster.local [100.102.90.158])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 038C5838E9;
-	Wed,  3 Sep 2025 17:20:36 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1756920036; a=rsa-sha256;
-	cv=none;
-	b=5m2Yf51ZG44B7BwxMBEzC2KfBeQJIvORDYa5tpwY9P82Xo4tNUIPzZGg/DvfCUNmYGDpIN
-	5y23oNSsnrIh47dL+0/l0b+QFKIkE5qna98c8lWKMFqYyfPgClwfwatF4PZjXqrflIIs2C
-	EQQVcBs2v79HDMZ3fVqG8s2E0hOKeyIheVFoMvww0dCAQWJD1/IS+iM01Oz0qFVLewhcii
-	oGUN6Z/OU34QiLxzqWUXigsOZZ5HkPiNjLVkw7zC8eOQhQ5010j7u5HZKIAuh/X89v2nnS
-	ktGy/LMn6T3GLHwuUdNzuJm25m0YI832dKJD7+fjSrdONhU03uO9CEQF28UzLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1756920036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
-	b=sux4pWIe4VamQiwbwsMxKAPxHRM/L7nxjoRaRHyywsWj07in5+/sewXq5+1O0Hx6FOS0VT
-	0GopkysBxTcL1UKc/8VaUsVlhdqD5sc+zgkpu3S7fjoOFpToec+cavyMn2FWyuix87+jW/
-	XPiDBXYoUhrgkG9TbdtWxTwchcbFP9t62+QJk8Qcx6Zj7H1+bb2Oed87enzW2oe5diq0Yz
-	C8cJkfTdQ4mH4l0sMP5IwUtA93G9fv99YVbP9ps/VQ+4MwUm7ho9dhqhh3PvWDCphs3m4R
-	qKGRFPNgYAr4/ibPI3e3+jQejqUlHeCKW9B3tR1FONeHOIl2578gOXDkVNkvaw==
-ARC-Authentication-Results: i=1;
-	rspamd-8b9589799-lbhhm;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Towering-Towering: 482a2d8960fe1f3f_1756920037295_1615045819
-X-MC-Loop-Signature: 1756920037295:2098147381
-X-MC-Ingress-Time: 1756920037295
-Received: from pdx1-sub0-mail-a267.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.102.90.158 (trex/7.1.3);
-	Wed, 03 Sep 2025 17:20:37 +0000
-Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a267.dreamhost.com (Postfix) with ESMTPSA id 4cH8Wl0Sk8z32;
-	Wed,  3 Sep 2025 10:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1756920035;
-	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=lt5XZwrzOijlWhs0vkrGLHtk40d4+o6Pbpay4c+fth8lRnZrp6uhHoUxO75WQRWt/
-	 w2OJEHUfnEpYv1qHvtYnfy13XlO0/BTP8Gn6bqwIMziEjVOuQLMAlQKxGzw3bN4cxp
-	 odA8lEWEBteOWj9hYwaxH+DW2NTTPcrs+HvvhkrypvpmqvaQWD5KEDmkXedoegCDXY
-	 fk9NJktdjAUAsRoF+LTYqpas9V0fmI+w04N6uvbk6gSspvY9DWY+VRWiS7QB38WXEQ
-	 IBBSN05bQThGSsOzcqcyDLgjU/kPG+RHjvKRik8QaOxK5mEMvLDMWZmuwiaUUZW6/k
-	 wOl7kq5n49DVA==
-Date: Wed, 3 Sep 2025 10:20:32 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: alejandro.lucero-palau@amd.com
-Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
-	dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
-	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>,
-	Zhi Wang <zhiw@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ben Cheatham <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH v17 15/22] cxl: Make region type based on endpoint type
-Message-ID: <20250903172032.vfffqqjnwnzbl2id@offworld>
-References: <20250624141355.269056-1-alejandro.lucero-palau@amd.com>
- <20250624141355.269056-16-alejandro.lucero-palau@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2eLVXJagJlVOGQ7Zt4g02BlHMzcJseNNIFVs+09XpTHbPz7jwGHMyPQfcqjd+PIFHezSOyS9XBC9CU0vDsLtsl1d2Jr8jGjF22wBl+GzHc0ppKnY0y4Eprrk57Ztt0XMysW7byAVKiVZf2yAUK5iUUhnYNT9lQnPFWyQasIwII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1utrrn-000000006q3-35cG;
+	Wed, 03 Sep 2025 18:05:55 +0000
+Date: Wed, 3 Sep 2025 19:05:50 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Andreas Schirm <andreas.schirm@siemens.com>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Peter Christen <peter.christen@siemens.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v2 1/6] net: dsa: lantiq_gswip: move to
+ dedicated folder
+Message-ID: <aLiDfrXUbw1O5Vdi@pidgin.makrotopia.org>
+References: <cover.1756228750.git.daniel@makrotopia.org>
+ <ceb75451afb48ee791a2585463d718772b2cf357.1756228750.git.daniel@makrotopia.org>
+ <20250828203346.eqe5bzk52pcizqt5@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250624141355.269056-16-alejandro.lucero-palau@amd.com>
-User-Agent: NeoMutt/20220429
+In-Reply-To: <20250828203346.eqe5bzk52pcizqt5@skbuf>
 
-On Tue, 24 Jun 2025, alejandro.lucero-palau@amd.com wrote:
+On Thu, Aug 28, 2025 at 11:33:46PM +0300, Vladimir Oltean wrote:
+> On Wed, Aug 27, 2025 at 12:05:28AM +0100, Daniel Golle wrote:
+> > Move the lantiq_gswip driver to its own folder and update
+> > MAINTAINERS file accordingly.
+> > This is done ahead of extending the driver to support the MaxLinear
+> > GSW1xx series of standalone switch ICs, which includes adding a bunch
+> > of files.
+> > 
+> > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+> > ---
+> > v2: move driver to its own folder
+> > 
+> >  MAINTAINERS                                 | 3 +--
+> >  drivers/net/dsa/Kconfig                     | 8 +-------
+> >  drivers/net/dsa/Makefile                    | 2 +-
+> >  drivers/net/dsa/lantiq/Kconfig              | 7 +++++++
+> >  drivers/net/dsa/lantiq/Makefile             | 1 +
+> >  drivers/net/dsa/{ => lantiq}/lantiq_gswip.c | 0
+> >  drivers/net/dsa/{ => lantiq}/lantiq_gswip.h | 0
+> >  drivers/net/dsa/{ => lantiq}/lantiq_pce.h   | 0
+> >  8 files changed, 11 insertions(+), 10 deletions(-)
+> >  create mode 100644 drivers/net/dsa/lantiq/Kconfig
+> >  create mode 100644 drivers/net/dsa/lantiq/Makefile
+> >  rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.c (100%)
+> >  rename drivers/net/dsa/{ => lantiq}/lantiq_gswip.h (100%)
+> >  rename drivers/net/dsa/{ => lantiq}/lantiq_pce.h (100%)
+> 
+> I don't have a problem with this patch per se, but it will make it
+> harder to avoid conflicts for the known and unsubmitted bug fixes, like:
+> https://github.com/dangowrt/linux/commit/c7445039b965e1a6aad1a4435e7efd4b7cb30f5b
+> https://github.com/dangowrt/linux/commit/48d5cac46fc95a826b5eb49434a3a68b75a8ae1a
+> which I haven't found the time to submit (sorry). Are we okay with that?
 
->From: Alejandro Lucero <alucerop@amd.com>
->
->Current code is expecting Type3 or CXL_DECODER_HOSTONLYMEM devices only.
->Support for Type2 implies region type needs to be based on the endpoint
+I've prepared a tree rebasing your tree
 
-s/Type2/HDM-D[B]
+https://github.com/vladimiroltean/linux/commits/lantiq-gswip/
 
->type instead.
->
->Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->Reviewed-by: Zhi Wang <zhiw@nvidia.com>
->Reviewed-by: Dave Jiang <dave.jiang@intel.com>
->Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
+onto current net-next:
 
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+https://github.com/dangowrt/linux/commits/lantiq_gswip-fixes-for-vladimiroltean/
+
+If you don't have time to submit the patches from this tree yourself I
+can do that on your behalf, just let me know which of the patches you'd
+like to submit as fixes, I'll find the causing commit, add the Fixes:-tag
+and send them to netdev@ for the net tree after the next net-next -> net
+merge.
+
+Or, in case that makes more sense, send the patches to 'net' now and
+then solve the conflicts at the next net-next -> net merge, what ever
+works better.
+
