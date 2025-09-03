@@ -1,406 +1,322 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737E92D660F
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 19:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B42D660F
+	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 19:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756926174; cv=none; b=a2xzQLzMmY3b+YKlhbp7ow4mTLVC5ubbs0RI4aHvRGcA7JhCkxB3VejVchzRJ7zsQTsrNcWEB/UICPEENeCwa1a/uvI6KAT4+rHson0N0dPGSmWBqnJ+sGrJRwEF0VVTYLPD9MH6wLX6YzGLMOK5PTPatOAsPIGdTcABoSdDaro=
+	t=1756926180; cv=none; b=qkfcxjWB7TQu/GdffmG/Ie7WyyA3RIvyMu/2ybl1hSmGoyu+wmxNBywJF/LeVemL3Io5NUV7cS46km8tm7GZm33sOOzpLrNwymF6g+YmPgGWMRZJw7afIdeH3GrCdhKdDFWOaDJrsWVuSmJS3pxUWr5bOeKvhABtkqNJNyJru5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756926174; c=relaxed/simple;
-	bh=gj6aYZ7KQ1aqhXUG3Ur52eLx4emNHQiYmnCTH+MCwmY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J08AUD8hHJttVvPcgXo7HGx0WVrh95j468NkQ4H0ZEdN7ZrS4aBYK0o/M8pn3NQq4/Yr8j/Ffp/b6RbLpSpfleVQmXUN1h5T658Uuvp/uleB4BDK2ls3kj8ev4VYX8Uhqbelqooa8ljrUZjN4VczF/ols+9JU4/3gSfHcWKqT7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W9tNQLvs; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1756926180; c=relaxed/simple;
+	bh=jtApd2ZeWsZxj/ZI+3k16eU9crBCEEcddrRCQsgIc2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q9SzST/Fh2niWtrZKrFfh/4wfOjLIUgf8VDgVWBCsHwJ6cVtcAcgrdD9n5N8Kxkb5IYbcrCNo61xNhIhETqCE5TloVl525+8VB7kqfFx3tYmhLRwx0UlR6m2v3iAUIf0ZipACeaVMiY/EqI9+V6wFWAOu2Yue2bWQPJoOwioUPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Is2Kp4k/; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W9tNQLvs"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-32811874948so112475a91.2
-        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 12:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756926169; x=1757530969; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vzF4zJ5+F1zF9VaKrU/tXWM1tjtt/QoM4YGbOeZxyBQ=;
-        b=W9tNQLvszgdha1+oynwM0f0mG5SfWdHZ6vDF/PC/rweDdDPDR5HtO+sEnLkAszTnH5
-         upRvYOtvPiEw9Rp5XRjxtLdK8x/f7pSMyFyZPdULuqHTuLNyy7pZyQORUm2j5zhnVnE0
-         OXSC9YV5GdTEYExRD8RmaWVV0FYBTC3IVB+6VErc6kynEhHASu4lihN+l7ZaRiFBdrnn
-         WMWGwiB1XCjCl9+KPvj17dcE5FCaYB4ukMQ0PKE6Nl1VCs8l7sZZKFkktSAIDMNt38+i
-         0cPndAN0TaG1K/4PmfoBfl4WLljD5sc45Fu2HEEHNh9quxnvuZcQRGvI4AzSe3ljJod3
-         8T4Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Is2Kp4k/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756926176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vuj6/ynYvZNCMQC+NtWMjW82+TVK2toqfMK12UBW0wg=;
+	b=Is2Kp4k/MTb8uSmQQ0MvEbOpoiM0Nnl6BjKDx/MzITGeh4FY/uXY6TGVrBBUEHGs6Bak55
+	p+vS5uaw17jswxBPZtaoMsJwiCjVVdCssibez6OeRD5SIybQVZGKxkq50QbjNqxE6P6Nl5
+	G1hzwgpQp1F9Ur/UzI9PE4Z8KEIBVBo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-XYeOPqcxNNiJe9TIOGVbmw-1; Wed, 03 Sep 2025 15:02:48 -0400
+X-MC-Unique: XYeOPqcxNNiJe9TIOGVbmw-1
+X-Mimecast-MFC-AGG-ID: XYeOPqcxNNiJe9TIOGVbmw_1756926165
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b98de0e34so1927775e9.0
+        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 12:02:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756926169; x=1757530969;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vzF4zJ5+F1zF9VaKrU/tXWM1tjtt/QoM4YGbOeZxyBQ=;
-        b=r6gQVBQikI2Qi4FxX1g9789VTkBl/BDymNc2mosi/MNXNbEbPKWXAW5o3xRZNbeiO5
-         91dH94WFXsy43p2IBhGX2Nun3t4QHPa24mGcvXyP4L0DCmUxuexmS209d8engZnI1pfu
-         LLUZd1gqB5/ufR1ltg3lB4pTCehBdZAn+Dl6dMqRqOO5Or1j9XwgKnPjC0qLSwGCgszG
-         i2I8MiZ/+nhp87ULx+GoJAA9fpH4JcbyoZvHBfEPilUyWRgp6QWItta2EswQP0KPGGI5
-         gunE9A5RzCWSUMrRQY0H9USWICaIWSFIQNhGfqOz8MbJqH/jy1SipchavdTwsZed+r56
-         z2tg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFdy+Fd73wr1E/sgRc7XTvvekVoxQKWI7OZHquvxAjUPDwm7FYhmqrSSkM43aVDUFHEkga7EU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2vxnRDFdUXYcy3SMal6+4Xow7WXENflGLZZhOODVgyP09ahRg
-	b4UnSQHC0g6fLu6jpQDixrUqIBsQgOCWkpe/BI5HvydHowrHnVP4jmnxUY2yH2FeCnFaGvaeWPe
-	Xbo0evw==
-X-Google-Smtp-Source: AGHT+IELOo2GRkjTPUTVgvOb0l9KOXwTyVVAAUseHJuaZjmTyh3t9jPNV7rbNRv+rNipdEvHh3NDb6TeoMw=
-X-Received: from pjbsl11.prod.google.com ([2002:a17:90b:2e0b:b0:325:8e70:8d5e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d603:b0:311:b413:f5e1
- with SMTP id 98e67ed59e1d1-328156e4731mr19519055a91.32.1756926168800; Wed, 03
- Sep 2025 12:02:48 -0700 (PDT)
-Date: Wed,  3 Sep 2025 19:02:04 +0000
-In-Reply-To: <20250903190238.2511885-1-kuniyu@google.com>
+        d=1e100.net; s=20230601; t=1756926165; x=1757530965;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vuj6/ynYvZNCMQC+NtWMjW82+TVK2toqfMK12UBW0wg=;
+        b=lPcxTDH/ZEUFHAX/XTKNXKCRH4fX5/Bvr/PGbORI00szo9kelCXTOF6H/LBINQo1AW
+         rFD5bLA7qtc6BJNmQGkS2jucnaXWikxQ26epBrYEnZpgpTvjGF5Oba4YpK6TA3P/lwtf
+         VwgVTqC0wuIRWEY5wRxjflKyrPqmdotfChpi0GdjL/QCT0k/quNeFd5vpf8/LAENfCcu
+         XpGyQnG5xI+pjiagdcj4wpmiAhNEenrch1DkjCxt56GEescft+3SQnZABjRwunfbMrxo
+         9mkJ3C1BKC89BdX8aYXugyznTQUod+R+S3n9lbfUYbImuXgsXQMFnTKan8OSP8h6/6r0
+         HHDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWhegVc/+KUqodn51h36ryyOHLyGJ56DOzRLN0LLzVstDNzRgzL8zAQiMkYsvwkIZOeYMEGdWw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDg3ZgvSAKIsae6fhbZBgoRO41jgVAiCcuBUGvUF4Iuzpl26zS
+	W3Hf4H1vDfFIvC54QG8VYp5cl76HfFN9Laio+Jt8TsWCER1rggmB4/+wO4PjVVQLvvJMbr5wTGs
+	ftHAivus8lV77QSMp/FTXypRTIl6JritkGlHR3BSj4evgnsoPaDNma8/QPQ==
+X-Gm-Gg: ASbGncsmJgkjuRQgNbYqQ7Ej8F40OIje0Gz23UmjwxqT7DlBptlNcLcR9nMAHRRiCfN
+	VM2YHFYButaC/yb8Pb5SEsE6kacZbCLmAVxEgC1vkw0TXs/GG7W58gca6mhqepo5BwRf1VY+hTy
+	1zQZ72fRGdgY62LjcAhRO215yl+ghJzItlp5/SAR3/ZBHs0gScBhbhf+cH7lEIa6M1zQJrFDlH8
+	L0H2wiW7JUI0n8C0RGUAKz9b8UUcEju13ZDHSJXPP+dKKFUCQI6KCG05mU158ooaJ/6gGhIrjSW
+	+JNgGX4ynGGWtPa5Oscpu9dg3WLbhSvEFsWHdj2Qg1G2U1c=
+X-Received: by 2002:a05:600c:4ed3:b0:45c:b549:2241 with SMTP id 5b1f17b1804b1-45cb54923d6mr26593335e9.27.1756926164930;
+        Wed, 03 Sep 2025 12:02:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHLGfe6sRBehSXUl814xMt0UzzbnzlGvmUMrebVIF41OwNzF4h3DaViA7EblSEd/J7Ia4fNPg==
+X-Received: by 2002:a05:600c:4ed3:b0:45c:b549:2241 with SMTP id 5b1f17b1804b1-45cb54923d6mr26593155e9.27.1756926164395;
+        Wed, 03 Sep 2025 12:02:44 -0700 (PDT)
+Received: from fedora.redhat.com ([2001:4df4:5814:7700:7fb2:f956:4fb9:7689])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6b99sm331978655e9.4.2025.09.03.12.02.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 12:02:44 -0700 (PDT)
+From: mheib@redhat.com
+To: intel-wired-lan@lists.osuosl.org
+Cc: przemyslawx.patynowski@intel.com,
+	jiri@resnulli.us,
+	netdev@vger.kernel.org,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	aleksandr.loktionov@intel.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Mohammad Heib <mheib@redhat.com>
+Subject: [PATCH net-next,v2,2/2] i40e: support generic devlink param "max_mac_per_vf"
+Date: Wed,  3 Sep 2025 22:02:29 +0300
+Message-ID: <20250903190229.49193-2-mheib@redhat.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250903190229.49193-1-mheib@redhat.com>
+References: <20250903190229.49193-1-mheib@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250903190238.2511885-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.51.0.338.gd7d06c2dae-goog
-Message-ID: <20250903190238.2511885-6-kuniyu@google.com>
-Subject: [PATCH v5 bpf-next/net 5/5] selftest: bpf: Add test for SK_BPF_MEMCG_SOCK_ISOLATED.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <martin.lau@linux.dev>
-Cc: John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Mina Almasry <almasrymina@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The test does the following for IPv4/IPv6 x TCP/UDP sockets
-with/without BPF prog.
+From: Mohammad Heib <mheib@redhat.com>
 
-  1. Create socket pairs
-  2. Send a bunch of data that requires more than 256 pages
-  3. Read memory_allocated from the 3rd column in /proc/net/protocols
-  4. Check if unread data is charged to memory_allocated
+Currently the i40e driver enforces its own internally calculated per-VF MAC
+filter limit, derived from the number of allocated VFs and available
+hardware resources. This limit is not configurable by the administrator,
+which makes it difficult to control how many MAC addresses each VF may
+use.
 
-If BPF prog is attached, memory_allocated should not be changed,
-but we allow a small error (up to 10 pages) in case other processes
-on the host use some amounts of TCP/UDP memory.
+This patch adds support for the new generic devlink runtime parameter
+"max_mac_per_vf". On i40e, the parameter affects only trusted VFs. It
+provides administrators with a way to cap the number of MAC addresses a
+VF can use:
 
-At 2., the test actually sends more than 1024 pages because the sysctl
-net.core.mem_pcpu_rsv is 256 is by default, which means 256 pages are
-buffered per cpu before reporting to sk->sk_prot->memory_allocated.
+- When the parameter is set to 0 (default), the driver continues to use
+  its internally calculated limit.
 
-  BUF_SINGLE (1024) * NR_SEND (128) * NR_SOCKETS (64) / 4096
-  = 2048 pages
+- When set to a non-zero value, the driver applies this value as a strict
+  cap for trusted VFs, overriding the internal calculation.
 
-When it's reduced to 1024 pages, the following assertion for the
-non-isolated case got flaky.
+Important notes:
 
-  ASSERT_GT(memory_allocated[1], memory_allocated[0] + 256, ...)
+- The configured value is a theoretical maximum. Hardware limits may
+  still prevent additional MAC addresses from being added, even if the
+  parameter allows it.
 
-We use kern_sync_rcu() for UDP because UDP recv queue is destroyed
-after 1 RCU grace period.
+- Since MAC filters are a shared hardware resource across all VFs,
+  setting a high value may cause resource contention and starve other
+  VFs.
 
-The test takes ~0.5s on QEMU w/ KVM but takes 2s w/o KVM.
+- This change gives administrators predictable and flexible control over
+  VF resource allocation, while still respecting hardware limitations.
 
-  # time ./test_progs -t sk_memcg
-  #370/1   sk_memcg/TCP       :OK
-  #370/2   sk_memcg/UDP       :OK
-  #370/3   sk_memcg/TCPv6     :OK
-  #370/4   sk_memcg/UDPv6     :OK
-  #370     sk_memcg:OK
-  Summary: 1/4 PASSED, 0 SKIPPED, 0 FAILED
+- Previous discussion about this change:
+  https://lore.kernel.org/netdev/20250805134042.2604897-2-dhill@redhat.com
+  https://lore.kernel.org/netdev/20250823094952.182181-1-mheib@redhat.com
 
-  real	0m0.473s
-  user	0m0.009s
-  sys	0m0.201s
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
 ---
-v5:
-  * Use kern_sync_rcu()
-  * Double NR_SEND to 128
+ Documentation/networking/devlink/i40e.rst     | 35 ++++++++++++++
+ drivers/net/ethernet/intel/i40e/i40e.h        |  4 ++
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 48 ++++++++++++++++++-
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 28 +++++++----
+ 4 files changed, 103 insertions(+), 12 deletions(-)
 
-v4:
-  * Only use inet_create() hook
-  * Test bpf_getsockopt()
-  * Add serial_ prefix
-  * Reduce sleep() and the amount of sent data
----
- .../selftests/bpf/prog_tests/sk_memcg.c       | 218 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/sk_memcg.c  |  38 +++
- 2 files changed, 256 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/sk_memcg.c
- create mode 100644 tools/testing/selftests/bpf/progs/sk_memcg.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_memcg.c b/tools/testing/selftests/bpf/prog_tests/sk_memcg.c
-new file mode 100644
-index 000000000000..66bdff2d6ec7
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_memcg.c
-@@ -0,0 +1,218 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025 Google LLC */
+diff --git a/Documentation/networking/devlink/i40e.rst b/Documentation/networking/devlink/i40e.rst
+index d3cb5bb5197e..3052f638fdd5 100644
+--- a/Documentation/networking/devlink/i40e.rst
++++ b/Documentation/networking/devlink/i40e.rst
+@@ -7,6 +7,41 @@ i40e devlink support
+ This document describes the devlink features implemented by the ``i40e``
+ device driver.
+ 
++Parameters
++==========
 +
-+#include <test_progs.h>
-+#include "sk_memcg.skel.h"
-+#include "network_helpers.h"
++.. list-table:: Generic parameters implemented
++    :widths: 5 5 90
 +
-+#define NR_SOCKETS	64
-+#define NR_SEND		128
-+#define BUF_SINGLE	1024
-+#define BUF_TOTAL	(BUF_SINGLE * NR_SEND)
++    * - Name
++      - Mode
++      - Notes
++    * - ``max_mac_per_vf``
++      - runtime
++      - Controls the maximum number of MAC addresses a **trusted VF** can use
++        on i40e devices.
 +
-+struct test_case {
-+	char name[10]; /* protocols (%-9s) in /proc/net/protocols, see proto_seq_printf(). */
-+	int family;
-+	int type;
-+	int (*create_sockets)(struct test_case *test_case, int sk[], int len);
-+};
++        By default (``0``), the driver enforces its internally calculated per-VF
++        MAC filter limit, which is based on the number of allocated VFS.
 +
-+static int tcp_create_sockets(struct test_case *test_case, int sk[], int len)
++        If set to a non-zero value, this parameter acts as a strict cap:
++        the driver will use the user-provided value instead of its internal
++        calculation.
++
++        **Important notes:**
++        - MAC filters are a **shared hardware resource** across all VFs.
++          Setting a high value may cause other VFs to be starved of filters.
++
++        - This value is a **theoretical maximum**. The hardware may return
++          errors when its absolute limit is reached, regardless of the value
++          set here.
++
++        - Only **trusted VFs** are affected; untrusted VFs use a fixed small
++          limit.
++
++        The default value is ``0`` (internal calculation is used).
++
++
+ Info versions
+ =============
+ 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index 801a57a925da..d2d03db2acec 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -574,6 +574,10 @@ struct i40e_pf {
+ 	struct i40e_vf *vf;
+ 	int num_alloc_vfs;	/* actual number of VFs allocated */
+ 	u32 vf_aq_requests;
++	/* If set to non-zero, the device uses this value
++	 * as maximum number of MAC filters per VF.
++	 */
++	u32 max_mac_per_vf;
+ 	u32 arq_overflows;	/* Not fatal, possibly indicative of problems */
+ 	struct ratelimit_state mdd_message_rate_limit;
+ 	/* DCBx/DCBNL capability for PF that indicates
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_devlink.c b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+index cc4e9e2addb7..cd01e35da94e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_devlink.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+@@ -5,6 +5,35 @@
+ #include "i40e.h"
+ #include "i40e_devlink.h"
+ 
++static int i40e_max_mac_per_vf_set(struct devlink *devlink,
++				   u32 id,
++				   struct devlink_param_gset_ctx *ctx,
++				   struct netlink_ext_ack *extack)
 +{
-+	int server, i;
++	struct i40e_pf *pf = devlink_priv(devlink);
 +
-+	server = start_server(test_case->family, test_case->type, NULL, 0, 0);
-+	ASSERT_GE(server, 0, "start_server_str");
-+
-+	for (i = 0; i < len / 2; i++) {
-+		sk[i * 2] = connect_to_fd(server, 0);
-+		if (!ASSERT_GE(sk[i * 2], 0, "connect_to_fd"))
-+			return sk[i * 2];
-+
-+		sk[i * 2 + 1] = accept(server, NULL, NULL);
-+		if (!ASSERT_GE(sk[i * 2 + 1], 0, "accept"))
-+			return sk[i * 2 + 1];
-+	}
-+
-+	close(server);
-+
++	pf->max_mac_per_vf = ctx->val.vu32;
 +	return 0;
 +}
 +
-+static int udp_create_sockets(struct test_case *test_case, int sk[], int len)
++static int i40e_max_mac_per_vf_get(struct devlink *devlink,
++				   u32 id,
++				   struct devlink_param_gset_ctx *ctx)
 +{
-+	int i, err, rcvbuf = BUF_TOTAL;
++	struct i40e_pf *pf = devlink_priv(devlink);
 +
-+	for (i = 0; i < len / 2; i++) {
-+		sk[i * 2] = start_server(test_case->family, test_case->type, NULL, 0, 0);
-+		if (!ASSERT_GE(sk[i * 2], 0, "start_server"))
-+			return sk[i * 2];
-+
-+		sk[i * 2 + 1] = connect_to_fd(sk[i * 2], 0);
-+		if (!ASSERT_GE(sk[i * 2 + 1], 0, "connect_to_fd"))
-+			return sk[i * 2 + 1];
-+
-+		err = connect_fd_to_fd(sk[i * 2], sk[i * 2 + 1], 0);
-+		if (!ASSERT_EQ(err, 0, "connect_fd_to_fd"))
-+			return err;
-+
-+		err = setsockopt(sk[i * 2], SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(int));
-+		if (!ASSERT_EQ(err, 0, "setsockopt(SO_RCVBUF)"))
-+			return err;
-+
-+		err = setsockopt(sk[i * 2 + 1], SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(int));
-+		if (!ASSERT_EQ(err, 0, "setsockopt(SO_RCVBUF)"))
-+			return err;
-+	}
-+
++	ctx->val.vu32 = pf->max_mac_per_vf;
 +	return 0;
 +}
 +
-+static int get_memory_allocated(struct test_case *test_case)
-+{
-+	long memory_allocated = -1;
-+	char *line = NULL;
-+	size_t unused;
-+	FILE *f;
-+
-+	f = fopen("/proc/net/protocols", "r");
-+	if (!ASSERT_OK_PTR(f, "fopen"))
-+		goto out;
-+
-+	while (getline(&line, &unused, f) != -1) {
-+		unsigned int unused_0;
-+		int unused_1;
-+		int ret;
-+
-+		if (strncmp(line, test_case->name, sizeof(test_case->name)))
-+			continue;
-+
-+		ret = sscanf(line + sizeof(test_case->name), "%4u %6d  %6ld",
-+			     &unused_0, &unused_1, &memory_allocated);
-+		ASSERT_EQ(ret, 3, "sscanf");
-+		break;
-+	}
-+
-+	ASSERT_NEQ(memory_allocated, -1, "get_memory_allocated");
-+
-+	free(line);
-+	fclose(f);
-+out:
-+	return memory_allocated;
-+}
-+
-+static int check_isolated(struct test_case *test_case, bool isolated)
-+{
-+	char buf[BUF_SINGLE] = {};
-+	long memory_allocated[2];
-+	int sk[NR_SOCKETS] = {};
-+	int err = -1, i, j;
-+
-+	memory_allocated[0] = get_memory_allocated(test_case);
-+	if (!ASSERT_GE(memory_allocated[0], 0, "memory_allocated[0]"))
-+		goto out;
-+
-+	err = test_case->create_sockets(test_case, sk, ARRAY_SIZE(sk));
-+	if (err)
-+		goto close;
-+
-+	/* Must allocate pages >= net.core.mem_pcpu_rsv */
-+	for (i = 0; i < ARRAY_SIZE(sk); i++) {
-+		for (j = 0; j < NR_SEND; j++) {
-+			int bytes = send(sk[i], buf, sizeof(buf), 0);
-+
-+			/* Avoid too noisy logs when something failed. */
-+			if (bytes != sizeof(buf))
-+				ASSERT_EQ(bytes, sizeof(buf), "send");
-+		}
-+	}
-+
-+	memory_allocated[1] = get_memory_allocated(test_case);
-+	if (!ASSERT_GE(memory_allocated[1], 0, "memory_allocated[1]"))
-+		goto close;
-+
-+	if (isolated) {
-+		ASSERT_LE(memory_allocated[1], memory_allocated[0] + 10, "isolated");
-+	} else {
-+		/* By default, net.core.mem_pcpu_rsv == 256 pages */
-+		ASSERT_GT(memory_allocated[1], memory_allocated[0] + 256, "not isolated");
-+	}
-+
-+close:
-+	for (i = 0; i < ARRAY_SIZE(sk); i++)
-+		close(sk[i]);
-+
-+	if (test_case->type == SOCK_DGRAM) {
-+		/* Give 150ms to let RCU destruct UDP sockets */
-+		kern_sync_rcu();
-+	}
-+out:
-+	return err;
-+}
-+
-+void run_test(struct test_case *test_case)
-+{
-+	struct sk_memcg *skel;
-+	int cgroup, err;
-+
-+	skel = sk_memcg__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	cgroup = test__join_cgroup("/sk_memcg");
-+	if (!ASSERT_GE(cgroup, 0, "join_cgroup"))
-+		goto destroy_skel;
-+
-+	err = check_isolated(test_case, false);
-+	if (!ASSERT_EQ(err, 0, "test_isolated(false)"))
-+		goto close_cgroup;
-+
-+	skel->links.sock_create = bpf_program__attach_cgroup(skel->progs.sock_create, cgroup);
-+	if (!ASSERT_OK_PTR(skel->links.sock_create, "attach_cgroup(sock_create)"))
-+		goto close_cgroup;
-+
-+	err = check_isolated(test_case, true);
-+	ASSERT_EQ(err, 0, "test_isolated(false)");
-+
-+close_cgroup:
-+	close(cgroup);
-+destroy_skel:
-+	sk_memcg__destroy(skel);
-+}
-+
-+struct test_case test_cases[] = {
-+	{
-+		.name = "TCP       ",
-+		.family = AF_INET,
-+		.type = SOCK_STREAM,
-+		.create_sockets = tcp_create_sockets,
-+	},
-+	{
-+		.name = "UDP       ",
-+		.family = AF_INET,
-+		.type = SOCK_DGRAM,
-+		.create_sockets = udp_create_sockets,
-+	},
-+	{
-+		.name = "TCPv6     ",
-+		.family = AF_INET6,
-+		.type = SOCK_STREAM,
-+		.create_sockets = tcp_create_sockets,
-+	},
-+	{
-+		.name = "UDPv6     ",
-+		.family = AF_INET6,
-+		.type = SOCK_DGRAM,
-+		.create_sockets = udp_create_sockets,
-+	},
++static const struct devlink_param i40e_dl_params[] = {
++	DEVLINK_PARAM_GENERIC(MAX_MAC_PER_VF,
++			      BIT(DEVLINK_PARAM_CMODE_RUNTIME),
++			      i40e_max_mac_per_vf_get,
++			      i40e_max_mac_per_vf_set,
++			      NULL),
 +};
 +
-+void serial_test_sk_memcg(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(test_cases); i++) {
-+		test__start_subtest(test_cases[i].name);
-+		run_test(&test_cases[i]);
-+	}
-+}
-diff --git a/tools/testing/selftests/bpf/progs/sk_memcg.c b/tools/testing/selftests/bpf/progs/sk_memcg.c
-new file mode 100644
-index 000000000000..a613c1deeede
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/sk_memcg.c
-@@ -0,0 +1,38 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2025 Google LLC */
-+
-+#include "bpf_tracing_net.h"
-+#include <bpf/bpf_helpers.h>
-+#include <errno.h>
-+
-+SEC("cgroup/sock_create")
-+int sock_create(struct bpf_sock *ctx)
-+{
-+	u32 flags = SK_BPF_MEMCG_SOCK_ISOLATED;
+ static void i40e_info_get_dsn(struct i40e_pf *pf, char *buf, size_t len)
+ {
+ 	u8 dsn[8];
+@@ -165,7 +194,18 @@ void i40e_free_pf(struct i40e_pf *pf)
+  **/
+ void i40e_devlink_register(struct i40e_pf *pf)
+ {
+-	devlink_register(priv_to_devlink(pf));
++	struct devlink *dl = priv_to_devlink(pf);
++	struct device *dev = &pf->pdev->dev;
 +	int err;
 +
-+	err = bpf_setsockopt(ctx, SOL_SOCKET, SK_BPF_MEMCG_FLAGS,
-+			     &flags, sizeof(flags));
++	err = devlink_params_register(dl, i40e_dl_params,
++				      ARRAY_SIZE(i40e_dl_params));
 +	if (err)
-+		goto err;
++		dev_err(dev,
++			"devlink params register failed with error %d", err);
 +
-+	flags = 0;
++	devlink_register(dl);
 +
-+	err = bpf_getsockopt(ctx, SOL_SOCKET, SK_BPF_MEMCG_FLAGS,
-+			     &flags, sizeof(flags));
-+	if (err)
-+		goto err;
+ }
+ 
+ /**
+@@ -176,7 +216,11 @@ void i40e_devlink_register(struct i40e_pf *pf)
+  **/
+ void i40e_devlink_unregister(struct i40e_pf *pf)
+ {
+-	devlink_unregister(priv_to_devlink(pf));
++	struct devlink *dl = priv_to_devlink(pf);
 +
-+	if (flags != SK_BPF_MEMCG_SOCK_ISOLATED) {
-+		err = -EINVAL;
-+		goto err;
++	devlink_unregister(dl);
++	devlink_params_unregister(dl, i40e_dl_params,
++				  ARRAY_SIZE(i40e_dl_params));
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 081a4526a2f0..e6d90d51221b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2935,19 +2935,26 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 		if (!f)
+ 			++mac_add_cnt;
+ 	}
+-
+-	/* If this VF is not privileged, then we can't add more than a limited
+-	 * number of addresses.
++	/* Determine the maximum number of MAC addresses this VF may use.
++	 *
++	 * - For untrusted VFs: use a fixed small limit.
++	 *
++	 * - For trusted VFs: limit is calculated by dividing total MAC
++	 *  filter pool across all VFs/ports.
+ 	 *
+-	 * If this VF is trusted, it can use more resources than untrusted.
+-	 * However to ensure that every trusted VF has appropriate number of
+-	 * resources, divide whole pool of resources per port and then across
+-	 * all VFs.
++	 * - User can override this by devlink param "max_mac_per_vf".
++	 *   If set its value is used as a strict cap.
++	 *   Note:
++	 *    even when overridden, this is a theoretical maximum; hardware
++	 *    may reject additional MACs if the absolute HW limit is reached.
+ 	 */
+-	if (!vf_trusted)
++	if (!vf_trusted) {
+ 		mac_add_max = I40E_VC_MAX_MAC_ADDR_PER_VF;
+-	else
++	} else {
+ 		mac_add_max = I40E_VC_MAX_MACVLAN_PER_TRUSTED_VF(pf->num_alloc_vfs, hw->num_ports);
++		if (pf->max_mac_per_vf > 0)
++			mac_add_max = pf->max_mac_per_vf;
 +	}
-+
-+	return 1;
-+
-+err:
-+	bpf_set_retval(err);
-+	return 0;
-+}
-+
-+char LICENSE[] SEC("license") = "GPL";
+ 
+ 	/* VF can replace all its filters in one step, in this case mac_add_max
+ 	 * will be added as active and another mac_add_max will be in
+@@ -2961,7 +2968,8 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 			return -EPERM;
+ 		} else {
+ 			dev_err(&pf->pdev->dev,
+-				"Cannot add more MAC addresses, trusted VF exhausted it's resources\n");
++				"Cannot add more MAC addresses: trusted VF reached its maximum allowed limit (%d)\n",
++				mac_add_max);
+ 			return -EPERM;
+ 		}
+ 	}
 -- 
-2.51.0.338.gd7d06c2dae-goog
+2.50.1
 
