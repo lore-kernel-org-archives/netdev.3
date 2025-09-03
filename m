@@ -1,90 +1,120 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from beige.elm.relay.mailchannels.net (beige.elm.relay.mailchannels.net [23.83.212.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D35135085D
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 17:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756922218; cv=none; b=mXpUrWLEC8BcUc0cBzViEQROM3PGvNZQCmysPAQiJWBt8N+SlXFLrn8JVF8c37tYImX/cKSRHencSui6Egdgt9AIis+bFMh7cuH3/e/H9REhOWodZ0/Se4YGdzusxXJPT8BNJeHDJMb60a/ZIjYNzGSvXm5x4RGXEnYCfZapIvw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756922218; c=relaxed/simple;
-	bh=F6bNep8D109sbyXZNHXJabnlojF0qG38hM9vy4g/PeQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WkolNhWIkY2P5QuT3/R2CTVzWlzrgq7ibCSLXsoKhMpTH1mAeARFtT4FByIrruUoUs0WdegZFEVBFpcylgwRGhnzxoWCw0t2jYJGwUPg/X7vD4s6eIwtZAiqKur6VZOx16BRmMSnUEkMbV7A8VmTXWPFHyeMKiS3Y89dGJod8B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KBvdRfup; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jeroendb.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00EF350D7E;
+	Wed,  3 Sep 2025 17:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756922233; cv=pass; b=UDwRyiwDXMDRtR/gXIHZsuZgxn5W22BUUzErMwelVq5dXDP0B8jk+fNFAgwRHjoRKb9AtgJx44m096vAT0BAg11Kr9jcsUrdW4Hg9sArJ24oAiJgtrvsgjCU+kLEa0ymWy4XrvyWkQsfVsMjXLSbvnscleksnoKHUJeOG1JoT8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756922233; c=relaxed/simple;
+	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VFzqAzKLJ/Q0au05QAGYnlwIbbz0SkraddXDUbLOj61Ge3AgJrvGArSQSOEX4jdPYtPDtLKMABV2fbXaghnIh3zQtYudF7KOut5SbeWOpCB2WR5RMUqIQRwqNhKRB6mqQy9+5PpQR1lUluBK+JFReIjyyDrSf/ucjsu6iyp9U44=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=lt5XZwrz; arc=pass smtp.client-ip=23.83.212.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KBvdRfup"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-244581953b8so1833235ad.2
-        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 10:56:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756922216; x=1757527016; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+3ojQkminMxLTqsNJsCs0CXcsRfJBTxhwZ1SYZQ52IQ=;
-        b=KBvdRfup5cCKmz76t2kEKIEQa6oqjrwpBvQNEpBO2CTU4l5NLi3jSc20SplXu8E7TW
-         mkzrg27z8OHAq36YhdT/R/Y4Ur62RuCMcZSxwWPOceyjpGm8AQRhAC1ccGiGdC/ZfQru
-         Lvm0qJ34TEjvOjL0iqTdmA8Monvu6pYwZqwY44vWOMpsyFU7qH161dMsQpcuMppcfdGX
-         x97w066cH/UotYrje9cXFXrJ2ALlgpD1KtNilK64OS36n4j9RG2YLQmm9C/HVARRX+ms
-         3E/9XtHKoAAmtQO3iQGo+B2OolJZM1WJhOdd2KJMDQBwy6Q+qPW/HQJkG9pSt8OKTe1I
-         q5XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756922216; x=1757527016;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+3ojQkminMxLTqsNJsCs0CXcsRfJBTxhwZ1SYZQ52IQ=;
-        b=uZEuky1bDtlp0vitMGgEtGNzjpqK62YaPUg7hUelw7/gKGGNqH1nO0tHfYgIl1Te6X
-         0j9pIsq9TwMuNP3yaqsAiaSZXWbPf1aHHIS2lM+hPkNB1eWpYhcArk8XkVzgwljhPZi0
-         DmqzdFfhqjfqlnqdYNlRUissmhtmlSNOwNAq4AEbY9PHQE8Lh78eAfrHmxVEjTcHIQYL
-         IGhC87AE7IRkvVTi/z3Uq0cd53JqgVjMgJzCIx7X6WMi27pSyYgOuV8P9k9DjXrfYD9K
-         K5g1qk22wTLNyWoO/GHIdPlWGVWXsnB4Wf9fT32HsklXfpvwJn4SrWgJiOV8ekJIjHmn
-         mXIw==
-X-Gm-Message-State: AOJu0YwK8C+uarqIW6p15ulvyIeOL6/B1s3eUBn/EDIpcAIj1whfqThM
-	dFkKuQLk0Jy0q5Jd3zjWpl1wUsW4QO63uq6YNDThCJQwGUNAW3NpGoAbhJl2foHk+Z1OSZzgUms
-	gBQzuPgkq5L8KkcZ8GzsrgHU+DCREqroBr0yzbtUgdQSOvm9fSw2fToPhPBJtPVtyds4fimdaXa
-	nvD1i2mc7dHNvnfWLMLqjk5K+4wGjiRF4WFGbgE7NyWl1fj1c=
-X-Google-Smtp-Source: AGHT+IHKU8Lr3G8r8m3yqV9vYnXIOx6YdOAJ970dcfiLKzKX+vMwFQ+J0DzQAEW8/HMDNGBNSswpLru05iy/ng==
-X-Received: from plck21.prod.google.com ([2002:a17:902:f295:b0:244:6aa2:d387])
- (user=jeroendb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:e5c5:b0:24c:1a84:f73e with SMTP id d9443c01a7336-24c1a84f94cmr62207225ad.60.1756922216373;
- Wed, 03 Sep 2025 10:56:56 -0700 (PDT)
-Date: Wed,  3 Sep 2025 10:56:49 -0700
+	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="lt5XZwrz"
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 6B452849FF;
+	Wed,  3 Sep 2025 17:20:37 +0000 (UTC)
+Received: from pdx1-sub0-mail-a267.dreamhost.com (100-102-90-158.trex-nlb.outbound.svc.cluster.local [100.102.90.158])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 038C5838E9;
+	Wed,  3 Sep 2025 17:20:36 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1756920036; a=rsa-sha256;
+	cv=none;
+	b=5m2Yf51ZG44B7BwxMBEzC2KfBeQJIvORDYa5tpwY9P82Xo4tNUIPzZGg/DvfCUNmYGDpIN
+	5y23oNSsnrIh47dL+0/l0b+QFKIkE5qna98c8lWKMFqYyfPgClwfwatF4PZjXqrflIIs2C
+	EQQVcBs2v79HDMZ3fVqG8s2E0hOKeyIheVFoMvww0dCAQWJD1/IS+iM01Oz0qFVLewhcii
+	oGUN6Z/OU34QiLxzqWUXigsOZZ5HkPiNjLVkw7zC8eOQhQ5010j7u5HZKIAuh/X89v2nnS
+	ktGy/LMn6T3GLHwuUdNzuJm25m0YI832dKJD7+fjSrdONhU03uO9CEQF28UzLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1756920036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
+	b=sux4pWIe4VamQiwbwsMxKAPxHRM/L7nxjoRaRHyywsWj07in5+/sewXq5+1O0Hx6FOS0VT
+	0GopkysBxTcL1UKc/8VaUsVlhdqD5sc+zgkpu3S7fjoOFpToec+cavyMn2FWyuix87+jW/
+	XPiDBXYoUhrgkG9TbdtWxTwchcbFP9t62+QJk8Qcx6Zj7H1+bb2Oed87enzW2oe5diq0Yz
+	C8cJkfTdQ4mH4l0sMP5IwUtA93G9fv99YVbP9ps/VQ+4MwUm7ho9dhqhh3PvWDCphs3m4R
+	qKGRFPNgYAr4/ibPI3e3+jQejqUlHeCKW9B3tR1FONeHOIl2578gOXDkVNkvaw==
+ARC-Authentication-Results: i=1;
+	rspamd-8b9589799-lbhhm;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Towering-Towering: 482a2d8960fe1f3f_1756920037295_1615045819
+X-MC-Loop-Signature: 1756920037295:2098147381
+X-MC-Ingress-Time: 1756920037295
+Received: from pdx1-sub0-mail-a267.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.102.90.158 (trex/7.1.3);
+	Wed, 03 Sep 2025 17:20:37 +0000
+Received: from offworld (syn-076-167-199-067.res.spectrum.com [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a267.dreamhost.com (Postfix) with ESMTPSA id 4cH8Wl0Sk8z32;
+	Wed,  3 Sep 2025 10:20:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1756920035;
+	bh=xWaMQ7dVtqJM1hwK59xQ7uLpqa+t9EL4ZGNQx53GTxI=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=lt5XZwrzOijlWhs0vkrGLHtk40d4+o6Pbpay4c+fth8lRnZrp6uhHoUxO75WQRWt/
+	 w2OJEHUfnEpYv1qHvtYnfy13XlO0/BTP8Gn6bqwIMziEjVOuQLMAlQKxGzw3bN4cxp
+	 odA8lEWEBteOWj9hYwaxH+DW2NTTPcrs+HvvhkrypvpmqvaQWD5KEDmkXedoegCDXY
+	 fk9NJktdjAUAsRoF+LTYqpas9V0fmI+w04N6uvbk6gSspvY9DWY+VRWiS7QB38WXEQ
+	 IBBSN05bQThGSsOzcqcyDLgjU/kPG+RHjvKRik8QaOxK5mEMvLDMWZmuwiaUUZW6/k
+	 wOl7kq5n49DVA==
+Date: Wed, 3 Sep 2025 10:20:32 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: alejandro.lucero-palau@amd.com
+Cc: linux-cxl@vger.kernel.org, netdev@vger.kernel.org,
+	dan.j.williams@intel.com, edward.cree@amd.com, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+	dave.jiang@intel.com, Alejandro Lucero <alucerop@amd.com>,
+	Zhi Wang <zhiw@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ben Cheatham <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v17 15/22] cxl: Make region type based on endpoint type
+Message-ID: <20250903172032.vfffqqjnwnzbl2id@offworld>
+References: <20250624141355.269056-1-alejandro.lucero-palau@amd.com>
+ <20250624141355.269056-16-alejandro.lucero-palau@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.355.g5224444f11-goog
-Message-ID: <20250903175649.23246-1-jeroendb@google.com>
-Subject: [PATCH net] gve: update MAINTAINERS
-From: Jeroen de Borst <jeroendb@google.com>
-To: netdev@vger.kernel.org
-Cc: hramamurthy@google.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, willemb@google.com, pabeni@redhat.com, 
-	Jeroen de Borst <jeroendb@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250624141355.269056-16-alejandro.lucero-palau@amd.com>
+User-Agent: NeoMutt/20220429
 
-Jeroen is leaving Google and Josh is taking his place as a maintainer.
+On Tue, 24 Jun 2025, alejandro.lucero-palau@amd.com wrote:
 
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>From: Alejandro Lucero <alucerop@amd.com>
+>
+>Current code is expecting Type3 or CXL_DECODER_HOSTONLYMEM devices only.
+>Support for Type2 implies region type needs to be based on the endpoint
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1819c477eee3..c6f470250f6a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10388,7 +10388,7 @@ S:	Maintained
- F:	drivers/input/touchscreen/goodix*
- 
- GOOGLE ETHERNET DRIVERS
--M:	Jeroen de Borst <jeroendb@google.com>
-+M:	Joshua Washington <joshwash@google.com>
- M:	Harshitha Ramamurthy <hramamurthy@google.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
--- 
-2.51.0.355.g5224444f11-goog
+s/Type2/HDM-D[B]
 
+>type instead.
+>
+>Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>Reviewed-by: Zhi Wang <zhiw@nvidia.com>
+>Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+>Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
+
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
