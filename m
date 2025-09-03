@@ -1,188 +1,177 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4BE36B;
-	Wed,  3 Sep 2025 16:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844C92D1F44;
+	Wed,  3 Sep 2025 16:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756916195; cv=none; b=pHgAAO+RqoxpJN3wbng8K1gLFKSEofW5WrQH3jPkggHBJDZzVnLSYqXPvo9YSIsKTIpN72qDaOMtqTB9spsqYtxrQ1Rblj68B6O/NPgLrlblKYnHiM29W7jEaK6XL3kU2VWQBBSfsbqF9NOvyiUN3tAuIKesiT6/nhYo2PWiRQU=
+	t=1756916266; cv=none; b=irtgFh7ZxW/9V2+yqtpA0MqpEirR5JbMYytAle964QmKCIWMyS92y9qJmQ5HvTmsGybMp0yf3Em7KZ1w6IXQ02/nqw8YH9DLRfu563NtELyazDOK4/nBxXQh9b9ZLwQ3ez56apDSlzWTSGGYRzAFgYCu0D0hYrIpQgjGuESjPnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756916195; c=relaxed/simple;
-	bh=QrZ1xBXZfnmeUYwuf4tYL7a2LZz7hVimzmzBV48W7SM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twE1fmRB/OY8T2Udgij3MIUM6a1sbfpw7v1AKk3yzHWhx8Axl/13uOdRc7eIcPN9s8YIvaqEArfyo8xb+mdkiwqtpq804xYJC4VqSm94AtkvROlYEj+MA74U2FZ0L3NUZ0mQBqVKV6COL1lR3r8Eh10HJDLhSQnh7iC8UaP66So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U0ZcdiMv; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1756916266; c=relaxed/simple;
+	bh=40lehCKBugHinswqoHnpQqnJORE8caA8xtKHTMajjy4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kY+yjRRGtGmtq/eju3ADsCfBgiH6W3gs/cjtBbit368IVnj8T3ttVm2bJWhadJPuK+G/p7w5d9iWuB3uU0O+oBfekQ96J6+bJQ72x0jFk81zdoCvQG6tZ8sUN8PY9UmlQIprFqsxQJWTH4ZxCx3g828Ijadq0QeMiwSxSujic64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KEu0qlNq; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U0ZcdiMv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756916193; x=1788452193;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QrZ1xBXZfnmeUYwuf4tYL7a2LZz7hVimzmzBV48W7SM=;
-  b=U0ZcdiMvUSV+U0mscu9PbmxHDerTEW3igfgQ+9q2pWBuDybMyjj32hDK
-   uVuqwiXxyKZJajzMZXvaCrOzHO7RKg0VPym2KI/5inddZ/98PvPUJCS8Z
-   9500UxWMm2o26oiq9+gx+gspcnRIc18wwUjKgqqkBw8REJUXKUeJ65WZU
-   1STxwPHh2L66YRTDPI7Hiv+Q7omex/xUn0wwcRt0gvMNdBgLtHOjbNtQ8
-   b16LPQLtzO8x6Z8sahqOXTkCv3D71AvepA8d7obseaqpHy9QUGvAAXKr6
-   mZ7/erHscACTZNlbEixjXQugQ9kJf6q1ZDr4UywcLxGJfSPHAeaWCo8gH
-   w==;
-X-CSE-ConnectionGUID: vBCy4yW6RQSPPzbSUcs+Rg==
-X-CSE-MsgGUID: y3mq2aQNTjSopV0jFzOEAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11542"; a="76839620"
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
-   d="scan'208";a="76839620"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2025 09:16:31 -0700
-X-CSE-ConnectionGUID: h2nnzHojS7WwighpkOdYcQ==
-X-CSE-MsgGUID: L3aVKnAYRX+fBoJTiDYFkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,236,1751266800"; 
-   d="scan'208";a="195279702"
-Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 03 Sep 2025 09:16:25 -0700
-Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1utq8g-00047n-23;
-	Wed, 03 Sep 2025 16:15:24 +0000
-Date: Thu, 4 Sep 2025 00:14:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: MD Danish Anwar <danishanwar@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Xin Guo <guoxin09@huawei.com>, Lei Wei <quic_leiwei@quicinc.com>,
-	Lee Trager <lee@trager.us>, Michael Ellerman <mpe@ellerman.id.au>,
-	Fan Gong <gongfan1@huawei.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
-	Suman Anna <s-anna@ti.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	Tero Kristo <kristo@kernel.org>, devicetree@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KEu0qlNq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=9cJnPOGanCbByCRx0wy1KMAjtkHYfjJnIkC0w2nhhAk=;
+	b=KEu0qlNqxOlS3L2qYTIsYAizqOC4i+XrOGC8kP+hgjPnbX0InWFzoFgyCe+nKQ
+	oIQAav3goZqhyrVOsdiB69UAm24fzm9kxaaQ8lIQ5EmNjQ/pybulTzEQqhPPydRT
+	5LH2QZqKK3IdRdy6+VTYfw3mRk2kGc4vN4IHtZyKRPips=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wAXSCYFarhoDW05GQ--.9058S2;
+	Thu, 04 Sep 2025 00:17:10 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: kerneljasonxing@gmail.com,
+	willemdebruijn.kernel@gmail.com,
+	edumazet@google.com,
+	ferenc@fejes.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 4/8] net: rpmsg-eth: Add basic rpmsg skeleton
-Message-ID: <202509032343.1y6JMbSq-lkp@intel.com>
-References: <20250902090746.3221225-5-danishanwar@ti.com>
+Subject: Re: [PATCH net-next v10 2/2] net: af_packet: Use hrtimer to do the retire operation
+Date: Thu,  4 Sep 2025 00:17:09 +0800
+Message-Id: <20250903161709.563847-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250902090746.3221225-5-danishanwar@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAXSCYFarhoDW05GQ--.9058S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXF1fAr1fuFWDJw1kGF13twb_yoWrWr4UpF
+	WUKa4xGr4kJanFgr1xZws7Ar1Sqw13JFZ8Jrs3X3y5ArWDWFyfJFy29FyYvFWSqF4kWFn2
+	vr48GrW5AFs3A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U-18PUUUUU=
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/1tbibge9Cmi4Y8iRZQAAsR
 
-Hi MD,
+On Tue, Sep 2, 2025 at 23:43 +0800 Jason Xing <kerneljasonxing@gmail.com> wrote:
 
-kernel test robot noticed the following build errors:
+> >         p1->max_frame_len = p1->kblk_size - BLK_PLUS_PRIV(p1->blk_sizeof_priv);
+> >         prb_init_ft_ops(p1, req_u);
+> > -       prb_setup_retire_blk_timer(po);
+> > +       hrtimer_setup(&p1->retire_blk_timer, prb_retire_rx_blk_timer_expired,
+> > +                     CLOCK_MONOTONIC, HRTIMER_MODE_REL_SOFT);
+> > +       hrtimer_start(&p1->retire_blk_timer, p1->interval_ktime,
+> > +                     HRTIMER_MODE_REL_SOFT);
+> 
+> You expect to see it start at the setsockopt phase? Even if it's far
+> from the real use of recv at the moment.
+> 
+> >         prb_open_block(p1, pbd);
+> >  }
 
-[auto build test ERROR on 2fd4161d0d2547650d9559d57fc67b4e0a26a9e3]
+Before applying this patch, init_prb_bdqc also start the timer by mod_timer:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/MD-Danish-Anwar/dt-bindings-net-ti-rpmsg-eth-Add-DT-binding-for-RPMSG-ETH/20250902-171411
-base:   2fd4161d0d2547650d9559d57fc67b4e0a26a9e3
-patch link:    https://lore.kernel.org/r/20250902090746.3221225-5-danishanwar%40ti.com
-patch subject: [PATCH net-next v2 4/8] net: rpmsg-eth: Add basic rpmsg skeleton
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20250903/202509032343.1y6JMbSq-lkp@intel.com/config)
-compiler: gcc-13 (Debian 13.3.0-16) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250903/202509032343.1y6JMbSq-lkp@intel.com/reproduce)
+init_prb_bdqc
+  prb_open_block
+    _prb_refresh_rx_retire_blk_timer
+      mod_timer
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509032343.1y6JMbSq-lkp@intel.com/
-
-All error/warnings (new ones prefixed by >>):
-
-   drivers/net/ethernet/rpmsg_eth.c: In function 'rpmsg_eth_get_shm_info':
->> drivers/net/ethernet/rpmsg_eth.c:88:29: error: implicit declaration of function 'devm_ioremap' [-Werror=implicit-function-declaration]
-      88 |         common->port->shm = devm_ioremap(common->dev, rmem->base, rmem->size);
-         |                             ^~~~~~~~~~~~
->> drivers/net/ethernet/rpmsg_eth.c:88:27: warning: assignment to 'void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-      88 |         common->port->shm = devm_ioremap(common->dev, rmem->base, rmem->size);
-         |                           ^
-   cc1: some warnings being treated as errors
+So the current timer's start time is almost the same as it was before applying
+the patch.
 
 
-vim +/devm_ioremap +88 drivers/net/ethernet/rpmsg_eth.c
+> > @@ -917,7 +873,6 @@ static void prb_open_block(struct tpacket_kbdq_core *pkc1,
+> >         pkc1->pkblk_end = pkc1->pkblk_start + pkc1->kblk_size;
+> >
+> >         prb_thaw_queue(pkc1);
+> > -       _prb_refresh_rx_retire_blk_timer(pkc1);
+> 
+> Could you say more on why you remove this here and only reset/update
+> the expiry time in the timer handler? Probably I missed something
+> appearing in the previous long discussion.
+> 
+> >
+> >         smp_wmb();
+> >  }
 
-    34	
-    35	/**
-    36	 * rpmsg_eth_get_shm_info - Retrieve shared memory region for RPMsg Ethernet
-    37	 * @common: Pointer to rpmsg_eth_common structure
-    38	 *
-    39	 * This function locates and maps the reserved memory region for the RPMsg
-    40	 * Ethernet device by traversing the device tree hierarchy. It first identifies
-    41	 * the associated remote processor (rproc), then locates the "rpmsg-eth" child
-    42	 * node within the rproc's device tree node, and finally retrieves the
-    43	 * "memory-region" phandle that points to the reserved memory region.
-    44	 * Once found, the shared memory region is mapped into the
-    45	 * kernel's virtual address space using devm_ioremap()
-    46	 *
-    47	 * Return: 0 on success, negative error code on failure.
-    48	 */
-    49	static int rpmsg_eth_get_shm_info(struct rpmsg_eth_common *common)
-    50	{
-    51		struct device_node *np, *rpmsg_eth_node, *rmem_np;
-    52		struct reserved_mem *rmem;
-    53		struct rproc *rproc;
-    54	
-    55		/* Get the remote processor associated with this device */
-    56		rproc = rproc_get_by_child(&common->rpdev->dev);
-    57		if (!rproc) {
-    58			dev_err(common->dev, "rpmsg eth device not child of rproc\n");
-    59			return -EINVAL;
-    60		}
-    61	
-    62		/* Get the device node from rproc or its parent */
-    63		np = rproc->dev.of_node ?: (rproc->dev.parent ? rproc->dev.parent->of_node : NULL);
-    64		if (!np) {
-    65			dev_err(common->dev, "Cannot find rproc device node\n");
-    66			return -ENODEV;
-    67		}
-    68	
-    69		/* Get the rpmsg-eth child node */
-    70		rpmsg_eth_node = of_get_child_by_name(np, "rpmsg-eth");
-    71		if (!rpmsg_eth_node) {
-    72			dev_err(common->dev, "Couldn't get rpmsg-eth node from np\n");
-    73			return -ENODEV;
-    74		}
-    75	
-    76		/* Parse the memory-region phandle */
-    77		rmem_np = of_parse_phandle(rpmsg_eth_node, "memory-region", 0);
-    78		of_node_put(rpmsg_eth_node);
-    79		if (!rmem_np)
-    80			return -EINVAL;
-    81	
-    82		/* Lookup the reserved memory region */
-    83		rmem = of_reserved_mem_lookup(rmem_np);
-    84		of_node_put(rmem_np);
-    85		if (!rmem)
-    86			return -EINVAL;
-    87	
-  > 88		common->port->shm = devm_ioremap(common->dev, rmem->base, rmem->size);
-    89		if (IS_ERR(common->port->shm))
-    90			return PTR_ERR(common->port->shm);
-    91	
-    92		common->port->buf_size = rmem->size;
-    93	
-    94		return 0;
-    95	}
-    96	
+In the description of [PATCH net-next v10 0/2] net: af_packet: optimize retire operation:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Changes in v7:
+  When the callback return, without sk_buff_head lock protection, __run_hrtimer will
+  enqueue the timer if return HRTIMER_RESTART. Setting the hrtimer expires while
+  enqueuing a timer may cause chaos in the hrtimer red-black tree.
+
+Neither hrtimer_set_expires nor hrtimer_forward_now is allowed when the hrtimer has
+already been enqueued. Therefore, the only place where the hrtimer timeout can be set is
+within the callback, at which point the hrtimer is in a non-enqueued state and can have
+its timeout set.
+
+
+Changes in v8:
+  Simplify the logic related to setting timeout, as suggestd by Willem de Bruijn.
+  Currently timer callback just restarts itself unconditionally, so delete the
+ 'out:' label, do not forward hrtimer in prb_open_block, call hrtimer_forward_now
+  directly and always return HRTIMER_RESTART. The only special case is when
+  prb_open_block is called from tpacket_rcv. That would set the timeout further
+  into the future than the already queued timer. An earlier timeout is not
+  problematic. No need to add complexity to avoid that.
+
+This paragraph explains that if the block's retire timeout is not adjusted within
+the timer callback, it will only result in an earlier-than-expected retire timeout,
+which is not problematic. Therefore, it is unnecessary to increase the logical complexity
+to ensure block retire timeout occurs as expected each time.
+
+
+> The whole structure needs a new organization?
+> 
+> Before:
+>         /* size: 152, cachelines: 3, members: 22 */
+>         /* sum members: 144, holes: 2, sum holes: 8 */
+>         /* paddings: 1, sum paddings: 4 */
+>         /* last cacheline: 24 bytes */
+> After:
+>         /* size: 176, cachelines: 3, members: 19 */
+>         /* sum members: 163, holes: 4, sum holes: 13 */
+>         /* paddings: 1, sum paddings: 4 */
+>         /* forced alignments: 1, forced holes: 1, sum forced holes: 6 */
+>         /* last cacheline: 48 bytes */
+
+What about the following organization:?
+
+/* kbdq - kernel block descriptor queue */
+struct tpacket_kbdq_core {
+	struct pgv	*pkbdq;
+	unsigned int	feature_req_word;
+	unsigned int	hdrlen;
+	unsigned short	kactive_blk_num;
+	unsigned short	blk_sizeof_priv;
+	unsigned char	reset_pending_on_curr_blk;
+
+	char		*pkblk_start;
+	char		*pkblk_end;
+	int		kblk_size;
+	unsigned int	max_frame_len;
+	unsigned int	knum_blocks;
+	char		*prev;
+	char		*nxt_offset;
+
+	unsigned short  version;
+	
+	uint64_t	knxt_seq_num;
+	struct sk_buff	*skb;
+
+	rwlock_t	blk_fill_in_prog_lock;
+
+	/* timer to retire an outstanding block */
+	struct hrtimer  retire_blk_timer;
+
+	/* Default is set to 8ms */
+#define DEFAULT_PRB_RETIRE_TOV	(8)
+
+	ktime_t		interval_ktime;
+};
+
+
+
+Thanks
+Xin Zhao
+
