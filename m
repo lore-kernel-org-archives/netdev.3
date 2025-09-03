@@ -1,80 +1,48 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449E22F28F0;
-	Wed,  3 Sep 2025 09:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1952EB5BD;
+	Wed,  3 Sep 2025 09:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756891563; cv=none; b=p85YUkUTfaS4tixXnshzvUaK4BxNzHj4If68h6Kml4ze1TtxOAcfyNBt6O+1oOdEt9z98DaRtzNaOAlSeuMn7eGAQAakP3P+DvilcIxNNgcUXCq70FF2tQW0xtUmmtsNPeAYVGG/WGNBIf7yNPZc/h7/KGwvNmxK5+bIVZ6jVUo=
+	t=1756891678; cv=none; b=e7EzWgq2MNihAEdzbpe7OnWjfNha5VsEwhYRFCDzTyuRTvwPsm2oa4jGgiMHhpLqP6NDdd8sWnZKZo207whlrKGBsLiqNEo8tTNpz9LXNLfX8bUUc2ME/S+KdRn3MPKvJ8XEBUYs0GhzILeBTd0qoyaPV+DLrsRdMgZ8KyV1h48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756891563; c=relaxed/simple;
-	bh=g+o3S8dQKE3xX5uzFSIIJknkJOesvFWLGaouxBM94KA=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=Rd9fICQGeX8zqVF6j32YvmJyLt0kZoC3y7Ib7+uBGe26GFE58ozScXaILKu7oPo4PhKYir/h88KQKd2WOYa8sPz6FJAWlF5XfbORMqXeqNiNYjV/fFzeOU8ta5MFwtvZOZ3GAQLXF515AbQf2O9Juf9fwwIi1SY7KbqrrHfm5BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q7euBEf8; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1756891678; c=relaxed/simple;
+	bh=zoygvyrvbpRQP0lvFaQr5ZvBPQrrVcLHonREwQLABLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O1fxwRSilvqOszdpkL1hYBIDVSkQNt+pzpB130KhXKmhpap8ryjjiVrm1WlqssNg2Ki9XN0zo1z3vwlszlgRjzXJykI/kqyqv8Az5FE44PUVlVhCDEpb+0zFv8m6Z+XFd0JNF1BDthpljebKmYhWAln1aKPBjuCKFm8I3O/FdL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aaJiHxMm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q7euBEf8"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3df35a67434so185241f8f.3;
-        Wed, 03 Sep 2025 02:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756891559; x=1757496359; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g+o3S8dQKE3xX5uzFSIIJknkJOesvFWLGaouxBM94KA=;
-        b=Q7euBEf8SnVIwaoe6GJmDVcBqD4mf6iM25gx9+CK+0mV1ZocHEWm28j8oGQvC85jve
-         7mXxSkb8a4R4r8q+KAYOsu58iQf2ya+5tcStsME4JLjbnD4WTZWPWllVeBmXqGlqIR7c
-         AB+6NTr7TLez4nj/Go5uxoJqUOIGdoWa9dRfeHcgzLk28LnWhbgZe/sJM/RMBSjYbX+/
-         1TE6ML3QK5YqYeWJQQAKyneN3c/cjEGV2rWYmm/LCfBaDJ/ciVNHOW4/J8hFpo69VpdW
-         EA80brhL5XCG69k/QaoOYFCGvr+W7Va4FkRp72MEA88v1knfU5/FDzRjJb3m/NcKQcb0
-         9jWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756891559; x=1757496359;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g+o3S8dQKE3xX5uzFSIIJknkJOesvFWLGaouxBM94KA=;
-        b=Mv3vXf1Y6yOlItHQc/czoeHA10ekkidNoL6mDihU44Gr4s1Ji0ptxvGDRU18fbrS88
-         CBRJlAphfIcqSKHvzcn4FWtpoGZ3axrLsSBsOZU+VMIXvQ8N8NkbLhYJvJPAW+frQCdq
-         IgnpHcVPUTd0W/Nzw/04b2VdmE1Hp43aHEGQ7RZ3KPDcHpCOF5EpmS/0anj9BuVECbdU
-         Y9C6Wx1/mVCtr8Npnbg2XudbiZ06K9/Xb6d1S1+UYUpXLMr6VeuHBxSANgMiOocCEzqb
-         W2w83nTkgA/NWLKkRHcEvW8TKOTTyDJHyvvQ1Hbj4oEUdKGfJ8eOA1lkFWWCOzkYE3/p
-         JrwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRHTwxcGJjwxS7Njb0FO9TqhC5w20l92vNtjePXN+P2cnpqmbdU6ZeqWge1jGENqTd0mFtL+V2@vger.kernel.org, AJvYcCVSkBI8YHSDcFS9cCbxvUoghWVOFSP88v1iPSPNFR7FJHwqrdLdkh+I7fv8izAb9EoILOvHzEgYNoqw8s4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpioAtRwKztVJNIrtttRU3kip3F0E4IYgv7brUSD+FV4vdT6zc
-	Cp9SRLZalSqw/0aIBcFNOImn/SZMinI+S4uM79nQpDD8RTdOBllL9H1MQa15L9ZK
-X-Gm-Gg: ASbGncuZgQjNk3yuZ5Ad7vmI8XMLHfyp6DoM5bhn/n2sw4tGniufaKUSozBT5jvI6vz
-	5SFcWCo6W+HSIuBzc7KEDaJSArdSifcJYnGeMWY1GcTTlOGGVKyvgXrL16o1a0b/Nvlu9asA+6X
-	d+KUq13iapNc/LlebFvgrkXLN9NE9oxRrth02leA4x1zXJUzFi/6AICEWSi+CIUng6vXb2mvaS8
-	Cn5lWnUuFUMVagqjjKW64cK5uECghiKlh7tMUIfyYNQfZW803owe/7q8gVhe4+YAaZKAQ6GMGyu
-	tl8aOhqkYQNyq3r8KOTeNC8BqwtxxifOKHK01y6/bOCq8yRFUZhccyvBgHahdtmUDmvlCKH4AJX
-	8F771LjwhciyGLETsdOEyEV2j8xpoklyCsY35wT7VAls+bj9BhMrYr+oo424izQ==
-X-Google-Smtp-Source: AGHT+IGQiBSCmiqTBxizTmCxQcY84vqkIOOlgW/eXh130LIO11F8u1GDeRiPCtGygHHVmt+1Cdqrvg==
-X-Received: by 2002:a05:6000:402b:b0:3db:c7aa:2c19 with SMTP id ffacd0b85a97d-3dbc7aa2dfbmr2691721f8f.26.1756891559107;
-        Wed, 03 Sep 2025 02:25:59 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:599c:af76:2d34:5ced])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e7d23b7sm231360845e9.1.2025.09.03.02.25.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 02:25:58 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
- <ast@fiberby.net>
-Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Jacob Keller
- <jacob.e.keller@intel.com>,  "Matthieu Baerts (NGI0)"
- <matttbe@kernel.org>,  David Ahern <dsahern@kernel.org>,  Chuck Lever
- <chuck.lever@oracle.com>,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 3/3] genetlink: fix typo in comment
-In-Reply-To: <20250902154640.759815-4-ast@fiberby.net>
-Date: Wed, 03 Sep 2025 09:52:38 +0100
-Message-ID: <m2wm6fzzmx.fsf@gmail.com>
-References: <20250902154640.759815-1-ast@fiberby.net>
-	<20250902154640.759815-4-ast@fiberby.net>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aaJiHxMm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094DEC4CEF0;
+	Wed,  3 Sep 2025 09:27:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756891677;
+	bh=zoygvyrvbpRQP0lvFaQr5ZvBPQrrVcLHonREwQLABLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aaJiHxMmxm+KDWV54GEw0wFKqHa23MozUT9t1F6E6ykgPQidtVov9eFpwyt2PT/e1
+	 ykvXi8dABrzbhFHZac+ksIqZX5jqvgdo+i/bFDYYqs72VAONSagJP7/hSdvvYCxKz1
+	 eI1/thKT/ROliJ9DvpqJgMsGdmQ2Nm7CxoQr1q03RenOSahf10HJFkPQBnUPtjYevu
+	 7P7PWKjHLGsxIaf3fDgTDHGDy72eJAoJ0j0J3xFjm2UsyWc53a8WTuSfAJkdS7HDlA
+	 Rn/Cqm6KHIE+bQpWm2+d5YOls7aiPXWdMtpkunQRf6ofwIiK55Vv7GdgjI45bB7G7g
+	 0BP6SbigvujPw==
+Date: Wed, 3 Sep 2025 10:27:50 +0100
+From: Lee Jones <lee@kernel.org>
+To: a0282524688@gmail.com
+Cc: tmyu0@nuvoton.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+	andi.shyti@kernel.org, mkl@pengutronix.de,
+	mailhol.vincent@wanadoo.fr, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, wim@linux-watchdog.org, linux@roeck-us.net,
+	jdelvare@suse.com, alexandre.belloni@bootlin.com,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
+	netdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-rtc@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH RESEND v14 0/7] Add Nuvoton NCT6694 MFD drivers
+Message-ID: <20250903092750.GG2163762@google.com>
+References: <20250825092403.3301266-1-a0282524688@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,12 +50,22 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250825092403.3301266-1-a0282524688@gmail.com>
 
-Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net> writes:
+On Mon, 25 Aug 2025, a0282524688@gmail.com wrote:
 
-> In this context "not that ..." should properly be "note that ...".
->
-> Signed-off-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
+> From: Ming Yu <a0282524688@gmail.com>
+> 
+> This patch series introduces support for Nuvoton NCT6694, a peripheral
+> expander based on USB interface. It models the chip as an MFD driver
+> (1/7), GPIO driver(2/7), I2C Adapter driver(3/7), CANfd driver(4/7),
+> WDT driver(5/7), HWMON driver(6/7), and RTC driver(7/7).
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Doesn't apply.
+
+Please rebase onto v6.17-rc1 and submit a [RESEND].
+
+-- 
+Lee Jones [李琼斯]
