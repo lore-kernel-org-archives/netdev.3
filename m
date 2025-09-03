@@ -1,141 +1,167 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB542F8BC8
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 11:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C282EC555;
+	Wed,  3 Sep 2025 12:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.26.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756900314; cv=none; b=razAz0xXkgynog//SA6CSzU+6LQKke/YLNPZ4haZJtIVyMvp9x2zpUHlR6sNH5mcoFJAzr3JssyXdkbMURj5UdFs9jFcDps51+rX/L2wKiB1H+HC3o25XzlOfPpOWRcDlaVeJBhGjk3Jq/XgL2gDli7mKRgouvHHxgmCO1K5558=
+	t=1756900868; cv=none; b=ndGqkIfpio5lRZuseVU+fZKrKAOiGipeU6qfhdYTxtF7Yk1hFw6XGQQ70TBnKWUwoYcW0cWJerNZ/vi7x/U1MJV3mLBGTPml03bHEA1F7PD5LgOYUoFZP/l27tIFpDQ+xPAwrTAj5poCrxzd5C66+kS1q+tP5Pvn6+Uhi6JZSLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756900314; c=relaxed/simple;
-	bh=vjZCdrKe6hOD7Yv2fX2UA7ueGYqP1Vng6fVS60zb4HU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Da5rVDkBB+hZlQrEc69MfMuBfiCLfc7OA+j7hvbiPcUWlkE0NPWz6xyzmSQm1ENYVAh9reMQlMAU5uvx+5W4wlBE5ii+wu6rUjU2fU1pp2Hql0OD2Y5QmFyUoNyUDhVqEMNIzVtB0csMIxfzu6jj1Ot/CTTVfj0BySvlqoz1neU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eU6u4n5D; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eU6u4n5D"
-Message-ID: <b6a40fe0-09da-4b84-aa8d-0dcebf15d822@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1756900309;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oOpPo9rfvuietfnhT1ULTm8FPMp1Hb2NvfdmaZ4rz/4=;
-	b=eU6u4n5D518nrFJjvI6lafeqMMKUYLzLVrYB3+xgupfmh/X7LVNdLvhcvR/8zFsknTxK7B
-	eaKPOr333gO2RZ30g1V/GPhcMrbIFZzLccPLY9CRU6EKrSIbXe4PzJlKA2uPYoYQdqoZW0
-	Gr7Z8CnpnCyrV2C0ivepnscuhs6dDqw=
-Date: Wed, 3 Sep 2025 19:51:07 +0800
+	s=arc-20240116; t=1756900868; c=relaxed/simple;
+	bh=Fbn6GppGy8yBxgfUd1MDljuMgmJusjReJOu+jY8SeA4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=erqDWVmNEtl41L4WbhfExT8tzZAjH+YTgMt5hFN/vTGlrpyJ4U41cWTbwWGjwYr4XxS7rgk7J9GxTwaln+IHpwQ3TwWcSuXCGqmYSThEECz2/SvjY03cKkfHQquwlkcjZVkInmo8Fe0BB/AFva9Cum/jfMsXs3TSZdfI/z6iWYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.26.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
+Received: from Jtjnmail201614.home.langchao.com
+        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id 202509032000566242;
+        Wed, 03 Sep 2025 20:00:56 +0800
+Received: from Jtjnmail201618.home.langchao.com (10.100.2.18) by
+ Jtjnmail201614.home.langchao.com (10.100.2.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.57; Wed, 3 Sep 2025 20:00:57 +0800
+Received: from Jtjnmail201618.home.langchao.com ([fe80::e8a5:9069:4c1e:2304])
+ by Jtjnmail201618.home.langchao.com ([fe80::e8a5:9069:4c1e:2304%10]) with
+ mapi id 15.01.2507.057; Wed, 3 Sep 2025 20:00:57 +0800
+From: =?utf-8?B?R2FyeSBDaHUo5qWa5YWJ5bqGKQ==?= <chuguangqing@inspur.com>
+To: "Markus.Elfring@web.de" <Markus.Elfring@web.de>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "antonio@openvpn.net"
+	<antonio@openvpn.net>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"sd@queasysnail.net" <sd@queasysnail.net>, "horms@kernel.org"
+	<horms@kernel.org>
+Subject: Re: [PATCH v2 1/1] ovpn: use kmalloc_array() for array space
+ allocation
+Thread-Topic: [PATCH v2 1/1] ovpn: use kmalloc_array() for array space
+ allocation
+Thread-Index: AdwcyN3LkBtHNNPAvE+aVgfnozl3SA==
+Date: Wed, 3 Sep 2025 12:00:57 +0000
+Message-ID: <154e91e453c44817abbea33a7fb72e32@inspur.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";
+	micalg=SHA1; boundary="----=_NextPart_000_0066_01DC1D0D.7594F930"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] inet: Avoid established lookup missing active sk
-To: Eric Dumazet <edumazet@google.com>
-Cc: kuniyu@google.com, davem@davemloft.net, kuba@kernel.org,
- kernelxing@tencent.com, netdev@vger.kernel.org,
- Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20250903024406.2418362-1-xuanqiang.luo@linux.dev>
- <CANn89i+XH95h4UANWpR-39LSRkvM3LL=_pRL0+6fp6dwTZxn_g@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-In-Reply-To: <CANn89i+XH95h4UANWpR-39LSRkvM3LL=_pRL0+6fp6dwTZxn_g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+tUid: 20259032000564b70b01accfe526d474de3e659ea2449
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 
+------=_NextPart_000_0066_01DC1D0D.7594F930
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-在 2025/9/3 14:40, Eric Dumazet 写道:
-> On Tue, Sep 2, 2025 at 7:46 PM Xuanqiang Luo <xuanqiang.luo@linux.dev> wrote:
->> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>
->> Since the lookup of sk in ehash is lockless, when one CPU is performing a
->> lookup while another CPU is executing delete and insert operations
->> (deleting reqsk and inserting sk), the lookup CPU may miss either of
->> them, if sk cannot be found, an RST may be sent.
->>
->> The call trace map is drawn as follows:
->>     CPU 0                           CPU 1
->>     -----                           -----
->>                                  spin_lock()
->>                                  sk_nulls_del_node_init_rcu(osk)
->> __inet_lookup_established()
->>                                  __sk_nulls_add_node_rcu(sk, list)
->>                                  spin_unlock()
->>
->> We can try using spin_lock()/spin_unlock() to wait for ehash updates
->> (ensuring all deletions and insertions are completed) after a failed
->> lookup in ehash, then lookup sk again after the update. Since the sk
->> expected to be found is unlikely to encounter the aforementioned scenario
->> multiple times consecutively, we only need one update.
-> No need for a lock really...
-> - add the new node (with a temporary 'wrong' nulls value),
-> - delete the old node
-> - replace the nulls value by the expected one.
->
-Hi Eric, May I ask if your main purpose is to add a temporary 'wrong' 
-nulls to trigger a re-lookup in the lookup, until the real new sk is 
-successfully replaced, like the following code (rough code)?
+Hi Markus=EF=BC=8C
+	First of all, thank you for your reminder. According to your =
+suggestion, the format "Chu Guangqing" should be used. However, in line =
+with our company's signature conventions and my previous contributions =
+to the kernel community, I have been using "chuguangqing". Therefore, I =
+have to continue using this signature. The signature should not be =
+changed frequently.
 
-Thanks
-Xuanqiang
+>=20
+> > Signed-off-by: chuguangqing <chuguangqing@inspur.com>
+>=20
+> Would the personal name usually deviate a bit from the email =
+identifier
+> according to the Developer's Certificate of Origin?
+> =
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/D=
+ocume
+> ntation/process/submitting-patches.rst?h=3Dv6.17-rc4#n436
+>=20
+> Regards,
+> Markus
 
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -526,6 +526,8 @@ struct sock *__inet_lookup_established(const struct net *net,
-       * not the expected one, we must restart lookup.
-       * We probably met an item that was moved to another chain.
-       */
-+
-+    /* Here, temporary NULL values cause a re-lookup. */
-      if (get_nulls_value(node) != slot)
-          goto begin;
-  out:
-@@ -684,7 +686,34 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
-  
-      spin_lock(lock);
-      if (osk) {
-+        struct hlist_nulls_node *i, *last = NULL, *n = &sk->sk_nulls_node;
-          WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
-+
-+        /* find the last node in the list */
-+        for (i = list->first; !is_a_nulls(i); i = i->next)
-+            last = i;
-+
-+        if (last) {
-+            /* save the original nulls values  */
-+            i = last->next;
-+
-+            /* 1. add the temporary 'wrong' nulls value */
-+            rcu_assign_pointer(hlist_nulls_next_rcu(last),
-+                       (struct hlist_nulls_node *)NULLS_MARKER(NULL));
-+
-+            /* 2. delete the old node */
-+            ret = sk_nulls_del_node_init_rcu(osk);
-+
-+            /* 3. add the new node */
-+            if (ret) {
-+                WRITE_ONCE(n->next, i);
-+                n->pprev = &last->next;
-+                rcu_assign_pointer(hlist_nulls_next_rcu(last), n);
-+            } else {
-+                rcu_assign_pointer(hlist_nulls_next_rcu(last), i);
-+            }
-+            goto unlock;
-+        }
-          ret = sk_nulls_del_node_init_rcu(osk);
-      } else if (found_dup_sk) {
-          *found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
-@@ -695,6 +724,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
-      if (ret)
-          __sk_nulls_add_node_rcu(sk, list);
-  
-+unlock:
-      spin_unlock(lock);
-  
-      return ret;
+Best regards,
+Chu Guangqing
+<chuguangqing@inspur.com>
 
+------=_NextPart_000_0066_01DC1D0D.7594F930
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+
+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
+SIb3DQMHMB0GA1UdDgQWBBQRC/IegXfBTn5cZmp9COa0bolxUDAfBgNVHSMEGDAWgBReWQOmtExY
+YJFO9h61pTmmMsE1ajCCAQ8GA1UdHwSCAQYwggECMIH/oIH8oIH5hoG6bGRhcDovLy9DTj1JTlNQ
+VVItQ0EsQ049SlRDQTIwMTIsQ049Q0RQLENOPVB1YmxpYyUyMEtleSUyMFNlcnZpY2VzLENOPVNl
+cnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9aG9tZSxEQz1sYW5nY2hhbyxEQz1jb20/Y2VydGlm
+aWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50
+hjpodHRwOi8vSlRDQTIwMTIuaG9tZS5sYW5nY2hhby5jb20vQ2VydEVucm9sbC9JTlNQVVItQ0Eu
+Y3JsMIIBLAYIKwYBBQUHAQEEggEeMIIBGjCBsQYIKwYBBQUHMAKGgaRsZGFwOi8vL0NOPUlOU1BV
+Ui1DQSxDTj1BSUEsQ049UHVibGljJTIwS2V5JTIwU2VydmljZXMsQ049U2VydmljZXMsQ049Q29u
+ZmlndXJhdGlvbixEQz1ob21lLERDPWxhbmdjaGFvLERDPWNvbT9jQUNlcnRpZmljYXRlP2Jhc2U/
+b2JqZWN0Q2xhc3M9Y2VydGlmaWNhdGlvbkF1dGhvcml0eTBkBggrBgEFBQcwAoZYaHR0cDovL0pU
+Q0EyMDEyLmhvbWUubGFuZ2NoYW8uY29tL0NlcnRFbnJvbGwvSlRDQTIwMTIuaG9tZS5sYW5nY2hh
+by5jb21fSU5TUFVSLUNBKDEpLmNydDApBgNVHSUEIjAgBggrBgEFBQcDAgYIKwYBBQUHAwQGCisG
+AQQBgjcKAwQwNQYJKwYBBAGCNxUKBCgwJjAKBggrBgEFBQcDAjAKBggrBgEFBQcDBDAMBgorBgEE
+AYI3CgMEMEsGA1UdEQREMEKgJwYKKwYBBAGCNxQCA6AZDBdjaHVndWFuZ3FpbmdAaW5zcHVyLmNv
+bYEXY2h1Z3VhbmdxaW5nQGluc3B1ci5jb20wUAYJKwYBBAGCNxkCBEMwQaA/BgorBgEEAYI3GQIB
+oDEEL1MtMS01LTIxLTE2MDY5ODA4NDgtNzA2Njk5ODI2LTE4MDE2NzQ1MzEtNTYwNDA2MA0GCSqG
+SIb3DQEBCwUAA4IBAQBDRhwc9Cfe5n65yxddOeEDQbNITPIjt/Q+Mf0KqzH+d4IcHt7HNA8ZhrOp
+YQJiFgjJY9eOo4+lABBfQTWVK3MrIiBTzf1MB8MRXnLKR1+FhZkDj+NRQdKDV6L1rcO+RsCJrLM2
+1MGkhqFlpXCHxlyPt+T18YSXSD0ceJ5QpQ3A+/N2p+OTxezHL5GqPSJT051H43ikZC5xCpZMWafu
+B0GyyrLlvvzet4Ko76Y4jWDL61EEakexUR9RgPcPhYFHiNf9f3wi3fc1AW0J1smh+3rm9INI+6Xx
+/g6gEHmIeBWZfODTrhP6FGMlMMJlLQoSAZbPBadhUnssKKTWgy5rT4qUMYIDkzCCA48CAQEwcDBZ
+MRMwEQYKCZImiZPyLGQBGRYDY29tMRgwFgYKCZImiZPyLGQBGRYIbGFuZ2NoYW8xFDASBgoJkiaJ
+k/IsZAEZFgRob21lMRIwEAYDVQQDEwlJTlNQVVItQ0ECE34AAkSWdsZNK1EPE5IAAQACRJYwCQYF
+Kw4DAhoFAKCCAfgwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+OTAzMTIwMDU1WjAjBgkqhkiG9w0BCQQxFgQUcqQTxZhBRxH0Xkr+ocWsTEVB1GUwfwYJKwYBBAGC
+NxAEMXIwcDBZMRMwEQYKCZImiZPyLGQBGRYDY29tMRgwFgYKCZImiZPyLGQBGRYIbGFuZ2NoYW8x
+FDASBgoJkiaJk/IsZAEZFgRob21lMRIwEAYDVQQDEwlJTlNQVVItQ0ECE34AAkSWdsZNK1EPE5IA
+AQACRJYwgYEGCyqGSIb3DQEJEAILMXKgcDBZMRMwEQYKCZImiZPyLGQBGRYDY29tMRgwFgYKCZIm
+iZPyLGQBGRYIbGFuZ2NoYW8xFDASBgoJkiaJk/IsZAEZFgRob21lMRIwEAYDVQQDEwlJTlNQVVIt
+Q0ECE34AAkSWdsZNK1EPE5IAAQACRJYwgZMGCSqGSIb3DQEJDzGBhTCBgjALBglghkgBZQMEASow
+CwYJYIZIAWUDBAEWMAoGCCqGSIb3DQMHMAsGCWCGSAFlAwQBAjAOBggqhkiG9w0DAgICAIAwDQYI
+KoZIhvcNAwICAUAwBwYFKw4DAhowCwYJYIZIAWUDBAIDMAsGCWCGSAFlAwQCAjALBglghkgBZQME
+AgEwDQYJKoZIhvcNAQEBBQAEggEAM163rdy7QBY4QcH0d+34+Z9/fzNWk+W5FANHajOiJeOBrVaR
+tqlb680R7zzdNNNTeI3mXDl1voygUwBFV376V215LSbLwBBqRfOgt6zCZVn/ucr8iwAq8blxcii/
+0k5czP8ueJj32Oab+aMS2B2EBSxMHdjGhPEOi2Lbjhlu3uutXe65bZiBoP3cExs7vSgP6BbfPEgR
+9xot28ZEtX7lLpJG0hXE1GC6oRJM2ayRTC8E+O7C2wIufPKbkMVLswGwVn7FfvfVFxgfrpDJIbCl
+DLobtdXbQUC2iyJ5D258HNC+/El8xfKcyzcS3+x2GRvQSGLvg4hO7jtvlE4RfW8HWgAAAAAAAA==
+
+------=_NextPart_000_0066_01DC1D0D.7594F930--
