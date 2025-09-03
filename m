@@ -1,182 +1,160 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000DF2BE7A0
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 16:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213A22BEC30
+	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 16:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756915987; cv=none; b=AUA/UVgmF1b1MG4//tZq+zHWcaRBMI1wPYwMv87VCKnYrOrMHBtKmUB3qLmCCpchF+e6IHmPAo/N1yZtDVDJZvnZ3mpuaIK6Ob+s3prmXHUe0Nd4zdg7C9fGaFRzYZATlM8cbDv2Q036d29jPardQlDLipyHUAfe6Wn3/GCrGns=
+	t=1756916088; cv=none; b=J1uvtbNbALBD77gRuHeimQcnlDBWEHsJBye57kPzDVXiWFbELOe+5axNRDdUYm8CN3l9uL0xmiTeDDlT2swFrR7+IFPPS21nrqvs1DCYIF60gO5qO8P8OgciehlRgRSAlLJrnVHHHQaYY+gQzDfJSU6nZ4faqkgdBpSiE7eX+hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756915987; c=relaxed/simple;
-	bh=npa6VTO3UD4EmfEg4HVC1uujU7lkywOp1bop//9kLe0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Se4Y65uGJlLny6bXDYxc1j1rhtTYXGFHY2Xg7KXhJk73/B/Ifj118IqqMdBV5qyil5+Gt2LkcieTtDkNfk5aAgyUgo5lRWVluAbyxt16PE5eGpI+0tCUBSyCfeWXmBATRO1yqX33n3LLrKUhe3K+Mc2//tZj3kklgvD0NyVuDKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RcwnqjG3; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1756916088; c=relaxed/simple;
+	bh=15e4KV2uKHJPOVsBfG9vaA4N6uUsqxcFksJxJYT4tQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jlMeETCkGT8Nc1YL98XCFQaPmbrEsvg7Khb+1Dkm5IENDlHTTPsK9J2bFAtWlUIwQ56TGO3CxzKXvrIgnyTHgi8G4FQvJo1zZvsWICuzugtReUkLN3sgIKmz5Z2BUfEt72xTQM2pyT/7drrByfWGc7N/7g0zeA2BRDD7MLO1crU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m8G4ebPH; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RcwnqjG3"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Dx96U001019
-	for <netdev@vger.kernel.org>; Wed, 3 Sep 2025 16:13:04 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m8G4ebPH"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Dwvoe007938
+	for <netdev@vger.kernel.org>; Wed, 3 Sep 2025 16:14:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pKeGXm8jI+JpucgwsLhCt1MqYWl2JGrUgMOwCF0ZLRw=; b=RcwnqjG3gzZFzE5y
-	qk0DpNv2Z9TZ/bvR+tO3S4pDWBBktCGCpsH1epbK0E1RpKxO2iLyG5xmhciO2pKt
-	qCU+iB4l77rt009pAJYpZmWzNzzC6whn7GzU+IFxXVSxW7i2EG6Bmk/6gEBkPDT1
-	DjE0WOfBwjNYbG+qwHdqww/EIEvnIk3fxh6yaPQE0JyHUAsOebQH28DzBNrKDLFO
-	McOgq085DUVyLmPxGlqK09VDyxDvLJI2hZjlEn19Jbf5DaHLfVTtP0cxC/KWi3K4
-	cfXSyFe7/lPyPeS5SZeC5FyxM/EE30UXGx+3w5XLDCQ8QoTjg8oU9f5gdl2InkCe
-	zawcTw==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ush348ba-1
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=p7A2A36WC5hNzLUFGe9+5GUr
+	6YgZGXzB2kAzl3I+Zec=; b=m8G4ebPHfdBWbfEBqrnyIXVeXIkMcLttOwjhy+p9
+	aESVUv+N3OBwniKB9YFGpLkV2PwYTywpf7MyIj71SeDf3kj8yNPBkT00pc41zXhU
+	VCxJqpHjxIe/P3S2LmI+Xm1C6x7EZlQoftYl1Q2w1FFFdoW3u6q3B9kVBcvBjrS4
+	mPTc7QQYjlIyTRZdDOa61TLUg8zSnmEQFHoBfrDMDT9NQZ4r+xxFwkIVZMKWuFT/
+	gZeukkl6iEqfIKHBriMW4REe5Xn0OFVvAU9d3lXy8Dnb7VF1VbUY42CAUYWAoPHy
+	QVbC8Idg5WMreuITfpxMbiLE/FldfFDY06dtJyktrAQrLQ==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48w8wy887m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 16:13:04 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b32eddd8a6so90741cf.2
-        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 09:13:04 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 16:14:45 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-77243618babso83733b3a.0
+        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 09:14:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756915983; x=1757520783;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pKeGXm8jI+JpucgwsLhCt1MqYWl2JGrUgMOwCF0ZLRw=;
-        b=UdwoMRQWNfJdOF/tFgjXvvva8iWi3MfU2XukSBhfA5D179s2gwQbyGESyRJt6WRerz
-         W08+enuG043DFqLabwSIsyLYiUejhEVAY+Pm8D4mrLYVWHDlB3ZVyH+vmcC2Rd11mXrn
-         w2xCoMb5BS63dDA+8IT5z9tS+K2Gpag9DJB5e98H61fcly/za+RcKXSBIUGHgTrCagwn
-         jQaT2tjZkmqqA9XEQmDMrsjdmpyTfd/GXhXj0RXoi/YY29zXo4HrVhlyI8Yd9ZXoXpDJ
-         bDhMpcxCTHRHSj0dEI5g6E9RxZmPhSjfwbYnIDZ1geKgyd0/Bi8zndMJ9OLeTCv9QRuL
-         3Mhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCz8jO+ZHS39V1mn5PC6DMHJrAA7D7iCuybDiV0TXf/jkQ1bpGKPgxact58GtBjMT6w1te4TU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0+xTNOJbZ3j9NAKxfvvoUZmLoltmd6sfUo/rhwiRECbdFEBaj
-	QQFu8lrZxoWFtueSCAThBnQLiYPpznX5Ldcd4v3C2v4woFIKYTU1NNVOqc0hTaAmP0H7FGakdyB
-	a9cwof26XoL6rFS/K34Sid31UHD/XGbv1DmPfSeZna3C4DjgzA679hpiArxA=
-X-Gm-Gg: ASbGncvx5iaNImQoT8US0EfCmVR/nbWF5GTbclvO6Exx+CWAHPaak5a/Cl8LQ79lluY
-	kBZrydrS3aXHUkFu9y/5qJIkLKl2tNXySH61kBXK7VsaxybMI0GfCHqF2JM3hu4jDwg+eWXUIO/
-	/E/TeKWCkDX1VaGu4TnV+cfhDMOcVk0ZiRQMicUim0Jn+9sRatEUqoUciuj5VtholcsMioJrSH7
-	tjYt5GyToDYdeS5HONGoM3bJgnR0ysLr9cQ0bM69GALg7yC4xt6kR9695+5mBPGCPTIS8bC4lA/
-	l8rt1r1meJ1qt5EcBQB32I6LKiQjUSTVmGTb5ABMothP4KpjHcuZg0UvuXHOnLRpAGF0oYjsiVu
-	BO3alBX7CfHqpron4Q7pKPw==
-X-Received: by 2002:a05:622a:4506:b0:4b3:4590:ab74 with SMTP id d75a77b69052e-4b34590ba5bmr60324161cf.13.1756915982745;
-        Wed, 03 Sep 2025 09:13:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfWwWchCPw1ePeEGx4qP5S7OYtJkgaeMl5VvODCf95CzdX3BdtWxnPTsVZ03+bkL8BPje0cQ==
-X-Received: by 2002:a05:622a:4506:b0:4b3:4590:ab74 with SMTP id d75a77b69052e-4b34590ba5bmr60323761cf.13.1756915982100;
-        Wed, 03 Sep 2025 09:13:02 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b04110b94cbsm1003115266b.93.2025.09.03.09.12.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Sep 2025 09:13:01 -0700 (PDT)
-Message-ID: <c82d44af-d107-4e84-b5ae-eeb624bc03af@oss.qualcomm.com>
-Date: Wed, 3 Sep 2025 18:12:59 +0200
+        d=1e100.net; s=20230601; t=1756916085; x=1757520885;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p7A2A36WC5hNzLUFGe9+5GUr6YgZGXzB2kAzl3I+Zec=;
+        b=W4sTAqTr8PGjmYnCZJCMd9xP5RWIUDCA2p+qpQRt8mgcHGqLZrFGGFzRvQU2dZlQDu
+         nmUgr6GS5kCBE2m06ZGzPFM0GJWKyWm5odlZJvrZ9QFeJZibI8ERnQxjbdoWl3k9pwhe
+         G7ltRZLZB2kZ1OqEWqJj03NJ2hp5nYokeYOsPvkOVw8nS3mx1ArWsXZTRNLKGiqahyAw
+         KAqi2KQWkCbnJHAGO+KF2ErKuqHY6Nl0kiAAdXhbDw0n12bh7Bj4ckMQGrR7frdlbtJE
+         eY37RUUO8monEQIGDLmL/tfxK+I+ndwY+6o/Ccnc0Uryp8CPH2GJVv4wvtNISYUVtTDp
+         PNLg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIwHgoXN4eMw0q/+B+luNv5vbq1DjOSCB2nhVufFqfIs2jgKeeIjnNoWmnSqAQHxA+amwoCU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvM0pPPo+TpgUcAVLBZGFOmKdS+nwtKiiGW2sFi1OLnH2bdC8B
+	VtDxloMprd+3VVC2RfhpEPX4UXZykHXl/BWV1xrAup5f+pBdNFrRUvIZGU5ORirIjsSGahn4Wrg
+	+wv2iBhI0To6ordEBPt9akJXpl6ex1aSUH+Q7iFRIN16f/mNDZHZJrm+Enao=
+X-Gm-Gg: ASbGncuhd6DwiWhpcRvuWJ7meQgVZqXJsn5EMRqodbxTsTiEaR/HLslIcMUsCf43Ku4
+	pxaEbmYws8AXT6Ib/5iS1IdB+5cv4Bqf1/1J1PHz2P2wv1HUTJ6UDu2cfL+mp/JEXXcMaAKDybH
+	h7drZx9XA1aQ2omaSRkF/5JSndriAnE8Ne5YCKGfVedScitMr0yRKRricwYTxZNdRSTAJkPxYc+
+	Y7E22rRHZ2qbHLeSXSCQWvtqcLHt/O+8epf/s+eKvDsHaspH7KWCRNWpzhtBoljaVgzwBK9Dpqu
+	c1U4k4+lkuzqhjQNQpceQ7+v2Gzj33uLBemeJsEqPNG4xr3zy8tbf2eAx+PSE4gHbh80
+X-Received: by 2002:a05:6a00:80b:b0:772:50c6:47d6 with SMTP id d2e1a72fcca58-77250c660aamr16685505b3a.2.1756916084639;
+        Wed, 03 Sep 2025 09:14:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFN8Fk9FYilCvfsVTUpXK3eaQZpWzMaZJtyrt/idToT1wN7680TzLMcXUUYYpYB/Pxpe/CGg==
+X-Received: by 2002:a05:6a00:80b:b0:772:50c6:47d6 with SMTP id d2e1a72fcca58-77250c660aamr16685461b3a.2.1756916084165;
+        Wed, 03 Sep 2025 09:14:44 -0700 (PDT)
+Received: from hu-wasimn-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77285bb2614sm1757820b3a.58.2025.09.03.09.14.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 09:14:43 -0700 (PDT)
+Date: Wed, 3 Sep 2025 21:44:37 +0530
+From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>, kernel@oss.qualcomm.com,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Sushrut Shree Trivedi <quic_sushruts@quicinc.com>
+Subject: Re: [PATCH v2 06/13] arm64: dts: qcom: lemans-evk: Enable PCIe
+ support
+Message-ID: <aLhpbRL/mNfIMg/P@hu-wasimn-hyd.qualcomm.com>
+References: <20250903-lemans-evk-bu-v2-0-bfa381bf8ba2@oss.qualcomm.com>
+ <20250903-lemans-evk-bu-v2-6-bfa381bf8ba2@oss.qualcomm.com>
+ <facc2270-e700-49e4-a7ab-3b473e343ccb@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] arm64: dts: qcom: lemans: Add SDHC controller and SDC
- pin configuration
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Wasim Nazir <wasim.nazir@oss.qualcomm.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>, kernel@oss.qualcomm.com,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, Monish Chunara <quic_mchunara@quicinc.com>
-References: <20250826-lemans-evk-bu-v1-0-08016e0d3ce5@oss.qualcomm.com>
- <20250826-lemans-evk-bu-v1-2-08016e0d3ce5@oss.qualcomm.com>
- <rxd4js6hb5ccejge2i2fp2syqlzdghqs75hb5ufqrhvpwubjyz@zwumzc7wphjx>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <rxd4js6hb5ccejge2i2fp2syqlzdghqs75hb5ufqrhvpwubjyz@zwumzc7wphjx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMiBTYWx0ZWRfX1rrUfANDMZRZ
- SmKW3QMv9ESg84Dt+lpOuiP6kWKa0HFYHuJrdTyVfCNMcBvfly5qS93h/kKkJxOLFk6ZN1eqVCL
- s5DR5VaAGM5cOjrToAm7zpgE9a39kcxPG0wbma5XKabOx1HvdUMG18Y5Ab+Usryvx2iPWV3Ov4G
- kQdgkfDFMElZFvP4q2xtfLseQcPko2sV2HpasBkmImLWEIf/kkLXnVkVJEKewBg7KkquXJb7vjK
- wytGQtTK3Vme0IXxxPaIJWyyVmHJd6J7slLxyzh/bOYx6a+jyleCNuuv2cRHoNkN06xvUIof9Bt
- Tui3i6/yGNfcSK4R2OosFeX2a0CK99QdFQIiPSakfvGV1S312hPAkDm27NGTyJ8UEkZU+uOtXms
- NptzJTFr
-X-Proofpoint-ORIG-GUID: KkgHzj77Imgx2XHNXY3TgmmiWBR15ZwO
-X-Proofpoint-GUID: KkgHzj77Imgx2XHNXY3TgmmiWBR15ZwO
-X-Authority-Analysis: v=2.4 cv=M9NNKzws c=1 sm=1 tr=0 ts=68b86910 cx=c_pps
- a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=onm5DRxEkm4ScgEcFVIA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <facc2270-e700-49e4-a7ab-3b473e343ccb@oss.qualcomm.com>
+X-Authority-Analysis: v=2.4 cv=Ycq95xRf c=1 sm=1 tr=0 ts=68b86976 cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=5vNF0T9NdgVroHtUm1oA:9 a=CjuIK1q_8ugA:10 a=2VI0MkxyNR6bbpdq8BZq:22
  a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-GUID: htZo-3TtzZTlEmVM9g-M9VT3L2D80xdO
+X-Proofpoint-ORIG-GUID: htZo-3TtzZTlEmVM9g-M9VT3L2D80xdO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAxMDEwMSBTYWx0ZWRfXxqKt5cq4X/HJ
+ H3MY6GHAuKJ62Sn92MB0KAdCJ8Y1bJTP5U4r9ZCZ3tPoUIERLJwHvZ33xa/n94dKwXDj9YHEMJH
+ bH03/mAxauQnYFn//Ssw2aH2CX+3JhGuqJy+LB+SjjJzUPdw1pr0btEijNYcpP26ZUr1ZO0Akb9
+ 3PugBQ7ijZ+7KsyUnmmI3JxdqiloSB/IYRCOIMrmtuOKwpgHl9Zn51JwfwktQ5SEnDcMMqvneyb
+ dNHA1B1CFaoO5rKdpR4LS7l0NWslwLwG7f1OvVoeEVi6KWEt8wpqgs8KJzaQk1TUI30SQyG7PcV
+ rCtBQYrv1KAK8+brS7ix8uM9ERqPB4SUp5TVQk7nKSGioM8UkU3i1E5TsF1RQ6Y+SiQwVy3DX/y
+ IbmJDkw3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-03_08,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0 spamscore=0 priorityscore=1501 malwarescore=0
- clxscore=1015 suspectscore=0 phishscore=0 bulkscore=0 classifier=typeunknown
+ clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0
+ bulkscore=0 suspectscore=0 impostorscore=0 spamscore=0 classifier=typeunknown
  authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300032
+ engine=8.19.0-2507300000 definitions=main-2509010101
 
-On 8/27/25 3:20 AM, Dmitry Baryshkov wrote:
-> On Tue, Aug 26, 2025 at 11:51:01PM +0530, Wasim Nazir wrote:
->> From: Monish Chunara <quic_mchunara@quicinc.com>
->>
->> Introduce the SDHC v5 controller node for the Lemans platform.
->> This controller supports either eMMC or SD-card, but only one
->> can be active at a time. SD-card is the preferred configuration
->> on Lemans targets, so describe this controller.
->>
->> Define the SDC interface pins including clk, cmd, and data lines
->> to enable proper communication with the SDHC controller.
->>
->> Signed-off-by: Monish Chunara <quic_mchunara@quicinc.com>
->> Co-developed-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
->> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
->> ---
->>  arch/arm64/boot/dts/qcom/lemans.dtsi | 70 ++++++++++++++++++++++++++++++++++++
->>  1 file changed, 70 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
->> index 99a566b42ef2..a5a3cdba47f3 100644
->> --- a/arch/arm64/boot/dts/qcom/lemans.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
->> @@ -3834,6 +3834,36 @@ apss_tpdm2_out: endpoint {
->>  			};
->>  		};
->>  
->> +		sdhc: mmc@87c4000 {
->> +			compatible = "qcom,sa8775p-sdhci", "qcom,sdhci-msm-v5";
->> +			reg = <0x0 0x087c4000 0x0 0x1000>;
->> +
->> +			interrupts = <GIC_SPI 383 IRQ_TYPE_LEVEL_HIGH>,
->> +				     <GIC_SPI 521 IRQ_TYPE_LEVEL_HIGH>;
->> +			interrupt-names = "hc_irq", "pwr_irq";
->> +
->> +			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
->> +				 <&gcc GCC_SDCC1_APPS_CLK>;
->> +			clock-names = "iface", "core";
->> +
->> +			interconnects = <&aggre1_noc MASTER_SDC 0 &mc_virt SLAVE_EBI1 0>,
->> +					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDC1 0>;
->> +			interconnect-names = "sdhc-ddr", "cpu-sdhc";
->> +
->> +			iommus = <&apps_smmu 0x0 0x0>;
->> +			dma-coherent;
->> +
->> +			resets = <&gcc GCC_SDCC1_BCR>;
->> +
->> +			no-sdio;
->> +			no-mmc;
->> +			bus-width = <4>;
+On Wed, Sep 03, 2025 at 05:50:00PM +0200, Konrad Dybcio wrote:
+> On 9/3/25 1:47 PM, Wasim Nazir wrote:
+> > From: Sushrut Shree Trivedi <quic_sushruts@quicinc.com>
+> > 
+> > Enable PCIe0 and PCIe1 along with the respective phy-nodes.
+> > 
+> > PCIe0 is routed to an m.2 E key connector on the mainboard for wifi
+> > attaches while PCIe1 routes to a standard PCIe x4 expansion slot.
+> > 
+> > Signed-off-by: Sushrut Shree Trivedi <quic_sushruts@quicinc.com>
+> > Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/lemans-evk.dts | 82 +++++++++++++++++++++++++++++++++
+> >  1 file changed, 82 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/qcom/lemans-evk.dts b/arch/arm64/boot/dts/qcom/lemans-evk.dts
+> > index 196c5ee0dd34..7528fa1c661a 100644
+> > --- a/arch/arm64/boot/dts/qcom/lemans-evk.dts
+> > +++ b/arch/arm64/boot/dts/qcom/lemans-evk.dts
+> > @@ -379,6 +379,40 @@ &mdss0_dp1_phy {
+> >  	status = "okay";
+> >  };
+> >  
+> > +&pcie0 {
+> > +	perst-gpios = <&tlmm 2 GPIO_ACTIVE_LOW>;
+> > +	wake-gpios = <&tlmm 0 GPIO_ACTIVE_HIGH>;
+> > +
+> > +	pinctrl-names = "default";
+> > +	pinctrl-0 = <&pcie0_default_state>;
 > 
-> This is the board configuration, it should be defined in the EVK DTS.
+> property-n
+> property-names
+> 
+> in this order, please
 
-Unless the controller is actually incapable of doing non-SDCards
+Ack.
 
-But from the limited information I can find, this one should be able
-to do both
+> 
+> Konrad
 
-Konrad
+-- 
+Regards,
+Wasim
