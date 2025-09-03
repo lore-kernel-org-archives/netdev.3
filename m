@@ -1,63 +1,63 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427E62F0C67;
-	Wed,  3 Sep 2025 09:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CF62F1FC0;
+	Wed,  3 Sep 2025 09:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756891559; cv=none; b=QL0/TM7boKvliBtUd+K00/R7NzOs9Qn/94ocmIdO3lyjT8K9ETzqT3hJZQB+CcOm7jjAlcG5Wdw219L8VPniItd+pOvt1soP1DdTEJ/grLD1G6Xt6s80HmoJaISIfgbYblQ0G499/BxW8LoVBJ+K6wYlOVIc7Qq/IDU4V9TtWRg=
+	t=1756891561; cv=none; b=u3kRKoABpG/Hw7F8K+xH3KX/AuHAgCtD4txs5KfY5YjR7CR3vAic+OmeayPLUEgC4Ndqm9gtxGjCF6DDGTKZgoUu3rPNIsGg2COCCqjAr+udtiHv819rl75Cx+p5ipcTe/1WAQObrrW45UsVdfWvLta1nGpxmX97mTc0jYeCb44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756891559; c=relaxed/simple;
-	bh=U+v5jH6AyaindDQc6AGwol0j3FYphD7c+3FZrE9ycmk=;
+	s=arc-20240116; t=1756891561; c=relaxed/simple;
+	bh=59iraut11ydwf19KgWFacNPvjuTlEHsS6RhQ76in5nc=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=TTvRAMUTISifdoEdcGLmc7QKw3r3JlaZAOcKKK2tr08km6aoRpmnzYz65uYmK4yKTBaWn+ggI+4myz+Tcbw37eU3vB1rI1xpYBIhoQe/TiYvoqFwT47m/B1ImxypSgooD1DXx5FbWovtvUwAoD6ytUoyMWD/VyE0MI3rEK9dx8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VpMCmb1a; arc=none smtp.client-ip=209.85.128.44
+	 MIME-Version:Content-Type; b=JlPIWZmSnA6BYsCuFaJk7gUyu4nRv0rCa9/Q5n9+2RDRANd5+1rJI+fXqQndO8W6oBplA9V5ZD0QjavarkLuAh1Hsw+UDZS/zQBKLinzIY5XSn1JlFVCO1rxOXNkMo3vYmWfEdPbUaddnJ8VB0/P8LL9+9MWTQIY/Jen5j5EOnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J9pufOPj; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VpMCmb1a"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45cb6428c46so3347295e9.1;
-        Wed, 03 Sep 2025 02:25:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J9pufOPj"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-45b883aa3c9so23237555e9.2;
+        Wed, 03 Sep 2025 02:25:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756891556; x=1757496356; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1756891558; x=1757496358; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:user-agent:references
          :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=U+v5jH6AyaindDQc6AGwol0j3FYphD7c+3FZrE9ycmk=;
-        b=VpMCmb1aEuDv9dqCeIQvHzIcqAUjBmQWRhZeqyUeq7ifcaB5XkYIRHqoYtRkZQ76cH
-         NKJO0a/Xw+gAmYOXOBJC8rqsPUftwI38UthGItL8Oep1arxUysnxqbOWg+dRtZ0UZ6iZ
-         SY7z1/9syJcH6ec0wynuzjbBOKAgDK8xTTNYaUCcTXmchZIxUZpx5k50ulYYiUyHsn/n
-         PlwnKF86k+iI9LVAMbAl18m73MbD2eJUaqVBIN+aOGkOLW/ogM6JWR3TtG2lfgeNVE/i
-         JqJDwsztzkY31+bKcdA0fd5goWWyo2Xr/Xl8vyPA+RtfbInK1z4dNkMQp1j/D+JWjL1y
-         YIDQ==
+        bh=59iraut11ydwf19KgWFacNPvjuTlEHsS6RhQ76in5nc=;
+        b=J9pufOPjj0ty5QDtiENqVkDOV2/86JyUQllY1nPFrRvHASdiY2OFfsl1fGNSl5ewIw
+         utmza6cyZ3xEopp06q9YHoUZmZe89iZmk+Wh4r/jUEg6I4dGuTJcbs64xqC0qrwzfNq5
+         gtROXgZ3t5Tv9g5r3kPQ2rN05BwFooA56AypgeNqzhH9j66YpeJA7sbrhG1/htrZbgqG
+         Gd78grNNhuqmCkFG42GiunD1wnvESJZWa8HaaxL+muokhtWG/7cTKdRFo38tUUs/Egw4
+         oz0ODehzPWK2NuFe4Zxscc1B4LBgdRy6zw2yoCJiaa1Lzrup6tOX0iC2F8geIqj/pWce
+         jtwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756891556; x=1757496356;
+        d=1e100.net; s=20230601; t=1756891558; x=1757496358;
         h=content-transfer-encoding:mime-version:user-agent:references
          :message-id:date:in-reply-to:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=U+v5jH6AyaindDQc6AGwol0j3FYphD7c+3FZrE9ycmk=;
-        b=iAl5ci2tBIp+8Laa2TtgwOgJhdHJQuoyYkeR+biSHiFo7whfvLrDxqQcmJdX9DucSc
-         qh9wIg0RNhGSCS4Y5UYDkSHxxleobNs3OY/Vbox2cAbjdUu0y28WJBAiQP5plKpu2L/m
-         8HCybxmQg8MIjthSGe8FEc/bjLSDsEPopU2SFZx2GxT0TOZnYAImdSBN/rinkUs2QQay
-         Ton4kp6Up3Bx1uB5/E69TGTk11hRc7ltffxA6ywU7SXBwH37FASI4CU2XNGKKvdnLUNo
-         crlYGE7nAAsRhmyf+t7Kr5WNKnYOzvSz2TX78EB9wgfPQzl4RTVVMK+VZgskfuNNQNS5
-         l03w==
-X-Forwarded-Encrypted: i=1; AJvYcCUnVpUJa66xeeZeOp+nVKafkRw/DODOdDAMWPQytPP6U0WZiJH82zVBrATf01j57DD6Ypvr1nenWQexm+s=@vger.kernel.org, AJvYcCWlRtqwWxpYi6xP1ngv5CORNqTBjUcvlOvd5v8CpQnDu50QJsbpG9SdXKT+a0peEYWny1U2NoYc@vger.kernel.org
-X-Gm-Message-State: AOJu0YygCdXCxfD9COaQHKjHSN7TViuaxOa8Ha261IJ1vkJ6Yn42Ti/B
-	z0HYSH5KJb2haLyQJCsZOQPQObBEz16ULy3EvXwZ2OF+wOavZmunE1MV3NmNww88
-X-Gm-Gg: ASbGncsyHCWkMvwWDV1K6sgRVCC5MJdXGH8lftsdGZFI4iQyTvD8sivUehyZVFqns6v
-	YfnD91jlKWnmInNbTPHzU668zL1tEQnh/4zrRgSsiGreDV3E8xeiZQU1+B8kNJW/TboqrcEO7EH
-	kv03b0g2aEJzknH1+2s4iwyjlz5x05q7BOe8oRqKnwFj0OYiscjCe02lkwkfAX6sNk7wpD+d1yC
-	GUQKUgzSlz/5S6/8U22qcPp/LvKILlMJlJejoJeJb6sn3Ydu7avnVo+noMcwP8E89+TAbK1FHgz
-	J4dxU1JGN1BMihFDp/bp0dXk/774YQR7jiVsBe1pcje2SlTucqhiZJAr7/k5uW+ZpcxgNRpXaQv
-	VnJK7rT46H6kB8pny/4pqywO3daKJMqLHwPad8KB/
-X-Google-Smtp-Source: AGHT+IHkRhdj2JIsa9WgkzYrLBB4WzmIICB1y+y2H3Ew0iWqnYwj6kwSQy5LuNDyUHpy5pHhniB76g==
-X-Received: by 2002:a05:600c:46c8:b0:45b:7e6b:c235 with SMTP id 5b1f17b1804b1-45b85533095mr127570215e9.9.1756891556075;
-        Wed, 03 Sep 2025 02:25:56 -0700 (PDT)
+        bh=59iraut11ydwf19KgWFacNPvjuTlEHsS6RhQ76in5nc=;
+        b=jGk8J5ZfqOjRr+bxUtK6hZEgBFiOuT3kWU2/WK4VY0MvUrd84yUMxjXg1N0r5UjLWr
+         jFwhpXXeE98j+mRz2Lje/PRPM9rCQHf3HzPmBD4SC3ik0qZOoMnMTIotMoCt+pPdg6lG
+         SbOSqqFe1ZlbglV68iXUH4RvmcT/sgAmKyVI5kQd/8dUJLXxu+dsSsJkqTfniOFiwAHB
+         63cB6LEjALSTVA8qEZXaRunQLoG69T7243XYIYMEVTqyjU2PBoBrg9P5BdrmcEyVx8y8
+         LFnh4LU2RUKxgjQSzQPB/pU/zQ5QLhSLlcuzzSWxT/f4s9N+SuVfEzsB0A3DSVHWFejH
+         0DpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEXHrPhdCkRC/wz7ZfgwMfQEWXC3DOK3hAt/GJNQILhueMIukAnRZ+BKU1HimA0ezlNnEGe/7Ka850T0M=@vger.kernel.org, AJvYcCW0N3gs6/wX0LFgN4CcmCO1Hslaz5ITFR/e1W+ipSvrgHnasLREbHcRYtA6cOXYus59PhEWc/51@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXdh8EUS9tO5ZIhmvno6YQtV5dxuZcPeYgICT/9o5iVtgi1qKX
+	AAMHaAiNRKOPb8HtqwisHpObuH1r4VCOnh0t8XpNExFeccQsPKJQde+Tp4bOb5UC
+X-Gm-Gg: ASbGncvu0WLcTcUHLjznAzVnlAz5aXU8kdl0puAH8cUJby4IkzwnUy9VORFM8cKUjDE
+	CIIY3d8vl8EkHum3i4WBrpIxuHWp5JGKzpvoRmLlXtIMRO6VmYU6wWQVAFg5RSuWSvCDI+Ie/cS
+	qvQv4H3ItOtGe+cIP16cwqu8GZ8cS92j1vT4ifIDf/BLsq3m0RJzBSjimV+fecWQvZAbW9jSOEj
+	Rb5/CrvyaZ9dEQGVYygdYfnO5YVew3cIDMhN+JdVFuFE5xMwBGfByfOfuU3ScS4bqKqyUVoHgTH
+	rD7WWTmAvcUVR6JhZjpgT0Cb4LMegc3X4/Vakj2x5V19AhPO4TROlVi1eTHQWqNPDer0Z7dVzDz
+	WrgPpFhLULXKTpkFirKEOrZUp0pW3eFaRyWjDhFBEwUcnR+fsrqA=
+X-Google-Smtp-Source: AGHT+IGB8DmohHMW6msrYhaVF5l2NP3sJ9vRQEvj8ccMXD12u2Tcvi9xVFV6fZ6eicZPf1I2e8+k4g==
+X-Received: by 2002:a5d:5d86:0:b0:3de:8806:ed17 with SMTP id ffacd0b85a97d-3de8806f363mr1024675f8f.25.1756891557690;
+        Wed, 03 Sep 2025 02:25:57 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:599c:af76:2d34:5ced])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b7e50e30asm232866805e9.24.2025.09.03.02.25.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6db6sm335743485e9.2.2025.09.03.02.25.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Sep 2025 02:25:55 -0700 (PDT)
+        Wed, 03 Sep 2025 02:25:57 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
  <ast@fiberby.net>
@@ -68,13 +68,13 @@ Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
  <matttbe@kernel.org>,  David Ahern <dsahern@kernel.org>,  Chuck Lever
  <chuck.lever@oracle.com>,  netdev@vger.kernel.org,
   linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/3] netlink: specs: fou: change
- local-v6/peer-v6 check
-In-Reply-To: <20250902154640.759815-2-ast@fiberby.net>
-Date: Wed, 03 Sep 2025 09:32:34 +0100
-Message-ID: <m25xe00wd9.fsf@gmail.com>
+Subject: Re: [PATCH net-next v2 2/3] tools: ynl-gen: use macro for binary
+ min-len check
+In-Reply-To: <20250902154640.759815-3-ast@fiberby.net>
+Date: Wed, 03 Sep 2025 09:52:11 +0100
+Message-ID: <m21pon2a10.fsf@gmail.com>
 References: <20250902154640.759815-1-ast@fiberby.net>
-	<20250902154640.759815-2-ast@fiberby.net>
+	<20250902154640.759815-3-ast@fiberby.net>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -87,16 +87,15 @@ Content-Transfer-Encoding: quoted-printable
 
 Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net> writes:
 
-> While updating the binary min-len implementation, I noticed that
-> the only user, should AFAICT be using exact-len instead.
+> This patch changes the generated min-len check for binary
+> attributes to use the NLA_POLICY_MIN_LEN() macro, thereby the
+> generated code supports strict policy validation.
 >
-> In net/ipv4/fou_core.c FOU_ATTR_LOCAL_V6 and FOU_ATTR_PEER_V6
-> are only used for singular IPv6 addresses, and there are AFAICT
-> no known implementations trying to send more, it therefore
-> appears safe to change it to an exact-len policy.
+> With this change TypeBinary will always generate a NLA_BINARY
+> attribute policy.
 >
-> This patch therefore changes the local-v6/peer-v6 attributes to
-> use an exact-len check, instead of a min-len check.
+> This doesn't change any currently generated code, as it isn't
+> used in any specs currently used for generating code.
 >
 > Signed-off-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
 
