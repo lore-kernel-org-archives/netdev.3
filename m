@@ -1,83 +1,94 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7730A2D63F1
-	for <netdev@vger.kernel.org>; Wed,  3 Sep 2025 06:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F86619F12A;
+	Wed,  3 Sep 2025 06:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756881054; cv=none; b=UFThzamuS73monpOhiTwRtaOy/gR/aYAhDKRfDbOc992/5czgkiKlzRV0K95FWOo6nQ1GBuHz75uZsykpiVbmqZ4AcFlLutcpmZV1SjYIcn8XQJBOxWLW13yrsH3FkFUJPvXcDHiit4iY2EIT/HkcOEm4m0LhVz25fU9RvJX6P0=
+	t=1756881085; cv=none; b=hQ5Tbw95gCqROuaRFarDcnoom5KT3Zf+mjE1B4pR9HZ5HXF9dbePtzvB5q0s9v4BUAjf6+ygRb/RoUmJQOWhEIu8s79DlygQS5amGWZff1j4U9WBq2k0rlFeLJojBzLsSEbkLdW6zQV2kXMK/LVYu/6+loHslugTdv+P7j12Cq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756881054; c=relaxed/simple;
-	bh=+ICxwKK6hJFsowULuFqAsADj1Gm0liG53o2aXB3V6Y0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G9lU5TsGWbjyaYLfg7qEwlfzxIojfAhQL2mjGXdzeGRgjCBEyqPE6fCm8JiRrUbtqB1tm2h/I0e+xYgWdhv7KVG2OPW3/47Nywa0Jaq3WejHnyb8Gnlx2Y7Ptd1XlLVxd3MInuptFlP6kTunw4A4ecbbRwRnn5XX7SLrRlgGokY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=x6Mrn56C; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1756881085; c=relaxed/simple;
+	bh=cIELB+MKUdfwCBYdZmaI1Sg0mQcM3EneIgaB0hQZ4GI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gu5a5/+oAIr13Zp8/loUKaAvmAmOWTkEAK0R81r9MOZu1/ruUja428nVMCWuRO9/uwby/m4+4vNbHQbWssenU2QHqyzSqEuLRleFxmWC/gqs50YUHp85l7QaLi4epy4lIzLY77wnN3tvvBoEcvOyif/5qkmuWS8OI7KAQkvpHS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pE15uslG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="x6Mrn56C"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 4BAF6207BE;
-	Wed,  3 Sep 2025 08:21:18 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 8R07tqQ_LjyP; Wed,  3 Sep 2025 08:21:17 +0200 (CEST)
-Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 7E7452067A;
-	Wed,  3 Sep 2025 08:21:17 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7E7452067A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1756880477;
-	bh=LYLk/SvVcJ1awk3BtWRCyyHMoamJhFsBcefhJ2ZKgPs=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=x6Mrn56Cr73DKgtJZ62fpHmvGEhFOxWORUEdLTPmUiHrgn3i1d+mzXkDKNgBuDYwU
-	 jfghVRd8KZceXqZbrJm8Pr816mrQwR1/YU3nlhAzdhm7ESopcitfX8YNCPO/MweoRH
-	 Ybv1s89C8Jua+frhdzSNWLdxcOPOHVQEZw12oqqsfYhc7LJOFBxrvJ+Fmtvj/ZcFm4
-	 vr0HQoGQV2OwB6+gh5V81+ADN/siwmJp8rzWIQWLz9AeBe4JgwTNp/oMRozLFW5NRy
-	 oiWSeKvgPyTB4YSuu7fZQxmjZbNb5+gqV7/R6MwBqONIk9xFA4qub3xztODZboPRQN
-	 zpWLTKxUc+Ttw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Wed, 3 Sep
- 2025 08:21:16 +0200
-Received: (nullmailer pid 1666869 invoked by uid 1000);
-	Wed, 03 Sep 2025 06:21:16 -0000
-Date: Wed, 3 Sep 2025 08:21:16 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, Aakash Kumar S <saakashkumar@marvell.com>,
-	<herbert@gondor.apana.org.au>,
-	<syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com>
-Subject: Re: [PATCH ipsec] xfrm: xfrm_alloc_spi shouldn't use 0 as SPI
-Message-ID: <aLfeXFePeKjLPwaN@secunet.com>
-References: <b7a2832406b97f48fbfdffc93f00b7a3fd83fee1.1756457310.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pE15uslG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036DDC4CEF0;
+	Wed,  3 Sep 2025 06:31:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756881085;
+	bh=cIELB+MKUdfwCBYdZmaI1Sg0mQcM3EneIgaB0hQZ4GI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pE15uslGjgt6cRA32qLrkZ5BmKnuqz5OD/ScbGYJfIMO6wb3gVqZZUm/xT3OTU43g
+	 sYa/QsOyzKVq9qkazDT02S3mRNWOlNGbDAy38o869+buum74U+mTEPuv+XA84PQDrr
+	 Al3b0uxOJz2D+cWvatzNtFWheFiFAmcFk1Dc3KBKp22yC7NRv8B28rA+GyenGkvkwx
+	 HB/nd7KfW0mohODmik/WwxrjksDWBwE/Gp8dKWsYiZ5b/948+kjFLjTnI9eLK7qlVh
+	 Rur1AgNilvBznCgU2dHc9mtQAzegrz2BDf8QkSDbFBmuTLsQXYzx9px0CnHhuinxVA
+	 1NaEduWZuThsA==
+From: Saeed Mahameed <saeed@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	linux-rdma@vger.kernel.org,
+	Leon Romanovsky <leonro@nvidia.com>,
+	netdev@vger.kernel.org,
+	mbloch@nvidia.com,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Daniel Zahka <daniel.zahka@gmail.com>,
+	Raed Salem <raeds@nvidia.com>
+Subject: [GIT PULL] mlx5 PSP IFC bits
+Date: Tue,  2 Sep 2025 23:30:49 -0700
+Message-ID: <20250903063050.668442-1-saeed@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <b7a2832406b97f48fbfdffc93f00b7a3fd83fee1.1756457310.git.sd@queasysnail.net>
-X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
- EXCH-01.secunet.de (10.32.0.171)
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 29, 2025 at 10:54:15AM +0200, Sabrina Dubroca wrote:
-> x->id.spi == 0 means "no SPI assigned", but since commit
-> 94f39804d891 ("xfrm: Duplicate SPI Handling"), we now create states
-> and add them to the byspi list with this value.
-> 
-> __xfrm_state_delete doesn't remove those states from the byspi list,
-> since they shouldn't be there, and this shows up as a UAF the next
-> time we go through the byspi list.
-> 
-> Reported-by: syzbot+a25ee9d20d31e483ba7b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=a25ee9d20d31e483ba7b
-> Fixes: 94f39804d891 ("xfrm: Duplicate SPI Handling")
-> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-Applied, thanks a lot Sabrina!
+Hi Jakub, Jason,
+
+This PR has a single patch to add mlx5_ifc PSP related capabilities structures
+and HW definitions needed for PSP support in mlx5.
+
+Link: https://lore.kernel.org/netdev/20250828162953.2707727-1-daniel.zahka@gmail.com/
+
+Please pull and let me know if there's any problem.
+
+The following changes since commit 40653f280b2640e5caa94eeedee43e0f1df97704:
+
+  {rdma,net}/mlx5: export mlx5_vport_get_vhca_id (2025-08-15 12:17:47 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mellanox/linux.git tags/mlx5-psp-ifc
+
+for you to fetch changes up to 04a3134f88a4bd03001a3093144819523cfca99e:
+
+  net/mlx5: Add PSP capabilities structures and bits (2025-09-02 23:08:13 -0700)
+
+----------------------------------------------------------------
+mlx5 PSP IFC bits
+
+----------------------------------------------------------------
+
+Saeed Mahameed (1):
+  net/mlx5: Add PSP capabilities structures and bits
+
+ drivers/net/ethernet/mellanox/mlx5/core/fw.c  |  6 ++
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  1 +
+ .../mellanox/mlx5/core/steering/hws/definer.c |  2 +-
+ include/linux/mlx5/device.h                   |  4 +
+ include/linux/mlx5/mlx5_ifc.h                 | 95 ++++++++++++++++++-
+ 5 files changed, 103 insertions(+), 5 deletions(-)
+
+-- 
+2.50.1
+
