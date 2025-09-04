@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359172DA762;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3598D2DA774;
 	Thu,  4 Sep 2025 22:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023409; cv=none; b=EE0eI6xncrbgPZJBkROPjiYzvNfpb3vapXZryA1sZQF4HklJNrKMCHpZhocMPtjJc1qQthrnzqOItqcjExEkm1prS5SvCtnwbec9x4I/RlH/tiHREb/HjCgkDtDQrMn0tFzOp97wTf0A7mToMcLiMN2jjES72Kly9FfnyFPcl6s=
+	t=1757023409; cv=none; b=MPvWtJtUppYrxgA3BhTRDpWLQPzuN5pDZOhqHV/Hn82cmrfMpmC5xUbYPlX9oAxI1IW8p5qlrOLVHobr57SZx0x8WfOcBkMoroS7WDvMqzJ5eB1krBu3ZCRJL12vTLdfGCEwxOCOpEtoeu9uNBQZmtyiYYujyXVOSA2Y1PwRKNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757023409; c=relaxed/simple;
-	bh=woEk/16zCB9jjHSN1udeBatbeBvJgoxHXprMMI53ihc=;
+	bh=kMqU8o5gtS6cIF/f8unFSWXSRJW30XLyBCaK0+2pFYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q+7XkkGXttnT2uIFel9rRFAxwl7qQ10D0VPMMnGeyvaysj2diOsKgF22rv4hKSsdA16TmoBZxYi9Ir+fem0K3+zDjMgF0loBvzLnQg3THi7kSiEh0Q79kmr9IR1RbyTV302hOFB+Ml7V/PrUBviCyCGO8ok8sl1GffDaJCJoRVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=XE/rTpN7; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=h4P0XVv5+3PYnLPyISIRnzqkL7yxeU5xEObYVWWfKl4ymRmfLp0KedsrCfQfUWjED3JPOHCBLapcUDPuWRp20BTfnX3aOkilS5poYdJUBnV2RVqz45axEzFbdazXv8tQSC44zcNhnUwg/6/skNS0lC6U4l/LTMGK6bPxAyTLRF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=fJgHVluk; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="XE/rTpN7"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="fJgHVluk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=woEk/16zCB9jjHSN1udeBatbeBvJgoxHXprMMI53ihc=;
+	bh=kMqU8o5gtS6cIF/f8unFSWXSRJW30XLyBCaK0+2pFYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XE/rTpN7VLhgQuFEIcL6E38F7Pq9/zT1Rj7/1sn7TxmqFL/bFFgsHw0iJZ/QlT8HR
-	 VUftYk/VeK/pWug1iMzy4bu99rseXHqIQayQRiltlovm+LeCSV2bUMXU981bFFP4Ml
-	 w4b4FgdBEoRPBQ5HRq1wxjWFPI9kZaOcwlvFfWyt6VQkzrqcxsh/ifwt3ubiaYCYe1
-	 Q9g0KVZqdks2ANkFDARXDFteUih6AVuOcPHoXeQ78nUHX8ex6wHLR7gkuqocQm97Au
-	 wpx6gX3jSZ7oNQM7OrIqYlF5ERaFr79ao6aSnvviUBQuoORPo3pc3v6Vd7ggzlqggk
-	 KIMoTR2040Iow==
+	b=fJgHVlukhZI9GWZafrg2HpZI0hOJlvBVMyvyhCgUJmf/nMNU6KQ8q9aK1yv9s0MY/
+	 oijR0ZBs3qfz6ACDt8H0XHVYYKKZXICNL5SaEer62z+2khoXo5HNzpHeVPXb0Np8mQ
+	 ygK18YgAiKU+FlU659aSmCPatGd8Q7/A9BbJn4OyhmN6R5xStpCF4DFQ5WQDOyvAdJ
+	 Lm4Hm4e+sfGig/I53USQSIgxxTDo9nPWqURQ+aChL2OZiSQVGYv/J+rUrCQ5ONuO4f
+	 /ZWiGHDpw0FIFAXg4TXMOGh8Y/CUfVf5S2hyg/jV5URwNDUKvvR4tpcu5JQbUux9jY
+	 1YQvJyT/wO6kA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 937A6600C4;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 90D8960078;
 	Thu,  4 Sep 2025 22:03:11 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id D6A5C202775; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
+	id 90E5D202AC7; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,12 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 09/11] tools: ynl: encode indexed-array
-Date: Thu,  4 Sep 2025 22:01:32 +0000
-Message-ID: <20250904220156.1006541-9-ast@fiberby.net>
+Subject: [RFC net-next 09/14] wireguard: netlink: convert to split ops
+Date: Thu,  4 Sep 2025 22:02:43 +0000
+Message-ID: <20250904220255.1006675-9-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
-References: <20250904-wg-ynl-prep@fiberby.net>
+In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
+References: <20250904-wg-ynl-rfc@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,56 +60,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch adds support for encoding indexed-array
-attributes with sub-type nest in pyynl.
+This patch converts wireguard from using legacy struct genl_ops
+to struct genl_split_ops, by applying the same transformation
+as genl_cmd_full_to_split() does.
+
+WGDEVICE_A_MAX is swapped for WGDEVICE_A_PEERS, which is
+currently equivalent and is what ynl-gen would generate.
+
+This is an incremental step towards adopting netlink policy
+code generated by ynl-gen.
+
+This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/wireguard/netlink.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index 4928b41c636a..a37294a751da 100644
---- a/tools/net/ynl/pyynl/lib/ynl.py
-+++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -564,6 +564,11 @@ class YnlFamily(SpecFamily):
-             nl_type |= Netlink.NLA_F_NESTED
-             sub_space = attr['nested-attributes']
-             attr_payload = self._add_nest_attrs(value, sub_space, search_attrs)
-+        elif attr['type'] == 'indexed-array' and attr['sub-type'] == 'nest':
-+            nl_type |= Netlink.NLA_F_NESTED
-+            sub_space = attr['nested-attributes']
-+            attr_payload = self._encode_indexed_array(value, sub_space,
-+                                                      search_attrs)
-         elif attr["type"] == 'flag':
-             if not value:
-                 # If value is absent or false then skip attribute creation.
-@@ -617,6 +622,9 @@ class YnlFamily(SpecFamily):
-         else:
-             raise Exception(f'Unknown type at {space} {name} {value} {attr["type"]}')
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index 5dae2aa51346..1311f64d9fcf 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -614,29 +614,31 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
+ 	return ret;
+ }
  
-+        return self._add_attr_raw(nl_type, attr_payload)
-+
-+    def _add_attr_raw(self, nl_type, attr_payload):
-         pad = b'\x00' * ((4 - len(attr_payload) % 4) % 4)
-         return struct.pack('HH', len(attr_payload) + 4, nl_type) + attr_payload + pad
+-static const struct genl_ops genl_ops[] = {
++static const struct genl_split_ops wireguard_nl_ops[] = {
+ 	{
+ 		.cmd = WG_CMD_GET_DEVICE,
+ 		.start = wg_get_device_start,
+ 		.dumpit = wg_get_device_dump,
+ 		.done = wg_get_device_done,
+-		.flags = GENL_UNS_ADMIN_PERM
++		.policy = device_policy,
++		.maxattr = WGDEVICE_A_PEERS,
++		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DUMP,
+ 	}, {
+ 		.cmd = WG_CMD_SET_DEVICE,
+ 		.doit = wg_set_device,
+-		.flags = GENL_UNS_ADMIN_PERM
++		.policy = device_policy,
++		.maxattr = WGDEVICE_A_PEERS,
++		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	}
+ };
  
-@@ -628,6 +636,15 @@ class YnlFamily(SpecFamily):
-                                            sub_attrs)
-         return attr_payload
+ static struct genl_family genl_family __ro_after_init = {
+-	.ops = genl_ops,
+-	.n_ops = ARRAY_SIZE(genl_ops),
++	.split_ops = wireguard_nl_ops,
++	.n_split_ops = ARRAY_SIZE(wireguard_nl_ops),
+ 	.resv_start_op = WG_CMD_SET_DEVICE + 1,
+ 	.name = WG_GENL_NAME,
+ 	.version = WG_GENL_VERSION,
+-	.maxattr = WGDEVICE_A_MAX,
+ 	.module = THIS_MODULE,
+-	.policy = device_policy,
+ 	.netnsok = true
+ };
  
-+    def _encode_indexed_array(self, vals, sub_space, search_attrs):
-+        attr_payload = b''
-+        nested_flag = Netlink.NLA_F_NESTED
-+        for i, val in enumerate(vals):
-+            idx = i | Netlink.NLA_F_NESTED
-+            val_payload = self._add_nest_attrs(val, sub_space, search_attrs)
-+            attr_payload += self._add_attr_raw(idx, val_payload)
-+        return attr_payload
-+
-     def _get_enum_or_unknown(self, enum, raw):
-         try:
-             name = enum.entries_by_val[raw].name
 -- 
 2.51.0
 
