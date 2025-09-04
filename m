@@ -1,65 +1,65 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EC72E8B73
-	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 22:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FEF2E8E00
+	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 22:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757024415; cv=none; b=AyYa62UpgNLhN2gYMkR1jEutpna9W2aMtJJ5/I7W4Q+tPtXKiNASzMdP6/OHUbQ3a7Y0EIUbLZen/rgGJ32YHsfavcSQV05peHqpqlKhHgAerczSNw1re7pLtlxleSpHQCC+YdMlRCh7CZTFDysx4GSrMrbWu3aoYvlYj2LFebg=
+	t=1757024416; cv=none; b=rPh/AYZd2kkNukdHiuv14PTmUuvSsdB8hcVJ8EKQh4FhwwniyM0Zhi7zXNO4X4yEjKEge5DJfm4V6B4UJLo0C41XXvYXuX/zyWei4Zf47SYKfBMixyX3GQVarFA7o9tut2x8NqPxS1wkrtAnqiIkhsSb5YJ4OGwYhQHXGeTl7jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757024415; c=relaxed/simple;
-	bh=MQKjuBZ9jF0mckpOwYWgkpLyoNZW3UsQBW37YZIQ/NA=;
+	s=arc-20240116; t=1757024416; c=relaxed/simple;
+	bh=h9Tp96V2m+jDdf0BMXdL59jsza5VkcjQbLFOf5wWQic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd+qQa8ghHOnyl9r2K4YJT8n2gDKZis02Eg4TitCUmGJwkcokI+KbFDeLXTZWT/ETjRqkhZ7n+X+4XH/JXRFyACO+XAvJ2i5mN6mLom6tikhiltqLePKvfGtk843iewuVRs5PVLmI3KGC/AmmG8XBbV+6ya+p733SLf5MuB1D+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FLwwBMAi; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=rAhVKVh5JjjWjn+LQDqU85DoK8JNHaG1zDLPZWmxioJxKQ6HhyVYXoVOeoLtgYjQK7g1W5oCoAbU5Cn2UWgpJVWfie20WlIz1YHBhrujsgq179hQ0FFZRPFBvslpcXJiPXH838TVMnjVPr2vLtaO42iKI+VpKirTm2YtWkVEBSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QEpuKS5Q; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FLwwBMAi"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584Cut4s004664;
-	Thu, 4 Sep 2025 22:20:05 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QEpuKS5Q"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584DZcnb005329;
+	Thu, 4 Sep 2025 22:20:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=krOeWezkgS9V/GW/N
-	Rvt9U0ACSBl0zTg6ypjslaJSJA=; b=FLwwBMAieZtu1Y7PAtb+H8P+tTZM7PyHD
-	iTm/BSRVJ/pLW7K6MDWt9hwocCsixbcM2nGRY1Q1OgCVRz2JaJ1B9FCEFCarDC78
-	mLJf2M3KZZOV6Vo4dj9XpOL/waUg6YyqoqNIq6uXz8cDoKmvIdVXo+I7zUs/Ipoi
-	its575FznKTSgPbifEJN/T8GEBxlhMMb5Iz9R7yAy6NRVdfYaCyOKCZlE1F8O0nI
-	SaYYa0cpZKJXBeuWS8bHYSgN685VNxXodkpybHmw8AwdPTt7EFAYXDqeAtF/AF1P
-	icKMLswgNJihv6zlGy4CtyhyduLTb9j7iS7FwlMIs32H2Xy7KU4mw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usuacbx1-1
+	:mime-version:references:subject:to; s=pp1; bh=1jn0RXlf82CnENqB/
+	D5u221a6E2Fb2IGybu5+NtxIW8=; b=QEpuKS5QxSQRWlSEbMTFr0bEB6+zfKeTc
+	BJAImmnuEvx5zhee4v4AbMd6N2pu1V+CDzDXsBRNkVYdT8tzrFTRL4LgbA3bIq+1
+	Gq7ngxNy/rJU3V8cKdYcnkmSJNFE/m4scBfYMgQbj8IjDu1rY5WH/UKNwuoVt3Ni
+	QrmMHVDDjK0Fb9LYD11K3rw8W4BcEW8Uo6qOUcxQjeGJsIR7pkqKFTWqh7t31Ie/
+	MOqjzCW5xrF/khW9+4m0xDzXooTVoTYJRb/ptkcW4EiNlUBdUg0TZQ+AueHmZ0UY
+	2orFOFQKKLYfyu1QIe9KgbIJC63MQc6LFNxgpgHWndIoBOfHcuedw==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usvg4ets-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 22:20:04 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 584J1bju019412;
-	Thu, 4 Sep 2025 22:20:04 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vd4n6jmt-1
+	Thu, 04 Sep 2025 22:20:07 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 584Kksmh009059;
+	Thu, 4 Sep 2025 22:20:06 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48vdumpg5n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 22:20:04 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584MK0sr31720182
+	Thu, 04 Sep 2025 22:20:06 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584MK3BR30736944
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Sep 2025 22:20:01 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C306D58050;
-	Thu,  4 Sep 2025 22:20:00 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7665258045;
-	Thu,  4 Sep 2025 22:20:00 +0000 (GMT)
+	Thu, 4 Sep 2025 22:20:03 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F7365804E;
+	Thu,  4 Sep 2025 22:20:03 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5391A5803F;
+	Thu,  4 Sep 2025 22:20:03 +0000 (GMT)
 Received: from localhost (unknown [9.61.141.209])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Sep 2025 22:20:00 +0000 (GMT)
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Sep 2025 22:20:03 +0000 (GMT)
 From: David Wilder <wilder@us.ibm.com>
 To: netdev@vger.kernel.org
 Cc: jv@jvosburgh.net, wilder@us.ibm.com, pradeeps@linux.vnet.ibm.com,
         pradeep@us.ibm.com, i.maximets@ovn.org, amorenoz@redhat.com,
         haliu@redhat.com, stephen@networkplumber.org, horms@kernel.org
-Subject: [PATCH net-next v10 2/7] bonding: Adding extra_len field to struct bond_opt_value.
-Date: Thu,  4 Sep 2025 15:18:20 -0700
-Message-ID: <20250904221956.779098-3-wilder@us.ibm.com>
+Subject: [PATCH net-next v10 5/7] bonding: Update to bond_arp_send_all() to use supplied vlan tags
+Date: Thu,  4 Sep 2025 15:18:23 -0700
+Message-ID: <20250904221956.779098-6-wilder@us.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250904221956.779098-1-wilder@us.ibm.com>
 References: <20250904221956.779098-1-wilder@us.ibm.com>
@@ -71,75 +71,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: q-6V25wu5bvbx0E1aP4ElAIiUWe_qaT3
-X-Authority-Analysis: v=2.4 cv=U6uSDfru c=1 sm=1 tr=0 ts=68ba1095 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=zofNYPC-ylGwukCjRwUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX0aPLcFmx/Cr3
- in/jA9Z4IPyDgNO7ftFr6dEDFSGCivpHOTq9ootu0zgr7WFSTj3Z455eujTdOjbjJ2rJwCQPN4C
- ycINT3s6DRgEGJuoHJZzghdIW741dFGIVknlt8MGjK/txVvdMeI2yXnI86zT9WB9eXK2T0gYXVS
- C+N6RpkMxL4Y51gtSjDMofyAxW62UH+l3u4cxnsMWwNwt/PysWwZO4AMU0Gpbde2lhApm+kPVwB
- quGRzSi7lWFeTojF1jPVTZJ6Q+kxWkE6zqNNBJnazFTMVbLm6OVaynTElQE02ev1WLX9mqdDdYI
- 87sGvK4HRq+kepYz3igRPfLX2KXoj92kjjbVjVuvRCU5189XREk9gA8rbEHxCu9Tj86lQmXIpY+
- rxXtFzNM
-X-Proofpoint-ORIG-GUID: q-6V25wu5bvbx0E1aP4ElAIiUWe_qaT3
+X-Authority-Analysis: v=2.4 cv=behrUPPB c=1 sm=1 tr=0 ts=68ba1097 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=ZKn5ET9WYz78Zcf0JJ0A:9
+X-Proofpoint-ORIG-GUID: 64aKZt19XMyfDCaS9ZI2i_Vmm8auiuCt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfXzJXQQJvBN/cY
+ Q8dJd8oNejTMT/UuaiFWw9wcL7/4P+n9f0AL2HldDmjD6aTqamDARmw6k7THZ3KbqHNEvuw1GiX
+ rAfnM4NwnoxaORwdhzxHBVQpOK/46nxnjpLyYDMpDXy1fRjPrO8UR18wZidMe6y3Xr5lehoXaK7
+ FBxClsKrYfQgzAxvm5XKK4RCq3SowD5MFTuiUFx1qow/9Lk/95j3Bo8cnMODxSVJKdjxW/nIKPi
+ GXHYdfCUoQJ4VF2t5cAPBysrV1ux48ehMJMbiNu/bH5veRYmxSmuoz45oLO9qQ0nckht07CcVBX
+ usKEP4uWNR3YDPz+XlohV2RDvi/waweQgb3fr40eUDDaJcEDRRUwvMSgXAjRN1i93OJ8QScJFhr
+ Y8Y1DfnW
+X-Proofpoint-GUID: 64aKZt19XMyfDCaS9ZI2i_Vmm8auiuCt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-04_07,2025-09-04_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 adultscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0
+ malwarescore=0 impostorscore=0 spamscore=0 clxscore=1015 phishscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
 
-Used to record the size of the extra array.
+bond_arp_send_all() will pass the vlan tags supplied by
+the user to bond_arp_send(). If vlan tags have not been
+supplied the vlans in the path to the target will be
+discovered by bond_verify_device_path(). The discovered
+vlan tags are then saved to be used on future calls to
+bond_arp_send().
 
-__bond_opt_init() is updated to set extra_len.
-BOND_OPT_EXTRA_MAXLEN is increased from 16 to 64.
-
-This is needed for the extended  arp_ip_target option.
-The ip command will now pass a variable length value when
-setting arp_ip_target.
+bond_uninit() is also updated to free vlan tags when a
+bond is destroyed.
 
 Signed-off-by: David Wilder <wilder@us.ibm.com>
 ---
- include/net/bond_options.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/bonding/bond_main.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/include/net/bond_options.h b/include/net/bond_options.h
-index b7f275bc33a1..7d22bbe67121 100644
---- a/include/net/bond_options.h
-+++ b/include/net/bond_options.h
-@@ -86,14 +86,15 @@ enum {
-  * - if value != ULLONG_MAX -> parse value
-  * - if string != NULL -> parse string
-  * - if the opt is RAW data and length less than maxlen,
-- *   copy the data to extra storage
-+ *   copy the data to extra storage, extra_len is set to the size of data copied.
-  */
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 7548119ca0f3..7288f8a5f1a5 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3063,18 +3063,19 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
  
--#define BOND_OPT_EXTRA_MAXLEN 16
-+#define BOND_OPT_EXTRA_MAXLEN 64
- struct bond_opt_value {
- 	char *string;
- 	u64 value;
- 	u32 flags;
-+	size_t extra_len;
- 	union {
- 		char extra[BOND_OPT_EXTRA_MAXLEN];
- 		struct net_device *slave_dev;
-@@ -168,8 +169,10 @@ static inline void __bond_opt_init(struct bond_opt_value *optval,
- 	else if (string)
- 		optval->string = string;
+ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
+ {
+-	struct rtable *rt;
+-	struct bond_vlan_tag *tags;
+ 	struct bond_arp_target *targets = bond->params.arp_targets;
++	char pbuf[BOND_OPTION_STRING_MAX_SIZE];
++	struct bond_vlan_tag *tags;
+ 	__be32 target_ip, addr;
++	struct rtable *rt;
+ 	int i;
  
--	if (extra && extra_len <= BOND_OPT_EXTRA_MAXLEN)
-+	if (extra && extra_len <= BOND_OPT_EXTRA_MAXLEN) {
- 		memcpy(optval->extra, extra, extra_len);
-+		optval->extra_len = extra_len;
-+	}
+ 	for (i = 0; i < BOND_MAX_ARP_TARGETS && targets[i].target_ip; i++) {
+ 		target_ip = targets[i].target_ip;
+ 		tags = targets[i].tags;
+ 
+-		slave_dbg(bond->dev, slave->dev, "%s: target %pI4\n",
+-			  __func__, &target_ip);
++		slave_dbg(bond->dev, slave->dev, "%s: target %s\n", __func__,
++			  bond_arp_target_to_string(&targets[i], pbuf, sizeof(pbuf)));
+ 
+ 		/* Find out through which dev should the packet go */
+ 		rt = ip_route_output(dev_net(bond->dev), target_ip, 0, 0, 0,
+@@ -3096,9 +3097,13 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
+ 		if (rt->dst.dev == bond->dev)
+ 			goto found;
+ 
+-		rcu_read_lock();
+-		tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
+-		rcu_read_unlock();
++		if (!tags) {
++			rcu_read_lock();
++			tags = bond_verify_device_path(bond->dev, rt->dst.dev, 0);
++			/* cache the tags */
++			targets[i].tags = tags;
++			rcu_read_unlock();
++		}
+ 
+ 		if (!IS_ERR_OR_NULL(tags))
+ 			goto found;
+@@ -3114,7 +3119,6 @@ static void bond_arp_send_all(struct bonding *bond, struct slave *slave)
+ 		addr = bond_confirm_addr(rt->dst.dev, target_ip, 0);
+ 		ip_rt_put(rt);
+ 		bond_arp_send(slave, ARPOP_REQUEST, target_ip, addr, tags);
+-		kfree(tags);
+ 	}
  }
- #define bond_opt_initval(optval, value) __bond_opt_init(optval, NULL, value, NULL, 0)
- #define bond_opt_initstr(optval, str) __bond_opt_init(optval, str, ULLONG_MAX, NULL, 0)
+ 
+@@ -6047,6 +6051,7 @@ static void bond_uninit(struct net_device *bond_dev)
+ 	bond_for_each_slave(bond, slave, iter)
+ 		__bond_release_one(bond_dev, slave->dev, true, true);
+ 	netdev_info(bond_dev, "Released all slaves\n");
++	bond_free_vlan_tags(bond->params.arp_targets);
+ 
+ #ifdef CONFIG_XFRM_OFFLOAD
+ 	mutex_destroy(&bond->ipsec_lock);
+@@ -6633,7 +6638,6 @@ static void __exit bonding_exit(void)
+ 
+ 	bond_netlink_fini();
+ 	unregister_pernet_subsys(&bond_net_ops);
+-
+ 	bond_destroy_debugfs();
+ 
+ #ifdef CONFIG_NET_POLL_CONTROLLER
 -- 
 2.50.1
 
