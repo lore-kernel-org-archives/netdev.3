@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70F52D6E65;
-	Thu,  4 Sep 2025 22:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A872C275B0A;
+	Thu,  4 Sep 2025 22:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023407; cv=none; b=YnxUituVbhC3YtpWeE8TMN4HpHQhP8f4fxF86BnheSP5TQgbrGrUjcQXv8d/U+JGPmNSc39ZO7TwPC3RNKwX3p8H+O+w9ohbzjRrtOyGhtqz6hJ8RzPGfw3ZhOnvXxTyHCdRq88I8TMl3qi2BrP9M5hiadoIkCOwQx5IE0/RQBI=
+	t=1757023408; cv=none; b=VsbzOB/gf3nMySB2iWYBpBxU668xuhXvgSxfXdivN2VT+6W5aov0tR0DoWwc09vpLvPin7y2nXEZkgOl6o58tQ8CR98Ply0EqpRlYTyYcdCYgSxRi5rUYYXbg9TNmFY6NR41MWsoWGaDbMYRyy1YUfSYFCKIuHVvL8VrhVSoiPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023407; c=relaxed/simple;
-	bh=O56nXG2PIp67W8RUpsWeXklMaE5M2YiL8OY2yAjHgps=;
+	s=arc-20240116; t=1757023408; c=relaxed/simple;
+	bh=ODj6RhlwRxLTGLnRhQ5eS3l2jrWo/SBLLtOAG4EVhhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q3ctWrg8Z6oLLkEO/Gpe+I5lCe+ACuA2q6/a9Hi9SuENkg7ZSKupHKa1rLhCH5CT8FieCtBf9HYLFnfjfcIL4Nj/cLfK3vx/D1Qfiv927upDI+kgz2Bwj6ujcxI5KcWfJ5Ioa7oE69NL2925WI5z6pHGQpuByvQrocO6KnpmWOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=XloSlDjE; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=Uhhr+UYgehm2fkLgL22FoXno5c+to8MxMRy0eU3WvmFN0SBV1hwbOKQ06rKW2gHOV6/Ps3boT6mdJz9pJhC9ovm8YdgwP8IJZwC37Rjly4ooTAFlg7+alxcqtd9IH8HfbaAZlfcKpZScp5i9us1Y2ZaL75XrtO7CMMyb+q6ZEno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=P7lKnSX6; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="XloSlDjE"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="P7lKnSX6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=O56nXG2PIp67W8RUpsWeXklMaE5M2YiL8OY2yAjHgps=;
+	bh=ODj6RhlwRxLTGLnRhQ5eS3l2jrWo/SBLLtOAG4EVhhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XloSlDjEBfE2ov65mZY/AkKPSo8kum75TAV4IiZZE6y5QRyHv5Dk8rAYHMRXHnyLA
-	 qVz2l8xCdaRTtTwagNLF7OThfqUc10i3jVVPHCUeA0HaZJQky15k34ZfyqyCFgVDJu
-	 Jx3yC2D7pIzCni86ZFcqy5j0+tTqNxDuC+L77XBL/ddbjGuNN6T5Wmmkx573n2Xs8R
-	 bTwFVAeCx28MgnOUKMVvjZzWGTQ/qwzkR15shoHcbh1RM1nYbDROzoWpzWsi+r2T+L
-	 OU7GRAgqqzUrMXrcScQmM278fwnL+bNoJUFLPiZxYh7hSPYHJeg2qiigx2VNIMzj+U
-	 2ZJvQLis41ENQ==
+	b=P7lKnSX6zr+/PVcx4vRXprAnAhEYt1+EhLFWZdW91EkGVGscno9bi5T9JkDgNrZhj
+	 XfL6WwYvp8hGf/zxFJbDjMI1+pm4jkGv8ls6PK2K9+iDmfzmj+r0qWNxl56euJwjw5
+	 jnCjRdaEDZGuqNjltbl7EGOwQaWIr6Pkq+CCQpVtNON8n4xiQGl1lpnrwNMyqEW1qE
+	 KQ1rf4/jLJWgnv76XAhol+XjtPzKCmcEX8mNSvjqxRCPgkwaJofxJgGGaLMlkgDutg
+	 29visO5/vmRB9z28F1e1pfjPGTiVVbWbQqER+HJQedLp4izuaAMTFd4WXQbeIBzbCM
+	 glrnhKUhhF18A==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 95E9760128;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 9DE816012E;
 	Thu,  4 Sep 2025 22:03:11 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 84C42202A16; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
+	id 8C1E6201FD8; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,12 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 08/14] uapi: wireguard: generate header with ynl-gen
-Date: Thu,  4 Sep 2025 22:02:42 +0000
-Message-ID: <20250904220255.1006675-8-ast@fiberby.net>
+Subject: [PATCH net-next 01/11] tools: ynl-gen: allow overriding name-prefix for constants
+Date: Thu,  4 Sep 2025 22:01:24 +0000
+Message-ID: <20250904220156.1006541-1-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
-References: <20250904-wg-ynl-rfc@fiberby.net>
+In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
+References: <20250904-wg-ynl-prep@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,109 +60,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Use ynl-gen to generate the UAPI header for wireguard.
+Allow using custom name-prefix with constants,
+just like it is for enum and flags declarations.
 
-Changes in generated header:
-* As __*_F_ALL are not generated by ynl-gen:
-  * All users have been replaced by their current value.
-  * Once the policies are also generated, then the
-    NLA_POLICY_MASK() policies will be kept in sync.
-* Convert the last bit-shifted flag value in enum wgdevice_flag.
-* Trivial include guard rename.
-* Trivial white space changes.
-
-No behavioural changes intended.
+This is needed for generating WG_KEY_LEN in
+include/uapi/linux/wireguard.h from a spec.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c |  6 +++---
- include/uapi/linux/wireguard.h  | 26 +++++++++++---------------
- 2 files changed, 14 insertions(+), 18 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 742d3f88d132..5dae2aa51346 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -24,7 +24,7 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- 	[WGDEVICE_A_IFNAME]		= { .type = NLA_NUL_STRING, .len = IFNAMSIZ - 1 },
- 	[WGDEVICE_A_PRIVATE_KEY]	= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
- 	[WGDEVICE_A_PUBLIC_KEY]		= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
--	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGDEVICE_F_ALL),
-+	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, 1),
- 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
- 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
- 	[WGDEVICE_A_PEERS]		= NLA_POLICY_NESTED_ARRAY(peer_policy),
-@@ -33,7 +33,7 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
- 	[WGPEER_A_PUBLIC_KEY]				= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
- 	[WGPEER_A_PRESHARED_KEY]			= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
--	[WGPEER_A_FLAGS]				= NLA_POLICY_MASK(NLA_U32, __WGPEER_F_ALL),
-+	[WGPEER_A_FLAGS]				= NLA_POLICY_MASK(NLA_U32, 7),
- 	[WGPEER_A_ENDPOINT]				= NLA_POLICY_MIN_LEN(sizeof(struct sockaddr)),
- 	[WGPEER_A_PERSISTENT_KEEPALIVE_INTERVAL]	= { .type = NLA_U16 },
- 	[WGPEER_A_LAST_HANDSHAKE_TIME]			= NLA_POLICY_EXACT_LEN(sizeof(struct __kernel_timespec)),
-@@ -47,7 +47,7 @@ static const struct nla_policy allowedip_policy[WGALLOWEDIP_A_MAX + 1] = {
- 	[WGALLOWEDIP_A_FAMILY]		= { .type = NLA_U16 },
- 	[WGALLOWEDIP_A_IPADDR]		= NLA_POLICY_MIN_LEN(sizeof(struct in_addr)),
- 	[WGALLOWEDIP_A_CIDR_MASK]	= { .type = NLA_U8 },
--	[WGALLOWEDIP_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGALLOWEDIP_F_ALL),
-+	[WGALLOWEDIP_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, 1),
- };
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index fb7e03805a11..1543d4911bf5 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -3211,8 +3211,9 @@ def render_uapi(family, cw):
+             cw.block_end(line=';')
+             cw.nl()
+         elif const['type'] == 'const':
++            name_pfx = const.get('name-prefix', f"{family.ident_name}-")
+             defines.append([c_upper(family.get('c-define-name',
+-                                               f"{family.ident_name}-{const['name']}")),
++                                               f"{name_pfx}{const['name']}")),
+                             const['value']])
  
- static struct wg_device *lookup_interface(struct nlattr **attrs,
-diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
-index 623ec9527e22..b83973aed9f8 100644
---- a/include/uapi/linux/wireguard.h
-+++ b/include/uapi/linux/wireguard.h
-@@ -1,32 +1,28 @@
--/* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR MIT */
--/*
-- * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-- */
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/wireguard.yaml */
-+/* YNL-GEN uapi header */
- 
--#ifndef _WG_UAPI_WIREGUARD_H
--#define _WG_UAPI_WIREGUARD_H
-+#ifndef _UAPI_LINUX_WIREGUARD_H
-+#define _UAPI_LINUX_WIREGUARD_H
- 
--#define WG_GENL_NAME "wireguard"
--#define WG_GENL_VERSION 1
-+#define WG_GENL_NAME	"wireguard"
-+#define WG_GENL_VERSION	1
- 
--#define WG_KEY_LEN 32
-+#define WG_KEY_LEN	32
- 
- enum wgdevice_flag {
--	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
--	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
-+	WGDEVICE_F_REPLACE_PEERS = 1,
- };
- 
- enum wgpeer_flag {
- 	WGPEER_F_REMOVE_ME = 1,
- 	WGPEER_F_REPLACE_ALLOWEDIPS = 2,
- 	WGPEER_F_UPDATE_ONLY = 4,
--	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
--			 WGPEER_F_UPDATE_ONLY
- };
- 
- enum wgallowedip_flag {
- 	WGALLOWEDIP_F_REMOVE_ME = 1,
--	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
- };
- 
- enum wgdevice_attribute {
-@@ -80,4 +76,4 @@ enum wg_cmd {
- };
- #define WG_CMD_MAX (__WG_CMD_MAX - 1)
- 
--#endif /* _WG_UAPI_WIREGUARD_H */
-+#endif /* _UAPI_LINUX_WIREGUARD_H */
+     if defines:
 -- 
 2.51.0
 
