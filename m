@@ -1,157 +1,162 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2065.outbound.protection.outlook.com [40.107.243.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7692D3731
-	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 17:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757005742; cv=none; b=MoAAWM9vxfgFaNCKQZFN2Z3OfybMWWUQ7PcfmxKYluHJsSBsPcrsvVW0ia2ADlpTtJnkbNDLNm2QLJmPtoZrJn3CaY1Iety/uDclvtjLA9z8ODwJHfucqUvpTBLmLS7c6HuM6juuSGJtuAo29RAivnzXTGnCHTh+xEN1I/orCkE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757005742; c=relaxed/simple;
-	bh=rtVoiEqArhk6jdIIAM0VXZHs2vMtXnbobPVPXnd96Ss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QtViax1w3iMFTynai1RAetnvU2B6w5RW0+o13kSYOflUpFHe7Cw45gh/fMTVfMQSVtMj+OyHtFH9nNJbKfwv0azqEMBfH2tesZ7cGAb1pgShVkyHkSLwoyxCwHTRKKynmmn36VJMdGoshLxlmoymMEhcKEqrR2rwCLn6X7MZ9SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YAs9TejA; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA7A31159A
+	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 17:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757005759; cv=fail; b=hPNXIst77SVmfAC3qQHGUb2lRga42gLt6yJ52oUkzJJf1XzZ2xO8icFZGXMOnKFyDA8jg3h6BlCIkfDmqCp3AWV+mm8H4cDyEhS/B7G34Zxb59xK8SvkytOUu6jax/OdkJP+qz8MsG/Evjgg3SPOxx3FyVb7VfURXTH+0sfihWM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757005759; c=relaxed/simple;
+	bh=smZMWFXkm9EbCnxd+knCVrOQ5uuE+kiC1Dj3lWLPrhI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pW2oI9j/L1O4aYyCoh2qqdthqBHTtv9k7Qi2ZY7NuXDHmHqfzjpDvm+KlY4cNVxKYUmS9GOvuAosaY7t+3CriyqnlZRtd/Lqo/OzVUN1I9MNg7GrLLZYctBOjkyqoMGeV0udkymnnF8E6biGQd+bXiAy0mWRDrhUXwzaTl4z0K0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uO2Bww9Q; arc=fail smtp.client-ip=40.107.243.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YAs9TejA"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-61d14448c22so611a12.1
-        for <netdev@vger.kernel.org>; Thu, 04 Sep 2025 10:09:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757005739; x=1757610539; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9l+BX4BeciP06MlQ3YhBfi/kk7JAIUUCElY1RG7/WT4=;
-        b=YAs9TejA4b4mW7lVC9ebOHUPc/lOxXuZdTCq7mi3GS93GIGAeGLiE/uc2DHbpFr5bC
-         CNyBETR3rxTLUO3Gk7POXXkpJA53uJnmXxb9dG0/aP4O2iGCXZ08eG63MU1RQ2hCZITU
-         de9OJcHSCZGtoY9uh7+lMQvg2Ocu7avUJg+mmpshVpYzOA4OSnIZNrTOXBWQGJvGSigJ
-         svm+m5/LxTOQlpgii4zQ86HyZjrrfginkOj+UN00yoaio3l0QkZTguThj2TaTctY0E2w
-         xs3RZkKttQ0ZJ0DRuz0g4h+ro+mUzfkznU4CyDm4U+KHKi8icbIAYPBmEGW9rx8VcTxS
-         B7YA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757005739; x=1757610539;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9l+BX4BeciP06MlQ3YhBfi/kk7JAIUUCElY1RG7/WT4=;
-        b=nNr0hoa47b7flRavBoJe6mlbCgnGjp+/6MWl7dIZyG1iDoJFToMiByo59pQ18Gtkij
-         rxtCNAHpw+kWK+JlQuxNrxjJ+jGzHsiaqBVu7WZoSnj1NEX3SH+IU6336tA0Cxu0XOJi
-         7due4jZe6PvcJOc7+wlEQG+Gtp1KymArIRW7bnLTLxTuLP/CPJcysXUVthIrWZpz4e6x
-         asjlyK+hdkHZglwkgpNfPgwmgJdnuJgBL+rXWmXK9+xRF7leg9w2+TYDwmSePUQgabbt
-         TiIw7e9EcZkmD42KS6Hz6v7/GYZgrtaxORGjD4EcgK6vS2QmFmfcDK6rXl/SmdiaeEwf
-         +ZXA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIXOj+2GRwjJ/pP/JjFnqi/31LbDdXtJGX4dLP7sbhjE5uyb15a5Oi8fFXRRe/RgUN2HXN4dU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCZik2tsjKixxm+KPmVZGgYotWRnjyTJyeRa7UQMczSIjAFA2w
-	znI9Zos72ovlf99MPGSobsQ0BXAqWffH0YaruwaBPu3pmDTsIsW9/CPZxJgvHHVmBjIHWmtig7q
-	DX70uBQkk6IY9ghKO3u6IJxUkUi7r22WRXX1Qeg3A
-X-Gm-Gg: ASbGncvU9CspxHl/4KPsc8AK4Fo41vJ5W0I6ez4RN914jn8RQOfz3I2ivufwRIlPnsL
-	hOQd2lqwuGn5YR+PQy3hy4gPd28Gk8p9Sn8RnzKcdLE/uhK5ogMRKIJjFmZhkyKs6KEtPsFoJM8
-	p7NkZ+p8ir6/lso2pRu/aUkzMuKSdkBYy58X7uqyfDzmYvh4y8yokVk3N3WIRNVENRdbBx02g1T
-	rS84WG+2n8Ua46c+wDM5rGE3S7EYJY6O+e+pBUxJeUsXTa0qS7ijr5GIiJYVczZX51Bp7EylEOF
-X-Google-Smtp-Source: AGHT+IF2ruMQe+WqyRmQ/okwctanAc23wDnLh4q8x7OzuSo6MwWq8CGCK4IZ++J24eerKVtO/lIr742TQbMqgGEV01E=
-X-Received: by 2002:a50:934f:0:b0:61c:c9e3:18f9 with SMTP id
- 4fb4d7f45d1cf-61f5bd290c7mr71874a12.3.1757005738679; Thu, 04 Sep 2025
- 10:08:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uO2Bww9Q"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HzP1AbdfI3N5xd5uBnYS/RS9u90u7d8U+rz9zTecM7LOeBlWP39it8W+zLnIxWyw4pblrXBOZKRpZ6yxI958cFq7Y2CcNTmatctbdU9jGILR+py+96V7tXGAliE71E98A9IzFQ4S/yXtM8RM7Hh2IQTsKXreXsjopI1vgUTcfuFzBlEy5aEfjPS/0X2VOPzRNdGsRF9BTZvtazjlBPIWTLazrjflQUtaPWU5jVcE0oHKhbkR4iGviGuXp6crSvGaTAcMn2VqVVJfGo7pvFBNJJeHhOdgfmLmGf9wPgScrEhZ1fx820Taef7RAjxudBjm215xldlbCyRKINFbVjmpRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zBpzWITxhJ6Ho06CZMoVbOh2TDLCSpdOfQ/aN7linjE=;
+ b=RV8L65BmfqVuXhF3Qs/Dmna9WU1QAzMADH9k0RyzXwOtaIqWpSpgRJDUoDCtJvGBZwgVMZMSotYFJ7KjeWV6FoZZAtiSnevS7gfc7cEHBYLcvsNQ9K0hxaht3eiOnxfUeCWIlZ6mE9xeABomO+lqS3ubRus+FAIRiNuH/BfgLcW43jduEUt5xk1I18q/dcLxfl95cqZNjnAXbOLlfygd62giw3xx6lgbR4WQ3w+10p0xYg3snt3XdXYzyJDnrSwwr67Sx7sXth6I5ohFwwKJuHQCGfLzsuZwnsNSJrerVvF6p2MlGNj4wNEp4Xoqsg87SIhjw/lFusMBGZJ740boEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zBpzWITxhJ6Ho06CZMoVbOh2TDLCSpdOfQ/aN7linjE=;
+ b=uO2Bww9QcSrWetqllPDiFdobdCACT1ubLabVDSVxsdfJ1TTt3mug1vzVzJ8hX/YPmVFMBIu3dhx/WeuFOmyEW/YRduMNFc3ZqObbluC2tF+t68SfaCwICs3TZgQPxLj+Hf6ELBeHXatsCHZUmuxa3CLfG2TFDKVakOWYAbNvFPqs1kbre8PPt4ULElzACeWXlfDIJBDrRPfe5M2kmPUZ7hYdXQixz66gKaDhhitOpUitmGNfF9/O2uotZe6sgBG51/zkvLeLFFL/sgMdS59p+UqlO3zdTQIWxK79eo5qWej48kk2frasmReRuO/vO9kpq0YVUIZZKdTEn8T/3AJLfw==
+Received: from CH0P221CA0030.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11d::18)
+ by PH7PR12MB6667.namprd12.prod.outlook.com (2603:10b6:510:1a9::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 17:09:11 +0000
+Received: from CH1PEPF0000A349.namprd04.prod.outlook.com
+ (2603:10b6:610:11d:cafe::75) by CH0P221CA0030.outlook.office365.com
+ (2603:10b6:610:11d::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.17 via Frontend Transport; Thu,
+ 4 Sep 2025 17:09:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH1PEPF0000A349.mail.protection.outlook.com (10.167.244.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9094.14 via Frontend Transport; Thu, 4 Sep 2025 17:09:10 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 4 Sep
+ 2025 10:08:51 -0700
+Received: from fedora.docsis.vodafone.cz (10.126.231.35) by
+ rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 4 Sep 2025 10:08:46 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>
+CC: Simon Horman <horms@kernel.org>, Nikolay Aleksandrov
+	<razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
+	<bridge@lists.linux.dev>, Petr Machata <petrm@nvidia.com>, <mlxsw@nvidia.com>
+Subject: [PATCH net-next 01/10] net: bridge: Introduce BROPT_FDB_LOCAL_VLAN_0
+Date: Thu, 4 Sep 2025 19:07:18 +0200
+Message-ID: <ab85e33ef41ed19a3deaef0ff7da26830da30642.1757004393.git.petrm@nvidia.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1757004393.git.petrm@nvidia.com>
+References: <cover.1757004393.git.petrm@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250904015424.1228665-1-marcharvey@google.com> <willemdebruijn.kernel.22c2bf5d2d4f3@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.22c2bf5d2d4f3@gmail.com>
-From: Marc Harvey <marcharvey@google.com>
-Date: Thu, 4 Sep 2025 10:08:46 -0700
-X-Gm-Features: Ac12FXw49kSh6GKY2h7-eXe1I6WZ_M0sYCUqMpP9WWQchylNNQte6QMg8ZJMPxM
-Message-ID: <CANkEMgmYHBw3YA5VBv20Y=BvjAx7a7b=YQfGPtmeFmDHvSauvw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] selftests: net: Add tests to verify team
- driver option set and get.
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: jiri@resnulli.us, andrew+netdev@lunn.ch, edumazet@google.com, 
-	willemb@google.com, maheshb@google.com, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kuba@kernel.org, liuhangbin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A349:EE_|PH7PR12MB6667:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4793a1dd-d7fd-45d3-55d5-08ddebd5c439
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?U9avBdIVqDmsQOrzpLwt6QH/v5yLmDN1xW03a/wKpaZ6+5egjRzjMZVs0Qfh?=
+ =?us-ascii?Q?WBlGpiPTG2YT/v81fASMFDSv3WB0B2AJNaql3uOQejGWMBKKqBKox2c2jlbA?=
+ =?us-ascii?Q?JjFcfCEoeMG5ujyXrdgTLnC2VpkfjaleQK/j8DviJoFtQZXnKWg7NoXlVdKS?=
+ =?us-ascii?Q?mEukOUq0x7W9Qtde+CEuWrbOphu9DgXOeInqaf0Jm36mf1R9lyKIrqXAMGL5?=
+ =?us-ascii?Q?9W/wIFOa/RKwv/xNiHqghV47u8V0fhtCGx/TaTQM8OcRNusjMVARgzxl8TfY?=
+ =?us-ascii?Q?l1Ro5HUJcjhcW0bFSUHDXlSRHFr8/W59VhAZRg4YY0gK7RG61swYeiwuT9WO?=
+ =?us-ascii?Q?BjpOP+/o1tkfArqQ5XJM+FE5IcrHjBQSFqhZp69g5Ross0gg/Nq6FB7wz5PC?=
+ =?us-ascii?Q?Vzs0XRMmHabombt7y1byKMmCJUUGNclr+Ltb8w18sHLr/reCy3qpIrKHaoKx?=
+ =?us-ascii?Q?2kjVcHudZWX/Yv6jGiS4+RG6lYWYpxjbZ2RfBCt45WAgqmtcxyzpQBULn0wB?=
+ =?us-ascii?Q?m9Vt8BCUGKJJEvQpaNW5KWz6ZuoP5MKxqwoQ1xvI77HX2E8AgU7XAZokTrey?=
+ =?us-ascii?Q?ICwNBdRcf06zFHNpF/q95w+LgiHxZ+a+ZHDHIbvkixClHUrWNBlOpcaJxQYB?=
+ =?us-ascii?Q?iK+4wWeEJFytW8BB/wLJyuhzuZruYcxXnW2CQS+sB43qLcUD27nwKw22HWb4?=
+ =?us-ascii?Q?uatHtbDpYOpsh2d/I3xV5sNz+ZeFMpfmM5sPjzzLQKTVEnYLGDtpSwd7AhVs?=
+ =?us-ascii?Q?9iD9pBbUVU64/2G1IF42j/LbNtIrl3DJoHZ6doHVy8WsD5uekKFnIsGqlsz7?=
+ =?us-ascii?Q?WAu9TiyYSBs+rDVULXEpUdNHaF9SXj3CBn0fWBJtWKDSKL6N8IS/IPNFJGA1?=
+ =?us-ascii?Q?05aQU4VJJC0EpZRyt1m7dpXxSdMEuOga97NjNx97wlwIKuM5/WMnmoANUt29?=
+ =?us-ascii?Q?nZ3c38iA9msGtnh+naMtyLhlouXChupBCzaezLAnyn5fYKLqfdjnZS/S3fvd?=
+ =?us-ascii?Q?iQ4tpwBztupH/qOGgcRcRj9nHEmJIXy/CXXCfidt0nO3cuHZ+Md8qpwnZrI4?=
+ =?us-ascii?Q?XHvEvVzBO8zKn6acZEwm/0bBRuJyIkHogMEa84gp86lB5NhBjoRyTi5H/1Et?=
+ =?us-ascii?Q?/jM31Ixqn6Fo/DTt0plOntlH9gPMOO2CkfrvmSU7IRmTbRRV7KcvSZGvv/35?=
+ =?us-ascii?Q?BaUcW0mU5iVSMJXU0KJG5iTPuBNqC/k0axX9/z7U/bjQ14TYKrzWeMF+IdhD?=
+ =?us-ascii?Q?sVY94NClK25f+XH3uJQ4P1GGjpxHst8C4NwAC1uz2WCWzwTCbqk2+PkKmOqT?=
+ =?us-ascii?Q?gxAj1LZ0/js3Jx8LkqLkOuIVy66YZY6E4suOIXKKi3OLE0NpFvVkyHYpS3Br?=
+ =?us-ascii?Q?lP9hkFTtpNpRjAhIGIaFnFJiD9/Z8UrHm2kUhyXFAr2+mGeOpkqGzjwShQZP?=
+ =?us-ascii?Q?9ZjrLQbT2Kp5wPdwhe1r6EoH5+FmQd2/yr0Kte2SnYvsWKk1phMxn1R7YGSQ?=
+ =?us-ascii?Q?2czfVv6kSkudLk64+wApDkPCfvqOczNMJkpo?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 17:09:10.7513
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4793a1dd-d7fd-45d3-55d5-08ddebd5c439
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000A349.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6667
 
-> >
-> >  TEST_INCLUDES := \
-> >       ../bonding/lag_lib.sh \
-> >       ../../../net/forwarding/lib.sh \
-> > -     ../../../net/lib.sh
-> > +     ../../../net/lib.sh \
-> > +     ../../../net/in_netns.sh \
-> > +     ../../../net/lib/sh/defer.sh \
->
-> Where is defer used? Also no backslash at last line.
+The following patches will gradually introduce the ability of the bridge
+to look up local FDB entries on VLAN 0 instead of using the VLAN indicated
+by a packet.
 
-Thank you for the review Willem.
+In this patch, just introduce the option itself, with which the feature
+will be linked.
 
-Acknowledged for the backslash, will add in next iteration.
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+---
+ net/bridge/br_private.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Defer is used by net/lib.sh. If defer.sh isn't included here, then the
-test won't build correctly.
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 8de0904b9627..87da287f19fe 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -487,6 +487,7 @@ enum net_bridge_opts {
+ 	BROPT_MCAST_VLAN_SNOOPING_ENABLED,
+ 	BROPT_MST_ENABLED,
+ 	BROPT_MDB_OFFLOAD_FAIL_NOTIFICATION,
++	BROPT_FDB_LOCAL_VLAN_0,
+ };
+ 
+ struct net_bridge {
+-- 
+2.49.0
 
-> > +attach_port_if_specified()
-> > +{
-> > +        local port_name="${1}"
->
-> nit: parentheses around single character variable. Inconsistent.
-
-Acknowledged, will add in the next iteration.
-
-> > +#######################################
-> > +# Test that an option's get value matches its set value.
-> > +# Globals:
-> > +#   RET - Used by testing infra like `check_err`.
-> > +#   EXIT_STATUS - Used by `log_test` to whole script exit value.
-> > +# Arguments:
-> > +#   option_name - The name of the option.
-> > +#   value_1 - The first value to try setting.
-> > +#   value_2 - The second value to try setting.
-> > +#   port_name - The (optional) name of the attached port.
-> > +#######################################
->
-> Just curious: is this a standard documentation format?
-
-https://google.github.io/styleguide/shellguide.html#function-comments
-But I will make these fit in better with the rest of the selftests.
-
->
-> > +team_test_option()
-> > +{
-> > +        local option_name="$1"
-> > +        local value_1="$2"
-> > +        local value_2="$3"
-> > +        local possible_values="$2 $3 $2"
-> > +        local port_name="$4"
-> > +        local port_flag
-> > +
-> > +        RET=0
-> > +
-> > +        echo "Setting '${option_name}' to '${value_1}' and '${value_2}'"
-> > +
-> > +        attach_port_if_specified "${port_name}"
-> > +        check_err $? "Couldn't attach ${port_name} to master"
->
-> Can the rest of the test continue if this command failed?
-
-The test will fail, but the rest of the test will still run. That
-being said, only the first error message is printed by the check_err
-function.
-
-
->
-> > +        port_flag=$(get_port_flag "${port_name}")
-> > +
-> > +        # Set and get both possible values.
-> > +        for value in ${possible_values}; do
-> > +                set_and_check_get "${option_name}" "${value}" "${port_flag}"
-> > +                check_err $? "Failed to set '${option_name}' to '${value}'"
-> > +        done
-> > +
-> > +        detach_port_if_specified "${port_name}"
-> > +        check_err $? "Couldn't detach ${port_name} from its master"
-> > +
-> > +        log_test "Set + Get '${option_name}' test"
-> > +}
->
