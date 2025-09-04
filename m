@@ -1,546 +1,280 @@
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2072.outbound.protection.outlook.com [40.107.100.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BF131A57D;
-	Thu,  4 Sep 2025 17:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757005805; cv=fail; b=eUWWiTugRCzErELxjAHhWBhiTj0TEfIcN1NYULE4W5FPcYTf+8WphQ9mLkn/O+z19WbLLvOgXCyemDv3ox4QEbAJuJh/6hzkp2mSdDzUvupVw9z8c9b1PcQV0e7frmP92DaZs8noJpzPjXBZwME73mQIjDo+xLysa7lM4dESKus=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757005805; c=relaxed/simple;
-	bh=bq9cGEt2ioA4lzn7eM2vP4Dq9g+/9Da5s83XTCCakOo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EMSEVlOnNHTkR/B/nI6WP+SWFPO6P2Co5EpZhCeN9CRhA8BVMjAqhYO5pGEID7rcsGDYHMrxNlwzuCytfzHnROWvXldeuBQUF/nujg+eMdYFs2oCg3u3dgsD9yoFku4ubvnlPwmOlo8uXjCA7ZcnKyooTFIK4dztuDgsH5QAXUg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=sC9/nxKo; arc=fail smtp.client-ip=40.107.100.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA352F5484;
+	Thu,  4 Sep 2025 17:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757006790; cv=none; b=VwBs8969ZK2IEIJaRss6APkg9o98pCk35nVlCXehZmB3CSyu4PhuXQAu+MLiIL3dj920HBBo/0sHlRd0vqYTajDIEn4XUvIEatdw1v5twN0oFFp38PsDB9eRQ9pSAmP9XdPdOfto/QE4PXZ16WEgBs6wIKDplby8MyorA9ItIco=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757006790; c=relaxed/simple;
+	bh=EZ4Ig0++pbLqluvGrZc18Gn/h/uLnsrnUXNvG8CGVgI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BBLk33kPeBCAxKTk0y+mgyRWkY/S9RrEbcxz7yp2SMUWxe4gKak2845Sj6UURzObS3MPoeSQCfPduWkE6vYorwBzC37t/tPfQurG1Fj63kzo+jJxDKOwsN589vsmZ5IBJgywe6IVHk1pZDr2y9BqDvBVxDQ4D8PwtzQC3Q2J3f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KA03Ee0q; arc=none smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="sC9/nxKo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wYXzJSkkKR6blVin5Y7VzFMLkogpiY+Iz0ouwQVhLaJsWVGyo8ttiXCUdkvlQFcj3bh4QBQsSELuMvXJtHqOrvzW7n4Phx69VN9ecmyU432fvtEc0PORMQzn/WJAFUzZXVqqe6MnSrweozv0lvyAftb6HQ8zYOiMw6ObTY+Jn0W47Dq12i8XERBL1wqI6QLCYbId8hLBB9ePky4nvRtnjOnI9Y0AACxUPOSKpxwLTt03OMQUbiN/F0k61qBEp53gdQ1MxUy1oJ+oxQ//7Kx8+3BFe5JOBr+qg0L6Vou+JAvOY8xB/OLj56d9p58GJdDp2P4/bQbSUQ2Onl2+ggu18Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0gwFLbstI0bne31Dy5BdFXkd1Fj3ZoNH/VAuS/3Sxc=;
- b=hPb2g9CiGjUH65ox9L9mGEhdwizwfcw96xcbO56bnUtfEFcu54wAapEP/lfZHAXiJtZLPGSKUVtAMIRrTNyVOdJ/7fsG2LUzJPjEJ+pwFYVcJiCSGrn8/vpoM2rkVbrM9hHOGEYJyYz1kv8Uo3H5IZQXUEjodBUtlDDCXXu/uebaeE5cc7iUZ0Q33OWK6L6TJs3xpWYJjflXY7j44QK6UlG+Xe5tUiG/xM2juzAbOWsqVnXxyuFmWMlbJiLLURKRSTlVGyMyEW9Xq4Ge5V/VsCr12jswAZHUClKy3DSka/CmUo02viknoAOnjEAQ621qvvYUIVOTMK3Zn7JVnsx2YA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0gwFLbstI0bne31Dy5BdFXkd1Fj3ZoNH/VAuS/3Sxc=;
- b=sC9/nxKo0CMUzBZom1tj9fRBKvSehb3LEcdas++nca/wdp72ZkNguLnBQDtUTwd/qFgcmrrdVBpuW1ZONvYQCQCZp1oVDDWGD1T7/3HD6a/OOLDnJIZiN+fs9djW/8aJODf+nd65B0V1+Gc/jnvpFyc2Og01Tz2JAhCebqkt+NxP19+XUr0M6WAsFcL0GYUO7iuxQ3U0FWajkhzz90jAHLFIrLPjKBdVQ78AOC/qurVEvy/JJu3qCwkAr+18zfkSKUu8Vd886DCCuIlPiCmCEf9R1gTDLZngiFYz8S1/6NCGMS2w8k6tAqez9N7O+dSFCVUNiwYEt6e+CQ84WgrpGw==
-Received: from MW4PR03CA0275.namprd03.prod.outlook.com (2603:10b6:303:b5::10)
- by CH1PPFA0A5C3BCA.namprd12.prod.outlook.com (2603:10b6:61f:fc00::61f) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.18; Thu, 4 Sep
- 2025 17:10:00 +0000
-Received: from CO1PEPF000042A7.namprd03.prod.outlook.com
- (2603:10b6:303:b5:cafe::1c) by MW4PR03CA0275.outlook.office365.com
- (2603:10b6:303:b5::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.27 via Frontend Transport; Thu,
- 4 Sep 2025 17:09:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CO1PEPF000042A7.mail.protection.outlook.com (10.167.243.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.14 via Frontend Transport; Thu, 4 Sep 2025 17:09:59 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 4 Sep
- 2025 10:09:39 -0700
-Received: from fedora.docsis.vodafone.cz (10.126.231.35) by
- rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Thu, 4 Sep 2025 10:09:34 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>, Nikolay Aleksandrov
-	<razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
-	<bridge@lists.linux.dev>, Petr Machata <petrm@nvidia.com>,
-	<mlxsw@nvidia.com>, Shuah Khan <shuah@kernel.org>,
-	<linux-kselftest@vger.kernel.org>
-Subject: [PATCH net-next 10/10] selftests: forwarding: Add test for BR_BOOLOPT_FDB_LOCAL_VLAN_0
-Date: Thu, 4 Sep 2025 19:07:27 +0200
-Message-ID: <62294f96884ab5d341648eef21243fa099a2dee5.1757004393.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1757004393.git.petrm@nvidia.com>
-References: <cover.1757004393.git.petrm@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KA03Ee0q"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-71d6051afbfso13934187b3.2;
+        Thu, 04 Sep 2025 10:26:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757006787; x=1757611587; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sUseh6g4kqp9p2rXZD1SW9na3Fv96A86jzaodeUURis=;
+        b=KA03Ee0qfyUqZXpD/6JyKMfdxz1taYvnfibL3xQSPnot3Os9uIH338FeA/wdnVwoLd
+         HrVnKdIIPG6PiBG7G8xcP/mZnCsKRBs/L+//0qXCSwevqWff+1Y41h/UphBUnVaoxjVp
+         6eEaMqivEKrw1aa/gP5wvlCKWbfbpJOW+5fCqhARmbPE3+oyU7hA1G+aRM7DGjAI95Ky
+         /9rwLujrbGSrT5puiQUGppm27YOv30cxwCcmwU9JmrdyOyyzm5oFXN2XyJ/8Kaeh/Tai
+         E2ZczNeVNPSgPho/1H2HcoKaD2NkcroRr11qfQA2/4PksKAVRkxisRRN5h2bXgbLCS1O
+         8Flw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757006787; x=1757611587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sUseh6g4kqp9p2rXZD1SW9na3Fv96A86jzaodeUURis=;
+        b=jqvnuNfwh+5h0m+6bpoVsZPsaY+bUb57RkHV5hEflYwXO3269U9bI3QeqObC++gpAw
+         8L/ARhf7vapb7GhH5cQiT+Z16cxVI5NH/mdtQ9v942OrPKxkxO3qIEvQSL37p71E2cHG
+         Nf03IxM3hmqdvv7GzJ9ui7Mx1Y73a+rk0Nb3AgwljfzmEYILTpiUHSyl7V8Fuu9PoerY
+         pyLe9eOwLBvLyhAnYm5lfiqhjk609NBU2eKFmTTLIx6VpufqdRND2M07nmWqBKzGBT9c
+         8j+QTiuzf4QgRUYGAQE9ROwbm/ZAJRBUYGxQ9lr2oCMbr4cNq2HYDBtdc69j31rPPRDQ
+         rSZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrM1NBE5/e0YASUYE+SlzUCsQ/Rn3mvBdRg9cBOe97C3mzAfRCzf26Kfm8ORNBy0FnQ80SANg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZCBVUy2owy2XKslRSNvEGDRl8bLP44xaaoy/ZUGeEXx0iQRmX
+	+GdgMEZ608E/dthI5mGgeEhhk5lCPatAy3qdn8vqhuICT7zqooqD2dL9dUSYxvRRewyvvob2njY
+	1SYfEODPwVxjoH39zMVne2jAkzRUnJGg=
+X-Gm-Gg: ASbGncsT+b2NaFvqJ9gvNmGIjpxB3vh2K/CcxbuGKkR8cdfcubzNqCSDhotHJFJEFte
+	T+o6SBcY+2uCaHk2BRd+LmvsEg5pMRhaN6d57ujZc5oH5mlHny2IOFsRNN657G0I15Cqsk8rnDs
+	v+h3J2CNtYfnc534I1uKtEBzNCFYs8pW+3AB4sjAGT3HA9Cna7GwGw1HFF23/PEi5H15VjHuXoe
+	vee+Bs=
+X-Google-Smtp-Source: AGHT+IGx3jnOzpltQpFtLJ6oiDv+D1VVFsLiOEtkFP4nBFm8p4HY0HXJ7PMWXuN/Tp73VN1nHY3liACQfvrrOOifd6s=
+X-Received: by 2002:a05:690c:74c7:b0:723:bd45:4ff5 with SMTP id
+ 00721157ae682-723bd45544amr65039767b3.5.1757006787046; Thu, 04 Sep 2025
+ 10:26:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042A7:EE_|CH1PPFA0A5C3BCA:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8b6c83e-5fee-4d22-bf9d-08ddebd5e14a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?599b29z1qyDu7SLmgphw8J/fQTHXf0+Nb+ra6u0vaLlyizP3YKO5XK7RGDy4?=
- =?us-ascii?Q?Vsv3SZmef0BEYjW3MdflHKDrlkz51JUUSpNMO756FCFrAmUivdYyZbCTSanD?=
- =?us-ascii?Q?LNrqcFz3idTP3dYI9x6059O/IzGrlxieLdb/Sjxc2NkDsf3O3bSSw7GLkD3Y?=
- =?us-ascii?Q?fpHQFytbCtJjt3cM9LDM9BqDzem49tUsXRxI0v2jo22NafcOejSesiGtP3OG?=
- =?us-ascii?Q?BPVR0bmAJGt45fTdub+o0sLQVvlh250MhO5Jm9Ak/419+GV01KncoPvpoFUm?=
- =?us-ascii?Q?xajJkvlimHaG+0Y1KeAakhmQUck9B67mpVV/FvgjYlrcBiZ0d5PShWD8tkkZ?=
- =?us-ascii?Q?wU6qitHDc/RfZFCNmCSJzUlj7r2W9SMKWTajqvnhh+28a0vm2Nd6WQtMq+kQ?=
- =?us-ascii?Q?bVW4vEPPXLsipFr82NwxcI0qG9+ymNY6RN5H8O2McqBBiFRk+GG1AcnZ3lM9?=
- =?us-ascii?Q?uxSsFKvqK7FbDR/HN6cUvo5nt7rB2xm2VTcQ5or3Omybsq5Dh7jyr7Mty8EE?=
- =?us-ascii?Q?tuiPhIvoRqkhn+5W+/o4v55ZTyh7WH6ulK6Vn5dVDGeQA1K9iG14t617usp+?=
- =?us-ascii?Q?61NhDR+PBvHpA34VsYbHvNJK+U45RVuzOMGTalurPyEL+PIz/3ypFolulYzz?=
- =?us-ascii?Q?FbGXeKuAf3MSoqLP0FK7BkNkZz2GAiJ0oG3zRmSpaUPijblMQ8m59S7f2+Ns?=
- =?us-ascii?Q?/7ZSqzRDdldu4f/EuzOHM691DK/r1GNEjQPn2aq9XvzsMAus297DKu3D3cnG?=
- =?us-ascii?Q?SUBR12FKxCnDNTVxJi5ZmQpBtS7sg/TJmefO1JtqYqV8CQ+DiPWHZCxHB5Ir?=
- =?us-ascii?Q?/KmglB3RzBvvEUBQiqY1V43Zo1vZXkxTH2iySViJ+j4SAfkxSiTQ7Vm0MHZ2?=
- =?us-ascii?Q?XrRYb5uEMOsEVnfd2Um0J8neJex1YAikCNNsKqpaj69iBdnJUbdH5/Vr72NA?=
- =?us-ascii?Q?tOGdpak2muyegAkgNdg2qgocibxy2QMJ7ujH7yh/vQs83FAiB81fdMNUmTK5?=
- =?us-ascii?Q?s+hm5vrLoE+pHl4ByOlRd1zXb6O4cBwkLCzEE6Ucs6ABa41UD6ebeUJXzc7H?=
- =?us-ascii?Q?xSql4xn55En4hc6Yg6GfvsAE+/2MFPJUr0Bo734W/KyvK0TjsKt7UH9AH7Yt?=
- =?us-ascii?Q?9J62csqSjhOif/nUIwT0WmyFjgMIrDb2WOCXmOavWKJU7t5u6HhNSTIaja6c?=
- =?us-ascii?Q?0ivbN/e4otIQGPvXjCHsIWy/6wUPr0JdxpyiOrowbrWJcJKJ6FFtPrSHyVKK?=
- =?us-ascii?Q?vHI5yRJZxNQMxxDeZfJasY43g39iQmsomh8sIyfpOeHY2Dd15JCgCvx6DJvT?=
- =?us-ascii?Q?mk2d6lK+boD4f+HtySGDl6x/zfp48WsydVejWuhIB9MueFkcT2dNHLjaMA6T?=
- =?us-ascii?Q?qQnMOvd3HAwG+843Ah00fojEUsw16ltsTYjUWYB2ZNR9jPq9e3+5e33z7rmO?=
- =?us-ascii?Q?RTj7d2055FMRXUnFAwggytFHor+OBcvWCAVGGkEiFVBkWs4ICoz2YVv7vAv+?=
- =?us-ascii?Q?eOmF9h5n2tavJQu/TgLp0URdC3oKiWKakrhB?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 17:09:59.6360
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8b6c83e-5fee-4d22-bf9d-08ddebd5e14a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000042A7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFA0A5C3BCA
+References: <20250825193918.3445531-1-ameryhung@gmail.com> <20250825193918.3445531-2-ameryhung@gmail.com>
+ <76vmglojxf3yqysn5iwthctiacjy6xqcvrzzny74524djwhcf3@ejctdcty3cdz>
+ <CAMB2axOLCakHEGnPcRTd1-ZdcGT6+wximWDOSMY1r9PGerfF0g@mail.gmail.com> <aniua473ljbet6w6ov24z6yzwlzzsbvd2d5dud2gep6kp6j5fg@fngzextb6w46>
+In-Reply-To: <aniua473ljbet6w6ov24z6yzwlzzsbvd2d5dud2gep6kp6j5fg@fngzextb6w46>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Thu, 4 Sep 2025 10:26:16 -0700
+X-Gm-Features: Ac12FXx2q_q915X9Patm4wfP-feA-NH31t2kA361SMWg6vHC4odkEWwSKPceHCo
+Message-ID: <CAMB2axP-T5PDZK3E5+Jmq2+_O5vAmX7yxQUQGR5c0RPhaZ0JEg@mail.gmail.com>
+Subject: Re: [RFC bpf-next v1 1/7] net/mlx5e: Fix generating skb from
+ nonlinear xdp_buff
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
+	andrii@kernel.org, daniel@iogearbox.net, kuba@kernel.org, 
+	martin.lau@kernel.org, mohsin.bashr@gmail.com, saeedm@nvidia.com, 
+	tariqt@nvidia.com, mbloch@nvidia.com, maciej.fijalkowski@intel.com, 
+	kernel-team@meta.com, noren@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a selftest to check the operation of this newly-introduced bridge
-option.
+On Thu, Aug 28, 2025 at 9:23=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
+> On Wed, Aug 27, 2025 at 08:44:24PM -0700, Amery Hung wrote:
+> > On Wed, Aug 27, 2025 at 6:45=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia=
+.com> wrote:
+> > >
+> > > On Mon, Aug 25, 2025 at 12:39:12PM -0700, Amery Hung wrote:
+> > > > [...]
+> > > > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/driv=
+ers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> > > > index b8c609d91d11..c5173f1ccb4e 100644
+> > > > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> > > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> > > > @@ -1725,16 +1725,17 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_r=
+q *rq, struct mlx5e_wqe_frag_info *wi
+> > > >                            struct mlx5_cqe64 *cqe, u32 cqe_bcnt)
+> > > >  {
+> > > >       struct mlx5e_rq_frag_info *frag_info =3D &rq->wqe.info.arr[0]=
+;
+> > > > +     struct mlx5e_wqe_frag_info *pwi, *head_wi =3D wi;
+> > > >       struct mlx5e_xdp_buff *mxbuf =3D &rq->mxbuf;
+> > > > -     struct mlx5e_wqe_frag_info *head_wi =3D wi;
+> > > >       u16 rx_headroom =3D rq->buff.headroom;
+> > > >       struct mlx5e_frag_page *frag_page;
+> > > >       struct skb_shared_info *sinfo;
+> > > > -     u32 frag_consumed_bytes;
+> > > > +     u32 frag_consumed_bytes, i;
+> > > >       struct bpf_prog *prog;
+> > > >       struct sk_buff *skb;
+> > > >       dma_addr_t addr;
+> > > >       u32 truesize;
+> > > > +     u8 nr_frags;
+> > > >       void *va;
+> > > >
+> > > >       frag_page =3D wi->frag_page;
+> > > > @@ -1775,14 +1776,26 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_r=
+q *rq, struct mlx5e_wqe_frag_info *wi
+> > > >       prog =3D rcu_dereference(rq->xdp_prog);
+> > > >       if (prog && mlx5e_xdp_handle(rq, prog, mxbuf)) {
+> > > >               if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->=
+flags)) {
+> > > > -                     struct mlx5e_wqe_frag_info *pwi;
+> > > > +                     pwi =3D head_wi;
+> > > > +                     while (pwi->frag_page->netmem !=3D sinfo->fra=
+gs[0].netmem && pwi < wi)
+> > > > +                             pwi++;
+> > > >
+> > > Is this trying to skip counting the frags for the linear part? If yes=
+,
+> > > don't understand the reasoning. If not, I don't follow the code.
+> > >
+> > > AFAIU frags have to be counted for the linear part + sinfo->nr_frags.
+> > > Frags could be less after xdp program execution, but the linear part =
+is
+> > > still there.
+> > >
+> >
+> > This is to search the first frag after xdp runs because I thought it
+> > is possible that the first frag (head_wi+1) might be released by
+> > bpf_xdp_pull_data() and then the frag will start from head_wi+2.
+> >
+> > After sleeping on it a bit, it seems it is not possible as there is
+> > not enough room in the linear to completely pull PAGE_SIZE byte of
+> > data from the first frag to the linear area. Is this correct?
+> >
+> Right. AFAIU the usable linear part is smaller due to headroom and
+> tailroom.
+>
+> [...]
+> > > >               if (unlikely(!skb)) {
+> > > >                       mlx5e_page_release_fragmented(rq->page_pool,
+> > > > @@ -2102,20 +2124,25 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct m=
+lx5e_rq *rq, struct mlx5e_mpw_info *w
+> > > >               mlx5e_page_release_fragmented(rq->page_pool, &wi->lin=
+ear_page);
+> > > >
+> > > >               if (xdp_buff_has_frags(&mxbuf->xdp)) {
+> > > > -                     struct mlx5e_frag_page *pagep;
+> > > > +                     struct mlx5e_frag_page *pagep =3D head_page;
+> > > > +
+> > > > +                     truesize =3D nr_frags * PAGE_SIZE;
+> > > I am not sure that this is accurate. The last fragment might be small=
+er
+> > > than page size. It should be aligned to BIT(rq->mpwqe.log_stride_sz).
+> > >
+> >
+> > According to the truesize calculation in
+> > mlx5e_skb_from_cqe_mpwrq_nonlinear() just before mlx5e_xdp_handle().
+> > After the first frag, the frag_offset is always 0 and
+> > pg_consumed_bytes will be PAGE_SIZE. Therefore the last page also
+> > consumes a page, no?
+> >
+> My understanding is that the last pg_consumed_bytes will be a byte_cnt
+> that is smaller than PAGE_SIZE as there is a min operation.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
----
+The remaining byte_cnt will then be aligned to
+BIT(rq->mpwqe.log_stride_sz), which is PAGE_SHIFT if there is xdp
+program (per mlx5e_mpwqe_get_log_stride_size()). Therefore, it still
+adds a page to truesize.
 
-Notes:
-CC: Shuah Khan <shuah@kernel.org>
-CC: linux-kselftest@vger.kernel.org
+I will change to ALIGN(..., BIT(rq->mpwqe.log_stride_sz)) to be
+consistent with existing code.
 
- .../testing/selftests/net/forwarding/Makefile |   1 +
- .../net/forwarding/bridge_fdb_local_vlan_0.sh | 374 ++++++++++++++++++
- 2 files changed, 375 insertions(+)
- create mode 100755 tools/testing/selftests/net/forwarding/bridge_fdb_local_vlan_0.sh
+>
+> > If the last page has variable size, I wonder how can
+> > bpf_xdp_adjust_tail() handle a dynamic tailroom.
+> That is a good point. So this can stay as is I guess.
+>
+> > bpf_xdp_adjust_tail()
+> > requires a driver to specify a static frag size (the maximum size a
+> > frag can grow) when calling __xdp_rxq_info_reg(), which seem to be a
+> > page in mlx5.
+> >
+> This is an issue raised by Nimrod as well. Currently striding rq sets
+> rxq->frag_size to 0. It is set to PAGE_SIZE only in legacy rq mode.
+>
 
-diff --git a/tools/testing/selftests/net/forwarding/Makefile b/tools/testing/selftests/net/forwarding/Makefile
-index 0a0d4c2a85f7..e6f482a600da 100644
---- a/tools/testing/selftests/net/forwarding/Makefile
-+++ b/tools/testing/selftests/net/forwarding/Makefile
-@@ -5,6 +5,7 @@ TEST_PROGS = \
- 	bridge_fdb_learning_limit.sh \
- 	bridge_igmp.sh \
- 	bridge_locked_port.sh \
-+	bridge_fdb_local_vlan_0.sh \
- 	bridge_mdb.sh \
- 	bridge_mdb_host.sh \
- 	bridge_mdb_max.sh \
-diff --git a/tools/testing/selftests/net/forwarding/bridge_fdb_local_vlan_0.sh b/tools/testing/selftests/net/forwarding/bridge_fdb_local_vlan_0.sh
-new file mode 100755
-index 000000000000..5a0b43aff5aa
---- /dev/null
-+++ b/tools/testing/selftests/net/forwarding/bridge_fdb_local_vlan_0.sh
-@@ -0,0 +1,374 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# +-----------------------+ +-----------------------+ +-----------------------+
-+# | H1 (vrf)              | | H2 (vrf)              | | H3 (vrf)              |
-+# |    + $h1              | |    + $h2              | |    + $h3              |
-+# |    | 192.0.2.1/28     | |    | 192.0.2.2/28     | |    | 192.0.2.18/28    |
-+# |    | 2001:db8:1::1/64 | |    | 2001:db8:1::2/64 | |    | 2001:db8:2::2/64 |
-+# |    |                  | |    |                  | |    |                  |
-+# +----|------------------+ +----|------------------+ +----|------------------+
-+#      |                         |                         |
-+# +----|-------------------------|-------------------------|------------------+
-+# | +--|-------------------------|------------------+      |                  |
-+# | |  + $swp1                   + $swp2            |      + $swp3            |
-+# | |                                               |        192.0.2.17/28    |
-+# | |  BR1 (802.1q)                                 |        2001:db8:2::1/64 |
-+# | |  192.0.2.3/28                                 |                         |
-+# | |  2001:db8:1::3/64                             |                         |
-+# | +-----------------------------------------------+                      SW |
-+# +---------------------------------------------------------------------------+
-+#
-+#shellcheck disable=SC2317 # SC doesn't see our uses of functions.
-+#shellcheck disable=SC2034 # ... and global variables
-+
-+ALL_TESTS="
-+	test_d_no_sharing
-+	test_d_sharing
-+	test_q_no_sharing
-+	test_q_sharing
-+"
-+
-+NUM_NETIFS=6
-+source lib.sh
-+
-+pMAC=00:11:22:33:44:55
-+bMAC=00:11:22:33:44:66
-+mMAC=00:11:22:33:44:77
-+xMAC=00:11:22:33:44:88
-+
-+host_create()
-+{
-+	local h=$1; shift
-+	local ipv4=$1; shift
-+	local ipv6=$1; shift
-+
-+	simple_if_init "$h" "$ipv4" "$ipv6"
-+	defer simple_if_fini "$h" "$ipv4" "$ipv6"
-+
-+	ip_route_add vrf "v$h" 192.0.2.16/28 nexthop via 192.0.2.3
-+	ip_route_add vrf "v$h" 2001:db8:2::/64 nexthop via 2001:db8:1::3
-+}
-+
-+h3_create()
-+{
-+	simple_if_init "$h3" 192.0.2.18/28 2001:db8:2::2/64
-+	defer simple_if_fini "$h3" 192.0.2.18/28 2001:db8:2::2/64
-+
-+	ip_route_add vrf "v$h3" 192.0.2.0/28 nexthop via 192.0.2.17
-+	ip_route_add vrf "v$h3" 2001:db8:1::/64 nexthop via 2001:db8:2::1
-+
-+	tc qdisc add dev "$h3" clsact
-+	defer tc qdisc del dev "$h3" clsact
-+
-+	tc filter add dev "$h3" ingress proto ip pref 104 \
-+	   flower skip_hw ip_proto udp dst_port 4096 \
-+	   action pass
-+	defer tc filter del dev "$h3" ingress proto ip pref 104
-+
-+	tc qdisc add dev "$h2" clsact
-+	defer tc qdisc del dev "$h2" clsact
-+
-+	tc filter add dev "$h2" ingress proto ip pref 104 \
-+	   flower skip_hw ip_proto udp dst_port 4096 \
-+	   action pass
-+	defer tc filter del dev "$h2" ingress proto ip pref 104
-+}
-+
-+switch_create()
-+{
-+	ip_link_set_up "$swp1"
-+
-+	ip_link_set_up "$swp2"
-+
-+	ip_addr_add "$swp3" 192.0.2.17/28
-+	ip_addr_add "$swp3" 2001:db8:2::1/64
-+	ip_link_set_up "$swp3"
-+}
-+
-+setup_prepare()
-+{
-+	h1=${NETIFS[p1]}
-+	swp1=${NETIFS[p2]}
-+
-+	swp2=${NETIFS[p3]}
-+	h2=${NETIFS[p4]}
-+
-+	swp3=${NETIFS[p5]}
-+	h3=${NETIFS[p6]}
-+
-+	vrf_prepare
-+	defer vrf_cleanup
-+
-+	forwarding_enable
-+	defer forwarding_restore
-+
-+	host_create "$h1" 192.0.2.1/28 2001:db8:1::1/64
-+	host_create "$h2" 192.0.2.2/28 2001:db8:1::2/64
-+	h3_create
-+
-+	switch_create
-+}
-+
-+adf_bridge_create()
-+{
-+	local dev
-+	local mac
-+
-+	ip_link_add br up type bridge vlan_default_pvid 0 "$@"
-+	mac=$(mac_get br)
-+	ip_addr_add br 192.0.2.3/28
-+	ip_addr_add br 2001:db8:1::3/64
-+
-+	bridge_vlan_add dev br vid 1 pvid untagged self
-+	bridge_vlan_add dev br vid 2 self
-+	bridge_vlan_add dev br vid 3 self
-+
-+	for dev in "$swp1" "$swp2"; do
-+		ip_link_set_master "$dev" br
-+		bridge_vlan_add dev "$dev" vid 1 pvid untagged
-+		bridge_vlan_add dev "$dev" vid 2
-+		bridge_vlan_add dev "$dev" vid 3
-+	done
-+
-+	ip_link_set_addr br "$mac"
-+}
-+
-+check_fdb_local_vlan_0_support()
-+{
-+	if ip_link_add XXbr up type bridge vlan_filtering 1 fdb_local_vlan_0 1 \
-+		    &>/dev/null; then
-+		return 0
-+	fi
-+
-+	log_test_skip "FDB sharing" \
-+		      "iproute 2 or the kernel do not support fdb_local_vlan_0"
-+}
-+
-+check_mac_presence()
-+{
-+	local should_fail=$1; shift
-+	local dev=$1; shift
-+	local vlan=$1; shift
-+	local mac
-+
-+	mac=$(mac_get "$dev")
-+
-+	if ((vlan == 0)); then
-+		vlan=null
-+	fi
-+
-+	bridge -j fdb show dev "$dev" |
-+	    jq -e --arg mac "$mac" --argjson vlan "$vlan" \
-+	       '.[] | select(.mac == $mac) | select(.vlan == $vlan)' > /dev/null
-+	check_err_fail "$should_fail" $? "FDB dev $dev vid $vlan addr $mac exists"
-+}
-+
-+do_sharing_test()
-+{
-+	local should_fail=$1; shift
-+	local what=$1; shift
-+	local dev
-+
-+	RET=0
-+
-+	for dev in "$swp1" "$swp2" br; do
-+		check_mac_presence 0 "$dev" 0
-+		check_mac_presence "$should_fail" "$dev" 1
-+		check_mac_presence "$should_fail" "$dev" 2
-+		check_mac_presence "$should_fail" "$dev" 3
-+	done
-+
-+	log_test "$what"
-+}
-+
-+do_end_to_end_test()
-+{
-+	local mac=$1; shift
-+	local what=$1; shift
-+	local probe_dev=${1-$h3}; shift
-+	local expect=${1-10}; shift
-+
-+	local t0
-+	local t1
-+	local dd
-+
-+	RET=0
-+
-+	# In mausezahn, use $dev MAC as the destination MAC. In the MAC sharing
-+	# context, that will cause an FDB miss on VLAN 1 and prompt a second
-+	# lookup in VLAN 0.
-+
-+	t0=$(tc_rule_stats_get "$probe_dev" 104 ingress)
-+
-+	$MZ "$h1" -c 10 -p 64 -a own -b "$mac" \
-+		  -A 192.0.2.1 -B 192.0.2.18 -t udp "dp=4096,sp=2048" -q
-+	sleep 1
-+
-+	t1=$(tc_rule_stats_get "$probe_dev" 104 ingress)
-+	dd=$((t1 - t0))
-+
-+	((dd == expect))
-+	check_err $? "Expected $expect packets on $probe_dev got $dd"
-+
-+	log_test "$what"
-+}
-+
-+do_tests()
-+{
-+	local should_fail=$1; shift
-+	local what=$1; shift
-+	local swp1_mac
-+	local br_mac
-+
-+	swp1_mac=$(mac_get "$swp1")
-+	br_mac=$(mac_get br)
-+
-+	do_sharing_test "$should_fail" "$what"
-+	do_end_to_end_test "$swp1_mac" "$what: end to end, $swp1 MAC"
-+	do_end_to_end_test "$br_mac" "$what: end to end, br MAC"
-+}
-+
-+bridge_standard()
-+{
-+	local vlan_filtering=$1; shift
-+
-+	if ((vlan_filtering)); then
-+		echo 802.1q
-+	else
-+		echo 802.1d
-+	fi
-+}
-+
-+nonexistent_fdb_test()
-+{
-+	local vlan_filtering=$1; shift
-+	local standard
-+
-+	standard=$(bridge_standard "$vlan_filtering")
-+
-+	# We expect flooding, so $h2 should get the traffic.
-+	do_end_to_end_test "$xMAC" "$standard: Nonexistent FDB" "$h2"
-+}
-+
-+misleading_fdb_test()
-+{
-+	local vlan_filtering=$1; shift
-+	local standard
-+
-+	standard=$(bridge_standard "$vlan_filtering")
-+
-+	defer_scope_push
-+		# Add an FDB entry on VLAN 0. The lookup on VLAN-aware bridge
-+		# shouldn't pick this up even with fdb_local_vlan_0 enabled, so
-+		# the traffic should be flooded. This all holds on
-+		# vlan_filtering bridge, on non-vlan_filtering one the FDB entry
-+		# is expected to be found as usual, no flooding takes place.
-+		#
-+		# Adding only on VLAN 0 is a bit tricky, because bridge is
-+		# trying to be nice and interprets the request as if the FDB
-+		# should be added on each VLAN.
-+
-+		bridge fdb add "$mMAC" dev "$swp1" master
-+		bridge fdb del "$mMAC" dev "$swp1" vlan 1 master
-+		bridge fdb del "$mMAC" dev "$swp1" vlan 2 master
-+		bridge fdb del "$mMAC" dev "$swp1" vlan 3 master
-+
-+		local expect=$((vlan_filtering ? 10 : 0))
-+		do_end_to_end_test "$mMAC" \
-+				   "$standard: Lookup of non-local MAC on VLAN 0" \
-+				   "$h2" "$expect"
-+	defer_scope_pop
-+}
-+
-+change_mac()
-+{
-+	local dev=$1; shift
-+	local mac=$1; shift
-+	local cur_mac
-+
-+	cur_mac=$(mac_get "$dev")
-+
-+	log_info "Change $dev MAC $cur_mac -> $mac"
-+	ip_link_set_addr "$dev" "$mac"
-+	defer log_info "Change $dev MAC back"
-+}
-+
-+do_test_no_sharing()
-+{
-+	local vlan_filtering=$1; shift
-+	local standard
-+
-+	standard=$(bridge_standard "$vlan_filtering")
-+
-+	adf_bridge_create vlan_filtering "$vlan_filtering"
-+	setup_wait
-+
-+	do_tests 0 "$standard, no FDB sharing"
-+
-+	change_mac "$swp1" "$pMAC"
-+	change_mac br "$bMAC"
-+
-+	do_tests 0 "$standard, no FDB sharing after MAC change"
-+
-+	in_defer_scope check_fdb_local_vlan_0_support || return
-+
-+	log_info "Set fdb_local_vlan_0=1"
-+	ip link set dev br type bridge fdb_local_vlan_0 1
-+
-+	do_tests 1 "$standard, fdb sharing after toggle"
-+}
-+
-+do_test_sharing()
-+{
-+	local vlan_filtering=$1; shift
-+	local standard
-+
-+	standard=$(bridge_standard "$vlan_filtering")
-+
-+	in_defer_scope check_fdb_local_vlan_0_support || return
-+
-+	adf_bridge_create vlan_filtering "$vlan_filtering" fdb_local_vlan_0 1
-+	setup_wait
-+
-+	do_tests 1 "$standard, FDB sharing"
-+
-+	nonexistent_fdb_test "$vlan_filtering"
-+	misleading_fdb_test "$vlan_filtering"
-+
-+	change_mac "$swp1" "$pMAC"
-+	change_mac br "$bMAC"
-+
-+	do_tests 1 "$standard, FDB sharing after MAC change"
-+
-+	log_info "Set fdb_local_vlan_0=0"
-+	ip link set dev br type bridge fdb_local_vlan_0 0
-+
-+	do_tests 0 "$standard, No FDB sharing after toggle"
-+}
-+
-+test_d_no_sharing()
-+{
-+	do_test_no_sharing 0
-+}
-+
-+test_d_sharing()
-+{
-+	do_test_sharing 0
-+}
-+
-+test_q_no_sharing()
-+{
-+	do_test_no_sharing 1
-+}
-+
-+test_q_sharing()
-+{
-+	do_test_sharing 1
-+}
-+
-+
-+trap cleanup EXIT
-+
-+setup_prepare
-+tests_run
--- 
-2.49.0
+I see.
 
+> >
+> > > >
+> > > >                       /* sinfo->nr_frags is reset by build_skb, cal=
+culate again. */
+> > > > -                     xdp_update_skb_shared_info(skb, frag_page - h=
+ead_page,
+> > > > +                     xdp_update_skb_shared_info(skb, nr_frags,
+> > > >                                                  sinfo->xdp_frags_s=
+ize, truesize,
+> > > >                                                  xdp_buff_is_frag_p=
+fmemalloc(
+> > > >                                                       &mxbuf->xdp))=
+;
+> > > >
+> > > > -                     pagep =3D head_page;
+> > > > -                     do
+> > > > +                     while (pagep->netmem !=3D sinfo->frags[0].net=
+mem && pagep < frag_page)
+> > > > +                             pagep++;
+> > > > +
+> > > > +                     for (i =3D 0; i < nr_frags; i++, pagep++)
+> > > >                               pagep->frags++;
+> > > > -                     while (++pagep < frag_page);
+> > > > +
+> > > > +                     headlen =3D min_t(u16, MLX5E_RX_MAX_HEAD - le=
+n, sinfo->xdp_frags_size);
+> > > > +                     __pskb_pull_tail(skb, headlen);
+> > > >               }
+> > > > -             __pskb_pull_tail(skb, headlen);
+> > > What happens when there are no more frags? (bpf_xdp_frags_shrink_tail=
+()
+> > > shrinked them out). Is that at all possible?
+> >
+> > It is possible for bpf_xdp_frags_shrink_tail() to release all frags.
+> > There is no limit of how much they can shrink. If there is linear
+> > data, the kfunc allows shrinking data_end until ETH_HLEN. Before this
+> > patchset, it could trigger a BUG_ON in __pskb_pull_tail(). After this
+> > set, the driver will pass a empty skb to the upper layer.
+> >
+> I see what you mean.
+>
+> > For bpf_xdp_pull_data(), in the case of mlx5, I think it is only
+> > possible to release all frags when the first and only frag contains
+> > less than 256 bytes, which is the free space in the linear page.
+> >
+> Why would only 256 bytes be free in the linear area? My understanding
+> is that we have PAGE_SIZE - headroom - tailroom which should be more?
+>
+
+mlx5e_skb_from_cqe_mpwrq_nonlinear() currently sets xdp->frame_sz to
+be XDP_PACKET_HEADROOM (256) + MLX5E_RX_MAX_HEAD (256) + sizeof(struct
+skb_shared_info), so only 256 is available to xdp programs to pull
+data in.
+
+> > >
+> > > In general, I think the code would be nicer if it would do a rewind o=
+f
+> > > the end pointer based on the diff between the old and new nr_frags.
+> > >
+> >
+> > Not sure if I get this. Do you mean calling __pskb_pull_tail() some
+> > how based on the difference between sinfo->nr_frags and nr_frags?
+> >
+> > Thanks for reviewing the patch!
+> >
+> I was suggesting an approach for the whole patch that might be cleaner.
+>
+> Roll back frag_page to the last used fragment after program execution:
+>
+>         frag_page -=3D old_nr_frags - new_nr_frags;
+>
+> ... and after that you won't need to touch the frag counting loops
+> and the xdp_update_skb_shared_info().
+>
+
+Got it. This makes the change quite cleaner.
+
+> Thanks,
+> Dragos
