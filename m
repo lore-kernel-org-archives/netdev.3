@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A63D25FA34
-	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 18:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AA12586C8
+	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 18:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757012262; cv=none; b=iprzp8rX43DfQDYR3GfbFLlrvT6TprcX2MekRULMEazCXZeXJrtBeWJPecZcGU5K5WOrYVHf6BwfjSfQEbkR6w2p2t0Qw3stRKZnuepgDhbqMgFNWibqu8GJqjXHe1Kts+QFqoinIZAbx8P/xidj8TiewTJCNNMZoN0yXMZeFco=
+	t=1757012334; cv=none; b=RrXomiUPMooCRVOaZthCU1E6RGro5HW8MFHJanJgJgvoH3ntrCnGqu5TEBPIJc1czTR/m5PUYR05EOKzq0Sbm1555f9HRfCs8pnqIJpPgXyhOF9JVoRzCXh0QmiXlj0WzQPKHuZXZNiOkU6ZxRJbr+UJbCXVwJiWJHTpJMSrHQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757012262; c=relaxed/simple;
-	bh=pzNG+bCZZ0wDRj517I4ILeAsqiNTWNSZmIBSe/sa5EI=;
+	s=arc-20240116; t=1757012334; c=relaxed/simple;
+	bh=XXempzrcMvneuwnKeRtkjXxBA00Ztzp24C+0k3w+73o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rfedvUElaIfW5lK+JlkcwBrxfEgZP+EE/gLQNRybA0W+DHNJjnMPDDO1arrfyJJA0N6KALjR1VPvQX8Z2lWdfJqVX+U8y3WEMCGQxSx2v4bKeUy/gb6ETvTcwvma67tkmRUsmH3IuCWGY0XCXtSDJZD6u2mtkAdqLESSloTTDgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=RuX5dCrs; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wv20diKv2hb9QHnjHTEspTCB4pUjavdTGXAD/JOx7r7jYIkNvz2FJZ4wsrCOqvdDzB4GjEBfbSyolylUoKHBa0vJVwf9z51w+pwwmNZrX+wUwYGzltgnTwwukoCviV1XoZIDNnWb1EXHy6ZE56NMAZDA0MsbfaMH0ZoQ7PkkTS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=a1rNGZzo; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="RuX5dCrs"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="a1rNGZzo"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xTiDOTyQs4o2KTqHJ5rl2nvLZ6nilRCAZAsj4RoV+iw=; b=RuX5dCrsF8J5h3npPIEwhd6p1F
-	J2N+TqNVCqSV7s2Q6lfCFIxm2jnzk9yjEg85k9LeSVyqYs5kChyzThEWEzPvlOR3O0J/p2MHXyHT7
-	1CDt79LQmAhNPZwOlmV7vM1JI0K7MurJ1LT/6SdKBjXck89KBPf4HplcIgyc3xeb3yKE=;
+	bh=rxc+WFScWaMWMshrOaUEfaLNiPNmyIGxiIMV1CB7UL8=; b=a1rNGZzoQR5nHNAhRMsWPrO4Ep
+	zsM6tGyCruRbEEuRXTz01MC43O6E43UJ9qJDbLLboGM+/+hIMKfpC3QRtONnpxfls5QaLXaDBcLBD
+	5so+8jsQGED0VK32X6QJV5sY5biwZTVsaiKtJLkqehdWBoRky26DFOXgR+1WWuBKqkhU=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1uuF9H-007G2z-7n; Thu, 04 Sep 2025 20:57:31 +0200
-Date: Thu, 4 Sep 2025 20:57:31 +0200
+	id 1uuFAT-007G48-9D; Thu, 04 Sep 2025 20:58:45 +0200
+Date: Thu, 4 Sep 2025 20:58:45 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -40,11 +40,11 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v2 03/11] net: stmmac: mdio: provide
- priv->gmii_address_bus_config
-Message-ID: <91aaefa9-a594-4336-918a-5c50654ecb50@lunn.ch>
+Subject: Re: [PATCH net-next v2 04/11] net: stmmac: mdio: move
+ stmmac_mdio_format_addr() into read/write
+Message-ID: <3e15839e-5bce-496c-82c0-9ac95cbd9b79@lunn.ch>
 References: <aLmBwsMdW__XBv7g@shell.armlinux.org.uk>
- <E1uu8o2-00000001vog-1LyK@rmk-PC.armlinux.org.uk>
+ <E1uu8o7-00000001vom-1pN8@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,13 +53,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1uu8o2-00000001vog-1LyK@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1uu8o7-00000001vom-1pN8@rmk-PC.armlinux.org.uk>
 
-On Thu, Sep 04, 2025 at 01:11:10PM +0100, Russell King (Oracle) wrote:
-> Provide a pre-formatted value for the MDIO address register fields
-> which remain constant across the various different transactions
-> rather than recreating the register value from scratch every time.
-> Currently, we only do this for the CR (clock range) field.
+On Thu, Sep 04, 2025 at 01:11:15PM +0100, Russell King (Oracle) wrote:
+> Move stmmac_mdio_format_addr() into stmmac_mdio_read() and
+> stmmac_mdio_write().
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
