@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE462DF124;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30742DF6F4;
 	Thu,  4 Sep 2025 22:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023411; cv=none; b=BJSJmK+2aPQQCo74wNL66vAXTXvtIYVeE++oFTVlQ7C8+bsOx9g7FYzzw17abT22vzFQERbz1i079LzdkhfhEJAwFBoU7srWWgX2Fr/cAKNHxJW6j4B/w7bVopBAiIStOwvE6c0YAQSLckQf/S/Lr4lnhmhW/MtBbKR7x3c9BJk=
+	t=1757023411; cv=none; b=dNWoszu5WewrB+o6zT0TtOPiBJUyuN1ds9uq0HHljFKJmUyI1jITNggOJjBlSDKJEVlcVMFnF7miOwmRlyr4biGqtmyJPJgRW/4aWX3V0Fa2ESl7yV0YjJRI2nbB+dP+p1PxYiZ72IXwQKw0Sn2tSAiUNmbRfdrSyenasFPYKkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757023411; c=relaxed/simple;
-	bh=ECNMbXl3XLvGt4tALH0EaehkGJdjFoR5BhZ1oyO4DKU=;
+	bh=eBBuwNaUDHXo8diw1UVgSV3P1XZ5UqZY0UXPecgkD5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rGkQUTnhAnMJ7uTP7CnFVpYVTp82biD5ta8zc+mBJ367EY3BcmfM392TZ5hb6xtxTIa2nQ8IL0KW+mH9GGHaGMrHZB5knVzCTa6u6iVhAYNiUkdZ6fRNRVhY86SEzwH3yOeCmBs9wLzrVTdQjZCHWAqZL+v+S4rBZKooyA4iFDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=bzZnJJFp; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=IB84aA3qmhZHrXw9mUboVCXkq765g5IAwerAmHvQI52eETYefu/O8au2Lwzg/eaUReVZoS5q4nssl3YPJYKIDNJdygoXWbUUZ2OZ0bNCaF7Q7htf5Qw7aLvVBXnR+eFcrE8pdEEY005Adt7OqZlL94p8zmgST3DCozIFJYf9qzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=G2FjblNS; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="bzZnJJFp"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="G2FjblNS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=ECNMbXl3XLvGt4tALH0EaehkGJdjFoR5BhZ1oyO4DKU=;
+	bh=eBBuwNaUDHXo8diw1UVgSV3P1XZ5UqZY0UXPecgkD5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzZnJJFp7x0TGcadOB6VkbUDx+lay5/40mepR8zc6VCVjxCiyGL1QiULRw/Qu5U+Q
-	 8sw45x379bEcIu1SInV5H3yjZMonFjOgEljmG1gq8bpwpUi5lt9gXhx9oaNJap74aw
-	 xWxmOt1wAzXn2jCnjUrYVRCXC0ONm++TMeUForqMPkyncIpBCWgA0n503NU1oX9F+P
-	 qdHIz3R6B70msIoQIgUHFK43EypLTIZpH/2F52eMyojuHzFplUukL6A/shfIw4ufK3
-	 oz542vZ+n5Scvs0qw08/EUJGQXtIPQSyQcyv307bYeSa6mp4iF6leJdXNOWyHBZI+5
-	 DRPwypK2RjabQ==
+	b=G2FjblNSimyRinWpU52JayO17SNj9IDU70wB4c74C1GPk5ZwAxxLn53/kKzbQ2dyc
+	 CyCRm6wy11I+8pmuGqMmYmv6Ks5W4/KdaYVXaeamcpoNxG60w4tvdeSt0ZiDgwfTBm
+	 mxX+62rW5Hp9wQ9GsmVVSqMwlJPY/O17mYD41UOIdZ3WsDdyv2uz9hxOz0KKb46ICy
+	 4CJpzZ4c2RptkZLM/TA4Hr0hjk78poWK2xSLUizgcUHLoB/Az34ch52y6++J7uIoWW
+	 RRGCAgEOa+N600eXqWWqXd2KX6on/LpvjtIxFGf13WJN6uVhelo+zVysN/Iw0FfSV6
+	 SZrIxwQaxTEyQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 5D3096013C;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 4C5B960138;
 	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id B6C0E202B2F; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
+	id 954F72020F1; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,12 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 13/14] wireguard: netlink: enable strict genetlink validation
-Date: Thu,  4 Sep 2025 22:02:47 +0000
-Message-ID: <20250904220255.1006675-13-ast@fiberby.net>
+Subject: [PATCH net-next 02/11] tools: ynl-gen: generate nested array policies
+Date: Thu,  4 Sep 2025 22:01:25 +0000
+Message-ID: <20250904220156.1006541-2-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
-References: <20250904-wg-ynl-rfc@fiberby.net>
+In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
+References: <20250904-wg-ynl-prep@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,30 +60,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Wireguard is a modern enough genetlink family, that it doesn't
-need resv_start_op. It already had policies in place when it was
-first merged, it has also never used reserved fields, or other
-things toggled by resv_start_op.
+This patch adds support for NLA_POLICY_NESTED_ARRAY() policies.
 
-[TODO: before v1, also test with ancient wireguard-tools versions]
+Example spec (from future wireguard.yaml):
+-
+  name: wgpeer
+  attributes:
+    -
+      name: allowedips
+      type: indexed-array
+      sub-type: nest
+      nested-attributes: wgallowedip
+
+yields NLA_POLICY_NESTED_ARRAY(wireguard_wgallowedip_nl_policy).
+
+This doesn't change any currently generated code, as it isn't
+used in any specs currently used for generating code.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 0e34817126b9..67c448eef25d 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -592,7 +592,6 @@ int wireguard_nl_set_device_doit(struct sk_buff *skb,
- static struct genl_family genl_family __ro_after_init = {
- 	.split_ops = wireguard_nl_ops,
- 	.n_split_ops = ARRAY_SIZE(wireguard_nl_ops),
--	.resv_start_op = WG_CMD_SET_DEVICE + 1,
- 	.name = WG_GENL_NAME,
- 	.version = WG_GENL_VERSION,
- 	.module = THIS_MODULE,
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 1543d4911bf5..b7de7f6b1fc7 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -816,6 +816,11 @@ class TypeArrayNest(Type):
+                     f'unsigned int n_{self.c_name}']
+         return super().arg_member(ri)
+ 
++    def _attr_policy(self, policy):
++        if self.attr['sub-type'] == 'nest':
++            return f'NLA_POLICY_NESTED_ARRAY({self.nested_render_name}_nl_policy)'
++        return super()._attr_policy(policy)
++
+     def _attr_typol(self):
+         if self.attr['sub-type'] in scalars:
+             return f'.type = YNL_PT_U{c_upper(self.sub_type[1:])}, '
 -- 
 2.51.0
 
