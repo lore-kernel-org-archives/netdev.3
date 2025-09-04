@@ -1,395 +1,218 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011018.outbound.protection.outlook.com [52.101.70.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74A329D281;
-	Thu,  4 Sep 2025 21:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757020399; cv=none; b=A24LD03B7Z6G29UEYOlTsbg6pshuubdZGRafpfNySFvyMgKb4+SJ+zlbLxlRlQKXcX3jWBxVdg5EbBCrujs8ux++57mTMFmwzUrQowRtdWZCgUqlQP8YgjV1l3VChtbYDpdFUnu4CwyY9xvIttI3r56jk87QJk3S40qd3SkimgQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757020399; c=relaxed/simple;
-	bh=PG+ib/nk6SWnN9J3aSk2bi5cGPIS3zNAw9Aj90ie2lw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pE0B2n2YwG6hDaYfIwySkNAe4QQ5dFvhYZLSa+NR7i4ZM9l9ftvxJBP7IDXeq4bBfsdw4Mjyd5NO2Tq/q7vr8PKWN2ZUoi220vSZ1/dCVtTEzkbFegq4YqrSYAlQrH6hTL1e5A22Qm1ps2kZx2N1HHqxDXYvXWPm9TyyeEvOmQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hyzk1hC9; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10E1277C98;
+	Thu,  4 Sep 2025 21:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757020421; cv=fail; b=CwnXVv5ZN8LVrNr3VrmoWXKMB2gLvyL7AJEdJDKXOJQhU4z4vUtO8Q95XCS3DDxEpM9iIWLGK6Tvu4JUDWXKMSxOxadohr4/zyF9BN4mzsv7d4Rg/pNzR5GIR/EDJORAR8Jwh2cdYcfbwt/1CxPoTSOqV1c9qeNhfoSuC9djczU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757020421; c=relaxed/simple;
+	bh=n8HaXUvq4dOXujnEWiQnDd3xk+tw+LA3Wr853ciwzD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=oDXUcbjTqM8TItHbf2OPv3Gj33BQH8c2fzv/MV2ZbiVu+ozVEhXjVFLfjtnwXRqVYs8y+0k7t49yFhWaZqqKCYSEfTELGcH7h6sqUvKHP00qV3Iy0d06tLfNzCSqRPxEEIlB7EcVs/M37Fx3FGwp0R0CzouXvAtXiVlVdBAEFXM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=P5XtHR+e; arc=fail smtp.client-ip=52.101.70.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hyzk1hC9"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584ELORD009202;
-	Thu, 4 Sep 2025 21:13:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8a6tHUF39FrptoQJQ
-	e5qW45HCdImsqKMlWl9c5/fngo=; b=hyzk1hC90mkVJIxCW9WUcsuf0FgeanCdT
-	2n1GEltzdPtLvuCYazucaA0JPs07xZ0s0eFaycGGsoFGBuXaomHfDsDbmaP2qtT/
-	QW+XfIBlecKVwDT5gIuGHdgoGkNkjFE7aINkyZOf4a+lvqAZ8zMpg75bLQzfvYBS
-	UQBc7RqjhK9fsze7V7cu21Lq81JKRXWwuc5UDQqyc2XgmWksTnHtHtD6dVgAOnQd
-	7S1Ht9E6Tsa0WXfj8tMOp50hTiPx5te8AULyGR2bNNxQ4F8XbXTdCdLyodXIpMx3
-	0YE7GfZluf4L26mS+z0d1GGusDXNKdxnoclTPBz78/Fcr3f3lW1aQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48uswdmqu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 21:13:09 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 584L9WGJ006319;
-	Thu, 4 Sep 2025 21:13:08 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48uswdmqtx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 21:13:08 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 584Kr2GM014345;
-	Thu, 4 Sep 2025 21:13:07 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3p51j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 21:13:07 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584LD48M51642834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Sep 2025 21:13:04 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2193120043;
-	Thu,  4 Sep 2025 21:13:04 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF3E420040;
-	Thu,  4 Sep 2025 21:13:03 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Sep 2025 21:13:03 +0000 (GMT)
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Cc: Halil Pasic <pasic@linux.ibm.com>
-Subject: [PATCH net-next 1/2] net/smc: make wr buffer count configurable
-Date: Thu,  4 Sep 2025 23:12:52 +0200
-Message-ID: <20250904211254.1057445-2-pasic@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250904211254.1057445-1-pasic@linux.ibm.com>
-References: <20250904211254.1057445-1-pasic@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="P5XtHR+e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TCYLL7khUaD2v7+cjoRSi4bLrR3jMeb/8zZdvGP1hIm/uMEZ71we63nHnjKLS8p3tk6pvZrE+wjH7HpQaXOWdAeFoFEzrf2/oT1/zgeXxASP4+naKkYAzY2xvhf/3nn669QcGgzoCUs+aN4TtPTOCAYe8DJP/T8wfImUHfF8frGZJsctPRG1OKd7Fpai6Y5Y1y6fv4h3x6VsvNoxTtneW4wUn0p2BZgy4lpcszd+X57y/soErJxCm6mGQjaVEtnsKy4INlDxwrUeNtlamcqGpjyZGasISohPpFpQNLLBsm2wha+id9bJVZR/vXoJFxmobJV662mPCIYMhGPTC6AHsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aqRlE9SZq9qZEjb7arWLJ0NvIKrfiZd33cYIH0Mkx/M=;
+ b=WVuDG+eOC6Q/TqnBu2S5UFTxictiRrcO2zzn8QQaJ7H8Xc3Axo/IZUbnPchEgkNu76cBXnJZDSLx8E1DYNQFbcDnOGdAFU2LfS1CBaLBTf5ppmr4DkCsTZDqZGJlifPmobhLMLco8r1dzwLfp7pmL20iPVOgOMAsEDp2A4PPTmoW6YzngnX2w1OfhRHGWF9Y6a0arIDkOweHjB2y9fflMcM5xR06PR6heo2yDb0sAK+J4NJRwqzofheMPQb3mwGFmeD64GCUMTzakBHQkOca60SaVhEFyCz+G4V2rIrI1UwgfTSl/sKC5f09WrgcouIA+HlZwvo8Pyp1zvuBWYeybA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aqRlE9SZq9qZEjb7arWLJ0NvIKrfiZd33cYIH0Mkx/M=;
+ b=P5XtHR+evfANp0kikH+uPfWN4MYFokv8EKrBfE3VeHRic8mGRa0choezvnNd5eJgREYbR0WAgz9Qd9kSWf1+459jJdMoE45S5hueD6TI3VMmG1tiFDkUFcxqidNSsbWQpEghmbCsVsWfgNGCQBrU9YAJbgbBhKSu1GVsKL93mMSGJd7W/BZ78NUgl66wR++Cd7xSVxX/ZRt3d6Ng9E0MytQNhIuSDauRJmOeRLDnzt7aApcZ9DsmeagvzGzhx0fq9IZChfLkP2fih2iZO2PUJlchXic0S+QqurdR6WuwUfsdthaP4ZcOqK3LyDuvcmxtDeIrOAS0yWnLNUYJNT8s8w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
+ by AS8PR04MB7765.eurprd04.prod.outlook.com (2603:10a6:20b:2ae::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Thu, 4 Sep
+ 2025 21:13:35 +0000
+Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
+ ([fe80::55ef:fa41:b021:b5dd%5]) with mapi id 15.20.9094.015; Thu, 4 Sep 2025
+ 21:13:35 +0000
+Date: Thu, 4 Sep 2025 17:13:26 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com
+Subject: Re: [PATCH v5 net-next 3/5] net: fec: add rx_frame_size to support
+ configurable RX length
+Message-ID: <aLoA9mVfYoGOfIUg@lizhi-Precision-Tower-5810>
+References: <20250904203502.403058-1-shenwei.wang@nxp.com>
+ <20250904203502.403058-4-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904203502.403058-4-shenwei.wang@nxp.com>
+X-ClientProxiedBy: SJ0PR03CA0005.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::10) To DB9PR04MB9626.eurprd04.prod.outlook.com
+ (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=PeP/hjhd c=1 sm=1 tr=0 ts=68ba00e5 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=bFSKpROA1of_4W3tK1kA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX/3L2dsQq29D9
- GQnnGvUOexAE+hnMsZFjRYFrjQL1pg/+7tU317SsGWO5guyOY3sibJ7zGiVyRWT37J8ssrQLWdZ
- jqCPBblbrqAUsPSR2zZx6E8hwGMSLnHpxySzUN4HSaqH7Ybi9iqNZPaoATwANAt10pRiA0bUp3C
- F+6AUbpIYB1UB4n3kqY68vEbV/YW3Jg4ne5IqHLl+b0feJxtPJgbgWFzG4WgaPJvqVINaZIoLy8
- OqAPUmjre/skLiVscjblZ7pI31uN3NeDoPOYpZwXtFufKNVWY1LHlEpiASSc0iKvSg2KRD51Bi7
- UDS7ZMMn50z+vhS3tAh0jdk916LNN4pwpssH3YYaQFoJOraPZ79r+4B/Eg1P7Uv0YAbg8jnLPHl
- pdIJIWw+
-X-Proofpoint-GUID: sWg36E1s0zG8R-QJlqtVrguB119In2Jv
-X-Proofpoint-ORIG-GUID: D-Hn-qxd3qdk5Gd6EdcKPCV5-GwoDS4R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-04_07,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
- impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AS8PR04MB7765:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44227a49-debd-4d55-beb1-08ddebf7e8ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?vG/Jhzpvs8s5kNOiTG/aorP6muZDAH5xtMb4YHCSccfAKzP9F5h8lWGflTOE?=
+ =?us-ascii?Q?gcELYc6b+ZPQVWSjz4L+pcYnytZpYzJN9ydeXACVRh+BK2jDovh1IEvzSiUP?=
+ =?us-ascii?Q?exiaz5ujUdGC6YnX1rRjON2lajKu8FfROWTo0ykfwO4h9YoL/9CZT1dnGWN/?=
+ =?us-ascii?Q?Xenn47JZJp84qzrS6T2B7gYacP01FXCxO4xnBBo0BErzWKyEzLpKdlrxsJuD?=
+ =?us-ascii?Q?QravmVYUQgcmKymysEa+CezMuRbzwmrIvGdMA9fRrTiGalL72jg7iOZRKNFp?=
+ =?us-ascii?Q?+yohrk9IjMcBCnllV4lemmIXFr6dOs6o1Z81v4Rm/W5GjbPOBFTOBgQP5/Rx?=
+ =?us-ascii?Q?604gO4w3swvXyEescKkpOIxy5kHCaCFokaCPgwJTxfSONPBX5ND21pAY4sRr?=
+ =?us-ascii?Q?i30ackHgn+znL1AZq4f6A3ejO04sbZugPwhp6SCWpQcoXG2dr3EWnupEZKqM?=
+ =?us-ascii?Q?1aEZ49W2s4+mAC4ji11ben8NTiVqq4XT9wK/mUhdGDBzYk8mkj0VSzgKbnK5?=
+ =?us-ascii?Q?tVY79u1KYefF3yJuvDVnA9DZrQXYvTUZbYpNHqplgtO98aRA1zGFwWjxC8Is?=
+ =?us-ascii?Q?3vIThGrJv4xPitG2kldsZqLWubeMtwzd6+D+LpoiumZv1dnPl9BXMbB6tMCC?=
+ =?us-ascii?Q?Pb/NbNRc0jR3qUCWnmRXYWe9BsdN8aPTNBaW/PUDAjiTjOENmZKey98V5oC+?=
+ =?us-ascii?Q?57gGe/yKeAt0sPpGCNIsdfuqrWHzfzOHrBh/3LEih4VYWbeyoo7lEmGsYjKp?=
+ =?us-ascii?Q?8S+aGISR5m+OFgrqUO3uy9mREmeN1TfpPyDbxoA9VFRSfp0S5hBe0xeoazz0?=
+ =?us-ascii?Q?jJHBd/OnGo4IPoIgTkb+8sXTIIWiy8IkFpLkghqsP2aLp144IczRakV9VVUg?=
+ =?us-ascii?Q?SI5WnPh6wDFdK6rETX8ds4d/LW0Py6KnyWSeTsl2eErM2AjF6Y+BP1CUdOIE?=
+ =?us-ascii?Q?HiKvxKpdzxnmZYH3IvtDWiRApXQsrztSoqLDqKcpFcpwdViCpqj2RYajV4sM?=
+ =?us-ascii?Q?X7UZSDc8fqt2w8rAgyVyZ/Mzk1MlNRbuRitovaDexuaD66vXNtf20NBtJqgP?=
+ =?us-ascii?Q?ApOhEppylrghE8UDUH5dW/M9FF7NO6nQ7Bu0fi8+RDtgp7cHx4tcNEOrNZiH?=
+ =?us-ascii?Q?jYfZQi+0INNI4ww8TOoLgLJbi8ahPZVD+Tdj9vdxc8Z8AWsn0NbtKfaxwl9f?=
+ =?us-ascii?Q?a7pP5reNV1uPHCqmz+Ix23ar8zr63rvrMlOHJnEv9CA9c6lmatVFqy8rGV4Y?=
+ =?us-ascii?Q?p4yqUIHdWE3d6nSEosZ4s3335kDY/Km2a4nMTdFXl0uAzEObRFBH/OTxzbFP?=
+ =?us-ascii?Q?hI6iKo+KD7Gzkv0ViICROCesm0i1NWAMFhHCRx2LUwjENsPgu3jx4ToH1A62?=
+ =?us-ascii?Q?XgSdPNRpe26NqjUvEj0OlN3+nLTZfYH7RuJgppPTuM5GJACNAeMElxmlSOc8?=
+ =?us-ascii?Q?V5Int/AAr3+uhe8xM9BV9XncBTyDwkeC1JNp6lAlPoc1+SLizfwkVQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?02fp2C90jD7fFHbTFueWT+gNL+MwLANzZ/Fy059k+LZZ+bmyMx/gV4Rn8fIH?=
+ =?us-ascii?Q?kegMMEQqX0rw4jI2Rbpd+yKnupDuTa2yL1FJacemul85JPBW8RbC6kv0mG+0?=
+ =?us-ascii?Q?/FO7dcI6LJmCYTQEPh9f8QGMdp3PR9G4lcqXnqwRyQRWUa2nhbZcZJoOMIf6?=
+ =?us-ascii?Q?3Jo3D4O+NKzKnSlh6sYrZnJ2zqGhNLxqTzFBcbYUbQ/ghU89Nj30CogpWA27?=
+ =?us-ascii?Q?tgDoKjU/M+A1FTCyKcm1A0hBYeQSvieoYM9ElOQZF8jEyMNAbdHHs1aJBd55?=
+ =?us-ascii?Q?lbtKMlvAXQO+vrmuHHKbU6Pex2ZgsUZkybr8DBGqOZLGXQy4cB72jSke22lh?=
+ =?us-ascii?Q?35DFYNBAviuvO4AvcX+xc/gMbKLaQWDnDw7uv4FSk5EsyCNCpIwGYDkkZm2q?=
+ =?us-ascii?Q?GIqhKU/W0LVRj25/YtB4aB2Q5Mp9szwIVly/dVUDfj8XKvN10sdklX0vjbIe?=
+ =?us-ascii?Q?4WHvM4AN60yYxdvnJ5yThDGz2ZQXNZAX4V7UBhGR9iFhy53pNeasHX3uSxH4?=
+ =?us-ascii?Q?WX+2vUDiwbnqT0OVbRj4q+JvhDOdrlkNDwRQWxp2xLYBIgaPp+evIAEAtKij?=
+ =?us-ascii?Q?jsj54YzGFwfwJi8NvY8sts2Z57e1qld3z8vKMWLfrJxEb7lSFXNYW15owx6z?=
+ =?us-ascii?Q?CjOaGumUFRqqgSK6NcIi7G+f2FN7jMXYYSK/z4oc5w6aUY8nWHbzNdzfAdWX?=
+ =?us-ascii?Q?nwcbfeTYDoI5k6CUSrdgx4uliNxYTED83evsoftLP4ch2cxDZ8EZqdOkfG6F?=
+ =?us-ascii?Q?oNMvz8S2Cm7jzAOROHJBbfziWJtcJI4CNieESqN67SRfvt6uzdLMGEeR+rdn?=
+ =?us-ascii?Q?CKCo8cD69TOyweUrJYuMSz62FcIlDw3cZHXzL9otgC5SH5hhR+40Pe1VWR1q?=
+ =?us-ascii?Q?8sl4g40j/w9fW9h7tTaaAjIVWAH3EVDh21pnjChQa3nlP3ZPfrcLdBaon4fY?=
+ =?us-ascii?Q?aegoZtGOfM4BGticbPgTObwHRXyVyPEAEWWghglZgG7j3UCnDiz0TAq0Qlj/?=
+ =?us-ascii?Q?klqm2JCbRUUlSKt14uleElcnoPjMqbfAQ2RgqVGlYeB6Ul0GtOSz2fwrgnGp?=
+ =?us-ascii?Q?yxz5m/NclH8KZZ9vKhcHfKxQ7/f/hFiUHnL7t+F5IrqZX520KtKXR+cP92GO?=
+ =?us-ascii?Q?JjN05zCMQyr3tajOvbkmh9ynB7Rj1BZ3UePR+oocSBkKXT3Eq7h1dXpvitmK?=
+ =?us-ascii?Q?FpL4fYEjAU1sCMJePTuskqn1vwOVHGJmkCoDhSJM6/NzyfG0K6pQGBabfNNx?=
+ =?us-ascii?Q?GbxkpRe1x2h3ktOeyL/QssFSloLOYUH4SQo2mM4bY66zMF0Lbyyd/mDVrN2x?=
+ =?us-ascii?Q?y99a4fUlhLLSCuUPlm5iN+t0IeXa/jrkWZaeVQcW1B9xwQBAZoPTUDF7kSrR?=
+ =?us-ascii?Q?jy9aT49RutClDbWdi0GZ9VVGyChhX4GF9q4n9QLgJeJQqehLbKT+52I+4YXW?=
+ =?us-ascii?Q?bUaSuf7/BBdw/lZx8pf3G++S6GyMMq4LFyF5gWtqHD4sZAybTjXvqQxuq+WJ?=
+ =?us-ascii?Q?IkQv9y+vgrPjPhS4qvnVn//+YMeEPr8vP1DzSlpbcHEYHHyZjXvfyEssnJxU?=
+ =?us-ascii?Q?GC0CiiAxffd2jS14oKVm/Kp/UeG8WwcIl+2s8N1P?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44227a49-debd-4d55-beb1-08ddebf7e8ec
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 21:13:35.6523
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6pgfh+JgGtn5O5EIJMTdkKqH5XVl0MhTbIz2686y9/fow3rHe08n282ldZjJWJ/HgzZ+3UbZIYGVcoqhb5Rd/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7765
 
-Think SMC_WR_BUF_CNT_SEND := SMC_WR_BUF_CNT used in send context and
-SMC_WR_BUF_CNT_RECV := 3 * SMC_WR_BUF_CNT used in recv context. Those
-get replaced with lgr->max_send_wr and lgr->max_recv_wr respective.
+On Thu, Sep 04, 2025 at 03:35:00PM -0500, Shenwei Wang wrote:
+> Add a new rx_frame_size member in the fec_enet_private structure to
+> track the RX buffer size. On the Jumbo frame enabled system, the value
+> will be recalculated whenever the MTU is updated, allowing the driver
+> to allocate RX buffer efficiently.
+>
+> Configure the MAX_FL (Maximum Frame Length) based on the current MTU,
+> by changing the OPT_FRAME_SIZE macro.
+>
+> Configure the TRUNC_FL (Frame Truncation Length) based on the smaller
+> value between max_buf_size and the rx_frame_size to maintain consistent
+> RX error behavior, regardless of whether Jumbo frames are enabled.
+>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
 
-While at it let us also remove a confusing comment that is either not
-about the context in which it resides (describing
-qp_attr.cap.max_send_wr and qp_attr.cap.max_recv_wr) or not applicable
-any more when these values become configurable .
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
----
- Documentation/networking/smc-sysctl.rst | 37 +++++++++++++++++++++++++
- net/smc/smc.h                           |  2 ++
- net/smc/smc_core.h                      |  4 +++
- net/smc/smc_ib.c                        |  7 ++---
- net/smc/smc_llc.c                       |  2 ++
- net/smc/smc_sysctl.c                    | 22 +++++++++++++++
- net/smc/smc_wr.c                        | 32 +++++++++++----------
- net/smc/smc_wr.h                        |  2 --
- 8 files changed, 86 insertions(+), 22 deletions(-)
-
-diff --git a/Documentation/networking/smc-sysctl.rst b/Documentation/networking/smc-sysctl.rst
-index a874d007f2db..c687092329e3 100644
---- a/Documentation/networking/smc-sysctl.rst
-+++ b/Documentation/networking/smc-sysctl.rst
-@@ -71,3 +71,40 @@ smcr_max_conns_per_lgr - INTEGER
- 	acceptable value ranges from 16 to 255. Only for SMC-R v2.1 and later.
- 
- 	Default: 255
-+
-+smcr_max_send_wr - INTEGER
-+	So called work request buffers are SMCR link (and RDMA queue pair) level
-+	resources necessary for performing RDMA operations. Since up to 255
-+	connections can share a link group and thus also a link and the number
-+	of the work request buffers is decided when the link is allocated,
-+	depending on the workload it can a bottleneck in a sense that threads
-+	have to wait for work request buffers to become available. Before the
-+	introduction of this control the maximal number of work request buffers
-+	available on the send path used to be hard coded to 16. With this control
-+	it becomes configurable. The acceptable range is between 2 and 2048.
-+
-+	Please be aware that all the buffers need to be allocated as a physically
-+	continuous array in which each element is a single buffer and has the size
-+	of SMC_WR_BUF_SIZE (48) bytes. If the allocation fails we give up much
-+	like before having this control.
-+	this control.
-+
-+	Default: 16
-+
-+smcr_max_recv_wr - INTEGER
-+	So called work request buffers are SMCR link (and RDMA queue pair) level
-+	resources necessary for performing RDMA operations. Since up to 255
-+	connections can share a link group and thus also a link and the number
-+	of the work request buffers is decided when the link is allocated,
-+	depending on the workload it can a bottleneck in a sense that threads
-+	have to wait for work request buffers to become available. Before the
-+	introduction of this control the maximal number of work request buffers
-+	available on the receive path used to be hard coded to 16. With this control
-+	it becomes configurable. The acceptable range is between 2 and 2048.
-+
-+	Please be aware that all the buffers need to be allocated as a physically
-+	continuous array in which each element is a single buffer and has the size
-+	of SMC_WR_BUF_SIZE (48) bytes. If the allocation fails we give up much
-+	like before having this control.
-+
-+	Default: 48
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 2c9084963739..ffe48253fa1f 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -33,6 +33,8 @@
- 
- extern struct proto smc_proto;
- extern struct proto smc_proto6;
-+extern unsigned int smc_ib_sysctl_max_send_wr;
-+extern unsigned int smc_ib_sysctl_max_recv_wr;
- 
- extern struct smc_hashinfo smc_v4_hashinfo;
- extern struct smc_hashinfo smc_v6_hashinfo;
-diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
-index 48a1b1dcb576..b883f43fc206 100644
---- a/net/smc/smc_core.h
-+++ b/net/smc/smc_core.h
-@@ -361,6 +361,10 @@ struct smc_link_group {
- 						/* max conn can be assigned to lgr */
- 			u8			max_links;
- 						/* max links can be added in lgr */
-+			u16			max_send_wr;
-+						/* number of WR buffers on send */
-+			u16			max_recv_wr;
-+						/* number of WR buffers on recv */
- 		};
- 		struct { /* SMC-D */
- 			struct smcd_gid		peer_gid;
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 0052f02756eb..e8d35c22c525 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -669,11 +669,6 @@ int smc_ib_create_queue_pair(struct smc_link *lnk)
- 		.recv_cq = lnk->smcibdev->roce_cq_recv,
- 		.srq = NULL,
- 		.cap = {
--				/* include unsolicited rdma_writes as well,
--				 * there are max. 2 RDMA_WRITE per 1 WR_SEND
--				 */
--			.max_send_wr = SMC_WR_BUF_CNT * 3,
--			.max_recv_wr = SMC_WR_BUF_CNT * 3,
- 			.max_send_sge = SMC_IB_MAX_SEND_SGE,
- 			.max_recv_sge = lnk->wr_rx_sge_cnt,
- 			.max_inline_data = 0,
-@@ -683,6 +678,8 @@ int smc_ib_create_queue_pair(struct smc_link *lnk)
- 	};
- 	int rc;
- 
-+	qp_attr.cap.max_send_wr = 3 * lnk->lgr->max_send_wr;
-+	qp_attr.cap.max_recv_wr = lnk->lgr->max_recv_wr;
- 	lnk->roce_qp = ib_create_qp(lnk->roce_pd, &qp_attr);
- 	rc = PTR_ERR_OR_ZERO(lnk->roce_qp);
- 	if (IS_ERR(lnk->roce_qp))
-diff --git a/net/smc/smc_llc.c b/net/smc/smc_llc.c
-index f865c58c3aa7..91c936bf7336 100644
---- a/net/smc/smc_llc.c
-+++ b/net/smc/smc_llc.c
-@@ -2157,6 +2157,8 @@ void smc_llc_lgr_init(struct smc_link_group *lgr, struct smc_sock *smc)
- 	init_waitqueue_head(&lgr->llc_msg_waiter);
- 	init_rwsem(&lgr->llc_conf_mutex);
- 	lgr->llc_testlink_time = READ_ONCE(net->smc.sysctl_smcr_testlink_time);
-+	lgr->max_send_wr = (u16)(READ_ONCE(smc_ib_sysctl_max_send_wr));
-+	lgr->max_recv_wr = (u16)(READ_ONCE(smc_ib_sysctl_max_recv_wr));
- }
- 
- /* called after lgr was removed from lgr_list */
-diff --git a/net/smc/smc_sysctl.c b/net/smc/smc_sysctl.c
-index 2fab6456f765..01da1297e150 100644
---- a/net/smc/smc_sysctl.c
-+++ b/net/smc/smc_sysctl.c
-@@ -29,6 +29,10 @@ static int links_per_lgr_min = SMC_LINKS_ADD_LNK_MIN;
- static int links_per_lgr_max = SMC_LINKS_ADD_LNK_MAX;
- static int conns_per_lgr_min = SMC_CONN_PER_LGR_MIN;
- static int conns_per_lgr_max = SMC_CONN_PER_LGR_MAX;
-+unsigned int smc_ib_sysctl_max_send_wr = 16;
-+unsigned int smc_ib_sysctl_max_recv_wr = 48;
-+static unsigned int smc_ib_sysctl_max_wr_min = 2;
-+static unsigned int smc_ib_sysctl_max_wr_max = 2048;
- 
- static struct ctl_table smc_table[] = {
- 	{
-@@ -99,6 +103,24 @@ static struct ctl_table smc_table[] = {
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
-+	{
-+		.procname       = "smcr_max_send_wr",
-+		.data		= &smc_ib_sysctl_max_send_wr,
-+		.maxlen         = sizeof(int),
-+		.mode           = 0644,
-+		.proc_handler   = proc_dointvec_minmax,
-+		.extra1		= &smc_ib_sysctl_max_wr_min,
-+		.extra2		= &smc_ib_sysctl_max_wr_max,
-+	},
-+	{
-+		.procname       = "smcr_max_recv_wr",
-+		.data		= &smc_ib_sysctl_max_recv_wr,
-+		.maxlen         = sizeof(int),
-+		.mode           = 0644,
-+		.proc_handler   = proc_dointvec_minmax,
-+		.extra1		= &smc_ib_sysctl_max_wr_min,
-+		.extra2		= &smc_ib_sysctl_max_wr_max,
-+	},
- };
- 
- int __net_init smc_sysctl_net_init(struct net *net)
-diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-index b04a21b8c511..85ebc65f1546 100644
---- a/net/smc/smc_wr.c
-+++ b/net/smc/smc_wr.c
-@@ -34,6 +34,7 @@
- #define SMC_WR_MAX_POLL_CQE 10	/* max. # of compl. queue elements in 1 poll */
- 
- #define SMC_WR_RX_HASH_BITS 4
-+
- static DEFINE_HASHTABLE(smc_wr_rx_hash, SMC_WR_RX_HASH_BITS);
- static DEFINE_SPINLOCK(smc_wr_rx_hash_lock);
- 
-@@ -547,9 +548,9 @@ void smc_wr_remember_qp_attr(struct smc_link *lnk)
- 		    IB_QP_DEST_QPN,
- 		    &init_attr);
- 
--	lnk->wr_tx_cnt = min_t(size_t, SMC_WR_BUF_CNT,
-+	lnk->wr_tx_cnt = min_t(size_t, lnk->lgr->max_send_wr,
- 			       lnk->qp_attr.cap.max_send_wr);
--	lnk->wr_rx_cnt = min_t(size_t, SMC_WR_BUF_CNT * 3,
-+	lnk->wr_rx_cnt = min_t(size_t, lnk->lgr->max_recv_wr,
- 			       lnk->qp_attr.cap.max_recv_wr);
- }
- 
-@@ -741,50 +742,51 @@ int smc_wr_alloc_lgr_mem(struct smc_link_group *lgr)
- int smc_wr_alloc_link_mem(struct smc_link *link)
- {
- 	/* allocate link related memory */
--	link->wr_tx_bufs = kcalloc(SMC_WR_BUF_CNT, SMC_WR_BUF_SIZE, GFP_KERNEL);
-+	link->wr_tx_bufs = kcalloc(link->lgr->max_send_wr,
-+				   SMC_WR_BUF_SIZE, GFP_KERNEL);
- 	if (!link->wr_tx_bufs)
- 		goto no_mem;
--	link->wr_rx_bufs = kcalloc(SMC_WR_BUF_CNT * 3, link->wr_rx_buflen,
-+	link->wr_rx_bufs = kcalloc(link->lgr->max_recv_wr, SMC_WR_BUF_SIZE,
- 				   GFP_KERNEL);
- 	if (!link->wr_rx_bufs)
- 		goto no_mem_wr_tx_bufs;
--	link->wr_tx_ibs = kcalloc(SMC_WR_BUF_CNT, sizeof(link->wr_tx_ibs[0]),
--				  GFP_KERNEL);
-+	link->wr_tx_ibs = kcalloc(link->lgr->max_send_wr,
-+				  sizeof(link->wr_tx_ibs[0]), GFP_KERNEL);
- 	if (!link->wr_tx_ibs)
- 		goto no_mem_wr_rx_bufs;
--	link->wr_rx_ibs = kcalloc(SMC_WR_BUF_CNT * 3,
-+	link->wr_rx_ibs = kcalloc(link->lgr->max_recv_wr,
- 				  sizeof(link->wr_rx_ibs[0]),
- 				  GFP_KERNEL);
- 	if (!link->wr_rx_ibs)
- 		goto no_mem_wr_tx_ibs;
--	link->wr_tx_rdmas = kcalloc(SMC_WR_BUF_CNT,
-+	link->wr_tx_rdmas = kcalloc(link->lgr->max_send_wr,
- 				    sizeof(link->wr_tx_rdmas[0]),
- 				    GFP_KERNEL);
- 	if (!link->wr_tx_rdmas)
- 		goto no_mem_wr_rx_ibs;
--	link->wr_tx_rdma_sges = kcalloc(SMC_WR_BUF_CNT,
-+	link->wr_tx_rdma_sges = kcalloc(link->lgr->max_send_wr,
- 					sizeof(link->wr_tx_rdma_sges[0]),
- 					GFP_KERNEL);
- 	if (!link->wr_tx_rdma_sges)
- 		goto no_mem_wr_tx_rdmas;
--	link->wr_tx_sges = kcalloc(SMC_WR_BUF_CNT, sizeof(link->wr_tx_sges[0]),
-+	link->wr_tx_sges = kcalloc(link->lgr->max_send_wr, sizeof(link->wr_tx_sges[0]),
- 				   GFP_KERNEL);
- 	if (!link->wr_tx_sges)
- 		goto no_mem_wr_tx_rdma_sges;
--	link->wr_rx_sges = kcalloc(SMC_WR_BUF_CNT * 3,
-+	link->wr_rx_sges = kcalloc(link->lgr->max_recv_wr,
- 				   sizeof(link->wr_rx_sges[0]) * link->wr_rx_sge_cnt,
- 				   GFP_KERNEL);
- 	if (!link->wr_rx_sges)
- 		goto no_mem_wr_tx_sges;
--	link->wr_tx_mask = bitmap_zalloc(SMC_WR_BUF_CNT, GFP_KERNEL);
-+	link->wr_tx_mask = bitmap_zalloc(link->lgr->max_send_wr, GFP_KERNEL);
- 	if (!link->wr_tx_mask)
- 		goto no_mem_wr_rx_sges;
--	link->wr_tx_pends = kcalloc(SMC_WR_BUF_CNT,
-+	link->wr_tx_pends = kcalloc(link->lgr->max_send_wr,
- 				    sizeof(link->wr_tx_pends[0]),
- 				    GFP_KERNEL);
- 	if (!link->wr_tx_pends)
- 		goto no_mem_wr_tx_mask;
--	link->wr_tx_compl = kcalloc(SMC_WR_BUF_CNT,
-+	link->wr_tx_compl = kcalloc(link->lgr->max_send_wr,
- 				    sizeof(link->wr_tx_compl[0]),
- 				    GFP_KERNEL);
- 	if (!link->wr_tx_compl)
-@@ -905,7 +907,7 @@ int smc_wr_create_link(struct smc_link *lnk)
- 		goto dma_unmap;
- 	}
- 	smc_wr_init_sge(lnk);
--	bitmap_zero(lnk->wr_tx_mask, SMC_WR_BUF_CNT);
-+	bitmap_zero(lnk->wr_tx_mask, lnk->lgr->max_send_wr);
- 	init_waitqueue_head(&lnk->wr_tx_wait);
- 	rc = percpu_ref_init(&lnk->wr_tx_refs, smcr_wr_tx_refs_free, 0, GFP_KERNEL);
- 	if (rc)
-diff --git a/net/smc/smc_wr.h b/net/smc/smc_wr.h
-index f3008dda222a..aa4533af9122 100644
---- a/net/smc/smc_wr.h
-+++ b/net/smc/smc_wr.h
-@@ -19,8 +19,6 @@
- #include "smc.h"
- #include "smc_core.h"
- 
--#define SMC_WR_BUF_CNT 16	/* # of ctrl buffers per link */
--
- #define SMC_WR_TX_WAIT_FREE_SLOT_TIME	(10 * HZ)
- 
- #define SMC_WR_TX_SIZE 44 /* actual size of wr_send data (<=SMC_WR_BUF_SIZE) */
--- 
-2.48.1
-
+>  drivers/net/ethernet/freescale/fec.h      | 1 +
+>  drivers/net/ethernet/freescale/fec_main.c | 5 +++--
+>  2 files changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
+> index 47317346b2f3..f1032a11aa76 100644
+> --- a/drivers/net/ethernet/freescale/fec.h
+> +++ b/drivers/net/ethernet/freescale/fec.h
+> @@ -621,6 +621,7 @@ struct fec_enet_private {
+>  	unsigned int total_rx_ring_size;
+>  	unsigned int max_buf_size;
+>  	unsigned int pagepool_order;
+> +	unsigned int rx_frame_size;
+>
+>  	struct	platform_device *pdev;
+>
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index f046d32a62fb..cf5118838f9c 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -253,7 +253,7 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
+>  #if defined(CONFIG_M523x) || defined(CONFIG_M527x) || defined(CONFIG_M528x) || \
+>      defined(CONFIG_M520x) || defined(CONFIG_M532x) || defined(CONFIG_ARM) || \
+>      defined(CONFIG_ARM64)
+> -#define	OPT_FRAME_SIZE	(fep->max_buf_size << 16)
+> +#define	OPT_FRAME_SIZE	((fep->netdev->mtu + ETH_HLEN + ETH_FCS_LEN) << 16)
+>  #else
+>  #define	OPT_FRAME_SIZE	0
+>  #endif
+> @@ -1191,7 +1191,7 @@ fec_restart(struct net_device *ndev)
+>  		else
+>  			val &= ~FEC_RACC_OPTIONS;
+>  		writel(val, fep->hwp + FEC_RACC);
+> -		writel(fep->max_buf_size, fep->hwp + FEC_FTRL);
+> +		writel(min(fep->rx_frame_size, fep->max_buf_size), fep->hwp + FEC_FTRL);
+>  	}
+>  #endif
+>
+> @@ -4560,6 +4560,7 @@ fec_probe(struct platform_device *pdev)
+>  	pinctrl_pm_select_sleep_state(&pdev->dev);
+>
+>  	fep->pagepool_order = 0;
+> +	fep->rx_frame_size = FEC_ENET_RX_FRSIZE;
+>  	fep->max_buf_size = PKT_MAXBUF_SIZE;
+>  	ndev->max_mtu = fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
+>
+> --
+> 2.43.0
+>
