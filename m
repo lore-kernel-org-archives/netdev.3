@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800352E7635;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A082E718B;
 	Thu,  4 Sep 2025 22:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023413; cv=none; b=D64ghI92RsJiYlm1rviF+C4pQFemncNh2H4URhgzdt+ftFyonm9iBA+/6tuwz/8e4AibI7bFCmxI3paTdJRnmon+lnil+ApAKIEG4/+/iLKOWndYVUokIMtlf324czehPt2tQA0kKOXQnFRhbxU9AXXP2bBdH52NGHaRDcsEH/I=
+	t=1757023413; cv=none; b=a+KMmOoSFiGs79nUNCZERkXjNxAuckRV0hSJun2TjAH5jLiA4zrrnqURKQAAlWLPcVKY7od1jhbPRHnq3bUnkrpMzSNDko9FAuBThwEHPKbmDSqowPMhS634CV9sknnM6U8GPG4oRJPyVCb1TrLA5qw6VzMHyqe9jzZuLBBI6gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757023413; c=relaxed/simple;
-	bh=HDjLGdakeEgBxhxtRpsEM7x1k+CfKJ0/LjGVCRNwVuo=;
+	bh=H49KM7APmknx805x0ucjx+wtFzxUqH6rOOG1AZweFSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SNAmPw69J21f5jRadH+0AZoblTYP1p5yMQ94IQaCVPZ7Ac0YULXYL4n8zqU0ZyMgs1LsbIM6BOOXjDQPr0PmK0le61YTxI6/btQ49kPewlN6fqjBOcmdlmIoW/ltrDsVhFjOvxrxmcKvXs0nnMFp1+kDqUq+re/6+Pxr/qBq764=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Rd0yVeHH; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=es2Mki1mLgC8uqFgTcDoIOtAhKB440QorCYeZ1MgkEtg+5oTWLTdhZ7ANhrP9xK7aNaBDlsToTZw5zz8gBeLzwCc3LtrC9Vo0FcH3jYxxU5OMCs39kaP1GHBbgCWybngESkL+d0N6Cp8eckoHoJ3WH+RU25b2PSRPFqR3D6vbdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=jQ3HzzKo; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Rd0yVeHH"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="jQ3HzzKo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=HDjLGdakeEgBxhxtRpsEM7x1k+CfKJ0/LjGVCRNwVuo=;
+	bh=H49KM7APmknx805x0ucjx+wtFzxUqH6rOOG1AZweFSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rd0yVeHHooiX9mtR4bNKHCb5VbHlFdLXERrpDO1WVmzK6rTuTCs7d7nMw+ZJWxqhE
-	 HLftjA3sWz+fx3cjz2UDkwKWc5v8I7McEXT0dC3OQhasQTHzWh15Eun2Is8crv2FVY
-	 KudLfhvKtmLm+puR97UJO5zeoevDjRbZbkHnOwbkq0VyJwxRfSHxKb7/bRuPx/KnTa
-	 uy0pSwG2VhmDP8EZyRHMch+yzpGpMD4QugqfGjrA6avViSzt334Xo7UNvSgmNwy3cR
-	 t041XDKolPHUAHpxQvjSSpYEIfc2zuIm1xUD0B/7+FvoApnig7vaBF37N/BV7B0snS
-	 Zu/xlvLf1B/HQ==
+	b=jQ3HzzKoaFY8iuJCnGrGZSi2ITe5xIQi7fh3YLIETVb2MmH5171xKjL/W2AZas2Ve
+	 TV7Y5z8lD1o/vrWTPtgcl1Ic/ScuM4LzGda1GuRvpD03Mf5YLvlYx+lGSKNfc3PrRf
+	 Mc4aBprxDOLfWni9IKrFWn5cHpW9+R/8Ay4xsRJV9ATbwtl9qbscJtXtVI6s9bJ6Ol
+	 Y/R+aspXoH03gR47eucvvoGp3ekrHnJ9mEDaj7SfvZpo6pnlFOAPlh4IRAhxsO0tEw
+	 3gyMHTbM9UtYCWpupRuXluxc3r7HMekOrjB7BC1VbGHCCOeyzCPvfuiuymEiQjRw3Y
+	 lx9Z/SkWZ/A0w==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id B4507601B9;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id B7B746039A;
 	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 4C32A202886; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
+	id 71A8020297D; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 02/14] wireguard: netlink: validate nested arrays in policy
-Date: Thu,  4 Sep 2025 22:02:36 +0000
-Message-ID: <20250904220255.1006675-2-ast@fiberby.net>
+Subject: [RFC net-next 06/14] uapi: wireguard: move enum wg_cmd
+Date: Thu,  4 Sep 2025 22:02:40 +0000
+Message-ID: <20250904220255.1006675-6-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
 References: <20250904-wg-ynl-rfc@fiberby.net>
@@ -60,41 +60,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Use NLA_POLICY_NESTED_ARRAY() to add nested array validation.
+This patch moves enum wg_cmd to the end of the file, where
+ynl-gen would like to generate it.
 
-No behavioural changes intended, as the nested policy is already
-enforced through nla_parse_nested().
-
-This patch is an incremental step towards adopting a policy
+This is an incremental step towards adopting an UAPI header
 generated by ynl-gen.
+
+This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/uapi/linux/wireguard.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 086edd4bb33b..742d3f88d132 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -27,7 +27,7 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- 	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGDEVICE_F_ALL),
- 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
- 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
--	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
-+	[WGDEVICE_A_PEERS]		= NLA_POLICY_NESTED_ARRAY(peer_policy),
- };
+diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+index c2bb2463211a..ee63aba7f98f 100644
+--- a/include/uapi/linux/wireguard.h
++++ b/include/uapi/linux/wireguard.h
+@@ -11,13 +11,6 @@
  
- static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
-@@ -39,7 +39,7 @@ static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
- 	[WGPEER_A_LAST_HANDSHAKE_TIME]			= NLA_POLICY_EXACT_LEN(sizeof(struct __kernel_timespec)),
- 	[WGPEER_A_RX_BYTES]				= { .type = NLA_U64 },
- 	[WGPEER_A_TX_BYTES]				= { .type = NLA_U64 },
--	[WGPEER_A_ALLOWEDIPS]				= { .type = NLA_NESTED },
-+	[WGPEER_A_ALLOWEDIPS]				= NLA_POLICY_NESTED_ARRAY(allowedip_policy),
- 	[WGPEER_A_PROTOCOL_VERSION]			= { .type = NLA_U32 }
- };
+ #define WG_KEY_LEN 32
  
+-enum wg_cmd {
+-	WG_CMD_GET_DEVICE,
+-	WG_CMD_SET_DEVICE,
+-	__WG_CMD_MAX
+-};
+-#define WG_CMD_MAX (__WG_CMD_MAX - 1)
+-
+ enum wgdevice_flag {
+ 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
+ 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+@@ -76,4 +69,12 @@ enum wgallowedip_attribute {
+ };
+ #define WGALLOWEDIP_A_MAX (__WGALLOWEDIP_A_MAX - 1)
+ 
++enum wg_cmd {
++	WG_CMD_GET_DEVICE,
++	WG_CMD_SET_DEVICE,
++
++	__WG_CMD_MAX
++};
++#define WG_CMD_MAX (__WG_CMD_MAX - 1)
++
+ #endif /* _WG_UAPI_WIREGUARD_H */
 -- 
 2.51.0
 
