@@ -1,124 +1,126 @@
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F61285069
-	for <netdev@vger.kernel.org>; Thu,  4 Sep 2025 06:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756968585; cv=none; b=YDPEPKFYba/HcCryuKqdgy9dbDUkvr+wATvOxBpgR4q8Yw+2MqDIU7ysbmYbsB/FPdAIFC8bi80LoI1xqXxtYk170j8aP+NDhLgmI2YXLbUYgsZkMvxrxBZrR5njqStNOVZjl7XGG9zwukp2WISOL+m3vD1R95F5S9otqDCANKw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756968585; c=relaxed/simple;
-	bh=Mjve9as+XeiIpu4AGRqn4u8NIiTcc7YxtMIECHZ8YKE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V+PtadHo84Gm98DN/4HCer+xT0W3twb1haGKxgd/alMdTKQDddXSmFRjNdcg7nBUTKkoXh7yBPiqXuHHLq2p4tPo9dfJ8aRJbFkleR0JTxpgtwI5R17xiQdsf9nkZxdBDyOOnHXqYiZxgfvR9FbDsE8kINescx0pSztURvQTJWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IFFtKopd; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C726286412;
+	Thu,  4 Sep 2025 06:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756968943; cv=pass; b=Ozdb6NHaeO0zowUVmte2M2WwDhEqDtTiuypo657MZX6jrNlTZTiJOHKTKNnhxTct8Ka/r6bV+SHCI2ErG9dQArGhmtTVFBwEAch1lrQUVrqCse2VgAoeIvPe/tSso6SQW5Zn+2vdMB/rD3uGh3bE3sV7xM5xp+vpSSTg0SwKXek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756968943; c=relaxed/simple;
+	bh=bCInGNafFosv2/EfM0snbVd+AWphjz5RaQRvz2HRRWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jHukFFz/70uYr76Q4TQFMnSP6gJT8utkCUbZCNSMkAFI+7IUfHoANOSoD3nMKAB8NKkF1glyt2Amu5DkCTDQequCW7aazmeZek6A5KTeg42jSiiuGnB4O4vrIumNWezyGVcYkwb71nWOD0FA3NKXMsnhzsV6VjckCvx8y4JSSKA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=dbfK9a5M; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=LfO3RmLV; arc=pass smtp.client-ip=81.169.146.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IFFtKopd"
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-3f663225a2bso5605985ab.1
-        for <netdev@vger.kernel.org>; Wed, 03 Sep 2025 23:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756968583; x=1757573383; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mjve9as+XeiIpu4AGRqn4u8NIiTcc7YxtMIECHZ8YKE=;
-        b=IFFtKopdNnN5qCxZH79CpW3iG+0jrW1BiIZqGTqZJ3rWQTBz7SQWq3ef4CQBJqnIPM
-         oyLYiuO9YiKctaNygzgbfywQX+pB7ThlgaYxq8p+wFQcPT5CtZwl21CJ6cf5MUk6rtsj
-         cEwi67oi3FVSNVEuIhe4eoxnxxlVqjTVJwKrXwWhXaD8/JgDhfgGnp+QefnbHbkZ5TCh
-         JF4DTdGgQHQow+o7sVl46ELEFhpprT2cwKfDheKMIly+GPYDnrxUbhN7jYnjft2YBM8r
-         72yNgfrSmvmHvzcimrXBljPUwBW5osSm7xONXoeoO5wuTDufed6Bmfd1tBwfO+X1TGcZ
-         tK4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756968583; x=1757573383;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mjve9as+XeiIpu4AGRqn4u8NIiTcc7YxtMIECHZ8YKE=;
-        b=RTivkE1fWBZJwfxHPPcIgf3rjAaE4exBYGZFXY0lhMfivh6OXjuGcGkaxLqqiPobN9
-         1K1NgKIrTjieQLR1AXwT84wSnpzrt74veDiX/O6ESGKGthCKhLBi2kVGKHbVveNcZCHo
-         MhLFJxSNfZ3537hkHt4+2FTiz02T+kMk/De/um0l+c4IB/Po6IY4mJ5yamOmgrOCOuTd
-         N8xm3EDEMOWfqWLA6gOYPifyY+jjCFc2nxHGlHAc0Y6lDBufpo18dYiJ1Wo9mWqE+xQ6
-         8R0NrVZQ7KGPm1n7FCRnYot1dOcKiU115VEshEfL9k1iRXRqauIZHqxCW1E2vh2icQjR
-         znuA==
-X-Forwarded-Encrypted: i=1; AJvYcCXNqQagAVPMWunnxfdbKw/d6w5HkxNbzY3Z8eVk7oQabfpkToz6eMP0UEPkQRA8gR+jFLzAGCE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxxd+O/4VMrg5WzozWh4mlVCgHNQbVpGdWHEZxgUaH7JHus+I1S
-	mn5IliJx3URBh8ZD6IVD5BHiCM/yMvKUJtQ5PXaKWZPFu38x2OL8CrHoLMwGWPJSM5dtJUwieqh
-	5q3IIsxLRDMKQ5bh7v5+ajUwmX11SwaA=
-X-Gm-Gg: ASbGncsHBxUTyhf6EH5G+Ve6xFxDvIcXaNoSH7c2gsgx18nl3HUCEUx1u6lr5vjSkRs
-	qC7xsLwyBMQgeaBefoWfrv9u31Vqo724HNUw20NTVCCFVhD4ZW7zwjxLqc0I3mXyAKFDrVEfqxW
-	hGfjA7W4dIXFlw+TO6azYmEO8priNVuF+cyAQfsrrda1kjLs1Iz7sD+pZYhF6sfuR2kM+AXt+Vd
-	BbTcVc=
-X-Google-Smtp-Source: AGHT+IGEeJyHTblpykuHQu4g3FUHHuhXizIB5I/cX8I++TYM3nF2bQWsC8dz5vgCxjpcdjZrFOVjFGE+fqVSAh7PCDk=
-X-Received: by 2002:a05:6e02:144c:b0:3f3:cd20:d7e4 with SMTP id
- e9e14a558f8ab-3f3ffda2be4mr313977075ab.1.1756968583123; Wed, 03 Sep 2025
- 23:49:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="dbfK9a5M";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="LfO3RmLV"
+ARC-Seal: i=1; a=rsa-sha256; t=1756967139; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=jhq13UGEQj+UVTk+FWkawpup0vWB4vRosIpcfSqaHJGKkk+Dhe0og8uhEFj4d6JneY
+    e+bjNgmNs4dO27TjhMBlijH9o3muPliKutXtBtJas2EHGbIXCEUE+39i0hKfkeM8GvoB
+    WFxaCyW4EeWT1H2zqGlYGrZUxNoJ1P/J3f49h6P61fACrTouQG3zQQylHQ3BLjkM7ebV
+    xlDkHAm5ZkT1zZMb7WwVMCPsIwVfbO6klyFMfeiYtdYydgrQSSTvcpslAuloVRrAuBM+
+    K+G5Tih4IhRcnRjJ8bjdnaLmUSFcumNL/heDZDnONfJmRYt+oC1GyX4mh0Xp0WdxoTnY
+    zuBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1756967139;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
+    b=YJ7Zq4RffSAYvQ4PAcODpZPt/IguDM1sVSWYL5sbpbtRhwiqmZOyjVeuTxRuyGgMPf
+    xH73WxLHA+b1d1Hwy4xTDUALSA0TBosFv5ZNrvAgWJ1AOkPsKhVBxMmzR5pmluT+K83+
+    lEMAZa9el1uPH8lK8FU5cbT6r+UIO9/dPbQB5yAVDj53dylYRHATUAJYGPamn34EPJeb
+    Zp33XZ4ID18Fu4isdsdTFFKcDhL0fQl+l2Uq2hZ4n6POfxbw0nveNz4d8Ff1T+fnomPu
+    DsviOJPSZOPpJI3fCHQ1V0rhuMDEnracpCtWPadiNVk0Qr2rDBzsgCEGSkQmctPhr/Fy
+    +uMw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756967139;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
+    b=dbfK9a5Mgo+loiwoQD9/Qn2XvVKcsbBEDCo8BQtzhJhC4Ik7MrAdQ0BPbfVsvrcom5
+    VQavMhKiJJ1BVZ3rymEhPjG+uVHMigPqBvIvy4wuNqqq5Qx9v+63vxB1WFw8wPbaF6Oc
+    SeyGfQwuSF6qcllQYX04K1Eo7XB2GvCJL4ts+JkO+DGrPs9KQxwpWA3YMhgFxRYnIR8D
+    cVxXpVX+FbIzpIdHnFley9eEy5qvAPp4RtJk+z94ewfgEePHRou2g2OU6y+y3l/mwWLd
+    GAoODfCCXqE3xpYIrBIvNTQTsVae2czBtsq9cV/3lTxKFUEvMfhOSacEFKdUZwxfv14U
+    iImA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756967139;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
+    b=LfO3RmLVCHeKqxyFq05BCUkJ+hEc08nOhAClgxTWDjRJj0w87El7mpFbFrL1j5Jmw0
+    yXbDCD9J9xtU/Mle0kBQ==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bGWj0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::9f3]
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id K5d3611846PcLfl
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 4 Sep 2025 08:25:38 +0200 (CEST)
+Message-ID: <a7c707b7-61e1-4c40-8708-f3331da96d34@hartkopp.net>
+Date: Thu, 4 Sep 2025 08:25:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250903084720.1168904-1-edumazet@google.com> <20250903084720.1168904-2-edumazet@google.com>
- <CAL+tcoCqey97QW=7n_S8V9t-haSe=mu9iE1sAaDmPPJ+1BkysA@mail.gmail.com>
- <CAAVpQUBgCyC+y+2M7=WKJVk=sivgeZtE2kwCxDLFCrgezycjZg@mail.gmail.com>
- <CAL+tcoBJxe6GkosVCS5Vzwk_z8W1WmxqLFELzXNwCRSYkQUyHw@mail.gmail.com> <CANn89iLO1JOw8LKoxAYm5M_tXDFyiSVhEovOPsSf9H08gPwj_Q@mail.gmail.com>
-In-Reply-To: <CANn89iLO1JOw8LKoxAYm5M_tXDFyiSVhEovOPsSf9H08gPwj_Q@mail.gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Thu, 4 Sep 2025 14:49:07 +0800
-X-Gm-Features: Ac12FXwMWZ5vK3YAHtyRE0U3uRDuNk6V1hWJ7W7gu6NgzxQL7NOu8q3d5SzZG_c
-Message-ID: <CAL+tcoBT8=w9qHZC+P3nV5F2p7q4-r--aDFSn-TnQLMLkavLwg@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/3] tcp: fix __tcp_close() to only send RST when required
-To: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] docs: networking: can: change bcm_msg_head frames
+ member to support flexible array
+To: Alex Tran <alex.t.tran@gmail.com>
+Cc: mkl@pengutronix.de, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-can@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250904031709.1426895-1-alex.t.tran@gmail.com>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <20250904031709.1426895-1-alex.t.tran@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 4, 2025 at 2:44=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Wed, Sep 3, 2025 at 11:19=E2=80=AFPM Jason Xing <kerneljasonxing@gmail=
-.com> wrote:
-> >
-> > On Thu, Sep 4, 2025 at 1:32=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google=
-.com> wrote:
-> > >
-> > > On Wed, Sep 3, 2025 at 10:04=E2=80=AFPM Jason Xing <kerneljasonxing@g=
-mail.com> wrote:
-> > > >
-> > > > On Wed, Sep 3, 2025 at 4:47=E2=80=AFPM Eric Dumazet <edumazet@googl=
-e.com> wrote:
-> > > > >
-> > > > > If the receive queue contains payload that was already
-> > > > > received, __tcp_close() can send an unexpected RST.
-> > > > >
-> > > > > Refine the code to take tp->copied_seq into account,
-> > > > > as we already do in tcp recvmsg().
-> > > > >
-> > > > > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > > >
-> > > > Sorry, Eric. I might be wrong, and I don't think it's a bugfix for =
-now.
-> > > >
-> > > > IIUC, it's not possible that one skb stays in the receive queue and
-> > > > all of the data has been consumed in tcp_recvmsg() unless it's
-> > > > MSG_PEEK mode. So my understanding is that the patch tries to cover
-> > > > the case where partial data of skb is read by applications and the
-> > > > whole skb has not been unlinked from the receive queue yet. Sure, a=
-s
-> > > > we can learn from tcp_sendsmg(), skb can be partially read.
-> > >
-> > > You can find a clear example in patch 2 that this patch fixes.
-> >
-> > Oh, great, a very interesting corner case: resending data with FIN....
->
-> Linux TCP stack under memory pressure can do that BTW, no need for
-> another implementation :)
->
-> tcp_send_fin()
 
-Thank you, Eric!
+
+On 04.09.25 05:17, Alex Tran wrote:
+> The documentation of the 'bcm_msg_head' struct does not match how
+> it is defined in 'bcm.h'. Changed the frames member to a flexible array,
+> matching the definition in the header file.
+> 
+> See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+> flexible-array members")
+> 
+> Bug 217783 <https://bugzilla.kernel.org/show_bug.cgi?id=217783>
+> 
+> Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
+
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+
+Thanks Alex!
+
+> ---
+>   Documentation/networking/can.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
+> index bc1b585355f7..7650c4b5be5f 100644
+> --- a/Documentation/networking/can.rst
+> +++ b/Documentation/networking/can.rst
+> @@ -742,7 +742,7 @@ The broadcast manager sends responses to user space in the same form:
+>               struct timeval ival1, ival2;    /* count and subsequent interval */
+>               canid_t can_id;                 /* unique can_id for task */
+>               __u32 nframes;                  /* number of can_frames following */
+> -            struct can_frame frames[0];
+> +            struct can_frame frames[];
+>       };
+>   
+>   The aligned payload 'frames' uses the same basic CAN frame structure defined
+
