@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8E32E9EC1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AF62EA15E;
 	Thu,  4 Sep 2025 22:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023415; cv=none; b=J5u1HisWEf/VthIDfr8HZ6SfJKgPdA8Lov47nwYnu9ij1CmulyvVDRNA5BirMZR7G/eS6WVWr00DM8eiJ30L/0XCRSF9WWAspJ3/RVx4vQ3HgZVTH5Tdwb69TnWseOSZ/SYtEx67eC4yRNwftdx1sdAZVTAKqXXYnIYHGgfdNmw=
+	t=1757023416; cv=none; b=ZOBRtPt9jgNt39jg0Z9niu3RSeb6f1uLK4J2pdTWTspXQ5n1TF05vVigCrvq7GT6ZJJNsrq2sySNfUPefi9G8u0w1HiY6/l1qMhYI/n8OK/bywxWPyYzH9b/B8vYGve00Au+Xaao6YdHZ2FMbhiqbm+6kEoRlX/bBS0SLyP1N44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023415; c=relaxed/simple;
-	bh=jFLTdQ0cGKkgHRD4y4SQu258pzqgYDTrDQqFmjeFWTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HZBh8I7a0EIzri7SBC853kiZuw7fdT0xc9xClgaAMn/IgTkeRxLWzFu9AGD/aaC1++eM6TFbYDFR08B1bGaxcN5iiP2jqHU7UEvdhckTCRBoCD8hiUpnseLQiYXcOmUVn9icdClRrHuXROaT0e5AhZLWg79aHdfS2FE19sK0f4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=p6gks5LY; arc=none smtp.client-ip=193.104.135.124
+	s=arc-20240116; t=1757023416; c=relaxed/simple;
+	bh=1d9dz0MFSz7ZmhIL6hDuc8ci8qBPILxE41nDcSMMkeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=motbwAp/3QlRrLHyPZVMrUNZrppn/6EuQ4gDahD+4Bbpamu7+S6+BHoTenARukxtxEO+Lf66MSxG+i16g9nGelpufUn8hpOddG8o63Kpn4+uXcm9pt0JCTxIpT4US6ROLLxq/s9udHyz0skgiOaldwG0/fbrFKzDsM+aF3F/fhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=ky1OlIjG; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="p6gks5LY"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="ky1OlIjG"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=jFLTdQ0cGKkgHRD4y4SQu258pzqgYDTrDQqFmjeFWTg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=p6gks5LYm1fRkaP9FgEE4fMc2O5qO7+vv+jsjsAOQFofN0NNO+IySsN+IS3mseRJk
-	 ZA4Jlgv8nr4oaQaSdXvnq4ETmW4FBzcj7vJ11kO5PHIJ5fyVl3y65teurWRAJG1ETw
-	 zzOpwg6I6TXz5B/gFhTyO3b5fYqDnpN6eGEjW3iM2438REMLsyJ86z5w6+00nO/0/S
-	 ATOfw6cKkGcV60lPd8LsbZ5anWn+ATsb08C67mvRCx43Rl28JlfqXPDPAKKT0RA09r
-	 BEsGzTH5VRoWGUWxPDL4TqJtlLUUSpS8CRZ3CgYwOmTzERZMkayyZ3Xv0kqBsMRJWq
-	 b6C5yGMS8Nhsg==
+	bh=1d9dz0MFSz7ZmhIL6hDuc8ci8qBPILxE41nDcSMMkeg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ky1OlIjG9upN4xQj7DcuxsvGtECcUoeZ+xy+n6+pfAZiYlAuY5U8HoIG9f0mnn719
+	 df1ZFS8nsGgJCdGGB25lagosD0M/7FcIu9HlhGJn2yxsduWWoxg4QAMc2aUH9PaMvH
+	 D2F36N0EWmCG8OEOaNpC2QD0hXCCY1NFNnUTaA9NRK6kXMM2iHld1QyRSyGLcnLGwU
+	 8TuiU378kRJZ4beVM9gEhZNhTAoF3TK/pvk5vALhug0P6N+X2BgLm2nvZ8GyoT5um+
+	 e4S79rz0rJSAKWIip+yOe3pqUD3Ma8BZumdpg0A32mawG/Z6JcRZp8QmrISAe3JwMi
+	 GNB3+VYWBfLCg==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id B80F06039C;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id ED15B6057F;
 	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 278C2202849; Thu, 04 Sep 2025 22:02:55 +0000 (UTC)
+	id C34122025D6; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -44,10 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 00/14] wireguard: netlink: ynl conversion
-Date: Thu,  4 Sep 2025 22:02:34 +0000
-Message-ID: <20250904-wg-ynl-rfc@fiberby.net>
+Subject: [PATCH net-next 07/11] tools: ynl-gen: rename TypeArrayNest to TypeIndexedArray
+Date: Thu,  4 Sep 2025 22:01:30 +0000
+Message-ID: <20250904220156.1006541-7-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
+References: <20250904-wg-ynl-prep@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,47 +60,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series contains the wireguard changes needed to adopt
-an YNL-based generated netlink code.
+As TypeArrayNest can now be used with many other sub-types
+than nest, then rename it to TypeIndexedArray, to reduce
+confusion.
 
-This RFC series is posted for reference, as it is referenced
-from the current v1 series of ynl preparations, which has to
-go in before this series can be submitted for net-next.
+This is a trivial patch with no behavioural changes intended.
 
-This series applies on top of this series:
-https://lore.kernel.org/netdev/20250904-wg-ynl-prep@fiberby.net/
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+ tools/net/ynl/pyynl/ynl_gen_c.py | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Asbjørn Sloth Tønnesen (14):
-  wireguard: netlink: use WG_KEY_LEN in policies
-  wireguard: netlink: validate nested arrays in policy
-  netlink: specs: add specification for wireguard
-  netlink: specs: wireguard: add remaining checks
-  uapi: wireguard: use __*_A_MAX in enums
-  uapi: wireguard: move enum wg_cmd
-  uapi: wireguard: move flag enums
-  uapi: wireguard: generate header with ynl-gen
-  wireguard: netlink: convert to split ops
-  wireguard: netlink: rename netlink handlers
-  wireguard: netlink: generate netlink code
-  netlink: specs: wireguard: alternative to wireguard_params.h
-  wireguard: netlink: enable strict genetlink validation
-  tools: ynl: add sample for wireguard
-
- Documentation/netlink/specs/wireguard.yaml | 289 +++++++++++++++++++++
- MAINTAINERS                                |   3 +
- drivers/net/wireguard/Makefile             |   1 +
- drivers/net/wireguard/netlink.c            |  73 ++----
- drivers/net/wireguard/netlink_gen.c        |  77 ++++++
- drivers/net/wireguard/netlink_gen.h        |  29 +++
- include/uapi/linux/wireguard.h             | 202 +++-----------
- tools/net/ynl/samples/.gitignore           |   1 +
- tools/net/ynl/samples/wireguard.c          | 104 ++++++++
- 9 files changed, 559 insertions(+), 220 deletions(-)
- create mode 100644 Documentation/netlink/specs/wireguard.yaml
- create mode 100644 drivers/net/wireguard/netlink_gen.c
- create mode 100644 drivers/net/wireguard/netlink_gen.h
- create mode 100644 tools/net/ynl/samples/wireguard.c
-
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 3c0b158c4da8..c4a6895ab5bb 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -792,7 +792,7 @@ class TypeMultiAttr(Type):
+                 f"{presence} = n_{self.c_name};"]
+ 
+ 
+-class TypeArrayNest(Type):
++class TypeIndexedArray(Type):
+     def is_multi_val(self):
+         return True
+ 
+@@ -829,7 +829,7 @@ class TypeArrayNest(Type):
+         elif self.attr['sub-type'] == 'nest':
+             return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
+         else:
+-            raise Exception(f"Typol for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
++            raise Exception(f"Typol for IndexedArray sub-type {self.attr['sub-type']} not supported, yet")
+ 
+     def _attr_get(self, ri, var):
+         local_vars = ['const struct nlattr *attr2;']
+@@ -859,7 +859,7 @@ class TypeArrayNest(Type):
+             ri.cw.p(f'for (i = 0; i < {var}->_count.{self.c_name}; i++)')
+             ri.cw.p(f"{self.nested_render_name}_put(nlh, i, &{var}->{self.c_name}[i]);")
+         else:
+-            raise Exception(f"Put for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
++            raise Exception(f"Put for IndexedArray sub-type {self.attr['sub-type']} not supported, yet")
+         ri.cw.p('ynl_attr_nest_end(nlh, array);')
+         ri.cw.block_end()
+ 
+@@ -1137,7 +1137,7 @@ class AttrSet(SpecAttrSet):
+             t = TypeNest(self.family, self, elem, value)
+         elif elem['type'] == 'indexed-array' and 'sub-type' in elem:
+             if elem["sub-type"] in ['binary', 'nest', 'u32']:
+-                t = TypeArrayNest(self.family, self, elem, value)
++                t = TypeIndexedArray(self.family, self, elem, value)
+             else:
+                 raise Exception(f'new_attr: unsupported sub-type {elem["sub-type"]}')
+         elif elem['type'] == 'nest-type-value':
 -- 
 2.51.0
 
