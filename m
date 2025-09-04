@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20462DF6E9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17512DF715;
 	Thu,  4 Sep 2025 22:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023411; cv=none; b=QUbWfzaistSAnqxsfalBKdVJZjf1pC6r1ZOHv3OCyRYewwFRtq9ytuPNuDLzWZLXgtV+x0nGcoyS3xP+dlHc6fRQh+7lupNI0oCYOYnJE663xgWRpYOnm0WcSwvKwysutx6fShLoyfUjupmdtbMmIcYSK6EMFNBkNmvFSUvqt60=
+	t=1757023412; cv=none; b=J2+qIOuwPQbcGVKDNbwRfUF+GmsdTI+mb3kQWMh5fWBnzGR4Vu8eUk75IAIYE6YsFHQoxb0lWkVOsa+BgXgKusiywOJ1vDiQtMGhBXE5DecLlS7eUbjcrUF9iUlwLSgN8Mw3z/tp505GyFU6JFsiXwPa+MRaXIewNeci8AFCvxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023411; c=relaxed/simple;
-	bh=kfNKsp1FHappfXlSa3oCQen0sULVOEgKmZ5WZwpdTBk=;
+	s=arc-20240116; t=1757023412; c=relaxed/simple;
+	bh=7mPaZYp6IBm/oj1/oMkLKS5KcOMTq2FZ1vUvfx3mqLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HIuFe/hNkAy44WnPSPO7OY8VIZe7JjTYNd0d+RLZwEqgqCKqxtJBkegN6jlT3yJCD/Z/R0RuRDQRxugEE+EwqGx4tYGpBmNJ4xdteDjObA1je1sccdV6alNPEKNGDKINy6w491IsVH6bt8pS0PARYo6Hy39SJQbNSAmSv6w5DVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=HhCs/zKf; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=qyX6zLmHkozTM8cKGftwpOR5CWes+SIwFyVSlurnMLKz2YSTm+OEkJOP8PTGbTFy4j+DY65KRprz4sMXDHnoN96eaDXUasZeBcFlTRQlL6JIQiV9UfIk78gX496srJbCQu4kmVVqz5VBbUAdY1obsU6JkAlahXwR+4ol6prUJzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Q08+1KNc; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="HhCs/zKf"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Q08+1KNc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=kfNKsp1FHappfXlSa3oCQen0sULVOEgKmZ5WZwpdTBk=;
+	bh=7mPaZYp6IBm/oj1/oMkLKS5KcOMTq2FZ1vUvfx3mqLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhCs/zKfXQtb+hq+pa99bB1PTkRLkiO84V9dq15EmSJ/7PDXYqePkTS4Kxe7A4Kui
-	 /Ggma/1U5k+fZeVj03VOXSNzULLuzFfQqFdgO+L/SrRKHoH0fWcOf9RQD42wvHKm41
-	 sxWwZHSzWSB/0haGq/bShUKKUkDomWGs9AoILzyYGYTQjOkQBM6Mrf4DRRMOAVyxNc
-	 gSMZ8HXgUPFLkk2fJDMGOwOts+xB0+sRyvPpTlhLHVMYGulzk5BflSFjoIrr+oq9JO
-	 7j7R61lMNpbvNCi1roX5TtWlYHYqobDzTTEf/vO1mx9dCz/+6ZSTqmU0JYTB8P7/4p
-	 9QtGcAAlyHj9w==
+	b=Q08+1KNcfP0JSDXoY2eORt544YehFndoOuLJxAAvx+JPDINNxVOuU8sJZu0wGSXug
+	 tJ/4k0dxxd71ZzD4oG/NDL+7Sd4S4P0PMcPsU2H8OeCEMdHo8pjhIBVJqQl4QLB/Tc
+	 D53xrnNKZuU4sVHanNuKlqHiyh2o0k9pCIbuf6ZC54EcH3TwvMojywQUjtIOMSKZij
+	 fSgEtA7ZCE+ZRvyylUc5ox73KqTLoga9lQupfnF7TElineIV4T/LkD6XwkWJ++OEz0
+	 qiZkXRZg5ryGWxRwoiwQH0MErs0yuAIpVgwW0iU0wAEgJBFFKxvxDW+cA2LkLQmMB8
+	 TzJZPXZV4DAHw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 9485860142;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 481F360137;
 	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id B168C2024AB; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
+	id 9E68D202231; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 05/11] tools: ynl-gen: define nlattr *array in a block scope
-Date: Thu,  4 Sep 2025 22:01:28 +0000
-Message-ID: <20250904220156.1006541-5-ast@fiberby.net>
+Subject: [PATCH net-next 03/11] tools: ynl-gen: add sub-type check
+Date: Thu,  4 Sep 2025 22:01:26 +0000
+Message-ID: <20250904220156.1006541-3-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
 References: <20250904-wg-ynl-prep@fiberby.net>
@@ -60,62 +60,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Instead of trying to define "struct nlattr *array;" in the all
-the right places, then simply define it in a block scope,
-as it's only used here.
+Add a check to verify that the sub-type is "nest", and throw an
+exception if no policy could be generated, as a guard to prevent
+against generating a bad policy.
 
-Before this patch it was generated for attribute set _put()
-functions, like wireguard_wgpeer_put(), but missing and caused a
-compile error for the command function wireguard_set_device().
-
-$ make -C tools/net/ynl/generated wireguard-user.o
--e      CC wireguard-user.o
-wireguard-user.c: In function ‘wireguard_set_device’:
-wireguard-user.c:548:9: error: ‘array’ undeclared (first use in ..)
-  548 |         array = ynl_attr_nest_start(nlh, WGDEVICE_A_PEERS);
-      |         ^~~~~
+This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index b0eeedfca2f2..e6a84e13ec0a 100755
+index b7de7f6b1fc7..04c26ed92ca3 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -842,6 +842,9 @@ class TypeArrayNest(Type):
-         return get_lines, None, local_vars
+@@ -826,8 +826,10 @@ class TypeArrayNest(Type):
+             return f'.type = YNL_PT_U{c_upper(self.sub_type[1:])}, '
+         elif self.attr['sub-type'] == 'binary' and 'exact-len' in self.checks:
+             return f'.type = YNL_PT_BINARY, .len = {self.checks["exact-len"]}, '
+-        else:
++        elif self.attr['sub-type'] == 'nest':
+             return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
++        else:
++            raise Exception(f"Typol for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
  
-     def attr_put(self, ri, var):
-+        ri.cw.block_start()
-+        ri.cw.p('struct nlattr *array;')
-+        ri.cw.nl()
-         ri.cw.p(f'array = ynl_attr_nest_start(nlh, {self.enum_name});')
-         if self.sub_type in scalars:
-             put_type = self.sub_type
-@@ -857,6 +860,7 @@ class TypeArrayNest(Type):
-         else:
-             raise Exception(f"Put for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
-         ri.cw.p('ynl_attr_nest_end(nlh, array);')
-+        ri.cw.block_end()
- 
-     def _setter_lines(self, ri, member, presence):
-         return [f"{member} = {self.c_name};",
-@@ -2063,13 +2067,9 @@ def put_req_nested(ri, struct):
-         init_lines.append(f"hdr = ynl_nlmsg_put_extra_header(nlh, {struct_sz});")
-         init_lines.append(f"memcpy(hdr, &obj->_hdr, {struct_sz});")
- 
--    has_anest = False
-     has_count = False
-     for _, arg in struct.member_list():
--        has_anest |= arg.type == 'indexed-array'
-         has_count |= arg.presence_type() == 'count'
--    if has_anest:
--        local_vars.append('struct nlattr *array;')
-     if has_count:
-         local_vars.append('unsigned int i;')
- 
+     def _attr_get(self, ri, var):
+         local_vars = ['const struct nlattr *attr2;']
 -- 
 2.51.0
 
