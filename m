@@ -1,42 +1,61 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B346302CC2;
-	Thu,  4 Sep 2025 15:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7661DF75A;
+	Thu,  4 Sep 2025 15:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756998018; cv=none; b=SVYPQ0p4eMmi26kCiQcYbAMfQFeMOIvoT3De1E77qUJDScyennvmfT+3tZZLKoPaSwd8DfNgLZGcpKlCeIrox15yJl5erV7RE4j+GzumeoC3kT2nunLaDe8i4tfsKsI6gVwBNcoPEM/jV/4W4cn1hy04g0+IH49akvuEnch3wWo=
+	t=1756998085; cv=none; b=uZ2KVSsI1ojVPcG8ImoFhER7WxEVSNWiTmRsrpigpI5VuV4kMJ4JpjXFErLxrsbj6qQGKk22p/CS+A2Ub8pRZGrC0C47mokhdexwfRw0CR+qAd+tHjPhbMMvQtAzm2VJbf4tXyuzJGoe/RtY3ebc67dAlEriyhXH0RyQeTeNIes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756998018; c=relaxed/simple;
-	bh=yN93/JGK3+gKg6XI5Xt7d/9ipacWhWqRUwi0NIAfa+Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=G5Eix9a38bEGVBcaHGoOqe6ZRRdRp6uXM0YUxXQl6eyQIgGDveG3csq9PWChKU21xtBscts1ScyzY2TEBtvWzL3ajXa8ji4BqXxlMvSjc2eU6TeBB16HW1tFMzMrtkIFD+MkyLynihicUh2JuFQam66bmNksV0dAc8wOrRoDh9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=E0Jfvwby; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1756998085; c=relaxed/simple;
+	bh=l9JRa4X4F7x+/30IpIHfnpxeHKhZluyQDJO44iIji0I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gFA1QHD6iZF+/lSDIDsBFQd28YzkNKT3F30ykqMWnAmKqLD9fmGLQE4pVAEON7wlq/HFngvN5XZqe74Uc1gUHlvOcRS1jYqa8NRKr4kWKCmWZ3TPlu5tkjl4OGthR2kgr/nffKxfJpjHTHeXkxaj1yNjr/GvZs1uPLgnPOQQ6P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=n8DQcUVM; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="E0Jfvwby"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=/5lazZJk/6vmmNJZ9fd2QJzdDNBwqyugP2eqo+d23QU=;
-	b=E0JfvwbyB7IR9YTyCr1TTOrYCnoCDnLdX5772564KPstCJWzAD5BpgpjvFvuNS
-	fJkxQwpg9M6BTL9nt0FtoqQdIhO19hPU1vcUaHkFf+Zhi6ybvOVT8/nzrslAYFaj
-	0kWCsWEhvdRZ28AavrRGR/SZkpz92flTda1UEFkAy00x8=
-Received: from zhaoxin-MS-7E12.. (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAXvVNIqbloVZcuGQ--.61807S2;
-	Thu, 04 Sep 2025 22:59:21 +0800 (CST)
-From: Xin Zhao <jackzxcui1989@163.com>
-To: kerneljasonxing@gmail.com,
-	willemdebruijn.kernel@gmail.com,
-	edumazet@google.com,
-	ferenc@fejes.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v10 2/2] net: af_packet: Use hrtimer to do the retire operation
-Date: Thu,  4 Sep 2025 22:59:20 +0800
-Message-Id: <20250904145920.1431219-1-jackzxcui1989@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="n8DQcUVM"
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584EtqXm027829;
+	Thu, 4 Sep 2025 15:01:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=corp-2025-04-25; bh=mbD0BssDocPQ0T17
+	ewmMm3en4cOLmF13gbBhmgWv6Mk=; b=n8DQcUVMLwqvHRrYWtALWg+XhHdizsnV
+	hkMjIgLpbQvJnujFu43kytIq9UTQOv+DLXtfbr/k690ZzHxcv9W8GGvjM4v1zdlg
+	CqnuTb9sUq9SE5+MRyHnZFuvr8Pb/yi783FO4Iobjqhi8PkXG1XRjwZV+C7wcZZI
+	PC5/6aJTXATuyCVM7ErCmRzcPfJ2ImeKls+FksRpViDMNDQtw2EcP+Fedtuo7mQp
+	6BaQ+pZHqoPuxS1nlz3pNMQEDP/eNzK5ky+mowVkI9IRyXoN7nPjt+lEsVbyhOOU
+	xuLBN40M/Jz9ZtV3PbUCRRZS8QHgdBuzx/6jWCTVAyKu4kJmiT47SQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48ycgn02q7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 04 Sep 2025 15:01:11 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 584EFIAl036336;
+	Thu, 4 Sep 2025 15:01:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrbnj2s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 04 Sep 2025 15:01:10 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 584EwW3A013524;
+	Thu, 4 Sep 2025 15:01:09 GMT
+Received: from lab61.no.oracle.com (lab61.no.oracle.com [10.172.144.82])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 48uqrbnj17-1;
+	Thu, 04 Sep 2025 15:01:09 +0000
+From: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>
+To: Allison Henderson <allison.henderson@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: =?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3] rds: ib: Remove unused extern definition
+Date: Thu,  4 Sep 2025 17:01:04 +0200
+Message-ID: <20250904150105.3954918-1-haakon.bugge@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,152 +64,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXvVNIqbloVZcuGQ--.61807S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWryruw13Xry7Xry5WFW7Arb_yoWrXFyrpa
-	yjg34DGrZ7tr1jgw4UAan5Xr1SvwnrJF17Jrs3ta4YyrZrtF1fGa42kF909FZ8Xrs7u3Z3
-	ZF4fKry5uw4kJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UmjgxUUUUU=
-X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/1tbiRx6+Cmi4+XeCpgACsV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_05,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2508110000 definitions=main-2509040148
+X-Authority-Analysis: v=2.4 cv=evbfzppX c=1 sm=1 tr=0 ts=68b9a9b7 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=M51BFTxLslgA:10 a=yPCof4ZbAAAA:8
+ a=VwQbUJbxAAAA:8 a=vqxsdnOqdfS0dGDShygA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 5fHTU7woyNNIbJUHD3puzsjcJ9uiBguW
+X-Proofpoint-ORIG-GUID: 5fHTU7woyNNIbJUHD3puzsjcJ9uiBguW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA0MDE0MiBTYWx0ZWRfX+Qe8yCiPCWUX
+ UIZ2GJzZmM10cTk1G7HEVzdcT1PbFUofpd6EvxEpbVAwIth+mX0iZz6KALbXECxu31Ghd6MUpfq
+ 8RqL9uilOlBZHm+3nJEw8W30I26usWpoIbVOjHwEUn/vve7sfCrWwDbbFmuxCsHKw6njaz+moOd
+ /YVGQDm09NzniIxJAJNSpDh3swS52Hq7bQmwrG/35surzkx+WH30PySk+QBxY125Nc8jmw0tECR
+ Lw6Wsh9ERkFWigRBJWx+ogrnj0uH7TSCnX4HJJbEyScOoJdWUKokzRQcMXi0oHpxJu3z1jyxXV3
+ IBD1nTGeyzQLxeq4OTNCp5O9U9g8iLkO/yXk6aiOk/VTKz3UVTYOO5x3LFsHVLNIuRsjfKAQaxT
+ tmHpaEhR
 
-On Thu, Sep 4, 2025 at 10:50 +0800 Jason Xing <kerneljasonxing@gmail.com> wrote:
+In the old days, RDS used FMR (Fast Memory Registration) to register
+IB MRs to be used by RDMA. A newer and better verbs based
+registration/de-registration method called FRWR (Fast Registration
+Work Request) was added to RDS by commit 1659185fb4d0 ("RDS: IB:
+Support Fastreg MR (FRMR) memory registration mode") in 2016.
 
-> > In the description of [PATCH net-next v10 0/2] net: af_packet: optimize retire operation:
-> >
-> > Changes in v7:
-> >   When the callback return, without sk_buff_head lock protection, __run_hrtimer will
-> >   enqueue the timer if return HRTIMER_RESTART. Setting the hrtimer expires while
-> >   enqueuing a timer may cause chaos in the hrtimer red-black tree.
-> >
-> > Neither hrtimer_set_expires nor hrtimer_forward_now is allowed when the hrtimer has
-> > already been enqueued. Therefore, the only place where the hrtimer timeout can be set is
-> > within the callback, at which point the hrtimer is in a non-enqueued state and can have
-> > its timeout set.
-> 
-> Can we use hrtimer_is_queued() instead? Please see tcp_pacing_check()
-> as an example. But considering your following explanation, I think
-> it's okay now.
+Detection and enablement of FRWR was done in commit 2cb2912d6563
+("RDS: IB: add Fastreg MR (FRMR) detection support"). But said commit
+added an extern bool prefer_frmr, which was not used by said commit -
+nor used by later commits. Hence, remove it.
 
-Okay， let's keep the current logic as it is.
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
 
+---
 
+	v2 -> v3:
+	      * As per Jakub's request, removed Cc: and Fixes: tags
+	      * Subject to net-next (instead of net)
 
-> > /* kbdq - kernel block descriptor queue */
-> > struct tpacket_kbdq_core {
-> >         struct pgv      *pkbdq;
-> >         unsigned int    feature_req_word;
-> >         unsigned int    hdrlen;
-> >         unsigned short  kactive_blk_num;
-> >         unsigned short  blk_sizeof_priv;
-> >         unsigned char   reset_pending_on_curr_blk;
-> >
-> >         char            *pkblk_start;
-> >         char            *pkblk_end;
-> >         int             kblk_size;
-> >         unsigned int    max_frame_len;
-> >         unsigned int    knum_blocks;
-> >         char            *prev;
-> >         char            *nxt_offset;
-> >
-> >         unsigned short  version;
-> >
-> >         uint64_t        knxt_seq_num;
-> >         struct sk_buff  *skb;
-> >
-> >         rwlock_t        blk_fill_in_prog_lock;
-> >
-> >         /* timer to retire an outstanding block */
-> >         struct hrtimer  retire_blk_timer;
-> >
-> >         /* Default is set to 8ms */
-> > #define DEFAULT_PRB_RETIRE_TOV  (8)
-> >
-> >         ktime_t         interval_ktime;
-> > };
-> 
-> Could you share the result after running 'pahole --hex -C
-> tpacket_kbdq_core vmlinux'?
+	v1 -> v2:
+	      * Added commit message
+	      * Added Cc: stable@vger.kernel.org
+---
+ net/rds/ib_mr.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-I change the struct tpacket_kbdq_core as following:
-
-/* kbdq - kernel block descriptor queue */
-struct tpacket_kbdq_core {
-	struct pgv	*pkbdq;
-	unsigned int	feature_req_word;
-	unsigned int	hdrlen;
-	unsigned char	reset_pending_on_curr_blk;
-	unsigned short	kactive_blk_num;
-	unsigned short	blk_sizeof_priv;
-
-	unsigned short  version;
-
-	char		*pkblk_start;
-	char		*pkblk_end;
-	int		kblk_size;
-	unsigned int	max_frame_len;
-	unsigned int	knum_blocks;
-	char		*prev;
-	char		*nxt_offset;
-
-	uint64_t	knxt_seq_num;
-	struct sk_buff	*skb;
-
-	rwlock_t	blk_fill_in_prog_lock;
-
-	/* timer to retire an outstanding block */
-	struct hrtimer  retire_blk_timer;
-
-	/* Default is set to 8ms */
-#define DEFAULT_PRB_RETIRE_TOV	(8)
-
-	ktime_t		interval_ktime;
-};
-
-
-pahole --hex -C tpacket_kbdq_core vmlinux
-
-running results:
-
-struct tpacket_kbdq_core {
-        struct pgv *               pkbdq;                /*     0   0x8 */
-        unsigned int               feature_req_word;     /*   0x8   0x4 */
-        unsigned int               hdrlen;               /*   0xc   0x4 */
-        unsigned char              reset_pending_on_curr_blk; /*  0x10   0x1 */
-
-        /* XXX 1 byte hole, try to pack */
-
-        short unsigned int         kactive_blk_num;      /*  0x12   0x2 */
-        short unsigned int         blk_sizeof_priv;      /*  0x14   0x2 */
-        short unsigned int         version;              /*  0x16   0x2 */
-        char *                     pkblk_start;          /*  0x18   0x8 */
-        char *                     pkblk_end;            /*  0x20   0x8 */
-        int                        kblk_size;            /*  0x28   0x4 */
-        unsigned int               max_frame_len;        /*  0x2c   0x4 */
-        unsigned int               knum_blocks;          /*  0x30   0x4 */
-
-        /* XXX 4 bytes hole, try to pack */
-
-        char *                     prev;                 /*  0x38   0x8 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        char *                     nxt_offset;           /*  0x40   0x8 */
-        uint64_t                   knxt_seq_num;         /*  0x48   0x8 */
-        struct sk_buff *           skb;                  /*  0x50   0x8 */
-        rwlock_t                   blk_fill_in_prog_lock; /*  0x58  0x30 */
-        /* --- cacheline 2 boundary (128 bytes) was 8 bytes ago --- */
-        struct hrtimer             retire_blk_timer __attribute__((__aligned__(8))); /*  0x88  0x40 */
-
-        /* XXX last struct has 4 bytes of padding */
-
-        /* --- cacheline 3 boundary (192 bytes) was 8 bytes ago --- */
-        ktime_t                    interval_ktime;       /*  0xc8   0x8 */
-
-        /* size: 208, cachelines: 4, members: 19 */
-        /* sum members: 203, holes: 2, sum holes: 5 */
-        /* paddings: 1, sum paddings: 4 */
-        /* forced alignments: 1 */
-        /* last cacheline: 16 bytes */
-} __attribute__((__aligned__(8)));
-
-
-Thanks
-Xin Zhao
+diff --git a/net/rds/ib_mr.h b/net/rds/ib_mr.h
+index ea5e9aee4959e..5884de8c6f45b 100644
+--- a/net/rds/ib_mr.h
++++ b/net/rds/ib_mr.h
+@@ -108,7 +108,6 @@ struct rds_ib_mr_pool {
+ };
+ 
+ extern struct workqueue_struct *rds_ib_mr_wq;
+-extern bool prefer_frmr;
+ 
+ struct rds_ib_mr_pool *rds_ib_create_mr_pool(struct rds_ib_device *rds_dev,
+ 					     int npages);
+-- 
+2.43.5
 
