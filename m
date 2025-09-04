@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6B42D97BD;
-	Thu,  4 Sep 2025 22:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8279D2EACF7;
+	Thu,  4 Sep 2025 22:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023417; cv=none; b=CnNK5u4InamCDfpirBrxk3AHax3fnBNoYnIMWKUxgZzW5cJfIbkf4y3iMUSzTguMlhEZ8PN9AaXquUsNfAGd2rH4e3uKvJtHpZsOwMVko97zr/JZnnsthPlDpxQKixRDb3Rq558IMZnndnE500vBgkOA1BHOtgNnganbYL9vJUM=
+	t=1757023417; cv=none; b=uf/cpF0Wz9CY8nT3VqTVM9b47KjCk64Xptabt/80dGf9RMGDGt7uptcZLiw+prG5AsYFMsUUjG+L+S6JwPBtIB+grSO4iMrcbPoTdcqpUBg7l3C1jlZoFRvW1ADnQueawCyNgYbY+fLa+vVHwP7kwdvinP3YRQfu4BhsDVI+Eqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757023417; c=relaxed/simple;
-	bh=ONNek9e9XXLRrSnQiiYpvkro4XvZ25Cp3066DjpUKos=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MZA2f/K57ia7CrG+Rv6wG8kmLAPsnZNOz/vLd/4veU74dM5HVmT/T0zstcEPvBsBzLWXpwJvVPnxNji8mkgUhh8z/1bwkAxMWunGZg6v+0twOfjhqVBjNAEhXxnDj+dKURRp9Ne82WG8iMYYMaIPJdpEmR7+P75fFdADpAUQ6aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=a53Olmkq; arc=none smtp.client-ip=193.104.135.124
+	bh=3titisb2qOCRkFsigSmEsTRxF1CfZY1f9y1aFsaVeS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F5wQPe5c1TEmNeEzHM2oyBzEM7b65RSbbAF1AZYSpJ36sKSeaZaj0HRBfWhbNM5MZuwUASQH/EABjwBwV5GgizlaVwt3N7lzTDBAzrZt1R9pGSyb4Y+ErQFL1em172pruRFC5hAbaX+X/nNrhIBdNK+gzT0adlxaUpqjCkKOAyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=sdIvtphO; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="a53Olmkq"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="sdIvtphO"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023399;
-	bh=ONNek9e9XXLRrSnQiiYpvkro4XvZ25Cp3066DjpUKos=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a53Olmkqz4aRkLa/ZKdGhn7GnrBtXxsyRrkfDNYG1d/FdeeYyRthcvMvE9EjS2BFw
-	 gbKS4QeYgBxlk8RJFgutfGRq8144lRRUpo61hyhNdCyrBxcfdUnTb4mvZMT4fl2J0r
-	 808iPYKXYKXarcAHLVTwoI6uO/FZ35Qdy3o0iCStTGmbJGf+nzjhWUKoxooW1dz8Sr
-	 raTBQTP5Dj8lUfFp8V6ibFSkr8En1gkkKP2mGnTH+FwKg5SoHsl+8v6U/GQwEg45Yr
-	 qbmVfMOP1x61QVTFGUrU/iJGzkLiqM5If9LgntOKm51b5WddhaOWiPOrlarVDGTPV1
-	 bQxVFP+Xsia2Q==
+	bh=3titisb2qOCRkFsigSmEsTRxF1CfZY1f9y1aFsaVeS4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sdIvtphOcH283w5+jo96tBv1w5Xb4I/VHDC5l3YaIfFjix9w7CM6ik0qK3I7ev8pL
+	 ddq5Ss+1FzJL7uGlcGS/YbAnVe4nHCa9Am6A5UW+txliwfu9s1uUvN4znv7UPLggMI
+	 HurpCP/WiveitbuzqiK+2SM40mnStB/oHmZpF4uZWFDWbKq2xXWtUjzZMmRJTUc1BV
+	 qFfuiQewZQPAoZab3Hj/zyF9dbjRJa8HTTK2dDchkU74EpScZz6f1IUWInC4j3/7fx
+	 E63FDOZZG2+JipdNu104wZhwWYyee8dCYkpOfyA2VGxagWNFiInQxEYpImyyzYg/yf
+	 ezcNHy+tdLQ6g==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 1DBA56058A;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 1C21D60586;
 	Thu,  4 Sep 2025 22:03:19 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 6F0AC201EBF; Thu, 04 Sep 2025 22:01:56 +0000 (UTC)
+	id A7BF320228C; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -44,10 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 00/11] tools: ynl: prepare for wireguard
-Date: Thu,  4 Sep 2025 22:01:23 +0000
-Message-ID: <20250904-wg-ynl-prep@fiberby.net>
+Subject: [PATCH net-next 04/11] tools: ynl-gen: define count iterator in print_dump()
+Date: Thu,  4 Sep 2025 22:01:27 +0000
+Message-ID: <20250904220156.1006541-4-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
+References: <20250904-wg-ynl-prep@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,30 +60,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series contains the last batch of YNL changes to support
-the wireguard YNL conversion.
+In wireguard_get_device_dump(), as generated by print_dump(),
+it didn't generate a declaration of `unsigned int i`:
 
-The next batch has been posted as an RFC series here:
-https://lore.kernel.org/netdev/20250904-wg-ynl-rfc@fiberby.net/
+$ make -C tools/net/ynl/generated wireguard-user.o
+-e      CC wireguard-user.o
+wireguard-user.c: In function ‘wireguard_get_device_dump’:
+wireguard-user.c:502:22: error: ‘i’ undeclared (first use in this fn)
+  502 |                 for (i = 0; i < req->_count.peers; i++)
+      |                      ^
 
-Asbjørn Sloth Tønnesen (11):
-  tools: ynl-gen: allow overriding name-prefix for constants
-  tools: ynl-gen: generate nested array policies
-  tools: ynl-gen: add sub-type check
-  tools: ynl-gen: define count iterator in print_dump()
-  tools: ynl-gen: define nlattr *array in a block scope
-  tools: ynl-gen: don't validate nested array attribute types
-  tools: ynl-gen: rename TypeArrayNest to TypeIndexedArray
-  tools: ynl: move nest packing to a helper function
-  tools: ynl: encode indexed-array
-  tools: ynl: decode hex input
-  tools: ynl: add ipv4-or-v6 display hint
+Copy the logic from print_req() as it correctly generated the
+iterator in wireguard_set_device().
 
- Documentation/netlink/genetlink-legacy.yaml |  2 +-
- tools/net/ynl/pyynl/lib/ynl.py              | 36 +++++++++++++++---
- tools/net/ynl/pyynl/ynl_gen_c.py            | 42 ++++++++++++++-------
- 3 files changed, 59 insertions(+), 21 deletions(-)
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+ tools/net/ynl/pyynl/ynl_gen_c.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 04c26ed92ca3..b0eeedfca2f2 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -2425,6 +2425,11 @@ def print_dump(ri):
+         local_vars += ['size_t hdr_len;',
+                        'void *hdr;']
+ 
++    for _, attr in ri.struct['request'].member_list():
++        if attr.presence_type() == 'count':
++            local_vars += ['unsigned int i;']
++            break
++
+     ri.cw.write_func_lvar(local_vars)
+ 
+     ri.cw.p('yds.yarg.ys = ys;')
 -- 
 2.51.0
 
