@@ -1,72 +1,67 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C726286412;
-	Thu,  4 Sep 2025 06:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756968943; cv=pass; b=Ozdb6NHaeO0zowUVmte2M2WwDhEqDtTiuypo657MZX6jrNlTZTiJOHKTKNnhxTct8Ka/r6bV+SHCI2ErG9dQArGhmtTVFBwEAch1lrQUVrqCse2VgAoeIvPe/tSso6SQW5Zn+2vdMB/rD3uGh3bE3sV7xM5xp+vpSSTg0SwKXek=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756968943; c=relaxed/simple;
-	bh=bCInGNafFosv2/EfM0snbVd+AWphjz5RaQRvz2HRRWc=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C2624501B;
+	Thu,  4 Sep 2025 07:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1756970208; cv=none; b=PImgXGfIOjHJEECpBWrvpmPLajHEAIrZa5tvKd+W+Q4JyOntjF79HdsFpLVYIWe91HDwBd1kNJjUuLpwQRaPaIkGC+k9y0w3K4P4gXUSMJuyTftPQIV/MSg9bMghrfszAv3PXgjoPNTNBuvlaVIByhnr+rhXUBlTLeUmNk825NQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1756970208; c=relaxed/simple;
+	bh=1+RWVcDIIkiRod+TRNgoORvaOZSUBzh3FfCqknTDUbo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jHukFFz/70uYr76Q4TQFMnSP6gJT8utkCUbZCNSMkAFI+7IUfHoANOSoD3nMKAB8NKkF1glyt2Amu5DkCTDQequCW7aazmeZek6A5KTeg42jSiiuGnB4O4vrIumNWezyGVcYkwb71nWOD0FA3NKXMsnhzsV6VjckCvx8y4JSSKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=dbfK9a5M; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=LfO3RmLV; arc=pass smtp.client-ip=81.169.146.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
+	 In-Reply-To:Content-Type; b=O5VAUejrhD5hXCln0apVIZs3QJrCItdsXMm010X3UzVLdhj363mVbSUC2EfydydvbXgyAblRCkXbKbDe7c1QSZPz0wOFRtBbEzUNt/AEccke/E4oQv5GV/I8DFIhJHpgN9fh9bfZUsxmdcqHaGTVc5oBpEWRu3Y1bLnGXIBDQAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=F94ROrFE; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="dbfK9a5M";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="LfO3RmLV"
-ARC-Seal: i=1; a=rsa-sha256; t=1756967139; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=jhq13UGEQj+UVTk+FWkawpup0vWB4vRosIpcfSqaHJGKkk+Dhe0og8uhEFj4d6JneY
-    e+bjNgmNs4dO27TjhMBlijH9o3muPliKutXtBtJas2EHGbIXCEUE+39i0hKfkeM8GvoB
-    WFxaCyW4EeWT1H2zqGlYGrZUxNoJ1P/J3f49h6P61fACrTouQG3zQQylHQ3BLjkM7ebV
-    xlDkHAm5ZkT1zZMb7WwVMCPsIwVfbO6klyFMfeiYtdYydgrQSSTvcpslAuloVRrAuBM+
-    K+G5Tih4IhRcnRjJ8bjdnaLmUSFcumNL/heDZDnONfJmRYt+oC1GyX4mh0Xp0WdxoTnY
-    zuBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1756967139;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
-    b=YJ7Zq4RffSAYvQ4PAcODpZPt/IguDM1sVSWYL5sbpbtRhwiqmZOyjVeuTxRuyGgMPf
-    xH73WxLHA+b1d1Hwy4xTDUALSA0TBosFv5ZNrvAgWJ1AOkPsKhVBxMmzR5pmluT+K83+
-    lEMAZa9el1uPH8lK8FU5cbT6r+UIO9/dPbQB5yAVDj53dylYRHATUAJYGPamn34EPJeb
-    Zp33XZ4ID18Fu4isdsdTFFKcDhL0fQl+l2Uq2hZ4n6POfxbw0nveNz4d8Ff1T+fnomPu
-    DsviOJPSZOPpJI3fCHQ1V0rhuMDEnracpCtWPadiNVk0Qr2rDBzsgCEGSkQmctPhr/Fy
-    +uMw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1756967139;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
-    b=dbfK9a5Mgo+loiwoQD9/Qn2XvVKcsbBEDCo8BQtzhJhC4Ik7MrAdQ0BPbfVsvrcom5
-    VQavMhKiJJ1BVZ3rymEhPjG+uVHMigPqBvIvy4wuNqqq5Qx9v+63vxB1WFw8wPbaF6Oc
-    SeyGfQwuSF6qcllQYX04K1Eo7XB2GvCJL4ts+JkO+DGrPs9KQxwpWA3YMhgFxRYnIR8D
-    cVxXpVX+FbIzpIdHnFley9eEy5qvAPp4RtJk+z94ewfgEePHRou2g2OU6y+y3l/mwWLd
-    GAoODfCCXqE3xpYIrBIvNTQTsVae2czBtsq9cV/3lTxKFUEvMfhOSacEFKdUZwxfv14U
-    iImA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1756967139;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Et1a3Y43DomKtCR9LncztA0z4+5TKf95ey/BMZttA8Y=;
-    b=LfO3RmLVCHeKqxyFq05BCUkJ+hEc08nOhAClgxTWDjRJj0w87El7mpFbFrL1j5Jmw0
-    yXbDCD9J9xtU/Mle0kBQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bGWj0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::9f3]
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id K5d3611846PcLfl
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 4 Sep 2025 08:25:38 +0200 (CEST)
-Message-ID: <a7c707b7-61e1-4c40-8708-f3331da96d34@hartkopp.net>
-Date: Thu, 4 Sep 2025 08:25:32 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="F94ROrFE"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583I06Yt027831;
+	Thu, 4 Sep 2025 07:16:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TS0UBg
+	gYq9qgJNvx7S91o1QOtieKgQ4j9xHsjF1SE7w=; b=F94ROrFEux6ZiMlvOFpEgd
+	C9VlT6QYPgM62Fpmj6JSPkwKhE3ohAPg+vh5SD6Zn7u23DqyNnnCXqHq8kpjFTFR
+	/R0/o0mjJo+NFxa4qfvG6n47tqOBGk3SImILuqtbouJt2MUiZrcJDhs/Q232tP0A
+	mdYWNQojPYEtDKs3FqaFCX6RYeOynxMKYtoJ7ZNeVH+znhPdvLqwYuUZj+0tLVqQ
+	OzhhyTP9HKR/FXsGvmLguoGN1mVlGU67/b9gzePX9GFIob31jsgllg7XjjHMLXGj
+	f9GlTcpBkph8tuv7Lf/zky7uBd0zdo9lqw4RSZ93PS7XGMwGuyXPAK5lNDmvqvhQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usvg09ry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 07:16:32 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58478GfV013713;
+	Thu, 4 Sep 2025 07:16:31 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usvg09rw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 07:16:31 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5844Avck019404;
+	Thu, 4 Sep 2025 07:16:31 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vd4n35sf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 07:16:31 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5847GRff51184024
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Sep 2025 07:16:27 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8CB532004B;
+	Thu,  4 Sep 2025 07:16:27 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 438CC20043;
+	Thu,  4 Sep 2025 07:16:27 +0000 (GMT)
+Received: from [9.152.224.94] (unknown [9.152.224.94])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Sep 2025 07:16:27 +0000 (GMT)
+Message-ID: <5177c2da-4158-4b12-996d-831ff1ab0708@linux.ibm.com>
+Date: Thu, 4 Sep 2025 09:16:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,53 +69,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] docs: networking: can: change bcm_msg_head frames
- member to support flexible array
-To: Alex Tran <alex.t.tran@gmail.com>
-Cc: mkl@pengutronix.de, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-can@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250904031709.1426895-1-alex.t.tran@gmail.com>
+Subject: Re: [PATCH net-next 1/2] s390/ism: Log module load/unload
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Sidraya Jayagond
+ <sidraya@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Aswin Karuvally <aswin@linux.ibm.com>,
+        David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Mahanta Jambigi
+ <mjambigi@linux.ibm.com>,
+        Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
+References: <20250901145842.1718373-1-wintera@linux.ibm.com>
+ <20250901145842.1718373-2-wintera@linux.ibm.com>
+ <20250903164233.7b2750e8@kernel.org>
 Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20250904031709.1426895-1-alex.t.tran@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20250903164233.7b2750e8@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=behrUPPB c=1 sm=1 tr=0 ts=68b93cd0 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=meDq6FdmJ0PmnKaK2a0A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: E8rj7Yox8s0U02qs8xoMj_gE5Hoiks5R
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX9scUnzTkVyjc
+ HKTTXbno/KVTwMyRgJovelqt5QWoUzUgzA4vVPsOcXAeYThh+TZI6ob0noFLrqU5s8nu/RIzrJ/
+ SgeVlEj06oMhyzkec3zvCiYx4SnSDdY2ZaQ6WIRdDT4SumOg/2/lerpdmux1Ho/LcldgqZxmw0j
+ 9PLz916votBQSa25hBoiv39vSfewI5o3O7NpQUXTv3J6czN+36wuncAtr4/3ZPsXFGS9J9FM4A2
+ T8PrAeJ47w9mv0Fonkl5/rVru/v8Nh0MmDizjU76BRgnSU4XMOGL1GF9EQlmzeSv/R9HiL3xtS2
+ sdxMl+HHA9aDnCD4xlVU7CuDRMzwwors8rG0oAWwdyuFlfiKvAo6ItA0x7yozaHvQEZ+FY+grUl
+ 5iGGag15
+X-Proofpoint-GUID: CROkHagpF6zv1arebXtvAW35Gh-l6g-g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_02,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 spamscore=0 clxscore=1015 phishscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
 
 
 
-On 04.09.25 05:17, Alex Tran wrote:
-> The documentation of the 'bcm_msg_head' struct does not match how
-> it is defined in 'bcm.h'. Changed the frames member to a flexible array,
-> matching the definition in the header file.
+On 04.09.25 01:42, Jakub Kicinski wrote:
+> On Mon,  1 Sep 2025 16:58:41 +0200 Alexandra Winter wrote:
+>> Add log messages to visualize timeline of module loads and unloads.
 > 
-> See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-> flexible-array members")
-> 
-> Bug 217783 <https://bugzilla.kernel.org/show_bug.cgi?id=217783>
-> 
-> Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
+> How deeply do you care about this patch ? I understand the benefit when
+> debugging "interface doesn't exist" issues with just logs at hand.
+> OTOH seeing a litany of "hello" messages on every boot from built-in
+> drivers, is rather annoying. Perhaps this being an s390 driver makes
+> it a bit of a special case..
 
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+tl dr: I don't care very deeply
 
-Thanks Alex!
-
-> ---
->   Documentation/networking/can.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
-> index bc1b585355f7..7650c4b5be5f 100644
-> --- a/Documentation/networking/can.rst
-> +++ b/Documentation/networking/can.rst
-> @@ -742,7 +742,7 @@ The broadcast manager sends responses to user space in the same form:
->               struct timeval ival1, ival2;    /* count and subsequent interval */
->               canid_t can_id;                 /* unique can_id for task */
->               __u32 nframes;                  /* number of can_frames following */
-> -            struct can_frame frames[0];
-> +            struct can_frame frames[];
->       };
->   
->   The aligned payload 'frames' uses the same basic CAN frame structure defined
-
+I think s390 users care a lot about debugability and are less concerned
+about log size. As you said, many other modules (on s390) have these
+'hello' messages, so I kind of expected the ism module to show up as well.
+But if you want to reject it, we can live without it ;-)
