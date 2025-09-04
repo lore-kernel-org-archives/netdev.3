@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3598D2DA774;
-	Thu,  4 Sep 2025 22:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ECA2DE6FC;
+	Thu,  4 Sep 2025 22:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023409; cv=none; b=MPvWtJtUppYrxgA3BhTRDpWLQPzuN5pDZOhqHV/Hn82cmrfMpmC5xUbYPlX9oAxI1IW8p5qlrOLVHobr57SZx0x8WfOcBkMoroS7WDvMqzJ5eB1krBu3ZCRJL12vTLdfGCEwxOCOpEtoeu9uNBQZmtyiYYujyXVOSA2Y1PwRKNo=
+	t=1757023410; cv=none; b=LTmzEukFwookbfN21/fWWIY6DJqHKUTBmR592K25Q5iHTNfIX8MnJYFm1nYRYu/1SmZQ60rW2q4DeuuaufHIQzWz3Jx9lohSZa9W3x/FtEx2aHV4VQFXV49r1S9aCkOeRDzehAeO2QMITIdUdTUMMeEsRHVNkGwRbjUQf290xF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023409; c=relaxed/simple;
-	bh=kMqU8o5gtS6cIF/f8unFSWXSRJW30XLyBCaK0+2pFYQ=;
+	s=arc-20240116; t=1757023410; c=relaxed/simple;
+	bh=04RmY4dERnT2T8QvjCbEKW4QZvKlQz3IonhiKvd3MHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h4P0XVv5+3PYnLPyISIRnzqkL7yxeU5xEObYVWWfKl4ymRmfLp0KedsrCfQfUWjED3JPOHCBLapcUDPuWRp20BTfnX3aOkilS5poYdJUBnV2RVqz45axEzFbdazXv8tQSC44zcNhnUwg/6/skNS0lC6U4l/LTMGK6bPxAyTLRF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=fJgHVluk; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=LaIQWL8K6IMOxyJ34r8tAg+KdzSsXRXf7ZofLFxJTUUq2m1DXg7JyuYL4jgkd7GbsM3LjY6y9oR8KXNnXSBL6d99gkiaEeGfth/KkuMeayXWDvUc1PqNcWOkeHZ5HQZQoVxf0BN+jgwiomMGQPak/qCpS2rWIyOUa77tg54CQTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=cMBpPhoM; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="fJgHVluk"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="cMBpPhoM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=kMqU8o5gtS6cIF/f8unFSWXSRJW30XLyBCaK0+2pFYQ=;
+	bh=04RmY4dERnT2T8QvjCbEKW4QZvKlQz3IonhiKvd3MHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJgHVlukhZI9GWZafrg2HpZI0hOJlvBVMyvyhCgUJmf/nMNU6KQ8q9aK1yv9s0MY/
-	 oijR0ZBs3qfz6ACDt8H0XHVYYKKZXICNL5SaEer62z+2khoXo5HNzpHeVPXb0Np8mQ
-	 ygK18YgAiKU+FlU659aSmCPatGd8Q7/A9BbJn4OyhmN6R5xStpCF4DFQ5WQDOyvAdJ
-	 Lm4Hm4e+sfGig/I53USQSIgxxTDo9nPWqURQ+aChL2OZiSQVGYv/J+rUrCQ5ONuO4f
-	 /ZWiGHDpw0FIFAXg4TXMOGh8Y/CUfVf5S2hyg/jV5URwNDUKvvR4tpcu5JQbUux9jY
-	 1YQvJyT/wO6kA==
+	b=cMBpPhoMmMrLIR9vCa1n8bJB+MKbrnRVkNp1CFGsyquH0uI3Ig0DjuFiCqm32v5JY
+	 Aig9+6NjCETruljoyP1DiWl68gGZkKmxpp7GAnx3meN6PrFX01L1zG2yO1uJb5Et5m
+	 r/x5lNw5CeY6RNFlJHVKOToFh4h90knOe/+aOHcuTUsQ4g0bjiewKK0MzOaUaVkSAd
+	 PBYL88Uvkmo0sYLnXb1vYQw8VN+dMkRkwZSDfDzbi5PW+BZSAMAr1Npz/8ge/oIM62
+	 GcMaV/ZSR/xxgqMW7FE2DbAJUiPzvq5gef9lxwHlNajGtUyO2VMKW7ptTtqQBzb/nT
+	 XjVPato148qiw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 90D8960078;
-	Thu,  4 Sep 2025 22:03:11 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 71C4F6013D;
+	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 90E5D202AC7; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
+	id 42E82202863; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 09/14] wireguard: netlink: convert to split ops
-Date: Thu,  4 Sep 2025 22:02:43 +0000
-Message-ID: <20250904220255.1006675-9-ast@fiberby.net>
+Subject: [RFC net-next 01/14] wireguard: netlink: use WG_KEY_LEN in policies
+Date: Thu,  4 Sep 2025 22:02:35 +0000
+Message-ID: <20250904220255.1006675-1-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
 References: <20250904-wg-ynl-rfc@fiberby.net>
@@ -60,65 +60,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This patch converts wireguard from using legacy struct genl_ops
-to struct genl_split_ops, by applying the same transformation
-as genl_cmd_full_to_split() does.
+When converting the netlink policies to YNL, then the constants
+used in the policy has to be visible to user-space.
 
-WGDEVICE_A_MAX is swapped for WGDEVICE_A_PEERS, which is
-currently equivalent and is what ynl-gen would generate.
+As NOISE_*_KEY_LEN isn't visible for userspace, then change to
+use WG_KEY_LEN, as is also documented in the UAPI header:
 
-This is an incremental step towards adopting netlink policy
-code generated by ynl-gen.
+$ grep WG_KEY_LEN include/uapi/linux/wireguard.h
+ *    WGDEVICE_A_PRIVATE_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+ *    WGDEVICE_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+ *            WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+ *            WGPEER_A_PRESHARED_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+ [...]
 
-This is a trivial patch with no behavioural changes intended.
+Add a couple of BUILD_BUG_ON() to ensure that they stay in sync.
+
+No behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/wireguard/netlink.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 5dae2aa51346..1311f64d9fcf 100644
+index 67f962eb8b46..086edd4bb33b 100644
 --- a/drivers/net/wireguard/netlink.c
 +++ b/drivers/net/wireguard/netlink.c
-@@ -614,29 +614,31 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
+@@ -22,8 +22,8 @@ static struct genl_family genl_family;
+ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
+ 	[WGDEVICE_A_IFINDEX]		= { .type = NLA_U32 },
+ 	[WGDEVICE_A_IFNAME]		= { .type = NLA_NUL_STRING, .len = IFNAMSIZ - 1 },
+-	[WGDEVICE_A_PRIVATE_KEY]	= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
+-	[WGDEVICE_A_PUBLIC_KEY]		= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
++	[WGDEVICE_A_PRIVATE_KEY]	= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
++	[WGDEVICE_A_PUBLIC_KEY]		= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
+ 	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGDEVICE_F_ALL),
+ 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
+ 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
+@@ -31,8 +31,8 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
+ };
+ 
+ static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
+-	[WGPEER_A_PUBLIC_KEY]				= NLA_POLICY_EXACT_LEN(NOISE_PUBLIC_KEY_LEN),
+-	[WGPEER_A_PRESHARED_KEY]			= NLA_POLICY_EXACT_LEN(NOISE_SYMMETRIC_KEY_LEN),
++	[WGPEER_A_PUBLIC_KEY]				= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
++	[WGPEER_A_PRESHARED_KEY]			= NLA_POLICY_EXACT_LEN(WG_KEY_LEN),
+ 	[WGPEER_A_FLAGS]				= NLA_POLICY_MASK(NLA_U32, __WGPEER_F_ALL),
+ 	[WGPEER_A_ENDPOINT]				= NLA_POLICY_MIN_LEN(sizeof(struct sockaddr)),
+ 	[WGPEER_A_PERSISTENT_KEEPALIVE_INTERVAL]	= { .type = NLA_U16 },
+@@ -642,6 +642,9 @@ static struct genl_family genl_family __ro_after_init = {
+ 
+ int __init wg_genetlink_init(void)
+ {
++	BUILD_BUG_ON(WG_KEY_LEN != NOISE_PUBLIC_KEY_LEN);
++	BUILD_BUG_ON(WG_KEY_LEN != NOISE_SYMMETRIC_KEY_LEN);
++
+ 	return genl_register_family(&genl_family);
  }
- 
--static const struct genl_ops genl_ops[] = {
-+static const struct genl_split_ops wireguard_nl_ops[] = {
- 	{
- 		.cmd = WG_CMD_GET_DEVICE,
- 		.start = wg_get_device_start,
- 		.dumpit = wg_get_device_dump,
- 		.done = wg_get_device_done,
--		.flags = GENL_UNS_ADMIN_PERM
-+		.policy = device_policy,
-+		.maxattr = WGDEVICE_A_PEERS,
-+		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DUMP,
- 	}, {
- 		.cmd = WG_CMD_SET_DEVICE,
- 		.doit = wg_set_device,
--		.flags = GENL_UNS_ADMIN_PERM
-+		.policy = device_policy,
-+		.maxattr = WGDEVICE_A_PEERS,
-+		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	}
- };
- 
- static struct genl_family genl_family __ro_after_init = {
--	.ops = genl_ops,
--	.n_ops = ARRAY_SIZE(genl_ops),
-+	.split_ops = wireguard_nl_ops,
-+	.n_split_ops = ARRAY_SIZE(wireguard_nl_ops),
- 	.resv_start_op = WG_CMD_SET_DEVICE + 1,
- 	.name = WG_GENL_NAME,
- 	.version = WG_GENL_VERSION,
--	.maxattr = WGDEVICE_A_MAX,
- 	.module = THIS_MODULE,
--	.policy = device_policy,
- 	.netnsok = true
- };
  
 -- 
 2.51.0
