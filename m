@@ -1,56 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD99B14AA9;
-	Thu,  4 Sep 2025 13:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB7318A956;
+	Thu,  4 Sep 2025 13:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756993499; cv=none; b=i6tFVvd9ncyoXVUExL1qQhcIryTo9+eRb1AibpN5k3fwXMCJMfIonBLNh0FZ8herWD155NRNGUzGZLLgssQAvQ2X2V/ZYSJt1VCqt1rilLgZrk22LNa1ALDuQS2w+NGB04FUjMDJYUTpsEEmRIQqg+wD9s9qGbWkS3EagyZYLBA=
+	t=1756993940; cv=none; b=D3qH3Kw+oe8VIZXdtzGUJq1f7o/XCA7TEMeSYZf1hUXF4Y03uvbhRXy8Gt89Obr8fgokmzJ91QOAVXwPAVfDYiCpDeRIz3c1U0u4w6bjtHgQKGx4TAgVazD/We4DI5odWKo9ZeTNr3lAItA8YGTBgP9l6Hgdf2F57NOStHOmY6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756993499; c=relaxed/simple;
-	bh=+BW5/2LAZqixMbdbAbb7uoQXYsbhUfksqEkqBZNbAsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FjDE9qpBL4irDSt5lxd/Yzx6aOzJfnt5or6iStxnRhz9+hTbvp/dP4t4lnfg7zkt/4Rc0UrsF/3KQfoWJ2Urd4UTqP36yYOxv/eu49d7a+BP2VJjgidiTsctPxS/Xy6jV52Duzr0/vp3B++vYRwLcZEggOQLohRA5OhSzcNH3qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+gMvT9D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1756993940; c=relaxed/simple;
+	bh=Mls69VKfWElYGVqggJF++7wDVfDhORSsd8b4fL4Wibs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5uk7juqwVS7d1MWQA/okLwfiqJLktEvEebh4jLktzAOEoY8xpyESH7GwfVZLlfcOPobkUHKcJ/meA+8yOf/PK0/S43vgvWDVAOKploik0N1kY86CgVLxam9ztXSz+sn/SaoD2R4Ex0aBHEFWjQX2xQWLX8Pfiul88i2GsIoFas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=YXroj9DQ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+gMvT9D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B12C4CEF1;
-	Thu,  4 Sep 2025 13:44:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756993499;
-	bh=+BW5/2LAZqixMbdbAbb7uoQXYsbhUfksqEkqBZNbAsE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R+gMvT9D18jZ2jXV+iA4wFOqMy9mnXDMTzW/0LKvwO1K/P2flsluXjrpbLyJLz0n6
-	 RJs+xHanRdtbJRbunnOfOhQW9/xi67S/douHd/jnVyHf6VLikeZgcXOeqU2Vt3LES9
-	 29A63gt/3cT5z8uYKldFk96PiJYqcw8tVghAT0cVrCszRQ8WodXPA3nuN2G2ooF6z2
-	 S7w9i/EAKknf6KzVse4oe/R8En8H73yqvoL6cNXrEA2Kjg5dII6ed4GFFkPnWqUZhZ
-	 1pV8Z6pWxcbajsaV7FkEgOjthRF/7BgInfJiP71/VNRBvm2el/Z9huukV9Rk17xPo5
-	 Q/VYU6tmhgqHQ==
-Date: Thu, 4 Sep 2025 06:44:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Makar Semyonov <m.semenov@tssltd.ru>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca
- <sd@queasysnail.net>, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] macsec: fix double free of flow_table groups on
- allocation failure
-Message-ID: <20250904064457.0b222da4@kernel.org>
-In-Reply-To: <20250904114655.1674691-1-m.semenov@tssltd.ru>
-References: <20250904114655.1674691-1-m.semenov@tssltd.ru>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="YXroj9DQ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jioOZ/YKP696h31GdxCKZH7S75Olh8LYI/7clG07OIA=; b=YXroj9DQwIFA53lTCR7LfFXm0i
+	7L/PiLzUl4wRbv/I+ZCAx5xJH30otZKXQOVRSpqERsNvKRwz12aqTpdB7HXRTqO2O+GzJeK6K4Dec
+	p6yD4CoHT4r9BhVtRZ6H4SINS6H9j81sRSgUFBkDdNAX5eDz+mcXAoHgGmzLjxb+wx+9InjGRPFul
+	3eGDinWRPuKngBkrtjX1oMascVVgTkySUVABC6Qybv/1dRbJ8AH3JG4R7LMrdIl06Eki4AB4+TUiF
+	zHAKIAHIAiRe64y2j2gUSaZVsPhiONC5f2VFV01PBOGzJxLlEncDxlgXS9FJsXR7N2TAn3i8UMrSF
+	gXvwlM8Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57008)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uuANq-0000000025R-2HbV;
+	Thu, 04 Sep 2025 14:52:14 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uuANn-000000001Zp-1hw1;
+	Thu, 04 Sep 2025 14:52:11 +0100
+Date: Thu, 4 Sep 2025 14:52:11 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 net 1/2] net: phylink: add lock for serializing
+ concurrent pl->phydev writes with resolver
+Message-ID: <aLmZiwnGGSCS8Ll-@shell.armlinux.org.uk>
+References: <20250904125238.193990-1-vladimir.oltean@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250904125238.193990-1-vladimir.oltean@nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu,  4 Sep 2025 14:46:54 +0300 Makar Semyonov wrote:
-> Subject: [PATCH] macsec: fix double free of flow_table groups on allocation failure
+On Thu, Sep 04, 2025 at 03:52:37PM +0300, Vladimir Oltean wrote:
+> Currently phylink_resolve() protects itself against concurrent
+> phylink_bringup_phy() or phylink_disconnect_phy() calls which modify
+> pl->phydev by relying on pl->state_mutex.
+> 
+> The problem is that in phylink_resolve(), pl->state_mutex is in a lock
+> inversion state with pl->phydev->lock. So pl->phydev->lock needs to be
+> acquired prior to pl->state_mutex. But that requires dereferencing
+> pl->phydev in the first place, and without pl->state_mutex, that is
+> racy.
+> 
+> Hence the reason for the extra lock. Currently it is redundant, but it
+> will serve a functional purpose once mutex_lock(&phy->lock) will be
+> moved outside of the mutex_lock(&pl->state_mutex) section.
+> 
+> Another alternative considered would have been to let phylink_resolve()
+> acquire the rtnl_mutex, which is also held when phylink_bringup_phy()
+> and phylink_disconnect_phy() are called. But since phylink_disconnect_phy()
+> runs under rtnl_lock(), it would deadlock with phylink_resolve() when
+> calling flush_work(&pl->resolve). Additionally, it would have been
+> undesirable because it would have unnecessarily blocked many other call
+> paths as well in the entire kernel, so the smaller-scoped lock was
+> preferred.
+> 
+> Link: https://lore.kernel.org/netdev/aLb6puGVzR29GpPx@shell.armlinux.org.uk/
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-nit: please use the driver name as the first prefix, so "mlx5:" or 
-"eth: mlx5:". "macsec:" would be appropriate for drivers/net/macsec
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+
+Thanks!
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
