@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17512DF715;
-	Thu,  4 Sep 2025 22:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799C62E7199;
+	Thu,  4 Sep 2025 22:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023412; cv=none; b=J2+qIOuwPQbcGVKDNbwRfUF+GmsdTI+mb3kQWMh5fWBnzGR4Vu8eUk75IAIYE6YsFHQoxb0lWkVOsa+BgXgKusiywOJ1vDiQtMGhBXE5DecLlS7eUbjcrUF9iUlwLSgN8Mw3z/tp505GyFU6JFsiXwPa+MRaXIewNeci8AFCvxk=
+	t=1757023413; cv=none; b=XrLlC4W262fCQ+YzBmmCbKbn3+YozfZ4B7P1axKvqmLV2IGrIiWhh0WNVk79SP/nEkBbCF0ii+X/CyTvV2HhCR0acYbuZ80kB41kIV/4oTV8ngHzNynbECt+6p+feqPo2i/ZMfp4npBanjoqsSoThXR8EkKzB1n2pfE6+flmVmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023412; c=relaxed/simple;
-	bh=7mPaZYp6IBm/oj1/oMkLKS5KcOMTq2FZ1vUvfx3mqLc=;
+	s=arc-20240116; t=1757023413; c=relaxed/simple;
+	bh=yn7KM2RELbYxnavae/6JZHbx03cZRlg0W85YqkjfB88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyX6zLmHkozTM8cKGftwpOR5CWes+SIwFyVSlurnMLKz2YSTm+OEkJOP8PTGbTFy4j+DY65KRprz4sMXDHnoN96eaDXUasZeBcFlTRQlL6JIQiV9UfIk78gX496srJbCQu4kmVVqz5VBbUAdY1obsU6JkAlahXwR+4ol6prUJzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Q08+1KNc; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=PAH2+Pko5LVo+d+EntX8+NynFnAbEDiTn7XnXaxQAJp6ttO0m4Q6W1I++a/s3719xdOgEXgvfjHrzZx9Y/tT6DiWYZL7VrrOHuGlm2180ji/fWLOrVEJkAdjJhIZVXz3s1p6XD7+q/669r7COUIYcNs6BixUVWT4i6dOAdmmVtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=vkSHpgkP; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Q08+1KNc"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="vkSHpgkP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757023398;
-	bh=7mPaZYp6IBm/oj1/oMkLKS5KcOMTq2FZ1vUvfx3mqLc=;
+	bh=yn7KM2RELbYxnavae/6JZHbx03cZRlg0W85YqkjfB88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q08+1KNcfP0JSDXoY2eORt544YehFndoOuLJxAAvx+JPDINNxVOuU8sJZu0wGSXug
-	 tJ/4k0dxxd71ZzD4oG/NDL+7Sd4S4P0PMcPsU2H8OeCEMdHo8pjhIBVJqQl4QLB/Tc
-	 D53xrnNKZuU4sVHanNuKlqHiyh2o0k9pCIbuf6ZC54EcH3TwvMojywQUjtIOMSKZij
-	 fSgEtA7ZCE+ZRvyylUc5ox73KqTLoga9lQupfnF7TElineIV4T/LkD6XwkWJ++OEz0
-	 qiZkXRZg5ryGWxRwoiwQH0MErs0yuAIpVgwW0iU0wAEgJBFFKxvxDW+cA2LkLQmMB8
-	 TzJZPXZV4DAHw==
+	b=vkSHpgkPrmCvRkFngWuNjOpOr9SJQRjyTLDI6PBUI4cbVcVSWKlpMz5FW6iOWIbli
+	 FuMlurajhUluO78DIA4O9bm/3clTz69BF9GpcgXPVuyQUdKxbsBP3Cjjj7Yqqk7Dv0
+	 h/A1KF1ggnmEggivHPnBmK4vIFO/cbUzprRpo0h7dKU/1dxEggmpzFQs6Y2NgZ2Mim
+	 zCKFzb7j1gHZ1M3d0OooA2nYoZ/sadsJ0CsmOyc4FFs9g4++jN0a6zWqJUuZOxa0it
+	 ETQTY7D+cH78Qa376aFHYLdcmwUZgLOaVYxLAN8W0KfO5ZX2g6cwC67FPbg/yuy0HZ
+	 7JVw1tbRuPM2g==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 481F360137;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 9131B60141;
 	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 9E68D202231; Thu, 04 Sep 2025 22:02:09 +0000 (UTC)
+	id 99F5D202AD8; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,12 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 03/11] tools: ynl-gen: add sub-type check
-Date: Thu,  4 Sep 2025 22:01:26 +0000
-Message-ID: <20250904220156.1006541-3-ast@fiberby.net>
+Subject: [RFC net-next 10/14] wireguard: netlink: rename netlink handlers
+Date: Thu,  4 Sep 2025 22:02:44 +0000
+Message-ID: <20250904220255.1006675-10-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250904-wg-ynl-prep@fiberby.net>
-References: <20250904-wg-ynl-prep@fiberby.net>
+In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
+References: <20250904-wg-ynl-rfc@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,33 +60,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a check to verify that the sub-type is "nest", and throw an
-exception if no policy could be generated, as a guard to prevent
-against generating a bad policy.
+Rename netlink handlers to use the naming expected by ynl-gen.
+
+This is an incremental step towards adopting netlink command
+definitions generated by ynl-gen.
 
 This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireguard/netlink.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index b7de7f6b1fc7..04c26ed92ca3 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -826,8 +826,10 @@ class TypeArrayNest(Type):
-             return f'.type = YNL_PT_U{c_upper(self.sub_type[1:])}, '
-         elif self.attr['sub-type'] == 'binary' and 'exact-len' in self.checks:
-             return f'.type = YNL_PT_BINARY, .len = {self.checks["exact-len"]}, '
--        else:
-+        elif self.attr['sub-type'] == 'nest':
-             return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
-+        else:
-+            raise Exception(f"Typol for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index 1311f64d9fcf..a61e1c5c7850 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -197,7 +197,7 @@ get_peer(struct wg_peer *peer, struct sk_buff *skb, struct dump_ctx *ctx)
+ 	return -EMSGSIZE;
+ }
  
-     def _attr_get(self, ri, var):
-         local_vars = ['const struct nlattr *attr2;']
+-static int wg_get_device_start(struct netlink_callback *cb)
++static int wireguard_nl_get_device_start(struct netlink_callback *cb)
+ {
+ 	struct wg_device *wg;
+ 
+@@ -208,7 +208,8 @@ static int wg_get_device_start(struct netlink_callback *cb)
+ 	return 0;
+ }
+ 
+-static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
++static int wireguard_nl_get_device_dumpit(struct sk_buff *skb,
++					  struct netlink_callback *cb)
+ {
+ 	struct wg_peer *peer, *next_peer_cursor;
+ 	struct dump_ctx *ctx = DUMP_CTX(cb);
+@@ -302,7 +303,7 @@ static int wg_get_device_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	 */
+ }
+ 
+-static int wg_get_device_done(struct netlink_callback *cb)
++static int wireguard_nl_get_device_done(struct netlink_callback *cb)
+ {
+ 	struct dump_ctx *ctx = DUMP_CTX(cb);
+ 
+@@ -500,7 +501,8 @@ static int set_peer(struct wg_device *wg, struct nlattr **attrs)
+ 	return ret;
+ }
+ 
+-static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
++static int wireguard_nl_set_device_doit(struct sk_buff *skb,
++					struct genl_info *info)
+ {
+ 	struct wg_device *wg = lookup_interface(info->attrs, skb);
+ 	u32 flags = 0;
+@@ -617,15 +619,15 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
+ static const struct genl_split_ops wireguard_nl_ops[] = {
+ 	{
+ 		.cmd = WG_CMD_GET_DEVICE,
+-		.start = wg_get_device_start,
+-		.dumpit = wg_get_device_dump,
+-		.done = wg_get_device_done,
++		.start = wireguard_nl_get_device_start,
++		.dumpit = wireguard_nl_get_device_dumpit,
++		.done = wireguard_nl_get_device_done,
+ 		.policy = device_policy,
+ 		.maxattr = WGDEVICE_A_PEERS,
+ 		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DUMP,
+ 	}, {
+ 		.cmd = WG_CMD_SET_DEVICE,
+-		.doit = wg_set_device,
++		.doit = wireguard_nl_set_device_doit,
+ 		.policy = device_policy,
+ 		.maxattr = WGDEVICE_A_PEERS,
+ 		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
 -- 
 2.51.0
 
