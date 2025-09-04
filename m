@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E3B2E975E;
-	Thu,  4 Sep 2025 22:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DFE2D8DCE;
+	Thu,  4 Sep 2025 22:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757023414; cv=none; b=iTllEApqzbrHj3Nq66+ingV6KtMcbPYXKcWqXvlN3ZSDNS9CaOco4QiwMz0g5EYQehOOq3OB4LlMjs1LZ4Ya7KDkTINVEZtHHgFdmx4XqvNUGSn2Y+xoZ+m2w3w0CYtNC81m2lswOnpVdujOBJtpxLv4MbjC64PmQ6Ded4Fo/H4=
+	t=1757023415; cv=none; b=RPC5BtlVpRd3z3qQ64iRlmzPCVsKtKozHlCam08IYH4yKzlR5uY+Q5NcrfcpminFHtZLpnEsVUNRc7eaOybKGvC5D6r5uQQDcbyCm0llrrFUGrilR/20+0dlYJAIZXkLgP1NhxlpjCQ5ObbhPykMJUjbktINoexSiu97z5fCL7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757023414; c=relaxed/simple;
-	bh=121vixZVyWdpVnNNIFvoWmdEy0OO+Zl65XWR5OE1tLw=;
+	s=arc-20240116; t=1757023415; c=relaxed/simple;
+	bh=DzsomDNZcnbGdazovvDZJX7/3UaAXs2JSIxRLfRcScE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WqB2rAxnDJDjpBEy26hLR4bNKDMy6GQ0vUCs3Is4Lox5ui8tSZGNs3IR0aAhFzZx4NRfSLrIcZN5Q5flm3fK96MTZTZPyScLh9lQ0CxFjxMkA1SaUl/9lS6UWF/ONHl7/YP3tVw0o/FCZ602WpGFtbJ20EDgdDfORNKEOJiLEDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=FP2Bejtv; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=ui4Smoe1GK0HV9qiYA2oXUgesSy60g0dkYZcWxfB47Vlx/IgjkTTnORryehg7ARolLRI8KJIdAaQE6G5YGPsFQVFjuiS8NmfJ7hKuvzvUNlwfEbytBjBYshhzwHMOUn0LCkyXiot8qdRXTQdBiJsEruA8DoXn+HRjr/0Yj9kP3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=VJuoSt1E; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="FP2Bejtv"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="VJuoSt1E"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1757023398;
-	bh=121vixZVyWdpVnNNIFvoWmdEy0OO+Zl65XWR5OE1tLw=;
+	s=202008; t=1757023399;
+	bh=DzsomDNZcnbGdazovvDZJX7/3UaAXs2JSIxRLfRcScE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FP2BejtvAsJh7YFQdMgwp8FMpDrroAdmxWJfk+VTiAEkYKkCcH4qH2rypSLSPsn70
-	 lQTsoSNJIfmXwhsugI2uaBUJWa55ceguOolrLRq0vw1uOCtaVNe6gWdZLuOefW438P
-	 nrQtoS82nYLP5N/QMOUc7tWl0bcH8EjLynuL2sicKiuO0EuiD8PB68VnvSvToircii
-	 okZjy4jCtVJRjoXdgiHOs74fFwM2LNNIa5HjFVmWcyCj3r+nz9KOMxQAlNAVZGlAoI
-	 KusbL9Ds0xfPlvzc3vXb1BRqIY2uS01zZMR4uOC+oPTcwvY0I4SgZSPzwZp9lu5svH
-	 i9ony3xmVz6Sg==
+	b=VJuoSt1Ee/U58mkZaOKJpQ0vrfpGneUFdniqX/ogifsND5yUPvDpXoY4MdgHVT+Ms
+	 1bTwzU9AS9w/zRAYt6T5y+rTwjt9pAFI3mEn4wl0KGQF02BbVwkM1nJbFvpWw10Qym
+	 O/o4E3PvkOo3iDvD658sLCWHBAJgDqtkqZipzDJafQ+kGI6uQz+URGIm6PCLTwzFCO
+	 GBl/DkcyvXa7QeuRzCO/sw7rb+AgwvE0XpiPkNVVR4Wd27xGCh7No7wttwEz0yf7t5
+	 +8gphHPp05XnWMXF9euuB0u7HGP0P01q4s6lYN/QdtYGtsiB0SgXDWJgnpVnOS87dZ
+	 ysnYagYi94GHA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id B7A6C60396;
-	Thu,  4 Sep 2025 22:03:18 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 1C16060585;
+	Thu,  4 Sep 2025 22:03:19 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 7B28E2029CD; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
+	id 68B65202936; Thu, 04 Sep 2025 22:02:58 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC net-next 07/14] uapi: wireguard: move flag enums
-Date: Thu,  4 Sep 2025 22:02:41 +0000
-Message-ID: <20250904220255.1006675-7-ast@fiberby.net>
+Subject: [RFC net-next 05/14] uapi: wireguard: use __*_A_MAX in enums
+Date: Thu,  4 Sep 2025 22:02:39 +0000
+Message-ID: <20250904220255.1006675-5-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250904-wg-ynl-rfc@fiberby.net>
 References: <20250904-wg-ynl-rfc@fiberby.net>
@@ -60,72 +60,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Move the wg*_flag enums, so that they are defined above the
-attribute set enums, as ynl-gen would place them.
-
-While touching these lines, also pre-compute bitshifted flag
-values, like ynl-gen would generate them.
+This patch renames enum members from __*_A_LAST to __*_A_MAX.
 
 This is an incremental step towards adopting an UAPI header
-generated by ynl-gen.
+generated by YNL.
 
 This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- include/uapi/linux/wireguard.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ include/uapi/linux/wireguard.h | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
-index ee63aba7f98f..623ec9527e22 100644
+index dee4401e0b5d..c2bb2463211a 100644
 --- a/include/uapi/linux/wireguard.h
 +++ b/include/uapi/linux/wireguard.h
-@@ -15,6 +15,20 @@ enum wgdevice_flag {
- 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
- 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+@@ -32,9 +32,10 @@ enum wgdevice_attribute {
+ 	WGDEVICE_A_LISTEN_PORT,
+ 	WGDEVICE_A_FWMARK,
+ 	WGDEVICE_A_PEERS,
+-	__WGDEVICE_A_LAST
++
++	__WGDEVICE_A_MAX
  };
-+
-+enum wgpeer_flag {
-+	WGPEER_F_REMOVE_ME = 1,
-+	WGPEER_F_REPLACE_ALLOWEDIPS = 2,
-+	WGPEER_F_UPDATE_ONLY = 4,
-+	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
-+			 WGPEER_F_UPDATE_ONLY
-+};
-+
-+enum wgallowedip_flag {
-+	WGALLOWEDIP_F_REMOVE_ME = 1,
-+	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
-+};
-+
- enum wgdevice_attribute {
- 	WGDEVICE_A_UNSPEC,
- 	WGDEVICE_A_IFINDEX,
-@@ -30,13 +44,6 @@ enum wgdevice_attribute {
- };
- #define WGDEVICE_A_MAX (__WGDEVICE_A_MAX - 1)
+-#define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
++#define WGDEVICE_A_MAX (__WGDEVICE_A_MAX - 1)
  
--enum wgpeer_flag {
--	WGPEER_F_REMOVE_ME = 1U << 0,
--	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
--	WGPEER_F_UPDATE_ONLY = 1U << 2,
--	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
--			 WGPEER_F_UPDATE_ONLY
--};
- enum wgpeer_attribute {
- 	WGPEER_A_UNSPEC,
- 	WGPEER_A_PUBLIC_KEY,
-@@ -54,10 +61,6 @@ enum wgpeer_attribute {
+ enum wgpeer_flag {
+ 	WGPEER_F_REMOVE_ME = 1U << 0,
+@@ -55,9 +56,10 @@ enum wgpeer_attribute {
+ 	WGPEER_A_TX_BYTES,
+ 	WGPEER_A_ALLOWEDIPS,
+ 	WGPEER_A_PROTOCOL_VERSION,
+-	__WGPEER_A_LAST
++
++	__WGPEER_A_MAX
  };
- #define WGPEER_A_MAX (__WGPEER_A_MAX - 1)
+-#define WGPEER_A_MAX (__WGPEER_A_LAST - 1)
++#define WGPEER_A_MAX (__WGPEER_A_MAX - 1)
  
--enum wgallowedip_flag {
--	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
--	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
--};
- enum wgallowedip_attribute {
- 	WGALLOWEDIP_A_UNSPEC,
- 	WGALLOWEDIP_A_FAMILY,
+ enum wgallowedip_flag {
+ 	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
+@@ -69,8 +71,9 @@ enum wgallowedip_attribute {
+ 	WGALLOWEDIP_A_IPADDR,
+ 	WGALLOWEDIP_A_CIDR_MASK,
+ 	WGALLOWEDIP_A_FLAGS,
+-	__WGALLOWEDIP_A_LAST
++
++	__WGALLOWEDIP_A_MAX
+ };
+-#define WGALLOWEDIP_A_MAX (__WGALLOWEDIP_A_LAST - 1)
++#define WGALLOWEDIP_A_MAX (__WGALLOWEDIP_A_MAX - 1)
+ 
+ #endif /* _WG_UAPI_WIREGUARD_H */
 -- 
 2.51.0
 
