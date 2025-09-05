@@ -1,79 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D631D1E8342;
-	Fri,  5 Sep 2025 01:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7431218EA8;
+	Fri,  5 Sep 2025 02:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757037391; cv=none; b=oQDnVvMO4Gd7jsz0CEdTll40SbXY2kxpDo4IjifF7gN3IKkV5yXpdH+wJ14sGSNwoGxlb3ZCDW5XyHkwuw2uKMsVPd2TwFRYdYcAqnLImHqHRdr01jg6UZvhx8eEqz49NtiHiKx+4+nsRfeu7uzH4oAXZUo4GKj1pIdASkv/lbU=
+	t=1757037602; cv=none; b=lanKkou5H8UvmdVO3r/DaTKt/feh/0iEWVz83Hrp5QfJYqMDIeou6j/QDD9M7P5on1SuLyGL6/uMPYXZnWU6Vtkchrb3d1pFeZ0elfUF7QY1usRCeBWK26VW0FHXO4XRgMoyrDaymLjC0/jketykiQRvjPWJ0gZOYyifgND0u08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757037391; c=relaxed/simple;
-	bh=Xcn+I+kMYJB+u+tv1XD+EFcjTYldh08BKwhM60y/8E0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1P5OFgpnenFhos5bEyZJ7c9RaXiEhdvjsUo/VQLPkGc59YEmeLWWvowzupoST1WxpZh75WYWrHttMiYvA/sRByWpabTeOwmHbHORpIKAl4K+ECHf5AD3dlIeTlgv/9etVaMjjd/jqKMcupnqfnAKAvUM6n+7IvpHHRwLyVj8Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXfTEnvb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757037602; c=relaxed/simple;
+	bh=6WrSKGMcklSN3roHjGk3yFcw/fLf1SGPFW5yr0SuEYA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Rj0lnkkIWRUOTqaDoI7vG180I2cV0lsQPIr53cMH80NZmILaeFmUFEhArL978ahEKTLFg1zyiChZVo6LqKZmYcrcLfmfV+Fpp9y5nYyAC2k88+gL6O56IkzCEfcqw0Z9PHE91BJziiJwFiKDlmpaIfSw0WZ6aHeyWWNouMFYzTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=keIR4Mol; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXfTEnvb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D057AC4CEF0;
-	Fri,  5 Sep 2025 01:56:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="keIR4Mol"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297EBC4AF0B;
+	Fri,  5 Sep 2025 02:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757037390;
-	bh=Xcn+I+kMYJB+u+tv1XD+EFcjTYldh08BKwhM60y/8E0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZXfTEnvbwXuSMFbjorLIGqEyLXaaUZmSiUjjAV7YcCN0klbARxYqI5ez4nWya6UgS
-	 WFqadB42tQlbl/Jex5QJqNkVBfpnbkmrriSTx1YaA6fNerL2HuC3bTAtcaW+Ozmwbd
-	 5QfHpCUhrrmMWqSrCc6xVIRwJK8IuR9TQOkmMboXH1u7wbCwsP1GxXwO0jFjh75KHK
-	 fRob6P3T6OK4OPUg2iW2fbRY2l1JqfaJvfcTJZsFb6x00s0h2uAuTUqEcMQb7ypxwF
-	 2a7Ed53ton6FayNdd4vSg+WxpWz+rdirz9hm7NxfvE0nQmrvAGX3tdENBAkdoYtdEE
-	 nsiFdX+FR15ew==
-Date: Thu, 4 Sep 2025 18:56:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Basierski <sebastian.basierski@intel.com>
-Cc: Konrad Leszczynski <konrad.leszczynski@intel.com>,
- <davem@davemloft.net>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
- <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <cezary.rojewski@intel.com>, Karol
- Jurczenia <karol.jurczenia@intel.com>
-Subject: Re: [PATCH net 3/3] net: stmmac: check if interface is running
- before TC block setup
-Message-ID: <20250904185628.0de3c483@kernel.org>
-In-Reply-To: <e1e9c67e-04c7-4db4-9719-25e5d0609490@intel.com>
-References: <20250828100237.4076570-1-konrad.leszczynski@intel.com>
-	<20250828100237.4076570-4-konrad.leszczynski@intel.com>
-	<20250901130311.4b764fea@kernel.org>
-	<e1e9c67e-04c7-4db4-9719-25e5d0609490@intel.com>
+	s=k20201202; t=1757037602;
+	bh=6WrSKGMcklSN3roHjGk3yFcw/fLf1SGPFW5yr0SuEYA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=keIR4MolXDCuDAQ4tpQuRfXkj9XNWYKqGDp4fRkc61kQInngXYCgqRhI6cwQ+G2KI
+	 WHaiElr2nXUMWbBrIWQAHLGc6y/JM7K0tIvmNAehAsJwMt2fKui0y4RljvXxBefdxF
+	 +1j5Xj/d1fJIHjCaUpOcQVGyh/JS5B5bHVYBfK+jxbrEdZhgkQnyfBxD4S/UUSPdYI
+	 ton3QP+6YF/XdXMfaYrOHwC++lCqsVGyIZqMdmr7vu6sSrOunyn3/K51gk6W8UGK1w
+	 VhdIkXlGWz+Sz1peFjS0rQXq1PYYNKHIMY2h4OqY3hDZP2WopJmHUKRIl0SSge6WCV
+	 RONgPnl0iGlRg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADEEB383BF6C;
+	Fri,  5 Sep 2025 02:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 0/5] dd ethernet support for RPi5
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175703760650.2006573.13109159782302004132.git-patchwork-notify@kernel.org>
+Date: Fri, 05 Sep 2025 02:00:06 +0000
+References: <20250822093440.53941-1-svarbanov@suse.de>
+In-Reply-To: <20250822093440.53941-1-svarbanov@suse.de>
+To: Stanimir Varbanov <svarbanov@suse.de>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rpi-kernel@lists.infradead.org, bcm-kernel-feedback-list@broadcom.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, florian.fainelli@broadcom.com, andrea.porta@suse.com,
+ nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev, phil@raspberrypi.com,
+ jonathan@raspberrypi.com, dave.stevenson@raspberrypi.com
 
-On Thu, 4 Sep 2025 21:01:49 +0200 Sebastian Basierski wrote:
-> On 9/1/2025 10:03 PM, Jakub Kicinski wrote:
-> > More context would be useful. What's the user-visible behavior before
-> > and after? Can the device handle installing the filters while down?
-> > Is it just an issue of us restarting the queues when we shouldn't? =20
->=20
-> Before this patch driver couldn't be unloaded with tc filter applied.
->=20
-> Running those commands is enough to reproduce the issue:
->  =C2=A0 tc qdisc add dev enp0s29f2 ingress
->  =C2=A0 tc filter add dev enp0s29f2 ingress protocol all prio 1 u32
->  =C2=A0 rmmod dwmac_intel
->=20
-> in effect module would not unload.
+Hello:
 
-Makes sense. Could you also confirm that the offload doesn't in fact
-work if set up when device is down? I think block setup is when qdisc
-is installed?
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-ip link set dev $x down
-tc qdisc add dev enp0s29f2 ingress
-ip link set dev $x up
-tc filter add dev enp0s29f2 ingress protocol all prio 1 u32 ...
+On Fri, 22 Aug 2025 12:34:35 +0300 you wrote:
+> Hello,
+> 
+> Changes in v2:
+>  - In 1/5 updates according to review comments (Nicolas)
+>  - In 1/5 added Fixes tag (Nicolas)
+>  - Added Reviewed-by and Acked-by tags.
+> 
+> [...]
 
-If it doesn't work we can feel safe we're not breaking anyone's
-scripts, however questionable.
+Here is the summary with links:
+  - [v2,1/5] net: cadence: macb: Set upper 32bits of DMA ring buffer
+    (no matching commit)
+  - [v2,2/5] dt-bindings: net: cdns,macb: Add compatible for Raspberry Pi RP1
+    https://git.kernel.org/netdev/net-next/c/d9c74e6f8125
+  - [v2,3/5] net: cadence: macb: Add support for Raspberry Pi RP1 ethernet controller
+    (no matching commit)
+  - [v2,4/5] arm64: dts: rp1: Add ethernet DT node
+    (no matching commit)
+  - [v2,5/5] arm64: dts: broadcom: Enable RP1 ethernet for Raspberry Pi 5
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
