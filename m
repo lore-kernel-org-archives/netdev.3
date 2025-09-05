@@ -1,140 +1,162 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F40C374292;
-	Fri,  5 Sep 2025 17:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8B024EA9D
+	for <netdev@vger.kernel.org>; Fri,  5 Sep 2025 17:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757092067; cv=none; b=bzpL/7KmKDawLIUl7NSI+LYgo7sVNmQa4v5vMy0Pp1wmWR+WTDmZpPr1i9FXJtSc94MIw/A66xqlaKxOa2qoi+sPiQXz1uBKJvOc9sx9RtQAYskWghjdnzphHKxhgcZu4GDN4miB9MtdTMxB4wLbueyTK563MltucSuvnzYchzo=
+	t=1757092816; cv=none; b=U5rPCaecMtb0Gw9/bgSGEJU0eiClA4NZry5stg6KqoThRxgaYAQ6oLlw7S5MfJNlPnRztC50kcEY46zKA5gIHnrPbeW5xyaU1dZOVru27+gQ1F3YeuAiEvJDFbJ0J4IYVmbpTqxbOtnAsjX11PbOXbne8SPnfubK8nLDy0Xbouc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757092067; c=relaxed/simple;
-	bh=3aXidoCnjwjLlFAFt83SYhSNY9u5/DbQjFuEPX/ClMk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qUhQziS7Hx7EI7TwfbOcaOlmM3bbNnppdLYZq4Xb5mU6YsgqHiIqa0y8I5U+Z62zZ0Z5/hdNKPpP68b5WVnIx1pmYC5D+nLrhath+/xO+m6LFuv1iXFG2BUN4mVCcUp+y7u4UAgYZtXuWor8A6HSZZk2P2qwdxPfA8tgUPs2mRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-61a8c134533so4447944a12.3;
-        Fri, 05 Sep 2025 10:07:45 -0700 (PDT)
+	s=arc-20240116; t=1757092816; c=relaxed/simple;
+	bh=0AT7APgm8B0/OQcxue2jUmcVmW2/EJobNbH376ZH6JA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SlQDA2lh6SEoA2XAfM98viIn/ns6boPDaprLSIV4zstt7JkjrueMd3AmtabCxdMqBkgsxUIZ+V6249srYZdMtLXRT+SR103KegsgmPQsdZ5g3ITMM0jFaWjhm90Jyz/eiPGx7bruVh3Ds/xuh678jboNYail9AhkNft1gLBtM3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cF43RVlX; arc=none smtp.client-ip=209.85.160.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cF43RVlX"
+Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-3158a9ccc52so1236618fac.3
+        for <netdev@vger.kernel.org>; Fri, 05 Sep 2025 10:20:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757092064; x=1757696864;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hPOh83BwsxUoqeI+xJ5O/OzWhrMRpIrMTjO1JPoh9E0=;
-        b=WChw8X0QAyFyJXC/Vt1tlQe7ixA5IAS+HQbV7dyezOCmXN1nj6bJczjrN2QWXQWhy3
-         Tsqqra4jHcyCFAjxu+qZLdRPlX+rBLnXoMzewWB/aZIUdVA9VXcSjlnDZqinGT17GP2t
-         XXsplGFYlXhDEKPadEgXLpThwQrc3Iw+zgettKiyIzvJUqVcCX91pNVi2/zVjQfRm8dW
-         x7zUwiQdv6CEavLGKs3P27ZXxpTAXu1ttJrvCEdy5UGwzNLwmiXa1iXk1mhDuRR7A4+F
-         zX8w9671RCwyYxS32io6TAcQXTvzzWTFuLGd+tgEOmbWtYPYvOlDJCzO2KvPmWdvKRwt
-         kEvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVr36u2Z4bxGDYxkVp28crRoDfns6Mu2ozV08qGs9FuWWtNBV03bcx8K9XozNIBvBdJ0hq5V9ayInbd/KA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfD7IDG+5kWclfOZ0VibJXo85MHuy3V7YR4huh0cxawmdiDRAM
-	l/NhtJR+fwa+w/uTsTBmFwpWRfq+z9q5r/Xp9r/qttx2GVYuEy2Ni7df
-X-Gm-Gg: ASbGnctATNBFzM9yGdu6ChxVJ48lOyVtIiLg4lh//wixrenyGGm313CHu0Zw1b/8nNm
-	7WU8nODX5qXNugKsSgkq/W43Tq2WkvUcPNphE6QBWQ1cuTFWBrnRYp30TY8d8Yx+H0AGhqqJH3a
-	gLipml80ERbIh5P8x6LU+CIUS+fiXIDWwT4yr6PZQ/8ZuQyH07XlmjmdKFZbKzvqA+miiI7N+wJ
-	7svu7sh/OXJIKB/RIMmbswoUT/FX9z5v0PKF9p7Tmygk2MlwpkuKBnvapMgYV4zP2lJPpmjOmuy
-	1O/R5zI4BB0uylTASzupJA8foUjq5YnQHtJx8wFne1u5mvUnK3RA/G12ChDrinVpLCZnlobr9Nk
-	q3WR0mHnyIOJNmLquCJgu2972
-X-Google-Smtp-Source: AGHT+IFHB/021clnQGQ9l2V/ebhPpnhyDNv4aANIU9IER24mAVYd7lakHWEK5C+0sF2ladD2UZSv7Q==
-X-Received: by 2002:a05:6402:210c:b0:61e:a5c8:e830 with SMTP id 4fb4d7f45d1cf-61ea5c8e868mr16151197a12.1.1757092063706;
-        Fri, 05 Sep 2025 10:07:43 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:71::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61cfc1c77d0sm17028678a12.11.2025.09.05.10.07.42
+        d=1e100.net; s=20230601; t=1757092813; x=1757697613;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xLFW2g+f2TuwLyM0X1O85UbfIsEt5ZueedBLU5KTuv0=;
+        b=grNBuW7+7cWy+jTuHHHIH+tGUjk+XDr6/C3xni0YrzZ5LcHSAgJSdeQbY9zAhQFdMl
+         0Ax37DhspkhRuBpj6UIobJO+B5nJnmp5WusAhltSAOEQqEzKCGzcYXIrT1ndEvkIYB8D
+         KJxMUQByvhrYwLf7dti2qpyLx8VYeMorauxU39slsARGbokMZ0hrRVvG3xyo1Ex4OObt
+         zALUy02KNW6+BdDk9hWXaAQLcH3ChwS0at8FDDRIOc4WHRWfLznvn9h1KMXIO72J1dgs
+         o+mr4BsKJm8bdFX0HKxHbaPcyMa+xKLGSbWC6smBgxLcLzP6xUq+lkTg9aAPGQ5pORom
+         vmQw==
+X-Gm-Message-State: AOJu0Yyr2kuTunLmMvCGB2JMTXnWJzntBbmzWaTtkNj6ksysg60gxJIB
+	WJJRzBoAj/e+uh2LfCBNRM85qyErRADiONCJRJPviAtE9Z3fDjnCp1U58IL/miqtb44Tsq0oRd1
+	X9CepghBnRtyL2vQbwnO9GPQjWwSJ6eLRlGQcJaD5oMGKyVX3ulz8gt8aoKEAI4iKk+fvWZadZT
+	77TOEdtQ40c2odMKoNIb1LBmsTA14Wse3+Lvy/BgKmvPUoe/qjFpeuWduN+uaobv9YV5LeidtVx
+	T176tnGUD0/ioh5q12J
+X-Gm-Gg: ASbGncvKjG+nuJ7FpRCOGKWmMhDL5Vuy0xlHZCdcl6Uyqq/YT1b5L9dt/YnfhT0VL4a
+	IeGa9x+EyXDKiSFizOmLz7NJLxTyVc3KpZlUpeZDj7wHBDk2d7GpQaCVWKZE/ZRE9DXm6GFx6G+
+	uBx9D7/R57pL5WliucV/rD1LCXdJAlYobtbWz7Rwyq8sTi7doge5i3ZrsjkkiNMUJiHNWmVRsig
+	1KOpbveBfE599tlGxJaAkcAOhRREBOrnCUM31qOqM5MjQb8phUiWnVr9EnQPNxlsq46IpcxHN64
+	8IbjzRsEiLVa7TY6U8kRKBoyYyqu61BWNGPUq895D3Ik3ilQd04bLmM0uw2EHTQt8iUGw9hQfKK
+	ulTzsZDmxEKkd7muVogX9ueUaO8AVOH90PYNJfQ4ch/eAyPGA4077cusJspEYK+dU0YcCVAGmYw
+	1o1+FqWw==
+X-Google-Smtp-Source: AGHT+IGAoAdIHZg/abI0ESTWx4V6ht1MjUoIppBvu1xdgYTmRh4neCH9D5m4lc0/99226xLINgv+eJ+UO1Mu
+X-Received: by 2002:a05:687c:2f86:b0:319:cad9:c6f1 with SMTP id 586e51a60fabf-319cad9d36amr6199326fac.36.1757092813376;
+        Fri, 05 Sep 2025 10:20:13 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-746d7d6e5c8sm268551a34.6.2025.09.05.10.20.13
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 05 Sep 2025 10:20:13 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-772537d9f4aso2168841b3a.2
+        for <netdev@vger.kernel.org>; Fri, 05 Sep 2025 10:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1757092812; x=1757697612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xLFW2g+f2TuwLyM0X1O85UbfIsEt5ZueedBLU5KTuv0=;
+        b=cF43RVlXklU60/pSByrESmFvAJtZb94tYG5DZWqcmkHnUgQ2kJJjGERVkzWtfAzZg3
+         Zb1J9jUstPX5deALDjoREMoX+JOyuPWclOcyc7nGug3W8tnhJMh4tEQFcB8fExW98eHy
+         jyUak3Ny4HVXukPIRk6FuWaso3UXeaK0ejoOc=
+X-Received: by 2002:a05:6a00:240c:b0:771:f8b5:d93 with SMTP id d2e1a72fcca58-7723e38c01dmr26589999b3a.27.1757092811449;
+        Fri, 05 Sep 2025 10:20:11 -0700 (PDT)
+X-Received: by 2002:a05:6a00:240c:b0:771:f8b5:d93 with SMTP id d2e1a72fcca58-7723e38c01dmr26589971b3a.27.1757092810976;
+        Fri, 05 Sep 2025 10:20:10 -0700 (PDT)
+Received: from hyd-csg-thor2-h1-server2.dhcp.broadcom.net ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a2b78d7sm22678001b3a.30.2025.09.05.10.20.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 10:07:43 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 05 Sep 2025 10:07:26 -0700
-Subject: [PATCH RFC net-next 7/7] net: virtio_net: add get_rxrings ethtool
- callback for RX ring queries
+        Fri, 05 Sep 2025 10:20:10 -0700 (PDT)
+From: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Subject: [v6, net-next 00/10] Add more functionality to BNGE 
+Date: Fri,  5 Sep 2025 22:46:42 +0000
+Message-ID: <20250905224652.48692-1-bhargava.marreddy@broadcom.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250905-gxrings-v1-7-984fc471f28f@debian.org>
-References: <20250905-gxrings-v1-0-984fc471f28f@debian.org>
-In-Reply-To: <20250905-gxrings-v1-0-984fc471f28f@debian.org>
-To: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- kuba@kernel.org, Simon Horman <horms@kernel.org>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- virtualization@lists.linux.dev, Breno Leitao <leitao@debian.org>, 
- jdamato@fastly.com, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-dd21f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1593; i=leitao@debian.org;
- h=from:subject:message-id; bh=3aXidoCnjwjLlFAFt83SYhSNY9u5/DbQjFuEPX/ClMk=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBouxjSrAs1Sm+xxMdVGyejtHHGgv9lU+1AEZcr8
- HRgIm5+yvKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaLsY0gAKCRA1o5Of/Hh3
- bSzdD/9VZrqjup5ByMvV1ARdrXaNOQAT0EzCwe6eGJSqbeLxU6C5ECSqaD2RYn6tKOwqGGwr0aK
- KNWlZc7acHG7tdwqHvzcctsE6HsC5bFDsVO7N4AdhNiZtz0b/U0FLDYas4mtVQyw68PRhffmMBX
- boWG8bfFtjAj4MvMwVbFlWNYsIbL/FNHgMx/7zj5pLzAWB4HFASzWEkpq2dgQdittZ05EpETn1u
- UMRVxB5cG7Gebm0jD0L86pan6rSQlaLr6VZDUN+zQkUsP9aO9YY99Zux7c+u16ZWaVS9AskwOze
- ce80xTgM9pgAz9S1WQyDCC0w1xLbw/zfZI2Y3xTUpD3oRC+QmRBzezdCnD3+6inNbf/QyNGqwpL
- 30d8WBTuEcCMXqKPYwmWgaEL30ljXdjT89l4Q4xyzMgGLc3WMBxLXUlFVq4AfW8JeSeIpITb/lj
- 9RX94ORn0vcc4wgenLBxht/1Y0JIRyWYr7JIz/CIfhlnbEl0VSaCNK0gFCMKf6u7DYpd29s5tZV
- l1WXHx3tdLMBIFtlbM2dAzS9eBBb8fbeh4QOju85Y4GOs5qozuuFsLZETAq1ZkJF1PdzeTWg+sP
- /1ig8EsSB8pIvbnuafh054c5DHfMc2I1IFr1eeVvrnu2Z3LzDJroipiBciPKHFPubblQW/PfxGa
- UOYSQ23i/cdj7GQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Replace the existing virtnet_get_rxnfc callback with a dedicated
-virtnet_get_rxrings implementation to provide the number of RX rings
-directly via the new ethtool_ops get_rxrings pointer.
+Hi,
 
-This simplifies the RX ring count retrieval and aligns virtio_net with
-the new ethtool API for querying RX ring parameters.
+This patch series adds the infrastructure to make the netdevice
+functional. It allocates data structures for core resources,
+followed by their initialisation and registration with the firmware.
+The core resources include the RX, TX, AGG, CMPL, and NQ rings,
+as well as the VNIC. RX/TX functionality will be introduced in the
+next patch series to keep this one at a reviewable size.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/virtio_net.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+Changes from:
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 975bdc5dab84b..942ae55e8897d 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -5610,20 +5610,11 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 	return 0;
- }
- 
--static int virtnet_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info, u32 *rule_locs)
-+static int virtnet_get_rxrings(struct net_device *dev)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
--	int rc = 0;
- 
--	switch (info->cmd) {
--	case ETHTOOL_GRXRINGS:
--		info->data = vi->curr_queue_pairs;
--		break;
--	default:
--		rc = -EOPNOTSUPP;
--	}
--
--	return rc;
-+	return vi->curr_queue_pairs;
- }
- 
- static const struct ethtool_ops virtnet_ethtool_ops = {
-@@ -5651,7 +5642,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
- 	.set_rxfh = virtnet_set_rxfh,
- 	.get_rxfh_fields = virtnet_get_hashflow,
- 	.set_rxfh_fields = virtnet_set_hashflow,
--	.get_rxnfc = virtnet_get_rxnfc,
-+	.get_rxrings = virtnet_get_rxrings,
- };
- 
- static void virtnet_get_queue_stats_rx(struct net_device *dev, int i,
+v5->v6
+Addressed comments from Jakub Kicinski:
+    - Add appropriate error handling in several functions
+    - Enable device lock for bnge netdev ops
+
+v4->v5
+Addressed comments from Alok Tiwari
+    - Remove the redundant `size` assignment
+
+v3->v4
+Addressed a comment from Jakub Kicinski:
+    - To handle the page pool for both RX and AGG rings
+    - Use the appropriate page allocation mechanism for the AGG ring
+      when PAGE_SIZE is larger
+
+v2->v3
+Addressed a comment from Jakub Kicinski: 
+    - Changed uses of atomic_t to refcount_t
+
+v1->v2
+
+Addressed warnings and errors in the patch series.
+
+Thanks,
+
+Bhargava Marreddy (10):
+  bng_en: make bnge_alloc_ring() self-unwind on failure
+  bng_en: Add initial support for RX and TX rings
+  bng_en: Add initial support for CP and NQ rings
+  bng_en: Introduce VNIC
+  bng_en: Initialise core resources
+  bng_en: Allocate packet buffers
+  bng_en: Allocate stat contexts
+  bng_en: Register rings with the firmware
+  bng_en: Register default VNIC
+  bng_en: Configure default VNIC
+
+ drivers/net/ethernet/broadcom/Kconfig         |    1 +
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   27 +
+ .../net/ethernet/broadcom/bnge/bnge_core.c    |   16 +
+ drivers/net/ethernet/broadcom/bnge/bnge_db.h  |   34 +
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  485 ++++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |   31 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 2211 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |  251 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |    4 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_rmem.c    |   67 +-
+ .../net/ethernet/broadcom/bnge/bnge_rmem.h    |   14 +
+ 12 files changed, 3136 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_db.h
 
 -- 
 2.47.3
