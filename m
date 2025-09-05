@@ -1,38 +1,31 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAEA1487F6;
-	Fri,  5 Sep 2025 02:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884672628D
+	for <netdev@vger.kernel.org>; Fri,  5 Sep 2025 03:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757040953; cv=none; b=X47FI29oP/Q77eTU6yaML04zEKOWWGjOW3K2yU8N6Ojo9HqE6YTuPs2BanBvgand0aPrm/wqgee7d9k+R8EWqqObXsP6Td8jSIyxEOoTo75uh88eg/J3OmL90wDOAzAFwR86DnZgvYDHJ3jBJ9zd4TxAVhxFqv7FayivrvlMDSo=
+	t=1757041688; cv=none; b=IewDR2RltpWrlRO6OOH+z8fHf4/E7nFQxPbm8b8T5tG2To+bHA6VnlsScDWP3Na0qEXewN9G+foeEJMJjO6l8KyEOwP3O+HEmYDALVNW/vfobIX/6KUSzEMVN9f/nU3iT4QUPY6SUfWQSkrk3FVvbKQWypcYg5PX0g8fYrcdLzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757040953; c=relaxed/simple;
-	bh=m0NchfMU+6mv+FH2Live2SrPoEDdZN1S9Mkgu9lUtvg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N7A9N7durXuLdIhmHj1bPR+TLSSPgnLKTNC+9Oy/ytLeYAWf46ksYTEOklOiJabQP7nkbwf/e8tMjO/mNrZzSWR0z1Vms2PR+hjfNy3RmknGVK5mySZFdjR41XLqs60Qz5Iq53leCgBYc6yTSiuHGlolZPaCYRPcVTJeMPu/qqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nBWNsNyy; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nBWNsNyy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=TS
-	2c4+8QcxzYCQJ9dOwqNrRRCyzgODztpgqxHCDceTQ=; b=nBWNsNyyuSn5F3z0s/
-	QzuJv8Nrbaah8YFsYpiXBbpyF3JgDSGG9FNRwAxBqGD7H036I9Q9aK82x5K9KdHu
-	+6UDW257J3VuIKMeyotgPpehQblGttdcVyScOdaRQHYz49Q9OVtUZlMcKyKtr3hY
-	vhtdpt64LiYq5OfcpMbbNZK/s=
-Received: from neo-TianYi510Pro-15ICK.. (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wAXNKwdUbpo_djoGA--.23003S2;
-	Fri, 05 Sep 2025 10:55:26 +0800 (CST)
-From: liuqiangneo@163.com
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com
-Cc: intel-wired-lan@lists.osuosl.org,
+	s=arc-20240116; t=1757041688; c=relaxed/simple;
+	bh=4pnU9K3Ib56qdsTvpQ/kbd6uN/uS5urg3ADNTinfndA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lO1JQSeuzT62NHYw5QEqa8uVaQtXK2XSmXmV7cLTpQae/B0a/9xBrAdtpLOD751egaARvHV7papyGw/jmmxLm0AHlyJXLNXuPQuZXLdxBxmudxGw+WB1+Pl0XAoyccjtjfvBRRnDRA7Dbv1vTPBir0B4HMr7OwvUtp7njiefCfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn; spf=pass smtp.mailfrom=iie.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iie.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iie.ac.cn
+Received: from localhost.localdomain (unknown [159.226.95.28])
+	by APP-05 (Coremail) with SMTP id zQCowAB33RYFVLpo8kC3AA--.48295S2;
+	Fri, 05 Sep 2025 11:07:51 +0800 (CST)
+From: Chen Yufeng <chenyufeng@iie.ac.cn>
+To: ecree.xilinx@gmail.com
+Cc: kuba@kernel.org,
+	linux@treblig.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qiang Liu <liuqiang@kylinos.cn>
-Subject: [PATCH] ixgbe: Remove self-assignment code
-Date: Fri,  5 Sep 2025 10:55:15 +0800
-Message-ID: <20250905025519.58196-1-liuqiangneo@163.com>
-X-Mailer: git-send-email 2.43.0
+	Chen Yufeng <chenyufeng@iie.ac.cn>
+Subject: [PATCH] sfc: farch: Potential Null Pointer Dereference in ef4_farch_handle_tx_event()
+Date: Fri,  5 Sep 2025 11:07:37 +0800
+Message-ID: <20250905030737.220-1-chenyufeng@iie.ac.cn>
+X-Mailer: git-send-email 2.43.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,48 +33,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXNKwdUbpo_djoGA--.23003S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF13XryUWr17ur17JFykGrg_yoW8Gr4rpF
-	W8u3sIgry3XF45Way8Xay5Jr90ga92vw4rGFyDAw4rZw1DCrsrGwn7t3y0yFyxZrW0vF1I
-	vF45Aws5C3Z3J3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UGXd8UUUUU=
-X-CM-SenderInfo: 5olx1xxdqj0vrr6rljoofrz/1tbishG-YWi6TaZSWAAAsO
+X-CM-TRANSID:zQCowAB33RYFVLpo8kC3AA--.48295S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFW5uFWftry7JFW3XF45GFg_yoW8AF45pa
+	yDArWSvF4xtF4rZas3K3WruF45JayrJFy2ga4Sg3yYvr9rGryDXF1xt34YgrsayrWkGa1a
+	yryUAF4kXFn8J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
+	xVWUAVWUtwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
+	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
+	17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
+	C0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
+	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvj
+	DU0xZFpf9x0JUoKZXUUUUU=
+X-CM-SenderInfo: xfkh05xxih0wo6llvhldfou0/1tbiDAYQEmi6Ik7aTQAAsh
 
-From: Qiang Liu <liuqiang@kylinos.cn>
+A patch similar to 83b09a180741("sfc: farch: fix TX queue lookup in TX 
+ event handling").
 
-After obtaining the register value via raw_desc,
-redundant self-assignment operations can be removed.
+The code was using ef4_channel_get_tx_queue() function with a TXQ label 
+parameter, when it should have been using direct queue access via 
+channel->tx_queue. This mismatch could result in NULL pointer returns, 
+leading to system crashes.
 
-Signed-off-by: Qiang Liu <liuqiang@kylinos.cn>
+Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/sfc/falcon/farch.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index bfeef5b0b99d..6efedf04a963 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -143,18 +143,14 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+diff --git a/drivers/net/ethernet/sfc/falcon/farch.c b/drivers/net/ethernet/sfc/falcon/farch.c
+index 01017c41338e..29b34fb9fb24 100644
+--- a/drivers/net/ethernet/sfc/falcon/farch.c
++++ b/drivers/net/ethernet/sfc/falcon/farch.c
+@@ -838,16 +838,16 @@ ef4_farch_handle_tx_event(struct ef4_channel *channel, ef4_qword_t *event)
+ 		/* Transmit completion */
+ 		tx_ev_desc_ptr = EF4_QWORD_FIELD(*event, FSF_AZ_TX_EV_DESC_PTR);
+ 		tx_ev_q_label = EF4_QWORD_FIELD(*event, FSF_AZ_TX_EV_Q_LABEL);
+-		tx_queue = ef4_channel_get_tx_queue(
+-			channel, tx_ev_q_label % EF4_TXQ_TYPES);
++		tx_queue = channel->tx_queue +
++			(tx_ev_q_label % EF4_TXQ_TYPES);
+ 		tx_packets = ((tx_ev_desc_ptr - tx_queue->read_count) &
+ 			      tx_queue->ptr_mask);
+ 		ef4_xmit_done(tx_queue, tx_ev_desc_ptr);
+ 	} else if (EF4_QWORD_FIELD(*event, FSF_AZ_TX_EV_WQ_FF_FULL)) {
+ 		/* Rewrite the FIFO write pointer */
+ 		tx_ev_q_label = EF4_QWORD_FIELD(*event, FSF_AZ_TX_EV_Q_LABEL);
+-		tx_queue = ef4_channel_get_tx_queue(
+-			channel, tx_ev_q_label % EF4_TXQ_TYPES);
++		tx_queue = channel->tx_queue +
++			(tx_ev_q_label % EF4_TXQ_TYPES);
  
- 	/* Read sync Admin Command response */
- 	if ((hicr & IXGBE_PF_HICR_SV)) {
--		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-+		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
--			raw_desc[i] = raw_desc[i];
--		}
- 	}
- 
- 	/* Read async Admin Command response */
- 	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
--		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-+		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
- 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
--			raw_desc[i] = raw_desc[i];
--		}
- 	}
- 
- 	/* Handle timeout and invalid state of HICR register */
+ 		netif_tx_lock(efx->net_dev);
+ 		ef4_farch_notify_tx_desc(tx_queue);
 -- 
-2.43.0
+2.34.1
 
