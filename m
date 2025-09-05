@@ -1,162 +1,214 @@
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2079.outbound.protection.outlook.com [40.107.101.79])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4548B346A12
-	for <netdev@vger.kernel.org>; Fri,  5 Sep 2025 11:14:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757070864; cv=fail; b=h55CgCYAeM83hIueUbgi0vcXQFXPVoDpojTIGplcBxBX1YmkoeWM/O3L0MhBfCg57hZnzXxQklW2hfyMZsIVvNXSx5rWtLURC/Fc/yseC1er3ywSiWeZcjLI00cauIJ/2jCMdYrdlyi00evz1hFG4SWudJHAaUep02CTH+Kd21I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757070864; c=relaxed/simple;
-	bh=pJW0Ps5oDxZv2lZV/HrQK66AtQJe+d+xv0ylwC1YMlk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M2c9S2aU9yPLHT09e+NOXrJMeIgFNAObVtT9c8FE5VFqQa604NgZDVKmLsWgiJ8vEv0yxOi4nrl6J3zVd4DtgPnAXMtDNMu4IIVrPxkSXR3Qz6cORDIeBR5SyzTeIDactw+Gt8nGMtG1Gb6wVMw/VaRiZU5Y1nWTTqnG6rr1B3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RD5tuIsv; arc=fail smtp.client-ip=40.107.101.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB29346A14
+	for <netdev@vger.kernel.org>; Fri,  5 Sep 2025 11:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757070877; cv=none; b=lPC7WEC5PRfBJVLCWqZ5HO3DP7egEs2hG1wd4mCOnfx4ieuAMEyRVqLNfC50DM82faKWzBsA6S+h8Nswe8sAF76ixf08LPR5droH/YHKLuOFFfyhc8ldYI503MVEHobwfT2y8NgJzEVXoUxPP85oz9aTEWtdB9zWL1oXIfC16oA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757070877; c=relaxed/simple;
+	bh=eMmQ9OoGm+P5E4eaGh3F1MRJISstesFzwHdqyCpi4pk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FAAPVI9NdLjXVJZcZi+upSM+1WeRdcqpinVy/zIm2iazLMiwiKY+yxlj1WzW7DZ1jrinTa7iB1NQC7s7xwpki6bi7C5FlBsp64RJhkb/CwkNQpgm+0Kb67GWdaax+h1Z3CipJv0t+IsfxOJg8F88Halct2mICV9JhEdYE7ZLMa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QEja0c3G; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RD5tuIsv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nOmShPIVRS2nZq6okWxn3zxqUiNPSFRl/j7Mo84ZHTApSw/G+Qjb2JNFPBTTsgme4ybh9Rl3143rpxNhYiD1KY+6QdMRAjZuTX6xJX+nYrI9SqMMs7fwGke9Usz5rX2lZ6CH4GIkgCnfReFCBZr/8mkVJQZT1XjWX2YwBgCCyk2N9rO48YPGU0G0fGbZD+Df/iHUo7pvmXPBzoN/Lmfxe2Sf6iFFpH8FGX8lSopn5rQVeimSBmR5U5r64RnPXPA/G3aJ+s28brcP4lnQlfrLc4arPOhAjN/+ooYbgWxeaEKiyUxQDXVRTAzxPWig/qlLlMvDAtSWiOte6ewQP9suFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ADss53qSwhjgsi/juYaNn6aLcf6WHyhnZGvJW9l7hwk=;
- b=sVgUMQKIKhudyO2SSRKEWHRKgQ2NsTDd6/XVQ5dWCeDTqkybC1Mpk5SJ2zlUTtgmJS2wBlrVGWTPOQ00svw9QIeZCO+eRyAX7H3bDTowGthVE58Ga5BO6TGH1Mx0xOsWMKgLiD8OdprtLEs568eT58QyqBt7cC5as5PDo75lerUTGw02KdP6Gnw+43sbtAOhuY5YGHAf9fhm4w0JUXCMW5LBw2kkd+Uv5EXJbL9oRwXCyoP3qKuqFqt7YhQQD5gdlJA+m86jY67LExn0vFXbkrxRvH0W0RPiXJhFPOh4STpuResWqLweeHK3I0rO8VJGYo4redIHSiIOBmxTHgTfnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=davemloft.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ADss53qSwhjgsi/juYaNn6aLcf6WHyhnZGvJW9l7hwk=;
- b=RD5tuIsvFM5zgLGvmtb71uzGtNyiSdrKp7kH4ZjWnHZcw3cGdk5fWCFTOsZhbeLmFlDzvHs9dZSstRhzmPXFg20wbB4ANOhym5uUP8XwIfKwGJY+PfBNW94AP7qFosqRpkrl64kT8q86oCQiVcltNsj/1x1FekHpAOhq1whrQTPLoMkhYdhjX3wiYeMcnXu3ZuScf683kyaH+8sCdkempxuOHMUrCuDtvOzixjhA29qZr1MQdgOND84Kt+9W2PHa9PDJKfoQ8LzAkja+2nMg9RTnaO0bvVYPUqtOCK5XVi8fovvUFRU2UYPSpcI3OyX5A+Ewdg6rzcVlBzACeUwHcg==
-Received: from CY5PR04CA0007.namprd04.prod.outlook.com (2603:10b6:930:1e::27)
- by CH2PR12MB4069.namprd12.prod.outlook.com (2603:10b6:610:ac::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.19; Fri, 5 Sep
- 2025 11:14:19 +0000
-Received: from CY4PEPF0000FCC2.namprd03.prod.outlook.com
- (2603:10b6:930:1e:cafe::31) by CY5PR04CA0007.outlook.office365.com
- (2603:10b6:930:1e::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9094.18 via Frontend Transport; Fri,
- 5 Sep 2025 11:14:18 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000FCC2.mail.protection.outlook.com (10.167.242.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9094.14 via Frontend Transport; Fri, 5 Sep 2025 11:14:18 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 5 Sep
- 2025 04:13:59 -0700
-Received: from fedora.mtl.com (10.126.231.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 5 Sep
- 2025 04:13:51 -0700
-From: Petr Machata <petrm@nvidia.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, "Nikolay
- Aleksandrov" <razor@blackwall.org>, Ido Schimmel <idosch@nvidia.com>,
-	<bridge@lists.linux.dev>, Petr Machata <petrm@nvidia.com>, <mlxsw@nvidia.com>
-Subject: [PATCH net] net: bridge: Bounce invalid boolopts
-Date: Fri, 5 Sep 2025 13:12:33 +0200
-Message-ID: <e6fdca3b5a8d54183fbda075daffef38bdd7ddce.1757070067.git.petrm@nvidia.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QEja0c3G"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5857iopf023904
+	for <netdev@vger.kernel.org>; Fri, 5 Sep 2025 11:14:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/FpbTHZW4xFomqVXWX7ayTQvBYf6qoBXa0d+diUXkvY=; b=QEja0c3GC5hhIQb2
+	fD9baFhbJ7Ms/iRoXZlJedqpURgY3oSaACrPnfba2EdQFzNkeTWIVxerLFDbesup
+	WBz8YRPJ8ZC/4Kkx1DhO8p2gh+gjH3O9hD/EwkO+Sgt+0YCjrrkcqbaUXP+WMkoJ
+	R3ApghoHAd/mSNCKhRSu2mV8b6Xj3sFh1e8K8ReVMswfAhNaYV2zOcdIKdpR+737
+	9/DVisxAymcd6g3NsiHZ3eNFeqpdX8ig8AnXQNN/qA3P2nd3uiGuNOZzY3t9lIU7
+	Xtu+KypdF7mkzV6hITjeNtfSe+zNmCaiv0YMNjPQO61bA3N1CprYrJSaFdeq8r7w
+	imAKAA==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 48ut2fts4t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 05 Sep 2025 11:14:35 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-804e9d31454so58653485a.1
+        for <netdev@vger.kernel.org>; Fri, 05 Sep 2025 04:14:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757070874; x=1757675674;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/FpbTHZW4xFomqVXWX7ayTQvBYf6qoBXa0d+diUXkvY=;
+        b=dkCnFqT3nDDoMR4Ldvpr4kwUUCntrmPofoBt026Uw8nMZiFuEbIeueTWnvCTm0JvAe
+         +itwDIq6/AHLHNvYxY2VqwNZiXcXob+ZpldtZz60hnDGOyXm6aiWvmezjP9s4WhgMJ3R
+         o7ZwoWXEbnQuoiNg2HtMof53RX8hrAq4GrUD6E2ehShJbUKnPyAkvxxZTCBNtFHRBEcp
+         VV3CT4Xw6eq5zPxFCxwH0IbukiM9y8H9E1xZm0m/gjWvg+a9p2ZC2TasEQtoG/izY/nR
+         e5+d5f1XQjcWpdMG9rta9LSGAup+opB6UnHORHtsjFCTEFGy6kc8Q1vPGp+13ZDIGmnY
+         ETQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVx3nkBzsRW+uC4XwGYMKo82LBf3NvcEdfeotH+X2l0Qmi5y524LW5oM90omae+bU7AOqcGEO8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJcieB704T4d6Z1arB/0AJUrN6DIxT8AbVaBlQxQw9yMBbIdJE
+	LxG89nV5T52H3hcSgqbwbuyF17ERwIGqxSK8zZtpBvHs9tSmJCrgC9hsNcBCGxpunKKE0Oe72pg
+	qJeLM8RsKANN0HdX4iSj6JB8tXiNvamANk5/nvtvk4gOYyDICQ0jxl4htwZs=
+X-Gm-Gg: ASbGnct7fBXBu0Qhh0mqIRAYrH085V0/85hst3PZif/eYYjaemgT5xip2+tBgV0n8Ls
+	M8QbVaC7NPiYf+53rYIp4WD37tTVFxdAK3zr7msa3NNM0cmTe3FzOkI1305F+Gjq0zkV7C5qA/p
+	ApqtD4Ia4rQKxS1Dm+nPZQsTFfrCQy5BRgOAv2xKBmNenbmyciY0NKYKcvDDq3a2cj8tJOlU4+k
+	PZbGUhp5DI78TGbcdM1D2X/aDrUlg01lupooBCLDwgiQSbFlDjwmxf39+PaoGMv5+fZ43bvBxYX
+	ubIp9gl4LEvQgCuffj8oQ6udIL+CB1DGqzrkhNwScxHHWpofAKT3pxDmB16d9aFhgQX4+988RUB
+	gW2vb4fYuwcK2sqpE9DV/SQ==
+X-Received: by 2002:a05:6214:2a88:b0:72b:880d:3bfc with SMTP id 6a1803df08f44-72b880d3c5amr24659086d6.2.1757070873571;
+        Fri, 05 Sep 2025 04:14:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhxBIevK2sCdJCUPTxNgK1ElXc44o+jt15YDs8l2kK2RYkNbTjat2e9c4WHF0UaaGbTJuaiQ==
+X-Received: by 2002:a05:6214:2a88:b0:72b:880d:3bfc with SMTP id 6a1803df08f44-72b880d3c5amr24658896d6.2.1757070872870;
+        Fri, 05 Sep 2025 04:14:32 -0700 (PDT)
+Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b03ab857474sm1508366066b.89.2025.09.05.04.14.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Sep 2025 04:14:32 -0700 (PDT)
+Message-ID: <57ae28ea-85fd-4f8b-8e74-1efba33f0cd2@oss.qualcomm.com>
+Date: Fri, 5 Sep 2025 13:14:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] arm64: dts: qcom: lemans: Add SDHC controller and SDC
+ pin configuration
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>, kernel@oss.qualcomm.com,
+        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        netdev@vger.kernel.org, Monish Chunara <quic_mchunara@quicinc.com>
+References: <20250826-lemans-evk-bu-v1-0-08016e0d3ce5@oss.qualcomm.com>
+ <20250826-lemans-evk-bu-v1-2-08016e0d3ce5@oss.qualcomm.com>
+ <rxd4js6hb5ccejge2i2fp2syqlzdghqs75hb5ufqrhvpwubjyz@zwumzc7wphjx>
+ <c82d44af-d107-4e84-b5ae-eeb624bc03af@oss.qualcomm.com>
+ <aLhssUQa7tvUfu2j@hu-wasimn-hyd.qualcomm.com>
+ <tqm4sxoya3hue7mof3uqo4nu2b77ionmxi65ewfxtjouvn5xlt@d6ala2j2msbn>
+ <3b691f3a-633c-4a7f-bc38-a9c464d83fe1@oss.qualcomm.com>
+ <zofmya5h3yrz7wfcl4gozsmfjdeaixoir3zrk5kqpymbz5mkha@qxhj26jow5eh>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <zofmya5h3yrz7wfcl4gozsmfjdeaixoir3zrk5kqpymbz5mkha@qxhj26jow5eh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC2:EE_|CH2PR12MB4069:EE_
-X-MS-Office365-Filtering-Correlation-Id: df6478d5-5867-46f1-b649-08ddec6d5b2e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dmwp8OAGlq8xrXLuUuMM87lm9P3V50S0SnWS9BICinSoCLS6DquPeRg3lq3T?=
- =?us-ascii?Q?wuEb6WnmbIAKJsCHlhzGfIUZ16pkxQw4zbr0TVqCfS4k2vf7/hjIYUelcRph?=
- =?us-ascii?Q?MmLHtPPT9gl85mGVT++tKdQ+tG41pp71PHfr2zt//vxIz99vuwMOdVaA4mz2?=
- =?us-ascii?Q?JofRFOx+C7rVpqEsDqgWb6hcCd94+ZVcm0izr7jpUed0OJVVN2IpSw9UiMPR?=
- =?us-ascii?Q?tA2jorYwXgoHrZAag8K2NYwN9O0DqB4tX1o1fglYhxBt5O+VExZ3pCuDbZgR?=
- =?us-ascii?Q?TNxR0JL2xqU/rD5ZB12LCawPqke9psEAZXtL34jHtfHxYd0+zkP8eFvKOTuU?=
- =?us-ascii?Q?bvXslIKXddqlcNtoU1eK7i148vg2Hy8Up7LJ9YpB5B7WHkgK0hzIXXeV7fcW?=
- =?us-ascii?Q?ejkPVFB09YkvQRR2F5S649oZcE8YRYlT7WIxndeQZSm+tLFawebrCSZrWNKh?=
- =?us-ascii?Q?X+BwLWbpd4Ujl2+swEUtAmfoWEvDfpWqz4sdRK0xJB4OGnU3Itd/zlADp6Ck?=
- =?us-ascii?Q?MC2lKxmk8xJKg5hAiXH8Nsy2+hYDSYMtFvNlc9A/AQZTlY6iUVdWQ3Liz5Rb?=
- =?us-ascii?Q?lxn54Juifv2Aw3fcR6/8mMhudCmRI1hebgXnKdaPW7o4nXA6Sc6H0MJ+mZ37?=
- =?us-ascii?Q?HvN6h61tetkCyTV39e/Zbxj1FquMxjugflzFa0SbP8M3x8LHwte3plkGVjYq?=
- =?us-ascii?Q?9gr0K8CrZiuqSdim71y7Hdua1AMKiJDGQRa+Ufwh/cwSSduAtdC/vp/fRgym?=
- =?us-ascii?Q?wvc30vqQqpYANNXzHUEh8hQ7J3iqZ6JO4qg8OwDH2cvsHvb9IgcdCJXt/4xy?=
- =?us-ascii?Q?uNrRdfL5PR09wbFxv25oUqDjvloywpNZdLBdAUmA40vprUKzq5LYtYhGzaE/?=
- =?us-ascii?Q?8COI6/kpBmrLO0BS83xM2wZCu61gDHP3zPvPZ7/l8Q1EKhQborENuwf+mmpN?=
- =?us-ascii?Q?HwmkEKrxhV1dwzycgrhIhicfrjRdQpPB+IEdAW/lF9myMUIPrvpcF+PqD/XR?=
- =?us-ascii?Q?Wu9pRJqcwB+johUfDyynQlum1HIInIJI4fGUpYwXA7p2Mz5HZJoV11gd3ZS5?=
- =?us-ascii?Q?7Ca3vNwMFTp0kLF4kwpYITVqMW26/nEpC9trzXeDA3NSbh+WOYdO/vslGd1t?=
- =?us-ascii?Q?DrmPpweXZjWH6Al+H+XCLtJEnbtJkTxZdhx3rrXJCnFIKvKGOAwzHdLaQ6sJ?=
- =?us-ascii?Q?Q8habzLGre48cW4/UGYmx32vXys3wQUoqE4gDUSOPHC0/EeqVZUy7u7yD1W6?=
- =?us-ascii?Q?pZPMnilr0rcEETDqiHAwALb4zemR9/T/4QqlzWfbleziTscXsUWTW9WYSiay?=
- =?us-ascii?Q?75gsxmfdQTzJOnvry1q6zJLw3dauX3kVir8++AsWoBdXJjmQq2PYF2XQ/bes?=
- =?us-ascii?Q?lcGGJQNix6RfCsOYLLkkTdYBkf6sd2WG38Rv4hZ3o5sRLQg8d+HinGc/sQFJ?=
- =?us-ascii?Q?7aaEedeeV+cifBRRuYkomdg369nKOakUh7KbwiBTFdOAmxSJTipjUneM5GXk?=
- =?us-ascii?Q?eMOBJ/1KsC1EOfTliQlaKzNSpu/7i+fDdcVr?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 11:14:18.0565
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: df6478d5-5867-46f1-b649-08ddec6d5b2e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC2.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4069
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzOCBTYWx0ZWRfX0TSQvUYPMx2I
+ kguzCG0/dws1zjO4pph/WOmDhrfSRqPYjHZ0VVZ0tbuyxQi1YT4/Pj3zNq85zJEDbe6O9QWse7c
+ VunyozUvHtHWYkJ/E2wInE+ZDjHm4xv5mGpwafAUw6flWGASGH7ltvdXC/Jx5UTeWxEyx8fa5uK
+ ZWwiwRSw1hNxdYNgQCOxdGrZjHlF6ai/j8LMoUdxrok/F7A0SycbpycQU8sefDjY2+BldTGpTb6
+ LWncGegqn3PfPrz1e2i3VonDeDKc6TVDs9eEdqW63+H+Ncz2OZPeJ78KEsjhOLQ6E40EAvR9EId
+ g1JHrAw2iFFZD/1j/SJT0o0IccnU62Tp0Bm1uitfWIQnDqEe2oetlk09LMX4ETNZppZY7yu4zWp
+ aJzkMK2R
+X-Proofpoint-ORIG-GUID: ceYYZkpZmOXjlVuHdfra0LJkL-I6lAwb
+X-Proofpoint-GUID: ceYYZkpZmOXjlVuHdfra0LJkL-I6lAwb
+X-Authority-Analysis: v=2.4 cv=U7iSDfru c=1 sm=1 tr=0 ts=68bac61b cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=HgT1ff4I_b0h3GnEaV4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_03,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300038
 
-The bridge driver currently tolerates options that it does not recognize.
-Instead, it should bounce them.
+On 9/4/25 7:32 PM, Dmitry Baryshkov wrote:
+> On Thu, Sep 04, 2025 at 04:34:05PM +0200, Konrad Dybcio wrote:
+>> On 9/4/25 3:35 PM, Dmitry Baryshkov wrote:
+>>> On Wed, Sep 03, 2025 at 09:58:33PM +0530, Wasim Nazir wrote:
+>>>> On Wed, Sep 03, 2025 at 06:12:59PM +0200, Konrad Dybcio wrote:
+>>>>> On 8/27/25 3:20 AM, Dmitry Baryshkov wrote:
+>>>>>> On Tue, Aug 26, 2025 at 11:51:01PM +0530, Wasim Nazir wrote:
+>>>>>>> From: Monish Chunara <quic_mchunara@quicinc.com>
+>>>>>>>
+>>>>>>> Introduce the SDHC v5 controller node for the Lemans platform.
+>>>>>>> This controller supports either eMMC or SD-card, but only one
+>>>>>>> can be active at a time. SD-card is the preferred configuration
+>>>>>>> on Lemans targets, so describe this controller.
+>>>>>>>
+>>>>>>> Define the SDC interface pins including clk, cmd, and data lines
+>>>>>>> to enable proper communication with the SDHC controller.
+>>>>>>>
+>>>>>>> Signed-off-by: Monish Chunara <quic_mchunara@quicinc.com>
+>>>>>>> Co-developed-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+>>>>>>> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+>>>>>>> ---
+>>>>>>>  arch/arm64/boot/dts/qcom/lemans.dtsi | 70 ++++++++++++++++++++++++++++++++++++
+>>>>>>>  1 file changed, 70 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
+>>>>>>> index 99a566b42ef2..a5a3cdba47f3 100644
+>>>>>>> --- a/arch/arm64/boot/dts/qcom/lemans.dtsi
+>>>>>>> +++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
+>>>>>>> @@ -3834,6 +3834,36 @@ apss_tpdm2_out: endpoint {
+>>>>>>>  			};
+>>>>>>>  		};
+>>>>>>>  
+>>>>>>> +		sdhc: mmc@87c4000 {
+>>>>>>> +			compatible = "qcom,sa8775p-sdhci", "qcom,sdhci-msm-v5";
+>>>>>>> +			reg = <0x0 0x087c4000 0x0 0x1000>;
+>>>>>>> +
+>>>>>>> +			interrupts = <GIC_SPI 383 IRQ_TYPE_LEVEL_HIGH>,
+>>>>>>> +				     <GIC_SPI 521 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> +			interrupt-names = "hc_irq", "pwr_irq";
+>>>>>>> +
+>>>>>>> +			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
+>>>>>>> +				 <&gcc GCC_SDCC1_APPS_CLK>;
+>>>>>>> +			clock-names = "iface", "core";
+>>>>>>> +
+>>>>>>> +			interconnects = <&aggre1_noc MASTER_SDC 0 &mc_virt SLAVE_EBI1 0>,
+>>>>>>> +					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDC1 0>;
+>>>>>>> +			interconnect-names = "sdhc-ddr", "cpu-sdhc";
+>>>>>>> +
+>>>>>>> +			iommus = <&apps_smmu 0x0 0x0>;
+>>>>>>> +			dma-coherent;
+>>>>>>> +
+>>>>>>> +			resets = <&gcc GCC_SDCC1_BCR>;
+>>>>>>> +
+>>>>>>> +			no-sdio;
+>>>>>>> +			no-mmc;
+>>>>>>> +			bus-width = <4>;
+>>>>>>
+>>>>>> This is the board configuration, it should be defined in the EVK DTS.
+>>>>>
+>>>>> Unless the controller is actually incapable of doing non-SDCards
+>>>>>
+>>>>> But from the limited information I can find, this one should be able
+>>>>> to do both
+>>>>>
+>>>>
+>>>> It’s doable, but the bus width differs when this controller is used for
+>>>> eMMC, which is supported on the Mezz board. So, it’s cleaner to define
+>>>> only what’s needed for each specific usecase on the board.
+>>>
+>>> `git grep no-sdio arch/arm64/boot/dts/qcom/` shows that we have those
+>>> properties inside the board DT. I don't see a reason to deviate.
+>>
+>> Just to make sure we're clear
+>>
+>> I want the author to keep bus-width in SoC dt and move the other
+>> properties to the board dt
+> 
+> I think bus-width is also a property of the board. In the end, it's a
+> question of schematics whether we route 1 wire or all 4 wires. git-log
+> shows that bus-width is being sent in both files (and probalby we should
+> sort that out).
 
-Fixes: a428afe82f98 ("net: bridge: add support for user-controlled bool options")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
----
- net/bridge/br.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Actually this is the controller capability, so if it can do 8, it should
+be 8 and the MMC core will do whatever it pleases (the not-super-sure
+docs that I have say 8 for this platform)
 
-diff --git a/net/bridge/br.c b/net/bridge/br.c
-index 4bfaf543835a..512872a2ef81 100644
---- a/net/bridge/br.c
-+++ b/net/bridge/br.c
-@@ -346,6 +346,13 @@ int br_boolopt_multi_toggle(struct net_bridge *br,
- 	int err = 0;
- 	int opt_id;
- 
-+	opt_id = find_next_bit(&bitmap, BITS_PER_LONG, BR_BOOLOPT_MAX);
-+	if (opt_id != BITS_PER_LONG) {
-+		NL_SET_ERR_MSG_FMT_MOD(extack, "Unknown boolean option %d",
-+				       opt_id);
-+		return -EINVAL;
-+	}
-+
- 	for_each_set_bit(opt_id, &bitmap, BR_BOOLOPT_MAX) {
- 		bool on = !!(bm->optval & BIT(opt_id));
- 
--- 
-2.49.0
-
+Konrad
