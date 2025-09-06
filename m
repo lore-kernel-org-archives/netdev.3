@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A49A25BEF1;
-	Sat,  6 Sep 2025 04:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4872F26CE2C;
+	Sat,  6 Sep 2025 04:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757132022; cv=none; b=MvUymzW6Cfp632MLmKoTdP0nMAZJIafY2sITOjZELd5Uyaw2b9u0K4MFlDOnEOJZMBfE/GDpjNaMCTY9BWG1QerBHIQ3tV6uuJe/iWTV2ZGjncIy9xpWf9onbFW7Oq0pyATZPh3xzt3hzhIzSnArwYnKOyJg05at1N8+VDbGQM0=
+	t=1757132024; cv=none; b=uT6/pm18PqLQwCUuFTdvyoAMgdMDnRyXRcCV0rxSfmgn+bYlY+iVNABRy7smJ3vPw10ZaxPsPnI0zbejOkW0eDxlT/PDiK/ndJ5XmO3rcoCEKM8KC9DqHi03FFEeBo/apIhDDEQJeZGC66ouPQnVDNQpxxVowr/UOkZTE5otljM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757132022; c=relaxed/simple;
-	bh=e0tQSO9pJI2jVvlvL9W4OBbAj83puHTjG+o0KV+3bdg=;
+	s=arc-20240116; t=1757132024; c=relaxed/simple;
+	bh=tDfUpZExKmJMXStQh2fTARqlHOrlMBEVmIQj8qTNpp8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p7kVozkxKcuf/VX/RjRenZoRMoW01BAnxh0Y0aw1S1xZzCPzDkfgEQQyVfkK937O8L9uPlcNknRTDokt+3SczLbtwlO6+GP0/4+3FUgopC/4RjDaI/mSLnO9hZ8nH43XqcZQfDr6qpI1ev2xjDz10VK/n45qk/SMzRXc60II2GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGOCCKyv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=DMHY519qOg+06vY7Nx4HxmoW0Je7Xa+YdoGc3VdpmGbM/xx706qpbsiEuLl3pXivJzk8Dq06M3Mssy6KjwQu5KyYF+cpyp0enRGxsE0PDUB+xnT0jBsfXxJ7FUtQOhwVWXKiGfXjMpe1dFRPAG1NJ0uBL1l9HvnotSgM8TEK8aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxcX3hDd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGOCCKyv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6F5C4CEFA;
-	Sat,  6 Sep 2025 04:13:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxcX3hDd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BB9C4CEF7;
+	Sat,  6 Sep 2025 04:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757132022;
-	bh=e0tQSO9pJI2jVvlvL9W4OBbAj83puHTjG+o0KV+3bdg=;
+	s=k20201202; t=1757132024;
+	bh=tDfUpZExKmJMXStQh2fTARqlHOrlMBEVmIQj8qTNpp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGOCCKyvtKQUB2Yp7JXOHuMuYZTKhFou+gUmvaZSudPcnsXWZbxp+Ak58iQAVKgKY
-	 gEYGre0Qtmg2KCOk6IpzBSiGSHy8zltK8m+VEf/e+22/0BXy4/IWWwu5XY5JQwNXpq
-	 F/TaPGQS5uFbXVqzfip1eyjKEZIwE/PsS1Vu+7+0iHOE9/um5naRykJK2bWoscQgNk
-	 PBp1RWgqH3QrFCgXX6qaqu4E0EFMh2KxzbWYWN4PUuAFtYzBrifpq7tIj1tl5lQcR3
-	 T0i2DRm5W/x9oKLgQReyU2clkAzCdJJ+I8I0GNpjcMZTbg1+/NXf8RfGozg4r4B0KW
-	 fK1sFc4mp0xvA==
+	b=qxcX3hDdhIcHU3lc6DId6MV315Sk7yYxVfYARSA80aE259q6UGqWfhpcdvQ0sSDMW
+	 vw1uu7EhOf86FWBcj70eUuJ9tjOsPY6MCZNGXZRQUxX85V0Q0y4d+/lujPNMTEhnNt
+	 0LZLQY8AuPtKB/8N3aoy/aEzMmwa6iQ6EQfJ07B0Uyxx9tzWn6CJZYsrzpkLhglHqK
+	 sLJoe7ZZuMUA4hpYoh0MsrEFY8XOkCSc6pMjCrkFNoKnPKoi+tm1U1V3r/+LTuHmEo
+	 XGnTuepdldm36U+VNpLSWxlkPOre2hll8LTqd30iQligkWtmm/w16k591RYns7Xenv
+	 RuVsh29ymcmcQ==
 Received: by wens.tw (Postfix, from userid 1000)
-	id B6DFC5FE60; Sat, 06 Sep 2025 12:13:38 +0800 (CST)
+	id D59155FEF5; Sat, 06 Sep 2025 12:13:38 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,11 +45,10 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH net-next v3 03/10] soc: sunxi: sram: add entry for a523
-Date: Sat,  6 Sep 2025 12:13:26 +0800
-Message-Id: <20250906041333.642483-4-wens@kernel.org>
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH net-next v3 06/10] arm64: dts: allwinner: a527: cubie-a5e: Add ethernet PHY reset setting
+Date: Sat,  6 Sep 2025 12:13:29 +0800
+Message-Id: <20250906041333.642483-7-wens@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250906041333.642483-1-wens@kernel.org>
 References: <20250906041333.642483-1-wens@kernel.org>
@@ -63,45 +62,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wens@csie.org>
 
-The A523 has two Ethernet controllers. So in the system controller
-address space, there are two registers for Ethernet clock delays,
-one for each controller.
+The external Ethernet PHY has a reset pin that is connected to the SoC.
+It is missing from the original submission.
 
-Add a new entry for the A523 system controller that allows access to
-the second register.
+Add it to complete the description.
 
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Fixes: acca163f3f51 ("arm64: dts: allwinner: a527: add EMAC0 to Radxa A5E board")
 Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 ---
- drivers/soc/sunxi/sunxi_sram.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/soc/sunxi/sunxi_sram.c b/drivers/soc/sunxi/sunxi_sram.c
-index 08e264ea0697..4f8d510b7e1e 100644
---- a/drivers/soc/sunxi/sunxi_sram.c
-+++ b/drivers/soc/sunxi/sunxi_sram.c
-@@ -320,6 +320,10 @@ static const struct sunxi_sramc_variant sun50i_h616_sramc_variant = {
- 	.has_ths_offset = true,
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+index 70d439bc845c..d4cee2222104 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+@@ -94,6 +94,9 @@ &mdio0 {
+ 	ext_rgmii_phy: ethernet-phy@1 {
+ 		compatible = "ethernet-phy-ieee802.3-c22";
+ 		reg = <1>;
++		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
++		reset-assert-us = <10000>;
++		reset-deassert-us = <150000>;
+ 	};
  };
  
-+static const struct sunxi_sramc_variant sun55i_a523_sramc_variant = {
-+	.num_emac_clocks = 2,
-+};
-+
- #define SUNXI_SRAM_THS_OFFSET_REG	0x0
- #define SUNXI_SRAM_EMAC_CLOCK_REG	0x30
- #define SUNXI_SYS_LDO_CTRL_REG		0x150
-@@ -440,6 +444,10 @@ static const struct of_device_id sunxi_sram_dt_match[] = {
- 		.compatible = "allwinner,sun50i-h616-system-control",
- 		.data = &sun50i_h616_sramc_variant,
- 	},
-+	{
-+		.compatible = "allwinner,sun55i-a523-system-control",
-+		.data = &sun55i_a523_sramc_variant,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, sunxi_sram_dt_match);
 -- 
 2.39.5
 
