@@ -1,166 +1,161 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from beige.elm.relay.mailchannels.net (beige.elm.relay.mailchannels.net [23.83.212.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392A31632C8
-	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 01:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757121622; cv=none; b=FtK78LSMUJP+xi4mgF+UFzu0BOiQ9mLkpWbYwyiYOj4NBU7GcZ8cuB/zXuRabS5wQZ01vnslI53XIAop5ftHY/LL7uiLHHp6mew8xrLbJzfVdmb6Br8w/JBNlkHFQChHxFphaM9W0meGnmUXCu22peKOJ3pa40IiFVwopD8dV8I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757121622; c=relaxed/simple;
-	bh=OZfmvUtSyXTRBokVQWrm6BmwrIq4AfkWxUHBYagVBJY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PWrptUd/iuFoAnIXSNsMuadxl5ds2Bl9uLK9zxE0DkIImdlr6oPgnUBlC6mJTn2PLmD/x4d5FvxZS0m7E7i9+ZzNFVud+PpIrJ0ITOw8hFzAECD1N0bewVRN7TF/YxzcffwvYZ8dmZyL9XXRJ5dG2pf8x4aNzGnxGAG86lYdX5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com; spf=pass smtp.mailfrom=aisle.com; dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b=EDPobhn3; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aisle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aisle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AC18E3F
+	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 01:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.212.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757121742; cv=pass; b=JRpwUc3XyjU1AwuKPip3qr3BpqcuNy1SkpkXTkXFZaGy1doHH/rj9nLZLWR0xqj8m/JbQFoaeTFJyZpZgF4yjlcAdHYhtOioGtPPCSmw+tDcnW25y8dUj1tuU5dgxyW1bwmpdfJSBleWer/hxC0iL4yHNvJO7gB6GAcod5h4MqE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757121742; c=relaxed/simple;
+	bh=WvVgPknsoh+orVwJyLL8s+U0TpN7DdgUwGDzywQz9lI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=iVE1rQdeqGJhrN972VreKkptZ5TNEl6zLhtNKVB+jglshinuIjvjr4ZgoXF92XjjtcQmvQb8AJBj873RaHPCar6Xt/tGXoa2I72JZP6FBfM1EU27WYZhlMb0pJHU2zj8MAByHbWx+VBSVHKDsOFuZn0viH6p44v3J+zyJDHMC90=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com; spf=pass smtp.mailfrom=templeofstupid.com; dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b=XB2QLy1l; arc=pass smtp.client-ip=23.83.212.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=templeofstupid.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aisle.com header.i=@aisle.com header.b="EDPobhn3"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6228de280ccso1442247a12.3
-        for <netdev@vger.kernel.org>; Fri, 05 Sep 2025 18:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aisle.com; s=google; t=1757121618; x=1757726418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MhkCEPpqVmmHGdIendUwEnS7TAUpZx7akLTv5G7IgZ0=;
-        b=EDPobhn32aZ9nGj5SpTcN5JKbAXkMu3DWrU4z2VeH1PS3Qm9C6jhu0qC1vVaTeLMXU
-         YvHxzeHlclV6yQGfrY+yD7iAXxRQX/IzxU7TuVq4kzWUQWBAcgfsAqQjcVbB5pLmpPm5
-         H3oPILOM7b6DvrqboaXuqzv/qNiIiKBVLRMY8xG4I/VEPvPPFY0YIINXx63L9TXB7N0h
-         M0ODKa13l7qr/CvVj790JJbUQU8zKLdxP9IYWMFytMIcQWsKbqK6LbJmzSc+V3htvtUc
-         qSh0z8f4V+ucsSHuWzYmCqh901hCKxUmdSq6mWwH+HejjnVvtM8Ke/dKqILbbIB5Cx8y
-         oVPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757121618; x=1757726418;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MhkCEPpqVmmHGdIendUwEnS7TAUpZx7akLTv5G7IgZ0=;
-        b=VuBWhRLK56XzR1uyJbxAMuRUziKZUf93B7x6QMyB243q8ribJ28yW9gzrsubKZpt3m
-         NB3oH4jVA5s5BKgWUkhBVSAeiXbRA+5elPCqzYuGmJuaVtwU6oHv3L/JR11R0qz+Wz5l
-         TsMqQ3jYFA5KiecmRS0EGhlEQjmWOpv9C7921JwaKkeBkcU0uYx16HUsaTjKi8bcnIu0
-         m+tVS4bIBks1wVj/zf3C06iiyNPKT+V030rYxYB3kRd3dLN7pwTIAtrATtTPWorbRYkv
-         eZ5kT9rzQsQOHGwQKWizEcGYxQyrKh7Bk0YUBsICCHvZqoZXP+Z+ElRE2XTeiVZTN/Kt
-         YH9g==
-X-Gm-Message-State: AOJu0YxpL1ObFzda9zyxFrogJk6aV95Hx6VFpB8+qNK2aAPsWiSt+S4R
-	G7+ihGb/Oy6qxd895Ada17PWWy8v+rK2zl9HZmoQ8yQto1ZNZPZaLZzUtejLBD/nFid8HK9HBF0
-	5gLE0587q7DL5QHg=
-X-Gm-Gg: ASbGncu45R1DJuIhJQjSrubPmkxC9mRdLCxxCjASvEIrH/Y0u/F8Po612Z6fdWOcT+d
-	f633A5rjUBa5Nl3LMWU2iXgQFSQDvRJsz5wjyrisjpQU4uDmaSF3FWkOupyS3ke+HRX0E6HhDuO
-	ZT05m3MREMOr7KmtHILa8x1A5eF1wISFnjXNEfYTB2mmF3osrWmVHGY0Mnfpyi/m8r5m8cJmqxX
-	9sRldpMxBqxNpdNqrl9dCay9XZDP0M4TwH0resK9JRMH6SQ+tgZgSy1ERBOgc3XuKJJu3jngT0l
-	4lkWVrITnCOepT/YKX38++t+RMc1w8Pn/MAkY97mvdheqWwNYktW87D8LMKgSEl+pz7xIa8Xufn
-	bVLcWIyeeCNbY0pWgniEgdNGOn+oxfm8xPfk7OH2B4nkYnFo=
-X-Google-Smtp-Source: AGHT+IGFMbR3iirc4diOpoMpZyM33hVySYIhjNMV95KRXjY0dEcC/hyOGyDBHtgZ0shcIt4Vk3AiBA==
-X-Received: by 2002:a05:6402:40c9:b0:61c:6fc9:daa with SMTP id 4fb4d7f45d1cf-6237edb2f07mr757777a12.20.1757121618390;
-        Fri, 05 Sep 2025 18:20:18 -0700 (PDT)
-Received: from localhost ([149.102.246.10])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-61cfc4e50fbsm17060426a12.38.2025.09.05.18.20.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 18:20:18 -0700 (PDT)
-From: Stanislav Fort <stanislav.fort@aisle.com>
-X-Google-Original-From: Stanislav Fort <disclosure@aisle.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	security@kernel.org,
-	Stanislav Fort <disclosure@aisle.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] netrom: linearize and validate lengths in nr_rx_frame()
-Date: Sat,  6 Sep 2025 04:20:16 +0300
-Message-Id: <20250906012016.58856-1-disclosure@aisle.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b="XB2QLy1l"
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id BEA1922A2B
+	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 00:43:06 +0000 (UTC)
+Received: from pdx1-sub0-mail-a309.dreamhost.com (100-102-209-228.trex-nlb.outbound.svc.cluster.local [100.102.209.228])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 6B99222B12
+	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 00:43:06 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1757119386; a=rsa-sha256;
+	cv=none;
+	b=6b1JJk4lTTfiLNVl79eEklxmbE6vOZPSVMDVoF3eo2ageveiG2SlownaeK+Y471zPjLfTD
+	6GCW8UtZhOSUmMX6Qoh7VMnYUcpsFPyqGVjGFMkGVYoMm60BDU/KcY1Ehm+IJ1KDVCZa8O
+	yhpBItSHp0IWjRSDkscoSXL1o5TqHJBgVGxtdh9AXvPqrIkNBuz04ceGNh/YHxb/BPASai
+	MagzJIrHFEt8ps44x7hpld7PbXSlZjm5jpCTkT5HnywhA10jmDhZtKR+e5f6Gxd10LOqT+
+	vf2sIamk6MTRS3x/Lm1pjnqxeAFvcNnt2ZOrxukcezjw0eoXFa+TxF74s6g2sw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1757119386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 dkim-signature; bh=djnk/mvzW8JgrM/aEd1q2IUDriPKm9TV+QHUIYoTH20=;
+	b=sGRJEAFQuyrwJntkdcumAev3+8TbfmxVGIl0AD4w3d9FfcLrFdD0eSxMZ/VIdGOWOz9kbj
+	YVpLlmXuARlcOw0G2mBAeymfNH81am75AQo+uMgVienwAhhBJs2NippDZnjonDRCYHYYy6
+	s720LoadMZbFC6FdhU904jsYsHJQcJNmwgBrdOHMGrSsYfpYzbgULXtGuuQnd4a9mkQRA/
+	9FbX+O+qMfa574TBT0c7JbJPJnJI2WcU6CRLumnbUmSpQw6pwD7PdxPDlpOrQpoWQ/9Oxu
+	ocF/kG3q1tsXxNGRIhKCflhOslFY/oRtg8dUYq03Hb/cC9W95QwKes7v+X6LXA==
+ARC-Authentication-Results: i=1;
+	rspamd-8b9589799-l9c74;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MailChannels-Auth-Id: dreamhost
+X-Unite-Abiding: 1e6a11da43845b20_1757119386661_3554539585
+X-MC-Loop-Signature: 1757119386661:4157567128
+X-MC-Ingress-Time: 1757119386661
+Received: from pdx1-sub0-mail-a309.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.102.209.228 (trex/7.1.3);
+	Sat, 06 Sep 2025 00:43:06 +0000
+Received: from kmjvbox.templeofstupid.com (c-73-70-109-47.hsd1.ca.comcast.net [73.70.109.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kjlx@templeofstupid.com)
+	by pdx1-sub0-mail-a309.dreamhost.com (Postfix) with ESMTPSA id 4cJZFQ1BLhzDF
+	for <netdev@vger.kernel.org>; Fri,  5 Sep 2025 17:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
+	s=dreamhost; t=1757119386;
+	bh=djnk/mvzW8JgrM/aEd1q2IUDriPKm9TV+QHUIYoTH20=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=XB2QLy1lI69MOFqrWqLt9AYDTmRyy4IBOWUwpOy/x7TlRaI+g5Zmxj616mJW6T5xe
+	 Z6doqS0rSho/av0HBz5NBXN/A3UXpUxMSX4Sxi8C0Y4wxF/9ieMsOFszG2U9pVj913
+	 1r7bv4NOnzWMsmjAYJ7T1v5E0WNX+Etj4beMrnZzALWJbisphxxbzGcSCZMWrWcP2l
+	 YkA12D8sgwqu6eVfWf4PNO6mDrn6Gc87drJfZ5ENwV2N/1jKFMCLmgTFOz+1dDqzfz
+	 1FW8/qT18xDfYbkONV5qNXK0T6QS0MkIjW0gjVDQYkNvXkn2NbuDJfPQXAuo8++RVQ
+	 L7iid3XT5Y9Rw==
+Received: from johansen (uid 1000)
+	(envelope-from kjlx@templeofstupid.com)
+	id e0263
+	by kmjvbox.templeofstupid.com (DragonFly Mail Agent v0.13);
+	Fri, 05 Sep 2025 17:43:04 -0700
+Date: Fri, 5 Sep 2025 17:43:04 -0700
+From: Krister Johansen <kjlx@templeofstupid.com>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+	netdev@vger.kernel.org, mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org, David Reaver <me@davidreaver.com>
+Subject: [PATCH mptcp] mptcp: sockopt: make sync_socket_options propagate
+ SOCK_KEEPOPEN
+Message-ID: <aLuDmBsgC7wVNV1J@templeofstupid.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Linearize skb and add targeted length checks in nr_rx_frame() to
-prevent out-of-bounds reads and potential use-after-free (UAF) when
-processing malformed NET/ROM frames.
+Users reported a scenario where MPTCP connections that were configured
+with SO_KEEPALIVE prior to connect would fail to enable their keepalives
+if MTPCP fell back to TCP mode.
 
-- Require skb to be linear and at least NR_NETWORK_LEN +
-  NR_TRANSPORT_LEN (20 bytes) before reading
-  network/transport fields.
-- For existing sockets path, ensure NR_CONNACK includes the window
-  byte (>= 21 bytes).
-- For CONNREQ handling, ensure window (byte 20) and user address
-  (bytes 21-27) are present (>= 28 bytes).
-- Preserve existing BPQ extension handling:
-  - NR_CONNACK len == 22 -> 1 extra byte (TTL)
-  - NR_CONNREQ len == 37 -> 2 extra bytes (timeout)
+After investigating, this affects keepalives for any connection where
+sync_socket_options is called on a socket that is in the closed or
+listening state.  Joins are handled properly. For connects,
+sync_socket_options is called when the socket is still in the closed
+state.  The tcp_set_keepalive() function does not act on sockets that
+are closed or listening, hence keepalive is not immediately enabled.
+Since the SO_KEEPOPEN flag is absent, it is not enabled later in the
+connect sequence via tcp_finish_connect.  Setting the keepalive via
+sockopt after connect does work, but would not address any subsequently
+created flows.
 
-These validations block malformed frames from triggering bounds
-violations via short skbs. Because NET/ROM frames may originate from
-remote peers, the issue is externally triggerable and therefore
-security-relevant.
+Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on the
+subflow when calling sync_socket_options.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+The fix was valdidated both by using tcpdump to observe keeplaive
+packets not being sent before the fix, and being sent after the fix.  It
+was also possible to observe via ss that the keepalive timer was not
+enabled on these sockets before the fix, but was enabled afterwards.
+
+Fixes: 1b3e7ede1365 ("mptcp: setsockopt: handle SO_KEEPALIVE and SO_PRIORITY")
 Cc: stable@vger.kernel.org
-Signed-off-by: Stanislav Fort <disclosure@aisle.com>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 ---
-Changes since v3:
-- Wrap commit message at 74 columns
-- Add Fixes tag and Cc: stable
-- Drop Reported-by
-- Add Reviewed-by from Eric Dumazet
----
- net/netrom/af_netrom.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ net/mptcp/sockopt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
-index 3331669d8e33..f0660dd6d3b0 100644
---- a/net/netrom/af_netrom.c
-+++ b/net/netrom/af_netrom.c
-@@ -885,6 +885,11 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 	/*
- 	 *		skb->data points to the netrom frame start
- 	 */
+diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+index 2c267aff95be..13108e9f982b 100644
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1532,13 +1532,11 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
+ {
+ 	static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
+ 	struct sock *sk = (struct sock *)msk;
++	int kaval = !!sock_flag(sk, SOCK_KEEPOPEN);
+ 
+-	if (ssk->sk_prot->keepalive) {
+-		if (sock_flag(sk, SOCK_KEEPOPEN))
+-			ssk->sk_prot->keepalive(ssk, 1);
+-		else
+-			ssk->sk_prot->keepalive(ssk, 0);
+-	}
++	if (ssk->sk_prot->keepalive)
++		ssk->sk_prot->keepalive(ssk, kaval);
++	sock_valbool_flag(ssk, SOCK_KEEPOPEN, kaval);
+ 
+ 	ssk->sk_priority = sk->sk_priority;
+ 	ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
- +	if (skb_linearize(skb))
- +		return 0;
- +	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN)
- +		return 0;
- +
- 	src 	= (ax25_address *)(skb->data + 0);
- 	dest = (ax25_address *)(skb->data + 7);
-
-@@ -927,6 +932,11 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 	}
-
- 	if (sk != NULL) {
- +		if (frametype == NR_CONNACK &&
- +		    skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN + 1) {
- +			sock_put(sk);
- +			return 0;
- +		}
- 		bh_lock_sock(sk);
- 		skb_reset_transport_header(skb);
-
-@@ -961,10 +971,14 @@ int nr_rx_frame(struct sk_buff *skb, struct net_device *dev)
- 		return 0;
- 	}
-
--	sk = nr_find_listener(dest);
- +	/* Need window (byte 20) and user address (bytes 21-27) */
- +	if (skb->len < NR_NETWORK_LEN + NR_TRANSPORT_LEN + 1 + AX25_ADDR_LEN)
- +		return 0;
-
- 	user = (ax25_address *)(skb->data + 21);
-
- +	sk = nr_find_listener(dest);
- +
- 	if (sk == NULL || sk_acceptq_is_full(sk) ||
- 	    (make = nr_make_new(sk)) == NULL) {
- 		nr_transmit_refusal(skb, 0);
+base-commit: 319f7385f22c85618235ab0169b80092fa3c7696
 -- 
-2.39.3 (Apple Git-146)
+2.43.0
 
