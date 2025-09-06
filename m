@@ -1,98 +1,119 @@
-Received: from mail-m3271.qiye.163.com (mail-m3271.qiye.163.com [220.197.32.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB736B;
-	Sat,  6 Sep 2025 08:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD71222594
+	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 09:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757148546; cv=none; b=lZYbXnC7u9OHSGqXJ0ODdGU2kTMUTAkO1F0hhiLpMazVHknCcAzkmJPlNoYgm7xsKtz0X7dkfmDCRMjVHR7vPwXhcO5OguojZyycJ8fwMKu1Vxynfhf0d9HGnMqCC/TvZFXreOg0Q15+GOcC2oOkXelEOm3cRn+G5LpkLsI60ds=
+	t=1757150233; cv=none; b=Q2glKC2ZahxU11XyILqvdbAu4DtlTko2ah55mlDgjGkvGCL548LoGO5vIVnn6lFPG2aJS+JCLEVdZ9PUfDJ+V8HnidmltI04UhBKKwNue6QICrcmqP6rcfke2MQBWYSbWmOL4K5qatThzSC7tVTVg3H16OFzYXOF3nXCRPd88Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757148546; c=relaxed/simple;
-	bh=KQSgrx87mA7b5NmZQfBcbr/+bLWuPewIo/h3wQhzTYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r9aMX4socstzJYfnah4wTlJhz6WQh6ZAG37NyXrLSKNDSLHbyivvqU3PhY7UGntdrt9ohfCfNAdvU09DOVc9zdBQ2y0uoyJDvrUNLEYK8I1X61trmu2F6yK54KT1py0lK5hACr6p6PtQbsfGeGEak4tydptMZTtLqgsFKCFxico=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=XeollWZr; arc=none smtp.client-ip=220.197.32.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1757150233; c=relaxed/simple;
+	bh=4tcf+x1bAGP5gLbbX2/0mJXn6QiSKzTB0gWtNPgyCvs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y70QqsLfmAXVyzxZYAwyZdAmnqsH3Aq75bRbH6KLSQ62Scpxh9rBR8+kiF2ub8b92wjybNISftF6562M2+4aSrHUSBee9aKMaeoaUDx3OB2dkBX91MciPFC3pn9nz/DPyjaDy8doxxfcxi0PUfpilub2oZOc3CAF8gOMUSzySa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uo4szKVP; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="XeollWZr"
-Received: from [172.16.12.153] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 21e46c877;
-	Sat, 6 Sep 2025 14:26:31 +0800 (GMT+08:00)
-Message-ID: <5d691f5b-460e-46cb-9658-9c391058342f@rock-chips.com>
-Date: Sat, 6 Sep 2025 14:26:31 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uo4szKVP"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-8072bb631daso288413785a.1
+        for <netdev@vger.kernel.org>; Sat, 06 Sep 2025 02:17:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757150229; x=1757755029; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jyTsTWBfEVvg2d8Q116wig3LF6X3zwSWXkw8iB2bvBY=;
+        b=Uo4szKVPKNwugn/xYEwclUxWlsz/wfzT0y9wtG3my9pHhhcL8wsOsbrRJZDfUE+9Vd
+         qvkuh+VnfzmX76DBCPWCv1gaIuMdie+q6XRHbVKvwhgAe8WqTMih8rf3oXo7MtKzOqzv
+         zAst9Dxnbkk5NC16gEv0aSMfZ3MJDI0sFkA9l8xteaGy0z0HpvS0fLcq95u0c7ypFFNQ
+         j8dNe66mdVCav+vJOz/byabyP+13IqJQ3Uz4R8+GqF7Stt0cbNPrzcKvjbGXyQkw8ttk
+         XjEfxfTytfyVaULVheLtxif9fxFABEp5m+r671ggybaYPoo5GD/jplvX+UVy0Jn/Pn/v
+         C+lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757150229; x=1757755029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jyTsTWBfEVvg2d8Q116wig3LF6X3zwSWXkw8iB2bvBY=;
+        b=SQqPvXSZ+dGCOk8/kGIRFSvMTvc6x3q7Xp70UK8yHzPLyzoYe+TzLWtDDxHQvAbf8h
+         2hmobAOaOOLdd3cumgf7P/PdlFi7aWtgaeQASQtXK1Y22/u1uaHHTJ+cJQVr8w3ADfd6
+         SG5cPDkUnZRRB7c4A3AKBsSapPgeZbvsnLY2c2ID9ZGiEIizui2sV17l6ASpiJkN/6EO
+         tD1k39HcMDZMoW9749I/suU7FZkjwGaCC/XKHRXV3d88d8P5SGEt9ECtQU3pV86FZxbj
+         pDrPOMOQ8Q2jAVpGHy9nNA8IUN/pdG8vx4ou2Ia6gahYozlZyJbuenBOVMOwj7DUxNps
+         g+jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeCVBSG19QGpjSbnScRq9yhmwLPTn8PHphvBcQ+faijmpjK3yDBb+rO3ATe3+IjXbgwffba6Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ10nv+tYG8fHhhBsid7WJloMzJ5vDdcvuyF8lupxFnsHWTyRg
+	4lhua0i+SBNkAiAoWvn4RLo8v+CRqoMTUdrdYJRzbS5hjZ0oGH1Z7rESjavvwX6gyAZJRyDTGJZ
+	WBgMjxhJhmKfDJ1ZHjVM8MByqWIkhHvVEQB8Ypoz6
+X-Gm-Gg: ASbGncsxVVHMLv+XmkBLdyAiCxnpEJHC6tVpUbFhJh2U1JcbZHVxstlHs+auyKS1OnZ
+	cIntQypteryFJQVW38/T+i712ZmoB6k/ftyls8X+zGjyCzccRZdN03smRlO7P0i7E9KXNqdtylO
+	Rn1bUceMSHZh3zHi4fZUFxApxLugiAkdbidLUx4ZPJcTHFVEhAMAKt8kBBggCKIopSbPTq2GcUF
+	el1gmiIVFFnHGwNXLItLJc=
+X-Google-Smtp-Source: AGHT+IFNHk3o12uxwbf6OpMNI0I53ugLfIK2NXUHGthDfhTNjq2NSap4D+GDM5PavZ580+AiwTooTru70iUwX14qHME=
+X-Received: by 2002:a05:620a:440f:b0:806:7c82:fd2f with SMTP id
+ af79cd13be357-813c33dbd99mr153395285a.75.1757150229022; Sat, 06 Sep 2025
+ 02:17:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: dwmac-rk: Ensure clk_phy doesn't contain
- invalid address
-To: Yao Zi <ziyao@disroot.org>, "Russell King (Oracle)"
- <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jonas Karlman <jonas@kwiboo.se>, David Wu <david.wu@rock-chips.com>,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20250904031222.40953-3-ziyao@disroot.org>
- <aLlwv3v8ACha8b-3@shell.armlinux.org.uk>
- <b5fbeb3f-9962-444d-85b3-3b8a11f69266@rock-chips.com>
- <aLlyb6WvoBiBfUx3@shell.armlinux.org.uk>
- <aLly7lJ05xQjqCWn@shell.armlinux.org.uk> <aLvIbPfWWNa6TwNv@pie>
-Content-Language: en-US
-From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-In-Reply-To: <aLvIbPfWWNa6TwNv@pie>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a991db47afa03abkunm6f5b97526997b6
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRlJTVZKTxpPTU4fTB1JQ05WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=XeollWZr90ZLf9L7AdJ3LQbsRm2o9/RlO6fnKUc1fCiUZVidPuq4AywnynalP0/pupRK5Fn/V141DZqMKg6Or8cwAa9y0ysjWi/3FI7BGU/AW4bcdOEc5Y30uM5F1jnwWVDYZe3IbI/KYC9P81XZ7KUdvA0qDfkfDWwVrYpGR48=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=iAEkg+oPP2b/JZz9myImwCnXMGQd4xA94/pfnmR4uF0=;
-	h=date:mime-version:subject:message-id:from;
+References: <68bb4160.050a0220.192772.0198.GAE@google.com> <CANn89iLNFHBMTF2Pb6hHERYpuih9eQZb6A12+ndzBcQs_kZoBA@mail.gmail.com>
+In-Reply-To: <CANn89iLNFHBMTF2Pb6hHERYpuih9eQZb6A12+ndzBcQs_kZoBA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sat, 6 Sep 2025 02:16:58 -0700
+X-Gm-Features: Ac12FXxOqkfzxU_8v9kW7s_ChUAwPmKMRLy0TrO1zWLZ0WwxfLDIRZs52c2CrbU
+Message-ID: <CANn89iJaY+MJPUJgtowZOPwHaf8ToNVxEyFN9U+Csw9+eB7YHg@mail.gmail.com>
+Subject: Re: [syzbot] [net?] possible deadlock in inet_shutdown
+To: syzbot <syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>
+Cc: davem@davemloft.net, dsahern@kernel.org, horms@kernel.org, kuba@kernel.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ming.lei@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com, thomas.hellstrom@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/6/2025 1:36 PM, Yao Zi wrote:
+On Fri, Sep 5, 2025 at 1:03=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
+rote:
+>
+> On Fri, Sep 5, 2025 at 1:00=E2=80=AFPM syzbot
+> <syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com> wrote:
 
-> On Thu, Sep 04, 2025 at 12:07:26PM +0100, Russell King (Oracle) wrote:
->> On Thu, Sep 04, 2025 at 12:05:19PM +0100, Russell King (Oracle) wrote:
->>> On Thu, Sep 04, 2025 at 07:03:10PM +0800, Chaoyi Chen wrote:
->>>> On 9/4/2025 6:58 PM, Russell King (Oracle) wrote:
->>>>> On Thu, Sep 04, 2025 at 03:12:24AM +0000, Yao Zi wrote:
->>>>>>    	if (plat->phy_node) {
->>>>>>    		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
->>>>>>    		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
->>>>>> -		/* If it is not integrated_phy, clk_phy is optional */
->>>>>> +		/*
->>>>>> +		 * If it is not integrated_phy, clk_phy is optional. But we must
->>>>>> +		 * set bsp_priv->clk_phy to NULL if clk_phy isn't proivded, or
->>>>>> +		 * the error code could be wrongly taken as an invalid pointer.
->>>>>> +		 */
->>>>> I'm concerned by this. This code is getting the first clock from the DT
->>>>> description of the PHY. We don't know what type of PHY it is, or what
->>>>> the DT description of that PHY might suggest that the first clock would
->>>>> be.
->>>>>
->>>>> However, we're geting it and setting it to 50MHz. What if the clock is
->>>>> not what we think it is?
->>>> We only set integrated_phy to 50M, which are all known targets. For external PHYs, we do not perform frequency settings.
->>> Same question concerning enabling and disabling another device's clock
->>> that the other device should be handling.
->> Let me be absolutely clear: I consider *everything* that is going on
->> with clk_phy here to be a dirty hack.
->>
->> Resources used by a device that has its own driver should be managed
->> by _that_ driver alone, not by some other random driver.
-> Agree on this. Should we drop the patch, or fix it up for now to at
-> least prevent the oops? Chaoyi, I guess there's no user of the feature
-> for now, is it?
+Note to NBD maintainers : I held about  20 syzbot reports all pointing
+to NBD accepting various sockets, I  can release them if needed, if you pre=
+fer
+to triage them.
 
-This at least needs fixing. Sorry, I have no idea how to implement this in the PHY.
-
+>
+> Question to NBD maintainers.
+>
+> What socket types are supposed to be supported by NBD ?
+>
+> I was thinking adding a list of supported ones, assuming TCP and
+> stream unix are the only ones:
+>
+> diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+> index 6463d0e8d0ce..87b0b78249da 100644
+> --- a/drivers/block/nbd.c
+> +++ b/drivers/block/nbd.c
+> @@ -1217,6 +1217,14 @@ static struct socket *nbd_get_socket(struct
+> nbd_device *nbd, unsigned long fd,
+>         if (!sock)
+>                 return NULL;
+>
+> +       if (!sk_is_tcp(sock->sk) &&
+> +           !sk_is_stream_unix(sock->sk)) {
+> +               dev_err(disk_to_dev(nbd->disk), "Unsupported socket:
+> should be TCP or UNIX.\n");
+> +               *err =3D -EINVAL;
+> +               sockfd_put(sock);
+> +               return NULL;
+> +       }
+> +
+>         if (sock->ops->shutdown =3D=3D sock_no_shutdown) {
+>                 dev_err(disk_to_dev(nbd->disk), "Unsupported socket:
+> shutdown callout must be supported.\n");
+>                 *err =3D -EINVAL;
