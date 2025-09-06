@@ -1,73 +1,26 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail-m3271.qiye.163.com (mail-m3271.qiye.163.com [220.197.32.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B346A2C11D8
-	for <netdev@vger.kernel.org>; Sat,  6 Sep 2025 08:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB736B;
+	Sat,  6 Sep 2025 08:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757147335; cv=none; b=C07A1jtsRFOQeWHubYTlWpjz7bPO7Upd0oNJCAKzjvgRVrm8CGz2yE8QzF3x2Wh6BWYhXrgLt9bJP+rGSRojycPJ0CpyB0UtyHkzywaSpUnwiKjGqVit4lZv8qx8T5grYwH9DgAHWFD8rldyGJPqZ7aAe54E+MP2RutzpYyoK3Y=
+	t=1757148546; cv=none; b=lZYbXnC7u9OHSGqXJ0ODdGU2kTMUTAkO1F0hhiLpMazVHknCcAzkmJPlNoYgm7xsKtz0X7dkfmDCRMjVHR7vPwXhcO5OguojZyycJ8fwMKu1Vxynfhf0d9HGnMqCC/TvZFXreOg0Q15+GOcC2oOkXelEOm3cRn+G5LpkLsI60ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757147335; c=relaxed/simple;
-	bh=n3YYbeyql2yL1SH/t8tDGUT7N9M3cy6l+tco6F3vxpk=;
+	s=arc-20240116; t=1757148546; c=relaxed/simple;
+	bh=KQSgrx87mA7b5NmZQfBcbr/+bLWuPewIo/h3wQhzTYY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fdV8YoW9+XteWxDN4TYyXbKz94lTRuHtudbFhwaERPHkDbwuepqNkMz86kGSrIvrIxOhCrwUZ37xKxd3h2Kk2mDhSATjpfZAjr8FjOIoLcMxYrBskRnkqQopfnha982kHDhWhvK7WPIJl4MVo9eDCAC4EnwtIfSgprhCOhYwGBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=I8RDQYrQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=r9aMX4socstzJYfnah4wTlJhz6WQh6ZAG37NyXrLSKNDSLHbyivvqU3PhY7UGntdrt9ohfCfNAdvU09DOVc9zdBQ2y0uoyJDvrUNLEYK8I1X61trmu2F6yK54KT1py0lK5hACr6p6PtQbsfGeGEak4tydptMZTtLqgsFKCFxico=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=XeollWZr; arc=none smtp.client-ip=220.197.32.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="I8RDQYrQ"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5863PGXZ019566
-	for <netdev@vger.kernel.org>; Sat, 6 Sep 2025 08:28:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qKdwIMsuOs8hXrBNQvvXPiZ2vNFLXyJWMTWiOB3kSMs=; b=I8RDQYrQJI5XWMYG
-	CVEND3u+va15bk5ulW5EfdlM4vvd5k1tM1eUxBQixl3x5b0aeLEuMhVx8ujbbwmO
-	dqvUa93y5Nkxmvb5HExqDppVers2XyHafDjkEbjrjQXBwFFsQz9AxP/A/jECRWQc
-	J2H3Ldb3tlf8ocMeOF5MrRR1dqsqwz+T8odDroQw1p9O2KqzCfgd5rVZ2x1L4nsH
-	20fQbDThEhMx6RH9Z0U0NenbDUVy4rZMbfpLwXWS122i1WcrGqZtXpKjp52uyhwX
-	EA8keiXZ2YXIDlWxxReqhXc7n0cnJv/yuEtrrNYsSQaXkl6k5FAzS5LSgnvDLn8Q
-	LMHDzA==
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 490aap8kr9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 06 Sep 2025 08:28:52 +0000 (GMT)
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-4b331150323so7017561cf.0
-        for <netdev@vger.kernel.org>; Sat, 06 Sep 2025 01:28:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757147332; x=1757752132;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qKdwIMsuOs8hXrBNQvvXPiZ2vNFLXyJWMTWiOB3kSMs=;
-        b=ZrZFVp+vcS/UiYUAXdI+Q1ObY59A6DiGVY1hNgtuMr2xXlxrtAVSu2edFDSFFwip9K
-         dzJ/k4oaCU9gQ3KHsnEQ/PTY7C/0+uUytdXwRqBNRBZynPQfT6oatvNNok/JAiUZ4VzM
-         rUMom7kjxajd8ij0gnAUba6AjjFZ9NNB7BvNsHBRP6mxdh56V/DWw2UnUEvD/sx1CvrB
-         d3PevDUQGKd3K9BRKf66Au3Dk3WiIXRT2+5WmSPOKNMgoCVmeQpCR8WrVfHhi586FGwz
-         asURjJt4xDQ59LUpsMppgpuDUaTL8ukVIwchfKirofhW70G3/+LwRk96/FELcP6yv+kw
-         Y4pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiorNu5HId2l761NIo8SLATIisEMi4U6yjSqLKL4/JjpUNMc1wmxGUuwYTyT8yjP/wQRYtN20=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyO+xyTnNNIPNGQq+4bFHi6K8vMU5L6/H4CxP0fGSm8QjCx5280
-	aRvORiYhHHWMS+ddryaHR/vsoXZSE4UpvqBdaOUdIdXqYC9BrPHZGR/fbCdTviplKBFzVPUMHnx
-	mE6vojnWnwPA5tITLZ14GV3tsgBwEtVajfeDu2pVal8kg5xNVMbIhy4brens=
-X-Gm-Gg: ASbGncv1eLxp/8xY32/uQRqUaLb3cW7+aR8vruCG76dBZvdEM+Gr5KP92iQ4c4sJTrD
-	jjVbLs4ahIPFOEqj3TpBOZG94xQjbGJBUrlY/lg8YsrfEuk0GijeTCNvVk3Sn4RzICUZy3Pxgjh
-	qvctKr/hT7/5QmMDAyQ9gXi39Lj0T9usUOyreSyROlyx8L1jHyhhqnMn2m/fXiwrqEExKtrFaRU
-	TiKo6dsZ9Jrq6ZsNVLZH/guMe2Shfp6/GZzxvJYMSsRGLvkYJ/EmvUQj4UvTibiQeVaqaRfyJ8x
-	3MPo+htw79uTWiYb8eBaAotBWfMder4UlTtdG9TnKGvHRCu6N9imP8SqDFMmQGE36nuUjJNS4NN
-	yZfSPLd71TOuFWZ6clnmP4w==
-X-Received: by 2002:ac8:5a82:0:b0:4b5:eb76:3c6a with SMTP id d75a77b69052e-4b5f8464b47mr9538771cf.12.1757147331629;
-        Sat, 06 Sep 2025 01:28:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3y3GSyZNNkgjIVF+qqXTkBKrkNGyGUS1amXxGqYrBzXr417aU+8RqZGf0t3Sfd6GltOwwIA==
-X-Received: by 2002:ac8:5a82:0:b0:4b5:eb76:3c6a with SMTP id d75a77b69052e-4b5f8464b47mr9538561cf.12.1757147330963;
-        Sat, 06 Sep 2025 01:28:50 -0700 (PDT)
-Received: from [192.168.149.223] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b041800e89esm1548972366b.30.2025.09.06.01.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Sep 2025 01:28:50 -0700 (PDT)
-Message-ID: <d3e96be4-8c78-4938-8072-abdb0f0e8f05@oss.qualcomm.com>
-Date: Sat, 6 Sep 2025 10:28:47 +0200
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="XeollWZr"
+Received: from [172.16.12.153] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 21e46c877;
+	Sat, 6 Sep 2025 14:26:31 +0800 (GMT+08:00)
+Message-ID: <5d691f5b-460e-46cb-9658-9c391058342f@rock-chips.com>
+Date: Sat, 6 Sep 2025 14:26:31 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,161 +28,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] arm64: dts: qcom: lemans: Add SDHC controller and SDC
- pin configuration
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Wasim Nazir <wasim.nazir@oss.qualcomm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>, kernel@oss.qualcomm.com,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        netdev@vger.kernel.org, Monish Chunara <quic_mchunara@quicinc.com>
-References: <20250826-lemans-evk-bu-v1-2-08016e0d3ce5@oss.qualcomm.com>
- <rxd4js6hb5ccejge2i2fp2syqlzdghqs75hb5ufqrhvpwubjyz@zwumzc7wphjx>
- <c82d44af-d107-4e84-b5ae-eeb624bc03af@oss.qualcomm.com>
- <aLhssUQa7tvUfu2j@hu-wasimn-hyd.qualcomm.com>
- <tqm4sxoya3hue7mof3uqo4nu2b77ionmxi65ewfxtjouvn5xlt@d6ala2j2msbn>
- <3b691f3a-633c-4a7f-bc38-a9c464d83fe1@oss.qualcomm.com>
- <zofmya5h3yrz7wfcl4gozsmfjdeaixoir3zrk5kqpymbz5mkha@qxhj26jow5eh>
- <57ae28ea-85fd-4f8b-8e74-1efba33f0cd2@oss.qualcomm.com>
- <xausmwmh6ze5374eukv6pcmwe3lv4qun73pcszd3aqgjwm75u6@h3exsqf4dsfv>
- <53aac104-76fb-42b8-9e0d-0e8a3f59b2da@oss.qualcomm.com>
- <zw6o6nxczrzz3dkreq2nuxalbrlv7jmra2hs3pljew7xnbuepo@b6rs47vnnctx>
+Subject: Re: [PATCH net] net: stmmac: dwmac-rk: Ensure clk_phy doesn't contain
+ invalid address
+To: Yao Zi <ziyao@disroot.org>, "Russell King (Oracle)"
+ <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jonas Karlman <jonas@kwiboo.se>, David Wu <david.wu@rock-chips.com>,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20250904031222.40953-3-ziyao@disroot.org>
+ <aLlwv3v8ACha8b-3@shell.armlinux.org.uk>
+ <b5fbeb3f-9962-444d-85b3-3b8a11f69266@rock-chips.com>
+ <aLlyb6WvoBiBfUx3@shell.armlinux.org.uk>
+ <aLly7lJ05xQjqCWn@shell.armlinux.org.uk> <aLvIbPfWWNa6TwNv@pie>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <zw6o6nxczrzz3dkreq2nuxalbrlv7jmra2hs3pljew7xnbuepo@b6rs47vnnctx>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=eMETjGp1 c=1 sm=1 tr=0 ts=68bbf0c4 cx=c_pps
- a=mPf7EqFMSY9/WdsSgAYMbA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
- a=pmlacQdDjGSF83KW4JAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=dawVfQjAaf238kedN5IG:22 a=TjNXssC_j7lpFel5tvFf:22
-X-Proofpoint-GUID: 89tXI4xosaLdfwGdFFJYD7Jx5LMuR5Ks
-X-Proofpoint-ORIG-GUID: 89tXI4xosaLdfwGdFFJYD7Jx5LMuR5Ks
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfX7XLlYmaMFKki
- wkksIdz7xgT1rNhfkzX6mn6PlqXNKMdmfXEmdRPNLyOlaKD90LvTVYCZ7neCivKsvkTd6m1/Tfz
- XlELpvN9WlkcMm13JXfATxlDxTp4Goc+Z02zBvIAot2VuVtjtlb7bkuTnJDQ5x1pIKb9XJw4bVW
- p0IVq4BWHmoEOiu57Pu7vjdwF8gsyJsF2Ti967JNru/s4eM8GcgfF0DQgzASdGzvJGzJMc3Gblc
- dI9AdpXn8x/o1ux3+2d00UHa/8FgLOC4VyEtk5HFe4tPK1J4DlO6BYEpymI9PeOhslCiOH0pEUc
- oOpXhGf3Q3wY9VSpkSzCSQo/MyQ6AZxnNA6aqSv9SeUMViSeD9OOb3MOKjQJhFlHDrEDVv2PHFT
- bgleDtX1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-06_02,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015 adultscore=0
- bulkscore=0 phishscore=0 spamscore=0 suspectscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509060000
+From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+In-Reply-To: <aLvIbPfWWNa6TwNv@pie>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a991db47afa03abkunm6f5b97526997b6
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGRlJTVZKTxpPTU4fTB1JQ05WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=XeollWZr90ZLf9L7AdJ3LQbsRm2o9/RlO6fnKUc1fCiUZVidPuq4AywnynalP0/pupRK5Fn/V141DZqMKg6Or8cwAa9y0ysjWi/3FI7BGU/AW4bcdOEc5Y30uM5F1jnwWVDYZe3IbI/KYC9P81XZ7KUdvA0qDfkfDWwVrYpGR48=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=iAEkg+oPP2b/JZz9myImwCnXMGQd4xA94/pfnmR4uF0=;
+	h=date:mime-version:subject:message-id:from;
 
-On 9/5/25 3:44 PM, Dmitry Baryshkov wrote:
-> On Fri, Sep 05, 2025 at 02:04:47PM +0200, Konrad Dybcio wrote:
->> On 9/5/25 1:45 PM, Dmitry Baryshkov wrote:
->>> On Fri, Sep 05, 2025 at 01:14:29PM +0200, Konrad Dybcio wrote:
->>>> On 9/4/25 7:32 PM, Dmitry Baryshkov wrote:
->>>>> On Thu, Sep 04, 2025 at 04:34:05PM +0200, Konrad Dybcio wrote:
->>>>>> On 9/4/25 3:35 PM, Dmitry Baryshkov wrote:
->>>>>>> On Wed, Sep 03, 2025 at 09:58:33PM +0530, Wasim Nazir wrote:
->>>>>>>> On Wed, Sep 03, 2025 at 06:12:59PM +0200, Konrad Dybcio wrote:
->>>>>>>>> On 8/27/25 3:20 AM, Dmitry Baryshkov wrote:
->>>>>>>>>> On Tue, Aug 26, 2025 at 11:51:01PM +0530, Wasim Nazir wrote:
->>>>>>>>>>> From: Monish Chunara <quic_mchunara@quicinc.com>
->>>>>>>>>>>
->>>>>>>>>>> Introduce the SDHC v5 controller node for the Lemans platform.
->>>>>>>>>>> This controller supports either eMMC or SD-card, but only one
->>>>>>>>>>> can be active at a time. SD-card is the preferred configuration
->>>>>>>>>>> on Lemans targets, so describe this controller.
->>>>>>>>>>>
->>>>>>>>>>> Define the SDC interface pins including clk, cmd, and data lines
->>>>>>>>>>> to enable proper communication with the SDHC controller.
->>>>>>>>>>>
->>>>>>>>>>> Signed-off-by: Monish Chunara <quic_mchunara@quicinc.com>
->>>>>>>>>>> Co-developed-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
->>>>>>>>>>> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
->>>>>>>>>>> ---
->>>>>>>>>>>  arch/arm64/boot/dts/qcom/lemans.dtsi | 70 ++++++++++++++++++++++++++++++++++++
->>>>>>>>>>>  1 file changed, 70 insertions(+)
->>>>>>>>>>>
->>>>>>>>>>> diff --git a/arch/arm64/boot/dts/qcom/lemans.dtsi b/arch/arm64/boot/dts/qcom/lemans.dtsi
->>>>>>>>>>> index 99a566b42ef2..a5a3cdba47f3 100644
->>>>>>>>>>> --- a/arch/arm64/boot/dts/qcom/lemans.dtsi
->>>>>>>>>>> +++ b/arch/arm64/boot/dts/qcom/lemans.dtsi
->>>>>>>>>>> @@ -3834,6 +3834,36 @@ apss_tpdm2_out: endpoint {
->>>>>>>>>>>  			};
->>>>>>>>>>>  		};
->>>>>>>>>>>  
->>>>>>>>>>> +		sdhc: mmc@87c4000 {
->>>>>>>>>>> +			compatible = "qcom,sa8775p-sdhci", "qcom,sdhci-msm-v5";
->>>>>>>>>>> +			reg = <0x0 0x087c4000 0x0 0x1000>;
->>>>>>>>>>> +
->>>>>>>>>>> +			interrupts = <GIC_SPI 383 IRQ_TYPE_LEVEL_HIGH>,
->>>>>>>>>>> +				     <GIC_SPI 521 IRQ_TYPE_LEVEL_HIGH>;
->>>>>>>>>>> +			interrupt-names = "hc_irq", "pwr_irq";
->>>>>>>>>>> +
->>>>>>>>>>> +			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
->>>>>>>>>>> +				 <&gcc GCC_SDCC1_APPS_CLK>;
->>>>>>>>>>> +			clock-names = "iface", "core";
->>>>>>>>>>> +
->>>>>>>>>>> +			interconnects = <&aggre1_noc MASTER_SDC 0 &mc_virt SLAVE_EBI1 0>,
->>>>>>>>>>> +					<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_SDC1 0>;
->>>>>>>>>>> +			interconnect-names = "sdhc-ddr", "cpu-sdhc";
->>>>>>>>>>> +
->>>>>>>>>>> +			iommus = <&apps_smmu 0x0 0x0>;
->>>>>>>>>>> +			dma-coherent;
->>>>>>>>>>> +
->>>>>>>>>>> +			resets = <&gcc GCC_SDCC1_BCR>;
->>>>>>>>>>> +
->>>>>>>>>>> +			no-sdio;
->>>>>>>>>>> +			no-mmc;
->>>>>>>>>>> +			bus-width = <4>;
->>>>>>>>>>
->>>>>>>>>> This is the board configuration, it should be defined in the EVK DTS.
->>>>>>>>>
->>>>>>>>> Unless the controller is actually incapable of doing non-SDCards
->>>>>>>>>
->>>>>>>>> But from the limited information I can find, this one should be able
->>>>>>>>> to do both
->>>>>>>>>
->>>>>>>>
->>>>>>>> It’s doable, but the bus width differs when this controller is used for
->>>>>>>> eMMC, which is supported on the Mezz board. So, it’s cleaner to define
->>>>>>>> only what’s needed for each specific usecase on the board.
->>>>>>>
->>>>>>> `git grep no-sdio arch/arm64/boot/dts/qcom/` shows that we have those
->>>>>>> properties inside the board DT. I don't see a reason to deviate.
->>>>>>
->>>>>> Just to make sure we're clear
->>>>>>
->>>>>> I want the author to keep bus-width in SoC dt and move the other
->>>>>> properties to the board dt
+On 9/6/2025 1:36 PM, Yao Zi wrote:
+
+> On Thu, Sep 04, 2025 at 12:07:26PM +0100, Russell King (Oracle) wrote:
+>> On Thu, Sep 04, 2025 at 12:05:19PM +0100, Russell King (Oracle) wrote:
+>>> On Thu, Sep 04, 2025 at 07:03:10PM +0800, Chaoyi Chen wrote:
+>>>> On 9/4/2025 6:58 PM, Russell King (Oracle) wrote:
+>>>>> On Thu, Sep 04, 2025 at 03:12:24AM +0000, Yao Zi wrote:
+>>>>>>    	if (plat->phy_node) {
+>>>>>>    		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
+>>>>>>    		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
+>>>>>> -		/* If it is not integrated_phy, clk_phy is optional */
+>>>>>> +		/*
+>>>>>> +		 * If it is not integrated_phy, clk_phy is optional. But we must
+>>>>>> +		 * set bsp_priv->clk_phy to NULL if clk_phy isn't proivded, or
+>>>>>> +		 * the error code could be wrongly taken as an invalid pointer.
+>>>>>> +		 */
+>>>>> I'm concerned by this. This code is getting the first clock from the DT
+>>>>> description of the PHY. We don't know what type of PHY it is, or what
+>>>>> the DT description of that PHY might suggest that the first clock would
+>>>>> be.
 >>>>>
->>>>> I think bus-width is also a property of the board. In the end, it's a
->>>>> question of schematics whether we route 1 wire or all 4 wires. git-log
->>>>> shows that bus-width is being sent in both files (and probalby we should
->>>>> sort that out).
->>>>
->>>> Actually this is the controller capability, so if it can do 8, it should
->>>> be 8 and the MMC core will do whatever it pleases (the not-super-sure
->>>> docs that I have say 8 for this platform)
->>>
->>> Isn't it a physical width of the bus between the controller and the slot
->>> or eMMC chip?
+>>>>> However, we're geting it and setting it to 50MHz. What if the clock is
+>>>>> not what we think it is?
+>>>> We only set integrated_phy to 50M, which are all known targets. For external PHYs, we do not perform frequency settings.
+>>> Same question concerning enabling and disabling another device's clock
+>>> that the other device should be handling.
+>> Let me be absolutely clear: I consider *everything* that is going on
+>> with clk_phy here to be a dirty hack.
 >>
->> No, that's matched against reported (sd/mmc) card capabilities IIUC
-> 
-> What if both host and the card support 4 bits bus (normal SD card), but
-> board has only one data wire?
+>> Resources used by a device that has its own driver should be managed
+>> by _that_ driver alone, not by some other random driver.
+> Agree on this. Should we drop the patch, or fix it up for now to at
+> least prevent the oops? Chaoyi, I guess there's no user of the feature
+> for now, is it?
 
-Ohhh, touche.. I assumed it's "smart" like PCIe, but it's (probably)
-not.
+This at least needs fixing. Sorry, I have no idea how to implement this in the PHY.
 
-Sorry for the trouble, Wasim. Let's keep 4 for now and get this patch
-merged.
-
-Konrad> 
