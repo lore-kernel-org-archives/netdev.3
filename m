@@ -1,124 +1,105 @@
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDDF7081E
-	for <netdev@vger.kernel.org>; Sun,  7 Sep 2025 01:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CC34A06;
+	Sun,  7 Sep 2025 02:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757209808; cv=none; b=KtskfPOZ0+Uv2fFkIc1gIupenoostxsdy5HecFLy1IOVsRy7pw9D5kyu+2a6YoWQyhEat1Xv0yU+r6mxjUtYaQdFn3w8yFAEbRNNcRtwTNfosSabYBnQwrVvTaNWNkizn7Kn9czTnOxQoYlxaSk4HWgFXPg46NNmh6QUbV/1WRo=
+	t=1757211084; cv=none; b=kvT7VHYd9ypuvWtV78fAhWqK7M4EPcoUJQq0kn0rNN+uzfXhUUPCNqhNZ1wOG3ArnfzAiyn4WDcDzcALeWuIVO0zzDhMZK23hbRcY7tuNohNkkF9aDpaMGs9nu7aCUTOyJCfe0YFdVdG9hXsqwPMsdjVwekXhuQIDpi5p4Cg6rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757209808; c=relaxed/simple;
-	bh=gWCfXCYiEg2TDV9nKN8YjmgdZN5mApOcBplo/gxWROw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lXj4b+Ev7rUK+PjY88NVw3x9lXH9sdonzdTWSIplmmUlyFGkjeMKTVf5otqfyXu2ZJMKLh+0HETRlDwxK6oxBIz7saOGRvNpfE1zk6kYiEM53/hgqlWfRRcaJRVbSvagiB+LF0jjSnwDmt/5xWh30Sz1Wz63sCocHcs+pqt/cMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=tzRW60Lz; arc=none smtp.client-ip=185.125.188.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1757211084; c=relaxed/simple;
+	bh=OZCpA0chSjxv3Lgd+uW/ts5asDVyp+uuQl0W9GpliIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W2CAZk0aGnBK6KClZOOEJ/b1aotsaSC2juLkU7VRDxtYZnHj/cWeSE7sFKPbOM0o5shVry/st9/bKH5uiKLKBCkoWGWmQR947ICoh6fvoZ/CYLPT93TTiXIcsT+R68JWX8eeqG1KoWZ3cwk9iuQr1Frp2Zu8Eju389n62wkk34Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uu53tzYX; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="tzRW60Lz"
-Received: from famine.localdomain (unknown [50.35.97.145])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id D5B7C43F24;
-	Sun,  7 Sep 2025 01:42:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1757209348;
-	bh=xL5v0AAPfk7u/SIoZ0TFLsQl2HWNv9ulxf7OBh4HSDw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=tzRW60LzUAaRxXmQGwpmDvxgHu5ZNKpS1Nn0fdL+XPyRvyvBtgfT045Pgbr7hsuXJ
-	 CKz4pAF0VOgyxYEHF/TGQ5VnFtybXmjXCyKHoGb2/aRIosGZCXVeGUBrEbtTCSC7td
-	 U/+ZPP3bThvgdqgFSJBQcfnF+kN6NeygvxAj/IKGemUVI3Q6qS79R9lpSJq/OXp8lZ
-	 gphkebvrK4K69Lf9eRaHov2wybp4FGMcz5Txst9AUFSp26RGxWlQ6MfVZeI144uSRr
-	 JNiWVn3sO+uzkB72rOaXUocbj3J9OSovg6U8Z4YRv0Z8Kd6uswjlEuvsQI6WQhDidZ
-	 wwsiO6Ugbqi4w==
-From: Jay Vosburgh <jay.vosburgh@canonical.com>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-	David Ahern <dsahern@gmail.com>
-Subject: [PATCH 1/4 iproute2-next] lib: Update backend of print_size to accept 64 bit size
-Date: Sat,  6 Sep 2025 18:42:13 -0700
-Message-Id: <20250907014216.2691844-2-jay.vosburgh@canonical.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250907014216.2691844-1-jay.vosburgh@canonical.com>
-References: <20250907014216.2691844-1-jay.vosburgh@canonical.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uu53tzYX"
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-88762f20125so257554839f.0;
+        Sat, 06 Sep 2025 19:11:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757211080; x=1757815880; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2kLVhBsN9dhNrlhLxW+XbovzQ/BZ8ochPm1sfsjRFYg=;
+        b=Uu53tzYXYjFZWPlASaFuLavLv/1vqrxgCtJuUtcTXWiwU8x0CubXsxxyEeAmHCumf1
+         YuBm88DCbyBwkdoILKKSG4UYhd18ZyuQc3uKCloGSY3dW6UWJdiLk4IaV+TmPY9FPG/6
+         UH1LaAgn1W9QlKNbx3zhIloIvmzt2691eJNW+pZ9lJTYTtY4zrPcDUJs/jM1RTWGIvXC
+         9ujdi0MmTzeOW37XJdg7Z2q+w8VdabMoJyH45+VllwU9x3JFBSXr2TT4MsX8mNlBJvun
+         eqO5JUIuIC6Eg0MBV0zaKiVSzePMb6jMYDssxVqnrPjX2JQTYe+1OYJgs2VDWMQKOtJU
+         0lyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757211080; x=1757815880;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2kLVhBsN9dhNrlhLxW+XbovzQ/BZ8ochPm1sfsjRFYg=;
+        b=O/++AwVo+6UP1Lvyhruu6BU8YmHFi19mJxZ9sNIoYMzzue7FeXxvWo2WKzj1rZpACa
+         Q09Ao0jDLCz/sAXuw+mhVlmKl1i7Mws2PBlm8kvWDUpYCpkGaLw+CGKIpsi3NX05wxv4
+         radHg3vsvfa1NP1otr3ErqdPZ3ISN6zWW05WJ3MZpX+H74kZUS4ZgUU28ljuvGKgkHkc
+         +SP9wbkEJ/ds3nZAs+SjmRSm1qu0eXAvm1gIYPaZLH4/Z00kPdS3baPCdl+z4CQCppKJ
+         coZ8tTMapozQpnVYFSMGG9qapjWZemOWhVXQHrWL7SPU7CRbkBSRwI4jI0cOO2cx+LTQ
+         CxsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXRsCf8fhuXFN+VQ0YCo0Lk9HDRBeOBlpIfZ+NhhWXSUwxJXQjtjUFJdssfaE1zIY4arTPtgXutIUKUx4HW7eA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQnXkopRW48+dKh/8iFoV2CX4mIzw1TxvyyoFLOJJwKYHNYBSL
+	rKlAGgbYwTk3m66b+7mmqVM07C6yyj4pfmNm00607Iwmy5Q215nAichD
+X-Gm-Gg: ASbGncvHrhiqT4/JwC37jd/vVwfhagQ1Hg+8Jm9JMauAZ4tr5p5H0GrItfkqo7e2WjH
+	2FCt6QW1lcgxJjw2/cM6wx970ZGD8oR7Iij2f779AZS0g9/JzVBOkqp8d/+UDNpMbGtkU7v0mhB
+	22wxnR4oM+Gla+Dtli+di5AeCTydNOuNhM0/NVgYw9lg08PgM9GdixdyBxMF9jgdrrg2aLayo59
+	xVIGbVokoHgF6DexHVJR9HUDMw6QaSw5rSNyhFG2eah0VRrVrkS7H2GaWOTS2CY10zYA2iBNT7P
+	GwVJ24MFnKTuIobV3iQB6c1zwKntdjYcJgfj8M37yM7RkAbTjewBkuwkGBjxXl9DMOMZ+D6Z3hm
+	6GzZYAT7Xyy37cZIzdYtBqsrTLLuYUe0H+XtYcgOo+wie0Gbr7rAsrtn2KxXqW5ee+X5i4EBy4e
+	9gPUUDxGaV/YxZe7pwQw4=
+X-Google-Smtp-Source: AGHT+IGfR179kG7864B43/0SNBFqoAPFytz/8tsks0C7teojneHa6P+vs74igS0RB7CarHog7x4GxA==
+X-Received: by 2002:a05:6602:6d11:b0:883:ee95:7266 with SMTP id ca18e2360f4ac-8877768cf57mr557808739f.9.1757211080482;
+        Sat, 06 Sep 2025 19:11:20 -0700 (PDT)
+Received: from ?IPV6:2601:282:1e02:1040:8951:1fac:8f57:51bb? ([2601:282:1e02:1040:8951:1fac:8f57:51bb])
+        by smtp.googlemail.com with ESMTPSA id ca18e2360f4ac-8872a4f8e38sm646686239f.27.2025.09.06.19.11.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 06 Sep 2025 19:11:20 -0700 (PDT)
+Message-ID: <842ad1ae-6e82-4ffc-8338-da0b1401ea25@gmail.com>
+Date: Sat, 6 Sep 2025 20:11:18 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/2] selftests: net: run groups from fcnal-test
+ in parallel
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20250907012116.3315344-1-kuba@kernel.org>
+ <20250907012116.3315344-2-kuba@kernel.org>
+From: David Ahern <dsahern@gmail.com>
+In-Reply-To: <20250907012116.3315344-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-	In preparation for accepting 64 bit burst sizes, modify
-sprint_size, the formatting function behind print_size, to accept __u64 as
-its size parameter.  Also include a "Gb" size category.
+On 9/6/25 7:21 PM, Jakub Kicinski wrote:
+> fcnal-test.sh takes almost hour and a half to finish.
+> The tests are already grouped into ipv4, ipv6 and other.
+> Run those groups separately.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  tools/testing/selftests/net/Makefile       | 4 +++-
+>  tools/testing/selftests/net/fcnal-ipv4.sh  | 2 ++
+>  tools/testing/selftests/net/fcnal-ipv6.sh  | 2 ++
+>  tools/testing/selftests/net/fcnal-other.sh | 2 ++
+>  tools/testing/selftests/net/fcnal-test.sh  | 3 +++
+>  5 files changed, 12 insertions(+), 1 deletion(-)
+>  create mode 100755 tools/testing/selftests/net/fcnal-ipv4.sh
+>  create mode 100755 tools/testing/selftests/net/fcnal-ipv6.sh
+>  create mode 100755 tools/testing/selftests/net/fcnal-other.sh
+> 
 
-Signed-off-by: Jay Vosburgh <jay.vosburgh@canonical.com>
----
- include/json_print.h  |  4 ++--
- lib/json_print_math.c | 11 +++++++----
- 2 files changed, 9 insertions(+), 6 deletions(-)
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-diff --git a/include/json_print.h b/include/json_print.h
-index daebcf5d25f5..59edd5b2467e 100644
---- a/include/json_print.h
-+++ b/include/json_print.h
-@@ -68,7 +68,7 @@ _PRINT_FUNC(on_off, bool)
- _PRINT_FUNC(null, const char*)
- _PRINT_FUNC(string, const char*)
- _PRINT_FUNC(uint, unsigned int)
--_PRINT_FUNC(size, __u32)
-+_PRINT_FUNC(size, __u64)
- _PRINT_FUNC(u64, uint64_t)
- _PRINT_FUNC(hhu, unsigned char)
- _PRINT_FUNC(hu, unsigned short)
-@@ -109,6 +109,6 @@ static inline int print_bool_opt(enum output_type type,
- }
- 
- /* A backdoor to the size formatter. Please use print_size() instead. */
--char *sprint_size(__u32 sz, char *buf);
-+char *sprint_size(__u64 sz, char *buf);
- 
- #endif /* _JSON_PRINT_H_ */
-diff --git a/lib/json_print_math.c b/lib/json_print_math.c
-index f4d504995924..3e951cd9f504 100644
---- a/lib/json_print_math.c
-+++ b/lib/json_print_math.c
-@@ -7,25 +7,28 @@
- #include "utils.h"
- #include "json_print.h"
- 
--char *sprint_size(__u32 sz, char *buf)
-+char *sprint_size(__u64 sz, char *buf)
- {
- 	long kilo = 1024;
- 	long mega = kilo * kilo;
-+	long giga = mega * kilo;
- 	size_t len = SPRINT_BSIZE - 1;
- 	double tmp = sz;
- 
--	if (sz >= mega && fabs(mega * rint(tmp / mega) - sz) < 1024)
-+	if (sz >= giga && fabs(giga * rint(tmp / giga) - sz) < 1024)
-+		snprintf(buf, len, "%gGb", rint(tmp / giga));
-+	else if (sz >= mega && fabs(mega * rint(tmp / mega) - sz) < 1024)
- 		snprintf(buf, len, "%gMb", rint(tmp / mega));
- 	else if (sz >= kilo && fabs(kilo * rint(tmp / kilo) - sz) < 16)
- 		snprintf(buf, len, "%gKb", rint(tmp / kilo));
- 	else
--		snprintf(buf, len, "%ub", sz);
-+		snprintf(buf, len, "%llub", sz);
- 
- 	return buf;
- }
- 
- int print_color_size(enum output_type type, enum color_attr color,
--		     const char *key, const char *fmt, __u32 sz)
-+		     const char *key, const char *fmt, __u64 sz)
- {
- 	SPRINT_BUF(buf);
- 
--- 
-2.25.1
 
