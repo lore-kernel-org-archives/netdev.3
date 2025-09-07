@@ -1,48 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B00C1DDF7;
-	Sun,  7 Sep 2025 01:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E355310957
+	for <netdev@vger.kernel.org>; Sun,  7 Sep 2025 01:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757208086; cv=none; b=AMvmWCsljS9sPJdV3BLmKmTvv5d90THTNA2OxeOS7u1QWc/lNn7a26crCbtkF9yyUVrtYCUj3erAC2LAaOmUKI3SAwtsThTh6spxLzQAOJfUyOwyvNdbFrj+WLSVgUL5pjc8DmkLKcS0ezW/EILXF/eeNF3gq0cc9yf6L2y1m0o=
+	t=1757208616; cv=none; b=RiJqI9AOpCeHBzgZwCsWGOqJejg2keomx7HwtEXJ+ZfULABmTpmmdngUHbg4V4dfqXIMosRXP6L6uO2GjmJQlSDmGsoPFbsPGfeEEn8z4euhP1IPFIosWt/aaGZ+jQiilknm/+mwZiJIbHW9SxpYBtrCwoh+cHKccMMa8bRAnYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757208086; c=relaxed/simple;
-	bh=rtX3oKEEiJXaqHWETBe8kB5dsg2UHl0IvweYcav6NfE=;
+	s=arc-20240116; t=1757208616; c=relaxed/simple;
+	bh=EWbUFvMA4MXxX2lK1OzuBkqWJ0ExsqIf4ot/1FqlHoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uyg8xzcoBNzt8bL966dKsR9lg2SSybxI+3A9k2uakJqj2hElP9vj6Zhwc+X1O479tanJAvrypSDHOdkXQ0o+z8PlIOosZi7ktDYLKl7anOCTn/SRPDk3c8y00xOo1l0+yrdthIMZIUJnu9UZNrX3dLB2vS7M+ffcyyLPMnfZ/Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojML1cjx; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=RVTnC5fjN7Tp3PWifvGNIGVoQMayCQFXw0hrXT+0jnesI2OeFxXEsdLvMxu1GJLrONq3g0YPqzjjiGKgZn53Y/kj4Q230tUneZrxHLfWzLPp0Or7xAS0GO9qKch8axzCpQSO2rtikCJduD90IKv6t79KCw2wkoE7MflIS9H4FbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ptk8X3Ip; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojML1cjx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357C0C4CEFB;
-	Sun,  7 Sep 2025 01:21:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ptk8X3Ip"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB00C4CEF7;
+	Sun,  7 Sep 2025 01:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757208085;
-	bh=rtX3oKEEiJXaqHWETBe8kB5dsg2UHl0IvweYcav6NfE=;
+	s=k20201202; t=1757208615;
+	bh=EWbUFvMA4MXxX2lK1OzuBkqWJ0ExsqIf4ot/1FqlHoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojML1cjxV+4OLp77L1R+ovTJM2iA9silR38xXfNYryrJ5lgj9Q2c1OUqEhPjFbIZa
-	 qJy9Q4MR6oVIjVsiHQEJ7RazLSKmZ95sSx321t8rdf8ekNu9OWwmiuwNBqEeXHD/uy
-	 mTg8lY/9BYPe9lvxzDXs2iusn6v2LWzM4hOdwpcialX+BtWdVJXLyZ9cVmXNcPT6KU
-	 +5RlJnOOrX9HoPvvo4L5nZBV4HGBr9Y6Fgcm9mFPXY0L1kZM5B6Gp8+LKBUmtQgYct
-	 4+vR6J0kuYgRcNtxgmgSmH3tOcnlJW6/5iDZp/v49/M16A7+WAe1eSqx1Jon+sg+W4
-	 FZlU7lI8aVDDA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	dsahern@gmail.com,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/2] selftests: net: run groups from fcnal-test in parallel
-Date: Sat,  6 Sep 2025 18:21:16 -0700
-Message-ID: <20250907012116.3315344-2-kuba@kernel.org>
+	b=ptk8X3IpbvXaHqkwo6aiaeiJym4C79a+1vTkRukop1DoSJsOwHVCvrM4Do51tkJI9
+	 kwGlBGVE5bCmlxfsHEOqMp+4spAVzjX+jJ/ZiPZY02Ouglmiz9lVTOjU1WNICNb1eP
+	 N5dLfYnDOuaCWmEqq8qKQxFm8pY3TYZTa7x8x7lQozLwR7nfaXKrnVN9sSpuwEcFYF
+	 COhRD0wTk/J9MyZ4zGJpUog2TmajYzX0sH8I4bh/CP+xHQQ7NVNmEyoh5Xhwi7qx3B
+	 uFn9eLYBNQxbmcL8ZvMiVgpUZ8XVHXzA3zymSnWZi3Z988fp7ileK8xymD7mwhMk+d
+	 AsB5FAU7520ZA==
+From: Saeed Mahameed <saeed@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	netdev@vger.kernel.org,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Kamal Heib <kheib@redhat.com>
+Subject: [PATCH V7 net-next 01/11] devlink: Add 'total_vfs' generic device param
+Date: Sat,  6 Sep 2025 18:29:43 -0700
+Message-ID: <20250907012953.301746-2-saeed@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250907012116.3315344-1-kuba@kernel.org>
-References: <20250907012116.3315344-1-kuba@kernel.org>
+In-Reply-To: <20250907012953.301746-1-saeed@kernel.org>
+References: <20250907012953.301746-1-saeed@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,93 +55,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fcnal-test.sh takes almost hour and a half to finish.
-The tests are already grouped into ipv4, ipv6 and other.
-Run those groups separately.
+From: Vlad Dumitrescu <vdumitrescu@nvidia.com>
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+NICs are typically configured with total_vfs=0, forcing users to rely
+on external tools to enable SR-IOV (a widely used and essential feature).
+
+Add total_vfs parameter to devlink for SR-IOV max VF configurability.
+Enables standard kernel tools to manage SR-IOV, addressing the need for
+flexible VF configuration.
+
+Signed-off-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Tested-by: Kamal Heib <kheib@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- tools/testing/selftests/net/Makefile       | 4 +++-
- tools/testing/selftests/net/fcnal-ipv4.sh  | 2 ++
- tools/testing/selftests/net/fcnal-ipv6.sh  | 2 ++
- tools/testing/selftests/net/fcnal-other.sh | 2 ++
- tools/testing/selftests/net/fcnal-test.sh  | 3 +++
- 5 files changed, 12 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/net/fcnal-ipv4.sh
- create mode 100755 tools/testing/selftests/net/fcnal-ipv6.sh
- create mode 100755 tools/testing/selftests/net/fcnal-other.sh
+ Documentation/networking/devlink/devlink-params.rst | 5 +++++
+ include/net/devlink.h                               | 4 ++++
+ net/devlink/param.c                                 | 5 +++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 8c860782f9cd..8270f747ffbc 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -8,11 +8,12 @@ CFLAGS += -I../
+diff --git a/Documentation/networking/devlink/devlink-params.rst b/Documentation/networking/devlink/devlink-params.rst
+index 211b58177e12..c51da4fba7e7 100644
+--- a/Documentation/networking/devlink/devlink-params.rst
++++ b/Documentation/networking/devlink/devlink-params.rst
+@@ -143,3 +143,8 @@ own name.
+    * - ``clock_id``
+      - u64
+      - Clock ID used by the device for registering DPLL devices and pins.
++   * - ``total_vfs``
++     - u32
++     - The max number of Virtual Functions (VFs) exposed by the PF.
++       after reboot/pci reset, 'sriov_totalvfs' entry under the device's sysfs
++       directory will report this value.
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 5f44e702c25c..8d4362f010e4 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -530,6 +530,7 @@ enum devlink_param_generic_id {
+ 	DEVLINK_PARAM_GENERIC_ID_EVENT_EQ_SIZE,
+ 	DEVLINK_PARAM_GENERIC_ID_ENABLE_PHC,
+ 	DEVLINK_PARAM_GENERIC_ID_CLOCK_ID,
++	DEVLINK_PARAM_GENERIC_ID_TOTAL_VFS,
  
- TEST_PROGS := run_netsocktests run_afpackettests test_bpf.sh netdevice.sh \
- 	      rtnetlink.sh xfrm_policy.sh
-+TEST_PROGS += fcnal-ipv4.sh fcnal-ipv6.sh fcnal-other.sh
- TEST_PROGS += fib_tests.sh fib-onlink-tests.sh pmtu.sh udpgso.sh ip_defrag.sh
- TEST_PROGS += udpgso_bench.sh fib_rule_tests.sh msg_zerocopy.sh psock_snd.sh
- TEST_PROGS += udpgro_bench.sh udpgro.sh test_vxlan_under_vrf.sh reuseport_addr_any.sh
- TEST_PROGS += test_vxlan_fdb_changelink.sh so_txtime.sh ipv6_flowlabel.sh
--TEST_PROGS += tcp_fastopen_backup_key.sh fcnal-test.sh l2tp.sh traceroute.sh
-+TEST_PROGS += tcp_fastopen_backup_key.sh l2tp.sh traceroute.sh
- TEST_PROGS += fin_ack_lat.sh fib_nexthop_multiprefix.sh fib_nexthops.sh fib_nexthop_nongw.sh
- TEST_PROGS += altnames.sh icmp.sh icmp_redirect.sh ip6_gre_headroom.sh
- TEST_PROGS += route_localnet.sh
-@@ -127,6 +128,7 @@ TEST_GEN_FILES += $(YNL_GEN_FILES)
- TEST_GEN_PROGS += $(YNL_GEN_PROGS)
+ 	/* add new param generic ids above here*/
+ 	__DEVLINK_PARAM_GENERIC_ID_MAX,
+@@ -594,6 +595,9 @@ enum devlink_param_generic_id {
+ #define DEVLINK_PARAM_GENERIC_CLOCK_ID_NAME "clock_id"
+ #define DEVLINK_PARAM_GENERIC_CLOCK_ID_TYPE DEVLINK_PARAM_TYPE_U64
  
- TEST_FILES := settings
-+TEST_FILES += fcnal-test.sh
- TEST_FILES += in_netns.sh lib.sh setup_loopback.sh setup_veth.sh
++#define DEVLINK_PARAM_GENERIC_TOTAL_VFS_NAME "total_vfs"
++#define DEVLINK_PARAM_GENERIC_TOTAL_VFS_TYPE DEVLINK_PARAM_TYPE_U32
++
+ #define DEVLINK_PARAM_GENERIC(_id, _cmodes, _get, _set, _validate)	\
+ {									\
+ 	.id = DEVLINK_PARAM_GENERIC_ID_##_id,				\
+diff --git a/net/devlink/param.c b/net/devlink/param.c
+index 41dcc86cfd94..33134940c266 100644
+--- a/net/devlink/param.c
++++ b/net/devlink/param.c
+@@ -102,6 +102,11 @@ static const struct devlink_param devlink_param_generic[] = {
+ 		.name = DEVLINK_PARAM_GENERIC_CLOCK_ID_NAME,
+ 		.type = DEVLINK_PARAM_GENERIC_CLOCK_ID_TYPE,
+ 	},
++	{
++		.id = DEVLINK_PARAM_GENERIC_ID_TOTAL_VFS,
++		.name = DEVLINK_PARAM_GENERIC_TOTAL_VFS_NAME,
++		.type = DEVLINK_PARAM_GENERIC_TOTAL_VFS_TYPE,
++	},
+ };
  
- TEST_GEN_FILES += $(patsubst %.c,%.o,$(wildcard *.bpf.c))
-diff --git a/tools/testing/selftests/net/fcnal-ipv4.sh b/tools/testing/selftests/net/fcnal-ipv4.sh
-new file mode 100755
-index 000000000000..82f9c867c3e8
---- /dev/null
-+++ b/tools/testing/selftests/net/fcnal-ipv4.sh
-@@ -0,0 +1,2 @@
-+#!/bin/sh
-+./fcnal-test.sh -t ipv4
-diff --git a/tools/testing/selftests/net/fcnal-ipv6.sh b/tools/testing/selftests/net/fcnal-ipv6.sh
-new file mode 100755
-index 000000000000..ab1fc7aa3caf
---- /dev/null
-+++ b/tools/testing/selftests/net/fcnal-ipv6.sh
-@@ -0,0 +1,2 @@
-+#!/bin/sh
-+./fcnal-test.sh -t ipv6
-diff --git a/tools/testing/selftests/net/fcnal-other.sh b/tools/testing/selftests/net/fcnal-other.sh
-new file mode 100755
-index 000000000000..a840cf80b32e
---- /dev/null
-+++ b/tools/testing/selftests/net/fcnal-other.sh
-@@ -0,0 +1,2 @@
-+#!/bin/sh
-+./fcnal-test.sh -t other
-diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
-index 0e3304d37fd0..49d85d267925 100755
---- a/tools/testing/selftests/net/fcnal-test.sh
-+++ b/tools/testing/selftests/net/fcnal-test.sh
-@@ -4272,6 +4272,7 @@ EOF
- TESTS_IPV4="ipv4_ping ipv4_tcp ipv4_udp ipv4_bind ipv4_runtime ipv4_netfilter"
- TESTS_IPV6="ipv6_ping ipv6_tcp ipv6_udp ipv6_bind ipv6_runtime ipv6_netfilter"
- TESTS_OTHER="use_cases"
-+# note: each TEST_ group needs a dedicated runner, e.g. fcnal-ipv4.sh
- 
- PAUSE_ON_FAIL=no
- PAUSE=no
-@@ -4302,6 +4303,8 @@ elif [ "$TESTS" = "ipv4" ]; then
- 	TESTS="$TESTS_IPV4"
- elif [ "$TESTS" = "ipv6" ]; then
- 	TESTS="$TESTS_IPV6"
-+elif [ "$TESTS" = "other" ]; then
-+	TESTS="$TESTS_OTHER"
- fi
- 
- check_gen_prog "nettest"
+ static int devlink_param_generic_verify(const struct devlink_param *param)
 -- 
 2.51.0
 
