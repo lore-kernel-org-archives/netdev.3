@@ -1,40 +1,40 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F381D6BB
-	for <netdev@vger.kernel.org>; Sun,  7 Sep 2025 16:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C726285050
+	for <netdev@vger.kernel.org>; Sun,  7 Sep 2025 17:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757264134; cv=none; b=AqEcHFdQTpng+sacZAt8RXwSgSEvggYXRPB+SjrouPhgoC3WkJaVPkhY5PKY6L5khwPHEXfa3B2OAVXrcM8TPKhslSBHHlv2LFDT69yn1BqMDMg8Ul5ApQRWGVkxiwX1zbJk6LKdje68ytuqALg23xyfEAfXW/tEO6cKyhW+tBs=
+	t=1757264539; cv=none; b=E6BxlaEaNgRi6GVK1bj5dKxzeqFrPAJwIAG+w/8wnpQHZypNuY/ViobsWAry2S+K6iWQBCRv2xN+ORV3+W6Wniuris1/pZDnxjnEL/OmuXAeMqM5kCNz8JSKCQvHrY2BUEm+nSVhLJKZfxw6X7Wtvkzi5XYm4UG6jTIWrV5wadQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757264134; c=relaxed/simple;
-	bh=hj/oyp4cEgcvL/1yElr6j76VlPObqr1h7l8aQw98mog=;
+	s=arc-20240116; t=1757264539; c=relaxed/simple;
+	bh=pZD4tEIZUEKClZFShsoJNa/2iBOVNA9IPvLNH9RRFF4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C1BeZ2KeNMwG/P4+0kZDRsM3YjDPBWAL1u7ERIumRXSopUVq1IR/T3PP3To0FDsSb7bQKmOae9oL+KPIlLrGWVPqx8NsUHB92pTsHHhZ6CH2jKJXrHMLwW/teAt/475VTIqB21ByoaXaWubAGpsNbV0HKcPEIzLNuu4nA2qXT1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SiRhoxjz; arc=none smtp.client-ip=95.215.58.182
+	 In-Reply-To:Content-Type; b=ARDklxT0/DUY4t1noRlvV7kFDrFImz5wtdnVfwj90FoLSVD8AV1r1NERjX1h+MOG5FK8Dbl5ez7RLj+6b/mIYdn5pjADNhsfKI44xEg3GUXNYH9XxFH3kUfXtY/HkM/HazD3/w26c6YPfqeVRbczUTN6Vljadnr5OWqLBFDz8TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Pc5F4vkf; arc=none smtp.client-ip=95.215.58.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SiRhoxjz"
-Message-ID: <00d37c64-f584-4846-b65c-76582601c30f@linux.dev>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Pc5F4vkf"
+Message-ID: <98c93693-0647-4c7e-ac1c-729502beab76@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757264129;
+	t=1757264534;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ELddA0f2ttvGHdC8Ifs6ZhKF0YoIStSpLQZE8s5K2Hk=;
-	b=SiRhoxjzpq/2GariF7snGksH/Pd5bDzzHTigFdy3aSAkiser8+ypa/adG+daV1Bk4oA1qh
-	SWBT2+lOQdHsHT0hRRA3vKKs6Ss9Z6Go2J1T0gffzlYtP8tc42aa+KezEjCMfhR4xSiWVY
-	57phi9DDi2EaPMzzkOi3DZ8+tOGFiYY=
-Date: Sun, 7 Sep 2025 17:55:24 +0100
+	bh=2BpoMe7d7Kugc9Y1D7mPUdyY4RnJVBGdaC/+fYtsNMQ=;
+	b=Pc5F4vkfsytINfbG8VdYiuuX2FOWy8zm5XNcsP53lO+I+fCOOMtJznKQkytd5iuDzJBH5Y
+	Uu5SIdP8Qp1yor43oYoRkPBZE461WtY6V4HDLYBKedKYuwBvW4kQ+jkdHF8DW2bx8RBRjj
+	WubaymY0/1EV3nSTx7Nmutck9Qw2Z1g=
+Date: Sun, 7 Sep 2025 18:02:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v04 05/14] hinic3: Command Queue flush interfaces
+Subject: Re: [PATCH net-next v04 06/14] hinic3: Nic_io initialization
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -49,67 +49,44 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Lee Trager <lee@trager.us>, Michael Ellerman <mpe@ellerman.id.au>,
  Suman Ghosh <sumang@marvell.com>,
  Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Joe Damato <jdamato@fastly.com>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 References: <cover.1757057860.git.zhuyikai1@h-partners.com>
- <be5378bb148410286bb319a82fd2e2f0c9044117.1757057860.git.zhuyikai1@h-partners.com>
+ <0d48674ae76a54bf52dcdba64fb60eb26e7e7e70.1757057860.git.zhuyikai1@h-partners.com>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <be5378bb148410286bb319a82fd2e2f0c9044117.1757057860.git.zhuyikai1@h-partners.com>
+In-Reply-To: <0d48674ae76a54bf52dcdba64fb60eb26e7e7e70.1757057860.git.zhuyikai1@h-partners.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
 On 05/09/2025 09:28, Fan Gong wrote:
+> Add nic_io initialization to enable NIC service, initialize function table
+> and negotiate activation of NIC features.
 
 [...]
 
-> +struct comm_cmd_clear_doorbell {
-> +	struct mgmt_msg_head head;
-> +	u16                  func_id;
-> +	u16                  rsvd1[3];
-> +};
+> +static DEFINE_IDA(hinic3_adev_ida);
 > +
-> +struct comm_cmd_clear_resource {
-> +	struct mgmt_msg_head head;
-> +	u16                  func_id;
-> +	u16                  rsvd1[3];
-> +};
-
-I don't see any difference in these 2 structures. And the code
-implementation doesn't check types. Probably it's better to refactor
-things and try to implement it using common thing.
-
-[...]
-
-> +void hinic3_enable_doorbell(struct hinic3_hwif *hwif)
+> +static int hinic3_adev_idx_alloc(void)
 > +{
-> +	u32 addr, attr4;
-> +
-> +	addr = HINIC3_CSR_FUNC_ATTR4_ADDR;
-> +	attr4 = hinic3_hwif_read_reg(hwif, addr);
-> +
-> +	attr4 &= ~HINIC3_AF4_DOORBELL_CTRL_MASK;
-> +	attr4 |= HINIC3_AF4_SET(ENABLE_DOORBELL, DOORBELL_CTRL);
-> +
-> +	hinic3_hwif_write_reg(hwif, addr, attr4);
+> +	return ida_alloc(&hinic3_adev_ida, GFP_KERNEL);
 > +}
 > +
-> +void hinic3_disable_doorbell(struct hinic3_hwif *hwif)
+> +static void hinic3_adev_idx_free(int id)
 > +{
-> +	u32 addr, attr4;
-> +
-> +	addr = HINIC3_CSR_FUNC_ATTR4_ADDR;
-> +	attr4 = hinic3_hwif_read_reg(hwif, addr);
-> +
-> +	attr4 &= ~HINIC3_AF4_DOORBELL_CTRL_MASK;
-> +	attr4 |= HINIC3_AF4_SET(DISABLE_DOORBELL, DOORBELL_CTRL);
-> +
-> +	hinic3_hwif_write_reg(hwif, addr, attr4);
+> +	ida_free(&hinic3_adev_ida, id);
 > +}
+> +
+>   int hinic3_init_hwdev(struct pci_dev *pdev)
+>   {
+>   	struct hinic3_pcidev *pci_adapter = pci_get_drvdata(pdev);
+> @@ -451,6 +463,7 @@ int hinic3_init_hwdev(struct pci_dev *pdev)
+>   	hwdev->pdev = pci_adapter->pdev;
+>   	hwdev->dev = &pci_adapter->pdev->dev;
+>   	hwdev->func_state = 0;
+> +	hwdev->dev_id = hinic3_adev_idx_alloc();
 
-These 2 functions differ only in one bit. It might be better to
-implement it once and use extra boolean parameter?
-
+Why do you need dev_id? It's not used anywhere in the patchset. The
+commit doesn't explain it neither...
 
