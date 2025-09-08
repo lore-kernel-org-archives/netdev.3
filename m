@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3341A3191A8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334D43191B1;
 	Mon,  8 Sep 2025 18:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757355074; cv=none; b=NAyaK1dxm+KWQ6c17d8wr53d/yINwWSDIZBs8DNLg6nnGZCHvJ96QE4ujtDDroCMExR4SjgmpxGHl4oTzLFnuxzYImmtS5+cOJt7WNbDmia1/csjz/ZBmx0KVWrH6vL7CUbOZxpvg7F0O8Jj2q/go5ha6R2E5EO7kCH8u5o8dsM=
+	t=1757355074; cv=none; b=CfFvPLeIa2uMwt54/KUK020tg1o+BMV/V45NX2WE/erY4eP70F2iHcaiqAPLKMaO3tQF6obbrCVyeA+vLtCimZcgqzN61ocTg4wHsDGXDHlxN2ZalOL7fz4VopILX2RtDcHgVhDrh3dVUu3I9qq6uZM6O3hWPOctJB+gh4PR7bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757355074; c=relaxed/simple;
-	bh=CBUxzfQMcURd9xrdRX1X6MkdC4HdUWPC7RS7d5q4rC8=;
+	bh=coKgeanaUZ3X4I0jziHLWfdNIN3UjLw9i/nP+qWcjHY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iaLgfuGM5DPpIFSsMHsQKxTvsSEUa2LsytsXAxUIEvh4nvLitwY2Svwz41Meyc4MnML3fNvxT0S3tukQMef807zOTHg3AcsIGoDFREDMIsRvJPPgv789n98K47DDG9wotUh/OWLiM8O6JqknX1cKHEG0vByConOOcwLz7jvDAZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QoL2bmsq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Ik1P3yRUuge3DXXlrBEK1aoqCAGMGpm1ayMUBZdlepC469gQRxvsbh/VjSV1Pcr0qrjO9sz+XVREumPapabFlegjyXZVW9MqTFgMLP9TymOkn6fGamaA8Hylj6A6iCZVmMKMo1JwtcSgwGTKhj4VQBlM6w/o1+Vt4W1Wp57tqAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbjPAJVj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QoL2bmsq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5ECCC113D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbjPAJVj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF70FC4CEF9;
 	Mon,  8 Sep 2025 18:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757355074;
-	bh=CBUxzfQMcURd9xrdRX1X6MkdC4HdUWPC7RS7d5q4rC8=;
+	s=k20201202; t=1757355073;
+	bh=coKgeanaUZ3X4I0jziHLWfdNIN3UjLw9i/nP+qWcjHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QoL2bmsqrFTDNcyXn7/rTjjoOHFY6ciexniXAGJBY7IucNkeX0wgA6GiCd8cZHN29
-	 AA4U4DT/VLcYDXhOo/lMdy72Ar+URZpgr/De5S9DLgQn9d7lnsZf2WXCyiqT283ZUv
-	 M7GFK+G1c+I2bWFQzXb2NdhjgkKGzjgX7FFLjT8f//1RW2VEwQtaAFPON6VK8eZC9T
-	 SFpeTw+/tJYvgVOQl1dBYRuMztB69btsD2Tl8IdTrI49iolxDvCHW+uvWYBwvIosaU
-	 sMHPNEO2WBDkpO7OUviTpug9ymTFTKPww357bSotk4KK5SOIbCnINggjAkVFKiX0Ts
-	 8EQ2gPtn+/fVg==
+	b=NbjPAJVj+Ccx1YTKZrvpsRHmbAEV0P6asEw8LJwiUJ/hVodfJHuxDiEB3U2dkEI6y
+	 NTrL18E/0x2Jj9reBGahfUtLqFZ1Wa/eCATTh3aKxaayBbifCy28Ra3bLf+7Q6EXTw
+	 Pik5J8qfj9NUWYfYNH0lduTRBKe3ig+seqEi6d/kwdYzNW9r8yWKhbFC5y6tfcFBi4
+	 moOY7NR8iN5YVDsDwm1noOE0ecXRsjYZ8/IcataZX+EvcYAdtea4C3JS63q4LbPKYs
+	 jyt5oWNZVdgHo23+YafzlHasx82rfYbudDXTErU+BYqMH7c9xbNMJmT3Zk1go8JWEP
+	 JaZtukR2iu0Ag==
 Received: by wens.tw (Postfix, from userid 1000)
-	id 423F65FEEF; Tue, 09 Sep 2025 02:11:09 +0800 (CST)
+	id 5666E5FF5A; Tue, 09 Sep 2025 02:11:09 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -47,9 +47,9 @@ Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Andre Przywara <andre.przywara@arm.com>,
 	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH net-next v4 06/10] arm64: dts: allwinner: a527: cubie-a5e: Add ethernet PHY reset setting
-Date: Tue,  9 Sep 2025 02:10:55 +0800
-Message-Id: <20250908181059.1785605-7-wens@kernel.org>
+Subject: [PATCH net-next v4 08/10] arm64: dts: allwinner: t527: avaota-a1: Add ethernet PHY reset setting
+Date: Tue,  9 Sep 2025 02:10:57 +0800
+Message-Id: <20250908181059.1785605-9-wens@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250908181059.1785605-1-wens@kernel.org>
 References: <20250908181059.1785605-1-wens@kernel.org>
@@ -68,18 +68,18 @@ It is missing from the original submission.
 
 Add it to complete the description.
 
-Fixes: acca163f3f51 ("arm64: dts: allwinner: a527: add EMAC0 to Radxa A5E board")
+Fixes: c6800f15998b ("arm64: dts: allwinner: t527: add EMAC0 to Avaota-A1 board")
 Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 ---
- arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts | 3 +++
+ arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-index 70d439bc845c..d4cee2222104 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-@@ -94,6 +94,9 @@ &mdio0 {
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
+index b9eeb6753e9e..e7713678208d 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
+@@ -85,6 +85,9 @@ &mdio0 {
  	ext_rgmii_phy: ethernet-phy@1 {
  		compatible = "ethernet-phy-ieee802.3-c22";
  		reg = <1>;
