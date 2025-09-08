@@ -1,64 +1,65 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4155F2FF645;
-	Mon,  8 Sep 2025 17:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F26313C8E8;
+	Mon,  8 Sep 2025 17:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757352978; cv=none; b=mBac7ISJaK4ePcpfHKaFf6VcWPtzgpazkommtIb023d2oRZFOuwm5DBBxiCyKVHm3nkL1GgndP1tjrUtnFe83J23l4BywWnnjdhR9u+Entr64Jztx+kuzh0hkdJ1ybpMiv1438GcV0ZHKUoJJCT3+VSC9KA0Yz/8/xSWnIO7cx8=
+	t=1757353848; cv=none; b=Q+M+5mlEgni6l6VPs5+G8YUrKZMAU+FmazOwYPRF1q7dGyxtV5Yk18R3LIPmQgADbJRMooRNzNMdQL4Vb0F6am93hXac7TshIj1KCtUL3YCNj3GjnRsqKd8wA7h3mVH32eR7cQ1ABwY/QYGGIX7fIoUS8iU7BS6iySw5DWJzPfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757352978; c=relaxed/simple;
-	bh=8idK2oy7Zo4ccmkOav1LwfHm/x5wjjv4iakprekjEws=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SeWBHzZ5NVIgYia/u6LYpmkB/j3RMdVSLQP6uUv7qjIwy4z5kehS+EWbcbu1n/N2kNg7sMiPjBiCPvNurT7ToQ1oS0MqYFLzgVdZZAFSqXk3nr+st3ryZMTDkn0SSyPIP+78vFH2399GYVihhoMzjRMYyroVgeSHWZat2teI5rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1757353848; c=relaxed/simple;
+	bh=5YY088FLsTyhrftmqQfk5sbO8FI4XvIM5JKW8bZMtq4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kzI/FwhJbirm0asXnaMzBatEvZ7EpKn776+0yfQvtrEs39eFVFUhxtgMM4Rc8Bs0Iof02RYRoX69h3MReuM0nr/ADv6HomycKnnTJaMpI28VLq9JjrCNR/tU2UdK41DxHx8QuUT+had8AW7nMYzc6dfg7TIsb7xoAoYF39LK1io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fomichev.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-77256e75eacso4195859b3a.0;
-        Mon, 08 Sep 2025 10:36:16 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-772301f8ae2so3829365b3a.0;
+        Mon, 08 Sep 2025 10:50:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757352975; x=1757957775;
+        d=1e100.net; s=20230601; t=1757353846; x=1757958646;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TWOkXO1YSMafh5wZGCwi36l6ttH6nWTujllVdXtHiw4=;
-        b=m41Gjo3atWX/arjH9Hj5AMHd1en2zOIBI1NfDbA/IGaIgO90asBuuHbo8xvRAQMQMH
-         LJou2BkW9g0HSoB1uLnG4qLJqTTGtM7ATsO/KQvs2rSKaaOad5Z3Uj1zOABid0LPU/Fe
-         2okzYuvCnEtvxkpZuyMM3Ryi9knnuSFKynqX9uc75ROdOb4tkpGy0DcQR7fAq+HhQq6R
-         pUvyN+dOs4kQlgE8yDfh0KNIShJcttpRucWJdWgNCmpv1hnS1be+8e6IbO5B/qvWxy5e
-         G6UM101sf5Nc1av1FVAl5hLiQF2oVfxJCSed1X15+aChYw6Ak5qfubAXLYe550REVvOP
-         qt+g==
-X-Forwarded-Encrypted: i=1; AJvYcCU7RCQoghAoDz8gFFVj0olHpBySE4WacD7TDSlK7HZBfNAcyiaUK0YF2THcRy1W2zTGEeaOHKe/rId5hlU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4PRozg7QB4gbIb1F+Y1HHhEdZlaNhEALdHrcKOeK2Ig07Q3Qd
-	5QknhyFi8XCnWRaCG2Y+2IIJsUWRPFBct465eoX762rmxn+LYUxhv0DhGHiM
-X-Gm-Gg: ASbGncti4KdZGp5+39n/ZEHwM7JeonGk4WKoMBAqlDUiZNIF330qi6+WwNNhawdk2/2
-	4K9Pm0gYIA1CaPd40GnvKa2Qi2Xypk0Pgc61wuDPCMCiPF8i75h8GOtXW+vU2OHEIzqz96s3L/D
-	L1xkFVgJaJrM5mV+MPzkxNs1Vdkl/KP4YRTBUNNZDUbIoSWANHDXkPJncMC9d/jB5G+ZDEoVqIm
-	oKZG1gH/jHHyoreSlrPZZDFqLCtbS2ISLmifpyx+x3SZ8rd7BUNxrYgdBZFiEYVARUsVMM3QP+b
-	MXyLEXe3JgNhITcvnXpOA1ouJOHsNmT64dAtjr244kzgPoXMQa6dR+x4idPjMSL6Qavj9R2qMJJ
-	bYx9HACxnwsfPxMH5qECB2uTR35FGLRPXgoYJzl9JzGsnHr0zdygwvMuqhTXMBSlXsFlX9fY3gp
-	Rv9r8mmGYfvL9YKg6wFJVc2PEk4tQR/QxaP7KJYRJrHvMfXBJcdNmAVU8n0YJYaE5ZMlU4EKY1f
-	8I5YDE+6R0K+2c=
-X-Google-Smtp-Source: AGHT+IERN6EDSYSkg/6wareSlQZNsXYOru97WYIXq6nvOxJ+0c5Ptsp/1vjusxPOKzL+cQOBPJs60A==
-X-Received: by 2002:a05:6a00:188b:b0:772:63ba:11b with SMTP id d2e1a72fcca58-7742ded355emr10665305b3a.28.1757352975241;
-        Mon, 08 Sep 2025 10:36:15 -0700 (PDT)
+        bh=Z3YSAFfQ0v2sBBmNLG7Qti585x+a4A5KEbS76irY4Js=;
+        b=tWlLTcKM97E6UkmIdqM/bLMudF1IG45YCogDgQm18h+m++oUd7/wfPNVmrqYocW+eA
+         9xsXJb2Ak6Hjqs9HItFSEB60bNBTTf96jDh47MPE2gFD7+43tj7EOSlzp3/F141+SCZo
+         3A61DctViGtPnSIQiMJVM+RGjnO6BGnTDVO6yd5EFfHZFpprnOk9srKp9o6p69LzYH8A
+         Mh5vH0uncW/sFUoBge635uySrvGbibhdAA05sus+y7YWfCwU97FuaLlaDdJcbKBOBeJq
+         p7RD8hqiDtDRWcahDeELiKiD5abLVkbojjsfkmQ4bXt57JaJlvZ4k0pl/+GVaRSeDYjW
+         Yp5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWehKh9yj/paA7Yy4MjlC1CZkWJnfnLaS7zAnBfPAOlLhoW2J67vmawlLP2BxjcNhwYW6GxbsbgeCkq75g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx48T5v0nMhbZnK6WKzAr1qwInXGO60S/ptnoOdEfaUriNXbuWw
+	M0NEa+HGtCMCBxUP/DmjZCLIJDhDFGYS0ziMr6ZfL+4z+4EOLN9O4FS39PIc
+X-Gm-Gg: ASbGncvFrFLaeoHk23bJoxkW+H00+HfmpEXXCmabEm1X4nPAgB9IykhcGgAYz2yq3fZ
+	0GLZe2VOIbRUHwC/ri2p9wuFQDlDV5WoNeSRZ8eEVnK3XIRqoHktZM7npHYPpQh+2blFYdVSWYe
+	XJJq94V82KzgEqyQFFdiMiOg/VZyB/ZZRX4EMu5gt9IVArZBuqVwYpvayPzioUCw4+onw8QH08+
+	3+UUWbmq+zlv2ltcALPy9Tz9swH5VXExrDNeOzoeUp+HJ2w5vENY00Kgosq8ttAHcao6Mtb4eqV
+	T8hPtfmSsWAjid3bVIg0d/r+tOLbTdfutGHIi965MU7FHvvkaf8a+HJGtnWPeUTi0LD8OgJqo8O
+	PrIWtNw3BGQ0fY1fOafgBTDuPgbfaEaPeQoe5dTZMZwtxqP8SJkatTSZZ5DTZoS5ffRjdo+jmUC
+	5eGHFe9SyvKFAPXUBWWQ+1fe6eBZcu8vG553JyMRcnEl7Vx/o55VfKQcFR6vTqtEs+ZQNkxvz6t
+	K/F
+X-Google-Smtp-Source: AGHT+IGcxfNb22s3jr7+1Cy+2Q+z7L23H4uk3O3sxYxG7gKcFstVC/6fh4ReASuZxujTamDx3bUf7A==
+X-Received: by 2002:a05:6a20:7f8a:b0:250:300f:2f32 with SMTP id adf61e73a8af0-2534547a71cmr12155131637.45.1757353846344;
+        Mon, 08 Sep 2025 10:50:46 -0700 (PDT)
 Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7722a2b2f56sm29887344b3a.26.2025.09.08.10.36.14
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b4d96829a66sm25333596a12.6.2025.09.08.10.50.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 10:36:14 -0700 (PDT)
+        Mon, 08 Sep 2025 10:50:45 -0700 (PDT)
 From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	sd@queasysnail.net,
-	andrew+netdev@lunn.ch,
-	sdf@fomichev.me,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	dsahern@kernel.org,
+	horms@kernel.org,
 	linux-kernel@vger.kernel.org,
-	syzbot+7e0f89fb6cae5d002de0@syzkaller.appspotmail.com
-Subject: [PATCH net] macsec: sync features on RTM_NEWLINK
-Date: Mon,  8 Sep 2025 10:36:14 -0700
-Message-ID: <20250908173614.3358264-1-sdf@fomichev.me>
+	Mina Almasry <almasrymina@google.com>
+Subject: [PATCH net-next] net: devmem: expose tcp_recvmsg_locked errors
+Date: Mon,  8 Sep 2025 10:50:45 -0700
+Message-ID: <20250908175045.3422388-1-sdf@fomichev.me>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,70 +69,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Syzkaller managed to lock the lower device via ETHTOOL_SFEATURES:
+tcp_recvmsg_dmabuf can export the following errors:
+- EFAULT when linear copy fails
+- ETOOSMALL when cmsg put fails
+- ENODEV if one of the frags is readable
+- ENOMEM on xarray failures
 
- netdev_lock include/linux/netdevice.h:2761 [inline]
- netdev_lock_ops include/net/netdev_lock.h:42 [inline]
- netdev_sync_lower_features net/core/dev.c:10649 [inline]
- __netdev_update_features+0xcb1/0x1be0 net/core/dev.c:10819
- netdev_update_features+0x6d/0xe0 net/core/dev.c:10876
- macsec_notify+0x2f5/0x660 drivers/net/macsec.c:4533
- notifier_call_chain+0x1b3/0x3e0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2267 [inline]
- call_netdevice_notifiers net/core/dev.c:2281 [inline]
- netdev_features_change+0x85/0xc0 net/core/dev.c:1570
- __dev_ethtool net/ethtool/ioctl.c:3469 [inline]
- dev_ethtool+0x1536/0x19b0 net/ethtool/ioctl.c:3502
- dev_ioctl+0x392/0x1150 net/core/dev_ioctl.c:759
+But they are all ignored and replaced by EFAULT in the caller
+(tcp_recvmsg_locked). Expose real error to the userspace to
+add more transparency on what specifically fails.
 
-It happens because lower features are out of sync with the upper:
+In non-devmem case (skb_copy_datagram_msg) doing `if (!copied)
+copied=-EFAULT` is ok because skb_copy_datagram_msg can return only EFAULT.
 
-  __dev_ethtool (real_dev)
-    netdev_lock_ops(real_dev)
-    ETHTOOL_SFEATURES
-      __netdev_features_change
-        netdev_sync_upper_features
-          disable LRO on the lower
-    if (old_features != dev->features)
-      netdev_features_change
-        fires NETDEV_FEAT_CHANGE
-	macsec_notify
-	  NETDEV_FEAT_CHANGE
-	    netdev_update_features (for each macsec dev)
-	      netdev_sync_lower_features
-	        if (upper_features != lower_features)
-	          netdev_lock_ops(lower) # lower == real_dev
-		  stuck
-		  ...
-
-    netdev_unlock_ops(real_dev)
-
-Per commit af5f54b0ef9e ("net: Lock lower level devices when updating
-features"), we elide the lock/unlock when the upper and lower features
-are synced. Makes sure the lower (real_dev) has proper features after
-the macsec link has been created. This makes sure we never hit the
-situation where we need to sync upper flags to the lower.
-
-Reported-by: syzbot+7e0f89fb6cae5d002de0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7e0f89fb6cae5d002de0
-Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+Cc: Mina Almasry <almasrymina@google.com>
 Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 ---
- drivers/net/macsec.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 01329fe7451a..0eca96eeed58 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -4286,6 +4286,7 @@ static int macsec_newlink(struct net_device *dev,
- 	if (err < 0)
- 		goto del_dev;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 588932c3cf1d..c56d53e32c29 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2820,7 +2820,7 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
+ 							 used);
+ 				if (err <= 0) {
+ 					if (!copied)
+-						copied = -EFAULT;
++						copied = err;
  
-+	netdev_update_features(dev);
- 	netif_stacked_transfer_operstate(real_dev, dev);
- 	linkwatch_fire_event(dev);
- 
+ 					break;
+ 				}
 -- 
 2.51.0
 
