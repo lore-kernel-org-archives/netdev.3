@@ -1,274 +1,205 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15B41E1DE7;
-	Mon,  8 Sep 2025 17:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1F128399;
+	Mon,  8 Sep 2025 17:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757352242; cv=none; b=dwqTRsWf0M6zh9+twdlmh8zon3Vgk7sJAUp4feyCG3qUdBD4cT4xoEB4azEz0FWVvU2ppI2iAqacXpiIJT50e+fj1jZ3MBs6VdjwDanUVf2IpeZkeEoDeZP4SEyzODAJLrlKvW1B7B4opBNi2gIv0uSWWaYpwuu1l70WMcbt7q0=
+	t=1757352709; cv=none; b=RXt+8fPeLht4hOLPaWnvZEJ3AJMhXdO8G6xRQIZOtRHJBzNAwljQivOnKaPDlQoLb6qivPmPoAkI1z8tlZKltvJMMxPut/BbXC0ifkclRLRB+gcpuBCUif0t/laeb4u+g7yU3NPgcy4IHaH7GeqBivpO+pkeo2ZW9CIfvzqZ7cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757352242; c=relaxed/simple;
-	bh=qneFfOqnL/55hc/APD1To1k5e3b7xuMXLn1DjS+W9Cc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UT9gIoModkffWt8I4IckHFRuKPVbvL5KmcqrqEKsbPDcSMbaKQtJat3YYfE0/NQfXwuiRI6xinLCnlcfqEjpC7qS+HO61hAmRqTFD/1NytbrNcn29R7u75tDDuqfWLFSokEiICbmMG1ZxTs20OhrA1gJjy7XTagkWeQaH8Va//A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2vV+QMV; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757352709; c=relaxed/simple;
+	bh=+GJvdWbYdEkO2iexLk7YraWW+Q1K7c80iEct8a7Ig08=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=myFgTMlijUpivlObkhpf9SM+gz/89mPcn1pnyCqQIs0INvVmEk64ufNcAb1Pqx2BAII23TTy3jgGE74BgI9AsNKHwaH4bbLYxFeaKDE7aU9HRF0mA5/nZeYUx45aFGiIarY6u3WKBvrZzTFmmOWwpGt25uO9c5FTH6UxCTb3/7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nKb0Vaa6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2vV+QMV"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-71d6059f490so40334467b3.3;
-        Mon, 08 Sep 2025 10:24:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757352240; x=1757957040; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yuKkpzYEiCvO71Ei8abl0SPWjd7LNSODsnz5Kg8MlhA=;
-        b=C2vV+QMVJFDfR8jehzlTm5HJbwVXpDKegkYWvu9e1mKM7Q/VKBMONgRrYUD4vze+je
-         w3S/scGhQcI8TDxSt37Mq8rK2epOK8JNh30Se0eixan5bXfwKmCczcRvTJBZ1lpSL6fJ
-         rNXDgX2jjD3u2j95EbOEIJGBqi5HhC6vA9GswNZwsG4Y1AOVjJXldjC4/E+jftOciRZv
-         Z4dV3SvORoqVE/Y6VrPmS1UxDUEhQk9WC+uOOk339p5NdwHYG3G09Jkswwck0TJmYlRW
-         jSO3rV9a7AlecJRSCm3n4ZHPcfD43ZNQuwLXzV4R6qCr3VWyvXEJWZfBeKP8IcJwswCt
-         fIuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757352240; x=1757957040;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yuKkpzYEiCvO71Ei8abl0SPWjd7LNSODsnz5Kg8MlhA=;
-        b=iiBSGKlt+fzG3p+dsL/mAeQ/Y5s5pbg3AXDMZ02Rihgu252I3vZpmTxLCDESXsRrJy
-         tD3gVtiwjWaH/LUNJwzWWr0OPt2tonfD/zr8Rw1J3p8Cv7K86eKXTkNyTMp5+Ow6a9BO
-         0Fc8k3dYwTVumVuzQ4Tvvx1CCtZtEbV2Rgrv2IpNW1JJtKnEjlYJmfUEgb7CbM0IpRSC
-         puhIpi3ooBfv9PSLvSwE0zRT3nIlUzl9dB8o8zQRqsekxLhFV3yau86wh/RTWE9bz92Q
-         o1TQnK08I8KYo5jZjl5Vhw8H/MjlezqIVFc85+y4bZG6dKZwC9FMMpYMMbCKnYOFgaRH
-         exlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX0Xyuobl35QzRB7c/c8X+eAHlEceC5anqA4VUH1I62EdDz8CrB4mzsfXrIJ5yMaau25OFuoa4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzO+XBUcjRXfQhm0ZWEO+CeZLX9ZBra3tWiQBbdtbX0+WW59zxb
-	o5vQC1I1LLZAeojltEgBMbyhaj+J0WYeEd6o37hsJb8L1dg4GnOI2wxImerTnmHB/9d6XNhN4tl
-	/emxZZTOatEkEKRN0JbVcLHOVrNFyuJNFKHEL
-X-Gm-Gg: ASbGncvPQzZc5REC8vw85wBKCD0qFk7+lH4Eu5k/VQWm5NLinvYiQ2dwDnLzDtq1HNX
-	ccMnIFZqiHj5l0hn4fCZBRJ/9QLhu1NbxXyLI3VEahb+tG5xSPgNYi2T6JF48F2qtlrI72cxtN9
-	ssCtGPLWgbDI4KmZ8j7AX7kerFE33NSkKXJhxDNrm4+1V+lVB2Op1U10QpQFzzqTHVFQ2fQsGQa
-	STWMjs=
-X-Google-Smtp-Source: AGHT+IFmcR6kIZTfFFH38Mv50nfyJ8VTSCs13f+os33Iq32qw8+PAHy+dsPhdR+ID+BxjLqjAnctIj1Ev7XrqZSudYk=
-X-Received: by 2002:a05:690c:4444:b0:721:3bd0:d5b4 with SMTP id
- 00721157ae682-727f652a236mr79006277b3.33.1757352239722; Mon, 08 Sep 2025
- 10:23:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nKb0Vaa6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2627C4CEF1;
+	Mon,  8 Sep 2025 17:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757352708;
+	bh=+GJvdWbYdEkO2iexLk7YraWW+Q1K7c80iEct8a7Ig08=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nKb0Vaa6R6NYNEhMOdCuSCZp+oUbllfgqCTq09Di+mi3HR05l7lLTtqUXO2QiPh5D
+	 2TkhXqVhsnCGDCILeuJ3Th5CZnGG/+Qy0vxAG1rQ7kOTmpDbwoxX0SpIlmc6yizT2u
+	 PBjtsWe4axam2aOM6I6nsko6txOuJ921r9tItcjIzmsK4kpJs9uFkg+dnjPocJxG6E
+	 i08+j0L54EyL4hquPoVsrO70xn22r89elZosE1O65Jzv/BIyWhEOE9/iwQNlQFw4EX
+	 gEEuvbp2hHx3njq3vEXg+8sgwjfCPgqFs8D8t63V0nQP0r8cronoUzyfFtmzjAPQDa
+	 lV0LtmAheILWg==
+Message-ID: <23a66a02-7de9-40c5-995d-e701cb192f8b@kernel.org>
+Date: Mon, 8 Sep 2025 19:31:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250905173352.3759457-1-ameryhung@gmail.com> <20250905173352.3759457-2-ameryhung@gmail.com>
- <4hgasq7ibnulieu77b4bryhouggobgousci7z2i3pefv7ofysh@j3qeucyw5wv5>
-In-Reply-To: <4hgasq7ibnulieu77b4bryhouggobgousci7z2i3pefv7ofysh@j3qeucyw5wv5>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Mon, 8 Sep 2025 10:23:48 -0700
-X-Gm-Features: Ac12FXxxe1yFTTrTU9YLONLqW1XUVSPH2DSVnCDNx2pozF0qEODf_ma-DU3pwss
-Message-ID: <CAMB2axOoZysP2QtiLF+rYU_RebF140zPN4FjAm3AF1wW8yFLuQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v2 1/7] net/mlx5e: Fix generating skb from
- nonlinear xdp_buff
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, kuba@kernel.org, 
-	stfomichev@gmail.com, martin.lau@kernel.org, mohsin.bashr@gmail.com, 
-	noren@nvidia.com, saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
-	maciej.fijalkowski@intel.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH mptcp] mptcp: sockopt: make sync_socket_options propagate
+ SOCK_KEEPOPEN
+Content-Language: en-GB, fr-BE
+To: Krister Johansen <kjlx@templeofstupid.com>
+Cc: Geliang Tang <geliang@kernel.org>, Mat Martineau <martineau@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ David Reaver <me@davidreaver.com>
+References: <aLuDmBsgC7wVNV1J@templeofstupid.com>
+ <ab6ff5d8-2ef1-44de-b6db-8174795028a1@kernel.org>
+ <83191d507b7bc9b0693568c2848319932e6b974e.camel@kernel.org>
+ <78d4a7b8-8025-493a-805c-a4c5d26836a8@kernel.org>
+ <aL8RoSniweGJgm3h@templeofstupid.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <aL8RoSniweGJgm3h@templeofstupid.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 8, 2025 at 7:42=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com>=
- wrote:
+Hi Krister,
 
-Resending the reply to the list again as some html stuff accidentally
-got mixed in
+On 08/09/2025 19:25, Krister Johansen wrote:
+> On Mon, Sep 08, 2025 at 07:13:12PM +0200, Matthieu Baerts wrote:
+>> Hi Geliang,
+>>
+>> On 07/09/2025 02:51, Geliang Tang wrote:
+>>> Hi Matt,
+>>>
+>>> On Sat, 2025-09-06 at 15:26 +0200, Matthieu Baerts wrote:
+>>>> Hi Krister,
+>>>>
+>>>> On 06/09/2025 02:43, Krister Johansen wrote:
+>>>>> Users reported a scenario where MPTCP connections that were
+>>>>> configured
+>>>>> with SO_KEEPALIVE prior to connect would fail to enable their
+>>>>> keepalives
+>>>>> if MTPCP fell back to TCP mode.
+>>>>>
+>>>>> After investigating, this affects keepalives for any connection
+>>>>> where
+>>>>> sync_socket_options is called on a socket that is in the closed or
+>>>>> listening state.  Joins are handled properly. For connects,
+>>>>> sync_socket_options is called when the socket is still in the
+>>>>> closed
+>>>>> state.  The tcp_set_keepalive() function does not act on sockets
+>>>>> that
+>>>>> are closed or listening, hence keepalive is not immediately
+>>>>> enabled.
+>>>>> Since the SO_KEEPOPEN flag is absent, it is not enabled later in
+>>>>> the
+>>>>> connect sequence via tcp_finish_connect.  Setting the keepalive via
+>>>>> sockopt after connect does work, but would not address any
+>>>>> subsequently
+>>>>> created flows.
+>>>>>
+>>>>> Fortunately, the fix here is straight-forward: set SOCK_KEEPOPEN on
+>>>>> the
+>>>>> subflow when calling sync_socket_options.
+>>>>>
+>>>>> The fix was valdidated both by using tcpdump to observe keeplaive
+>>>>> packets not being sent before the fix, and being sent after the
+>>>>> fix.  It
+>>>>> was also possible to observe via ss that the keepalive timer was
+>>>>> not
+>>>>> enabled on these sockets before the fix, but was enabled
+>>>>> afterwards.
+>>>>
+>>>>
+>>>> Thank you for the fix! Indeed, the SOCK_KEEPOPEN flag was missing!
+>>>> This
+>>>> patch looks good to me as well:
+>>>>
+>>>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>>>>
+>>>>
+>>>> @Netdev Maintainers: please apply this patch in 'net' directly. But I
+>>>> can always re-send it later if preferred.
+>>>
+>>> nit:
+>>>
+>>> I just noticed his patch breaks 'Reverse X-Mas Tree' order in
+>>> sync_socket_options(). If you think any changes are needed, please
+>>> update this when you re-send it.
+>>
+>> Sure, I can do the modification and send it with other fixes we have.
+> 
+> Thanks for the reviews, Geliang and Matt.  If you'd like me to fix the
+> formatting up and send a v2, I'm happy to do that as well.  Just let me
+> know.
 
->
-> On Fri, Sep 05, 2025 at 10:33:45AM -0700, Amery Hung wrote:
-> > xdp programs can change the layout of an xdp_buff through
-> > bpf_xdp_adjust_tail() and bpf_xdp_adjust_head(). Therefore, the driver
-> > cannot assume the size of the linear data area nor fragments. Fix the
-> > bug in mlx5 by generating skb according to xdp_buff after xdp programs
-> > run.
-> >
-> Shouldn't this patch be a fix for net then?
+I was going to apply this diff:
 
-Make sense. I will separate the mlx5 patch from this set and target net.
+> diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
+> index 13108e9f982b..2abe6f1e9940 100644
+> --- a/net/mptcp/sockopt.c
+> +++ b/net/mptcp/sockopt.c
+> @@ -1532,11 +1532,12 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
+>  {
+>         static const unsigned int tx_rx_locks = SOCK_RCVBUF_LOCK | SOCK_SNDBUF_LOCK;
+>         struct sock *sk = (struct sock *)msk;
+> -       int kaval = !!sock_flag(sk, SOCK_KEEPOPEN);
+> +       bool keep_open;
+>  
+> +       keep_open = sock_flag(sk, SOCK_KEEPOPEN);
+>         if (ssk->sk_prot->keepalive)
+> -               ssk->sk_prot->keepalive(ssk, kaval);
+> -       sock_valbool_flag(ssk, SOCK_KEEPOPEN, kaval);
+> +               ssk->sk_prot->keepalive(ssk, keep_open);
+> +       sock_valbool_flag(ssk, SOCK_KEEPOPEN, keep_open);
+>  
+>         ssk->sk_priority = sk->sk_priority;
+>         ssk->sk_bound_dev_if = sk->sk_bound_dev_if;
 
->
-> > Currently, when handling multi-buf xdp, the mlx5 driver assumes the
-> > layout of an xdp_buff to be unchanged. That is, the linear data area
-> > continues to be empty and fragments remains the same. This may cause
-> > the driver to generate erroneous skb or triggering a kernel
-> > warning. When an xdp program added linear data through
-> > bpf_xdp_adjust_head(), the linear data will be ignored as
-> > mlx5e_build_linear_skb() builds an skb without linear data and then
-> > pull data from fragments to fill the linear data area. When an xdp
-> > program has shrunk the non-linear data through bpf_xdp_adjust_tail(),
-> > the delta passed to __pskb_pull_tail() may exceed the actual nonlinear
-> > data size and trigger the BUG_ON in it.
-> >
-> > To fix the issue, first record the original number of fragments. If the
-> > number of fragments changes after the xdp program runs, rewind the end
-> > fragment pointer by the difference and recalculate the truesize. Then,
-> > build the skb with linear data area matching the xdp_buff. Finally, onl=
-y
-> > pull data in if there is non-linear data and fill the linear part up to
-> > 256 bytes.
-> >
-> > Fixes: f52ac7028bec ("net/mlx5e: RX, Add XDP multi-buffer support in St=
-riding RQ")
-> Your fix covers both Legacy RQ and Striding RQ. So the tag is only 1/2
-> correct. Normally we have separate patches for each mode.
+(sock_flag() returns a bool, and 'keep_open' is maybe clearer)
 
-Will split the patch into two.
+But up to you, I really don't mind if you prefer to send the v2 by
+yourself, just let me know.
 
->
->
->
-> > Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> > ---
-> >  .../net/ethernet/mellanox/mlx5/core/en_rx.c   | 38 +++++++++++++++++--
-> >  1 file changed, 35 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/=
-net/ethernet/mellanox/mlx5/core/en_rx.c
-> > index b8c609d91d11..6b6bb90cf003 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
-> > @@ -1729,6 +1729,7 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *rq,=
- struct mlx5e_wqe_frag_info *wi
-> >       struct mlx5e_wqe_frag_info *head_wi =3D wi;
-> >       u16 rx_headroom =3D rq->buff.headroom;
-> >       struct mlx5e_frag_page *frag_page;
-> > +     u8 nr_frags_free, old_nr_frags;
-> >       struct skb_shared_info *sinfo;
-> >       u32 frag_consumed_bytes;
-> >       struct bpf_prog *prog;
-> > @@ -1772,17 +1773,27 @@ mlx5e_skb_from_cqe_nonlinear(struct mlx5e_rq *r=
-q, struct mlx5e_wqe_frag_info *wi
-> >               wi++;
-> >       }
-> >
-> > +     old_nr_frags =3D sinfo->nr_frags;
-> > +
-> >       prog =3D rcu_dereference(rq->xdp_prog);
-> >       if (prog && mlx5e_xdp_handle(rq, prog, mxbuf)) {
-> >               if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, rq->flag=
-s)) {
-> >                       struct mlx5e_wqe_frag_info *pwi;
-> >
-> > +                     wi -=3D old_nr_frags - sinfo->nr_frags;
-> > +
-> >                       for (pwi =3D head_wi; pwi < wi; pwi++)
-> >                               pwi->frag_page->frags++;
-> >               }
-> >               return NULL; /* page/packet was consumed by XDP */
-> >       }
-> >
-> > +     nr_frags_free =3D old_nr_frags - sinfo->nr_frags;
-> > +     if (unlikely(nr_frags_free)) {
-> Even with with a branch prediction hint, is it really worth it?
->
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-[...]
-
->
-> > +             wi -=3D nr_frags_free;
-> > +             truesize -=3D nr_frags_free * frag_info->frag_stride;
-> > +     }
-> > +
-> >       skb =3D mlx5e_build_linear_skb(
-> >               rq, mxbuf->xdp.data_hard_start, rq->buff.frame0_sz,
-> >               mxbuf->xdp.data - mxbuf->xdp.data_hard_start,
-> > @@ -2004,6 +2015,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_r=
-q *rq, struct mlx5e_mpw_info *w
-> >       u32 byte_cnt       =3D cqe_bcnt;
-> >       struct skb_shared_info *sinfo;
-> >       unsigned int truesize =3D 0;
-> > +     u32 pg_consumed_bytes;
-> >       struct bpf_prog *prog;
-> >       struct sk_buff *skb;
-> >       u32 linear_frame_sz;
-> > @@ -2057,7 +2069,7 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_r=
-q *rq, struct mlx5e_mpw_info *w
-> >
-> >       while (byte_cnt) {
-> >               /* Non-linear mode, hence non-XSK, which always uses PAGE=
-_SIZE. */
-> > -             u32 pg_consumed_bytes =3D min_t(u32, PAGE_SIZE - frag_off=
-set, byte_cnt);
-> > +             pg_consumed_bytes =3D min_t(u32, PAGE_SIZE - frag_offset,=
- byte_cnt);
-> >
-> >               if (test_bit(MLX5E_RQ_STATE_SHAMPO, &rq->state))
-> >                       truesize +=3D pg_consumed_bytes;
-> > @@ -2073,10 +2085,15 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e=
-_rq *rq, struct mlx5e_mpw_info *w
-> >       }
-> >
-> >       if (prog) {
-> > +             u8 nr_frags_free, old_nr_frags =3D sinfo->nr_frags;
-> > +             u32 len;
-> > +
-> >               if (mlx5e_xdp_handle(rq, prog, mxbuf)) {
-> >                       if (__test_and_clear_bit(MLX5E_RQ_FLAG_XDP_XMIT, =
-rq->flags)) {
-> >                               struct mlx5e_frag_page *pfp;
-> >
-> > +                             frag_page -=3D old_nr_frags - sinfo->nr_f=
-rags;
-> > +
-> >                               for (pfp =3D head_page; pfp < frag_page; =
-pfp++)
-> >                                       pfp->frags++;
-> >
-> > @@ -2087,9 +2104,22 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_=
-rq *rq, struct mlx5e_mpw_info *w
-> >                       return NULL; /* page/packet was consumed by XDP *=
-/
-> >               }
-> >
-> > +             len =3D mxbuf->xdp.data_end - mxbuf->xdp.data;
-> > +
-> > +             nr_frags_free =3D old_nr_frags - sinfo->nr_frags;
-> > +             if (unlikely(nr_frags_free)) {
-> Same question about the if.
-
-I see. I will make the recalculation unconditional.
-
->
-> > +                     frag_page -=3D nr_frags_free;
-> > +
-> > +                     /* the last frag is always freed first */
-> > +                     truesize -=3D ALIGN(pg_consumed_bytes, BIT(rq->mp=
-wqe.log_stride_sz));
-> > +                     while (--nr_frags_free)
-> > +                             truesize -=3D nr_frags_free *
-> > +                                         ALIGN(PAGE_SIZE, BIT(rq->mpwq=
-e.log_stride_sz));
-> > +             }
-> > +
-> This doesn't seem correct. It seems to remove too much from truesize
-> when nr_frags_free > 2. I think it should be:
->
-> truesize -=3D ALIGN(pg_consumed_bytes, BIT(rq->mpwqe.log_stride_sz)) -
->             (nr_frags_free - 1) * ALIGN(PAGE_SIZE, BIT(rq->mpwqe.log_stri=
-de_sz));
->
-> And PAGE_SIZE is aligned to stride size so you can shorted it to:
->
-> truesize -=3D ALIGN(pg_consumed_bytes, BIT(rq->mpwqe.log_stride_sz)) -
->             (nr_frags_free - 1) * PAGE_SIZE;
-
-Sorry that I was being sloppy here. You are correct, and I think you
-probably meant "+" instead of "-".
-
-truesize -=3D ALIGN(pg_consumed_bytes, BIT(rq->mpwqe.log_stride_sz)) +
-             (nr_frags_free - 1) * PAGE_SIZE;
-
->
-> Thanks,
-> Dragos
->
