@@ -1,63 +1,63 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0BC2E2EE4;
-	Mon,  8 Sep 2025 10:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7E72EB86F;
+	Mon,  8 Sep 2025 10:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757329158; cv=none; b=m5WXR3Gh+85eBVKcXAKh+cf2s6cCpP0wMyg2ur5f+OE2YhHRajWHGBSmDsGqEzi/KxyyRkn5P4EcCirUwa6UfCt8vUmvrNFzf0ZBlzcwOGOPOWq4YbNSJ+kC32XqgMIxy31xosTMUxP7GVziYVnWz6DLz1H3g2mtL3qYNPY+V0I=
+	t=1757329159; cv=none; b=J2vsT2qIMvyLK6fShz1b1ZhEIVEKhPSiaANH11MdHNRWDfDs4NE9qcb6UFebF/2364RWFWUL+RTJ0k+pUP0f3jDs9bniII2hY/Crv+zEXVnPR1pyXddJyUi0f1ChwuFoPvvsJAMDRw9mAXRp1caftpFy7a3hvXJhlFF4Z/t9t0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757329158; c=relaxed/simple;
-	bh=iapixa64kjytIq8WdaD+DnYpon6Dk8Z39NYSWqnWZlw=;
+	s=arc-20240116; t=1757329159; c=relaxed/simple;
+	bh=Q8ZmvH2dcnPSKkYNIQCMCNSaVbab0qTqP/gwu87zQs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3bkRN8uh5Wvs3dAp55FjMd1bIkuNXkypxaBIM9IoEeRNJDwIpTG5nLAbh85buhfzsOraI006VDzgOwm6cQJI3zMEnZmN2LgNvlPVQ+w/BgrZDvittIDjeE7teantxJhYrJdqapRuB9XKaY/UKAep9CV1/EQ5zefRfZ8nKyK/xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEeTNmhR; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=oe8LNXoaLe9I5uULsTKlJK3BVVZfonF9/5Ie3Jvi2IlQO+hFpLhOZwBkGZilGdUZYkdlMG8h6+4Ffjf05uVCx7ajBocLkJP0KCnVe5GjaBiFOElctFeEt+gBM7lF/V1xBhIIu93fIs5SJCh10wrScVlxuWNiUrfO+40/oRsDB0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cP1te8fB; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEeTNmhR"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45ddddbe31fso10674175e9.1;
-        Mon, 08 Sep 2025 03:59:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cP1te8fB"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-45dcff2f313so25307495e9.0;
+        Mon, 08 Sep 2025 03:59:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757329153; x=1757933953; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757329155; x=1757933955; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2tT1Xp52aCmTF02+8Ud3J8zJAyZxLoOv8A3lD9qbLto=;
-        b=YEeTNmhRt233HxSzYdBGV32DepfOoexetEQU5bdEdjvPndOS5ZRy7t0ygFg19DzxLr
-         yvRKabUpf/xs5xONsCSAPv+X+zD9qKDuWPvMCiKLKAhac9aObSllneZLWH8vFRkLToK8
-         EA2o5Uv9+pVVoU6LmktywBYYM/BOqEWNVVZJzK/9wRddR4sLctzT+wu9Y4l02w/P9Ye7
-         gWFBeWbcYtg4PhMnUNdVgkhxH7YllblFiqAe00+wi9ZL/UkqI2H7gCwA46gRUpprzf2I
-         tqL72MKk4g8rEEq1xU3H/oUzYEjXmtBtuBXlirV93epeMZxXhUqfXnhDimUzx/5difiZ
-         gNew==
+        bh=uf/M2p3yJHaMrS3IqSkuhZTHc2x/xMcbIpQDOhQMCBY=;
+        b=cP1te8fBdIgPGaOLs0uVTtHKJXEOK2D49rGd4yNikyeg1PM+FLply68Oczw9jXS5BW
+         uNVVCGKeLyaDRxKIjRZlTT3UpmkBhDp0PIfzG5DSI4y3uiSjJGZ2zSnWCtUxYSYG4v49
+         UEaq0Odo1BNVzh52jvn5KOAp6FgD3qzotojcNrpw8EZuCpnlXI09cgcTkuHmvg0t7vuX
+         VRied9PevdDaXCZiLW6KHKwGX0jWSLeI8EOh25d655Deu5B1l5pYdB4+zn6Enej4LOWl
+         z76PR8p+yjge2D6vH/kyL5aKhr0iTyk+dZUowVoe3S8cMo1bD5ZR6BDxxfNOSlZgSXXY
+         ymvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757329153; x=1757933953;
+        d=1e100.net; s=20230601; t=1757329155; x=1757933955;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2tT1Xp52aCmTF02+8Ud3J8zJAyZxLoOv8A3lD9qbLto=;
-        b=NMQygemAwumrEobCoMYiucI4d4+8tfrRGKCp6H/Va1OQHG6p+JB1BaF/beZKWWcRTZ
-         ioeMLQyBSptESd4ZDw1r/YQp3n0JpTJbbfGAGtUzc4pUon3TrElUD11KmWnCTUnlWtdf
-         Ccsa+kNTbGxjZrhkIUsiRxbo8l8HQYpH5hq0/CcSqmIdNwy5eWumNtm0RCvhfrLrmHba
-         /kuyWDuwvWMnmzL27slvTp0CQEzwHv7Tv413X0o8ZVtDDCC+zEDUSXrvxJZGgUxtWjf4
-         d99Dp9g0OHvlE2TZ17pdc0FRuwiLzQ8YJxj4KBFafE1dn+l44LatX35dzjfPRj6BLdhl
-         X1nA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3LOhrsAWSm4v872BKfRFlj2aqvzrWnHOWuDLAu7fi6PN5cI6s1Drh5JZV2gtY6DJNo1WXeo1E2OfkMo0QFknxiFg=@vger.kernel.org, AJvYcCVn1TgoieWGYzwx0Qm3Z4Xo082mS6uVG7b7ONcHRLsLMFhH/f7GFcFOm1XvBiYe2CqyvdU4tvU2yOEW@vger.kernel.org, AJvYcCWpZt6OT8+KPTrXd+9yjiURic5FCoU2Nzq86er69pB730DdcO/6lpxbsjW0B42qkIbrREpFbNSKGUKVZrjX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxbhCUhjtjsAhbgea7EtrMIrxz8Fc/GokC3Yjqkso9JTFl3Kol
-	7XmEegV5kb6DL7AOmkBjpsOaMwgYrlwRzQt/JNeIysJr+QPzCt/OjLTi
-X-Gm-Gg: ASbGncsRY0ZWn2ffshc22h2x1Gq9HjHJFTT6x2t9OaXx5T2WTcxEeQUnaT3rl//UJDC
-	TMsLhB/VtcS58V1pgbtvMt2NAoYUdK6OY1O6GyiSJRTffvq980RmRofEqMpms+NaOSijJbUNgya
-	wHH4cXRN9dYsyXs4q7BFjnUxkxJRAuTLPe5YAc8DNOQZS0ln/ULesZ1Ud64MJmI0jSyotGNtqru
-	bcJTFV1BXaZztKB2rcMXY8gFEHbNohSIq6xElymk0LIvEkpxkseX+WbvT6qwI+/rpbaZ5mIDpFW
-	oqlaG5GXfMBpu0nS2os0ELQJQcJYqO+tFc06nKMtN2ElEAsvR1mz8J9LKJibJRXPhYFciecXnbS
-	a5WgtcLeNNmBH14eWY7PmEEYpv+ljGvEPijbZ8R0VibK+1+LsIpUEk1qR5B6RjTpnEEy3
-X-Google-Smtp-Source: AGHT+IGEc8edQOs3dhheC9RQKQGoxTtdML+eQP6weXI+CH1pZvzlnV0eMSoMuxHSD+mTWez85Xg/MQ==
-X-Received: by 2002:a05:600c:1c0d:b0:45d:d353:a491 with SMTP id 5b1f17b1804b1-45ddde868admr61847095e9.1.1757329152682;
-        Mon, 08 Sep 2025 03:59:12 -0700 (PDT)
+        bh=uf/M2p3yJHaMrS3IqSkuhZTHc2x/xMcbIpQDOhQMCBY=;
+        b=TVPA3LxfMoLOXKg8uNS/DT9QN2K6dQMZCEXJML/0kZid4Emf43SWj+BttnQdE05aXw
+         nKV4rBrP+u1Aetqlu9EanacYWAgk85zLJK0bn8tTV2kzXHTpIAza+X/RgyXV89iaYo4h
+         FYnCvg5Wd3GQ+X96LhLNGWn0hoSX1uOUr0/Y8DPVOkGsOjmGhPFi/chD/1LPbnwtRq+l
+         91YiyfNRWGtW9bOw7408cax/o47xZVpEmQlMIv35d/fk5RyVkwxi0X8jZW01RcapNSHn
+         FFmyGxVKxLnWFfXGtRM28vOTe39vKf0aPEDcfur3d/IznE4g/xaf72QhbQxx5slx0uLc
+         NaiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXi3CP1BHbw+GbGFgkL2Y7s2io/mbVH99dbCJLDhZr50TYCrmUJfCfVCBop6vdam30m7kRf7sphVCC7lDNCOfII5g=@vger.kernel.org, AJvYcCUZ3DGNjtcGlS4s0jihewR8KlhQW0zTZdmYYZ4Jof1TM/NPKbs1tgJZG0bj8NV7dI70wopRs7avFgPTE6Zp@vger.kernel.org, AJvYcCV9JkMPdI4EkNbakAh2CUKO5OEuK2LdfIJiJ3L/H3GZJH5ksSe5+wC16viOwzvWD6XMKGkTKjS8HBY4@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSqmPfGkUeXqjSV0z1nopfmDO3MVHARxSE9uBkZJ/DCTayxS3y
+	ddj6yMmxJilNp9UXLwQhhsQA0q4JiGf7bK8ca/5FDhIXh/00SEx/DppZ
+X-Gm-Gg: ASbGncuMVq9IC84FoSPsacOeZ94yZB37pC1bW/O+ro9udZQTr+qHSF3N4NyMqu5niZG
+	aHDzEKBHka8KRH1newm++v6CK5BOEUgOjNDac41ghzX+hSiI6gEljCcIayyWXDDMC8mf9Mh7JvX
+	AzFpl8tTo3MGDNwx6NT2vm82CmD/RBQnQrjBV6pll1dti36wKGK9QyFGRH8VhX9rJoV7JuIJ1Eh
+	MuGw+BQuGPjr/MBEHDhCQJEWkF+0up0sty/KwsewwnXMRnVPdhqQwG3/Mh6PvIO7eMOllt/Cws3
+	Kjgm4iQoqtJNWbF8cgDka/KfDKVqoeFU4YrN5avEfcnvsF0wDupMVLHcGlXIveXhA6BPl4IAm9C
+	wZyOPMRHdIRUfU3EmMVV6rYzJZfM3RODXWySaiHtNhCtnygNhHGlDTuBZWKeALJNFy30P
+X-Google-Smtp-Source: AGHT+IHblMi4stag0oLrxcrHSFQ7OdUQZDLXbmXDrAdQ2fS9UVrhh42Zym0Zb20SR1y+8nRSsXcmEg==
+X-Received: by 2002:a05:600c:1d24:b0:456:fdd:6030 with SMTP id 5b1f17b1804b1-45dea83f76bmr8307965e9.19.1757329154791;
+        Mon, 08 Sep 2025 03:59:14 -0700 (PDT)
 Received: from iku.Home ([2a06:5906:61b:2d00:393b:4605:1f6c:eea1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45ddfe0b654sm91063195e9.3.2025.09.08.03.59.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45ddfe0b654sm91063195e9.3.2025.09.08.03.59.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 03:59:12 -0700 (PDT)
+        Mon, 08 Sep 2025 03:59:14 -0700 (PDT)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -88,9 +88,9 @@ Cc: netdev@vger.kernel.org,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next v3 1/3] dt-bindings: net: renesas,rzv2h-gbeth: Document Renesas RZ/T2H and RZ/N2H SoCs
-Date: Mon,  8 Sep 2025 11:58:59 +0100
-Message-ID: <20250908105901.3198975-2-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH net-next v3 3/3] net: stmmac: dwmac-renesas-gbeth: Add support for RZ/T2H SoC
+Date: Mon,  8 Sep 2025 11:59:01 +0100
+Message-ID: <20250908105901.3198975-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908105901.3198975-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20250908105901.3198975-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -104,299 +104,158 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Add device tree binding support for the Gigabit Ethernet MAC (GMAC) IP
-on Renesas RZ/T2H and RZ/N2H SoCs. While these SoCs use the same
-Synopsys DesignWare MAC version 5.20 as RZ/V2H, they are synthesized
-with different hardware configurations.
+Extend the Renesas GBETH stmmac glue driver to support the RZ/T2H SoC,
+where the GMAC is connected through a MIIC PCS. Introduce a new
+`has_pcs` flag in `struct renesas_gbeth_of_data` to indicate when PCS
+handling is required.
 
-Add new compatible strings "renesas,r9a09g077-gbeth" for RZ/T2H and
-"renesas,r9a09g087-gbeth" for RZ/N2H, with the latter using RZ/T2H as
-fallback since they share identical GMAC IP.
+When enabled, the driver parses the `pcs-handle` phandle, creates a PCS
+instance with `miic_create()`, and wires it into phylink. Proper cleanup
+is done with `miic_destroy()`. New init/exit/select hooks are added to
+`plat_stmmacenet_data` for PCS integration.
 
-Update the schema to handle hardware differences between SoC variants.
-RZ/T2H requires only 3 clocks compared to 7 on RZ/V2H, supports 8 RX/TX
-queue pairs instead of 4, and needs 2 reset controls with reset-names
-property versus a single unnamed reset. RZ/T2H also has the split header
-feature enabled which is disabled on RZ/V2H.
-
-Add support for an optional pcs-handle property to connect the GMAC to
-the MIIC PCS converter on RZ/T2H. Use conditional schema validation to
-enforce the correct clock, reset, and interrupt configurations per SoC
-variant.
-
-Extend the base snps,dwmac.yaml schema to accommodate the increased
-interrupt count, supporting up to 19 interrupts and extending the
-rx-queue and tx-queue interrupt name patterns to cover queues 0-7.
+Update Kconfig to select `PCS_RZN1_MIIC` when building the Renesas GBETH
+driver so the PCS support is always available.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
 v2->v3:
-- No changes.
+- Dropped passing STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP flag in stmmac_flags
+  as it is always set for all the SoCs.
+- Updated Kconfig to include RZ/T2H and RZ/N2H.
 
 v1->v2:
-- Squshed incerasing interrupt count changes to snps,dwmac.yaml into this patch.
-- Dropped un-necessary blank lines.
-- Switched using "renesas,r9a09g077-gbeth" compatible string for RZ/T2H
-  instead of "renesas,rzt2h-gbeth" and used it as a fallback for RZ/N2H.
-- Added pcs-handle property required for RZ/T2H.
-- Updated description for reset property.
-- Updated commit message to reflect changes.
+- No changes.
 ---
- .../bindings/net/renesas,rzv2h-gbeth.yaml     | 178 ++++++++++++++----
- .../devicetree/bindings/net/snps,dwmac.yaml   |   9 +-
- 2 files changed, 143 insertions(+), 44 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   | 12 +++--
+ .../stmicro/stmmac/dwmac-renesas-gbeth.c      | 51 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-index 23e39bcea96b..bd53ab300f50 100644
---- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-+++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-@@ -17,63 +17,111 @@ select:
-           - renesas,r9a09g047-gbeth
-           - renesas,r9a09g056-gbeth
-           - renesas,r9a09g057-gbeth
-+          - renesas,r9a09g077-gbeth
-+          - renesas,r9a09g087-gbeth
-           - renesas,rzv2h-gbeth
-   required:
-     - compatible
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 67fa879b1e52..91d9a14362bf 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -133,15 +133,17 @@ config DWMAC_QCOM_ETHQOS
+ 	  stmmac device driver.
  
- properties:
-   compatible:
--    items:
--      - enum:
--          - renesas,r9a09g047-gbeth # RZ/G3E
--          - renesas,r9a09g056-gbeth # RZ/V2N
--          - renesas,r9a09g057-gbeth # RZ/V2H(P)
--      - const: renesas,rzv2h-gbeth
--      - const: snps,dwmac-5.20
-+    oneOf:
-+      - items:
-+          - enum:
-+              - renesas,r9a09g047-gbeth # RZ/G3E
-+              - renesas,r9a09g056-gbeth # RZ/V2N
-+              - renesas,r9a09g057-gbeth # RZ/V2H(P)
-+          - const: renesas,rzv2h-gbeth
-+          - const: snps,dwmac-5.20
-+      - items:
-+          - const: renesas,r9a09g077-gbeth # RZ/T2H
-+          - const: snps,dwmac-5.20
-+      - items:
-+          - const: renesas,r9a09g087-gbeth # RZ/N2H
-+          - const: renesas,r9a09g077-gbeth
-+          - const: snps,dwmac-5.20
+ config DWMAC_RENESAS_GBETH
+-	tristate "Renesas RZ/V2H(P) GBETH support"
++	tristate "Renesas RZ/V2H(P) GBETH and RZ/T2H, RZ/N2H GMAC support"
+ 	default ARCH_RENESAS
+ 	depends on OF && (ARCH_RENESAS || COMPILE_TEST)
++	select PCS_RZN1_MIIC
+ 	help
+-	  Support for Gigabit Ethernet Interface (GBETH) on Renesas
+-	  RZ/V2H(P) SoCs.
++	  Support for Gigabit Ethernet Interface (GBETH)/ Ethernet MAC (GMAC)
++	  on Renesas SoCs.
  
-   reg:
-     maxItems: 1
+-	  This selects the Renesas RZ/V2H(P) Soc specific glue layer support
+-	  for the stmmac device driver.
++	  This selects Renesas SoC glue layer support for the stmmac device
++	  driver. This driver is used for the RZ/V2H(P) family, RZ/T2H and
++	  RZ/N2H SoCs.
  
-   clocks:
--    items:
--      - description: CSR clock
--      - description: AXI system clock
--      - description: PTP clock
--      - description: TX clock
--      - description: RX clock
--      - description: TX clock phase-shifted by 180 degrees
--      - description: RX clock phase-shifted by 180 degrees
-+    oneOf:
-+      - items:
-+          - description: CSR clock
-+          - description: AXI system clock
-+          - description: PTP clock
-+          - description: TX clock
-+          - description: RX clock
-+          - description: TX clock phase-shifted by 180 degrees
-+          - description: RX clock phase-shifted by 180 degrees
-+      - items:
-+          - description: CSR clock
-+          - description: AXI system clock
-+          - description: TX clock
+ config DWMAC_ROCKCHIP
+ 	tristate "Rockchip dwmac support"
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+index 50be944ee37b..bc7bb975803c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
+@@ -17,6 +17,7 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/pcs-rzn1-miic.h>
+ #include <linux/platform_device.h>
+ #include <linux/reset.h>
+ #include <linux/types.h>
+@@ -33,6 +34,7 @@
+  *                handled by the glue driver or core driver.
+  * @set_clk_tx_rate: Flag to indicate if Tx clock is fixed or
+  *                   set_clk_tx_rate is needed.
++ * @has_pcs: Flag to indicate if the MAC has a PCS
+  */
+ struct renesas_gbeth_of_data {
+ 	const char * const *clks;
+@@ -40,6 +42,7 @@ struct renesas_gbeth_of_data {
+ 	u32 stmmac_flags;
+ 	bool handle_reset;
+ 	bool set_clk_tx_rate;
++	bool has_pcs;
+ };
  
-   clock-names:
--    items:
--      - const: stmmaceth
--      - const: pclk
--      - const: ptp_ref
--      - const: tx
--      - const: rx
--      - const: tx-180
--      - const: rx-180
--
--  interrupts:
--    minItems: 11
-+    oneOf:
-+      - items:
-+          - const: stmmaceth
-+          - const: pclk
-+          - const: ptp_ref
-+          - const: tx
-+          - const: rx
-+          - const: tx-180
-+          - const: rx-180
-+      - items:
-+          - const: stmmaceth
-+          - const: pclk
-+          - const: tx
+ struct renesas_gbeth {
+@@ -53,6 +56,41 @@ static const char *const renesas_gbeth_clks[] = {
+ 	"tx", "tx-180", "rx", "rx-180",
+ };
  
-   interrupt-names:
--    items:
--      - const: macirq
--      - const: eth_wake_irq
--      - const: eth_lpi
--      - const: rx-queue-0
--      - const: rx-queue-1
--      - const: rx-queue-2
--      - const: rx-queue-3
--      - const: tx-queue-0
--      - const: tx-queue-1
--      - const: tx-queue-2
--      - const: tx-queue-3
-+    oneOf:
-+      - items:
-+          - const: macirq
-+          - const: eth_wake_irq
-+          - const: eth_lpi
-+          - const: rx-queue-0
-+          - const: rx-queue-1
-+          - const: rx-queue-2
-+          - const: rx-queue-3
-+          - const: tx-queue-0
-+          - const: tx-queue-1
-+          - const: tx-queue-2
-+          - const: tx-queue-3
-+      - items:
-+          - const: macirq
-+          - const: eth_wake_irq
-+          - const: eth_lpi
-+          - const: rx-queue-0
-+          - const: rx-queue-1
-+          - const: rx-queue-2
-+          - const: rx-queue-3
-+          - const: rx-queue-4
-+          - const: rx-queue-5
-+          - const: rx-queue-6
-+          - const: rx-queue-7
-+          - const: tx-queue-0
-+          - const: tx-queue-1
-+          - const: tx-queue-2
-+          - const: tx-queue-3
-+          - const: tx-queue-4
-+          - const: tx-queue-5
-+          - const: tx-queue-6
-+          - const: tx-queue-7
++static const char *const renesas_gmac_clks[] = {
++	"tx",
++};
++
++static int renesas_gmac_pcs_init(struct stmmac_priv *priv)
++{
++	struct device_node *np = priv->device->of_node;
++	struct device_node *pcs_node;
++	struct phylink_pcs *pcs;
++
++	pcs_node = of_parse_phandle(np, "pcs-handle", 0);
++	if (pcs_node) {
++		pcs = miic_create(priv->device, pcs_node);
++		of_node_put(pcs_node);
++		if (IS_ERR(pcs))
++			return PTR_ERR(pcs);
++
++		priv->hw->phylink_pcs = pcs;
++	}
++
++	return 0;
++}
++
++static void renesas_gmac_pcs_exit(struct stmmac_priv *priv)
++{
++	if (priv->hw->phylink_pcs)
++		miic_destroy(priv->hw->phylink_pcs);
++}
++
++static struct phylink_pcs *renesas_gmac_select_pcs(struct stmmac_priv *priv,
++						   phy_interface_t interface)
++{
++	return priv->hw->phylink_pcs;
++}
++
+ static int renesas_gbeth_init(struct platform_device *pdev, void *priv)
+ {
+ 	struct plat_stmmacenet_data *plat_dat;
+@@ -150,6 +188,11 @@ static int renesas_gbeth_probe(struct platform_device *pdev)
+ 	plat_dat->exit = renesas_gbeth_exit;
+ 	plat_dat->flags |= STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP |
+ 			   gbeth->of_data->stmmac_flags;
++	if (of_data->has_pcs) {
++		plat_dat->pcs_init = renesas_gmac_pcs_init;
++		plat_dat->pcs_exit = renesas_gmac_pcs_exit;
++		plat_dat->select_pcs = renesas_gmac_select_pcs;
++	}
  
-   resets:
--    items:
--      - description: AXI power-on system reset
-+    oneOf:
-+      - items:
-+          - description: AXI power-on system reset
-+      - items:
-+          - description: AXI power-on system reset
-+          - description: AHB reset
-+
-+  pcs-handle:
-+    description:
-+      phandle pointing to a PCS sub-node compatible with
-+      Documentation/devicetree/bindings/net/pcs/renesas,rzn1-miic.yaml#
-+      (Refer RZ/T2H portion in the DT-binding file)
+ 	return devm_stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+ }
+@@ -163,7 +206,15 @@ static const struct renesas_gbeth_of_data renesas_gbeth_of_data = {
+ 			STMMAC_FLAG_SPH_DISABLE,
+ };
  
- required:
-   - compatible
-@@ -87,6 +135,56 @@ required:
- allOf:
-   - $ref: snps,dwmac.yaml#
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: renesas,r9a09g077-gbeth
-+    then:
-+      properties:
-+        clocks:
-+          maxItems: 3
++static const struct renesas_gbeth_of_data renesas_gmac_of_data = {
++	.clks = renesas_gmac_clks,
++	.num_clks = ARRAY_SIZE(renesas_gmac_clks),
++	.stmmac_flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY,
++	.has_pcs = true,
++};
 +
-+        clock-names:
-+          maxItems: 3
-+
-+        interrupts:
-+          minItems: 19
-+
-+        interrupt-names:
-+          minItems: 19
-+
-+        resets:
-+          minItems: 2
-+
-+        reset-names:
-+          minItems: 2
-+
-+      required:
-+        - reset-names
-+    else:
-+      properties:
-+        clocks:
-+          minItems: 7
-+
-+        clock-names:
-+          minItems: 7
-+
-+        interrupts:
-+          minItems: 11
-+          maxItems: 11
-+
-+        interrupt-names:
-+          minItems: 11
-+          maxItems: 11
-+
-+        resets:
-+          maxItems: 1
-+
-+        pcs-handle: false
-+
-+        reset-names: false
-+
- unevaluatedProperties: false
- 
- examples:
-diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-index 4e3cbaa06229..658c004e6a5c 100644
---- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-@@ -75,6 +75,7 @@ properties:
-         - qcom,sc8280xp-ethqos
-         - qcom,sm8150-ethqos
-         - renesas,r9a06g032-gmac
-+        - renesas,r9a09g077-gbeth
-         - renesas,rzn1-gmac
-         - renesas,rzv2h-gbeth
-         - rockchip,px30-gmac
-@@ -118,11 +119,11 @@ properties:
- 
-   interrupts:
-     minItems: 1
--    maxItems: 11
-+    maxItems: 19
- 
-   interrupt-names:
-     minItems: 1
--    maxItems: 11
-+    maxItems: 19
-     items:
-       oneOf:
-         - description: Combined signal for various interrupt events
-@@ -134,9 +135,9 @@ properties:
-         - description: The interrupt that occurs when HW safety error triggered
-           const: sfty
-         - description: Per channel receive completion interrupt
--          pattern: '^rx-queue-[0-3]$'
-+          pattern: '^rx-queue-[0-7]$'
-         - description: Per channel transmit completion interrupt
--          pattern: '^tx-queue-[0-3]$'
-+          pattern: '^tx-queue-[0-7]$'
- 
-   clocks:
-     minItems: 1
+ static const struct of_device_id renesas_gbeth_match[] = {
++	{ .compatible = "renesas,r9a09g077-gbeth", .data = &renesas_gmac_of_data },
+ 	{ .compatible = "renesas,rzv2h-gbeth", .data = &renesas_gbeth_of_data },
+ 	{ /* Sentinel */ }
+ };
 -- 
 2.51.0
 
