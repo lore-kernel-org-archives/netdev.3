@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755BF301000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79135304BA2
 	for <netdev@vger.kernel.org>; Mon,  8 Sep 2025 12:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757335592; cv=none; b=UpTPkyFjJ9z8hjIeH0fv9f9YNNlDXq85GnLgMd6XnF6I7Fo8WdPeIv4qpDjNrgHoMfAXUafWgJNGsM2w4enyKUVrWSpyYcVOCYtYMAMC5KB2tH3MhlqLjRCiTKPMz8vmpq5DIVbURl2i4sGsqWxtPQXGmm4oCgw4Sud06y0QDkQ=
+	t=1757335593; cv=none; b=Jx/UTxyJpqgL9yQdUalP61NxQMgMTJdsL9OodWeg6WPZ4zjOiN1j+RU3RQyZkywBCVbpAWjkZhh7pkMi1CcibgeK8RmVCiJ/kOHS7N7VxNrXOySI6soxBKHybjXFHoKMO4WMt22jKtTOeVZ2lc7zeoX/wgiV70vKxMWMakcsroc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757335592; c=relaxed/simple;
-	bh=mi701kfGJTKES9vPTw0fIImE98rfwqJb0dwo8H6v2+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nDr3yRZLqO8w2telMCuXv6qtGIByPhdeC1yOllCbIojo0l/Su+F8PifzwE/H+MTjfa4/tfrny+7Ejwp4EfYcPglfTR5GsrMpFt18dyun0bvsqJCNCD5txJqHzl0YYhoAmHSbSFWBxa4DpFPIebbdf3MgHtBkrSSYc6yDdymAgYo=
+	s=arc-20240116; t=1757335593; c=relaxed/simple;
+	bh=eqi5cWxql2GFQOQrFamav+SZLeSxTtB7OrfG1LHpA/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=arhQOPBKAPYAL4E8PH01l/x+TueO5mHfhah8s60qyMpw3zO4HO6XOeKNJgc/j+kaeO9heqVovpYyAdfYd8GiVEcijs8LhxY956bhSH82zwrdP78+6IYpkpMn8mZwAM9tT2Niefw0VzVh2fhlRc9aEOB0a5UlvLFw5Vc3IcEwzAk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uvbG9-0003Rt-F8; Mon, 08 Sep 2025 14:46:13 +0200
+	id 1uvbG9-0003S9-F8; Mon, 08 Sep 2025 14:46:13 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uvbG7-000Fim-2A;
+	id 1uvbG7-000Fis-2h;
 	Mon, 08 Sep 2025 14:46:11 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1uvbG7-0000000CKJA-2QdY;
+	id 1uvbG7-0000000CKJo-34Ag;
 	Mon, 08 Sep 2025 14:46:11 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -50,10 +51,12 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	linux-doc@vger.kernel.org,
 	Michal Kubecek <mkubecek@suse.cz>,
 	Roan van Dijk <roan@protonic.nl>
-Subject: [PATCH net-next v5 0/5] ethtool: introduce PHY MSE diagnostics UAPI and drivers
-Date: Mon,  8 Sep 2025 14:46:05 +0200
-Message-ID: <20250908124610.2937939-1-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v5 4/5] net: phy: micrel: add MSE interface support for KSZ9477 family
+Date: Mon,  8 Sep 2025 14:46:09 +0200
+Message-ID: <20250908124610.2937939-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250908124610.2937939-1-o.rempel@pengutronix.de>
+References: <20250908124610.2937939-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,91 +70,127 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-changes v5:
-- add struct phy_mse_snapshot and phy_mse_config to the documentation
-changes v4:
-- remove -ENETDOWN as expected error value for get_mse_config() and
-  get_mse_snapshot()
-- fix htmldocs builds
-- s/__ethtool-a-mse/--ethtool-a-mse
-changes v3:
-- add missing ETHTOOL_A_LINKSTATE_MSE_* yaml changes
-changes v2:
-- rebase on latest net-next
+Implement the get_mse_config() and get_mse_snapshot() PHY driver ops
+for KSZ9477-series integrated PHYs to demonstrate the new PHY MSE
+UAPI.
 
-This series introduces a generic kernel-userspace API for retrieving PHY
-Mean Square Error (MSE) diagnostics, together with netlink integration,
-a fast-path reporting hook in LINKSTATE_GET, and initial driver
-implementations for the KSZ9477 and DP83TD510E PHYs.
+These PHYs do not expose a documented direct MSE register, but the
+Signal Quality Indicator (SQI) registers are derived from the
+internal MSE computation. This hook maps SQI readings into the MSE
+interface so that tooling can retrieve the raw value together with
+metadata for correct interpretation in userspace.
 
-MSE is defined by the OPEN Alliance "Advanced diagnostic features for
-100BASE-T1 automotive Ethernet PHYs" specification [1] as a measure of
-slicer error rate, typically used internally to derive the Signal
-Quality Indicator (SQI). While SQI is useful as a normalized quality
-index, it hides raw measurement data, varies in scaling and thresholds
-between vendors, and may not indicate certain failure modes - for
-example, cases where autonegotiation would fail even though SQI reports
-a good link. In practice, such scenarios can only be investigated in
-fixed-link mode; here, MSE can provide an empirically estimated value
-indicating conditions under which autonegotiation would not succeed.
+Behaviour:
+  - For 1000BASE-T, report per-channel (A–D) values and support a
+    WORST channel selector.
+  - For 100BASE-TX, only LINK-wide measurements are available.
+  - Report average MSE only, with a max scale based on
+    KSZ9477_MMD_SQI_MASK and a fixed refresh rate of 2 µs.
 
-Example output with current implementation:
-root@DistroKit:~ ethtool lan1
-Settings for lan1:
-...
-        Speed: 1000Mb/s
-        Duplex: Full
-...
-        Link detected: yes
-        SQI: 5/7
-        MSE: 3/127 (channel: worst)
+This mapping differs from the OPEN Alliance SQI definition, which
+assigns thresholds such as pre-fail indices; the MSE interface
+instead provides the raw measurement, leaving interpretation to
+userspace.
 
-root@DistroKit:~ ethtool --show-mse lan1
-MSE diagnostics for lan1:
-MSE Configuration:
-        Max Average MSE: 127
-        Refresh Rate: 2000000 ps
-        Symbols per Sample: 250
-        Supported capabilities: average channel-a channel-b channel-c
-                                channel-d worst
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/phy/micrel.c | 76 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-MSE Snapshot (Channel: a):
-        Average MSE: 4
-
-MSE Snapshot (Channel: b):
-        Average MSE: 3
-
-MSE Snapshot (Channel: c):
-        Average MSE: 2
-
-MSE Snapshot (Channel: d):
-        Average MSE: 3
-
-[1] https://opensig.org/wp-content/uploads/2024/01/Advanced_PHY_features_for_automotive_Ethernet_V1.0.pdf
-
-
-
-Oleksij Rempel (5):
-  ethtool: introduce core UAPI and driver API for PHY MSE diagnostics
-  ethtool: netlink: add ETHTOOL_MSG_MSE_GET and wire up PHY MSE access
-  ethtool: netlink: add lightweight MSE reporting to LINKSTATE_GET
-  net: phy: micrel: add MSE interface support for KSZ9477 family
-  net: phy: dp83td510: add MSE interface support for 10BASE-T1L
-
- Documentation/netlink/specs/ethtool.yaml      | 175 +++++++++
- Documentation/networking/ethtool-netlink.rst  |  71 ++++
- drivers/net/phy/dp83td510.c                   |  44 +++
- drivers/net/phy/micrel.c                      |  76 ++++
- include/linux/phy.h                           | 115 ++++++
- .../uapi/linux/ethtool_netlink_generated.h    |  94 +++++
- net/ethtool/Makefile                          |   2 +-
- net/ethtool/linkstate.c                       |  84 ++++
- net/ethtool/mse.c                             | 362 ++++++++++++++++++
- net/ethtool/netlink.c                         |  10 +
- net/ethtool/netlink.h                         |   2 +
- 11 files changed, 1034 insertions(+), 1 deletion(-)
- create mode 100644 net/ethtool/mse.c
-
---
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index e403cbbcead5..075ac5093390 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2320,6 +2320,80 @@ static int kszphy_get_sqi_max(struct phy_device *phydev)
+ 	return KSZ9477_SQI_MAX;
+ }
+ 
++static int kszphy_get_mse_config(struct phy_device *phydev,
++				 struct phy_mse_config *config)
++{
++	if (phydev->speed == SPEED_1000)
++		config->supported_caps |= PHY_MSE_CAP_CHANNEL_A |
++					  PHY_MSE_CAP_CHANNEL_B |
++					  PHY_MSE_CAP_CHANNEL_C |
++					  PHY_MSE_CAP_CHANNEL_D |
++					  PHY_MSE_CAP_WORST_CHANNEL;
++	else if (phydev->speed == SPEED_100)
++		config->supported_caps |= PHY_MSE_CAP_LINK;
++	else
++		return -EOPNOTSUPP;
++
++	config->max_average_mse = FIELD_MAX(KSZ9477_MMD_SQI_MASK);
++	config->refresh_rate_ps = 2000000; /* 2 us */
++	/* Estimated from link modulation (125 MBd per channel) and documented
++	 * refresh rate of 2 µs
++	 */
++	config->num_symbols = 250;
++
++	config->supported_caps |= PHY_MSE_CAP_AVG;
++
++	return 0;
++}
++
++static int kszphy_get_mse_snapshot(struct phy_device *phydev, u32 channel,
++				   struct phy_mse_snapshot *snapshot)
++{
++	u8 num_channels;
++	int ret;
++
++	if (phydev->speed == SPEED_1000)
++		num_channels = 4;
++	else if (phydev->speed == SPEED_100)
++		num_channels = 1;
++	else
++		return -EOPNOTSUPP;
++
++	if (channel == PHY_MSE_CHANNEL_WORST) {
++		u32 worst_val = 0;
++		int i;
++
++		for (i = 0; i < num_channels; i++) {
++			ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++					KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + i);
++			if (ret < 0)
++				return ret;
++
++			ret = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++			if (ret > worst_val)
++				worst_val = ret;
++		}
++		snapshot->average_mse = worst_val;
++	} else if (channel == PHY_MSE_CHANNEL_LINK && num_channels == 1) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else if (channel >= PHY_MSE_CHANNEL_A &&
++		   channel <= PHY_MSE_CHANNEL_D) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + channel);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static void kszphy_enable_clk(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+@@ -6369,6 +6443,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_sqi	= kszphy_get_sqi,
+ 	.get_sqi_max	= kszphy_get_sqi_max,
++	.get_mse_config = kszphy_get_mse_config,
++	.get_mse_snapshot = kszphy_get_mse_snapshot,
+ } };
+ 
+ module_phy_driver(ksphy_driver);
+-- 
 2.47.3
 
