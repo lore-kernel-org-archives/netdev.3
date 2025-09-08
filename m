@@ -1,139 +1,295 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926B9147C9B;
-	Mon,  8 Sep 2025 12:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7563B303A21
+	for <netdev@vger.kernel.org>; Mon,  8 Sep 2025 12:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757335411; cv=none; b=Y26pITfIUqQvYo+2tGDSW5+J1xgEOkmzy7jY3D8FLkcyjkimaZs32nT43FtMt6RGEKoU9469+A9RyIjWzWehjm1OW0xLxD5WwL56OqamLN5EeL9qLVlKCScqowdtdHGnLCAqnebUIfcubq78u8FgjuHUOD4aiWT+mB21l8sdM9s=
+	t=1757335592; cv=none; b=mnnyLuBLOJSpMvkQEJ8lybEU7gfd2O55MJ7a4PPwrTMEWsFmxuFvqn8LpE5o5KfZrPRuLP/p3MaUF6V+S2EGmNiEfA2V+C4dR31vsLFSKYERuck0XkTurFTmLux6mPqo5DoKyE4YtU8aQZKlaNlhcY2tNCFFui93zK1jfOfvBE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757335411; c=relaxed/simple;
-	bh=hCZzQzXTqDQPsdfkFKi7HNFa74pKEkCdhxSkeUYipyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sLBY++u2uKz4l6U+1S2g49Iv1R05bXYiX+gr8Uu96DCwyOkPdYEAV4LGBUp6NpQjD1NuC3Sj+BFghrZzGsTD1Usya3ncLG7Q50kZUwhE9jKQx0d8g9vEoLASOO5xgdLsEiZHTQp2ibEjDStxUK6IOdMITpDOOKY67tzII805xtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnyZZKH7; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnyZZKH7"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-45dd5e24d16so28996785e9.3;
-        Mon, 08 Sep 2025 05:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757335408; x=1757940208; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+Vg0GNEeuU43g45pQCnqO0Jnldu9YfZ3lQZTRTHWzUE=;
-        b=mnyZZKH7+Yv7vl3R80JstR07HNE/Ssuc8VXWTwnrVZjvjjfObjc0/sWmQVAxZBS5RZ
-         ZZi/0FDjijpbYJVsG+RGQLZXWGSZAVNhd7ioz1WiTrwwxRm2G3tkrGRiT2EQXiE1fSMc
-         gOI3pkyko0a/bUZCr56YWFLIrkn+/02GAJ/M+szxx/Dl6V2wMjAJDtoE21OCUObjiUtU
-         A1DpaGTHTeOvNA6nX4gupOZ8iLzLUGZha0yeeUOp9sJBBem9XpkAdi/h+SHJSek6iQE5
-         KPbveRTSRTTxaX2tDhOTa8KW3vEliiKty8J/jiQvOdKpde+n/4QxmBU24z79Jjb+HXWK
-         uObg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757335408; x=1757940208;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Vg0GNEeuU43g45pQCnqO0Jnldu9YfZ3lQZTRTHWzUE=;
-        b=M1ygHDXDA6twQExkTB2hW10GG3ia4q2v06zmNtX3lUpGtBWUbg0jZZGTnogGBPI55e
-         3cBIg0B8xaug9rnhMhdgyKitnQrIxmA41sp3VTYyS5UrZfKzFKyR78puc5OJABL4vC+E
-         waL0GzCqyhDx7Lecdw68E59lYGLwGPy9lqAtwy5jnR6TCSnGu8dKRoEst+ioEmDmnCro
-         XBmP3UU0bRL7JG6JhN0CUTGQnIxekfjNI7mFK9NYud6Y2MhTrEw7OC7/MAD/yiSH3eRi
-         BI59R62g5OQkIndlZ46kXCXcfK/oQ9W/G2zv1MaqSbpWJnpJLMGjm6hzqkekusftSvXP
-         7tWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVh7NBhFXWtgf1iZMYTFFw2N8n++JjXns8iDqyNx5VK+up0j6tgaD5kfTvEEzqoMTeKrTaQj0g5@vger.kernel.org, AJvYcCVoR8s7JmahdJy+UPDpSauawDhfDvh2YmS+7zjA39YmPMb8O/w/3p5W8OugMnUIfWao+Ye1F0Y6iqPM//w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyja2Hq/G4v1oSozAavFlI2VBYFMo7AoE7ctIx0SR7i1foKuhO8
-	fi6v+ehWWwwbkd7ieb4+PW4tJlam9MJGAH4/CcmHpDLJd0pva6kyUCR0
-X-Gm-Gg: ASbGnctsnGh8lm+XCN9JfnSor0ZsM+b0Pp9jQBo46KyfGPqpkzhvukrFe0M6hAd2Pxp
-	uOH4L1jhRPCHI3SRVJbw8nvc2ThMOb50r9HNePnDA8/1Xd6oV2yY+VTFyHX1VeVPrdeJ7wxo5mq
-	FD2+T5gIV46PR5oRg9chDw1F3z/77y5SPxGP1/NXMdDLsOdlCIAQDlCARrfoa8W9bxB2hYXM7+n
-	l5WAMqLI12/oP18m+2JcVz1s8695eU9VJmcc7ttMYsqze3ebOKlPET1kzDVZTjH5DVjJPs2rcsd
-	x6+kIrmjx0k9qIJ2xx4BM/4byEGeojc1RMfOxbbAGnk08F7hBtZlp50isEK/lGXykWSK1Q2ehKt
-	YvS4Ff0V9KUZRi/QcuQSBhwOK1gqcZxkKUDe0WeWl/v+vZu6KQnNptw==
-X-Google-Smtp-Source: AGHT+IEt6VZ1UvFJW697LTeVzoEhMryjNa7nQmEERcDQ9zZ1SOxfk7VPPhBwquSNBfmWIdnecVE8RQ==
-X-Received: by 2002:a05:600c:3596:b0:45d:d6fc:2509 with SMTP id 5b1f17b1804b1-45dddeb00bfmr81306645e9.6.1757335407547;
-        Mon, 08 Sep 2025 05:43:27 -0700 (PDT)
-Received: from [10.158.36.109] ([72.25.96.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b8f2d3c88sm309254095e9.19.2025.09.08.05.43.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Sep 2025 05:43:26 -0700 (PDT)
-Message-ID: <25e5b405-09bf-40ac-8f45-5f3a0bbed8f5@gmail.com>
-Date: Mon, 8 Sep 2025 15:43:25 +0300
+	s=arc-20240116; t=1757335592; c=relaxed/simple;
+	bh=eIoIGMNmHpncgrZqDWheiR7G/ij0Gu/wz7/Y5EiAJMU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PG8YlfcsV+S3tm6KzZSFPjhNWA/zLC1vNF42duP8bwdMONvEGnuW2cmoqQ8SDtolrgl6qA8XGuW9G+dnRY9lFPrUftYbeZsTdSe1n0w5xABYsctE8RCEVHfyBr/L7w+AUrFEKdRMgGgxaezf3USei+q0PHcPpzJjGWcnKOs7ujI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvbG9-0003S7-F8; Mon, 08 Sep 2025 14:46:13 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvbG7-000Fiq-2a;
+	Mon, 08 Sep 2025 14:46:11 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1uvbG7-0000000CKJd-2xFm;
+	Mon, 08 Sep 2025 14:46:11 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Nishanth Menon <nm@ti.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH net-next v5 3/5] ethtool: netlink: add lightweight MSE reporting to LINKSTATE_GET
+Date: Mon,  8 Sep 2025 14:46:08 +0200
+Message-ID: <20250908124610.2937939-4-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250908124610.2937939-1-o.rempel@pengutronix.de>
+References: <20250908124610.2937939-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5: Not returning mlx5_link_info table when
- speed is unknown
-To: Vitaly Kuznetsov <vkuznets@redhat.com>, Li Tian <litian@redhat.com>,
- netdev@vger.kernel.org, linux-hyperv@vger.kernel.org
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- Benjamin Poirier <bpoirier@redhat.com>, Carolina Jubran
- <cjubran@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>
-References: <20250908085313.18768-1-litian@redhat.com>
- <877by9fep2.fsf@redhat.com>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <877by9fep2.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
+Extend ETHTOOL_MSG_LINKSTATE_GET to optionally return a simplified
+Mean Square Error (MSE) reading alongside existing link status fields.
 
+The new attributes are:
+  - ETHTOOL_A_LINKSTATE_MSE_VALUE: current average MSE value
+  - ETHTOOL_A_LINKSTATE_MSE_MAX: scale limit for the reported value
+  - ETHTOOL_A_LINKSTATE_MSE_CHANNEL: source channel selector
 
-On 08/09/2025 12:58, Vitaly Kuznetsov wrote:
-> Li Tian <litian@redhat.com> writes:
-> 
->> Because mlx5e_link_mode is sparse e.g. Azure mlx5 reports PTYS 19.
->> Do not return it when speed unless retrieved successfully.
->>
->> Fixes: 65a5d35571849 ("net/mlx5: Refactor link speed handling with mlx5_link_info struct")
+This path reuses the PHY MSE core API, but only retrieves a single
+value intended for quick link-health checks:
+  * If the PHY supports a WORST channel selector, report its current
+    average MSE.
+  * Otherwise, if LINK-wide measurements are supported, report those.
+  * If neither is available, omit the attributes.
 
-++
+Unlike the full MSE_GET interface, LINKSTATE_GET does not expose
+per-channel or peak/worst-peak values and incurs minimal overhead.
+Drivers that implement get_mse_config() / get_mse_snapshot() will
+automatically populate this data.
 
-Adding author and reviewer of offending patch.
+The intent is to provide tooling with a “fast path” health indicator
+without issuing a separate MSE_GET request, though the long-term
+overlap with the full interface may need reevaluation.
 
->> Suggested-by: Vitaly Kuznetsov <vkuznets@redhat.com>
->> Signed-off-by: Li Tian <litian@redhat.com>
->> ---
->>   drivers/net/ethernet/mellanox/mlx5/core/port.c | 6 +++++-
->>   1 file changed, 5 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
->> index 2d7adf7444ba..a69c83da2542 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
->> @@ -1170,7 +1170,11 @@ const struct mlx5_link_info *mlx5_port_ptys2info(struct mlx5_core_dev *mdev,
->>   	mlx5e_port_get_link_mode_info_arr(mdev, &table, &max_size,
->>   					  force_legacy);
->>   	i = find_first_bit(&temp, max_size);
->> -	if (i < max_size)
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+---
+changes v3:
+- add missing yaml spec
+---
+ Documentation/netlink/specs/ethtool.yaml      |  9 ++
+ Documentation/networking/ethtool-netlink.rst  |  9 ++
+ .../uapi/linux/ethtool_netlink_generated.h    |  3 +
+ net/ethtool/linkstate.c                       | 84 +++++++++++++++++++
+ 4 files changed, 105 insertions(+)
 
-Keep an empty line before comment.
-
->> +	/*
-
-Can have the comment text starting from the first line.
->> +	 * mlx5e_link_mode is sparse. Check speed
-> 
-> The array is either 'mlx5e_link_mode' or 'mlx5e_ext_link_info' but both
-> have holes in them.
-> 
-
-You mean 'mlx5e_link_info' and 'mlx5e_ext_link_info'.
-I wouldn't say they are sparse. They have holes indeed.
-
-
->> +	 * is non-zero as indication of a hole.
->> +	 */
->> +	if (i < max_size && table[i].speed)
->>   		return &table[i];
->>   
->>   	return NULL;
-> 
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index d69dd3fb534b..3f1f19c9c18a 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -708,6 +708,15 @@ attribute-sets:
+       -
+         name: ext-down-cnt
+         type: u32
++      -
++        name: mse-value
++        type: u32
++      -
++        name: mse-max
++        type: u32
++      -
++        name: mse-channel
++        type: u32
+   -
+     name: debug
+     attr-cnt-name: __ethtool-a-debug-cnt
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index aae53f39c2b0..b3ebd4da3562 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -530,6 +530,9 @@ Kernel response contents:
+   ``ETHTOOL_A_LINKSTATE_EXT_STATE``     u8      link extended state
+   ``ETHTOOL_A_LINKSTATE_EXT_SUBSTATE``  u8      link extended substate
+   ``ETHTOOL_A_LINKSTATE_EXT_DOWN_CNT``  u32     count of link down events
++  ``ETHTOOL_A_LINKSTATE_MSE_VALUE``     u32     Current average MSE value
++  ``ETHTOOL_A_LINKSTATE_MSE_MAX``       u32     Max scale for average MSE
++  ``ETHTOOL_A_LINKSTATE_MSE_CHANNEL``   u32     Source of MSE value
+   ====================================  ======  ============================
+ 
+ For most NIC drivers, the value of ``ETHTOOL_A_LINKSTATE_LINK`` returns
+@@ -541,6 +544,12 @@ optional values. ethtool core can provide either both
+ ``ETHTOOL_A_LINKSTATE_EXT_STATE`` and ``ETHTOOL_A_LINKSTATE_EXT_SUBSTATE``,
+ or only ``ETHTOOL_A_LINKSTATE_EXT_STATE``, or none of them.
+ 
++``ETHTOOL_A_LINKSTATE_MSE_VALUE`` and ``ETHTOOL_A_LINKSTATE_MSE_MAX`` are
++optional values. The MSE value provided by this interface is a lightweight,
++less detailed version for quick health checks. If only one channel is used, it
++returns the current average MSE value. If multiple channels are supported, it
++returns the current average MSE of the channel with the worst MSE.
++
+ ``LINKSTATE_GET`` allows dump requests (kernel returns reply messages for all
+ devices supporting the request).
+ 
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+index 8317e4b230a5..a9ef0ec11695 100644
+--- a/include/uapi/linux/ethtool_netlink_generated.h
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -331,6 +331,9 @@ enum {
+ 	ETHTOOL_A_LINKSTATE_EXT_STATE,
+ 	ETHTOOL_A_LINKSTATE_EXT_SUBSTATE,
+ 	ETHTOOL_A_LINKSTATE_EXT_DOWN_CNT,
++	ETHTOOL_A_LINKSTATE_MSE_VALUE,
++	ETHTOOL_A_LINKSTATE_MSE_MAX,
++	ETHTOOL_A_LINKSTATE_MSE_CHANNEL,
+ 
+ 	__ETHTOOL_A_LINKSTATE_CNT,
+ 	ETHTOOL_A_LINKSTATE_MAX = (__ETHTOOL_A_LINKSTATE_CNT - 1)
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 05a5f72c99fa..b27fb0ffc526 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -14,6 +14,9 @@ struct linkstate_reply_data {
+ 	int					link;
+ 	int					sqi;
+ 	int					sqi_max;
++	u32					mse_value;
++	u32					mse_max;
++	u32					mse_channel;
+ 	struct ethtool_link_ext_stats		link_stats;
+ 	bool					link_ext_state_provided;
+ 	struct ethtool_link_ext_state_info	ethtool_link_ext_state_info;
+@@ -76,6 +79,65 @@ static bool linkstate_sqi_valid(struct linkstate_reply_data *data)
+ 	       data->sqi <= data->sqi_max;
+ }
+ 
++static int linkstate_get_mse(struct phy_device *phydev,
++			     struct linkstate_reply_data *data)
++{
++	struct phy_mse_snapshot snapshot = {};
++	struct phy_mse_config config = {};
++	int channel, ret;
++
++	if (!phydev)
++		return -EOPNOTSUPP;
++
++	mutex_lock(&phydev->lock);
++
++	if (!phydev->drv || !phydev->drv->get_mse_config ||
++	    !phydev->drv->get_mse_snapshot) {
++		ret = -EOPNOTSUPP;
++		goto unlock;
++	}
++
++	if (!phydev->link) {
++		ret = -ENETDOWN;
++		goto unlock;
++	}
++
++	ret = phydev->drv->get_mse_config(phydev, &config);
++	if (ret)
++		goto unlock;
++
++	if (config.supported_caps & PHY_MSE_CAP_WORST_CHANNEL) {
++		channel = PHY_MSE_CHANNEL_WORST;
++	} else if (config.supported_caps & PHY_MSE_CAP_LINK) {
++		channel = PHY_MSE_CHANNEL_LINK;
++	} else {
++		ret = -EOPNOTSUPP;
++		goto unlock;
++	}
++
++	ret = phydev->drv->get_mse_snapshot(phydev, channel, &snapshot);
++	if (ret)
++		goto unlock;
++
++	data->mse_value = snapshot.average_mse;
++	data->mse_max = config.max_average_mse;
++	data->mse_channel = channel;
++
++unlock:
++	mutex_unlock(&phydev->lock);
++	return ret;
++}
++
++static bool linkstate_mse_critical_error(int err)
++{
++	return err < 0 && err != -EOPNOTSUPP && err != -ENETDOWN;
++}
++
++static bool linkstate_mse_valid(struct linkstate_reply_data *data)
++{
++	return data->mse_max > 0 && data->mse_value <= data->mse_max;
++}
++
+ static int linkstate_get_link_ext_state(struct net_device *dev,
+ 					struct linkstate_reply_data *data)
+ {
+@@ -125,6 +187,10 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
+ 		goto out;
+ 	data->sqi_max = ret;
+ 
++	ret = linkstate_get_mse(phydev, data);
++	if (linkstate_mse_critical_error(ret))
++		goto out;
++
+ 	if (dev->flags & IFF_UP) {
+ 		ret = linkstate_get_link_ext_state(dev, data);
+ 		if (ret < 0 && ret != -EOPNOTSUPP && ret != -ENODATA)
+@@ -164,6 +230,12 @@ static int linkstate_reply_size(const struct ethnl_req_info *req_base,
+ 		len += nla_total_size(sizeof(u32)); /* LINKSTATE_SQI_MAX */
+ 	}
+ 
++	if (linkstate_mse_valid(data)) {
++		len += nla_total_size(sizeof(u32)); /* LINKSTATE_MSE_VALUE */
++		len += nla_total_size(sizeof(u32)); /* LINKSTATE_MSE_MAX */
++		len += nla_total_size(sizeof(u32)); /* LINKSTATE_MSE_CHANNEL */
++	}
++
+ 	if (data->link_ext_state_provided)
+ 		len += nla_total_size(sizeof(u8)); /* LINKSTATE_EXT_STATE */
+ 
+@@ -195,6 +267,18 @@ static int linkstate_fill_reply(struct sk_buff *skb,
+ 			return -EMSGSIZE;
+ 	}
+ 
++	if (linkstate_mse_valid(data)) {
++		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_MSE_VALUE,
++				data->mse_value))
++			return -EMSGSIZE;
++		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_MSE_MAX,
++				data->mse_max))
++			return -EMSGSIZE;
++		if (nla_put_u32(skb, ETHTOOL_A_LINKSTATE_MSE_CHANNEL,
++				data->mse_channel))
++			return -EMSGSIZE;
++	}
++
+ 	if (data->link_ext_state_provided) {
+ 		if (nla_put_u8(skb, ETHTOOL_A_LINKSTATE_EXT_STATE,
+ 			       data->ethtool_link_ext_state_info.link_ext_state))
+-- 
+2.47.3
 
