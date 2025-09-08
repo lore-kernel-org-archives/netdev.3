@@ -1,49 +1,49 @@
 Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A362AE97;
-	Mon,  8 Sep 2025 09:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDEF1E1E1E;
+	Mon,  8 Sep 2025 09:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757322525; cv=none; b=H14Gqt9aTNm0kaSfgyIkObvh6pM0nuARZF0Oo6026tITdCj1E1AF6gFhxC2j4cOWZgOrQTtoz6u7oys6WCj3eD9NhGaHoApDrhXH8Jmju5s7CAX6MhtunbyouKZVDabFk+l1DwJoWbZjjYqNMUwcvGBQLe5p2cx5zx9ySMiEtYg=
+	t=1757322526; cv=none; b=A2xmYHHZ4pOKvW6c8PZg+CWdd5HJ1ftPj2S1vUoVAq9tmG/Jxvq1VJ1mCfK+P8kOHs0cgaaMOosIydWyUsJKGwJxwlD6U3Hky6d4m4oflGmjw0gq9bHhuxnuVbt4skJxW3WUs8ToQEoBHjr6Smh84WNk8pJePykX4O/tzBkNuvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757322525; c=relaxed/simple;
-	bh=PwFQRyqxA7dBm5wTA/RSvs7ERLmXcHJnAn+LxV2kH+E=;
+	s=arc-20240116; t=1757322526; c=relaxed/simple;
+	bh=pxCk7XGN3L7r9ZczqLXHX57qOG+ulO27ydJJwfzrxKQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qXRuC+jiZGUvw5CfpPruCr+1eCViSQAfb9S75hqopZRwf5GEH19eaJ5nJqFlRd5T6mXF3cACUlwpZb+nEmiHkX6Msdi005hsjypI24xwnwgTcNAkUbDA4Qa2ETEjjQZmSL4dfMJ14TDS/2AgkK5BoDXw63cyqyrpLtXvaAmDPnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fNzupBQ4; arc=none smtp.client-ip=198.47.23.235
+	 MIME-Version:Content-Type; b=J/uis9g+8QlQyv9e5btPnrxrmDmFednTCNWhGn9RNowxnMflMthfzWG6UN4SwV3G5oq6QuOciQGrg1kxNnQdP47pxLh/sulJbcDq8woZZaHDe8c9t1DOy259RIKPCMOca1yPVuqFnoBaFhxphDVi1wXxsAB5CBK4CkOnB9UPeSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fgy9AHse; arc=none smtp.client-ip=198.47.23.235
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fNzupBQ4"
-Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58897uMQ071852;
-	Mon, 8 Sep 2025 04:07:56 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fgy9AHse"
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 588986dc071994;
+	Mon, 8 Sep 2025 04:08:06 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757322476;
-	bh=MP0LLr4lRflx432u6oAkBGLCKf7U72EqLHq7dp9l1Mg=;
+	s=ti-com-17Q1; t=1757322486;
+	bh=WibgegTqo+WJ+bFaRM+5vscvWKwWpKt986Uxz6u8MQQ=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=fNzupBQ48c/mtWWBs7AX0CqPWWEb0i6xpR8AAe+OSytZHQ3TyXEk8Jyh4WVAvhZJz
-	 JKfmP3asMeUeVFZIKHGIdFf599mq2LTP1v/wrXYqYzcntY6lqmS5CpT2tAhaEZHcJW
-	 AC1L9Op8+xdRD1mgDHlcE0qUTjQ/2K9TM7X75U5E=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58897ujX2856562
+	b=fgy9AHsekO02wFnSIM8AfzFYvbHCdXufrzVAIH9/VtA69wnE6SKvxLyvKZsIYOUYw
+	 T+ZIFlqFsIvJ2lJmBHvg42HXOqY9DjHl+5MjHkzo5yxMGNH+An5O8HA4kMfDGtS4cr
+	 J6Zmr/ggYy38l+lDG2M0FN2ZDjf9bNTPZHUe1CsI=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 588986043666698
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 8 Sep 2025 04:07:56 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 8 Sep 2025 04:08:06 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 8
- Sep 2025 04:07:55 -0500
-Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2025 04:08:05 -0500
+Received: from fllvem-mr08.itg.ti.com (10.64.41.88) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 8 Sep 2025 04:07:55 -0500
+ Frontend Transport; Mon, 8 Sep 2025 04:08:05 -0500
 Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58897tMr2355795;
-	Mon, 8 Sep 2025 04:07:55 -0500
+	by fllvem-mr08.itg.ti.com (8.18.1/8.18.1) with ESMTP id 588985Eb2298756;
+	Mon, 8 Sep 2025 04:08:05 -0500
 Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58897sQb023024;
-	Mon, 8 Sep 2025 04:07:55 -0500
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 588985f7023054;
+	Mon, 8 Sep 2025 04:08:05 -0500
 From: MD Danish Anwar <danishanwar@ti.com>
 To: "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet
@@ -78,9 +78,9 @@ To: "David S. Miller" <davem@davemloft.net>,
 CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH net-next v3 2/7] net: rpmsg-eth: Add basic rpmsg skeleton
-Date: Mon, 8 Sep 2025 14:37:41 +0530
-Message-ID: <20250908090746.862407-3-danishanwar@ti.com>
+Subject: [PATCH net-next v3 7/7] arch: arm64: dts: k3-am64*: Add rpmsg-eth node
+Date: Mon, 8 Sep 2025 14:37:46 +0530
+Message-ID: <20250908090746.862407-8-danishanwar@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250908090746.862407-1-danishanwar@ti.com>
 References: <20250908090746.862407-1-danishanwar@ti.com>
@@ -94,291 +94,48 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Introduces a basic RPMSG Ethernet driver and add it's basic skeleton.
-Add support for creating virtual Ethernet devices over RPMSG channels,
-allowing user-space programs to send and receive messages using a
-standard Ethernet protocol. The driver includes message handling,
-probe, and remove functions, along with necessary data structures.
+Add rpmsg-eth node to main_r5fss0_core0. This node describes the memory
+region to be used for rpmsg ethernet communication. The commit adds
+below changes,
+
+- Adding new reserved memory region main_r5fss0_core0_memory_region_shm
+- Adding rpmsg-eth node to main_r5fss0_core0 with memory-region as
+  main_r5fss0_core0_memory_region_shm
 
 Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 ---
- drivers/net/ethernet/Kconfig     |  10 +++
- drivers/net/ethernet/Makefile    |   1 +
- drivers/net/ethernet/rpmsg_eth.c | 142 +++++++++++++++++++++++++++++++
- drivers/net/ethernet/rpmsg_eth.h |  85 ++++++++++++++++++
- 4 files changed, 238 insertions(+)
- create mode 100644 drivers/net/ethernet/rpmsg_eth.c
- create mode 100644 drivers/net/ethernet/rpmsg_eth.h
+ arch/arm64/boot/dts/ti/k3-am642-evm.dts | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index f86d4557d8d7..a73a45a9ef3d 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -170,6 +170,16 @@ config OA_TC6
- 	  To know the implementation details, refer documentation in
- 	  <file:Documentation/networking/oa-tc6-framework.rst>.
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-evm.dts b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+index e01866372293..6e8e2c39146b 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-am642-evm.dts
+@@ -61,7 +61,13 @@ main_r5fss0_core0_dma_memory_region: r5f-dma-memory@a0000000 {
  
-+config RPMSG_ETH
-+	tristate "RPMsg Based Virtual Ethernet driver"
-+	depends on RPMSG
-+	help
-+	  This makes it possible for user-space programs to send and receive
-+	  rpmsg messages as a standard eth protocol.
+ 		main_r5fss0_core0_memory_region: r5f-memory@a0100000 {
+ 			compatible = "shared-dma-pool";
+-			reg = <0x00 0xa0100000 0x00 0xf00000>;
++			reg = <0x00 0xa0100000 0x00 0x300000>;
++			no-map;
++		};
 +
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called rpmsg_eth.
-+
- source "drivers/net/ethernet/packetengines/Kconfig"
- source "drivers/net/ethernet/pasemi/Kconfig"
- source "drivers/net/ethernet/pensando/Kconfig"
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index 67182339469a..aebd15993e3c 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -107,3 +107,4 @@ obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
- obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
- obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
- obj-$(CONFIG_OA_TC6) += oa_tc6.o
-+obj-$(CONFIG_RPMSG_ETH) += rpmsg_eth.o
-diff --git a/drivers/net/ethernet/rpmsg_eth.c b/drivers/net/ethernet/rpmsg_eth.c
-new file mode 100644
-index 000000000000..b375dfd9cf1c
---- /dev/null
-+++ b/drivers/net/ethernet/rpmsg_eth.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* RPMsg Based Virtual Ethernet Driver
-+ *
-+ * Copyright (C) 2025 Texas Instruments Incorporated - https://www.ti.com/
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/of.h>
-+#include <linux/of_reserved_mem.h>
-+#include <linux/remoteproc.h>
-+#include "rpmsg_eth.h"
-+
-+static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
-+			      void *priv, u32 src)
-+{
-+	struct rpmsg_eth_common *common = dev_get_drvdata(&rpdev->dev);
-+	struct message *msg = (struct message *)data;
-+	u32 msg_type = msg->msg_hdr.msg_type;
-+	int ret = 0;
-+
-+	switch (msg_type) {
-+	case RPMSG_ETH_REQUEST_MSG:
-+	case RPMSG_ETH_RESPONSE_MSG:
-+	case RPMSG_ETH_NOTIFY_MSG:
-+		dev_dbg(common->dev, "Msg type = %d, Src Id = %d\n",
-+			msg_type, msg->msg_hdr.src_id);
-+		break;
-+	default:
-+		dev_err(common->dev, "Invalid msg type\n");
-+		ret = -EINVAL;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+/**
-+ * rpmsg_eth_get_shm_info - Retrieve shared memory region for RPMsg Ethernet
-+ * @common: Pointer to rpmsg_eth_common structure
-+ *
-+ * This function locates and maps the reserved memory region for the RPMsg
-+ * Ethernet device by traversing the device tree hierarchy. It first identifies
-+ * the associated remote processor (rproc), then locates the "rpmsg-eth" child
-+ * node within the rproc's device tree node, and finally retrieves the
-+ * "memory-region" phandle that points to the reserved memory region.
-+ * Once found, the shared memory region is mapped into the
-+ * kernel's virtual address space using devm_ioremap()
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+static int rpmsg_eth_get_shm_info(struct rpmsg_eth_common *common)
-+{
-+	struct device_node *np, *rmem_np;
-+	struct reserved_mem *rmem;
-+	struct rproc *rproc;
-+
-+	/* Get the remote processor associated with this device */
-+	rproc = rproc_get_by_child(&common->rpdev->dev);
-+	if (!rproc) {
-+		dev_err(common->dev, "rpmsg eth device not child of rproc\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Get the device node from rproc or its parent */
-+	np = rproc->dev.of_node ?: (rproc->dev.parent ? rproc->dev.parent->of_node : NULL);
-+	if (!np) {
-+		dev_err(common->dev, "Cannot find rproc device node\n");
-+		return -ENODEV;
-+	}
-+
-+	/* Parse the memory-region phandle */
-+	rmem_np = of_parse_phandle(np, "memory-region", common->data.shm_region_index);
-+	of_node_put(np);
-+	if (!rmem_np)
-+		return -EINVAL;
-+
-+	/* Lookup the reserved memory region */
-+	rmem = of_reserved_mem_lookup(rmem_np);
-+	of_node_put(rmem_np);
-+	if (!rmem)
-+		return -EINVAL;
-+
-+	common->port->shm = devm_ioremap(common->dev, rmem->base, rmem->size);
-+	if (IS_ERR(common->port->shm))
-+		return PTR_ERR(common->port->shm);
-+
-+	common->port->buf_size = rmem->size;
-+
-+	return 0;
-+}
-+
-+static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
-+{
-+	struct device *dev = &rpdev->dev;
-+	struct rpmsg_eth_common *common;
-+	int ret = 0;
-+
-+	common = devm_kzalloc(&rpdev->dev, sizeof(*common), GFP_KERNEL);
-+	if (!common)
-+		return -ENOMEM;
-+
-+	dev_set_drvdata(dev, common);
-+
-+	common->port = devm_kzalloc(dev, sizeof(*common->port), GFP_KERNEL);
-+	common->dev = dev;
-+	common->rpdev = rpdev;
-+	common->data = *(const struct rpmsg_eth_data *)rpdev->id.driver_data;
-+	dev_err(dev, "shm_index = %d\n", common->data.shm_region_index);
-+
-+	ret = rpmsg_eth_get_shm_info(common);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static void rpmsg_eth_remove(struct rpmsg_device *rpdev)
-+{
-+	dev_dbg(&rpdev->dev, "rpmsg-eth client driver is removed\n");
-+}
-+
-+static const struct rpmsg_eth_data ti_rpmsg_eth_data = {
-+	.shm_region_index = 2,
-+};
-+
-+static struct rpmsg_device_id rpmsg_eth_id_table[] = {
-+	{ .name = "ti.shm-eth", .driver_data = (kernel_ulong_t)&ti_rpmsg_eth_data },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(rpmsg, rpmsg_eth_id_table);
-+
-+static struct rpmsg_driver rpmsg_eth_rpmsg_client = {
-+	.drv.name = KBUILD_MODNAME,
-+	.id_table = rpmsg_eth_id_table,
-+	.probe = rpmsg_eth_probe,
-+	.callback = rpmsg_eth_rpmsg_cb,
-+	.remove = rpmsg_eth_remove,
-+};
-+module_rpmsg_driver(rpmsg_eth_rpmsg_client);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("MD Danish Anwar <danishanwar@ti.com>");
-+MODULE_DESCRIPTION("RPMsg Based Virtual Ethernet driver");
-diff --git a/drivers/net/ethernet/rpmsg_eth.h b/drivers/net/ethernet/rpmsg_eth.h
-new file mode 100644
-index 000000000000..7c8ae57fcf07
---- /dev/null
-+++ b/drivers/net/ethernet/rpmsg_eth.h
-@@ -0,0 +1,85 @@
-+/* SPDX-License-Identifier: GPL-2.0
-+ * RPMsg Based Virtual Ethernet Driver common header
-+ *
-+ * Copyright (C) 2025 Texas Instruments Incorporated - https://www.ti.com/
-+ */
-+
-+#ifndef __RPMSG_ETH_H__
-+#define __RPMSG_ETH_H__
-+
-+#include <linux/errno.h>
-+#include <linux/etherdevice.h>
-+#include <linux/if_ether.h>
-+#include <linux/if_vlan.h>
-+#include <linux/jiffies.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/netdevice.h>
-+#include <linux/rpmsg.h>
-+
-+#define RPMSG_ETH_SHM_MAGIC_NUM 0xABCDABCD
-+
-+enum rpmsg_eth_msg_type {
-+	RPMSG_ETH_REQUEST_MSG = 0,
-+	RPMSG_ETH_RESPONSE_MSG,
-+	RPMSG_ETH_NOTIFY_MSG,
-+};
-+
-+/**
-+ * struct message_header - message header structure for RPMSG Ethernet
-+ * @src_id: Source endpoint ID
-+ * @msg_type: Message type
-+ */
-+struct message_header {
-+	u32 src_id;
-+	u32 msg_type;
-+} __packed;
-+
-+/**
-+ * struct message - RPMSG Ethernet message structure
-+ *
-+ * @msg_hdr: Message header contains source and destination endpoint and
-+ *          the type of message
-+ *
-+ * This structure is used to send and receive messages between the RPMSG
-+ * Ethernet ports.
-+ */
-+struct message {
-+	struct message_header msg_hdr;
-+} __packed;
-+
-+/**
-+ * struct prueth_pdata - RPMSG ETH device data
-+ * @shm_region_index: Shared memory region index
-+ */
-+struct rpmsg_eth_data {
-+	u8 shm_region_index;
-+};
-+
-+/**
-+ * struct rpmsg_eth_common - common structure for RPMSG Ethernet
-+ * @rpdev: RPMSG device
-+ * @port: Ethernet port
-+ * @dev: Device
-+ * @data: Vendor specific data
-+ */
-+struct rpmsg_eth_common {
-+	struct rpmsg_device *rpdev;
-+	struct rpmsg_eth_port *port;
-+	struct device *dev;
-+	struct rpmsg_eth_data data;
-+};
-+
-+/**
-+ * struct rpmsg_eth_port - Ethernet port structure for RPMSG Ethernet
-+ * @common: Pointer to the common RPMSG Ethernet structure
-+ * @shm: Shared memory region mapping
-+ * @buf_size: Size (in bytes) of the shared memory buffer for this port
-+ */
-+struct rpmsg_eth_port {
-+	struct rpmsg_eth_common *common;
-+	void __iomem *shm;
-+	phys_addr_t buf_size;
-+};
-+
-+#endif /* __RPMSG_ETH_H__ */
++		main_r5fss0_core0_memory_region_shm: r5f-shm-memory@a0400000 {
++			compatible = "shared-dma-pool";
++			reg = <0x00 0xa0400000 0x00 0xc00000>;
+ 			no-map;
+ 		};
+ 
+@@ -767,7 +773,8 @@ mbox_m4_0: mbox-m4-0 {
+ &main_r5fss0_core0 {
+ 	mboxes = <&mailbox0_cluster2 &mbox_main_r5fss0_core0>;
+ 	memory-region = <&main_r5fss0_core0_dma_memory_region>,
+-			<&main_r5fss0_core0_memory_region>;
++			<&main_r5fss0_core0_memory_region>,
++			<&main_r5fss0_core0_memory_region_shm>;
+ };
+ 
+ &main_r5fss0_core1 {
 -- 
 2.34.1
 
