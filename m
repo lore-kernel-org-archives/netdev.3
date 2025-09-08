@@ -1,543 +1,112 @@
-Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF172FB0A6;
-	Mon,  8 Sep 2025 09:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7ED21C186;
+	Mon,  8 Sep 2025 09:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757322532; cv=none; b=TNOCBp1aZPUk/v37Wxct13btakrErH75ljx8kUXaRIxc6s6xP06IzRyYFcjE9nn4/8VG/F4RnFOqggfholORr5sT4ajmVdvzV8oNXUMzohW6vPzK1pZHDDtc2Atszt3AUWVqeyvAY00w3y+WeKRWxPfAibeQlcTl+GXJbdae9PM=
+	t=1757324078; cv=none; b=KPo5/1XKjSp+v3rLopvJp8teuAGRWTTec/RBfkvSoBsqnEyZopyj6tbUxY0THD4ATrcp5A2CJhHNR4FhruoPGcT5mrM0x9PQnUyRM88bj872pfglf3Kq0CJGa4b7kttF/LKo0CVmjIHZz9P1eAi17iWYKKvr89nC2k1BalavK7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757322532; c=relaxed/simple;
-	bh=f268JepUj79CSvfyvL3vf0I0fZ9d/I2BmfWjbBQM3RU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VmatzwFrOXHFWuCWFMVnfdeGpQKHfPJLZTubxiVWNbXjA5/u0xmeIWQFufD38IZOA5Lm7Omi6euvWj2vMUJ+6aVtjaIUcHmf8rNKCBEyhoas1FEVx/h1GgEhvvRtdx9jdtn7TXroYr5ZMFiyk52QDiEQSXZp0C7DeBd8VENiLzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bSD+fSDq; arc=none smtp.client-ip=198.47.23.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bSD+fSDq"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 588980pi3834399;
-	Mon, 8 Sep 2025 04:08:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757322480;
-	bh=NkAf9VmrM84S/iiWeg1yFOSkop+ObLDvLnj0H7RvAxk=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=bSD+fSDqXOHgh+MsbY/2uDk0e/0w6QtWDjOgZag5vXsfaENxLjfzBj8y8ekTPgVhp
-	 WTgWPomAKlpklHukY2ZiQtsK/NzJjs3JaBP2ZSYaXCQmBPNYcby+GCdZP3O8AiohOc
-	 3vFvhUzl3uIE+6sQomY4JJKQG46WuqojDZUdmGrc=
-Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 588980tN3666478
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Mon, 8 Sep 2025 04:08:00 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 8
- Sep 2025 04:07:59 -0500
-Received: from fllvem-mr08.itg.ti.com (10.64.41.88) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
- Frontend Transport; Mon, 8 Sep 2025 04:07:59 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by fllvem-mr08.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58897xmc2298629;
-	Mon, 8 Sep 2025 04:07:59 -0500
-Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58897w4F023036;
-	Mon, 8 Sep 2025 04:07:59 -0500
-From: MD Danish Anwar <danishanwar@ti.com>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Jonathan Corbet
-	<corbet@lwn.net>, Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        MD Danish Anwar
-	<danishanwar@ti.com>,
-        Mengyuan Lou <mengyuanlou@net-swift.com>,
-        Luo Jie
-	<quic_luoj@quicinc.com>, Fan Gong <gongfan1@huawei.com>,
-        Lei Wei
-	<quic_leiwei@quicinc.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Lee Trager
-	<lee@trager.us>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Parthiban Veerasooran
-	<Parthiban.Veerasooran@microchip.com>,
-        Geert Uytterhoeven
-	<geert+renesas@glider.be>,
-        Lukas Bulwahn <lukas.bulwahn@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH net-next v3 4/7] net: rpmsg-eth: Add netdev ops
-Date: Mon, 8 Sep 2025 14:37:43 +0530
-Message-ID: <20250908090746.862407-5-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250908090746.862407-1-danishanwar@ti.com>
-References: <20250908090746.862407-1-danishanwar@ti.com>
+	s=arc-20240116; t=1757324078; c=relaxed/simple;
+	bh=YzsJwu4bSe8qpnD0n9Z1JQk+MCIqNJAEcPjaD9JFnJE=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=dApmv0316Bd8daQezXFTfDB6x+ACCkKCQRHxwi97s1jVgbmoocM2vwcVRlFVFSIPm9JCxL//WXGB/o3765pIRJ7D1NVTj2MaZRnBFUGCguaLzgYjB1LvSW0BrmAjZuWFrmYTBukyhm69Su2ihZhyFeAv5NmIDJ1RUCxdVjvQ54w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4cL1xh3DCXzKHMyt;
+	Mon,  8 Sep 2025 17:34:32 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 884D41A0DCA;
+	Mon,  8 Sep 2025 17:34:32 +0800 (CST)
+Received: from [10.174.179.143] (unknown [10.174.179.143])
+	by APP4 (Coremail) with SMTP id gCh0CgB3wY0mo75oX50yBw--.65125S3;
+	Mon, 08 Sep 2025 17:34:32 +0800 (CST)
+Subject: Re: [syzbot] [net?] possible deadlock in inet_shutdown
+To: Eric Dumazet <edumazet@google.com>, Yu Kuai <yukuai1@huaweicloud.com>
+Cc: syzbot <syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com>,
+ Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
+ davem@davemloft.net, dsahern@kernel.org, horms@kernel.org, kuba@kernel.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.lei@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com,
+ syzkaller-bugs@googlegroups.com, thomas.hellstrom@linux.intel.com,
+ "yukuai (C)" <yukuai3@huawei.com>
+References: <68bb4160.050a0220.192772.0198.GAE@google.com>
+ <CANn89iLNFHBMTF2Pb6hHERYpuih9eQZb6A12+ndzBcQs_kZoBA@mail.gmail.com>
+ <CANn89iJaY+MJPUJgtowZOPwHaf8ToNVxEyFN9U+Csw9+eB7YHg@mail.gmail.com>
+ <c035df1c-abaf-9173-032f-3dd91b296101@huaweicloud.com>
+ <CANn89iKVbTKxgO=_47TU21b6GakhnRuBk2upGviCK0Y1Q2Ar2Q@mail.gmail.com>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <51adf9cb-619e-9646-36f0-1362828e801e@huaweicloud.com>
+Date: Mon, 8 Sep 2025 17:34:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <CANn89iKVbTKxgO=_47TU21b6GakhnRuBk2upGviCK0Y1Q2Ar2Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-CM-TRANSID:gCh0CgB3wY0mo75oX50yBw--.65125S3
+X-Coremail-Antispam: 1UD129KBjvdXoW7XryfKFyruw1ruFWDWr4kWFg_yoWkuwb_Cr
+	48uwn3Ga17Xr13tFsxKrn7Gw1qqasYg34DXwn5Ja4fu3Z3ArWUAF18C3WrZw4rtan7KasI
+	krZ09a1ftFy3KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7sRidbbtUUUUU==
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-Add netdev ops for rpmsg-eth driver. This patch introduces the netdev
-operations for the rpmsg-eth driver, enabling the driver to interact
-with the Linux networking stack. The following functionalities are
-implemented:
+Hi,
 
-1. `ndo_open` and `ndo_stop`:
-	- Handles the initialization and cleanup of the network device
-	  during open and stop operations.
-	- Manages the state transitions of the rpmsg-eth driver.
+在 2025/09/08 17:07, Eric Dumazet 写道:
+> On Mon, Sep 8, 2025 at 1:52 AM Yu Kuai <yukuai1@huaweicloud.com> wrote:
+>>
+>> Hi,
+>>
+>> 在 2025/09/06 17:16, Eric Dumazet 写道:
+>>> On Fri, Sep 5, 2025 at 1:03 PM Eric Dumazet <edumazet@google.com> wrote:
+>>>>
+>>>> On Fri, Sep 5, 2025 at 1:00 PM syzbot
+>>>> <syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com> wrote:
+>>>
+>>> Note to NBD maintainers : I held about  20 syzbot reports all pointing
+>>> to NBD accepting various sockets, I  can release them if needed, if you prefer
+>>> to triage them.
+>>>
+>> I'm not NBD maintainer, just trying to understand the deadlock first.
+>>
+>> Is this deadlock only possible for some sepecific socket types? Take
+>> a look at the report here:
+>>
+>> Usually issue IO will require the order:
+>>
+>> q_usage_counter -> cmd lock -> tx lock -> sk lock
+>>
+> 
+> I have not seen the deadlock being reported with normal TCP sockets.
+> 
+> NBD sets sk->sk_allocation to  GFP_NOIO | __GFP_MEMALLOC;
+> from __sock_xmit(), and TCP seems to respect this.
+> .
+> 
 
-2. `ndo_start_xmit`:
-	- Implements the transmit functionality by copying data from the
-	  skb to the shared memory buffer and updating the head index.
+What aboud iscsi and nvme-tcp? and probably other drivers, where
+sk_allocation is GFP_ATOMIC, do they have similar problem?
 
-3. `ndo_set_mac_address`:
-	- Allows setting the MAC address of the network device and sends
-	  the updated MAC address to the remote processor.
-
-4. RX Path:
-	- Adds a timer-based mechanism to poll for received packets in
-	  shared memory.
-	- Implements NAPI-based packet processing to handle received
-	  packets efficiently.
-
-5. State Machine:
-	- Introduces a state machine to manage the driver's state
-	  transitions, such as PROBE, OPEN, READY, and RUNNING.
-
-6. Initialization:
-	- Adds necessary initialization for locks, timers, and work
-	  structures.
-	- Registers the network device and sets up NAPI and RX timer.
-
-7. Cleanup:
-	- Ensures proper cleanup of resources during driver removal,
-	  including NAPI and timers.
-
-This patch enhances the rpmsg-eth driver to function as a fully
-operational network device in the Linux kernel.
-
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- drivers/net/ethernet/rpmsg_eth.c | 318 +++++++++++++++++++++++++++++++
- drivers/net/ethernet/rpmsg_eth.h |   2 +
- 2 files changed, 320 insertions(+)
-
-diff --git a/drivers/net/ethernet/rpmsg_eth.c b/drivers/net/ethernet/rpmsg_eth.c
-index bcbcfca37379..211d1499f3d7 100644
---- a/drivers/net/ethernet/rpmsg_eth.c
-+++ b/drivers/net/ethernet/rpmsg_eth.c
-@@ -50,6 +50,109 @@ static int rpmsg_eth_validate_handshake(struct rpmsg_eth_port *port,
- 	return 0;
- }
- 
-+static int create_request(struct rpmsg_eth_common *common,
-+			  enum rpmsg_eth_rpmsg_type rpmsg_type)
-+{
-+	struct message *msg = &common->send_msg;
-+	int ret = 0;
-+
-+	msg->msg_hdr.src_id = common->port->port_id;
-+	msg->req_msg.type = rpmsg_type;
-+
-+	switch (rpmsg_type) {
-+	case RPMSG_ETH_REQ_SHM_INFO:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_REQUEST_MSG;
-+		break;
-+	case RPMSG_ETH_REQ_SET_MAC_ADDR:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_REQUEST_MSG;
-+		ether_addr_copy(msg->req_msg.mac_addr.addr,
-+				common->port->ndev->dev_addr);
-+		break;
-+	case RPMSG_ETH_NOTIFY_PORT_UP:
-+	case RPMSG_ETH_NOTIFY_PORT_DOWN:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_NOTIFY_MSG;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		dev_err(common->dev, "Invalid RPMSG request\n");
-+	}
-+	return ret;
-+}
-+
-+static int rpmsg_eth_create_send_request(struct rpmsg_eth_common *common,
-+					 enum rpmsg_eth_rpmsg_type rpmsg_type,
-+					 bool wait)
-+{
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	if (wait)
-+		reinit_completion(&common->sync_msg);
-+
-+	spin_lock_irqsave(&common->send_msg_lock, flags);
-+	ret = create_request(common, rpmsg_type);
-+	if (ret)
-+		goto release_lock;
-+
-+	ret = rpmsg_send(common->rpdev->ept, (void *)(&common->send_msg),
-+			 sizeof(common->send_msg));
-+	if (ret) {
-+		dev_err(common->dev, "Failed to send RPMSG message\n");
-+		goto release_lock;
-+	}
-+
-+	spin_unlock_irqrestore(&common->send_msg_lock, flags);
-+	if (wait) {
-+		ret = wait_for_completion_timeout(&common->sync_msg,
-+						  RPMSG_ETH_REQ_TIMEOUT_JIFFIES);
-+
-+		if (!ret) {
-+			dev_err(common->dev, "Failed to receive response within %ld jiffies\n",
-+				RPMSG_ETH_REQ_TIMEOUT_JIFFIES);
-+			return -ETIMEDOUT;
-+		}
-+		ret = 0;
-+	}
-+	return ret;
-+release_lock:
-+	spin_unlock_irqrestore(&common->send_msg_lock, flags);
-+	return ret;
-+}
-+
-+static void rpmsg_eth_state_machine(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct rpmsg_eth_common *common;
-+	struct rpmsg_eth_port *port;
-+	int ret;
-+
-+	common = container_of(dwork, struct rpmsg_eth_common, state_work);
-+	port = common->port;
-+
-+	mutex_lock(&common->state_lock);
-+
-+	switch (common->state) {
-+	case RPMSG_ETH_STATE_PROBE:
-+		break;
-+	case RPMSG_ETH_STATE_OPEN:
-+		rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SHM_INFO, false);
-+		break;
-+	case RPMSG_ETH_STATE_CLOSE:
-+		break;
-+	case RPMSG_ETH_STATE_READY:
-+		ret = rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SET_MAC_ADDR, false);
-+		if (!ret) {
-+			napi_enable(&port->rx_napi);
-+			netif_carrier_on(port->ndev);
-+			mod_timer(&port->rx_timer, RX_POLL_TIMEOUT_JIFFIES);
-+		}
-+		break;
-+	case RPMSG_ETH_STATE_RUNNING:
-+		break;
-+	}
-+	mutex_unlock(&common->state_lock);
-+}
-+
- static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 			      void *priv, u32 src)
- {
-@@ -86,6 +189,17 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 				dev_err(common->dev, "RPMSG handshake failed %d\n", ret);
- 				return ret;
- 			}
-+
-+			mutex_lock(&common->state_lock);
-+			common->state = RPMSG_ETH_STATE_READY;
-+			mutex_unlock(&common->state_lock);
-+
-+			mod_delayed_work(system_wq,
-+					 &common->state_work,
-+					 STATE_MACHINE_TIME_JIFFIES);
-+
-+			break;
-+		case RPMSG_ETH_RESP_SET_MAC_ADDR:
- 			break;
- 		}
- 		break;
-@@ -93,6 +207,20 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 		rpmsg_type = msg->notify_msg.type;
- 		dev_dbg(common->dev, "Msg type = %d, RPMsg type = %d, Src Id = %d, Msg Id = %d\n",
- 			msg_type, rpmsg_type, msg->msg_hdr.src_id, msg->notify_msg.id);
-+		switch (rpmsg_type) {
-+		case RPMSG_ETH_NOTIFY_REMOTE_READY:
-+			mutex_lock(&common->state_lock);
-+			common->state = RPMSG_ETH_STATE_RUNNING;
-+			mutex_unlock(&common->state_lock);
-+
-+			mod_delayed_work(system_wq,
-+					 &common->state_work,
-+					 STATE_MACHINE_TIME_JIFFIES);
-+			break;
-+		case RPMSG_ETH_NOTIFY_PORT_UP:
-+		case RPMSG_ETH_NOTIFY_PORT_DOWN:
-+			break;
-+		}
- 		break;
- 	default:
- 		dev_err(common->dev, "Invalid msg type\n");
-@@ -157,6 +285,181 @@ static int rpmsg_eth_get_shm_info(struct rpmsg_eth_common *common)
- 	return 0;
- }
- 
-+static void rpmsg_eth_rx_timer(struct timer_list *timer)
-+{
-+	struct rpmsg_eth_port *port = timer_container_of(port, timer, rx_timer);
-+	struct napi_struct *napi;
-+	int num_pkts = 0;
-+	u32 head, tail;
-+
-+	head = readl(port->shm + port->rx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->rx_offset +
-+		     TAIL_IDX_OFFSET(port->rx_max_buffers));
-+
-+	num_pkts = tail - head;
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->rx_max_buffers);
-+
-+	napi = &port->rx_napi;
-+	if (num_pkts && likely(napi_schedule_prep(napi)))
-+		__napi_schedule(napi);
-+	else
-+		mod_timer(&port->rx_timer, RX_POLL_JIFFIES);
-+}
-+
-+static int rpmsg_eth_rx_packets(struct napi_struct *napi, int budget)
-+{
-+	struct rpmsg_eth_port *port = container_of(napi, struct rpmsg_eth_port, rx_napi);
-+	u32 count, process_pkts;
-+	struct sk_buff *skb;
-+	u32 head, tail;
-+	int num_pkts;
-+	u32 pkt_len;
-+
-+	head = readl(port->shm + port->rx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->rx_offset +
-+		     TAIL_IDX_OFFSET(port->rx_max_buffers));
-+
-+	num_pkts = head - tail;
-+
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->rx_max_buffers);
-+	process_pkts = min(num_pkts, budget);
-+	count = 0;
-+	while (count < process_pkts) {
-+		memcpy_fromio((void *)&pkt_len,
-+			      port->shm + port->rx_offset + MAGIC_NUM_SIZE_TYPE +
-+			      PKT_START_OFFSET((tail + count) % port->rx_max_buffers),
-+			      PKT_LEN_SIZE_TYPE);
-+		/* Start building the skb */
-+		skb = napi_alloc_skb(napi, pkt_len);
-+		if (!skb) {
-+			port->ndev->stats.rx_dropped++;
-+			goto rx_dropped;
-+		}
-+
-+		skb->dev = port->ndev;
-+		skb_put(skb, pkt_len);
-+		memcpy_fromio((void *)skb->data,
-+			      port->shm + port->rx_offset + PKT_LEN_SIZE_TYPE +
-+			      MAGIC_NUM_SIZE_TYPE +
-+			      PKT_START_OFFSET((tail + count) % port->rx_max_buffers),
-+			      pkt_len);
-+
-+		skb->protocol = eth_type_trans(skb, port->ndev);
-+
-+		/* Push skb into network stack */
-+		napi_gro_receive(napi, skb);
-+
-+		count++;
-+		port->ndev->stats.rx_packets++;
-+		port->ndev->stats.rx_bytes += skb->len;
-+	}
-+
-+rx_dropped:
-+
-+	if (num_pkts) {
-+		writel((tail + count) % port->rx_max_buffers,
-+		       port->shm + port->rx_offset +
-+		       TAIL_IDX_OFFSET(port->rx_max_buffers));
-+
-+		if (num_pkts < budget && napi_complete_done(napi, count))
-+			mod_timer(&port->rx_timer, RX_POLL_TIMEOUT_JIFFIES);
-+	}
-+
-+	return count;
-+}
-+
-+static int rpmsg_eth_ndo_open(struct net_device *ndev)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+
-+	mutex_lock(&common->state_lock);
-+	common->state = RPMSG_ETH_STATE_OPEN;
-+	mutex_unlock(&common->state_lock);
-+	mod_delayed_work(system_wq, &common->state_work, msecs_to_jiffies(100));
-+
-+	return 0;
-+}
-+
-+static int rpmsg_eth_ndo_stop(struct net_device *ndev)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+	struct rpmsg_eth_port *port = rpmsg_eth_ndev_to_port(ndev);
-+
-+	mutex_lock(&common->state_lock);
-+	common->state = RPMSG_ETH_STATE_CLOSE;
-+	mutex_unlock(&common->state_lock);
-+
-+	netif_carrier_off(port->ndev);
-+
-+	cancel_delayed_work_sync(&common->state_work);
-+	timer_delete_sync(&port->rx_timer);
-+	napi_disable(&port->rx_napi);
-+
-+	return 0;
-+}
-+
-+static netdev_tx_t rpmsg_eth_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-+{
-+	struct rpmsg_eth_port *port = rpmsg_eth_ndev_to_port(ndev);
-+	u32 head, tail;
-+	int num_pkts;
-+	u32 len;
-+
-+	len = skb_headlen(skb);
-+	head = readl(port->shm + port->tx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->tx_offset +
-+		     TAIL_IDX_OFFSET(port->tx_max_buffers));
-+
-+	/* If the buffer queue is full, then drop packet */
-+	num_pkts = head - tail;
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->tx_max_buffers);
-+
-+	if ((num_pkts + 1) == port->tx_max_buffers) {
-+		netdev_warn(ndev, "Tx buffer full %d\n", num_pkts);
-+		goto ring_full;
-+	}
-+	/* Copy length */
-+	memcpy_toio(port->shm + port->tx_offset + PKT_START_OFFSET(head) + MAGIC_NUM_SIZE_TYPE,
-+		    (void *)&len, PKT_LEN_SIZE_TYPE);
-+	/* Copy data to shared mem */
-+	memcpy_toio(port->shm + port->tx_offset + PKT_START_OFFSET(head) + MAGIC_NUM_SIZE_TYPE +
-+		    PKT_LEN_SIZE_TYPE, (void *)skb->data, len);
-+	writel((head + 1) % port->tx_max_buffers,
-+	       port->shm + port->tx_offset + HEAD_IDX_OFFSET);
-+
-+	ndev->stats.tx_packets++;
-+	ndev->stats.tx_bytes += skb->len;
-+
-+	dev_consume_skb_any(skb);
-+	return NETDEV_TX_OK;
-+
-+ring_full:
-+	return NETDEV_TX_BUSY;
-+}
-+
-+static int rpmsg_eth_set_mac_address(struct net_device *ndev, void *addr)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+	int ret;
-+
-+	ret = eth_mac_addr(ndev, addr);
-+
-+	if (ret < 0)
-+		return ret;
-+	ret = rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SET_MAC_ADDR, false);
-+	return ret;
-+}
-+
-+static const struct net_device_ops rpmsg_eth_netdev_ops = {
-+	.ndo_open = rpmsg_eth_ndo_open,
-+	.ndo_stop = rpmsg_eth_ndo_stop,
-+	.ndo_start_xmit = rpmsg_eth_start_xmit,
-+	.ndo_set_mac_address = rpmsg_eth_set_mac_address,
-+};
-+
- static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- {
- 	struct device *dev = &common->rpdev->dev;
-@@ -180,6 +483,7 @@ static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- 
- 	ndev_priv = netdev_priv(port->ndev);
- 	ndev_priv->port = port;
-+	port->ndev->netdev_ops = &rpmsg_eth_netdev_ops;
- 	SET_NETDEV_DEV(port->ndev, dev);
- 
- 	port->ndev->min_mtu = RPMSG_ETH_MIN_PACKET_SIZE;
-@@ -191,6 +495,8 @@ static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- 	}
- 
- 	netif_carrier_off(port->ndev);
-+	netif_napi_add(port->ndev, &port->rx_napi, rpmsg_eth_rx_packets);
-+	timer_setup(&port->rx_timer, rpmsg_eth_rx_timer, 0);
- 	err = register_netdev(port->ndev);
- 	if (err)
- 		dev_err(dev, "error registering rpmsg_eth net device %d\n", err);
-@@ -221,6 +527,12 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
- 	if (ret)
- 		return ret;
- 
-+	spin_lock_init(&common->send_msg_lock);
-+	spin_lock_init(&common->recv_msg_lock);
-+	mutex_init(&common->state_lock);
-+	INIT_DELAYED_WORK(&common->state_work, rpmsg_eth_state_machine);
-+	init_completion(&common->sync_msg);
-+
- 	/* Register the network device */
- 	ret = rpmsg_eth_init_ndev(common);
- 	if (ret)
-@@ -231,6 +543,12 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
- 
- static void rpmsg_eth_remove(struct rpmsg_device *rpdev)
- {
-+	struct rpmsg_eth_common *common = dev_get_drvdata(&rpdev->dev);
-+	struct rpmsg_eth_port *port = common->port;
-+
-+	netif_napi_del(&port->rx_napi);
-+	timer_delete_sync(&port->rx_timer);
-+
- 	dev_dbg(&rpdev->dev, "rpmsg-eth client driver is removed\n");
- }
- 
-diff --git a/drivers/net/ethernet/rpmsg_eth.h b/drivers/net/ethernet/rpmsg_eth.h
-index 3925a9ef1e3c..b741407b216b 100644
---- a/drivers/net/ethernet/rpmsg_eth.h
-+++ b/drivers/net/ethernet/rpmsg_eth.h
-@@ -218,6 +218,7 @@ enum rpmsg_eth_state {
-  * @data: Vendor specific data
-  * @state: Interface state
-  * @state_work: Delayed work for state machine
-+ * @sync_msg: Completion for synchronous message
-  */
- struct rpmsg_eth_common {
- 	struct rpmsg_device *rpdev;
-@@ -234,6 +235,7 @@ struct rpmsg_eth_common {
- 	/** @state_lock: Lock for changing interface state */
- 	struct mutex state_lock;
- 	struct delayed_work state_work;
-+	struct completion sync_msg;
- };
- 
- /**
--- 
-2.34.1
+Thanks,
+Kuai
 
