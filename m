@@ -1,124 +1,160 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8532F069E;
-	Mon,  8 Sep 2025 09:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AF32ECD13;
+	Mon,  8 Sep 2025 09:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757322514; cv=none; b=m6SL+4ITQ9FKojAOC+g7b/5gZlktTgu4IW3ybWEskscv4C7VB8wxrkimQj1n3v6wJVHRmWVsZncj6s0ZqpLJx8Nzks1eRPhlBtDl0unTrMbQ2eXBvTECwKHZAG81ivG+epWeKyFQJxG2XITNKNaEyMWlD1VgFOmiVXJxozKZD/k=
+	t=1757322525; cv=none; b=Wxn7Nx9BPtq0nK1KdhtlCDX8M7YiKA40LKrQnm60U39T/wkAMEj51yNjtcY1Bb0XSis1VVGwvYYzadfr9vwhSJUYD9kgLiiQQgm7LrythLGj2apfgtC/QbiMESqw6ycb4Omn5FA6GgkCWDbHn2cIVpKgXAQTkj+tKuzcusI6kHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757322514; c=relaxed/simple;
-	bh=MhMgcHHloqdsvpGVS4XMV4EJ/KcTgELqX1VRtRedv10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dZKb7DugkDm0mUgfjdtyFF4SkgKBlvJku65IWirjEYwza+V/vqHRUaUlQWasfiXY75zOjsQV8qb75JWBVbyNqz38VV8PLYAg3XGotaJM05psYyfz6MR7wcJh+sCtYnV6gov8vMInUxQcD5WhqpSajg76C06hVeURpJ0ERcGSNdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=N8qUxz9G; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1757322525; c=relaxed/simple;
+	bh=7JoeAhQFH8pNxURdTGSe/k8G1U9yl25jn2lVYW/PbXs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KJBleoIRRNvmmpMIvTA7j3VyE74CTi1QcAqaU+mtS/Ww/DHd3D3glJUUMJRAiFDL7PN6ET8/VTPkj1PCmi87smwZLjkyyOLM1A20R2YQkYFk9LLq1mk1Pl8t+/DTH64Ug+YicKEu8Nqgx7XKH0HxOGy9LgI/vIFBKDGm+NYOSJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=QX6HnDSF; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="N8qUxz9G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1757322503;
-	bh=MhMgcHHloqdsvpGVS4XMV4EJ/KcTgELqX1VRtRedv10=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=N8qUxz9GarM32aXEpFClgSN1X9YmPiA2/Cye3eCjKaljfvBxPtLiIRTL2SM0SAjf4
-	 VQdvRKI49OiqfOQ9IAHUsCg3Y4mwaUH61Eyy8qZCH0OeU5xRiPoDSYVIvphO5QCnsu
-	 WIoChJDkzakpAcbjpqctgm0FtGeW/0c/tQsNZlC7cSkOwSvww4M8EBOHGCPr/w5bPo
-	 9XsIaarbsNVskh/KaMCWXvM5jBPQDWatUyAMBPjGJHv0cHtbFSxcAjrc3V0w01Eqg0
-	 Go8a1IztY6bbh2sak9PiIM8uVIDdqoKplkrIB3UrgsSfjr/Nxse0wvCLx0mJJ5mZff
-	 wyKaKmCtOJehQ==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 754826000C;
-	Mon,  8 Sep 2025 09:08:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by x201s (Postfix) with ESMTP id 4D922200C27;
-	Mon, 08 Sep 2025 09:08:17 +0000 (UTC)
-Message-ID: <f574e4b9-d0ea-46ef-bbed-8f607ab7276f@fiberby.net>
-Date: Mon, 8 Sep 2025 09:08:16 +0000
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="QX6HnDSF"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58897qN5071816;
+	Mon, 8 Sep 2025 04:07:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1757322472;
+	bh=I+OEYV3P6RAdn9e+dnjp6V6LTEnzQUTTg6OwU4gAIao=;
+	h=From:To:CC:Subject:Date;
+	b=QX6HnDSFstWjhl3Na2VLK5e1msp0nT0IBOdbNL8iAp8VW5uZV6DmBaoiriOzjmoKo
+	 /PKypUrv28UApFjGZ7N5lP1yiKcwc4uqjbhq0GHCIORj5Fz+/T6tnWcuKiSr8KpPVf
+	 Sclh8z15/11XDoOhtS3JPoNZeM4H9qD4ZAd3GE6U=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58897q372856541
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Mon, 8 Sep 2025 04:07:52 -0500
+Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Mon, 8
+ Sep 2025 04:07:51 -0500
+Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55 via
+ Frontend Transport; Mon, 8 Sep 2025 04:07:51 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58897p2J2355770;
+	Mon, 8 Sep 2025 04:07:51 -0500
+Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58897o8E023014;
+	Mon, 8 Sep 2025 04:07:50 -0500
+From: MD Danish Anwar <danishanwar@ti.com>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet
+	<corbet@lwn.net>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        MD Danish Anwar
+	<danishanwar@ti.com>,
+        Mengyuan Lou <mengyuanlou@net-swift.com>,
+        Luo Jie
+	<quic_luoj@quicinc.com>, Fan Gong <gongfan1@huawei.com>,
+        Lei Wei
+	<quic_leiwei@quicinc.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Lee Trager
+	<lee@trager.us>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Parthiban Veerasooran
+	<Parthiban.Veerasooran@microchip.com>,
+        Geert Uytterhoeven
+	<geert+renesas@glider.be>,
+        Lukas Bulwahn <lukas.bulwahn@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v3 0/7] Add RPMSG Ethernet Driver
+Date: Mon, 8 Sep 2025 14:37:39 +0530
+Message-ID: <20250908090746.862407-1-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 02/11] tools: ynl-gen: generate nested array
- policies
-To: Johannes Berg <johannes@sipsolutions.net>,
- "Keller, Jacob E" <jacob.e.keller@intel.com>,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "wireguard@lists.zx2c4.com" <wireguard@lists.zx2c4.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250904-wg-ynl-prep@fiberby.net>
- <20250904220156.1006541-2-ast@fiberby.net>
- <e24f5baf-7085-4db0-aaad-5318555988b3@intel.com>
- <6e31a9e0-5450-4b45-a557-2aa08d23c25a@fiberby.net>
- <c1a4da4cb54c0436d5f67efacf6866b4bc057b3e.camel@sipsolutions.net>
-Content-Language: en-US
-From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
-In-Reply-To: <c1a4da4cb54c0436d5f67efacf6866b4bc057b3e.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On 9/8/25 7:54 AM, Johannes Berg wrote:
-> On Sat, 2025-09-06 at 14:13 +0000, Asbjørn Sloth Tønnesen wrote:
->> Johannes introduced NLA_NESTED_ARRAY and the NLA_POLICY_NESTED_ARRAY()
->> macro in commit 1501d13596b9 for use in nl80211, and it's therefore
->> used in net/wireless/nl80211.c, but outside of that the macro is
->> only sparsely adopted (only by mac80211_hwsim.c and nf_tables_api.c).
->>
->> Wireguard adopts the macro in this RFC patch:
->> https://lore.kernel.org/netdev/20250904220255.1006675-2-ast@fiberby.net/
-> 
- > I think the general consensus now is that preference should be towards
- > arrays being expressed by giving the attribute holding the array
- > multiple times, i.e. each occurrence of an attribute holds a single
- > entry of the array:
- >
- > [header][type1:a1][type2:b][type1:a2][type1:a3]
- >
- > resulting in an array
- >
- > [a1, a2, a3] and a separate value "b",
- >
- > rather than a nested array:
- >
- > [header][type1:[1:a1][2:a2][3:a3]][type2:b]
- >
- >
- > Of course if each entry has multiple values, then you'd still need
- > nesting:
- >
- > [header][type1:[subtype1:x1][subtype2:x2]][type1:[subtype1:y1][subtype2:y2]]
- >
- > would be an array
- >
- > [[x1, x2], [y1, y2]].
+This patch series introduces the RPMSG Ethernet driver, which provides a
+virtual Ethernet interface for communication between a host processor and
+a remote processor using the RPMSG framework. The driver enables
+Ethernet-like packet transmission and reception over shared memory,
+facilitating inter-core communication in systems with heterogeneous
+processors.
 
-Thank you for the consensus write up. Should we prohibit indexed-array with sub-type
-nest for families with a genetlink protocol?
+Key features of this driver:
 
-It is currently only used in families with a netlink-raw or genetlink-legacy protocol.
+1. Virtual Ethernet interface using RPMSG framework
+2. Shared memory-based packet transmission and reception
+3. Support for multicast address filtering
+4. Dynamic MAC address assignment
+5. NAPI support for efficient packet processing
+6. State machine for managing interface states
 
-> I can't get rid of the nested array types in nl80211 though, of course.
+This driver is designed to be generic and vendor-agnostic. Vendors can
+develop firmware for the remote processor to make it compatible with this
+driver by adhering to the shared memory layout and communication protocol
+described in the documentation.
 
-Wireguard is already in the same boat. It is not using the term, nor the policy,
-but it is doing the validation in the handler through, so it can adopt a
-NLA_POLICY_NESTED_ARRAY() policy, instead of a plain '{ .type = NLA_NESTED }'.
+This patch series has been tested on a TI AM64xx platform with a
+compatible remote processor firmware. Feedback and suggestions for
+improvement are welcome.
 
-Comments on the protocol in include/uapi/linux/wireguard.h:
- > WGDEVICE_A_PEERS: NLA_NESTED
- >   0: NLA_NESTED
- >     WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
- >     [..]
- >   0: NLA_NESTED
- >     ...
- >   ...
+Changes from v2 to v3:
+- Removed the binding patches as suggested by Krzysztof Kozlowski <krzk@kernel.org>
+- Dropped the rpmsg-eth node. The shared memory region is directly added to the
+  "memory-region" in rproc device.
+- Added #include <linux/io.h> header for memory mapping operations
+- Added vendor-specific configuration through rpmsg_eth_data structure
+- Added shared memory region index support with shm_region_index parameter
+- Changed RPMSG channel name from generic "shm-eth" to vendor-specific "ti.shm-eth"
+- Fixed format string warning using %zu instead of %lu for size_t type
+- Updated Documentation to include shm_region_index
+- Added MAINTAINERS entry for the driver
 
-Given that, as Jacob pointed out, there are more families with nested arrays in
-their YNL spec, than those using NLA_NESTED_ARRAY, then it appears that there
-are more families already in the boat.
+v2 https://lore.kernel.org/all/20250902090746.3221225-1-danishanwar@ti.com/
+v1 https://lore.kernel.org/all/20250723080322.3047826-1-danishanwar@ti.com/
+
+MD Danish Anwar (7):
+  net: rpmsg-eth: Add Documentation for RPMSG-ETH Driver
+  net: rpmsg-eth: Add basic rpmsg skeleton
+  net: rpmsg-eth: Register device as netdev
+  net: rpmsg-eth: Add netdev ops
+  net: rpmsg-eth: Add support for multicast filtering
+  MAINTAINERS: Add entry for RPMSG Ethernet driver
+  arch: arm64: dts: k3-am64*: Add rpmsg-eth node
+
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../device_drivers/ethernet/rpmsg_eth.rst     | 424 ++++++++++++
+ MAINTAINERS                                   |   6 +
+ arch/arm64/boot/dts/ti/k3-am642-evm.dts       |  11 +-
+ drivers/net/ethernet/Kconfig                  |  10 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/rpmsg_eth.c              | 639 ++++++++++++++++++
+ drivers/net/ethernet/rpmsg_eth.h              | 293 ++++++++
+ 8 files changed, 1383 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst
+ create mode 100644 drivers/net/ethernet/rpmsg_eth.c
+ create mode 100644 drivers/net/ethernet/rpmsg_eth.h
+
+
+base-commit: 16c610162d1f1c332209de1c91ffb09b659bb65d
+-- 
+2.34.1
+
