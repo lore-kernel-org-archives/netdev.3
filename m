@@ -1,132 +1,72 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF967181CFA;
-	Tue,  9 Sep 2025 08:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27EC181CFA;
+	Tue,  9 Sep 2025 08:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757405947; cv=none; b=N2fFeMJqQVtmBGg3gjeH9dN1ztKnXZTXwHOI/+zfYbqCyN24cgo/DVULwOqVLMu0aglUrllktvYHq6bRmDWujbqUp2bq87cQOdmuSrHk9rR9PpM3AEv1l/raNfj7+0mUeWUNXZj8h1vWzuXuY5prilKQ2XdpsO2AjTTNK9y009o=
+	t=1757405949; cv=none; b=n/oTXHM2qO2KGatvMolJA5fUSJeXUDtwzUc+HPMZFjZO1wKn3fmb9H++e8syWbCJUN2jSSQZ9sRcUQUsNof3Wt1YEdHSa/PcSDw6TLnZZKUDCRon4gRx2R49SWkqkKVZgmlBq7Wt0vU5/Cdz2xAAqwiPiJ4fyHnV1LZFrN4bNLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757405947; c=relaxed/simple;
-	bh=UOs1D2zaTKzVNvaXvVUug3+A+pozaCT5dX8It7FgCbE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i2ZXfbhQCfIeiRIC9fX7H6BhI2f92OLkm+N7imV+Vg4iEEC8yX7ujQJAHdkuurIArAgRks0KBH0Reudch9LmEiuZMhiNth0S4zWucIUMIuA0gmp+DenL2lc0p0hHcYVr4GB36PWSIwCTQZnsiUReXHKlQAs/rksPMX7Vi4gRlYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C1Ay7rIM; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757405949; c=relaxed/simple;
+	bh=MWMb3JDCgr53rJ4YRfT6QcfgMhS0Ernt4XGPRIWZVYQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=lCxXYEc7oFiT6TfzR153a5MCvOTeCZ9C3j83g+dx5R4Y9uKqcSbPEpMYKHJHP0bE4xVSr/xQfjxRlMbH/eERBy7ciu7iyVd4BAGfL7fmm8TDzdQPggjQHQWcLmHDad/w+CXexLo27ZI+hwIo9Tts4mVpn2nPMHPcAUZafuIz5wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgUK35j6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C1Ay7rIM"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b4fb8d3a2dbso3313147a12.3;
-        Tue, 09 Sep 2025 01:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757405945; x=1758010745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQCVIQ4ZNeoL3O3c1h4pVx8WIYjn5htIpwze/ZKsILQ=;
-        b=C1Ay7rIMLIvw69cNSsR6wSGtENMRUuz9uJtyXfjUl3irRocRF7Aztk9970jSECrx7A
-         3QgcZ59aTfcgJyPCvtjjt8uGG+Zl7QI3nX5ypxLnHuHsLfSUUsShZkk94tS29VnDgZoX
-         e+k3zifv72h6qTHdnzUJ1HAjA9tSBqYJhOyEVBl+W01zhxyw9qERTFXjre9Jtxarcco1
-         DK5Q13hlJBPdelYviSK2BuLNvFXNxQd/5VnEcffQwybCwSP5GC7GcfIrA1INNwA4XTLX
-         U7Xh4dKG7ygbuj9qQcTpA7JQshw2szckE4uWuR8gXserbH/5EMlK04t6ALYxk4Kz21WI
-         Jp4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757405945; x=1758010745;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UQCVIQ4ZNeoL3O3c1h4pVx8WIYjn5htIpwze/ZKsILQ=;
-        b=iGzRMgcr5pDAGCsWXYcbY7R2U7aFYwfwYSR+644FqVMr+QJqaLRb4AaOpm8q2etyx6
-         FIQhc0oe3ThuLCu56djH+NkcyU0kfy0IH7eOC39dvUObpMHWUuymUVEhhxxbCWfiWRQ/
-         f2U/XQxWod6sW9a3cVUDcDvwgC9dvj7QaGgweL6EFCGn7bpcfJkAW/3eusM9Fs8i4ZpO
-         MchAI2+o7PXt0hqcvu1exrMa4bsbRTa1r/kiECyqWS9J498rHM7pdEvRhgsPavTkpfhz
-         pDLXM+iToi2qSrTYfeoG/k3D9f7carACUrYWUbhvamyY/Auj4r8FgG0CuuV/MeLpdVs4
-         vtgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOUkFQhU4jjtobu7wKKQpaXtZiGvUBwyLdS+mt+Cf04cdjGQhtLxlf/2Atxi5u8ce79yS26L/2QuYu37/mdbo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0rC/NttlDhJiSn45nqVPdhXR528LfGq5VZB3bktotMWJCb1jK
-	9uCac12iMJJPNnGH734burQr7I2A5BgERFrXsL7t1r2qwavyqhMQs/yBZ69uwsdHBgQ=
-X-Gm-Gg: ASbGncssYjcVzUe/vwbqSuYZBOKUL42lNXhf5iGb2lXHkFXEREU3x2G/ye/cU8oe6Nd
-	FpvvH6yE8t9e6EbShDsGkR+CJHxxahlcHMeVDXhvWWR/+I3xsvwvF2TvAY/owdpUJGx8PNpSRKC
-	6FRgH6IfqG0IW/a5R87LWKGbEMW4EqUSusK3zlgAB97DxUu+NdEbCUDZe8uvoCHgNKKEMs7GBTr
-	PtqvWNKdybZcrOUw1jJ76IEiRXWlPefKNDvarAxZnxhz7y9jELZZKDDGostSmFJyHSXiN0GBinC
-	gl/H6xfx+9Zn32v9rj+zF9G7UNGaAx95xMdvVl+pG2Qlz0lsJU4Qy7sfuakSw7nZbDmqOwNZF88
-	p3AQFS5DYVgU/pBMVwYnd06v72+fs2VQBzwGajFu5sQq212Dv6vL6
-X-Google-Smtp-Source: AGHT+IHOwAF6ey8JXaYopBWq9/Uhe7RT1srRJ5PBZryhDlCcrPMiCboRAz+KtxEzy/adPCaSbItKSw==
-X-Received: by 2002:a17:903:b8b:b0:246:620:a0b9 with SMTP id d9443c01a7336-25176729c6fmr119760875ad.61.1757405944709;
-        Tue, 09 Sep 2025 01:19:04 -0700 (PDT)
-Received: from fedora.redhat.com ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24c7ecd9cafsm174370575ad.83.2025.09.09.01.18.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 01:19:04 -0700 (PDT)
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sdubroca@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	bridge@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	Hangbin Liu <liuhangbin@gmail.com>
-Subject: [PATCHv3 net-next 0/5] net: common feature compute for upper interface
-Date: Tue,  9 Sep 2025 08:18:47 +0000
-Message-ID: <20250909081853.398190-1-liuhangbin@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgUK35j6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9647DC4CEFA;
+	Tue,  9 Sep 2025 08:19:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757405949;
+	bh=MWMb3JDCgr53rJ4YRfT6QcfgMhS0Ernt4XGPRIWZVYQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=NgUK35j6GvvgetxNdYkGon9/NteJq1+nV9dtsySWfiCnG5Q9KAulOCocEmXH8AjOS
+	 zPTjyhmUsUMv/GawuUmPN35GNR4J1UnzhXY/HI5X2OxjKMgl38V4bnCllgISXLUd9a
+	 pS46v8+M8Jqw1r2NIYtz9nyPR7Gs/9TkYRKQ5wjKUH28LFkhiY6kExKBrkO6Mpyiz9
+	 4PhZBhqUlglH9lFkQ4IXMaUvD27caQjat2ceF/eq7THPBAJg/APWDYUhscsmAKQQQy
+	 mHgD0M1PFv+Y1JnxHvCawXNYISZwcBWUC2Z0o/+1MakRdnqb7tQAd+M4I+1WS7WlmJ
+	 jjepBx9ZDH7rw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Mark Bloch <mbloch@nvidia.com>, 
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, 
+ Yael Chemla <ychemla@nvidia.com>
+In-Reply-To: <1756884600-520195-1-git-send-email-tariqt@nvidia.com>
+References: <1756884600-520195-1-git-send-email-tariqt@nvidia.com>
+Subject: Re: [PATCH mlx5-next] net/mlx5: Add RS FEC histogram
+ infrastructure
+Message-Id: <175740594613.474749.6222291255125007761.b4-ty@kernel.org>
+Date: Tue, 09 Sep 2025 04:19:06 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-Some high-level virtual drivers need to compute features from their
-lower devices, but each currently has its own implementation and may
-miss some feature computations. This patch set introduces a common function
-to compute features for such devices.
 
-Currently, bonding, team, and bridge have been updated to use the new
-helper.
+On Wed, 03 Sep 2025 10:30:00 +0300, Tariq Toukan wrote:
+> Define the Ports Phy Histogram Configuration Register (PPHCR) to expose
+> RS-FEC histogram bin ranges, and expose a new counter group in the Ports
+> Performance Counters Register (PPCNT) to report the corresponding
+> histogram values.
+> 
+> 
 
-v3:
-a) fix hw_enc_features asign order (Sabrina Dubroca)
-b) set virtual dev feature defination in netdev_features.h (Jakub Kicinski)
-c) remove unneeded err in team_del_slave (Stanislav Fomichev)
-d) remove NETIF_F_HW_ESP test as it needs to be test with GSO pkts (Sabrina Dubroca)
+Applied, thanks!
 
-v2:
-a) remove hard_header_len setting. I will set needed_headroom for bond/team
-   in a separate patch as bridge has it's own ways. (Ido Schimmel)
-b) Add test file to Makefile, set RET=0 to a proper location. (Ido Schimmel)
+[1/1] net/mlx5: Add RS FEC histogram infrastructure
+      https://git.kernel.org/rdma/rdma/c/ff97bc38be343e
 
-Hangbin Liu (5):
-  net: add a common function to compute features from lowers devices
-  bonding: use common function to compute the features
-  team: use common function to compute the features
-  net: bridge: use common function to compute the features
-  selftests/net: add offload checking test for virtual interface
-
- drivers/net/bonding/bond_main.c             |  99 +-------------
- drivers/net/team/team_core.c                |  78 +----------
- include/linux/netdev_features.h             |  18 +++
- include/linux/netdevice.h                   |   1 +
- net/bridge/br_if.c                          |  22 +---
- net/core/dev.c                              |  76 +++++++++++
- tools/testing/selftests/net/Makefile        |   1 +
- tools/testing/selftests/net/config          |   1 +
- tools/testing/selftests/net/vdev_offload.sh | 137 ++++++++++++++++++++
- 9 files changed, 246 insertions(+), 187 deletions(-)
- create mode 100755 tools/testing/selftests/net/vdev_offload.sh
-
+Best regards,
 -- 
-2.50.1
+Leon Romanovsky <leon@kernel.org>
 
