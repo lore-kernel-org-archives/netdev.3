@@ -1,141 +1,81 @@
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2F83009D2
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 18:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A456146A66
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 18:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757443810; cv=none; b=A1Xc5+YYVWG8y2eZRohVp4WldR4NJX6KmaQbhn4WJJw7i0ziw1gehK0Rq4FeZXlmNSx0lz4U/gwaB8V5DF/wHbXS0L0kJUr2l9xMqfnQ2jPIwDlwQdRKhLCTiPojaRZu6KNbIchsDnGB2MSi3DwtpCBEASJREi1yLwES60JnYiU=
+	t=1757443889; cv=none; b=kdjiH1IRhPDcqlG4IIlHw1GuPbDgpG/YZAz2/q822bzlXfkn34CEx5wZ4p2OWKseW8kBSF6RbpexUlPCpDDrPhz+VlMdfXz8NcAXmSWBo47YEotwcI+gl1NV6wejfz2fk/05zIljtrB9By9wLKy3SlmgNngSlDuCNRLY/64aeSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757443810; c=relaxed/simple;
-	bh=A+h1YDOqRpV4KWri32dN3hlHAdfU+RZvsfazMFTUXFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTQrfjhR66hwmddAPdxdnbz1CFg7sJgNTAImxDKURVm1CCRykiW0g6u+syzKHLhLh3NISWNt//8pC9ylLkCzwCH4HyYBj9cuE1Eya+o/HBs6pNdt6V+D0ewfGPsJeg4oB9umML5WZ5Md4CtmmCDlyxk8cU3d4z1d+4DpQjyjQ/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NcF0y0qz; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1757443889; c=relaxed/simple;
+	bh=rL0GhuYStDM+W7s5meNosmoaEWfpiILntiP13BA37KY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bADl/0gCOBjnG1cfR8XNwJYiV/BZgACgur8Q/TGTifRf5Ox9Z1PgIKkJLUOhPxRVF3GrZJFYBBFtsGZkN+XDI2sslOR6SZ8iXM1Q+BuPhFBMKIGQYutkzpX+Nv3gN88FkTUPQErwex2k0H1nN0DCmv88bYlo7odLLArnhJa4+xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4dUlsZ+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NcF0y0qz"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757443804;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0hdCwsUdqxbkvyqqDVE6MYjEaZTRoA0QzrkQgbyUfTQ=;
-	b=NcF0y0qz3t/eqDtZztAMBfOs66T64i65Aj7keSjNFArKz6JCHN+C/ZUVpXL7okGLBbTVrS
-	UxU50xBuRQTuH5geo9qei2RFSfcpoyU+gz1d7LjZVgUTN+qdjx52/1cU+2BBcbIzY7a9en
-	SVCQcQ8SQFYz84j+ublnAgI3bvvJw6E=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	intel-wired-lan@lists.osuosl.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Yael Chemla <ychemla@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH net-next 4/4] net/mlx5e: Report RS-FEC histogram statistics via ethtool
-Date: Tue,  9 Sep 2025 18:42:16 +0000
-Message-ID: <20250909184216.1524669-5-vadim.fedorenko@linux.dev>
-In-Reply-To: <20250909184216.1524669-1-vadim.fedorenko@linux.dev>
-References: <20250909184216.1524669-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4dUlsZ+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB91C4CEF4;
+	Tue,  9 Sep 2025 18:51:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757443888;
+	bh=rL0GhuYStDM+W7s5meNosmoaEWfpiILntiP13BA37KY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O4dUlsZ+CNJj+BeqNzbPbSE8zoaotOs5cRCCYdmVOYTP88/PtNGx7BTINq25g6CMY
+	 Gd+B4T13c2/nPRlVL1NcTXKwpOzSEKIi08IVFLgqsapHBdKJqmdGhAH/MGJ7Jt4iOT
+	 8rdzIwMdK2PeA1Jh4GxJLQSFg4m/2s2bmzVjt4T1QpcybhcVadqXF6YMOy/KSkOtVM
+	 QCALrL935fn7Ix6mkAYoioht5z2n6Z/AgUBIRQdTUtD/SEwcnVFO3icOhwLiluBJfx
+	 wnw7rUlPZPxoRCfuK2J5YNKpUBG1ONze/o+QLAvtt6CEc91DdrvN16bn/nAOUvB6R3
+	 yCej+JothJbgw==
+Date: Tue, 9 Sep 2025 19:51:24 +0100
+From: Simon Horman <horms@kernel.org>
+To: Kamal Heib <kheib@redhat.com>
+Cc: netdev@vger.kernel.org, Veerasenareddy Burru <vburru@marvell.com>,
+	Sathesh Edara <sedara@marvell.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: Re: [PATCH net v2] octeon_ep: Validate the VF ID
+Message-ID: <20250909185124.GD20205@horms.kernel.org>
+References: <20250909131020.1397422-1-kheib@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909131020.1397422-1-kheib@redhat.com>
 
-From: Carolina Jubran <cjubran@nvidia.com>
+On Tue, Sep 09, 2025 at 09:10:20AM -0400, Kamal Heib wrote:
+> Add a helper to validate the VF ID and use it in the VF ndo ops to
+> prevent accessing out-of-range entries.
+> 
+> Without this check, users can run commands such as:
+> 
+>  # ip link show dev enp135s0
+>  2: enp135s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+>     link/ether 00:00:00:01:01:00 brd ff:ff:ff:ff:ff:ff
+>     vf 0     link/ether 00:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state enable, trust off
+>     vf 1     link/ether 00:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state enable, trust off
+>  # ip link set dev enp135s0 vf 4 mac 00:00:00:00:00:14
+>  # echo $?
+>  0
+> 
+> even though VF 4 does not exist, which results in silent success instead
+> of returning an error.
+> 
+> Fixes: 8a241ef9b9b8 ("octeon_ep: add ndo ops for VFs in PF driver")
+> Signed-off-by: Kamal Heib <kheib@redhat.com>
+> Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+> ---
+> v2: Address the comments from Michal.
 
-Add support for reporting RS-FEC histogram counters by reading them
-from the RS_FEC_HISTOGRAM_GROUP in the PPCNT register.
+Thanks Kamal,
 
-Co-developed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- .../ethernet/mellanox/mlx5/core/en_stats.c    | 39 +++++++++++++++++--
- 1 file changed, 35 insertions(+), 4 deletions(-)
+This looks good to me.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index f64cae6dd367..e9f2bf342f95 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -1519,24 +1519,55 @@ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv,
- 		void *bin_range = MLX5_ADDR_OF(pphcr_reg, out, bin_range[i]);
- 
- 		priv->fec_ranges[i].high = MLX5_GET(bin_range_layout, bin_range,
--						    high_val);
-+						    high_val);
- 		priv->fec_ranges[i].low = MLX5_GET(bin_range_layout, bin_range,
--						   low_val);
-+						   low_val);
- 	}
- 	*ranges = priv->fec_ranges;
- 
- 	return num_of_bins;
- }
- 
-+static void fec_rs_histogram_fill_stats(struct mlx5e_priv *priv,
-+					u8 num_of_bins,
-+					struct ethtool_fec_hist *hist)
-+{
-+	struct mlx5_core_dev *mdev = priv->mdev;
-+	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
-+	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
-+	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
-+	void *rs_histogram_cntrs;
-+
-+	MLX5_SET(ppcnt_reg, in, local_port, 1);
-+	MLX5_SET(ppcnt_reg, in, grp, MLX5_RS_FEC_HISTOGRAM_GROUP);
-+	if (mlx5_core_access_reg(mdev, in, sz, out, sz, MLX5_REG_PPCNT, 0, 0))
-+		return;
-+
-+	rs_histogram_cntrs = MLX5_ADDR_OF(ppcnt_reg, out,
-+					  counter_set.rs_histogram_cntrs);
-+	/* Guaranteed that num_of_bins is less than MLX5E_FEC_RS_HIST_MAX
-+	 * by fec_rs_histogram_fill_ranges().
-+	 */
-+	for (int i = 0; i < num_of_bins; i++) {
-+		hist->values[i].bin_value = MLX5_GET64(rs_histogram_cntrs,
-+						       rs_histogram_cntrs,
-+						       hist[i]);
-+	}
-+}
-+
- static void fec_set_histograms_stats(struct mlx5e_priv *priv, int mode,
--				     struct ethtool_fec_hist *hist)
-+				     struct ethtool_fec_hist *hist)
- {
-+	u8 num_of_bins;
-+
- 	switch (mode) {
- 	case MLX5E_FEC_RS_528_514:
- 	case MLX5E_FEC_RS_544_514:
- 	case MLX5E_FEC_LLRS_272_257_1:
- 	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
--		fec_rs_histogram_fill_ranges(priv, &hist->ranges);
-+		num_of_bins = fec_rs_histogram_fill_ranges(priv, &hist->ranges);
-+		if (num_of_bins)
-+			fec_rs_histogram_fill_stats(priv, num_of_bins, hist);
- 		break;
- 	default:
- 		return;
--- 
-2.47.3
+Reviewed-by: Simon Horman <horms@kernel.org>
 
+For future reference: please allow 24h to elapse between patch revisions.
