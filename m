@@ -1,351 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFF2289376
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 09:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1BA304980;
+	Tue,  9 Sep 2025 09:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757409354; cv=none; b=odTWSBxNxeLUn3HbvlBzrGXk9xBePvWtvVAEBXjxXnr/tSW1nWu1F8h51XKHC9OIorzbG8Oi4OsF4ReL18/PD+JW/F+La/nFY92MdyycCJcmERB5oz7A2gSDkaN7mbPrc2nrBvxonZBsN3Ed3WbVHzKh4d4t3+aL5wYwZDN6AJs=
+	t=1757409354; cv=none; b=md/fE3oacnBPeciPOpSIuoLHe3UP1+ADlkqSCpBKwqHfAuHEomNqZhf9rVYipXEg6VCJChUfzOgUgwAMjCLaOxpMrGzyY+7Y3Yq5mKyFMKnF6FOlMXDOsOungNbQyemg1XFrOrLaFtQxRfVYvoNTxQpRW0SsbIxAF3x5RFx/D1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757409354; c=relaxed/simple;
-	bh=n3YPv+oYDZZIdXzu+wyT67oJqYkMcpblrHmfvOruekc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDqm4qInTWhQzRiu/ayLucQs3D1tQkeDCP+b43hk2Rp+nCHU09xQxoJ0bPFYAkDnBYfpARB9bVppykJ6mM+iUTuz9ThhJ/CDxgIN2n6nL+zm4iZZyOvuwBydfB6ZcMncDrS1VoW9qMNuAwZ2R0hN13uAc/H/JnbtgbDhh0g49fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fJTQxKGj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	bh=KEUSLfMMWB84n7xGRN2SjgOotEQ+TRM8VUQ+2PeCgJw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTSpHtp8yTgVB4vkGK2xmCpU+bCrk/pldrahBT8lk5zgzCxZmUF9iya8KLlDxTbBCEVt/oaTisvsZfeXF40ElXCA+Xht1rY/orM8Gc6Y18/nJY0f6WEHxzwEBv3XwUabU8CCF2KVJLEweCY4x5UXBZ8jGgz8rP3zhc2JitOFHts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huvR+DMX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fJTQxKGj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757409351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G+1tiVp78x5covZnU7YFK4xGYliLhhtlLPs5SUPtmJk=;
-	b=fJTQxKGjvaJ80g0zuESWtsvLGAZhJx26vHsRi7Ep/OQ0vsyktm6ryk9GBB07q4SdcQj3e5
-	WHo7VDvotJrGTE0IlfYkpzMAtlgvQCdcmr1Oa5slQqA8ja5c+bvlHz2yQ1i9uTDZRfvJbi
-	8YD725PAqA/SrT04Nll7zjchnSesPm4=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-457-A348gbPiOQaiea3ZVe9rWg-1; Tue,
- 09 Sep 2025 05:15:45 -0400
-X-MC-Unique: A348gbPiOQaiea3ZVe9rWg-1
-X-Mimecast-MFC-AGG-ID: A348gbPiOQaiea3ZVe9rWg_1757409344
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BF7CF180028C;
-	Tue,  9 Sep 2025 09:15:42 +0000 (UTC)
-Received: from p16v.. (unknown [10.43.2.187])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 57A1919560B8;
-	Tue,  9 Sep 2025 09:15:38 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huvR+DMX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FB3C4CEF5;
+	Tue,  9 Sep 2025 09:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757409354;
+	bh=KEUSLfMMWB84n7xGRN2SjgOotEQ+TRM8VUQ+2PeCgJw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=huvR+DMX/VdgIqdU+01Zkr09A/ol3h1HFuMavOqpA4amye8tc/KoxhrDtl0kM5OFk
+	 fNv3dTw2WWLU0BBvrOgy74OSva0JjyE4cOXsqn/KfRa8L0BChj0um/pli9OcSRKBC7
+	 D5NQEA0utsrwkvWnrWaitCLquTHZkbxFM285zH/cKQVb1vl0n/1GR50ITM7422erS3
+	 LjgBFOZen8H/WE8Ers9scHzBVCm0wzU2Wt7JSZL95CF4phNVFQfhE60WV1rSqJZIrS
+	 UG0FKsBV0vMUbgH9LbzZW6nnJ2mNkuvhS8fl2JGYjOIMrnl81H4ic0PAKl1Btw7r8h
+	 Eu8EEJbTTv/ww==
+Date: Tue, 9 Sep 2025 10:15:50 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yangyu Chen <cyy@cyyself.name>
+Cc: netdev@vger.kernel.org, Igor Russkikh <irusskikh@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>
-Subject: [PATCH net-next v6 1/5] dpll: zl3073x: Add functions to access hardware registers
-Date: Tue,  9 Sep 2025 11:15:28 +0200
-Message-ID: <20250909091532.11790-2-ivecera@redhat.com>
-In-Reply-To: <20250909091532.11790-1-ivecera@redhat.com>
-References: <20250909091532.11790-1-ivecera@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: atlantic: make RX page order tunable via module
+ param
+Message-ID: <20250909091550.GA13871@horms.kernel.org>
+References: <tencent_E71C2F71D9631843941A5DF87204D1B5B509@qq.com>
+ <20250909091313.GF2015@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909091313.GF2015@horms.kernel.org>
 
-Besides the device host registers that are directly accessible, there
-are also hardware registers that can be accessed indirectly via specific
-host registers.
+On Tue, Sep 09, 2025 at 10:13:17AM +0100, Simon Horman wrote:
+> On Sat, Sep 06, 2025 at 09:54:34PM +0800, Yangyu Chen wrote:
 
-Add register definitions for accessing hardware registers and provide
-helper functions for working with them. Additionally, extend the number
-of pages in the regmap configuration to 256, as the host registers used
-for accessing hardware registers are located on page 255.
+...
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/core.c | 155 +++++++++++++++++++++++++++++++++++-
- drivers/dpll/zl3073x/core.h |  30 +++++++
- drivers/dpll/zl3073x/regs.h |  12 +++
- 3 files changed, 193 insertions(+), 4 deletions(-)
+> > diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+> > index b24eaa5283fa..48f35fbf9a70 100644
+> > --- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+> > +++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+> > @@ -40,6 +40,10 @@ static unsigned int aq_itr_rx;
+> >  module_param_named(aq_itr_rx, aq_itr_rx, uint, 0644);
+> >  MODULE_PARM_DESC(aq_itr_rx, "RX interrupt throttle rate");
+> >  
+> > +static unsigned int rxpageorder = AQ_CFG_RX_PAGEORDER;
+> > +module_param_named(rxpageorder, rxpageorder, uint, 0644);
+> > +MODULE_PARM_DESC(rxpageorder, "RX page order");
+> > +
+> 
+> Unfortunately adding new module parameters to networking drivers
+> is strongly discouraged. Can we find another way to address the problem
+> described in your cover: e.g.
+> 
+> 1. Changing the fixed value
+> 2. Somehow making the value auto detected
+> 3. Some other mechanism to allow the user to configure the value, e.g. devlink
+> 
+> ...
 
-diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-index 7ebcfc5ec1f09..86c26edc90462 100644
---- a/drivers/dpll/zl3073x/core.c
-+++ b/drivers/dpll/zl3073x/core.c
-@@ -95,9 +95,9 @@ EXPORT_SYMBOL_NS_GPL(zl30735_chip_info, "ZL3073X");
- 
- #define ZL_RANGE_OFFSET		0x80
- #define ZL_PAGE_SIZE		0x80
--#define ZL_NUM_PAGES		15
-+#define ZL_NUM_PAGES		256
- #define ZL_PAGE_SEL		0x7F
--#define ZL_PAGE_SEL_MASK	GENMASK(3, 0)
-+#define ZL_PAGE_SEL_MASK	GENMASK(7, 0)
- #define ZL_NUM_REGS		(ZL_NUM_PAGES * ZL_PAGE_SIZE)
- 
- /* Regmap range configuration */
-@@ -174,9 +174,10 @@ static bool
- zl3073x_check_reg(struct zl3073x_dev *zldev, unsigned int reg, size_t size)
- {
- 	/* Check that multiop lock is held when accessing registers
--	 * from page 10 and above.
-+	 * from page 10 and above except the page 255 that does not
-+	 * need this protection.
- 	 */
--	if (ZL_REG_PAGE(reg) >= 10)
-+	if (ZL_REG_PAGE(reg) >= 10 && ZL_REG_PAGE(reg) < 255)
- 		lockdep_assert_held(&zldev->multiop_lock);
- 
- 	/* Check the index is in valid range for indexed register */
-@@ -446,6 +447,152 @@ int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
- 	return zl3073x_poll_zero_u8(zldev, op_reg, op_val);
- }
- 
-+/**
-+ * zl3073x_do_hwreg_op - Perform HW register read/write operation
-+ * @zldev: zl3073x device pointer
-+ * @op: operation to perform
-+ *
-+ * Performs requested operation and waits for its completion.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+static int
-+zl3073x_do_hwreg_op(struct zl3073x_dev *zldev, u8 op)
-+{
-+	int rc;
-+
-+	/* Set requested operation and set pending bit */
-+	rc = zl3073x_write_u8(zldev, ZL_REG_HWREG_OP, op | ZL_HWREG_OP_PENDING);
-+	if (rc)
-+		return rc;
-+
-+	/* Poll for completion - pending bit cleared */
-+	return zl3073x_poll_zero_u8(zldev, ZL_REG_HWREG_OP,
-+				    ZL_HWREG_OP_PENDING);
-+}
-+
-+/**
-+ * zl3073x_read_hwreg - Read HW register
-+ * @zldev: zl3073x device pointer
-+ * @addr: HW register address
-+ * @value: Value of the HW register
-+ *
-+ * Reads HW register value and stores it into @value.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_read_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 *value)
-+{
-+	int rc;
-+
-+	/* Set address to read data from */
-+	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_ADDR, addr);
-+	if (rc)
-+		return rc;
-+
-+	/* Perform the read operation */
-+	rc = zl3073x_do_hwreg_op(zldev, ZL_HWREG_OP_READ);
-+	if (rc)
-+		return rc;
-+
-+	/* Read the received data */
-+	return zl3073x_read_u32(zldev, ZL_REG_HWREG_READ_DATA, value);
-+}
-+
-+/**
-+ * zl3073x_write_hwreg - Write value to HW register
-+ * @zldev: zl3073x device pointer
-+ * @addr: HW registers address
-+ * @value: Value to be written to HW register
-+ *
-+ * Stores the requested value into HW register.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_write_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value)
-+{
-+	int rc;
-+
-+	/* Set address to write data to */
-+	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_ADDR, addr);
-+	if (rc)
-+		return rc;
-+
-+	/* Set data to be written */
-+	rc = zl3073x_write_u32(zldev, ZL_REG_HWREG_WRITE_DATA, value);
-+	if (rc)
-+		return rc;
-+
-+	/* Perform the write operation */
-+	return zl3073x_do_hwreg_op(zldev, ZL_HWREG_OP_WRITE);
-+}
-+
-+/**
-+ * zl3073x_update_hwreg - Update certain bits in HW register
-+ * @zldev: zl3073x device pointer
-+ * @addr: HW register address
-+ * @value: Value to be written into HW register
-+ * @mask: Bitmask indicating bits to be updated
-+ *
-+ * Reads given HW register, updates requested bits specified by value and
-+ * mask and writes result back to HW register.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_update_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value,
-+			 u32 mask)
-+{
-+	u32 tmp;
-+	int rc;
-+
-+	rc = zl3073x_read_hwreg(zldev, addr, &tmp);
-+	if (rc)
-+		return rc;
-+
-+	tmp &= ~mask;
-+	tmp |= value & mask;
-+
-+	return zl3073x_write_hwreg(zldev, addr, tmp);
-+}
-+
-+/**
-+ * zl3073x_write_hwreg_seq - Write HW registers sequence
-+ * @zldev: pointer to device structure
-+ * @seq: pointer to first sequence item
-+ * @num_items: number of items in sequence
-+ *
-+ * Writes given HW registers sequence.
-+ *
-+ * Return: 0 on success, <0 on error
-+ */
-+int zl3073x_write_hwreg_seq(struct zl3073x_dev *zldev,
-+			    const struct zl3073x_hwreg_seq_item *seq,
-+			    size_t num_items)
-+{
-+	int i, rc = 0;
-+
-+	for (i = 0; i < num_items; i++) {
-+		dev_dbg(zldev->dev, "Write 0x%0x [0x%0x] to 0x%0x",
-+			seq[i].value, seq[i].mask, seq[i].addr);
-+
-+		if (seq[i].mask == U32_MAX)
-+			/* Write value directly */
-+			rc = zl3073x_write_hwreg(zldev, seq[i].addr,
-+						 seq[i].value);
-+		else
-+			/* Update only bits specified by the mask */
-+			rc = zl3073x_update_hwreg(zldev, seq[i].addr,
-+						  seq[i].value, seq[i].mask);
-+		if (rc)
-+			return rc;
-+
-+		if (seq->wait)
-+			msleep(seq->wait);
-+	}
-+
-+	return rc;
-+}
-+
- /**
-  * zl3073x_ref_state_fetch - get input reference state
-  * @zldev: pointer to zl3073x_dev structure
-diff --git a/drivers/dpll/zl3073x/core.h b/drivers/dpll/zl3073x/core.h
-index 71af2c8001109..16e750d77e1dd 100644
---- a/drivers/dpll/zl3073x/core.h
-+++ b/drivers/dpll/zl3073x/core.h
-@@ -3,6 +3,7 @@
- #ifndef _ZL3073X_CORE_H
- #define _ZL3073X_CORE_H
- 
-+#include <linux/bitfield.h>
- #include <linux/kthread.h>
- #include <linux/list.h>
- #include <linux/mutex.h>
-@@ -115,6 +116,28 @@ int zl3073x_dev_probe(struct zl3073x_dev *zldev,
-  * Registers operations
-  **********************/
- 
-+/**
-+ * struct zl3073x_hwreg_seq_item - HW register write sequence item
-+ * @addr: HW register to be written
-+ * @value: value to be written to HW register
-+ * @mask: bitmask indicating bits to be updated
-+ * @wait: number of ms to wait after register write
-+ */
-+struct zl3073x_hwreg_seq_item {
-+	u32	addr;
-+	u32	value;
-+	u32	mask;
-+	u32	wait;
-+};
-+
-+#define HWREG_SEQ_ITEM(_addr, _value, _mask, _wait)	\
-+{							\
-+	.addr	= _addr,				\
-+	.value	= FIELD_PREP_CONST(_mask, _value),	\
-+	.mask	= _mask,				\
-+	.wait	= _wait,				\
-+}
-+
- int zl3073x_mb_op(struct zl3073x_dev *zldev, unsigned int op_reg, u8 op_val,
- 		  unsigned int mask_reg, u16 mask_val);
- int zl3073x_poll_zero_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 mask);
-@@ -126,6 +149,13 @@ int zl3073x_write_u8(struct zl3073x_dev *zldev, unsigned int reg, u8 val);
- int zl3073x_write_u16(struct zl3073x_dev *zldev, unsigned int reg, u16 val);
- int zl3073x_write_u32(struct zl3073x_dev *zldev, unsigned int reg, u32 val);
- int zl3073x_write_u48(struct zl3073x_dev *zldev, unsigned int reg, u64 val);
-+int zl3073x_read_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 *value);
-+int zl3073x_write_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value);
-+int zl3073x_update_hwreg(struct zl3073x_dev *zldev, u32 addr, u32 value,
-+			 u32 mask);
-+int zl3073x_write_hwreg_seq(struct zl3073x_dev *zldev,
-+			    const struct zl3073x_hwreg_seq_item *seq,
-+			    size_t num_items);
- 
- /*****************
-  * Misc operations
-diff --git a/drivers/dpll/zl3073x/regs.h b/drivers/dpll/zl3073x/regs.h
-index 614e33128a5c9..80922987add34 100644
---- a/drivers/dpll/zl3073x/regs.h
-+++ b/drivers/dpll/zl3073x/regs.h
-@@ -260,4 +260,16 @@
- #define ZL_REG_OUTPUT_ESYNC_WIDTH		ZL_REG(14, 0x18, 4)
- #define ZL_REG_OUTPUT_PHASE_COMP		ZL_REG(14, 0x20, 4)
- 
-+/*
-+ * Register Page 255 - HW registers access
-+ */
-+#define ZL_REG_HWREG_OP				ZL_REG(0xff, 0x00, 1)
-+#define ZL_HWREG_OP_WRITE			0x28
-+#define ZL_HWREG_OP_READ			0x29
-+#define ZL_HWREG_OP_PENDING			BIT(1)
-+
-+#define ZL_REG_HWREG_ADDR			ZL_REG(0xff, 0x04, 4)
-+#define ZL_REG_HWREG_WRITE_DATA			ZL_REG(0xff, 0x08, 4)
-+#define ZL_REG_HWREG_READ_DATA			ZL_REG(0xff, 0x0c, 4)
-+
- #endif /* _ZL3073X_REGS_H */
--- 
-2.49.1
-
+Oops. I now see that Andrew and Jakub already responded.
+And my comment doesn't add much. Sorry about that.
