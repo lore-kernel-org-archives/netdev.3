@@ -1,40 +1,41 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E431C59C
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87493314DD
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757424126; cv=none; b=E1rG6GM9caCoqUZkKoTx5RPKidLq9RPtfP4gXx0KxSwg94iDKKgNOsMP6greLJQ6WXVSn9/oVtsfQwRpl+t5TqvWxTRVPl+inxJBgNr2vlsOZGbnZgpaPhU5AEWZ1cU1M7MfMZ2/HCGlstfz7AqjlLGJPuKchobgibawO84sVPw=
+	t=1757424127; cv=none; b=E8apaHixTLk+MAlZH1XmpUR7lie5eDcpH7TRCvSgab7RfbamnvlT9iNWOVss2dARljfNFPgJcGMimTMP5Jc85LBXc50J47b8RtSR7u4mQiGt2LEwPgeWZEZ//IoZGDu8P+isotRF7dhctVSaMepFZzyIjdGIz/xLvbZEeNFW9Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757424126; c=relaxed/simple;
-	bh=tKbw9+9TF7pYl5uEZwolNfYlJ+3ACNEmgPvOsSGk73c=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TChnQ8dI3Lfcxtlz3mYaJkHImLQnDg0azH51UY/Wf+RLLeijmTaFacZkvBL8vTFt8QZqUY5KTaG8sF+YVvrTbcAqCsCi0ir3YWFQqDZZtgS4CXVXdRD5MHNMuN/WqQSSzpwB5MRi2HIs5ZIuEbqeZh/JdW4KlHjFaZa3Ezej8tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ny5luSKz; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1757424127; c=relaxed/simple;
+	bh=7xqOWbgXAQaae9DvfPkMPl6ylq2M33CxQ64JN2py/Fo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=n0phF4X3CMpss+fZpqyLZHdQQ17lkBQLCR4kL2osis1yE5xSpYdTRTEAjFZ8bnm6zuC29KYJ1Bj4iNqV+81CFWm0GcV1d5I82PfuVsA5+FLYxLYWRW+uyofIvU3mmBXuqIf1tG40ll0GA0WaS0bSi9EAXJLi7X4mQ1rOMMv4fIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X0uCXBfu; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ny5luSKz"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X0uCXBfu"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8BDC7C6B39C;
-	Tue,  9 Sep 2025 13:21:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 287F41A0DB8
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:22:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A89760630;
-	Tue,  9 Sep 2025 13:22:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3BC7D102F1D42;
-	Tue,  9 Sep 2025 15:22:00 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 031D060630;
+	Tue,  9 Sep 2025 13:22:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8938102F2866;
+	Tue,  9 Sep 2025 15:22:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757424120; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=qlQm4Uqrg5cNEG78At7VfBrU9Z1kHsNamidbkl28UHc=;
-	b=ny5luSKzgj4VLYog8D4jM3HNdMLxKaQIlKPxaCdQg7Q8JZi/jUu0v3hfdZFpWCT+UjlB94
-	cItL7mRvZUnxSLKp9ZEMKwjPXmZKxohLTAZmRxB+4MuBf1Md4ZzqyvH8LsGJTRUZ72s/2B
-	EyOGR4ksLktG8ifqARDQqUJhsCQOflCAdQdB5P/NnRZul9pm04fJNibmYhp22tEhFzr0c5
-	7iu0Oa9xdDha8VOic2X0XM8vIny2eBoFnt1qHVOUPm7CpB6+zp4baUAhNoICRHKV2PTxxz
-	1h/iLVg3cyVFf0XCiBbfS6MNzVpmU5N7XGQBRvzKIi6EsFvl4BWbsfR59DJlyw==
+	t=1757424122; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=d6yHu1Zo2Af8EQvH90HguxdR9ywvNLEkskg877xwcfw=;
+	b=X0uCXBfueODgPPnZoRB/rjxObwPzPB9CT8JTtR2q4+hloERUnpGEqBw8N5IkYofs/l/dwD
+	Y/+j5irGJsHzue9rr12L1zIEgRrzYEPeU09PKpTFaqyXa9OiDVjYa98ZJ1wD1BC8+dnU39
+	uc+08T7g06Ryac4zjz7+i+4B8EhjQdnCEDuit58nNOvn+V9NGwGm7rr/IOIounX/iHDan3
+	TarM//C1aC4ZEBkSGBOcx50AWdbeAzlew6D5kbMCzWIpHJ8kIB7DQJaJzD/8yhaLL5a2A3
+	nVSSl7/L2Yxl2bObqjH1bWCFI3a/W72Enb3vIn3DuXyyZcb89317+VACZOnvlA==
 From: Kory Maincent <kory.maincent@bootlin.com>
-Subject: [PATCH iproute2-next 0/2] Add uapi header import script
-Date: Tue, 09 Sep 2025 15:21:41 +0200
-Message-Id: <20250909-feature_uapi_import-v1-0-50269539ff8a@bootlin.com>
+Date: Tue, 09 Sep 2025 15:21:43 +0200
+Subject: [PATCH iproute2-next 2/2] Update kernel headers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,41 +43,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOUpwGgC/x3MwQoCIRRG4VcZ7jrBbILsVSIGzd+6i1SuGgPDv
- Hsyy29xzkYVwqh0nzYS/LhyTgPn00Svj0tvKA7DZLS5aqutinCtC5buCi/8LVmauvngXcAcvb3
- QKIsg8npcH8RFcm8wKmFt9Nz3P/IdIMh0AAAA
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250909-feature_uapi_import-v1-2-50269539ff8a@bootlin.com>
+References: <20250909-feature_uapi_import-v1-0-50269539ff8a@bootlin.com>
+In-Reply-To: <20250909-feature_uapi_import-v1-0-50269539ff8a@bootlin.com>
 To: David Ahern <dsahern@gmail.com>
 Cc: netdev@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Kory Maincent <kory.maincent@bootlin.com>
 X-Mailer: b4 0.15-dev-8cb71
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add a script to automate importing Linux UAPI headers from kernel source.
-The script handles dependency resolution and creates a commit with proper
-attribution, similar to the ethtool project approach.
-
-Run the script and import the current state of Linux UAPI header from
-net-next.
+Update kernel headers to commit:
+	aeb8d48ea92e: ("selftests: net: add test for ipv6 fragmentation")
 
 Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
 ---
-Kory Maincent (2):
-      scripts: Add uapi header import script
-      Update kernel headers
+ include/uapi/linux/devlink.h | 2 ++
+ include/uapi/linux/if_link.h | 1 +
+ include/uapi/linux/stddef.h  | 1 -
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
- include/uapi/linux/devlink.h |  2 ++
- include/uapi/linux/if_link.h |  1 +
- include/uapi/linux/stddef.h  |  1 -
- scripts/iproute2-import-uapi | 67 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 70 insertions(+), 1 deletion(-)
----
-base-commit: 68ba2bc6e2d060526496bc79591b09fcbc851a7f
-change-id: 20250909-feature_uapi_import-8bdbade4fb93
+diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
+index a89df2a7..bcd5fde1 100644
+--- a/include/uapi/linux/devlink.h
++++ b/include/uapi/linux/devlink.h
+@@ -636,6 +636,8 @@ enum devlink_attr {
+ 
+ 	DEVLINK_ATTR_RATE_TC_BWS,		/* nested */
+ 
++	DEVLINK_ATTR_HEALTH_REPORTER_BURST_PERIOD,	/* u64 */
++
+ 	/* Add new attributes above here, update the spec in
+ 	 * Documentation/netlink/specs/devlink.yaml and re-generate
+ 	 * net/devlink/netlink_gen.c.
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index b450757c..8c460dc3 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -1562,6 +1562,7 @@ enum {
+ 	IFLA_BOND_SLAVE_AD_ACTOR_OPER_PORT_STATE,
+ 	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
+ 	IFLA_BOND_SLAVE_PRIO,
++	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
+ 	__IFLA_BOND_SLAVE_MAX,
+ };
+ 
+diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
+index e1fcfcf3..48ee4438 100644
+--- a/include/uapi/linux/stddef.h
++++ b/include/uapi/linux/stddef.h
+@@ -3,7 +3,6 @@
+ #define _LINUX_STDDEF_H
+ 
+ 
+-
+ #ifndef __always_inline
+ #define __always_inline __inline__
+ #endif
 
-Best regards,
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+2.43.0
 
