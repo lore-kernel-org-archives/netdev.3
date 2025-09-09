@@ -1,144 +1,112 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9593218D0
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCE430DD01
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757424127; cv=none; b=H2NN7gFv/E6kfdB9sU1xRdG3AWrlK7f8BfngGOvZqTipn4fqI1KlgjN+yYzCmpWHAE5SOVauLBFNum2TOg4Tqm7fxcqtEEpu1kjC45cbFCKz2Ceh19f9lY7AHpIpca/IUSERuI42DE754YcMXI968YhE4KBU9eM/Bj2rHGjhijY=
+	t=1757424174; cv=none; b=OWGaHWbRgNo53s1Oycs/q4tS+zOIUjw8fwV9/uZj5NzPEy57kjrzIP6bVamGO7p5A7AmZF5zycKySpeca1NgpgF/jPU9sK7fWC6+0qJsSjeucbgejFYwUg/ycIAE4GI7Xv/C6LxUl1JVUdCyntv4/4vFcKd2bwZtTWLXOUeVVzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757424127; c=relaxed/simple;
-	bh=nTklphbKec1dqeg91ig+HC41qiYgIMM8IRMQcK4cZJ4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CnYk1i3CaQG9krZm+iWp/94f/zPDwMnjrdiJfu+4gF5c+k11t6tsk4D2jdXaDms2+8LK0dfz5RNIzcqSNVwNw1F5RhKNQHLi9NvCjW8nVFWrjpsl1EH59EGaq7Kgx1xbkVn6eH3ulbYjG98vsZPSpVmh+Yo8EbMlZ5xEoouRk44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x00Engyz; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1757424174; c=relaxed/simple;
+	bh=kAoIWg0eouVwlZINqB9hM9ZgDWPys75E8dPDrrUOVRI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bcc7fXKgxBda+cDQI48i2HW26bT32qIZi+lQNVuRSzhE+ZE6CF55sAneX25Oj/nBWTC7Ifxi7AdFUK0eEn8AFgN7DDANF7UuFmIW5pLhWARcDSumw8Qwe3yhWVIvcu6McTbXrOo6UAxGfFAZXpWgYMpMVltz17Wf713In3ymSLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XGQ1gNTm; arc=none smtp.client-ip=209.85.160.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x00Engyz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 30728C6B39E;
-	Tue,  9 Sep 2025 13:21:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D9E7D60630;
-	Tue,  9 Sep 2025 13:22:01 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08454102F27F2;
-	Tue,  9 Sep 2025 15:22:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757424121; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Jgxw2vjes+YPCoBh3+f4yiXw6JgQQ3m2MdCmEakuFeo=;
-	b=x00EngyzjawEDroEo35gEIRYINhMH5la0uRynqeF8Nxgnv6h6Y0EDwcs1LQXuf00sgzoG8
-	/eDvqRHv8I8gTlEjS/0ip5jwStv3ZeOwXXL3SI+jZylIlR1yyGPK54kgZexbO4JNIP2CdG
-	hTSbbd2xPv7pIcE20ZkDdYeTxYnYDCJCx6dvH9yrdGto+OtzUK8hr8ynmJSLS9QndGGCtU
-	VshpOjxGVAvgHd+qRGMgklyi6WOeOB3lyDnL7iMIo1388vWA4LnykyW8Ru/8Uka8Yhgo6M
-	P9cQHxkmGbJc8jQVHR2aDQgsjkOcL4gN6O4d+KAW0byzFQ8nQfH5wdHeZY60lA==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 09 Sep 2025 15:21:42 +0200
-Subject: [PATCH iproute2-next 1/2] scripts: Add uapi header import script
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XGQ1gNTm"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4b5e5f80723so121450741cf.1
+        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 06:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757424172; x=1758028972; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uchVPC5V5AnCU++0LQSE31dfyzhx8FL2wjNsKVYAXlI=;
+        b=XGQ1gNTmJSgz5hjFPrtuVBGnqeKdf1jj/8mf/pZNeqdhyJkwTnWjQEnqraShpxMxti
+         CU6WcZm1JHOrnR3D0MTiTAriv9nU1GeFNJDODjehxQNuzMwpevMhw0Zff5VURVLXM2dv
+         5c9LKOSP1QfwHX9DgylFmNR5nYunILLJaANmrr387Lb84helrD1k3uK3NszUBAzT8oWT
+         qKKRIVELjQXlqwK64Md4qW9tjMuYBGZUrd3U9HyBJ73/uXZo8phM1oMkN8p7bxDVylka
+         tU9ldJnU9FbIaYZdYylBhFCA8xad0mdklE4HKWvs02u1Ls3WkAGFj/YH1pYERjm9UJkJ
+         2rHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757424172; x=1758028972;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uchVPC5V5AnCU++0LQSE31dfyzhx8FL2wjNsKVYAXlI=;
+        b=Zv6Y9ClI1ypEjCuuT6eUYC/b11WTB/6tWuHAixtLXkjyC/87qlPuLdEhEJl5u39Q8M
+         If/2lHpoZgoBzoVLlPMI2ntkxQ0uwrG2ety9zc3nb8pD1vaIeGX0neaRVMsYiCK8Iy6R
+         wvKkQ+lL+9X8wBcUv3VV8qYFb/uIOjde+1wymP9VsgNyz9nADcq/rzcx4oUH7wOCmsZK
+         wdqsa9BI+FSqRZGXIsM7L8itQGTpqoDrdnFOz6tyUa6/7CU84Y2SzJbuN9Jz69fBBwNu
+         mjXi1WNeIAkmGsz1jXIH/H7WzRH1eIxbltMLrKnpDSkElIMPvd4deSusSi3zndhXzjsO
+         CUuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZpzICSBBGr7Rn0ntgxGrosTFuFeUZzBGDJ8hRZteE7L6jbUe/m0kcZgF7a6lwAfLEHgfsopw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPNG25X08XZkX3ldC22bUwYe2hdkOu7010GnKD3KpiS/kbsn+u
+	2LsYry/2X/Hfb3qBrWS//Pv8zjW52xEYjYr+vEkLieXJuVFJkcJsQAwXCc+DpjZN/cq4jmPiT5D
+	80XHgqHoBmXr08A==
+X-Google-Smtp-Source: AGHT+IGYpVQiEzn9QHE1zn1hAW5xwDjdaQLoTNKxPgWkv7gyao/+uTsXb3LQmW5bD0GeIq3wlXcgPuI+F3/c5w==
+X-Received: from qtz5.prod.google.com ([2002:ac8:5945:0:b0:4b0:a157:1d5b])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:4b14:b0:4b0:da5c:de57 with SMTP id d75a77b69052e-4b5f844d1fbmr103893091cf.54.1757424171653;
+ Tue, 09 Sep 2025 06:22:51 -0700 (PDT)
+Date: Tue,  9 Sep 2025 13:22:43 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250909-feature_uapi_import-v1-1-50269539ff8a@bootlin.com>
-References: <20250909-feature_uapi_import-v1-0-50269539ff8a@bootlin.com>
-In-Reply-To: <20250909-feature_uapi_import-v1-0-50269539ff8a@bootlin.com>
-To: David Ahern <dsahern@gmail.com>
-Cc: netdev@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250909132243.1327024-1-edumazet@google.com>
+Subject: [PATCH] nbd: restrict sockets to TCP and UDP
+From: Eric Dumazet <edumazet@google.com>
+To: Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
+	Eric Dumazet <eric.dumazet@gmail.com>, Eric Dumazet <edumazet@google.com>, 
+	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com, 
+	Mike Christie <mchristi@redhat.com>, "Richard W.M. Jones" <rjones@redhat.com>, 
+	Yu Kuai <yukuai1@huaweicloud.com>, linux-block@vger.kernel.org, nbd@other.debian.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add a script to automate importing Linux UAPI headers from kernel source.
-The script handles dependency resolution and creates a commit with proper
-attribution, similar to the ethtool project approach.
+Recently, syzbot started to abuse NBD with all kinds of sockets.
 
-Usage:
-    $ LINUX_GIT="$LINUX_PATH" iproute2-import-uapi [commit]
+Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
+made sure the socket supported a shutdown() method.
 
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Explicitely accept TCP and UNIX stream sockets.
+
+Fixes: cf1b2326b734 ("nbd: verify socket is supported during setup")
+Reported-by: syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/CANn89iJ+76eE3A_8S_zTpSyW5hvPRn6V57458hCZGY5hbH_bFA@mail.gmail.com/T/#m081036e8747cd7e2626c1da5d78c8b9d1e55b154
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mike Christie <mchristi@redhat.com>
+Cc: Richard W.M. Jones <rjones@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>
+Cc: linux-block@vger.kernel.org
+Cc: nbd@other.debian.org
 ---
- scripts/iproute2-import-uapi | 67 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ drivers/block/nbd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/scripts/iproute2-import-uapi b/scripts/iproute2-import-uapi
-new file mode 100755
-index 00000000..505ab25a
---- /dev/null
-+++ b/scripts/iproute2-import-uapi
-@@ -0,0 +1,67 @@
-+#!/bin/bash -e
-+#
-+# iproute2-import-uapi [commit]
-+#
-+# Imports sanitized copies of kernel uapi headers from <commit> (can be
-+# a commit id, a tag or a branch name). If the argument is omitted,
-+# commit currently checked out in the kernel repository is used.
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 6463d0e8d0cef71e73e67fecd16de4dec1c75da7..87b0b78249da3325023949585f4daf40486c9692 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1217,6 +1217,14 @@ static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
+ 	if (!sock)
+ 		return NULL;
+ 
++	if (!sk_is_tcp(sock->sk) &&
++	    !sk_is_stream_unix(sock->sk)) {
++		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: should be TCP or UNIX.\n");
++		*err = -EINVAL;
++		sockfd_put(sock);
++		return NULL;
++	}
 +
-+sn="${0##*/}"
-+export ARCH="x86_64"
-+mkopt="-j$(nproc)" || mkopt=''
-+
-+if [ ! -d "$LINUX_GIT" ]; then
-+    echo "${sn}: please set LINUX_GIT to the location of kernel git" >&2
-+    exit 1
-+fi
-+
-+pushd "$LINUX_GIT"
-+if [ -n "$1" ]; then
-+    git checkout "$1"
-+fi
-+desc=$(git describe --exact-match 2>/dev/null \
-+       || git show -s --abbrev=12 --pretty='%h: ("%s")')
-+kobj=$(mktemp -d)
-+make $mkopt O="$kobj" allmodconfig
-+make $mkopt O="$kobj" prepare
-+make $mkopt O="$kobj" INSTALL_HDR_PATH="${kobj}/hdr" headers_install
-+popd
-+
-+pushd include/uapi
-+find . -type f -name '*.h' -exec cp -v "${kobj}/hdr/include/{}" {} \;
-+
-+go_on=true
-+while $go_on; do
-+    go_on=false
-+    while read f; do
-+        if [ "${f#asm/}" != "$f" ]; then
-+            # skip architecture dependent asm/ headers
-+            continue
-+        fi
-+        if [ -f "$f" ]; then
-+            # already present
-+            continue
-+        fi
-+	if [ ! -f "${kobj}/hdr/include/${f}" ]; then
-+            # not a kernel header
-+            continue
-+        fi
-+        echo "+ add $f"
-+        go_on=true
-+        mkdir -p "${f%/*}"
-+        cp "${kobj}/hdr/include/${f}" "${f}"
-+    done < <(
-+        find . -type f -name '*.[ch]' -exec sed -nre '\_^[[:blank:]]*#include[[:blank:]]<.+>_ { s_^[[:blank:]]*#include[[:blank:]]<([^>]*)>.*$_\1_ ; p }' {} \; \
-+            | LC_ALL=C sort -u
-+    )
-+done
-+popd
-+rm -rf "$kobj"
-+
-+git add include/uapi
-+git commit -s -F - <<EOT
-+Update kernel headers
-+
-+Update kernel headers to commit:
-+	${desc}
-+EOT
-
+ 	if (sock->ops->shutdown == sock_no_shutdown) {
+ 		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
+ 		*err = -EINVAL;
 -- 
-2.43.0
+2.51.0.384.g4c02a37b29-goog
 
