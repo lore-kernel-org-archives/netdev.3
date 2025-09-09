@@ -1,132 +1,109 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7093451AD
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551B9341ABD;
+	Tue,  9 Sep 2025 13:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757424768; cv=none; b=CeJsSNbOZFiwN/uDOS2WnEcPcKcFjmAeQi5/bV6Wb/yaALH0vzv9dnR4nAFbKAkMlwU0w2ZYq1NGarRuPk+j4UfHsblJdyMxM1tGyBDjdt9rwd95Itye1JP600qTNNbmeNFZHNDtmDVr3yvWRvxpcNH1mLN2OLcWTovf/Ht+cds=
+	t=1757425036; cv=none; b=tUQlMlNX68aTVRecr/47rTVksrQTnpuukELzKodtZU8NgHsnFT4KcthaeYfK/uLylTqWhNBsQLjZ2l9Yoo5k7ekhu3NWVo5tYTOOQzWsX/QWYAoncBZEAanZ2mJEC3eDI6KPEk3sDEsahYQJQKG4/jpOIIy8eBxpI3y84udopng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757424768; c=relaxed/simple;
-	bh=MY8eAzyDaP5DVy3awWgMxodlcnWPUFKzXBdeLXpV/pc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TcWlFzwNsSACUcxoQUkpWs6Z/bICDYbXVmVk5bfE42s52acGCji9FxWtJ3M68RKc+1zTCMjeDNF/W/E3/PveY9kyGHPCLfzpWghR0ymfU1DKLz1Xrjeg1PphDmTkVkkdyzkFPPqlmSqJkVdYXuclJQCsR65bcMlsYZcvj1uyuhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U1di4U7j; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757425036; c=relaxed/simple;
+	bh=31mOWd8+i/1YkiYaOgcvUkmjuR7GoBD5Ed0MeKEuOFo=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=uJixg82tKDwnW55ZMmN11jQRif2ydEO8esVava4wEZdScSBonpF3Sv/aOKlABv1dfZzlcMk+Qn1/hLk6Dqg7NG0je3YFyd2ZFrkxoIe7h7kd8d0QAgS/0GmypZ/1dDwm93SeWkdSyUFe8OabmdUmMzSMOXkcbU3eOnA12/XnYE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXVF3yf9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U1di4U7j"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757424765;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4BXqa/2VkY+MYk3taj1l57EoqmZshiIHmHuWstQftUs=;
-	b=U1di4U7jNkqiWrbGMje9tfZ409biW8EVfc2U2xIx2rKT2DxOWydcW0tYNlAUMKLxxWm4hn
-	XpnaYKNhHb7l6AOk8k0zzbxdkRdiH04zPl3kO6Zg+5Ejzjj4KHsh3jME59hBmW9C+W4x4O
-	rXQYv+WtcvhHnzKL70NTcMMiJ2WLcq0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-2iugDZeIPuO7Vf7gf0CKVg-1; Tue,
- 09 Sep 2025 09:32:42 -0400
-X-MC-Unique: 2iugDZeIPuO7Vf7gf0CKVg-1
-X-Mimecast-MFC-AGG-ID: 2iugDZeIPuO7Vf7gf0CKVg_1757424760
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E93CA19541BD;
-	Tue,  9 Sep 2025 13:32:39 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.196])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EA2163000198;
-	Tue,  9 Sep 2025 13:32:36 +0000 (UTC)
-Date: Tue, 9 Sep 2025 14:32:32 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
-	linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org,
-	Eric Dumazet <eric.dumazet@gmail.com>,
-	syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com,
-	Mike Christie <mchristi@redhat.com>,
-	Yu Kuai <yukuai1@huaweicloud.com>, linux-block@vger.kernel.org,
-	nbd@other.debian.org
-Subject: Re: [PATCH] nbd: restrict sockets to TCP and UDP
-Message-ID: <20250909132936.GA1460@redhat.com>
-References: <20250909132243.1327024-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXVF3yf9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEE4C4CEF4;
+	Tue,  9 Sep 2025 13:37:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757425035;
+	bh=31mOWd8+i/1YkiYaOgcvUkmjuR7GoBD5Ed0MeKEuOFo=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=BXVF3yf9YngGzwiQotWaE4Rx6byZFIleDiFn32GZnBJJycd+usgkvBcEjrfraU96O
+	 OLTqsYuQ/7Ml956/i1KRFTRDv3ny65maB8g2Qe9iG1w94gWkJpNT2tofdbPoe2tXH7
+	 opsMO0H97xnzvR7WoO7CbjNuFHu4L7lYCDl0vQEf4fIFRrRX5pXgXj6qyMEvJi35rf
+	 DF9JVkUOLuzzd4k1pKuBWFVkqfOQpB4frNdfuxprHgWoaLw3EH4vIWgZC9Vp9SjlhZ
+	 PV/YJisDuvITkYhqnPjVVPk0BAnO3xPs8gzW5kLJnw74J8pKUJwjCAajxeYcZSXdz0
+	 HpfFO1hkpa2pg==
+Date: Tue, 09 Sep 2025 08:37:15 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250909132243.1327024-1-edumazet@google.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "Chester A. Unal" <chester.a.unal@arinc9.com>, devicetree@vger.kernel.org, 
+ Sean Wang <sean.wang@mediatek.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Srinivas Kandagatla <srini@kernel.org>, linux-mediatek@lists.infradead.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, Simon Horman <horms@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, 
+ DENG Qingfang <dqfext@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+ netdev@vger.kernel.org, Daniel Golle <daniel@makrotopia.org>, 
+ Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
+ Vladimir Oltean <olteanv@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: Christian Marangi <ansuelsmth@gmail.com>
+In-Reply-To: <20250909004343.18790-5-ansuelsmth@gmail.com>
+References: <20250909004343.18790-1-ansuelsmth@gmail.com>
+ <20250909004343.18790-5-ansuelsmth@gmail.com>
+Message-Id: <175742464480.3063209.323009363144312411.robh@kernel.org>
+Subject: Re: [net-next PATCH v16 04/10] dt-bindings: mfd: Document support
+ for Airoha AN8855 Switch SoC
 
-On Tue, Sep 09, 2025 at 01:22:43PM +0000, Eric Dumazet wrote:
-> Recently, syzbot started to abuse NBD with all kinds of sockets.
+
+On Tue, 09 Sep 2025 02:43:35 +0200, Christian Marangi wrote:
+> Document support for Airoha AN8855 Switch SoC. This SoC expose various
+> peripherals like an Ethernet Switch, a NVMEM provider and Ethernet PHYs.
 > 
-> Commit cf1b2326b734 ("nbd: verify socket is supported during setup")
-> made sure the socket supported a shutdown() method.
+> It does also support i2c and timers but those are not currently
+> supported/used.
 > 
-> Explicitely accept TCP and UNIX stream sockets.
-
-I'm not clear what the actual problem is, but I will say that libnbd &
-nbdkit (which are another NBD client & server, interoperable with the
-kernel) we support and use NBD over vsock[1].  And we could support
-NBD over pretty much any stream socket (Infiniband?) [2].
-
-[1] https://libguestfs.org/nbd_aio_connect_vsock.3.html
-    https://libguestfs.org/nbdkit-service.1.html#AF_VSOCK
-[2] https://libguestfs.org/nbd_connect_socket.3.html
-
-TCP and Unix domain sockets are by far the most widely used, but I
-don't think it's fair to exclude other socket types.
-
-Rich.
-
-> Fixes: cf1b2326b734 ("nbd: verify socket is supported during setup")
-> Reported-by: syzbot+e1cd6bd8493060bd701d@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/netdev/CANn89iJ+76eE3A_8S_zTpSyW5hvPRn6V57458hCZGY5hbH_bFA@mail.gmail.com/T/#m081036e8747cd7e2626c1da5d78c8b9d1e55b154
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Mike Christie <mchristi@redhat.com>
-> Cc: Richard W.M. Jones <rjones@redhat.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Yu Kuai <yukuai1@huaweicloud.com>
-> Cc: linux-block@vger.kernel.org
-> Cc: nbd@other.debian.org
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 > ---
->  drivers/block/nbd.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  .../bindings/mfd/airoha,an8855.yaml           | 175 ++++++++++++++++++
+>  1 file changed, 175 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
 > 
-> diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-> index 6463d0e8d0cef71e73e67fecd16de4dec1c75da7..87b0b78249da3325023949585f4daf40486c9692 100644
-> --- a/drivers/block/nbd.c
-> +++ b/drivers/block/nbd.c
-> @@ -1217,6 +1217,14 @@ static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
->  	if (!sock)
->  		return NULL;
->  
-> +	if (!sk_is_tcp(sock->sk) &&
-> +	    !sk_is_stream_unix(sock->sk)) {
-> +		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: should be TCP or UNIX.\n");
-> +		*err = -EINVAL;
-> +		sockfd_put(sock);
-> +		return NULL;
-> +	}
-> +
->  	if (sock->ops->shutdown == sock_no_shutdown) {
->  		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
->  		*err = -EINVAL;
-> -- 
-> 2.51.0.384.g4c02a37b29-goog
 
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-virt-builder quickly builds VMs from scratch
-http://libguestfs.org/virt-builder.1.html
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/airoha,an8855.yaml:
+	Error in referenced schema matching $id: http://devicetree.org/schemas/net/airoha,an8855-mdio.yaml
+	Tried these paths (check schema $id if path is wrong):
+	/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/airoha,an8855-mdio.yaml
+	/usr/local/lib/python3.13/dist-packages/dtschema/schemas/net/airoha,an8855-mdio.yaml
+
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/airoha,an8855.example.dtb: soc@1 (airoha,an8855): mdio: {'compatible': ['airoha,an8855-mdio'], '#address-cells': 1, '#size-cells': 0, 'ethernet-phy@1': {'compatible': ['ethernet-phy-idc0ff.0410', 'ethernet-phy-ieee802.3-c22'], 'reg': [[1]], 'nvmem-cells': [[3], [4], [5], [6]], 'nvmem-cell-names': ['tx_a', 'tx_b', 'tx_c', 'tx_d'], 'phandle': 1}, 'ethernet-phy@2': {'compatible': ['ethernet-phy-idc0ff.0410', 'ethernet-phy-ieee802.3-c22'], 'reg': [[2]], 'nvmem-cells': [[7], [8], [9], [10]], 'nvmem-cell-names': ['tx_a', 'tx_b', 'tx_c', 'tx_d'], 'phandle': 2}} should not be valid under {'description': "Can't find referenced schema: http://devicetree.org/schemas/net/airoha,an8855-mdio.yaml#"}
+	from schema $id: http://devicetree.org/schemas/mfd/airoha,an8855.yaml#
+Documentation/devicetree/bindings/mfd/airoha,an8855.example.dtb: /example-0/mdio/soc@1/mdio: failed to match any schema with compatible: ['airoha,an8855-mdio']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250909004343.18790-5-ansuelsmth@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
