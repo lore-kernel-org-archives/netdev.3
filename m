@@ -1,260 +1,140 @@
-Received: from sonic303-47.consmr.mail.ne1.yahoo.com (sonic303-47.consmr.mail.ne1.yahoo.com [66.163.188.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15682FFDEC
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 06:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF303235074;
+	Tue,  9 Sep 2025 06:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757399195; cv=none; b=ABzG/IxKq6gIcGFO41Ff3FFHle5/sgmESvJSDn0PoEb4Num5j9xywZXSQXv25YnyqoNcf6KI2Oe8vC4tfPjxi+1GpVGWajd5xZi4C1Sq1TbnT92qbosrVRTx9ZgiqRJ/4cwXXBNJauzR3NWsJuy/azvyxxOKkn6iBVKQhMQ+T3Y=
+	t=1757399374; cv=none; b=GCpckla+wgpFELiNz/tPWQPHrqqLgNLjLKGL7dA4RC8i+XgB59T94W9xIwRu7xHDqKuaos1OhdwnZON2Q6+0fAqff/NZU8VH2cJd7u1k/4dNQhpOrrhYghYJjQoKLm+RnO889xAwRMOdFzN9gdsxhTdb3zz0SgbF22d/Hx6bPdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757399195; c=relaxed/simple;
-	bh=BCrI98Al6V2cDpjg7srxnjtqmIHUr7yeTPPXCOtUi8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBQTSIAPs0ab8s4XsiTEYiyfSCUrCKd47b4ivkSLi9I3e9u+ENpPqs1rXQUluqcm+S0pPKKZFOziWrtzXBbGB2bFS/liYDuWEX33OneclonTJeT4p4+xQQC7Fcny3apf0n69VlkC1wGWSM1/mc7pcj5wvR1t0sx0RCOefvmIjKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=irRX7J4K; arc=none smtp.client-ip=66.163.188.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1757399374; c=relaxed/simple;
+	bh=RSVuLnwfn6lKemssdBwmkRTtO64cdfYMqOYTLPlQs3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gfar64rKewtwRmUjN84mhJB7eA7yilT9ZgpV7aIw2vsy+ma8vw6yCHGhA3rKCPXCabMGoBGwTEhJtEDiYzrkYvPZf70wr8oldmIKOyahkXY0c8VVRmXoYaJUW1ADb+yG4Zd9SPGtZhQ0Gv+Sk+38exiGgYibScrYz2UdyoKFJMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODPEczKa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="irRX7J4K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757399192; bh=Hh5AiVRRSIVLYHx6HYBkWSOaq+Uu8yBYs+KbtiesYKE=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=irRX7J4KVp7/2BmLwBNtKH9WBOJw2G5X0u0gJx7wQ5g281aWyLAlLvOo905DbO/DkooODb+yXWtclhD34FnAm1bUXy0KHDnsXlV2yn/MQ4pN7VTe4+2q2OXUgMKQVmaVTHiUeq7wBTgEZotoF0dPq/N4G8++G1XX4ziwNdEYV1M2vEc98QLS2+n1jmMRCaJrgTpCV4WozN5FcGIEWaJ/smoviSJ0fgGKMyQGzkmaapGT089WTmiWUTM1/Cl1aShcEF3sxojVIRYcbsm3TZceHMyczDt3XnRuXYqCxkA25cgr2Qq3MLObpbfADvIMp7tvDNp0hay0yjOVFh3wzSb+2Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757399192; bh=NOF91vvXCQf8kZV3ptxCEzUDtqoZMCZMzBPdkRUMTFq=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=RkokZVuado5HMx9oO9f1Si4GyLSXU1pPavvc/KmjLLgbzvp2v/ey8jNIffH4k8aMq5Y9t6h6V01LO8L2YvRhx91s3CzeDhUgAM6lAUEX3kyaGtDha1qHLHyr7+zE2jvnEE4ST1iaF84rlDWhCeQeBV0U+nWz9pR37TR6J6JuP7OCvEOav8hFw6CUwKnMPi4IASfejI2dxJbeJga4BxldJmflYtfu+lhyPqpQTzvYGI25+5mNC8nbtPjqs9SXnTBcOuU7WPBwnj7upftOiBx+U8PosuBQi62M9YysmwPPjkaCZj7ypIqhL1PwARduRaf4EZC+XTyojViS23qrv60dMw==
-X-YMail-OSG: EGG58r8VM1li7aQMej_RUIYy77GGBC_90ZdcAMVXMtajbytXwoiCxzxv53LH.Ve
- 917_QksSAvEHGdxvkGFfRHLTGFcMgf52Vwk.mlpCpTCAqPMjv3R2Fq2oXRuYSA5oZkbV5DRPN_EV
- njn88PoCtAetiuSxwFy7f7zziVj28aB0USk.CF0gnrRjoBtXv1okg7EWmOgFUl.jnkO6.QK99Qj9
- DvrTOyrZee9dPbm3jZde4vqQobiAoQtLA2QVhvPdkc23_ivlNfE8dCdJrhR9NoAtECi1r_LXD99Q
- .Fe5YCX61DNLO62mf6r_hxUvp94vOD58lBEXfvyo.HsYeFczOUV8Gk74eQOGdK8WgONIHOuncIrN
- gtvy1I.Pw4yA_WTrWy6H6SdSQLMKNrH6qHLMUVWRgLdOs01G8EpFjk3TnrcoaBhPuFAT3HfVsduC
- lI_m5y1RO17RqRJ3kAHmVZK6vWizu7MNAUV6VU.HQAH83Y4vii8EVR1g5vODoLeeAwm7sL_o_ZdN
- OYDm7NquxIuQ3Nh.JHeL.NwIZJ34sVUQpesTJd9e78Be1Qr_4QK5KuBlnGJMfP4L.AfhfGRvtBOa
- 2ySBo_R5tT3OLV8rCntb7nf.Yq2qtYJWmtFwMv5Fv.H5oj0VoLtWumSJHVdMH8RvjlbDKtFRR9yu
- w1EVMwTGAt8XpOwPAoAmiP3FTbkkDZgsbYum1vGJkjL.zCgz0dPh1c5smCHM78Jdxi9iCVG2JZIY
- Yg2PKnl6XMjo6PBB3vxoh1Rc2C5XEbaHuX10weZ9nhETLa_UtNK4Z6WC6n8YOK7uedWTsgfwatt6
- 8Cxhf1M3Pn2FFjOdVrQSlShaAAspPsLB6H5HmtXLP118ivasq0zQsVQ72W63.uZCIY_uVAODVuiO
- U_ndynVT1.kn38s2smONfXzIG6g1U_CTWqX4XG2m2pB0iCqlse9ak.JDsqsbZls3rz9_2PNlthsI
- p6O8OWQy9sQJgRv4GSyKiQ0tUjYQfBLLN2yWRntAeG.Khw0riq8eQQD3UcuJPOXZC8QCTw04ura9
- SUwQwbmDgMfCbC4xD56ddWtZ0dsaoY2O_t3Q2sU3XcpPZdhqvLNDy6E.hxgMCst7tWuSJ0DLjNGp
- noHPOAPiqzYHgIUNhuFX6ChEOArt5kcj19KZVoBD7qrcdf706LTalUgz1GMipVZts3eXWAeKBkW7
- buc8xWAV_twV.WS80wlNyH0cajfPyy.eQLwjv78jDvcS0gpce5VEy5JppdGoCITumrP4Ll9ezjML
- iutiGSOLTpmsJPffuARcbPRPXQB98zdLi1Wl7izdQfczKKIavfGNTs8W7VBpclPUoFFQOq7Vr..I
- 8KZ4B2GeJa_zAxGpAvOHWaCX0.ROfRR23WSfiwXbsO8rFYB8ltNKSdw28QCHJlXZtKl7a4iHgiSJ
- 7bEMacg5lQnu5rh87v7aL5bcWFQ8a0LrFM.Q4MW4_dg6nc0KScRbE5v7Jb8.Er8dHJsHBQv9wuxH
- bUMQUHmiG4WCo2vXQVAWiOuBgebeebTReBl8HDchqa4m13y_Z7ht9LtKB7_dAYacV_XrGoZBfWIO
- BQ2YJQwRdamyOXpWEAB5usVtXdoFtc9XGzp1X4ffV3dbQvt0AMKa1hpR46gZOaqjzxrezxZa4AhC
- sTDkEh51r1xWrG2RljACPpf2UK1Mhe5BSk_dbP.qWDkA5e3NxZiWYo1_2X3ZMA.LmoNbArfVzohR
- GxFxYZrygSqpvIIlAobkwVOT65ltvUPDHKee7YliWGIQesDSbf_olwPi4N5lA5Em_lLT0ksU9yQW
- BaXCUX7gfgDKfnEAGEMmEVAVvR7M4e1Jh835xpgIEj3IS4j7RRj.9pGcM1Y_JAJS3Z_wgcWkDyzm
- e0DiMvYep22ZNWWWxKxYrIA8VxDvP6mho0dy.nH8n8prKitT5ovIUx2g0GZeJyzcQW99LSkAhNYP
- .obE9Eqv71_Zo.wtagIuXLdWji7WIQmVmW6ZOqOQmcJwH6Q7bYrPNpYzIV5.cT1T63PiU_Z88mwE
- yueIGSTouAX654o6tg309X7.pZLToUAF.M3ktbGXPJD2Q9nRQmb0JZFqei74EQuj8jFivfDiODtp
- VQ1MMph6XN_dLSET3h5DC.jlx8F6J30.tQe_E5Tu5efZHu0nbxkSQKesitzvwYRAVuPBsQbvq46p
- 2too.qWX9tzJ0mUbHsyeJis7rB.8jK0mZY2tG4ursRNpxhD1Yj_gI2IHiffzaHffcnko24.6Ji_p
- fHioFf52KBDh76x_wGGEsHaqTAJdRjQ--
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 0bad9165-9f6c-4e0a-a3c3-20481bca6e45
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Tue, 9 Sep 2025 06:26:32 +0000
-Received: by hermes--production-ir2-7d8c9489f-9tl65 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 06aa482699b918a59f317ba4e6d13960;
-          Tue, 09 Sep 2025 05:43:56 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	antonio@openvpn.net
-Cc: openvpn-devel@lists.sourceforge.net,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next 1/3] net: dst_cache: implement RCU variants for dst_cache helpers
-Date: Tue,  9 Sep 2025 07:43:31 +0200
-Message-ID: <20250909054333.12572-2-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250909054333.12572-1-mmietus97@yahoo.com>
-References: <20250909054333.12572-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODPEczKa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51560C4CEF4;
+	Tue,  9 Sep 2025 06:29:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757399373;
+	bh=RSVuLnwfn6lKemssdBwmkRTtO64cdfYMqOYTLPlQs3s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ODPEczKa/AlXKhw6F8c9TO09Io1SaxNo2XlIOUAggPIbGDm87relJQDwAsvfXFd7P
+	 rzIHU+XrDwvKXq4U+1b4yJVDvOJBp/lSFUBg+od9u0qR+S5uCy0m2bClTkMA33SBYx
+	 NXn7fg6brMGNc1u/FUII/nK7/oPS70XAGvEeGNLPuiTHBV4U6QqWkrj/Q2PyiGnujU
+	 5RaqwplwO5CHfsdCRSX0KyHGS3p7+50u6GJQANsnvNtLaV/B3eorVx4hq1sn3FgVT5
+	 6g3Vc/sebHYaIwlAfYy+zBitJas0cE1IYEoJhEclbmmxrUlIEy2T+eQxyye0p+SyM5
+	 7XaiAU2f3FKDA==
+Message-ID: <898bf39e-1b34-40e9-bdfa-ec4eca1c3f7d@kernel.org>
+Date: Tue, 9 Sep 2025 08:29:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 03/14] dt-bindings: arm: mediatek: mmsys: Add
+ assigned-clocks/rates properties
+To: Ariel D'Alessandro <ariel.dalessandro@collabora.com>
+Cc: airlied@gmail.com, amergnat@baylibre.com, andrew+netdev@lunn.ch,
+ andrew-ct.chen@mediatek.com, angelogioacchino.delregno@collabora.com,
+ broonie@kernel.org, chunkuang.hu@kernel.org, ck.hu@mediatek.com,
+ conor+dt@kernel.org, davem@davemloft.net, dmitry.torokhov@gmail.com,
+ edumazet@google.com, flora.fu@mediatek.com, houlong.wei@mediatek.com,
+ jeesw@melfas.com, jmassot@collabora.com, kernel@collabora.com,
+ krzk+dt@kernel.org, kuba@kernel.org,
+ kyrie.wu@mediatek.corp-partner.google.com, lgirdwood@gmail.com,
+ linus.walleij@linaro.org, louisalexis.eyraud@collabora.com,
+ maarten.lankhorst@linux.intel.com, matthias.bgg@gmail.com,
+ mchehab@kernel.org, minghsiu.tsai@mediatek.com, mripard@kernel.org,
+ p.zabel@pengutronix.de, pabeni@redhat.com, robh@kernel.org,
+ sean.wang@kernel.org, simona@ffwll.ch, support.opensource@diasemi.com,
+ tiffany.lin@mediatek.com, tzimmermann@suse.de, yunfei.dong@mediatek.com,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-sound@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20250820171302.324142-1-ariel.dalessandro@collabora.com>
+ <20250820171302.324142-4-ariel.dalessandro@collabora.com>
+ <20250821-electric-kestrel-of-awe-cb89dc@kuoka>
+ <1cf0b296-adaa-4c80-864c-9b78f09cd3e3@collabora.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <1cf0b296-adaa-4c80-864c-9b78f09cd3e3@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Implement RCU variants for existing dst_cache helpers interacting with
-dst_entry.
+On 08/09/2025 21:19, Ariel D'Alessandro wrote:
+> Krzysztof,
+> 
+> On 8/21/25 3:43 AM, Krzysztof Kozlowski wrote:
+>> On Wed, Aug 20, 2025 at 02:12:51PM -0300, Ariel D'Alessandro wrote:
+>>> Current, the DT bindings for MediaTek mmsys controller is missing the
+>>> assigned-clocks and assigned-clocks-rates properties. Add these and
+>>
+>> No, they do not miss them. I don't understand why you are adding these.
+> 
+> The reason I added these is due to the following check error:
+> 
+> $ make -j$(nproc) CHECK_DTBS=y mediatek/mt8173-elm.dtb
+>    DTC [C] arch/arm64/boot/dts/mediatek/mt8173-elm.dtb
+> [...]
+> arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: syscon@14000000 
+> (mediatek,mt8173-mmsys): 'assigned-clock-rates', 'assigned-clocks' do 
+> not match any of the regexes: '^pinctrl-[0-9]+$'
+> 	from schema $id: 
+> http://devicetree.org/schemas/arm/mediatek/mediatek,mmsys.yaml#
 
-The new helpers avoid referencing the dst_entry, sparing some unnecessary
-atomic operations. They should only be used in flows that are already
-guaranteed to be inside a RCU read-side critical context.
+This is looking like missing clocks or other unevaluated property by the
+binding.
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- include/net/dst_cache.h | 22 ++++++++++++
- net/core/dst_cache.c    | 78 +++++++++++++++++++++++++++++++++++------
- 2 files changed, 90 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/dst_cache.h b/include/net/dst_cache.h
-index 1961699598e2..e94f6c15bed9 100644
---- a/include/net/dst_cache.h
-+++ b/include/net/dst_cache.h
-@@ -32,6 +32,17 @@ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache);
-  */
- struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
- 
-+/**
-+ *	dst_cache_get_ip4_rcu - perform cache lookup and fetch ipv4 source
-+ *	address without taking a reference on the dst
-+ *	@dst_cache: the cache
-+ *	@saddr: return value for the retrieved source address
-+ *
-+ *	Must be called with local BH disabled, and within an rcu read side
-+ *	critical section
-+ */
-+struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr);
-+
- /**
-  *	dst_cache_set_ip4 - store the ipv4 dst into the cache
-  *	@dst_cache: the cache
-@@ -43,6 +54,17 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
- void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       __be32 saddr);
- 
-+/**
-+ *	dst_cache_steal_ip4 - store the ipv4 dst into the cache and steal its
-+ *	reference
-+ *	@dst_cache: the cache
-+ *	@dst: the entry to be cached whose reference will be stolen
-+ *	@saddr: the source address to be stored inside the cache
-+ *
-+ *	local BH must be disabled
-+ */
-+void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
-+			 __be32 saddr);
- #if IS_ENABLED(CONFIG_IPV6)
- 
- /**
-diff --git a/net/core/dst_cache.c b/net/core/dst_cache.c
-index 9ab4902324e1..f1e3992d8171 100644
---- a/net/core/dst_cache.c
-+++ b/net/core/dst_cache.c
-@@ -25,20 +25,30 @@ struct dst_cache_pcpu {
- 	};
- };
- 
--static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
--				      struct dst_entry *dst, u32 cookie)
-+static void __dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
-+					struct dst_entry *dst, u32 cookie)
- {
- 	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
- 	dst_release(dst_cache->dst);
--	if (dst)
--		dst_hold(dst);
- 
- 	dst_cache->cookie = cookie;
- 	dst_cache->dst = dst;
- }
- 
--static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
--					       struct dst_cache_pcpu *idst)
-+static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
-+				      struct dst_entry *dst, u32 cookie)
-+{
-+	if (dst == dst_cache->dst && cookie == dst_cache->cookie)
-+		return;
-+
-+	if (dst)
-+		dst_hold(dst);
-+
-+	__dst_cache_per_cpu_dst_set(dst_cache, dst, cookie);
-+}
-+
-+static struct dst_entry *__dst_cache_per_cpu_get(struct dst_cache *dst_cache,
-+						 struct dst_cache_pcpu *idst)
- {
- 	struct dst_entry *dst;
- 
-@@ -47,14 +57,10 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
- 	if (!dst)
- 		goto fail;
- 
--	/* the cache already hold a dst reference; it can't go away */
--	dst_hold(dst);
--
- 	if (unlikely(!time_after(idst->refresh_ts,
- 				 READ_ONCE(dst_cache->reset_ts)) ||
- 		     (READ_ONCE(dst->obsolete) && !dst->ops->check(dst, idst->cookie)))) {
- 		dst_cache_per_cpu_dst_set(idst, NULL, 0);
--		dst_release(dst);
- 		goto fail;
- 	}
- 	return dst;
-@@ -64,6 +70,18 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
- 	return NULL;
- }
- 
-+static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
-+					       struct dst_cache_pcpu *idst)
-+{
-+	struct dst_entry *dst;
-+
-+	dst = __dst_cache_per_cpu_get(dst_cache, idst);
-+	if (dst)
-+		/* the cache already hold a dst reference; it can't go away */
-+		dst_hold(dst);
-+	return dst;
-+}
-+
- struct dst_entry *dst_cache_get(struct dst_cache *dst_cache)
- {
- 	struct dst_entry *dst;
-@@ -100,6 +118,28 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr)
- }
- EXPORT_SYMBOL_GPL(dst_cache_get_ip4);
- 
-+struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr)
-+{
-+	struct dst_cache_pcpu *idst;
-+	struct dst_entry *dst;
-+
-+	if (!dst_cache->cache)
-+		return NULL;
-+
-+	local_lock_nested_bh(&dst_cache->cache->bh_lock);
-+	idst = this_cpu_ptr(dst_cache->cache);
-+	dst = __dst_cache_per_cpu_get(dst_cache, idst);
-+	if (!dst) {
-+		local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+		return NULL;
-+	}
-+
-+	*saddr = idst->in_saddr.s_addr;
-+	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+	return dst_rtable(dst);
-+}
-+EXPORT_SYMBOL_GPL(dst_cache_get_ip4_rcu);
-+
- void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       __be32 saddr)
- {
-@@ -116,6 +156,24 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- }
- EXPORT_SYMBOL_GPL(dst_cache_set_ip4);
- 
-+void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
-+			 __be32 saddr)
-+{
-+	struct dst_cache_pcpu *idst;
-+
-+	if (!dst_cache->cache) {
-+		dst_release(dst);
-+		return;
-+	}
-+
-+	local_lock_nested_bh(&dst_cache->cache->bh_lock);
-+	idst = this_cpu_ptr(dst_cache->cache);
-+	__dst_cache_per_cpu_dst_set(idst, dst, 0);
-+	idst->in_saddr.s_addr = saddr;
-+	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+}
-+EXPORT_SYMBOL_GPL(dst_cache_steal_ip4);
-+
- #if IS_ENABLED(CONFIG_IPV6)
- void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       const struct in6_addr *saddr)
--- 
-2.51.0
-
+Best regards,
+Krzysztof
