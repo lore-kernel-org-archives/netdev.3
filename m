@@ -1,104 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF62340DBB
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 13:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB0B31CA52;
+	Tue,  9 Sep 2025 13:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757425191; cv=none; b=uSCpsVhYxlv+CkEGUTL3UDY3sMyx9guk+5WnAgCpzjDUqMk6qqywYktCh/5I6nAa5NMplSODisFEMbMiQVkpRtCICd4QqE4YPEPrRYs7DtKqITBfLWU/bzU6FoNBVy6+m2dPQMsP1jn4I+tPUVwc+3VfOmRQxiOiWP6s6dNDTDQ=
+	t=1757425223; cv=none; b=Me9gqcD8nV+v0H1DxKchaUhPl0TkVcr0F90A0UWhbN4FDkCZ5UTS7qRVfxYLcXwwFPg8iGu++Lyg8hPDplJr6UNGfRpmnHwBJlC1IDoZYNSkWWU8OIJy2SP2M+xbzxRvLAdY+8pQaGBR739hWBsHmoZPkM3kKgv8tCoo6Y1Mpmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757425191; c=relaxed/simple;
-	bh=vi5VRQkGnadH4GghNkC+dE6/jru5UwXPOOOgEteonfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KGdZ7a6AfKtjTPCZonS7VLo5IetUiCxkbeaqX850pUfgl1Uot+Cm/uRvVwGbFABelO6wTGFiadDAwZgXQSih4Wl61/SM42l9B1NKeurooK2T439/5AIMTiHjvM5lWjG+SIRhdG7ThoY2xdCeIDz/gQLPU+/17RI9oAHZ43/+rXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ujv/kshz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757425223; c=relaxed/simple;
+	bh=NlXEF3VmiXF2+P9u5NoblgQUs0TpNmThc3On54QrJMw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=MFf/ZYl7yFeSRe25KYBP3UP5Qbw7KmBKFW/b2rxVUiZmeC5kNp+xOaRb53s5zoz+PQTaQqigHV1d7ELh6T3RQ0NyRzo6vVaGtiF8GD8C4CuvC1z80qJt+Vhg90jwFDOmTb0XGVs1NqTRb/wTEc8gA1LydQG3syvYTlLX/vWhIhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bq/pHbki; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ujv/kshz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757425189;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GohOyoDd6x5FyrxWCq8oo7hZUyfe+EcNhFxczstEYjc=;
-	b=Ujv/kshzHtA1mLGp4PDx0tN4NJsaWmOXx2i/ZHq1FaXLIH5Li1c5AYSBBKcjxYAWlq4lk7
-	gyltq1OKyr/Z6i4HYxNboAS/JPqgtqEUE0PchdlOtg/Gakmfhj61NES4py4pBkhNplcFyJ
-	U2+pVUCKOqIRrxUohlRzrwED5PiQZSg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-bYyznTzbPn-1qP80LSWDzQ-1; Tue, 09 Sep 2025 09:39:47 -0400
-X-MC-Unique: bYyznTzbPn-1qP80LSWDzQ-1
-X-Mimecast-MFC-AGG-ID: bYyznTzbPn-1qP80LSWDzQ_1757425187
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b990eb77cso39839365e9.0
-        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 06:39:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757425186; x=1758029986;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GohOyoDd6x5FyrxWCq8oo7hZUyfe+EcNhFxczstEYjc=;
-        b=oPwIfadScIc7jpOU6P/4aK7IQfGF1xWpfFOFf4dJh8AnSTfoM6mMX5WLyf1g8xnHs1
-         5HWIhA1HWGAs/spPyGf5gqOL7GbDIZ2pYZ6cwXlBkUcCSCtxltb337fi3NRPaTnUfZ4S
-         h6zPX/NyG8x1vA2F9TvXZu3ZJT5Vy55e7D48d4bihsyGG/a2RLZgYX71zoHCAOZmrOcf
-         TPIRE3NXLhVm/1fpdQYy5AexELqioKz4CIMN75DD1NV177ystlIkbeU1yLCAs4AFwQXq
-         N1Ny1hhfrUG8q4WWyfxCCjALsg5px05wl4kirGt2qTKeNK+u2rf5lbig/zqRpHENG1VS
-         ZzZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVu1LRl3PpDfICFKyIcnnnQk1uUT3jhlxSbJyfSwmugs/CNrwJuMECfY/6G22uMZz20Lg7oRsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHFvDg4HEM3JZ5mkdVpUsixVYPwcJyjl7Eyl8IWFhyIusN2ne7
-	8sKwoZBGm5uPLvyCs2G35s2AwPL32Wz5VNwVAIFzRKzeDKGfXaB1hIHw9VMNBtzfskepy+EFPBD
-	0hDqsfs3M3ZKmczIfHA1DHRJoRZNLslRMmdJvCzJzmKxyFOwtLxPUFZLs0A==
-X-Gm-Gg: ASbGnctEOVXQvJjW5amHlcC5/T7zR8jH+8rvAR5QBxSD0ksJhsVcBSFN1T8N6i/P3Vr
-	TJsKkaHBldPAvr37ERk9UOFUNcJph6nps5NkDBo0uXhEMcIfmEaZex73bJ+qPZhq0/Da6DIDhMa
-	UErSvAtg0BSLjcfYbEWi9a1niikf9CGvaqlIveMrSVftrZSftRk7XLtLZFUisgE8CLlCn1Ypisr
-	pLAxEBKTlkAqgILXabMSq90626idZBD4VFPOgkJx7493oqpmEk2DZVFKjW/1A10J/Cz4YEVqEBz
-	WB/2fVlSqLHJwspg0PuOaqPcgxSLQf8IdWOdoWtysLF4h4jAoHDWzp3oMVqybiLpGJ6secU0Bt4
-	0rhZlJu7xaQI=
-X-Received: by 2002:a05:600c:5309:b0:45d:d86b:b386 with SMTP id 5b1f17b1804b1-45de73821damr68920095e9.14.1757425186500;
-        Tue, 09 Sep 2025 06:39:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG8vcW13o8zQiQ2BPQk91775ugYApMAY0U59RrXwvT1V4eBKeiivLPWrCq9O8pjWqULjjLA3A==
-X-Received: by 2002:a05:600c:5309:b0:45d:d86b:b386 with SMTP id 5b1f17b1804b1-45de73821damr68919805e9.14.1757425186131;
-        Tue, 09 Sep 2025 06:39:46 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45dda2021dfsm179865925e9.24.2025.09.09.06.39.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 06:39:45 -0700 (PDT)
-Message-ID: <047408ad-6fe5-4e85-8704-16edb289ca93@redhat.com>
-Date: Tue, 9 Sep 2025 15:39:44 +0200
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bq/pHbki"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5899LR49009159;
+	Tue, 9 Sep 2025 13:39:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yd/oPuUfVOJcMQA/lTcKzDkbSGoGxeZhh5S6dzLVh+I=; b=bq/pHbki52n+xlpE
+	YPJ324wYDd4eq6QDmKcf4GXVJiszfNFz3t/gg4FPsISNDVKTuO0+c1BQGNpUBZy0
+	pgJu6hOH10Vwq7EZNza4MUUU52clxkOJ1GbzesJg5r/hvLNw8xp155HrRbnnCVaM
+	2xz+Wf/D+3sN2sAiQs50kwuUHSfxqotOfXUXWI37JGmdLTcMtVxZwVXgdt7oLaIK
+	gzAm02A8i8YUhdQYXR8FI1YR85GHxTUlFED9MdUi13ECx2UWwjXFEdReJx1NjPGt
+	G9RkAZQhMxXZMLisVPK830mIWjU5gjRdGl8kPxHItvfMdEV4A+7aQkVlZ2oH06KJ
+	7iBATQ==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 491qhdw5vf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Sep 2025 13:39:52 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 589DdqZL022907
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Sep 2025 13:39:52 GMT
+Received: from nsssdc-sh01-lnx.ap.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.24; Tue, 9 Sep 2025 06:39:46 -0700
+From: Luo Jie <quic_luoj@quicinc.com>
+Date: Tue, 9 Sep 2025 21:39:13 +0800
+Subject: [PATCH v5 04/10] clk: qcom: gcc-ipq5424: Enable NSS NoC clocks to
+ use icc-clk
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 5/7] bonding: Update to bond_arp_send_all()
- to use supplied vlan tags
-To: David Wilder <wilder@us.ibm.com>, netdev@vger.kernel.org
-Cc: jv@jvosburgh.net, pradeeps@linux.vnet.ibm.com, pradeep@us.ibm.com,
- i.maximets@ovn.org, amorenoz@redhat.com, haliu@redhat.com,
- stephen@networkplumber.org, horms@kernel.org
-References: <20250904221956.779098-1-wilder@us.ibm.com>
- <20250904221956.779098-6-wilder@us.ibm.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250904221956.779098-6-wilder@us.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20250909-qcom_ipq5424_nsscc-v5-4-332c49a8512b@quicinc.com>
+References: <20250909-qcom_ipq5424_nsscc-v5-0-332c49a8512b@quicinc.com>
+In-Reply-To: <20250909-qcom_ipq5424_nsscc-v5-0-332c49a8512b@quicinc.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Varadarajan
+ Narayanan" <quic_varada@quicinc.com>,
+        Georgi Djakov <djakov@kernel.org>, "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        Anusha Rao <quic_anusha@quicinc.com>,
+        "Manikanta Mylavarapu" <quic_mmanikan@quicinc.com>,
+        Devi Priya
+	<quic_devipriy@quicinc.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "Richard
+ Cochran" <richardcochran@gmail.com>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>,
+        <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <quic_kkumarcs@quicinc.com>, <quic_linchen@quicinc.com>,
+        <quic_leiwei@quicinc.com>, <quic_pavir@quicinc.com>,
+        <quic_suruchia@quicinc.com>, Luo Jie
+	<quic_luoj@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757425161; l=1747;
+ i=quic_luoj@quicinc.com; s=20250209; h=from:subject:message-id;
+ bh=NlXEF3VmiXF2+P9u5NoblgQUs0TpNmThc3On54QrJMw=;
+ b=6rzlGrtf5VhelZUnQeSdhadmQ0GIDdRH7Skgdahrg9hSitkSO+i7pqegpxcL3hyrJnwKQ+IHu
+ pIyIV6y/E/zBH7izgJW0shEFonjzUJtrsD5W6qfWXotJ59+Zr3hegHl
+X-Developer-Key: i=quic_luoj@quicinc.com; a=ed25519;
+ pk=pzwy8bU5tJZ5UKGTv28n+QOuktaWuriznGmriA9Qkfc=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6n1DAXKtfqOxuJKqmubf_sc1-PbXpfnE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDAzNCBTYWx0ZWRfX80FPbKVtPCXK
+ cZwGom+2lhm5RF+56rWVvNKPdSyqsXhDpAD7TEdejeMGm5BKx5vxtVWfjF5++MPvMZPcE54tZkQ
+ YqmIcbHLgqUqbYRdG6nnwq94Sk1KetllO2qSGTXgOPE/HWtmDhv5OLQWwNLVRPJvxCaqyDgIM69
+ Q9bogFwA9vuDdlXamwm14X98XgAUCKLdCfaW/1NIWKKXjl8unqB+FyOmOhxEfb+sX59EiSsOPpv
+ k9gac+QzMkUVAcH2b0o4bkkPQzJJ7VLSKaNhO4ykOCYVoKL4PbRXQeWOnvLcOtsSGz4HpttXyfB
+ I2+5SHDfS/4JWLCtoFEhZadfWxX8KJQb4a/cPmrdppvq6vHnd0eZx+gIfM2HvemK3r2Hro71Phr
+ ymIikCZu
+X-Authority-Analysis: v=2.4 cv=YOCfyQGx c=1 sm=1 tr=0 ts=68c02e28 cx=c_pps
+ a=JYp8KDb2vCoCEuGobkYCKw==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=EUspDBNiAAAA:8
+ a=COk6AnOGAAAA:8 a=gl6uzLfi5yNa2Npxn2gA:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: 6n1DAXKtfqOxuJKqmubf_sc1-PbXpfnE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-09_01,2025-09-08_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 clxscore=1015 adultscore=0 impostorscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509080034
 
-On 9/5/25 12:18 AM, David Wilder wrote:
-> @@ -6633,7 +6638,6 @@ static void __exit bonding_exit(void)
->  
->  	bond_netlink_fini();
->  	unregister_pernet_subsys(&bond_net_ops);
-> -
->  	bond_destroy_debugfs();
->  
->  #ifdef CONFIG_NET_POLL_CONTROLLER
+Add NSS NoC clocks using the icc-clk framework to create interconnect
+paths. The network subsystem (NSS) can be connected to these NoCs.
 
-Please avoid unneeded whitespace-only changes.
+Additionally, add the LPASS CNOC and SNOC nodes to establish the complete
+interconnect path.
 
-/P
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+---
+ drivers/clk/qcom/gcc-ipq5424.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/clk/qcom/gcc-ipq5424.c b/drivers/clk/qcom/gcc-ipq5424.c
+index 71afa1b86b72..6cfe4f2b2888 100644
+--- a/drivers/clk/qcom/gcc-ipq5424.c
++++ b/drivers/clk/qcom/gcc-ipq5424.c
+@@ -3250,6 +3250,16 @@ static const struct qcom_icc_hws_data icc_ipq5424_hws[] = {
+ 	{ MASTER_ANOC_PCIE3, SLAVE_ANOC_PCIE3, GCC_ANOC_PCIE3_2LANE_M_CLK },
+ 	{ MASTER_CNOC_PCIE3, SLAVE_CNOC_PCIE3, GCC_CNOC_PCIE3_2LANE_S_CLK },
+ 	{ MASTER_CNOC_USB, SLAVE_CNOC_USB, GCC_CNOC_USB_CLK },
++	{ MASTER_NSSNOC_NSSCC, SLAVE_NSSNOC_NSSCC, GCC_NSSNOC_NSSCC_CLK },
++	{ MASTER_NSSNOC_SNOC_0, SLAVE_NSSNOC_SNOC_0, GCC_NSSNOC_SNOC_CLK },
++	{ MASTER_NSSNOC_SNOC_1, SLAVE_NSSNOC_SNOC_1, GCC_NSSNOC_SNOC_1_CLK },
++	{ MASTER_NSSNOC_PCNOC_1, SLAVE_NSSNOC_PCNOC_1, GCC_NSSNOC_PCNOC_1_CLK },
++	{ MASTER_NSSNOC_QOSGEN_REF, SLAVE_NSSNOC_QOSGEN_REF, GCC_NSSNOC_QOSGEN_REF_CLK },
++	{ MASTER_NSSNOC_TIMEOUT_REF, SLAVE_NSSNOC_TIMEOUT_REF, GCC_NSSNOC_TIMEOUT_REF_CLK },
++	{ MASTER_NSSNOC_XO_DCD, SLAVE_NSSNOC_XO_DCD, GCC_NSSNOC_XO_DCD_CLK },
++	{ MASTER_NSSNOC_ATB, SLAVE_NSSNOC_ATB, GCC_NSSNOC_ATB_CLK },
++	{ MASTER_CNOC_LPASS_CFG, SLAVE_CNOC_LPASS_CFG, GCC_CNOC_LPASS_CFG_CLK },
++	{ MASTER_SNOC_LPASS, SLAVE_SNOC_LPASS, GCC_SNOC_LPASS_CLK },
+ };
+ 
+ static const struct of_device_id gcc_ipq5424_match_table[] = {
+
+-- 
+2.34.1
 
