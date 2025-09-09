@@ -1,75 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4535207F
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 14:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663F52288F7
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 14:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757427002; cv=none; b=LIGoyAFE/QzyjeXrYt1eWTo6Msyl+YtVwvDm4JtHLXu9WwXH4OczdBfcTPcqRIhD6CfVo0MXjUNqM9RZuyV2t3KJE6D3hD6vyWLLFCNkPQ+re8MnsZqxBoDCppc8cZ6hXnnGvDBrqHCHyPzNatvaXPYEZ1RRlTfW69I+BGIME0I=
+	t=1757427671; cv=none; b=fqM3kHAMeSIFGp3Gvc7wUJkR1oD4ls3CdAmvQGlYsrT7UE0UO/cEM1R6jgxcQAwDqoRpgQxMLdaQHBEOEhrNJVRWArofmvN0UDr3WjezIiwk3idnx2HtCD+69d7HbMN61NTkQIjjEsm/kaY82zeAdpjKsWPlDdCuymaF+MtZxXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757427002; c=relaxed/simple;
-	bh=HmYr/d2oRkMy9dODDXn23342HlRZSgE+1b7+publUlY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jseekptjjF1kfNDVa0aGqpaqnkdDEubkdS91DgE5aJNgzuWjzokn0vwI1ZpQye6KtzhFzp4OR0whQBWSptL7F+w5M/QuwfURVg63jkWFygby8yHatY+H0r7uO3kQbVHPb5jhaovgOMxLJfrQl0dSIP4o93VmntfiAHujoU+SlAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+mr/SXz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757427671; c=relaxed/simple;
+	bh=eFaz1FbjLOe0auzFVwB/pCvwCLOzZfD/UEis1KyqCNA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rGg635X2kMUz3HLi7z5HENsJWyUidXJJp4yHkhO8RKaf9joHQ1df0OpUyhLMmHrbL85f4FF3d7CGrsPzdicZVhYws2VfhLQc8rrFyQw0avZGpgn0KwG2Rjs6T98neBQA96Eb7d/6pBAqwuAqFhpZGWttqSffUCpVEuf6RJctWrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kaywNOKr; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+mr/SXz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33687C4CEF4;
-	Tue,  9 Sep 2025 14:10:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757427002;
-	bh=HmYr/d2oRkMy9dODDXn23342HlRZSgE+1b7+publUlY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=D+mr/SXzZe332nW+Hq9CRzVUoLZIPrLnFtMHEa2EbtKYfxyc9Jja+L6aVwuRNQ62B
-	 lhc2+EqY2YuedjHNQY94tTmEpoVo9ZZdOcx55/3u+/Q3PQ2O+9TRthBrUk3pv3LBd/
-	 mQieRLDKkv55snrR4ccB05E/cL4HE6BOQiqdZl+iGei/hitb11pCv1hp/ZZdBNyWom
-	 A94Yne8X/FijpNz++ERNecvKBcvY90tMPNjEKx4wn8iXVTDfjJfxOYZua/R8JJi0d+
-	 NCKQ6urWae3H8USGiYqiZEot0uKEai4EwQm8vxyyBCmLJy78kHUrNrisJRV0eTAvC1
-	 5fK7/V1WBDaew==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADEC5383BF69;
-	Tue,  9 Sep 2025 14:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kaywNOKr"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-323267b98a4so5236155a91.1
+        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 07:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757427670; x=1758032470; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8TeFkN7fcGow6PeEF+7elJ3SB1YToe/OnzJcgFoo4gE=;
+        b=kaywNOKrPa+njj05Jt0B53qz1ZYhuhtB+JA+tQ8wTdps17G3HDp6sTuIoQzCpc4JGz
+         R84AEsrpjn49dR+q47Yg6u/i3wCfJ5uHlh8bNQEI/eUqzdu+51Q4xpir5aj44KUysKKX
+         XUET7XsELXWyK1xXXHn3s/PwfxYXL3/C1rfyvPIi5jQtSvB+n7/kS+ugCtkfCZUtcCZx
+         mgI7vN5loo6rcg2Z4ppikoif7KLJr6ctpZM9ZzOlQvw0YcLd1JuziPVWVl9BjpV6rAsY
+         Rv3HPXAurBJjc1+LWD6cDTr4VvlgbUidhCnEfN90gUR5TGSUnK+yOfPhBac/hizwFLtF
+         /LBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757427670; x=1758032470;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8TeFkN7fcGow6PeEF+7elJ3SB1YToe/OnzJcgFoo4gE=;
+        b=J4lmDfrHawAs6Alimcybrr+659zx1ZInJIZBoDKF4XZ6Hr7t30P06m+AoRPwhKhMNR
+         5U3JMFFZzY8NO+BcWhWKfzDBIRT/a5Tx3I4R5+5Ach7hyCmJps825srwCinNeY+/60lU
+         /5lOiH3/gj1lxDrumFWIGV7RxKtPMCDZI6qkmosoBQx47y1TtjSpEDfkD3HDd2/GcKTX
+         VEv5pBSjosb67vSHe5Jxi5AOKgz+74AsNtpcThuWttR8D8m82pBSyQqgz7lEtSnp/3Cr
+         /Q9Oo+wjjM4MCwautrxW8H1PwX5/GPKCxuFu1tbhGREx/lzScGX/yhajHc79Datms+El
+         BKhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpb2zXKEUHW+hzGXkv+b+4Vdmepp+PD68AG8e+fmC/rQkpEf1XfBsbO3ILyvimwCRLNYv9aPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4K55CzHfdc0NcpaS4pqs/ft+yQM7mA8Gmy23c700zOjIOuX+1
+	9Upi+adn5lxQ4pNtp2M9rFzCg74LLJZk/+viOiKRsh6e3/24rd1eae7+eN38g4XIGuMzerm0v8G
+	gqRAuVjqBwgu/5Xu3C6GLfGdNSR00ef526ou35sOyow==
+X-Gm-Gg: ASbGncveZyvRD3eHKXb1zMdR9cuxea6CxrkazbhX9dy5cuejFEDU9/mCq/PgZssmK5N
+	OpeU+dIj09+rrjgQiQjtEOVYHHj5DpcsVfpWHkTo7AjdhMsBtSi2uA6bOk8oGysSrRkNZDNnIQw
+	BJNk2UCe/TD1UPvmz+/ajtLZpgViBQvGxipa2jkKO0B6Oe0t3ddEJ+JpUZSp20bCp3C7rbal6OC
+	YGw0Us0gZE4dvq/r9Krddjo8U1zbED59nSABfhcquvx/jR4VoEwnBfKgBkIsZmwH1/nhgNGcJiZ
+	FaMLZKs=
+X-Google-Smtp-Source: AGHT+IHcxqQ3MwYg1e6CBranmjT3hbA3KQEdh9KM+28JVgj+Ob7LBa6ks7tZBX8uSiN8HysQ5OLuhZIp+UzO70D3LVY=
+X-Received: by 2002:a17:90b:5284:b0:327:ba78:e96e with SMTP id
+ 98e67ed59e1d1-32d43f09a68mr14437698a91.13.1757427669481; Tue, 09 Sep 2025
+ 07:21:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] eth: fbnic: support persistent NAPI config
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175742700550.692355.16451104453714222910.git-patchwork-notify@kernel.org>
-Date: Tue, 09 Sep 2025 14:10:05 +0000
-References: <20250905022254.2635707-1-kuba@kernel.org>
-In-Reply-To: <20250905022254.2635707-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- alexanderduyck@fb.com, joe@dama.to
+References: <20250907195601.957051083@linuxfoundation.org> <CA+G9fYsX_CrcywkDJDYBqHijE1d5gBNV=3RF=cUVdVj9BKuFzw@mail.gmail.com>
+In-Reply-To: <CA+G9fYsX_CrcywkDJDYBqHijE1d5gBNV=3RF=cUVdVj9BKuFzw@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 9 Sep 2025 19:50:57 +0530
+X-Gm-Features: AS18NWCu9Mz3BICbrj4i65CQRhAEXwjomJBkbcBzM4Smm39VCPlu0yA5D9Oglok
+Message-ID: <CA+G9fYvhLSjZ0ir66wDK2FCbdToK9=+r_9d4dfrMA6vuxJErpg@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/52] 5.10.243-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, achill@achill.org, Netdev <netdev@vger.kernel.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Ben Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+On Mon, 8 Sept 2025 at 23:44, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Mon, 8 Sept 2025 at 01:38, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 5.10.243 release.
+> > There are 52 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Tue, 09 Sep 2025 19:55:53 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.243-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+>
+> While building Linux stable-rc 5.10.243-rc1 the arm64 allyesconfig
+> builds failed.
+>
+> * arm64, build
+>   - gcc-12-allyesconfig
+>
+> Regression Analysis:
+> - New regression? yes
+> - Reproducibility? yes
+>
+>
+> Build regression: stable-rc 5.10.243-rc1 arm64 allyesconfig
+> qede_main.c:204:17: error: field name not in record or union
+> initializer
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> ### build log
+> drivers/net/ethernet/qlogic/qede/qede_main.c:204:17: error: field name
+> not in record or union initializer
+>   204 |                 .arfs_filter_op = qede_arfs_filter_op,
+>       |                 ^
+>
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Please ignore this allyesconfig build failure for now on 5.15 and 5.10.
+Seems like it is my local builder issue.
 
-On Thu,  4 Sep 2025 19:22:54 -0700 you wrote:
-> No shenanigans in this driver, AFAIU, pass the vector index to NAPI
-> registration.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-
-Here is the summary with links:
-  - [net-next] eth: fbnic: support persistent NAPI config
-    https://git.kernel.org/netdev/net-next/c/0574c27cbe79
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+- Naresh
