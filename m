@@ -1,63 +1,63 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFF0371EB0
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 17:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF8E393DC9
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 17:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757437243; cv=none; b=KJEM16KypVGvVXY3GNtfxqxk9g3G1cG1roUlwNjThj1LGl5EpnZj4KT4osCpYR1iyM028XfwjzDfDn4d4vH4K+YCWY1LikBZnpogCAwCr57EXroY6eYGjaoYREq3QPzIqolO5DIEBzzS02umz1fOnlJRQSprFsJ+XSIXeKU+ivo=
+	t=1757437243; cv=none; b=EPdmEZRGuYRzy6zDdgQM5WNbS3XGZqOyGXhfR0o4bKgpjrySfEIkC6a6NrlVF4/cXEDqToQy8B2gOQoW/yKq8vdKk7pZaDwa2GJLex3rBdGgSOgUMtd3AlkitSm6dNPrfYbx0caqQ+N2sitIOIrTO2fLKOHihC9PgVEeyBew1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757437243; c=relaxed/simple;
-	bh=+h0USvHVSOjVlYs4CQ7D6pRgCwNmz3LEbxwllF2zr7M=;
+	bh=l70Tt3FuZHgPclFIM+NfxP198WHw2epKUvxqXGbrz+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNjGX5LI42S9IFQ1U08LjkqdekdldIWPuMpzP/sLbaLGQSsu2PMVoLxLttRfba+molsQKmIB43jcEEo8J/NQK57Ay+FrP6CrAORubCL0uYOAhuch88R2Pa6aOl3EeSJf62xjXV3ciZYULftjD4Bv77CAzKLKjws3a0vWFNq7K+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=CdYDpQl2; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=bXkb4SP0gqLkaqixwN2EHP1utNa6mGpJIL9uRez9VWfUR5kWeOfOQp0x3/f7HCFe3h91FZdQJ7gyc4Eue1FjnsmMKY51vzuFvqF0nvLKzgTcK1y7GOHs0tUNcjPukGMI9pbrUtS5RM3QTdq0zNMO080STke+uoC5sa+cHE45z/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io; spf=none smtp.mailfrom=jrife.io; dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b=2xT1kLZO; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jrife.io
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=jrife.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="CdYDpQl2"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-24cda620e37so12181515ad.3
-        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 10:00:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jrife-io.20230601.gappssmtp.com header.i=@jrife-io.20230601.gappssmtp.com header.b="2xT1kLZO"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32da2bd7044so147189a91.0
+        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 10:00:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1757437240; x=1758042040; darn=vger.kernel.org;
+        d=jrife-io.20230601.gappssmtp.com; s=20230601; t=1757437242; x=1758042042; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OQ2N5xxnmus4ZpffddOCN7KvCKEZCAM6yJZL2PBeUoE=;
-        b=CdYDpQl2tAmwxjN6snzWnOydKcWuUpN9ar/QM8ZyazyfFIVpyHsTsu0ldKHD/GEiAx
-         nwWInIJoqFy0pDL3x9vWRffk6g4Vg21XmtIJ2W3rGdV1CM0Xn3MpwsCijuUdUbenvHpM
-         777I2OWsqiHBgIu6kkAR0aIFgzQvj3ySfiDQeNRr59AXuMiqYvm/8YkTu8gS/m7zrkfh
-         PB+XNM31luEXyTQg+rAx1OTe5n3y/JygigtwQiLwrXI7LnfaikkvJinC6M8tx0kPSaJh
-         wbk8H78orKA5N/X6BD9XmNub0Sbr5xJZR2XfYw6vLUrCfSrB7Ih9GQqvg4sL3vQ0dj8x
-         jyAQ==
+        bh=gH5okahG80CFaiitNQPCJC0OENnKbKego7xVaG7PJGg=;
+        b=2xT1kLZO0SoU7EoPSyPSjTEILC+3KbmAv7CyL+49X104TYQDpu1yMb3pe6fdZyrg03
+         xsJHfIOaDNE/pDRiZ2MpHhfmL9ZYybZLE1dPF5F/1aRgP+9nHe/UayJeH8mqOt5ios5P
+         Wx5JlBDQTQDjCtrYk4I6Rro8azn/S1rzWpEWQKXUmMFCZMlfBjqBNiUW3MIP02JyfRhK
+         kkeen3RYClpMenogabM4ZEAoa2TZWuHfe3GZkwaFp9MqTltjkZcOHLesgaFexefMHvy3
+         2xv2+K/khGriRpaUZYGBR4o23ofLgpM5Uwz0s5waHUc/jv6j/yjBYsJKZZUJ7R5oUaYX
+         YK2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757437240; x=1758042040;
+        d=1e100.net; s=20230601; t=1757437242; x=1758042042;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OQ2N5xxnmus4ZpffddOCN7KvCKEZCAM6yJZL2PBeUoE=;
-        b=pQJYt0oYnPodN7Rngzbs/Zwqceeu+gVMSnasFSnK8dHHqw5rrRcsqhnkVoisL1lreo
-         TzGyXpD/gw9kwSf50tVA7kdTOX9loLk4eS0qVSY51WsJPXwW0mBMnUDlGyV4x38j19Gp
-         3cJ2ZHSqWsh/tN/hh72B4T75EeVPPf03PgJ3qzwH6q7nfEb5TWKoJf6FFfifBrYHE/DA
-         NR4TMAqkXsqZhEND/TXOJB1Y9nS8vxOzEy1kUQ9BzZy4RY2Lv5KWmkZLEdqS7p9a10hC
-         Z/To5Tgqyd9e6a8/ldkDy3vA8SapuYLnarBOFpsbSgNi+aWNgFeH/xoYrBhwWhwNVvIx
-         SFHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/sEOBv8GV293BK+tvqEC2CEpI2VJqrOhxUBZdkxQkP+TteEvBmkpER/gzG02xw13VoH+UQQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxguhlITGWi7tyQz7L7hhK+RNkhek4O8kdwaRahgFyPfuH5rRDz
-	qR/Ln6aBktbTFmLFlbKk1w5MQgFm95eoDSoC12NNQWqAE4+e12FD16hnQ9wFQByIndQ=
-X-Gm-Gg: ASbGncuVF1e9YCT5ytSEJOafX2JUrGlg1Mex/hBArllgg7edgN+WvAFo0vWcm0LLtXX
-	oPlcG1Yp40pKuX32zmyTcd4R8mRPMypNV3K3gvZDgKakjsH5cFQTV4XybuuIsn5SMklhYMGFa1a
-	b0PLkHAeTEPe1KImEDpop3SG7kefOh71KIm79tfrMQhQJwOz4+8QS4cq32tVpPqiAL71uPc/YGi
-	KIBG41kBHjRu2cucgmBE5csjR7UJUpmWX2GezPUr6GRgNSQt9j2IHnZPYPU6TQT6ulScx7OaHyN
-	qiN9uSfJesMa56PNqS4AbdDtRkH0J+yfQM/OlPNbvZdcAjN8qepIYV7x4heGVfucYnIqCdB3mOl
-	6zpRaROQ8SJiHeGqdG7irxjT5
-X-Google-Smtp-Source: AGHT+IE9OIP6hyYkXnoOOQf7QFy+S02KfxFAr3zaX7ZXSsugbY/CYTyitnChhkMQ1hniUlegxCeOpw==
-X-Received: by 2002:a17:903:2442:b0:24e:4248:3d9b with SMTP id d9443c01a7336-2517121749dmr75274395ad.4.1757437238831;
-        Tue, 09 Sep 2025 10:00:38 -0700 (PDT)
+        bh=gH5okahG80CFaiitNQPCJC0OENnKbKego7xVaG7PJGg=;
+        b=Ukwg426wGX4QzMZePmQ9btVmeSx1ZXZMA1luoNexL0EszUQiEBWbpgjBKS/G6ZFjns
+         IekhzO6D4jug+YBAVUH65RTpg3I6rKKvuTFYG2PAhVMOg5BBBa/PtW53rIVAxPKDFeVo
+         Q4b2t3rriElvAQ5el1ZXv08cdk3i1MAgmfRZ57PI/u+lYhZgcksi0ekY+5OqHu15BJnt
+         XCpCtZobK8ObBp95o73+DaH9ZrgWH9+BBQ9YPuOVBGe9FB0OD3eYJHdbiANQMXLK1dzn
+         nhIdpeFIayxPmq/uFz5j/CRQZiDZOyIDegwIbgxA/q9uj0Vx0xvZm/fiM1mDGLqmL1GZ
+         ywzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbDqr6et7607FTqY+O5L4MpM7TB/pe2ldPphGSAejfEr4a/A/4dhapFr0lg0Pd8J+SofCkNds=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz84aQ9gnIrwy7eTrEt/EZorYg/4gyRBrjjL5qIbPvdbZwV+QE+
+	yVDj/3zWNrqeB3Nchka8N0DtvSLtnae0MCrRpz5K2dKXURaUxXtadSM70o/KLMpFkzo=
+X-Gm-Gg: ASbGnctog+D19iye7eAkwkKiWGKoG3JMPF2Oz8bmPGPMcLgbflRFWF4rnQWMhrDGuzP
+	kSlI8vrn7pOY2y+fD8+HWXUId/XZngZJ45mgoywdRpNA7pTgFV5YjWKiOV+O/e6GnO2cG413n9I
+	iZbo2+sWXr0wfp6EBT2MM4v7DlIhm94C5ahoFJqG+x7H8/fSRC/cyQ+58ERsNCmNfKRqOWEwLeC
+	wAWhe2/E8nDiZZAlPm3J2bquAFq0k9MNbb4GVOA15IhBQDGTR3vUz3cQ6fJoHiWwTtinIvnLREb
+	RPnmjeOKwK+e3Zdt6bRwLCIuvOa0sL8XQ3lu4WfdhVF8jycmSZx+TmshXPGEwyWI4pf/S2Ha3dd
+	VGeyQpBZYskht/6ciWiqBM21BVB7ncwyDPLOzyXokptW56w==
+X-Google-Smtp-Source: AGHT+IE9t/bVVwp+x9aU6YApQEJhEPGf3ZFC2snlfCBL2peHMOS3ErwrvPCjskLHZK2jWDRAnLK5cg==
+X-Received: by 2002:a17:90b:4ac9:b0:32b:9e6f:f36b with SMTP id 98e67ed59e1d1-32d43f65c55mr8635918a91.3.1757437241613;
+        Tue, 09 Sep 2025 10:00:41 -0700 (PDT)
 Received: from t14.. ([104.133.198.228])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b548a6a814esm251733a12.29.2025.09.09.10.00.37
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b548a6a814esm251733a12.29.2025.09.09.10.00.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 10:00:38 -0700 (PDT)
+        Tue, 09 Sep 2025 10:00:41 -0700 (PDT)
 From: Jordan Rife <jordan@jrife.io>
 To: bpf@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -69,9 +69,9 @@ Cc: Jordan Rife <jordan@jrife.io>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Aditi Ghag <aditi.ghag@isovalent.com>
-Subject: [RFC PATCH bpf-next 10/14] selftests/bpf: Socket map + sockops insert and destroy
-Date: Tue,  9 Sep 2025 10:00:04 -0700
-Message-ID: <20250909170011.239356-11-jordan@jrife.io>
+Subject: [RFC PATCH bpf-next 12/14]  bpf: Allow bpf_sock_(map|hash)_update from BPF_SOCK_OPS_UDP_CONNECTED_CB
+Date: Tue,  9 Sep 2025 10:00:06 -0700
+Message-ID: <20250909170011.239356-13-jordan@jrife.io>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250909170011.239356-1-jordan@jrife.io>
 References: <20250909170011.239356-1-jordan@jrife.io>
@@ -83,396 +83,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use a sockops program to automatically insert sockets into a socket map
-and socket hash and use BPF iterators with key prefix bucketing and
-filtering to destroy the set of sockets connected to the same remote
-port regardless of protocol. This test wraps things up by demonstrating
-the desired end to end flow and showing how all the pieces are meant to
-fit together.
+Finally, enable the use of bpf_sock_map_update and bpf_sock_hash_update
+from the BPF_SOCK_OPS_UDP_CONNECTED_CB sockops hook to allow automatic
+management of the contents of a socket hash.
 
 Signed-off-by: Jordan Rife <jordan@jrife.io>
 ---
- .../selftests/bpf/prog_tests/sockmap_basic.c  | 277 ++++++++++++++++++
- .../selftests/bpf/progs/bpf_iter_sockmap.c    |  14 +
- .../selftests/bpf/progs/test_sockmap_update.c |  43 +++
- 3 files changed, 334 insertions(+)
+ net/core/sock_map.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-index 1e3e4392dcca..00afa377cf7d 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_basic.c
-@@ -16,6 +16,7 @@
- #include "bpf_iter_sockmap.skel.h"
- 
- #include "sockmap_helpers.h"
-+#include "network_helpers.h"
- 
- #define TCP_REPAIR		19	/* TCP sock is under repair right now */
- 
-@@ -364,6 +365,280 @@ static void test_sockmap_copy(enum bpf_map_type map_type)
- 	bpf_iter_sockmap__destroy(skel);
- }
- 
-+#define TEST_NS "sockmap_basic"
-+
-+struct sock_hash_key {
-+	__u32 bucket_key;
-+	__u64 cookie;
-+} __packed;
-+
-+static void close_fds(int fds[], int fds_len)
-+{
-+	int i;
-+
-+	for (i = 0; i < fds_len; i++)
-+		if (fds[i] >= 0)
-+			close(fds[i]);
-+}
-+
-+static __u64 socket_cookie(int fd)
-+{
-+	__u64 cookie;
-+	socklen_t cookie_len = sizeof(cookie);
-+
-+	if (!ASSERT_OK(getsockopt(fd, SOL_SOCKET, SO_COOKIE, &cookie,
-+				  &cookie_len), "getsockopt(SO_COOKIE)"))
-+		return 0;
-+	return cookie;
-+}
-+
-+static bool has_socket(struct bpf_map *map, __u64 sk_cookie, int key_size)
-+{
-+	void *prev_key = NULL, *key = NULL;
-+	int map_fd = bpf_map__fd(map);
-+	bool found = false;
-+	__u64 cookie;
-+	int err;
-+
-+	key = malloc(key_size);
-+	if (!ASSERT_OK_PTR(key, "malloc(key_size)"))
-+		goto cleanup;
-+
-+	prev_key = malloc(key_size);
-+	if (!ASSERT_OK_PTR(key, "malloc(key_size)"))
-+		goto cleanup;
-+
-+	err = bpf_map__get_next_key(map, NULL, key, key_size);
-+	if (!ASSERT_OK(err, "get_next_key"))
-+		goto cleanup;
-+
-+	do {
-+		err = bpf_map_lookup_elem(map_fd, key, &cookie);
-+		if (!err)
-+			found = sk_cookie == cookie;
-+		else if (!ASSERT_EQ(err, -ENOENT, "bpf_map_lookup_elem"))
-+			goto cleanup;
-+
-+		memcpy(prev_key, key, key_size);
-+	} while (!found &&
-+		 bpf_map__get_next_key(map, prev_key, key, key_size) == 0);
-+cleanup:
-+	if (prev_key)
-+		free(prev_key);
-+	if (key)
-+		free(key);
-+	return found;
-+}
-+
-+static void test_sockmap_insert_sockops_and_destroy(void)
-+{
-+	DECLARE_LIBBPF_OPTS(bpf_iter_attach_opts, opts);
-+	struct test_sockmap_update *update_skel = NULL;
-+	static const int port0 = 10000, port1 = 10001;
-+	int prog_fd = -1, cg_fd = -1, iter_fd = -1;
-+	struct bpf_iter_sockmap *iter_skel = NULL;
-+	__u32 key_prefix = htonl((__u32)port0);
-+	int accept_serv[4] = {-1, -1, -1, -1};
-+	int tcp_clien[4] = {-1, -1, -1, -1};
-+	union bpf_iter_link_info linfo = {};
-+	int tcp_serv[4] = {-1, -1, -1, -1};
-+	struct nstoken *nstoken = NULL;
-+	int tcp_clien_cookies[4] = {};
-+	struct bpf_link *link = NULL;
-+	char buf[64];
-+	int len;
-+	int i;
-+
-+	SYS_NOFAIL("ip netns del " TEST_NS);
-+	SYS(cleanup, "ip netns add %s", TEST_NS);
-+	SYS(cleanup, "ip -net %s link set dev lo up", TEST_NS);
-+
-+	nstoken = open_netns(TEST_NS);
-+	if (!ASSERT_OK_PTR(nstoken, "open_netns"))
-+		goto cleanup;
-+
-+	cg_fd = test__join_cgroup("/sockmap_basic");
-+	if (!ASSERT_OK_FD(cg_fd, "join_cgroup"))
-+		goto cleanup;
-+
-+	update_skel = test_sockmap_update__open_and_load();
-+	if (!ASSERT_OK_PTR(update_skel, "test_sockmap_update__open_and_load"))
-+		goto cleanup;
-+
-+	iter_skel = bpf_iter_sockmap__open_and_load();
-+	if (!ASSERT_OK_PTR(iter_skel, "bpf_iter_sockmap__open_and_load"))
-+		goto cleanup;
-+
-+	if (!ASSERT_OK(bpf_prog_attach(bpf_program__fd(update_skel->progs.insert_sock),
-+				       cg_fd, BPF_CGROUP_SOCK_OPS,
-+				       BPF_F_ALLOW_OVERRIDE),
-+		       "bpf_prog_attach"))
-+		goto cleanup;
-+
-+	/* Create two servers on each port, port0 and port1, and connect a
-+	 * client to each.
-+	 */
-+	tcp_serv[0] = start_server(AF_INET, SOCK_STREAM, "127.0.0.1", port0, 0);
-+	if (!ASSERT_OK_FD(tcp_serv[0], "start_server"))
-+		goto cleanup;
-+
-+	tcp_serv[1] = start_server(AF_INET6, SOCK_STREAM, "::1", port0, 0);
-+	if (!ASSERT_OK_FD(tcp_serv[1], "start_server"))
-+		goto cleanup;
-+
-+	tcp_serv[2] = start_server(AF_INET, SOCK_STREAM, "127.0.0.1", port1, 0);
-+	if (!ASSERT_OK_FD(tcp_serv[2], "start_server"))
-+		goto cleanup;
-+
-+	tcp_serv[3] = start_server(AF_INET6, SOCK_STREAM, "::1", port1, 0);
-+	if (!ASSERT_OK_FD(tcp_serv[3], "start_server"))
-+		goto cleanup;
-+
-+	for (i = 0; i < ARRAY_SIZE(tcp_serv); i++) {
-+		tcp_clien[i] = connect_to_fd(tcp_serv[i], 0);
-+		if (!ASSERT_OK_FD(tcp_clien[i], "connect_to_fd"))
-+			goto cleanup;
-+
-+		accept_serv[i] = accept(tcp_serv[i], NULL, NULL);
-+		if (!ASSERT_OK_FD(accept_serv[i], "accept"))
-+			goto cleanup;
-+	}
-+
-+	/* Ensure that sockets are connected. */
-+	for (i = 0; i < ARRAY_SIZE(tcp_clien); i++)
-+		if (!ASSERT_EQ(send(tcp_clien[i], "a", 1, 0), 1, "send"))
-+			goto cleanup;
-+
-+	/* Ensure that client sockets exist in the map and the hash. */
-+	if (!ASSERT_EQ(update_skel->bss->count,
-+		       ARRAY_SIZE(tcp_clien) + ARRAY_SIZE(udp_clien),
-+		       "count"))
-+		goto cleanup;
-+
-+	for (i = 0; i < ARRAY_SIZE(tcp_clien); i++)
-+		tcp_clien_cookies[i] = socket_cookie(tcp_clien[i]);
-+
-+	for (i = 0; i < ARRAY_SIZE(tcp_clien); i++) {
-+		if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_map,
-+					    tcp_clien_cookies[i],
-+					    sizeof(__u32)),
-+				 "has_socket"))
-+			goto cleanup;
-+
-+		if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_hash,
-+					    tcp_clien_cookies[i],
-+					    sizeof(struct sock_hash_key)),
-+				 "has_socket"))
-+			goto cleanup;
-+	}
-+
-+	/* Destroy sockets connected to port0. */
-+	linfo.map.map_fd = bpf_map__fd(update_skel->maps.sock_hash);
-+	linfo.map.sock_hash.key_prefix = (__u64)(void *)&key_prefix;
-+	linfo.map.sock_hash.key_prefix_len = sizeof(key_prefix);
-+	opts.link_info = &linfo;
-+	opts.link_info_len = sizeof(linfo);
-+	link = bpf_program__attach_iter(iter_skel->progs.destroy, &opts);
-+	if (!ASSERT_OK_PTR(link, "bpf_program__attach_iter"))
-+		goto cleanup;
-+
-+	iter_fd = bpf_iter_create(bpf_link__fd(link));
-+	if (!ASSERT_OK_FD(iter_fd, "bpf_iter_create"))
-+		goto cleanup;
-+
-+	while ((len = read(iter_fd, buf, sizeof(buf))) > 0)
-+		;
-+	if (!ASSERT_GE(len, 0, "read"))
-+		goto cleanup;
-+
-+	/* Ensure that sockets connected to port0 were destroyed. */
-+	if (!ASSERT_LT(send(tcp_clien[0], "a", 1, 0), 0, "send"))
-+		goto cleanup;
-+	if (!ASSERT_EQ(errno, ECONNABORTED, "ECONNABORTED"))
-+		goto cleanup;
-+
-+	if (!ASSERT_LT(send(tcp_clien[1], "a", 1, 0), 0, "send"))
-+		goto cleanup;
-+	if (!ASSERT_EQ(errno, ECONNABORTED, "ECONNABORTED"))
-+		goto cleanup;
-+
-+	if (!ASSERT_EQ(send(tcp_clien[2], "a", 1, 0), 1, "send"))
-+		goto cleanup;
-+
-+	if (!ASSERT_EQ(send(tcp_clien[3], "a", 1, 0), 1, "send"))
-+		goto cleanup;
-+
-+	/* Close and ensure that sockets are removed from maps. */
-+	close(tcp_clien[0]);
-+	close(tcp_clien[1]);
-+
-+	/* Ensure that the sockets connected to port0 were removed from the
-+	 * maps.
-+	 */
-+	if (!ASSERT_FALSE(has_socket(update_skel->maps.sock_map,
-+				     tcp_clien_cookies[0],
-+				     sizeof(__u32)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_FALSE(has_socket(update_skel->maps.sock_map,
-+				     tcp_clien_cookies[1],
-+				     sizeof(__u32)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_map,
-+				    tcp_clien_cookies[2],
-+				    sizeof(__u32)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_map,
-+				    tcp_clien_cookies[3],
-+				    sizeof(__u32)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_FALSE(has_socket(update_skel->maps.sock_hash,
-+				     tcp_clien_cookies[0],
-+				     sizeof(struct sock_hash_key)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_FALSE(has_socket(update_skel->maps.sock_hash,
-+				     tcp_clien_cookies[1],
-+				     sizeof(struct sock_hash_key)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_hash,
-+				    tcp_clien_cookies[2],
-+				    sizeof(struct sock_hash_key)),
-+			 "has_socket"))
-+		goto cleanup;
-+
-+	if (!ASSERT_TRUE(has_socket(update_skel->maps.sock_hash,
-+				    tcp_clien_cookies[3],
-+				    sizeof(struct sock_hash_key)),
-+			 "has_socket"))
-+		goto cleanup;
-+cleanup:
-+	close_fds(accept_serv, ARRAY_SIZE(accept_serv));
-+	close_fds(tcp_clien, ARRAY_SIZE(tcp_clien));
-+	close_fds(tcp_serv, ARRAY_SIZE(tcp_serv));
-+	if (prog_fd >= 0)
-+		bpf_prog_detach(cg_fd, BPF_CGROUP_SOCK_OPS);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (iter_fd >= 0)
-+		close(iter_fd);
-+	bpf_link__destroy(link);
-+	test_sockmap_update__destroy(update_skel);
-+	bpf_iter_sockmap__destroy(iter_skel);
-+	close_netns(nstoken);
-+	SYS_NOFAIL("ip netns del " TEST_NS);
-+}
-+
- static void test_sockmap_skb_verdict_attach(enum bpf_attach_type first,
- 					    enum bpf_attach_type second)
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index b0b428190561..08b6d647100c 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -522,7 +522,8 @@ static bool sock_map_op_okay(const struct bpf_sock_ops_kern *ops)
  {
-@@ -1064,6 +1339,8 @@ void test_sockmap_basic(void)
- 		test_sockmap_copy(BPF_MAP_TYPE_SOCKMAP);
- 	if (test__start_subtest("sockhash copy"))
- 		test_sockmap_copy(BPF_MAP_TYPE_SOCKHASH);
-+	if (test__start_subtest("sock(map|hash) sockops insert and destroy"))
-+		test_sockmap_insert_sockops_and_destroy();
- 	if (test__start_subtest("sockmap skb_verdict attach")) {
- 		test_sockmap_skb_verdict_attach(BPF_SK_SKB_VERDICT,
- 						BPF_SK_SKB_STREAM_VERDICT);
-diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_sockmap.c b/tools/testing/selftests/bpf/progs/bpf_iter_sockmap.c
-index 317fe49760cc..9eb2bee443c1 100644
---- a/tools/testing/selftests/bpf/progs/bpf_iter_sockmap.c
-+++ b/tools/testing/selftests/bpf/progs/bpf_iter_sockmap.c
-@@ -57,3 +57,17 @@ int copy(struct bpf_iter__sockmap *ctx)
- 	ret = bpf_map_delete_elem(&dst, &tmp);
- 	return ret && ret != -ENOENT;
- }
-+
-+SEC("iter/sockmap")
-+int destroy(struct bpf_iter__sockmap *ctx)
-+{
-+	struct sock *sk = ctx->sk;
-+	void *key = ctx->key;
-+
-+	if (!key || !sk)
-+		return 0;
-+
-+	bpf_sock_destroy((struct sock_common *)sk);
-+
-+	return 0;
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_sockmap_update.c b/tools/testing/selftests/bpf/progs/test_sockmap_update.c
-index 6d64ea536e3d..eb84753c6a1a 100644
---- a/tools/testing/selftests/bpf/progs/test_sockmap_update.c
-+++ b/tools/testing/selftests/bpf/progs/test_sockmap_update.c
-@@ -45,4 +45,47 @@ int copy_sock_map(void *ctx)
- 	return failed ? SK_DROP : SK_PASS;
+ 	return ops->op == BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB ||
+ 	       ops->op == BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB ||
+-	       ops->op == BPF_SOCK_OPS_TCP_LISTEN_CB;
++	       ops->op == BPF_SOCK_OPS_TCP_LISTEN_CB ||
++	       ops->op == BPF_SOCK_OPS_UDP_CONNECTED_CB;
  }
  
-+__u32 count = 0;
-+
-+struct sock_hash_key {
-+	__u32 bucket_key;
-+	__u64 cookie;
-+} __attribute__((__packed__));
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKHASH);
-+	__uint(max_entries, 16);
-+	__ulong(map_extra, offsetof(struct sock_hash_key, cookie));
-+	__type(key, struct sock_hash_key);
-+	__type(value, __u64);
-+} sock_hash SEC(".maps");
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__uint(max_entries, 16);
-+	__type(key, __u32);
-+	__type(value, __u64);
-+} sock_map SEC(".maps");
-+
-+SEC("sockops")
-+int insert_sock(struct bpf_sock_ops *skops)
-+{
-+	struct sock_hash_key key = {
-+		.bucket_key = skops->remote_port,
-+		.cookie     = bpf_get_socket_cookie(skops),
-+	};
-+
-+	switch (skops->op) {
-+	case BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB:
-+		bpf_sock_hash_update(skops, &sock_hash, &key, BPF_NOEXIST);
-+		bpf_sock_map_update(skops, &sock_map, &count, BPF_NOEXIST);
-+		count++;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
- char _license[] SEC("license") = "GPL";
+ static bool sock_map_redirect_allowed(const struct sock *sk)
 -- 
 2.43.0
 
