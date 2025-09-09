@@ -1,296 +1,227 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5E9178372
-	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 12:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757420390; cv=none; b=Tr50vqUFfl6D5n9tTd6u9b4s3iYNr56zx3KDAI0tiu0eVJGXk8u8E33WmG49a/uPShlEFSEkhBhY/9xcE2+HLtMhbQuM2pNEJTSTbZskCntlWyglqZxYRuXhJ+qknMXlmovV3w23dvxigFWE+X/Mep940PiAma5/GHTbItZlyDY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757420390; c=relaxed/simple;
-	bh=A6PFxe7JxmFPu8qZGsuN5Kn15ua4vF/EEArxSxmBA14=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bwN8onZMH/YtfFxtaQB6xoiYYOWPomV5bT6shUfHJTEnKz1xVeGDL7+ZCG4A43Ij073pK/P9GVGbHOoqqdKV/zdVXfE1NK9uZmcHxePGF+/YqoEEhQ4kB93wxPevHoY8bkDKnOZSXVEm23O5fxMOoRkyt4jSkuYAHpVb7e3xUJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ijIqDYyq; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CEFA32C324
+	for <netdev@vger.kernel.org>; Tue,  9 Sep 2025 12:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1757420550; cv=fail; b=gAvqOwcG1fDaAfjp6BCR56axWOIh9ZxeC1oKOuL2+8YcR9A29b4ojtcqrgx17kbf6KHaldyNKWWeNz7i2p45IUafpQXB6IPkrVRwXlArAG1Tl2a5pbL8Res+p2Xd9CwDomnQ7cpscsSlZtDGob72+8deNa2yCB8jurDwU/HeSF8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1757420550; c=relaxed/simple;
+	bh=vx3E0vEMozXgqIK5gBVEDAOBMAjiJV2JQzFH6KE3Vls=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Xp7SFFzJWg1xD+XJrS/hYBhACjWGsBOwainRhq4izBMHosgAo1CTHbQzz5m7y3K1z7tV8c1B7ONNk7QdbQFftYAbl/jMadAczxL1x5BdK5FFgfPFvO7nCmNE6L0GxHMpsPnedHDVKfv4sBxr2xxW17BROeqNfR+Fcs/0fvd0LUA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=lyDQRsEf; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=t/OBt5/u; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ijIqDYyq"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7e870315c98so2174846485a.0
-        for <netdev@vger.kernel.org>; Tue, 09 Sep 2025 05:19:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="lyDQRsEf";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="t/OBt5/u"
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 589Ag5lQ006786;
+	Tue, 9 Sep 2025 12:22:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=1dDoJyZMGRqQ/lKyH+97ZRyNfQYJe+bYovw74T1IJW0=; b=
+	lyDQRsEffZ4iETgHCHruGLM5bufSUMcp2CMhQ3QV8X1oJ/XwgH3wfry+b9looEgB
+	1HM5Mzt8VZqzGTw2vVKQn5qw8EGvM7sofGC2R+RCJZNM3+IAkNZbBFuSNVm+/A/J
+	HS/ur98TwhKGii3++TDjK+CtvK7xnBeksAYeHVxVbXvDRp8e2760h7oUTf/8Adca
+	TgMZR8Oz1gfCdP4wenvT+5q5LOmHsaNn9v3fs+oeqE7Ar7f8d6HmbnebucQ/70IB
+	cgA7CImduWT4UAMeluwXdxZ0ZlqoOXfxE4Gr4t7Mlq4dQg5KRLu1I7E7Mg/yxaIS
+	aRgGSg6G+fF1smfja38Mqg==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4922961sqr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Sep 2025 12:22:20 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 589AXShh025946;
+	Tue, 9 Sep 2025 12:22:19 GMT
+Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011000.outbound.protection.outlook.com [52.101.62.0])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 490bd9hwn1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Sep 2025 12:22:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=egrhSqZJeTjIX0dzZB5JAlDnzCH6YP7KV689doMqZsoE1BXR9H8DcHEb7rvj7OW60fuCEtJmI5pew0pdVrXLnUZ243ne8i6KfWNsXMAmFYzDG0xtbZLz8d7tPWnHJhbpjWslNko/eY89vSa6KWg3iIkHBik9nsT5xoZUCPXVmBtm7reboEMCEmYa1Car/nzAHZhMvC+xYtu79/PjcZjaRc0A+96dIRGx0JR6HeVwDfnWXMD/v8Blm2lv+hSCp62VpMPa1XM9WmlPeAODLO1c7di78yhaDXRtPjO1QPRBkNMW3L9om7VD/e4/r+DeVcj1s6AMdRSKYHECX7ZGeoyVPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1dDoJyZMGRqQ/lKyH+97ZRyNfQYJe+bYovw74T1IJW0=;
+ b=BCb7jxRNFkNPTvAMO+tAhVm1riPDeQEE1q21VXstXe8Te+kug16AfQszwJNawMmG9yqKHc9usBP3HtyBd4xYVU2boLye6HA0GfAg6BSKXq1bx+QHtYEpwzOWzx9j0hakPK9obytxoy9XdXTCYiq0JovdPZAeyxOiJEAzx81C112ecq1Jru8AjNE27dTORazGO7ey22vcl6/Tb1Wknaumm1ez3iE9CuVu4pkI2fZob9F5YGAJgMFaZAfJvZdX0XmG6E3GpYCdm7N5kvFX/fgP+qroBaDs1vMUpj2kJROvSYpfKFqQEYD0iqQ0WdChx1s2cbT+nyryJ1U6RCpwBYl+1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757420388; x=1758025188; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=giwHdK3Mfv46Z87kT5NA1CnepIrtZb4LT3nCyX16Kyo=;
-        b=ijIqDYyqd9JkMUrRWCYKVZcsxxxOkKZ0Sz6E4w5PZBpBKV46jDH7KLsh+u+uOpyS6X
-         n9nPzkVmadl5pza4RNpvsqtMbFoAsUMZvIadwKaU+mrh5LDisV9Ikxbn4V/e2r/H4j2+
-         +ATqBM6OW8/paoMfgPDawmuKiATVtHdE4na4jOpDteDyXUR+RG9js2JlEZEbjckD8d3j
-         uLfQfvQzHuyMFhgzEELnKPfYFII1TBCsp7RBCK7Rcex4vZN0Vz9ishQhFMCmJqC4zq2E
-         rVZ7VnjF4g9XLfhPDOBKMa8EXym+R00HS3JGHwEpMh+mET2v2C+2yafEx+bcL7BdQ58f
-         VV1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757420388; x=1758025188;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=giwHdK3Mfv46Z87kT5NA1CnepIrtZb4LT3nCyX16Kyo=;
-        b=UzEkdVHCS9XoQ6NpHy8luYcReN0qUyw2gU1qdbflxIGDtP+LDmqAYjlD64yL0YnKUH
-         nWgzZX1j7h9lNO6p99tSE2MWMFqVuVM0MXnE5zZot2Z6OP3FM1HUsNLnHgf/4qDvqWqD
-         +wvI/InE2bk/A7wOrhR791cU/89jmm3sYn34XwShYb1WzyS67sRrQoZeyACxTnMlgzhp
-         Sd2VLqOfnMsPOfc4mpP0/Cd/7oXWSujNInpC/JLUhBUjIOreWYbCrqwZnUykYJIpPV8u
-         red6NQuUbi6k+RvtDEzXQ7XHdeHRQHen1jjrnbCHpBS8ILWwW9Hn/tj+t6gHmKuM7YtW
-         86xg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+KzBEHDgaWl2E8iKU4A5VFaKXNbNbIhoqN5mtM/t3Sm53ZeUUbtO1TV7A1BOWKHGgFbc+8wA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1q0LWoTJPjOxT4p6SpQKzL9gQJPSr3vamCGOCv95Rb0gGCJpL
-	EY9GoGSLoJ3zIM4hiS0WE/YYaiRnQzInFywwiS0CX+kWALajWqGksPO47a5ti1UfpwsECQ3BU/m
-	VjkcfBq4hvcqUwA==
-X-Google-Smtp-Source: AGHT+IFZByZMnMQpHKrwIqhVwrgaEWZaXvv6tKNO0ZfrtvQCLK1LFizzTlVr10YMr5KDchBPypCzIiqRzd0h6w==
-X-Received: from qkbdl8.prod.google.com ([2002:a05:620a:1d08:b0:807:3657:89cc])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:3186:b0:811:936a:d0b5 with SMTP id af79cd13be357-813c2efcd37mr1113543685a.65.1757420384869;
- Tue, 09 Sep 2025 05:19:44 -0700 (PDT)
-Date: Tue,  9 Sep 2025 12:19:42 +0000
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1dDoJyZMGRqQ/lKyH+97ZRyNfQYJe+bYovw74T1IJW0=;
+ b=t/OBt5/ucpGmsGyL2KDLwUNQOOKkrfi9O/RVIAqXIrbIJuZ9tbptFnKM2KcBJycp1Ug8txBO1zNxeBHfS4KMghxgeHPYjEtzIlyk+DsaAOAdf7qJrxpj7F5tGCB+kTq4DD+g7ekjXifHnyNLbXguzQZG2+YYkHl5hCYYDVV85Tc=
+Received: from DS7PR10MB5328.namprd10.prod.outlook.com (2603:10b6:5:3a6::12)
+ by LV3PR10MB7820.namprd10.prod.outlook.com (2603:10b6:408:1b4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Tue, 9 Sep
+ 2025 12:22:17 +0000
+Received: from DS7PR10MB5328.namprd10.prod.outlook.com
+ ([fe80::ea13:c6c1:9956:b29c]) by DS7PR10MB5328.namprd10.prod.outlook.com
+ ([fe80::ea13:c6c1:9956:b29c%5]) with mapi id 15.20.9073.032; Tue, 9 Sep 2025
+ 12:22:17 +0000
+Message-ID: <80486f87-2be7-46c0-a6fe-7cafa5c6823d@oracle.com>
+Date: Tue, 9 Sep 2025 17:52:10 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ipv6: udp: fix typos in comments
+To: Simon Horman <horms@kernel.org>
+Cc: dsahern@kernel.org, willemdebruijn.kernel@gmail.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        netdev@vger.kernel.org
+References: <20250907191659.3610353-1-alok.a.tiwari@oracle.com>
+ <20250909121100.GC14415@horms.kernel.org>
+Content-Language: en-US
+From: ALOK TIWARI <alok.a.tiwari@oracle.com>
+In-Reply-To: <20250909121100.GC14415@horms.kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0316.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a4::16) To DS7PR10MB5328.namprd10.prod.outlook.com
+ (2603:10b6:5:3a6::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250909121942.1202585-1-edumazet@google.com>
-Subject: [PATCH net-next] net: use NUMA drop counters for softnet_data.dropped
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR10MB5328:EE_|LV3PR10MB7820:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e9c7c31-ed6f-46c4-fcaf-08ddef9b8413
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?c1hWUTk2OHRlVG0ybDA0UmZBSmZ2VmhWdElXYjdlWitjTmRBRXhSeWpaN3hs?=
+ =?utf-8?B?OU9MN0cxaGlXS2hXdzZ6Q3BJakdrVmt4REFXbHgwS2twSlYrVXg1OFAzUXBF?=
+ =?utf-8?B?dVdIRHQ2M25hUjVZbmRhNzFUU1VTbTZYWmtaZnIreU03TWpEc3YrUmI5YnhE?=
+ =?utf-8?B?SlFLRzdPcXF4WXNRODhFem04U011R1d2elB0cDFpRjQ1ZkRyQVdHZDR6N1E3?=
+ =?utf-8?B?RUNpRlZHdVB1ejBSdytSR0hzSEkrRDJ5dGVaVDhpQnVFSTR1cmxzcnF1WjQ3?=
+ =?utf-8?B?S3FOMUNVRVU4TFpZZk9ycDBLN0NKcHZKNjdZbjhYckN6elBCMXVSQTJGSWFY?=
+ =?utf-8?B?WjY3MWp3cHhka3hET1VseXlBK0RicVY3RWRocStpM3JHMFhhL3dNVFUzNE5X?=
+ =?utf-8?B?anFDZU9qNDJHVkRvL0tKWUdyVnI3amgwaVFuTjFtS2hHOS8vSzF2TXpOSXNk?=
+ =?utf-8?B?Zm5nYzlzaGUzdlBpOURaNTNXYXpMTy9YMmN1TDVPYThERlR5L0hCSmZHd3Fz?=
+ =?utf-8?B?dDJkbHZjRERFSzZzNDUzT2Jpbkp4ZFVPYlpKK3NSbE11Tlh6YUoxMURnV1Zm?=
+ =?utf-8?B?UWFXNHcvdUF4dGZnUXVNS1lUMkFadmh3NzNqSmJ0ZkllaHpqdWREcVdzZWcy?=
+ =?utf-8?B?aGNkWFQwRE9zQUNFTHRMZ2J4TW1ZV3VMcDlTdGVqRzVZaThJMFFPQ1FxTU1Q?=
+ =?utf-8?B?VnJJUm44ZTU5TGhJUDUwZmJueVJlenN4bzdzTU9QYll0VXIyMU83K21FaDhz?=
+ =?utf-8?B?M0ptQXNuMTBlUUxUOFpyNXVST0JQa0daSm9UR1hHcC9XNzRTSnEwQjBzUlBP?=
+ =?utf-8?B?bkpZWS9PcGRLeHFsSWNNa24vUFd4ZXJtbjZaamxJVDc2MWJtdWZJMGFJNlJx?=
+ =?utf-8?B?cGk2MjRqdTNNN1puTWNhTFJhaTRmYlp0aWE3Q3NaSmg4c3RUMUdGcVJIV0px?=
+ =?utf-8?B?VzJhb2VkUG4reUxBTE9mK1I2RHFaZ1VxclFiZktSK2xJZWJMdEpTY05EUkNN?=
+ =?utf-8?B?TlhWRklpaFN3a2JpL3lkL2lkSm9jbmFGN21nbVpFekpycGJneXRzU0hBVktE?=
+ =?utf-8?B?eENjVEpuTitwZW9aUXN4WWNTSUxudUZGRGYxZkRrL3lxWTE4NWNsdDhwVVRo?=
+ =?utf-8?B?ajNHYWxuaFhoMVdJNHk5MmZoL1JsV3FPbDYxbUJ6V3o0blFkYlhjeGRJRUpE?=
+ =?utf-8?B?Q3RVVjlEdEtIT0duT3c5Z21BajRLVURZMExqSWFYbWRudlliNEhneEZBUUxt?=
+ =?utf-8?B?STNGNk9uUEZ1NnZmY1Z6TmdWckswdEVvd0JkSU84aXpWTEE4cFNQdWxvZG53?=
+ =?utf-8?B?eEV2WG01UDdyMm9XK0tXUWNaUkNjeG9HdW1PU1hqb21reUJuVVVJekNhb3NC?=
+ =?utf-8?B?b1JINmNEeUhCb3ozcVdGOHJpRW5XRGRjakluL1EwSmhrejdQazZ5ZnVLc0Ra?=
+ =?utf-8?B?SzJVbGVKUUpyVStGZDVRRTI5RGVUQko3UkZLNzZHbmptanFmckR0cGdCdXJo?=
+ =?utf-8?B?ZFoyOU94UnBhWngwSTVLSXpmeWRVNWE1NGgveEJyUDk0UE1jWEx0OTY2RHhp?=
+ =?utf-8?B?OXdoMEVjOVVkUlBnSHVyRGFHbzZ5ckd2eWd5cE4zdWVDOXNoVHNCRTczWWFp?=
+ =?utf-8?B?elcrZ3h3MVZwWnN5a2lzUFZxcG1PaFZIMTRIWDlmZ0w0RU81dmdDZ0pISmZE?=
+ =?utf-8?B?eXpkUEo0NDBXUVlaSE9ZMldORUZDVmV5K2NQMSsyd3MxWnJOcWxNRWs5TzJ0?=
+ =?utf-8?B?ZFluZ3FOVTJSRk9jT3ZxT05sMHVBSHozUy9sRDFFSjdWZ1NiSWdFdDgxVTdt?=
+ =?utf-8?B?eTA2U05FS21sUFRMSmhuR2JvL293ekkyZnpYMnFNYlVUMTRCWXhYNGZMV1oz?=
+ =?utf-8?B?ZWxCdGZyMkEwalFMUUZnREV2WGRNaCt6ZzJTd0s2RmNFcHFMNUNTcFhBdi9O?=
+ =?utf-8?Q?dt0E/TIMeYU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5328.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VndTMGZxcHpyY21aN1NXZDdIVGpyYXBsZnhJTzFKSngwQktHOHJXNC9MU29q?=
+ =?utf-8?B?ZTY4YmNuWjF0cDZxT2hRMUFZQjJYZFZ0UWxXTzVzMm5FYVE4aHM1ei95RWta?=
+ =?utf-8?B?RzE2NlMvMm0rNCtPZjBnRzRSbXJmR01yei9LMkZzV1NsYW9oVVdXVTF0c0xD?=
+ =?utf-8?B?WjNlcmFUQzd4dHh6VGR5TkVzeERFMXNhTVdyRE03dFI3eThVQ0ZoVm9DditW?=
+ =?utf-8?B?UWFrK09oQkJ2YlJ2ajV0QjJUbDZHV1VCNGhrOEl6V1VCYjh0bnNGWlNvNk11?=
+ =?utf-8?B?OVBiUWw1RWprZ2dWYWVjMGI5SlFiTWdsbE8rWm9aVXZocE8rNUtML3RkTytZ?=
+ =?utf-8?B?bXY0TXp0YnQ0NDlIL3EreGZOdW8zMitBdTY5VFphcG5oVmlHWUY0UkNtVEow?=
+ =?utf-8?B?NkZNMjJPL1JyV2g5ZUlTM3YwRVlPOWxTL0p0ejBwTEdZMG1GNk9EbjFMT1FJ?=
+ =?utf-8?B?Nm42MmV1V2doMEI2Uy81Q2E4enAyNEg0OHBVZUMrV0N5VFlJOTlCalZtMWhp?=
+ =?utf-8?B?UVNLNTNSR0xJUnQrWlhYRDFvaWd2QUo1YW5XTU5oTURwT21pTUNubUFkaXNJ?=
+ =?utf-8?B?bGtBWmo1Tk9TOFhmTzlFNEZyaXp6QlF3Mm9FZ2dZVENYNFF0V2s0RGZLeUtI?=
+ =?utf-8?B?MnJHa3U1azNhVksySitydXFrR29rOG8reDJSc28zL0xMeHgzZi8xU0NXbjhC?=
+ =?utf-8?B?dHZNRC84Rlk5blBONXVjeTlra2NJZE5yZzd2ek9xWkxHa0NkcGtqQ1RQbi93?=
+ =?utf-8?B?RXpVai9qeVNXUlNyczlvTXNIa29CN09FKzVZODBua0NIR1JGenozZ003c09C?=
+ =?utf-8?B?OFArUEw2SWVkeWRqN1J0WjdXdU5YbzZmZjdWaGVsc2MyNldodE12OHpqajZn?=
+ =?utf-8?B?MmxZV3diSzU5RnNEUnhuWVdybmsrQjI5RDJDTVJNUGpKRXFKb2pvcDhVaTU4?=
+ =?utf-8?B?ejJURWR1cncybnBrNHB0QlJJY3JsM3NrR1F3cDB6dXB2ZWZjRDhnM2k0eFQ5?=
+ =?utf-8?B?aGl2azRUN0gzb3F1UTN2NVhGcU9kdUZ6bFN6dCtmc21zZ3d5THVXOW9GSnBO?=
+ =?utf-8?B?NGpqNWRsdlJ1cFVJaFRUOVp1U1VwRXVuY3pDRkFPQm9wMjNpZWZmNHdpUFlq?=
+ =?utf-8?B?Mis4THZ3QWx3L2p4MGRaeVl1aXhJWVl4eUFFTlJxRm1HMTk5bFlUbEZFbHgw?=
+ =?utf-8?B?elAzV0lrcWlSNXNseEZIZk1BZ0syOUtjRWJnU3BFck9sMkpsbEpZVHdVd0JR?=
+ =?utf-8?B?enBvVmZsOGJhVXJqay9LRk1pVnRtbUZBdjB4VmtZUG4vMjJ4UWU4d2FORDhs?=
+ =?utf-8?B?QzM2MWxiQ0Zaam9XNmpwWUZDSVhxeER5NmxqRGJqSUx3VWQ5cC9iTzJ6cDNL?=
+ =?utf-8?B?d0xNck5rK0E2WlRrbDhVcnFYbnlmWGQzL3h4Qmd5SjNycWg0Qk1SdlZUaGRD?=
+ =?utf-8?B?WjNtTkNaWGRPamhUQVdsTG84U1puWFVCelpNNzZmZDFQZmFxOXM5OWdGcjg3?=
+ =?utf-8?B?VER0VE1pTXlIQURWOGJZL29Ha0FGUXc2ajB2SkE1QUdSWkxSMXpPT3Z3OEdS?=
+ =?utf-8?B?d283OTIvSzNlTWRJRVNiT3pHWUdzLzJkWWV1ZGNtNGhidGgyb3dmK1JObm9i?=
+ =?utf-8?B?dERyaUNieDJQYWtXNVJKNlJDdTFXc3ZqTDdTMS9MZHFJWCtnNTRTa0JMOW85?=
+ =?utf-8?B?bFhqdi8xTTd6ZlI1Zkk4dzdVeSsvTStKQXJzS0pBSHB0c2V2TE9JdXFXbVp2?=
+ =?utf-8?B?Tm9CUVd5N2xrWU1SbVFhYnA4RndPM2tKeVFyVmlMS2VCQnlVa2JGR2pZM0tE?=
+ =?utf-8?B?VlE1WmsyczlvQ2VUeW9YUnAxb0p3Y1VnREJrK1E4MG5QQnFQdEVHNVJBNFI4?=
+ =?utf-8?B?ZldJUzNtc29PcXIybUcvQWdDUUEzSTc4ZXFkTTNja0JxOGxqSWQrOUhNRC9K?=
+ =?utf-8?B?dFBKaGR3ekQ1d20rYUx4QjdOQ3U0ZXlwYzh6eUtJMnVvTkVpUUtuNGZwL2NG?=
+ =?utf-8?B?WWo5aGg4Z1M0RE1lRnE5TWFuMktGTXBmd3BTOFVKaklFWW5idjJqZ3FtZlV3?=
+ =?utf-8?B?ZU9wT1N0RTdrY2E5OENxQ25PU28zK05McGg3ZWxrYzdmQmg5dkZycSszRXVJ?=
+ =?utf-8?B?aVMyT2xLNHR1LzZZNUszT3hZT1JuTlNobjF1VjE4OVBEdFNBbHJDZ2N0ZGdD?=
+ =?utf-8?B?cmc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	kts9y2eB6/kqWkiNVacB14e/rymbjj9bId85AHNbGFO7d2Tc4aWNJgdqgTODKZ2G4ha248giM3X0y8i2mZEmRjfXYpdLvS6DCAtiNiUnLfOaEtny31tZ70c6SvgZvhtx88s9vlVORNb9xppoObAZRnpKoD6B6CUTobgzndcFbdXjJJhf8VTtEC3/1j8Pj/YAPmooHHW2orW87cHJu0feR3mI9R17tXx1+anOMDHun0JjNQ5d7H4hSGmfqqe/4Vw8TALNSlfnv+Y7AEV9QyCNoxHV/OyUT+BZNJfMegFHBE91EyuB1eesJm3PTsVBIjMdY/K2s0P/FJlq2d/SZPhi61UPKA0hxQdmb9hNh12pmst1MWtDU0W19n2IF6+RH1hQDY2+tB9HiqH5EKI97bPpm/1PWARHwYTRhc9rZ/N8s7YGU+YWjsm2g+IvFdqWcoubzvxqFcpYEJT3oAFKdyDFq7FvfiwdLVgaHSsXNQgWL+OFvYHoP0ZaOCAHGoEoQAg86AQlHIsUI8m9N6hrI6CsTD6JHiB69AMwa/ZDk9TrSnL0b118GSxBnoT7HDhy8Khv16GBCNODIXh8n2HxK+kSN3JmQin7lH7eHBJIDv0hOqY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e9c7c31-ed6f-46c4-fcaf-08ddef9b8413
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5328.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2025 12:22:17.4188
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7LODk23Nt87jRGqb9Vc/GlM2MHlChi6byOHPKJ4BxuD3nFMisnuNI4j+In5WFXerKHoPekM2QUrxXdSKnhZEGW5UvQM0K6afVeANy1QHEZU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7820
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-09_01,2025-09-08_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509090122
+X-Proofpoint-GUID: DcoNJjj1-8Q0aRqlCM3RTXcIE-6cM5S1
+X-Authority-Analysis: v=2.4 cv=CPEqXQrD c=1 sm=1 tr=0 ts=68c01bfc b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=yJojWOMRYYMA:10 a=GoEa3M9JfhUA:10 a=xQIX8RsSxpClGtwelmYA:9
+ a=QEXdDO2ut3YA:10 cc=ntf awl=host:13614
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OSBTYWx0ZWRfXya/IWhv4h9g7
+ JVMZwSdL8IvBS5uQTv6OFYvlN81WRf9RODNUknrTv5zQYsPe93Azis9EQ9dvdPqRZ+yZ45rXg4k
+ xMxkKCp88f9ZLm4124phrlrL7LY6j+WiVrP93UMyvL7PA+DPsKuubz8++9XrSDbAMJzmMkLTp4G
+ tLlsLUbzFZTvJdeqkuews8GPwhJ2Ln0kph/dyUSq5JKA9a2+EmhVakmXCCzKnuhgsEBlcs7EfmZ
+ +0I+p3FoSeJwq9yLmvGWwq0+340ZfoCwC1iY8OAxWAlagpb0g+ioY7GnJdpAvqHfXF2OWUVp4HQ
+ z8JKTJNWzbvzCkIDKPRSfswLA6y68PFCrTYypEdxLBWLpVqXhsmZ1KpKGr0bYHEbh0/uDy6i2aP
+ qdqs29dHcTfsIKzfqjhqmpKqRRgxYQ==
+X-Proofpoint-ORIG-GUID: DcoNJjj1-8Q0aRqlCM3RTXcIE-6cM5S1
 
-Hosts under DOS attack can suffer from false sharing
-in enqueue_to_backlog() : atomic_inc(&sd->dropped).
 
-This is because sd->dropped can be touched from many cpus,
-possibly residing on different NUMA nodes.
 
-Generalize the sk_drop_counters infrastucture
-added in commit c51613fa276f ("net: add sk->sk_drop_counters")
-and use it to replace softnet_data.dropped
-with NUMA friendly softnet_data.drop_counters.
+On 9/9/2025 5:41 PM, Simon Horman wrote:
+> Hi Alok,
+> 
+> I'm wondering if you could consider also fixing the following while
+> you are updating this file.
+> 
+> measureable ==> measurable
+> 
+> Flagged by codespell.
 
-This adds 64 bytes per cpu, maybe more in the future
-if we increase the number of counters (currently 2)
-per 'struct numa_drop_counters'.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- include/linux/ipv6.h      |  2 +-
- include/linux/netdevice.h | 28 +++++++++++++++++++++++++++-
- include/linux/udp.h       |  2 +-
- include/net/raw.h         |  2 +-
- include/net/sock.h        | 37 ++++++++++++-------------------------
- net/core/dev.c            |  2 +-
- net/core/net-procfs.c     |  3 ++-
- 7 files changed, 45 insertions(+), 31 deletions(-)
+Thanks Simon, I will incorporate this change in the next version.
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 261d02efb615cfb7fa5717a88c1b2612ef0cbd82..f43314517396777105cc20ba30cac9c651b7dbf9 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -295,7 +295,7 @@ struct raw6_sock {
- 	__u32			offset;		/* checksum offset  */
- 	struct icmp6_filter	filter;
- 	__u32			ip6mr_table;
--	struct socket_drop_counters drop_counters;
-+	struct numa_drop_counters drop_counters;
- 	struct ipv6_pinfo	inet6;
- };
- 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index f3a3b761abfb1b883a970b04634c1ef3e7ee5407..f5a840c07cf10eac05f5317baf46c771a043bd2c 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3459,6 +3459,32 @@ static inline bool dev_has_header(const struct net_device *dev)
- 	return dev->header_ops && dev->header_ops->create;
- }
- 
-+struct numa_drop_counters {
-+	atomic_t	drops0 ____cacheline_aligned_in_smp;
-+	atomic_t	drops1 ____cacheline_aligned_in_smp;
-+};
-+
-+static inline int numa_drop_read(const struct numa_drop_counters *ndc)
-+{
-+	return atomic_read(&ndc->drops0) + atomic_read(&ndc->drops1);
-+}
-+
-+static inline void numa_drop_add(struct numa_drop_counters *ndc, int val)
-+{
-+	int n = numa_node_id() % 2;
-+
-+	if (n)
-+		atomic_add(val, &ndc->drops1);
-+	else
-+		atomic_add(val, &ndc->drops0);
-+}
-+
-+static inline void numa_drop_reset(struct numa_drop_counters *ndc)
-+{
-+	atomic_set(&ndc->drops0, 0);
-+	atomic_set(&ndc->drops1, 0);
-+}
-+
- /*
-  * Incoming packets are placed on per-CPU queues
-  */
-@@ -3504,7 +3530,7 @@ struct softnet_data {
- 	struct sk_buff_head	input_pkt_queue;
- 	struct napi_struct	backlog;
- 
--	atomic_t		dropped ____cacheline_aligned_in_smp;
-+	struct numa_drop_counters drop_counters;
- 
- 	/* Another possibly contended cache line */
- 	spinlock_t		defer_lock ____cacheline_aligned_in_smp;
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index 981506be1e15ad3aa831c1d4884372b2a477f988..6ed008ab166557e868c1918daaaa5d551b7989a7 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -108,7 +108,7 @@ struct udp_sock {
- 	 * the last UDP socket cacheline.
- 	 */
- 	struct hlist_node	tunnel_list;
--	struct socket_drop_counters drop_counters;
-+	struct numa_drop_counters drop_counters;
- };
- 
- #define udp_test_bit(nr, sk)			\
-diff --git a/include/net/raw.h b/include/net/raw.h
-index d5270913906077f88cbd843ed1edde345b4d42d7..66c0ffeada2eb10711e7ca7a7f05e6e36817e070 100644
---- a/include/net/raw.h
-+++ b/include/net/raw.h
-@@ -81,7 +81,7 @@ struct raw_sock {
- 	struct inet_sock   inet;
- 	struct icmp_filter filter;
- 	u32		   ipmr_table;
--	struct socket_drop_counters drop_counters;
-+	struct numa_drop_counters drop_counters;
- };
- 
- #define raw_sk(ptr) container_of_const(ptr, struct raw_sock, inet.sk)
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 896bec2d2176638460345c6fac5614f63df215d7..0fd465935334160eeda7c1ea608f5d6161f02cb1 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -102,11 +102,6 @@ struct net;
- typedef __u32 __bitwise __portpair;
- typedef __u64 __bitwise __addrpair;
- 
--struct socket_drop_counters {
--	atomic_t	drops0 ____cacheline_aligned_in_smp;
--	atomic_t	drops1 ____cacheline_aligned_in_smp;
--};
--
- /**
-  *	struct sock_common - minimal network layer representation of sockets
-  *	@skc_daddr: Foreign IPv4 addr
-@@ -287,7 +282,7 @@ struct sk_filter;
-   *	@sk_err_soft: errors that don't cause failure but are the cause of a
-   *		      persistent failure not just 'timed out'
-   *	@sk_drops: raw/udp drops counter
--  *	@sk_drop_counters: optional pointer to socket_drop_counters
-+  *	@sk_drop_counters: optional pointer to numa_drop_counters
-   *	@sk_ack_backlog: current listen backlog
-   *	@sk_max_ack_backlog: listen backlog set in listen()
-   *	@sk_uid: user id of owner
-@@ -456,7 +451,7 @@ struct sock {
- #ifdef CONFIG_XFRM
- 	struct xfrm_policy __rcu *sk_policy[2];
- #endif
--	struct socket_drop_counters *sk_drop_counters;
-+	struct numa_drop_counters *sk_drop_counters;
- 	__cacheline_group_end(sock_read_rxtx);
- 
- 	__cacheline_group_begin(sock_write_rxtx);
-@@ -2698,18 +2693,12 @@ struct sock_skb_cb {
- 
- static inline void sk_drops_add(struct sock *sk, int segs)
- {
--	struct socket_drop_counters *sdc = sk->sk_drop_counters;
-+	struct numa_drop_counters *ndc = sk->sk_drop_counters;
- 
--	if (sdc) {
--		int n = numa_node_id() % 2;
--
--		if (n)
--			atomic_add(segs, &sdc->drops1);
--		else
--			atomic_add(segs, &sdc->drops0);
--	} else {
-+	if (ndc)
-+		numa_drop_add(ndc, segs);
-+	else
- 		atomic_add(segs, &sk->sk_drops);
--	}
- }
- 
- static inline void sk_drops_inc(struct sock *sk)
-@@ -2719,23 +2708,21 @@ static inline void sk_drops_inc(struct sock *sk)
- 
- static inline int sk_drops_read(const struct sock *sk)
- {
--	const struct socket_drop_counters *sdc = sk->sk_drop_counters;
-+	const struct numa_drop_counters *ndc = sk->sk_drop_counters;
- 
--	if (sdc) {
-+	if (ndc) {
- 		DEBUG_NET_WARN_ON_ONCE(atomic_read(&sk->sk_drops));
--		return atomic_read(&sdc->drops0) + atomic_read(&sdc->drops1);
-+		return numa_drop_read(ndc);
- 	}
- 	return atomic_read(&sk->sk_drops);
- }
- 
- static inline void sk_drops_reset(struct sock *sk)
- {
--	struct socket_drop_counters *sdc = sk->sk_drop_counters;
-+	struct numa_drop_counters *ndc = sk->sk_drop_counters;
- 
--	if (sdc) {
--		atomic_set(&sdc->drops0, 0);
--		atomic_set(&sdc->drops1, 0);
--	}
-+	if (ndc)
-+		numa_drop_reset(ndc);
- 	atomic_set(&sk->sk_drops, 0);
- }
- 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1d1650d9ecff4a863b3449bf88d7201d72ec8e33..2522d9d8f0e4d0da3488afe98f46501eeecd5b51 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5248,7 +5248,7 @@ static int enqueue_to_backlog(struct sk_buff *skb, int cpu,
- 	backlog_unlock_irq_restore(sd, &flags);
- 
- cpu_backlog_drop:
--	atomic_inc(&sd->dropped);
-+	numa_drop_add(&sd->drop_counters, 1);
- bad_dev:
- 	dev_core_stats_rx_dropped_inc(skb->dev);
- 	kfree_skb_reason(skb, reason);
-diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-index 4f0f0709a1cbc702dc44debc6325d20008b08d86..70e0e9a3b650c0753f0b865642aa372a956a4bf5 100644
---- a/net/core/net-procfs.c
-+++ b/net/core/net-procfs.c
-@@ -145,7 +145,8 @@ static int softnet_seq_show(struct seq_file *seq, void *v)
- 	seq_printf(seq,
- 		   "%08x %08x %08x %08x %08x %08x %08x %08x %08x %08x %08x %08x %08x "
- 		   "%08x %08x\n",
--		   READ_ONCE(sd->processed), atomic_read(&sd->dropped),
-+		   READ_ONCE(sd->processed),
-+		   numa_drop_read(&sd->drop_counters),
- 		   READ_ONCE(sd->time_squeeze), 0,
- 		   0, 0, 0, 0, /* was fastroute */
- 		   0,	/* was cpu_collision */
--- 
-2.51.0.384.g4c02a37b29-goog
-
+Thanks,
+Alok
