@@ -1,104 +1,86 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1782571D8;
-	Wed, 10 Sep 2025 09:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960931D361;
+	Wed, 10 Sep 2025 10:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757498342; cv=none; b=uocB1AxjnvXMc4Bm/oD9jSPpQnkz4wgweEZaQTn/Rsctk6WrHeJoEKz35Gzd0rMgu0GmqFF4H3g470BvOuuvPYc0j/eAOJr4xnOjlCaxLkOKtIST7TNzJMCkljZWpkITHBRJXcw+pIuu/1gwRnwyWacEPk1TCfffrhzCEZlh+GQ=
+	t=1757498466; cv=none; b=Bk+vO1qsbIEE3j8EMTdRCFVkDYBdttnO9IgFo6GjkEj0nD2YFbc9SIo/IMlObFkGXCczpi1lE+vtov6XO89sqdYyE1j54oyRFIqUKl9vsg47EF8dE8sixUo5ACKz49e4kk1fitjVHQ4uqI8yI2phQ0OujvimQb8YGXEHfJcskNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757498342; c=relaxed/simple;
-	bh=BCXjFIv5eUOEWTgnUI3HxkUvkh3QdFBmS5Rfy5izgT8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=Q/Z6WmjyD+w5uc3SSnc+VFhev2Tbf7vQU0lP0Da0/XfulclGMZMBLXw58SbKesRXuNx08fI4w9UiVQRaXY7K59V7v81FmXA4NNDTdaa+31msoidLaHw95U2Xn0njLp8Zskh90Bo8OIINSZ0rozSsERkX4exxkMfKnqsc7fu7z4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YygIbnNF; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757498466; c=relaxed/simple;
+	bh=G54EZvV6TYh/6aRiLS/VHoanwwYRL6VCM+nMKElEI20=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BHFWDcql/xNyXSH8EZgQ1hF0A9azztCfH/0aCnqyDj+N4Qgt3Fz6eUnkcwkkkFaY8q+V40SFrqBOynayr3fnxLeuJKeUJRfDK4wmdLII+VDM4MxqhWfKDfV8aPEtdSQsbGm9BFz1wy43fVXQqeBHiY4jnOzKtQd8kQK1+CK6NPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0ArAIPW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YygIbnNF"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3db9641b725so6549886f8f.2;
-        Wed, 10 Sep 2025 02:59:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757498339; x=1758103139; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dcj8LHmCHhhzaPZqNxD2R+CK+UNale4qQvJ5EcHfdLQ=;
-        b=YygIbnNFmug24FErkWblhqTHNHIaFW8M3plnP94wPu4Auo4T5lrlhQ4j7v19AmZEyH
-         N7+P/xfFkhxf1JxtrgX3Sx83icojpu0A8ndeaxOMFHKHeo31Bxkw32vmV2Cv8TQwubpV
-         do43EKLXdE9HSaxacIUJV+xPYk1MYBoXXjLkLnh9hFxmU2cbBrtWPfNvS6yppeDDOOep
-         dLoivbxjs1zTRk1yR5YGzIyVYdTwk2uYtCM3aRBFEmYlbTlrgoA8A1YsuEf0QB0rKcpG
-         kQGUG+Q/9Cr4/m67oTLwD/DNO2GV4Ydt6rqNq319WtIn9mlqx1Qo/akKq0JPC9TXf069
-         YOlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757498339; x=1758103139;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dcj8LHmCHhhzaPZqNxD2R+CK+UNale4qQvJ5EcHfdLQ=;
-        b=YhtkzNc2PchHRUCMrssY/Yqt4Snayn5uMzpFEUnz15C1KS3B0r5Mji36uSkLvtzM08
-         fFLdq4nhzTeXN45cJWSWk29wUdm4VAjA7il3VOCkv/kc3k8QvglqovVbyqrU2Xk9Nqzr
-         +kRO3MnW8+MI0aCLOnZGGRexlz4Wehnt/obkrgYWwp2IOxs0Yerii+3OzTNTPz20J3qa
-         ntWfYxkQ8prigiEfe9k4bRe24lhFHN5mW3+BB91UJpWFBt34KWfToiOIxsALmBla2R8B
-         dATfzmKpxUXqfeVa4j/3Fwzvef2cOWL9BXBxJzs0k6a0HzYEg0gCMgJhG9tlSIgIrq6p
-         S1zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVfWBNcwfWTR/KNoPYnLcEJAG1qe5+92RXz1a5qs2ZC72iq6adKs+yRYLS3UZGSBeoQZeHWcnc@vger.kernel.org, AJvYcCVTaq8unD0H99zcfEdbK+FqvNDcp3bfKEHzeiTRv7YkHRiFloui4KjDddzSbkRhpLzvrI7TjRzKY9UpRAo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyML7lTurmJCqlE8114KWt4xP0SIFRBY4HoqZpYNI1l+9+nr4V7
-	1AOp+ouv8saEwOZ36olRae6F2XcxNb0OfXfWHptzaLbUa33K+cBwTmBC2ET6d2QRELg=
-X-Gm-Gg: ASbGncsr7PR3Yr6JFCO2f257gV2lXnIM46BPvm5iZvqQ9WrhdbEDRkJxLGeUSa7E3yt
-	HyMyS4y+uh7Pl7vMKHKYym/tfaYmXRW8eKV5MGZJ/ppCIbcT3tFxhjEOKfEauK36WMnAzIh2+VP
-	yg5ggHBx9baMNgSFjZdnzS6zYq51pdZIx0UpKg8/gE8ljT9B4e93cZX1U9FtcP1l9FxCOop1eEp
-	xph8iGSmgKxN61JE2eJ20rzrX2BfgXTOe3o35wAIvvWQjX3JLeDw8AjJ/uJYFLC19/ldHJ7utDB
-	vXcB0xJKNutWNmwmb7qn5XiKZttWqwaoxOmOzEXHfckLWx9JTa7C5SIZ9RaNU1ewGGrug8dUp0w
-	l0m/j9XvyD8OauY0lEMH1zK5K58shRCvWweFdAmq7Fv7l
-X-Google-Smtp-Source: AGHT+IG1OsKW3uGvrvidR1V/OAfvfZahPy53s3qyGN1V32wVeDsT3Sd+YD+xtJm/ziSYOMAV7t2fTw==
-X-Received: by 2002:a5d:5847:0:b0:3e3:921b:65a2 with SMTP id ffacd0b85a97d-3e643556501mr9986581f8f.50.1757498338540;
-        Wed, 10 Sep 2025 02:58:58 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:18f9:fa9:c12a:ac60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521ca2aesm6390950f8f.26.2025.09.10.02.58.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 02:58:58 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
-  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/8] tools: ynl: fix errors reported by Ruff
-In-Reply-To: <20250909-net-next-ynl-ruff-v1-0-238c2bccdd99@kernel.org>
-Date: Wed, 10 Sep 2025 09:53:11 +0100
-Message-ID: <m2wm66y9hk.fsf@gmail.com>
-References: <20250909-net-next-ynl-ruff-v1-0-238c2bccdd99@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0ArAIPW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D25CC4CEF0;
+	Wed, 10 Sep 2025 10:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757498465;
+	bh=G54EZvV6TYh/6aRiLS/VHoanwwYRL6VCM+nMKElEI20=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j0ArAIPWssOq42cLhTYSaTOOEJ3f4TBdM/d8YerpuWgBriQtXuyvU+81knfjxYXt5
+	 NV1+P14kcqIt+EbTzbRGCUbdEM/UHfatAA2R5KTwKqiapdE1S25UYnLqPh7ObG7Lgv
+	 YeDAqGlHqMjJ7uhjLZU4hA1VFYuuIYBwwYRkkjN8rUoURyeU8StIcihBmdnXggdn1A
+	 sAug9yL8h/isBavawkJzfdFyz5tY01zNuSYyK+Nw3NzLC61UPM89My7GuKULLmoVte
+	 cVgTrHOnuIjWrK16Yok8x6ljiChFtIx+9pPfoP2Lnvy+XrJSa0QGT6mV886AjC6Ehz
+	 o3ai+1/N+usZw==
+Date: Wed, 10 Sep 2025 13:01:00 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Kriish Sharma <kriish.sharma2006@gmail.com>
+Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+	sidraya@linux.ibm.com, wenjia@linux.ibm.com, mjambigi@linux.ibm.com,
+	tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] net/smc: replace strncpy with strscpy for ib_name
+Message-ID: <20250910100100.GM341237@unreal>
+References: <20250908180913.356632-1-kriish.sharma2006@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250908180913.356632-1-kriish.sharma2006@gmail.com>
 
-"Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
-
-> When looking at the YNL code to add a new feature, my text editor
-> automatically executed 'ruff check', and found out at least one
-> interesting error: one variable was used while not being defined.
->
-> I then decided to fix this error, and all the other ones reported by
-> Ruff. After this series, 'ruff check' reports no more errors with
-> version 0.12.12.
->
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+On Mon, Sep 08, 2025 at 06:09:13PM +0000, Kriish Sharma wrote:
+> Replace the deprecated strncpy() with strscpy() for ib_name in
+> smc_pnet_add_ib(). The destination buffer should be NUL-terminated and
+> does not require any trailing NUL-padding. Since ib_name is a fixed-size
+> array, the two-argument form of strscpy() is sufficient and preferred.
+> 
+> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
 > ---
-> Matthieu Baerts (NGI0) (8):
->       tools: ynl: fix undefined variable name
->       tools: ynl: avoid bare except
->       tools: ynl: remove assigned but never used variable
->       tools: ynl: remove f-string without any placeholders
->       tools: ynl: remove unused imports
->       tools: ynl: remove unnecessary semicolons
->       tools: ynl: use 'cond is None'
->       tools: ynl: check for membership with 'not in'
+>  net/smc/smc_pnet.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/smc/smc_pnet.c b/net/smc/smc_pnet.c
+> index 76ad29e31d60..b90337f86e83 100644
+> --- a/net/smc/smc_pnet.c
+> +++ b/net/smc/smc_pnet.c
+> @@ -450,7 +450,7 @@ static int smc_pnet_add_ib(struct smc_pnettable *pnettable, char *ib_name,
+>  		return -ENOMEM;
+>  	new_pe->type = SMC_PNET_IB;
+>  	memcpy(new_pe->pnet_name, pnet_name, SMC_MAX_PNETID_LEN);
+> -	strncpy(new_pe->ib_name, ib_name, IB_DEVICE_NAME_MAX);
+> +	strscpy(new_pe->ib_name, ib_name);
 
-The series looks good to me, thanks for the fixes.
+It is worth to mention that caching ib_name is wrong as IB/core provides
+IB device rename functionality.
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Thanks
+
+>  	new_pe->ib_port = ib_port;
+>  
+>  	new_ibdev = true;
+> -- 
+> 2.34.1
+> 
+> 
