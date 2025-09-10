@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BC730FF3F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B0730FF39;
 	Wed, 10 Sep 2025 23:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757545742; cv=none; b=ZPlihRRhY/v/DUrnBrv6SGbZ73UqvnSfm/dYVnEzul9intfIz8CzPYwzU8+tA8DUKiAm8aKKSGXfNHwoUpEdA0FyrCPSRMPrIraUQ8p8ToWCt77tJVK2LlNMAqjyc23lhfK/whBGYJaBY5LeJ0gCx1KtA45eSp+ka/oGDR/BONg=
+	t=1757545742; cv=none; b=ZsjCJXS9+ZBKXpvnl/2CLMm8EZq4jXI70m4EufVnk+bOYnerJYO5mS1AX4ec2iWNPpTaen4LwG4wX6L5FVQhRoYF3Q8v7dndMBsSFkUBIWv/tEeodpqG96i1j1le6gyXSNnxgoxNQLAxhneYTNXBbI7IuJsUzkSSRQ1GkvLiFNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757545742; c=relaxed/simple;
-	bh=mHCxHMaMTlUNc8yNdBlBwvuCNIWstdK/GS0nKVCzvbM=;
+	bh=Ns7Cgk5ZDdtF+Q6dyaF9mQHUhLgGBUAAJadXXI0Ry6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tIBsgJ/YXd3XTi8JXOrf68ogLjIrWrOsYV+PdJ6VdUtySqypfQ6T1s6ZNfv6+hR4N2bDNvkbNu/Ug+mOW9qsNj/l1tcWeI03ZYE+isJwK5acuIE9DhXskbzF8+kYSlBZp3FnbGjRgsaCHY+VdxdoX7a+IM1Oqqe6ME1gVu82iNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=uidoNNm4; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=VE5CF+UyLCADfhSzNOqTaZDotKvX751HNhyWbR7A5a0m4eVWJKR1fBKSZX/yAajTyWqzZ+Ui7ZInhkzfrnHlkTBnwjQLsWBNumezk0PMcHXa4/u2jxSi7Rfl5fjh4M7jaEMSxdULXGWnzY1n57RTGqp+yK12lysF9HLwxLqOn9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=umbYFG1d; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="uidoNNm4"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="umbYFG1d"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757545730;
-	bh=mHCxHMaMTlUNc8yNdBlBwvuCNIWstdK/GS0nKVCzvbM=;
+	bh=Ns7Cgk5ZDdtF+Q6dyaF9mQHUhLgGBUAAJadXXI0Ry6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uidoNNm48j4rEEdkjJMfaKXIcU2W5eWc8JlPd1inHIZAEeBg9e33lXkR0p8KsI9gw
-	 YpIvfri0nB/UXDskxgy897Ao39UtgpKXvb2LuU6ruAtmyfEZpcejVXVQ3l9jryoSxl
-	 jWbV5FjHCzAXPL/ngfcdtlACoar+nChkt6kYYgVktCTbomNRdt1RyXcpZGrjTsv9RC
-	 HTmqp+H58yJO+PClPNBPvX+9FoqEJQg2hjn/1XDk8rj9twWhgmXPdoOm4WCaa7QiAA
-	 w4KNhZUPOxNMpjkRie75wkok/k/3wwt5XS4dqyLD+U7CfQzXq8nPazfKQcPjAVBA4n
-	 sz9VMGz9tTpQw==
+	b=umbYFG1d5Yak61rLgZzoGxrWRIqKSxbBUaFIbuDdfZU1mTzy6jhP0VGirnCNImw5z
+	 MySboBdfMvv+xHfYnjq2OiKHmbaodKvF6CCyAAdBlSIOtlTeIHxrAZoVDIDYZ/AAQU
+	 f8hPGt6GK7+xz0sf9jKTI67/B8H3ry8VlDJpxzB47LEhd0+sFqoTtR88EB6bMrz3Xr
+	 tNkqDER4VnB7JpFKB8un/pEp2TsXF8Nj6ZGSknA20gpJ0biBm2cOxrslEhgpfxDqr6
+	 3kuga41VpSqcsIe6zGZn5RF6MB7rskNQ0+FbYqM3LFwUozTzKpR1SGeJJHlAjcuqZJ
+	 nFet1GbCbDnSQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 7E7746012E;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id CFABB6013B;
 	Wed, 10 Sep 2025 23:08:50 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 44AB02051E5; Wed, 10 Sep 2025 23:08:43 +0000 (UTC)
+	id 27688204E9E; Wed, 10 Sep 2025 23:08:43 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 12/12] tools: ynl: add ipv4-or-v6 display hint
-Date: Wed, 10 Sep 2025 23:08:34 +0000
-Message-ID: <20250910230841.384545-13-ast@fiberby.net>
+Subject: [PATCH net-next v2 09/12] tools: ynl: move nest packing to a helper function
+Date: Wed, 10 Sep 2025 23:08:31 +0000
+Message-ID: <20250910230841.384545-10-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910230841.384545-1-ast@fiberby.net>
 References: <20250910230841.384545-1-ast@fiberby.net>
@@ -61,59 +61,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The attribute WGALLOWEDIP_A_IPADDR can contain either an IPv4
-or an IPv6 address depending on WGALLOWEDIP_A_FAMILY, however
-in practice it is enough to look at the attribute length.
+This patch moves nest packing into a helper function,
+that can also be used for packing indexed arrays.
 
-This patch implements an ipv4-or-v6 display hint, that can
-deal with this kind of attribute.
-
-It only implements this display hint for genetlink-legacy, it
-can be added to other protocol variants if needed, but we don't
-want to encourage it's use.
+No behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- Documentation/netlink/genetlink-legacy.yaml | 2 +-
- tools/net/ynl/pyynl/lib/ynl.py              | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/netlink/genetlink-legacy.yaml b/Documentation/netlink/genetlink-legacy.yaml
-index b29d62eefa16..66fb8653a344 100644
---- a/Documentation/netlink/genetlink-legacy.yaml
-+++ b/Documentation/netlink/genetlink-legacy.yaml
-@@ -154,7 +154,7 @@ properties:
-                   Optional format indicator that is intended only for choosing
-                   the right formatting mechanism when displaying values of this
-                   type.
--                enum: [ hex, mac, fddi, ipv4, ipv6, uuid ]
-+                enum: [ hex, mac, fddi, ipv4, ipv6, ipv4-or-v6, uuid ]
-               struct:
-                 description: Name of the nested struct type.
-                 type: string
 diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index 50f4889e721b..4f2c8126d6e9 100644
+index 8244a5f440b2..4928b41c636a 100644
 --- a/tools/net/ynl/pyynl/lib/ynl.py
 +++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -957,7 +957,7 @@ class YnlFamily(SpecFamily):
-                 formatted = hex(raw)
-             else:
-                 formatted = bytes.hex(raw, ' ')
--        elif display_hint in [ 'ipv4', 'ipv6' ]:
-+        elif display_hint in [ 'ipv4', 'ipv6', 'ipv4-or-v6' ]:
-             formatted = format(ipaddress.ip_address(raw))
-         elif display_hint == 'uuid':
-             formatted = str(uuid.UUID(bytes=raw))
-@@ -966,7 +966,7 @@ class YnlFamily(SpecFamily):
-         return formatted
+@@ -562,11 +562,8 @@ class YnlFamily(SpecFamily):
  
-     def _from_string(self, string, attr_spec):
--        if attr_spec.display_hint in ['ipv4', 'ipv6']:
-+        if attr_spec.display_hint in ['ipv4', 'ipv6', 'ipv4-or-v6']:
-             ip = ipaddress.ip_address(string)
-             if attr_spec['type'] == 'binary':
-                 raw = ip.packed
+         if attr["type"] == 'nest':
+             nl_type |= Netlink.NLA_F_NESTED
+-            attr_payload = b''
+             sub_space = attr['nested-attributes']
+-            sub_attrs = SpaceAttrs(self.attr_sets[sub_space], value, search_attrs)
+-            for subname, subvalue in value.items():
+-                attr_payload += self._add_attr(sub_space, subname, subvalue, sub_attrs)
++            attr_payload = self._add_nest_attrs(value, sub_space, search_attrs)
+         elif attr["type"] == 'flag':
+             if not value:
+                 # If value is absent or false then skip attribute creation.
+@@ -623,6 +620,14 @@ class YnlFamily(SpecFamily):
+         pad = b'\x00' * ((4 - len(attr_payload) % 4) % 4)
+         return struct.pack('HH', len(attr_payload) + 4, nl_type) + attr_payload + pad
+ 
++    def _add_nest_attrs(self, value, sub_space, search_attrs):
++        sub_attrs = SpaceAttrs(self.attr_sets[sub_space], value, search_attrs)
++        attr_payload = b''
++        for subname, subvalue in value.items():
++            attr_payload += self._add_attr(sub_space, subname, subvalue,
++                                           sub_attrs)
++        return attr_payload
++
+     def _get_enum_or_unknown(self, enum, raw):
+         try:
+             name = enum.entries_by_val[raw].name
 -- 
 2.51.0
 
