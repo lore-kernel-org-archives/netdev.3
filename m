@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD7F30F959;
-	Wed, 10 Sep 2025 23:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A8630FF36;
+	Wed, 10 Sep 2025 23:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757545741; cv=none; b=FfJ6ODNfLeBUIc7hMZhnPDmsk0fTZVNkAY9z4cxEQ1QLhNxb7eg7Gl4Z2wG3dvMLWtaWpw9RhVYWN4f0lFv6Go8wsXIIT5wCIPg+XpNBzWsAqr3fwX/a8vfB71WiX+qak2R2MMPZ5BeVwU9ZHreh5Z1sI+8ik7qIR4JrN12PVnU=
+	t=1757545741; cv=none; b=DMvAOOJTqAmgJrk5eaQYSrPR7gE+9CQK2WWcIdMWhXoT0MJx2OukyLPdVkNrH9lcniG7vDNkZ2a5DkaaBlitayU6THEfUcFqBonheao7Nf88DXIrsY0wZ9Q7MefJL3TcD8pYObKCE6Ojtp4ayQQeaw+xS+oDL5KyzreWfUvxbxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757545741; c=relaxed/simple;
-	bh=yVwAAwA8ZqRChTcsBFbq0ZzAjSu1W4vNRIY3ubw2sZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BQyZqyoJjGo2DLFGTs26KuypFCQYMQ1Sp5JDB2H5HmwXT6ny/rODRanRlZsdX6hL736gC/eBAewHJlxso5XEtY1EWe3LhBkp/NBNSujRnSh8SWzLrT7Ck8CC4nRRtQIE2Ft2ZFS+Czro6QnZy+4GsaMVVJPwBe3yV+ksJj/sI4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=RLr7MtZ4; arc=none smtp.client-ip=193.104.135.124
+	bh=nmFUdln7rWayXOvm+tCjXRJq0z3FgFYUv+rQXSS1YKI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PvOtya7ANAo9ZyMnn5btkaVWMAKuWDd+0kudNgHAA1M+NK5ytYsGYcb9FjVAra6hsX+NEf/eNnVfHORrjLymqEh23T2J7CsNqH767R9QiSKvmt6vjBDVsKAalmZMp+M9Z0ZzGXU8MBmmaErd53XcPnD82mf3Uz3CK6Ae0YPfzQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=HltxTKhi; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="RLr7MtZ4"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="HltxTKhi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757545730;
-	bh=yVwAAwA8ZqRChTcsBFbq0ZzAjSu1W4vNRIY3ubw2sZM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RLr7MtZ4rHKmaE1FQIIoWsxuAKru9AKHAzTux5QvM2HLOtQCzwp8yp3Sra3LYIP+L
-	 xjcQd7aX9Ynrxg6CxpVOTTh/ZZR3LND1SGPQL4IT7TYRBBYkycwoNidbaT2cQD6+6D
-	 8wOPud1z8QP1OsoiN/oS1VEsToeQ/KU/cKTnCb1TZcTDUh3EeaOzg8936wlh9Ia5JH
-	 6xtNJ9z5pHQ/7VoJilMsu1+2oKQ3I0ay6p8lokB06Df/J468YERIgpzl9jPKJZjIyX
-	 hIyFT2QYrpUmZJlGmSiXSIy+1zde8hsQ30MdIpaTu3hh/Oj2s+gXEDqd2n7kDW49qc
-	 WPyPgoKJAvsGw==
+	bh=nmFUdln7rWayXOvm+tCjXRJq0z3FgFYUv+rQXSS1YKI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HltxTKhiOHnCSUfdLrTG0iql13BAsPaDviXRRjJeOvWgY0+fo21zV1lKcSz2gEXNL
+	 L1FC5zrJ8EISxDPPjVrprNtiWuZaGH+2kl9PSTZt+vCj8QpgQiRX6QsVbRQ4iZA8KZ
+	 g6uI2QCbYkiOI3atxij7Wnul56VLVU6cGkmxReUsofKV4jy+CeR2gMaKLPoLekwKkK
+	 5Vl3ihDFfXTiE+Lc/bhpFBTLcgl2orys1DvV0XVlPDmCOEOJxywPjSV/5+7w2i6ZGX
+	 KqFdn6b3y0ewBDHrc7XyDXsyhjGNLe6TNW0RO+TvLO5rAHp8hy+Pku72gThVtot2Ty
+	 lzZIp2a/SfYSQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 56DB360128;
-	Wed, 10 Sep 2025 23:08:50 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 3DB566000C;
+	Wed, 10 Sep 2025 23:08:49 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id BFDE9201BFB; Wed, 10 Sep 2025 23:08:42 +0000 (UTC)
+	id F351E203A9B; Wed, 10 Sep 2025 23:08:42 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,10 +46,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 00/12] tools: ynl: prepare for wireguard
-Date: Wed, 10 Sep 2025 23:08:22 +0000
-Message-ID: <20250910230841.384545-1-ast@fiberby.net>
+Subject: [PATCH net-next v2 05/12] tools: ynl-gen: add CodeWriter.p_lines() helper
+Date: Wed, 10 Sep 2025 23:08:27 +0000
+Message-ID: <20250910230841.384545-6-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250910230841.384545-1-ast@fiberby.net>
+References: <20250910230841.384545-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,48 +61,103 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+Add a helper for writing an array of lines, and convert
+all the existing loops doing that, to use the new helper.
 
-This series contains the last batch of YNL changes to support
-the wireguard YNL conversion.
+This is a trivial patch with no behavioural changes intended,
+there are no changes to the generated code.
 
-The wireguard changes, to be applied on top of this series,
-has been posted as an RFC series here:
-  https://lore.kernel.org/netdev/20250904-wg-ynl-rfc@fiberby.net/
-
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
-v2:
-- Added Reviewed-By's to unchanged patches. Thanks to all reviewers.
-- Patch 4, refactors local variables for .attr_put() callers, and
-  replaces the old patch 4 and 5.
-- Patch 5 and 6 are new, and reduces the differences between the 3
-  .attr_put() callers, so it might be easier to keep them in sync.
-- Patch 7, now validates the nested payload (thanks Jakub).
-- Patch 8, now renames more variables (thanks Jakub),
-- Patch 10, got a dead line remove (thanks Donald).
-- Patch 11, revised hex input to support macsec (suggested by Sabrina).
-v1: https://lore.kernel.org/netdev/20250904-wg-ynl-prep@fiberby.net/
+ tools/net/ynl/pyynl/ynl_gen_c.py | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-Asbjørn Sloth Tønnesen (12):
-  tools: ynl-gen: allow overriding name-prefix for constants
-  tools: ynl-gen: generate nested array policies
-  tools: ynl-gen: add sub-type check
-  tools: ynl-gen: refactor local vars for .attr_put() callers
-  tools: ynl-gen: add CodeWriter.p_lines() helper
-  tools: ynl-gen: deduplicate fixed_header handling
-  tools: ynl-gen: only validate nested array payload
-  tools: ynl-gen: rename TypeArrayNest to TypeIndexedArray
-  tools: ynl: move nest packing to a helper function
-  tools: ynl: encode indexed-arrays
-  tools: ynl: decode hex input
-  tools: ynl: add ipv4-or-v6 display hint
-
- Documentation/netlink/genetlink-legacy.yaml |   2 +-
- tools/net/ynl/lib/ynl-priv.h                |   2 +
- tools/net/ynl/lib/ynl.c                     |  17 ++-
- tools/net/ynl/pyynl/lib/ynl.py              |  38 ++++-
- tools/net/ynl/pyynl/ynl_gen_c.py            | 152 +++++++++++---------
- 5 files changed, 133 insertions(+), 78 deletions(-)
-
+diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+index 6441d5a31391..18c6ed0044b9 100755
+--- a/tools/net/ynl/pyynl/ynl_gen_c.py
++++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+@@ -181,8 +181,7 @@ class Type(SpecAttr):
+ 
+     def free(self, ri, var, ref):
+         lines = self._free_lines(ri, var, ref)
+-        for line in lines:
+-            ri.cw.p(line)
++        ri.cw.p_lines(lines)
+ 
+     def arg_member(self, ri):
+         member = self._complex_member_type(ri)
+@@ -268,13 +267,9 @@ class Type(SpecAttr):
+             if self.presence_type() == 'present':
+                 ri.cw.p(f"{var}->_present.{self.c_name} = 1;")
+ 
+-        if init_lines:
+-            ri.cw.nl()
+-            for line in init_lines:
+-                ri.cw.p(line)
++        ri.cw.p_lines(init_lines, nl_before=True)
+ 
+-        for line in lines:
+-            ri.cw.p(line)
++        ri.cw.p_lines(lines)
+         ri.cw.block_end()
+         return True
+ 
+@@ -1789,8 +1784,7 @@ class CodeWriter:
+         self.block_start()
+         self.write_func_lvar(local_vars=local_vars)
+ 
+-        for line in body:
+-            self.p(line)
++        self.p_lines(body)
+         self.block_end()
+ 
+     def writes_defines(self, defines):
+@@ -1831,6 +1825,12 @@ class CodeWriter:
+             self.p('#ifdef ' + config_option)
+         self._ifdef_block = config_option
+ 
++    def p_lines(self, lines, nl_before=False):
++        if lines and nl_before:
++            self.nl()
++        for line in lines or []:
++            self.p(line)
++
+ 
+ scalars = {'u8', 'u16', 'u32', 'u64', 's8', 's16', 's32', 's64', 'uint', 'sint'}
+ 
+@@ -2088,8 +2088,7 @@ def put_req_nested(ri, struct):
+     ri.cw.block_start()
+     ri.cw.write_func_lvar(local_vars)
+ 
+-    for line in init_lines:
+-        ri.cw.p(line)
++    ri.cw.p_lines(init_lines)
+ 
+     for _, arg in struct.member_list():
+         arg.attr_put(ri, "obj")
+@@ -2150,8 +2149,7 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+     ri.cw.block_start()
+     ri.cw.write_func_lvar(local_vars)
+ 
+-    for line in init_lines:
+-        ri.cw.p(line)
++    ri.cw.p_lines(init_lines)
+     ri.cw.nl()
+ 
+     for arg in struct.inherited:
+@@ -2280,10 +2278,8 @@ def parse_rsp_submsg(ri, struct):
+ 
+         ri.cw.block_start(line=f'{kw} (!strcmp(sel, "{name}"))')
+         get_lines, init_lines, _ = arg._attr_get(ri, var)
+-        for line in init_lines or []:
+-            ri.cw.p(line)
+-        for line in get_lines:
+-            ri.cw.p(line)
++        ri.cw.p_lines(init_lines)
++        ri.cw.p_lines(get_lines)
+         if arg.presence_type() == 'present':
+             ri.cw.p(f"{var}->_present.{arg.c_name} = 1;")
+         ri.cw.block_end()
 -- 
 2.51.0
 
