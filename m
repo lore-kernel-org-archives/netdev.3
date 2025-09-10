@@ -1,178 +1,112 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from mx0b-00823401.pphosted.com (mx0b-00823401.pphosted.com [148.163.152.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125E230F959;
-	Wed, 10 Sep 2025 23:09:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BC1307482;
+	Wed, 10 Sep 2025 23:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.152.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757545747; cv=none; b=jtoUnJ+h7+La9u2pCX3RSawL+ZHWsnrAbgKxE7dkc3+xVZKVxT0Lg5zSJio3Tic6GGZyLHjDB9b2muHQyy5YuxEbdBf7pLgp3tT1Bi6UhhaOU7jj2Qy7C+GGHrvi8bup+wDHG1bTR8BakhqJv+OerBb/e+A5pEARKXfnbzk/azM=
+	t=1757545948; cv=none; b=Pg8hlVr5P7N8MvrGQlcR8pwsnQS3XECE0L2/xd5UlVNyBeVMiFaXs+mRSuYoett5vFmmrQULLlDyeqi1XbYtnpohzDHD2qdV9G37O3U0awYtS/30lI3G91Lp+9oZPSDopyjsWGrUOe3ahhHQecfk50ROsGz3Jovnaw10KY6jbJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757545747; c=relaxed/simple;
-	bh=Dv6vpp6X/AAuz1b30uuf1mx68WEBTMVd1Kg6gyPEzLY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nbuM/P/PoEqR4+9FMd5Awpm3Q2fpksquc7zSMjEg/eYW2cB8djuVxf3hdPWAcPLE/KhR6EJPyPuGCxPit0YDJzxj36jb28PKzG0pPtyu4SEKhQNwLhRjKSGeCAUazm9hXQeFhbhaQ4/5EVAbz9zAY3TDoabllLWnRyj7kZN/zJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=E4j0kdv2; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1757545948; c=relaxed/simple;
+	bh=n4wDrOJ4+8oFO0FiTxRck8gYC+w4YduRB2nz7ydN4nA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKIsxjzzc7G8dlJ/VkS4YRP23QujN2GIBtN0cBSq8nlonllsmX4w7cVi0TZJgGcafftawNKhrliB9Y1kVAWtlnDqEQQg51Op2aqdHMLQFNjD1ufCyF6rPsf2VoRbKluVVpb2mkIP52C5CbOB2PsTNo7TX+uXQkwiLqB9HVHRrIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motorola.com; spf=pass smtp.mailfrom=motorola.com; dkim=pass (2048-bit key) header.d=motorola.com header.i=@motorola.com header.b=S1WX82rf; arc=none smtp.client-ip=148.163.152.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motorola.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motorola.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="E4j0kdv2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1757545731;
-	bh=Dv6vpp6X/AAuz1b30uuf1mx68WEBTMVd1Kg6gyPEzLY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4j0kdv2eni1WM/7CAHkGhsViAFNy7p0a4Mau5GfYuZ4ij+KAvQ6mB7Vmm2Jn0EoX
-	 BNYobMkHu4pIbHKdckHiTC8BP3jpcnqPtqIlXDL6ujjwIeqzXjZALDzeIrQsf1FfaM
-	 gKX/MWKkm2r/egCXmxDL1vTjWMths2fGYYF2iIqp0qJ3UTzk9kngd539US0vcH8ZeS
-	 pPrvQRWPcGcFgEAHGCzdZaZkn7aJuoP8fIN3m22JvosisoIKv6WiJl2j33gXlUpjhI
-	 QrAIHeTVPaXSmnTmW8sMnCh5s1RcecwK4gyI/9rpwC3G3taBlRM7ox9GzwmN/CNIgs
-	 wHLitHkBzqirQ==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id C4B6A60137;
-	Wed, 10 Sep 2025 23:08:50 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 13C24204B0E; Wed, 10 Sep 2025 23:08:43 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 07/12] tools: ynl-gen: only validate nested array payload
-Date: Wed, 10 Sep 2025 23:08:29 +0000
-Message-ID: <20250910230841.384545-8-ast@fiberby.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910230841.384545-1-ast@fiberby.net>
-References: <20250910230841.384545-1-ast@fiberby.net>
+	dkim=pass (2048-bit key) header.d=motorola.com header.i=@motorola.com header.b="S1WX82rf"
+Received: from pps.filterd (m0355089.ppops.net [127.0.0.1])
+	by mx0b-00823401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58AK6HoS028264;
+	Wed, 10 Sep 2025 23:12:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=motorola.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=DKIM202306; bh=GXNaxpXDaecg9dpDLtfpg+r
+	/GJho9RVlZ4wvwX45vgc=; b=S1WX82rfW4pJyOqg3v75OrJyQCYGx39H1oajtFx
+	bj2+KOjp03MU+HDvIK/kfhhFL2YjTjoGdwmyhA8/dRYDQ9lRgPsTaPqT6R9kVrzJ
+	KJwEQBk0OQsIhqSBtBXNhN/9mXlVaEwesV2Bqt0youupLVzTSbI1pGXXPVNo5QPw
+	uQdWU67M4OqNYqEyfSHoQHm7mZWnimUpRKphqM5cVL3thLpWuePtsXG/O3n+f3O8
+	tN95MpvpAuJGevgZ6von5jNJFxkow2wJT/40uAk8cEQ7uuiFSTmbwMMfCwbLp7f6
+	l5kqVLiTBsi7mfW6d2WGGiKojufUeJpszq7Mll3ebIBEozA==
+Received: from iadlppfpol1.lenovo.com ([104.232.228.80])
+	by mx0b-00823401.pphosted.com (PPS) with ESMTPS id 4911gntc5g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Sep 2025 23:12:10 +0000 (GMT)
+Received: from va32lmmrp01.lenovo.com (unknown [10.62.177.113])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by iadlppfpol1.lenovo.com (Postfix) with ESMTPS id 4cMbzy5xTcz8fkFk;
+	Wed, 10 Sep 2025 23:11:58 +0000 (UTC)
+Received: from ilclbld243.mot.com (ilclbld243.mot.com [100.64.22.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mbland@motorola.com)
+	by va32lmmrp01.lenovo.com (Postfix) with ESMTPSA id 4cMc0B2ZPPz2VZ2P;
+	Wed, 10 Sep 2025 23:12:10 +0000 (UTC)
+Date: Wed, 10 Sep 2025 18:12:05 -0500
+From: Maxwell Bland <mbland@motorola.com>
+To: Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: selinux@vger.kernel.org, paul@paul-moore.com, omosnace@redhat.com,
+        netdev@vger.kernel.org, horms@kernel.org
+Subject: Re: [PATCH v7 01/42] selinux: restore passing of selinux_state
+Message-ID: <6cfe4uqtic6ga3ch463zflke2wp5hobd7j3r5ctyp4puwbjiet@xgi6jfi7au3c>
+References: <20250814132637.1659-1-stephen.smalley.work@gmail.com>
+ <20250814132637.1659-2-stephen.smalley.work@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814132637.1659-2-stephen.smalley.work@gmail.com>
+X-Proofpoint-ORIG-GUID: Rk-9LfFivE9bjSa7rOblwI5ZwUx0Iwa6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA3MDAyNSBTYWx0ZWRfXwcL4ZLpVtQYJ
+ 75dNL7n24GUcUHHLVEXdiak9vtn4EfNO4CJzE2zqsJrW+iFZAJLlu/yRIOMeoNslBof3BLSdI3j
+ oVATMio3vaMdYsJQ7pOCq78+FIL/8YQD0EoyHwnA+DevcuIZzMvHlT3lFbn8vCGPoPUYpjh0N7V
+ eIHsflLngxANIcLrCDgFS0ysfjcOVhmdwQcyqbcM2ylbUyIKI5BwVOzqPORJwMCSHnxF26ba6Ta
+ TEOWAIOF8ZVeVZzeWmoFrknsSf4JL3mbIjCVciOGgqLEtBAIZmPQh8bduiJO2UZduxjonpas2aB
+ sSywaptmkfv8zpKBm+Ulhpgdp9nI0WR5vQ/wINzYlsR/tWqyq18sPEUYd5H2K0AMiHzFDOI2z0B
+ P9nVZlHS
+X-Authority-Analysis: v=2.4 cv=bopMBFai c=1 sm=1 tr=0 ts=68c205cb cx=c_pps
+ a=LMRlKrtnqgVLeY6h3uZyow==:117 a=LMRlKrtnqgVLeY6h3uZyow==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=45E8AWlfMGMlSf_upCYA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: Rk-9LfFivE9bjSa7rOblwI5ZwUx0Iwa6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-10_04,2025-09-10_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 suspectscore=0 clxscore=1011 bulkscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509070025
 
-In nested arrays don't require that the intermediate attribute
-type should be a valid attribute type, it might just be zero
-or an incrementing index, it is often not even used.
+On Thu, Aug 14, 2025 at 09:25:52AM -0400, Stephen Smalley wrote:
+> This reverts commit e67b79850fcc4eb5 ("selinux: stop passing selinux_state
+> pointers and their offspring"). This change is necessary in order to
+> support SELinux namespaces.
+> 
 
-See include/net/netlink.h about NLA_NESTED_ARRAY:
-> The difference to NLA_NESTED is the structure:
-> NLA_NESTED has the nested attributes directly inside
-> while an array has the nested attributes at another
-> level down and the attribute types directly in the
-> nesting don't matter.
+FYI, thank you for this new commit. Some "fuel for the fire":
 
-Example based on include/uapi/linux/wireguard.h:
- > WGDEVICE_A_PEERS: NLA_NESTED
- >   0: NLA_NESTED
- >     WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
- >     [..]
- >   0: NLA_NESTED
- >     ...
- >   ...
+Turns out, e67b79850fcc4eb5 makes it hard to enforce immutability on the
+SELinux state / AVC cache from EL2, because the compiler likes to put
+them on the same page, leading to having the hypervisor track spinlock
+management issues, just to ensure the core selinux state remains
+unmodified. 
 
-Previous the check required that the nested type was valid in
-the parent attribute set, which in this case resolves to
-WGDEVICE_A_UNSPEC, which is YNL_PT_REJECT, and it took the
-early exit and returned YNL_PARSE_CB_ERROR.
+In the past (pre-2023/e67b79850fcc4eb5), it was possible to set the avc
+cache onto a separate page from the other critical selinux_state data
+during early boot, and it looks like this *may* restore that.
 
-This patch adds a new helper, ynl_attr_validate_payload(),
-which we can use to validate the payload of the nested
-attribute, in the context of the parents attribute type,
-and it's policy, which in the above case is generated as:
-[WGDEVICE_A_PEERS] = {
-  .name = "peers",
-  .type = YNL_PT_NEST,
-  .nest = &wireguard_wgpeer_nest,
-},
+As you likely know, the issue is without EL2 enforcement of immutability
+on the selinux_state page it is possible to just flip the enforcing bit
+via EL1 write-gadget. It may also be possible to address this whole
+issue using ARM MTE or something else.
 
-Some other examples are NL80211_BAND_ATTR_FREQS (nest) and
-NL80211_ATTR_SUPPORTED_COMMANDS (u32).
-
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- tools/net/ynl/lib/ynl-priv.h     |  2 ++
- tools/net/ynl/lib/ynl.c          | 17 ++++++++++++++---
- tools/net/ynl/pyynl/ynl_gen_c.py |  2 +-
- 3 files changed, 17 insertions(+), 4 deletions(-)
-
-diff --git a/tools/net/ynl/lib/ynl-priv.h b/tools/net/ynl/lib/ynl-priv.h
-index 824777d7e05e..70ea14c0a0e9 100644
---- a/tools/net/ynl/lib/ynl-priv.h
-+++ b/tools/net/ynl/lib/ynl-priv.h
-@@ -107,6 +107,8 @@ struct nlmsghdr *
- ynl_gemsg_start_dump(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version);
- 
- int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr);
-+int ynl_attr_validate_payload(struct ynl_parse_arg *yarg,
-+			      const struct nlattr *attr, unsigned int type);
- int ynl_submsg_failed(struct ynl_parse_arg *yarg, const char *field_name,
- 		      const char *sel_name);
- 
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index 2a169c3c0797..d52aa188401f 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -360,15 +360,15 @@ static int ynl_cb_done(const struct nlmsghdr *nlh, struct ynl_parse_arg *yarg)
- 
- /* Attribute validation */
- 
--int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
-+int __ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr,
-+			unsigned int type)
- {
- 	const struct ynl_policy_attr *policy;
--	unsigned int type, len;
- 	unsigned char *data;
-+	unsigned int len;
- 
- 	data = ynl_attr_data(attr);
- 	len = ynl_attr_data_len(attr);
--	type = ynl_attr_type(attr);
- 	if (type > yarg->rsp_policy->max_attr) {
- 		yerr(yarg->ys, YNL_ERROR_INTERNAL,
- 		     "Internal error, validating unknown attribute");
-@@ -450,6 +450,17 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
- 	return 0;
- }
- 
-+int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
-+{
-+	return __ynl_attr_validate(yarg, attr, ynl_attr_type(attr));
-+}
-+
-+int ynl_attr_validate_payload(struct ynl_parse_arg *yarg,
-+			      const struct nlattr *attr, unsigned int type)
-+{
-+	return __ynl_attr_validate(yarg, attr, type);
-+}
-+
- int ynl_submsg_failed(struct ynl_parse_arg *yarg, const char *field_name,
- 		      const char *sel_name)
- {
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index f149c68ae84e..e93f5d724b42 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -836,7 +836,7 @@ class TypeArrayNest(Type):
-         local_vars = ['const struct nlattr *attr2;']
-         get_lines = [f'attr_{self.c_name} = attr;',
-                      'ynl_attr_for_each_nested(attr2, attr) {',
--                     '\tif (ynl_attr_validate(yarg, attr2))',
-+                     '\tif (ynl_attr_validate_payload(yarg, attr2, type))',
-                      '\t\treturn YNL_PARSE_CB_ERROR;',
-                      f'\tn_{self.c_name}++;',
-                      '}']
--- 
-2.51.0
-
+Regards,
+Maxwell Bland
