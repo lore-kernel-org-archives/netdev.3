@@ -1,79 +1,131 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5B99463;
-	Wed, 10 Sep 2025 16:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B385335BB9
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 16:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757521691; cv=none; b=P0qPMfiaCV4zNTFBNHkYXli2XO762THBMORyhN35T8WXjzTM4Tys5npRc/c8mHyb+zBTZRFkl6vDVuXxr1Sj6rK8yUnPpzzRTwKOXDox50sRsW1VBLOdJb55nlICOu3AxI3QCXpznWtlulOuSgI8gruOrBaNh9d3aFbFISGTIOY=
+	t=1757521756; cv=none; b=SX9k5h42muCpsVrTXr+sES+r/drC4rthVFrwZnsIn+MFgidJF9ogvYuAQRAYEyQ8f+krm0CF11z/f5Pt+ztLKaiWsYBtZywZ4xFO1hshStMbR9rMTirEz0IOhJSTsdgmNGJ87g9nEmAxRXdthbnldbhipVlhaUD3+8dumrIQ9oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757521691; c=relaxed/simple;
-	bh=Ip/KN2ZBg4uirjUszlcMbTp+luH52XTz8G/cRfWRFX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LJSlrcG2jYfxcHbAFD53+H4VsUhwkfoeyN8Vrbwv0ahV/ryrHO9MPNm3fcKEkOmdoU+ON8AcZIYryh0NFBHawPBAyjYTyLQuKNXnmKakrAecAYACfGyJZsDv5U2nWK0E961oNu3paREFarUU7nYuWKu2leTK+vvLk6pu0ntPv+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3N1bM+YG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3N1bM+YG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/xjGoP5vn/+OHaRa5itQ8wKINnejO/BR/dQQpInoLBQ=; b=3N1bM+YGSMC9Ti8OTLgjBhKB0T
-	Ldrt3k3BjutpLirPelsVDJ9tkzlbslgsdsIHSDwGQIBWGhVDRLR3UYN4ZvPaH1MqKR+6AoFUJwWBp
-	VYdccpB8p18eo2HU3gQT6dPWJ7iPNUPVzVMwdMW/ucXpIwoEjt4FEQjSgoY45hgiNpYw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uwNfm-007yKv-RE; Wed, 10 Sep 2025 18:27:54 +0200
-Date: Wed, 10 Sep 2025 18:27:54 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	=?iso-8859-1?Q?Miqu=E8l?= Raynal <miquel.raynal@bootlin.com>,
-	Pascal Eberhard <pascal.eberhard@se.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] net: dsa: microchip: Add strap
- configuration during reset
-Message-ID: <393f0c41-57f2-491a-9ac6-5069c7db089e@lunn.ch>
-References: <20250910-ksz-strap-pins-v1-0-6308bb2e139e@bootlin.com>
+	s=arc-20240116; t=1757521756; c=relaxed/simple;
+	bh=punXH83Uoa6wgRv5ThkDRV+PlzR4TOXKfmV4AG+OZS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EzDD9DS/Cxehn1OUz+cJia9XXFzoSc2fTFVN4jR6J90XF7syDRRNF9Gi56CxEV2aAIFTteCwVJt21UWlJ/I2Yi+Ah4pX8RBjvAZ5AHaC8ZMse9qtIi0xIkUbIYPs9JZe6HTmDFQKxDpIifTRBVLwC3m/VyJLVWVXyqgmfnkWPhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uwNh2-0004nt-G2
+	for netdev@vger.kernel.org; Wed, 10 Sep 2025 18:29:12 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uwNh2-000cUu-0o
+	for netdev@vger.kernel.org;
+	Wed, 10 Sep 2025 18:29:12 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id E3FBF46B1DF
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 16:29:11 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id AC1F746B1C3;
+	Wed, 10 Sep 2025 16:29:10 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 720f3d7d;
+	Wed, 10 Sep 2025 16:29:09 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/7] pull-request: can 2025-09-10
+Date: Wed, 10 Sep 2025 18:20:20 +0200
+Message-ID: <20250910162907.948454-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910-ksz-strap-pins-v1-0-6308bb2e139e@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Wed, Sep 10, 2025 at 04:55:23PM +0200, Bastien Curutchet wrote:
-> Hi all,
-> 
-> This small series aims to allow to configure the KSZ8463 switch at
-> reset. This configuration is determined by pin states while the chip is
-> held in reset. Normally, this kind of configuration is handled with
-> pull-ups/pull-downs. However, in some designs these pull-ups/pull-downs
-> can be missing (either intentionally to save power or simply by mistake).
-> In such cases, we need to manually drive the configuration pins during
-> reset to ensure the switch is set up correctly.
-> 
-> PATCH 0 adds a new property to the bindings that describes the GPIOs to
-> be set during reset in order to configure the switch properly. Alongside
-> this new property, a new 'reset' pinctrl state is introduced.
-> 
-> PATCH 1 implements the use of this property in the driver. I only have a
-> KSZ8463 to test with, so only its configuration is supported.
+Hello netdev-team,
 
-Are you setting switch state which cannot be set via register writes?
+this is a pull request of 7 patches for net/main, it supersedes
+linux-can-fixes-for-6.17-20250909.
 
-	Andrew
+The 1st patch is by Alex Tran and fixes the Documentation of the
+struct bcm_msg_head.
+
+Davide Caratti's patch enabled the VCAN driver as a module for the
+Linux self tests.
+
+Tetsuo Handa contributes 3 patches that fix various problems in the
+CAN j1939 protocol.
+
+Anssi Hannula's patch fixes a potential use-after-free in the
+xilinx_can driver.
+
+Geert Uytterhoeven's patch fixes the rcan_can's suspend to RAM on
+R-Car Gen3 using PSCI.
+
+regards,
+Marc
+
+---
+
+The following changes since commit d3b28612bc5500133260aaf36794a0a0c287d61b:
+
+  net: phy: NXP_TJA11XX: Update Kconfig with TJA1102 support (2025-09-08 18:24:19 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-6.17-20250910
+
+for you to fetch changes up to 5c793afa07da6d2d4595f6c73a2a543a471bb055:
+
+  can: rcar_can: rcar_can_resume(): fix s2ram with PSCI (2025-09-10 17:12:05 +0200)
+
+----------------------------------------------------------------
+linux-can-fixes-for-6.17-20250910
+
+----------------------------------------------------------------
+Alex Tran (1):
+      docs: networking: can: change bcm_msg_head frames member to support flexible array
+
+Anssi Hannula (1):
+      can: xilinx_can: xcan_write_frame(): fix use-after-free of transmitted SKB
+
+Davide Caratti (1):
+      selftests: can: enable CONFIG_CAN_VCAN as a module
+
+Geert Uytterhoeven (1):
+      can: rcar_can: rcar_can_resume(): fix s2ram with PSCI
+
+Tetsuo Handa (3):
+      can: j1939: implement NETDEV_UNREGISTER notification handler
+      can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
+      can: j1939: j1939_local_ecu_get(): undo increment when j1939_local_ecu_get() fails
+
+ Documentation/networking/can.rst       |  2 +-
+ drivers/net/can/rcar/rcar_can.c        |  8 +-----
+ drivers/net/can/xilinx_can.c           | 16 +++++------
+ net/can/j1939/bus.c                    |  5 +++-
+ net/can/j1939/j1939-priv.h             |  1 +
+ net/can/j1939/main.c                   |  3 ++
+ net/can/j1939/socket.c                 | 52 ++++++++++++++++++++++++++++++++++
+ tools/testing/selftests/net/can/config |  3 ++
+ 8 files changed, 73 insertions(+), 17 deletions(-)
+ create mode 100644 tools/testing/selftests/net/can/config
+
