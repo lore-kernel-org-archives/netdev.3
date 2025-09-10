@@ -1,260 +1,69 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863BC1DFD8F;
-	Wed, 10 Sep 2025 02:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992724DD13;
+	Wed, 10 Sep 2025 02:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757472717; cv=none; b=iZ4t2BnS6r2sKO2VzSri9VS0fRgtA8HgBIcueePvajMnxCOUXCAkkrqo82632Lu7t2g28AoCN9HBgeFELUgxl6xpN1V/nKXIKvTp0+u7kxLzKMbLXklpU9/6pB1Cp5KsiZGaDcqSTnPO4rvHEQxziz05c2W4hgEolTm5Hi824BU=
+	t=1757473112; cv=none; b=nw4MSoR58YaEv+cMG5dMOMtz5c1XGIRzb+KR7iClIJgYeQMA08TO+4ybT6674+4nUUYOGmUkcHkW9surdcRFlvr94uz7nbT7dQjQB9UIuVuMfjd6z6UU6UqDsw5t1nXvViwFJmwq81qRzgXR5Hcgye+pa3SltmhBy3LoxtRdh3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757472717; c=relaxed/simple;
-	bh=3KTOccWMzr8DxZPfBNk641Us82FbHT4BEw3lrJOsNTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAfXIW8Z4+vbcr4MpkSF+NXEhFi2G+ctVBn9VDNrSX5Ods06yL0oJRKp9zrYQnh3KBu6NN9iXuTV9x9lClq6cif7NpoquZszIXpbcnIb8ioAbN5RL2yFXFBYsczgoMv2vca44CDC7+DOOt9RSeQPrIP+ljY54McV6VQCepqeExc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdsvlRB5; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757473112; c=relaxed/simple;
+	bh=Fj1+SPmCrZ5d9OWSnR3KIszRp+ovuWgPD0GRfdFAt1g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tTAeKbKZigYRC8Q0LzbVEEM4OkboJYaxkejSFDSsZCnIxTUjfUbyYcBWtVYjdG/lk04Dy9it2yrA25xU6HIgX2q/h9LeLq/lJNe0IjQ7D3XfkaWVtRy/PAfh6tFL47y1OGli/IMVwLMJRacs8RROC9abvKwo64oKZ2fb2KYg1K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ru/yB2ho; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdsvlRB5"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so152237b3a.1;
-        Tue, 09 Sep 2025 19:51:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757472715; x=1758077515; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e2TiZwTLryn0Z2XdO8OaBNvuenSuTUZNT9oHE0TAuq4=;
-        b=OdsvlRB5HOQOkeknasjsr2yiiVvTu2iRfA/by2SOvpU2cGvvx1Pl0lr+xgm6zNEZnW
-         q2v+cOh2Qk2rhQ5umxIzQ19I86OqkXpTJeLb905nKp4+VWSC6PbW8OkeaIHJtse+Rplu
-         pzORfpg81ajsy/wou4Ntj+fVVPKMDUCYVtFJSd8skWkx/sBI5A+e3U5kbgl2M7Ch2JUn
-         kLKzpeqOMcuC5CrUA8OsA+hoBCaou8tFy5Lw66fFY29C6R8P1mySS8setxcUoQQ1tjpA
-         xbF3ZJacTsiqL0Gjcrk3/G6kpJBD+GFWu6wzJyiSVdamg89bxeLLEDVR7jVH7sXuWOPR
-         P/2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757472715; x=1758077515;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e2TiZwTLryn0Z2XdO8OaBNvuenSuTUZNT9oHE0TAuq4=;
-        b=NyG0zRqzn5Wm3wJ2b+5GizEN7XCXB6x/sahPk3W4cD8F7uxkOYT6BbNr0DH7EhptBO
-         QLftOlnVXt+B6GFUqrGdticvQD2Ll5zorn2hu31ghJVN2op/6v5NqLEAQQWQEn27rZCX
-         qqq6q1rW9vV0WPfJbxsk31a8uzZFlROAbgXZjMce9qECs5otNxWdEwI5k27vV12bzk+x
-         gQYX9noonEZcOIbCAKtjijqnPBZuHO1kGbxRcuf+ZjsdF5hZtnU4BBkLvX4TvawvyHZp
-         SfsJLjQ7b6qcuUB5sJeIwxn0qglaT5HiVdBG6SnXue6doX00RlmOSWRGqsmrn7zcmrUg
-         ov2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUIrWvx+UPqYe7SsXQIfsbIt4LQ2BrGv1xX3sBDcmYludFzeyG3i6rjuFk+SGNjLb144tBcEhSg96oL@vger.kernel.org, AJvYcCUkmVMzYYcgcCug/zJ2iF9yiETGuRLIOCSEwpUCBC5BgJCc+8HGPhhPntulCZaTaiO8YKLVn2UoJeQ=@vger.kernel.org, AJvYcCV6XFLBieh/v2nG2cbeReaxKuEff/NPPxHWCHqAV0MKs5NzVD8CB8Ab77oWKruO6PHaDB+rozF2L3hjpVc=@vger.kernel.org, AJvYcCVbEVq3eiqq5/Xe0xMNQaOgIrFdEJFm2IMPGYydd8wdH2gegEBhBRiGZtq+8rbTnW5crL/fWvNbJdcoz/co@vger.kernel.org, AJvYcCVnasjWXdxqdHMEcnXz6XmVR9hajXeDbhvHVmEkMvTt2rUpqtj7vesN0t2cBDVtAQgaPjx+0zAl@vger.kernel.org, AJvYcCVpitWN7tS40avVubwTnlL+s+hehfQ5ydrI8amSQ5fNf8PVc39COYmyIo37gIojnIJFkrw=@vger.kernel.org, AJvYcCW0VLTac3ELBXEBio4RauJ/WwHRtgWqphh3xV+IP8CXTGTb2KOkJ1H4pfHWzqZk8MMyx6+Yt5BiyrV2ghE=@vger.kernel.org, AJvYcCWgR3DcXl7aSs/mqCKb3yo5d9EM72TyNYo2BKjpZwlohy8OSL7GyiPSuOAiu0imeGyPozDWb3x4l0zJ@vger.kernel.org, AJvYcCXmSeCGS0mbDbHfA8TX56c3Y48PIw/3KPXee3SKL0g2//g+YyZnP6yWGdK/0PBGwJlJS+vbS6+PjXZ68Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEP5GU5fz8M7ignn53vwvMAajpehQrlkdueM04+13h4N+VEG/r
-	g76rE/68jUHxLA5IrdXGmdkBmF24Ao2GVEelVB1SOhRNXlwUQXDsR3pY
-X-Gm-Gg: ASbGncuGVdVl3Ih6nBRXgfkxp5IstmIMhAE9lY5JNQ5JQji10fq2OSGHfcCMChe8MFT
-	OM8uEn8S0xvyeFiKSalnt3Dj3xusDnUuiNGKPiOxWdPoOtyodGR3Z7fZlhhjTFaIF4Y9muG2P4y
-	GPzty9mwHPbyVYnVYMvwbCXrvbeISv1eN27Uc3HGs9AUB/eERobPWYmv0/ovGv+6bmgjyACLngj
-	GRoD9RVywOi+PlstH/cu6GnQ18eSbGtzdqapfWnfqz/sZjWoaEl0tqQOMPL+5tV5Nq/lG19NW3b
-	zDqtYg8kIlhmwPq4q9UOgxcQhhWD7oFLemqoqHjW+P7Sn/JBesoCLUk1e5LWkOUAu9bcC2DtS8E
-	pdaf1F1QJok2Uq/acL7MpLnkak+sloBpH9GZy
-X-Google-Smtp-Source: AGHT+IFTyhfnUg3CqVtgOKW3+2pEfzFWWNjw1TnoTWF2WDPCy8Lg+0w3QYglyJRg7NnUo5SJL/6TsA==
-X-Received: by 2002:a05:6a00:882:b0:770:4753:b984 with SMTP id d2e1a72fcca58-7742e4bf142mr18186197b3a.16.1757472714666;
-        Tue, 09 Sep 2025 19:51:54 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77466293757sm3470498b3a.63.2025.09.09.19.51.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Sep 2025 19:51:53 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id F395041BDD47; Wed, 10 Sep 2025 09:43:52 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux DAMON <damon@lists.linux.dev>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Power Management <linux-pm@vger.kernel.org>,
-	Linux Block Devices <linux-block@vger.kernel.org>,
-	Linux BPF <bpf@vger.kernel.org>,
-	Linux Kernel Workflows <workflows@vger.kernel.org>,
-	Linux KASAN <kasan-dev@googlegroups.com>,
-	Linux Devicetree <devicetree@vger.kernel.org>,
-	Linux fsverity <fsverity@lists.linux.dev>,
-	Linux MTD <linux-mtd@lists.infradead.org>,
-	Linux DRI Development <dri-devel@lists.freedesktop.org>,
-	Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	Linux Sound <linux-sound@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Huang Rui <ray.huang@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	tytso@mit.edu,
-	Richard Weinberger <richard@nod.at>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shay Agroskin <shayagr@amazon.com>,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Saeed Bishara <saeedb@amazon.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexandru Ciobotaru <alcioa@amazon.com>,
-	The AWS Nitro Enclaves Team <aws-nitro-enclaves-devel@amazon.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ranganath V N <vnranganath.20@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH v2 11/13] Documentation: net: Convert external kernel networking docs
-Date: Wed, 10 Sep 2025 09:43:26 +0700
-Message-ID: <20250910024328.17911-12-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250910024328.17911-1-bagasdotme@gmail.com>
-References: <20250910024328.17911-1-bagasdotme@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ru/yB2ho"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97619C4CEF4;
+	Wed, 10 Sep 2025 02:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757473111;
+	bh=Fj1+SPmCrZ5d9OWSnR3KIszRp+ovuWgPD0GRfdFAt1g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ru/yB2ho6cTaJ+a7EiC6ivKbrbp1G4PjYDkZ6v2L3DGqw/TBnaHWuNrZYmQi4YnnO
+	 MlhBOMl2WFocgeZGJzqjK++BEBur6Gc/BEV+BbjtfmMvQ98AkEn1AsX65cHQ4viHsb
+	 sZgMKgTyhKLXdFVfxG7gjAJiLTXSk/p8yLJbe2xSmilcx3tqBx6YBzyp1jRr3C7kvC
+	 7yfVw42ce36nkv1IUHGadoItBkN1jJepm9BWiG1oxtT0GL3snriKuQoaKhYM/gzzI8
+	 hL00zLGDh3c697MYtIN9KhOaWOB1L27jegv9LK+UYDWqIpU4YXxw+dGJWsbfSnjF5u
+	 eSVR/Q8+OsAyw==
+From: David Ahern <dsahern@kernel.org>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	shuah@kernel.org,
+	David Ahern <dsahern@kernel.org>
+Subject: [PATCH net-next 1/2] selftests: Disable dad for ipv6 in fcnal-test.sh
+Date: Tue,  9 Sep 2025 20:58:27 -0600
+Message-Id: <20250910025828.38900-1-dsahern@kernel.org>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4165; i=bagasdotme@gmail.com; h=from:subject; bh=3KTOccWMzr8DxZPfBNk641Us82FbHT4BEw3lrJOsNTs=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkHniglPN1/l+G0b3W08+an+40OlbWa5hi83XTh+GX/4 C8C1xeFdZSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiBZEM/4u927OPq/vretv+ eb/f6YB5Kk/Laj31K1IKboVhiko7uxj+pxYZGDy7rZrM+OWh+Y5vk3hP+ti0xKVJLGg67/x7TvV +PgA=
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-Convert cross-references to kernel networking docs that use external
-links into internal ones.
+Constrained test environment; duplicate address detection is not needed
+and causes races so disable it.
 
-Reviewed-by: Arthur Kiyanovski <akiyano@amazon.com> # ena driver
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Signed-off-by: David Ahern <dsahern@kernel.org>
 ---
- .../device_drivers/can/ctu/ctucanfd-driver.rst       |  3 +--
- .../device_drivers/ethernet/amazon/ena.rst           |  4 ++--
- Documentation/networking/ethtool-netlink.rst         |  3 +--
- Documentation/networking/snmp_counter.rst            | 12 +++++-------
- 4 files changed, 9 insertions(+), 13 deletions(-)
+ tools/testing/selftests/net/fcnal-test.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst b/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-index 1661d13174d5b8..4f9f36414333fd 100644
---- a/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-+++ b/Documentation/networking/device_drivers/can/ctu/ctucanfd-driver.rst
-@@ -40,8 +40,7 @@ About SocketCAN
- SocketCAN is a standard common interface for CAN devices in the Linux
- kernel. As the name suggests, the bus is accessed via sockets, similarly
- to common network devices. The reasoning behind this is in depth
--described in `Linux SocketCAN <https://www.kernel.org/doc/html/latest/networking/can.html>`_.
--In short, it offers a
-+described in Documentation/networking/can.rst. In short, it offers a
- natural way to implement and work with higher layer protocols over CAN,
- in the same way as, e.g., UDP/IP over Ethernet.
+diff --git a/tools/testing/selftests/net/fcnal-test.sh b/tools/testing/selftests/net/fcnal-test.sh
+index 69941520e8e5..068379a79651 100755
+--- a/tools/testing/selftests/net/fcnal-test.sh
++++ b/tools/testing/selftests/net/fcnal-test.sh
+@@ -424,6 +424,8 @@ create_ns()
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.keep_addr_on_down=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.forwarding=1
+ 	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.forwarding=1
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.default.accept_dad=0
++	ip netns exec ${ns} sysctl -qw net.ipv6.conf.all.accept_dad=0
+ }
  
-diff --git a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-index 14784a0a6a8a10..b7b314de857b01 100644
---- a/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-+++ b/Documentation/networking/device_drivers/ethernet/amazon/ena.rst
-@@ -366,9 +366,9 @@ RSS
- 
- DEVLINK SUPPORT
- ===============
--.. _`devlink`: https://www.kernel.org/doc/html/latest/networking/devlink/index.html
- 
--`devlink`_ supports reloading the driver and initiating re-negotiation with the ENA device
-+:doc:`devlink </networking/devlink/index>` supports reloading the driver and
-+initiating re-negotiation with the ENA device
- 
- .. code-block:: shell
- 
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index ab20c644af2485..3445b575cb5d39 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1100,8 +1100,7 @@ This feature is mainly of interest for specific USB devices which does not cope
- well with frequent small-sized URBs transmissions.
- 
- ``ETHTOOL_A_COALESCE_RX_PROFILE`` and ``ETHTOOL_A_COALESCE_TX_PROFILE`` refer
--to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
--<https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
-+to DIM parameters, see Documentation/networking/net_dim.rst.
- 
- COALESCE_SET
- ============
-diff --git a/Documentation/networking/snmp_counter.rst b/Documentation/networking/snmp_counter.rst
-index ff1e6a8ffe2164..c51d6ca9eff2c7 100644
---- a/Documentation/networking/snmp_counter.rst
-+++ b/Documentation/networking/snmp_counter.rst
-@@ -782,13 +782,11 @@ TCP ACK skip
- ============
- In some scenarios, kernel would avoid sending duplicate ACKs too
- frequently. Please find more details in the tcp_invalid_ratelimit
--section of the `sysctl document`_. When kernel decides to skip an ACK
--due to tcp_invalid_ratelimit, kernel would update one of below
--counters to indicate the ACK is skipped in which scenario. The ACK
--would only be skipped if the received packet is either a SYN packet or
--it has no data.
--
--.. _sysctl document: https://www.kernel.org/doc/Documentation/networking/ip-sysctl.rst
-+section of the Documentation/networking/ip-sysctl.rst. When kernel
-+decides to skip an ACK due to tcp_invalid_ratelimit, kernel would
-+update one of below counters to indicate the ACK is skipped in
-+which scenario. The ACK would only be skipped if the received
-+packet is either a SYN packet or it has no data.
- 
- * TcpExtTCPACKSkippedSynRecv
- 
+ # create veth pair to connect namespaces and apply addresses.
 -- 
-An old man doll... just what I always wanted! - Clara
+2.43.0
 
