@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D519314B69;
-	Wed, 10 Sep 2025 23:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CD9314B6B;
+	Wed, 10 Sep 2025 23:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757545745; cv=none; b=f3K8nfp5FQO2IL67Br+Ehe11k44FJGQTlWLE/Qz9A/1zOcy4pUIjHbtdZK2819ut6hVNz3ItKRa0KZJJY8T4OIAqWWzWrkAy8FZUXHwlWk2kv7xhBNf77/Tofr1nZSwtyOjqzsKG+wL2r99LuXBJdVE3nRaNskN1btR/QW+UBso=
+	t=1757545745; cv=none; b=VUYoOoIlPoL+cZgNu3BwIEp4/wQY6A0235jj/szm78ieLq7CC+EZMpg1Ab24vOKM9bsfT/8TleFplW7AtGas0NO6agvi9e3bW7Da7WBv8dXYdsoI1SXnVMBL3sKJkF0/zMKctF8tlMEOcMHpB3HSo+858Lub1LPgh7LI60bIvCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757545745; c=relaxed/simple;
-	bh=BXBJfFZ+zTwLVHSQB68jOM4LzO0NIRI61RviYfjsvu0=;
+	bh=gPzW3wCV+qM3pD5q/z5sXTnTfFB9BV31CnXtVtDMhXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fz9OHOu5hO7PCP2zn0MZzQtkid7iZjqtBk3zKUUjQvvsFl4uA4Fmb/mU69+G9No03eTo0ie/ZQYujnUTEj04hDFymA9BcbSw5uUsaTaIwLkKK43em9psxkh3deNWh3U5T/eeSCmddT1eul0ckQUVACNArJT78Y2afEbYLzQp8wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=bBqxdVSi; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=QKsxoDBhEWOmwj7FcQTZrmIhm2l38SJxYIoIoghdivSCdnHpl4+GRazepEzJ09NVHdQ9meSry5gp2A047oFKmBuDygThtow3ZzjMMsPo6lH/0rFSveYVwbp535gPCH1Kz4PpL9BedKXCpR9GOs7o0U+xucoZ1IbBEQ2dUlAym/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=hyH/WVOo; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="bBqxdVSi"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="hyH/WVOo"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757545730;
-	bh=BXBJfFZ+zTwLVHSQB68jOM4LzO0NIRI61RviYfjsvu0=;
+	bh=gPzW3wCV+qM3pD5q/z5sXTnTfFB9BV31CnXtVtDMhXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBqxdVSi6kSZofaDl44lkOtbNg80c6YNbSYMuAf/AVwIgtPHOnlUkvjG6C+9f/qb/
-	 n4eJh4JMpEt/CuHjB3UuvkMvSsAqrNZ8ZnrHKL5NM2IZJWygHJYezgIte5L5XJK4T+
-	 sG7WJwx/nA9z27PkDE5BWAvytDssIibs9UkxXW3Ybq5b0K6pMxFEFy0SuNIGLSKA7g
-	 sBbv6SugbhobBsrALc3zjxhz54HVei8JvaGYG5GWxHN25rGr/hLr+wYd9Pj/xePqV7
-	 fIbWxY/BL9W5L1KlIh3b2+ilAFSTMWwblORxPM4FQch3U/h9Nn9tguwN7/PpvpO+a+
-	 ycqzJ+476TWZA==
+	b=hyH/WVOoCpQXnsmm/RhKX8w55PKl+c6IaIxkkHUJMtocIu6ROFzZaQLMEtFETOjbC
+	 T0+1wMFchb6H5DS+dk/blqGvnoEA1XU6E+bG7lxLLEEJ66uspRFdy5lrQcSsqqqIRw
+	 mePeC3azkYm3GXema0IW58Wb8ccnFg6Q4sovumUjHsyCMIs9s5gtZ36iaOBpJO45yt
+	 IBpyvFhUKiVSS+6xllPdq0x5iP2KdILcYSH8Zf7kyzpxBiR9ozbhB8rFVKPMcdzGkq
+	 1VtMH02EGSFLmPC695ZI/uTyG8BW+FEXOx+h0C7Q4rQQJ3FK7ZHbaHxIepgg7sdikq
+	 3gknIExnuyazA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id E947960140;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id D73AB6013E;
 	Wed, 10 Sep 2025 23:08:50 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id C7C10201D12; Wed, 10 Sep 2025 23:08:42 +0000 (UTC)
+	id 3B22F20519B; Wed, 10 Sep 2025 23:08:43 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 01/12] tools: ynl-gen: allow overriding name-prefix for constants
-Date: Wed, 10 Sep 2025 23:08:23 +0000
-Message-ID: <20250910230841.384545-2-ast@fiberby.net>
+Subject: [PATCH net-next v2 11/12] tools: ynl: decode hex input
+Date: Wed, 10 Sep 2025 23:08:33 +0000
+Message-ID: <20250910230841.384545-12-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910230841.384545-1-ast@fiberby.net>
 References: <20250910230841.384545-1-ast@fiberby.net>
@@ -61,35 +61,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow using custom name-prefix with constants,
-just like it is for enum and flags declarations.
+This patch adds support for decoding hex input, so
+that binary attributes can be read through --json.
 
-This is needed for generating WG_KEY_LEN in
-include/uapi/linux/wireguard.h from a spec.
+Example (using future wireguard.yaml):
+ $ sudo ./tools/net/ynl/pyynl/cli.py --family wireguard \
+   --do set-device --json '{"ifindex":3,
+     "private-key":"2a ae 6c 35 c9 4f cf <... to 32 bytes>"}'
+
+In order to somewhat mirror what is done in _formatted_string(),
+then for non-binary attributes attempt to convert it to an int.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index fb7e03805a11..1543d4911bf5 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -3211,8 +3211,9 @@ def render_uapi(family, cw):
-             cw.block_end(line=';')
-             cw.nl()
-         elif const['type'] == 'const':
-+            name_pfx = const.get('name-prefix', f"{family.ident_name}-")
-             defines.append([c_upper(family.get('c-define-name',
--                                               f"{family.ident_name}-{const['name']}")),
-+                                               f"{name_pfx}{const['name']}")),
-                             const['value']])
- 
-     if defines:
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 7ddf689a2a6e..50f4889e721b 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -972,6 +972,11 @@ class YnlFamily(SpecFamily):
+                 raw = ip.packed
+             else:
+                 raw = int(ip)
++        elif attr_spec.display_hint == 'hex':
++            if attr_spec['type'] == 'binary':
++                raw = bytes.fromhex(string)
++            else:
++                raw = int(string, 16)
+         else:
+             raise Exception(f"Display hint '{attr_spec.display_hint}' not implemented"
+                             f" when parsing '{attr_spec['name']}'")
 -- 
 2.51.0
 
