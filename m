@@ -1,100 +1,163 @@
-Received: from out203-205-221-191.mail.qq.com (out203-205-221-191.mail.qq.com [203.205.221.191])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C2925782A;
-	Wed, 10 Sep 2025 10:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112BD316905
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 10:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757501252; cv=none; b=PVLnzzEmOWvjvX5DvxfyaDNk172iglCXGExODEKZ4yW6FNprUXzP5QXSgHClXEkZZVvs/maJ8sysHR+PiM3Qh9XlM3dkaalyOo7lUcWQWFFQ0Rp5H9EL/JGDQ8rr1J/gCtcnUK5Rk9zbZgtbsVUZHVQV1wqeDQZ3WBFc9xBoo08=
+	t=1757501770; cv=none; b=M5uKA0hGjvDXQ0a+Oo1+VDhyXW+Hm04QRH9ewgkZC19AP2WU9PZEgSnx/KPosGfiCLzgfOTKTduAHjkb+ZOTq1eoeaOKRX9JMO6Mo4T+852oI2SepIWzUmO/bYCya5QLTqVkOdYwYtceU9q2rCevA89YoGNSOR/GjV+2jisEHsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757501252; c=relaxed/simple;
-	bh=vuDuae618+G9GIUKKhfT2gpIoatwCsXfX9KM+fgvIWg=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ov4ZXYDN/PhDtUArlh2We80Foi4xxEOArdeQj6yRywKJxI7tguffcw3GRYTadfnvOeTpS0hC9AmNATzBnRxVNa7V7rlfJegIUJY39igiIvSEunkUojgZKtRccD1Hoh3kF9xGyM0p59DgHeJIQcbQ9hfniZjwqxwtfndApQiq97g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=UKcOtrWe; arc=none smtp.client-ip=203.205.221.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+	s=arc-20240116; t=1757501770; c=relaxed/simple;
+	bh=pHpswxtRWQi3EOsPFZZJeb/sThV2Fod/Xfxn9Br6Mpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SKwM+V6yP9kcRWg7FNhGHmmON+4+PAAveZF9tuq13FnM7VtzmAXKtw0IETi8GMQqcL5MrMMOZsYEztDoJPswV7cA43XLxkLaigvBwE7vuA3xPalR9xwnIyaXDIvKX949gtDaZ9C+0i0oG27aDGWbhx3qSSvf9sAfpuoPtb8A3Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DV6v2x5h; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="UKcOtrWe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1757500940;
-	bh=2g9SqMhLUUY5OWEkbJI62B9o1oK6Cw9puvU0A/SCA4o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UKcOtrWeRpFVvSeF5GCNO133+5B6ZvqaXNXzV45vA3lJvkzVtzFWbiWnBOx/AezUZ
-	 kMIyisSIVdUV0F9VZd6S67kmAx80S1MS+KqDzlYF4m9ffw9tfsvqdJiJN4J6aJUgqU
-	 L2qBiOjvH1drJje0rA5tTn5QaYJ6SETm0WwqSVw0=
-Received: from localhost ([112.94.75.165])
-	by newxmesmtplogicsvrsza56-0.qq.com (NewEsmtp) with SMTP
-	id A929FED7; Wed, 10 Sep 2025 18:42:18 +0800
-X-QQ-mid: xmsmtpt1757500938tef4mg7kx
-Message-ID: <tencent_7731B6630F8BF7EC0292D2F3ADAEA6F70207@qq.com>
-X-QQ-XMAILINFO: OGZxhFXqN7PJ0OGUSKzaot3PkSIPfgVcLkJCNRpHiuJ/wDe1agEPYkkDgLl2Hi
-	 VOLH3oLeXitQpuBvQSjVDLTenk7gOXKMWl5lIUdIurYWrfPcJfqoxIlMbwDa0NCVvD/fpfwctQ4W
-	 dlK9X4VxXrG7MZypC2CsplwMvnT0QSoTIRbDK/PMKORm4o/XfhIUQzRmmgh1p6zV9KMUBUDDlxxe
-	 7QiAGhORxfs6JdFSuF1CK/yMvtm3LKEeWHFAOkrOtx+/pQlaQ1KvAkMrnnQ0kofZ+7DM+METOhsF
-	 J0A1iiFDrnSTAK6HqAfofrs00ucqqsMDGFwHyxDy58hE0EC4s2DjhkNvLFOWC+i7EVgr5krq/Xsw
-	 jkbCVMlOSlPDeoU/ld01iXgQz+A8thbNZNMkJUeN4HQpFsLa2AMOet7cnlAmmr+EIFlGZseu13OX
-	 p3EX36p5+2qlaV2ZSSqSjj5lxzQRmefkqiQTjai6y80FGFidMEQsOnwil/dqtAoA5lg9Btk/mgSr
-	 IzLe9cdt2rPWbMaB36jw75vSDnopXHJTlmmyAHKei+sQgpdV/E/ZCvWG+stiNU5e0h+6EmsXn23S
-	 xl6rZr63f7g/xOceAsyUYfcnG/qW7YR3qcT0dqdHS+BK5ZWJGOmKG+wa+RTDypNQrsjutbM3DC0v
-	 CIZi00R9lMW3QWiloZRV1r5MM3JkInK9GunpWu+qwMnHMsb/tBCqS+3U9IfWSMMROzRHWEJPdYLX
-	 gsj0D3vQ4jaYVaAUGpvKNwl9rW8zP3F30rm6CoHC06oNSDol+pZKrCf7gAu+8LCzZ03K+GrXoHk5
-	 uFcVtNUdpTenn9iFEjhgpP9nvOTWOHyNxxeqjTDhgqaR0V+sMwduna4mUAeKmLzyfwCX1SLkZ98Y
-	 jwyV3LptUlbJY901E7btNys4ibMQqCqYb0x42NGAwncT97apaNR8dB5BltdiakC2+Ks5Em5Siobs
-	 Fr7wWd2LPZgHgdvQMwvFosqJk5CsFqEnf+SEGw9lEVTd8xbCkqnC5GHvpJ+CgYdSTNCuzSJsRerA
-	 cL9uGeROqA7nvG09ZHTetWJgw1ONKke/Z2AYJAxw==
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-Date: Wed, 10 Sep 2025 18:42:18 +0800
-From: Conley Lee <conleylee@foxmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: vkoul@kernel.org, davem@davemloft.net, wens@csie.org,
-	mripard@kernel.org, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: ethernet: sun4i-emac: free dma descriptor
-X-OQ-MSGID: <20250910104218.GA1760035@ubuntu-server>
-References: <20250904072446.5563130d@kernel.org>
- <tencent_D434891410B0717BB0BDCB1434969E6EB50A@qq.com>
- <20250908132615.6a2507ed@kernel.org>
- <tencent_0DDFF70B944AC1B7CE9AC20A22D8DA3C4609@qq.com>
- <20250909181547.0782840f@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DV6v2x5h"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757501769; x=1789037769;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pHpswxtRWQi3EOsPFZZJeb/sThV2Fod/Xfxn9Br6Mpo=;
+  b=DV6v2x5hBzrcmsV4BF49Ar8lzwtmkAG2j/7YrBtIXvFIOArM2NQCJutV
+   s1UHzHzQ4sJqYx1kT/lIr/JLXzwL99WBCc/VOoz7wl3I4cQsts6SHPZld
+   MGAmCU/5bONDlN3t3hSif7l39SrM7xUGpCvQPmTRzmKdPlDmWEalitlHg
+   rn4AssJ10TcgdNp5iP/Y1HIhAfLZABoMsRKB7cvh7ILGHaMYzwV37BfgS
+   aO0usjKTzPG4Ud9xED3vCixyXLh2Qg4M57IxpCt2iyi14Ac2akMQqbddm
+   cLqW8m6U1jPRT4u8dykNw74YT4HxsRb826J65nzFDOIqbPVQuRSgZd6rO
+   w==;
+X-CSE-ConnectionGUID: G3sW6kCNRx6VVF7xWHZ9uQ==
+X-CSE-MsgGUID: SBekzg++QzKCcw6kSrIpMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11548"; a="47379712"
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="47379712"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 03:56:08 -0700
+X-CSE-ConnectionGUID: K/bl4HYrR/qVZ5g0g3sg4A==
+X-CSE-MsgGUID: XnovDimTScqFoaCXKYjltA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,254,1751266800"; 
+   d="scan'208";a="204121209"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 10 Sep 2025 03:56:05 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwIUc-0005r9-2l;
+	Wed, 10 Sep 2025 10:56:02 +0000
+Date: Wed, 10 Sep 2025 18:55:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH net-next 3/4] net: dsa: mv88e6xxx: remove
+ chip->evcap_config
+Message-ID: <202509101826.aERYSElG-lkp@intel.com>
+References: <E1uw0Xk-00000004IOC-1EJd@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250909181547.0782840f@kernel.org>
+In-Reply-To: <E1uw0Xk-00000004IOC-1EJd@rmk-PC.armlinux.org.uk>
 
-On 09/09/25 at 06:15下午, Jakub Kicinski wrote:
-> Date: Tue, 9 Sep 2025 18:15:47 -0700
-> From: Jakub Kicinski <kuba@kernel.org>
-> To: 李克斯 <conleylee@foxmail.com>
-> Cc: vkoul@kernel.org, davem@davemloft.net, wens@csie.org,
->  mripard@kernel.org, netdev@vger.kernel.org, dmaengine@vger.kernel.org,
->  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH] net: ethernet: sun4i-emac: free dma descriptor
-> 
-> On Tue, 9 Sep 2025 14:36:42 +0800 李克斯 wrote:
-> > Thank you for the suggestion. I've reviewed the documentation, and
-> > setting the reuse flag while reusing descriptors might be a good
-> > optimization. I'll make the changes and run some tests. If everything
-> > works well, I'll submit a new patch.
-> 
-> To be clear if you're saying the driver is buggy and can crash right
-> now we need to fix it first and then optimize it later, as separate
-> commits. So that LTS kernels can backport the fix.
-> 
-> The questions I'm asking are because I don't understand whether the
-> upstream kernel is buggy and how exactly..
+Hi Russell,
 
-After carefully reviewing the documentation and how other drivers use
-dmaengine, I think that if the reuse flag is not set for the descriptor,
-manual release is unnecessary. Therefore, the current driver implementation
-does not contain a bug. This fix patch was a mistake.
+kernel test robot noticed the following build errors:
 
-Thank you for your thorough review.
+[auto build test ERROR on net-next/main]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Russell-King-Oracle/net-dsa-mv88e6xxx-remove-mv88e6250_ptp_ops/20250910-034838
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/E1uw0Xk-00000004IOC-1EJd%40rmk-PC.armlinux.org.uk
+patch subject: [PATCH net-next 3/4] net: dsa: mv88e6xxx: remove chip->evcap_config
+config: i386-buildonly-randconfig-004-20250910 (https://download.01.org/0day-ci/archive/20250910/202509101826.aERYSElG-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250910/202509101826.aERYSElG-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509101826.aERYSElG-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/dsa/mv88e6xxx/ptp.c:182:2: error: use of undeclared identifier 'evcap_config'; did you mean 'evap_config'?
+     182 |         evcap_config = MV88E6XXX_TAI_CFG_CAP_OVERWRITE |
+         |         ^~~~~~~~~~~~
+         |         evap_config
+   drivers/net/dsa/mv88e6xxx/ptp.c:178:6: note: 'evap_config' declared here
+     178 |         u16 evap_config;
+         |             ^
+   drivers/net/dsa/mv88e6xxx/ptp.c:185:3: error: use of undeclared identifier 'evcap_config'; did you mean 'evap_config'?
+     185 |                 evcap_config |= MV88E6XXX_TAI_CFG_EVREQ_FALLING;
+         |                 ^~~~~~~~~~~~
+         |                 evap_config
+   drivers/net/dsa/mv88e6xxx/ptp.c:178:6: note: 'evap_config' declared here
+     178 |         u16 evap_config;
+         |             ^
+   drivers/net/dsa/mv88e6xxx/ptp.c:187:53: error: use of undeclared identifier 'evcap_config'; did you mean 'evap_config'?
+     187 |         err = mv88e6xxx_tai_write(chip, MV88E6XXX_TAI_CFG, evcap_config);
+         |                                                            ^~~~~~~~~~~~
+         |                                                            evap_config
+   drivers/net/dsa/mv88e6xxx/ptp.c:178:6: note: 'evap_config' declared here
+     178 |         u16 evap_config;
+         |             ^
+   3 errors generated.
+
+
+vim +182 drivers/net/dsa/mv88e6xxx/ptp.c
+
+   168	
+   169	/* mv88e6352_config_eventcap - configure TAI event capture
+   170	 * @event: PTP_CLOCK_PPS (internal) or PTP_CLOCK_EXTTS (external)
+   171	 * @rising: zero for falling-edge trigger, else rising-edge trigger
+   172	 *
+   173	 * This will also reset the capture sequence counter.
+   174	 */
+   175	static int mv88e6352_config_eventcap(struct mv88e6xxx_chip *chip, int event,
+   176					     int rising)
+   177	{
+   178		u16 evap_config;
+   179		u16 cap_config;
+   180		int err;
+   181	
+ > 182		evcap_config = MV88E6XXX_TAI_CFG_CAP_OVERWRITE |
+   183			       MV88E6XXX_TAI_CFG_CAP_CTR_START;
+   184		if (!rising)
+   185			evcap_config |= MV88E6XXX_TAI_CFG_EVREQ_FALLING;
+   186	
+   187		err = mv88e6xxx_tai_write(chip, MV88E6XXX_TAI_CFG, evcap_config);
+   188		if (err)
+   189			return err;
+   190	
+   191		if (event == PTP_CLOCK_PPS) {
+   192			cap_config = MV88E6XXX_TAI_EVENT_STATUS_CAP_TRIG;
+   193		} else if (event == PTP_CLOCK_EXTTS) {
+   194			/* if STATUS_CAP_TRIG is unset we capture PTP_EVREQ events */
+   195			cap_config = 0;
+   196		} else {
+   197			return -EINVAL;
+   198		}
+   199	
+   200		/* Write the capture config; this also clears the capture counter */
+   201		err = mv88e6xxx_tai_write(chip, MV88E6XXX_TAI_EVENT_STATUS,
+   202					  cap_config);
+   203	
+   204		return err;
+   205	}
+   206	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
