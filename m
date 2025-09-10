@@ -1,109 +1,155 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.155.198.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D032877E9;
-	Wed, 10 Sep 2025 09:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03E030E825
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 09:25:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.155.198.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757495877; cv=none; b=kSsdz1RFPVLmXs+AwEVNvIW8UQ9nGyeyX0/lCDH0xF7zbX7iaA91DFCbSN9CDPh902kBQDsmyZTvN4whxp4SRTHx1nCakBt2f2RAVVgq5gMR/q1t440hPn75LgFr5XLBVML1HNH7wQOfueU7c1CpUgI/Uz/aMKZJ3/oeFbPU/hY=
+	t=1757496351; cv=none; b=bfdNxR46V0+SV3NPPxZowiP7Yoa12qZvoTYGuZDIz4G5OoJVGrnvPBeW9BwYtaRxs1glxVMHMoJT0vcmMpo22JxvfK/030TVoh2ljHaTAwMA8Jox82HIXB/6t0pdjysmevBvlpXOOqyFTFz723dRn2YMV4mGdJZB48FT2ugyrvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757495877; c=relaxed/simple;
-	bh=GGcoW1rHPYKDVIpMVNnDGCuNsRgAHDhGZ6iQD3KEJQM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b12J0e9OyGLQBizPK1J9J3iGxpyPPqM2A8jbZZbK7vM4kVGBgGzqnKAuH4choW3luGqnZjsI+kXUj+5DQqELsqpImlLVc/7AjLZ0ucN4G2AChvOg9UC5qJ1IY8sNf2NnSvMwvq/2Ad/KKLJloCEDJNcOhCQjvwST4r0KbW4DTig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Wh8Yimpd; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1757496351; c=relaxed/simple;
+	bh=HNILZtt0hwwuxNVL/jW9PoH0yqkXYiFDFS+0lRZCWTg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h0rSXGKmjxv0DGxvBvPbq+qjmgV81k3E0fRd1nODqteb0c1s+ZcFOj0NTm6ui3DDPnWmqnpYhkJQze6wU2hrYeLnyd1KcBswitZSJeEWHb25LGGa+zNQYhAa8OFSCmCd08867nOuCUl9iFskCu0xHS8t5czeZzXR3sAKJ+cxsVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=gJ1JyjkB; arc=none smtp.client-ip=35.155.198.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Wh8Yimpd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=kW
-	sJsKi4N76Tmx+Lu2+X5uhhEh4alrr77qi//eZRpHk=; b=Wh8YimpdbYux2bZ0Tm
-	WiH6rPacfglByyrkNxLAiLObV0VMg8PC+2FP2WgEiy6sBzh/6BqSnR5YHy/Z6yKS
-	urXYQwcFkNLjmdElYBMNrT4vgDwyXQK/60fdiC+/zBenz3vTa3A7afk/EFb7jtMH
-	izbshVITI8VxHHqjJN8TkZhtc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDHL4wPQsFoNSDgAA--.35458S2;
-	Wed, 10 Sep 2025 17:17:04 +0800 (CST)
-From: yicongsrfy@163.com
-To: linux@armlinux.org.uk
-Cc: andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	yicong@kylinos.cn
-Subject: Re: [PATCH] net: phy: avoid config_init failure on unattached PHY during resume
-Date: Wed, 10 Sep 2025 17:17:03 +0800
-Message-Id: <20250910091703.3575924-1-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <aMEzv50VmUb2eUMQ@shell.armlinux.org.uk>
-References: <aMEzv50VmUb2eUMQ@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="gJ1JyjkB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757496349; x=1789032349;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dsgebjoGUOrCSMEDwcajyXGY4GIsEupdqnjHKO74RKk=;
+  b=gJ1JyjkB3vJCRsFPEh40HJJoOGmlsXUiJtx9gClUTGn3lfMKl38L9flB
+   HJ0lLKss+X0u3HtuVqNgfOn8Lr+8tbm94hDJWi20mKTB+riLYj/V2yMBh
+   wnDSkQ/VIew9d49OZiDdmaPHaQie1o0jKmzbA8eCOGvG40ECklXaPcuMY
+   9j9L+0ldyJLFliyQsWb7EWWKerw0EifPu8gZ9kvfNcHTTmCh1tdJhxzGM
+   R4T+s75aPj4oIk1zVCG7U7zDpAEerT4NDiagKLcDNLpfIFG48lHaXRs7h
+   jnh6djh1bWq1wVWbCUO6PRjjRVfGRN9oLR06ZIfVGsuhjhwfbSSQ3GxU8
+   Q==;
+X-CSE-ConnectionGUID: Kw7qBZ6ZTAamd1guporJ+A==
+X-CSE-MsgGUID: kmInTI60TJ2s0uunu3OY5w==
+X-IronPort-AV: E=Sophos;i="6.18,253,1751241600"; 
+   d="scan'208";a="2633235"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-009.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 09:25:47 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:43888]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.9.164:2525] with esmtp (Farcaster)
+ id ea498177-17d9-4ab8-bc5d-400dc2e76433; Wed, 10 Sep 2025 09:25:47 +0000 (UTC)
+X-Farcaster-Flow-ID: ea498177-17d9-4ab8-bc5d-400dc2e76433
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 10 Sep 2025 09:25:47 +0000
+Received: from b0be8375a521.amazon.com (10.37.244.7) by
+ EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Wed, 10 Sep 2025 09:25:44 +0000
+From: Kohei Enju <enjuk@amazon.com>
+To: <aleksandr.loktionov@intel.com>
+CC: <andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <enjuk@amazon.com>,
+	<intel-wired-lan@lists.osuosl.org>, <kohei.enju@gmail.com>,
+	<kuba@kernel.org>, <kurt@linutronix.de>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <przemyslaw.kitszel@intel.com>,
+	<vitaly.lifshits@intel.com>
+Subject: Re: RE: [Intel-wired-lan] [PATCH v1 iwl-net] igc: unregister netdev when igc_led_setup() fails in igc_probe()
+Date: Wed, 10 Sep 2025 18:25:08 +0900
+Message-ID: <20250910092537.30823-1-enjuk@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <IA3PR11MB8986C779F51731B60D07BEB7E50EA@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <IA3PR11MB8986C779F51731B60D07BEB7E50EA@IA3PR11MB8986.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHL4wPQsFoNSDgAA--.35458S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uryUJr4xGw43KFy8Gr1Utrb_yoW8Kry5pr
-	WxXas5ur1vqF1kGrs7A3y8Ja4jvwsIvrW3J3sxKr98CFy5uF9Y939Fqr43ZFW5Crs8Ca47
-	ZF4jqayUArZruaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U7wIgUUUUU=
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbiUATE22jBPCm76wAAsn
+X-ClientProxiedBy: EX19D041UWA002.ant.amazon.com (10.13.139.121) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Wed, 10 Sep 2025 09:15:59 +0100, "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Wed, 10 Sep 2025 09:02:51 +0000, Loktionov, Aleksandr wrote:
+
+[...]
+>> >>
+>> >> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+>> >
+>> >Thank you for the patch and for identifying this issue!
+>> >
+>> >I was wondering whether we could avoid failing the probe in cases
+>> where
+>> >igc_led_setup fails. It seems to me that a failure in the LED class
+>> >functionality shouldn't prevent the device's core functionality from
+>> >working properly.
+>> 
+>> Indeed, that also makes sense.
+>> 
+>> The behavior that igc_probe() succeeds even if igc_led_setup() fails
+>> also seems good to me, as long as notifying users that igc's led
+>> functionality is not available.
+>> 
+>> >
+>> > From what I understand, errors in this function are not due to
+>> hardware
+>> >malfunctions. Therefore, I suggest we remove the error propagation.
+>> >
+>> >Alternatively, if feasible, we could consider reordering the function
+>> >calls so that the LED class setup occurs before the netdev
+>> registration.
+>> >
+>> 
+>> I don't disagree with you, but I would like to hear Kurt and
+>> Aleksandr's
+>> opinion. Do you have any preference or suggestions?
+>> 
+>> I'll revise and work on v2 if needed.
+>> Thanks!
 >
-> On Wed, Sep 10, 2025 at 10:58:26AM +0800, yicongsrfy@163.com wrote:
-> > From: Yi Cong <yicong@kylinos.cn>
-> >
-> > When resuming a PHY device that is not attached to a MAC (i.e.
-> > phydev->attached_dev is NULL), mdio_bus_phy_resume() may call into
-> > phy_init_hw() -> phydev->drv->config_init(), which can return -EOPNOTSUPP
-> > (-95) if the driver does not support initialization in this state.
-> >
-> > This results in log messages like:
-> > [ 1905.106209] YT8531S Gigabit Ethernet xxxxmac_mii_bus-XXXX:00:01:
-> > PM: dpm_run_callback(): mdio_bus_phy_resume+0x0/0x180 [libphy] returns -95
-> > [ 1905.106232] YT8531S Gigabit Ethernet xxxxmac_mii_bus-XXXX:00:01:
-> > PM: failed to resume: error -95
-> >
-> > In practice, only one PHY on the bus (e.g. XXXX:00:00) is typically
-> > attached to a MAC interface; others (like XXXX:00:01) are probed but
-> > not used, making such resume attempts unnecessary and misleading.
-> >
-> > Add an early return in mdio_bus_phy_resume() when !phydev->attached_dev,
-> > to prevent unneeded hardware initialization and avoids false error reports.
+>Just in case /*I'm Alex*/ here are my 2cents:
+>  I’d treat LED setup as best‑effort and not fail probe if it errors.
+>Warn once, mark LEDs unavailable, and continue. That keeps datapath
+>up and avoids tricky probe unwind. If we still want to fail on LED errors,
+>then either (a) fix the unwind (unregister_netdev et al.) or (b) move LED setup before register_netdev().
+
+Got it, thank you for your opinion :)
+
 >
-> PHYs are allowed to be attached without a net device. Your PHY
-> driver needs to cope with this condition.
+>  If LED labels depend on the netdev name, it’s fine to run LED setup after register_netdev().
+>Since errors are non‑fatal, there’s no unwind complexity.
 >
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>Keep igc_led_setup() returning an error for internal visibility, but don’t propagate it as probe failure:
+>err = igc_led_setup(adapter);
+>if (err) {
+>    netdev_warn_once(netdev,
+>                     "LED init failed (%d); continuing without LED support\n",
+>                     err);
+>    adapter->leds_available = false;
+>} else {
+>    adapter->leds_available = true;
+>}
+>
+>In remove()/error paths, guard teardown:
+>if (adapter->leds_available)
+>    igc_led_teardown(adapter);
 
-Thank you for the reply!
+I would like to adopt this approach, where we don't propagate led's
+failure and manage its status using flag like leds_available.
 
-My thought is, if a PHY device hasn't been attached to a net_device,
-is it still necessary to go through the resume procedure?
+I'll send v2 shortly.
 
-My issue context is as follows:
-After entering `mdio_bus_phy_resume`, the call flow proceeds to:
-`phy_init_hw()`
-    => `phydev->drv->config_init`
-        => `yt8521_config_init`
-
-Then, because `phydev->interface != PHY_INTERFACE_MODE_SGMII`, it attempts
-to enter `ytphy_rgmii_clk_delay_config` to configure the RGMII tx/rx delay.
-However, since this PHY device is not associated with any GMAC and is not
-connected via an RGMII interface, the function returns `-EOPNOTSUPP`.
-
-Of course, I could submit a fix patch to `motorcomm.c` to terminate
-`config_init` early. But as I mentioned at the beginning, when a PHY
-device hasn't been attached, do we really need to let it go through
-the entire resume process?
-
+>
+>Keep current order but fully unwind on error:
+>err = igc_led_setup(adapter);
+>if (err) {
+>    unregister_netdev(netdev);
+>    /* del NAPI, free queues, etc. in reverse order */
+>    err = -E...;
+>    goto err_free;
+>}
+>
+>With the best regards
+>Alex
