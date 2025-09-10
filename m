@@ -1,32 +1,32 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FAD311C15
-	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 22:19:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5E4313277
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 22:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757542749; cv=none; b=INTFZKcv4rdJNzIxH/5nIbaJYNmhPBEbgM2sF1L0ERRCV85e8H9eHAp0EYBKS97+Icy1roPNb+MwnN+Uo9jbam8SzaM7rH2DQkoJkoNEwMBSa2iHgoUE20yb57bboM96PJvOp2My/a64ClN5QE2dqTenww+yGSDUyMYwl3UTAec=
+	t=1757542750; cv=none; b=ihJKQHhkVX2l45P8znF30vnRa+wHz46c0AxtX1slrng0LPHgbV6w2Eas7EP7XjzjMkOEJaI6VuAnWRlkENqki5aJaUcfrqcveklo15nbEHG/if34VP6wCCWkTTPRqa/GoFp5j+v2tM33pG2P+Xxn7W1P8RmkkK4fHvP3G4DdBcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757542749; c=relaxed/simple;
-	bh=0DFWrsAzWk0RfZEVFwjBedn9frwXsKmc4zAU1ULPNUI=;
+	s=arc-20240116; t=1757542750; c=relaxed/simple;
+	bh=eV0K2GIn5pNZ4ozBfUg0OotLEO7xwOjObGc0k457mY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJT/vmptnoy3ZcHFuX2ENYV1jRlC1HXhWGoPh1I2swXSojh+0NsoGP/9ppdm2CZ/9CvG3PtjZIEPHNF2JURX6sSpNuZ+b5UGVzqLy+fJAGpcM3M7wm9nafJ2cg/3Pi3W+uBqklp93ZOC9b8Tu7dkLPvERRKm0opZBThMabiFEwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=i0I6cKmk; arc=none smtp.client-ip=91.218.175.178
+	 MIME-Version; b=PZWKLol7XU7K5iWLc+2SHKZX1OVKOyC31iQq3/OhyFH8JImobww3NnjsDZXKqgCiVU8ax7JUlT2fV+CXB3DR2s6VSfmxGKP3PXTx+5TuvT3r5AH/nB8lTQtbYESg1fWVKBZQLRdt6ycdJ0l8zRIrq8Oafar0w2pgsvkgla4ROlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FmkdZyfS; arc=none smtp.client-ip=91.218.175.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="i0I6cKmk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FmkdZyfS"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757542742;
+	t=1757542746;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KQAJ+wT8cFn5Wmcmc/suMjlhZAN13rfaMxrHJYH4sOg=;
-	b=i0I6cKmkybBWdqLcS1i8WEGJsTekJVOIDwByTg0cKg7Dl1nkiNqRh1kfWrkxBUYGJzyy7k
-	d6I0+uTnrdYiVoNAubvxxOPBOTx2yclMK9PuA1dgviW8MRN8+HPSGEw0dAvhswmtFTpTkT
-	pNivSXfXxxJn2y+U6C1gAGfnuOLoBkQ=
+	bh=faDaaCe9eHY4bsA8Y6JtH7wTEzGEgv1zxdTd+/w3W1E=;
+	b=FmkdZyfS/eH70Kx0zumWID/lfsaZxrfR3I/VBKDGU8geKhPo2GeNa9yB3QDaO63Ht8bSWl
+	DUBSLlm0vgPUXUuybuZO77zSU/NPsDjRuDgcZMqnlpxAk/xqRcHHXb1DRMZw1PfgfaGLKD
+	um5sEm1/dp+TKpOuQ9nItl+CYI5ZJBw=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Jakub Kicinski <kuba@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -40,10 +40,12 @@ To: Jakub Kicinski <kuba@kernel.org>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2 1/4] ethtool: add FEC bins histogramm report
-Date: Wed, 10 Sep 2025 22:11:08 +0000
-Message-ID: <20250910221111.1527502-2-vadim.fedorenko@linux.dev>
+	netdev@vger.kernel.org,
+	Yael Chemla <ychemla@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>
+Subject: [PATCH net-next v2 4/4] net/mlx5e: Report RS-FEC histogram statistics via ethtool
+Date: Wed, 10 Sep 2025 22:11:11 +0000
+Message-ID: <20250910221111.1527502-5-vadim.fedorenko@linux.dev>
 In-Reply-To: <20250910221111.1527502-1-vadim.fedorenko@linux.dev>
 References: <20250910221111.1527502-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
@@ -55,431 +57,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
-clarifies it a bit further. Implement reporting interface through as
-addition to FEC stats available in ethtool.
+From: Carolina Jubran <cjubran@nvidia.com>
 
+Add support for reporting RS-FEC histogram counters by reading them
+from the RS_FEC_HISTOGRAM_GROUP in the PPCNT register.
+
+Co-developed-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
 Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- Documentation/netlink/specs/ethtool.yaml      | 22 ++++++
- Documentation/networking/ethtool-netlink.rst  |  5 ++
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  3 +-
- .../ethernet/fungible/funeth/funeth_ethtool.c |  3 +-
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  3 +-
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |  4 +-
- .../marvell/octeontx2/nic/otx2_ethtool.c      |  3 +-
- .../ethernet/mellanox/mlx5/core/en_ethtool.c  |  3 +-
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  3 +-
- drivers/net/ethernet/sfc/ethtool.c            |  3 +-
- drivers/net/ethernet/sfc/siena/ethtool.c      |  3 +-
- drivers/net/netdevsim/ethtool.c               | 22 +++++-
- include/linux/ethtool.h                       | 25 ++++++-
- .../uapi/linux/ethtool_netlink_generated.h    | 11 +++
- net/ethtool/fec.c                             | 69 ++++++++++++++++++-
- 15 files changed, 169 insertions(+), 13 deletions(-)
+ .../ethernet/mellanox/mlx5/core/en_stats.c    | 33 ++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 7a7594713f1f..9f5084a7d534 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -1219,6 +1219,23 @@ attribute-sets:
-         name: udp-ports
-         type: nest
-         nested-attributes: tunnel-udp
-+  -
-+    name: fec-hist
-+    attr-cnt-name: __ethtool-a-fec-hist-cnt
-+    attributes:
-+      -
-+        name: bin-low
-+        type: u32
-+      -
-+        name: bin-high
-+        type: u32
-+      -
-+        name: bin-val
-+        type: uint
-+      -
-+        name: bin-val-per-lane
-+        type: uint
-+        multi-attr: True
-   -
-     name: fec-stat
-     attr-cnt-name: __ethtool-a-fec-stat-cnt
-@@ -1242,6 +1259,11 @@ attribute-sets:
-         name: corr-bits
-         type: binary
-         sub-type: u64
-+      -
-+        name: hist
-+        type: nest
-+        multi-attr: True
-+        nested-attributes: fec-hist
-   -
-     name: fec
-     attr-cnt-name: __ethtool-a-fec-cnt
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index ab20c644af24..b270886c5f5d 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -1541,6 +1541,11 @@ Drivers fill in the statistics in the following structure:
- .. kernel-doc:: include/linux/ethtool.h
-     :identifiers: ethtool_fec_stats
- 
-+Statistics may have FEC bins histogram attribute ``ETHTOOL_A_FEC_STAT_HIST``
-+as defined in IEEE 802.3ck-2022 and 802.3df-2024. Nested attributes will have
-+the range of FEC errors in the bin (inclusive) and the amount of error events
-+in the bin.
-+
- FEC_SET
- =======
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 2830a2b17a27..e3dab169c865 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -3208,7 +3208,8 @@ static int bnxt_get_fecparam(struct net_device *dev,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+index 476689cb0c1f..1da439dda323 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+@@ -1529,15 +1529,46 @@ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv,
+ 	return num_of_bins;
  }
  
- static void bnxt_get_fec_stats(struct net_device *dev,
--			       struct ethtool_fec_stats *fec_stats)
-+			       struct ethtool_fec_stats *fec_stats,
-+			       struct ethtool_fec_hist *hist)
- {
- 	struct bnxt *bp = netdev_priv(dev);
- 	u64 *rx;
-diff --git a/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c b/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-index ba83dbf4ed22..1966dba512f8 100644
---- a/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-+++ b/drivers/net/ethernet/fungible/funeth/funeth_ethtool.c
-@@ -930,7 +930,8 @@ static void fun_get_rmon_stats(struct net_device *netdev,
- }
- 
- static void fun_get_fec_stats(struct net_device *netdev,
--			      struct ethtool_fec_stats *stats)
-+			      struct ethtool_fec_stats *stats,
-+			      struct ethtool_fec_hist *hist)
- {
- 	const struct funeth_priv *fp = netdev_priv(netdev);
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index a752d0e3db3a..a5eefa28454c 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -1659,7 +1659,8 @@ static void hns3_set_msglevel(struct net_device *netdev, u32 msg_level)
- }
- 
- static void hns3_get_fec_stats(struct net_device *netdev,
--			       struct ethtool_fec_stats *fec_stats)
-+			       struct ethtool_fec_stats *fec_stats,
-+			       struct ethtool_fec_hist *hist)
- {
- 	struct hnae3_handle *handle = hns3_get_handle(netdev);
- 	struct hnae3_ae_dev *ae_dev = hns3_get_ae_dev(handle);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 55e0f2c6af9e..62d3cfca350c 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4620,10 +4620,12 @@ static int ice_get_port_fec_stats(struct ice_hw *hw, u16 pcs_quad, u16 pcs_port,
-  * ice_get_fec_stats - returns FEC correctable, uncorrectable stats per netdev
-  * @netdev: network interface device structure
-  * @fec_stats: buffer to hold FEC statistics for given port
-+ * @hist: buffer to put FEC histogram statistics for given port
-  *
-  */
- static void ice_get_fec_stats(struct net_device *netdev,
--			      struct ethtool_fec_stats *fec_stats)
-+			      struct ethtool_fec_stats *fec_stats,
-+			      struct ethtool_fec_hist *hist)
- {
- 	struct ice_netdev_priv *np = netdev_priv(netdev);
- 	struct ice_port_topology port_topology;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 998c734ff839..b90e23dc49de 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -1283,7 +1283,8 @@ static int otx2_set_link_ksettings(struct net_device *netdev,
- }
- 
- static void otx2_get_fec_stats(struct net_device *netdev,
--			       struct ethtool_fec_stats *fec_stats)
-+			       struct ethtool_fec_stats *fec_stats,
-+			       struct ethtool_fec_hist *hist)
- {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 	struct cgx_fw_data *rsp;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index d507366d773e..bcc3bbb78cc9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1927,7 +1927,8 @@ static int mlx5e_set_wol(struct net_device *netdev, struct ethtool_wolinfo *wol)
- }
- 
- static void mlx5e_get_fec_stats(struct net_device *netdev,
--				struct ethtool_fec_stats *fec_stats)
-+				struct ethtool_fec_stats *fec_stats,
-+				struct ethtool_fec_hist *hist)
- {
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-index b4ff98ee2051..b6e5bdd509f1 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-@@ -1659,7 +1659,8 @@ fbnic_get_pause_stats(struct net_device *netdev,
- 
- static void
- fbnic_get_fec_stats(struct net_device *netdev,
--		    struct ethtool_fec_stats *fec_stats)
-+		    struct ethtool_fec_stats *fec_stats,
-+		    struct ethtool_fec_hist *hist)
- {
- 	struct fbnic_net *fbn = netdev_priv(netdev);
- 	struct fbnic_phy_stats *phy_stats;
-diff --git a/drivers/net/ethernet/sfc/ethtool.c b/drivers/net/ethernet/sfc/ethtool.c
-index 23c6a7df78d0..18fe5850a978 100644
---- a/drivers/net/ethernet/sfc/ethtool.c
-+++ b/drivers/net/ethernet/sfc/ethtool.c
-@@ -217,7 +217,8 @@ static int efx_ethtool_set_wol(struct net_device *net_dev,
- }
- 
- static void efx_ethtool_get_fec_stats(struct net_device *net_dev,
--				      struct ethtool_fec_stats *fec_stats)
-+				      struct ethtool_fec_stats *fec_stats,
-+				      struct ethtool_fec_hist *hist)
- {
- 	struct efx_nic *efx = efx_netdev_priv(net_dev);
- 
-diff --git a/drivers/net/ethernet/sfc/siena/ethtool.c b/drivers/net/ethernet/sfc/siena/ethtool.c
-index 994909789bfe..8c3ebd0617fb 100644
---- a/drivers/net/ethernet/sfc/siena/ethtool.c
-+++ b/drivers/net/ethernet/sfc/siena/ethtool.c
-@@ -217,7 +217,8 @@ static int efx_ethtool_set_wol(struct net_device *net_dev,
- }
- 
- static void efx_ethtool_get_fec_stats(struct net_device *net_dev,
--				      struct ethtool_fec_stats *fec_stats)
-+				      struct ethtool_fec_stats *fec_stats,
-+				      struct ethtool_fec_hist *hist)
- {
- 	struct efx_nic *efx = netdev_priv(net_dev);
- 
-diff --git a/drivers/net/netdevsim/ethtool.c b/drivers/net/netdevsim/ethtool.c
-index f631d90c428a..6ef163847d13 100644
---- a/drivers/net/netdevsim/ethtool.c
-+++ b/drivers/net/netdevsim/ethtool.c
-@@ -165,11 +165,31 @@ nsim_set_fecparam(struct net_device *dev, struct ethtool_fecparam *fecparam)
- 	return 0;
- }
- 
-+static const struct ethtool_fec_hist_range netdevsim_fec_ranges[] = {
-+	{ 0, 0},
-+	{ 1, 3},
-+	{ 4, 7},
-+	{ 0, 0}
-+};
-+
- static void
--nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats)
-+nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats,
-+		   struct ethtool_fec_hist *hist)
- {
-+	struct ethtool_fec_hist_value *values = hist->values;
-+
-+	hist->ranges = netdevsim_fec_ranges;
-+
- 	fec_stats->corrected_blocks.total = 123;
- 	fec_stats->uncorrectable_blocks.total = 4;
-+
-+	values[0].bin_value = 445;
-+	values[1].bin_value = 12;
-+	values[2].bin_value = 2;
-+	values[0].bin_value_per_lane[0] = 125;
-+	values[0].bin_value_per_lane[1] = 120;
-+	values[0].bin_value_per_lane[2] = 100;
-+	values[0].bin_value_per_lane[3] = 100;
- }
- 
- static int nsim_get_ts_info(struct net_device *dev,
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index de5bd76a400c..473e33da29d8 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -492,7 +492,29 @@ struct ethtool_pause_stats {
- };
- 
- #define ETHTOOL_MAX_LANES	8
-+/**
-+ * IEEE 802.3ck/df defines 16 bins for FEC histogram plus one more for
-+ * the end-of-list marker, total 17 items
-+ */
-+#define ETHTOOL_FEC_HIST_MAX	17
-+/**
-+ * struct ethtool_fec_hist_range - error bits range for FEC bins histogram
-+ * statistics
-+ * @low: low bound of the bin (inclusive)
-+ * @high: high bound of the bin (inclusive)
-+ */
-+struct ethtool_fec_hist_range {
-+	s16 low;
-+	s16 high;
-+};
- 
-+struct ethtool_fec_hist {
-+	struct ethtool_fec_hist_value {
-+		u64 bin_value;
-+		u64 bin_value_per_lane[ETHTOOL_MAX_LANES];
-+	} values[ETHTOOL_FEC_HIST_MAX];
-+	const struct ethtool_fec_hist_range *ranges;
-+};
- /**
-  * struct ethtool_fec_stats - statistics for IEEE 802.3 FEC
-  * @corrected_blocks: number of received blocks corrected by FEC
-@@ -1212,7 +1234,8 @@ struct ethtool_ops {
- 	int	(*set_link_ksettings)(struct net_device *,
- 				      const struct ethtool_link_ksettings *);
- 	void	(*get_fec_stats)(struct net_device *dev,
--				 struct ethtool_fec_stats *fec_stats);
-+				 struct ethtool_fec_stats *fec_stats,
-+				 struct ethtool_fec_hist *hist);
- 	int	(*get_fecparam)(struct net_device *,
- 				      struct ethtool_fecparam *);
- 	int	(*set_fecparam)(struct net_device *,
-diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
-index e3b8813465d7..fd70f15666c1 100644
---- a/include/uapi/linux/ethtool_netlink_generated.h
-+++ b/include/uapi/linux/ethtool_netlink_generated.h
-@@ -561,12 +561,23 @@ enum {
- 	ETHTOOL_A_TUNNEL_INFO_MAX = (__ETHTOOL_A_TUNNEL_INFO_CNT - 1)
- };
- 
-+enum {
-+	ETHTOOL_A_FEC_HIST_BIN_LOW = 1,
-+	ETHTOOL_A_FEC_HIST_BIN_HIGH,
-+	ETHTOOL_A_FEC_HIST_BIN_VAL,
-+	ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE,
-+
-+	__ETHTOOL_A_FEC_HIST_CNT,
-+	ETHTOOL_A_FEC_HIST_MAX = (__ETHTOOL_A_FEC_HIST_CNT - 1)
-+};
-+
- enum {
- 	ETHTOOL_A_FEC_STAT_UNSPEC,
- 	ETHTOOL_A_FEC_STAT_PAD,
- 	ETHTOOL_A_FEC_STAT_CORRECTED,
- 	ETHTOOL_A_FEC_STAT_UNCORR,
- 	ETHTOOL_A_FEC_STAT_CORR_BITS,
-+	ETHTOOL_A_FEC_STAT_HIST,
- 
- 	__ETHTOOL_A_FEC_STAT_CNT,
- 	ETHTOOL_A_FEC_STAT_MAX = (__ETHTOOL_A_FEC_STAT_CNT - 1)
-diff --git a/net/ethtool/fec.c b/net/ethtool/fec.c
-index e7d3f2c352a3..536b19f4f1cf 100644
---- a/net/ethtool/fec.c
-+++ b/net/ethtool/fec.c
-@@ -17,6 +17,7 @@ struct fec_reply_data {
- 		u64 stats[1 + ETHTOOL_MAX_LANES];
- 		u8 cnt;
- 	} corr, uncorr, corr_bits;
-+	struct ethtool_fec_hist fec_stat_hist;
- };
- 
- #define FEC_REPDATA(__reply_base) \
-@@ -113,7 +114,11 @@ static int fec_prepare_data(const struct ethnl_req_info *req_base,
- 		struct ethtool_fec_stats stats;
- 
- 		ethtool_stats_init((u64 *)&stats, sizeof(stats) / 8);
--		dev->ethtool_ops->get_fec_stats(dev, &stats);
-+		ethtool_stats_init((u64 *)data->fec_stat_hist.values,
-+				   ETHTOOL_FEC_HIST_MAX *
-+				   sizeof(struct ethtool_fec_hist_value) / 8);
-+		dev->ethtool_ops->get_fec_stats(dev, &stats,
-+						&data->fec_stat_hist);
- 
- 		fec_stats_recalc(&data->corr, &stats.corrected_blocks);
- 		fec_stats_recalc(&data->uncorr, &stats.uncorrectable_blocks);
-@@ -157,13 +162,70 @@ static int fec_reply_size(const struct ethnl_req_info *req_base,
- 	len += nla_total_size(sizeof(u8)) +	/* _FEC_AUTO */
- 	       nla_total_size(sizeof(u32));	/* _FEC_ACTIVE */
- 
--	if (req_base->flags & ETHTOOL_FLAG_STATS)
-+	if (req_base->flags & ETHTOOL_FLAG_STATS) {
- 		len += 3 * nla_total_size_64bit(sizeof(u64) *
- 						(1 + ETHTOOL_MAX_LANES));
-+		/* add FEC bins information */
-+		len += (nla_total_size(0) +  /* _A_FEC_HIST */
-+			nla_total_size(4) +  /* _A_FEC_HIST_BIN_LOW */
-+			nla_total_size(4) +  /* _A_FEC_HIST_BIN_HI */
-+			/* _A_FEC_HIST_BIN_VAL + per-lane values */
-+			nla_total_size_64bit(sizeof(u64)) +
-+			nla_total_size_64bit(sizeof(u64) * ETHTOOL_MAX_LANES)) *
-+			ETHTOOL_FEC_HIST_MAX;
-+	}
- 
- 	return len;
- }
- 
-+static int fec_put_hist(struct sk_buff *skb, const struct ethtool_fec_hist *hist)
++static void fec_rs_histogram_fill_stats(struct mlx5e_priv *priv,
++					u8 num_of_bins,
++					struct ethtool_fec_hist *hist)
 +{
-+	const struct ethtool_fec_hist_range *ranges = hist->ranges;
-+	const struct ethtool_fec_hist_value *values = hist->values;
-+	struct nlattr *nest;
-+	int i, j;
++	struct mlx5_core_dev *mdev = priv->mdev;
++	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
++	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
++	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
++	void *rs_histogram_cntrs;
 +
-+	if (!ranges)
-+		return 0;
++	MLX5_SET(ppcnt_reg, in, local_port, 1);
++	MLX5_SET(ppcnt_reg, in, grp, MLX5_RS_FEC_HISTOGRAM_GROUP);
++	if (mlx5_core_access_reg(mdev, in, sz, out, sz, MLX5_REG_PPCNT, 0, 0))
++		return;
 +
-+	for (i = 0; i < ETHTOOL_FEC_HIST_MAX; i++) {
-+		if (i && !ranges[i].low && !ranges[i].high)
-+			break;
-+
-+		if (WARN_ON_ONCE(values[i].bin_value == ETHTOOL_STAT_NOT_SET))
-+			break;
-+
-+		nest = nla_nest_start(skb, ETHTOOL_A_FEC_STAT_HIST);
-+		if (!nest)
-+			return -EMSGSIZE;
-+
-+		if (nla_put_u32(skb, ETHTOOL_A_FEC_HIST_BIN_LOW,
-+				ranges[i].low) ||
-+		    nla_put_u32(skb, ETHTOOL_A_FEC_HIST_BIN_HIGH,
-+				ranges[i].high) ||
-+		    nla_put_uint(skb, ETHTOOL_A_FEC_HIST_BIN_VAL,
-+				 values[i].bin_value))
-+			goto err_cancel_hist;
-+		for (j = 0; j < ETHTOOL_MAX_LANES; j++) {
-+			if (values[i].bin_value_per_lane[j] == ETHTOOL_STAT_NOT_SET)
-+				break;
-+		}
-+		if (j && nla_put_64bit(skb, ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE,
-+				       sizeof(u64) * j,
-+				       values[i].bin_value_per_lane,
-+				       ETHTOOL_A_FEC_STAT_PAD))
-+			goto err_cancel_hist;
-+
-+		nla_nest_end(skb, nest);
++	rs_histogram_cntrs = MLX5_ADDR_OF(ppcnt_reg, out,
++					  counter_set.rs_histogram_cntrs);
++	/* Guaranteed that num_of_bins is less than MLX5E_FEC_RS_HIST_MAX
++	 * by fec_rs_histogram_fill_ranges().
++	 */
++	for (int i = 0; i < num_of_bins; i++) {
++		hist->values[i].bin_value = MLX5_GET64(rs_histogram_cntrs,
++						       rs_histogram_cntrs,
++						       hist[i]);
 +	}
-+
-+	return 0;
-+
-+err_cancel_hist:
-+	nla_nest_cancel(skb, nest);
-+	return -EMSGSIZE;
 +}
 +
- static int fec_put_stats(struct sk_buff *skb, const struct fec_reply_data *data)
+ static void fec_set_histograms_stats(struct mlx5e_priv *priv, int mode,
+ 				     struct ethtool_fec_hist *hist)
  {
- 	struct nlattr *nest;
-@@ -183,6 +245,9 @@ static int fec_put_stats(struct sk_buff *skb, const struct fec_reply_data *data)
- 			  data->corr_bits.stats, ETHTOOL_A_FEC_STAT_PAD))
- 		goto err_cancel;
- 
-+	if (fec_put_hist(skb, &data->fec_stat_hist))
-+		goto err_cancel;
++	u8 num_of_bins;
 +
- 	nla_nest_end(skb, nest);
- 	return 0;
- 
+ 	switch (mode) {
+ 	case MLX5E_FEC_RS_528_514:
+ 	case MLX5E_FEC_RS_544_514:
+ 	case MLX5E_FEC_LLRS_272_257_1:
+ 	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
+-		fec_rs_histogram_fill_ranges(priv, &hist->ranges);
++		num_of_bins = fec_rs_histogram_fill_ranges(priv, &hist->ranges);
++		if (num_of_bins)
++			fec_rs_histogram_fill_stats(priv, num_of_bins, hist);
+ 		break;
+ 	default:
+ 		return;
 -- 
 2.47.3
 
