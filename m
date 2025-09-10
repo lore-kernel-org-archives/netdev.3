@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A8630FF36;
-	Wed, 10 Sep 2025 23:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5130FC06;
+	Wed, 10 Sep 2025 23:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757545741; cv=none; b=DMvAOOJTqAmgJrk5eaQYSrPR7gE+9CQK2WWcIdMWhXoT0MJx2OukyLPdVkNrH9lcniG7vDNkZ2a5DkaaBlitayU6THEfUcFqBonheao7Nf88DXIrsY0wZ9Q7MefJL3TcD8pYObKCE6Ojtp4ayQQeaw+xS+oDL5KyzreWfUvxbxY=
+	t=1757545742; cv=none; b=GVrYBVExY+0qKIsflHxB34iUZYSY6ObFAnp+UllOzavs0umgX7g0GFNxsNlg/a4qmU3w0L2CAEaq1Zp/zciYevWQ0e7i1J88NVLpgQeA/+sdUWCWv0WvYnBQQI/p5pn1HMD0NDPC22maEqViYIUbwbW+K+X8DGtoQ4QPRIVQ2ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757545741; c=relaxed/simple;
-	bh=nmFUdln7rWayXOvm+tCjXRJq0z3FgFYUv+rQXSS1YKI=;
+	s=arc-20240116; t=1757545742; c=relaxed/simple;
+	bh=KNcy1v4zfi/eZP7HpihPuqSy+gZFwWXsgS/ILoEcbXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PvOtya7ANAo9ZyMnn5btkaVWMAKuWDd+0kudNgHAA1M+NK5ytYsGYcb9FjVAra6hsX+NEf/eNnVfHORrjLymqEh23T2J7CsNqH767R9QiSKvmt6vjBDVsKAalmZMp+M9Z0ZzGXU8MBmmaErd53XcPnD82mf3Uz3CK6Ae0YPfzQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=HltxTKhi; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=pz3NqMs9aLaVjcmnQyS8qR7IulYC/szmUYRUR2bH1BzJjj6MEjylBbh8HkDSncU9tnv+pwcC25ru/LCt5KB7D6i8/w50a2a639HH+oq9TWGi0sWklZ78zEskhMYHgBB0B8I6ZsKAebh0ViiIbjrIuhh9XNEu+chU2MS7g5o/Wm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=aCrbd/pD; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="HltxTKhi"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="aCrbd/pD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757545730;
-	bh=nmFUdln7rWayXOvm+tCjXRJq0z3FgFYUv+rQXSS1YKI=;
+	bh=KNcy1v4zfi/eZP7HpihPuqSy+gZFwWXsgS/ILoEcbXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HltxTKhiOHnCSUfdLrTG0iql13BAsPaDviXRRjJeOvWgY0+fo21zV1lKcSz2gEXNL
-	 L1FC5zrJ8EISxDPPjVrprNtiWuZaGH+2kl9PSTZt+vCj8QpgQiRX6QsVbRQ4iZA8KZ
-	 g6uI2QCbYkiOI3atxij7Wnul56VLVU6cGkmxReUsofKV4jy+CeR2gMaKLPoLekwKkK
-	 5Vl3ihDFfXTiE+Lc/bhpFBTLcgl2orys1DvV0XVlPDmCOEOJxywPjSV/5+7w2i6ZGX
-	 KqFdn6b3y0ewBDHrc7XyDXsyhjGNLe6TNW0RO+TvLO5rAHp8hy+Pku72gThVtot2Ty
-	 lzZIp2a/SfYSQ==
+	b=aCrbd/pDy5sdCqEDbrrk8TrMRDl8uwg5JTucd5QYqK6209lFjYSKFJRv4zEe3CyAb
+	 EG6I46jSQEneIJdLDmzAaJd/zoQwViUkrV1v/TSZyHIm3WurPd8tc9GmaYLPFBSizB
+	 +fT0OSl5aQCmXo0QqB+Vu5LZhPJJ35JrYSUXr0FtaQqxe8KNCYxRG4Y34KAdRZLRCh
+	 CYP6cOrGh97EeYxz+4bBoFgUYWGV87F66Keue6JA2n7y/lstOwiH9xDxru6us8NTpV
+	 yHf4rA6caFdsMDJVvaxxr+LXKZP97GyGXbshVaj/d+C0YHv4ampJYTKMi4lRxcfxwe
+	 eTQ1kSxL/z2EA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 3DB566000C;
-	Wed, 10 Sep 2025 23:08:49 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 4C921600C4;
+	Wed, 10 Sep 2025 23:08:50 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id F351E203A9B; Wed, 10 Sep 2025 23:08:42 +0000 (UTC)
+	id D36E8202A89; Wed, 10 Sep 2025 23:08:42 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -46,9 +46,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 05/12] tools: ynl-gen: add CodeWriter.p_lines() helper
-Date: Wed, 10 Sep 2025 23:08:27 +0000
-Message-ID: <20250910230841.384545-6-ast@fiberby.net>
+Subject: [PATCH net-next v2 02/12] tools: ynl-gen: generate nested array policies
+Date: Wed, 10 Sep 2025 23:08:24 +0000
+Message-ID: <20250910230841.384545-3-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910230841.384545-1-ast@fiberby.net>
 References: <20250910230841.384545-1-ast@fiberby.net>
@@ -61,103 +61,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a helper for writing an array of lines, and convert
-all the existing loops doing that, to use the new helper.
+This patch adds support for NLA_POLICY_NESTED_ARRAY() policies.
 
-This is a trivial patch with no behavioural changes intended,
-there are no changes to the generated code.
+Example spec (from future wireguard.yaml):
+-
+  name: wgpeer
+  attributes:
+    -
+      name: allowedips
+      type: indexed-array
+      sub-type: nest
+      nested-attributes: wgallowedip
+
+yields NLA_POLICY_NESTED_ARRAY(wireguard_wgallowedip_nl_policy).
+
+This doesn't change any currently generated code, as it isn't
+used in any specs currently used for generating code.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 32 ++++++++++++++------------------
- 1 file changed, 14 insertions(+), 18 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 6441d5a31391..18c6ed0044b9 100755
+index 1543d4911bf5..b7de7f6b1fc7 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -181,8 +181,7 @@ class Type(SpecAttr):
+@@ -816,6 +816,11 @@ class TypeArrayNest(Type):
+                     f'unsigned int n_{self.c_name}']
+         return super().arg_member(ri)
  
-     def free(self, ri, var, ref):
-         lines = self._free_lines(ri, var, ref)
--        for line in lines:
--            ri.cw.p(line)
-+        ri.cw.p_lines(lines)
- 
-     def arg_member(self, ri):
-         member = self._complex_member_type(ri)
-@@ -268,13 +267,9 @@ class Type(SpecAttr):
-             if self.presence_type() == 'present':
-                 ri.cw.p(f"{var}->_present.{self.c_name} = 1;")
- 
--        if init_lines:
--            ri.cw.nl()
--            for line in init_lines:
--                ri.cw.p(line)
-+        ri.cw.p_lines(init_lines, nl_before=True)
- 
--        for line in lines:
--            ri.cw.p(line)
-+        ri.cw.p_lines(lines)
-         ri.cw.block_end()
-         return True
- 
-@@ -1789,8 +1784,7 @@ class CodeWriter:
-         self.block_start()
-         self.write_func_lvar(local_vars=local_vars)
- 
--        for line in body:
--            self.p(line)
-+        self.p_lines(body)
-         self.block_end()
- 
-     def writes_defines(self, defines):
-@@ -1831,6 +1825,12 @@ class CodeWriter:
-             self.p('#ifdef ' + config_option)
-         self._ifdef_block = config_option
- 
-+    def p_lines(self, lines, nl_before=False):
-+        if lines and nl_before:
-+            self.nl()
-+        for line in lines or []:
-+            self.p(line)
++    def _attr_policy(self, policy):
++        if self.attr['sub-type'] == 'nest':
++            return f'NLA_POLICY_NESTED_ARRAY({self.nested_render_name}_nl_policy)'
++        return super()._attr_policy(policy)
 +
- 
- scalars = {'u8', 'u16', 'u32', 'u64', 's8', 's16', 's32', 's64', 'uint', 'sint'}
- 
-@@ -2088,8 +2088,7 @@ def put_req_nested(ri, struct):
-     ri.cw.block_start()
-     ri.cw.write_func_lvar(local_vars)
- 
--    for line in init_lines:
--        ri.cw.p(line)
-+    ri.cw.p_lines(init_lines)
- 
-     for _, arg in struct.member_list():
-         arg.attr_put(ri, "obj")
-@@ -2150,8 +2149,7 @@ def _multi_parse(ri, struct, init_lines, local_vars):
-     ri.cw.block_start()
-     ri.cw.write_func_lvar(local_vars)
- 
--    for line in init_lines:
--        ri.cw.p(line)
-+    ri.cw.p_lines(init_lines)
-     ri.cw.nl()
- 
-     for arg in struct.inherited:
-@@ -2280,10 +2278,8 @@ def parse_rsp_submsg(ri, struct):
- 
-         ri.cw.block_start(line=f'{kw} (!strcmp(sel, "{name}"))')
-         get_lines, init_lines, _ = arg._attr_get(ri, var)
--        for line in init_lines or []:
--            ri.cw.p(line)
--        for line in get_lines:
--            ri.cw.p(line)
-+        ri.cw.p_lines(init_lines)
-+        ri.cw.p_lines(get_lines)
-         if arg.presence_type() == 'present':
-             ri.cw.p(f"{var}->_present.{arg.c_name} = 1;")
-         ri.cw.block_end()
+     def _attr_typol(self):
+         if self.attr['sub-type'] in scalars:
+             return f'.type = YNL_PT_U{c_upper(self.sub_type[1:])}, '
 -- 
 2.51.0
 
