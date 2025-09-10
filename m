@@ -1,130 +1,141 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F752D1F4A
-	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 14:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6DD3218DE
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 14:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757513066; cv=none; b=Jgfr1skoD7xJqShJy8YyKZuimU8A/NyYyCvBjggVVHv/eOE19FAIjaK/mU4EtfMm3kJFD/4ge2m1xUgimLfv1aFqVRzk83Gx8Np23bN7zcseWQae49QiWN/OAgQivVUFFqAfJSQYyZabVuz4TBbD6FgphKsgKhyZVf1aKJcI4Ms=
+	t=1757513160; cv=none; b=uz7y9jeu2CBS/haBOPJJo/EOJDphLbqEXvKOD/iN1itd5E6lNSuLg+PNhJSNuHNdFRFvA0JQ5dk2HaB2DdnRxqIgaKqlCBqaB3ehgCFARiAvwNeqqOMLCZdeNQrQoGaRP7B1o7QQc0BxSXjeSURwxsis6FYPCShfPYnoB9vZAAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757513066; c=relaxed/simple;
-	bh=hnkE5ws+Y7Sz5Z8rOOEgDXYKE3Ksd1N0H8xQlwvp9vA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lVqzKfV8rinrwLXJvRVx/1F28IsFXUN9k9vFvx7cbgEgP550qEMF9BZ593KxsozUyV3oCgSjHCKqDc4gFjvRY0I3xXvKLv/2pn2PRfzghFoMLlIHzb6MxVUqmfO+0dT+eun26aYZ2t1ODBMH4ic9HPzcP80jLAhx1KCn7uU+FGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XsCiK84Q; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1757513160; c=relaxed/simple;
+	bh=Bjhex7LejrbRQaESQF5Epo/8YEFXGCfX/zfXr9uPhYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EkXdbtWHHhY76NB5LdsCAtav+yESJ2RhTnbZM7x9zH+icUXE3a6G/MT2S/EB4de8BJ18/m/sReuJ3hWyHpkOKCN5rplQxbcDxIozlhga8WF2JE++1Fw3HaFGhzpq7a08Wlk+dU/9O2aOSvi/eybbGRvhDHv3pMuYWzbxvJ404gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=n7PmtqlO; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XsCiK84Q"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4b600575a54so25280581cf.3
-        for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 07:04:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757513064; x=1758117864; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wZxTcd4w8teArmJQkcEMWpOhKDkunR89B3LxRhXaljE=;
-        b=XsCiK84QQZizxvdE6v5/mAG9wYFLcc5xTJ+4kJrIs6V95B5FxGClPpFJinu4K9vh8I
-         WncbLjWe1rP76U1ytldVwmV94TOtPPFI5k/QDYMebLDlaY4a5uB5fOcFWb5ErHv/DaN/
-         GFU2p2X9ji8fCovMYZ0AG76HtuprAwQI1vs7cHIi6umIQXKJMYfs132U0lJUVz9J/r0P
-         R+6Gq704G2FWFqLGZc6/GL/iXE2i4UJVCEyJp0tYNi5BkQP2kJ1Th5FBFnOAkSBIHbk0
-         Jo7yGo2l55P4G3neZJRaoc8pNNzAjtvZC4pucgxectQDUBk+8x6wz3UyyHli/sT93gAz
-         aygw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757513064; x=1758117864;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wZxTcd4w8teArmJQkcEMWpOhKDkunR89B3LxRhXaljE=;
-        b=Prk0Ips2nWf1iZTxdwaaGFBdxzkSTzyn7XerFnDbhGdSjoMf+KRQJIbfqy+x7WacuP
-         K3htaaIFA1NWYsRXJHWWpDHbaTNdEG08OjK6kupR9GVdpBbhmsEGi7E1FqQW+9MtLkTe
-         Vo3eL9qRGeunvrKeqqHfBzPcrAQkU1YHGSbWacX6umbTlWvWXyFj6xb1UO9ChhCq/NJu
-         am4zpsEPuZ+ZxGnn7L/4qzxFxolmPYWitcYdsuRzh+meycNyJQd97KKAuo91saNP8ww2
-         9Xm4ZTy+YdeZVJjcDKNihLDIf5a7XeU+kU1fmLoJpMVis5LGV/5CeRi0ZeEbUcYTYuC4
-         X8Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzDhNxFOVd4t7taG8J3U22eHTUv+65zVOyORhNkwaep8mmyIUBwJ3FihFrjNYR8xgFocwUUPo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYN0+qjxGkitW0lgTsnuceF4ZSgh4aDQxgdlfpg6eSHhDrhysy
-	iERMlX6b/91f0zIIZYr1rxwyp/n5LxXalkniGSJIn0nNpKVjWUwvQCqL4InGyHYbwFSkZbnYMsd
-	b+yHv2fkqdA/xJF51dFGCYGZCtGT8swYu1JKYZ0Ui
-X-Gm-Gg: ASbGncvYEMvX55GfGRvLvS9V0v6xL1uUmMMTQ1+3QlYsPpw/qqyN+xn6rT5b2YJwRMd
-	kLtLC8vh6W/yd/ALdf3WGv2pfokLJHY8SzTvGgHlt6v5mc1lL5sMzY0DPt64OGYFBuYGX2UBKWZ
-	fyzGTkn1R0FEwMaSc9O3X6dYRKqNkn6SNbwQnb0rJUnpaT9RhmcUL4UPXKBrApN590jHnf1vAFg
-	S1YNorOMCZ148lyxCIMWK5S
-X-Google-Smtp-Source: AGHT+IFxaUVTb/vJtdUbM8G8/Iz0bbRq8OjzMiV0xBB/Py/J9WyTJORBqkbOaNFMomu73ltfyN0EE3tghbuWR+s9nxI=
-X-Received: by 2002:a05:622a:1808:b0:4b3:61b:58f7 with SMTP id
- d75a77b69052e-4b5f848ce23mr167804181cf.73.1757513063181; Wed, 10 Sep 2025
- 07:04:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="n7PmtqlO"
+Message-ID: <effcf89d-925a-4bf6-9c6c-39a9b6731409@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757513156;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/7/m/rIMOan/KvaJDI/7faZKA7j5+5vMGRzv9YnAqCQ=;
+	b=n7PmtqlOoANH8MFq4N43pNmgqxju3jBfwrmJRdS2rw6Bcz/+rp2HPeZcPDNjjoeigbq2OS
+	WifDv0/lAyQIZwMT4NFOEjIWACyr40nHgLl3J7bY5o7ybti+ocUfOOkRQjmr9DdtWLdhOj
+	Pq3vGnefsF1duEzaKTAkb6SWP68nj10=
+Date: Wed, 10 Sep 2025 07:05:46 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DU0PR07MB91623D4146367CDEABC5E381F80EA@DU0PR07MB9162.eurprd07.prod.outlook.com>
- <CANn89iKy+jvfifGQX8EBomWmhzQnn7j7q39uqd23NX0vvk1nFQ@mail.gmail.com> <CADVnQykpRGLzri3nDu9dJmXNUBqz-Q0YsqY-B_r4Pj0VOg44ZA@mail.gmail.com>
-In-Reply-To: <CADVnQykpRGLzri3nDu9dJmXNUBqz-Q0YsqY-B_r4Pj0VOg44ZA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 10 Sep 2025 07:04:11 -0700
-X-Gm-Features: Ac12FXwybpfcZl0c1iXcz0GtYLGiS4KU4z9PTU6y1yLXrfpBknn19_493oxGeSg
-Message-ID: <CANn89iJLjyzn_=E7fHXJGM1Geg_3WnVTsqVfxGAu-QAyBByHAQ@mail.gmail.com>
-Subject: Re: TCP connection/socket gets stuck - Customer requests are dropped
- with SocketTimeoutException
-To: Neal Cardwell <ncardwell@google.com>
-Cc: Ramakant Badolia <Ramakant.Badolia@tomtom.com>, "kuniyu@google.com" <kuniyu@google.com>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Ozan Sengul <Ozan.Sengul@tomtom.com>, 
-	Raja Sekhar Pula Venkata <RAJASEKHAR.PULAVENKATA@tomtom.com>, 
-	Jean-Christophe Duberga <Jean-Christophe.Duberga@tomtom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 bpf] tcp_bpf: Call sk_msg_free() when
+ tcp_bpf_send_verdict() fails to allocate psock->cork.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+ Jakub Sitnicki <jakub@cloudflare.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com
+References: <20250909232623.4151337-1-kuniyu@google.com>
+ <a29689e0-cabc-4fdb-a030-443f0ccfb468@linux.dev>
+ <CAAVpQUDeaiGUdxGQHSMRU3=zwJy7a0hMWXjoRkfdYPqaZLU09Q@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <CAAVpQUDeaiGUdxGQHSMRU3=zwJy7a0hMWXjoRkfdYPqaZLU09Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Sep 10, 2025 at 6:58=E2=80=AFAM Neal Cardwell <ncardwell@google.com=
-> wrote:
->
-> On Wed, Sep 10, 2025 at 6:16=E2=80=AFAM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > On Wed, Sep 10, 2025 at 1:49=E2=80=AFAM Ramakant Badolia
-> > <Ramakant.Badolia@tomtom.com> wrote:
-> > >
-> > > Hi Linux TCP Maintainers,
-> > >
-> > > I am writing to get insight on this bug report - https://bugzilla.ker=
-nel.org/show_bug.cgi?id=3D219221
-> > > Unfortunately, we at TomTom have also been stuck with this issue for =
-the last two months and our customer requests are getting dropped intermitt=
-ently several times a day.
-> > >
-> > > Currently we are using Linux version 5.14.0-570.37.1.el9_6.x86_64 whi=
-ch is causing this issue.
-> > >
-> > > As reported in https://bugzilla.kernel.org/show_bug.cgi?id=3D219221, =
-we don't have possibility to rollback to previous working version.
-> > >
-> > > I want to check if you acknowledged this bug and what solution was pr=
-ovided? Which version should we switch to in order to have this fixed?
-> > >
-> >
-> > No idea. This might be a question for Redhat support ?
-> >
-> > I do not think you shared a pcap with us ?
->
-> Looks like the bug report at
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D219221 posted a working
-> and non-working ("not working TCP connection PCAP file"
-> non-working_tcp_packets.pcap) pcap file, though there was only a text
-> update for the working case.
+On 9/9/25 11:56 PM, Kuniyuki Iwashima wrote:
+> On Tue, Sep 9, 2025 at 10:15 PM Martin KaFai Lau <martin.lau@linux.dev> wrote:
+>>
+>> On 9/9/25 4:26 PM, Kuniyuki Iwashima wrote:
+>>> syzbot reported the splat below. [0]
+>>>
+>>> The repro does the following:
+>>>
+>>>     1. Load a sk_msg prog that calls bpf_msg_cork_bytes(msg, cork_bytes)
+>>>     2. Attach the prog to a SOCKMAP
+>>>     3. Add a socket to the SOCKMAP
+>>>     4. Activate fault injection
+>>>     5. Send data less than cork_bytes
+>>>
+>>> At 5., the data is carried over to the next sendmsg() as it is
+>>> smaller than the cork_bytes specified by bpf_msg_cork_bytes().
+>>>
+>>> Then, tcp_bpf_send_verdict() tries to allocate psock->cork to hold
+>>> the data, but this fails silently due to fault injection + __GFP_NOWARN.
+>>>
+>>> If the allocation fails, we need to revert the sk->sk_forward_alloc
+>>> change done by sk_msg_alloc().
+>>>
+>>> Let's call sk_msg_free() when tcp_bpf_send_verdict fails to allocate
+>>> psock->cork.
+>>>
+>>> [0]:
+>>> WARNING: net/ipv4/af_inet.c:156 at inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156, CPU#1: syz-executor/5983
+>>> Modules linked in:
+>>> CPU: 1 UID: 0 PID: 5983 Comm: syz-executor Not tainted syzkaller #0 PREEMPT(full)
+>>> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/12/2025
+>>> RIP: 0010:inet_sock_destruct+0x623/0x730 net/ipv4/af_inet.c:156
+>>> Code: 0f 0b 90 e9 62 fe ff ff e8 7a db b5 f7 90 0f 0b 90 e9 95 fe ff ff e8 6c db b5 f7 90 0f 0b 90 e9 bb fe ff ff e8 5e db b5 f7 90 <0f> 0b 90 e9 e1 fe ff ff 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c 9f fc
+>>> RSP: 0018:ffffc90000a08b48 EFLAGS: 00010246
+>>> RAX: ffffffff8a09d0b2 RBX: dffffc0000000000 RCX: ffff888024a23c80
+>>> RDX: 0000000000000100 RSI: 0000000000000fff RDI: 0000000000000000
+>>> RBP: 0000000000000fff R08: ffff88807e07c627 R09: 1ffff1100fc0f8c4
+>>> R10: dffffc0000000000 R11: ffffed100fc0f8c5 R12: ffff88807e07c380
+>>> R13: dffffc0000000000 R14: ffff88807e07c60c R15: 1ffff1100fc0f872
+>>> FS:  00005555604c4500(0000) GS:ffff888125af1000(0000) knlGS:0000000000000000
+>>> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>>> CR2: 00005555604df5c8 CR3: 0000000032b06000 CR4: 00000000003526f0
+>>> Call Trace:
+>>>    <IRQ>
+>>>    __sk_destruct+0x86/0x660 net/core/sock.c:2339
+>>>    rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+>>>    rcu_core+0xca8/0x1770 kernel/rcu/tree.c:2861
+>>>    handle_softirqs+0x286/0x870 kernel/softirq.c:579
+>>>    __do_softirq kernel/softirq.c:613 [inline]
+>>>    invoke_softirq kernel/softirq.c:453 [inline]
+>>>    __irq_exit_rcu+0xca/0x1f0 kernel/softirq.c:680
+>>>    irq_exit_rcu+0x9/0x30 kernel/softirq.c:696
+>>>    instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
+>>>    sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1052
+>>>    </IRQ>
+>>>
+>>> Fixes: 4f738adba30a ("bpf: create tcp_bpf_ulp allowing BPF to monitor socket TX/RX data")
+>>> Reported-by: syzbot+4cabd1d2fa917a456db8@syzkaller.appspotmail.com
+>>> Closes: https://lore.kernel.org/netdev/68c0b6b5.050a0220.3c6139.0013.GAE@google.com/
+>>> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+>>> ---
+>>>    net/ipv4/tcp_bpf.c | 4 +++-
+>>>    1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+>>> index ba581785adb4..ee6a371e65a4 100644
+>>> --- a/net/ipv4/tcp_bpf.c
+>>> +++ b/net/ipv4/tcp_bpf.c
+>>> @@ -408,8 +408,10 @@ static int tcp_bpf_send_verdict(struct sock *sk, struct sk_psock *psock,
+>>>                if (!psock->cork) {
+>>>                        psock->cork = kzalloc(sizeof(*psock->cork),
+>>>                                              GFP_ATOMIC | __GFP_NOWARN);
+>>> -                     if (!psock->cork)
+>>> +                     if (!psock->cork) {
+>>> +                             sk_msg_free(sk, msg);
+>>
+>> Nothing has been corked yet, does it need to update the "*copied":
+>>
+>>                                  *copied -= sk_msg_free(sk, msg);
+> 
+> Oh exactly, or simply *copied = 0 ?
 
-This was a one year old report/pcap, I was assuming Ramakant Badolia
-had maybe a different issue.
+Make sense. I made the change and updated the commit message for this fix also. 
+Applied. Thanks.
 
-What I saw in it was a suspicious/tiny initial RWIN of  585 bytes in a
-SYNACK, of less than one MSS...
 
- 00:00:02.896476 IP 10.51.51.211.57738 > 10.51.51.75.31421: Flags [S],
-seq 3801883815, win 64240, options [mss 1460,nop,wscale
-8,nop,nop,sackOK], length 0
- 00:00:00.000065 IP 10.51.51.75.31421 > 10.51.51.211.57738: Flags
-[S.], seq 1230473431, ack 3801883816, win 585, options [mss
-1460,nop,nop,sackOK,nop,wscale 0], length 0
-
-Thus my recommendation against tiny and non functional SO_RCVBUF.
