@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678863375C0
-	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 16:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB2A3375CF
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 16:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757521757; cv=none; b=eb+VrEvZMMKlxOWZxW4Y0XX/qsbc+3ZYIWfQNIbq/9CgZKHoPMcC9FfvTAYjIE2K/NPy1GAf4j6KLeKiM9kQzs0a6G/omEp8VN+KvzEm76MVKpQYiy6kxgRGR5fyUovcI/4f8LxRYXF+0hEN2PY65y4ko9kUEiBqvlY3Y/qvouA=
+	t=1757521758; cv=none; b=Sz6EgqGisQzXlkA6u27jMOOBopPpMP6dK8/vhoRln2vkRD7nTY1DfSSMZBbBJiOYgAt6nO9lAQdg3m+Pt7fSWA2jwdgwCdxHcYWCufToQNfR/yl48O6nH3WyNZnBZqLAyZlsg/4yA7C7KEl+QJZPvDcnQb6XH4UA6e6HP6gt5WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757521757; c=relaxed/simple;
-	bh=9ThQkVd2Zi531Rvyvscgu2Z1Af6VCj646K62Dybge8M=;
+	s=arc-20240116; t=1757521758; c=relaxed/simple;
+	bh=bMaWgX3avYF+Ev6+k2uZD1yKCPw1akHzkA1wFZYRprQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTkU6XtN09mXUI0jNlGS1PA951vdOfqnjMHHl8Vmxr0AuSpjNnqYE7dsfPkcYycr0r/s5jT+oBx2nJH7lk1g616wY/yU/Jv1D+tvIwHIDBewFrtvLuCvA/flAw051SglfmvZrJu12cf+vZ1uEEzH7BMbzpO6d5ijv1AzYMHGvh0=
+	 MIME-Version; b=k1DiPQUn1aRTRalG7UrKiK7q8eywfxuqHK5g4aCQXs0VQgGDtRrWWd9HhCnuK3ZYQ/X/jvBLdIoz4V08kEZMwacRkQbwQ8rmtRt95RxmRD0wuNYuzA2nb9fa9jOXW9PE5kL8uKQONYcqKsJ2XFPv0jPt/Ii/sjMEwHMclq+EMtU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uwNh3-0004pO-OY
-	for netdev@vger.kernel.org; Wed, 10 Sep 2025 18:29:13 +0200
+	id 1uwNh4-0004po-9q
+	for netdev@vger.kernel.org; Wed, 10 Sep 2025 18:29:14 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1uwNh2-000cVw-3C
+	id 1uwNh3-000cWC-0h
 	for netdev@vger.kernel.org;
 	Wed, 10 Sep 2025 18:29:13 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id A749E46B1F1
+	by bjornoya.blackshift.org (Postfix) with SMTP id D54C046B1F5
 	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 16:29:12 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id C259046B1C4;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id E832F46B1C8;
 	Wed, 10 Sep 2025 16:29:10 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 09c6230a;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 41054530;
 	Wed, 10 Sep 2025 16:29:09 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,12 +45,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Alex Tran <alex.t.tran@gmail.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 1/7] docs: networking: can: change bcm_msg_head frames member to support flexible array
-Date: Wed, 10 Sep 2025 18:20:21 +0200
-Message-ID: <20250910162907.948454-2-mkl@pengutronix.de>
+Subject: [PATCH net 4/7] can: j1939: j1939_sk_bind(): call j1939_priv_put() immediately when j1939_local_ecu_get() failed
+Date: Wed, 10 Sep 2025 18:20:24 +0200
+Message-ID: <20250910162907.948454-5-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250910162907.948454-1-mkl@pengutronix.de>
 References: <20250910162907.948454-1-mkl@pengutronix.de>
@@ -66,40 +66,39 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Alex Tran <alex.t.tran@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-The documentation of the 'bcm_msg_head' struct does not match how
-it is defined in 'bcm.h'. Changed the frames member to a flexible array,
-matching the definition in the header file.
+Commit 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct
+callback") expects that a call to j1939_priv_put() can be unconditionally
+delayed until j1939_sk_sock_destruct() is called. But a refcount leak will
+happen when j1939_sk_bind() is called again after j1939_local_ecu_get()
+ from previous j1939_sk_bind() call returned an error. We need to call
+j1939_priv_put() before j1939_sk_bind() returns an error.
 
-See commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
-flexible-array members")
-
-Signed-off-by: Alex Tran <alex.t.tran@gmail.com>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://patch.msgid.link/20250904031709.1426895-1-alex.t.tran@gmail.com
-Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217783
+Fixes: 25fe97cb7620 ("can: j1939: move j1939_priv_put() into sk_destruct callback")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/4f49a1bc-a528-42ad-86c0-187268ab6535@I-love.SAKURA.ne.jp
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- Documentation/networking/can.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/can/j1939/socket.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
-index bc1b585355f7..7650c4b5be5f 100644
---- a/Documentation/networking/can.rst
-+++ b/Documentation/networking/can.rst
-@@ -742,7 +742,7 @@ The broadcast manager sends responses to user space in the same form:
-             struct timeval ival1, ival2;    /* count and subsequent interval */
-             canid_t can_id;                 /* unique can_id for task */
-             __u32 nframes;                  /* number of can_frames following */
--            struct can_frame frames[0];
-+            struct can_frame frames[];
-     };
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 70ebc861ea2a..88e7160d4248 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -521,6 +521,9 @@ static int j1939_sk_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	ret = j1939_local_ecu_get(priv, jsk->addr.src_name, jsk->addr.sa);
+ 	if (ret) {
+ 		j1939_netdev_stop(priv);
++		jsk->priv = NULL;
++		synchronize_rcu();
++		j1939_priv_put(priv);
+ 		goto out_release_sock;
+ 	}
  
- The aligned payload 'frames' uses the same basic CAN frame structure defined
-
-base-commit: d3b28612bc5500133260aaf36794a0a0c287d61b
 -- 
 2.51.0
 
