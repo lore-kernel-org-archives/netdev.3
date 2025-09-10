@@ -1,169 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B3D24A058
-	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 08:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA2631D39A
+	for <netdev@vger.kernel.org>; Wed, 10 Sep 2025 08:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757493632; cv=none; b=iMeYKfSHfCsbAX5C6hwY2lWN0KmH+F5xRczCQBKmXpCFvQRjObfahjHCC5cGdT738EMru5Qpnx5F/uJJnX0n8Su1BT1LyBo34Z3IkvPvdp2gRb1EuLPIpTV58o+b5I6CelDvmmkyEKk4TS3xc1cpyDksLuRglLu+u3Fp2TVuLiE=
+	t=1757494642; cv=none; b=V4b7SHDECLDjTuHTAFBIJqu/4c4p1+UrBL7CKaEG2n7hyTvkQLwCJkCeDZGjwyp+uP9Fpd22MIf8SgDmzlW2fvFIf0CVt4l/nxoI6V+JKdpdC1nqro9/7BmxDEQiwl1ak7g94AVydMxicb529S0xxZ95O4Z7Ze1YRMQGAZZUOGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757493632; c=relaxed/simple;
-	bh=dqzOebhYtBEm/9mdnkeCrdoukRPVSibFUQqAe+v50KI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcLVOMe0bICu9b4e3wntRb0UXxNanCwTDSWKbSZBU5b6j6c3u60Kohl0XVTSlVphiIOIRmuqluLvEi/dTjXTGNtloA6XGp2Q6qa/pl25HwzPr/fnszdCEyWMwu5WgGZ/TiQlxIRcj0e62I+yy9mm9PqPkNzwMNSwWd7CrKE7g8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJwZbD9s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757494642; c=relaxed/simple;
+	bh=n6HktFMvXlEZfA1HoDdBO9d4w2msy3IhJMr13Fd8rE0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=l0SxQlodaNPONm5HHzx2frjjk4QgR/U1mI8S8ID74VFTdRdGHpGrEyr5cnoLSGSHCUTULwHirbrc8ALi+WpmBd8nl2We0rgYhKdyrZGYes1HVRfc4lua72iE2cAZPyI8mJ64GXyR0iYLMcbIJh7rTmjXSJFsb2ir/Yj2DR8Fqu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aN12IBeL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WFCvfnlz; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJwZbD9s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C16AC4CEFC;
-	Wed, 10 Sep 2025 08:40:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757493632;
-	bh=dqzOebhYtBEm/9mdnkeCrdoukRPVSibFUQqAe+v50KI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jJwZbD9s5jPqDoV20gcRFE8VgiUyMTNnpIzA8VzK9PeLYi6swB+uA5AvsLuWl3cjl
-	 zAbVMq1U9Fpbi1NoDAFH8GfOkmtr/1h3Zj+rztysJOLnTnYcWt6Fxugb5opetD+h0d
-	 TppZ9/UKqLDmXF9kA9bWAwYdsG0eFJJMoDz1gS4ezMWOpITnrA8wzIqtSnOsUG48Ur
-	 DrpmTAbVNodfFYlrX6wabrCV/s/jspNAKU5L/eVzbqRvxIaiqOgbd2BIUTrx8HLzHX
-	 CG0WyKtLWC7Tt6pMzuVCv09oa/Z77dAgoJox8YG2Q4rnjTJErRmGAmo1LqSNDTu6Tv
-	 voRynZYLezNxA==
-Date: Wed, 10 Sep 2025 11:40:27 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: netdev@vger.kernel.org, Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Xiumei Mu <xmu@redhat.com>
-Subject: Re: [PATCH ipsec] xfrm: fix offloading of cross-family tunnels
-Message-ID: <20250910084027.GL341237@unreal>
-References: <1aaa7c722713167b09a9a22120a9870a25c87eda.1756126057.git.sd@queasysnail.net>
- <20250909092315.GC341237@unreal>
- <aMByADrbXBAXzIJr@krikkit>
- <20250910054550.GI341237@unreal>
- <aMExEjj3I4ahnMHc@krikkit>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aN12IBeL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WFCvfnlz"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1757494638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pc/v+5JWAGJNdou9DYjUduiOh9htdW77VarGrhFdsfU=;
+	b=aN12IBeLmQo21aQlVNThc1EpUhg4L6W6cmFgCOYjrLiqDxPjUtGrkon8xZNAPN8MEXAy7R
+	lD2oKJgqBLLBRiL5MXb31XQ0yuZgcg8qbddr9eXJi2P6vmR237Ur85UXXjuNlf8HFq6JPX
+	n3ca4ktYKETDtKQb6LnFoFN90APMWGEQe5USGhq5seuKSaYWoH7StFVBhgFPmmpmRfRlJu
+	x5Jg7iyjQv5jHLQYD84yBiDn4NVhr4U0UWVjzkKihnxsh+0dZYZkYlAnElAtpEwJ8C6uPi
+	NUTlravFNK/cbpbvtoV67XhBWkDmiAXwSgliq+NNNiS9Q8U7UOhfXdGB9m7n0w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1757494638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pc/v+5JWAGJNdou9DYjUduiOh9htdW77VarGrhFdsfU=;
+	b=WFCvfnlzo33gNofzRk7Wi34l4vbkWKvQU4gIuAvAiaGKiRKxYd14v0T5F3nbVz0xR4LYCT
+	W5PIyc3HMkDYMOBw==
+To: Kohei Enju <enjuk@amazon.com>, vitaly.lifshits@intel.com
+Cc: andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com, davem@davemloft.net,
+ edumazet@google.com, enjuk@amazon.com, intel-wired-lan@lists.osuosl.org,
+ kohei.enju@gmail.com, kuba@kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, przemyslaw.kitszel@intel.com,
+ aleksandr.loktionov@intel.com
+Subject: Re: [Intel-wired-lan] [PATCH v1 iwl-net] igc: unregister netdev
+ when igc_led_setup() fails in igc_probe()
+In-Reply-To: <20250910075231.99838-1-enjuk@amazon.com>
+References: <15453ddf-0854-4be6-9eed-017ef79d3c77@intel.com>
+ <20250910075231.99838-1-enjuk@amazon.com>
+Date: Wed, 10 Sep 2025 10:57:17 +0200
+Message-ID: <87cy7yk7ma.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMExEjj3I4ahnMHc@krikkit>
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-On Wed, Sep 10, 2025 at 10:04:34AM +0200, Sabrina Dubroca wrote:
-> 2025-09-10, 08:45:50 +0300, Leon Romanovsky wrote:
-> > On Tue, Sep 09, 2025 at 08:29:20PM +0200, Sabrina Dubroca wrote:
-> > > 2025-09-09, 12:23:15 +0300, Leon Romanovsky wrote:
-> > > > On Mon, Aug 25, 2025 at 02:50:23PM +0200, Sabrina Dubroca wrote:
-> > > > > Xiumei reported a regression in IPsec offload tests over xfrmi, where
-> > > > > IPv6 over IPv4 tunnels are no longer offloaded after commit
-> > > > > cc18f482e8b6 ("xfrm: provide common xdo_dev_offload_ok callback
-> > > > > implementation").
-> > > > 
-> > > > What does it mean "tunnels not offloaded"?
-> > > 
-> > > Offload is no longer performed for those tunnels, or for packets going
-> > > through those tunnels if we want to be pedantic.
-> > > 
-> > > > xdo_dev_offload_ok()
-> > > > participates in data path and influences packet processing itself,
-> > > > but not if tunnel offloaded or not.
-> > > 
-> > > If for you "tunnel is offloaded" means "xdo_dev_state_add is called",
-> > > then yes.
-> > 
-> > Yes, "offloaded" means that we created HW objects.
-> 
-> For me "offloaded" can mean either the xfrm state or the packets
-> depending on context, and I don't think there's a strict definition,
-> but whatever.
-> 
-> Xiumei reported a regression in IPsec offload tests over xfrmi, where
-> the traffic for IPv6 over IPv4 tunnels is processed in SW instead of
-> going through crypto offload, after commit [...].
-> 
-> It's getting too verbose IMO, but does that work for you?
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Yes, it is perfectly fine.
+On Wed Sep 10 2025, Kohei Enju wrote:
+> + Aleksandr
+>
+> On Wed, 10 Sep 2025 10:28:17 +0300, Lifshits, Vitaly wrote:
+>
+>>On 9/8/2025 9:26 AM, Kurt Kanzenbach wrote:
+>>> On Sat Sep 06 2025, Kohei Enju wrote:
+>>>> Currently igc_probe() doesn't unregister netdev when igc_led_setup()
+>>>> fails, causing BUG_ON() in free_netdev() and then kernel panics. [1]
+>>>>
+>>>> This behavior can be tested using fault-injection framework. I used the
+>>>> failslab feature to test the issue. [2]
+>>>>
+>>>> Call unregister_netdev() when igc_led_setup() fails to avoid the kernel
+>>>> panic.
+>>>>
+>>>> [1]
+>>>>   kernel BUG at net/core/dev.c:12047!
+>>>>   Oops: invalid opcode: 0000 [#1] SMP NOPTI
+>>>>   CPU: 0 UID: 0 PID: 937 Comm: repro-igc-led-e Not tainted 6.17.0-rc4-=
+enjuk-tnguy-00865-gc4940196ab02 #64 PREEMPT(voluntary)
+>>>>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debi=
+an-1.16.3-2 04/01/2014
+>>>>   RIP: 0010:free_netdev+0x278/0x2b0
+>>>>   [...]
+>>>>   Call Trace:
+>>>>    <TASK>
+>>>>    igc_probe+0x370/0x910
+>>>>    local_pci_probe+0x3a/0x80
+>>>>    pci_device_probe+0xd1/0x200
+>>>>   [...]
+>>>>
+>>>> [2]
+>>>>   #!/bin/bash -ex
+>>>>
+>>>>   FAILSLAB_PATH=3D/sys/kernel/debug/failslab/
+>>>>   DEVICE=3D0000:00:05.0
+>>>>   START_ADDR=3D$(grep " igc_led_setup" /proc/kallsyms \
+>>>>           | awk '{printf("0x%s", $1)}')
+>>>>   END_ADDR=3D$(printf "0x%x" $((START_ADDR + 0x100)))
+>>>>
+>>>>   echo $START_ADDR > $FAILSLAB_PATH/require-start
+>>>>   echo $END_ADDR > $FAILSLAB_PATH/require-end
+>>>>   echo 1 > $FAILSLAB_PATH/times
+>>>>   echo 100 > $FAILSLAB_PATH/probability
+>>>>   echo N > $FAILSLAB_PATH/ignore-gfp-wait
+>>>>
+>>>>   echo $DEVICE > /sys/bus/pci/drivers/igc/bind
+>>>>
+>>>> Fixes: ea578703b03d ("igc: Add support for LEDs on i225/i226")
+>>>> Signed-off-by: Kohei Enju <enjuk@amazon.com>
+>>>=20
+>>> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+>>
+>>Thank you for the patch and for identifying this issue!
+>>
+>>I was wondering whether we could avoid failing the probe in cases where=20
+>>igc_led_setup fails. It seems to me that a failure in the LED class=20
+>>functionality shouldn't prevent the device's core functionality from=20
+>>working properly.
+>
+> Indeed, that also makes sense.
+>
+> The behavior that igc_probe() succeeds even if igc_led_setup() fails
+> also seems good to me, as long as notifying users that igc's led
+> functionality is not available.
 
-> 
-> 
-> For the subject, are you ok with the current one? It's hard to fit
-> more details into such a short space.
+SGTM. The LED code is nice to have, but not mandatory at all. The device
+has sane LED defaults.
 
-Leave subject as is, you describe issue well enough in the commit
-message.
+>
+>>
+>> From what I understand, errors in this function are not due to hardware=
+=20
+>>malfunctions. Therefore, I suggest we remove the error propagation.
+>>
+>>Alternatively, if feasible, we could consider reordering the function=20
+>>calls so that the LED class setup occurs before the netdev registration.
+>>
+>
+> I don't disagree with you, but I would like to hear Kurt and Aleksandr's
+> opinion. Do you have any preference or suggestions?
 
-> 
-> > > > Also what type of "offload" are you talking? Crypto or packet?
-> > > 
-> > > Crypto offload, but I don't think packet offload would behave
-> > > differently here.
-> > 
-> > It will, at least in the latest code, we have an extra check before
-> > passing packet to HW.
-> > 
-> >   765         if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET) {
-> >   766                 if (!xfrm_dev_offload_ok(skb, x)) {
-> >   767                         XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> >   768                         kfree_skb(skb);
-> >   769                         return -EHOSTUNREACH;
-> >   770                 }
-> 
-> So it looks like packet offload is also affected. We get to
-> xfrm_dev_offload_ok, it does the wrong check, and the packets will get
-> dropped instead of being sent through SW crypto. Am I misreading this?
+See above.
 
-There is no fallback in packet offload, so dropping packet which can't
-be handled by HW is right thing to do. I agree that we shouldn't fail
-here.
+Thanks,
+Kurt
 
-> 
-> 
-> > > > > Commit cc18f482e8b6 added a generic version of existing checks
-> > > > > attempting to prevent packets with IPv4 options or IPv6 extension
-> > > > > headers from being sent to HW that doesn't support offloading such
-> > > > > packets. The check mistakenly uses x->props.family (the outer family)
-> > > > > to determine the inner packet's family and verify if
-> > > > > options/extensions are present.
-> > > > 
-> > > > This is how ALL implementations did, so I'm not agree with claimed Fixes
-> > > > tag (it it not important).
-> > > 
-> > > Well, prior to your commit, offload seemed to work on mlx5 as I
-> > > describe just after this.
-> > 
-> > It worked by chance, not by design :)
-> 
-> Sure.
-> 
-> [...]
-> > > > The latter is more correct, so it raises question against which
-> > > > in-kernel driver were these xfrmi tests performed?
-> > > 
-> > > mlx5
-> > 
-> > It is artifact.
-> 
-> Sorry, I'm not sure what you mean here.
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I'm saying that "works" depends on FW and HW revision.
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> [...]
-> > > > Will it work for transport mode too? We are taking this path both for
-> > > > tunnel and transport modes.
-> > > 
-> > > Yes, if you look at __xfrm_init_state, inner_mode will always be set
-> > > to whatever family is "inside".
-> > 
-> > I believe that you need to rephrase commit message around meaning of "offloaded"
-> > but the change looks ok to me.
-> > 
-> > Thanks,
-> > Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Thanks. I'll send a v2 when we agree on the wording, to avoid
-> resending multiple times.
-> 
-> -- 
-> Sabrina
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmjBPW0THGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgmfSEACerOjOXk+2Y8gvMjauZVEXuS1cMIaM
+Ej18mKnpkGLjVUjPdBNzXM3G3PcE4XZnl191D3QBpAHnopTaf9dRdSS0WjeNa1sY
+QlXkINq9DF+rNZmca3vGIyEv+DHHl+/r9APfWJKBE82gpg/+3tjbip18NIVQfes3
+kCQQiyFJfiLVTXSsZzQnF3/JQLjuahgM3ysXzq+jEPLq25A5IOma+cksRFi2nW5d
+uM4D4ArgTvX5eVP3Q2bQLJvoaqUd2pkdywquIKcboSMuKiSmVz3CQFUuZooiV6kq
+1qbwsqyo694SUgMCTN/gwvGTPuyjEHOOiXQs6lgR/4ba/3AHUv9ncQsJZYd0+p/k
+hDKypy7/JhV0HUjvOLqwFV8BvPqYwK21D6IFogbO4kYqzwx5++CL0JJHvDweP9Q0
+6une76DEbGMgUG3KJBMBv5w6oszPsH1PwBSLzPE7Lh+Q41hOleJjy9UOB2jzxqpb
+Fp0TYZ4619VNCppChwGzo9BA9fbfkIXiW+rw6mKXTUHFXckrVRvlwVP8ixVwlvto
+CHzPoOeCKcBYeN5g6rrEkfiQn4lMQwVROyY33nJbK/ycY3qGYmRR/v0TMTZ4R8O2
+SV4PYIDP8ul3VK+Cf55+LN0VrDM4Po1H9vgPgCcOPTh/LL329z1T1u3RQgG+BBac
+jAEsDZ20sajB8Q==
+=qkE/
+-----END PGP SIGNATURE-----
+--=-=-=--
