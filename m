@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3592DCF55;
-	Wed, 10 Sep 2025 10:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF74E2DCF55;
+	Wed, 10 Sep 2025 10:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757499780; cv=none; b=mpv1pfnEc9I4RcLxyBYjewS+At6RqyHo7YHynp4RKhLDlMiVwLP3uNU2IyOrtgImFRUzqDbLaE3EbVQ0RancubKB2pDtUaPfG8ORlORQxCIwJ/yj7+3K7saK9MGtHJlLGfLAuE4gLnd8wpCqe1BQyeKFd59mxeSiSrmM04p7AtQ=
+	t=1757499934; cv=none; b=gSbuTjS/k0cavpdT8kOTmA1M+iVaq9OikzIi6DO+3e7qdd0e0uyyDJ0XFYgz30kAB3YUZQn8WN0q3y7XMjT95KCrm6BIcvzrHTQuK/bHAjomta6+QLkv8NxB6ALVzoV3azAjS+WIjxYQiSth16udBbR4CvRld2xCUlDeAp2pfiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757499780; c=relaxed/simple;
-	bh=cci8FBP5oFeYz9yLMjoMZ35yzN03vgg0F6ebk7eIsi8=;
+	s=arc-20240116; t=1757499934; c=relaxed/simple;
+	bh=rOQxOgEMHcjOh++UqbUESyHQ5d1FesjktaJp9ctQiAo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TPi6lwD/BvHSIbHLV+HZFAJMZTGMDm1i2ZSKIiawlGuWv4BJcnNOr3xOXlG/9NYvvCh7mKng//g1AlBXmmrL9T26dfizME3cnGAdHSEh6RisomR+X7ANxxcI40OADW6kCQtB/Q6aqwR1KlsqcZqtgDnrHd4Kxw+KfeVadFfzWQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hDRZruSh; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=NllAgqT/76CDPKFDcKx8nBNtMUH3//+HsD2M+CcxqCno4XizzTjW8FTVSxlUSvU2x5AaLgig2QWPmKXVUVbiCQu8gIymItQFw82KsliaHqeA+1A/EPKPZ9irlXNr7HIpimEqXVm5w5rheHY+0RsJoG0xaekaDLD5GnWap8x8Dn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4K+kdev; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hDRZruSh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82E9C4CEF0;
-	Wed, 10 Sep 2025 10:22:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4K+kdev"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2692BC4CEF0;
+	Wed, 10 Sep 2025 10:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757499779;
-	bh=cci8FBP5oFeYz9yLMjoMZ35yzN03vgg0F6ebk7eIsi8=;
+	s=k20201202; t=1757499933;
+	bh=rOQxOgEMHcjOh++UqbUESyHQ5d1FesjktaJp9ctQiAo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hDRZruShKjhHZoJTXNHXIYfOcRr1DoZVXqSQxslDqsRXN/1YwAvtuyEsVja1lJYuq
-	 EC4gCJuHob8Imo2oOEST5R1EaMTvmWILH76C8wMPwv3ur+y1yyjqlUD5cSQjSZUnpw
-	 0f6RooPWUGACQFQBsSPIC++msWkNT91fczeelOq6s1bZVhHlj0hrTVDqVJpQllDzpH
-	 mYLb2EaA5ZUNJoAffUt9JTiU+7M/XoVyUcXmQLwoRo9/J7y/lLZDcFoa4SEQm/mq6/
-	 U27d3bsjAXnBl+dbPWjbKqg8dLtziXc2VKAWwpSOLtxGmyXkVQAL+rfp4x484SNRlA
-	 Zrqhvh8ICN9gg==
-Date: Wed, 10 Sep 2025 13:22:54 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: ALOK TIWARI <alok.a.tiwari@oracle.com>
-Cc: Abhijit Gangurde <abhijit.gangurde@amd.com>, brett.creeley@amd.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, corbet@lwn.net, jgg@ziepe.ca,
-	andrew+netdev@lunn.ch, sln@onemain.com, allen.hubbe@amd.com,
-	nikhil.agarwal@amd.com, linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Andrew Boyer <andrew.boyer@amd.com>
-Subject: Re: [External] : [PATCH v6 10/14] RDMA/ionic: Register device ops
- for control path
-Message-ID: <20250910102254.GO341237@unreal>
-References: <20250903061606.4139957-1-abhijit.gangurde@amd.com>
- <20250903061606.4139957-11-abhijit.gangurde@amd.com>
- <98538e34-c329-4785-8380-7932a284a515@oracle.com>
+	b=b4K+kdevzHGbYRrec4m+ky9DW3o4crg47X0AbSlGJkqgiabBEiwxdKkU6us5Vgxpr
+	 bxQnspbQIaDrkez1h7jyF+5DJZTGvDcLqZn2L8BBp6I8r0q0o5qZyqOtoStYFcS5V7
+	 9904tL+Gy3mAtD9nxYLQWIR0LHwsV44ZYtqzsHfPoxvzjHrzkUIhKxxFBrw/z5WO5L
+	 MBijN8s/qIyiMADWPXDyqk8ZWUcxR4KqKJQrEwMu+OXbdsgwA4QooCLDgOTkI3Pu/X
+	 GiGvtrrAK7XVqNvrsWhUxK0LryZqtlHRvXqXWqE02melptFeQx/6FdUb9Dme2K/Dzl
+	 VasjEYf1cVLtw==
+Date: Wed, 10 Sep 2025 11:25:28 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] Bluetooth: Avoid a couple dozen
+ -Wflex-array-member-not-at-end warnings
+Message-ID: <20250910102528.GA30363@horms.kernel.org>
+References: <aMAZ7wIeT1sDZ4_V@kspp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,37 +49,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98538e34-c329-4785-8380-7932a284a515@oracle.com>
+In-Reply-To: <aMAZ7wIeT1sDZ4_V@kspp>
 
-On Tue, Sep 09, 2025 at 07:37:32PM +0530, ALOK TIWARI wrote:
+On Tue, Sep 09, 2025 at 02:13:35PM +0200, Gustavo A. R. Silva wrote:
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
 > 
+> Use the __struct_group() helper to fix 31 instances of the following
+> type of warnings:
 > 
-> On 9/3/2025 11:46 AM, Abhijit Gangurde wrote:
-> > +/* admin queue v1 opcodes */
-> > +enum ionic_v1_admin_op {
-> > +	IONIC_V1_ADMIN_NOOP,
-> > +	IONIC_V1_ADMIN_CREATE_CQ,
-> > +	IONIC_V1_ADMIN_CREATE_QP,
-> > +	IONIC_V1_ADMIN_CREATE_MR,
-> > +	IONIC_V1_ADMIN_STATS_HDRS,
-> > +	IONIC_V1_ADMIN_STATS_VALS,
-> > +	IONIC_V1_ADMIN_DESTROY_MR,
-> > +	IONIC_v1_ADMIN_RSVD_7,		/* RESIZE_CQ */
+> 30 net/bluetooth/mgmt_config.c:16:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 1 net/bluetooth/mgmt_config.c:22:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 > 
-> typo IONIC_v1_ADMIN_RSVD_7 -> IONIC_V1_ADMIN_RSVD_7
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+> Changes in v2:
+>  - Use __struct_group() instead of TRAILING_OVERLAP().
+> 
+> v1:
+>  - Link: https://lore.kernel.org/linux-hardening/aLSCu8U62Hve7Dau@kspp/
 
-I fixed it locally
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Thanks
-
-> 
-> > +	IONIC_V1_ADMIN_DESTROY_CQ,
-> > +	IONIC_V1_ADMIN_MODIFY_QP,
-> > +	IONIC_V1_ADMIN_QUERY_QP,
-> > +	IONIC_V1_ADMIN_DESTROY_QP,
-> > +	IONIC_V1_ADMIN_DEBUG,
-> > +	IONIC_V1_ADMIN_CREATE_AH,
-> 
-> 
-> Thanks,
-> Alok
