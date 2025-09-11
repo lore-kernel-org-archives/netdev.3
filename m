@@ -1,99 +1,108 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002322D29D0;
-	Thu, 11 Sep 2025 08:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47322DECCC;
+	Thu, 11 Sep 2025 08:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757577933; cv=none; b=bEpMPTtqiqWsR18jeQr4g3LqeOzgZgwkoNBXOvFCXFajNuoWvM90bf8D0Kmv0BcmqiIOfGtPEljmN/kI/ET5nlpRqiSFOuT5quTxeS2b3ARCWrt58wgRsdoBfMMPx0kz2X+CVrXSXfkRazYkVHjH+rRcl01BPokMi9L5JHZnFuc=
+	t=1757579009; cv=none; b=ObivgLmsEJafgSit2CvWmhTBA7mX1iT/BXwn+9pGN4UsMfegOQjhvs2C1gPK2zRCUHj0QBKbIAKAFp4vrDMgW3t4viJWm4MwtEQ1AOU45HRkwSrKmuuYa3ssnyVNCcQTLA1AawBXBO+qT9n3tBYq6gH0AODgWpSoSgyDatzYeos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757577933; c=relaxed/simple;
-	bh=kyEZTSyTVT22OnQt8GD5B8uSiBJmJtF2ytLQyJXbi8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XilmAt33CHtOjwjtwdBpOtPpUpylg/oI1k5Pe5G2WPSGteog7SdNkJa5fmuPOJWpqooYXfzIZTlpKXilRVxd3mTkjxiOsJqUCZW2hm2R00vqa+uHqtbsQ26ydKXwtJqjAPM1+l8aW4tngygyU8jmDIeHdhEBm85tZ8YdWkZEWlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eykry1+l; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1757579009; c=relaxed/simple;
+	bh=/v0yrpBEJQ0D28G9+YyT6cosJyEdCGkLKC3aD1BtsjQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VwCG/hUxmKbX/p58/E7Om3nsufC5DRtKUJ+yJFZXRmfukGaRs3LfkJz9QFzOBUH4LqDjL5S7fuRgBa5swVxOLDYnc6x0omJhvA5BGpGHrKubAyVWZKy/wHwZcWjecnsyZTtVy9SvunT3vqaz2T/g+W6mWFsBp/mrPoJ/WYCwPd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQxyzVZf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eykry1+l"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45b9814efbcso9320595e9.0;
-        Thu, 11 Sep 2025 01:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757577930; x=1758182730; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WILfbNWCo4ARUml9R1JlxJoUwAPnqw4NB8gmHT/M6qY=;
-        b=eykry1+lrwbI2HbdlCpkQjGooFfiE0WiogxB8hulMIk3iR6AIXJ47uJeDFPIMDDv8i
-         E0zYnmLAzWAsDHyKii855aL4GtMzdJ8cULUp3+QGK6lNyf9E1b+p9fPoL5I2O8mTaqeI
-         ehTOho0xJyjwU744DtAdzxIh5dtS7d7ehO0jtEwf/JPUbKOBqRq/lNzprXEXij4pxzqM
-         aiLGY7I3oAGEPCm0otDJWIuoA+H9nFQAtCKD1rtrhqAKbn9QY12hxdl52TzGGl6uXYId
-         jDX4zNB56QPi5umdlwRvGVW5zvtAZRNR8nFcZpPH6MiOk9JRh9uyi1nsFAmx6xLBnKPO
-         zvkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757577930; x=1758182730;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WILfbNWCo4ARUml9R1JlxJoUwAPnqw4NB8gmHT/M6qY=;
-        b=w5lzcfPaZt5GFt/Fd2UTkYpUd26ZXSg+lISm66XNvFFk5QSLOSVNZDmiMb3CZcaezE
-         wQCyGiK4VjIBFf1UK5rmw1LStXQ8UaFhOA4oyBlfLfAfLFBptoewkD0PKAFtX2U8yTdh
-         wV0L5MXdjsgR4el54lHmDNL+aw0vKDKw+UNZBGHDO0OqWKI3hJ0Jlm+PYzwWKffhIjvQ
-         m8K8A/rHnggfhYt4IAz2gu5FzYpHuCGY0OYP7ZerJXbFBq+fBQZ43nCjVoO206KlURW4
-         wFJIWcIzDJZRqL+S/WKpMaoYYq1/1ij7s/lEIZjDJCdWu6tpjWEs8HbuKh+/FvVrLYGq
-         g7QA==
-X-Forwarded-Encrypted: i=1; AJvYcCW08nSJCo+tms9l/I4KqLAHEzNSkjpjT/swecsKNE/4tEPTPbeUf6gx62oY4OC+k8AagFDnvmY0@vger.kernel.org, AJvYcCWcqeK8xuNmI8zWVAPLIT+46tQJo2hCaAvhT5PXx+P1btdkndfiuIGgxZcBx0PmcFYhzLm3cvvN5wYkIXM=@vger.kernel.org, AJvYcCX7iuY4UItFIrAZAyaXuWMZggJusjJvVf8fXOGT++AIojhor7lo/Hcj5D9kaRptIitfzeawbP87uMmk41rvtUx4@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiJgU6+EhH8yurMHHWv+4gyXLnpKyKE2/MSAn4G184f4VR/j9r
-	aGombQ5WZPWjZtN5LHunp2/kyJUn1GcopHoEUrQt6Mjvyn5CYQ06o4Nc
-X-Gm-Gg: ASbGncu0vr2vKw1Azub2n9QBMozypaZdQTvpOuGy3w/OJVwvpg9qbu/t60cKRoqrVuk
-	8/S8AyWsx6WaB7+HoPFloPMH4XHaO5M0UwOKg0nan3W3ipxHURoiiXHL9uiWb7fuvYDpyMVwdPY
-	2Q1TkexKIuzA/uHPSbR5BXXP/5KmStMcdOy7/wKTxJId3eYoiJJZmzmwxmqTDFKA1D5VTF8XZMn
-	PCNnKAdJyVjDIN0WDCH4rKTDuYFcsR0v3GFx0VhO6NjLCVShGVnajWd6jOP1M4cu48NpdL4kHzk
-	GfeIXQXWNSMDoC9k4Pv8eD0qx5EzVg6W7ZaPOqe7GaCsPiA3C1FyAbeWwF5jUn2rg/t2BpLBhH7
-	KzzK1Q3se3q8azPbYQwo=
-X-Google-Smtp-Source: AGHT+IGgAGUcNXjgllFkYVY1TZbEoX/w4+CCWy19jehwdaJkLLJthfSn7prFns29wdUb+u9szALQ7Q==
-X-Received: by 2002:a05:600c:c0cd:b0:45c:b5c3:ea37 with SMTP id 5b1f17b1804b1-45dfd5e3d97mr17699455e9.11.1757577930042;
-        Thu, 11 Sep 2025 01:05:30 -0700 (PDT)
-Received: from archlinux ([143.58.192.81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0152ffc1sm9246035e9.3.2025.09.11.01.05.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Sep 2025 01:05:29 -0700 (PDT)
-Date: Thu, 11 Sep 2025 09:05:27 +0100
-From: Andre Carvalho <asantostc@gmail.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 4/5] netconsole: resume previously deactivated
- target
-Message-ID: <nvbscfpi75on4pkv5niyzxkheobyxqofju7lr5a6kfywssgedj@tn4cgo4zj3qc>
-References: <20250909-netcons-retrigger-v1-0-3aea904926cf@gmail.com>
- <20250909-netcons-retrigger-v1-4-3aea904926cf@gmail.com>
- <jcvsmfivr27bchhk2t2lt2l35ixjs2adaos6hqwfydpulq7gxm@5aprxim4vvoa>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQxyzVZf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 67236C4CEF7;
+	Thu, 11 Sep 2025 08:23:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757579009;
+	bh=/v0yrpBEJQ0D28G9+YyT6cosJyEdCGkLKC3aD1BtsjQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=CQxyzVZfqH+P8zdM82GRHXbD8rE+lYTjiUXu+VMzpsklXBR9fuIyHyWn95aOHeij+
+	 KRbHJHTH1k7NCMiEZ0DPX6Oy84HwmVwMu+cvW5iGVfZz3l7vuW/EK/sift3aM/85FS
+	 nQ8m3gzMIZ1e29VOW8+pIln+g9i03WkXc+d+z0wRvrMgRz/VC7RloIXEYvmQI9gmGs
+	 /1EZuYKLIdxqaNNj3hGFk3tJqo6+/nsxiI7JZJ87zRdNlE4AZnCWTKRK97n1nFszT3
+	 VQhv+/NRP4yPq1vH9CtgsHsaONBPTjPjEDU5Zjk9XVs+qwBAWqe9cW5yD2qIBmM0nc
+	 lKsJ5rUKSOZow==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54666CAC587;
+	Thu, 11 Sep 2025 08:23:29 +0000 (UTC)
+From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
+Date: Thu, 11 Sep 2025 16:22:59 +0800
+Subject: [PATCH net 1/2] net: stmmac: est: Fix GCL bounds checks
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jcvsmfivr27bchhk2t2lt2l35ixjs2adaos6hqwfydpulq7gxm@5aprxim4vvoa>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250911-qbv-fixes-v1-1-e81e9597cf1f@altera.com>
+References: <20250911-qbv-fixes-v1-0-e81e9597cf1f@altera.com>
+In-Reply-To: <20250911-qbv-fixes-v1-0-e81e9597cf1f@altera.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <Jose.Abreu@synopsys.com>, 
+ Rohan G Thomas <rohan.g.thomas@intel.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rohan G Thomas <rohan.g.thomas@altera.com>, 
+ Matthew Gerlach <matthew.gerlach@altera.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757579008; l=1329;
+ i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
+ bh=08KV5iTtWBP58r0AMyc5QP0+5U8/3Bb20vU2hpRSVqk=;
+ b=RKVL8L4shTtsE0yMWktLB7UBTuTa5UWJgk5bAXN9GwEGjDkZuaPg7txbFStG1fwxJBY0LIErS
+ eYMjClFcT76BBd+UOuHoOQAlvwTtkpfhVFDcJ60tcbGH5COJq7AZ5kT
+X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
+ pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
+X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
+ with auth_id=494
+X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reply-To: rohan.g.thomas@altera.com
 
-On Wed, Sep 10, 2025 at 12:50:07PM -0700, Breno Leitao wrote:
-> > +		if (nt->state == STATE_DEACTIVATED && event == NETDEV_UP)  {
-> > +			if (!strncmp(nt->np.dev_name, dev->name, IFNAMSIZ))
-> 
-> Don't you need to check for dev_mac here as well?
+From: Rohan G Thomas <rohan.g.thomas@intel.com>
 
-I believe so. Will fix that and try to cover this case on the selftest too.
+Fix the bounds checks for the hw supported maximum GCL entry
+count and gate interval time.
 
-> > +				schedule_work(&nt->resume_wq);
-> 
-> I would prefer to have the enablement done inline here, instead of
-> scheduling a task.
+Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-That makes sense. I believe I'll need an alternative to netpoll_setup that can be 
-called with rtnl already held. I'll attempt to do this for v2.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 694d6ee1438197bd4434af6e9b78f022e94ff98f..89d094abb6be5c993c81901e3f79a6b03f310511 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -981,7 +981,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 	if (qopt->cmd == TAPRIO_CMD_DESTROY)
+ 		goto disable;
+ 
+-	if (qopt->num_entries >= dep)
++	if (qopt->num_entries > dep)
+ 		return -EINVAL;
+ 	if (!qopt->cycle_time)
+ 		return -ERANGE;
+@@ -1012,7 +1012,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 		s64 delta_ns = qopt->entries[i].interval;
+ 		u32 gates = qopt->entries[i].gate_mask;
+ 
+-		if (delta_ns > GENMASK(wid, 0))
++		if (delta_ns >= BIT(wid))
+ 			return -ERANGE;
+ 		if (gates > GENMASK(31 - wid, 0))
+ 			return -ERANGE;
 
-Thanks for the review!
+-- 
+2.25.1
+
+
