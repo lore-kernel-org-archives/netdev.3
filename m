@@ -1,283 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDA036CDE6;
-	Thu, 11 Sep 2025 16:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF8C35AAB9
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 16:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757607825; cv=none; b=XKM/ME0Je5aZwjfmeVvWLaRtj4XPrjTjl7o0qbezV+u3s+RkkafFW7aGU2uphy7QorjgAEEjTHuu+QH6pxAXij5L1dbLL8sj6TdeARUYFiJp3Oq47ybJLpsf1zNlNhSjP6Dh9B7+SFHjpvyoh8H5kCn9Mk+KcqKDwmuXP6aVGZw=
+	t=1757608066; cv=none; b=gRmGndti8Lh82JR1Hjj3lDpe9V+IXXiXA1me1pPdLF5Po2dnh04bMVvmb9byaSNT7xLeazFunlAuyEkIMsbkyyjWJSnlgbREetR//kImkzUlSIqALfQ3IJXNJjCUYM5yao6ZSEZau0J/hqQBEimMyX9lbnYnBRO3bHrkBmiO/ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757607825; c=relaxed/simple;
-	bh=ZbzwFksgb7H1D0gKuZCJsoT2wb4x1APi3k7nuAZfsng=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJ9FLqX0ALHZ0NpSe+4tRmsq2f0MtKCkGxlMw5LDCIWZwNJdOCtD9nj+KDfj0vF88tMKVGO0xNayCOzn2IecuqeMp5vnQ0RsUW2+TNaMsHnMXalhiyEXAYCI0RkHBNKHXJjA533mkYqAEqOxYWWQIpIkthQnipBnjvVfD+r5oDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U1f1WM85; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757608066; c=relaxed/simple;
+	bh=TwUk990oB0arNw1DZXZzp2OuVwx4/bKeQidL32+X/sE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fv3tBzjy7NCR0iPp3k43XeaAkAuC5K4H30t4MSSz6V14yRyqxD1h5tj0jO9TQYFDbJ5EFHPKxHrVey26WbLamuQtM2mDBzlMYw2gAQi2qiYzixFBZPYA1kH4bYL0Tyrm8cdFtN9Z6ywldxcwdhUFUc3ibJR4hHcKbxSj2iajMfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BJtWKHls; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U1f1WM85"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757607823; x=1789143823;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ZbzwFksgb7H1D0gKuZCJsoT2wb4x1APi3k7nuAZfsng=;
-  b=U1f1WM85yQKQwYY+y8RMtkrG8IsakMUilozjaQJYOiutRpaYGKx6pKSL
-   IPy8iQTwQlXu3oMyRL0HDPAgYm2bvXAGen0bozuW6gUMPOPPXI6EbbYAI
-   LM/wGtB0roGJ0eCd6txA+mZRPtHjDAGWMDJ2DaoUdZ8LeGbKaCZaYd2vY
-   rYk2v7xki+jEC48TxyWjTfTo18+5xs5judtNmGV4h0v6e050deSqhsSTG
-   inEjrWx9j3+O152MO/WWJoCYhczzi8kzjx50HvLFGUsnSBYbVkm3yl30h
-   sO7kzPZ2KmT1l+NZlloPYV6+i5XKlHlaEVo+gWMRqFox8YAJY3yld7OBO
-   g==;
-X-CSE-ConnectionGUID: NCstvL1wT82bf3CGc1retw==
-X-CSE-MsgGUID: XRKs40YQQOaco0k265bHIQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="70635216"
-X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
-   d="scan'208";a="70635216"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 09:23:43 -0700
-X-CSE-ConnectionGUID: BYgh7milQWyE4Mf5GqIn9A==
-X-CSE-MsgGUID: iWVXcq3mT628kEEr6mXlZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,257,1751266800"; 
-   d="scan'208";a="173284722"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa009.jf.intel.com with ESMTP; 11 Sep 2025 09:23:38 -0700
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Simon Horman <horms@kernel.org>,
-	nxne.cnse.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-next 5/5] idpf: enable XSk features and ndo_xsk_wakeup
-Date: Thu, 11 Sep 2025 18:22:33 +0200
-Message-ID: <20250911162233.1238034-6-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250911162233.1238034-1-aleksander.lobakin@intel.com>
-References: <20250911162233.1238034-1-aleksander.lobakin@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BJtWKHls"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45df0cde41bso7085465e9.3
+        for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 09:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757608062; x=1758212862; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ID9K2Pz50qvQb969LAhUUpT2ZvtF2+y3oALjyFfijA=;
+        b=BJtWKHlsYg2YvnWWggyIB45+Xnb0uoKR/dz3AVX6m8xl/Iu4+rj196sf0NzOJiIfBh
+         XtNKbSQTyiNbkI6mdi4BjnI65no8qoHA6+CIuZFZoe4NJ4NaagE/81ZvlQECBkuM2kp3
+         vxs4Y2K++TNDrFXsHFkjuydNt1oIVdcTJ5eHlZjNJJKdzPLSJSx3Eg2DmmdSG1KIFx3j
+         6/a/FwuHhjkbvMQjvjx+aazUQHxGNuq+nxmLU61FcxG/S9/L8/YWSgfRPEEsviv70T2T
+         rN7PU8lmL1cpHXalshncEnVCev6EiBmev+Io71P4966sOOtvdIjMzSkexu1l6/egb8o9
+         qxIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757608062; x=1758212862;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ID9K2Pz50qvQb969LAhUUpT2ZvtF2+y3oALjyFfijA=;
+        b=a1jE5yvFK1VnixEIGmRHo+MNzDvNa5zcX380fFeibVNNvaMDvl/ArZTEHTCW8+sKHw
+         Hd8L203SAzEoNTLWqOBTN4AapqnYlWyzq2KWMKRH8tbOsjsV5+cPEelYQU+DJc9h1m7I
+         2PR0bDupjGk4ue9pVsRPjGyXsnfJZ22qmTSJQafL7np1R5jTASe2UNtfaOq1AS0ReBZT
+         kU+X0GD3GgQ1RU+PZl9icpAapOzuQ/gQCgpKrejx2xbnd28pEH+QvcYscWVYzfgyqDFW
+         Ipo8VNBMjoalF0mwPLQX6Hpa0Lrgci8bvz0JYSkDl9eif9ajo4xa61IjfwIj/vl55FK5
+         jzGw==
+X-Gm-Message-State: AOJu0YxCMy2oI5//5PGZlOmox8NP84Td2fWE6Hy+wWLzB1rMAwuZWHPR
+	m1JvnZFXqUGw5sD2bQ/iHxmHFVtOGFR1DeKyRkmazqZRhlJS6QXCzkYG
+X-Gm-Gg: ASbGncse0RZ3155Kcp8FxdRUI/p0Tj6ZfcJ0oeJPprbPGS8UlK2Thcl40VS/cQuZdch
+	L48fEj1ThwF13O8hAje62yDjCm7wEyDr57CTLr8UJZTlDvNQX+viafX6/fXwNSUex+mr+IaVBXS
+	bARAGw423mredfbVL0yI/JhO2mcEJHg2MQe1g2+Xax5Iua4K7cAwnmQSvbp92uiKKYEd56ONYV+
+	C6yc6Mdsy29s4kksK2DUzqiyx2WNGAust/hGyqloNv0LoIaRdLSJ6/APZJJW2qT/7EtN4/18Ely
+	K3FQ4eCks62awreY3i+zTlciTGBm6w15J22ld4eFdm9QCzP7xSwEzmhYmhTtO1+ACDhth69YzeB
+	VWl8o60Vy23rCQmFVuy9rY1QWFHm+Mp+P/Ut2hQ3Lgc+hqHJsEclalxH1RzAkPW8Qg2Aajces7y
+	x4s0hTIgD6T8K0Xq4I7vTNiGd8opaWrhj8aKG4rVUP7OloyVn/Kj2ouJpA2csIfA==
+X-Google-Smtp-Source: AGHT+IHpG+Lo9fvd05RKlmJWiOpN27divHXOE8lnNfa1d6ppWXpWPFE6GbzGC0My0rBHZwg88ZcJjg==
+X-Received: by 2002:a05:600c:6b06:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-45f211d0795mr843665e9.10.1757608061940;
+        Thu, 11 Sep 2025 09:27:41 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f4f:5300:1cfa:4708:5a23:4727? (p200300ea8f4f53001cfa47085a234727.dip0.t-ipconnect.de. [2003:ea:8f4f:5300:1cfa:4708:5a23:4727])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e7607d7593sm3033783f8f.43.2025.09.11.09.27.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 09:27:41 -0700 (PDT)
+Message-ID: <bb41943c-991a-46bc-a0de-e2f3f1295dc4@gmail.com>
+Date: Thu, 11 Sep 2025 18:28:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/2] net: phylink: warn if deprecated array-style
+ fixed-link binding is used
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <964df2db-082b-4977-b4c9-fbdcfc902f9e@gmail.com>
+ <bca6866a-4840-4da0-a735-1a394baadbd8@gmail.com>
+ <51e11917-e9c7-4708-a80f-f369874d2ed3@kernel.org>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
+ sY7IoIouzOjyFdFPnz4Bl3927ClT567hUJJ+SNaFEiJ9vadI6vZm2gcY4ExdIevYHWe1msJF
+ MVE4yNwdS+UsPeCF/6CQQTzHc+n7DomE7fjJD5J1hOJjqz2XWe71fTvYXzxCFLwXXbBiqDC9
+ dNqOe5odPsa4TsWZ09T33g5n2nzTJs4Zw8fCy8rLqix/raVsqr8fw5qM66MVtdmEljFaJ9N8
+ /W56qGCp+H8Igk/F7CjlbWXiOlKHA25mPTmbVp7VlFsvsmMokr/imQr+0nXtmvYVaKEUwY2g
+ 86IU6RAOuA8E0J5bD/BeyZdMyVEtX1kT404UJZekFytJZrDZetwxM/cAH+1fMx4z751WJmxQ
+ J7mIXSPuDfeJhRDt9sGM6aRVfXbZt+wBogxyXepmnlv9K4A13z9DVLdKLrYUiu9/5QEl6fgI
+ kPaXlAZmJsQfoKbmPqCHVRYj1lpQtDM/2/BO6gHASflWUHzwmBVZbS/XRs64uJO8CB3+V3fa
+ cIivllReueGCMsHh6/8wgPAyopXOWOxbLsZ291fmZqIR0L5Y6b2HvdFN1Xhc+YrQ8TKK+Z4R
+ mJRDh0wNQ8Gm89g92/YkHji4jIWlp2fwzCcx5+lZCQ1XdqAiHQARAQABzSZIZWluZXIgS2Fs
+ bHdlaXQgPGhrYWxsd2VpdDFAZ21haWwuY29tPsLBjgQTAQgAOBYhBGxfqY/yOyXjyjJehXLe
+ ig9U8DoMBQJf9GRVAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHLeig9U8DoMSycQ
+ AJbfg8HZEK0ljV4M8nvdaiNixWAufrcZ+SD8zhbxl8GispK4F3Yo+20Y3UoZ7FcIidJWUUJL
+ axAOkpI/70YNhlqAPMsuudlAieeYZKjIv1WV5ucNZ3VJ7dC+dlVqQdAr1iD869FZXvy91KhJ
+ wYulyCf+s4T9YgmLC6jLMBZghKIf1uhSd0NzjyCqYWbk2ZxByZHgunEShOhHPHswu3Am0ftt
+ ePaYIHgZs+Vzwfjs8I7EuW/5/f5G9w1vibXxtGY/GXwgGGHRDjFM7RSprGOv4F5eMGh+NFUJ
+ TU9N96PQYMwXVxnQfRXl8O6ffSVmFx4H9rovxWPKobLmqQL0WKLLVvA/aOHCcMKgfyKRcLah
+ 57vGC50Ga8oT2K1g0AhKGkyJo7lGXkMu5yEs0m9O+btqAB261/E3DRxfI1P/tvDZpLJKtq35
+ dXsj6sjvhgX7VxXhY1wE54uqLLHY3UZQlmH3QF5t80MS7/KhxB1pO1Cpcmkt9hgyzH8+5org
+ +9wWxGUtJWNP7CppY+qvv3SZtKJMKsxqk5coBGwNkMms56z4qfJm2PUtJQGjA65XWdzQACib
+ 2iaDQoBqGZfXRdPT0tC1H5kUJuOX4ll1hI/HBMEFCcO8++Bl2wcrUsAxLzGvhINVJX2DAQaF
+ aNetToazkCnzubKfBOyiTqFJ0b63c5dqziAgzsFNBF/0ZFUBEADF8UEZmKDl1w/UxvjeyAeX
+ kghYkY3bkK6gcIYXdLRfJw12GbvMioSguvVzASVHG8h7NbNjk1yur6AONfbUpXKSNZ0skV8V
+ fG+ppbaY+zQofsSMoj5gP0amwbwvPzVqZCYJai81VobefTX2MZM2Mg/ThBVtGyzV3NeCpnBa
+ 8AX3s9rrX2XUoCibYotbbxx9afZYUFyflOc7kEpc9uJXIdaxS2Z6MnYLHsyVjiU6tzKCiVOU
+ KJevqvzPXJmy0xaOVf7mhFSNQyJTrZpLa+tvB1DQRS08CqYtIMxRrVtC0t0LFeQGly6bOngr
+ ircurWJiJKbSXVstLHgWYiq3/GmCSx/82ObeLO3PftklpRj8d+kFbrvrqBgjWtMH4WtK5uN5
+ 1WJ71hWJfNchKRlaJ3GWy8KolCAoGsQMovn/ZEXxrGs1ndafu47yXOpuDAozoHTBGvuSXSZo
+ ythk/0EAuz5IkwkhYBT1MGIAvNSn9ivE5aRnBazugy0rTRkVggHvt3/7flFHlGVGpBHxFUwb
+ /a4UjJBPtIwa4tWR8B1Ma36S8Jk456k2n1id7M0LQ+eqstmp6Y+UB+pt9NX6t0Slw1NCdYTW
+ gJezWTVKF7pmTdXszXGxlc9kTrVUz04PqPjnYbv5UWuDd2eyzGjrrFOsJEi8OK2d2j4FfF++
+ AzOMdW09JVqejQARAQABwsF2BBgBCAAgFiEEbF+pj/I7JePKMl6Fct6KD1TwOgwFAl/0ZFUC
+ GwwACgkQct6KD1TwOgxUfg//eAoYc0Vm4NrxymfcY30UjHVD0LgSvU8kUmXxil3qhFPS7KA+
+ y7tgcKLHOkZkXMX5MLFcS9+SmrAjSBBV8omKoHNo+kfFx/dUAtz0lot8wNGmWb+NcHeKM1eb
+ nwUMOEa1uDdfZeKef/U/2uHBceY7Gc6zPZPWgXghEyQMTH2UhLgeam8yglyO+A6RXCh+s6ak
+ Wje7Vo1wGK4eYxp6pwMPJXLMsI0ii/2k3YPEJPv+yJf90MbYyQSbkTwZhrsokjQEaIfjrIk3
+ rQRjTve/J62WIO28IbY/mENuGgWehRlTAbhC4BLTZ5uYS0YMQCR7v9UGMWdNWXFyrOB6PjSu
+ Trn9MsPoUc8qI72mVpxEXQDLlrd2ijEWm7Nrf52YMD7hL6rXXuis7R6zY8WnnBhW0uCfhajx
+ q+KuARXC0sDLztcjaS3ayXonpoCPZep2Bd5xqE4Ln8/COCslP7E92W1uf1EcdXXIrx1acg21
+ H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
+ lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
+ OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
+In-Reply-To: <51e11917-e9c7-4708-a80f-f369874d2ed3@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Now that AF_XDP functionality is fully implemented, advertise XSk XDP
-feature and add .ndo_xsk_wakeup() callback to be able to use it with
-this driver.
+On 9/11/2025 8:34 AM, Krzysztof Kozlowski wrote:
+> On 09/09/2025 21:16, Heiner Kallweit wrote:
+>> The array-style fixed-link binding has been marked deprecated for more
+>> than 10 yrs, but still there's a number of users. Print a warning when
+>> usage of the deprecated binding is detected.
+>>
+>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+>> ---
+>>  drivers/net/phy/phylink.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+>> index c7f867b36..d3cb52717 100644
+>> --- a/drivers/net/phy/phylink.c
+>> +++ b/drivers/net/phy/phylink.c
+>> @@ -700,6 +700,9 @@ static int phylink_parse_fixedlink(struct phylink *pl,
+>>  			return -EINVAL;
+>>  		}
+>>  
+>> +		phylink_warn(pl, "%s uses deprecated array-style fixed-link binding!",
+>> +			     fwnode_get_name(fwnode));
+> Similar comment as for patch #1 - this seems to be going to printk, so
+> use proper % format for fwnodes (I think there is as well such).
+> 
+At least here no format for fwnodes is mentioned.
+https://www.kernel.org/doc/Documentation/printk-formats.txt
 
-Co-developed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf.h      |  7 +++++
- drivers/net/ethernet/intel/idpf/idpf_txrx.h | 10 ++++---
- drivers/net/ethernet/intel/idpf/xsk.h       |  4 +++
- drivers/net/ethernet/intel/idpf/idpf_lib.c  |  2 ++
- drivers/net/ethernet/intel/idpf/idpf_txrx.c |  3 +++
- drivers/net/ethernet/intel/idpf/xdp.c       |  4 ++-
- drivers/net/ethernet/intel/idpf/xsk.c       | 29 +++++++++++++++++++++
- 7 files changed, 55 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index 6e79fa8556e9..c5ede00c5b2e 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -978,6 +978,13 @@ static inline void idpf_vport_ctrl_unlock(struct net_device *netdev)
- 	mutex_unlock(&np->adapter->vport_ctrl_lock);
- }
- 
-+static inline bool idpf_vport_ctrl_is_locked(struct net_device *netdev)
-+{
-+	struct idpf_netdev_priv *np = netdev_priv(netdev);
-+
-+	return mutex_is_locked(&np->adapter->vport_ctrl_lock);
-+}
-+
- void idpf_statistics_task(struct work_struct *work);
- void idpf_init_task(struct work_struct *work);
- void idpf_service_task(struct work_struct *work);
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index a42aa4669c3c..75b977094741 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -374,9 +374,10 @@ struct idpf_intr_reg {
-  * @complq: array of completion queues
-  * @xsksq: array of XSk send queues
-  * @intr_reg: See struct idpf_intr_reg
-- * @napi: napi handler
-+ * @csd: XSk wakeup CSD
-  * @total_events: Number of interrupts processed
-  * @wb_on_itr: whether WB on ITR is enabled
-+ * @napi: napi handler
-  * @tx_dim: Data for TX net_dim algorithm
-  * @tx_itr_value: TX interrupt throttling rate
-  * @tx_intr_mode: Dynamic ITR or not
-@@ -406,10 +407,13 @@ struct idpf_q_vector {
- 	__cacheline_group_end_aligned(read_mostly);
- 
- 	__cacheline_group_begin_aligned(read_write);
--	struct napi_struct napi;
-+	call_single_data_t csd;
-+
- 	u16 total_events;
- 	bool wb_on_itr;
- 
-+	struct napi_struct napi;
-+
- 	struct dim tx_dim;
- 	u16 tx_itr_value;
- 	bool tx_intr_mode;
-@@ -427,7 +431,7 @@ struct idpf_q_vector {
- 	__cacheline_group_end_aligned(cold);
- };
- libeth_cacheline_set_assert(struct idpf_q_vector, 136,
--			    24 + sizeof(struct napi_struct) +
-+			    56 + sizeof(struct napi_struct) +
- 			    2 * sizeof(struct dim),
- 			    8);
- 
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.h b/drivers/net/ethernet/intel/idpf/xsk.h
-index d5338cbef8bd..b622d08c03e8 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.h
-+++ b/drivers/net/ethernet/intel/idpf/xsk.h
-@@ -8,14 +8,17 @@
- 
- enum virtchnl2_queue_type;
- struct idpf_buf_queue;
-+struct idpf_q_vector;
- struct idpf_rx_queue;
- struct idpf_tx_queue;
- struct idpf_vport;
-+struct net_device;
- struct netdev_bpf;
- 
- void idpf_xsk_setup_queue(const struct idpf_vport *vport, void *q,
- 			  enum virtchnl2_queue_type type);
- void idpf_xsk_clear_queue(void *q, enum virtchnl2_queue_type type);
-+void idpf_xsk_init_wakeup(struct idpf_q_vector *qv);
- 
- int idpf_xskfq_init(struct idpf_buf_queue *bufq);
- void idpf_xskfq_rel(struct idpf_buf_queue *bufq);
-@@ -25,5 +28,6 @@ int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget);
- bool idpf_xsk_xmit(struct idpf_tx_queue *xsksq);
- 
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *xdp);
-+int idpf_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags);
- 
- #endif /* !_IDPF_XSK_H_ */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 9b8f7a6d65d6..8a941f0fb048 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -5,6 +5,7 @@
- #include "idpf_virtchnl.h"
- #include "idpf_ptp.h"
- #include "xdp.h"
-+#include "xsk.h"
- 
- static const struct net_device_ops idpf_netdev_ops;
- 
-@@ -2618,4 +2619,5 @@ static const struct net_device_ops idpf_netdev_ops = {
- 	.ndo_hwtstamp_set = idpf_hwtstamp_set,
- 	.ndo_bpf = idpf_xdp,
- 	.ndo_xdp_xmit = idpf_xdp_xmit,
-+	.ndo_xsk_wakeup = idpf_xsk_wakeup,
- };
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 67963c0f4541..828f7c444d30 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -1210,6 +1210,8 @@ static int idpf_qp_enable(const struct idpf_queue_set *qs, u32 qid)
- 		if (!idpf_queue_has(XSK, q->txq))
- 			continue;
- 
-+		idpf_xsk_init_wakeup(q_vector);
-+
- 		q->txq->q_vector = q_vector;
- 		q_vector->xsksq[q_vector->num_xsksq++] = q->txq;
- 	}
-@@ -4418,6 +4420,7 @@ static void idpf_vport_intr_map_vector_to_qs(struct idpf_vport *vport)
- 			continue;
- 
- 		qv = idpf_find_rxq_vec(vport, i);
-+		idpf_xsk_init_wakeup(qv);
- 
- 		xdpsq->q_vector = qv;
- 		qv->xsksq[qv->num_xsksq++] = xdpsq;
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index cde6d56553d2..21ce25b0567f 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -400,7 +400,9 @@ void idpf_xdp_set_features(const struct idpf_vport *vport)
- 	if (!idpf_is_queue_model_split(vport->rxq_model))
- 		return;
- 
--	libeth_xdp_set_features_noredir(vport->netdev, &idpf_xdpmo);
-+	libeth_xdp_set_features_noredir(vport->netdev, &idpf_xdpmo,
-+					idpf_get_max_tx_bufs(vport->adapter),
-+					libeth_xsktmo);
- }
- 
- static int idpf_xdp_setup_prog(struct idpf_vport *vport,
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
-index ba35dca946d5..fd2cc43ab43c 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.c
-+++ b/drivers/net/ethernet/intel/idpf/xsk.c
-@@ -158,6 +158,11 @@ void idpf_xsk_clear_queue(void *q, enum virtchnl2_queue_type type)
- 	}
- }
- 
-+void idpf_xsk_init_wakeup(struct idpf_q_vector *qv)
-+{
-+	libeth_xsk_init_wakeup(&qv->csd, &qv->napi);
-+}
-+
- void idpf_xsksq_clean(struct idpf_tx_queue *xdpsq)
- {
- 	struct libeth_xdpsq_napi_stats ss = { };
-@@ -602,3 +607,27 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- 
- 	return ret;
- }
-+
-+int idpf_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags)
-+{
-+	const struct idpf_netdev_priv *np = netdev_priv(dev);
-+	const struct idpf_vport *vport = np->vport;
-+	struct idpf_q_vector *q_vector;
-+
-+	if (unlikely(idpf_vport_ctrl_is_locked(dev)))
-+		return -EBUSY;
-+
-+	if (unlikely(!vport->link_up))
-+		return -ENETDOWN;
-+
-+	if (unlikely(!vport->num_xdp_txq))
-+		return -ENXIO;
-+
-+	q_vector = idpf_find_rxq_vec(vport, qid);
-+	if (unlikely(!q_vector->xsksq))
-+		return -ENXIO;
-+
-+	libeth_xsk_wakeup(&q_vector->csd, qid);
-+
-+	return 0;
-+}
--- 
-2.51.0
+> Best regards,
+> Krzysztof
 
