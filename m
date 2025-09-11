@@ -1,49 +1,49 @@
-Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EC432038B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D84E320380;
 	Thu, 11 Sep 2025 11:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757590627; cv=none; b=A0yB8W/7WgqWbEjvYRDGWl9aFcOGx6lpQO3I5MnQbNZW9ZFaOcH3DAUNGwuZPSP+TZoQCMXiuv/SMD96u7KL2DsSzpjS0RQuAawhF8jcNHxq5iiQDgd1G3XHjiv79FOfjpdokHIBaZRmK3RNGP8D7R95yl8OfhWfjqFvncpgYsM=
+	t=1757590628; cv=none; b=M39nvJp88MVyTZ1sndqv4ZZ084iDfPz/MLuvbVTllchm/XnSg4E9sldFctWbZ1ESY4ob8HBwNPSTalzocgeudoMMI+5gN9+vMCq7sevognrDCLRFma/djpi0WlicSmrmLwV62DSr89AhZujG6qq2ynQ3Ui5RWPRsUjCuoatMgIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757590627; c=relaxed/simple;
-	bh=3JuQddPCunUMjQrT6vQYeUt75KQpUx3lNt2KEVfeukw=;
+	s=arc-20240116; t=1757590628; c=relaxed/simple;
+	bh=3/IXwQYdzrb+8+Wl8ttL6K2OCageb+uA5sMyf5P3l0U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kAK3B7vJyJLPAMHiG/QLjjaof+QAGYLriDIl+e4FG+VtpqYw8fXsOTqO+EwouzSIcHiuGRX29zX2pS+bcGegnnMXSxQoo2544kUmrfLix5uNfy+WdJ6kRNJwzabNtRJ80mgoObeBxW2ECzXFtYmWwm+EK9iKSUh1M8Xchh+lvQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=GrpcF4J3; arc=none smtp.client-ip=198.47.19.246
+	 MIME-Version:Content-Type; b=jp31rAAUHRkNfsve2+irSt+vPPd2z/wDye8F6GGMFqOkOoMHZ7SAt/nKM2y+PmrBldU4NKg3PaeryeKnaMfyD93TbDY+5clU5mVG/wc0CW3Ph4fsnjlHBr6W72yK8iB6YzQeW1VFuviLdCmPchpF6Jkj6G+CKnnTus/Wc+H7agg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ped4xet8; arc=none smtp.client-ip=198.47.19.245
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GrpcF4J3"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58BBaR7J735480;
-	Thu, 11 Sep 2025 06:36:27 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ped4xet8"
+Received: from lelvem-sh02.itg.ti.com ([10.180.78.226])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58BBaJqJ282478;
+	Thu, 11 Sep 2025 06:36:19 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1757590587;
-	bh=TM6mT9th3rVCAn81L1mGY3S50wIg3OwdQwzQAAB5wWs=;
+	s=ti-com-17Q1; t=1757590579;
+	bh=oFCiZfEq7zIHjgLX3tsUwQj/pkDFixFCQPlJyAkDwDQ=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=GrpcF4J3GXqL6HKj3ZXdFxclmYLZ0treeZYcL4W0Frg1Bywkp1mLF8JfvfHh9d5bY
-	 06iXriz6+wmEXrNs75rzPibf6qZT8+AWFVg/WFGgK55GUm+Fe+2yufO5G82KuVGnDg
-	 kVVVUqH7s5zT9ef3I5d9UxabSPlOtZra58PxH1IA=
-Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58BBaQfO1908833
+	b=ped4xet8FJRNV2jYqgJzx9ZFhpf9i/K81xUgQrLIJOGw7ea0RnyIOl6D2o+C/gYH4
+	 p+Bpxl5Bp8auJcC8guGuwDYGk/hHVeq+vu2BbHrdiaJa9qNxfIQllCbLYNgBC2FWWv
+	 DFkQPwHNdXJI0qe1oJTNLol/50IgoG2UPVK9FYMA=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelvem-sh02.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58BBaJ7R1027159
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Thu, 11 Sep 2025 06:36:26 -0500
-Received: from DLEE203.ent.ti.com (157.170.170.78) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+	Thu, 11 Sep 2025 06:36:19 -0500
+Received: from DLEE215.ent.ti.com (157.170.170.118) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 11
- Sep 2025 06:36:25 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE203.ent.ti.com
- (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
+ Sep 2025 06:36:18 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE215.ent.ti.com
+ (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 11 Sep 2025 06:36:26 -0500
-Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58BBaPkY2062025;
-	Thu, 11 Sep 2025 06:36:26 -0500
+ Transport; Thu, 11 Sep 2025 06:36:18 -0500
+Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58BBaIJL1766152;
+	Thu, 11 Sep 2025 06:36:18 -0500
 Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
-	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58BBaPlT032075;
-	Thu, 11 Sep 2025 06:36:25 -0500
+	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58BBaHiF007143;
+	Thu, 11 Sep 2025 06:36:18 -0500
 From: MD Danish Anwar <danishanwar@ti.com>
 To: "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet
@@ -77,9 +77,9 @@ To: "David S. Miller" <davem@davemloft.net>,
 CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
         <devicetree@vger.kernel.org>
-Subject: [PATCH net-next v4 4/7] net: rpmsg-eth: Add netdev ops
-Date: Thu, 11 Sep 2025 17:06:09 +0530
-Message-ID: <20250911113612.2598643-5-danishanwar@ti.com>
+Subject: [PATCH net-next v4 1/7] net: rpmsg-eth: Add Documentation for RPMSG-ETH Driver
+Date: Thu, 11 Sep 2025 17:06:06 +0530
+Message-ID: <20250911113612.2598643-2-danishanwar@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250911113612.2598643-1-danishanwar@ti.com>
 References: <20250911113612.2598643-1-danishanwar@ti.com>
@@ -93,450 +93,463 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Add netdev ops for rpmsg-eth driver. This patch introduces the netdev
-operations for the rpmsg-eth driver, enabling the driver to interact
-with the Linux networking stack. The following functionalities are
-implemented:
-
-1. `ndo_open` and `ndo_stop`:
-	- Handles the initialization and cleanup of the network device
-	  during open and stop operations.
-	- Manages the state transitions of the rpmsg-eth driver.
-
-2. `ndo_start_xmit`:
-	- Implements the transmit functionality by copying data from the
-	  skb to the shared memory buffer and updating the head index.
-
-3. `ndo_set_mac_address`:
-	- Allows setting the MAC address of the network device and sends
-	  the updated MAC address to the remote processor.
-
-4. RX Path:
-	- Adds a timer-based mechanism to poll for received packets in
-	  shared memory.
-	- Implements NAPI-based packet processing to handle received
-	  packets efficiently.
-
-5. State Machine:
-	- Introduces a state machine to manage the driver's state
-	  transitions, such as PROBE, OPEN, READY, and RUNNING.
-
-6. Initialization:
-	- Adds necessary initialization for locks, timers, and work
-	  structures.
-	- Registers the network device and sets up NAPI and RX timer.
-
-7. Cleanup:
-	- Ensures proper cleanup of resources during driver removal,
-	  including NAPI and timers.
-
-This patch enhances the rpmsg-eth driver to function as a fully
-operational network device in the Linux kernel.
+Add documentation for the RPMSG Based Virtual Ethernet Driver (rpmsg-eth).
+The documentation describes the driver's architecture, shared memory
+layout, RPMSG communication protocol, and requirements for vendor firmware
+to interoperate with the driver. It details the use of a magic number for
+shared memory validation, outlines the information exchanged between the
+host and remote processor, and provides a how-to guide for vendors to
+implement compatible firmware.
 
 Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 ---
- drivers/net/ethernet/rpmsg_eth.c | 318 +++++++++++++++++++++++++++++++
- drivers/net/ethernet/rpmsg_eth.h |   2 +
- 2 files changed, 320 insertions(+)
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../device_drivers/ethernet/rpmsg_eth.rst     | 424 ++++++++++++++++++
+ 2 files changed, 425 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst
 
-diff --git a/drivers/net/ethernet/rpmsg_eth.c b/drivers/net/ethernet/rpmsg_eth.c
-index f599318633ea..43196e1d7eeb 100644
---- a/drivers/net/ethernet/rpmsg_eth.c
-+++ b/drivers/net/ethernet/rpmsg_eth.c
-@@ -63,6 +63,108 @@ static int rpmsg_eth_validate_handshake(struct rpmsg_eth_port *port,
- 	return 0;
- }
- 
-+static int create_request(struct rpmsg_eth_common *common,
-+			  enum rpmsg_eth_rpmsg_type rpmsg_type)
-+{
-+	struct message *msg = &common->send_msg;
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 0b0a3eef6aae..20513a595af1 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -51,6 +51,7 @@ Contents:
+    netronome/nfp
+    pensando/ionic
+    qualcomm/ppe/ppe
++   rpmsg_eth
+    smsc/smc9
+    stmicro/stmmac
+    ti/cpsw
+diff --git a/Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst b/Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst
+new file mode 100644
+index 000000000000..7a9d94291de4
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/rpmsg_eth.rst
+@@ -0,0 +1,424 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+	msg->msg_hdr.src_id = common->port->port_id;
-+	msg->req_msg.type = rpmsg_type;
++===================================
++RPMSG Based Virtual Ethernet Driver
++===================================
 +
-+	switch (rpmsg_type) {
-+	case RPMSG_ETH_REQ_SHM_INFO:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_REQUEST_MSG;
-+		break;
-+	case RPMSG_ETH_REQ_SET_MAC_ADDR:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_REQUEST_MSG;
-+		ether_addr_copy(msg->req_msg.mac_addr.addr,
-+				common->port->ndev->dev_addr);
-+		break;
-+	case RPMSG_ETH_NOTIFY_PORT_UP:
-+	case RPMSG_ETH_NOTIFY_PORT_DOWN:
-+		msg->msg_hdr.msg_type = RPMSG_ETH_NOTIFY_MSG;
-+		break;
-+	default:
-+		dev_err(common->dev, "Invalid RPMSG request\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
++Overview
++========
 +
-+static int rpmsg_eth_create_send_request(struct rpmsg_eth_common *common,
-+					 enum rpmsg_eth_rpmsg_type rpmsg_type,
-+					 bool wait)
-+{
-+	unsigned long flags;
-+	int ret;
++The RPMSG Based Virtual Ethernet Driver provides a virtual Ethernet interface for
++communication between a host processor and a remote processor using the RPMSG
++framework. This driver enables Ethernet-like packet transmission and reception
++over shared memory, facilitating inter-core communication in systems with
++heterogeneous processors.
 +
-+	if (wait)
-+		reinit_completion(&common->sync_msg);
++The driver is designed to work with the RPMSG framework, which is part of the
++Linux Remote Processor (remoteproc) subsystem. It uses shared memory for data
++exchange and supports features like multicast address management, dynamic MAC
++address assignment, and efficient packet processing using NAPI.
 +
-+	spin_lock_irqsave(&common->send_msg_lock, flags);
-+	ret = create_request(common, rpmsg_type);
-+	if (ret)
-+		goto release_lock;
++This driver is generic and can be used by any vendor. Vendors can develop their
++own firmware for the remote processor to make it compatible with this driver.
++The firmware must adhere to the shared memory layout, RPMSG communication
++protocol, and data exchange requirements described in this documentation.
 +
-+	ret = rpmsg_send(common->rpdev->ept, (void *)(&common->send_msg),
-+			 sizeof(common->send_msg));
-+	if (ret) {
-+		dev_err(common->dev, "Failed to send RPMSG message\n");
-+		goto release_lock;
-+	}
++Naming Convention
++=================
 +
-+	spin_unlock_irqrestore(&common->send_msg_lock, flags);
-+	if (wait) {
-+		ret = wait_for_completion_timeout(&common->sync_msg,
-+						  RPMSG_ETH_REQ_TIMEOUT_JIFFIES);
++Throughout this documentation and in the driver implementation, the following naming
++convention is used to describe the direction of communication:
 +
-+		if (!ret) {
-+			dev_err(common->dev, "Failed to receive response within %ld jiffies\n",
-+				RPMSG_ETH_REQ_TIMEOUT_JIFFIES);
-+			return -ETIMEDOUT;
-+		}
-+		ret = 0;
-+	}
-+	return ret;
-+release_lock:
-+	spin_unlock_irqrestore(&common->send_msg_lock, flags);
-+	return ret;
-+}
++- **Firmware**: The firmware / RTOS binary running on the remote core. This takes the primary role.
++- **Driver**: The Linux driver running on the host core. This takes the secondary role.
 +
-+static void rpmsg_eth_state_machine(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct rpmsg_eth_common *common;
-+	struct rpmsg_eth_port *port;
-+	int ret;
++This convention is important for understanding the data flow and the responsibilities
++of each side in the communication channel.
 +
-+	common = container_of(dwork, struct rpmsg_eth_common, state_work);
-+	port = common->port;
++Key Features
++============
 +
-+	mutex_lock(&common->state_lock);
++- Virtual Ethernet interface using RPMSG.
++- Shared memory-based packet transmission and reception.
++- Support for multicast address management.
++- Dynamic MAC address assignment.
++- NAPI (New API) support for efficient packet processing.
++- State machine for managing interface states.
++- Workqueue-based asynchronous operations.
++- Support for notifications and responses from the firmware.
 +
-+	switch (common->state) {
-+	case RPMSG_ETH_STATE_PROBE:
-+		break;
-+	case RPMSG_ETH_STATE_OPEN:
-+		rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SHM_INFO, false);
-+		break;
-+	case RPMSG_ETH_STATE_CLOSE:
-+		break;
-+	case RPMSG_ETH_STATE_READY:
-+		ret = rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SET_MAC_ADDR, false);
-+		if (!ret) {
-+			napi_enable(&port->rx_napi);
-+			netif_carrier_on(port->ndev);
-+			mod_timer(&port->rx_timer, RX_POLL_TIMEOUT_JIFFIES);
-+		}
-+		break;
-+	case RPMSG_ETH_STATE_RUNNING:
-+		break;
-+	}
-+	mutex_unlock(&common->state_lock);
-+}
++Magic Number
++============
 +
- static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 			      void *priv, u32 src)
- {
-@@ -99,6 +201,17 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 				msg->resp_msg.shm_info.num_pkt_bufs;
- 			port->rx_max_buffers =
- 				msg->resp_msg.shm_info.num_pkt_bufs;
++A **magic number** is used in the shared memory layout to validate that the
++memory region is correctly initialized and accessible by both driver and the
++firmware. This value is a unique constant ``0xABCDABCD`` that is written to
++specific locations (such as the head and tail structures) in the shared memory
++by the firmware and checked by the driver during the handshake process.
 +
-+			mutex_lock(&common->state_lock);
-+			common->state = RPMSG_ETH_STATE_READY;
-+			mutex_unlock(&common->state_lock);
++Purpose of the Magic Number
++---------------------------
 +
-+			mod_delayed_work(system_wq,
-+					 &common->state_work,
-+					 STATE_MACHINE_TIME_JIFFIES);
++- **Validation:** Ensures that the shared memory region has been properly set up
++  and is not corrupted or uninitialized.
++- **Synchronization:** Both driver and firmware must agree on the magic number
++  value, which helps detect mismatches in memory layout or protocol version.
++- **Error Detection:** If the driver detects an incorrect magic number during
++  initialization or runtime, it can abort the handshake and report an error,
++  preventing undefined behavior.
 +
-+			break;
-+		case RPMSG_ETH_RESP_SET_MAC_ADDR:
- 			break;
- 		}
- 		break;
-@@ -106,6 +219,20 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
- 		rpmsg_type = msg->notify_msg.type;
- 		dev_dbg(common->dev, "Msg type = %d, RPMsg type = %d, Src Id = %d, Msg Id = %d\n",
- 			msg_type, rpmsg_type, msg->msg_hdr.src_id, msg->notify_msg.id);
-+		switch (rpmsg_type) {
-+		case RPMSG_ETH_NOTIFY_REMOTE_READY:
-+			mutex_lock(&common->state_lock);
-+			common->state = RPMSG_ETH_STATE_RUNNING;
-+			mutex_unlock(&common->state_lock);
++Implementation Details
++----------------------
 +
-+			mod_delayed_work(system_wq,
-+					 &common->state_work,
-+					 STATE_MACHINE_TIME_JIFFIES);
-+			break;
-+		case RPMSG_ETH_NOTIFY_PORT_UP:
-+		case RPMSG_ETH_NOTIFY_PORT_DOWN:
-+			break;
-+		}
- 		break;
- 	default:
- 		dev_err(common->dev, "Invalid msg type\n");
-@@ -172,6 +299,181 @@ static int rpmsg_eth_get_shm_info(struct rpmsg_eth_common *common)
- 	return 0;
- }
- 
-+static void rpmsg_eth_rx_timer(struct timer_list *timer)
-+{
-+	struct rpmsg_eth_port *port = timer_container_of(port, timer, rx_timer);
-+	struct napi_struct *napi;
-+	int num_pkts = 0;
-+	u32 head, tail;
++- The magic number is defined as a macro in the driver source (e.g.,
++  ``#define RPMSG_ETH_SHM_MAGIC_NUM 0xABCDABCD``).
++- The firmware must write this value to the ``magic_num`` field of the head and
++  tail structures in the shared memory region.
++- During the handshake, the Linux driver reads these fields and compares them to
++  the expected value. If any mismatch is detected, the driver will log an error
++  and refuse to proceed.
 +
-+	head = readl(port->shm + port->rx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->rx_offset +
-+		     TAIL_IDX_OFFSET(port->rx_max_buffers));
++Example Usage in Shared Memory
++------------------------------
 +
-+	num_pkts = tail - head;
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->rx_max_buffers);
++.. code-block:: text
 +
-+	napi = &port->rx_napi;
-+	if (num_pkts && likely(napi_schedule_prep(napi)))
-+		__napi_schedule(napi);
-+	else
-+		mod_timer(&port->rx_timer, RX_POLL_JIFFIES);
-+}
++      Shared Memory Layout:
++      ---------------------------
++      |   MAGIC_NUM (0xABCDABCD) |   <-- rpmsg_eth_shm_head
++      |          HEAD            |
++      ---------------------------
++      |   MAGIC_NUM (0xABCDABCD) |   <-- rpmsg_eth_shm_tail
++      |          TAIL            |
++      ---------------------------
 +
-+static int rpmsg_eth_rx_packets(struct napi_struct *napi, int budget)
-+{
-+	struct rpmsg_eth_port *port = container_of(napi, struct rpmsg_eth_port, rx_napi);
-+	u32 count, process_pkts;
-+	struct sk_buff *skb;
-+	u32 head, tail;
-+	int num_pkts;
-+	u32 pkt_len;
++The magic number must be present in both the head and tail structures for the
++handshake to succeed.
 +
-+	head = readl(port->shm + port->rx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->rx_offset +
-+		     TAIL_IDX_OFFSET(port->rx_max_buffers));
++Firmware developers must ensure that the correct magic number is written to the
++appropriate locations in shared memory before the Linux driver attempts to
++initialize the interface.
 +
-+	num_pkts = head - tail;
++Shared Memory Layout
++====================
 +
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->rx_max_buffers);
-+	process_pkts = min(num_pkts, budget);
-+	count = 0;
-+	while (count < process_pkts) {
-+		memcpy_fromio((void *)&pkt_len,
-+			      port->shm + port->rx_offset + MAGIC_NUM_SIZE_TYPE +
-+			      PKT_START_OFFSET((tail + count) % port->rx_max_buffers),
-+			      PKT_LEN_SIZE_TYPE);
-+		/* Start building the skb */
-+		skb = napi_alloc_skb(napi, pkt_len);
-+		if (!skb) {
-+			port->ndev->stats.rx_dropped++;
-+			goto rx_dropped;
-+		}
++The RPMSG Based Virtual Ethernet Driver uses a shared memory region to exchange
++data between driver and firmware. The shared memory is divided into transmit
++and receive regions, each with its own `head` and `tail` indices to track the
++buffer state. The base address of this shared memory is configured in the
++device tree. See :ref:`Configuration <rpmsg_config>` for details.
 +
-+		skb->dev = port->ndev;
-+		skb_put(skb, pkt_len);
-+		memcpy_fromio((void *)skb->data,
-+			      port->shm + port->rx_offset + PKT_LEN_SIZE_TYPE +
-+			      MAGIC_NUM_SIZE_TYPE +
-+			      PKT_START_OFFSET((tail + count) % port->rx_max_buffers),
-+			      pkt_len);
++Shared Memory Parameters
++------------------------
 +
-+		skb->protocol = eth_type_trans(skb, port->ndev);
++The following parameters are exchanged between the driver and the firmware to
++configure the shared memory layout:
 +
-+		/* Push skb into network stack */
-+		napi_gro_receive(napi, skb);
++1. **num_pkt_bufs**:
 +
-+		count++;
-+		port->ndev->stats.rx_packets++;
-+		port->ndev->stats.rx_bytes += skb->len;
-+	}
++   - The total number of packet buffers available in the shared memory.
++   - This determines the maximum number of packets that can be stored in the
++     shared memory at any given time.
 +
-+rx_dropped:
++2. **buff_slot_size**:
 +
-+	if (num_pkts) {
-+		writel((tail + count) % port->rx_max_buffers,
-+		       port->shm + port->rx_offset +
-+		       TAIL_IDX_OFFSET(port->rx_max_buffers));
++   - The size of each buffer slot in the shared memory.
++   - This includes space for the packet length, metadata, and the actual packet
++     data.
 +
-+		if (num_pkts < budget && napi_complete_done(napi, count))
-+			mod_timer(&port->rx_timer, RX_POLL_TIMEOUT_JIFFIES);
-+	}
++3. **tx_offset**:
 +
-+	return count;
-+}
++   - The offset from the `base_addr` where the transmit buffers begin.
++   - This is used by driver to write packets for transmission.
 +
-+static int rpmsg_eth_ndo_open(struct net_device *ndev)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
++4. **rx_offset**:
 +
-+	mutex_lock(&common->state_lock);
-+	common->state = RPMSG_ETH_STATE_OPEN;
-+	mutex_unlock(&common->state_lock);
-+	mod_delayed_work(system_wq, &common->state_work, msecs_to_jiffies(100));
++   - The offset from the `base_addr` where the receive buffers begin.
++   - This is used by driver to read packets received from the firmware.
 +
-+	return 0;
-+}
++Shared Memory Structure
++-----------------------
 +
-+static int rpmsg_eth_ndo_stop(struct net_device *ndev)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+	struct rpmsg_eth_port *port = rpmsg_eth_ndev_to_port(ndev);
++The shared memory layout is as follows:
 +
-+	mutex_lock(&common->state_lock);
-+	common->state = RPMSG_ETH_STATE_CLOSE;
-+	mutex_unlock(&common->state_lock);
++.. code-block:: text
 +
-+	netif_carrier_off(port->ndev);
++      Shared Memory Layout:
++      ---------------------------
++      |        MAGIC_NUM        |   rpmsg_eth_shm_head
++      |        HEAD_IDX         |
++      ---------------------------
++      |        MAGIC_NUM        |
++      |        PKT_1_LEN        |
++      |          PKT_1          |
++      ---------------------------
++      |           ...           |
++      ---------------------------
++      |        MAGIC_NUM        |
++      |        TAIL_IDX         |   rpmsg_eth_shm_tail
++      ---------------------------
 +
-+	cancel_delayed_work_sync(&common->state_work);
-+	timer_delete_sync(&port->rx_timer);
-+	napi_disable(&port->rx_napi);
++1. **MAGIC_NUM**:
 +
-+	return 0;
-+}
++   - A unique identifier used to validate the shared memory region.
++   - Ensures that the memory region is correctly initialized and accessible.
 +
-+static netdev_tx_t rpmsg_eth_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-+{
-+	struct rpmsg_eth_port *port = rpmsg_eth_ndev_to_port(ndev);
-+	u32 head, tail;
-+	int num_pkts;
-+	u32 len;
++2. **HEAD Index**:
 +
-+	len = skb_headlen(skb);
-+	head = readl(port->shm + port->tx_offset + HEAD_IDX_OFFSET);
-+	tail = readl(port->shm + port->tx_offset +
-+		     TAIL_IDX_OFFSET(port->tx_max_buffers));
++   - Tracks the start of the buffer for packet transmission or reception.
++   - Updated by the producer (Driver or firmware) after writing a packet.
 +
-+	/* If the buffer queue is full, then drop packet */
-+	num_pkts = head - tail;
-+	num_pkts = num_pkts >= 0 ? num_pkts :
-+				   (num_pkts + port->tx_max_buffers);
++3. **TAIL Index**:
 +
-+	if ((num_pkts + 1) == port->tx_max_buffers) {
-+		netdev_warn(ndev, "Tx buffer full %d\n", num_pkts);
-+		goto ring_full;
-+	}
-+	/* Copy length */
-+	memcpy_toio(port->shm + port->tx_offset + PKT_START_OFFSET(head) + MAGIC_NUM_SIZE_TYPE,
-+		    (void *)&len, PKT_LEN_SIZE_TYPE);
-+	/* Copy data to shared mem */
-+	memcpy_toio(port->shm + port->tx_offset + PKT_START_OFFSET(head) + MAGIC_NUM_SIZE_TYPE +
-+		    PKT_LEN_SIZE_TYPE, (void *)skb->data, len);
-+	writel((head + 1) % port->tx_max_buffers,
-+	       port->shm + port->tx_offset + HEAD_IDX_OFFSET);
++   - Tracks the end of the buffer for packet transmission or reception.
++   - Updated by the consumer (Driver or firmware) after reading a packet.
 +
-+	ndev->stats.tx_packets++;
-+	ndev->stats.tx_bytes += skb->len;
++4. **Packet Buffers**:
 +
-+	dev_consume_skb_any(skb);
-+	return NETDEV_TX_OK;
++   - Each packet buffer contains:
 +
-+ring_full:
-+	return NETDEV_TX_BUSY;
-+}
++      - **Packet Length**: A 4-byte field indicating the size of the packet.
++      - **Packet Data**: The actual Ethernet frame data.
 +
-+static int rpmsg_eth_set_mac_address(struct net_device *ndev, void *addr)
-+{
-+	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
-+	int ret;
++5. **Buffer Size**:
 +
-+	ret = eth_mac_addr(ndev, addr);
++   - Each buffer has a fixed size defined by `RPMSG_ETH_BUFFER_SIZE`, which
++     includes space for the packet length and data.
 +
-+	if (ret < 0)
-+		return ret;
++Buffer Management
++-----------------
 +
-+	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SET_MAC_ADDR, false);
-+}
++- The driver and firmware use a circular buffer mechanism to manage the shared
++  memory.
++- The `head` and `tail` indices are used to determine the number of packets
++  available for processing:
 +
-+static const struct net_device_ops rpmsg_eth_netdev_ops = {
-+	.ndo_open = rpmsg_eth_ndo_open,
-+	.ndo_stop = rpmsg_eth_ndo_stop,
-+	.ndo_start_xmit = rpmsg_eth_start_xmit,
-+	.ndo_set_mac_address = rpmsg_eth_set_mac_address,
-+};
++   .. code-block:: c
 +
- static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- {
- 	struct device *dev = &common->rpdev->dev;
-@@ -195,6 +497,7 @@ static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- 
- 	ndev_priv = netdev_priv(port->ndev);
- 	ndev_priv->port = port;
-+	port->ndev->netdev_ops = &rpmsg_eth_netdev_ops;
- 	SET_NETDEV_DEV(port->ndev, dev);
- 
- 	port->ndev->min_mtu = RPMSG_ETH_MIN_PACKET_SIZE;
-@@ -206,6 +509,8 @@ static int rpmsg_eth_init_ndev(struct rpmsg_eth_common *common)
- 	}
- 
- 	netif_carrier_off(port->ndev);
-+	netif_napi_add(port->ndev, &port->rx_napi, rpmsg_eth_rx_packets);
-+	timer_setup(&port->rx_timer, rpmsg_eth_rx_timer, 0);
- 	err = register_netdev(port->ndev);
- 	if (err)
- 		dev_err(dev, "error registering rpmsg_eth net device %d\n", err);
-@@ -235,6 +540,12 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
- 	if (ret)
- 		return ret;
- 
-+	spin_lock_init(&common->send_msg_lock);
-+	spin_lock_init(&common->recv_msg_lock);
-+	mutex_init(&common->state_lock);
-+	INIT_DELAYED_WORK(&common->state_work, rpmsg_eth_state_machine);
-+	init_completion(&common->sync_msg);
++         num_pkts = head - tail;
++         num_pkts = num_pkts >= 0 ? num_pkts : (num_pkts + max_buffers);
 +
- 	/* Register the network device */
- 	ret = rpmsg_eth_init_ndev(common);
- 	if (ret)
-@@ -245,6 +556,13 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
- 
- static void rpmsg_eth_remove(struct rpmsg_device *rpdev)
- {
-+	struct rpmsg_eth_common *common = dev_get_drvdata(&rpdev->dev);
-+	struct rpmsg_eth_port *port = common->port;
++- The producer writes packets to the buffer and increments the `head` index.
++- The consumer reads packets from the buffer and increments the `tail` index.
 +
-+	netif_napi_del(&port->rx_napi);
-+	timer_delete_sync(&port->rx_timer);
-+	unregister_netdev(port->ndev);
++RPMSG Communication
++===================
 +
- 	dev_dbg(&rpdev->dev, "rpmsg-eth client driver is removed\n");
- }
- 
-diff --git a/drivers/net/ethernet/rpmsg_eth.h b/drivers/net/ethernet/rpmsg_eth.h
-index 0a0695e857df..80fa07be1678 100644
---- a/drivers/net/ethernet/rpmsg_eth.h
-+++ b/drivers/net/ethernet/rpmsg_eth.h
-@@ -219,6 +219,7 @@ enum rpmsg_eth_state {
-  * @data: Vendor specific data
-  * @state: Interface state
-  * @state_work: Delayed work for state machine
-+ * @sync_msg: Completion for synchronous message
-  */
- struct rpmsg_eth_common {
- 	struct rpmsg_device *rpdev;
-@@ -235,6 +236,7 @@ struct rpmsg_eth_common {
- 	/** @state_lock: Lock for changing interface state */
- 	struct mutex state_lock;
- 	struct delayed_work state_work;
-+	struct completion sync_msg;
- };
- 
- /**
++The driver uses RPMSG channels to exchange control messages with the firmware.
++These messages are used to manage the state of the Ethernet interface,
++configure settings, notify events, and exchange runtime information.
++
++Information Exchanged Between RPMSG Channels
++--------------------------------------------
++
++1. **Requests from Driver to Firmware**:
++
++   - `RPMSG_ETH_REQ_SHM_INFO`: Request shared memory information, such as
++     ``num_pkt_bufs``, ``buff_slot_size``, ``tx_offset``, and
++     ``rx_offset``.
++   - `RPMSG_ETH_REQ_SET_MAC_ADDR`: Set the MAC address of the Ethernet
++     interface.
++   - `RPMSG_ETH_REQ_ADD_MC_ADDR`: Add a multicast address to the firmware's
++     filter list.
++   - `RPMSG_ETH_REQ_DEL_MC_ADDR`: Remove a multicast address from firmware's
++     filter list.
++
++2. **Responses from Firmware to Driver**:
++
++   - `RPMSG_ETH_RESP_SET_MAC_ADDR`: Acknowledge the MAC address configuration.
++   - `RPMSG_ETH_RESP_ADD_MC_ADDR`: Acknowledge the addition of a multicast
++     address.
++   - `RPMSG_ETH_RESP_DEL_MC_ADDR`: Acknowledge the removal of a multicast
++     address.
++   - `RPMSG_ETH_RESP_SHM_INFO`: Respond with shared memory information such as
++     ``num_pkt_bufs``, ``buff_slot_size``, ``tx_offset``, and
++     ``rx_offset``.
++
++3. **Notifications from Firmware to Driver**:
++
++   - `RPMSG_ETH_NOTIFY_PORT_UP`: Notify that the Ethernet port is up and ready
++     for communication.
++   - `RPMSG_ETH_NOTIFY_PORT_DOWN`: Notify that the Ethernet port is down.
++   - `RPMSG_ETH_NOTIFY_REMOTE_READY`: Notify that the firmware is ready for
++     communication.
++
++4. **Runtime Information Exchanged**:
++
++   - **Link State**: Notifications about link state changes (e.g., link up or
++     link down).
++   - **Statistics**: Runtime statistics such as transmitted/received packets,
++     errors, and dropped packets.
++   - **Error Notifications**: Notifications about errors like buffer overflows
++     or invalid packets.
++   - **Configuration Updates**: Notifications about changes in configuration,
++     such as updated MTU or VLAN settings.
++
++How-To Guide for Vendors
++========================
++
++This section provides a guide for vendors to develop firmware for the remote
++processor that is compatible with the RPMSG Based Virtual Ethernet Driver.
++
++1. **Implement Shared Memory Layout**:
++
++   - Allocate a shared memory region for packet transmission and reception.
++   - Initialize the `MAGIC_NUM`, `num_pkt_bufs`, `buff_slot_size`, `tx_offset`,
++     and `rx_offset`.
++
++2. **Magic Number Requirements**
++
++   - The firmware must write a unique magic number ``0xABCDABCD`` to the
++     `magic_num` field of both the head and tail structures in the shared
++     memory region.
++   - This magic number is used by the Linux driver to validate that the shared
++     memory region is correctly initialized and accessible.
++   - If the driver detects an incorrect magic number during the handshake, it
++     will abort initialization and report an error.
++   - Vendors must ensure the magic number matches the value expected by the
++     Linux driver, see the `RPMSG_ETH_SHM_MAGIC_NUM` macro in the driver
++     source.
++
++3. **Handle RPMSG Requests**:
++
++   - Implement handlers for the following RPMSG requests:
++
++      - `RPMSG_ETH_REQ_SHM_INFO`
++      - `RPMSG_ETH_REQ_SET_MAC_ADDR`
++      - `RPMSG_ETH_REQ_ADD_MC_ADDR`
++      - `RPMSG_ETH_REQ_DEL_MC_ADDR`
++
++4. **Send RPMSG Notifications**:
++
++   - Notify the Driver about the state of the Ethernet interface using the
++     notifications described above.
++
++5. **Send Runtime Information**:
++
++   - Implement mechanisms to send runtime information such as link state
++     changes, statistics, and error notifications.
++
++6. **Implement Packet Processing**:
++
++   - Process packets in the shared memory transmit and receive buffers.
++
++7. **Test the Firmware**:
++
++   - Use the RPMSG Based Virtual Ethernet Driver on the host to test packet
++     transmission and reception.
++
++.. _rpmsg_config:
++
++Configuration
++=============
++
++The driver relies on the device tree for configuration. The shared memory
++region need to be specified in the remote processor device's "memory-region".
++
++Example Device Tree Node
++------------------------
++Here is an example of how the device tree node might look:
++
++.. code-block:: dts
++
++    <shr_mem_region> {
++        compatible = "shared-dma-pool";
++        reg = <base_address size>;
++    };
++
++    <rproc_device> {
++        memory-region = <&<shr_mem_region>>;
++    };
++
++In this example, ``<rproc_device>`` is the remote processor device node, and
++``<shr_mem_region>`` is the shared memory region node. The remote processor
++device references the shared memory region node using the ``memory-region``
++property.
++
++Vendors can create their own ``<shr_mem_region>`` and add it to their remote
++processor device node i.e. ``<rproc_device>``
++
++Driver Configuration
++--------------------
++
++Vendors need to configure the driver as well by adding a new entry of type
++:c:type:`rpmsg_device_id` in the array ``rpmsg_eth_id_table``.
++
++The :c:type:`rpmsg_device_id` structure contains two members:
++
++* :c:member:`name` - a string that identifies the RPMsg device
++* :c:member:`driver_data` - a pointer to a :c:type:`rpmsg_eth_data` structure
++
++Overview of rpmsg_eth_data
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The ``rpmsg_eth_data`` structure is a vendor-specific configuration structure
++that provides customization options for the RPMsg Ethernet driver.
++
++.. code-block:: c
++
++   /**
++    * struct rpmsg_eth_data - RPMSG ETH device data
++    * @shm_region_index: Shared memory region index
++    */
++   struct rpmsg_eth_data {
++       u8 shm_region_index;
++   };
++
++Currently, the structure contains a single field, but it is designed to be
++extensible for future enhancements.
++
++The shm_region_index Field
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The ``shm_region_index`` field is an 8-bit unsigned integer within the
++``rpmsg_eth_data`` structure that specifies which memory-region phandle to use
++from the device tree for the RPMsg Ethernet shared memory.
++
++This field is used in the ``rpmsg_eth_get_shm_info`` function to retrieve the
++correct shared memory region from the device tree using the
++``of_parse_phandle`` function:
++
++.. code-block:: c
++
++    rmem_np = of_parse_phandle(np, "memory-region", common->data.shm_region_index);
++
++The ``shm_region_index`` indicates which memory region to use when multiple
++memory regions are defined in the remote processor device tree node.
++
++Example
++~~~~~~~
++
++The following example shows how to create a custom RPMsg device ID:
++
++.. code-block:: c
++
++    static const struct rpmsg_eth_data my_rpmsg_eth_data = {
++        .shm_region_index = 2,
++    };
++
++    static struct rpmsg_device_id my_rpmsg_eth_id_table[] = {
++        { .name = "my.shm-eth", .driver_data = (kernel_ulong_t)&my_rpmsg_eth_data },
++        {},
++    };
++
++Limitations
++===========
++
++- The driver assumes a specific shared memory layout and may not work with other
++  configurations.
++- The driver currently supports only one transmit and one receive queue.
++- The current implementation only supports Linux driver running on the "host"
++  core as secondary and firmware running on the "remote" core as primary. It
++  does not support Linux-to-Linux communication where Linux driver would run on
++  both ends.
++
++References
++==========
++
++- :doc:`RPMSG Framework documentation </staging/rpmsg>`
++- :doc:`Network device documentation </networking/index>`
++
++Authors
++=======
++
++- MD Danish Anwar <danishanwar@ti.com>
 -- 
 2.34.1
 
