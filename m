@@ -1,189 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4FA329F3C;
-	Thu, 11 Sep 2025 07:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE21214A97
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 07:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757575006; cv=none; b=K7mV010ZBe+iTIX/jYy7gy00h8ileWNdM+eSYR2guSLhWy/TpjegMBQHWFpE12pj68FyWbn0zPpjYWsaAVBw7zjDGratGT2d9VOUdjumE5xUJrBqbU13wO0r3cSmEKWgmpeqGwmkpdsCnPEaBNsgLEGWwWY5ooO9f9p9/yaRdvg=
+	t=1757575342; cv=none; b=RqXZWxjGBjKhaftZFyQsWd+iyx9TBRj7hYOxzflc/7s471Wh3vLIAn8AZwlGnXjUOc289jz4Xw8S3IADhCwDRlRlnZl9BAN76DHsKR7+b2wk3Qpt1x0PI6xdfT+ZIGThFXTiHxD0cdvK6cR+4Xibn6sNIAgm4Ts2RWbH84Lbwww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757575006; c=relaxed/simple;
-	bh=7uGHdwspov13fWrmLMIbLwiUfvKN6M+pTzZVb9Q53Ro=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=HlK7ZlCnf27TzAKMNJulVAe3qC9bDqkllpHSbisZEoyWwctTZFSPmsFo9J70OTbZSCYWjkdPuIgQBKfRZQ30AQJAOAxuXXM/CYLEWVjGmiYspalKx7n/1xqmL+ePBC4CjFeATa/pqve8LP04kmTBIZXi8mCoewwt2Mx8L/eB5Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tkvtB8YH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757575342; c=relaxed/simple;
+	bh=ZWaN7YsA4DMy2XRDp49IiuKAKtTkNWybbq8m1ORlV/c=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=DCphA8oZrU/50gLJ7kJoOxz1OlLE2boodmnTYGgynIRwiB5vAVfVUXRE1UGl1VmM/LIupYLxF7G5xCUo2nlONb0srcBfOuSKieKReBuQhAtj/S/FCXbpfh2NHjciUBDxm8JO4rlAhoiBYR7+1UjfjlX2O9+4Fr1uD9lgUDRdPG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOoqW1bD; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tkvtB8YH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0191C4CEF1;
-	Thu, 11 Sep 2025 07:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757575006;
-	bh=7uGHdwspov13fWrmLMIbLwiUfvKN6M+pTzZVb9Q53Ro=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tkvtB8YHTF7I7A0YRsL6MPNezG5SFV6ujDtgOzwDMhRZaNV0US5mDp+tzYD6V7Y7t
-	 d73fBQ4ox3f91qX62whcs9a6tbo+/0h6gdcf2qjX97pTYO/NUxFjtiXFfI1iJiHlzU
-	 S6+ygrec/xkPoP/l7gmFJxogiyNvt76ZJBm0gFvmtg4/+OA/npZCjUUBgF7WN3rVMn
-	 JuGBW7aH0p/Pb+55XkXWti9R7OS4T4eC9leg5tdub3wDU4sbW3zFTtI7CH9NyLU4uH
-	 r/wSkuPlt0NMlokqK3rGuxRdU+JdqyJy9Bp2GidwlpG+sFju0gjUEr9aU4GH+pxYAW
-	 SAWk46v9gaSPg==
-Content-Type: multipart/mixed; boundary="------------wAejUPd1aokr3amusa9Pbb4V"
-Message-ID: <04fa441a-0171-4569-8764-1cfad39b8386@kernel.org>
-Date: Thu, 11 Sep 2025 09:16:40 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOoqW1bD"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45de6490e74so3503345e9.2
+        for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 00:22:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757575338; x=1758180138; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iBZDug7B3a6KZhOLQWyC0Abrerybwc7sC4SOlNu+UcM=;
+        b=VOoqW1bDxpQoJRa2KUEmLv6ktm8YwJYEh5D9gC7TdwhY3HSjtzv/jf4ZU3Wp8t443X
+         OPfaPd+Xao2lEXKnksBq2ZOU4VmxNbQ7wQwlL7WkQ1SZme21+kCUTIHD1TQb7lyL+jjF
+         jBSU4WvKZz5ea26FfFVJbOcyx3g4Dazf4Y3w1sbs/YWOQw75qI86N9vfYIfZcwM6Ghk6
+         R+bMQj05sqI0lZyLgeyn6SVYnGMC2rVdPVKNJN3BjnjB1n5ea1q/kdIV8ate6aR2f1iN
+         ZqFANIoI2q560N9yeYJ6QyCsdxhivS8YHO75rYF9yUObM0GJaO/WBAexjUwvUmfFiFN+
+         cKdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757575338; x=1758180138;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iBZDug7B3a6KZhOLQWyC0Abrerybwc7sC4SOlNu+UcM=;
+        b=q+ihfUmNSfuybUTVxeIw/EAUoYg5zexYl0qzPPSVrWihPW5QYhRBRL/LAYfsEmaK1h
+         i7lC0PZJUAPA+rebu8fqeMmmoVi26X+KwR9iJ2LWlQjgQfhNecO1Z6lRnU+1fSk/KvFZ
+         kgYKWCxr8Yz8GjxHQpq7ZNnnyoadc8/4D/Pkpiy33XkblR8fk4+KBApcpGnep91Ed25q
+         g4K307r0z4WO6PdKNnvQkts86ivLktSs+tDdPss34vPnRhfxuULOGKBxBtCZUMcZ27wQ
+         7IXqMuH7KhOLu7/ZwYDI+OkFZmEmGTNECslwbAKI6ekvt9HQRJjhtrG3UoCsO8AZ0lsZ
+         dDMA==
+X-Gm-Message-State: AOJu0YwwzuaIJmglObOgL/BWeYs9jzu9eDGZUOTGDAd7F2JxAjsgs6XG
+	I4mubmJTArCRXG6fP/Jm8Dd1DPAUePHBBo7VgKAKYVlXz8bcZGefTzFJSP3bkCcc
+X-Gm-Gg: ASbGncsdpKH9Txl8t2OKGNa6lQ/CWrCJgLsk9Y13huW1MIfdEjKQyr4YYijhzpLA2SS
+	hZdQQNiJ/Awsjw5ZEQHNtZVXiZh+sEuMPEbgGl1/SmPmqRWJxssVemmB7k+RwhULNwq+JvQNOLd
+	AbHn6WwQizVUH29Nk6iffd/bVOyskYlVsnuyK8FzqS36pYzXeVCSLVEzvXANsfr2DgN0z9HRCYc
+	+GL0j5ZXZl1/Fq6qKzlh9kTaWKdPdNSYMIqrDhbUNxXS6qIJ7l3N/oDy5NpdRa8J370gonyjtpb
+	wZ4n9FIlJvdrl0l7Qp9Rrg3iUXmRY+bHp9A+8uKiFQCa+vuBELroTWF8aWJaCPYa1PaRAy6HhuE
+	rIPjwk5z64iUXHl1CMSd2fb5SJAX6RpCBKsN4wj5v3O8KAX6VDRKj/YGAckm5dLTZtcJWtOIwZU
+	zaRIB0d4OIPYx6JlHIZ2MvwnhM30Rp1UxFtLwdOLSDxu2bzfP1e4PV32ApGJOCoA==
+X-Google-Smtp-Source: AGHT+IHz5V7nV8JBl91x1wAz8oXQZ/wriSZAbpgenGV/u8zJ6gkd3CH7anEVb0TSQOAHW6eGajD48g==
+X-Received: by 2002:a05:600c:5248:b0:45b:7d24:beac with SMTP id 5b1f17b1804b1-45df73e889emr57541185e9.10.1757575338041;
+        Thu, 11 Sep 2025 00:22:18 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f4f:5300:882c:6330:ec22:3cc3? (p200300ea8f4f5300882c6330ec223cc3.dip0.t-ipconnect.de. [2003:ea:8f4f:5300:882c:6330:ec22:3cc3])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3e7607770aesm1335638f8f.6.2025.09.11.00.22.17
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Sep 2025 00:22:17 -0700 (PDT)
+Message-ID: <fe09b79f-7d87-4fc7-b0fc-f594c6eaa440@gmail.com>
+Date: Thu, 11 Sep 2025 09:22:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 0/7] netfilter: updates for net: manual merge
-Content-Language: en-GB, fr-BE
-To: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- netfilter-devel@vger.kernel.org, pablo@netfilter.org,
- Stephen Rothwell <sfr@canb.auug.org.au>
-References: <20250910190308.13356-1-fw@strlen.de>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20250910190308.13356-1-fw@strlen.de>
-
-This is a multi-part message in MIME format.
---------------wAejUPd1aokr3amusa9Pbb4V
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/2] net: phy: print warning if usage of
+ deprecated array-style fixed-link binding is detected
+From: Heiner Kallweit <hkallweit1@gmail.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <964df2db-082b-4977-b4c9-fbdcfc902f9e@gmail.com>
+Content-Language: en-US
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+In-Reply-To: <964df2db-082b-4977-b4c9-fbdcfc902f9e@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Florian,
-
-On 10/09/2025 21:03, Florian Westphal wrote:
-> Hi,
+On 9/9/2025 9:14 PM, Heiner Kallweit wrote:
+> The array-style fixed-link binding has been marked deprecated for more
+> than 10 yrs, but still there's a number of users. Print a warning when
+> usage of the deprecated binding is detected.
 > 
-> The following patchset contains Netfilter fixes for *net*:
+> Heiner Kallweit (2):
+>   of: mdio: warn if deprecated fixed-link binding is used
+>   net: phylink: warn if deprecated array-style fixed-link binding is
+>     used
 > 
-> WARNING: This results in a conflict on net -> net-next merge.
-> Merge resolution walkthrough is at the end of this cover letter, see
-> MERGE WALKTHROUGH.
-
-Thank you for these instructions, that was very clear!
-
-Just in case other people need that, attached is the corresponding 3-way
-patch, and the rr-cache for this conflict is available there:
-
-https://github.com/multipath-tcp/mptcp-upstream-rr-cache/commit/580515b
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
---------------wAejUPd1aokr3amusa9Pbb4V
-Content-Type: text/x-patch; charset=UTF-8;
- name="4cab275179a48c3ded528b85c4daed7808a6f04c.patch"
-Content-Disposition: attachment;
- filename="4cab275179a48c3ded528b85c4daed7808a6f04c.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWNjIG5ldC9uZXRmaWx0ZXIvbmZ0X3NldF9waXBhcG8uYwppbmRleCA0YjY0YzNi
-ZDhlNzAsNzkzNzkwZDc5ZDEzLi5hN2I4ZmE4Y2FiN2MKLS0tIGEvbmV0L25ldGZpbHRlci9u
-ZnRfc2V0X3BpcGFwby5jCisrKyBiL25ldC9uZXRmaWx0ZXIvbmZ0X3NldF9waXBhcG8uYwpA
-QEAgLTU2Miw3IC01MzksNyArNTc4LDcgQEBAIG5mdF9waXBhcG9fbG9va3VwKGNvbnN0IHN0
-cnVjdCBuZXQgKm5ldAogIAljb25zdCBzdHJ1Y3QgbmZ0X3BpcGFwb19lbGVtICplOwogIAog
-IAltID0gcmN1X2RlcmVmZXJlbmNlKHByaXYtPm1hdGNoKTsKLSAJZSA9IHBpcGFwb19nZXRf
-c2xvdyhtLCAoY29uc3QgdTggKilrZXksIGdlbm1hc2ssIGdldF9qaWZmaWVzXzY0KCkpOwog
-LQllID0gcGlwYXBvX2dldChtLCAoY29uc3QgdTggKilrZXksIE5GVF9HRU5NQVNLX0FOWSwg
-Z2V0X2ppZmZpZXNfNjQoKSk7CisrCWUgPSBwaXBhcG9fZ2V0X3Nsb3cobSwgKGNvbnN0IHU4
-ICopa2V5LCBORlRfR0VOTUFTS19BTlksIGdldF9qaWZmaWVzXzY0KCkpOwogIAogIAlyZXR1
-cm4gZSA/ICZlLT5leHQgOiBOVUxMOwogIH0KZGlmZiAtLWNjIG5ldC9uZXRmaWx0ZXIvbmZ0
-X3NldF9waXBhcG9fYXZ4Mi5jCmluZGV4IDc1NTkzMDZkMGFlZCxjMDg4NGZhNjhjNzkuLjI3
-ZGFiMzY2NzU0OAotLS0gYS9uZXQvbmV0ZmlsdGVyL25mdF9zZXRfcGlwYXBvX2F2eDIuYwor
-KysgYi9uZXQvbmV0ZmlsdGVyL25mdF9zZXRfcGlwYXBvX2F2eDIuYwpAQEAgLTEyMjYsNzUg
-LTEyNDEsMjggKzEyMjYsNzQgQEBAIG5leHRfbWF0Y2gKICAKICAjdW5kZWYgTkZUX1NFVF9Q
-SVBBUE9fQVZYMl9MT09LVVAKICAKIC0JCWlmIChyZXQgPCAwKQogLQkJCWdvdG8gb3V0Owog
-LQogLQkJaWYgKGxhc3QpIHsKIC0JCQljb25zdCBzdHJ1Y3QgbmZ0X3NldF9leHQgKmUgPSAm
-Zi0+bXRbcmV0XS5lLT5leHQ7CiAtCiAtCQkJaWYgKHVubGlrZWx5KG5mdF9zZXRfZWxlbV9l
-eHBpcmVkKGUpKSkKIC0JCQkJZ290byBuZXh0X21hdGNoOwogLQogLQkJCWV4dCA9IGU7CiAt
-CQkJZ290byBvdXQ7CiArCQlpZiAocmV0IDwgMCkgewogKwkJCXNjcmF0Y2gtPm1hcF9pbmRl
-eCA9IG1hcF9pbmRleDsKICsJCQlrZXJuZWxfZnB1X2VuZCgpOwogKwkJCV9fbG9jYWxfdW5s
-b2NrX25lc3RlZF9iaCgmc2NyYXRjaC0+YmhfbG9jayk7CiArCQkJcmV0dXJuIE5VTEw7CiAg
-CQl9CiAgCiArCQlpZiAobGFzdCkgewogKwkJCXN0cnVjdCBuZnRfcGlwYXBvX2VsZW0gKmU7
-CiArCiArCQkJZSA9IGYtPm10W3JldF0uZTsKICsJCQlpZiAodW5saWtlbHkoX19uZnRfc2V0
-X2VsZW1fZXhwaXJlZCgmZS0+ZXh0LCB0c3RhbXApIHx8CiArCQkJCSAgICAgIW5mdF9zZXRf
-ZWxlbV9hY3RpdmUoJmUtPmV4dCwgZ2VubWFzaykpKQogKwkJCQlnb3RvIG5leHRfbWF0Y2g7
-CiArCiArCQkJc2NyYXRjaC0+bWFwX2luZGV4ID0gbWFwX2luZGV4OwogKwkJCWtlcm5lbF9m
-cHVfZW5kKCk7CiArCQkJX19sb2NhbF91bmxvY2tfbmVzdGVkX2JoKCZzY3JhdGNoLT5iaF9s
-b2NrKTsKICsJCQlyZXR1cm4gZTsKICsJCX0KICsKICsJCW1hcF9pbmRleCA9ICFtYXBfaW5k
-ZXg7CiAgCQlzd2FwKHJlcywgZmlsbCk7CiAtCQlycCArPSBORlRfUElQQVBPX0dST1VQU19Q
-QURERURfU0laRShmKTsKICsJCWRhdGEgKz0gTkZUX1BJUEFQT19HUk9VUFNfUEFEREVEX1NJ
-WkUoZik7CiAgCX0KICAKIC1vdXQ6CiAtCWlmIChpICUgMikKIC0JCXNjcmF0Y2gtPm1hcF9p
-bmRleCA9ICFtYXBfaW5kZXg7CiAgCWtlcm5lbF9mcHVfZW5kKCk7CiArCV9fbG9jYWxfdW5s
-b2NrX25lc3RlZF9iaCgmc2NyYXRjaC0+YmhfbG9jayk7CiArCXJldHVybiBOVUxMOwogK30K
-ICsKICsvKioKICsgKiBuZnRfcGlwYXBvX2F2eDJfbG9va3VwKCkgLSBEYXRhcGxhbmUgZnJv
-bnRlbmQgZm9yIEFWWDIgaW1wbGVtZW50YXRpb24KICsgKiBAbmV0OglOZXR3b3JrIG5hbWVz
-cGFjZQogKyAqIEBzZXQ6CW5mdGFibGVzIEFQSSBzZXQgcmVwcmVzZW50YXRpb24KICsgKiBA
-a2V5OgluZnRhYmxlcyBBUEkgZWxlbWVudCByZXByZXNlbnRhdGlvbiBjb250YWluaW5nIGtl
-eSBkYXRhCiArICoKICsgKiBUaGlzIGZ1bmN0aW9uIGlzIGNhbGxlZCBmcm9tIHRoZSBkYXRh
-IHBhdGguICBJdCB3aWxsIHNlYXJjaCBmb3IKICsgKiBhbiBlbGVtZW50IG1hdGNoaW5nIHRo
-ZSBnaXZlbiBrZXkgaW4gdGhlIGN1cnJlbnQgYWN0aXZlIGNvcHkgdXNpbmcKICsgKiB0aGUg
-QVZYMiByb3V0aW5lcyBpZiB0aGUgRlBVIGlzIHVzYWJsZSBvciBmYWxsIGJhY2sgdG8gdGhl
-IGdlbmVyaWMKICsgKiBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgYWxnb3JpdGhtIG90aGVyd2lz
-ZS4KICsgKgogKyAqIFJldHVybjogbmZ0YWJsZXMgQVBJIGV4dGVuc2lvbiBwb2ludGVyIG9y
-IE5VTEwgaWYgbm8gbWF0Y2guCiArICovCiArY29uc3Qgc3RydWN0IG5mdF9zZXRfZXh0ICoK
-ICtuZnRfcGlwYXBvX2F2eDJfbG9va3VwKGNvbnN0IHN0cnVjdCBuZXQgKm5ldCwgY29uc3Qg
-c3RydWN0IG5mdF9zZXQgKnNldCwKICsJCSAgICAgICBjb25zdCB1MzIgKmtleSkKICt7CiAr
-CXN0cnVjdCBuZnRfcGlwYXBvICpwcml2ID0gbmZ0X3NldF9wcml2KHNldCk7Ci0gCXU4IGdl
-bm1hc2sgPSBuZnRfZ2VubWFza19jdXIobmV0KTsKICsJY29uc3Qgc3RydWN0IG5mdF9waXBh
-cG9fbWF0Y2ggKm07CiArCWNvbnN0IHU4ICpycCA9IChjb25zdCB1OCAqKWtleTsKICsJY29u
-c3Qgc3RydWN0IG5mdF9waXBhcG9fZWxlbSAqZTsKICsKICsJbG9jYWxfYmhfZGlzYWJsZSgp
-OwogKwogKwlpZiAodW5saWtlbHkoIWlycV9mcHVfdXNhYmxlKCkpKSB7CiArCQljb25zdCBz
-dHJ1Y3QgbmZ0X3NldF9leHQgKmV4dDsKICsKICsJCWV4dCA9IG5mdF9waXBhcG9fbG9va3Vw
-KG5ldCwgc2V0LCBrZXkpOwogKwogKwkJbG9jYWxfYmhfZW5hYmxlKCk7CiArCQlyZXR1cm4g
-ZXh0OwogKwl9CiArCiArCW0gPSByY3VfZGVyZWZlcmVuY2UocHJpdi0+bWF0Y2gpOwogKwot
-IAllID0gcGlwYXBvX2dldF9hdngyKG0sIHJwLCBnZW5tYXNrLCBnZXRfamlmZmllc182NCgp
-KTsKKysJZSA9IHBpcGFwb19nZXRfYXZ4MihtLCBycCwgTkZUX0dFTk1BU0tfQU5ZLCBnZXRf
-amlmZmllc182NCgpKTsKICAJbG9jYWxfYmhfZW5hYmxlKCk7CiAgCiAtCXJldHVybiBleHQ7
-CiArCXJldHVybiBlID8gJmUtPmV4dCA6IE5VTEw7CiAgfQo=
-
---------------wAejUPd1aokr3amusa9Pbb4V--
+>  drivers/net/mdio/of_mdio.c | 2 ++
+>  drivers/net/phy/phylink.c  | 3 +++
+>  2 files changed, 5 insertions(+)
+> 
+--
+pw-bot: cr
