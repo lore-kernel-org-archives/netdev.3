@@ -1,175 +1,80 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3C29A2;
-	Thu, 11 Sep 2025 10:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957C3288DB
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 10:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757587452; cv=none; b=Arz7mSXG+Z/b67093mKmB9o8pbeqNmVvcTTVUFxD7YvCsAbXdraMDrKgR+xvg/Cz6yJcjBazLF+6VLmlbtFGlWmRyI18ajxXWEUUIyEOEjbgwLp0b8KzXTPf3UPRYtCudtFgtb9fF599mIla/fAQScfedVXdVmWj576RYQEO/JM=
+	t=1757587570; cv=none; b=fgL9tyAx1FrbpIXZbxpXLrUr6hiAsDaD3CyQZvS9mgvhICdCFAKzOdQnMqR0EOw/0wAJpxHItVWwbOHWo4YlQLm9UZxczYMAOA3TXQEjOzx/1L+O4Qw/LeBOSQjonTrES14irGxKp2Taf3u6icHG2/zD1FbIFzk/HQXVJ0eULFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757587452; c=relaxed/simple;
-	bh=Swde+Hi+3ITyGRK9/AxWwHZwjrgVy8whbbKd2UeVfDc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B5n0VXYqy3/emmWsuGhUo2PVERY3irZvg5DVJefR0Ikq5GMaeZNmaPs9KyfxfrCoscScElfu6XENKzkywBV8rNRK9xeEqNWhQxwntLKfL+bnj4UmydQjuK9ISQefYm+s/dQKhy8Yq6QIaMdZtFNpcd5QZBIm0mph82Ueyv5vSAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RxLXsu3t; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1757587570; c=relaxed/simple;
+	bh=NL64vX0D3up+otsPGbGAYfyEVyLGlVBHwEZCYPCkbsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=klQMIzqhkD6QlYGEv4O1/ekMu+PBmHr1TCaKyYVBckqlkyB2u10nwhHWJKBy0oDB7mvAl2Jc5cF3G76Iyy+bohZvyrN5zzrbiIcfyzP4mPGfqcQJt7IwFhAoHCaCIXiOCsPpyTH3C3MGK1Ek7cDnCqSpD7tRc4yl9rls0VYqqtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Y+CwFyLr; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RxLXsu3t"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B2T5Xp009660;
-	Thu, 11 Sep 2025 10:44:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Ezv6MH
-	CQJydzZELRFLwYdUjg0nfO+4KaY4T2Hx6OoZ4=; b=RxLXsu3tiaxmBbIXdC3ZXU
-	/pyhEzgwpNWJjeTBduboorigbRnUMvjj0pEErlj/0qdOz0rO4o7Z5ZZr6dG6UXUG
-	gTSYIW8VUksmELnvvqsRJMCWWDBPVGmFSCZ1ELTozpTjsYbaNNACmbyd6rzvabqq
-	zJ7az461s1mqolEudi5gbTDInOt8RpP3Y3A2c7O7OJp8fYULIZzzglZEK2V441OV
-	BqlxNf7FWNEHTOsfrgNnaYHOGKfhetJIxXT980r2xthrEsCJ17RTc4FJuoi4hk7p
-	SNoiuyvENaHPj1icfqeYRYGXw+GN7Qd8M4Zd+WcyE6kJ9ntPZSHDg4bEqaVFq3JA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acrbg8y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 10:44:02 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58BAdOu3030455;
-	Thu, 11 Sep 2025 10:44:01 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490acrbg8w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 10:44:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58B84Tc1011428;
-	Thu, 11 Sep 2025 10:44:00 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9unku0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Sep 2025 10:44:00 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58BAhud252429068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 10:43:56 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCA3620040;
-	Thu, 11 Sep 2025 10:43:56 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D1C020043;
-	Thu, 11 Sep 2025 10:43:56 +0000 (GMT)
-Received: from [9.152.224.94] (unknown [9.152.224.94])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Sep 2025 10:43:56 +0000 (GMT)
-Message-ID: <ee9c259b-1c32-4ba1-9bfa-cc21b2735290@linux.ibm.com>
-Date: Thu, 11 Sep 2025 12:43:56 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Y+CwFyLr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=hf/mDYxEsjx164N97i5P7Au6KHHEfORnhAPs8S6ufw0=; b=Y+CwFyLrzYErHDTI/iUrw6AK0+
+	Nhtc5WtijOPQjakvwN3iBCrA3cVnhStQ9s7mKOAt0NZliLqZ5NUwkkgqFChPmq4WPRDks7g1LDrCO
+	hpC9LpMtIGXEYt2OCCOMZbpJ5AvdyT9MVTItQwid50Pdp0gU3iv8jYrkhTVMTBid/MoU2jtwrXzRA
+	BBDDVbMRaGfLt6d7cF+1QEEWMqxyp7yAhTYM58q2o+UxLvKmlD2oH0OOT81UpQQ64GcqMDJmGd8AZ
+	TD5ppNL3d7zM/+4D0Fh4H+OD/cgawK5XGqWJZBDBO/w4Ec5cyHhWPIKO0vFMGLdiwf5KrR2EAdRZi
+	U8/VoScg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47016)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uweoQ-000000002pA-21xc;
+	Thu, 11 Sep 2025 11:45:58 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uweoN-000000002I5-3ae5;
+	Thu, 11 Sep 2025 11:45:55 +0100
+Date: Thu, 11 Sep 2025 11:45:55 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: [PATCH net-next v2 0/4] net: dsa: mv88e6xxx: remove redundant
+ ptp/timestamping code
+Message-ID: <aMKoYyN18FHFCa1q@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 03/14] net/dibs: Create net/dibs
-To: Julian Ruess <julianr@linux.ibm.com>, dust.li@linux.alibaba.com,
-        "D. Wythe" <alibuda@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Wenjia Zhang
- <wenjia@linux.ibm.com>,
-        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Aswin Karuvally <aswin@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
-        Mahanta Jambigi <mjambigi@linux.ibm.com>,
-        Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
-References: <20250905145428.1962105-1-wintera@linux.ibm.com>
- <20250905145428.1962105-4-wintera@linux.ibm.com>
- <aL-IwWQN7ZUNdjky@linux.alibaba.com>
- <b2c1b2b9-ce28-4a20-bf48-a427b364a664@linux.ibm.com>
- <DCOY3FWT1W5E.3SSDEILQWSZOF@linux.ibm.com>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <DCOY3FWT1W5E.3SSDEILQWSZOF@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: t8NwpX26Nyd3L1CsslNreD9hiSbtlRID
-X-Authority-Analysis: v=2.4 cv=Mp1S63ae c=1 sm=1 tr=0 ts=68c2a7f2 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=c1AFN8GM_vvGFmY8fb4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 8v43vAMjN1qyz7QI6JcZ2nXXMNCy8ido
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAwMCBTYWx0ZWRfX5/aHh2zAO+bQ
- OPz1SRMhUuM8T+Fiv9t88lVgIRQJB8qUk87Q1pIbt2CXAuE/frcXAwIeHphoyPuuopXhrmjSyoH
- 1/YLQZB8GTIsNIF4TQ3FegDop/SmmdScty7QIpEkZDGO4rOhysZR/Fqdml0cJqKJxbMZJ4+pL6A
- v5Ai/xAcjQyzgeoqCaZeEGyv3l+XUjpo/FjBQEEJsuDqr7ydU6uZKd8+IBEvpcnSQTViehItHOO
- OCPdqQ0tZf7SE7TBBNd5SwJdEL5JKL9u16DK5fr6xexqu7Q5/bD7zcQdCUlE1AK5jgmU1vhQww7
- siM9kwAcjxh0jfXCqifYmExSdwvm5j4QNA5zTLvRoPte1d/AbbCA1d6G71/N2urktmp1+iuzwi6
- ELZqclgV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_04,2025-09-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 malwarescore=0 clxscore=1015 phishscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
+Hi,
 
+mv88e6xxx as accumulated some unused data structures and code over the
+years. This series removes it and simplifies the code. See the patches
+for each change.
 
-On 10.09.25 09:34, Julian Ruess wrote:
-> On Tue Sep 9, 2025 at 9:36 AM CEST, Alexandra Winter wrote:
->>
->>
->> On 09.09.25 03:54, Dust Li wrote:
->>> On 2025-09-05 16:54:16, Alexandra Winter wrote:
->>>> Create an 'DIBS' shim layer that will provide generic functionality and
->>>> declarations for dibs device drivers and dibs clients.
->>>>
->>>> Following patches will add functionality.
->>>>
->>>> Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
->>>> ---
->>>> MAINTAINERS          |  7 +++++++
->>>> include/linux/dibs.h | 42 ++++++++++++++++++++++++++++++++++++++++++
->>>> net/Kconfig          |  1 +
->>>> net/Makefile         |  1 +
->>>> net/dibs/Kconfig     | 12 ++++++++++++
->>>> net/dibs/Makefile    |  7 +++++++
->>>> net/dibs/dibs_main.c | 37 +++++++++++++++++++++++++++++++++++++
->>>> 7 files changed, 107 insertions(+)
->>>> create mode 100644 include/linux/dibs.h
->>>> create mode 100644 net/dibs/Kconfig
->>>> create mode 100644 net/dibs/Makefile
->>>> create mode 100644 net/dibs/dibs_main.c
->>>
->>> I recall we previously discussed the issue of which directory to place
->>> it in, and I don't have any strong preference regarding this. However,
->>> I'm not sure whether we reached an agreement on this point. In my
->>> opinion, placing it under the drivers/ directory seems more reasonable.
->>> But if net/ is OK, that works for me too.
->>>
->>> Best regards,
->>> Dust
->>>
->>>
->>
->> You mean like drivers/infiniband that provides sys/class/infiniband?
->> I don't have any strong feelings about where to place the directory.
->> Are there any practical consequences?
->> Other opinions?
-> 
-> I agree with Dust. Since we are planning to also have non-networking use-cases,
-> it would be better to place it in drivers/.
+v2: fix evap_config typo, remove MV88E6XXX_TAI_EVENT_STATUS_CAP_TRIG
+definitio
 
+ drivers/net/dsa/mv88e6xxx/chip.c |  2 +-
+ drivers/net/dsa/mv88e6xxx/chip.h |  2 --
+ drivers/net/dsa/mv88e6xxx/ptp.c  | 55 ++++++----------------------------------
+ drivers/net/dsa/mv88e6xxx/ptp.h  |  3 --
+ 4 files changed, 9 insertions(+), 53 deletions(-)
 
-Moving to drivers/dibs/ in next version
-
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
