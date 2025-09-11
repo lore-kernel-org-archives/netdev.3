@@ -1,85 +1,80 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCAD34AAF0
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 14:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8540D3376B3;
+	Thu, 11 Sep 2025 14:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601355; cv=none; b=Dr7Jw8K4h3ObywcONXekjVdYhwwpKZvIb200YX33Lwb07sLthgRmRoESTwUY0Z5sCSf+UJF8ddHHrxXLCEVLOm3+ToDKVviCn36Jgp5eZ+uz8Vz/zXPqISQ9wTwcrDyBzHxpluUsP2+7i39oX15tW0jsElDUSWvidRLlFQklUG4=
+	t=1757601392; cv=none; b=QqmmMULWST15FQ2bk+zHvs13OzWxkeaDK2ZwM5nUEv5hRa7XCS4rkAFb6iB1pexMxCjrJFODCPV5catQOWRE7F/CqxEa3DtoNES2SVECuKdUrIX1cSc2nVXl6EMnJ5125j4JGABL6ZMXQXhUO6K0uYOLMK8TBd19Ai2e3wCX4MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601355; c=relaxed/simple;
-	bh=OZSFRR3m0RcZ0aCctV8DPRcpigMznLiN+vHi2hm6xfY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d8D/g87fEvJ8YSVWDM2ipBwS808fly5do37GKC2VvcBc/uo9Oi+RxhUidrjzaMnbmwD20ijNUs3EMueXqxXxKuwqfuvaCox4nzRmCaFp+PGnrNdlqjfCZNXQumlHf9gVe3/i35nHCFwsag0DR9/T0/6/j0NAMINA8+d0JxYYYAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=luusbQob; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1757601392; c=relaxed/simple;
+	bh=xmwE7Dd3BUl4FfFfkILXOnu6GtYmwpiyNr7Jy+EZ2oQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jCLxhWTRQylvemHlB9rxtDF5tEhYlnBLb73dOWpkj7NhNAdrYBuCxXkZX9x6br6O0IzSpAzION79BlRx2wuYdHc8e6WSGjm8qchFnxD704cv0QK0UiFs99eAwf0QwQib/xkGglkj9BfhOKA8JYTthQonbwJFadKs6EHEr/X/GP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NaFkYOP4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="luusbQob"
-Message-ID: <ca3b4343-f538-4db9-90be-fc9aa2854263@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757601341;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SXjkB0t5I8EFqUaQRQVUcc6w6ST88EZ7TlVvOqu4u8w=;
-	b=luusbQobTnOdzoitzZymP78lbIeTEczsiQ+GuglI0b3NFVMvWV8RI40NM0UoKFe5x2ZElJ
-	L2Lr1EguHLWVck8EJLOeIcxx8MWsNrw0+EYRaAtBv1bQcZDt8TSAZ6tGSrAdfFRfViy+BI
-	aEcLqUfmXWmKMZ9KcGILYzNXB+clV7E=
-Date: Thu, 11 Sep 2025 10:35:37 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NaFkYOP4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12B5C4CEF0;
+	Thu, 11 Sep 2025 14:36:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757601392;
+	bh=xmwE7Dd3BUl4FfFfkILXOnu6GtYmwpiyNr7Jy+EZ2oQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NaFkYOP4lP4otQm6RHM9IPoLQW55MnIzhxxRrdtHCErFJ7RT5CKT5pX+QCwsTW8iG
+	 K/FQNLVPKBwte1CuNpMA3PF/vhHHDa5jnVE9v/bbmUBtn8k+TNY5dxue3QWQ+WL4n3
+	 pLnXp99/4OBJ0XHsXKkhYstxoF/uGqlB772S9nRJ5/jn9GSp1vQwvnVvVv+kG05ceT
+	 PMVoDlcdD8jx3pLoXG21JwDu7uXOkdzYY3hSaPGOKkBZu8ahDTA5lI74q7xAsmNF9X
+	 KH/KuKzXfcsU6zRVAs/3eMcMrkEjelhO9jxXWkGan2tipU5bJ2XN5SpBHgiF0vfZrz
+	 HEcAxG5NHCg8A==
+Date: Thu, 11 Sep 2025 07:36:30 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky
+ <leon@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Gal Pressman
+ <gal@nvidia.com>, linux-rdma@vger.kernel.org, Alexei Lazar
+ <alazar@nvidia.com>
+Subject: Re: [PATCH net V2 10/11] net/mlx5e: Update and set Xon/Xoff upon
+ port speed set
+Message-ID: <20250911073630.14cd6764@kernel.org>
+In-Reply-To: <fdd4a537-8fa3-42ae-bfab-80c0dc32a7c2@nvidia.com>
+References: <20250825143435.598584-1-mbloch@nvidia.com>
+	<20250825143435.598584-11-mbloch@nvidia.com>
+	<20250910170011.70528106@kernel.org>
+	<20250911064732.2234b9fb@kernel.org>
+	<fdd4a537-8fa3-42ae-bfab-80c0dc32a7c2@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 1/2] net: xilinx: axienet: Fix kernel-doc warning
- for axienet_free_tx_chain return value
-To: Suraj Gupta <suraj.gupta2@amd.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, michal.simek@amd.com, radhey.shyam.pandey@amd.com,
- horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, harini.katakam@amd.com
-References: <20250911072815.3119843-1-suraj.gupta2@amd.com>
- <20250911072815.3119843-2-suraj.gupta2@amd.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20250911072815.3119843-2-suraj.gupta2@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 9/11/25 03:28, Suraj Gupta wrote:
-> Add proper "Return:" section in axienet_free_tx_chain() description.
-> The return value description was present in the function description
-> but not in the standardized format.
-> Move the return value description from the main description to a separate
-> "Return:" section to follow Linux kernel documentation standards.
+On Thu, 11 Sep 2025 17:25:22 +0300 Mark Bloch wrote:
+> On 11/09/2025 16:47, Jakub Kicinski wrote:
+> > On Wed, 10 Sep 2025 17:00:11 -0700 Jakub Kicinski wrote:  
+> >> Hi, this is breaking dual host CX7 w/ 28.45.1300 (but I think most
+> >> older FW versions, too). Looks like the host is not receiving any
+> >> mcast (ping within a subnet doesn't work because the host receives
+> >> no ndisc), and most traffic slows down to a trickle.
+> >> Lost of rx_prio0_buf_discard increments.
+> >>
+> >> Please TAL ASAP, this change went to LTS last week.  
+> > 
+> > Any news on this? I heard that it also breaks DCB/QoS configuration
+> > on 6.12.45 LTS.  
 > 
-> Fixes below kernel-doc warning:
-> warning: No description found for return value of 'axienet_free_tx_chain'
-> 
-> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
-> ---
->  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index ec6d47dc984a..0cf776153508 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -773,7 +773,8 @@ static int axienet_device_reset(struct net_device *ndev)
->   *
->   * Would either be called after a successful transmit operation, or after
->   * there was an error when setting up the chain.
-> - * Returns the number of packets handled.
-> + *
-> + * Return: The number of packets handled.
->   */
->  static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
->  				 int nr_bds, bool force, u32 *sizep, int budget)
+> We are looking into this, once we have anything I'll update.
+> Just to make sure, reverting this is one commit solves the
+> issue you are seeing?
 
-Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+It did for me, but Daniel (who is working on the PSP series)
+mentioned that he had reverted all three to get net-next working:
+
+  net/mlx5e: Set local Xoff after FW update
+  net/mlx5e: Update and set Xon/Xoff upon port speed set
+  net/mlx5e: Update and set Xon/Xoff upon MTU set
