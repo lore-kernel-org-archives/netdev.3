@@ -1,59 +1,88 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0F930F94A
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 11:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FB931CA65;
+	Thu, 11 Sep 2025 11:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757590663; cv=none; b=jtSMelOw4nQn+aL035nTzJto7FOt2PSAahIf1RM2LuZSrJuSQX6B4FGxMz/yJZVSa4TRhBlnonmLu/xmq9WPQhGsxbjelMeJVmF26PAuxoqBaqpPbm/n+rN1TCQGjazUFjMJaLSlmIok9y889b9Y9yacmEliJrEGXL8zU8W6D3I=
+	t=1757590926; cv=none; b=amIGTXHWBKVopL8+6/Uj6rgLpA6wcrUiJjeEOLFcQOx1DQUfr7s6kLUDFB17wJ1QsAxf2+dkeuxDBrEwHhajKIUwMF7q9ohEI3YZhWnCmoQGLoAeLZaROqAvkfQ1ctOvOlrwunPmcSdNPIW9HqDXvmiJinaFjl9cgcOX5Hv24xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757590663; c=relaxed/simple;
-	bh=u6umOtzdj3W9bZWwuhhKDx6RA5dkO6dv53GPJnlDTp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mrMfKR7z2lXNzydIKgg14Fqs8/7V290ORzSAoLFW7lsUYnSUvRM8AyaAJjfIlcmLzV6k2mR2pfWY39KCFSNXFOXvecWOHz/a2Sa7oxVa0fk/TCKK8gyaUWW4gLkz9eHH6c8Fd/wDAevk5Fr94hfPHagVINmChXdwvYT/rs2IFA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=l+fthXk6; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1757590926; c=relaxed/simple;
+	bh=JQQi36eZE14yH3jRBYl6UW9XA0A2eEGQafkfVENT8Ac=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=grYFFn9bvHLQjA6EX4ME36y5+LKTtt8DkHyAPkIax4fGjhz9Gu7VR3+SRRUQD4LV9VSkl6qgwFI4EiEYuz+XKt4oxDyBcLwEJpZ/69gbBH6pXc/drmPAv+tnBIIatxrZlsOjdI0LEREMA2k2R1+oRBPBGl9PnxQS3OBUo1qbgnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=i5JGUhxZ; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="l+fthXk6"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58B8fl0c002057;
-	Thu, 11 Sep 2025 11:37:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=xb2CXb0ZzHiVUZ9x7mSkjL9XR3F4Z
-	90ZfedCuRFmyR0=; b=l+fthXk6yyg64Q4U0VIgLoooI1GeOnSpV3/A0+onHraXM
-	ZfFe78sx9wlAcsZcOtt23ds1S172cphHkuA0RJHhud+g4wUZgDJPLTpy7yCzocs2
-	qc4OO4u3nVcfvB+j6HGn68q0S6QQJ1O3YZQy1pUOPX2FyWbsPdHKXU3UPFIDn1vb
-	84t5URW74AtznIK+RqdwwzZ0VbjLIx1zkt8u4drI8grdEyyEKTgsFRrbNu512esV
-	wS5PuMO7jB+wGPPMI6276tw/B/Froa1PzZqHWnPDgVCJYNKdhYBEoHz7aDr6p/n+
-	cCt4HD3YlprXcTnMjTClKaLTuJ2qx9qBPawRjH0hw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4922shwyed-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 11:37:31 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58BA9rbN012850;
-	Thu, 11 Sep 2025 11:37:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdch2ve-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Sep 2025 11:37:31 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58BBbU13040856;
-	Thu, 11 Sep 2025 11:37:30 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 490bdch2v4-1;
-	Thu, 11 Sep 2025 11:37:30 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: shayagr@amazon.com, akiyano@amazon.com, saeedb@amazon.com,
-        darinzon@amazon.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        horms@kernel.org, netdev@vger.kernel.org
-Cc: alok.a.tiwari@oracle.com
-Subject: [PATCH net] net: ena: fix duplicate Autoneg setting in get_link_ksettings
-Date: Thu, 11 Sep 2025 04:37:20 -0700
-Message-ID: <20250911113727.3857978-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="i5JGUhxZ"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58BBaSPF282600;
+	Thu, 11 Sep 2025 06:36:28 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1757590588;
+	bh=MvLpwpR2k8oWPS7J/omjOonARgnQ/9NgXe245RoEZPI=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=i5JGUhxZAtlepksxmLTonKbL9ibKpoQc9n3ck1pQSbI+fWfUeepdUQ9DoYwDw876U
+	 8Ef/8ztmGSbAcSisQMNAXipQL4VMXUKSuBrh633GqFusOsqg8p5gIFxn81e2bFbIcj
+	 cbZKFivyWQmOaRmgz8rAvH2F651YJVZk6rUzMvTk=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58BBaSVT464628
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Thu, 11 Sep 2025 06:36:28 -0500
+Received: from DFLE211.ent.ti.com (10.64.6.69) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Thu, 11
+ Sep 2025 06:36:28 -0500
+Received: from fllvem-mr07.itg.ti.com (10.64.41.89) by DFLE211.ent.ti.com
+ (10.64.6.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 11 Sep 2025 06:36:28 -0500
+Received: from fllv0122.itg.ti.com (fllv0122.itg.ti.com [10.247.120.72])
+	by fllvem-mr07.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58BBaSwp1068579;
+	Thu, 11 Sep 2025 06:36:28 -0500
+Received: from localhost (danish-tpc.dhcp.ti.com [172.24.231.152])
+	by fllv0122.itg.ti.com (8.14.7/8.14.7) with ESMTP id 58BBaR4d032081;
+	Thu, 11 Sep 2025 06:36:27 -0500
+From: MD Danish Anwar <danishanwar@ti.com>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Jonathan Corbet
+	<corbet@lwn.net>, Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra
+	<vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        MD Danish Anwar
+	<danishanwar@ti.com>,
+        Mengyuan Lou <mengyuanlou@net-swift.com>,
+        Lei Wei
+	<quic_leiwei@quicinc.com>, Xin Guo <guoxin09@huawei.com>,
+        Michael Ellerman
+	<mpe@ellerman.id.au>, Fan Gong <gongfan1@huawei.com>,
+        Lorenzo Bianconi
+	<lorenzo@kernel.org>,
+        Parthiban Veerasooran
+	<Parthiban.Veerasooran@microchip.com>,
+        Lukas Bulwahn
+	<lukas.bulwahn@redhat.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH net-next v4 5/7] net: rpmsg-eth: Add support for multicast filtering
+Date: Thu, 11 Sep 2025 17:06:10 +0530
+Message-ID: <20250911113612.2598643-6-danishanwar@ti.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250911113612.2598643-1-danishanwar@ti.com>
+References: <20250911113612.2598643-1-danishanwar@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,51 +90,184 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-10_04,2025-09-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
- definitions=main-2509110105
-X-Authority-Analysis: v=2.4 cv=esTfzppX c=1 sm=1 tr=0 ts=68c2b47c b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=F1KUkW-MTnVBcKIWaLUA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE2NSBTYWx0ZWRfX64LMnpu5QufE
- 45JUqjbqgzWBKwbBaJn9Nsv9e2CwPVQUKQmSgraS98h1iOU1tnZzvGDNZGQTAIeq+7L/EswkRBf
- 7gpwVWEdqI7q+NqHlDyOr42+UOoicRwmf/nLuBkVIsC5Pb/1SN08E9dg10RGYa5Sa+4SOxHd1Yo
- 1iBBPHwhni1AVHuKgvo5ojSM2mqR7nmIBoc8s+Nvz1I6otqbtc3+TJ3ASjL1jAP0I29ON4dYkjz
- KEUHLPMSh36/mQxrwnd8pn/SYU6xRX1bzt5kElIZhgs761ZqX2xanceVY7G7FLyxIQIWSL2w5Fe
- kTwqdpsCQ3ShPmE+mtVvnaujab0oLAae9MH6yRYKAXADkzmxKLua9DVGNIg+z6VRGKcWhX662vV
- ySbsc5hx
-X-Proofpoint-GUID: P_Tm8pA3eOiVzfib7QvGhHSTCuYM4-HY
-X-Proofpoint-ORIG-GUID: P_Tm8pA3eOiVzfib7QvGhHSTCuYM4-HY
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The ENA ethtool implementation mistakenly sets the Autoneg link mode
-twice in the 'supported' mask, leaving the 'advertising mask unset.
+Add support for multicast filtering for RPMSG ETH driver. Implement the
+ndo_set_rx_mode callback as icve_set_rx_mode() API. rx_mode_workqueue is
+initialized in rpmsg_eth_probe() and queued in rpmsg_eth_set_rx_mode().
 
-Fix this by setting Autoneg in 'advertising' instead of duplicating
-it in 'supported'.
-
-Fixes: 1738cd3ed342 ("net: ena: Add a driver for Amazon Elastic Network Adapters (ENA)")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 ---
- drivers/net/ethernet/amazon/ena/ena_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/rpmsg_eth.c | 63 ++++++++++++++++++++++++++++++++
+ drivers/net/ethernet/rpmsg_eth.h | 12 ++++++
+ 2 files changed, 75 insertions(+)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_ethtool.c b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-index a81d3a7a3bb9..a6ef12c157ca 100644
---- a/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_ethtool.c
-@@ -471,7 +471,7 @@ static int ena_get_link_ksettings(struct net_device *netdev,
- 		ethtool_link_ksettings_add_link_mode(link_ksettings,
- 						     supported, Autoneg);
- 		ethtool_link_ksettings_add_link_mode(link_ksettings,
--						     supported, Autoneg);
-+						     advertising, Autoneg);
- 	}
+diff --git a/drivers/net/ethernet/rpmsg_eth.c b/drivers/net/ethernet/rpmsg_eth.c
+index 43196e1d7eeb..cde19d924b89 100644
+--- a/drivers/net/ethernet/rpmsg_eth.c
++++ b/drivers/net/ethernet/rpmsg_eth.c
+@@ -80,6 +80,11 @@ static int create_request(struct rpmsg_eth_common *common,
+ 		ether_addr_copy(msg->req_msg.mac_addr.addr,
+ 				common->port->ndev->dev_addr);
+ 		break;
++	case RPMSG_ETH_REQ_ADD_MC_ADDR:
++	case RPMSG_ETH_REQ_DEL_MC_ADDR:
++		ether_addr_copy(msg->req_msg.mac_addr.addr,
++				common->mcast_addr);
++		break;
+ 	case RPMSG_ETH_NOTIFY_PORT_UP:
+ 	case RPMSG_ETH_NOTIFY_PORT_DOWN:
+ 		msg->msg_hdr.msg_type = RPMSG_ETH_NOTIFY_MSG;
+@@ -131,6 +136,22 @@ static int rpmsg_eth_create_send_request(struct rpmsg_eth_common *common,
+ 	return ret;
+ }
  
- 	link_ksettings->base.autoneg =
++static int rpmsg_eth_add_mc_addr(struct net_device *ndev, const u8 *addr)
++{
++	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
++
++	ether_addr_copy(common->mcast_addr, addr);
++	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_ADD_MC_ADDR, true);
++}
++
++static int rpmsg_eth_del_mc_addr(struct net_device *ndev, const u8 *addr)
++{
++	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
++
++	ether_addr_copy(common->mcast_addr, addr);
++	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_DEL_MC_ADDR, true);
++}
++
+ static void rpmsg_eth_state_machine(struct work_struct *work)
+ {
+ 	struct delayed_work *dwork = to_delayed_work(work);
+@@ -213,6 +234,10 @@ static int rpmsg_eth_rpmsg_cb(struct rpmsg_device *rpdev, void *data, int len,
+ 			break;
+ 		case RPMSG_ETH_RESP_SET_MAC_ADDR:
+ 			break;
++		case RPMSG_ETH_RESP_ADD_MC_ADDR:
++		case RPMSG_ETH_RESP_DEL_MC_ADDR:
++			complete(&common->sync_msg);
++			break;
+ 		}
+ 		break;
+ 	case RPMSG_ETH_NOTIFY_MSG:
+@@ -407,10 +432,15 @@ static int rpmsg_eth_ndo_stop(struct net_device *ndev)
+ 
+ 	netif_carrier_off(port->ndev);
+ 
++	__dev_mc_unsync(ndev, rpmsg_eth_del_mc_addr);
++	__hw_addr_init(&common->mc_list);
++
+ 	cancel_delayed_work_sync(&common->state_work);
+ 	timer_delete_sync(&port->rx_timer);
+ 	napi_disable(&port->rx_napi);
+ 
++	cancel_work_sync(&common->rx_mode_work);
++
+ 	return 0;
+ }
+ 
+@@ -467,10 +497,35 @@ static int rpmsg_eth_set_mac_address(struct net_device *ndev, void *addr)
+ 	return rpmsg_eth_create_send_request(common, RPMSG_ETH_REQ_SET_MAC_ADDR, false);
+ }
+ 
++static void rpmsg_eth_ndo_set_rx_mode_work(struct work_struct *work)
++{
++	struct rpmsg_eth_common *common;
++	struct net_device *ndev;
++
++	common = container_of(work, struct rpmsg_eth_common, rx_mode_work);
++	ndev = common->port->ndev;
++
++	/* make a mc list copy */
++	netif_addr_lock_bh(ndev);
++	__hw_addr_sync(&common->mc_list, &ndev->mc, ndev->addr_len);
++	netif_addr_unlock_bh(ndev);
++
++	__hw_addr_sync_dev(&common->mc_list, ndev, rpmsg_eth_add_mc_addr,
++			   rpmsg_eth_del_mc_addr);
++}
++
++static void rpmsg_eth_set_rx_mode(struct net_device *ndev)
++{
++	struct rpmsg_eth_common *common = rpmsg_eth_ndev_to_common(ndev);
++
++	queue_work(common->cmd_wq, &common->rx_mode_work);
++}
++
+ static const struct net_device_ops rpmsg_eth_netdev_ops = {
+ 	.ndo_open = rpmsg_eth_ndo_open,
+ 	.ndo_stop = rpmsg_eth_ndo_stop,
+ 	.ndo_start_xmit = rpmsg_eth_start_xmit,
++	.ndo_set_rx_mode = rpmsg_eth_set_rx_mode,
+ 	.ndo_set_mac_address = rpmsg_eth_set_mac_address,
+ };
+ 
+@@ -546,6 +601,13 @@ static int rpmsg_eth_probe(struct rpmsg_device *rpdev)
+ 	INIT_DELAYED_WORK(&common->state_work, rpmsg_eth_state_machine);
+ 	init_completion(&common->sync_msg);
+ 
++	__hw_addr_init(&common->mc_list);
++	INIT_WORK(&common->rx_mode_work, rpmsg_eth_ndo_set_rx_mode_work);
++	common->cmd_wq = create_singlethread_workqueue("rpmsg_eth_rx_work");
++	if (!common->cmd_wq) {
++		dev_err(dev, "Failure requesting workqueue\n");
++		return -ENOMEM;
++	}
+ 	/* Register the network device */
+ 	ret = rpmsg_eth_init_ndev(common);
+ 	if (ret)
+@@ -562,6 +624,7 @@ static void rpmsg_eth_remove(struct rpmsg_device *rpdev)
+ 	netif_napi_del(&port->rx_napi);
+ 	timer_delete_sync(&port->rx_timer);
+ 	unregister_netdev(port->ndev);
++	destroy_workqueue(common->cmd_wq);
+ 
+ 	dev_dbg(&rpdev->dev, "rpmsg-eth client driver is removed\n");
+ }
+diff --git a/drivers/net/ethernet/rpmsg_eth.h b/drivers/net/ethernet/rpmsg_eth.h
+index 80fa07be1678..d6112cb9269a 100644
+--- a/drivers/net/ethernet/rpmsg_eth.h
++++ b/drivers/net/ethernet/rpmsg_eth.h
+@@ -58,10 +58,14 @@ enum rpmsg_eth_rpmsg_type {
+ 	/* Request types */
+ 	RPMSG_ETH_REQ_SHM_INFO = 0,
+ 	RPMSG_ETH_REQ_SET_MAC_ADDR,
++	RPMSG_ETH_REQ_ADD_MC_ADDR,
++	RPMSG_ETH_REQ_DEL_MC_ADDR,
+ 
+ 	/* Response types */
+ 	RPMSG_ETH_RESP_SHM_INFO,
+ 	RPMSG_ETH_RESP_SET_MAC_ADDR,
++	RPMSG_ETH_RESP_ADD_MC_ADDR,
++	RPMSG_ETH_RESP_DEL_MC_ADDR,
+ 
+ 	/* Notification types */
+ 	RPMSG_ETH_NOTIFY_PORT_UP,
+@@ -220,6 +224,10 @@ enum rpmsg_eth_state {
+  * @state: Interface state
+  * @state_work: Delayed work for state machine
+  * @sync_msg: Completion for synchronous message
++ * @rx_mode_work: Work structure for rx mode
++ * @cmd_wq: Workqueue for commands
++ * @mc_list: List of multicast addresses
++ * @mcast_addr: Multicast address filter
+  */
+ struct rpmsg_eth_common {
+ 	struct rpmsg_device *rpdev;
+@@ -237,6 +245,10 @@ struct rpmsg_eth_common {
+ 	struct mutex state_lock;
+ 	struct delayed_work state_work;
+ 	struct completion sync_msg;
++	struct work_struct rx_mode_work;
++	struct workqueue_struct *cmd_wq;
++	struct netdev_hw_addr_list mc_list;
++	u8 mcast_addr[ETH_ALEN];
+ };
+ 
+ /**
 -- 
-2.50.1
+2.34.1
 
