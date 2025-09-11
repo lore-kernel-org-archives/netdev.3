@@ -1,80 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FD71F91F6;
-	Thu, 11 Sep 2025 01:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50A31519B9;
+	Thu, 11 Sep 2025 01:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757552405; cv=none; b=JndZi2FiIn3Zly9cxC7nrccrSETAwBo08nEwydenWCVZPlwfbO8niy1bcg2YLIJlC/Bn4lm12BDRWMS1Hd1lODs2/2k0UetNZaTfCJe+HhLiAlwRJfofdnhzrrgPHyNuYMN7UlBSOFPL4+yfctSpCw9YjFziTaLxdgAWoyjoM6o=
+	t=1757552432; cv=none; b=nJEeybBIibZ2JleVY7bOIseaIqVHtjS2gpSKY5vTo0OhM/0BzSZQaHqCnvHbRP7eUz1BgOoUEiAw1s8DkbVrvJU6SleXpHeRHh9+NTWRsxEZ1IbiWZb7Boju9Q2tcMWdIV6KGB1F7P1MFbzv9lDZpZ42/jUdRvQbm6jJCqSmvkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757552405; c=relaxed/simple;
-	bh=qwuXpus2HWlOop1DAknXNJAailxPHFlyyk/IHmk53HM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nRXccg2OrLz89rSRXpu/Er9gw+3m8QQl7RDl/Q6foHUVDCdgtyeh7GSKnZVxJoPenySHpCjQNTBEIe9gLSzFYGQ75xUV8hfCOhyFjBM+yov/UWEU+k2f8Zv1w2vxGoeO7h+mEM6hc9SRrX2n5Wv8U7kCwyA3LA+72en44g6fbr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpMBew0H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757552432; c=relaxed/simple;
+	bh=XeSikDz3/rCknydEBrqESWnjjoPx806qZ8IdQkhjSTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XDEQdlP9WLgtzwA7MrJdmyX5SX6JIVLMoHMM7QrkjqnZSpmMMkrYbZIVXl98Vfy+/h0Qa8YXHaOiThG9pIZuzVUU3tZXC9jgjZi41OWyeEtOXBFg8fiWfW92cF2Zyk8phYdcDyfsP0YQoDFra2SMvEFT+0V24Mblu93pdRIbCxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nb9a94fx; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpMBew0H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF02C4CEEB;
-	Thu, 11 Sep 2025 01:00:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757552404;
-	bh=qwuXpus2HWlOop1DAknXNJAailxPHFlyyk/IHmk53HM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=PpMBew0HCzA09m6fBendvnylpvAzecO78yo5XL3bVqbq72OO/QTDHosm4SnBPq23X
-	 scPl5PcGMzDi/UcIFtrpPradMXUYela68oztOJMfNJSLPRKGwW5Oi4fcBLrxeY1fzl
-	 fNB3Ldhh0NnjODu/m8FcKulBEwfpaCR0+IaXIX28H0OB46BzY/1wosfrReNNFzlREx
-	 Ci5kSzODn6z/qT+yBxLGV71+Gs5hToKcfZIiftp4aS3XhD3kz/gKK1fRaidN571XBC
-	 FCXvOr5HCUuIzVbip5pnhdoxqQQx7lM1o/zVHY12AZ3Aa2f7gEa1RJgW6YvpLk6DzF
-	 4IROVwNLPYy0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB546383BF69;
-	Thu, 11 Sep 2025 01:00:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nb9a94fx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757552431; x=1789088431;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XeSikDz3/rCknydEBrqESWnjjoPx806qZ8IdQkhjSTI=;
+  b=Nb9a94fxhKYxVTed5b6Xuyy8mDIO4xmWwjAjnODQq6BNs5EhTV9CN3oW
+   vUhmNXSbodYYpRGkWCP4Yc5iBfU7JQltpaN8n6GTZ20egr8nrxKUWp6hR
+   nBkfcboiFR4vOe10yNqqClSyHPE13pYbbNS6A/Is1eKj5AySGUL+WIiMS
+   7pjZhOvsFBcLND0irbfegoVpxTkU4ZDO4LlkFyeMc3F46VnD+de/Ozr1R
+   Ff1P4z87YEEPTcplHhZ4Rkb/aV0N6/jdFAH2MXWsLQoRVFyKvdQATcTKo
+   0LHThZKu7ymzEX3GiCEkrK0W4NjxerBzptnCkr8jlSOx8LzND4tCAT3Pw
+   A==;
+X-CSE-ConnectionGUID: uBYKdiP6RrOUXA2eLQlY1w==
+X-CSE-MsgGUID: N36bxgagR82qXQp0yIXWfw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11549"; a="85320724"
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="85320724"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2025 18:00:30 -0700
+X-CSE-ConnectionGUID: KgU3xY3NQhWIRsn18xSuHA==
+X-CSE-MsgGUID: cHaGfah0QLCNJg8PMluWrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,255,1751266800"; 
+   d="scan'208";a="173382583"
+Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 10 Sep 2025 18:00:23 -0700
+Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uwVfg-0006OT-14;
+	Thu, 11 Sep 2025 01:00:20 +0000
+Date: Thu, 11 Sep 2025 08:59:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net
+Cc: oe-kbuild-all@lists.linux.dev,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, thomas.petazzoni@bootlin.com,
+	Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?iso-8859-1?Q?Nicol=F2?= Veronese <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+	Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>
+Subject: Re: [PATCH net-next v12 09/18] net: phylink: Move sfp interface
+ selection and filtering to phy_caps
+Message-ID: <202509110810.9Kjzuszo-lkp@intel.com>
+References: <20250909152617.119554-10-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1 1/1] net: usb: asix: ax88772: drop phylink use in
- PM to
- avoid MDIO runtime PM wakeups
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175755240775.1614523.6238417350387130294.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Sep 2025 01:00:07 +0000
-References: <20250908112619.2900723-1-o.rempel@pengutronix.de>
-In-Reply-To: <20250908112619.2900723-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hubert.wisniewski.25632@gmail.com,
- stable@vger.kernel.org, kernel@pengutronix.de, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, lukas@wunner.de, linux@armlinux.org.uk,
- xu.yang_2@nxp.com, linux-usb@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250909152617.119554-10-maxime.chevallier@bootlin.com>
 
-Hello:
+Hi Maxime,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+kernel test robot noticed the following build errors:
 
-On Mon,  8 Sep 2025 13:26:19 +0200 you wrote:
-> Drop phylink_{suspend,resume}() from ax88772 PM callbacks.
-> 
-> MDIO bus accesses have their own runtime-PM handling and will try to
-> wake the device if it is suspended. Such wake attempts must not happen
-> from PM callbacks while the device PM lock is held. Since phylink
-> {sus|re}sume may trigger MDIO, it must not be called in PM context.
-> 
-> [...]
+[auto build test ERROR on net-next/main]
 
-Here is the summary with links:
-  - [net,v1,1/1] net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups
-    https://git.kernel.org/netdev/net/c/5537a4679403
+url:    https://github.com/intel-lab-lkp/linux/commits/Maxime-Chevallier/dt-bindings-net-Introduce-the-ethernet-connector-description/20250909-233858
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250909152617.119554-10-maxime.chevallier%40bootlin.com
+patch subject: [PATCH net-next v12 09/18] net: phylink: Move sfp interface selection and filtering to phy_caps
+config: arm-randconfig-001-20250910 (https://download.01.org/0day-ci/archive/20250911/202509110810.9Kjzuszo-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250911/202509110810.9Kjzuszo-lkp@intel.com/reproduce)
 
-You are awesome, thank you!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509110810.9Kjzuszo-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "phy_caps_filter_sfp_interfaces" [drivers/net/phy/phylink.ko] undefined!
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
