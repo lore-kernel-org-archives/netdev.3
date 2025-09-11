@@ -1,219 +1,135 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA4F3680B8;
-	Thu, 11 Sep 2025 18:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F817346A1E
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 18:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757614528; cv=none; b=MkbWzITDdcFKgrwC+upzp78oX05vAGFLc9y08Eo4amkKyKq6pdUmO9hKerU7pkOK7379Cbfec2nKCLI0dXMoXs/DFJzJa4lwecMbVI1fHM/skN8hxWtxQBna5VFoIIyWgECsqYW2//nGGjN9DiVc2zQARK+03HXzz5eqUsLfT1o=
+	t=1757614590; cv=none; b=Efsi2RjTYxZp1JxkfRqpxC5lHdMcop7YbUXpITpuUbHQUJ36Mi6fGIyE0eZHyWCA/RnYBXFGcmcBxnbSMnO37Mebusyw38QEAWRg2NrR0tDWpC56fRArGn3bAtC6/hyIb8Hd8HKQEMh5brKh5sOiF7gObN7S9xB/aJGKSJ0PhOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757614528; c=relaxed/simple;
-	bh=tN0bWRW/FogW6QcDX7SYo3X9nLWglFyC/kf36x3EnSc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YdpaqxiwyNwdAbjNfXFe79pfe8CT4g29egkpfkEqWQASb/RfgDSpSCXiso8Ps+SQDqLbVS6AHVVg4O/RjYX2yFVswwyK3FPWDDmhEFRiZ2rAhNlnxA8Nr3lIkMJMhPmEw5PHQqqFUW+gZKntDIYsMFeXcLPlAHE6T9PZ8PSpLA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [127.0.0.2] (unknown [114.241.87.235])
-	by APP-03 (Coremail) with SMTP id rQCowACn9H5sEcNoZr9SAg--.27064S2;
-	Fri, 12 Sep 2025 02:14:05 +0800 (CST)
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-Subject: [PATCH net-next v11 0/5] Add Ethernet MAC support for SpacemiT K1
-Date: Fri, 12 Sep 2025 02:13:52 +0800
-Message-Id: <20250912-net-k1-emac-v11-0-aa3e84f8043b@iscas.ac.cn>
+	s=arc-20240116; t=1757614590; c=relaxed/simple;
+	bh=4oW5g7VQcwRUp7W8nvq3W6DVtJW3UmQDZV1rM7GL7zo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W/4Fmxeb5Esfw1kZiG5kdzWIcY8C8lWMeJBCq+RHz5f3ObG3I98T7EEDnf1qtqY6T3dvkZwXObcidbgDDGjhBW+Wq7bGqCAKwb6l0+sNVL2fb7vcTeQ7fjXrhdmKFiOGIPR6YmHl4K/+bSACcyRtpZcBUdPWvfJOk9Hms/4YgtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ddqPBkQw; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ddqPBkQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD14C4CEF5;
+	Thu, 11 Sep 2025 18:16:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757614588;
+	bh=4oW5g7VQcwRUp7W8nvq3W6DVtJW3UmQDZV1rM7GL7zo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ddqPBkQwt2ZztyRN/9AKh2B8DqvTzl5xFDfgfQIdX/VY85rEZNxIrXCWZTxkJcrVX
+	 PN1rUOiUX6ZzIlP94e3aStfvtwnogpbbOB1K0CsZKTWONaeTa6pU7c8nQa7bZMQUe7
+	 JsSIJb+QroHiq4AJ2WWOxGHdIhnVtHCoX5E/vaLk3s437SurSFeYe+1rdAEqyVPrVw
+	 lwUPFrBKGEMWlW/2JkSSn0VYP9HoL+UjuPmp1n137uixIljw16xvpDBkQQsYLETgI4
+	 nG7sg3THFI1oAOkt7O8trH+FFJexhJP/VAjBHFwVzwXSpqAhya369Ib0ueO5tgirHB
+	 elRJFhf2VGhhQ==
+Message-ID: <0fa3078a-1ebc-47a3-88a1-1b8713acba12@kernel.org>
+Date: Thu, 11 Sep 2025 20:16:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/2] net: phylink: warn if deprecated array-style
+ fixed-link binding is used
+To: Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>
+Cc: Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ David Miller <davem@davemloft.net>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <964df2db-082b-4977-b4c9-fbdcfc902f9e@gmail.com>
+ <bca6866a-4840-4da0-a735-1a394baadbd8@gmail.com>
+ <51e11917-e9c7-4708-a80f-f369874d2ed3@kernel.org>
+ <bb41943c-991a-46bc-a0de-e2f3f1295dc4@gmail.com>
+ <815dcbff-ab08-4b92-acf4-6e28a230e1bf@lunn.ch>
+ <233db109-6666-4696-9199-2da040974714@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <233db109-6666-4696-9199-2da040974714@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGARw2gC/23RS07DMBAG4KtUXuNqxvGzK+6BWDjjMUSoKSQhK
- qp6d9wUqXmwtD3f/Pb4InruGu7FYXcRHY9N35zaskB82gl6j+0byyaVDaFAGbBgZcuD/EDJx0i
- yYvRowHO0WhTx2XFuzlO7F3ErbPk8iNf7Scdf36X/8Hdcx54lnY7HZjjsRrtHJzvCqfi96YdT9
- zNdasSp+h6P1SJ+RAmSyObABsFa99z0FPt9pD21U6dRzbVfalV00NlkcEq56Le6emgHaqmror1
- XiYzRoHO11XquVzfXRVtvEwTSlP/LNg/tcZVtik4JHekAJuuw1XamFSy1vU0NWfmsal+z2Wo31
- 8svH13RpiY0PoG3kbfaz/Vq5r5oDuBMSopigK0OD10et9Sh6IxWhzr4iIG2GmHOV+EItx+H5ME
- RJW1Xc7ter78i0YsoEAMAAA==
-X-Change-ID: 20250606-net-k1-emac-3e181508ea64
-To: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
- Vivian Wang <wangruikang@iscas.ac.cn>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>
-Cc: Vivian Wang <uwu@dram.page>, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
- Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
- Hendrik Hamerlinck <hendrik.hamerlinck@hammernet.be>
-X-Mailer: b4 0.14.2
-X-CM-TRANSID:rQCowACn9H5sEcNoZr9SAg--.27064S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtF45tF1kJw43WryxJF4DCFg_yoW7KF1fpF
-	W8CrZ0vw47JrWIgF4kCw47uF1xXan5J343WF1UK393Xa1DAFyUZ392kw43CFyDZrZ3J34j
-	ya1UZF1DWa4DJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8JV
-	W8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjTRM6wCDUUUU
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-SpacemiT K1 has two gigabit Ethernet MACs with RGMII and RMII support.
-Add devicetree bindings, driver, and DTS for it.
+On 11/09/2025 18:58, Heiner Kallweit wrote:
+> On 9/11/2025 6:44 PM, Andrew Lunn wrote:
+>> On Thu, Sep 11, 2025 at 06:28:03PM +0200, Heiner Kallweit wrote:
+>>> On 9/11/2025 8:34 AM, Krzysztof Kozlowski wrote:
+>>>> On 09/09/2025 21:16, Heiner Kallweit wrote:
+>>>>> The array-style fixed-link binding has been marked deprecated for more
+>>>>> than 10 yrs, but still there's a number of users. Print a warning when
+>>>>> usage of the deprecated binding is detected.
+>>>>>
+>>>>> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+>>>>> ---
+>>>>>  drivers/net/phy/phylink.c | 3 +++
+>>>>>  1 file changed, 3 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+>>>>> index c7f867b36..d3cb52717 100644
+>>>>> --- a/drivers/net/phy/phylink.c
+>>>>> +++ b/drivers/net/phy/phylink.c
+>>>>> @@ -700,6 +700,9 @@ static int phylink_parse_fixedlink(struct phylink *pl,
+>>>>>  			return -EINVAL;
+>>>>>  		}
+>>>>>  
+>>>>> +		phylink_warn(pl, "%s uses deprecated array-style fixed-link binding!",
+>>>>> +			     fwnode_get_name(fwnode));
+>>>> Similar comment as for patch #1 - this seems to be going to printk, so
+>>>> use proper % format for fwnodes (I think there is as well such).
+>>>>
+>>> At least here no format for fwnodes is mentioned.
+>>> https://www.kernel.org/doc/Documentation/printk-formats.txt
+No, you are looking at wrong file.
 
-Tested primarily on BananaPi BPI-F3. Basic TX/RX functionality also
-tested on Milk-V Jupiter.
-
-I would like to note that even though some bit field names superficially
-resemble that of DesignWare MAC, all other differences point to it in
-fact being a custom design.
-
-Based on SpacemiT drivers [1]. These patches are also available at:
-
-https://github.com/dramforever/linux/tree/k1/ethernet/v11
-
-[1]: https://github.com/spacemit-com/linux-k1x
-
----
-Changes in v11:
-- Use NETDEV_PCPU_STAT_DSTATS for tx_dropped
-- Use DECLARE_FLEX_ARRAY for emac_hw_{tx,rx}_stats instead of cast
-- More bitfields stuff to simplify code:
-  - Define EMAC_MAX_DELAY_UNIT with FIELD_MAX
-  - Use FIELD_{PREP,GET} in emac_mii_{read,write}()
-  - Use FIELD_MODIFY in emac_set_{tx,rx}_fc()
-- Minor changes:
-  - Use lower_32_bits and such instead of casts and shifts
-  - Extract emac_ether_addr_hash() helper
-  - In emac_mdio_init(), 0xffffffff -> ~0
-  - Minor comment changes
-- Link to v10: https://lore.kernel.org/r/20250908-net-k1-emac-v10-0-90d807ccd469@iscas.ac.cn
-
-Changes in v10:
-- Use FIELD_GET and FIELD_PREP, remove some unused constants
-- Remove redundant software statistics
-  - In particular, rx_dropped should have been and is already tracked in
-    rx_errors.
-- Track tx_dropped with a percpu field
-- Minor changes
-  - Simplified int emac_rx_frame_status() -> bool emac_rx_frame_good()
-- Link to v9: https://lore.kernel.org/r/20250905-net-k1-emac-v9-0-f1649b98a19c@iscas.ac.cn
-
-Changes in v9:
-- Refactor to use phy_interface_mode_is_rgmii
-- Minor changes
-  - Use netdev_err in more places
-  - Print phy-mode by name on unsupported phy-mode
-- Link to v8: https://lore.kernel.org/r/20250828-net-k1-emac-v8-0-e9075dd2ca90@iscas.ac.cn
-
-Changes in v8:
-- Use devres to do of_phy_deregister_fixed_link on probe failure or
-  remove
-- Simplified control flow in a few places with early return or continue
-- Minor changes
-  - Removed some unneeded parens in emac_configure_{tx,rx}
-- Link to v7: https://lore.kernel.org/r/20250826-net-k1-emac-v7-0-5bc158d086ae@iscas.ac.cn
-
-Changes in v7:
-- Removed scoped_guard usage
-- Renamed error handling path labels after destinations
-- Fix skb free error handling path in emac_start_xmit and emac_tx_mem_map
-- Cancel tx_timeout_task to prevent schedule_work lifetime problems
-- Minor changes:
-  - Remove unnecessary timer_delete_sync in emac_down
-  - Use dev_err_ratelimited in a few more places
-  - Cosmetic fixes in error messages
-- Link to v6: https://lore.kernel.org/r/20250820-net-k1-emac-v6-0-c1e28f2b8be5@iscas.ac.cn
-
-Changes in v6:
-- Implement pause frame support
-- Minor changes:
-  - Convert comment for emac_stats_update() into assert_spin_locked()
-  - Cosmetic fixes for some comments and whitespace
-  - emac_set_mac_addr() is now refactored
-- Link to v5: https://lore.kernel.org/r/20250812-net-k1-emac-v5-0-dd17c4905f49@iscas.ac.cn
-
-Changes in v5:
-- Rebased on v6.17-rc1, add back DTS now that they apply cleanly
-- Use standard statistics interface, handle 32-bit statistics overflow
-- Minor changes:
-  - Fix clock resource handling in emac_resume
-  - Ratelimit the message in emac_rx_frame_status
-  - Add ndo_validate_addr = eth_validate_addr
-  - Remove unnecessary parens in emac_set_mac_addr
-  - Change some functions that never fail to return void instead of int
-  - Minor rewording
-- Link to v4: https://lore.kernel.org/r/20250703-net-k1-emac-v4-0-686d09c4cfa8@iscas.ac.cn
-
-Changes in v4:
-- Resource handling on probe and remove: timer_delete_sync and
-  of_phy_deregister_fixed_link
-- Drop DTS changes and dependencies (will send through SpacemiT tree)
-- Minor changes:
-  - Remove redundant phy_stop() and setting of ndev->phydev
-  - Fix error checking for emac_open in emac_resume
-  - Fix one missed dev_err -> dev_err_probe
-  - Fix type of emac_start_xmit
-  - Fix one missed reverse xmas tree formatting
-  - Rename some functions for consistency between emac_* and ndo_*
-- Link to v3: https://lore.kernel.org/r/20250702-net-k1-emac-v3-0-882dc55404f3@iscas.ac.cn
-
-Changes in v3:
-- Refactored and simplified emac_tx_mem_map
-- Addressed other minor v2 review comments
-- Removed what was patch 3 in v2, depend on DMA buses instead
-- DT nodes in alphabetical order where appropriate
-- Link to v2: https://lore.kernel.org/r/20250618-net-k1-emac-v2-0-94f5f07227a8@iscas.ac.cn
-
-Changes in v2:
-- dts: Put eth0 and eth1 nodes under a bus with dma-ranges
-- dts: Added Milk-V Jupiter
-- Fix typo in emac_init_hw() that broke the driver (Oops!)
-- Reformatted line lengths to under 80
-- Addressed other v1 review comments
-- Link to v1: https://lore.kernel.org/r/20250613-net-k1-emac-v1-0-cc6f9e510667@iscas.ac.cn
-
----
-Vivian Wang (5):
-      dt-bindings: net: Add support for SpacemiT K1
-      net: spacemit: Add K1 Ethernet MAC
-      riscv: dts: spacemit: Add Ethernet support for K1
-      riscv: dts: spacemit: Add Ethernet support for BPI-F3
-      riscv: dts: spacemit: Add Ethernet support for Jupiter
-
- .../devicetree/bindings/net/spacemit,k1-emac.yaml  |   81 +
- arch/riscv/boot/dts/spacemit/k1-bananapi-f3.dts    |   46 +
- arch/riscv/boot/dts/spacemit/k1-milkv-jupiter.dts  |   46 +
- arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi       |   48 +
- arch/riscv/boot/dts/spacemit/k1.dtsi               |   22 +
- drivers/net/ethernet/Kconfig                       |    1 +
- drivers/net/ethernet/Makefile                      |    1 +
- drivers/net/ethernet/spacemit/Kconfig              |   29 +
- drivers/net/ethernet/spacemit/Makefile             |    6 +
- drivers/net/ethernet/spacemit/k1_emac.c            | 2161 ++++++++++++++++++++
- drivers/net/ethernet/spacemit/k1_emac.h            |  416 ++++
- 11 files changed, 2857 insertions(+)
----
-base-commit: 062b3e4a1f880f104a8d4b90b767788786aa7b78
-change-id: 20250606-net-k1-emac-3e181508ea64
+It is Documentation/core-api/printk-formats.rst
 
 Best regards,
--- 
-Vivian "dramforever" Wang
-
+Krzysztof
