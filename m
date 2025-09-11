@@ -1,117 +1,149 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47E6314B8A;
-	Thu, 11 Sep 2025 11:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9377331A067
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 11:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757590010; cv=none; b=Er3ki9Nj5EQVjBl9w1bxH6nk5dHSie4b4vqv8qakgBtbFasOU/Jd0gl2Fet+tO5qrHevXsBbX2OrX+JfWUdavbsxFliT01K2A5Ol9qyCPWBb025Xqh8Bs+yVuqxusygh3KZzwbJBweigoUHUug5GS8hbdI9TRR+lIYlw+boFun8=
+	t=1757590604; cv=none; b=hd8sn8NzekhKFOb8ts32u2m5tfEzODKIuLuZsuwVrphYLfQaHCMOW8c+KdGrKjswnOzdx8sgG1NULGuIdYVSWoee9Rr/PZxbMprouvDDrrBOwVXa5KkvtVw0Zi14kjruvOUKGlhyeIEx4C8aY/DzHeb0R8xZOB9Uy8MVX47nyIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757590010; c=relaxed/simple;
-	bh=qGc5jx2TlqmbUZ05luhkqYaO/xLYnwqJRdeDDTtSO8g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=icVPye5fZY5+SeO/y2BUYomGyL6py/7faiJOZKQIgw+NoX6phNBdWWQybCq1LM7otTNsY6RN8fKC2FUBEtLmsP4HMYBK8d4Fe/g0isJZIl/LSSkrB3vuz0um8r1AQodgG9g3YJ9P/d8w3gADSfAuY7Kn2jVw/GC4cW6SE3xFraQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OK6//3tD; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1757590604; c=relaxed/simple;
+	bh=l3WS5mh3b7m+0CGnd7HwPGEX6fOXJSXSic0gzbaETOY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FPdh5yvZZB4VMPcnrXyyTIRorPPrttfbVZXXGsLegWmOKpvjCD0q0+fTWpB4LUNyDyE7nqmEhbH7Q+WqmfKYtq/WWrQMPjgwT1bHoy6hezHtmBMPYc3kPXU6XisfMS4LutwdtShjB9warvE1iommjvGeWeD000nUgnNaxSwCc04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QbgcjOFd; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OK6//3tD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=CO
-	EvvwlmwDoA2pMwxCwzNYrjaVFZy7dLqFs2BwEoIHo=; b=OK6//3tDLUruKVY1Kv
-	ky9P3ZkpMmjV4pTgaXXpfAryC3TqorVxaAXrr+LN3tkbOeGjuU3td51LekpDU+xF
-	nXYIGO8+bIABGt5WQBTshER3pX/fUwBVdD2UsJEMl0WcsnS5apfmsO4VoAFYULEJ
-	5KmwEdRg0XjlUoVZWbDHhhvFs=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgA3ThalscJozfgyCg--.64583S2;
-	Thu, 11 Sep 2025 19:25:26 +0800 (CST)
-From: yicongsrfy@163.com
-To: linux@armlinux.org.uk
-Cc: andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	yicong@kylinos.cn
-Subject: Re: [PATCH] net: phy: avoid config_init failure on unattached PHY during resume
-Date: Thu, 11 Sep 2025 19:25:25 +0800
-Message-Id: <20250911112525.3824360-1-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <aMFKvS-Dm0hhJVnO@shell.armlinux.org.uk>
-References: <aMFKvS-Dm0hhJVnO@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QbgcjOFd"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6188b5ae1e8so789072a12.0
+        for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 04:36:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757590601; x=1758195401; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l3WS5mh3b7m+0CGnd7HwPGEX6fOXJSXSic0gzbaETOY=;
+        b=QbgcjOFdQCEX77z/FdlRwnzEmGsALvq3U9SOMI0CS5/Coz9cwTG3pr8H10coBpZ0ZT
+         ALfxzqhBFvmTlunvaBg5eojquIU2M0Jaj6+Hd0e8iXqgKuOZqpt4Pv6GARREjVuH73n6
+         hdS/4L12c0LlPui/1Ra+uKktXYpezhtgeFeBAindj/qegG++n014aPkSXSpYqw+JJt2x
+         5d9AacMrKkjsMmKaZ0myeESD6BMVT92frcJGeyabQR1LDI54v2GGB/cQhRWnOlA2P3pb
+         1nosawlRTBFeGlzHK360D6IZGmPAf3T+Q0SiPG4HX3udF0VqG3qAdTsBxdNsQnMuetky
+         AnCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757590601; x=1758195401;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=l3WS5mh3b7m+0CGnd7HwPGEX6fOXJSXSic0gzbaETOY=;
+        b=uqrrS1FKlGYwgtAZevyYlraChvaT9kYG1WEgU8xNqXMnHK13SND9vDAZNlJsfDbgyH
+         esvj5w88514rXcd4q91Z14PoLRzDFC+kTBJp2cUxnnVdCLpLqCEIbfIcfKsdvJ3bVxlQ
+         Abs7eEsY+NS7Jp56LSGp/RXNAp9KcydDOIhdb402WCOJDIjIBlqWODX0CVLoe8NTCMzx
+         0Zza8vw0kXY3uZE6dzPQis1lfbiE0+dz5MP7sycwp5aQoOo+zy9N95KTZ5XCV+71J4Pm
+         xTPniF/vbm9wXz25fbfvUszL06jX9ZsIYalQPfyh/a9qqSQihjFtP02s/B4lvJPbYASH
+         TAoA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1W1kNWuApvEvaLqR7cgctc7dXonr84VKo4bcgXMT3ErmWzEcoCPFf+XX2WNLYYQxdDMpsfVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNugsIg00XWH2lSH34eH41v8tcqxekdG3BBnN/NtnKXlxAFN2T
+	B7DnwtTWX+jbcVc3J7l89tUxTOjHCdVQRcLE9Rccycq4VpWdm95KC4U1f2EhbVDRvP4xGuqxNeW
+	UFMpbuW0pUxfVASHeJKTAg8mOAknUHPpUsT9y42A=
+X-Gm-Gg: ASbGncs+MFssyFBwej+e62TAj43fHXb8dNqDMV08pqOCZpQm0Mjrhykq5DMn0+bMc4C
+	nztx6y0PSUzvHCN8kWB/8PKd4wTCxmYsg8luIgRtJMh75QQRcPzri82sESxy1jKmjWOZFov9mfW
+	25OSdDjvjNtPYNWXv8EhgfFrDYpwPQE4/nbk2K95lsXIIddScjf5CjDmTxXvo971yH+5/X3QB3k
+	I1PoDr5dNkdnBpNtA==
+X-Google-Smtp-Source: AGHT+IFTNKY6jjRUaK+95vjWoIXWhr+sTjejTLV8OOCQsfjrobYVHw8JMmZi1nhLUH2mOW0HugLlXyiAfLiI1n/62Pg=
+X-Received: by 2002:a05:6402:2685:b0:61d:dd9:20db with SMTP id
+ 4fb4d7f45d1cf-6237c048793mr16217741a12.31.1757590600743; Thu, 11 Sep 2025
+ 04:36:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgA3ThalscJozfgyCg--.64583S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZrWkJrW8Jr4UurW8uw1rZwb_yoW5Xw4kpa
-	y3WrWFkr1DJF1fCrWDZr40y34jvanavryUGF9xtr9Yyr15XF9a9wnrKr47ZFW7Crn5Cayj
-	qFWjvayjva909aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UzT5LUUUUU=
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbiUATF22jCq-mYPQABsW
+References: <20250910-work-namespace-v1-0-4dd56e7359d8@kernel.org>
+ <20250910-work-namespace-v1-27-4dd56e7359d8@kernel.org> <CAOQ4uxgtQQa-jzsnTBxgUTPzgtCiAaH8X6ffMqd+1Y5Jjy0dmQ@mail.gmail.com>
+ <20250911-werken-raubzug-64735473739c@brauner>
+In-Reply-To: <20250911-werken-raubzug-64735473739c@brauner>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 11 Sep 2025 13:36:28 +0200
+X-Gm-Features: Ac12FXxRFt9Ctd5Cl_pR-FdI4tarLWVQlbT7aCbaq2ftodBoMLqTaIDo5wMZnik
+Message-ID: <CAOQ4uxgMgzOjz4E-4kJFJAz3Dpd=Q6vXoGrhz9F0=mb=4XKZqA@mail.gmail.com>
+Subject: Re: [PATCH 27/32] nsfs: support file handles
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>, 
+	=?UTF-8?Q?Zbigniew_J=C4=99drzejewski=2DSzmek?= <zbyszek@in.waw.pl>, 
+	Lennart Poettering <mzxreary@0pointer.de>, Daan De Meyer <daan.j.demeyer@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 10 Sep 2025 10:54:05 +0100, "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Thu, Sep 11, 2025 at 11:31=E2=80=AFAM Christian Brauner <brauner@kernel.=
+org> wrote:
 >
-> On Wed, Sep 10, 2025 at 05:17:03PM +0800, yicongsrfy@163.com wrote:
-> > Then, because `phydev->interface != PHY_INTERFACE_MODE_SGMII`, it attempts
-> > to enter `ytphy_rgmii_clk_delay_config` to configure the RGMII tx/rx delay.
-> > However, since this PHY device is not associated with any GMAC and is not
-> > connected via an RGMII interface, the function returns `-EOPNOTSUPP`.
+> On Wed, Sep 10, 2025 at 07:21:22PM +0200, Amir Goldstein wrote:
+> > On Wed, Sep 10, 2025 at 4:39=E2=80=AFPM Christian Brauner <brauner@kern=
+el.org> wrote:
+> > >
+> > > A while ago we added support for file handles to pidfs so pidfds can =
+be
+> > > encoded and decoded as file handles. Userspace has adopted this quick=
+ly
+> > > and it's proven very useful.
+> >
+> > > Pidfd file handles are exhaustive meaning
+> > > they don't require a handle on another pidfd to pass to
+> > > open_by_handle_at() so it can derive the filesystem to decode in.
+> > >
+> > > Implement the exhaustive file handles for namespaces as well.
+> >
+> > I think you decide to split the "exhaustive" part to another patch,
+> > so better drop this paragraph?
 >
-> It seems the problem is this code:
+> Yes, good point. I've dont that.
 >
->         /* set rgmii delay mode */
->         if (phydev->interface != PHY_INTERFACE_MODE_SGMII) {
->                 ret = ytphy_rgmii_clk_delay_config(phydev);
+> > I am missing an explanation about the permissions for
+> > opening these file handles.
+> >
+> > My understanding of the code is that the opener needs to meet one of
+> > the conditions:
+> > 1. user has CAP_SYS_ADMIN in the userns owning the opened namespace
+> > 2. current task is in the opened namespace
 >
-> which assumes that phydev->interface will be either SGMII or one of
-> the RGMII modes. This is not the case with a PHY that has been
-> freshly probed unless phydev->interface is set in the probe function.
+> Yes.
 >
-> I see the probe function decodes the PHYs operating mode and
-> configures stuff based on that. Maybe, as it only supports RGMII
-> and SGMII, it should also initialise phydev->interface to the initial
-> operating condition of the PHY if other code in the driver relies
-> upon this being set to either SGMII or one of the RGMII types.
+> >
+> > But I do not fully understand the rationale behind the 2nd condition,
+> > that is, when is it useful?
+>
+> A caller is always able to open a file descriptor to it's own set of
+> namespaces. File handles will behave the same way.
 >
 
-Thank you for your reply!
+I understand why it's safe, and I do not object to it at all,
+I just feel that I do not fully understand the use case of how ns file hand=
+les
+are expected to be used.
+A process can always open /proc/self/ns/mnt
+What's the use case where a process may need to open its own ns by handle?
 
-What you mentioned above is correct.
-However, there is a particular scenario as follows:
+I will explain. For CAP_SYS_ADMIN I can see why keeping handles that
+do not keep an elevated refcount of ns object could be useful in the same
+way that an NFS client keeps file handles without keeping the file object a=
+live.
 
-Some PHY chips support two addresses, using address 0 as a broadcast address
-and address 1 as the hardware address. Both addresses respond to GMAC's MDIO
-read/write operations. As a result, during 'mdio_scan', both PHY addresses are
-detected, leading to the creation of two PHY device instances (for example,
-as in my previous email: xxxxmac_mii_bus-XXXX:00:00 and xxxxmac_mii_bus-XXXX:00:01).
+But if you do not have CAP_SYS_ADMIN and can only open your own ns
+by handle, what is the application that could make use of this?
+and what's the benefit of such application keeping a file handle instead of
+ns fd?
 
-The GMAC will only attach to one of these PHY addresses. Some GMAC drivers
-select the first available PHY address (via calling 'phy_find_first'), leaving
-the other address idle and unattached. However, during the system resume
-process, it attempts to resume this unused PHY instance.
+Sorry. I feel that I may be missing something in the big picture.
 
-When resuming this PHY instance, because 'phydev->interface' hasn't been
-set to a valid interface mode supported by the chip (such as RGMII or SGMII),
-we encounter the EOPNOTSUPP error.
-
-I've tried modifying motorcomm.c as a workaround, but logically speaking,
-it's not an ideal solution:
-1. If I return 0 from the driver's resume function, mdio_bus_phy_resume will proceed.
-2. If I return an error, the system will still report an error.
-
-The key issue is: does the current kernel provide any field or mechanism
-to indicate that two PHY addresses (instances) actually refer to the same
-physical PHY device?
-
-I haven't found any such mechanism in the kernel. Do you have any
-suggestions on how to properly handle this?
-
-Looking forward to your advice. Thank you!
-
+Thanks,
+Amir.
