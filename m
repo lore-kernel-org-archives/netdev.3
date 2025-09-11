@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D06C272814;
-	Thu, 11 Sep 2025 20:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75B927602A;
+	Thu, 11 Sep 2025 20:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757621137; cv=none; b=UCbJUjWVRY+9UI/Uk3DfvSOsUKBexl3BpDz7zmuY92s9cfdmN2c847A4a84xv4fs44chYcu5zntpRd60SUFe3tfUXBakuPOJO3AA8+0w7u0ZTXTXfDuWvdvRVg44j4h0vnCa/ZWpgh2CxeFwgbGpReFoYXFFj1wVat7Fslrjz68=
+	t=1757621137; cv=none; b=ZQRVSOn2tkHB48hm8QQMTmIYr8AeY/7y9GZnURN6tjIzTdz53/LYvV4tPvN555R8FqcxnhHr0ngR3fD2yM23QPWYaky6mruJU8wYVBnLrT4gh+6Eg38CpG3MHUYk2jvgrH0cBdhTP2kyC3RBO5S53+Bh1GDgSfx8+QBLBmykl3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757621137; c=relaxed/simple;
-	bh=lcInuRuB+vNuJa4fGRHJlvJD9iDvGJACqmazL3h49mo=;
+	bh=M8RZw0PcAr23td7B4SWZsTm8GfTk/HQcBuK2/+z1TOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MHvVTUvh4Rmkgv4YC7Kne2OuCSirs5E3mwIN9WMH36YS6Vx1zSNjrRhVzHg6RId/f9j4ZUnFsa3Vd9AB7+KSbqb6OSCCOiaU4mwTfza8ftr4jEekUQy1vx7xeqjAV/ySKPSJB7phcYhpU5lOMLMECRlRsnrhtv1NwyRm87ttSh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=KTps+Ak3; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=jHTrDvhxQrmnn/ZtoeW91vu2eGQ/t4ouQHF1dBqmw7DRYbj8t+iukIFI0Ykj0kQ5yB2Rw3xYeGDMDtPOLLhht1OIhsKtFPo0N8hSh3tUtYiOm3aL9R+SGqTfVyMklgr/WgEDE7x20AKgolk+QlnVojRjOcWqqKsOs0wpG/dgQac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Ckqf8y3/; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="KTps+Ak3"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Ckqf8y3/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757621127;
-	bh=lcInuRuB+vNuJa4fGRHJlvJD9iDvGJACqmazL3h49mo=;
+	bh=M8RZw0PcAr23td7B4SWZsTm8GfTk/HQcBuK2/+z1TOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTps+Ak3z9B88aI2xES6gW/itFyEksAj2Na5VSiHTFw496zhNGJYX75h/HwL4u6Yi
-	 zhLSI75/6qifk21s3i+vDBYCe44U3iVHaDscqq/tIuX9qV5swoIdgtib92Iw5zMl4Y
-	 G6MCd63pj4T84dTcJskwwpIRY5aGMYjBnlGaJSALslf1HWrO4EzJUd1gm1gw+40FXi
-	 4SywbKNn86VDw6I8xRGLE4Qo0kfnrx084mFu4CIOk76S095+VqzlRNqTNbSvsKdsNj
-	 wInScr1wtH4WUzXGdl2GAmSVmKI0zeWMcLAFyfzRcY9RJZc/wtSIvUjFzjXu6RCK3J
-	 TH1xTKvzl/Ylw==
+	b=Ckqf8y3/AzjVvxnZC2k9ly4RI51ZQ712aXjBCfSJ1VWDwgQ6rwgd/eYNnJFOKinFf
+	 4kzX0y7z5ebvlRob3JLsiSN4EB9s/YIYoa7rAcH8yZtYxpZ7W2EZbcsyBR7kHR5ar4
+	 R01PXD+xvbgd0pAhIIPCSTPk0vZMchw95XuL9HUU9lXYJtSy9aOxrzFIt0i4I5EB6g
+	 i+vM068jPRcJbP1Q8XaYbNY43x7LFUxC85WmJixa7oLMvnbvIeYMz8uWZA01Lf5ey3
+	 mGMC69ouOTPYidd/N/e2G0KOK0gsjHZ3ZAGo63kyNjaCM0u9m/F6OOaQ0QvKGoyQfP
+	 89APPZycwQAFw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 2C1D460137;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 96AED601B9;
 	Thu, 11 Sep 2025 20:05:27 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 20275204CAF; Thu, 11 Sep 2025 20:05:21 +0000 (UTC)
+	id 5964120573E; Thu, 11 Sep 2025 20:05:21 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 07/13] tools: ynl-gen: avoid repetitive variables definitions
-Date: Thu, 11 Sep 2025 20:05:00 +0000
-Message-ID: <20250911200508.79341-8-ast@fiberby.net>
+Subject: [PATCH net-next v3 13/13] tools: ynl: add ipv4-or-v6 display hint
+Date: Thu, 11 Sep 2025 20:05:06 +0000
+Message-ID: <20250911200508.79341-14-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250911200508.79341-1-ast@fiberby.net>
 References: <20250911200508.79341-1-ast@fiberby.net>
@@ -60,137 +60,59 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In the generated attribute parsing code, avoid repetitively
-defining the same variables over and over again, local to
-the conditional block for each attribute.
+The attribute WGALLOWEDIP_A_IPADDR can contain either an IPv4
+or an IPv6 address depending on WGALLOWEDIP_A_FAMILY, however
+in practice it is enough to look at the attribute length.
 
-This patch consolidates the definitions of local variables
-for attribute parsing, so that they are defined at the
-function level, and re-used across attributes, thus making
-the generated code read more natural.
+This patch implements an ipv4-or-v6 display hint, that can
+deal with this kind of attribute.
 
-If attributes defines identical local_vars, then they will
-be deduplicated, attributes are assumed to only use their
-local variables transiently.
+It only implements this display hint for genetlink-legacy, it
+can be added to other protocol variants if needed, but we don't
+want to encourage it's use.
 
-The example below shows how `len` was defined repeatedly in
-tools/net/ynl/generated/nl80211-user.c:
-
-nl80211_iftype_data_attrs_parse(..) {
-   [..]
-   ynl_attr_for_each_nested(attr, nested) {
-     unsigned int type = ynl_attr_type(attr);
-
-     if (type == NL80211_BAND_IFTYPE_ATTR_IFTYPES) {
-       unsigned int len;
-       [..]
-     } else if (type == NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC) {
-       unsigned int len;
-       [..]
-     [same pattern 8 times, so 11 times in total]
-     } else if (type == NL80211_BAND_IFTYPE_ATTR_EHT_CAP_PPE) {
-       unsigned int len;
-       [..]
-     }
-   }
-   return 0;
-}
-
-This patch results in this diffstat for the generated code:
-
-$ diff -Naur pre/ post/ | diffstat
-  devlink-user.c      |  187 +++----------------
-  dpll-user.c         |   10 -
-  ethtool-user.c      |   49 +----
-  fou-user.c          |    5
-  handshake-user.c    |    3
-  mptcp_pm-user.c     |    3
-  nfsd-user.c         |   16 -
-  nl80211-user.c      |  159 +---------------
-  nlctrl-user.c       |   21 --
-  ovpn-user.c         |    7
-  ovs_datapath-user.c |    9
-  ovs_flow-user.c     |   89 ---------
-  ovs_vport-user.c    |    7
-  rt-addr-user.c      |   14 -
-  rt-link-user.c      |  183 ++----------------
-  rt-neigh-user.c     |   14 -
-  rt-route-user.c     |   26 --
-  rt-rule-user.c      |   11 -
-  tc-user.c           |  380 +++++----------------------------------
-  tcp_metrics-user.c  |    7
-  team-user.c         |    5
-  21 files changed, 175 insertions(+), 1030 deletions(-)
-
-The changed lines are mostly `unsigned int len;` definitions:
-
-$ diff -Naur pre/ post/ | grep ^[-+] | grep -v '^[-+]\{3\}' |
-  grep -v '^.$' | sed -e 's/\t\+/ /g' | sort | uniq -c | sort -nr
-    488 - unsigned int len;
-    153 + unsigned int len;
-     24 - const struct nlattr *attr2;
-     18 + const struct nlattr *attr2;
-      1 - __u32 policy_id, attr_id;
-      1 + __u32 policy_id, attr_id;
-      1 - __u32 op_id;
-      1 + __u32 op_id;
-      1 - const struct nlattr *attr_policy_id, *attr_attr_id;
-      1 + const struct nlattr *attr_policy_id, *attr_attr_id;
-      1 - const struct nlattr *attr_op_id;
-      1 + const struct nlattr *attr_op_id;
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ Documentation/netlink/genetlink-legacy.yaml | 2 +-
+ tools/net/ynl/pyynl/lib/ynl.py              | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index b3ce0901a19b..d63b63ac0b8e 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -247,7 +247,7 @@ class Type(SpecAttr):
-         raise Exception(f"Attr get not implemented for class type {self.type}")
- 
-     def attr_get(self, ri, var, first):
--        lines, init_lines, local_vars = self._attr_get(ri, var)
-+        lines, init_lines, _ = self._attr_get(ri, var)
-         if type(lines) is str:
-             lines = [lines]
-         if type(init_lines) is str:
-@@ -255,10 +255,6 @@ class Type(SpecAttr):
- 
-         kw = 'if' if first else 'else if'
-         ri.cw.block_start(line=f"{kw} (type == {self.enum_name})")
--        if local_vars:
--            for local in local_vars:
--                ri.cw.p(local)
--            ri.cw.nl()
- 
-         if not self.is_multi_val():
-             ri.cw.p("if (ynl_attr_validate(yarg, attr))")
-@@ -2124,6 +2120,7 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+diff --git a/Documentation/netlink/genetlink-legacy.yaml b/Documentation/netlink/genetlink-legacy.yaml
+index b29d62eefa16..66fb8653a344 100644
+--- a/Documentation/netlink/genetlink-legacy.yaml
++++ b/Documentation/netlink/genetlink-legacy.yaml
+@@ -154,7 +154,7 @@ properties:
+                   Optional format indicator that is intended only for choosing
+                   the right formatting mechanism when displaying values of this
+                   type.
+-                enum: [ hex, mac, fddi, ipv4, ipv6, uuid ]
++                enum: [ hex, mac, fddi, ipv4, ipv6, ipv4-or-v6, uuid ]
+               struct:
+                 description: Name of the nested struct type.
+                 type: string
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 707753e371e2..62383c70ebb9 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -956,7 +956,7 @@ class YnlFamily(SpecFamily):
+                 formatted = hex(raw)
              else:
-                 raise Exception("Per-op fixed header not supported, yet")
+                 formatted = bytes.hex(raw, ' ')
+-        elif display_hint in [ 'ipv4', 'ipv6' ]:
++        elif display_hint in [ 'ipv4', 'ipv6', 'ipv4-or-v6' ]:
+             formatted = format(ipaddress.ip_address(raw))
+         elif display_hint == 'uuid':
+             formatted = str(uuid.UUID(bytes=raw))
+@@ -965,7 +965,7 @@ class YnlFamily(SpecFamily):
+         return formatted
  
-+    var_set = set()
-     array_nests = set()
-     multi_attrs = set()
-     needs_parg = False
-@@ -2141,6 +2138,13 @@ def _multi_parse(ri, struct, init_lines, local_vars):
-             multi_attrs.add(arg)
-         needs_parg |= 'nested-attributes' in aspec
-         needs_parg |= 'sub-message' in aspec
-+
-+        try:
-+            _, _, l_vars = aspec._attr_get(ri, '')
-+            var_set |= set(l_vars) if l_vars else set()
-+        except Exception:
-+            pass  # _attr_get() not implemented by simple types, ignore
-+    local_vars += list(var_set)
-     if array_nests or multi_attrs:
-         local_vars.append('int i;')
-     if needs_parg:
+     def _from_string(self, string, attr_spec):
+-        if attr_spec.display_hint in ['ipv4', 'ipv6']:
++        if attr_spec.display_hint in ['ipv4', 'ipv6', 'ipv4-or-v6']:
+             ip = ipaddress.ip_address(string)
+             if attr_spec['type'] == 'binary':
+                 raw = ip.packed
 -- 
 2.51.0
 
