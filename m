@@ -1,47 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747DA2D23B8
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 21:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AE61DA55
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 21:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757624740; cv=none; b=m44X6OTKfquBcaQfaTPavnpsQAjRfxHpFln7QIQD2p5wCxiXPq0ZsCu+qsn/ZoZeVhTTojJbjj258y536OgiWdCq5CL/gQpSioi1pllhrE5YIzP2bhQ7+VoJHmIlqhsJznqBpZ4Ov0O/ZvDy3V+Dj4BBw2vcJzoNDpDrU7Tbk1Y=
+	t=1757624742; cv=none; b=M4QFojH0IczinT61r2zCxlYy8pEmxqEYyLFq3r0swsATB6uptjHF9PeN7jshO65iaUrP9lGy4s++tCznWG0ctFoucRA9BIse4Ok1rLOvtA3S3w+ixPPXC7bPWj5yJ1u1yaOJTw2lN9k6IlsA312MTLyuVD73zIPmd3h24z9i068=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757624740; c=relaxed/simple;
-	bh=vo5qFUglzmuWMMVnYWy79b5GhFFSgr0ZIaI8Yc9xjio=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jAAWkFoganvXGKLZxGJpdrdQFk903l+/TQoI69jSuiufjEoycvvr7TSGlshr7DANqbwvwy/mkugJDUD4YRxjv8LO8hXtp3v6po+YYYKN3L1uj4YVmrm54621Z2lXkWnBnzFJb3RbRdBKyfjzxfQfWOg6ghq8f/OV9mKjT+XYLzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IAlm1XxO; arc=none smtp.client-ip=198.175.65.9
+	s=arc-20240116; t=1757624742; c=relaxed/simple;
+	bh=U+2v1LOM67kWJz3YEtUUrZ2c5DZomC6gyAm0DuzETRk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N88xJZdAgpdQO7ufY82x1L4eW8XDDFdjcxiYAYnYBdt9uvHw5hkjpGI2reqkC6wpPJVVwQEG8mLBe1AUfC5yIu5iLyl44AQN7eVVun5ArZnUCvLeQwPDjgcVQVXL5Pedp5uxTleKf925eR/vz0/qSjhUXHtocIpKvCLMqh7ftJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQob0UaJ; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IAlm1XxO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQob0UaJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757624740; x=1789160740;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vo5qFUglzmuWMMVnYWy79b5GhFFSgr0ZIaI8Yc9xjio=;
-  b=IAlm1XxOWIUQGxy5YprDmXxx4SrysjZiXsXk6fmQle9Nrw78eIg663Cl
-   xQnfvWUYHk7pOYBBtNw4utsKUgFsJlCV3I/B6Lq4KHiZEZ+f93R1xiSO+
-   f+8JRrvgwAEEHn7tZUH63qnKveQKl2mnu+VzdmSrvuiY0jYlwSAqDpPBS
-   quF1QC6EbW+yyokXamCCVXTUovhbQua3bwYqCmTMRe+kBk59iz8Wr28Er
-   YYqJqQjOjkqw2vK7dbaGv8VJTit6ddlhR1nnj8yv9F2K5Tfv7Ro+DFnYv
-   Fe8CQ61X0hbXY4DWoTlaYx6IuOjsjZHWNbTl1bO9cniAHkPp0LKTXDZEg
-   g==;
-X-CSE-ConnectionGUID: 8SYwa15IQOucvDlxejShXw==
-X-CSE-MsgGUID: WBGhuWB1TqKLXeUpPjpVjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="82558834"
+  t=1757624741; x=1789160741;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=U+2v1LOM67kWJz3YEtUUrZ2c5DZomC6gyAm0DuzETRk=;
+  b=OQob0UaJ2DGGc6VlOc6T4+uzDrZxfWz5luct2veLlFHVO6wc5xATpw7H
+   NscFlPASSxewSxmWJ3HNquU7JpOeWagDOh14P6QOeQmYJ05kblb+qk/Yo
+   Fwpsuy9HBF25fi78P1klqGGrN+yrxr0Sr+J+P/WokaAj/4HrYqbv+L4Ok
+   NLb4Kojcj8ymOkOeRo865RYZM+M/qvXxbBa12+xiLbg6pfnEYg9+71iCV
+   odSxrdigjLicYdub2l4+PdcjC4/3bWKW9BONx0MKw58L3r/SQpKOXYFwB
+   jidMZM/t9byeN8QdC5x2EPUaczwO6kHCP7/uOhrUafqfX83ajNAIB64Sp
+   w==;
+X-CSE-ConnectionGUID: BPazLUmTRM6cusgAJM9ZfQ==
+X-CSE-MsgGUID: 4w6PtyEaSR6xc0/09O8Xaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="82558860"
 X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="82558834"
+   d="scan'208";a="82558860"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 14:05:36 -0700
-X-CSE-ConnectionGUID: b7Ph6G+GTgSPXnY0xnFlhQ==
-X-CSE-MsgGUID: 9Oat9nu9Rw2MF0AURg9xbQ==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2025 14:05:38 -0700
+X-CSE-ConnectionGUID: sbz77mIgTs2QE/Euf+hrtA==
+X-CSE-MsgGUID: EdXUgHb0SQuRaUDnLih7oA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,258,1751266800"; 
-   d="scan'208";a="174583323"
+   d="scan'208";a="174583340"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa010.fm.intel.com with ESMTP; 11 Sep 2025 14:05:34 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 11 Sep 2025 14:05:36 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -49,16 +50,20 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	michal.swiatkowski@linux.intel.com,
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	anthony.l.nguyen@intel.com,
 	aleksander.lobakin@intel.com,
 	przemyslaw.kitszel@intel.com,
 	dawid.osuchowski@linux.intel.com,
-	horms@kernel.org
-Subject: [PATCH net-next 00/15][pull request] Fwlog support in ixgbe
-Date: Thu, 11 Sep 2025 14:04:59 -0700
-Message-ID: <20250911210525.345110-1-anthony.l.nguyen@intel.com>
+	horms@kernel.org,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net-next 03/15] ice: drop ice_pf_fwlog_update_module()
+Date: Thu, 11 Sep 2025 14:05:02 -0700
+Message-ID: <20250911210525.345110-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250911210525.345110-1-anthony.l.nguyen@intel.com>
+References: <20250911210525.345110-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,64 +72,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Michal Swiatkowski says:
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Firmware logging is a feature that allow user to dump firmware log using
-debugfs interface. It is supported on device that can handle specific
-firmware ops. It is true for ice and ixgbe driver.
+Any other access to fwlog_cfg isn't done through a function. Follow
+scheme that is used to access other fwlog_cfg elements from debugfs and
+write to the log_level directly.
 
-Prepare code from ice driver to be moved to the library code and reuse
-it in ixgbe driver.
+ice_pf_fwlog_update_module() is called only twice (from one function).
+Remove it.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
-IWL: https://lore.kernel.org/intel-wired-lan/20250812042337.1356907-1-michal.swiatkowski@linux.intel.com/
+ drivers/net/ethernet/intel/ice/ice.h         |  1 -
+ drivers/net/ethernet/intel/ice/ice_debugfs.c |  5 +++--
+ drivers/net/ethernet/intel/ice/ice_main.c    | 13 -------------
+ 3 files changed, 3 insertions(+), 16 deletions(-)
 
-The following are changes since commit 5adf6f2b9972dbb69f4dd11bae52ba251c64ecb7:
-  Merge branch 'ipv4-icmp-fix-source-ip-derivation-in-presence-of-vrfs'
-and are available in the git repository at:
-  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 10GbE
-
-Michal Swiatkowski (15):
-  ice: make fwlog functions static
-  ice: move get_fwlog_data() to fwlog file
-  ice: drop ice_pf_fwlog_update_module()
-  ice: introduce ice_fwlog structure
-  ice: add pdev into fwlog structure and use it for logging
-  ice: allow calling custom send function in fwlog
-  ice: move out debugfs init from fwlog
-  ice: check for PF number outside the fwlog code
-  ice: drop driver specific structure from fwlog code
-  libie, ice: move fwlog admin queue to libie
-  ice: move debugfs code to fwlog
-  ice: prepare for moving file to libie
-  ice: reregister fwlog after driver reinit
-  ice, libie: move fwlog code to libie
-  ixgbe: fwlog support for e610
-
- drivers/net/ethernet/intel/Kconfig            |    2 +
- drivers/net/ethernet/intel/ice/Makefile       |    1 -
- drivers/net/ethernet/intel/ice/ice.h          |    6 +-
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |   78 --
- drivers/net/ethernet/intel/ice/ice_common.c   |   46 +-
- drivers/net/ethernet/intel/ice/ice_debugfs.c  |  633 +---------
- drivers/net/ethernet/intel/ice/ice_fwlog.c    |  474 -------
- drivers/net/ethernet/intel/ice/ice_fwlog.h    |   79 --
- drivers/net/ethernet/intel/ice/ice_main.c     |   43 +-
- drivers/net/ethernet/intel/ice/ice_type.h     |    6 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c |   32 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h |    2 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c |   10 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |    2 +
- drivers/net/ethernet/intel/libie/Kconfig      |    9 +
- drivers/net/ethernet/intel/libie/Makefile     |    4 +
- drivers/net/ethernet/intel/libie/fwlog.c      | 1115 +++++++++++++++++
- include/linux/net/intel/libie/adminq.h        |   90 ++
- include/linux/net/intel/libie/fwlog.h         |   85 ++
- 19 files changed, 1403 insertions(+), 1314 deletions(-)
- delete mode 100644 drivers/net/ethernet/intel/ice/ice_fwlog.c
- delete mode 100644 drivers/net/ethernet/intel/ice/ice_fwlog.h
- create mode 100644 drivers/net/ethernet/intel/libie/fwlog.c
- create mode 100644 include/linux/net/intel/libie/fwlog.h
-
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index e952d67388bf..a6803b344540 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -912,7 +912,6 @@ void ice_debugfs_fwlog_init(struct ice_pf *pf);
+ void ice_debugfs_pf_deinit(struct ice_pf *pf);
+ void ice_debugfs_init(void);
+ void ice_debugfs_exit(void);
+-void ice_pf_fwlog_update_module(struct ice_pf *pf, int log_level, int module);
+ 
+ bool netif_is_ice(const struct net_device *dev);
+ int ice_vsi_setup_tx_rings(struct ice_vsi *vsi);
+diff --git a/drivers/net/ethernet/intel/ice/ice_debugfs.c b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+index cb71eca6a85b..170050548e74 100644
+--- a/drivers/net/ethernet/intel/ice/ice_debugfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_debugfs.c
+@@ -164,6 +164,7 @@ ice_debugfs_module_write(struct file *filp, const char __user *buf,
+ 	struct ice_pf *pf = file_inode(filp)->i_private;
+ 	struct dentry *dentry = file_dentry(filp);
+ 	struct device *dev = ice_pf_to_dev(pf);
++	struct ice_hw *hw = &pf->hw;
+ 	char user_val[16], *cmd_buf;
+ 	int module, log_level, cnt;
+ 
+@@ -192,7 +193,7 @@ ice_debugfs_module_write(struct file *filp, const char __user *buf,
+ 	}
+ 
+ 	if (module != ICE_AQC_FW_LOG_ID_MAX) {
+-		ice_pf_fwlog_update_module(pf, log_level, module);
++		hw->fwlog_cfg.module_entries[module].log_level = log_level;
+ 	} else {
+ 		/* the module 'all' is a shortcut so that we can set
+ 		 * all of the modules to the same level quickly
+@@ -200,7 +201,7 @@ ice_debugfs_module_write(struct file *filp, const char __user *buf,
+ 		int i;
+ 
+ 		for (i = 0; i < ICE_AQC_FW_LOG_ID_MAX; i++)
+-			ice_pf_fwlog_update_module(pf, log_level, i);
++			hw->fwlog_cfg.module_entries[i].log_level = log_level;
+ 	}
+ 
+ 	return count;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index dcb8e7520471..47e2fab3432e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4628,19 +4628,6 @@ static void ice_print_wake_reason(struct ice_pf *pf)
+ 	dev_info(ice_pf_to_dev(pf), "Wake reason: %s", wake_str);
+ }
+ 
+-/**
+- * ice_pf_fwlog_update_module - update 1 module
+- * @pf: pointer to the PF struct
+- * @log_level: log_level to use for the @module
+- * @module: module to update
+- */
+-void ice_pf_fwlog_update_module(struct ice_pf *pf, int log_level, int module)
+-{
+-	struct ice_hw *hw = &pf->hw;
+-
+-	hw->fwlog_cfg.module_entries[module].log_level = log_level;
+-}
+-
+ /**
+  * ice_register_netdev - register netdev
+  * @vsi: pointer to the VSI struct
 -- 
 2.47.1
 
