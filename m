@@ -1,77 +1,71 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04849214A8B;
-	Thu, 11 Sep 2025 14:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E86341668
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 14:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601511; cv=none; b=p0M9GHKEdmADzQNytKgUazADkxzEy+rhUXJcGXpKJJ93tgbMRZ1qZ27+VMQFY2E4s3LzuFp/jOa6zTQSxhwiFWCTmv7yONyUbuJFxtcLGHaC/VhEDGQJFM8WIyNmikRi3iK2WEOp55vI1ukGlFHoy3lRF6olNETRbpUFQxd0FZM=
+	t=1757601511; cv=none; b=e7b1v+EtYGOM10THTLuGkS2yiWxJVLaBSKdvV9xq2++QQimKkiN7zPQSRuUkLFtbltl229f99m9GCrWr92lBz7vpTsttV/2YGAlYkxYgH1pxHGAI51t5jcdbrxu5v5yExOBHHo5tfWTwX2bZz5687ITw6VxvBJ5FbWavVIW7WFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757601511; c=relaxed/simple;
-	bh=FSnIpU6ZCAXqQ8bL/82fDks9DVR6kr4M84ujrVqiLLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOkpnwKGewUOle0VOThSNNMHM/kX+mZicWYdTNi6F2WpPvQ6wQgWv2oMeitlDRec7SUR3QCrvk6/8ALZB41iKxz4i0IM0xHnVCepkQ9JmLnXA9oZZ4ckw893OxPlWHIBvOejvrgxx8bsv1/lxmUHN0qzFI7wq7UULh08tI0tqoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 18DDE60326; Thu, 11 Sep 2025 16:38:28 +0200 (CEST)
-From: Florian Westphal <fw@strlen.de>
-To: <netdev@vger.kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	<netfilter-devel@vger.kernel.org>,
-	pablo@netfilter.org
-Subject: [PATCH net-next 1/5] selftest:net: fixed spelling mistakes
-Date: Thu, 11 Sep 2025 16:38:15 +0200
-Message-ID: <20250911143819.14753-2-fw@strlen.de>
-X-Mailer: git-send-email 2.49.1
-In-Reply-To: <20250911143819.14753-1-fw@strlen.de>
-References: <20250911143819.14753-1-fw@strlen.de>
+	bh=0aMBCWuZxegRTdBEVWfVFqr2DQag4E3Yte4YgTlkMGQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c+jyueGfGJrhN8ZzW9WUmJji7jNgU9pDNQHtxCKIAM09bdQQSs6fkMjjhBH799zrcHLgHAltfjGEWXZrNfboaAJjncki/nnZ8zrMDIGKNgYkerfTNvhUoWRrEo276Y1U12uQtaoXgTHWt7kAuG5PGsDkpwM4NWvOb18OqUgO6YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1uwPbDX; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1uwPbDX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A4DC4CEF8;
+	Thu, 11 Sep 2025 14:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757601511;
+	bh=0aMBCWuZxegRTdBEVWfVFqr2DQag4E3Yte4YgTlkMGQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=F1uwPbDX0debbPFztyhfnqUlnR58W02DO73xViz6y9m6cKqfGpFhEz+1hsktMlhUB
+	 y6RtIm3lUzF5ru1rN75B6Jx3PftNUVykGktQGmC4xpw4vn5vJQ5+IIq7iSy+uHog2s
+	 l2qLSmnFsFrgLa6Sn5nAgR7mchZXBlmR0odCRNKdhkrQHbvOZhu3XzRDvbxm9M+vcV
+	 u5U7OzUesl+OC0x1k9+Sb/rz9gBaYXiA45t+8Pms26ZkYjE5XITmCoN5Y+RHEbtJnf
+	 yHkNtxzFwXlpsBJTDSXdaDvswFdaTgQh4hXOZlFKFCj2/lsckfGmLXsQ7swnxmGYVk
+	 OcR4grBJJ9QWg==
+Date: Thu, 11 Sep 2025 07:38:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, willemb@google.com,
+ netdev@vger.kernel.org, mkarsten@uwaterloo.ca
+Subject: Re: [PATCH net] net: Use NAPI_* in test_bit when stopping napi
+ kthread
+Message-ID: <20250911073829.5f1bb612@kernel.org>
+In-Reply-To: <CAAywjhQZ=4hYaCrO6Uue+cfB4xyyPDMbRTtucEQ4vvxozqxKEQ@mail.gmail.com>
+References: <20250910203716.1016546-1-skhawaja@google.com>
+	<20250911064021.026ad6f2@kernel.org>
+	<CAAywjhTkX3N5CY8+DCEu-DD_0y+Ts0SEkkVphKam1vScMRWdgA@mail.gmail.com>
+	<CAAywjhQZ=4hYaCrO6Uue+cfB4xyyPDMbRTtucEQ4vvxozqxKEQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Andres Urian Florez <andres.emb.sys@gmail.com>
+On Thu, 11 Sep 2025 07:31:11 -0700 Samiullah Khawaja wrote:
+> > > Is this basically addressing the bug that Martin run into?  
+> > Not really. That one was because the busy polling bit remained set
+> > during kthread stop. Basically in this function when we unset
+> > STATE_THREADED, we also needed to unset STATE_THREADED_BUSY_POLL.
+> >
+> > @@ -7000,7 +7002,8 @@ static void napi_stop_kthread(struct napi_struct *napi)
+> >                  */
+> >                 if ((val & NAPIF_STATE_SCHED_THREADED) ||
+> >                     !(val & NAPIF_STATE_SCHED)) {
+> > -                       new = val & (~NAPIF_STATE_THREADED);
+> > +                       new = val & (~(NAPIF_STATE_THREADED |
+> > +                                      NAPIF_STATE_THREADED_BUSY_POLL));
+> >  
+> Just to add to my last email: I did find this test_bit issue while
+> working on the fix for that other problem.
 
-Fixed spelling errors in test_redirect6() error message and
-test_port_shadowing() comments
-
-Signed-off-by: Andres Urian Florez <andres.emb.sys@gmail.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- tools/testing/selftests/net/netfilter/nft_nat.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/net/netfilter/nft_nat.sh b/tools/testing/selftests/net/netfilter/nft_nat.sh
-index a954754b99b3..b3ec2d0a3f56 100755
---- a/tools/testing/selftests/net/netfilter/nft_nat.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_nat.sh
-@@ -569,7 +569,7 @@ test_redirect6()
- 	ip netns exec "$ns0" sysctl net.ipv6.conf.all.forwarding=1 > /dev/null
- 
- 	if ! ip netns exec "$ns2" ping -q -c 1 dead:1::99 > /dev/null;then
--		echo "ERROR: cannnot ping $ns1 from $ns2 via ipv6"
-+		echo "ERROR: cannot ping $ns1 from $ns2 via ipv6"
- 		lret=1
- 	fi
- 
-@@ -859,7 +859,7 @@ EOF
- 	# from router:service bypass connection tracking.
- 	test_port_shadow_notrack "$family"
- 
--	# test nat based mitigation: fowarded packets coming from service port
-+	# test nat based mitigation: forwarded packets coming from service port
- 	# are masqueraded with random highport.
- 	test_port_shadow_pat "$family"
- 
--- 
-2.49.1
-
+I see, makes sense. I was curious whether your previous posting would
+work with just this fix. I guess we'll wait until next week 'cause
+this fix didn't make it to today's PR in time :(
