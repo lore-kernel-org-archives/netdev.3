@@ -1,71 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E86341668
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 14:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD482340DAB;
+	Thu, 11 Sep 2025 14:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601511; cv=none; b=e7b1v+EtYGOM10THTLuGkS2yiWxJVLaBSKdvV9xq2++QQimKkiN7zPQSRuUkLFtbltl229f99m9GCrWr92lBz7vpTsttV/2YGAlYkxYgH1pxHGAI51t5jcdbrxu5v5yExOBHHo5tfWTwX2bZz5687ITw6VxvBJ5FbWavVIW7WFU=
+	t=1757601518; cv=none; b=SwiZpO2AUc88UsyOJDU2npMI3PInyjUz1Zjr+BXIG2jxBHVregVRTtofKbBLXFu2GVfWsJoegzzTbC4XR+qMlJd8JgCtrHFQJF1+/AzzqWxUy1b8laH2fVmUxfzYQc8hMzs77OeAhRtVd8T8pDYBWSJh0sko2oxfYyhHwKfoI8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601511; c=relaxed/simple;
-	bh=0aMBCWuZxegRTdBEVWfVFqr2DQag4E3Yte4YgTlkMGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c+jyueGfGJrhN8ZzW9WUmJji7jNgU9pDNQHtxCKIAM09bdQQSs6fkMjjhBH799zrcHLgHAltfjGEWXZrNfboaAJjncki/nnZ8zrMDIGKNgYkerfTNvhUoWRrEo276Y1U12uQtaoXgTHWt7kAuG5PGsDkpwM4NWvOb18OqUgO6YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1uwPbDX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1uwPbDX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A4DC4CEF8;
-	Thu, 11 Sep 2025 14:38:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757601511;
-	bh=0aMBCWuZxegRTdBEVWfVFqr2DQag4E3Yte4YgTlkMGQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F1uwPbDX0debbPFztyhfnqUlnR58W02DO73xViz6y9m6cKqfGpFhEz+1hsktMlhUB
-	 y6RtIm3lUzF5ru1rN75B6Jx3PftNUVykGktQGmC4xpw4vn5vJQ5+IIq7iSy+uHog2s
-	 l2qLSmnFsFrgLa6Sn5nAgR7mchZXBlmR0odCRNKdhkrQHbvOZhu3XzRDvbxm9M+vcV
-	 u5U7OzUesl+OC0x1k9+Sb/rz9gBaYXiA45t+8Pms26ZkYjE5XITmCoN5Y+RHEbtJnf
-	 yHkNtxzFwXlpsBJTDSXdaDvswFdaTgQh4hXOZlFKFCj2/lsckfGmLXsQ7swnxmGYVk
-	 OcR4grBJJ9QWg==
-Date: Thu, 11 Sep 2025 07:38:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, willemb@google.com,
- netdev@vger.kernel.org, mkarsten@uwaterloo.ca
-Subject: Re: [PATCH net] net: Use NAPI_* in test_bit when stopping napi
- kthread
-Message-ID: <20250911073829.5f1bb612@kernel.org>
-In-Reply-To: <CAAywjhQZ=4hYaCrO6Uue+cfB4xyyPDMbRTtucEQ4vvxozqxKEQ@mail.gmail.com>
-References: <20250910203716.1016546-1-skhawaja@google.com>
-	<20250911064021.026ad6f2@kernel.org>
-	<CAAywjhTkX3N5CY8+DCEu-DD_0y+Ts0SEkkVphKam1vScMRWdgA@mail.gmail.com>
-	<CAAywjhQZ=4hYaCrO6Uue+cfB4xyyPDMbRTtucEQ4vvxozqxKEQ@mail.gmail.com>
+	s=arc-20240116; t=1757601518; c=relaxed/simple;
+	bh=0GKBcWnoMkmGgI6KSrz2yAfXdWpuS9nTro7aEOdcQyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LrnRL6T6yK2iNmooJGm8QH7B8tWzhheBP3Afa8jpPE3k64CPN1+VPHoPv40bmliK53XWBcoXTdeL8bPhjwhdzbA+KdCHAm794v98NyIf72b6+/VXty0S/s2Yz2F45qMOHoiqu3LhkEIyyb4wYddD0+jTqkRBuDzf1vq8nkNYbWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 732796014E; Thu, 11 Sep 2025 16:38:32 +0200 (CEST)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net-next 2/5] netfilter: ipset: Remove unused htable_bits in macro ahash_region
+Date: Thu, 11 Sep 2025 16:38:16 +0200
+Message-ID: <20250911143819.14753-3-fw@strlen.de>
+X-Mailer: git-send-email 2.49.1
+In-Reply-To: <20250911143819.14753-1-fw@strlen.de>
+References: <20250911143819.14753-1-fw@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 11 Sep 2025 07:31:11 -0700 Samiullah Khawaja wrote:
-> > > Is this basically addressing the bug that Martin run into?  
-> > Not really. That one was because the busy polling bit remained set
-> > during kthread stop. Basically in this function when we unset
-> > STATE_THREADED, we also needed to unset STATE_THREADED_BUSY_POLL.
-> >
-> > @@ -7000,7 +7002,8 @@ static void napi_stop_kthread(struct napi_struct *napi)
-> >                  */
-> >                 if ((val & NAPIF_STATE_SCHED_THREADED) ||
-> >                     !(val & NAPIF_STATE_SCHED)) {
-> > -                       new = val & (~NAPIF_STATE_THREADED);
-> > +                       new = val & (~(NAPIF_STATE_THREADED |
-> > +                                      NAPIF_STATE_THREADED_BUSY_POLL));
-> >  
-> Just to add to my last email: I did find this test_bit issue while
-> working on the fix for that other problem.
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-I see, makes sense. I was curious whether your previous posting would
-work with just this fix. I guess we'll wait until next week 'cause
-this fix didn't make it to today's PR in time :(
+Since the ahash_region() macro was redefined to calculate the region
+index solely from HTABLE_REGION_BITS, the htable_bits parameter became
+unused.
+
+Remove the unused htable_bits argument and its call sites, simplifying
+the code without changing semantics.
+
+Fixes: 8478a729c046 ("netfilter: ipset: fix region locking in hash types")
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+ net/netfilter/ipset/ip_set_hash_gen.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index 5251524b96af..5e4453e9ef8e 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -63,7 +63,7 @@ struct hbucket {
+ 		: jhash_size((htable_bits) - HTABLE_REGION_BITS))
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+-#define ahash_region(n, htable_bits)		\
++#define ahash_region(n)		\
+ 	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+@@ -702,7 +702,7 @@ mtype_resize(struct ip_set *set, bool retried)
+ #endif
+ 				key = HKEY(data, h->initval, htable_bits);
+ 				m = __ipset_dereference(hbucket(t, key));
+-				nr = ahash_region(key, htable_bits);
++				nr = ahash_region(key);
+ 				if (!m) {
+ 					m = kzalloc(sizeof(*m) +
+ 					    AHASH_INIT_SIZE * dsize,
+@@ -852,7 +852,7 @@ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	elements = t->hregion[r].elements;
+ 	maxelem = t->maxelem;
+@@ -1050,7 +1050,7 @@ mtype_del(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	rcu_read_lock_bh();
+ 	t = rcu_dereference_bh(h->table);
+ 	key = HKEY(value, h->initval, t->htable_bits);
+-	r = ahash_region(key, t->htable_bits);
++	r = ahash_region(key);
+ 	atomic_inc(&t->uref);
+ 	rcu_read_unlock_bh();
+ 
+-- 
+2.49.1
+
