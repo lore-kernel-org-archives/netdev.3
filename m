@@ -1,100 +1,160 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8AB2E1C44
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 08:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53022E0922;
+	Thu, 11 Sep 2025 08:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757579360; cv=none; b=jDCEUlXfu+XftZcgg5a1fTxY4HFAvDpy7W/mjFBlx5j+Cl1H+NcILcdPrXPTa5ndJ9u+6+h8/Wykcn+2JwNh6zZGwgOREadFIxIOgOf6M1OCE1MPkBFaLpiGD4UOqXqleaVylWxyTrW/nawxUvjLGvyaq3Q9nxqGea/s2VMWLSQ=
+	t=1757579407; cv=none; b=fmvYAWFZEi0eOfIh09X7pj/1MXHqXuq0O+0w0sL/a2D2ZWNvGCaPebhBCIRLx+4BmIcrbjQh9VSdhC8vytT2e+rmL6zp/NoSVetVfGS4Qwsfk6j+1ztrrgqB72tbIgDzsiYMMTgTsgw4IfDEDH7hVdMn7hvwFPAt7yKQEjYUP6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757579360; c=relaxed/simple;
-	bh=cectbzOwSX7/raq+3N3bfK5CjRa4tK2nFA3zl8Ny/eg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e98MnjEYcFeNINT2wtfo+54KdHgbqxClRZpfNKuxRhRwFAZjZb47uWudAtzOgPR1KHGSKtkipx8ykj+aVzXunUd/IlZoAEbLGra2hLYzR+X/jty18SC6YApJOexD/5m2koqjhQcazdVkbpDbO/AZ49M50X07aTw2+fLOaRkO550=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1uwcfy-0004dq-5J; Thu, 11 Sep 2025 10:29:06 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 11 Sep 2025 10:29:03 +0200
-Subject: [PATCH v2] net: phy: micrel: Update Kconfig help text
+	s=arc-20240116; t=1757579407; c=relaxed/simple;
+	bh=6yQW0ml2hneuegSu/DND2ZHAHnDbMIQgiFkYLrD8ZzY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=TFWbiZM69Y1ag4E2gPINE18MvypTyblSBbiiootDadJFP8l4i6HyX/fZYdQ0BpR16GBKXw918fK9vVdlwqRtQn+pb7frYmlNxRagAOKt2rBf6pXKoqWD0e62azrMSf81pln4lOV3UEwPXWcL+n3FNur3JqiDrCwTyOdpYMgxLGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=yg9H/dvZ; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="yg9H/dvZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=3X9+A0P0F92W8xd1mm/wdAzjQD7bN49SA+/OJzzCmm4=; b=yg9H/dvZuy+suCTZ203CdRADS7
+	nNXV+ibyvDbulq170sSwsMU8++kmF/wux1Q5JpPvos3Ant6WGGswNDj9aslDfRfJsKO0B8TM6gWTE
+	PaYSbEw+R25eXbHqUitRQ6mUsmfsl89NaJkf9F0sKnxM9SCGsbS6ftGp8nwgUJZTnDla4+wI/iXUk
+	pQWFiiUN9RyvXuHp3a5XKYhPdUuJ5qZTmlKihwZMU9tpPbe46RvjKzr/rDlPYGXTHxJ0mupfiyKoV
+	etE7LkMzSBDcA3tzaSX4pJ19FmYyT7sboWO0MrXhD474LW4O7edyl0xL+xNej0n0gLMKJxTazG2Y9
+	6+nZE4Kw==;
+Received: from [122.175.9.182] (port=33004 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1uwcPk-000000015ts-2XgD;
+	Thu, 11 Sep 2025 04:12:21 -0400
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 526AB1781F05;
+	Thu, 11 Sep 2025 13:42:14 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 2754D17840BC;
+	Thu, 11 Sep 2025 13:42:14 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id N5Rg2jz0nb_G; Thu, 11 Sep 2025 13:42:14 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id C74831781F05;
+	Thu, 11 Sep 2025 13:42:13 +0530 (IST)
+Date: Thu, 11 Sep 2025 13:42:13 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: kuba <kuba@kernel.org>
+Cc: parvathi <parvathi@couthit.com>, danishanwar <danishanwar@ti.com>, 
+	rogerq <rogerq@kernel.org>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	pabeni <pabeni@redhat.com>, robh <robh@kernel.org>, 
+	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
+	ssantosh <ssantosh@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	m-malladi <m-malladi@ti.com>, s hauer <s.hauer@pengutronix.de>, 
+	afd <afd@ti.com>, 
+	michal swiatkowski <michal.swiatkowski@linux.intel.com>, 
+	jacob e keller <jacob.e.keller@intel.com>, horms <horms@kernel.org>, 
+	johan <johan@kernel.org>, ALOK TIWARI <alok.a.tiwari@oracle.com>, 
+	m-karicheri2 <m-karicheri2@ti.com>, s-anna <s-anna@ti.com>, 
+	glaroque <glaroque@baylibre.com>, 
+	saikrishnag <saikrishnag@marvell.com>, 
+	kory maincent <kory.maincent@bootlin.com>, 
+	diogo ivo <diogo.ivo@siemens.com>, 
+	javier carrasco cruz <javier.carrasco.cruz@gmail.com>, 
+	basharath <basharath@couthit.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
+	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, pmohan <pmohan@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1472700459.335961.1757578333581.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20250908133019.44602174@kernel.org>
+References: <20250904101729.693330-1-parvathi@couthit.com> <20250905183151.6a0d832a@kernel.org> <974157264.314549.1757343020136.JavaMail.zimbra@couthit.local> <20250908133019.44602174@kernel.org>
+Subject: Re: [PATCH net-next v15 0/5] PRU-ICSSM Ethernet Driver
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250911-micrel-kconfig-v2-1-e8f295059050@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAE6IwmgC/13MQQ6CMBCF4auQWVszjBZSV9zDsBAYYKK2pEWCI
- b27lcSNy/8l79sgsBcOcMk28LxIEGdT0CGDdrzZgZV0qYGQNBrU6imt54e6t872MihsTElFWZw
- 0F5BOk+de1h281qlHCbPz791f8u/6o8w/teQqV0QdnpvGIGqqJrbDa/bOynrsGOoY4wcFQPSCs
- QAAAA==
-X-Change-ID: 20250905-micrel-kconfig-0b97267635e6
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1543; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=cectbzOwSX7/raq+3N3bfK5CjRa4tK2nFA3zl8Ny/eg=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsg41BFw/lrh1YxDPBXvs1rFb6z1UpsS+dRGek/9vZrFp
- z+qm7e6d5SyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACZyLp/hf/znq8q3vC3q+ZZc
- OJpiHpISduxWFMcMa5GmHN+Io07XAxkZDoUUPeRanhPQNuXNL0sdoZuK/JZd1Sk/+qwdbF/ytv9
- lBgA=
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
-X-SA-Exim-Mail-From: jre@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC138 (Linux)/8.8.15_GA_3968)
+Thread-Topic: PRU-ICSSM Ethernet Driver
+Thread-Index: /Xec1/3639+TyIC3wc37Kq4oOeNPjg==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-This driver by now supports 17 different Microchip (formerly known as
-Micrel) chips: KSZ9021, KSZ9031, KSZ9131, KSZ8001, KS8737, KSZ8021,
-KSZ8031, KSZ8041, KSZ8051, KSZ8061, KSZ8081, KSZ8873MLL, KSZ886X,
-KSZ9477, LAN8814, LAN8804 and LAN8841.
+Hi,
 
-Support for the VSC8201 was removed in commit 51f932c4870f ("micrel phy
-driver - updated(1)")
+> On Mon, 8 Sep 2025 20:20:20 +0530 (IST) Parvathi Pudi wrote:
+>> > On Thu,  4 Sep 2025 15:45:37 +0530 Parvathi Pudi wrote:
+>> >> The Programmable Real-Time Unit Industrial Communication Sub-system (PRU-ICSS)
+>> >> is available on the TI SOCs in two flavors: Gigabit ICSS (ICSSG) and the older
+>> >> Megabit ICSS (ICSSM).
+>> > 
+>> > Looks like the new code is not covered by the existing MAINTAINERS
+>> > entries. Who is expected to be maintaining the new driver?
+>> > Please consult:
+>> > https://docs.kernel.org/next/maintainer/feature-and-driver-maintainers.html
+>> 
+>> We will update the MAINTAINERS information in a separate patch to
+>> this series and share the next version soon.
+> 
+> I wasn't asking if you can update the MAINTAINERS, I was asking what
+> you will update it with. Since that's still not clear I'm dropping
+> the series from pw, please repost with the MAINTAINERS entry included.
 
-Update the help text to reflect that, list families instead of models to
-ease future maintenance.
+The new entry for the ICSSM Ethernet driver will be added immediately
+after the existing ICSSG driver section.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
-Changes in v2:
-- Don't capitalize "micrel" in commit message (Thanks, Jakub)
-- Name chip families with the common xxx-placeholders (Thanks, Jakub)
-- Be a bit more specific as to which families
-- Link to v1: https://lore.kernel.org/r/20250909-micrel-kconfig-v1-1-22d04bb90052@pengutronix.de
----
- drivers/net/phy/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We will update the MAINTAINERS file with the change shown below.
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index a7fb1d7cae94..e543eef36d98 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -298,7 +298,7 @@ config MICREL_PHY
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	select PHY_PACKAGE
- 	help
--	  Supports the KSZ9021, VSC8201, KS8001 PHYs.
-+	  Supports the KSZ8xxx, KSZ9xxx, and LAN88xx families of Micrel/Microchip PHYs.
- 
- config MICROCHIP_T1S_PHY
- 	tristate "Microchip 10BASE-T1S Ethernet PHYs"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b81595e9ea95..c7f04ff96cf0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25320,6 +25320,18 @@ S:     Maintained
+ F:     Documentation/devicetree/bindings/net/ti,icss*.yaml
+ F:     drivers/net/ethernet/ti/icssg/*
 
----
-base-commit: 16c610162d1f1c332209de1c91ffb09b659bb65d
-change-id: 20250905-micrel-kconfig-0b97267635e6
++TI ICSSM ETHERNET DRIVER (ICSSM)
++M:     MD Danish Anwar <danishanwar@ti.com>
++M:     Parvathi Pudi <parvathi@couthit.com>
++R:     Roger Quadros <rogerq@kernel.org>
++R:     Mohan Reddy Putluru <pmohan@couthit.com>
++L:     linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++L:     netdev@vger.kernel.org
++S:     Maintained
++F:     Documentation/devicetree/bindings/net/ti,icssm*.yaml
++F:     Documentation/devicetree/bindings/net/ti,pruss-ecap.yaml
++F:     drivers/net/ethernet/ti/icssm/*
++
+ TI J721E CSI2RX DRIVER
+ M:     Jai Luthra <jai.luthra@linux.dev>
+ L:     linux-media@vger.kernel.org
+--
 
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
 
+Thanks and Regards,
+Parvathi.
