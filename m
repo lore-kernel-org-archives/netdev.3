@@ -1,60 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E7719309E;
-	Thu, 11 Sep 2025 00:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6261F237A
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 01:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757551962; cv=none; b=k7nGNK/vsZ+pEpl4FfSvzMxpcwbP09efmyn+Kurr0x8DZ5K2FQNqLVcYUi6uiq+rHZdLVNZgq9UawtkZFR3ZWyYE5e7y5ycUojqbyiSywi4UqAiKfZ1uQTZQ8BppWMcfboyDWaq5iGJGTvsITYhsm0GYtO6wVSi3SfZxgz6iBPY=
+	t=1757552404; cv=none; b=bpLSFpqSm9Zk5qmF3DzyJLnmGsX0tMLOwZfdRsvCaV02IE7VcLFhoYchfnwy6BluumA8DbdARqpJ3D2inHBXA7mv8+Toq0kZ5t1aiwSFdwnAvdjVb+xVbWj57L6Yu+WxMIOl0k6Rqq/roPN5Hvh9b43r0EfDQDJ8soFPzwtRMFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757551962; c=relaxed/simple;
-	bh=V8xpZ+8EhZp3so4fvB8IMMv2kOizosAzyULq4a4Whcg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QtMK4paxvEHxMxxbLRw6sWdKG0Xhe5YlSnkrUNQgEeuuMukWxKeWKN3LhcPVKtTS8Dn0G/2/XPsw30BlWdYfrGSOhOB1oJG3CLlrI777u7Ug+x/CmNeTAZ+I5dHUdaU5bI8T7Yt/6iI7Pl3muxqOYF9P4tSJ1o07Jw6ZiFj9SD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nb62S9Ri; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757552404; c=relaxed/simple;
+	bh=DRtCX1OgZcfnYUPNDwEMV/MItTo6xliwHZL+vUxPzPU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=JUCweQ6o9ZgwFtTN05l1/ZF0qWRcsIDtNARXvO4nNV22pZGfCRVDpZasvLFjXfFy+fQh2OkHb5Gsj2zdDb8p22zV02fH20d4+Mt64qBvrJN8EdziiyMX10PIvHBdfX2ffFyXCvu9Z2OH1OO2xMqcxVF2K5kh9AHiyS9iwcrD900=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=syIAh+Ob; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nb62S9Ri"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB21C4CEEB;
-	Thu, 11 Sep 2025 00:52:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="syIAh+Ob"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDE1C4CEF7;
+	Thu, 11 Sep 2025 01:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757551961;
-	bh=V8xpZ+8EhZp3so4fvB8IMMv2kOizosAzyULq4a4Whcg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nb62S9RikRNNrxSmYWlXFL1v3AvgVoV4t1QDscjX9c9vNFgqnQ7VBi+/+nZd4fApc
-	 aA3gEVEh43XTCU6/iBvtv3RcAgFQQNx6jkTTd+aLrnFl2UONNbfpZxgWcpQEMb+tyH
-	 +RzbRdRo8W+YiJ1pfQiJDD3aep5t/lM7h9NlZBtDt29aJhfp9903diIAq2YDy9I2XP
-	 eDLzAJfWXEql86JELFzv4QtzPqaMr0AwnEcK0wXDte+DVOezCdTN6p9xJimxTmCb5J
-	 PoXWomCPzqHtMGagmxPAFf+NNHL5gE56cWy6nE4TIgmHStvPO9ohbfTtl50FRGdxNO
-	 Ccy5hxFvJKduw==
-Date: Wed, 10 Sep 2025 17:52:40 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net, hawk@kernel.org
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, ilias.apalodimas@linaro.org,
- nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
- justinstitt@google.com, llvm@lists.linux.dev
-Subject: Re: [PATCH net-next] page_pool: always add GFP_NOWARN for ATOMIC
- allocations
-Message-ID: <20250910175240.72c56e86@kernel.org>
-In-Reply-To: <20250908152123.97829-1-kuba@kernel.org>
-References: <20250908152123.97829-1-kuba@kernel.org>
+	s=k20201202; t=1757552403;
+	bh=DRtCX1OgZcfnYUPNDwEMV/MItTo6xliwHZL+vUxPzPU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=syIAh+ObHB2WHbGjO5/JaA3DG8791jSqYt3zXwAVN6qYCaIUM2zgGFh/lDfauOcrR
+	 Oa0AbimMln0+OSouipgZDGYDXlaizoSGRYZKGQkOjWgsdozPDPB3H+g69ITCHB8q5G
+	 UUukpPOZ/9jWs9U73T+T83xtUR6atYEk1QDr8E+nqh4TBx28WXl6i3jIQfrPZSa/0Y
+	 1HMoDmSqemaf49wcDC+NzjOyTOATfp0SPaASLtUFeJQnVO51wTRAyTtmij69awrRH/
+	 ezx6VCM7T8u6VVV8X/ek3RBW8eP8vH2uO5gFvb2I7tCqgyifSYVeBov7jv6ITgIueR
+	 pcRGQyNTxAgaw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE172383BF6C;
+	Thu, 11 Sep 2025 01:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: ethtool: fix wrong type used in struct
+ kernel_ethtool_ts_info
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175755240661.1614523.16873488190452553602.git-patchwork-notify@kernel.org>
+Date: Thu, 11 Sep 2025 01:00:06 +0000
+References: <E1uvMEK-00000003Amd-2pWR@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1uvMEK-00000003Amd-2pWR@rmk-PC.armlinux.org.uk>
+To: Russell King <rmk+kernel@armlinux.org.uk>
+Cc: kory.maincent@bootlin.com, wintera@linux.ibm.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, sln@onemain.com, horms@kernel.org
 
-On Mon,  8 Sep 2025 08:21:23 -0700 Jakub Kicinski wrote:
-> Driver authors often forget to add GFP_NOWARN for page allocation
-> from the datapath. This is annoying to operators as OOMs are a fact
-> of life, and we pretty much expect network Rx to hit page allocation
-> failures during OOM. Make page pool add GFP_NOWARN for ATOMIC allocations
-> by default.
+Hello:
 
-Hi Jesper! Are you okay with this? It's not a lot of instructions and
-it's in the _slow() function, anyway. TBH I wrote the patch to fix the
-driver (again) first but when writing the commit message I realized my
-explanation why we can't fix this in the core was sounding like BS :$
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 07 Sep 2025 21:43:20 +0100 you wrote:
+> In C, enumerated types do not have a defined size, apart from being
+> compatible with one of the standard types. This allows an ABI /
+> compiler to choose the type of an enum depending on the values it
+> needs to store, and storing larger values in it can lead to undefined
+> behaviour.
+> 
+> The tx_type and rx_filters members of struct kernel_ethtool_ts_info
+> are defined as enumerated types, but are bit arrays, where each bit
+> is defined by the enumerated type. This means they typically store
+> values in excess of the maximum value of the enumerated type, in
+> fact (1 << max_value) and thus must not be declared using the
+> enumated type.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: ethtool: fix wrong type used in struct kernel_ethtool_ts_info
+    https://git.kernel.org/netdev/net/c/6fef6ae764be
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
