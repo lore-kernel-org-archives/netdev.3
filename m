@@ -1,115 +1,82 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1091B3376B3
-	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 14:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A49633A004;
+	Thu, 11 Sep 2025 14:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757601256; cv=none; b=lMgWrKX/94MtXjzd7VKvhHY37y3QZJ1iLCnAUjPrEdLw4xQyD8YAaz2/D9VvXO7pYzwfyBM6qORDOe2ZediZ8D70P9ibpGE7WEXOBwzUs0qm6qiQkj1pqCwXrKKdttwfTm9ogt5IsCiRQ8F4VA19AWF4oTE4RmpA/N6fqvOlLtI=
+	t=1757601332; cv=none; b=RtCK1pOA43Gr+yYF6ANjisymhIaidFeoqoGVn86K1LUszspuhcuCN+CRCglR6gkK2dwSwyJrcBD5MNIESthS2ukLGf6L1013WixzLeLOp1LjWOMdf04s4uSZfAa70SS7o/1rVvM9Z9evU7ZJB/YcApCLuqFvLrm9+HBM11Afslk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757601256; c=relaxed/simple;
-	bh=LF9mjpsJE320nJa7ljvOUbLgrwPxvDyg6GUm3LLtrR0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xml0N08G3SNkDNWOu/xSorN7YarJ16J9WtVLb1LCBDYkrlmg0TNpCXZgXyKrRkvJObo+iC8dp6Nl0bJUUhp9irAqg7LVPMALqNyrb3Yl2onuLDB/QLLBT+LVweVwc5CfgYBgAyGNkSDIimSsRHcXGLNCuz8FuZ92wWX5ggTX9NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BEdTl97P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757601332; c=relaxed/simple;
+	bh=c7JCd04MwdS7CUE2Fo15MvufZX7mN9AXA6y5tx0jPAA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qpr+9hhy7rwkLZnbBGATS0/cuLk5VPTXAOwKGFL1vqzsJ3dQHoduD2O1dYtNiJdSAPPP70a0zuWp6lDCmETwosv32pJ4L7oiQ+G9g0qymcpA7WCGKJ5T/OecxPSazQmKiMyrasf+qYfJipcM1YX8urBefygpAYKyQyJv/uLAX5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oaC8OiDI; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BEdTl97P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757601253;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oaC8OiDI"
+Message-ID: <0dc424bf-c19b-4eeb-82db-88bff4f85d46@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1757601328;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0HwNowAS09RWNRuCOS+CaBRWoQtMYUs2xhxpuv/fB2s=;
-	b=BEdTl97PDBByWLT3JiPVGune/EJd+ZmbEremhHsrEpwqNPHd89NOhtzlgMo7xwZeVYjuyS
-	66rbjnwWqypaGtts4XcuBiEq5ObFrVzWxj96/5yWg68FR/DF3EZxnkYQGqMPK7ZDzzLCpO
-	ajIZ8xf41UuLDoc/7dXOy6YYsBVQBfE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-482-hC8V3QT8NjOrS0eIjaO0kw-1; Thu,
- 11 Sep 2025 10:34:06 -0400
-X-MC-Unique: hC8V3QT8NjOrS0eIjaO0kw-1
-X-Mimecast-MFC-AGG-ID: hC8V3QT8NjOrS0eIjaO0kw_1757601241
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3BA8E1800372;
-	Thu, 11 Sep 2025 14:34:00 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.33.21])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 34A0A1800576;
-	Thu, 11 Sep 2025 14:33:55 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	linux-usb@vger.kernel.org,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
-Subject: [PATCH net] Revert "net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups"
-Date: Thu, 11 Sep 2025 16:33:31 +0200
-Message-ID: <2945b9dbadb8ee1fee058b19554a5cb14f1763c1.1757601118.git.pabeni@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=37t0QPtyu/XvIalXZWt6PWI4bvROoJUZ3WeQvV5JNsU=;
+	b=oaC8OiDIhGEaAAekyBYHmzL+501l+czft7xmdUJGAyUMLfPFEsD/2qKIsZwmQR2JWpta6v
+	5WYqyYOZD8HjDasYlBQkI3L3l3iVDmF4rWUPqBeUaiG+TwnPF+TNxjruTdEI1TlxXKGa5Z
+	VDt6kjHfL6UPggzWsyCfCkcAfMrzwB4=
+Date: Thu, 11 Sep 2025 10:35:22 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Subject: Re: [PATCH net-next 2/2] net: xilinx: axienet: Add inline comment for
+ stats_lock mutex definition
+To: Suraj Gupta <suraj.gupta2@amd.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, michal.simek@amd.com, radhey.shyam.pandey@amd.com,
+ horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, harini.katakam@amd.com
+References: <20250911072815.3119843-1-suraj.gupta2@amd.com>
+ <20250911072815.3119843-3-suraj.gupta2@amd.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20250911072815.3119843-3-suraj.gupta2@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-This reverts commit 5537a4679403 ("net: usb: asix: ax88772: drop
-phylink use in PM to avoid MDIO runtime PM wakeups"), it breaks
-operation of asix ethernet usb dongle after system suspend-resume
-cycle.
+On 9/11/25 03:28, Suraj Gupta wrote:
+> Add inline comment to document the purpose of the stats_lock mutex in
+> the axienet_local structure. This mutex protects the hw_stats_seqcount
+> sequence counter used for hardware statistics synchronization.
+> 
+> Fixes checkpatch warning:
+> CHECK: struct mutex definition without comment
+> 
+> Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
+> ---
+>  drivers/net/ethernet/xilinx/xilinx_axienet.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+> index 5ff742103beb..99b9c27bbd60 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+> @@ -598,7 +598,7 @@ struct axienet_local {
+>  
+>  	u64 hw_stat_base[STAT_COUNT];
+>  	u32 hw_last_counter[STAT_COUNT];
+> -	seqcount_mutex_t hw_stats_seqcount;
+> +	seqcount_mutex_t hw_stats_seqcount; /* Lock for hardware statistics */
+>  	struct mutex stats_lock;
+>  	struct delayed_work stats_work;
+>  	bool reset_in_progress;
 
-Link: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@samsung.com/
-Fixes: 5537a4679403 ("net: usb: asix: ax88772: drop phylink use in PM to avoid MDIO runtime PM wakeups")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
-Since we have the net PR waiting for this one, I'll apply it very soon
-unless someone screams very loudly in just a few mins :)
----
- drivers/net/usb/asix_devices.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index 1e8f7089f5e8..792ddda1ad49 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -607,8 +607,15 @@ static const struct net_device_ops ax88772_netdev_ops = {
- 
- static void ax88772_suspend(struct usbnet *dev)
- {
-+	struct asix_common_private *priv = dev->driver_priv;
- 	u16 medium;
- 
-+	if (netif_running(dev->net)) {
-+		rtnl_lock();
-+		phylink_suspend(priv->phylink, false);
-+		rtnl_unlock();
-+	}
-+
- 	/* Stop MAC operation */
- 	medium = asix_read_medium_status(dev, 1);
- 	medium &= ~AX_MEDIUM_RE;
-@@ -637,6 +644,12 @@ static void ax88772_resume(struct usbnet *dev)
- 	for (i = 0; i < 3; i++)
- 		if (!priv->reset(dev, 1))
- 			break;
-+
-+	if (netif_running(dev->net)) {
-+		rtnl_lock();
-+		phylink_resume(priv->phylink);
-+		rtnl_unlock();
-+	}
- }
- 
- static int asix_resume(struct usb_interface *intf)
--- 
-2.51.0
-
+NAK. This is already documented in the kernel-doc comment.
