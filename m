@@ -1,150 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA5636C07F;
-	Thu, 11 Sep 2025 17:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD6941A8F
+	for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 17:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757612438; cv=none; b=mfFyN4620XQhUExDS04IhciuH8o3A2DLhyDt5DrHIbxwDyc7K7dhVmNaf3tS1ABYuvVUfEQlhjWCkz8lWbcH64sGifw6yGBbomOADGo+Og7lHyztVlQoNi2KBWhdALJmPFKcSxk3h3tuizfzFMT8r8GaoMwiZDXrSSEVlJJ8Z7M=
+	t=1757612736; cv=none; b=FgZX98m2YQ2ZoujIIdKbokR0mIpB2h6doTKo1TqdYfJPMTUsfRoPs5eLNJhXvEEbf6xl2A8CkpHXpNOyxGTTtrebhbiZwy9AqWwXhVXZjFEzbElVL6AQVYyWohWJip9ON95mVjzDtQuRlr4p4LGe3rvNGj9LyXGsgaW0j8CGnug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757612438; c=relaxed/simple;
-	bh=KwQ33/Me6CtoPqF903pwWNvdntE/FNahw7BHgwIWeoE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D/MKA6pbxtGa34pCIfvyrEAZxUSs6FAmsiU2PIwaFbQkMhUqNJDJ0WazERbDDZBEnWyTbQdy0cET3IFenn4en2Qd8esrkh/+rzCd/X49uEUD+WO6VJHzh67bzRuIKWaEUjpnPuOx3JnitpXhCye92jmLrfd1p64gG/7T/7HyVQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXKWDV6/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757612736; c=relaxed/simple;
+	bh=/nHpAWqYD2tKnha6x0XreH89BIrbfc21iMX6BLcP+FI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gxj6+BrkDIcSE6ATgrIRdAV7fJ/APliOOKPeE1oySuBnTdgqTcp68NKaUBK8LNaua2HiKvWtjbfDxb4r3jgmZeIoJUk7M44qWzzkhWtNJ+2W8DR9K5MlXtGFQrqntfus8/Qd1NQpoleut8haOAsgMT5fhqaQRm3Z+d01COOaAfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0dhZWErX; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXKWDV6/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BDEC4CEF0;
-	Thu, 11 Sep 2025 17:40:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757612438;
-	bh=KwQ33/Me6CtoPqF903pwWNvdntE/FNahw7BHgwIWeoE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXKWDV6/zRIDx8rmJIF19WHTQ1kLiS67cArk4RJNLqqLh/AHyIzr7jna4Yi7RD49O
-	 sNolPJdJi+9pg8YW8VaEr58zA5XSiuyR5JfEdr2//hK9Jn9Y9WCX6ehSS9I4jFX86r
-	 lzNI9PD+v5010UKCCzPgjcdWe2BSXCin+Ql/OtSDW/lK/QPrqWju5/Dg+SuNkYJ2Aq
-	 WjY8mg/puH2u3ZKyMWc+/qrIIcZ+z41aTZ57eCQiY0dXFz3ehRJ5W1fNncZX72jfNR
-	 aFZXn2BSnW/j/WlWFfzXfjjj2Z783x6U97TXDkQWSLw7MJXSOt5T0T6DQ15FMbfXhq
-	 aT6v7dLkdDOZA==
-Received: by wens.tw (Postfix, from userid 1000)
-	id 4659F5FEEE; Fri, 12 Sep 2025 01:40:33 +0800 (CST)
-From: Chen-Yu Tsai <wens@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej@kernel.org>,
-	Samuel Holland <samuel@sholland.org>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH net-next v5 5/6] arm64: dts: allwinner: t527: avaota-a1: enable second Ethernet port
-Date: Fri, 12 Sep 2025 01:40:31 +0800
-Message-Id: <20250911174032.3147192-6-wens@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250911174032.3147192-1-wens@kernel.org>
-References: <20250911174032.3147192-1-wens@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0dhZWErX"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-24b21006804so11074295ad.3
+        for <netdev@vger.kernel.org>; Thu, 11 Sep 2025 10:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1757612734; x=1758217534; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bIDXrbSC6UOck2vb5ofWkAL7Y5qvL0omsEwcHkXaHLY=;
+        b=0dhZWErXrJLmAOzuiVGM9yWI298wBYVstVACmzKc/pqnslK+bZgWBoI/6D+jhfepT3
+         oql+NAI4nk4A/ik4Mgw6VTWavBftISS/Tm26MpAvsM8+yEcBcuQinToLpsrjtzogWE7D
+         KcHk/RlVrKOQC0vTTsO24O9kpFAZ4YP9/E8GbSCnORKucf8XK7vpOAR2k8IsZhEAw8j9
+         P77Yubec3ih9qpaSIryCqwIExPVC+/wxP6LbyovgecJ7nQChjxb5MD1jUO9L+8UkZ9mk
+         crJ0uQYHWds7zDpjMBzOG/y5ea7dSNeSr709A/1S0JtkfPt5kKC8bI/FyprXd8hqJXkk
+         7SSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757612734; x=1758217534;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bIDXrbSC6UOck2vb5ofWkAL7Y5qvL0omsEwcHkXaHLY=;
+        b=Hbs6lTblrhTdCzqGYLvuL74bcDom7PzwoCv7MfmTxPMqBuc02Qzg9L5Ea/gF8DVt9l
+         1Suhuov99O4N4eWgLePg+jA1udM3gpTvziLsMH9m3CpI3Urr9M2tqAxUkMc1FT9FTDXz
+         jiGoZaOZoF/4r0lsNVbGg5Pjon18+WryhLeM6IgHaphlFdyiHvumra1QOD7KKuYgfy+l
+         GhaDf5Qic6fA4hOt1oarYT4t7clB5BxrLZUOb28o8FOcnnw0S7cnNYImeurvqFp/Fxqm
+         fg/il+W+qZKhl7rmaXDByK+Y6B37JuGQvrF7oAmWh6h1t5JGRZDAO8pYigpEp61SwgZm
+         Inxw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZrnlP4veXNv/AIPum4NVKNuZHfsuC+XJ2M6SX5tJPG2q7PzNwj9lNiHDbWl8KoKf3zwH9apw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6EwEMnKqXIQtqEpI3txKI3mNRRSIdTwI2HmqgBuXXnhTahMTW
+	5Kw5nYMI8uCOKvH5hLo+NyaHXNNjZhPc6Q+4GzxuppInFGyNnio/ZQWuIYQDnok6eRy19TQPVF/
+	Ber4Mjro7xgMe6iWPUQqZqeh3vZaloIFh8wZX4Mae
+X-Gm-Gg: ASbGncvYkRG63dIayYwAqXB5RCjylygPxrOD7ZEljAMJR/eUh2w4aoH0nK8i+1T2UvY
+	/g0M46ktvrkstMow7rauA+G9Tx/TFaazdBfzs3kVedVVAD5ip6n6l2mBiesICmaeNPCLHtiD19/
+	UEZ/Dv0tJwPfkI4k1GaQCvP5lhgrWYRSqlBU5dyFB71UDS56T9fr6yCxxRJi5qcJXba9zROI8sO
+	sjABhRB2G0/6PC3/S8xwmvxShIXL/a8EjViF1zEaD8Y/PFgfK5RrlMCnQ==
+X-Google-Smtp-Source: AGHT+IHIn8C6lOWdI+zJlJd7pZkkHxpa2w2Svm/nZBtc24pdPe9O1TKt0+/2OUZjF7yD9ol7AbWe92PUv8sPtUKxc60=
+X-Received: by 2002:a17:902:ce92:b0:24e:81d2:cfe2 with SMTP id
+ d9443c01a7336-25d23e11172mr3242085ad.7.1757612733782; Thu, 11 Sep 2025
+ 10:45:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250911030620.1284754-1-kuniyu@google.com> <20250911030620.1284754-7-kuniyu@google.com>
+ <CANn89iJnOZ-bYc9bAPSphiCX4vwy4af2r_QvF1ukVXF7DyA4Kw@mail.gmail.com>
+ <CAAVpQUA3cnUz5=2AYQ_6Od_jmHUjS0Cd20NhdzfDxB1GptfsQg@mail.gmail.com>
+ <CANn89i+dyhqbd0wDS+-hRDWXExBvic4ETm1uaM2y1G9H4s69Tg@mail.gmail.com>
+ <CAAVpQUDgfLp3Ca8M0Z-Q1Jf00ufDsJJQCcSASTGBJkKTOGMO9A@mail.gmail.com> <CANn89i+hNzxZMgHXHsqZs7XaMcxQKyXK-aM43uqrS5Yj-iZNKQ@mail.gmail.com>
+In-Reply-To: <CANn89i+hNzxZMgHXHsqZs7XaMcxQKyXK-aM43uqrS5Yj-iZNKQ@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 11 Sep 2025 10:45:22 -0700
+X-Gm-Features: Ac12FXyT-QxoGLnfkIDS9Y7109un6vOjKZoOHa_cNKmvcu6_JpfPTga1o0Zxr40
+Message-ID: <CAAVpQUDe3uStevAzpQ0nreUrJRGgJYY9wF1-k=JT49jL2K8oTA@mail.gmail.com>
+Subject: Re: [PATCH v1 net 6/8] tcp: Use sk_dst_dev_rcu() in tcp_fastopen_active_disable_ofo_check().
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Neal Cardwell <ncardwell@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Chen-Yu Tsai <wens@csie.org>
+On Thu, Sep 11, 2025 at 10:35=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Thu, Sep 11, 2025 at 10:24=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google=
+.com> wrote:
+> >
+> > On Thu, Sep 11, 2025 at 10:07=E2=80=AFAM Eric Dumazet <edumazet@google.=
+com> wrote:
+> > >
+> > > On Thu, Sep 11, 2025 at 9:53=E2=80=AFAM Kuniyuki Iwashima <kuniyu@goo=
+gle.com> wrote:
+> > >
+> > > >
+> > > > Sorry, I missed this one.  I'll drop this patch and send the
+> > > > series to net-next.
+> > > >
+> > >
+> > > No problem.
+> > >
+> > > Main reason for us to use net-next is that adding lockdep can bring n=
+ew issues,
+> > > thus we have more time to polish patches before hitting more users.
+> > >
+> > > We also can iterate faster, not having to wait one week for net fan i=
+n.
+> >
+> > Thank you for explaining the reason.  That makes sense.
+> >
+> > Then should we keep or drop Fixes: tag ?  At least it will not land
+> > on the mainline and thus stable until the next merge window.
+>
+> Fixes: tags are fine.
+>
+> I usually do not add them for all patches, because I know that
+> everything will be
+> backported anyway because of dependencies.
 
-On the Avaota A1 board, the second Ethernet controller, aka the GMAC200,
-is connected to a second external RTL8211F-CG PHY. The PHY uses an
-external 25MHz crystal, and has the SoC's PJ16 pin connected to its
-reset pin.
-
-Enable the second Ethernet port. Also fix up the label for the existing
-external PHY connected to the first Ethernet port.
-
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
----
-
-Changes since v1:
-- Switch to generic (tx|rx)-internal-delay-ps properties
----
- .../dts/allwinner/sun55i-t527-avaota-a1.dts   | 26 +++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-index e7713678208d..f540965ffaa4 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-t527-avaota-a1.dts
-@@ -13,6 +13,7 @@ / {
- 
- 	aliases {
- 		ethernet0 = &gmac0;
-+		ethernet1 = &gmac1;
- 		serial0 = &uart0;
- 	};
- 
-@@ -67,7 +68,7 @@ &ehci1 {
- 
- &gmac0 {
- 	phy-mode = "rgmii-id";
--	phy-handle = <&ext_rgmii_phy>;
-+	phy-handle = <&ext_rgmii0_phy>;
- 	phy-supply = <&reg_dcdc4>;
- 
- 	allwinner,tx-delay-ps = <100>;
-@@ -76,13 +77,24 @@ &gmac0 {
- 	status = "okay";
- };
- 
-+&gmac1 {
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&ext_rgmii1_phy>;
-+	phy-supply = <&reg_dcdc4>;
-+
-+	tx-internal-delay-ps = <100>;
-+	rx-internal-delay-ps = <100>;
-+
-+	status = "okay";
-+};
-+
- &gpu {
- 	mali-supply = <&reg_dcdc2>;
- 	status = "okay";
- };
- 
- &mdio0 {
--	ext_rgmii_phy: ethernet-phy@1 {
-+	ext_rgmii0_phy: ethernet-phy@1 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
- 		reg = <1>;
- 		reset-gpios = <&pio 7 8 GPIO_ACTIVE_LOW>; /* PH8 */
-@@ -91,6 +103,16 @@ ext_rgmii_phy: ethernet-phy@1 {
- 	};
- };
- 
-+&mdio1 {
-+	ext_rgmii1_phy: ethernet-phy@1 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <1>;
-+		reset-gpios = <&pio 9 16 GPIO_ACTIVE_LOW>; /* PJ16 */
-+		reset-assert-us = <10000>;
-+		reset-deassert-us = <150000>;
-+	};
-+};
-+
- &mmc0 {
- 	vmmc-supply = <&reg_cldo3>;
- 	cd-gpios = <&pio 5 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* PF6 */
--- 
-2.39.5
-
+Thanks for clarification.  I'll keep them this time.
