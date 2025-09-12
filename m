@@ -1,264 +1,119 @@
-Received: from sonic303-21.consmr.mail.ne1.yahoo.com (sonic303-21.consmr.mail.ne1.yahoo.com [66.163.188.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169ED2F531B
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 11:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6877641C62;
+	Fri, 12 Sep 2025 11:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757676906; cv=none; b=DPfM085laBQ45aGZobUzfRpN0C7AmuSo9xBACCtjPwl30lA0+fJVTxxitUfK4q0G1RN/cLi3b5e4zTbVPPo/y+Y5eiSiJ2OKzS2nv0B8M9iK7dmODhVEklprnSfLj5F9ACvSniIKNqDBAkc3oHt9T+15dlm9074y9Vn30mAneKU=
+	t=1757677406; cv=none; b=LqxhO0/hEm2CBiuRf2QSIZfrs1QADxDxXNs9KqooStFKWzUl2txum2r9uL7PH641ezl3Esgj3pwuJJxDmhf76yaZtrZ7qhFpmGAiJcCSdYL/1vH8W6OpWOjkfwr0zG6W3yCq3Lhh689Iuq9HvGW84gxLsOqDSmcQ6bxHUIFsLpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757676906; c=relaxed/simple;
-	bh=/D4ZsHmPotH4bpkYrgVoQfL3zC2wBli73f92oQH7skE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuX9R57h74cm5o0EtcP/0HCluMbGhQLsyMo/jvZgIYN416wPNjmx7HmHWpvre33geje6nC3bcYHAmPmTs5FhWkYRNVNSLJAMwFhfIdwpUbP5L+dFmeSzBftaSgUiO5h+A2T3GHCv5KIyLh+sMwXoVTP7H8VxjS9ka6cZUvJOD+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=m21+TIdO; arc=none smtp.client-ip=66.163.188.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1757677406; c=relaxed/simple;
+	bh=vQZw18LyMNiHBfayqqKazzYbl6hyR7y4CM3GzrQTcKo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RyT9RI2j6qOlTnaYw0KIyVEqiCQewLMLd/nvCUsYpul/nevb3VCawDMMznzTt3QXW27xUIh4k04hjXrPzAaaw8HDSnnQ6fKvlkpQgzxNMzYIEVkbBae5QY+dpEWx5Gx7uILyul80jYkayGann837FbrbbgrtfJUJam7XhYXjr6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TCwjyZx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="m21+TIdO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757676897; bh=kQN6ns9dR4cKsHVgmniWSuQnXl22gTgXJWUVwRX4GN8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=m21+TIdOH9jWQeqYpiB71U7foBUC6uXtilbnBTBJnJyocBSya7T2YDFrfDvQPcpIqXOSyqpW+lYV7NybaApmLGpq4yeuBGV1EzQHuUwxrxb663StLWOIDV3dNZtnw0p+X9qAXcq2IwMakqZL3n99M9iLK6+HfImYmn/btChN887cfNg0Ucj7m1Fc8pAQx2IsH7zAFGGe34DruV6bURSSPDkEvN0kyGH0W4T6zG/GoPTkkIkrXWn8Rol9CTG8G6+yZ2lWr4Da1iNTv+3YWTdJIXOi8W7bkusP1QzU19rFro/+a4hFwh5yxQswZDXRNzsDN1/mfXla5kk/TglaFDid9A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757676897; bh=R/v30VJvyxYL/dYxfEdkT/MNYEZ9ZBrh3wSmYg2hOON=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=YkQ401uY3xwOe3b6wNdBM1FqZwSTiVMi1PRgjBnrI4qm31OpWWgz6zR//1HLQIZ+SdgukCrVxjX3bahGuWNFY+D/5CXPPXoFFjlWjTAR15SPwrr0z1HM+AA+ujxaB02t7NmR8CvOm1rIdWB9WtPq5xXkApUUTXXA+iPv7mbNsdfe4EuV4rXM5VlKzvWfIpnejs/iTsnVG2sRHHs6rIcAbEpYo474G+taEfeAx1gUtv30oZc+HWqG1HOW0fIvBhIJt+ceuVxe0aOeR4OnJiFV2d0kMNkG318AmMqjxcG9Qtf1C9wWFxcdQRo5qNDDfaCaQwfGMwyPxaylOTzvXY6Azw==
-X-YMail-OSG: nIivqLoVM1lOivMbtDPvpmVJfGn.seRimOY8e4j1gEF5t8ny7vMsefNhWR7kTic
- LGXQv8a8i6bYw3iC06YVurKxglvzWWZquCh4ouBGzlx086GBVnN8XdbybFzVuwYMhZZ.RrpN3som
- HRNGHWhl2VlPDXESXu9YIfavdaBX1DhYZeLAeUrQaBehQ0v4yNU66iV6MDhKPkrGkFZEFmFPvcia
- XaDkCdkPcxxy44znKRDK1whR4usN2b8POSLQWVABPaNIiomf1wdet2aS5V6Si3mnRUcMdqv5mW4Z
- LOHdGDxeLHFsUtWlq7TsTWjX_lNHyAlQ4bvb11TOO8n9k65MIqj4Q.5KOkooJKzhsZZLss.aAgfI
- bTiZY0aGbmytIFqa1KlMN8egoVt8iSL2MYCgI9zuDpv1eX3G6w_DRCk3BteZNgjz18GMYqcbeWUS
- S0Mp6QxyNuDkJdJKnqToIUvpBTsXFeox16pLnVviXhV.GSSzVFOfRHdGxMM50bOQUIbNEoqQZNSy
- dFr.czXFxDXYMfrvTJJGVFQh0IMlA.L_fY0N1b.c1BmOImsUt9sHPqMfIRQ99E7fqyWKMz25Oka5
- su41Jq1VZKy6lZht2WXEasFtUHnSQ5vWCcPr0VvNbkWUJY3kxNfXrEeWyMrn60ckqf2wE54ZtiXX
- 0BkLsJ246oU56yp9FrfsJSwJ6glHXwRoFmww9jT86nW2UxqV2A_g1y7t6t.0vyNomOf_S8tczNq9
- b5ZMvMIWk7UtBKyydik0KV3P.B.M5yCTHdmkxJOyuEKYiFFdOa2uDqDsoEZPgh21X5CezpwqAxE9
- 8.l7g40BqNxajUnOrJkHxRB.rCATrpBK3iPV_mTA6lAq1hU253rAkya2tHuvs7ddZizauhyXNH1.
- vRSsion8a7RJu9PxRqE7tZ5a3zBXZHfofVm1.FW7LenLr_GJOYL5AMhjkLaElOQuox1TiDo7WAWK
- 3Kf_EYObsnq_nWKss8k6l_8udYZXO5dDGlNaBkzHdHg3Rq53mrjSk7nrQf5L2ihrZtuLKd_Sd6ay
- NQdAIueqDxjhuld7lihPHBaf096UQFqZhcXuSxKJZyQ_k7POtgUKXPnK2tFVENuWlfAwtbXOJ.cX
- RDf637coHkJH5BxL4ddrcaq_n6PQp3C5W_O5HhYVElymYU4ZTwgXYri6oiOSPYH81NMcYWKrTSB3
- Wp.Rs0GpN.V9RY5chv71gyrMJeqHaZjSdqmbyYpg7y1GhB2hGnXrovFDGBkllwkWT5M21dazayzB
- WUy93.3BddMhlSFnNsX9wgibjfXUHS0K5CuApR.C1Acsf8..AagdyXqx0sp8YhacmvwIH0VytSR8
- Nu0PZRwS0BWHGNpWFgXuMTVHWv.fET.vNasB3H3fEbc1sG.d1nydKBjzENVQsdUoHJFv2tUtT2vF
- hc7.JIz2MntDy01aSjgXaMAJsRo5br67TDLt9xhblYwxgEBDAL_.E6wwMEt418BvjTHU5IxziC_i
- DjtoR2HKqz_gMIscrfZf5R7bJzD.eiPTtSakkMJvEf4q2tmLkg2to7x7iSgu8W..aGUu9CnsnhEU
- 7qRXNZa6AhEqdulEHqSDOAS3v934_L5Yr2a_aKdqGq85cuFFkaVlllsHnh0tMxcVKHbGvzHzUyDJ
- g_hHkuxcxeeuEOWBdoy8KVoKsLe9X1Nhrej2FzjDaVAFg_ZLvzGW9embB8_v8VhdeWM3EC2oRQMH
- iaZ79E1AHbqJzA693IiLcdUGJWNI83_vA86uQhc4ruKNVNpKaZFpAh78Z_F4gJsf8zsl2t1ZtQEL
- VfcaDu2dzhqK2mo9asTjiwnwVpKZm.aBExAOmC7oSPeZQFBEI.dGKz2rmzgS0dj686EcZTgBj4X4
- kQ9TaigjSlbhixqolDyBY4AJnoV6wKgyiTdWqZCl03B_r0a0RA9tVZZjr74N8Vdfv2L_Kst_S8RN
- GBL5bZyFkXwAi6EOqWXlizDAc.VpFuuJEwQcvjj_hwUhdkv5ySoEEa66wrh27EXb39afWYPI0vVV
- vkreolMg5i9I9tt61aFor2N4l2FeX8S4r_6x9P7xnggrzy_QtdAoQsbCB9FmC5OcVO9aZsDL5pza
- gcmpu5ht8n4siBGpBfMXxZhXGqJz3IcL5G8q52_kEUi2q3NyxB2MzObs7rTC4Yj8VREtTVqFQ9cK
- bTGrrC3Cl0PugKox0niQQ8FA5Sg9qsx8p7N1VZ12HOXNjVw--
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: c405784a-adb1-4de2-9ec4-31216b83b70e
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Fri, 12 Sep 2025 11:34:57 +0000
-Received: by hermes--production-ir2-7d8c9489f-pnggd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 93cda13a9625b3ea865113cded111022;
-          Fri, 12 Sep 2025 11:24:49 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	antonio@openvpn.net,
-	kuba@kernel.org
-Cc: openvpn-devel@lists.sourceforge.net,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v2 1/3] net: dst_cache: implement RCU variants for dst_cache helpers
-Date: Fri, 12 Sep 2025 13:24:18 +0200
-Message-ID: <20250912112420.4394-2-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250912112420.4394-1-mmietus97@yahoo.com>
-References: <20250912112420.4394-1-mmietus97@yahoo.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TCwjyZx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2916DC4CEF1;
+	Fri, 12 Sep 2025 11:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757677405;
+	bh=vQZw18LyMNiHBfayqqKazzYbl6hyR7y4CM3GzrQTcKo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0TCwjyZxwiSPrLtFZN+IyniMywN3vL/LlOWbuAxsnEsOVAbzmqup0WIsjoDHMFsp4
+	 CZHsmzwRAvDxfPp9R9I5o3dTd0LaONRXa7YSjy5cAsJmZrkkOk9zpdlsnFkevQaLH4
+	 NT9opWe3xXbfYZRU1UCBvRT6dZZUiedrQxIwCvto=
+Date: Fri, 12 Sep 2025 13:43:22 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mukesh R <mrathor@linux.microsoft.com>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	linux-arch@vger.kernel.org, virtualization@lists.linux.dev,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+	jikos@kernel.org, bentiss@kernel.org, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	dmitry.torokhov@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, bhelgaas@google.com,
+	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+	deller@gmx.de, arnd@arndb.de, sgarzare@redhat.com, horms@kernel.org
+Subject: Re: [PATCH v1 2/2] Drivers: hv: Make CONFIG_HYPERV bool
+Message-ID: <2025091253-overwrite-carol-b197@gregkh>
+References: <20250906010952.2145389-1-mrathor@linux.microsoft.com>
+ <20250906010952.2145389-3-mrathor@linux.microsoft.com>
+ <2025090621-rumble-cost-2c0d@gregkh>
+ <d7d7b23f-eaea-2dbc-9c9d-4bee082f6fe7@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d7d7b23f-eaea-2dbc-9c9d-4bee082f6fe7@linux.microsoft.com>
 
-Implement RCU variants for existing dst_cache helpers interacting with
-dst_entry.
+On Mon, Sep 08, 2025 at 02:01:34PM -0700, Mukesh R wrote:
+> On 9/6/25 04:36, Greg KH wrote:
+> > On Fri, Sep 05, 2025 at 06:09:52PM -0700, Mukesh Rathor wrote:
+> >> With CONFIG_HYPERV and CONFIG_HYPERV_VMBUS separated, change CONFIG_HYPERV
+> >> to bool from tristate. CONFIG_HYPERV now becomes the core Hyper-V
+> >> hypervisor support, such as hypercalls, clocks/timers, Confidential
+> >> Computing setup, PCI passthru, etc. that doesn't involve VMBus or VMBus
+> >> devices.
+> > 
+> > But why are you making it so that this can not be a module anymore?  You
+> > are now forcing ALL Linux distro users to always have this code in their
+> > system, despite not ever using the feature.  That feels like a waste to
+> > me.
+> > 
+> > What is preventing this from staying as a module?  Why must you always
+> > have this code loaded at all times for everyone?
+> 
+> This is currently not a module. I assume it was at the beginning. In
+> drivers/Makefile today:
+> 
+> obj-$(subst m,y,$(CONFIG_HYPERV))       += hv/
+> 
+> 
+> More context: CONFIG_HYPERV doesn't really reflect one module. It is
+> both for kernel built in code and building of stuff in drivers/hv.
+> 
+> drivers/hv then builds 4 modules:
+> 
+> obj-$(CONFIG_HYPERV)            += hv_vmbus.o
+> obj-$(CONFIG_HYPERV_UTILS)      += hv_utils.o
+> obj-$(CONFIG_HYPERV_BALLOON)    += hv_balloon.o
+> obj-$(CONFIG_MSHV_ROOT)         += mshv_root.o
+> 
+> Notice vmbus is using CONFIG_HYPERV because there is no 
+> CONFIG_HYPERV_VMBUS. We are trying to fix that here.
 
-The new helpers avoid referencing the dst_entry, sparing some unnecessary
-atomic operations. They should only be used in flows that are already
-guaranteed to be inside a RCU read-side critical context.
+This series does not apply to my tree:
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
----
- include/net/dst_cache.h | 26 ++++++++++++++
- net/core/dst_cache.c    | 78 +++++++++++++++++++++++++++++++++++------
- 2 files changed, 94 insertions(+), 10 deletions(-)
+checking file drivers/gpu/drm/Kconfig
+checking file drivers/hid/Kconfig
+checking file drivers/hv/Kconfig
+Hunk #2 FAILED at 82.
+1 out of 2 hunks FAILED
+checking file drivers/hv/Makefile
+checking file drivers/input/serio/Kconfig
+checking file drivers/net/hyperv/Kconfig
+checking file drivers/pci/Kconfig
+checking file drivers/scsi/Kconfig
+checking file drivers/uio/Kconfig
+checking file drivers/video/fbdev/Kconfig
+checking file include/asm-generic/mshyperv.h
+Hunk #1 succeeded at 162 with fuzz 2 (offset -3 lines).
+Hunk #2 succeeded at 198 (offset -3 lines).
+Hunk #3 succeeded at 215 (offset -3 lines).
+checking file net/vmw_vsock/Kconfig
 
-diff --git a/include/net/dst_cache.h b/include/net/dst_cache.h
-index 1961699598e2..d3bf616a6e6f 100644
---- a/include/net/dst_cache.h
-+++ b/include/net/dst_cache.h
-@@ -32,6 +32,21 @@ struct dst_entry *dst_cache_get(struct dst_cache *dst_cache);
-  */
- struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
- 
-+/**
-+ * dst_cache_get_ip4_rcu - lookup cache and ipv4 source under RCU
-+ * @dst_cache: the cache
-+ * @saddr: return value for the retrieved source address
-+ *
-+ * Perform cache lookup and fetch ipv4 source without taking a
-+ * reference on the dst.
-+ * Must be called with local BH disabled, and within an rcu read side
-+ * critical section.
-+ *
-+ * Return: Pointer to retrieved rtable if cache is initialized and
-+ * cached dst is valid, NULL otherwise.
-+ */
-+struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr);
-+
- /**
-  *	dst_cache_set_ip4 - store the ipv4 dst into the cache
-  *	@dst_cache: the cache
-@@ -43,6 +58,17 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr);
- void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       __be32 saddr);
- 
-+/**
-+ * dst_cache_steal_ip4 - store the ipv4 dst into the cache and steal its
-+ * reference
-+ * @dst_cache: the cache
-+ * @dst: the entry to be cached whose reference will be stolen
-+ * @saddr: the source address to be stored inside the cache
-+ *
-+ * local BH must be disabled
-+ */
-+void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
-+			 __be32 saddr);
- #if IS_ENABLED(CONFIG_IPV6)
- 
- /**
-diff --git a/net/core/dst_cache.c b/net/core/dst_cache.c
-index 9ab4902324e1..f1e3992d8171 100644
---- a/net/core/dst_cache.c
-+++ b/net/core/dst_cache.c
-@@ -25,20 +25,30 @@ struct dst_cache_pcpu {
- 	};
- };
- 
--static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
--				      struct dst_entry *dst, u32 cookie)
-+static void __dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
-+					struct dst_entry *dst, u32 cookie)
- {
- 	DEBUG_NET_WARN_ON_ONCE(!in_softirq());
- 	dst_release(dst_cache->dst);
--	if (dst)
--		dst_hold(dst);
- 
- 	dst_cache->cookie = cookie;
- 	dst_cache->dst = dst;
- }
- 
--static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
--					       struct dst_cache_pcpu *idst)
-+static void dst_cache_per_cpu_dst_set(struct dst_cache_pcpu *dst_cache,
-+				      struct dst_entry *dst, u32 cookie)
-+{
-+	if (dst == dst_cache->dst && cookie == dst_cache->cookie)
-+		return;
-+
-+	if (dst)
-+		dst_hold(dst);
-+
-+	__dst_cache_per_cpu_dst_set(dst_cache, dst, cookie);
-+}
-+
-+static struct dst_entry *__dst_cache_per_cpu_get(struct dst_cache *dst_cache,
-+						 struct dst_cache_pcpu *idst)
- {
- 	struct dst_entry *dst;
- 
-@@ -47,14 +57,10 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
- 	if (!dst)
- 		goto fail;
- 
--	/* the cache already hold a dst reference; it can't go away */
--	dst_hold(dst);
--
- 	if (unlikely(!time_after(idst->refresh_ts,
- 				 READ_ONCE(dst_cache->reset_ts)) ||
- 		     (READ_ONCE(dst->obsolete) && !dst->ops->check(dst, idst->cookie)))) {
- 		dst_cache_per_cpu_dst_set(idst, NULL, 0);
--		dst_release(dst);
- 		goto fail;
- 	}
- 	return dst;
-@@ -64,6 +70,18 @@ static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
- 	return NULL;
- }
- 
-+static struct dst_entry *dst_cache_per_cpu_get(struct dst_cache *dst_cache,
-+					       struct dst_cache_pcpu *idst)
-+{
-+	struct dst_entry *dst;
-+
-+	dst = __dst_cache_per_cpu_get(dst_cache, idst);
-+	if (dst)
-+		/* the cache already hold a dst reference; it can't go away */
-+		dst_hold(dst);
-+	return dst;
-+}
-+
- struct dst_entry *dst_cache_get(struct dst_cache *dst_cache)
- {
- 	struct dst_entry *dst;
-@@ -100,6 +118,28 @@ struct rtable *dst_cache_get_ip4(struct dst_cache *dst_cache, __be32 *saddr)
- }
- EXPORT_SYMBOL_GPL(dst_cache_get_ip4);
- 
-+struct rtable *dst_cache_get_ip4_rcu(struct dst_cache *dst_cache, __be32 *saddr)
-+{
-+	struct dst_cache_pcpu *idst;
-+	struct dst_entry *dst;
-+
-+	if (!dst_cache->cache)
-+		return NULL;
-+
-+	local_lock_nested_bh(&dst_cache->cache->bh_lock);
-+	idst = this_cpu_ptr(dst_cache->cache);
-+	dst = __dst_cache_per_cpu_get(dst_cache, idst);
-+	if (!dst) {
-+		local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+		return NULL;
-+	}
-+
-+	*saddr = idst->in_saddr.s_addr;
-+	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+	return dst_rtable(dst);
-+}
-+EXPORT_SYMBOL_GPL(dst_cache_get_ip4_rcu);
-+
- void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       __be32 saddr)
- {
-@@ -116,6 +156,24 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- }
- EXPORT_SYMBOL_GPL(dst_cache_set_ip4);
- 
-+void dst_cache_steal_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
-+			 __be32 saddr)
-+{
-+	struct dst_cache_pcpu *idst;
-+
-+	if (!dst_cache->cache) {
-+		dst_release(dst);
-+		return;
-+	}
-+
-+	local_lock_nested_bh(&dst_cache->cache->bh_lock);
-+	idst = this_cpu_ptr(dst_cache->cache);
-+	__dst_cache_per_cpu_dst_set(idst, dst, 0);
-+	idst->in_saddr.s_addr = saddr;
-+	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
-+}
-+EXPORT_SYMBOL_GPL(dst_cache_steal_ip4);
-+
- #if IS_ENABLED(CONFIG_IPV6)
- void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
- 		       const struct in6_addr *saddr)
--- 
-2.51.0
+What was it made against?
 
+thanks,
+
+greg k-h
