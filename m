@@ -1,186 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com [35.158.23.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C4A2DC787;
-	Fri, 12 Sep 2025 13:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45F0305077;
+	Fri, 12 Sep 2025 13:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.158.23.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757682331; cv=none; b=Bbe7MImljA1Hkz/KIfNN6ku0dJTI6d+ggw84/8LG3goeGapylPBH9rBqwDVf3aURjqK2prRVU0evg8yurmOAp/rcqex8l+JHD1+6VZp7pXyTGHZF+JpMLy5Hl8j9taCz0yosCwMwqoAy/qe8UO3Kco1pd9kMVXGRdgmOTN0gVCk=
+	t=1757682462; cv=none; b=A5Qzo2KBCxPrMtsg2d87hqXgMJ0JNH6X/hiokCsS5BkzUSQSYu64Rl3VgwWXnwJLi5QbRAkIpbk0H/aGasaF8ASOky3XI9uBWGt8hUtbV7mFAG+sUWVZL2XvxJKWlOjrbqhdx4I5JJkJOItriwwNSTiewMt9VeELXX8NTvWSxqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757682331; c=relaxed/simple;
-	bh=Oj2YhsrlW7/LL2/+FfpL2MDbCW0BhZLRp8bVjxYH3/4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sG0Yha6Kx84OCUdLYCI46WvOpphwmhBiZVq1Ea/jzdrjmtSPETGxCVhc1CcbeVs7VZ+upjlrcacLDKAOrCkWHqNs5Rz5xcByvqCCp4P6FYN7asab6p97/SMj/Yi0dRgjuYLBRfcq4VHD0RmqfCKCaH+7xx4s9Yai26Gb+USyIPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QYmYXTzS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757682462; c=relaxed/simple;
+	bh=AhN3kcAG8s569E8YZrQ3IpCqcZPTOWGxuTdywrZKkkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fa+vFSp/UwjDqTOb744evCvBkam4zvKWZjv5RN9c3pEf8m7ymtUV+WisjG2QU1xzJA3Hz+zpu9Cu7x2HU/JN5zLlhZl1AxXmjPrpzibxzzIz1Ey2uWGEruJMzTDgN7ekdYyUPom8GBrhDheupWnjBldehinuM1jdEkDllVQ0o6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=oQ/qSowh; arc=none smtp.client-ip=35.158.23.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QYmYXTzS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCDCC4CEF1;
-	Fri, 12 Sep 2025 13:05:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757682330;
-	bh=Oj2YhsrlW7/LL2/+FfpL2MDbCW0BhZLRp8bVjxYH3/4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QYmYXTzSvoub6ckp1xdpKOdLcSDR/MGN65tzs+mhcDVodcTVq4E0vyN83ehL+5jls
-	 ebOPq+YIRNK8+3qzlOYuHLUMUE+GawtStVvB5HdnTpuQ22W3MW2B3mlKxzDAmBWwy/
-	 1FJAe1Jve27dbaPIBLnrFnxL4ldNsXO/YOdz53BsBfUhceap1kcbGF0zR9X/iooRK+
-	 e5Mj+ZyPjWuKjpM2TzrFWsYtkyBB2VmsSyqjsyY7px1/Q+AJtZLXNMxbk9q6I4rFdP
-	 l33tP7e8dZb7kcc/eFpbFvF9LROABe07SVyr9fIGYJVmEqG2ZSn9gxJocjwm9l2l4T
-	 4mMRrYuK/Xpcw==
-Message-ID: <73c95643-e1eb-461c-b547-931642ec633a@kernel.org>
-Date: Fri, 12 Sep 2025 15:05:25 +0200
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="oQ/qSowh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1757682460; x=1789218460;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=AhN3kcAG8s569E8YZrQ3IpCqcZPTOWGxuTdywrZKkkQ=;
+  b=oQ/qSowhdUpAyNpv4iy/dRKXbaOq5UHbovGvMNDGMWWJXkhb/Ame/X8y
+   yepx7ChyLO/e+BZawDJMXlV08LtzN2qTP2yE5z/gf+peZzPzVGv3Z3VoC
+   c7mV4BH/HFoh21oIZdMe8BLj/DoaEMERR6TKMCVgX78V2/aJAr04yXz46
+   fnwXQBeg3aBOSf6Ue1V7darJpviNLIdtkxYRXbs8tdI6wCGRepiQazsAJ
+   g9k+yS7CsoCkR+GTh3MYD9oFw1BvOf99KTojupOeMO1ddnffMY+B3pRJj
+   epAk/hKK5mwldGeT8RZGlh+8x3m7+C+M7KbrwDKIr3EdiDYuQoRj+BYuN
+   Q==;
+X-CSE-ConnectionGUID: 1aNlGU+5Rf6yIjIrkLsmtA==
+X-CSE-MsgGUID: 8ilwknIVRdeG8d/0rLfTWQ==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751241600"; 
+   d="scan'208";a="2023068"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-008.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 13:07:37 +0000
+Received: from EX19MTAEUA002.ant.amazon.com [54.240.197.232:28668]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.20.211:2525] with esmtp (Farcaster)
+ id f101f8c5-b944-4295-b7d2-10d8943975ce; Fri, 12 Sep 2025 13:07:37 +0000 (UTC)
+X-Farcaster-Flow-ID: f101f8c5-b944-4295-b7d2-10d8943975ce
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 12 Sep 2025 13:07:36 +0000
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
+ Fri, 12 Sep 2025 13:07:35 +0000
+Received: from EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d]) by
+ EX19D018EUA004.ant.amazon.com ([fe80::e53:84f8:3456:a97d%3]) with mapi id
+ 15.02.2562.020; Fri, 12 Sep 2025 13:07:35 +0000
+From: "Farber, Eliav" <farbere@amazon.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: "jesse.brandeburg@intel.com" <jesse.brandeburg@intel.com>,
+	"anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+	"davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "vitaly.lifshits@intel.com" <vitaly.lifshits@intel.com>,
+	"post@mikaelkw.online" <post@mikaelkw.online>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Chocron,
+ Jonathan" <jonnyc@amazon.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "Farber, Eliav" <farbere@amazon.com>
+Subject: RE: [PATCH 5.10.y] e1000e: fix EEPROM length types for overflow
+ checks
+Thread-Topic: [PATCH 5.10.y] e1000e: fix EEPROM length types for overflow
+ checks
+Thread-Index: AQHcI+Y14Hz9ZqTtuk67HsScGeoBbw==
+Date: Fri, 12 Sep 2025 13:07:35 +0000
+Message-ID: <5614ed5db9bd412cb43a78ad656eb433@amazon.com>
+References: <20250910173138.8307-1-farbere@amazon.com>
+ <2025091131-tractor-almost-6987@gregkh>
+ <f524c24888924a999c3bb90de0099b78@amazon.com>
+ <2025091122-obsolete-earthen-8c9b@gregkh>
+In-Reply-To: <2025091122-obsolete-earthen-8c9b@gregkh>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] tools: ynl: rst: display attribute-set doc
-Content-Language: en-GB, fr-BE
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-doc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250910-net-next-ynl-attr-doc-rst-v1-1-0bbc77816174@kernel.org>
- <m2v7lpuv2w.fsf@gmail.com> <a1f55940-7115-4650-835c-2f1138c5eaa4@kernel.org>
- <m2ecscudyf.fsf@gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <m2ecscudyf.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 12/09/2025 13:07, Donald Hunter wrote:
-> Matthieu Baerts <matttbe@kernel.org> writes:
-> 
->> Hi Donald,
->>
->> On 11/09/2025 12:44, Donald Hunter wrote:
->>> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> writes:
->>>
->>>> Some attribute-set have a documentation (doc:), but it was not displayed
->>>> in the RST / HTML version. Such field can be found in ethtool, netdev,
->>>> tcp_metrics and team YAML files.
->>>>
->>>> Only the 'name' and 'attributes' fields from an 'attribute-set' section
->>>> were parsed. Now the content of the 'doc' field, if available, is added
->>>> as a new paragraph before listing each attribute. This is similar to
->>>> what is done when parsing the 'operations'.
->>>
->>> This fix looks good, but exposes the same issue with the team
->>> attribute-set in team.yaml.
->>
->> Good catch! I forgot to check why the output was like that before
->> sending this patch.
->>
->>> The following patch is sufficient to generate output that sphinx doesn't
->>> mangle:
->>>
->>> diff --git a/Documentation/netlink/specs/team.yaml b/Documentation/netlink/specs/team.yaml
->>> index cf02d47d12a4..fae40835386c 100644
->>> --- a/Documentation/netlink/specs/team.yaml
->>> +++ b/Documentation/netlink/specs/team.yaml
->>> @@ -25,7 +25,7 @@ definitions:
->>>  attribute-sets:
->>>    -
->>>      name: team
->>> -    doc:
->>> +    doc: |
->>>        The team nested layout of get/set msg looks like
->>>            [TEAM_ATTR_LIST_OPTION]
->>>                [TEAM_ATTR_ITEM_OPTION]
->> Yes, that's enough to avoid the mangled output in .rst and .html files.
->>
->> Do you plan to send this patch, or do you prefer if I send it? As part
->> of another series or do you prefer a v2?
-> 
-> Could you add it to a v2 please.
-
-Sure, will do!
-
->> Note that a few .yaml files have the doc definition starting at the next
->> line, but without this '|' at the end. It looks strange to me to have
->> the string defined at the next line like that. I was thinking about
->> sending patches containing modifications created by the following
->> command, but I see that this way of writing the string value is valid in
->> YAML.
->>
->>   $ git grep -l "doc:$" -- Documentation/netlink/specs | \
->>         xargs sed -i 's/doc:$/doc: |/g'
->>
->> Except the one with "team", the other ones don't have their output
->> mangled. So such modifications are probably not needed for the other ones.
-> 
-> Yeah, those doc: entries look weird to me too. Not sure it's worth
-> fixing them up, given that they are valid. Also worth noting that the
-> two formats that we should encourage are
-> 
->   doc: >-
->     Multi line text that will get folded and
->     stripped, i.e. internal newlines and trailing
->     newlines will be removed.
-> 
->   doc: |
->     Multi line text that will be handled literally
->     and clipped, i.e. internal newlines and trailing
->     newline are preserved but additional trailing
->     newlines get removed.
-> 
-> So if we were to fix up the doc:$ occurrences, then I'd suggest using
-> doc: >-
-
-Good point!
-
-If these entries look weird to you too, I will add one patch adding
-'>-', at least to push people to "properly" declare future scalar strings.
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+PiBPbiBUaHUsIFNlcCAxMSwgMjAyNSBhdCAwNjoxMzozM0FNICswMDAwLCBGYXJiZXIsIEVsaWF2
+IHdyb3RlOg0KPiA+ID4gT24gV2VkLCBTZXAgMTAsIDIwMjUgYXQgMDU6MzE6MzhQTSArMDAwMCwg
+RWxpYXYgRmFyYmVyIHdyb3RlOg0KPiA+ID4+IEZpeCBhIGNvbXBpbGF0aW9uIGZhaWx1cmUgd2hl
+biB3YXJuaW5ncyBhcmUgdHJlYXRlZCBhcyBlcnJvcnM6DQo+ID4gPj4NCj4gPiA+PiBkcml2ZXJz
+L25ldC9ldGhlcm5ldC9pbnRlbC9lMTAwMGUvZXRodG9vbC5jOiBJbiBmdW5jdGlvbiDigJhlMTAw
+MF9zZXRfZWVwcm9t4oCZOg0KPiA+ID4+IC4vaW5jbHVkZS9saW51eC9vdmVyZmxvdy5oOjcxOjE1
+OiBlcnJvcjogY29tcGFyaXNvbiBvZiBkaXN0aW5jdCBwb2ludGVyIHR5cGVzIGxhY2tzIGEgY2Fz
+dCBbLVdlcnJvcl0NCj4gPiA+PiAgICA3MSB8ICAodm9pZCkgKCZfX2EgPT0gX19kKTsgICBcDQo+
+ID4gPj4gICAgICAgfCAgICAgICAgICAgICAgIF5+DQo+ID4gPj4gZHJpdmVycy9uZXQvZXRoZXJu
+ZXQvaW50ZWwvZTEwMDBlL2V0aHRvb2wuYzo1ODI6Njogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1h
+Y3JvIOKAmGNoZWNrX2FkZF9vdmVyZmxvd+KAmQ0KPiA+ID4+ICAgNTgyIHwgIGlmIChjaGVja19h
+ZGRfb3ZlcmZsb3coZWVwcm9tLT5vZmZzZXQsIGVlcHJvbS0+bGVuLCAmdG90YWxfbGVuKSB8fA0K
+PiA+ID4+ICAgICAgIHwgICAgICBefn5+fn5+fn5+fn5+fn5+fn4NCj4gPiA+Pg0KPiA+ID4+IFRv
+IGZpeCB0aGlzLCBjaGFuZ2UgdG90YWxfbGVuIGFuZCBtYXhfbGVuIGZyb20gc2l6ZV90IHRvIHUz
+MiBpbg0KPiA+ID4+IGUxMDAwX3NldF9lZXByb20oKS4NCj4gPiA+PiBUaGUgY2hlY2tfYWRkX292
+ZXJmbG93KCkgaGVscGVyIHJlcXVpcmVzIHRoYXQgdGhlIGZpcnN0IHR3byBvcGVyYW5kcw0KPiA+
+ID4+IGFuZCB0aGUgcG9pbnRlciB0byB0aGUgcmVzdWx0ICh0aGlyZCBvcGVyYW5kKSBhbGwgaGF2
+ZSB0aGUgc2FtZSB0eXBlLg0KPiA+ID4+IE9uIDY0LWJpdCBidWlsZHMsIHVzaW5nIHNpemVfdCBj
+YXVzZWQgYSBtaXNtYXRjaCB3aXRoIHRoZSB1MzIgZmllbGRzDQo+ID4gPj4gZWVwcm9tLT5vZmZz
+ZXQgYW5kIGVlcHJvbS0+bGVuLCBsZWFkaW5nIHRvIHR5cGUgY2hlY2sgZmFpbHVyZXMuDQo+ID4g
+Pj4NCj4gPiA+PiBGaXhlczogY2U4ODI5ZDNkNDRiICgiZTEwMDBlOiBmaXggaGVhcCBvdmVyZmxv
+dyBpbiBlMTAwMF9zZXRfZWVwcm9tIikNCj4gPiA+PiBTaWduZWQtb2ZmLWJ5OiBFbGlhdiBGYXJi
+ZXIgPGZhcmJlcmVAYW1hem9uLmNvbT4NCj4gPiA+PiAtLS0NCj4gPiA+PiAgZHJpdmVycy9uZXQv
+ZXRoZXJuZXQvaW50ZWwvZTEwMDBlL2V0aHRvb2wuYyB8IDIgKy0NCj4gPiA+PiAgMSBmaWxlIGNo
+YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4gPj4NCj4gPiA+PiBkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvZTEwMDBlL2V0aHRvb2wuYw0KPiA+
+ID4+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvZTEwMDBlL2V0aHRvb2wuYw0KPiA+ID4+
+IGluZGV4IDRhY2E4NTQ3ODNlMi4uNTg0Mzc4MjkxZjNmIDEwMDY0NA0KPiA+ID4+IC0tLSBhL2Ry
+aXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2UxMDAwZS9ldGh0b29sLmMNCj4gPiA+PiArKysgYi9k
+cml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9lMTAwMGUvZXRodG9vbC5jDQo+ID4gPj4gQEAgLTU1
+OSw3ICs1NTksNyBAQCBzdGF0aWMgaW50IGUxMDAwX3NldF9lZXByb20oc3RydWN0IG5ldF9kZXZp
+Y2UNCj4gPiA+PiAqbmV0ZGV2LCAgew0KPiA+ID4+ICAgICAgIHN0cnVjdCBlMTAwMF9hZGFwdGVy
+ICphZGFwdGVyID0gbmV0ZGV2X3ByaXYobmV0ZGV2KTsNCj4gPiA+PiAgICAgICBzdHJ1Y3QgZTEw
+MDBfaHcgKmh3ID0gJmFkYXB0ZXItPmh3Ow0KPiA+ID4+IC0gICAgIHNpemVfdCB0b3RhbF9sZW4s
+IG1heF9sZW47DQo+ID4gPj4gKyAgICAgdTMyIHRvdGFsX2xlbiwgbWF4X2xlbjsNCj4gPiA+PiAg
+ICAgICB1MTYgKmVlcHJvbV9idWZmOw0KPiA+ID4+ICAgICAgIGludCByZXRfdmFsID0gMDsNCj4g
+PiA+PiAgICAgICBpbnQgZmlyc3Rfd29yZDsNCj4gPiA+PiAtLQ0KPiA+ID4+IDIuNDcuMw0KPiA+
+ID4+DQo+ID4gPg0KPiA+ID4gV2h5IGlzIHRoaXMgbm90IG5lZWRlZCBpbiBMaW51cydzIHRyZWU/
+DQo+ID4gS2VybmVsIDUuMTAuMjQzIGVuZm9yY2VzIHRoZSBzYW1lIHR5cGUsIGJ1dCB0aGlzIGVu
+Zm9yY2VtZW50IGlzDQo+ID4gYWJzZW50IGZyb20gNS4xNS4xOTIgYW5kIGxhdGVyOg0KPiA+IC8q
+DQo+ID4gICogRm9yIHNpbXBsaWNpdHkgYW5kIGNvZGUgaHlnaWVuZSwgdGhlIGZhbGxiYWNrIGNv
+ZGUgYmVsb3cgaW5zaXN0cyBvbg0KPiA+ICAqIGEsIGIgYW5kICpkIGhhdmluZyB0aGUgc2FtZSB0
+eXBlIChzaW1pbGFyIHRvIHRoZSBtaW4oKSBhbmQgbWF4KCkNCj4gPiAgKiBtYWNyb3MpLCB3aGVy
+ZWFzIGdjYydzIHR5cGUtZ2VuZXJpYyBvdmVyZmxvdyBjaGVja2VycyBhY2NlcHQNCj4gPiAgKiBk
+aWZmZXJlbnQgdHlwZXMuIEhlbmNlIHdlIGRvbid0IGp1c3QgbWFrZSBjaGVja19hZGRfb3ZlcmZs
+b3cgYW4NCj4gPiAgKiBhbGlhcyBmb3IgX19idWlsdGluX2FkZF9vdmVyZmxvdywgYnV0IGFkZCB0
+eXBlIGNoZWNrcyBzaW1pbGFyIHRvDQo+ID4gICogYmVsb3cuDQo+ID4gICovDQo+ID4gI2RlZmlu
+ZSBjaGVja19hZGRfb3ZlcmZsb3coYSwgYiwgZCkgX19tdXN0X2NoZWNrX292ZXJmbG93KCh7ICBc
+DQo+DQo+IFllYWgsIHRoZSBtaW4oKSBidWlsZCB3YXJuaW5nIG1lc3MgaXMgc2xvd2x5IHByb3Bh
+Z2F0aW5nIGJhY2sgdG8gb2xkZXINCj4ga2VybmVscyBvdmVyIHRpbWUgYXMgd2UgdGFrZSB0aGVz
+ZSB0eXBlcyBvZiBmaXhlcyBiYWNrd2FyZHMuICBJIGNvdW50IDMNCj4gc3VjaCBuZXcgd2Fybmlu
+Z3MgaW4gdGhlIG5ldyA1LjEwIHJlbGVhc2UsIG5vdCBqdXN0IHRoaXMgc2luZ2xlIG9uZS4NCj4N
+Cj4gT3ZlcmFsbCwgaG93IGFib3V0IGZpeGluZyB0aGlzIHVwIHNvIGl0IGRvZXNuJ3QgaGFwcGVu
+IGFueW1vcmUgYnkNCj4gYmFja3BvcnRpbmcgdGhlIG1pbigpIGxvZ2ljIGluc3RlYWQ/ICBUaGF0
+IHNob3VsZCBzb2x2ZSB0aGlzIGJ1aWxkDQo+IHdhcm5pbmcsIGFuZCBrZWVwIGl0IGZyb20gaGFw
+cGVuaW5nIGFnYWluIGluIHRoZSBmdXR1cmU/ICBJIGRpZCB0aGF0IGZvcg0KPiBuZXdlciBrZXJu
+ZWwgYnJhbmNoZXMsIGJ1dCBuZXZlciBnb3QgYXJvdW5kIHRvIGl0IGZvciB0aGVzZS4NCg0KSSBk
+aWQgYmFja3BvcnRpbmcgb2YgNCBjb21taXRzIHRvIGJyaW5nIGluY2x1ZGUvbGludXgvb3ZlcmZs
+b3cuaCBpbg0KbGluZSB3aXRoIHY1LjE1LjE5MyBpbiBvcmRlciB0byBwdWxsIGNvbW1pdCAxZDFh
+YzgyNDRjMjIgKCJvdmVyZmxvdzoNCkFsbG93IG1peGVkIHR5cGUgYXJndW1lbnRzIikuDQpJJ2xs
+IGFsc28gY2hlY2sgd2hhdCBjYW4gYmUgZG9uZSBmb3IgaW5jbHVkZS9saW51eC9taW5tYXguaC4N
+Cg0KLS0tDQpSZWdhcmRzLCBFbGlhdg0K
