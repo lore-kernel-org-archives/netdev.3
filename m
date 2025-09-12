@@ -1,183 +1,186 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0579926E16C
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 09:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF47A275AFF
+	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 09:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757667869; cv=none; b=KKfWMwAbStYEA/AKy7ek5PlH7Nj2OZr8gCO47N27z08xf5Kkdaxtu3KOhPJTG2c+NPehApevuPTptH0EFsVmTFl2Ytgkhf4I1PqUwO9pcODN6DQ2MqE2RVTS7h/mv9F+IcvY65HvtxwkLn7wDdRck9XJUzAdcJ0xa4YaVpOyBLc=
+	t=1757668344; cv=none; b=tj6pwS8KHJAC+R9qXDp2/Gq0AAoXSgF5eJs+WzqGyIy/bA/TWwsHdJrCp0D1wM8B5EFKoWVc2gA79ZQNXn3Ij2GzLdv5l9me5ipVkl4/mkFzYxVzRElwie3ApBjSaApbqvYFU/YST4OEjHxv62YHcsyW5B3zbCw9KJ6UYhBV/V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757667869; c=relaxed/simple;
-	bh=Y9EhGSCVNUf+eR07x0M8siC98ghrnoePSoUI/apFSMA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ee/pwDk+cjibgUyhoHWq35tstUHcTH8sY28rIDkTed//0MV/j7unA+HBqEWBv9CBbI8YGEl6XrHCkEU/wdsG595DE8z7O1RtSby194+soozCz4Z3+rN6bFeeF3MjAjyXEYRLFK0Iq26JBcvLRmijWjtA2KY4cFkShX2pSIpnMZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VGIVa2gQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A6ToNB6E; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1757668344; c=relaxed/simple;
+	bh=ioIOH2p5Blrv6vNOqNmSCymoSvN1zmkkAsnVeBc1SMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FO3PUiGAIFdfPzxEx3TyIpJVDAP9BjgDwnav4G7Uu5qQxzKK+Fa07gZHJ67hbAb7Y89T2VzhYy4OMeRtmLGDqPxYQKPTCtU25FupqjC9xJOSs9GUosydG04pf0Q3JfPXIA7p7WBq8nOGwm2SajaXrIswHvJAf2r3C1C5UC5PqQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aploMs7w; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VGIVa2gQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A6ToNB6E"
-From: Kurt Kanzenbach <kurt@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757667865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=90syXxZ3hoNyEnxXFNUZkJr/u60hxBRVGIRfqMYso1A=;
-	b=VGIVa2gQBaPJitni38eBDuq8p17wXeE2ctQhxYWyldkLpZz3DSCsKkHg26jUuLQvseU683
-	jjI1VlafuhsTMz+Iq1SA8EavYY1X7BNpFekMQZHEVCjMT/td+Rqp8AY8ad6nxfPsVNqWFS
-	SCuwwPCUG9NI6jmufu6WCOgnRyLUvaY5IX0FQxqOqdudaNrP1yKNyE27D7/D68+uUIlqIp
-	88a94168wftahtQzpnI+VLDeJwAXbZDyk/ZXIA76xyxpu6ihM0v92XaCvBPXbS9Tia1DDA
-	UrzbnQm/okHoZBv5OeQXiSV2hVzBSiGTBlXESS0OJeajO8EgzcWOn7B5BWVb8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757667865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=90syXxZ3hoNyEnxXFNUZkJr/u60hxBRVGIRfqMYso1A=;
-	b=A6ToNB6EY4ij/h3wvb31H3s7QpJP1Sangz/E0U99Veb1OKoPNPbRxOeEdC7bY9tQYtYMzi
-	/IXjH9nXZ/wCEMCA==
-To: Miroslav Lichvar <mlichvar@redhat.com>, Jacob Keller
- <jacob.e.keller@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Vinicius
- Costa Gomes <vinicius.gomes@intel.com>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] igb: Retrieve Tx timestamp
- directly from interrupt
-In-Reply-To: <aKV_rEjYD_BDgG1A@localhost>
-References: <20250815-igb_irq_ts-v1-1-8c6fc0353422@linutronix.de>
- <aKMbekefL4mJ23kW@localhost>
- <c3250413-873f-4517-a55d-80c36d3602ee@intel.com>
- <aKV_rEjYD_BDgG1A@localhost>
-Date: Fri, 12 Sep 2025 11:04:24 +0200
-Message-ID: <87ikhodotj.fsf@jax.kurt.home>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aploMs7w"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b046f6fb230so320452166b.1
+        for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 02:12:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757668341; x=1758273141; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ioIOH2p5Blrv6vNOqNmSCymoSvN1zmkkAsnVeBc1SMY=;
+        b=aploMs7whY/LgaXCAuOUQbkHlH9PozV3z9HFoHHh4tp/dJFhM6pt21fAvHgYgjlN8M
+         rmpVcHSueNagemUBdQowpA6BdoN7gqqaLplS1v3ScHX+yKhTwev5VBs4Bed/9bkH4dLN
+         4rfLLpcIvHJONxgYVXSLM7qEor3rn+MmXCTKDCzXypEm5HHBP38sGD0OFUOjAm326bQ+
+         1r2w7gh4g7621FkXF6rJzjHEIMZg4g13DDPyWgPK4mWuR3T6PMXO71Jvdha7GKG/r6lh
+         avbJhFNvPx4G+gPZm0XJKYAQwKp/BQENGe5DK6uHxVZst/QOlcM6CwamdS6qIfXycNC8
+         TKgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757668341; x=1758273141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ioIOH2p5Blrv6vNOqNmSCymoSvN1zmkkAsnVeBc1SMY=;
+        b=FtY2n4Rdts+nVh67RrJ28kUy1DF7oT60TJAzkTUVaYH33mS5PG4cAhExAwl2tB/Okr
+         BqproqqhDoJh+DenkZmugTay0sHzdrM8dH9AXim1prIv1cspV25HLE5NifB+aZlbZ6jn
+         KSEPTqi8LQbVWWquwjchThGHIEqewSmLwAI//tcz146G0EbiqqFjW+wYxaAO5mIuk3QY
+         MIYSo2RzYhKFjaRcxrehFPCFJ+IhB7lyFWl8aMz0fxdgt7+DoiQ5EVmOUGoQ7ns4Xx1J
+         girR3ShMDDzzHBmKOk36KnEEX5tZqkfV7G7SYp295XJ7yeO1zXGRjE9oc6fba28wuqLl
+         g27g==
+X-Forwarded-Encrypted: i=1; AJvYcCVSiI5qLMmZUm4gr2Yc3wKsP0UXpH2t5EXN/n0p8W3X5++4Xnof99Qgh7Fy0hFluLDScrp+IDc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwXvfUcfKZThZEzv8myJ2CEuphLimjd3Rj13bpme9QFG76CZrA
+	x0FjtLyw7cFTYdhzdO5lPZvNDy1M/srMF5ZIdetd74RMvv/7PdhvoGzlRNfjLgg6CNUGQutyA9a
+	fo8YSVM3//mD9ybPCO87QQsu8DbHM66c=
+X-Gm-Gg: ASbGncsOCrrNwF/01yujNXWtbDiglg1qIWurev/DOz86OOiCiOF2eZf1ra6k6x6xgTN
+	BaunZukXBCCz8T49NAJUkUvMwNkTC69TJ89ZOiI8NIi82oQQv1LRr0QZuz9Ff4RtuAONKTqDhHY
+	5s2aQHEulLUK/peiFtwDy9qEiDbzh3OmQia+nkARYYehwxaVfqnAF68RoknWZwgiozad4VBPoO3
+	LVy7G4=
+X-Google-Smtp-Source: AGHT+IECQ2FSxCpELdyt8w8+Ta17OX81olY1L21qGnLXRiiNiAsbzwmD/JJZPTQJsBBXBb5BWfCf5Q2bF6gDjvOJbJk=
+X-Received: by 2002:a17:907:3e9f:b0:b04:3402:391c with SMTP id
+ a640c23a62f3a-b07a68bddd8mr590036766b.24.1757668340932; Fri, 12 Sep 2025
+ 02:12:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
-
---=-=-=
-Content-Type: text/plain
+References: <20250910-work-namespace-v1-0-4dd56e7359d8@kernel.org>
+ <20250910-work-namespace-v1-27-4dd56e7359d8@kernel.org> <CAOQ4uxgtQQa-jzsnTBxgUTPzgtCiAaH8X6ffMqd+1Y5Jjy0dmQ@mail.gmail.com>
+ <20250911-werken-raubzug-64735473739c@brauner> <CAOQ4uxgMgzOjz4E-4kJFJAz3Dpd=Q6vXoGrhz9F0=mb=4XKZqA@mail.gmail.com>
+ <20250912-wirsing-karibus-7f6a98621dd1@brauner>
+In-Reply-To: <20250912-wirsing-karibus-7f6a98621dd1@brauner>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Fri, 12 Sep 2025 11:12:09 +0200
+X-Gm-Features: Ac12FXzXlVrWyNxThzcVLm8bWdnJouio3PTW50wsmgaWY6Ne9FaEF2yc3iNy4og
+Message-ID: <CAOQ4uxgGpdQ42d-QRuHbvdrvZWrS9qz9=A2GRa2Bq-sMcK6w4w@mail.gmail.com>
+Subject: Re: [PATCH 27/32] nsfs: support file handles
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>, 
+	=?UTF-8?Q?Zbigniew_J=C4=99drzejewski=2DSzmek?= <zbyszek@in.waw.pl>, 
+	Lennart Poettering <mzxreary@0pointer.de>, Daan De Meyer <daan.j.demeyer@gmail.com>, 
+	Aleksa Sarai <cyphar@cyphar.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed Aug 20 2025, Miroslav Lichvar wrote:
-> On Tue, Aug 19, 2025 at 04:31:49PM -0700, Jacob Keller wrote:
->> I'm having trouble interpreting what exactly this data shows, as its
->> quite a lot of data and numbers. I guess that it is showing when it
->> switches over to software timestamps.. It would be nice if ntpperf
->> showed number of events which were software vs hardware timestamping, as
->> thats likely the culprit. igb hardare only has a single outstanding Tx
->> timestamp at a time.
+On Fri, Sep 12, 2025 at 10:20=E2=80=AFAM Christian Brauner <brauner@kernel.=
+org> wrote:
 >
-> The server doesn't have a way to tell the client (ntpperf) which
-> timestamps are HW or SW, we can only guess from the measured offset as
-> HW timestamps should be more accurate, but on the server side the
-> number of SW and HW TX timestamps provided to the client can be
-> monitored with the "chronyc serverstats" command. The server requests
-> both SW and HW TX timestamps and uses the better one it gets from the
-> kernel, if it can actually get one before it receives the next
-> request from the same client (ntpperf simulates up to 16384 concurrent
-> clients).
+> On Thu, Sep 11, 2025 at 01:36:28PM +0200, Amir Goldstein wrote:
+> > On Thu, Sep 11, 2025 at 11:31=E2=80=AFAM Christian Brauner <brauner@ker=
+nel.org> wrote:
+> > >
+> > > On Wed, Sep 10, 2025 at 07:21:22PM +0200, Amir Goldstein wrote:
+> > > > On Wed, Sep 10, 2025 at 4:39=E2=80=AFPM Christian Brauner <brauner@=
+kernel.org> wrote:
+> > > > >
+> > > > > A while ago we added support for file handles to pidfs so pidfds =
+can be
+> > > > > encoded and decoded as file handles. Userspace has adopted this q=
+uickly
+> > > > > and it's proven very useful.
+> > > >
+> > > > > Pidfd file handles are exhaustive meaning
+> > > > > they don't require a handle on another pidfd to pass to
+> > > > > open_by_handle_at() so it can derive the filesystem to decode in.
+> > > > >
+> > > > > Implement the exhaustive file handles for namespaces as well.
+> > > >
+> > > > I think you decide to split the "exhaustive" part to another patch,
+> > > > so better drop this paragraph?
+> > >
+> > > Yes, good point. I've dont that.
+> > >
+> > > > I am missing an explanation about the permissions for
+> > > > opening these file handles.
+> > > >
+> > > > My understanding of the code is that the opener needs to meet one o=
+f
+> > > > the conditions:
+> > > > 1. user has CAP_SYS_ADMIN in the userns owning the opened namespace
+> > > > 2. current task is in the opened namespace
+> > >
+> > > Yes.
+> > >
+> > > >
+> > > > But I do not fully understand the rationale behind the 2nd conditio=
+n,
+> > > > that is, when is it useful?
+> > >
+> > > A caller is always able to open a file descriptor to it's own set of
+> > > namespaces. File handles will behave the same way.
+> > >
+> >
+> > I understand why it's safe, and I do not object to it at all,
+> > I just feel that I do not fully understand the use case of how ns file =
+handles
+> > are expected to be used.
+> > A process can always open /proc/self/ns/mnt
+> > What's the use case where a process may need to open its own ns by hand=
+le?
+> >
+> > I will explain. For CAP_SYS_ADMIN I can see why keeping handles that
+> > do not keep an elevated refcount of ns object could be useful in the sa=
+me
+> > way that an NFS client keeps file handles without keeping the file obje=
+ct alive.
+> >
+> > But if you do not have CAP_SYS_ADMIN and can only open your own ns
+> > by handle, what is the application that could make use of this?
+> > and what's the benefit of such application keeping a file handle instea=
+d of
+> > ns fd?
 >
-> When I run ntpperf at a fixed rate of 140000 requests per second
-> for 10 seconds (-r 140000 -t 10), I get the following numbers.
+> A process is not always able to open /proc/self/ns/. That requires
+> procfs to be mounted and for /proc/self/ or /proc/self/ns/ to not be
+> overmounted. However, they can derive a namespace fd from their own
+> pidfd. And that also always works if it's their own namespace.
 >
-> Without the patch:
-> NTP daemon TX timestamps   : 28056
-> NTP kernel TX timestamps   : 1012864
-> NTP hardware TX timestamps : 387239
+> There's no need to introduce unnecessary behavioral differences between
+> /proc/self/ns/, pidfd-derived namespace fs, and file-handle-derived
+> namespace fds. That's just going to be confusing.
 >
-> With the patch:
-> NTP daemon TX timestamps   : 28047
-> NTP kernel TX timestamps   : 707674
-> NTP hardware TX timestamps : 692326
+> The other thing is that there are legitimate use-case for encoding your
+> own namespace. For example, you might store file handles to your set of
+> namespaces in a file on-disk so you can verify when you get rexeced that
+> they're still valid and so on. This is akin to the pidfd use-case.
 >
-> The number of HW timestamps is significantly higher with the patch, so
-> that looks good.
->
-> But when I increase the rate to 200000, I get this:
->
-> Without the patch:
-> NTP daemon TX timestamps   : 35835
-> NTP kernel TX timestamps   : 1410956
-> NTP hardware TX timestamps : 581575=20=20=20=20=20=20=20=20=20=20=20=20
->
-> With the patch:
-> NTP daemon TX timestamps   : 476908
-> NTP kernel TX timestamps   : 646146
-> NTP hardware TX timestamps : 412095
->
+> Or just plainly for namespace comparison reasons where you keep a file
+> handle to your own namespaces and can then easily check against others.
 
-Sebastian found a machine with i350 and gave me access.
+OK. As I said no objections I was just curious about this use case.
 
-I did run the same test as you mentioned here. But, my numbers are
-completely different. Especially the number of hardware TX timestamps
-are significantly lower overall.
+FWIW, comparing current ns to a stored file handle does not really require
+permission to open_by_handle_at(). name_to_handle_at() the current ns
+and binary compare to the stored file handle should be a viable option.
 
-Without the patch:
+This was exactly the reason for introducing AT_HANDLE_FID, so that fanotify
+unprivileged watcher with no permission to open_by_handle_at() could compar=
+e
+an fid reported in an event with another fid they obtained earlier with
+name_to_handle_at() and kept in a map.
 
-./ntpperf -i eno8303 -m X -d Y -s Z -I -r 200000 -t 10
-
-NTP daemon RX timestamps   : 0
-NTP daemon TX timestamps   : 565057
-NTP kernel RX timestamps   : 100208
-NTP kernel TX timestamps   : 281215
-NTP hardware RX timestamps : 882823
-NTP hardware TX timestamps : 136759
-
-With the patch:
-
-NTP daemon RX timestamps   : 0
-NTP daemon TX timestamps   : 576561
-NTP kernel RX timestamps   : 99232
-NTP kernel TX timestamps   : 255634
-NTP hardware RX timestamps : 868392
-NTP hardware TX timestamps : 135429
-
-What am I doing wrong? Here's my chrony config:
-
-|########## i350 NTP performance regression test ###########
-|local stratum 10
-|allow X
-|allow Y
-|allow Z
-|
-|hwtimestamp eno0
-|=20
-|clientloglimit 134217728
-|log measurements statistics tracking
-|logdir /var/log/chrony
-
-Thanks,
-Kurt
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmjD4hgTHGt1cnRAbGlu
-dXRyb25peC5kZQAKCRDBk9HyqkZzghJQD/wOlyr68b2d4rXNnVkz9MAXmxjW+Qf1
-xqm6H5xo4ezq7+nNCd1HbOVpsghEFimenmYc0PTXlwhN3WAghahQvW2Hn0h9F649
-2nS+vrVMTxKMvsY6NprHmku+QMUsuHdZ87pqXBPlvIwRUkK0+xkymYLKcWbutHoH
-vnU9ij7jm3+tuWs6ofC3tlEmInOuGhaxiXlqModNsp0utJWDngNq2daFnBvcY1b/
-vcVRAzSUizJIlEewj5SiwvpVrR3GWeu1g/7pOWeSGn4rEdJ9H7P0Hwpj4/2ivx/9
-Gl5jFl/+R5yPwAPwPqle5tIy2e5fSOCLCDLswI0m5bHXDkOqjQqMB20Qwc+D3G1m
-Y54x26hdy2TYLX+85mcCR/wsR2CczAjXrK5SNBh+MTK1T9qY1lA6rI05j75Zl555
-xej9MEHpkCbrl2ZGFT7p6+mrCNhyN5XevGqcGxFUeNxD0kwu7FPs2tLXV4qHtHid
-sjmcqem363FZg9qwzflkHv4VVDDDE2iVbfEA7Mm5qRTTONJNM7LYT+37HseT4orG
-YPeZGZeauOb6Htg6ZHB3XOefKlWwAESDj1rkmD/X0BammaKI44r1QISnXcH4AF7g
-jDblw+ACA+jOXSRss3AEl9ikH2ngjHK3245gH9USkfzbPHOQlMjpdPgJwKjBFoRj
-HRBPt6CSq1i0Tg==
-=6fDY
------END PGP SIGNATURE-----
---=-=-=--
+Thanks for the explanation!
+Amir.
