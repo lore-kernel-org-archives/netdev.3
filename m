@@ -1,133 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AB030EF89;
-	Fri, 12 Sep 2025 13:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0772D257827
+	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 13:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757682873; cv=none; b=LrSg2aDwpUSBoB7r39gkEL5a7ei1RIc4fexXpuJi5REnKlomZSjFf3N3AhLn5BwUPk/t+0ejEs/0/5FFVD/kq4zI2J3FkGk8OokfkbLgh/eS+zXR8cDPFsfIdWnixnHc+hwlSB3OO6DNzFjM79S1c5ZI9KyXYWYgIOcHjwJ59+4=
+	t=1757683035; cv=none; b=IqOr8WBLMMIoYiuLia4pz/dwL4P8DmUH4mQdxQcn0J7h+FYOCZ6uKqIGQshrAt2M4tlA5EPIIzNxuo/Tua934+Q6Y1BdhWc93BhDh1kL0e/+LoLmjrvRnXOJD1zCX+6PriT3hBhraE7k6zIJK9P3woSabEYSKijWlGyF52C45so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757682873; c=relaxed/simple;
-	bh=MxMamnhy9oj92yxyc9e8YwEgNJD+oI68n6DyGiWWVCs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bdrnSRlb6swhkC7mRCtERRxvQqoHY/vUIhqbsbUReDOAw3CwZyYzzoHEnPNUSIYU1jdfVrwSrbOExS+XeMiVgJrffa6udDuroOJ1S8ImRSX37gRDGBJyMzDpWR/1or+Z+a6n1/l/J3LL2tEAyj25mxIY2wMkjyd9tOGqT/M9CiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEwyhLVW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757683035; c=relaxed/simple;
+	bh=Qmp/sVrKPtWZYE32eNYZrLxUcCXTL+w4Rquv9L6eNds=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Zykui7mA9SDC9KdaaGZc5QMo+kCP/08IkuPbXjnaChO7sqz8nogPZAoc3zS4DEE57J8Es2XFYARsIGdRekocSU/lSXlQKPQ5oP/PvdErX6WeaI7KhL4wkBAPgQmPrjqXZIzvbsz5LjDy2NCeQA+RxcZfqH0/7wHpIxiRRBbNku0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tm+gETZE; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEwyhLVW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E603C4CEF1;
-	Fri, 12 Sep 2025 13:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757682873;
-	bh=MxMamnhy9oj92yxyc9e8YwEgNJD+oI68n6DyGiWWVCs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GEwyhLVW7tgTFSLAz7JK3+1HYMD/7HIye32Lxy3ySptbeD+445/nkm2JHAK+972z4
-	 hN1yg6qT/Cv6KzMK+8abeYegIyHojhenatknUEJABAkmsZKRhxN9A/1PKsL28JNgpG
-	 P8gPONP1X/RAQ3DDLBshYfOaHDXkUep0mwc3eyRp2eHwvDGNkpqIyR27ghXrurze4a
-	 32xG1qLEdaIZUklU3/X4Sb88ZgBxKg0LUkvcL4hf/jh43Eg4SPXr+hTax9PtE/mo+E
-	 agzGNJBkiGuwxZdGrjohvI5zMdbZtdppELU60GEdYwgj7UoTvHhVvBA+kwIrM0xjlf
-	 O2SDiRwfa8GpQ==
-Message-ID: <50496bf2-1d10-4d89-addb-f4fe774497d9@kernel.org>
-Date: Fri, 12 Sep 2025 15:14:24 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tm+gETZE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1757683033; x=1789219033;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Qmp/sVrKPtWZYE32eNYZrLxUcCXTL+w4Rquv9L6eNds=;
+  b=Tm+gETZE2JohBW7eYWsQ1AuXi37+PT9eO4ZqQsX5GLydr3fH5GLZZNud
+   Kr2LGpUw09IR54Cgdj6c+ylnGUikrk69aYeovtrbkGRA+QY2MS7Q+gmzD
+   Yhh1QHLhlAGX7COGnqoz46r/MkSeF7I/fvilrVJh0zTVJIJ+LGVHaBb9r
+   r3pqeWpL8Ag3KiTi/mv288FvdOmcH4Fd+YA3Sj7zCvMCP1W8tL4mdBP2t
+   SLDIGGmMQuxgO3ULkQQXdFDt+7x4VyQ3WuDMmKPdQGo3mBDG5l7ubvNhy
+   BEii3PTEVRU9VtoExh352G97ybUmWo+KLHL+/J5+qqHRjjHPKeZF8jiwt
+   A==;
+X-CSE-ConnectionGUID: IyEDVAWFS96wQBpHFFhdcw==
+X-CSE-MsgGUID: 7Dj4XkB0SQ2KRPL/T15URA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11551"; a="85461397"
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="85461397"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 06:17:12 -0700
+X-CSE-ConnectionGUID: jAmMynUMS+iiQ33zQpcMmQ==
+X-CSE-MsgGUID: dozrqj/ARvOLvhPTPLceOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="173131203"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa006.jf.intel.com with ESMTP; 12 Sep 2025 06:17:10 -0700
+Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 9DF1D2FC6E;
+	Fri, 12 Sep 2025 14:17:08 +0100 (IST)
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: netdev@vger.kernel.org,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Petr Oros <poros@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH iwl-next 0/9] ice: pospone service task disabling
+Date: Fri, 12 Sep 2025 15:06:18 +0200
+Message-Id: <20250912130627.5015-1-przemyslaw.kitszel@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] dt-bindings: ethernet: eswin: Document for EIC7700
- SoC
-To: weishangjuan@eswincomputing.com, devicetree@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- yong.liang.choong@linux.intel.com, vladimir.oltean@nxp.com,
- rmk+kernel@armlinux.org.uk, faizal.abdul.rahim@linux.intel.com,
- prabhakar.mahadev-lad.rj@bp.renesas.com, inochiama@gmail.com,
- jan.petrous@oss.nxp.com, jszhang@kernel.org, p.zabel@pengutronix.de,
- boon.khai.ng@altera.com, 0x1207@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- emil.renner.berthing@canonical.com
-Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
- lizhi2@eswincomputing.com, pinkesh.vaghela@einfochips.com
-References: <20250912055352.2832-1-weishangjuan@eswincomputing.com>
- <20250912055612.2884-1-weishangjuan@eswincomputing.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250912055612.2884-1-weishangjuan@eswincomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/09/2025 07:56, weishangjuan@eswincomputing.com wrote:
-> From: Shangjuan Wei <weishangjuan@eswincomputing.com>
-> 
-> Add ESWIN EIC7700 Ethernet controller, supporting clock
-> configuration, delay adjustment and speed adaptive functions.
-> 
-> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
-> Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
+Move service task shutdown to the very end of driver teardown procedure.
+This is needed (or at least beneficial) for all unwinding functions that
+talk to FW/HW via Admin Queue (so, most of top-level functions, like
+ice_deinit_hw()).
 
-There is no explanation of dropping the tag. Please read CAREFULLY
-submitting patches.
+Most of the patches move stuff around (I believe it makes it much easier
+to review/proof when kept separate) in preparation to defer stopping the
+service task to the very end of ice_remove() (and other unwinding flows).
+Then last patch fixes duplicate call to ice_init_hw() (actual, but
+unlikely to encounter, so -next, given the size of the changes).
 
-Comparing also fails:
+First patch is not much related, only by that it was developed together
+with the rest, and is so small, that there is no point for separate thread
 
-b4 diff '<20250912055352.2832-1-weishangjuan@eswincomputing.com>'
-Using cached copy of the lookup
----
-Analyzing 55 messages in the thread
-Preparing fake-am for v6: dt-bindings: ethernet: eswin: Document for
-EIC7700 SoC
-ERROR: Could not fake-am version v6
----
-Could not create fake-am range for upper series v6
+--
+changes vs internal review:
+Expanded cover letter (Jake).
 
-I am not going to review twice, so you can drop my tag again without
-explanation.
+Przemek Kitszel (9):
+  ice: enforce RTNL assumption of queue NAPI manipulation
+  ice: move service task start out of ice_init_pf()
+  ice: move ice_init_interrupt_scheme() prior ice_init_pf()
+  ice: ice_init_pf: destroy mutexes and xarrays on memory alloc failure
+  ice: move udp_tunnel_nic and misc IRQ setup into ice_init_pf()
+  ice: move ice_init_pf() out of ice_init_dev()
+  ice: extract ice_init_dev() from ice_init()
+  ice: move ice_deinit_dev() to the end of deinit paths
+  ice: remove duplicate call to ice_deinit_hw() on error paths
 
-Best regards,
-Krzysztof
+ drivers/net/ethernet/intel/ice/ice.h          |   4 +
+ .../net/ethernet/intel/ice/devlink/devlink.c  |  21 ++-
+ drivers/net/ethernet/intel/ice/ice_common.c   |   3 +
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   4 +-
+ drivers/net/ethernet/intel/ice/ice_main.c     | 159 +++++++++---------
+ 5 files changed, 109 insertions(+), 82 deletions(-)
+
+-- 
+2.39.3
+
