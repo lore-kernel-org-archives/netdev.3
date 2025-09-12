@@ -1,158 +1,118 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729DD27EC7C;
-	Fri, 12 Sep 2025 09:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3311A27B332;
+	Fri, 12 Sep 2025 09:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757668598; cv=none; b=mrCLIJH831I1sapUmx//QckvAhcNrjLzIVan/dFcrIEqWfew7a6PgYxWrjE4nadFpoNGzEkOK6Oju7B9p/GnTfrdZ3XEY2R4JX7bihyHhqaSTdSheU0q/t4srk2skZuGi+klz5Cpj3v2ZqKS1GRsMVXsrjZpUI7B1DpVrNiLqZQ=
+	t=1757668610; cv=none; b=u0ICh9m4yhHW33lcYdoOwLFH8DVwa13t+2Nq4kNCjNkFIaBftIcDG5PJ9KJ3wn9Vd8ZaAXYIYXtRAkf7Q0O7rPpSIWFYfmqtGc5SS+ispxMmyyfcZeSCtgRrOYOsKXOPB4xyojylseP+k/mi1SGf6TV/wR0q8Ln0ulI9g07V+ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757668598; c=relaxed/simple;
-	bh=M6H4vuC1kEo4E+gLt9fSDpwP8uZAqmIgNGYQto3FN6w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UYbDug5gjKOQqKZf4TEN2MMGauDq1lHoE7/p2sG2P7fKIQFUecOb0C3pJS+ny1htebMU0C0AoP1+IXvvrfOVOiBgygXtzvzLgjvS5fg+2ScL+fI9taen0IJc5GhaDEzZ1antvwI9/J8KviC/qF9If+2W6zfNxhPbQTIo3XnmZ2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=v1TaEspG; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1757668610; c=relaxed/simple;
+	bh=R6TdoxJTGLt58giAE9c066CGOKBAyKfPk46y8hSTDuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CzgsXVhGMn2SPwYPZ9WEZrP81rSaVx+yJaj4DGUfy5dN3oYt0xCoXoPCyQV/nNP+EeLoF+TbNcx04l1xv75oj80+F02K8uqcR7L4gtB6DqtFmHaXM0noTRbIambGlTXMIANFOSuMtYL0xI9kr37du3FyeTjd2A7WUdZ3jfAbtm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=LT0kvgcd; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="v1TaEspG"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BE04E4E40CA2;
-	Fri, 12 Sep 2025 09:16:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 92B5660638;
-	Fri, 12 Sep 2025 09:16:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C311102F29F0;
-	Fri, 12 Sep 2025 11:16:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1757668593; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=WrEpjzQG6DNyDJzeGBdcuqSqyOJS2DKBX8gv90YD2t4=;
-	b=v1TaEspGpxrRVy9CAufNd7nysVTGp7WzDeWJbuYbWq3jSgdOAofV8kjtAU0R+M9hk98xCH
-	Vgo0qNsz2WFp5siWvHSRuxqjYl1sAFXUhgeClNLb01j7ZKDjU8BNX2FEXos1iO24Ih/HkH
-	gFpN82nVW/ut3i4opQ2pu5rlkuMyYwHSjXsU8YthPAVVfrU9P9kqmTHadi9oc+gHQ1ty3+
-	fHLoQHu/2BoYKFRFWmgBoA/A4xxCvXTUsIPyRLhS0OZ1I5esjbpDPqZ4JsM9zzrIJEHPCW
-	evYSdH77Ge6oA9BQ909yIKT3TTDwNuB69pI+BuwXOFdjvHRJsPXrw5TUoM1hvg==
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Date: Fri, 12 Sep 2025 11:09:14 +0200
-Subject: [PATCH net-next v2 3/3] net: dsa: microchip: Set SPI as bus
- interface during reset for KSZ8463
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="LT0kvgcd"
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C1vv7x019342;
+	Fri, 12 Sep 2025 09:16:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=i6PS96kxqQ3nhDF+Bey3wocVR2JPq
+	/nepgh0WRD2V4Y=; b=LT0kvgcdztN0EXZueELwJzj0vDj35t26BQTXliPkNrfuG
+	GC/XTi1qfa1VT0mpGm6k9En4moQj9qdnfKCkGH7X2VbomclvrYFDWRsKhFGxyvBX
+	Iv1/phbHpSlu5emjjvrL93D4Zh8XZigk+sQWVUlfL2jpizf7D18mZMZaqN15+wDD
+	iEoJXXRR0uhhGWooIw+5goiDVuDvG08iDA3X9yEP2WQeLWO5L7j/wPFcfV3VUR4w
+	SapMifFIQ78OiwjXOadmmJOzBkBBH7UqzAMwiuQPvSjYJETlvv/KZILirNSXtRhP
+	RF4+Jl9sOwN4HpxgAm+2H5wLrnnZAmXH/EnCicanw==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49226syw01-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 09:16:38 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 58C89Xqo032848;
+	Fri, 12 Sep 2025 09:16:37 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 490bdekcbs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 09:16:37 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 58C9CJW1014831;
+	Fri, 12 Sep 2025 09:16:37 GMT
+Received: from prahar-home.osdevelopmeniad.oraclevcn.com (prahar-home.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.252.152])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 490bdekcay-1;
+	Fri, 12 Sep 2025 09:16:37 +0000
+From: Pradyumn Rahar <pradyumn.rahar@oracle.com>
+To: linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, jv@jvosburgh.net,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org
+Cc: pradyumn.rahar@oracle.com, anand.a.khoje@oracle.com,
+        rama.nichanamatlu@oracle.com, manjunath.b.patil@oracle.com,
+        rajesh.sivaramasubramaniom@oracle.com
+Subject: [PATCH RFC net 1/1] net/bonding: add 0 to the range of arp_missed_max
+Date: Fri, 12 Sep 2025 09:16:35 +0000
+Message-ID: <20250912091635.3577586-1-pradyumn.rahar@oracle.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250912-ksz-strap-pins-v2-3-6d97270c6926@bootlin.com>
-References: <20250912-ksz-strap-pins-v2-0-6d97270c6926@bootlin.com>
-In-Reply-To: <20250912-ksz-strap-pins-v2-0-6d97270c6926@bootlin.com>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
- Pascal Eberhard <pascal.eberhard@se.com>, 
- Woojung Huh <Woojung.Huh@microchip.com>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_03,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509120087
+X-Authority-Analysis: v=2.4 cv=QeRmvtbv c=1 sm=1 tr=0 ts=68c3e4f6 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=yJojWOMRYYMA:10 a=yPCof4ZbAAAA:8 a=pX0Wh22Zp09VsyUOIvQA:9
+X-Proofpoint-ORIG-GUID: kiB0TVr1IJRuu_X43Rxpcot7nDFicyfn
+X-Proofpoint-GUID: kiB0TVr1IJRuu_X43Rxpcot7nDFicyfn
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA4MDE1OCBTYWx0ZWRfXzWg9fZiTXyMU
+ rx9sIoU1Ljf56RLhgNf28jCsXv1b+GgrG6p70bA1ZmTSkXHMc/cqomBOXp26BEUAeENptP9OAVP
+ rVeCKW8A2YeVF1EiBTo94UIhXGyjX5e3O42GSZ6bQQ5U5AJdA7Oow1OlFdh0k7HmDDzyNYsFn86
+ Lar7k/80dUF6ugHuxQGyb/+5aS4JBi4hNnlUOv2vUh33jIArRhCOmBBrtwXonSDJPJkkBMDrsfx
+ bvIO2rkiGxrQHAg40FbY/fm3FtKV8qExrzdEl5O84za02AgeTFsD2tVIIqu16jHGylsUhBd+JFs
+ QYmEJfmFhQTOT0mKt9uFUpUu8PTh3hsMPXjm5fau/0+9/KWwJFXsufcsN720W8j7quSt/d1O5ui
+ fKVwYezo
 
-At reset, the KSZ8463 uses a strap-based configuration to set SPI as
-bus interface. SPI is the only bus supported by the driver. If the
-required pull-ups/pull-downs are missing (by mistake or by design to
-save power) the pins may float and the configuration can go wrong
-preventing any communication with the switch.
+NetworkManager uses 0 to indicate that the option `arp_missed_max`
+is in unset state as this option is not compatible with 802.3AD,
+balance-tlb and balance-alb modes.
 
-Introduce a ksz8463_configure_straps_spi() function called during the
-device reset. It relies on the 'strap-rxd*-gpios' OF properties and the
-'reset' pinmux configuration to enforce SPI as bus interface.
+This causes kernel to report errors like this:
 
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+kernel: backend0: option arp_missed_max: invalid value (0)
+kernel: backend0: option arp_missed_max: allowed values 1 - 255
+NetworkManager[1766]: <error> [1757489103.9525] platform-linux: sysctl: failed to set 'bonding/arp_missed_max' to '0': (22) Invalid argument
+NetworkManager[1766]: <warn>  [1757489103.9525] device (backend0): failed to set bonding attribute 'arp_missed_max' to '0'
+
+when NetworkManager tries to set this value to 0
+
+Signed-off-by: Pradyumn Rahar <pradyumn.rahar@oracle.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 45 ++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+ drivers/net/bonding/bond_options.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 7292bfe2f7cac3a0d88bb51339cc287f56ca1d1f..ac05dd25b4863a61b15ac1131587b2b4df11ec41 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -23,6 +23,7 @@
- #include <linux/of_mdio.h>
- #include <linux/of_net.h>
- #include <linux/micrel_phy.h>
-+#include <linux/pinctrl/consumer.h>
- #include <net/dsa.h>
- #include <net/ieee8021q.h>
- #include <net/pkt_cls.h>
-@@ -5338,6 +5339,38 @@ static int ksz_parse_drive_strength(struct ksz_device *dev)
- 	return 0;
- }
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 3b6f815c55ff..243fde3caecd 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -230,7 +230,7 @@ static const struct bond_opt_value bond_ad_user_port_key_tbl[] = {
+ };
  
-+static int ksz8463_configure_straps_spi(struct ksz_device *dev)
-+{
-+	struct pinctrl *pinctrl;
-+	struct gpio_desc *rxd0;
-+	struct gpio_desc *rxd1;
-+
-+	rxd0 = devm_gpiod_get_optional(dev->dev, "strap-rxd0", GPIOD_OUT_LOW);
-+	if (IS_ERR(rxd0))
-+		return PTR_ERR(rxd0);
-+
-+	rxd1 = devm_gpiod_get_optional(dev->dev, "strap-rxd1", GPIOD_OUT_HIGH);
-+	if (IS_ERR(rxd1))
-+		return PTR_ERR(rxd1);
-+
-+	if (!rxd0 && !rxd1)
-+		return 0;
-+
-+	if ((rxd0 && !rxd1) || (rxd1 && !rxd0))
-+		return -EINVAL;
-+
-+	pinctrl = devm_pinctrl_get_select(dev->dev, "reset");
-+	if (IS_ERR(pinctrl))
-+		return PTR_ERR(pinctrl);
-+
-+	return 0;
-+}
-+
-+static int ksz8463_release_straps_spi(struct ksz_device *dev)
-+{
-+	return pinctrl_select_default_state(dev->dev);
-+}
-+
- int ksz_switch_register(struct ksz_device *dev)
- {
- 	const struct ksz_chip_data *info;
-@@ -5353,10 +5386,22 @@ int ksz_switch_register(struct ksz_device *dev)
- 		return PTR_ERR(dev->reset_gpio);
- 
- 	if (dev->reset_gpio) {
-+		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
-+			ret = ksz8463_configure_straps_spi(dev);
-+			if (ret)
-+				return ret;
-+		}
-+
- 		gpiod_set_value_cansleep(dev->reset_gpio, 1);
- 		usleep_range(10000, 12000);
- 		gpiod_set_value_cansleep(dev->reset_gpio, 0);
- 		msleep(100);
-+
-+		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
-+			ret = ksz8463_release_straps_spi(dev);
-+			if (ret)
-+				return ret;
-+		}
- 	}
- 
- 	mutex_init(&dev->dev_mutex);
-
+ static const struct bond_opt_value bond_missed_max_tbl[] = {
+-	{ "minval",	1,	BOND_VALFLAG_MIN},
++	{ "minval",	0,	BOND_VALFLAG_MIN},
+ 	{ "maxval",	255,	BOND_VALFLAG_MAX},
+ 	{ "default",	2,	BOND_VALFLAG_DEFAULT},
+ 	{ NULL,		-1,	0},
 -- 
-2.51.0
+2.43.7
 
