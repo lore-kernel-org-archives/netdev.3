@@ -1,113 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF34D30FC08
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 13:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E172E7BAE;
+	Fri, 12 Sep 2025 13:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757683041; cv=none; b=qK92eYA7wV0CFrlQQlWfNaJgqiLvUlNaK/zjZQ/6xwVQDrVn+4U3vvc4VDr1jjk7l5SCKnKDG2Ei7aE8Bjwz09mhb+vZu+Q4/2SxSIUaVYXDOw+CyTxbP1JlBH47U+LfG5rLyS3cll2miIqDh/Zxszs2s6g0EAa5cxp3OrCl2so=
+	t=1757683106; cv=none; b=Seg9V+LKFL2VN4X+YZ48ked1RpRa6bpv1oI4fB1azhTE2R0A6WdRVi5HSRpdSfYDHWBsJ4dwlamrl4tEjl6jUjV8/U94dXjcgi33ZM+wazwfSUzU3Bxzz50ebfhbfohfw3EEWa1mV86HpofBAw5FaJ/jswyt74yaa06FbELYibM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757683041; c=relaxed/simple;
-	bh=0lubkKvXUTXLnSw8A50MURKszPTJ4IuA01qIWQQ67bw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SqcQAN9T0bxcZKpouXrw+XcwBQbRtzUfbFyAPtnwNKr87QFAwlaetzcTw1dlAo7kXA5ZX8MgqwMy0+ghq3mAEkvlR2MGh+q9bBqG7R3de/+OakCKz3taqEzj4O1ljvgCzKYBVUn9Geiz9LeVk9KGn0zI5cBtDXyMtg1R3iWzmj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WYYju7tZ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1757683106; c=relaxed/simple;
+	bh=0kMqkbeltdD0+hkiQDYxpMhQHrKg2khUuaUPs1Ep/hI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=fujc8mg+jvS4sHk+Ef30Oc1LLq6jvBjYUr4Km6y13QnJtv3F/15pYQSVrSlpyTenUXAYULCGlufHpMJq8S+88/6zt2EM8X4/h/Im6x01Qb2KEwsnTpaXKPZVudYdbzZfMSH02aKUjs72W/Evzr8Cf3UWQc5weI17jq3Jvp5PrrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/cve73U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WYYju7tZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757683040; x=1789219040;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0lubkKvXUTXLnSw8A50MURKszPTJ4IuA01qIWQQ67bw=;
-  b=WYYju7tZdWC0bBgVhpkb8vS5Htl6xfNCpaizJWIxIT9XF7Ce2ZgRZxBy
-   DBLTAeW2cow3Ib7owtefvmm7w6DxdZkiF6da9rN3SlNm1fjSWN+53fcDF
-   VU9qrP8UqbWc7nE34VdppdZTGmOL8/5K5ltuCRMoKhDnc3spBCsRqi5U6
-   KgRAgcRpn0Y2YjFz9AshJWhBDlZDel8uYPibd+r/W8yMrU89395a509lt
-   jPdS8AfZ/ZvDZCaMljbCMxQQFKoZeDgNTe1HabOJwqRhhpOQfu/ukR4yi
-   3YCwAASpUr96FSDtprEl3XkWYryL+cuPHfYBzWPq6CKrVuSzURNQ7ZQF9
-   g==;
-X-CSE-ConnectionGUID: OUGsfynaR4WLZImtsbHpWA==
-X-CSE-MsgGUID: I0MUj9c/TIapbcBD0ZAymA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11551"; a="85461445"
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="85461445"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2025 06:17:18 -0700
-X-CSE-ConnectionGUID: ZI6MQcVeSVq/gzDwBhapww==
-X-CSE-MsgGUID: AZYbj3sgQE+bbxvvwjG7rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
-   d="scan'208";a="173131240"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa006.jf.intel.com with ESMTP; 12 Sep 2025 06:17:16 -0700
-Received: from vecna.igk.intel.com (vecna.igk.intel.com [10.123.220.17])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id A08EE2FC71;
-	Fri, 12 Sep 2025 14:17:14 +0100 (IST)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: netdev@vger.kernel.org,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-next 9/9] ice: remove duplicate call to ice_deinit_hw() on error paths
-Date: Fri, 12 Sep 2025 15:06:27 +0200
-Message-Id: <20250912130627.5015-10-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20250912130627.5015-1-przemyslaw.kitszel@intel.com>
-References: <20250912130627.5015-1-przemyslaw.kitszel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/cve73U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DDFC4CEF1;
+	Fri, 12 Sep 2025 13:18:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757683106;
+	bh=0kMqkbeltdD0+hkiQDYxpMhQHrKg2khUuaUPs1Ep/hI=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=S/cve73U+Bw437os2DmOTcDcAxGgeMMGJW70XQxJfg5ffPkgfjlSBiQ8huULc5d+5
+	 zvkaNiaPM03OGirJzboN9rT62iO/WmT7v2ToCve0tUc6y7B++Rs4hioHbFWRbX2nq9
+	 hPx/7JC4p0KuOSgaxI8rAMzGqY/ctvSdQTYpvSq2OYZH59uZjPG9VzLsGCn4TZvU9d
+	 z5WBAC2HxY/NVfFDZiDy22+CM5WFVEflj9rjB9slCD6mCsUQwB63/XpNOxFJiUre2l
+	 x5a0OFES0jcxTY4qIQLbn1OqG6/QsAz7w5slxE+g1qBRRYE2wZC4+7lQYgV+JasYen
+	 gGninWye9fkVg==
+Message-ID: <228603d0-c7fc-48b7-9589-c897ff805808@kernel.org>
+Date: Fri, 12 Sep 2025 15:18:17 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/2] dt-bindings: ethernet: eswin: Document for EIC7700
+ SoC
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: weishangjuan@eswincomputing.com, devicetree@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ yong.liang.choong@linux.intel.com, vladimir.oltean@nxp.com,
+ rmk+kernel@armlinux.org.uk, faizal.abdul.rahim@linux.intel.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, inochiama@gmail.com,
+ jan.petrous@oss.nxp.com, jszhang@kernel.org, p.zabel@pengutronix.de,
+ boon.khai.ng@altera.com, 0x1207@gmail.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ emil.renner.berthing@canonical.com
+Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
+ lizhi2@eswincomputing.com, pinkesh.vaghela@einfochips.com
+References: <20250912055352.2832-1-weishangjuan@eswincomputing.com>
+ <20250912055612.2884-1-weishangjuan@eswincomputing.com>
+ <50496bf2-1d10-4d89-addb-f4fe774497d9@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <50496bf2-1d10-4d89-addb-f4fe774497d9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Current unwinding code on error paths of ice_devlink_reinit_up() and
-ice_probe() have manual call to ice_deinit_hw() (which is good, as there
-is also manual call to ice_hw_init() there), which is then duplicated
-(and was prior current series) in ice_deinit_dev().
+On 12/09/2025 15:14, Krzysztof Kozlowski wrote:
+> On 12/09/2025 07:56, weishangjuan@eswincomputing.com wrote:
+>> From: Shangjuan Wei <weishangjuan@eswincomputing.com>
+>>
+>> Add ESWIN EIC7700 Ethernet controller, supporting clock
+>> configuration, delay adjustment and speed adaptive functions.
+>>
+>> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+>> Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
+> 
+> There is no explanation of dropping the tag. Please read CAREFULLY
+> submitting patches.
+> 
+> Comparing also fails:
+> 
+> b4 diff '<20250912055352.2832-1-weishangjuan@eswincomputing.com>'
+> Using cached copy of the lookup
+> ---
+> Analyzing 55 messages in the thread
+> Preparing fake-am for v6: dt-bindings: ethernet: eswin: Document for
+> EIC7700 SoC
+> ERROR: Could not fake-am version v6
+> ---
+> Could not create fake-am range for upper series v6
 
-Fix the above by removing ice_deinit_hw() from ice_deinit_dev().
-Add a (now missing) call in ice_remove().
 
-Reported-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20250717-jk-ddp-safe-mode-issue-v1-1-e113b2baed79@intel.com
-Fixes: 4d3f59bfa2cd ("ice: split ice_init_hw() out from ice_init_dev()")
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
-This series obsoletes patch by Jake Link:ed above; already removed from our
-dev-queue
----
- drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah, that because your patchset is broken.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index c169134beb04..6b197d44f56d 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4815,7 +4815,6 @@ int ice_init_dev(struct ice_pf *pf)
- 
- void ice_deinit_dev(struct ice_pf *pf)
- {
--	ice_deinit_hw(&pf->hw);
- 	ice_service_task_stop(pf);
- 
- 	/* Service task is already stopped, so call reset directly. */
-@@ -5497,6 +5496,7 @@ static void ice_remove(struct pci_dev *pdev)
- 	ice_set_wake(pf);
- 
- 	ice_adapter_put(pdev);
-+	ice_deinit_hw(&pf->hw);
- 
- 	ice_deinit_dev(pf);
- 	ice_aq_cancel_waiting_tasks(pf);
--- 
-2.39.3
+Please start using b4, which would solve such problems. Otherwise you
+just waste your own and ours time, because this cannot be applied and
+cannot be tested.
 
+> 
+> I am not going to review twice, so you can drop my tag again without
+> explanation.
+
+Best regards,
+Krzysztof
