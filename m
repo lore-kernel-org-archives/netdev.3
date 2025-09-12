@@ -1,319 +1,1033 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720BA3074A6;
-	Fri, 12 Sep 2025 11:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B4032A830;
+	Fri, 12 Sep 2025 11:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757678132; cv=none; b=Jw6D131V0mQEg6wN31Gbh4A0PPB8Imo+Qj3F7DNyH9z+INqFhcLkGHzP0/DNSR+yZy2R5NKjyaysYMjk6sCg8p3ZfRg5b7A0m/Y2HXJNp0U3vqr4YFHjZXKHEfuVTGRYLRvlnXgCbTFLr0KkaUm+an0Sn3pXPSj4OvmwQtigZRs=
+	t=1757678133; cv=none; b=Cwr8k9JzKqa7mRndYTolvDIh6emurYh3gvDydqzAR6tCqEqfvFilt4eX3Aa3dUwQEznyRlPactNMiji6/pWlUateYHV6UR/kk82vbjylxl0rJ7yVLyCbdbfH+8MKJvzqfh0gu3eIcIiVv0O3ouHKCJSHooScBxU+mQ53iBSKEjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757678132; c=relaxed/simple;
-	bh=Fqq1VXRV80SxU6N1xNA+0LWY7g4OkpEIOyaLnXTvTnU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=o+PsxgSeS4aAGi+CJ3bR7yRDMGFvPrX90W5VfljRMTPspqQO5W7beoraPTJhROMoIIM2NG4M16aKPiLSgEQXxnIatHvxc4t6llzvnLtK0DFx3Kaoa0d+s/vnAPE8nxTCVEE4rWNDoDDKrDj/lEI3GxXvfJ8VLCgDiOBfk07UwW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FP6apMQ4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1757678133; c=relaxed/simple;
+	bh=HWReLS5eFkOW9wArsGK6yFzx+ukafeWapKkcneq0rIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qe/vUI3SSQ5wxy9JDVFBVk7VcaUDwvCwZ9Y8BU5Gl8WjiBHtRNfSYE1wu55qkPJMnSmgPMTIAjSDql8aZdmWbjKAaC0OmQvYY1NfxUcvi9n2SB3MsmApXQImWe88LArIhL2jIuauF+yvx8bcwTurNT0o8XkVIIJhveX7X0k4mKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=uy+Uoald; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FP6apMQ4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7537C4CEF4;
-	Fri, 12 Sep 2025 11:55:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757678132;
-	bh=Fqq1VXRV80SxU6N1xNA+0LWY7g4OkpEIOyaLnXTvTnU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=FP6apMQ42fGlfKRfPT2foK+bDDQtD8pOt7QuKRi5O1bjlwjna+6nu9pUXxJ35H9Xk
-	 HlidHESHz3XWBSjriGSd2BJ5iYaglc+F4C1JGlMzNqAO24Agtv3aIas3EsJUob2bNT
-	 dXnyfDEgU+5dWIqtn3cM3Sl8saGtVaY79flpX6FutMjJgWHKkpq92Ac1izJjjcjrHS
-	 F8AaH3Cl8c90wFBlHnS6yF5LCp6i3AS1WJu5po8g0IRa1/jOxb2jWYgf/wLYWFmZ4U
-	 qmRi9NlA9RMPY3wfwaOvIchaoUvPStE1wjybnJ/CyqMLJ9UtQO8/dZK4Jr6BTRMN8I
-	 RuhXK6qABNbJw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 12 Sep 2025 13:52:49 +0200
-Subject: [PATCH v2 26/33] ns: add to_<type>_ns() to respective headers
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="uy+Uoald"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=ABLclAmNXcd73IJHK4dDG4aF1Bmf1AXekQnWr0CYxvo=; b=uy+UoaldABzzxGproNNR4M7XES
+	P2dSyOWwFnnQ/RpSSkJTEhjX6vrnZhKM//pmb7tluNXqs4J8iX2++oZAJ3k9zmIxle06H0cqUV/Mb
+	7eUHz31Bhwu7BqdsxnP9pNYyNqLMiw1Wk5CHzxp8sEU0Qx05oB4Akc4QWrsMpxPTNtj8TyUns1/3H
+	lC1HYsePvYlioNu9kfas+2IC3zGrd+euk6hPCuF16Qiax+4UxJ4qJwZhsADNrYN0JSG2THZFPQ1dW
+	A1uNyJKYU2UEv/PVc3totGqBwLCpy34jQ2t7tb/mq0vUn5MVYxOncMIJ8n9ANencN+O30+2ZZfQzI
+	i57Xk/qw==;
+Received: from [122.175.9.182] (port=33256 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1ux2NC-000000024DJ-20kH;
+	Fri, 12 Sep 2025 07:55:26 -0400
+From: Parvathi Pudi <parvathi@couthit.com>
+To: danishanwar@ti.com,
+	rogerq@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	ssantosh@kernel.org,
+	richardcochran@gmail.com,
+	m-malladi@ti.com,
+	s.hauer@pengutronix.de,
+	afd@ti.com,
+	jacob.e.keller@intel.com,
+	kory.maincent@bootlin.com,
+	johan@kernel.org,
+	alok.a.tiwari@oracle.com,
+	m-karicheri2@ti.com,
+	s-anna@ti.com,
+	horms@kernel.org,
+	glaroque@baylibre.com,
+	saikrishnag@marvell.com,
+	diogo.ivo@siemens.com,
+	javier.carrasco.cruz@gmail.com,
+	basharath@couthit.com,
+	parvathi@couthit.com,
+	pmohan@couthit.com
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	vadim.fedorenko@linux.dev,
+	bastien.curutchet@bootlin.com,
+	pratheesh@ti.com,
+	prajith@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com
+Subject: [PATCH net-next v16 4/6] net: ti: icssm-prueth: Adds link detection, RX and TX support.
+Date: Fri, 12 Sep 2025 17:23:28 +0530
+Message-ID: <20250912115443.529856-5-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250912104741.528721-1-parvathi@couthit.com>
+References: <20250912104741.528721-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250912-work-namespace-v2-26-1a247645cef5@kernel.org>
-References: <20250912-work-namespace-v2-0-1a247645cef5@kernel.org>
-In-Reply-To: <20250912-work-namespace-v2-0-1a247645cef5@kernel.org>
-To: Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
- linux-fsdevel@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, 
- Mike Yuan <me@yhndnzj.com>, 
- =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
- Lennart Poettering <mzxreary@0pointer.de>, 
- Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>, 
- Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
- =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- netdev@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.14.3-dev-385fa
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8323; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Fqq1VXRV80SxU6N1xNA+0LWY7g4OkpEIOyaLnXTvTnU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQc4Zyaszp0Z/7SE8emr+IK9H/9MMPZxHuC62de1uU/c
- 9JKkhdodZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkYgXDPxvFkpP20YZP5hzx
- sX8+k3f+OrUdyYsOsX0MmrY55kSVOD8jw/knLH2iB2NlXm31SXnWZx2l/0vI2+J18AKHA4tyI8N
- t+QE=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Every namespace type has a container_of(ns, <ns_type>, ns) static inline
-function that is currently not exposed in the header. So we have a bunch
-of places that open-code it via container_of(). Move it to the headers
-so we can use it directly.
+From: Roger Quadros <rogerq@ti.com>
 
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Changes corresponding to link configuration such as speed and duplexity.
+IRQ and handler initializations are performed for packet reception.Firmware
+receives the packet from the wire and stores it into OCMC queue. Next, it
+notifies the CPU via interrupt. Upon receiving the interrupt CPU will
+service the IRQ and packet will be processed by pushing the newly allocated
+SKB to upper layers.
+
+When the user application want to transmit a packet, it will invoke
+sys_send() which will in turn invoke the PRUETH driver, then it will write
+the packet into OCMC queues. PRU firmware will pick up the packet and
+transmit it on to the wire.
+
+Reviewed-by: Mohan Reddy Putluru <pmohan@couthit.com>
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 ---
- include/linux/cgroup.h         | 5 +++++
- include/linux/ipc_namespace.h  | 5 +++++
- include/linux/pid_namespace.h  | 5 +++++
- include/linux/time_namespace.h | 4 ++++
- include/linux/user_namespace.h | 5 +++++
- include/linux/utsname.h        | 5 +++++
- include/net/net_namespace.h    | 5 +++++
- ipc/namespace.c                | 5 -----
- kernel/cgroup/namespace.c      | 5 -----
- kernel/pid_namespace.c         | 5 -----
- kernel/time/namespace.c        | 5 -----
- kernel/user_namespace.c        | 5 -----
- kernel/utsname.c               | 5 -----
- net/core/net_namespace.c       | 5 -----
- 14 files changed, 34 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c | 652 ++++++++++++++++++-
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h |  56 ++
+ 2 files changed, 706 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index b18fb5fcb38e..9ca25346f7cb 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -794,6 +794,11 @@ extern struct cgroup_namespace init_cgroup_ns;
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+index 0bc230d60367..295c8bdd7c76 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+@@ -35,6 +35,14 @@
  
- #ifdef CONFIG_CGROUPS
- 
-+static inline struct cgroup_namespace *to_cg_ns(struct ns_common *ns)
+ #define TX_START_DELAY		0x40
+ #define TX_CLK_DELAY_100M	0x6
++#define HR_TIMER_TX_DELAY_US	100
++
++static void icssm_prueth_write_reg(struct prueth *prueth,
++				   enum prueth_mem region,
++				   unsigned int reg, u32 val)
 +{
-+	return container_of(ns, struct cgroup_namespace, ns);
++	writel_relaxed(val, prueth->mem[region].va + reg);
++}
+ 
+ /* Below macro is for 1528 Byte Frame support, to Allow even with
+  * Redundancy tag
+@@ -289,7 +297,7 @@ static void icssm_prueth_hostinit(struct prueth *prueth)
+ 	icssm_prueth_mii_init(prueth);
+ }
+ 
+-/* This function initialize the driver in EMAC or HSR or PRP mode
++/* This function initialize the driver in EMAC mode
+  * based on eth_type
+  */
+ static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
+@@ -297,6 +305,17 @@ static void icssm_prueth_init_ethernet_mode(struct prueth *prueth)
+ 	icssm_prueth_hostinit(prueth);
+ }
+ 
++static void icssm_prueth_port_enable(struct prueth_emac *emac, bool enable)
++{
++	struct prueth *prueth = emac->prueth;
++	void __iomem *port_ctrl;
++	void __iomem *ram;
++
++	ram = prueth->mem[emac->dram].va;
++	port_ctrl = ram + PORT_CONTROL_ADDR;
++	writeb(!!enable, port_ctrl);
 +}
 +
- void free_cgroup_ns(struct cgroup_namespace *ns);
- 
- struct cgroup_namespace *copy_cgroup_ns(unsigned long flags,
-diff --git a/include/linux/ipc_namespace.h b/include/linux/ipc_namespace.h
-index e8240cf2611a..924e4754374f 100644
---- a/include/linux/ipc_namespace.h
-+++ b/include/linux/ipc_namespace.h
-@@ -129,6 +129,11 @@ static inline int mq_init_ns(struct ipc_namespace *ns) { return 0; }
- #endif
- 
- #if defined(CONFIG_IPC_NS)
-+static inline struct ipc_namespace *to_ipc_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct ipc_namespace, ns);
-+}
-+
- extern struct ipc_namespace *copy_ipcs(unsigned long flags,
- 	struct user_namespace *user_ns, struct ipc_namespace *ns);
- 
-diff --git a/include/linux/pid_namespace.h b/include/linux/pid_namespace.h
-index 7c67a5811199..ba0efc8c8596 100644
---- a/include/linux/pid_namespace.h
-+++ b/include/linux/pid_namespace.h
-@@ -54,6 +54,11 @@ extern struct pid_namespace init_pid_ns;
- #define PIDNS_ADDING (1U << 31)
- 
- #ifdef CONFIG_PID_NS
-+static inline struct pid_namespace *to_pid_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct pid_namespace, ns);
-+}
-+
- static inline struct pid_namespace *get_pid_ns(struct pid_namespace *ns)
+ static int icssm_prueth_emac_config(struct prueth_emac *emac)
  {
- 	if (ns != &init_pid_ns)
-diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
-index 7f6af7a9771e..a47a4ce4183e 100644
---- a/include/linux/time_namespace.h
-+++ b/include/linux/time_namespace.h
-@@ -33,6 +33,10 @@ struct time_namespace {
- extern struct time_namespace init_time_ns;
+ 	struct prueth *prueth = emac->prueth;
+@@ -304,11 +323,13 @@ static int icssm_prueth_emac_config(struct prueth_emac *emac)
+ 	void __iomem *dram_base;
+ 	void __iomem *mac_addr;
+ 	void __iomem *dram;
++	void __iomem *sram;
  
- #ifdef CONFIG_TIME_NS
-+static inline struct time_namespace *to_time_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct time_namespace, ns);
-+}
- void __init time_ns_init(void);
- extern int vdso_join_timens(struct task_struct *task,
- 			    struct time_namespace *ns);
-diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-index a0bb6d012137..a09056ad090e 100644
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -168,6 +168,11 @@ static inline void set_userns_rlimit_max(struct user_namespace *ns,
+ 	/* PRU needs local shared RAM address for C28 */
+ 	sharedramaddr = ICSS_LOCAL_SHARED_RAM;
+ 	/* PRU needs real global OCMC address for C30*/
+ 	ocmcaddr = (u32)prueth->mem[PRUETH_MEM_OCMC].pa;
++	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
  
- #ifdef CONFIG_USER_NS
+ 	/* Clear data RAM */
+ 	icssm_prueth_clearmem(prueth, emac->dram);
+@@ -329,6 +350,9 @@ static int icssm_prueth_emac_config(struct prueth_emac *emac)
+ 	memcpy_toio(dram, queue_descs[emac->port_id],
+ 		    sizeof(queue_descs[emac->port_id]));
  
-+static inline struct user_namespace *to_user_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct user_namespace, ns);
-+}
++	emac->rx_queue_descs = sram + HOST_QUEUE_DESC_OFFSET;
++	emac->tx_queue_descs = dram;
 +
- static inline struct user_namespace *get_user_ns(struct user_namespace *ns)
- {
- 	if (ns)
-diff --git a/include/linux/utsname.h b/include/linux/utsname.h
-index bf7613ba412b..5d34c4f0f945 100644
---- a/include/linux/utsname.h
-+++ b/include/linux/utsname.h
-@@ -30,6 +30,11 @@ struct uts_namespace {
- extern struct uts_namespace init_uts_ns;
+ 	/* Set in constant table C28 of PRU0 to ICSS Shared memory */
+ 	pru_rproc_set_ctable(emac->pru, PRU_C28, sharedramaddr);
  
- #ifdef CONFIG_UTS_NS
-+static inline struct uts_namespace *to_uts_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct uts_namespace, ns);
-+}
-+
- static inline void get_uts_ns(struct uts_namespace *ns)
+@@ -343,8 +367,13 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
  {
- 	refcount_inc(&ns->ns.count);
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index 42075748dff1..b9c5f6c7ee1e 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -263,6 +263,11 @@ void ipx_unregister_sysctl(void);
- #ifdef CONFIG_NET_NS
- void __put_net(struct net *net);
+ 	struct prueth_emac *emac = netdev_priv(ndev);
+ 	struct phy_device *phydev = emac->phydev;
++	struct prueth *prueth = emac->prueth;
+ 	bool new_state = false;
++	enum prueth_mem region;
+ 	unsigned long flags;
++	u32 port_status = 0;
++	u32 txcfg, mask;
++	u32 delay;
  
-+static inline struct net *to_net_ns(struct ns_common *ns)
-+{
-+	return container_of(ns, struct net, ns);
-+}
-+
- /* Try using get_net_track() instead */
- static inline struct net *get_net(struct net *net)
- {
-diff --git a/ipc/namespace.c b/ipc/namespace.c
-index 9f923c1a1eb3..89588819956b 100644
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -209,11 +209,6 @@ void put_ipc_ns(struct ipc_namespace *ns)
+ 	spin_lock_irqsave(&emac->lock, flags);
+ 
+@@ -367,8 +396,32 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
+ 		emac->link = 0;
  	}
+ 
+-	if (new_state)
++	if (new_state) {
+ 		phy_print_status(phydev);
++		region = emac->dram;
++
++		/* update phy/port status information based on PHY values*/
++		if (emac->link) {
++			port_status |= PORT_LINK_MASK;
++
++			icssm_prueth_write_reg(prueth, region, PHY_SPEED_OFFSET,
++					       emac->speed);
++
++			delay = TX_CLK_DELAY_100M;
++			delay = delay << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT;
++			mask = PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_MASK;
++
++			if (emac->port_id)
++				txcfg = PRUSS_MII_RT_TXCFG1;
++			else
++				txcfg = PRUSS_MII_RT_TXCFG0;
++
++			regmap_update_bits(prueth->mii_rt, txcfg, mask, delay);
++		}
++
++		writeb(port_status, prueth->mem[region].va +
++		       PORT_STATUS_OFFSET);
++	}
+ 
+ 	if (emac->link) {
+ 	       /* reactivate the transmit queue if it is stopped */
+@@ -382,6 +435,401 @@ static void icssm_emac_adjust_link(struct net_device *ndev)
+ 	spin_unlock_irqrestore(&emac->lock, flags);
  }
  
--static inline struct ipc_namespace *to_ipc_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct ipc_namespace, ns);
--}
--
- static struct ns_common *ipcns_get(struct task_struct *task)
++static unsigned int
++icssm_get_buff_desc_count(const struct prueth_queue_info *queue)
++{
++	unsigned int buffer_desc_count;
++
++	buffer_desc_count = queue->buffer_desc_end -
++			    queue->buffer_desc_offset;
++	buffer_desc_count /= BD_SIZE;
++	buffer_desc_count++;
++
++	return buffer_desc_count;
++}
++
++static void icssm_get_block(struct prueth_queue_desc __iomem *queue_desc,
++			    const struct prueth_queue_info *queue,
++			    int *write_block, int *read_block)
++{
++	*write_block = (readw(&queue_desc->wr_ptr) -
++			queue->buffer_desc_offset) / BD_SIZE;
++	*read_block = (readw(&queue_desc->rd_ptr) -
++		       queue->buffer_desc_offset) / BD_SIZE;
++}
++
++/**
++ * icssm_emac_rx_irq - EMAC Rx interrupt handler
++ * @irq: interrupt number
++ * @dev_id: pointer to net_device
++ *
++ * EMAC Interrupt handler - we only schedule NAPI and not process any packets
++ * here.
++ *
++ * Return: IRQ_HANDLED if the interrupt handled
++ */
++static irqreturn_t icssm_emac_rx_irq(int irq, void *dev_id)
++{
++	struct net_device *ndev = (struct net_device *)dev_id;
++	struct prueth_emac *emac = netdev_priv(ndev);
++
++	if (likely(netif_running(ndev))) {
++		/* disable Rx system event */
++		disable_irq_nosync(emac->rx_irq);
++		napi_schedule(&emac->napi);
++	}
++
++	return IRQ_HANDLED;
++}
++
++/**
++ * icssm_prueth_tx_enqueue - queue a packet to firmware for transmission
++ *
++ * @emac: EMAC data structure
++ * @skb: packet data buffer
++ * @queue_id: priority queue id
++ *
++ * Return: 0 (Success)
++ */
++static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
++				   struct sk_buff *skb,
++				   enum prueth_queue_id queue_id)
++{
++	struct prueth_queue_desc __iomem *queue_desc;
++	const struct prueth_queue_info *txqueue;
++	struct net_device *ndev = emac->ndev;
++	unsigned int buffer_desc_count;
++	int free_blocks, update_block;
++	bool buffer_wrapped = false;
++	int write_block, read_block;
++	void *src_addr, *dst_addr;
++	int pkt_block_size;
++	void __iomem *dram;
++	int txport, pktlen;
++	u16 update_wr_ptr;
++	u32 wr_buf_desc;
++	void *ocmc_ram;
++
++	dram = emac->prueth->mem[emac->dram].va;
++	if (eth_skb_pad(skb)) {
++		if (netif_msg_tx_err(emac) && net_ratelimit())
++			netdev_err(ndev, "packet pad failed\n");
++		return -ENOMEM;
++	}
++
++	/* which port to tx: MII0 or MII1 */
++	txport = emac->tx_port_queue;
++	src_addr = skb->data;
++	pktlen = skb->len;
++	/* Get the tx queue */
++	queue_desc = emac->tx_queue_descs + queue_id;
++	txqueue = &queue_infos[txport][queue_id];
++
++	buffer_desc_count = icssm_get_buff_desc_count(txqueue);
++
++	/* the PRU firmware deals mostly in pointers already
++	 * offset into ram, we would like to deal in indexes
++	 * within the queue we are working with for code
++	 * simplicity, calculate this here
++	 */
++	icssm_get_block(queue_desc, txqueue, &write_block, &read_block);
++
++	if (write_block > read_block) {
++		free_blocks = buffer_desc_count - write_block;
++		free_blocks += read_block;
++	} else if (write_block < read_block) {
++		free_blocks = read_block - write_block;
++	} else { /* they are all free */
++		free_blocks = buffer_desc_count;
++	}
++
++	pkt_block_size = DIV_ROUND_UP(pktlen, ICSS_BLOCK_SIZE);
++	if (pkt_block_size > free_blocks) /* out of queue space */
++		return -ENOBUFS;
++
++	/* calculate end BD address post write */
++	update_block = write_block + pkt_block_size;
++
++	/* Check for wrap around */
++	if (update_block >= buffer_desc_count) {
++		update_block %= buffer_desc_count;
++		buffer_wrapped = true;
++	}
++
++	/* OCMC RAM is not cached and write order is not important */
++	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
++	dst_addr = ocmc_ram + txqueue->buffer_offset +
++		   (write_block * ICSS_BLOCK_SIZE);
++
++	/* Copy the data from socket buffer(DRAM) to PRU buffers(OCMC) */
++	if (buffer_wrapped) { /* wrapped around buffer */
++		int bytes = (buffer_desc_count - write_block) * ICSS_BLOCK_SIZE;
++		int remaining;
++
++		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
++		 * entire packet may have fit within the last BD
++		 * if pkt_info.length is not integral multiple of
++		 * ICSS_BLOCK_SIZE
++		 */
++		if (pktlen < bytes)
++			bytes = pktlen;
++
++		/* copy non-wrapped part */
++		memcpy(dst_addr, src_addr, bytes);
++
++		/* copy wrapped part */
++		src_addr += bytes;
++		remaining = pktlen - bytes;
++		dst_addr = ocmc_ram + txqueue->buffer_offset;
++		memcpy(dst_addr, src_addr, remaining);
++	} else {
++		memcpy(dst_addr, src_addr, pktlen);
++	}
++
++       /* update first buffer descriptor */
++	wr_buf_desc = (pktlen << PRUETH_BD_LENGTH_SHIFT) &
++		       PRUETH_BD_LENGTH_MASK;
++	writel(wr_buf_desc, dram + readw(&queue_desc->wr_ptr));
++
++	/* update the write pointer in this queue descriptor, the firmware
++	 * polls for this change so this will signal the start of transmission
++	 */
++	update_wr_ptr = txqueue->buffer_desc_offset + (update_block * BD_SIZE);
++	writew(update_wr_ptr, &queue_desc->wr_ptr);
++
++	return 0;
++}
++
++void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
++			     struct prueth_packet_info *pkt_info)
++{
++	pkt_info->shadow = !!(buffer_descriptor & PRUETH_BD_SHADOW_MASK);
++	pkt_info->port = (buffer_descriptor & PRUETH_BD_PORT_MASK) >>
++			 PRUETH_BD_PORT_SHIFT;
++	pkt_info->length = (buffer_descriptor & PRUETH_BD_LENGTH_MASK) >>
++			   PRUETH_BD_LENGTH_SHIFT;
++	pkt_info->broadcast = !!(buffer_descriptor & PRUETH_BD_BROADCAST_MASK);
++	pkt_info->error = !!(buffer_descriptor & PRUETH_BD_ERROR_MASK);
++	pkt_info->lookup_success = !!(buffer_descriptor &
++				      PRUETH_BD_LOOKUP_SUCCESS_MASK);
++	pkt_info->flood = !!(buffer_descriptor & PRUETH_BD_SW_FLOOD_MASK);
++	pkt_info->timestamp = !!(buffer_descriptor & PRUETH_BD_TIMESTAMP_MASK);
++}
++
++/**
++ * icssm_emac_rx_packet - EMAC Receive function
++ *
++ * @emac: EMAC data structure
++ * @bd_rd_ptr: Buffer descriptor read pointer
++ * @pkt_info: packet information structure
++ * @rxqueue: Receive queue information structure
++ *
++ * Get a packet from receive queue
++ *
++ * Return: 0 (Success)
++ */
++int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
++			 struct prueth_packet_info *pkt_info,
++			 const struct prueth_queue_info *rxqueue)
++{
++	struct net_device *ndev = emac->ndev;
++	unsigned int buffer_desc_count;
++	int read_block, update_block;
++	unsigned int actual_pkt_len;
++	bool buffer_wrapped = false;
++	void *src_addr, *dst_addr;
++	struct sk_buff *skb;
++	int pkt_block_size;
++	void *ocmc_ram;
++
++	/* the PRU firmware deals mostly in pointers already
++	 * offset into ram, we would like to deal in indexes
++	 * within the queue we are working with for code
++	 * simplicity, calculate this here
++	 */
++	buffer_desc_count = icssm_get_buff_desc_count(rxqueue);
++	read_block = (*bd_rd_ptr - rxqueue->buffer_desc_offset) / BD_SIZE;
++	pkt_block_size = DIV_ROUND_UP(pkt_info->length, ICSS_BLOCK_SIZE);
++
++	/* calculate end BD address post read */
++	update_block = read_block + pkt_block_size;
++
++	/* Check for wrap around */
++	if (update_block >= buffer_desc_count) {
++		update_block %= buffer_desc_count;
++		if (update_block)
++			buffer_wrapped = true;
++	}
++
++	/* calculate new pointer in ram */
++	*bd_rd_ptr = rxqueue->buffer_desc_offset + (update_block * BD_SIZE);
++
++	actual_pkt_len = pkt_info->length;
++
++	/* Allocate a socket buffer for this packet */
++	skb = netdev_alloc_skb_ip_align(ndev, actual_pkt_len);
++	if (!skb) {
++		if (netif_msg_rx_err(emac) && net_ratelimit())
++			netdev_err(ndev, "failed rx buffer alloc\n");
++		return -ENOMEM;
++	}
++
++	dst_addr = skb->data;
++
++	/* OCMC RAM is not cached and read order is not important */
++	ocmc_ram = (__force void *)emac->prueth->mem[PRUETH_MEM_OCMC].va;
++
++	/* Get the start address of the first buffer from
++	 * the read buffer description
++	 */
++	src_addr = ocmc_ram + rxqueue->buffer_offset +
++		   (read_block * ICSS_BLOCK_SIZE);
++
++	/* Copy the data from PRU buffers(OCMC) to socket buffer(DRAM) */
++	if (buffer_wrapped) { /* wrapped around buffer */
++		int bytes = (buffer_desc_count - read_block) * ICSS_BLOCK_SIZE;
++		int remaining;
++		/* bytes is integral multiple of ICSS_BLOCK_SIZE but
++		 * entire packet may have fit within the last BD
++		 * if pkt_info.length is not integral multiple of
++		 * ICSS_BLOCK_SIZE
++		 */
++		if (pkt_info->length < bytes)
++			bytes = pkt_info->length;
++
++		/* copy non-wrapped part */
++		memcpy(dst_addr, src_addr, bytes);
++
++		/* copy wrapped part */
++		dst_addr += bytes;
++		remaining = actual_pkt_len - bytes;
++
++		src_addr = ocmc_ram + rxqueue->buffer_offset;
++		memcpy(dst_addr, src_addr, remaining);
++		src_addr += remaining;
++	} else {
++		memcpy(dst_addr, src_addr, actual_pkt_len);
++		src_addr += actual_pkt_len;
++	}
++
++	skb_put(skb, actual_pkt_len);
++
++	/* send packet up the stack */
++	skb->protocol = eth_type_trans(skb, ndev);
++	netif_receive_skb(skb);
++
++	/* update stats */
++	emac->stats.rx_bytes += actual_pkt_len;
++	emac->stats.rx_packets++;
++
++	return 0;
++}
++
++static int icssm_emac_rx_packets(struct prueth_emac *emac, int budget)
++{
++	struct prueth_queue_desc __iomem *queue_desc;
++	const struct prueth_queue_info *rxqueue;
++	struct prueth *prueth = emac->prueth;
++	struct prueth_packet_info pkt_info;
++	int start_queue, end_queue;
++	void __iomem *shared_ram;
++	u16 bd_rd_ptr, bd_wr_ptr;
++	u16 update_rd_ptr;
++	u8 overflow_cnt;
++	u32 rd_buf_desc;
++	int used = 0;
++	int i, ret;
++
++	shared_ram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
++
++	start_queue = emac->rx_queue_start;
++	end_queue = emac->rx_queue_end;
++
++	/* skip Rx if budget is 0 */
++	if (!budget)
++		return 0;
++
++	/* search host queues for packets */
++	for (i = start_queue; i <= end_queue; i++) {
++		queue_desc = emac->rx_queue_descs + i;
++		rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
++
++		overflow_cnt = readb(&queue_desc->overflow_cnt);
++		if (overflow_cnt > 0) {
++			emac->stats.rx_over_errors += overflow_cnt;
++			/* reset to zero */
++			writeb(0, &queue_desc->overflow_cnt);
++		}
++
++		bd_rd_ptr = readw(&queue_desc->rd_ptr);
++		bd_wr_ptr = readw(&queue_desc->wr_ptr);
++
++		/* while packets are available in this queue */
++		while (bd_rd_ptr != bd_wr_ptr) {
++			/* get packet info from the read buffer descriptor */
++			rd_buf_desc = readl(shared_ram + bd_rd_ptr);
++			icssm_parse_packet_info(prueth, rd_buf_desc, &pkt_info);
++
++			if (pkt_info.length <= 0) {
++				/* a packet length of zero will cause us to
++				 * never move the read pointer ahead, locking
++				 * the driver, so we manually have to move it
++				 * to the write pointer, discarding all
++				 * remaining packets in this queue. This should
++				 * never happen.
++				 */
++				update_rd_ptr = bd_wr_ptr;
++				emac->stats.rx_length_errors++;
++			} else if (pkt_info.length > EMAC_MAX_FRM_SUPPORT) {
++				/* if the packet is too large we skip it but we
++				 * still need to move the read pointer ahead
++				 * and assume something is wrong with the read
++				 * pointer as the firmware should be filtering
++				 * these packets
++				 */
++				update_rd_ptr = bd_wr_ptr;
++				emac->stats.rx_length_errors++;
++			} else {
++				update_rd_ptr = bd_rd_ptr;
++				ret = icssm_emac_rx_packet(emac, &update_rd_ptr,
++							   &pkt_info, rxqueue);
++				if (ret)
++					return used;
++				used++;
++			}
++
++			/* after reading the buffer descriptor we clear it
++			 * to prevent improperly moved read pointer errors
++			 * from simply looking like old packets.
++			 */
++			writel(0, shared_ram + bd_rd_ptr);
++
++			/* update read pointer in queue descriptor */
++			writew(update_rd_ptr, &queue_desc->rd_ptr);
++			bd_rd_ptr = update_rd_ptr;
++
++			/* all we have room for? */
++			if (used >= budget)
++				return used;
++		}
++	}
++
++	return used;
++}
++
++static int icssm_emac_napi_poll(struct napi_struct *napi, int budget)
++{
++	struct prueth_emac *emac = container_of(napi, struct prueth_emac, napi);
++	int num_rx;
++
++	num_rx = icssm_emac_rx_packets(emac, budget);
++
++	if (num_rx < budget && napi_complete_done(napi, num_rx))
++		enable_irq(emac->rx_irq);
++
++	return num_rx;
++}
++
+ static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
+ 				   struct net_device *ndev)
  {
- 	struct ipc_namespace *ns = NULL;
-diff --git a/kernel/cgroup/namespace.c b/kernel/cgroup/namespace.c
-index fc12c416dfeb..5a327914b565 100644
---- a/kernel/cgroup/namespace.c
-+++ b/kernel/cgroup/namespace.c
-@@ -89,11 +89,6 @@ struct cgroup_namespace *copy_cgroup_ns(unsigned long flags,
- 	return new_ns;
+@@ -411,6 +859,21 @@ static int icssm_emac_set_boot_pru(struct prueth_emac *emac,
+ 			   fw_name, ret);
+ 		return ret;
+ 	}
++	return ret;
++}
++
++static int icssm_emac_request_irqs(struct prueth_emac *emac)
++{
++	struct net_device *ndev = emac->ndev;
++	int ret;
++
++	ret = request_irq(emac->rx_irq, icssm_emac_rx_irq,
++			  IRQF_TRIGGER_HIGH,
++			  ndev->name, ndev);
++	if (ret) {
++		netdev_err(ndev, "unable to request RX IRQ\n");
++		return ret;
++	}
+ 
+ 	return ret;
+ }
+@@ -441,10 +904,29 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = icssm_emac_request_irqs(emac);
++	if (ret)
++		goto rproc_shutdown;
++
++	napi_enable(&emac->napi);
++
+ 	/* start PHY */
+ 	phy_start(emac->phydev);
++
++	/* enable the port and vlan */
++	icssm_prueth_port_enable(emac, true);
++
+ 	prueth->emac_configured |= BIT(emac->port_id);
++
++	if (netif_msg_drv(emac))
++		dev_notice(&ndev->dev, "started\n");
++
+ 	return 0;
++
++rproc_shutdown:
++	rproc_shutdown(emac->pru);
++
++	return ret;
  }
  
--static inline struct cgroup_namespace *to_cg_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct cgroup_namespace, ns);
--}
--
- static int cgroupns_install(struct nsset *nsset, struct ns_common *ns)
+ /**
+@@ -458,18 +940,146 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
+ static int icssm_emac_ndo_stop(struct net_device *ndev)
  {
- 	struct nsproxy *nsproxy = nsset->nsproxy;
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 228ae20299f9..9b327420309e 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -345,11 +345,6 @@ int reboot_pid_ns(struct pid_namespace *pid_ns, int cmd)
+ 	struct prueth_emac *emac = netdev_priv(ndev);
++	struct prueth *prueth = emac->prueth;
++
++	prueth->emac_configured &= ~BIT(emac->port_id);
++
++	/* disable the mac port */
++	icssm_prueth_port_enable(emac, false);
+ 
+ 	/* stop PHY */
+ 	phy_stop(emac->phydev);
+ 
++	napi_disable(&emac->napi);
++	hrtimer_cancel(&emac->tx_hrtimer);
++
++	/* stop the PRU */
+ 	rproc_shutdown(emac->pru);
+ 
++	/* free rx interrupts */
++	free_irq(emac->rx_irq, ndev);
++
++	if (netif_msg_drv(emac))
++		dev_notice(&ndev->dev, "stopped\n");
++
  	return 0;
  }
  
--static inline struct pid_namespace *to_pid_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct pid_namespace, ns);
--}
--
- static struct ns_common *pidns_get(struct task_struct *task)
- {
- 	struct pid_namespace *ns;
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index 408f60d0a3b6..20b65f90549e 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -261,11 +261,6 @@ void free_time_ns(struct time_namespace *ns)
- 	kfree_rcu(ns, ns.ns_rcu);
++/* VLAN-tag PCP to priority queue map for EMAC/Switch/HSR/PRP used by driver
++ * Index is PCP val / 2.
++ *   low  - pcp 0..3 maps to Q4 for Host
++ *   high - pcp 4..7 maps to Q3 for Host
++ *   low  - pcp 0..3 maps to Q2 (FWD Queue) for PRU-x
++ *   where x = 1 for PRUETH_PORT_MII0
++ *             0 for PRUETH_PORT_MII1
++ *   high - pcp 4..7 maps to Q1 (FWD Queue) for PRU-x
++ */
++static const unsigned short emac_pcp_tx_priority_queue_map[] = {
++	PRUETH_QUEUE4, PRUETH_QUEUE4,
++	PRUETH_QUEUE3, PRUETH_QUEUE3,
++	PRUETH_QUEUE2, PRUETH_QUEUE2,
++	PRUETH_QUEUE1, PRUETH_QUEUE1,
++};
++
++static u16 icssm_prueth_get_tx_queue_id(struct prueth *prueth,
++					struct sk_buff *skb)
++{
++	u16 vlan_tci, pcp;
++	int err;
++
++	err = vlan_get_tag(skb, &vlan_tci);
++	if (likely(err))
++		pcp = 0;
++	else
++		pcp = (vlan_tci & VLAN_PRIO_MASK) >> VLAN_PRIO_SHIFT;
++
++	/* Below code (pcp >>= 1) is made common for all
++	 * protocols (i.e., EMAC, RSTP, HSR and PRP)*
++	 * pcp value 0,1 will be updated to 0 mapped to QUEUE4
++	 * pcp value 2,3 will be updated to 1 mapped to QUEUE4
++	 * pcp value 4,5 will be updated to 2 mapped to QUEUE3
++	 * pcp value 6,7 will be updated to 3 mapped to QUEUE3
++	 */
++	pcp >>= 1;
++
++	return emac_pcp_tx_priority_queue_map[pcp];
++}
++
++/**
++ * icssm_emac_ndo_start_xmit - EMAC Transmit function
++ * @skb: SKB pointer
++ * @ndev: EMAC network adapter
++ *
++ * Called by the system to transmit a packet - we queue the packet in
++ * EMAC hardware transmit queue
++ *
++ * Return: enum netdev_tx
++ */
++static enum netdev_tx icssm_emac_ndo_start_xmit(struct sk_buff *skb,
++						struct net_device *ndev)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++	int ret;
++	u16 qid;
++
++	qid = icssm_prueth_get_tx_queue_id(emac->prueth, skb);
++	ret = icssm_prueth_tx_enqueue(emac, skb, qid);
++	if (ret) {
++		if (ret != -ENOBUFS && netif_msg_tx_err(emac) &&
++		    net_ratelimit())
++			netdev_err(ndev, "packet queue failed: %d\n", ret);
++		goto fail_tx;
++	}
++
++	emac->stats.tx_packets++;
++	emac->stats.tx_bytes += skb->len;
++	dev_kfree_skb_any(skb);
++
++	return NETDEV_TX_OK;
++
++fail_tx:
++	if (ret == -ENOBUFS) {
++		netif_stop_queue(ndev);
++		hrtimer_start(&emac->tx_hrtimer,
++			      us_to_ktime(HR_TIMER_TX_DELAY_US),
++			      HRTIMER_MODE_REL_PINNED);
++		ret = NETDEV_TX_BUSY;
++	} else {
++		/* error */
++		emac->stats.tx_dropped++;
++		ret = NET_XMIT_DROP;
++	}
++
++	return ret;
++}
++
++/**
++ * icssm_emac_ndo_get_stats64 - EMAC get statistics function
++ * @ndev: The EMAC network adapter
++ * @stats: rtnl_link_stats structure
++ *
++ * Called when system wants to get statistics from the device.
++ *
++ */
++static void icssm_emac_ndo_get_stats64(struct net_device *ndev,
++				       struct rtnl_link_stats64 *stats)
++{
++	struct prueth_emac *emac = netdev_priv(ndev);
++
++	stats->rx_packets = emac->stats.rx_packets;
++	stats->rx_bytes = emac->stats.rx_bytes;
++	stats->tx_packets = emac->stats.tx_packets;
++	stats->tx_bytes = emac->stats.tx_bytes;
++	stats->tx_dropped = emac->stats.tx_dropped;
++	stats->rx_over_errors = emac->stats.rx_over_errors;
++	stats->rx_length_errors = emac->stats.rx_length_errors;
++}
++
+ static const struct net_device_ops emac_netdev_ops = {
+ 	.ndo_open = icssm_emac_ndo_open,
+ 	.ndo_stop = icssm_emac_ndo_stop,
++	.ndo_start_xmit = icssm_emac_ndo_start_xmit,
++	.ndo_get_stats64 = icssm_emac_ndo_get_stats64,
+ };
+ 
+ /* get emac_port corresponding to eth_node name */
+@@ -508,6 +1118,17 @@ static int icssm_prueth_node_mac(struct device_node *eth_node)
+ 		return PRUETH_MAC_INVALID;
  }
  
--static struct time_namespace *to_time_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct time_namespace, ns);
--}
--
- static struct ns_common *timens_get(struct task_struct *task)
++static enum hrtimer_restart icssm_emac_tx_timer_callback(struct hrtimer *timer)
++{
++	struct prueth_emac *emac =
++			container_of(timer, struct prueth_emac, tx_hrtimer);
++
++	if (netif_queue_stopped(emac->ndev))
++		netif_wake_queue(emac->ndev);
++
++	return HRTIMER_NORESTART;
++}
++
+ static int icssm_prueth_netdev_init(struct prueth *prueth,
+ 				    struct device_node *eth_node)
  {
- 	struct time_namespace *ns = NULL;
-diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-index ade5b6806c5c..cfb0e28f2779 100644
---- a/kernel/user_namespace.c
-+++ b/kernel/user_namespace.c
-@@ -1325,11 +1325,6 @@ bool current_in_userns(const struct user_namespace *target_ns)
- }
- EXPORT_SYMBOL(current_in_userns);
+@@ -539,16 +1160,37 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
+ 	/* by default eth_type is EMAC */
+ 	switch (port) {
+ 	case PRUETH_PORT_MII0:
++		emac->tx_port_queue = PRUETH_PORT_QUEUE_MII0;
++
++		/* packets from MII0 are on queues 1 through 2 */
++		emac->rx_queue_start = PRUETH_QUEUE1;
++		emac->rx_queue_end = PRUETH_QUEUE2;
++
+ 		emac->dram = PRUETH_MEM_DRAM0;
+ 		emac->pru = prueth->pru0;
+ 		break;
+ 	case PRUETH_PORT_MII1:
++		emac->tx_port_queue = PRUETH_PORT_QUEUE_MII1;
++
++		/* packets from MII1 are on queues 3 through 4 */
++		emac->rx_queue_start = PRUETH_QUEUE3;
++		emac->rx_queue_end = PRUETH_QUEUE4;
++
+ 		emac->dram = PRUETH_MEM_DRAM1;
+ 		emac->pru = prueth->pru1;
+ 		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
++
++	emac->rx_irq = of_irq_get_byname(eth_node, "rx");
++	if (emac->rx_irq < 0) {
++		ret = emac->rx_irq;
++		if (ret != -EPROBE_DEFER)
++			dev_err(prueth->dev, "could not get rx irq\n");
++		goto free;
++	}
++
+ 	/* get mac address from DT and set private and netdev addr */
+ 	ret = of_get_ethdev_address(eth_node, ndev);
+ 	if (!is_valid_ether_addr(ndev->dev_addr)) {
+@@ -579,6 +1221,11 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
+ 	ndev->dev.of_node = eth_node;
+ 	ndev->netdev_ops = &emac_netdev_ops;
  
--static inline struct user_namespace *to_user_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct user_namespace, ns);
--}
--
- static struct ns_common *userns_get(struct task_struct *task)
- {
- 	struct user_namespace *user_ns;
-diff --git a/kernel/utsname.c b/kernel/utsname.c
-index 64155417ae0c..a682830742d3 100644
---- a/kernel/utsname.c
-+++ b/kernel/utsname.c
-@@ -103,11 +103,6 @@ void free_uts_ns(struct uts_namespace *ns)
- 	kfree_rcu(ns, ns.ns_rcu);
++	netif_napi_add(ndev, &emac->napi, icssm_emac_napi_poll);
++
++	hrtimer_setup(&emac->tx_hrtimer, &icssm_emac_tx_timer_callback,
++		      CLOCK_MONOTONIC, HRTIMER_MODE_REL_PINNED);
++
+ 	return 0;
+ free:
+ 	emac->ndev = NULL;
+@@ -603,6 +1250,7 @@ static void icssm_prueth_netdev_exit(struct prueth *prueth,
+ 
+ 	phy_disconnect(emac->phydev);
+ 
++	netif_napi_del(&emac->napi);
+ 	prueth->emac[mac] = NULL;
  }
  
--static inline struct uts_namespace *to_uts_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct uts_namespace, ns);
--}
--
- static struct ns_common *utsns_get(struct task_struct *task)
- {
- 	struct uts_namespace *ns = NULL;
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 169ec22c4758..a57b3cda8dbc 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -1541,11 +1541,6 @@ static struct ns_common *netns_get(struct task_struct *task)
- 	return net ? &net->ns : NULL;
- }
+diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+index f1d1deef888f..f5b6b1e99bd4 100644
+--- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
++++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
+@@ -20,6 +20,12 @@
  
--static inline struct net *to_net_ns(struct ns_common *ns)
--{
--	return container_of(ns, struct net, ns);
--}
--
- static void netns_put(struct ns_common *ns)
- {
- 	put_net(to_net_ns(ns));
-
+ /* PRUSS local memory map */
+ #define ICSS_LOCAL_SHARED_RAM	0x00010000
++#define EMAC_MAX_PKTLEN		(ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN)
++/* Below macro is for 1528 Byte Frame support, to Allow even with
++ * Redundancy tag
++ */
++#define EMAC_MAX_FRM_SUPPORT (ETH_HLEN + VLAN_HLEN + ETH_DATA_LEN + \
++			      ICSSM_LRE_TAG_SIZE)
+ 
+ /* PRU Ethernet Type - Ethernet functionality (protocol
+  * implemented) provided by the PRU firmware being loaded.
+@@ -76,6 +82,28 @@ struct prueth_queue_info {
+ 	u16 buffer_desc_end;
+ };
+ 
++/**
++ * struct prueth_packet_info - Info about a packet in buffer
++ * @shadow: this packet is stored in the collision queue
++ * @port: port packet is on
++ * @length: length of packet
++ * @broadcast: this packet is a broadcast packet
++ * @error: this packet has an error
++ * @lookup_success: src mac found in FDB
++ * @flood: packet is to be flooded
++ * @timestamp: Specifies if timestamp is appended to the packet
++ */
++struct prueth_packet_info {
++	bool shadow;
++	unsigned int port;
++	unsigned int length;
++	bool broadcast;
++	bool error;
++	bool lookup_success;
++	bool flood;
++	bool timestamp;
++};
++
+ /* In switch mode there are 3 real ports i.e. 3 mac addrs.
+  * however Linux sees only the host side port. The other 2 ports
+  * are the switch ports.
+@@ -158,21 +186,39 @@ struct prueth_private_data {
+ 	const struct prueth_firmware fw_pru[PRUSS_NUM_PRUS];
+ };
+ 
++struct prueth_emac_stats {
++	u64 tx_packets;
++	u64 tx_dropped;
++	u64 tx_bytes;
++	u64 rx_packets;
++	u64 rx_bytes;
++	u64 rx_length_errors;
++	u64 rx_over_errors;
++};
++
+ /* data for each emac port */
+ struct prueth_emac {
+ 	struct prueth *prueth;
+ 	struct net_device *ndev;
++	struct napi_struct napi;
+ 
+ 	struct rproc *pru;
+ 	struct phy_device *phydev;
++	struct prueth_queue_desc __iomem *rx_queue_descs;
++	struct prueth_queue_desc __iomem *tx_queue_descs;
+ 
+ 	int link;
+ 	int speed;
+ 	int duplex;
++	int rx_irq;
+ 
++	enum prueth_port_queue_id tx_port_queue;
++	enum prueth_queue_id rx_queue_start;
++	enum prueth_queue_id rx_queue_end;
+ 	enum prueth_port port_id;
+ 	enum prueth_mem dram;
+ 	const char *phy_id;
++	u32 msg_enable;
+ 	u8 mac_addr[6];
+ 	phy_interface_t phy_if;
+ 
+@@ -180,6 +226,9 @@ struct prueth_emac {
+ 	 * during link configuration
+ 	 */
+ 	spinlock_t lock;
++
++	struct hrtimer tx_hrtimer;
++	struct prueth_emac_stats stats;
+ };
+ 
+ struct prueth {
+@@ -201,4 +250,11 @@ struct prueth {
+ 	size_t ocmc_ram_size;
+ 	u8 emac_configured;
+ };
++
++void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
++			     struct prueth_packet_info *pkt_info);
++int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
++			 struct prueth_packet_info *pkt_info,
++			 const struct prueth_queue_info *rxqueue);
++
+ #endif /* __NET_TI_PRUETH_H */
 -- 
-2.47.3
+2.43.0
 
