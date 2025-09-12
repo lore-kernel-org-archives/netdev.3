@@ -1,46 +1,43 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DE62DC76D
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 20:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044D72DC76D;
+	Fri, 12 Sep 2025 20:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757709409; cv=none; b=dGvcsPMKuRA8uBvVa16le9lsh0wdsilGpKpdc9MB1hR1kzxelrVJ74iwUN0c/RJA/vrOFcSxpMSq1PvUkDgwZBfsXqojfGTddRtG6vIsrBjWVHy1isx/98WrbXwMO3fnkeb01RWQdNwVR/eRnSObLMfvTBIspmwL9os9mxfTYLc=
+	t=1757709550; cv=none; b=YnHYlkLD5OwpBciRr61B92vG86lmxXOJE0EOscS9mv9IKJyDOBs0Z07fOv5gSco+q+XIwGiNEqzWSULCsSom+IUi2VrJ2hB1gbXXJtVp68XKDzYZftcPzLDKRZqkQ9IZsPHZ6eAg3xbhiTgacNwxKdcqbtpxX5GgMCd1wMiMnH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757709409; c=relaxed/simple;
-	bh=kzGlxNAIWV3br9b3tVz1lXP6+GdlTkmo1VaTNHPMWpc=;
+	s=arc-20240116; t=1757709550; c=relaxed/simple;
+	bh=XjlzbxOPI9k4HJ/nt4qvHCfNeSL+KPbMyK5is1V3w98=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vrfto6VqzXVF/OjB3ncIQW8Gs0a2APooqIdIUI2wEr9B4U/yDD79M2bKVRn2vQwRunf/nkF+ya8PVQbaUqpI2CL/Ag30GJs8eYJKn7TQ42v3Yche2GGKOr80aj3RPxMtGDfad9h4t77dSaNXLfi6C4i+q0WSIs2GxpSw1ftn9GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Hza4FmlN; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=rZ++fbO88GCDHDIdzzmohlA3Rt1s06du0Yv9DQYellNZfC7Ontyoxt+8KRsJ2rUxFwONU5pYGL5kiZ6obOML1LcIdAgXQnGNPEEmC+1fV/voQHti6mP13+fuy+UX8R3dFlu/0+q+TdBI3Og0camGrgN40hImfnqjHyUsy43juL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ornA/hVk; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Hza4FmlN"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ornA/hVk"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cyCyLGML5xcb4UNJGaWz3oPm1rJji59KfpAlSIagdZQ=; b=Hza4FmlNgCgAmXOskMYSaE7j+j
-	uOt+RNgzF1UjWqt9VqaqaL6cHwAih3ewL66/J6KvJEZmgh1Eroa6vjeed2w+8YCCnu+kCFpglDBno
-	5xk3ijUMa5AKUR8Akna1ef9z/oxEwkGyYH5l2mKrmsHUPtUzgmAH77n3D3QAdLdtP6Dc=;
+	bh=RoWkU4gWBG8S5M3j86BiHNrtQVTCkzI308KAVYRZnWQ=; b=ornA/hVkqies3qUnsXJy75cbao
+	jS9S6Gz3sIatOyl5f73NbNxTIDaiVaLAUAMXJAOXUhmzPHd52KDypu+qyfq1rW3zlHveHcr9In+u8
+	SAgo9dNURUFhmePp1BqVBkkHXXZQegXOyGvpE5klIkcDlQF/3LkTe+sNOI2+AtSlCrn8=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1uxAVb-008Fou-29; Fri, 12 Sep 2025 22:36:39 +0200
-Date: Fri, 12 Sep 2025 22:36:39 +0200
+	id 1uxAXu-008Fpw-Gr; Fri, 12 Sep 2025 22:39:02 +0200
+Date: Fri, 12 Sep 2025 22:39:02 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Stefan Wahren <wahrenst@gmx.net>
-Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Yeounsu Moon <yyyynoom@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH V2 2/2 net-next] ethernet: Extend
- device_get_mac_address() to use NVMEM
-Message-ID: <5e481fbe-d6cf-4ee0-a531-f8cec75c28f9@lunn.ch>
-References: <20250912140332.35395-1-wahrenst@gmx.net>
- <20250912140332.35395-3-wahrenst@gmx.net>
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dlink: handle copy_thresh allocation failure
+Message-ID: <57d58296-c656-4dab-a2e2-faf2452fb4de@lunn.ch>
+References: <20250912145339.67448-2-yyyynoom@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,16 +46,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250912140332.35395-3-wahrenst@gmx.net>
+In-Reply-To: <20250912145339.67448-2-yyyynoom@gmail.com>
 
-On Fri, Sep 12, 2025 at 04:03:32PM +0200, Stefan Wahren wrote:
-> A lot of modern SoC have the ability to store MAC addresses in their
-> NVMEM. So extend the generic function device_get_mac_address() to
-> obtain the MAC address from an nvmem cell named 'mac-address' in
-> case there is no firmware node which contains the MAC address directly.
-> 
-> Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+> -				skb_copy_to_linear_data (skb,
+> +				skb_copy_to_linear_data(skb,
+>  						  np->rx_skbuff[entry]->data,
+>  						  pkt_len);
+> -				skb_put (skb, pkt_len);
+> +				skb_put(skb, pkt_len);
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Please don't include white space changes with other changes. It makes
+the patch harder to review.
 
     Andrew
+
+---
+pw-bot: cr
