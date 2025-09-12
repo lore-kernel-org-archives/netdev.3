@@ -1,28 +1,29 @@
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F4E134BD;
-	Fri, 12 Sep 2025 06:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F11280CF1;
+	Fri, 12 Sep 2025 06:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757658531; cv=none; b=R5/MPQgv70XPq58RFAOnrMEVlltx6QnnaUtmE0v0G1qnJp0rGk27Ix1M/glwrfVX5B+z6M2wdvkfaIpADtABm3+iQUCbZwn2pvpK7m24pjPztwQhe0z7fo+YohdLQ66XLJcjqDFhq0r9s+SMvfPtQ4EMBmlCOUOE0YRvbKUr1hM=
+	t=1757658531; cv=none; b=BZ/9GRYQWX9Pzr/PgQKRhH02zEVZV/QaizchG+sKPL0Wrbnq9H1R+6fW0Cq9LxmPqeNNrcQiEktrOFDkKZL8dtJ1G715sI2rRT8gu/jJJfQESeTY0K66T44xvRhGvB2/hn5/zwrhQPdeUPfeKRTMrFkCnOxI3MnkR1jEQe2QoDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757658531; c=relaxed/simple;
-	bh=n9uh+eUbq1plCIfJHPx2hvfSEm+aoHjwv2aI0EWbXII=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tYJZtOCh/9yi9UXNg8XmsEiaX+mNgxUQlGCVzGZZB4AvcU7xLcP+8aBVcRjLbToQsoy8qL9AVpdChHBtcGr4WEW8vK8iNKGejp60QSNhLlmZsVCpH/AOM5MZu7Vxj1/vYtKg2uLO7oZZ6/R3HBRr3nrAA8Ls5mnXJ++rXbKynTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+	bh=Yi/1cpqA8qQen9IzdIh8Dhk8BoklicOLnKI8lRBwco0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gYl0FPLCLehDFUSLeizVIcfZgA6Pmy2MUiFIFEQN1M9NevAq6Jw/xdfBdYmhG2Kr+bgT8fPGKTJxex2TGz5TgUQ46N2HsX54tQ+AzBilToCEc8D94YxCO6OEoJIeRCudxhnMbedQIfXCkSDTw/lbP5vVZS/iSe5DMGQyJPH1iu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4cNPXh1ZDYz13Ms5;
-	Fri, 12 Sep 2025 14:24:36 +0800 (CST)
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cNPXB4MrjzQlQg;
+	Fri, 12 Sep 2025 14:24:10 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 099D11400C8;
-	Fri, 12 Sep 2025 14:28:39 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id AB2A11400C8;
+	Fri, 12 Sep 2025 14:28:47 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.55) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 12 Sep 2025 14:28:37 +0800
+ 15.2.1544.11; Fri, 12 Sep 2025 14:28:46 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
@@ -39,10 +40,12 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
 	<vadim.fedorenko@linux.dev>, Suman Ghosh <sumang@marvell.com>, Przemek
  Kitszel <przemyslaw.kitszel@intel.com>, Joe Damato <jdamato@fastly.com>,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net-next v06 00/14] net: hinic3: Add a driver for Huawei 3rd gen NIC - sw and hw initialization
-Date: Fri, 12 Sep 2025 14:28:17 +0800
-Message-ID: <cover.1757653621.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v06 04/14] hinic3: HW capability initialization
+Date: Fri, 12 Sep 2025 14:28:21 +0800
+Message-ID: <8f4cbd99306a14cee1b7621714c269a02a5082dc.1757653621.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <cover.1757653621.git.zhuyikai1@h-partners.com>
+References: <cover.1757653621.git.zhuyikai1@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,108 +57,184 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-This is [3/3] part of hinic3 Ethernet driver initial submission.
-With this patch hinic3 becomes a functional Ethernet driver.
+Use mailbox to get device capability for initializing driver capability.
 
-The driver parts contained in this patch:
-Memory allocation and initialization of the driver structures.
-Management interfaces initialization.
-HW capabilities probing, initialization and setup using management
-interfaces.
-Net device open/stop implementation and data queues initialization.
-Register VID:DID in PCI id_table.
-Fix netif_queue_set_napi usage.
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    | 66 +++++++++++++++++++
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.h    |  1 +
+ .../ethernet/huawei/hinic3/hinic3_hw_intf.h   | 42 ++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_hwdev.c |  6 ++
+ 4 files changed, 115 insertions(+)
 
-Changes:
-
-PATCH 03 V01: https://lore.kernel.org/netdev/cover.1756195078.git.zhuyikai1@h-partners.com
-
-PATCH 03 V02: https://lore.kernel.org/netdev/cover.1756378721.git.zhuyikai1@h-partners.com
-* Remove extra memset 0 after kzalloc (Vadim Fedorenko)
-* Remove another init function in hinic3_init_hwdev/hwif/nic_io (Vadim Fedorenko)
-* Create a new separate patch of fixing code style (Vadim Fedorenko)
-* Use bitmap_free instead of kfree (ALOK TIWARI)
-* Add prefix "hinic3" to non-static functions and parse_* functions (Vadim Fedorenko)
-* Init func_tbl_cfg to {} (Vadim Fedorenko)
-* Extract endianess improvement from queue pair resource initialization (Vadim Fedorenko)
-* Use kmalloc_array before overwrite rss_hkey on the very next line (Vadim Fedorenko)
-* Remove extra key copy about hinic3_rss_set_hash_key (Vadim Fedorenko)
-* Use netdev_rss_key_fill instead of static rss hash key for safety (Eric Dumazet)
-
-PATCH 03 V03: https://lore.kernel.org/netdev/cover.1756524443.git.zhuyikai1@h-partners.com
-* Modify get_hwif_attr function for improving readability (Vadim Fedorenko)
-* Add HINIC3_PCIE_LINK_DOWN errorcode to init_hwif_attr error handling (Vadim Fedorenko)
-
-PATCH 03 V04: https://lore.kernel.org/netdev/cover.1757057860.git.zhuyikai1@h-partners.com
-* Use pci_enable_msix_range instead of pci_alloc_irq_vectors (Jakub Kicinski)
-* Move defensive codes to place that they are set/loaded (Jakub Kicinski)
-* Code format fixes: remove empty lines between error handling path (Jakub Kicinski)
-* Remove redundant waiting sleep in hinic3_rx_tx_flush (Jakub Kicinski)
-* Use ethtool_rxfh_indir_default for standalizing codes (Jakub Kicinski)
-* Use netif_get_num_default_rss_queues instead of driver-local logic (Jakub Kicinski)
-* Use netif_set_real_num_queues to set both TX and RX queues (Jakub Kicinski)
-
-PATCH 03 V05: https://lore.kernel.org/netdev/cover.1757401320.git.zhuyikai1@h-partners.com
-* Merge comm_cmd_clear_doorbell & comm_cmd_clear_resource (Vadim Fedorenko)
-* Merge hinic3_enable/disable_doorbell to hinic3_toggle_doorbel (Vadim Fedorenko)
-* Update hinic3_Nic_io initialization commit message (Vadim Fedorenko)
-
-PATCH 03 V06:
-* Use array_size() instead of multipling directly (Simon Horman)
-* Modify comment in hinic3_config_num_qps to improve readability (Simon Horman)
-
-Fan Gong (14):
-  hinic3: HW initialization
-  hinic3: HW management interfaces
-  hinic3: HW common function initialization
-  hinic3: HW capability initialization
-  hinic3: Command Queue flush interfaces
-  hinic3: Nic_io initialization
-  hinic3: Queue pair endianness improvements
-  hinic3: Queue pair resource initialization
-  hinic3: Queue pair context initialization
-  hinic3: Tx & Rx configuration
-  hinic3: Add Rss function
-  hinic3: Add port management
-  hinic3: Fix missing napi->dev in netif_queue_set_napi
-  hinic3: Fix code style (Missing a blank line before return)
-
- drivers/net/ethernet/huawei/hinic3/Makefile   |   2 +
- .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    | 168 ++++
- .../ethernet/huawei/hinic3/hinic3_hw_cfg.h    |   4 +
- .../ethernet/huawei/hinic3/hinic3_hw_comm.c   | 363 ++++++++
- .../ethernet/huawei/hinic3/hinic3_hw_comm.h   |  21 +
- .../ethernet/huawei/hinic3/hinic3_hw_intf.h   | 115 +++
- .../net/ethernet/huawei/hinic3/hinic3_hwdev.c | 541 ++++++++++-
- .../net/ethernet/huawei/hinic3/hinic3_hwif.c  | 269 ++++++
- .../net/ethernet/huawei/hinic3/hinic3_hwif.h  |  16 +
- .../net/ethernet/huawei/hinic3/hinic3_irq.c   |   2 +-
- .../net/ethernet/huawei/hinic3/hinic3_lld.c   |   9 +-
- .../net/ethernet/huawei/hinic3/hinic3_main.c  |   8 +-
- .../net/ethernet/huawei/hinic3/hinic3_mgmt.c  |  21 +
- .../net/ethernet/huawei/hinic3/hinic3_mgmt.h  |   2 +
- .../huawei/hinic3/hinic3_mgmt_interface.h     | 119 +++
- .../huawei/hinic3/hinic3_netdev_ops.c         | 426 ++++++++-
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   | 152 +++
- .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   |  20 +
- .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |   5 +
- .../ethernet/huawei/hinic3/hinic3_nic_io.c    | 870 +++++++++++++++++-
- .../ethernet/huawei/hinic3/hinic3_nic_io.h    |  39 +-
- .../huawei/hinic3/hinic3_pci_id_tbl.h         |   9 +
- .../net/ethernet/huawei/hinic3/hinic3_rss.c   | 336 +++++++
- .../net/ethernet/huawei/hinic3/hinic3_rss.h   |  14 +
- .../net/ethernet/huawei/hinic3/hinic3_rx.c    | 226 ++++-
- .../net/ethernet/huawei/hinic3/hinic3_rx.h    |  38 +-
- .../net/ethernet/huawei/hinic3/hinic3_tx.c    | 184 +++-
- .../net/ethernet/huawei/hinic3/hinic3_tx.h    |  30 +-
- 28 files changed, 3923 insertions(+), 86 deletions(-)
- create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_mgmt.c
- create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h
- create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rss.c
- create mode 100644 drivers/net/ethernet/huawei/hinic3/hinic3_rss.h
-
-
-base-commit: b1c92cdf5af3198e8fbc1345a80e2a1dff386c02
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
+index 8db5e2c9ff10..7827c1f626db 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
+@@ -8,6 +8,67 @@
+ #include "hinic3_hwif.h"
+ #include "hinic3_mbox.h"
+ 
++#define HINIC3_CFG_MAX_QP  256
++
++static void hinic3_parse_pub_res_cap(struct hinic3_hwdev *hwdev,
++				     struct hinic3_dev_cap *cap,
++				     const struct cfg_cmd_dev_cap *dev_cap,
++				     enum hinic3_func_type type)
++{
++	cap->port_id = dev_cap->port_id;
++	cap->supp_svcs_bitmap = dev_cap->svc_cap_en;
++}
++
++static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
++				       struct hinic3_dev_cap *cap,
++				       const struct cfg_cmd_dev_cap *dev_cap,
++				       enum hinic3_func_type type)
++{
++	struct hinic3_nic_service_cap *nic_svc_cap = &cap->nic_svc_cap;
++
++	nic_svc_cap->max_sqs = min(dev_cap->nic_max_sq_id + 1,
++				   HINIC3_CFG_MAX_QP);
++}
++
++static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
++				 const struct cfg_cmd_dev_cap *dev_cap,
++				 enum hinic3_func_type type)
++{
++	struct hinic3_dev_cap *cap = &hwdev->cfg_mgmt->cap;
++
++	/* Public resource */
++	hinic3_parse_pub_res_cap(hwdev, cap, dev_cap, type);
++
++	/* L2 NIC resource */
++	if (hinic3_support_nic(hwdev))
++		hinic3_parse_l2nic_res_cap(hwdev, cap, dev_cap, type);
++}
++
++static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
++			   enum hinic3_func_type type)
++{
++	struct mgmt_msg_params msg_params = {};
++	struct cfg_cmd_dev_cap dev_cap = {};
++	int err;
++
++	dev_cap.func_id = hinic3_global_func_id(hwdev);
++
++	mgmt_msg_params_init_default(&msg_params, &dev_cap, sizeof(dev_cap));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_CFGM,
++				       CFG_CMD_GET_DEV_CAP, &msg_params);
++	if (err || dev_cap.head.status) {
++		dev_err(hwdev->dev,
++			"Failed to get capability from FW, err: %d, status: 0x%x\n",
++			err, dev_cap.head.status);
++		return -EIO;
++	}
++
++	hinic3_parse_dev_cap(hwdev, &dev_cap, type);
++
++	return 0;
++}
++
+ static int hinic3_init_irq_info(struct hinic3_hwdev *hwdev)
+ {
+ 	struct hinic3_cfg_mgmt_info *cfg_mgmt = hwdev->cfg_mgmt;
+@@ -153,6 +214,11 @@ void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id)
+ 	mutex_unlock(&irq_info->irq_mutex);
+ }
+ 
++int hinic3_init_capability(struct hinic3_hwdev *hwdev)
++{
++	return get_cap_from_fw(hwdev, HINIC3_FUNC_TYPE_VF);
++}
++
+ bool hinic3_support_nic(struct hinic3_hwdev *hwdev)
+ {
+ 	return hwdev->cfg_mgmt->cap.supp_svcs_bitmap &
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
+index 5978cbd56fb2..58806199bf54 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
+@@ -49,6 +49,7 @@ int hinic3_alloc_irqs(struct hinic3_hwdev *hwdev, u16 num,
+ 		      struct msix_entry *alloc_arr, u16 *act_num);
+ void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id);
+ 
++int hinic3_init_capability(struct hinic3_hwdev *hwdev);
+ bool hinic3_support_nic(struct hinic3_hwdev *hwdev);
+ u16 hinic3_func_max_qnum(struct hinic3_hwdev *hwdev);
+ u8 hinic3_physical_port_id(struct hinic3_hwdev *hwdev);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+index b5695dda8fe5..87b43a123edb 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_intf.h
+@@ -51,6 +51,48 @@ static inline void mgmt_msg_params_init_default(struct mgmt_msg_params *msg_para
+ 	msg_params->timeout_ms = 0;
+ }
+ 
++enum cfg_cmd {
++	CFG_CMD_GET_DEV_CAP = 0,
++};
++
++/* Device capabilities, defined by hw */
++struct cfg_cmd_dev_cap {
++	struct mgmt_msg_head head;
++
++	u16                  func_id;
++	u16                  rsvd1;
++
++	/* Public resources */
++	u8                   host_id;
++	u8                   ep_id;
++	u8                   er_id;
++	u8                   port_id;
++
++	u16                  host_total_func;
++	u8                   host_pf_num;
++	u8                   pf_id_start;
++	u16                  host_vf_num;
++	u16                  vf_id_start;
++	u8                   host_oq_id_mask_val;
++	u8                   timer_en;
++	u8                   host_valid_bitmap;
++	u8                   rsvd_host;
++
++	u16                  svc_cap_en;
++	u16                  max_vf;
++	u8                   flexq_en;
++	u8                   valid_cos_bitmap;
++	u8                   port_cos_valid_bitmap;
++	u8                   rsvd2[45];
++
++	/* l2nic */
++	u16                  nic_max_sq_id;
++	u16                  nic_max_rq_id;
++	u16                  nic_default_num_queues;
++
++	u8                   rsvd3[250];
++};
++
+ /* COMM Commands between Driver to fw */
+ enum comm_cmd {
+ 	/* Commands for clearing FLR and resources */
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+index c2327c34a47b..258e96ac9b76 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
+@@ -479,6 +479,12 @@ int hinic3_init_hwdev(struct pci_dev *pdev)
+ 		goto err_free_cfg_mgmt;
+ 	}
+ 
++	err = hinic3_init_capability(hwdev);
++	if (err) {
++		dev_err(hwdev->dev, "Failed to init capability\n");
++		goto err_uninit_comm_ch;
++	}
++
+ 	err = hinic3_set_comm_features(hwdev, hwdev->features,
+ 				       COMM_MAX_FEATURE_QWORD);
+ 	if (err) {
 -- 
 2.43.0
 
