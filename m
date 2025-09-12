@@ -1,236 +1,193 @@
-Received: from sonic309-20.consmr.mail.ne1.yahoo.com (sonic309-20.consmr.mail.ne1.yahoo.com [66.163.184.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A382DC791
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 11:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B55F2957C2;
+	Fri, 12 Sep 2025 11:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757677513; cv=none; b=NwaWmzak8ryz9D4wLAYqMkiw1fcsLMWMphdnIHf9aoDcM/xZwoTwzxlvpIzmaTWOJnsoNRH1Fb0zn1q6q3CfgxMcZxRmbuECfQvtZYj+y3bH7+bFK8Aj2aZ8kAuLjc+J5CFfJg/xv7WAtoNMc3JHPWaZ0n0KNNjo3/383nfXRSY=
+	t=1757677980; cv=none; b=MKTw6A/X7iHjMGXfqTKRCNhKQgHMmWpx0OtYXMx9uClu+XYSreCY+cWTn5VMx0RUbQuqJ9zOCV3Bd0aD8cwTo1A36O1k98f3BtwIIJLO6r8niqfbnV4FunmfayphlwRuud4f2DZ4GJbxbVjqj/DMslZI49pqM0FKoAetdjil0XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757677513; c=relaxed/simple;
-	bh=lZxSpP6bc+yrLhDlPDYG+Ew03JLZO/PQomcPSncCcDo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk4l2xaeZpySgW2xT+dY2qk8Irs+RRz7SxlKw28ma/9cK719HkWHnrsoR8vUk365xNtaLwFrdkMULpiUdBjSB3pX1o68rUv7iu6/ATnQzOzFBIEejFsuAg16atRHGrfzY8ATSnSLc/wTBSaATyGOBwKmay7yiN07+0NCDYP7IeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=al6DQyxI; arc=none smtp.client-ip=66.163.184.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1757677980; c=relaxed/simple;
+	bh=NmIyJJYs4LCcRYXbb9KAw9QgbmU7rJnHEjrNjnl2vwc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YmU785W0kb/qXUziohO0fgdUaJESy8D6k6+Xp6VA5VTsbV82g3kBki3R3QguBYzObf3lMXPL3Z+x0GVbY47iNwSq/vKv6+68IPssCCEGR5ocV3jWGQ3ILL2ZV3Z4kX/bc5JJb7fPrsN++OsI2GVMRubP5CuPuCPxEsC2KNFZrY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyhOAe9Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="al6DQyxI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757677510; bh=hOCx3exMi/gEZlRMsfu6f3yZal5ZMUNsmvImqwmEt+8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=al6DQyxIgm5jX9CJoZN6/Shihzz7bJ2P3cZjR//pA3Culr8jgisIIQ7AcKSQiWluOLJ/aX1nrzEQNE39ZVNAnla+6dQVSgR3aXSBGvyn8carp+snNzzC+dao7ha0GMdSNffM/5yWwsGT9Af0Jw/8/VLy+S5IrO27LyBP00upOmCooIP8Gw4xAz0gECz016VFe3X832YEzUg+tt1jZU0VO0ah1W7mFmvIUEZdMZx0lFolwwtCOnZpt6IaVgucUxDmLEqU0hGl3eNNbbdcDuxudfE0Y9AimXaDlNXhMzhHEqEcF5tx9v42guDOrV/pJGPq6YzsaxUnNR0IyW+3AUhr2Q==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1757677510; bh=9JkiZoW6deyCjsWlQaLj3VSSdwwok/TE0e0aoWnV9xb=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=e8gDXmmcFaetN6XJ/o5whJ4O7g2S/PgUn+4XM4wAxqLEWuNPc2pPiJObYaLAEiz7q/Hl2SUAeznB+Kh9UCvsVKXJBaUC8KV3lAoeEQoudIeZ0ZBN4F6mT/jyL4g/Vj0E2H4RsL2/DXi0T477SQInirPt5zlNEpfLba4G80VfuSs9KVC5gV16eCD6hMzdViEq44GWjVaxjT/iEwfdJ+MRnNu6WXzHpF8eXYy6ZlpdWOAxasd9i1xpOtC+HXeS9wdG02Y/qkugO086p074Epzr3bshpcgzR6WTcmubhvNys9ifT0ZgEhmePInif0u34MDbG5nj81gjW6un760jTaEw8w==
-X-YMail-OSG: JnAdo2oVM1mN0OqDLmR5gaglMmx8KeC5hCvpizUCTMjAv0EPrJsysxZ3BKjYcIz
- 4bOEwjTozrhvCHIXSuZbgg6muj00r3ytwu5cjlGbUGqKcgsEEAn9ZaDCMKJD.YK2N9Rg23hb9q7f
- WO.fQBib8ZUBUua7giPRhVc86gZhO..WNqS4sxlVPGGB6pI8fWsSCpBu.HzRCQ_EvrldpyHNIyRM
- ip_ukjWUa9HmncvsfwyxKBGtmc6oTjJ3y865FAIgooqj65otmvxbNQUJcc6ZxOChDzfOozKPYc9q
- XMO7Mpf6EzxTvy_Pe.x3Fp37z6dm4dOGST05rz5Iy3yvMITcOMnjwP3sNIDHb1q6Wpt6R5Y0OBsN
- YpuvDYDWJXtZDALVzTvOuUvqNGxkvHrPHpdaTYt3MF47nPhXyeEuvBLgeQm3vKeyXxzSrHBWraXi
- L_Fr8DOrJkOZs1K4Lp1zKR7mocyYzELA6WMXnQ3pyPoaqOMgKLsSmxr._ixEh9.qSxHHkrsUo2De
- z1RQCkKcI6rle8lEyDPYijc2XzwuwmggBoYVITVcfoQAqkMehPkFTID6HcJtyC8m10RUpwX7XzL.
- NBVyeFXDJUxgSqB2qH75Lyeb2J468PONhiGOEO7pQQPnVScNmKD3uE7Lk1aRMPQ5.gNDB_4rQi.8
- ANI8zVFCVRfZ3F2V5sNgzoyCCOebsXekPXvHxKWOEzyPWtXew.xVEwMO1AKN1MxeVufwhLIY2nMJ
- L.xVaJpaQiBAj1ltAcEYALxzCc863HZ8qHxDyVS1eFDzcw0t_GQSk2zehKSwJsYPHH6jBgdEYscM
- CSBJexgUOr0SSEQlUNrN0Stfgbw9DI5P4.V2T9hkpUDQZLu8qEOFSNqTowAxo1OarepImD5C2_VI
- nJcIhSWfPDn4G2UjydaCzVmsezvKDnEPyHGdCSk7K5v4qFdHsiUzWXG36LnoXbAjxx7geM7jXpgh
- qdOOC1OnAApuV50g_7pfKeyb_crguQqt48G5KdOv5ZB9PtkunHKUV4Ezdctr9T1rHwS4hVjC0zQ0
- X6LjNhYUrSnGjKphHA_cfe_qNd.iSLZZTdUMeWGmb23pCu9JdehktsEWwVGrtbRD1ES2DYSwOFHM
- gvMrUW_Vf5K0D5jpxj6u1SLBSjPkmWKtW1fNrjFnj12i2JaC6yMwcT6325kuMLsZlXkmgxyuREbx
- hQQ63Q8g9neQ9UPlthxDE_26qpxjDZf.C0DqZI0VzCulkOONxgjfUhAi7nGJ7u4Y9OeRVaqsJzwS
- _4T1z0pCoc9HCwkMuFMLeinv.FA8wcma1IaGrReZtsiqc.bz0WO6vCj2_3vMjSdyAcYTw9ATz.yD
- 1wuoxE_e9P6Dqxn66JG8CK.dGOxlv2boYssyX6QYDnlJNBZIAeqL1h_wzf9LFjY1iE3gzKa0cbgL
- lHYvlFAWx9P6KjAbym_WbGfsANarDsbhYjifcSkjjoNj346NeXiKf9CxVtt.YV8cuwOfov8pf1I8
- 9vGyzE4RouLc_TGaAAsvGmRSSLd1nV_Xu8ZEeddhpe4UhqrPJYPJM_U10aM_5VuPnJh9XlFMk0Ms
- 9tIMobZTy0_9C2Xcd2I.FvZJW7ZDZnRUHujXdBJSTNeHlzJoDLAcUUt9yR698MR2Rge8cJg6ZOJR
- .KVgHxQX3PCKXt8t1fHxQf.jxXgBCaUyX4IUHK8gshzP2oTkgfkTi25ltwCHxatJqlxFzKOkEpU.
- UnRUy3DDfqTvt6T.h.XgQMwf0IgqrlbLI6noTkbFw95Cf2WkKf_yF6CZvSWkvy1zOdxk3hpBoHRs
- jQXnK8hbuQlSAI_8N5FTY7YKc.yn49dMDwIzcPEjMf7L9AG7eeNlrNTSNroXQfWTH7bC9rQVWA0f
- EWR_LHbMIgvRUe7uWylSy1VhXI0sYl9m5R9tUtPRf6TDipu61f6Z76yq7skzXM2yXi9Skt7GHt4K
- yzooLZKGVRavykDxRbAjacp52V1Miliv.0uYBLUL9XIwLvQHOVCubfDVlVshc2pKlttam4crg_GU
- UtXTul4BrHRm4VT0ru95y2gkc5wZMXulGpxYRQg.z8UFm_3QjlULTVuuUN83p4peT.EAd_8Jkl7q
- dye2GUOAkbbX7gvhYQPUZ0x1xYWEYWyPFGfMWGRxYFyhqnq7bqobRfB7DJDsvkB.3Ii_tWuZd4tK
- .41i.vBcfi_bbnl0qH0B_jB1SDNRgNxGsmnY2O2QyjH8NvihwGAI-
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: 1a3c935b-93fc-4057-a8bb-bf9bf1fce931
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 12 Sep 2025 11:45:10 +0000
-Received: by hermes--production-ir2-7d8c9489f-pnggd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 93cda13a9625b3ea865113cded111022;
-          Fri, 12 Sep 2025 11:24:53 +0000 (UTC)
-From: Marek Mietus <mmietus97@yahoo.com>
-To: netdev@vger.kernel.org,
-	antonio@openvpn.net,
-	kuba@kernel.org
-Cc: openvpn-devel@lists.sourceforge.net,
-	Marek Mietus <mmietus97@yahoo.com>
-Subject: [PATCH net-next v2 2/3] net: tunnel: implement noref flows in udp_tunnel_xmit_skb
-Date: Fri, 12 Sep 2025 13:24:19 +0200
-Message-ID: <20250912112420.4394-3-mmietus97@yahoo.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250912112420.4394-1-mmietus97@yahoo.com>
-References: <20250912112420.4394-1-mmietus97@yahoo.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyhOAe9Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662D0C4CEF1;
+	Fri, 12 Sep 2025 11:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757677979;
+	bh=NmIyJJYs4LCcRYXbb9KAw9QgbmU7rJnHEjrNjnl2vwc=;
+	h=From:Subject:Date:To:Cc:From;
+	b=hyhOAe9YjTHpuvO3AierKWjw5OD6myMMT9p9EcAITM9Pb1+NMH1wNQliBW4upbO8R
+	 QKLEJTkZOFgy6Z7Rcv0TWlRM6KFx3wbCWIslNfJQePl2ar/NACLfIVPK0JL1g/FEk2
+	 UVzJTaTZwpeS5oDpzxAq2Q0XeiyJAmJkrbdCsrmzy/2O5EdknZbZXqkgKD34w5Kt60
+	 cXZutEgXWMkzZ5SfXX25tYjEbHnq08JT7p33wBaq9iN79MiJHJtDg+uiC57+8BNmVQ
+	 sWORuSN82YYjCx/iPj7SywZx6RHpiSzNU9r/RWlkjqF0ywWC/uz9ptnOTs498c9DxA
+	 YX25RtJ36IZdQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v2 00/33] ns: support file handles
+Date: Fri, 12 Sep 2025 13:52:23 +0200
+Message-Id: <20250912-work-namespace-v2-0-1a247645cef5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHcJxGgC/12OQQ6DIBQFr9KwLgaooHbVezQuEH6VWMF8DG1jv
+ HvRdNXlLObNW0kEdBDJ9bQShOSiCz6DOJ+IGbTvgTqbmQgmJGuYpK+AI/V6gjhrA9SouhbKWs1
+ sSbI0Izzc+xi8t5k7HYF2qL0Z9plJxwWwSKrgFUXDd2VwcQn4OS4kvou/Gmf/tcQpo6W1UkF1k
+ Y2tbyOgh2cRsCfttm1fpsF3PNAAAAA=
+X-Change-ID: 20250905-work-namespace-c68826dda0d4
+To: Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
+ linux-fsdevel@vger.kernel.org
+Cc: Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, 
+ Mike Yuan <me@yhndnzj.com>, 
+ =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
+ Lennart Poettering <mzxreary@0pointer.de>, 
+ Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>, 
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+ =?utf-8?q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+ netdev@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>
+X-Mailer: b4 0.14.3-dev-385fa
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5785; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=NmIyJJYs4LCcRYXbb9KAw9QgbmU7rJnHEjrNjnl2vwc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQc4ZwyI2lNaoVFPNf3BDnj5GaDXQxxN1I1fs9oWW367
+ 9frOfqeHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMxu83IMH/VM39dsQ/zo04o
+ iZVfafW8PHXXwzC+1TEyHJazH7zzns3I8DP76XfDrJULMx9GbpZJjbKKmZBxfmPTEbX26vULXRk
+ dmAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-In cases where udp_tunnel_xmit_skb is called inside a RCU read-side
-critical section, we can avoid referencing the dst_entry.
+For a while now we have supported file handles for pidfds. This has
+proven to be very useful.
 
-Implement noref variants for udp_tunnel_xmit_skb and iptunnel_xmit to be
-used in noref flows.
+Extend the concept to cover namespaces as well. After this patchset it
+is possible to encode and decode namespace file handles using the
+commong name_to_handle_at() and open_by_handle_at() apis.
 
-Signed-off-by: Marek Mietus <mmietus97@yahoo.com>
+Namespaces file descriptors can already be derived from pidfds which
+means they aren't subject to overmount protection bugs. IOW, it's
+irrelevant if the caller would not have access to an appropriate
+/proc/<pid>/ns/ directory as they could always just derive the namespace
+based on a pidfd already.
+
+It has the same advantage as pidfds. It's possible to reliably and for
+the lifetime of the system refer to a namespace without pinning any
+resources and to compare them.
+
+Permission checking is kept simple. If the caller is located in the
+namespace the file handle refers to they are able to open it otherwise
+they must hold privilege over the owning namespace of the relevant
+namespace.
+
+Both the network namespace and the mount namespace already have an
+associated cookie that isn't recycled and is fully exposed to userspace.
+Move this into ns_common and use the same id space for all namespaces so
+they can trivially and reliably be compared.
+
+There's more coming based on the iterator infrastructure but the series
+is large enough and focuses on file handles.
+
+Extensive selftests included.
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- include/net/ip_tunnels.h   |  3 +++
- include/net/udp_tunnel.h   |  4 ++++
- net/ipv4/ip_tunnel_core.c  | 34 +++++++++++++++++++++++++++-------
- net/ipv4/udp_tunnel_core.c | 29 +++++++++++++++++++++++++----
- 4 files changed, 59 insertions(+), 11 deletions(-)
+Changes in v2:
+- Address various review comments.
+- Use a common NS_GET_ID ioctl() instead of individual ioctls.
+- Link to v1: https://lore.kernel.org/20250910-work-namespace-v1-0-4dd56e7359d8@kernel.org
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 8cf1380f3656..6dcea237bf21 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -604,6 +604,9 @@ static inline int iptunnel_pull_header(struct sk_buff *skb, int hdr_len,
- void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 		   __be32 src, __be32 dst, u8 proto,
- 		   u8 tos, u8 ttl, __be16 df, bool xnet, u16 ipcb_flags);
-+void iptunnel_xmit_noref(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
-+			 __be32 src, __be32 dst, u8 proto,
-+			 u8 tos, u8 ttl, __be16 df, bool xnet, u16 ipcb_flags);
- struct metadata_dst *iptunnel_metadata_reply(struct metadata_dst *md,
- 					     gfp_t flags);
- int skb_tunnel_check_pmtu(struct sk_buff *skb, struct dst_entry *encap_dst,
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 9acef2fbd2fd..033098ebf789 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -135,6 +135,10 @@ void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb
- 			 __be32 src, __be32 dst, __u8 tos, __u8 ttl,
- 			 __be16 df, __be16 src_port, __be16 dst_port,
- 			 bool xnet, bool nocheck, u16 ipcb_flags);
-+void udp_tunnel_xmit_skb_noref(struct rtable *rt, struct sock *sk, struct sk_buff *skb,
-+			       __be32 src, __be32 dst, __u8 tos, __u8 ttl,
-+			       __be16 df, __be16 src_port, __be16 dst_port,
-+			       bool xnet, bool nocheck, u16 ipcb_flags);
- 
- void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
- 			  struct sk_buff *skb,
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index cc9915543637..8b03fb380397 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -47,10 +47,10 @@ const struct ip6_tnl_encap_ops __rcu *
- 		ip6tun_encaps[MAX_IPTUN_ENCAP_OPS] __read_mostly;
- EXPORT_SYMBOL(ip6tun_encaps);
- 
--void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
--		   __be32 src, __be32 dst, __u8 proto,
--		   __u8 tos, __u8 ttl, __be16 df, bool xnet,
--		   u16 ipcb_flags)
-+static void __iptunnel_xmit(struct sock *sk, struct rtable *rt,
-+			    struct sk_buff *skb, __be32 src, __be32 dst,
-+			    __u8 proto, __u8 tos, __u8 ttl, __be16 df,
-+			    u16 ipcb_flags)
- {
- 	int pkt_len = skb->len - skb_inner_network_offset(skb);
- 	struct net *net = dev_net(rt->dst.dev);
-@@ -58,10 +58,7 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 	struct iphdr *iph;
- 	int err;
- 
--	skb_scrub_packet(skb, xnet);
--
- 	skb_clear_hash_if_not_l4(skb);
--	skb_dst_set(skb, &rt->dst);
- 	memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
- 	IPCB(skb)->flags = ipcb_flags;
- 
-@@ -89,8 +86,31 @@ void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
- 		iptunnel_xmit_stats(dev, pkt_len);
- 	}
- }
-+
-+void iptunnel_xmit(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
-+		   __be32 src, __be32 dst, __u8 proto,
-+		   __u8 tos, __u8 ttl, __be16 df, bool xnet,
-+		   u16 ipcb_flags)
-+{
-+	skb_scrub_packet(skb, xnet);
-+	skb_dst_set(skb, &rt->dst);
-+
-+	__iptunnel_xmit(sk, rt, skb, src, dst, proto, tos, ttl, df, ipcb_flags);
-+}
- EXPORT_SYMBOL_GPL(iptunnel_xmit);
- 
-+void iptunnel_xmit_noref(struct sock *sk, struct rtable *rt, struct sk_buff *skb,
-+			 __be32 src, __be32 dst, __u8 proto,
-+			 __u8 tos, __u8 ttl, __be16 df, bool xnet,
-+			 u16 ipcb_flags)
-+{
-+	skb_scrub_packet(skb, xnet);
-+	skb_dst_set_noref(skb, &rt->dst);
-+
-+	__iptunnel_xmit(sk, rt, skb, src, dst, proto, tos, ttl, df, ipcb_flags);
-+}
-+EXPORT_SYMBOL_GPL(iptunnel_xmit_noref);
-+
- int __iptunnel_pull_header(struct sk_buff *skb, int hdr_len,
- 			   __be16 inner_proto, bool raw_proto, bool xnet)
- {
-diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
-index fce945f23069..c0e9007cf081 100644
---- a/net/ipv4/udp_tunnel_core.c
-+++ b/net/ipv4/udp_tunnel_core.c
-@@ -170,10 +170,9 @@ void udp_tunnel_notify_del_rx_port(struct socket *sock, unsigned short type)
- }
- EXPORT_SYMBOL_GPL(udp_tunnel_notify_del_rx_port);
- 
--void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb,
--			 __be32 src, __be32 dst, __u8 tos, __u8 ttl,
--			 __be16 df, __be16 src_port, __be16 dst_port,
--			 bool xnet, bool nocheck, u16 ipcb_flags)
-+static void udp_tunnel_add_hdr(struct sk_buff *skb, __be32 src,
-+			       __be32 dst, __be16 src_port,
-+			       __be16 dst_port, bool nocheck)
- {
- 	struct udphdr *uh;
- 
-@@ -188,12 +187,34 @@ void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb
- 	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
- 
- 	udp_set_csum(nocheck, skb, src, dst, skb->len);
-+}
-+
-+void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk,
-+			 struct sk_buff *skb, __be32 src, __be32 dst,
-+			 __u8 tos, __u8 ttl, __be16 df, __be16 src_port,
-+			 __be16 dst_port, bool xnet, bool nocheck,
-+			 u16 ipcb_flags)
-+{
-+	udp_tunnel_add_hdr(skb, src, dst, src_port, dst_port, nocheck);
- 
- 	iptunnel_xmit(sk, rt, skb, src, dst, IPPROTO_UDP, tos, ttl, df, xnet,
- 		      ipcb_flags);
- }
- EXPORT_SYMBOL_GPL(udp_tunnel_xmit_skb);
- 
-+void udp_tunnel_xmit_skb_noref(struct rtable *rt, struct sock *sk,
-+			       struct sk_buff *skb, __be32 src, __be32 dst,
-+			       __u8 tos, __u8 ttl, __be16 df, __be16 src_port,
-+			       __be16 dst_port, bool xnet, bool nocheck,
-+			       u16 ipcb_flags)
-+{
-+	udp_tunnel_add_hdr(skb, src, dst, src_port, dst_port, nocheck);
-+
-+	iptunnel_xmit_noref(sk, rt, skb, src, dst, IPPROTO_UDP, tos, ttl, df,
-+			    xnet, ipcb_flags);
-+}
-+EXPORT_SYMBOL_GPL(udp_tunnel_xmit_skb_noref);
-+
- void udp_tunnel_sock_release(struct socket *sock)
- {
- 	rcu_assign_sk_user_data(sock->sk, NULL);
--- 
-2.51.0
+---
+Christian Brauner (33):
+      pidfs: validate extensible ioctls
+      nsfs: drop tautological ioctl() check
+      nsfs: validate extensible ioctls
+      block: use extensible_ioctl_valid()
+      ns: move to_ns_common() to ns_common.h
+      nsfs: add nsfs.h header
+      ns: uniformly initialize ns_common
+      cgroup: use ns_common_init()
+      ipc: use ns_common_init()
+      mnt: use ns_common_init()
+      net: use ns_common_init()
+      pid: use ns_common_init()
+      time: use ns_common_init()
+      user: use ns_common_init()
+      uts: use ns_common_init()
+      ns: remove ns_alloc_inum()
+      nstree: make iterator generic
+      mnt: support ns lookup
+      cgroup: support ns lookup
+      ipc: support ns lookup
+      net: support ns lookup
+      pid: support ns lookup
+      time: support ns lookup
+      user: support ns lookup
+      uts: support ns lookup
+      ns: add to_<type>_ns() to respective headers
+      nsfs: add current_in_namespace()
+      nsfs: support file handles
+      nsfs: support exhaustive file handles
+      nsfs: add missing id retrieval support
+      tools: update nsfs.h uapi header
+      selftests/namespaces: add identifier selftests
+      selftests/namespaces: add file handle selftests
+
+ block/blk-integrity.c                              |    8 +-
+ fs/fhandle.c                                       |    6 +
+ fs/internal.h                                      |    1 +
+ fs/mount.h                                         |   10 +-
+ fs/namespace.c                                     |  156 +--
+ fs/nsfs.c                                          |  201 ++-
+ fs/pidfs.c                                         |    2 +-
+ include/linux/cgroup.h                             |    5 +
+ include/linux/exportfs.h                           |    6 +
+ include/linux/fs.h                                 |   14 +
+ include/linux/ipc_namespace.h                      |    5 +
+ include/linux/ns_common.h                          |   29 +
+ include/linux/nsfs.h                               |   40 +
+ include/linux/nsproxy.h                            |   11 -
+ include/linux/nstree.h                             |   89 ++
+ include/linux/pid_namespace.h                      |    5 +
+ include/linux/proc_ns.h                            |   32 +-
+ include/linux/time_namespace.h                     |    9 +
+ include/linux/user_namespace.h                     |    5 +
+ include/linux/utsname.h                            |    5 +
+ include/net/net_namespace.h                        |    6 +
+ include/uapi/linux/fcntl.h                         |    1 +
+ include/uapi/linux/nsfs.h                          |   15 +-
+ init/main.c                                        |    2 +
+ ipc/msgutil.c                                      |    1 +
+ ipc/namespace.c                                    |   12 +-
+ ipc/shm.c                                          |    2 +
+ kernel/Makefile                                    |    2 +-
+ kernel/cgroup/cgroup.c                             |    2 +
+ kernel/cgroup/namespace.c                          |   24 +-
+ kernel/nstree.c                                    |  233 ++++
+ kernel/pid_namespace.c                             |   13 +-
+ kernel/time/namespace.c                            |   23 +-
+ kernel/user_namespace.c                            |   17 +-
+ kernel/utsname.c                                   |   28 +-
+ net/core/net_namespace.c                           |   59 +-
+ tools/include/uapi/linux/nsfs.h                    |   17 +-
+ tools/testing/selftests/namespaces/.gitignore      |    2 +
+ tools/testing/selftests/namespaces/Makefile        |    7 +
+ tools/testing/selftests/namespaces/config          |    7 +
+ .../selftests/namespaces/file_handle_test.c        | 1429 ++++++++++++++++++++
+ tools/testing/selftests/namespaces/nsid_test.c     |  986 ++++++++++++++
+ 42 files changed, 3257 insertions(+), 270 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250905-work-namespace-c68826dda0d4
 
