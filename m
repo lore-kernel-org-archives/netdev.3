@@ -1,63 +1,63 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E05324B3E
-	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 12:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B684309DB5
+	for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 12:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757678937; cv=none; b=GHH23SvxzHlye3Mm+B2l06AScoQEh6r0HVN8Td++DPTy3+9X5JQaHorC4TLhNNWu8UVuHY2Mz6r3Bg36Bw8A4VMa8grF09ONb1c8PXcM65F1PkuoHM2Apzzw4ZiymzBPvxCn4vg5+o48W7BnrPledOh56/d/Q6wFXD2Ff/yirBw=
+	t=1757678938; cv=none; b=EEt6SF5zOmlnDCkhYBNTG3YAK8pP6L99mXe3Pr+XaKSpVLXpjG6Y5o31IdCZNARgXGCFH6xf94i5Hc/fclcoZTJxwQ9aPQAddd87cEA4FrAqyn19Q5gAwbV9NYoHRivHM8ZNO7GxiMgD+HUF9thbNI9s9OINqS4ASfCsiuOduoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757678937; c=relaxed/simple;
-	bh=Wz4E5peEWJEuLH5HpKzn2maiOPcV7d/t/JntClDMc3Y=;
+	s=arc-20240116; t=1757678938; c=relaxed/simple;
+	bh=I2XBnZVyAQMrhhSI/DaBzgxF6FwG3l7nrVJBzdS3kY0=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=EfJgqjEPKbVWcOn7UiFPnFoYV4BhFewNiLCGUfhMZ9z/vcQGazuYYU6cjWNDJGA7d8lhPyvFm5lpq/0+lzMIVrRfLMViaRWL6Kw7QLAJgffRbz8ta3IPdhYxhbknpjL7kWKd5/MDdH3OSXLnJFL4YCAcwwhpj4mZIOzwrVvSCts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WsYaVhjQ; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=J/gqtqKldVaGTm/rTuqyGtlnK6B+qhdD2420VMwEeqqB3PJpgM2hK33tpFcitYF7IlfKYisHUsdc9+KxXTqFN0SkeO98pxfFWyWtLQUhWClLH2lsc18+wGrfFwuTVXiFqCsKr5RE/3ZBro542J6GpX2FEnRkgDKRdZZekGb+ZO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCDjMeL9; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WsYaVhjQ"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45cb6428c46so21829145e9.1
-        for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 05:08:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCDjMeL9"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3c6abcfd142so852874f8f.2
+        for <netdev@vger.kernel.org>; Fri, 12 Sep 2025 05:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757678933; x=1758283733; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757678934; x=1758283734; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:user-agent:references
          :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Wz4E5peEWJEuLH5HpKzn2maiOPcV7d/t/JntClDMc3Y=;
-        b=WsYaVhjQn2JqKOoWVPSN3hvIwjd0D7IZWiGO4L4yFLbMk/ocRhAfR+M1tcvbeiXIe2
-         LB2VMBqAyNaKlV33VR9TlZnlKbOZGT088PYnXiLVebdx2M/khLD+oYqScZQgSq8jMOwk
-         JVeOS1sf52TKhpVshHayo436Z9lo5dxkZkxw3Iip8ayWuU/xKH49sUvEbkGpwC4sflaY
-         O/w0b8vAGiBImtanSV1xlRWMmvMqzmRntkYpu3AsRf0l/2JQucBPqV9sxhFuKay4eJaQ
-         cav0gQEn3pUvJGtkdGuw3DkwZUY3dfMQ+bsJVAT09ssZ3vklqDGZk4RjOcDkcG/IycEf
-         04Jw==
+        bh=I2XBnZVyAQMrhhSI/DaBzgxF6FwG3l7nrVJBzdS3kY0=;
+        b=RCDjMeL9i8K1JbbO2eI/BdU5hA2tdYuXIlaaxoOspmTMWYZnJa7t+8jcLYJZVCP3Sk
+         3WLtjih0uq1RbNCV42meTejOoR5e2F0s2cREUK63BadUSiCQgrKF0uI207d0e9hZPBmv
+         82JdHECXqdAXSVkdl0eF7xhW52irQwXJ1JH8Ravin82p1DnnIJ11EGL3Cm7y9D3VjcTX
+         zacxVL8HZtnX7TevBCv8eA8W95BSJwfCDwmUZQ9ZYgfSP54r2p2pDxc3PHuSr/7OtRrC
+         fLjR4XL46dUsCr+2L/jh4laGAft7PfPEhcMqBL6Vsra+3+wAlY23QIO1Xoc1AbAzYznz
+         XqFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757678933; x=1758283733;
+        d=1e100.net; s=20230601; t=1757678934; x=1758283734;
         h=content-transfer-encoding:mime-version:user-agent:references
          :message-id:date:in-reply-to:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wz4E5peEWJEuLH5HpKzn2maiOPcV7d/t/JntClDMc3Y=;
-        b=L15XczDa4AFa7KjW6jdP7AmMD5kW8AgQ565U9Lp7c6tHoUdD3qb3POqW2tggWeXHCR
-         adccyy/6FfOfwnNt6vBsneI6gmixpi0N9kq5qq13LwaFRFpREoD3w7Ms0T2JZrOs4GYS
-         Rthy0asvV5wdoZd+tOZIZ/iwt4TZLVuETaDaECmhNSOfaNtyXN6ZvIJeWQcHEaP/Urd5
-         KmXr2ASIaWjLWNlUvo5TpcvM7TXkjnmNVx03VmBp42SRJ20AMA66z4EGZSM4xED9DGkJ
-         9jzwLVMGVHVnCjB85q5nkOl4SA/xBfQaGW4GSSmKKy2nJGdFWdHuavB1KGxVSa5wPVDB
-         SlSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWEWKO1tBQlqOa0TFT+Hlc/ChHvXaY9XKZoo5riJWH7dVVG7rG6QRrLXrbLCJxv0RfkyIa74p4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ4qRXQABKo/pElqM0OEvFt2FBau3TTfiXPKSLC/lqy/xWRm88
-	7RULLlLUcTFrjsSm4TiS39mzIl4bqpitim4A20XWq+TdFF9tyiQ2q/wt
-X-Gm-Gg: ASbGncsN95kpPoBLsxsLn8nqKD4/eEQrgAC4M2oioDAAKxKHZhevOnIH/iP4lpHMjp/
-	LOs8XR3V+jJYKJ4ymMA9sorS0X1i6bhT2MivHOJ7aCm0KYDTZQCMzJWRNYHBVoZh17OfZZlMri8
-	KiRMPy+7Mn06G+rlkTTtuI55b90rWH0OEgv/QP3WeSVPsysg2Jak5dM7W5UrngzgYyiFrsmfndc
-	kd9eT67+jms4fIFtnrdbVv/yQ4uN3Q8hpOKzRC+aILtSdWKFqUTBHaJLuxks436X0z2D90+19sx
-	ThhyNl1FXvYsVO4WSuJRCub42XaBWZEjf7SEPH2veORGz0KsMS/x7zwMnj5Hpd+RhmG+3RBLrkD
-	FFjHtiZfQ+o1YVgfI+5tnAeY7IgnMLHmvtLT1AI6neWku
-X-Google-Smtp-Source: AGHT+IFBSzBHrD878oYYF5kKGavS67qgNolUi5Ck7EzGdSc891Ykev73AV+0ueAWDKAT71qdNTJHOA==
-X-Received: by 2002:a05:600c:1d2a:b0:45b:9c93:d21d with SMTP id 5b1f17b1804b1-45f24ef20d0mr11997575e9.8.1757678932165;
-        Fri, 12 Sep 2025 05:08:52 -0700 (PDT)
+        bh=I2XBnZVyAQMrhhSI/DaBzgxF6FwG3l7nrVJBzdS3kY0=;
+        b=PkAbTxZO+4xVbtbmxO6SsBZhiA8Rw15rrVUnVf0P8qiUYV/PMtU3rnZGYgD5tbyrik
+         uZ1+sehmiKDmOcjdluaYzeSVyCyxTGvPqGbX9sFDvQQqtKWzGazPBhDd/h8fMVC4bRJa
+         fxPI3HoilA6U4oLG/tgVGFO5tcK+uAlfJGQUrcvVFmfChMsGzA+jmbRUsi4r2PYDMicY
+         EiRB8Uuib78VhQfNjtVyByMGPAALQwAwaqrKRg3NN26Tmv87HU3cggTo15UnUDubyUW5
+         4OVSdM2AycA9PxMcBM5j6rEM+I1++6AXyioanXRQ0ntL8yaRmHP/OuTldC4zoXRb/arU
+         mN4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWV9yy1dYzdQe+2iCfToBw4c6d/z8PTFsdUetYwPLPcbkkV+1LiZYOG3/Dm0zUsLUpqYG1vkYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrHtQKRrSo8TFKMp/wNjfXzXZjdXeig+cnQMvABs4VWjhWcdfo
+	yXsgAHWBWOokMjLo11AnpV8+7XJHPJIgK2oq28hJ+LXnfiN/bGQiz0KQ
+X-Gm-Gg: ASbGncsQy7iHvdZfa8SJq3h6Pm04zc/qWgmqM1wra+1bI2ycxB6KjBX6GVw/iJJK2EM
+	ML8JWb7sDSM8z1jNNAj+dfLq68/7umRV31tS1BChFdt07qeOQ/R9WA9+AyJbxQEYTnOFaLYLSNB
+	01TkiVfKT/imq5eNZgOAO8ESq7CHlDcFmn2x2OFFndlGdBN8e1pKUXRyxwMT3BOhByekWOvXOQE
+	DnUosnlfEQwhfADhUFaLafW4YA+3+ctKlDNGLakrnq6lChkzfh/f3WK2IRZ0H5lNSZUFvtj1vgV
+	qnh3JcBeZAfv+kSMWQvn1hgM/OXc7nC2Rguf+hxbMZeqgdXJ6Raqal6eIhTjdZFkOInDCGnq12w
+	+SXr4ifKrQL3ISr26elbKhVOfxVwgTATUwQ==
+X-Google-Smtp-Source: AGHT+IFHvsX4+WM6Fj66Yc3KV7zMbPnHeT1OHPDmR/usCdny9EBxn21UZKnW27EJ5m4ay8CYAoEFMg==
+X-Received: by 2002:a05:6000:18a6:b0:3e7:486b:45cb with SMTP id ffacd0b85a97d-3e765594133mr2411503f8f.3.1757678933645;
+        Fri, 12 Sep 2025 05:08:53 -0700 (PDT)
 Received: from imac ([2a02:8010:60a0:0:18f9:fa9:c12a:ac60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e017b2722sm33750515e9.1.2025.09.12.05.08.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e0157d68esm32967665e9.6.2025.09.12.05.08.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Sep 2025 05:08:51 -0700 (PDT)
+        Fri, 12 Sep 2025 05:08:53 -0700 (PDT)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
  <ast@fiberby.net>
@@ -67,13 +67,13 @@ Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,  "David S. Miller"
  Horman <horms@kernel.org>,  Jacob Keller <jacob.e.keller@intel.com>,
   Sabrina Dubroca <sd@queasysnail.net>,  wireguard@lists.zx2c4.com,
   netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 07/13] tools: ynl-gen: avoid repetitive
- variables definitions
-In-Reply-To: <20250911200508.79341-8-ast@fiberby.net>
-Date: Fri, 12 Sep 2025 12:30:32 +0100
-Message-ID: <m21pobvrfr.fsf@gmail.com>
+Subject: Re: [PATCH net-next v3 09/13] tools: ynl-gen: rename TypeArrayNest
+ to TypeIndexedArray
+In-Reply-To: <20250911200508.79341-10-ast@fiberby.net>
+Date: Fri, 12 Sep 2025 13:00:54 +0100
+Message-ID: <m2wm63ubgp.fsf@gmail.com>
 References: <20250911200508.79341-1-ast@fiberby.net>
-	<20250911200508.79341-8-ast@fiberby.net>
+	<20250911200508.79341-10-ast@fiberby.net>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -86,22 +86,19 @@ Content-Transfer-Encoding: quoted-printable
 
 Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net> writes:
 
-> In the generated attribute parsing code, avoid repetitively
-> defining the same variables over and over again, local to
-> the conditional block for each attribute.
+> Since TypeArrayNest can now be used with many other sub-types
+> than nest, then rename it to TypeIndexedArray, to reduce
+> confusion.
 >
-> This patch consolidates the definitions of local variables
-> for attribute parsing, so that they are defined at the
-> function level, and re-used across attributes, thus making
-> the generated code read more natural.
+> This patch continues the rename, that was started in commit
+> aa6485d813ad ("ynl: rename array-nest to indexed-array"),
+> when the YNL type was renamed.
 >
-> If attributes defines identical local_vars, then they will
-> be deduplicated, attributes are assumed to only use their
-> local variables transiently.
+> In order to get rid of all references to the old naming,
+> within ynl, then renaming some variables in _multi_parse().
 >
-> ...
+> This is a trivial patch with no behavioural changes intended.
 >
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
 > Signed-off-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
 
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
