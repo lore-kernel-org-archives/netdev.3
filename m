@@ -1,115 +1,149 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B3A280A5B
-	for <netdev@vger.kernel.org>; Sat, 13 Sep 2025 21:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117CE28FFE7;
+	Sat, 13 Sep 2025 21:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757798540; cv=none; b=AgbNS/+GuEO0AfjMzlTPfRJc2dOm0ooo4xHfegkGHJftc6Ae3Tbv9axtCc9I6GP4R6RUofveQKn0Q4aM+LAvgFi3pyPT1Jrg/I5QbPLvUAujh1LwaG+9U39S2TCBIlGkz56sCeesz+ySKF1aBf/YwMKfbvB/EImVSo/a63r/Q24=
+	t=1757800237; cv=none; b=YKAi14FzwLDLyz6HnRSfO9QhEiRYEns95VGqEbiMaOi4AGyO7A8PK1wr1Pgy/dJnTNc3+DnGcofbxFIZDPOdfqlUk7jvcZXF9whjft2McEFHSeIfeKlg54198le91Y1Zcqw2ezYGyqjZ8wAMMFKx2dAJyR9z5ZcHaeLsxOUprb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757798540; c=relaxed/simple;
-	bh=P6/RDnXuyvGR5/p3YqZlXfHx3y0Wzd9Q1lGTBel91xE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SbeMkYkHhnU8XoVymrcSDRhqSrRQ8zh+EprSP/kiZRGFL+tUG6CEYDGwetKG2hjsYC6O7NUyH9Yy8owlUGlAqYrGbFFB1PYDhiqKHBu5gfZ4zXURa7d0OmQRe5PYUXigZC3rq3uk0gA2Cyc+lmmjYTb+EYr3xhTOkTQuvFck7xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WbjCJORV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zAsyiRek; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WbjCJORV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zAsyiRek"
-Date: Sat, 13 Sep 2025 23:22:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757798533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D5C7fkGF35hiR7LwAwgyg4oFIfaQBXBh0CwYsral4wc=;
-	b=WbjCJORVN0ATu4p4hmUogZc/L9UBJ89/tRVIqAzIJJjlA6TfROh6zz2X6/h3+Rfg1daidZ
-	qJuqWdfnVaxrsERYmCVg30T1aGbinrqUbwSnoUQ820vuIMAdq1qFC61qD6ZVw01SOykHWs
-	lx7ER1dv55Pm94Zjtw92ZMBCcvH4W7EUTSnk67hlsoT7km984upOsH/BSNyeq3xyDNspLp
-	pOkLDqTM4CIpFtev/MRZXsr6XpWU/S4Ir6mCSGvGeLTUW17cNgIoScdqzNq85+quOTO6Q8
-	3cVtpm2HbZdTR56JrSq8DJOn+Hx9wQMMSuYcPAVvMQqo3Vb0dRhsJQtZSFKYiw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757798533;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D5C7fkGF35hiR7LwAwgyg4oFIfaQBXBh0CwYsral4wc=;
-	b=zAsyiRek2uOkhkCW78BDEONvnrWYao3wF4Qn3FR6rk/pyn+8x23FC6gp3aUYuxJ6rJ3yoG
-	pU4ScYThXEt00QBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Kurt Kanzenbach <kurt@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	s=arc-20240116; t=1757800237; c=relaxed/simple;
+	bh=pYXg+RjVUBMuFo6zpMi8H7R1wlDcj/Kh1n5x5Me1OyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUo29GnpvI2EzeDbEwONKHgvbwgMd9fxaJeABL5a4Q7kcNxHjDrJX2eZI1sZVHNz7oZK8C3e7ydbdwFvOUs2vz9DB6vygPl0GSblKReDnLT1c49qWBCc9QbQG3W0RpvriYbNirmendhmj385IDqZ+0Fq2mVLm0xCgMKvACCpXyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cPPkc3BGyz9sW1;
+	Sat, 13 Sep 2025 23:36:40 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 0pGzEJhCBt9J; Sat, 13 Sep 2025 23:36:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cPPhk19GGz9sdX;
+	Sat, 13 Sep 2025 23:35:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 179668C083;
+	Sat, 13 Sep 2025 11:14:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id d4O0pvgN9ca6; Sat, 13 Sep 2025 11:14:32 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A9638C07C;
+	Sat, 13 Sep 2025 11:14:32 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: TRINH THAI Florent <florent.trinh-thai@cs-soprasteria.com>,
+	CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
+	Herve Codina <herve.codina@bootlin.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next] igb: Retrieve Tx timestamp
- directly from interrupt
-Message-ID: <20250913212212.3nwetWbI@linutronix.de>
-References: <20250815-igb_irq_ts-v1-1-8c6fc0353422@linutronix.de>
- <aKMbekefL4mJ23kW@localhost>
- <c3250413-873f-4517-a55d-80c36d3602ee@intel.com>
- <aKV_rEjYD_BDgG1A@localhost>
- <87ikhodotj.fsf@jax.kurt.home>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] net: wan: framer: Add version sysfs attribute for the Lantiq PEF2256 framer
+Date: Sat, 13 Sep 2025 11:13:26 +0200
+Message-ID: <f9aaa89946f1417dc0a5e852702410453e816dbc.1757754689.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <87ikhodotj.fsf@jax.kurt.home>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757754844; l=2774; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=pYXg+RjVUBMuFo6zpMi8H7R1wlDcj/Kh1n5x5Me1OyE=; b=tfC1xUh21QCNvBaXuRPGT0NhydxAWojncrDaZfhcS0B0AKGUYA16Khums+TTQAtYZ5xIQ1F9Y ncjv+E3Me0fDsKPbk9TUjvtm3Sxsv6doVTBTDkA/A8EGmcWLj3VsqZh
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-On 2025-09-12 11:04:24 [+0200], Kurt Kanzenbach wrote:
-=E2=80=A6
-> I did run the same test as you mentioned here. But, my numbers are
-> completely different. Especially the number of hardware TX timestamps
-> are significantly lower overall.
-=E2=80=A6
+Lantiq PEF2256 framer has some little differences in behaviour
+depending on its version.
 
-Using the command line, I see hardly any difference over 5 runs. One
-thing that made me curious:
+Add a sysfs attribute to allow user applications to know the
+version.
 
-| NTP packets received       : 1061901
-| NTP daemon TX timestamps   : 565892
-| NTP kernel TX timestamps   : 327905
-| NTP hardware TX timestamps : 168104
-| tx_hwstamp:395778
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ drivers/net/wan/framer/pef2256/pef2256.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-tx_hwstamp is a counter in igb_ptp_tx_tstamp_event() keeping track how
-many packets it processed. So it processed ~395k packets but "NTP
-hardware TX" says 168k. Reading the timestamp directly or via the
-worker, it looks mostly like noise. I see on ntpperf side ~ 45% - 55%
-loss.
+diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
+index 1e4c8e85d598..2d56bc25af3c 100644
+--- a/drivers/net/wan/framer/pef2256/pef2256.c
++++ b/drivers/net/wan/framer/pef2256/pef2256.c
+@@ -37,6 +37,7 @@ struct pef2256 {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+ 	enum pef2256_version version;
++	const char *version_txt;
+ 	struct clk *mclk;
+ 	struct clk *sclkr;
+ 	struct clk *sclkx;
+@@ -114,6 +115,14 @@ enum pef2256_version pef2256_get_version(struct pef2256 *pef2256)
+ }
+ EXPORT_SYMBOL_GPL(pef2256_get_version);
+ 
++static ssize_t version_show(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	struct pef2256 *pef2256 = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%s\n", pef2256->version_txt);
++}
++DEVICE_ATTR_RO(version);
++
+ enum pef2256_gcm_config_item {
+ 	PEF2256_GCM_CONFIG_1544000 = 0,
+ 	PEF2256_GCM_CONFIG_2048000,
+@@ -697,7 +706,6 @@ static int pef2256_probe(struct platform_device *pdev)
+ 	unsigned long sclkr_rate, sclkx_rate;
+ 	struct framer_provider *framer_provider;
+ 	struct pef2256 *pef2256;
+-	const char *version_txt;
+ 	void __iomem *iomem;
+ 	int ret;
+ 	int irq;
+@@ -763,18 +771,18 @@ static int pef2256_probe(struct platform_device *pdev)
+ 	pef2256->version = pef2256_get_version(pef2256);
+ 	switch (pef2256->version) {
+ 	case PEF2256_VERSION_1_2:
+-		version_txt = "1.2";
++		pef2256->version_txt = "1.2";
+ 		break;
+ 	case PEF2256_VERSION_2_1:
+-		version_txt = "2.1";
++		pef2256->version_txt = "2.1";
+ 		break;
+ 	case PEF2256_VERSION_2_2:
+-		version_txt = "2.2";
++		pef2256->version_txt = "2.2";
+ 		break;
+ 	default:
+ 		return -ENODEV;
+ 	}
+-	dev_info(pef2256->dev, "Version %s detected\n", version_txt);
++	dev_info(pef2256->dev, "Version %s detected\n", pef2256->version_txt);
+ 
+ 	ret = pef2556_of_parse(pef2256, np);
+ 	if (ret)
+@@ -835,6 +843,8 @@ static int pef2256_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	device_create_file(pef2256->dev, &dev_attr_version);
++
+ 	return 0;
+ }
+ 
+@@ -849,6 +859,8 @@ static void pef2256_remove(struct platform_device *pdev)
+ 	pef2256_write8(pef2256, PEF2256_IMR3, 0xff);
+ 	pef2256_write8(pef2256, PEF2256_IMR4, 0xff);
+ 	pef2256_write8(pef2256, PEF2256_IMR5, 0xff);
++
++	device_remove_file(pef2256->dev, &dev_attr_version);
+ }
+ 
+ static const struct of_device_id pef2256_id_table[] = {
+-- 
+2.49.0
 
-If I do
-| ntpperf -i X =E2=80=A6 -I -r 1000 -t 2
-
-then there is no loss and on other side I see
-
-| NTP packets received       : 2201
-| NTP timestamps held        : 2101
-| NTP daemon TX timestamps   : 200
-| NTP kernel TX timestamps   : 901
-| NTP hardware TX timestamps : 1100
-| tx_hwstamp:2101
-
-Here the tx_hwstamp counter colorates with "NTP timestamps held". Does
-it this make any sense? I don't see this matching with the "larger" runs
-where ntpperf reports loss.
-
-> Thanks,
-> Kurt
-
-Sebastian
