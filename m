@@ -1,95 +1,98 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FC657C9F;
-	Sat, 13 Sep 2025 23:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688692BEFFB;
+	Sat, 13 Sep 2025 23:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757805301; cv=none; b=KhKnT7zynjQoXBN6Lz/sXAnU9NKInGCd/JcSlrC4pWktkIauI7N1iUoSITgPESBiSOsZuSU42FAReCLmCFOdUAW0W6s9nlNAlYdq7+RwdCsLKF0s6jwt+ftqIu9OxteAagSW9sxseEDBGZfB8vpImQRNF9GYYL26mCSr8bR5Nvs=
+	t=1757807958; cv=none; b=nRnxUnvQrAWOVtfQbLt2ntvmmgq0K6dHqwrm7j0pVDEK1CKAxDs+cqSRMc/+A2YiN1rcjzfX2uWpaR2cdtNgxTv0CBR/XFFHhqsGiOVoJ1Z2PFIYlkeWKwztuABYJjIv+rSza3qMD4RMc7x5EBW67EBpX8HOZrqovFJ2F1+bXDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757805301; c=relaxed/simple;
-	bh=8wDYtDrhpFgUUI+jhVG4Tnavlo0d2jYskZlAletJsXY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GrP+q8+/1Wq4nCg2M3zNDy0jLCZXjTYH4jWg8ZqD+tdWxc/STwirtqo+oB6DevtzGfYBMErtOk7+kZxw30f+cTdP3DVWpPLvv/97+kWvaiLvOazvoqnveUArUyMW2hZpY022FtT6CQgyqhboxTsvlNXYnFVosG/Ae2Aagy2zTL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=WzeHUuy6; arc=none smtp.client-ip=193.104.135.124
+	s=arc-20240116; t=1757807958; c=relaxed/simple;
+	bh=CklzBOgUQddwzBO3UlL2pkEPjFixeUSxqIJvFTCFOhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WdF7zfRjvnwJUqVvCxVAaT2R2X2WcSCCjGPNaAWoVAYyx+kMxFg2O/eXSPmd8CGOA494qqsL/Ap/Ixi2zdvUj5Vw9wwMMX1aQbyp0N2FqyeR2BGeWSbAhKJh3HVDAsjTbTz3RJzmJvQbvbBIzbxnIOLkApOtiNfc8EdyU1fDcwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=ZFbeA0ob; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="WzeHUuy6"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="ZFbeA0ob"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1757805289;
-	bh=8wDYtDrhpFgUUI+jhVG4Tnavlo0d2jYskZlAletJsXY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WzeHUuy6lg97Q2koIZK33Jw7f5uG4oTiq8dmQAFKifab5663vM5HUqqH/FCTn+LVB
-	 57n5vKQC+Xd0YHQJc/r39n0LGMiea81eyOqqivbXIF9GLLWSp3imOa2J3QJkuDjVWs
-	 OBPsWTymIEjGY+JN20FEiGdJfbio1kUMW0ueB5OGl/rHUWvPOqcFvobu9moMCxMZ8M
-	 MeVSB9BDkQGu57sL2SvZyQu0FwjqWFQ9oXsw/PAGarCpq42A8ll5PclZtRLL7+FDPK
-	 m6PnyaripS2mgYHC2GiGP+44coUBkslaEXSBizP6LB9jx+JLI/wO8V/HqfMcOnHxLo
-	 gkZT9sd5fzS5A==
+	s=202008; t=1757807952;
+	bh=CklzBOgUQddwzBO3UlL2pkEPjFixeUSxqIJvFTCFOhk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZFbeA0obsZ/LV8zfxCNfnZr8P4fn3Izl0iP8loTpz26QA5GLRLQbhr07vsyiqvzu2
+	 HXSxDiAFT6+ebF4L/cfkX7RVaboS2r+GNrWugJeHtc5TyVEGAkm40/rQ89dLvRKMe0
+	 TerYLVBMzIM5GzwQZrUMT5WnQfkLUKVoPvha0FnJ7AO97JTeZD3QwVgvgFaW15gnIw
+	 J4UemLGvg9KLghk8Yb/D2yjU1ElPyIas0QzJprWMAId83fchbSpS+LfywCle/tJ9hz
+	 g5bDx5aKUZvdqTmrYsPtWe62Z8qmHJ+mg7o3JsGUDtxH+loDxFOHg46SKnD7bC4kS1
+	 PvtYvCI9CaeMQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id CB8FF600C4;
-	Sat, 13 Sep 2025 23:14:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by x201s (Postfix) with ESMTP id 924CD202FBF;
-	Sat, 13 Sep 2025 23:14:38 +0000 (UTC)
-Message-ID: <aba5915c-5246-4a31-a2ea-2eeedb4ab108@fiberby.net>
-Date: Sat, 13 Sep 2025 23:14:38 +0000
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 5310960078;
+	Sat, 13 Sep 2025 23:59:12 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id 878D420519B; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4 10/11] tools: ynl: decode hex input
+Date: Sat, 13 Sep 2025 23:58:31 +0000
+Message-ID: <20250913235847.358851-11-ast@fiberby.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250913235847.358851-1-ast@fiberby.net>
+References: <20250913235847.358851-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 06/13] tools: ynl-gen: deduplicate
- fixed_header handling
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>,
- Sabrina Dubroca <sd@queasysnail.net>, wireguard@lists.zx2c4.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250911200508.79341-1-ast@fiberby.net>
- <20250911200508.79341-7-ast@fiberby.net> <20250912172418.1271771d@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
-In-Reply-To: <20250912172418.1271771d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/13/25 12:24 AM, Jakub Kicinski wrote:
-> On Thu, 11 Sep 2025 20:04:59 +0000 Asbjørn Sloth Tønnesen wrote:
->> Fixed headers are handled nearly identical in print_dump(),
->> print_req() and put_req_nested(), generalize them and use a
->> common function to generate them.
->>
->> This only causes cosmetic changes to tc_netem_attrs_put() in
->> tc-user.c.
->>
->> Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
->> ---
->>   tools/net/ynl/pyynl/ynl_gen_c.py | 39 ++++++++++++++++----------------
->>   1 file changed, 20 insertions(+), 19 deletions(-)
-> 
-> This only makes the code longer and harder to follow.
+This patch adds support for decoding hex input, so
+that binary attributes can be read through --json.
 
-We have 3 functions using put_attr():
-* put_req_nested()
-* print_req()
-* print_dump()
+Example (using future wireguard.yaml):
+ $ sudo ./tools/net/ynl/pyynl/cli.py --family wireguard \
+   --do set-device --json '{"ifindex":3,
+     "private-key":"2a ae 6c 35 c9 4f cf <... to 32 bytes>"}'
 
-I was just trying to align them a bit more so that they don't
-do the same thing in three different ways. I would prefer to
-make these functions more aligned, as it will hopefully make
-it easier avoid issue like the missing local variables for
-.attr_put().
+In order to somewhat mirror what is done in _formatted_string(),
+then for non-binary attributes attempt to convert it to an int.
 
-I agree these clean up patches would also fit better in a
-dedicated cleanup series, the only reason that I added this to
-this series, was because you pushed back, then I said that the
-`len` dedup, and other "make code look natural" cleanups might
-not be for this series.
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+---
+ tools/net/ynl/pyynl/lib/ynl.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I have dropped this patch in v4, it's not important for this
-series.
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 9fd83f8b091f..707753e371e2 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -971,6 +971,11 @@ class YnlFamily(SpecFamily):
+                 raw = ip.packed
+             else:
+                 raw = int(ip)
++        elif attr_spec.display_hint == 'hex':
++            if attr_spec['type'] == 'binary':
++                raw = bytes.fromhex(string)
++            else:
++                raw = int(string, 16)
+         else:
+             raise Exception(f"Display hint '{attr_spec.display_hint}' not implemented"
+                             f" when parsing '{attr_spec['name']}'")
+-- 
+2.51.0
+
