@@ -1,45 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8FE2C0F75;
-	Sat, 13 Sep 2025 09:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628B5747F;
+	Sat, 13 Sep 2025 09:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757754435; cv=none; b=dGlSm2c7TPlENppKf0XRJu961fJvc6WwEUr8ExXKo/X9E/ndPH41Ws62GHeL2JhqwAne5mw+HyEAaFJEaUgJaVeMqXIC0lyqf5gEUOTGT2ihM21mZEbzZJ5SyfhEj/maWezw9HOiureGScbOiqTqTiOYZ1F4oGbRk9kZw4JKBI4=
+	t=1757754971; cv=none; b=rXbhedHIxTjtg1jRiMC0ldW/p19UuDjr/cVAL0XXPAF1QqiaDe1CyWthkOAP4WO7g4P+upFWsTPVTVjHQvwY6umAN6YiOfGPSt5baBXzl0JTnNThCD2glBOEoQg8JlBEEVqKzBqXihza1I+EKQQppJwsss2+C25/m4wnz8EggGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757754435; c=relaxed/simple;
-	bh=cb2Q1hU2BTJSMSERZdg9xxImCo1b0IDRVIFl13zEi7k=;
+	s=arc-20240116; t=1757754971; c=relaxed/simple;
+	bh=tIdpl+E9qiPpRky8s9y/LrALOp3p9zK9giky241MagU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bgShBX8zzY5WEv9tNO/zLiUau1BcEITNZJSpVArtDPUWGEymSKcBc7V/1NGFKtp8t1VLBYgjfm3J+rvFU9faiTusWbKZMLJJu3b13EJGO4cTi/bBdYVZpmg/uyGRQdG7Ljp/GvReL5uaeSoAimmUJPhNI2TNPROZu5s7Aa23J2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSbkRV2H; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HLepzB+zrlImdVou/gL9wGc8gW/3vntDu0qUL6be0IaxOlzoX86YfJHiAzIUCG5HKJGbR09A9ScwfzGah3E22HB3xjw3hgiCVt1ly1e9kwTvbF3YrQGVr+rqXQdVhNz6W/cqrOqa2aK5XEbhy4PAxpou8EHNlf3+rkckPnFqlJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApP3lpej; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSbkRV2H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A797AC4CEEB;
-	Sat, 13 Sep 2025 09:07:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ApP3lpej"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF665C4CEEB;
+	Sat, 13 Sep 2025 09:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757754434;
-	bh=cb2Q1hU2BTJSMSERZdg9xxImCo1b0IDRVIFl13zEi7k=;
+	s=k20201202; t=1757754971;
+	bh=tIdpl+E9qiPpRky8s9y/LrALOp3p9zK9giky241MagU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NSbkRV2HmBGKR0IvjNlWBMNvMj2ZwzM+axTyyVP0B1NhK/lPu29kleoUZYZ0kzHE6
-	 iIBLvIEwW1BrD+itZRICi/qMl2r8xilMBWAge74VRMSj4izWj0p87oYKpn4rMlfUaM
-	 DWwYT1YW/7jKzKB805wqGN1AccB+foRDwD4JNeKfK2PaUxdNUHLHTdPZN6WOCs3OLY
-	 /AoWkr4njKga7pyCKxB/j32CHsiUjr0DmLygOuEsa6+h37sc8aMQHT35aW8QDKqEKz
-	 dMA5GDF82bnpzuTGiEDr7R11sFiFMwABTlL/Nq6UfaNM5QHGL7IOLq9DpyslmjYNOf
-	 SDmPuQPPsda1Q==
-Date: Sat, 13 Sep 2025 10:07:10 +0100
+	b=ApP3lpejWn30G2bgA2ehbS3Ka26Z+JAlbpL80GW1VdmC2SuBpe5XIFWE5tUIpa8cX
+	 gRiD3eRMAft2Sq7jzXSv4PkzkeiR86yhl5bdPiyfMgr1Ae4bwZT09VTSKACagMfQe7
+	 6J4NIRmMVmzy321QEzvJL5fDRu0hT32gg/b8UzhQsdd9Nl8mz8XOkEVM2jsJGMMMXR
+	 om24bPxkm8kyhvA0xOVZKVXWt9cAjdLG1MuCQzuS+e6liSRuDfY47w9+TH2x4WC1f6
+	 KTkHCbGGsUVodAb4BM9hmGSX2osedxVL9d/CQksXy0aRBsP114fd7B1mDU7ALv8JDY
+	 fjolwuRHLU8cw==
+Date: Sat, 13 Sep 2025 10:16:04 +0100
 From: Simon Horman <horms@kernel.org>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Jesse Brandeburg <jbrandeburg@cloudflare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-doc@vger.kernel.org,
-	corbet@lwn.net, Jesse Brandeburg <jesse.brandeburg@intel.com>
-Subject: Re: [PATCH v3 5/5] ice: refactor to use helpers
-Message-ID: <20250913090710.GJ224143@horms.kernel.org>
-References: <20250911-resend-jbrandeb-ice-standard-stats-v3-0-1bcffd157aa5@intel.com>
- <20250911-resend-jbrandeb-ice-standard-stats-v3-5-1bcffd157aa5@intel.com>
+To: "irving.ch.lin" <irving-ch.lin@mediatek.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Qiqi Wang <qiqi.wang@mediatek.com>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-pm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Project_Global_Chrome_Upstream_Group@mediatek.com,
+	sirius.wang@mediatek.com, vince-wl.liu@mediatek.com,
+	jh.hsu@mediatek.com
+Subject: Re: [PATCH v2 4/4] pmdomain: mediatek: Add power domain driver for
+ MT8189 SoC
+Message-ID: <20250913091604.GK224143@horms.kernel.org>
+References: <20250912120508.3180067-1-irving-ch.lin@mediatek.com>
+ <20250912120508.3180067-5-irving-ch.lin@mediatek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,27 +58,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250911-resend-jbrandeb-ice-standard-stats-v3-5-1bcffd157aa5@intel.com>
+In-Reply-To: <20250912120508.3180067-5-irving-ch.lin@mediatek.com>
 
-On Thu, Sep 11, 2025 at 04:40:41PM -0700, Jacob Keller wrote:
-> From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+On Fri, Sep 12, 2025 at 08:04:53PM +0800, irving.ch.lin wrote:
+> From: Irving-ch Lin <irving-ch.lin@mediatek.com>
 > 
-> Use the ice_netdev_to_pf() helper in more places and remove a bunch of
-> boilerplate code. Not every instance could be replaced due to use of the
-> netdev_priv() output or the vsi variable within a bunch of functions.
+> Introduce a new power domain (pmd) driver for the MediaTek mt8189 SoC.
+> This driver ports and refines the power domain framework, dividing
+> hardware blocks (CPU, GPU, peripherals, etc.) into independent power
+> domains for precise and energy-efficient power management.
 > 
-> Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_ethtool.c   | 48 ++++++++------------------
->  drivers/net/ethernet/intel/ice/ice_flex_pipe.c |  8 ++---
->  drivers/net/ethernet/intel/ice/ice_lag.c       |  3 +-
->  drivers/net/ethernet/intel/ice/ice_main.c      | 10 ++----
->  drivers/net/ethernet/intel/ice/ice_ptp.c       |  6 ++--
->  drivers/net/ethernet/intel/ice/ice_sriov.c     |  3 +-
->  6 files changed, 24 insertions(+), 54 deletions(-)
+> Signed-off-by: Irving-ch Lin <irving-ch.lin@mediatek.com>
 
-Less is more :)
+...
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> diff --git a/drivers/pmdomain/mediatek/mtk-scpsys.c b/drivers/pmdomain/mediatek/mtk-scpsys.c
 
+...
+
+> @@ -419,54 +848,145 @@ static void init_clks(struct platform_device *pdev, struct clk **clk)
+>  		clk[i] = devm_clk_get(&pdev->dev, clk_names[i]);
+>  }
+>  
+> +static int init_subsys_clks(struct platform_device *pdev,
+> +			    const char *prefix, struct clk **clk)
+> +{
+> +	struct device_node *node = pdev->dev.of_node;
+> +	u32 prefix_len, sub_clk_cnt = 0;
+> +	struct property *prop;
+> +	const char *clk_name;
+> +
+> +	if (!node) {
+> +		dev_err(&pdev->dev, "Cannot find scpsys node: %ld\n",
+> +			PTR_ERR(node));
+> +		return PTR_ERR(node);
+
+Hi Irving-ch,
+
+Here node is NULL. So PTR_ERR(node) will be zero.
+This is probably not what you are after here.
+
+Flagged by Smatch
+
+> +	}
+> +
+> +	prefix_len = strlen(prefix);
+> +
+> +	of_property_for_each_string(node, "clock-names", prop, clk_name) {
+> +		if (!strncmp(clk_name, prefix, prefix_len) &&
+> +		    (strlen(clk_name) > prefix_len + 1) &&
+> +		    (clk_name[prefix_len] == '-')) {
+> +			if (sub_clk_cnt >= MAX_SUBSYS_CLKS) {
+> +				dev_err(&pdev->dev,
+> +					"subsys clk out of range %d\n",
+> +					sub_clk_cnt);
+> +				return -EINVAL;
+> +			}
+> +
+> +			clk[sub_clk_cnt] = devm_clk_get(&pdev->dev, clk_name);
+> +
+> +			if (IS_ERR(clk[sub_clk_cnt])) {
+> +				dev_err(&pdev->dev,
+> +					"Subsys clk get fail %ld\n",
+> +					PTR_ERR(clk[sub_clk_cnt]));
+> +				return PTR_ERR(clk[sub_clk_cnt]);
+> +			}
+> +			sub_clk_cnt++;
+> +		}
+> +	}
+> +
+> +	return sub_clk_cnt;
+> +}
+
+...
