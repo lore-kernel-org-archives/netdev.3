@@ -1,149 +1,74 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117CE28FFE7;
-	Sat, 13 Sep 2025 21:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E012C08BE;
+	Sat, 13 Sep 2025 23:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757800237; cv=none; b=YKAi14FzwLDLyz6HnRSfO9QhEiRYEns95VGqEbiMaOi4AGyO7A8PK1wr1Pgy/dJnTNc3+DnGcofbxFIZDPOdfqlUk7jvcZXF9whjft2McEFHSeIfeKlg54198le91Y1Zcqw2ezYGyqjZ8wAMMFKx2dAJyR9z5ZcHaeLsxOUprb0=
+	t=1757805300; cv=none; b=mUHqq/ySaBJxv+SVtZV9Ll1EhF9nV2rP7i71/gLY8IMf47f4gjGQqol9ZoTHjy5IQqwXhJiMVrL/ayv8SVtttcc6VkDB3HSxaFMLueVYSg9ViCdXKYxAfOVnyCKAR1+JI+Vn7l09SU/KGz4cUBJGZacEaYKPW2/gfbXD67H4NAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757800237; c=relaxed/simple;
-	bh=pYXg+RjVUBMuFo6zpMi8H7R1wlDcj/Kh1n5x5Me1OyE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUo29GnpvI2EzeDbEwONKHgvbwgMd9fxaJeABL5a4Q7kcNxHjDrJX2eZI1sZVHNz7oZK8C3e7ydbdwFvOUs2vz9DB6vygPl0GSblKReDnLT1c49qWBCc9QbQG3W0RpvriYbNirmendhmj385IDqZ+0Fq2mVLm0xCgMKvACCpXyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cPPkc3BGyz9sW1;
-	Sat, 13 Sep 2025 23:36:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 0pGzEJhCBt9J; Sat, 13 Sep 2025 23:36:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cPPhk19GGz9sdX;
-	Sat, 13 Sep 2025 23:35:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 179668C083;
-	Sat, 13 Sep 2025 11:14:33 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id d4O0pvgN9ca6; Sat, 13 Sep 2025 11:14:32 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7A9638C07C;
-	Sat, 13 Sep 2025 11:14:32 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: TRINH THAI Florent <florent.trinh-thai@cs-soprasteria.com>,
-	CASAUBON Jean Michel <jean-michel.casaubon@cs-soprasteria.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next] net: wan: framer: Add version sysfs attribute for the Lantiq PEF2256 framer
-Date: Sat, 13 Sep 2025 11:13:26 +0200
-Message-ID: <f9aaa89946f1417dc0a5e852702410453e816dbc.1757754689.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1757805300; c=relaxed/simple;
+	bh=hdvUQ1mYN4bd9lUCkvNBWXP9pwpsysgRgSzVxZsOjKc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=meXkP5COL4Z0YJOjqMEja0FHdHa0efIgYIO0BrCzQuW6HAIKZKQobFv28PhzwnRESDly03hVjee1YCsB/Ra5ARHEwrx+6jW1wNjykoRMSvvYU4/OCWDzcCvmmRzPdpo0iNMCsYl8rbzmnWK7S51SsiBnY4FJ8wcvgK7eWey6VBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=v+zyZQA1; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="v+zyZQA1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1757805289;
+	bh=hdvUQ1mYN4bd9lUCkvNBWXP9pwpsysgRgSzVxZsOjKc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=v+zyZQA1XpyrYDKPYVquDr3wzJSpMv6MVpylqIT9EIjBomM1zdQSaflKqiMY6SA09
+	 CpqSn7ndm8yEBpWAUZLH8chwsd+9u6Geg/KkQFxI0cBAs6bBHGXvnhIS5Be2hZpPrn
+	 dTSth+QMpUvAMlCXwlFWx4BHEXj1sHW16ED30MgQQDwhbzSJMwIR7Js/Q8SxX1eeeg
+	 2eh11MlJW27R2MvdUCBDXgxvRtwcFcNjJSknUOUEMaCY57m3Y7iCMcbzwf7e20PAPO
+	 RH8YS0wG9qOO8hVAWz9hd0cfa/6bUrgGmL+10kAO+55T8Q8+ujxrw+eEIYUo9lB5hj
+	 YE1GF70r9zjYA==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id C68B66000C;
+	Sat, 13 Sep 2025 23:14:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by x201s (Postfix) with ESMTP id 8135920393F;
+	Sat, 13 Sep 2025 23:14:40 +0000 (UTC)
+Message-ID: <32fde530-f462-4ccf-99bf-7ee1e192b76a@fiberby.net>
+Date: Sat, 13 Sep 2025 23:14:40 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757754844; l=2774; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=pYXg+RjVUBMuFo6zpMi8H7R1wlDcj/Kh1n5x5Me1OyE=; b=tfC1xUh21QCNvBaXuRPGT0NhydxAWojncrDaZfhcS0B0AKGUYA16Khums+TTQAtYZ5xIQ1F9Y ncjv+E3Me0fDsKPbk9TUjvtm3Sxsv6doVTBTDkA/A8EGmcWLj3VsqZh
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 05/13] tools: ynl-gen: add
+ CodeWriter.p_lines() helper
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, wireguard@lists.zx2c4.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250911200508.79341-1-ast@fiberby.net>
+ <20250911200508.79341-6-ast@fiberby.net> <20250912172124.57f96054@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>
+In-Reply-To: <20250912172124.57f96054@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Lantiq PEF2256 framer has some little differences in behaviour
-depending on its version.
+On 9/13/25 12:21 AM, Jakub Kicinski wrote:
+> On Thu, 11 Sep 2025 20:04:58 +0000 Asbjørn Sloth Tønnesen wrote:
+>> Add a helper for writing an array of lines, and convert
+>> all the existing loops doing that, to use the new helper.
+>>
+>> This is a trivial patch with no behavioural changes intended,
+>> there are no changes to the generated code.
+> 
+> I don't see the need for this.
 
-Add a sysfs attribute to allow user applications to know the
-version.
+Ok, loop macros are only for C, not Python. :)
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/net/wan/framer/pef2256/pef2256.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
-index 1e4c8e85d598..2d56bc25af3c 100644
---- a/drivers/net/wan/framer/pef2256/pef2256.c
-+++ b/drivers/net/wan/framer/pef2256/pef2256.c
-@@ -37,6 +37,7 @@ struct pef2256 {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	enum pef2256_version version;
-+	const char *version_txt;
- 	struct clk *mclk;
- 	struct clk *sclkr;
- 	struct clk *sclkx;
-@@ -114,6 +115,14 @@ enum pef2256_version pef2256_get_version(struct pef2256 *pef2256)
- }
- EXPORT_SYMBOL_GPL(pef2256_get_version);
- 
-+static ssize_t version_show(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	struct pef2256 *pef2256 = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%s\n", pef2256->version_txt);
-+}
-+DEVICE_ATTR_RO(version);
-+
- enum pef2256_gcm_config_item {
- 	PEF2256_GCM_CONFIG_1544000 = 0,
- 	PEF2256_GCM_CONFIG_2048000,
-@@ -697,7 +706,6 @@ static int pef2256_probe(struct platform_device *pdev)
- 	unsigned long sclkr_rate, sclkx_rate;
- 	struct framer_provider *framer_provider;
- 	struct pef2256 *pef2256;
--	const char *version_txt;
- 	void __iomem *iomem;
- 	int ret;
- 	int irq;
-@@ -763,18 +771,18 @@ static int pef2256_probe(struct platform_device *pdev)
- 	pef2256->version = pef2256_get_version(pef2256);
- 	switch (pef2256->version) {
- 	case PEF2256_VERSION_1_2:
--		version_txt = "1.2";
-+		pef2256->version_txt = "1.2";
- 		break;
- 	case PEF2256_VERSION_2_1:
--		version_txt = "2.1";
-+		pef2256->version_txt = "2.1";
- 		break;
- 	case PEF2256_VERSION_2_2:
--		version_txt = "2.2";
-+		pef2256->version_txt = "2.2";
- 		break;
- 	default:
- 		return -ENODEV;
- 	}
--	dev_info(pef2256->dev, "Version %s detected\n", version_txt);
-+	dev_info(pef2256->dev, "Version %s detected\n", pef2256->version_txt);
- 
- 	ret = pef2556_of_parse(pef2256, np);
- 	if (ret)
-@@ -835,6 +843,8 @@ static int pef2256_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	device_create_file(pef2256->dev, &dev_attr_version);
-+
- 	return 0;
- }
- 
-@@ -849,6 +859,8 @@ static void pef2256_remove(struct platform_device *pdev)
- 	pef2256_write8(pef2256, PEF2256_IMR3, 0xff);
- 	pef2256_write8(pef2256, PEF2256_IMR4, 0xff);
- 	pef2256_write8(pef2256, PEF2256_IMR5, 0xff);
-+
-+	device_remove_file(pef2256->dev, &dev_attr_version);
- }
- 
- static const struct of_device_id pef2256_id_table[] = {
--- 
-2.49.0
-
+I have dropped this patch in v4, as it's not important for this
+series.
