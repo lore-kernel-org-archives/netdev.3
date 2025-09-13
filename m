@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C07B2C11CA;
-	Sat, 13 Sep 2025 23:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688DB2C11CC;
+	Sat, 13 Sep 2025 23:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757807958; cv=none; b=PIDguIDm4vPIoB2jpmjUiHrkFtQgHvdmQabx4Ya2p3edlDGISh4UxqtDT3gvZHFeFfTHeh6H2t47D2XitEi2Abia9xgjIxqNZ4jO5fWM1xWuxKq+m7WC3kaacLcZcpRkBK2SY+0ipgWeSaWEOp41trC3k7QBSKdTJ1Cz96KhsgM=
+	t=1757807958; cv=none; b=etPZK/wbO0xEB+MFbN3CbAFSauJYZN1nao/IkjuiLaYZFEDS0i9cd8LWjdKCpquaBMXeOwHJU72wjDP5a2d1oTH5YhJBcA21FUXzMFZHCAaSja31039HnIBmeYJSnEHbJ5RdEdYalz33GsOwE8PK61F6iHG5b2rRcYdzW8zwOdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757807958; c=relaxed/simple;
-	bh=EZJrSC8HKLIZeYkZ/ou7/O3NW58W1W8t+y2LSY8Uu94=;
+	bh=HqyIhwC1Ng9W9Rs+TyJnvWCNwSRIXH4apSsRMl21lQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VWK9TFs6+dPaMnPN+n/Nr/7ho7PIm5Bz/c6QBrtOcMoQl3X2j0eOhyNj7ZnUR32iOwHqK2EkQhYm3IY00wlVJOdwmupqH+HxU47i6Zh7Hl3LzwafQigGctojNKGy+AXB9OR+Rj1zJMlFckCZJz0ll7Ef1HQ7z8M1AoeLx2CJLn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Xm3vjlFN; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=FO4easMbd057oqpn1Km4wLoiDryxSMD+Kl5ehOLY5HTG1j/CZrnwm7vCIEFYPtN2MGWvPXRQzT9ei7vaSymbIKwUA1f/l7G7kK9ytzMEfHrfrQ6lRELSA7NlXC8iGO3jde/w0bYkfvZy2uwlZNwcUO+XeLzh7iSiJqSv+hHjr1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=le4JH8fI; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Xm3vjlFN"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="le4JH8fI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757807952;
-	bh=EZJrSC8HKLIZeYkZ/ou7/O3NW58W1W8t+y2LSY8Uu94=;
+	bh=HqyIhwC1Ng9W9Rs+TyJnvWCNwSRIXH4apSsRMl21lQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xm3vjlFNGg+PC2MuFwo/YHxsjBdtYgSTmDGb05RcKqwbGjVrOmUEn3KSDXp3hmrLC
-	 CNfzPS9uYrrgg7hU9Z9Qy62o6KvWNilvebhCLMvbOF/9gPa7na9bia4r4zw/XSa6ze
-	 MJY5JJ4TlvQNqqHUuTA2Sz1P4QAB1sgaSr7nHmejovxGUv8m+Qd8SiuVecftGHfxn2
-	 r2Xd4PCdr9pX/bqdMVJURnwMsfM1WKTcGR9S9dnEEYKxjO2d2F32ks1r9SulpPCIlC
-	 N4tzs4LGq8Wfgzv7q7gKkJ4T2U+xyV+0wzvYnm58ryGPYiqXBdXR8RpB6qCEsklunm
-	 R3mbguZdl3O3A==
+	b=le4JH8fI75erN98H+o4YToCsQY9N/LYcIKUefNNJf85hoyeGBl4urZHbdkoQvJN7D
+	 nIDk0FzfygsPBlrMH0toZpnFxJnBsP2nS4lXsh1TSKHalHXC7BjAHJ4nPENP6rfafq
+	 isDbhCLIspbDwifBF0NbPADXdrEb3ZORL8iZ0B7r5u1mSME7keRU0cgCACfn8RXY/E
+	 PzqgugldhzK42isqyrxuvg3fkDm0GCoflVS1ue60SyVZNjirz9fHjC+WqU9bb/GZib
+	 pWypIMyXCqDuxC6jPyrQpGnedCZwwlAaYTIV5QhcFsh8aNNO5ZyNU08K29bgEIPqpz
+	 7IT2XDlhiDqiA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 502BC6000C;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 5585A600C4;
 	Sat, 13 Sep 2025 23:59:12 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 45C6D2038ED; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
+	id 75069204E9E; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 03/11] tools: ynl-gen: add sub-type check
-Date: Sat, 13 Sep 2025 23:58:24 +0000
-Message-ID: <20250913235847.358851-4-ast@fiberby.net>
+Subject: [PATCH net-next v4 08/11] tools: ynl: move nest packing to a helper function
+Date: Sat, 13 Sep 2025 23:58:29 +0000
+Message-ID: <20250913235847.358851-9-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913235847.358851-1-ast@fiberby.net>
 References: <20250913235847.358851-1-ast@fiberby.net>
@@ -60,36 +60,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a check to verify that the sub-type is "nest", and throw an
-exception if no policy could be generated, as a guard to prevent
-against generating a bad policy.
+This patch moves nest packing into a helper function,
+that can also be used for packing indexed arrays.
 
-This is a trivial patch with no behavioural changes intended.
+No behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 95a60fdaf14e..3266af19edcd 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -825,8 +825,10 @@ class TypeArrayNest(Type):
-             return f'.type = YNL_PT_U{c_upper(self.sub_type[1:])}, '
-         elif self.attr['sub-type'] == 'binary' and 'exact-len' in self.checks:
-             return f'.type = YNL_PT_BINARY, .len = {self.checks["exact-len"]}, '
--        else:
-+        elif self.attr['sub-type'] == 'nest':
-             return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
-+        else:
-+            raise Exception(f"Typol for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 50805e05020a..92ff26f34f4d 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -561,11 +561,8 @@ class YnlFamily(SpecFamily):
  
-     def _attr_get(self, ri, var):
-         local_vars = ['const struct nlattr *attr2;']
+         if attr["type"] == 'nest':
+             nl_type |= Netlink.NLA_F_NESTED
+-            attr_payload = b''
+             sub_space = attr['nested-attributes']
+-            sub_attrs = SpaceAttrs(self.attr_sets[sub_space], value, search_attrs)
+-            for subname, subvalue in value.items():
+-                attr_payload += self._add_attr(sub_space, subname, subvalue, sub_attrs)
++            attr_payload = self._add_nest_attrs(value, sub_space, search_attrs)
+         elif attr["type"] == 'flag':
+             if not value:
+                 # If value is absent or false then skip attribute creation.
+@@ -622,6 +619,14 @@ class YnlFamily(SpecFamily):
+         pad = b'\x00' * ((4 - len(attr_payload) % 4) % 4)
+         return struct.pack('HH', len(attr_payload) + 4, nl_type) + attr_payload + pad
+ 
++    def _add_nest_attrs(self, value, sub_space, search_attrs):
++        sub_attrs = SpaceAttrs(self.attr_sets[sub_space], value, search_attrs)
++        attr_payload = b''
++        for subname, subvalue in value.items():
++            attr_payload += self._add_attr(sub_space, subname, subvalue,
++                                           sub_attrs)
++        return attr_payload
++
+     def _get_enum_or_unknown(self, enum, raw):
+         try:
+             name = enum.entries_by_val[raw].name
 -- 
 2.51.0
 
