@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EB92C375E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DA62D0606;
 	Sat, 13 Sep 2025 23:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757807961; cv=none; b=X8khC7tzUbWTB26poxUaID267HW8dEu3Fuj1LUXBg9REoGfg1Qm1i770IurNfwGdzRtDcOJ1trbo+sddHaOPyB2WO/3seDls2ImGymapOu67ldWQCe2vhLv6kEg/kw0jEpRA3m48jLujY0XXA98Ptk48ZdPvb1rCXfyCu6CkfQs=
+	t=1757807962; cv=none; b=Ov7Fau72jNzV3RPBu2N8ffYNrGCTYP1rKyjfh4ILmsg+++OJWm7FqfTnQZmwqFdPFyQpXWsSTGVZjaQbpfVc4suVlX77h+9ADEz9yUj7RljfRJQSHemIUUnzvLJsKlCSvN+E8S9HYPxGW0zGd+PKWydPozrvZ/bD8fg8g/uGu+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757807961; c=relaxed/simple;
-	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
+	s=arc-20240116; t=1757807962; c=relaxed/simple;
+	bh=isN9nfZe/xsnXb7EvebVXPVfEeOjs2MBmF1UCAMY/qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOCbzDzeytFAo83Ws7VeqGdAC2cr+oaVn9jOej7zEB5AHjV0VTC3Cx9TmPtUCx0ZpoMEIIerHYTITZKDX6taY9VYt/QvdOC3wqMQHb4Z6tAQ5wEW3l0LzR64tWP5XtxiyLSsIpOxy+EW6TNIF/FokGMahSy1GznX8XMfCGuXhdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=L/RsZVTf; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=VktMaFtIkItdZzNoeUQfToSnkokD7Ohxbq1PoZa/ujFuijhxVgV2P5M+kCx1LyVePT+v1EWbJdmeqDCYJCUkW3NHOWZJ4HO1A3joDXfUXp3ro5DHm99Q2lfSUPEtTsmu+6X2chgpN7lPdlxGZyNCGKFXnNaPGDsktUvnEkrYE80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Zq5DYmkV; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="L/RsZVTf"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Zq5DYmkV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757807953;
-	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
+	bh=isN9nfZe/xsnXb7EvebVXPVfEeOjs2MBmF1UCAMY/qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/RsZVTfXxK53xZh9BYw91H4z1fUKTKXs+zwXuivg3L874idQG4oILRW0JVnf+IPY
-	 xlvt9r7xZSMp8FVdA1sUmwyB3KXsGhyuHSdw0ViofxPzbpAgNSXCg3AePedT/ELTg4
-	 to2R8tYwbjqZUtUXmDLAZFd62Fn5mGRDJ3eRaeLenRLmdWMw+uGBojDkwl4hTtysZ5
-	 fTPLHc1btgDQsuqvLaHy+TegH1YPJjtGyhHdSSOmDBsH1Ugzx0tqeAUBNp4VvKY7N9
-	 j3GY938J2cK7qkrGpiQrkJHTocpktmXxTq1v1bJ5ELx25lGqGTZd72CvBNfaujXxhv
-	 FhLTX8vMQbC7w==
+	b=Zq5DYmkVsf0nokW5rVwmeFLd5WdW9eQydGs4RPOYNxiDAbQC/xja11MuqZWQn2xF4
+	 Pj16ocpATtRjgJMDBhvzlNULxawllsL4sULPW32xzsYz/4fxGyggbxDto2WqoY5b66
+	 AbdlX2Qk7izyE6IuY+xzHFUoXvhnVMacCdYUkh1x8M8T7vYcEFlvBJR06hnGZhw4FU
+	 ORpaIy5qhijaeWTtQ1a5iwAT94JIZ6+mY77J3W9a6wCq/xsuZ0m6wqGD5RttLaePJL
+	 65N6bMnSFI11udUQm9ELAzO7iYQrlDjzGjcwTRGux+HOrU7ILZupz0a0BI4qDzQAjD
+	 6MDr7+JyqB/HQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 9D3356013E;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id B50E460140;
 	Sat, 13 Sep 2025 23:59:13 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 315412022B0; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
+	id 61FE8204B0E; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 01/11] tools: ynl-gen: allow overriding name-prefix for constants
-Date: Sat, 13 Sep 2025 23:58:22 +0000
-Message-ID: <20250913235847.358851-2-ast@fiberby.net>
+Subject: [PATCH net-next v4 06/11] tools: ynl-gen: validate nested arrays
+Date: Sat, 13 Sep 2025 23:58:27 +0000
+Message-ID: <20250913235847.358851-7-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913235847.358851-1-ast@fiberby.net>
 References: <20250913235847.358851-1-ast@fiberby.net>
@@ -60,35 +60,126 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow using custom name-prefix with constants,
-just like it is for enum and flags declarations.
+In nested arrays don't require that the intermediate attribute
+type should be a valid attribute type, it might just be zero
+or an incrementing index, it is often not even used.
 
-This is needed for generating WG_KEY_LEN in
-include/uapi/linux/wireguard.h from a spec.
+See include/net/netlink.h about NLA_NESTED_ARRAY:
+> The difference to NLA_NESTED is the structure:
+> NLA_NESTED has the nested attributes directly inside
+> while an array has the nested attributes at another
+> level down and the attribute types directly in the
+> nesting don't matter.
+
+Example based on include/uapi/linux/wireguard.h:
+ > WGDEVICE_A_PEERS: NLA_NESTED
+ >   0: NLA_NESTED
+ >     WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+ >     [..]
+ >   0: NLA_NESTED
+ >     ...
+ >   ...
+
+Previous the check required that the nested type was valid
+in the parent attribute set, which in this case resolves to
+WGDEVICE_A_UNSPEC, which is YNL_PT_REJECT, and it took the
+early exit and returned YNL_PARSE_CB_ERROR.
+
+This patch renames the old nl_attr_validate() to
+__nl_attr_validate(), and creates a new inline function
+nl_attr_validate() to mimic the old one.
+
+The new __nl_attr_validate() takes the attribute type as an
+argument, so we can use it to validate attributes of a
+nested attribute, in the context of the parents attribute
+type, which in the above case is generated as:
+[WGDEVICE_A_PEERS] = {
+  .name = "peers",
+  .type = YNL_PT_NEST,
+  .nest = &wireguard_wgpeer_nest,
+},
+
+__nl_attr_validate() only checks if the attribute length
+is plausible for a given attribute type, so the .nest in
+the above example is not used.
+
+As the new inline function needs to be defined after
+ynl_attr_type(), then the definitions are moved down,
+so we avoid a forward declaration of ynl_attr_type().
+
+Some other examples are NL80211_BAND_ATTR_FREQS (nest) and
+NL80211_ATTR_SUPPORTED_COMMANDS (u32) both in nl80211-user.c
+$ make -C tools/net/ynl/generated nl80211-user.c
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/lib/ynl-priv.h     | 10 +++++++++-
+ tools/net/ynl/lib/ynl.c          |  6 +++---
+ tools/net/ynl/pyynl/ynl_gen_c.py |  2 +-
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/tools/net/ynl/lib/ynl-priv.h b/tools/net/ynl/lib/ynl-priv.h
+index 824777d7e05e..29481989ea76 100644
+--- a/tools/net/ynl/lib/ynl-priv.h
++++ b/tools/net/ynl/lib/ynl-priv.h
+@@ -106,7 +106,6 @@ ynl_gemsg_start_req(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version);
+ struct nlmsghdr *
+ ynl_gemsg_start_dump(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version);
+ 
+-int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr);
+ int ynl_submsg_failed(struct ynl_parse_arg *yarg, const char *field_name,
+ 		      const char *sel_name);
+ 
+@@ -467,4 +466,13 @@ ynl_attr_put_sint(struct nlmsghdr *nlh, __u16 type, __s64 data)
+ 	else
+ 		ynl_attr_put_s64(nlh, type, data);
+ }
++
++int __ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr,
++			unsigned int type);
++
++static inline int ynl_attr_validate(struct ynl_parse_arg *yarg,
++				    const struct nlattr *attr)
++{
++	return __ynl_attr_validate(yarg, attr, ynl_attr_type(attr));
++}
+ #endif
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index 2a169c3c0797..2bcd781111d7 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -360,15 +360,15 @@ static int ynl_cb_done(const struct nlmsghdr *nlh, struct ynl_parse_arg *yarg)
+ 
+ /* Attribute validation */
+ 
+-int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
++int __ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr,
++			unsigned int type)
+ {
+ 	const struct ynl_policy_attr *policy;
+-	unsigned int type, len;
+ 	unsigned char *data;
++	unsigned int len;
+ 
+ 	data = ynl_attr_data(attr);
+ 	len = ynl_attr_data_len(attr);
+-	type = ynl_attr_type(attr);
+ 	if (type > yarg->rsp_policy->max_attr) {
+ 		yerr(yarg->ys, YNL_ERROR_INTERNAL,
+ 		     "Internal error, validating unknown attribute");
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 101d8ba9626f..c8b15569ecc1 100755
+index 9555c9a2fea5..8f8d33593326 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -3208,8 +3208,9 @@ def render_uapi(family, cw):
-             cw.block_end(line=';')
-             cw.nl()
-         elif const['type'] == 'const':
-+            name_pfx = const.get('name-prefix', f"{family.ident_name}-")
-             defines.append([c_upper(family.get('c-define-name',
--                                               f"{family.ident_name}-{const['name']}")),
-+                                               f"{name_pfx}{const['name']}")),
-                             const['value']])
- 
-     if defines:
+@@ -830,7 +830,7 @@ class TypeArrayNest(Type):
+         local_vars = ['const struct nlattr *attr2;']
+         get_lines = [f'attr_{self.c_name} = attr;',
+                      'ynl_attr_for_each_nested(attr2, attr) {',
+-                     '\tif (ynl_attr_validate(yarg, attr2))',
++                     '\tif (__ynl_attr_validate(yarg, attr2, type))',
+                      '\t\treturn YNL_PARSE_CB_ERROR;',
+                      f'\tn_{self.c_name}++;',
+                      '}']
 -- 
 2.51.0
 
