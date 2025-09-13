@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043B42C11D6;
-	Sat, 13 Sep 2025 23:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EB92C375E;
+	Sat, 13 Sep 2025 23:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757807959; cv=none; b=W0zYVqXF+epW+hGsnotyAuWPiUMEh8nGTCMxJCXxw1gcO9T6eioEZIJm/9YxUx+hPdMTsYGNl1YFWgKfMngp0VrAlU18jRjncxdNSTReMxhQwT5zw/fj0GhyTBHR/Kr/DvkRraNpryDCJgzsJW4Bkm/4dwsUBtIdlku8tVQmf8E=
+	t=1757807961; cv=none; b=X8khC7tzUbWTB26poxUaID267HW8dEu3Fuj1LUXBg9REoGfg1Qm1i770IurNfwGdzRtDcOJ1trbo+sddHaOPyB2WO/3seDls2ImGymapOu67ldWQCe2vhLv6kEg/kw0jEpRA3m48jLujY0XXA98Ptk48ZdPvb1rCXfyCu6CkfQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757807959; c=relaxed/simple;
-	bh=NCxd5MRWulhhiQGexBU/b6H+S/dHIidGMKcSy5JY6Lo=;
+	s=arc-20240116; t=1757807961; c=relaxed/simple;
+	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CTvY7mNc/qkYlHXJ313XAU2JOfnmHCGG3ro3YiC7EPAMOeOy3FKIkPCWWq50Z9AEdiB7UXNw7mWqCnzQUa72u5EQlZK0/D4XDz0tIPnD0zrs1wak/Wa2kLRC/T3wovZNvE0MEBQkQn2HX33PVJRmdrVkvO50qGP8ATQ1BPPCEDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=S6SpsJhO; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=NOCbzDzeytFAo83Ws7VeqGdAC2cr+oaVn9jOej7zEB5AHjV0VTC3Cx9TmPtUCx0ZpoMEIIerHYTITZKDX6taY9VYt/QvdOC3wqMQHb4Z6tAQ5wEW3l0LzR64tWP5XtxiyLSsIpOxy+EW6TNIF/FokGMahSy1GznX8XMfCGuXhdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=L/RsZVTf; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="S6SpsJhO"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="L/RsZVTf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1757807952;
-	bh=NCxd5MRWulhhiQGexBU/b6H+S/dHIidGMKcSy5JY6Lo=;
+	s=202008; t=1757807953;
+	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6SpsJhOOKjC2w5l1+EX+OcNvD9Ge6paj7F6JlTfAA/TX5zbP0J5TacS7nMKOC4Uv
-	 LPb67ik+J/yIVC9T93JaQKVZMIWsYPfk6aLaM/xi4Gza2EfuMqUR9hYxr4VOLaBYax
-	 kNDyJi7ZtyjXj2PmePNkWXEyZbVpmuBdCTZK/D60HkNdkz1C5vgZrJZLRrVGLni1fk
-	 cY751tl7X2ToujXIZIQJbnS3WYHfHHaHSSaP8jv181bJw2GOl4BdiSmMNTBmYCwGBb
-	 7NMjxojLnqVHQOhQgccRKNJALmMxfv8cEbSuaIKUMBt3SPTkyUg57kGM6MrIISue54
-	 mgQK8SHYKxNGw==
+	b=L/RsZVTfXxK53xZh9BYw91H4z1fUKTKXs+zwXuivg3L874idQG4oILRW0JVnf+IPY
+	 xlvt9r7xZSMp8FVdA1sUmwyB3KXsGhyuHSdw0ViofxPzbpAgNSXCg3AePedT/ELTg4
+	 to2R8tYwbjqZUtUXmDLAZFd62Fn5mGRDJ3eRaeLenRLmdWMw+uGBojDkwl4hTtysZ5
+	 fTPLHc1btgDQsuqvLaHy+TegH1YPJjtGyhHdSSOmDBsH1Ugzx0tqeAUBNp4VvKY7N9
+	 j3GY938J2cK7qkrGpiQrkJHTocpktmXxTq1v1bJ5ELx25lGqGTZd72CvBNfaujXxhv
+	 FhLTX8vMQbC7w==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 6C0AB60128;
-	Sat, 13 Sep 2025 23:59:12 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 9D3356013E;
+	Sat, 13 Sep 2025 23:59:13 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 4F10E203A9B; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
+	id 315412022B0; Sat, 13 Sep 2025 23:58:57 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 04/11] tools: ynl-gen: refactor local vars for .attr_put() callers
-Date: Sat, 13 Sep 2025 23:58:25 +0000
-Message-ID: <20250913235847.358851-5-ast@fiberby.net>
+Subject: [PATCH net-next v4 01/11] tools: ynl-gen: allow overriding name-prefix for constants
+Date: Sat, 13 Sep 2025 23:58:22 +0000
+Message-ID: <20250913235847.358851-2-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250913235847.358851-1-ast@fiberby.net>
 References: <20250913235847.358851-1-ast@fiberby.net>
@@ -60,113 +60,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Refactor the generation of local variables needed when building
-requests, by moving the logic into the Type classes, and use the
-same helper in all places where .attr_put() is called.
+Allow using custom name-prefix with constants,
+just like it is for enum and flags declarations.
 
-If any attributes requests identical local_vars, then they will
-be deduplicated, attributes are assumed to only use their local
-variables transiently.
-
-This patch fixes the build errors below:
-$ make -C tools/net/ynl/generated/
-[...]
--e      GEN wireguard-user.c
--e      GEN wireguard-user.h
--e      CC wireguard-user.o
-wireguard-user.c: In function ‘wireguard_get_device_dump’:
-wireguard-user.c:480:9: error: ‘array’ undeclared (first use in func)
-  480 |         array = ynl_attr_nest_start(nlh, WGDEVICE_A_PEERS);
-      |         ^~~~~
-wireguard-user.c:480:9: note: each undeclared identifier is reported
-                        only once for each function it appears in
-wireguard-user.c:481:14: error: ‘i’ undeclared (first use in func)
-  481 |         for (i = 0; i < req->_count.peers; i++)
-      |              ^
-wireguard-user.c: In function ‘wireguard_set_device’:
-wireguard-user.c:533:9: error: ‘array’ undeclared (first use in func)
-  533 |         array = ynl_attr_nest_start(nlh, WGDEVICE_A_PEERS);
-      |         ^~~~~
-make: *** [Makefile:52: wireguard-user.o] Error 1
-make: Leaving directory '/usr/src/linux/tools/net/ynl/generated'
+This is needed for generating WG_KEY_LEN in
+include/uapi/linux/wireguard.h from a spec.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 33 +++++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 3266af19edcd..85b1de6a7fef 100755
+index 101d8ba9626f..c8b15569ecc1 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -840,6 +840,9 @@ class TypeArrayNest(Type):
-                      '}']
-         return get_lines, None, local_vars
+@@ -3208,8 +3208,9 @@ def render_uapi(family, cw):
+             cw.block_end(line=';')
+             cw.nl()
+         elif const['type'] == 'const':
++            name_pfx = const.get('name-prefix', f"{family.ident_name}-")
+             defines.append([c_upper(family.get('c-define-name',
+-                                               f"{family.ident_name}-{const['name']}")),
++                                               f"{name_pfx}{const['name']}")),
+                             const['value']])
  
-+    def attr_put_local_vars(self):
-+        return ['struct nlattr *array;']
-+
-     def attr_put(self, ri, var):
-         ri.cw.p(f'array = ynl_attr_nest_start(nlh, {self.enum_name});')
-         if self.sub_type in scalars:
-@@ -2040,6 +2043,18 @@ def put_enum_to_str(family, cw, enum):
-     _put_enum_to_str_helper(cw, enum.render_name, map_name, 'value', enum=enum)
- 
- 
-+def put_local_vars(struct):
-+    local_vars = set()
-+    for _, attr in struct.member_list():
-+        if attr.presence_type() == 'count':
-+            local_vars.add('unsigned int i;')
-+        try:
-+            local_vars |= set(attr.attr_put_local_vars())
-+        except AttributeError:
-+            pass
-+    return list(local_vars)
-+
-+
- def put_req_nested_prototype(ri, struct, suffix=';'):
-     func_args = ['struct nlmsghdr *nlh',
-                  'unsigned int attr_type',
-@@ -2062,15 +2077,7 @@ def put_req_nested(ri, struct):
-         init_lines.append(f"hdr = ynl_nlmsg_put_extra_header(nlh, {struct_sz});")
-         init_lines.append(f"memcpy(hdr, &obj->_hdr, {struct_sz});")
- 
--    has_anest = False
--    has_count = False
--    for _, arg in struct.member_list():
--        has_anest |= arg.type == 'indexed-array'
--        has_count |= arg.presence_type() == 'count'
--    if has_anest:
--        local_vars.append('struct nlattr *array;')
--    if has_count:
--        local_vars.append('unsigned int i;')
-+    local_vars += put_local_vars(struct)
- 
-     put_req_nested_prototype(ri, struct, suffix='')
-     ri.cw.block_start()
-@@ -2354,10 +2361,7 @@ def print_req(ri):
-         local_vars += ['size_t hdr_len;',
-                        'void *hdr;']
- 
--    for _, attr in ri.struct["request"].member_list():
--        if attr.presence_type() == 'count':
--            local_vars += ['unsigned int i;']
--            break
-+    local_vars += put_local_vars(ri.struct['request'])
- 
-     print_prototype(ri, direction, terminate=False)
-     ri.cw.block_start()
-@@ -2424,6 +2428,9 @@ def print_dump(ri):
-         local_vars += ['size_t hdr_len;',
-                        'void *hdr;']
- 
-+    if 'request' in ri.op[ri.op_mode]:
-+        local_vars += put_local_vars(ri.struct['request'])
-+
-     ri.cw.write_func_lvar(local_vars)
- 
-     ri.cw.p('yds.yarg.ys = ys;')
+     if defines:
 -- 
 2.51.0
 
