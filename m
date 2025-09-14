@@ -1,111 +1,176 @@
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D32272E71;
-	Sun, 14 Sep 2025 03:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCAA25A334;
+	Sun, 14 Sep 2025 04:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757822165; cv=none; b=BKwKGgIr0+N4t23FZm61eqjZnbBAURSbsRlr/0Q1jk7XNne0JROAnrpDYEshMUbD4Y3ct0reDfXrGjjslNQy+r2eRdUJuh6rhnSKRvD5s57FTkmqRDVRrS7JyWo2VsGNlhkGhkBLhbjWyDcMzhV7oZeQsv+wgge5GI5ObAmQi0k=
+	t=1757823861; cv=none; b=VLckkgSqglL7Fzyljm/UcE9EBexAvX+HHywKWG/o9GiTmfw7nnChdixZ2bMbefEvwc/45mXThS5BViEfiruFQvHh7bmyk37FuOTeFEuqSrlaEBmVXDpNhRS6MbwXpXbzOXl1atPMsoxFPCJRrZJ/ZmuvsCL00kOIa8ComZ/BSs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757822165; c=relaxed/simple;
-	bh=u02mMUaIVtvdrURtSKHtzwR4LI8cy7hQrvFjwPb8eKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iClVXYA8uff8cucqlSDeYQvF7FohjskD3CcsvSfGS9isr8MYdnKwjwR7r5yhQY+0HFWw4HCExiqIcK94aAfh2s/vBxhFOTcb4BHj7lzNRbuUg4lEDE7TK1Fg/fDUl57msyV2Fqe6MzZSAHHDyQHkTfNkIWJUAWZ5AHVmScLPe6U=
+	s=arc-20240116; t=1757823861; c=relaxed/simple;
+	bh=JYwXZ2yQ2DNcBndTAT6ZFh53Jl3ZF9pzbFC7JU7r9Q0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=GKbA20Ngq2zXs4Jbs363yWwEz9Wj7FEO+QxjiHK0+ETnCT+VFFgZI1Q19u5q5WRepTGv5kWOMPnpDieTN5vOAv5JKOikNkI+HPvfhtvBtQB94zRFHigWWA3kHxz8ml0ALxLSTmiUaAaRxGNKebjM/kAfKwH3cUG9Aj7cGPOuGWs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.109] (unknown [114.241.87.235])
-	by APP-03 (Coremail) with SMTP id rQCowADX64V+PMZoDyHBAg--.5992S2;
-	Sun, 14 Sep 2025 11:54:39 +0800 (CST)
-Message-ID: <850e769c-ea03-4777-b91b-c7a8b0ad6455@iscas.ac.cn>
-Date: Sun, 14 Sep 2025 11:54:38 +0800
+Received: from [127.0.0.2] (unknown [114.241.87.235])
+	by APP-03 (Coremail) with SMTP id rQCowAAndoBBQ8Zop+bBAg--.11749S5;
+	Sun, 14 Sep 2025 12:23:31 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Date: Sun, 14 Sep 2025 12:23:14 +0800
+Subject: [PATCH net-next v12 3/5] riscv: dts: spacemit: Add Ethernet
+ support for K1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 2/5] net: spacemit: Add K1 Ethernet MAC
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Vivian Wang <uwu@dram.page>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
- Troy Mitchell <troy.mitchell@linux.spacemit.com>
-References: <20250912-net-k1-emac-v11-0-aa3e84f8043b@iscas.ac.cn>
- <20250912-net-k1-emac-v11-2-aa3e84f8043b@iscas.ac.cn>
- <1f2887e4-2644-48a4-8171-98bd310d190f@lunn.ch>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <1f2887e4-2644-48a4-8171-98bd310d190f@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:rQCowADX64V+PMZoDyHBAg--.5992S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jr1UArWkXr4kCw1DZrWDurg_yoWktFgE9r
-	1DXwnrGwnxArsrCw4akr1UJa9Y9rZrZFnrZ3WfG39xZa9FvFWkZrW8Ar1Sgr97Ar4fGryS
-	kr9xuF4xCa48ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbV8YjsxI4VWkCwAYFVCjjxCrM7AC8VAFwI0_Xr0_Wr1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xK
-	xwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-	DU0xZFpf9x07jDKsUUUUUU=
+Message-Id: <20250914-net-k1-emac-v12-3-65b31b398f44@iscas.ac.cn>
+References: <20250914-net-k1-emac-v12-0-65b31b398f44@iscas.ac.cn>
+In-Reply-To: <20250914-net-k1-emac-v12-0-65b31b398f44@iscas.ac.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>
+Cc: Vivian Wang <uwu@dram.page>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Junhui Liu <junhui.liu@pigmoral.tech>, Simon Horman <horms@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-CM-TRANSID:rQCowAAndoBBQ8Zop+bBAg--.11749S5
+X-Coremail-Antispam: 1UD129KBjvJXoWxWFy7AFy8Wry7XF48Kr18AFb_yoW5KF4Dpa
+	yUAFs3Cr4xCw1rCwnavF9rWF4kGa1FkFyrGr9xGFWxGF4rtry7tFn0yry5Xw48Zws8ArW8
+	Gr48XrWxKFnrtw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmS14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJVW0
+	owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
+	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
+	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
+	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
+	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
+	42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBI
+	daVFxhVjvjDU0xZFpf9x0pRl_MsUUUUU=
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
+Add nodes for each of the two Ethernet MACs on K1 with generic
+properties. Also add "gmac" pins to pinctrl config.
 
-On 9/13/25 05:10, Andrew Lunn wrote:
->> +static u32 emac_rd(struct emac_priv *priv, u32 reg)
->> +{
->> +	return readl(priv->iobase + reg);
->> +}
->> +static int emac_mii_read(struct mii_bus *bus, int phy_addr, int regnum)
->> +{
->> +	struct emac_priv *priv = bus->priv;
->> +	u32 cmd = 0, val;
->> +	int ret;
->> +
->> +	cmd |= FIELD_PREP(MREGBIT_PHY_ADDRESS, phy_addr);
->> +	cmd |= FIELD_PREP(MREGBIT_REGISTER_ADDRESS, regnum);
->> +	cmd |= MREGBIT_START_MDIO_TRANS | MREGBIT_MDIO_READ_WRITE;
->> +
->> +	emac_wr(priv, MAC_MDIO_DATA, 0x0);
->> +	emac_wr(priv, MAC_MDIO_CONTROL, cmd);
->> +
->> +	ret = readl_poll_timeout(priv->iobase + MAC_MDIO_CONTROL, val,
->> +				 !(val & MREGBIT_START_MDIO_TRANS), 100, 10000);
->> +
->> +	if (ret)
->> +		return ret;
->> +
->> +	val = emac_rd(priv, MAC_MDIO_DATA);
->> +	return val;
-> emac_rd() returns a u32. Is it guaranteed by the hardware that the
-> upper word is 0? Maybe this needs to be masked?
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Reviewed-by: Yixun Lan <dlan@gentoo.org>
+---
+ arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi | 48 ++++++++++++++++++++++++++++
+ arch/riscv/boot/dts/spacemit/k1.dtsi         | 22 +++++++++++++
+ 2 files changed, 70 insertions(+)
 
-This should be fine, since most of the registers only have lower 16
-bits, and the upper 16 bits ignores writes and read as zeros. But I'll
-change it to a FIELD_GET for v12 just so there's no question on whether
-this is safe.
+diff --git a/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi b/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
+index 3810557374228100be7adab58cd785c72e6d4aed..aff19c86d5ff381881016eaa87fc4809da65b50e 100644
+--- a/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
++++ b/arch/riscv/boot/dts/spacemit/k1-pinctrl.dtsi
+@@ -11,6 +11,54 @@
+ #define K1_GPIO(x)	(x / 32) (x % 32)
+ 
+ &pinctrl {
++	gmac0_cfg: gmac0-cfg {
++		gmac0-pins {
++			pinmux = <K1_PADCONF(0, 1)>,	/* gmac0_rxdv */
++				 <K1_PADCONF(1, 1)>,	/* gmac0_rx_d0 */
++				 <K1_PADCONF(2, 1)>,	/* gmac0_rx_d1 */
++				 <K1_PADCONF(3, 1)>,	/* gmac0_rx_clk */
++				 <K1_PADCONF(4, 1)>,	/* gmac0_rx_d2 */
++				 <K1_PADCONF(5, 1)>,	/* gmac0_rx_d3 */
++				 <K1_PADCONF(6, 1)>,	/* gmac0_tx_d0 */
++				 <K1_PADCONF(7, 1)>,	/* gmac0_tx_d1 */
++				 <K1_PADCONF(8, 1)>,	/* gmac0_tx */
++				 <K1_PADCONF(9, 1)>,	/* gmac0_tx_d2 */
++				 <K1_PADCONF(10, 1)>,	/* gmac0_tx_d3 */
++				 <K1_PADCONF(11, 1)>,	/* gmac0_tx_en */
++				 <K1_PADCONF(12, 1)>,	/* gmac0_mdc */
++				 <K1_PADCONF(13, 1)>,	/* gmac0_mdio */
++				 <K1_PADCONF(14, 1)>,	/* gmac0_int_n */
++				 <K1_PADCONF(45, 1)>;	/* gmac0_clk_ref */
++
++			bias-pull-up = <0>;
++			drive-strength = <21>;
++		};
++	};
++
++	gmac1_cfg: gmac1-cfg {
++		gmac1-pins {
++			pinmux = <K1_PADCONF(29, 1)>,	/* gmac1_rxdv */
++				 <K1_PADCONF(30, 1)>,	/* gmac1_rx_d0 */
++				 <K1_PADCONF(31, 1)>,	/* gmac1_rx_d1 */
++				 <K1_PADCONF(32, 1)>,	/* gmac1_rx_clk */
++				 <K1_PADCONF(33, 1)>,	/* gmac1_rx_d2 */
++				 <K1_PADCONF(34, 1)>,	/* gmac1_rx_d3 */
++				 <K1_PADCONF(35, 1)>,	/* gmac1_tx_d0 */
++				 <K1_PADCONF(36, 1)>,	/* gmac1_tx_d1 */
++				 <K1_PADCONF(37, 1)>,	/* gmac1_tx */
++				 <K1_PADCONF(38, 1)>,	/* gmac1_tx_d2 */
++				 <K1_PADCONF(39, 1)>,	/* gmac1_tx_d3 */
++				 <K1_PADCONF(40, 1)>,	/* gmac1_tx_en */
++				 <K1_PADCONF(41, 1)>,	/* gmac1_mdc */
++				 <K1_PADCONF(42, 1)>,	/* gmac1_mdio */
++				 <K1_PADCONF(43, 1)>,	/* gmac1_int_n */
++				 <K1_PADCONF(46, 1)>;	/* gmac1_clk_ref */
++
++			bias-pull-up = <0>;
++			drive-strength = <21>;
++		};
++	};
++
+ 	uart0_2_cfg: uart0-2-cfg {
+ 		uart0-2-pins {
+ 			pinmux = <K1_PADCONF(68, 2)>,
+diff --git a/arch/riscv/boot/dts/spacemit/k1.dtsi b/arch/riscv/boot/dts/spacemit/k1.dtsi
+index abde8bb07c95c5a745736a2dd6f0c0e0d7c696e4..7b2ac3637d6d9fa1929418cc68aa25c57850ac7f 100644
+--- a/arch/riscv/boot/dts/spacemit/k1.dtsi
++++ b/arch/riscv/boot/dts/spacemit/k1.dtsi
+@@ -805,6 +805,28 @@ network-bus {
+ 			#size-cells = <2>;
+ 			dma-ranges = <0x0 0x00000000 0x0 0x00000000 0x0 0x80000000>,
+ 				     <0x0 0x80000000 0x1 0x00000000 0x0 0x80000000>;
++
++			eth0: ethernet@cac80000 {
++				compatible = "spacemit,k1-emac";
++				reg = <0x0 0xcac80000 0x0 0x420>;
++				clocks = <&syscon_apmu CLK_EMAC0_BUS>;
++				interrupts = <131>;
++				mac-address = [ 00 00 00 00 00 00 ];
++				resets = <&syscon_apmu RESET_EMAC0>;
++				spacemit,apmu = <&syscon_apmu 0x3e4>;
++				status = "disabled";
++			};
++
++			eth1: ethernet@cac81000 {
++				compatible = "spacemit,k1-emac";
++				reg = <0x0 0xcac81000 0x0 0x420>;
++				clocks = <&syscon_apmu CLK_EMAC1_BUS>;
++				interrupts = <133>;
++				mac-address = [ 00 00 00 00 00 00 ];
++				resets = <&syscon_apmu RESET_EMAC1>;
++				spacemit,apmu = <&syscon_apmu 0x3ec>;
++				status = "disabled";
++			};
+ 		};
+ 
+ 		pcie-bus {
 
-Thanks,
-Vivian "dramforever" Wang
-
-> 	Andrew
+-- 
+2.50.1
 
