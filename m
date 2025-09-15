@@ -1,127 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A2F2E0934
-	for <netdev@vger.kernel.org>; Mon, 15 Sep 2025 08:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7072ECD28;
+	Mon, 15 Sep 2025 08:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757924303; cv=none; b=NStUK3jzTFOOFQKI31XrY9huhAkAE1nPhzeyQJldgZMiPETmHKyJ93TFYTneqVhsbpMo6kBN4me46+bUJRBKzEez0btPbl59v+nO6ZoOPWAg+/s6m0cjEhN3GTAAzf7HOn+0pbEtyMjKZJ7hMr0yGLv481hF/6iKGBbzxM7riYg=
+	t=1757924538; cv=none; b=V+yo7UQB3TZmGmsjM3lGbajnRvp5c3FNB0eDgJa6c6n0O0OgE8lljBkrmmQ7j4q6pBgS48erV/ENIJdTQzq/ddmjex8cb1bOBhhZPCFszvHMKWv4YFXPZjoaK9ceRxgdCRZgF2U1uUqqUWtpFVGXISeZQIhm0Sg8O9ovhlwcuI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757924303; c=relaxed/simple;
-	bh=GHrc0yQIb9KLUpWhvQ29IYnGW02UxYT9eFseO4jZP4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rc5/GqZko/vlnV7qnGwPRwgVnLl+mEvghtoT9YPEXxwJ5dE0Zbxvz5RTn2wYJ2yQaAC38MgVBUiHXAAdd2HRFREo/Xs/9iTmMFeyPV/FHofPbZkuE1/GhZutkdfyq6gYSQFD6ME8j85jQZdQcLZtAooo+/z0wUjRRWXQcYorhkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eCH/Uv+/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1757924538; c=relaxed/simple;
+	bh=mo4HPuFIxILu1fSJb80bB4lgwGqWuG93OPcqvnD64Pc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iU1m2PPsQGbhIZq/49VD0enQoO88hU33PuGwjd8zTuc/BZEvv1qSLGqomG2rYNVcNTTEVp53gNAJCCgXtN94udyLWQ8WDghDHTY9CC+alhniQhI6mG4pXYyUIWHvRY+NKT3X98D1rKH/ZOmFu/rp2UZZOoJdnUz2aGZmiYKiiLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTi177P/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eCH/Uv+/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757924300;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PqEIjCNSum5pekZp097c2PmEi/H7x+xWDTcPJJSAOCs=;
-	b=eCH/Uv+/Db5Zh/88xUQRTdyf+Ykr+XTJjlv0noDkVIS8I+UL8S2ewVUxbbOsLplV4iDm12
-	Qr9gAHm4XcagmdRrhM/zZhfVKMTUQzTGgtVAOorbgJjR8sERyhfGzBKktjHoTWqRvQFrSt
-	lzub2oWleco0V6bkoIPnrCHY1/BLX9Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-227-kt0tbXspMEeJwx-LqWhRtA-1; Mon,
- 15 Sep 2025 04:18:18 -0400
-X-MC-Unique: kt0tbXspMEeJwx-LqWhRtA-1
-X-Mimecast-MFC-AGG-ID: kt0tbXspMEeJwx-LqWhRtA_1757924297
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 79347180045C;
-	Mon, 15 Sep 2025 08:18:16 +0000 (UTC)
-Received: from [10.45.226.64] (unknown [10.45.226.64])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7F89419560A2;
-	Mon, 15 Sep 2025 08:18:05 +0000 (UTC)
-Message-ID: <4bd1847b-00b6-42a6-8391-aba08aeb3721@redhat.com>
-Date: Mon, 15 Sep 2025 10:18:03 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTi177P/"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A8F26C4CEFA;
+	Mon, 15 Sep 2025 08:22:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757924536;
+	bh=mo4HPuFIxILu1fSJb80bB4lgwGqWuG93OPcqvnD64Pc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=JTi177P/uBOLY62ASimFn1X5aACZldEUqQP2h1qOfZVarSFyT83Qs762HpRoUZRsy
+	 IAe3Ks9JKMIHq55nWZ9F8Vma/vJEdPHS2fMZ/vz46aMOKnN4TXRv9Tb5HkuPFVmGSQ
+	 fpsjQrVP4D4BPR8US21f6BGYmy+cLsvgfKH78pbENfYvTtGpz9P2CbUU4GAnNVKBhn
+	 9Ml1rsXJh/fD8I3JCPxP9mvaqU/qgrJujyV3Z445LmIhWjRPJ6zjqVoE29JyDQOU/g
+	 BMxsnXsms6AmbJfIuSc3E9BJWfL/+wCBrhwUhVmIf+v/ZZhRKt3FIAw4yqJ0LR/Arj
+	 KdpMnPPzOSAAw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94F5ACAC599;
+	Mon, 15 Sep 2025 08:22:16 +0000 (UTC)
+From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
+Date: Mon, 15 Sep 2025 16:22:14 +0800
+Subject: [PATCH net-next v2] net: stmmac: est: Drop frames causing HLBS
+ error
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 3/5] dpll: zl3073x: Add firmware loading
- functionality
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Prathosh Satish <Prathosh.Satish@microchip.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michal Schmidt <mschmidt@redhat.com>,
- Petr Oros <poros@redhat.com>
-References: <20250909091532.11790-1-ivecera@redhat.com>
- <20250909091532.11790-4-ivecera@redhat.com>
- <20250914144549.2c8d7453@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20250914144549.2c8d7453@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Message-Id: <20250915-hlbs_2-v2-1-27266b2afdd9@altera.com>
+X-B4-Tracking: v=1; b=H4sIALXMx2gC/12NywrCMBBFf6XM2pEkOtq68j+kSB9TM1ATSUKpl
+ Py7oUuXh3M5d4PIQTjCrdog8CJRvCtgDhUMtnMvRhkLg1GGVKM12rmPT4M0jSPxuT5NykAZfwJ
+ Psu6hBzhO6HhN0BZjJSYfvvvDonf/H1s0ahz6CxHXTUP99d7NiUN3HPwb2pzzD68txvunAAAA
+X-Change-ID: 20250911-hlbs_2-5fdd5e483f02
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rohan G Thomas <rohan.g.thomas@altera.com>, 
+ Matthew Gerlach <matthew.gerlach@altera.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757924535; l=4857;
+ i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
+ bh=hFASYJ89I2m+eMFKEU8Vw8nda9ry4NXxOx/oENtYScc=;
+ b=JZPA6bBDBbmw1kmGvVEjSVf2f5+gWw40697/4dlWcC1R3xyZcnqCR2GZQqK2kNwiiDUisLXIO
+ v/YYi0W9bpmAn6u75g6queSx6QKhCUO9XrUq7Jh19vBgWWamXQIgAm/
+X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
+ pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
+X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
+ with auth_id=494
+X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reply-To: rohan.g.thomas@altera.com
 
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
+Drop those frames causing HLBS error to avoid HLBS interrupt
+flooding and netdev watchdog timeouts due to blocked packets.
+Also add HLBS frame drops to taprio stats.
 
-On 14. 09. 25 11:45 odp., Jakub Kicinski wrote:
-> On Tue,  9 Sep 2025 11:15:30 +0200 Ivan Vecera wrote:
->> +	/* Fetch image name and size from input */
->> +	strscpy(buf, *psrc, min(sizeof(buf), *psize));
->> +	rc = sscanf(buf, "%15s %u %n", name, &count, &pos);
->> +	if (!rc) {
->> +		/* No more data */
->> +		return 0;
->> +	} else if (rc == 1 || count > U32_MAX / sizeof(u32)) {
->> +		ZL3073X_FW_ERR_MSG(extack, "invalid component size");
->> +		return -EINVAL;
->> +	}
->> +	*psrc += pos;
->> +	*psize -= pos;
-> 
-> Still worried about pos not being bounds checked.
-> Admin can crash the kernel with invalid FW file.
-> 
-> 	if (pos > *psize)
-> 		/* error */
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+---
+Changes in v2:
+- Removed unnecessary parantheses
+- Link to v1: https://lore.kernel.org/r/20250911-hlbs_2-v1-1-cb655e8995b7@altera.com
+---
+ drivers/net/ethernet/stmicro/stmmac/common.h     | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.c | 9 ++++++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_est.h | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c  | 7 +++++--
+ 4 files changed, 13 insertions(+), 5 deletions(-)
 
-This cannot happen...
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index eaa1f2e1c5a53b297b014a8218bf8f3db5beb4de..8f34c9ad457f07553206841223fd38e55208d5ab 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -228,6 +228,7 @@ struct stmmac_extra_stats {
+ 	unsigned long mtl_est_btrlm;
+ 	unsigned long max_sdu_txq_drop[MTL_MAX_TX_QUEUES];
+ 	unsigned long mtl_est_txq_hlbf[MTL_MAX_TX_QUEUES];
++	unsigned long mtl_est_txq_hlbs[MTL_MAX_TX_QUEUES];
+ 	/* per queue statistics */
+ 	struct stmmac_txq_stats txq_stats[MTL_MAX_TX_QUEUES];
+ 	struct stmmac_rxq_stats rxq_stats[MTL_MAX_RX_QUEUES];
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+index ac6f2e3a3fcd2f9ae21913845282ff015cd2f7ec..4b513d27a9889046e8b5e404adfd917f469c3f05 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.c
+@@ -63,7 +63,7 @@ static int est_configure(struct stmmac_priv *priv, struct stmmac_est *cfg,
+ 			 EST_GMAC5_PTOV_SHIFT;
+ 	}
+ 	if (cfg->enable)
+-		ctrl |= EST_EEST | EST_SSWL;
++		ctrl |= EST_EEST | EST_SSWL | EST_DFBS;
+ 	else
+ 		ctrl &= ~EST_EEST;
+ 
+@@ -109,6 +109,10 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 
+ 		x->mtl_est_hlbs++;
+ 
++		for (i = 0; i < txqcnt; i++)
++			if (value & BIT(i))
++				x->mtl_est_txq_hlbs[i]++;
++
+ 		/* Clear Interrupt */
+ 		writel(value, est_addr + EST_SCH_ERR);
+ 
+@@ -131,10 +135,9 @@ static void est_irq_status(struct stmmac_priv *priv, struct net_device *dev,
+ 
+ 		x->mtl_est_hlbf++;
+ 
+-		for (i = 0; i < txqcnt; i++) {
++		for (i = 0; i < txqcnt; i++)
+ 			if (feqn & BIT(i))
+ 				x->mtl_est_txq_hlbf[i]++;
+-		}
+ 
+ 		/* Clear Interrupt */
+ 		writel(feqn, est_addr + EST_FRM_SZ_ERR);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+index d247fa383a6e44a5a8371dd491eab5b1c99cd1f2..f70221c9c84afe6bce62782c7847a8005e469dd7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_est.h
+@@ -16,6 +16,7 @@
+ #define EST_XGMAC_PTOV_MUL		9
+ #define EST_SSWL			BIT(1)
+ #define EST_EEST			BIT(0)
++#define EST_DFBS			BIT(5)
+ 
+ #define EST_STATUS			0x00000008
+ #define EST_GMAC5_BTRL			GENMASK(11, 8)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 694d6ee1438197bd4434af6e9b78f022e94ff98f..97e89a604abd7a01bb8e904c38f10716e0a911c1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -1080,6 +1080,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 		for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
+ 			priv->xstats.max_sdu_txq_drop[i] = 0;
+ 			priv->xstats.mtl_est_txq_hlbf[i] = 0;
++			priv->xstats.mtl_est_txq_hlbs[i] = 0;
+ 		}
+ 		mutex_unlock(&priv->est_lock);
+ 	}
+@@ -1097,7 +1098,8 @@ static void tc_taprio_stats(struct stmmac_priv *priv,
+ 
+ 	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+ 		window_drops += priv->xstats.max_sdu_txq_drop[i] +
+-				priv->xstats.mtl_est_txq_hlbf[i];
++				priv->xstats.mtl_est_txq_hlbf[i] +
++				priv->xstats.mtl_est_txq_hlbs[i];
+ 	qopt->stats.window_drops = window_drops;
+ 
+ 	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
+@@ -1111,7 +1113,8 @@ static void tc_taprio_queue_stats(struct stmmac_priv *priv,
+ 	int queue = qopt->queue_stats.queue;
+ 
+ 	q_stats->stats.window_drops = priv->xstats.max_sdu_txq_drop[queue] +
+-				      priv->xstats.mtl_est_txq_hlbf[queue];
++				      priv->xstats.mtl_est_txq_hlbf[queue] +
++				      priv->xstats.mtl_est_txq_hlbs[queue];
+ 
+ 	/* Transmission overrun doesn't happen for stmmac, hence always 0 */
+ 	q_stats->stats.tx_overruns = 0;
 
-1) strscpy(buf, *psrc, min(sizeof(buf, *psize)) ensures that the string
-    will be zero padded and strlen(buf) will be less than *psize
+---
+base-commit: 5b5ba63a54cc7cb050fa734dbf495ffd63f9cbf7
+change-id: 20250911-hlbs_2-5fdd5e483f02
 
-2) sscanf(buf, "%15s %u %n", name, &count, &pos) scans for string with
-    max length of 15, one or more whitespace(s), number and one or more
-    whitespaces(s). And reports number of parsed arguments. Note that
-    the %n does not increase the count returned.
+Best regards,
+-- 
+Rohan G Thomas <rohan.g.thomas@altera.com>
 
-So... if:
-1) buf is empty then sscanf returns 0 and /* No more data */ code path
-    is executed
-2) buf contains only string (1st argument) OR string and non-numeric
-    2nd argument then the sscanf returns 1 and 'invalid component size'
-    is executed
-3) buf contains string (1st arg) and numeric 2nd arg then the sscanf
-    returns 2 and the 2nd arg is stored into 'count' and number of
-    consumed characters into 'pos'
-4) if 'count' > (U32_MAX / 4) then 'invalid component size' path is
-    executed
-
-> Also what if sscanf() return 2? pos is uninitialized?
-
-If the sscanf() returns 2 then pos is initialized, in other words
-'pos' is initialized and less then *psize if the 'count' is correctly
-parsed as the numeric value.
-
-Thanks,
-Ivan
 
