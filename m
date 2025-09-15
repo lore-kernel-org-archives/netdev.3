@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCA43218DD;
-	Mon, 15 Sep 2025 14:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B4132F74A;
+	Mon, 15 Sep 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757947670; cv=none; b=hn3dn+2WG7OfrG4VJ7dOZ63j4IahOeMjAMoeYiTUrOjG9FxaO3jlDimLiwXSS2D1NIrqVzOb2MVLGZQn0IqoU41TT8aopkXLcOwkxwFvwttr19EDC9ovPkAatWYvT4b0fKcoD1UHM10+dFZzmmmkQYm9aBbGAs7OM47bUxL4Q9o=
+	t=1757947670; cv=none; b=Z0/W5p0GS7ymFvtUW620d6am/OQgJL+JBuSFnmXTjY6Jhqwb2bgLz/GRVh9e4NkmHdl4deBVaE1kxpufd+OlLkRRBkqA2CN+RFg24BopgEpUdD8EPBLyYaHEoSn46FLLvgze04xG6kc5mt5KAR3Gx1n2mM2aTiVvaVMwNj8E794=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757947670; c=relaxed/simple;
-	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
+	bh=WdiVKtISm6Es87M4VHX7uCkXtl/4BmGjMgtxhRNpB9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nm5FcHDISQQ1bxxM98vbFyOan75Gyb1fFPJ8SyWYoBSpLyShH5vumqYOs2areao52f2pFhlnVml3F4Hxuwnuic/Pe45/PhX9zcUJ6L2SmsJ1rAsUDNJtynr16i0Cs9vlRcDrLRbyxLQG+9FZOGk5aASt46r1/Z+MdE9kR1ImEuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=hoMUSXVK; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=OeudOa2mpI5S8QOXxX3j2z8ClR3iARIPkuW5gUletxQaFdwNkClYeLA3kwm90ylbOuaZcXPPEnceam0bbte9yKb05KfY4fBQTgivsZ5namC7JIkO6GYk5/2hu1e5y54rNrqFXu0mpnQwOquLLjLOTj7KIT/jXgEOuyzguowXU9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=qL53Cmjn; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="hoMUSXVK"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="qL53Cmjn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757947660;
-	bh=pnz1Z9RsFEA/w79qMxEPA9j3gcVp4d2qUkVblwMqsWk=;
+	bh=WdiVKtISm6Es87M4VHX7uCkXtl/4BmGjMgtxhRNpB9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hoMUSXVKFfde3bsoRfAP+zKKVg8wQ4eLCkWF1SzvhH1Wb6HPrw1v8MmYimae+etjC
-	 Sn9cxM2gVRlBrAJuYUrDNhJMzt9o5bHQg/M67nFE8tf/b5V7cwR3spDypevXEYSKp/
-	 IccJ6FRAys2IHLZOPcLEy61sP/qfB4LJGQDbAHROORyWNHwoffBho6lYDWUb8X/hPF
-	 lw59aqHGpAJ0oUVcEIXYIyA/2oTwtWXagwKy9bjzk8Lr7o7DPy1GiKvpypIuRa3o7w
-	 +jmI9PQiTe8MEDl3ZeVoyohEV43LO1fMh3WPu34OExv4gZIuJtSiRhSTAaL6RMm2Za
-	 VQtXhQFWrs7pQ==
+	b=qL53CmjnKs48CG8RjylDneBngqZToh9zAYg8ENvXjLiLN6hN+bo5opJEc57ObFxvl
+	 UH1aFwlk4/BtmlDKcdoe2SJjnprwr3FNbZCpnlsh3N+IxGJvl1lLFZoZHWSJf2VyTy
+	 M+j/cUXdxwE1JdDPl1Wje+9ArT15oRageXT5lM01LIU71RMoDqyq/1cEwWKiZsash7
+	 JSd5OQNYWm38Korn4ynhyJKiAdcaqt54zDsmNn4nL+A0c72hOKiGb6ZA23F8R+V03F
+	 e9tI41ZUf4LMQvvuyol6VD1Lobkc+BCObeR47zOeWiILOA70zMDefiiS+GF58fisyw
+	 BtPS9ZplPELbQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id CD0FB6000C;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id E0993600C4;
 	Mon, 15 Sep 2025 14:47:39 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 06495201B79; Mon, 15 Sep 2025 14:43:06 +0000 (UTC)
+	id 4BB6B204CAF; Mon, 15 Sep 2025 14:43:06 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 01/11] tools: ynl-gen: allow overriding name-prefix for constants
-Date: Mon, 15 Sep 2025 14:42:46 +0000
-Message-ID: <20250915144301.725949-2-ast@fiberby.net>
+Subject: [PATCH net-next v5 07/11] tools: ynl-gen: rename TypeArrayNest to TypeIndexedArray
+Date: Mon, 15 Sep 2025 14:42:52 +0000
+Message-ID: <20250915144301.725949-8-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250915144301.725949-1-ast@fiberby.net>
 References: <20250915144301.725949-1-ast@fiberby.net>
@@ -60,35 +60,142 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow using custom name-prefix with constants,
-just like it is for enum and flags declarations.
+Since TypeArrayNest can now be used with many other sub-types
+than nest, then rename it to TypeIndexedArray, to reduce
+confusion.
 
-This is needed for generating WG_KEY_LEN in
-include/uapi/linux/wireguard.h from a spec.
+This patch continues the rename, that was started in commit
+aa6485d813ad ("ynl: rename array-nest to indexed-array"),
+when the YNL type was renamed.
+
+In order to get rid of all references to the old naming,
+within ynl, then renaming some variables in _multi_parse().
+
+This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/pyynl/ynl_gen_c.py | 36 ++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 101d8ba9626f..c8b15569ecc1 100755
+index 9b42e75d24e9..c064e6df41bd 100755
 --- a/tools/net/ynl/pyynl/ynl_gen_c.py
 +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -3208,8 +3208,9 @@ def render_uapi(family, cw):
-             cw.block_end(line=';')
-             cw.nl()
-         elif const['type'] == 'const':
-+            name_pfx = const.get('name-prefix', f"{family.ident_name}-")
-             defines.append([c_upper(family.get('c-define-name',
--                                               f"{family.ident_name}-{const['name']}")),
-+                                               f"{name_pfx}{const['name']}")),
-                             const['value']])
+@@ -787,7 +787,7 @@ class TypeMultiAttr(Type):
+                 f"{presence} = n_{self.c_name};"]
  
-     if defines:
+ 
+-class TypeArrayNest(Type):
++class TypeIndexedArray(Type):
+     def is_multi_val(self):
+         return True
+ 
+@@ -824,7 +824,7 @@ class TypeArrayNest(Type):
+         elif self.attr['sub-type'] == 'nest':
+             return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
+         else:
+-            raise Exception(f"Typol for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
++            raise Exception(f"Typol for IndexedArray sub-type {self.attr['sub-type']} not supported, yet")
+ 
+     def _attr_get(self, ri, var):
+         local_vars = ['const struct nlattr *attr2;']
+@@ -850,7 +850,7 @@ class TypeArrayNest(Type):
+             ri.cw.p(f'for (i = 0; i < {var}->_count.{self.c_name}; i++)')
+             ri.cw.p(f"{self.nested_render_name}_put(nlh, i, &{var}->{self.c_name}[i]);")
+         else:
+-            raise Exception(f"Put for ArrayNest sub-type {self.attr['sub-type']} not supported, yet")
++            raise Exception(f"Put for IndexedArray sub-type {self.attr['sub-type']} not supported, yet")
+         ri.cw.p('ynl_attr_nest_end(nlh, array);')
+ 
+     def _setter_lines(self, ri, member, presence):
+@@ -1127,7 +1127,7 @@ class AttrSet(SpecAttrSet):
+             t = TypeNest(self.family, self, elem, value)
+         elif elem['type'] == 'indexed-array' and 'sub-type' in elem:
+             if elem["sub-type"] in ['binary', 'nest', 'u32']:
+-                t = TypeArrayNest(self.family, self, elem, value)
++                t = TypeIndexedArray(self.family, self, elem, value)
+             else:
+                 raise Exception(f'new_attr: unsupported sub-type {elem["sub-type"]}')
+         elif elem['type'] == 'nest-type-value':
+@@ -2109,18 +2109,18 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+             else:
+                 raise Exception("Per-op fixed header not supported, yet")
+ 
+-    var_set = set()
+-    array_nests = set()
++    indexed_arrays = set()
+     multi_attrs = set()
+     needs_parg = False
++    var_set = set()
+     for arg, aspec in struct.member_list():
+         if aspec['type'] == 'indexed-array' and 'sub-type' in aspec:
+             if aspec["sub-type"] in {'binary', 'nest'}:
+                 local_vars.append(f'const struct nlattr *attr_{aspec.c_name};')
+-                array_nests.add(arg)
++                indexed_arrays.add(arg)
+             elif aspec['sub-type'] in scalars:
+                 local_vars.append(f'const struct nlattr *attr_{aspec.c_name};')
+-                array_nests.add(arg)
++                indexed_arrays.add(arg)
+             else:
+                 raise Exception(f'Not supported sub-type {aspec["sub-type"]}')
+         if 'multi-attr' in aspec:
+@@ -2134,16 +2134,16 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+         except Exception:
+             pass  # _attr_get() not implemented by simple types, ignore
+     local_vars += list(var_set)
+-    if array_nests or multi_attrs:
++    if indexed_arrays or multi_attrs:
+         local_vars.append('int i;')
+     if needs_parg:
+         local_vars.append('struct ynl_parse_arg parg;')
+         init_lines.append('parg.ys = yarg->ys;')
+ 
+-    all_multi = array_nests | multi_attrs
++    all_multi = indexed_arrays | multi_attrs
+ 
+-    for anest in sorted(all_multi):
+-        local_vars.append(f"unsigned int n_{struct[anest].c_name} = 0;")
++    for arg in sorted(all_multi):
++        local_vars.append(f"unsigned int n_{struct[arg].c_name} = 0;")
+ 
+     ri.cw.block_start()
+     ri.cw.write_func_lvar(local_vars)
+@@ -2163,8 +2163,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+         else:
+             ri.cw.p('hdr = ynl_nlmsg_data_offset(nlh, sizeof(struct genlmsghdr));')
+         ri.cw.p(f"memcpy(&dst->_hdr, hdr, sizeof({struct.fixed_header}));")
+-    for anest in sorted(all_multi):
+-        aspec = struct[anest]
++    for arg in sorted(all_multi):
++        aspec = struct[arg]
+         ri.cw.p(f"if (dst->{aspec.c_name})")
+         ri.cw.p(f'return ynl_error_parse(yarg, "attribute already present ({struct.attr_set.name}.{aspec.name})");')
+ 
+@@ -2182,8 +2182,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+     ri.cw.block_end()
+     ri.cw.nl()
+ 
+-    for anest in sorted(array_nests):
+-        aspec = struct[anest]
++    for arg in sorted(indexed_arrays):
++        aspec = struct[arg]
+ 
+         ri.cw.block_start(line=f"if (n_{aspec.c_name})")
+         ri.cw.p(f"dst->{aspec.c_name} = calloc(n_{aspec.c_name}, sizeof(*dst->{aspec.c_name}));")
+@@ -2208,8 +2208,8 @@ def _multi_parse(ri, struct, init_lines, local_vars):
+         ri.cw.block_end()
+     ri.cw.nl()
+ 
+-    for anest in sorted(multi_attrs):
+-        aspec = struct[anest]
++    for arg in sorted(multi_attrs):
++        aspec = struct[arg]
+         ri.cw.block_start(line=f"if (n_{aspec.c_name})")
+         ri.cw.p(f"dst->{aspec.c_name} = calloc(n_{aspec.c_name}, sizeof(*dst->{aspec.c_name}));")
+         ri.cw.p(f"dst->_count.{aspec.c_name} = n_{aspec.c_name};")
 -- 
 2.51.0
 
