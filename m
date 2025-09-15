@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED15130E0F2
-	for <netdev@vger.kernel.org>; Mon, 15 Sep 2025 15:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B941DE4E5
+	for <netdev@vger.kernel.org>; Mon, 15 Sep 2025 15:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757949402; cv=none; b=TXGrOWnRD017m/RKtxa4lo62zVCHt6MlnZIPl782YIKpb/BIJDmztsiNEWHsW2h0HlgqCh4nJlIZ9yWjlShr1oeI1mbuwv2d9sm3BGyybdxSZDYTob1L6+mBFDWvTfmQo1WgPUT6t7sIJFbkyRaNY0NC4yuNensfyigphCAaFC8=
+	t=1757949572; cv=none; b=NLfBW6et4+j6wWR8KEFmeEHG1txgTdJN7AnuXw7vRDANYOnsqbnVRO6jUQ3iiKcaEmROevrMNLyaKnu6kPXgibVW6dj59gY36LVIYxxcu/zYVEyg/bm+hZQ37dfNdt8SHyD+JhSqZgBOluB1piL381ZMBJQmRNeR7uAc/s2JAFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757949402; c=relaxed/simple;
-	bh=LuKYQMCnP1LS/CAJAZl9A9uSSLXK7wO2ORBieue52UI=;
+	s=arc-20240116; t=1757949572; c=relaxed/simple;
+	bh=+zPXRJvQLGrQg5knOB0aVgDPejM02fyGGa6SPEbwTdk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fWTybyOTMcH31D3+b/mx/q3LMu/aaFEc7zHDdcXinrJco+Zz5hntaXkFotaOkHa8cZmWsEeBVTZn04SEozhXrVoJny8Le5zRmsWcspyqq9+ubuGo7W/TAKPPUbFSioJFNc0FfxQ7FIqhn45u3uVZ5itdczJgqTmOpmJzmmL2/5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DlpgRoWg; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lXqb8NDH1tLCz6OJMncSR6SPOej/UfIp62dNbkLL1Gkzm4l5ti2JenGJgY0NFQMhgPqHJItaJ6oLSt6ZIbBDMFBvLnfALEXlXIL7Tar5ddtS+Gy4QLaHPa5mJPV6Wz5mm8+bOvypo0iT7ap76LMzXMQqOeg/4MIcbbgdYHsxbTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnedSK9F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DlpgRoWg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D45C4CEF1;
-	Mon, 15 Sep 2025 15:16:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnedSK9F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A5EC4CEF7;
+	Mon, 15 Sep 2025 15:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757949401;
-	bh=LuKYQMCnP1LS/CAJAZl9A9uSSLXK7wO2ORBieue52UI=;
+	s=k20201202; t=1757949571;
+	bh=+zPXRJvQLGrQg5knOB0aVgDPejM02fyGGa6SPEbwTdk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DlpgRoWgU+IqMxuDjVrGu1xTj3hHA8S+OFw/CTXE35Z0m/d3a/ex4d+WQVZjlT+oA
-	 tomoLFjK/1jZVvB14JMzKCJm+vHv5zv6J4sq02kJp7XdRiKkJjjNIMDRR2lAtrqGrQ
-	 c8LheYdY362WF0il5E9NQPxNm9g4LcYkiUaulFbZdaOyTKX617Gnv1o+e4BUxGsu7U
-	 p5SsMudL+Oah2djJvcudxjMTbSFNJAYUASq0AO4uyoVRxem9JUuVuquqfoirkPuYem
-	 4CcQzm42orb48YEjZ6jkGfrd4NMkcgbDE5izua7pivzWIrfZSgXMh7G3fjjnUVv4Lc
-	 /zdX308senOOg==
-Date: Mon, 15 Sep 2025 08:16:40 -0700
+	b=PnedSK9FiWLSf1h+8yvnwvytyYIV1GvzvZ5H5oSMxMgZCXD9BnZrnur2iddMAmcxL
+	 28aukGW4Mgdm7wiaq9u8ehvr5wGax0nHfvtk7X8i8om2yDDT03w8CHYIVm8YmftNrh
+	 GAEeRZF0EkJ/yhWvIOF+MyBqN+ZL4lImnQnKkRixfYWRwImuDp6ADWmTYk1hTYq9/3
+	 pQHOjLhJ2jRQS1I7lqNtaAPau+gOM0qSKzyO934lt3RUfMhgspEAvkoTvBHWBtnpoC
+	 VrQhrg1GKeb9xuxs9nqpOBs3u2smT9GCtraaZ3kyo/t5cFEl+hxPQrWZUsQRt8TBNB
+	 p7ddP2/EZI8xw==
+Date: Mon, 15 Sep 2025 08:19:30 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, alexanderduyck@fb.com,
- jacob.e.keller@intel.com
-Subject: Re: [PATCH net-next 2/9] eth: fbnic: use fw uptime to detect fw
- crashes
-Message-ID: <20250915081640.6d86ff6f@kernel.org>
-In-Reply-To: <20250915095846.GO224143@horms.kernel.org>
-References: <20250912201428.566190-1-kuba@kernel.org>
-	<20250912201428.566190-3-kuba@kernel.org>
-	<20250915095846.GO224143@horms.kernel.org>
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: <intel-wired-lan@lists.osuosl.org>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, <netdev@vger.kernel.org>, Michal Schmidt
+ <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>
+Subject: Re: [PATCH iwl-next 2/9] ice: move service task start out of
+ ice_init_pf()
+Message-ID: <20250915081930.32de8247@kernel.org>
+In-Reply-To: <84554f92-5b57-4fcd-85f5-89d9ec0f2523@intel.com>
+References: <20250912130627.5015-1-przemyslaw.kitszel@intel.com>
+	<20250912130627.5015-3-przemyslaw.kitszel@intel.com>
+	<20250912161938.1647096b@kernel.org>
+	<84554f92-5b57-4fcd-85f5-89d9ec0f2523@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,51 +50,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Sep 2025 10:58:46 +0100 Simon Horman wrote:
-> On Fri, Sep 12, 2025 at 01:14:21PM -0700, Jakub Kicinski wrote:
-> > Currently we only detect FW crashes when it stops responding
-> > to heartbeat messages. FW has a watchdog which will reset it
-> > in case of crashes. Use FW uptime sent in the heartbeat messages
-> > to detect that the watchdog has fired.  
+On Mon, 15 Sep 2025 13:01:47 +0200 Przemek Kitszel wrote:
+> On 9/13/25 01:19, Jakub Kicinski wrote:
+> > On Fri, 12 Sep 2025 15:06:20 +0200 Przemek Kitszel wrote:  
+> >> +	timer_setup(&pf->serv_tmr, ice_service_timer, 0);
+> >> +	pf->serv_tmr_period = HZ;
+> >> +	INIT_WORK(&pf->serv_task, ice_service_task);
+> >> +	clear_bit(ICE_SERVICE_SCHED, pf->state);  
+> > 
+> > I should just read the code, but this looks like an open-coded
+> > deferred_work ?  
 > 
-> I see that the time sent in heartbeat messages is critical to this check.
-> But the time sent in ownership messages is also used, right?
-
-Fair, will add. I wasn't sure how to concisely include this.
-Ownership is kinda like the 0-th heartbeat in my mind..
-
-> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> > index 6e580654493c..72f750eea055 100644
-> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> > @@ -495,6 +495,11 @@ int fbnic_fw_xmit_ownership_msg(struct fbnic_dev *fbd, bool take_ownership)
-> >  
-> >  	fbd->last_heartbeat_request = req_time;
-> >  
-> > +	/* Set prev_firmware_time to 0 to avoid triggering firmware crash
-> > +	 * detection now that we received a response from firmware.
-> > +	 */  
+> I wanted to put some joke about our driver, but it is not funny :F
 > 
-> I'm having a bit of trouble understanding this comment.
-> Here we are sending an ownership message.
-> Have we (also) received a response from firmware?
-
-Yes, sorry..
-
-> > +	fbd->prev_firmware_time = 0;
-> > +
-> >  	/* Set heartbeat detection based on if we are taking ownership */
-> >  	fbd->fw_heartbeat_enabled = take_ownership;
-> >  
-> > @@ -671,6 +676,9 @@ static int fbnic_fw_parse_ownership_resp(void *opaque,
-> >  	/* Count the ownership response as a heartbeat reply */
-> >  	fbd->last_heartbeat_response = jiffies;
-> >  
-> > +	/* Capture firmware time for logging and firmware crash check */
-> > +	fbd->firmware_time = fta_get_uint(results, FBNIC_FW_HEARTBEAT_UPTIME);  
+> ice-service-task is scheduled both by the timer and work_queue (ice_wq),
+> there is more flags that I could count around the scheduling, and it is
+> a pain to stop/reset the thing - I will definitively try to simplify
+> the thing (esp. given I have a bug with driver reset on me)
 > 
-> Maybe FBNIC_FW_OWNERSHIP_UPTIME?
+> but for now, the cited thing is just a little chunk that I have moved
+> from one function to another (and the whole series is not about a race)
 
-ack!
-
-Thanks for reviews!
+FWIW a lot of races that used to exist around work scheduling are now
+trivially resolved by disabling the work. But yeah, not a blocker here
+obviously..
