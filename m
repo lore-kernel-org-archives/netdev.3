@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941BE340D8A;
-	Mon, 15 Sep 2025 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1911341AA3;
+	Mon, 15 Sep 2025 14:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757947675; cv=none; b=Yu+E1BFIBoDywB0voekCJPp8LNpVVu1ECDqJDs6V5Td0xgHUKG88UJyP84WutDmUg/EEsEnUHIx9HZ0v42wQtES0qAFld7noh7aziiWfcIobSP9B3Db62Bz1a9UMNoxCZqJieooStVdlgL4nac7Hgtrm6jrxJuB5PgJZe8qe1zU=
+	t=1757947676; cv=none; b=fRyawuFCs09LMsJvL7AbuAGIluvE7//BiIaSGwslPbK/l8lJyNsTlZjzVpk8VWr5XDep2Vqs8f/J4EbglfohTmVa6YlEf/wqUNJWETVyhqXOQFNam/eY7BX5HhkUZRlGHZkDLf79OAwGQ+V+pi8AnlZz6dbUF4UqOQd40KTKsyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757947675; c=relaxed/simple;
-	bh=IsmjNeaXavqPvifeThqRq8BNJU4LPyh8Y4FXmPIrN2A=;
+	s=arc-20240116; t=1757947676; c=relaxed/simple;
+	bh=CklzBOgUQddwzBO3UlL2pkEPjFixeUSxqIJvFTCFOhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SoIJhFb1ZoovT0snWB76C5lnXJtSYBldW8XJA8bWLrAKPemaE5AGqtUOZSMoH5/hjgc4gudYxGJSbOLORiwA1DS8xQ58sF9RYCWIklSsIwmJsj6fWXbA+Otswi129NaQ7qK884Bwx95ozEL3Oq3zvHVg4toHm9J/B6Znq2/hddw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=WEW24BMr; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=HZAtwng9o3vbfHa9+Xj8wBXthQkpWgR7z1YVkC5txozYxz+cuUR3flOZ+4qx0zPgCMKSTw8xV+f565uhjOCGff85CXbxRhAYCouxrnbmN3THACFeAZR67fd9PEQt/8+Mkd5D53XhS9MEw73QkWrDdhWyTuNdTH1Y0l4tJAGKr5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=NbaxkH1V; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="WEW24BMr"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="NbaxkH1V"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1757947661;
-	bh=IsmjNeaXavqPvifeThqRq8BNJU4LPyh8Y4FXmPIrN2A=;
+	bh=CklzBOgUQddwzBO3UlL2pkEPjFixeUSxqIJvFTCFOhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEW24BMrMoIAB6//FCu9YqsdwI5AcZBBuX+35+Ggi7+lMKwLnQ+a52vkM1tbBhyPd
-	 ebI37IDVsiZJeeKtMvFrihYh3b5MTjPu1nmXdWJ40CencVLpV8KguEPlHAhoswSvJl
-	 oDQZ36lRXm6+Rd/uQiqxSjhwGUv13Q47Ytj1v7B7juFEmrBf8pRrGr4hLVnPESTfnH
-	 3PP8pbEQhqMp1PkYLWDdtliGMAmyt+Vsey8OoSviFnscS0Cm0excutaR55atOpJnpi
-	 Vrxvjox43wlpUJpZrzcbUXSKzGI+vm6/uWGmu5SOSS0rsM7Uuj/rom/GKRMlHC+SRL
-	 BwlE1zzNqdtXg==
+	b=NbaxkH1VfBJI70Q8opnolbnjhvJ1jUIqdURF+XM4qienrRTxTbBacP/Pw/cmf1Cdx
+	 OSNJpX2wL5Flr4MC81YhmyL+TJCYYQsUulAdZfdRU/d2OI1uDeHIuzmhIUjc/aMNPJ
+	 tijZZqTH/dwvDdA9PrdgHEW/bnXTlKcICBtdArHZGgODGK4Pe6gRdgLQFZ3Xx2lsBc
+	 FRRfrykrJ0EKgz6K6a6mZ33FuTe9x8fK9lg14ZajECK8xJhItyI1K4ZWECkhbIsIIP
+	 kMkhJql1ilT2J3iiReDSVGLJz/a/qFXGLsFdeqXXEYjNf7Rbur+7PEkMd1LC0B7vHs
+	 n1kuyYAByvgAA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 044D06013B;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 1556C6013F;
 	Mon, 15 Sep 2025 14:47:41 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 2BC77203CF3; Mon, 15 Sep 2025 14:43:06 +0000 (UTC)
+	id 6B8212051A8; Mon, 15 Sep 2025 14:43:06 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 04/11] tools: ynl-gen: refactor local vars for .attr_put() callers
-Date: Mon, 15 Sep 2025 14:42:49 +0000
-Message-ID: <20250915144301.725949-5-ast@fiberby.net>
+Subject: [PATCH net-next v5 10/11] tools: ynl: decode hex input
+Date: Mon, 15 Sep 2025 14:42:55 +0000
+Message-ID: <20250915144301.725949-11-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250915144301.725949-1-ast@fiberby.net>
 References: <20250915144301.725949-1-ast@fiberby.net>
@@ -60,106 +60,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Refactor the generation of local variables needed when building
-requests, by moving the logic from put_req_nested() into a new
-helper put_local_vars(), and use the helper before .attr_put() is
-called, thus generating the local variables assumed by .attr_put().
+This patch adds support for decoding hex input, so
+that binary attributes can be read through --json.
 
-Previously only put_req_nested() generated the variables assumed
-by .attr_put(),  print_req() only generated the count iterator `i`,
-and print_dump() neither generated `i` nor `array`.
+Example (using future wireguard.yaml):
+ $ sudo ./tools/net/ynl/pyynl/cli.py --family wireguard \
+   --do set-device --json '{"ifindex":3,
+     "private-key":"2a ae 6c 35 c9 4f cf <... to 32 bytes>"}'
 
-This patch fixes the build errors below:
-$ make -C tools/net/ynl/generated/
-[...]
--e      GEN wireguard-user.c
--e      GEN wireguard-user.h
--e      CC wireguard-user.o
-wireguard-user.c: In function ‘wireguard_get_device_dump’:
-wireguard-user.c:480:9: error: ‘array’ undeclared (first use in func)
-  480 |         array = ynl_attr_nest_start(nlh, WGDEVICE_A_PEERS);
-      |         ^~~~~
-wireguard-user.c:480:9: note: each undeclared identifier is reported
-                        only once for each function it appears in
-wireguard-user.c:481:14: error: ‘i’ undeclared (first use in func)
-  481 |         for (i = 0; i < req->_count.peers; i++)
-      |              ^
-wireguard-user.c: In function ‘wireguard_set_device’:
-wireguard-user.c:533:9: error: ‘array’ undeclared (first use in func)
-  533 |         array = ynl_attr_nest_start(nlh, WGDEVICE_A_PEERS);
-      |         ^~~~~
-make: *** [Makefile:52: wireguard-user.o] Error 1
-make: Leaving directory '/usr/src/linux/tools/net/ynl/generated'
+In order to somewhat mirror what is done in _formatted_string(),
+then for non-binary attributes attempt to convert it to an int.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 3266af19edcd..a0c571456236 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -2040,6 +2040,20 @@ def put_enum_to_str(family, cw, enum):
-     _put_enum_to_str_helper(cw, enum.render_name, map_name, 'value', enum=enum)
- 
- 
-+def put_local_vars(struct):
-+    local_vars = []
-+    has_array = False
-+    has_count = False
-+    for _, arg in struct.member_list():
-+        has_array |= arg.type == 'indexed-array'
-+        has_count |= arg.presence_type() == 'count'
-+    if has_array:
-+        local_vars.append('struct nlattr *array;')
-+    if has_count:
-+        local_vars.append('unsigned int i;')
-+    return local_vars
-+
-+
- def put_req_nested_prototype(ri, struct, suffix=';'):
-     func_args = ['struct nlmsghdr *nlh',
-                  'unsigned int attr_type',
-@@ -2062,15 +2076,7 @@ def put_req_nested(ri, struct):
-         init_lines.append(f"hdr = ynl_nlmsg_put_extra_header(nlh, {struct_sz});")
-         init_lines.append(f"memcpy(hdr, &obj->_hdr, {struct_sz});")
- 
--    has_anest = False
--    has_count = False
--    for _, arg in struct.member_list():
--        has_anest |= arg.type == 'indexed-array'
--        has_count |= arg.presence_type() == 'count'
--    if has_anest:
--        local_vars.append('struct nlattr *array;')
--    if has_count:
--        local_vars.append('unsigned int i;')
-+    local_vars += put_local_vars(struct)
- 
-     put_req_nested_prototype(ri, struct, suffix='')
-     ri.cw.block_start()
-@@ -2354,10 +2360,7 @@ def print_req(ri):
-         local_vars += ['size_t hdr_len;',
-                        'void *hdr;']
- 
--    for _, attr in ri.struct["request"].member_list():
--        if attr.presence_type() == 'count':
--            local_vars += ['unsigned int i;']
--            break
-+    local_vars += put_local_vars(ri.struct['request'])
- 
-     print_prototype(ri, direction, terminate=False)
-     ri.cw.block_start()
-@@ -2424,6 +2427,9 @@ def print_dump(ri):
-         local_vars += ['size_t hdr_len;',
-                        'void *hdr;']
- 
-+    if 'request' in ri.op[ri.op_mode]:
-+        local_vars += put_local_vars(ri.struct['request'])
-+
-     ri.cw.write_func_lvar(local_vars)
- 
-     ri.cw.p('yds.yarg.ys = ys;')
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 9fd83f8b091f..707753e371e2 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -971,6 +971,11 @@ class YnlFamily(SpecFamily):
+                 raw = ip.packed
+             else:
+                 raw = int(ip)
++        elif attr_spec.display_hint == 'hex':
++            if attr_spec['type'] == 'binary':
++                raw = bytes.fromhex(string)
++            else:
++                raw = int(string, 16)
+         else:
+             raise Exception(f"Display hint '{attr_spec.display_hint}' not implemented"
+                             f" when parsing '{attr_spec['name']}'")
 -- 
 2.51.0
 
