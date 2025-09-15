@@ -1,133 +1,99 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFB72E9EC7;
-	Mon, 15 Sep 2025 08:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA72D5932;
+	Mon, 15 Sep 2025 08:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757923531; cv=none; b=ic5zhmMxWgqEMYD5E2TRTwGqbkFLLKeitTMHIQGYpgimFZs3IkAxo6/Vf+cWGqjPxcEOIpEqG34o1QhWhB2jbMRUbiq0BnHGNW882wYc/rcjeKqVofN3LDF4cKcUdr+L9tKVHXZSBlRgee7xerCXYRXftf5fCcIblf8kgrMA14I=
+	t=1757924241; cv=none; b=RDccq8nxWOsjAith+JgkuBuCA7k8QdmsECbKEslmIo2aCLgvwMBWGDhAaqwoaZWbNGoS6WI45toc6xR6risBka2BZj/VB5CcLizeuDN+CxMnUi6IhrSIE/r8sfGPdVnUjINzS36+nx00wM1nzFtIuPb5cOSBvuEf8uw8vZ0m+6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757923531; c=relaxed/simple;
-	bh=B74HX5e+TfRygmN6Og4POXNipS2VHQDoP8es2YE1kNc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u38sQARDITpaQXxVpGktCbCbgwvuHylxgokXX6T/kNKpEaBOYzJ/sItnP5c00XnHmC4D+yWvK5wfmGKYO0aHBFPNoG0jVO93CDWr6lFFRTND6VfMYCfpYVDcs2ZGj82m6vMpzowmaX9x3bUycDSbU1uBsM+c7cElFdcYC2Z0sRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=jjmz3yV5; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1757924241; c=relaxed/simple;
+	bh=F/X+TtZHooGZVCVdoXlX23gyuHCMQDwSSkVtX3di3Hg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NDT+PTlM9+UFmaoP5bA0vwkrW99bikpvpIrOsyf44a4RSW8qz/tm0IR8A3Ffr0ni+x+lefzEKnsVKrsCQ39rOGpWEVjxjKi1PT1CRC/cmJnyK4uKQHLtzSkNqg7VV3wD/UQZNE/TOBFybWHV8s5KXU7MLlY/6BPNknd4bQCTEKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GV9RqtAc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="jjmz3yV5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1757923529; x=1789459529;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=B74HX5e+TfRygmN6Og4POXNipS2VHQDoP8es2YE1kNc=;
-  b=jjmz3yV5k4P8OXl/Km9t6DejuYxQoVdef6j4H/qGmewvXbkpjqiyPsoW
-   UeZmlUdAquR2YzSxUafXOyZYYFMUe48kzvWNA4yO05TQL8t19BZ6f9BjB
-   9R8NkbY8qlk5ZU7P/0M76GkOYi8Ild+N4sV15Q3P8WeyLAyvNGa9EUNiT
-   WNqBUV2ZKivq1OGP0hpfnYekZ2IoCZ71Y6/hBF0iMEl6rS7OJQRFtPfG8
-   6JZ5RdAjX6ND9bVxBslJIegU0kT2lsYSHTt+GsocuyfJ5apLMurCaZCyB
-   Z3uqctM16f92FWlac8S9Bg+R5e5I8D5MQEEQDlLaeXrwEyuVTMAxKwMLy
-   g==;
-X-CSE-ConnectionGUID: ewY7/e+gQ0WFS+nyOvSX4A==
-X-CSE-MsgGUID: 824WDI+DT/Wt1juxykZo1A==
-X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
-   d="scan'208";a="213889417"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Sep 2025 01:05:22 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 15 Sep 2025 01:05:14 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Mon, 15 Sep 2025 01:05:11 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <vladimir.oltean@nxp.com>,
-	<vadim.fedorenko@linux.dev>, <rosenp@gmail.com>,
-	<rmk+kernel@armlinux.org.uk>, <christophe.jaillet@wanadoo.fr>,
-	<steen.hegelund@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net] phy: mscc: Fix PTP for vsc8574 and VSC8572
-Date: Mon, 15 Sep 2025 10:01:12 +0200
-Message-ID: <20250915080112.3531170-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GV9RqtAc"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 70B48C4CEF1;
+	Mon, 15 Sep 2025 08:17:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757924241;
+	bh=F/X+TtZHooGZVCVdoXlX23gyuHCMQDwSSkVtX3di3Hg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GV9RqtAc3SB8pgtHReS7bf1ET/E5vlZUVbYsXHtspijXoI45Txf5P71bCW1PTgJV3
+	 ex0yceO9ZS+ovvANqgyEHfA2Qj+1iAM6DXHZrjU8MczOnLdaRHjSKBj3K0rKEz9GQf
+	 9krMvdrr8vcMowZZT9Xs7F9IjBlFcNkDW3gwqB4SFlOCoN9qAT5g1NjZfrSVeRdYQx
+	 icJL5z60ZHfKeJvQCTjkAo4G5K2VGF+x8qlXmdPuyibktjmqLtE1A3WkITAL3lOGzw
+	 QH/EkozVXDMET64a3VJSdExZenU+NQYYtSE6NT693CXgaTgUqea8BcXoX8GKS4+pVr
+	 4CPy9LxgzY7IA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E10ACAC597;
+	Mon, 15 Sep 2025 08:17:21 +0000 (UTC)
+From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
+Subject: [PATCH net v2 0/2] net: stmmac: Minor fixes for stmmac EST
+ implementation
+Date: Mon, 15 Sep 2025 16:17:17 +0800
+Message-Id: <20250915-qbv-fixes-v2-0-ec90673bb7d4@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI7Lx2gC/22Myw7CIBQFf6W5azG9pC9c+R+mC2xPLYlCBUI0D
+ f8u6drlnJmcnQK8QaBLtZNHMsE4W0CeKppWbR8QZi5MspZtrZjF+57EYj4IotHomhlDB/RU+s3
+ jECW/kUWksYyrCdH57/Gf+FB/rhKLWmBgqFb108LLVT8jvD5P7kVjzvkHWuVGd6gAAAA=
+X-Change-ID: 20250911-qbv-fixes-4ae64de86ee7
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <Jose.Abreu@synopsys.com>, 
+ Rohan G Thomas <rohan.g.thomas@intel.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rohan G Thomas <rohan.g.thomas@altera.com>, 
+ Matthew Gerlach <matthew.gerlach@altera.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1757924239; l=899;
+ i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
+ bh=F/X+TtZHooGZVCVdoXlX23gyuHCMQDwSSkVtX3di3Hg=;
+ b=bi6AtS44Cm+PAB1TLYBv/5mE8nemeFtjJHyyt2gUpKfTRwLORFKt6gXA8FrQeXWPi9muVBfYJ
+ Lh5o/Pnal8SCzk2Xrv11tNs0rwrZbC5HqjijLT6SOGWlDtKX5riau4o
+X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
+ pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
+X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
+ with auth_id=494
+X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reply-To: rohan.g.thomas@altera.com
 
-When trying to enable PTP on vsc8574 and vsc8572 it is not working even
-if the function vsc8584_ptp_init it says that it has support for PHY
-timestamping. It is not working because there is no PTP device.
-So, to fix this make sure to create a PTP device also for this PHYs as
-they have the same PTP IP as the other vsc PHYs.
+This patchset includes following minor fixes for stmmac EST
+implementation:
+   1. Fix GCL bounds checks
+   2. Consider Tx VLAN offload tag length for maxSDU
 
-Fixes: 774626fa440e ("net: phy: mscc: Add PTP support for 2 more VSC PHYs")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
 ---
- drivers/net/phy/mscc/mscc_main.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+Changes in v2:
+- Use GENMASK instead of BIT for clarity and consistency
+- Link to v1: https://lore.kernel.org/r/20250911-qbv-fixes-v1-0-e81e9597cf1f@altera.com
 
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index ef0ef1570d392..89b5cd96e8720 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2259,6 +2259,7 @@ static int vsc8574_probe(struct phy_device *phydev)
- 	u32 default_mode[4] = {VSC8531_LINK_1000_ACTIVITY,
- 	   VSC8531_LINK_100_ACTIVITY, VSC8531_LINK_ACTIVITY,
- 	   VSC8531_DUPLEX_COLLISION};
-+	int ret;
- 
- 	vsc8531 = devm_kzalloc(&phydev->mdio.dev, sizeof(*vsc8531), GFP_KERNEL);
- 	if (!vsc8531)
-@@ -2267,8 +2268,11 @@ static int vsc8574_probe(struct phy_device *phydev)
- 	phydev->priv = vsc8531;
- 
- 	vsc8584_get_base_addr(phydev);
--	devm_phy_package_join(&phydev->mdio.dev, phydev,
--			      vsc8531->base_addr, 0);
-+	ret = devm_phy_package_join(&phydev->mdio.dev, phydev,
-+				    vsc8531->base_addr,
-+				    sizeof(struct vsc85xx_shared_private));
-+	if (ret)
-+		return ret;
- 
- 	vsc8531->nleds = 4;
- 	vsc8531->supp_led_modes = VSC8584_SUPP_LED_MODES;
-@@ -2279,6 +2283,16 @@ static int vsc8574_probe(struct phy_device *phydev)
- 	if (!vsc8531->stats)
- 		return -ENOMEM;
- 
-+	if (phy_package_probe_once(phydev)) {
-+		ret = vsc8584_ptp_probe_once(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = vsc8584_ptp_probe(phydev);
-+	if (ret)
-+		return ret;
-+
- 	return vsc85xx_dt_led_modes_get(phydev, default_mode);
- }
- 
-@@ -2648,7 +2662,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_aneg    = &vsc85xx_config_aneg,
- 	.aneg_done	= &genphy_aneg_done,
- 	.read_status	= &vsc85xx_read_status,
--	.handle_interrupt = vsc85xx_handle_interrupt,
-+	.handle_interrupt = vsc8584_handle_interrupt,
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
+---
+Rohan G Thomas (2):
+      net: stmmac: est: Fix GCL bounds checks
+      net: stmmac: Consider Tx VLAN offload tag length for maxSDU
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 25 ++++++++++++++++-------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   |  4 ++--
+ 2 files changed, 20 insertions(+), 9 deletions(-)
+---
+base-commit: 5b5ba63a54cc7cb050fa734dbf495ffd63f9cbf7
+change-id: 20250911-qbv-fixes-4ae64de86ee7
+
+Best regards,
 -- 
-2.34.1
+Rohan G Thomas <rohan.g.thomas@altera.com>
+
 
