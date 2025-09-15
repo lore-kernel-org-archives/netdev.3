@@ -1,89 +1,200 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08C51E7C2E
-	for <netdev@vger.kernel.org>; Mon, 15 Sep 2025 09:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BDF2F0C64;
+	Mon, 15 Sep 2025 09:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757927584; cv=none; b=iXRp4etBeZhyIbVENY+z4NOW5X8Cmo8we+4ZVTSwxUCbZ0gWURJuZTxYLXNv/JkvajWCmN5PqLGJFWYN7t89XLJcUqLK3aCQ48UZETwurBw26bUXK92dmR0gNK0FGrp5d131gQUTW22xTP2yqaHeBfIb3NC6ABzJRD+uuKKYE+I=
+	t=1757927841; cv=none; b=bdz4tax04+U6jLKpVz82SRSX5VJPUQPWyMf3QhBwbGcf2YSgYU63PEACjAI5ITndA430h/Rxyfwangdy3arQMAHW419vm8xnVZM0P+IM3791t/XxVCkM4v9eEqJ03FMIK2pTZNjc9aevLfJ0sg5Xpd1C0eZso9T1RJqL9aLUlqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757927584; c=relaxed/simple;
-	bh=7+kB8ZMerG7yaoGrdsJ+/bImc0MjKYSjj9HksU+tMr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QAhib8c0vmBQ2+Yo6pWN+ntLAMnhfbSh3llFSHJvlrE+mj8RjOPPA9lAmvDHrIsT91XxJUzbLfmt2ordLVTXialvDXW912B9mrNG51bBF0G4hIcfTU/LExPjfHMgWs82khiEvQ3yDXCxu19rL6TSRDiavX5AgV6Nu3hVISHYMYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6228de280a4so328513a12.2
-        for <netdev@vger.kernel.org>; Mon, 15 Sep 2025 02:13:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757927581; x=1758532381;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MtNRcJRwwCKEIJqf9/whpSBRpMqLegKM6RuT3nM+mBg=;
-        b=Bf5ZEPzCvqj4Cfkq0+uLdjCEUjJQWh26skYGWHb7ga0ZpVv8SPYi3WZWgqM9uuuH3A
-         5cloNDANIJaYv7QWsN++TUqizcx9E7H7OMc2LuAu6BofDrXCRorjbl1BMmpM+wBWTJLG
-         uYlu3RgW/3J0SLHpbWK/AM7wQh/lLda7URLrsHx3D6kBzOE7NP2qCsD7/p/r5+Nr+/DD
-         ZAYG728mQzKL8aGkDHG5EYdRZLhioivv63+KEG3a/M7ITsvDFc+aFLwjm+3zi1TdYL1z
-         sBdXex3SXtMCUXeoVDXCuhsZtd15xVv10IcnCoud/W+VqdC8ISi7lM7xg1+L8ZfUBst0
-         LJyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQLNEnQ9zdKfkQzX5ZF89+W/trzJtR8C6chkJl/cgymQJU4vRCZsvRooi955s9PGv1iUPR8dU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxasI6aktW0hDtWpXeWe9oRE6Uknmu6x4jgYOhQka5H+cfoSelZ
-	br5Ts5cYww4N1YH7iW9pfnjmG0VcKqk4Wh5/ksZdO2CufoivZkMfmljE
-X-Gm-Gg: ASbGncvha8umlUWRg7TtZT9qTIMhDHRje87voCGC3fJyHUl0EBEDkBZGACYGkmjgdmy
-	moU9b+5QkZ+pTPRGoWsUQOWKRER4Mm9rZbFkLBBHT5faUfbWdVNpGEQ9LgO0ed3COkYs62Qy/HP
-	n2vtAb5OCEK6mGeKM3FDe96H8QCM3ZIxOv/F3Mw7kT2+cJVBqkW7ua61b9egs2L5g/4+N3KJifm
-	K7Q26fYvVuPj4jcsi80diNw0vXfN5DjIaokbBeepvWngW/UvNeMLokb8Q5kTjP1Di2RuiZTFriK
-	NdufBwMTttAt7pniTNOF29QvvLvoBOkDMxI+4E+ZVrTNi23BStXrBW4ZEK1Jd/LgcRtaumvGtB1
-	AGdp731U5GOX5BdpDZPiHkr6J
-X-Google-Smtp-Source: AGHT+IEAqk1Bgc7JcF+1aQKWXD0BySjNrACtXO/rAEWZU4UuzJsWjT8CX+gGJiPIKhaccM3UW22mlQ==
-X-Received: by 2002:a05:6402:2742:b0:61e:c750:1ef2 with SMTP id 4fb4d7f45d1cf-62ed82c6d29mr11320958a12.36.1757927581094;
-        Mon, 15 Sep 2025 02:13:01 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:41::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62f0dae0140sm4601341a12.48.2025.09.15.02.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Sep 2025 02:13:00 -0700 (PDT)
-Date: Mon, 15 Sep 2025 02:12:58 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	virtualization@lists.linux.dev, Lei Yang <leiyang@redhat.com>, kernel-team@meta.com
-Subject: Re: [PATCH net-next v2 4/7] net: ethtool: add get_rx_ring_count
- callback to optimize RX ring queries
-Message-ID: <zskbmdjunfamn3x3kmxcjeamnckfh4icb7emwkkwhqwstlzt2e@nqjcg5h6hgsv>
-References: <20250912-gxrings-v2-0-3c7a60bbeebf@debian.org>
- <20250912-gxrings-v2-4-3c7a60bbeebf@debian.org>
- <20250914125949.17ea0ade@kernel.org>
+	s=arc-20240116; t=1757927841; c=relaxed/simple;
+	bh=zfbydqOh+dk1zNcsBtslvIQY6yi3mBOP1C29nui2VcI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gSNdi5xIAMFCcKqJuFdStkIQSp5loJHjSTEAM+QRzEUH9dOWX9gWtSP2mHpjRH0EwxVsCOJOM5iNGRSy5d17FzxBNd1pt51J9Z0wB6a7g/YS4DAH8We4djdeSs1XOyMsgOffwFeaCUnLr9KsHy1aquiGjNerAJ6WQv9OqRXAHfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=OFCXcuUo; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="OFCXcuUo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1757927840; x=1789463840;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zfbydqOh+dk1zNcsBtslvIQY6yi3mBOP1C29nui2VcI=;
+  b=OFCXcuUos/Y72GyXSlFfdK76TdCu4QBRsNVu/kyZDxjuiWO10s5yDA+f
+   U4dTkQhwvXblghfOzSto7lCtMHDSTP+rpJsojF6/XMZXNJ4skTbi5WiGy
+   /hz0fCsUZS5z4WPSDr5SSB5MgeHctc7/n9hNvEZGfvBMnx/TgsQ5r5Mu1
+   Pbd+CgCxolwAgvpe6c36d8GfGBH+4rCYvYo7jkN4JYFP6doEa+40Aw2qm
+   rfhHx4aR/IQ6Dj4RMNTSHsecxbnjwWK5clk8uCV9SSQB8Ryq7HtZ+NFhf
+   p7ueFNi9i8lGw3Cc61QFGM8m+4zRFYFEZXJI6vGXcevHQhxdSPv2e2FDj
+   g==;
+X-CSE-ConnectionGUID: D9R2LNivTDmP0BykzHc4zw==
+X-CSE-MsgGUID: OdHmFyjUQPG9P7zwgDpDVw==
+X-IronPort-AV: E=Sophos;i="6.18,265,1751266800"; 
+   d="scan'208";a="46505434"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Sep 2025 02:17:13 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 15 Sep 2025 02:16:31 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 15 Sep 2025 02:16:29 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net-next] net: phy: micrel: Add Fast link failure support for lan8842
+Date: Mon, 15 Sep 2025 11:11:49 +0200
+Message-ID: <20250915091149.3539162-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250914125949.17ea0ade@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sun, Sep 14, 2025 at 12:59:49PM -0700, Jakub Kicinski wrote:
-> On Fri, 12 Sep 2025 08:59:13 -0700 Breno Leitao wrote:
-> > @@ -1225,9 +1242,7 @@ static noinline_for_stack int ethtool_get_rxrings(struct net_device *dev,
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	ret = ops->get_rxnfc(dev, &info, NULL);
-> > -	if (ret < 0)
-> > -		return ret;
-> > +	info.data = ethtool_get_rx_ring_count(dev);
-> 
-> Is there a reason we're no longer checking for negative errno here?
-> It's possible that none of the drivers actually return an error, but
-> we should still check. For consistency with the other patches / paths
-> if nothing else.
+Add support for fast link failure for lan8842, when this is enabled the
+PHY will detect link down immediately (~1ms). The disadvantage of this
+is that also small instability might be reported as link down.
+Therefore add this feature as a tunable configuration and the user will
+know when to enable or not. By default it is not enabled.
 
-Agree, we need to check the result of ethtool_get_rx_ring_count, and
-return it if negative. I will update the patchset.
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+---
+ drivers/net/phy/micrel.c | 77 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 75 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index e403cbbcead5b..a946c34dbbf79 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -107,6 +107,7 @@
+ #define LAN8814_INTC				0x18
+ #define LAN8814_INTS				0x1B
+ 
++#define LAN8814_INT_FLF				BIT(15)
+ #define LAN8814_INT_LINK_DOWN			BIT(2)
+ #define LAN8814_INT_LINK_UP			BIT(0)
+ #define LAN8814_INT_LINK			(LAN8814_INT_LINK_UP |\
+@@ -2805,6 +2806,14 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
+ 	return ret;
+ }
+ 
++/**
++ * LAN8814_PAGE_PCS - Selects Extended Page 0.
++ *
++ * This page appaers to control the fast link failure and there are different
++ * debug info registers.
++ */
++#define LAN8814_PAGE_PCS 0
++
+ /**
+  * LAN8814_PAGE_AFE_PMA - Selects Extended Page 1.
+  *
+@@ -5910,7 +5919,8 @@ static int lan8842_config_intr(struct phy_device *phydev)
+ 		if (err)
+ 			return err;
+ 
+-		err = phy_write(phydev, LAN8814_INTC, LAN8814_INT_LINK);
++		err = phy_write(phydev, LAN8814_INTC,
++				LAN8814_INT_LINK | LAN8814_INT_FLF);
+ 	} else {
+ 		err = phy_write(phydev, LAN8814_INTC, 0);
+ 		if (err)
+@@ -5986,7 +5996,7 @@ static irqreturn_t lan8842_handle_interrupt(struct phy_device *phydev)
+ 		return IRQ_NONE;
+ 	}
+ 
+-	if (irq_status & LAN8814_INT_LINK) {
++	if (irq_status & (LAN8814_INT_LINK | LAN8814_INT_FLF)) {
+ 		phy_trigger_machine(phydev);
+ 		ret = IRQ_HANDLED;
+ 	}
+@@ -6055,6 +6065,67 @@ static int lan8842_update_stats(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++#define LAN8842_FLF				15 /* 0x0e */
++#define LAN8842_FLF_ENA				BIT(1)
++#define LAN8842_FLF_ENA_LINK_DOWN		BIT(0)
++
++static int lan8842_get_fast_down(struct phy_device *phydev, u8 *msecs)
++{
++	int ret;
++
++	ret = lanphy_read_page_reg(phydev, LAN8814_PAGE_PCS, LAN8842_FLF);
++	if (ret < 0)
++		return ret;
++
++	if (ret & LAN8842_FLF_ENA)
++		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_ON;
++	else
++		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_OFF;
++
++	return 0;
++}
++
++static int lan8842_set_fast_down(struct phy_device *phydev, const u8 *msecs)
++{
++	if (*msecs == ETHTOOL_PHY_FAST_LINK_DOWN_ON)
++		return lanphy_modify_page_reg(phydev, LAN8814_PAGE_PCS,
++					      LAN8842_FLF,
++					      LAN8842_FLF_ENA |
++					      LAN8842_FLF_ENA_LINK_DOWN,
++					      LAN8842_FLF_ENA |
++					      LAN8842_FLF_ENA_LINK_DOWN);
++
++	if (*msecs == ETHTOOL_PHY_FAST_LINK_DOWN_OFF)
++		return lanphy_modify_page_reg(phydev, LAN8814_PAGE_PCS,
++					      LAN8842_FLF,
++					      LAN8842_FLF_ENA |
++					      LAN8842_FLF_ENA_LINK_DOWN, 0);
++
++	return -EINVAL;
++}
++
++static int lan8842_get_tunable(struct phy_device *phydev,
++			       struct ethtool_tunable *tuna, void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_FAST_LINK_DOWN:
++		return lan8842_get_fast_down(phydev, data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int lan8842_set_tunable(struct phy_device *phydev,
++			       struct ethtool_tunable *tuna, const void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_FAST_LINK_DOWN:
++		return lan8842_set_fast_down(phydev, data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
+ static void lan8842_get_phy_stats(struct phy_device *phydev,
+ 				  struct ethtool_eth_phy_stats *eth_stats,
+ 				  struct ethtool_phy_stats *stats)
+@@ -6299,6 +6370,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.handle_interrupt = lan8842_handle_interrupt,
+ 	.get_phy_stats	= lan8842_get_phy_stats,
+ 	.update_stats	= lan8842_update_stats,
++	.get_tunable	= lan8842_get_tunable,
++	.set_tunable	= lan8842_set_tunable,
+ 	.cable_test_start	= lan8814_cable_test_start,
+ 	.cable_test_get_status	= ksz886x_cable_test_get_status,
+ }, {
+-- 
+2.34.1
+
