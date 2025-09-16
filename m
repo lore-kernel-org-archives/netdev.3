@@ -1,77 +1,95 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7787E2D6E64;
-	Tue, 16 Sep 2025 11:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346782C158F;
+	Tue, 16 Sep 2025 11:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758021566; cv=none; b=TrIjralx9oO1jgWO9u0xJzS9JSTTSrkaN/J7Xl6UF1N/c2hPTwCDSq3B63CTW1B21O2SQNT/Obxznz8JYyYZPCQMSK7kmHNrsHdmDhh+/v/L0Kp7/Y214kl8iKomPUhtOPGoHyby1+HzzGAAbLp27BUWm2rw2s2pEHJL/fy2e7A=
+	t=1758021612; cv=none; b=j/DZEwBGqvkDTkpKdvzWViu5gYBmcPeGyDnpwKPS+cOPQrUeXuHqwhQYwZR3TB/2VMoyuGyApzOOmNZu2XGzipOH+fJjGNOzVwI0zZySzFkDZxo+PIASwMEH6z+aKUPiq23ZkoRA0mS/IZj/LGOZbKtE40XTLe2gNOkXBaMHriU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758021566; c=relaxed/simple;
-	bh=ZkEUkqP6FZBlXHDVGb/IKSKdn6/DO0jUbBztVIUKexc=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FmOpVHGbadaeFgYboQqKFo3VwC8At2+WeHblw8yZpNzlSbH43tz2RCzevx/4xC/70I9+QSngjydkUmH+EDH2P+bLv5BIG1PrvQ4nSCc+fXcsHbBJc9oISyIlpddpapn448q/06F/jYdUnB+Hu7VYlsWNy8a9CJ4lvq3A1Bp9680=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=iAhOZc7j; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1758021612; c=relaxed/simple;
+	bh=14sOQQinc11cHCKnIiI6Ab/MANDaVgA92SJ8bByuOrA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GPrV5j2caYUn7rB44rGKla0S29Yxbnh/INgdV2tSHP7KKkhVcXg5ic2OrVE1mxa8T9lRBfj+MdTjd9fAcGy2XaNZ0ERoGtOwiomvRYzw80A6+ZZNMFjPQBYDWKTW5zWE0Gz2s7WRcKn5hV7dPEKIvvEl0haLaJlvmJTYyaxPP7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwM8jv5b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="iAhOZc7j"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58GBEO7k001188;
-	Tue, 16 Sep 2025 04:19:03 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	content-type:date:from:message-id:mime-version:subject:to; s=
-	pfpt0220; bh=Ab6LVYTy3wdjdNsodU2BuvBNogQMb57VcpoD69+tAxk=; b=iAh
-	OZc7jmcfoAtKTuIe75kPTRsGY9bQ/+LUnpDyF2IJC8bkI57JMeuhlYUat3pA1iRK
-	W+wCJjHrudUN6jAOikspco4s0yGhCVh0BlwF6lwcEUV2K9wExM9NlMSakBK1TNcm
-	T93rBFVjg1fuTunzzFkZSfDEwZ4G1SS8ALl84uaBQTx5ocSZsStjpIqTqyuS325X
-	ZYNJU/5VPQ+lF6PeS1gaK3X8TOqg5/VENXB14fH+u8jx/A/ifItZ0KkAxU+rGWnD
-	1QjNageV6cE70PUTY1U29kDztHFfgLOogiZciSWgydl+XZHSlmkKH4gwnF00uHZV
-	l/wkLSLyCkZlm8LK55Q==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4976ukg060-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 04:19:03 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 16 Sep 2025 04:19:09 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 16 Sep 2025 04:19:09 -0700
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id D27375E6872;
-	Tue, 16 Sep 2025 04:18:57 -0700 (PDT)
-Date: Tue, 16 Sep 2025 16:48:56 +0530
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kuba@kernel.org>, <davem@davemloft.net>, <sgoutham@marvell.com>,
-        <gakula@marvell.com>, <sbhatta@marvell.com>, <naveenm@marvell.com>,
-        <edumazet@google.com>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-        <bbhushan2@marvell.com>
-Subject: Query regarding Phy loopback support
-Message-ID: <aMlHoBWqe8YOwnv8@test-OptiPlex-Tower-Plus-7010>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwM8jv5b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2E0C4CEEB;
+	Tue, 16 Sep 2025 11:20:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758021612;
+	bh=14sOQQinc11cHCKnIiI6Ab/MANDaVgA92SJ8bByuOrA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GwM8jv5bXdsHfLGp25eYIs+KXZkrnrk1BTxTI8uOnCDcLnnOfpO7jCDV8/zfKyVYw
+	 R3XtBe05hWce2cnVkQsWvnmAS6GM/kKDsOzCofqrfT18T0y2niThi4CnnpYHDDO88d
+	 nKBfo9i2rs1o6ZeMPVkdOYV7Yc4y1BZHEendlGMtaF4ft9LzwJr+XO6VMgnGhInk9w
+	 cYGz8RF2NITu2t9He49tjMR/MEWemu0HRVIwouU54Z5YviVndwjmPqAdu4k4dPSsjo
+	 MV8FMOL0+kY0vKZLLpvC2AXRvXS9C9JG/eOr5N9aJmw309/U4K7I1wXe7n3l3QnSex
+	 +Qo1j+I6FVvfQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F4F39D0C1A;
+	Tue, 16 Sep 2025 11:20:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDEwNiBTYWx0ZWRfX5veuNGpLKakX n6LyHf6Y88IWZgqddag0rcKhZKvpfVv3lxY7T9IQAKX+CTwSMegQS9VOwR2QHmXiXvWQ5X3kKXB PzQ6fPnbqV7eAvBeq02rD9eNeU8Z0rlhS8WZVlCG3l6E2vCo0YgGNa+ZX35SmfqaP1Kih7ZZw4V
- QBEbPR1pZ4/u0f4NNSUs4gG3YIrKWJ3lYj6SlhkaKzKhig5iKlzaPXIBnxfIbGxFrWskea014UN 5tBfWDaYRcp1erPy/61eYDfYjQSXd7Pez27fQgbwKUxA+G+yj6sT83WrfAfbuWmjEUfOdN14CkL v9RZsUXoNxYpYIQ7NmcDnP7plwNDdii3zlUYvy4IwCmkzUnEkYPd4/Pr88rYS7VP9FSrD/zLfxc J82oVcTK
-X-Proofpoint-GUID: N1wQo6NOJfc867ctH2CRmUh7HuymDQ6R
-X-Proofpoint-ORIG-GUID: N1wQo6NOJfc867ctH2CRmUh7HuymDQ6R
-X-Authority-Analysis: v=2.4 cv=deWA3WXe c=1 sm=1 tr=0 ts=68c947a7 cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=Q0HHoM9fUppamqbhzqYA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_02,2025-09-12_01,2025-03-28_01
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v12 0/5] Add Ethernet MAC support for SpacemiT K1
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175802161326.713595.16381910315366172301.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Sep 2025 11:20:13 +0000
+References: <20250914-net-k1-emac-v12-0-65b31b398f44@iscas.ac.cn>
+In-Reply-To: <20250914-net-k1-emac-v12-0-65b31b398f44@iscas.ac.cn>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: andrew+netdev@lunn.ch, kuba@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, dlan@gentoo.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ p.zabel@pengutronix.de, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, uwu@dram.page,
+ vadim.fedorenko@linux.dev, junhui.liu@pigmoral.tech, horms@kernel.org,
+ maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ conor.dooley@microchip.com, troy.mitchell@linux.spacemit.com,
+ hendrik.hamerlinck@hammernet.be, andrew@lunn.ch
 
-We're looking for a standard way to configure PHY loopback on a network 
-interface using common Linux tools like ethtool, ip, or devlink.
+Hello:
 
-Currently, ethtool -k eth0 loopback on enables a generic loopback, but it 
-doesn't specify if it's an internal, external, or PHY loopback. 
-Need suggestions to implement this feature in a standard way.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Sun, 14 Sep 2025 12:23:11 +0800 you wrote:
+> SpacemiT K1 has two gigabit Ethernet MACs with RGMII and RMII support.
+> Add devicetree bindings, driver, and DTS for it.
+> 
+> Tested primarily on BananaPi BPI-F3. Basic TX/RX functionality also
+> tested on Milk-V Jupiter.
+> 
+> I would like to note that even though some bit field names superficially
+> resemble that of DesignWare MAC, all other differences point to it in
+> fact being a custom design.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v12,1/5] dt-bindings: net: Add support for SpacemiT K1
+    https://git.kernel.org/netdev/net-next/c/62a12a221769
+  - [net-next,v12,2/5] net: spacemit: Add K1 Ethernet MAC
+    https://git.kernel.org/netdev/net-next/c/bfec6d7f2001
+  - [net-next,v12,3/5] riscv: dts: spacemit: Add Ethernet support for K1
+    https://git.kernel.org/netdev/net-next/c/60775f28cfb7
+  - [net-next,v12,4/5] riscv: dts: spacemit: Add Ethernet support for BPI-F3
+    https://git.kernel.org/netdev/net-next/c/3c247a6366d5
+  - [net-next,v12,5/5] riscv: dts: spacemit: Add Ethernet support for Jupiter
+    https://git.kernel.org/netdev/net-next/c/e32dc7a936b1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
