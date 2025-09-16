@@ -1,92 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A11A21FF26;
-	Tue, 16 Sep 2025 09:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7932829C327
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758014679; cv=none; b=mYbpH5rpdOXubtPXA27K2CLSPRqV8zDhH7czEXtJyaSJhz5uiJ6xav0KWFDv3Ym7QoGGxf1fdMv9avXcPA50uqnY//HLdaNp4SSUxcLnzt0mX5nwuzdP+CP493acZYaqzGaCPcfczu52m9hDbYVzp5GkYINb3Vrme0Tqxaw5z+c=
+	t=1758014754; cv=none; b=ay/mOjL/18+bEFlQABShp8vAjFRDrPHT/AFjqS8uEThJjgCqGwm2EOd1Q1kFKk2dMxto24YiWB2RIrPFQamIJ9KOt9na6rW/U8ZLQBpEtSxfjGqZYECcrphISqcrgCeTqAiXLgs1YdrsOwHTSCWrhluCA7x3osE4x9QYUa4qzLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758014679; c=relaxed/simple;
-	bh=AnX7zxFGiyVOnoqXI9inEwlM0tnpL/1wWccRXpRvCCA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ADaCa9enMPsWDZMWJHIdbYm4IjvBHFwKrM09A2x2g/DWifPrADv9Ixmrlpz8ELnVmuTTxhmsWF/K069hkxowRz4IvlkMlIfoiVatzG/lanuY8PCYe+gHZSxGToh0pjc6eZlm/anm/9YLUDy5lodVgwUDnUm+amgS5OHSe/daHE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDPBgD5u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758014754; c=relaxed/simple;
+	bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qVTySKlpxJWCibiffXE9T+nwaWvvb97aFh6e1pVj29jedGXlqYgta1i+ezzfnpsASCK/gvfFB7oQ7URahIA9av4mA20EvHJHom7BtwXpjZxvse2+umR0xLhAmu8r3DCOiwnfcbSUmTAsAlLhYMIEZc9iahFgGXSHykiZCowR1y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9GWTVhI; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDPBgD5u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E36C4CEEB;
-	Tue, 16 Sep 2025 09:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758014678;
-	bh=AnX7zxFGiyVOnoqXI9inEwlM0tnpL/1wWccRXpRvCCA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=UDPBgD5uQQtr4YYQbHhYP5Jer9tPD8oVfjVRHHcMELrhsC8E0oLdB3k95Jm30AqT1
-	 eZlSarX8mANLnjG9/aww9XiIxRt1hBhXOhcieYu4LVde8rCCK/6qhEc9BdIdGui9bV
-	 JxmcH9Zmj6e+J1tanYc1uPnueNbnF4/w+6ilWExXvvZZM05EwL/ojwUjiI69QvzOnu
-	 dWakFHLLs1xmiueFjs2cHly6Ovxr9N3+zGMV6A8EqVkG002Rd6U0USEFVwmdt+EP5+
-	 9KYKR1U4I/ptIpvfWaHzTDEEiO8J0r0DIoYLR5YuZZn4Ca5tzXltiKG109QSTct0AQ
-	 Su7efqeLg9KIg==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 16 Sep 2025 11:24:33 +0200
-Subject: [PATCH iproute] mptcp: fix event attributes type
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9GWTVhI"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-267dbd4e189so557395ad.1
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 02:25:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758014752; x=1758619552; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+        b=Y9GWTVhIJtRrGpeL0bZclzvTItu83iRH38oBrb2EcNhXc3csSEaIHLjxntN6vPRekG
+         U+fX+zMMyWvq4fU1tXc9j2glULsCsD3HDQtSdJDyCms7FAzij16kiCbq4ZFH4GfX1o2O
+         60bm9gvWo1/H68oAAxP9Bh2C3rYz1lxFDBZZr5Llaxr51bh/syGn3RGUDU4Wubvi7ara
+         /L0GnCtskb8YvQYVF0Cb8mRK/F3O+YZqvZLAJowHKwv2kqeo8uPRcyKtqEPj2z3PGkaP
+         rt4IM+0Zu60Px0mIEQ9DMA72XYDEi5sZQhNM4KrzJelebhotOVNfMemzPC3+X9ehK8+e
+         a/6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758014752; x=1758619552;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=prkrcgQgpwPbi8Cfds13n7nM9MiR8JPZLk8prSDLM2M=;
+        b=HqQ5Fk0xQWvRRlQ8DxpL/Pgw/zmWRZDca4V8HPvumu+WVWc/Q1wk9Er/tx7GzaTSY1
+         7xOs6OcTr/GDtplefd31DDAQO8pchuBGRZqok5UcBWNSLD/oOUZ2KouLtal2FcaXV5Nx
+         LGmzs0P/LaucQdQIX0Amw+wSgEia6IvU5lYv5cusOIjjqocRsmq3J1fKvLg7/S8wW0aw
+         88FmxuLupiT1v0L+/PJ3UKzAnb9cVnuXFUMJRJ+9EPR9Zfd6Ne46pkWY2/0yrcc+oDdI
+         EncGJ0agIMRhEf6YtqZogYrp304x0VQMmrBPXDotgsM+l+RrLA9y7wfga40g4Fi6Ghkf
+         l60Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXllnsoEU9FeuiXqIrmC+s1bXN8ZNtNrpfCWOpvX9ej2L/NYrbf708Sx3Li1LPB4i9+mmWe15s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEbgIi2VJbH72+p8V9j55XP0Ls22Sykh0ceNh6wOZDaqwcRlSP
+	H9hsF6gXEJELk1hclupYIZxtRPppoG0YuF7ZY+eqsOpURx8MhOjjfmVU2g/j1EDD9Wx3EMhiFxZ
+	CIfnM8AUbQ47WSNVWpywU5AYv+sr5Qto=
+X-Gm-Gg: ASbGnctNKEcAb76mBp482zaOpAceIexQvihol1rN0iwaCIHStuGWVcOkSwRUh1OBeFM
+	2GJgEAN0JkUIoiCbixnfrw6Po3jeGUGWFRTk4j5npK3RhY+3dmEuu2IqPUwiHKamBLQ01etHRkt
+	lBSlFQwzMJT2M2nuIh1Ad8brstX81+Hgpb5t22UgUshl0R7qh3rUn043jOlprgmRbGNJSwau4Pd
+	f/wxJbdmj33qr4fuOgkuRHcrxIaqO9XMcftMnW0eMaqgV1Kyry4bolNVmsD5HukG8/hc5vAS9Af
+	YNBrUbJqO2BaRlzStZXWVST8JA==
+X-Google-Smtp-Source: AGHT+IFwc6Y1OseNifdIO5J0qDFbM+aOcV8Z7xSmon/0tVZxaKw/+AP4a1wI7bqiW8muI5j5MuELqcXm9FvbGpAicyA=
+X-Received: by 2002:a17:902:e5c8:b0:264:9287:3fc3 with SMTP id
+ d9443c01a7336-2649287431dmr60170295ad.2.1758014751666; Tue, 16 Sep 2025
+ 02:25:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250916-mptcp-attr-sign-v1-1-316aa96b93ca@kernel.org>
-X-B4-Tracking: v=1; b=H4sIANAsyWgC/x3MTQ5AMBBA4avIrE1S9ReuIhbFlFmoZloiEXfXW
- H6L9x4IJEwB+uwBoYsDHy6hyDOYN+NWQl6SQStdq65ocPdx9mhiFAy8OrStLqtaLZM1HaTKC1m
- +/+MA7OU4I8H4vh9o+/W4agAAAA==
-X-Change-ID: 20250916-mptcp-attr-sign-f723450dbfa9
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: MPTCP Linux <mptcp@lists.linux.dev>, netdev@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1348; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=AnX7zxFGiyVOnoqXI9inEwlM0tnpL/1wWccRXpRvCCA=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJO6lzlcr68K76gjqvuyJLP8jIX5UVUZn69cyvjwfs34
- ss/9rTM7ChlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZiI/0KG/0HLSnuLVH3K9rtv
- WhiSOsnQz60q5e9Liz0TU9//PVFwJ4yR4Uz+rYIrMydOOGfkK35rpfS5XQp+3wXXtRj8cjdJdJ9
- RwAUA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+References: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+In-Reply-To: <20250813-core-cstr-fanout-1-v3-0-545c14bc44ff@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 16 Sep 2025 11:25:39 +0200
+X-Gm-Features: AS18NWCYvwyg0oQ7WKMGNn77retnSNUsfiN0nCmq9Ts2BvgM8ip_kHMckevDcv8
+Message-ID: <CANiq72kq4RWNO1pJtJuG8jBpARq5ft6pcn8dHuUWJx=nosweyQ@mail.gmail.com>
+Subject: Re: [PATCH v3 00/11] rust: use `core::ffi::CStr` method names
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+	Jocelyn Falempe <jfalempe@redhat.com>, Javier Martinez Canillas <javierm@redhat.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Len Brown <lenb@kernel.org>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The 'backup' and 'error' attributes are unsigned.
+On Wed, Aug 13, 2025 at 5:42=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> This is series 2b/5 of the migration to `core::ffi::CStr`[0].
+> 20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com.
+>
+> This series depends on the prior series[0] and is intended to go through
+> the rust tree to reduce the number of release cycles required to
+> complete the work.
+>
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the other series must go).
+>
+> [0] https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a91524037=
+783@gmail.com/
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Even if, for the moment, >2^7 values are not expected, they should be
-printed as unsigned (%u) and not as signed (%d).
+Applied to `rust-next` -- thanks everyone!
 
-Fixes: ff619e4f ("mptcp: add support for event monitoring")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- ip/ipmptcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If any maintainer has a problem with this, please shout.
 
-diff --git a/ip/ipmptcp.c b/ip/ipmptcp.c
-index 118bac4a42a1ea3ce9710510df1353683eb29c89..2415cac8a36089da0e1c42995c06535a08305de7 100644
---- a/ip/ipmptcp.c
-+++ b/ip/ipmptcp.c
-@@ -522,9 +522,9 @@ static int mptcp_monitor_msg(struct rtnl_ctrl_data *ctrl,
- 	if (tb[MPTCP_ATTR_DPORT])
- 		printf(" dport=%u", rta_getattr_be16(tb[MPTCP_ATTR_DPORT]));
- 	if (tb[MPTCP_ATTR_BACKUP])
--		printf(" backup=%d", rta_getattr_u8(tb[MPTCP_ATTR_BACKUP]));
-+		printf(" backup=%u", rta_getattr_u8(tb[MPTCP_ATTR_BACKUP]));
- 	if (tb[MPTCP_ATTR_ERROR])
--		printf(" error=%d", rta_getattr_u8(tb[MPTCP_ATTR_ERROR]));
-+		printf(" error=%u", rta_getattr_u8(tb[MPTCP_ATTR_ERROR]));
- 	if (tb[MPTCP_ATTR_FLAGS])
- 		printf(" flags=%x", rta_getattr_u16(tb[MPTCP_ATTR_FLAGS]));
- 	if (tb[MPTCP_ATTR_TIMEOUT])
-
----
-base-commit: bd63ac4980f3d405f4b785fdfe45ba9284b052af
-change-id: 20250916-mptcp-attr-sign-f723450dbfa9
-
-Best regards,
--- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
-
+Cheers,
+Miguel
