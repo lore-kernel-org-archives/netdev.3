@@ -1,117 +1,102 @@
-Received: from trager.us (trager.us [52.5.81.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E271F03FB
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 01:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.5.81.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A951A295
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 01:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757987762; cv=none; b=Vcom6F/mJ2V7LGce1ByJqYTvxQKgWr8koxC19z9+Mb2b0Qk54ES+8bMKOS+OWfbJ12W5FEP3mU9oiLS3j3lVauRFPWzpaV5iruX/A/2DLpcbPF2PtbAuEWSmpNdKjmrUVM+ZVpkLaTUqSevHJU4lOzGbrd3yf6lXhTwGjA38FbM=
+	t=1757987816; cv=none; b=tuwlbLzs/zjvyyno6eh0mY5dP80bgLGNyE8xgTOhacfXW+JRUVJB+yYf++nJc5xUwmrKIen64sU4hk9H2sdFnYN+Nip35wEoHUPlXNYv2s+aLypOA/f2QEZhh7XwcDEaekOpLoHYjYA5J1+NsFAw5htWmBCpIn9H507ZP0QckAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757987762; c=relaxed/simple;
-	bh=+9ijxWvghtikeNN6h3dm5VQGQS9lq/Yd0JBbG9r3Yps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n4oImIhUAuxRcCwmMMpyCE2YCpoSVcDYfYbGmqkYJ57RTImTqaHB3mtjv85ely5RQN7yKyAqrK+9G/U3YoQpqvDASpAGk+0kukIXTYMUN6AXXGxI5IFRQneU7f3EZL/1VYyTZuo8+RVyR93k0ehWJS9ANcl8gChLJY+6KprhyxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us; spf=pass smtp.mailfrom=trager.us; arc=none smtp.client-ip=52.5.81.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=trager.us
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trager.us
-Received: from c-76-104-255-50.hsd1.wa.comcast.net ([76.104.255.50] helo=[192.168.1.226])
-	by trager.us with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128)
-	(Exim 4.92.3)
-	(envelope-from <lee@trager.us>)
-	id 1uyKbj-0003Uz-Ff; Tue, 16 Sep 2025 01:35:47 +0000
-Message-ID: <1f99551f-5037-4670-9c2d-a4ce4d5c017e@trager.us>
-Date: Mon, 15 Sep 2025 18:35:40 -0700
+	s=arc-20240116; t=1757987816; c=relaxed/simple;
+	bh=VFyNjh5pRSJKK8xGtVTv7B7ae5WwYNdlThQjBdV4TrA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oHCR9/wUzHIEZYiEwWNz/PYwbdoR+KLjxXI5zlmOIwNqEXELgepIK1SIVyl7mhZRXwTgJ5D8KEA/v7vO/Z30vun9cOYUYE7VkmFdMv5TV0iDIZGqegr15yz1iozzuOhrC+UaedAnzDaRUF9O6zgH4AczRWpVeqxKN/PY+cwBokg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgwZPaoq; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgwZPaoq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58F5C4CEF1;
+	Tue, 16 Sep 2025 01:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757987816;
+	bh=VFyNjh5pRSJKK8xGtVTv7B7ae5WwYNdlThQjBdV4TrA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rgwZPaoqJqQPhBt/6hEZQ+I882YuzQqS8e0fYC+xzYwc9OGHxvA7o4jaogtLZdzWn
+	 WLQD1FYWnsTZ9LiBPq+8CB8MAWS4nc3k0Q/CA1Eu+KnsF8E3bDsU7P2fV/+4tYspzu
+	 k9Q0Y9CnztW3/fRJDl0Thm7nE6r9HJyM+eH6VeFX+X4msR76KnrxnntfnC5vl37GEy
+	 5bTVICi3YZqwQ9M7RVXtNWnwtcacFpVvRT8fm4Hyx0KK0FiIDZraGBi3nKGrOPO5pb
+	 XZ3KgYTS5DvimOEswH7SScylyBOoFEQqS0k//1p7VwcCRdYLOMGQo959UnLDM0Kv0s
+	 4taiXukEJBQUQ==
+Date: Mon, 15 Sep 2025 18:56:54 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lee Trager <lee@trager.us>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ alexanderduyck@fb.com, jacob.e.keller@intel.com
+Subject: Re: [PATCH net-next v2 8/9] eth: fbnic: report FW uptime in health
+ diagnose
+Message-ID: <20250915185654.26097169@kernel.org>
+In-Reply-To: <1f99551f-5037-4670-9c2d-a4ce4d5c017e@trager.us>
+References: <20250915155312.1083292-1-kuba@kernel.org>
+	<20250915155312.1083292-9-kuba@kernel.org>
+	<1f99551f-5037-4670-9c2d-a4ce4d5c017e@trager.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 8/9] eth: fbnic: report FW uptime in health
- diagnose
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, alexanderduyck@fb.com,
- jacob.e.keller@intel.com
-References: <20250915155312.1083292-1-kuba@kernel.org>
- <20250915155312.1083292-9-kuba@kernel.org>
-Content-Language: en-US
-From: Lee Trager <lee@trager.us>
-In-Reply-To: <20250915155312.1083292-9-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 9/15/25 8:53 AM, Jakub Kicinski wrote:
+On Mon, 15 Sep 2025 18:35:40 -0700 Lee Trager wrote:
+> >   Statistics
+> >   ----------
+> > diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+> > index 0e8920685da6..f3f3585c0aac 100644
+> > --- a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+> > +++ b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
+> > @@ -487,6 +487,18 @@ static int fbnic_fw_reporter_dump(struct devlink_health_reporter *reporter,
+> >   	return err;
+> >   }
+> >   
+> > +static int
+> > +fbnic_fw_reporter_diagnose(struct devlink_health_reporter *reporter,
+> > +			   struct devlink_fmsg *fmsg,
+> > +			   struct netlink_ext_ack *extack)
+> > +{
+> > +	struct fbnic_dev *fbd = devlink_health_reporter_priv(reporter);
+> > +
+> > +	devlink_fmsg_u32_pair_put(fmsg, "FW uptime", fbd->firmware_time);  
+> 
+> I originally added fbd->firmware_time as part of the implementation for 
+> logging support in D51521853. The original idea was to correlate 
+> firmware logs to host time. This proved to be difficult. Instead I used 
+> firmware time to detect firmware crashes in D52065019. Time is to set 0 
+> when fbnic_fw_log_write() is called in fbnic_devlink_fw_report() because 
+> we don't know the actual time firmware crashed.
 
-> FW crashes are detected based on uptime going back, expose the uptime
-> via devlink health diagnose.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->   .../device_drivers/ethernet/meta/fbnic.rst          |  4 +++-
->   drivers/net/ethernet/meta/fbnic/fbnic_devlink.c     | 13 +++++++++++++
->   2 files changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst b/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
-> index 62693566ff1f..3c81b58d8292 100644
-> --- a/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
-> +++ b/Documentation/networking/device_drivers/ethernet/meta/fbnic.rst
-> @@ -77,7 +77,9 @@ fw reporter
->   
->   The ``fw`` health reporter tracks FW crashes. Dumping the reporter will
->   show the core dump of the most recent FW crash, and if no FW crash has
-> -happened since power cycle - a snapshot of the FW memory.
-> +happened since power cycle - a snapshot of the FW memory. Diagnose callback
-> +shows current FW uptime (the crashes are detected by checking if uptime
-> +goes down).
-I was a little surprised to see this since it didn't go through our 
-normal internal review and validation process.
->   
->   Statistics
->   ----------
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> index 0e8920685da6..f3f3585c0aac 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_devlink.c
-> @@ -487,6 +487,18 @@ static int fbnic_fw_reporter_dump(struct devlink_health_reporter *reporter,
->   	return err;
->   }
->   
-> +static int
-> +fbnic_fw_reporter_diagnose(struct devlink_health_reporter *reporter,
-> +			   struct devlink_fmsg *fmsg,
-> +			   struct netlink_ext_ack *extack)
-> +{
-> +	struct fbnic_dev *fbd = devlink_health_reporter_priv(reporter);
-> +
-> +	devlink_fmsg_u32_pair_put(fmsg, "FW uptime", fbd->firmware_time);
+I don't see this in my series.
 
-I originally added fbd->firmware_time as part of the implementation for 
-logging support in D51521853. The original idea was to correlate 
-firmware logs to host time. This proved to be difficult. Instead I used 
-firmware time to detect firmware crashes in D52065019. Time is to set 0 
-when fbnic_fw_log_write() is called in fbnic_devlink_fw_report() because 
-we don't know the actual time firmware crashed. fbd->firmware_time is 
-only updated with the heartbeat is received. When a crash occurs 
-fbd->firmware_time is reset once firmware comes back up. Ignoring the 
-crash case this should be something like fbd->firmware_time + (jiffies - 
-fbd->last_heartbeat_req) * 1000.
+> fbd->firmware_time is 
+> only updated with the heartbeat is received. When a crash occurs 
+> fbd->firmware_time is reset once firmware comes back up. Ignoring the 
+> crash case this should be something like fbd->firmware_time + (jiffies - 
+> fbd->last_heartbeat_req) * 1000.
 
-Another issue is your using a u32 for fbd->firmware_time which is u64. 
-Firmware returns its time by calling k_uptime_get()[1] which returns an 
-s64 as its the firmware uptime in milliseconds.
+I don't understand what you're getting at, TBH.
 
-We also don't use firmware time in its raw integer form anywhere in the 
-driver or firmware. Its very hard to read FBNIC_FW_LOG_FMT has the 
-format used in the driver which is based on what Zephyr uses[2].
+> Another issue is your using a u32 for fbd->firmware_time which is u64. 
+> Firmware returns its time by calling k_uptime_get()[1] which returns an 
+> s64 as its the firmware uptime in milliseconds.
 
-IMO this doesn't really have a use case and I would just drop it.
+Ah, good point.
 
+> We also don't use firmware time in its raw integer form anywhere in the 
+> driver or firmware. Its very hard to read FBNIC_FW_LOG_FMT has the 
+> format used in the driver which is based on what Zephyr uses[2].
+> 
+> IMO this doesn't really have a use case and I would just drop it.
 
-[1] 
-https://elixir.bootlin.com/zephyr/v3.7.1/source/include/zephyr/kernel.h#L1751
-
-[2] 
-https://github.com/zephyrproject-rtos/zephyr/blob/main/subsys/logging/log_output.c#L263
-
+Knowing FW uptime is very useful in multi-host systems.
+NIC get into bad state and digging up when the last NIC power cycle
+happened from orchestration datasets is a PITA.
