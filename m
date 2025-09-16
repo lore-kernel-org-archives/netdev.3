@@ -1,207 +1,114 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F536221F13;
-	Tue, 16 Sep 2025 09:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0441283FFB
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758015665; cv=none; b=Mk52Kvt90ZytuEiGD4nZKiLLj4Jcp4922jogNDMxiju4NLF6VojH+VfLUJCDd4530mbX6qRdvGfTNCE/cocEnvFtQ7IDEruChmYY3zx3iww7Ona/ZufZFH5Z9HM8H/+CZn9Cxg3k94IJYvzRtUbFVRT0qbrz7xV5J0eE/187/p8=
+	t=1758015728; cv=none; b=t5se8jViRSmwTNN3BWoBXdOZD4t+rl9Me6jzN/rOo6LXwGHwwrRj6QLNsljgwiIr98Z3/mxNdR3P30gRLbZwHWcr6M2Ns63Q41Lv8S4UyLtF0PeYl4sjoQsNarf+zlw6Q937nXtphJpU5YTZ+86gUAgJrp3vKZOznAmYBCybOpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758015665; c=relaxed/simple;
-	bh=7mDQ3f8snEovW3tpnZoa5moze2SXoSnMrbg0Lk29bGA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=klHEr9q/dPsWkLCZti0axJjrcTr2t6LM6HiwnAOgH+nrn7R17TdnSky0xFfqmDsaQhEOyPv0FQT/Z/eE8vWN6BVy9Vh6QN80Y0jXobOB1ISJOnJgNS5IF4eNR+u9l79oCZGItRxBN0EutN2Ro33FwKKILHWLu8V/J/zou1Ffops=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=G9udsDFW; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1758015728; c=relaxed/simple;
+	bh=wtSv0L6/GwqZZywYhmXmG694rGZXr5C/8JsbMi/MtQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Amh+JZSk01eviVpiwum+rIGYQvJjT96NTW/brKRu1HUgwARKUQzlegcaNhg4J2XPTaHGOr+UiuEDytwGcbnoVcVuqH5Ig+/U54ytI6r8CRq7ouHfCoY+XDwhDQUEhEak/DutNBP+7pLw7CeFsmmhcoQlJQuoW1ChKg707b980nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NROLxOU4; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="G9udsDFW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1758015662; x=1789551662;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7mDQ3f8snEovW3tpnZoa5moze2SXoSnMrbg0Lk29bGA=;
-  b=G9udsDFWQzUayOuDG57iXHN/XMn48AgXupopC2XhpIGbhBdFXStwT4cB
-   sl9wT7srOHj6ajS4VRhJDL0U9Obkm4Gr0fA6VuFG74IhcW7BmiNYuwMCQ
-   EHRH8NFdSUjnR02iVvf/TctEu77B1ExxNf/EedeAB1w1FmwTjYjZMjYW4
-   hPs14w+MZip2oKqv4AsjrGx+fs6ajef3lYjMnkUCbvVfi4dmV24dRpZR8
-   Cphl+hZkOeJOFT6gj/R9aCzCVpAeVqbqPXa55dfo/ZrLpn6gxTYAmWzDY
-   mdTtUur6ew24gEeximUEy9/vg1k84/hWtOjGXytFPsfurDpibdFInG94U
-   Q==;
-X-CSE-ConnectionGUID: NkyZM3DcTXSy4ES9qfIxYw==
-X-CSE-MsgGUID: dgoXgsAuSWqkOOV8WWkw1w==
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
-   d="scan'208";a="45983016"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Sep 2025 02:40:56 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 16 Sep 2025 02:40:27 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 16 Sep 2025 02:40:25 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net-next v2] net: phy: micrel: Add Fast link failure support for lan8842
-Date: Tue, 16 Sep 2025 11:36:05 +0200
-Message-ID: <20250916093605.3735843-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NROLxOU4"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-336b908cbaaso45808351fa.1
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 02:42:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758015724; x=1758620524; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=haBjQsvE5vE3ZaF/RXUldLy+CB1Z0cpROeB+NEV/yO0=;
+        b=NROLxOU4z9V4kypeFZVw3XwLvlvgr7633NM1a03un3CtR4lJaMlWQe4MQ9UCfQlvEb
+         6ob7dt32cZ4IpbAOwNI4qTzia9lGJazUfcNRQp/OvPUSDu7sGMuWeYcpArVUzIW4p20/
+         gKtwWEXsjbsLeP+PHDVCpBxenDK1C/PGey1OlckTGwKYRad5H3S3uYuXCz0vu8CDIW7T
+         egPW/KGCxW3n6bStOzn36fCBk211k/YGoekXP8VanV1j1gkifMzn/eUrtagsp5xDC43J
+         /jMULwG82ttCurMTfCNleWqTU5QOCkSM5vljU7z/8VsgANXljSZs6vhM5Asl795xTzI1
+         suEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758015724; x=1758620524;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=haBjQsvE5vE3ZaF/RXUldLy+CB1Z0cpROeB+NEV/yO0=;
+        b=Pwc++CMtYNFbMTC9iJwR8mZz3j349fd9CwppAfbnHUqr1+c/RM4OkEWS5VkAldZYL8
+         OLToAD6XJaqgyvkVkLy/s8QfR0BB1DQ1Pe8cVYECzBs1vKWPRnNSbsKJ/xa101nVMXtd
+         IxNUCfYLG2aMhgrIx3TWgJyDQX/xecELHOu3+0VLG3KR6oqCu282yncc8DyVVPzTuWjN
+         Et/w4aXoXuBFMExU+QQI2GgqytShcaXARIlH7k38Mkvvp1WcQcIjzeQiVQlZ+5k1SbAk
+         lQ/mwTPxa2GL+/KhfKiTNFLTyhcX+k4pEJ015xSpGqArchqq9HW4Tu0LPAym4RgglTlF
+         HQQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkHoTsI+Lh6jF9tSZUoBa3ZA4v2lpArfogIT27zXOJGMD9YgP6UwiQATJC9XhrC3/qLTF3aog=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8qmEyqtzL+k00IKJ0Mh6Ba5DpAmPG2GC/vrhKd3XUNfQJjOZI
+	zfVFfkQm33LnXkrndu+zFlKuvesOZHskZcBjtBF4qvrtqPvYXx1AZCDj
+X-Gm-Gg: ASbGnct7oOnqdfSf7Ho4Uo6LL3QjznpqtS5JVo3d9vVvPCqBtusPDjPUpPVlRLT6hWl
+	hX/0XXsW7l2+b4dmXlfRihDzEerHVvNpBxZzOE9ZcaGB53DRiozXqCuMToAupq2BKsUbjkmVTrE
+	2cspqME/Zz1Rbe+AhV7tPnvjf9w47he9RvudggEda/n+INb+fmM6ge2nMUY+kxsSxFjhbDMgTb3
+	ZvDwh3s/CoH3NfZnhr5OgPyPKAi8C+2hPpOa0W8yY2U6PiiyJMUNvKzf9eTTSEoO15Y0ZIzWVOY
+	OMEESg90dOeqtyholQElFXLuR7oH2ioORiba7LMdIr5lHbNuVTWMOlhwh0IOmvpP1ujv20o8jhp
+	Gueh3T/dfqqaKaGjzMBQMQXie2TyLZGlUMbilQHxFlcEjQHk=
+X-Google-Smtp-Source: AGHT+IGHsAz1XUgqjX9cBNXDDceT4RSYaRrx53ol9Kht+YGnRRfTcQN5imeqv3DeXohNMYqhdx9Bfg==
+X-Received: by 2002:a2e:a00e:0:20b0:34a:7575:36db with SMTP id 38308e7fff4ca-351401fd0f5mr48965051fa.33.1758015723646;
+        Tue, 16 Sep 2025 02:42:03 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-34f15a5835asm32481881fa.4.2025.09.16.02.42.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 02:42:02 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 58G9fwKw021585;
+	Tue, 16 Sep 2025 12:41:59 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 58G9fts1021584;
+	Tue, 16 Sep 2025 12:41:55 +0300
+Date: Tue, 16 Sep 2025 12:41:55 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: pengdonglin <dolinux.peng@gmail.com>
+Cc: tj@kernel.org, tony.luck@intel.com, jani.nikula@linux.intel.com,
+        ap420073@gmail.com, jv@jvosburgh.net, freude@linux.ibm.com,
+        bcrl@kvack.org, trondmy@kernel.org, longman@redhat.com,
+        kees@kernel.org, bigeasy@linutronix.de, hdanton@sina.com,
+        paulmck@kernel.org, linux-kernel@vger.kernel.org,
+        linux-rt-devel@lists.linux.dev, linux-nfs@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-s390@vger.kernel.org,
+        cgroups@vger.kernel.org, Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        pengdonglin <pengdonglin@xiaomi.com>
+Subject: Re: [PATCH v3 11/14] net: ncsi: Remove redundant
+ rcu_read_lock/unlock() in spin_lock
+Message-ID: <aMkw4zTLRJqpVGCm@home.paul.comp>
+References: <20250916044735.2316171-1-dolinux.peng@gmail.com>
+ <20250916044735.2316171-12-dolinux.peng@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916044735.2316171-12-dolinux.peng@gmail.com>
 
-Add support for fast link failure for lan8842, when this is enabled the
-PHY will detect link down immediately (~1ms). The disadvantage of this
-is that also small instability might be reported as link down.
-Therefore add this feature as a tunable configuration and the user will
-know when to enable or not. By default it is not enabled.
+Hello pengdonglin,
 
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Thank you for the patch, looks reasonable and justified.
 
----
-v1->v2:
-- fix typo appaers->appears
-- simplify lan8842_set_fast_down as suggested by Russell
----
- drivers/net/phy/micrel.c | 79 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 77 insertions(+), 2 deletions(-)
+On Tue, Sep 16, 2025 at 12:47:32PM +0800, pengdonglin wrote:
+> From: pengdonglin <pengdonglin@xiaomi.com>
+> 
+> Since commit a8bb74acd8efe ("rcu: Consolidate RCU-sched update-side function definitions")
+> there is no difference between rcu_read_lock(), rcu_read_lock_bh() and
+> rcu_read_lock_sched() in terms of RCU read section and the relevant grace
+> period. That means that spin_lock(), which implies rcu_read_lock_sched(),
+> also implies rcu_read_lock().
+> 
+> There is no need no explicitly start a RCU read section if one has already
+> been started implicitly by spin_lock().
+> 
+> Simplify the code and remove the inner rcu_read_lock() invocation.
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index e403cbbcead5b..5e3f41fceab21 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -107,6 +107,7 @@
- #define LAN8814_INTC				0x18
- #define LAN8814_INTS				0x1B
- 
-+#define LAN8814_INT_FLF				BIT(15)
- #define LAN8814_INT_LINK_DOWN			BIT(2)
- #define LAN8814_INT_LINK_UP			BIT(0)
- #define LAN8814_INT_LINK			(LAN8814_INT_LINK_UP |\
-@@ -2805,6 +2806,14 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
- 	return ret;
- }
- 
-+/**
-+ * LAN8814_PAGE_PCS - Selects Extended Page 0.
-+ *
-+ * This page appears to control the fast link failure and there are different
-+ * debug info registers.
-+ */
-+#define LAN8814_PAGE_PCS 0
-+
- /**
-  * LAN8814_PAGE_AFE_PMA - Selects Extended Page 1.
-  *
-@@ -5910,7 +5919,8 @@ static int lan8842_config_intr(struct phy_device *phydev)
- 		if (err)
- 			return err;
- 
--		err = phy_write(phydev, LAN8814_INTC, LAN8814_INT_LINK);
-+		err = phy_write(phydev, LAN8814_INTC,
-+				LAN8814_INT_LINK | LAN8814_INT_FLF);
- 	} else {
- 		err = phy_write(phydev, LAN8814_INTC, 0);
- 		if (err)
-@@ -5986,7 +5996,7 @@ static irqreturn_t lan8842_handle_interrupt(struct phy_device *phydev)
- 		return IRQ_NONE;
- 	}
- 
--	if (irq_status & LAN8814_INT_LINK) {
-+	if (irq_status & (LAN8814_INT_LINK | LAN8814_INT_FLF)) {
- 		phy_trigger_machine(phydev);
- 		ret = IRQ_HANDLED;
- 	}
-@@ -6055,6 +6065,69 @@ static int lan8842_update_stats(struct phy_device *phydev)
- 	return 0;
- }
- 
-+#define LAN8842_FLF				15 /* 0x0e */
-+#define LAN8842_FLF_ENA				BIT(1)
-+#define LAN8842_FLF_ENA_LINK_DOWN		BIT(0)
-+
-+static int lan8842_get_fast_down(struct phy_device *phydev, u8 *msecs)
-+{
-+	int ret;
-+
-+	ret = lanphy_read_page_reg(phydev, LAN8814_PAGE_PCS, LAN8842_FLF);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ret & LAN8842_FLF_ENA)
-+		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_ON;
-+	else
-+		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_OFF;
-+
-+	return 0;
-+}
-+
-+static int lan8842_set_fast_down(struct phy_device *phydev, const u8 *msecs)
-+{
-+	u16 flf;
-+
-+	switch (*msecs) {
-+	case ETHTOOL_PHY_FAST_LINK_DOWN_OFF:
-+		flf = 0;
-+		break;
-+	case ETHTOOL_PHY_FAST_LINK_DOWN_ON:
-+		flf = LAN8842_FLF_ENA | LAN8842_FLF_ENA_LINK_DOWN;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return lanphy_modify_page_reg(phydev, LAN8814_PAGE_PCS,
-+				      LAN8842_FLF,
-+				      LAN8842_FLF_ENA |
-+				      LAN8842_FLF_ENA_LINK_DOWN, flf);
-+}
-+
-+static int lan8842_get_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_FAST_LINK_DOWN:
-+		return lan8842_get_fast_down(phydev, data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int lan8842_set_tunable(struct phy_device *phydev,
-+			       struct ethtool_tunable *tuna, const void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_FAST_LINK_DOWN:
-+		return lan8842_set_fast_down(phydev, data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static void lan8842_get_phy_stats(struct phy_device *phydev,
- 				  struct ethtool_eth_phy_stats *eth_stats,
- 				  struct ethtool_phy_stats *stats)
-@@ -6299,6 +6372,8 @@ static struct phy_driver ksphy_driver[] = {
- 	.handle_interrupt = lan8842_handle_interrupt,
- 	.get_phy_stats	= lan8842_get_phy_stats,
- 	.update_stats	= lan8842_update_stats,
-+	.get_tunable	= lan8842_get_tunable,
-+	.set_tunable	= lan8842_set_tunable,
- 	.cable_test_start	= lan8814_cable_test_start,
- 	.cable_test_get_status	= ksz886x_cable_test_get_status,
- }, {
--- 
-2.34.1
-
+Reviewed-by: Paul Fertser <fercerpav@gmail.com>
