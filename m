@@ -1,55 +1,55 @@
-Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E34284B3C
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 16:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD76F32859F
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 16:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758039004; cv=none; b=MWaBgtNHDTv4rA3xxN3OeT1QCsI6Wci4NbmiacjF1BRBgRXy82X+QPoYu2F5SGaNI73r6Tv3+ONI2qIlKuZZh8SJdnxzwr7nJL5ZG78lDltZYzehak1wVwiZE4xC5YDGkcIaXdOaCHZk0Rmi4gdSUuC9Yws1yi6rc1jOqQvMIf0=
+	t=1758039006; cv=none; b=jkW9QXpMhJWS/ZaoU5n1BOvRElpzbMlouiGxoEw0Yjj5AMT8yH7RXQai/P47N79TyLenISAFn6hxPQ8UxmIYXQmtJBFfFXvblawWCpdx+8ExAygrTUATstGgDyjNFmJobmsBHKwuUH/7ROoiNX0w1eEGLbCLvBWgN+LgR3cI4NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758039004; c=relaxed/simple;
-	bh=PYvVgA2hzQ5qmSWTE5lfIM3EUHTuyZNS4Y9S9SX2MVU=;
+	s=arc-20240116; t=1758039006; c=relaxed/simple;
+	bh=oWg3YNnWYACtDAPbF196PRRm69HK4VFomSGjvc3j1jc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tcVQdm2ciYNLIjdaM27iinqh2R6IGbHzOaFds4nvQfqx/+BGjfF4C170wRiCwjqH+eSpixHW2BCNFFmCedCKobmVg99t3c9qW+JD1SZ8jh0mc2lFgYxR9iwsn75/Zkk7W4pI5TUs5Lma5DzSLaPf6g+xMpxc0qULLfGxkn8HXGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cYCF40pK; arc=none smtp.client-ip=209.85.160.201
+	 To:Cc:Content-Type; b=EoZ30x5kjgtTp3Yz8SEv1HwlewOkpQq6p/6kTXSddguBrEwULU6qzr+vD+6MoD2OVWzOeWOLiR1It7ABaPsuEKzOipGFnzynMfWvkLwYf9sLC2PS4yyezaTXghml8uJ3oo5Njf+8i9Koz0Y0v6TRRbSQ52/sN6akQ208ZAmBklo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKg8DRyV; arc=none smtp.client-ip=209.85.160.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cYCF40pK"
-Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4b7ad72bc9dso40325701cf.3
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:10:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKg8DRyV"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-4b5f31ef7dfso102061cf.1
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:10:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758039000; x=1758643800; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758039004; x=1758643804; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cXocC8LdBAgZKSDUXnlVODmDdKv8bcG9hAMfu5EJ0LA=;
-        b=cYCF40pK31gXOx/x1JGHIRlibXQR82hBsTXj8JCCyl5+l97gnsQqOpjnE1yPXxg+D6
-         qwomdyM8UzBlgYY8UUYp3VJf3ipI/uBFWkaL7arn0TPpMMUdptnb/V9TEYgRvxGBO+hX
-         shXKZGyTrIJHf3nx8EBqNJvBeEWc1+C0Kd9KILNSdskCxx8RGWVStL8/AT2n1wW18DmD
-         hmEbSYHe/TiTR4hV+xWgB+l8HqClYwA7Fhr3Ggxg+3cZFZP08/H6IPNB++NeRKrsmDah
-         m2LOVa9M8aYly/hOvGoyJ90m+eoLnHnmIn5aBr58E9tm4Nd9Q3sZY9SOaQH1u055HfBA
-         gj2A==
+        bh=n1ic1ShNX20oOOQyhH3LedNKHClWbOwoDP9AaCm/jgc=;
+        b=MKg8DRyVk0IKr/6/fdv6NM90k74ISvpNP8wFvHhcSXHFI3HnOPNLr1whRylmWF1Ege
+         nqrPvpTW6Y70GullV92A8xmadnmIZYFQ58HQFNUr3NFchzEu+ubi66zpDKD9w/IdwflK
+         JezYWOHyPbDStxgbyQ/D3AITGwkXpxdqcKo2oxtv7R/WGqZn1GAeH7xUndlwTiVf85R0
+         KkcLzwzbN15Y+LrqhmY9f/fihslbEofwnMnRn+3BFt5nE7wIFolWlg2udbL6YaUDyjP7
+         BPUgoThSxAZig3paLNhlSmIMQjscqgXYho0/H9fP5ZMWgp9yZheYaCEbTgRH6ZgfsSQB
+         5DzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758039000; x=1758643800;
+        d=1e100.net; s=20230601; t=1758039004; x=1758643804;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cXocC8LdBAgZKSDUXnlVODmDdKv8bcG9hAMfu5EJ0LA=;
-        b=tCafPo4crDWTS60qKGZg75fvLfrZ5QYUp22R1x1FEB6/bhg+4l7pLxsHg+DSduIFIq
-         nxHFg2kDFFoCLbn1P9hIPFh1FIPMP52ZQteMIWbzpLEpzjhF0a2au2NiMHOJZ+JHQZ99
-         YDBsICfhezx7vwzarXj01QgPNX4vGroX3OpZ78ILjcVQRsBIdGHpMOMuZinvqvdYi4EQ
-         CPppfBCGOouWJtZX21Jugu6Qy1bWpA+xTQyb3Pt8uH6qmrSVOmG6g6eSpjKiOxOUCkqF
-         knqabpBybDqjtnfTaoNlylEy8N35+AVjvRErtPDzEifOnfcX86+iN7c52VLsuDIGr8an
-         0oQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnPSBrGQD73v81n50cA86cfUzmAFQalnukLFy3HlXYDK97znDwltSqBkw8+yn5q5lHnlDp8YU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJTsTKF0GevybEAk1wd+HHbEjIcDJaS3VJrMBtACAAmnkFY/h0
-	vcVK6LBxaNPqmPOeoeZFT7NXSKZ04seUECOdQt8g5gd27z6U3JhmfCHozLodIU4RO29yZFlsELP
-	1L8AM2xhPcR1maQ==
-X-Google-Smtp-Source: AGHT+IEAgZ682d05pLAidqXPlK4LG47j9os5l2hHbXe8dKnZqDlNKS/G4b81qoQrfBj+4tgwwtCa3am8d97x3A==
-X-Received: from qtbcm16.prod.google.com ([2002:a05:622a:2510:b0:4b6:272a:fbb3])
+        bh=n1ic1ShNX20oOOQyhH3LedNKHClWbOwoDP9AaCm/jgc=;
+        b=hJevm4zkDGibo0+m1w3gAMORyFuJjFvI5svtyxnJK4wr6kATQfBeVt5A9TpH1eiN02
+         Rzc1o1l4/EJB30qJz+HrnF331RIVimt0+eK2nGxGiKdzm219OlCHo7WuWO2Z2e/AG1UO
+         /j1UPtQTOAz3qPxoCxO5m549kb4gRSPZ+jPqoHa77boBlx6ec8PGHfVs7ZbKds8OE4/Y
+         U97D3jYZI2tMadbKeh/zoOhih/DzLmM0p7+P4q3uySvLSdc6k/dzTWEFi7V22pQPSVGn
+         IJKiZJaj3uGPA0V5A2IJNksN25XQ3D71ZzPRafqDydJIkcQe+9UyRQ/4UiYYAq32REXT
+         B9/g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/5GhTh9IE0lXXLXDiEi1ETVfgVJlYNq/LjvmcCjMatiLXCeZchjhdyLMqb3y1y3XLY1+zPnY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzvpxBfJ/0K4REbWJl4mYkLOH7nWc1qVDQ80wLyzabYkJQCACk
+	1+AebcbdRUDHrJi3wnlH5sDEhilouHs5Bt8kFV4sLOPdsrzIXofMtx9xMg2yaq1ucObkp22m/pg
+	1jmwUWqLGyXHV/g==
+X-Google-Smtp-Source: AGHT+IGByW6xHflvJK5BPoMZboX5+Bje2atIKoUne+h4jfggV/ehCHcv1TaNHlSyq1vP8g8qz1FGdrOY9+6VTg==
+X-Received: from qtxa13.prod.google.com ([2002:a05:622a:2cd:b0:4b7:aab6:1b3])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:59cf:0:b0:4b7:a9ef:1987 with SMTP id d75a77b69052e-4b7aef57598mr75278851cf.39.1758039000237;
- Tue, 16 Sep 2025 09:10:00 -0700 (PDT)
-Date: Tue, 16 Sep 2025 16:09:44 +0000
+ 2002:a05:622a:488a:b0:4b7:a8ce:a40f with SMTP id d75a77b69052e-4b7b44829c1mr28396081cf.10.1758039003656;
+ Tue, 16 Sep 2025 09:10:03 -0700 (PDT)
+Date: Tue, 16 Sep 2025 16:09:46 +0000
 In-Reply-To: <20250916160951.541279-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250916160951.541279-1-edumazet@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250916160951.541279-4-edumazet@google.com>
-Subject: [PATCH net-next 03/10] ipv6: np->rxpmtu race annotation
+Message-ID: <20250916160951.541279-6-edumazet@google.com>
+Subject: [PATCH net-next 05/10] udp: refine __udp_enqueue_schedule_skb() test
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -69,45 +69,34 @@ Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add READ_ONCE() annotations because np->rxpmtu can be changed
-while udpv6_recvmsg() and rawv6_recvmsg() read it.
+Commit 5a465a0da13e ("udp: Fix multiple wraparounds
+of sk->sk_rmem_alloc.") allowed to slightly overshoot
+sk->sk_rmem_alloc, when many cpus are trying
+to feed packets to a common UDP socket.
 
-Since this is a very rarely used feature, and that udpv6_recvmsg()
-and rawv6_recvmsg() read np->rxopt anyway, change the test order
-so that np->rxpmtu does not need to be in a hot cache line.
+This patch, combined with the following one reduces
+false sharing on the victim socket under DDOS.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv6/raw.c | 2 +-
- net/ipv6/udp.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/udp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index 4ae07a67b4d4f1be6730c252d246e79ff9c73d4c..e369f54844dd9456a819db77435eaef33d162932 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -445,7 +445,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (flags & MSG_ERRQUEUE)
- 		return ipv6_recv_error(sk, msg, len, addr_len);
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index cca41c569f37621404829e096306ba7d78ce4d43..edd846fee90ff7850356a5cb3400ce96856e5429 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1739,8 +1739,8 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 		if (rcvbuf > INT_MAX >> 1)
+ 			goto drop;
  
--	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
-+	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
- 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
+-		/* Always allow at least one packet for small buffer. */
+-		if (rmem > rcvbuf)
++		/* Accept the packet if queue is empty. */
++		if (rmem)
+ 			goto drop;
+ 	}
  
- 	skb = skb_recv_datagram(sk, flags, &err);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index b70369f3cd3223cfde07556b1cb1636e8bc78d49..e87d0ef861f88af3ff7bf9dd5045c4d4601036e3 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -479,7 +479,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (flags & MSG_ERRQUEUE)
- 		return ipv6_recv_error(sk, msg, len, addr_len);
- 
--	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
-+	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
- 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
- 
- try_again:
 -- 
 2.51.0.384.g4c02a37b29-goog
 
