@@ -1,100 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE8F29BDB4;
-	Tue, 16 Sep 2025 09:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3142868A6
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758014428; cv=none; b=M4ND4yBDx+V8vi0kpfE1VE+0vk+RVOaZ05mO9DeV2jdUhwDcK56XNSSl/sXQoe+Vpd3yib9DOsuKyy66OgqNJ2279Pl6DojurNv9xKgp0MPwosi8i0QmHJUWl3VjOrvHQcdpgRHUz6rx0utSM3hAGaTYBjGEwI7fd369bpQrICk=
+	t=1758014495; cv=none; b=q5t9PRL491E/L77X/BzGAcLEzBv4BGzUOTrjh5gTqK21CRyHce1pehArGwGEskunDUKwHCyqtdG0DSx4ri67pQ8HHmnqSPO1ShFPfLWC8nVz5qxAn7vDeDeXWnlV4PyRlZks9ziOuRMorJCAoTMGhcaBM/RMo/5eohsII7ySGuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758014428; c=relaxed/simple;
-	bh=aWLd47MRoI/sjNgau3RpO0j0qsjD6QkgQ11E2+SOxIA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iEDK7nb2tOVnYo5chz3Xzm/WlbI6Is4YnTAZIg939O91J0eYAB1gLbsoDM0UbQVwmhCStxy6IjDoKLCIfYNV1rB+YFIk/QFWVsS5hYm1MtZa9O8xLaS7wVFUBRCXhT2BBD8e+aCj4wtoLIF+UtCQVb1HzpW8BNBybzlL0YaDqrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vxd4kuen; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758014495; c=relaxed/simple;
+	bh=fHCgaSHMfZ8MihYV55qC/Iyj1UrsAPT7d42hSGY4LLU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sqtRnXo1Dhf8RoUtlrtmDtYO4exJcmnNmIJ+/rLAITeAMKRaP6t5Htz0ZQu9jU9xLHl1KhnMFw7Qnsa1b5BZAo8Z2D1xjzp5rTk0zTlbp7sx5MmCead0nQTffJfk7oVPuQC0GgHiJ9zhmUOcgk1lGTlvNsrZArNVcg6xmPPi8Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LDZco6Cn; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vxd4kuen"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758014427; x=1789550427;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aWLd47MRoI/sjNgau3RpO0j0qsjD6QkgQ11E2+SOxIA=;
-  b=Vxd4kuen5vTifKTAtULgYzh9AJMSjcHJMF2oSUIbxVb6JP8C4JE2iNVa
-   F232w5UJTP9WKr4fbN9uSaW4bhwc/OFNfIcaogObUS1rv3j2bhWCFG9cV
-   ML5EHw+Njuf4rii8/5ZK/x3WFvBbpvgoVMtP6Zpv1GzSYYyEuXwoz+oxe
-   8SQwRSOtaGBSPEDheAhOuHSd5bJ3noY9L8Qg5MmFyo9uYMTFAp9LRQXv8
-   9lviKwBJHUBEWtM6zO17gjo4eEkEc4xE5SE8phiireC6y+hX1eaBN5G6T
-   KpFanBpmV/+BOtDXpHC3acJvShcZWVxlslu+M6QRt0zQSN6eqftC5QQaG
-   A==;
-X-CSE-ConnectionGUID: GlsMhUFkRKKpfFhUGRzYvg==
-X-CSE-MsgGUID: X8VwbWSOTmGiIGKFT5nWzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="70968809"
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
-   d="scan'208";a="70968809"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 02:20:25 -0700
-X-CSE-ConnectionGUID: tJ61g1MGTxqtjrUcSIXGIA==
-X-CSE-MsgGUID: pD4hyALmSeCx2udQBKU0xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
-   d="scan'208";a="175305467"
-Received: from gklab-kleszczy-dev.igk.intel.com ([10.102.25.215])
-  by fmviesa008.fm.intel.com with ESMTP; 16 Sep 2025 02:20:22 -0700
-From: Konrad Leszczynski <konrad.leszczynski@intel.com>
-To: davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cezary.rojewski@intel.com,
-	sebastian.basierski@intel.com,
-	Karol Jurczenia <karol.jurczenia@intel.com>,
-	Konrad Leszczynski <konrad.leszczynski@intel.com>
-Subject: [PATCH net v3 2/2] net: stmmac: check if interface is running before TC block setup
-Date: Tue, 16 Sep 2025 11:25:07 +0200
-Message-Id: <20250916092507.216613-3-konrad.leszczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250916092507.216613-1-konrad.leszczynski@intel.com>
-References: <20250916092507.216613-1-konrad.leszczynski@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LDZco6Cn"
+Message-ID: <0ab15522-d5cd-4898-881f-4a8c867e4980@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758014491;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dXj6W/toc1FHvht0kF0dcaLY4qFh6ccrS0Ipr0OO1o0=;
+	b=LDZco6CnmhMKcw9l8HcVVX7893dPcMtYVpQ3PsaL0sqc0KTW6uHGN1qbXTAbUJgor1Qycw
+	2w3jv4wJbZCsii3DfDMgU9gBUUkYCssQEXtlSJ5lL9UvD/yE8jFeY1PAFX7EArtN2ZCEtJ
+	mqW1lkP5U7WyubYu3tNAunupiqczAQM=
+Date: Tue, 16 Sep 2025 17:20:46 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH net-next v2 0/3] net: Avoid ehash lookup races
+To: Eric Dumazet <edumazet@google.com>
+Cc: kuniyu@google.com, kerneljasonxing@gmail.com, davem@davemloft.net,
+ kuba@kernel.org, netdev@vger.kernel.org,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20250916064614.605075-1-xuanqiang.luo@linux.dev>
+ <CANn89iLC6F3P6PcP4cKG9=f7+ymW1By1EyhFH+Q0V6V-xXn7jA@mail.gmail.com>
+ <09d9a014-5687-4b60-9646-95c3644efe19@linux.dev>
+ <CANn89iKHr_cxcsPG0Oy7SJ9jyZS5zRAgPZL_wy8PSighy+Cy6A@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <CANn89iKHr_cxcsPG0Oy7SJ9jyZS5zRAgPZL_wy8PSighy+Cy6A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Karol Jurczenia <karol.jurczenia@intel.com>
 
-If the interface is down before setting a TC block, the queues are already
-disabled and setup cannot proceed.
+在 2025/9/16 17:02, Eric Dumazet 写道:
+> On Tue, Sep 16, 2025 at 1:12 AM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
+>>
+>> 在 2025/9/16 15:30, Eric Dumazet 写道:
+>>> On Mon, Sep 15, 2025 at 11:47 PM <xuanqiang.luo@linux.dev> wrote:
+>>>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>>>
+>>>> After replacing R/W locks with RCU in commit 3ab5aee7fe84 ("net: Convert
+>>>> TCP & DCCP hash tables to use RCU / hlist_nulls"), a race window emerged
+>>>> during the switch from reqsk/sk to sk/tw.
+>>>>
+>>>> Now that both timewait sock (tw) and full sock (sk) reside on the same
+>>>> ehash chain, it is appropriate to introduce hlist_nulls replace
+>>>> operations, to eliminate the race conditions caused by this window.
+>>>>
+>>>> ---
+>>>> Changes:
+>>>>     v2:
+>>>>       * Patch 1
+>>>>           * Use WRITE_ONCE() to initialize old->pprev.
+>>>>       * Patch 2&3
+>>>>           * Optimize sk hashed check. Thanks Kuni for pointing it out!
+>>>>
+>>>>     v1: https://lore.kernel.org/all/20250915070308.111816-1-xuanqiang.luo@linux.dev/
+>>> Note : I think you sent an earlier version, you should have added a
+>>> link to the discussion,
+>>> and past feedback/suggestions.
+>>>
+>>> Lack of credit is a bit annoying frankly.
+>>>
+>>> I will take a look at your series, thanks.
+>> This patch's solution isn't very related to previous ones, so I didn't
+>> include prior discussions.
+> This is completely related, aiming to fix the same issue, do not try
+> to pretend otherwise.
+>
+> Really, adding more context and acknowledging that reviewers
+> made suggestions would be quite fair.
+>
+> This is a difficult series, with a lot of potential bugs, you need to bring
+> us on board.
 
-Reviewed-by: Konrad Leszczynski <konrad.leszczynski@intel.com>
-Reviewed-by: Sebastian Basierski <sebastian.basierski@intel.com>
-Signed-off-by: Karol Jurczenia <karol.jurczenia@intel.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7b16d1207b80..133ffdc91153 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6247,6 +6247,9 @@ static int stmmac_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
- 	struct stmmac_priv *priv = cb_priv;
- 	int ret = -EOPNOTSUPP;
- 
-+	if (!netif_running(priv->dev))
-+		return -EINVAL;
-+
- 	if (!tc_cls_can_offload_and_chain0(priv->dev, type_data))
- 		return ret;
- 
--- 
-2.34.1
+I understand your point. I’m sorry for wasting your time on this. Please 
+disregard this series submission — I will send the next version soon, 
+which will include the mentioned background information. I apologize 
+again for my misunderstanding.
+Thanks Xuanqiang.
 
