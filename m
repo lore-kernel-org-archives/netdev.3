@@ -1,55 +1,55 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-qt1-f201.google.com (mail-qt1-f201.google.com [209.85.160.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2823427E076
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 16:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E34284B3C
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 16:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758039004; cv=none; b=sR8T7G48s3A4eWvzGqMZ+vm2rbH4BOVte+8lckx/yaEOPMjZeN1hwMw5QiYOcrE5smEiWf/uBH+kaa4LQ2rLyoHlIqUN6RLnafvrvOulVOv2W+vpXSjUMGPCrazhQ+GCXYS9S1ueq3B8kJ2+rCDcX01yOmmP1X2FlYGaek9rCFM=
+	t=1758039004; cv=none; b=MWaBgtNHDTv4rA3xxN3OeT1QCsI6Wci4NbmiacjF1BRBgRXy82X+QPoYu2F5SGaNI73r6Tv3+ONI2qIlKuZZh8SJdnxzwr7nJL5ZG78lDltZYzehak1wVwiZE4xC5YDGkcIaXdOaCHZk0Rmi4gdSUuC9Yws1yi6rc1jOqQvMIf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758039004; c=relaxed/simple;
-	bh=uV1zwOQANSuCdiJDCDM2bNcH1MMnYnUp+EQkLo9Mv2k=;
+	bh=PYvVgA2hzQ5qmSWTE5lfIM3EUHTuyZNS4Y9S9SX2MVU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=r1ifs7jFpigVnPhfVUlFcX3iQiVdaQDBJQaHRhPLLSxYbLUSb+fnEy/eoIEI6vUONEz8sIFRumum/APeuhetVs83jRK1L6CFPM9ob1iKaD9hX/Wo3kpMtHdzEEnwf9HGGTrqafw6lIcdlHGAF3fcp4lwaaoKpBXqgvBTvMIEuhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gWTiKL0y; arc=none smtp.client-ip=209.85.222.201
+	 To:Cc:Content-Type; b=tcVQdm2ciYNLIjdaM27iinqh2R6IGbHzOaFds4nvQfqx/+BGjfF4C170wRiCwjqH+eSpixHW2BCNFFmCedCKobmVg99t3c9qW+JD1SZ8jh0mc2lFgYxR9iwsn75/Zkk7W4pI5TUs5Lma5DzSLaPf6g+xMpxc0qULLfGxkn8HXGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cYCF40pK; arc=none smtp.client-ip=209.85.160.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gWTiKL0y"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-82b1934907dso327730885a.0
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:10:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cYCF40pK"
+Received: by mail-qt1-f201.google.com with SMTP id d75a77b69052e-4b7ad72bc9dso40325701cf.3
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758039002; x=1758643802; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758039000; x=1758643800; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+4xxXVL8Parx6CuDjnbk6PvH6kIz/LppsEYSr/fhdAs=;
-        b=gWTiKL0yPx67rymoRZkkkpXx3yB9jAqf4ek/wlfiuY01KpNb8+cGWngdRh+9975+0C
-         urIWSiXFatAfrBF5WhD+7mWxfASLSDiG7QQdYYPRSIDLLbNj/dajlnMjBz3ftMOZ94g2
-         5d9eIFfbP51L7RrjfRD5TcV1H60tI4dYEnT/FwWYgXdq6ZplSIHk8L1vRlKiqZ4LS69M
-         QCAYA+RnfGHTjUmc+jBKOX2F+MGQzUwkHJeUSFJ+0nQnrQZW8xFdEDhNaQF08Yo150fZ
-         XR6FFKybNNf0WCTkmsSN+gviG4/0mMNFoJTIOJHH/xkAwHZ+90AhiJJVtjT4GfOZLpXj
-         Orbg==
+        bh=cXocC8LdBAgZKSDUXnlVODmDdKv8bcG9hAMfu5EJ0LA=;
+        b=cYCF40pK31gXOx/x1JGHIRlibXQR82hBsTXj8JCCyl5+l97gnsQqOpjnE1yPXxg+D6
+         qwomdyM8UzBlgYY8UUYp3VJf3ipI/uBFWkaL7arn0TPpMMUdptnb/V9TEYgRvxGBO+hX
+         shXKZGyTrIJHf3nx8EBqNJvBeEWc1+C0Kd9KILNSdskCxx8RGWVStL8/AT2n1wW18DmD
+         hmEbSYHe/TiTR4hV+xWgB+l8HqClYwA7Fhr3Ggxg+3cZFZP08/H6IPNB++NeRKrsmDah
+         m2LOVa9M8aYly/hOvGoyJ90m+eoLnHnmIn5aBr58E9tm4Nd9Q3sZY9SOaQH1u055HfBA
+         gj2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758039002; x=1758643802;
+        d=1e100.net; s=20230601; t=1758039000; x=1758643800;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+4xxXVL8Parx6CuDjnbk6PvH6kIz/LppsEYSr/fhdAs=;
-        b=Y0Uugb+PKgmxpUmi8A4YXn8ET4VGDKfiDX8fzPetQUOAAa5SViIm6fhKRWgh3VazbW
-         u07HnKrIy56dMiVdpH4HUf1y1kDzBpKDFlje2SVM2ublzZ+meDK9nn4ELirtnJ1PM3dr
-         ZYtU1RVQdg+kJakevBFcdFzEjmnNLI/yFMRgQ6XTbJ5i5MNZ6Nzc6mTJv5uGWGzhRxwv
-         hqEGda+g5Qjy3UUcTpyZryHcWpayPlK6Rk2u6QrXKs7tTFVge73O1Ra7w/SWTksRpzgF
-         /YKGUkcZqHVnLytJvWnI7KS7fmEWu+XIYnAw8CZ9uvsk0ssXODkaTRNdwvBv3e+UD6am
-         LU+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV5aEzCoUBaC3Z/lFQu+qGBZnZSVBDiAAdIV7nDK1VfL5abq5gMGRaeayKvOpAju2EAt5+Erq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCCmqTVUSoC2sf4C3g9J4ZNIkR1Am4kuBXbkoAUD+0gw+9qzzB
-	LFjR3B6o0BuKeJcNWmNbwKzG59tgCp9wj/KBLYNNEO7y2O5TBhiCSiT/WGMx5h5kwBFtoUEbHoV
-	xJqqGNVkD78+3MQ==
-X-Google-Smtp-Source: AGHT+IHSXTt5E1gjPk2pm43LDRgcTGvGfBIyUMU+He+hUvCrsVsEEO1DclewyRabLjJLVtxh7YeG1kInAAIQDA==
-X-Received: from qts10.prod.google.com ([2002:a05:622a:a90a:b0:4b2:9bf3:9666])
+        bh=cXocC8LdBAgZKSDUXnlVODmDdKv8bcG9hAMfu5EJ0LA=;
+        b=tCafPo4crDWTS60qKGZg75fvLfrZ5QYUp22R1x1FEB6/bhg+4l7pLxsHg+DSduIFIq
+         nxHFg2kDFFoCLbn1P9hIPFh1FIPMP52ZQteMIWbzpLEpzjhF0a2au2NiMHOJZ+JHQZ99
+         YDBsICfhezx7vwzarXj01QgPNX4vGroX3OpZ78ILjcVQRsBIdGHpMOMuZinvqvdYi4EQ
+         CPppfBCGOouWJtZX21Jugu6Qy1bWpA+xTQyb3Pt8uH6qmrSVOmG6g6eSpjKiOxOUCkqF
+         knqabpBybDqjtnfTaoNlylEy8N35+AVjvRErtPDzEifOnfcX86+iN7c52VLsuDIGr8an
+         0oQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnPSBrGQD73v81n50cA86cfUzmAFQalnukLFy3HlXYDK97znDwltSqBkw8+yn5q5lHnlDp8YU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJTsTKF0GevybEAk1wd+HHbEjIcDJaS3VJrMBtACAAmnkFY/h0
+	vcVK6LBxaNPqmPOeoeZFT7NXSKZ04seUECOdQt8g5gd27z6U3JhmfCHozLodIU4RO29yZFlsELP
+	1L8AM2xhPcR1maQ==
+X-Google-Smtp-Source: AGHT+IEAgZ682d05pLAidqXPlK4LG47j9os5l2hHbXe8dKnZqDlNKS/G4b81qoQrfBj+4tgwwtCa3am8d97x3A==
+X-Received: from qtbcm16.prod.google.com ([2002:a05:622a:2510:b0:4b6:272a:fbb3])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:344:b0:4b3:30d:5384 with SMTP id d75a77b69052e-4b77d078aecmr216538051cf.70.1758039001859;
- Tue, 16 Sep 2025 09:10:01 -0700 (PDT)
-Date: Tue, 16 Sep 2025 16:09:45 +0000
+ 2002:ac8:59cf:0:b0:4b7:a9ef:1987 with SMTP id d75a77b69052e-4b7aef57598mr75278851cf.39.1758039000237;
+ Tue, 16 Sep 2025 09:10:00 -0700 (PDT)
+Date: Tue, 16 Sep 2025 16:09:44 +0000
 In-Reply-To: <20250916160951.541279-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250916160951.541279-1-edumazet@google.com>
 X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250916160951.541279-5-edumazet@google.com>
-Subject: [PATCH net-next 04/10] ipv6: reorganise struct ipv6_pinfo
+Message-ID: <20250916160951.541279-4-edumazet@google.com>
+Subject: [PATCH net-next 03/10] ipv6: np->rxpmtu race annotation
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -69,93 +69,45 @@ Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
 	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Move fields used in tx fast path at the beginning of the structure,
-and seldom used ones at the end.
+Add READ_ONCE() annotations because np->rxpmtu can be changed
+while udpv6_recvmsg() and rawv6_recvmsg() read it.
 
-Note that rxopt is also in the first cache line.
+Since this is a very rarely used feature, and that udpv6_recvmsg()
+and rawv6_recvmsg() read np->rxopt anyway, change the test order
+so that np->rxpmtu does not need to be in a hot cache line.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- include/linux/ipv6.h | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ net/ipv6/raw.c | 2 +-
+ net/ipv6/udp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 8e6d9f8b3dc80c3904ff13e1d218b9527a554e35..43b7bb82873881b38a461031b784f55c740a0741 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -214,18 +214,21 @@ struct inet6_cork {
+diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
+index 4ae07a67b4d4f1be6730c252d246e79ff9c73d4c..e369f54844dd9456a819db77435eaef33d162932 100644
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -445,7 +445,7 @@ static int rawv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
- /* struct ipv6_pinfo - ipv6 private area */
- struct ipv6_pinfo {
-+	/* Used in tx path (inet6_csk_route_socket(), ip6_xmit()) */
- 	struct in6_addr 	saddr;
--	struct in6_pktinfo	sticky_pktinfo;
-+	__be32			flow_label;
-+	u32			dst_cookie;
-+	struct ipv6_txoptions __rcu	*opt;
-+	s16			hop_limit;
-+	u8			pmtudisc;
-+	u8			tclass;
- #ifdef CONFIG_IPV6_SUBTREES
- 	bool			saddr_cache;
- #endif
- 	bool			daddr_cache;
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
  
--	__be32			flow_label;
--	__u32			frag_size;
--
--	s16			hop_limit;
- 	u8			mcast_hops;
-+	u32			frag_size;
+ 	skb = skb_recv_datagram(sk, flags, &err);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index b70369f3cd3223cfde07556b1cb1636e8bc78d49..e87d0ef861f88af3ff7bf9dd5045c4d4601036e3 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -479,7 +479,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_ERRQUEUE)
+ 		return ipv6_recv_error(sk, msg, len, addr_len);
  
- 	int			ucast_oif;
- 	int			mcast_oif;
-@@ -233,7 +236,7 @@ struct ipv6_pinfo {
- 	/* pktoption flags */
- 	union {
- 		struct {
--			__u16	srcrt:1,
-+			u16	srcrt:1,
- 				osrcrt:1,
- 			        rxinfo:1,
- 			        rxoinfo:1,
-@@ -250,29 +253,25 @@ struct ipv6_pinfo {
- 				recvfragsize:1;
- 				/* 1 bits hole */
- 		} bits;
--		__u16		all;
-+		u16		all;
- 	} rxopt;
+-	if (np->rxpmtu && np->rxopt.bits.rxpmtu)
++	if (np->rxopt.bits.rxpmtu && READ_ONCE(np->rxpmtu))
+ 		return ipv6_recv_rxpmtu(sk, msg, len, addr_len);
  
- 	/* sockopt flags */
--	__u8			srcprefs;	/* 001: prefer temporary address
-+	u8			srcprefs;	/* 001: prefer temporary address
- 						 * 010: prefer public address
- 						 * 100: prefer care-of address
- 						 */
--	__u8			pmtudisc;
--	__u8			min_hopcount;
--	__u8			tclass;
-+	u8			min_hopcount;
- 	__be32			rcv_flowinfo;
-+	struct in6_pktinfo	sticky_pktinfo;
- 
--	__u32			dst_cookie;
-+	struct sk_buff		*pktoptions;
-+	struct sk_buff		*rxpmtu;
-+	struct inet6_cork	cork;
- 
- 	struct ipv6_mc_socklist	__rcu *ipv6_mc_list;
- 	struct ipv6_ac_socklist	*ipv6_ac_list;
- 	struct ipv6_fl_socklist __rcu *ipv6_fl_list;
--
--	struct ipv6_txoptions __rcu	*opt;
--	struct sk_buff		*pktoptions;
--	struct sk_buff		*rxpmtu;
--	struct inet6_cork	cork;
- };
- 
- /* We currently use available bits from inet_sk(sk)->inet_flags,
+ try_again:
 -- 
 2.51.0.384.g4c02a37b29-goog
 
