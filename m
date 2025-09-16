@@ -1,128 +1,110 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E3E283FFB
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 08:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD0C1B532F
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 08:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758010804; cv=none; b=BOy5IvveaaR9LxcX7wswk1o6NZZy2/cwuBZ1a1uBBUvouz1cedTcjO5vOZ4okbtikmFhmRKOxcjqdbjHR2MOVTnB6Kt1Mj2NkFfzj1rOTD0ULjnxKFR2NWyVUwcscZF5+HMbWgN4etAznM5bUtKlji6xWzUonzP0JA0eiSRGujw=
+	t=1758010856; cv=none; b=TdtbgdCcoey020yDHW6pdeb7dJwrNGqoFOCMdQSvTaWjTkOOe3atKKBKFsOeQd5OkD/UeggXwTPoATbhCw7i+e5h9XIFAyjEIPCMZroa4lrAkBuL20v0yxqwIJRBIWaWyeADd7e3ciJPUCRDU8PPIZeTmWk6ZlR9ezQvVXhYs2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758010804; c=relaxed/simple;
-	bh=wyzFXdhH71/K6R4ozNwpypG96FdPPhKK1bsIffaUOAU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XllRdqRQWjlFqTzMV3CbY0/Gy2TtR4OmdreQFwvph39+7RU+fkgCoqAwpcLvpGdWMU+2Qpm4a9ToP3z22LFzPh+q8+XfhynoCPlTtZVCXAy72VAXLVIcnTW1pqp3JrJyhDdEUFfDFLwuU49Riso9Yri5VbwszRBHxzqT585sjT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cKl8mF+B; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758010856; c=relaxed/simple;
+	bh=4KE3ZIM46VZBGWx1rOrIwDYke0hW1+PjLACdRpNqbEQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LkmSGwYxDVK+AALyYhd1YRJlZjIav8ZnC8zEH6tfwRjHiFe9x/eQgqqHbrwotiJw+shYwD0homsGxRy+g2fErBGPhx5NcKBCMG5I+TFjUWXu2bjjRd5noL7BOWFj31CqYdJn8zHlaY1Sze2cAB/wqogndgGbhF0mmWwrjF+Fkjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=M5jmvdY2; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cKl8mF+B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758010802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NzL2N1DLwKqBJMwL8CAS9ydZTfmXfd5ccrcFe6t3UgE=;
-	b=cKl8mF+B2HrIPufSGUrOV9ztHLqZHbhhCz+Fi+9OTAMuT5ZKdV9zr27FEvhQzDP5KYyaM0
-	j+J+ZSg4XbfmvPZ/A/M8k66Cz16KPJwabzPaOYo7uVyZNRWYhAVkYuysFm9T2+/8ofdX0/
-	atjWij8Tc1PfdxBwc2vsuz2lhBSEj5A=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-FU7JORNSPO6fYZOGemM21Q-1; Tue, 16 Sep 2025 04:20:01 -0400
-X-MC-Unique: FU7JORNSPO6fYZOGemM21Q-1
-X-Mimecast-MFC-AGG-ID: FU7JORNSPO6fYZOGemM21Q_1758010800
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ec7be07a17so246333f8f.1
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 01:20:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758010800; x=1758615600;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NzL2N1DLwKqBJMwL8CAS9ydZTfmXfd5ccrcFe6t3UgE=;
-        b=f2+a0R9AXy/FgykB+0mxq0W/LxD0p3N7aFp9Ay+U4N9zh/l6MA3ivWnAMlq/Qo0ggk
-         iwGdElw6n4WdBhot8YSvQQ7VdMZl8+UaXU5VRmz/XIOUSeMMuNR/43xuTRuqRoqwrFXE
-         bFJQGaTM02gUmyn7wFUsf/t3D3gh6m7ML+2yytVVqIePOZYYhfYr0FmJrqU6WIR7b+eZ
-         CwiOSfSxmFqAPuhnTKf77CmkGHKfp2Typq8Z/WX4EA+se0tId14i+EcrmALyVIZZmVAb
-         FGHX+pBOjcs6IGt1nHwb63w+uNszmeeJZgIcqz0IswqBPgZAkBxAHeA2KLfD4y29byMN
-         YQgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXww9pRiIVix+5Sa7XhT7xtuKuAgSa7uJkUjMuK4hQ9eoI7eUp14ET9y0A2rFCYbzyocmMqlBg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykEHKhhkp3QS1ZlqNWndFQ/sh//v554n2BlKXMrjVx712tk+Lu
-	1E+6qUx9VApWgvLXfSHAgbW5cEopOvemnnRBPGkU416ED0BZhmVi02LvLofCCo4R6fzOXLJw8N1
-	vjAePtdQeGD+9rYMRH5cWaF//cKpzjs5ygUnt2ULrPONHFpWcE/7S67e5eQ==
-X-Gm-Gg: ASbGncvd84kUjwsDpvkO0JDCFcf0wM6vN+t6ZkP5cNzMV2QDSWjizEjVvTN1S/qGw/a
-	ILtNcSFCCu+/ZSuqifTJZlTLDbHi+6yITS8tsUQhPgYgFeQXxPKY7xfoO4xvn5w9RqHMGC56L6h
-	voDsIlKISp8dS2du53OrPf8d30wuW7kc4mjTN7ctj1qPIV196ar3juMkC7NhSqV8lad4eM1PGOr
-	brVrEPUKCmTI2AcetKXQH7mbZSsuw+qRcqU0Fkr8sjZ/Ybn/N/EuHGtDhW9NXSwNwzf651aEbcL
-	J0JotlI2de8oqHaSkqQTda0oL9qLD8mYtPAYGYOlvgM3IIFm/LhZvAaTKElWJmLk8lNehULtOP/
-	n4l2VlrMAvESu
-X-Received: by 2002:a05:6000:23ca:b0:3ea:5f76:3f7a with SMTP id ffacd0b85a97d-3ea5f764a5dmr4367644f8f.22.1758010799657;
-        Tue, 16 Sep 2025 01:19:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEno2K+NdUW6UjWVLC6LxT9P7Qfem/6TR6gFdG8F5R9GArEc4/f2xtzeLzakkVXchgcRbliwQ==
-X-Received: by 2002:a05:6000:23ca:b0:3ea:5f76:3f7a with SMTP id ffacd0b85a97d-3ea5f764a5dmr4367594f8f.22.1758010799204;
-        Tue, 16 Sep 2025 01:19:59 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e9a066366fsm10432408f8f.44.2025.09.16.01.19.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Sep 2025 01:19:58 -0700 (PDT)
-Message-ID: <e50be1a2-4e9f-44b4-b524-706be01c97e5@redhat.com>
-Date: Tue, 16 Sep 2025 10:19:56 +0200
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="M5jmvdY2"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 799302076B;
+	Tue, 16 Sep 2025 10:11:18 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id xUMulOkRt5Pq; Tue, 16 Sep 2025 10:11:14 +0200 (CEST)
+Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id B152620704;
+	Tue, 16 Sep 2025 10:11:14 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B152620704
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1758010274;
+	bh=2XIifIGekRVtEO8555U5kYgBep2JshmsVkCS7TmCgIM=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=M5jmvdY2cHCBVyM2opoCHe3KjpNoWNq3CegKvHtT9Aw61/3u3q6yO4E5gQyW9wwP8
+	 zCuukYjydFikqjlD3u5VujRihNUWd7HktvXoHLBT4onc7Ayaff0A+cB4KYXDfcOoRE
+	 E563uY6e+hC0TToEiUtToP+gJkX8twcJkVyOnUS6KhcdtyE2qBv5XQsQyQRpt0N/6g
+	 kuPUegaDRjp1HlmfroDswrV5yagdUBKtWZJ1LfJj2v7cNQF0EaJvLgwEFq7nENtxre
+	 tgFqyJdQ9fLEkC39+if3syfnHZmsrEI3FKjRl4jHXaVOq4oxSEHyVnPZ3O+wsxTZh0
+	 gcUDospxSADvw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Tue, 16 Sep
+ 2025 10:11:14 +0200
+Received: (nullmailer pid 1264670 invoked by uid 1000);
+	Tue, 16 Sep 2025 08:11:13 -0000
+Date: Tue, 16 Sep 2025 10:11:13 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Sabrina Dubroca <sd@queasysnail.net>
+CC: <netdev@vger.kernel.org>, Xiumei Mu <xmu@redhat.com>, Leon Romanovsky
+	<leonro@nvidia.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH ipsec v2] xfrm: fix offloading of cross-family tunnels
+Message-ID: <aMkbobzEx53SfGEx@secunet.com>
+References: <c4b61b2da197f2ef3742afec3f8866c5ab8e9051.1757516819.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 13/14] dibs: Move data path to dibs layer
-To: Alexandra Winter <wintera@linux.ibm.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>,
- Sidraya Jayagond <sidraya@linux.ibm.com>, Wenjia Zhang
- <wenjia@linux.ibm.com>, David Miller <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Julian Ruess <julianr@linux.ibm.com>,
- Aswin Karuvally <aswin@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>,
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Harald Freudenberger <freude@linux.ibm.com>,
- Konstantin Shkolnyy <kshk@linux.ibm.com>
-References: <20250911194827.844125-1-wintera@linux.ibm.com>
- <20250911194827.844125-14-wintera@linux.ibm.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250911194827.844125-14-wintera@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <c4b61b2da197f2ef3742afec3f8866c5ab8e9051.1757516819.git.sd@queasysnail.net>
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ EXCH-01.secunet.de (10.32.0.171)
 
-On 9/11/25 9:48 PM, Alexandra Winter wrote:
-> +static void __dibs_lo_unregister_dmb(struct dibs_lo_dev *ldev,
-> +				     struct dibs_lo_dmb_node *dmb_node)
-> +{
-> +	/* remove dmb from hash table */
-> +	write_lock_bh(&ldev->dmb_ht_lock);
-> +	hash_del(&dmb_node->list);
-> +	write_unlock_bh(&ldev->dmb_ht_lock);
-> +
-> +	clear_bit(dmb_node->sba_idx, ldev->sba_idx_mask);
-> +	kvfree(dmb_node->cpu_addr);
-> +	kfree(dmb_node);
+On Wed, Sep 10, 2025 at 05:22:13PM +0200, Sabrina Dubroca wrote:
+> Xiumei reported a regression in IPsec offload tests over xfrmi, where
+> the traffic for IPv6 over IPv4 tunnels is processed in SW instead of
+> going through crypto offload, after commit
+> cc18f482e8b6 ("xfrm: provide common xdo_dev_offload_ok callback
+> implementation").
+> 
+> Commit cc18f482e8b6 added a generic version of existing checks
+> attempting to prevent packets with IPv4 options or IPv6 extension
+> headers from being sent to HW that doesn't support offloading such
+> packets. The check mistakenly uses x->props.family (the outer family)
+> to determine the inner packet's family and verify if
+> options/extensions are present.
+> 
+> In the case of IPv6 over IPv4, the check compares some of the traffic
+> class bits to the expected no-options ihl value (5). The original
+> check was introduced in commit 2ac9cfe78223 ("net/mlx5e: IPSec, Add
+> Innova IPSec offload TX data path"), and then duplicated in the other
+> drivers. Before commit cc18f482e8b6, the loose check (ihl > 5) passed
+> because those traffic class bits were not set to a value that
+> triggered the no-offload codepath. Packets with options/extension
+> headers that should have been handled in SW went through the offload
+> path, and were likely dropped by the NIC or incorrectly
+> processed. Since commit cc18f482e8b6, the check is now strict (ihl !=
+> 5), and in a basic setup (no traffic class configured), all packets go
+> through the no-offload codepath.
+> 
+> The commits that introduced the incorrect family checks in each driver
+> are:
+> 2ac9cfe78223 ("net/mlx5e: IPSec, Add Innova IPSec offload TX data path")
+> 8362ea16f69f ("crypto: chcr - ESN for Inline IPSec Tx")
+> 859a497fe80c ("nfp: implement xfrm callbacks and expose ipsec offload feature to upper layer")
+> 32188be805d0 ("cn10k-ipsec: Allow ipsec crypto offload for skb with SA")
+> [ixgbe/ixgbevf commits are ignored, as that HW does not support tunnel
+> mode, thus no cross-family setups are possible]
+> 
+> Fixes: cc18f482e8b6 ("xfrm: provide common xdo_dev_offload_ok callback implementation")
+> Reported-by: Xiumei Mu <xmu@redhat.com>
+> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+> Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-I see the above comes directly from existing code, but it's not clear to
-me where (and if) dmb_node->cpu_addr is vmalloc()ed (as opposed to
-kmalloc()ed).
-
-Could you consider switching to kfree() (if possible/applicable) and/or
-add a describing comment if not?
-
-Thanks,
-
-Paolo
-
+Applied, thanks a lot Sabrina!
