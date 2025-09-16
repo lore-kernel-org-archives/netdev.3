@@ -1,58 +1,35 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7484F13B293;
-	Tue, 16 Sep 2025 01:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C0A1DE8AF;
+	Tue, 16 Sep 2025 01:30:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757986130; cv=none; b=LYBEQSXtIKsVCYfiUlMfaVxcL582Z04DXlBnJCVinp87EdKds0sCGaiEKgX+mSnbiTXD5GFD548cUqaJJKk0+Sh4LXWMokBEMWUW/i3CdztDwlwKpQQvHSjUfAYIfMSVP04go/RVd72C+ZkJmz9bT5UyIeGS3Nwmu0Zz6Lh6C/M=
+	t=1757986218; cv=none; b=MCSu1fmJsr2zepde7xp58z55D7WIh5UdkC5wfkVumzIK9pELQ/DGH2bLG46kARs/ZMsHH9buyUN9irzMiexeAB97jq4u/5smjg3ZiA6QMggOOi6Jn9VXdwSuqgoja/2rkQSw3a2fMYLLLjoF5EX/W3zicP0YTJBSnKeUjZbVcc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757986130; c=relaxed/simple;
-	bh=dOrtMow+yygUOhhXu/PCIEqWa9NtW5uvhs7mmCFFDXg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FYjhOyknzXgA7+kT2MIZ/CkLHIpEpX5xkFAtl1EAU6ndBVlujaBqjZ9ZE9fwrWoSIGlbOxdb2VzqMCT0ZzUd+e+aHiEDnusEkNECG8nSkFfpVAM35kyZdjPJZc1sjHSmnFtX6j6YuHWKllCzkGw98IvCOl7jmRaEmJfZEe8Vtr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=airkyi.com; spf=pass smtp.mailfrom=airkyi.com; dkim=pass (1024-bit key) header.d=airkyi.com header.i=@airkyi.com header.b=J98MyLcb; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=airkyi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=airkyi.com
+	s=arc-20240116; t=1757986218; c=relaxed/simple;
+	bh=TEwGEXAiXPihZpryiTp34CJavZYQMOxb4M1Wre0+0Nw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NN6+RJAP/k9EqLR+eahfaeJyQdmdUqCOAE1yt6efpyqpngVWl/WTRVSctUlSUdZZgleK1b8svPPhR/239odhHGGZ+vOHGjWTeBPEMh4BWbDwdDMEvcb+C5xdv/s2rSvDObNLFwxcImfIsA4z8TfxBqZg37bSD+VwGBNMjGrhDbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLdgGRcv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=airkyi.com header.i=@airkyi.com header.b="J98MyLcb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=airkyi.com;
-	s=altu2504; t=1757986002;
-	bh=r40/9/byFQ5Kdho5bSZgFzvBLnr6GNZb9hi7qVjYjLk=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=J98MyLcbMRG94NEiVPEjeSXACyzHlGMhioQe+AoZz+U5Pl5VQ3tvrizeCPZchXSH0
-	 d2rMdEy5H/PcgpFTo13OzEfrZ4GonSnL1tUb0wvZGI64BXUf/kaItCe4zy6dRa1XJM
-	 oVipO6zCRqLqhivuCR8IJ8o6LMSpaqpg8K/p6Q98=
-X-QQ-mid: esmtpgz16t1757985994tb691f01f
-X-QQ-Originating-IP: 9WqvNV5m81o9OAQGGCKKLjLtxMwpN1LWrrj43UnBIq8=
-Received: from DESKTOP-8BT1A2O.localdomain ( [58.22.7.114])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 16 Sep 2025 09:26:31 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 13026834714890684059
-From: Chaoyi Chen <kernel@airkyi.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	David Wu <david.wu@rock-chips.com>
-Cc: sebastian.reichel@collabora.com,
-	ziyao@disroot.org,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Chaoyi Chen <chaoyi.chen@rock-chips.com>
-Subject: [PATCH net-next] Revert "net: ethernet: stmmac: dwmac-rk: Make the clk_phy could be used for external phy"
-Date: Tue, 16 Sep 2025 09:26:28 +0800
-Message-ID: <0A3F1D1604FEE424+20250916012628.1819-1-kernel@airkyi.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLdgGRcv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF07CC4CEF1;
+	Tue, 16 Sep 2025 01:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757986216;
+	bh=TEwGEXAiXPihZpryiTp34CJavZYQMOxb4M1Wre0+0Nw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=kLdgGRcvSYMBKpv2MZevGrA2MMFTohQd3RpZckKOnJQx58NwFu9SaaM4XI2EKYK7e
+	 cDxa8aWf/goNUsQLpum8tS1MSlwwPTWrp3NnsGfXB6lIEt60qavIaeSgrdcczX5CCy
+	 tHfB5bg6MlxmUTfzhfG1izVnnN/7ipCSNTMBrPyOITvwmsugvX/0En/N9IWlFQZ78M
+	 cCeguwnJzCcxMuZeFsxxd1/3BefhaiYk3i989H9vIIepgXGTRg/TR7uqtuhk7mC3Q1
+	 lyRGFmcouGZM2UQyWXD/hAno8Kk1eXN28oPiIqHc8orXuzicft45b3O5BhH6m6xOT/
+	 +Gui56xLpH4tw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7156839D0C17;
+	Tue, 16 Sep 2025 01:30:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,62 +37,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:airkyi.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: NpSUeF22LnzDaMKYiEuFqevqeK1MYzf4iSkkCu3fQqOjrNgyfGsywGra
-	GMwsWfxhO5M0UlGrG374jH3Xa17Hadfevx69JtfBFyquyr68EHvK2gqjtNyOyGoN5N/9Ypm
-	kv2vOCH1CMFRpEpIgjYRQ4sSB5udtTSTunJKOV7T8qxujPtCch7tkg2wkeh3aY97izqA7zs
-	fNXf6auP3iTDII0WIJKE9Vltww++i4bLigltiLAncAP7lsgqPay9ChFGa2sxFMpXFSxkRUY
-	IwLGia11ARql5Ns2AvaY2uG+nPJpXN/KnzHaVl2+I5OI0r6qtg7kXLjJN1i0dPSHDedKhUd
-	T+PdR1TWVAMpVmesdSinSeyyZDWVmffXSDAgV88zwpKYQ8Gq6yuQr+VyVwoSM8+h96Tm+z+
-	2KutP7P6l+B5dU/6fULMPT4BnM+MQr7iNsYP19RJm79bjmiepNqfxbjs6b21AsjrcnsLrnJ
-	EAKuVCXTj5X7ze5uXsIQBXeYa2SDOSrXiUEFiE50dqj5xOV9znX4FbpLeCNQXvnFBkRelAB
-	FsVObfsXPkF0WkkL+619MIYdebgIOFIBx3c2t5Xe2VjtDokOc4Xitf2eprN8YvgcVULfnLa
-	OlnhGfIoX2E9URDE+Lrbj7S/f8plgVl/ok2vV/W0LOcD3WCS3S3ez6xM0rfr2A/QCpPuBex
-	8XGoTFjaDSUilnJkOizFTOeG2SavuAvNPlzPjAB0DYksyIVmUE9Om69N8nL9S0zyVez7No1
-	XQU4G9/uczKgpSlwBVZqiM2LIaucy41R4WKSeefH/4j+mu1JCf+n2horpNVZCsaNmG3QQWC
-	zo5Bu9MIFGZxBHe3foojnFqdZ02SDzWGyEdxAcdwwNmhG6SfD5zwaND74VHf5UzjvZpFty+
-	AhYAiM9/If3Q55L+HCWcd5BbrrCEb9ZMzW8zlvJ0wcflYp8sT3LiBQwYwAx4fDtI4IdkAys
-	xRiJLq952WEZ+uDHpDt5/KlbJma6R/bcVeWasD1XDg7yJeg==
-X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
-X-QQ-RECHKSPAM: 0
+Subject: Re: [PATCH net 0/5] mptcp: pm: nl: announce deny-join-id0 flag
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175798621825.559370.16652026022818101575.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Sep 2025 01:30:18 +0000
+References: 
+ <20250912-net-mptcp-pm-uspace-deny_join_id0-v1-0-40171884ade8@kernel.org>
+In-Reply-To: 
+ <20250912-net-mptcp-pm-uspace-deny_join_id0-v1-0-40171884ade8@kernel.org>
+To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ donald.hunter@gmail.com, fw@strlen.de, kishen.maloor@intel.com,
+ shuah@kernel.org, dmytro@shytyi.net, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, marek@cloudflare.com
 
-From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
+Hello:
 
-This reverts commit da114122b83149d1f1db0586b1d67947b651aa20.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-As discussed, the PHY clock should be managed by PHY driver instead
-of other driver like dwmac-rk.
+On Fri, 12 Sep 2025 14:52:19 +0200 you wrote:
+> During the connection establishment, a peer can tell the other one that
+> it cannot establish new subflows to the initial IP address and port by
+> setting the 'C' flag [1]. Doing so makes sense when the sender is behind
+> a strict NAT, operating behind a legacy Layer 4 load balancer, or using
+> anycast IP address for example.
+> 
+> When this 'C' flag is set, the path-managers must then not try to
+> establish new subflows to the other peer's initial IP address and port.
+> The in-kernel PM has access to this info, but the userspace PM didn't,
+> not letting the userspace daemon able to respect the RFC8684.
+> 
+> [...]
 
-Signed-off-by: Chaoyi Chen <chaoyi.chen@rock-chips.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+Here is the summary with links:
+  - [net,1/5] mptcp: set remote_deny_join_id0 on SYN recv
+    https://git.kernel.org/netdev/net/c/96939cec9940
+  - [net,2/5] mptcp: pm: nl: announce deny-join-id0 flag
+    https://git.kernel.org/netdev/net/c/2293c57484ae
+  - [net,3/5] selftests: mptcp: userspace pm: validate deny-join-id0 flag
+    https://git.kernel.org/netdev/net/c/24733e193a0d
+  - [net,4/5] mptcp: tfo: record 'deny join id0' info
+    https://git.kernel.org/netdev/net/c/92da495cb657
+  - [net,5/5] selftests: mptcp: sockopt: fix error messages
+    https://git.kernel.org/netdev/net/c/b86418beade1
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-index 266c53379236..49f92cd79aa8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-@@ -1410,15 +1410,12 @@ static int rk_gmac_clk_init(struct plat_stmmacenet_data *plat)
- 		clk_set_rate(plat->stmmac_clk, 50000000);
- 	}
- 
--	if (plat->phy_node) {
-+	if (plat->phy_node && bsp_priv->integrated_phy) {
- 		bsp_priv->clk_phy = of_clk_get(plat->phy_node, 0);
- 		ret = PTR_ERR_OR_ZERO(bsp_priv->clk_phy);
--		/* If it is not integrated_phy, clk_phy is optional */
--		if (bsp_priv->integrated_phy) {
--			if (ret)
--				return dev_err_probe(dev, ret, "Cannot get PHY clock\n");
--			clk_set_rate(bsp_priv->clk_phy, 50000000);
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret, "Cannot get PHY clock\n");
-+		clk_set_rate(bsp_priv->clk_phy, 50000000);
- 	}
- 
- 	return 0;
+You are awesome, thank you!
 -- 
-2.49.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
