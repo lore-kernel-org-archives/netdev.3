@@ -1,99 +1,77 @@
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C172D8DDA;
-	Tue, 16 Sep 2025 12:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D58630F801;
+	Tue, 16 Sep 2025 12:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025239; cv=none; b=l2aEXeNisMYzKjeZkOiIhBzAQDynwattHTTNEclKvrDsorn+60Fm7e9AWdZebcEFroYd2JlM9qpzfWjDcI0wEcF24nvkPiVT/XzfqlJXVlJBadHk13+b3O5AaXOtU8TXxHaix/zNZiwoF1Zhqkm/SrOtuvvZkbtMhcKoEd717ao=
+	t=1758025352; cv=none; b=Nbc0FqQJsPJsdSa8ImFkLqMc7V9P+1lFKkau+ybk6ctpYDUyNXmtIVkNuoeye6APMvkj1agtEYeRcQ9O4Ec6sY8EBawbBJK8QfNWpO4icYSU1/pU8MtR5sFBfZM/iSIwmR5OU3eL/MEZzmmXofQtoVrkt8XB4BZS8Ni7hWKjQFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758025239; c=relaxed/simple;
-	bh=Ea9+rkswREodz+LF4GSRMjtdY2KBM5WSAG3M5nIxo/o=;
+	s=arc-20240116; t=1758025352; c=relaxed/simple;
+	bh=DQ66jMMLT0n6nh4A38mjN8ZZ3cw2WkkdN+niNxHw18Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M1MJHDuu1ZZ6wwdmJi7TpioSQWZe3Rrz8D372XOuEWtBaqH5kRSnbFfI9wJpGEvyJodE/s9nu3hItDcpQKirupKosT5a2HtMiflrvw4Pxg3G9MeqvwyKo5r02HhYnIjb0dYRlhB6fBa5jxuRIJJ9lVxpoDwEvBWTeSVZRDw3TRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-Received: from localhost (unknown [180.158.240.90])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dlan)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id B1D73340DBF;
-	Tue, 16 Sep 2025 12:20:36 +0000 (UTC)
-Date: Tue, 16 Sep 2025 20:20:26 +0800
-From: Yixun Lan <dlan@gentoo.org>
-To: pabeni@redhat.com
-Cc: Vivian Wang <wangruikang@iscas.ac.cn>, andrew+netdev@lunn.ch,
-	kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, p.zabel@pengutronix.de, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-	uwu@dram.page, vadim.fedorenko@linux.dev, junhui.liu@pigmoral.tech,
-	horms@kernel.org, maxime.chevallier@bootlin.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, conor.dooley@microchip.com,
-	troy.mitchell@linux.spacemit.com, hendrik.hamerlinck@hammernet.be,
-	andrew@lunn.ch
-Subject: Re: [PATCH net-next v12 0/5] Add Ethernet MAC support for SpacemiT K1
-Message-ID: <20250916122026-GYB1255161@gentoo.org>
-References: <20250914-net-k1-emac-v12-0-65b31b398f44@iscas.ac.cn>
- <175802161326.713595.16381910315366172301.git-patchwork-notify@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=KSwCVggdu+9VwvS7+XTLpMt2ebbhzqrpdPoHeH0okA/8DQTxE6mN3gLh/36O4WM6KFi5NZgmv69V8/IY0Or9BMWmKm1OKN4OxszXRU6dBb7DE6Jz5LQOiW7Z9u82+3BuOzX029IV8j+uGK7BJsrsjnb88YCnyQh9b5TIg4i51EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BBQ/25QL; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BBQ/25QL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=rAdzrtg37/s4ZoFN3TXa9jj78kk9SLK3gEkTudn0BLg=; b=BB
+	Q/25QLU/mVLuli58ZX2YR19+U6nZ2PJRVTK8iJHwDYsECQviA8DW6QXI2pA87faNg9c3Ak8IQ6Wou
+	Uyy4CASj5jBloRnRAXefUESLPw4jqFK6qXLY3rmK24BCZ/fx2smadhIn/H5M3uyZlXh4ksPM6oi3B
+	/i3K436DZbGHeI8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uyUhO-008YfT-HE; Tue, 16 Sep 2025 14:22:18 +0200
+Date: Tue, 16 Sep 2025 14:22:18 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Cc: Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: Re: [net-next 2/6] net: rcar_gen4_ptp: Move control fields to users
+Message-ID: <52a331b3-275e-4a7c-8852-875e8d5b8f62@lunn.ch>
+References: <20250916101055.740518-1-niklas.soderlund+renesas@ragnatech.se>
+ <20250916101055.740518-3-niklas.soderlund+renesas@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <175802161326.713595.16381910315366172301.git-patchwork-notify@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250916101055.740518-3-niklas.soderlund+renesas@ragnatech.se>
 
-Hi Paolo Abeni,
-
-Thanks for taking this series, but I have one comment (see below)
-
-On 11:20 Tue 16 Sep     , patchwork-bot+netdevbpf@kernel.org wrote:
-> Hello:
+On Tue, Sep 16, 2025 at 12:10:51PM +0200, Niklas Söderlund wrote:
+> The struct rcar_gen4_ptp_private provides two fields for convenience of
+> its users, tstamp_tx_ctrl and tstamp_rx_ctrl. These fields are not used
+> by the rcar_gen4_ptp driver itself but only by the drivers using it.
 > 
-> This series was applied to netdev/net-next.git (main)
-> by Paolo Abeni <pabeni@redhat.com>:
+> Upcoming work will enable the RAVB driver currently only supporting gPTP
+> on pre-Gen4 SoCs to use the Gen4 implementation as well. To facilitate
+> this the convenience of having these fields in struct
+> rcar_gen4_ptp_private becomes a problem as the RAVB driver already have
+> it's own driver specific fields for the same thing.
 > 
-> On Sun, 14 Sep 2025 12:23:11 +0800 you wrote:
-> > SpacemiT K1 has two gigabit Ethernet MACs with RGMII and RMII support.
-> > Add devicetree bindings, driver, and DTS for it.
-> > 
-> > Tested primarily on BananaPi BPI-F3. Basic TX/RX functionality also
-> > tested on Milk-V Jupiter.
-> > 
-> > I would like to note that even though some bit field names superficially
-> > resemble that of DesignWare MAC, all other differences point to it in
-> > fact being a custom design.
-> > 
-> > [...]
+> Move the fields from struct rcar_gen4_ptp_private to each driver using
+> the Gen4 gPTP clocks own private data structures. There is no functional
+> change.
 > 
-> Here is the summary with links:
->   - [net-next,v12,1/5] dt-bindings: net: Add support for SpacemiT K1
->     https://git.kernel.org/netdev/net-next/c/62a12a221769
->   - [net-next,v12,2/5] net: spacemit: Add K1 Ethernet MAC
->     https://git.kernel.org/netdev/net-next/c/bfec6d7f2001
-..
->   - [net-next,v12,3/5] riscv: dts: spacemit: Add Ethernet support for K1
->     https://git.kernel.org/netdev/net-next/c/60775f28cfb7
->   - [net-next,v12,4/5] riscv: dts: spacemit: Add Ethernet support for BPI-F3
->     https://git.kernel.org/netdev/net-next/c/3c247a6366d5
->   - [net-next,v12,5/5] riscv: dts: spacemit: Add Ethernet support for Jupiter
->     https://git.kernel.org/netdev/net-next/c/e32dc7a936b1
-> 
+> Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-Generally, I'd expect the DT part patch (3-5) to go via SpacemiT's SoC tree[1],
-so, this will avoid potential conflicts..
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Can you drop patch 3-5? then I will take care of them, plus there is one more
-patch in my queue..
-
-Link: https://github.com/spacemit-com/linux/tree/k1/dt-for-next [1]
-
--- 
-Yixun Lan (dlan)
+    Andrew
