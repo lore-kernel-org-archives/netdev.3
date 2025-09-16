@@ -1,70 +1,89 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047E51C2DB2
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 13:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287BA315D37
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 13:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758029918; cv=none; b=NYSM3R7mrFvFDDv02+YTquCeZuDm8KRJzOFM8OFW1fuaYX8L0pqQM2xyxEnCyRNVD4k6EH5DgkX+AynkrUozbfK/tMjq+z9Y2fHnFTGQlUoerGUHELgHTVvEwIGXyKG1UOHm5zBDuKkkLCi9HN5ZYpBy7hf2hTao17oqeYlHOmY=
+	t=1758030019; cv=none; b=I1aUHfWXrY8rw4vX5yxDgaaUhP40Xa6xOA9MNylI9d5ofqPqAEMz+nw2kxTqLb/YkT46yStDFA0mDA32qcdzwPUr9OB5QesXgQKOtFvh+6g9O00RX1GE8fQ4hRLkyMc05DLdFB+Yc/IUJ1TgsiRsgb4pCgIFhr9Pxmarke6YUNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758029918; c=relaxed/simple;
-	bh=RUIOFUyGAU9lf/b6ffnhbghIz3X/+a8GFkJzvSDd0UA=;
+	s=arc-20240116; t=1758030019; c=relaxed/simple;
+	bh=+gio5aL+IW3u8W8SSU4aBeYKAREDBl4pvtVMTW2Fww4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BIau+ia4r8OWHnfgJoGxwxdMR2nCLSYMOpNSdOuePchoixhZ+ZQhIGtcYw8X/FeRofTbLWcYJ07F0lRIPMwtZV4gJnV307ZEgWguFuW/9nnN9EEMCWGv+KiCj6CvqbV7T/F0yYX9kZpi1XKE9dq0F9qBit3CkFZ+0sdXRRL1RAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=v5gj2Erz; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kj3E/nHO0eSfv3yTaSDNX67bfhqAooGlz4f3KPU0M6ZFPHDvahIfh1o06M5cBB/a6ZEb0q1uLxiiT6kNQreetPC8e0JUZV/1eNceSsblgEE8p9mXbNDDTGaxZlxaAiAXzl66Ui0DIzf3BWwVLPc1Z5HPwN6gtynmKwuXNk51Pjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tkoliKqr; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="v5gj2Erz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WPVN6uX7KvmtEwe9ZmBY3J+N/O0DGcQ0FgQs3IdZ+84=; b=v5gj2ErzdPrRuimce0O2nKewK0
-	pwYRtdVSMcZzmSOhsvXE9lvCpL67O6yNeI/hiiCAiT/w2NcXgzxF21fIBjl8Ks61MRzM7O1XcWsde
-	14/Bq2FY00clRhJFC8zJaxZR5fKdm6chntG8wATe/Apckz7fTodaIXn5+GCAh2nCs2Jj0yaqQLwVP
-	MAUJiIFm99au241Bo5lzaYZN83D6kfMUz4rjd9eKMubrsRhbrLh+ZbU+YSLdz3JMWcZWODnDpTvJu
-	rFf0Qa9DB+Iqzil89VqCKUdYDTLB6MEzIf2z6knfQ3VNuPi3jpi+HXixeGOkDlzp0RxK8ELvic4pg
-	Cluj0nqg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58202)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uyVt3-000000004fD-2eCm;
-	Tue, 16 Sep 2025 14:38:25 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uyVt1-000000007ga-1Nb3;
-	Tue, 16 Sep 2025 14:38:23 +0100
-Date: Tue, 16 Sep 2025 14:38:23 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tkoliKqr"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-45dfb8e986aso55075925e9.0
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 06:40:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1758030016; x=1758634816; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mcfExlni0fgEhBakaF+iv8wUB2vTkCFI57QVuCuRuQI=;
+        b=tkoliKqr+Puwgc4wrCBAWlwO76XhSpqvtbzRhcjH8h9IHYLdD0Tgl/3LxnAHvGK/OF
+         w/+FBaeXfdzLi1t5i7yNR1Ko71QSPtOH+yIYovkoMpdary1q845eGwwXEV8iiIdMyctd
+         tUU37urY/o7g/x9ndJV/NpB02WMCTdKZ7L+ssG1DedVjNAHkhs2ea1joSyCVOCrJ10VI
+         ZzOz6B3DN9KHXpBej51hYbhVpc+O+AVr6Z1J1DsjOErRB+E/g0ZMDudvjUu47/G2pPPv
+         S7sCE4hFC5qpVdNPFCWjvj4u1DADpjb7z+KsP2o3SWtZtpKgvagli4UGFT4zibY685W/
+         FObA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758030016; x=1758634816;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mcfExlni0fgEhBakaF+iv8wUB2vTkCFI57QVuCuRuQI=;
+        b=XQYxwRpSWkKXpGDV+IhFUaZ3l00ReQ3FKSZhAlSGuwEEOMK9zRKSswsCV30pcHE9vc
+         Y9zF2PpuiBhK8V3oxKCG92hHxLobiTjBQp4fAgD4bhg6VnsO9lMNwtd7dVFyx4OA1qp+
+         pR51lD3Ju+DLsjESP8meeauVZ16Rhq2BXyGYsHn8g2tg/cs4RIdGqUzK8dG+6OBLROSN
+         bDp+mAXls1jAH4wziyvnkqfBN/8uZqjC2j8NueaE7y567QP6a4q609jgkRIOBbXOKOgA
+         WlmNrDmxm4EklizB48tMT7klHkSd5WLw2M5iWziF5V7H2gEoHs5AMfsbWg6bXVj2h3Kr
+         1Xhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVdMHEHumtTnXsJP55ttsCXKYGL/2rcPxsEtGTRwp8L8sMp5U6c6maPtEjZsST0yfayy+lL1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyrSf/YEd1Sjrhi2011Nkx2y/DD2SmqYxcirX4qPmjGcJCbeii
+	C3cscQpEIhOemchWylxiRFTF6NXXL/OUZcHsh03o8zGxWM66jE7marcg4KbewSKadJc=
+X-Gm-Gg: ASbGncuppkie4mdSdrbtFjCi7lpb1hRMEtlMOr2IVP8AXd/FRMyMugsIXE1ICcuouI9
+	jLLEDkJG8DcCCF1BQqrWVxw64Llz9X2aiRIT3fWU6sESge7y50pxDz1EqTf+gWYK+5YUyxUACj/
+	GlODbhpXJT2eT7nHxKCDdyTqRuqFpUFV+XmTNfz7YThs5tIzwJ1gMq3tNqnbVAGVM4OqXzV5h+W
+	RWj9JZDIsYx4OYU4/miwvJjz27zh9N5Ju1geaaOnqIAtqeh3xDDSJpMuehRKfEw8CgNQqJ9oXhr
+	aS8zTFXtngYA+HmhyaYGBR8YNG9cvH+BoSd2uVRBcEjuyNsUI0/om7hMPXjQqFcINWpPhvlm+MQ
+	14CgvdEf1Hu1MnYXa49oiyfsZkBk=
+X-Google-Smtp-Source: AGHT+IG8kaWPMWFHbVd4viKfQeFJBGjRKwC9gr1w5fiYvRQ3T/k+ZTU4DWIxru8SYExw4YHgKkL4Vg==
+X-Received: by 2002:a05:6000:2887:b0:3ec:dbcc:8104 with SMTP id ffacd0b85a97d-3ecdbcc8195mr912496f8f.36.1758030014747;
+        Tue, 16 Sep 2025 06:40:14 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45f31c51e8dsm41553405e9.1.2025.09.16.06.40.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Sep 2025 06:40:14 -0700 (PDT)
+Date: Tue, 16 Sep 2025 16:40:10 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>, linux-fsdevel@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>,
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
+	Lennart Poettering <mzxreary@0pointer.de>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>,
+	Aleksa Sarai <cyphar@cyphar.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
 	Eric Dumazet <edumazet@google.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Nick Shi <nick.shi@broadcom.com>, Paolo Abeni <pabeni@redhat.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>
-Subject: Re: [PATCH net-next 2/2] ptp: rework ptp_clock_unregister() to
- disable events
-Message-ID: <aMloTwObRUIRAzPF@shell.armlinux.org.uk>
-References: <aMglp11mUGk9PAvu@shell.armlinux.org.uk>
- <E1uyAP7-00000005lGq-3FqI@rmk-PC.armlinux.org.uk>
- <PAXPR04MB851098C0A69B74DD232071B68814A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 04/33] block: use extensible_ioctl_valid()
+Message-ID: <aMlouk_55OXZv8w5@stanley.mountain>
+References: <20250912-work-namespace-v2-0-1a247645cef5@kernel.org>
+ <20250912-work-namespace-v2-4-1a247645cef5@kernel.org>
+ <02da33e3-6583-4344-892f-a9784b9c5b1b@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,31 +92,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PAXPR04MB851098C0A69B74DD232071B68814A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <02da33e3-6583-4344-892f-a9784b9c5b1b@sirena.org.uk>
 
-On Tue, Sep 16, 2025 at 09:03:17AM +0000, Wei Fang wrote:
-> > the ordering of ptp_clock_unregister() is not ideal, as the chardev
->  ^
-> Nit: Uppercase, 't' -> 'T'
-> 
-> > +void ptp_disable_all_pins(struct ptp_clock *ptp)
-> > +{
-> > +	struct ptp_clock_info *info = ptp->info;
-> > +	unsigned int i;
-> > +
-> > +	mutex_lock(&ptp->pincfg_mux);
-> 
-> Currently ptp_chardev.c has been converted to use the auto-cleanup
-> API (scoped_cond_guard()), so scoped_guard() can be used here.
+Yeah, the:
 
-... which are very non-C like, non-obvious, and I currently have no
-idea at the moment how to use it. In my opinion, it makes code more
-difficult to understand.
+	if (extensible_ioctl_valid(cmd, FS_IOC_GETLBMD_CAP, LBMD_SIZE_VER0))
+		return -ENOIOCTLCMD;
 
-Maybe someone else can convert this for me to this non-C like
-structure?
+test is inverted...  It should be if (!valid) return instead of if (valid)
+return;
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+regards,
+dan carpenter
+
