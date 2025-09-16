@@ -1,129 +1,174 @@
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from s1.jo-so.de (s1.jo-so.de [37.221.195.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F224A31E8B7
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 19:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A561FBEA2;
+	Tue, 16 Sep 2025 19:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.221.195.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758050479; cv=none; b=Tbr9IAGhwAOhIdSnPlkYc0XNoHfPipaKeJJjK38uFODMyvuLZ+2pqFp0zZO9JW6WE6780eEBg2Vehbm3RHUnzOQSOqEG4fzI7WVLqx8JOrhExjaUeOITH5RdhAjxcNQO7ZQW7TtL7BaBgyCYuojGKXwWOf7wqM+JJ6D6m3s66cI=
+	t=1758050492; cv=none; b=WsvAGpLrVMWaVX9ill/wHab4Y6fsPaNjkrNftVaNr6VDuDQh26sVRHYxIbJ/UAWV5NgcsjULW+jXthd+rgiQDY32uBKculfmgPV3gWnYqbjBxAyNFd4SsdrPRork6KN9uDyk4nWGee0yJQZlbq6NGKT0D/VOiaVcvF7THwiWzn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758050479; c=relaxed/simple;
-	bh=eV0K2GIn5pNZ4ozBfUg0OotLEO7xwOjObGc0k457mY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEv6AcryXVDtz4YLcBElsSvN1NWGFO+0P88+oTMjjTsThd2UaNQn8lYv9KMWmA53dsE6qltk6af8Ae1eRWv0F/JevOJu5Ljm2OJQX+OKvGzFcMEnJKfBuTgo1v/BShLHacnPGk/LoZ6aueszARYmz7GWdc0njQ/QHxstdnZ9Saw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CFlLo7NX; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CFlLo7NX"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758050475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=faDaaCe9eHY4bsA8Y6JtH7wTEzGEgv1zxdTd+/w3W1E=;
-	b=CFlLo7NX1hnw+VMtSz9JCSmgN2SKzpTAEwlg1D/dO6dfQaYRkUrYH/z0N6DRDeKSiJbcrM
-	9IQDCtHYYxCRk/mMRRuQOWT/zKfJwMaK51y80H6C38Gt7pnsamwpKFGXzFAI9Kw+KdSVO0
-	UFUEDsq3LNUYL+74BRoslbF5i4VmzJM=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	intel-wired-lan@lists.osuosl.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Yael Chemla <ychemla@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH net-next v3 4/4] net/mlx5e: Report RS-FEC histogram statistics via ethtool
-Date: Tue, 16 Sep 2025 19:12:57 +0000
-Message-ID: <20250916191257.13343-5-vadim.fedorenko@linux.dev>
-In-Reply-To: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
-References: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
+	s=arc-20240116; t=1758050492; c=relaxed/simple;
+	bh=VVgIyIvhFIRGLe9aaJKQZNnY2mT71sn0CpTCBtep7UY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dpZ+gsRSnSajLP1ZBD0Y0Xn8LWEv8+QoId1MCwHldiIU16IHCZ+q3TMre9CBS0of/wwpy+qxV8k6z0DZyFznWQBt32Wt3D6tgNsKkWqv9iiFTsFYvUAYX7Xm5txd30rk2VJA5zEx0Hgvz0FcKg03cbHqTh6m30R5amNSaYdh/us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de; spf=pass smtp.mailfrom=jo-so.de; arc=none smtp.client-ip=37.221.195.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jo-so.de
+Received: from mail-relay (helo=jo-so.de)
+	by s1.jo-so.de with local-bsmtp (Exim 4.98.2)
+	(envelope-from <joerg@jo-so.de>)
+	id 1uybEV-00000001VFD-2hyk;
+	Tue, 16 Sep 2025 21:20:55 +0200
+Received: from joerg by zenbook.jo-so.de with local (Exim 4.98.2)
+	(envelope-from <joerg@jo-so.de>)
+	id 1uybEU-000000028Ed-48e9;
+	Tue, 16 Sep 2025 21:20:54 +0200
+Date: Tue, 16 Sep 2025 21:20:54 +0200
+From: =?utf-8?B?SsO2cmc=?= Sommer <joerg@jo-so.de>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, 
+	gur.stavi@huawei.com, maddy@linux.ibm.com, mpe@ellerman.id.au, danishanwar@ti.com, 
+	lee@trager.us, gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be, 
+	Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com, alexanderduyck@fb.com, 
+	richardcochran@gmail.com, kees@kernel.org, gustavoars@kernel.org, rdunlap@infradead.org, 
+	vadim.fedorenko@linux.dev, netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v12 2/5] net: rnpgbe: Add n500/n210 chip support
+ with BAR2 mapping
+Message-ID: <qbvrpeywjv6jvngkdtfcducex4jpsgqktfqs6ar2plc5bcgt5o@7bsfau64w3om>
+OpenPGP: id=7D2C9A23D1AEA375; url=https://jo-so.de/pgp-key.txt;
+ preference=signencrypt
+References: <20250916112952.26032-1-dong100@mucse.com>
+ <20250916112952.26032-3-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="knfqrve42bbn7g3c"
+Content-Disposition: inline
+In-Reply-To: <20250916112952.26032-3-dong100@mucse.com>
 
-From: Carolina Jubran <cjubran@nvidia.com>
 
-Add support for reporting RS-FEC histogram counters by reading them
-from the RS_FEC_HISTOGRAM_GROUP in the PPCNT register.
+--knfqrve42bbn7g3c
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next v12 2/5] net: rnpgbe: Add n500/n210 chip support
+ with BAR2 mapping
+MIME-Version: 1.0
 
-Co-developed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- .../ethernet/mellanox/mlx5/core/en_stats.c    | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+Dong Yibo schrieb am Di 16. Sep, 19:29 (+0800):
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/ne=
+t/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> index 60bbc806f17b..0afe39621661 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> @@ -2,8 +2,11 @@
+>  /* Copyright(c) 2020 - 2025 Mucse Corporation. */
+> =20
+>  #include <linux/pci.h>
+> +#include <net/rtnetlink.h>
+> +#include <linux/etherdevice.h>
+> =20
+>  #include "rnpgbe.h"
+> +#include "rnpgbe_hw.h"
+> =20
+>  static const char rnpgbe_driver_name[] =3D "rnpgbe";
+> =20
+> @@ -25,6 +28,54 @@ static struct pci_device_id rnpgbe_pci_tbl[] =3D {
+>  	{0, },
+>  };
+> =20
+> +/**
+> + * rnpgbe_add_adapter - Add netdev for this pci_dev
+> + * @pdev: PCI device information structure
+> + * @board_type: board type
+> + *
+> + * rnpgbe_add_adapter initializes a netdev for this pci_dev
+> + * structure. Initializes Bar map, private structure, and a
+> + * hardware reset occur.
+> + *
+> + * Return: 0 on success, negative errno on failure
+> + **/
+> +static int rnpgbe_add_adapter(struct pci_dev *pdev,
+> +			      int board_type)
+> +{
+> +	struct net_device *netdev;
+> +	void __iomem *hw_addr;
+> +	struct mucse *mucse;
+> +	struct mucse_hw *hw;
+> +	int err;
+> +
+> +	netdev =3D alloc_etherdev_mq(sizeof(struct mucse), RNPGBE_MAX_QUEUES);
+> +	if (!netdev)
+> +		return -ENOMEM;
+> +
+> +	SET_NETDEV_DEV(netdev, &pdev->dev);
+> +	mucse =3D netdev_priv(netdev);
+> +	mucse->netdev =3D netdev;
+> +	mucse->pdev =3D pdev;
+> +	pci_set_drvdata(pdev, mucse);
+> +
+> +	hw =3D &mucse->hw;
+> +	hw_addr =3D devm_ioremap(&pdev->dev,
+> +			       pci_resource_start(pdev, 2),
+> +			       pci_resource_len(pdev, 2));
+> +	if (!hw_addr) {
+> +		err =3D -EIO;
+> +		goto err_free_net;
+> +	}
+> +
+> +	hw->hw_addr =3D hw_addr;
+> +
+> +	return 0;
+> +
+> +err_free_net:
+> +	free_netdev(netdev);
+> +	return err;
+> +}
+> +
+>  /**
+>   * rnpgbe_probe - Device initialization routine
+>   * @pdev: PCI device information struct
+> @@ -37,6 +88,7 @@ static struct pci_device_id rnpgbe_pci_tbl[] =3D {
+>   **/
+>  static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id=
+ *id)
+>  {
+> +	int board_type =3D id->driver_data;
+>  	int err;
+> =20
+>  	err =3D pci_enable_device_mem(pdev);
+> @@ -63,6 +115,9 @@ static int rnpgbe_probe(struct pci_dev *pdev, const st=
+ruct pci_device_id *id)
+>  		dev_err(&pdev->dev, "pci_save_state failed %d\n", err);
+>  		goto err_free_regions;
+>  	}
+> +	err =3D rnpgbe_add_adapter(pdev, board_type);
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-index 476689cb0c1f..1da439dda323 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
-@@ -1529,15 +1529,46 @@ fec_rs_histogram_fill_ranges(struct mlx5e_priv *priv,
- 	return num_of_bins;
- }
- 
-+static void fec_rs_histogram_fill_stats(struct mlx5e_priv *priv,
-+					u8 num_of_bins,
-+					struct ethtool_fec_hist *hist)
-+{
-+	struct mlx5_core_dev *mdev = priv->mdev;
-+	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
-+	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {0};
-+	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
-+	void *rs_histogram_cntrs;
-+
-+	MLX5_SET(ppcnt_reg, in, local_port, 1);
-+	MLX5_SET(ppcnt_reg, in, grp, MLX5_RS_FEC_HISTOGRAM_GROUP);
-+	if (mlx5_core_access_reg(mdev, in, sz, out, sz, MLX5_REG_PPCNT, 0, 0))
-+		return;
-+
-+	rs_histogram_cntrs = MLX5_ADDR_OF(ppcnt_reg, out,
-+					  counter_set.rs_histogram_cntrs);
-+	/* Guaranteed that num_of_bins is less than MLX5E_FEC_RS_HIST_MAX
-+	 * by fec_rs_histogram_fill_ranges().
-+	 */
-+	for (int i = 0; i < num_of_bins; i++) {
-+		hist->values[i].bin_value = MLX5_GET64(rs_histogram_cntrs,
-+						       rs_histogram_cntrs,
-+						       hist[i]);
-+	}
-+}
-+
- static void fec_set_histograms_stats(struct mlx5e_priv *priv, int mode,
- 				     struct ethtool_fec_hist *hist)
- {
-+	u8 num_of_bins;
-+
- 	switch (mode) {
- 	case MLX5E_FEC_RS_528_514:
- 	case MLX5E_FEC_RS_544_514:
- 	case MLX5E_FEC_LLRS_272_257_1:
- 	case MLX5E_FEC_RS_544_514_INTERLEAVED_QUAD:
--		fec_rs_histogram_fill_ranges(priv, &hist->ranges);
-+		num_of_bins = fec_rs_histogram_fill_ranges(priv, &hist->ranges);
-+		if (num_of_bins)
-+			fec_rs_histogram_fill_stats(priv, num_of_bins, hist);
- 		break;
- 	default:
- 		return;
--- 
-2.47.3
+Would an empty line before this assignment make the code more readable?
 
+
+
+--=20
+Professor: =E2=80=9AGott=E2=80=98, unverst=C3=A4ndliches und mythisches Wes=
+en, das sich einmal
+  pro Woche im Kreis der Sterblichen manifestiert um Weisheit auf Folien
+  unter das Volk zu bringen.		(Dschungelbuch=C2=A011, FSU=C2=A0Jena)
+
+--knfqrve42bbn7g3c
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABEIAB0WIQS1pYxd0T/67YejVyF9LJoj0a6jdQUCaMm4kwAKCRB9LJoj0a6j
+dcomAPwK0FbLAeUxOE6JiQpjcigplrvqMi5jCaJJvPAK7Fxo2QD/SnaCTg1bNL5B
+nDsd8Xyg2CtKj9MluTtobPMagELo2nw=
+=fT2B
+-----END PGP SIGNATURE-----
+
+--knfqrve42bbn7g3c--
