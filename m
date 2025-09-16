@@ -1,112 +1,138 @@
-Received: from mx0b-00190b01.pphosted.com (mx0b-00190b01.pphosted.com [67.231.157.127])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEC1223DF6
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 05:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.157.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9591C6A3;
+	Tue, 16 Sep 2025 05:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758001034; cv=none; b=kwThOzNOi+oJpQY3FdKBIWAXZR5p7lJqjQhbJyj+RNTOyerpZwBnRVu2JaL/vnKzSkACQl7Ei/9l+E/3Xgs03qDWazaII82UfRRwJfstLR+pwpKzGhaSXNEfcNF5Lm1XugSZPGu91+8OKaKqqXqHZVJkDcuvkCUAMwb6x1Jj9b8=
+	t=1758001556; cv=none; b=jTruajq/WGaJI9egBzYCFt7e8lSGZVxeoCh5szzGbnKxGGKcVLhUMJvmG4MzESf1dm5kUv1OcR9DN0dmBZ4fFdh300DDS5C9c8zCFQ1DCq4/KVPyTI0XL12D0ixXdGzpwc8yH6KupPVNaaj3GPy90GFGmZpzPwrBYAWWb8uL12U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758001034; c=relaxed/simple;
-	bh=6n2+F+6WCeEdX7IBCd3sAzOpY2dA2TDymEX5m8E9vL8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cHaF+2TcWtAnZINClUIgmqJwLhrMh952EUVFQKn6ltCR/lGP44gNgxXYMULam7G2LR3K1gvvmUO9uc1MD8n7inOU8jVpTB4ZYjnFYNXIiovSSMUsZ9bGqpRvKGJ8ZovYfPJ2sSF5HNvwY8zPxT8YQvDIDZDr/cRKjAlmxBDoxUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=i2knMQ0e; arc=none smtp.client-ip=67.231.157.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	s=arc-20240116; t=1758001556; c=relaxed/simple;
+	bh=St0T9L/irb0uOHmCv7ND5bZ4N+RxY3A5HgQju34FRd4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tRTpynE9+6cFpq0RYw1MVQ1RGqiFc/sdwe6aibB4CbzT7dv1nfLE53yvsjZlgGbfAIHKdaeI5CD6XcspHyEu9paf6pjFdUBmE4I72oTRcW+hGgLyYHBQybR4jikWuK/QfRdAe9bC/uSd+3YGDmalMv8ge7eYJxcW1EXYiB78HK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hV75BlTh; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="i2knMQ0e"
-Received: from pps.filterd (m0050096.ppops.net [127.0.0.1])
-	by m0050096.ppops.net-00190b01. (8.18.1.2/8.18.1.2) with ESMTP id 58G3jhpO013704;
-	Tue, 16 Sep 2025 04:48:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=jan2016.eng; bh=MzE24RzG3TGvfyXQs95e7HHxFLJkCbCCa
-	v26MuCefMw=; b=i2knMQ0ep71edMbrU+xXADrsVWgJS+I1MqzNpm/eQQh+Aq7+N
-	Nz0ZRpYVe0LSQTbOCoeEwm4re/U7szs02AjX9I3r9ipq37oFZY9AKuI99fZzEq4f
-	ViwoEVL+rXd3HtDDhZEazJTdvVKVBf1qpMNvnDYk9pjlUJTF58sL918VrqAHtZ1J
-	835KjRt6swxM1nxbQ+VbzqjowE0o0LjHV+kB6GO6KYeH5aM5+X4mKw/e3ul4yhho
-	jh/YTg+vAS3v0xC0Ts9DhPq8FGKVM+83pBTfRa/f/Jdz55dRuwgKEldIeoQuDggV
-	azGoSfOVZIvgzU401yBIamaUV2AH8P+QyvyUA==
-Received: from prod-mail-ppoint6 (prod-mail-ppoint6.akamai.com [184.51.33.61])
-	by m0050096.ppops.net-00190b01. (PPS) with ESMTPS id 496gst2m1k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Sep 2025 04:48:58 +0100 (BST)
-Received: from pps.filterd (prod-mail-ppoint6.akamai.com [127.0.0.1])
-	by prod-mail-ppoint6.akamai.com (8.18.1.2/8.18.1.2) with ESMTP id 58FMJulB004097;
-	Mon, 15 Sep 2025 23:48:57 -0400
-Received: from prod-mail-relay01.akamai.com ([172.27.118.31])
-	by prod-mail-ppoint6.akamai.com (PPS) with ESMTP id 495j1t6pwc-1;
-	Mon, 15 Sep 2025 23:48:57 -0400
-Received: from bos-lhv9ol.bos01.corp.akamai.com (bos-lhv9ol.bos01.corp.akamai.com [172.28.41.79])
-	by prod-mail-relay01.akamai.com (Postfix) with ESMTP id 3900689;
-	Tue, 16 Sep 2025 03:48:57 +0000 (UTC)
-From: Jason Baron <jbaron@akamai.com>
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
-Date: Mon, 15 Sep 2025 23:48:41 -0400
-Message-Id: <20250916034841.2317171-1-jbaron@akamai.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hV75BlTh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758001555; x=1789537555;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=St0T9L/irb0uOHmCv7ND5bZ4N+RxY3A5HgQju34FRd4=;
+  b=hV75BlThWq8KodXbt2apsGzge37/5sliuUpvVBBvQE1x/gf1DBEFlbq/
+   yXJ6gNEZBPvCnBYjr6z8jSLTeHRCEJBWaZFPWREjom73KuoADV75n0lDC
+   YBr9E/Lq41caQE+FbTOfHfLCRVJI0sW0kQ0ej6k6UvdShxsVmvGcYgzOu
+   k9H15cBDipxFhG2N0FBDJBe5vrC6G8TknqI7eJIBxp7lQZ6uPyzYA65fS
+   G/nHEA+FU3LwSEaoGobpRYCtc36fn3DFGXRkBd7PGs3mS0oabQ3YwCbKC
+   5PpTpsvxkK6TxKnlQ+0CnBnMhkdTacL6pnvQki9JBLhxXBvYGe+p3YSQF
+   g==;
+X-CSE-ConnectionGUID: Z/W4vhbtT1KTx7Xm115Qng==
+X-CSE-MsgGUID: yyozBt0DSIaeLlz4AI3aHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="63902761"
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
+   d="scan'208";a="63902761"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 22:45:54 -0700
+X-CSE-ConnectionGUID: MlV3610HQl6I+ZtfDRhHmw==
+X-CSE-MsgGUID: AV8iiBnCROSuPNFdCkIvjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,268,1751266800"; 
+   d="scan'208";a="178848707"
+Received: from lkp-server01.sh.intel.com (HELO 5b01dd97f97c) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 15 Sep 2025 22:45:47 -0700
+Received: from kbuild by 5b01dd97f97c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uyOVc-00011z-20;
+	Tue, 16 Sep 2025 05:45:44 +0000
+Date: Tue, 16 Sep 2025 13:45:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tariq Toukan <tariqt@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>, Will Deacon <will@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Justin Stitt <justinstitt@google.com>
+Subject: Re: [PATCH net-next V2] net/mlx5: Improve write-combining test
+ reliability for ARM64 Grace CPUs
+Message-ID: <202509161338.Kq88HUjH-lkp@intel.com>
+References: <1757925308-614943-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_01,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=801 adultscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2509160035
-X-Proofpoint-ORIG-GUID: uvAI5RuVY1yeEB6H4ccF8_D1VO7JAtHJ
-X-Proofpoint-GUID: uvAI5RuVY1yeEB6H4ccF8_D1VO7JAtHJ
-X-Authority-Analysis: v=2.4 cv=WeEMa1hX c=1 sm=1 tr=0 ts=68c8de2a cx=c_pps
- a=WPLAOKU3JHlOa4eSsQmUFQ==:117 a=WPLAOKU3JHlOa4eSsQmUFQ==:17
- a=yJojWOMRYYMA:10 a=X7Ea-ya5AAAA:8 a=NhSYdsD-4wXDxyF7mi0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDA5NSBTYWx0ZWRfX2E0I6gdI7mHq
- 4D9WfbrMWM0JbEid2e0+Hfdcydv0aRgaca5HHBR05vUdCRvl7pzXL7xwlCNOM/i97bm2yXYsTzC
- A9MHcRgnTRll56v9o3p9szBRs4yQ9bpLaZ7CgAG/DSvNn7vbYsR+P5ElRGBEg0uQrljkAn7M6vd
- TcpLoIdJ20kG62Ea9Ykezrq/VMZNVlqUvkg2cYT07bIs2b8Y+k5ovv0Ftl4NhVht2b+F38FVZT/
- PDKGoGqyL4k3fq5euOfvq5OVF3eTWC9aY3yxfZhVuvIYlQRke6HuDrY3I/GfV1Iexv3+nMtnS2z
- pW339pCocRwhJEB/cqzT6FYbxqXzhddEQSz/lsmuAxIGCdkJCYbu0T1KPz1nXvoY7TyLLWsY14m
- 7+49ecAgExrWS+PuU6+yX50xLtRYjA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-16_01,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 adultscore=0 malwarescore=0 clxscore=1015 phishscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2508280000
- definitions=main-2509150095
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1757925308-614943-1-git-send-email-tariqt@nvidia.com>
 
-Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
-slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
-alloc_skb_with_frags() will size their allocation of frags based
-on MAX_SKB_FRAGS.
+Hi Tariq,
 
-Signed-off-by: Jason Baron <jbaron@akamai.com>
----
- net/core/skbuff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 23b776cd9879..df942aca0617 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6669,7 +6669,7 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
- 		return NULL;
- 
- 	while (data_len) {
--		if (nr_frags == MAX_SKB_FRAGS - 1)
-+		if (nr_frags == MAX_SKB_FRAGS)
- 			goto failure;
- 		while (order && PAGE_ALIGN(data_len) < (PAGE_SIZE << order))
- 			order--;
+[auto build test ERROR on 1f24a240974589ce42f70502ccb3ff3f5189d69a]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Tariq-Toukan/net-mlx5-Improve-write-combining-test-reliability-for-ARM64-Grace-CPUs/20250915-163901
+base:   1f24a240974589ce42f70502ccb3ff3f5189d69a
+patch link:    https://lore.kernel.org/r/1757925308-614943-1-git-send-email-tariqt%40nvidia.com
+patch subject: [PATCH net-next V2] net/mlx5: Improve write-combining test reliability for ARM64 Grace CPUs
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20250916/202509161338.Kq88HUjH-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250916/202509161338.Kq88HUjH-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509161338.Kq88HUjH-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/mellanox/mlx5/core/lib/wc_neon_iowrite64_copy.c:9:3: error: instruction requires: neon
+       9 |         ("ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
+         |          ^
+   <inline asm>:1:2: note: instantiated into assembly here
+       1 |         ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [x19]
+         |         ^
+   drivers/net/ethernet/mellanox/mlx5/core/lib/wc_neon_iowrite64_copy.c:9:48: error: instruction requires: neon
+       9 |         ("ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
+         |                                                       ^
+   <inline asm>:2:2: note: instantiated into assembly here
+       2 |         st1 {v0.16b, v1.16b, v2.16b, v3.16b}, [x20]
+         |         ^
+   2 errors generated.
+
+
+vim +9 drivers/net/ethernet/mellanox/mlx5/core/lib/wc_neon_iowrite64_copy.c
+
+     5	
+     6	void mlx5_wc_neon_iowrite64_copy(void __iomem *to, const void *from)
+     7	{
+     8		asm volatile
+   > 9		("ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
