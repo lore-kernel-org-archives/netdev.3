@@ -1,132 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB342D661D
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 11:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B557E2DC79E;
+	Tue, 16 Sep 2025 12:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758023782; cv=none; b=LdrV4cy6b2uUqeWXOSp/JTskcp5ak5Sw7y9cipyt+lRXCRiJB15obcy+MOzEtQOZYCtzFr4reuVlvtjHdtrL2VecdgT9LHstvZP1lfgi/94kSCDYkNtd50/5eE2muKT8MM/uI4r4lSkIMVxRlpkuIRu/kK3aKN4shoNgAgTApiQ=
+	t=1758024286; cv=none; b=A01yy3oaQ95P/lbVcN+JOGix4QFRFdV4jo0fEGlR4P1Uoid323A63SpEBOpakHzxzSvVqfMoZvKHDpD/P3k9/6SOxiPb/jN0kn3vx2KOblp4dPV0LBOL1TEY0eII+EDOFSyLzDql3C1xYZwgetzuqI9Lq4lR6dpGpJpI3iTOHnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758023782; c=relaxed/simple;
-	bh=3S+jNxmDYUUUXfEI5vWwrT9ih7WaBA7z3QtFabvleW0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kgFrCJOS065JSHZiIpi8t7fdVoi63CBerlXogHjGytLHl+Kdo2ZMEkcs49iLTYxGeNvuu3cTy0DN+rv6kxNS6FS5OzXMu9Y1y2jiKOsXUxmOh+VcFvk4BNcQ+ByEwR4T1Bxq8qX/B29rKHMb0eu0OC1MXpDpLZns3jlGUNd3SIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GQOP8Ij/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758024286; c=relaxed/simple;
+	bh=SCxMx4yEem5tSoETGmO1maR9jyrWfm8TqZNB0zt9vOw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pifne5Eqy2/Q9Xgnu141Fzx4B5yizYb6kYrr45nnl8vWjWazwWdtPvpfo+Mf9X9cpPaxXkPAIfPbHOmtR+avXfRAzWRv3y6GHaXYBrjr8dL9ffhH3+gtf7QGOloDAm3LgonCkezCe2Z613LdW5eRRD+GR94abIaGiyNyuScedyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUY3ce9a; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GQOP8Ij/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758023779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h0Ra6i2f66P59CRI5N1spBjW+VhT7ES9HuZ5VOE5NFk=;
-	b=GQOP8Ij/LCrdQtY5WnS2rgHdew1mNpfwtjdUsUYhtNUVel78xtigsFWIO9S46DWLJ3sSgP
-	nLNJvKHac8uEMlM+JHbfwRoLdStChslmx+rUvyn42w40u6KywY+KtrGNHW/APhcp6WTqo+
-	SacH9TiYJM15HagluisR/GQQeJbfhC4=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-sSAAhqIqPduwe2a4YfAHww-1; Tue, 16 Sep 2025 07:56:17 -0400
-X-MC-Unique: sSAAhqIqPduwe2a4YfAHww-1
-X-Mimecast-MFC-AGG-ID: sSAAhqIqPduwe2a4YfAHww_1758023777
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b0787ffa053so496297866b.1
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 04:56:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758023777; x=1758628577;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h0Ra6i2f66P59CRI5N1spBjW+VhT7ES9HuZ5VOE5NFk=;
-        b=c7uQcTljXJfiIox5qlteYzgb2XsSSOgtowvPPjXmeTNVsucyUI9BQBUH+JFEwMUqTf
-         36bSltrUaTz/t0ZEwHpcF3ZoS1R9bO+ECY8mMXpjw5TkBLuUAVSGe5HYc5ndHvHghdbM
-         o1hOKt+d2W+ztyBOO1/yNdG32EShSTNrc3KcK87PIq7+oQ4sr7+EIiG8kNTU0x65agaX
-         BvqEvXD27yrPMoB/WGOB4kR+CS8SvonGlESJvzPeB3hB6eOSQELpc8sq6UJAyq2xAV1A
-         wEisRFvc/s7rggDYnMBtJZw3nvToAh9Jxxbn9Ll6oySo5bov0SBBkAAUzXO0y3T4E/Bu
-         TBPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcpdgvOSjjy5Auf7aj8/2DxA5uJ5ZY+Y1MRVy/VmI4Lidk54TxCV16WGfd+3qhF09iw5jnjl0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9KMQUBuDNzehZ+Lh2YZse5BcnEfau7d7iv3F575uAzcyvg/nM
-	wcyUcF/jE/ooA858NWJodd6mR8oZwHvD/o909VxM2Dz3umAdZTQEZXtVaYRmQV7qtd7PTRADZGr
-	NJUcE3cDRoVmAOBr4B1gir8M38AS/2PweGss6TWCaVEujBsN2AxCaAPDpXoqiYTUlbLhf/ovklb
-	1lfLWQB/dqcLfpEEqoH8TSq0lctKpU3WQT
-X-Gm-Gg: ASbGncv+Ude8P4GAecqQNhie9Qy2tJiIZGPKPyXm0ajOSgopr8msanrctlgAmRjqGAJ
-	Dnrw2dCeO6gI6628ozETl+8T/GW8dWkQA27wsF+XBVoD6hEWEqOrW0FnpgVuleOAw3rE8exehI/
-	z7FYrl8AJgrN5npnmGtjRavA==
-X-Received: by 2002:a17:907:3d02:b0:b11:3760:95b4 with SMTP id a640c23a62f3a-b167deddcf6mr245928566b.2.1758023776662;
-        Tue, 16 Sep 2025 04:56:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0PI35/hEV3tO6/rTmDZsusJRuSn/cMesYTaXeGJ6BLt+Imfx3eO+iuaBX8kz/r5FsIazYF9a5oXZ9S/+4tTA=
-X-Received: by 2002:a17:907:3d02:b0:b11:3760:95b4 with SMTP id
- a640c23a62f3a-b167deddcf6mr245925266b.2.1758023776230; Tue, 16 Sep 2025
- 04:56:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUY3ce9a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758024284; x=1789560284;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SCxMx4yEem5tSoETGmO1maR9jyrWfm8TqZNB0zt9vOw=;
+  b=QUY3ce9aP4da3ibNMqYG79wrOkFj/8+csWgyG1eaox9l0FPCkGoTRtOD
+   VnVJwvbmHwpxrgWGi8rZ0vM8CcLNRQqxKWSNpAuY4dBANnO8uMuDcIxIx
+   SFvL7/++iQaxsE0Mk8NVGsVffI5NdV18/qP50Ct/4GOIXWYT91IUHZMe4
+   fLU/pyYGLrdL9J0bMQZJtaDQjOrYvhLUB35bNNoZGwcQ9gw8ahlSQdR12
+   eOfhOLUuigGxQViGOp21GnN87wnorrOQEU+NHCBrTKrcxKtv5xD4A/vtC
+   jfzpH0fqH4SIH62OFUsKEb2xk4wfz6YHcLMXm5xK2e7viHEhzbMfaQsPF
+   w==;
+X-CSE-ConnectionGUID: XkjKfuFGT8uhpJdZbls9qg==
+X-CSE-MsgGUID: ni8xyfJsRAm9PV7wOj0dhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="59347147"
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="59347147"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 05:04:43 -0700
+X-CSE-ConnectionGUID: +tfY37zWQQeVhM7X2GtGXQ==
+X-CSE-MsgGUID: jk21zKWcS7WwUSZnHEVknw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
+   d="scan'208";a="180058260"
+Received: from gklab-kleszczy-dev.igk.intel.com ([10.102.25.215])
+  by orviesa005.jf.intel.com with ESMTP; 16 Sep 2025 05:04:41 -0700
+From: Konrad Leszczynski <konrad.leszczynski@intel.com>
+To: davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	cezary.rojewski@intel.com,
+	sebastian.basierski@intel.com,
+	Konrad Leszczynski <konrad.leszczynski@intel.com>
+Subject: [PATCH net v4 0/2] net: stmmac: misc fixes
+Date: Tue, 16 Sep 2025 14:09:30 +0200
+Message-Id: <20250916120932.217547-1-konrad.leszczynski@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1757951612.git.mst@redhat.com> <A8EB32B8-1AF2-45AA-87A9-4068E405B284@nutanix.com>
-In-Reply-To: <A8EB32B8-1AF2-45AA-87A9-4068E405B284@nutanix.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Tue, 16 Sep 2025 19:55:39 +0800
-X-Gm-Features: AS18NWDfz5SNTBZIUxlhuLZxRAY5mBqwnEKmFaFtzrsqK0Bx9ahhPEpbA2uZSho
-Message-ID: <CAPpAL=zNOt0ke-12k_Fo1mzFyfi48h3v__6pb3+ZS_7d=pwnZQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] vhost-net regression fixes
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Jon Kohler <jon@nutanix.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Tested this series of patches with virtio-net regression tests,
-everything works fine. Please feel free to let me know if these
-patches need me to do more tests.
+This series adds two fixes addressing KASAN panic on ethtool usage and
+flow stop on TC block setup when interface down.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+Patchset has been created as a result of discussion at [1].
 
-On Tue, Sep 16, 2025 at 12:39=E2=80=AFAM Jon Kohler <jon@nutanix.com> wrote=
-:
->
->
->
-> > On Sep 15, 2025, at 12:03=E2=80=AFPM, Michael S. Tsirkin <mst@redhat.co=
-m> wrote:
-> >
-> > !-------------------------------------------------------------------|
-> >  CAUTION: External Email
-> >
-> > |-------------------------------------------------------------------!
-> >
-> >
-> > Two regressions were reported in vhost-net.
-> > This is based on a patchset by Jason, but with
-> > patch 2 from his series split up and made simpler.
-> >
-> > Lightly tested.
-> > Jason, Jon could you pls test this as well, and report?
->
-> For the iotlb bit (patch 2/3):
-> Tried this out on a 6.16 host / guest that locked up with iotlb miss loop=
-,
-> applied this patch and all was well.
->
-> Tested-by: Jon Kohler <jon@nutanix.com>
->
-> >
-> >
-> > Jason Wang (2):
-> >  vhost-net: unbreak busy polling
-> >
-> > Michael S. Tsirkin (1):
-> >  Revert "vhost/net: Defer TX queue re-enable until after sendmsg"
-> >  vhost-net: flush batched before enabling notifications
-> >
-> > drivers/vhost/net.c | 44 ++++++++++++++++++++------------------------
-> > 1 file changed, 20 insertions(+), 24 deletions(-)
-> >
-> > --
-> > MST
-> >
->
+v2 can be found at [2].
+v3 can be found at [3].
+
+[1] https://lore.kernel.org/netdev/20250826113247.3481273-1-konrad.leszczynski@intel.com/
+[2] https://lore.kernel.org/netdev/20250828100237.4076570-1-konrad.leszczynski@intel.com/
+[3] https://lore.kernel.org/netdev/20250916092507.216613-1-konrad.leszczynski@intel.com/
+
+v3 -> v4:
+- add missing Reviewed-by lines
+
+v2 -> v3:
+- replace strcpy with ethtool_puts per suggestion
+- removed extension patch for printing enhanced descriptors
+
+v1 -> v2:
+- add missing Fixes lines
+- add missing SoB lines
+- removed all non-fix patches. These will be sent in separate series
+
+Karol Jurczenia (1):
+  net: stmmac: check if interface is running before TC block setup
+
+Konrad Leszczynski (1):
+  net: stmmac: replace memcpy with ethtool_puts in ethtool
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
 
