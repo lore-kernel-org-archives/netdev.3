@@ -1,67 +1,97 @@
-Received: from cdmsr2.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FF81B0F1E
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 03:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6AD233D9C;
+	Tue, 16 Sep 2025 03:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757994020; cv=none; b=S37SEIiYkYaTcBzO3NZkVxZ3WtR/+5mn/TmQ1V4LdaRJQKvUKHIJaYuU7fANko3EvVcjafR5WFMf1zG7Ma5vFxjfppAejnFQZbISPUGcdxq0qSy52JW5oLEzY2SGwq3Lw3lGADHea/n4epMu8N9H2206Nm2ZqRusQ/nY2OcLCsg=
+	t=1757995001; cv=none; b=VG94qzn+1A/vVdsZQSezcEOz34MehkuiS0cULOlumTGOGAxshqbEYKoWs5PnFjEHGxnRZPxb1dRQbHp/zJH4Ze75FFKZ6QLj6B/wJNhSs1pYLKMDx/FsOBg8yQhc93+H6eBIBQUCJJH8HV2cp5Rw3Ew0JYNhVL+2Xcr3XPnEJEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757994020; c=relaxed/simple;
-	bh=oyMCGO1a6aNiZMUQ7sl2/U2TykMRg4cT5rWCugmHr+M=;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=jNK1FIC7BaZUyi1+mqCKc1eDe79HGnLCiQuKOJmVH/tC7e/wVaTUP2HeZn6uekGwfdU4iSSfskC1W/K68tvAVEbUUfPArcznqLI+FAOwwgIVNCEcAapzCBAukaveJOhjekLlYBQRDdlSsmmvVDiBNL85qRUFOQ3FuLRsN9vIO78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=eSvmCvKR; arc=none smtp.client-ip=210.65.1.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+	s=arc-20240116; t=1757995001; c=relaxed/simple;
+	bh=IhRqGH+mDSxYQwGsnSKG7Q7bcY4B8OSLGwI4BLjoXds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hkN9zdTC4T7KbClo50T5n+xoL+ekXvBtmVtCWevcRR/d2vYcxAtrWbuQoUAIxHBS01SsDLhPdI9M/4ttdTlPkiXNj5uxkXu1LpwVdwfA0UA2xe+UPN/RM/61S4VAgIK+ayaDUkVFHzlEK473SuwvsfZmKl1DstmDoblZqkDwGNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Gya+LUhD; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="eSvmCvKR"
-Received: from cmsr6.hinet.net ([10.199.216.85])
-	by cdmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 58G3e8Jd953307
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 11:40:09 +0800
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
-	s=default; t=1757994009; bh=AJRnvz1qGhekxTJ0olJE/B+ggew=;
-	h=From:To:Subject:Date;
-	b=eSvmCvKRst5//DKDn/8ri6rLw81LCW7hDqlf7KVVcGJ1xYLdm+inMl9da0V441P4e
-	 92qspsS/DLHY064lwhQRrWyQSrFri+09+8vaUQKeH6zDqMNym1m8ueNp7UX8viHSjh
-	 ArklyeWMTLdWSCZx79o9zdfje5tQNI9TDGJUlM0g=
-Received: from [127.0.0.1] (114-36-80-110.dynamic-ip.hinet.net [114.36.80.110])
-	by cmsr6.hinet.net (8.15.2/8.15.2) with ESMTPS id 58G3WW3x816062
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 11:35:04 +0800
-From: "Info - Albinayah 646" <Netdev@ms29.hinet.net>
-To: netdev@vger.kernel.org
-Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
-Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gNzI0NzMgVHVlc2RheSwgU2VwdGVtYmVyIDE2LCAyMDI1IGF0IDA1OjM1OjAzIEFN?=
-Message-ID: <24fd7789-7e62-c1bb-73ee-a46d35d6a6bc@ms29.hinet.net>
-Content-Transfer-Encoding: 7bit
-Date: Tue, 16 Sep 2025 03:35:03 +0000
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Gya+LUhD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uph5aHv/n19lelcCRPrreyQYMbwW8KOpqDyim4t/BPk=; b=Gya+LUhDiz9ftcN0dbd/HhuUQo
+	ntihO4DCc5n0VF8c+PywSJOYWabQMP73o8D4mHFGcJwmDsSfxLF3G4GZ5LVlr5x0NBPQVFo51oovl
+	gTiNraq8tkrigsDQRtDTjmxmOtpb1EFxGvpXuVcOKs+ApFEbGKdXGYJqNQ7DIH4RG+X/dn1C4dyOq
+	hWJZoSAP6NQCk+pLsvPj3CHOFLITXeIQKF3yTxmT7PF1YU/qQfWQnaHXuwpLEBCKbUoOcLjsoSwp2
+	3cOF92p/AAqvX7yXn+9c5C6RZFfTJuce2iLbMsaJu8KPl58wNGkf9wGcCetbDhzM9p6pOwXS53v3j
+	U2GFM43g==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uyMnx-00000005nOq-14tn;
+	Tue, 16 Sep 2025 03:56:33 +0000
+Date: Tue, 16 Sep 2025 04:56:33 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>,
+	linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>,
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
+	Lennart Poettering <mzxreary@0pointer.de>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>,
+	Aleksa Sarai <cyphar@cyphar.com>, Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 18/33] mnt: support ns lookup
+Message-ID: <20250916035633.GM39973@ZenIV>
+References: <20250912-work-namespace-v2-0-1a247645cef5@kernel.org>
+ <20250912-work-namespace-v2-18-1a247645cef5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-HiNet-Brightmail: Spam
-X-CMAE-Score: 100
-X-CMAE-Analysis: v=2.4 cv=UojANPwB c=0 sm=1 tr=0 ts=68c8dae9
-	p=OrFXhexWvejrBOeqCD4A:9 a=CYLkyOAMVnx1jOyxgnWgDg==:117 a=IkcTkHD0fZMA:10
-	a=5KLPUuaC_9wA:10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250912-work-namespace-v2-18-1a247645cef5@kernel.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Hi Netdev,
+On Fri, Sep 12, 2025 at 01:52:41PM +0200, Christian Brauner wrote:
+> Move the mount namespace to the generic ns lookup infrastructure.
+> This allows us to drop a bunch of members from struct mnt_namespace.
 
-Please provide a quote for your products:
+>  static void mnt_ns_tree_remove(struct mnt_namespace *ns)
+>  {
+>  	/* remove from global mount namespace list */
+> -	if (!is_anon_ns(ns)) {
+> -		mnt_ns_tree_write_lock();
+> -		rb_erase(&ns->mnt_ns_tree_node, &mnt_ns_tree);
+> -		list_bidir_del_rcu(&ns->mnt_ns_list);
+> -		mnt_ns_tree_write_unlock();
+> -	}
+> -
+> -	call_rcu(&ns->mnt_ns_rcu, mnt_ns_release_rcu);
+> -}
+> -
+> -static int mnt_ns_find(const void *key, const struct rb_node *node)
+> -{
+> -	const u64 mnt_ns_id = *(u64 *)key;
+> -	const struct mnt_namespace *ns = node_to_mnt_ns(node);
+> +	if (!is_anon_ns(ns))
+> +		ns_tree_remove(ns);
 
-Include:
-1.Pricing (per unit)
-2.Delivery cost & timeline
-3.Quote expiry date
+Conflicts with "mnt_ns_tree_remove(): DTRT if mnt_ns had never been
+added to mnt_ns_list".
 
-Deadline: September
+FWIW, the right thing to do here is
 
-Thanks!
+	if (!RB_EMPTY_NODE(to_ns_common(ns)->ns_tree_node))
+		ns_tree_remove(ns);
 
-Kamal Prasad
-
-Albinayah Trading
