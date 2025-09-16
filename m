@@ -1,16 +1,15 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754C428506C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA5F298991
 	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 12:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025956; cv=none; b=IOzgFOE+xeZO+poX4ALsNwYFbOLeh7t+/YNdypXYTVP/bQRuUW5IoJ/MvIZCXziwthQmzIThoThl5ra8GaFu4AhbL6ojEjJ63CTp8pVumm4ufhiYVfribby7bjXzN5/R6WsKe3p2VNc7D4AKgMDIycRubY1VE0zQozBy0WYsOdw=
+	t=1758025956; cv=none; b=Yy919nojQpycpwNBbhCqHgYTagocBuKzQSyEukVxyy2cFOaP0npFb2Z2P8um9QtcV7CSheqN4JIhvy9pvXENjFpy/++6w64n92ruZISszGNRRM+dZ2HOxDGggvinq1AF9p6SCv9gbvq8w1UqtNXSo0Ya9fNryV2iG8qtWliUf0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758025956; c=relaxed/simple;
-	bh=eqasl4Gulv2tyL8V2MQuYRKQ8E4bI4e0PVmQe5uf65U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tByQz9M/cJZa66sqaLXHtAByZoInMPoPNFpsoV7Yvdj20SRzdlYB7bgMWJGu0jyJvOonp/JW68wj2Fxa/k7Qv0xiE7Bf0RjkrdrbiLDvC8mPILPZnM+f/VZewFbHnwnSzlLBfyHwBpLUNOmTHVG4ji/n5fpChEHvxYQTIBqH3u4=
+	bh=Agg8jwj0yNz4U+D1vkGqSfDDpA4p1Dso+0TsUn5IHJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ACzcqbshkVqfla1AGb2pA2zR7FlKDJzUdJKuzAjCxNH0oXPmdrivE2BTCJNzaTJFZcH7Yq4uiBynGS33V8TtX7GuvhUDJEr/fV0ojuH3AuG2QdBCBpXR2P2Vc8zQGdpR1xCvE3EnF+nnyReOLhUWNZnJ+DT5lEONDXocuYbHZaE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
@@ -18,106 +17,91 @@ Received: from kero.packetmixer.de (p200300c5972536D8604E0A64d0d3AAD8.dip0.t-ipc
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 81448FA1AE;
-	Tue, 16 Sep 2025 14:24:52 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D79CDFA12C;
+	Tue, 16 Sep 2025 14:24:48 +0200 (CEST)
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: kuba@kernel.org,
 	davem@davemloft.net
 Cc: netdev@vger.kernel.org,
 	b.a.t.m.a.n@lists.open-mesh.org,
-	Sven Eckelmann <sven@narfation.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 4/4] batman-adv: remove includes for extern declarations
-Date: Tue, 16 Sep 2025 14:24:41 +0200
-Message-ID: <20250916122441.89246-5-sw@simonwunderlich.de>
+Subject: [PATCH net-next 0/4] pull request for net-next: batman-adv 2025-09-16
+Date: Tue, 16 Sep 2025 14:24:37 +0200
+Message-ID: <20250916122441.89246-1-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250916122441.89246-1-sw@simonwunderlich.de>
-References: <20250916122441.89246-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Sven Eckelmann <sven@narfation.org>
 
-It is not necessary to include the header for the struct definition for an
-"extern " declaration. It can simply be dropped from the headers to reduce
-the number of includes the preprocessor has to process. If needed, it can
-be added to the actual C source file.
+Hi Jakub, hi David,
 
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
----
- net/batman-adv/hard-interface.c | 1 +
- net/batman-adv/hard-interface.h | 1 -
- net/batman-adv/mesh-interface.c | 1 +
- net/batman-adv/mesh-interface.h | 1 -
- net/batman-adv/netlink.h        | 1 -
- 5 files changed, 2 insertions(+), 3 deletions(-)
+here is a cleanup pull request of batman-adv to go into net-next.
 
-diff --git a/net/batman-adv/hard-interface.c b/net/batman-adv/hard-interface.c
-index bace57e4f9a51..5113f879736b5 100644
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -22,6 +22,7 @@
- #include <linux/minmax.h>
- #include <linux/mutex.h>
- #include <linux/netdevice.h>
-+#include <linux/notifier.h>
- #include <linux/printk.h>
- #include <linux/rculist.h>
- #include <linux/rtnetlink.h>
-diff --git a/net/batman-adv/hard-interface.h b/net/batman-adv/hard-interface.h
-index 262a783647427..9db8a310961ea 100644
---- a/net/batman-adv/hard-interface.h
-+++ b/net/batman-adv/hard-interface.h
-@@ -12,7 +12,6 @@
- #include <linux/compiler.h>
- #include <linux/kref.h>
- #include <linux/netdevice.h>
--#include <linux/notifier.h>
- #include <linux/rcupdate.h>
- #include <linux/stddef.h>
- #include <linux/types.h>
-diff --git a/net/batman-adv/mesh-interface.c b/net/batman-adv/mesh-interface.c
-index be55d8d87348c..df7e95811ef56 100644
---- a/net/batman-adv/mesh-interface.c
-+++ b/net/batman-adv/mesh-interface.c
-@@ -37,6 +37,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
- #include <net/netlink.h>
-+#include <net/rtnetlink.h>
- #include <uapi/linux/batadv_packet.h>
- #include <uapi/linux/batman_adv.h>
- 
-diff --git a/net/batman-adv/mesh-interface.h b/net/batman-adv/mesh-interface.h
-index 7ba055b2bc269..53756c5a45e04 100644
---- a/net/batman-adv/mesh-interface.h
-+++ b/net/batman-adv/mesh-interface.h
-@@ -13,7 +13,6 @@
- #include <linux/netdevice.h>
- #include <linux/skbuff.h>
- #include <linux/types.h>
--#include <net/rtnetlink.h>
- 
- int batadv_skb_head_push(struct sk_buff *skb, unsigned int len);
- void batadv_interface_rx(struct net_device *mesh_iface,
-diff --git a/net/batman-adv/netlink.h b/net/batman-adv/netlink.h
-index fe4548b974bb0..4eae9e5ff1354 100644
---- a/net/batman-adv/netlink.h
-+++ b/net/batman-adv/netlink.h
-@@ -11,7 +11,6 @@
- 
- #include <linux/netlink.h>
- #include <linux/types.h>
--#include <net/genetlink.h>
- 
- void batadv_netlink_register(void);
- void batadv_netlink_unregister(void);
--- 
-2.47.3
+This time we use a https pull request link as we have turned off our
+public git protocol server - sorry for the hiccup last time, I hope
+everything is smooth now.
 
+Please pull or let me know of any problem!
+
+Thank you,
+      Simon
+
+The following changes since commit d69eb204c255c35abd9e8cb621484e8074c75eaa:
+
+  Merge tag 'net-6.17-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-09-04 09:59:15 -0700)
+
+are available in the Git repository at:
+
+  https://git.open-mesh.org/linux-merge.git tags/batadv-next-pullrequest-20250916
+
+for you to fetch changes up to 629a2b18e8729497eeac5b63e575e0961ca3a4ab:
+
+  batman-adv: remove includes for extern declarations (2025-09-05 15:11:02 +0200)
+
+----------------------------------------------------------------
+This cleanup patchset includes the following patches:
+
+ - bump version strings, by Simon Wunderlich
+
+ - Remove network coding support, by Sven Eckelmann (2 patches)
+
+ - remove includes for extern declarations, by Sven Eckelmann
+
+----------------------------------------------------------------
+Simon Wunderlich (1):
+      batman-adv: Start new development cycle
+
+Sven Eckelmann (3):
+      batman-adv: remove network coding support
+      batman-adv: keep skb crc32 helper local in BLA
+      batman-adv: remove includes for extern declarations
+
+ net/batman-adv/Kconfig                 |   13 -
+ net/batman-adv/Makefile                |    1 -
+ net/batman-adv/bat_iv_ogm.c            |    5 -
+ net/batman-adv/bridge_loop_avoidance.c |   34 +
+ net/batman-adv/hard-interface.c        |    1 +
+ net/batman-adv/hard-interface.h        |    1 -
+ net/batman-adv/log.h                   |    3 -
+ net/batman-adv/main.c                  |   50 -
+ net/batman-adv/main.h                  |    5 +-
+ net/batman-adv/mesh-interface.c        |   15 +-
+ net/batman-adv/mesh-interface.h        |    1 -
+ net/batman-adv/netlink.c               |   17 -
+ net/batman-adv/netlink.h               |    1 -
+ net/batman-adv/network-coding.c        | 1878 --------------------------------
+ net/batman-adv/network-coding.h        |  106 --
+ net/batman-adv/originator.c            |    6 -
+ net/batman-adv/routing.c               |    9 +-
+ net/batman-adv/send.c                  |   16 +-
+ net/batman-adv/translation-table.c     |    4 +-
+ net/batman-adv/types.h                 |  216 ----
+ 20 files changed, 41 insertions(+), 2341 deletions(-)
+ delete mode 100644 net/batman-adv/network-coding.c
+ delete mode 100644 net/batman-adv/network-coding.h
