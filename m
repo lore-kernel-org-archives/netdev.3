@@ -1,265 +1,123 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75EB304BDE;
-	Tue, 16 Sep 2025 10:17:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [13.75.44.102])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3A524338F;
+	Tue, 16 Sep 2025 10:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.75.44.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758017827; cv=none; b=MUJ9wEEFNBpxz3nSI4le3TeepSGmYDc67GmF07/9VzDPVX7yioeR6jrrNJ8fpZuhYGL7+27w1yeBN9fizAhnHhCgftNgPQFtLEyaky95eEYiyL8veUrgiLv34H+1Vqfv5v+y6vTV9GNz6+fqH+rmlRlh7c33NmOva9foexlmvKo=
+	t=1758017969; cv=none; b=QD4u6b3m+bfMoKxOgTYwZeS1F40p9509TF/87oYH8DKkCVQ2UCsmGGcMWLwhuCk+SdrMgz3Xm2amZDDrUEsD4E3kZOBEr3Q3xPswvnQSHvH9J15LL/HRfbb0IOIWcqF1DNcYIUpGXsrkRELynRNDTVm+5J07c/trU6T8T+Ajeqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758017827; c=relaxed/simple;
-	bh=ONFTQAhJ8N2IcV/gDc5KkDTtwxBpmxNKKJjk//LG8sM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thnmH/pH5eMicR1LYam+dur/FsUsT3AHt+zXfhYTQDIDl172wHbGQQOGY8kClSYioTGakl0wBOqwgG9q3Gbn2ZCX6v8ODbz9JjvQcoSn/nwTNVlKZNSy76knHSKbzHb+duMH3XA6vusiwVZxN53YOz8Yc2yrcTkmOZwty7Gv5Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=WcS2UvOl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Z87+xRGh; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="WcS2UvOl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z87+xRGh"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id AB6411D0012C;
-	Tue, 16 Sep 2025 06:17:04 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Tue, 16 Sep 2025 06:17:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1758017824;
-	 x=1758104224; bh=ImGP7SqcXzQvr6+iz7rBxGNIK2CoXJ7AF5xi/BOO03k=; b=
-	WcS2UvOl3Zvgu2/bfLaiCVN/22R9/9uyRFoOp8mXgb79DynV/RDMF4GVbfasgavV
-	0TAxdTDSDjX9XE7FKcuWjjwIIUMXOOKzmw5XesN/inMgy/tD/mCYWGU/rPUm3hy1
-	rafomn1xU3x8oi5wuKt/jGncegaSRoJOgseEYyO/gxER9yz3XQK4seBMPyBfLnYH
-	bG+JvMMtbSHoR/ZClS4kXZVZ/GacpUQH+zbEvTQxdUOQ+V7SAyhSrI2iED5wv0QW
-	ZCGzne209e9Tb+DshPtg/Rjmr5fyKOcGAiE0cgLpsxwhmijOEdoWuunD0Bn+nVie
-	YJ/ghb8nY5clbSSmJU9iFg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1758017824; x=
-	1758104224; bh=ImGP7SqcXzQvr6+iz7rBxGNIK2CoXJ7AF5xi/BOO03k=; b=Z
-	87+xRGh9EE6MtMw/pM491ECydfSJ+QICjj2/E0AZxVhKJtjM7lb7TBqfzf+EfFU+
-	Db6yZP6t3U7q4OASN1qkbGb/iNQ+PpKQtohDPePSqO//Ai8sjnzpW/JLX5Tk0sQf
-	PIBJIvY32R/Ywk+aOUBpE7v14NCInZCeG7IT6wdiqkN2WNnclycyYCEpL05iVe4D
-	P2p6Er7krUqSODUwhOd6Rb+LDTTmH5QgAfABvPfffAY8TxC2z9OwB2RPyclQ2MhQ
-	pglevlmebwy+e5+9WP6ROPRbzkL698U8DZUQbTWk8mfcVBJXHlTSZfg3LJz9CTRw
-	TPQOCPO5cidu99bpyUjEA==
-X-ME-Sender: <xms:IDnJaP4Pd2dy-qc4rRJXzLlZb1_Bt_ZdlTTa2BLDBwGXK61umWH4Vg>
-    <xme:IDnJaBlP4hXIrX370pbpUsE5JbzUCc9FQ01seLN5mMnaxGL3l0PthQ1FThMkZ71xT
-    PMMUmMA5xslI5TIwQM>
-X-ME-Received: <xmr:IDnJaKUGZrePNmZbYb1YuBW7WDCX1t-tWLgb8x8ZIjWCoFlGOfLLL6-r7gdvPejr-XxLKY0_uL1k37-qOsQRuhG63g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdegtdeftdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomheppfhikhhlrghs
-    ucfunpguvghrlhhunhguuceonhhikhhlrghsrdhsohguvghrlhhunhguodhrvghnvghsrg
-    hssehrrghgnhgrthgvtghhrdhsvgeqnecuggftrfgrthhtvghrnhepheeigfeuveeutdef
-    hfehgeekvedtleeuueekveefudehhffhjeffgfegffelfeegnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhhikhhlrghsrdhsohguvghrlhhu
-    nhgusehrrghgnhgrthgvtghhrdhsvgdpnhgspghrtghpthhtohepudefpdhmohguvgepsh
-    hmthhpohhuthdprhgtphhtthhopehprghulhesphgsrghrkhgvrhdruggvvhdprhgtphht
-    thhopegrnhgurhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtohepuggrvh
-    gvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghho
-    ohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohephihoshhhihhh
-    ihhrohdrshhhihhmohgurgdruhhhsehrvghnvghsrghsrdgtohhmpdhrtghpthhtohepgh
-    gvvghrthdorhgvnhgvshgrshesghhlihguvghrrdgsvgdprhgtphhtthhopehmrghgnhhu
-    shdruggrmhhmsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:IDnJaKQFS5Sl7T3AAlzm5TTjjtMbpv4uR7TDSIw7XYpXSu1VNqTw6w>
-    <xmx:IDnJaHAMqr1D7TLbHoIqN5JJqk6ilF8tXm0eAcGo6acKTxzCN02ctg>
-    <xmx:IDnJaCszVFAKNyMF-RLIVRXKYj6uLksciaXa-UHNQGkbt_slwK9z6g>
-    <xmx:IDnJaF_z4G6qmKKP-LbS35jrjOT116nAE2FCfS-36TXqkYeqaDt-Eg>
-    <xmx:IDnJaDJ8VlcGjvJVczreiy7CS3P0sSEjrB2JboQoo9aiUqKn61Cb64Ch>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Sep 2025 06:17:03 -0400 (EDT)
-From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Paul Barker <paul@pbarker.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org
-Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [net-next 6/6] net: ravb: Use common defines for time stamping control
-Date: Tue, 16 Sep 2025 12:10:55 +0200
-Message-ID: <20250916101055.740518-7-niklas.soderlund+renesas@ragnatech.se>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250916101055.740518-1-niklas.soderlund+renesas@ragnatech.se>
-References: <20250916101055.740518-1-niklas.soderlund+renesas@ragnatech.se>
+	s=arc-20240116; t=1758017969; c=relaxed/simple;
+	bh=W5YIT3+BDwsaliPJO5D4/+GpNuefOW/D5AS/xsXGfms=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=QmHSpXLRm96k0ddiZGknVvfTl+97N8L4tDR97dFlw4bVtO7Ypa7Iv+UEvg1ky0sOFGIiKbGopPGEyDpEx25U/hmTVMozHspxZuktCcJ/M+A047xSrZotFNNADw+PM8wP/dXNO1m3ZWTe1h1tBoNhA8bRSV0ynv4zoflrfVwmbbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=13.75.44.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from zju.edu.cn (unknown [106.117.98.100])
+	by mtasvr (Coremail) with SMTP id _____wD34GqZOclo2ro9Ag--.591S3;
+	Tue, 16 Sep 2025 18:19:06 +0800 (CST)
+Received: from duoming$zju.edu.cn ( [106.117.98.100] ) by
+ ajax-webmail-mail-app2 (Coremail) ; Tue, 16 Sep 2025 18:19:04 +0800
+ (GMT+08:00)
+Date: Tue, 16 Sep 2025 18:19:04 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: duoming@zju.edu.cn
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com,
+	edumazet@google.com, davem@davemloft.net, andrew+netdev@lunn.ch
+Subject: Re: [PATCH net] cnic: Fix use-after-free bugs in cnic_delete_task
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250620(94335109) Copyright (c) 2002-2025 www.mailtech.cn zju.edu.cn
+In-Reply-To: <20250915182235.77a556c4@kernel.org>
+References: <20250914034335.35643-1-duoming@zju.edu.cn>
+ <20250915182235.77a556c4@kernel.org>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <1bb984a1.4455.1995208fc7b.Coremail.duoming@zju.edu.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:zC_KCgAHIUWYOclo47sEAg--.52277W
+X-CM-SenderInfo: qssqjiasttq6lmxovvfxof0/1tbiAwELAWjIa-sOCQAIs3
+X-CM-DELIVERINFO: =?B?ejjX0AXKKxbFmtjJiESix3B1w3uoVhYI+vyen2ZzBEkOnu5chDpkB+ZdGnv/zQ0PbP
+	CR1/7cgVV3ofNmrvLphm9h9KSdQ6gWx4m7N3E1IpYaFopor/Utk1b8mb/TyWa9iv/7g5Ij
+	NyuI6fTO1uy65bQUXPJDvr+MbXTmyfN4WXPfTHGra/VIiW8Xv3q7tH0yCShV1w==
+X-Coremail-Antispam: 1Uk129KBj93XoWxGw4kAr1UurWxKF4DWFyUJwc_yoW5ZFy8pr
+	WfW345XFZ7Jr18twsaqr48XF1Y9w4vya47Grs5Jrs2y34rJF1YgryfKFWruaykurWkZF4x
+	ZFn8ZFZxZFyqkFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUmvb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AK
+	xVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0Y48IcxkI7V
+	AKI48G6xCjnVAKz4kxM4xvF2IEb7IF0Fy264kE64k0F24lFcxC0VAYjxAxZF0Ex2IqxwAK
+	zVCY07xG64k0F24l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r12
+	6r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
+	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UMVCEFcxC0VAYjxAxZFUvcSsGvf
+	C2KfnxnUUI43ZEXa7IU848BUUUUUU==
 
-Instead of translating to/from driver specific flags for packet time
-stamp control use the common flags directly. This simplifies the driver
-as the translating code can be removed while at the same time making it
-clear the flags are not flags written to hardware registers.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
----
- drivers/net/ethernet/renesas/ravb.h      | 14 +-----
- drivers/net/ethernet/renesas/ravb_main.c | 62 +++++++++++-------------
- 2 files changed, 30 insertions(+), 46 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-index 7b48060c250b..655a9c968ce5 100644
---- a/drivers/net/ethernet/renesas/ravb.h
-+++ b/drivers/net/ethernet/renesas/ravb.h
-@@ -35,16 +35,6 @@
- /* Driver's parameters */
- #define RAVB_ALIGN	128
- 
--/* Hardware time stamp */
--#define RAVB_TXTSTAMP_VALID	0x00000001	/* TX timestamp valid */
--#define RAVB_TXTSTAMP_ENABLED	0x00000010	/* Enable TX timestamping */
--
--#define RAVB_RXTSTAMP_VALID	0x00000001	/* RX timestamp valid */
--#define RAVB_RXTSTAMP_TYPE	0x00000006	/* RX type mask */
--#define RAVB_RXTSTAMP_TYPE_V2_L2_EVENT 0x00000002
--#define RAVB_RXTSTAMP_TYPE_ALL	0x00000006
--#define RAVB_RXTSTAMP_ENABLED	0x00000010	/* Enable RX timestamping */
--
- enum ravb_reg {
- 	/* AVB-DMAC registers */
- 	CCC	= 0x0000,
-@@ -1114,8 +1104,8 @@ struct ravb_private {
- 	u32 rx_over_errors;
- 	u32 rx_fifo_errors;
- 	struct net_device_stats stats[NUM_RX_QUEUE];
--	u32 tstamp_tx_ctrl;
--	u32 tstamp_rx_ctrl;
-+	enum hwtstamp_tx_types tstamp_tx_ctrl;
-+	enum hwtstamp_rx_filters tstamp_rx_ctrl;
- 	struct list_head ts_skb_list;
- 	u32 ts_skb_tag;
- 	struct ravb_ptp ptp;
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 9d3bd65b85ff..a187a18fb9e6 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -992,7 +992,6 @@ static int ravb_rx_rcar(struct net_device *ndev, int budget, int q)
- 			if (desc_status & MSC_CEEF)
- 				stats->rx_missed_errors++;
- 		} else {
--			u32 get_ts = priv->tstamp_rx_ctrl & RAVB_RXTSTAMP_TYPE;
- 			struct ravb_rx_buffer *rx_buff;
- 			void *rx_addr;
- 
-@@ -1010,18 +1009,27 @@ static int ravb_rx_rcar(struct net_device *ndev, int budget, int q)
- 				break;
- 			}
- 			skb_mark_for_recycle(skb);
--			get_ts &= (q == RAVB_NC) ?
--					RAVB_RXTSTAMP_TYPE_V2_L2_EVENT :
--					~RAVB_RXTSTAMP_TYPE_V2_L2_EVENT;
--			if (get_ts) {
--				struct skb_shared_hwtstamps *shhwtstamps;
--
--				shhwtstamps = skb_hwtstamps(skb);
--				memset(shhwtstamps, 0, sizeof(*shhwtstamps));
--				ts.tv_sec = ((u64) le16_to_cpu(desc->ts_sh) <<
--					     32) | le32_to_cpu(desc->ts_sl);
--				ts.tv_nsec = le32_to_cpu(desc->ts_n);
--				shhwtstamps->hwtstamp = timespec64_to_ktime(ts);
-+
-+			if (priv->tstamp_rx_ctrl != HWTSTAMP_FILTER_NONE) {
-+				bool get_ts = false;
-+
-+				if (q == RAVB_NC)
-+					get_ts = priv->tstamp_rx_ctrl ==
-+						HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
-+				else
-+					get_ts = priv->tstamp_rx_ctrl !=
-+						HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
-+
-+				if (get_ts) {
-+					struct skb_shared_hwtstamps *shhwtstamps;
-+
-+					shhwtstamps = skb_hwtstamps(skb);
-+					memset(shhwtstamps, 0, sizeof(*shhwtstamps));
-+					ts.tv_sec = ((u64)le16_to_cpu(desc->ts_sh) << 32)
-+						| le32_to_cpu(desc->ts_sl);
-+					ts.tv_nsec = le32_to_cpu(desc->ts_n);
-+					shhwtstamps->hwtstamp = timespec64_to_ktime(ts);
-+				}
- 			}
- 
- 			skb_put(skb, pkt_len);
-@@ -2396,18 +2404,8 @@ static int ravb_hwtstamp_get(struct net_device *ndev, struct ifreq *req)
- 	struct hwtstamp_config config;
- 
- 	config.flags = 0;
--	config.tx_type = priv->tstamp_tx_ctrl ? HWTSTAMP_TX_ON :
--						HWTSTAMP_TX_OFF;
--	switch (priv->tstamp_rx_ctrl & RAVB_RXTSTAMP_TYPE) {
--	case RAVB_RXTSTAMP_TYPE_V2_L2_EVENT:
--		config.rx_filter = HWTSTAMP_FILTER_PTP_V2_L2_EVENT;
--		break;
--	case RAVB_RXTSTAMP_TYPE_ALL:
--		config.rx_filter = HWTSTAMP_FILTER_ALL;
--		break;
--	default:
--		config.rx_filter = HWTSTAMP_FILTER_NONE;
--	}
-+	config.tx_type = priv->tstamp_tx_ctrl;
-+	config.rx_filter = priv->tstamp_rx_ctrl;
- 
- 	return copy_to_user(req->ifr_data, &config, sizeof(config)) ?
- 		-EFAULT : 0;
-@@ -2417,19 +2415,17 @@ static int ravb_hwtstamp_get(struct net_device *ndev, struct ifreq *req)
- static int ravb_hwtstamp_set(struct net_device *ndev, struct ifreq *req)
- {
- 	struct ravb_private *priv = netdev_priv(ndev);
-+	enum hwtstamp_rx_filters tstamp_rx_ctrl;
-+	enum hwtstamp_tx_types tstamp_tx_ctrl;
- 	struct hwtstamp_config config;
--	u32 tstamp_rx_ctrl = RAVB_RXTSTAMP_ENABLED;
--	u32 tstamp_tx_ctrl;
- 
- 	if (copy_from_user(&config, req->ifr_data, sizeof(config)))
- 		return -EFAULT;
- 
- 	switch (config.tx_type) {
- 	case HWTSTAMP_TX_OFF:
--		tstamp_tx_ctrl = 0;
--		break;
- 	case HWTSTAMP_TX_ON:
--		tstamp_tx_ctrl = RAVB_TXTSTAMP_ENABLED;
-+		tstamp_tx_ctrl = config.tx_type;
- 		break;
- 	default:
- 		return -ERANGE;
-@@ -2437,14 +2433,12 @@ static int ravb_hwtstamp_set(struct net_device *ndev, struct ifreq *req)
- 
- 	switch (config.rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
--		tstamp_rx_ctrl = 0;
--		break;
- 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
--		tstamp_rx_ctrl |= RAVB_RXTSTAMP_TYPE_V2_L2_EVENT;
-+		tstamp_rx_ctrl = config.rx_filter;
- 		break;
- 	default:
- 		config.rx_filter = HWTSTAMP_FILTER_ALL;
--		tstamp_rx_ctrl |= RAVB_RXTSTAMP_TYPE_ALL;
-+		tstamp_rx_ctrl = HWTSTAMP_FILTER_ALL;
- 	}
- 
- 	priv->tstamp_tx_ctrl = tstamp_tx_ctrl;
--- 
-2.51.0
+T24gTW9uLCAxNSBTZXAgMjAyNSAxODoyMjozNSAtMDcwMCBKYWt1YiBLaWNpbnNraSB3cm90ZToK
+PiA+IFRoZSBvcmlnaW5hbCBjb2RlIHVzZXMgY2FuY2VsX2RlbGF5ZWRfd29yaygpIGluIGNuaWNf
+Y21fc3RvcF9ibngyeF9odygpLAo+ID4gd2hpY2ggZG9lcyBub3QgZ3VhcmFudGVlIHRoYXQgdGhl
+IGRlbGF5ZWQgd29yayBpdGVtICdkZWxldGVfdGFzaycgaGFzCj4gPiBmdWxseSBjb21wbGV0ZWQg
+aWYgaXQgd2FzIGFscmVhZHkgcnVubmluZy4gQWRkaXRpb25hbGx5LCB0aGUgZGVsYXllZCB3b3Jr
+Cj4gPiBpdGVtIGlzIGN5Y2xpYywgZmx1c2hfd29ya3F1ZXVlKCkgaW4gY25pY19jbV9zdG9wX2Ju
+eDJ4X2h3KCkgY291bGQgbm90Cj4gPiBwcmV2ZW50IHRoZSBuZXcgaW5jb21pbmcgb25lcy4gVGhp
+cyBsZWFkcyB0byB1c2UtYWZ0ZXItZnJlZSBzY2VuYXJpb3MKPiA+IHdoZXJlIHRoZSBjbmljX2Rl
+diBpcyBkZWFsbG9jYXRlZCBieSBjbmljX2ZyZWVfZGV2KCksIHdoaWxlIGRlbGV0ZV90YXNrCj4g
+PiByZW1haW5zIGFjdGl2ZSBhbmQgYXR0ZW1wdCB0byBkZXJlZmVyZW5jZSBjbmljX2RldiBpbiBj
+bmljX2RlbGV0ZV90YXNrKCkuCj4gCj4gW3NuaXBdCj4gCj4gPiBSZXBsYWNlIGNhbmNlbF9kZWxh
+eWVkX3dvcmsoKSB3aXRoIGNhbmNlbF9kZWxheWVkX3dvcmtfc3luYygpIHRvIGVuc3VyZQo+ID4g
+dGhhdCB0aGUgZGVsYXllZCB3b3JrIGl0ZW0gaXMgcHJvcGVybHkgY2FuY2VsZWQgYW5kIGFueSBl
+eGVjdXRpbmcgZGVsYXllZAo+ID4gd29yayBoYXMgZmluaXNoZWQgYmVmb3JlIHRoZSBjbmljX2Rl
+diBpcyBkZWFsbG9jYXRlZC4KPiAKPiBIYXZlIHlvdSB0ZXN0ZWQgdGhpcyBvbiByZWFsIEhXPyBQ
+bGVhc2UgYWx3YXlzIGluY2x1ZGUgaW5mb3JtYXRpb24gb24KPiBob3cgeW91IGRpc2NvdmVyZWQg
+dGhlIHByb2JsZW0gYW5kIHdoZXRoZXIgeW91IG1hbmFnZWQgdG8gdGVzdCB0aGUgZml4LgoKVG8g
+cmVwcm9kdWNlIHRoZSBpc3N1ZSwgSSBlbXVsYXRlZCB0aGUgY25pYyBkZXZpY2UgaW4gUUVNVSBh
+bmQgbWFudWFsbHkKdHJpZ2dlcmVkIHRoZSBwcm9ibGVtIGJ5IGludHJvZHVjaW5nIGRlbGF5cywg
+c3VjaCBhcyBjYWxscyB0b8Kgc3NsZWVwKCksIAp3aXRoaW4gdGhlwqBjbmljX2RlbGV0ZV90YXNr
+KCnCoGZ1bmN0aW9uLgoKV2hpbGUgdGhlIGRlbGF5ZWQgd29yayB3YXMgZXhlY3V0aW5nLMKgY2Fu
+Y2VsX2RlbGF5ZWRfd29yaygpwqBmYWlsZWQgdG8gCnRlcm1pbmF0ZSBpdC4gRnVydGhlcm1vcmUs
+IHNpbmNlwqBjbmljX2RlbGV0ZV90YXNrKCnCoGlzIGEgcmVjdXJyaW5nCmRlbGF5ZWQgd29yayBp
+dGVtLMKgZmx1c2hfd29ya3F1ZXVlKCnCoG9ubHkgYmxvY2tzIGFuZCB3YWl0cyBmb3Igd29yawpp
+dGVtcyB0aGF0IHdlcmUgYWxyZWFkeSBxdWV1ZWQgdG8gdGhlIHdvcmtxdWV1ZSBwcmlvciB0byBp
+dHMgaW52b2NhdGlvbi4gCkFueSB3b3JrIGl0ZW1zIHN1Ym1pdHRlZCBhZnRlcsKgZmx1c2hfd29y
+a3F1ZXVlKCnCoGlzIGNhbGxlZCBhcmUgbm90CmluY2x1ZGVkIGluIHRoZSBzZXQgb2YgdGFza3Mg
+dGhhdCB0aGUgZmx1c2ggb3BlcmF0aW9uIGF3YWl0cy4gVGhpcwptZWFucyB0aGF0IGFmdGVyIHRo
+ZSBjeWNsaWMgd29yayBpdGVtcyBoYXZlIGZpbmlzaGVkIGV4ZWN1dGluZywgCmEgZGVsYXllZCB3
+b3JrIGl0ZW0gbWF5IHN0aWxsIGV4aXN0IGluIHRoZSB3b3JrIHF1ZXVlLgoKWW91IGNhbiBzZWUg
+dGhlIGRldGFpbCBpbiB0aGUgZm9sbG93aW5nIGxpbms6Cmh0dHBzOi8vZWxpeGlyLmJvb3RsaW4u
+Y29tL2xpbnV4L3Y2LjE3LXJjNi9zb3VyY2Uva2VybmVsL3dvcmtxdWV1ZS5jI0wzOTM3CgpGdXJ0
+aGVybW9yZSwgSSB3cm90ZSBhIGtlcm5lbCBtb2R1bGUgdG8gdGVzdCB3aGV0aGVyIHRoZSBjb21i
+aW5hdGlvbiBvZgpjYW5jZWxfZGVsYXllZF93b3JrKCnCoGFuZMKgZmx1c2hfd29ya3F1ZXVlKCnC
+oGNhbiBzYWZlbHkgdGVybWluYXRlIHJlY3VycmluZwpkZWxheWVkIHdvcmsgaXRlbXMuIFRoZSBy
+ZXN1bHQgaXMgbmVnYXRpdmUsIGluZGljYXRpbmcgdGhhdCB0aGUgYWZvcmVtZW50aW9uZWQKY29t
+YmluYXRpb24gY2FycmllcyBwb3RlbnRpYWwgcmlza3MuCgpUaGUgY2FuY2VsX2RlbGF5ZWRfd29y
+a19zeW5jwqBjYWxsc8KgX19jYW5jZWxfd29yayh3b3JrLCAuLi4gfCBXT1JLX0NBTkNFTF9ESVNB
+QkxFKQp0byBhdHRlbXB0IHRvIHJlbW92ZSB0aGUgd29yayBpdGVtIGZyb20gdGhlIHF1ZXVlIGFu
+ZCBzZXRzIHRoZcKgV09SS19DQU5DRUxfRElTQUJMRQpmbGFnLCBwcmV2ZW50aW5nIHRoZSB3b3Jr
+IGl0ZW0gZnJvbSBiZWluZyBleGVjdXRlZCBhZ2Fpbi4gTWVhbndoaWxlLCBpdCB1c2VzCl9fZmx1
+c2hfd29yayh3b3JrLCB0cnVlKcKgdG8gcGVyZm9ybSBhIHN5bmNocm9ub3VzIG9wZXJhdGlvbiwg
+d2FpdGluZyBmb3IgYW55CmN1cnJlbnRseSBleGVjdXRpbmcgd29yayBpdGVtIHRvIGZpbmlzaCBy
+dW5uaW5nLgoKWW91IGNhbiBzZWUgdGhlIGRldGFpbCBpbiB0aGUgZm9sbG93aW5nIGxpbms6Cmh0
+dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y2LjE3LXJjNi9zb3VyY2Uva2VybmVsL3dv
+cmtxdWV1ZS5jI0w0MzQ4Cgo+ID4gRml4ZXM6IGZkZjI0MDg2ZjQ3NSAoImNuaWM6IERlZmVyIGlz
+Y3NpIGNvbm5lY3Rpb24gY2xlYW51cCIpCj4gPiBTaWduZWQtb2ZmLWJ5OiBEdW9taW5nIFpob3Ug
+PGR1b21pbmdAemp1LmVkdS5jbj4KPiAKPiA+ICAJY25pY19ibngyeF9kZWxldGVfd2FpdChkZXYs
+IDApOwo+ID4gIAo+ID4gLQljYW5jZWxfZGVsYXllZF93b3JrKCZjcC0+ZGVsZXRlX3Rhc2spOwo+
+ID4gKwljYW5jZWxfZGVsYXllZF93b3JrX3N5bmMoJmNwLT5kZWxldGVfdGFzayk7Cj4gPiAgCWZs
+dXNoX3dvcmtxdWV1ZShjbmljX3dxKTsKPiAKPiBBRkFJQ1QgeW91ciBwYXRjaCBpcyBhIG5vcCwg
+ZG91YnQgdGhpcyBpZiBmaXhpbmcgYW55dGhpbmcKClRoaXMgcGF0Y2ggaXMgbm90IGEgbm9wLCBh
+bHRob3VnaCB0aGUgcHJvYmFiaWxpdHkgb2YgdHJpZ2dlcmluZwp0aGlzIGlzc3VlIGlzIGxvdywg
+dGhpcyBwYXRjaCBpbmRlZWQgZml4ZXMgdGhlIHVuZGVybHlpbmcKcHJvYmxlbS4KCkJlc3QgcmVn
+YXJkcywKRHVvbWluZyBaaG91Cg==
 
