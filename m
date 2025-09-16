@@ -1,368 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856A02F5A0D;
-	Tue, 16 Sep 2025 19:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8922E0B5F
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 19:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758050219; cv=none; b=MU9m6T1qBBcCqNpzgzi6mLf/6lZFkbyLWhIy+7P4ZCzDsjaUcKTcWljxBYTHzWf1LeaTXxZa7eHxaGG6NdbeOEU/dzQMAwvG3v6mfTH6dozWcxvWI4Rz+XFAHDoWr7Yh3QXs9dg0go3G8K9wS/jOxUlZyF7TC1LqmTosyiapGHE=
+	t=1758050475; cv=none; b=uJceLrj2/WaJHMaAhtQd5+3fOC3KHztEr2xUs4BLeLyYTMbfdM7z8XYBBANKCEI77c2WAvYK13uoVcu3JbFOKTbuD8q05N7Ludw5tSI0VAwtuM2S8ni0KNK7+XKb95a8q1xiwD3DaeW3OLEmpSzogdJepU6xwzDakDppbkLKiDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758050219; c=relaxed/simple;
-	bh=UATtTNQzoabKuQM/6vY2vzTps6UhIUpgfFktUIIOqaQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iDY7ITxpyGEhSO4BdYrtK42VkLPj7jQhRR04tkTWzWEyHSKcC46t9VxRxmT5cpKTklD21U8JJbHRtvpPR3lz4YcTXniEsmj/cK1lLGUFU4Dxpj5Bi9/I0N7+C17Q6nEqYs6yllLkS2A9Z0ZzHil9ZhhgDqU9NkDXovmFaqWCZM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KvVTxrqe; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758050475; c=relaxed/simple;
+	bh=WhBY+Dxby3pxptlLCyrwG+4UyCat6JpjpG/ROEC5ZLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NU7WN3LsLL2L3MmJdxsAAz7nLcW8bkJMPv1dRzLJj4jIrhUgMfat3eHbVPkw3Egy++TozYmY7yWUWbu/+wsCn9DfOywqg/l88DWgCfTRCu+ISw2iui0d9KTZZERvZ/m+fclfo4pQQBE1dv0sphgkNeWs9OKR3i5mcYTB2w1CJRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dW0VL8ww; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KvVTxrqe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758050217; x=1789586217;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=UATtTNQzoabKuQM/6vY2vzTps6UhIUpgfFktUIIOqaQ=;
-  b=KvVTxrqe2htI1Trcm+RLke+nG8Zr1wdA2pHT673ZmRXSlERRzLwE8eeZ
-   fxQHF7DCivQjTyxBkEmSE2yAshSauNkhmyym5ZAQlep17fZQ5mRtikgrs
-   so7RgDpR5Ea/vt2fme+VkzdFdMhTZsMPK8UFQLynnEyasNQMWYNfgH07i
-   1rICXsNBzb+DS4tYLGf0U4CMdo2jzMCxKh6mBcVs/3hDFYKsA96CshR4n
-   pQT0+x0sPBLDDcZDGSP1d3l3V6Fa7R05VjCb3HjMyzW7y387Tvu9TGwDe
-   QqPQIeXsocZxQgHNXEQSvuWbc4XG+w8i6xN0+M3czfs5k2kb2OdHuwWiO
-   g==;
-X-CSE-ConnectionGUID: uX7rLUjBQJ2tFCZpBq0lXw==
-X-CSE-MsgGUID: n+8Q9DV9TkCZ7VxU3bt0rA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="60037604"
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="60037604"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 12:16:55 -0700
-X-CSE-ConnectionGUID: YyawpJIJQFWiFuOnXXwbiQ==
-X-CSE-MsgGUID: ruwDdXVqQtiIgQwl+pbp5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,269,1751266800"; 
-   d="scan'208";a="174961773"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2025 12:16:55 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Tue, 16 Sep 2025 12:14:58 -0700
-Subject: [PATCH iwl-next v4 5/5] ice: refactor to use helpers
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dW0VL8ww"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758050470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KHfn5L5fcFZmTsJ1nwE7zTcSMcWzspvG3lHp40FICm8=;
+	b=dW0VL8wwGYaXBjDVs6mHi8aYqjrqa9ecmNoBqXbvSlToIcnkXng9HAC6wj60LCq6B+S5BK
+	wWaOyWmUiAiJkldXteds0UMZdzsOQShN1jaqq2Suzzm1ZXNJzCLNrZxCf46vHjS6/klSZm
+	cfGgbkCx/szHeM+USDCQoi7xmHIuwus=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	intel-wired-lan@lists.osuosl.org,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v3 0/4] add FEC bins histogram report via ethtool
+Date: Tue, 16 Sep 2025 19:12:53 +0000
+Message-ID: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250916-resend-jbrandeb-ice-standard-stats-v4-5-ec198614c738@intel.com>
-References: <20250916-resend-jbrandeb-ice-standard-stats-v4-0-ec198614c738@intel.com>
-In-Reply-To: <20250916-resend-jbrandeb-ice-standard-stats-v4-0-ec198614c738@intel.com>
-To: Jesse Brandeburg <jbrandeburg@cloudflare.com>, 
- Jakub Kicinski <kuba@kernel.org>, Hariprasad Kelam <hkelam@marvell.com>, 
- Simon Horman <horms@kernel.org>, 
- Marcin Szycik <marcin.szycik@linux.intel.com>, 
- Rahul Rameshbabu <rrameshbabu@nvidia.com>, netdev@vger.kernel.org, 
- intel-wired-lan@lists.osuosl.org, linux-doc@vger.kernel.org, corbet@lwn.net, 
- Jacob Keller <jacob.e.keller@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- jbrandeburg@cloudflare.com
-X-Mailer: b4 0.15-dev-cbe0e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11409;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=A10gTwzw8UAmR4U3sxzOasO0Vo16YSPxlv82FPThXgc=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoyT25eozfzG7p97ZlVzQe+koElqIraGXcfuWDAc9LPVP
- Xa78ujljlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACbyIoPhnynP0ukdCdvXfVPg
- PbW185Xi/Ovv3Nf9i54hJ5p9XOGQzGFGhp/C/jM8U2c0G955zy0dvSPh8oR1RU5MRUkuqRtWTpp
- wnBkA
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
+clarifies it a bit further. Implement reporting interface through as
+addition to FEC stats available in ethtool. NetDevSim driver has simple
+implementation as an example while mlx5 has much more complex solution.
 
-Use the ice_netdev_to_pf() helper in more places and remove a bunch of
-boilerplate code. Not every instance could be replaced due to use of the
-netdev_priv() output or the vsi variable within a bunch of functions.
+The example query is the same as usual FEC statistics while the answer
+is a bit more verbose:
 
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ethtool.c   | 48 ++++++++------------------
- drivers/net/ethernet/intel/ice/ice_flex_pipe.c |  8 ++---
- drivers/net/ethernet/intel/ice/ice_lag.c       |  3 +-
- drivers/net/ethernet/intel/ice/ice_main.c      | 10 ++----
- drivers/net/ethernet/intel/ice/ice_ptp.c       |  6 ++--
- drivers/net/ethernet/intel/ice/ice_sriov.c     |  3 +-
- 6 files changed, 24 insertions(+), 54 deletions(-)
+[vmuser@archvm9 linux]$ ./tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/ethtool.yaml --do fec-get --json '{"header":{"dev-index": 10, "flags": 4}}'
+{'auto': 0,
+ 'header': {'dev-index': 10, 'dev-name': 'eni10np1'},
+ 'modes': {'bits': {}, 'nomask': True, 'size': 121},
+ 'stats': {'corr-bits': [],
+           'corrected': [123],
+           'hist': [{'bin-high': 0,
+                     'bin-low': 0,
+                     'bin-val': 445,
+                     'bin-val-per-lane': [125, 120, 100, 100]},
+                    {'bin-high': 3, 'bin-low': 1, 'bin-val': 12},
+                    {'bin-high': 7, 'bin-low': 4, 'bin-val': 2}],
+           'uncorr': [4]}}
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f8bb2d55b28c..0b99a7b863d8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -794,8 +794,7 @@ static int ice_get_extended_regs(struct net_device *netdev, void *p)
- static void
- ice_get_regs(struct net_device *netdev, struct ethtool_regs *regs, void *p)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	struct ice_hw *hw = &pf->hw;
- 	u32 *regs_buf = (u32 *)p;
- 	unsigned int i;
-@@ -810,8 +809,7 @@ ice_get_regs(struct net_device *netdev, struct ethtool_regs *regs, void *p)
- 
- static u32 ice_get_msglevel(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- #ifndef CONFIG_DYNAMIC_DEBUG
- 	if (pf->hw.debug_mask)
-@@ -824,8 +822,7 @@ static u32 ice_get_msglevel(struct net_device *netdev)
- 
- static void ice_set_msglevel(struct net_device *netdev, u32 data)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- #ifndef CONFIG_DYNAMIC_DEBUG
- 	if (ICE_DBG_USER & data)
-@@ -840,16 +837,14 @@ static void ice_set_msglevel(struct net_device *netdev, u32 data)
- static void ice_get_link_ext_stats(struct net_device *netdev,
- 				   struct ethtool_link_ext_stats *stats)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- 	stats->link_down_events = pf->link_down_events;
- }
- 
- static int ice_get_eeprom_len(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- 	return (int)pf->hw.flash.flash_size;
- }
-@@ -858,9 +853,7 @@ static int
- ice_get_eeprom(struct net_device *netdev, struct ethtool_eeprom *eeprom,
- 	       u8 *bytes)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	struct ice_hw *hw = &pf->hw;
- 	struct device *dev;
- 	int ret;
-@@ -959,8 +952,7 @@ static u64 ice_link_test(struct net_device *netdev)
-  */
- static u64 ice_eeprom_test(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- 	netdev_info(netdev, "EEPROM test\n");
- 	return !!(ice_nvm_validate_checksum(&pf->hw));
-@@ -1277,9 +1269,8 @@ static int ice_lbtest_receive_frames(struct ice_rx_ring *rx_ring)
-  */
- static u64 ice_loopback_test(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *orig_vsi = np->vsi, *test_vsi;
--	struct ice_pf *pf = orig_vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
-+	struct ice_vsi *test_vsi;
- 	u8 *tx_frame __free(kfree) = NULL;
- 	u8 broadcast[ETH_ALEN], ret = 0;
- 	int num_frames, valid_frames;
-@@ -1368,8 +1359,7 @@ static u64 ice_loopback_test(struct net_device *netdev)
-  */
- static u64 ice_intr_test(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	u16 swic_old = pf->sw_int_count;
- 
- 	netdev_info(netdev, "interrupt test\n");
-@@ -1397,9 +1387,8 @@ static void
- ice_self_test(struct net_device *netdev, struct ethtool_test *eth_test,
- 	      u64 *data)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	bool if_running = netif_running(netdev);
--	struct ice_pf *pf = np->vsi->back;
- 	struct device *dev;
- 
- 	dev = ice_pf_to_dev(pf);
-@@ -1723,9 +1712,7 @@ static int ice_nway_reset(struct net_device *netdev)
-  */
- static u32 ice_get_priv_flags(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	u32 i, ret_flags = 0;
- 
- 	for (i = 0; i < ICE_PRIV_FLAG_ARRAY_SIZE; i++) {
-@@ -4413,9 +4400,7 @@ static int
- ice_get_module_info(struct net_device *netdev,
- 		    struct ethtool_modinfo *modinfo)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	struct ice_hw *hw = &pf->hw;
- 	u8 sff8472_comp = 0;
- 	u8 sff8472_swap = 0;
-@@ -4487,12 +4472,10 @@ static int
- ice_get_module_eeprom(struct net_device *netdev,
- 		      struct ethtool_eeprom *ee, u8 *data)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- #define SFF_READ_BLOCK_SIZE 8
- 	u8 value[SFF_READ_BLOCK_SIZE] = { 0 };
- 	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
- 	unsigned int i, j;
-@@ -4768,8 +4751,7 @@ static void ice_get_ts_stats(struct net_device *netdev,
-  */
- static int ice_ethtool_reset(struct net_device *dev, u32 *flags)
- {
--	struct ice_netdev_priv *np = netdev_priv(dev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(dev);
- 	enum ice_reset_req reset;
- 
- 	switch (*flags) {
-diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-index fc94e189e52e..c2caee083ca7 100644
---- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-@@ -574,9 +574,7 @@ ice_destroy_tunnel(struct ice_hw *hw, u16 index, enum ice_tunnel_type type,
- int ice_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
- 			    unsigned int idx, struct udp_tunnel_info *ti)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	enum ice_tunnel_type tnl_type;
- 	int status;
- 	u16 index;
-@@ -598,9 +596,7 @@ int ice_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
- int ice_udp_tunnel_unset_port(struct net_device *netdev, unsigned int table,
- 			      unsigned int idx, struct udp_tunnel_info *ti)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	enum ice_tunnel_type tnl_type;
- 	int status;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index aebf8e08a297..d2576d606e10 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -2177,8 +2177,7 @@ static void ice_lag_chk_disabled_bond(struct ice_lag *lag, void *ptr)
-  */
- static void ice_lag_disable_sriov_bond(struct ice_lag *lag)
- {
--	struct ice_netdev_priv *np = netdev_priv(lag->netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(lag->netdev);
- 
- 	ice_clear_feature_support(pf, ICE_F_SRIOV_LAG);
- 	ice_clear_feature_support(pf, ICE_F_SRIOV_AA_LAG);
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 249fd3c050eb..9994a9479082 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -8043,9 +8043,7 @@ static int
- ice_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
- 		   struct net_device *dev, u32 filter_mask, int nlflags)
- {
--	struct ice_netdev_priv *np = netdev_priv(dev);
--	struct ice_vsi *vsi = np->vsi;
--	struct ice_pf *pf = vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(dev);
- 	u16 bmode;
- 
- 	bmode = pf->first_sw->bridge_mode;
-@@ -8115,8 +8113,7 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
- 		   u16 __always_unused flags,
- 		   struct netlink_ext_ack __always_unused *extack)
- {
--	struct ice_netdev_priv *np = netdev_priv(dev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(dev);
- 	struct nlattr *attr, *br_spec;
- 	struct ice_hw *hw = &pf->hw;
- 	struct ice_sw *pf_sw;
-@@ -9550,8 +9547,7 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
-  */
- int ice_open(struct net_device *netdev)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- 	if (ice_is_reset_in_progress(pf->state)) {
- 		netdev_err(netdev, "can't open net device while reset is in progress");
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index d2ca9d7bcfc1..9b9b408c0adb 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2244,8 +2244,7 @@ static int ice_ptp_getcrosststamp(struct ptp_clock_info *info,
- int ice_ptp_hwtstamp_get(struct net_device *netdev,
- 			 struct kernel_hwtstamp_config *config)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 
- 	if (pf->ptp.state != ICE_PTP_READY)
- 		return -EIO;
-@@ -2316,8 +2315,7 @@ int ice_ptp_hwtstamp_set(struct net_device *netdev,
- 			 struct kernel_hwtstamp_config *config,
- 			 struct netlink_ext_ack *extack)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	int err;
- 
- 	if (pf->ptp.state != ICE_PTP_READY)
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index 843e82fd3bf9..6b1126ddb561 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1190,8 +1190,7 @@ ice_vf_lan_overflow_event(struct ice_pf *pf, struct ice_rq_event_info *event)
-  */
- int ice_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
- {
--	struct ice_netdev_priv *np = netdev_priv(netdev);
--	struct ice_pf *pf = np->vsi->back;
-+	struct ice_pf *pf = ice_netdev_to_pf(netdev);
- 	struct ice_vsi *vf_vsi;
- 	struct device *dev;
- 	struct ice_vf *vf;
+v2 -> v3:
+* fix yaml spec to use binary array for histogram per-lane values
+* fix spelling
+v1 -> v2:
+* fix memset size of FEC histogram bins in mlx5
+* adjust fbnic driver FEC stats callback
+
+Links to RFC discussions:
+v1 - https://lore.kernel.org/netdev/20250729102354.771859-1-vadfed@meta.com/
+v2 - https://lore.kernel.org/netdev/20250731231019.1809172-1-vadfed@meta.com/
+v3 - https://lore.kernel.org/netdev/20250802063024.2423022-1-vadfed@meta.com/
+v4 - https://lore.kernel.org/netdev/20250807155924.2272507-1-vadfed@meta.com/
+v5 - https://lore.kernel.org/netdev/20250815132729.2251597-1-vadfed@meta.com/
+
+Carolina Jubran (3):
+  net/mlx5e: Don't query FEC statistics when FEC is disabled
+  net/mlx5e: Add logic to read RS-FEC histogram bin ranges from PPHCR
+  net/mlx5e: Report RS-FEC histogram statistics via ethtool
+
+Vadim Fedorenko (1):
+  ethtool: add FEC bins histogram report
+
+ Documentation/netlink/specs/ethtool.yaml      |  22 ++++
+ Documentation/networking/ethtool-netlink.rst  |   5 +
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |   3 +-
+ .../ethernet/fungible/funeth/funeth_ethtool.c |   3 +-
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |   3 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |   4 +-
+ .../marvell/octeontx2/nic/otx2_ethtool.c      |   3 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  |   1 +
+ .../ethernet/mellanox/mlx5/core/en_ethtool.c  |   5 +-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c |  10 ++
+ .../ethernet/mellanox/mlx5/core/en_stats.c    | 102 ++++++++++++++++--
+ .../ethernet/mellanox/mlx5/core/en_stats.h    |   4 +-
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |   3 +-
+ drivers/net/ethernet/sfc/ethtool.c            |   3 +-
+ drivers/net/ethernet/sfc/siena/ethtool.c      |   3 +-
+ drivers/net/netdevsim/ethtool.c               |  22 +++-
+ include/linux/ethtool.h                       |  25 ++++-
+ .../uapi/linux/ethtool_netlink_generated.h    |  11 ++
+ net/ethtool/fec.c                             |  69 +++++++++++-
+ 19 files changed, 278 insertions(+), 23 deletions(-)
 
 -- 
-2.51.0.rc1.197.g6d975e95c9d7
+2.47.3
 
