@@ -1,152 +1,61 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE34D2DC763
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 01:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096D0132117;
+	Tue, 16 Sep 2025 01:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757986478; cv=none; b=ReOc3PunITJcZVeht0arUAg4MHhF0wzUfibJswU2GxjUnSbLDq/yLCyWI+wozC4qUYnD4jpKrNIYYArAn/H6E6zPqzE5sHLp+ObxaitgnFk+DbD7aCpQdql775dLYEOGHmq+Ta/5C7nYF3l/GJKdnV/JDEcZkSQ30LMxFVhASzs=
+	t=1757986644; cv=none; b=sO4Mp626PFNXSME/afmZQlz4C7TpvDKZjuGZkt6qd74nQ1r9DPx+wE1ib6wmc/EByAnTiEIxshOPOhRVZp/zusBO0UF3bBz1KlHwjH931LQB7mt+EVHIZB8RaTxwfRvIDJ8zwK3ln2/J3CaEyKRfyFKZ4ikScY1gChdf3tOGHAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757986478; c=relaxed/simple;
-	bh=/lQ504ZrYn7m+j2mobFcmPkr6ADpKI1SVUGF+0G3F5w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KI4bLxcC5SlbenKLqiUpnGiVDwFAoSXg97/lI/cK7PHIWekTA0Lq99/hhU949ss5bnQlsh9m3HhYBIpUHZyo2HsrmKGY5OiOyqyZks1d/Yxp5vmo76K9DLl50RxCF0PwTrlVm9ZH84eo9NS0kdpcO0owQ6UUkD9j3YPrCvEztIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=oiUNdyEQ; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1757986644; c=relaxed/simple;
+	bh=7HwG7iGKyKIIChKcO1I+A2YrFISPv1gEMBtMTdiCqds=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jlVUJjbS6bYfcmCWP+eKv0BUWA4j6iftdLAI6CJf7qXMc+7KzT1Qc1Kvsvd8DTvLuTIiFLljHl1OmCgvD6FJGK4NtxysMaJeifIWh4Sc4RnqXYlBi0IezyTYxrBE2iz1jNL0ZBOM16lbbLUvCAZDmR6YZrqD/iTrKZbEP8tug6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fR/ML7LF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="oiUNdyEQ"
-Message-ID: <91b6398c-70fb-440a-a654-a3e618338134@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1757986473;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XDXPAsuDgTbQZNmGKDc3AXRua/2/wTL33HLJDbdMkWM=;
-	b=oiUNdyEQSwigNjTBUu81X3S0zBfyerhLV4v+/WCpLBPYbGaS5n6j2oNOfscXPU7Td9b1cP
-	pz0IgxNPBHrMOV5K88aeFy/auQ8px/pLoNlPDbbiBHnsri7b0VeMBQ4Ap3Z6iq4sIMzpo9
-	VtJ5AogHnkU55wdUTkXBWY0y2ESJfhw=
-Date: Tue, 16 Sep 2025 09:33:51 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fR/ML7LF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330E5C4CEF1;
+	Tue, 16 Sep 2025 01:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757986643;
+	bh=7HwG7iGKyKIIChKcO1I+A2YrFISPv1gEMBtMTdiCqds=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fR/ML7LFO+0xYXsreQmJ6E9a5P/y4H6ListzR4l8tO/1sF+8YBm2JfnR6PDvkmriX
+	 xqeu9PCMCPAHRtd0Y7bhI+7Ny/jnPt9k3HwwKO+kb6r0EThML38uWNtKBk9fcdVsGs
+	 sPDOkQNlHbpK0R0U5N5mIPSPoevmXH/H1N9eMbiRQnixQu9U60Wrey2XPvQDoFOY/1
+	 3RcCAkq4G7Nu/seQU/9f330kOMn8DOzf+AIom0Am5qud1EiKTBCyO1r3cGKYdaX25G
+	 PydZF5Sj3i6M9v5q3HKTtnLflZM2kIfXWjBeNkV7NTXNL6FYrKhBNaLipdUA7y/ejp
+	 9mGkcKcanLkhw==
+Date: Mon, 15 Sep 2025 18:37:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Niklas =?UTF-8?B?U8O2ZGVybHVuZA==?=
+ <niklas.soderlund+renesas@ragnatech.se>
+Cc: Paul Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>
+Subject: Re: [net-next,v2] net: ravb: Fix -Wmaybe-uninitialized warning
+Message-ID: <20250915183722.50e83484@kernel.org>
+In-Reply-To: <20250913133229.2087822-1-niklas.soderlund+renesas@ragnatech.se>
+References: <20250913133229.2087822-1-niklas.soderlund+renesas@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v1 1/3] rculist: Add __hlist_nulls_replace_rcu()
- and hlist_nulls_replace_init_rcu()
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: edumazet@google.com, kerneljasonxing@gmail.com, davem@davemloft.net,
- kuba@kernel.org, netdev@vger.kernel.org,
- Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-References: <20250915070308.111816-1-xuanqiang.luo@linux.dev>
- <20250915070308.111816-2-xuanqiang.luo@linux.dev>
- <CAAVpQUBuV9ixMheieH137YNxZsKAZhQekjudpiw-=7DsvxV7BA@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-In-Reply-To: <CAAVpQUBuV9ixMheieH137YNxZsKAZhQekjudpiw-=7DsvxV7BA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, 13 Sep 2025 15:32:29 +0200 Niklas S=C3=B6derlund wrote:
+> Fix a -Wmaybe-uninitialized warning by initializing the variable to
+> NULL. The warning is bogus and should not happen, but fixing it allows
+> running the check on the driver to catch potential future problems.
+>=20
+>   $ make CFLAGS_ravb_main.o=3D-Wmaybe-uninitialized
 
-在 2025/9/16 06:50, Kuniyuki Iwashima 写道:
-> On Mon, Sep 15, 2025 at 12:04 AM <xuanqiang.luo@linux.dev> wrote:
->> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>
->> Add two functions to atomically replace RCU-protected hlist_nulls entries.
->>
->> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->> ---
->>   include/linux/rculist_nulls.h | 62 +++++++++++++++++++++++++++++++++++
->>   1 file changed, 62 insertions(+)
->>
->> diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
->> index 89186c499dd4..eaa3a0d2f206 100644
->> --- a/include/linux/rculist_nulls.h
->> +++ b/include/linux/rculist_nulls.h
->> @@ -152,6 +152,68 @@ static inline void hlist_nulls_add_fake(struct hlist_nulls_node *n)
->>          n->next = (struct hlist_nulls_node *)NULLS_MARKER(NULL);
->>   }
->>
->> +/**
->> + * __hlist_nulls_replace_rcu - replace an old entry by a new one
->> + * @old: the element to be replaced
->> + * @new: the new element to insert
->> + *
->> + * Description:
->> + * Replace the old entry with the new one in a RCU-protected hlist_nulls, while
->> + * permitting racing traversals.
->> + *
->> + * The caller must take whatever precautions are necessary (such as holding
->> + * appropriate locks) to avoid racing with another list-mutation primitive, such
->> + * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), running on this same
->> + * list.  However, it is perfectly legal to run concurrently with the _rcu
->> + * list-traversal primitives, such as hlist_nulls_for_each_entry_rcu().
->> + */
->> +static inline void __hlist_nulls_replace_rcu(struct hlist_nulls_node *old,
->> +                                            struct hlist_nulls_node *new)
->> +{
->> +       struct hlist_nulls_node *next = old->next;
->> +
->> +       new->next = next;
->> +       WRITE_ONCE(new->pprev, old->pprev);
->> +       rcu_assign_pointer(*(struct hlist_nulls_node __rcu **)new->pprev, new);
->> +       if (!is_a_nulls(next))
->> +               WRITE_ONCE(new->next->pprev, &new->next);
->> +}
->> +
->> +/**
->> + * hlist_nulls_replace_init_rcu - replace an old entry by a new one and
->> + * initialize the old
->> + * @old: the element to be replaced
->> + * @new: the new element to insert
->> + *
->> + * Description:
->> + * Replace the old entry with the new one in a RCU-protected hlist_nulls, while
->> + * permitting racing traversals, and reinitialize the old entry.
->> + *
->> + * Return: true if the old entry was hashed and was replaced successfully, false
->> + * otherwise.
->> + *
->> + * Note: hlist_nulls_unhashed() on the old node returns true after this.
->> + * It is useful for RCU based read lockfree traversal if the writer side must
->> + * know if the list entry is still hashed or already unhashed.
->> + *
->> + * The caller must take whatever precautions are necessary (such as holding
->> + * appropriate locks) to avoid racing with another list-mutation primitive, such
->> + * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), running on this same
->> + * list. However, it is perfectly legal to run concurrently with the _rcu
->> + * list-traversal primitives, such as hlist_nulls_for_each_entry_rcu().
->> + */
->> +static inline bool hlist_nulls_replace_init_rcu(struct hlist_nulls_node *old,
->> +                                               struct hlist_nulls_node *new)
->> +{
->> +       if (!hlist_nulls_unhashed(old)) {
-> This is already checked by __sk_nulls_replace_node_init_rcu().
->
-It seems to me that hlist_nulls_replace_init_rcu() checks whether the
-sk_nulls_node is unhashed, while __sk_nulls_replace_node_init_rcu() checks the
-sk_node's unhashed status. Perhaps these serve different purposes?
-This would maintain parity with how hlist_nulls_del_init_rcu verifies
-sk_nulls_node and __sk_nulls_del_node_init_rcu() checks sk_node.
-
-
-Thanks
-Xuanqiang
-
->> +               __hlist_nulls_replace_rcu(old, new);
->> +               old->pprev = NULL;
->> +               return true;
->> +       }
->> +
->> +       return false;
->> +}
->> +
->>   /**
->>    * hlist_nulls_for_each_entry_rcu - iterate over rcu list of given type
->>    * @tpos:      the type * to use as a loop cursor.
->> --
->> 2.27.0
->>
+FWIW this is why kernel only enables this warning at W=3D2 for gcc.
+Clang appears to suck much less in detecting uninitialized variables.
+Testing with both compilers at W=3D1 is usually better for one's sanity
+than trying to fix W=3D2 warnings.
