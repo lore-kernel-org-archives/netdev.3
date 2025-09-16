@@ -1,57 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F12298991
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 12:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75451222585
+	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 12:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758025908; cv=none; b=bZdhuHDvFBlcwH1wFzmKtIdq37SnPqx8P/WOesy1j8pYb7qPD3p+Z5tWMZrbTreTGPIZLkWCXVZ6+oRDaA+Q+RoYpdD30dV08G2f6RKsJICb8seBSHEcIuSZj4CHA6dSgpuTKnJ41dJngqMtCwLiyiGfsKPYITLgt1QXz8u26zk=
+	t=1758025956; cv=none; b=ui6Cv7kU5Pw4LTRJW12uz6mJL7e5ZqQDi46SSHByBI/oNl9PmrbsOH0DK6Q2C+gUAEr+0P805cKkvFjESOawuwXSzldjEJtvcql9aVHs5ksL7hu1lGCMBYYzfm7dZ64Ls0qLZe7bSQ3sjbA8L+l+wVKMb8frwisvChyyc9OI6nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758025908; c=relaxed/simple;
-	bh=jZWMRY9mUhPPrj6oZ8u8ZvwgE9DdtUy1L7lAUtkCW4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IKeZIIBjbOxWSwGI4z9c/oK5vqbk7HGL5iqkaGbkcCU6ANY9OsvM7yqaXXq5s8hGAVa5F4A6kBy9/fDUWK8lU7akgLjALBWoD9TYRBxuIZBQCcEYvzM5KKgFmiiCKKLSE4UvtQMdXksNvDBcGT8TNxi846JZYLc0cxU8hJrB1W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/ljuU8E; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/ljuU8E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB2FC4CEFA;
-	Tue, 16 Sep 2025 12:31:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758025907;
-	bh=jZWMRY9mUhPPrj6oZ8u8ZvwgE9DdtUy1L7lAUtkCW4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u/ljuU8Ep7u3m7cHpJzV5q0AJzs9lrKaiZi5jTGHTF+eWHFmnwVECVVOA5HWekrMy
-	 8CqDHWr8P/yxuj1vYrM6Y2k0ffpodjrWESQCe8ABq7r8LmDIVuKMMGRTWGdfq5MCeo
-	 P0BH92DW877OiUxSyG2seNnidtNpmTkw472KZaIo2XClgGOcfUYnrx3ugn0Mzv7k77
-	 zIM1mEOTQ9XYLwk6qPIGE4dL40n0vyEYgYYR5tHUx8BSncqwFBl+pd4eDS/8v9YLDd
-	 1zy55kHqK1BCxctR2++drstDO6PtXBzQVchbcSsy9rPZ8cbI3U/iMxRqETVJ18EGyM
-	 Eh2Mmb+B6grOQ==
-Date: Tue, 16 Sep 2025 13:31:43 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, alexanderduyck@fb.com,
-	jacob.e.keller@intel.com
-Subject: Re: [PATCH net-next v2 1/9] eth: fbnic: make fbnic_fw_log_write()
- parameter const
-Message-ID: <20250916123143.GY224143@horms.kernel.org>
-References: <20250915155312.1083292-1-kuba@kernel.org>
- <20250915155312.1083292-2-kuba@kernel.org>
+	s=arc-20240116; t=1758025956; c=relaxed/simple;
+	bh=KjNuzmtytXgBNeHqrsxSUJgj6fgWBsbaYJ6XCXLsCzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Pjvf6MGxAzSZlULXUmS3ChNgui5NeAyQrTpTlCtMucdFud3maE+E6kOuXfDGGbCFw6L+hJglX/z7UzhcGwk6xGzUMT6UUcjCx2YT1XRxSJO/V/va97OqD7ESPlIYdBdLalUPyiOYMtIR5ymCloYbVgy+Fgvz0eZgc08bPEgBK14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from kero.packetmixer.de (p200300C5972536D8604E0a64D0d3AaD8.dip0.t-ipconnect.de [IPv6:2003:c5:9725:36d8:604e:a64:d0d3:aad8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 42B23FA130;
+	Tue, 16 Sep 2025 14:24:50 +0200 (CEST)
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: kuba@kernel.org,
+	davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net-next 1/4] batman-adv: Start new development cycle
+Date: Tue, 16 Sep 2025 14:24:38 +0200
+Message-ID: <20250916122441.89246-2-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250916122441.89246-1-sw@simonwunderlich.de>
+References: <20250916122441.89246-1-sw@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250915155312.1083292-2-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 15, 2025 at 08:53:04AM -0700, Jakub Kicinski wrote:
-> Make the log message parameter const, it's not modified
-> and this lets us pass in strings which are const for the caller.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This version will contain all the (major or even only minor) changes for
+Linux 6.18.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+The version number isn't a semantic version number with major and minor
+information. It is just encoding the year of the expected publishing as
+Linux -rc1 and the number of published versions this year (starting at 0).
+
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+---
+ net/batman-adv/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/batman-adv/main.h b/net/batman-adv/main.h
+index 1481eb2bacee3..0d3ec0f1c9fb2 100644
+--- a/net/batman-adv/main.h
++++ b/net/batman-adv/main.h
+@@ -13,7 +13,7 @@
+ #define BATADV_DRIVER_DEVICE "batman-adv"
+ 
+ #ifndef BATADV_SOURCE_VERSION
+-#define BATADV_SOURCE_VERSION "2025.3"
++#define BATADV_SOURCE_VERSION "2025.4"
+ #endif
+ 
+ /* B.A.T.M.A.N. parameters */
+-- 
+2.47.3
 
