@@ -1,124 +1,100 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8122B234973
-	for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 16:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B741C37429F;
+	Tue, 16 Sep 2025 16:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758039822; cv=none; b=uZIlzBhDrXgNd82MWaQyT/Fxe275Z2GxhT+z1kIM1XW+sWblRKGG8FQPHUPms5IldVLn5EkByUF1l90K6cGXDG7SqxeAS0kllKsk+ELopaVCmC7THeVtkBNn4L1KeEZuDRmJZLysemSTIm7yF0pGaM6FsWLUJQNjmvNboMKZJjY=
+	t=1758040013; cv=none; b=Tkt8zeLJPvrBQ93RV71Y77Lt2Gp6h9/a1lGlhF2vIWY/lhuqicJwkuXuq0wSvyfLgDCLetvfW/4c3AoTHDaJOHQ8LZmQhzs566OaMLI/pugJiFHCLYYm7Gp1FBKyv2wt7xU2ZoNI4/wzNTSvsyKlRpk6ht1wb4ePGS+R/tYoy7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758039822; c=relaxed/simple;
-	bh=LrD6BrLgpUvSdcLR7Skt26zZgEQ2s0Ux2XOn4YPB7Pc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t5f+kvZfClGmLL1EixZS8P2PjzMWwAwCfqWZzCjKs/GMdweIkbVHIlVg929+R9ipWCgtOCWsD/RWam7YBVV1LFn8cirFGxYB64J+GMqXDZJ3V/nSUj9RcXAi+cV4mU7E8h54n525C3WNuNx7QGILC/ThJlKBBaih2i1qQ3+y3ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rg/NP985; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758040013; c=relaxed/simple;
+	bh=9/4FFgEn6XEt8f8CMB04t//ssD3IMAER3UQ1rPHhAVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jidRB9j0x+A6dffMtJjSuKhNLnnS7vp3P5ueAK9oK89ZMIUCyZ5IXkhBDnkRJ4+nXXEy5yAcmm6YJdVnES/lrVkbobilx2iV0hgC+gxo9esmg5FduzFcBSSOsKw6XqaZW4JIFHYEFvO9qPbAQBq0RF42igqADLxABIIim0uGVqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L4FfYHbS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rg/NP985"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-45dd7b15a64so328425e9.0
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 09:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758039819; x=1758644619; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K/7fckWG4F5rhCUIhkg35WDPQwJJKTQY1bkq1rzEfW4=;
-        b=Rg/NP985qniJZy3QUCuAo6thS9AAPa08TGk6Vbr024serU+stSllIgdaQcy/BK55fF
-         knf56vz1cWIOssfKS2VZEc1R6c1durXcX1dcUz/b0+wLlXZRt6Cb+AIM67bUzWL5k+ok
-         TCaKX4JtfYOoz69vc5UqOR4Yo+sSRPIWK2C8yXuv3t02yTud/EfYu0sRudaNaXgT9Gvc
-         mOs7ot7NrTnR9/hPq3t/nyT4sWjGmcw2ua7ILhqLoyPK1WSHLIY1by95n7fsrn36kKNv
-         486/YNUTXVPM3SQgDi0nQWbwPduSOX1ejvSDbrFXms9jRfifr156AdKsDzXZLij2JOuO
-         +RAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758039819; x=1758644619;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K/7fckWG4F5rhCUIhkg35WDPQwJJKTQY1bkq1rzEfW4=;
-        b=aWmq4d2CP81MjjQW+EYsdaOCxzCKSHPDGPI+qHhzNPC2oEGAPZljv619X5TQURC10i
-         6ROrTtS1yaQclEtP5F+vfbcePYGIGYBhfKebYRoLTEHAm44UaTSqngWs50xglDJGwxI5
-         W2Rp5NcLatYjeKZX5fgfxjYeqAvxHx8JjSTETapSzCrTBEsS8grS7gGcCLSQbZWzZhyp
-         aYW5P/56uLvPGKJeCJX3NZ1isnrHHmuiYvyG1I7vF+HIHutJ8/GBSS4LVhFAQ/fFqnbj
-         HNOl7dkMVXNPmI5zBgFuTq/067XbAS8vX3mzVSllCn/xDFboUL2b1gU8eno5ceGbBtA2
-         tCBw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9IH/gJ8Xroq3QyYuMRN9ZFZiWqqpRcHSLayvJTMon4Hj+RYnCuDt4my0jA3E8MqQr+OshBCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcWD62MoYU9LGjWE8wgeAa8m/wpbL2mmHhsO+jRsnchJjWnjTI
-	hwRc2Lqba8PSa4CcH0CvVtUJHc3C+XjI2p1/6vl/cNNJIH7vYdi91C5atz0aNA==
-X-Gm-Gg: ASbGncuES5aMFnwbRuYw2cKiqLVZGZmMmb8Z9Jn5cRK3cLLr4NoNo9gDa4tz5wwjdZn
-	/hOo9so197hAZmF4X1oVG+eBdYvArAU0QQ7CeVxNfox4ZPPg78qAm8GuQjVhVKrJgC49MOKRg2j
-	js+IwuZ5iWvZyBYFt3CnQkPfHpqbZG7Zw0YuwBA5drgEWuMsCMrJt7RTFgB14U8xErVYQmsoAbs
-	cjB0QzDM6npGxjd5vThZ+lX8JTXiNyhxtWxpXFOxCeAUYfM5Cp4sLu+wq1tLCQtHILuP6HvBM/g
-	88t0Nev3Zc8KF53WIRPHByb4Kwu5yCYqm9qkW1IdTdXMeOvrPXC88VNiSW2jq9iXMNMuPr41pva
-	Ih1IXSf3lG0Udua5JI0/V0w364D2naMtX+qW4NBWyd8Mpcls=
-X-Google-Smtp-Source: AGHT+IHHuSYAzUDnzV8A0W3K4WH+E5KPEEi2k/OrYuXUvaclai/18lUV90Qfo4UZxkj86ARB8Jf7Jg==
-X-Received: by 2002:a05:600c:3505:b0:45f:2d7b:7953 with SMTP id 5b1f17b1804b1-45f32d512b8mr29544545e9.18.1758039818697;
-        Tue, 16 Sep 2025 09:23:38 -0700 (PDT)
-Received: from iku.Home ([2a06:5906:61b:2d00:ddad:97b9:9e9b:bb33])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f32083729sm21385035e9.0.2025.09.16.09.23.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 09:23:38 -0700 (PDT)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linux-renesas-soc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>
-Subject: [PATCH net-next] net: pcs: Kconfig: Fix unmet dependency warning
-Date: Tue, 16 Sep 2025 17:23:35 +0100
-Message-ID: <20250916162335.3339558-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L4FfYHbS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5846EC4CEF0;
+	Tue, 16 Sep 2025 16:26:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758040013;
+	bh=9/4FFgEn6XEt8f8CMB04t//ssD3IMAER3UQ1rPHhAVE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L4FfYHbSlgxAEZqpKg+vOAqtPp7Qu8D3Ty1/bOmONAX9TYWIHDXdhtf8yxNaTYvDF
+	 sTxEZXcYzX/AstijcyLOqPJC6fd29TiHiPtrR12r1ArFwnQeHdiGEvGzrRRUCz3ys0
+	 hfqCsxrSk/G28gcrYIzaEDQSrSHxGbf9Omz+/JZ0lpAJMyHFX7byh2rSyqUTaDkwsz
+	 PZOhwmRCRYZEBQqYxwQ14y8NoCYrCvAP9uQqY2bSzlz6fz8YInxmyONZiT5uziV1h7
+	 1s6a90+peiR5qIx3ePRd8k+NzFgx75G4SCofaOz/nnI2UEG4h6q/yWWFAJIxLlyXGY
+	 TJGZ7+AUHNTCA==
+Date: Tue, 16 Sep 2025 17:26:49 +0100
+From: Simon Horman <horms@kernel.org>
+To: Konrad Leszczynski <konrad.leszczynski@intel.com>
+Cc: davem@davemloft.net, andrew+netdev@lunn.ch, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cezary.rojewski@intel.com,
+	sebastian.basierski@intel.com
+Subject: Re: [PATCH net v3 1/2] net: stmmac: replace memcpy with ethtool_puts
+ in ethtool
+Message-ID: <20250916162649.GL224143@horms.kernel.org>
+References: <20250916092507.216613-1-konrad.leszczynski@intel.com>
+ <20250916092507.216613-2-konrad.leszczynski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250916092507.216613-2-konrad.leszczynski@intel.com>
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On Tue, Sep 16, 2025 at 11:25:06AM +0200, Konrad Leszczynski wrote:
+> Fix kernel exception by replacing memcpy with ethtool_puts when used with
+> safety feature strings in ethtool logic.
+> 
+> [  +0.000023] BUG: KASAN: global-out-of-bounds in stmmac_get_strings+0x17d/0x520 [stmmac]
+> [  +0.000115] Read of size 32 at addr ffffffffc0cfab20 by task ethtool/2571
+> 
+> [  +0.000005] Call Trace:
+> [  +0.000004]  <TASK>
+> [  +0.000003]  dump_stack_lvl+0x6c/0x90
+> [  +0.000016]  print_report+0xce/0x610
+> [  +0.000011]  ? stmmac_get_strings+0x17d/0x520 [stmmac]
+> [  +0.000108]  ? kasan_addr_to_slab+0xd/0xa0
+> [  +0.000008]  ? stmmac_get_strings+0x17d/0x520 [stmmac]
+> [  +0.000101]  kasan_report+0xd4/0x110
+> [  +0.000010]  ? stmmac_get_strings+0x17d/0x520 [stmmac]
+> [  +0.000102]  kasan_check_range+0x3a/0x1c0
+> [  +0.000010]  __asan_memcpy+0x24/0x70
+> [  +0.000008]  stmmac_get_strings+0x17d/0x520 [stmmac]
 
-Fix the Kconfig dependencies for PCS_RZN1_MIIC to avoid the unmet direct
-dependency warning when enabling DWMAC_RENESAS_GBETH. The PCS driver is
-used on multiple Renesas SoCs including RZ/N1, RZ/N2H and RZ/T2H, but the
-existing condition only allowed ARCH_RZN1, ARCH_R9A09G077, or
-ARCH_R9A09G087. This conflicted with the GBETH/GMAC driver which selects
-PCS_RZN1_MIIC under ARCH_RENESAS.
+I think it would be worth adding some commentary around
+why memcpy results in this problem in this case.
 
-Update the dependency to ARCH_RENESAS || COMPILE_TEST so that the PCS
-driver is available on all Renesas platforms.
+> 
+> Reviewed-by: Sebastian Basierski <sebastian.basierski@intel.com>
+> Signed-off-by: Konrad Leszczynski <konrad.leszczynski@intel.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index 77758a7299b4..d5a2b7e9b2a9 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> @@ -752,7 +752,7 @@ static void stmmac_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+>  				if (!stmmac_safety_feat_dump(priv,
+>  							&priv->sstats, i,
+>  							NULL, &desc)) {
+> -					memcpy(p, desc, ETH_GSTRING_LEN);
+> +					ethtool_puts(&p, desc);
+>  					p += ETH_GSTRING_LEN;
 
-Fixes: 08f89e42121d ("net: pcs: rzn1-miic: Add RZ/T2H MIIC support")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/all/aMlgg_QpJOEDGcEA@monster/
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/net/pcs/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ethtool_puts() increments p, so I think the line above should be removed.
 
-diff --git a/drivers/net/pcs/Kconfig b/drivers/net/pcs/Kconfig
-index 76dbc11d9575..ecbc3530e780 100644
---- a/drivers/net/pcs/Kconfig
-+++ b/drivers/net/pcs/Kconfig
-@@ -28,7 +28,7 @@ config PCS_MTK_LYNXI
- config PCS_RZN1_MIIC
- 	tristate "Renesas RZ/N1, RZ/N2H, RZ/T2H MII converter"
- 	depends on OF
--	depends on ARCH_RZN1 || ARCH_R9A09G077 || ARCH_R9A09G087 || COMPILE_TEST
-+	depends on ARCH_RENESAS || COMPILE_TEST
- 	help
- 	  This module provides a driver for the MII converter available on
- 	  Renesas RZ/N1, RZ/N2H, and RZ/T2H SoCs. This PCS converts MII to
--- 
-2.51.0
-
+>  				}
+>  			}
+> -- 
+> 2.34.1
+> 
+> 
