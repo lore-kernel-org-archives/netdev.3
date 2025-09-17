@@ -1,63 +1,63 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F581799F
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 00:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926642AF0A
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 00:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758067815; cv=none; b=FHtLv6ndmZ/AZsZ2305Y0p+qiMGHf1ddS/rk3TgolpnBtO4K0TBOuhaNVpOuvy6RsJzRsbL1zfJ28gxsAkw5shXJxP0hsAqeIQ2kYRGpCqjrIeErBqv4RLf91vvP9t+bAsl02oPnaey9UnyCoOt5LIAK1tKx+3KQyNM+lCjb57A=
+	t=1758067817; cv=none; b=f6XUzVFnz6CUlT2tjODuzL+skqFzuOwJK5CWE8/P8lLgTw1DWsAW7uUPmZ6wL9W13yM7ebJuPkr1/P6w8oDvcZTbArYJ4+fCSYryk8ZKIGJ7h0PcfJxUeyjGlZbBqhIg1KwlidNf5aEhWipmg5vwuPGaEaIZQNKQ5I65lzQIsgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758067815; c=relaxed/simple;
-	bh=mTYUv6iGXiGkNL3aquxE4pWoG8xRHVN6TZkadUeYABs=;
+	s=arc-20240116; t=1758067817; c=relaxed/simple;
+	bh=dC78lDRwMb2NgQKiXaSPbLq4tn+jzs4cJoBcAlaUexM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3qXokzw3ppyw1krYY/tiIvfOQwO70UZN1RQF4ttR6sXLc4kewHH4DEQx9pPutYGJL3D5KkhDpj4Jtgx3Xr9ECLT0LD+szsD5LoPy/kQtmc+EV2OYqKLuRvF/tJoBD4b217rUFxExmKKcv6jw3o/CAwm8SvLrAIn/T8lkOk5tZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fcM9j4u4; arc=none smtp.client-ip=209.85.219.177
+	 MIME-Version; b=AV1aN98lAJax8d0afUj1mWqCv5aOr5eZr6JGwsB2v0sEiXsGXR8tz9I0n+rh3Vu71zD0eJfyfSVW2MNmvjCZAlJj5kPK5Hi6lIlDaIvB5EXFDJOfpwDyT6I6fomurAAXZ9o4cCoAA/kREu60yoT2xLSxBD8tU4uQfPEO39S4Ifg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0QjWJdk; arc=none smtp.client-ip=74.125.224.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fcM9j4u4"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-ea5c06bd2b2so84373276.2
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 17:10:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0QjWJdk"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-606b375eeb3so2950083d50.1
+        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 17:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758067811; x=1758672611; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758067813; x=1758672613; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fHZ2u60Qfm3Jvl+0zRc0XXhonWulKZA3HSXw7sEIVrs=;
-        b=fcM9j4u4QG4qYJUi5SCBkcQTy6tIS4ra/V45WWQdGYe1dq7wsY8/Z8DDxLPtpynZGU
-         X0x6YGvUZN27KX936puv8hm+GwMLH45yrvAaeEXw6YzxTc9y66ftF2OdFHdVt56bFaV+
-         u+mzVDkg3+gLnh/QaBjA/aYa4T3JV6igdr15oac6haQo/XnIJybfbhvWw+wKJ9ufaaas
-         bQfA1tVQR5a6379eGNDYZH+6wulZJDTtwnxvEbCV3hvGXUgPVQxyoJpkTpbR9oZd9H+/
-         AO8lhLbtJq/xFF0AQDj/+EAGd1f89wNBEevXW/StGCHQZMB7NF7YErlGBTRXxXIIpJi2
-         ta5A==
+        bh=LUUElgwtzGsq+5AVQUHkKd2HcyCMcfSQRQySCiKpc/o=;
+        b=h0QjWJdk3Oclx9eJ01c36occKZ2VP88CiBlKaBqhvujCFsZ1oS374adsWJcVxx0B7T
+         TjSl8Jwtx5e7AssVM7fRtHdNdzxNsHKpy/U3V640g8l6sWvLyEfs+IyAThLXh8EEbdum
+         C74QR9BCfqSBqwC2O2Tawnx5DcVyQAk7oQEpe8nx3kwWbybMObApV2N76GyBKFh1JLDT
+         +bzcMGi0H/kRMkCrl9IgNL5ZTSJtb5q9DndSrlmUQXP8H17PpNGMBQhnsv/JGi0OzZL9
+         9knvTSWdrFR+aYYB21BvYmk+ESUfOWEeF8of3EmqnYijQQFCkgnouEsz0Q7Yh1figy7l
+         ZzSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758067811; x=1758672611;
+        d=1e100.net; s=20230601; t=1758067813; x=1758672613;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fHZ2u60Qfm3Jvl+0zRc0XXhonWulKZA3HSXw7sEIVrs=;
-        b=q4TikqbI4DY6WliDM7/UR+4DI/vU2QqM/CtHRf/v9pGNkK82whU3qjyD0bk8dqH1U9
-         QIzylQDaDgNqCOI1UicvdQ7ujZ98JLOnTZeXZS2qdpo0QXSoCzbLbZ2B4aS5aUDs4V+Q
-         cRAKQ5auHmLzUc1iB/Vw2upUo7E8ilxqwI6bO4pcTGIMkg/LksJp/pUDyWejYn6qSD1z
-         lmyO5rMB48CNjOI2mWLQud6rvbcDdRjftQ1WxnGZGZJInU90Yry0LfiACjXIojlX3YWD
-         TlL9z5aJNSL5Q+N/WNwwvhk43YRahQOnUa1v6eHnct5QL1a22ZiWPX/16MWHmYj7nhei
-         Vy6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXBbjSVW0lzyJ2ySBURrugtLbykX54JtONNJw39a8aS4ATF6i0Z8doWFmb38c9GkFYGkhs7wxE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDYoNz4m8QDMUTV/Bhe5OG2z01lOPor27VssFLA9k4/XejPbfM
-	X+UKXTuIv5SDiOjITbl0sKYESN4DkQcZjsOs6P5BAoj9IiCYu0xL+34p
-X-Gm-Gg: ASbGnctF4ahXnRkwUTMmLlDkuEtwHdbc0E/xlzUBcmZfWEa76TTGJp1HzM1ubCftfjy
-	t9yVDorLpavRx4UQRAz802Lskb7TgmRaPjrHtegcWTG73EoaYGet1t9le/n8Y27rjdVKhfq3k3F
-	vec2S+VyqOZxvKDXaJOA8Oh/VgDnRoK73lwNzya13uBTOgF0jUtT5zhWTk5v2t1E3E3La14ESnd
-	SykePJb+2uDKm6metzxVrN3W6CE17kABpWEVDf2AsTw3w9mqJ6bJZhnz3e8cXSOVy49sYLCQh0n
-	3BcFoM17dEmBwRqKce/V+KjI0HB5bj/nZxJ/ypgpTq04/Pa8y1OpQGeQw3fJGrXJubsXQfN4k9O
-	uDOX/9GU1SEYgJDByUge4
-X-Google-Smtp-Source: AGHT+IG0NsfDOBMTb38CpiOvaFRl6DpP/gSG/Bn0EJGPjcX11cYl9ZXTbO2Rt9Q9kDBLYvzo+ySIoQ==
-X-Received: by 2002:a53:c705:0:b0:600:f8c2:2264 with SMTP id 956f58d0204a3-633b062c615mr285788d50.7.1758067811083;
-        Tue, 16 Sep 2025 17:10:11 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:57::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7335af1ea69sm23770777b3.34.2025.09.16.17.10.10
+        bh=LUUElgwtzGsq+5AVQUHkKd2HcyCMcfSQRQySCiKpc/o=;
+        b=wOQ632MDB4zXe9kwRD/1WkqsjNE+Bk7BTfkbjsuBYfS6sV3xdFB+AwBNs7GT7PS/TP
+         hlaTajtL8PZrdp3s3Sm1JZ2z02NJywqvE0e1QScU0S5oN3EnnozbyyHRpt4vYF2FRLIv
+         XvaKZ5fja6IoebA9zx3fKdWOIMBi74j3uCk6mFhadbFJ0YvlPoGsUwjcc+87vHY5Ewag
+         LT6dA60dZu0tiiJyTffprFMA15YxK9BfkkR01vweNBwkOp9wnyFijbKxJi6uvBDWtLwR
+         vqrqqS6fPNnGSOaL55NN+w0c7nNzfBQ84tX4GqXMSibaOCdWdTVQibHdbLx29zqbXry/
+         MxeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWf5Puy2w9oQTXrPKcNm0lkTngAsLvHewK0UqAap3ca/EnLQ2L821V9Y9bvYDataHOgcuA29nI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYoH9SoXtr9Ff/TrY7Vf0+uZcbDsl3prBEvpfUuXJkH4sHEHvq
+	qXbuGBgAasp6VQ3TL0r9qCz2paRyVSAh1WB+cUlLKpTRn6j9b6Fz/C6j
+X-Gm-Gg: ASbGncuuAPK8jZKnwwbyf/z8/hZYz0EG9b6oxG/KnyfE71pa9Off8+ZqD4zNouO0nmW
+	L8vEJhRppJH7D30UQqnrFDXHtH1S+w5U6jINrdaYIu+PppUpDAwpo7CGcap9xEv80ghhlo3BnRi
+	lDAv+8O0DH1ozYoetcef+VmC1IXSfN6XbkyDv/SMBLfUiP+HTH3ekKNH061BsVzGJvtjJDoj6qN
+	Rd8HKOkq9cyWgnZpkJYuE/Zgn7wNcnoTktgNHBoOJx4gWsV+sg7jZCQTXsKa5/bwn97nWwQcp/u
+	LVVvZffpXnkT7zJ0gpk8x1l3XxicAa7A94MpTtTl/QN0Tj6rwESWGluXIgWCCuIsXa2Z6m+DvwN
+	3pf/N2RsV4QjrBij7zbPyOkssFKxJrUw=
+X-Google-Smtp-Source: AGHT+IFguxkxyorD2s3S+OaoJlpKLpbF1I10cvVPU+3mgih/p3X2E05iNogU5T2NvYramBi4uKZ33g==
+X-Received: by 2002:a05:690e:164e:b0:630:c799:fe60 with SMTP id 956f58d0204a3-633b07114d8mr229979d50.20.1758067813340;
+        Tue, 16 Sep 2025 17:10:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:25ff:11::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-73688b795ddsm11506427b3.7.2025.09.16.17.10.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Sep 2025 17:10:10 -0700 (PDT)
+        Tue, 16 Sep 2025 17:10:12 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -86,9 +86,9 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Kiran Kella <kiran.kella@broadcom.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v13 13/19] psp: provide encapsulation helper for drivers
-Date: Tue, 16 Sep 2025 17:09:40 -0700
-Message-ID: <20250917000954.859376-14-daniel.zahka@gmail.com>
+Subject: [PATCH net-next v13 15/19] net/mlx5e: Add PSP steering in local NIC RX
+Date: Tue, 16 Sep 2025 17:09:42 -0700
+Message-ID: <20250917000954.859376-16-daniel.zahka@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20250917000954.859376-1-daniel.zahka@gmail.com>
 References: <20250917000954.859376-1-daniel.zahka@gmail.com>
@@ -102,147 +102,572 @@ Content-Transfer-Encoding: 8bit
 
 From: Raed Salem <raeds@nvidia.com>
 
-Create a new function psp_encapsulate(), which takes a TCP packet and
-PSP encapsulates it according to the "Transport Mode Packet Format"
-section of the PSP Architecture Specification.
+Introduce decrypt FT, the RX error FT, and the default rules.
 
-psp_encapsulate() does not push a PSP trailer onto the skb. Both IPv6
-and IPv4 are supported. Virtualization cookie is not included.
+The PSP (PSP) RX decrypt flow table is pointed by the TTC
+(Traffic Type Classifier) UDP steering rules.
+The decrypt flow table has two flow groups. The first flow group
+keeps the decrypt steering rule programmed always when PSP packet is
+recognized using the dedicated udp destination port number 1000, if
+packet is decrypted then a PSP marker is set in metadata_regB[30].
+The second flow group has a default rule to forward all non-offloaded
+PSP packet to the TTC UDP default RSS TIR.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+The RX error flow table is the destination of the decrypt steering rules in
+the PSP RX decrypt flow table. It has two fixed rule one with single copy
+action that copies psp_syndrome to metadata_regB[23:29]. The PSP marker
+and syndrome is used to filter out non-psp packet and to return the PSP
+crypto offload status in Rx flow. The marker is used to identify such
+packet in driver so the driver could set SKB PSP metadata. The destination
+of RX error flow table is the TTC UDP default RSS TIR. The second rule will
+drop packets that failed to be decrypted (like in case illegal SPI or
+expired SPI is used).
+
 Signed-off-by: Raed Salem <raeds@nvidia.com>
 Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Co-developed-by: Daniel Zahka <daniel.zahka@gmail.com>
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
 
 Notes:
-    v11:
-    - support IPv4 in psp_dev_encapsualate()
-    v4:
-    - rename psp_encapsulate() to psp_dev_encapsulate()
-    v3:
-    - patch introduced
+    v6:
+    - move call to mlx5e_fs_get_ttc() to after null check of fs
+    v1:
+    - https://lore.kernel.org/netdev/20240510030435.120935-13-kuba@kernel.org/
 
- include/net/psp/functions.h |  2 ++
- include/net/psp/types.h     |  2 ++
- net/psp/psp_main.c          | 65 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 69 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en/fs.h   |   2 +-
+ .../mellanox/mlx5/core/en_accel/psp.c         | 469 ++++++++++++++++++
+ 2 files changed, 470 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/psp/functions.h b/include/net/psp/functions.h
-index 183a3c9216b7..0a539e1b39f4 100644
---- a/include/net/psp/functions.h
-+++ b/include/net/psp/functions.h
-@@ -17,6 +17,8 @@ struct psp_dev *
- psp_dev_create(struct net_device *netdev, struct psp_dev_ops *psd_ops,
- 	       struct psp_dev_caps *psd_caps, void *priv_ptr);
- void psp_dev_unregister(struct psp_dev *psd);
-+bool psp_dev_encapsulate(struct net *net, struct sk_buff *skb, __be32 spi,
-+			 u8 ver, __be16 sport);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+index 9560fcba643f..85a53e8bcbc7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs.h
+@@ -88,7 +88,7 @@ enum {
+ #ifdef CONFIG_MLX5_EN_ARFS
+ 	MLX5E_ARFS_FT_LEVEL = MLX5E_INNER_TTC_FT_LEVEL + 1,
+ #endif
+-#ifdef CONFIG_MLX5_EN_IPSEC
++#if defined(CONFIG_MLX5_EN_IPSEC) || defined(CONFIG_MLX5_EN_PSP)
+ 	MLX5E_ACCEL_FS_ESP_FT_LEVEL = MLX5E_INNER_TTC_FT_LEVEL + 1,
+ 	MLX5E_ACCEL_FS_ESP_FT_ERR_LEVEL,
+ 	MLX5E_ACCEL_FS_POL_FT_LEVEL,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+index 6d88c246c8dd..c433c1b215d6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+@@ -9,6 +9,18 @@
+ #include "en_accel/psp.h"
+ #include "fs_core.h"
  
- /* Kernel-facing API */
- void psp_assoc_put(struct psp_assoc *pas);
-diff --git a/include/net/psp/types.h b/include/net/psp/types.h
-index ec218747ced0..d9688e66cf09 100644
---- a/include/net/psp/types.h
-+++ b/include/net/psp/types.h
-@@ -20,6 +20,8 @@ struct psphdr {
- 	__be64	vc[]; /* optional */
++enum accel_fs_psp_type {
++	ACCEL_FS_PSP4,
++	ACCEL_FS_PSP6,
++	ACCEL_FS_PSP_NUM_TYPES,
++};
++
++enum accel_psp_syndrome {
++	PSP_OK = 0,
++	PSP_ICV_FAIL,
++	PSP_BAD_TRAILER,
++};
++
+ struct mlx5e_psp_tx {
+ 	struct mlx5_flow_namespace *ns;
+ 	struct mlx5_flow_table *ft;
+@@ -18,12 +30,216 @@ struct mlx5e_psp_tx {
+ 	u32 refcnt;
  };
  
-+#define PSP_ENCAP_HLEN (sizeof(struct udphdr) + sizeof(struct psphdr))
++struct mlx5e_psp_rx_err {
++	struct mlx5_flow_table *ft;
++	struct mlx5_flow_handle *rule;
++	struct mlx5_flow_handle *drop_rule;
++	struct mlx5_modify_hdr *copy_modify_hdr;
++};
 +
- #define PSP_SPI_KEY_ID		GENMASK(30, 0)
- #define PSP_SPI_KEY_PHASE	BIT(31)
++struct mlx5e_accel_fs_psp_prot {
++	struct mlx5_flow_table *ft;
++	struct mlx5_flow_group *miss_group;
++	struct mlx5_flow_handle *miss_rule;
++	struct mlx5_flow_destination default_dest;
++	struct mlx5e_psp_rx_err rx_err;
++	u32 refcnt;
++	struct mutex prot_mutex; /* protect ESP4/ESP6 protocol */
++	struct mlx5_flow_handle *def_rule;
++};
++
++struct mlx5e_accel_fs_psp {
++	struct mlx5e_accel_fs_psp_prot fs_prot[ACCEL_FS_PSP_NUM_TYPES];
++};
++
+ struct mlx5e_psp_fs {
+ 	struct mlx5_core_dev *mdev;
+ 	struct mlx5e_psp_tx *tx_fs;
++	/* Rx manage */
+ 	struct mlx5e_flow_steering *fs;
++	struct mlx5e_accel_fs_psp *rx_fs;
+ };
  
-diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
-index 98ad8c85b58e..e026880fa1a2 100644
---- a/net/psp/psp_main.c
-+++ b/net/psp/psp_main.c
-@@ -1,10 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/bitfield.h>
- #include <linux/list.h>
- #include <linux/netdevice.h>
- #include <linux/xarray.h>
- #include <net/net_namespace.h>
- #include <net/psp.h>
-+#include <net/udp.h>
- 
- #include "psp.h"
- #include "psp-nl-gen.h"
-@@ -158,6 +160,69 @@ unsigned int psp_key_size(u32 version)
- }
- EXPORT_SYMBOL(psp_key_size);
- 
-+static void psp_write_headers(struct net *net, struct sk_buff *skb, __be32 spi,
-+			      u8 ver, unsigned int udp_len, __be16 sport)
++/* PSP RX flow steering */
++static enum mlx5_traffic_types fs_psp2tt(enum accel_fs_psp_type i)
 +{
-+	struct udphdr *uh = udp_hdr(skb);
-+	struct psphdr *psph = (struct psphdr *)(uh + 1);
++	if (i == ACCEL_FS_PSP4)
++		return MLX5_TT_IPV4_UDP;
 +
-+	uh->dest = htons(PSP_DEFAULT_UDP_PORT);
-+	uh->source = udp_flow_src_port(net, skb, 0, 0, false);
-+	uh->check = 0;
-+	uh->len = htons(udp_len);
-+
-+	psph->nexthdr = IPPROTO_TCP;
-+	psph->hdrlen = PSP_HDRLEN_NOOPT;
-+	psph->crypt_offset = 0;
-+	psph->verfl = FIELD_PREP(PSPHDR_VERFL_VERSION, ver) |
-+		      FIELD_PREP(PSPHDR_VERFL_ONE, 1);
-+	psph->spi = spi;
-+	memset(&psph->iv, 0, sizeof(psph->iv));
++	return MLX5_TT_IPV6_UDP;
 +}
 +
-+/* Encapsulate a TCP packet with PSP by adding the UDP+PSP headers and filling
-+ * them in.
-+ */
-+bool psp_dev_encapsulate(struct net *net, struct sk_buff *skb, __be32 spi,
-+			 u8 ver, __be16 sport)
++static void accel_psp_fs_rx_err_del_rules(struct mlx5e_psp_fs *fs,
++					  struct mlx5e_psp_rx_err *rx_err)
 +{
-+	u32 network_len = skb_network_header_len(skb);
-+	u32 ethr_len = skb_mac_header_len(skb);
-+	u32 bufflen = ethr_len + network_len;
-+
-+	if (skb_cow_head(skb, PSP_ENCAP_HLEN))
-+		return false;
-+
-+	skb_push(skb, PSP_ENCAP_HLEN);
-+	skb->mac_header		-= PSP_ENCAP_HLEN;
-+	skb->network_header	-= PSP_ENCAP_HLEN;
-+	skb->transport_header	-= PSP_ENCAP_HLEN;
-+	memmove(skb->data, skb->data + PSP_ENCAP_HLEN, bufflen);
-+
-+	if (skb->protocol == htons(ETH_P_IP)) {
-+		ip_hdr(skb)->protocol = IPPROTO_UDP;
-+		be16_add_cpu(&ip_hdr(skb)->tot_len, PSP_ENCAP_HLEN);
-+		ip_hdr(skb)->check = 0;
-+		ip_hdr(skb)->check =
-+			ip_fast_csum((u8 *)ip_hdr(skb), ip_hdr(skb)->ihl);
-+	} else if (skb->protocol == htons(ETH_P_IPV6)) {
-+		ipv6_hdr(skb)->nexthdr = IPPROTO_UDP;
-+		be16_add_cpu(&ipv6_hdr(skb)->payload_len, PSP_ENCAP_HLEN);
-+	} else {
-+		return false;
++	if (rx_err->drop_rule) {
++		mlx5_del_flow_rules(rx_err->drop_rule);
++		rx_err->drop_rule = NULL;
 +	}
 +
-+	skb_set_inner_ipproto(skb, IPPROTO_TCP);
-+	skb_set_inner_transport_header(skb, skb_transport_offset(skb) +
-+						    PSP_ENCAP_HLEN);
-+	skb->encapsulation = 1;
-+	psp_write_headers(net, skb, spi, ver,
-+			  skb->len - skb_transport_offset(skb), sport);
++	if (rx_err->rule) {
++		mlx5_del_flow_rules(rx_err->rule);
++		rx_err->rule = NULL;
++	}
 +
-+	return true;
++	if (rx_err->copy_modify_hdr) {
++		mlx5_modify_header_dealloc(fs->mdev, rx_err->copy_modify_hdr);
++		rx_err->copy_modify_hdr = NULL;
++	}
 +}
-+EXPORT_SYMBOL(psp_dev_encapsulate);
 +
- static int __init psp_init(void)
++static void accel_psp_fs_rx_err_destroy_ft(struct mlx5e_psp_fs *fs,
++					   struct mlx5e_psp_rx_err *rx_err)
++{
++	accel_psp_fs_rx_err_del_rules(fs, rx_err);
++
++	if (rx_err->ft) {
++		mlx5_destroy_flow_table(rx_err->ft);
++		rx_err->ft = NULL;
++	}
++}
++
++static void accel_psp_setup_syndrome_match(struct mlx5_flow_spec *spec,
++					   enum accel_psp_syndrome syndrome)
++{
++	void *misc_params_2;
++
++	spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_2;
++	misc_params_2 = MLX5_ADDR_OF(fte_match_param, spec->match_criteria, misc_parameters_2);
++	MLX5_SET_TO_ONES(fte_match_set_misc2, misc_params_2, psp_syndrome);
++	misc_params_2 = MLX5_ADDR_OF(fte_match_param, spec->match_value, misc_parameters_2);
++	MLX5_SET(fte_match_set_misc2, misc_params_2, psp_syndrome, syndrome);
++}
++
++static int accel_psp_fs_rx_err_add_rule(struct mlx5e_psp_fs *fs,
++					struct mlx5e_accel_fs_psp_prot *fs_prot,
++					struct mlx5e_psp_rx_err *rx_err)
++{
++	u8 action[MLX5_UN_SZ_BYTES(set_add_copy_action_in_auto)] = {};
++	struct mlx5_core_dev *mdev = fs->mdev;
++	struct mlx5_flow_act flow_act = {};
++	struct mlx5_modify_hdr *modify_hdr;
++	struct mlx5_flow_handle *fte;
++	struct mlx5_flow_spec *spec;
++	int err = 0;
++
++	spec = kzalloc(sizeof(*spec), GFP_KERNEL);
++	if (!spec)
++		return -ENOMEM;
++
++	/* Action to copy 7 bit psp_syndrome to regB[23:29] */
++	MLX5_SET(copy_action_in, action, action_type, MLX5_ACTION_TYPE_COPY);
++	MLX5_SET(copy_action_in, action, src_field, MLX5_ACTION_IN_FIELD_PSP_SYNDROME);
++	MLX5_SET(copy_action_in, action, src_offset, 0);
++	MLX5_SET(copy_action_in, action, length, 7);
++	MLX5_SET(copy_action_in, action, dst_field, MLX5_ACTION_IN_FIELD_METADATA_REG_B);
++	MLX5_SET(copy_action_in, action, dst_offset, 23);
++
++	modify_hdr = mlx5_modify_header_alloc(mdev, MLX5_FLOW_NAMESPACE_KERNEL,
++					      1, action);
++	if (IS_ERR(modify_hdr)) {
++		err = PTR_ERR(modify_hdr);
++		mlx5_core_err(mdev,
++			      "fail to alloc psp copy modify_header_id err=%d\n", err);
++		goto out_spec;
++	}
++
++	accel_psp_setup_syndrome_match(spec, PSP_OK);
++	/* create fte */
++	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_MOD_HDR |
++		MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
++	flow_act.modify_hdr = modify_hdr;
++	fte = mlx5_add_flow_rules(rx_err->ft, spec, &flow_act,
++				  &fs_prot->default_dest, 1);
++	if (IS_ERR(fte)) {
++		err = PTR_ERR(fte);
++		mlx5_core_err(mdev, "fail to add psp rx err copy rule err=%d\n", err);
++		goto out;
++	}
++	rx_err->rule = fte;
++
++	/* add default drop rule */
++	memset(spec, 0, sizeof(*spec));
++	memset(&flow_act, 0, sizeof(flow_act));
++	/* create fte */
++	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_DROP;
++	fte = mlx5_add_flow_rules(rx_err->ft, spec, &flow_act, NULL, 0);
++	if (IS_ERR(fte)) {
++		err = PTR_ERR(fte);
++		mlx5_core_err(mdev, "fail to add psp rx err drop rule err=%d\n", err);
++		goto out_drop_rule;
++	}
++	rx_err->drop_rule = fte;
++	rx_err->copy_modify_hdr = modify_hdr;
++
++	goto out_spec;
++
++out_drop_rule:
++	mlx5_del_flow_rules(rx_err->rule);
++	rx_err->rule = NULL;
++out:
++	mlx5_modify_header_dealloc(mdev, modify_hdr);
++out_spec:
++	kfree(spec);
++	return err;
++}
++
++static int accel_psp_fs_rx_err_create_ft(struct mlx5e_psp_fs *fs,
++					 struct mlx5e_accel_fs_psp_prot *fs_prot,
++					 struct mlx5e_psp_rx_err *rx_err)
++{
++	struct mlx5_flow_namespace *ns = mlx5e_fs_get_ns(fs->fs, false);
++	struct mlx5_flow_table_attr ft_attr = {};
++	struct mlx5_flow_table *ft;
++	int err;
++
++	ft_attr.max_fte = 2;
++	ft_attr.autogroup.max_num_groups = 2;
++	ft_attr.level = MLX5E_ACCEL_FS_ESP_FT_ERR_LEVEL; // MLX5E_ACCEL_FS_TCP_FT_LEVEL
++	ft_attr.prio = MLX5E_NIC_PRIO;
++	ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
++	if (IS_ERR(ft)) {
++		err = PTR_ERR(ft);
++		mlx5_core_err(fs->mdev, "fail to create psp rx inline ft err=%d\n", err);
++		return err;
++	}
++
++	rx_err->ft = ft;
++	err = accel_psp_fs_rx_err_add_rule(fs, fs_prot, rx_err);
++	if (err)
++		goto out_err;
++
++	return 0;
++
++out_err:
++	mlx5_destroy_flow_table(ft);
++	rx_err->ft = NULL;
++	return err;
++}
++
++static void accel_psp_fs_rx_fs_destroy(struct mlx5e_accel_fs_psp_prot *fs_prot)
++{
++	if (fs_prot->def_rule) {
++		mlx5_del_flow_rules(fs_prot->def_rule);
++		fs_prot->def_rule = NULL;
++	}
++
++	if (fs_prot->miss_rule) {
++		mlx5_del_flow_rules(fs_prot->miss_rule);
++		fs_prot->miss_rule = NULL;
++	}
++
++	if (fs_prot->miss_group) {
++		mlx5_destroy_flow_group(fs_prot->miss_group);
++		fs_prot->miss_group = NULL;
++	}
++
++	if (fs_prot->ft) {
++		mlx5_destroy_flow_table(fs_prot->ft);
++		fs_prot->ft = NULL;
++	}
++}
++
+ static void setup_fte_udp_psp(struct mlx5_flow_spec *spec, u16 udp_port)
  {
- 	mutex_init(&psp_devs_lock);
+ 	spec->match_criteria_enable |= MLX5_MATCH_OUTER_HEADERS;
+@@ -33,6 +249,252 @@ static void setup_fte_udp_psp(struct mlx5_flow_spec *spec, u16 udp_port)
+ 	MLX5_SET(fte_match_set_lyr_2_4, spec->match_value, ip_protocol, IPPROTO_UDP);
+ }
+ 
++static int accel_psp_fs_rx_create_ft(struct mlx5e_psp_fs *fs,
++				     struct mlx5e_accel_fs_psp_prot *fs_prot)
++{
++	struct mlx5_flow_namespace *ns = mlx5e_fs_get_ns(fs->fs, false);
++	u8 action[MLX5_UN_SZ_BYTES(set_add_copy_action_in_auto)] = {};
++	int inlen = MLX5_ST_SZ_BYTES(create_flow_group_in);
++	struct mlx5_modify_hdr *modify_hdr = NULL;
++	struct mlx5_flow_table_attr ft_attr = {};
++	struct mlx5_flow_destination dest = {};
++	struct mlx5_core_dev *mdev = fs->mdev;
++	struct mlx5_flow_group *miss_group;
++	MLX5_DECLARE_FLOW_ACT(flow_act);
++	struct mlx5_flow_handle *rule;
++	struct mlx5_flow_spec *spec;
++	struct mlx5_flow_table *ft;
++	u32 *flow_group_in;
++	int err = 0;
++
++	flow_group_in = kvzalloc(inlen, GFP_KERNEL);
++	spec = kvzalloc(sizeof(*spec), GFP_KERNEL);
++	if (!flow_group_in || !spec) {
++		err = -ENOMEM;
++		goto out;
++	}
++
++	/* Create FT */
++	ft_attr.max_fte = 2;
++	ft_attr.level = MLX5E_ACCEL_FS_ESP_FT_LEVEL;
++	ft_attr.prio = MLX5E_NIC_PRIO;
++	ft_attr.autogroup.num_reserved_entries = 1;
++	ft_attr.autogroup.max_num_groups = 1;
++	ft = mlx5_create_auto_grouped_flow_table(ns, &ft_attr);
++	if (IS_ERR(ft)) {
++		err = PTR_ERR(ft);
++		mlx5_core_err(mdev, "fail to create psp rx ft err=%d\n", err);
++		goto out_err;
++	}
++	fs_prot->ft = ft;
++
++	/* Create miss_group */
++	MLX5_SET(create_flow_group_in, flow_group_in, start_flow_index, ft->max_fte - 1);
++	MLX5_SET(create_flow_group_in, flow_group_in, end_flow_index, ft->max_fte - 1);
++	miss_group = mlx5_create_flow_group(ft, flow_group_in);
++	if (IS_ERR(miss_group)) {
++		err = PTR_ERR(miss_group);
++		mlx5_core_err(mdev, "fail to create psp rx miss_group err=%d\n", err);
++		goto out_err;
++	}
++	fs_prot->miss_group = miss_group;
++
++	/* Create miss rule */
++	rule = mlx5_add_flow_rules(ft, spec, &flow_act, &fs_prot->default_dest, 1);
++	if (IS_ERR(rule)) {
++		err = PTR_ERR(rule);
++		mlx5_core_err(mdev, "fail to create psp rx miss_rule err=%d\n", err);
++		goto out_err;
++	}
++	fs_prot->miss_rule = rule;
++
++	/* Add default Rx psp rule */
++	setup_fte_udp_psp(spec, PSP_DEFAULT_UDP_PORT);
++	flow_act.crypto.type = MLX5_FLOW_CONTEXT_ENCRYPT_DECRYPT_TYPE_PSP;
++	/* Set bit[31, 30] PSP marker */
++	/* Set bit[29-23] psp_syndrome is set in error FT */
++#define MLX5E_PSP_MARKER_BIT (BIT(30) | BIT(31))
++	MLX5_SET(set_action_in, action, action_type, MLX5_ACTION_TYPE_SET);
++	MLX5_SET(set_action_in, action, field, MLX5_ACTION_IN_FIELD_METADATA_REG_B);
++	MLX5_SET(set_action_in, action, data, MLX5E_PSP_MARKER_BIT);
++	MLX5_SET(set_action_in, action, offset, 0);
++	MLX5_SET(set_action_in, action, length, 32);
++
++	modify_hdr = mlx5_modify_header_alloc(mdev, MLX5_FLOW_NAMESPACE_KERNEL, 1, action);
++	if (IS_ERR(modify_hdr)) {
++		err = PTR_ERR(modify_hdr);
++		mlx5_core_err(mdev, "fail to alloc psp set modify_header_id err=%d\n", err);
++		modify_hdr = NULL;
++		goto out_err;
++	}
++
++	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST |
++			  MLX5_FLOW_CONTEXT_ACTION_CRYPTO_DECRYPT |
++			  MLX5_FLOW_CONTEXT_ACTION_MOD_HDR;
++	flow_act.modify_hdr = modify_hdr;
++	dest.type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
++	dest.ft = fs_prot->rx_err.ft;
++	rule = mlx5_add_flow_rules(fs_prot->ft, spec, &flow_act, &dest, 1);
++	if (IS_ERR(rule)) {
++		err = PTR_ERR(rule);
++		mlx5_core_err(mdev,
++			      "fail to add psp rule Rx decryption, err=%d, flow_act.action = %#04X\n",
++			      err, flow_act.action);
++		goto out_err;
++	}
++
++	fs_prot->def_rule = rule;
++	goto out;
++
++out_err:
++	accel_psp_fs_rx_fs_destroy(fs_prot);
++out:
++	kvfree(flow_group_in);
++	kvfree(spec);
++	return err;
++}
++
++static int accel_psp_fs_rx_destroy(struct mlx5e_psp_fs *fs, enum accel_fs_psp_type type)
++{
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5e_accel_fs_psp *accel_psp;
++
++	accel_psp = fs->rx_fs;
++
++	/* The netdev unreg already happened, so all offloaded rule are already removed */
++	fs_prot = &accel_psp->fs_prot[type];
++
++	accel_psp_fs_rx_fs_destroy(fs_prot);
++
++	accel_psp_fs_rx_err_destroy_ft(fs, &fs_prot->rx_err);
++
++	return 0;
++}
++
++static int accel_psp_fs_rx_create(struct mlx5e_psp_fs *fs, enum accel_fs_psp_type type)
++{
++	struct mlx5_ttc_table *ttc = mlx5e_fs_get_ttc(fs->fs, false);
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5e_accel_fs_psp *accel_psp;
++	int err;
++
++	accel_psp = fs->rx_fs;
++	fs_prot = &accel_psp->fs_prot[type];
++
++	fs_prot->default_dest = mlx5_ttc_get_default_dest(ttc, fs_psp2tt(type));
++
++	err = accel_psp_fs_rx_err_create_ft(fs, fs_prot, &fs_prot->rx_err);
++	if (err)
++		return err;
++
++	err = accel_psp_fs_rx_create_ft(fs, fs_prot);
++	if (err)
++		accel_psp_fs_rx_err_destroy_ft(fs, &fs_prot->rx_err);
++
++	return err;
++}
++
++static int accel_psp_fs_rx_ft_get(struct mlx5e_psp_fs *fs, enum accel_fs_psp_type type)
++{
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5_flow_destination dest = {};
++	struct mlx5e_accel_fs_psp *accel_psp;
++	struct mlx5_ttc_table *ttc;
++	int err = 0;
++
++	if (!fs || !fs->rx_fs)
++		return -EINVAL;
++
++	ttc = mlx5e_fs_get_ttc(fs->fs, false);
++	accel_psp = fs->rx_fs;
++	fs_prot = &accel_psp->fs_prot[type];
++	mutex_lock(&fs_prot->prot_mutex);
++	if (fs_prot->refcnt++)
++		goto out;
++
++	/* create FT */
++	err = accel_psp_fs_rx_create(fs, type);
++	if (err) {
++		fs_prot->refcnt--;
++		goto out;
++	}
++
++	/* connect */
++	dest.type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
++	dest.ft = fs_prot->ft;
++	mlx5_ttc_fwd_dest(ttc, fs_psp2tt(type), &dest);
++
++out:
++	mutex_unlock(&fs_prot->prot_mutex);
++	return err;
++}
++
++static void accel_psp_fs_rx_ft_put(struct mlx5e_psp_fs *fs, enum accel_fs_psp_type type)
++{
++	struct mlx5_ttc_table *ttc = mlx5e_fs_get_ttc(fs->fs, false);
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5e_accel_fs_psp *accel_psp;
++
++	accel_psp = fs->rx_fs;
++	fs_prot = &accel_psp->fs_prot[type];
++	mutex_lock(&fs_prot->prot_mutex);
++	if (--fs_prot->refcnt)
++		goto out;
++
++	/* disconnect */
++	mlx5_ttc_fwd_default_dest(ttc, fs_psp2tt(type));
++
++	/* remove FT */
++	accel_psp_fs_rx_destroy(fs, type);
++
++out:
++	mutex_unlock(&fs_prot->prot_mutex);
++}
++
++static void accel_psp_fs_cleanup_rx(struct mlx5e_psp_fs *fs)
++{
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5e_accel_fs_psp *accel_psp;
++	enum accel_fs_psp_type i;
++
++	if (!fs->rx_fs)
++		return;
++
++	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++)
++		accel_psp_fs_rx_ft_put(fs, i);
++
++	accel_psp = fs->rx_fs;
++	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++) {
++		fs_prot = &accel_psp->fs_prot[i];
++		mutex_destroy(&fs_prot->prot_mutex);
++		WARN_ON(fs_prot->refcnt);
++	}
++	kfree(fs->rx_fs);
++	fs->rx_fs = NULL;
++}
++
++static int accel_psp_fs_init_rx(struct mlx5e_psp_fs *fs)
++{
++	struct mlx5e_accel_fs_psp_prot *fs_prot;
++	struct mlx5e_accel_fs_psp *accel_psp;
++	enum accel_fs_psp_type i;
++
++	accel_psp = kzalloc(sizeof(*accel_psp), GFP_KERNEL);
++	if (!accel_psp)
++		return -ENOMEM;
++
++	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++) {
++		fs_prot = &accel_psp->fs_prot[i];
++		mutex_init(&fs_prot->prot_mutex);
++	}
++
++	for (i = 0; i < ACCEL_FS_PSP_NUM_TYPES; i++)
++		accel_psp_fs_rx_ft_get(fs, ACCEL_FS_PSP4);
++
++	fs->rx_fs = accel_psp;
++	return 0;
++}
++
+ static int accel_psp_fs_tx_create_ft_table(struct mlx5e_psp_fs *fs)
+ {
+ 	int inlen = MLX5_ST_SZ_BYTES(create_flow_group_in);
+@@ -198,6 +660,7 @@ int mlx5_accel_psp_fs_init_tx_tables(struct mlx5e_priv *priv)
+ 
+ static void mlx5e_accel_psp_fs_cleanup(struct mlx5e_psp_fs *fs)
+ {
++	accel_psp_fs_cleanup_rx(fs);
+ 	accel_psp_fs_cleanup_tx(fs);
+ 	kfree(fs);
+ }
+@@ -217,8 +680,14 @@ static struct mlx5e_psp_fs *mlx5e_accel_psp_fs_init(struct mlx5e_priv *priv)
+ 		goto err_tx;
+ 
+ 	fs->fs = priv->fs;
++	err = accel_psp_fs_init_rx(fs);
++	if (err)
++		goto err_rx;
+ 
+ 	return fs;
++
++err_rx:
++	accel_psp_fs_cleanup_tx(fs);
+ err_tx:
+ 	kfree(fs);
+ 	return ERR_PTR(err);
 -- 
 2.47.3
 
