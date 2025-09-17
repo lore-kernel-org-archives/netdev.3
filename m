@@ -1,114 +1,84 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710E52FB085
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 16:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F942FB97E;
+	Wed, 17 Sep 2025 16:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758128227; cv=none; b=oaoFE4fA1Wkn7Nx25eShikLDPVlar/tXT4Y4hgqUdMX2uAP91mkEKchHiQXlC1mM5tfH5cVFrdYqfa8sf3QiXjN/vnRu08In1zI+FX2SBGk6H4owYBaLQpi/GyU9LE4WB5SDUWQ4a3yU4rHhaIN3H4gsQtrJaUlXBw1l3ZKkpDY=
+	t=1758128359; cv=none; b=F4XgyXH9H17rhlFDxnd2ydLHSxcejS1dt19bkacreS1/z6viuMdxLVBUs1qqNO+2BCtQYQ1Us2rnb+4MxnEQxDhciRmzTdF17rsxrzapUueUlaTp2TaHkFLVMY6vOJu1xN+0AqqPNH9d4tTTunOE+jRjDBx+B8zKLXHKPcTTy3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758128227; c=relaxed/simple;
-	bh=RoYs+lOPKP6EI+cACs3xu9y1s81zhU0ASthwBE3+IQU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CyCtkXfZS1QGfg2t0wY2uZAixgTpbTR3WQMaj1R5qp6+38zlbBC7kXhqqZm5GsQlefnL/Lbbcb+fU6tqkqY89huiPUqW4Vt0+zRqtWFluvUmv4gNqSOov7EdMA050ysJIppbYJ2Uusb64U/+U4PozngXSovMC1keX8bleE6fbgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rMGRGJTR; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758128359; c=relaxed/simple;
+	bh=LyRoG4EagDIB2pRE+5aY/rsh9XhcSfatt0XDUTGFxQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m7CJnUu/UPZOtxXUDaKkaZSZqGkZcwXZGTW95Btw6PSyRsbrm7ZIjrofZHYFzLo/k5Y7qpDerhy666sxvSWoc42zV6AiBF/KvnHx5miLdSyhux04LRz5tr8cLpv/DmZPm1PtAuuCPjgLLn+C5f7ClO/I0oXtVG3pCYdOeBpTD+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WsU5spqP; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rMGRGJTR"
-Message-ID: <0be046b6-a48e-45be-9b0e-3922f298b089@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758128213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1JoFXqqjHsUv55cfZ28zVmVLyTt7+FuolwMXE9BtBiU=;
-	b=rMGRGJTREOYpdTnMVNhvvmi5BAKKTLUj7wP1zqJOVOHkUO0Ttj8HFZ3l5nXc/iaw0o1MQL
-	2QM9jmog1MShmwUw6gyM0sKRbNzoYZwf7/8/VfUKicRYjLICunvr2ZhR3T3VADDscVI9EF
-	wYhQDUM30pposu7scRj3bV4GGxVOhnA=
-Date: Wed, 17 Sep 2025 17:56:46 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WsU5spqP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=BVoadd5F/9NL1Kfvm2TxEXN3h6uo1IEKqiMc/UGEVZY=; b=WsU5spqPHlpgxmikqRVXl5+fBm
+	mJ/dwE3WD9XA/CEjjeQxsmCReWAj+HiEi+ooG5ZMvEVdYZaWC6eF+T8hkdYiOLgLWs5cSYxo4FdPV
+	l/0FVSTGq7eirPyu1KjfVt7SIn+aIF9knbf4acZiaFMVj0aBoSmoQuj/jZNA5QPpuMuw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uyvUd-008iUe-T2; Wed, 17 Sep 2025 18:58:55 +0200
+Date: Wed, 17 Sep 2025 18:58:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jijie Shao <shaojijie@huawei.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	shenjian15@huawei.com, liuyonglong@huawei.com,
+	chenhao418@huawei.com, lantao5@huawei.com,
+	huangdonghua3@h-partners.com, yangshuaisong@h-partners.com,
+	huangdengdui@h-partners.com, jonathan.cameron@huawei.com,
+	salil.mehta@huawei.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 1/3] net: hns3: fix loopback test of serdes and phy
+ is failed if duplex is half
+Message-ID: <a060e5cf-c1cf-4dfa-b534-ddb72e8652f8@lunn.ch>
+References: <20250917122954.1265844-1-shaojijie@huawei.com>
+ <20250917122954.1265844-2-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] net: nfc: nc: Add parameter validation for packet data
-To: Deepak Sharma <deepak.sharma.472935@gmail.com>, krzk@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
- syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
-References: <20250917140547.66886-1-deepak.sharma.472935@gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250917140547.66886-1-deepak.sharma.472935@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250917122954.1265844-2-shaojijie@huawei.com>
 
-On 17/09/2025 15:05, Deepak Sharma wrote:
-> This is v2 for the original patch, I realized soon after
-> sending the patch that I missed the release of skb before
-> returning, apologies.
+On Wed, Sep 17, 2025 at 08:29:52PM +0800, Jijie Shao wrote:
+> If duplex setting is half, mac and phy can not transmit and receive data
+> at the same time.
 
-this part shouldn't be in the commit message, it has to go under
-strip mark ("---")
+Lets think about the fundamentals of Ethernet, MII and half duplex.
 
-> 
-> Syzbot reported an uninit-value bug at nci_init_req for commit
-> 5aca7966d2a7
-> 
-> This bug arises due to very limited and poor input validation
-> that was done at net/nfc/nci/core.c:1543. This validation only
-> validates the skb->len (directly reflects size provided at the
-> userspace interface) with the length provided in the buffer
-> itself (interpreted as NCI_HEADER). This leads to the processing
-> of memory content at the address assuming the correct layout
-> per what opcode requires there. This leads to the accesses to
-> buffer of `skb_buff->data` which is not assigned anything yet
-> 
-> Following the same silent drop of packets of invalid sizes, at
-> net/nfc/nci/core.c:1543, I have added validation in the
-> `nci_nft_packet` which processes NFT packets and silently return
-> in case of failure of any validation check
-> 
-> Possible TODO: because we silently drop the packets, the
-> call to `nci_request` will be waiting for completion of request
-> and will face timeouts. These timeouts can get excessively logged
-> in the dmesg. A proper handling of them may require to export
-> `nci_request_cancel` (or propagate error handling from the
-> nft packets handlers)
-> 
-> Reported-by: syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=740e04c2a93467a0f8c8
-> Signed-off-by: Deepak Sharma <deepak.sharma.472935@gmail.com>
-> ---
->   net/nfc/nci/ntf.c | 42 ++++++++++++++++++++++++++++++++++--------
->   1 file changed, 34 insertions(+), 8 deletions(-)
-> 
-> diff --git a/net/nfc/nci/ntf.c b/net/nfc/nci/ntf.c
-> index a818eff27e6b..f5e03f3ff203 100644
-> --- a/net/nfc/nci/ntf.c
-> +++ b/net/nfc/nci/ntf.c
-> @@ -809,35 +809,61 @@ void nci_ntf_packet(struct nci_dev *ndev, struct sk_buff *skb)
->   
->   	switch (ntf_opcode) {
->   	case NCI_OP_CORE_RESET_NTF:
-> -		nci_core_reset_ntf_packet(ndev, skb);
-> +		if (skb->len < sizeof(struct nci_core_reset_ntf))
-> +			goto end;
-> +		else
-> +			nci_core_reset_ntf_packet(ndev, skb);
->   		break;
+Is this specific to your MAC/PHY combination, or just generally true?
 
-every case here has it's special function. I believe the length check
-should be put into these functions and then the return value should
-indicate error. That's the actual style of kernel code.
+Should this is solved in phylib, because it is true for every MAC/PHY
+combination? phylib returning -EINAL to phy_loopback() would seem like
+the correct thing to do.
 
-You should also indicate the tree to apply your patch, as this is the
-fix, the tree will be net, so the subject should be:
-[PATCH net v2] net: nfc: nc: Add parameter validation for packet data
+Is it specific to your PHY, but independent of the MAC?  Then the PHY
+should return -EINVAL in its set_loopback() method.
 
-And the Fixes tag should be added to provide some information for
-possible backports.
+> +	hdev->hw.mac.duplex_last = phydev->duplex;
+> +
+> +	ret = phy_set_bits(phydev, MII_BMCR, BMCR_FULLDPLX);
+
+A MAC driver should not be doing this. What if the PHY is C45 only?
+And Marvell PHYs need a soft reset before such an operation take
+effect.
+
+    Andrew
+
+---
+pw-bot: cr
+
+
