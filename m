@@ -1,111 +1,197 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9179430C100;
-	Wed, 17 Sep 2025 15:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA63A30C100
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 15:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758122930; cv=none; b=LcnHPGGkKms+fF9zAI0C5h8Pu9bMf1bLrsu9n0PEF6ni1xAIh05CPvVKAIePVSzhDJUR8DyoA1O/he8h94/bWmrwN6wCa9CY+U46N42YTcfPrR1UKnpy92DiooQJ2YSi9Do2e4vn0BQAKsW1FPjVqMlloSTuXng+YSU/erebO2c=
+	t=1758122965; cv=none; b=ipdR0e2AmtIfQ7Mvi/U9Q+PvZot+/FlHNs2iYGUjmHD3IP6e/9PEXwGS6TY5V/wO7AZDGuD6vLDhHIHO9jhXO8AO9CbXrqpIEPGWarFySpQcy3zX8RVylC1wCxtcn6spla7PGudgXFpk7jf9l6Rng5Ygr+oU14urzo1moNGjlmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758122930; c=relaxed/simple;
-	bh=VpoFPhTwmm+WWukzSN7f5WNcO6XoGwtY7ZzuWmn9+lg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZyY6hzavTXa1oolB5KE0MEO2eZiLn/ykQOnWhYbHCyozFD5QYM6+/WoIU9pfUO4nbffrhVSVxSqEKZx+jilMl8Gd2MRm+ZZ4sJiYVaR5t7x6dIjqZvfedq3kYg7kyo0v6vsP+zu4V4NH1HdM/hSBNkWU/BWzjWkQa0IW8TZOKZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=VzbT8W8n; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1758122965; c=relaxed/simple;
+	bh=+3tp+XBFxUD228D6hv/nxzpWNrGkhM4J6eg/MJaE7rY=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=m7NTO9yRJylWQQCVTL6Shf7CuCYyj9B9hwJBhhqaDoYKnleeuBuF+1ELD7N9hOej/pvC3wkrLK2YIqLwb1MR7d5Lw16O9kqxA1lgItOshD+Y7gsa+LNpeYROnyKKWDegFeVWjt3Ak+XL+Zr9BFXaaDwcgpVDxZ5f7ZgoJ6Om6yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=cmLmfPjn; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="VzbT8W8n"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 28151C0078E;
-	Wed, 17 Sep 2025 15:28:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9801A6063E;
-	Wed, 17 Sep 2025 15:28:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BADAB102F1BF4;
-	Wed, 17 Sep 2025 17:28:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758122924; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=BFIVUZm5xuzuhfpRFg3QFSYuUBaBVnTUcSVoLhOrwf4=;
-	b=VzbT8W8n/UBPmcEza93b9wYmwQXZ05Yy8SthzG0kUy+NcfHlsxg7W9HcgcKVoWjhL7FE2E
-	Outq7VvZEGdkcqxNqc0m1OstRoquJTw6VgFfU88C0LlZdYF7bKL+Av7MxsWzxUPoj4SBW8
-	8HYzaNOh26u/Au9nqoJ5SiB+kJEAjuP/2tWHEZofJEVISWpoWHcR6eSH138JJDIV7McPjb
-	KNpoefIhS6ZtOlmXqHLo/dOnT8KclXhVjSfTw7zcxk8C5/lP7yagBp38SRAYsA5Tau/o25
-	J7YpionBrmZnKqLY0gjXfGvbSAgCwiJBGhd7+QH3pYGVtFd8cCMouQ+xrzNDiQ==
-Message-ID: <be4cd796-e47e-444a-97b9-b1d537e495f3@bootlin.com>
-Date: Wed, 17 Sep 2025 17:28:25 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="cmLmfPjn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xtZeWx9KqJQHyw/RwePAF9k/RAwt4wluWSxKJcfUeCU=; b=cmLmfPjnvDCQAT+4j4CDP/CqP2
+	f9se6tU2GSHHFs2/ZKmDFUJECu+41yF3IJuR3tgPqhxBrmeKO00vPY4wEJsBuiXrROerDtefj0e5L
+	3uxX34vV3QCJgBKz9rY9eTWSUDFR3A6UMaWCOAgXwFljG9OFlctEbZIjvIbTo65S+IWe3uSk62+ta
+	vJEZQOlRae+y+ZlL/MZhPc4wm2RWWSiHhmToiL8nbMTCFDwMv+WozI8us5n1RVKhj2iGYxVWXBrQs
+	we6nbF3GePtbZP3AHiSy+yEMfMAIWSQagl/ymveh19RWWdpor5uHVFj4foxiGRFdSir85U72CO2OU
+	OAY1GLZA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:57100 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1uytq1-000000004nF-1c12;
+	Wed, 17 Sep 2025 16:12:53 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1uytpv-00000006H2x-196h;
+	Wed, 17 Sep 2025 16:12:47 +0100
+In-Reply-To: <aMrPpc8oRxqGtVPJ@shell.armlinux.org.uk>
+References: <aMrPpc8oRxqGtVPJ@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Chen-Yu Tsai <wens@csie.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Drew Fustini <fustini@kernel.org>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Fu Wei <wefu@redhat.com>,
+	Guo Ren <guoren@kernel.org>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Samuel Holland <samuel@sholland.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH net-next 10/10] net: stmmac: remove mac_interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v3 01/14] selftests/bpf: test_xsk: Split
- xskxceiver
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Jonathan Lemon <jonathan.lemon@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>,
- Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Alexis Lothore <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250904-xsk-v3-0-ce382e331485@bootlin.com>
- <20250904-xsk-v3-1-ce382e331485@bootlin.com> <aMlyUX999WOmUNMP@boxer>
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aMlyUX999WOmUNMP@boxer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1uytpv-00000006H2x-196h@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 17 Sep 2025 16:12:47 +0100
 
-Hi Maciej,
+mac_interface has served little purpose, and has only caused confusion.
+Now that we have cleaned up all platform glue drivers which should not
+have been using mac_interface, there are no users remaining. Remove
+mac_interface.
 
-On 9/16/25 4:21 PM, Maciej Fijalkowski wrote:
-> On Thu, Sep 04, 2025 at 12:10:16PM +0200, Bastien Curutchet (eBPF Foundation) wrote:
->> AF_XDP features are tested by the test_xsk.sh script but not by the
->> test_progs framework. The tests used by the script are defined in
->> xksxceiver.c which can't be integrated in the test_progs framework as is.
->>
->> Extract these test definitions from xskxceiver{.c/.h} to put them in new
->> test_xsk{.c/.h} files.
->> Keep the main() function and its unshared dependencies in xksxceiver to
->> avoid impacting the test_xsk.sh script which is often used to test real
->> hardware.
->>
->> Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
->> ---
-> 
-> Hi Bastien,
-> 
-> after this patch the way summary is reported is different.
-> 
-> Before:
-> # 16 skipped test(s) detected. Consider enabling relevant config options to improve coverage.
-> # Totals: pass:53 fail:3 xfail:0 xpass:0 skip:16 error:0
-> 
-> After:
-> # Planned tests != run tests (72 != 53)
-> # Totals: pass:53 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> We lose the count of failed tests. Could you take a look?
+This results in the special dwmac specific "mac-mode" DT property
+becoming redundant, and an in case, no DTS files in the kernel make use
+of this property. Add a warning if the property is set, and it is
+different from the "phy-mode".
 
-Good catch, I'll take a look at it.
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c  |  2 --
+ drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c   |  1 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c     |  5 +----
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c |  6 +++++-
+ include/linux/stmmac.h                                | 11 +++--------
+ 5 files changed, 9 insertions(+), 16 deletions(-)
 
-Best regards,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index dd82dc2189e9..592aa9d636e5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -98,8 +98,6 @@ static void loongson_default_data(struct pci_dev *pdev,
+ 	/* Set default value for multicast hash bins */
+ 	plat->multicast_filter_bins = 256;
+ 
+-	plat->mac_interface = PHY_INTERFACE_MODE_NA;
+-
+ 	/* Set default value for unicast filter entries */
+ 	plat->unicast_filter_entries = 1;
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
+index c0c44916f849..2562a6d036a2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-lpc18xx.c
+@@ -41,7 +41,6 @@ static int lpc18xx_dwmac_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plat_dat))
+ 		return PTR_ERR(plat_dat);
+ 
+-	plat_dat->mac_interface = PHY_INTERFACE_MODE_NA;
+ 	plat_dat->has_gmac = true;
+ 
+ 	reg = syscon_regmap_lookup_by_compatible("nxp,lpc1850-creg");
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index a23017a886f3..d17820d9e7f1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1118,10 +1118,7 @@ static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
+  */
+ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ {
+-	int interface = priv->plat->mac_interface;
+-
+-	if (interface == PHY_INTERFACE_MODE_NA)
+-		interface = priv->plat->phy_interface;
++	int interface = priv->plat->phy_interface;
+ 
+ 	if (priv->dma_cap.pcs) {
+ 		if ((interface == PHY_INTERFACE_MODE_RGMII) ||
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index a3e077f225d1..712ef235f0f4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -453,8 +453,12 @@ stmmac_probe_config_dt(struct platform_device *pdev, u8 *mac)
+ 		return ERR_PTR(phy_mode);
+ 
+ 	plat->phy_interface = phy_mode;
++
+ 	rc = stmmac_of_get_mac_mode(np);
+-	plat->mac_interface = rc < 0 ? plat->phy_interface : rc;
++	if (rc >= 0 && rc != phy_mode)
++		dev_warn(&pdev->dev,
++			 "\"mac-mode\" property used for %s but differs to \"phy-mode\" of %s, and will be ignored. Please report.\n",
++			 phy_modes(rc), phy_modes(phy_mode));
+ 
+ 	/* Some wrapper drivers still rely on phy_node. Let's save it while
+ 	 * they are not converted to phylink. */
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index f14f34ec6d5e..fa1318bac06c 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -190,8 +190,8 @@ struct plat_stmmacenet_data {
+ 	int bus_id;
+ 	int phy_addr;
+ 	/* MAC ----- optional PCS ----- SerDes ----- optional PHY ----- Media
+-	 *                          ^            ^
+-	 *                    mac_interface phy_interface
++	 *                                       ^
++	 *                                  phy_interface
+ 	 *
+ 	 * The Synopsys dwmac core only covers the MAC and an optional
+ 	 * integrated PCS. Where the integrated PCS is used with a SerDes,
+@@ -208,12 +208,7 @@ struct plat_stmmacenet_data {
+ 	 * is used, this counts as "the rest of the SoC" in the above
+ 	 * paragraph.
+ 	 *
+-	 * Thus, mac_interface is of little use inside the stmmac code;
+-	 * please do not use unless there is a definite requirement, and
+-	 * make sure to gain review feedback first.
+-	 */
+-	phy_interface_t mac_interface;
+-	/* phy_interface is the PHY-side interface - the interface used by
++	 * phy_interface is the PHY-side interface - the interface used by
+ 	 * an attached PHY or SFP etc. This is equivalent to the interface
+ 	 * that phylink uses.
+ 	 */
 -- 
-Bastien Curutchet, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.47.3
 
