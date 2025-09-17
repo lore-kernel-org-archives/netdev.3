@@ -1,227 +1,317 @@
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3DF333AA6;
-	Wed, 17 Sep 2025 15:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=185.132.182.106
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758123433; cv=fail; b=KaKb53aoS/o+j25xR+tXA4Gwub/aQqKhXNpNpS8OCAIJ0QFVXw5iMNWUjqFz8hOsA2cteaMoVUWiS614Eu9WfZGaXGgwanV39MVDOalHEpamX81gYo+nOj84PNRdEdyzmK8MI7jrZT7EnqaLUltaktYx3JSuqtp+IohT3c9qU+w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758123433; c=relaxed/simple;
-	bh=uZZbsWW6QVZ2ckpmua2ncZoJY0ZXnfgkdELHcBX8lPg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=sgrY7eYa502blgxo6+MpL9hLaVxQi0sDL9xjGC2upFt8OP/hCLr3T0rW4pfb928yBFwzaLh8IFNXkx/VGlKpaJbdZhvuW7ZDLCQ98t4g+myI1eW7HFuFmiSF+tq+xntIY2w4rnd2K6TjJ+8MI6hSS5lEG+P/yZVDQNsUaPRotzQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=GXTsrjyv; arc=fail smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB6E33B472;
+	Wed, 17 Sep 2025 15:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758123466; cv=none; b=YHoRJrPExeOGJqmTdN0GhKb846XwahJ3GM3xIv2qsj0v+dsK0lLmlzl4sp/RHjRXE8Y7qd1GDguQQd9RUTenjLHUnTACo8qxzk0RmJjUky/mGbN0esK4sTvSLhnHWc5HvhyA6UApjRw95Z+xR2Uzmvie9EX+BzE16EkjwojLhDI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758123466; c=relaxed/simple;
+	bh=MeUni8BMkE51AXY4WYnb0RnjXbbI5tBqofM6SoODgLs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vn/PtZ2KzCRT1ubb+fRawp37Kjnb8v4Zstgo+go0L+R96TQdlxCa83JUiNmPX0QEkqxhI8PndZYOohwOvi34EBq5/AB8L789u06z837PTJQ/OCLtma4Mc7dVtnd+wUDe45fhFqfcIScbkhGIGvjHCQx1sY3sAMkgnRYSqijOv/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cfBQD6ln; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="GXTsrjyv"
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58HFX7P2015745;
-	Wed, 17 Sep 2025 17:36:47 +0200
-Received: from mrwpr03cu001.outbound.protection.outlook.com (mail-francesouthazon11011043.outbound.protection.outlook.com [40.107.130.43])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 497fxavgnq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Sep 2025 17:36:47 +0200 (MEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rXRFaPSQMrCxwcwJxJR7FjJsJOvyXMSaHoOo9+cfKfwlfUTFh40WiR2CObwOvlnZ44CfmtobLIwa9VLe90KjelR6K1H5Qdm0wEqzfzeYo8F51CcSLmrTsamD7tVwbyaVeEVy+cpnOutlFhKg0CxBW5mqG77kb8MTyLkUn2WqkMdTH6PPz/PE1+wPqcPro9hcEyvFiPqNwTsrmCEjURnCA6LFJ7wjoXTLYz5Uv9KnX8vtbq8oxMsdgLenDe7rKBsOnVZKD/m9TBW7Am1yZrxxVeaLRJdXqC1jK4czeaNzEXuD+kctAOdWJ7prZjoai9sd/3XqH5SMe2Uto48Ux1H4NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jmuAgNdVmjniBdoQIHgLOr41745ZNLiPqGkW8D/yo3w=;
- b=VA5M9JCikORultrwhoK23ZVfC/9YVJ3oCN6QmSV/1NcyKnSxV/BY26k3GkSDLYZ2X6q0Eu7vagi0DaVVIFHGeHy+u0nWCI2L1xGI8152+YlIpZwIPdmyiHKeXlhqyAouas2bww80UF+2qvvVg/19lexCfMcDQjwDYA8Hw4qh54ADAYpJZyC+fA501eMeDDS3WaMeA7SVEO7yPbcUqkQYGTQ8ROhlL8hHRwD8RB3CrH9THGkm0UV+gG/0FCcdjEtkWKM2H8iOrB8uP83oRjNPLMayiW8tem68Uh3h4Z1JH5NsSYbRSL9QCCMvjN2m2u1AczHkt85QgqwCyk5TuV+64w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.44) smtp.rcpttodomain=google.com smtp.mailfrom=foss.st.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jmuAgNdVmjniBdoQIHgLOr41745ZNLiPqGkW8D/yo3w=;
- b=GXTsrjyvakez3EZx5fgw1VdcmWf1WPif/LyhzxmNBCqdZDJhdIJSNjStS3SpK5Jb+1HB4Aib21QJjledFuwQw7p5xysunlTwzUjONq7R8MC4v7MlSci+q40oJhJ41rPVxRR5/JDZIFtxg5zZ6sMI4WUborGoRsZgPtzZSMgXyDFCXnF8a2zmkU9X4HINuTAl6eW+P5Bt7oTdeo15Tei+tIEkfxg+As9noGfD6+cin6MzVv9TZbiyLD4n854nI1024yPZRI8aJ/dKm5O5g57VW3j6e4h+V0qm/embMa2rftDTt8IjoZxVNwuBgWJNPbCfKSQKOrZDvutdrX7U4DhW2w==
-Received: from DU2PR04CA0311.eurprd04.prod.outlook.com (2603:10a6:10:2b5::16)
- by AS8PR10MB6055.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:570::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Wed, 17 Sep
- 2025 15:36:44 +0000
-Received: from DB3PEPF0000885E.eurprd02.prod.outlook.com
- (2603:10a6:10:2b5:cafe::2c) by DU2PR04CA0311.outlook.office365.com
- (2603:10a6:10:2b5::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.13 via Frontend Transport; Wed,
- 17 Sep 2025 15:36:44 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.44)
- smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.44 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.44; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.44) by
- DB3PEPF0000885E.mail.protection.outlook.com (10.167.242.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Wed, 17 Sep 2025 15:36:43 +0000
-Received: from SHFDAG1NODE1.st.com (10.75.129.69) by smtpO365.st.com
- (10.250.44.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Wed, 17 Sep
- 2025 17:29:39 +0200
-Received: from localhost (10.48.87.141) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Wed, 17 Sep
- 2025 17:36:42 +0200
-From: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Date: Wed, 17 Sep 2025 17:36:37 +0200
-Subject: [PATCH net-next v2 2/4] net: stmmac: stm32: add WoL from PHY
- support
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cfBQD6ln"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D5D9FC0078E;
+	Wed, 17 Sep 2025 15:37:24 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5C0E16063E;
+	Wed, 17 Sep 2025 15:37:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3AB3B102F1BFC;
+	Wed, 17 Sep 2025 17:37:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758123460; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=JuYim+SlVrtNYeSwdN0cSCkxCqIdEwBN5vppKoroMbc=;
+	b=cfBQD6ln14eDJpiVMnMGJ0X9kLqUH6pTTbkpMHNYJ3FalGMMbIIzHBN/2byBwyVQe9aVbT
+	MNRkipNTQBtdDvKX07LGfyYMMliFu84s0ImltrNbbJ4Tnv2dT1B3Pgmeyk0v0c2sHcurzW
+	9WAAh4OkknS5MUlaPd4SKf8Eg2kcjIVmNg+kScLmQ1pebMt4dRABOxSOpZfcdGvDaJgi+8
+	rrVZnju+KuFnCVvtG2WR9rGYh0IGxK1o7bbGF6uXL1/1z7VdqFxSO4yIgGiGsfrWOU760t
+	kZ+vfvm727A+ar6N9ugZUCrVw/yU4PpQAO90Un5Jb+wyC9MS4mCp9w12lfz+QQ==
+Message-ID: <fa9ca4f6-f34d-4957-9100-ba006500116e@bootlin.com>
+Date: Wed, 17 Sep 2025 17:37:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v3 14/14] selftests/bpf: test_xsk: Integrate
+ test_xsk.c to test_progs framework
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>,
+ Jonathan Lemon <jonathan.lemon@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>,
+ Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Alexis Lothore <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250904-xsk-v3-0-ce382e331485@bootlin.com>
+ <20250904-xsk-v3-14-ce382e331485@bootlin.com> <aMmpYilJr35/acaP@boxer>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <aMmpYilJr35/acaP@boxer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250917-wol-smsc-phy-v2-2-105f5eb89b7f@foss.st.com>
-References: <20250917-wol-smsc-phy-v2-0-105f5eb89b7f@foss.st.com>
-In-Reply-To: <20250917-wol-smsc-phy-v2-0-105f5eb89b7f@foss.st.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
-        Christophe Roullier
-	<christophe.roullier@foss.st.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "Heiner
- Kallweit" <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "Simon Horman" <horms@kernel.org>,
-        Tristram Ha <Tristram.Ha@microchip.com>,
-        "Florian Fainelli" <florian.fainelli@broadcom.com>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        Gatien Chevallier <gatien.chevallier@foss.st.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB3PEPF0000885E:EE_|AS8PR10MB6055:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c5087e9-c186-400c-cf92-08ddf6000146
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|36860700013|1800799024|82310400026|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SWZuSTk3U21jcjAzeWhWZlI3SmZmN2tEZG1CS3A5NmsreEl6c0NJQ1FiOTE0?=
- =?utf-8?B?R0IrZ1NxMEFqVWF3SWJPZzFJczJrU1NMYjg5dXZkNC8zTndLcy9Jc1c2bTYz?=
- =?utf-8?B?Y1c1UGdpVHNUNGJWNW5wRmZjNWhqMm0wQ2pJY0NsbkZhNFBoclBwUXAwTlJk?=
- =?utf-8?B?Q3Y1R3RXWjg5ZElieThLYXJEeUJ1Q3ZOWXczQUdLMS9GZXU1ZHgyeDVlRUhz?=
- =?utf-8?B?aWJST1VLV0hpbjZsOHlVWmhQYWxaNWx2ZVdJUVVTcnFVYjl2UUMrUlRKbCtI?=
- =?utf-8?B?V1VQa3hwWXpQbThLUU9SSGd2V3M1NUs4Nlk1MXNNd2pSaTBVYXhuOGNyM1VV?=
- =?utf-8?B?THRYQnhiYkY5YWtQdWw3SVhTUTdOTlltd3hseWtyczh2N0RFaEhMcUFZa3pE?=
- =?utf-8?B?Nmx2emQ5ay9mUk0rcXFLdzhsaGxOSEZQTVlycmJqUUsxaXRPbHlJVDhhTHBN?=
- =?utf-8?B?Q2dtK0RkTm0rRHk0UzE5Y0RLWllFMS9yWlBQblc5YjZVY0R4a0gwOVprNVNw?=
- =?utf-8?B?VDZoU3pUTS9BaXRSTTJUNWNOdGFDUHVHbEtpWm5LN0pvd21RZksxb3ZUaUE2?=
- =?utf-8?B?QU1rYktzQ1hYdkV3akxOZDN4bmNqWVg2OUVjaUNLYUFQNERVdUJPNk50Y2dj?=
- =?utf-8?B?S0NnaXROMjA1UndXTmVhcnlpaW9aOThtWXpFWURoNXA3TnB6WTRPMUZHVmlp?=
- =?utf-8?B?alB2dVNDdVlwWlliZTBreWVWZUk4ZEVQaE1wTDBOVnJSWlFHeUZsRlhsU2Vk?=
- =?utf-8?B?Y1RhRUJhMk1MRFFKdFpxZWFUaEpsTjVFajBkMll6YWp5NTJ3cldNUFNtR0lK?=
- =?utf-8?B?bE5KNkxEVjVIUVg4QUNuUXBQUGM4OUZVSTIxM2JYQWRmUVlMZUlNaExSeU1a?=
- =?utf-8?B?Z2lVaWczNzJYYktwZUxrYWN1Z2dSVjVJRGlMaktCSUZMa0dEVXRMVS81QVBT?=
- =?utf-8?B?WXpxR3JYS2pEcVNVdmR6OHVCSmFyUGpYN0ZqRFZtQ1N4VW9Xc2VNc3hhTE44?=
- =?utf-8?B?VmxHeUw4VDhiVnZ2QXNIR09YWlE5UkFaKzRJd0oyYm95VFdiY2xRM3RsQjNO?=
- =?utf-8?B?UXVEc0VXZnFLSEVjSVZkRi9TeGZ1c0FROUY4Ri9zTFBFczY5WGRySVhNOWM0?=
- =?utf-8?B?azRSTkxFd3JvSkcvQ3FOLzVNdjhqenB6VkdIekh5aEpMMSsxWWxoRE9rZThG?=
- =?utf-8?B?NHVTYWtSWnpNbmhGZzZRK1dFaDlpWnBKM2tZZVY5NkFkczNWdll0NXQrNW5L?=
- =?utf-8?B?OUh2WmNabTdxdXdXenpVb3VURmx6RTFqM3ZBWVZtaUhNMk1jOTA0VGtsNm9F?=
- =?utf-8?B?Rm5oSFJxWWYxOXdFeVZzY1NxYmV3VlJmdFM5SU8xQmVKckJaQzlEbkY5cmQv?=
- =?utf-8?B?bHdIUXlWU05GNDdvTnhnS1o4OEZQUUcyaC9kVnc2Q2cvWm9SUmNnZCt1V1l5?=
- =?utf-8?B?N0xtMWszVHNIdkkvekpsaUJkUzEzOTcwbitNcENLNVpSYjV2QWp6czBtYWpW?=
- =?utf-8?B?TThHaCtuQXRKZ0ZsVTIvT2R3ZmI0OGNncnpmUUZBV01wc2Y4a1JGL0puR09q?=
- =?utf-8?B?RThCSysyT1BzM0hBd2JxNFBaOUdNZC9iaXJyM2JISUk4U080bCtKYWxLdjIx?=
- =?utf-8?B?NVFGa1lNaXZubUdnRXpEQUVqWnpmZE5MU1NGMTM1dE1uREQyNXZJdUhIckpU?=
- =?utf-8?B?V3Jwbk5paGFqRUdyRUkxdEhYdld4MTlFdDZLNDhqZ0xja2Jla3R2enY4NUZW?=
- =?utf-8?B?YmpjTGJsY3N3S25hUEV4SWMwcTZtVEhVdDJ1cFpVTGNKOWJRRDh2cThkcDZi?=
- =?utf-8?B?QlVFVElESlYwdXc2MTFDLzU5aW5OSlRET0U5NlJJb3BoNmVLNUthNm43WXBL?=
- =?utf-8?B?T3pMMGVZbHgyMmp2L0laS0llWlZ3dlV5dG5iOTlwN1JieDZockxSNGx3UE1j?=
- =?utf-8?B?dTRnMk16TUFTdkxpeEdtbGFHNm9kaFl5UGNhVFZsVmVaTjZlTU5kTHpZU1NZ?=
- =?utf-8?B?WTBEVzk1RFU5WVg2L21xWVBRV0hodC8xL2thai94dmQ1akpHUmxYNGE1R013?=
- =?utf-8?B?K2JGY1YrQ2d6aXdiNGxUN05POCtKZDlxcjk2Zz09?=
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.44;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(1800799024)(82310400026)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 15:36:43.7130
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c5087e9-c186-400c-cf92-08ddf6000146
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.44];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB3PEPF0000885E.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB6055
-X-Authority-Analysis: v=2.4 cv=RPOzH5i+ c=1 sm=1 tr=0 ts=68cad58f cx=c_pps a=CUAEBjslK4IwMcEc9encMA==:117 a=Tm9wYGWyy1fMlzdxM1lUeQ==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=h8e1o3o8w34MuCiiGQrqVE4VwXA=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=ei1tl_lDKmQA:10 a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=s63m1ICgrNkA:10 a=KrXZwBdWH7kA:10 a=8b9GpE9nAAAA:8 a=KdhiARzPwkhzkzMreFQA:9 a=QEXdDO2ut3YA:10 a=T3LWEMljR5ZiDmsYVIUa:22
-X-Proofpoint-ORIG-GUID: qC4pqSwilYu0NXw46aJRt3LpocmAZcEV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE2MDIwMiBTYWx0ZWRfX3R9ZFB1LPR2R 60ooqj/r49VFxKhUX++H2IVOXsIPWrWkqlp3e9sUEqgbU0buina0uKglEWlBD5Lfv3pVLjkqdzV MxQ//FKn1gZwV7f04wKxob0kneQwzKKeMzKMLktHo+aOZbI03sl0moXWlVS+TMf+Pi7d9lT92/m
- 6dLg+d8gtIWKKcANnTGUrH3nfXcm8gaQQ15gb/uYnTj3XXEJP6cQzwb3pK4Gqt7fkqipLbSp2To MehuuG8U5UBIHwfItTnCd4coTUFGSPz1CAXulm9pgcXFUqE1gYeTw1AjsYchRgeF4nE0mCwl/wq krVwc8QMeWFNXMW9b15kA0SI4Wh6p9vKu28xwXCLP3+WGhMTqOap02+IalazzrUcUlOll+z2i2t /3huRtZA
-X-Proofpoint-GUID: qC4pqSwilYu0NXw46aJRt3LpocmAZcEV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-17_01,2025-09-17_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 impostorscore=0
- malwarescore=0 suspectscore=0 adultscore=0 spamscore=0 clxscore=1015
- bulkscore=0 phishscore=0 classifier=typeunknown authscore=0 authtc=
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509160202
+X-Last-TLS-Session-Version: TLSv1.3
 
-If the "st,phy-wol" property is present in the device tree node,
-set the STMMAC_FLAG_USE_PHY_WOL flag to use the WoL capability of
-the PHY.
+Hi Maciej,
 
-Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On 9/16/25 8:16 PM, Maciej Fijalkowski wrote:
+> On Thu, Sep 04, 2025 at 12:10:29PM +0200, Bastien Curutchet (eBPF Foundation) wrote:
+>> test_xsk.c isn't part of the test_progs framework.
+>>
+>> Integrate the tests defined by test_xsk.c into the test_progs framework
+>> through a new file : prog_tests/xsk.c. ZeroCopy mode isn't tested in it
+>> as veth peers don't support it.
+>>
+>> Move test_xsk{.c/.h} to prog_tests/.
+>>
+>> Add the find_bit library to test_progs sources in the Makefile as it is
+>> is used by test_xsk.c
+>>
+>> Signed-off-by: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
+>> ---
+>>   tools/testing/selftests/bpf/Makefile               |  13 +-
+>>   .../selftests/bpf/{ => prog_tests}/test_xsk.c      |   0
+>>   .../selftests/bpf/{ => prog_tests}/test_xsk.h      |   0
+>>   tools/testing/selftests/bpf/prog_tests/xsk.c       | 146 +++++++++++++++++++++
+>>   tools/testing/selftests/bpf/xskxceiver.c           |   2 +-
+>>   5 files changed, 158 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+>> index 4bb4f3ee822c1adce0fbd82725b40983695d38b9..1af7d4b9fe54b777131bce0cbb8ca328c885c23a 100644
+>> --- a/tools/testing/selftests/bpf/Makefile
+>> +++ b/tools/testing/selftests/bpf/Makefile
+>> @@ -541,6 +541,8 @@ TRUNNER_TEST_OBJS := $$(patsubst %.c,$$(TRUNNER_OUTPUT)/%.test.o,	\
+>>   				 $$(notdir $$(wildcard $(TRUNNER_TESTS_DIR)/*.c)))
+>>   TRUNNER_EXTRA_OBJS := $$(patsubst %.c,$$(TRUNNER_OUTPUT)/%.o,		\
+>>   				 $$(filter %.c,$(TRUNNER_EXTRA_SOURCES)))
+>> +TRUNNER_LIB_OBJS := $$(patsubst %.c,$$(TRUNNER_OUTPUT)/%.o,		\
+>> +				 $$(filter %.c,$(TRUNNER_LIB_SOURCES)))
+>>   TRUNNER_EXTRA_HDRS := $$(filter %.h,$(TRUNNER_EXTRA_SOURCES))
+>>   TRUNNER_TESTS_HDR := $(TRUNNER_TESTS_DIR)/tests.h
+>>   TRUNNER_BPF_SRCS := $$(notdir $$(wildcard $(TRUNNER_BPF_PROGS_DIR)/*.c))
+>> @@ -672,6 +674,10 @@ $(TRUNNER_EXTRA_OBJS): $(TRUNNER_OUTPUT)/%.o:				\
+>>   	$$(call msg,EXT-OBJ,$(TRUNNER_BINARY),$$@)
+>>   	$(Q)$$(CC) $$(CFLAGS) -c $$< $$(LDLIBS) -o $$@
+>>   
+>> +$(TRUNNER_LIB_OBJS): $(TRUNNER_OUTPUT)/%.o:$(TOOLSDIR)/lib/%.c
+>> +	$$(call msg,LIB-OBJ,$(TRUNNER_BINARY),$$@)
+>> +	$(Q)$$(CC) $$(CFLAGS) -c $$< $$(LDLIBS) -o $$@
+>> +
+>>   # non-flavored in-srctree builds receive special treatment, in particular, we
+>>   # do not need to copy extra resources (see e.g. test_btf_dump_case())
+>>   $(TRUNNER_BINARY)-extras: $(TRUNNER_EXTRA_FILES) | $(TRUNNER_OUTPUT)
+>> @@ -685,6 +691,7 @@ $(OUTPUT)/$(TRUNNER_BINARY): | $(TRUNNER_BPF_OBJS)
+>>   
+>>   $(OUTPUT)/$(TRUNNER_BINARY): $(TRUNNER_TEST_OBJS)			\
+>>   			     $(TRUNNER_EXTRA_OBJS) $$(BPFOBJ)		\
+>> +			     $(TRUNNER_LIB_OBJS)			\
+>>   			     $(RESOLVE_BTFIDS)				\
+>>   			     $(TRUNNER_BPFTOOL)				\
+>>   			     $(OUTPUT)/veristat				\
+>> @@ -718,6 +725,7 @@ TRUNNER_EXTRA_SOURCES := test_progs.c		\
+>>   			 json_writer.c 		\
+>>   			 flow_dissector_load.h	\
+>>   			 ip_check_defrag_frags.h
+>> +TRUNNER_LIB_SOURCES := find_bit.c
+>>   TRUNNER_EXTRA_FILES := $(OUTPUT)/urandom_read				\
+>>   		       $(OUTPUT)/liburandom_read.so			\
+>>   		       $(OUTPUT)/xdp_synproxy				\
+>> @@ -755,6 +763,7 @@ endif
+>>   TRUNNER_TESTS_DIR := map_tests
+>>   TRUNNER_BPF_PROGS_DIR := progs
+>>   TRUNNER_EXTRA_SOURCES := test_maps.c
+>> +TRUNNER_LIB_SOURCES :=
+>>   TRUNNER_EXTRA_FILES :=
+>>   TRUNNER_BPF_BUILD_RULE := $$(error no BPF objects should be built)
+>>   TRUNNER_BPF_CFLAGS :=
+>> @@ -776,8 +785,8 @@ $(OUTPUT)/test_verifier: test_verifier.c verifier/tests.h $(BPFOBJ) | $(OUTPUT)
+>>   	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+>>   
+>>   # Include find_bit.c to compile xskxceiver.
+>> -EXTRA_SRC := $(TOOLSDIR)/lib/find_bit.c
+>> -$(OUTPUT)/xskxceiver: $(EXTRA_SRC) test_xsk.c test_xsk.h xskxceiver.c xskxceiver.h $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
+>> +EXTRA_SRC := $(TOOLSDIR)/lib/find_bit.c prog_tests/test_xsk.c prog_tests/test_xsk.h
+>> +$(OUTPUT)/xskxceiver: $(EXTRA_SRC) xskxceiver.c xskxceiver.h $(OUTPUT)/network_helpers.o $(OUTPUT)/xsk.o $(OUTPUT)/xsk_xdp_progs.skel.h $(BPFOBJ) | $(OUTPUT)
+>>   	$(call msg,BINARY,,$@)
+>>   	$(Q)$(CC) $(CFLAGS) $(filter %.a %.o %.c,$^) $(LDLIBS) -o $@
+>>   
+>> diff --git a/tools/testing/selftests/bpf/test_xsk.c b/tools/testing/selftests/bpf/prog_tests/test_xsk.c
+>> similarity index 100%
+>> rename from tools/testing/selftests/bpf/test_xsk.c
+>> rename to tools/testing/selftests/bpf/prog_tests/test_xsk.c
+>> diff --git a/tools/testing/selftests/bpf/test_xsk.h b/tools/testing/selftests/bpf/prog_tests/test_xsk.h
+>> similarity index 100%
+>> rename from tools/testing/selftests/bpf/test_xsk.h
+>> rename to tools/testing/selftests/bpf/prog_tests/test_xsk.h
+>> diff --git a/tools/testing/selftests/bpf/prog_tests/xsk.c b/tools/testing/selftests/bpf/prog_tests/xsk.c
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..7ce5ddd7d3fc848df27534f00a6a9f82fbc797c5
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/bpf/prog_tests/xsk.c
+>> @@ -0,0 +1,146 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +#include <net/if.h>
+>> +#include <stdarg.h>
+>> +
+>> +#include "network_helpers.h"
+>> +#include "test_progs.h"
+>> +#include "test_xsk.h"
+>> +#include "xsk_xdp_progs.skel.h"
+>> +
+>> +#define VETH_RX "veth0"
+>> +#define VETH_TX "veth1"
+>> +#define MTU	1500
+>> +
+>> +int setup_veth(bool busy_poll)
+>> +{
+>> +	SYS(fail,
+>> +	"ip link add %s numtxqueues 4 numrxqueues 4 type veth peer name %s numtxqueues 4 numrxqueues 4",
+>> +	VETH_RX, VETH_TX);
+>> +	SYS(fail, "sysctl -wq net.ipv6.conf.%s.disable_ipv6=1", VETH_RX);
+>> +	SYS(fail, "sysctl -wq net.ipv6.conf.%s.disable_ipv6=1", VETH_TX);
+>> +
+>> +	if (busy_poll) {
+>> +		SYS(fail, "echo 2 > /sys/class/net/%s/napi_defer_hard_irqs", VETH_RX);
+>> +		SYS(fail, "echo 200000 > /sys/class/net/%s/gro_flush_timeout", VETH_RX);
+>> +		SYS(fail, "echo 2 > /sys/class/net/%s/napi_defer_hard_irqs", VETH_TX);
+>> +		SYS(fail, "echo 200000 > /sys/class/net/%s/gro_flush_timeout", VETH_TX);
+>> +	}
+>> +
+>> +	SYS(fail, "ip link set %s mtu %d", VETH_RX, MTU);
+>> +	SYS(fail, "ip link set %s mtu %d", VETH_TX, MTU);
+>> +	SYS(fail, "ip link set %s up", VETH_RX);
+>> +	SYS(fail, "ip link set %s up", VETH_TX);
+>> +
+>> +	return 0;
+>> +
+>> +fail:
+>> +	return -1;
+>> +}
+>> +
+>> +void delete_veth(void)
+>> +{
+>> +	SYS_NOFAIL("ip link del %s", VETH_RX);
+>> +	SYS_NOFAIL("ip link del %s", VETH_TX);
+>> +}
+>> +
+>> +int configure_ifobj(struct ifobject *tx, struct ifobject *rx)
+>> +{
+>> +	rx->ifindex = if_nametoindex(VETH_RX);
+>> +	if (!ASSERT_OK_FD(rx->ifindex, "get RX ifindex"))
+>> +		return -1;
+>> +
+>> +	tx->ifindex = if_nametoindex(VETH_TX);
+>> +	if (!ASSERT_OK_FD(tx->ifindex, "get TX ifindex"))
+>> +		return -1;
+>> +
+>> +	tx->shared_umem = false;
+>> +	rx->shared_umem = false;
+>> +
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void test_xsk(const struct test_spec *test_to_run, enum test_mode mode)
+>> +{
+>> +	struct ifobject *ifobj_tx, *ifobj_rx;
+>> +	struct test_spec test;
+>> +	int ret;
+>> +
+>> +	ifobj_tx = ifobject_create();
+>> +	if (!ASSERT_OK_PTR(ifobj_tx, "create ifobj_tx"))
+>> +		return;
+>> +
+>> +	ifobj_rx = ifobject_create();
+>> +	if (!ASSERT_OK_PTR(ifobj_rx, "create ifobj_rx"))
+>> +		goto delete_tx;
+>> +
+>> +	if (!ASSERT_OK(setup_veth(false), "setup veth"))
+>> +		goto delete_rx;
+>> +
+>> +	if (!ASSERT_OK(configure_ifobj(ifobj_tx, ifobj_rx), "conigure ifobj"))
+>> +		goto delete_veth;
+>> +
+>> +	ret = get_hw_ring_size(ifobj_tx->ifname, &ifobj_tx->ring);
+>> +	if (!ret) {
+>> +		ifobj_tx->hw_ring_size_supp = true;
+>> +		ifobj_tx->set_ring.default_tx = ifobj_tx->ring.tx_pending;
+>> +		ifobj_tx->set_ring.default_rx = ifobj_tx->ring.rx_pending;
+>> +	}
+>> +
+>> +	if (!ASSERT_OK(init_iface(ifobj_rx, worker_testapp_validate_rx), "init RX"))
+>> +		goto delete_veth;
+>> +	if (!ASSERT_OK(init_iface(ifobj_tx, worker_testapp_validate_tx), "init TX"))
+>> +		goto delete_veth;
+>> +
+>> +	test_init(&test, ifobj_tx, ifobj_rx, 0, &tests[0]);
+>> +
+>> +	test.tx_pkt_stream_default = pkt_stream_generate(DEFAULT_PKT_CNT, MIN_PKT_SIZE);
+>> +	if (!ASSERT_OK_PTR(test.tx_pkt_stream_default, "TX pkt generation"))
+>> +		goto delete_veth;
+>> +	test.rx_pkt_stream_default = pkt_stream_generate(DEFAULT_PKT_CNT, MIN_PKT_SIZE);
+>> +	if (!ASSERT_OK_PTR(test.rx_pkt_stream_default, "RX pkt generation"))
+>> +		goto delete_veth;
+>> +
+>> +
+>> +	test_init(&test, ifobj_tx, ifobj_rx, mode, test_to_run);
+>> +	ret = test.test_func(&test);
+>> +	if (ret != TEST_SKIP)
+>> +		ASSERT_OK(ret, "Run test");
+>> +	pkt_stream_restore_default(&test);
+>> +
+>> +	if (ifobj_tx->hw_ring_size_supp)
+>> +		hw_ring_size_reset(ifobj_tx);
+>> +
+>> +	pkt_stream_delete(test.tx_pkt_stream_default);
+>> +	pkt_stream_delete(test.rx_pkt_stream_default);
+>> +	xsk_xdp_progs__destroy(ifobj_tx->xdp_progs);
+>> +	xsk_xdp_progs__destroy(ifobj_rx->xdp_progs);
+>> +
+>> +delete_veth:
+>> +	delete_veth();
+>> +delete_rx:
+>> +	ifobject_delete(ifobj_rx);
+>> +delete_tx:
+>> +	ifobject_delete(ifobj_tx);
+>> +}
+>> +
+>> +void test_ns_xsk_skb(void)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>> +		if (test__start_subtest(tests[i].name))
+>> +			test_xsk(&tests[i], TEST_MODE_SKB);
+> 
+> Ouff. Feels not optimal to setup everything per each test case. Was there
+> any stopper from keeping the veth pair per each test mode?
+> 
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-index 77a04c4579c9dbae886a0b387f69610a932b7b9e..6f197789cc2e8018d6959158b795e4bca46869c5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-@@ -106,6 +106,7 @@ struct stm32_dwmac {
- 	u32 speed;
- 	const struct stm32_ops *ops;
- 	struct device *dev;
-+	bool phy_wol;
- };
- 
- struct stm32_ops {
-@@ -433,6 +434,8 @@ static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
- 		}
- 	}
- 
-+	dwmac->phy_wol = of_property_read_bool(np, "st,phy-wol");
-+
- 	return err;
- }
- 
-@@ -557,6 +560,8 @@ static int stm32_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->bsp_priv = dwmac;
- 	plat_dat->suspend = stm32_dwmac_suspend;
- 	plat_dat->resume = stm32_dwmac_resume;
-+	if (dwmac->phy_wol)
-+		plat_dat->flags |= STMMAC_FLAG_USE_PHY_WOL;
- 
- 	ret = stm32_dwmac_init(plat_dat);
- 	if (ret)
+Indeed, it can feel heavy, but IMHO, creating new veth pairs for each 
+test case is good way to ensure that the test cases don't collide with 
+each other.
 
+Best regards,
 -- 
-2.35.3
+Bastien Curutchet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
