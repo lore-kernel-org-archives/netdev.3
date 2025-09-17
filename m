@@ -1,86 +1,85 @@
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE51A315C
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 19:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A743C2FC896
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 19:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758136039; cv=none; b=SJo8yTExpanjMknxz1Oz68c6GIuTBoe8xqmWAyafs742g5oari9mbjRLvQv51pdhskTJm0txaV4A4ATHgtKmsk4EXNzyma/QR2XioWbaZogefp0wFA6LYRvRGusFR1XXG0Qj0Np2sd2shHhZ58t7/06OA7mzYCRnwHGXKp5GXF4=
+	t=1758136448; cv=none; b=O26Uw/OM3+OQBzjovrQch7239Umrr9B0zmRlhFVRkhBFB+Dma9FZIrnlWSS9u9EnNOlcpus8W+MSu8PWUdwUCOxEJXpsQ39LkKLqqJQBFpemahVNdWkeXUezbYSpdh5vX6tCTxoC/N9qu/TNXFKYKHzNXhCdXgYU6s6k+Zux90Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758136039; c=relaxed/simple;
-	bh=byvrkWcLSc+D3J0J6P6u54xndl8WT+MLirwMnepcsD4=;
+	s=arc-20240116; t=1758136448; c=relaxed/simple;
+	bh=oXGJc5PtcToWhpYg7IPZKPXFjyI+V6rr8h6OjDhs62c=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=nE5alOHE2IKc1IU0evRHA1ayjQhCfGRDfRN+SN/20GgRIQeyTNaqq58x21vJ5Qst5sZ0lNlW7pWM43/3r5X3p8mEBKCZ3kQOODWcXpZB7jnnC9NcuWR40ujx/aj7I3W+xvUDCO2Gb9GC925Mmo8XKxAHWeaVMCml8WbLaMb/QDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4U0rMPE; arc=none smtp.client-ip=209.85.222.177
+	 Mime-Version:Content-Type; b=Dyr0hB2Pc7MyInHvhVfg8Z5EJuAUQhP19O05necEpxnacGWZDgEgRyGPovZlwE0Mma0WbbqTl7I15HgQl36rLc9LY0AY3DmmIsk06FYfh69NAJWfCHdXiMbUIa+CkWBBCIlQ6wpyW+2DIWfdHXhWyqXASbP6QfJStIU+hoviLQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzuoWa8y; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4U0rMPE"
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8112c7d196eso18178885a.3
-        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 12:07:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzuoWa8y"
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-545df2bb95dso60165e0c.0
+        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 12:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758136037; x=1758740837; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758136445; x=1758741245; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=byvrkWcLSc+D3J0J6P6u54xndl8WT+MLirwMnepcsD4=;
-        b=Z4U0rMPEEQU8FHEzoCKTIvDPQn5rAFZJqUaDbbm8bAQpXeYtwBOxBVjIjJagR/ppT/
-         PpcNMEy9tvQ/YR+hcocLq2Rt/21tP3CYUV8rAXTp2ekct/toLKjmYJK99buoF/mmWsEg
-         CRpAYha/tcjdY+VMlGuChHR3IJz6kOUkjv5z+BjDd7E+U/atzV6oQ97RRRFfbfTEP/Lr
-         Nd0CtHIvyG4cNfhm8HbN51Pje5jaz/GtKfNt1iIaPieCN2yaydrRtUu3fdILelGStnaj
-         U/m1ZLii/gqeoM74nF3KAfYJ+QpBgQKZb+AIOjCzDg03ian1xDF/O39DH//I/BKiYNXB
-         5pTA==
+        bh=CRQZa+sJ/uVO1Ce6tXItjTSHDpvtVz0AGOs/O2qEd44=;
+        b=PzuoWa8yrFjj+9i6OWFvwFRsSaxI/D5sInRZ/VkIHqMAxd/Xd+BxGwEoJ+igIBLij2
+         k+zQLj1ICoX1krp5ViCblMY9J5ARXB9JIT+HA+LLSkILR1jML0me3ICyACQAJH7WMKqG
+         qfdMYmYMyz0nsVMrW2VWzygW9CjZTAeBnEt4Q5QzW3bI4nBcWYvj8uCRVIcTNQAIEpuO
+         SAQDgRFHvWXQgBGssiHqnXUuUYKGTrK8zxmAwIAo4XSaphyBH2yMQ+CZRmtXywYix6m3
+         PnPmi8vsY4uxwaVPmEn1bxPM9L3kCfLPVPM8atTJXsOcbfntFkbq/cWV3aSFMr96Qnbo
+         jk3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758136037; x=1758740837;
+        d=1e100.net; s=20230601; t=1758136445; x=1758741245;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=byvrkWcLSc+D3J0J6P6u54xndl8WT+MLirwMnepcsD4=;
-        b=rPxdZjtMFQiJJ2RIXlN8BBKX9sQ2S4FNQjCEQFsa5XfMAQE32rUj1xH9o5pxjLvUGb
-         SayTlx5xAzJFq/ASMBPck+wIRXj4tS6ED+m9GwP8ZP8E/DsYG7nR1pdumKFnWNjhcRxG
-         eH3mNKdOF3c+sF7NxDF6g+WZYlZGlGTVWBFPRi4k0vbULu2aM3CGWkccFoTKUKXlzS95
-         o+1HzjSdQ7TF44E9ny5eHPMvLGPktLUVSU7AqaZJGUhvkdtppC3hva76HYcnl2YbjbXF
-         jVJSuCnoPqPDJCcU5wLxjHD4D/hYUqwDTw1qy2j005NKsFSNJArccf7c2NYii6xSe8hM
-         MHuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYQHFfafKRxJpOibDO5/6S1dXoFtewoeQanbIxslIkcX7FSuezm6NEOxeH46EVZQuLq0+CY48=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFm/uyHN0F4YYLcVYetLjINydM2I185UfdyfnfMMmFHtxBjMrM
-	kylf9pSwKu9VSRg+UV3kHfXg0sPPGCLL9x/bZdnppREVS1p9RDI8p+Oe
-X-Gm-Gg: ASbGncuETle0MvuT5DlEhtyBs6DYnAJOZxy31YqbFkogi/RY1W316MswByJp/w/JHpK
-	ytDiebvczf730qJ/yWYdIIiiKXMqXdMYC1Si+S76XjuHq3zgjkWBEbRdaPPh4sCuIg0QmX6/i13
-	sN0SvGeDF1IPKJDbkxSKhx+E/fEt1b0WIPhXc0ckdZ/CrRdWXIbamYZdOOhcvx4pAbYmiF5Uqdr
-	S0ZP+4zmKfbZ/noVVwAy0eRs8TYt5+8ZC1BGTXVHPz6WIU5sn/jGSzE913EYszC6lLhzic+49WA
-	x9ZglsrzyS55tPTQ458nBixrsfeZGjcNHmnZMj2pG/xoK9aVqQ4mCLYvbX2O3b2UTsYHGEFtV+K
-	UQR2t227OcSa2ProdVsfYvKldrxmjaMqDRwaTdVM90PVniJFxO+YW++hkW4IkT5QsBWtt/4I5x7
-	tTUQ==
-X-Google-Smtp-Source: AGHT+IGpIBLiSD6jpr3D6aB/ySS1xNWNfZqMZM6WqsRzP1GM1/T4MasIDqLbkdJfNBB5jOoIhVn3AQ==
-X-Received: by 2002:a05:620a:414a:b0:826:474a:9f81 with SMTP id af79cd13be357-8310b5994a0mr388348585a.25.1758136036558;
-        Wed, 17 Sep 2025 12:07:16 -0700 (PDT)
+        bh=CRQZa+sJ/uVO1Ce6tXItjTSHDpvtVz0AGOs/O2qEd44=;
+        b=aLHM2Yb/LpfzRKGxpF68vddpmQVgKdFg/p2f2qlNanLRPIa/RZb1Ud19MmBunU6RZQ
+         frvIiQvAJCHZKEggUQfMN56iGNuVlyflkGVNO4QXf513wwJbjYaN2eBYykzEe4ZDg21+
+         lMfXcucCSqZuE4oUIOXyHm5OsICkrD7WlMVUkW81gv/hHvjnidIo5uTrLlpDqF442GTs
+         PTvUAkIeCVyA9buOK8/hkuoiVTNgdVMWu7oXj5SgYi3jIO+2bUCPAeEGpC98l73/RQle
+         wiEAzWRDXXJesZQjPVRlUOQBYkZcVVIApz2hFLGQ6h9bRm+BPP0M7vHpvm4M3yBIojDP
+         L+7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNs+5tHAzd1OMgV5ho9/XBZTK1gLpobAvmnzY45nkGsc7zJbq9b2B20Kzp0ybDTZ6zAEUCpvA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuKO2ZFttg7/vPCVl41rUe+P+hJCO1priuDTQ9f8+QnI88/oEa
+	mq0fkUlqbMP9OXdjHh/OiqwXX/64IXLIG1LJX1uEBGU5osScxzNn4WkV
+X-Gm-Gg: ASbGncvPBFomVLRV2TLZUsrEXz0xrtKAsHDjscwB2x8Oa1AJDFISoou4VGPGSwWif/3
+	e2gIm3px/S+nfhC78YlHcAkZEJeOuK1BhcUTq23k9IHIoMwHCiZ0VLTHjeZVWSBHdmCtpq0ARCS
+	75e7bigyu7ZnhCTkvSbFl0DCxEyKrpcskraJq3AfUa/lvVbZs+eB1Qy7D50+MPKR0TpQv1ZcTZE
+	NbQt6O0zLUsu+eeq0nQDKa3XyLYYV1X5H4QR7x+3H3cysMeleeVMhSYt+GTJxMhE6MLWo6YZ+J3
+	Onm6I52LBK0GaJUz+w9Fe+AQ8NbrLwKpY/Zk2rFiQp3iOoto/MyKp4w0vz4ZHKh+kUA4o7c5nqI
+	gAZ3GIblUGzJY1H4uam3JSZe/SaLyVSKEWj5sKP4q37y0pz6qxH8M600HzGDWVGvPde8fviTOoT
+	CTUg==
+X-Google-Smtp-Source: AGHT+IEWQK36fylCtprNzyW2M9skLMZXDXc3XKdbsHAwfTkeagnoPw/iQciwzN/2hP7Qd+838wurxw==
+X-Received: by 2002:a05:6122:659a:b0:538:d49b:719 with SMTP id 71dfb90a1353d-54a605d2923mr1055836e0c.1.1758136445414;
+        Wed, 17 Sep 2025 12:14:05 -0700 (PDT)
 Received: from gmail.com (141.139.145.34.bc.googleusercontent.com. [34.145.139.141])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-83630299579sm29768285a.41.2025.09.17.12.07.15
+        by smtp.gmail.com with UTF8SMTPSA id 71dfb90a1353d-54a729be0d7sm104960e0c.24.2025.09.17.12.14.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 12:07:16 -0700 (PDT)
-Date: Wed, 17 Sep 2025 15:07:15 -0400
+        Wed, 17 Sep 2025 12:14:04 -0700 (PDT)
+Date: Wed, 17 Sep 2025 15:14:04 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>, 
- Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S . Miller" <davem@davemloft.net>, 
+To: Eric Dumazet <edumazet@google.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
  Jakub Kicinski <kuba@kernel.org>, 
  Paolo Abeni <pabeni@redhat.com>, 
  Simon Horman <horms@kernel.org>, 
  Willem de Bruijn <willemb@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
  David Ahern <dsahern@kernel.org>, 
  netdev@vger.kernel.org, 
  eric.dumazet@gmail.com
-Message-ID: <willemdebruijn.kernel.1cc75fc0f6dfe@gmail.com>
-In-Reply-To: <CAAVpQUCumbFexO9TBhed0G0wGToLc4crVMSh8OxqwLep6kSzuA@mail.gmail.com>
+Message-ID: <willemdebruijn.kernel.896e45dd59fc@gmail.com>
+In-Reply-To: <CANn89iK-iPeGNVP5zKq4t+0vPhTsqCFeP715Z5XSfW6KdfhzKg@mail.gmail.com>
 References: <20250916160951.541279-1-edumazet@google.com>
- <20250916160951.541279-6-edumazet@google.com>
- <willemdebruijn.kernel.20220031a140a@gmail.com>
- <CANn89iKPip5QppUDo_NT-KrZ4Lg+maqJ6_zz0-NpVwbuR8yomw@mail.gmail.com>
- <CAAVpQUCumbFexO9TBhed0G0wGToLc4crVMSh8OxqwLep6kSzuA@mail.gmail.com>
-Subject: Re: [PATCH net-next 05/10] udp: refine __udp_enqueue_schedule_skb()
- test
+ <20250916160951.541279-7-edumazet@google.com>
+ <willemdebruijn.kernel.111bed09b8999@gmail.com>
+ <CANn89iK-iPeGNVP5zKq4t+0vPhTsqCFeP715Z5XSfW6KdfhzKg@mail.gmail.com>
+Subject: Re: [PATCH net-next 06/10] udp: update sk_rmem_alloc before busylock
+ acquisition
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,44 +90,70 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Kuniyuki Iwashima wrote:
-> On Wed, Sep 17, 2025 at 8:57=E2=80=AFAM Eric Dumazet <edumazet@google.c=
-om> wrote:
+Eric Dumazet wrote:
+> On Wed, Sep 17, 2025 at 8:01=E2=80=AFAM Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
 > >
-> > On Wed, Sep 17, 2025 at 8:00=E2=80=AFAM Willem de Bruijn
-> > <willemdebruijn.kernel@gmail.com> wrote:
+> > Eric Dumazet wrote:
+> > > Avoid piling too many producers on the busylock
+> > > by updating sk_rmem_alloc before busylock acquisition.
 > > >
-> > > Eric Dumazet wrote:
-> > > > Commit 5a465a0da13e ("udp: Fix multiple wraparounds
-> > > > of sk->sk_rmem_alloc.") allowed to slightly overshoot
-> > > > sk->sk_rmem_alloc, when many cpus are trying
-> > > > to feed packets to a common UDP socket.
-> > > >
-> > > > This patch, combined with the following one reduces
-> > > > false sharing on the victim socket under DDOS.
+> > > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > > ---
+> > >  net/ipv4/udp.c | 7 +++++--
+> > >  1 file changed, 5 insertions(+), 2 deletions(-)
 > > >
-> > > It also changes the behavior. There was likely a reason to allow
-> > > at least one packet if the buffer is small. Kuniyuki?
+> > > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > > index edd846fee90ff7850356a5cb3400ce96856e5429..658ae87827991a78c25=
+c2172d52e772c94ea217f 100644
+> > > --- a/net/ipv4/udp.c
+> > > +++ b/net/ipv4/udp.c
+> > > @@ -1753,13 +1753,16 @@ int __udp_enqueue_schedule_skb(struct sock =
+*sk, struct sk_buff *skb)
+> > >       if (rmem > (rcvbuf >> 1)) {
+> > >               skb_condense(skb);
+> > >               size =3D skb->truesize;
+> > > +             rmem =3D atomic_add_return(size, &sk->sk_rmem_alloc);=
+
+> > > +             if (rmem > rcvbuf)
+> > > +                     goto uncharge_drop;
 > >
-> > It should not change the behavior.
-> >
-> > rmem would be zero if there is no packet in the queue : We still
-> > accept the incoming skb, regardless of its truesize.
-> >
-> > If there is any packet, rmem > 0
+> > This does more than just reorganize code. Can you share some context
+> > on the behavioral change?
 > =
 
-> Agreed, this change should be fine.
+> Sure : If we update sk_rmem_alloc sooner, before waiting 50usec+ on the=
+ busylock
+> other cpus trying to push packets might see sk_rmem_alloc being too
+> big already and exit early,
+> before even trying to acquire the spinlock.
 > =
 
-> The rule comes from 0fd7bac6b6157, and later 850cbaddb52d
-> tried to be more strict but caused regression, and the condition
-> was converted to the current form in 363dc73acacbb.
+> Say you have many cpus coming there.
 > =
 
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Before the patch :
+> =
 
-Interesting. Thanks both!
+> They all spin on busylock, then update sk_rmem_alloc one at a time
+> (while they hold busylock)
+> =
+
+> After :
+> =
+
+> They update sk_rmem_alloc :
+> if too big, they immediately drop and return, no need to take any lock.=
+
+> =
+
+> If not too big, then they acquire the busylock.
+
+I see. So this likely also overshoots the rcvbuf less?
+
+As they currently all check against the sk_rcvbuf limit before
+waiting (50usec+) on the busylock, and only update rmem and enqueue
+after acquiring the lock. With no drop path at all (aside from
+forward alloc).
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
-
