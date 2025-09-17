@@ -1,125 +1,126 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B2B2EC0BB
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 10:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9684E35A2B3
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 10:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758103971; cv=none; b=TsJvHl/zpfjQWz4gizG0uI6vxIxEc6OnldDatWM2bRg2ijG7mzxQ9hSm8f0bPdlfHrrTRxcQUt78PYh0Gtm0LUa0mX4Av22EdXWabcomHRjyOIoUXd0uryOKe/xrlPSYz1LmhqK84ln9q2HIEng9g7Ta4dt1vvrcqyeywzFXa64=
+	t=1758104234; cv=none; b=T0blEGXutws/ezl7Y3rWwOvF8OJDoNfGd/YNSZGT0yz+t6Qk6hAtr5Cj0FPhb7udBf6xWp9he3fwR5bD5kuRH2rVmUf9ECVvWdXYNOKVYB164crv3Lk9TurROZiU49dug9TV9pNAceb+V5XMgEPfCv4UTnA6S2vQPiswHiBL0K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758103971; c=relaxed/simple;
-	bh=+HNLf5Nh134LRJe7Yk2RbvrVFs07+caGghRIwhbRwKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DIRqAeMLI5/aLmaUS80PwCYlQoGRGnsmLBE0TqMAed0W5MI74eg1aXL1dM+SA/F0ekX+2PD1IP5wHhPvQQmBvw7QqmPYWOD/43EcNRpws0xY/WVmUQnqY6VQYEjEbg4M1LbbJ2fwZMazV5bIH0iocnS6PIOCOuUDRdkBLeLxxdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyp9E-0006bW-BM; Wed, 17 Sep 2025 12:12:24 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyp9D-001k60-0W;
-	Wed, 17 Sep 2025 12:12:23 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1uyp9D-00DffQ-03;
-	Wed, 17 Sep 2025 12:12:23 +0200
-Date: Wed, 17 Sep 2025 12:12:22 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Eric Dumazet <edumazet@google.com>, Rob Herring <robh@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Lukasz Majewski <lukma@denx.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Divya.Koppera@microchip.com,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org,
-	Sabrina Dubroca <sd@queasysnail.net>, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH net-next v4 0/3] Documentation and ynl: add flow control
-Message-ID: <aMqJhl2swbkiYx_p@pengutronix.de>
-References: <20250909072212.3710365-1-o.rempel@pengutronix.de>
- <20250909143256.24178247@kernel.org>
+	s=arc-20240116; t=1758104234; c=relaxed/simple;
+	bh=IvietE9JkXKS7w9qtNuxLpxmV+K7Q5GqlA/kPY5CBMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lJCzOrkWtoSTWqnR0gIeED7GwZc5VCy7Po+Mejd5lw96wHerEqXD5/LXa7Dl+g0ydmmWMPn528CM0BNDpec63BByMa8OJmBOVtv6yYH0Qs6RZRgRWfG5RlSBRASUeXrd28zjBDkYqIQ/5Y9wgWY4Kbaaq0SVSu2ffsxraj+uMWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXxDfwBz; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXxDfwBz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1010C4CEF5;
+	Wed, 17 Sep 2025 10:17:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758104234;
+	bh=IvietE9JkXKS7w9qtNuxLpxmV+K7Q5GqlA/kPY5CBMs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tXxDfwBzDpDpGuCYjlLfBQ8kgZfLDB+QIPU79cA6oqIpKGU1oY/iY1IWYWJXptlLv
+	 t0KAeE78vlYh4+RKFfSb9Z7IXR5XyJS/ejQnP5ZVnlgGShGcJFolT8kqWPSemR3TDt
+	 g9rK87tuaLzH73WyuCZmjFcdb0ncrKgE9ddQqZB5S2vhXZ9yIIe7/MpMzyZVySZF24
+	 KKfeSDrfiLkMq1F+FNTytbC/uGBdJEApIhmJ8zjLcme+wKW/C4y7D9/gsNyLKagIkN
+	 JLsuLSh46/DzZclsl30AanEV59pSh2qNYmK8fcLwaxV2tmI2ISlO07KBio1a//v0Lt
+	 Fjs5LpgzHj7tQ==
+Message-ID: <35a48361-c69f-4cf9-aec9-db1ac0597f96@kernel.org>
+Date: Wed, 17 Sep 2025 12:17:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250909143256.24178247@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 net-next 6/7] mptcp: Call dst_release() in
+ mptcp_active_enable().
+Content-Language: en-GB, fr-BE
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>
+References: <20250916214758.650211-1-kuniyu@google.com>
+ <20250916214758.650211-7-kuniyu@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20250916214758.650211-7-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 09, 2025 at 02:32:56PM -0700, Jakub Kicinski wrote:
-> On Tue,  9 Sep 2025 09:22:09 +0200 Oleksij Rempel wrote:
-> > This series improves kernel documentation around Ethernet flow control
-> > and enhances the ynl tooling to generate kernel-doc comments for
-> > attribute enums.
-> > 
-> > Patch 1 extends the ynl generator to emit kdoc for enums based on YAML
-> > attribute documentation.
-> > Patch 2 regenerates all affected UAPI headers (dpll, ethtool, team,
-> > net_shaper, netdev, ovpn) so that attribute enums now carry kernel-doc.
-> > Patch 3 adds a new flow_control.rst document and annotates the ethtool
-> > pause/pause-stat YAML definitions, relying on the kdoc generation
-> > support from the earlier patches.
+Hi Kuniyuki,
+
+On 16/09/2025 23:47, Kuniyuki Iwashima wrote:
+> mptcp_active_enable() calls sk_dst_get(), which returns dst with its
+> refcount bumped, but forgot dst_release().
 > 
-> The reason we don't render the kdoc today is that I thought it's far
-> more useful to focus on the direct ReST generation. I think some of 
-> the docs are not rendered, and other may be garbled, but the main
-> structure of the documentation works quite well:
+> Let's add missing dst_release().
 > 
->   https://docs.kernel.org/next/netlink/specs/dpll.html
-> 
-> Could you spell out the motivation for this change a little more?
+> Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+> v2: split from the next patch as dst_dev_rcu() patch hasn't been
+>     backported to 6.12+, where the cited commit exists.
 
-The reason I went down the kdoc-in-UAPI route is mostly historical.
-When I first started writing the flow control documentation, reviewers
-pointed out that the UAPI parts should be documented in the header
-files.  Since these headers are generated from YAML, the natural way was
-to move  the docstrings into the YAML and let the generator emit them.
-One step led  to another, and we ended up with this change.
+Thank you for the v2 and for the split!
 
-I don’t have a strong preference for where the documentation lives, my
-primary goal was to avoid duplicating text and make sure the UAPI enums
-for pause / pause-stat are self-describing. If the consensus is that we
-should concentrate on ReST output only, I’m happy to reduce the scope of
-this series and drop the kernel-doc emission. The actual motivation of
-my  series is to add flow_control.rst and document the ethtool API
-there.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-So if you prefer, I can respin with just the flow_control.rst and YAML  
-annotations, and skip the generator changes.
+Ideally, it would be great to if the 'Cc: stable' tag can be added when
+applying the patch, so I would be notified in case of issues with the
+backport of this patch.
 
-Oleksij
+Cc: stable@vger.kernel.org
+
+Cheers,
+Matt
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sponsored by the NGI0 Core fund.
+
