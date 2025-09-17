@@ -1,89 +1,66 @@
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BB42F2607
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 15:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DBC19E98C
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 15:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758123619; cv=none; b=Vbfl4qy5JU8flQg6Uz53ntwFGAgbcHsNTP3BCNQkDJpj8yQ1agzW0Sp4FDmysi6BMMp103X28z4gVtgO4+K1B52msaJrlGNNikdfiWmKhFgM2Fm39FUpxZhJ0De5CBbaQctS1qbzP4ZWA7OJwnVT88gKd7mFXM+WDiX4qbDSbLc=
+	t=1758123852; cv=none; b=SrEYmLHMikngCx0Aojj54zcf0dBDOicYke/SqginXsAa9iCIBRiD+jx1VAnTJQricMAVekzrPrXWUJX7PtqHGmZPeFefdVaGdlykCXLMRCrA/BmACB7PIG8uyLkRdD5Ne5NxgcQPjzABUkbwCjI9zehodX6EwaG+6d5LsmIpz+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758123619; c=relaxed/simple;
-	bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qu5zVNHW1VrCd0r6gIgUVdKI7KPlTj0A2JBQhisu9yisTPuU9ksjzMFtOiXxg+3LPUbui2U6PG40XL0rrKNdiDSUlZdr3AnYa2QRPmp60TkWDmkE/5ehHQisnar9p/eu1RMDlq8cUHKwUeo3iOYzXk4ZSClSKz4JqWQeB40lRCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=mUK7Y2JD; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+	s=arc-20240116; t=1758123852; c=relaxed/simple;
+	bh=LGwsyxLmtznvMB35hom2jPbsclfLsrkVG3Fgw8UXByE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iGIaZRo2Ru19btjpNWxi/VLgB4jLzMmoQcEUGfAN+SLDRl8lKW6tDzqMwBslJJrNa8KpHOY7Fmi9pbLbocr0iLhHgacn6V41sgLWJYZAKL1Ccz+iWsG5U1cgWXgzD/mGdRcuN1WL5++qyhMyN6BQXFvXYPvEFyP08QIIJMcjrK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbeR38N3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="mUK7Y2JD"
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id CEA8B1C127C
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 18:31:21 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1758123080; x=
-	1758987081; bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=; b=m
-	UK7Y2JDolCC4ftU69n3P0AGiWfHotidgiNjBSyT7VJzTPEEd0HaKE/GN6stqlu66
-	haIlkdCUTF96H/gv+sIkGAW7jlt1hWJagZhisNwuGuByGOiPGbbFiOjS78Edbr4+
-	Ts1eq5o6vgLqO6dcCSXlXmRMfzMjXKtfZmfT+97O8A=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id R1LhbHdQy2eB for <netdev@vger.kernel.org>;
-	Wed, 17 Sep 2025 18:31:20 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 024D61C0CC1;
-	Wed, 17 Sep 2025 18:31:18 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: liquidio: fix overflow in octeon_init_instr_queue()
-Date: Wed, 17 Sep 2025 15:30:58 +0000
-Message-ID: <20250917153105.562563-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbeR38N3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13511C4CEE7;
+	Wed, 17 Sep 2025 15:44:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758123852;
+	bh=LGwsyxLmtznvMB35hom2jPbsclfLsrkVG3Fgw8UXByE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MbeR38N3j7D18tkYQMdKbGBrbDUvyp0tSn12RpLXZmSwi6LHNewPp8WK1yBZgEjof
+	 FPlT1M9VwBwxI95lPKIolOu/mMrUeJzopxV89ezs/LHr9m8sa0MP5G5MktuFBX1jf+
+	 sVSlB1x18Roeno6S0ytN3EFQq43o5gQJG+FQJYfOg3rfkmgDYtmGwnwD4uS14A71uz
+	 5LzeQiVF2o5Xoy3jVp9ZkylT+Siz7RTOWOA7u7c5sKr8YJgtW52Be2an8FqON+nZ21
+	 5lrOqi5IWKjJOZRr4b4gau1tPdhherSXFJP2ULY5GxdXo+uQfgtyI8ddPXZp7GM8jU
+	 TAFjv9t7DWd+Q==
+Message-ID: <51fa5967-df5a-4cbe-bf4a-11626d209dd4@kernel.org>
+Date: Wed, 17 Sep 2025 09:44:11 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 06/10] udp: update sk_rmem_alloc before busylock
+ acquisition
+Content-Language: en-US
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
+References: <20250916160951.541279-1-edumazet@google.com>
+ <20250916160951.541279-7-edumazet@google.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20250916160951.541279-7-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The expression `(conf->instr_type == 64) << iq_no` can overflow because
-`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
-operand to `u64` ensures correct 64-bit arithmetic.
+On 9/16/25 10:09 AM, Eric Dumazet wrote:
+> Avoid piling too many producers on the busylock
+> by updating sk_rmem_alloc before busylock acquisition.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  net/ipv4/udp.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-Cc: stable@vger.kernel.org # v4.2+
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-index de8a6ce86ad7..12105ffb5dac 100644
---- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
-+++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
-@@ -126,7 +126,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
- 	oct->io_qmask.iq |= BIT_ULL(iq_no);
- 
- 	/* Set the 32B/64B mode for each input queue */
--	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
-+	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
- 	iq->iqcmd_64B = (conf->instr_type == 64);
- 
- 	oct->fn_list.setup_iq_regs(oct, iq_no);
--- 
-2.43.0
 
