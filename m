@@ -1,226 +1,199 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D272C11C9
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 11:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758108350; cv=fail; b=gLn2tHZqLWAJWy1Grc1BvkXR6faVV/CglA16oxGW4m9H5kCGHJTBZO7CZNzts+aWMNt4nfzCnxV6NMlX/NSdAIHsXgwRuZ4efrLyrdkEXhFY+Pc/PBJOJrGn081dThorQ593TAPPj7L5a+7BYR8c1VtPMDkF+H3HPDcujYYUyJk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758108350; c=relaxed/simple;
-	bh=6VGAMXHgRFNwInXsTyM6mOG4pZ8+P/FNod9RgqO4j/A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tV/G4AG9oHY+ob0ErBThdi+6qGIMLlQ6zKZn4ahR6O8grCV2OWlE/rL5rbOfy1EmrXh+nfLJ6I0ApR2aemWN9UQzgdXuEITWCGCrZp8FK4jw+gcDOR5V6UGjYmpIca8JtuyYJSUkOm0Wxa9F6Ori69oG/Tx/rcF77bOU+5ZEi+M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NBiEpPaR; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08045304985
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 11:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758108389; cv=none; b=GSdUszb5gy8U6m1woEe4PgzNE2V87WarhsOQfWtxOTFJowpeGgudrrLmqEmgeReuGFU1M4t+B5ayx57WrSt+SWpLgxaeKTqTE+15ChY56CPGk5fNyo8qL4rjJ3syuHY2Pj9dIO1JBZql6G5oY5oU52AGVJ02TvLS24dalh1bhkM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758108389; c=relaxed/simple;
+	bh=ppa9xqtoGfGGmWZPvjGVyKSOFbJHHlCDfK1ROI9sSuc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=I+rgH9VlBSCoIm9qGnEIV/PX4ZBRN+CkzDhHUVs/YOJui3zwSSIKNqEf4XwzrrCKfwMPdRGXRmGlyN9dTSFMX/7YJSqeb+G90JUUZgZI0MYzcU/JIbNN1Y2S4H8jtyrBW16+DKiJ4oanuzXFiHhJdVGLuXmCdwwb0vRyehopRI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eP4/C49y; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NBiEpPaR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758108349; x=1789644349;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=6VGAMXHgRFNwInXsTyM6mOG4pZ8+P/FNod9RgqO4j/A=;
-  b=NBiEpPaRzDZh9iKsl1sAuKvyYU4nVd0aEsES6ZQsH6MQ9r2TAKMZGaDo
-   NOcb3YxtgkH0W7pwjp2DfW1miXHo1922qT2n+A7lVOZmGXx8rhfkiPbWy
-   14jTHMli/8dQ6IzmMbavPE6D+Jlg1jqYRGS8GnH/lrP0qPL85TeF5lDDV
-   ln3+aM5bJaDoRhWFo6W2/VB4IYKuSQYSh3Vtu5zLt5S/YlP80stN2Q5lx
-   eRLXLKl04EgWkYmm9ihlbZmxq+VhEfFbAKk8thwP4Z3lBohEKShmiAkrj
-   uBVz+K4phB7cPLhInJq8fGN5xcc1H2qEpbYXEE9ea02zv7mkh7+xuxTfx
-   Q==;
-X-CSE-ConnectionGUID: vhTMIX9WRwif6HbP53Jwmw==
-X-CSE-MsgGUID: 6IeDCQgmR7WGosrcohewyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11555"; a="60519251"
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="60519251"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 04:25:46 -0700
-X-CSE-ConnectionGUID: fHM/oKf9Rhe1HoMnYJqmPw==
-X-CSE-MsgGUID: 9XhQuWlaTqqXPcaYDnfyRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="175630344"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2025 04:25:42 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 17 Sep 2025 04:25:41 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 17 Sep 2025 04:25:41 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.40)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 17 Sep 2025 04:25:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vsGpsBeJTA48XX8eEA85gfy/kU0xjUtqXKv2QHCk4yx9tF5if9xDK8MFUMmYZyCEoJp7qLM/9RZGw7XFWWtVL0BgzsI3fVZnkY0SZmrQ3sjhvfgn5gWPoF8naIZwu70daQ7AvKc0hHl03Mhv3Jx4I8c3Ul4XRGJ2lNvP2gSDRj1e1B5uQbNAuSPZJ1uy7zQHxXwunzfprADM7KvOYNJvQVsuEDrjq1iJTKc6Eut076Eh7/BrJjPx90+oacryY4yWHo13XveSQynvqTZAoWhB68+7rOjztDnSw531OwI6k1EEuqLST/LKc5zCD/3oZVNm5AlUU3vQreCN4v5Jh2cGwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6VGAMXHgRFNwInXsTyM6mOG4pZ8+P/FNod9RgqO4j/A=;
- b=RcjdyBgXhs/A5IRi8pmUBqSWuOSTBmoC5ZIR1cEaBc9JQmygWOv+EOoQQ/ASbZVOXIfeO5bHVvbfJy60sfNyJudc6fXfwZx894pTJ9SgqNohHcmznC37QF6eT9d3KLLfcq7XxYR7dVq15fW+dVdtYD0V1vmKNaUeAxzfv/78l50bqbCLe+HbmQQ22TOwYKS0HVqNkT6GGi/nBy7g9kOgeoCb4uUDxNbPD25S1kacFBcCctsAA7L++PWvnTJ93JhuxxY+dqw4+6nPgz/K1kfTRoH6Q9rNMzzA2v/uNljfCWYFr7pDlLCbYkCJZ+bSpXoLpLLIODbTU+gGDxtQahfxyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Wed, 17 Sep
- 2025 11:25:38 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408%3]) with mapi id 15.20.9115.020; Wed, 17 Sep 2025
- 11:25:38 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Jakub Kicinski
-	<kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Michael Chan
-	<michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, "Tariq
- Toukan" <tariqt@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, Donald
- Hunter <donald.hunter@gmail.com>, Carolina Jubran <cjubran@nvidia.com>
-CC: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Yael Chemla
-	<ychemla@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: RE: [Intel-wired-lan] [PATCH net-next v3 3/4] net/mlx5e: Add logic to
- read RS-FEC histogram bin ranges from PPHCR
-Thread-Topic: [Intel-wired-lan] [PATCH net-next v3 3/4] net/mlx5e: Add logic
- to read RS-FEC histogram bin ranges from PPHCR
-Thread-Index: AQHcJz8kQD8J6RnEBUOusDdwdqv3xbSXPPZQ
-Date: Wed, 17 Sep 2025 11:25:38 +0000
-Message-ID: <IA3PR11MB89869FB384C972744A1D9F0CE517A@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
- <20250916191257.13343-4-vadim.fedorenko@linux.dev>
-In-Reply-To: <20250916191257.13343-4-vadim.fedorenko@linux.dev>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SJ0PR11MB4845:EE_
-x-ms-office365-filtering-correlation-id: ee87713a-670e-42e1-d003-08ddf5dced7a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014|921020|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?4apC4wC/UgEhhmSaXIC0xrmCpQZV42eN1/KQ6vaqd2GjDFdVgOigf5Iww98m?=
- =?us-ascii?Q?eX7UXKJkwMgulPJCPORD8oVVyA4vaBxLVs1FtV3QnD29+E5TPbWkUZAity0h?=
- =?us-ascii?Q?vYy3suElFBRJZQFSGXMdkjCfcpd1j3BD0tCH77HH3u6hCBRlS7X9JJe0A27b?=
- =?us-ascii?Q?HcMeVbxUnlZcaXFAF5ZezSvyY4sU1SYbXIL4kdcFLwLcfztyjkvrya8SROAu?=
- =?us-ascii?Q?egiH7HmkA+fxpIb/2ECXUd35MrfJUc4Bgy2f+rVqYEiUWbiWzjVrELcNWeDd?=
- =?us-ascii?Q?RPLbRY33+caVgSAuelYjudrdcZMEAttbq+UGh6ziFBquoXPrfaVljgm2yDyE?=
- =?us-ascii?Q?8O59w9nIMEjoUX3tP8Yma+KdL/gv1oVN27JHgyjNOfZLYZ99OkWBflgMkxYp?=
- =?us-ascii?Q?agGogILaUdniB6SVL65YCBQ69SX9Fqu6Ejp/Fmu08V50Rs2m3gigNv5wR8nb?=
- =?us-ascii?Q?dtxmZu12wgmhuvBKteU3cR4Tt0yz+39XlbFyCdEWC0eqo4OVRFaC3PL3jo0o?=
- =?us-ascii?Q?Kd9N6EZxZHyT1ymnbcdU3EJWLZ40Nw8bIKaSs/kbWOP0Xa/E8AKlmrxMxAY3?=
- =?us-ascii?Q?2BlWgwOAQgCyxavgc/WAe7oU/lHNcc4n6D+VOlAAewxN766K7cCHLO9octPF?=
- =?us-ascii?Q?8490Np2uXWHJCBuGtU/H0LqtwEgXb4iQMMtUUdlUwMyKgzusffVklwDhKNnF?=
- =?us-ascii?Q?puFzs0rOJnxPZAGe5Hr7t3ePfA+ZEQiEzOxAMHnrshNPmqg+CXz65FJ80Rmt?=
- =?us-ascii?Q?JJCTzgKCsqlzJzsMFW+n9dE3X/CO30S1aTRFneESB87eJB7D+5j7eBjxl5oF?=
- =?us-ascii?Q?Uiry88dys/WxP8a9oLk6l849RCm1L9m7VVNPNmBEXqgaKG/xot5PJ9lPdCmB?=
- =?us-ascii?Q?Acxyx9yazYU7iQWNBb6XQPfCv7JW9X0IuhOBmyCqEP4EeM6mknqynuh6Hsum?=
- =?us-ascii?Q?C8QoBzmufrzfy6B/4yivfW+CYjHvEHAvF3OjPGWOT+6IZTV3cwnJwVyVbmB+?=
- =?us-ascii?Q?cjdK0qEq2pd087N0UwPw7bJdw88DudWE+0neiGUdwiMsip7oArDLXwEK5CqP?=
- =?us-ascii?Q?31jTz4pK5WofnARAuMh11zS9UcNVE1psjxjqEhJJYxoUy17EMryWVVOzGFOr?=
- =?us-ascii?Q?7PLPAL4j6o5tf+OiaNouhr11mzhRr6XAvOczJC263eCb4KfEBUjrlxVhNvEX?=
- =?us-ascii?Q?tt1YfnGM7H9269lrcmvonk1fMt+UJfhJ/zyt+ftczJwmoh8A08IYf4S8eA9b?=
- =?us-ascii?Q?z9/IZ/kRWZUTTrgD+BppmVq2SESNJmqzJvDP876wkEILlE5SRI8q+VAbwIHE?=
- =?us-ascii?Q?kQa3cY+QqVRyfZt0Yr0iPWd/vSWjvPrRBZD1pNHIx3cudKp+vlyGcjPIEwyH?=
- =?us-ascii?Q?uLfdbe/wPi2Z7e+YL3+af9Zh4itdsOjgnHL9nNpcZnIRWqtdEHwU3m8o/TIe?=
- =?us-ascii?Q?GtsUWyS24sd8d6mzlsURsBs7GerpduU2U66/cnpziIaxxUDQfT7Jp8U/mpK/?=
- =?us-ascii?Q?KaZQoxYnAx1jOBc=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(921020)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?J0SUhOyR4sO8V+iQyp0VvsjzuEmICqKn2FAf6pwx6mrfECefa/gHoiT2yVNr?=
- =?us-ascii?Q?OHwhBvqtMRF70S6l0zrM/8aVG8ReAB+xHgm7rTxc83tHNOoNVEaiCEKwlH4J?=
- =?us-ascii?Q?PGV76gyq7hoQ6ajpLEKlUs04qnT8oMagFpu67LmzCxzmBpb1QlTpHwSrnbyN?=
- =?us-ascii?Q?GaP9IZSt7hQO2QvJKq+tTtEoBnQ9nBr4hDngIr5Br0jF4jxvkXqnxqK295as?=
- =?us-ascii?Q?CmRnnl9VOvIDlK1Hg5kb/Q6gFyUIABl6jihFXVenEr3KYDTOiJ5VWByVKT2a?=
- =?us-ascii?Q?5/T/qHA2+vX5kA3n8saw+uj1BvbIHKdnQp1oUzzQi7VKiO9jifXn1pq+wVZ6?=
- =?us-ascii?Q?6Pdh3kU2fz86UPKqv3ZpNMNstiGeccQLvEMdYfMBGJ4Cac2LSWcpNjk/+IWo?=
- =?us-ascii?Q?AyhnAWwPSfxjKTtc8M/zwsDVoZM25N3mBYEErwcuRmgmVrGAZPkqLLsI4/iP?=
- =?us-ascii?Q?W3SMuQHpE6NpV5X7Y5LNzPHtgOhdFNrKrnDq0l4tI1U4nGNQWh9tP4u33ddd?=
- =?us-ascii?Q?kV3bNfhJR+ctCWWTIxpALyklJNtvFyVb5/tt3u7iXMVo6Z12OJPjDgn5V5iP?=
- =?us-ascii?Q?ebAAfyrii/0UDIExd8T3eJc7zafvXpZhELLxTFn0HiXIgJONHmUaOzYPVbkD?=
- =?us-ascii?Q?EZJgXEZHZA6va1z4nWMDs8kHJT1lnLhi3Q4/4Vdj5ZjGkm+H/vPLeXDjGw0n?=
- =?us-ascii?Q?MloRVdXmXoujd+QbcSp4YVSIMStqlmng8A58CQ3J0elrN3sBVsSQ5+YjSr/h?=
- =?us-ascii?Q?dNiWFKPwvnzalW+ffYx0E2NhRg3p6AW4QOqCFhRRBafYRdjWWWCxL6ncXx+z?=
- =?us-ascii?Q?XT9sE3d4swxF/WKUDJlaMFuGT85zluMNyR2MQvbp4+8fYZq+uYjdB1tDBa9n?=
- =?us-ascii?Q?q0tbhQy6ZVvCeG1P/BM9T3qJN6RZ74oYI4sGCgorzZu9PhWIFOgh5mjsAfsE?=
- =?us-ascii?Q?W9EVpigxzheMlhldeqQPEXK3Ge600O+MsqSS3DefFV4Lbn3MATnoYndKdl9z?=
- =?us-ascii?Q?X8dMF1eacRMwuukWE7wQXctx0BF7KIpbS9XPmYPriYTOwMau3p5X5TejBE4X?=
- =?us-ascii?Q?/XlicPwJkbaocxiLOZS2rDBA+uSCPSMlTZhGnZJIp1rlr7vm4oC0xkcRi9gJ?=
- =?us-ascii?Q?FyGtuCzAcosycVwLDT3vqljF+iK41l/UjxOPcJs7G34nFXdJjmmlWc/PgWQD?=
- =?us-ascii?Q?Ay6V1ZA3gy71nxpqOqGMlWNX1j5bmXRnOMpMW92YxRvPy5L2QKajC7bHFg/0?=
- =?us-ascii?Q?oxg+2pJb3YBP6iHF9lW/PUd7wzEuLTdvlLi2ecWwzBF8LDWqievRkNqy5+K0?=
- =?us-ascii?Q?wBlS20CRVx76w3atJXNzDIFiQTatkeuJxYQFbH97bRt+JsDYmonXeWDPQbFX?=
- =?us-ascii?Q?AxCyb+8I6RiQLvheXgkjypDoEhoc5PcKMsyDlF89LrKCj3r/kdIUcg8/KBRi?=
- =?us-ascii?Q?2lmSb3yHiNzdcAquxdL4xyRf6aPsGp+WRApMPCItWAW4Ysh05rpD3A55hSmw?=
- =?us-ascii?Q?tEBMnDvTNyyYF9dfm/2AXUws6ofHbexUM0TIRHpswuQ3AWgXEN+sLC21hcoG?=
- =?us-ascii?Q?dJRZQ2lkhPcRGNBxYLtpXUiwwtI8XrNpfMoCV51Copg4UmM9Hqu1YPCGfzDh?=
- =?us-ascii?Q?Fw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eP4/C49y"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b042cc3954fso1174172266b.0
+        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 04:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758108386; x=1758713186; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HgyP1skDDpJkVrmkkvIDINFO9MgyddQrfr7riBVEJpU=;
+        b=eP4/C49yE/BRvaU3klF2lUBfV5xFx4nym6GMuSa3xR2rbLkwV85cKFvaf+GEJE+wjk
+         dnAiIBZQWDdPFNqQ0O4XdKOQwIUZukP+HrIrz7rREM918n/XuMmKfcguv/mTJNhOX0U3
+         sHmFjL+JOguJgshk1dRs+60vR/ZhMBaLJAN/abEFYUc1qG27uGk5v0Ne+szca+mlZjyP
+         YKKzAZ313FhKoj29YoqhxLQmScpKSHgJ2O6RXBNMfAKS7r748BMaKje7priHMZy+gK/H
+         s8p5qh7eJcVNqyBZ88mzCaX+7hIAUznTqUzdx0nJhbisdq4wPVUBGKXeR409g81HYVws
+         q1cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758108386; x=1758713186;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HgyP1skDDpJkVrmkkvIDINFO9MgyddQrfr7riBVEJpU=;
+        b=DFVMUEaHsbCZ4pxZ7Abt9hplT8QiW3EbNHyjK9Vv69kj1CZe2iyqeEe9i2CuhOEQET
+         RhWMxb4dLDsqvKp9xjuMspbDO1Fd91R/rYLBIHQ7ZQL77zoha0i+L2K/jHY3iRywuFHT
+         hfo35NKD57jZ7grNm/1pZH8kjgvUh3vBorD54VQq67RjpwuyfkGEPDcagqPBXjV1SI3h
+         ksVhtCQh65IYouB7AV8Tk/g6vcyy/qPnVsUgnzccFFzRDy4R9Uye6JYTKmV7GUFSIAe7
+         Ty1a5SZJjlFxXAVPciZpSL/6N6wWS86ZkzqCTZrv5EUYEGTmbFzF2j7xHRfU6r2ihnr+
+         yL9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUJzU2/kOvIhog31CDHtonRidO/EAUWL+ig6R//y7KklSI5mNlxyTrINRKHEtrCL2Fmq1kw9FA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFumB+yf/KkQhwcbFTcG+zwqKnwuoLTcuCIftxIc16kD7sihXK
+	N3s1nYFTQURFq2X7kTN7y4H+QdagYEmfcmjyouF9nW6b6qYWoP3WHoAu
+X-Gm-Gg: ASbGncuEi773j3cPqa+DJ/Mdp4dIviJ64h2/KVxC9phOJnbZodzl58g5+ja8y7aXqe9
+	kaLZ2ORc4v6SDaRI+ROCDs0HHugeOlOnfexFlPsFRwhJw2hwcXeNTxzVwQRwyG1OvB0ezv1sT3Y
+	/j3/rc5phg0Q27puEWAAflJn+PRkVezyIdoWiJ0xGct8z711JWGPLknPq2zN+qz+0v/s7cxyRks
+	2yYGoRklnu2d8rxuw5w2NKOqjl14mT3/GgoVyl5DQTF7qLbjMAA/4FH5xiIXEJ+/Iqvpbn+Z7rG
+	8UUbtAn0aCgU98ZlNJrLiJVjUa1pHlsNea+rXl7BlT6wD+mHhMnzRYu2kIWMoWZNujLV5/U9mUQ
+	0HIUIVFozkf4PVPFEhXaHZX7X2ld/KoD52K30LU/lUD11QcPtcrjND7kVX+5ocE2CYjk=
+X-Google-Smtp-Source: AGHT+IFZoOXXk0BzdVxzupl6UXjj53Xlysq4bZMGAJDUG5f0y1MlvEMSvXFKvK4gq4mVVf9cuDDYRA==
+X-Received: by 2002:a17:906:f592:b0:b0d:61a0:9a28 with SMTP id a640c23a62f3a-b1baf60b87cmr182559666b.6.1758108385868;
+        Wed, 17 Sep 2025 04:26:25 -0700 (PDT)
+Received: from localhost (public-gprs292944.centertel.pl. [31.62.31.145])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b07b30da388sm1340847766b.22.2025.09.17.04.26.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Sep 2025 04:26:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee87713a-670e-42e1-d003-08ddf5dced7a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2025 11:25:38.1718
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dFvrjmdyh98GTX6wcpRJ0IYOMsn4lZ3IjUEXzeKbo/vL10XlrcK0MEQemoZjTJpk8zWvpLbiJ7K4G71+81nVJepnKHW1GJKzhCljSZDb4nI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4845
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Sep 2025 13:26:23 +0200
+Message-Id: <DCV1EPLCX5L5.3MWOCVTH5AWM4@gmail.com>
+Cc: "Marek Szyprowski" <m.szyprowski@samsung.com>, <stable@vger.kernel.org>,
+ <kernel@pengutronix.de>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, "Lukas Wunner" <lukas@wunner.de>, "Russell King"
+ <linux@armlinux.org.uk>, "Xu Yang" <xu.yang_2@nxp.com>,
+ <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH net v1 1/1] net: usb: asix: forbid runtime PM to avoid
+ PM/MDIO + RTNL deadlock
+From: =?utf-8?q?Hubert_Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
+To: "Oleksij Rempel" <o.rempel@pengutronix.de>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>
+X-Mailer: aerc 0.20.0
+References: <20250917095457.2103318-1-o.rempel@pengutronix.de>
+In-Reply-To: <20250917095457.2103318-1-o.rempel@pengutronix.de>
 
-
-
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Vadim Fedorenko
-> Sent: Tuesday, September 16, 2025 9:13 PM
-> To: Jakub Kicinski <kuba@kernel.org>; Andrew Lunn <andrew@lunn.ch>;
-> Michael Chan <michael.chan@broadcom.com>; Pavan Chebbi
-> <pavan.chebbi@broadcom.com>; Tariq Toukan <tariqt@nvidia.com>; Gal
-> Pressman <gal@nvidia.com>; intel-wired-lan@lists.osuosl.org; Donald
-> Hunter <donald.hunter@gmail.com>; Carolina Jubran
-> <cjubran@nvidia.com>; Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> Cc: Paolo Abeni <pabeni@redhat.com>; Simon Horman <horms@kernel.org>;
-> netdev@vger.kernel.org; Yael Chemla <ychemla@nvidia.com>; Dragos
-> Tatulea <dtatulea@nvidia.com>
-> Subject: [Intel-wired-lan] [PATCH net-next v3 3/4] net/mlx5e: Add
-> logic to read RS-FEC histogram bin ranges from PPHCR
->=20
-> From: Carolina Jubran <cjubran@nvidia.com>
->=20
-> Introduce support for querying the Ports Phy Histogram Configuration
-> Register (PPHCR) to retrieve RS-FEC histogram bin ranges. The ranges
-> are stored in a static array and will be used to map histogram
-> counters to error levels.
->=20
-> The actual RS-FEC histogram statistics are not yet reported in this
-> commit and will be handled in a downstream patch.
->=20
-> Co-developed-by: Yael Chemla <ychemla@nvidia.com>
-> Signed-off-by: Yael Chemla <ychemla@nvidia.com>
-> Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Yael Chemla <ychemla@nvidia.com>
-> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
+On Wed Sep 17, 2025 at 11:54 AM CEST, Oleksij Rempel wrote:
+> Forbid USB runtime PM (autosuspend) for AX88772* in bind.
+>
+> usbnet enables runtime PM by default in probe, so disabling it via the
+> usb_driver flag is ineffective. For AX88772B, autosuspend shows no
+> measurable power saving in my tests (no link partner, admin up/down).
+> The ~0.453 W -> ~0.248 W reduction on 6.1 comes from phylib powering
+> the PHY off on admin-down, not from USB autosuspend.
+>
+> With autosuspend active, resume paths may require calling phylink/phylib
+> (caller must hold RTNL) and doing MDIO I/O. Taking RTNL from a USB PM
+> resume can deadlock (RTNL may already be held), and MDIO can attempt a
+> runtime-wake while the USB PM lock is held. Given the lack of benefit
+> and poor test coverage (autosuspend is usually disabled by default in
+> distros), forbid runtime PM here to avoid these hazards.
+>
+> This affects only AX88772* devices (per-interface in bind). System
+> sleep/resume is unchanged.
+>
+> Fixes: 4a2c7217cd5a ("net: usb: asix: ax88772: manage PHY PM from MAC")
+> Reported-by: Hubert Wi=C5=9Bniewski <hubert.wisniewski.25632@gmail.com>
+> Closes: https://lore.kernel.org/all/20220622141638.GE930160@montezuma.acc=
+.umu.se
+> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Closes: https://lore.kernel.org/all/b5ea8296-f981-445d-a09a-2f389d7f6fdd@=
+samsung.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
-...
-> --
-> 2.47.3
+> Link to the measurement results:
+> https://lore.kernel.org/all/aMkPMa650kfKfmF4@pengutronix.de/
+> ---
+>  drivers/net/usb/asix_devices.c | 34 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+>
+> diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_device=
+s.c
+> index 792ddda1ad49..0d341d7e6154 100644
+> --- a/drivers/net/usb/asix_devices.c
+> +++ b/drivers/net/usb/asix_devices.c
+> @@ -625,6 +625,22 @@ static void ax88772_suspend(struct usbnet *dev)
+>  		   asix_read_medium_status(dev, 1));
+>  }
+> =20
+> +/*
+> + * Notes on PM callbacks and locking context:
+> + *
+> + * - asix_suspend()/asix_resume() are invoked for both runtime PM and
+> + *   system-wide suspend/resume. For struct usb_driver the ->resume()
+> + *   callback does not receive pm_message_t, so the resume type cannot
+> + *   be distinguished here.
+> + *
+> + * - The MAC driver must hold RTNL when calling phylink interfaces such =
+as
+> + *   phylink_suspend()/resume(). Those calls will also perform MDIO I/O.
+> + *
+> + * - Taking RTNL and doing MDIO from a runtime-PM resume callback (while
+> + *   the USB PM lock is held) is fragile. Since autosuspend brings no
+> + *   measurable power saving for this device with current driver version=
+, it is
+> + *   disabled below.
+> + */
+>  static int asix_suspend(struct usb_interface *intf, pm_message_t message=
+)
+>  {
+>  	struct usbnet *dev =3D usb_get_intfdata(intf);
+> @@ -919,6 +935,16 @@ static int ax88772_bind(struct usbnet *dev, struct u=
+sb_interface *intf)
+>  	if (ret)
+>  		goto initphy_err;
+> =20
+> +	/* Disable USB runtime PM (autosuspend) for this interface.
+> +	 * Rationale:
+> +	 * - No measurable power saving from autosuspend for this device.
+> +	 * - phylink/phylib calls require caller-held RTNL and do MDIO I/O,
+> +	 *   which is unsafe from USB PM resume paths (possible RTNL already
+> +	 *   held, USB PM lock held).
+> +	 * System suspend/resume is unaffected.
+> +	 */
+> +	pm_runtime_forbid(&intf->dev);
+> +
+>  	return 0;
+> =20
+>  initphy_err:
+> @@ -948,6 +974,10 @@ static void ax88772_unbind(struct usbnet *dev, struc=
+t usb_interface *intf)
+>  	phylink_destroy(priv->phylink);
+>  	ax88772_mdio_unregister(priv);
+>  	asix_rx_fixup_common_free(dev->driver_priv);
+> +	/* Re-allow runtime PM on disconnect for tidiness. The interface
+> +	 * goes away anyway, but this balances forbid for debug sanity.
+> +	 */
+> +	pm_runtime_allow(&intf->dev);
+>  }
+> =20
+>  static void ax88178_unbind(struct usbnet *dev, struct usb_interface *int=
+f)
+> @@ -1600,6 +1630,10 @@ static struct usb_driver asix_driver =3D {
+>  	.resume =3D	asix_resume,
+>  	.reset_resume =3D	asix_resume,
+>  	.disconnect =3D	usbnet_disconnect,
+> +	/* usbnet will force supports_autosuspend=3D1; we explicitly forbid RPM
+> +	 * per-interface in bind to keep autosuspend disabled for this driver
+> +	 * by using pm_runtime_forbid().
+> +	 */
+>  	.supports_autosuspend =3D 1,
+>  	.disable_hub_initiated_lpm =3D 1,
+>  };
 
+Well, this fixes the issue for me. No suspend/resume -- no deadlock -- no
+problem. Thanks.
+
+Tested-by: Hubert Wi=C5=9Bniewski <hubert.wisniewski.25632@gmail.com>
