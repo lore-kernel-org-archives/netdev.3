@@ -1,95 +1,112 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2462DE202
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 07:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7180A302CA4
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 07:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758094819; cv=none; b=ax/fTGq4ZVwtutJNLZC2Py4oiLhC79HT1Muj49IaHcw3wQj2JMHbfCtEWL5LuJ1unjK1RbZ9zj9/QnV/cUwwKEDd5sLux6LLJGM9kARBTN04SObmvWt8cnd+1RKSZ7DGbUfpJLXKHQ3+CpPQq17WiTbeFvPUyvO838QNBgcGM0E=
+	t=1758094820; cv=none; b=C6+PJOiyzAukdXaHnTTijrCuklNyKVNeDoSPtmGyphx9Wj2jJYjllxqbs2Tt5dRD1jK84MzPfzq1/xsdGG9oPFqMxeq6G1F0X1hsWAnyTkeJXHgllqLYQnNH42knKKGZLDiGpMkEQASzhBzFfnSsIrI1mwxsA52ilmddGc1gnGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758094819; c=relaxed/simple;
-	bh=HxHsHvcdKs/v1qm12ibX90gBBGUFIvSLbkIVYD3OTX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iiC+mIN3FJYLwc1SSBhAMsFYlHsPf7Okgb8r41h+xGBs1GtoM2n65WQNLVFVvVoCNHFYuzhf5nzr1QaQR5PY/aT4Lv5ChdL+JQzX2Cj0hm6ecacPOm5K0P1heCU8T0mLxN2nuLrqo7d8usefMCwCcf/cjnCY6IrcyH21f2ft5zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=inLILgKO; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="inLILgKO"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-45de5246dc4so13604815e9.0
-        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 00:40:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758094816; x=1758699616; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/XIt5NtVraCB5MTYAooGz9WbJEZ2DnkRKVJdNOYFJ8=;
-        b=inLILgKOok0/HmI48V5f31us3L2NM3sS/hlWNVYAle3PNiGKSfqOSMbxauL5ndTYpV
-         XLRQv0Wad+qQg9yGzJU6stlEVlfkcQRRMlMt18lnyfZjWDXX2fsG5fwO8dnROTb3uZ8M
-         qCL+2LmOOih40TVvatOxnztBVXMplORGGmD+yBfC70Y3BCFpxE7VqrQDqeSdjFRJS7yy
-         W3UNj7KB5MWIAMu7pSB9FqFaMqa92lIVfO8y1KYjo1q0mTv9XIUhk0gnaDS2cd64uYIg
-         oVEu+TU128el7sT62y903b+ydHhcAHGUWH6aNjKH84/7SCu9Tl/fKwCxYS38UnPaJWY6
-         ZY3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758094816; x=1758699616;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0/XIt5NtVraCB5MTYAooGz9WbJEZ2DnkRKVJdNOYFJ8=;
-        b=eStqjM/lFFIOacH7r64ZoPtqoosuTZGcjLi3TIn5JPh16wr7GPfee2CGgiz7Y9YxWa
-         5HtgZNZDB0UsBnMndELpTguUV5L/JuqoccXueWcjAVaoZdktJ5a0KcCF24S9NDBfg9P7
-         AosrB9RPH9k9DGVoNE3v5tM/V4X9C1tiIC64ohBKV8Fx9m5SO+Ubve9o4LvUElomQRcB
-         bfc+J/lwj+lADtmOYOS3RzNN9zjqZ4FivGTQz/173PR8cQ+sjJDyVlt992VYk5Z3G4TW
-         21XwxCtN9n4nbnLbnbXNs+MK0LmIAW8Dhs9dyniPIVogWtVWW/MBySgjHvDmqpXP0bbp
-         S1iA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCo8bRoTUvMAYDJ9eHcbEjbpu/O1qMpJevHysexIU4TlJGva9EAGtfvatub+yh4izLKzygVnc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwsCqMr+XRK7DrACD4qdcD2wbX8CE4vGTKLKdMDDN8fG3qYzM5
-	cTwTLQuKCj90HbX76sINY019EpHE818nASQDhN2XcO2FOWQeBBdG84Ph
-X-Gm-Gg: ASbGncv8XIP4+3aaGEOMYla+H80/A2C6dj4vM3liVhyJ9kS+dBFK1bqiqaKmrTUpBzH
-	TxrFws7lXC7Xfria4JOrdUwhFPDu4nNSP1H8NDn8xoDaDAaGTGz5SbWaNiiM9oyUCxuJBN1+fcg
-	VvccdrD1OdNDICsSThbAjLr5v8GQNBO9RlVCvGMAFGKa5ErQpWB8XVdbn/HkKZKKjTdsKUDf5cs
-	FYezdM7nDM1BR+oleokl+VLg9iflcg941tS6FtUXFqSgcNv5FMKbYFjKZjKIuU0C4YsXMsY9yIB
-	bVq6JOl+p7OBgKKfCd0VtLbbb93erxZViSLoVNjvVofTPZrEzFtPc9G3sRDJCVm3BuGUjpr+ZVY
-	rqX0kQXT/TTcHzVo=
-X-Google-Smtp-Source: AGHT+IH+aEDsquFwI7j5oPZLBieB2+/7Sfb48d409ushmu9h1HOa1q5tHuGixHUOK8v4Xcq5CxkBMA==
-X-Received: by 2002:a05:600c:1c18:b0:45f:3263:762e with SMTP id 5b1f17b1804b1-462fef540a0mr19185e9.3.1758094815316;
-        Wed, 17 Sep 2025 00:40:15 -0700 (PDT)
-Received: from skbuf ([2a02:2f04:d005:3b00:8bcc:b603:fee7:a273])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-461eefee9f3sm14717025e9.1.2025.09.17.00.40.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 00:40:14 -0700 (PDT)
-Date: Wed, 17 Sep 2025 10:40:11 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Russell King - ARM Linux <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	David Miller <davem@davemloft.net>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/2] net: dsa: dsa_loop: remove usage of
- mdio_board_info
-Message-ID: <20250917074011.zjh6lhxz7zwzohlo@skbuf>
-References: <4ccf7476-0744-4f6b-aafc-7ba84d15a432@gmail.com>
- <da9563a4-8e14-41cf-bfea-cf5f1b58a4b7@gmail.com>
+	s=arc-20240116; t=1758094820; c=relaxed/simple;
+	bh=iVDNLvHY8ShaFwgEpBiblYqA9FdT2BYsWKFXKU7hKb0=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JP9nqoqdtavfQN9nonbaJZ3ZBfVRMoJ5XKhNTFQyKX9Elb9vBd8Jqlyn36J//of/hPiwchigAWxyEPYBeSZ6H53zST/8z/IoUAbOBwZfddU3CtY6NCgw+HHVJ0K7VFDbvvPw3P1kN+x6xHmaqO1vqXEuJXrcDAX7k5GzLQi+46I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:Yeas8t1758094726t577t07824
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.235.139.142])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 4785895773401471484
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Simon Horman'" <horms@kernel.org>,
+	"'Alexander Lobakin'" <aleksander.lobakin@intel.com>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>
+References: <20250912062357.30748-1-jiawenwu@trustnetic.com>	<20250912062357.30748-2-jiawenwu@trustnetic.com>	<20250915180133.2af67344@kernel.org>	<038c01dc2775$9f4c58f0$dde50ad0$@trustnetic.com> <20250916192544.36c20fc1@kernel.org>
+In-Reply-To: <20250916192544.36c20fc1@kernel.org>
+Subject: RE: [PATCH net-next v4 1/2] net: libwx: support multiple RSS for every pool
+Date: Wed, 17 Sep 2025 15:38:45 +0800
+Message-ID: <039301dc27a6$194e79a0$4beb6ce0$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <da9563a4-8e14-41cf-bfea-cf5f1b58a4b7@gmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFA/7Etsb+JxZdvJ6Pe7eBYG6K7DgGXMDePAjSuA00CQvneMAEVDKDdtZPWzTA=
+Content-Language: zh-cn
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MIEbEOayU4Louc4E46eBUvqQ0OHRFd+hAEB+9YKCrNNlCEfwhifsXs1U
+	El6GmSmkLp5DvpOr0yUfS/WxZBkuL59sVsA4tiklEh9rfJ55mDxjQDs3p7skWibClSwT1q5
+	NQEjTDoMC/YyFJRUIWe1ypzoX4ghBF4uNChgQJlJVPXQ7wpzOrM8nw8GNqlBofbRygoPn33
+	QMExd0elMQtIzrfNwa7WxBJjjH3yNlfl7YByqQHRmgTGXOa97nO50jSN5fUbb+QmsWGDMwg
+	7O6PFBLbj+S5UlS9Uoba8RyFPkFRrQqOj5oR0tzISutWmoCh0DO4dl3raXH7E9K0POWXG+3
+	C0HiWP2hXoyYxB4Iijr3ltmPxnyZvHP7k/OkbUOM9wZLqzo1b7xSrWqXqSICLHlk3DNjXOJ
+	39D8zJ68+xEXSg13vnvKY8yjUFRU+XHmx/n+14Z6uE/Je9inNg7tMT/ZN0xUzhYC4l3mkE4
+	NtYXgIiS049u5CuMFvTKFWtx75Uw2W7eN11h0AWdv0QfaDGKONNjeLuA7RENkp7MTw97yAO
+	ud4Mp6yJ/2wklMWsVY09Bh+d3it2/6DtIDmvZUA4gltCxywU+89JxjJFF8jn48EsqKRxsJt
+	44w4K9GXoBIu8KsbPqglohIUdx4/EjykTJsRE5MsxF2Uf3X1zxdUErXpnB/tlwSE27CAypo
+	Y5r1xQUaHpKGzoLMznDxK+pSoOLk8HuKx+INvqnfcGKy3zWJZjIQ9luzXzplsz5uq1Grsva
+	WZ4m2fTa2s37k6UFoDaIFMCFeBRG/NHd40tZ3wpcwSeu7wo6+qyDwaQvqH2fo+MpimnN0kk
+	acoucVp3jzqG43A4Jjuvowte6lobw74wuzOLmXWvLTeYG12F6uC52eCXQ7dNzJQHOjC1DC7
+	Mn/H8j5iJ/x/UDoKEB5p5YWcYm14Emf98bTo7mc0/gkgh+HW65w+wj172RGgToXm6vhJHvQ
+	53cKorz8IvoTOCIU2Cyn+Lv23lxtIEYfqz9UQBMsaSawwhdGacF6WJOpskf8UqTCyY+IA/p
+	g7O8u33JCGtD7GcA9S8sfdGe2um2c=
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
+X-QQ-RECHKSPAM: 0
 
-On Sat, Sep 13, 2025 at 11:07:08PM +0200, Heiner Kallweit wrote:
-> dsa_loop is the last remaining user of mdio_board_info. Let's remove
-> using mdio_board_info, so that support for it can be dropped from
-> phylib.
+On Wed, Sep 17, 2025 10:26 AM, Jakub Kicinski wrote:
+> On Wed, 17 Sep 2025 09:51:44 +0800 Jiawen Wu wrote:
+> > On Tue, Sep 16, 2025 9:02 AM, Jakub Kicinski wrote:
+> > > On Fri, 12 Sep 2025 14:23:56 +0800 Jiawen Wu wrote:
+> > > > Subject: [PATCH net-next v4 1/2] net: libwx: support multiple RSS for every pool
+> > >
+> > > "support multiple RSS" needs an object. Multiple RSS keys? Multiple
+> > > contexts? Multiple tables?
+> >
+> > All of these are multiple. Each pool has a different RSS scheme.
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
+> Then configuration?
+> As in "support separate RSS configuration for every pool" ?
+> 
+> > > > -static void wx_store_reta(struct wx *wx)
+> > > > +u32 wx_rss_indir_tbl_entries(struct wx *wx)
+> > > >  {
+> > > > +	if (test_bit(WX_FLAG_SRIOV_ENABLED, wx->flags))
+> > > > +		return 64;
+> > > > +	else
+> > > > +		return 128;
+> > > > +}
+> > >
+> > > Is WX_FLAG_SRIOV_ENABLED set only when VFs are created?
+> >
+> > Yes.
+> >
+> > > What if the user set a table with 128 entries?
+> > > The RSS table can't shrink once intentionally set to a specific size.
+> >
+> > Deleting VFs will reset these configurations.
+> 
+> You shouldn't reset user-set configuration of the PF when SR-IOV
+> is disabled.
 
-Thanks for the conversion! It looks really good.
+But the maximum queue number of PF is different when SRIOV is
+enabled or disabled?
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Tested-by: Vladimir Oltean <olteanv@gmail.com>
+And for the global RSS table (non SR-IOV mode) or multiple RSS table
+(SR-IOV mode), the table size is different on hardware design.
+
+How could I keep the RSS redirection table during the mode switching?
+
+
