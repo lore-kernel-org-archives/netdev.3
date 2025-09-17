@@ -1,39 +1,39 @@
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C4E2FFFBF;
-	Wed, 17 Sep 2025 07:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DEE301706;
+	Wed, 17 Sep 2025 07:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758093663; cv=none; b=QPhINWhFx5GilFTXhW/e8qi+JAbVl2ei9Bvitm7uvPUWYTLWTS/tQlDavHTJLw9RMCaUumUyPA9AM/843+o1UdvIF4dLbNFqGnL/sFdNxoO9VmTG92pwlMZTt4Pn5KxSqFoYi5g2FpsmNv2C8ougPXTyonmZTwxo3SJ31MqAOYY=
+	t=1758093668; cv=none; b=J5X3Y5yWcjwdYn5sfH2HEDzsEJywaRla7JyUv1IiZWaRdw3bMHoZRPwhHkdtBhEkOQv8WuuaCFSle9HGv5SQTwafodoTWiToeoOz6XDtL1sKVVFYVdDFSfWCMrNxx9bFpWnTvsMyTcZ/70/E7JwfnMqteC/P0xNoYzW8JWoC26M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758093663; c=relaxed/simple;
-	bh=nFzqA5g3aYlkgH3ruL3eEoTR59cyDhBtX7Pf5luMH0k=;
+	s=arc-20240116; t=1758093668; c=relaxed/simple;
+	bh=wi+BDfWniz+fSNMJHWDEUuouEGlVejipe4WyWSspWJ0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZUD08GpN/OvBAiHG7MfXdqewyxG8lkAWo0Rim+2Oq9WxnOAong+L2BtlA9mUS+bOfuEW8ufxpCNH0xZgRVM8RAJbGdrKHC5oPTj4OiS9/tnZ0kc3uJkJwunNlftlWO3cz6K4Mo5XhjeHLDXLder8m5ZRlXMBwr7q2E6AwoLJ9sA=
+	 In-Reply-To:Content-Type; b=qykvxYH+thxY5M32/qpNJEOb1Rza25tDsog3PTX2oCL5zRtvZXPkK3do2AbJctnhLRa+R7PtFr11wjh683YopZqNPbsqkzMo7d2vzgxqfureZzKGju5e0DZHM6EXAHDOgt9eTDK8d4EqAnk8jLt1HZCeaVBKbTPSmILswR8YntY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cRV7c6r5Bz9sxq;
-	Wed, 17 Sep 2025 09:02:04 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4cRV546dq9z9sxc;
+	Wed, 17 Sep 2025 08:59:52 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id bdYov1DU9pDS; Wed, 17 Sep 2025 09:02:04 +0200 (CEST)
+	with ESMTP id Z46yxuCUCYXC; Wed, 17 Sep 2025 08:59:52 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRV7c53qMz9sxm;
-	Wed, 17 Sep 2025 09:02:04 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRV544zDlz9sxb;
+	Wed, 17 Sep 2025 08:59:52 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 771578B766;
-	Wed, 17 Sep 2025 09:02:04 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7C9518B766;
+	Wed, 17 Sep 2025 08:59:52 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id vC-MlbVpWJHu; Wed, 17 Sep 2025 09:02:04 +0200 (CEST)
+	with ESMTP id u3lJUXBftTCg; Wed, 17 Sep 2025 08:59:52 +0200 (CEST)
 Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 28FA88B763;
-	Wed, 17 Sep 2025 09:02:03 +0200 (CEST)
-Message-ID: <e7c1245c-49d6-4a5d-b8c0-0312b80c9c3f@csgroup.eu>
-Date: Wed, 17 Sep 2025 09:02:02 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 36D288B763;
+	Wed, 17 Sep 2025 08:59:51 +0200 (CEST)
+Message-ID: <2b3f5f44-0629-4fc0-a70a-dc949a3edc0c@csgroup.eu>
+Date: Wed, 17 Sep 2025 08:59:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,8 +41,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v12 12/18] net: phy: marvell: Support SFP through
- phy_port interface
+Subject: Re: [PATCH net-next v12 05/18] net: phy: dp83822: Add support for
+ phy_port representation
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>, davem@davemloft.net
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, thomas.petazzoni@bootlin.com,
@@ -65,183 +65,144 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Daniel Golle <daniel@makrotopia.org>,
  Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 References: <20250909152617.119554-1-maxime.chevallier@bootlin.com>
- <20250909152617.119554-13-maxime.chevallier@bootlin.com>
+ <20250909152617.119554-6-maxime.chevallier@bootlin.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Language: fr-FR
-In-Reply-To: <20250909152617.119554-13-maxime.chevallier@bootlin.com>
+In-Reply-To: <20250909152617.119554-6-maxime.chevallier@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 Le 09/09/2025 à 17:26, Maxime Chevallier a écrit :
-> Convert the Marvell driver (especially the 88e1512 driver) to use the
-> phy_port interface to handle SFPs. This means registering a
-> .attach_port() handler to detect when a serdes line interface is used
-> (most likely, and SFP module).
+> With the phy_port representation introduced, we can use .attach_port to
+> populate the port information based on either the straps or the
+> ti,fiber-mode property. This allows simplifying the probe function and
+> allow users to override the strapping configuration.
 > 
 > Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
 Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 > ---
->   drivers/net/phy/marvell.c | 94 ++++++++++++++-------------------------
->   1 file changed, 33 insertions(+), 61 deletions(-)
+>   drivers/net/phy/dp83822.c | 72 +++++++++++++++++++++++++--------------
+>   1 file changed, 46 insertions(+), 26 deletions(-)
 > 
-> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> index 623292948fa7..467cf94e2d7f 100644
-> --- a/drivers/net/phy/marvell.c
-> +++ b/drivers/net/phy/marvell.c
-> @@ -29,10 +29,10 @@
->   #include <linux/ethtool.h>
->   #include <linux/ethtool_netlink.h>
+> diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+> index 33db21251f2e..c6e5b7244658 100644
+> --- a/drivers/net/phy/dp83822.c
+> +++ b/drivers/net/phy/dp83822.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/module.h>
+>   #include <linux/of.h>
 >   #include <linux/phy.h>
 > +#include <linux/phy_port.h>
->   #include <linux/marvell_phy.h>
+>   #include <linux/netdevice.h>
 >   #include <linux/bitfield.h>
->   #include <linux/of.h>
-> -#include <linux/sfp.h>
 >   
->   #include <linux/io.h>
->   #include <asm/irq.h>
-> @@ -3561,42 +3561,38 @@ static int marvell_probe(struct phy_device *phydev)
->   	return marvell_hwmon_probe(phydev);
+> @@ -811,17 +812,6 @@ static int dp83822_of_init(struct phy_device *phydev)
+>   	int i, ret;
+>   	u32 val;
+>   
+> -	/* Signal detection for the PHY is only enabled if the FX_EN and the
+> -	 * SD_EN pins are strapped. Signal detection can only enabled if FX_EN
+> -	 * is strapped otherwise signal detection is disabled for the PHY.
+> -	 */
+> -	if (dp83822->fx_enabled && dp83822->fx_sd_enable)
+> -		dp83822->fx_signal_det_low = device_property_present(dev,
+> -								     "ti,link-loss-low");
+> -	if (!dp83822->fx_enabled)
+> -		dp83822->fx_enabled = device_property_present(dev,
+> -							      "ti,fiber-mode");
+> -
+>   	if (!device_property_read_string(dev, "ti,gpio2-clk-out", &of_val)) {
+>   		if (strcmp(of_val, "mac-if") == 0) {
+>   			dp83822->gpio2_clk_out = DP83822_CLK_SRC_MAC_IF;
+> @@ -950,6 +940,49 @@ static int dp83822_read_straps(struct phy_device *phydev)
+>   	return 0;
 >   }
 >   
-> -static int m88e1510_sfp_insert(void *upstream, const struct sfp_eeprom_id *id)
-> +static int m88e1510_port_configure_serdes(struct phy_port *port, bool enable,
-> +					  phy_interface_t interface)
->   {
-> -	DECLARE_PHY_INTERFACE_MASK(interfaces);
-> -	struct phy_device *phydev = upstream;
-> -	phy_interface_t interface;
-> +	struct phy_device *phydev = port_phydev(port);
->   	struct device *dev;
->   	int oldpage;
->   	int ret = 0;
->   	u16 mode;
->   
-> -	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
-> -
->   	dev = &phydev->mdio.dev;
->   
-> -	sfp_parse_support(phydev->sfp_bus, id, supported, interfaces);
-> -	interface = sfp_select_interface(phydev->sfp_bus, supported);
-> +	if (enable) {
-> +		switch (interface) {
-> +		case PHY_INTERFACE_MODE_1000BASEX:
-> +			mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_1000X;
->   
-> -	dev_info(dev, "%s SFP module inserted\n", phy_modes(interface));
-> +			break;
-> +		case PHY_INTERFACE_MODE_100BASEX:
-> +			mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_100FX;
->   
-> -	switch (interface) {
-> -	case PHY_INTERFACE_MODE_1000BASEX:
-> -		mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_1000X;
-> +			break;
-> +		case PHY_INTERFACE_MODE_SGMII:
-> +			mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_SGMII;
->   
-> -		break;
-> -	case PHY_INTERFACE_MODE_100BASEX:
-> -		mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_100FX;
-> +			break;
-> +		default:
-> +			dev_err(dev, "Incompatible SFP module inserted\n");
->   
-> -		break;
-> -	case PHY_INTERFACE_MODE_SGMII:
-> -		mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII_SGMII;
-> -
-> -		break;
-> -	default:
-> -		dev_err(dev, "Incompatible SFP module inserted\n");
-> -
-> -		return -EINVAL;
-> +			return -EINVAL;
-> +		}
+> +static int dp83822_attach_mdi_port(struct phy_device *phydev,
+> +				   struct phy_port *port)
+> +{
+> +	struct dp83822_private *dp83822 = phydev->priv;
+> +	int ret;
+> +
+> +	if (port->mediums) {
+> +		if (phy_port_is_fiber(port))
+> +			dp83822->fx_enabled = true;
 > +	} else {
-> +		mode = MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII;
+> +		ret = dp83822_read_straps(phydev);
+> +		if (ret)
+> +			return ret;
+> +
+> +#if IS_ENABLED(CONFIG_OF_MDIO)
+> +		if (dp83822->fx_enabled && dp83822->fx_sd_enable)
+> +			dp83822->fx_signal_det_low =
+> +				device_property_present(&phydev->mdio.dev,
+> +							"ti,link-loss-low");
+> +
+> +		/* ti,fiber-mode is still used for backwards compatibility, but
+> +		 * has been replaced with the mdi node definition, see
+> +		 * ethernet-port.yaml
+> +		 */
+> +		if (!dp83822->fx_enabled)
+> +			dp83822->fx_enabled =
+> +				device_property_present(&phydev->mdio.dev,
+> +							"ti,fiber-mode");
+> +#endif /* CONFIG_OF_MDIO */
+> +
+> +		if (dp83822->fx_enabled) {
+> +			port->lanes = 1;
+> +			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASEF);
+> +		} else {
+> +			/* This PHY can only to 100BaseTX max, so on 2 lanes */
+> +			port->lanes = 2;
+> +			port->mediums = BIT(ETHTOOL_LINK_MEDIUM_BASET);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>   static int dp8382x_probe(struct phy_device *phydev)
+>   {
+>   	struct dp83822_private *dp83822;
+> @@ -968,27 +1001,13 @@ static int dp8382x_probe(struct phy_device *phydev)
+>   
+>   static int dp83822_probe(struct phy_device *phydev)
+>   {
+> -	struct dp83822_private *dp83822;
+>   	int ret;
+>   
+>   	ret = dp8382x_probe(phydev);
+>   	if (ret)
+>   		return ret;
+>   
+> -	dp83822 = phydev->priv;
+> -
+> -	ret = dp83822_read_straps(phydev);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret = dp83822_of_init(phydev);
+> -	if (ret)
+> -		return ret;
+> -
+> -	if (dp83822->fx_enabled)
+> -		phydev->port = PORT_FIBRE;
+> -
+> -	return 0;
+> +	return dp83822_of_init(phydev);
+>   }
+>   
+>   static int dp83826_probe(struct phy_device *phydev)
+> @@ -1172,6 +1191,7 @@ static int dp83822_led_hw_control_get(struct phy_device *phydev, u8 index,
+>   		.led_hw_is_supported = dp83822_led_hw_is_supported,	\
+>   		.led_hw_control_set = dp83822_led_hw_control_set,	\
+>   		.led_hw_control_get = dp83822_led_hw_control_get,	\
+> +		.attach_mdi_port = dp83822_attach_mdi_port		\
 >   	}
 >   
->   	oldpage = phy_select_page(phydev, MII_MARVELL_MODE_PAGE);
-> @@ -3613,49 +3609,24 @@ static int m88e1510_sfp_insert(void *upstream, const struct sfp_eeprom_id *id)
->   
->   error:
->   	return phy_restore_page(phydev, oldpage, ret);
-> -}
-> -
-> -static void m88e1510_sfp_remove(void *upstream)
-> -{
-> -	struct phy_device *phydev = upstream;
-> -	int oldpage;
-> -	int ret = 0;
-> -
-> -	oldpage = phy_select_page(phydev, MII_MARVELL_MODE_PAGE);
-> -	if (oldpage < 0)
-> -		goto error;
-> -
-> -	ret = __phy_modify(phydev, MII_88E1510_GEN_CTRL_REG_1,
-> -			   MII_88E1510_GEN_CTRL_REG_1_MODE_MASK,
-> -			   MII_88E1510_GEN_CTRL_REG_1_MODE_RGMII);
-> -	if (ret < 0)
-> -		goto error;
-> -
-> -	ret = __phy_set_bits(phydev, MII_88E1510_GEN_CTRL_REG_1,
-> -			     MII_88E1510_GEN_CTRL_REG_1_RESET);
->   
-> -error:
-> -	phy_restore_page(phydev, oldpage, ret);
-> +	return 0;
->   }
->   
-> -static const struct sfp_upstream_ops m88e1510_sfp_ops = {
-> -	.module_insert = m88e1510_sfp_insert,
-> -	.module_remove = m88e1510_sfp_remove,
-> -	.attach = phy_sfp_attach,
-> -	.detach = phy_sfp_detach,
-> -	.connect_phy = phy_sfp_connect_phy,
-> -	.disconnect_phy = phy_sfp_disconnect_phy,
-> +static const struct phy_port_ops m88e1510_serdes_port_ops = {
-> +	.configure_mii = m88e1510_port_configure_serdes,
->   };
->   
-> -static int m88e1510_probe(struct phy_device *phydev)
-> +static int m88e1510_attach_mii_port(struct phy_device *phy_device,
-> +				    struct phy_port *port)
->   {
-> -	int err;
-> +	port->ops = &m88e1510_serdes_port_ops;
->   
-> -	err = marvell_probe(phydev);
-> -	if (err)
-> -		return err;
-> +	__set_bit(PHY_INTERFACE_MODE_SGMII, port->interfaces);
-> +	__set_bit(PHY_INTERFACE_MODE_1000BASEX, port->interfaces);
-> +	__set_bit(PHY_INTERFACE_MODE_100BASEX, port->interfaces);
->   
-> -	return phy_sfp_probe(phydev, &m88e1510_sfp_ops);
-> +	return 0;
->   }
->   
->   static struct phy_driver marvell_drivers[] = {
-> @@ -3915,7 +3886,7 @@ static struct phy_driver marvell_drivers[] = {
->   		.driver_data = DEF_MARVELL_HWMON_OPS(m88e1510_hwmon_ops),
->   		.features = PHY_GBIT_FIBRE_FEATURES,
->   		.flags = PHY_POLL_CABLE_TEST,
-> -		.probe = m88e1510_probe,
-> +		.probe = marvell_probe,
->   		.config_init = m88e1510_config_init,
->   		.config_aneg = m88e1510_config_aneg,
->   		.read_status = marvell_read_status,
-> @@ -3941,6 +3912,7 @@ static struct phy_driver marvell_drivers[] = {
->   		.led_hw_is_supported = m88e1318_led_hw_is_supported,
->   		.led_hw_control_set = m88e1318_led_hw_control_set,
->   		.led_hw_control_get = m88e1318_led_hw_control_get,
-> +		.attach_mii_port = m88e1510_attach_mii_port,
->   	},
->   	{
->   		.phy_id = MARVELL_PHY_ID_88E1540,
+>   #define DP83825_PHY_DRIVER(_id, _name)				\
 
