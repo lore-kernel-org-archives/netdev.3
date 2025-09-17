@@ -1,98 +1,240 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F03A2D781E;
-	Wed, 17 Sep 2025 07:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F61200127;
+	Wed, 17 Sep 2025 07:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758092976; cv=none; b=jDz0A+0YUAsG77suWOkysje46nSHyHRSwuSqrlPbP9u/4kJTDIof65gI2Q7v2lmOKAR/WbeGgEZua5y39q76XehAqML7ww0476db86e6l7/zHU0BscqB39GQmsnLB3b5qr2quRSLuCrenzI7fcgwLNIzgfbxXS+Vykg56TWNs/w=
+	t=1758093136; cv=none; b=sJCEJzhxyxWFwuIsi4ZlV07ziN3UIBpTfAcPmt66oD3P6DQgqZ5hCTBVy+Ym1/FsHVfRZrZ+RLviERcLmJN7oesjwJ+Igz07MGt1k5/rWtFCDnXLYov8vBf3jEE2rXxtfTkfk1L+LUtWPkbwsL5Dpht9KvW/UHaqUvps3mzsG5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758092976; c=relaxed/simple;
-	bh=nMiL6Us8jF/5NVrU3nbcvoZY44eWUfuFxF0JqFTgPNk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g5ODMWOIn17IUWpgPt6eQPWDnQSoPlS7fG6uu4hF5NclDpR69rFrDuwHo4kvyEhUgXiKWOH7WK0sN6AbBLfuvdtfKZfvSA8vbL21z6iqT4pV7Nr5FWIId0e2RSu00JNxT4XV87Kqlbljp63bIRx3o3b9B4DalaZ/CL9RdywrLkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=QliMOZ+A; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1758093136; c=relaxed/simple;
+	bh=AnUEUznLqClCmdYSXr4NxPzJ7PnwHzaxSWx9a+Ughrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pbmuPZAwWxM8E7CFwm2LZVIzh0Otza6p0ztGW0cYlV58NCuniUmLB1srDsHeGDxz0vqjv5MBvAUnnodWJgTAWtSqzFkUPEEu62M5qU034tJUY3n0SjpeI07nZ1dH+/yhJV3hun58ZpurAphpPs+v8jDZIB2YwhY2OQpCiCcOU5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oFbLN6uL; arc=none smtp.client-ip=198.47.23.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="QliMOZ+A"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1758092974; x=1789628974;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nMiL6Us8jF/5NVrU3nbcvoZY44eWUfuFxF0JqFTgPNk=;
-  b=QliMOZ+AOlriiKQ5/oPRO/1QtMEssfslfzee1sNTbPBoK1AK8vXQIJZv
-   IMDXtsUya01B3lcaY7BOVMXB0ZYNOGEY+Rc4YRT/6O2DC9DsUNJ8mndiO
-   9X7qY+sSeuk2QYNg7war4Xew80ippmwrtJmu1C7o+Xr9r7o0XgCyiulJ8
-   cbdZ3UbiPfFlYqgooeE30/mWG/2jI6+X+RDaRo81uyJWfYTMHlK/cCQnl
-   6ysrdHUXIk0GUZPv9d7jYhnpzC24iMbw1CcvqngpE+arEskWF+TIEN7PZ
-   oYW/Y8BGEpVI38KyAan11o8Ux+EC/NoDEoa6LLvCl8jXp505jUvR7Yoh4
-   w==;
-X-CSE-ConnectionGUID: LbPGE0rbRfKlE3mQvAcwsA==
-X-CSE-MsgGUID: ZFyuMrmYR7Sw165WoWhATA==
-X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
-   d="scan'208";a="46029004"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 17 Sep 2025 00:09:33 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 17 Sep 2025 00:09:14 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Wed, 17 Sep 2025 00:09:13 -0700
-Date: Wed, 17 Sep 2025 09:05:16 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: phy: micrel: Add Fast link failure support
- for lan8842
-Message-ID: <20250917070516.a5pykok2e6xfjyao@DEN-DL-M31836.microchip.com>
-References: <20250915091149.3539162-1-horatiu.vultur@microchip.com>
- <698d4fbe-a84b-40cd-986f-1ebaecbf60b1@lunn.ch>
- <20250916073427.xohv2cywonkfzp5k@DEN-DL-M31836.microchip.com>
- <d0839c6b-1a6a-4043-bdaf-b0f572b26792@lunn.ch>
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oFbLN6uL"
+Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTP id 58H7A95w1551071;
+	Wed, 17 Sep 2025 02:10:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1758093009;
+	bh=JhpSRRMgVqAgduSNDjKmLQdUXJ0KKY7dsmGJD0xdH98=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=oFbLN6uL9Yp+2AUPSNOKZwf1JWAVNRsp0wg5LTa8IHaUSXtGQKLTzjUXK6ptQpM9D
+	 IsVEOwUoDjB1NvyqeuovRGSHWwofGcJD7/XhEHBwJhmLSo+KVY6Qu37WaAE9RKqs/R
+	 SXrGoQPR/uutEu3YeZ2vscJ/6JlAqs8ZwRw9Hm3c=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 58H7A8O0575420
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
+	Wed, 17 Sep 2025 02:10:08 -0500
+Received: from DFLE202.ent.ti.com (10.64.6.60) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 17
+ Sep 2025 02:10:08 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE202.ent.ti.com
+ (10.64.6.60) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 17 Sep 2025 02:10:08 -0500
+Received: from [172.24.231.152] (danish-tpc.dhcp.ti.com [172.24.231.152])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 58H79xa42605473;
+	Wed, 17 Sep 2025 02:10:00 -0500
+Message-ID: <f095f31c-b725-4a3f-bc73-7cc57428e5f2@ti.com>
+Date: Wed, 17 Sep 2025 12:39:59 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <d0839c6b-1a6a-4043-bdaf-b0f572b26792@lunn.ch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v12 5/5] net: rnpgbe: Add register_netdev
+To: Dong Yibo <dong100@mucse.com>, <andrew+netdev@lunn.ch>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <corbet@lwn.net>,
+        <gur.stavi@huawei.com>, <maddy@linux.ibm.com>, <mpe@ellerman.id.au>,
+        <lee@trager.us>, <gongfan1@huawei.com>, <lorenzo@kernel.org>,
+        <geert+renesas@glider.be>, <Parthiban.Veerasooran@microchip.com>,
+        <lukas.bulwahn@redhat.com>, <alexanderduyck@fb.com>,
+        <richardcochran@gmail.com>, <kees@kernel.org>, <gustavoars@kernel.org>,
+        <rdunlap@infradead.org>, <vadim.fedorenko@linux.dev>, <joerg@jo-so.de>
+CC: <netdev@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+References: <20250916112952.26032-1-dong100@mucse.com>
+ <20250916112952.26032-6-dong100@mucse.com>
+Content-Language: en-US
+From: MD Danish Anwar <danishanwar@ti.com>
+In-Reply-To: <20250916112952.26032-6-dong100@mucse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-The 09/16/2025 14:53, Andrew Lunn wrote:
-> 
-> On Tue, Sep 16, 2025 at 09:34:27AM +0200, Horatiu Vultur wrote:
-> > The 09/15/2025 14:42, Andrew Lunn wrote:
-> >
-> > Hi Andrew,
-> >
-> > >
-> > > > +/**
-> > > > + * LAN8814_PAGE_PCS - Selects Extended Page 0.
-> > > > + *
-> > > > + * This page appaers to control the fast link failure and there are different
-> 
-> > And the reason why I say it 'appears' is because I have seen most of the
-> > registers are for debug and some timers.
-> 
-> So maybe change the comment to
-> 
->         This page contains timers and debug registers...
-> 
-> It does not matter if the document is public or not, the description
-> is then correct and does not give the suggestion it is guesswork.
 
-Yes, I will change this in the next version.
 
+On 16/09/25 4:59 pm, Dong Yibo wrote:
+> Complete the network device (netdev) registration flow for Mucse Gbe
+> Ethernet chips, including:
+> 1. Hardware state initialization:
+>    - Send powerup notification to firmware (via echo_fw_status)
+>    - Sync with firmware
+>    - Reset hardware
+> 2. MAC address handling:
+>    - Retrieve permanent MAC from firmware (via mucse_mbx_get_macaddr)
+>    - Fallback to random valid MAC (eth_random_addr) if not valid mac
+>      from Fw
 > 
->         Andrew
+> Signed-off-by: Dong Yibo <dong100@mucse.com>
+> ---
+>  drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  18 +++
+>  .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  80 ++++++++++++++
+>  drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   2 +
+>  .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   | 103 ++++++++++++++++++
+>  4 files changed, 203 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> index 41b580f2168f..4c4b2f13cb4a 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
+> @@ -6,6 +6,7 @@
+>  
+>  #include <linux/types.h>
+>  #include <linux/mutex.h>
+> +#include <linux/netdevice.h>
+>  
+>  enum rnpgbe_boards {
+>  	board_n500,
+> @@ -34,12 +35,26 @@ struct mucse_mbx_info {
+>  	u32 fwpf_ctrl_base;
+>  };
+>  
+> +enum {
+> +	mucse_fw_powerup,
+> +};
+> +
+
+This enum has only one value. You should either use a #define or add
+more values to justify having an enum.
+
+>  struct mucse_hw {
+>  	void __iomem *hw_addr;
+> +	struct pci_dev *pdev;
+> +	const struct mucse_hw_operations *ops;
+>  	struct mucse_mbx_info mbx;
+> +	int port;
+> +	u8 perm_addr[ETH_ALEN];
+>  	u8 pfvfnum;
+>  };
+>  
+> +struct mucse_hw_operations {
+> +	int (*reset_hw)(struct mucse_hw *hw);
+> +	int (*get_perm_mac)(struct mucse_hw *hw);
+> +	int (*mbx_send_notify)(struct mucse_hw *hw, bool enable, int mode);
+> +};
+> +
+>  struct mucse {
+>  	struct net_device *netdev;
+>  	struct pci_dev *pdev;
+> @@ -54,4 +69,7 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type);
+>  #define PCI_DEVICE_ID_N500_DUAL_PORT 0x8318
+>  #define PCI_DEVICE_ID_N210 0x8208
+>  #define PCI_DEVICE_ID_N210L 0x820a
+> +
+> +#define mucse_hw_wr32(hw, reg, val) \
+> +	writel((val), (hw)->hw_addr + (reg))
+>  #endif /* _RNPGBE_H */
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> index 86f1c75796b0..667e372387a2 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> @@ -1,11 +1,88 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  /* Copyright(c) 2020 - 2025 Mucse Corporation. */
+>  
+> +#include <linux/pci.h>
+>  #include <linux/errno.h>
+> +#include <linux/etherdevice.h>
+>  
+>  #include "rnpgbe.h"
+>  #include "rnpgbe_hw.h"
+>  #include "rnpgbe_mbx.h"
+> +#include "rnpgbe_mbx_fw.h"
+> +
+> +/**
+> + * rnpgbe_get_permanent_mac - Get permanent mac
+> + * @hw: hw information structure
+> + *
+> + * rnpgbe_get_permanent_mac tries to get mac from hw
+> + *
+> + * Return: 0 on success, negative errno on failure
+> + **/
+> +static int rnpgbe_get_permanent_mac(struct mucse_hw *hw)
+> +{
+> +	struct device *dev = &hw->pdev->dev;
+> +	u8 *mac_addr = hw->perm_addr;
+> +	int err;
+> +
+> +	err = mucse_mbx_get_macaddr(hw, hw->pfvfnum, mac_addr, hw->port);
+> +	if (err) {
+> +		dev_err(dev, "Failed to get MAC from FW %d\n", err);
+> +		return err;
+> +	}
+> +
+> +	if (!is_valid_ether_addr(mac_addr)) {
+> +		dev_err(dev, "Failed to get valid MAC from FW\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * rnpgbe_reset - Do a hardware reset
+> + * @hw: hw information structure
+> + *
+> + * rnpgbe_reset calls fw to do a hardware
+> + * reset, and cleans some regs to default.
+> + *
+> + * Return: 0 on success, negative errno on failure
+> + **/
+> +static int rnpgbe_reset(struct mucse_hw *hw)
+> +{
+> +	mucse_hw_wr32(hw, RNPGBE_DMA_AXI_EN, 0);
+> +	return mucse_mbx_reset_hw(hw);
+> +}
+> +
+> +/**
+> + * rnpgbe_mbx_send_notify - Echo fw status
+> + * @hw: hw information structure
+> + * @enable: true or false status
+> + * @mode: status mode
+> + *
+> + * Return: 0 on success, negative errno on failure
+> + **/
+> +static int rnpgbe_mbx_send_notify(struct mucse_hw *hw,
+> +				  bool enable,
+> +				  int mode)
+> +{
+> +	int err;
+> +
+> +	switch (mode) {
+> +	case mucse_fw_powerup:
+> +		err = mucse_mbx_powerup(hw, enable);
+> +		break;
+> +	default:
+> +		err = -EINVAL;
+> +	}
+> +
+
+Since you only have one mode currently, this switch statement seems
+unnecessary.
+
+> +	return err;
+> +}
+
 
 -- 
-/Horatiu
+Thanks and Regards,
+Danish
+
