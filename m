@@ -1,149 +1,171 @@
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EC4296BBB;
-	Wed, 17 Sep 2025 11:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439D42EC08B
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758107888; cv=none; b=pmoAwk65txRVRn5pDH0gjqoHpf86iPGLuBxeqUJqodRsEB4YP544GP0MD6L579l1RNTiGx9eO8HfKmnSN1M82VMAbAjU1AftjpVFDm+q2TpL+MeM3ASTVR2r36M2p7sfQ0wpATpjKA/slSlJae1E8kc4Hhwh0zQrzrwSivV3n48=
+	t=1758107894; cv=none; b=ipnpwVG0hjMiMbIJU2E0b47FufmrTA3FXHrhXw8JESYbvsEk/vja/yEShQvm3X0rfxwQcmu/Rfe/AKmIxfVXL7gZtKleh5PCfNHwUDac7iu3T5SvXXOfsnYE71lJsY1nd2CJbV+07sy5LnWNAaC++ky07xQ88K6Mz78nOVKLvyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758107888; c=relaxed/simple;
-	bh=/kSeI78h4y9G4JNsOy+QlFi7Ig7SFC1gf5owympzhlc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LQyjGdzoI/uCp3s7bi5PGSNTHlPDR93mO8RajYX5FDusw+8Dsqp5awD1SlMplo7lVCH22P9A3EHtjg0cmBRqt16yuZl/7vUZtz8aHqPDToUOInWEfp5QMa9Tuv9sm3dVWzQCLHUylTHGijzkizuVOsT8Iv7chIunlvLPCXMI8Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cRbl11Z0Qz2VRrP;
-	Wed, 17 Sep 2025 19:14:37 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 340BA140142;
-	Wed, 17 Sep 2025 19:18:02 +0800 (CST)
-Received: from huawei.com (10.50.159.234) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 17 Sep
- 2025 19:18:00 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <willemdebruijn.kernel@gmail.com>, <jasowang@redhat.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <ast@kernel.org>,
-	<daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-	<sdf@fomichev.me>, <lorenzo@kernel.org>, <toke@redhat.com>
-CC: <yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-Subject: [PATCH net] net: tun: Update napi->skb after XDP process
-Date: Wed, 17 Sep 2025 19:39:19 +0800
-Message-ID: <20250917113919.3991267-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1758107894; c=relaxed/simple;
+	bh=fUKPTw/jrCmIgUj55A/LWv1Kjf1lKlW2Lrqq+JZSJ4M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xsud8d1SQQ1MAtEs2WRSKlOXqBr6UmlGPcZvaedHchTxxj91gFAgD5y1LJeHOfUgXvc+kOTgoodW58uYTTAjj6sDmF12ke1G1MgLK9Swp6N4tBM1i8sWebmrhcBKDSOBim7Iw5DiikwDQJfiiQ6RdIRoXL/DW2/mA9njmgKZJD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GY1ZHOT1; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GY1ZHOT1"
+Message-ID: <649298e6-4a8e-4641-aedc-37708f6a797f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758107890;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4IssIQO7BFDZKYD8boaAxFTZ8xweSlUfwCHKHVAU0RA=;
+	b=GY1ZHOT1ijHpMuDc8cnjHNbRxGtB+mUs5mleabc8gsVKUowPiyXLO4RE04F3iEMwVvUDCd
+	BOsJ5KUNknkj7qTZCkzrJ5DayAhSXh+TPQQcNnOkXWmKstlc4WOwDcpV7DdT50KPts73Ym
+	mo757M39SxzjW4rxK4HdrqbCCNtdtBg=
+Date: Wed, 17 Sep 2025 12:18:05 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+Subject: Re: [PATCH v2 net] octeontx2-pf: Fix use-after-free bugs in
+ otx2_sync_tstamp()
+To: Duoming Zhou <duoming@zju.edu.cn>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@google.com, davem@davemloft.net, sgoutham@marvell.com,
+ gakula@marvell.com, sbhatta@marvell.com, hkelam@marvell.com,
+ bbhushan2@marvell.com, andrew+netdev@lunn.ch, richardcochran@gmail.com,
+ naveenm@marvell.com
+References: <20250917063853.24295-1-duoming@zju.edu.cn>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20250917063853.24295-1-duoming@zju.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-The syzbot report a UAF issue:
+On 17/09/2025 07:38, Duoming Zhou wrote:
+> The original code relies on cancel_delayed_work() in otx2_ptp_destroy(),
+> which does not ensure that the delayed work item synctstamp_work has fully
+> completed if it was already running. This leads to use-after-free scenarios
+> where otx2_ptp is deallocated by otx2_ptp_destroy(), while synctstamp_work
+> remains active and attempts to dereference otx2_ptp in otx2_sync_tstamp().
+> Furthermore, the synctstamp_work is cyclic, the likelihood of triggering
+> the bug is nonnegligible.
+> 
+> A typical race condition is illustrated below:
+> 
+> CPU 0 (cleanup)           | CPU 1 (delayed work callback)
+> otx2_remove()             |
+>    otx2_ptp_destroy()      | otx2_sync_tstamp()
+>      cancel_delayed_work() |
+>      kfree(ptp)            |
+>                            |   ptp = container_of(...); //UAF
+>                            |   ptp-> //UAF
+> 
+> This is confirmed by a KASAN report:
+> 
+> BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x7d7/0x8c0
+> Write of size 8 at addr ffff88800aa09a18 by task bash/136
+> ...
+> Call Trace:
+>   <IRQ>
+>   dump_stack_lvl+0x55/0x70
+>   print_report+0xcf/0x610
+>   ? __run_timer_base.part.0+0x7d7/0x8c0
+>   kasan_report+0xb8/0xf0
+>   ? __run_timer_base.part.0+0x7d7/0x8c0
+>   __run_timer_base.part.0+0x7d7/0x8c0
+>   ? __pfx___run_timer_base.part.0+0x10/0x10
+>   ? __pfx_read_tsc+0x10/0x10
+>   ? ktime_get+0x60/0x140
+>   ? lapic_next_event+0x11/0x20
+>   ? clockevents_program_event+0x1d4/0x2a0
+>   run_timer_softirq+0xd1/0x190
+>   handle_softirqs+0x16a/0x550
+>   irq_exit_rcu+0xaf/0xe0
+>   sysvec_apic_timer_interrupt+0x70/0x80
+>   </IRQ>
+> ...
+> Allocated by task 1:
+>   kasan_save_stack+0x24/0x50
+>   kasan_save_track+0x14/0x30
+>   __kasan_kmalloc+0x7f/0x90
+>   otx2_ptp_init+0xb1/0x860
+>   otx2_probe+0x4eb/0xc30
+>   local_pci_probe+0xdc/0x190
+>   pci_device_probe+0x2fe/0x470
+>   really_probe+0x1ca/0x5c0
+>   __driver_probe_device+0x248/0x310
+>   driver_probe_device+0x44/0x120
+>   __driver_attach+0xd2/0x310
+>   bus_for_each_dev+0xed/0x170
+>   bus_add_driver+0x208/0x500
+>   driver_register+0x132/0x460
+>   do_one_initcall+0x89/0x300
+>   kernel_init_freeable+0x40d/0x720
+>   kernel_init+0x1a/0x150
+>   ret_from_fork+0x10c/0x1a0
+>   ret_from_fork_asm+0x1a/0x30
+> 
+> Freed by task 136:
+>   kasan_save_stack+0x24/0x50
+>   kasan_save_track+0x14/0x30
+>   kasan_save_free_info+0x3a/0x60
+>   __kasan_slab_free+0x3f/0x50
+>   kfree+0x137/0x370
+>   otx2_ptp_destroy+0x38/0x80
+>   otx2_remove+0x10d/0x4c0
+>   pci_device_remove+0xa6/0x1d0
+>   device_release_driver_internal+0xf8/0x210
+>   pci_stop_bus_device+0x105/0x150
+>   pci_stop_and_remove_bus_device_locked+0x15/0x30
+>   remove_store+0xcc/0xe0
+>   kernfs_fop_write_iter+0x2c3/0x440
+>   vfs_write+0x871/0xd70
+>   ksys_write+0xee/0x1c0
+>   do_syscall_64+0xac/0x280
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> ...
+> 
+> Replace cancel_delayed_work() with cancel_delayed_work_sync() to ensure
+> that the delayed work item is properly canceled before the otx2_ptp is
+> deallocated.
+> 
+> This bug was initially identified through static analysis. To reproduce
+> and test it, I simulated the OcteonTX2 PCI device in QEMU and introduced
+> artificial delays within the otx2_sync_tstamp() function to increase the
+> likelihood of triggering the bug.
+> 
+> Fixes: 2958d17a8984 ("octeontx2-pf: Add support for ptp 1-step mode on CN10K silicon")
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+> ---
+> Changes in v2:
+>    - Describe how the issue was discovered and how the patch was tested.
+> 
+>   drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+> index e52cc6b1a26c..dedd586ed310 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ptp.c
+> @@ -491,7 +491,7 @@ void otx2_ptp_destroy(struct otx2_nic *pfvf)
+>   	if (!ptp)
+>   		return;
+>   
+> -	cancel_delayed_work(&pfvf->ptp->synctstamp_work);
+> +	cancel_delayed_work_sync(&pfvf->ptp->synctstamp_work);
+>   
+>   	ptp_clock_unregister(ptp->ptp_clock);
+>   	kfree(ptp);
 
-  BUG: KASAN: slab-use-after-free in skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
-  BUG: KASAN: slab-use-after-free in napi_frags_skb net/core/gro.c:723 [inline]
-  BUG: KASAN: slab-use-after-free in napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
-  Read of size 8 at addr ffff88802ef22c18 by task syz.0.17/6079
-  CPU: 0 UID: 0 PID: 6079 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
-   print_address_description mm/kasan/report.c:378 [inline]
-   print_report+0xca/0x240 mm/kasan/report.c:482
-   kasan_report+0x118/0x150 mm/kasan/report.c:595
-   skb_reset_mac_header include/linux/skbuff.h:3150 [inline]
-   napi_frags_skb net/core/gro.c:723 [inline]
-   napi_gro_frags+0x6e/0x1030 net/core/gro.c:758
-   tun_get_user+0x28cb/0x3e20 drivers/net/tun.c:1920
-   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
-   new_sync_write fs/read_write.c:593 [inline]
-   vfs_write+0x5c9/0xb30 fs/read_write.c:686
-   ksys_write+0x145/0x250 fs/read_write.c:738
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-   </TASK>
-
-  Allocated by task 6079:
-   kasan_save_stack mm/kasan/common.c:47 [inline]
-   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
-   unpoison_slab_object mm/kasan/common.c:330 [inline]
-   __kasan_mempool_unpoison_object+0xa0/0x170 mm/kasan/common.c:558
-   kasan_mempool_unpoison_object include/linux/kasan.h:388 [inline]
-   napi_skb_cache_get+0x37b/0x6d0 net/core/skbuff.c:295
-   __alloc_skb+0x11e/0x2d0 net/core/skbuff.c:657
-   napi_alloc_skb+0x84/0x7d0 net/core/skbuff.c:811
-   napi_get_frags+0x69/0x140 net/core/gro.c:673
-   tun_napi_alloc_frags drivers/net/tun.c:1404 [inline]
-   tun_get_user+0x77c/0x3e20 drivers/net/tun.c:1784
-   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
-   new_sync_write fs/read_write.c:593 [inline]
-   vfs_write+0x5c9/0xb30 fs/read_write.c:686
-   ksys_write+0x145/0x250 fs/read_write.c:738
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-  Freed by task 6079:
-   kasan_save_stack mm/kasan/common.c:47 [inline]
-   kasan_save_track+0x3e/0x80 mm/kasan/common.c:68
-   kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:576
-   poison_slab_object mm/kasan/common.c:243 [inline]
-   __kasan_slab_free+0x5b/0x80 mm/kasan/common.c:275
-   kasan_slab_free include/linux/kasan.h:233 [inline]
-   slab_free_hook mm/slub.c:2422 [inline]
-   slab_free mm/slub.c:4695 [inline]
-   kmem_cache_free+0x18f/0x400 mm/slub.c:4797
-   skb_pp_cow_data+0xdd8/0x13e0 net/core/skbuff.c:969
-   netif_skb_check_for_xdp net/core/dev.c:5390 [inline]
-   netif_receive_generic_xdp net/core/dev.c:5431 [inline]
-   do_xdp_generic+0x699/0x11a0 net/core/dev.c:5499
-   tun_get_user+0x2523/0x3e20 drivers/net/tun.c:1872
-   tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1996
-   new_sync_write fs/read_write.c:593 [inline]
-   vfs_write+0x5c9/0xb30 fs/read_write.c:686
-   ksys_write+0x145/0x250 fs/read_write.c:738
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-After commit e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in
-generic mode"), the original skb may be freed in skb_pp_cow_data() when
-XDP program was attached, which was allocated in tun_napi_alloc_frags().
-However, the napi->skb still point to the original skb, update it after
-XDP process.
-
-Reported-by: syzbot+64e24275ad95a915a313@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=64e24275ad95a915a313
-Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- drivers/net/tun.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index cc6c50180663..47ddcb4b9a78 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1875,6 +1875,9 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 				local_bh_enable();
- 				goto unlock_frags;
- 			}
-+
-+			if (frags && skb != tfile->napi.skb)
-+				tfile->napi.skb = skb;
- 		}
- 		rcu_read_unlock();
- 		local_bh_enable();
--- 
-2.34.1
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
