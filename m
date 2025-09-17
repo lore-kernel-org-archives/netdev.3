@@ -1,155 +1,100 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC2D23D281;
-	Wed, 17 Sep 2025 06:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31D425EFBE;
+	Wed, 17 Sep 2025 06:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758091837; cv=none; b=tiENIeOoexcaSYgjY+SaFwLattdZbdLXLAVn5lhj5vkP34wzPewONH1KP+hvTyWtpW+mQrPVRDXtUieLHs34bZZN1Hqd9y+n/1Q9q/NUVCIOdLPjzAykCb1a33wJe876N+apRmvN+Nhj8IRz6ECxub4owejZLW14pNZ4wsC3Rfg=
+	t=1758091851; cv=none; b=feerAJwZVc0u8XMAsDwTKhVPlAt93QF89UaFMx5DkY41mQk69iBFoqMkQ7orpkP8wpBMq9xDzn+pBuh2D+YxXZRqVZyvshntzE3zQaKHYRLB1BPlEH4FpP6N08+MqS7YAev4VFgxpDadrGKghc1cl6/rTWekR3RgzcULj9oJE4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758091837; c=relaxed/simple;
-	bh=yUebgToB8fNqLYyOXSBAVPWT0p5rZMhaAsCibJB/MRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wd99bOmdegSc2szX7RQVxSC993lf+ldMHVJ/qMSeQECeg9HVniTWEdmuKXLteb9zn+kS4gS462YbIGZkDzmZqVz58bAuvkbE5VVX1ZpMo0Yi7MmnAKISlSXSlVuOQqhvI+1rLQ4lp1/Eoa9Ez+8AsOaoAIxACiVEPhpO7c43TmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cRTHm5Xlbz9sxc;
-	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cdMlgPgnLR0b; Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRTHm3mDVz9sxY;
-	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EAAC8B766;
-	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ZNb0SINzbGae; Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C684C8B763;
-	Wed, 17 Sep 2025 08:24:03 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Herve Codina <herve.codina@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2] net: wan: framer: Add version sysfs attribute for the Lantiq PEF2256 framer
-Date: Wed, 17 Sep 2025 08:24:01 +0200
-Message-ID: <2e01f4ed00d0c1475863ffa30bdc2503f330b688.1758089951.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1758091851; c=relaxed/simple;
+	bh=8tluT2i8GW6WhEmoITXfxdorw8zGejI+ZxqHYeHI9gg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ggFHhX2kivR33O0b/YhtUW4Gq3w8gDS9xlqIZJiC5qScaB0v3m/otZaIbF+tvO9Hd3eGYuyjgPdUEqkXMmGawpj0X4V/jufA4D7Qecg1wQpgGSqAgGubxAMYgBMS9Q1/2lIJnyHF/85RV9cciayMCAGRkInvbszcKmdL58qoSd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.2.205] (p5dc55721.dip0.t-ipconnect.de [93.197.87.33])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 58A2F60213C82;
+	Wed, 17 Sep 2025 08:49:47 +0200 (CEST)
+Message-ID: <329bdb90-578b-4fba-97fd-7000baa281e6@molgen.mpg.de>
+Date: Wed, 17 Sep 2025 08:49:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1758090241; l=3036; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=yUebgToB8fNqLYyOXSBAVPWT0p5rZMhaAsCibJB/MRE=; b=XinTr0sQd/fycGPP9Ahs+KCsT52jn6P0PjWwxzML/HAyXtlvz85bQ/3HFUOcTJvz4KCIavxke xhO9gi/FA+vBoFKf2SdHRX9DHgHLs/OYBcq4bCVaw+bNMDGV58B+AJm
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net] libie: fix string names for AQ
+ error codes
+To: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250916-jk-fix-missing-underscore-v1-1-a64be25ec2ac@intel.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20250916-jk-fix-missing-underscore-v1-1-a64be25ec2ac@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Lantiq PEF2256 framer has some little differences in behaviour
-depending on its version.
+Dear Jacob,
 
-Add a sysfs attribute to allow user applications to know the
-version.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2:
-- Make DEVICE_ATTR_RO(version) static
-- Split version_show() prototype into 2 lines to remain under 80 chars
+Thank you for your patch.
 
-v1: https://lore.kernel.org/all/f9aaa89946f1417dc0a5e852702410453e816dbc.1757754689.git.christophe.leroy@csgroup.eu/
----
- drivers/net/wan/framer/pef2256/pef2256.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+Am 16.09.25 um 22:09 schrieb Jacob Keller:
+> The LIBIE_AQ_STR macro() introduced by commit 5feaa7a07b85 ("libie: add
+> adminq helper for converting err to str") is used in order to generate
+> strings for printing human readable error codes. Its definition is missing
+> the separating underscore ('_') character which makes the resulting strings
+> difficult to read. Additionally, the string won't match the source code,
+> preventing search tools from working properly.
+> 
+> Add the missing underscore character, fixing the error string names.
+> 
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> Fixes: 5feaa7a07b85 ("libie: add adminq helper for converting err to str")
+> ---
+> I found this recently while reviewing the libie code. I believe this
+> warrants a net fix because it is both simple, and because users may attempt
+> to pass printed error codes into search tools like grep, and will be unable
+> to locate the error values without manually adding the missing '_'.
 
-diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
-index 1e4c8e85d598..a2166b424428 100644
---- a/drivers/net/wan/framer/pef2256/pef2256.c
-+++ b/drivers/net/wan/framer/pef2256/pef2256.c
-@@ -37,6 +37,7 @@ struct pef2256 {
- 	struct device *dev;
- 	struct regmap *regmap;
- 	enum pef2256_version version;
-+	const char *version_txt;
- 	struct clk *mclk;
- 	struct clk *sclkr;
- 	struct clk *sclkx;
-@@ -114,6 +115,16 @@ enum pef2256_version pef2256_get_version(struct pef2256 *pef2256)
- }
- EXPORT_SYMBOL_GPL(pef2256_get_version);
- 
-+static ssize_t version_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
-+{
-+	struct pef2256 *pef2256 = dev_get_drvdata(dev);
-+
-+	return sysfs_emit(buf, "%s\n", pef2256->version_txt);
-+}
-+
-+static DEVICE_ATTR_RO(version);
-+
- enum pef2256_gcm_config_item {
- 	PEF2256_GCM_CONFIG_1544000 = 0,
- 	PEF2256_GCM_CONFIG_2048000,
-@@ -697,7 +708,6 @@ static int pef2256_probe(struct platform_device *pdev)
- 	unsigned long sclkr_rate, sclkx_rate;
- 	struct framer_provider *framer_provider;
- 	struct pef2256 *pef2256;
--	const char *version_txt;
- 	void __iomem *iomem;
- 	int ret;
- 	int irq;
-@@ -763,18 +773,18 @@ static int pef2256_probe(struct platform_device *pdev)
- 	pef2256->version = pef2256_get_version(pef2256);
- 	switch (pef2256->version) {
- 	case PEF2256_VERSION_1_2:
--		version_txt = "1.2";
-+		pef2256->version_txt = "1.2";
- 		break;
- 	case PEF2256_VERSION_2_1:
--		version_txt = "2.1";
-+		pef2256->version_txt = "2.1";
- 		break;
- 	case PEF2256_VERSION_2_2:
--		version_txt = "2.2";
-+		pef2256->version_txt = "2.2";
- 		break;
- 	default:
- 		return -ENODEV;
- 	}
--	dev_info(pef2256->dev, "Version %s detected\n", version_txt);
-+	dev_info(pef2256->dev, "Version %s detected\n", pef2256->version_txt);
- 
- 	ret = pef2556_of_parse(pef2256, np);
- 	if (ret)
-@@ -835,6 +845,8 @@ static int pef2256_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	device_create_file(pef2256->dev, &dev_attr_version);
-+
- 	return 0;
- }
- 
-@@ -849,6 +861,8 @@ static void pef2256_remove(struct platform_device *pdev)
- 	pef2256_write8(pef2256, PEF2256_IMR3, 0xff);
- 	pef2256_write8(pef2256, PEF2256_IMR4, 0xff);
- 	pef2256_write8(pef2256, PEF2256_IMR5, 0xff);
-+
-+	device_remove_file(pef2256->dev, &dev_attr_version);
- }
- 
- static const struct of_device_id pef2256_id_table[] = {
--- 
-2.49.0
+As always, great commit message! Thank you.
 
+> ---
+>   drivers/net/ethernet/intel/libie/adminq.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/libie/adminq.c b/drivers/net/ethernet/intel/libie/adminq.c
+> index 55356548e3f0..7b4ff479e7e5 100644
+> --- a/drivers/net/ethernet/intel/libie/adminq.c
+> +++ b/drivers/net/ethernet/intel/libie/adminq.c
+> @@ -6,7 +6,7 @@
+>   
+>   static const char * const libie_aq_str_arr[] = {
+>   #define LIBIE_AQ_STR(x)					\
+> -	[LIBIE_AQ_RC_##x]	= "LIBIE_AQ_RC" #x
+> +	[LIBIE_AQ_RC_##x]	= "LIBIE_AQ_RC_" #x
+>   	LIBIE_AQ_STR(OK),
+>   	LIBIE_AQ_STR(EPERM),
+>   	LIBIE_AQ_STR(ENOENT),
+
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+
+Kind regards,
+
+Paul
