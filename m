@@ -1,43 +1,57 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29DC2D05D;
-	Wed, 17 Sep 2025 10:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7B2D05D;
+	Wed, 17 Sep 2025 10:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758106328; cv=none; b=qzdjjXH/QlC1rVaRVp45SEdaXE6AzQEHBAkhTf6csgeAzG2jtMSGxAveqa7w2YxGmUhEZD6NFE32ySm39koGCZxVj072Yenm5Uel9AT26GCgycaFhW2Twz5bIYcn34urxaLTRsd2l8fpUuOJuWi4oNf2yiAFACHosz6r80Gwjdk=
+	t=1758106360; cv=none; b=ncJ/wXBnmdrpyF6S9dRdQKOzshSpF80ZDYUmwrVP+jWXVjkY7QtHss/8R8+SZbVzoeDoeQ9hp9XV8yoQvuF+TqO1cgKR2tiNpDN5ZWTk0bDmjcYe7/wGJ4zFiGD1tSRrloZ8Amp61VReM2u/4poilye1y/RVMFQa3Efv4QBh0yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758106328; c=relaxed/simple;
-	bh=MguEq0RFysX6iVHApwFAjBaZigxJOOEDap5FC+ybZ9E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMg6+CHeff87QRC22qAYn6xHwofL6ed34aUU6yYyj3nkb42sPr8FpJu28vTZ/BPRI3T3VVE+2aIpyF5loaQyxqDblTeUixvqqRGX23oDeMabRcCzQwoPzCRyOz7eo3QVgW9ttuylLbkO9Q+1hb9zwAJjLcHwxtXTg3cPDqjglcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=nqX4hXc6; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1758106360; c=relaxed/simple;
+	bh=cT1ndc0cXbjAgVOSSx+yf4dBqSEecEZsxVmJK/s64qg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=heo4vqTrW2h+xBbNWhHCVWs+CbltETMfm21H20Kcn+bEs3+mvGeKyFjIepybAs4mVUHgllMqlWcafJmJ3Ki62MafUD+ntxJ/UwlX2wHZ2QuU7XNSudf7RH/NrRY6NPiVdt4VTWYuGYFqNe4dTDO3g8LhMphQV0/TtJWHpAH+r9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=U7LByDbT; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="nqX4hXc6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=lr3uZ43uOxqUdkQuwA7YKfaJGPDt8d6P0M2HrbHSyoA=; t=1758106326; x=1759315926; 
-	b=nqX4hXc6YRmHp9U3PjEgQzmqShyzSCXug4vpdm+njpFqyef9TKiZnevDA90M8qcKPhQptPPTAj/
-	27NSbVQdrjLylMDN3l5NGpCNHNmTJwcZgi2IJJCJzKQFAHi25DUrmyzAXMUVul0f3XHSnhqe6Gfkc
-	SQ0DqLoN/Va+1kq8maILePc9/AohM3GFPaTt9bn3l0+24ERA6vWcbxkVWte8Zd3kNQeYCnmbFuqbe
-	UYDPMbgeQmjnwXxu+QaS6doZg3OecURwQ3Ksaho1QC5FsiVAgZJ/iDvS8W0H7YaVraPMNo6xT55f0
-	WBzocL0O60yLg6JWdkt9aGUBQydEeQiYEVng==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uyplc-0000000AoDo-1930;
-	Wed, 17 Sep 2025 12:52:04 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-09-17
-Date: Wed, 17 Sep 2025 12:49:50 +0200
-Message-ID: <20250917105159.161583-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="U7LByDbT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1758106358; x=1789642358;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=cT1ndc0cXbjAgVOSSx+yf4dBqSEecEZsxVmJK/s64qg=;
+  b=U7LByDbTD7xrump8yVdrq3htawHUgtO6aiTu1P9PrTxoOv1qLyY+Tk+j
+   GmaiDMP0ABLoARicffmsw9/Qh9geIbqRde9/ss1r6x8dgKv57Mz9icLIe
+   uiP+BSbr4L1ivCcCZpfTLPGd8/q7fQFhbdmQNIqg8kmcZEg73ecPBFfNf
+   wsTIVZejn5V1dEmabUHI6Tnr9/y/qC+jfPRorB6rHXkBj2SanBE1ZQZE7
+   00FY3QFPKi8gmkSd7ySAi62BUR7BEKCDUt3RIgsJuGClwhCeYeRoPgkW9
+   iAf0kfThL/2GTeNQvdpy8Su9HwLpHFPwtsLXWPgUsCW+uQ1vosZiA9+2r
+   Q==;
+X-CSE-ConnectionGUID: 4yvbvGwYT+ChxZSk5lvAZQ==
+X-CSE-MsgGUID: 6eK46GDiRbaqAoZ1tCO1cQ==
+X-IronPort-AV: E=Sophos;i="6.18,271,1751266800"; 
+   d="scan'208";a="46037418"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 17 Sep 2025 03:52:31 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 17 Sep 2025 03:52:00 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 17 Sep 2025 03:51:59 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net-next v3] net: phy: micrel: Add Fast link failure support for lan8842
+Date: Wed, 17 Sep 2025 12:46:30 +0200
+Message-ID: <20250917104630.3931969-1-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,47 +59,152 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi,
+Add support for fast link failure for lan8842, when this is enabled the
+PHY will detect link down immediately (~1ms). The disadvantage of this
+is that also small instability might be reported as link down.
+Therefore add this feature as a tunable configuration and the user will
+know when to enable or not. By default it is not enabled.
 
-Two more fixes, but I think things have quieted down to say
-we probably won't have more. The iwlwifi aggregation thing
-is myself having messed up some recent changes, while rfkill
-has a potential crash that doesn't really seem to happen in
-practice, or only on some select machines.
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-Please pull and let us know if there's any problem.
+---
+v2->v3:
+- improve comment for LAN8814_PAGE_PCS by saying explict what it
+  contains
+v1->v2:
+- fix typo appaers->appears
+- simplify lan8842_set_fast_down as suggested by Russell
+---
+ drivers/net/phy/micrel.c | 79 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 77 insertions(+), 2 deletions(-)
 
-Thanks,
-johannes
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index e403cbbcead5b..af05764394f69 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -107,6 +107,7 @@
+ #define LAN8814_INTC				0x18
+ #define LAN8814_INTS				0x1B
+ 
++#define LAN8814_INT_FLF				BIT(15)
+ #define LAN8814_INT_LINK_DOWN			BIT(2)
+ #define LAN8814_INT_LINK_UP			BIT(0)
+ #define LAN8814_INT_LINK			(LAN8814_INT_LINK_UP |\
+@@ -2805,6 +2806,14 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
+ 	return ret;
+ }
+ 
++/**
++ * LAN8814_PAGE_PCS - Selects Extended Page 0.
++ *
++ * This page contains timers used for auto-negotiation, debug registers and
++ * register to configure fast link failure.
++ */
++#define LAN8814_PAGE_PCS 0
++
+ /**
+  * LAN8814_PAGE_AFE_PMA - Selects Extended Page 1.
+  *
+@@ -5910,7 +5919,8 @@ static int lan8842_config_intr(struct phy_device *phydev)
+ 		if (err)
+ 			return err;
+ 
+-		err = phy_write(phydev, LAN8814_INTC, LAN8814_INT_LINK);
++		err = phy_write(phydev, LAN8814_INTC,
++				LAN8814_INT_LINK | LAN8814_INT_FLF);
+ 	} else {
+ 		err = phy_write(phydev, LAN8814_INTC, 0);
+ 		if (err)
+@@ -5986,7 +5996,7 @@ static irqreturn_t lan8842_handle_interrupt(struct phy_device *phydev)
+ 		return IRQ_NONE;
+ 	}
+ 
+-	if (irq_status & LAN8814_INT_LINK) {
++	if (irq_status & (LAN8814_INT_LINK | LAN8814_INT_FLF)) {
+ 		phy_trigger_machine(phydev);
+ 		ret = IRQ_HANDLED;
+ 	}
+@@ -6055,6 +6065,69 @@ static int lan8842_update_stats(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++#define LAN8842_FLF				15 /* 0x0e */
++#define LAN8842_FLF_ENA				BIT(1)
++#define LAN8842_FLF_ENA_LINK_DOWN		BIT(0)
++
++static int lan8842_get_fast_down(struct phy_device *phydev, u8 *msecs)
++{
++	int ret;
++
++	ret = lanphy_read_page_reg(phydev, LAN8814_PAGE_PCS, LAN8842_FLF);
++	if (ret < 0)
++		return ret;
++
++	if (ret & LAN8842_FLF_ENA)
++		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_ON;
++	else
++		*msecs = ETHTOOL_PHY_FAST_LINK_DOWN_OFF;
++
++	return 0;
++}
++
++static int lan8842_set_fast_down(struct phy_device *phydev, const u8 *msecs)
++{
++	u16 flf;
++
++	switch (*msecs) {
++	case ETHTOOL_PHY_FAST_LINK_DOWN_OFF:
++		flf = 0;
++		break;
++	case ETHTOOL_PHY_FAST_LINK_DOWN_ON:
++		flf = LAN8842_FLF_ENA | LAN8842_FLF_ENA_LINK_DOWN;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return lanphy_modify_page_reg(phydev, LAN8814_PAGE_PCS,
++				      LAN8842_FLF,
++				      LAN8842_FLF_ENA |
++				      LAN8842_FLF_ENA_LINK_DOWN, flf);
++}
++
++static int lan8842_get_tunable(struct phy_device *phydev,
++			       struct ethtool_tunable *tuna, void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_FAST_LINK_DOWN:
++		return lan8842_get_fast_down(phydev, data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int lan8842_set_tunable(struct phy_device *phydev,
++			       struct ethtool_tunable *tuna, const void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_FAST_LINK_DOWN:
++		return lan8842_set_fast_down(phydev, data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
+ static void lan8842_get_phy_stats(struct phy_device *phydev,
+ 				  struct ethtool_eth_phy_stats *eth_stats,
+ 				  struct ethtool_phy_stats *stats)
+@@ -6299,6 +6372,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.handle_interrupt = lan8842_handle_interrupt,
+ 	.get_phy_stats	= lan8842_get_phy_stats,
+ 	.update_stats	= lan8842_update_stats,
++	.get_tunable	= lan8842_get_tunable,
++	.set_tunable	= lan8842_set_tunable,
+ 	.cable_test_start	= lan8814_cable_test_start,
+ 	.cable_test_get_status	= ksz886x_cable_test_get_status,
+ }, {
+-- 
+2.34.1
 
-
-
-The following changes since commit db87bd2ad1f736c2f7ab231f9b40c885934f6b2c:
-
-  Merge tag 'net-6.17-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-09-11 08:54:42 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-09-17
-
-for you to fetch changes up to b6f56a44e4c1014b08859dcf04ed246500e310e5:
-
-  net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer (2025-09-17 12:37:05 +0200)
-
-----------------------------------------------------------------
-Just two fixes:
- - fix crash in rfkill due to uninitialized type_name
- - fix aggregation in iwlwifi 7000/8000 devices
-
-----------------------------------------------------------------
-Hans de Goede (1):
-      net: rfkill: gpio: Fix crash due to dereferencering uninitialized pointer
-
-Johannes Berg (2):
-      wifi: iwlwifi: pcie: fix byte count table for some devices
-      Merge tag 'iwlwifi-fixes-2025-09-15' of https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next
-
- drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/tx.c | 2 +-
- net/rfkill/rfkill-gpio.c                            | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
