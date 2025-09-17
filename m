@@ -1,63 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3FF2DEA76
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 07:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CB0226D04
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 07:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758095144; cv=none; b=ZEFTkI+N0uqRysAgCJFYi21mqrST8FpTS7JHSWRXDAmxbADJH+SKOBg5ZyQAvuT32KdXCccDvywH1UDRVj4pBNelwga2rRzKR6ajSLYfVfcQISko4uRax1a61ZSliY0QSmCEnkjP7y+0IoieaWSMT9FJYHqPPmud6K052mTCnEk=
+	t=1758095335; cv=none; b=O4daDzTGqaZKX2zsl0eaaqoFzHUkQdoCwuniorXu1J64/hYiPB0Yx5XLceVtdIf+6PxRXZ9KHTDLKghXPclfiyZdNxxv+SxVMU/j8QEijVl8x5OVfOTnPPk0oqKujaa+RZ+CqmbSOju4yVLEnArOhtGpEwzz79XsVdRUujWYPaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758095144; c=relaxed/simple;
-	bh=VuANqMa5rXUe4iT43Lw7PbSvkgG3E3jO9Qqod1i4wOQ=;
+	s=arc-20240116; t=1758095335; c=relaxed/simple;
+	bh=GvG4ZrNeu3Bih9o5JKPRxWfcPy07BDNekStcTkR0NZs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JRbS9cduFFo+BPmxJkthNHcqw9iWxaWHOL6adVw0IbwIbI3M1p6nFKPleQWw8jd16T8eJKxf8Khvz6ouoNjVMaEXU+yclwjw069z+yIib8l3KGcA63M6Td3tKblKfNGknKJBKVfVWlSJSB1GJeoRZV4v+8JzRxlZ11WsT04rs2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PdF5H7pe; arc=none smtp.client-ip=209.85.128.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=u83JoeRvNUxQpy2mFUbBduqqBxsvIWDEKQ3+Yj7rd43VRGRI51tTob+tamgaG9+GwWIcbco2gCZvfwwSZm9DcnaI5AJ4xKUcKkqwi/9YVJz+2ix8N+o22hFIsmPTKBae6KvsbBO+gnhDWA/bUheOhNfB2h0zv0DA2nFoHMgby/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aXfuQLbH; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PdF5H7pe"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-45de4ebe79eso8062505e9.0
-        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 00:45:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aXfuQLbH"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ecdd162cd1so114457f8f.2
+        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 00:48:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758095141; x=1758699941; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758095332; x=1758700132; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S0QGfVLuLdMyhumFCXJB4wuAALuJd1MUyMagn3o+9ac=;
-        b=PdF5H7peXwQ74wVoyQ8+RsncWK9Kvidu9ia/yWUdLc3oxm22qQFryvCJgspLiF9Tjn
-         5KQJoCIL6peLaCTKHFI+//tArrehvlQqiCurNCeLNJ9QdbeoyBSGayFmiXZ8+Pk4R2BZ
-         ecyECpZBtTUWZarrWqpx0N2uMy6e0uTu17++KHY/jqIuSGqlCRX1zWmhYGQLNxDQQX04
-         UFeOA+3dk4GrxKfHrz1cCu8XNSx3u56IH1iFunFb27Lp8Bj1fW6PnOOuswVv9dIikhHO
-         0sUbhO1OBXdODyjbozIwLZCklATJa7zgXbyDGGy+KK0GhUpfUMMunr2Ce/doBJFBXRg9
-         5jPQ==
+        bh=A8wO7TzGJ1CsD3wQ7QRbj80R2FbQIfeqksFtR+W48DU=;
+        b=aXfuQLbHBotscl6eb+rg33I9QOlczzD/3WHma3UuX387KphwVrpxq8fbvcjlfxmK3s
+         C7R4KAkSwvx6HwVXFl0nCJTZ7wApH2wiOIYmahKPtXlU5/DLc4uG5NlWY6/gWgU+aJzn
+         MEybPSNA01Ca7yM8Wnm2lwy/3yJcK3uwxU04Mte2uuTfmwknIiR8oNQqS2OB1DcBFedH
+         hzjobFQ5fvAZCkwyS4wcjBpOkMF04Jk0hk4+imkECpt3oCTqZLsKhTyl8NB6dix+q3AM
+         8sZCdgWU1lYtYEbz5dyoC45pQBCxFywyl3j6/ncXRFAU8kY2sbcKrpKHkpJbxPPhVfwn
+         qSbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758095141; x=1758699941;
+        d=1e100.net; s=20230601; t=1758095332; x=1758700132;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S0QGfVLuLdMyhumFCXJB4wuAALuJd1MUyMagn3o+9ac=;
-        b=Fg6wm/JFaoJQMN8OVF+42qyzr51Fpn0HJqhakiJYAeFaEEqjclUr4BZK5a4QGyvXiS
-         y9uBtEpGc2u8AxSLyUHLdDU55jbcwNciHpfveL7DXxhN50uUXzUAhlBvtPXCrpIPOQt7
-         vTzbbCHVy501k0YOyAnuCAB6ezsn7MjV0VqTbY/pqP9+WvjBhRdZomt2F3TnsH0AnmIn
-         Lrazv+1Wg2NkYNUWdHTPVS9OxdsD7rH4S0dEK5C5q+kC5zruAJAoUkViXITcYyAIuDS6
-         tkjVBI2AaI9hNk77W726GQ9rBuztd2Go7xn1CV4JKBz9do7TYGvflj9+4aDA5KADu3/w
-         Zp6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXRjkgxmGEeOvNWwwpvSQMEAqIL45HSzP1vnJl2GAR9mjUP0yKUnZQ0rfUN2V5OOaapA7b8zQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyhfy1ZIMw3Q6Mf9ZKh9tFStEC58uUwjtL1u+g1bpRyeS3mo7M
-	iaxkycsmTvjR4oHY4Wdi/NJiqceeALngoJ8J+FECJgUVdB3F8xSu53aO
-X-Gm-Gg: ASbGnctLy1HvOyy7JQhMOG5Rr9tXqy76ds++tmiN1n/BC5A28piTlm7TMmq00hv83Vm
-	OJSvyDj7q8bnRgmN9EP7mwsgAUlaaZnD/o4a0wCZpldvDXXp90F+2lvdAcFG2YIb0BPwgfxGv1U
-	2ltixWKJ/052MxR1O5GUIit0CYdOKpUkvAGsKgyZanSquwlrpwBkQ6Ma/dyKcxJUPcRwXLY+ovO
-	Ydx+CaeSzLNqBQC1T8tJdfV7vw5I+4ubEx9aEVHPmysvgXDNVwogTzbLDAxQLgjAg03Fa0P4PX6
-	xrqCzSTdDvnUgAhUMzXfnn1D1TjOyJg3FnDSKiI/WbWyy2/hS4sz9LwsoJ+13+NcQbKMjG4W64r
-	2C8FB8ov7GHiJQuU=
-X-Google-Smtp-Source: AGHT+IH8RmFFjNhojj0XqfH1n7mmTs1aKG9YohJHS+lk9Ma00ithMaqPdkkBQ6vUDQlCKNbEiH9SLQ==
-X-Received: by 2002:a05:6000:4013:b0:3eb:21ee:bdba with SMTP id ffacd0b85a97d-3ecdf9be891mr482549f8f.2.1758095140860;
-        Wed, 17 Sep 2025 00:45:40 -0700 (PDT)
+        bh=A8wO7TzGJ1CsD3wQ7QRbj80R2FbQIfeqksFtR+W48DU=;
+        b=teDP5MZgW1Wdb0DHHtbs0CIdradcQD4D8nIWiBcWuie7NB7uWuLEWK4lZVGXrd7Y6k
+         4zdT8FttHk0ChHEPsGDm8Q6iu+LgnCFspRKwrkpy9LvD9AdbI2ccsv0kKpK53z6oQhrm
+         TQ0EvwFKqoxGyrsqguLnscNJftYSzwOMI66TLGpJJcV0doGzUCh5fMlLRo+OSdRZVzDn
+         h9kuBcNJkWfHbWgQ8Ax8quWJ2ug+m+Rir3HSQSxNnHMSTHtgGZ4Zg0kOT/p9WITgoekp
+         dlQABieGD7USVca6hGlheMjPF2BjT0jIH95ntJzayUhBiy0VQC1yBnsjc0tdYXoK1ynP
+         xOVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQCA3w7giLWpasLKR23LGIwxeJI5brSXABRlyprycBmIAfsxw58SFdW168FondT4g26pcQtPg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHe4goMqdHHP3RTpVvb5BRDgQ1ZmSoR7gMnSq+hGjy13U/qj/u
+	DHv3hceKviXUJgfUPtQRo2T3L5YRhYHgnoROfZacl25Vfnhj5eFQYtfH
+X-Gm-Gg: ASbGnctmzxy1nQI5fdJqScF/NgRIGTjJOHNGpi6YGCd7lpD68nxznj716HwAfGNfJZe
+	C6VQEA3kKPl/C24oTxDLH8iUklpXzHMyS/kRUPlx8QGQIr/3v5DdsFc2TfzNPWy/Qn37CQhmyko
+	r046T31FaVmEgskKEQLazl8vFQT0rZKMYxrJF8kBvBrVkOCcuq2VSR9BRWrnTm+/j2SbH71XdMR
+	ZDY08Ef54Wycx5HlenfGpeHY+wBHoAJoDIiPJDX4quGaDPN2Vzc7UIQqVVM9Lr5KGpFwr8BzLsn
+	/F2g/iqDnj+WCcB1SLHUr00TlfEfrYgXiqtyu/MjDYBeMDNQcDYhuy6eORaD8CWbxNDybbwpmQ/
+	c+153T9UyHSO4ENY=
+X-Google-Smtp-Source: AGHT+IGP66R9YGIfI9dU67bVddlj+EfkIEoePShuQKSstEqkr+z+S4oQhfPP1Zqaea9RwOBEdxNqiQ==
+X-Received: by 2002:a05:600c:c16f:b0:45d:d57b:69bc with SMTP id 5b1f17b1804b1-462074c689amr5484435e9.8.1758095332170;
+        Wed, 17 Sep 2025 00:48:52 -0700 (PDT)
 Received: from skbuf ([2a02:2f04:d005:3b00:8bcc:b603:fee7:a273])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ecddc97bfesm2262635f8f.51.2025.09.17.00.45.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46139e87614sm25680475e9.23.2025.09.17.00.48.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Sep 2025 00:45:40 -0700 (PDT)
-Date: Wed, 17 Sep 2025 10:45:37 +0300
+        Wed, 17 Sep 2025 00:48:51 -0700 (PDT)
+Date: Wed, 17 Sep 2025 10:48:49 +0300
 From: Vladimir Oltean <olteanv@gmail.com>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
@@ -65,13 +65,11 @@ Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>,
 	Richard Cochran <richardcochran@gmail.com>
-Subject: Re: [PATCH net-next v2 1/5] net: dsa: mv88e6xxx: rename TAI
- definitions according to core
-Message-ID: <20250917074537.rjlzg4gnzirmagso@skbuf>
+Subject: Re: [PATCH net-next v2 5/5] net: dsa: mv88e6xxx: move
+ mv88e6xxx_hwtstamp_work() prototype
+Message-ID: <20250917074849.ddhqdb6sys4zjnjj@skbuf>
 References: <aMnJ1uRPvw82_aCT@shell.armlinux.org.uk>
- <aMnJ1uRPvw82_aCT@shell.armlinux.org.uk>
- <E1uycO0-00000005xap-1rbr@rmk-PC.armlinux.org.uk>
- <E1uycO0-00000005xap-1rbr@rmk-PC.armlinux.org.uk>
+ <E1uycOK-00000005xbI-3u2c@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,14 +78,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1uycO0-00000005xap-1rbr@rmk-PC.armlinux.org.uk>
- <E1uycO0-00000005xap-1rbr@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1uycOK-00000005xbI-3u2c@rmk-PC.armlinux.org.uk>
 
-On Tue, Sep 16, 2025 at 09:34:48PM +0100, Russell King (Oracle) wrote:
-> The TAI_EVENT_STATUS and TAI_CFG definitions are only used for the
-> 88E6352-family of TAI implementations. Rename them as such, and
-> remove the TAI_EVENT_TIME_* definitions that are unused (although
-> we read them as a block.)
+On Tue, Sep 16, 2025 at 09:35:08PM +0100, Russell King (Oracle) wrote:
+> Since mv88e6xxx_hwtstamp_work() is defined in hwtstamp.c, its prototype
+> should be in hwtstamp.h, so move it there. Remove it's redundant stub
+> definition, as both hwtstamp.c (the function provider) and ptp.c (the
+> consumer) are both dependent on the same config symbol.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 > ---
