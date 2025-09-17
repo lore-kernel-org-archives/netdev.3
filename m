@@ -1,172 +1,155 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73C9283121
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 06:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC2D23D281;
+	Wed, 17 Sep 2025 06:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758091262; cv=none; b=oghWZ0OgI2lI0c8oRWFh7OyT2MX68QOAjeQxfMYEpowjwKn6PnURJf1h1Lgv3ze3exvBm9QX0O4vsMGtzRj4zCdeoT0EHQE5qzoQVOvoldKRLnw0VeWjDLp6e+Q+VnrrbmUB6vj5h/p8wpPfqfMT84acZCPyUAqa6EZDQIGzS1I=
+	t=1758091837; cv=none; b=tiENIeOoexcaSYgjY+SaFwLattdZbdLXLAVn5lhj5vkP34wzPewONH1KP+hvTyWtpW+mQrPVRDXtUieLHs34bZZN1Hqd9y+n/1Q9q/NUVCIOdLPjzAykCb1a33wJe876N+apRmvN+Nhj8IRz6ECxub4owejZLW14pNZ4wsC3Rfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758091262; c=relaxed/simple;
-	bh=GTsD+zDHi5iUxyCHZCjNne7OiB64xj+ttr+pkOj+OwQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DRxDBja5eT5v0tveob8RxlXnaNw+JNEYp12fVWLI/xVkGTxBVlCLKYB9KsVciGR1o9C0jv73EJjDm8MRiHongq6NAdwUxKbrIkwTYEIE/CGQnX0Vsf4X+5K61sCLCJyWK5jNlm0o4LXPOyoqtvKayklHtnT50W+AKfhGSDD6gas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TsYit2XW; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TsYit2XW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758091259;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LTbbBlln6DCFneAUqcEqgaH8223TNkqnZLXB2rPiJQQ=;
-	b=TsYit2XWG+q/zCqkZemU2sfVZ597u7sAIosRsIKKbNbkV0VaKZxV57eWOYcO033fEARUJX
-	d3vy8Mo8nWt/W35H1qFMiO4LhqWiN2j7os3CfhQoktdmHrEDY2XYaON/uoF0oNTDltVGrV
-	sowSyKuDyaLjeEHj3KqPHzfD8uRXibs=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-Ky8FxcsBMnebP_0v5Slu7Q-1; Wed, 17 Sep 2025 02:40:58 -0400
-X-MC-Unique: Ky8FxcsBMnebP_0v5Slu7Q-1
-X-Mimecast-MFC-AGG-ID: Ky8FxcsBMnebP_0v5Slu7Q_1758091257
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-61d2d2b792aso6536211a12.1
-        for <netdev@vger.kernel.org>; Tue, 16 Sep 2025 23:40:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758091257; x=1758696057;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LTbbBlln6DCFneAUqcEqgaH8223TNkqnZLXB2rPiJQQ=;
-        b=WStAp5R5s7aVDkSln6+B3lWQXklyY4OolswlW1cMTlWRRmVeCgovh1fzCFNbWGURmW
-         zDARwF8Pt2uulz79JgdeavgSAKeR7biKiyP8WlNBDiVFLL7JaKTimq6SLsv/dnosOTdX
-         EWuoIxDS8G6c7FHVrqbxCaM+9TXHRfNdVJO559J7E4YY5i/Fhr+hQ67rGZ6IWTTnVyRe
-         U4l11K+v2r2op0InIJz4BhlHaktyTbuonaCZ+53uxhCchJPYOAi/6I8ervNnPEPc3guP
-         tkzhmISsjiGDHSxlz6NWpPNsWJT49UAYxACVjib6i1HgULGkIshkz1T0yke3LXWRWE77
-         pekQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSncnK6KMuH76qN7WdxJHpQlVVOIQLCX1P+QlJPEDK0eIicE4u1SCFIU2FLsACjfpUtg/gV7g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvTOqm85Nf0jYtwbKv3TktOYSCa2Aea3DphG5UYnir2mkgtd+X
-	2YE9SrZJshwfl1QSrsFwo/SZIM8JMpqjVoKu/BKXiIOzIgCDYbAypyZDGeEXRXolMOM4n4s39Ab
-	O1HbH7IcD6VajG0L9DpbXG9XgdEx86OGNnjI0D3Foq31SgGQHtNDC1/WLAja6LfYYkAcxMRCcGe
-	MR7i747KZousDYcWQSBoGBE5Ba+W8XmAkF
-X-Gm-Gg: ASbGnctg8bmlwVdQd0ur0Sd72NWAx1RvYCP9ojGkyQJPb3FZ91RTNTaOzfsLFsH0kyB
-	+nmzwgdZXH9lEhRxD+w8xCoPEZYGxmsC89FUs8KbJlHa4vgk4rHE8dD8ofYMHQ905ayq/vewNja
-	QwlDWB5aVPncnYhN+T3FzyYw==
-X-Received: by 2002:a05:6402:40c8:b0:627:c739:ee36 with SMTP id 4fb4d7f45d1cf-62f83c34ad3mr933040a12.14.1758091256866;
-        Tue, 16 Sep 2025 23:40:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHuCx8Wm2NjgvVx8aU5k6RVtZU9jl0CgUhRhEkRJ87iAGzVB+vCxFRz69dVnXZ4ziFgE912UQsq1iIuOuRI/cM=
-X-Received: by 2002:a05:6402:40c8:b0:627:c739:ee36 with SMTP id
- 4fb4d7f45d1cf-62f83c34ad3mr933005a12.14.1758091256362; Tue, 16 Sep 2025
- 23:40:56 -0700 (PDT)
+	s=arc-20240116; t=1758091837; c=relaxed/simple;
+	bh=yUebgToB8fNqLYyOXSBAVPWT0p5rZMhaAsCibJB/MRE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wd99bOmdegSc2szX7RQVxSC993lf+ldMHVJ/qMSeQECeg9HVniTWEdmuKXLteb9zn+kS4gS462YbIGZkDzmZqVz58bAuvkbE5VVX1ZpMo0Yi7MmnAKISlSXSlVuOQqhvI+1rLQ4lp1/Eoa9Ez+8AsOaoAIxACiVEPhpO7c43TmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cRTHm5Xlbz9sxc;
+	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id cdMlgPgnLR0b; Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cRTHm3mDVz9sxY;
+	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4EAAC8B766;
+	Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ZNb0SINzbGae; Wed, 17 Sep 2025 08:24:04 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C684C8B763;
+	Wed, 17 Sep 2025 08:24:03 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v2] net: wan: framer: Add version sysfs attribute for the Lantiq PEF2256 framer
+Date: Wed, 17 Sep 2025 08:24:01 +0200
+Message-ID: <2e01f4ed00d0c1475863ffa30bdc2503f330b688.1758089951.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250915-gxrings-v3-0-bfd717dbcaad@debian.org>
-In-Reply-To: <20250915-gxrings-v3-0-bfd717dbcaad@debian.org>
-From: Lei Yang <leiyang@redhat.com>
-Date: Wed, 17 Sep 2025 14:40:19 +0800
-X-Gm-Features: AS18NWAdyteJLjS2OkZ5AwPMlO36O2pUFdRp0nHMdxW5VJOQ-UMOLbGst0il8i0
-Message-ID: <CAPpAL=wz5t4cMuVeksmpsv5aRyhJez=W4Uc2jOUqr7bNHHYJRw@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/8] net: ethtool: add dedicated GRXRINGS
- driver callbacks
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, kuba@kernel.org, 
-	Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1758090241; l=3036; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=yUebgToB8fNqLYyOXSBAVPWT0p5rZMhaAsCibJB/MRE=; b=XinTr0sQd/fycGPP9Ahs+KCsT52jn6P0PjWwxzML/HAyXtlvz85bQ/3HFUOcTJvz4KCIavxke xhO9gi/FA+vBoFKf2SdHRX9DHgHLs/OYBcq4bCVaw+bNMDGV58B+AJm
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 
-Tested this series of patches v3 with virtio-net regression tests,
-everything works fine.
+Lantiq PEF2256 framer has some little differences in behaviour
+depending on its version.
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+Add a sysfs attribute to allow user applications to know the
+version.
 
-On Mon, Sep 15, 2025 at 6:47=E2=80=AFPM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> This patchset introduces a new dedicated ethtool_ops callback,
-> .get_rx_ring_count, which enables drivers to provide the number of RX
-> rings directly, improving efficiency and clarity in RX ring queries and
-> RSS configuration.
->
-> Number of drivers implements .get_rxnfc callback just to report the ring
-> count, so, having a proper callback makes sense and simplify .get_rxnfc
-> (in some cases remove it completely).
->
-> This has been suggested by Jakub, and follow the same idea as RXFH
-> driver callbacks [1].
->
-> This also port virtio_net to this new callback. Once there is consensus
-> on this approach, I can start moving the drivers to this new callback.
->
-> Link: https://lore.kernel.org/all/20250611145949.2674086-1-kuba@kernel.or=
-g/ [1]
->
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Tested-by: Lei Yang <leiyang@redhat.com>
-> ---
-> Changes in v3:
-> - Make ethtool_get_rx_ring_count() non static and use it in rss_set_prep_=
-indir()
-> - Check return function of ethtool_get_rx_ring_count() in
->   ethtool_get_rx_ring_count() (Jakub)
-> - Link to v2: https://lore.kernel.org/r/20250912-gxrings-v2-0-3c7a60bbeeb=
-f@debian.org
->
-> Changes in v2:
-> - rename get_num_rxrings() to ethtool_get_rx_ring_count() (Jakub)
-> - initialize struct ethtool_rxnfc() (Jakub)
-> - Link to v1: https://lore.kernel.org/r/20250909-gxrings-v1-0-634282f06a5=
-4@debian.org
-> ---
-> Changes v1 from RFC:
-> - Renaming and changing the return type of .get_rxrings() callback (Jakub=
-)
-> - Add the docstring format for the new callback (Simon)
-> - Remove the unecessary WARN_ONCE() (Jakub)
-> - Link to RFC: https://lore.kernel.org/r/20250905-gxrings-v1-0-984fc471f2=
-8f@debian.org
->
-> ---
-> Breno Leitao (8):
->       net: ethtool: pass the num of RX rings directly to ethtool_copy_val=
-idate_indir
->       net: ethtool: add support for ETHTOOL_GRXRINGS ioctl
->       net: ethtool: remove the duplicated handling from ethtool_get_rxrin=
-gs
->       net: ethtool: add get_rx_ring_count callback to optimize RX ring qu=
-eries
->       net: ethtool: update set_rxfh to use ethtool_get_rx_ring_count help=
-er
->       net: ethtool: update set_rxfh_indir to use ethtool_get_rx_ring_coun=
-t helper
->       net: ethtool: use the new helper in rss_set_prep_indir()
->       net: virtio_net: add get_rxrings ethtool callback for RX ring queri=
-es
->
->  drivers/net/virtio_net.c | 15 ++-------
->  include/linux/ethtool.h  |  2 ++
->  net/ethtool/common.h     |  2 ++
->  net/ethtool/ioctl.c      | 88 ++++++++++++++++++++++++++++++++++++++----=
-------
->  net/ethtool/rss.c        | 15 ++++-----
->  5 files changed, 84 insertions(+), 38 deletions(-)
-> ---
-> base-commit: 5b5ba63a54cc7cb050fa734dbf495ffd63f9cbf7
-> change-id: 20250905-gxrings-a2ec22ee2aec
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2:
+- Make DEVICE_ATTR_RO(version) static
+- Split version_show() prototype into 2 lines to remain under 80 chars
+
+v1: https://lore.kernel.org/all/f9aaa89946f1417dc0a5e852702410453e816dbc.1757754689.git.christophe.leroy@csgroup.eu/
+---
+ drivers/net/wan/framer/pef2256/pef2256.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
+index 1e4c8e85d598..a2166b424428 100644
+--- a/drivers/net/wan/framer/pef2256/pef2256.c
++++ b/drivers/net/wan/framer/pef2256/pef2256.c
+@@ -37,6 +37,7 @@ struct pef2256 {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+ 	enum pef2256_version version;
++	const char *version_txt;
+ 	struct clk *mclk;
+ 	struct clk *sclkr;
+ 	struct clk *sclkx;
+@@ -114,6 +115,16 @@ enum pef2256_version pef2256_get_version(struct pef2256 *pef2256)
+ }
+ EXPORT_SYMBOL_GPL(pef2256_get_version);
+ 
++static ssize_t version_show(struct device *dev, struct device_attribute *attr,
++			    char *buf)
++{
++	struct pef2256 *pef2256 = dev_get_drvdata(dev);
++
++	return sysfs_emit(buf, "%s\n", pef2256->version_txt);
++}
++
++static DEVICE_ATTR_RO(version);
++
+ enum pef2256_gcm_config_item {
+ 	PEF2256_GCM_CONFIG_1544000 = 0,
+ 	PEF2256_GCM_CONFIG_2048000,
+@@ -697,7 +708,6 @@ static int pef2256_probe(struct platform_device *pdev)
+ 	unsigned long sclkr_rate, sclkx_rate;
+ 	struct framer_provider *framer_provider;
+ 	struct pef2256 *pef2256;
+-	const char *version_txt;
+ 	void __iomem *iomem;
+ 	int ret;
+ 	int irq;
+@@ -763,18 +773,18 @@ static int pef2256_probe(struct platform_device *pdev)
+ 	pef2256->version = pef2256_get_version(pef2256);
+ 	switch (pef2256->version) {
+ 	case PEF2256_VERSION_1_2:
+-		version_txt = "1.2";
++		pef2256->version_txt = "1.2";
+ 		break;
+ 	case PEF2256_VERSION_2_1:
+-		version_txt = "2.1";
++		pef2256->version_txt = "2.1";
+ 		break;
+ 	case PEF2256_VERSION_2_2:
+-		version_txt = "2.2";
++		pef2256->version_txt = "2.2";
+ 		break;
+ 	default:
+ 		return -ENODEV;
+ 	}
+-	dev_info(pef2256->dev, "Version %s detected\n", version_txt);
++	dev_info(pef2256->dev, "Version %s detected\n", pef2256->version_txt);
+ 
+ 	ret = pef2556_of_parse(pef2256, np);
+ 	if (ret)
+@@ -835,6 +845,8 @@ static int pef2256_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	device_create_file(pef2256->dev, &dev_attr_version);
++
+ 	return 0;
+ }
+ 
+@@ -849,6 +861,8 @@ static void pef2256_remove(struct platform_device *pdev)
+ 	pef2256_write8(pef2256, PEF2256_IMR3, 0xff);
+ 	pef2256_write8(pef2256, PEF2256_IMR4, 0xff);
+ 	pef2256_write8(pef2256, PEF2256_IMR5, 0xff);
++
++	device_remove_file(pef2256->dev, &dev_attr_version);
+ }
+ 
+ static const struct of_device_id pef2256_id_table[] = {
+-- 
+2.49.0
 
