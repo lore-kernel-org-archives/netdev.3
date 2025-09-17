@@ -1,35 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B17341374;
-	Wed, 17 Sep 2025 15:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BB42F2607
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 15:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758123605; cv=none; b=XPqzIr9KXJVOltQahmzltTYZBcK+t5VegizWI739o8YE4Ekf5lYxEsVOoYUdWYdpAYSGiUlMIS6qSiNaMMHVj/6Q/9y4XPbf1iSzBazH1CB4v9qdQqa0PJpRhGzg69nrI7nCytsLziwkaG1xmQh5/8giXugF+842pNUVmhmgxWg=
+	t=1758123619; cv=none; b=Vbfl4qy5JU8flQg6Uz53ntwFGAgbcHsNTP3BCNQkDJpj8yQ1agzW0Sp4FDmysi6BMMp103X28z4gVtgO4+K1B52msaJrlGNNikdfiWmKhFgM2Fm39FUpxZhJ0De5CBbaQctS1qbzP4ZWA7OJwnVT88gKd7mFXM+WDiX4qbDSbLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758123605; c=relaxed/simple;
-	bh=yN/U/jhwhDljjCnEG6NxhXzHQCHYjmUdn1DRxaE/3Hk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pU6xF9eNFrKjnkw8QzY5xIi4GPWdv+zmB5ycmYtot05SaJS7tAAsoJOq14kWwHXnF5rkBb54BoV9nA6W9F0KeJ98gwgU1dNWKXdWkKw5OSuEe5H/9PLfAz53XuOclhiaWx9qj4mw7WJERno5XCptLqxNJbPd805abBfPK2k5WSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fO82zLSZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758123619; c=relaxed/simple;
+	bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qu5zVNHW1VrCd0r6gIgUVdKI7KPlTj0A2JBQhisu9yisTPuU9ksjzMFtOiXxg+3LPUbui2U6PG40XL0rrKNdiDSUlZdr3AnYa2QRPmp60TkWDmkE/5ehHQisnar9p/eu1RMDlq8cUHKwUeo3iOYzXk4ZSClSKz4JqWQeB40lRCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=mUK7Y2JD; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fO82zLSZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A269C4CEE7;
-	Wed, 17 Sep 2025 15:40:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758123605;
-	bh=yN/U/jhwhDljjCnEG6NxhXzHQCHYjmUdn1DRxaE/3Hk=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fO82zLSZNMmm7aqB8df19tB6ITe4K3DCVGGI2E4sc3NugRYrMdCtDY2M4gNtoy6DO
-	 OtLo4sbtY4vZ4k9V2BYYzSteL+R0nK1BoFfJqA4gT2K2knEPiVyMAN69XzQ3dc5Xwq
-	 j5SiSb2dCe2si917JJ/ZJUFJKB/82LyQX/Wd6kEWeVIFjZokI9ZiD9whLk3zkdaXCx
-	 kIghApnHpoi5zY9sXK+T4nKRyvW4mNKU+FJm19+hR6nHbwvBLzbofJXPCjjQmkigvj
-	 shzxnkyyb+FxiYGVS1kUsVlMX//+spuE5ElDFw6A9JWHp3wf3TsiUwy8P6Fqh1X7fp
-	 qcT6Bzt5XryUg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E1339D0C20;
-	Wed, 17 Sep 2025 15:40:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="mUK7Y2JD"
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id CEA8B1C127C
+	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 18:31:21 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1758123080; x=
+	1758987081; bh=W+nAB7mlSdd0jKuQKWnzw6YNuQNulCyIVJxWcBkg+d0=; b=m
+	UK7Y2JDolCC4ftU69n3P0AGiWfHotidgiNjBSyT7VJzTPEEd0HaKE/GN6stqlu66
+	haIlkdCUTF96H/gv+sIkGAW7jlt1hWJagZhisNwuGuByGOiPGbbFiOjS78Edbr4+
+	Ts1eq5o6vgLqO6dcCSXlXmRMfzMjXKtfZmfT+97O8A=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id R1LhbHdQy2eB for <netdev@vger.kernel.org>;
+	Wed, 17 Sep 2025 18:31:20 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 024D61C0CC1;
+	Wed, 17 Sep 2025 18:31:18 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] net: liquidio: fix overflow in octeon_init_instr_queue()
+Date: Wed, 17 Sep 2025 15:30:58 +0000
+Message-ID: <20250917153105.562563-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,39 +57,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH iproute] mptcp: fix event attributes type
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175812360603.2048620.7321956968651605409.git-patchwork-notify@kernel.org>
-Date: Wed, 17 Sep 2025 15:40:06 +0000
-References: <20250916-mptcp-attr-sign-v1-1-316aa96b93ca@kernel.org>
-In-Reply-To: <20250916-mptcp-attr-sign-v1-1-316aa96b93ca@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: stephen@networkplumber.org, mptcp@lists.linux.dev, netdev@vger.kernel.org
 
-Hello:
+The expression `(conf->instr_type == 64) << iq_no` can overflow because
+`iq_no` may be as high as 64 (`CN23XX_MAX_RINGS_PER_PF`). Casting the
+operand to `u64` ensures correct 64-bit arithmetic.
 
-This patch was applied to iproute2/iproute2.git (main)
-by Stephen Hemminger <stephen@networkplumber.org>:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-On Tue, 16 Sep 2025 11:24:33 +0200 you wrote:
-> The 'backup' and 'error' attributes are unsigned.
-> 
-> Even if, for the moment, >2^7 values are not expected, they should be
-> printed as unsigned (%u) and not as signed (%d).
-> 
-> Fixes: ff619e4f ("mptcp: add support for event monitoring")
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> 
-> [...]
+Cc: stable@vger.kernel.org # v4.2+
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ drivers/net/ethernet/cavium/liquidio/request_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Here is the summary with links:
-  - [iproute] mptcp: fix event attributes type
-    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=ccbd9b64d666
-
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/cavium/liquidio/request_manager.c b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+index de8a6ce86ad7..12105ffb5dac 100644
+--- a/drivers/net/ethernet/cavium/liquidio/request_manager.c
++++ b/drivers/net/ethernet/cavium/liquidio/request_manager.c
+@@ -126,7 +126,7 @@ int octeon_init_instr_queue(struct octeon_device *oct,
+ 	oct->io_qmask.iq |= BIT_ULL(iq_no);
+ 
+ 	/* Set the 32B/64B mode for each input queue */
+-	oct->io_qmask.iq64B |= ((conf->instr_type == 64) << iq_no);
++	oct->io_qmask.iq64B |= ((u64)(conf->instr_type == 64) << iq_no);
+ 	iq->iqcmd_64B = (conf->instr_type == 64);
+ 
+ 	oct->fn_list.setup_iq_regs(oct, iq_no);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
