@@ -1,155 +1,162 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011009.outbound.protection.outlook.com [40.93.194.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AA618FDBD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93BD32898E
 	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 12:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758113539; cv=fail; b=uJp5wE3E40Qyf8WOPVBpMNMAvoZd1NUWc0MEBRal9jzt6SoPUID9UMJNAqL4rEoplqoUcWiHg1zH6We5P0froA2v9cVTxBkJsnUpc+6z1Pemrx9f+22wtnt6WsnVP5OyWslCi4w+wBmSrIBkfALT/3ep7UsQW1zQ1XN04I8obOI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758113539; cv=none; b=VUFG3LmOv3cdfBsNTDnmm6V6I1Oud0eIRQCb6i8/voQdouY/D8sC8A5rnjSzljqayhmjZg62l0rUom8bj22OzDn1nM+D+C1BqgLTx0TJyOxt3Or0ukachVlNvRgCz/qR3PWVzv/8mjVb6YH6PnR5SPYc6kZb9jI75bEcbZe0Dqo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758113539; c=relaxed/simple;
-	bh=HXZVQ1NBENrUaX8xEEppFNqyAEvgSwKc1QUWCD1q22M=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ogW4j318gu8rPeyMuMOMqLIuX6+Ht4GLaFTgzx3bW2MFyqna/4ybANDnji/tYvHKhiaPc3BsymZ4fNuaD8db0fnD9T9Qxot7E4xGTW+clygFqGlAUpOwaG1G5VzC4X5CrZgzshh/qc8Eet8oTMHiYJwt9wE3yBppYoYn9ooR62w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DJnsYk9d; arc=fail smtp.client-ip=40.93.194.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DJnsYk9d"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IGyKAXRunMGksQQ7ILV9z5Ygm1u7mRoyadZl78M9RT4r0YW2lgCVzR7+nKDXBV+37rqnYDumk0I8MFUcYC9GAh6QcYpInFIO43zTc08j3cdbwIwWN8EN3pJRXKAm98yvF2sI0EGDbehAH+f+57l2rDLRqXmzSIPucCdnEAwF/qKLb3ET3qSboHl6hhWcnAPP4TYH0MeALJbHRAH6Qbto7QXm2sWHVCvoYlcR8OLB8zPgpU9y/NMwbS5af9HUtGD2pLQYIKXKpZ7yKxgwxvirUFNntlQe/FR0otNS07aJGB+V/jF+KYfnJrUDIhGNp9pN6RiIa+EU5H8vbHL3aqLQmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vvh/mxhj2GUAEnN1icwmSsQzATIAySNU3NTpO8OakrY=;
- b=tex8Vl4wNuwF+ntQDhISrwY5sFaKolEbzXCaenrL6N4r3JAhGh6CTf8LbNP8+lr6YOanVekprr8nD1XHnWvAIIAcUNjgLQimvUIqjVXW73yh/fAUfbqLjHHv+HiJhLUx0iJmAfX+sym4Rlfss94DbuVl4Ok/ZShO5z11SVclBQGwggaFHyliUOyGqFHIOmVP/O9wE3ozjMrvWinc+i+qzi8XmLsLpGq+ZpRc30TNahj2hV0BwsOsuYILThMy3I1BrFzeXo8VvGjXfj3bY/sUEenvpFQvzCNTFV04fYprsyGdI/tSY+z1pxMCyfOKGuYjrMXcXR+qnXQnJOIM2w6z4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lists.linux-foundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vvh/mxhj2GUAEnN1icwmSsQzATIAySNU3NTpO8OakrY=;
- b=DJnsYk9dMoG1ftyTIZpgNMDF+7UgGqYnVhQn7UCTUcbYEj23ZdLcOwHWk8qRUErsvgkpXQz+HGXenN2e21L0SGNPs66GRERUratcE90ijmOnWGy8wXv5FteM18zkpdpeQF25rYC9LO9vIlM+NYGxwmRUeNDrN2+NKv9RlxszzRwmbkwHuC3BW4Lkm1m+BiUlISuHzP3jDbxgY9IsnJHKv6FRRjAA2zOySCpI7r6rj3art0Hu+YiJznHaPIr4ZW4qiy2OTB8j+5kPxNoAGJmf4XIelfm3Ryov87lLFS+MU+i+LD8G7ptcj0/+uEEXXORxhW8cRiDWOiPb6AkEK0TCbw==
-Received: from BL1PR13CA0093.namprd13.prod.outlook.com (2603:10b6:208:2b9::8)
- by DM6PR12MB4386.namprd12.prod.outlook.com (2603:10b6:5:28f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.13; Wed, 17 Sep
- 2025 12:52:13 +0000
-Received: from BL6PEPF00020E61.namprd04.prod.outlook.com
- (2603:10b6:208:2b9:cafe::f0) by BL1PR13CA0093.outlook.office365.com
- (2603:10b6:208:2b9::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.13 via Frontend Transport; Wed,
- 17 Sep 2025 12:52:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF00020E61.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Wed, 17 Sep 2025 12:52:12 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 17 Sep
- 2025 05:51:58 -0700
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 17 Sep
- 2025 05:51:54 -0700
-References: <9d887044246a656e15d05df716cde77e9d9ba64a.1758038828.git.petrm@nvidia.com>
- <aMqi98APC2YXu5xn@shredder>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-CC: Petr Machata <petrm@nvidia.com>, Nikolay Aleksandrov
-	<razor@blackwall.org>, David Ahern <dsahern@kernel.org>,
-	<netdev@vger.kernel.org>, <bridge@lists.linux-foundation.org>, Andy Roulin
-	<aroulin@nvidia.com>
-Subject: Re: [PATCH iproute2-next v2] ip: iplink_bridge: Support
- fdb_local_vlan_0
-Date: Wed, 17 Sep 2025 14:50:43 +0200
-In-Reply-To: <aMqi98APC2YXu5xn@shredder>
-Message-ID: <87bjn9s0nr.fsf@nvidia.com>
+	bh=0qblMs7pvAvukMaqH1XZzSc/HsAgRmJmnlAnkCtcl+M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=RQwj0HGoKXlnIbgN8iJ3jBDQw+vo60G4+hIp2Zpa+d2iIKz/HyZ4RZYFhSYvVfVYyRPiUXjRIgGfDy/11EUid2tp5lx3WF1RZ0pPXlqAz7GoR+HgUB2J9jIKA6R0VLnm63RqDJ4Fc6UZ7EKfBmoYawFu4Jp4QFOvEtAz/bTmPvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b07ba1c3df4so1041820266b.3
+        for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 05:52:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758113535; x=1758718335;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9cRw8y8aLRwmgMXJrfhUT0H+SQQUEvdJ4IqhIR3aLXE=;
+        b=L2LQ0CHnSmtaXk4bW7/LEiREeHsJGsvw2wMmeEfIPLgqi/HOQS91LvFgBJEwZAI+oW
+         j/pYscXGwQlg+TttaoyUOBmb3UScPWXnjNhIn+1d622HBjPKVHUDmLps9B9+yAkNSyb7
+         9HrRzkmG1Ae3oQDNzku9mVLsZw7JXC+m+/1bAkix7/ObHM9sa/72MUDBpUwRzUkWeJWb
+         C+1HqEXd44LpkpQuG2403V2FhQ0NPj3gxPjqzp75DFOP4XS8DcOje4+6AT9CgWXe3TTG
+         NHmYMzPT/GPruoJbsEl87a2ygYowLX8NWmzY8nPsI+90MWUEEjXi3vjL5O+jrln9rXeU
+         FVWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUt1DtXwS9aiV6vab7puelSO8G2KyxXP5cWwW6VGMDJHSLvwZo8YuLR/EGebLmQm6u7/cDVGzM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywhxk/IxvvHvRS+Y0yWzw67+cxVszi6yHHIkQ+i1DRDd16ei7qH
+	VuLsVBpWIfdy7TzkWftdYbUY6SXWQuOEbnxXE1t8haWaIkYI3Hvdy4ug
+X-Gm-Gg: ASbGncvYdI70/5gtjU+xL6KfA5N69uOkiTjHIjfNCnt3QKDW2hxbLAj5l4oFliF71lY
+	bUFaRrzW0tYhMUWD884TgZSdysJMfX0XNDIptkafadHYXBQnGTnFidtOZBN5PdsBOqHtLZH6ozC
+	BvVmzOT44XiY4/MNFLlaOb5GKYVLL69t3u2BL9KMYyyc8i4e1Yv37npfXLjr9hVKWzRbLxvHa37
+	1eFLCdXDKwLFWqKbAEBxwQIBOUhW0mw27QkXHVBURAQyw479ELri4V9NB2ScrEizBMftpm3M0e8
+	nMo6kpsuJGmReguiNaFNcao9wxm/43OTTlO9t48jiVs3r7w/8A0MGXthkvOcERwrtfEZtHIk/wU
+	sfJbdgjz8nfoA5g==
+X-Google-Smtp-Source: AGHT+IGcKNDtBC4IjzRF3C/1A9WDY4PVAXhCw25GqLowT2AP0xhnCrLG2vPouzAemnf5ULAz3hkDMA==
+X-Received: by 2002:a17:907:9444:b0:afe:b311:a274 with SMTP id a640c23a62f3a-b1bc106eff5mr256536266b.46.1758113534737;
+        Wed, 17 Sep 2025 05:52:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:41::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1c11d45587sm114087366b.12.2025.09.17.05.52.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Sep 2025 05:52:14 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 17 Sep 2025 05:51:42 -0700
+Subject: [PATCH net v4 1/4] net: netpoll: fix incorrect refcount handling
+ causing incorrect cleanup
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E61:EE_|DM6PR12MB4386:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3009e80-e892-41ed-a230-08ddf5e905dc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rqmk8za+IjcScajKomiT5GtJIzJRvgq/7ZMSCT58Dg4FOzm0ox9rm7U/3G7+?=
- =?us-ascii?Q?vwtwykJcvXytZi9sZ36e1dild4YjREL+us0uDVurI7ry1vSxrVM7pYFT/HbP?=
- =?us-ascii?Q?nsxmAkMqM2RX1ZqH5QF+A6a4PtphpOaid5Qh8F7ruHTqbwa/cy+j4+vRtqp/?=
- =?us-ascii?Q?ZEBHCNoNvkhWbNnFH8qJugJlTWK7hUF1pM1L2DoEwGKJdUyF/DoEykOjfVNB?=
- =?us-ascii?Q?caf3Phy255xfjj/9Dz1lf90Y+fK4orAMyKgMvs0tyZDjbrD+AGslH94jBrty?=
- =?us-ascii?Q?ctOJ0y0Lpe/Q8HUW1E7fM0ltCHYjmI0ImRT6AFHL4zINtTb/C5gNVaJe3lje?=
- =?us-ascii?Q?4LwsD2rFMh0RMHXamDzFjBqpcbWEG9D++1CuJXr3Adh4sXe79suB21pSOcTY?=
- =?us-ascii?Q?n7bKytVnP46/mHqN8/HB2UrmYmXKVUG2G2YCGNIXev72zcHYuxot8Cuecuiy?=
- =?us-ascii?Q?ykVMsGNzO193H5ZlMFC+JHw29UE0vvpRZQjNFL9KW/t9CIonIl15zO+tBGCZ?=
- =?us-ascii?Q?GA9FbOBEk50jcWbWcgi7tlKqBpQ4tKwljwOENpuE+3Ov1dXQYFTUW4oZTmqn?=
- =?us-ascii?Q?dwRvsR6qMjLglsJJe4OMz7GokYS6IpI55yk5bmlqA2w3EAt2USE91mSeaMND?=
- =?us-ascii?Q?CS8UBUIaZUCKM54VYdv+WciQSIsXuC4u4DRG9hvftpWdRySxQf+kjMUeC3sZ?=
- =?us-ascii?Q?KqCB6nZMTXFCLBjHw/FqRa2CZ14sLGRRZGV/E+YS96XS8bca3fEvNOlTaiQO?=
- =?us-ascii?Q?LSvODJOQZDLT7kyDmRq+lHfSjL1wKRnEK7HmJQkjBqhhEQiyVyHw2LsX7R81?=
- =?us-ascii?Q?RhTn8tQAxvnMyqcz/VlbgzXqw8kEgeViFLLey69zk/S+xjXnxt89Fxsr1BD7?=
- =?us-ascii?Q?e4UbVuRwhtQmvpFhy1id0fdVovSezGDI79l4kWWVnF40GRuCiYmogFp3tBqo?=
- =?us-ascii?Q?J3T1iEkzTdKzLQpe8dM2MdwhitpdPdj7Fgap3QFZwi1liNbC5LjBFAM2NhQu?=
- =?us-ascii?Q?DMm1akCP81/OManyz/27l1V8QE4e0dLAL8DLdcCd97SPhUp53aKdV9Ztc2cN?=
- =?us-ascii?Q?KFncB6XRAIFE7pDN5AzTSu9LnNLPxAbr+8pKAoDwKeRN/QFdX3DlXop25quA?=
- =?us-ascii?Q?6ECPWVHlSbP+/I8+H9cN68Wfmww2RBGnzfn0axxQoBQgE+Q77N9XvFYX+imc?=
- =?us-ascii?Q?9NRXEbTo9lONE3pIjSjUvqptpXPFEFQT0GEqCkd7RvpBZRFWM0RH4OLNT4pW?=
- =?us-ascii?Q?AGLngaIqf7fJ8pzJ3izcgHqI6sK8bDNBEhnBq+supiDq69k1VDxUHGQmcIZC?=
- =?us-ascii?Q?0yrAHmVvFaB6J/px8Q2CDithzqGc5INKgGnvzmqfNY/Elt0r8jkBbqcz5AD0?=
- =?us-ascii?Q?P5c2X7vevuit584RFk7gHry4c7OgO0t6Y0g+ucaWcE9stcnnPcjOHGT6xV+m?=
- =?us-ascii?Q?hFcGfdqdvn8P0GJReQhfgv7DplSjFj+TjbcA9hKnpIwsqb45HdGFEtho5nKO?=
- =?us-ascii?Q?EWxW5bpMWu7FP+l3IF9Nne8PFjBoncoAu7f1?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2025 12:52:12.9184
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3009e80-e892-41ed-a230-08ddf5e905dc
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E61.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4386
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250917-netconsole_torture-v4-1-0a5b3b8f81ce@debian.org>
+References: <20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org>
+In-Reply-To: <20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+ david decotigny <decot@googlers.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
+ jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2686; i=leitao@debian.org;
+ h=from:subject:message-id; bh=0qblMs7pvAvukMaqH1XZzSc/HsAgRmJmnlAnkCtcl+M=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoyq77ikqYfP1RsaQ1IywqQvoCiFOi9x4LHFf3b
+ bZdGzWOyqiJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaMqu+wAKCRA1o5Of/Hh3
+ bSuvEACZOgjHa9YCJXRrUCYSe7rbbAYJhxe8eWRbe/mAXDcoBW+xpoh1HUdkdE1BAw7KwCch3f7
+ Cvf/tCZ1PG9v+NXgAL8A1R9jwarbT2vNayZo3f9ynePau6EOLiptAvpyqr/RoNvmoF7GvF4ELz9
+ wLx8oNvpTzgSNv6K2o3SEGxewOQweLFfIo+9BOHlJvlXvtm6J4f0MaMcgHiGz77YxM3BYKfNlIj
+ 8RY0q/NZCmalRYOMAvonH0AJkLXJvwGKVEH/k1rgFTK7PEE9ayZV4sfcjBE74CUOAjQWam4FFIg
+ 2mDTwda3SsxX6zzrNx5FPuQmMYhFCWDHqPwTm8dqatgr3VYnOCOrNRHmICT+S6g7W2CSOdveycJ
+ ttTlVgfnzb5nskzsZCipFeIx3K133loOfy2StaLgIcGcx6XM4vE4vH43DF1Wj+uzzJiLm/E3wzp
+ sMjRFKKqgwBxYZizTWVnwRWcax3N7iMHLyA4e7wkwX68w8EEnqzUKpBdVNcFYaALDTo4eR1LvDj
+ klGCoybhLWEBaAlEwohhAInLBwj/lJeg7lln5Y3DkWaU8z8DPCBcvc0i3y18oSW4L/rii7zaa+b
+ Nhd262M16Gx8Xt1rG4YQB0qi3HzB0GrqDifWCYwgFIaSYRaXi8ilp1/xfkZmrx9IvLnSojLcDbU
+ 2eehCEHIH6FtR0g==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
+commit efa95b01da18 ("netpoll: fix use after free") incorrectly
+ignored the refcount and prematurely set dev->npinfo to NULL during
+netpoll cleanup, leading to improper behavior and memory leaks.
 
-Ido Schimmel <idosch@nvidia.com> writes:
+Scenario causing lack of proper cleanup:
 
-> On Tue, Sep 16, 2025 at 06:25:46PM +0200, Petr Machata wrote:
->> @@ -635,6 +648,7 @@ static void bridge_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
->>  
->>  	if (tb[IFLA_BR_MULTI_BOOLOPT]) {
->>  		__u32 mofn_bit = 1 << BR_BOOLOPT_MDB_OFFLOAD_FAIL_NOTIFICATION;
->> +		__u32 fdb_vlan_0_bit = 1 << BR_BOOLOPT_FDB_LOCAL_VLAN_0;
->>  		__u32 mcvl_bit = 1 << BR_BOOLOPT_MCAST_VLAN_SNOOPING;
->>  		__u32 no_ll_learn_bit = 1 << BR_BOOLOPT_NO_LL_LEARN;
->>  		__u32 mst_bit = 1 << BR_BOOLOPT_MST_ENABLE;
->> @@ -661,6 +675,11 @@ static void bridge_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
->>  				   "mdb_offload_fail_notification",
->>  				   "mdb_offload_fail_notification %u ",
->>  				   !!(bm->optval & mofn_bit));
->> +		if (bm->optval & fdb_vlan_0_bit)
->
-> Shouldn't this be 'bm->optmask' ?
+1) A netpoll is associated with a NIC (e.g., eth0) and netdev->npinfo is
+   allocated, and refcnt = 1
+   - Keep in mind that npinfo is shared among all netpoll instances. In
+     this case, there is just one.
 
-It should.
+2) Another netpoll is also associated with the same NIC and
+   npinfo->refcnt += 1.
+   - Now dev->npinfo->refcnt = 2;
+   - There is just one npinfo associated to the netdev.
+
+3) When the first netpolls goes to clean up:
+   - The first cleanup succeeds and clears np->dev->npinfo, ignoring
+     refcnt.
+     - It basically calls `RCU_INIT_POINTER(np->dev->npinfo, NULL);`
+   - Set dev->npinfo = NULL, without proper cleanup
+   - No ->ndo_netpoll_cleanup() is either called
+
+4) Now the second target tries to clean up
+   - The second cleanup fails because np->dev->npinfo is already NULL.
+     * In this case, ops->ndo_netpoll_cleanup() was never called, and
+       the skb pool is not cleaned as well (for the second netpoll
+       instance)
+  - This leaks npinfo and skbpool skbs, which is clearly reported by
+    kmemleak.
+
+Revert commit efa95b01da18 ("netpoll: fix use after free") and adds
+clarifying comments emphasizing that npinfo cleanup should only happen
+once the refcount reaches zero, ensuring stable and correct netpoll
+behavior.
+
+Cc: <stable@vger.kernel.org> # 3.17.x
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Fixes: efa95b01da18 ("netpoll: fix use after free")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+ net/core/netpoll.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 5f65b62346d4e..19676cd379640 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -815,6 +815,10 @@ static void __netpoll_cleanup(struct netpoll *np)
+ 	if (!npinfo)
+ 		return;
+ 
++	/* At this point, there is a single npinfo instance per netdevice, and
++	 * its refcnt tracks how many netpoll structures are linked to it. We
++	 * only perform npinfo cleanup when the refcnt decrements to zero.
++	 */
+ 	if (refcount_dec_and_test(&npinfo->refcnt)) {
+ 		const struct net_device_ops *ops;
+ 
+@@ -824,8 +828,7 @@ static void __netpoll_cleanup(struct netpoll *np)
+ 
+ 		RCU_INIT_POINTER(np->dev->npinfo, NULL);
+ 		call_rcu(&npinfo->rcu, rcu_cleanup_netpoll_info);
+-	} else
+-		RCU_INIT_POINTER(np->dev->npinfo, NULL);
++	}
+ 
+ 	skb_pool_flush(np);
+ }
+
+-- 
+2.47.3
+
