@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB4D33AEBB
-	for <netdev@vger.kernel.org>; Wed, 17 Sep 2025 15:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9511369B4;
+	Wed, 17 Sep 2025 15:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758123034; cv=none; b=nqumaCGUp5ifA7oNlhLD2i9zIt6ikiXEf1xa6HV9K6jW/SdSajaeZQlh1RLaiZhGlrbuNR8tj5Uvh/Fy0DvRbYag+DhPpM6AbqKlyaStatBMfKMENRippuo2kdwJDNiavBqVED3CHDcsfKqR21DPLtUf4m2G+leAt0piOvsr53E=
+	t=1758123184; cv=none; b=Pvmwd8jrvgnqWCsseJ43bUzhDIR73KrnKwKOhjB7EFklknTjAUM+U6tR4/Lf0jHtB/q5el2l29FOkGvwViZWHlbL75LK5b5DURUcoWgj4be0Mf3LTOLTjPOaYs1Gvu0X2L5aiM/gCp1+D6DDZrSCgxgD3XnDqvnH5EqA0cOTNsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758123034; c=relaxed/simple;
-	bh=rQtaAWifWer/HWQ5iIeM0d7RTgmb27MzOxlHJR7+tkc=;
+	s=arc-20240116; t=1758123184; c=relaxed/simple;
+	bh=Hc351q4nYxBtizLPpdMYPsra/T/ADj1HoY+Za3zpojg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BAOrAqOGDg50uky6qJDZJIEBhfFG+RfvydjNJdU8J6htcukArookR31PgLVjRFYBcdFh1x/Fo4zSlU9x06nIXbHB/LcEAWyYjdNcJjVdmytMrLwEsvfWUYBQLlBv+jnhhMCA7IN5Ksfzb/B1mFlZgHvKQL7lR7I7VxXGMOZVnC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vu2UriZ5; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=GTtWW73ZQKHtoazL92kYnGic9eMb9cA7NH0/n0RbTiECoHCPItp1J2pT/UFbK7VR9/2WdM0n9plVyvZ0Q4Df74e4pzyfH9dVahmTH0QRLL6rni9LxV+C5hqHcpNsmiL5LOYk+Fl9Q9g8KVG4bP7MxzKZ/4PtZNsIU3sGnMsCZoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Fbq2AHxG; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vu2UriZ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4269C4CEE7;
-	Wed, 17 Sep 2025 15:30:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758123034;
-	bh=rQtaAWifWer/HWQ5iIeM0d7RTgmb27MzOxlHJR7+tkc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Vu2UriZ5YJ7zYdrHwiqR4lwyTSN8Vdyohet92/9gMVEPCCD4TZuoDxbMGPON5tFoI
-	 8QWBu4VLyt9aYoAqQkCIHxxHxToafE5xBaj0Cc7t9929IG69h35P6HkGaeejTXsYvT
-	 uutMyAPOKJf0ZbBrSG8bqyfy2pMMcA8qSVIX8GNRwknafE9mplas9BPOflu6kn6DBf
-	 f+j0+kQJRGhyjuDzQtbTzCtGgPi7HVZB7ZUz0USSBjzOc+xJh86G9ePIIUnuENDiPd
-	 QVMVAF1IyV0sQveq5vGpL0sMBba4elfUjit6bEVq/fIBqZYp0/f0upwpnBRImXa+Sm
-	 mJs8MOwjeUG0g==
-Message-ID: <b955eb49-a177-4aaf-9e5a-e2a9ddeef1cf@kernel.org>
-Date: Wed, 17 Sep 2025 09:30:32 -0600
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Fbq2AHxG"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 5878A1A0E8F;
+	Wed, 17 Sep 2025 15:33:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A93D6063E;
+	Wed, 17 Sep 2025 15:33:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 36D80102F1BF4;
+	Wed, 17 Sep 2025 17:32:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758123180; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=KvBFi2h1uOxbQSe3Qg7pMz9oi1pLN3OKIQs0ZmF1Qzk=;
+	b=Fbq2AHxGtY47IIcSa4Culc0rQoPlBe6J/KabnGGAnkRHAImzIyRedtbsPZLnBcuH928DBF
+	zqdZk+la6iUXkeNOEFqwVW2en9mAgIB+TjRSRQcwum+LM48/+2zWzuAm0zW+U/WE3Niskn
+	sLrFBtXum9AmBL6yoAP5mHAHQPaBz30jp7tKLyaGBDwTSXJo/iQ1fG7WA51k2/xJPCwqg2
+	LFLMZgY9FO2gSSfsWGmPDgf+XJKxnHnLVi90kOzUGCGI24PrcDtW52tX6mCRKLZTW6/WTm
+	sEUV2z180ESgNff9cRCU+VULMjFt7a+91OrnBMr4zfIdF1KAExOCtcm3kgV5mg==
+Message-ID: <6ac21f07-45ef-4e80-bedf-c0470df47bc7@bootlin.com>
+Date: Wed, 17 Sep 2025 17:32:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,39 +42,63 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 01/10] ipv6: make ipv6_pinfo.saddr_cache a
- boolean
+Subject: Re: [PATCH bpf-next v3 03/14] selftests/bpf: test_xsk: Fix memory
+ leaks
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Magnus Karlsson <magnus.karlsson@intel.com>,
+ Jonathan Lemon <jonathan.lemon@gmail.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Mykola Lysenko <mykolal@fb.com>,
+ Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Alexis Lothore <alexis.lothore@bootlin.com>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250904-xsk-v3-0-ce382e331485@bootlin.com>
+ <20250904-xsk-v3-3-ce382e331485@bootlin.com> <aMmlNc1z5ULnOjJY@boxer>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
-References: <20250916160951.541279-1-edumazet@google.com>
- <20250916160951.541279-2-edumazet@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20250916160951.541279-2-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <aMmlNc1z5ULnOjJY@boxer>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/16/25 10:09 AM, Eric Dumazet wrote:
-> ipv6_pinfo.saddr_cache is either NULL or &np->saddr.
+Hi Maciej
+
+On 9/16/25 7:58 PM, Maciej Fijalkowski wrote:
+> On Thu, Sep 04, 2025 at 12:10:18PM +0200, Bastien Curutchet (eBPF Foundation) wrote:
+>> Some tests introduce memory leaks by not freeing all the pkt_stream
+>> objects they're creating.
+>>
+>> Fix these memory leaks.
 > 
-> We do not need 8 bytes, a boolean is enough.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  include/linux/ipv6.h             | 4 ++--
->  include/net/ip6_route.h          | 4 ++--
->  net/ipv6/af_inet6.c              | 2 +-
->  net/ipv6/inet6_connection_sock.c | 2 +-
->  net/ipv6/ip6_output.c            | 3 ++-
->  net/ipv6/route.c                 | 4 ++--
->  net/ipv6/tcp_ipv6.c              | 4 ++--
->  7 files changed, 12 insertions(+), 11 deletions(-)
+> I would appreciate being more explicit here as I've been scratching my
+> head here.
 > 
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Indeed it lacks details sorry. IIRC I spotted these with valgrind, maybe 
+I can add valgrind's output to the commit log in next iteration.
 
+>  From what I see the problem is with testapp_stats_rx_dropped() as it's the
+> one case that uses replace and receive half of pkt streams, both of which
+> overwrite the default pkt stream. So we lose a pointer to one of pkt
+> streams and leak it eventually.
+> 
+
+Exactly, we lose pointers in some cases when xsk->pkt_stream gets 
+replaced by a new stream. testapp_stats_rx_dropped() is the most 
+convoluted of these cases.
+
+Best regards,
+-- 
+Bastien Curutchet, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
