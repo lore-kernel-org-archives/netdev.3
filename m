@@ -1,83 +1,74 @@
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06736288DA;
-	Wed, 17 Sep 2025 12:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED72036D;
+	Wed, 17 Sep 2025 12:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758112259; cv=none; b=SCPBCQnlildcYMHQWnmItyJqgXqwOriQZx6/v1AF4QHRXddK6gK27V9e4trSvlK9gDdBiVHYu1tOXGaC1v1EeE6wj404QgIxyPZ7NtKb+c3PiizTM/ll4ho904fGYHsuwf7zg1Bxi78z9Cs+NBhvnKYRDvqtyWSIhkv0JqkRfZE=
+	t=1758112672; cv=none; b=ZYsiWSS6lt1e4RvNPtksRRDg5nfiGPDs7xa8cWqWTk42GcwhunBg8r9LOVmvy1yWtWlS/wYr4e5rzxSRdGKQT0AmciRtBkM7duRu7phqzJMCEvrU1k7EDKRqEu4BCMf4KHaM5KRtUC4Ko9O6v/MIucUvIv/C+V1VBtYetj9kubU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758112259; c=relaxed/simple;
-	bh=Cl8E2kLQ7/p5S5S9om1u8eRejpquMbqieTheoYS7NVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sDSkwmSVFbrP4/m55GJckk5g8J804Z84svgfQuocO8BTZW9N4ffiHzk2PZEdM1PuTFhArnJh3K4jBMcvM0pZgIBuupTxqz3isowW4RqaQarRANIx7rxKyV00t4lTSWHJYAOIssCkTskoJIlzWd1zZzVsXpzXA0WrzWarxTNivGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-Received: from localhost (unknown [180.158.240.90])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dlan)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id 527CD340F2E;
-	Wed, 17 Sep 2025 12:30:56 +0000 (UTC)
-Date: Wed, 17 Sep 2025 20:30:45 +0800
-From: Yixun Lan <dlan@gentoo.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Vivian Wang <wangruikang@iscas.ac.cn>,
-	David Miller <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Networking <netdev@vger.kernel.org>,
-	Guodong Xu <guodong@riscstar.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the net-next tree with the spacemit
- tree
-Message-ID: <20250917123045-GYA1265885@gentoo.org>
-References: <aMqby4Cz8hn6lZgv@sirena.org.uk>
- <597466da-643d-4a75-b2e8-00cf7cf3fcd0@iscas.ac.cn>
- <76970eed-cb88-4a42-864a-8c2290624b72@sirena.org.uk>
+	s=arc-20240116; t=1758112672; c=relaxed/simple;
+	bh=4b0yS3bHw4hdRnAsU/fqET8C8on0HsorpTHay5/m+TA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f/KFqaQlk55DZpm2Lyevi5MS7PhicXxOC6KsgxHD7lMoOFWNUChL18xcEJx5UOenQJm7yNen8qz2em4b7GGVZHqvuHu9NVtODTaGFxCq2GVthE6d7KlHL/Xfwrfb0KbKlZ+q9LlBmY3X1ShWy+o2c9JOrRIIJd4Fzmx8SuQTeQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cRdTf4xJPzPtGY;
+	Wed, 17 Sep 2025 20:33:10 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 58747180486;
+	Wed, 17 Sep 2025 20:37:46 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 17 Sep 2025 20:37:45 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<huangdengdui@h-partners.com>, <jonathan.cameron@huawei.com>,
+	<salil.mehta@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <shaojijie@huawei.com>
+Subject: [PATCH net 0/3] There are some bugfix for the HNS3 ethernet driver
+Date: Wed, 17 Sep 2025 20:29:51 +0800
+Message-ID: <20250917122954.1265844-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <76970eed-cb88-4a42-864a-8c2290624b72@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hi Mark,
+This patchset includes 3 fixes:
+1. Patch1 fixes the issue of loopback failure under half-duplex mode.
+  The driver will automatically switch to full-duplex mode
+  before loopback tests.
+2. Patch2 fixes an incorrect function return value.
+3. Patch4 fixes the potential loss of user rate and duplex configuration
+  after reset.
 
-On 13:03 Wed 17 Sep     , Mark Brown wrote:
-> On Wed, Sep 17, 2025 at 07:48:34PM +0800, Vivian Wang wrote:
-> 
-> > Just FYI, Yixun has proposed for net-next to back out of the DTS changes
-> > and taking them up through the spacemit tree instead [1], resolving the
-> > conflicts in the spacemit tree. This would certainly mean less headaches
-> > while managing pull requests, as well as allowing Yixun to take care of
-> > code style concerns like node order. However, I do not know what the
-> > norms here are.
-> 
-> Thanks.  They're pretty trivial conflicts so I'm not sure it's critical,
-> though like you say node order might easily end up the wrong way round
-> depending on how the conflict resolution gets done.
+Jijie Shao (3):
+  net: hns3: fix loopback test of serdes and phy is failed if duplex is
+    half
+  net: hns3: return error code when function fails
+  net: hns3: use user configure after hardware reset when using kernel
+    PHY
 
-Thanks for the help and fixing this, but ..
-
-If it's possible to revert the DT patch 3-5, then I'd be happy to take,
-but if this is too much job, e.g. the net-next's main branch is imuutable
-and reverting it will cause too much trouble, then I'm fine with current
-solution - carry the fix via net-next tree..
-
-But please use commit: 0f084b221e2c5ba16eca85b3d2497f9486bd0329 of
-https://github.com/spacemit-com/linux/tree/k1/dt-for-next as the merge
-parent, which I'm about to send to Arnd (the SoC tree)
-
-BTW, The 'for-next' branch is a merged branch contains clock and DT patches
-for SpacemiT SoC tree's which isn't immutable..
-
-Let me know what I should proceed, thank you
+ .../ethernet/hisilicon/hns3/hns3_ethtool.c    |  26 ++--
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 139 ++++++++++++++----
+ .../hisilicon/hns3/hns3pf/hclge_main.h        |   3 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.c        |   9 +-
+ .../hisilicon/hns3/hns3pf/hclge_mdio.h        |   2 +-
+ 5 files changed, 130 insertions(+), 49 deletions(-)
 
 -- 
-Yixun Lan (dlan)
+2.33.0
+
