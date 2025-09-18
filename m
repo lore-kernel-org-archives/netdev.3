@@ -1,128 +1,137 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FCA22FE0E
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 12:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63DA22FE0E
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 12:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758197499; cv=none; b=jEHqo7nuXmUN1hGZTREbs6FL66zGufctc91hTPwQYs/7dHbR3py0PHhlwF2DEt6Q3QZG91dsvlaEYoTm7BfFE1V7IDR59T6iuXezcQMPZyl9T3GRCaoJZou+0/EwOCCigxC36wm1NpkAWs4zwqWefT+mokbaBMhI9GyxFcRyPwk=
+	t=1758197570; cv=none; b=Qvbz11UysQCUoWlZYUjKqssG/elrU1DkwTZicimhNTLg8KQolKBYtzo2illo8v5em90GPnFoAYDqo21k0q3zooG8PkIO800rWja9ruzdPAIEh4Y4kJRHKk0ZhlTYA8w2WnwsF2swclxURrHgei4gjT7Xq4COGBvL4SkvTJNlLas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758197499; c=relaxed/simple;
-	bh=pM/QS29tKZw2LpLFbZO+mNiT8s/PArRVEDjFQoj0pLY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tkjpRa2ig+FK3EP3qpQ2/buK1hw6fDWLd1r9PBBynjcRnv++bsdDzXGafb3SjEGEbSSqYwgmGyI1S5y70J4WrfLonv8a09/9m+Ajp60dM6Wvpv/seSDrKH7Nx8A7R9fFnoRU+8ZUnP0vKh+XbMZjQYCFWjI6pAAM9pAmaeJ5SLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dpGC0pIE; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758197570; c=relaxed/simple;
+	bh=3AuDQOb4x5iPQKA8fJMnmCnY++4xw9SzQPwxbDEjEO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SlMbAd+cm7fD8cVZvv6I7+HHKNy5/zya5I7hWAhd8F3A6R/4Iz5fCDCiYj07Sd2J1wrJsAco2MA6vLsrt/KhKyfZ3qcy5dCeSNHJp//jIGsBMDlfx+cfENT6AmKNGDK9f9eSHUorNNh36daW/dULndglbc5lyLPm+CB8d0mztts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=g1iFMGLh; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dpGC0pIE"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2445826fd9dso10376695ad.3
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 05:11:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="g1iFMGLh"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-45df7dc1b98so5558615e9.1
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 05:12:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758197497; x=1758802297; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GAoC+ZaDxdXo+spV/LmE7DgvWELZkUtLA5pPamornbw=;
-        b=dpGC0pIE6D80o2+1xZ03B2s4M5CQMCovQlNBxkkTLeVVTZlUOW6vF8HHrbhYZ7w5q+
-         9YMKROhaTqK6d9xosoZGYaZlYW3Saeh2qFMdnYBYpZDLVnl9BgRlivkFAFKlUiAzul+x
-         x6fSN3AKGgwsVan2jOE/vIKiwHXqHb6o4pcCRhQZQ1k44kKfgig+XUfeG99vGmsZqMR3
-         HYaapBuYbtcwEbnrwcn2+xqxqotKYWzcxb42aIscncFp2KvdICzyEZalPcaxj+KNAIft
-         yUFihf8afoynZkBe8rXIAuj+YhNdfFHLuvDmKRMr0MiXyQxeqAgsfts3lDGh+iCS+v2m
-         L7jA==
+        d=suse.com; s=google; t=1758197566; x=1758802366; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BWX04E2Uyfnl0/MdQ83kX9KCxuahZoS9QnFEedx1B1I=;
+        b=g1iFMGLhBdzHGXMZ9VMTjgBRnD2aLwTrP7nJSP3UY1F6DU5408sbnwbNfT/xgqjzNw
+         MQVDsNAwgLCtFT6scdmuM9eOhEu6Zlx+C51fbZvrMfis47p8Jux4KHldBDAVurlGB1lN
+         65Q36IxCSSI2+eMzv5bxpAzO3gPoFy/WcKb1BTphkOdIFTDvQhm8yOwbyT6Y2z69RiXJ
+         wB/chwaSD4krqOQcrbamo2uMJ+l6azrlt1i0XzlaejgsGWSD8I/rfcAFkuJVppxQOHRv
+         5+ZQy+i6lUeP9MOm6guBzzBI4R/KCUP0HEH/lK/3nr3OpwpqiyQHe6bvER4ei8UmlkH/
+         tD4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758197497; x=1758802297;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GAoC+ZaDxdXo+spV/LmE7DgvWELZkUtLA5pPamornbw=;
-        b=Atw2GCMgiqswTWvM+ApO4MsJiq0UYw76k9TO0natXQ4bnK4IXMED98lAP0tSCaAcig
-         TFrGPwqkyBC5O4yeIvIz1VBZ85yBq9hMzBzCmOrGcZb+Zr3B9esmKJ+SGLIkzGT5iWzc
-         wTeLgnJzjvnabqC9q7wOJ9l0K528MpL54DEfTFFXI5g8yvkTVdOp7N9f6c0L7cYfANGN
-         ARc8nsXfVuYjmkfOEFmY2NGjZAR3YLuPH4L7o41qnY2sNfK63KJcilOCWhUl9XRhnOyT
-         iPrMD99QW1hSRXTIBoNPKo2wcWj7g5d5QoOXLl5X4E4ZwBmJf8yYeNf0IsPzLfjo/7BW
-         Nfig==
-X-Forwarded-Encrypted: i=1; AJvYcCVfj+Ad41vUCGgviuhSfcZXCoCC9r+znGuqRlB/Ultkcmw0a8jXGfmmKAuXNkTo2sNXeaNAJuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8V8p5Ferl4sbeVNndUHXl9oe3t9zYKh9+UtniMAjPqk//07j6
-	tPY/JYNPLVWZ+wrB+PxrqQSpOFzYWQSgshtsXGFmuO4829mEeV2gtLrUKgkDwTYfHBM=
-X-Gm-Gg: ASbGncvzSvbNzXm1s+KvnMWZu6FppDs+qRl6VlsTTZVwCMk1vXzNPdx3cf7eFLOaSzO
-	fuoLZiWWbckfIkmwrw1zLhtbOXdHC+tjF3yu4/jlekC0H47YpmQOmMVyW8uZpuP2NrzYjLc+ola
-	PXFVXGmLm69DZW8vL721xnQBu6cCkl1KcI3noY3i80tRcwl7iEvBjjjs0T8hRixdR9w4RLBpg8A
-	dMZ+ZboQPMSftCB6O/VSDeguFwe5Ah71ObPUlFrjwl1XTb3/Dq9ZRy2q9CXDu7WsyPb6Wn7F7qJ
-	Twj3r+UBjcYspUB8y1Ps19qzLqZ4jTdVVFbj3bMcLWsLw5LPbE5E/5sTfVerxgDzITmKBSbr0VA
-	YYNQY2FkGoRV45sDCmSmar9MJIRJ1MkuATGBqXOk=
-X-Google-Smtp-Source: AGHT+IG0U3CDVX4gT2JNVdHXAgEHkLdFsWTYpr4SHEqTj4aBiuSHXKemrWgFeH7m9flFwFyjVfVlIA==
-X-Received: by 2002:a17:903:37ce:b0:264:ee2:c40f with SMTP id d9443c01a7336-26813cfb8famr72310705ad.52.1758197497020;
-        Thu, 18 Sep 2025 05:11:37 -0700 (PDT)
-Received: from lgs.. ([223.80.110.60])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269800529cdsm24686835ad.22.2025.09.18.05.11.30
+        d=1e100.net; s=20230601; t=1758197566; x=1758802366;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BWX04E2Uyfnl0/MdQ83kX9KCxuahZoS9QnFEedx1B1I=;
+        b=iNlzQ2QRVCmffQjocE2W5My+vosoAx+aBQnyFNDlQVz3YfyyMeTIKijXeS/g8EREhR
+         4v53fRCfEGJUwr2goeLWQcXUWys1RmaddDhLxGdB99WahpMR6jhUZ/mgWfT8Tsgn6mMo
+         cgUKmFVXdCYUDZfZ9Rd2WEJ6rQ7ymLOK6BG08kbdjb4vGPdNIn4UXgT6T+NKXGQhAUMn
+         rACTtssvqYytHMl03VUhtqeAptXCW4JWtl+s27nZPyMjngX25G0lQlxj3KmAeXbRmHET
+         zGAK9PMgvwQu6dPYYE5NtcF9t2m8UIEpuRDWZQOXCiUuXjZPF3qtTXnKLZreDUQ0hlFw
+         FIdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX52WzyGY/sq9ke782v6YcfrkVEAslyO1joUE6jMKH0E86Z8GSqKZzQQF1yEst77weVtjlgwFc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxXMnoZCojQPcspJ4wvV6+mp4p78LcbduEIZ1JMGJ42qBYfdRib
+	m+YgTfLV6Xp+ulZ9Mllg70nBTQiqVgIIxEEVh+1+42oGupCbEUYEiaJHc1BJtwDhZqk=
+X-Gm-Gg: ASbGncs5xgZfSOPV49GdMcHy+SbWbdAJlId0C4nP6XcAprpMlLd7EllNivPrWwhYcmo
+	Fiz3hiTHMZ9q4uX4S/WyMXxb75hHGqFUy/crRMTWvjD0trZPFHg6qHg+eeOdOa5FD0RqGGnLuG9
+	W13EeNFtZoRKBxW/20ztbGZLD5B04J1xFBxP0a96TrhyaF9K3cuiZOpLoXKaYZdk7bNY8x+yvrm
+	g+NqmNYuarzkpSnGrnYT3QB6GN0SEXqX3q/82SQAP4dHZYJObkzigjOmEd54xe8tpNBrtCqg8xu
+	p2IT3trFx3yntVCtz+f/ZgUsXFFoCmn3LG865/6bkxVrCq/CtTBToJ99kBHd6yf5W7+n1ljm10t
+	3s4j49XLVelHAd9ulukM1XT40u8HLKVLSM7QYSDdFitxa0qpq+NAKEnVC+Q8bTCkFXfhZtPAG
+X-Google-Smtp-Source: AGHT+IFC0tUTZXRyDtSx9d5omtvQ0WqRKqIy7a/GY6qAoByd5UMfWoRhcJw9UPFcqNlY7Wi3YHh+QA==
+X-Received: by 2002:a05:600c:4692:b0:456:1824:4808 with SMTP id 5b1f17b1804b1-46206f04fa0mr48803915e9.32.1758197565947;
+        Thu, 18 Sep 2025 05:12:45 -0700 (PDT)
+Received: from blackdock.suse.cz (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45f3252260csm64513315e9.2.2025.09.18.05.12.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 05:11:36 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jeff Garzik <jeff@garzik.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Mariusz Kozlowski <m.kozlowski@tuxland.pl>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] net: ethernet: broadcom: sb1250-mac: Add checks for kcalloc() in sbdma_initctx()
-Date: Thu, 18 Sep 2025 20:10:51 +0800
-Message-ID: <20250918121051.3504490-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Thu, 18 Sep 2025 05:12:45 -0700 (PDT)
+Date: Thu, 18 Sep 2025 14:12:43 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>, 
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, Lennart Poettering <mzxreary@0pointer.de>, 
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 14/14] ns: rename to __ns_ref
+Message-ID: <3hwzagok7cl3sz4x7wi7z4xwme54y3pyljfkqfjrbkjrbdlyih@rodvre2ii7f6>
+References: <20250918-work-namespace-ns_ref-v1-0-1b0a98ee041e@kernel.org>
+ <20250918-work-namespace-ns_ref-v1-14-1b0a98ee041e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="d2ckcju6bogfsla5"
+Content-Disposition: inline
+In-Reply-To: <20250918-work-namespace-ns_ref-v1-14-1b0a98ee041e@kernel.org>
 
-Two kcalloc() allocations (descriptor table and context table) can fail
-and are used unconditionally afterwards (ALIGN()/phys conversion and
-dereferences), leading to potential NULL pointer dereference.
 
-Check both allocations and bail out early; on the second failure, free
-the first allocation to avoid a leak. Do not emit extra OOM logs.
+--d2ckcju6bogfsla5
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH 14/14] ns: rename to __ns_ref
+MIME-Version: 1.0
 
-Fixes: 73d739698017 ("sb1250-mac.c: De-typedef, de-volatile, de-etc...")
-Fixes: c477f3348abb ("drivers/net/sb1250-mac.c: kmalloc + memset conversion to kcalloc")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/net/ethernet/broadcom/sb1250-mac.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Hi.
 
-diff --git a/drivers/net/ethernet/broadcom/sb1250-mac.c b/drivers/net/ethernet/broadcom/sb1250-mac.c
-index 30865fe03eeb..e16a49e22488 100644
---- a/drivers/net/ethernet/broadcom/sb1250-mac.c
-+++ b/drivers/net/ethernet/broadcom/sb1250-mac.c
-@@ -625,6 +625,8 @@ static void sbdma_initctx(struct sbmacdma *d, struct sbmac_softc *s, int chan,
- 	d->sbdma_dscrtable_unaligned = kcalloc(d->sbdma_maxdescr + 1,
- 					       sizeof(*d->sbdma_dscrtable),
- 					       GFP_KERNEL);
-+	if (!d->sbdma_dscrtable_unaligned)
-+		return;		/* avoid NULL deref in ALIGN/phys conversion */
- 
- 	/*
- 	 * The descriptor table must be aligned to at least 16 bytes or the
-@@ -644,7 +646,11 @@ static void sbdma_initctx(struct sbmacdma *d, struct sbmac_softc *s, int chan,
- 
- 	d->sbdma_ctxtable = kcalloc(d->sbdma_maxdescr,
- 				    sizeof(*d->sbdma_ctxtable), GFP_KERNEL);
--
-+	if (!d->sbdma_ctxtable) {
-+		kfree(d->sbdma_dscrtable_unaligned);
-+		d->sbdma_dscrtable_unaligned = NULL;
-+		return;
-+	}
- #ifdef CONFIG_SBMAC_COALESCE
- 	/*
- 	 * Setup Rx/Tx DMA coalescing defaults
--- 
-2.43.0
+On Thu, Sep 18, 2025 at 12:11:59PM +0200, Christian Brauner <brauner@kernel.org> wrote:
+> --- a/include/linux/ns_common.h
+> +++ b/include/linux/ns_common.h
+> @@ -29,7 +29,7 @@ struct ns_common {
+>  	struct dentry *stashed;
+>  	const struct proc_ns_operations *ops;
+>  	unsigned int inum;
+> -	refcount_t count;
+> +	refcount_t __ns_ref; /* do not use directly */
 
++	refcount_t __ns_ref; /* do not use directly unless initializing */
+
+Or a helper macro like
+#define NS_REFCOUNT_INIT(v)  .ns.__ns_ref = REFCOUNT_INIT((v))
+
+>  /* cgroup namespace for init task */
+>  struct cgroup_namespace init_cgroup_ns = {
+> -	.ns.count	= REFCOUNT_INIT(2),
+> +	.ns.__ns_ref	= REFCOUNT_INIT(2),
+>  	.user_ns	= &init_user_ns,
+>  	.ns.ops		= &cgroupns_operations,
+>  	.ns.inum	= PROC_CGROUP_INIT_INO,
+
+The double underscore stands out here.
+
+Regards,
+Michal
+
+
+--d2ckcju6bogfsla5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCaMv3ORsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQfj0C55Tb+AiRfAEApv9CrJao8D2U3nthYItW
+n4Mj9Y9Wuj/jH8AzHvpRZR8BAPgIUuzR7g9w7rnCTqM8ybuEtlMzNEwUPf5cGz0m
+vFwK
+=DJVu
+-----END PGP SIGNATURE-----
+
+--d2ckcju6bogfsla5--
