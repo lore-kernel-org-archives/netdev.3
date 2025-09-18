@@ -1,91 +1,130 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FC518A6DB
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 10:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA15C18A6DB;
+	Thu, 18 Sep 2025 10:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758193104; cv=none; b=D68OTtbfGlXVQTehwxevub3jo8v6esBp+c51fnVYEYTYA0LyurXXSbFqaPzyArmX8v/jXH/cmHHSCJs2EA/wC+l03ewCHIKUzW1AXT97cpPbjiLqukU9CcRLs8727b/3KkKMhHzW9POR/xhHu+fBxiZgniiBkB1xPa7wJ8kOv2Y=
+	t=1758193187; cv=none; b=jDhW0rTj7PaCXdg6noTyRpxU+ehbYBxbKbcVCUCCM0VWer8HO9PzDkjeQG907cqSxRxUjSVvo+tiaEwYJMXfgyKylYx0X1izkgIvcC/FyrOY446lbnEqeT2NXkPzQRShE3mX63fr4uW6jiv9eF75xbX8TardZzzofD+zQ53o84Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758193104; c=relaxed/simple;
-	bh=m0F5sK9Br7xom68QNmOgq4vD+IUQK/ytAcJDS28ftUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fELTInhRWaJq8Z/rFbU8izhxqXIrTwOhW1krG/0AeyNbdKcO0fa6bu+kQt24g+kNYtC73Viqvaul2orXwUohm98zPs5phoopHGlS3mUVFpCxFYdP/uFVlMcsYLpngcu11X6C2PGb9MX9dZLS43hHle3CikSCLo0ojzREVB3OnhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fmkMuGCb; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758193187; c=relaxed/simple;
+	bh=k7WjdxD1akUFMFsnjD+igZOq30uLF23C9JuX5ROO/Wk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aXuWS+8z6uU4RyDOTKgtP3hPEoKgoEn8UH+wh2K9PMxqVIkxRtp2q9chqzde6aHm42+5XsOIFDQazotMO40d/WxFNF/d+jRO06P1p0SC1PrqDT13hUpz0uO0YMfWLUoKKRpiv3JwPz5vW5VjlLbs5d+ciNHkFXRSR7BkjjxUeiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aos9blcv; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fmkMuGCb"
-Message-ID: <6cffe63f-4099-40f7-afee-3f13f1464e56@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758193098;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eGmAXk85XR0eQMr0uyPembtkDsCH0jfFf7uqsLjvtFw=;
-	b=fmkMuGCb2lQpBDdyKyjzq8xOE9zA6v0QZL7eK4YFpGcg1Sz591iH5P3eMFrhRZ6Pw9IMIo
-	EiHJAct+Ho7ogJQvDkReKNPqJSPQzed0wiG+CRWhRAOjsZvyayvaJMino2OdD2t1/f3VM7
-	6QZ/fpkNdcqq/CPGkTzRCZefoxeBlQM=
-Date: Thu, 18 Sep 2025 11:58:13 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aos9blcv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758193186; x=1789729186;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=k7WjdxD1akUFMFsnjD+igZOq30uLF23C9JuX5ROO/Wk=;
+  b=Aos9blcvkrt9eop+nKgdyLCxd9Yd0+/NoT2gWYrKdTZ7C2/snZM32qY2
+   1oiJT5nx77MJqkiqnPDncmDlB+g9KQ8qmaEEwNBxcOVICPD+hY7+t3rUv
+   fmd0rYmCPv7/znvKASeknMpXwD7vSyKCN6Pca6GTXWBubbpyRy6Gf9TTZ
+   3/AyBXgOI37an1t9xgH0Tln6tn5IjqQjCpbrv9I761eFKmwMKciX3BdSi
+   9ut7GAon0GeDNpPK6K+4Skby1y3r2Y8pFZegaCEmZuQoUgqL8VL+579TA
+   pkw/9F58KAkfYZfqSrvT36h+R/Of6QC/z79EA+01VPRFvQmERi/d/E1jH
+   A==;
+X-CSE-ConnectionGUID: q+Jmw2+kSUC45AaKVqZlsw==
+X-CSE-MsgGUID: QejdNk/gQqeNz3yxS6Kd1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="64336083"
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="64336083"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 03:59:45 -0700
+X-CSE-ConnectionGUID: TW+Q+WYtS32lblmpHmpoQw==
+X-CSE-MsgGUID: ZVBunwrSQee44Q89CHxReQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
+   d="scan'208";a="180627016"
+Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
+  by orviesa005.jf.intel.com with ESMTP; 18 Sep 2025 03:59:41 -0700
+From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Avi Shalev <avi.shalev@intel.com>,
+	Song Yoong Siang <yoong.siang.song@intel.com>
+Subject: [PATCH iwl-net v1] igc: fix race condition in TX timestamp read for register 0
+Date: Fri, 19 Sep 2025 02:38:11 +0800
+Message-ID: <20250918183811.31270-1-chwee.lin.choong@intel.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Intel-wired-lan] [PATCH net-next v3 1/4] ethtool: add FEC bins
- histogram report
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Carolina Jubran <cjubran@nvidia.com>, Donald Hunter
- <donald.hunter@gmail.com>, "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- Gal Pressman <gal@nvidia.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>,
- Tariq Toukan <tariqt@nvidia.com>, Michael Chan <michael.chan@broadcom.com>,
- Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew@lunn.ch>
-References: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
- <20250916191257.13343-2-vadim.fedorenko@linux.dev>
- <IA3PR11MB89861635B2B78A559A8EAE12E517A@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <IA3PR11MB89861635B2B78A559A8EAE12E517A@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On 17/09/2025 12:27, Loktionov, Aleksandr wrote:
-> 
-> 
->> -----Original Message-----
->> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
->> Of Vadim Fedorenko
->> Sent: Tuesday, September 16, 2025 9:13 PM
->> To: Jakub Kicinski <kuba@kernel.org>; Andrew Lunn <andrew@lunn.ch>;
->> Michael Chan <michael.chan@broadcom.com>; Pavan Chebbi
->> <pavan.chebbi@broadcom.com>; Tariq Toukan <tariqt@nvidia.com>; Gal
->> Pressman <gal@nvidia.com>; intel-wired-lan@lists.osuosl.org; Donald
->> Hunter <donald.hunter@gmail.com>; Carolina Jubran
->> <cjubran@nvidia.com>; Vadim Fedorenko <vadim.fedorenko@linux.dev>
->> Cc: Paolo Abeni <pabeni@redhat.com>; Simon Horman <horms@kernel.org>;
->> netdev@vger.kernel.org
->> Subject: [Intel-wired-lan] [PATCH net-next v3 1/4] ethtool: add FEC
->> bins histogram report
->>
->> IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
->> clarifies it a bit further. Implement reporting interface through as
->> addition to FEC stats available in ethtool.
->>
->> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> 
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> 
+The current HW bug workaround checks the TXTT_0 ready bit first,
+then reads LOW -> HIGH -> LOW from register 0 to detect if a
+timestamp was captured.
 
-Thanks for the review!
-BTW, do you know if Intel's E8xx series can provide such kind of statistics?
+This sequence has a race: if a new timestamp is latched after
+reading the TXTT mask but before the first LOW read, both old
+and new timestamp match, causing the driver to drop a valid
+timestamp.
 
-CC: Tony and Przemek as maintainers of ice driver
+Fix by reading the LOW register first, then the TXTT mask,
+so a newly latched timestamp will always be detected.
+
+This fix also prevents TX unit hangs observed under heavy
+timestamping load.
+
+Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
+Suggested-by: Avi Shalev <avi.shalev@intel.com>
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+---
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index b7b46d863bee..930486b02fc1 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -774,10 +774,17 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
+ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
++	u32 txstmpl_old;
+ 	u64 regval;
+ 	u32 mask;
+ 	int i;
+ 
++	/* Read the "low" register 0 first to establish a baseline value.
++	 * This avoids a race where a new timestamp could be latched
++	 * after checking the TXTT mask.
++	 */
++	txstmpl_old = rd32(IGC_TXSTMPL);
++
+ 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
+ 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
+ 		regval = rd32(IGC_TXSTMPL);
+@@ -801,9 +808,8 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ 		 * timestamp was captured, we can read the "high"
+ 		 * register again.
+ 		 */
+-		u32 txstmpl_old, txstmpl_new;
++		u32 txstmpl_new;
+ 
+-		txstmpl_old = rd32(IGC_TXSTMPL);
+ 		rd32(IGC_TXSTMPH);
+ 		txstmpl_new = rd32(IGC_TXSTMPL);
+ 
+-- 
+2.42.0
+
