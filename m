@@ -1,225 +1,125 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30986230BCC;
-	Thu, 18 Sep 2025 13:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397E821171B
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 14:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758203972; cv=none; b=VS1Lrg3QzmQBujKV8QL8ne41C0M12sj5xTjCyqXnrRKnQ2r+UqAwjnzlxPuheBb10hb79m8ADX4/hneQ88j3TNIGT6CCMfNs9s8uYYkdguxZwI8BmkFWcWT55z58hXnV08jqFcaQEn8VTOnh9NVGcHhtdfGfQCkpore+tsau1Zk=
+	t=1758204079; cv=none; b=c+unOFNmcliXVPVJKL1zJl+LzufG8asLy18VjabmIw6/wl+Ps8KIK8UnH+5/53XgF9tPK8mcNZEsqj5cb8A+QpCz/UxLZnuNBfKwR8XSqN5j3ccHnCPLmpnViRHnYYE39XhWlHhqOCm8Hf426hMwbz0LsZd5NyoYL3sxmRlqe8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758203972; c=relaxed/simple;
-	bh=PYQn2VLpXq30qPT2Nio97KPnrBpck+Q8SjCmT8+7P+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=laHYPsTfmFfsyDe/ZlVuHIeiaggBp6FFoaFfK2mh8HMss8Ly/VnC/A9rZwQaRGxeTW1h1eaoyk1lT+7hNfxsSOZru7in9zddV6u8VPpu4KDqZ+xJXa8mONMxYynCWEkmgAg3LT7Sz9MkUk2GE7kmfdnM8Sl48EsoaQ9vJPwGJGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=x0uhvtYB; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1758204079; c=relaxed/simple;
+	bh=nQXbNFRGteQ5sQcKTS+R+cIbFxjMYn75rSXxx/muXvQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nVLHX1sCts+ywhaLmeqXstc9jCcEP90UBNl7AxFifAg2ZA0l479orpxW5GkXMupWx1RKUQ1f9Vz3sucEpomIMOM/dpc7qF2H4LWY+rzF6TyFSkXTeX4xwbiUoHzEmBlZWM6s4w9mcQ/N1KbFwN4lLAmSXd5U7jDbeC0Tv867Z7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hYgJcslS; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="x0uhvtYB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jZhxEQj8wZgmKlh5JqOaBLYYciKgqt6bF58Ec3MI89Q=; b=x0uhvtYBfqM4ev+QWxKV0Frpwg
-	N9X8yEsVyXlcdquDplWJZyDSlAuYdBR/tphzRSDW0zb1xSWPXb5fyhb6wT625E6bya4WZyk3APlLp
-	GVzyCnyrbryNoM1RQ6h5uepOBsoSK1fQX5fQ9KY3kEC7q/gLhn5VGtaDK7f0zZxqJU4MD8lIEVOp9
-	C+vWkp3FiAdoyUyE+IeL/dsRBWh8fDVUt5eS1Fc01ftOWH7skmHklK/wGzAPgsLg+EfMgPIsZ2krI
-	5P1StXX1neYRSzqDCeJDD34LPKo1UIlSvE9Mm0EohDvCDVEATdxJDVNrtVBUOsUeL0zLiWOp7wQoi
-	93q80zzw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:49182)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uzFAC-000000000ng-2pjn;
-	Thu, 18 Sep 2025 14:59:08 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uzFA8-000000001EY-1H75;
-	Thu, 18 Sep 2025 14:59:04 +0100
-Date: Thu, 18 Sep 2025 14:59:04 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Christophe Roullier <christophe.roullier@foss.st.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/4] net: stmmac: stm32: add WoL from PHY
- support
-Message-ID: <aMwQKERA1p29BeKF@shell.armlinux.org.uk>
-References: <20250917-wol-smsc-phy-v2-0-105f5eb89b7f@foss.st.com>
- <20250917-wol-smsc-phy-v2-2-105f5eb89b7f@foss.st.com>
- <aMriVDAgZkL8DAdH@shell.armlinux.org.uk>
- <72ad4e2d-42fa-41c2-960d-c0e7ea80c6ff@foss.st.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hYgJcslS"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-45ed646b656so9994885e9.3
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 07:01:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758204076; x=1758808876; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zaWUgxon+Xb6FrjH6O0C9Bi3oSkKAAwiP/2JQApbLis=;
+        b=hYgJcslSxCvnZQtTddvsA29OtOhIJcTzb/4Ib8LZWr/H4tTqaQmaQdKiW6FKMj+e/0
+         a/8nr6QgjgKdM+iylpNS1u3bhIp5m8DIPxKouBtxRmvrmHj+8dyfbim3TaYdIF61lW0/
+         oZE8WOVVuVu7BAbmzosyfC2tLDMUm3Em+TKF1zMNXEs80PizFBvCFXHxxUychtLdgqlA
+         5PFccquZBnYoSsj6Z2/4QZoQNYIXkD1x33Bw19gYffDBc6Vmy+j02pNaPCdsE8lr3To6
+         EkAU+k1cCgvBo1vNxMb01Rw1GihZjz2WiblX7iSxuYnooWuO1v681LUA8XjDL8jQ2hpv
+         xDWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758204076; x=1758808876;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zaWUgxon+Xb6FrjH6O0C9Bi3oSkKAAwiP/2JQApbLis=;
+        b=ZB6qFlBbNc5dhG4kT/MY6YKjbEDJT9vFBGBBo0jJOp/4hyaHVNw4jhLD9ZLPJbIY2e
+         hMBtoNOrvECIzy7ql9draDJIOdeGU1UxlMopvibCwajFtZEJ/xnPKxJQ3UobIorrFUj7
+         cPDqk1grhGToeOdpusyOOAb6H8e1zxbNQlPeMgGd+xi7SxQc88/STJ/WmEvt4rm/yg/U
+         RYB44bCspI6CefvMB2+SaiKDks49IpvGaDb6N48W2/EuejMIiVdhC0qh61HQd4zMOnFM
+         pj4JNM4neMpa4QYZ/MiE4jVvTeeueTQwRgyBVjiyfyFs4Hi9qTy4TtFDi6U5yMbf4Qf/
+         G2yQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWizIa6XEuHo2CR8kXi8Lzg4iCJ70ZHfGZfDILckh+OlNiYpVWJ8PjAYYMuVyeD+aELjqnw/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV5i6pD5V3qElkExCYf22TNcLPpSRDtt7kAvDA71fjlZtOGTqy
+	6vFnh4Ij/1r4aIkmTEQp3Ki4ea3sc/KZD9m09kQHjXZ9UUmQlykrSdYJ
+X-Gm-Gg: ASbGncu+reHEwGBPY6A0sqQqFo3fnudZOpDYHMSaUG9JKem5hhGJEuduWPiJURrVHTz
+	L6PaVScpDM6VkHBVrCKze9rZMt0LThIogjia24pmbca0XQauRwbwzYsENZIyE4EpBAHA/dEg5jz
+	ICLtJKAapAWEOJIV9TMQG/aclFsMu3DjUxRIawYNJ4DARoV69KJ+PwDw7T9+bcFkOPeXet1ibiD
+	x4LGESfv2Fqr9osGQQFOCpuhv072ErYncc+GfWgP0fYvNgzIH6qHjmhrMJ79+gNpwIvC4TwOnZV
+	b17Ba+IdxjD9MZqfq3sruc91vrFDCJzLkpMmh+Q85QVdVJqFC5iKnxdUyO7w0GBv6rQMovou4kR
+	EGxB2SLSBslEA5o3QPUqgiFOfIKSrAnXmfquS7ljHZg==
+X-Google-Smtp-Source: AGHT+IERhi0ttbTQo7U5CDSJQlptbQTdHlo+lnabNgzEp0i9XMu8w6gt9JnH1CQDgn2GAUpwL99/Jw==
+X-Received: by 2002:a05:600c:350d:b0:45f:28ed:6e22 with SMTP id 5b1f17b1804b1-46202175f42mr59095015e9.3.1758204076009;
+        Thu, 18 Sep 2025 07:01:16 -0700 (PDT)
+Received: from localhost ([45.10.155.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-461eefee9f3sm77154855e9.1.2025.09.18.07.01.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 07:01:14 -0700 (PDT)
+Message-ID: <84aea541-7472-4b38-b58d-2e958bde4f98@gmail.com>
+Date: Thu, 18 Sep 2025 16:01:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <72ad4e2d-42fa-41c2-960d-c0e7ea80c6ff@foss.st.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Subject: Re: [PATCH net-next v6 4/5] net: gro: remove unnecessary df checks
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ ecree.xilinx@gmail.com, willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ horms@kernel.org, corbet@lwn.net, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, dsahern@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, shuah@kernel.org, sdf@fomichev.me,
+ aleksander.lobakin@intel.com, florian.fainelli@broadcom.com,
+ alexander.duyck@gmail.com, linux-kernel@vger.kernel.org,
+ linux-net-drivers@amd.com
+References: <20250916144841.4884-1-richardbgobert@gmail.com>
+ <20250916144841.4884-5-richardbgobert@gmail.com>
+ <c557acda-ad4e-4f07-a210-99c3de5960e2@redhat.com>
+From: Richard Gobert <richardbgobert@gmail.com>
+In-Reply-To: <c557acda-ad4e-4f07-a210-99c3de5960e2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 18, 2025 at 02:46:54PM +0200, Gatien CHEVALLIER wrote:
-> On 9/17/25 18:31, Russell King (Oracle) wrote:
-> > On Wed, Sep 17, 2025 at 05:36:37PM +0200, Gatien Chevallier wrote:
-> > > If the "st,phy-wol" property is present in the device tree node,
-> > > set the STMMAC_FLAG_USE_PHY_WOL flag to use the WoL capability of
-> > > the PHY.
-> > > 
-> > > Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> > > ---
-> > >   drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 5 +++++
-> > >   1 file changed, 5 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-> > > index 77a04c4579c9dbae886a0b387f69610a932b7b9e..6f197789cc2e8018d6959158b795e4bca46869c5 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-> > > @@ -106,6 +106,7 @@ struct stm32_dwmac {
-> > >   	u32 speed;
-> > >   	const struct stm32_ops *ops;
-> > >   	struct device *dev;
-> > > +	bool phy_wol;
-> > >   };
-> > >   struct stm32_ops {
-> > > @@ -433,6 +434,8 @@ static int stm32_dwmac_parse_data(struct stm32_dwmac *dwmac,
-> > >   		}
-> > >   	}
-> > > +	dwmac->phy_wol = of_property_read_bool(np, "st,phy-wol");
-> > > +
-> > >   	return err;
-> > >   }
-> > > @@ -557,6 +560,8 @@ static int stm32_dwmac_probe(struct platform_device *pdev)
-> > >   	plat_dat->bsp_priv = dwmac;
-> > >   	plat_dat->suspend = stm32_dwmac_suspend;
-> > >   	plat_dat->resume = stm32_dwmac_resume;
-> > > +	if (dwmac->phy_wol)
-> > > +		plat_dat->flags |= STMMAC_FLAG_USE_PHY_WOL;
-> > 
-> > I would much rather we found a different approach, rather than adding
-> > custom per-driver DT properties to figure this out.
-> > 
-> > Andrew has previously suggested that MAC drivers should ask the PHY
-> > whether WoL is supported, but this pre-supposes that PHY drivers are
-> > coded correctly to only report WoL capabilities if they are really
-> > capable of waking the system. As shown in your smsc PHY driver patch,
-> > this may not be the case.
+Paolo Abeni wrote:
+> On 9/16/25 4:48 PM, Richard Gobert wrote:
+>> Currently, packets with fixed IDs will be merged only if their
+>> don't-fragment bit is set. This restriction is unnecessary since
+>> packets without the don't-fragment bit will be forwarded as-is even
+>> if they were merged together. The merged packets will be segmented
+>> into their original forms before being forwarded, either by GSO or
+>> by TSO. The IDs will also remain identical unless NETIF_F_TSO_MANGLEID
+>> is set, in which case the IDs can become incrementing, which is also fine.
+>>
+>> Note that IP fragmentation is not an issue here, since packets are
+>> segmented before being further fragmented. Fragmentation happens the
+>> same way regardless of whether the packets were first merged together.
 > 
-> So how can we distinguish whether a PHY that implements WoL features
-> is actually able (wired) to wake up the system? By adding the
-> "wakeup-source" property to the PHY node?
-
-Andrew's original idea was essentially that if the PHY reports that it
-supports WoL, then it's functional.
-
-Sadly, that's not the case with many PHY drivers - the driver
-implementers just considered "does this PHY have the ability to detect
-WoL packets" and not "can this PHY actually wake the system."
-
-Thankfully, all but one PHY driver does not use
-device_set_wakeup_capable() - my recent patches for realtek look like
-the first PHY driver to use this.
-
-Thus, if we insist that PHY drivers use device_set_wakeup_capable()
-to indicate that (a) they have WoL capability _and_ are really
-capable of waking the system, we have a knob we can test for.
-
-Sadly, there is no way to really know whether the interrupt that the
-PHY is attached to can wake the system. Things get worse with PHYs
-that don't use interrupts to wake the system. So, I would suggest
-that, as we already have this "wakeup-source" property available for
-_any_ device in DT, we start using this to say "on this system, this
-PHY is connected to something that can wake the system up."
-
-See the past discussion when Realtek was being added - some of the
-context there covers what I mention above.
-
-> Therefore, only set the "can wakeup" capability when both the PHY
-> supports WoL and the property is present in the PHY node?
-
-Given that telling the device model that a device is wakeup
-capable causes this to be advertised to userspace, we really do
-not want devices saying that they are wakeup capable when they
-aren't capable of waking the system. So I would say that a call
-to device_set_wakeup_capable(dev, true) should _only_ be made if
-the driver is 100% certain that this device really can, without
-question, wake the platform.
-
-If we don't have that guarantee, then we're on a hiding to nothing
-and chaos will reign, MAC drivers won't work properly... but I would
-suggest that's the price to be paid for shoddy implementation and
-not adhering to a sensible approach such as what I outline above.
-
-> However, this does not solve the actual static pin function
-> configuration for pins that can, if correct alternate function is
-> selected, generate interrupts, in PHY drivers.
+> I agree with Willem, that an explicit assertion somewhere (in
+> ip_do_fragmentation?!?) could be useful.
 > 
-> It would be nice to be able to apply some kind of pinctrl to configure
-> the PHY pins over the MDIO bus thanks to some kind of pinctrl hogging.
-> This suggests modifying relevant PHY drivers and documentation to be
-> able to handle an optional pinctrl.
 
-How would that work with something like the Realtek 8821F which has
-a single pin which can either signal interrupts (including a wake-up)
-or be in PME mode, where it only ever signals a wake-up event.
-Dynamically switching between the two modes is what got us into the
-crazy situation where, when WoL was enabled on this PHY, phylib
-stopped working because the pin was switched to PME mode, and we no
-longer got link status interrupts. So one could enable WoL, plug in
-an ethernet cable, and the kernel has no idea that the link has come
-up.
+As I replied to Willem, I'll mention ip_finish_output_gso explicitly in the
+commit message.
 
-So no. In a situation like this, either we want to be in interrupt
-mode (in which case we have an interrupt), or the pin is wired to
-a power management controller and needs to be in PME mode, or it isn't
-wired.
+Or did you mean I should add some type of WARN_ON assertion that ip_do_fragment isn't
+called for GSO packets?
 
-Which it is can be easily identified.
+> Also I'm not sure that "packets are segmented before being further
+> fragmented" is always true for the OVS forwarding scenario.
+> 
 
-$1. Is there an interrupt specified (Y/N) ?
-$2. Is there a wakeup-source property (Y/N) ?
+If this is really the case, it is a bug in OVS. Segmentation is required before
+fragmentation as otherwise GRO isn't transparent and fragments will be forwarded
+that contain data from multiple different packets. It's also probably less efficient,
+if the segment size is smaller than the MTU. I think this should be addressed in a
+separate patch series.
 
-States:
-$1  $2
-*   N   we have no idea if an interrupt (if specified) can wake the
-        system, or if there is other wiring from the PHY which might.
-	Legacy driver, or has no wake-up support. We have to fall back
-	on existing approaches to maintain compatibility and void
-	breaking userspace, which may suggest WoL is supported when it
-	isn't. For example, with stmmac, if STMMAC_FLAG_USE_PHY_WOL is
-	set, we must assume the PHY can wake the system in this case.
-Y   Y   interrupt wakes the system, we're good for WoL
-N   Y   non-interrupt method of waking the system, e.g. PME
+I'll also mention OVS in the commit message.
 
-I'd prefer not to go for a complicated solution to this, e.g. involving
-pinctrl, when we don't know how many PHYs need this, because forcing
-extra complexity on driver authors means we have yet more to review, and
-I think it's fair to say that we're already missing stuff. Getting the
-pinctrl stuff right also requires knowledge of the hardware, and is
-likely something that reviewers can't know if it's correct or not -
-because datasheets giving this information aren't publicly available.
+> /P
+> 
 
-So, I'm all in favour of "keep it damn simple, don't give people more
-work, even if it looks nice in DT" here.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
