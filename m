@@ -1,99 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1822C11E9;
-	Thu, 18 Sep 2025 10:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D000B2DA757
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 10:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758191980; cv=none; b=AIAT2WdccaWcXBAWwGwpHAseVTfEBVg+5aGFT5q9ts8Zge4NNsDi7yh20I/ziQ5/aXr9BIEmPI5gd73bZSim2Yh8ZPraRSmEB7Fgt6G62KnG3knY4kGtANDYykc71AGlUIhWYVgktzyihj2XWGr7yoHvGzhuvV1+XdqY2Gi53AI=
+	t=1758192084; cv=none; b=eD6w1V41Thy1hsWHkEK16k7ITYNT6qShJImgDxSbPzUIDSgxZzk5YC5TgI8O1qx9jadv9sOUfSYqixcmu9+PqISf/YTtNB/u0d9wHEyDFDXF/x+LYupnU5wa+dG5NpBDgY8sZHN+1TxAUDkV1kK6odrmsLkPGZOaZs8nz1cVND4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758191980; c=relaxed/simple;
-	bh=fgVQ+j91Fez+nkL73mza5lRSVa/JXo8LJ4pD2kGgnIo=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=WHGH7vcJE2HydCclPvkqCHjniP9g41xoI0ye0v6ki1ajSSbcOa2IL7NoCOP/XyFmFJnfqy9JrT7weMrDUdYA/SZL6l6NCqFJr7a8My42AfMSiBmy27HsZ8yAixbgP94YZIMO/hZH/cBfLbFN44M5+/Xub2xmAziUXyVBJiiT3kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3+FK3JA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758192084; c=relaxed/simple;
+	bh=/ryAaRu1zsK2hhBXqXw6qylc208FGP4UEyznFLamZc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gp7tt4+J1uynzW9Pxc/XKVZCBBcWSQcFK9Enk1mURVuuIYJF/VvItYiW0xuGxyv5doW0KzH6cvWb8fa00hldGdMmRiDwuTwVatJYzwRZBgbOzRYPnjxWV2yo44lTvSiiJjwV6+rm2cSup4w9xJSSFYmj7xGYvS8iUxzoHj+TEuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=f2C7C41y; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ivPVFIeS; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=J9ZXhpJt; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=UGXuXfB1; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3+FK3JA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69582C4CEEB;
-	Thu, 18 Sep 2025 10:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758191979;
-	bh=fgVQ+j91Fez+nkL73mza5lRSVa/JXo8LJ4pD2kGgnIo=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=j3+FK3JAwgdtXmAmA/n8u92H71M5nmXhj88js81lHZ0PXcz6dejE4g+PoS1D2NCaN
-	 eQnTteMfrViMm+HcaWZrAEgPLB2ij3iBbzpI0Y1V5RKXEUhzETS+SxXn7XLZXIXmki
-	 PvAil22+9Tolh89AXqSomKl9WjJuKKeJ7AQsqfjJV+V5Vqq5+9Nlnl8HvmH+h5+3Ae
-	 frBfUxrXUWKG7IthYpVWfT/AT4I1+wsRXPrnMtBTa3g3wHhofsApylkI9b02aZSkgj
-	 71CUivatKdvvr1C6gvAtstsxtB8hy8r94dET5moVfTum20xjdekXQmHOUCmNZTRIie
-	 FePqtINQC/CZg==
-Date: Thu, 18 Sep 2025 05:39:38 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="f2C7C41y";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ivPVFIeS";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="J9ZXhpJt";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="UGXuXfB1"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B477B336E7;
+	Thu, 18 Sep 2025 10:41:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758192080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLqw+cTYuI4KQmK1iyTFyxZRmHV3Ig++tUCoQTHRt6I=;
+	b=f2C7C41yDGwl0u4IEePcheDl8kBxth97QhE2fCXUrvf6V4+5RfdmKfTHdbydnXiQce5G/9
+	MrzrAqpExp18kNJzsnByNS95VEgtgZMJMsrSe96lIr7RKe7rnj5wzlwvu5zCFco8nfcHRR
+	j9RvcBNjT2A7/9mvGK+8tUuzbC/qvVU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758192080;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLqw+cTYuI4KQmK1iyTFyxZRmHV3Ig++tUCoQTHRt6I=;
+	b=ivPVFIeS2PvlTAsxQSywtKZJM2M5w6H+EfILPJzj25swmaCqQ+UJnJoIEGN8V8DI8ekjq1
+	qinAK+GQSo5ISnAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=J9ZXhpJt;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=UGXuXfB1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1758192079; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLqw+cTYuI4KQmK1iyTFyxZRmHV3Ig++tUCoQTHRt6I=;
+	b=J9ZXhpJtLzLFglt6jHPsvjOzfFJsQUG1jDCRUh6bgOt3ZzMlxON5ehiSTlOiZg73NZcGsT
+	QGK/fbwAaSMkl6yJVea3poD3B81oU+hCp03Rfg1RfXWB9hm6ItzX7ruqz4KQA/hBsHrA5k
+	+f2PbAZTGVK7LSX+yxWejvjRhXH04PI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1758192079;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLqw+cTYuI4KQmK1iyTFyxZRmHV3Ig++tUCoQTHRt6I=;
+	b=UGXuXfB1mHDGlwI8bDeqpqea/yjcfrtmgUDHe1RGGLwa/6a4KzE1GhPERdSg4eTwXwUUif
+	d+MezK01asNKyYBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8DB1013A39;
+	Thu, 18 Sep 2025 10:41:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id v2lPIs/hy2gxcgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 18 Sep 2025 10:41:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 08891A09B1; Thu, 18 Sep 2025 12:41:19 +0200 (CEST)
+Date: Thu, 18 Sep 2025 12:41:18 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>, 
+	Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>, Mike Yuan <me@yhndnzj.com>, 
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, Lennart Poettering <mzxreary@0pointer.de>, 
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Tejun Heo <tj@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 00/14] ns: rework reference counting
+Message-ID: <mngabd3ala2dsrps5iviihl4ijpjlwea4lnzrqzoihcydinweo@bu6ewudaqksi>
+References: <20250918-work-namespace-ns_ref-v1-0-1b0a98ee041e@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: ningyu@eswincomputing.com, prabhakar.mahadev-lad.rj@bp.renesas.com, 
- pabeni@redhat.com, rmk+kernel@armlinux.org.uk, anthony.l.nguyen@intel.com, 
- yong.liang.choong@linux.intel.com, linux-stm32@st-md-mailman.stormreply.com, 
- boon.khai.ng@altera.com, netdev@vger.kernel.org, krzk+dt@kernel.org, 
- andrew+netdev@lunn.ch, vladimir.oltean@nxp.com, inochiama@gmail.com, 
- jszhang@kernel.org, linux-arm-kernel@lists.infradead.org, 
- alexandre.torgue@foss.st.com, jan.petrous@oss.nxp.com, 
- mcoquelin.stm32@gmail.com, linux-kernel@vger.kernel.org, 
- linmin@eswincomputing.com, 0x1207@gmail.com, lizhi2@eswincomputing.com, 
- kuba@kernel.org, davem@davemloft.net, edumazet@google.com, 
- devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, conor+dt@kernel.org, 
- pinkesh.vaghela@einfochips.com
-To: weishangjuan@eswincomputing.com
-In-Reply-To: <20250918085903.3228-1-weishangjuan@eswincomputing.com>
-References: <20250918085612.3176-1-weishangjuan@eswincomputing.com>
- <20250918085903.3228-1-weishangjuan@eswincomputing.com>
-Message-Id: <175819197799.813528.5926397518793037522.robh@kernel.org>
-Subject: Re: [PATCH v7 1/2] dt-bindings: ethernet: eswin: Document for
- EIC7700 SoC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918-work-namespace-ns_ref-v1-0-1b0a98ee041e@kernel.org>
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,toxicpanda.com,kernel.org,yhndnzj.com,in.waw.pl,0pointer.de,cyphar.com,zeniv.linux.org.uk,suse.cz,cmpxchg.org,suse.com,linutronix.de];
+	TAGGED_RCPT(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Queue-Id: B477B336E7
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -2.51
 
+On Thu 18-09-25 12:11:45, Christian Brauner wrote:
+> Stop open accesses to the reference counts and cargo-culting the same
+> code in all namespace. Use a set of dedicated helpers and make the
+> actual count private.
+> 
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-On Thu, 18 Sep 2025 16:59:03 +0800, weishangjuan@eswincomputing.com wrote:
-> From: Shangjuan Wei <weishangjuan@eswincomputing.com>
-> 
-> Add ESWIN EIC7700 Ethernet controller, supporting clock
-> configuration, delay adjustment and speed adaptive functions.
-> 
-> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
-> Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  .../bindings/net/eswin,eic7700-eth.yaml       | 127 ++++++++++++++++++
->  1 file changed, 127 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
+> Christian Brauner (14):
+>       ns: add reference count helpers
+>       mnt: port to ns_ref_*() helpers
+>       cgroup: port to ns_ref_*() helpers
+>       ipc: port to ns_ref_*() helpers
+>       pid: port to ns_ref_*() helpers
+>       time: port to ns_ref_*() helpers
+>       user: port to ns_ref_*() helpers
+>       net-sysfs: use check_net()
+>       net: use check_net()
+>       ipv4: use check_net()
+>       uts: port to ns_ref_*() helpers
+>       net: port to ns_ref_*() helpers
+>       nsfs: port to ns_ref_*() helpers
+>       ns: rename to __ns_ref
 > 
-
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml:127:7: [error] no new line character at the end of file (new-line-at-end-of-file)
-
-dtschema/dtc warnings/errors:
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250918085903.3228-1-weishangjuan@eswincomputing.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+>  fs/mount.h                       |  2 +-
+>  fs/namespace.c                   |  4 ++--
+>  fs/nsfs.c                        |  2 +-
+>  include/linux/cgroup_namespace.h |  4 ++--
+>  include/linux/ipc_namespace.h    |  4 ++--
+>  include/linux/ns_common.h        | 47 ++++++++++++++++++++++++++++++----------
+>  include/linux/pid_namespace.h    |  2 +-
+>  include/linux/time_namespace.h   |  4 ++--
+>  include/linux/user_namespace.h   |  4 ++--
+>  include/linux/uts_namespace.h    |  4 ++--
+>  include/net/net_namespace.h      |  8 +++----
+>  init/version-timestamp.c         |  2 +-
+>  ipc/msgutil.c                    |  2 +-
+>  ipc/namespace.c                  |  2 +-
+>  kernel/cgroup/cgroup.c           |  2 +-
+>  kernel/nscommon.c                |  2 +-
+>  kernel/pid.c                     |  2 +-
+>  kernel/pid_namespace.c           |  4 ++--
+>  kernel/time/namespace.c          |  2 +-
+>  kernel/user.c                    |  2 +-
+>  kernel/user_namespace.c          |  2 +-
+>  net/core/net-sysfs.c             |  6 ++---
+>  net/core/net_namespace.c         |  2 +-
+>  net/ipv4/inet_timewait_sock.c    |  4 ++--
+>  net/ipv4/tcp_metrics.c           |  2 +-
+>  25 files changed, 73 insertions(+), 48 deletions(-)
+> ---
+> base-commit: 3f9cc273c16f63b5d584ec4e767918765c44316b
+> change-id: 20250917-work-namespace-ns_ref-357162ca7aa8
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
