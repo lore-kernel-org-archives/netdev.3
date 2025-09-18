@@ -1,130 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA15C18A6DB;
-	Thu, 18 Sep 2025 10:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD552F60A6
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 11:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758193187; cv=none; b=jDhW0rTj7PaCXdg6noTyRpxU+ehbYBxbKbcVCUCCM0VWer8HO9PzDkjeQG907cqSxRxUjSVvo+tiaEwYJMXfgyKylYx0X1izkgIvcC/FyrOY446lbnEqeT2NXkPzQRShE3mX63fr4uW6jiv9eF75xbX8TardZzzofD+zQ53o84Q=
+	t=1758193232; cv=none; b=P/z2HkLEXjhxmQK6FE+BEFM0h2w1aI7XxHZMZ6luSfx7iDiFvaXtjiZ4z5EYDKMg4ZCz9pyeSRSSPf/jAhnPjzcNGfKjNYyE+N7km+xLSYFrU3XVMjnGm0v+G/MYoQNp3ooe6HDfRVZQP3YSiW8H48W7YkC7QIdL2KP7J02VR3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758193187; c=relaxed/simple;
-	bh=k7WjdxD1akUFMFsnjD+igZOq30uLF23C9JuX5ROO/Wk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aXuWS+8z6uU4RyDOTKgtP3hPEoKgoEn8UH+wh2K9PMxqVIkxRtp2q9chqzde6aHm42+5XsOIFDQazotMO40d/WxFNF/d+jRO06P1p0SC1PrqDT13hUpz0uO0YMfWLUoKKRpiv3JwPz5vW5VjlLbs5d+ciNHkFXRSR7BkjjxUeiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Aos9blcv; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758193232; c=relaxed/simple;
+	bh=1vJOiUg12eOw9SKaR/xyTrh+bc5LbnK/5rBq3fmB4XI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=exwG7MYenrcZYGTsa5PJN6jLhivlrHRzHRx2WaA4z0pGKhe4BhfflmbQ3yBeEG3xwBAttwPLokDNKaK1V5h4GAdJ8D8vLg2zfBQkyS7I0vGJHjtn01R/zkhV2nUrwDUT1ookSty17ZeorjuuvuadfnaW4g8Lr0Wfs+TRC5Ir0vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZflD9WoM; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Aos9blcv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758193186; x=1789729186;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=k7WjdxD1akUFMFsnjD+igZOq30uLF23C9JuX5ROO/Wk=;
-  b=Aos9blcvkrt9eop+nKgdyLCxd9Yd0+/NoT2gWYrKdTZ7C2/snZM32qY2
-   1oiJT5nx77MJqkiqnPDncmDlB+g9KQ8qmaEEwNBxcOVICPD+hY7+t3rUv
-   fmd0rYmCPv7/znvKASeknMpXwD7vSyKCN6Pca6GTXWBubbpyRy6Gf9TTZ
-   3/AyBXgOI37an1t9xgH0Tln6tn5IjqQjCpbrv9I761eFKmwMKciX3BdSi
-   9ut7GAon0GeDNpPK6K+4Skby1y3r2Y8pFZegaCEmZuQoUgqL8VL+579TA
-   pkw/9F58KAkfYZfqSrvT36h+R/Of6QC/z79EA+01VPRFvQmERi/d/E1jH
-   A==;
-X-CSE-ConnectionGUID: q+Jmw2+kSUC45AaKVqZlsw==
-X-CSE-MsgGUID: QejdNk/gQqeNz3yxS6Kd1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11556"; a="64336083"
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
-   d="scan'208";a="64336083"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2025 03:59:45 -0700
-X-CSE-ConnectionGUID: TW+Q+WYtS32lblmpHmpoQw==
-X-CSE-MsgGUID: ZVBunwrSQee44Q89CHxReQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,274,1751266800"; 
-   d="scan'208";a="180627016"
-Received: from p2dy149cchoong.png.intel.com ([10.107.243.50])
-  by orviesa005.jf.intel.com with ESMTP; 18 Sep 2025 03:59:41 -0700
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Avi Shalev <avi.shalev@intel.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>
-Subject: [PATCH iwl-net v1] igc: fix race condition in TX timestamp read for register 0
-Date: Fri, 19 Sep 2025 02:38:11 +0800
-Message-ID: <20250918183811.31270-1-chwee.lin.choong@intel.com>
-X-Mailer: git-send-email 2.42.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZflD9WoM"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4b3d3f6360cso8162141cf.0
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 04:00:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758193229; x=1758798029; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXX9Pd07gBMtRdpX7laTywvFXTkQX5wlfDb0swVx5yc=;
+        b=ZflD9WoMuhwT+43LAOuJEmNMRSEdAGywx5dElJC+9C/ZqEuaQHB3Gf2NDmor8kdiU6
+         hEVpt+7+p5CCwONt7Fpv2P9+JE67jZ1YfJBSPrgXvSrpks20+lKXQ3jXaKOTzD3f1Zk6
+         3m88ZPKyEF16W+XI9/gxb3GEJ2x9j8TdF1BHDrpSJviylSDkyWbcqIa0TPNHmF6cfNSY
+         qn6awUJcZvj+GEp0Y9rCITJMkelu5Ebm2TOHJ+wxxmmCW181xbMcqa1yXkFFxxAY8N0+
+         8kXDfLwJ7/B4cnDz6MvXNH9vRB50u6ih66DalWPXY3BkvIei9Ljk/YZ46AYpKafMEmj8
+         8vOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758193229; x=1758798029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SXX9Pd07gBMtRdpX7laTywvFXTkQX5wlfDb0swVx5yc=;
+        b=Bsg2WwlCH2t5Z1F6KhVls4UlLEVc/0AZPbeW3NWhquKNUNEMfjekfGU51d8E9y7nhV
+         FT89zLyklZ+qwHeCpnxHzoCa7E+Ex9mi9AVCnYzeVcePhfaAWzphU/rNSA5OLr6f5MoX
+         W7dMySIRW+Xd1IiMVgMNt4Xf3JUo38NTnBsjr1Ktm7CHgKv45cJJsHQbVKALP2qubhtV
+         UqPcElQwXRZHbmNM6Kj/+w2Aj249/3dXXdQUNddkahcorcVoqGuSM+0PfJzyVBzgCD6B
+         ELydzQACtgQp5VMkqFVPsB0xmTofKlOm5vsDnTVO794+OvOXAWDq7idNTQkSCsKzNb/F
+         3NIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqP0Kep6jRa+GtGj0LBPHgPYJgYNNlSIj0btL/sGQ3E4wDkEO6okr80talnyKmHnlR5wkPSxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4UOyqxcYB/5xaWHRJBG7wB2T8s/ZoGOi34T1uG23iUWtgCCkG
+	Wx6FayN+0DjU/+VVbMAv/t1LgGEhAiFtbdHPtlyV2aIhuYlT4CO1K7KetaTrskW4tdBiut/Im9M
+	VJaYTsqgukOA4RZggosdpJWgZ3cJiF6L1SZsqKeIL
+X-Gm-Gg: ASbGncu7oLFicjV5vR4b9g2V30//pbxkEZhE1KUJS8rQ8NpG+Y50qJ+HAmURGJyf31m
+	f0b4PbTBHloek7BHD0Uu03Vr+BADCKDF1bIabCrvjdviJx3mONm28gnLavoLgrj3JgKZPAQAAtS
+	rUNrgSLCjyy62bNIfI0qavWGlE6sAosdqW7Klq6pDweDIH0o1sgmI+0KcciwL44vMt3Nr6UH4Y5
+	afMz9ahl0IbPRH9AXWskhXGeul9M17y
+X-Google-Smtp-Source: AGHT+IHw4wX5s8YhuxS+d3J3MvBKiIlVhPalyIEnmHbfLRME8wdoVUP/exuT3945oq+nQ/GlrXZ3XApw00klZKNZMjE=
+X-Received: by 2002:a05:622a:40ce:b0:4b7:a8ce:a419 with SMTP id
+ d75a77b69052e-4ba66e0c45amr57172341cf.26.1758193228590; Thu, 18 Sep 2025
+ 04:00:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250917000954.859376-1-daniel.zahka@gmail.com> <175819262850.2365733.8295832390159298825.git-patchwork-notify@kernel.org>
+In-Reply-To: <175819262850.2365733.8295832390159298825.git-patchwork-notify@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 18 Sep 2025 04:00:16 -0700
+X-Gm-Features: AS18NWAWlAgMHoG6y9ufZXhFoFwYo7GO6OYKGdvyuZjKM0Mjoi9Jr4mcU6VQzdk
+Message-ID: <CANn89i+ZdBDEV6TE=Nw5gn9ycTzWw4mZOpPuCswgwEsrgOyNnw@mail.gmail.com>
+Subject: Re: [PATCH net-next v13 00/19] add basic PSP encryption for TCP connections
+To: patchwork-bot+netdevbpf@kernel.org
+Cc: Daniel Zahka <daniel.zahka@gmail.com>, donald.hunter@gmail.com, kuba@kernel.org, 
+	davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, 
+	andrew+netdev@lunn.ch, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, 
+	borisp@nvidia.com, kuniyu@google.com, willemb@google.com, dsahern@kernel.org, 
+	ncardwell@google.com, phaddad@nvidia.com, raeds@nvidia.com, 
+	jianbol@nvidia.com, dtatulea@nvidia.com, rrameshbabu@nvidia.com, 
+	sdf@fomichev.me, toke@redhat.com, aleksander.lobakin@intel.com, 
+	kiran.kella@broadcom.com, jacob.e.keller@intel.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The current HW bug workaround checks the TXTT_0 ready bit first,
-then reads LOW -> HIGH -> LOW from register 0 to detect if a
-timestamp was captured.
+On Thu, Sep 18, 2025 at 3:50=E2=80=AFAM <patchwork-bot+netdevbpf@kernel.org=
+> wrote:
+>
+> Hello:
+>
+> This series was applied to netdev/net-next.git (main)
+> by Paolo Abeni <pabeni@redhat.com>:
+>
+> On Tue, 16 Sep 2025 17:09:27 -0700 you wrote:
+> > This is v13 of the PSP RFC [1] posted by Jakub Kicinski one year
+> > ago. General developments since v1 include a fork of packetdrill [2]
+> > with support for PSP added, as well as some test cases, and an
+> > implementation of PSP key exchange and connection upgrade [3]
+> > integrated into the fbthrift RPC library. Both [2] and [3] have been
+> > tested on server platforms with PSP-capable CX7 NICs. Below is the
+> > cover letter from the original RFC:
+> >
+> > [...]
+>
+> Here is the summary with links:
+>   - [net-next,v13,01/19] psp: add documentation
+>     https://git.kernel.org/netdev/net-next/c/a9266275fd7b
+>   - [net-next,v13,02/19] psp: base PSP device support
+>     https://git.kernel.org/netdev/net-next/c/00c94ca2b99e
+>   - [net-next,v13,03/19] net: modify core data structures for PSP datapat=
+h support
+>     https://git.kernel.org/netdev/net-next/c/ed8a507b7483
+>   - [net-next,v13,04/19] tcp: add datapath logic for PSP with inline key =
+exchange
+>     https://git.kernel.org/netdev/net-next/c/659a2899a57d
+>   - [net-next,v13,05/19] psp: add op for rotation of device key
+>     https://git.kernel.org/netdev/net-next/c/117f02a49b77
+>   - [net-next,v13,06/19] net: move sk_validate_xmit_skb() to net/core/dev=
+.c
+>     https://git.kernel.org/netdev/net-next/c/8c511c1df380
+>   - [net-next,v13,07/19] net: tcp: allow tcp_timewait_sock to validate sk=
+bs before handing to device
+>     https://git.kernel.org/netdev/net-next/c/0917bb139eed
+>   - [net-next,v13,08/19] net: psp: add socket security association code
+>     https://git.kernel.org/netdev/net-next/c/6b46ca260e22
+>   - [net-next,v13,09/19] net: psp: update the TCP MSS to reflect PSP pack=
+et overhead
+>     https://git.kernel.org/netdev/net-next/c/e97269257fe4
+>   - [net-next,v13,10/19] psp: track generations of device key
+>     https://git.kernel.org/netdev/net-next/c/e78851058b35
+>   - [net-next,v13,11/19] net/mlx5e: Support PSP offload functionality
+>     https://git.kernel.org/netdev/net-next/c/89ee2d92f66c
+>   - [net-next,v13,12/19] net/mlx5e: Implement PSP operations .assoc_add a=
+nd .assoc_del
+>     https://git.kernel.org/netdev/net-next/c/af2196f49480
+>   - [net-next,v13,13/19] psp: provide encapsulation helper for drivers
+>     https://git.kernel.org/netdev/net-next/c/fc724515741a
+>   - [net-next,v13,14/19] net/mlx5e: Implement PSP Tx data path
+>     https://git.kernel.org/netdev/net-next/c/e5a1861a298e
+>   - [net-next,v13,15/19] net/mlx5e: Add PSP steering in local NIC RX
+>     https://git.kernel.org/netdev/net-next/c/9536fbe10c9d
+>   - [net-next,v13,16/19] net/mlx5e: Configure PSP Rx flow steering rules
+>     https://git.kernel.org/netdev/net-next/c/2b6e450bfde7
+>   - [net-next,v13,17/19] psp: provide decapsulation and receive helper fo=
+r drivers
+>     https://git.kernel.org/netdev/net-next/c/0eddb8023cee
+>   - [net-next,v13,18/19] net/mlx5e: Add Rx data path offload
+>     https://git.kernel.org/netdev/net-next/c/29d7f433fcec
+>   - [net-next,v13,19/19] net/mlx5e: Implement PSP key_rotate operation
+>     https://git.kernel.org/netdev/net-next/c/411d9d33c8a2
+>
+> You are awesome, thank you!
+> --
+> Deet-doot-dot, I am a bot.
+> https://korg.docs.kernel.org/patchwork/pwbot.html
 
-This sequence has a race: if a new timestamp is latched after
-reading the TXTT mask but before the first LOW read, both old
-and new timestamp match, causing the driver to drop a valid
-timestamp.
+I just saw a name conflict on psp_dev_destroy(), not sure why it was
+not caught earlier.
 
-Fix by reading the LOW register first, then the TXTT mask,
-so a newly latched timestamp will always be detected.
-
-This fix also prevents TX unit hangs observed under heavy
-timestamping load.
-
-Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-Suggested-by: Avi Shalev <avi.shalev@intel.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
----
- drivers/net/ethernet/intel/igc/igc_ptp.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index b7b46d863bee..930486b02fc1 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -774,10 +774,17 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
- static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 txstmpl_old;
- 	u64 regval;
- 	u32 mask;
- 	int i;
- 
-+	/* Read the "low" register 0 first to establish a baseline value.
-+	 * This avoids a race where a new timestamp could be latched
-+	 * after checking the TXTT mask.
-+	 */
-+	txstmpl_old = rd32(IGC_TXSTMPL);
-+
- 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
- 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
- 		regval = rd32(IGC_TXSTMPL);
-@@ -801,9 +808,8 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- 		 * timestamp was captured, we can read the "high"
- 		 * register again.
- 		 */
--		u32 txstmpl_old, txstmpl_new;
-+		u32 txstmpl_new;
- 
--		txstmpl_old = rd32(IGC_TXSTMPL);
- 		rd32(IGC_TXSTMPH);
- 		txstmpl_new = rd32(IGC_TXSTMPL);
- 
--- 
-2.42.0
-
+drivers/crypto/ccp/psp-dev.c:294:void psp_dev_destroy(struct sp_device *sp)
+drivers/crypto/ccp/sp-dev.c:210:                psp_dev_destroy(sp);
+drivers/crypto/ccp/sp-dev.h:175:void psp_dev_destroy(struct sp_device *sp);
+drivers/crypto/ccp/sp-dev.h:182:static inline void
+psp_dev_destroy(struct sp_device *sp) { }
+net/psp/psp.h:16:void psp_dev_destroy(struct psp_dev *psd);
+net/psp/psp.h:45:               psp_dev_destroy(psd);
+net/psp/psp_main.c:102:void psp_dev_destroy(struct psp_dev *psd)
+net/psp/psp_main.c:125: /* Wait until psp_dev_destroy() to call
+xa_erase() to prevent a
