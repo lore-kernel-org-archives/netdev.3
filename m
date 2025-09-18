@@ -1,115 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0427721B9C8;
-	Thu, 18 Sep 2025 15:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C8F3101D1
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 15:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758209695; cv=none; b=LoOmm/JleSd28q8KwyTUj61O4YCerlCDrzUIywMWAn14QLzniG0lZc+VGz7ksXMlDs7pMtC+wy3YpW0zNQsWYCZhQlMaQqxYLVop6x6QFht7dL4Q/Z5kNKAPPwWejllYMreFtCwXsldJbqHdty4xtICMIjt8CYiPbSSI90LVNDM=
+	t=1758209701; cv=none; b=JQEsZlqtBG/nw7ghi6BKD7uTfEMEAJr0mbQvPekl8i3tmBWlnGzfX3DVKfF0LOMLP2azOfsewlOq2G7Rm8PmNl/TsP7xnD4QgLz4GWSlQLk/HjQ1Lb+yzzxQRprom957ewocS+Jv0iqLD8yPL1qiHfr0eEWgW+vOT+1zBfqeF2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758209695; c=relaxed/simple;
-	bh=zpFVkb0lnhdGOYxmaSWK3NFzYVJkDSQXVNFp+JnGLtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H5+OIqcTAfP9ctyulbUFrgsywVvqZSsE3EjQpMpP3FEggZejKIIKQjf0RJWCU8UqeTaMNana+QRRHuy9m1OUMEOsahWvBD6pCZ0VnXKE3d3TOnJ5s7tQVqM6tLv7ucVnu+mYSGWU/m743VZfw7ghZ7VK9XtdyijjuYOjpVghBY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DQWGvp0p; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758209701; c=relaxed/simple;
+	bh=1L4ztzZI21TGZatF3aNWfrnQCTgXQdveVEOhyL3fA0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cbf1oF0LhgiQvFnOWEVu0LKYbU29UN7oZzdu14DQNcw0gJtn6XCRCRxq+XHptM85zgD9cVrc0+iQVGIvv9it07VVvT11w/PAmTHOc0qc+BF1AooPPqxle+TycPdfsNnlxZsumY752pxWftjpougO0g/EckNv2q3xRlg/BooKD+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=QQemO7m4; arc=none smtp.client-ip=94.124.121.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DQWGvp0p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=534+lwp2XT2+BE76GPOqNHw9H4NtzKsVjc9xzAvBcWw=; b=DQWGvp0pq6RVj00wUirYjFs+2y
-	fORCEVeztn3KYnmhvxMZuL3pGJCZ5u2Pbwpx2PelEmLP3Bs/600/BAt624JQARAK0TjUifSWMdIcA
-	wyxhY+8kEnaHts3bxEWdVPCtoTBxlw+oNDLdpClbdAl0TdQi/dm8aA/Zgun5JO+Ckuuw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uzGeY-008qQn-7z; Thu, 18 Sep 2025 17:34:34 +0200
-Date: Thu, 18 Sep 2025 17:34:34 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Gatien CHEVALLIER <gatien.chevallier@foss.st.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Christophe Roullier <christophe.roullier@foss.st.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/4] net: stmmac: stm32: add WoL from PHY
- support
-Message-ID: <46f9bdf8-a35c-4e94-9d4d-c87219444029@lunn.ch>
-References: <20250917-wol-smsc-phy-v2-0-105f5eb89b7f@foss.st.com>
- <20250917-wol-smsc-phy-v2-2-105f5eb89b7f@foss.st.com>
- <aMriVDAgZkL8DAdH@shell.armlinux.org.uk>
- <72ad4e2d-42fa-41c2-960d-c0e7ea80c6ff@foss.st.com>
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="QQemO7m4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=SqjdATjfjZTk7QANAggTs1mW/P13EV6a+Izt0r+agQ0=;
+	b=QQemO7m4x6zCxk4M9laZ90eCIBZvlHRq/VuixCptBB7zzwo7W14mF7GpiYLDE2KravDs5mWr5Fe32
+	 YI5vbPnjY8XchNI9DA2VxwqrhGOoXIMDArJfiLqW1D+YRL2YnyHQ4WHp2jj+Z3dwdLVow44GMCxb0b
+	 S6ozX0oObc8Pf1HBbvovaxNrs8/iL/hnZAJYohUXXEqDuxD0E+wq2MS2PgcGQeAqkHwHgbtE3szPdO
+	 LY51aW6TvUu1QOAIlIzGxXruryI8IjrqSj/QbUYXHmCSZMbUySBHPD6UI6terkJcLsOTJupcY0AuoB
+	 JpIpBWXwmgF0fXl9CqpcwJtEM9ZcoKQ==
+X-MSG-ID: df093cf2-94a4-11f0-858c-005056817704
+Date: Thu, 18 Sep 2025 17:33:47 +0200
+From: David Jander <david@protonic.nl>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jonas Rebmann <jre@pengutronix.de>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-sound@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [PATCH v2 3/3] arm64: dts: add Protonic PRT8ML board
+Message-ID: <20250918173347.28db5569@erd003.prtnl>
+In-Reply-To: <7f1d9289-4102-4db9-a2bb-ff270e8871b7@lunn.ch>
+References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
+	<20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
+	<af554442-aeec-40d2-a35a-c7ee5bfcb99a@lunn.ch>
+	<20250918165156.10e55b85@erd003.prtnl>
+	<7f1d9289-4102-4db9-a2bb-ff270e8871b7@lunn.ch>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <72ad4e2d-42fa-41c2-960d-c0e7ea80c6ff@foss.st.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-> > Andrew has previously suggested that MAC drivers should ask the PHY
-> > whether WoL is supported, but this pre-supposes that PHY drivers are
-> > coded correctly to only report WoL capabilities if they are really
-> > capable of waking the system. As shown in your smsc PHY driver patch,
-> > this may not be the case.
+On Thu, 18 Sep 2025 17:04:55 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
+
+> > Yes, unfortunately the SJA1105Q does not support PAUSE frames, and the i.MX8MP
+> > FEC isn't able to sustain 1000Mbps (only about 400ish) due to insufficient
+> > internal bus bandwidth. It will generate PAUSE frames, but the SJA1105Q
+> > ignores these, leading to packet loss, which is obviously worse than
+> > restricting this link to 100Mbps. Ironically both chips are from the same
+> > manufacturer, yet are incompatible in this regard.  
 > 
-> So how can we distinguish whether a PHY that implements WoL features
-> is actually able (wired) to wake up the system? By adding the
-> "wakeup-source" property to the PHY node?
-> 
-> Therefore, only set the "can wakeup" capability when both the PHY
-> supports WoL and the property is present in the PHY node?
+> Thanks for the explanation. Maybe add a comment that the bandwidth is
+> limited due to the lack of flow control resulting in packet loss in
+> the FEC.
+>
+> Anything which looks odd deserves a comment, otherwise somebody will
+> question it....
 
-There are layering issue to solve, and backwards compatibility
-problems, but basically yes.
+Yes! This is a golden tip. Ironically what I said above is incorrect. Sorry
+for the noise.
 
-I would prefer to keep the phylib API simple. Call get_wol() and it
-returns an empty set if the PHY is definitely not capable of waking
-the system. Calling set_wol() returns -EOPNOTSUPP, or maybe -EINVAL,
-if it definitely cannot wake the system. 
+Ftr: I wrote this DT about 4 years ago, so my memory failed me, and a comment
+in the code would have saved me this embarrassment ;-)
 
-However, 'wakeup-source' on its own is not sufficient. It indicates
-the PHY definitely can wake the system. However, it being missing does
-not tell us it cannot wake the system, because old DT blobs never had
-it, but i assume some work, and some are broken.
+The comment above applies to the i.MX6 SoC's which had this limitation. On the
+i.MX8MP we had a different problem that also caused the SJA1105Q not to work
+reliably at 1000Mbps either. We haven't been able to find the issue, but so far
+this switch hasn't been able to work at 1000Mbps reliable on any platform,
+possibly for different reasons in each case.
 
-We need the PHY driver involved as well. If the driver only supports
-WoL via interrupts, and phy_interrupt_is_valid() returns False, it
-cannot wake the system.
+Best regards,
 
-There other tests we can make, like device_can_wakeup(). In the end,
-we probably have some cases where we know it should work, some cases
-we know it will not work, and a middle ground, shrug our shoulders, it
-might work, try it and see.
-
-> However, this does not solve the actual static pin function
-> configuration for pins that can, if correct alternate function is
-> selected, generate interrupts, in PHY drivers.
-> 
-> It would be nice to be able to apply some kind of pinctrl to configure
-> the PHY pins over the MDIO bus thanks to some kind of pinctrl hogging.
-
-I don't think it needs to be hogging. From what i remember of pinctrl,
-when a driver is probed, pinctrl-0 is activated. It is not limited to
-pins which the driver directly uses. So if LED2 is connected to a pin,
-pinctrl can at least select the needed function for that pin.
-
-	Andrew
+-- 
+David Jander
