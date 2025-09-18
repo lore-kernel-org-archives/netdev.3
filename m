@@ -1,150 +1,148 @@
-Received: from mail-oa1-f100.google.com (mail-oa1-f100.google.com [209.85.160.100])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758742F99A5
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 10:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65E926FA60
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 10:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758192089; cv=none; b=L4THQpMgg+e0AoWLoxe9IjzoFc6fmNdZTEYVLR+D6wquoHtirRXeymWqRX8Ctxe4PepuKCpGxCEdkPre0UIMh1XziTeeY69YYN+zyZWjiTgyHb9nWu9w0uO8brrBfvuWZnpsaBTlyYj+aj6lwVBpZtmJRmhZWvY5RXH9ysS5X14=
+	t=1758192138; cv=none; b=XgC3LXOVy9gToxe/9tHSF6a04WK54M3V/I0OFTAEAj2pr6n+TYSPHzQldPKUrd0hQtRADbhgVEdMtv0QsROoo6vbzto/ulqgtn4JtIwe/aius2puzvSjgfXyyxOxr6r7B62mcM3ENxXxXCLlhz6T/UKN314t1W+CSRR1K+rfeIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758192089; c=relaxed/simple;
-	bh=CbE49JSJ+LMRaHZriOstDzk9yUxo35FaLPw3pqofbVs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E0F70P/Cm++Aww63gpAIlfWM2tbQgc7Gr2AsYDBUarkW1et/bO0X4zcFFNSIMJK6bIW7QwfinvhaGqLQeBkNNzyArDz5BN13kszJoYKiyIEdPyypPKTQeODpn4Eedv4m+2v9wj9x0sEt17uzIVrdWoY9WqCZFQN896f/rxXjEhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BNhcXiXQ; arc=none smtp.client-ip=209.85.160.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BNhcXiXQ"
-Received: by mail-oa1-f100.google.com with SMTP id 586e51a60fabf-322f0a39794so194682fac.2
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 03:41:27 -0700 (PDT)
+	s=arc-20240116; t=1758192138; c=relaxed/simple;
+	bh=kmRZY8w5k0zkpK6hrl5VtFf84jTuGxFx4DLf6XrQZNo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BEKGlGa8gvl68876KIOFo0Sw64WkB+sWP+MaX1eujrqN9K4NrI0VqYWmdbl3TXqMRpq8kG5LiiAWz4jfy6E2agR1Ei6yoVET9ODjZ1umWtC5ddyYK6u9tXWHmIN8Q5xgA0pS0D0aI/CFCm17XJKcOHgaVThRNBnObPwv0n+RNkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b2350899a40so30168466b.3
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 03:42:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758192086; x=1758796886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQCJx6p5vPHKg/pDposcY1SdIZSMhxTSp8O6tFxrHXM=;
-        b=W6I3HPp0RBBeq4ccXJ8f75ffOE3bgI5Jh1gzuydEDkMt0Caq8hFZWmks8iuJVZt929
-         HDmRIM5vMVpKsapUxe/6JsJCd2G7uZnQeNf4/kKA6Q7hNEldx0CA6p/QAaSL0ulPD6K0
-         slH2VzEAckkfmKwl5Dw3MQ2oO3OylmZfZ/1qHdvHrNPZiXlTiMgMVZ8MDd2YI2JjivxQ
-         jzf8GrT5rAVZa1HZC97QN7+DwOj0fkqgi7QDU9JymAflOt4MDRbWpi5JIrD0pqGGYAG8
-         QOcNWdaBFxdGZPxcbgQZEI5eSXIgnmI1PzpEw80PJNV5ls13binS5Bak0u1Myyjbkqjx
-         nQOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURoWbrCfNRumUFzipEFcnrLuLRLwA8txkukaVaB+ySFgJja/VT6KqPPlz9LALApLiqhbgH9BY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywrv2XWyEYPx/hNtocIrPDGFdnr9HYyf+X/OFIKytkJDQbMOaXr
-	Q48F2WTJEgcDXgQGwzlJYfekDeEd4Jhb/fpbKFM4CpZenxG5lAQlUBL0770XGX8KGpbAniHcz/b
-	DWcB/7OPE85EFwdUnMydCg22BtEkHOrM59/P9SZ1CYMw4NNp1g+rR+7yH1e/FN1ui63/H5eUwqy
-	G5/ykLPATO3CNCN7vOjgnY1nJPZnmJ729v0O1M/qm7zv9hThsVKx2OoP14zzBraz/CQAYuk4O7E
-	Qi+L/60dW04pr/SzQ==
-X-Gm-Gg: ASbGncviX+DFcD2FAMdtpUjyyZ0LtHyIZHgUYTnaJ8mY1TeS+uZKsG2fDjhOC/BPVMC
-	69ig5P1AkPXjtZ4TSZIaPLUxwOpdgx6LK9DV/Kxhdd6u7d5bVstm5V7eLqQA9gjXIPr9tab1oti
-	cW3bZNPfmcDTxWkrhONlNgGzB/UUD8iXqlPRxLKMiTRBXo5ynsIARh17Yg75+3UeN1RUVFbKpUt
-	PjLgsknf5apIQvye7VqSh3nP9rB9j29w/Vz0+JYq7GSl1PVB7TjAJGz7Wv5OqIHFOtA4NpHiwEm
-	DXeILroY9xs0PG3M9DmkfRIbASE638+UGFgbnkCL410GpAq2e3amlcEdT/0gg6RgiJyeIG37mpv
-	bX+UPBDf/VGxCC7hAuCS8r2Xw+PhT3qnJTQVuEwGewroFlxLC4qPN8Mv3rISPIgi8sEhrCRTE1l
-	qnQiVkC5kv
-X-Google-Smtp-Source: AGHT+IHeZJ7Nn7uAoeI9He1XORqk2Vn/1Bc5li7Mtl+c7QW/BWRONQ9vz/OgmwI74q93rD5jSbajJwwCi8PU
-X-Received: by 2002:a05:6870:9a26:b0:332:7373:523f with SMTP id 586e51a60fabf-335be0b5da3mr2799622fac.13.1758192086385;
-        Thu, 18 Sep 2025 03:41:26 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-119.dlp.protect.broadcom.com. [144.49.247.119])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-336e6aa02ffsm239637fac.22.2025.09.18.03.41.25
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 18 Sep 2025 03:41:26 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2665df2e24aso15163365ad.2
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 03:41:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1758192085; x=1758796885; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QQCJx6p5vPHKg/pDposcY1SdIZSMhxTSp8O6tFxrHXM=;
-        b=BNhcXiXQGqm9CM8zSPgnlcJB7SOKNBfda2nDknRva5BeAb5O17COUPsoL4VksisPn8
-         l7KIVKwxeEujPgq3butIBOUcbsN1MEBLhGqa1ic5INoAeLoyovEWSJOM34cUIk3pLT5Y
-         cIHmSZMG8aF07Rur9yQjG8zjEcKNPZtvBg8Cs=
-X-Forwarded-Encrypted: i=1; AJvYcCU/xe09AilmgobvgYD9ynBQf9jrYscQZWqoB+++pz4HwRy3oRd5v560/MgGU1rOauvDmrUe+WE=@vger.kernel.org
-X-Received: by 2002:a17:903:4b07:b0:25c:101e:8f04 with SMTP id d9443c01a7336-26813bf16aamr68403885ad.50.1758192084733;
-        Thu, 18 Sep 2025 03:41:24 -0700 (PDT)
-X-Received: by 2002:a17:903:4b07:b0:25c:101e:8f04 with SMTP id
- d9443c01a7336-26813bf16aamr68403675ad.50.1758192084392; Thu, 18 Sep 2025
- 03:41:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758192134; x=1758796934;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nxYxoWnyh3CIAHNSBMBX+856QflQb2Xo+2DXZq8kCNM=;
+        b=Jy8l/LDmsjskJeIHZpzdgkGR5LOYBW16WQTQ17WFiWTdwDaav0b8LdNCTimHuUOUw5
+         xeagAO2hvopzlB36dPygAMQF+wOe0bbw82JcsqPxbPQ1ynTQrF6QJydwxT6zmKDjkPlW
+         f5kBDHakCVElNFhgDfvtTkYQoc7qjmxXFNynq6VzYkRoJzs81Pv2xCy4y6Jf/yyEAg4q
+         nrhBoZmcYH+S+1q485GKbwSakBhkSc8r4nQG8c5pukg+8uIAijpd+I8s9xSpzhKl+K9Z
+         pxtxai5eAqoNmke+NSBpzUhQG8zCJvfP7nvrLX8M5MQA1aQ33ge94RhlR+GLHcZunBKz
+         WO6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVwriCRNTbs0stwyLZSJhmFxqrvaEimG7ZHFY7mdCLdvmcWbzVMPd8Ivpew0bYlwT3t25ol3Sk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybVJGg/LGAcSeeVqm9oQDnBj8fDcCAFoTnK5FSZescHDRlzyCg
+	4FoGSR1I3lSSr+hGh7oE6Lunh2kGsPJj2MF+VpD66Qx6KRObWa/MTd3D/HrXcQ==
+X-Gm-Gg: ASbGncsvDpjKWX+j8j2RhSJaGx3r3D3PdQHcMbavrUt1YovOEfcs9WWXImPtBAgRACR
+	ALPxsoW3RXIko6wTQRV8im6tep1BmGe23o+67rNFYvrbTjoCld0xDfU8ItIfoy8kOIGTmt6d2un
+	RaJUpvraPXTwU1wCO5x8eiSYJ9k86KpMiIcBABmGawuDdHgqo08zSlFXRK2qrCPaA3mvKqwLtsl
+	aZ7neAbj8HCxtTTw/h3oVA6vcb9p3PkNMCWG1111pyyjWs2XKNtE0JPEfvKFAwyygWSrhM/fNXq
+	kIDPsYO+QuYjFnS5AEvJiUftf0Eq92RPTtfAGg9oqphICxkJnZ1RA1I8YvxLN6oPZQh26ntX9Vq
+	P2qVydpvrRYoJjmrpmzi00hfCQrPb3gW6
+X-Google-Smtp-Source: AGHT+IFPlnj0GWz3JtOomOSOaIy/h3xVJRcQvzsL6J7IalJov4TbRyxQPOXC8EJWvJr+zn6eCnYukA==
+X-Received: by 2002:a17:907:2d2b:b0:b04:b435:fc6b with SMTP id a640c23a62f3a-b1bc02f6656mr572679066b.60.1758192133735;
+        Thu, 18 Sep 2025 03:42:13 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:41::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b1fd2816ebcsm167488966b.109.2025.09.18.03.42.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 03:42:13 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net v5 0/4] net: netpoll: fix memory leak and add
+ comprehensive selftests
+Date: Thu, 18 Sep 2025 03:42:04 -0700
+Message-Id: <20250918-netconsole_torture-v5-0-77e25e0a4eb6@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250911193505.24068-1-bhargava.marreddy@broadcom.com>
- <20250911193505.24068-9-bhargava.marreddy@broadcom.com> <20250916155130.GK224143@horms.kernel.org>
-In-Reply-To: <20250916155130.GK224143@horms.kernel.org>
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Date: Thu, 18 Sep 2025 16:11:12 +0530
-X-Gm-Features: AS18NWBXxQ-XRVIz_9_yMEp0dLlt_TczR64kZc3knMwWoDDMOSdrut_aSwS6y_M
-Message-ID: <CANXQDtYdxMq_EAPqu_WvnYqZ5SKW2k139Hwm+jW=kZpSQQgRtQ@mail.gmail.com>
-Subject: Re: [v7, net-next 08/10] bng_en: Register rings with the firmware
-To: Simon Horman <horms@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, michael.chan@broadcom.com, 
-	pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com, 
-	vikas.gupta@broadcom.com, 
-	Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP3hy2gC/33NTWrDMBBA4auIWXvKSLLkn1XvEUqRpVEiKFKQX
+ ZMSfPeCVy4xXT/43hNmrolnGMUTKq9pTiXDKEwjwN9cvjKmAKMARcrQQAozL77kuXzx51Lq8l0
+ Z++iVjuS8GwZoBNwrx/TY0QtkXuCjEXBL81Lqzz5a5Z7+M1eJEkl7S9aaoefhPfCUXH4r9bp7q
+ zoa7amhkNB0neFggtfWvhj6aJhTQyNh3xnfRZ6Clq9GezBkd2q0SEjOTHrqYy89/zG2bfsFI1l
+ L8oYBAAA=
+X-Change-ID: 20250902-netconsole_torture-8fc23f0aca99
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+ david decotigny <decot@googlers.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ calvin@wbinvd.org, kernel-team@meta.com, calvin@wbinvd.org, 
+ jv@jvosburgh.net, Breno Leitao <leitao@debian.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2394; i=leitao@debian.org;
+ h=from:subject:message-id; bh=kmRZY8w5k0zkpK6hrl5VtFf84jTuGxFx4DLf6XrQZNo=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBoy+IEayY0wOB0N6LcgVg/3eZnL0c4YjWUJMcW8
+ aPTGC82+PuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaMviBAAKCRA1o5Of/Hh3
+ bWhHD/4g2xJTXx8UGq9wQva+IfMIUCFKahYqNTlZGbrgrrHqDoyoDJuL5MEuOUZtuc8W6i0TZFQ
+ Apm3fPKwpCpKcTJ+BHkdTy35yIZLWzdozLuLMwvu/QfkimJMa7r4FgvZLaj9bUj6gi/Fr1fjZe6
+ OlyLtzaus7QfQg56wRJ4k1andr/l2C9cXqHxbp09qMeTPSM+IZ8fmcobzc4wqAffmSsSS/quD+1
+ TYyhl0O3Ts57gZxub9BkNzmAklAJnI/YvtTrIbCkySxV5nDbslCQYff8kB6OK4FJyFVI/mQYmmt
+ YY5ntWdZpMbIt3HrZid8VCc2L49Z9W7eH7H08t9xD2fwwnkT9K29Aa5pu0cwA+9bKQUfJ/Yy1Vz
+ iTEiLVEqiyvbs5LprfO2/m+4pOdjKnbpIcFzPwfepdlPiUnCAQMwiAQ6jZlGNTYD5+4ni82svNv
+ +0MGZU8NIo6o3Kt1/Y/rdfRJxuQibP+fLYjzJNNB9JLvTbhhiP/pGOkpdEhwjlx/TBpggCTygFe
+ AiVWfMQu9wU3jYV7313QoNZJVmeqd9lDr8JsV6SuH9GVK8sR4qVEB87A95GUK9o3W8H5I3l+n6c
+ X3kSs1jU8Ow8tz3evtIuKKtuSdCbWdf7Y5Z5OR9BNBOgEcbdTyEaqar607jCRGhPJy0/jVKGEJ/
+ kYx6smXqwTftCMg==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-On Tue, Sep 16, 2025 at 9:21=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Fri, Sep 12, 2025 at 01:05:03AM +0530, Bhargava Marreddy wrote:
-> > Enable ring functionality by registering RX, AGG, TX, CMPL, and
-> > NQ rings with the firmware. Initialise the doorbells associated
-> > with the rings.
-> >
-> > Signed-off-by: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-> > Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
-> > Reviewed-by: Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>
->
-> ...
->
-> > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_db.h b/drivers/net=
-/ethernet/broadcom/bnge/bnge_db.h
-> > new file mode 100644
-> > index 00000000000..950ed582f1d
-> > --- /dev/null
-> > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_db.h
-> > @@ -0,0 +1,34 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/* Copyright (c) 2025 Broadcom */
-> > +
-> > +#ifndef _BNGE_DB_H_
-> > +#define _BNGE_DB_H_
-> > +
-> > +/* 64-bit doorbell */
-> > +#define DBR_EPOCH_SFT                                        24
-> > +#define DBR_TOGGLE_SFT                                       25
-> > +#define DBR_XID_SFT                                  32
-> > +#define DBR_PATH_L2                                  (0x1ULL << 56)
-> > +#define DBR_VALID                                    (0x1ULL << 58)
-> > +#define DBR_TYPE_SQ                                  (0x0ULL << 60)
-> > +#define DBR_TYPE_SRQ                                 (0x2ULL << 60)
-> > +#define DBR_TYPE_CQ                                  (0x4ULL << 60)
-> > +#define DBR_TYPE_CQ_ARMALL                           (0x6ULL << 60)
-> > +#define DBR_TYPE_NQ                                  (0xaULL << 60)
-> > +#define DBR_TYPE_NQ_ARM                                      (0xbULL <=
-< 60)
-> > +#define DBR_TYPE_NQ_MASK                             (0xeULL << 60)
->
-> Perhaps BIT_ULL() and GENMASK_ULL() can be used here?
+Fix a memory leak in netpoll and introduce netconsole selftests that
+expose the issue when running with kmemleak detection enabled.
 
-Thanks for the suggestion, Simon. Some macros have non-contiguous
-bits, requiring combinations with "|",
-which would make the definitions longer and harder to follow. Since
-these Doorbell Register (DBR) values
-are hardware-specified, I believe it's better to keep them as they
-are. Please let me know if you see any issues.
+This patchset includes a selftest for netpoll with multiple concurrent
+users (netconsole + bonding), which simulates the scenario from test[1]
+that originally demonstrated the issue allegedly fixed by commit
+efa95b01da18 ("netpoll: fix use after free") - a commit that is now
+being reverted.
 
->
-> ...
+Sending this to "net" branch because this is a fix, and the selftest
+might help with the backports validation.
+
+Link: https://lore.kernel.org/lkml/96b940137a50e5c387687bb4f57de8b0435a653f.1404857349.git.decot@googlers.com/ [1]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v5:
+- Set CONFIG_BONDING=m in selftests/drivers/net/config.
+- Link to v4: https://lore.kernel.org/r/20250917-netconsole_torture-v4-0-0a5b3b8f81ce@debian.org
+
+Changes in v4:
+- Added an additional selftest to test multiple netpoll users in
+  parallel
+- Link to v3: https://lore.kernel.org/r/20250905-netconsole_torture-v3-0-875c7febd316@debian.org
+
+Changes in v3:
+- This patchset is a merge of the fix and the selftest together as
+  recommended by Jakub.
+
+Changes in v2:
+- Reuse the netconsole creation from lib_netcons.sh. Thus, refactoring
+  the create_dynamic_target() (Jakub)
+- Move the "wait" to after all the messages has been sent.
+- Link to v1: https://lore.kernel.org/r/20250902-netconsole_torture-v1-1-03c6066598e9@debian.org
+
+---
+Breno Leitao (4):
+      net: netpoll: fix incorrect refcount handling causing incorrect cleanup
+      selftest: netcons: refactor target creation
+      selftest: netcons: create a torture test
+      selftest: netcons: add test for netconsole over bonded interfaces
+
+ net/core/netpoll.c                                 |   7 +-
+ tools/testing/selftests/drivers/net/Makefile       |   2 +
+ tools/testing/selftests/drivers/net/config         |   1 +
+ .../selftests/drivers/net/lib/sh/lib_netcons.sh    | 197 ++++++++++++++++++---
+ .../selftests/drivers/net/netcons_over_bonding.sh  |  76 ++++++++
+ .../selftests/drivers/net/netcons_torture.sh       | 127 +++++++++++++
+ 6 files changed, 385 insertions(+), 25 deletions(-)
+---
+base-commit: 5e87fdc37f8dc619549d49ba5c951b369ce7c136
+change-id: 20250902-netconsole_torture-8fc23f0aca99
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
