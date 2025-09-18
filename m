@@ -1,96 +1,97 @@
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF24A279DA1
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 12:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2729F3081CA
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 13:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758200328; cv=none; b=cHA4io5R6XwkobAd1EPzy/0OLTHMXniWQ54/5sXGCV40QjsjdPUjFifWL+BPN8bEcv1K00EHxHOLsxlXuH4sHyUXZeTFGk5VjluOwQW66zr7E3j8pzKdY9WVr016qmWgA3gmfRc9oJ3RI1Xy+61OrFTjIkK8BqRB4u94e5U4+Eg=
+	t=1758201315; cv=none; b=P02QbUWDRWrktYTSwOYLNZ7Ba7FUF0IZlSKKsZl2/zGG9KD+vZBgh7yue/WGC3oFVHtElr32sWeCd/bKUal62gyVeVToi6PC9QeMYez8L+Z3RGpQX8Q8AIlx63ajXjW3svZMy+/AiOVjEhdHlR2e7Pnvfz7oykJXYT3WLg7bjeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758200328; c=relaxed/simple;
-	bh=lvcQGE6zMqa3RPKmZjZH5zBkLah9vgbD3X7rCwM3Uvs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=LguCSHaosgSljiiYHdOeDle3GKkhhkisPt21kyVWGPsvE+gsAp4E/briEGbBgyy5dSTn0zz0728/Jr41slJdOEWDiV5KqfFOEEUEKSDj8H9o1FWrZEPbvEUtOCK9Erqo421DNPpGDvaPQDAlpfBjk97mE/NWaF09RU0xLlZKJaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXnGKhAL; arc=none smtp.client-ip=209.85.218.68
+	s=arc-20240116; t=1758201315; c=relaxed/simple;
+	bh=hXvBVmZ/fztmwKpBoz+jL6GsfqQgIV7nyZzXIbVT4II=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ct/5UpJGSh3a0z93Lhlm+RhKOlz5naFU7784zE2viyiMjy0J88ZXYCHNRp7kZdIab03RsMGUX/6n9LdYQlot2MLsQxE4cMZ70pzqddUJ3E/ng36iLS1r1VDuSLdgVJxodQXumYuv5i/oi1ZFmUYFPjl/eH9YzY9TDwpGNZJ4Hag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FiHyLrul; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXnGKhAL"
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b07dac96d1eso306398066b.1
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 05:58:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FiHyLrul"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-795be3a3644so2611696d6.0
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 06:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758200325; x=1758805125; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lvcQGE6zMqa3RPKmZjZH5zBkLah9vgbD3X7rCwM3Uvs=;
-        b=NXnGKhALfj6DlKeOHQ2Bg5ICvOLXQRL87q2c4Dyfau+W0hglTwwzaKOaqY507QyHnk
-         9Ki6JEkZw+W8uT7xLGegNVOiM3eJsB4Qsfno57q+yr9fZEhK1DF72giefaYlvQnbRh4q
-         T1bxVw5tDGdpoNO6bNIBIx8zPnlS61+y/zkFtld7loynoTEUfDnADlYz8fSqBMuGhpsR
-         4imNkTluKLs0F4YMvhlWkf3xFjPiE6DOAv4yj/VlZdgGAyWQdtqMAI4zg3Uqnbqibm4l
-         IZvoXM2f6DyscJIoOV3AnJdAiOJiz7VFf/Nd/fIqK8gmn59ywBUTodIKGvjbjP/rBw1W
-         uNTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758200325; x=1758805125;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+        d=gmail.com; s=20230601; t=1758201313; x=1758806113; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lvcQGE6zMqa3RPKmZjZH5zBkLah9vgbD3X7rCwM3Uvs=;
-        b=fDcJttuEKqBz4mLvOncY0J4SjGCu+N0bvvpa57u60VXfInfvY6nOMSibv4DdcVKURD
-         o1EBDPVF7K98j6CxZffKUj8HZiKG08YYsFIFVQzbIZoB5WCdAGMYevkQje7wNGWM8oij
-         qjoUN4RCCF1/ZT9Gg25087OgQiSzYMS75Lzegk9TZ6Wx6uaM23zXC+XDXGaRlaONfODK
-         SqHHFKRpuQmMvAo5aYS6zYZUFiPAJs3Q9PCtJ2/yb+0faAFz97sExJqPWm5kseBdKRBe
-         dcMwhr4mGZm/mcuLN2K9yXoJDPA8UxQaM30gra9iqSbE8sAk6zSshpylJsTYHtpNJl5u
-         arQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX43Q0ZVTmyrt3kIIieXkdsSUVRhKHbMawBjTr9sq465EB16vhEuCBg9l+s3xbY09J4icjg6Yc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFNg5WIrBBJlZAKw1pnzAKkIR/FevNIkMrQpsvgzEgJFHvzCJi
-	fdkL3axafdqkGOp/WZidD0ZHzxLJGM8K1hSpwyfcTom3mgoo28D+sAq6tIfSIgjKw8lrEee/1t6
-	qvjpQ6DXi+5LnTe6Hzfng4oCmIb0o498=
-X-Gm-Gg: ASbGncsRSpmm9/VOR204j1BzEt/X/w7zbi3AP6e2R0nTWr7XwE9j3lFpaw+q/PHQe7u
-	wpi0iq2ocrHSkcgohx6hSEHt1cXllxYdh0vuVjeYswOkU07zVXAZLT+C8XzDI1tHCfWpVBb5yy2
-	gUwVVLclpHmmgvyqPhCHj8/8SuJsiV4VSXV5+yT3cMycP71XDLw7tf1k7WRVk6OoD9W0IHdQFJC
-	BAutkfc6bzs189Z/uv7tjfOLA==
-X-Google-Smtp-Source: AGHT+IHG8sk3bcUaHQwBrZoLncnJChfwaJcuvBt6nfYyVTZWygm5etjUbCmo0srSUZFjiTWBAdZCH1hJ4cgs9M5FLD4=
-X-Received: by 2002:a17:907:6d06:b0:b0d:400:9182 with SMTP id
- a640c23a62f3a-b1fac4e0b80mr343825666b.22.1758200324771; Thu, 18 Sep 2025
- 05:58:44 -0700 (PDT)
+        bh=hXvBVmZ/fztmwKpBoz+jL6GsfqQgIV7nyZzXIbVT4II=;
+        b=FiHyLrulTwsxpINVKRZDhj0xz2kPQEnBFwoyHZrWwZc6/K3lYWp9SvxeHsaV2SXGOD
+         UTBc0llnzuZSeQZRgMfRoIb0UOEoxgk5nHF1i5a4orK4Koy1uNNkWGyC4iMfm8bluIUD
+         0vrY2DxBFgva4ZAfOjn3FLZmC62SrxKasd8UndiaisUKFI2YC5hUwxCoZIpUY81bX3Tt
+         bwP0bhdvWTmiFipaTMM2W0K0IH5joDTOgNf4SRGCHDQlcwlupZJtFo5ZKzkCybDTnpqy
+         Hbmm0DhzLgWMEz40BkGeFrJUVcFCJJidhn+9sru2dzyKU5sIkhas1C2jyYqkdpDmqW4P
+         0QMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758201313; x=1758806113;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hXvBVmZ/fztmwKpBoz+jL6GsfqQgIV7nyZzXIbVT4II=;
+        b=pCQr8YGZHNUsaaT0ngPBF5AS2v7WJX3Zrv5w7Js9/yojKIhNCdMpaX6B1QzJV/RHSW
+         hV5J+yS9DUPtEFcJaRPO5CpcFdJ7er899QzKEYIqjFRxm2BwcWFHce4aCwKscyaJ2S6+
+         7kZzaou/B9/6r5OuW1kEaWVC+rvVrR+zow122/+kG7JW0d5WZkd30AUxnEnJWXbjMfAA
+         2PNDfLlWvBdCTAhiOlcqkQXmht0vvcEUVYvkcLKTYe81W5PWCOLrKqGyMNbPIkxWLSgn
+         n1G2XdOCYbuxjeGGqC/FJtHCIxqu4jhZt/gVnSKq6N/+UkFE+xHo6t1M/Jw4T1S0kxV1
+         eUTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMtDpyZEand+Ax9iIXVqhFy0Cs+qAfXTxTHk0v2k4Etil6tubAXp/hSLBWB1Atl5GCr1uggW8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZzXT8TMOjRrGE0BqS5eUdCfpTPdc8ebhWh1BBQ7EwUIsKZ5TF
+	Ua1OyXOxX4BaQmCMKz0si3Ig8EAuqwbCcxhsiAJeBN6rgI+WP3nEquyn
+X-Gm-Gg: ASbGnctdFXEJHnBfftwfLhb0TNij4M2ntu4kbu7+PGZ4v0d9320TyDS/NMy9jGlu6lB
+	cINreckMv/HZxt2zI4BhiKRJwQUXvtnvfe22RC7JBO0hAcZVlVQHyb3uHVTy9isu9utOX6DzS1V
+	hgg8SrFsGNiVb1iKVFgoF1gbVSg8CjRRVh4LMLAG/3ZKF8k4JTguPnbA2QakJTXnQ1n3MYz5GxH
+	F2reG4zfLbfEd6BvHzgkIJIH3GTpyor1uBa+JcDWcMDsaTlVNygnoIfRlR1BsaLqioWkOKsyfF5
+	EWG/rTa4iX6cQfe13boZqPOscQbxMmCECwekB0BesT6cg4bFqRKstk8A+241nI0P+594ZMgkwrI
+	0Y2iAluSltaE1sFAvWzr+D8E8evlEx6H3Hk2hcT722jU/ha1yieyJ19AlT3dtkRKSvGOTVamcnC
+	RAYHhdIlsK9LI3MtxhnXnWUg==
+X-Google-Smtp-Source: AGHT+IGX36rYkJKu1Y2spSV+ktEvHacdGTQcg4ybzYZzTOY+HTZxRSY8uiO/O6BE8165/9rWDIa6Ug==
+X-Received: by 2002:ad4:5c84:0:b0:780:9cd1:df6a with SMTP id 6a1803df08f44-78ecf117222mr61021476d6.51.1758201312335;
+        Thu, 18 Sep 2025 06:15:12 -0700 (PDT)
+Received: from ?IPV6:2600:4040:93b8:5f00:52dd:c164:4581:b7eb? ([2600:4040:93b8:5f00:52dd:c164:4581:b7eb])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-793446aed5fsm13021406d6.9.2025.09.18.06.15.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 06:15:11 -0700 (PDT)
+Message-ID: <0695458c-7bd7-455f-a101-3c0636a4cbf9@gmail.com>
+Date: Thu, 18 Sep 2025 09:15:10 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Andrea Daoud <andreadaoud6@gmail.com>
-Date: Thu, 18 Sep 2025 20:58:33 +0800
-X-Gm-Features: AS18NWCEXBGAyDTuAdYfLyOIr8P8xtqgcUaqAsI0KK0ysqpeO0oKN9Ycaxuqg4o
-Message-ID: <CAOprWosSvBmORh9NKk-uxoWZpD6zdnF=dODS-uxVnTDjmofL6g@mail.gmail.com>
-Subject: Possible race condition of the rockchip_canfd driver
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Heiko Stuebner <heiko@sntech.de>, Elaine Zhang <zhangqing@rock-chips.com>, kernel@pengutronix.de, 
-	linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] psp: do not use sk_dst_get() in
+ psp_dev_get_for_sock()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>
+References: <20250918115238.237475-1-edumazet@google.com>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <20250918115238.237475-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Marc,
 
-I'm using the rockchip_canfd driver on an RK3568. When under high bus
-load, I get
-the following logs [1] in rkcanfd_tx_tail_is_eff, and the CAN bus is unable to
-communicate properly under this condition. The exact cause is currently not
-entirely clear, and it's not reliably reproducible.
 
-In the logs we can spot some strange points:
+On 9/18/25 7:52 AM, Eric Dumazet wrote:
+> Use __sk_dst_get() and dst_dev_rcu(), because dst->dev could
+> be changed under us.
+>
+> Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+>
 
-1. Line 24, tx_head == tx_tail. This should have been rejected by the if
-(!rkcanfd_get_tx_pending) clause.
-
-2. Line 26, the last bit of priv->tx_tail (0x0185dbb3) is 1. This means that the
-tx_tail should be 1, because rkcanfd_get_tx_tail is essentially mod the
-priv->tx_tail by two. But the printed tx_tail is 0.
-
-I believe these problems could mean that the code is suffering from some race
-condition. It seems that, in the whole IRQ processing chain of the driver,
-there's no lock protection. Maybe some IRQ happens within the execution of
-rkcanfd_tx_tail_is_eff, and touches the state of the tx_head and tx_tail?
-
-Could you please have a look at the code, and check if some locking is needed?
-
-[1]: https://pastebin.com/R7uuEKEz
+Tested-by: Daniel Zahka <daniel.zahka@gmail.com>
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
