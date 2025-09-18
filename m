@@ -1,124 +1,105 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78D0315D42;
-	Thu, 18 Sep 2025 16:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CAB31195D
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 16:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758211512; cv=none; b=bola+sh/JjUeEKfSQB/+ZUt3CQ/BRYaOAhVyDQ+yuInzzd8Wrt9OP+6WJA7VviwsqinRwOv2r8w4C3ml/s99S9MlNDZoPU8yFFiM+aZxGktjJAeZzAnpoSyKnbsp3BxCHQbbU6/aTDStWAwea6a40zUaqDe6jRbL6CPZllXmNIw=
+	t=1758211601; cv=none; b=YOKPcImH/OMJ3mN+Ve9bakTSfBzB2syRrEOhm/88zz1AQmV2j3T+1ztKMZ4AyX2VzkW77EXvsTcWUeC4D7l5C7G6tQ41isCuQHxfB9afVroqaf5uJYEFIWqOBK5I6H/gUwgWvv3gWVHuJes6L7mxBbpjBompfMjDCOl18qVeWn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758211512; c=relaxed/simple;
-	bh=iY4LeQULomcpam8kh1OA82zPLoZNxtvKGtjBX/0HVnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t+Y/SmWDWhRfIjAor8+hbIzV5YBS/J0y2sgTh0vDu3HLjUGyIqNlVz0scQCqrhvcXP1GpyYRW2p0p2VVAnhXSctMriAinui9svWIl9ATvO/Fjrqvtyzxoq6jeju4vEucvqpWSENbFZIuvZ6d4iWCr6LJ6R+PshpSMXNWtb1gzmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.42] (g42.guest.molgen.mpg.de [141.14.220.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0478060213C91;
-	Thu, 18 Sep 2025 18:03:28 +0200 (CEST)
-Message-ID: <11e02598-3fc8-4350-91b7-5fc587a8cf6b@molgen.mpg.de>
-Date: Thu, 18 Sep 2025 18:03:27 +0200
+	s=arc-20240116; t=1758211601; c=relaxed/simple;
+	bh=P+Wmf0yqfouH3Oi06gJJiikblIWfpXgZcHs/2usguFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VkehAlesQMFVKtDXfQhoqs1Ap/qav+syRYlTKkIw0UKHAs8+PJ3NO6S724TLqZ7dHK6dfe1nWg5SNOvyf3BR9pwZ5ikGzMyB2CZF4rlbS2vClkwvfCMBVM9hMYluZdp2Ay/XNSXIRBfWKkQIuL9CmTff5oUk/nC45QD71ie3fUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IG4pwe58; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IG4pwe58"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758211598;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T/W5lCTYIz1tvKkOImL2aA/ps1g+KzlVk0fBujrhKzM=;
+	b=IG4pwe5890UhSMVh8eKMNvPwYKV7DfxT9iNyQ+8nlEQ1LJKoEPr67Zjq/udp0TnuSa3mNz
+	IBFCkq04U4VCqyPYjzmKeIYQ7C2LuYeqemHP6m/88zZLihR/PJLn9NMzEtqmLBKxqXx4lr
+	WX13UFcOA/cv9rscD+15Qb2zrmS2Mu0=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-s5mRPRIMPayaAAc4lAk1Sg-1; Thu, 18 Sep 2025 12:06:36 -0400
+X-MC-Unique: s5mRPRIMPayaAAc4lAk1Sg-1
+X-Mimecast-MFC-AGG-ID: s5mRPRIMPayaAAc4lAk1Sg_1758211596
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3eb2c65e0d6so856319f8f.3
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 09:06:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758211595; x=1758816395;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T/W5lCTYIz1tvKkOImL2aA/ps1g+KzlVk0fBujrhKzM=;
+        b=BptIh0swhYryp3eH8a2PSCaHNEiOjTYYqyAiDVYbj9MzaLTy/dLOjayKnmYK8bbnk0
+         SJnbwG9x6HTXq5TfU08zLE38Pe8L8JYZk3eX7SM0m+nNLieBUlDiJ+64fHrCDGC5SRgz
+         VY4eFuduilnMmCiYYj5hrfuSJr+rVrROwAl2e5Doim6tt3Z9Nf5/aZbMBS3mFSwYUTnX
+         7fKUlvrcfWL6iXF2xyRxrfZB4azD5RtgiUV/5CFfofYdlk4DNiYVVbz3lp8dYkIDHQx3
+         hKtpapsXlCvw4luzyu/x8fGpckYpmeZEH6U/u8c0IQIqE4ADMPd2yDDsxopsmRKFFpLH
+         rjcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwn/j4PCCKmlaGY0OtfrpgKMNpCTIFuFQpuPCfWISTwAHgVWXvTSFz1hSyniYR95aofqUji+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPUyi+slnbqFqAGyro/OFdltBaoTbzw2aBbLgfeEQ8pkNCqtuS
+	mqiToBiHNfTmnEzk4+RC4Z9QO0V2kq7ITfV/qDXXRVna2c2yONTyxuWuenVZ06+xJmOY4LvTDgF
+	w1xU9G9ugWkz+t4QmmCzlsTM+RR7NjQzPgEm8bW3kOG2Z+tFspne3R373owqs83wq+w==
+X-Gm-Gg: ASbGncsAwKb0pGhDE8Q+QajPiRPmyFbDw9Noq5ysWlX9d1kztIThcsmNN2qVUow7Lkw
+	8cAsK0+rDzxPYLrUTL3PUfallKzQpN7fnUZ1A6QsMLEk4mXm8yPiq9T6DIY2ucYee+AUKl2Scn9
+	nTF1CX9Vd1vz4/KAXf/oRthuMsbAqyFaiHi9Q8eaS8cFMLjFX38N18zpMa+0DcwlvCaJ3tzAzWf
+	UbqXRFGKGCgVLUVTYZRQKpZCKoFQQxGXFdZFUAgxnTEvWsWze/EikZBLX+H4A8V3JfvmATfGzXZ
+	E5l0mOQ/L1EEZSBHFs47MyCIcaJUwzraDuY=
+X-Received: by 2002:a05:6000:2881:b0:3ec:df2b:14ff with SMTP id ffacd0b85a97d-3ecdfa14161mr6207934f8f.40.1758211595335;
+        Thu, 18 Sep 2025 09:06:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEk3vFxLumDhq+BR9Bo4nIsWcXRAcKMyNyvcVzS+eyg8tV4+vQBxrdk3o5AQ7UyoiyFo7QtNw==
+X-Received: by 2002:a05:6000:2881:b0:3ec:df2b:14ff with SMTP id ffacd0b85a97d-3ecdfa14161mr6207900f8f.40.1758211594963;
+        Thu, 18 Sep 2025 09:06:34 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73e7:4d00:2294:2331:c6cf:2fde])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3ee0fbc7300sm4062735f8f.34.2025.09.18.09.06.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Sep 2025 09:06:34 -0700 (PDT)
+Date: Thu, 18 Sep 2025 12:06:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] vhost_task: Fix a bug where KVM wakes an exited
+ task
+Message-ID: <20250918120607-mutt-send-email-mst@kernel.org>
+References: <20250827194107.4142164-1-seanjc@google.com>
+ <20250827201059.EmmdDFB_@linutronix.de>
+ <20250918110828-mutt-send-email-mst@kernel.org>
+ <20250918154826.oUc0cW0Y@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1] igc: fix race condition in
- TX timestamp read for register 0
-To: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Avi Shalev <avi.shalev@intel.com>,
- Song Yoong Siang <yoong.siang.song@intel.com>
-References: <20250918183811.31270-1-chwee.lin.choong@intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20250918183811.31270-1-chwee.lin.choong@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250918154826.oUc0cW0Y@linutronix.de>
 
-Dear Chwee-Lin,
-
-
-Thank you for your patch.
-
-Am 18.09.25 um 20:38 schrieb Chwee-Lin Choong:
-> The current HW bug workaround checks the TXTT_0 ready bit first,
-> then reads LOW -> HIGH -> LOW from register 0 to detect if a
-> timestamp was captured.
+On Thu, Sep 18, 2025 at 05:48:26PM +0200, Sebastian Andrzej Siewior wrote:
+> On 2025-09-18 11:09:05 [-0400], Michael S. Tsirkin wrote:
+> > So how about switching to this approach then?
+> > Instead of piling up fixes like we seem to do now ...
+> > Sean?
 > 
-> This sequence has a race: if a new timestamp is latched after
-> reading the TXTT mask but before the first LOW read, both old
-> and new timestamp match, causing the driver to drop a valid
-> timestamp.
-
-Reading the TXTT mask is `rd32(IGC_TSYNCTXCTL)`, correct?
-
-> Fix by reading the LOW register first, then the TXTT mask,
-> so a newly latched timestamp will always be detected.
+> Since I am in To: here. You want me to resent my diff as a proper patch?
 > 
-> This fix also prevents TX unit hangs observed under heavy
-> timestamping load.
+> Sebastian
 
-The unit shouldn’t hang, even if valid timestamps are dropped?
+Yes please, if Sean can ack it.
 
-Do you have a reproducer?
+-- 
+MST
 
-> Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-> Suggested-by: Avi Shalev <avi.shalev@intel.com>
-> Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-> Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-> ---
->   drivers/net/ethernet/intel/igc/igc_ptp.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-> index b7b46d863bee..930486b02fc1 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-> @@ -774,10 +774,17 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
->   static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
->   {
->   	struct igc_hw *hw = &adapter->hw;
-> +	u32 txstmpl_old;
->   	u64 regval;
->   	u32 mask;
->   	int i;
->   
-> +	/* Read the "low" register 0 first to establish a baseline value.
-> +	 * This avoids a race where a new timestamp could be latched
-> +	 * after checking the TXTT mask.
-> +	 */
-> +	txstmpl_old = rd32(IGC_TXSTMPL);
-> +
->   	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
->   	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
->   		regval = rd32(IGC_TXSTMPL);
-> @@ -801,9 +808,8 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
->   		 * timestamp was captured, we can read the "high"
->   		 * register again.
->   		 */
-> -		u32 txstmpl_old, txstmpl_new;
-> +		u32 txstmpl_new;
->   
-> -		txstmpl_old = rd32(IGC_TXSTMPL);
->   		rd32(IGC_TXSTMPH);
->   		txstmpl_new = rd32(IGC_TXSTMPL);
->   
-
-Kind regards,
-
-Paul
