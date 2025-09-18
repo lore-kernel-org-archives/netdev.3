@@ -1,112 +1,91 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EC231691D
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 15:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641493148C5
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 16:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758210948; cv=none; b=J8Lywm2jXR+mzXd+JGPvtB4cTzqqU1IqkCFKCHN4q03Dyl75ZymoXH4Xbq9gx7jo0D0em1R4+f33aiQSWRFjUu1tefnuXm1EdNNmdTalcRHqv4PCX+AQbkhlmSs9TLUc9vN3kaqgR+Um5unPIvmM+HHVXB7NB9Ag4znxWZlbwO4=
+	t=1758211451; cv=none; b=ThW7CXtq+PCjk6zfKTCfGI/8Y352RhMpSWUDYw0y3TqtjXDaV5fHYLAKR2MCy19rJHrbfsnyJYdf2GYX2MWE7BRbfnQIh5gwgsuZquLCKjnoRGL8w0NQSys1kOhnpTNyscwy3PnzRqQSxXBg8vLhboiQKB1TNEVLrllUbT+3aFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758210948; c=relaxed/simple;
-	bh=az2yAgODHkk3UNjNvp6YMsZ1T4B3L6irQ9G2CXnjkFA=;
+	s=arc-20240116; t=1758211451; c=relaxed/simple;
+	bh=Z5B5dt6wI87+KOD3sTN8FRIoAj7TBjgpAUwP/aqCmqQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=irx/amwwz5Ejqv67GoGVkbYyZIItn5S9ar9cnMaF1SUeFqnskg1wsYa4yKYQiXWd5h0LIrvg20KISOnS9P4Z4tgKtNE99XsoBiPxPUtXMB4/pNusW6pYfKpEw6fsGqV35hSWOMx+WhBpWSGE/ORidfocOd4xFNNRbua7shVxfOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gwnnj2+C; arc=none smtp.client-ip=209.85.222.201
+	 To:Cc:Content-Type; b=bM4NRnoIU7S0J7yA7lYXqcDBPR0rM2hv76yrWDB8q7WZXP16rr865X6BxGAuNbLIsUANHk1LLr6aK7YiTOLl8Do0nxvAhiqFE+F3yxq0WAWuubmtBGZzYMwiSD45Sd7InpO4BQpOSdP0LFMJ9/Q8W3HO57QxQpg5DIzshbjt6FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VOr72Oha; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gwnnj2+C"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8178135137fso237284985a.2
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 08:55:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VOr72Oha"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-324e41e946eso1803057a91.0
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 09:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758210945; x=1758815745; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1758211449; x=1758816249; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3TluJj0egsx6VGlVnLIyP07QHgIYR+yLagWUVyZmLg=;
-        b=gwnnj2+C7oeRvqc17GeMv/bc3wXiA5cV/hD40a7iCsZa8PpheUxD1hCmv3vmkNjfWF
-         UNE9mG9sDTHYHgkU+PQU4jQLvA9DOe//cxTAPnJr42KvRV2mCjbEQlOkWXvXzPnjDCK/
-         L5glbNvdix0DnwH+s/9pS9X2mhDv38aDwkySiLIy5/d+Oiy3w4LHgMJ1fz29IeaquVBJ
-         Oqb8tqtvKgc5wLIwJEQh52yCzgld01k0SMuTbJM28iIneDDS8F7dMfzA8PLQWmjz9ngM
-         3ddnPtLD75Txa6dSeFwNSVlbNfVbKgAzLKEFw7NXHmd4xda/a6TMm3yDOnb/p+bX5EXp
-         nOBQ==
+        bh=tqabNObTrUIXb/BYAEPfcGgxscP8Gw2Vuj2oVftkStA=;
+        b=VOr72OhaMYpzapuIs580oRqi7i5QW15pQ9M7wpE19Y140mgSmxSlSVReqFLOdc+dEJ
+         TNey1BMN6NnoMxNbUCB6x7YhYkHnduajq+EtrEbB4RPOCSqhq6RxkIP52vIQ94Oxpj9n
+         wgd5FY7+hHyR2ZAi9W6K8Fh3rcnD7DvjNqx+s8Ox7BzmO9bSWKRNAAdeaoUZ9OAnWrtq
+         UGKNxq2qcV7Xy2dSdlpMgMs0wXSQ0N0G983D8i9Z2DkJQD6pTjRwSh9ujtkhg+2p0e4z
+         GsxHpfYUP/U/iqEP2WuxUDFFHEB0FM972laqIV+9ueYEzkZ6PvV0xIMG4/HF34G1cagy
+         bS1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758210945; x=1758815745;
+        d=1e100.net; s=20230601; t=1758211449; x=1758816249;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3TluJj0egsx6VGlVnLIyP07QHgIYR+yLagWUVyZmLg=;
-        b=ELrR+sNBeyy/vU6ZamLsr26FTHeBZw+U+87GNNn5YZ9VLqoVtZZhDKjeNAHBoeWGuu
-         TPvjpOGhrJ6t3/Rqbm0aiDYW967VYCK6MDUZOgQuZ/WCl6TlvuwhXiNf5va8Sf+SPf+9
-         pi0tChWFSeZIS8SSE9uqJU07GicxcuaUWPyG9GQ5sDbhhpfz+MyO0VRH7oUHN/uG8Rpk
-         ZN20UW5IhkTAPi+LYzSVMEN3MZ0CoHDq6cv1GvpHpT21oD20b4QbL1P8LBSAnXxNn2VC
-         98ZcxXKlaJNEW/0imKxBlFeDmLDOVCJDwF5YllgNvWnZhjbc9m3slr/FNfyEpY2kLpTx
-         7ysg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/j8hu39vp2KmEweP2PMSWWs0WPLijvV4+GNUpT7D17XpDDkLYUmOUaPMuSZbD9E2pxbeGHtA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy90RqzJIu/Y3wVcCuyn/izDUaY5/CIFYf25JiZzxkk0Dw9y++C
-	wn4I7OQUfInBtBCuep7euAyV/Q+HvOUsJC4ZA352dR48wos8XWIShCjwKrsJ/YD7/NuSv0zZt1k
-	e7OK7pWv+UJ5b3A==
-X-Google-Smtp-Source: AGHT+IG6N54dSfOJjCohOcVrl12xs6oYf/UjJgoNKx4QpaZpDXw1gDFKm4Q9azy/23pG2F+/1aQfzsjWlOP7Mw==
-X-Received: from qknpb18.prod.google.com ([2002:a05:620a:8392:b0:80f:d3f1:62a6])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:1491:b0:829:2d2e:4df1 with SMTP id af79cd13be357-83ba40ade93mr7793685a.25.1758210945342;
- Thu, 18 Sep 2025 08:55:45 -0700 (PDT)
-Date: Thu, 18 Sep 2025 15:55:32 +0000
-In-Reply-To: <20250918155532.751173-1-edumazet@google.com>
+        bh=tqabNObTrUIXb/BYAEPfcGgxscP8Gw2Vuj2oVftkStA=;
+        b=fn8DobcGdoo8DM7jWZarJggUFkOyzioaZdDL8rCG2tYib3+ItSK300btBv3Uo05/+z
+         NJC6t/kc48gyi6EKQbk9lyoES+fNZ56lrefKpXegQm3fPhEvP3KPssIiwn4RcwgeZtNa
+         UZ9hO7hpHR9mVIQnr4Cysk0Oc5QmFy5dIdOQNesI65GCOwDX2n2SMSLUbrgIcjlJwPXj
+         m1I1dYbSVPdVps5SnCG5sVvVxLCM24gwFCWj/c5eX0hmMIsLDjf/K6umWVkdPttTJOAi
+         4FMLCyJZ0jBTxzOutVhmQXWjQGknGtFbQkZZNxtML42ddn3FYQAa3+Nt39Jkla8ELSgF
+         8ZXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVe11+e8OhGCTvutj1Tmfyfmjo5SpbjLfmvpOQFMiAz7b6pMsr4UwzM2GFaSp1IsEmzHLUiF48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXSIfMLu9Ep7Jd92aT/j88HO32XJTVAec+8NoSiYqeQCWHxw12
+	L7Ws0itM+OL/dpdMyw82HoJYnPDmpoAXXpwE5i1k6SHdNi5bM57xcwNDlJX3ANpMqWTlBi4XQUJ
+	Ekzj5zA==
+X-Google-Smtp-Source: AGHT+IGkmbYJfZP5nllHSP5gPnF6lwqm76wSLahcIX1/RcNPCgiykqnALzGjrifpViIQLPrzkR7sDPMdXBM=
+X-Received: from pjp16.prod.google.com ([2002:a17:90b:55d0:b0:329:ec3d:72ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f4b:b0:32e:9281:7c7b
+ with SMTP id 98e67ed59e1d1-32ee3ebb1e1mr8451052a91.3.1758211448798; Thu, 18
+ Sep 2025 09:04:08 -0700 (PDT)
+Date: Thu, 18 Sep 2025 09:04:07 -0700
+In-Reply-To: <20250918154826.oUc0cW0Y@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250918155532.751173-1-edumazet@google.com>
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250918155532.751173-8-edumazet@google.com>
-Subject: [PATCH net-next 7/7] tcp: reclaim 8 bytes in struct request_sock_queue
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20250827194107.4142164-1-seanjc@google.com> <20250827201059.EmmdDFB_@linutronix.de>
+ <20250918110828-mutt-send-email-mst@kernel.org> <20250918154826.oUc0cW0Y@linutronix.de>
+Message-ID: <aMwtd40q44q5uqwr@google.com>
+Subject: Re: [PATCH v2 0/3] vhost_task: Fix a bug where KVM wakes an exited task
+From: Sean Christopherson <seanjc@google.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-synflood_warned had to be u32 for xchg(), but ensuring
-atomicity is not really needed.
+On Thu, Sep 18, 2025, Sebastian Andrzej Siewior wrote:
+> On 2025-09-18 11:09:05 [-0400], Michael S. Tsirkin wrote:
+> > So how about switching to this approach then?
+> > Instead of piling up fixes like we seem to do now ...
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- include/net/request_sock.h | 2 +-
- net/ipv4/tcp_input.c       | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+I don't have a strong preference for 6.17, beyond landing a fix of some kind.
+I think there are three options for 6.17, in order of "least like to break
+something":
 
-diff --git a/include/net/request_sock.h b/include/net/request_sock.h
-index 6a5ec1418e8552b4aa9d25d61afa5376187b569d..cd4d4cf71d0d22bdb980f6e1cbe10e8307965b0e 100644
---- a/include/net/request_sock.h
-+++ b/include/net/request_sock.h
-@@ -185,8 +185,8 @@ struct fastopen_queue {
- struct request_sock_queue {
- 	spinlock_t		rskq_lock;
- 	u8			rskq_defer_accept;
-+	u8			synflood_warned;
- 
--	u32			synflood_warned;
- 	atomic_t		qlen;
- 	atomic_t		young;
- 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index f93d48d98d5dacf2ee868cd6b2d65a396443d106..79d5252ed6cc1a24ec898f4168d47c39c6e92fe1 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -7282,8 +7282,8 @@ static bool tcp_syn_flood_action(struct sock *sk, const char *proto)
- #endif
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPREQQFULLDROP);
- 
--	if (!READ_ONCE(queue->synflood_warned) && syncookies != 2 &&
--	    xchg(&queue->synflood_warned, 1) == 0) {
-+	if (syncookies != 2 && !READ_ONCE(queue->synflood_warned)) {
-+		WRITE_ONCE(queue->synflood_warned, 1);
- 		if (IS_ENABLED(CONFIG_IPV6) && sk->sk_family == AF_INET6) {
- 			net_info_ratelimited("%s: Possible SYN flooding on port [%pI6c]:%u. %s.\n",
- 					proto, inet6_rcv_saddr(sk),
--- 
-2.51.0.384.g4c02a37b29-goog
+ 1. Sebastian's get_task_struct() fix
+ 2. This series, without the KILLED sanity check in __vhost_task_wake()
+ 3. This series, with my fixup (with which syzbot was happy)
 
+Longer term, I'd still like to land everything though.
+
+> > Sean?
+> 
+> Since I am in To: here. You want me to resent my diff as a proper patch?
+
+Ya, I think it makes sense to harden against UAF even if we fix the KVM bug more
+directly.
