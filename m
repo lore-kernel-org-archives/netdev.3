@@ -1,295 +1,90 @@
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3E427F16A
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 10:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982262D7DF5;
+	Thu, 18 Sep 2025 10:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758192844; cv=none; b=DsJpaw6A5AkPpIXQRwQPAdO6eJpZyL0JfKRwCbI5Nam04WSkbyyMqmSifCx3tbbBWEqcmkyoFIvYlzGS1qsX+kHl18zoYyqsqLIdeIm5DIVffHp0LA/pfwr8M7G1oOWTa4QBkk1KJoGLYI0/pXo1yKZ03E6LtvYcMMHnl3qI4/E=
+	t=1758192922; cv=none; b=cZwyFLheh+8uDX4qwSULZy4HLxrUp0WQWJ/j9XtV0GlbCNRcLnN1TNUNOqn72nMfWN+Y6U/jLAcVLjghBOE0+QyBMtgR3gNn5pAyq8gDTDSjTdjy9jUAHz3qYKWHJRoN1mVALiOwXpYL6aaXCCZbl/LbVPqqUfoVn6FQ5K+WQck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758192844; c=relaxed/simple;
-	bh=EBigqMLKQcJf3yyGjvlxCEGGdlVi2CIBLcoRQ46RJsw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QgAGNNfJ50e1qjdhk/ysKPd41xgqoVfejLBaGqeLUOlzv70ZsYHWF8xDZAvGiTdTbTl9vgF00x784BEgAHq4ttv0pCPe6sfSjWPd/jTs/UWKdMHRPxWVb1bqkPw8ljsxk/YOeH8vbEg1sje04s5y5ZWVTLWX0eKOiTt33cfSe+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ApqCQqNJ; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ApqCQqNJ"
-Message-ID: <3091c796-acad-4c87-9782-3b67210147c2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758192838;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xsDP46X6fdA2u1G9s7qo7CSnBAFcuoriQweXOrgAGIw=;
-	b=ApqCQqNJDO++mHt1LnGEJWA8arGHVsC9zfb3M8bICGy4orbt6bKbtqRv2+JeOnCjCDUyY2
-	W4RQxNrn+sjIRwN8zInaCDNEiItPcQtjHY+8H0UUZonfyo/G4/niu2Hf6dT0qQamsymVKC
-	M9NmnF0Qa0mhKKijJQuKBXcuqNcodwY=
-Date: Thu, 18 Sep 2025 11:53:53 +0100
+	s=arc-20240116; t=1758192922; c=relaxed/simple;
+	bh=Jzf7d4NPLv/m9fmRY8sv81t4C2v9/nH5P3FDHBe2rKc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zw8bDwmz2ndazM/NpjIBQ71xw/JTkDX0iaWUOUCQsJ5AgG066HT+zU4MdLA6XK9AShvhprhl8RSJ/wnd2USZt+fmdy6Ls3lACsOWdzDl6cAGQAo967dS8GHYrThm6Xicx00wC8Xwakr3u9YKGfk8kO2ctnZFAih6kJ0pXiuEw7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cSC8x3jzWz6L6Ks;
+	Thu, 18 Sep 2025 18:50:41 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id C38FA14038F;
+	Thu, 18 Sep 2025 18:55:16 +0800 (CST)
+Received: from localhost (10.47.69.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 18 Sep
+ 2025 12:55:15 +0200
+Date: Thu, 18 Sep 2025 11:55:12 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: <alejandro.lucero-palau@amd.com>
+CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
+	<dave.jiang@intel.com>, Alejandro Lucero <alucerop@amd.com>, "Alison
+ Schofield" <alison.schofield@intel.com>
+Subject: Re: [PATCH v18 01/20] cxl: Add type2 device basic support
+Message-ID: <20250918115512.00007a02@huawei.com>
+In-Reply-To: <20250918091746.2034285-2-alejandro.lucero-palau@amd.com>
+References: <20250918091746.2034285-1-alejandro.lucero-palau@amd.com>
+	<20250918091746.2034285-2-alejandro.lucero-palau@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v3 1/4] ethtool: add FEC bins histogram report
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, Tariq Toukan <tariqt@nvidia.com>,
- Gal Pressman <gal@nvidia.com>, intel-wired-lan@lists.osuosl.org,
- Donald Hunter <donald.hunter@gmail.com>, Carolina Jubran
- <cjubran@nvidia.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
-References: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
- <20250916191257.13343-2-vadim.fedorenko@linux.dev>
- <20250917174148.0c909f92@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20250917174148.0c909f92@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On 18/09/2025 01:41, Jakub Kicinski wrote:
-> On Tue, 16 Sep 2025 19:12:54 +0000 Vadim Fedorenko wrote:
->> IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
->> clarifies it a bit further. Implement reporting interface through as
->> addition to FEC stats available in ethtool.
->> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
->> index 7a7594713f1f..de5008266884 100644
->> --- a/Documentation/netlink/specs/ethtool.yaml
->> +++ b/Documentation/netlink/specs/ethtool.yaml
->> @@ -1219,6 +1219,23 @@ attribute-sets:
->>           name: udp-ports
->>           type: nest
->>           nested-attributes: tunnel-udp
->> +  -
->> +    name: fec-hist
->> +    attr-cnt-name: __ethtool-a-fec-hist-cnt
-> 
-> s/__/--/
+On Thu, 18 Sep 2025 10:17:27 +0100
+alejandro.lucero-palau@amd.com wrote:
 
-That will bring strong inconsistency in schema. All other attributes
-have counter attribute with __ in the beginning:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> Differentiate CXL memory expanders (type 3) from CXL device accelerators
+> (type 2) with a new function for initializing cxl_dev_state and a macro
+> for helping accel drivers to embed cxl_dev_state inside a private
+> struct.
+> 
+> Move structs to include/cxl as the size of the accel driver private
+> struct embedding cxl_dev_state needs to know the size of this struct.
+> 
+> Use same new initialization with the type3 pci driver.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
 
-     name: fec-stat
-     attr-cnt-name: __ethtool-a-fec-stat-cnt
 
-     name: stats-grp
-     attr-cnt-name: __ethtool-a-stats-grp-cnt
+> diff --git a/Documentation/driver-api/cxl/theory-of-operation.rst b/Documentation/driver-api/cxl/theory-of-operation.rst
+> index 257f513e320c..ab8ebe7722a9 100644
+> --- a/Documentation/driver-api/cxl/theory-of-operation.rst
+> +++ b/Documentation/driver-api/cxl/theory-of-operation.rst
+> @@ -347,6 +347,9 @@ CXL Core
+>  .. kernel-doc:: drivers/cxl/cxl.h
+>     :internal:
+>  
+> +.. kernel-doc:: include/cxl/cxl.h
+> +   :internal:
+> +
 
-     name: stats
-     attr-cnt-name: __ethtool-a-stats-cnt
+Smells like a merge conflict issue given same entry is already there.
 
-> 
->> +    attributes:
->> +      -
->> +        name: bin-low
->> +        type: u32
->> +      -
->> +        name: bin-high
->> +        type: u32
-> 
-> We should add some doc: strings here so that the important info like
-> which one is inclusive is rendered right in the API reference
+>  .. kernel-doc:: drivers/cxl/acpi.c
+>     :identifiers: add_cxl_resources
 
-Yep, will add some doc
-
-> 
->> +      -
->> +        name: bin-val
->> +        type: uint
->> +      -
->> +        name: bin-val-per-lane
->> +        type: binary
-> 
-> probably good to doc this too
-
-ack
-
-> 
->> +        sub-type: u64
->>     -
->>       name: fec-stat
->>       attr-cnt-name: __ethtool-a-fec-stat-cnt
->> @@ -1242,6 +1259,11 @@ attribute-sets:
->>           name: corr-bits
->>           type: binary
->>           sub-type: u64
->> +      -
->> +        name: hist
->> +        type: nest
->> +        multi-attr: True
->> +        nested-attributes: fec-hist
->>     -
->>       name: fec
->>       attr-cnt-name: __ethtool-a-fec-cnt
->> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
->> index ab20c644af24..b270886c5f5d 100644
->> --- a/Documentation/networking/ethtool-netlink.rst
->> +++ b/Documentation/networking/ethtool-netlink.rst
->> @@ -1541,6 +1541,11 @@ Drivers fill in the statistics in the following structure:
->>   .. kernel-doc:: include/linux/ethtool.h
->>       :identifiers: ethtool_fec_stats
->>   
->> +Statistics may have FEC bins histogram attribute ``ETHTOOL_A_FEC_STAT_HIST``
->> +as defined in IEEE 802.3ck-2022 and 802.3df-2024. Nested attributes will have
->> +the range of FEC errors in the bin (inclusive) and the amount of error events
->> +in the bin.
-> 
-> Does this sound better?
-> 
->    Optional ``ETHTOOL_A_FEC_STAT_HIST`` attributes form a FEC error
->    histogram, as defined in IEEE 802.3ck-2022 and 802.3df-2024
->    (histogram of number of errors within a single FEC block).
->    Each ``ETHTOOL_A_FEC_STAT_HIST`` entry contains error count
->    (optionally also broken down by SerDes lane) as well as metadata
->    about the bin. Bin range (low, high) is inclusive.
-
-Ack
-
-> 
->>   static void
->> -nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats)
->> +nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats,
->> +		   struct ethtool_fec_hist *hist)
->>   {
->> +	struct ethtool_fec_hist_value *values = hist->values;
->> +
->> +	hist->ranges = netdevsim_fec_ranges;
->> +
->>   	fec_stats->corrected_blocks.total = 123;
->>   	fec_stats->uncorrectable_blocks.total = 4;
->> +
->> +	values[0].bin_value = 445;
-> 
-> Bin 0 had per lane breakdown, can't core add up the lanes for the
-> driver?
-
-Like it's done for blocks counter? Should we force drivers to keep 'sum'
-value equal to ETHTOOL_STAT_NOT_SET when they provide per-lane values?
-
-> 
->> +	values[1].bin_value = 12;
->> +	values[2].bin_value = 2;
->> +	values[0].bin_value_per_lane[0] = 125;
->> +	values[0].bin_value_per_lane[1] = 120;
->> +	values[0].bin_value_per_lane[2] = 100;
->> +	values[0].bin_value_per_lane[3] = 100;
->>   }
-> 
->> +/**
->> + * struct ethtool_fec_hist_range - error bits range for FEC bins histogram
-> 
-> Don't say "FEC bin histogram" I think the word histogram implies that
-> the data is bin'ed up.
-
-Ack
-
-> 
->> + * statistics
->> + * @low: low bound of the bin (inclusive)
->> + * @high: high bound of the bin (inclusive)
->> + */
-> 
->> @@ -113,7 +114,11 @@ static int fec_prepare_data(const struct ethnl_req_info *req_base,
->>   		struct ethtool_fec_stats stats;
->>   
->>   		ethtool_stats_init((u64 *)&stats, sizeof(stats) / 8);
->> -		dev->ethtool_ops->get_fec_stats(dev, &stats);
->> +		ethtool_stats_init((u64 *)data->fec_stat_hist.values,
->> +				   ETHTOOL_FEC_HIST_MAX *
->> +				   sizeof(struct ethtool_fec_hist_value) / 8);
-> 
-> sizeof(data->fec_stat_hist.values) / 8
-> 
-> would save you the multiplication?
-
-yeah...
-
-> 
->> +		dev->ethtool_ops->get_fec_stats(dev, &stats,
->> +						&data->fec_stat_hist);
->>   
->>   		fec_stats_recalc(&data->corr, &stats.corrected_blocks);
->>   		fec_stats_recalc(&data->uncorr, &stats.uncorrectable_blocks);
-> 
->> +static int fec_put_hist(struct sk_buff *skb, const struct ethtool_fec_hist *hist)
-> 
-> over 80 chars, please wrap (checkpatch --max-line-length=80)
-
-ouch, that's proper strict check! :)
-
-> 
->> +{
->> +	const struct ethtool_fec_hist_range *ranges = hist->ranges;
->> +	const struct ethtool_fec_hist_value *values = hist->values;
->> +	struct nlattr *nest;
->> +	int i, j;
->> +
->> +	if (!ranges)
->> +		return 0;
->> +
->> +	for (i = 0; i < ETHTOOL_FEC_HIST_MAX; i++) {
->> +		if (i && !ranges[i].low && !ranges[i].high)
-> 
-> low and high should probably be unsigned now
-
-ack
-
-> 
->> +			break;
->> +
->> +		if (WARN_ON_ONCE(values[i].bin_value == ETHTOOL_STAT_NOT_SET))
->> +			break;
->> +
->> +		nest = nla_nest_start(skb, ETHTOOL_A_FEC_STAT_HIST);
->> +		if (!nest)
->> +			return -EMSGSIZE;
->> +
->> +		if (nla_put_u32(skb, ETHTOOL_A_FEC_HIST_BIN_LOW,
->> +				ranges[i].low) ||
->> +		    nla_put_u32(skb, ETHTOOL_A_FEC_HIST_BIN_HIGH,
->> +				ranges[i].high) ||
->> +		    nla_put_uint(skb, ETHTOOL_A_FEC_HIST_BIN_VAL,
->> +				 values[i].bin_value))
->> +			goto err_cancel_hist;
->> +		for (j = 0; j < ETHTOOL_MAX_LANES; j++) {
->> +			if (values[i].bin_value_per_lane[j] == ETHTOOL_STAT_NOT_SET)
-> 
-> You know, bin_value could be 'sum', and bin_value_per_lane could be
-> simply 'per_lane'.
-
-SG, I'll change it
-
-> 
->> +				break;
->> +		}
-> 
-> {} brackets unnecessary
-> 
->> +		if (j && nla_put_64bit(skb, ETHTOOL_A_FEC_HIST_BIN_VAL_PER_LANE,
->> +				       sizeof(u64) * j,
->> +				       values[i].bin_value_per_lane,
->> +				       ETHTOOL_A_FEC_STAT_PAD))
->> +			goto err_cancel_hist;
->> +
->> +		nla_nest_end(skb, nest);
->> +	}
->> +
->> +	return 0;
->> +
->> +err_cancel_hist:
->> +	nla_nest_cancel(skb, nest);
->> +	return -EMSGSIZE;
->> +}
-> 
-> We need a selftest. Add a case to stats.py and do basic sanity checking
-> on what the kernel spits out? Maybe 2 test cases - one for overall and
-> one for per-lane, cause mlx5 doesn't have per lane and we'd like the
-> test to pass there.
-Yeah, sure, I'll add them as another patch to this series
 
