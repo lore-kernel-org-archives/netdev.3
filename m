@@ -1,110 +1,129 @@
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9397030C0E8
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 14:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DE4223702;
+	Thu, 18 Sep 2025 14:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758207190; cv=none; b=fDU7uu12MOiPuk3XwDPOHjberi9bsLyLqQUZmBqy0L7rucixVQlKloaK1s68hRHdiDxODuUeUdjSw1A7HRsk/5A2WbbE20oDhmG2Q+tFVaJrP0+uutqw3YXkVAe/LofqxkPsUaeiOe4DUTs9IQqPzA9UUn9xf6UEbeob5sU6+40=
+	t=1758207231; cv=none; b=D4jDDPMpKFph77Z8vZ90GFImpT80v8KjWig2Zr2K07NyWNeoDDZJXIHXugdkpXBliZ7CP8L+2L0HjSLXDOMoUChpR25DllOJlpItUsx+QGb3IoEBASTm0GN8hsoLxEMN9kDBj3f4VnIFI+Cd0LipHpb9Zh3UhUZAhFDGZzKZKVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758207190; c=relaxed/simple;
-	bh=Uay4MjYFjjFjRxgKNev3XtX0NxhEpjQT2Ltej8n3uas=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y/t7098WiCIEFU7rmvMU4hFFr+I2/F8IFsY7vr0K0xgSZRP+O42r2PJ7A1T0xh04JehtzrxW6H5fQ7+w15oOj+/uDjXPsgM47Lj/TFho71zhMXSP7Jnt8dMx+QZO0B/jJIk4Ixepp7JmcnaPoLek9NvnhkIZ9wWEqZASFzZLqoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=kIabRhxv; arc=none smtp.client-ip=94.124.121.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="kIabRhxv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=ScdLUi7Tz/pPrIV0NjyW4U23VIueAMMWyx8pCW4VZCI=;
-	b=kIabRhxvNKZM0EOI0x7ezn3kFDiHT7Qm8gIvQ0BYtJpuVmeKcBUdD0GswFJM4ppsDTAfe2nGvvNzW
-	 EXD8tBZpck/HdmqTgASPLT6zjPnhfW3/RUZoI4rvTNKJWHwAwbHtRCS6+DhaCeZlMw5IfwJYZIDLbv
-	 yFmJKLYi1x+eMUSaqnjmy9vIa1tanmteksbq2doEgc7rmR2DgCCx8crqZVfC+RlwGFmiNWbIBl4xWb
-	 9hNRV0yBO/HZHtotQkzznJ1DRPpbuM1Z29ahTt8cX/J5e94fqC11tRXXsFVnIUte9MEJLYq6n/Hq7j
-	 UdYFbNO1fjxZ0AANHx3zEmpP069LWnA==
-X-MSG-ID: 05ec3115-949f-11f0-9d65-00505681446f
-Date: Thu, 18 Sep 2025 16:51:56 +0200
-From: David Jander <david@protonic.nl>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jonas Rebmann <jre@pengutronix.de>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>,
- Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [PATCH v2 3/3] arm64: dts: add Protonic PRT8ML board
-Message-ID: <20250918165156.10e55b85@erd003.prtnl>
-In-Reply-To: <af554442-aeec-40d2-a35a-c7ee5bfcb99a@lunn.ch>
-References: <20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de>
-	<20250918-imx8mp-prt8ml-v2-3-3d84b4fe53de@pengutronix.de>
-	<af554442-aeec-40d2-a35a-c7ee5bfcb99a@lunn.ch>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1758207231; c=relaxed/simple;
+	bh=9uweKD5nptRoV8TQF3BhFreSe9aWWZOS3tbSqP8xL2k=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sTbosIK8C4MxhjzgBNcd2ri+NmjTFyBsmrdsgRbl4pGrTSXvoO8/0vbEbys7GXmjTy+9iQtPaRZldgSEBzSQJVZ+XEUQuEgg7ZzQLu0s1yZzs96vsLfqmOAcmF0l/52+ZPtTwvhwtAJgi3iDD/TK6/2ymQk2XUt6mETD6WenpB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cSJWZ2cp3z6GDCk;
+	Thu, 18 Sep 2025 22:52:10 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 55B8E1402F5;
+	Thu, 18 Sep 2025 22:53:46 +0800 (CST)
+Received: from localhost (10.47.69.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 18 Sep
+ 2025 16:53:45 +0200
+Date: Thu, 18 Sep 2025 15:53:44 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: <alejandro.lucero-palau@amd.com>
+CC: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
+	<dave.jiang@intel.com>, Alejandro Lucero <alucerop@amd.com>, Martin Habets
+	<habetsm.xilinx@gmail.com>, Edward Cree <ecree.xilinx@gmail.com>
+Subject: Re: [PATCH v18 12/20] sfc: get endpoint decoder
+Message-ID: <20250918155344.00000483@huawei.com>
+In-Reply-To: <20250918091746.2034285-13-alejandro.lucero-palau@amd.com>
+References: <20250918091746.2034285-1-alejandro.lucero-palau@amd.com>
+	<20250918091746.2034285-13-alejandro.lucero-palau@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Thu, 18 Sep 2025 16:14:28 +0200
-Andrew Lunn <andrew@lunn.ch> wrote:
+On Thu, 18 Sep 2025 10:17:38 +0100
+alejandro.lucero-palau@amd.com wrote:
 
-> > +			port@4 {
-> > +				reg = <4>;
-> > +				ethernet = <&fec>;
-> > +				label = "cpu";
-> > +				phy-mode = "rgmii-id";
-> > +				rx-internal-delay-ps = <2000>;
-> > +				tx-internal-delay-ps = <2000>;
-> > +
-> > +				fixed-link {
-> > +					full-duplex;
-> > +					speed = <100>;
-> > +				};
-> > +			};
-> > +		};
-> > +	};
-> > +};
-> > +
-> > +&fec {
-> > +	pinctrl-names = "default";
-> > +	pinctrl-0 = <&pinctrl_fec>;
-> > +	phy-mode = "rgmii"; /* switch inserts delay */
-> > +	rx-internal-delay-ps = <0>;
-> > +	tx-internal-delay-ps = <0>;
-> > +	status = "okay";
-> > +
-> > +	fixed-link {
-> > +		full-duplex;
-> > +		speed = <100>;
-> > +	};  
+> From: Alejandro Lucero <alucerop@amd.com>
 > 
-> You have an RGMII interface, but you run it at 100Mbps? That might be
-> worth a comment somewhere to explain why.
+> Use cxl api for getting DPA (Device Physical Address) to use through an
+> endpoint decoder.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+> Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/net/ethernet/sfc/efx_cxl.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+> index d29594e71027..4461b7a4dc2c 100644
+> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+> @@ -99,16 +99,23 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  
+>  	if (IS_ERR(cxl->cxlrd)) {
+>  		pci_err(pci_dev, "cxl_get_hpa_freespace failed\n");
+> -		cxl_release_endpoint(cxl->cxlmd, cxl->endpoint);
+> -		return PTR_ERR(cxl->cxlrd);
+> +		rc = PTR_ERR(cxl->cxlrd);
+> +		goto err_release;
 
-Yes, unfortunately the SJA1105Q does not support PAUSE frames, and the i.MX8MP
-FEC isn't able to sustain 1000Mbps (only about 400ish) due to insufficient
-internal bus bandwidth. It will generate PAUSE frames, but the SJA1105Q
-ignores these, leading to packet loss, which is obviously worse than
-restricting this link to 100Mbps. Ironically both chips are from the same
-manufacturer, yet are incompatible in this regard.
+Push back into patch 10.  I was wondering why you didn't do this there, thn
+found it here.
 
-Best regards,
 
--- 
-David Jander
+>  	}
+>  
+>  	if (max_size < EFX_CTPIO_BUFFER_SIZE) {
+>  		pci_err(pci_dev, "%s: not enough free HPA space %pap < %u\n",
+>  			__func__, &max_size, EFX_CTPIO_BUFFER_SIZE);
+> -		cxl_put_root_decoder(cxl->cxlrd);
+> -		cxl_release_endpoint(cxl->cxlmd, cxl->endpoint);
+> -		return -ENOSPC;
+> +		rc = -ENOSPC;
+> +		goto err_decoder;
+> +	}
+> +
+> +	cxl->cxled = cxl_request_dpa(cxl->cxlmd, CXL_PARTMODE_RAM,
+> +				     EFX_CTPIO_BUFFER_SIZE);
+> +	if (IS_ERR(cxl->cxled)) {
+> +		pci_err(pci_dev, "CXL accel request DPA failed");
+> +		rc = PTR_ERR(cxl->cxled);
+> +		goto err_decoder;
+>  	}
+>  
+>  	probe_data->cxl = cxl;
+> @@ -116,12 +123,21 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>  	cxl_release_endpoint(cxl->cxlmd, cxl->endpoint);
+>  
+>  	return 0;
+> +
+> +err_decoder:
+> +	cxl_put_root_decoder(cxl->cxlrd);
+> +err_release:
+> +	cxl_release_endpoint(cxl->cxlmd, cxl->endpoint);
+> +
+> +	return rc;
+>  }
+>  
+>  void efx_cxl_exit(struct efx_probe_data *probe_data)
+>  {
+> -	if (probe_data->cxl)
+> +	if (probe_data->cxl) {
+> +		cxl_dpa_free(probe_data->cxl->cxled);
+>  		cxl_put_root_decoder(probe_data->cxl->cxlrd);
+> +	}
+>  }
+>  
+>  MODULE_IMPORT_NS("CXL");
+
