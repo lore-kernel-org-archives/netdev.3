@@ -1,40 +1,43 @@
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121742FB62B
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 13:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD91CA52
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 13:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758201624; cv=none; b=KW4oTazd2pGFzpoeuKSLN3LGxFOedtre2vOZ84Oon/b7LgFqxqp9NNFWwccGt3HNhmeLCjGvwMi9KdPXWUxWaeiDg8iMCxdbp9ZZb6ZlKSDBtfsdMhn3sxeRi4Z/3t3wfwLt7DpJD9Qb1bovqWmphKMdLjPqgZ65qJiAp3bDT9U=
+	t=1758203201; cv=none; b=cCYykEMskS6Rn99BDnau8BsDsh4jLpkH+e/+YMLxIFDnKl7ixRZeZJ8jPbE4hdBetq97K76MLCIVyepD949CfEdxk9LwyZTVI/AlU/JG2n3Lz00aIFX4OgiziHONRxbS1OimOURan0BnnCpFKPtA7Rm0KIcjwZF6nq6rdxPA5mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758201624; c=relaxed/simple;
-	bh=BESp7YMo0j4ECK1K7IXQ5Q9w77QTDd4knF0udeeynQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=stVYyvdG97Jo6RhDBK/fQsIt7Lv+YKr3ABn5W/LqXORM5Y+eVUFQS9Y+lIbbOE0T63aLiN3q3EY1ebGD+ChHGRP9MaZdWoDxK8gvSP/IM/LtoaAIUpleTKjjjxPd4xPYEDCjcVhLabpM4DTMxAAiVLxlO0Lwnp1TFbugQO/A2AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Po0IaO/3; arc=none smtp.client-ip=91.218.175.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1758203201; c=relaxed/simple;
+	bh=XLIidpsqO51OHrc1VlSMDqjpYMADSazxBvF/B/6gB70=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XKCEDBl+72KHeNYloopQOtlV08ph96fSq57bhlFyzfZ8CfrjPqs0VwEohDwK8fMD6jYvtz1JbVt2WYh90om9DknWz2H6JPy7kxHUS7clHW2prn2W4jk+46UFpVBP99Q1rjc4AcNokT/hfpFh+Tj7MuDpdgG2BK0OptnlGrmc6+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8h8OcPT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Po0IaO/3"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758201619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KqEzJY5judtsdRu0sjsQMaldyVEG89URhxDEZYuoSHU=;
-	b=Po0IaO/3xmPWLY0cDTs9w3/x0e09XTCrIRVgW0Febng6IF2SJ4xyHWX9TtwLiMZyHbnOaj
-	aKeBNH7MAKmqE8K27Zn58f805rBIjy6C976xgf63AG9UxtYd0hf3XOZG1E/wjmSuq+y/Rn
-	5BWtO2kKcDHQTKusn30396N/OfxennU=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next] ptp_ocp: make ptp_ocp driver compatible with PTP_EXTTS_REQUEST2
-Date: Thu, 18 Sep 2025 13:11:46 +0000
-Message-ID: <20250918131146.651468-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8h8OcPT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0081C4CEE7;
+	Thu, 18 Sep 2025 13:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758203201;
+	bh=XLIidpsqO51OHrc1VlSMDqjpYMADSazxBvF/B/6gB70=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b8h8OcPTpEveN+gpxwQ/M62HPwCj/Q28BaTWz/OsqdC3l+zbzoXYPaQU0Lnmox+Df
+	 ZuTxfCrl9Ihph+tiPZvBZUEr8zWi5ZXyEXIqVBwNRgjjNPYzUMPaL6wHA3lhlHoXPF
+	 eVRvcGz0OA3xGbtMLOF9O1BQFA2IGh+K7ubuD9/X3yaBqexKhcjsL8wgR537Yr5yzR
+	 9BSChKJxlxeU7AsMYtV1O5kQVLHvqJm2y2KMhqm47WoFqiT7fTLF3mIiORxxzsPcGm
+	 nGeWDMdPEniE83v7qL04VO0uy3LXdw6ubsHwKx+KLc3zSLg0OoPi+06I7C3LtZPa2l
+	 q2rI3jGWx5UDg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	herve.codina@bootlin.com
+Subject: [PATCH net-next] wan: framer: pef2256: use %pe in print format
+Date: Thu, 18 Sep 2025 06:46:37 -0700
+Message-ID: <20250918134637.2226614-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,46 +45,34 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Originally ptp_ocp driver was not strictly checking flags for external
-timestamper and was always activating rising edge timestamping as it's
-the only supported mode. Recent changes to ptp made it incompatible with
-PTP_EXTTS_REQUEST2 ioctl. Adjust ptp_clock_info to provide supported
-mode and be compatible with new infra.
+New cocci check complains:
 
-While at here remove explicit check of periodic output flags from the
-driver and provide supported flags for ptp core to check.
+  drivers/net/wan/framer/pef2256/pef2256.c:733:3-10: WARNING: Consider using %pe to print PTR_ERR()
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://lore.kernel.org/1758192227-701925-1-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/ptp/ptp_ocp.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+CC: herve.codina@bootlin.com
+---
+ drivers/net/wan/framer/pef2256/pef2256.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 4e1286ce05c9..794ec6e71990 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -1485,6 +1485,8 @@ static const struct ptp_clock_info ptp_ocp_clock_info = {
- 	.pps		= true,
- 	.n_ext_ts	= 6,
- 	.n_per_out	= 5,
-+	.supported_extts_flags = PTP_STRICT_FLAGS | PTP_RISING_EDGE,
-+	.supported_perout_flags = PTP_PEROUT_DUTY_CYCLE | PTP_PEROUT_PHASE,
- };
+diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
+index 1e4c8e85d598..2a25cbd3f13b 100644
+--- a/drivers/net/wan/framer/pef2256/pef2256.c
++++ b/drivers/net/wan/framer/pef2256/pef2256.c
+@@ -719,8 +719,8 @@ static int pef2256_probe(struct platform_device *pdev)
+ 	pef2256->regmap = devm_regmap_init_mmio(&pdev->dev, iomem,
+ 						&pef2256_regmap_config);
+ 	if (IS_ERR(pef2256->regmap)) {
+-		dev_err(&pdev->dev, "Failed to initialise Regmap (%ld)\n",
+-			PTR_ERR(pef2256->regmap));
++		dev_err(&pdev->dev, "Failed to initialise Regmap (%pe)\n",
++			pef2256->regmap);
+ 		return PTR_ERR(pef2256->regmap);
+ 	}
  
- static void
-@@ -2095,10 +2097,6 @@ ptp_ocp_signal_from_perout(struct ptp_ocp *bp, int gen,
- {
- 	struct ptp_ocp_signal s = { };
- 
--	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
--			   PTP_PEROUT_PHASE))
--		return -EOPNOTSUPP;
--
- 	s.polarity = bp->signal[gen].polarity;
- 	s.period = ktime_set(req->period.sec, req->period.nsec);
- 	if (!s.period)
 -- 
-2.47.3
+2.51.0
 
