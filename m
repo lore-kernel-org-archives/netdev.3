@@ -1,108 +1,116 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E759D299A81
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 11:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9642D0C68
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 11:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758195627; cv=none; b=EUcRVZm0evflp3YFVrty5r4I1OHAY0g0F0zXTbRWQw0jd+nkFfFmNQfLFSBSbOb698Mw3MIGvJEh6IowRQBZ4GZ8Z5vYNJcKyUfXTFBpHVKsdSKfjaNnk0WWeHFKw4owQcuKwkfXyk6w5CD7EqczGvCgKGXZou6QaAVIw4T/wHk=
+	t=1758196362; cv=none; b=jI/TkZ764l8t3y4xL2NZhZuNIYM8OfAyEjs7oDnq9dAanvu66d24+CODtEwRk11s4ZyF+CwhQpVrORT8j66SUJvCEpjJUXxk9nMJK8Dx7ecpQL9/Oq1cka+UgVsiNVLFUbj2Qe75Ojit56v3FQ4DpjPDpymAinxvTrhAnaTqvBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758195627; c=relaxed/simple;
-	bh=94EML2YX7AYmMlLS4ljOwRT3kFId4sNZy7RWcOBmjy0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Daj+fcCTUzQ+7AHkVfdjdzOinioFGmHSsbrQQeH1GUEx57BmVukNKrXDf80hbca7WxqOS3RiRZnaxGCiyJUIgqysPC7OuzAR1Nzda1aO2aj4snFGKTEHf0w+qPVIxQluMjL0BEnM8mQWP1g/HXpUUTz0hliU4/dQIa+WpAi/hkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Uf2HFvtl; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758196362; c=relaxed/simple;
+	bh=orcEWWXZedqoXAATzhchY0ZD0iMu2nnp+TaE53eAuWU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=S0WxVfztLo9M5x6j1m+uiaFNqE6/Vc1ykaad9w/lpeyPhDhH9mIu0I9E/l4tVes9KNnyz0FIcFEt64g7x2KFsp3uYclAb6H3UpemDH7fF6XxW+gB+Zn1ZIcgoJRpiICxlRm/HuyyPPnoNC0sT+3Awh0WNMNZhI6JIudBoJo+qak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i8BdAqbR; arc=none smtp.client-ip=209.85.219.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Uf2HFvtl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758195625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hgPJVM2wYZcAOQHjxIVTAbyinSxKVYEfxq5qAotJRBs=;
-	b=Uf2HFvtlyMh8F0QVjwPAsLALXrOwGEV85ARGb4jV0ni3RbUkeZHN6feh7fn2vjvoP/9pHN
-	de/1l4BI1D69D0oAl9CisrDH/BLtWFHfX2Bju4oJuTRKJjGSgsis9UFxmGbDOAhy1KOSNM
-	Os/Q8CaMTHcHBfu3zmdMk2v8cktcRO8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-KIU5fsmdNY20DBIoePvXUw-1; Thu, 18 Sep 2025 07:40:23 -0400
-X-MC-Unique: KIU5fsmdNY20DBIoePvXUw-1
-X-Mimecast-MFC-AGG-ID: KIU5fsmdNY20DBIoePvXUw_1758195622
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3df07c967e9so402726f8f.2
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 04:40:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i8BdAqbR"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-7946137e7c2so13374286d6.0
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 04:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758196360; x=1758801160; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lj85ZEG/huPOcCxz/XnmQuQGQpVn4o0LUY0b/XI4CFs=;
+        b=i8BdAqbRuKrtNg//WHod86M3AHgdf0apqvpZuEKgXkRfowqblWJDTWG/vH5slKEnsg
+         cNziQYCuBoq63k19yU8QpssJomMgqGvgSsk6akIaj4/rlvjlX2IxlSTpwyVturMmaPZw
+         4SxPjSEpcVwX2TPzo0dX4QY+ZTY51e58r6jj60j9rYJHFl8W5S5lsQgHpDTLKh9xlEmU
+         fgq1LSJSzJD6iMuzhuODrogwiZSebRvd9Bl/UnBxRy29kB0HoH0eW6SMsO07dpIHC8lZ
+         lZnNhXtvt2nc/JMwOIxNzKsYfUVBKoNsPIlnI7OZV6TDPlcHOMI1QirUaDARwKjx46MR
+         vDow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758195622; x=1758800422;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hgPJVM2wYZcAOQHjxIVTAbyinSxKVYEfxq5qAotJRBs=;
-        b=teqSi9ii75meZDSq9UC3TYvxNJLhFG4RjKmgmaIaNNYtDAZgkRg6eFKppnp9JmJIWb
-         jbSlknY10+0hEQ5I9sDU1zWbog7BPGDycFToFhMY2/bpf2OLkyU64bIV3+zX8dbUmWGN
-         bPGng/6RqjmUaWj9cxSlsm0tbqIY7Xy+HUfTDLPVGJWIw+ifGFIfSIeuvZiqaq20+aOI
-         P3DnxHI8mZ6sHhS20x54FHZm+61mJani1vuJJyzgMMwnbl+sedZLb+OUC3Dww0Kdj3XX
-         kHqRorXTNaKzjLMGOQyCExcRQWT8UyCz6E3+qd6r26UP7MeFPrm73mburIjC4gi4sEYv
-         /ZJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsQSwkeTUES+wVh++TKgHdY322Eg5l3Z0YJvg0QQdTD1hjxjwM7uuvL8AUIUn03J5L93sphS0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTuLbV9xWrj6c0Fg4k418xTvrzISHBqgU/XWV3osX5nBL7DBgn
-	XgbY65c+6bS6uwUS+cqQvye/oqk/8tzdLBUqiO0pb2FtN03K96KgkmIVJsiql+t6scgeXNDbLSY
-	qt4SoOm/f4eODYUPs7I130h7ZliKBQaLti06XS4BW+rM2TzymT9O/vZAxYg==
-X-Gm-Gg: ASbGncvJL2dbVJAr1FZtdRlM6oUWRLu5a8C5ocq/5QX+mY/DC9XSHWCF2CtBawB5yoH
-	rQoJ5Gn4pQwJ+fvkXdTCkSo2qiHKoryH1Fw2WyqGiAP66QwXt/GjO0PGT9Ke37UgRycBR3Rj8vq
-	hqYYnr27iuR6oee5VwYjLPlbTaQzW53AP3Ip4XZ1jQAH4yhbi0xmSLbd4By/zQ6+wi5tHhaEtU4
-	Z3Rc3sN7pc7naHNCUk+rPfe/F1vR7wzRpbbz6h2J8gUULUGAnXOxn4gXICDpL1QUPmuK09et9m6
-	Kr2Q9a0lZ0x8Vg/a8rHGr40DiCfx8ewpLBjKcl/KCo5LKYeGDonjy5sntINPzlRWhbmoqNUjCZY
-	OScl74RLvZTFP
-X-Received: by 2002:a05:6000:2881:b0:3ec:2529:b4e5 with SMTP id ffacd0b85a97d-3ecdfa0d552mr5324877f8f.38.1758195622487;
-        Thu, 18 Sep 2025 04:40:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHiiMzhoC17rGGpLet+riqQz4wspo7U3zll9Iwt+xXUHl5ktjRATKDu+gU75xPefV+06WISSg==
-X-Received: by 2002:a05:6000:2881:b0:3ec:2529:b4e5 with SMTP id ffacd0b85a97d-3ecdfa0d552mr5324852f8f.38.1758195622053;
-        Thu, 18 Sep 2025 04:40:22 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f5a281f1sm37805585e9.17.2025.09.18.04.40.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Sep 2025 04:40:21 -0700 (PDT)
-Message-ID: <717ced87-a6f0-4c0b-afdb-72041e297fe2@redhat.com>
-Date: Thu, 18 Sep 2025 13:40:20 +0200
+        d=1e100.net; s=20230601; t=1758196360; x=1758801160;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lj85ZEG/huPOcCxz/XnmQuQGQpVn4o0LUY0b/XI4CFs=;
+        b=xHBQPKZpZMJEZuFF8yAF8gyOi6MiZpw1UVyEHeVwZlUm6h7et0KuP/MTmJdatuZZ/A
+         Uese3TY4OH412gPvqNSIkZxIu8ED42xm+QAsh+7YBxqma+nwJNuTCmXOFO1eCtI2OPcJ
+         fpUbdboS8N2olA+CpTLJxqo4K8iTvqwEC1QwF4t/AXTuUbmrLpW38rFU8bm3slMXq1XC
+         +I8XrTyvUrIL+paUPt1nCJLj7NL3Aq18yphoTBgauNAvMtw4lCZOAlwXt95u9JVpCMF4
+         d90MRZAU6Xe5HMTCR+zcaohcE83vmQnClbhHeQYOR6wl22xcPEkxMdMD5SnOnhyZH1eV
+         2MZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhBbgwUUyBI3vJARTUx9NPgXGSYahvou8/PZLbiHi1VSo7W5cFIQpJD9vHFqfz2hOkak6H3WY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEJpSBqvnNvY42lU7azvH8BXoqr7cyRmPiJTxoQjeOAQJU5+SM
+	81/c3vT21+aHRJtXsXHGtAZyuDR/ha+ZdfS3SDzBXnOmTC5ciS3iL7Sh6Rvr6My/BzvkKUzpW5A
+	+/bahj9vvQ4leaA==
+X-Google-Smtp-Source: AGHT+IGNtRgNKauTNhf36ZMlMuehEhv0AKFShg22+bHAViHHwyvGfi0DI2M0TTohZ3coa9qPBeWCdqqHHEr1iw==
+X-Received: from qknuk8.prod.google.com ([2002:a05:620a:6cc8:b0:80b:d787:6b48])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:a507:b0:835:9388:5d86 with SMTP id af79cd13be357-83593885da7mr282761785a.85.1758196360126;
+ Thu, 18 Sep 2025 04:52:40 -0700 (PDT)
+Date: Thu, 18 Sep 2025 11:52:38 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] psp: rename our psp_dev_destroy()
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, Daniel Zahka <daniel.zahka@gmail.com>,
- Willem de Bruijn <willemb@google.com>
-References: <20250918113546.177946-1-edumazet@google.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250918113546.177946-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
+Message-ID: <20250918115238.237475-1-edumazet@google.com>
+Subject: [PATCH net-next] psp: do not use sk_dst_get() in psp_dev_get_for_sock()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Daniel Zahka <daniel.zahka@gmail.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/18/25 1:35 PM, Eric Dumazet wrote:
-> psp_dev_destroy() was already used in drivers/crypto/ccp/psp-dev.c
-> 
-> Use psp_dev_free() instead, to avoid a link error when
-> CRYPTO_DEV_SP_CCP=y
-> 
-> Fixes: 00c94ca2b99e ("psp: base PSP device support")
-> Closes: https://lore.kernel.org/netdev/CANn89i+ZdBDEV6TE=Nw5gn9ycTzWw4mZOpPuCswgwEsrgOyNnw@mail.gmail.com/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Daniel Zahka <daniel.zahka@gmail.com>
-> Cc: Willem de Bruijn <willemb@google.com>
+Use __sk_dst_get() and dst_dev_rcu(), because dst->dev could
+be changed under us.
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+---
+ net/psp/psp_sock.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-I'm fine with applying this one (well) before the 24h grace period, to
-keep the tree saner.
-
-/P
+diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+index afa966c6b69dc657a54425656131b57645c81f6f..d19e37e939672c1f8fc0ebb62e50a3fb32cc8d25 100644
+--- a/net/psp/psp_sock.c
++++ b/net/psp/psp_sock.c
+@@ -11,21 +11,18 @@
+ 
+ struct psp_dev *psp_dev_get_for_sock(struct sock *sk)
+ {
++	struct psp_dev *psd = NULL;
+ 	struct dst_entry *dst;
+-	struct psp_dev *psd;
+-
+-	dst = sk_dst_get(sk);
+-	if (!dst)
+-		return NULL;
+ 
+ 	rcu_read_lock();
+-	psd = rcu_dereference(dst->dev->psp_dev);
+-	if (psd && !psp_dev_tryget(psd))
+-		psd = NULL;
++	dst = __sk_dst_get(sk);
++	if (dst) {
++		psd = rcu_dereference(dst_dev_rcu(dst)->psp_dev);
++		if (psd && !psp_dev_tryget(psd))
++			psd = NULL;
++	}
+ 	rcu_read_unlock();
+ 
+-	dst_release(dst);
+-
+ 	return psd;
+ }
+ 
+-- 
+2.51.0.384.g4c02a37b29-goog
 
