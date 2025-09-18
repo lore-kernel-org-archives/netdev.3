@@ -1,61 +1,46 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4BA15442C;
-	Thu, 18 Sep 2025 20:08:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D3831B113
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 20:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758226113; cv=none; b=Gwlvi4hAQxK38fhNKIb7uqZaOE3uihy7NM1KeitHMJOuVW5Y9cQx3JNcfd28V2XU/K5lbbMRkboBr1q3qXgZdOz+l9z1458jZ1ChgmEliFdIt8OhewkA7impnA/GRv7MtBQU1iRvyA8ucGf4FHYW5A5qBNvt0BazGQTYvSdSl4o=
+	t=1758226327; cv=none; b=pn9G/PnCA+Pd7qHPhqv6qZDrCylN6QgnndO3AS6D7YvfFn1d0nZJdr5kM4Ws7GKGk5CggouErrqDNGhndzrqctX8vt/x8KZOaemWQXUa0AmBR2WllKUUnjEEs1dSB7AQisc9mBrQm1MSB+4cYsoexiiSiM9jmCJRNcU6nqjnTB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758226113; c=relaxed/simple;
-	bh=/xURkBEfhrP61DoKhLS8ai19KyG8Yjda32gGq/Q1IbU=;
+	s=arc-20240116; t=1758226327; c=relaxed/simple;
+	bh=/5malKAf/53wBBNIen4m68do8XeguMRHCIZg0fmrbt4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bft/q2wAEt10zgK5uLH0OMO3OZdqZ8IiTiZ7NpcSHldosgSuhFFTlKKnd3whNcWPLNsNKYm7tf09nxqlkTjyS7xdBq5LLcOkubEsKtcBkEdFuaCCr4kp5smIY0CtSaKZd/PGWzdkanjppAQGJUeeWMOUh3SL0G7sv2B0/SZ7Tj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eQW9TtDw; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnMKln5ou+40uPW5eMsKpG09bY839S9o4h7WF47qBOIyGt8KWgp2SQ64b737saJoC0mzy+gLbe0uumNQs+5hE5oCa9yGkmYPIfG6OxHgGipBRahx0K07DHitVyaUI85NJFmyQEnPv1zOb6w944quNX0k6JKB1GYcT4y9w1+tvX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NjuLSoAD; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eQW9TtDw"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jT4S+lSLA3Y+AUajY/seHKGckePfxG1gceQ7KGrgVkc=; b=eQW9TtDw+1Ls7yx8EPz+nWzEin
-	QxsQcwqpxrt+dYwLttywOXbRUoP+wEwsVgM4Gde/eyq7X1duA+bq4Rk59C91coMzwXDHvhDOlR7NL
-	HSuZzYyv0IqrmM6nVQCsZ3k2KOMgGRhF15abncZN/f7xJIgQlgspcuOxQkiyyl4ugcTUrQDdefZh/
-	SKN7Rbsk4kteWetKTNNXgMY0E//tna4bQrxQfwW2FDd+1e+OclQfBtSIplTryq897UcCDiitHQ2iv
-	lAbuKpFehN7SQdBJXPCy2MtafF9j85aOkvb/TOHnS78z3sYYSD3PBBlzw6O/hMBWJ/p85dXI0/7Ql
-	lPr+eVzA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60456)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1uzKvS-0000000024E-3bbf;
-	Thu, 18 Sep 2025 21:08:18 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1uzKvP-000000001Tc-06qP;
-	Thu, 18 Sep 2025 21:08:15 +0100
-Date: Thu, 18 Sep 2025 21:08:14 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NjuLSoAD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=64cgCuOjk8WQWoRCW+lqFmzEnqEjh2rv8TA+DTpPXVM=; b=NjuLSoADhNWJNJFumowp1JNPRl
+	+klHNrmuoLUbacrLCo9m8yjAFzXNvVsJJ35CyCS3y763DJ7GJd3+CBbWXNnZarBcuUlxOcTpzGEYB
+	6heJ4YZAXdTyhkQb/3MeEB7d2DWvn+MyMbCSw2+yf2JiAgxnSe495h4woPIV//q7zlMg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uzKz4-008sAq-5t; Thu, 18 Sep 2025 22:12:02 +0200
+Date: Thu, 18 Sep 2025 22:12:02 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Russell King <rmk+kernel@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Andre Edich <andre.edich@microchip.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH net v4 0/3] net: phy: smsc: use IRQ + relaxed polling to
- fix missed link-up
-Message-ID: <aMxmrnmDEqn0Nvx1@shell.armlinux.org.uk>
-References: <20250714095240.2807202-1-o.rempel@pengutronix.de>
- <657997b5-1c20-4008-8b70-dc7a7f56c352@lunn.ch>
- <aMqw4LuoTTRspqfA@pengutronix.de>
- <a873e8e3-e1c9-4e82-b3e8-4b1cc8052a73@lunn.ch>
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 03/20] net: phy: marvell: add PHY PTP support
+Message-ID: <299f61cc-b5a7-48a6-b16d-f1f5d639af85@lunn.ch>
+References: <aMxDh17knIDhJany@shell.armlinux.org.uk>
+ <E1uzIb5-00000006mzK-0aob@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,41 +49,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a873e8e3-e1c9-4e82-b3e8-4b1cc8052a73@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <E1uzIb5-00000006mzK-0aob@rmk-PC.armlinux.org.uk>
 
-On Thu, Sep 18, 2025 at 09:48:33PM +0200, Andrew Lunn wrote:
-> > How about a minimal change instead: conditionally call
-> > phy_queue_state_machine() from lan87xx_config_aneg()? That would trigger
-> > a poll in the broken mode without touching phydev->irq or core teardown
-> > paths. Seems less intrusive than rewriting IRQ handling.
-> 
-> It is currently a static function, so that would have to change.
-> 
-> Or it might be better to add phy_trigger_machine_soon(), using the
-> default 1 second delay? And i would document it as only to be used by
-> broken PHYs, to try to stop it being abused. Anybody using it needs to
-> acknowledge their PHY is broken.
+> +static u64 marvell_phy_tai_clock_read(struct device *dev,
+> +				      struct ptp_system_timestamp *sts)
+> +{
+> +	struct phy_device *phydev = to_phy_device(dev);
+> +	int err, oldpage, lo, hi;
+> +
+> +	oldpage = phy_select_page(phydev, MARVELL_PAGE_PTP_GLOBAL);
+> +	if (oldpage >= 0) {
+> +		/* 88e151x says to write 0x8e0e */
+> +		ptp_read_system_prets(sts);
+> +		err = __phy_write(phydev, PTPG_READPLUS_COMMAND, 0x8e0e);
+> +		ptp_read_system_postts(sts);
+> +		lo = __phy_read(phydev, PTPG_READPLUS_DATA);
+> +		hi = __phy_read(phydev, PTPG_READPLUS_DATA);
+> +	}
+> +	err = phy_restore_page(phydev, oldpage, err);
+> +
+> +	if (err || lo < 0 || hi < 0)
+> +		return 0;
+> +
+> +	return lo | hi << 16;
 
-Couldn't this be even simpler? If the problem is the interrupt
-isn't raised, then how about the following.
+What happens when hi is >= 0x8000? Doesn't that result in undefined
+behaviour for 32 bit machines? The u64 result we are trying to return
+is big enough to hold the value. Does the hi need promoting to u64
+before doing the shift?
 
-(This assumes there is no issue with calling phy_trigger_machine()
-from IRQ context.)
-
-When lan87xx_config_aneg() detects that we're configuring into the
-broken mode, start a timer (which has been pre-initialised at probe
-time.) When the timer fires, call phy_trigger_machine(), and modify
-the timer for the next poll interval.
-
-When lan87xx_config_aneg() detects that we aren't in the broken
-mode, delete the timer synchronously. Also delete the timer when
-the PHY is suspended or unbound.
-
-This requires no changes necessary to the core phylib code, and no
-fiddling with fragile state either. Does it matter if the
-interrupt does fire? Not really.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+       Andrew
