@@ -1,103 +1,119 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D80D3090EF
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 20:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FDB2D63E4
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 20:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758226832; cv=none; b=LshlxGdBhdbGTP93Cs2vWYWcE36j02fmIL8HkuaI9pHkikH3tkJu9miTvzdpY1rU1fZBtI09EZ/AEXOL6OfpejmsqsPL75Q6lh0jc1Aaztcj8P41i7R6TCYj6d4sUmsdY35mjhBwVr/1NlsCNkKwc7CUYCt/BEJ2rczucGGosWM=
+	t=1758227615; cv=none; b=pL4KhfHjv+00gjvlo/ceMgBXpJ2CmM0Mfalh5zV/cCDe//SnmtUty0V8wMc8n9CP53+82axGsoMN7Yes+fct8LalHMXn9ZWN3mJ/Iom2fUt9i49rNlQrvYct+nDTxdQEYx21A4nQGX1krkqSvOWypjuK2iOpq8d8vBb1CQWZtvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758226832; c=relaxed/simple;
-	bh=Iz1O6jfjq1q9VqakNVUVO7uZ4sHU1u3uu4IY4c2AODg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ep5wmJ00VxN0MdrIVpCjbb7OjSMABPFyEbD41snCtCnFnAGez6IfO3rsK29y6F+MtdgmaOsQHnPgZPIfPHI1cOHjmfMwbRlHy01hkZuTW2P8Gxd8D30SlY4W8rTsUuDB3IlG+qWWgSBxeNrqB6ayvpBcWeQpFlKupUOH8h/mL0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=idkAdHuL; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=idkAdHuL; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1758227615; c=relaxed/simple;
+	bh=nLYn6PL0mHXKcvdGMKCiFs8JnrZRHrwFk+5bwFVPUjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FYdcmXLwuKWEa67cBrhyOJIqRggnz0rLL0+83w2mT8htdcHmzVqvMzImd9CqpPK4pT/KrWlmuXu19vbI+EikQiY3nh20aZxLvqIFqfZJszpzMq5HDoXSCyzwNI6qn1XCE0NGPPLhrLxYxD8q+HcZRjSfbMe3238DEIbtkWgvBCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mfU0A6Fn; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="idkAdHuL";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="idkAdHuL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1758226287; bh=Iz1O6jfjq1q9VqakNVUVO7uZ4sHU1u3uu4IY4c2AODg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=idkAdHuL3LERu69pldFSTewZEkM2ke2QlZR8x3wLMExFHvq3v28C00mmuWZtn+QUn
-	 eiTw4pD2Od7CeYDMMY7vXIPAw4MFLnzMkpIhAjgCNiCsxwH3SPv4NSgYOvS6Q/Hr6v
-	 N08Xf1Nc8bcps8ZPB1eq+PKJC8WOnA+j+ztxd4GZFj94zHDwE9VAY4Ra4B4GJ7eemL
-	 fYs8OfYQ53jk3W64OD8//weQjsy47BKG4k4YxDN1Wz4lr7iKZqIL57hF3XU89wyI/8
-	 yhcPYwZ3ibt0CiwmEzBEcTmatzqkJvTXZ7c6y+2Jd+WIsSOInaj66atOwHNfi9bJ3y
-	 vU1qIJ0k/wCWw==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 762393D55C1;
-	Thu, 18 Sep 2025 20:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1758226287; bh=Iz1O6jfjq1q9VqakNVUVO7uZ4sHU1u3uu4IY4c2AODg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=idkAdHuL3LERu69pldFSTewZEkM2ke2QlZR8x3wLMExFHvq3v28C00mmuWZtn+QUn
-	 eiTw4pD2Od7CeYDMMY7vXIPAw4MFLnzMkpIhAjgCNiCsxwH3SPv4NSgYOvS6Q/Hr6v
-	 N08Xf1Nc8bcps8ZPB1eq+PKJC8WOnA+j+ztxd4GZFj94zHDwE9VAY4Ra4B4GJ7eemL
-	 fYs8OfYQ53jk3W64OD8//weQjsy47BKG4k4YxDN1Wz4lr7iKZqIL57hF3XU89wyI/8
-	 yhcPYwZ3ibt0CiwmEzBEcTmatzqkJvTXZ7c6y+2Jd+WIsSOInaj66atOwHNfi9bJ3y
-	 vU1qIJ0k/wCWw==
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id F04BE3D4D3E;
-	Thu, 18 Sep 2025 20:11:25 +0000 (UTC)
-Message-ID: <64ea0259-30a2-4264-8c05-8fd7df113bb5@mleia.com>
-Date: Thu, 18 Sep 2025 23:11:20 +0300
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mfU0A6Fn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=wK57dgWVpMmulX+ZOs5o8wOp1BZEg0cFaZiFXUtxZng=; b=mfU0A6Fn8dSYv9axll2oxSQKol
+	sbc+Bdnsfgc9SUkyuvRKMaDVkZU/NkCnnNzaOMDSh44BcfQRqnZrD8TSLv5FhVBTlHhOkMOvoZ0Qt
+	22mmmaXY7c6dfVi+GBdslImPAUmJzLlDnJSNGoywNr1NR1TVMZGbWVU7sRaafKjBOGdZ+E+biaS/I
+	DEbC+ep77yhZ5Sxz3GpU/uAjZApWCEcc1GIInbHBO08kjLZGYw06olDl1C9ZlO86qtgQONZcn+QrR
+	eesqfTFuqR0fK61bGJV5G1bZpF923+0XVyi8E9Rd7MD3/s9BSy6/JGBA0HgUqpuk3EZgyWcG8WO8k
+	jVAh5lUQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33094)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uzLJq-0000000028w-0xfm;
+	Thu, 18 Sep 2025 21:33:30 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uzLJo-000000001Ur-02kq;
+	Thu, 18 Sep 2025 21:33:28 +0100
+Date: Thu, 18 Sep 2025 21:33:27 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>
+Subject: Re: [PATCH RFC net-next 03/20] net: phy: marvell: add PHY PTP support
+Message-ID: <aMxsl4v-Aio6R20R@shell.armlinux.org.uk>
+References: <aMxDh17knIDhJany@shell.armlinux.org.uk>
+ <E1uzIb5-00000006mzK-0aob@rmk-PC.armlinux.org.uk>
+ <299f61cc-b5a7-48a6-b16d-f1f5d639af85@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 10/10] net: stmmac: remove mac_interface
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Chen-Yu Tsai <wens@csie.org>,
- "David S. Miller" <davem@davemloft.net>, Drew Fustini <fustini@kernel.org>,
- Emil Renner Berthing <kernel@esmil.dk>, Eric Dumazet <edumazet@google.com>,
- Fabio Estevam <festevam@gmail.com>, Fu Wei <wefu@redhat.com>,
- Guo Ren <guoren@kernel.org>, imx@lists.linux.dev,
- Jakub Kicinski <kuba@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Minda Chen <minda.chen@starfivetech.com>,
- Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Samuel Holland <samuel@sholland.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>
-References: <aMrPpc8oRxqGtVPJ@shell.armlinux.org.uk>
- <E1uytpv-00000006H2x-196h@rmk-PC.armlinux.org.uk>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <E1uytpv-00000006H2x-196h@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20250918_201127_506365_0BB65E3C 
-X-CRM114-Status: GOOD (  11.00  )
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <299f61cc-b5a7-48a6-b16d-f1f5d639af85@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 9/17/25 18:12, Russell King (Oracle) wrote:
-> mac_interface has served little purpose, and has only caused confusion.
-> Now that we have cleaned up all platform glue drivers which should not
-> have been using mac_interface, there are no users remaining. Remove
-> mac_interface.
+On Thu, Sep 18, 2025 at 10:12:02PM +0200, Andrew Lunn wrote:
+> > +static u64 marvell_phy_tai_clock_read(struct device *dev,
+> > +				      struct ptp_system_timestamp *sts)
+> > +{
+> > +	struct phy_device *phydev = to_phy_device(dev);
+> > +	int err, oldpage, lo, hi;
+> > +
+> > +	oldpage = phy_select_page(phydev, MARVELL_PAGE_PTP_GLOBAL);
+> > +	if (oldpage >= 0) {
+> > +		/* 88e151x says to write 0x8e0e */
+> > +		ptp_read_system_prets(sts);
+> > +		err = __phy_write(phydev, PTPG_READPLUS_COMMAND, 0x8e0e);
+> > +		ptp_read_system_postts(sts);
+> > +		lo = __phy_read(phydev, PTPG_READPLUS_DATA);
+> > +		hi = __phy_read(phydev, PTPG_READPLUS_DATA);
+> > +	}
+> > +	err = phy_restore_page(phydev, oldpage, err);
+> > +
+> > +	if (err || lo < 0 || hi < 0)
+> > +		return 0;
+> > +
+> > +	return lo | hi << 16;
 > 
-> This results in the special dwmac specific "mac-mode" DT property
-> becoming redundant, and an in case, no DTS files in the kernel make use
-> of this property. Add a warning if the property is set, and it is
-> different from the "phy-mode".
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> What happens when hi is >= 0x8000? Doesn't that result in undefined
+> behaviour for 32 bit machines? The u64 result we are trying to return
+> is big enough to hold the value. Does the hi need promoting to u64
+> before doing the shift?
 
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+Good point - looking at the generated code, it gets sign-extended
+to a 64 bit value. So, hi=0x8000 results in 0xffffffff8000XXXX
+being returned.
+
+Does it matter? There are two functions that call the cyclecounter
+->read() method. timecounter_init() sets ->cycle_last from the
+value, and timecounter_read_delta() does this:
+
+	cycle_delta = (cycle_now - tc->cycle_last) & tc->cc->mask;
+
+before updating ->cycle_last with the returned value. As the
+mask is initialised thusly:
+
+	tai->cyclecounter.mask = CYCLECOUNTER_MASK(32);
+
+this masks off the sign-extended high 32-bits, giving us back
+a value of 0x8000XXXX.
+
+So, while the sign extension is undesirable, it has no effect on
+the operation. Is it worth throwing casts in the code? I suspect
+that's a matter of personal opinion.
 
 -- 
-Best wishes,
-Vladimir
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
