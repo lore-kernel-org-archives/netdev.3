@@ -1,63 +1,63 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA64313279
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 22:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D7E31AF00
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 22:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758235157; cv=none; b=mYE7T3ZoLTsFATn+dBJYyNZurmCQ+MPfuOMjN7mqQ2IiAX9eW5Id9771+fUCMaZ9/GYzIuCs+j8uUYiAom44bSd8RReIl1ERqsKA7AQMrp68vZ1M4pHzK4/tOsh6k3hQ/c5MJYlwKPKjazFGBIoTjy1z03Z+EIFizC8Ls9LwM3Y=
+	t=1758235161; cv=none; b=hZOmpYbbphuozdTuOCLGhSmIqjrLKw2PyW7hsEx2vfvI1MyryMTdddwLACpTecMqMbEa00JIdz0wqqgbjYI5qbvNrAK6W3X1z7YawIuVOts4JI/64yvYKENYVsazO7hpMikQJoCqvPW7jmhuuXbiPwMLc+0jMD8pEqd4kR1SxDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758235157; c=relaxed/simple;
-	bh=6P3A7cZm5Yziqrx5uzGcCkG+6/9fKPTNhq5n2p9Xz/c=;
+	s=arc-20240116; t=1758235161; c=relaxed/simple;
+	bh=pTYDBuUugNVmHrhoZQtDDUjkeRnZR6o10lNlJWHqli0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmOnkNo1Br5R3fWCjxmUmmy5EscirZ0TycGiqBwz9fVjsWLfGdgJkiWeV7tsnqj3e161Co5rYTwwFQ97Y+lbz1LtVfn7yq/ICgJ89yPlEmtZECmk1qqHmhGZ+MZwM9d+MHBc0ta2/gvZ+Jh4KpvXDs1bBAfs/ZN5EJgbukK1oK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNrCM0b4; arc=none smtp.client-ip=209.85.160.173
+	 MIME-Version; b=ckJ//riJgdH8nxYz5u1LPkYnlcrOt1w2jGGHR8tuKIvKu0vMESy74mHJD+s2Z1qMFlkgTZOBsaWNZkXVZUSCKOnfOMj8itJ1BA5kPqrjdwB817bWBMpPJ4GAtWGwxuqkNnM8HTSPtmSW4ckKohkUZHqzCbEo9pv3JMbOiyY+7OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hz6c1Sfx; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNrCM0b4"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4b61161dd37so9572801cf.3
-        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 15:39:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hz6c1Sfx"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-827ec18434aso148749585a.0
+        for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 15:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758235154; x=1758839954; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1758235157; x=1758839957; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XCruBin17lR+7sihK5Cg/S+ovvy6/Z/MfTL3LSn+IKQ=;
-        b=bNrCM0b4b7DIGJuS/n/hK4bDbygna859pmd00T5kImLXmXxxM9qsHZtjEifcelAte3
-         TZ90OLUbppcpuBpxSvrBLR2Zy5GSEq/g+ohMJLqVhxZQakfZWnbUB2r6uI9ltt7hwO6b
-         EdJv4GNUhDiAQuTbpWnp/2p9IUeu43iJUZdZs18C+QtIVMI+CFTCQLMan6kWNrYcQiyB
-         1WozGsLVlNeYam2Ge0+Czl+cpJUukbIz+DCI1UqC40CLOmyuoCo7yDMt62vd1fRDNhX+
-         l2X/LcR1Q/9pezLOSOO/gkaVQVVuTumqdsbblKT7qoytNcWV6Bvz9UfNilzthCuYeQdx
-         2AXg==
+        bh=9Y4zB7rBD6m7NScU7NVWv8ya0KYmya0O+ILyXMc2bD4=;
+        b=Hz6c1Sfx6GWnS5/Be8oYJZrVIA/pnV6huShQiRrr/riANvGuUaMr3q9E07j+DAQD7T
+         BmFKacUOamzWOWAsvsiWux+Wev57W6ShLqc9Aj3tKEc3I4Ruap6EdL9rE5DKLPwM3+ZM
+         A/V23gUhgP8k0mFIno1kdL6Z9mIzo8LfqCuL5Xp3w8+lGqhdqsf/OYOlDXIf/lv428Gz
+         G5GDOwKeov8KXMootEh0d1x53O/G50mTGfBrEwx0UkDZl6+whjdaMMlekbkS0i9t7r05
+         +T0wUJi3kHisCr4iKVLSxSUa8iIEX8ezDpdDId4bXerxyYhpfKyzNa+sE6136MZ2eKTz
+         HfMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758235154; x=1758839954;
+        d=1e100.net; s=20230601; t=1758235157; x=1758839957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XCruBin17lR+7sihK5Cg/S+ovvy6/Z/MfTL3LSn+IKQ=;
-        b=sKmFUqCeYU886Hrzl0NxitFYSzb2rKR6KQP/KtoeO1QmIlWK764/Glql7TStzgAaxL
-         ffn+1AhpsdFiodsGOFNLjygWSFLJ3IIr9HZrMi2mR3uSGhLST4JxT37HapvT+6l/VFYp
-         aHeVs6TOHj66x4lYAFAOVtRkdUEy3HD5Ow5jpVKg2tV6K+3L54AUIyUb/lfTETXM0u2n
-         Lv95HtvqpHlDEJ7Z3kNBa8nwhXlsk9GpkyiUE8OH6xxOjp0kFZR4DZcctzeqNaafkx0z
-         0iLtimw17BgED/Z1KTDDmsU8XbM6XrQ+p29ORJZgv2/QOT+R4IswY4e4koDWX45SzqGV
-         AOPg==
-X-Gm-Message-State: AOJu0YxfouvUyu4l22qPqblAHhn5no12i3YaQHBqGhIpCmnyMxwleDNV
-	KR2/5i8WrkEvMTaCDNjriGuW9rDPA6y+VVfbaQ4XwVeoVZnVa5NQ0YumM5me39vmb9I=
-X-Gm-Gg: ASbGncvECSL7VTFc5lPLxFRieMxrLSyN0WXylReMaNfUc0W+JwBIORW9FtsW2LCxZDV
-	lBNY0QIp1AhtYtZJdm5mXWNPHiL8ESXfs0EZQHun8CdzG52yT2qs5faGK2Z7Cl/QVMs7Bqrc17i
-	/jqPTby4APKIJm5zSMVZM5oO/tnGSCSe3avv/+k0dWiG+UjKqS5cK4/3EOLoAKE7gn6SpFAwzpq
-	CIbL5HlNeesSZGBFcaZn/boRQGLOMILDx1G45G58mXIrZV9VCAp665LomIHR2fXU1a/NGep2eog
-	rb8rkan0AKpu7ZXAJveDM5bsrQacw3lVvUyTZIDLbrcvF6awP/ZxwRHwdDPifayPKcJf+BbjcwB
-	G6gbjeIG38JGStaF1F3rt91y5A5bJimit1hwkRjBfLRwgalGy+PCw0wuuJT19/awbHPUVPxqJOK
-	0pU/OoLKhkunC/gMBe
-X-Google-Smtp-Source: AGHT+IEy3g4Rorpn3sOkYpZm2+Ko+7jnTBJbsZEuruQwdurAwAhDATkrVnAytUja1kHVc2ZoXb/9eg==
-X-Received: by 2002:a05:622a:289:b0:4b7:9581:a211 with SMTP id d75a77b69052e-4c06f84409bmr12227401cf.24.1758235153500;
-        Thu, 18 Sep 2025 15:39:13 -0700 (PDT)
+        bh=9Y4zB7rBD6m7NScU7NVWv8ya0KYmya0O+ILyXMc2bD4=;
+        b=aYWiRNoR7yvLGLpTfcOApGYa0VnrBGxyRA4gD5munWgpONmCQ+SvpzCb+kfFWhv618
+         ZLDKInYLt5D2C0nIp64XFCMcNpZ8MsOEcZpRx5u11ontVka4EouC6OfASsqcvnAFu9lO
+         i6Apa6z92k9AQeCGg5VV6cmc5ZZYIv+6bsDjGf7kp+Smmr5RqFQRiia5oKky8oRoqtS0
+         DgNTTRuLExu05mKKaeuACPSmJGTeJpXzjRzP4DbQWaqwnEVMixcKgujJDaIZBBtMo2F6
+         mV4Yd/g6ZWkghbdq1h2yOMDyg0Ofso/iE7MZZbfe1Z6PexKzwRd98CS8utqFInL3cbIH
+         R5MQ==
+X-Gm-Message-State: AOJu0YxjELx7FtRzkMLy8rAMRWGALHOrC2xwgIqoyMVfsNfr0xpg7mA0
+	stWcOR//WEuGlcNhEwyHsKZIbOW3emhwaV7XjJRkEAV48FIY0x1ye2kUGJXNt09Y7Rw=
+X-Gm-Gg: ASbGnctdzoSay7VwbfPdJY36xlK2XpqDgtiNMZsXEILJeydJrv9KRRWXGTn+bBfzm2k
+	XdFs4U46BGs+MH6OqxdL5JaSv010YNYngUWh/zXA01ZRRRKkizYH13hyuXfYhndhBDlzASu8onD
+	fjf0sI95U2Bv3S+G4c+9K228bzEUwhcQCGrJHpAt8qS3w5bTzCQuGNVPP2ubYd9/9n3qX6RUJpt
+	w8rxoY/EclTu+uWxyNY+y8YhABkVcvUsuVfZyy3CKm/w0Xy0rxT9/D2SOaabkocBnY0CgISCDI2
+	hh/rcHB38zN2XzgQHB9yYTxHWTCF6G+ygfx2/GxeZKrqkiO54srMm9A6W4vS+tpI7PUm2Vx6mdY
+	5qV2xv3hBzmjnJ2TX8CQNl3h4PJ5d3016fWOaNfAH3a6mpK23gHyzRJuanebSRxIWurAQzAGq7t
+	gKAbF9pA==
+X-Google-Smtp-Source: AGHT+IFae2NB7OGHWVcvyOJVVIUuQyVeXpDbExV3B8uTIB+ktBIorxnVw4F1oj/JD4R5eMnHY0SooQ==
+X-Received: by 2002:a05:620a:c53:b0:812:afec:d5b8 with SMTP id af79cd13be357-83bab470613mr164833585a.52.1758235156841;
+        Thu, 18 Sep 2025 15:39:16 -0700 (PDT)
 Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-83630481fc7sm244631185a.43.2025.09.18.15.39.11
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-83630481fc7sm244631185a.43.2025.09.18.15.39.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Sep 2025 15:39:12 -0700 (PDT)
+        Thu, 18 Sep 2025 15:39:15 -0700 (PDT)
 From: Xin Long <lucien.xin@gmail.com>
 To: network dev <netdev@vger.kernel.org>,
 	quic@lists.linux.dev
@@ -93,9 +93,9 @@ Cc: davem@davemloft.net,
 	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
 	Daniel Stenberg <daniel@haxx.se>,
 	Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Subject: [PATCH net-next v3 05/15] quic: provide quic.h header files for kernel and userspace
-Date: Thu, 18 Sep 2025 18:34:54 -0400
-Message-ID: <d48c10322d099fb79dc9148b189b84c3ae720864.1758234904.git.lucien.xin@gmail.com>
+Subject: [PATCH net-next v3 07/15] quic: add connection id management
+Date: Thu, 18 Sep 2025 18:34:56 -0400
+Message-ID: <b6f6ad2750b4a484107e0046ae2c3223cc53f8b9.1758234904.git.lucien.xin@gmail.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1758234904.git.lucien.xin@gmail.com>
 References: <cover.1758234904.git.lucien.xin@gmail.com>
@@ -107,46 +107,297 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This commit adds quic.h to include/uapi/linux, providing the necessary
-definitions for the QUIC socket API. Exporting this header allows both
-user space applications and kernel subsystems to access QUIC-related
-control messages, socket options, and event/notification interfaces.
+This patch introduces 'struct quic_conn_id_set' for managing Connection
+IDs (CIDs), which are represented by 'struct quic_source_conn_id'
+and 'struct quic_dest_conn_id'.
 
-Since kernel_get/setsockopt() is no longer available to kernel consumers,
-a corresponding internal header, include/linux/quic.h, is added. This
-provides kernel subsystems with the necessary declarations to handle
-QUIC socket options directly.
+It provides helpers to add and remove CIDs from the set, and handles
+insertion of source CIDs into the global connection ID hash table
+when necessary.
 
-Detailed descriptions of these structures are available in [1], and will
-be also provided when adding corresponding socket interfaces in the
-later patches.
+- quic_conn_id_add(): Add a new Connection ID to the set, and inserts
+  it to conn_id hash table if it is a source conn_id.
 
-[1] https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
+- quic_conn_id_remove(): Remove connection IDs the set with sequence
+  numbers less than or equal to a number.
 
-Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
+It also adds utilities to look up CIDs by value or sequence number,
+search the global hash table for incoming packets, and check for
+stateless reset tokens among destination CIDs. These functions are
+essential for RX path connection lookup and stateless reset processing.
+
+- quic_conn_id_find(): Find a Connection ID in the set by seq number.
+
+- quic_conn_id_lookup(): Lookup a Connection ID from global hash table
+  using the ID value, typically used for socket lookup on the RX path.
+
+- quic_conn_id_token_exists(): Check if a stateless reset token exists
+  in any dest Connection ID (used during stateless reset processing).
+
+Note source/dest conn_id set is per socket, the operations on it are
+always pretected by the sock lock.
+
 Signed-off-by: Xin Long <lucien.xin@gmail.com>
 ---
-v2:
-  - Fix a kernel API description warning, found by Jakub.
-  - Replace uintN_t with __uN, capitalize _UAPI_LINUX_QUIC_H, and
-    assign explicit values for QUIC_TRANSPORT_ERROR_ enum in UAPI
-    quic.h, suggested by David Howells.
+v3:
+  - Clarify in changelog that conn_id set is always protected by sock lock
+    (suggested by Paolo).
+  - Adjust global source conn_id hashtable operations for the new hashtable
+    type.
 ---
- include/linux/quic.h      |  19 +++
- include/uapi/linux/quic.h | 236 ++++++++++++++++++++++++++++++++++++++
- net/quic/socket.c         |  38 ++++++
- net/quic/socket.h         |   7 ++
- 4 files changed, 300 insertions(+)
- create mode 100644 include/linux/quic.h
- create mode 100644 include/uapi/linux/quic.h
+ net/quic/Makefile |   2 +-
+ net/quic/connid.c | 222 ++++++++++++++++++++++++++++++++++++++++++++++
+ net/quic/connid.h | 162 +++++++++++++++++++++++++++++++++
+ net/quic/socket.c |   6 ++
+ net/quic/socket.h |  13 +++
+ 5 files changed, 404 insertions(+), 1 deletion(-)
+ create mode 100644 net/quic/connid.c
+ create mode 100644 net/quic/connid.h
 
-diff --git a/include/linux/quic.h b/include/linux/quic.h
+diff --git a/net/quic/Makefile b/net/quic/Makefile
+index 094e9da5d739..eee7501588d3 100644
+--- a/net/quic/Makefile
++++ b/net/quic/Makefile
+@@ -5,4 +5,4 @@
+ 
+ obj-$(CONFIG_IP_QUIC) += quic.o
+ 
+-quic-y := common.o family.o protocol.o socket.o stream.o
++quic-y := common.o family.o protocol.o socket.o stream.o connid.o
+diff --git a/net/quic/connid.c b/net/quic/connid.c
 new file mode 100644
-index 000000000000..d35ff40bb005
+index 000000000000..6ec1c1fdbd48
 --- /dev/null
-+++ b/include/linux/quic.h
-@@ -0,0 +1,19 @@
++++ b/net/quic/connid.c
+@@ -0,0 +1,222 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Initialization/cleanup for QUIC protocol support.
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#include <linux/quic.h>
++#include <net/sock.h>
++
++#include "common.h"
++#include "connid.h"
++
++/* Lookup a source connection ID (scid) in the global source connection ID hash table. */
++struct quic_conn_id *quic_conn_id_lookup(struct net *net, u8 *scid, u32 len)
++{
++	struct quic_shash_head *head = quic_source_conn_id_head(net, scid);
++	struct quic_source_conn_id *s_conn_id;
++	struct quic_conn_id *conn_id = NULL;
++
++	read_lock(&head->lock);
++	hlist_for_each_entry(s_conn_id, &head->head, node) {
++		if (net == sock_net(s_conn_id->sk) && s_conn_id->common.id.len == len &&
++		    !memcmp(scid, &s_conn_id->common.id.data, s_conn_id->common.id.len)) {
++			sock_hold(s_conn_id->sk);
++			conn_id = &s_conn_id->common.id;
++			break;
++		}
++	}
++
++	read_unlock(&head->lock);
++	return conn_id;
++}
++
++/* Check if a given stateless reset token exists in any connection ID in the connection ID set. */
++bool quic_conn_id_token_exists(struct quic_conn_id_set *id_set, u8 *token)
++{
++	struct quic_common_conn_id *common;
++	struct quic_dest_conn_id *dcid;
++
++	dcid = (struct quic_dest_conn_id *)id_set->active;
++	if (!memcmp(dcid->token, token, QUIC_CONN_ID_TOKEN_LEN)) /* Fast path. */
++		return true;
++
++	list_for_each_entry(common, &id_set->head, list) {
++		dcid = (struct quic_dest_conn_id *)common;
++		if (common == id_set->active)
++			continue;
++		if (!memcmp(dcid->token, token, QUIC_CONN_ID_TOKEN_LEN))
++			return true;
++	}
++	return false;
++}
++
++static void quic_source_conn_id_free_rcu(struct rcu_head *head)
++{
++	struct quic_source_conn_id *s_conn_id;
++
++	s_conn_id = container_of(head, struct quic_source_conn_id, rcu);
++	kfree(s_conn_id);
++}
++
++static void quic_source_conn_id_free(struct quic_source_conn_id *s_conn_id)
++{
++	u8 *data = s_conn_id->common.id.data;
++	struct quic_shash_head *head;
++
++	if (!hlist_unhashed(&s_conn_id->node)) {
++		head = quic_source_conn_id_head(sock_net(s_conn_id->sk), data);
++		write_lock_bh(&head->lock);
++		hlist_del_init(&s_conn_id->node);
++		write_unlock_bh(&head->lock);
++	}
++
++	/* Freeing is deferred via RCU to avoid use-after-free during concurrent lookups. */
++	call_rcu(&s_conn_id->rcu, quic_source_conn_id_free_rcu);
++}
++
++static void quic_conn_id_del(struct quic_common_conn_id *common)
++{
++	list_del(&common->list);
++	if (!common->hashed) {
++		kfree(common);
++		return;
++	}
++	quic_source_conn_id_free((struct quic_source_conn_id *)common);
++}
++
++/* Add a connection ID with sequence number and associated private data to the connection ID set. */
++int quic_conn_id_add(struct quic_conn_id_set *id_set,
++		     struct quic_conn_id *conn_id, u32 number, void *data)
++{
++	struct quic_source_conn_id *s_conn_id;
++	struct quic_dest_conn_id *d_conn_id;
++	struct quic_common_conn_id *common;
++	struct quic_shash_head *head;
++	struct list_head *list;
++
++	/* Locate insertion point to keep list ordered by number. */
++	list = &id_set->head;
++	list_for_each_entry(common, list, list) {
++		if (number == common->number)
++			return 0; /* Ignore if it already exists on the list. */
++		if (number < common->number) {
++			list = &common->list;
++			break;
++		}
++	}
++
++	if (conn_id->len > QUIC_CONN_ID_MAX_LEN)
++		return -EINVAL;
++	common = kzalloc(id_set->entry_size, GFP_ATOMIC);
++	if (!common)
++		return -ENOMEM;
++	common->id = *conn_id;
++	common->number = number;
++	if (id_set->entry_size == sizeof(struct quic_dest_conn_id)) {
++		/* For destination connection IDs, copy the stateless reset token if available. */
++		if (data) {
++			d_conn_id = (struct quic_dest_conn_id *)common;
++			memcpy(d_conn_id->token, data, QUIC_CONN_ID_TOKEN_LEN);
++		}
++	} else {
++		/* For source connection IDs, mark as hashed and insert into the global source
++		 * connection ID hashtable.
++		 */
++		common->hashed = 1;
++		s_conn_id = (struct quic_source_conn_id *)common;
++		s_conn_id->sk = data;
++
++		head = quic_source_conn_id_head(sock_net(s_conn_id->sk), common->id.data);
++		write_lock_bh(&head->lock);
++		hlist_add_head(&s_conn_id->node, &head->head);
++		write_unlock_bh(&head->lock);
++	}
++	list_add_tail(&common->list, list);
++
++	if (number == quic_conn_id_last_number(id_set) + 1) {
++		if (!id_set->active)
++			id_set->active = common;
++		id_set->count++;
++
++		/* Increment count for consecutive following IDs. */
++		list_for_each_entry_continue(common, &id_set->head, list) {
++			if (common->number != ++number)
++				break;
++			id_set->count++;
++		}
++	}
++	return 0;
++}
++
++/* Remove connection IDs from the set with sequence numbers less than or equal to a number. */
++void quic_conn_id_remove(struct quic_conn_id_set *id_set, u32 number)
++{
++	struct quic_common_conn_id *common, *tmp;
++	struct list_head *list;
++
++	list = &id_set->head;
++	list_for_each_entry_safe(common, tmp, list, list) {
++		if (common->number <= number) {
++			if (id_set->active == common)
++				id_set->active = tmp;
++			quic_conn_id_del(common);
++			id_set->count--;
++		}
++	}
++}
++
++struct quic_conn_id *quic_conn_id_find(struct quic_conn_id_set *id_set, u32 number)
++{
++	struct quic_common_conn_id *common;
++
++	list_for_each_entry(common, &id_set->head, list)
++		if (common->number == number)
++			return &common->id;
++	return NULL;
++}
++
++void quic_conn_id_update_active(struct quic_conn_id_set *id_set, u32 number)
++{
++	struct quic_conn_id *conn_id;
++
++	if (number == id_set->active->number)
++		return;
++	conn_id = quic_conn_id_find(id_set, number);
++	if (!conn_id)
++		return;
++	quic_conn_id_set_active(id_set, conn_id);
++}
++
++void quic_conn_id_set_init(struct quic_conn_id_set *id_set, bool source)
++{
++	id_set->entry_size = source ? sizeof(struct quic_source_conn_id)
++				    : sizeof(struct quic_dest_conn_id);
++	INIT_LIST_HEAD(&id_set->head);
++}
++
++void quic_conn_id_set_free(struct quic_conn_id_set *id_set)
++{
++	struct quic_common_conn_id *common, *tmp;
++
++	list_for_each_entry_safe(common, tmp, &id_set->head, list)
++		quic_conn_id_del(common);
++	id_set->count = 0;
++	id_set->active = NULL;
++}
++
++void quic_conn_id_get_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p)
++{
++	p->active_connection_id_limit = id_set->max_count;
++}
++
++void quic_conn_id_set_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p)
++{
++	id_set->max_count = p->active_connection_id_limit;
++}
+diff --git a/net/quic/connid.h b/net/quic/connid.h
+new file mode 100644
+index 000000000000..cff37b2fb95b
+--- /dev/null
++++ b/net/quic/connid.h
+@@ -0,0 +1,162 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/* QUIC kernel implementation
 + * (C) Copyright Red Hat Corp. 2023
@@ -157,345 +408,220 @@ index 000000000000..d35ff40bb005
 + *    Xin Long <lucien.xin@gmail.com>
 + */
 +
-+#ifndef _LINUX_QUIC_H
-+#define _LINUX_QUIC_H
++#define QUIC_CONN_ID_LIMIT	8
++#define QUIC_CONN_ID_DEF	7
++#define QUIC_CONN_ID_LEAST	2
 +
-+#include <uapi/linux/quic.h>
++#define QUIC_CONN_ID_TOKEN_LEN	16
 +
-+int quic_kernel_setsockopt(struct sock *sk, int optname, void *optval, unsigned int optlen);
-+int quic_kernel_getsockopt(struct sock *sk, int optname, void *optval, unsigned int *optlen);
-+
-+#endif
-diff --git a/include/uapi/linux/quic.h b/include/uapi/linux/quic.h
-new file mode 100644
-index 000000000000..f7c85399ac4a
---- /dev/null
-+++ b/include/uapi/linux/quic.h
-@@ -0,0 +1,236 @@
-+/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#ifndef _UAPI_LINUX_QUIC_H
-+#define _UAPI_LINUX_QUIC_H
-+
-+#include <linux/types.h>
-+#ifdef __KERNEL__
-+#include <linux/socket.h>
-+#else
-+#include <sys/socket.h>
-+#endif
-+
-+/* NOTE: Structure descriptions are specified in:
-+ * https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
-+ */
-+
-+/* Send or Receive Options APIs */
-+enum quic_cmsg_type {
-+	QUIC_STREAM_INFO,
-+	QUIC_HANDSHAKE_INFO,
++/* Common fields shared by both source and destination Connection IDs */
++struct quic_common_conn_id {
++	struct quic_conn_id id;	/* The actual Connection ID value and its length */
++	struct list_head list;	/* Linked list node for conn_id list management */
++	u32 number;		/* Sequence number assigned to this Connection ID */
++	u8 hashed;		/* Non-zero if this ID is stored in source_conn_id hashtable */
 +};
 +
-+#define QUIC_STREAM_TYPE_SERVER_MASK	0x01
-+#define QUIC_STREAM_TYPE_UNI_MASK	0x02
-+#define QUIC_STREAM_TYPE_MASK		0x03
-+
-+enum quic_msg_flags {
-+	/* flags for stream_flags */
-+	MSG_STREAM_NEW		= MSG_SYN,
-+	MSG_STREAM_FIN		= MSG_FIN,
-+	MSG_STREAM_UNI		= MSG_CONFIRM,
-+	MSG_STREAM_DONTWAIT	= MSG_WAITFORONE,
-+	MSG_STREAM_SNDBLOCK	= MSG_ERRQUEUE,
-+
-+	/* extented flags for msg_flags */
-+	MSG_DATAGRAM		= MSG_RST,
-+	MSG_NOTIFICATION	= MSG_MORE,
++struct quic_source_conn_id {
++	struct quic_common_conn_id common;
++	struct hlist_node node; /* Hash table node for fast lookup by Connection ID */
++	struct rcu_head rcu;	/* RCU header for deferred destruction */
++	struct sock *sk;	/* Pointer to sk associated with this Connection ID */
 +};
 +
-+enum quic_crypto_level {
-+	QUIC_CRYPTO_APP,
-+	QUIC_CRYPTO_INITIAL,
-+	QUIC_CRYPTO_HANDSHAKE,
-+	QUIC_CRYPTO_EARLY,
-+	QUIC_CRYPTO_MAX,
++struct quic_dest_conn_id {
++	struct quic_common_conn_id common;
++	u8 token[QUIC_CONN_ID_TOKEN_LEN];	/* Stateless reset token in rfc9000#section-10.3 */
 +};
 +
-+struct quic_handshake_info {
-+	__u8	crypto_level;
++struct quic_conn_id_set {
++	/* Connection ID in use on the current path */
++	struct quic_common_conn_id *active;
++	/* Connection ID to use for a new path (e.g., after migration) */
++	struct quic_common_conn_id *alt;
++	struct list_head head;	/* Head of the linked list of available connection IDs */
++	u8 entry_size;		/* Size of each connection ID entry (in bytes) in the list */
++	u8 max_count;		/* active_connection_id_limit in rfc9000#section-18.2 */
++	u8 count;		/* Current number of connection IDs in the list */
 +};
 +
-+struct quic_stream_info {
-+	__s64	stream_id;
-+	__u32	stream_flags;
-+};
++static inline u32 quic_conn_id_first_number(struct quic_conn_id_set *id_set)
++{
++	struct quic_common_conn_id *common;
 +
-+/* Socket Options APIs */
-+#define QUIC_SOCKOPT_EVENT				0
-+#define QUIC_SOCKOPT_STREAM_OPEN			1
-+#define QUIC_SOCKOPT_STREAM_RESET			2
-+#define QUIC_SOCKOPT_STREAM_STOP_SENDING		3
-+#define QUIC_SOCKOPT_CONNECTION_ID			4
-+#define QUIC_SOCKOPT_CONNECTION_CLOSE			5
-+#define QUIC_SOCKOPT_CONNECTION_MIGRATION		6
-+#define QUIC_SOCKOPT_KEY_UPDATE				7
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM			8
-+#define QUIC_SOCKOPT_CONFIG				9
-+#define QUIC_SOCKOPT_TOKEN				10
-+#define QUIC_SOCKOPT_ALPN				11
-+#define QUIC_SOCKOPT_SESSION_TICKET			12
-+#define QUIC_SOCKOPT_CRYPTO_SECRET			13
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM_EXT		14
++	common = list_first_entry(&id_set->head, struct quic_common_conn_id, list);
++	return common->number;
++}
 +
-+#define QUIC_VERSION_V1			0x1
-+#define QUIC_VERSION_V2			0x6b3343cf
++static inline u32 quic_conn_id_last_number(struct quic_conn_id_set *id_set)
++{
++	return quic_conn_id_first_number(id_set) + id_set->count - 1;
++}
 +
-+struct quic_transport_param {
-+	__u8	remote;
-+	__u8	disable_active_migration;
-+	__u8	grease_quic_bit;
-+	__u8	stateless_reset;
-+	__u8	disable_1rtt_encryption;
-+	__u8	disable_compatible_version;
-+	__u8	active_connection_id_limit;
-+	__u8	ack_delay_exponent;
-+	__u16	max_datagram_frame_size;
-+	__u16	max_udp_payload_size;
-+	__u32	max_idle_timeout;
-+	__u32	max_ack_delay;
-+	__u16	max_streams_bidi;
-+	__u16	max_streams_uni;
-+	__u64	max_data;
-+	__u64	max_stream_data_bidi_local;
-+	__u64	max_stream_data_bidi_remote;
-+	__u64	max_stream_data_uni;
-+	__u64	reserved;
-+};
++static inline void quic_conn_id_generate(struct quic_conn_id *conn_id)
++{
++	get_random_bytes(conn_id->data, QUIC_CONN_ID_DEF_LEN);
++	conn_id->len = QUIC_CONN_ID_DEF_LEN;
++}
 +
-+struct quic_config {
-+	__u32	version;
-+	__u32	plpmtud_probe_interval;
-+	__u32	initial_smoothed_rtt;
-+	__u32	payload_cipher_type;
-+	__u8	congestion_control_algo;
-+	__u8	validate_peer_address;
-+	__u8	stream_data_nodelay;
-+	__u8	receive_session_ticket;
-+	__u8	certificate_request;
-+	__u8	reserved[3];
-+};
-+
-+struct quic_crypto_secret {
-+	__u8	send;  /* send or recv */
-+	__u8	level; /* crypto level */
-+	__u32	type; /* TLS_CIPHER_* */
-+#define QUIC_CRYPTO_SECRET_BUFFER_SIZE 48
-+	__u8	secret[QUIC_CRYPTO_SECRET_BUFFER_SIZE];
-+};
-+
-+enum quic_cong_algo {
-+	QUIC_CONG_ALG_RENO,
-+	QUIC_CONG_ALG_CUBIC,
-+	QUIC_CONG_ALG_MAX,
-+};
-+
-+struct quic_errinfo {
-+	__s64	stream_id;
-+	__u32	errcode;
-+};
-+
-+struct quic_connection_id_info {
-+	__u8	dest;
-+	__u32	active;
-+	__u32	prior_to;
-+};
-+
-+struct quic_event_option {
-+	__u8	type;
-+	__u8	on;
-+};
-+
-+/* Event APIs */
-+enum quic_event_type {
-+	QUIC_EVENT_NONE,
-+	QUIC_EVENT_STREAM_UPDATE,
-+	QUIC_EVENT_STREAM_MAX_DATA,
-+	QUIC_EVENT_STREAM_MAX_STREAM,
-+	QUIC_EVENT_CONNECTION_ID,
-+	QUIC_EVENT_CONNECTION_CLOSE,
-+	QUIC_EVENT_CONNECTION_MIGRATION,
-+	QUIC_EVENT_KEY_UPDATE,
-+	QUIC_EVENT_NEW_TOKEN,
-+	QUIC_EVENT_NEW_SESSION_TICKET,
-+	QUIC_EVENT_MAX,
-+};
-+
-+enum {
-+	QUIC_STREAM_SEND_STATE_READY,
-+	QUIC_STREAM_SEND_STATE_SEND,
-+	QUIC_STREAM_SEND_STATE_SENT,
-+	QUIC_STREAM_SEND_STATE_RECVD,
-+	QUIC_STREAM_SEND_STATE_RESET_SENT,
-+	QUIC_STREAM_SEND_STATE_RESET_RECVD,
-+
-+	QUIC_STREAM_RECV_STATE_RECV,
-+	QUIC_STREAM_RECV_STATE_SIZE_KNOWN,
-+	QUIC_STREAM_RECV_STATE_RECVD,
-+	QUIC_STREAM_RECV_STATE_READ,
-+	QUIC_STREAM_RECV_STATE_RESET_RECVD,
-+	QUIC_STREAM_RECV_STATE_RESET_READ,
-+};
-+
-+struct quic_stream_update {
-+	__s64	id;
-+	__u8	state;
-+	__u32	errcode;
-+	__u64	finalsz;
-+};
-+
-+struct quic_stream_max_data {
-+	__s64	id;
-+	__u64	max_data;
-+};
-+
-+struct quic_connection_close {
-+	__u32	errcode;
-+	__u8	frame;
-+	__u8	phrase[];
-+};
-+
-+union quic_event {
-+	struct quic_stream_update	update;
-+	struct quic_stream_max_data	max_data;
-+	struct quic_connection_close	close;
-+	struct quic_connection_id_info	info;
-+	__u64	max_stream;
-+	__u8	local_migration;
-+	__u8	key_update_phase;
-+};
-+
-+enum {
-+	QUIC_TRANSPORT_ERROR_NONE			= 0x00,
-+	QUIC_TRANSPORT_ERROR_INTERNAL			= 0x01,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_REFUSED		= 0x02,
-+	QUIC_TRANSPORT_ERROR_FLOW_CONTROL		= 0x03,
-+	QUIC_TRANSPORT_ERROR_STREAM_LIMIT		= 0x04,
-+	QUIC_TRANSPORT_ERROR_STREAM_STATE		= 0x05,
-+	QUIC_TRANSPORT_ERROR_FINAL_SIZE			= 0x06,
-+	QUIC_TRANSPORT_ERROR_FRAME_ENCODING		= 0x07,
-+	QUIC_TRANSPORT_ERROR_TRANSPORT_PARAM		= 0x08,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_ID_LIMIT	= 0x09,
-+	QUIC_TRANSPORT_ERROR_PROTOCOL_VIOLATION		= 0x0a,
-+	QUIC_TRANSPORT_ERROR_INVALID_TOKEN		= 0x0b,
-+	QUIC_TRANSPORT_ERROR_APPLICATION		= 0x0c,
-+	QUIC_TRANSPORT_ERROR_CRYPTO_BUF_EXCEEDED	= 0x0d,
-+	QUIC_TRANSPORT_ERROR_KEY_UPDATE			= 0x0e,
-+	QUIC_TRANSPORT_ERROR_AEAD_LIMIT_REACHED		= 0x0f,
-+	QUIC_TRANSPORT_ERROR_NO_VIABLE_PATH		= 0x10,
-+
-+	/* The cryptographic handshake failed. A range of 256 values is reserved
-+	 * for carrying error codes specific to the cryptographic handshake that
-+	 * is used. Codes for errors occurring when TLS is used for the
-+	 * cryptographic handshake are described in Section 4.8 of [QUIC-TLS].
++/* Select an alternate destination Connection ID for a new path (e.g., after migration). */
++static inline bool quic_conn_id_select_alt(struct quic_conn_id_set *id_set, bool active)
++{
++	if (id_set->alt)
++		return true;
++	/* NAT rebinding: peer keeps using the current source conn_id.
++	 * In this case, continue using the same dest conn_id for the new path.
 +	 */
-+	QUIC_TRANSPORT_ERROR_CRYPTO			= 0x0100,
-+};
++	if (active) {
++		id_set->alt = id_set->active;
++		return true;
++	}
++	/* Treat the prev conn_ids as used.
++	 * Try selecting the next conn_id in the list, unless at the end.
++	 */
++	if (id_set->active->number != quic_conn_id_last_number(id_set)) {
++		id_set->alt = list_next_entry(id_set->active, list);
++		return true;
++	}
++	/* If there's only one conn_id in the list, reuse the active one. */
++	if (id_set->active->number == quic_conn_id_first_number(id_set)) {
++		id_set->alt = id_set->active;
++		return true;
++	}
++	/* No alternate conn_id could be selected.  Caller should send a
++	 * QUIC_FRAME_RETIRE_CONNECTION_ID frame to request new connection IDs from the peer.
++	 */
++	return false;
++}
 +
-+#endif /* _UAPI_LINUX_QUIC_H */
++static inline void quic_conn_id_set_alt(struct quic_conn_id_set *id_set, struct quic_conn_id *alt)
++{
++	id_set->alt = (struct quic_common_conn_id *)alt;
++}
++
++/* Swap the active and alternate destination Connection IDs after path migration completes,
++ * since the path has already been switched accordingly.
++ */
++static inline void quic_conn_id_swap_active(struct quic_conn_id_set *id_set)
++{
++	void *active = id_set->active;
++
++	id_set->active = id_set->alt;
++	id_set->alt = active;
++}
++
++/* Choose which destination Connection ID to use for a new path migration if alt is true. */
++static inline struct quic_conn_id *quic_conn_id_choose(struct quic_conn_id_set *id_set, u8 alt)
++{
++	return (alt && id_set->alt) ? &id_set->alt->id : &id_set->active->id;
++}
++
++static inline struct quic_conn_id *quic_conn_id_active(struct quic_conn_id_set *id_set)
++{
++	return &id_set->active->id;
++}
++
++static inline void quic_conn_id_set_active(struct quic_conn_id_set *id_set,
++					   struct quic_conn_id *active)
++{
++	id_set->active = (struct quic_common_conn_id *)active;
++}
++
++static inline u32 quic_conn_id_number(struct quic_conn_id *conn_id)
++{
++	return ((struct quic_common_conn_id *)conn_id)->number;
++}
++
++static inline struct sock *quic_conn_id_sk(struct quic_conn_id *conn_id)
++{
++	return ((struct quic_source_conn_id *)conn_id)->sk;
++}
++
++static inline void quic_conn_id_set_token(struct quic_conn_id *conn_id, u8 *token)
++{
++	memcpy(((struct quic_dest_conn_id *)conn_id)->token, token, QUIC_CONN_ID_TOKEN_LEN);
++}
++
++static inline int quic_conn_id_cmp(struct quic_conn_id *a, struct quic_conn_id *b)
++{
++	return a->len != b->len || memcmp(a->data, b->data, a->len);
++}
++
++int quic_conn_id_add(struct quic_conn_id_set *id_set, struct quic_conn_id *conn_id,
++		     u32 number, void *data);
++bool quic_conn_id_token_exists(struct quic_conn_id_set *id_set, u8 *token);
++void quic_conn_id_remove(struct quic_conn_id_set *id_set, u32 number);
++
++struct quic_conn_id *quic_conn_id_find(struct quic_conn_id_set *id_set, u32 number);
++struct quic_conn_id *quic_conn_id_lookup(struct net *net, u8 *scid, u32 len);
++void quic_conn_id_update_active(struct quic_conn_id_set *id_set, u32 number);
++
++void quic_conn_id_get_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p);
++void quic_conn_id_set_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p);
++void quic_conn_id_set_init(struct quic_conn_id_set *id_set, bool source);
++void quic_conn_id_set_free(struct quic_conn_id_set *id_set);
 diff --git a/net/quic/socket.c b/net/quic/socket.c
-index 0b8fec63f769..08d21389c52e 100644
+index d0a50b218f9f..d79542c4387d 100644
 --- a/net/quic/socket.c
 +++ b/net/quic/socket.c
-@@ -121,6 +121,25 @@ static int quic_setsockopt(struct sock *sk, int level, int optname,
- 	return quic_do_setsockopt(sk, optname, optval, optlen);
- }
+@@ -41,6 +41,9 @@ static int quic_init_sock(struct sock *sk)
+ 	sk->sk_write_space = quic_write_space;
+ 	sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
  
-+/**
-+ * quic_kernel_setsockopt - set a QUIC socket option from within the kernel
-+ * @sk: socket to configure
-+ * @optname: option name (QUIC-level)
-+ * @optval: pointer to the option value
-+ * @optlen: size of the option value
-+ *
-+ * Sets a QUIC socket option on a kernel socket without involving user space.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_kernel_setsockopt(struct sock *sk, int optname, void *optval, unsigned int optlen)
-+{
-+	return quic_do_setsockopt(sk, optname, KERNEL_SOCKPTR(optval), optlen);
-+}
-+EXPORT_SYMBOL_GPL(quic_kernel_setsockopt);
++	quic_conn_id_set_init(quic_source(sk), 1);
++	quic_conn_id_set_init(quic_dest(sk), 0);
 +
- static int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
- {
- 	return -EOPNOTSUPP;
-@@ -135,6 +154,25 @@ static int quic_getsockopt(struct sock *sk, int level, int optname,
- 	return quic_do_getsockopt(sk, optname, USER_SOCKPTR(optval), USER_SOCKPTR(optlen));
- }
+ 	if (quic_stream_init(quic_streams(sk)))
+ 		return -ENOMEM;
  
-+/**
-+ * quic_kernel_getsockopt - get a QUIC socket option from within the kernel
-+ * @sk: socket to query
-+ * @optname: option name (QUIC-level)
-+ * @optval: pointer to the buffer to receive the option value
-+ * @optlen: pointer to the size of the buffer; updated to actual length on return
-+ *
-+ * Gets a QUIC socket option from a kernel socket, bypassing user space.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_kernel_getsockopt(struct sock *sk, int optname, void *optval, unsigned int *optlen)
-+{
-+	return quic_do_getsockopt(sk, optname, KERNEL_SOCKPTR(optval), KERNEL_SOCKPTR(optlen));
-+}
-+EXPORT_SYMBOL_GPL(quic_kernel_getsockopt);
-+
- static void quic_release_cb(struct sock *sk)
+@@ -55,6 +58,9 @@ static int quic_init_sock(struct sock *sk)
+ 
+ static void quic_destroy_sock(struct sock *sk)
  {
- }
++	quic_conn_id_set_free(quic_source(sk));
++	quic_conn_id_set_free(quic_dest(sk));
++
+ 	quic_stream_free(quic_streams(sk));
+ 
+ 	quic_data_free(quic_ticket(sk));
 diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 3f808489f571..aeaefc677973 100644
+index 3eba18514ae6..43f86cabb698 100644
 --- a/net/quic/socket.h
 +++ b/net/quic/socket.h
-@@ -9,6 +9,7 @@
-  */
- 
- #include <net/udp_tunnel.h>
-+#include <linux/quic.h>
- 
+@@ -14,6 +14,7 @@
  #include "common.h"
  #include "family.h"
-@@ -29,6 +30,7 @@ struct quic_sock {
- 	struct inet_sock		inet;
- 	struct list_head		reqs;
+ #include "stream.h"
++#include "connid.h"
  
-+	struct quic_config		config;
- 	struct quic_data		ticket;
- 	struct quic_data		token;
+ #include "protocol.h"
+ 
+@@ -37,6 +38,8 @@ struct quic_sock {
  	struct quic_data		alpn;
-@@ -49,6 +51,11 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
- 	return &quic_sk(sk)->reqs;
+ 
+ 	struct quic_stream_table	streams;
++	struct quic_conn_id_set		source;
++	struct quic_conn_id_set		dest;
+ };
+ 
+ struct quic6_sock {
+@@ -79,6 +82,16 @@ static inline struct quic_stream_table *quic_streams(const struct sock *sk)
+ 	return &quic_sk(sk)->streams;
  }
  
-+static inline struct quic_config *quic_config(const struct sock *sk)
++static inline struct quic_conn_id_set *quic_source(const struct sock *sk)
 +{
-+	return &quic_sk(sk)->config;
++	return &quic_sk(sk)->source;
 +}
 +
- static inline struct quic_data *quic_token(const struct sock *sk)
++static inline struct quic_conn_id_set *quic_dest(const struct sock *sk)
++{
++	return &quic_sk(sk)->dest;
++}
++
+ static inline bool quic_is_establishing(struct sock *sk)
  {
- 	return &quic_sk(sk)->token;
+ 	return sk->sk_state == QUIC_SS_ESTABLISHING;
 -- 
 2.47.1
 
