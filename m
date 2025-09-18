@@ -1,78 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD91CA52
-	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 13:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F00622F77E
+	for <netdev@vger.kernel.org>; Thu, 18 Sep 2025 13:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758203201; cv=none; b=cCYykEMskS6Rn99BDnau8BsDsh4jLpkH+e/+YMLxIFDnKl7ixRZeZJ8jPbE4hdBetq97K76MLCIVyepD949CfEdxk9LwyZTVI/AlU/JG2n3Lz00aIFX4OgiziHONRxbS1OimOURan0BnnCpFKPtA7Rm0KIcjwZF6nq6rdxPA5mY=
+	t=1758203965; cv=none; b=eGlMnC7pFk0GuFoj9ZNrYu4gNJnzC455eVp17NukqL7jP4qQ0td7F/+bds8mgqsYOMbyMZny2yhIo9OGhY/izAb2FZcDtqb8gof3bw3LKltlLIzmKnHmAX3OuiDj0pKrYhr4nEnBPGgYu99mvutNtrUN3+kQHuPmKfzp25AEr4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758203201; c=relaxed/simple;
-	bh=XLIidpsqO51OHrc1VlSMDqjpYMADSazxBvF/B/6gB70=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XKCEDBl+72KHeNYloopQOtlV08ph96fSq57bhlFyzfZ8CfrjPqs0VwEohDwK8fMD6jYvtz1JbVt2WYh90om9DknWz2H6JPy7kxHUS7clHW2prn2W4jk+46UFpVBP99Q1rjc4AcNokT/hfpFh+Tj7MuDpdgG2BK0OptnlGrmc6+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8h8OcPT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758203965; c=relaxed/simple;
+	bh=p5Lv3uUZAHbIQ99lh3jk7U1dwg6LSEj2Bbz5I2CYnbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OunwrjRs2WwKEhw9V0nFioCYw1ZVj2T3ioPSw9tZ2CD4O2IF359s1kapa/tvWYY+qhNwKrZ42JfpCEOnDCuMxR+fTkeJEXpjyQB1TvHxo7M74Qvn7GyDvo81yBRWapD6d54pWbwUYDPgpig9aGvFVUfKn1ieJENUCfGpshCXVAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AgKSRqA0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8h8OcPT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0081C4CEE7;
-	Thu, 18 Sep 2025 13:46:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AgKSRqA0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8BDC4CEEB;
+	Thu, 18 Sep 2025 13:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758203201;
-	bh=XLIidpsqO51OHrc1VlSMDqjpYMADSazxBvF/B/6gB70=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b8h8OcPTpEveN+gpxwQ/M62HPwCj/Q28BaTWz/OsqdC3l+zbzoXYPaQU0Lnmox+Df
-	 ZuTxfCrl9Ihph+tiPZvBZUEr8zWi5ZXyEXIqVBwNRgjjNPYzUMPaL6wHA3lhlHoXPF
-	 eVRvcGz0OA3xGbtMLOF9O1BQFA2IGh+K7ubuD9/X3yaBqexKhcjsL8wgR537Yr5yzR
-	 9BSChKJxlxeU7AsMYtV1O5kQVLHvqJm2y2KMhqm47WoFqiT7fTLF3mIiORxxzsPcGm
-	 nGeWDMdPEniE83v7qL04VO0uy3LXdw6ubsHwKx+KLc3zSLg0OoPi+06I7C3LtZPa2l
-	 q2rI3jGWx5UDg==
+	s=k20201202; t=1758203965;
+	bh=p5Lv3uUZAHbIQ99lh3jk7U1dwg6LSEj2Bbz5I2CYnbg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AgKSRqA04k3JrwNjdykMpfmrT2Tz99xMPbKvjXrVTBygsJeAuh04AKi6MfaPN4+ub
+	 3g9P+w26QO/Z9RXkQFTQz6kqfZvLFbl67g4hG3MIg2+k8LVATIgGIW0mzyvxWT0/5v
+	 9tlycIpqZshLfNCa8c7XHoisPaQl0s3Ysok9spqTn00Vhub6Npb3Vk1EpHDvBCoP+4
+	 WlTAKoxwbhpsQtaznUrHCayMBGfD2TAP9aqJyc6pMo+S6DnpP7loITmGIVGlpEPu8g
+	 exVvtDaibLrmXsXyda/RSR4M9OpA/eA4I8O/2aPqRH3EUvy+RylkhaUFT+L8cpFe2s
+	 NXbAbYHcWTiZQ==
+Date: Thu, 18 Sep 2025 06:59:23 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	herve.codina@bootlin.com
-Subject: [PATCH net-next] wan: framer: pef2256: use %pe in print format
-Date: Thu, 18 Sep 2025 06:46:37 -0700
-Message-ID: <20250918134637.2226614-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.51.0
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Andrew Lunn <andrew@lunn.ch>, Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, intel-wired-lan@lists.osuosl.org, Donald
+ Hunter <donald.hunter@gmail.com>, Carolina Jubran <cjubran@nvidia.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/4] ethtool: add FEC bins histogram report
+Message-ID: <20250918065923.26331dd6@kernel.org>
+In-Reply-To: <3091c796-acad-4c87-9782-3b67210147c2@linux.dev>
+References: <20250916191257.13343-1-vadim.fedorenko@linux.dev>
+	<20250916191257.13343-2-vadim.fedorenko@linux.dev>
+	<20250917174148.0c909f92@kernel.org>
+	<3091c796-acad-4c87-9782-3b67210147c2@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-New cocci check complains:
+On Thu, 18 Sep 2025 11:53:53 +0100 Vadim Fedorenko wrote:
+> On 18/09/2025 01:41, Jakub Kicinski wrote:
+> > On Tue, 16 Sep 2025 19:12:54 +0000 Vadim Fedorenko wrote:  
+> >> IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
+> >> clarifies it a bit further. Implement reporting interface through as
+> >> addition to FEC stats available in ethtool.
+> >> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+> >> index 7a7594713f1f..de5008266884 100644
+> >> --- a/Documentation/netlink/specs/ethtool.yaml
+> >> +++ b/Documentation/netlink/specs/ethtool.yaml
+> >> @@ -1219,6 +1219,23 @@ attribute-sets:
+> >>           name: udp-ports
+> >>           type: nest
+> >>           nested-attributes: tunnel-udp
+> >> +  -
+> >> +    name: fec-hist
+> >> +    attr-cnt-name: __ethtool-a-fec-hist-cnt  
+> > 
+> > s/__/--/  
+> 
+> That will bring strong inconsistency in schema. All other attributes
+> have counter attribute with __ in the beginning:
+> 
+>      name: fec-stat
+>      attr-cnt-name: __ethtool-a-fec-stat-cnt
+> 
+>      name: stats-grp
+>      attr-cnt-name: __ethtool-a-stats-grp-cnt
+> 
+>      name: stats
+>      attr-cnt-name: __ethtool-a-stats-cnt
 
-  drivers/net/wan/framer/pef2256/pef2256.c:733:3-10: WARNING: Consider using %pe to print PTR_ERR()
+I know.
 
-Link: https://lore.kernel.org/1758192227-701925-1-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: herve.codina@bootlin.com
----
- drivers/net/wan/framer/pef2256/pef2256.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> >>   static void
+> >> -nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats)
+> >> +nsim_get_fec_stats(struct net_device *dev, struct ethtool_fec_stats *fec_stats,
+> >> +		   struct ethtool_fec_hist *hist)
+> >>   {
+> >> +	struct ethtool_fec_hist_value *values = hist->values;
+> >> +
+> >> +	hist->ranges = netdevsim_fec_ranges;
+> >> +
+> >>   	fec_stats->corrected_blocks.total = 123;
+> >>   	fec_stats->uncorrectable_blocks.total = 4;
+> >> +
+> >> +	values[0].bin_value = 445;  
+> > 
+> > Bin 0 had per lane breakdown, can't core add up the lanes for the
+> > driver?  
+> 
+> Like it's done for blocks counter? Should we force drivers to keep 'sum'
+> value equal to ETHTOOL_STAT_NOT_SET when they provide per-lane values?
 
-diff --git a/drivers/net/wan/framer/pef2256/pef2256.c b/drivers/net/wan/framer/pef2256/pef2256.c
-index 1e4c8e85d598..2a25cbd3f13b 100644
---- a/drivers/net/wan/framer/pef2256/pef2256.c
-+++ b/drivers/net/wan/framer/pef2256/pef2256.c
-@@ -719,8 +719,8 @@ static int pef2256_probe(struct platform_device *pdev)
- 	pef2256->regmap = devm_regmap_init_mmio(&pdev->dev, iomem,
- 						&pef2256_regmap_config);
- 	if (IS_ERR(pef2256->regmap)) {
--		dev_err(&pdev->dev, "Failed to initialise Regmap (%ld)\n",
--			PTR_ERR(pef2256->regmap));
-+		dev_err(&pdev->dev, "Failed to initialise Regmap (%pe)\n",
-+			pef2256->regmap);
- 		return PTR_ERR(pef2256->regmap);
- 	}
- 
--- 
-2.51.0
+No preference, but if it is NOT_SET we should add it up.
 
