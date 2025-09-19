@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A539F321F27
-	for <netdev@vger.kernel.org>; Fri, 19 Sep 2025 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB8A322A29
+	for <netdev@vger.kernel.org>; Fri, 19 Sep 2025 17:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758304464; cv=none; b=oq66r/E/2GitrhnFv3aHasSTaMZpra/RH8Li3l+oVXk6ROMfE+CJO3QnNSasRPcUvpqCh+b6NzLhl64b0U5W7ZUmO0c4jK/Q+wCUsOQ+9/DxU+p4KF8cIh31aHo2N+hJoL2G06H9T8tO240cmb96qM/JdAWD4qEyTNvzcXLHBLo=
+	t=1758304464; cv=none; b=p8IqPMw69w+z6NLr43jEl8knX0cbWqVYnkGyOtUPCktv+SwAqyVYidASMk12RzWCIPSktSwe4V8b3zg9U4y5AIOkG2XbpAtOhc6cnE6YJBqsBndJy17sHoGe7Qn/pzERF5fWIgcJYkEUvSNUI60iEoCQmUnyHHm7ovrwO6z+hNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758304464; c=relaxed/simple;
-	bh=n3Zy9h8DvR0/dDHtZiwoSZe12pUPLYSFPUyQ0dwN0Fs=;
+	bh=YiQqcGrD46Iv4e09feMm8xC4xb3pr+0dhoqa1pdrnEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObUI5tLGcU9+Wn3fKUPhWdJbYbGdEqTbTs5ceSz1TMLlKSpa3oqM4LAqac21WBtbWO+qC4NA9NKmUAaGoPSUgKXD1OedDNv+Qp35XWs3G12zGojgM4aKrqRl9mIEZWoWwpdvdPk5Or0hp/w0CHTzQuZahHzMK5vgNVLEDwI2Z9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jZZGLNS7; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=Y0mn9hS9zZB32cQGeg1yxZij+EuBIroIDYIAAmWtAK3w+WWo7Xb75663GY7dqFdupLGzdUUvckGZQY+l6uelluCFhHCokn8Y+38m/EEcVU/+Jjn8jAAbCerRtWiPvwnydDAH5nPMTd214vZfy2SA72eqS4z/hxk8n6QQMNly+H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GoKU9pu+; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jZZGLNS7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GoKU9pu+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758304462; x=1789840462;
+  t=1758304464; x=1789840464;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=n3Zy9h8DvR0/dDHtZiwoSZe12pUPLYSFPUyQ0dwN0Fs=;
-  b=jZZGLNS7KJYl3Zu7rY41jRgvQ2huVFLBQi7XfHMdSAuA9e0F2xsacJjJ
-   KNY7Jkq4hF/QghbKIu6MC9lM4rSIF77kTOmbhM3xyewT4pK1SScAv0YBV
-   zDnfS77/bmS/NTDEDKaY9OVTn2WlZ1p2hTpi5Of+IEo1l0kFBaD7sUmrt
-   7HDbazvmIAmlxKC4heDxaIoIs4smoMpWaMSUnVxBP+ulDB2AITh1lRZ7w
-   7iiNZdYJeGIs19IuvfZ3BglzXC0e69uEOzbzI7Zg8KsyJ8+5Ro67O9ypG
-   /5b/w/U3ohc0ebzjys5FAbGRpzFqyX4Az+J7mk5lJQZnLH0qSlsJd4z/G
-   Q==;
-X-CSE-ConnectionGUID: 4mjhUBHtTJiqXRj5/iDTOA==
-X-CSE-MsgGUID: sPxz2uJURsuDyejuYF6KRw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="78097070"
+  bh=YiQqcGrD46Iv4e09feMm8xC4xb3pr+0dhoqa1pdrnEE=;
+  b=GoKU9pu+/IQhF2Zhprl58OY7Fg9EHcBY/OZ/ps6eniz1uNkCmiC/R2HA
+   QZamEas28O0MsV20XQ+7pCA2DjKB5SYc9+u6diUPLdHw9atP5qgZ0kUm0
+   6JqcI2O2KOmVf5KjMPbjq9FOBAHUU7T2ecwRbn2lTd+TsUZ6D0CFzcBtn
+   F33Yjc6D03wBJji6tajyyBIP7WfwWRSTj5nMui31JylkIaM1sjpKM+WqZ
+   VrFqE4h6T37CMX9LCT7bi4eQtAc641CRplJGxyZ2g9FdWO+rRvd/TdMtO
+   51ZfkJEiQxeXv2/QY16Vy1oFy246uWHXMm8iZCzHBIGdlO5X0LotSlxnc
+   g==;
+X-CSE-ConnectionGUID: Wo1iyQGgStKq9qmhD8pxUA==
+X-CSE-MsgGUID: hODrkBAEQwKdIMo3FibHAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11558"; a="78097083"
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="78097070"
+   d="scan'208";a="78097083"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2025 10:54:21 -0700
-X-CSE-ConnectionGUID: eH9nGLiISJu18WeuLqxbEA==
-X-CSE-MsgGUID: 1kLnbhuVTsS0MCdpVgJhuw==
+X-CSE-ConnectionGUID: u6a8P7SmQCeaEj2zlAoNYQ==
+X-CSE-MsgGUID: 4vowIdeiQyuumr/wrceSxw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,278,1751266800"; 
-   d="scan'208";a="176709479"
+   d="scan'208";a="176709488"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 10:54:19 -0700
+  by fmviesa010.fm.intel.com with ESMTP; 19 Sep 2025 10:54:20 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,15 +50,18 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Paul Greenwalt <paul.greenwalt@intel.com>,
+Cc: Milena Olech <milena.olech@intel.com>,
 	anthony.l.nguyen@intel.com,
-	david.m.ertman@intel.com,
+	anton.nadezhdin@intel.com,
+	konstantin.ilichev@intel.com,
+	richardcochran@gmail.com,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 2/7] ice: add E830 Earliest TxTime First Offload support
-Date: Fri, 19 Sep 2025 10:54:05 -0700
-Message-ID: <20250919175412.653707-3-anthony.l.nguyen@intel.com>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: [PATCH net-next 4/7] idpf: add HW timestamping statistics
+Date: Fri, 19 Sep 2025 10:54:07 -0700
+Message-ID: <20250919175412.653707-5-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250919175412.653707-1-anthony.l.nguyen@intel.com>
 References: <20250919175412.653707-1-anthony.l.nguyen@intel.com>
@@ -70,1219 +73,203 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paul Greenwalt <paul.greenwalt@intel.com>
+From: Milena Olech <milena.olech@intel.com>
 
-E830 supports Earliest TxTime First (ETF) hardware offload, which is
-configured via the ETF Qdisc on a per-queue basis (see tc-etf(8)). ETF
-introduces a new Tx flow mechanism that utilizes a timestamp ring
-(tstamp_ring) alongside the standard Tx ring. This timestamp ring is
-used to indicate when hardware will transmit a packet. Tx Time is
-supported on the first 2048 Tx queues of the device, and the NVM image
-limits the maximum number of Tx queues to 2048 for the device.
+Add HW timestamping statistics support - through implementing get_ts_stats.
+Timestamp statistics include correctly timestamped packets, discarded,
+skipped and flushed during PTP release.
 
-The allocation and initialization of the timestamp ring occur when the
-feature is enabled on a specific Tx queue via tc-etf. The requested Tx
-Time queue index cannot be greater than the number of Tx queues
-(vsi->num_txq).
+Most of the stats are collected per vport, only requests skipped due to
+lack of free latch index are collected per Tx queue.
 
-To support ETF, the following flags and bitmap are introduced:
+Statistics can be obtained using kernel ethtool since version 6.10
+with:
+ethtool -I -T <interface>
 
- - ICE_F_TXTIME: Device feature flag set for E830 NICs, indicating ETF
-   support.
- - txtime_txqs: PF-level bitmap set when ETF is enabled and cleared
-   when disabled for a specific Tx queue. It is used by
-   ice_is_txtime_ena() to check if ETF is allocated and configured on
-   any Tx queue, which is checked during Tx ring allocation.
- - ICE_TX_FLAGS_TXTIME: Per Tx ring flag set when ETF is allocated and
-   configured for a specific Tx queue. It determines ETF status during
-   packet transmission and is checked by ice_is_txtime_ena() to verify
-   if ETF is enabled on any Tx queue.
+The output will include:
+Statistics:
+  tx_pkts: 15
+  tx_lost: 0
+  tx_err: 0
 
-Due to a hardware issue that can result in a malicious driver detection
-event, additional timestamp descriptors are required when wrapping
-around the timestamp ring. Up to 64 additional timestamp descriptors
-are reserved, reducing the available Tx descriptors.
-
-To accommodate this, ICE_MAX_NUM_DESC_BY_MAC is introduced, defining:
-
- - E830: Maximum Tx descriptor count of 8096 (8K - 32 - 64 for timestamp
-   fetch descriptors).
- - E810 and E82X: Maximum Tx descriptor count of 8160 (8K - 32).
-
+Signed-off-by: Milena Olech <milena.olech@intel.com>
+Co-developed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
+Signed-off-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Alice Michael <alice.michael@intel.com>
-Signed-off-by: Alice Michael <alice.michael@intel.com>
-Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice.h          |  33 ++-
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  35 +++
- drivers/net/ethernet/intel/ice/ice_base.c     | 245 +++++++++++++++---
- drivers/net/ethernet/intel/ice/ice_base.h     |   1 +
- drivers/net/ethernet/intel/ice/ice_common.c   |  78 ++++++
- drivers/net/ethernet/intel/ice/ice_common.h   |   6 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |  14 +-
- .../net/ethernet/intel/ice/ice_hw_autogen.h   |   3 +
- .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |  41 +++
- drivers/net/ethernet/intel/ice/ice_lib.c      |   1 +
- drivers/net/ethernet/intel/ice/ice_main.c     | 109 +++++++-
- drivers/net/ethernet/intel/ice/ice_txrx.c     | 173 ++++++++++++-
- drivers/net/ethernet/intel/ice/ice_txrx.h     |  15 ++
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h |  14 +
- drivers/net/ethernet/intel/ice/virt/queues.c  |   2 +-
- 15 files changed, 722 insertions(+), 48 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf.h        | 17 ++++++
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    | 56 +++++++++++++++++++
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    | 11 +++-
+ .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  4 ++
+ 4 files changed, 87 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index d35eb6404524..22b8323ff0d0 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -84,7 +84,11 @@
- #define ICE_BAR0		0
- #define ICE_REQ_DESC_MULTIPLE	32
- #define ICE_MIN_NUM_DESC	64
--#define ICE_MAX_NUM_DESC	8160
-+#define ICE_MAX_NUM_DESC_E810	8160
-+#define ICE_MAX_NUM_DESC_E830	8096
-+#define ICE_MAX_NUM_DESC_BY_MAC(hw) ((hw)->mac_type == ICE_MAC_E830 ? \
-+				     ICE_MAX_NUM_DESC_E830 : \
-+				     ICE_MAX_NUM_DESC_E810)
- #define ICE_DFLT_MIN_RX_DESC	512
- #define ICE_DFLT_NUM_TX_DESC	256
- #define ICE_DFLT_NUM_RX_DESC	2048
-@@ -200,6 +204,7 @@ enum ice_feature {
- 	ICE_F_SMA_CTRL,
- 	ICE_F_CGU,
- 	ICE_F_GNSS,
-+	ICE_F_TXTIME,
- 	ICE_F_GCS,
- 	ICE_F_ROCE_LAG,
- 	ICE_F_SRIOV_LAG,
-@@ -575,6 +580,7 @@ struct ice_pf {
- 	DECLARE_BITMAP(misc_thread, ICE_MISC_THREAD_NBITS);
- 	unsigned long *avail_txqs;	/* bitmap to track PF Tx queue usage */
- 	unsigned long *avail_rxqs;	/* bitmap to track PF Rx queue usage */
-+	unsigned long *txtime_txqs;     /* bitmap to track PF Tx Time queue */
- 	unsigned long serv_tmr_period;
- 	unsigned long serv_tmr_prev;
- 	struct timer_list serv_tmr;
-@@ -748,6 +754,31 @@ static inline void ice_set_ring_xdp(struct ice_tx_ring *ring)
- 	ring->flags |= ICE_TX_FLAGS_RING_XDP;
- }
- 
-+/**
-+ * ice_is_txtime_ena - check if Tx Time is enabled on the Tx ring
-+ * @ring: pointer to Tx ring
-+ *
-+ * Return: true if the Tx ring has Tx Time enabled, false otherwise.
-+ */
-+static inline bool ice_is_txtime_ena(const struct ice_tx_ring *ring)
-+{
-+	struct ice_vsi *vsi = ring->vsi;
-+	struct ice_pf *pf = vsi->back;
-+
-+	return test_bit(ring->q_index,  pf->txtime_txqs);
-+}
-+
-+/**
-+ * ice_is_txtime_cfg - check if Tx Time is configured on the Tx ring
-+ * @ring: pointer to Tx ring
-+ *
-+ * Return: true if the Tx ring is configured for Tx ring, false otherwise.
-+ */
-+static inline bool ice_is_txtime_cfg(const struct ice_tx_ring *ring)
-+{
-+	return !!(ring->flags & ICE_TX_FLAGS_TXTIME);
-+}
-+
- /**
-  * ice_get_xp_from_qid - get ZC XSK buffer pool bound to a queue ID
-  * @vsi: pointer to VSI
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 93aedb35fd17..859e9c66f3e7 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -33,6 +33,10 @@ typedef struct __packed { u8 buf[ICE_TXQ_CTX_SZ]; } ice_txq_ctx_buf_t;
- 
- typedef struct __packed { u8 buf[ICE_TXQ_CTX_FULL_SZ]; } ice_txq_ctx_buf_full_t;
- 
-+#define ICE_TXTIME_CTX_SZ		25
-+
-+typedef struct __packed { u8 buf[ICE_TXTIME_CTX_SZ]; } ice_txtime_ctx_buf_t;
-+
- /* Queue Shutdown (direct 0x0003) */
- struct ice_aqc_q_shutdown {
- 	u8 driver_unloading;
-@@ -2117,6 +2121,34 @@ struct ice_aqc_add_rdma_qset_data {
- 	struct ice_aqc_add_tx_rdma_qset_entry rdma_qsets[];
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 6e79fa8556e9..6db6d6f0562a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -256,6 +256,21 @@ enum idpf_vport_flags {
+ 	IDPF_VPORT_FLAGS_NBITS,
  };
  
-+/* Set Tx Time LAN Queue (indirect 0x0C35) */
-+struct ice_aqc_set_txtimeqs {
-+	__le16 q_id;
-+	__le16 q_amount;
-+	u8 reserved[4];
-+	__le32 addr_high;
-+	__le32 addr_low;
-+};
-+
-+/* This is the descriptor of each queue entry for the Set Tx Time Queue
-+ * command (0x0C35). Only used within struct ice_aqc_set_txtime_qgrp.
++/**
++ * struct idpf_tstamp_stats - Tx timestamp statistics
++ * @stats_sync: See struct u64_stats_sync
++ * @packets: Number of packets successfully timestamped by the hardware
++ * @discarded: Number of Tx skbs discarded due to cached PHC
++ *	       being too old to correctly extend timestamp
++ * @flushed: Number of Tx skbs flushed due to interface closed
 + */
-+struct ice_aqc_set_txtimeqs_perq {
-+	u8 reserved[4];
-+	ice_txtime_ctx_buf_t txtime_ctx;
-+	u8 reserved1[3];
++struct idpf_tstamp_stats {
++	struct u64_stats_sync stats_sync;
++	u64_stats_t packets;
++	u64_stats_t discarded;
++	u64_stats_t flushed;
 +};
 +
-+/* The format of the command buffer for Set Tx Time Queue (0x0C35)
-+ * is an array of the following structs. Please note that the length of
-+ * each struct ice_aqc_set_txtime_qgrp is variable due to the variable
-+ * number of queues in each group!
-+ */
-+struct ice_aqc_set_txtime_qgrp {
-+	u8 reserved[8];
-+	struct ice_aqc_set_txtimeqs_perq txtimeqs[];
-+};
-+
- /* Download Package (indirect 0x0C40) */
- /* Also used for Update Package (indirect 0x0C41 and 0x0C42) */
- struct ice_aqc_download_pkg {
-@@ -2614,6 +2646,9 @@ enum ice_adminq_opc {
- 	ice_aqc_opc_cfg_txqs				= 0x0C32,
- 	ice_aqc_opc_add_rdma_qset			= 0x0C33,
- 
-+	/* Tx Time queue commands */
-+	ice_aqc_opc_set_txtimeqs			= 0x0C35,
-+
- 	/* package commands */
- 	ice_aqc_opc_download_pkg			= 0x0C40,
- 	ice_aqc_opc_upload_section			= 0x0C41,
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index dc4beac04086..2d35a278c555 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -242,7 +242,8 @@ static void ice_cfg_itr_gran(struct ice_hw *hw)
-  * @ring: ring to get the absolute queue index
-  * @tc: traffic class number
+ struct idpf_port_stats {
+ 	struct u64_stats_sync stats_sync;
+ 	u64_stats_t rx_hw_csum_err;
+@@ -328,6 +343,7 @@ struct idpf_fsteer_fltr {
+  * @tx_tstamp_caps: Capabilities negotiated for Tx timestamping
+  * @tstamp_config: The Tx tstamp config
+  * @tstamp_task: Tx timestamping task
++ * @tstamp_stats: Tx timestamping statistics
   */
--static u16 ice_calc_txq_handle(struct ice_vsi *vsi, struct ice_tx_ring *ring, u8 tc)
-+static u16
-+ice_calc_txq_handle(const struct ice_vsi *vsi, struct ice_tx_ring *ring, u8 tc)
- {
- 	WARN_ONCE(ice_ring_is_xdp(ring) && tc, "XDP ring can't belong to TC other than 0\n");
- 
-@@ -278,30 +279,20 @@ static void ice_cfg_xps_tx_ring(struct ice_tx_ring *ring)
- }
- 
- /**
-- * ice_setup_tx_ctx - setup a struct ice_tlan_ctx instance
-- * @ring: The Tx ring to configure
-- * @tlan_ctx: Pointer to the Tx LAN queue context structure to be initialized
-- * @pf_q: queue index in the PF space
-+ * ice_set_txq_ctx_vmvf - set queue context VM/VF type and number by VSI type
-+ * @ring: the Tx ring to configure
-+ * @vmvf_type: VM/VF type
-+ * @vmvf_num: VM/VF number
-  *
-- * Configure the Tx descriptor ring in TLAN context.
-+ * Return: 0 on success and a negative value on error.
-  */
--static void
--ice_setup_tx_ctx(struct ice_tx_ring *ring, struct ice_tlan_ctx *tlan_ctx, u16 pf_q)
-+static int
-+ice_set_txq_ctx_vmvf(struct ice_tx_ring *ring, u8 *vmvf_type, u16 *vmvf_num)
- {
- 	struct ice_vsi *vsi = ring->vsi;
--	struct ice_hw *hw = &vsi->back->hw;
--
--	tlan_ctx->base = ring->dma >> ICE_TLAN_CTX_BASE_S;
--
--	tlan_ctx->port_num = vsi->port_info->lport;
--
--	/* Transmit Queue Length */
--	tlan_ctx->qlen = ring->count;
--
--	ice_set_cgd_num(tlan_ctx, ring->dcb_tc);
-+	struct ice_hw *hw;
- 
--	/* PF number */
--	tlan_ctx->pf_num = hw->pf_id;
-+	hw = &vsi->back->hw;
- 
- 	/* queue belongs to a specific VSI type
- 	 * VF / VM index should be programmed per vmvf_type setting:
-@@ -314,21 +305,60 @@ ice_setup_tx_ctx(struct ice_tx_ring *ring, struct ice_tlan_ctx *tlan_ctx, u16 pf
- 	case ICE_VSI_CTRL:
- 	case ICE_VSI_PF:
- 		if (ring->ch)
--			tlan_ctx->vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VMQ;
-+			*vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VMQ;
- 		else
--			tlan_ctx->vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_PF;
-+			*vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_PF;
- 		break;
- 	case ICE_VSI_VF:
- 		/* Firmware expects vmvf_num to be absolute VF ID */
--		tlan_ctx->vmvf_num = hw->func_caps.vf_base_id + vsi->vf->vf_id;
--		tlan_ctx->vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VF;
-+		*vmvf_num = hw->func_caps.vf_base_id + vsi->vf->vf_id;
-+		*vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VF;
- 		break;
- 	case ICE_VSI_SF:
--		tlan_ctx->vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VMQ;
-+		*vmvf_type = ICE_TLAN_CTX_VMVF_TYPE_VMQ;
- 		break;
- 	default:
--		return;
-+		dev_info(ice_pf_to_dev(vsi->back),
-+			 "Unable to set VMVF type for VSI type %d\n",
-+			 vsi->type);
-+		return -EINVAL;
- 	}
-+	return 0;
-+}
-+
-+/**
-+ * ice_setup_tx_ctx - setup a struct ice_tlan_ctx instance
-+ * @ring: the Tx ring to configure
-+ * @tlan_ctx: pointer to the Tx LAN queue context structure to be initialized
-+ * @pf_q: queue index in the PF space
-+ *
-+ * Configure the Tx descriptor ring in TLAN context.
-+ *
-+ * Return: 0 on success and a negative value on error.
-+ */
-+static int
-+ice_setup_tx_ctx(struct ice_tx_ring *ring, struct ice_tlan_ctx *tlan_ctx, u16 pf_q)
-+{
-+	struct ice_vsi *vsi = ring->vsi;
-+	struct ice_hw *hw;
-+	int err;
-+
-+	hw = &vsi->back->hw;
-+	tlan_ctx->base = ring->dma >> ICE_TLAN_CTX_BASE_S;
-+	tlan_ctx->port_num = vsi->port_info->lport;
-+
-+	/* Transmit Queue Length */
-+	tlan_ctx->qlen = ring->count;
-+
-+	ice_set_cgd_num(tlan_ctx, ring->dcb_tc);
-+
-+	/* PF number */
-+	tlan_ctx->pf_num = hw->pf_id;
-+
-+	err = ice_set_txq_ctx_vmvf(ring, &tlan_ctx->vmvf_type,
-+				   &tlan_ctx->vmvf_num);
-+	if (err)
-+		return err;
- 
- 	/* make sure the context is associated with the right VSI */
- 	if (ring->ch)
-@@ -355,6 +385,80 @@ ice_setup_tx_ctx(struct ice_tx_ring *ring, struct ice_tlan_ctx *tlan_ctx, u16 pf
- 	 * 1: Legacy Host Interface
- 	 */
- 	tlan_ctx->legacy_int = ICE_TX_LEGACY;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_setup_txtime_ctx - setup a struct ice_txtime_ctx instance
-+ * @ring: the tstamp ring to configure
-+ * @txtime_ctx: pointer to the Tx time queue context structure to be initialized
-+ *
-+ * Return: 0 on success and a negative value on error.
-+ */
-+static int
-+ice_setup_txtime_ctx(const struct ice_tstamp_ring *ring,
-+		     struct ice_txtime_ctx *txtime_ctx)
-+{
-+	struct ice_tx_ring *tx_ring = ring->tx_ring;
-+	struct ice_vsi *vsi = tx_ring->vsi;
-+	struct ice_hw *hw = &vsi->back->hw;
-+	int err;
-+
-+	txtime_ctx->base = ring->dma >> ICE_TXTIME_CTX_BASE_S;
-+
-+	/* Tx time Queue Length */
-+	txtime_ctx->qlen = ring->count;
-+	txtime_ctx->txtime_ena_q = 1;
-+
-+	/* PF number */
-+	txtime_ctx->pf_num = hw->pf_id;
-+
-+	err = ice_set_txq_ctx_vmvf(tx_ring, &txtime_ctx->vmvf_type,
-+				   &txtime_ctx->vmvf_num);
-+	if (err)
-+		return err;
-+
-+	/* make sure the context is associated with the right VSI */
-+	if (tx_ring->ch)
-+		txtime_ctx->src_vsi = tx_ring->ch->vsi_num;
-+	else
-+		txtime_ctx->src_vsi = ice_get_hw_vsi_num(hw, vsi->idx);
-+
-+	txtime_ctx->ts_res = ICE_TXTIME_CTX_RESOLUTION_128NS;
-+	txtime_ctx->drbell_mode_32 = ICE_TXTIME_CTX_DRBELL_MODE_32;
-+	txtime_ctx->ts_fetch_prof_id = ICE_TXTIME_CTX_FETCH_PROF_ID_0;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_calc_ts_ring_count - calculate the number of Tx time stamp descriptors
-+ * @tx_ring: Tx ring to calculate the count for
-+ *
-+ * Return: the number of Tx time stamp descriptors.
-+ */
-+u16 ice_calc_ts_ring_count(struct ice_tx_ring *tx_ring)
-+{
-+	u16 prof = ICE_TXTIME_CTX_FETCH_PROF_ID_0;
-+	struct ice_vsi *vsi = tx_ring->vsi;
-+	struct ice_hw *hw = &vsi->back->hw;
-+	u16 max_fetch_desc = 0, fetch, i;
-+	u32 reg;
-+
-+	for (i = 0; i < ICE_TXTIME_FETCH_PROFILE_CNT; i++) {
-+		reg = rd32(hw, E830_GLTXTIME_FETCH_PROFILE(prof, 0));
-+		fetch = FIELD_GET(E830_GLTXTIME_FETCH_PROFILE_FETCH_TS_DESC_M,
-+				  reg);
-+		max_fetch_desc = max(fetch, max_fetch_desc);
-+	}
-+
-+	if (!max_fetch_desc)
-+		max_fetch_desc = ICE_TXTIME_FETCH_TS_DESC_DFLT;
-+
-+	max_fetch_desc = ALIGN(max_fetch_desc, ICE_REQ_DESC_MULTIPLE);
-+
-+	return tx_ring->count + max_fetch_desc;
- }
- 
- /**
-@@ -881,14 +985,50 @@ void ice_vsi_free_q_vectors(struct ice_vsi *vsi)
- 	vsi->num_q_vectors = 0;
- }
- 
-+/**
-+ * ice_cfg_tstamp - Configure Tx time stamp queue
-+ * @tx_ring: Tx ring to be configured with timestamping
-+ *
-+ * Return: 0 on success and a negative value on error.
-+ */
-+static int
-+ice_cfg_tstamp(struct ice_tx_ring *tx_ring)
-+{
-+	DEFINE_RAW_FLEX(struct ice_aqc_set_txtime_qgrp, txtime_qg_buf,
-+			txtimeqs, 1);
-+	u8 txtime_buf_len = struct_size(txtime_qg_buf, txtimeqs, 1);
-+	struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
-+	struct ice_txtime_ctx txtime_ctx = {};
-+	struct ice_vsi *vsi = tx_ring->vsi;
-+	struct ice_pf *pf = vsi->back;
-+	struct ice_hw *hw = &pf->hw;
-+	u16 pf_q = tx_ring->reg_idx;
-+	int err;
-+
-+	err = ice_setup_txtime_ctx(tstamp_ring, &txtime_ctx);
-+	if (err) {
-+		dev_err(ice_pf_to_dev(pf), "Failed to setup Tx time queue context for queue %d, error: %d\n",
-+			pf_q, err);
-+		return err;
-+	}
-+	ice_pack_txtime_ctx(&txtime_ctx,
-+			    &txtime_qg_buf->txtimeqs[0].txtime_ctx);
-+
-+	tstamp_ring->tail = hw->hw_addr + E830_GLQTX_TXTIME_DBELL_LSB(pf_q);
-+	return ice_aq_set_txtimeq(hw, pf_q, 1, txtime_qg_buf,
-+				  txtime_buf_len, NULL);
-+}
-+
- /**
-  * ice_vsi_cfg_txq - Configure single Tx queue
-  * @vsi: the VSI that queue belongs to
-  * @ring: Tx ring to be configured
-  * @qg_buf: queue group buffer
-+ *
-+ * Return: 0 on success and a negative value on error.
-  */
- static int
--ice_vsi_cfg_txq(struct ice_vsi *vsi, struct ice_tx_ring *ring,
-+ice_vsi_cfg_txq(const struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 		struct ice_aqc_add_tx_qgrp *qg_buf)
- {
- 	u8 buf_len = struct_size(qg_buf, txqs, 1);
-@@ -897,15 +1037,20 @@ ice_vsi_cfg_txq(struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 	struct ice_channel *ch = ring->ch;
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
-+	u32 pf_q, vsi_idx;
- 	int status;
--	u16 pf_q;
- 	u8 tc;
- 
- 	/* Configure XPS */
- 	ice_cfg_xps_tx_ring(ring);
- 
- 	pf_q = ring->reg_idx;
--	ice_setup_tx_ctx(ring, &tlan_ctx, pf_q);
-+	status = ice_setup_tx_ctx(ring, &tlan_ctx, pf_q);
-+	if (status) {
-+		dev_err(ice_pf_to_dev(pf), "Failed to setup Tx context for queue %d, error: %d\n",
-+			pf_q, status);
-+		return status;
-+	}
- 	/* copy context contents into the qg_buf */
- 	qg_buf->txqs[0].txq_id = cpu_to_le16(pf_q);
- 	ice_pack_txq_ctx(&tlan_ctx, &qg_buf->txqs[0].txq_ctx);
-@@ -925,14 +1070,15 @@ ice_vsi_cfg_txq(struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 	 */
- 	ring->q_handle = ice_calc_txq_handle(vsi, ring, tc);
- 
--	if (ch)
--		status = ice_ena_vsi_txq(vsi->port_info, ch->ch_vsi->idx, 0,
--					 ring->q_handle, 1, qg_buf, buf_len,
--					 NULL);
--	else
--		status = ice_ena_vsi_txq(vsi->port_info, vsi->idx, tc,
--					 ring->q_handle, 1, qg_buf, buf_len,
--					 NULL);
-+	if (ch) {
-+		tc = 0;
-+		vsi_idx = ch->ch_vsi->idx;
-+	} else {
-+		vsi_idx = vsi->idx;
-+	}
-+
-+	status = ice_ena_vsi_txq(vsi->port_info, vsi_idx, tc, ring->q_handle,
-+				 1, qg_buf, buf_len, NULL);
- 	if (status) {
- 		dev_err(ice_pf_to_dev(pf), "Failed to set LAN Tx queue context, error: %d\n",
- 			status);
-@@ -947,7 +1093,32 @@ ice_vsi_cfg_txq(struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 	if (pf_q == le16_to_cpu(txq->txq_id))
- 		ring->txq_teid = le32_to_cpu(txq->q_teid);
- 
-+	if (ice_is_txtime_ena(ring)) {
-+		status = ice_alloc_setup_tstamp_ring(ring);
-+		if (status) {
-+			dev_err(ice_pf_to_dev(pf),
-+				"Failed to allocate Tx timestamp ring, error: %d\n",
-+				status);
-+			goto err_setup_tstamp;
-+		}
-+
-+		status = ice_cfg_tstamp(ring);
-+		if (status) {
-+			dev_err(ice_pf_to_dev(pf), "Failed to set Tx Time queue context, error: %d\n",
-+				status);
-+			goto err_cfg_tstamp;
-+		}
-+	}
- 	return 0;
-+
-+err_cfg_tstamp:
-+	ice_free_tx_tstamp_ring(ring);
-+err_setup_tstamp:
-+	ice_dis_vsi_txq(vsi->port_info, vsi_idx, tc, 1, &ring->q_handle,
-+			&ring->reg_idx, &ring->txq_teid, ICE_NO_RESET,
-+			tlan_ctx.vmvf_num, NULL);
-+
-+	return status;
- }
- 
- int ice_vsi_cfg_single_txq(struct ice_vsi *vsi, struct ice_tx_ring **tx_rings,
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.h b/drivers/net/ethernet/intel/ice/ice_base.h
-index 632b5be61a98..d28294247599 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.h
-+++ b/drivers/net/ethernet/intel/ice/ice_base.h
-@@ -34,4 +34,5 @@ ice_fill_txq_meta(const struct ice_vsi *vsi, struct ice_tx_ring *ring,
- 		  struct ice_txq_meta *txq_meta);
- int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx);
- int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx);
-+u16 ice_calc_ts_ring_count(struct ice_tx_ring *tx_ring);
- #endif /* _ICE_BASE_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 1baac0b74caf..2250426ec91b 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1733,6 +1733,44 @@ int ice_write_txq_ctx(struct ice_hw *hw, struct ice_tlan_ctx *tlan_ctx,
- 	return 0;
- }
- 
-+/* Tx time Queue Context */
-+static const struct packed_field_u8 ice_txtime_ctx_fields[] = {
-+				    /* Field			Width	LSB */
-+	ICE_CTX_STORE(ice_txtime_ctx, base,			57,	0),
-+	ICE_CTX_STORE(ice_txtime_ctx, pf_num,			3,	57),
-+	ICE_CTX_STORE(ice_txtime_ctx, vmvf_num,			10,	60),
-+	ICE_CTX_STORE(ice_txtime_ctx, vmvf_type,		2,	70),
-+	ICE_CTX_STORE(ice_txtime_ctx, src_vsi,			10,	72),
-+	ICE_CTX_STORE(ice_txtime_ctx, cpuid,			8,	82),
-+	ICE_CTX_STORE(ice_txtime_ctx, tphrd_desc,		1,	90),
-+	ICE_CTX_STORE(ice_txtime_ctx, qlen,			13,	91),
-+	ICE_CTX_STORE(ice_txtime_ctx, timer_num,		1,	104),
-+	ICE_CTX_STORE(ice_txtime_ctx, txtime_ena_q,		1,	105),
-+	ICE_CTX_STORE(ice_txtime_ctx, drbell_mode_32,		1,	106),
-+	ICE_CTX_STORE(ice_txtime_ctx, ts_res,			4,	107),
-+	ICE_CTX_STORE(ice_txtime_ctx, ts_round_type,		2,	111),
-+	ICE_CTX_STORE(ice_txtime_ctx, ts_pacing_slot,		3,	113),
-+	ICE_CTX_STORE(ice_txtime_ctx, merging_ena,		1,	116),
-+	ICE_CTX_STORE(ice_txtime_ctx, ts_fetch_prof_id,		4,	117),
-+	ICE_CTX_STORE(ice_txtime_ctx, ts_fetch_cache_line_aln_thld, 4,	121),
-+	ICE_CTX_STORE(ice_txtime_ctx, tx_pipe_delay_mode,	1,	125),
-+};
-+
-+/**
-+ * ice_pack_txtime_ctx - pack Tx time queue context into a HW buffer
-+ * @ctx: the Tx time queue context to pack
-+ * @buf: the HW buffer to pack into
-+ *
-+ * Pack the Tx time queue context from the CPU-friendly unpacked buffer into
-+ * its bit-packed HW layout.
-+ */
-+void ice_pack_txtime_ctx(const struct ice_txtime_ctx *ctx,
-+			 ice_txtime_ctx_buf_t *buf)
-+{
-+	pack_fields(buf, sizeof(*buf), ctx, ice_txtime_ctx_fields,
-+		    QUIRK_LITTLE_ENDIAN | QUIRK_LSW32_IS_FIRST);
-+}
-+
- /* Sideband Queue command wrappers */
- 
- /**
-@@ -4846,6 +4884,46 @@ ice_aq_add_rdma_qsets(struct ice_hw *hw, u8 num_qset_grps,
- 	return ice_aq_send_cmd(hw, &desc, qset_list, buf_size, cd);
- }
- 
-+/**
-+ * ice_aq_set_txtimeq - set Tx time queues
-+ * @hw: pointer to the hardware structure
-+ * @txtimeq: first Tx time queue id to configure
-+ * @q_count: number of queues to configure
-+ * @txtime_qg: queue group to be set
-+ * @buf_size: size of buffer for indirect command
-+ * @cd: pointer to command details structure or NULL
-+ *
-+ * Set Tx Time queue (0x0C35)
-+ * Return: 0 on success or negative value on failure.
-+ */
-+int
-+ice_aq_set_txtimeq(struct ice_hw *hw, u16 txtimeq, u8 q_count,
-+		   struct ice_aqc_set_txtime_qgrp *txtime_qg, u16 buf_size,
-+		   struct ice_sq_cd *cd)
-+{
-+	struct ice_aqc_set_txtimeqs *cmd;
-+	struct libie_aq_desc desc;
-+	u16 size;
-+
-+	if (!txtime_qg || txtimeq > ICE_TXTIME_MAX_QUEUE ||
-+	    q_count < 1 || q_count > ICE_SET_TXTIME_MAX_Q_AMOUNT)
-+		return -EINVAL;
-+
-+	size = struct_size(txtime_qg, txtimeqs, q_count);
-+	if (buf_size != size)
-+		return -EINVAL;
-+
-+	cmd = libie_aq_raw(&desc);
-+
-+	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_set_txtimeqs);
-+
-+	desc.flags |= cpu_to_le16(LIBIE_AQ_FLAG_RD);
-+
-+	cmd->q_id = cpu_to_le16(txtimeq);
-+	cmd->q_amount = cpu_to_le16(q_count);
-+	return ice_aq_send_cmd(hw, &desc, txtime_qg, buf_size, cd);
-+}
-+
- /* End of FW Admin Queue command wrappers */
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index dba15ad315a6..e700ac0dc347 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -275,6 +275,12 @@ int ice_replay_vsi(struct ice_hw *hw, u16 vsi_handle);
- void ice_replay_post(struct ice_hw *hw);
- struct ice_q_ctx *
- ice_get_lan_q_ctx(struct ice_hw *hw, u16 vsi_handle, u8 tc, u16 q_handle);
-+int
-+ice_aq_set_txtimeq(struct ice_hw *hw, u16 txtimeq, u8 q_count,
-+		   struct ice_aqc_set_txtime_qgrp *txtime_qg,
-+		   u16 buf_size, struct ice_sq_cd *cd);
-+void ice_pack_txtime_ctx(const struct ice_txtime_ctx *ctx,
-+			 ice_txtime_ctx_buf_t *buf);
- int ice_sbq_rw_reg(struct ice_hw *hw, struct ice_sbq_msg_input *in, u16 flag);
- int ice_aq_get_cgu_input_pin_measure(struct ice_hw *hw, u8 dpll_idx,
- 				     struct ice_cgu_input_measure *meas,
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 55e0f2c6af9e..348acd46a0ef 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3147,9 +3147,11 @@ ice_get_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- {
- 	struct ice_netdev_priv *np = netdev_priv(netdev);
- 	struct ice_vsi *vsi = np->vsi;
-+	struct ice_hw *hw;
- 
--	ring->rx_max_pending = ICE_MAX_NUM_DESC;
--	ring->tx_max_pending = ICE_MAX_NUM_DESC;
-+	hw = &vsi->back->hw;
-+	ring->rx_max_pending = ICE_MAX_NUM_DESC_BY_MAC(hw);
-+	ring->tx_max_pending = ICE_MAX_NUM_DESC_BY_MAC(hw);
- 	if (vsi->tx_rings && vsi->rx_rings) {
- 		ring->rx_pending = vsi->rx_rings[0]->count;
- 		ring->tx_pending = vsi->tx_rings[0]->count;
-@@ -3177,15 +3179,16 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 	struct ice_vsi *vsi = np->vsi;
- 	struct ice_pf *pf = vsi->back;
- 	int i, timeout = 50, err = 0;
-+	struct ice_hw *hw = &pf->hw;
- 	u16 new_rx_cnt, new_tx_cnt;
- 
--	if (ring->tx_pending > ICE_MAX_NUM_DESC ||
-+	if (ring->tx_pending > ICE_MAX_NUM_DESC_BY_MAC(hw) ||
- 	    ring->tx_pending < ICE_MIN_NUM_DESC ||
--	    ring->rx_pending > ICE_MAX_NUM_DESC ||
-+	    ring->rx_pending > ICE_MAX_NUM_DESC_BY_MAC(hw) ||
- 	    ring->rx_pending < ICE_MIN_NUM_DESC) {
- 		netdev_err(netdev, "Descriptors requested (Tx: %d / Rx: %d) out of range [%d-%d] (increment %d)\n",
- 			   ring->tx_pending, ring->rx_pending,
--			   ICE_MIN_NUM_DESC, ICE_MAX_NUM_DESC,
-+			   ICE_MIN_NUM_DESC, ICE_MAX_NUM_DESC_BY_MAC(hw),
- 			   ICE_REQ_DESC_MULTIPLE);
- 		return -EINVAL;
- 	}
-@@ -3258,6 +3261,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 		tx_rings[i].count = new_tx_cnt;
- 		tx_rings[i].desc = NULL;
- 		tx_rings[i].tx_buf = NULL;
-+		tx_rings[i].tstamp_ring = NULL;
- 		tx_rings[i].tx_tstamps = &pf->ptp.port.tx;
- 		err = ice_setup_tx_ring(&tx_rings[i]);
- 		if (err) {
-diff --git a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
-index dd520aa4d1d6..082ad33c53dc 100644
---- a/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
-+++ b/drivers/net/ethernet/intel/ice/ice_hw_autogen.h
-@@ -19,6 +19,7 @@
- #define QTX_COMM_HEAD_MAX_INDEX			16383
- #define QTX_COMM_HEAD_HEAD_S			0
- #define QTX_COMM_HEAD_HEAD_M			ICE_M(0x1FFF, 0)
-+#define E830_GLQTX_TXTIME_DBELL_LSB(_DBQM)	(0x002E0000 + ((_DBQM) * 8))
- #define PF_FW_ARQBAH				0x00080180
- #define PF_FW_ARQBAL				0x00080080
- #define PF_FW_ARQH				0x00080380
-@@ -571,6 +572,8 @@
- #define E830_PFPTM_SEM_BUSY_M			BIT(0)
- #define VFINT_DYN_CTLN(_i)			(0x00003800 + ((_i) * 4))
- #define VFINT_DYN_CTLN_CLEARPBA_M		BIT(1)
-+#define E830_GLTXTIME_FETCH_PROFILE(_i, _j)     (0x002D3500 + ((_i) * 4 + (_j) * 64))
-+#define E830_GLTXTIME_FETCH_PROFILE_FETCH_TS_DESC_M ICE_M(0x1FF, 0)
- #define E830_MBX_PF_IN_FLIGHT_VF_MSGS_THRESH	0x00234000
- #define E830_MBX_VF_DEC_TRIG(_VF)		(0x00233800 + (_VF) * 4)
- #define E830_MBX_VF_IN_FLIGHT_MSGS_AT_PF_CNT(_VF)	(0x00233000 + (_VF) * 4)
-diff --git a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-index 77ba26538b07..10c312d49e05 100644
---- a/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lan_tx_rx.h
-@@ -569,4 +569,45 @@ struct ice_tlan_ctx {
- 	u8 pkt_shaper_prof_idx;
+ struct idpf_vport {
+ 	u16 num_txq;
+@@ -386,6 +402,7 @@ struct idpf_vport {
+ 	struct idpf_ptp_vport_tx_tstamp_caps *tx_tstamp_caps;
+ 	struct kernel_hwtstamp_config tstamp_config;
+ 	struct work_struct tstamp_task;
++	struct idpf_tstamp_stats tstamp_stats;
  };
  
-+#define ICE_TXTIME_TX_DESC_IDX_M	GENMASK(12, 0)
-+#define ICE_TXTIME_STAMP_M		GENMASK(31, 13)
-+
-+/* Tx time stamp descriptor */
-+struct ice_ts_desc {
-+	__le32 tx_desc_idx_tstamp;
-+};
-+
-+#define ICE_TS_DESC(R, i) (&(((struct ice_ts_desc *)((R)->desc))[i]))
-+
-+#define ICE_TXTIME_MAX_QUEUE		2047
-+#define ICE_SET_TXTIME_MAX_Q_AMOUNT	127
-+#define ICE_TXTIME_FETCH_TS_DESC_DFLT	8
-+#define ICE_TXTIME_FETCH_PROFILE_CNT	16
-+
-+/* Tx Time queue context data */
-+struct ice_txtime_ctx {
-+#define ICE_TXTIME_CTX_BASE_S		7
-+	u64 base;			/* base is defined in 128-byte units */
-+	u8 pf_num;
-+	u16 vmvf_num;
-+	u8 vmvf_type;
-+	u16 src_vsi;
-+	u8 cpuid;
-+	u8 tphrd_desc;
-+	u16 qlen;
-+	u8 timer_num;
-+	u8 txtime_ena_q;
-+	u8 drbell_mode_32;
-+#define ICE_TXTIME_CTX_DRBELL_MODE_32	1
-+	u8 ts_res;
-+#define ICE_TXTIME_CTX_RESOLUTION_128NS 7
-+	u8 ts_round_type;
-+	u8 ts_pacing_slot;
-+#define ICE_TXTIME_CTX_FETCH_PROF_ID_0 0
-+	u8 merging_ena;
-+	u8 ts_fetch_prof_id;
-+	u8 ts_fetch_cache_line_aln_thld;
-+	u8 tx_pipe_delay_mode;
-+};
-+
- #endif /* _ICE_LAN_TX_RX_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index a439b5a61a56..4479c824561e 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3950,6 +3950,7 @@ void ice_init_feature_support(struct ice_pf *pf)
- 	if (pf->hw.mac_type == ICE_MAC_E830) {
- 		ice_set_feature_support(pf, ICE_F_MBX_LIMIT);
- 		ice_set_feature_support(pf, ICE_F_GCS);
-+		ice_set_feature_support(pf, ICE_F_TXTIME);
- 	}
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index f0d3aee24a93..86f5859e88ef 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3969,6 +3969,11 @@ static void ice_deinit_pf(struct ice_pf *pf)
- 		pf->avail_rxqs = NULL;
- 	}
- 
-+	if (pf->txtime_txqs) {
-+		bitmap_free(pf->txtime_txqs);
-+		pf->txtime_txqs = NULL;
-+	}
-+
- 	if (pf->ptp.clock)
- 		ptp_clock_unregister(pf->ptp.clock);
- 
-@@ -4062,6 +4067,15 @@ static int ice_init_pf(struct ice_pf *pf)
- 		return -ENOMEM;
- 	}
- 
-+	pf->txtime_txqs = bitmap_zalloc(pf->max_pf_txqs, GFP_KERNEL);
-+	if (!pf->txtime_txqs) {
-+		bitmap_free(pf->avail_txqs);
-+		pf->avail_txqs = NULL;
-+		bitmap_free(pf->avail_rxqs);
-+		pf->avail_rxqs = NULL;
-+		return -ENOMEM;
-+	}
-+
- 	mutex_init(&pf->vfs.table_lock);
- 	hash_init(pf->vfs.table);
- 	if (ice_is_feature_supported(pf, ICE_F_MBX_LIMIT))
-@@ -7484,7 +7498,8 @@ int ice_vsi_open(struct ice_vsi *vsi)
- 	if (err)
- 		goto err_setup_rx;
- 
--	ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg.ena_tc);
-+	if (bitmap_empty(pf->txtime_txqs, pf->max_pf_txqs))
-+		ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg.ena_tc);
- 
- 	if (vsi->type == ICE_VSI_PF || vsi->type == ICE_VSI_SF) {
- 		/* Notify the stack of the actual queue counts. */
-@@ -9273,6 +9288,96 @@ static int ice_setup_tc_mqprio_qdisc(struct net_device *netdev, void *type_data)
- 	return ret;
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+index 0eb812ac19c2..786d0bacdd3c 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
+@@ -1685,6 +1685,61 @@ static int idpf_get_ts_info(struct net_device *netdev,
+ 	return err;
  }
  
 +/**
-+ * ice_cfg_txtime - configure Tx Time for the Tx ring
-+ * @tx_ring: pointer to the Tx ring structure
-+ *
-+ * Return: 0 on success, negative value on failure.
-+ */
-+static int ice_cfg_txtime(struct ice_tx_ring *tx_ring)
-+{
-+	int err, timeout = 50;
-+	struct ice_vsi *vsi;
-+	struct device *dev;
-+	struct ice_pf *pf;
-+	u32 queue;
-+
-+	if (!tx_ring)
-+		return -EINVAL;
-+
-+	vsi = tx_ring->vsi;
-+	pf = vsi->back;
-+	while (test_and_set_bit(ICE_CFG_BUSY, pf->state)) {
-+		timeout--;
-+		if (!timeout)
-+			return -EBUSY;
-+		usleep_range(1000, 2000);
-+	}
-+
-+	queue = tx_ring->q_index;
-+	dev = ice_pf_to_dev(pf);
-+
-+	/* Ignore return value, and always attempt to enable queue. */
-+	ice_qp_dis(vsi, queue);
-+
-+	err = ice_qp_ena(vsi, queue);
-+	if (err)
-+		dev_err(dev, "Failed to enable Tx queue %d for TxTime configuration\n",
-+			queue);
-+
-+	clear_bit(ICE_CFG_BUSY, pf->state);
-+	return err;
-+}
-+
-+/**
-+ * ice_offload_txtime - set earliest TxTime first
++ * idpf_get_ts_stats - Collect HW tstamping statistics
 + * @netdev: network interface device structure
-+ * @qopt_off: etf queue option offload from the skb to set
++ * @ts_stats: HW timestamping stats structure
 + *
-+ * Return: 0 on success, negative value on failure.
++ * Collect HW timestamping statistics including successfully timestamped
++ * packets, discarded due to illegal values, flushed during releasing PTP and
++ * skipped due to lack of the free index.
 + */
-+static int ice_offload_txtime(struct net_device *netdev,
-+			      void *qopt_off)
++static void idpf_get_ts_stats(struct net_device *netdev,
++			      struct ethtool_ts_stats *ts_stats)
 +{
-+	struct ice_netdev_priv *np = netdev_priv(netdev);
-+	struct ice_pf *pf = np->vsi->back;
-+	struct tc_etf_qopt_offload *qopt;
-+	struct ice_vsi *vsi = np->vsi;
-+	struct ice_tx_ring *tx_ring;
-+	int ret = 0;
++	struct idpf_netdev_priv *np = netdev_priv(netdev);
++	struct idpf_vport *vport;
++	unsigned int start;
 +
-+	if (!ice_is_feature_supported(pf, ICE_F_TXTIME))
-+		return -EOPNOTSUPP;
++	idpf_vport_ctrl_lock(netdev);
++	vport = idpf_netdev_to_vport(netdev);
++	do {
++		start = u64_stats_fetch_begin(&vport->tstamp_stats.stats_sync);
++		ts_stats->pkts = u64_stats_read(&vport->tstamp_stats.packets);
++		ts_stats->lost = u64_stats_read(&vport->tstamp_stats.flushed);
++		ts_stats->err = u64_stats_read(&vport->tstamp_stats.discarded);
++	} while (u64_stats_fetch_retry(&vport->tstamp_stats.stats_sync, start));
 +
-+	qopt = qopt_off;
-+	if (!qopt_off || qopt->queue < 0 || qopt->queue >= vsi->num_txq)
-+		return -EINVAL;
++	if (np->state != __IDPF_VPORT_UP)
++		goto exit;
 +
-+	if (qopt->enable)
-+		set_bit(qopt->queue,  pf->txtime_txqs);
-+	else
-+		clear_bit(qopt->queue, pf->txtime_txqs);
++	for (u16 i = 0; i < vport->num_txq_grp; i++) {
++		struct idpf_txq_group *txq_grp = &vport->txq_grps[i];
 +
-+	if (netif_running(vsi->netdev)) {
-+		tx_ring = vsi->tx_rings[qopt->queue];
-+		ret = ice_cfg_txtime(tx_ring);
-+		if (ret)
-+			goto err;
-+	}
++		for (u16 j = 0; j < txq_grp->num_txq; j++) {
++			struct idpf_tx_queue *txq = txq_grp->txqs[j];
++			struct idpf_tx_queue_stats *stats;
++			u64 ts;
 +
-+	netdev_info(netdev, "%s TxTime on queue: %i\n",
-+		    str_enable_disable(qopt->enable), qopt->queue);
-+	return 0;
++			if (!txq)
++				continue;
 +
-+err:
-+	netdev_err(netdev, "Failed to %s TxTime on queue: %i\n",
-+		   str_enable_disable(qopt->enable), qopt->queue);
++			stats = &txq->q_stats;
++			do {
++				start = u64_stats_fetch_begin(&txq->stats_sync);
 +
-+	if (qopt->enable)
-+		clear_bit(qopt->queue,  pf->txtime_txqs);
-+	return ret;
-+}
++				ts = u64_stats_read(&stats->tstamp_skipped);
++			} while (u64_stats_fetch_retry(&txq->stats_sync,
++						       start));
 +
- static LIST_HEAD(ice_block_cb_list);
- 
- static int
-@@ -9336,6 +9441,8 @@ ice_setup_tc(struct net_device *netdev, enum tc_setup_type type,
- 			mutex_unlock(&pf->adev_mutex);
- 		}
- 		return err;
-+	case TC_SETUP_QDISC_ETF:
-+		return ice_offload_txtime(netdev, type_data);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 17cda5e2f6a4..73f08d02f9c7 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -143,6 +143,56 @@ static struct netdev_queue *txring_txq(const struct ice_tx_ring *ring)
- 	return netdev_get_tx_queue(ring->netdev, ring->q_index);
- }
- 
-+/**
-+ * ice_clean_tstamp_ring - clean time stamp ring
-+ * @tx_ring: Tx ring to clean the Time Stamp ring for
-+ */
-+static void ice_clean_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
-+	u32 size;
-+
-+	if (!tstamp_ring->desc)
-+		return;
-+
-+	size = ALIGN(tstamp_ring->count * sizeof(struct ice_ts_desc),
-+		     PAGE_SIZE);
-+	memset(tstamp_ring->desc, 0, size);
-+	tstamp_ring->next_to_use = 0;
-+}
-+
-+/**
-+ * ice_free_tstamp_ring - free time stamp resources per queue
-+ * @tx_ring: Tx ring to free the Time Stamp ring for
-+ */
-+void ice_free_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
-+	u32 size;
-+
-+	if (!tstamp_ring->desc)
-+		return;
-+
-+	ice_clean_tstamp_ring(tx_ring);
-+	size = ALIGN(tstamp_ring->count * sizeof(struct ice_ts_desc),
-+		     PAGE_SIZE);
-+	dmam_free_coherent(tx_ring->dev, size, tstamp_ring->desc,
-+			   tstamp_ring->dma);
-+	tstamp_ring->desc = NULL;
-+}
-+
-+/**
-+ * ice_free_tx_tstamp_ring - free time stamp resources per Tx ring
-+ * @tx_ring: Tx ring to free the Time Stamp ring for
-+ */
-+void ice_free_tx_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	ice_free_tstamp_ring(tx_ring);
-+	kfree_rcu(tx_ring->tstamp_ring, rcu);
-+	tx_ring->tstamp_ring = NULL;
-+	tx_ring->flags &= ~ICE_TX_FLAGS_TXTIME;
-+}
-+
- /**
-  * ice_clean_tx_ring - Free any empty Tx buffers
-  * @tx_ring: ring to be cleaned
-@@ -181,6 +231,9 @@ void ice_clean_tx_ring(struct ice_tx_ring *tx_ring)
- 
- 	/* cleanup Tx queue statistics */
- 	netdev_tx_reset_queue(txring_txq(tx_ring));
-+
-+	if (ice_is_txtime_cfg(tx_ring))
-+		ice_free_tx_tstamp_ring(tx_ring);
- }
- 
- /**
-@@ -331,6 +384,84 @@ static bool ice_clean_tx_irq(struct ice_tx_ring *tx_ring, int napi_budget)
- 	return !!budget;
- }
- 
-+/**
-+ * ice_alloc_tstamp_ring - allocate the Time Stamp ring
-+ * @tx_ring: Tx ring to allocate the Time Stamp ring for
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+static int ice_alloc_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	struct ice_tstamp_ring *tstamp_ring;
-+
-+	/* allocate with kzalloc(), free with kfree_rcu() */
-+	tstamp_ring = kzalloc(sizeof(*tstamp_ring), GFP_KERNEL);
-+	if (!tstamp_ring)
-+		return -ENOMEM;
-+
-+	tstamp_ring->tx_ring = tx_ring;
-+	tx_ring->tstamp_ring = tstamp_ring;
-+	tstamp_ring->desc = NULL;
-+	tstamp_ring->count = ice_calc_ts_ring_count(tx_ring);
-+	tx_ring->flags |= ICE_TX_FLAGS_TXTIME;
-+	return 0;
-+}
-+
-+/**
-+ * ice_setup_tstamp_ring - allocate the Time Stamp ring
-+ * @tx_ring: Tx ring to set up the Time Stamp ring for
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+static int ice_setup_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
-+	struct device *dev = tx_ring->dev;
-+	u32 size;
-+
-+	/* round up to nearest page */
-+	size = ALIGN(tstamp_ring->count * sizeof(struct ice_ts_desc),
-+		     PAGE_SIZE);
-+	tstamp_ring->desc = dmam_alloc_coherent(dev, size, &tstamp_ring->dma,
-+						GFP_KERNEL);
-+	if (!tstamp_ring->desc) {
-+		dev_err(dev, "Unable to allocate memory for Time stamp Ring, size=%d\n",
-+			size);
-+		return -ENOMEM;
-+	}
-+
-+	tstamp_ring->next_to_use = 0;
-+	return 0;
-+}
-+
-+/**
-+ * ice_alloc_setup_tstamp_ring - Allocate and setup the Time Stamp ring
-+ * @tx_ring: Tx ring to allocate and setup the Time Stamp ring for
-+ *
-+ * Return: 0 on success, negative on error
-+ */
-+int ice_alloc_setup_tstamp_ring(struct ice_tx_ring *tx_ring)
-+{
-+	struct device *dev = tx_ring->dev;
-+	int err;
-+
-+	err = ice_alloc_tstamp_ring(tx_ring);
-+	if (err) {
-+		dev_err(dev, "Unable to allocate Time stamp ring for Tx ring %d\n",
-+			tx_ring->q_index);
-+		return err;
-+	}
-+
-+	err = ice_setup_tstamp_ring(tx_ring);
-+	if (err) {
-+		dev_err(dev, "Unable to setup Time stamp ring for Tx ring %d\n",
-+			tx_ring->q_index);
-+		ice_free_tx_tstamp_ring(tx_ring);
-+		return err;
-+	}
-+	return 0;
-+}
-+
- /**
-  * ice_setup_tx_ring - Allocate the Tx descriptors
-  * @tx_ring: the Tx ring to set up
-@@ -1822,10 +1953,46 @@ ice_tx_map(struct ice_tx_ring *tx_ring, struct ice_tx_buf *first,
- 	/* notify HW of packet */
- 	kick = __netdev_tx_sent_queue(txring_txq(tx_ring), first->bytecount,
- 				      netdev_xmit_more());
--	if (kick)
--		/* notify HW of packet */
--		writel(i, tx_ring->tail);
-+	if (!kick)
-+		return;
- 
-+	if (ice_is_txtime_cfg(tx_ring)) {
-+		struct ice_tstamp_ring *tstamp_ring = tx_ring->tstamp_ring;
-+		u32 tstamp_count = tstamp_ring->count;
-+		u32 j = tstamp_ring->next_to_use;
-+		struct ice_ts_desc *ts_desc;
-+		struct timespec64 ts;
-+		u32 tstamp;
-+
-+		ts = ktime_to_timespec64(first->skb->tstamp);
-+		tstamp = ts.tv_nsec >> ICE_TXTIME_CTX_RESOLUTION_128NS;
-+
-+		ts_desc = ICE_TS_DESC(tstamp_ring, j);
-+		ts_desc->tx_desc_idx_tstamp = ice_build_tstamp_desc(i, tstamp);
-+
-+		j++;
-+		if (j == tstamp_count) {
-+			u32 fetch = tstamp_count - tx_ring->count;
-+
-+			j = 0;
-+
-+			/* To prevent an MDD, when wrapping the tstamp ring
-+			 * create additional TS descriptors equal to the number
-+			 * of the fetch TS descriptors value. HW will merge the
-+			 * TS descriptors with the same timestamp value into a
-+			 * single descriptor.
-+			 */
-+			for (; j < fetch; j++) {
-+				ts_desc = ICE_TS_DESC(tstamp_ring, j);
-+				ts_desc->tx_desc_idx_tstamp =
-+				       ice_build_tstamp_desc(i, tstamp);
-+			}
++			ts_stats->lost += ts;
 +		}
-+		tstamp_ring->next_to_use = j;
-+		writel_relaxed(j, tstamp_ring->tail);
-+	} else {
-+		writel_relaxed(i, tx_ring->tail);
 +	}
- 	return;
- 
- dma_error:
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index 2fd8e78178a2..841a07bfba54 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -310,6 +310,16 @@ enum ice_dynamic_itr {
- #define ICE_TX_LEGACY	1
- 
- /* descriptor ring, associated with a VSI */
-+struct ice_tstamp_ring {
-+	struct ice_tx_ring *tx_ring;	/* Backreference to associated Tx ring */
-+	dma_addr_t dma;			/* physical address of ring */
-+	struct rcu_head rcu;            /* to avoid race on free */
-+	u8 __iomem *tail;
-+	void *desc;
-+	u16 next_to_use;
-+	u16 count;
-+} ____cacheline_internodealigned_in_smp;
 +
- struct ice_rx_ring {
- 	/* CL1 - 1st cacheline starts here */
- 	void *desc;			/* Descriptor ring memory */
-@@ -402,9 +412,11 @@ struct ice_tx_ring {
- 	spinlock_t tx_lock;
- 	u32 txq_teid;			/* Added Tx queue TEID */
- 	/* CL4 - 4th cacheline starts here */
-+	struct ice_tstamp_ring *tstamp_ring;
- #define ICE_TX_FLAGS_RING_XDP		BIT(0)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
-+#define ICE_TX_FLAGS_TXTIME		BIT(3)
- 	u8 flags;
- 	u8 dcb_tc;			/* Traffic class of ring */
- 	u16 quanta_prof_id;
-@@ -500,6 +512,7 @@ void ice_clean_tx_ring(struct ice_tx_ring *tx_ring);
- void ice_clean_rx_ring(struct ice_rx_ring *rx_ring);
- int ice_setup_tx_ring(struct ice_tx_ring *tx_ring);
- int ice_setup_rx_ring(struct ice_rx_ring *rx_ring);
-+int ice_alloc_setup_tstamp_ring(struct ice_tx_ring *tx_ring);
- void ice_free_tx_ring(struct ice_tx_ring *tx_ring);
- void ice_free_rx_ring(struct ice_rx_ring *rx_ring);
- int ice_napi_poll(struct napi_struct *napi, int budget);
-@@ -508,4 +521,6 @@ ice_prgm_fdir_fltr(struct ice_vsi *vsi, struct ice_fltr_desc *fdir_desc,
- 		   u8 *raw_packet);
- void ice_clean_ctrl_tx_irq(struct ice_tx_ring *tx_ring);
- void ice_clean_ctrl_rx_irq(struct ice_rx_ring *rx_ring);
-+void ice_free_tx_tstamp_ring(struct ice_tx_ring *tx_ring);
-+void ice_free_tstamp_ring(struct ice_tx_ring *tx_ring);
- #endif /* _ICE_TXRX_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-index 6cf32b404127..99717730f21a 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-@@ -53,6 +53,20 @@ ice_build_ctob(u64 td_cmd, u64 td_offset, unsigned int size, u64 td_tag)
- 			   (td_tag    << ICE_TXD_QW1_L2TAG1_S));
- }
- 
-+/**
-+ * ice_build_tstamp_desc - build Tx time stamp descriptor
-+ * @tx_desc: Tx LAN descriptor index
-+ * @tstamp: time stamp
-+ *
-+ * Return: Tx time stamp descriptor
-+ */
-+static inline __le32
-+ice_build_tstamp_desc(u16 tx_desc, u32 tstamp)
-+{
-+	return cpu_to_le32(FIELD_PREP(ICE_TXTIME_TX_DESC_IDX_M, tx_desc) |
-+			   FIELD_PREP(ICE_TXTIME_STAMP_M, tstamp));
++exit:
++	idpf_vport_ctrl_unlock(netdev);
 +}
 +
+ static const struct ethtool_ops idpf_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+ 				     ETHTOOL_COALESCE_USE_ADAPTIVE,
+@@ -1711,6 +1766,7 @@ static const struct ethtool_ops idpf_ethtool_ops = {
+ 	.set_ringparam		= idpf_set_ringparam,
+ 	.get_link_ksettings	= idpf_get_link_ksettings,
+ 	.get_ts_info		= idpf_get_ts_info,
++	.get_ts_stats		= idpf_get_ts_stats,
+ };
+ 
  /**
-  * ice_get_vlan_tci - get VLAN TCI from Rx flex descriptor
-  * @rx_desc: Rx 32b flex descriptor with RXDID=2
-diff --git a/drivers/net/ethernet/intel/ice/virt/queues.c b/drivers/net/ethernet/intel/ice/virt/queues.c
-index 40575cfe6dd4..aa2c5bf0d2a2 100644
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -54,7 +54,7 @@ static bool ice_vc_isvalid_ring_len(u16 ring_len)
- {
- 	return ring_len == 0 ||
- 	       (ring_len >= ICE_MIN_NUM_DESC &&
--		ring_len <= ICE_MAX_NUM_DESC &&
-+		ring_len <= ICE_MAX_NUM_DESC_E810 &&
- 		!(ring_len % ICE_REQ_DESC_MULTIPLE));
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+index ee21f2ff0cad..142823af1f9e 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
+@@ -618,8 +618,13 @@ u64 idpf_ptp_extend_ts(struct idpf_vport *vport, u64 in_tstamp)
+ 
+ 	discard_time = ptp->cached_phc_jiffies + 2 * HZ;
+ 
+-	if (time_is_before_jiffies(discard_time))
++	if (time_is_before_jiffies(discard_time)) {
++		u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
++		u64_stats_inc(&vport->tstamp_stats.discarded);
++		u64_stats_update_end(&vport->tstamp_stats.stats_sync);
++
+ 		return 0;
++	}
+ 
+ 	return idpf_ptp_tstamp_extend_32b_to_64b(ptp->cached_phc_time,
+ 						 lower_32_bits(in_tstamp));
+@@ -853,10 +858,14 @@ static void idpf_ptp_release_vport_tstamp(struct idpf_vport *vport)
+ 
+ 	/* Remove list with latches in use */
+ 	head = &vport->tx_tstamp_caps->latches_in_use;
++	u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
+ 	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
++		u64_stats_inc(&vport->tstamp_stats.flushed);
++
+ 		list_del(&ptp_tx_tstamp->list_member);
+ 		kfree(ptp_tx_tstamp);
+ 	}
++	u64_stats_update_end(&vport->tstamp_stats.stats_sync);
+ 
+ 	spin_unlock_bh(&vport->tx_tstamp_caps->latches_lock);
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index 4f1fb0cefe51..8a2e0f8c5e36 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -521,6 +521,10 @@ idpf_ptp_get_tstamp_value(struct idpf_vport *vport,
+ 	list_add(&ptp_tx_tstamp->list_member,
+ 		 &tx_tstamp_caps->latches_free);
+ 
++	u64_stats_update_begin(&vport->tstamp_stats.stats_sync);
++	u64_stats_inc(&vport->tstamp_stats.packets);
++	u64_stats_update_end(&vport->tstamp_stats.stats_sync);
++
+ 	return 0;
  }
  
 -- 
