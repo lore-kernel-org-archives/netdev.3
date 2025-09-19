@@ -1,153 +1,229 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC925BEF1;
-	Fri, 19 Sep 2025 21:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529FF2857D2
+	for <netdev@vger.kernel.org>; Fri, 19 Sep 2025 22:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758318730; cv=none; b=o6Nrz+gg2V4JwWVjt4N0vdnar06t+U9c3KHdKoeMsd5S3PchOG81LAnIkbKjac592hiIIBZ2NDvi7p2HH1s0Qqgab5tF57SiyP5Y3uakHTNHp6X9DkExbd6u9ofmVuOqBl5m2nQqYU9ZeWu6W4Q15KX64AqikYGf4hqsxl87MEY=
+	t=1758320577; cv=none; b=LKqwczdNLjj6yPK1V/s8IKHJew3SN5BJlYDlDCJBBf0KAbkxP4gyWCGo6o+NGENyQFCyjuxacw8AyMjdgGLE9s9qn9GBhxb+hRYzshl7iPFkI/WdXYcZCK9b3sBYQhlZTcjpcaowdHSX4z8r9+0NjVHgki7mIytx15RijCdnBPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758318730; c=relaxed/simple;
-	bh=4OaDL3zrRtaDStHRe6/1Biq2t/Nf1mV/1JFDrJJGNfg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khDePJ296MH8sGoHVf2uSA2mP6estHIc7PvyO53kcW28V+rY36WsSEum+N5lMhiXTql35Z2uLtu/i8T+W0IrMi48wB+qHCtu3TQAWwa19luVxHWlLo0NZTXnF1qAmb6pVao/Tjqqv5tPHSjeLZHmPX6ekiLcDL/JW019o6ciREI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=aui9D0by; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1758320577; c=relaxed/simple;
+	bh=IIFhRI+TsAvfZeudshXo/wh+vjAohK8Azb1V5DPNy1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rt3MsCs6DAl+CE/4wtixjvLaalHgwIqydzapMIy70XKAaW4YO3vjES6WdaziVSb4emdGeD3crK94Xpc9bM7kTLRtTJfkBWFZeMz/PhrZ+I7h9IV7YB1azIZS81Hmnh0Zepfwkeq8aCYxaXy6sV7KJuST88hsvmalptqpqswxIPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fjuE7i6c; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="aui9D0by"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=Tq+s3moi4aETY4tdJE1DrMRVk78qBpcdzGrGspHui+c=; b=aui9D0byxJR7P0X6HSPzzA5phm
-	7KoSANnmlgyHiNonMrmhAtJc9Feq+/nENyIvX07WjbQrIFDVye+WnV+gKaawuOaQEmDsZmHzoHXjZ
-	pV5eVtbjP4un1fJgLRt+ipm9tDE/zE014I98CbW/pntMYeIZm9JcQlt+hBFsOxzylQOJu7D9D7L8Q
-	MZRk2wwwqZnsWD+s++GOScqmpZSDr73ABpcxQ4zi7Rqg81dF7HOHwhFkGn7dFkOOnbNM99b0kTKDT
-	Gsix1I0rk8SWjJINzwIsHKBHxuD3NXkDQDHZ7T2gZunwJfme51H/03n23I+IlzH0hpkYCrtjMIww0
-	7vRqUEQQ==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1uziiB-000NtK-2P;
-	Fri, 19 Sep 2025 23:32:11 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sdf@fomichev.me,
-	john.fastabend@gmail.com,
-	martin.lau@kernel.org,
-	jordan@jrife.io,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	David Wei <dw@davidwei.uk>
-Subject: [PATCH net-next 18/20] netkit: Add io_uring zero-copy support for TCP
-Date: Fri, 19 Sep 2025 23:31:51 +0200
-Message-ID: <20250919213153.103606-19-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250919213153.103606-1-daniel@iogearbox.net>
-References: <20250919213153.103606-1-daniel@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fjuE7i6c"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-32eb45ab7a0so2470824a91.0
+        for <netdev@vger.kernel.org>; Fri, 19 Sep 2025 15:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758320576; x=1758925376; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NVttn2DL6ng5pXY1yjZwV7ysZJbj/h4XmkfTp1L7SEY=;
+        b=fjuE7i6cq82w5A2FP1tYBkDoCPnfg/eHw14jY1pUMVxStk+Fd027yGDAYhcZx9O+A0
+         foeL5IQi7v8bWuzxXO97smPqN5oUGrC0pEtbnYVSidpJvxRW7hzMK7q6cZH45YLihJXv
+         KvE8C6kw5kW5LcHMmIvLy9TcK45+NRae3k/LyfTl67ncAb4COUYw4KLO/p1OKZHuS1m4
+         Z3apRnLo7tm9iwaq7Np+a01d/tjudplw96pcWLtXO5a3B6NmiLDiXEi9bzFgDa+c9WAj
+         tKyw0LJmhCzjc7O8DEwGm2zzIjUMNlqANyAPJyuzO5zXJUluh37H5OZmPND5+us1DXPs
+         dlBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758320576; x=1758925376;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NVttn2DL6ng5pXY1yjZwV7ysZJbj/h4XmkfTp1L7SEY=;
+        b=sba5JG2uGctyp6uFg+c4n9gQj65T6agO/ZkAYFF2ct8pWuufEvtzolQ91pa2DS+WJK
+         uc+MNLixBKBxLZfi72bqeaNUihp8PcX+m05oPgrmk7imSckPxU7ve/s1NQEQ0/44xbxv
+         r2mXvMev92I0kC5hWvJmKY3aNEMU3U+JYLHMdMbi7w/Emse4TQOr1EZlMZv8zcVNzK0w
+         t1fz1VfOOLT2Q28QVro96aN+EOT2+p5T1fFsotN1tE3ZMbFx9i6zhSYNph3yi1BknOyV
+         MzU7RvGwbGBBPYfEY3VLfWSB3h6oPdYt0HXo4p1LmOwFVpaL1v/Efcj5dMEdFvmokoG7
+         DhoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmst5c4BMdzOagyS0qsvhD2ayfekjYdRyu7Y/qjaQsklMuPvMksRuOBossicQcnXVSiPCrJn4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/e5y4BDyR26F3y2HGY5ItarYyFUNwkHjtuYsn2J2RCrS3c92Y
+	bcsIDi2q/t8OktxRiuvJ/tpqULrefySHFMdE9pHa9mDYs/5YxRreC3CP9KzxYTZ8fXpQfu/6lsp
+	9T4LL1K84RA3sGwK0pU0UcTigmKaDjPM=
+X-Gm-Gg: ASbGnct3OC2A447G0FKP6aHNpypmMh7DrqDc3+NOv0wYoX+p8DtOTy1n9sDEVe6a/bp
+	M6cC51W8tc32NYChAj979uLQY454cZsbQQwEonysh0gAFdA7lS0Wh1L0P3WJM5imo2Zb0UW2z4n
+	P4w/btODs2QGK16lmxdbf5yGuO/XxvHf2yfXBBQXGHoBIKVWYJgPchunFxRbGeRCW6rIVBlycXX
+	OL97N7DIsTZi7VbbY2r/0E=
+X-Google-Smtp-Source: AGHT+IFTIxD0jJKO5G+pCCu1K6n7tVBYK28In98bQte8IZQWbsnwJnU5AjMBK6qo5Bs//UE/GcpJn8fuw07r+SjjOXU=
+X-Received: by 2002:a17:90b:5623:b0:32e:ca03:3ba with SMTP id
+ 98e67ed59e1d1-3309834c0afmr5496340a91.22.1758320575534; Fri, 19 Sep 2025
+ 15:22:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27767/Fri Sep 19 10:26:55 2025)
+References: <20250918080342.25041-1-alibuda@linux.alibaba.com> <20250918080342.25041-4-alibuda@linux.alibaba.com>
+In-Reply-To: <20250918080342.25041-4-alibuda@linux.alibaba.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 19 Sep 2025 15:22:41 -0700
+X-Gm-Features: AS18NWAZO1oRArFwgyo_d1_MJyN-C4gXYDi5ATwBewZOaAmKd2Jx5fB2DEmP76o
+Message-ID: <CAEf4BzY5oowUpq2x3Uz+TNi=8GJgc1FDzS-u5UqZwNXvkWtSEw@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2 3/4] libbpf: fix error when st-prefix_ops and
+ ops from differ btf
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	martin.lau@linux.dev, pabeni@redhat.com, song@kernel.org, sdf@google.com, 
+	haoluo@google.com, yhs@fb.com, edumazet@google.com, john.fastabend@gmail.com, 
+	kpsingh@kernel.org, jolsa@kernel.org, mjambigi@linux.ibm.com, 
+	wenjia@linux.ibm.com, wintera@linux.ibm.com, dust.li@linux.alibaba.com, 
+	tonylu@linux.alibaba.com, guwen@linux.alibaba.com, bpf@vger.kernel.org, 
+	davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, 
+	sidraya@linux.ibm.com, jaka@linux.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Wei <dw@davidwei.uk>
-
-This adds the last missing bit to netkit for supporting io_uring with
-zero-copy mode [0]. Up until this point it was not possible to consume
-the latter out of containers or Kubernetes Pods where applications are
-in their own network namespace.
-
-Thus, as a last missing bit, implement ndo_queue_get_dma_dev() in netkit
-to return the physical device of the real rxq for DMA. This allows memory
-providers like io_uring zero-copy or devmem to bind to the physically
-mapped rxq in netkit.
-
-io_uring example with eth0 being a physical device with 16 queues where
-netkit is bound to the last queue, iou-zcrx.c is binary from selftests.
-Flow steering to that queue is based on the service VIP:port of the
-server utilizing io_uring:
-
-  # ethtool -X eth0 start 0 equal 15
-  # ethtool -X eth0 start 15 equal 1 context new
-  # ethtool --config-ntuple eth0 flow-type tcp4 dst-ip 1.2.3.4 dst-port 5000 action 15
-  # ip netns add foo
-  # ip link add numrxqueues 2 type netkit
-  # ynl-bind eth0 15 nk0
-  # ip link set nk0 netns foo
-  # ip link set nk1 up
-  # ip netns exec foo ip link set lo up
-  # ip netns exec foo ip link set nk0 up
-  # ip netns exec foo ip addr add 1.2.3.4/32 dev nk0
-  [ ... setup routing etc to get external traffic into the netns ... ]
-  # ip netns exec foo ./iou-zcrx -s -p 5000 -i nk0 -q 1
-
-Remote io_uring client:
-
-  # ./iou-zcrx -c -h 1.2.3.4 -p 5000 -l 12840 -z 65536
-
-We have tested the above against a dual-port Nvidia ConnectX-6 (mlx5)
-100G NIC as well as Broadcom BCM957504 (bnxt_en) 100G NIC, both
-supporting TCP header/data split. For Cilium, the plan is to open
-up support for io_uring in zero-copy mode for regular Kubernetes Pods
-when Cilium is configured with netkit datapath mode.
-
-Signed-off-by: David Wei <dw@davidwei.uk>
-Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://kernel-recipes.org/en/2024/schedule/efficient-zero-copy-networking-using-io_uring [0]
----
- drivers/net/netkit.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index 27ff84833f28..5129b27a7c3c 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -274,6 +274,21 @@ static const struct ethtool_ops netkit_ethtool_ops = {
- 	.get_channels		= netkit_get_channels,
- };
- 
-+static struct device *netkit_queue_get_dma_dev(struct net_device *dev, int idx)
-+{
-+	struct netdev_rx_queue *rxq, *peer_rxq;
-+	unsigned int peer_idx;
+On Thu, Sep 18, 2025 at 1:03=E2=80=AFAM D. Wythe <alibuda@linux.alibaba.com=
+> wrote:
+>
+> When a struct_ops named xxx_ops was registered by a module, and
+> it will be used in both built-in modules and the module itself,
+> so that the btf_type of xxx_ops will be present in btf_vmlinux
+> instead of in btf_mod, which means that the btf_type of
+> bpf_struct_ops_xxx_ops and xxx_ops will not be in the same btf.
+>
+> Here are four possible case:
+>
+> +--------+---------------+-------------+---------------------------------=
 +
-+	rxq = __netif_get_rx_queue(dev, idx);
-+	if (!rxq->peer)
-+		return NULL;
+> |        | st_ops_xxx_ops| xxx_ops     |                                 =
+|
+> +--------+---------------+-------------+---------------------------------=
 +
-+	peer_rxq = rxq->peer;
-+	peer_idx = get_netdev_rx_queue_index(peer_rxq);
+> | case 0 | btf_vmlinux   | bft_vmlinux | be used and reg only in vmlinux =
+|
+> +--------+---------------+-------------+---------------------------------=
 +
-+	return netdev_queue_get_dma_dev(peer_rxq->dev, peer_idx);
-+}
+> | case 1 | btf_vmlinux   | bpf_mod     | INVALID                         =
+|
+> +--------+---------------+-------------+---------------------------------=
 +
- static int netkit_queue_create(struct net_device *dev)
- {
- 	struct netkit *nk = netkit_priv(dev);
-@@ -299,7 +314,8 @@ static int netkit_queue_create(struct net_device *dev)
- }
- 
- static const struct netdev_queue_mgmt_ops netkit_queue_mgmt_ops = {
--	.ndo_queue_create = netkit_queue_create,
-+	.ndo_queue_get_dma_dev		= netkit_queue_get_dma_dev,
-+	.ndo_queue_create		= netkit_queue_create,
- };
- 
- static struct net_device *netkit_alloc(struct nlattr *tb[],
--- 
-2.43.0
+> | case 2 | btf_mod       | btf_vmlinux | reg in mod but be used both in  =
+|
+> |        |               |             | vmlinux and mod.                =
+|
+> +--------+---------------+-------------+---------------------------------=
++
+> | case 3 | btf_mod       | btf_mod     | be used and reg only in mod     =
+|
+> +--------+---------------+-------------+---------------------------------=
++
+>
+> At present, cases 0, 1, and 3 can be correctly identified, because
+> st_ops_xxx_ops is searched from the same btf with xxx_ops. In order to
+> handle case 2 correctly without affecting other cases, we cannot simply
+> change the search method for st_ops_xxx_ops from find_btf_by_prefix_kind(=
+)
+> to find_ksym_btf_id(), because in this way, case 1 will not be
+> recognized anymore.
+>
+> To address the issue, we always look for st_ops_xxx_ops first,
+> figure out the btf, and then look for xxx_ops with the very btf to avoid
 
+What's "very btf"? Commit message would benefit from a little bit of
+proof-reading, if you can. It's a bit hard to follow, even if it's
+more or less clear at the end what problem you are trying to solve.
+
+Also, I'd suggest to send this fix as a separate patch and not block
+it on the overall patch set, which probably will take longer. This fix
+is independent, so we can land it much faster.
+
+> such issue.
+>
+> Fixes: 590a00888250 ("bpf: libbpf: Add STRUCT_OPS support")
+> Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> Acked-by: Andrii Nakryiko <andrii@kernel.org>
+> ---
+>  tools/lib/bpf/libbpf.c | 37 ++++++++++++++++++-------------------
+>  1 file changed, 18 insertions(+), 19 deletions(-)
+>
+> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+> index fe4fc5438678..50ca13833511 100644
+> --- a/tools/lib/bpf/libbpf.c
+> +++ b/tools/lib/bpf/libbpf.c
+> @@ -1013,35 +1013,34 @@ find_struct_ops_kern_types(struct bpf_object *obj=
+, const char *tname_raw,
+>         const struct btf_member *kern_data_member;
+>         struct btf *btf =3D NULL;
+>         __s32 kern_vtype_id, kern_type_id;
+> -       char tname[256];
+> +       char tname[256], stname[256];
+>         __u32 i;
+>
+>         snprintf(tname, sizeof(tname), "%.*s",
+>                  (int)bpf_core_essential_name_len(tname_raw), tname_raw);
+>
+> -       kern_type_id =3D find_ksym_btf_id(obj, tname, BTF_KIND_STRUCT,
+> -                                       &btf, mod_btf);
+> -       if (kern_type_id < 0) {
+> -               pr_warn("struct_ops init_kern: struct %s is not found in =
+kernel BTF\n",
+> -                       tname);
+> -               return kern_type_id;
+> -       }
+> -       kern_type =3D btf__type_by_id(btf, kern_type_id);
+> +       snprintf(stname, sizeof(stname), "%s%.*s", STRUCT_OPS_VALUE_PREFI=
+X,
+> +                (int)strlen(tname), tname);
+>
+> -       /* Find the corresponding "map_value" type that will be used
+> -        * in map_update(BPF_MAP_TYPE_STRUCT_OPS).  For example,
+> -        * find "struct bpf_struct_ops_tcp_congestion_ops" from the
+> -        * btf_vmlinux.
+> +       /* Look for the corresponding "map_value" type that will be used
+> +        * in map_update(BPF_MAP_TYPE_STRUCT_OPS) first, figure out the b=
+tf
+> +        * and the mod_btf.
+> +        * For example, find "struct bpf_struct_ops_tcp_congestion_ops".
+>          */
+> -       kern_vtype_id =3D find_btf_by_prefix_kind(btf, STRUCT_OPS_VALUE_P=
+REFIX,
+> -                                               tname, BTF_KIND_STRUCT);
+> +       kern_vtype_id =3D find_ksym_btf_id(obj, stname, BTF_KIND_STRUCT, =
+&btf, mod_btf);
+>         if (kern_vtype_id < 0) {
+> -               pr_warn("struct_ops init_kern: struct %s%s is not found i=
+n kernel BTF\n",
+> -                       STRUCT_OPS_VALUE_PREFIX, tname);
+> +               pr_warn("struct_ops init_kern: struct %s is not found in =
+kernel BTF\n", stname);
+>                 return kern_vtype_id;
+>         }
+>         kern_vtype =3D btf__type_by_id(btf, kern_vtype_id);
+>
+> +       kern_type_id =3D btf__find_by_name_kind(btf, tname, BTF_KIND_STRU=
+CT);
+> +       if (kern_type_id < 0) {
+> +               pr_warn("struct_ops init_kern: struct %s is not found in =
+kernel BTF\n", tname);
+> +               return kern_type_id;
+> +       }
+> +       kern_type =3D btf__type_by_id(btf, kern_type_id);
+> +
+>         /* Find "struct tcp_congestion_ops" from
+>          * struct bpf_struct_ops_tcp_congestion_ops {
+>          *      [ ... ]
+> @@ -1054,8 +1053,8 @@ find_struct_ops_kern_types(struct bpf_object *obj, =
+const char *tname_raw,
+>                         break;
+>         }
+>         if (i =3D=3D btf_vlen(kern_vtype)) {
+> -               pr_warn("struct_ops init_kern: struct %s data is not foun=
+d in struct %s%s\n",
+> -                       tname, STRUCT_OPS_VALUE_PREFIX, tname);
+> +               pr_warn("struct_ops init_kern: struct %s data is not foun=
+d in struct %s\n",
+> +                       tname, stname);
+>                 return -EINVAL;
+>         }
+>
+> --
+> 2.45.0
+>
