@@ -1,149 +1,73 @@
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C9B136349
-	for <netdev@vger.kernel.org>; Sat, 20 Sep 2025 06:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE03D1F09A5
+	for <netdev@vger.kernel.org>; Sat, 20 Sep 2025 06:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758350379; cv=none; b=ptleYUBH8UmQ/acIok8AowLYIs/PRJH4Bj9agJzcNLjdXlGlSbvGsETQNn7wrzg8esN1Hg4dj/VHHOXHyT0/NDaGATAkDdTUNjjrps2/O1sXsH6LBCIFlhh3L7K7egROT5rZJ9GUsXr3dutYC6ues8Sezt4/26rodYmmav1V5tg=
+	t=1758351126; cv=none; b=cnx4HjcY19fih3hjbEsitqdAy7ITMn9BNPs1UunARb+Ks4DxaI2AbplilI1nH9E/JuHUzBRkh/OtyRQpNi1O+x5MtkYPgpecNKqOlkySRaPtN30HjtAoydNCUPs7upgdYwxkxLGi1psny6NOakaQmfvT5YB1cRnbph9ZZhb1yf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758350379; c=relaxed/simple;
-	bh=e8kqgYrvJ7cg9RNgyZusLXNyLF+T+QCTuWEE2D9wCR0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=d2Slqle071wd26egD9M2HVr32gngI/jwE6d3m1nW9c8p3Bj+5AaBW4zC+kOcYJSwfZX8CgdCbtoPSaJc82mm/vGsvreJmVmNwmu7EN9OCyoUJc1lN1PTCZmgCQo/9//BOF0IaiDxz4Yu9Lxfqfcfj1xTcrZWSn5Qe4OglqLMCFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=GLHJ6dt7; arc=none smtp.client-ip=35.162.73.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="GLHJ6dt7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1758350378; x=1789886378;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DngEYkk0WyVFKbicUZyC/M+tZZLP+BY1LCYPHMJq73U=;
-  b=GLHJ6dt7g664qc4B1C2lZcT7RCidtVNa3LlHFfgbvdU+tnFvc/d3QKIm
-   rIA+++QfXTs1B5UABH0zaXyRNcGAy97j8yF9qgLeUzRnNpOjz0bhcA9K8
-   MhhnOf7084YibfxghbujrVZtgWACR4S/AOUohRJNb6LXblGBa5/ikKPeR
-   pjvMMYzPQA3fV8mmN0Cc7fSlTjweyzOVpjZnwyI/+mfZ97/KFARfSlbMO
-   cp6hiwo/2Ziqeh6TKY6qsgP8vSgtz50qMO1kG2/I0+6g1M+XHdVsFfO73
-   pOLD15846VoYQaE44wprriatu+ONy99heWtWYnlrFwlp/5K0r92eXnhLM
-   Q==;
-X-CSE-ConnectionGUID: f9AUeRKFQkGo3mwCVwDdmQ==
-X-CSE-MsgGUID: z25lp9b7Tl21LO8ckHVrdw==
-X-IronPort-AV: E=Sophos;i="6.18,280,1751241600"; 
-   d="scan'208";a="3221644"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2025 06:39:35 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:62830]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.168:2525] with esmtp (Farcaster)
- id 95a0804d-cf77-41a1-a611-af3935ecb572; Sat, 20 Sep 2025 06:39:35 +0000 (UTC)
-X-Farcaster-Flow-ID: 95a0804d-cf77-41a1-a611-af3935ecb572
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sat, 20 Sep 2025 06:39:35 +0000
-Received: from b0be8375a521.amazon.com (10.37.245.7) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Sat, 20 Sep 2025 06:39:33 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vitaly Lifshits
-	<vitaly.lifshits@intel.com>, <aleksandr.loktionov@intel.com>,
-	<kohei.enju@gmail.com>, Kohei Enju <enjuk@amazon.com>
-Subject: [PATCH v2 iwl-net] igc: power up the PHY before the link test
-Date: Sat, 20 Sep 2025 15:39:18 +0900
-Message-ID: <20250920063923.31468-1-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1758351126; c=relaxed/simple;
+	bh=0A3UN6LJOPp/OZfQ1gyQ88jOqiCAaywlt9ynTRCXTOQ=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=mY7x00YybzKAIrT8K8e2A42MKcUMA0tEPE+gFeRqIAncznlc+X8/ILjLF+HF4N/9zc/wLTY5zBRGUw/0RSd1jE5KSqBvVRtFowiWTJyqovFU+5Ci8pghP60MuoUXB67X8szX/4bd4suPaG4ZTh5nsAsC/2NobqnBoyaa3gPawZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-8a559429a55so549418739f.2
+        for <netdev@vger.kernel.org>; Fri, 19 Sep 2025 23:52:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758351124; x=1758955924;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T4LEO1FGizwQheZAp+/czE31tJW/ITYrqK47/XHpiws=;
+        b=j+Df7v9bOT/GfdvJfwfqj2DF36v+Z5m5BlPR5QQPIqpime0Ifb2kvuFkhy0SKUxcH9
+         8G1jmEnLZlFVxrOD8BY/csx5JzcMpmm/MBXhcYCNqdyooBqzOro9iy+FBJmnH377RO6Q
+         KAd8MQ6lz1MEfV/U4aCF89TSxKB9JwjRxZ4bFMOi6RJckIHfsiXQWL5iZiKivWQJPKE5
+         57+iionG160tXfIWA6WU9fy4Oi2Ebyd8G8H83PdbzAW40foRsGreAwXpNCzUfndo+FFp
+         yiB918PFCetfb/b7Fc1sMgyRE5vjjW/nDCxHSWAk/B0OY2hl/kn0430hUEnEZjkcG6mK
+         os2A==
+X-Forwarded-Encrypted: i=1; AJvYcCX8Uizn8E2hGyJAxNwUHlz3sSQqf2s5kieUTN5pKzbth3IyiivxnQGaMdMHQMXQt+WYCiX4pMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAy+2ywFlKTl05izbfCrkN1UuGXM/WCx+Vh96cfDqtgtMY4aIa
+	yWhwrwrOLpbbNqA/Ygpk+Vxtq2ohW0I+egKiwU4xUINP9NeRAOd8u2ZcD5tWtajOri+EPzU2UyR
+	9guynSyjFet0nB4cdpQpe32rsGzaLEDO+IABvvtIxxKp0YmrKyIHGuyMXMKE=
+X-Google-Smtp-Source: AGHT+IFk2ivyv/T41tozdkfanIx6JpttUK1xxhTgZqBmUoSeelYWRE0sOcYZnKVWJMBEFYXr1BsIXV7c521L4jjIKa98VP6cUTpU
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA002.ant.amazon.com (10.13.139.121) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Received: by 2002:a05:6e02:b26:b0:424:30f:8e7f with SMTP id
+ e9e14a558f8ab-4248199c513mr88966625ab.17.1758351124090; Fri, 19 Sep 2025
+ 23:52:04 -0700 (PDT)
+Date: Fri, 19 Sep 2025 23:52:04 -0700
+In-Reply-To: <20250920064813.386544-1-wangliang74@huawei.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68ce4f14.a00a0220.37dadf.0026.GAE@google.com>
+Subject: Re: [syzbot] [smc?] general protection fault in __smc_diag_dump (4)
+From: syzbot <syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
+	wangliang74@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 
-The current implementation of the igc driver doesn't power up the PHY
-before the link test in igc_ethtool_diag_test(), causing the link test
-to always report FAIL when admin state is down and the PHY is
-consequently powered down.
+Hello,
 
-To test the link state regardless of admin state, power up the PHY
-before the link test in the offline test path. After the link test, the
-original PHY state is restored by igc_reset(), so additional code which
-explicitly restores the original state is not necessary.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-Note that this change is applied only for the offline test path. This is
-because in the online path we shouldn't interrupt normal networking
-operation and powering up the PHY and restoring the original state would
-interrupt that.
+Reported-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
+Tested-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
 
-This implementation also uses igc_power_up_phy_copper() without checking
-the media type, since igc devices are currently only copper devices and
-the function is called in other places without checking the media type.
+Tested on:
 
-Furthermore, the powering up is on a best-effort basis, that is, we
-don't handle failures of powering up (e.g. bus error) and just let the
-test report FAIL.
+commit:         cd89d487 Merge tag '6.17-rc6-smb3-client-fixes' of git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=10864d04580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8f01d8629880e620
+dashboard link: https://syzkaller.appspot.com/bug?extid=f775be4458668f7d220e
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=102f5c7c580000
 
-Tested on Intel Corporation Ethernet Controller I226-V (rev 04) with
-cable connected and link available.
-
-Set device down and do ethtool test.
-  # ip link set dev enp0s5 down
-
-Without patch:
-  # ethtool --test enp0s5
-  The test result is FAIL
-  The test extra info:
-  Register test  (offline)         0
-  Eeprom test    (offline)         0
-  Interrupt test (offline)         0
-  Loopback test  (offline)         0
-  Link test   (on/offline)         1
-
-With patch:
-  # ethtool --test enp0s5
-  The test result is PASS
-  The test extra info:
-  Register test  (offline)         0
-  Eeprom test    (offline)         0
-  Interrupt test (offline)         0
-  Loopback test  (offline)         0
-  Link test   (on/offline)         0
-
-Fixes: f026d8ca2904 ("igc: add support to eeprom, registers and link self-tests")
-Signed-off-by: Kohei Enju <enjuk@amazon.com>
----
-Changes:
-v1->v2:
-  - rephrase commit message to clarify:
-    - applied only for offline test path
-    - original power state is restored by igc_reset()
-    - powering up the PHY is on a best-effort basis
-v1: https://lore.kernel.org/intel-wired-lan/20250830170656.61496-1-enjuk@amazon.com/
----
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index f3e7218ba6f3..ca93629b1d3a 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -2094,6 +2094,9 @@ static void igc_ethtool_diag_test(struct net_device *netdev,
- 		netdev_info(adapter->netdev, "Offline testing starting");
- 		set_bit(__IGC_TESTING, &adapter->state);
- 
-+		/* power up PHY for link test */
-+		igc_power_up_phy_copper(&adapter->hw);
-+
- 		/* Link test performed before hardware reset so autoneg doesn't
- 		 * interfere with test result
- 		 */
--- 
+Note: testing is done by a robot and is best-effort only.
