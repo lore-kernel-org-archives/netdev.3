@@ -1,27 +1,28 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011029.outbound.protection.outlook.com [52.101.62.29])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012002.outbound.protection.outlook.com [52.101.53.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70447199FAC
-	for <netdev@vger.kernel.org>; Sun, 21 Sep 2025 15:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AD6199FAC
+	for <netdev@vger.kernel.org>; Sun, 21 Sep 2025 15:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758467408; cv=fail; b=d2YdSBkfENk7oqbTWivYY8XF4eNrjJGG8xzogqopRU+2HGbrOGV1cPlWk4qx4iL2scQllkaQ1X43c9D4Yy3uVzWBlK0rtigH8jWjWmo4SKARMrN2/x9PUtifwLFDa9YVEKmvpRHz9VWoJD5OFGcjcFPbFEyMBcbZcWGcNXFQieQ=
+	t=1758467417; cv=fail; b=HrysQ37HdP7dBfZutcgj9eNY8/HRrmzj+KZjzD4wM1D6/4yXws558dbPet91c3+xZY+XdkDbSqkhUg+h3Ar7jnE+eCWiwu/4u6EGFIytxadbd5GCFSuSpU5KOU7O8hVdkUg3x9mWSv19Ns9duiH5OPXMDtvUDgdXb3WtU/obiqY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758467408; c=relaxed/simple;
-	bh=RouEIDdtCUQCRwPLiA+k9hbEOd30JCl4FP+l8wNrZcQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fuV5oMYE4wOgcJWYq4xftlUCmzAZHZQhus1SXxVu2mP7ssUnzsjnVgTfsW+kQfh6hu1v5g6zuk5wP9cCr0/2ebOn0OP9RyWMWkR04IIhkKW/pBlpwl6DqM8t6229YbTGmxacC9WCzFyJn74opQ80kXlWWlwHYRgrremRFupAx6g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Uf7MVmAp; arc=fail smtp.client-ip=52.101.62.29
+	s=arc-20240116; t=1758467417; c=relaxed/simple;
+	bh=ok53FoMvD6tLN1ANMwewoWkdCahohHyr45dROgdd6I8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KVVloJHxslms9F1WUD3GNYr5G37En7+IhsL5iN+dCXZ+o6EtYuWin05tHYsQno/hPBdErnT7qBpCafT7HGeVUt20yI3VsShk1LgBZGamzmGp//awUr5eKrJ98AsIPIvZEGKGJk/cO9okKKNWzs0DdhmnYBSva2Q8Fn35yorqOKA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=U2+GjXd8; arc=fail smtp.client-ip=52.101.53.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Uf7MVmAp"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="U2+GjXd8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=roQZj/mjpGEsVB/jUIMKRvGLSJm/9e6CgDY8DuE9Ok8PKQkkCss7pKkcHJ4rMOJKQ8wOlpwe9a3Maek3ZE665Ob2l1YSlQnzX9uNgvk5FrLYLzZSMemb3iIxNkoBhZdg0hnPiZ1ViewefKTvx+c9tz/Wh1/Xe5cRsSGMoz5wZtCMpyfMCWnk7ffF8DGoOnJaMN/USFAcNCys6oUl46aInUVG92Jmg9UANrsg3gMEydEgTKvMy3nyHYT4DXrcwUYVD8/QQWXB/4yASEBH8WFi97dzQoeq5sDGq2nq3rEYdgIz9HGhwHO+k1BwaKuCkQPF8yAB+ltyDqxAPTowZH+nBg==
+ b=mtcc0HnVGLCRZuUov/RT0FoHoornNdxQmIEjIlMOg0LyMjWhUPzK37EfAR8BlafvUQhv/IUbZzxSX9ar3b8F4dDkcUmi+Q40FGw+8KqX7uopn1GFXN8zZ6kxaIAq8wgMA9lNw7GW2GRj/+HMSnbyD5VuNnuQvYoxY4XXcmExrfEV6hvgfvHTIiBSenvlcyOJrH1uUp1io/ABYQWjqdJgui+BJEEK5dBcD3VGXy0tKDZKcv5j0kOdGgixHyZT8FwkTJmXTkxIHgULaykCULGyOHo2ZqbwNKSU4RQPKtrXFKZvyU0mGiMROne5X6mNjZC5nkYGztJnwQj9+6vhKK961Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H8PJFzVSVyascDsyjJ+eWSwATQ2kmquURnG1nyAIXXY=;
- b=M61vTZibREO8sFnsWokr4kFITAMnLD9uom5t/x9Vrtr8qkdr/BV2oTawTC7Grcp+lkUq0SHR1vP8UHoZI78YAjpkziGpymVWT7wG1ETDoZFswbTzzsRjM0gAEz8qXbvP2HwMvA+Dl1TOrblbYV4a5o/3/ckMj77FTNijADaniF+fAWe0fZSS/r1uaBotBHTCgrhwW6rdq3C99QOzTxcC0+3fDDGGmL1jjSwqAM+Fq4eCdAgLZnqhcxkDWEmLWPcIlD6kaAOso1m2qfaXepO0/BiLfbS0wf+W4RDgFjk+UQTQohqUoF8WOsR/7Rlzwb1rVrUrUW3Ys1QtZGlB8qSA8Q==
+ bh=Bx+V9y/o/VRbMEpGgnZ5TIIwnBpZLsoSb564jbhdumw=;
+ b=wLXAMibD/dO93M2XLQiFGorTFqKr1gmi9EvwJg1gmEhwB2cYesbsd0mFAQEu9sUrrJtpWXZWycnCO+3+cOP+2i02CbKc9GJdzQYLbehWz57UR8OFybpQyqnA1x0kFvaVfdYM8n3yTO4GC+Jbkt2nS4EtThHwcLqwEGaUXWRwNTPVPa+KQJYuZu7MJZ9JnIgM2k4jpIxXD0aBsooeO55Bl9fhmwLTZUAKghFyttdu417lSVO6hVWoCF9Yw7g2ZUbL1QpHu7wnbXoEbCU0pIsnnqy+DXODNwr3wHXPptKVK42w+JdF7QjvvZJiQPPAiA+orsJeJc9iw5JoQcJB55c5rQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H8PJFzVSVyascDsyjJ+eWSwATQ2kmquURnG1nyAIXXY=;
- b=Uf7MVmApfZTYZh8ewFZ+rmYi4KdcyX+hg85ujju7RNcyQMQyXOZgpv+EfZ4pmlQnZDK5cfmJzIZ9KIBf5ZgBgoZSijx+QKZCoEsyZEQoaKfN+kVU24gL1Bt/YftOS3HT7FZeSH9Iy8LEPDJgS1SlYhRm6P6IPkk+329vN/R008cnPAWF3lfUp/rxi/4G/qYoSLuhAkvwDU4IQ3FsAqwD30u/1JDMwIjE3S00bkf3FQe0ympuDoxsqf97MAiKFVC/DvJeWpRgGX+eEo50I7UTTUg8DtMbRCxFCskYyM6l8SP8h6JN9oTD1Wlsx/f5lXTpWMBG9LilA3s6FBcJZ/ZcPw==
-Received: from BL1PR13CA0423.namprd13.prod.outlook.com (2603:10b6:208:2c3::8)
- by DM6PR12MB4340.namprd12.prod.outlook.com (2603:10b6:5:2a8::7) with
+ bh=Bx+V9y/o/VRbMEpGgnZ5TIIwnBpZLsoSb564jbhdumw=;
+ b=U2+GjXd81O6jkHWq0X/NNK0QVeuLRGJQj2UrWp4I4u18/zVPp78nlJK41dx8I1rfmdlCx+5bvjhcwNVsch+IXiTgBw29V9O5Sn9dfdb0qtv2ZnMnAgyUCMSpnRV4fBLVbTAdXbSAqHDy/+JkXUZuxI6xDs3Y+Dt53bZ/JcllyA2f0Wb3SrXTCx6lDBwODR737U76wo6QgP3M3FQg6WSvW7kDvDDO+86ybvgVrraUV3ywdAH3+cDy5vGM0wXaNnHXo/LZHBmbIOqq2O7SmNpl1Fiz/obzwuIdXe1YJzy5Zp2LTMCNWBn5sX22V2zTwZQevUSWRB6YDfP3mwGpg4Jptg==
+Received: from MN0P221CA0022.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::35)
+ by DS0PR12MB6535.namprd12.prod.outlook.com (2603:10b6:8:c0::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.19; Sun, 21 Sep
- 2025 15:10:04 +0000
-Received: from BL02EPF0001A102.namprd05.prod.outlook.com
- (2603:10b6:208:2c3:cafe::55) by BL1PR13CA0423.outlook.office365.com
- (2603:10b6:208:2c3::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Sun,
- 21 Sep 2025 15:10:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Sun, 21 Sep
+ 2025 15:10:11 +0000
+Received: from BL02EPF0001A108.namprd05.prod.outlook.com
+ (2603:10b6:208:52a:cafe::59) by MN0P221CA0022.outlook.office365.com
+ (2603:10b6:208:52a::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.17 via Frontend Transport; Sun,
+ 21 Sep 2025 15:10:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -48,26 +49,28 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0001A102.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ BL02EPF0001A108.mail.protection.outlook.com (10.167.241.138) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Sun, 21 Sep 2025 15:10:03 +0000
+ 15.20.9137.12 via Frontend Transport; Sun, 21 Sep 2025 15:10:10 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sun, 21 Sep
- 2025 08:09:56 -0700
+ 2025 08:10:03 -0700
 Received: from shredder.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Sun, 21 Sep
- 2025 08:09:52 -0700
+ 2025 08:09:59 -0700
 From: Ido Schimmel <idosch@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <dsahern@kernel.org>, <horms@kernel.org>,
 	<petrm@nvidia.com>, <aroulin@nvidia.com>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 0/3] nexthop: Various fixes
-Date: Sun, 21 Sep 2025 18:08:21 +0300
-Message-ID: <20250921150824.149157-1-idosch@nvidia.com>
+Subject: [PATCH net 2/3] selftests: fib_nexthops: Fix creation of non-FDB nexthops
+Date: Sun, 21 Sep 2025 18:08:23 +0300
+Message-ID: <20250921150824.149157-3-idosch@nvidia.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250921150824.149157-1-idosch@nvidia.com>
+References: <20250921150824.149157-1-idosch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,69 +83,186 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A102:EE_|DM6PR12MB4340:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f505a6c-6a35-4648-041a-08ddf920f158
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A108:EE_|DS0PR12MB6535:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6969c64f-f408-46c4-30e5-08ddf920f596
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|82310400026|1800799024;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?YW1bh9E9IjOlnrWudjA4CDngByiS+DjxMW6jx2Q3vpw0NPP26xkSJXIF8dKm?=
- =?us-ascii?Q?9VJH5E5dJ2m5aWexy2cl5yOx44ivLj05SLv9TJKIqBGHxlJRmTMEcSB1TSMz?=
- =?us-ascii?Q?E0hRbpkqYyEpwQ0/V7VHi8xfKRStUwnctbpC888XYbuargWO/8vCBASrBAHb?=
- =?us-ascii?Q?TpBACm1SnRJNT4Do2jAHOMOejE7SIyediKsC7VEdq45XwrQGO/XxDexXKpj6?=
- =?us-ascii?Q?jMIFypoSCW6UFwmC4ilL7zWQ8jRCE6Crui/RDty/1wAuTHw/ybZwaBwU+hMQ?=
- =?us-ascii?Q?rV/M7Gsm0Z58AbqsQOZV99LNHKV3bmWvK1JJwJ1+3OE+v4Da2aXUYQooaEpr?=
- =?us-ascii?Q?s6DzhP3zmljp65M1gPnUqA6ANaW3BUmjnEprwAKII4Z0XnjvTefjEdjqZ27w?=
- =?us-ascii?Q?iW8BQgXvPoJPQPBZ7JVY7f9VRcVALnkd0WgmcuxG60PmdR0gs0wAxDTYK3xa?=
- =?us-ascii?Q?oHUDTSGjc1zNrXgX6RkKVx1FTLrJbxqcDJQXrZrmEseJ9Yx983BCjkpra/lX?=
- =?us-ascii?Q?bxIE+0ez3ld4svhVLN3cYGZvEIDszhoTtGcY+dsh20IbF28zXLwe8mXKLAtZ?=
- =?us-ascii?Q?ix5hhXOt2J35crlCKipW0cT+WIfB7UOrktQcCYv0UXZ+DUhNK1faL9Dum0bC?=
- =?us-ascii?Q?y5lcYm4JgC84TZLIaY8Ttkqo5pFuIEMx/3/EGmxR+zj49/Y2z/Da0ZxIrLdg?=
- =?us-ascii?Q?iskvtXGZlOXMCyq9l6Cv+ZTGZNbIydhL1ND4LgVkY6jK5UCIEwHkHjJkxhmz?=
- =?us-ascii?Q?L33o0U+n3X7bVzudipRKf0A2+BFFcGbSZiPwAH+CSnmoXTSoF49wvmSi4PUe?=
- =?us-ascii?Q?69D8tDl25tJQSIng0wfihFKcPfVCWzqj/GDAxHYU6iWXUX21Xqoxqe6GnIKv?=
- =?us-ascii?Q?WmgJYrXPn9enRQRqnMh10IV8LTpH8WA7NsBXcOYqYxv5GNEyW+vivZYcOUgb?=
- =?us-ascii?Q?x9U+f3cZBDOjihfc/rlsXJ7VJT2O5/AwWdS0xii6Y6n5F8fRK72rIKELXl0y?=
- =?us-ascii?Q?n5mZAytyQkDSupcw1rN8Unr4NKkXpO9hJoBxXTi0kDxyNB2VKqaO3pSMfxkd?=
- =?us-ascii?Q?rr+bxfcBlgcfSbj8ZTRlBanoVydJRpDFEmRTrwNqdPjnxCa+019teHGRk8IV?=
- =?us-ascii?Q?kMXmWlurRH254I6rxM3wf1B4YT7HnIzjOX7eFiYJhRQC+Wgvrmx2YqNDGx1i?=
- =?us-ascii?Q?ySzi0TJhsq1zgMfL1e7EZqw6s/UO7CZlAk57Y/asEWiN1fxKH0mKw2vkQ2m6?=
- =?us-ascii?Q?+NgVscdJKJHrvjUAkA4kftAevFD46XNVTaoRuLfyDSMSnLDjChek2Coo2OLt?=
- =?us-ascii?Q?3jIi1RLY/MHzSKqOInXMoCGok9tS0X2eSgGSBqkeVVWqf0JYMT+aB67vEhty?=
- =?us-ascii?Q?s665IkVjn4eVPokO7xK7RH97wLWXmEL9AAeS7jqYBYYdDfKkAUJmI0HLaX81?=
- =?us-ascii?Q?ThC4MQBD8lQtz7z3RdfxLvlSCl0bBvkYytsNlnvg4NLlPo67yLfGL0IRdJoO?=
- =?us-ascii?Q?yBxGRACWvdIcSXX27yC7N3U09PmyyK49x5e+?=
+	=?us-ascii?Q?Rm9CWirJhViOFjxKIL859T7+R/1O98xbTFdMtMktn+zacM6Yit8RGsZ+eoPF?=
+ =?us-ascii?Q?o+AsRnLf7VHOVkFd0M/zVDAvX9mLebjPx9fslyBNOoneXbq3c5M0NYJC5qo7?=
+ =?us-ascii?Q?ttFCuHP3iNEZW0QAH/knQobOsTeeYc6gyQQ1Pd/3lZ26ps66si4a0nRQxwgk?=
+ =?us-ascii?Q?jNrtB2hZjIy4+ZYXrSLR0iJeqWk3AiGQBakPMP5Mc3vUx9n1UmWB81gI8Oy3?=
+ =?us-ascii?Q?3tWLoqcCaLBbQaJMctm5PE8n/tE8HoI9NCIVf43co5Xyds9T9k84gKi5ckdT?=
+ =?us-ascii?Q?WRjerF5Deev+CRQPcNTFYGPJ90eZa1QOwqav9WDFv/vZzzXPHgNtxG4AMj5A?=
+ =?us-ascii?Q?65UDg26ZpTUij8SBqW1p6wnpvyJy2l+hqAPfE3tLZvD1DxrIr/iJK5FaN3cO?=
+ =?us-ascii?Q?eVt+XPWIOz2xTIQaW3A3r4/nvjUWQFXAgkegCIC/tXlONXCHIVWqAKncttNA?=
+ =?us-ascii?Q?0VCYfaiLhTP/e0Ep8BN93x5c3N9iRAzikkNQPfMvz+zhSdZxtbnw9kwyjQb8?=
+ =?us-ascii?Q?1KpeNvqtHg67dqBJ57FJTL97GjO3gdCJ2/hMzJaGMVBqCBFoYbK0u3Z3BiZy?=
+ =?us-ascii?Q?poLUzv91NzdBAthqaMSo8TlkbxXB4PcPPTakMX82B/CRs9TFzdLHM9wAKbQs?=
+ =?us-ascii?Q?VxAytE3O14OVdNB0O3SNi6Viieo4n97Dzz+txphDpok/CCfYv4OSP/Gd9Id2?=
+ =?us-ascii?Q?ifPLpp0lbBOk81MnE9IKdCZebLnHU9eC2ngb+RB8pvcnC4kXSDaiX94vMe1A?=
+ =?us-ascii?Q?m0bH15BnIMVYySXwOHxtH9xFWAywDbT+bBjWxZdtAU/6vM7w8PJ9xXxz90Js?=
+ =?us-ascii?Q?rC17cdfJqOBtxjB6sxKM0X6sy2yiMLB8kyj/dMnO/UprVXz9pNqgoKsq35Zu?=
+ =?us-ascii?Q?NPtbOmau264S7/01W3Wo4E4mzaG9R+4Cj24SS8vfeX3aiI8Sge4+4PzN83t6?=
+ =?us-ascii?Q?olCn9rrie68qgr6GDL60WyJSgmpF+xK7vDqzk9ziKoY0RQJ5UEM9BnQ3fazy?=
+ =?us-ascii?Q?ksXwbepSfYExjPkSeNRBkOoUJhKwy2WmrAO8JtAxVbe+Bx+r3JRSTJ7uxUxa?=
+ =?us-ascii?Q?RrFHUwMJAsPXdOvCKB1D4vWgxmXbM1DvXGPGgVeES8xvI94QsnTZ2xghYHcq?=
+ =?us-ascii?Q?lkqRV9h/CXaMNMGdaKsCs/c5jCFnHCIAv8XmiLyLbGfEKXhbGrWuqs/h6IQj?=
+ =?us-ascii?Q?m3wRTnsM8yY8KjAQKRW8y3STUEyX82VVXbc/tzUt0d7NZeIlv7tw0W+WGDhZ?=
+ =?us-ascii?Q?mN1ji3BoO9BcABryJJa5xHL9IFFft/6g5dHDuS9h8vfzV5UJW3zoZp6UaQfk?=
+ =?us-ascii?Q?5G+76LUq58d8Q4uFBhXNIBO9IYGXsEOqmdpkiEVQ9/eH/Xfda8FlLdcRknLX?=
+ =?us-ascii?Q?neinLZir/P25xiOVOsQzUkjLdx3/qU81G8Tji3hAKyE7jqSxj4Zcx9d4PW5c?=
+ =?us-ascii?Q?/BF/JS+OJJiQX1OpJGI3ypxqswm1A6yw8kg8v0e73RLJdDeBDHYDtuwbfiqp?=
+ =?us-ascii?Q?ufLKaxcksF9kfWRUsv+oD+TuskZTEOxpXWCx?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2025 15:10:03.7915
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2025 15:10:10.9170
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f505a6c-6a35-4648-041a-08ddf920f158
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6969c64f-f408-46c4-30e5-08ddf920f596
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A102.namprd05.prod.outlook.com
+	BL02EPF0001A108.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4340
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6535
 
-Patch #1 fixes a NPD that was recently reported by syzbot.
+The test creates non-FDB nexthops without a nexthop device which leads
+to the expected failure, but for the wrong reason:
 
-Patch #2 fixes an issue in the existing FIB nexthop selftest.
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
 
-Patch #3 extends the selftest with test cases for the bug that was fixed
-in the first patch.
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 63 via 2001:db8:91::4
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 64 via 2001:db8:91::5
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 63/64 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
 
-Ido Schimmel (3):
-  nexthop: Forbid FDB status change while nexthop is in a group
-  selftests: fib_nexthops: Fix creation of non-FDB nexthops
-  selftests: fib_nexthops: Add test cases for FDB status change
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-nRsN3E nexthop add id 14 via 172.16.1.2
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 15 via 172.16.1.3
+ Error: Device attribute required for non-blackhole and non-fdb nexthops.
+ COMMAND: ip -netns me-nRsN3E nexthop add id 103 group 14/15 fdb
+ Error: Invalid nexthop id.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
 
- net/ipv4/nexthop.c                          |  7 +++
- tools/testing/selftests/net/fib_nexthops.sh | 52 ++++++++++++++++++---
- 2 files changed, 53 insertions(+), 6 deletions(-)
+ COMMAND: ip -netns me-nRsN3E nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-nRsN3E nexthop add id 104 group 14/15
+ Error: Invalid nexthop id.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-0dlhyd ro add 172.16.0.0/22 nhid 15
+ Error: Nexthop id does not exist.
+ TEST: Route add with fdb nexthop                                    [ OK ]
 
+In addition, as can be seen in the above output, a couple of IPv4 test
+cases used the non-FDB nexthops (14 and 15) when they intended to use
+the FDB nexthops (16 and 17). These test cases only passed because
+failure was expected, but they failed for the wrong reason.
+
+Fix the test to create the non-FDB nexthops with a nexthop device and
+adjust the IPv4 test cases to use the FDB nexthops instead of the
+non-FDB nexthops.
+
+Output after the fix:
+
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal" -v
+
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 63 via 2001:db8:91::4 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 64 via 2001:db8:91::5 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 63/64 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+ [...]
+
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ COMMAND: ip -netns me-lNzfHP nexthop add id 14 via 172.16.1.2 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 15 via 172.16.1.3 dev veth1
+ COMMAND: ip -netns me-lNzfHP nexthop add id 103 group 14/15 fdb
+ Error: FDB nexthop group can only have fdb nexthops.
+ TEST: Fdb Nexthop group with non-fdb nexthops                       [ OK ]
+
+ COMMAND: ip -netns me-lNzfHP nexthop add id 16 via 172.16.1.2 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 17 via 172.16.1.3 fdb
+ COMMAND: ip -netns me-lNzfHP nexthop add id 104 group 16/17
+ Error: Non FDB nexthop group cannot have fdb nexthops.
+ TEST: Non-Fdb Nexthop group with fdb nexthops                       [ OK ]
+ [...]
+ COMMAND: ip -netns me-lNzfHP ro add 172.16.0.0/22 nhid 16
+ Error: Route cannot point to a fdb nexthop.
+ TEST: Route add with fdb nexthop                                    [ OK ]
+ [...]
+ Tests passed:  30
+ Tests failed:   0
+ Tests skipped:  0
+
+Fixes: 0534c5489c11 ("selftests: net: add fdb nexthop tests")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+---
+ tools/testing/selftests/net/fib_nexthops.sh | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index b39f748c2572..2ac394c99d01 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -467,8 +467,8 @@ ipv6_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
+ 
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4"
+-	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5"
++	run_cmd "$IP nexthop add id 63 via 2001:db8:91::4 dev veth1"
++	run_cmd "$IP nexthop add id 64 via 2001:db8:91::5 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 63/64 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+ 
+@@ -547,15 +547,15 @@ ipv4_fdb_grp_fcnal()
+ 	log_test $? 0 "Get Fdb nexthop group by id"
+ 
+ 	# fdb nexthop group can only contain fdb nexthops
+-	run_cmd "$IP nexthop add id 14 via 172.16.1.2"
+-	run_cmd "$IP nexthop add id 15 via 172.16.1.3"
++	run_cmd "$IP nexthop add id 14 via 172.16.1.2 dev veth1"
++	run_cmd "$IP nexthop add id 15 via 172.16.1.3 dev veth1"
+ 	run_cmd "$IP nexthop add id 103 group 14/15 fdb"
+ 	log_test $? 2 "Fdb Nexthop group with non-fdb nexthops"
+ 
+ 	# Non fdb nexthop group can not contain fdb nexthops
+ 	run_cmd "$IP nexthop add id 16 via 172.16.1.2 fdb"
+ 	run_cmd "$IP nexthop add id 17 via 172.16.1.3 fdb"
+-	run_cmd "$IP nexthop add id 104 group 14/15"
++	run_cmd "$IP nexthop add id 104 group 16/17"
+ 	log_test $? 2 "Non-Fdb Nexthop group with fdb nexthops"
+ 
+ 	# fdb nexthop cannot have blackhole
+@@ -582,7 +582,7 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:14 dev vx10 nhid 12 self"
+ 	log_test $? 255 "Fdb mac add with nexthop"
+ 
+-	run_cmd "$IP ro add 172.16.0.0/22 nhid 15"
++	run_cmd "$IP ro add 172.16.0.0/22 nhid 16"
+ 	log_test $? 2 "Route add with fdb nexthop"
+ 
+ 	run_cmd "$IP ro add 172.16.0.0/22 nhid 103"
 -- 
 2.51.0
 
