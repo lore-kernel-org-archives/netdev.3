@@ -1,73 +1,73 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012059.outbound.protection.outlook.com [40.107.209.59])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010041.outbound.protection.outlook.com [52.101.46.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7471C861A
-	for <netdev@vger.kernel.org>; Sun, 21 Sep 2025 15:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D877B1DE4CE
+	for <netdev@vger.kernel.org>; Sun, 21 Sep 2025 15:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758467421; cv=fail; b=c5PZYfvsIDKZ90t9ZyEI4JSTgl0FfIuFPx8rwmaKSfkP0uYIshcHNaEm33eACEzfb1lI2tUfQ3Xv1l0/iwbUMo6Of8AhFfQNwDtEiJP1svVU2LYpIjbOEoMhGq9y9aJx+mgw7e2L2USB8EpamP94FdShruKV4r9aOBryz0DBFG8=
+	t=1758467433; cv=fail; b=ZkYfMRlXQYrtzHbtP1nmZurKwp4SW0y4ifnIrQ0A6WmL6vxGqEpI7IXRQ/zy6hK5r23wYPEvzYND2dqu7wXletuWJxuwVKuOqjVMJf9vPT+3XRrhDxQsupI2+uyejHkXzZpLgr0N2ssqt5KpjJ/tLvIzZXzkPhPlgLJpmxwVuiY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758467421; c=relaxed/simple;
-	bh=9sxecU7kQx77TdquKW4+eCF0pFEZCwphvpMFs5YBIzI=;
+	s=arc-20240116; t=1758467433; c=relaxed/simple;
+	bh=rEqR/+4LiI9/qLkPHzd4i0C8MPDQK9u91cnMa5kn7yU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mmbw2rQ5mLdmUCzcYDKKsYl/sThFcjaIyEtm63s1iVfO0uL6LSN4zLwLuhwCRwHEGWltElFBzV9q1GpjWOpUc1e5ExEdyUTzu6RmWpvIAf8E2TNlO18tiKG0Cmx8iM6M0NzGJpWrRte65iN/lfWLeiUTZFv1cfUYd/VRG8sHQkc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DGy26t6h; arc=fail smtp.client-ip=40.107.209.59
+	 MIME-Version:Content-Type; b=OvU+lAompp/OwRjis5JlJVyBFBkbHAk99vETe11QJLxm9nw10ujf8WqREtu/SM9zQOUecL/7uhqn2CZbgtH4NuPxxR4mCclFQ69iVHIHGH12uWBM96CFUqsj8afWlokL6nGHiwGH/tMjY2qjFeodexApbGFvKyg8cmQ5uboEE6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aJccyLUS; arc=fail smtp.client-ip=52.101.46.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DGy26t6h"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aJccyLUS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UNtm8kRXEWMrb31rwJOnNqzREDuImt+EMAz1crIMnHi+y/Vwl6UI3iWAw5NotxXPeBxedIOLy+1NzBv/Y2JoYelIKW06J2pb87y2OhBTi9jLe9znSns73USNqf8e8YlYHULQyn6R9s6ITfgtUoKNKiTF0pm3OxfffPLlcQEcQQz9l3A1ox6t9h5IZ2Q0lU+VcAmwFNOgfwE6e91Snf+2g2d6JtX32yH2NF9sGYTOYV7YmVzh5cekpL0GsV4sbQ/MAeiGozRTWMtnN6l5D+zHAbhrkylwIVBXBKhkfZh8rdDFKwKjl58Y00FvVXF6Z+ME1feYHBbxL1WDx7w85qbH+Q==
+ b=h5jG5GestomkeFrRMMbQudfHI7O2rRUStTqtRQP9zsGZeSODH5xIwUClEbuqQDti7kJfnaB3acJg2MEgatsDXSpCqRDBY6wSsKwUH3qcp+Iac3DBUDfTDzwBF7wfImjmxjhROGBhYDk+LKtDpmKtwFr81ydvrTakMrJnpOBU+U68IZ27aMROYazc6fvpSBsyhp/DU9G5TEdjYy4FlBPgPZvobBx5XMGUkoVQvv/j3PEwNJhRgGB2xj1LrmLpZ+u9tPvjqL+dMLrsr6Bp4pGkhFnspD4Ou/IqK0e6k2dUxc+ZRA/r6thjmHals0G4UfyDkA23uFXhnYFbEBYmMio5FQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rdWnyKLLlCG5KLAYnYSql8T2LywU5vH8jGUzwaUPXsw=;
- b=Lxqf/arUwwaONR8PcgGZbQJvFT8JSe0zcCeZ5KPv17hJ2/uIRLX6lhz556ItAa9C1LBQkqDfQCT1TlyzSqpxmBcLiSoZlZK04lv9aOdXkZ9j9ijHt8pBmm756sbQSPw+jRjNmIYMKauKHXleVvEe5pxAKIzJKwHpVwwfgJSMy5Zlm0hIiktUCktZHA9hkhQarF6g5/oE/USNvWC+Q8tAmx54Rw0xBZ6U2Vw3HifgBIsl7rnMRBLUIW28oX/zpp74MKq2gWKWbKhpf4czY/G7lf5Jreuj+o4S3nJ5YbXgq2cqqj/fpYWw+aHnjicDnbD0ExRHa9UiL8g+4MxpUsKisg==
+ bh=UanMU3HQBpUEkxkFjmSu+wH9BRoRci5IxuLREFlXAyQ=;
+ b=k0nyLYCzFj2WcstarQgbHwfDu1dNhJGBKObtN2ilmiDgZP1LT8NjxFSeyh3rxWkyuZGR6FRReDhnXEnNNc6MDuFQll76ZAGgsbeWsbv9BhatcnUDH6CXNAHvN1teiMduE4AMTyogibVmGUrQI3TTn0Sm4nC3EyPKLnCxEBhSXLmVluA35FK/oktVtVpehUCOiXbLncYnDX7LoXXY9gz3s75Q0ri/yOh0g42qA0QXN4KGPZmz3D5R0WmsfBJbotjSvi11iWe06rv7BDgBEJlMeozFtGccUXlm7Sa5DOJvW4kiQYZQvJY3T0dnpTSQT2BGcJHCPYNbvGiAYCDCKdnyiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rdWnyKLLlCG5KLAYnYSql8T2LywU5vH8jGUzwaUPXsw=;
- b=DGy26t6hE4n9O20+ZSpeL6IszP0oJ4iEhGNwjQHQmcJkv2rbwuKBop8MDcaU97N8PtiBlyBpSAMATQmsJM/LORRzjmse3oL9HUZ8f5o4LTywFtqYH2gn2Hpo2L7Vdxe9Xl59bfanWJcpc8sMsqnX5UZ7CPwYLD0teYMuvhMlW1e37VEBVJssxorLgHbyCtOHYaau/SM2u10q5AmZkC+P/HdahTl13Goh/FIa/4p1UkhDPq9KolEJW2cSXigZyTnrrw5npcMlZRsocztRG2R0NaQxXwL2ZCCfIC2AadKyoWkgCNRA80079U2WLZF0D6L+Xr2OOoxK8aW5om30b6yjaQ==
-Received: from BL1PR13CA0437.namprd13.prod.outlook.com (2603:10b6:208:2c3::22)
- by LV8PR12MB9109.namprd12.prod.outlook.com (2603:10b6:408:18a::20) with
+ bh=UanMU3HQBpUEkxkFjmSu+wH9BRoRci5IxuLREFlXAyQ=;
+ b=aJccyLUSSNHuoSFYOLUTNYQ3nH6S7vA9QGOMhExuHy3EMfz/GAr3lw15WqsdDdXQmK3ZGSiXlDyx9J1BSfOTfcOI3QDb6xvPo4WQb4PNfoz5oaWvDcuRNmBrVVba/3HoBM7p1LVCi7g/b0wSJTeNBx+IxCSytRjYhsLtVoxHGAJFG7Kk1gXjSkPYf5o6NycsgPYUnBrTQ2KFNVe8ne4lmc4muFQtR41bT0+bJ2+qZrc1yoiCfMVZk4ygbUP3Y4hyiviwL+ICPPHx475yeTYLBZwse4H1ZcXzNCW8yZpTwjePTP720SCp64EPEqS6VhhcQOGAzB2zpLRGLJBdAmfWNA==
+Received: from SA1PR02CA0006.namprd02.prod.outlook.com (2603:10b6:806:2cf::15)
+ by CY8PR12MB7242.namprd12.prod.outlook.com (2603:10b6:930:59::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Sun, 21 Sep
- 2025 15:10:06 +0000
-Received: from BL02EPF0001A102.namprd05.prod.outlook.com
- (2603:10b6:208:2c3:cafe::ad) by BL1PR13CA0437.outlook.office365.com
- (2603:10b6:208:2c3::22) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.17 via Frontend Transport; Sun,
- 21 Sep 2025 15:10:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2025 15:10:25 +0000
+Received: from SA2PEPF00003F64.namprd04.prod.outlook.com
+ (2603:10b6:806:2cf:cafe::b7) by SA1PR02CA0006.outlook.office365.com
+ (2603:10b6:806:2cf::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Sun,
+ 21 Sep 2025 15:10:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL02EPF0001A102.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF00003F64.mail.protection.outlook.com (10.167.248.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Sun, 21 Sep 2025 15:10:06 +0000
+ 15.20.9137.12 via Frontend Transport; Sun, 21 Sep 2025 15:10:25 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sun, 21 Sep
- 2025 08:09:59 -0700
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Sun, 21 Sep
+ 2025 08:10:08 -0700
 Received: from shredder.nvidia.com (10.126.231.35) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Sun, 21 Sep
- 2025 08:09:56 -0700
+ 2025 08:10:03 -0700
 From: Ido Schimmel <idosch@nvidia.com>
 To: <netdev@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <dsahern@kernel.org>, <horms@kernel.org>,
 	<petrm@nvidia.com>, <aroulin@nvidia.com>, Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 1/3] nexthop: Forbid FDB status change while nexthop is in a group
-Date: Sun, 21 Sep 2025 18:08:22 +0300
-Message-ID: <20250921150824.149157-2-idosch@nvidia.com>
+Subject: [PATCH net 3/3] selftests: fib_nexthops: Add test cases for FDB status change
+Date: Sun, 21 Sep 2025 18:08:24 +0300
+Message-ID: <20250921150824.149157-4-idosch@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250921150824.149157-1-idosch@nvidia.com>
 References: <20250921150824.149157-1-idosch@nvidia.com>
@@ -83,138 +83,181 @@ X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A102:EE_|LV8PR12MB9109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7021c988-351b-4602-ca4b-08ddf920f311
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F64:EE_|CY8PR12MB7242:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad9d3e1a-88b3-45e7-f901-08ddf920fe41
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026|13003099007;
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FPkzopajC8/cinxGdhRcj9xv5D6PMf2kygnT4nCVIiPlJcXf0PQmPbVONdKv?=
- =?us-ascii?Q?tiXKGaMuAO367D6UbF+ZiKlBuJlrHpIFntGZ/Wf3wSFhWoAtS9S7pbo2ZbOg?=
- =?us-ascii?Q?IFaSf24pSSS+oi51YqgctiyeK39GRnkFdflaRsVR5ygoHMdg2bbGR0T1xSEv?=
- =?us-ascii?Q?pBSAGpcLcGVQwwx1hvX4QTadcyZXmv8OVoF2TwDc5K0/rvZzQXd4VRWVQ8iQ?=
- =?us-ascii?Q?Ega2/QH87F+8YtyfUmLmmAJD2LJQMomvaOU0QAR6QLoZtO/AUKA8tifIkfBH?=
- =?us-ascii?Q?aATWDCMXCLAHLYz2rBUw0VjHboiEwlYLeHnDJyaFTxfvYWZ4j8lRPHifDQ7O?=
- =?us-ascii?Q?31c7WJUBLDd2QVvQxog2OfFv2IjZm4twRPJscxVFBmyev1WGJT65P9Yj67Uu?=
- =?us-ascii?Q?xcHp95sK3B0UaWEHrHEn03QhqhoGTjCTk5OC2h7kO1MN2DZQ/Le5qKH4gzcZ?=
- =?us-ascii?Q?J5y1n56fBFrMNdFx9F8T16lkgjVLKWI/+EbgnBn8dAfwNDNibsq0VR9UJTPq?=
- =?us-ascii?Q?z3dxkaAFje6mcNoVuOPvgeNjHK6XuVX8mQskm40/2sKumdEHUYC+S4M/G+ak?=
- =?us-ascii?Q?WI+4psK65j+wOPsvE3QvvOozN+FQNhZlHbVCet/9XWuJHV2jG6cW7W4uBtMD?=
- =?us-ascii?Q?WvaqkBXH8DzL0wTvmBcq/JmxQ6ZKVgj/t0NgZKqMb7sX1jJB1Rw00+qM8Q59?=
- =?us-ascii?Q?V6Ou37sR+fHkLK4xGw4ex4MmcABmmtNZ9SbzIEMkWHE/NEjNVjEZqRQEhYJP?=
- =?us-ascii?Q?O6DXukz466Pl9EEHtUGVW1gvhPKjQ1NzN6Ph6U4CfZqvni0rTeR6WJPNZ6lV?=
- =?us-ascii?Q?L0ltZy3BI5pNpYX2ga3fNcr+QFbG1jf5YYtzA+vPNx0vEz1kaGxSQurAzgCj?=
- =?us-ascii?Q?NgWKQQQrwizn/ABEGc02el8GHDeu6KkIUtmp11j0O+6buYsug1AyYR3+ujtG?=
- =?us-ascii?Q?jwbquvlir7Icy5pyzqWyQbyltMcB8YygDrctQ4XITZb63erJwMsInlmU5q9m?=
- =?us-ascii?Q?ctfhLlFr+l1LV1ADC4mluwdBtsHw1sVV7Rd1NvJGWXS+euOIW9j83TT/+4JQ?=
- =?us-ascii?Q?5lkIQqJwEQX7RVUuEb0X3STgAdsHYc1iDvTRg6iNBQhV2pUbJ5XB2ZMo+2Yd?=
- =?us-ascii?Q?Z5ecOMVR7hiRYgUMbKpUjw7nxaKah+yStt55GEzQVZEJYUm/9WLMdvOiXzQc?=
- =?us-ascii?Q?FqvR87YBqHlEfiuI04m2+/gkDjBZ1ebA2ZTxgYSb71f0NRXQ53IeuMFH/6oz?=
- =?us-ascii?Q?C3dH+M2NkkQQDzTgPI1k0KacOuG6F8LZqRDLat9Zu/Qm6vNKDSNbspRbNHQ1?=
- =?us-ascii?Q?dG2SVnJusMVx8CVcRmsstjmb0dnXr0p75oftfrO9tdfbL2PE+E2KMkjjjpYd?=
- =?us-ascii?Q?EnYy6JVKu2TppCIosWF9go2ko+wKC0rOYDfuNqrqp3lh7ETmM+hMQeZxUsZw?=
- =?us-ascii?Q?hPFc0S1pMUHUZ8XYtIfbwtlPi+ubnIX/38wIrFWbAyuCzSeFj9qU07xUl2DF?=
- =?us-ascii?Q?7sBThNcllPwGTCMf47qpGu6W+5CHyvo9FsV+uaVvvJElhJ1pSfUStX0M5g?=
- =?us-ascii?Q?=3D=3D?=
+	=?us-ascii?Q?QwDr2nUomb6hbmK6Agr/qypJYSbUXx8vuEDKP8Zmbqq/d08hthNkzgZ5fWHR?=
+ =?us-ascii?Q?FTg601iTa+4HXNKdihLNAt2Da5pC+JcQu7Ir5ScP5qRRPAMdhM9/R3f8+q6q?=
+ =?us-ascii?Q?qFLA++5Km/A8asxKB/M8YpAgeT0uXwKj+d0Dy2OF6asxXN8EJBaGQBhUCCey?=
+ =?us-ascii?Q?DjJXezDheyr8tmlUeSP+yre4U2ubyVF5XG+R8AT7ZoVNCDYeYrcfIxnA0uey?=
+ =?us-ascii?Q?aXJPQbU5aG0FRqh09jHl74M4CNUzmZ8kDBSaTvOMMBp6fC4hAb3OQmgu4b1M?=
+ =?us-ascii?Q?4avMPRru/ZKl2X8ngrljOrnNJcpGDbh7U/E+09+AwOoyLjvQyURd75ulMFjJ?=
+ =?us-ascii?Q?bSk30G4w1rOapf63wVpqHuugPbqzFdvuZrQ4gVYXyVpwnXP0wMarzW+Js3Yk?=
+ =?us-ascii?Q?jjG8w+Y/uKWvqlY0VfSPTgcwZ4QknCXwWwAMo2ddqwsf2DL2X3hTUPuw63Zs?=
+ =?us-ascii?Q?X0WcUjIqhEm1hgEp8egwIu0TFO6WlSXB0PwlXE2D+ENwP2OVh5hojHbP1sTQ?=
+ =?us-ascii?Q?gA92X1W1abaXcp8WyTyN2EbAOJlCmMa6XZHxT5MfwYzTc+WXA4ag1u0VPrKj?=
+ =?us-ascii?Q?n0yjJ4OmssCT4VO91qus1KjlIpDzZIwiuicbg+axjiZQWd5d4d46kKkvVNm0?=
+ =?us-ascii?Q?CjtQjVv7Q8UmSvZVT6wR0VLNvt7GNt4E7Kq86EJsbGs9UFnq7ElkRNeoYPOT?=
+ =?us-ascii?Q?zjK/Ku6ZdOIhQJBe5nYzSoXDv5z49Fa8lwgiwqUoA2nRomSo2eiRBBPqD/ux?=
+ =?us-ascii?Q?cieSHJ7lbso2WAuc44d2Out9UeDcX/aeMt2r+1LLJ3jE4FtgbNu+Ur54/Qs7?=
+ =?us-ascii?Q?PatYVZ1ASIpGmBHntb2VmH/fxHdtQEpDzxBCKoof3sZ1IU1YcEb2tCswbcsD?=
+ =?us-ascii?Q?bPhnUzevJ9Qm/fdueCOVkj1zpSVKlevs0Y9gtxVOZmDlvT4vlbcMmNcHRmKU?=
+ =?us-ascii?Q?p/yZE/0T88Tm/WqF3s25h4wh5ulOPKM+srLEBr3vZyMEDurLAKiMoXubE5nc?=
+ =?us-ascii?Q?h17Wh0lNFhXJN+CJ68szo4iU9kJE+1cb9wQkMPdQVr4+ycdoXWO6XXvV4FcU?=
+ =?us-ascii?Q?f/zcP2cmwbCV2CcEFaaoXBdBazFzBMM0R+mNF/4RZvX8f9Odp7CVlC19vf6z?=
+ =?us-ascii?Q?oLZLeoaSs3mpLRUgKJX0n2EashJxwL1OUuPTUCZzxyLF7k2CWR3oduMJz311?=
+ =?us-ascii?Q?VbFMnPClRMG54+oPml04eLfVbggblmY9dX3cDlfHdFLl8q0nbnEXCmYNLpbh?=
+ =?us-ascii?Q?KAnfPvGac/L+UabDFKv1Q2jyLLPJY/uVZBX3gQVRn9g7A05CMZe9jqkrYoIy?=
+ =?us-ascii?Q?8zrXw9Og6UzmYVkft5JYc1XpMpKwp90lp8MlaABJdKZ5LKFrZC8Ftjryn5la?=
+ =?us-ascii?Q?7Ppfd25qa5nd+GPsFj9zYqRTD2eZcT0SaI/e3vZoarJQJ+HIzKRrOrUu1PY9?=
+ =?us-ascii?Q?iTOkNdcOuT201ZBkS/Bgudz469/d8Ip4LOxQb6X2/64Pabs3kmQ9NbuZMSHs?=
+ =?us-ascii?Q?8sg/Mp3ivPqx7ZDnbUOZxoy20UJ/4QOXD64Q?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2025 15:10:06.6945
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2025 15:10:25.5038
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7021c988-351b-4602-ca4b-08ddf920f311
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad9d3e1a-88b3-45e7-f901-08ddf920fe41
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A102.namprd05.prod.outlook.com
+	SA2PEPF00003F64.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9109
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7242
 
-The kernel forbids the creation of non-FDB nexthop groups with FDB
-nexthops:
+Add the following test cases for both IPv4 and IPv6:
 
- # ip nexthop add id 1 via 192.0.2.1 fdb
- # ip nexthop add id 2 group 1
- Error: Non FDB nexthop group cannot have fdb nexthops.
+* Can change from FDB nexthop to non-FDB nexthop and vice versa.
+* Can change FDB nexthop address while in a group.
+* Cannot change from FDB nexthop to non-FDB nexthop and vice versa while
+  in a group.
 
-And vice versa:
+Output without "nexthop: Forbid FDB status change while nexthop is in a
+group":
 
- # ip nexthop add id 3 via 192.0.2.2 dev dummy1
- # ip nexthop add id 4 group 3 fdb
- Error: FDB nexthop group can only have fdb nexthops.
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal"
 
-However, as long as no routes are pointing to a non-FDB nexthop group,
-the kernel allows changing the type of a nexthop from FDB to non-FDB and
-vice versa:
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ TEST: Replace FDB nexthop to non-FDB nexthop                        [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop                        [ OK ]
+ TEST: Replace FDB nexthop address while in a group                  [ OK ]
+ TEST: Replace FDB nexthop to non-FDB nexthop while in a group       [FAIL]
+ TEST: Replace non-FDB nexthop to FDB nexthop while in a group       [FAIL]
+ [...]
 
- # ip nexthop add id 5 via 192.0.2.2 dev dummy1
- # ip nexthop add id 6 group 5
- # ip nexthop replace id 5 via 192.0.2.2 fdb
- # echo $?
- 0
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ TEST: Replace FDB nexthop to non-FDB nexthop                        [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop                        [ OK ]
+ TEST: Replace FDB nexthop address while in a group                  [ OK ]
+ TEST: Replace FDB nexthop to non-FDB nexthop while in a group       [FAIL]
+ TEST: Replace non-FDB nexthop to FDB nexthop while in a group       [FAIL]
+ [...]
 
-This configuration is invalid and can result in a NPD [1] since FDB
-nexthops are not associated with a nexthop device:
+ Tests passed:  36
+ Tests failed:   4
+ Tests skipped:  0
 
- # ip route add 198.51.100.1/32 nhid 6
- # ping 198.51.100.1
+Output with "nexthop: Forbid FDB status change while nexthop is in a
+group":
 
-Fix by preventing nexthop FDB status change while the nexthop is in a
-group:
+ # ./fib_nexthops.sh -t "ipv6_fdb_grp_fcnal ipv4_fdb_grp_fcnal"
 
- # ip nexthop add id 7 via 192.0.2.2 dev dummy1
- # ip nexthop add id 8 group 7
- # ip nexthop replace id 7 via 192.0.2.2 fdb
- Error: Cannot change nexthop FDB status while in a group.
+ IPv6 fdb groups functional
+ --------------------------
+ [...]
+ TEST: Replace FDB nexthop to non-FDB nexthop                        [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop                        [ OK ]
+ TEST: Replace FDB nexthop address while in a group                  [ OK ]
+ TEST: Replace FDB nexthop to non-FDB nexthop while in a group       [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop while in a group       [ OK ]
+ [...]
 
-[1]
-BUG: kernel NULL pointer dereference, address: 00000000000003c0
-[...]
-Oops: Oops: 0000 [#1] SMP
-CPU: 6 UID: 0 PID: 367 Comm: ping Not tainted 6.17.0-rc6-virtme-gb65678cacc03 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-4.fc41 04/01/2014
-RIP: 0010:fib_lookup_good_nhc+0x1e/0x80
-[...]
-Call Trace:
- <TASK>
- fib_table_lookup+0x541/0x650
- ip_route_output_key_hash_rcu+0x2ea/0x970
- ip_route_output_key_hash+0x55/0x80
- __ip4_datagram_connect+0x250/0x330
- udp_connect+0x2b/0x60
- __sys_connect+0x9c/0xd0
- __x64_sys_connect+0x18/0x20
- do_syscall_64+0xa4/0x2a0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+ IPv4 fdb groups functional
+ --------------------------
+ [...]
+ TEST: Replace FDB nexthop to non-FDB nexthop                        [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop                        [ OK ]
+ TEST: Replace FDB nexthop address while in a group                  [ OK ]
+ TEST: Replace FDB nexthop to non-FDB nexthop while in a group       [ OK ]
+ TEST: Replace non-FDB nexthop to FDB nexthop while in a group       [ OK ]
+ [...]
 
-Fixes: 38428d68719c ("nexthop: support for fdb ecmp nexthops")
-Reported-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68c9a4d2.050a0220.3c6139.0e63.GAE@google.com/
-Tested-by: syzbot+6596516dd2b635ba2350@syzkaller.appspotmail.com
+ Tests passed:  40
+ Tests failed:   0
+ Tests skipped:  0
+
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/ipv4/nexthop.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/net/fib_nexthops.sh | 40 +++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 29118c43ebf5..34137768e7f9 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -2399,6 +2399,13 @@ static int replace_nexthop_single(struct net *net, struct nexthop *old,
- 		return -EINVAL;
- 	}
+diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+index 2ac394c99d01..2b0a90581e2f 100755
+--- a/tools/testing/selftests/net/fib_nexthops.sh
++++ b/tools/testing/selftests/net/fib_nexthops.sh
+@@ -494,6 +494,26 @@ ipv6_fdb_grp_fcnal()
+ 	run_cmd "$IP nexthop add id 69 encap mpls 101 via 2001:db8:91::8 dev veth1 fdb"
+ 	log_test $? 2 "Fdb Nexthop with encap"
  
-+	if (!list_empty(&old->grp_list) &&
-+	    rtnl_dereference(new->nh_info)->fdb_nh !=
-+	    rtnl_dereference(old->nh_info)->fdb_nh) {
-+		NL_SET_ERR_MSG(extack, "Cannot change nexthop FDB status while in a group");
-+		return -EINVAL;
-+	}
++	# Replace FDB nexthop to non-FDB and vice versa
++	run_cmd "$IP nexthop add id 70 via 2001:db8:91::2 fdb"
++	run_cmd "$IP nexthop replace id 70 via 2001:db8:91::2 dev veth1"
++	log_test $? 0 "Replace FDB nexthop to non-FDB nexthop"
++	run_cmd "$IP nexthop replace id 70 via 2001:db8:91::2 fdb"
++	log_test $? 0 "Replace non-FDB nexthop to FDB nexthop"
 +
- 	err = call_nexthop_notifiers(net, NEXTHOP_EVENT_REPLACE, new, extack);
- 	if (err)
- 		return err;
++	# Replace FDB nexthop address while in a group
++	run_cmd "$IP nexthop add id 71 group 70 fdb"
++	run_cmd "$IP nexthop replace id 70 via 2001:db8:91::3 fdb"
++	log_test $? 0 "Replace FDB nexthop address while in a group"
++
++	# Cannot replace FDB nexthop to non-FDB and vice versa while in a group
++	run_cmd "$IP nexthop replace id 70 via 2001:db8:91::2 dev veth1"
++	log_test $? 2 "Replace FDB nexthop to non-FDB nexthop while in a group"
++	run_cmd "$IP nexthop add id 72 via 2001:db8:91::2 dev veth1"
++	run_cmd "$IP nexthop add id 73 group 72"
++	run_cmd "$IP nexthop replace id 72 via 2001:db8:91::2 fdb"
++	log_test $? 2 "Replace non-FDB nexthop to FDB nexthop while in a group"
++
+ 	run_cmd "$IP link add name vx10 type vxlan id 1010 local 2001:db8:91::9 remote 2001:db8:91::10 dstport 4789 nolearning noudpcsum tos inherit ttl 100"
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:13 dev vx10 nhid 102 self"
+ 	log_test $? 0 "Fdb mac add with nexthop group"
+@@ -574,6 +594,26 @@ ipv4_fdb_grp_fcnal()
+ 	run_cmd "$IP nexthop add id 17 encap mpls 101 via 172.16.1.2 dev veth1 fdb"
+ 	log_test $? 2 "Fdb Nexthop with encap"
+ 
++	# Replace FDB nexthop to non-FDB and vice versa
++	run_cmd "$IP nexthop add id 18 via 172.16.1.2 fdb"
++	run_cmd "$IP nexthop replace id 18 via 172.16.1.2 dev veth1"
++	log_test $? 0 "Replace FDB nexthop to non-FDB nexthop"
++	run_cmd "$IP nexthop replace id 18 via 172.16.1.2 fdb"
++	log_test $? 0 "Replace non-FDB nexthop to FDB nexthop"
++
++	# Replace FDB nexthop address while in a group
++	run_cmd "$IP nexthop add id 19 group 18 fdb"
++	run_cmd "$IP nexthop replace id 18 via 172.16.1.3 fdb"
++	log_test $? 0 "Replace FDB nexthop address while in a group"
++
++	# Cannot replace FDB nexthop to non-FDB and vice versa while in a group
++	run_cmd "$IP nexthop replace id 18 via 172.16.1.2 dev veth1"
++	log_test $? 2 "Replace FDB nexthop to non-FDB nexthop while in a group"
++	run_cmd "$IP nexthop add id 20 via 172.16.1.2 dev veth1"
++	run_cmd "$IP nexthop add id 21 group 20"
++	run_cmd "$IP nexthop replace id 20 via 172.16.1.2 fdb"
++	log_test $? 2 "Replace non-FDB nexthop to FDB nexthop while in a group"
++
+ 	run_cmd "$IP link add name vx10 type vxlan id 1010 local 10.0.0.1 remote 10.0.0.2 dstport 4789 nolearning noudpcsum tos inherit ttl 100"
+ 	run_cmd "$BRIDGE fdb add 02:02:00:00:00:13 dev vx10 nhid 102 self"
+ 	log_test $? 0 "Fdb mac add with nexthop group"
 -- 
 2.51.0
 
