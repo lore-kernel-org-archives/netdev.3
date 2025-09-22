@@ -1,175 +1,100 @@
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887692F5302;
-	Mon, 22 Sep 2025 19:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C3927B343
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 19:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570655; cv=none; b=H5jWK7gMv7WsB41KGRNbiIW6yXsd4cP5oljPbFShgga5Dyc02miV39s1nRvsvRNvAWzuJnUPHYIeDcaUtrsbjo5vcxgm3QozKSKLlu5+AWKBIZmf6vgK5tahPGCY53avKkalLEgRX8XXYPS/Q+KuTWLUFvBKVerph+4N9vGrd2s=
+	t=1758571055; cv=none; b=Qph3ljllBcB1aed6/SYhQLTUgklCq1UA3/NvO8++Xd5Siilp1xbL4hLCwZ5jlQMuq6JNcwe0dPtO2DUdBqXf/s2ewqMQCDENuP1mzNjZSdH3i87Ouvq3Xg8Ct+GdiAOGwahaVutDToKVeK/aoM7FaHB8QzpJdUS5kkSEnAbjI4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570655; c=relaxed/simple;
-	bh=yqlA7vId+ku0OBurzmpSjN8elYoe+QUjP5XjIjEne1s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dDwJ3Tgr+A5rlbUYqf+TxqyWtKzDtcpDXyzj1CegS/KTWeXIjWErQMSXdxIQbFcEsljSKHPMHB1/B0O1hha5t+hD30Pf3cXJ3fKBeQsVx8yj0eS0CAQ9xHQwhin1btiUPWdB62PUzlcvtpzqFQLEftgI59nPnXxC7dOc2J/qhfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=VOEC33sv; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+	s=arc-20240116; t=1758571055; c=relaxed/simple;
+	bh=6dSoAAYhz3cwGVfk4zabHDqSxNRod72MiDNEA3WOIhQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BG6Q04Ov3WWDTh8sG7x28IanDAffNXQj3fpOGjpkkASvpsvmpsGwHgPKlM+sAuu+tY7A2bzHBFVtRuKCe6vxBEsZZInRTKDQb4xn8eCFpTvWoK8chSBwNZxtn5XzE5146qZuUHAJpOhOaHgL726RiqMCFaSQ/empN+R53AgVgPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CDHEkBH+; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="VOEC33sv"
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1621:0:640:12d9:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 91AF788577;
-	Mon, 22 Sep 2025 22:48:48 +0300 (MSK)
-Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6bf:8080:c27::1:3a])
-	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id TmcMU33Goa60-762HOt5G;
-	Mon, 22 Sep 2025 22:48:47 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1758570527;
-	bh=2QbQZ3xXww2zGM5XlqT0lRHZgoIfQAqx/2r0Ht+KoMI=;
-	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=VOEC33svWQgdO8JChu4rQmiwTOFSqRlqqXQkt5qrJTQtx9ILIHk6SFhOBLi73VlsH
-	 9TP2DzEvdLj+5pVaIe1xnz8VXrbXxpNneJe62CZArbIhbHPWrIhFHoxDyO/j6Mu9qp
-	 2qRLbM81vH9NWtxRmlB17dNYGJjEj609HaayXuPc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 2/3] netfilter/x_tables: introduce a helper for freeing entry offsets
-Date: Mon, 22 Sep 2025 22:48:18 +0300
-Message-Id: <20250922194819.182809-3-d-tatianin@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250922194819.182809-1-d-tatianin@yandex-team.ru>
-References: <20250922194819.182809-1-d-tatianin@yandex-team.ru>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CDHEkBH+"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4c794491480so25958431cf.3
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 12:57:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758571052; x=1759175852; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6dSoAAYhz3cwGVfk4zabHDqSxNRod72MiDNEA3WOIhQ=;
+        b=CDHEkBH+M2gbi2r7rj9p9IBb9weyctjLbqLf89jiXKTa1xn6Lvtla+Rf5LG/skYxXG
+         FtCp4075DDcaM54u/B7gcZ46hhdSgRdSR+l+Os43dr7DkUyT6yYKBTE3eKCMWGXA6UK9
+         HCIcmOE+jMyUg1R3lcnk0aUO5cTxTy37SihLyC1GSPp7NjhCMv529vIAB72AN5CgOc7Y
+         kHlOHsD12fcbNkJ9VCmDoZpf5+QyeKEyPP1cvdyli/BjohIofLujhhfVcWRrLKMW9rKc
+         2gjVdOlV7Qpyjtsd6GKwuBDp+el9qnUUS9AHweijNKZHwTIP2jYnqE2SXzONBoUzwMeE
+         Uobg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758571052; x=1759175852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6dSoAAYhz3cwGVfk4zabHDqSxNRod72MiDNEA3WOIhQ=;
+        b=g6JmDFST81r4GVcaQbbyj88EEMdemXnEShiDyc0N6Wk1DoJJZ0HoF+pDsb1ncJ4R42
+         mJmtIyahzB4eqw9bMbZjntHmlOA66A5WYsS8KGtPwbkd/vOl171UEv3jxmoBLeaA7tTK
+         UwnpBUbwxCb/1laZ9GVXLMqZ/eO0xyRx9p48JTSXBy95zVm2lF06Uc+JWtxYKjBzeSJI
+         MJkeXr5sOmUwetl5oxx809fFLFql8QAnzIdSOTuJ46sYkSZ2H5OJNz0aMc3pcmdUD3w5
+         Opn9h9Gx8a1HPWwMrhLD6GuXnyDVsSLJpMFvX6cbynZBvhjI6tKsA0JSBF+J3ihgG3p0
+         Xjbg==
+X-Forwarded-Encrypted: i=1; AJvYcCV//f5+yG6mSjwgUmSZ3Fi162SyTJ2xJjwV2JsUA3ctyq3WaeROZKSPp+9LIdIsdPpAzrTTORo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHmd6ul9N5koHwAUbOvyVpl7ALfh7LOJtKtaIbe+swOzeu2baW
+	YcfhDgJ+2+76sP0JDqyksl9fcXvM53WnxQKUjkRO80NJtWPD1cT6nynjiMuqJqeeBpQE2xPbwEy
+	hhZ91vQIGbwc7IxNhDUGndwjDMtaXgLpqQ2napIvt
+X-Gm-Gg: ASbGncuZQQr/Qsap+GCsQrDZrCQYw9+DklJRlQLbdM6JJyoTe4zxPHPMVqdj5os/rlM
+	lE1oR8t8VmH1WOLDgq8jaODQQyB5i61nk17aOhP0FfPIjTbXYoIwoi4IFUpba+RlhmC+x+gjHLO
+	Exp4WOgspceF9jgiZDdJkxZhUjJMGrJpVZDzsRJBMqg3WnuHqAD28p8Os7fKK9flXA3rw8G2t3k
+	4GVUDM=
+X-Google-Smtp-Source: AGHT+IEeviadhncbrfeMEEuR73auhdbI1jMRLd+NxNAMS1vJ8sJYiukZi0tcp9HuQo9jrqmfGDrK+b5Ag4ZnsKKUmQs=
+X-Received: by 2002:ac8:7dd6:0:b0:4d2:5b2b:95a5 with SMTP id
+ d75a77b69052e-4d367a1dc0bmr1104251cf.13.1758571051733; Mon, 22 Sep 2025
+ 12:57:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250922191957.2855612-1-jbaron@akamai.com>
+In-Reply-To: <20250922191957.2855612-1-jbaron@akamai.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 22 Sep 2025 12:57:19 -0700
+X-Gm-Features: AS18NWA3cCg3f4HmavVtv-Q_SWtDz_qJwoo5c9pasDG7TwmOUAr2LOdUw7aJjbE
+Message-ID: <CANn89i+rT0=9vVOH7dVqm4aFHjwEf0JEw4bF1PgH+FwtJNAt2g@mail.gmail.com>
+Subject: Re: [PATCH v2 net] net: allow alloc_skb_with_frags() to use MAX_SKB_FRAGS
+To: Jason Baron <jbaron@akamai.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Analogous to xt_free_table_info, add a helper so that the users of
-xt_alloc_entry_offsets don't have to assume the way the array was
-allocated. This also allows us to cleanly change how the array is
-allocated internally in the following commit.
+On Mon, Sep 22, 2025 at 12:20=E2=80=AFPM Jason Baron <jbaron@akamai.com> wr=
+ote:
+>
+> Currently, alloc_skb_with_frags() will only fill (MAX_SKB_FRAGS - 1)
+> slots. I think it should use all MAX_SKB_FRAGS slots, as callers of
+> alloc_skb_with_frags() will size their allocation of frags based
+> on MAX_SKB_FRAGS.
+>
+> This issue was discovered via a test patch that sets 'order' to 0
+> in alloc_skb_with_frags(), which effectively tests/simulates high
+> fragmentation. In this case sendmsg() on unix sockets will fail every
+> time for large allocations. If the PAGE_SIZE is 4K, then data_len will
+> request 68K or 17 pages, but alloc_skb_with_frags() can only allocate
+> 64K in this case or 16 pages.
+>
+> Fixes: 09c2c90705bb ("net: allow alloc_skb_with_frags() to allocate bigge=
+r packets")
+> Signed-off-by: Jason Baron <jbaron@akamai.com>
+> ---
+> Changes:
+> v2: Add Fixes: tag
 
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
----
- include/linux/netfilter/x_tables.h | 1 +
- net/ipv4/netfilter/arp_tables.c    | 4 ++--
- net/ipv4/netfilter/ip_tables.c     | 4 ++--
- net/ipv6/netfilter/ip6_tables.c    | 4 ++--
- net/netfilter/x_tables.c           | 6 ++++++
- 5 files changed, 13 insertions(+), 6 deletions(-)
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-diff --git a/include/linux/netfilter/x_tables.h b/include/linux/netfilter/x_tables.h
-index 77c778d84d4c..f695230eb89c 100644
---- a/include/linux/netfilter/x_tables.h
-+++ b/include/linux/netfilter/x_tables.h
-@@ -274,6 +274,7 @@ int xt_check_entry_offsets(const void *base, const char *elems,
- int xt_check_table_hooks(const struct xt_table_info *info, unsigned int valid_hooks);
- 
- unsigned int *xt_alloc_entry_offsets(unsigned int size);
-+void xt_free_entry_offsets(unsigned int *offsets);
- bool xt_find_jump_offset(const unsigned int *offsets,
- 			 unsigned int target, unsigned int size);
- 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index 1cdd9c28ab2d..bc164c2e22b0 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -570,7 +570,7 @@ static int translate_table(struct net *net,
- 		ret = -ELOOP;
- 		goto out_free;
- 	}
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 
- 	/* Finally, each sanity check must pass */
- 	i = 0;
-@@ -593,7 +593,7 @@ static int translate_table(struct net *net,
- 
- 	return ret;
-  out_free:
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 	return ret;
- }
- 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 23c8deff8095..1ffd871456e1 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -708,7 +708,7 @@ translate_table(struct net *net, struct xt_table_info *newinfo, void *entry0,
- 		ret = -ELOOP;
- 		goto out_free;
- 	}
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 
- 	/* Finally, each sanity check must pass */
- 	i = 0;
-@@ -731,7 +731,7 @@ translate_table(struct net *net, struct xt_table_info *newinfo, void *entry0,
- 
- 	return ret;
-  out_free:
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 	return ret;
- }
- 
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index d585ac3c1113..0f2999155bde 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -725,7 +725,7 @@ translate_table(struct net *net, struct xt_table_info *newinfo, void *entry0,
- 		ret = -ELOOP;
- 		goto out_free;
- 	}
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 
- 	/* Finally, each sanity check must pass */
- 	i = 0;
-@@ -748,7 +748,7 @@ translate_table(struct net *net, struct xt_table_info *newinfo, void *entry0,
- 
- 	return ret;
-  out_free:
--	kvfree(offsets);
-+	xt_free_entry_offsets(offsets);
- 	return ret;
- }
- 
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index c98f4b05d79d..5ea95c56f3a0 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -970,6 +970,12 @@ unsigned int *xt_alloc_entry_offsets(unsigned int size)
- }
- EXPORT_SYMBOL(xt_alloc_entry_offsets);
- 
-+void xt_free_entry_offsets(unsigned int *offsets)
-+{
-+	kvfree(offsets);
-+}
-+EXPORT_SYMBOL(xt_free_entry_offsets);
-+
- /**
-  * xt_find_jump_offset - check if target is a valid jump offset
-  *
--- 
-2.34.1
-
+Thanks Jason !
