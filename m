@@ -1,175 +1,178 @@
-Received: from mail-yw1-f226.google.com (mail-yw1-f226.google.com [209.85.128.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013013.outbound.protection.outlook.com [40.107.201.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA01A271443
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.226
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758531702; cv=none; b=MrtsETMjaCRFE2QOH1X04hOxTBqDshu54VvsQEjJ7VVeCN9JLcyY63AjYDOGsUy9hZpB8NXH9GNDA+hG/GtSAO+1EyspL/L2cI3iuO+LBvcP9KdeJn/VEy43fy2Xk/u3ZMZyDAgjEx059Ws2JEO1BEg2PfNgn25Z5JOe9bY2f8o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758531702; c=relaxed/simple;
-	bh=TOIzxHnD8azJMyks8dj+0Bgw7zq9WIFh1IqTUTQHvnk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YMKWGMPF5+0SjI9CGIvWiuyY5/7Qo1ytbBJbAY67mo5raIZ8NBtaFAjJg9Bg+rl8sWosm3ucU86WKLn1y+M2D+rbBlNU3mPkdN57sXG9xB6Die/cqf9fxVEb3SFoVXfhcA2x6XXNjn1nFNJNfZoLdIEEWf5l016tuNzN2dCPjTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AdGLfreK; arc=none smtp.client-ip=209.85.128.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7644F21B9DE;
+	Mon, 22 Sep 2025 09:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758531719; cv=fail; b=SB+trQZohtfqO5OwjX/NBH45PDiEDFSU7KdhLz4qNGpBJ3HMcehkfKBuWobzRAwcxjav684q665u5EhQPxeDE3vXcUSeVSFLkAybYYoM/P6U+uXjGGRIQda1sLeNRy3CpwgYMUNJfXO4z2xFpOSoB96uY/bMcHBsx/VFWkoyeFI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758531719; c=relaxed/simple;
+	bh=0aSMw7exjT90s5w5Z74fheJ3nVgUnpwkcFP/f771w/Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KF+UpvY/Rl7Q1SXNPmu83YeJIv7NnfV5EVdtpt5+YEcS340IxRq6wKuEBAqhs9yTzjGIUU1iZS1qTC3CVnV0MoxXUNcGmVGgm3s/C1Y1S+lW3zN5IiqCrV6hd3qr1Uu+qenRIz1U+U20YkuPtznBrc3sY88v620BGdAFni0bkes=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=e/csiHV0; arc=fail smtp.client-ip=40.107.201.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AdGLfreK"
-Received: by mail-yw1-f226.google.com with SMTP id 00721157ae682-74f6974175dso6083857b3.3
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 02:01:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758531700; x=1759136500;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A8ahRD5h4PIIPw1I1TySZWohjvVeAAasu3oQp+8Rxc8=;
-        b=whQC0g+B7hHdCOCi3oKqFiQzOZUywTyf7KMy/oF4Ge+4QWmhIkHqruh9fLQL1FuvIL
-         ik/pUR5vRKKqr0vQvqBP6MWC25KHG4ZOVEHZvb/zc277n9djNTdtKqjjyGRaXTicgXvB
-         C4F1tg8KsZMutr5ICCMMWiK2tN+5ToUTZRcEeEIj94XiOSkNM0+Cfh55ex7QADyOmHSx
-         v4/KjwucLgR7HrgJhyHYBdeGYzYKYnOL0scEv74mLnOlBNeiruYtU2TEO2HVd4oXara9
-         ISJDfD6G/rvc+OV5ODDC9AJ2HgkTxSUb/uC7mVek9j7Mp07hVTog/cLq9u818tX1ildI
-         6Ifw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/UhE517P2GxVvoOBRDPnl6hEv+naTEIAsvXUotcZOWY5uw+we1Q3SyTe5ZdSLI7x/PUYhNUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlMjab5i7mA1AaJe0lBqC7mLTZ2RoBlO8Ewb0e7hR/o7dwSzDM
-	fJl3Nwk2dr6XtGC8KaT7obOQUtUVh7kY9mzpYX7TeFcj68BeUxSG92JfXed+j5sWxmlHXagLXVv
-	Fe5Et5z5ZLlLmMCyLyDh66Zeb4INDwBxG6i4ysR7tistJDsutEUJKv5tetG7LnjsAn63vJrgrQc
-	M4ZjmQF+ic5OnWwBRR1e0ajQPebRICXjHWrLXtcJYZzeNpWBxLOOitvceSxLbV2ZjCTR0IzBQvy
-	wZChRdhkQk=
-X-Gm-Gg: ASbGncui2DAOH54Ks+/+VQppoQDS1nj5sZR4cH6SMm4DfkP4r/pzFbXmBsnmBbzVa75
-	NhSNF/k4nBPOzEL6sc4et3wf/8ut5nlgeDYQAAysvPMsNNsrW0NI/88jb8/XjIZzS+9KxllLrTK
-	BCCPe7tbbm08Q3gMAlRXiAETwA/Da0JLmuWAhjEB0KN0ThXsggQ2Rhb4RB4e2qhV/2GrjIrWxMW
-	GFtlw9qH1rIMkb4diDExnqAQkAx2LztWyXLZlZrKNfq1zWJz44CPanIzsyv4Ue8N7WnaaMqAdhj
-	DaqBPtaB89KFMfcv3WZ4zs7fibxJBxD25necatbP87sZjQaS4AgQwvC5QC5E9mJj3d1XNS5uBpb
-	NtR5CJmG71oRnman0DavNI70id7WML7XL5ou3v9Rh5jfMG2Rivb+jIpAZQoRs3hvG7qFltKz+HI
-	NBWw==
-X-Google-Smtp-Source: AGHT+IGpYdu+Xyr6WlZq2pEM+8bxksU/Ksgfsl2uk0SibJm9+qAxwwVEanFatXgmVp7yv6rk0U+k7OW2N/ae
-X-Received: by 2002:a05:690e:249b:b0:628:df16:3193 with SMTP id 956f58d0204a3-6347f5512bemr7035771d50.24.1758531699824;
-        Mon, 22 Sep 2025 02:01:39 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-119.dlp.protect.broadcom.com. [144.49.247.119])
-        by smtp-relay.gmail.com with ESMTPS id 3f1490d57ef6-ea5ce864190sm564725276.18.2025.09.22.02.01.39
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Sep 2025 02:01:39 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-25d21fddb85so74205075ad.1
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 02:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1758531692; x=1759136492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A8ahRD5h4PIIPw1I1TySZWohjvVeAAasu3oQp+8Rxc8=;
-        b=AdGLfreKXbXWCF7BYhtQpaY2gtx5gmYes3ASmL3+QGRA1I661om8nuPdhTAuDARgy6
-         LWZaw+7OR8i/G9S+k0C/UCDVvjgbVMWJgDhyZEbVMSmvl+Vj9veMJsrQfJHQqjGwA5Xj
-         b4XOZRS5aIf45j2rJrj+UKAYTL8h3/1m6Ceis=
-X-Forwarded-Encrypted: i=1; AJvYcCVtvemXq2pz7K27xkIZTy4Oooz3Czk4KeRdlfMGX85sSappYovYyfD8i1CWrX+FI6k+8lwabRI=@vger.kernel.org
-X-Received: by 2002:a17:903:f86:b0:267:16ec:390 with SMTP id d9443c01a7336-269ba447e48mr178283585ad.17.1758531692022;
-        Mon, 22 Sep 2025 02:01:32 -0700 (PDT)
-X-Received: by 2002:a17:903:f86:b0:267:16ec:390 with SMTP id d9443c01a7336-269ba447e48mr178282805ad.17.1758531691477;
-        Mon, 22 Sep 2025 02:01:31 -0700 (PDT)
-Received: from PC-MID-R740.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269803416a2sm123309615ad.134.2025.09.22.02.01.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 02:01:31 -0700 (PDT)
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-To: jgg@ziepe.ca,
-	michael.chan@broadcom.com
-Cc: dave.jiang@intel.com,
-	saeedm@nvidia.com,
-	Jonathan.Cameron@huawei.com,
-	davem@davemloft.net,
-	corbet@lwn.net,
-	edumazet@google.com,
-	gospo@broadcom.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	selvin.xavier@broadcom.com,
-	leon@kernel.org,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>
-Subject: [PATCH net-next 6/6] bnxt_fwctl: Add documentation entries
-Date: Mon, 22 Sep 2025 02:08:51 -0700
-Message-Id: <20250922090851.719913-7-pavan.chebbi@broadcom.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20250922090851.719913-1-pavan.chebbi@broadcom.com>
-References: <20250922090851.719913-1-pavan.chebbi@broadcom.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="e/csiHV0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wMQORrfjGi20u2WpdlV7uO+rFI3kl2gppd/S12e2t5RLyMb3mT2t1o4wubuobhop2rBYE2kLvYWFLxQ2dE6muw003D3gt3/8eyaLmdG7PwzVH5/arNe9hNPweXOaCktukYqXqNiqzliWbD4sGL86xHvEy/ekOAq0ao855Hf98vJ5Wp+xI6s8v2X1ATxpva8XFYX6s/rzFIkjSBUG6IgMzabhFjZlEKdWY8MzM2+i6qKqAOrFrOlANskegp3/3GqaVpIO7iJiu8XlnrVoTR9Zd8bNkfehJ/RJ8W40+gBfq9hYy+hQm1hvuRXGPBIcU4ftuUO41tEL5lH8bFIV3Sz6gQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gFO1uEZuwWcr+PQWQhYOY0NwzLqXlT00TQIV8z7p1S4=;
+ b=usRyuAgTcny5j6wR6w8TouQC1WFisxr3+jpc8CMqAkDkFXGgvn/DOUccaHVJgDj3A2Dm87jOakm6yv2LFevZkjEFWxcvofHLZhvVp71S7ymxiKHihYA0STy84++VPTz+MyuEJ3fxDCymyePZ2SI+t1ZJ2FegdQJ+sczZIGBElh5bkP6J3UcqLyaa0lWkecLGA3GaCApznUjGRPBgbpoTWH0thAMRDfjg1VHpKEzjT7TVtMU6CpjyDay6LzEBrEFxFbsEtw7pTzeXndb285cIB7eKr3pJ4kWLp6fw669isqbJt40CPhhpXy9NWplFq4gquxW4u9xVYglLQx4pVTL26A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gFO1uEZuwWcr+PQWQhYOY0NwzLqXlT00TQIV8z7p1S4=;
+ b=e/csiHV0xLqpyYgO/X8MyLtdUTuzs/FVTJMMI8WhTeVPAGIma63vDe9Ewh+GVSy3PVYt6PQOb5IaqNkh+ma5nsuGWg1pGTvjnRGoWnjOlmilKIiywwGoXxv1YiDCo4qTboYcrfDLq8y/0YXk/7K6heJTPYQDqcvPotjKc8d4CAMZ5fjfFABi/AuaT+6HuhNGInjomShiYbCe0ol33q1ioNjYixhvczib5kW5hUcdBQ0hIxb82BiedT2n5Xq1ie4qhET/GDSEJVC/idbJmhGiYcvv8NdC4pB6zbYSXOiShuHHFoUENW7UkrUlAXDEDYoIis1huN4nxzmfBFU/rVBwOg==
+Received: from CH2PR18CA0024.namprd18.prod.outlook.com (2603:10b6:610:4f::34)
+ by CH2PR12MB4325.namprd12.prod.outlook.com (2603:10b6:610:a9::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
+ 2025 09:01:55 +0000
+Received: from CH2PEPF00000145.namprd02.prod.outlook.com
+ (2603:10b6:610:4f:cafe::4f) by CH2PR18CA0024.outlook.office365.com
+ (2603:10b6:610:4f::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.19 via Frontend Transport; Mon,
+ 22 Sep 2025 09:01:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CH2PEPF00000145.mail.protection.outlook.com (10.167.244.102) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9137.12 via Frontend Transport; Mon, 22 Sep 2025 09:01:54 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 22 Sep
+ 2025 02:01:41 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 22 Sep 2025 02:01:40 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Mon, 22 Sep 2025 02:01:37 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>
+Subject: [PATCH net-next 0/7] net/mlx5: misc changes 2025-09-22
+Date: Mon, 22 Sep 2025 12:01:04 +0300
+Message-ID: <1758531671-819655-1-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000145:EE_|CH2PR12MB4325:EE_
+X-MS-Office365-Filtering-Correlation-Id: f2c2a7f4-d510-4c1f-c96a-08ddf9b6adae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?g2dLJ0O5gVPwPC61FuAaqmM5gXYCx2O4bjyDaWXpNmTGMQ5v5B2taIGcP/W/?=
+ =?us-ascii?Q?j0/hlChVcSihKIiPjuXyMgd6IeIstTZ34fmRYFLgM8id59zsp7Vp7lDhi9Qw?=
+ =?us-ascii?Q?CvvLi+7h+/oGZoZoXmFreqIVyBmnXnS13G7QSMU+XRlYB0IshUpM1IjopIgG?=
+ =?us-ascii?Q?UatZzQpXjOdFxv3dXFr+nfAu1CBPxNnHUU/JH8dXlfTxQqDR4fJV7WnbxNl5?=
+ =?us-ascii?Q?QuDGzk7CA/zvJnvaMxn27F0eoufMTQujEM6+eGl6Zj0HsmU1A2AXCMUOGvGA?=
+ =?us-ascii?Q?2MchWliaRDOwXTnd4A0oMeAEa5RmZFA3PXwTyZaFUaWd5ad8IuOR21SsWfyd?=
+ =?us-ascii?Q?IVpdPlqIWb7AkMi0L8SxbNPFACcDljMZEYoYIxZgkrtvWVr2CeBXXZtJdEHk?=
+ =?us-ascii?Q?Ozjpcqg81RpmdjvPD7rBSs01MkJoj5XvXxpt1ZZXyENQMdj7C+bYkSOMCjho?=
+ =?us-ascii?Q?UKGfX/Ba1GbooApG740zFOLjAsxszCsM3qgVJkyyjILaQj55v+0sXza60CBL?=
+ =?us-ascii?Q?rHyKmMR1UYXNvEnImwwIBQhCcCiiItikuF984sr2OB/PEwiiXSycFpmDwoPA?=
+ =?us-ascii?Q?esTSu7mFSVnpigUjwprT2bPVI6Gqvh06VWCruPnlw3ZWdW1QUX2nza+aklse?=
+ =?us-ascii?Q?kBb1K1yqJr6hqMVyG+gg5akyxzRGIztvg3pNmiKCQ18QQ28Hv8h+nOlx0Q/j?=
+ =?us-ascii?Q?R4xxAu0xVDPWrQIrJ9ijvd0OPt9kzEyEBaJZXbjPJZY8H8kN9sXz01jNUG2E?=
+ =?us-ascii?Q?7UPAHC3L3f172KfzDzPRbbdbkzLCpXAXGQTmgZro+FXQo9yZLVdpeFD6uckW?=
+ =?us-ascii?Q?VF5ejPt9QANgZ6l0Vyubhg7LSeuz3Jk1vHZTk66MdVNJ3KfJanrqKCwRdCTp?=
+ =?us-ascii?Q?LgZpasb/6YuAuccs03qMGPaZ+mXx18NJng1PIsIZhDOYJrdDfzu+0EMbCOHU?=
+ =?us-ascii?Q?D7UtFZEZ2VhQq6XFU+NH8fCI8Ul5rJLwyttoIAPor8S0/0UT7QflBBNyTHf/?=
+ =?us-ascii?Q?ITsBdGRFX014EQBAV29Vydcf7ZrdI1v8OLvEuNc3cpIpYZiNi4VVEI73Ou8V?=
+ =?us-ascii?Q?y+he42MuB7NY8kqM0OCR4RcHlhD27juR5f0AIP0o8xxtQoZw4Dg2LLqA21UZ?=
+ =?us-ascii?Q?CuWH4pH6ENKXRd2uVKOMrrYwoxF+vwWbpWRP5Ivjx0vOV6t0YrsneNZ8v1sQ?=
+ =?us-ascii?Q?6yaqBU1RuGgVmUBn/yox5x6GJdsSXFPmGCn8xguqyQRjDyt7ajeyi2pdE8Nc?=
+ =?us-ascii?Q?8ip5vsvs2gUlPEA48EtvWmAjQIXerzRRbX3UAed0FS6z7nVUX+eCKhclDcV1?=
+ =?us-ascii?Q?AkZIAh1G07X375iD4a/8LouoIH61g+WmtRukQQXBZeylYYve+WAr9ID43DX8?=
+ =?us-ascii?Q?UbfxzLjtp47Mh62NvGIvoBO9WiPPF8o7Yu3nHEtdsdLXvkxMDwiqdEo8u5xP?=
+ =?us-ascii?Q?+ZIXf0V++CxVNvlgU7zWuvO3UAQkqpxyAcuN9F+h6vnDF/L6JedeoOYWUDxy?=
+ =?us-ascii?Q?chuAHziANyWfhBrUb0B1hqk9H4ZyfDTmAwGb?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 09:01:54.8173
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2c2a7f4-d510-4c1f-c96a-08ddf9b6adae
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000145.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4325
 
-Add bnxt_fwctl to the driver and fwctl documentation pages.
+Hi,
 
-Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
----
- .../userspace-api/fwctl/bnxt_fwctl.rst        | 27 +++++++++++++++++++
- Documentation/userspace-api/fwctl/fwctl.rst   |  1 +
- Documentation/userspace-api/fwctl/index.rst   |  1 +
- 3 files changed, 29 insertions(+)
- create mode 100644 Documentation/userspace-api/fwctl/bnxt_fwctl.rst
+This series contains misc enhancements to the mlx5 driver.
 
-diff --git a/Documentation/userspace-api/fwctl/bnxt_fwctl.rst b/Documentation/userspace-api/fwctl/bnxt_fwctl.rst
-new file mode 100644
-index 000000000000..78f24004af02
---- /dev/null
-+++ b/Documentation/userspace-api/fwctl/bnxt_fwctl.rst
-@@ -0,0 +1,27 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+================
-+fwctl bnxt driver
-+================
-+
-+:Author: Pavan Chebbi
-+
-+Overview
-+========
-+
-+BNXT driver makes a fwctl service available through an auxiliary_device.
-+The bnxt_fwctl driver binds to this device and registers itself with the
-+fwctl subsystem.
-+
-+The bnxt_fwctl driver is agnostic to the device firmware internals. It
-+uses the ULP conduit provided by bnxt to send requests (HWRM commands)
-+to firmware.
-+
-+bnxt_fwctl User API
-+==================
-+
-+Each RPC request contains a message request structure (HWRM input) its,
-+legth, optional request timeout, and dma buffers' information if the
-+command needs any DMA. The request is then put together with the request
-+data and sent through bnxt's message queue to the firmware, and the results
-+are returned to the caller.
-diff --git a/Documentation/userspace-api/fwctl/fwctl.rst b/Documentation/userspace-api/fwctl/fwctl.rst
-index a74eab8d14c6..e9f345797ca0 100644
---- a/Documentation/userspace-api/fwctl/fwctl.rst
-+++ b/Documentation/userspace-api/fwctl/fwctl.rst
-@@ -151,6 +151,7 @@ fwctl User API
- .. kernel-doc:: include/uapi/fwctl/fwctl.h
- .. kernel-doc:: include/uapi/fwctl/mlx5.h
- .. kernel-doc:: include/uapi/fwctl/pds.h
-+.. kernel-doc:: include/uapi/fwctl/bnxt.h
- 
- sysfs Class
- -----------
-diff --git a/Documentation/userspace-api/fwctl/index.rst b/Documentation/userspace-api/fwctl/index.rst
-index 316ac456ad3b..c0630d27afeb 100644
---- a/Documentation/userspace-api/fwctl/index.rst
-+++ b/Documentation/userspace-api/fwctl/index.rst
-@@ -12,3 +12,4 @@ to securely construct and execute RPCs inside device firmware.
-    fwctl
-    fwctl-cxl
-    pds_fwctl
-+   bnxt_fwctl
+Regards,
+Tariq
+
+
+Carolina Jubran (4):
+  net/mlx5: Improve QoS error messages with actual depth values
+  net/mlx5e: Remove unused mdev param from RSS indir init
+  net/mlx5e: Introduce mlx5e_rss_init_params
+  net/mlx5e: Introduce mlx5e_rss_params for RSS configuration
+
+Gal Pressman (1):
+  net/mlx5e: Use extack in set rxfh callback
+
+Jianbo Liu (1):
+  net/mlx5e: Prevent entering switchdev mode with inconsistent netns
+
+Vlad Dogaru (1):
+  net/mlx5: HWS, Generalize complex matchers
+
+ .../net/ethernet/mellanox/mlx5/core/en/rss.c  |   91 +-
+ .../net/ethernet/mellanox/mlx5/core/en/rss.h  |   30 +-
+ .../ethernet/mellanox/mlx5/core/en/rx_res.c   |   43 +-
+ .../ethernet/mellanox/mlx5/core/en/rx_res.h   |    2 +-
+ .../ethernet/mellanox/mlx5/core/en_ethtool.c  |   15 +-
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   |    6 +-
+ .../net/ethernet/mellanox/mlx5/core/esw/qos.c |   15 +-
+ .../mellanox/mlx5/core/eswitch_offloads.c     |   33 +
+ .../mellanox/mlx5/core/steering/hws/bwc.c     |   37 +-
+ .../mellanox/mlx5/core/steering/hws/bwc.h     |   21 +-
+ .../mlx5/core/steering/hws/bwc_complex.c      | 1821 +++++++----------
+ .../mlx5/core/steering/hws/bwc_complex.h      |   60 +-
+ .../mellanox/mlx5/core/steering/hws/definer.c |   87 +-
+ .../mellanox/mlx5/core/steering/hws/definer.h |    9 +-
+ 14 files changed, 996 insertions(+), 1274 deletions(-)
+
+
+base-commit: 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
 -- 
-2.39.1
+2.31.1
 
