@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91BE2D97A9
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08742ED16C
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758535763; cv=none; b=ZCTMe4bDQJkrO/BqPAeeLQQxPyspPr+JjlwkKEP/Ym0GtwykrdI+2HUKwh1xsdqmNn+VCSVPaW3JXwiYahVtEmusZ/DHWkP5+95njN2bRI3vjrl/KReef5VNk6VH+wmJDhwPioDSz90E5x9Z89uFilRtcDbX82LIEU3BnF1if+8=
+	t=1758535764; cv=none; b=JC68/5lDhAG2OlUL7kcu2Zu5PPPFVUQS5gLC2Zm0oYFYXizbIrehy4PsFuL2yUX49QQZb0FDGECBt5PrwrqFwH3HcWJ2crDzc7P/A4CGlXIeHpyt4EOK2j0yoaCaKMWg4GfyPrf+KVrjk85YnSjCOBjEFOoqu2/VxFM2K3OOo0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758535763; c=relaxed/simple;
-	bh=zY+J6oMW4+Qfq1F0jWitstAwlvLuMzg1lL6ALKupSyM=;
+	s=arc-20240116; t=1758535764; c=relaxed/simple;
+	bh=x9PHoQptfGAMvVaAjTnOmTUgWsR/Z+37UUR9LJ1czeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEj61bO5xskzhVsh0FrXg5X4eIkcCtsU3I/cdPEGolfaCSX2PbtMO9tchY7tsfIludUdxZJ2gtNbbDNHgX/eTsl9MewGPEM9DjOCMu5Ldyd+7RbYSUD4vUBPOX44VCsWzBrPjRRPa+5ti3TNnqCwDPTip/Il2CgyJkeBhj6X06A=
+	 MIME-Version; b=ZhBAD7i+g41res7NZ7P4i0TwEXjR0t/kGekli5IWZqvHuoCFew+zwbleBq9+t+QTb5Y+AzLcoX0WLZjA+Pqsy+rxuBC2qwoh3VCVfzqeVfn6COzLMlX30o4x+9GFRUzxpBGy8WkzB0qBs1QHd9/eO3t1Gxm+00dPjmbtPntNX9o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v0dU0-0006vj-3u
-	for netdev@vger.kernel.org; Mon, 22 Sep 2025 12:09:20 +0200
+	id 1v0dU0-0006xf-Vw
+	for netdev@vger.kernel.org; Mon, 22 Sep 2025 12:09:21 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v0dTz-002ZUq-0D
+	id 1v0dU0-002ZWO-0W
 	for netdev@vger.kernel.org;
-	Mon, 22 Sep 2025 12:09:19 +0200
+	Mon, 22 Sep 2025 12:09:20 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id B0692476D07
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:18 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with SMTP id D48DD476D22
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:19 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id C7ED1476CDC;
-	Mon, 22 Sep 2025 10:09:16 +0000 (UTC)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 38DC4476CE3;
+	Mon, 22 Sep 2025 10:09:17 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 10babc4f;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 317ed7d0;
 	Mon, 22 Sep 2025 10:09:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,11 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Chen Yufeng <chenyufeng@iie.ac.cn>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 01/10] can: hi311x: fix null pointer dereference when resuming from sleep before interface was enabled
-Date: Mon, 22 Sep 2025 12:07:31 +0200
-Message-ID: <20250922100913.392916-2-mkl@pengutronix.de>
+Subject: [PATCH net 05/10] can: sun4i_can: populate ndo_change_mtu() to prevent buffer overflow
+Date: Mon, 22 Sep 2025 12:07:35 +0200
+Message-ID: <20250922100913.392916-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922100913.392916-1-mkl@pengutronix.de>
 References: <20250922100913.392916-1-mkl@pengutronix.de>
@@ -65,119 +65,80 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Chen Yufeng <chenyufeng@iie.ac.cn>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-This issue is similar to the vulnerability in the `mcp251x` driver,
-which was fixed in commit 03c427147b2d ("can: mcp251x: fix resume from
-sleep before interface was brought up").
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-In the `hi311x` driver, when the device resumes from sleep, the driver
-schedules `priv->restart_work`. However, if the network interface was
-not previously enabled, the `priv->wq` (workqueue) is not allocated and
-initialized, leading to a null pointer dereference.
+Unfortunately, because the sun4i_can driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
 
-To fix this, we move the allocation and initialization of the workqueue
-from the `hi3110_open` function to the `hi3110_can_probe` function.
-This ensures that the workqueue is properly initialized before it is
-used during device resume. And added logic to destroy the workqueue
-in the error handling paths of `hi3110_can_probe` and in the
-`hi3110_can_remove` function to prevent resource leaks.
+  $ ip link set can0 mtu 9999
 
-Signed-off-by: Chen Yufeng <chenyufeng@iie.ac.cn>
-Link: https://patch.msgid.link/20250911150820.250-1-chenyufeng@iie.ac.cn
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL))
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, sun4ican_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN frame.
+
+This can result in a buffer overflow. The driver will consume cf->len
+as-is with no further checks on this line:
+
+	dlc = cf->len;
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs a
+couple line below when doing:
+
+	for (i = 0; i < dlc; i++)
+		writel(cf->data[i], priv->base + (dreg + i * 4));
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU. By
+fixing the root cause, this prevents the buffer overflow.
+
+Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-3-0d1cada9393b@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/spi/hi311x.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ drivers/net/can/sun4i_can.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index 09ae218315d7..96bef8f384c4 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -545,8 +545,6 @@ static int hi3110_stop(struct net_device *net)
+diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
+index 6fcb301ef611..53bfd873de9b 100644
+--- a/drivers/net/can/sun4i_can.c
++++ b/drivers/net/can/sun4i_can.c
+@@ -768,6 +768,7 @@ static const struct net_device_ops sun4ican_netdev_ops = {
+ 	.ndo_open = sun4ican_open,
+ 	.ndo_stop = sun4ican_close,
+ 	.ndo_start_xmit = sun4ican_start_xmit,
++	.ndo_change_mtu = can_change_mtu,
+ };
  
- 	priv->force_quit = 1;
- 	free_irq(spi->irq, priv);
--	destroy_workqueue(priv->wq);
--	priv->wq = NULL;
- 
- 	mutex_lock(&priv->hi3110_lock);
- 
-@@ -770,34 +768,23 @@ static int hi3110_open(struct net_device *net)
- 		goto out_close;
- 	}
- 
--	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
--				   0);
--	if (!priv->wq) {
--		ret = -ENOMEM;
--		goto out_free_irq;
--	}
--	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
--	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
--
- 	ret = hi3110_hw_reset(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_setup(net);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	ret = hi3110_set_normal_mode(spi);
- 	if (ret)
--		goto out_free_wq;
-+		goto out_free_irq;
- 
- 	netif_wake_queue(net);
- 	mutex_unlock(&priv->hi3110_lock);
- 
- 	return 0;
- 
-- out_free_wq:
--	destroy_workqueue(priv->wq);
-  out_free_irq:
- 	free_irq(spi->irq, priv);
- 	hi3110_hw_sleep(spi);
-@@ -908,6 +895,15 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	if (ret)
- 		goto out_clk;
- 
-+	priv->wq = alloc_workqueue("hi3110_wq", WQ_FREEZABLE | WQ_MEM_RECLAIM,
-+				   0);
-+	if (!priv->wq) {
-+		ret = -ENOMEM;
-+		goto out_clk;
-+	}
-+	INIT_WORK(&priv->tx_work, hi3110_tx_work_handler);
-+	INIT_WORK(&priv->restart_work, hi3110_restart_work_handler);
-+
- 	priv->spi = spi;
- 	mutex_init(&priv->hi3110_lock);
- 
-@@ -943,6 +939,8 @@ static int hi3110_can_probe(struct spi_device *spi)
- 	return 0;
- 
-  error_probe:
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
- 	hi3110_power_enable(priv->power, 0);
- 
-  out_clk:
-@@ -963,6 +961,9 @@ static void hi3110_can_remove(struct spi_device *spi)
- 
- 	hi3110_power_enable(priv->power, 0);
- 
-+	destroy_workqueue(priv->wq);
-+	priv->wq = NULL;
-+
- 	clk_disable_unprepare(priv->clk);
- 
- 	free_candev(net);
-
-base-commit: cbf658dd09419f1ef9de11b9604e950bdd5c170b
+ static const struct ethtool_ops sun4ican_ethtool_ops = {
 -- 
 2.51.0
 
