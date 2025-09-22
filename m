@@ -1,100 +1,158 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346ED24167A;
-	Mon, 22 Sep 2025 10:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FD82882A6
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758535504; cv=none; b=CRfdn063Ysl1sY0hysfuvAE9OVyvRoCu9B5YklIRhA4kCkChWjqUV9zIXHpwsaIspL++IILHA7dv6i2JXwUppAtn4+ww7+InFj7LeRKanI4ycCEP6heiuOfls0GNI7u4BK+6K5m3k0qUTTGhrk2wkaga7r/JK9sMg22RIzr9vaQ=
+	t=1758535763; cv=none; b=ekTNpfGi0kuTfVn2g19aVKYN9C8HlYwuZ/vG9bTiV9NMlJzJk1Impih0LbhnLFNKUo9s6zvOCRiAqoJyghwjxQWSx0m5Aa1DV22qCZxDXz8NjAOH3E+vYzbjXsDDxWPDPdE/4vg0Pp9wMetZeNtjQgmdF1hjucqCpD+ET7VWSdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758535504; c=relaxed/simple;
-	bh=WB8GQ5RsepoYi2eFGEtfbChCX1TN6uBkef1VC/5PxZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lQY0scQZxIqB2bjmakSrpw0SDZZIp7KkyhVY/XDPLUmymiUHRE9Pxj+D9HnxiHR8CdNPWHurNlOuucNSa1f48esfVOw2Q/pGNZe6hdunLJ/1MQ4RtsYKYbiQ9p1ZUJD+i39jcbuTEDAMQsRR0LCYGdaMmADLPWxjuKCIvte+OVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZKdxg8o0; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZKdxg8o0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758535502; x=1790071502;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WB8GQ5RsepoYi2eFGEtfbChCX1TN6uBkef1VC/5PxZ8=;
-  b=ZKdxg8o08fJWoD1uy5ByViiSqsbiP3qkzAYKXj8xTnC1vPcRghczW3Xf
-   cP95VDcep8FeCOhJdro3zSsElf8IsyllgSIy040q38wEswu83AxuW7ODq
-   Wc3yiqdVOi26UmduoEvSSGkbJs9YtSKL0Wqdndx2Lfv8+GJJAotx3NHxP
-   Un6Cmhg3vYR3r4VVuPeF3Y4hMyGYqYC+nUZH7KR+p8SgKJWyMDM4xZf78
-   mnb5ADBlm+6Mcz/6mn8Elww+v4E8//bZsgL9Loftaw0izyZQKVj0YP6vn
-   FIMRQ6bkNX480gurq5IegbiCVD9djVEFNJLi95u6wTlUGx3uuWv1+m/gK
-   g==;
-X-CSE-ConnectionGUID: tOhN9DbPRa2nw0NwlGI+Jg==
-X-CSE-MsgGUID: /tAajN2JRbuCRLMMmhOzKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11560"; a="72218546"
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="72218546"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 03:05:01 -0700
-X-CSE-ConnectionGUID: Ai8W4B+aTiKldxgsb2qz1A==
-X-CSE-MsgGUID: G6NnfLnPQDaymjrIefS/zw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,284,1751266800"; 
-   d="scan'208";a="207180385"
-Received: from uniemimu-mobl1.ger.corp.intel.com (HELO [10.245.80.13]) ([10.245.80.13])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2025 03:04:57 -0700
-Message-ID: <2a927881-e0c7-47c8-a455-7ba3b1413648@linux.intel.com>
-Date: Mon, 22 Sep 2025 12:04:54 +0200
+	s=arc-20240116; t=1758535763; c=relaxed/simple;
+	bh=rd32eBhFiAAJLcDnvaafjRB6AVqo9CCTAgAfyMBrfAM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ETXHiazvxLxUM8o0LqAq1lxtGGP6DBaR73h4zOx7XgfsZuApcp4qOcBrGpWXE1ezwNiNGTvLzS1M+ZsoyK4Via4tD+qNhDM/2LCeowpRBoeIH2uPDN4+oh9xT4fJm2CpUW3ROGW6s5rq1GXD27R8v8XPHwlUPG+JGgKSsVumSJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v0dTz-0006vp-OQ
+	for netdev@vger.kernel.org; Mon, 22 Sep 2025 12:09:19 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v0dTz-002ZV1-0g
+	for netdev@vger.kernel.org;
+	Mon, 22 Sep 2025 12:09:19 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id D5501476D0A
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:18 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id F1729476CDE;
+	Mon, 22 Sep 2025 10:09:16 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id df03a408;
+	Mon, 22 Sep 2025 10:09:16 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 03/10] can: etas_es58x: populate ndo_change_mtu() to prevent buffer overflow
+Date: Mon, 22 Sep 2025 12:07:33 +0200
+Message-ID: <20250922100913.392916-4-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250922100913.392916-1-mkl@pengutronix.de>
+References: <20250922100913.392916-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/2] net: page_pool: Expose size limit
-To: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- Gal Pressman <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-References: <1758532715-820422-1-git-send-email-tariqt@nvidia.com>
-Content-Language: pl, en-US
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-In-Reply-To: <1758532715-820422-1-git-send-email-tariqt@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On 2025-09-22 11:18 AM, Tariq Toukan wrote:
-> Hi,
-> 
-> This small series by Dragos has two patches.
-> 
-> Patch #1 exposes the page_pool internal size limit so that drivers can
-> check against it before creating a page_pool.
-> 
-> Patch #2 adds usage of the exposed limit in mlx5e driver.
-> 
-> Regards,
-> Tariq
-> 
-> Dragos Tatulea (2):
->    net: page_pool: Expose internal limit
->    net/mlx5e: Clamp page_pool size to max
-> 
->   drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 ++
->   include/net/page_pool/types.h                     | 2 ++
->   net/core/page_pool.c                              | 2 +-
->   3 files changed, 5 insertions(+), 1 deletion(-)
-> 
-> 
-> base-commit: 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
+From: Vincent Mailhol <mailhol@kernel.org>
 
-For the series:
-Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Sending an PF_PACKET allows to bypass the CAN framework logic and to
+directly reach the xmit() function of a CAN driver. The only check
+which is performed by the PF_PACKET framework is to make sure that
+skb->len fits the interface's MTU.
 
-Thanks,
-Dawid
+Unfortunately, because the etas_es58x driver does not populate its
+net_device_ops->ndo_change_mtu(), it is possible for an attacker to
+configure an invalid MTU by doing, for example:
+
+  $ ip link set can0 mtu 9999
+
+After doing so, the attacker could open a PF_PACKET socket using the
+ETH_P_CANXL protocol:
+
+	socket(PF_PACKET, SOCK_RAW, htons(ETH_P_CANXL));
+
+to inject a malicious CAN XL frames. For example:
+
+	struct canxl_frame frame = {
+		.flags = 0xff,
+		.len = 2048,
+	};
+
+The CAN drivers' xmit() function are calling can_dev_dropped_skb() to
+check that the skb is valid, unfortunately under above conditions, the
+malicious packet is able to go through can_dev_dropped_skb() checks:
+
+  1. the skb->protocol is set to ETH_P_CANXL which is valid (the
+     function does not check the actual device capabilities).
+
+  2. the length is a valid CAN XL length.
+
+And so, es58x_start_xmit() receives a CAN XL frame which it is not
+able to correctly handle and will thus misinterpret it as a CAN(FD)
+frame.
+
+This can result in a buffer overflow. For example, using the es581.4
+variant, the frame will be dispatched to es581_4_tx_can_msg(), go
+through the last check at the beginning of this function:
+
+	if (can_is_canfd_skb(skb))
+		return -EMSGSIZE;
+
+and reach this line:
+
+	memcpy(tx_can_msg->data, cf->data, cf->len);
+
+Here, cf->len corresponds to the flags field of the CAN XL frame. In
+our previous example, we set canxl_frame->flags to 0xff. Because the
+maximum expected length is 8, a buffer overflow of 247 bytes occurs!
+
+Populate net_device_ops->ndo_change_mtu() to ensure that the
+interface's MTU can not be set to anything bigger than CAN_MTU or
+CANFD_MTU (depending on the device capabilities). By fixing the root
+cause, this prevents the buffer overflow.
+
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250918-can-fix-mtu-v1-1-0d1cada9393b@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index db1acf6d504c..adc91873c083 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -7,7 +7,7 @@
+  *
+  * Copyright (c) 2019 Robert Bosch Engineering and Business Solutions. All rights reserved.
+  * Copyright (c) 2020 ETAS K.K.. All rights reserved.
+- * Copyright (c) 2020-2022 Vincent Mailhol <mailhol.vincent@wanadoo.fr>
++ * Copyright (c) 2020-2025 Vincent Mailhol <mailhol@kernel.org>
+  */
+ 
+ #include <linux/unaligned.h>
+@@ -1977,6 +1977,7 @@ static const struct net_device_ops es58x_netdev_ops = {
+ 	.ndo_stop = es58x_stop,
+ 	.ndo_start_xmit = es58x_start_xmit,
+ 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
++	.ndo_change_mtu = can_change_mtu,
+ };
+ 
+ static const struct ethtool_ops es58x_ethtool_ops = {
+-- 
+2.51.0
+
+
