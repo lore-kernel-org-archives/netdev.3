@@ -1,121 +1,138 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F972FE589
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836E623D7E0
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:03:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758535045; cv=none; b=fMyD7vok76eWHEn9439QwV+kOuZVEsyeH+AdliZXp5dLEHgjVRp0HVrbEIJBHKNXk117nWkxiLsWakrCFd7h155m5/gSGRxegxUowg9Ulb9fyR1h5xQglg1lxkiGLhQDhrWStjVwq+9Lo1UYRRMyUq73DSyuCyiM8SILB71+UN4=
+	t=1758535389; cv=none; b=Zb+WzULpKNALRoh6uV7mq7woHRfTcY4dC1enUCdMFBDf+H59HZhAQyFit503xJD4GtSIERsBtmBocazjU+uNvt4eD7stxWDvDpLktZfiUDmqzeJHxjCfEqN/m+T6o9VUaALl/xr8C9+usFB4l3uTTdkbXJRLi9uoexYbYWLO2FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758535045; c=relaxed/simple;
-	bh=kmQ+U8Enw1LU4PehAdujiEV2CtRVJfOvPpSqaxAbVhE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTsp1bFG0456naL7bUG5ltzrq/iDT6UbZMH1GROSkf2/N8tU8r0IWfzwhLNiIk6EcdwXCBQ71GenwNOkeGy6iPmv4TXUJqjJ7zV48Dlq5GD9hWrCwRs22aRi6FYKCb10rYPfWtZ9b+DBah1wMK9v0beQlEtZB9gzp16fWalN68w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dG6vfFvI; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1758535389; c=relaxed/simple;
+	bh=1Z/FIrvKbz7+7KzkAOkAw8QtjVUi2Kn58A3/jKJj3TA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kJi8qRrT60cdBcS2Hy4MWrwQzxCTkHL/LGlJkxVZsPAR5t3anG2xCtfBglHaBM1yULMUb9DKOsP5R/OQEJzk08Wb718l/m/kDTNkKFSKPg+IObd9dwTQ5X/yQbJR4RvPijX7bAVx/dktMtvd3z7kKz5O0s6oFUqkr6Y7/XFTEHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FEnRLZPO; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dG6vfFvI"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b4c1fc383eeso2835612a12.1
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 02:57:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FEnRLZPO"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-268107d8662so44956595ad.2
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 03:03:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758535042; x=1759139842; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qeB3FT7O6G7iODwiTHw497b3MyFZuWsXQP1LvFOC/Bk=;
-        b=dG6vfFvIE1MRHIvxLMW0PTtStGICfLiXpkzT/CjoaD8ZLOAJ6AHleyaQ0u828lW9+g
-         Jf1ulaz7C8QUM0+VE7b+j2S+wYlsfro5/sp0cZlwczfBMN0T1bTpDM804XkvpUdZ8g2M
-         X50S0R1v+TUOxmjQYxTuQpbLRMDd+PnU21VTGu0AKUc9Z3p57TaIXiBGp8sn4126UzFk
-         HUqBzXJPSlBHjQUMrn8PDw7ZmwQwK/+k1hd4MFIoUHqSFatQFbGtiZhfZN/exi1/piTg
-         w0eoXX260LF3tQHWZl+jFPhwwpD891yVvbW2PEWYvIMw4GEE8P36Qpw0MOXCj5C/Ekv8
-         rWbw==
+        d=gmail.com; s=20230601; t=1758535388; x=1759140188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gLN+Eh1NQwEjC26VvFwkCS0AGaveETF0mZj2seOGw3U=;
+        b=FEnRLZPO3ZttIlJA5PIRijJIUesqOeqtyAcSbd/uRMbgs5VecyOJnreLC/ioKfQyg8
+         okfMpOrm7QUmdNHvDpv8G6V9j+k1Tj19NtWBcgEDspapWxUahUthiRpCWukGgNkwo/lU
+         jWaKGB74meRoEI7bnHpWpJ3x4ozlONWYbC8vmSQY4bIUlV7MYS48+CghpzLjSaZBIDAS
+         xLERbMghCnG2w9QVn2ZelArOV/upBLhBed8XakyMfa05GN4OQMOwCDEJphYqKtMNt2+x
+         kVOd8K0w10x/HYTAoyrJ6yajCI0M4XCzSQdh39TIFMoPgl0f1rR2qfIyYJNR+tRAcCo2
+         gBdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758535042; x=1759139842;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qeB3FT7O6G7iODwiTHw497b3MyFZuWsXQP1LvFOC/Bk=;
-        b=iyY0SXjvGKTMxB9rslBoN9KSmBwtLPDNBnIiIlwomovUqetbwT8LoRhUHg6vg82TJW
-         d0IalVBBmtzdevoMhHwax4p0papbrHvCjfngCOWQ2VyRiuVmvhOP+FIpLjTFsQDO8pkQ
-         OTq/SeL5cCg4oo+ApGnl1DFl8iA3uyqsUHO+T0enHJYGYQ6ZvBwSWacOnP54R+fRQ45S
-         noeizERNIElLlRpIaLwX5IvhZ4wFjOhnJkX+J1C6Vd/tOiNHzTmQS+sbEuUeEVnyGi+u
-         dR+jXjVTf6+BHDxXZrVqmi/f53gbvn4+bOJ2XBIHbo6pwEJL+/G9w+kE9fv2Z6i076FN
-         d0SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9SuMrMox+hjgIU0qgH79MXweGXkCAfl0baUfm3LV5MMGYjDeqEGe/tGkKKR3EslQ9ou4uh5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgFr+InVqbiIubUpAM8zjD51ztxu2XcXDN4nbbokONUNv4A8jy
-	x8ZH7nxIwlGnxXwoLDjg9EG19ck7qZoHY0uAlLKasHWmrVZGeKnwskhq
-X-Gm-Gg: ASbGncvfflO/1sqiXCXfo7qIbK6JkiyCp0+LAcZPxyLAnDUzBaAbEUnuk3lm9hucnuy
-	XpAcYIRqx78Ujddz11+4qLRLJKlSxr+tQXZzJ1LgMk1309NtBQwjyqoWcazz3KLyhsEMv6KzF8E
-	CW5CWAzbhyKQmKgNgSuOx2mlcjkOXFq6YsEzIpGDzBfPZF0hsqa62pFGPd5aYvNxHNCh/Yiwszh
-	+cjZ2sCortPOssBq0qU+6+6mZnr/KJv3oCZQ8F/Z5G0jZcZUwJPayFOEVTEy5INhh3bOSdgt/pw
-	P5aIRQC04C/fwYpZ16zLAUUt4nken8g6mfenoW6/F+wCCbgdAnZA6jFqi9giM0oelqzvT1zZWrH
-	rGLxSnXO1ZxV1ulA+k717OA==
-X-Google-Smtp-Source: AGHT+IEoygJmzEYO44daSPyeFaTBpaCMbE2ZfuMa7RzKKwvhLfvLaCA1dISw2KFcv2rO+bW3GUDBuw==
-X-Received: by 2002:a17:90b:3888:b0:32b:c9fc:8aa2 with SMTP id 98e67ed59e1d1-3309834c048mr15642705a91.20.1758535042341;
-        Mon, 22 Sep 2025 02:57:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758535388; x=1759140188;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gLN+Eh1NQwEjC26VvFwkCS0AGaveETF0mZj2seOGw3U=;
+        b=iinzuB98RF2kn0WkiMFHgFrsqkanE3sj+Ds6RsRXIqCIrNCs+IWcqEaxcSeElw1x2T
+         vlJnU1NStkWiIJsdFPAwlKQ581PlXTRQEa+X0NYtUiAd/ZmRRuHJEXs2YsukKl45VIX/
+         LOlmt3EydUp35i8de2/B8P1SkKEXBZH2vWscgrP/RtnrD8/1GFZZxMboMKZZIbE3FMFi
+         x8oUBPsPI7OAhgIgj44ZsjGKBrBS3XhsG4HLtM2MPZ5fHTJ40TZal/Cj8AYN7905NmaL
+         Rp3lH7R7RQYcUnUkmIvguTuX0m77tCXkAYkVMcrI7SJfIZkS2yNL/riXKR2X3dNzeq3k
+         5u+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUHU7zK/PfrsOxcwo6Og60HURnP5rbWhhuESD4AJPGKt7CXsAqKoWhaH+1e8TCrWfHzmOPbjr8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCcrE/Xyb6KLUNXOhnmKH9xDuf5eK6oxxGvcUvAn1rR5T0FkHa
+	urXzh8Rw+d4xqc3DtFzeSBl3Vc7oic2s0+e+clJ2QezsfV2aj8CIePEZ
+X-Gm-Gg: ASbGnctOOq6ZmwaivW5/B59I3K4rFwflve83weoVBcVFGziKupO0HlowWfk+xkCblYk
+	WMJ1FW4ka2BkI/hI5Ko/C6qaiSEIFrjbmqeybpoSSYz27/zUTU11nrLYDTf+5xKeTDrkf2139/s
+	FGyxp0WhyMfg435aWP8FZy0yIjJ/JeQaZyFVa0xir/OmWhz8Xxe7UjqRat5h2W4adl8TgnxQdlN
+	3OXJZ5JABdhpXSCMfAt+qZwm3ZNOO4j1hlD8HBPhWSrRjkkdrgStelIh2irzOjlJIOoXvJ8fhZz
+	cL0TlK6R2S2ORtB9CKl9Gj8wdlAa5ZntVGa8vajQF77PgkhQby2Ncwnm0AVgqhNPRcng+0mby5a
+	cfOsRXRcTMhdoW2A2FmloCQ==
+X-Google-Smtp-Source: AGHT+IGtm0n1I4e8NG5ZtmJGclD2BCxq19uF73e1qqljRkz9OTvu4KTJehS7N7z6k+2ok3CFb7xF+w==
+X-Received: by 2002:a17:903:3d0b:b0:270:ea84:324a with SMTP id d9443c01a7336-270ea843533mr122257575ad.38.1758535387676;
+        Mon, 22 Sep 2025 03:03:07 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3306db47817sm6030258a91.4.2025.09.22.02.57.18
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2699ae52db1sm116728775ad.43.2025.09.22.03.03.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 02:57:19 -0700 (PDT)
+        Mon, 22 Sep 2025 03:03:07 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id C0AAF41A2EDE; Mon, 22 Sep 2025 16:57:15 +0700 (WIB)
+	id 599B14220596; Mon, 22 Sep 2025 17:03:02 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.og>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	Linux Networking <netdev@vger.kernel.org>,
+	Linux AFS <linux-afs@lists.infradead.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Kees Cook <kees@kernel.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
 	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH net-next 1/3] net: dns_resolver: Use reST bullet list for features list
-Date: Mon, 22 Sep 2025 16:56:46 +0700
-Message-ID: <20250922095647.38390-3-bagasdotme@gmail.com>
+Subject: [PATCH net-next] Documentation: rxrpc: Demote three sections
+Date: Mon, 22 Sep 2025 17:02:53 +0700
+Message-ID: <20250922100253.39130-1-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250922095647.38390-2-bagasdotme@gmail.com>
-References: <20250922095647.38390-2-bagasdotme@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1221; i=bagasdotme@gmail.com; h=from:subject; bh=kmQ+U8Enw1LU4PehAdujiEV2CtRVJfOvPpSqaxAbVhE=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkXZbb+nzixgEMs8fhJifu7PA9GTpZYkve3Sq1e+PPhp LifCgyPOkpZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCRJeqMDP+ro2fO17gVnPi0 cOlZm9xHHPOWui84fJ5Tfs9BKbZ2BxuG/yXLjHJv5bzO1o5f92za1Wlfb296waOufrCSt2Fe2xK 242wA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1523; i=bagasdotme@gmail.com; h=from:subject; bh=1Z/FIrvKbz7+7KzkAOkAw8QtjVUi2Kn58A3/jKJj3TA=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkX5XSSnAoPBt0yTZtl8i6/RWrZ///5h41qeM04jjjUG al+/yDRUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgImYMDL8FWDcVHxIw2Ltxley dzby/pHQUZ/xLHbZnOBlRgYKu/TmpjEyLPK+qX45y6dB2Xn9waX3/5i4Wt49pT9fXjR72f6Oc5Y PWAE=
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-Features overview list uses an asterisk in parentheses (``(*)``)
-as bullet list marker, which isn't supported by Sphinx as proper
-bullet. Replace it with just asterisk.
+Three sections ("Socket Options", "Security", and "Example Client Usage")
+use title headings, which increase number of entries in the networking
+docs toctree by three, and also make the rest of sections headed under
+"Example Client Usage".
+
+Demote these sections back to section headings.
 
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/networking/dns_resolver.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/networking/rxrpc.rst | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/networking/dns_resolver.rst b/Documentation/networking/dns_resolver.rst
-index c0364f7070af84..5cec37bedf9950 100644
---- a/Documentation/networking/dns_resolver.rst
-+++ b/Documentation/networking/dns_resolver.rst
-@@ -25,11 +25,11 @@ These routines must be supported by userspace tools dns.upcall, cifs.upcall and
- request-key.  It is under development and does not yet provide the full feature
- set.  The features it does support include:
+diff --git a/Documentation/networking/rxrpc.rst b/Documentation/networking/rxrpc.rst
+index d63e3e27dd06be..8926dab8e2e60d 100644
+--- a/Documentation/networking/rxrpc.rst
++++ b/Documentation/networking/rxrpc.rst
+@@ -437,8 +437,7 @@ message type supported.  At run time this can be queried by means of the
+ RXRPC_SUPPORTED_CMSG socket option (see below).
  
-- (*) Implements the dns_resolver key_type to contact userspace.
-+ * Implements the dns_resolver key_type to contact userspace.
  
- It does not yet support the following AFS features:
+-==============
+-SOCKET OPTIONS
++Socket Options
+ ==============
  
-- (*) Dns query support for AFSDB resource record.
-+ * DNS query support for AFSDB resource record.
+ AF_RXRPC sockets support a few socket options at the SOL_RXRPC level:
+@@ -495,8 +494,7 @@ AF_RXRPC sockets support a few socket options at the SOL_RXRPC level:
+      the highest control message type supported.
  
- This code is extracted from the CIFS filesystem.
  
+-========
+-SECURITY
++Security
+ ========
+ 
+ Currently, only the kerberos 4 equivalent protocol has been implemented
+@@ -540,8 +538,7 @@ be found at:
+ 	http://people.redhat.com/~dhowells/rxrpc/listen.c
+ 
+ 
+-====================
+-EXAMPLE CLIENT USAGE
++Example Client Usage
+ ====================
+ 
+ A client would issue an operation by:
 -- 
 An old man doll... just what I always wanted! - Clara
 
