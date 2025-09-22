@@ -1,115 +1,87 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E0F2877DC
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 16:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F443312826
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 17:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758560190; cv=none; b=tWhuSpNBmVYt4zMS+ZwGFBN1OhYd0OGVq3dRZiK7LwG7x7mHT0qpRKTFeqCoR+hHW0fJ5YFFN0Phhjyqw1+66P/7VulRvMmppL9fFmKaG0J6rhFVhQDtijajKoShVAqZeXyn3GzVCPqkQcUAsSUyhkaHB6kC8Wu2PzkpBihSgVE=
+	t=1758560424; cv=none; b=gBFG/KH6ksyQIs300JdZvRfNk2H5LJDWRhPNWZvcrKkJ/NNDEzCYwUJH1i4PjVA//MiZXsB/vTkza81ybWJD3eaxudYT2ogSxmRc5Q82fGhrd1jZUwTW/0miDOebtA/1H2tdDZC8pqcjF2xgZjyWbLwq+O6wDEEDhipbufdSkQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758560190; c=relaxed/simple;
-	bh=Z8aEZbk7K8wEGwngFpv4xtlpj3slvHOmmjKJQEE2J7w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K403EUh+GRfxD3Fin2FXKwY1yTCPg3uGQGMSrIVZ97nb4Gj1ly/wkqKPDT2Xlb0v4o4ky52QdwvOH2mvwruuBq9xC0IwYCu2b7D+ziyuinBFXRopbsFNAWwV0DFsLu345D12xqiqPkJ+8XDTqec1DhqpPAjcghVx/zHCbMNXTF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fhbjzQH6; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758560424; c=relaxed/simple;
+	bh=qZVBiIrfQZyUYbQRabvbo+mDaBlfpGJRHHIXvsBFvsA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bARlCrhJx6/GW+L9YvaL8vPkFz2Z/osIhkxjP0r0UWUeFr6culZn1o/EEBGMwSWGAkHVWLFC9jmjz5KklD2J/Kme70sjArnTjd9OdmHiX0wYcAzkcNbdIFxsXNllcTWcNpC5sYE/sy8w4+GlbiNj2TKZMDO9WOgGjpwPj9e5cNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OlpXnVBK; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fhbjzQH6"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-32326e2f0b3so3944285a91.2
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758560189; x=1759164989; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nqezCH7ty2sJGRI7ApNpSX24s5g8dQOAL7yqOHAxNDg=;
-        b=fhbjzQH6/2+qO4vQdhjljb7WH/Zx273MveImlkIhbAjqJ+coSeoICNPaXBy5poad6U
-         x0ax81yABY2qd3h9w44qt3VwFo1/UYZ8sPoTAZw1sfHBZGTHeDRNj/n42nleN5z1I96b
-         TM+l95CH9vXuN8r/vbojnYfcxtpCO9AkbMwhalCqRrInYXQE7N0KqIBICq6wfBJ7wOUB
-         1F4c49nGIDegg6P0Wga+8ELID+fzaGi9yk2MIGhD/Bb/aoohjsTI4BOZd02mTNqFvEF5
-         OgnO+gQW4rtHybMHWfb64cCuWApkJ0vUfytoS8XM20XuanbdqNsrG0Lqg7hNXcUnpFCz
-         QEXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758560189; x=1759164989;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nqezCH7ty2sJGRI7ApNpSX24s5g8dQOAL7yqOHAxNDg=;
-        b=Q0MOq1FPn1rVdh1H+q1Ku1D6Kmcj6mTJdAzyHIoJ6JaoIjPhACC59RHlX8Rb5H6aLA
-         dGMZ7U8/DeGhAb016zh9rF7ax5qV5FiwLOyjth/nzy/m42ZIBxPUPlK7HfORBirJ6v33
-         QW6jm4NReAiH3HvVqHh/Dq/Dfy2NgwCiHHxnncnkh/CJtpxXeM33TuWp/rP3D8lJ6Frz
-         4snX9MN1azBJYlEIZlIRq+h884MqVUIeaBSaoeiX86s+xn2haf5rqFTWJfgHPzdUYlEX
-         Bg6Qd/4XwkMD8EQIMJwqtSb8g2HwiO74T06PBSNtgtAc5WXuIStlYv3Rm+6FRuR/D6TK
-         NPcw==
-X-Gm-Message-State: AOJu0Yz09xtNnxjNwuUce6Y/z1kcE0KdAfNsv+diVcPOOgkj0dcENRvj
-	1ZZcsraXXDaXSlBX8jGOGj5ttsAyA5Olid5PRsAUp/xnD7ZECe/+ivez
-X-Gm-Gg: ASbGncs0036Qsvayx9/wPaH0mDY1hJmXDgaIVRpn37PdfCiI9lnLo3GQvixxOSxugfX
-	I1sL2voyt3aQc+8NZdzk3yNSAatWZZV7KoMeqzc1iyqgbLyOARjOhEwG+ah7FR7TijW1yjSbUyN
-	1yO4GFo9DNAPdTB4nj9eDLjxSVrUM2K2DyEhno5ykzqyV/dKiLVXvvsf1YCUOL3cI+cGI1mVp0X
-	FsLAYofJzr6Q4YZXSbK5xLmLoN6aTf8+XKqhJlEWc5+w5fPyOzgOr8w8xQH7y9ILJzvkIgzRU4g
-	UdoLn55+d2OpMxr/IfBVnYOvorFl+JUs2TBhmO454+QHtYVBicXgYSBrge5Ag/xDu9EUEjgqiI/
-	Uud4cG6QUcYxbRl9Cd/tSwhOYblQioNEt52/+O5D7IFPeKBHvm75Li9Ht+UY3mzNoPpmyAw==
-X-Google-Smtp-Source: AGHT+IGz22n9GZBL59/2Ow/bMCLS/7wJcfK0mFaCKE5vjuXxwXStXHQzzY27R41ZWfk/tmc3+0XMZw==
-X-Received: by 2002:a17:90b:384a:b0:332:250e:eec8 with SMTP id 98e67ed59e1d1-332250efc34mr10760767a91.15.1758560188724;
-        Mon, 22 Sep 2025 09:56:28 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1151:15:9e:b61c:3ac6:b581? ([2620:10d:c090:500::6:9053])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-330606509e9sm14030816a91.9.2025.09.22.09.56.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Sep 2025 09:56:28 -0700 (PDT)
-Message-ID: <49d3b51d-5ee0-40a6-b6c4-88f6cea96e8c@gmail.com>
-Date: Mon, 22 Sep 2025 09:56:26 -0700
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OlpXnVBK"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1758560419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KonR8Va3M6+8JMJnQYJWvowsLvZQ1ZBzlJWjy35IOks=;
+	b=OlpXnVBKRwq5okgvkXoE2+SFLOdN2ktF95U0FVr5xRLMpKQeBapj5b0yHHQiiF3FxTaMl0
+	HPbK3YaZzxPwQMCn/FHdMZMJmHG4XMSICg8RUmwTsB93utktixh4Iapw//g56wm2IeV0rV
+	XgZuFaJsvLV/xgdlU/FFR2+YphrgmVA=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: netdev@vger.kernel.org
+Subject: [PATCH net-next 0/4] convert 3 drivers to ndo_hwtstamp API
+Date: Mon, 22 Sep 2025 16:51:14 +0000
+Message-ID: <20250922165118.10057-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] eth: fbnic: Read module EEPROM
-To: Ido Schimmel <idosch@idosch.org>
-Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, kuba@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- gustavoars@kernel.org, horms@kernel.org, jacob.e.keller@intel.com,
- kees@kernel.org, kernel-team@meta.com, lee@trager.us, linux@armlinux.org.uk,
- pabeni@redhat.com, sanman.p211993@gmail.com, suhui@nfschina.com,
- vadim.fedorenko@linux.dev
-References: <20250919191624.1239810-1-mohsin.bashr@gmail.com>
- <aM-t4IBZFFHE9f-V@shredder>
-Content-Language: en-US
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-In-Reply-To: <aM-t4IBZFFHE9f-V@shredder>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
+Convert tg3, bnxt_en and mlx5 to use ndo_hwtstamp API. These 3 drivers
+were chosen because I have access to the HW and is able to test the
+changes. Also there is a selftest provided to validated that the driver
+correctly sets up timestamp configuration, according to what is exposed
+as supported by the hardware. Selftest allows driver to fallback to some
+wider scope of RX timestamping, i.e. it allows the driver to set up
+ptpv2-event filter when ptpv2-l2-event is requested.
 
->> +	if (page_data->bank != 0) {
-> 
-> What is the reason for this check?
-> 
-> I understand that it's very unlikely to have a transceiver with banked
-> pages connected to this NIC (requires more than 8 lanes), but it's
-> generally better to not restrict this ethtool operation unless you have
-> a good reason to, especially when the firmware seems to support banked
-> pages.
-> 
-Hi Ido,
+Vadim Fedorenko (4):
+  tg3: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()
+  bnxt_en: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()
+  mlx5: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()
+  selftests: drv-net: add HW timestamping tests
 
-Thanks for the review.
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  8 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 35 ++++-----
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h |  7 +-
+ drivers/net/ethernet/broadcom/tg3.c           | 66 +++++++---------
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  | 13 ++--
+ .../net/ethernet/mellanox/mlx5/core/en/ptp.h  |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/en/trap.h |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/en/txrx.h |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c | 47 +++++-------
+ .../net/ethernet/mellanox/mlx5/core/en_rx.c   |  2 +-
+ .../ethernet/mellanox/mlx5/core/ipoib/ipoib.c | 17 +----
+ .../ethernet/mellanox/mlx5/core/ipoib/ipoib.h |  1 -
+ .../mellanox/mlx5/core/ipoib/ipoib_vlan.c     |  9 +--
+ .../ethernet/mellanox/mlx5/core/lib/clock.h   | 14 ++--
+ .../selftests/drivers/net/hw/nic_timestamp.py | 75 +++++++++++++++++++
+ 15 files changed, 167 insertions(+), 133 deletions(-)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/nic_timestamp.py
 
-The bank field is essentially unused in our common case. We were just 
-sending bank 0 to the FW so I believe, we should be okay removing this. 
-I'll update this part in V2.
+-- 
+2.47.3
 
->> +		NL_SET_ERR_MSG_MOD(extack,
->> +				   "Invalid bank. Only 0 is supported");
->> +		return -EINVAL;
->> +	}
->> +
->> +	fw_cmpl = __fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_QSFP_READ_RESP,
-> 
-> QSFP is not the most accurate term, but I assume it's named that way to
-> be consistent with the HW/FW data sheet.
-> 
-
-Yes, as Alex pointed out it is to be consistent with FW.
