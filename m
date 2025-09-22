@@ -1,141 +1,140 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707E7632;
-	Mon, 22 Sep 2025 12:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC58305E3B
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 12:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758544668; cv=none; b=HqG+34hKi3naExy9r9JBk+eoUYc62seEWHYLGaezlPmNAtOY+ic+HkMzJRimUeMFEAT27wvIMf2L+eLNpo2YU7nVG3DnU4O8iCZHW5HSjJdOXAO9tlu63BIbgCE4eIb20WrNZYfT9i7MO72uXrV14+ho4K1X8bUCL4oYHy8CSOI=
+	t=1758544692; cv=none; b=YSEVQmmMSFsNAL1WMXBPlef0qZAmz0vx3LLHp1vwTYEwIxsdQEl3kLO7FMn4+CK4FqeYdVGNsCqzTYJk/Xt7XXuOTEGkIYfhXeoWw4HenKSGv1AuGb/yu07tFA2zIvWT7d18IBW6Zq8HiEVTbYCuTc6eXyUYSwxcjVTThD8Drwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758544668; c=relaxed/simple;
-	bh=8YypPf0aiPKuOwo+g5HDRj8EAxKrVBf8pOov84amq8A=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HdLQNxL5ID10bomjcKvQOzNEFpdiL4CntcdDs6k16tp248/yRFvmRfUc7sLR7LENEvV62ER+wCbi4ADZY4dtqV2ODry7HF/45VkSBaAfEtwPEt0Ac2kkumFsByUOqAQd7lLflpNw0M5kMVUqIhaKvbAVemr6dunaA7s8U/2LXJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=oje7S2F/; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1758544692; c=relaxed/simple;
+	bh=XGhoOgJmqDt8u+WPyGufWLd32mB43qLxiWnV4nGqL5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RTnSSkXN6K3JBDdM+unTA7BdNyCkDRWx/StvqMk7TZxJnI9orL0s6Up42f6W25GNVNCEUt6scGFAxXid8fI30mWrKfjeFQpXC4eIFi4BC7JCwoqrZBEj/yE+FXt2wDdn6SDCCIsCV9xKEjuAOjhOxCvodptzybIWCeJCFmb2rUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=c6+IwH97; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="oje7S2F/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1758544666; x=1790080666;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8YypPf0aiPKuOwo+g5HDRj8EAxKrVBf8pOov84amq8A=;
-  b=oje7S2F/vmbHLTKGhEGuB5lIwdjTI4bqYH83NM9foWgoiPXx75WN28xT
-   8kROn3wNgb6n5ngOo3n6QvOpaOhreaiRWD+pXDTxSeD0A73l8i9S2iyqV
-   eSCHueUeEaFfUilmVaKVkufelabxC/GMGuYAUC3vJ4YiG7PrD0mPlO4lE
-   N92M2RpD4Gt0zl1cZjwmoWj8zD5l4r+ZI3ivRGjo+fzAs+nOYwA3DwDqu
-   F3R2lgVOVfnsDYlNpaF/zi70kdekbCHM97tLOApsGyxydUvBoI+g8Nf7c
-   +RWP8gPjcCYPJToz40WWqnpZi8SOywzL8vdTBu3k6XviHYmR8wQKyWCuP
-   Q==;
-X-CSE-ConnectionGUID: lBfTSD/JRDC5cyyuOb8Rqg==
-X-CSE-MsgGUID: WaGxFZAVTR6h9GyLGG3I9w==
-X-IronPort-AV: E=Sophos;i="6.18,285,1751266800"; 
-   d="scan'208";a="214199220"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 22 Sep 2025 05:37:44 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 22 Sep 2025 05:37:04 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 22 Sep 2025 05:37:04 -0700
-Date: Mon, 22 Sep 2025 14:33:01 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Jakub Kicinski <kuba@kernel.org>, <andrew@lunn.ch>,
-	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <richardcochran@gmail.com>,
-	<vadim.fedorenko@linux.dev>, <rmk+kernel@armlinux.org.uk>,
-	<christophe.jaillet@wanadoo.fr>, <rosenp@gmail.com>,
-	<steen.hegelund@microchip.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2] phy: mscc: Fix PTP for vsc8574 and VSC8572
-Message-ID: <20250922123301.y7qjguatajhci67o@DEN-DL-M31836.microchip.com>
-References: <20250917113316.3973777-1-horatiu.vultur@microchip.com>
- <20250918160942.3dc54e9a@kernel.org>
- <20250922121524.3baplkjgw2xnwizr@skbuf>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="c6+IwH97"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Cptg2XPcazefnww5fnawVEk1Q8wBmu4jZtFflDymxJc=; b=c6+IwH97Mk52JPQMgCrX1FuGOk
+	VNOEwOkqs3kH8y4Xgkli6LkqRcZJ7Z/DhbzDUxqzKKGAHcoKojdOFYtguwGYYMTf+89etzMA7eke5
+	C0lKvkTu+yxsp5td6Npge7+OQLjCRn4TClBXsQFZADFF6yaA0hAgGwU3pVEpLYJ5a5mpiAPtvnYV5
+	QR+sZH9Zgt9aoka0MUlX/BTILvTA/hIm6P00dsoAlxMzKcLQb+QSD1razh6BGY77bPtgld5pB2oLv
+	ev3R4WtfIG2IL5LPPKeIHq/qhC++DzBOXdtPUzkyFsLwmJuVuh8L0plAwLXvj2ueGH0C38pQLW1RD
+	NOUtf6ow==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51032)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1v0fnw-000000004lg-2yKL;
+	Mon, 22 Sep 2025 13:38:04 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1v0fnt-0000000056f-35aw;
+	Mon, 22 Sep 2025 13:38:01 +0100
+Date: Mon, 22 Sep 2025 13:38:01 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Janpieter Sollie <janpieter.sollie@kabelmail.de>
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [RFC] increase MDIO i2c poll timeout gradually (including patch)
+Message-ID: <aNFDKaIh6RNqLcBM@shell.armlinux.org.uk>
+References: <971aaa4c-ee1d-4ca1-ba38-d65db776d869@kabelmail.de>
+ <cbc4a620-36d3-409b-a248-a2b4add0016a@lunn.ch>
+ <f86737b0-a0fe-49a6-aeca-9e51fbdf0f0d@kabelmail.de>
+ <aM6Ng7tnEYdWmI1F@shell.armlinux.org.uk>
+ <6d444507-1c97-4904-8edb-e8cc1aa4399e@kabelmail.de>
+ <aM6xwq6Ns_LGxl4o@shell.armlinux.org.uk>
+ <4683e9ea-f795-4dab-8a0a-bd0b0f4fbd99@kabelmail.de>
+ <3fab95da-95c8-4cf5-af16-4b576095a1d9@kabelmail.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250922121524.3baplkjgw2xnwizr@skbuf>
+In-Reply-To: <3fab95da-95c8-4cf5-af16-4b576095a1d9@kabelmail.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The 09/22/2025 15:15, Vladimir Oltean wrote:
+On Mon, Sep 22, 2025 at 12:54:20PM +0200, Janpieter Sollie wrote:
+> this is a diff of 10usecs (i=10), 40usecs (i=4) and 30usecs (i=3) my device
+> is running the i2c_transfer_rollball().
+> seems a lot to me when an i2c call takes 11-12 usecs avg per call
+> are you sure these numbers point to a stable i2c bus?
 
-Hi,
+I guess you've never dealt with I2C buses before. As has already been
+stated, the clock rate for I2C used with SFP modules (which is, if you
+like, I2C v1) is 100kHz. that's 10us per bit.
 
-> 
-> On Thu, Sep 18, 2025 at 04:09:42PM -0700, Jakub Kicinski wrote:
-> > On Wed, 17 Sep 2025 13:33:16 +0200 Horatiu Vultur wrote:
-> > > When trying to enable PTP on vsc8574 and vsc8572 it is not working even
-> > > if the function vsc8584_ptp_init it says that it has support for PHY
-> > > timestamping. It is not working because there is no PTP device.
-> > > So, to fix this make sure to create a PTP device also for this PHYs as
-> > > they have the same PTP IP as the other vsc PHYs.
-> >
-> > May be useful to proof read your commit message, or run it thru
-> > a grammar checker. Copy & paste into a Google Doc would be enough..
-> 
-> I agree, and I did not understand the problem from the commit message.
-> 
-> I would suggest something like below (maybe not identical).
-> 
-> The PTP initialization is two-step: first we have vsc8584_ptp_probe_once() /
-> vsc8584_ptp_probe() at probe() time, then we have vsc8584_ptp_init() at
-> config_init() time.
-> 
-> For VSC8574 and VSC8572, the PTP initialization is incomplete. We are
-> making the second step without having previously made the first one.
-> This means, for example, that ptp_clock_register() is never called.
-> 
-> Nothing crashes as a result of this, but it is unexpected that some PHY
-> generations have PTP functionality exposed by the driver and some do
-> not, even though they share the same PTP clock IP.
+An I2C transaction consists of one start bit, 8 bits for the address
+and r/w bit, one bit for the ack, 8 bits for the each byte of data
+and their individual ACK bits, and finally a stop bit. If a restart
+condition is used, the stop and start between the messages can be
+combined into a restart condition, saving one bit.
 
-I agree, I need to be more carefull and more clear in the commit
-messages. Thanks for the great example.
+That works out at 1 + 8 + 1 + N*(8 + 1) + 1 bits, or 11 + 9 * N bits
+or clocks.
 
-> 
-> > Regarding the patch the new function looks like a spitting image
-> > of vsc8584_probe(), minus the revision check.
-> > --
-> > pw-bot: cr
-> 
-> Also, even without this patch, vsc8574_probe() and vsc8584_probe() are
-> structurally very similar and could use some consolidation.
-> 
-> Would it make sense to create a static int vsc8531_probe_common(struct
-> phy_device *phydev, bool ptp) and call it from multiple wrappers? The
-> VSC8584_REVB check can go in the vsc8584_probe() wrapper. The "size_t
-> priv_size" argument of devm_phy_package_join() can be set based on the
-> "bool ptp" argument, because struct vsc85xx_shared_private is used only
-> in PTP code.
-> 
-> You can make a preparatory change in 'net' patch sets, even without
-> a Fixes: tag, if you clearly explain what it's for.
+The polling consists of two transactions on the bus:
 
-Thanks for the advice.
-What about to make the PHY_ID_VSC8572 and PHY_ID_VSC8574 to use
-vsc8584_probe() and then in this function just have this check:
+- a write of one byte - giving 20 clock cycles.
+- a read of six bytes - giving 65 clock cycles.
 
----
-if ((phydev->phy_id & 0xfffffff0) != PHY_ID_VSC8572 &&
-    (phydev->phy_id & 0xfffffff0) != PHY_ID_VSC8574) {
-	if ((phydev->phy_id & MSCC_DEV_REV_MASK) != VSC8584_REVB) {
-		dev_err(&phydev->mdio.dev, "Only VSC8584 revB is supported.\n");
-		return -ENOTSUPP;
-	}
-}
----
+So that's 85 clock cycles, or 84 if using restart. At 10us per cycle,
+that's 840us _minimum_.
 
+If i2c_transfer() for that write and read are taking on the order of
+12us, that suggest the bus is being clocked at around 7MHz, which is
+certainly way too fast, a bug in the I2C driver, an issue with the
+I2C hardware, or maybe an error in calculating how long a call takes.
+
+And... it's your interpretation of your results.
+
+Remember, these are nanoseconds (ns), nanoseconds are 1000 microseconds
+(us) and there are 1000000 nanoseconds in a millisecond (ms). Sorry
+to teach you to suck eggs, but based on your reply it seems necessary
+to point this out.
+
+You quoted an average of 99901858ns - 99.9ms for the i=3 case.
+You quoted an average of 86375811ns - 86.4ms for the i=4 case.
+
+Given that the difference in msleep() delay is 5ms, and we're
+talking about 50 or 55ms here, for the i=3 case that's 45ms
+for i2c_transfer(). For the i=4 case, that's 36.4ms.
+
+However, msleep() is not accurate - and may even be bucket-based so I
+wouldn't rely on the requested msleep() interval being what you end
+up with - which seems to be suggested by the difference of almost 10ms
+in the apparent time that i2c_transfer() takes. 10ms, not 10us. So,
+unless you actually obtain timestamps before and after the
+i2c_transfer() call and calculate their difference, I would not read
+too much into that.
+
+In any case, figures in the realms of milliseconds are certainly in the
+realm of possibility for a 100kHz bus - as I say, one instance of a
+transaction _should_ be no less than 840 microseconds, so if your
+calculations come out less than that, you should not be claiming
+"bad bus" or something like that, but at first revalidating your
+analysis or interpretation of the figures.
+
+Also, because of scheduling delays, and some I2C drivers will sleep
+waiting for the transaction to finish, even that measurement I
+suggest can not be said to relate to the actual time it takes for
+the transactions on the bus, unless you're running a hard-realtime OS.
+
+However, it seems you're very keen to blame the I2C bus hardware...
 
 -- 
-/Horatiu
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
