@@ -1,134 +1,323 @@
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628C51DE2A7
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 22:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049C119A288
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 22:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758580267; cv=none; b=NcH4lAucogIKNw98JPUxVJwdmiXVeodfYOMx+XpxLDwhAuOsaFyil7uDKUEsxk4BtkB0quGeogLRUhe5opFiP9suBVvkZAmwyWPfGCx9/vUsOx8+53fDKvWdzhXygOyCkeypRZ9/TjnJGvZ5c7hk6h07DcouMRsg0rC25Ewlw7Q=
+	t=1758580631; cv=none; b=mZ6rjOCePEqyAiE2GPxRciYaZeN/WbvIT2fXYMiVjtQgnxaBO827roJnTyBbfEmkbIahGVobi09RXkx4h/Tb5o7mMza4Vb33zNjpf39UXEzXY7J34seau51CXaPf02vv8vUhN/THDY032m9vNxMW+GSAmkv/S506s9/bjcWI4H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758580267; c=relaxed/simple;
-	bh=f0Pf+/Nz8S8Bgu/9V/G5zu53Iw6Z7pQM1xGQ4Qrv/rQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mLFf2u/Dv9iR5q5zpBeGbkiJdjPeFFo6FRxEs8uy695J4QLfipglvWtlnKLzGR8hS5ASUCKIhaFywKTpUeXqaFyYVWITZ0hCB5cb012BJgzBX9vm1dvm8Kd/Yx3qMJm0mh6AXsp7zkEJksaeQUxG5uZxYQabwFAubwOvkl5TBpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nXk+Kjyz; arc=none smtp.client-ip=209.85.219.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758580631; c=relaxed/simple;
+	bh=wi10xT+hFJjbtKNY3+jUTG1o0wa+m599w/36l2Z0j6s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tSsG3a8zNHCDIEdMC6q20RPzFESr0z0iBsaXfJtK6bAm6uqTwkRWzNU9pR3djczZ9OC9BUVbyvXMUAYVkUOakLkTdTbohPZ75dTTUaZQpKSZS7b2VbdIcLT8DgO5xzicK/OT1ahbb8MaZ5/7h4yOyGnGrHaU71HRoOA4QqPGbt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ckKJSAJJ; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nXk+Kjyz"
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-ea5c1a18acfso4775190276.0
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 15:31:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758580264; x=1759185064; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WbtiN+WRaWrszvI4A9cJYkitcyxTdDcwVBjMTfPz09w=;
-        b=nXk+KjyzxdB7ECI3DSN/XtsU/9bTQodwoFKlf3Hah+7J4pqKWNinspaLgiaV13h29K
-         w6PIHpowizatZ3kMBcRq//R/lSfXZ4u/zPsmXUgBlg7VvxpNIUDXZBKkHnxNGf80+Zaw
-         5hS345nwQKCSUScfLe+QfSVH1XBEGrCxtwYsmbia/AT8bjbt7UE6mpglPUgrnoBUjOP9
-         zQ+lPMcueFsRtx3gLbgA0GogrzyASPRBjLm8EM6TVhqnuL1Vvzn8U4W5YruMfS50l8fU
-         EY/Lkq5aPych8U7t2hWlwhDfCMA444Iz1wxh/DMNYr3gm3DK3bv/PF6VcjFxVnxRhEU2
-         OPkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758580264; x=1759185064;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WbtiN+WRaWrszvI4A9cJYkitcyxTdDcwVBjMTfPz09w=;
-        b=j9KPJMvhAasDZw7uQUVOhMVAnVX/vn5ZONK+ra7q0pP7wiQAyaKTghwjI35dUo8VBf
-         ra62MbUh3DvRnDcF+z2Hh9EnQuY9ROCgpWfwW02cM+RupZI15bxLkU12gSUGYwhd/dfu
-         pNhAZf0zzHhjD65iLPcrCzjR3bAtxuuLlxyJ1NH/ndbY1UsgSn+IKZQZDSatj8ePu1Am
-         Qo3zfKA28xKJm4u1GNYqy6nS4no3N+CYUEaD+D5wUJxsrUkUmpSAnibpEdQOIMFELGEx
-         apDlzsSKJkWLZPF0NMvYdXCZXHpU8h78mBvWyoMAvBrzHlAh7K8TzWyb4mFxj94glUyA
-         n65A==
-X-Forwarded-Encrypted: i=1; AJvYcCXHoRcVFrfcm4McAKWF0ZG0958GT7Z4hwUbxJp8y9lwHoyt+mtbckDEfvzzVaw25EZuhVeCzGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztL1rPqn7tDcxtJWtOXn/+82cQ7vNeObjbkJFKXjsApF6Ddgou
-	WneFkgxursl/TIFKGmwggGWLKVWFS3aqN+/xIH8AWRJIqOJCFhOX0QgvJSCMFrJr5A1APraterW
-	d0P6gN6N8Lsoh44jTLBW/1aBUoriZ9sw=
-X-Gm-Gg: ASbGnct/SEbnstGEiaYqp8Z4ICvs77UDKnm+NvZ9rPJmiGb2W6Kr9/pb52D9LGKxqjs
-	nzt++CU2fuj49tjMoHzJ54fkHp+PWLD5Z9OUt0RKzyRUhM49POvMZMUDzz2K8Vx8591M7JTggiW
-	TXr6nTO6lUdjo8vBuYacglIKT6hE0npRXmaPM85VVXQxJG6zctZO+72qLFtpBzO0inWcVR9STGM
-	52YYfhlcF+AeMXou9nFLE4=
-X-Google-Smtp-Source: AGHT+IFdH1w+ZNyAYLaHh3rhpX284bCYkkpquZUVSDR4yfWiQ2pvfmbptj19EIZR1rn5jw+Ke1XbuMsRmKdrWNNs1DU=
-X-Received: by 2002:a05:690c:6108:b0:730:72a:7991 with SMTP id
- 00721157ae682-75891e0901dmr3078527b3.4.1758580264279; Mon, 22 Sep 2025
- 15:31:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ckKJSAJJ"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58MIPb9g005818;
+	Mon, 22 Sep 2025 22:37:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=bvJRZkED0BvU4Xaxn
+	hXh4BaumdbMGbjRg+xOwobAcu8=; b=ckKJSAJJkU6pkz4Zm2KChen3y8HryXWdg
+	rVZ9TmJajBmaPGf8CcNhgNUiwd9P7MiYjGOfYKyQUErcO9Eqj+PLO8dVj2/T631X
+	DIcm27lhrcBGzec1gz8WhvluZT+6Y9sOqJZ2OPHAITm063q7QCHD+4av/JKPgDl+
+	KrfTlqqBitX1gBsvT7QkrcBVdDLKbf01ZxzAN/HsovOAOyM6bjsdCY+PU9m3aHVb
+	RofCIZ7BXRqtBiVqpigv19xj/QPQ5gqYPlYxCtVPvbZNmCrfYpqByTu6PuERoBHI
+	YYz3xmPonMKRbsd+GaUsCenpwH8JRz9Tj4PUkZq8uNNWElcrOz8Ig==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jdfmt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Sep 2025 22:37:01 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58MMb12S007430;
+	Mon, 22 Sep 2025 22:37:01 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0jdfmr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Sep 2025 22:37:01 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58MLcx4D030356;
+	Mon, 22 Sep 2025 22:37:00 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 49a9a102db-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Sep 2025 22:37:00 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58MMaxBa9372188
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Sep 2025 22:36:59 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F3EF258064;
+	Mon, 22 Sep 2025 22:36:58 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B431B58056;
+	Mon, 22 Sep 2025 22:36:58 +0000 (GMT)
+Received: from localhost (unknown [9.61.77.150])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Sep 2025 22:36:58 +0000 (GMT)
+From: David Wilder <wilder@us.ibm.com>
+To: netdev@vger.kernel.org
+Cc: jv@jvosburgh.net, wilder@us.ibm.com, pradeep@us.ibm.com,
+        i.maximets@ovn.org, amorenoz@redhat.com, haliu@redhat.com,
+        stephen@networkplumber.org, dsahern@gmail.com
+Subject: [PATCH iproute2-next v6 1/1] iproute: Extend bonding's "arp_ip_target" parameter to add vlan tags.
+Date: Mon, 22 Sep 2025 15:35:11 -0700
+Message-ID: <20250922223640.2170084-2-wilder@us.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250922223640.2170084-1-wilder@us.ibm.com>
+References: <20250922223640.2170084-1-wilder@us.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250919230952.3628709-1-ameryhung@gmail.com> <20250919230952.3628709-6-ameryhung@gmail.com>
- <10e5dd51-701d-498b-b1eb-68b23df191d9@linux.dev> <CAMB2axPU6Aoj6hfJcsS0W7CDL=bvAFLtPm2ZrsJef3w+aNoAXg@mail.gmail.com>
- <f870f375-f9a5-4c36-80df-8062ec3eddd3@linux.dev>
-In-Reply-To: <f870f375-f9a5-4c36-80df-8062ec3eddd3@linux.dev>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Mon, 22 Sep 2025 15:30:52 -0700
-X-Gm-Features: AS18NWBHImg6Ly3imtzQWTz-SmTtiB9vYWNL_EUtmU52MWLBZC06W9_OT3aaWKI
-Message-ID: <CAMB2axNNc0p6kXgNQjQs-jsZ-NkKR==hY6OtoU6mxdHy-YqbvA@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v6 5/7] bpf: Support specifying linear xdp packet
- data size for BPF_PROG_TEST_RUN
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, paul.chaignon@gmail.com, 
-	kuba@kernel.org, stfomichev@gmail.com, martin.lau@kernel.org, 
-	mohsin.bashr@gmail.com, noren@nvidia.com, dtatulea@nvidia.com, 
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
-	maciej.fijalkowski@intel.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX3VZ1dYcHsgSb
+ LxWTNg061ZOncBYaZxa+4laA2MYNdveZeTIcyyzQSS6LiUjmKQoZV/fYwwmPF9bSxu8u8HorOV4
+ i/WD7C/tfib24SakfzqGMaamXQBRugMFBsyGX800W8IbBncpIbhO06EliB2aXgF9q4Pmb+Oxvgh
+ WaKcyeljLAhrWUlqPO+Fxe/SVn5SfZBhnnxIOMfN/AhycPkX26cn9+m0rnkCEGhAnXBQoB1ogfT
+ 3e5riaVKhh+a2IiCqnAcpRTPVF5L5Xo9Q4AfDvH/Ith8IMJpOZvO42YhHn+hf0SCxNpwNClhNRL
+ mQKbu7GuJ3YnrJFt/M313+aLAi9jcy1SpYIz9nv51eOyEe8Kj8MXzsGOblZAL5ScVpWMUM2QW6Y
+ wa09MHQk
+X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d1cf8e cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=ih_k2vk3dtMi9XJ1s-oA:9
+X-Proofpoint-ORIG-GUID: vV5dCa_KuN0roLIodaveNElqsakh8On3
+X-Proofpoint-GUID: hcDkeKybKPaGkOHHcSzNqzxrJ3-Jl-zp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-22_04,2025-09-22_05,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1031 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509200033
 
-On Mon, Sep 22, 2025 at 1:04=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.=
-dev> wrote:
->
-> On 9/22/25 12:48 PM, Amery Hung wrote:
-> >>> diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-> >>> index 4a862d605386..0cbd3b898c45 100644
-> >>> --- a/net/bpf/test_run.c
-> >>> +++ b/net/bpf/test_run.c
-> >>> @@ -665,7 +665,7 @@ static void *bpf_test_init(const union bpf_attr *=
-kattr, u32 user_size,
-> >>>        void __user *data_in =3D u64_to_user_ptr(kattr->test.data_in);
-> >>>        void *data;
-> >>>
-> >>> -     if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - =
-tailroom)
-> >>> +     if (user_size > PAGE_SIZE - headroom - tailroom)
-> >>>                return ERR_PTR(-EINVAL);
-> >>>
-> >>>        size =3D SKB_DATA_ALIGN(size);
-> >>> @@ -1001,6 +1001,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog=
-, const union bpf_attr *kattr,
-> >>>            kattr->test.cpu || kattr->test.batch_size)
-> >>>                return -EINVAL;
-> >>>
-> >>> +     if (size < ETH_HLEN)
-> >>> +             return -EINVAL;
-> >>> +
-> >>>        data =3D bpf_test_init(kattr, kattr->test.data_size_in,
-> >>>                             size, NET_SKB_PAD + NET_IP_ALIGN,
-> >>>                             SKB_DATA_ALIGN(sizeof(struct skb_shared_i=
-nfo)));
-> >>> @@ -1246,13 +1249,15 @@ int bpf_prog_test_run_xdp(struct bpf_prog *pr=
-og, const union bpf_attr *kattr,
-> >>
-> >> I just noticed it. It still needs a "size < ETH_HLEN" test at the begi=
-nning of
-> >> test_run_xdp. At least the do_live mode should still needs to have ETH=
-_HLEN bytes.
-> >
-> > Make sense. I will add the check for live mode.
->
-> The earlier comment wasn't clear, my bad. no need to limit the ETH_HLEN t=
-est to
-> live mode only. multi-frags or not, kattr->test.data_size_in should not b=
-e <
-> ETH_HLEN.
->
+This change extends the "arp_ip_target" parameter format to allow for
+a list of vlan tags to be included for each arp target.
 
-Right. It seems the current size check is also off. It allows empty
-xdp_buff as long as metadata is larger than ETH_HLEN.
+The new format for arp_ip_target is:
+arp_ip_target=ipv4-address[vlan-tag\...],...
 
->
+Examples:
+arp_ip_target=10.0.0.1[10]
+arp_ip_target=10.0.0.1[100/200]
+
+The inclusion of the list of vlan tags is optional. The new logic
+preserves both forward and backward compatibility with the kernel
+and iproute2 versions.
+
+Signed-off-by: David Wilder <wilder@us.ibm.com>
+---
+ ip/iplink_bond.c | 146 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 120 insertions(+), 26 deletions(-)
+
+diff --git a/ip/iplink_bond.c b/ip/iplink_bond.c
+index d6960f6d..6f9d70c0 100644
+--- a/ip/iplink_bond.c
++++ b/ip/iplink_bond.c
+@@ -173,6 +173,55 @@ static void explain(void)
+ 	print_explain(stderr);
+ }
+ 
++#define BOND_VLAN_PROTO_NONE htons(0xffff)
++#define BOND_MAX_VLAN_TAGS 5
++#define VLAN_VID_MASK 0x0fff
++
++struct bond_vlan_tag {
++	__be16  vlan_proto;
++	__be16  vlan_id;
++};
++
++static struct bond_vlan_tag *bond_vlan_tags_parse(char *vlan_list, int level, int *size)
++{
++	struct bond_vlan_tag *tags = NULL;
++	char *vlan;
++	int n;
++
++	if (level > BOND_MAX_VLAN_TAGS) {
++		fprintf(stderr, "Error: Too many vlan tags specified, maximum is %d.\n",
++			BOND_MAX_VLAN_TAGS);
++		exit(1);
++	}
++
++	if (!vlan_list || strlen(vlan_list) == 0) {
++		tags = calloc(level + 1, sizeof(*tags));
++		*size = (level + 1) * (sizeof(*tags));
++		if (tags)
++			tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
++		return tags;
++	}
++
++	for (vlan = strsep(&vlan_list, "/"); (vlan != 0); level++) {
++		tags = bond_vlan_tags_parse(vlan_list, level + 1, size);
++		if (!tags)
++			continue;
++
++		tags[level].vlan_proto = htons(ETH_P_8021Q);
++		n = sscanf(vlan, "%hu", &(tags[level].vlan_id));
++
++		if (n != 1 || tags[level].vlan_id < 1 || tags[level].vlan_id >= VLAN_VID_MASK) {
++			fprintf(stderr, "Error: Invalid vlan_id specified: %hu\n",
++				tags[level].vlan_id);
++			exit(1);
++		}
++
++		return tags;
++	}
++
++	return NULL;
++}
++
+ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 			  struct nlmsghdr *n)
+ {
+@@ -239,12 +288,28 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 				NEXT_ARG();
+ 				char *targets = strdupa(*argv);
+ 				char *target = strtok(targets, ",");
+-				int i;
++				struct bond_vlan_tag *tags;
++				int size, i;
+ 
+ 				for (i = 0; target && i < BOND_MAX_ARP_TARGETS; i++) {
+-					__u32 addr = get_addr32(target);
+-
+-					addattr32(n, 1024, i, addr);
++					struct {
++						__u32 addr;
++						struct bond_vlan_tag vlans[];
++					} data;
++					char *vlan_list, *dup;
++
++					dup = strdupa(target);
++					data.addr = get_addr32(strsep(&dup, "["));
++					vlan_list = strsep(&dup, "]");
++
++					if (vlan_list) {
++						tags = bond_vlan_tags_parse(vlan_list, 0, &size);
++						memcpy(&data.vlans, tags, size);
++						addattr_l(n, 1024, i, &data,
++							  sizeof(data.addr)+size);
++					} else {
++						addattr32(n, 1024, i, data.addr);
++					}
+ 					target = strtok(NULL, ",");
+ 				}
+ 				addattr_nest_end(n, nest);
+@@ -429,6 +494,22 @@ static int bond_parse_opt(struct link_util *lu, int argc, char **argv,
+ 	return 0;
+ }
+ 
++static void bond_vlan_tags_print(const struct bond_vlan_tag *vlan)
++{
++	for (unsigned int l = 0; l < BOND_MAX_VLAN_TAGS + 1; l++, vlan++) {
++		if (vlan->vlan_proto == BOND_VLAN_PROTO_NONE)
++			return;
++
++		if (l > 0)
++			print_string(PRINT_FP, NULL, "/", NULL);
++
++		print_uint(PRINT_ANY, NULL, "%u", vlan->vlan_id);
++	}
++
++	fprintf(stderr, "Internal Error: too many vlan tags.\n");
++	exit(1);
++}
++
+ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ {
+ 	int i;
+@@ -499,24 +580,41 @@ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 	if (tb[IFLA_BOND_ARP_IP_TARGET]) {
+ 		struct rtattr *iptb[BOND_MAX_ARP_TARGETS + 1];
+ 
+-		parse_rtattr_nested(iptb, BOND_MAX_ARP_TARGETS,
+-				    tb[IFLA_BOND_ARP_IP_TARGET]);
++		parse_rtattr_nested(iptb, BOND_MAX_ARP_TARGETS, tb[IFLA_BOND_ARP_IP_TARGET]);
+ 
+ 		if (iptb[0]) {
+ 			open_json_array(PRINT_JSON, "arp_ip_target");
+ 			print_string(PRINT_FP, NULL, "arp_ip_target ", NULL);
+ 		}
+ 
+-		for (i = 0; i < BOND_MAX_ARP_TARGETS; i++) {
+-			if (iptb[i])
+-				print_string(PRINT_ANY,
+-					     NULL,
+-					     "%s",
+-					     rt_addr_n2a_rta(AF_INET, iptb[i]));
+-			if (!is_json_context()
+-			    && i < BOND_MAX_ARP_TARGETS-1
+-			    && iptb[i+1])
+-				fprintf(f, ",");
++		for (unsigned int i = 0; i < BOND_MAX_ARP_TARGETS && iptb[i]; i++) {
++			struct {
++				__u32 addr;
++				struct bond_vlan_tag vlans[BOND_MAX_VLAN_TAGS + 1];
++			} data;
++
++			if (RTA_PAYLOAD(iptb[i]) < sizeof(data.addr) ||
++				RTA_PAYLOAD(iptb[i]) > sizeof(data)) {
++				fprintf(stderr, "Internal Error: Bad payload for arp_ip_target.\n");
++				exit(1);
++			}
++			memcpy(&data, RTA_DATA(iptb[i]), RTA_PAYLOAD(iptb[i]));
++
++			print_color_string(PRINT_ANY, COLOR_INET, "addr", "%s",
++					   rt_addr_n2a(AF_INET, sizeof(data.addr), &data.addr));
++
++			if (RTA_PAYLOAD(iptb[i]) > sizeof(data.addr)) {
++				open_json_array(PRINT_JSON, "vlan");
++				print_string(PRINT_FP, NULL, "[", NULL);
++
++				bond_vlan_tags_print(data.vlans);
++
++				close_json_array(PRINT_JSON, NULL);
++				print_string(PRINT_FP, NULL, "]", NULL);
++			}
++
++			if (i < BOND_MAX_ARP_TARGETS - 1 && iptb[i+1])
++				print_string(PRINT_FP, NULL, ",", NULL);
+ 		}
+ 
+ 		if (iptb[0]) {
+@@ -528,8 +626,7 @@ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 	if (tb[IFLA_BOND_NS_IP6_TARGET]) {
+ 		struct rtattr *ip6tb[BOND_MAX_NS_TARGETS + 1];
+ 
+-		parse_rtattr_nested(ip6tb, BOND_MAX_NS_TARGETS,
+-				    tb[IFLA_BOND_NS_IP6_TARGET]);
++		parse_rtattr_nested(ip6tb, BOND_MAX_NS_TARGETS, tb[IFLA_BOND_NS_IP6_TARGET]);
+ 
+ 		if (ip6tb[0]) {
+ 			open_json_array(PRINT_JSON, "ns_ip6_target");
+@@ -538,14 +635,11 @@ static void bond_print_opt(struct link_util *lu, FILE *f, struct rtattr *tb[])
+ 
+ 		for (i = 0; i < BOND_MAX_NS_TARGETS; i++) {
+ 			if (ip6tb[i])
+-				print_string(PRINT_ANY,
+-					     NULL,
+-					     "%s",
+-					     rt_addr_n2a_rta(AF_INET6, ip6tb[i]));
+-			if (!is_json_context()
+-			    && i < BOND_MAX_NS_TARGETS-1
+-			    && ip6tb[i+1])
+-				fprintf(f, ",");
++				print_color_string(PRINT_ANY, COLOR_INET6, NULL, "%s",
++						   rt_addr_n2a_rta(AF_INET6, ip6tb[i]));
++
++			if (i < BOND_MAX_NS_TARGETS - 1 && ip6tb[i+1])
++				print_string(PRINT_FP, NULL, ",", NULL);
+ 		}
+ 
+ 		if (ip6tb[0]) {
+-- 
+2.50.1
+
