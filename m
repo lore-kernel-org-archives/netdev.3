@@ -1,78 +1,78 @@
-Received: from mail-qv1-f97.google.com (mail-qv1-f97.google.com [209.85.219.97])
+Received: from mail-il1-f226.google.com (mail-il1-f226.google.com [209.85.166.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66C22EB87E
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 15:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51A12E22BF
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 15:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758555817; cv=none; b=BbkPufgKF5EdZNdHlsTS5Mzb+Euod2B+Xz1JXG2KE3joHfZUbJrgsemVen69g0muUYj0jRjFZSCjqnYY/76CYYShZJSy/3/OAoPeaWKamcTkYZk+OdQ5y+6nw5ye5HGlhNnWIPo3Stjo0vIZb/RzpDXYtX9D5H19IqoRnIl0mlA=
+	t=1758555828; cv=none; b=Sfm/rtUUXZnS+L3KHvCDEB0cNoQrwveWsVEoFeqPRb7nluXdNCg+aruC/NWSc43I9UQQFjsZPb4cIFIZVTwFHPSIDT7KQrkCbIfp2dhRnwQ6LDaIWxQRHtdqivmaB+8lAvUsQacvOdC6vCK/hq4BidRPMO7i83p6IK3aGjFfwdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758555817; c=relaxed/simple;
-	bh=5K22EYFqwhSZtpxvZ7pw6FhqwGWzT59lHJi/dIXRS/c=;
+	s=arc-20240116; t=1758555828; c=relaxed/simple;
+	bh=jk9XHrHx7bYq4/sgQUXrkobA7Nze9dvbLU4q4+t9uzY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LuchYPn675SSeXpxIHLTPxKmTYMQ0xOIEp9VsaBjo1HQcq6IzCLOjJifgn3+JkTpSQA/alt6gP7h9tRjdtWkR0ZnpY96D+7PjFd1N7cYWZwsFjNWeSspjnRRrDm1plC7VPNZqP4DMbpIW+ojDY86+7jyJchtjfqLzwNKEw0n2Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bGvKSfaC; arc=none smtp.client-ip=209.85.219.97
+	 MIME-Version; b=rcmZrigvlCEmQdW56JFUTt7txuHifK++qWLnS1vjXmj9QRCQkxdTzUxmIiAD8F+aSXAwBCro6c+yxUm78RVlF3JqNfyrsvIivfS7uJdsStwq3MvO3ljaqDrSpvKg0Kh4lUiAYbS9bAhS5UA8MH7xGVL8NTpDi7L/vFohprVSYIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J9cBBvIp; arc=none smtp.client-ip=209.85.166.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bGvKSfaC"
-Received: by mail-qv1-f97.google.com with SMTP id 6a1803df08f44-79390b83c7dso38342356d6.1
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 08:43:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J9cBBvIp"
+Received: by mail-il1-f226.google.com with SMTP id e9e14a558f8ab-4256f0fac67so21824235ab.2
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 08:43:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758555815; x=1759160615;
+        d=1e100.net; s=20230601; t=1758555825; x=1759160625;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ljzRf+fQkTXrHRLgyTo6IBmxzVI6wZ2jIzrNCpRNIRY=;
-        b=XQfdoHwcKRn1meD0BscN4xDrcEuu3fynuyIePEf5qxjv2FNmhhFA7qOYunqsbu4Iaf
-         6xqS8q+yIrx5sgrS2dpC5N2ele0evVs5SG5OEdIja2wpU//tkO0lszGiPrgC3JO6MhL2
-         fkpzvXqSp6P+T1T2iOZTND5VJ97bOMsvNzFZjaYINSVmFnjASVNbaxcfeEdIQBZEAmS/
-         c28uTJu+cxwgytztary6PYhbaLnWDjDFWuenHrzXhymPh7hAXcGKgxH+d8Eh1p3pekb4
-         qRCVNIOyXIH9cS0AcsDJUp2FZlG3ntFEBeNo9dNzHrIbfYv4to4K4YFVad8euZ2e7vhC
-         nmaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvfGxOuOh6LeuFrGTx+/2gNUk1DBw06duVlRwb/OV6tI5T8bDY2ytJjD3XLgDZIvb7nYuTNEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxqsnwcAY01ay9gIxZqFCR9ULaplAjZBeM0dW7BlnmEBqFt9Uz
-	Pn29T8o1V23wdLtCEx0SagE7VuOvvNmOn/r1YG2Q0PjoL4DWAGWoRxujVqPY2UFSwJK53jyi/aG
-	oAZmPskGTSalZPYwREcXa7KOM1O+9FSxmu8A7psNGixmwZpOMSpqs1vv0XJM1pZH5pUTaOUka2b
-	a3hydaHH0FBoVTgUlD17C5p6ZMH33FUentBaP53K8VbgFZ7SKD85vResXxU4b/MNWMeGlGVXH0T
-	jkHKIyaAFPa
-X-Gm-Gg: ASbGncvAc2gl961s+aF7dPgM6v5WeSDUjuVVK4AYJTW/rN83DP11iik0Ftnu+4/WZt0
-	WRJQBMdfOCRKKV3YtlJZLx/7aC+6MLCDkchucjCka8Ca4vfEnzhW64C19CHbna6rsYpLkU+FJix
-	ESnASjbc3qeKj5KocJ1MZ69A+nRWQTKvhiTgB4aVB3fSN9LPyNXjsLNcD1xumeVtK8HE6+PTFed
-	Bk39E3prq41Y3mvvhdHC/d8nUF4v9ourDib/8mqL7FcTAVyckfIpIZ6drC1ZWodgzt23zgU11Z2
-	4s/fIn1/A918d0WApIKm3sMwLp2a+9cqmuQPkGxjXWD+CuWUeEZq+Ypg7pQ+WcCH+6/17BZPnEI
-	WX6h0BcaYQwiP0HTVrKXTPsIOqPWl9DpjhE7MSGTFKlv1zbL/Bn6n3ODiYpPZXBMkQCPsqFcecw
-	==
-X-Google-Smtp-Source: AGHT+IGTQuCqVnrIYHM7lzOUDt15pnPyq4qmk1Z5WcYPjQUfW94Kdo7cPpJRMtA5EHvFNV0+jwlQ684jvKLT
-X-Received: by 2002:a05:6214:29ec:b0:794:5578:6a with SMTP id 6a1803df08f44-7991164d54emr158948456d6.10.1758555814423;
-        Mon, 22 Sep 2025 08:43:34 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-7934ee8bab1sm8035706d6.22.2025.09.22.08.43.34
+        bh=vk3sv/SQnh+KPf6GaohPlQ9kFAEuQOWwvyi6Ky3gclE=;
+        b=qv6Q41F6udyHbQE2uq4VBygGpWjxxXBk3fme88i1NHIBBYp6T/OBLP9NUro/wxY2ZM
+         RecHRghs0fcrZNgv/Hl2SmM/EZGzZk6IYw0hECuhBLxO84WTbDGoIDXRND2QXhHGxhvW
+         Vz25BzikmaOMdjrJTFW2u8hgR0QBXpIfU/+DBVKjwaJyxF8bZU8DRq3vMKBH57VsSdvl
+         ZjLPaJEjUIVh3gF2yhlb+kQwLXYMziqMoftgS1RDTCpxvZ1e2XN6uG0Ka1LI90nhO7m7
+         +PFJKL36wMF8TaLK/r0ZSTI0/Bl9b4V6f7saJ/Sg+JOicQ/N/qrpQ6Qxi5I/Pw5mCZ4L
+         1UVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUuX6SzZMGv4RDp2c0DXqGbszz8AFJgR6bYFq+NpWXxjW/nieeEO6oy9KgrPSzInPuDiiKLsaA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAXkmOvr6r9s+sPY5cUJTURxbWyRtoi8g0xB+2ma0f4TFZmJ06
+	EI1Yd/hZ8/BYRN5ZxPzPEtU88nXLyeqS+EffyOQABEdEnWUXbgP7m2VxUlgvzj/CjqstRq0JjJy
+	MK1nYAIhbO7MManV1/vBzu8dhqvU6uYa4RzK6TjLM2i5GkljHN1hyW7MLQGwA+RElQGT3HOIY8P
+	Msm8eiFn7BV9JYvgpMrQeeIHx+Avv77of9mvllTNZjFNS0ec8seUf9XkpT3CotpYkFjYqHKWO2p
+	Kqsxu/g2kRA
+X-Gm-Gg: ASbGncsorK97jCsLWgAe8rkWYP14IEJs86IMN9ofFXFpCBlJ1MSD/N+1DMQ4C5LbU8Z
+	A20jaQGU6ezPtgq2JE62+jXoRJK/Ri+EGWiDzjvTd5MkBDB3K7sl1XOg42egUiBGRb+zA8Epwdo
+	aTsXCZJJgBZPTdaeNNKRvdrzk7AvVXTQPhGx4kipGRwvYGdAUWsbdvTPnZl7I0rtBrOl4cJrhmM
+	H8jvD4ljou8hYKsYQeIIiKiaxMI29kRA+kVrNhngTCw3uC3gxhovWcC0GxKA4QdIuPijiEehazI
+	K2qzjam2CVBSR53MBwHDpYLlOteG3zx9wHYI/J2pI5DEP5qZIzBPicB6jMrpxKnjOA90Ao2m9B9
+	ghstVSgmW3HeSHg/csLeDY2F2f1jhR9/2vXZZoNumc0PlHI48WP9L/DRjTpLE3q66R58kAx4flP
+	oz
+X-Google-Smtp-Source: AGHT+IFAE8KW6xGVv+EWCG2GvNuQvJkUmKpKD/lB0maImvQ1L17APYksLq9mzLKDpnbm30gZ9FNYyr9mvMcs
+X-Received: by 2002:a05:6e02:c65:b0:424:8af2:8f81 with SMTP id e9e14a558f8ab-4248af2905amr104138765ab.19.1758555824899;
+        Mon, 22 Sep 2025 08:43:44 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-122.dlp.protect.broadcom.com. [144.49.247.122])
+        by smtp-relay.gmail.com with ESMTPS id e9e14a558f8ab-4244a48e3f9sm7933075ab.16.2025.09.22.08.43.44
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 22 Sep 2025 08:43:34 -0700 (PDT)
+        Mon, 22 Sep 2025 08:43:44 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4b5e303fe1cso77031791cf.2
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 08:43:34 -0700 (PDT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8271bdaccf9so487167685a.0
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 08:43:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1758555814; x=1759160614; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1758555824; x=1759160624; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ljzRf+fQkTXrHRLgyTo6IBmxzVI6wZ2jIzrNCpRNIRY=;
-        b=bGvKSfaCG6tAo7MrSsH4Aev7e4FQ/ss91LWgHs58r823qu/LgkgQlWT43+AYbhXVwJ
-         8B5d2VU4jRmnk2KK23nyb4NmCjwZmjwQ93jkZdKttorCYj2d4bDeUPP6hixgAjE61g63
-         D1ALaLPXCNLp8+BStdQ+fLcBXjDM1k9Mc07QQ=
-X-Forwarded-Encrypted: i=1; AJvYcCUlaAxakK/QyWrNdsfFVO3haPHxjf/HkxaemhKBbifTl+wnR+auCy0AF7YRDFSacTcRdSrES9s=@vger.kernel.org
-X-Received: by 2002:a05:622a:4295:b0:4b3:741:2e1f with SMTP id d75a77b69052e-4c06f8423acmr155597221cf.33.1758555813580;
-        Mon, 22 Sep 2025 08:43:33 -0700 (PDT)
-X-Received: by 2002:a05:622a:4295:b0:4b3:741:2e1f with SMTP id d75a77b69052e-4c06f8423acmr155596821cf.33.1758555813032;
-        Mon, 22 Sep 2025 08:43:33 -0700 (PDT)
+        bh=vk3sv/SQnh+KPf6GaohPlQ9kFAEuQOWwvyi6Ky3gclE=;
+        b=J9cBBvIp2wloRYfTeQroOQJADgU4TEQfxRMZYv/TYw3GhM8etHkQ9M+9mtOvFke39A
+         frWfu+NqcQkpZ3yDLNMlYZgByqK86NMOrFosj95y1iTvW/ImdhdplQc8CGFIw4GhOEfT
+         io6IJxvJU/JlESWpVJSYaro+QUwe8OkvGnuZI=
+X-Forwarded-Encrypted: i=1; AJvYcCUqwhad2LBQgZO3i6DUft1udnEco5+P5CZD4wzuyTmOW//1itNfcxBdVOwDq42QKwkcMHhd7Iw=@vger.kernel.org
+X-Received: by 2002:a05:620a:9178:b0:835:edb4:f0d1 with SMTP id af79cd13be357-83bac78ce46mr1284655885a.68.1758555823238;
+        Mon, 22 Sep 2025 08:43:43 -0700 (PDT)
+X-Received: by 2002:a05:620a:9178:b0:835:edb4:f0d1 with SMTP id af79cd13be357-83bac78ce46mr1284651385a.68.1758555822457;
+        Mon, 22 Sep 2025 08:43:42 -0700 (PDT)
 Received: from sjs-csg-thor3-swe-29.lvn.broadcom.net044broadcom.net ([192.19.224.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-84ada77bb17sm179496785a.30.2025.09.22.08.43.31
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-84ada77bb17sm179496785a.30.2025.09.22.08.43.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 08:43:32 -0700 (PDT)
+        Mon, 22 Sep 2025 08:43:42 -0700 (PDT)
 From: Siva Reddy Kallam <siva.kallam@broadcom.com>
 To: leonro@nvidia.com,
 	jgg@nvidia.com
@@ -83,9 +83,9 @@ Cc: linux-rdma@vger.kernel.org,
 	anand.subramanian@broadcom.com,
 	usman.ansari@broadcom.com,
 	Siva Reddy Kallam <siva.kallam@broadcom.com>
-Subject: [PATCH v2 3/8] RDMA/bng_re: Register and get the resources from bnge driver
-Date: Mon, 22 Sep 2025 15:42:58 +0000
-Message-Id: <20250922154303.246809-4-siva.kallam@broadcom.com>
+Subject: [PATCH v2 5/8] RDMA/bng_re: Add infrastructure for enabling Firmware channel
+Date: Mon, 22 Sep 2025 15:43:00 +0000
+Message-Id: <20250922154303.246809-6-siva.kallam@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250922154303.246809-1-siva.kallam@broadcom.com>
 References: <20250922154303.246809-1-siva.kallam@broadcom.com>
@@ -98,256 +98,1121 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Register and get the basic required resources from bnge driver.
+Add infrastructure for enabling Firmware channel.
 
 Signed-off-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
 Reviewed-by: Usman Ansari <usman.ansari@broadcom.com>
 ---
- drivers/infiniband/hw/bng_re/bng_dev.c | 149 +++++++++++++++++++++++++
- drivers/infiniband/hw/bng_re/bng_re.h  |   5 +
- drivers/infiniband/hw/bng_re/bng_res.h |  16 +++
- 3 files changed, 170 insertions(+)
- create mode 100644 drivers/infiniband/hw/bng_re/bng_res.h
+ drivers/infiniband/hw/bng_re/bng_dev.c | 120 +++++++-
+ drivers/infiniband/hw/bng_re/bng_fw.c  | 361 ++++++++++++++++++++++++-
+ drivers/infiniband/hw/bng_re/bng_fw.h  | 133 ++++++++-
+ drivers/infiniband/hw/bng_re/bng_re.h  |  45 +++
+ drivers/infiniband/hw/bng_re/bng_res.c |   2 +
+ drivers/infiniband/hw/bng_re/bng_res.h | 102 +++++++
+ drivers/infiniband/hw/bng_re/bng_tlv.h | 128 +++++++++
+ 7 files changed, 885 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/infiniband/hw/bng_re/bng_tlv.h
 
 diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
-index 08aba72a26f7..cad065df2032 100644
+index 1506f32fb550..a0fba30187ff 100644
 --- a/drivers/infiniband/hw/bng_re/bng_dev.c
 +++ b/drivers/infiniband/hw/bng_re/bng_dev.c
-@@ -7,8 +7,10 @@
+@@ -9,10 +9,10 @@
  
- #include <rdma/ib_verbs.h>
- 
-+#include "bng_res.h"
- #include "bng_re.h"
+ #include "bng_res.h"
+ #include "bng_fw.h"
+-#include "bng_re.h"
  #include "bnge.h"
-+#include "bnge_hwrm.h"
+-#include "bnge_hwrm.h"
  #include "bnge_auxr.h"
++#include "bng_re.h"
++#include "bnge_hwrm.h"
  
  static char version[] =
-@@ -40,6 +42,144 @@ static struct bng_re_dev *bng_re_dev_add(struct auxiliary_device *adev,
- 	return rdev;
+ 		BNG_RE_DESC "\n";
+@@ -105,6 +105,69 @@ static void bng_re_fill_fw_msg(struct bnge_fw_msg *fw_msg, void *msg,
+ 	fw_msg->timeout = timeout;
  }
  
-+
-+static int bng_re_register_netdev(struct bng_re_dev *rdev)
-+{
-+	struct bnge_auxr_dev *aux_dev;
-+
-+	aux_dev = rdev->aux_dev;
-+	return bnge_register_dev(aux_dev, rdev->adev);
-+}
-+
-+static void bng_re_destroy_chip_ctx(struct bng_re_dev *rdev)
-+{
-+	struct bng_re_chip_ctx *chip_ctx;
-+
-+	if (!rdev->chip_ctx)
-+		return;
-+
-+	chip_ctx = rdev->chip_ctx;
-+	rdev->chip_ctx = NULL;
-+	kfree(chip_ctx);
-+}
-+
-+static int bng_re_setup_chip_ctx(struct bng_re_dev *rdev)
-+{
-+	struct bng_re_chip_ctx *chip_ctx;
-+	struct bnge_auxr_dev *aux_dev;
-+
-+	aux_dev = rdev->aux_dev;
-+
-+	chip_ctx = kzalloc(sizeof(*chip_ctx), GFP_KERNEL);
-+	if (!chip_ctx)
-+		return -ENOMEM;
-+	chip_ctx->chip_num = aux_dev->chip_num;
-+	chip_ctx->hw_stats_size = aux_dev->hw_ring_stats_size;
-+
-+	rdev->chip_ctx = chip_ctx;
-+
-+	return 0;
-+}
-+
-+static void bng_re_init_hwrm_hdr(struct input *hdr, u16 opcd)
-+{
-+	hdr->req_type = cpu_to_le16(opcd);
-+	hdr->cmpl_ring = cpu_to_le16(-1);
-+	hdr->target_id = cpu_to_le16(-1);
-+}
-+
-+static void bng_re_fill_fw_msg(struct bnge_fw_msg *fw_msg, void *msg,
-+			       int msg_len, void *resp, int resp_max_len,
-+			       int timeout)
-+{
-+	fw_msg->msg = msg;
-+	fw_msg->msg_len = msg_len;
-+	fw_msg->resp = resp;
-+	fw_msg->resp_max_len = resp_max_len;
-+	fw_msg->timeout = timeout;
-+}
-+
-+static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
++static int bng_re_net_ring_free(struct bng_re_dev *rdev,
++				u16 fw_ring_id, int type)
 +{
 +	struct bnge_auxr_dev *aux_dev = rdev->aux_dev;
-+	struct hwrm_ver_get_output ver_get_resp = {};
-+	struct hwrm_ver_get_input ver_get_req = {};
-+	struct bng_re_chip_ctx *cctx;
++	struct hwrm_ring_free_input req = {};
++	struct hwrm_ring_free_output resp;
 +	struct bnge_fw_msg fw_msg = {};
-+	int rc;
++	int rc = -EINVAL;
 +
-+	bng_re_init_hwrm_hdr((void *)&ver_get_req, HWRM_VER_GET);
-+	ver_get_req.hwrm_intf_maj = HWRM_VERSION_MAJOR;
-+	ver_get_req.hwrm_intf_min = HWRM_VERSION_MINOR;
-+	ver_get_req.hwrm_intf_upd = HWRM_VERSION_UPDATE;
-+	bng_re_fill_fw_msg(&fw_msg, (void *)&ver_get_req, sizeof(ver_get_req),
-+			    (void *)&ver_get_resp, sizeof(ver_get_resp),
-+			    BNGE_DFLT_HWRM_CMD_TIMEOUT);
++	if (!rdev)
++		return rc;
++
++	if (!aux_dev)
++		return rc;
++
++	bng_re_init_hwrm_hdr((void *)&req, HWRM_RING_FREE);
++	req.ring_type = type;
++	req.ring_id = cpu_to_le16(fw_ring_id);
++	bng_re_fill_fw_msg(&fw_msg, (void *)&req, sizeof(req), (void *)&resp,
++			    sizeof(resp), BNGE_DFLT_HWRM_CMD_TIMEOUT);
 +	rc = bnge_send_msg(aux_dev, &fw_msg);
-+	if (rc) {
-+		ibdev_err(&rdev->ibdev, "Failed to query HW version, rc = 0x%x",
-+			  rc);
-+		return;
-+	}
-+
-+	cctx = rdev->chip_ctx;
-+	cctx->hwrm_intf_ver =
-+		(u64)le16_to_cpu(ver_get_resp.hwrm_intf_major) << 48 |
-+		(u64)le16_to_cpu(ver_get_resp.hwrm_intf_minor) << 32 |
-+		(u64)le16_to_cpu(ver_get_resp.hwrm_intf_build) << 16 |
-+		le16_to_cpu(ver_get_resp.hwrm_intf_patch);
-+
-+	cctx->hwrm_cmd_max_timeout = le16_to_cpu(ver_get_resp.max_req_timeout);
-+
-+	if (!cctx->hwrm_cmd_max_timeout)
-+		cctx->hwrm_cmd_max_timeout = BNG_ROCE_FW_MAX_TIMEOUT;
++	if (rc)
++		ibdev_err(&rdev->ibdev, "Failed to free HW ring:%d :%#x",
++			  req.ring_id, rc);
++	return rc;
 +}
 +
-+static int bng_re_dev_init(struct bng_re_dev *rdev)
++static int bng_re_net_ring_alloc(struct bng_re_dev *rdev,
++				 struct bng_re_ring_attr *ring_attr,
++				 u16 *fw_ring_id)
 +{
-+	int rc;
++	struct bnge_auxr_dev *aux_dev = rdev->aux_dev;
++	struct hwrm_ring_alloc_input req = {};
++	struct hwrm_ring_alloc_output resp;
++	struct bnge_fw_msg fw_msg = {};
++	int rc = -EINVAL;
 +
-+	/* Registered a new RoCE device instance to netdev */
-+	rc = bng_re_register_netdev(rdev);
-+	if (rc) {
-+		ibdev_err(&rdev->ibdev,
-+				"Failed to register with netedev: %#x\n", rc);
-+		return -EINVAL;
++	if (!aux_dev)
++		return rc;
++
++	bng_re_init_hwrm_hdr((void *)&req, HWRM_RING_ALLOC);
++	req.enables = 0;
++	req.page_tbl_addr =  cpu_to_le64(ring_attr->dma_arr[0]);
++	if (ring_attr->pages > 1) {
++		/* Page size is in log2 units */
++		req.page_size = BNGE_PAGE_SHIFT;
++		req.page_tbl_depth = 1;
 +	}
++	req.fbo = 0;
++	/* Association of ring index with doorbell index and MSIX number */
++	req.logical_id = cpu_to_le16(ring_attr->lrid);
++	req.length = cpu_to_le32(ring_attr->depth + 1);
++	req.ring_type = ring_attr->type;
++	req.int_mode = ring_attr->mode;
++	bng_re_fill_fw_msg(&fw_msg, (void *)&req, sizeof(req), (void *)&resp,
++			   sizeof(resp), BNGE_DFLT_HWRM_CMD_TIMEOUT);
++	rc = bnge_send_msg(aux_dev, &fw_msg);
++	if (!rc)
++		*fw_ring_id = le16_to_cpu(resp.ring_id);
 +
-+	set_bit(BNG_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
++	return rc;
++}
 +
-+	if (rdev->aux_dev->auxr_info->msix_requested < BNG_RE_MIN_MSIX) {
-+		ibdev_err(&rdev->ibdev,
-+			  "RoCE requires minimum 2 MSI-X vectors, but only %d reserved\n",
-+			  rdev->aux_dev->auxr_info->msix_requested);
+ static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ {
+ 	struct bnge_auxr_dev *aux_dev = rdev->aux_dev;
+@@ -143,7 +206,13 @@ static void bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ 
+ static void bng_re_dev_uninit(struct bng_re_dev *rdev)
+ {
++	bng_re_disable_rcfw_channel(&rdev->rcfw);
++	bng_re_net_ring_free(rdev, rdev->rcfw.creq.ring_id,
++			     RING_ALLOC_REQ_RING_TYPE_NQ);
+ 	bng_re_free_rcfw_channel(&rdev->rcfw);
++
++	kfree(rdev->nqr);
++	rdev->nqr = NULL;
+ 	bng_re_destroy_chip_ctx(rdev);
+ 	if (test_and_clear_bit(BNG_RE_FLAG_NETDEV_REGISTERED, &rdev->flags))
+ 		bnge_unregister_dev(rdev->aux_dev);
+@@ -151,6 +220,11 @@ static void bng_re_dev_uninit(struct bng_re_dev *rdev)
+ 
+ static int bng_re_dev_init(struct bng_re_dev *rdev)
+ {
++	struct bng_re_ring_attr rattr = {};
++	struct bng_re_creq_ctx *creq;
++	u32 db_offt;
++	int vid;
++	u8 type;
+ 	int rc;
+ 
+ 	/* Registered a new RoCE device instance to netdev */
+@@ -191,8 +265,48 @@ static int bng_re_dev_init(struct bng_re_dev *rdev)
+ 		goto fail;
+ 	}
+ 
+-	return 0;
++	/* Allocate nq record memory */
++	rdev->nqr = kzalloc(sizeof(*rdev->nqr), GFP_KERNEL);
++	if (!rdev->nqr) {
++		bng_re_destroy_chip_ctx(rdev);
 +		bnge_unregister_dev(rdev->aux_dev);
 +		clear_bit(BNG_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
-+		return -EINVAL;
++		return -ENOMEM;
 +	}
-+	ibdev_dbg(&rdev->ibdev, "Got %d MSI-X vectors\n",
-+		  rdev->aux_dev->auxr_info->msix_requested);
+ 
++	rdev->nqr->num_msix = rdev->aux_dev->auxr_info->msix_requested;
++	memcpy(rdev->nqr->msix_entries, rdev->aux_dev->msix_info,
++	       sizeof(struct bnge_msix_info) * rdev->nqr->num_msix);
 +
-+	rc = bng_re_setup_chip_ctx(rdev);
++	type = RING_ALLOC_REQ_RING_TYPE_NQ;
++	creq = &rdev->rcfw.creq;
++	rattr.dma_arr = creq->hwq.pbl[BNG_PBL_LVL_0].pg_map_arr;
++	rattr.pages = creq->hwq.pbl[creq->hwq.level].pg_count;
++	rattr.type = type;
++	rattr.mode = RING_ALLOC_REQ_INT_MODE_MSIX;
++	rattr.depth = BNG_FW_CREQE_MAX_CNT - 1;
++	rattr.lrid = rdev->nqr->msix_entries[BNG_RE_CREQ_NQ_IDX].ring_idx;
++	rc = bng_re_net_ring_alloc(rdev, &rattr, &creq->ring_id);
 +	if (rc) {
-+		bnge_unregister_dev(rdev->aux_dev);
-+		clear_bit(BNG_RE_FLAG_NETDEV_REGISTERED, &rdev->flags);
-+		ibdev_err(&rdev->ibdev, "Failed to get chip context\n");
-+		return -EINVAL;
++		ibdev_err(&rdev->ibdev, "Failed to allocate CREQ: %#x\n", rc);
++		goto free_rcfw;
++	}
++	db_offt = rdev->nqr->msix_entries[BNG_RE_CREQ_NQ_IDX].db_offset;
++	vid = rdev->nqr->msix_entries[BNG_RE_CREQ_NQ_IDX].vector;
++
++	rc = bng_re_enable_fw_channel(&rdev->rcfw,
++					vid, db_offt);
++	if (rc) {
++		ibdev_err(&rdev->ibdev, "Failed to enable RCFW channel: %#x\n",
++			  rc);
++		goto free_ring;
 +	}
 +
-+	bng_re_query_hwrm_version(rdev);
++	return 0;
++free_ring:
++	bng_re_net_ring_free(rdev, rdev->rcfw.creq.ring_id, type);
++free_rcfw:
++	bng_re_free_rcfw_channel(&rdev->rcfw);
+ fail:
+ 	bng_re_dev_uninit(rdev);
+ 	return rc;
+diff --git a/drivers/infiniband/hw/bng_re/bng_fw.c b/drivers/infiniband/hw/bng_re/bng_fw.c
+index bf7bbcf9b56e..1bfed58e6703 100644
+--- a/drivers/infiniband/hw/bng_re/bng_fw.c
++++ b/drivers/infiniband/hw/bng_re/bng_fw.c
+@@ -2,6 +2,7 @@
+ // Copyright (c) 2025 Broadcom.
+ #include <linux/pci.h>
+ 
++#include "roce_hsi.h"
+ #include "bng_res.h"
+ #include "bng_fw.h"
+ 
+@@ -61,10 +62,368 @@ int bng_re_alloc_fw_channel(struct bng_re_res *res,
+ 	spin_lock_init(&rcfw->tbl_lock);
+ 
+ 	rcfw->max_timeout = res->cctx->hwrm_cmd_max_timeout;
+-
+ 	return 0;
+ 
+ fail:
+ 	bng_re_free_rcfw_channel(rcfw);
+ 	return -ENOMEM;
+ }
++
++static int bng_re_process_qp_event(struct bng_re_rcfw *rcfw,
++				   struct creq_qp_event *qp_event,
++				   u32 *num_wait)
++{
++	struct bng_re_hwq *hwq = &rcfw->cmdq.hwq;
++	struct bng_re_crsqe *crsqe;
++	u32 req_size;
++	u16 cookie;
++	bool is_waiter_alive;
++	struct pci_dev *pdev;
++	u32 wait_cmds = 0;
++	int rc = 0;
++
++	pdev = rcfw->pdev;
++	switch (qp_event->event) {
++	case CREQ_QP_EVENT_EVENT_QP_ERROR_NOTIFICATION:
++		dev_err(&pdev->dev, "Received QP error notification\n");
++		break;
++	default:
++		/*
++		 * Command Response
++		 * cmdq->lock needs to be acquired to synchronie
++		 * the command send and completion reaping. This function
++		 * is always called with creq->lock held. Using
++		 * the nested variant of spin_lock.
++		 *
++		 */
++
++		spin_lock_nested(&hwq->lock, SINGLE_DEPTH_NESTING);
++		cookie = le16_to_cpu(qp_event->cookie);
++		cookie &= BNG_FW_MAX_COOKIE_VALUE;
++		crsqe = &rcfw->crsqe_tbl[cookie];
++
++		if (WARN_ONCE(test_bit(FIRMWARE_STALL_DETECTED,
++				       &rcfw->cmdq.flags),
++		    "Unreponsive rcfw channel detected.!!")) {
++			dev_info(&pdev->dev,
++				 "rcfw timedout: cookie = %#x, free_slots = %d",
++				 cookie, crsqe->free_slots);
++			spin_unlock(&hwq->lock);
++			return rc;
++		}
++
++		if (crsqe->is_waiter_alive) {
++			if (crsqe->resp) {
++				memcpy(crsqe->resp, qp_event, sizeof(*qp_event));
++				/* Insert write memory barrier to ensure that
++				 * response data is copied before clearing the
++				 * flags
++				 */
++				smp_wmb();
++			}
++		}
++
++		wait_cmds++;
++
++		req_size = crsqe->req_size;
++		is_waiter_alive = crsqe->is_waiter_alive;
++
++		crsqe->req_size = 0;
++		if (!is_waiter_alive)
++			crsqe->resp = NULL;
++
++		crsqe->is_in_used = false;
++
++		hwq->cons += req_size;
++
++		spin_unlock(&hwq->lock);
++	}
++	*num_wait += wait_cmds;
++	return rc;
++}
++
++/* function events */
++static int bng_re_process_func_event(struct bng_re_rcfw *rcfw,
++				     struct creq_func_event *func_event)
++{
++	switch (func_event->event) {
++	case CREQ_FUNC_EVENT_EVENT_TX_WQE_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_TX_DATA_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_RX_WQE_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_RX_DATA_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_CQ_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_TQM_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_CFCQ_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_CFCS_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_CFCC_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_CFCM_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_TIM_ERROR:
++	case CREQ_FUNC_EVENT_EVENT_VF_COMM_REQUEST:
++	case CREQ_FUNC_EVENT_EVENT_RESOURCE_EXHAUSTED:
++		break;
++	default:
++		return -EINVAL;
++	}
 +
 +	return 0;
 +}
 +
-+static void bng_re_dev_uninit(struct bng_re_dev *rdev)
++
++
++/* CREQ Completion handlers */
++static void bng_re_service_creq(struct tasklet_struct *t)
 +{
-+	bng_re_destroy_chip_ctx(rdev);
-+	if (test_and_clear_bit(BNG_RE_FLAG_NETDEV_REGISTERED, &rdev->flags))
-+		bnge_unregister_dev(rdev->aux_dev);
++	struct bng_re_rcfw *rcfw = from_tasklet(rcfw, t, creq.creq_tasklet);
++	struct bng_re_creq_ctx *creq = &rcfw->creq;
++	u32 type, budget = BNG_FW_CREQ_ENTRY_POLL_BUDGET;
++	struct bng_re_hwq *hwq = &creq->hwq;
++	struct creq_base *creqe;
++	u32 num_wakeup = 0;
++	u32 hw_polled = 0;
++
++	/* Service the CREQ until budget is over */
++	spin_lock_bh(&hwq->lock);
++	while (budget > 0) {
++		creqe = bng_re_get_qe(hwq, hwq->cons, NULL);
++		if (!BNG_FW_CREQ_CMP_VALID(creqe, creq->creq_db.dbinfo.flags))
++			break;
++		/* The valid test of the entry must be done first before
++		 * reading any further.
++		 */
++		dma_rmb();
++
++		type = creqe->type & CREQ_BASE_TYPE_MASK;
++		switch (type) {
++		case CREQ_BASE_TYPE_QP_EVENT:
++			bng_re_process_qp_event
++				(rcfw, (struct creq_qp_event *)creqe,
++				 &num_wakeup);
++			creq->stats.creq_qp_event_processed++;
++			break;
++		case CREQ_BASE_TYPE_FUNC_EVENT:
++			if (!bng_re_process_func_event
++			    (rcfw, (struct creq_func_event *)creqe))
++				creq->stats.creq_func_event_processed++;
++			else
++				dev_warn(&rcfw->pdev->dev,
++					 "aeqe:%#x Not handled\n", type);
++			break;
++		default:
++			if (type != ASYNC_EVENT_CMPL_TYPE_HWRM_ASYNC_EVENT)
++				dev_warn(&rcfw->pdev->dev,
++					 "creqe with event 0x%x not handled\n",
++					 type);
++			break;
++		}
++		budget--;
++		hw_polled++;
++		bng_re_hwq_incr_cons(hwq->max_elements, &hwq->cons,
++				     1, &creq->creq_db.dbinfo.flags);
++	}
++
++	if (hw_polled)
++		bng_re_ring_nq_db(&creq->creq_db.dbinfo,
++				  rcfw->res->cctx, true);
++	spin_unlock_bh(&hwq->lock);
++	if (num_wakeup)
++		wake_up_nr(&rcfw->cmdq.waitq, num_wakeup);
 +}
 +
- static int bng_re_add_device(struct auxiliary_device *adev)
- {
- 	struct bnge_auxr_priv *auxr_priv =
-@@ -58,7 +198,14 @@ static int bng_re_add_device(struct auxiliary_device *adev)
- 
- 	dev_info->rdev = rdev;
- 
-+	rc = bng_re_dev_init(rdev);
++static int bng_re_map_cmdq_mbox(struct bng_re_rcfw *rcfw)
++{
++	struct bng_re_cmdq_mbox *mbox;
++	resource_size_t bar_reg;
++	struct pci_dev *pdev;
++
++	pdev = rcfw->pdev;
++	mbox = &rcfw->cmdq.cmdq_mbox;
++
++	mbox->reg.bar_id = BNG_FW_COMM_PCI_BAR_REGION;
++	mbox->reg.len = BNG_FW_COMM_SIZE;
++	mbox->reg.bar_base = pci_resource_start(pdev, mbox->reg.bar_id);
++	if (!mbox->reg.bar_base) {
++		dev_err(&pdev->dev,
++			"CMDQ BAR region %d resc start is 0!\n",
++			mbox->reg.bar_id);
++		return -ENOMEM;
++	}
++
++	bar_reg = mbox->reg.bar_base + BNG_FW_COMM_BASE_OFFSET;
++	mbox->reg.len = BNG_FW_COMM_SIZE;
++	mbox->reg.bar_reg = ioremap(bar_reg, mbox->reg.len);
++	if (!mbox->reg.bar_reg) {
++		dev_err(&pdev->dev,
++			"CMDQ BAR region %d mapping failed\n",
++			mbox->reg.bar_id);
++		return -ENOMEM;
++	}
++
++	mbox->prod = (void  __iomem *)(mbox->reg.bar_reg +
++			BNG_FW_PF_VF_COMM_PROD_OFFSET);
++	mbox->db = (void __iomem *)(mbox->reg.bar_reg + BNG_FW_COMM_TRIG_OFFSET);
++	return 0;
++}
++
++static irqreturn_t bng_re_creq_irq(int irq, void *dev_instance)
++{
++	struct bng_re_rcfw *rcfw = dev_instance;
++	struct bng_re_creq_ctx *creq;
++	struct bng_re_hwq *hwq;
++	u32 sw_cons;
++
++	creq = &rcfw->creq;
++	hwq = &creq->hwq;
++	/* Prefetch the CREQ element */
++	sw_cons = HWQ_CMP(hwq->cons, hwq);
++	prefetch(bng_re_get_qe(hwq, sw_cons, NULL));
++
++	tasklet_schedule(&creq->creq_tasklet);
++
++	return IRQ_HANDLED;
++}
++
++int bng_re_rcfw_start_irq(struct bng_re_rcfw *rcfw, int msix_vector,
++			  bool need_init)
++{
++	struct bng_re_creq_ctx *creq;
++	struct bng_re_res *res;
++	int rc;
++
++	creq = &rcfw->creq;
++	res = rcfw->res;
++
++	if (creq->irq_handler_avail)
++		return -EFAULT;
++
++	creq->msix_vec = msix_vector;
++	if (need_init)
++		tasklet_setup(&creq->creq_tasklet, bng_re_service_creq);
++	else
++		tasklet_enable(&creq->creq_tasklet);
++
++	creq->irq_name = kasprintf(GFP_KERNEL, "bng_re-creq@pci:%s",
++				   pci_name(res->pdev));
++	if (!creq->irq_name)
++		return -ENOMEM;
++	rc = request_irq(creq->msix_vec, bng_re_creq_irq, 0,
++			 creq->irq_name, rcfw);
++	if (rc) {
++		kfree(creq->irq_name);
++		creq->irq_name = NULL;
++		tasklet_disable(&creq->creq_tasklet);
++		return rc;
++	}
++	creq->irq_handler_avail = true;
++
++	bng_re_ring_nq_db(&creq->creq_db.dbinfo, res->cctx, true);
++	atomic_inc(&rcfw->rcfw_intr_enabled);
++
++	return 0;
++}
++
++static int bng_re_map_creq_db(struct bng_re_rcfw *rcfw, u32 reg_offt)
++{
++	struct bng_re_creq_db *creq_db;
++	resource_size_t bar_reg;
++	struct pci_dev *pdev;
++
++	pdev = rcfw->pdev;
++	creq_db = &rcfw->creq.creq_db;
++
++	creq_db->dbinfo.flags = 0;
++	creq_db->reg.bar_id = BNG_FW_COMM_CONS_PCI_BAR_REGION;
++	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
++	if (!creq_db->reg.bar_id)
++		dev_err(&pdev->dev,
++			"CREQ BAR region %d resc start is 0!",
++			creq_db->reg.bar_id);
++
++	bar_reg = creq_db->reg.bar_base + reg_offt;
++
++	creq_db->reg.len = BNG_FW_CREQ_DB_LEN;
++	creq_db->reg.bar_reg = ioremap(bar_reg, creq_db->reg.len);
++	if (!creq_db->reg.bar_reg) {
++		dev_err(&pdev->dev,
++			"CREQ BAR region %d mapping failed",
++			creq_db->reg.bar_id);
++		return -ENOMEM;
++	}
++	creq_db->dbinfo.db = creq_db->reg.bar_reg;
++	creq_db->dbinfo.hwq = &rcfw->creq.hwq;
++	creq_db->dbinfo.xid = rcfw->creq.ring_id;
++	return 0;
++}
++
++void bng_re_rcfw_stop_irq(struct bng_re_rcfw *rcfw, bool kill)
++{
++	struct bng_re_creq_ctx *creq;
++
++	creq = &rcfw->creq;
++
++	if (!creq->irq_handler_avail)
++		return;
++
++	creq->irq_handler_avail = false;
++	/* Mask h/w interrupts */
++	bng_re_ring_nq_db(&creq->creq_db.dbinfo, rcfw->res->cctx, false);
++	/* Sync with last running IRQ-handler */
++	synchronize_irq(creq->msix_vec);
++	free_irq(creq->msix_vec, rcfw);
++	kfree(creq->irq_name);
++	creq->irq_name = NULL;
++	atomic_set(&rcfw->rcfw_intr_enabled, 0);
++	if (kill)
++		tasklet_kill(&creq->creq_tasklet);
++	tasklet_disable(&creq->creq_tasklet);
++}
++
++void bng_re_disable_rcfw_channel(struct bng_re_rcfw *rcfw)
++{
++	struct bng_re_creq_ctx *creq;
++	struct bng_re_cmdq_ctx *cmdq;
++
++	creq = &rcfw->creq;
++	cmdq = &rcfw->cmdq;
++	/* Make sure the HW channel is stopped! */
++	bng_re_rcfw_stop_irq(rcfw, true);
++
++	iounmap(cmdq->cmdq_mbox.reg.bar_reg);
++	iounmap(creq->creq_db.reg.bar_reg);
++
++	cmdq->cmdq_mbox.reg.bar_reg = NULL;
++	creq->creq_db.reg.bar_reg = NULL;
++	creq->msix_vec = 0;
++}
++
++int bng_re_enable_fw_channel(struct bng_re_rcfw *rcfw,
++			     int msix_vector,
++			     int cp_bar_reg_off)
++{
++	struct bng_re_cmdq_ctx *cmdq;
++	int rc;
++
++	cmdq = &rcfw->cmdq;
++
++	/* Assign defaults */
++	cmdq->seq_num = 0;
++	set_bit(FIRMWARE_FIRST_FLAG, &cmdq->flags);
++	init_waitqueue_head(&cmdq->waitq);
++
++	rc = bng_re_map_cmdq_mbox(rcfw);
 +	if (rc)
-+		goto re_dev_dealloc;
++		return rc;
 +
- 	return 0;
++	rc = bng_re_map_creq_db(rcfw, cp_bar_reg_off);
++	if (rc)
++		return rc;
 +
-+re_dev_dealloc:
-+	ib_dealloc_device(&rdev->ibdev);
- exit:
- 	return rc;
- }
-@@ -67,6 +214,7 @@ static int bng_re_add_device(struct auxiliary_device *adev)
- static void bng_re_remove_device(struct bng_re_dev *rdev,
- 				 struct auxiliary_device *aux_dev)
++	rc = bng_re_rcfw_start_irq(rcfw, msix_vector, true);
++	if (rc) {
++		dev_err(&rcfw->pdev->dev,
++			"Failed to request IRQ for CREQ rc = 0x%x\n", rc);
++		bng_re_disable_rcfw_channel(rcfw);
++		return rc;
++	}
++
++	return 0;
++}
+diff --git a/drivers/infiniband/hw/bng_re/bng_fw.h b/drivers/infiniband/hw/bng_re/bng_fw.h
+index 351f73baa9df..d1773832b592 100644
+--- a/drivers/infiniband/hw/bng_re/bng_fw.h
++++ b/drivers/infiniband/hw/bng_re/bng_fw.h
+@@ -4,9 +4,26 @@
+ #ifndef __BNG_FW_H__
+ #define __BNG_FW_H__
+ 
++#include "bng_tlv.h"
++
++/* FW DB related */
++#define BNG_FW_CMDQ_TRIG_VAL		1
++#define BNG_FW_COMM_PCI_BAR_REGION	0
++#define BNG_FW_COMM_CONS_PCI_BAR_REGION	2
++#define BNG_FW_COMM_SIZE		0x104
++#define BNG_FW_COMM_BASE_OFFSET		0x600
++#define BNG_FW_COMM_TRIG_OFFSET		0x100
++#define BNG_FW_PF_VF_COMM_PROD_OFFSET	0xc
++#define BNG_FW_CREQ_DB_LEN		8
++
+ /* CREQ */
+-#define BNG_FW_CREQE_MAX_CNT	(64 * 1024)
+-#define BNG_FW_CREQE_UNITS	16
++#define BNG_FW_CREQE_MAX_CNT		(64 * 1024)
++#define BNG_FW_CREQE_UNITS		16
++#define BNG_FW_CREQ_ENTRY_POLL_BUDGET	0x100
++#define BNG_FW_CREQ_CMP_VALID(hdr, pass)			\
++	(!!((hdr)->v & CREQ_BASE_V) ==				\
++	   !((pass) & BNG_RE_FLAG_EPOCH_CONS_MASK))
++#define BNG_FW_CREQ_ENTRY_POLL_BUDGET	0x100
+ 
+ /* CMDQ */
+ struct bng_fw_cmdqe {
+@@ -17,6 +34,15 @@ struct bng_fw_cmdqe {
+ #define BNG_FW_CMDQE_UNITS		sizeof(struct bng_fw_cmdqe)
+ #define BNG_FW_CMDQE_BYTES(depth)	((depth) * BNG_FW_CMDQE_UNITS)
+ 
++#define BNG_FW_MAX_COOKIE_VALUE		(BNG_FW_CMDQE_MAX_CNT - 1)
++#define BNG_FW_CMD_IS_BLOCKING		0x8000
++
++/* Crsq buf is 1024-Byte */
++struct bng_re_crsbe {
++	u8			data[1024];
++};
++
++
+ static inline u32 bng_fw_cmdqe_npages(u32 depth)
  {
-+	bng_re_dev_uninit(rdev);
- 	ib_dealloc_device(&rdev->ibdev);
+ 	u32 npages;
+@@ -31,14 +57,43 @@ static inline u32 bng_fw_cmdqe_page_size(u32 depth)
+ {
+ 	return (bng_fw_cmdqe_npages(depth) * PAGE_SIZE);
  }
++struct bng_re_cmdq_mbox {
++	struct bng_re_reg_desc		reg;
++	void __iomem			*prod;
++	void __iomem			*db;
++};
  
-@@ -90,6 +238,7 @@ static int bng_re_probe(struct auxiliary_device *adev,
- 	rc = bng_re_add_device(adev);
- 	if (rc)
- 		kfree(en_info);
+ /* HWQ */
+ struct bng_re_cmdq_ctx {
+ 	struct bng_re_hwq		hwq;
++	struct bng_re_cmdq_mbox		cmdq_mbox;
++	unsigned long			flags;
++#define FIRMWARE_INITIALIZED_FLAG	(0)
++#define FIRMWARE_STALL_DETECTED		(3)
++#define FIRMWARE_FIRST_FLAG		(31)
++	wait_queue_head_t		waitq;
++	u32				seq_num;
++};
 +
- 	return rc;
- }
++struct bng_re_creq_db {
++	struct bng_re_reg_desc	reg;
++	struct bng_re_db_info	dbinfo;
++};
++
++struct bng_re_creq_stat {
++	u64	creq_qp_event_processed;
++	u64	creq_func_event_processed;
+ };
  
+ struct bng_re_creq_ctx {
+ 	struct bng_re_hwq		hwq;
++	struct bng_re_creq_db		creq_db;
++	struct bng_re_creq_stat		stats;
++	struct tasklet_struct		creq_tasklet;
++	u16				ring_id;
++	int				msix_vec;
++	bool				irq_handler_avail;
++	char				*irq_name;
+ };
+ 
+ struct bng_re_crsqe {
+@@ -47,6 +102,14 @@ struct bng_re_crsqe {
+ 	/* Free slots at the time of submission */
+ 	u32			free_slots;
+ 	u8			opcode;
++	bool			is_waiter_alive;
++	bool			is_in_used;
++};
++
++struct bng_re_rcfw_sbuf {
++	void *sb;
++	dma_addr_t dma_addr;
++	u32 size;
+ };
+ 
+ /* RoCE FW Communication Channels */
+@@ -61,9 +124,75 @@ struct bng_re_rcfw {
+ 	u32			cmdq_depth;
+ 	/* cached from chip cctx for quick reference in slow path */
+ 	u16			max_timeout;
++	atomic_t		rcfw_intr_enabled;
++};
++
++struct bng_re_cmdqmsg {
++	struct cmdq_base	*req;
++	struct creq_base	*resp;
++	void			*sb;
++	u32			req_sz;
++	u32			res_sz;
++	u8			block;
+ };
+ 
++static inline void bng_re_fill_cmdqmsg(struct bng_re_cmdqmsg *msg,
++				       void *req, void *resp, void *sb,
++				       u32 req_sz, u32 res_sz, u8 block)
++{
++	msg->req = req;
++	msg->resp = resp;
++	msg->sb = sb;
++	msg->req_sz = req_sz;
++	msg->res_sz = res_sz;
++	msg->block = block;
++}
++
++/* Get the number of command units required for the req. The
++ * function returns correct value only if called before
++ * setting using bng_re_set_cmd_slots
++ */
++static inline u32 bng_re_get_cmd_slots(struct cmdq_base *req)
++{
++	u32 cmd_units = 0;
++
++	if (HAS_TLV_HEADER(req)) {
++		struct roce_tlv *tlv_req = (struct roce_tlv *)req;
++
++		cmd_units = tlv_req->total_size;
++	} else {
++		cmd_units = (req->cmd_size + BNG_FW_CMDQE_UNITS - 1) /
++			    BNG_FW_CMDQE_UNITS;
++	}
++
++	return cmd_units;
++}
++
++static inline u32 bng_re_set_cmd_slots(struct cmdq_base *req)
++{
++	u32 cmd_byte = 0;
++
++	if (HAS_TLV_HEADER(req)) {
++		struct roce_tlv *tlv_req = (struct roce_tlv *)req;
++
++		cmd_byte = tlv_req->total_size * BNG_FW_CMDQE_UNITS;
++	} else {
++		cmd_byte = req->cmd_size;
++		req->cmd_size = (req->cmd_size + BNG_FW_CMDQE_UNITS - 1) /
++				 BNG_FW_CMDQE_UNITS;
++	}
++
++	return cmd_byte;
++}
++
+ void bng_re_free_rcfw_channel(struct bng_re_rcfw *rcfw);
+ int bng_re_alloc_fw_channel(struct bng_re_res *res,
+ 			    struct bng_re_rcfw *rcfw);
++int bng_re_enable_fw_channel(struct bng_re_rcfw *rcfw,
++			     int msix_vector,
++			     int cp_bar_reg_off);
++void bng_re_disable_rcfw_channel(struct bng_re_rcfw *rcfw);
++int bng_re_rcfw_start_irq(struct bng_re_rcfw *rcfw, int msix_vector,
++			  bool need_init);
++void bng_re_rcfw_stop_irq(struct bng_re_rcfw *rcfw, bool kill);
+ #endif
 diff --git a/drivers/infiniband/hw/bng_re/bng_re.h b/drivers/infiniband/hw/bng_re/bng_re.h
-index bd3aacdc05c4..db692ad8db0e 100644
+index 18f80e2a1a46..033ca94d5164 100644
 --- a/drivers/infiniband/hw/bng_re/bng_re.h
 +++ b/drivers/infiniband/hw/bng_re/bng_re.h
-@@ -11,6 +11,8 @@
+@@ -4,6 +4,8 @@
+ #ifndef __BNG_RE_H__
+ #define __BNG_RE_H__
  
++#include "bng_res.h"
++
+ #define BNG_ROCE_DRV_MODULE_NAME	"bng_re"
+ #define BNG_RE_ADEV_NAME		"bng_en"
+ 
+@@ -12,12 +14,54 @@
  #define	rdev_to_dev(rdev)	((rdev) ? (&(rdev)->ibdev.dev) : NULL)
  
-+#define BNG_RE_MIN_MSIX		2
+ #define BNG_RE_MIN_MSIX		2
++#define BNG_RE_MAX_MSIX		BNGE_MAX_ROCE_MSIX
 +
++#define BNG_RE_CREQ_NQ_IDX	0
++/* NQ specific structures  */
++struct bng_re_nq_db {
++	struct bng_re_reg_desc	reg;
++	struct bng_re_db_info	dbinfo;
++};
++
++struct bng_re_nq {
++	struct pci_dev			*pdev;
++	struct bng_re_res		*res;
++	char				*name;
++	struct bng_re_hwq		hwq;
++	struct bng_re_nq_db		nq_db;
++	u16				ring_id;
++	int				msix_vec;
++	cpumask_t			mask;
++	struct tasklet_struct		nq_tasklet;
++	bool				requested;
++	int				budget;
++	u32				load;
++
++	struct workqueue_struct		*cqn_wq;
++};
++
++struct bng_re_nq_record {
++	struct bnge_msix_info	msix_entries[BNG_RE_MAX_MSIX];
++	struct bng_re_nq	nq[BNG_RE_MAX_MSIX];
++	int			num_msix;
++	/* serialize NQ access */
++	struct mutex		load_lock;
++};
+ 
  struct bng_re_en_dev_info {
  	struct bng_re_dev *rdev;
  	struct bnge_auxr_dev *auxr_dev;
-@@ -18,9 +20,12 @@ struct bng_re_en_dev_info {
- 
- struct bng_re_dev {
- 	struct ib_device		ibdev;
-+	unsigned long			flags;
-+#define BNG_RE_FLAG_NETDEV_REGISTERED		0
- 	struct net_device		*netdev;
- 	struct auxiliary_device         *adev;
- 	struct bnge_auxr_dev		*aux_dev;
-+	struct bng_re_chip_ctx		*chip_ctx;
- 	int				fn_id;
  };
  
-diff --git a/drivers/infiniband/hw/bng_re/bng_res.h b/drivers/infiniband/hw/bng_re/bng_res.h
-new file mode 100644
-index 000000000000..d64833498e2a
---- /dev/null
-+++ b/drivers/infiniband/hw/bng_re/bng_res.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+// Copyright (c) 2025 Broadcom.
-+
-+#ifndef __BNG_RES_H__
-+#define __BNG_RES_H__
-+
-+#define BNG_ROCE_FW_MAX_TIMEOUT	60
-+
-+struct bng_re_chip_ctx {
-+	u16	chip_num;
-+	u16	hw_stats_size;
-+	u64	hwrm_intf_ver;
-+	u16	hwrm_cmd_max_timeout;
++struct bng_re_ring_attr {
++	dma_addr_t	*dma_arr;
++	int		pages;
++	int		type;
++	u32		depth;
++	u32		lrid; /* Logical ring id */
++	u8		mode;
 +};
 +
-+#endif
+ struct bng_re_dev {
+ 	struct ib_device		ibdev;
+ 	unsigned long			flags;
+@@ -29,6 +73,7 @@ struct bng_re_dev {
+ 	int				fn_id;
+ 	struct bng_re_res		bng_res;
+ 	struct bng_re_rcfw		rcfw;
++	struct bng_re_nq_record		*nqr;
+ };
+ 
+ #endif
+diff --git a/drivers/infiniband/hw/bng_re/bng_res.c b/drivers/infiniband/hw/bng_re/bng_res.c
+index 2119d1f39b65..cb42c0fd2cdf 100644
+--- a/drivers/infiniband/hw/bng_re/bng_res.c
++++ b/drivers/infiniband/hw/bng_re/bng_res.c
+@@ -5,6 +5,7 @@
+ #include <linux/vmalloc.h>
+ #include <rdma/ib_umem.h>
+ 
++#include <linux/bnxt/hsi.h>
+ #include "bng_res.h"
+ #include "roce_hsi.h"
+ 
+@@ -235,6 +236,7 @@ int bng_re_alloc_init_hwq(struct bng_re_hwq *hwq,
+ 	hwq->depth = hwq_attr->depth;
+ 	hwq->max_elements = hwq->depth;
+ 	hwq->element_size = stride;
++	hwq->qe_ppg = pg_size / stride;
+ 	/* For direct access to the elements */
+ 	lvl = hwq->level;
+ 	if (hwq_attr->sginfo->nopte && hwq->level)
+diff --git a/drivers/infiniband/hw/bng_re/bng_res.h b/drivers/infiniband/hw/bng_re/bng_res.h
+index e6123abadfad..f40f3477125f 100644
+--- a/drivers/infiniband/hw/bng_re/bng_res.h
++++ b/drivers/infiniband/hw/bng_re/bng_res.h
+@@ -4,6 +4,8 @@
+ #ifndef __BNG_RES_H__
+ #define __BNG_RES_H__
+ 
++#include "roce_hsi.h"
++
+ #define BNG_ROCE_FW_MAX_TIMEOUT	60
+ 
+ #define PTR_CNT_PER_PG		(PAGE_SIZE / sizeof(void *))
+@@ -11,6 +13,12 @@
+ #define PTR_PG(x)		(((x) & ~PTR_MAX_IDX_PER_PG) / PTR_CNT_PER_PG)
+ #define PTR_IDX(x)		((x) & PTR_MAX_IDX_PER_PG)
+ 
++#define HWQ_CMP(idx, hwq)	((idx) & ((hwq)->max_elements - 1))
++#define HWQ_FREE_SLOTS(hwq)	(hwq->max_elements - \
++				((HWQ_CMP(hwq->prod, hwq)\
++				- HWQ_CMP(hwq->cons, hwq))\
++				& (hwq->max_elements - 1)))
++
+ #define MAX_PBL_LVL_0_PGS		1
+ #define MAX_PBL_LVL_1_PGS		512
+ #define MAX_PBL_LVL_1_PGS_SHIFT		9
+@@ -18,6 +26,41 @@
+ #define MAX_PBL_LVL_2_PGS		(256 * 512)
+ #define MAX_PDL_LVL_SHIFT               9
+ 
++#define BNG_RE_DBR_VALID		(0x1UL << 26)
++#define BNG_RE_DBR_EPOCH_SHIFT	24
++#define BNG_RE_DBR_TOGGLE_SHIFT	25
++
++
++struct bng_re_reg_desc {
++	u8		bar_id;
++	resource_size_t	bar_base;
++	unsigned long	offset;
++	void __iomem	*bar_reg;
++	size_t		len;
++};
++
++struct bng_re_db_info {
++	void __iomem		*db;
++	void __iomem		*priv_db;
++	struct bng_re_hwq	*hwq;
++	u32			xid;
++	u32			max_slot;
++	u32                     flags;
++	u8			toggle;
++};
++
++enum bng_re_db_info_flags_mask {
++	BNG_RE_FLAG_EPOCH_CONS_SHIFT        = 0x0UL,
++	BNG_RE_FLAG_EPOCH_PROD_SHIFT        = 0x1UL,
++	BNG_RE_FLAG_EPOCH_CONS_MASK         = 0x1UL,
++	BNG_RE_FLAG_EPOCH_PROD_MASK         = 0x2UL,
++};
++
++enum bng_re_db_epoch_flag_shift {
++	BNG_RE_DB_EPOCH_CONS_SHIFT  = BNG_RE_DBR_EPOCH_SHIFT,
++	BNG_RE_DB_EPOCH_PROD_SHIFT  = (BNG_RE_DBR_EPOCH_SHIFT - 1),
++};
++
+ struct bng_re_chip_ctx {
+ 	u16	chip_num;
+ 	u16	hw_stats_size;
+@@ -77,6 +120,8 @@ struct bng_re_hwq {
+ 	u16				element_size;
+ 	u32				prod;
+ 	u32				cons;
++	/* queue entry per page */
++	u16				qe_ppg;
+ };
+ 
+ struct bng_re_res {
+@@ -84,6 +129,63 @@ struct bng_re_res {
+ 	struct bng_re_chip_ctx		*cctx;
+ };
+ 
++static inline void *bng_re_get_qe(struct bng_re_hwq *hwq,
++				  u32 indx, u64 *pg)
++{
++	u32 pg_num, pg_idx;
++
++	pg_num = (indx / hwq->qe_ppg);
++	pg_idx = (indx % hwq->qe_ppg);
++	if (pg)
++		*pg = (u64)&hwq->pbl_ptr[pg_num];
++	return (void *)(hwq->pbl_ptr[pg_num] + hwq->element_size * pg_idx);
++}
++
++#define BNG_RE_INIT_DBHDR(xid, type, indx, toggle) \
++	(((u64)(((xid) & DBC_DBC_XID_MASK) | DBC_DBC_PATH_ROCE |  \
++		(type) | BNG_RE_DBR_VALID) << 32) | (indx) |  \
++	 (((u32)(toggle)) << (BNG_RE_DBR_TOGGLE_SHIFT)))
++
++static inline void bng_re_ring_db(struct bng_re_db_info *info,
++				  u32 type)
++{
++	u64 key = 0;
++	u32 indx;
++	u8 toggle = 0;
++
++	if (type == DBC_DBC_TYPE_CQ_ARMALL ||
++	    type == DBC_DBC_TYPE_CQ_ARMSE)
++		toggle = info->toggle;
++
++	indx = (info->hwq->cons & DBC_DBC_INDEX_MASK) |
++	       ((info->flags & BNG_RE_FLAG_EPOCH_CONS_MASK) <<
++		 BNG_RE_DB_EPOCH_CONS_SHIFT);
++
++	key =  BNG_RE_INIT_DBHDR(info->xid, type, indx, toggle);
++	writeq(key, info->db);
++}
++
++static inline void bng_re_ring_nq_db(struct bng_re_db_info *info,
++				     struct bng_re_chip_ctx *cctx,
++				     bool arm)
++{
++	u32 type;
++
++	type = arm ? DBC_DBC_TYPE_NQ_ARM : DBC_DBC_TYPE_NQ;
++	bng_re_ring_db(info, type);
++}
++
++static inline void bng_re_hwq_incr_cons(u32 max_elements, u32 *cons, u32 cnt,
++					u32 *dbinfo_flags)
++{
++	/* move cons and update toggle/epoch if wrap around */
++	*cons += cnt;
++	if (*cons >= max_elements) {
++		*cons %= max_elements;
++		*dbinfo_flags ^= 1UL << BNG_RE_FLAG_EPOCH_CONS_SHIFT;
++	}
++}
++
+ void bng_re_free_hwq(struct bng_re_res *res,
+ 		     struct bng_re_hwq *hwq);
+ 
+diff --git a/drivers/infiniband/hw/bng_re/bng_tlv.h b/drivers/infiniband/hw/bng_re/bng_tlv.h
+new file mode 100644
+index 000000000000..278f4922962d
+--- /dev/null
++++ b/drivers/infiniband/hw/bng_re/bng_tlv.h
+@@ -0,0 +1,128 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++
++#ifndef __BNG_TLV_H__
++#define __BNG_TLV_H__
++
++#include "roce_hsi.h"
++
++struct roce_tlv {
++	struct tlv tlv;
++	u8 total_size; // in units of 16 byte chunks
++	u8 unused[7];  // for 16 byte alignment
++};
++
++/*
++ * TLV size in units of 16 byte chunks
++ */
++#define TLV_SIZE ((sizeof(struct roce_tlv) + 15) / 16)
++/*
++ * TLV length in bytes
++ */
++#define TLV_BYTES (TLV_SIZE * 16)
++
++#define HAS_TLV_HEADER(msg) (le16_to_cpu(((struct tlv *)(msg))->cmd_discr) == CMD_DISCR_TLV_ENCAP)
++#define GET_TLV_DATA(tlv)   ((void *)&((uint8_t *)(tlv))[TLV_BYTES])
++
++static inline u8 __get_cmdq_base_opcode(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct cmdq_base *)GET_TLV_DATA(req))->opcode;
++	else
++		return req->opcode;
++}
++
++static inline void __set_cmdq_base_opcode(struct cmdq_base *req,
++					  u32 size, u8 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->opcode = val;
++	else
++		req->opcode = val;
++}
++
++static inline __le16 __get_cmdq_base_cookie(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct cmdq_base *)GET_TLV_DATA(req))->cookie;
++	else
++		return req->cookie;
++}
++
++static inline void __set_cmdq_base_cookie(struct cmdq_base *req,
++					  u32 size, __le16 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->cookie = val;
++	else
++		req->cookie = val;
++}
++
++static inline __le64 __get_cmdq_base_resp_addr(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct cmdq_base *)GET_TLV_DATA(req))->resp_addr;
++	else
++		return req->resp_addr;
++}
++
++static inline void __set_cmdq_base_resp_addr(struct cmdq_base *req,
++					     u32 size, __le64 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->resp_addr = val;
++	else
++		req->resp_addr = val;
++}
++
++static inline u8 __get_cmdq_base_resp_size(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct cmdq_base *)GET_TLV_DATA(req))->resp_size;
++	else
++		return req->resp_size;
++}
++
++static inline void __set_cmdq_base_resp_size(struct cmdq_base *req,
++					     u32 size, u8 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->resp_size = val;
++	else
++		req->resp_size = val;
++}
++
++static inline u8 __get_cmdq_base_cmd_size(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct roce_tlv *)(req))->total_size;
++	else
++		return req->cmd_size;
++}
++
++static inline void __set_cmdq_base_cmd_size(struct cmdq_base *req,
++					    u32 size, u8 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->cmd_size = val;
++	else
++		req->cmd_size = val;
++}
++
++static inline __le16 __get_cmdq_base_flags(struct cmdq_base *req, u32 size)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		return ((struct cmdq_base *)GET_TLV_DATA(req))->flags;
++	else
++		return req->flags;
++}
++
++static inline void __set_cmdq_base_flags(struct cmdq_base *req,
++					 u32 size, __le16 val)
++{
++	if (HAS_TLV_HEADER(req) && size > TLV_BYTES)
++		((struct cmdq_base *)GET_TLV_DATA(req))->flags = val;
++	else
++		req->flags = val;
++}
++
++#endif /* __BNG_TLV_H__ */
 -- 
 2.34.1
 
