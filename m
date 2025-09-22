@@ -1,222 +1,105 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1170A18C2C
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 19:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5BD18C2C;
+	Mon, 22 Sep 2025 19:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758570517; cv=none; b=TRKe0gIKzkkIPCUgKTf6/pPr4+QcgWLvFlVQ0iW/YF9M5lReiUXmCu47NaUmoDzAlzqNncVenHEu8esFLtgGPQVh0p6Qk+O12AYKZsub8Iq9fHajCN0O2AGLsmWspzFA9yEl7cgaJFhqylvImTg1py2A1FBC1ygi4EifUbaQ+Fw=
+	t=1758570538; cv=none; b=eZJJZg95Tu+U1jmSyWYH25MuZRlXIukgvHZXBwTxLwt5xseGrVOOENzqgPYw6E7Aqv2ZwK/Jj6b0OnUVBP4i5H+7Hat7GdRqWYQkHOCvtlWpXKK3n01IrSf0xecWjx3fzORP9U35dY2OvNTqHBXG9NN4RDwltbvqIB65NwYkIts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758570517; c=relaxed/simple;
-	bh=qXPBZfUeP/x6RysCp+DHEFbAwgv+uy1CyVQOf6oSNis=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I9Us4rKfjAU1MyJGinOVc/MBRR4gy0oc0QFCVnipQyxzqAOm0yUmlSpsRxzS++hHZ5DgMQdsY4b9+ZCSrAeiTuSPfwCST/g+BE5gym5Ft/MvxkOw6NpaRcYgRy9+MP6onc0FNzFR6PaEGrHqBbqu6LJpSb1+yFqMQGBoYlOkrNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VgsPgqvx; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758570538; c=relaxed/simple;
+	bh=Bktxi40ifPO0BVUh+lWCQD2JpGLqdhBXFVRwoXQXalg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UIXgVSCCeQfEpzfSylNKJM57YaDm4NNVgDwFXfIgdvvPq8pb1/ZRQeIl9LuF8Ew78+bBqmv9pEeuIXnO9OajPyPYWzBCJD8DT2USzuHzs4SGSq9beYsXZwKLTlQhTt2bMVeKqT6Uc1osV7jUkm0BUFv/IDToJkpP9OPfzYfVbWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=a9yirU8h; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VgsPgqvx"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e931c71a1baso5607983276.0
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 12:48:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758570515; x=1759175315; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PkdVW60zSe89lw4PQimfW9ADIdTFhU+1bpHfkRIYwaU=;
-        b=VgsPgqvx1S+RMmk2fP4TxxO75nCxcfOaxbOczC7qY9ndPoElJYnmikB/KLaO9miT+D
-         YGe346AyXSCExL3FNYOtzRH4VPj3tUtEgp9QNueSc0DQGV2clKoUjXShNn1NMofJH/7+
-         dmr4IXiC1OI5gyqcJHYhMhImGz5b07vVWx1oab0r++/dLPr0arSraY5dcD1/gy43xkzn
-         hY0DG7twZG140YNWerxYK+zhQ53h8SyIgWxYHNmKY8bWwXVEIp+HgsJD5OIrvontCOta
-         LBZe/qI3H7Sn9xzTlovOXJ4LIMy8yTU22+MXGm7iNNoxMeJnHN7mW7QTrrXP0lDdbQct
-         0Nbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758570515; x=1759175315;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PkdVW60zSe89lw4PQimfW9ADIdTFhU+1bpHfkRIYwaU=;
-        b=LihAZg2DUxkcnV4aqzl4S6//3ZIT2taISnriIy4C7QWoVRHi117Et1tF5ouAofo2PY
-         Lkw0eVQ5cyf/vNSBlP57eVAvp7nzhgeZhKAmuiXqKHe0salUrIht6JQVqWCTzWH7jre9
-         bSC//ulnk3CQvB2YHjrKe0zQtrB3X/Up+lriNFCXGdu9Lg9J2ohjoT8jPCzMJZdEUr08
-         VnvnYOoNysevXiQSna9T0Sc5+zJQqBa2+F8wAjogUlBspOP8DkAUJm4QjF94kfDG0v3e
-         pn1tpTlFOOA1l1SFqZXMy17wHmSDHl9yjY8r/5CPPBTh3PYd6YQPOOxhzuX2FiHzVUqA
-         Smtw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1ZLz8oPH1IzyVck7wPXiuAYxhanRym5Irl8i99uQmxcmWIJl1An3nbp6RthrK9TOZQ9MU1xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaNSinQ+Q/Wa0WFHSyzsGyoTFwlZzGESUgeGGz0ma1I6sX1emW
-	IAUWDTeoIJbLigOdZeFaFPV/9dySNoiaxevdWSNpeDAOms/T1kHlhvivL8c/ljylrRym9sHPL1a
-	iEQBdMw4Q9Qls9OGOs42nGm/nuQcaGUU=
-X-Gm-Gg: ASbGnctZSAqcW/yCC/OEjISawxxRpxSpYB4OPGHRjl1U245pBGUQL/jckHuDoQnr389
-	rA7s+SEzcVueWwV4CvDfgWfOzEKq1hcZxo7b9K7HQ9rt29MIDu1p/pHXF5/WbV+tNd0FUmU8rYk
-	BBoVTVAIiQVuIVkG9KkEmQeRQcp5WypuR+Szrl027+8fZn1yGnwYp9B9N11bEcXDokgtloJBhd+
-	3a+f3nJ5Xa4YDMiBFVNCTc=
-X-Google-Smtp-Source: AGHT+IEZ5OncBWjcOYfngJq1dEgQo4TW2iU0lYmppckWvFdyt93kHvoBkPjsNglkApCcVkY9EaDblmp++PIMna5urqo=
-X-Received: by 2002:a05:690c:6307:b0:754:ee80:db85 with SMTP id
- 00721157ae682-754ee80f937mr25242347b3.19.1758570514761; Mon, 22 Sep 2025
- 12:48:34 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="a9yirU8h"
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1621:0:640:12d9:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 4C111C00F5;
+	Mon, 22 Sep 2025 22:48:42 +0300 (MSK)
+Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6bf:8080:c27::1:3a])
+	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id TmcMU33Goa60-qkx2LIvO;
+	Mon, 22 Sep 2025 22:48:39 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1758570519;
+	bh=qxION9U5wlKwVIBQL5IAbiQNhU5dexT8YZgkvd6NzUw=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=a9yirU8hEev/JyLBw1NbWhSsTrDADJpz3q8ZPGBfZFMHdJKFc2EkUJVMuqr75DGvT
+	 Hd+JDtnzmff7m4Np8Q1x4WEGQBGCeDR/xhgoBEErX9EAjtpgv7NydhAB6XQB10aAmO
+	 0gVR/00CLy2xzYpQx4Ue8oGPZ8ywwHeedrGx5M3o=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 0/3] netfilter/x_tables: go back to using vmalloc
+Date: Mon, 22 Sep 2025 22:48:16 +0300
+Message-Id: <20250922194819.182809-1-d-tatianin@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250919230952.3628709-1-ameryhung@gmail.com> <20250919230952.3628709-6-ameryhung@gmail.com>
- <10e5dd51-701d-498b-b1eb-68b23df191d9@linux.dev>
-In-Reply-To: <10e5dd51-701d-498b-b1eb-68b23df191d9@linux.dev>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Mon, 22 Sep 2025 12:48:23 -0700
-X-Gm-Features: AS18NWAYbVJlzqPm94m4ngsATayGeBcreL_L477PqE-kxQKC0ytWFqOJ2spEQRE
-Message-ID: <CAMB2axPU6Aoj6hfJcsS0W7CDL=bvAFLtPm2ZrsJef3w+aNoAXg@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v6 5/7] bpf: Support specifying linear xdp packet
- data size for BPF_PROG_TEST_RUN
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, paul.chaignon@gmail.com, 
-	kuba@kernel.org, stfomichev@gmail.com, martin.lau@kernel.org, 
-	mohsin.bashr@gmail.com, noren@nvidia.com, dtatulea@nvidia.com, 
-	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, 
-	maciej.fijalkowski@intel.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 22, 2025 at 12:21=E2=80=AFPM Martin KaFai Lau <martin.lau@linux=
-.dev> wrote:
->
-> On 9/19/25 4:09 PM, Amery Hung wrote:
-> > To test bpf_xdp_pull_data(), an xdp packet containing fragments as well
-> > as free linear data area after xdp->data_end needs to be created.
-> > However, bpf_prog_test_run_xdp() always fills the linear area with
-> > data_in before creating fragments, leaving no space to pull data. This
-> > patch will allow users to specify the linear data size through
-> > ctx->data_end.
-> >
-> > Currently, ctx_in->data_end must match data_size_in and will not be the
-> > final ctx->data_end seen by xdp programs. This is because ctx->data_end
-> > is populated according to the xdp_buff passed to test_run. The linear
-> > data area available in an xdp_buff, max_data_sz, is alawys filled up
-> > before copying data_in into fragments.
-> >
-> > This patch will allow users to specify the size of data that goes into
-> > the linear area. When ctx_in->data_end is different from data_size_in,
-> > only ctx_in->data_end bytes of data will be put into the linear area wh=
-en
-> > creating the xdp_buff.
-> >
-> > While ctx_in->data_end will be allowed to be different from data_size_i=
-n,
-> > it cannot be larger than the data_size_in as there will be no data to
-> > copy from user space. If it is larger than the maximum linear data area
-> > size, the layout suggested by the user will not be honored. Data beyond
-> > max_data_sz bytes will still be copied into fragments.
-> >
-> > Finally, since it is possible for a NIC to produce a xdp_buff with empt=
-y
-> > linear data area, allow it when calling bpf_test_init() from
-> > bpf_prog_test_run_xdp() so that we can test XDP kfuncs with such
-> > xdp_buff. This is done by moving lower-bound check to callers as most o=
-f
-> > them already do except bpf_prog_test_run_skb().
-> >
-> > Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> > ---
-> >   net/bpf/test_run.c                                       | 9 +++++++-=
--
-> >   .../selftests/bpf/prog_tests/xdp_context_test_run.c      | 4 +---
-> >   2 files changed, 8 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-> > index 4a862d605386..0cbd3b898c45 100644
-> > --- a/net/bpf/test_run.c
-> > +++ b/net/bpf/test_run.c
-> > @@ -665,7 +665,7 @@ static void *bpf_test_init(const union bpf_attr *ka=
-ttr, u32 user_size,
-> >       void __user *data_in =3D u64_to_user_ptr(kattr->test.data_in);
-> >       void *data;
-> >
-> > -     if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - ta=
-ilroom)
-> > +     if (user_size > PAGE_SIZE - headroom - tailroom)
-> >               return ERR_PTR(-EINVAL);
-> >
-> >       size =3D SKB_DATA_ALIGN(size);
-> > @@ -1001,6 +1001,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, =
-const union bpf_attr *kattr,
-> >           kattr->test.cpu || kattr->test.batch_size)
-> >               return -EINVAL;
-> >
-> > +     if (size < ETH_HLEN)
-> > +             return -EINVAL;
-> > +
-> >       data =3D bpf_test_init(kattr, kattr->test.data_size_in,
-> >                            size, NET_SKB_PAD + NET_IP_ALIGN,
-> >                            SKB_DATA_ALIGN(sizeof(struct skb_shared_info=
-)));
-> > @@ -1246,13 +1249,15 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog=
-, const union bpf_attr *kattr,
->
-> I just noticed it. It still needs a "size < ETH_HLEN" test at the beginni=
-ng of
-> test_run_xdp. At least the do_live mode should still needs to have ETH_HL=
-EN bytes.
+This series aims to replace most calls to kvmalloc whose size directly depends
+on user input with vmalloc. This was actually the way xt_table_info was
+previously allocated if it ended up being too large back in 2017 before it got
+replaced with a call to kvmalloc in the
+commit eacd86ca3b036 ("net/netfilter/x_tables.c: use kvmalloc() in xt_alloc_table_info()").
 
-Make sense. I will add the check for live mode.
+The commit that changed it did so because "xt_alloc_table_info()
+basically opencodes kvmalloc()", which is not actually what it was
+doing. kvmalloc() does not attempt to go directly to vmalloc if the
+order the caller is trying to allocate is "expensive", instead it only
+uses vmalloc as a fallback in case the buddy allocator is not able to
+fullfill the request.
 
->
-> >
-> >       if (ctx) {
-> >               /* There can't be user provided data before the meta data=
- */
-> > -             if (ctx->data_meta || ctx->data_end !=3D size ||
-> > +             if (ctx->data_meta || ctx->data_end > size ||
-> >                   ctx->data > ctx->data_end ||
-> >                   unlikely(xdp_metalen_invalid(ctx->data)) ||
-> >                   (do_live && (kattr->test.data_out || kattr->test.ctx_=
-out)))
-> >                       goto free_ctx;
-> >               /* Meta data is allocated from the headroom */
-> >               headroom -=3D ctx->data;
-> > +
-> > +             size =3D ctx->data_end;
-> >       }
-> >
-> >       max_data_sz =3D PAGE_SIZE - headroom - tailroom;
-> It still needs to avoid multi-frags/bufs in do_live and the "if (size >
-> max_data_sz)" needs some adjustments. I think it is cleaner to specifical=
-ly test
-> "kattr->test.data_size_in". Something like this (untested) ?
->
-> -       if (size > max_data_sz) {
-> -               /* disallow live data mode for jumbo frames */
-> -               if (do_live)
-> -                       goto free_ctx;
-> -               size =3D max_data_sz;
-> -       }
-> +       size =3D min_t(u32, size, max_data_sz);
-> +
-> +       if (kattr->test.data_size_in > size && do_live)
-> +               goto free_ctx;
->
+The difference between the two is actually huge in case the system is
+under memory pressure and has no free pages of a large order. Before the
+change to kvmalloc we wouldn't even try going to the buddy allocator for
+large orders, but now we would force it to try to find a page of the
+required order by waking up kswapd/kcompactd and dropping reclaimable memory
+for no reason at all to satisfy our huge order allocation that could easily
+exist within vmalloc'ed memory instead.
 
-Looks correct to me. I will try to rename some variables to make
-things less confusing.
+Revert the change to always call vmalloc, since this code doesn't really
+benefit from contiguous physical memory, and the size it allocates is
+directly dictated by the userspace-passed table buffer thus allowing it to
+torture the buddy allocator by carefully crafting a huge table that fits
+right at the maximum available memory order on the system.
 
-Thanks for catching the bugs, especially this part.
+This series also touches the allocation of entry_offsets, since they suffer
+from the same issue.
 
-> > diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_ru=
-n.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-> > index 46e0730174ed..178292d1251a 100644
-> > --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-> > +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-> > @@ -97,9 +97,7 @@ void test_xdp_context_test_run(void)
-> >       /* Meta data must be 255 bytes or smaller */
-> >       test_xdp_context_error(prog_fd, opts, 0, 256, sizeof(data), 0, 0,=
- 0);
-> >
-> > -     /* Total size of data must match data_end - data_meta */
-> > -     test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
-> > -                            sizeof(data) - 1, 0, 0, 0);
-> > +     /* Total size of data must be data_end - data_meta or larger */
-> >       test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
-> >                              sizeof(data) + 1, 0, 0, 0);
-> >
->
+Daniil Tatianin (3):
+  netfilter/x_tables: go back to using vmalloc for xt_table_info
+  netfilter/x_tables: introduce a helper for freeing entry offsets
+  netfilter/x_tables: allocate entry_offsets with vcalloc
+
+ include/linux/netfilter/x_tables.h |  1 +
+ net/ipv4/netfilter/arp_tables.c    |  4 ++--
+ net/ipv4/netfilter/ip_tables.c     |  4 ++--
+ net/ipv6/netfilter/ip6_tables.c    |  4 ++--
+ net/netfilter/x_tables.c           | 12 +++++++++---
+ 5 files changed, 16 insertions(+), 9 deletions(-)
+
+-- 
+2.34.1
+
