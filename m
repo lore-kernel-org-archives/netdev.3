@@ -1,210 +1,338 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010014.outbound.protection.outlook.com [52.101.56.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9260427B34A;
-	Mon, 22 Sep 2025 09:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758531752; cv=fail; b=Y03zCVwRILntryLxYyTD+IzUl6Q0YWfsn9gjoRB0SRoZS0kY8FsfxQDzHeMKM7qOZtJBZN77rLtGwtClqSBSvzpPD/onDjXELhR0fbOKpulKUW3WwHaqNfEx5XqfT9BTXS5ATiSvCjlEf3tlySQ2siq3PU/SgYlOqoI6ksj9QRA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758531752; c=relaxed/simple;
-	bh=eyNOEWOYNaZruvf9oTqBbiwKqujNRhemsNG6iueXap8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OV6XGaC0uPEdHnd4NtCeo5SXaDmgVqU//F/cfQXy3EvD886WGgO1WWtJ1a9OsFzAt+MKV8sY96q/aINccRi0OtwwB5+xiB4ikN3744Cw6t3pDzqA6ie5P3mFPCK5/fQeXiC8yYu1OvPFqY9m1VDjTDIvpurJi0WPK31QGhRAQ6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LQJGa6I/; arc=fail smtp.client-ip=52.101.56.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99F277C9A
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.225
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758532159; cv=none; b=kG+igEx6J/XjbCwzi4xPdWyn74SGqKFjnSFhl7uvs+JdVgDw8NXL0eGgbN+wQ114hPrHjdao+JGd2cCX9Wynej7E2wFTh85kIQZ/Cc6Dtb+frgqzedTCXYG9SHaG/9c5tMyIRyAHIX8p/hbTq6cPiQwnhxhbXhMjaS+cH2BpR88=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758532159; c=relaxed/simple;
+	bh=P+xbXXENIRr59C9H8dmSx7rvC10vfBao+7CkpfUO3bM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=cyLfosQG5Owh4H+Ej14z5Hu7Fzy2A6H91P7OzoXhSq5dcz/JXeuzVZ8HvrfvLRDtgoNv6K30W1XUfRAR/Fj/77IIA4e5z4pPNdYwNFy09iRJFGe1SwqTZVDZQM9U5SVvzadgWWQA5ucEEPf5/fz9Cyn9o9x/Mc5uiVNFUtONlFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=cWTyIjn5; arc=none smtp.client-ip=209.85.222.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LQJGa6I/"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LuANq9hFoBq+2AhtSy+Ju3h3PuO485PJ5ytx83qH3VD8UIEQ7jVTq0wypQ8IaHyaG4HSZqnEXYRfDmO3owrggOgsbVr9eed2AbEZ7Lv5Aop+dcF6AwKcY5Zg3tTAhZWT9FpFvidmLP4GIbMu+HeUER70ZmwI6Jnbu5rcNPDpZEmCPujTt5QiAPIevzpC99y+K4ZhZE8CzspczGKyprr8i0sOQ1c6sJmfr3nmkqibbN7D7hu5MUDmJS+gp6rIUtUuMlR9H5Q6vs+J7P2BV7x9SH9xP+6HmTdaRJW0hUj/ecXOPOpQUxI90eIOv9Dq8zPEnjMGuoHwKOWvCOm8Yby0MQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uiiLITT7pnqFYHkvtAW0hcETkAYivUpZyQmuCKGdCgQ=;
- b=kENWAounzGKBpJ5xLLaIwizEtRsz492l2xafHBTJ8ODw1VJjV/YZfvVxExKPNIBZaKAJgEuTMRrtV36neYhWiiQv2NACBAlfb/6ITfocgvKkE6+AiWaPkmd8HArob9xSSDT8RMbDeoy/kJa9kFrA7fnNdtz+vedUIFoEKDNf6xazWH+sj2b6NV2hclsuOM3U1vY3sv6WVVHcGIaEFvpbBeL+USLtFpV55t0tCevBCW6GxdJjGfB1LWmiUZaSwKAUbI5FIOHPznNMdjYhZrrljjsD5Qf5sKdKLFXhgzFOmdt9aWKOpyPy+FynqY56C8ZQx/Mn6mqml8yM1gjB3JWN3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uiiLITT7pnqFYHkvtAW0hcETkAYivUpZyQmuCKGdCgQ=;
- b=LQJGa6I/7usFI5tPEP9lLeddwRqL6m2zwil83ulHM1VRE+h7ByIsDZDOVm1GXHAkUvPMSsJs4r8LOS6DFmMfiBTWgjy3aWIvrOFnUL/S9+jX3kkf2X/Rk3ydMi3eC72IJhggFTGuiM0XQVL10AFJAdS5CmWnCvlf0ZmRL7Y5bdeSXZewTG3uszGGR7GyPareEy3mcLcjzdtO+EovqfYT1RVuoF8vQddjqT41aJtSYeAhoDedcMXSsXeJZDBSxQPyD+Jo1BwJYKqUjhN2+zWwNjz3VZY/sYMN/U5+WJ8IQ+1rtoUStd/h9z+ivTTeQEfhq5bfzBqjU6n3hH1J3I9bAQ==
-Received: from BN9PR03CA0133.namprd03.prod.outlook.com (2603:10b6:408:fe::18)
- by DM4PR12MB6207.namprd12.prod.outlook.com (2603:10b6:8:a6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Mon, 22 Sep
- 2025 09:02:25 +0000
-Received: from BN3PEPF0000B071.namprd04.prod.outlook.com
- (2603:10b6:408:fe:cafe::59) by BN9PR03CA0133.outlook.office365.com
- (2603:10b6:408:fe::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.19 via Frontend Transport; Mon,
- 22 Sep 2025 09:02:24 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BN3PEPF0000B071.mail.protection.outlook.com (10.167.243.116) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9137.12 via Frontend Transport; Mon, 22 Sep 2025 09:02:24 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 22 Sep
- 2025 02:02:11 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Mon, 22 Sep 2025 02:02:11 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Mon, 22 Sep 2025 02:02:07 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>
-Subject: [PATCH net-next 7/7] net/mlx5e: Use extack in set rxfh callback
-Date: Mon, 22 Sep 2025 12:01:11 +0300
-Message-ID: <1758531671-819655-8-git-send-email-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.8.0
-In-Reply-To: <1758531671-819655-1-git-send-email-tariqt@nvidia.com>
-References: <1758531671-819655-1-git-send-email-tariqt@nvidia.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="cWTyIjn5"
+Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-84a7e1650fdso100483585a.2
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 02:09:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758532157; x=1759136957;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sTZFfTvToc3eSrZtaGP9vkY5xr5lWepCbD04a99pHno=;
+        b=c4N+abZmL95Nge1bccvVjGg06vJEL0TnpjuQ/0GNuX8+GZvjAX9osvsP9FIBHNCUgZ
+         7HcRsLvfloIdXvfvq+4sfuDHpmT36ydK+8fnBKsAd32F1UvFYBrxhWyQ+Y22wu6yusO1
+         9E0y8tIDLBWjy9+F8gAs/7gfBAOM08zV1igWYoH6JYkNZlJQTKM5APPTN45pc7effIH0
+         T9Y7aCSH55hqLzuE/AqMd3relv8FnXnqJRVdYYpqoeJHcrb3oRMBTDslsQ4OTqDLlGWY
+         nZ6N7iJptt+Wx8jwoFjJK0tDej9qexghjKDbllYrJZ2bqVmIWXglSay3Rz5oqrSSuX81
+         8Mpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAd2W1QSTMbztVFWIk85sVmdMb7T2JunIpEzoPn3KSgwCCGZEzsXy8/Jg8xbrNl++dfumEEDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxpW7K5/pJrjLTuU/2W7UEbhMDdQues31NwqZ+pPnig60Iy9cp
+	tuDdNjgauTSm0jFfNJM0qAO1l8CFQNKjMNzn3TtyvnFhkYSyUybScOYi+DhxwJQCyfn4XrCaGwS
+	SHJGWM1mkBX+oBI7kUmZENwA33F5Ryzm2KKFhAs1pcFZhxMIsHmtHwHNPkReE+H6ALOQguQP40E
+	8M6PQLcTb70BhkVwmohe+k6wazVHV0cFh9IkMK89IxWO9glB1S8v+Y/ePfKWyXuzMBptDDlw4am
+	JqS2YR8Sf8=
+X-Gm-Gg: ASbGncvkNiRDlwsVOozmqixQWiKPPV5n0Dndt7T/Rc/mJk1QSNyJnsa6dicEbdIDctO
+	QQxYNgySW7EsGSDe9xvN2fZIbAaIi+nr+4AVmODe/HXlqUY16faehebiyJBNnKgJ+3m60Kpin5r
+	rEF75fFVDThPiAVCMf+oB8hGkspokQvoyLynMMCn30gfUhuYd/4JAtzKbG3o8OSUrIfQI1Eh0TG
+	CT84vuPO6dhHUsB2eaXzdMha+uM6gxARJEyrS7/J2cfyJ9bU9FE+Wy8fl7B8J0uVdnfypF0KjS6
+	ELCmRmUDaXSO+PcyzPAsTFP9Dfi4Kev00lOq9vcXkVWpvQVl3cRBEqzlM1NyQNg/Y56Ck12iKt4
+	NPB4w/UHn9P0qxEfBf09kEJPinUO1fFaohQp1n5u+UKwPZ90eB/Jla9+yTisFtuX9znAUZqcXCU
+	Xz5A==
+X-Google-Smtp-Source: AGHT+IHSCrOalwDC1+Kmsa0vOHX5Q+aWhDqJcoT5li0RB2jKffsxojzwowIwbYO/pB5KnE3zLShsk/vNH9L8
+X-Received: by 2002:a17:903:1b0b:b0:267:a942:788c with SMTP id d9443c01a7336-269ba3fa0afmr180378595ad.1.1758531681045;
+        Mon, 22 Sep 2025 02:01:21 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2775258bec1sm1384295ad.65.2025.09.22.02.01.20
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 22 Sep 2025 02:01:21 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-24458345f5dso60403915ad.3
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 02:01:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1758531679; x=1759136479; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sTZFfTvToc3eSrZtaGP9vkY5xr5lWepCbD04a99pHno=;
+        b=cWTyIjn57qiY8V8OwOs5lsrHzKzbk6EvDuk62WG4bhipMqMqWjoMaTbSW+EdVZZKxN
+         JLVOtgYPsheUdd8Hb5FyS6xDnhC5hk6UYoZaYdGnCPDviKUbbXmqI7qIxIFiREkE0axk
+         h1faAx9dB3hudPJnF/MapwNBlAlVxozcuje+M=
+X-Forwarded-Encrypted: i=1; AJvYcCXyg06BS4U9FvSkCpFzvs/Mdr63j8r8oj0jzEDInuc3P9VyNF2yAZLV9Qwc7ezH65tkGP0+tPk=@vger.kernel.org
+X-Received: by 2002:a17:903:110c:b0:240:9dd8:219b with SMTP id d9443c01a7336-269ba53e4bfmr168216275ad.49.1758531678976;
+        Mon, 22 Sep 2025 02:01:18 -0700 (PDT)
+X-Received: by 2002:a17:903:110c:b0:240:9dd8:219b with SMTP id d9443c01a7336-269ba53e4bfmr168215405ad.49.1758531678205;
+        Mon, 22 Sep 2025 02:01:18 -0700 (PDT)
+Received: from PC-MID-R740.dhcp.broadcom.net ([192.19.234.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269803416a2sm123309615ad.134.2025.09.22.02.01.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Sep 2025 02:01:17 -0700 (PDT)
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+To: jgg@ziepe.ca,
+	michael.chan@broadcom.com
+Cc: dave.jiang@intel.com,
+	saeedm@nvidia.com,
+	Jonathan.Cameron@huawei.com,
+	davem@davemloft.net,
+	corbet@lwn.net,
+	edumazet@google.com,
+	gospo@broadcom.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	selvin.xavier@broadcom.com,
+	leon@kernel.org,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>
+Subject: [PATCH net-next 4/6] bnxt_en: Create an aux device for fwctl
+Date: Mon, 22 Sep 2025 02:08:49 -0700
+Message-Id: <20250922090851.719913-5-pavan.chebbi@broadcom.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20250922090851.719913-1-pavan.chebbi@broadcom.com>
+References: <20250922090851.719913-1-pavan.chebbi@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B071:EE_|DM4PR12MB6207:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0792bd8b-7a54-40df-d598-08ddf9b6bf5f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RMZVpRAsQg/7r3X9KH7citZNlJ3sa+ZH9uFStp0GbZYeBhf8Kz1/OxjNVxe/?=
- =?us-ascii?Q?EiJMvkSv6CWKrBi65eJaPsMJo+84n7npkWof0Wt5ffNdk6b6Ha2fvHNfsmbz?=
- =?us-ascii?Q?n1DroU286NbbKzkym5ykgSlK0HErIgY+lTiPQaLcclHw0kIrcEF2hO4RkATx?=
- =?us-ascii?Q?avSVr6UgQhlE9slSVrf3w+mgciQw4SoVmDn1cngWGIkFbrMQMbVea+3+5WPp?=
- =?us-ascii?Q?IFyTgPEmHr92fX1yFEDhzny3pB73n0BTWPMf7GeS16J/p5kdpam+JF8d0yUu?=
- =?us-ascii?Q?ywioqi4Mk8/Pdbg++DoITeOUwHhNffYiYhkuqhuKnJIvgQWkWPwrYFvs2GjE?=
- =?us-ascii?Q?PaF56ZzYoOGmSUCS8t3fI0wtW8JALJfu8atsFneV+F05bDErgCULADgNdMaO?=
- =?us-ascii?Q?fiiPTND+x5iTXxby4Tm6oR4Sw7YdRRXXEPkddhnPTQAbUc/SjTJsLqa/Sn1E?=
- =?us-ascii?Q?LFv1ixK44n/uIzwkIyjhirF1nW8o0jzHQXTcb78hbhtiKAoRAbZnZP3U/G3k?=
- =?us-ascii?Q?fg466Z9tUVyt4ms0ZS+UsNDna0RAbYm2Xo0czTH1TnSzu0OYKKh1kblt0+S1?=
- =?us-ascii?Q?+B7lKMYyEM3T7YJMpNz2UyS+t8839MAKtVLukWHwqW67ybYgOeAcjkazPV6P?=
- =?us-ascii?Q?1CaRPsYaOuG1xovGx5CQsXOP4seOf7zawmYlya1FZcYVY9z37KJENlLF375O?=
- =?us-ascii?Q?ekPr3ncgug9dxB9tYqBNp5W0caxkkPgYqZelHn64mQdDt3L4UXmth8ZVb7DY?=
- =?us-ascii?Q?zPm96UEKaX/n8bbg7ideYh/eJj/zNhnxpnHL0QEq8MlDkZpGlHsXE8YrR8fG?=
- =?us-ascii?Q?LB+xPYD+PjgjbMNkC6R9CGGEoKkb1RszuljXW1WctSEDZUCenP5Sv1tDEhfb?=
- =?us-ascii?Q?TeeWJE5Gqy4R17frlFlIN1/XYl7SeP4dfeYjHT+oq05ihjmV7OC1qxv4Hz7u?=
- =?us-ascii?Q?GznrjTz8Rb+lLjmRjj+epmBT2uUeUns3f2TnLIVj2Y6hVvcC1J/tLV14FdtV?=
- =?us-ascii?Q?Uy3t+2xKHMvEnJ2Sd8NCx8W4CDlArFzIeHCD+WLIkXi5ElGD7f+LsegoBUjy?=
- =?us-ascii?Q?3TO2VYdCUn5oqDr8kcJV2bVGAURBkkL3i9c7rzbus6H5J1z3X+bF2hXgoyRZ?=
- =?us-ascii?Q?JIPlH2/NORV19fY6NPnGXqpZEvq7tB7DLkMGHpGoeLfkoQT1dSt5xFHPqK8K?=
- =?us-ascii?Q?8tLJokUnoL5X+5vg+HFJ1iOc45iY/CPUnZIjz0WRTf6YCXobj6zFFTX2YxKM?=
- =?us-ascii?Q?T41uWaiBiQ51v/mzcDpztVOnt2pcJW6KE4BXqz1C66GAHDukjaJvtEwJagEf?=
- =?us-ascii?Q?WneDWHkhoBRSHzglXqFr45zrQgCwqKNLXYz87X1mO2siHJpt7nl5N+N5XWbv?=
- =?us-ascii?Q?ELHpb3xree5H3ibtBP8wET5V8Pr1JPBXdUzSVwcC0J4LxiXTLgcbh0KEBFi7?=
- =?us-ascii?Q?mB7V4OqocbcJTSv4WEvVQiKacUS+brbxbjxNnEMYmz381c/DnwUWiJ2LVJLY?=
- =?us-ascii?Q?EHHq2XPPbsXrjG0g1Cp6L/5cj5L5XmjDuYe9?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 09:02:24.4746
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0792bd8b-7a54-40df-d598-08ddf9b6bf5f
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B071.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6207
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Gal Pressman <gal@nvidia.com>
+Create an additional auxiliary device to support fwctl.
+The next patch will create bnxt_fwctl and bind to this
+device.
 
-The ->set_rxfh() callback now passes a valid extack instead of NULL
-through netlink [1]. In case of an error, reflect it through extack instead
-of a dmesg print.
-
-[1]
-commit c0ae03588bbb ("ethtool: rss: initial RSS_SET (indirection table handling)")
-
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_ethtool.c  | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  5 ++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  2 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 79 +++++++++++++++++--
+ include/linux/bnxt/ulp.h                      |  1 +
+ 4 files changed, 82 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index d507366d773e..eb25b19b4a4a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -1494,7 +1494,8 @@ static int mlx5e_get_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index feb11b9ea4dd..58a7c0af89a7 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -16189,11 +16189,13 @@ static void bnxt_remove_one(struct pci_dev *pdev)
+ 		__bnxt_sriov_disable(bp);
+ 
+ 	bnxt_aux_device_del(bp, BNXT_AUXDEV_RDMA);
++	bnxt_aux_device_del(bp, BNXT_AUXDEV_FWCTL);
+ 
+ 	unregister_netdev(dev);
+ 	bnxt_ptp_clear(bp);
+ 
+ 	bnxt_aux_device_uninit(bp, BNXT_AUXDEV_RDMA);
++	bnxt_aux_device_uninit(bp, BNXT_AUXDEV_FWCTL);
+ 
+ 	bnxt_free_l2_filters(bp, true);
+ 	bnxt_free_ntp_fltrs(bp, true);
+@@ -16780,6 +16782,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bnxt_init_ring_params(bp);
+ 	bnxt_set_ring_params(bp);
+ 	bnxt_aux_device_init(bp, BNXT_AUXDEV_RDMA);
++	bnxt_aux_device_init(bp, BNXT_AUXDEV_FWCTL);
+ 	rc = bnxt_set_dflt_rings(bp, true);
+ 	if (rc) {
+ 		if (BNXT_VF(bp) && rc == -ENODEV) {
+@@ -16844,6 +16847,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bnxt_dl_fw_reporters_create(bp);
+ 
+ 	bnxt_aux_device_add(bp, BNXT_AUXDEV_RDMA);
++	bnxt_aux_device_add(bp, BNXT_AUXDEV_FWCTL);
+ 
+ 	bnxt_print_device_info(bp);
+ 
+@@ -16852,6 +16856,7 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return 0;
+ init_err_cleanup:
+ 	bnxt_aux_device_uninit(bp, BNXT_AUXDEV_RDMA);
++	bnxt_aux_device_uninit(bp, BNXT_AUXDEV_FWCTL);
+ 	bnxt_dl_unregister(bp);
+ init_err_dl:
+ 	bnxt_shutdown_tc(bp);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index b2f139eddfec..1eeea0884e09 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2340,6 +2340,8 @@ struct bnxt {
+ 
+ 	struct bnxt_napi	**bnapi;
+ 
++	struct bnxt_en_dev	*edev_fwctl;
++	struct bnxt_aux_priv	*aux_priv_fwctl;
+ 	struct bnxt_rx_ring_info	*rx_ring;
+ 	struct bnxt_tx_ring_info	*tx_ring;
+ 	u16			*tx_ring_map;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+index ecad1947ccb5..c06a9503b551 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+@@ -28,6 +28,7 @@
+ #include "bnxt_hwrm.h"
+ 
+ static DEFINE_IDA(bnxt_rdma_aux_dev_ids);
++static DEFINE_IDA(bnxt_fwctl_aux_dev_ids);
+ 
+ struct bnxt_aux_device {
+ 	const char *name;
+@@ -43,6 +44,7 @@ struct bnxt_aux_device {
+ };
+ 
+ static void bnxt_rdma_aux_dev_release(struct device *dev);
++static void bnxt_fwctl_aux_dev_release(struct device *dev);
+ 
+ static void bnxt_rdma_aux_dev_set_priv(struct bnxt *bp,
+ 				       struct bnxt_aux_priv *priv)
+@@ -81,6 +83,43 @@ static void bnxt_rdma_aux_dev_free_ida(struct bnxt_aux_priv *aux_priv)
+ 	ida_free(&bnxt_rdma_aux_dev_ids, aux_priv->id);
  }
  
- static int mlx5e_rxfh_hfunc_check(struct mlx5e_priv *priv,
--				  const struct ethtool_rxfh_param *rxfh)
-+				  const struct ethtool_rxfh_param *rxfh,
-+				  struct netlink_ext_ack *extack)
- {
- 	unsigned int count;
++static void bnxt_fwctl_aux_dev_set_priv(struct bnxt *bp,
++					struct bnxt_aux_priv *priv)
++{
++	bp->aux_priv_fwctl = priv;
++}
++
++static struct bnxt_aux_priv *bnxt_fwctl_aux_dev_get_priv(struct bnxt *bp)
++{
++	return bp->aux_priv_fwctl;
++}
++
++static struct auxiliary_device *bnxt_fwctl_aux_dev_get_auxdev(struct bnxt *bp)
++{
++	return &bp->aux_priv_fwctl->aux_dev;
++}
++
++static void bnxt_fwctl_aux_dev_set_edev(struct bnxt *bp,
++					struct bnxt_en_dev *edev)
++{
++	bp->edev_fwctl = edev;
++}
++
++static struct bnxt_en_dev *bnxt_fwctl_aux_dev_get_edev(struct bnxt *bp)
++{
++	return bp->edev_fwctl;
++}
++
++static u32 bnxt_fwctl_aux_dev_alloc_ida(void)
++{
++	return ida_alloc(&bnxt_fwctl_aux_dev_ids, GFP_KERNEL);
++}
++
++static void bnxt_fwctl_aux_dev_free_ida(struct bnxt_aux_priv *aux_priv)
++{
++	ida_free(&bnxt_fwctl_aux_dev_ids, aux_priv->id);
++}
++
+ static struct bnxt_aux_device bnxt_aux_devices[__BNXT_AUXDEV_MAX] = {{
+ 	.name		= "rdma",
+ 	.alloc_ida	= bnxt_rdma_aux_dev_alloc_ida,
+@@ -91,6 +130,16 @@ static struct bnxt_aux_device bnxt_aux_devices[__BNXT_AUXDEV_MAX] = {{
+ 	.set_edev       = bnxt_rdma_aux_dev_set_edev,
+ 	.get_edev	= bnxt_rdma_aux_dev_get_edev,
+ 	.get_auxdev	= bnxt_rdma_aux_dev_get_auxdev,
++}, {
++	.name		= "fwctl",
++	.alloc_ida	= bnxt_fwctl_aux_dev_alloc_ida,
++	.free_ida	= bnxt_fwctl_aux_dev_free_ida,
++	.release	= bnxt_fwctl_aux_dev_release,
++	.set_priv       = bnxt_fwctl_aux_dev_set_priv,
++	.get_priv	= bnxt_fwctl_aux_dev_get_priv,
++	.set_edev       = bnxt_fwctl_aux_dev_set_edev,
++	.get_edev	= bnxt_fwctl_aux_dev_get_edev,
++	.get_auxdev	= bnxt_fwctl_aux_dev_get_auxdev,
+ }};
  
-@@ -1504,8 +1505,10 @@ static int mlx5e_rxfh_hfunc_check(struct mlx5e_priv *priv,
- 		unsigned int xor8_max_channels = mlx5e_rqt_max_num_channels_allowed_for_xor8();
- 
- 		if (count > xor8_max_channels) {
--			netdev_err(priv->netdev, "%s: Cannot set RSS hash function to XOR, current number of channels (%d) exceeds the maximum allowed for XOR8 RSS hfunc (%d)\n",
--				   __func__, count, xor8_max_channels);
-+			NL_SET_ERR_MSG_FMT_MOD(
-+				extack,
-+				"Cannot set RSS hash function to XOR, current number of channels (%d) exceeds the maximum allowed for XOR8 RSS hfunc (%d)\n",
-+				count, xor8_max_channels);
- 			return -EINVAL;
+ static void bnxt_fill_msix_vecs(struct bnxt *bp, struct bnxt_msix_entry *ent)
+@@ -314,6 +363,8 @@ void bnxt_ulp_stop(struct bnxt *bp)
  		}
  	}
-@@ -1524,7 +1527,7 @@ static int mlx5e_set_rxfh(struct net_device *dev,
+ ulp_stop_exit:
++	if (bp->edev_fwctl)
++		bp->edev_fwctl->flags |= BNXT_EN_FLAG_ULP_STOPPED;
+ 	mutex_unlock(&edev->en_dev_lock);
+ }
  
- 	mutex_lock(&priv->state_lock);
+@@ -347,6 +398,8 @@ void bnxt_ulp_start(struct bnxt *bp, int err)
+ 	}
+ ulp_start_exit:
+ 	edev->flags &= ~BNXT_EN_FLAG_ULP_STOPPED;
++	if (bp->edev_fwctl)
++		bp->edev_fwctl->flags &= ~BNXT_EN_FLAG_ULP_STOPPED;
+ 	mutex_unlock(&edev->en_dev_lock);
+ }
  
--	err = mlx5e_rxfh_hfunc_check(priv, rxfh);
-+	err = mlx5e_rxfh_hfunc_check(priv, rxfh, extack);
- 	if (err)
- 		goto unlock;
+@@ -536,12 +589,27 @@ void bnxt_aux_device_add(struct bnxt *bp, enum bnxt_ulp_auxdev_type auxdev_type)
+ 	aux_dev = bnxt_aux_devices[auxdev_type].get_auxdev(bp);
+ 	rc = auxiliary_device_add(aux_dev);
+ 	if (rc) {
+-		netdev_warn(bp->dev, "Failed to add auxiliary device for ROCE\n");
++		netdev_warn(bp->dev, "Failed to add auxiliary device for auxdev type %d\n",
++			    auxdev_type);
+ 		auxiliary_device_uninit(aux_dev);
+-		bp->flags &= ~BNXT_FLAG_ROCE_CAP;
++		if (auxdev_type == BNXT_AUXDEV_RDMA)
++			bp->flags &= ~BNXT_FLAG_ROCE_CAP;
+ 	}
+ }
  
-@@ -1550,7 +1553,7 @@ static int mlx5e_create_rxfh_context(struct net_device *dev,
++static void bnxt_fwctl_aux_dev_release(struct device *dev)
++{
++	struct bnxt_aux_priv *aux_priv =
++		container_of(dev, struct bnxt_aux_priv, aux_dev.dev);
++	struct bnxt *bp = netdev_priv(aux_priv->edev->net);
++
++	ida_free(&bnxt_fwctl_aux_dev_ids, aux_priv->id);
++	kfree(aux_priv->edev);
++	bp->edev_fwctl = NULL;
++	kfree(bp->aux_priv_fwctl);
++	bp->aux_priv_fwctl = NULL;
++}
++
+ void bnxt_aux_device_init(struct bnxt *bp,
+ 			  enum bnxt_ulp_auxdev_type auxdev_type)
+ {
+@@ -566,8 +634,8 @@ void bnxt_aux_device_init(struct bnxt *bp,
  
- 	mutex_lock(&priv->state_lock);
+ 	aux_priv->id = bnxt_aux_devices[auxdev_type].alloc_ida();
+ 	if (aux_priv->id < 0) {
+-		netdev_warn(bp->dev,
+-			    "ida alloc failed for ROCE auxiliary device\n");
++		netdev_warn(bp->dev, "ida alloc failed for %d auxiliary device\n",
++			    auxdev_type);
+ 		kfree(aux_priv);
+ 		goto exit;
+ 	}
+@@ -611,5 +679,6 @@ void bnxt_aux_device_init(struct bnxt *bp,
+ aux_dev_uninit:
+ 	auxiliary_device_uninit(aux_dev);
+ exit:
+-	bp->flags &= ~BNXT_FLAG_ROCE_CAP;
++	if (auxdev_type == BNXT_AUXDEV_RDMA)
++		bp->flags &= ~BNXT_FLAG_ROCE_CAP;
+ }
+diff --git a/include/linux/bnxt/ulp.h b/include/linux/bnxt/ulp.h
+index baac0dd44078..5a580bc37a06 100644
+--- a/include/linux/bnxt/ulp.h
++++ b/include/linux/bnxt/ulp.h
+@@ -22,6 +22,7 @@ struct bnxt;
  
--	err = mlx5e_rxfh_hfunc_check(priv, rxfh);
-+	err = mlx5e_rxfh_hfunc_check(priv, rxfh, extack);
- 	if (err)
- 		goto unlock;
- 
-@@ -1590,7 +1593,7 @@ static int mlx5e_modify_rxfh_context(struct net_device *dev,
- 
- 	mutex_lock(&priv->state_lock);
- 
--	err = mlx5e_rxfh_hfunc_check(priv, rxfh);
-+	err = mlx5e_rxfh_hfunc_check(priv, rxfh, extack);
- 	if (err)
- 		goto unlock;
+ enum bnxt_ulp_auxdev_type {
+ 	BNXT_AUXDEV_RDMA = 0,
++	BNXT_AUXDEV_FWCTL,
+ 	__BNXT_AUXDEV_MAX,
+ };
  
 -- 
-2.31.1
+2.39.1
 
