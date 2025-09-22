@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FB62FD7D8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E2F2FE05A
 	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758535765; cv=none; b=TgV6rpJFWSSouEHvzCwAriTJcL8dsPx9tOn+TZDa0Ou4/Iymwn1vIsfyM4RDD0Hf3kjRFqqUIt1EnCWgvqo2IMriI+NzToneByQfIbdwTJLdhGUHqnZEW7WbJ6L1gvzJsDUeItfcnkhq4wKqJNy+NZ0mzu16+H6ToLAUM5usquc=
+	t=1758535765; cv=none; b=Ee/Tc4vQuLizfzAwDp3mD8iWagOr86XOc2I1O39QOa6hOEklXvB00rrhJpeai4ysjsAOi4r23Y9xwO9gKuGgihsNfoG7AgkFJztn0wLsNgTObyAv7NDGXqm32M674nFqx5goDnWfkXze1fjDHAsNcxyWKrjYzH0jDbeSN44hYPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758535765; c=relaxed/simple;
-	bh=Xxl4jLJMJGxnq5yT/SRo25N9ZDMaMNzJ3DCauKRx5B0=;
+	bh=eZ1rB1SCdSOKWTqVlkIB/eBXgXG5Ss0vxgjBOmyl2Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PJcgsPd8TIOaqIdN8gJT0EHBX2ZMYeXG48/EYFPKOrQEUGwWyM/tbB3ZtEBUWokwE7F237FdxWO7UCIM5f6YFwjIsLqhaERU0ZZg0ym8DOVr0dv5Hlym0oKWG2dFx+7+WkXDYm57CI+0N6uYsdX3w3uzoZLHKoLKL33QVLK7nTo=
+	 MIME-Version:Content-Type; b=shsTTgJ/YHD9hhIbnXPAeBhzJMGvnDTPilfAQwB8GV57SHUzznLDVj5loZmflOBGSav5LbdbNoOqRopjErzFP9B4cA4SFEx987UoXEaUUkbhz+zX2D3CSgNa3/9DjZnhRK60kxdPUP6/WYT9CjNs5GWfx99uJyUqVMHvd8b2nTE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,26 +18,26 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v0dU1-0006zi-Ul
-	for netdev@vger.kernel.org; Mon, 22 Sep 2025 12:09:21 +0200
+	id 1v0dU2-0006z5-6E
+	for netdev@vger.kernel.org; Mon, 22 Sep 2025 12:09:22 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v0dU0-002ZXQ-37
+	id 1v0dU0-002ZXJ-2i
 	for netdev@vger.kernel.org;
 	Mon, 22 Sep 2025 12:09:20 +0200
 Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 9F73A476D2F
+	by bjornoya.blackshift.org (Postfix) with SMTP id 7A77A476D2E
 	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 10:09:20 +0000 (UTC)
 Received: from hardanger.blackshift.org (unknown [172.20.34.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id B0FC3476CEE;
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 7D744476CEA;
 	Mon, 22 Sep 2025 10:09:17 +0000 (UTC)
 Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id bd651fcc;
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 22f30a84;
 	Mon, 22 Sep 2025 10:09:16 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -45,11 +45,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
+	=?UTF-8?q?St=C3=A9phane=20Grosjean?= <stephane.grosjean@hms-networks.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 09/10] can: esd_usb: Fix handling of TX context objects
-Date: Mon, 22 Sep 2025 12:07:39 +0200
-Message-ID: <20250922100913.392916-10-mkl@pengutronix.de>
+Subject: [PATCH net 07/10] can: peak_usb: fix shift-out-of-bounds issue
+Date: Mon, 22 Sep 2025 12:07:37 +0200
+Message-ID: <20250922100913.392916-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250922100913.392916-1-mkl@pengutronix.de>
 References: <20250922100913.392916-1-mkl@pengutronix.de>
@@ -66,89 +66,36 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Stefan Mätje <stefan.maetje@esd.eu>
+From: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
 
-For each TX CAN frame submitted to the USB device the driver saves the
-echo skb index in struct esd_tx_urb_context context objects. If the
-driver runs out of free context objects CAN transmission stops.
+Explicitly uses a 64-bit constant when the number of bits used for its
+shifting is 32 (which is the case for PC CAN FD interfaces supported by
+this driver).
 
-Fixe some spots where such context objects are not freed correctly.
-
-In esd_usb_tx_done_msg() move the check for netif_device_present()
-after the identification and release of TX context and the release of
-the echo skb. This is allowed even if netif_device_present() would
-return false because the mentioned operations don't touch the device
-itself but only free local acquired resources. This keeps the context
-handling with the acknowledged TX jobs in sync.
-
-In esd_usb_start_xmit() performed a check to see whether a context
-object could be allocated. Add a netif_stop_queue() there before the
-function is aborted. This makes sure the network queue is stopped and
-avoids getting tons of log messages in a situation without free TX
-objects. The adjacent log message now also prints the active jobs
-counter making a cross check between active jobs and "no free context"
-condition possible.
-
-In esd_usb_start_xmit() the error handling of usb_submit_urb() missed to
-free the context object together with the echo skb and decreasing the
-job count.
-
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Signed-off-by: Stefan Mätje <stefan.maetje@esd.eu>
-Link: https://patch.msgid.link/20250821143422.3567029-3-stefan.maetje@esd.eu
-[mkl: minor change patch description to imperative language]
+Signed-off-by: Stéphane Grosjean <stephane.grosjean@hms-networks.com>
+Link: https://patch.msgid.link/20250918132413.30071-1-stephane.grosjean@free.fr
+Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Closes: https://lore.kernel.org/20250917-aboriginal-refined-honeybee-82b1aa-mkl@pengutronix.de
+Fixes: bb4785551f64 ("can: usb: PEAK-System Technik USB adapters driver core")
+[mkl: update subject, apply manually]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/esd_usb.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index ed1d6ba779dc..efc96619ee9a 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -460,9 +460,6 @@ static void esd_usb_tx_done_msg(struct esd_usb_net_priv *priv,
- 	struct net_device *netdev = priv->netdev;
- 	struct esd_tx_urb_context *context;
+diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+index 117637b9b995..dd5caa1c302b 100644
+--- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
++++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
+@@ -111,7 +111,7 @@ void peak_usb_update_ts_now(struct peak_time_ref *time_ref, u32 ts_now)
+ 		u32 delta_ts = time_ref->ts_dev_2 - time_ref->ts_dev_1;
  
--	if (!netif_device_present(netdev))
--		return;
--
- 	context = &priv->tx_contexts[msg->txdone.hnd & (ESD_USB_MAX_TX_URBS - 1)];
+ 		if (time_ref->ts_dev_2 < time_ref->ts_dev_1)
+-			delta_ts &= (1 << time_ref->adapter->ts_used_bits) - 1;
++			delta_ts &= (1ULL << time_ref->adapter->ts_used_bits) - 1;
  
- 	if (!msg->txdone.status) {
-@@ -478,6 +475,9 @@ static void esd_usb_tx_done_msg(struct esd_usb_net_priv *priv,
- 	context->echo_index = ESD_USB_MAX_TX_URBS;
- 	atomic_dec(&priv->active_tx_jobs);
- 
-+	if (!netif_device_present(netdev))
-+		return;
-+
- 	netif_wake_queue(netdev);
- }
- 
-@@ -975,9 +975,11 @@ static netdev_tx_t esd_usb_start_xmit(struct sk_buff *skb,
- 		}
+ 		time_ref->ts_total += delta_ts;
  	}
- 
--	/* This may never happen */
-+	/* This should never happen */
- 	if (!context) {
--		netdev_warn(netdev, "couldn't find free context\n");
-+		netdev_warn(netdev, "No free context. Jobs: %d\n",
-+			    atomic_read(&priv->active_tx_jobs));
-+		netif_stop_queue(netdev);
- 		ret = NETDEV_TX_BUSY;
- 		goto releasebuf;
- 	}
-@@ -1008,6 +1010,8 @@ static netdev_tx_t esd_usb_start_xmit(struct sk_buff *skb,
- 	if (err) {
- 		can_free_echo_skb(netdev, context->echo_index, NULL);
- 
-+		/* Release used context on error */
-+		context->echo_index = ESD_USB_MAX_TX_URBS;
- 		atomic_dec(&priv->active_tx_jobs);
- 		usb_unanchor_urb(urb);
- 
 -- 
 2.51.0
 
