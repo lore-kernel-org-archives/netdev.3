@@ -1,191 +1,115 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F323115AD
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 16:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E0F2877DC
+	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 16:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758559685; cv=none; b=Ta8+h5fZKGk1iC1CXB+bmkhv5DbrFT1fa7dfhU6peA5/uXnWckp840Y9wX7Um5/aLQ3udNRGopR4CQMp7p2M8+Q4GdBOj7naGHDPm7mJajGnGZKC9SQ4RL6pEvIOW+uKiVedUhGRN5UHlH8L7UqfCfxIYCMUn4tz4lb8Z5ka7eI=
+	t=1758560190; cv=none; b=tWhuSpNBmVYt4zMS+ZwGFBN1OhYd0OGVq3dRZiK7LwG7x7mHT0qpRKTFeqCoR+hHW0fJ5YFFN0Phhjyqw1+66P/7VulRvMmppL9fFmKaG0J6rhFVhQDtijajKoShVAqZeXyn3GzVCPqkQcUAsSUyhkaHB6kC8Wu2PzkpBihSgVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758559685; c=relaxed/simple;
-	bh=jWXdeGGGgkjMzjGrqhFHOvMVLqFH9NLTOg+0l5iyG4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=feJHsOC3OWiy0oXnCiv+UAn9kfolMweHR3/eOY5HKMKLE2OdQ9XtuGM8V2dBhwPfqPAp+fmU73rVIEGR3in7H/t/EP6UlKAHX3T0B6mCYOxNh9lBS0iIPiVbyygnSMQF3TTVGOBzjnNdveXi0EB8jWss/4l+W/b5aJsxQ0/qVI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O1eKEgZ4; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1758560190; c=relaxed/simple;
+	bh=Z8aEZbk7K8wEGwngFpv4xtlpj3slvHOmmjKJQEE2J7w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K403EUh+GRfxD3Fin2FXKwY1yTCPg3uGQGMSrIVZ97nb4Gj1ly/wkqKPDT2Xlb0v4o4ky52QdwvOH2mvwruuBq9xC0IwYCu2b7D+ziyuinBFXRopbsFNAWwV0DFsLu345D12xqiqPkJ+8XDTqec1DhqpPAjcghVx/zHCbMNXTF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fhbjzQH6; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O1eKEgZ4"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b552590d8cdso2938398a12.0
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:48:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fhbjzQH6"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-32326e2f0b3so3944285a91.2
+        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 09:56:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758559683; x=1759164483; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uLd/PEFRdlVhmkXjk+h4NVsNhitE9KvBZ+AXpxa+Bco=;
-        b=O1eKEgZ4+afWq230dyw9VEpChT79Rdnl5e2dkUeQkf1/CQCp016p1b2Pibv9myjlqe
-         ntLbUUsKYNQRywvIVAvsk9yXN58QCZo5Ga5XTmS2NwTXzGVTnmoQLlpcsP06zgRW4WIS
-         kfaRDCoQi59Hg8WnrrAauJTh7ZVnM9afeYRtyS51vQFsGza7o8gnM4//M+aAKv4BMNMM
-         /VJJu71JXqodtB7KyHixZ8aeo8ehpz2tR183W8bfGu4VK6y4V68AUWjhRZ5Hh0JpJQtP
-         DcnOSxTuUYO6RCaNpm7UrLWXjuBQP4/3UBdDmR5ULKkKe0yxV40lctjDMayQwVFdMyNg
-         MysA==
+        d=gmail.com; s=20230601; t=1758560189; x=1759164989; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nqezCH7ty2sJGRI7ApNpSX24s5g8dQOAL7yqOHAxNDg=;
+        b=fhbjzQH6/2+qO4vQdhjljb7WH/Zx273MveImlkIhbAjqJ+coSeoICNPaXBy5poad6U
+         x0ax81yABY2qd3h9w44qt3VwFo1/UYZ8sPoTAZw1sfHBZGTHeDRNj/n42nleN5z1I96b
+         TM+l95CH9vXuN8r/vbojnYfcxtpCO9AkbMwhalCqRrInYXQE7N0KqIBICq6wfBJ7wOUB
+         1F4c49nGIDegg6P0Wga+8ELID+fzaGi9yk2MIGhD/Bb/aoohjsTI4BOZd02mTNqFvEF5
+         OgnO+gQW4rtHybMHWfb64cCuWApkJ0vUfytoS8XM20XuanbdqNsrG0Lqg7hNXcUnpFCz
+         QEXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758559683; x=1759164483;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLd/PEFRdlVhmkXjk+h4NVsNhitE9KvBZ+AXpxa+Bco=;
-        b=TdH3CG/Uh4W+sd1uZhCMoe5TeaoyC9rIKO0P7DgZxV0z3+XnoBgS2amDq8OfXIJGKM
-         R7Cs2apIz43rNa4h0nnnsxAGSbchTIy8NPywTh6d48RohkPfXZXFYKo86kXxJUPP609L
-         J6kuE1P3sE7MCASA05fIf9E3FfzDKRV88PwPD9Dv5r9fytPepL0dlzHXptEy4dpvfdDb
-         0JbPs3zSGunfjXt+35ZitG/qx6vuV/D2YPRUy0nbnBUUnkd87CZh0rkvIWNhtwocLaj7
-         8COLamdQ1fFhGOvhJpR1dVcphagN3CHmqSO4UHnhyWJ0TPdbwMiYyF0Cx3KH/nC+eu5l
-         pUoA==
-X-Gm-Message-State: AOJu0Ywa0UduXZxt/Wqt2nx76oMpSYUicvTASRRhZVk5ddCDvi+gPq3f
-	So7tvY4spHWTyhqGtT+40FrfaVOgR6XDGKujkAOx4F3Yicl8byJwc7w=
-X-Gm-Gg: ASbGncuzx7SVkjUoamRDn6E0y2sQFewT53lIxZOQxXg3kUMb6sVqW9g4bK9nHPCGUhd
-	nJ/Bh/aOG86NBq0P9UyszMUKI4iY9F7smsOXMQwngtjVxtKzPa2ZB3Nsl4+IzWJYWTAUt/1yDcE
-	dvD6TwnDZ07bYH3BUOcYlWjECXsOlveRgGAUFgsw4Rh/UWkRrpsdH6nqGlKdy+UgnwzOIJJEHyi
-	vqA4THiGgdcDRpkgakqEsFjt+EsGkJrj0qFyydtTwqpZYJyM4KLK8PXAlLm9rLHRGkfZAZiGiQ/
-	1TJaorDswLeqwwN/lmNUX/ydF7Xi1wiR3r8m0jLB4pNAa+KRNfsoyB77M+TS2Wej8urcKdSoWDn
-	AIStI2n1X73qTRBzyAlKGvORKzE4nnFBExJ5US52IppzvWvKLbyeQSgM0uM/NO+eh4kQBeKWHQv
-	Te8KlhAxY5zO5t5Y4OBNYmbRPIoz2sQNdr5QBMeoEc7aUr1lSjdu+vlY1oHodEKzQCQnnFSEPBb
-	vs1
-X-Google-Smtp-Source: AGHT+IF+oD35LIv3CJ6KA7GHnZhPc4X7hT0udCz/Fxf7vUFgycWpsJe9ezDmgaCzuDGvU8c7RvG9Lw==
-X-Received: by 2002:a17:90b:3b49:b0:32e:37a1:cf65 with SMTP id 98e67ed59e1d1-33098362f99mr16420429a91.28.1758559682804;
-        Mon, 22 Sep 2025 09:48:02 -0700 (PDT)
-Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-332906a5348sm875704a91.1.2025.09.22.09.48.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Sep 2025 09:48:02 -0700 (PDT)
-Date: Mon, 22 Sep 2025 09:48:01 -0700
-From: Stanislav Fomichev <stfomichev@gmail.com>
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, kuba@kernel.org,
-	davem@davemloft.net, razor@blackwall.org, pabeni@redhat.com,
-	willemb@google.com, sdf@fomichev.me, john.fastabend@gmail.com,
-	martin.lau@kernel.org, jordan@jrife.io,
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com,
-	David Wei <dw@davidwei.uk>
-Subject: Re: [PATCH net-next 13/20] xsk: Proxy pool management for mapped
- queues
-Message-ID: <aNF9waxmQUipXe1_@mini-arch>
-References: <20250919213153.103606-1-daniel@iogearbox.net>
- <20250919213153.103606-14-daniel@iogearbox.net>
+        d=1e100.net; s=20230601; t=1758560189; x=1759164989;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nqezCH7ty2sJGRI7ApNpSX24s5g8dQOAL7yqOHAxNDg=;
+        b=Q0MOq1FPn1rVdh1H+q1Ku1D6Kmcj6mTJdAzyHIoJ6JaoIjPhACC59RHlX8Rb5H6aLA
+         dGMZ7U8/DeGhAb016zh9rF7ax5qV5FiwLOyjth/nzy/m42ZIBxPUPlK7HfORBirJ6v33
+         QW6jm4NReAiH3HvVqHh/Dq/Dfy2NgwCiHHxnncnkh/CJtpxXeM33TuWp/rP3D8lJ6Frz
+         4snX9MN1azBJYlEIZlIRq+h884MqVUIeaBSaoeiX86s+xn2haf5rqFTWJfgHPzdUYlEX
+         Bg6Qd/4XwkMD8EQIMJwqtSb8g2HwiO74T06PBSNtgtAc5WXuIStlYv3Rm+6FRuR/D6TK
+         NPcw==
+X-Gm-Message-State: AOJu0Yz09xtNnxjNwuUce6Y/z1kcE0KdAfNsv+diVcPOOgkj0dcENRvj
+	1ZZcsraXXDaXSlBX8jGOGj5ttsAyA5Olid5PRsAUp/xnD7ZECe/+ivez
+X-Gm-Gg: ASbGncs0036Qsvayx9/wPaH0mDY1hJmXDgaIVRpn37PdfCiI9lnLo3GQvixxOSxugfX
+	I1sL2voyt3aQc+8NZdzk3yNSAatWZZV7KoMeqzc1iyqgbLyOARjOhEwG+ah7FR7TijW1yjSbUyN
+	1yO4GFo9DNAPdTB4nj9eDLjxSVrUM2K2DyEhno5ykzqyV/dKiLVXvvsf1YCUOL3cI+cGI1mVp0X
+	FsLAYofJzr6Q4YZXSbK5xLmLoN6aTf8+XKqhJlEWc5+w5fPyOzgOr8w8xQH7y9ILJzvkIgzRU4g
+	UdoLn55+d2OpMxr/IfBVnYOvorFl+JUs2TBhmO454+QHtYVBicXgYSBrge5Ag/xDu9EUEjgqiI/
+	Uud4cG6QUcYxbRl9Cd/tSwhOYblQioNEt52/+O5D7IFPeKBHvm75Li9Ht+UY3mzNoPpmyAw==
+X-Google-Smtp-Source: AGHT+IGz22n9GZBL59/2Ow/bMCLS/7wJcfK0mFaCKE5vjuXxwXStXHQzzY27R41ZWfk/tmc3+0XMZw==
+X-Received: by 2002:a17:90b:384a:b0:332:250e:eec8 with SMTP id 98e67ed59e1d1-332250efc34mr10760767a91.15.1758560188724;
+        Mon, 22 Sep 2025 09:56:28 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1151:15:9e:b61c:3ac6:b581? ([2620:10d:c090:500::6:9053])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-330606509e9sm14030816a91.9.2025.09.22.09.56.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Sep 2025 09:56:28 -0700 (PDT)
+Message-ID: <49d3b51d-5ee0-40a6-b6c4-88f6cea96e8c@gmail.com>
+Date: Mon, 22 Sep 2025 09:56:26 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250919213153.103606-14-daniel@iogearbox.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] eth: fbnic: Read module EEPROM
+To: Ido Schimmel <idosch@idosch.org>
+Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, kuba@kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ gustavoars@kernel.org, horms@kernel.org, jacob.e.keller@intel.com,
+ kees@kernel.org, kernel-team@meta.com, lee@trager.us, linux@armlinux.org.uk,
+ pabeni@redhat.com, sanman.p211993@gmail.com, suhui@nfschina.com,
+ vadim.fedorenko@linux.dev
+References: <20250919191624.1239810-1-mohsin.bashr@gmail.com>
+ <aM-t4IBZFFHE9f-V@shredder>
+Content-Language: en-US
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+In-Reply-To: <aM-t4IBZFFHE9f-V@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 09/19, Daniel Borkmann wrote:
-> Similarly what we do for net_mp_{open,close}_rxq for mapped queues,
-> proxy also the xsk_{reg,clear}_pool_at_qid via __netif_get_rx_queue_peer
-> such that when a virtual netdev picked a mapped rxq, the request gets
-> through to the real rxq in the physical netdev.
-> 
-> Change the function signatures for queue_id to unsigned int in order
-> to pass the queue_id parameter into __netif_get_rx_queue_peer. The
-> proxying is only relevant for queue_id < dev->real_num_rx_queues since
-> right now its only supported for rxqs.
-> 
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Co-developed-by: David Wei <dw@davidwei.uk>
-> Signed-off-by: David Wei <dw@davidwei.uk>
-> ---
->  include/net/xdp_sock_drv.h |  4 ++--
->  net/xdp/xsk.c              | 16 +++++++++++-----
->  net/xdp/xsk.h              |  5 ++---
->  3 files changed, 15 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-> index 47120666d8d6..709af292cba7 100644
-> --- a/include/net/xdp_sock_drv.h
-> +++ b/include/net/xdp_sock_drv.h
-> @@ -29,7 +29,7 @@ bool xsk_tx_peek_desc(struct xsk_buff_pool *pool, struct xdp_desc *desc);
->  u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, u32 max);
->  void xsk_tx_release(struct xsk_buff_pool *pool);
->  struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
-> -					    u16 queue_id);
-> +					    unsigned int queue_id);
->  void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool);
->  void xsk_set_tx_need_wakeup(struct xsk_buff_pool *pool);
->  void xsk_clear_rx_need_wakeup(struct xsk_buff_pool *pool);
-> @@ -286,7 +286,7 @@ static inline void xsk_tx_release(struct xsk_buff_pool *pool)
->  }
->  
->  static inline struct xsk_buff_pool *
-> -xsk_get_pool_from_qid(struct net_device *dev, u16 queue_id)
-> +xsk_get_pool_from_qid(struct net_device *dev, unsigned int queue_id)
->  {
->  	return NULL;
->  }
-> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-> index cf40c70ee59f..b9efa6d8a112 100644
-> --- a/net/xdp/xsk.c
-> +++ b/net/xdp/xsk.c
-> @@ -23,6 +23,8 @@
->  #include <linux/netdevice.h>
->  #include <linux/rculist.h>
->  #include <linux/vmalloc.h>
-> +
-> +#include <net/netdev_queues.h>
->  #include <net/xdp_sock_drv.h>
->  #include <net/busy_poll.h>
->  #include <net/netdev_lock.h>
-> @@ -111,19 +113,20 @@ bool xsk_uses_need_wakeup(struct xsk_buff_pool *pool)
->  EXPORT_SYMBOL(xsk_uses_need_wakeup);
->  
->  struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
-> -					    u16 queue_id)
-> +					    unsigned int queue_id)
->  {
->  	if (queue_id < dev->real_num_rx_queues)
->  		return dev->_rx[queue_id].pool;
->  	if (queue_id < dev->real_num_tx_queues)
->  		return dev->_tx[queue_id].pool;
-> -
->  	return NULL;
->  }
->  EXPORT_SYMBOL(xsk_get_pool_from_qid);
->  
-> -void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
-> +void xsk_clear_pool_at_qid(struct net_device *dev, unsigned int queue_id)
->  {
-> +	if (queue_id < dev->real_num_rx_queues)
-> +		__netif_get_rx_queue_peer(&dev, &queue_id);
->  	if (queue_id < dev->num_rx_queues)
->  		dev->_rx[queue_id].pool = NULL;
->  	if (queue_id < dev->num_tx_queues)
-> @@ -135,7 +138,7 @@ void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
->   * This might also change during run time.
->   */
->  int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
-> -			u16 queue_id)
-> +			unsigned int queue_id)
->  {
->  	if (queue_id >= max_t(unsigned int,
->  			      dev->real_num_rx_queues,
-> @@ -143,6 +146,10 @@ int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
->  		return -EINVAL;
->  	if (xsk_get_pool_from_qid(dev, queue_id))
->  		return -EBUSY;
-> +	if (queue_id < dev->real_num_rx_queues)
-> +		__netif_get_rx_queue_peer(&dev, &queue_id);
-> +	if (xsk_get_pool_from_qid(dev, queue_id))
-> +		return -EBUSY;
->  
->  	pool->netdev = dev;
->  	pool->queue_id = queue_id;
 
-I feel like both of the above are also gonna be problematic wrt netdev
-lock. The callers lock the netdev, the callers will also have
-to resolve the virtual->real queue mapping. Hacking up the
-queue/netdev deep in the call stack in a few places is not gonna work.
+>> +	if (page_data->bank != 0) {
+> 
+> What is the reason for this check?
+> 
+> I understand that it's very unlikely to have a transceiver with banked
+> pages connected to this NIC (requires more than 8 lanes), but it's
+> generally better to not restrict this ethtool operation unless you have
+> a good reason to, especially when the firmware seems to support banked
+> pages.
+> 
+Hi Ido,
 
-Maybe also add assert for the (new) netdev lock to __netif_get_rx_queue_peer
-to trigger these.
+Thanks for the review.
+
+The bank field is essentially unused in our common case. We were just 
+sending bank 0 to the FW so I believe, we should be okay removing this. 
+I'll update this part in V2.
+
+>> +		NL_SET_ERR_MSG_MOD(extack,
+>> +				   "Invalid bank. Only 0 is supported");
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	fw_cmpl = __fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_QSFP_READ_RESP,
+> 
+> QSFP is not the most accurate term, but I assume it's named that way to
+> be consistent with the HW/FW data sheet.
+> 
+
+Yes, as Alex pointed out it is to be consistent with FW.
