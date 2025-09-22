@@ -1,93 +1,76 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2AD25A642
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 23:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CBD260583;
+	Mon, 22 Sep 2025 23:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758584181; cv=none; b=kUJjCz7+uHyQVuHy9RQNi/yMskMk41NWjP13stTmNbWc2swv9mOMeVXQGaiv29Ea81yGVaV4YZznmIJuHo/Web/+mu5py/T9d4ZUHo7+NbLBkYm582ujfod8bXi0KuiSPRJznLOKR9TGvYq1OpOAxa1reA+8j/1Ldi3BrTLbqFA=
+	t=1758584202; cv=none; b=lsy8mWjZMDJwaoC4WeXCPYygbACDIoxIADHLEVQPM7MYCzN3Cy3cx2bc9FxsFHJgNLpMAeKEHqokYRW+RAZ3BECTeqmiKtvg8xdAs1pqZiJKRlivsireCZF3OVT9sq9WyqU6l7SQ3LJREHuxnq+6B+DYVp1okVuHxiI9KboqB0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758584181; c=relaxed/simple;
-	bh=eQmNjNFXvG01rea8MnysvA0/424nxxb3t7fR9Ohh28I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oPQuwgqp8nS8cB3wfsbho+Vw8Q/iHL1ZYoNe+nu7bWYBB4yi1ULlqGrJqT49Pi5gxPqdgQqaqBD1msxFYorq0aE53kqKFHXFJ+TiCkpIcZltrbHPeZWDpX9VHxH8A0qoBrjxcJZwbwBtieBhJAIlFgHuH/+nhKIrdyd4W6yZ1Yo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DohfEkMG; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1758584202; c=relaxed/simple;
+	bh=QeuRrV0v+yB9NH3xmx+Y4CRYP/Vppq+zRFRPlfbQ+MA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E2nCDO42HHk8A/TGK3inlfdPCv0T7JEonbsIu1PWL2DbDihtZRndi6GWb+7ofsBySNMbR2A+Vl6r15ua2aMpKEk29Rii3BxxFM7sQAXNX+RopXhgz1vcujc7Fmf+ZuyFEZQJCOkkGmemTHXX8HiXYsRyhWvUmp/e4MULsm5J8Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mbah3QxT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DohfEkMG"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b555ab7fabaso763168a12.0
-        for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 16:36:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758584179; x=1759188979; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eQmNjNFXvG01rea8MnysvA0/424nxxb3t7fR9Ohh28I=;
-        b=DohfEkMGuMuZyB3oR2roYR41VojpLLDLqiRkVlxhDJRwO6fwvu4IbzfPs3dwl5GLSZ
-         /h8DAH9+j3PFJuLOUnjQ3QjYjWoXK1ugoBDsB6eS7EIcCsqzxBMSy4lvk3U1mp/3XXXS
-         skKJZe+LykjxjFw7+pt0YKQ9LXA20h17m+ybW8yi1XnPw+cStT1O5VdeXA2xMRwn8I38
-         O6TSp5s6QFpuU1d0OjOAaAGRnhcHzCpSRtBZ23qTT8M3Kfz7d1cbmNjFEUpQM4xceGSc
-         D7B/hVv6uHRif9hlgWzudP1X18c83PUmplUWAokQHmDhx/ceICcknnWAQw5Krk3VfX63
-         V+1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758584179; x=1759188979;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eQmNjNFXvG01rea8MnysvA0/424nxxb3t7fR9Ohh28I=;
-        b=uN4dbpUbgJ5I8CHc6fRmVJJxH9g1LCsYiBJwmNSGvlqbjlNB0odrPICYIB/a3kNDxH
-         +DL5yntRwk+TR9K649jY7U4uF2xN7678cLC89+MMR8qNjFjk/RZHR46vKJMtQC4S1fbi
-         XIFETcytI5ucrys1QDFSjoh7Gm66d2ZFxDW6Dc/w0kYf9GQcR73SySgJ5zulDm0a6PDE
-         4VT7Vp8Mq2FhCXpDLtIah3Gqsq3DnLAKQPaINtfXSZh++HIJpCwmKYV0ykhjssN/T0qb
-         dBhaassTHE1ZusmIepMIrZIhWG1EWh57yOS/zFIfxr8te8PM7fNrT1A67LInTSrZOfaM
-         I5Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGqkRz6xEMYrHgRUGij+8ay9/H2jMXxZGrpJEHDkjYvpKP4Pm7SeVOBAU1P6rJMl8hgaDcpxw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD+tKCgy3qpuVuXVRB75o6lIk1QiktOOWP+w+9WNT21C5RMOG6
-	jKpsOFcpDx4sqGJQ/9bma7uBq4O8Ely2/oROCr5V/4DktMWeLNoiGOK4tfAAwhPeCV2ExXZ46wY
-	vU1U6Fo0xvW1m2O2Mm5IBE5sWlQIxjHsg4EQzTiAahVzc2/Vb1N/X7SaDM64=
-X-Gm-Gg: ASbGncuVehIn8s50sYY1GjaZqly7WHjzyRegNYbz03skzJTw56fbfym3i+x7JUnj2pe
-	BOajyFmixIPe71GehF8FL8QHs4eELnCrxxcr2VNqPBIU5f785+asVv0ZXzbby1HcF3vep9oXPvy
-	2oeO1LzKUizLBzYV0NZrE6b+YrwrYRSZw1kOzgTFPqlZgxo9lJJ8bXDXwnPV358lcyPRd22RUwU
-	isbQ8cNyhFXEn+7mRb5w/0+U3ER0qUXReTClA==
-X-Google-Smtp-Source: AGHT+IFPW7lOMgzyQPp046NtljFqsNUoWqpI9Zpa5IRxMXYc7kiK/riWlNY9mVr/JdK1vWc63b8oUvHUDRve65XJmEM=
-X-Received: by 2002:a17:90b:48d1:b0:32e:c649:e583 with SMTP id
- 98e67ed59e1d1-332a95e9184mr641035a91.22.1758584178659; Mon, 22 Sep 2025
- 16:36:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mbah3QxT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82915C4CEF0;
+	Mon, 22 Sep 2025 23:36:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758584202;
+	bh=QeuRrV0v+yB9NH3xmx+Y4CRYP/Vppq+zRFRPlfbQ+MA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Mbah3QxTzFBIvH7XVept/nzwoq5gK8MDEwQHE7ym78wga5i6lsTIV1a5oVkUAAwrl
+	 oXw0BxjYvhNC6ECJXqTV28ducyJrqfahDkAmagM8WTPEgzEIWzWYyCJY5ZtqHCuT2U
+	 Got7JIvcOwIAUNPTHLegTnlQtfpUJFdPEgx/NgYQg9zmAHmUN30+37bY1qhncw/kID
+	 GgFtxaXh94zebz69fddhlLXBIYfgoRwVN7O1l4Gt7DmLhuRCoHii9q5Fti9Dv/C4NS
+	 zeJtXpLSGBCnc55dBB9Fj7qcVej0+tvUp7sfbmbba9z9k46aPsGcQxJ4cEFJwb8aaj
+	 lOJeXJxc4s/ng==
+Date: Mon, 22 Sep 2025 16:36:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Julia Lawall" <Julia.Lawall@inria.fr>, Nicolas Palix
+ <nicolas.palix@imag.fr>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Mark Bloch
+ <mbloch@nvidia.com>, Richard Cochran <richardcochran@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, <cocci@inria.fr>, "Gal Pressman"
+ <gal@nvidia.com>
+Subject: Re: [PATCH net-next 1/2] scripts/coccinelle: Find PTR_ERR() to %pe
+ candidates
+Message-ID: <20250922163640.2fc887e4@kernel.org>
+In-Reply-To: <1758192227-701925-2-git-send-email-tariqt@nvidia.com>
+References: <1758192227-701925-1-git-send-email-tariqt@nvidia.com>
+	<1758192227-701925-2-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250919204856.2977245-1-edumazet@google.com> <20250919204856.2977245-3-edumazet@google.com>
-In-Reply-To: <20250919204856.2977245-3-edumazet@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 22 Sep 2025 16:36:07 -0700
-X-Gm-Features: AS18NWAukwzMXWayBAjfxEgcQEiipowjOGE_eCbdIkdRbJiJ_3TVx3jnJb8O8OU
-Message-ID: <CAAVpQUBvKFLNc9DHMikByVzFVc9bp_AHw5rpEnZre5-69sL_4w@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 2/8] net: move sk->sk_err_soft and sk->sk_sndbuf
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 19, 2025 at 1:49=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> sk->sk_sndbuf is read-mostly in tx path, so move it from
-> sock_write_tx group to more appropriate sock_read_tx.
->
-> sk->sk_err_soft was not identified previously, but
-> is used from tcp_ack().
->
-> Move it to sock_write_tx group for better cache locality.
->
-> Also change tcp_ack() to clear sk->sk_err_soft only if needed.
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+On Thu, 18 Sep 2025 13:43:46 +0300 Tariq Toukan wrote:
+> Add a new Coccinelle script to identify places where PTR_ERR() is used
+> in print functions and suggest using the %pe format specifier instead.
+> 
+> For printing error pointers (i.e., a pointer for which IS_ERR() is true)
+> %pe will print a symbolic error name (e.g,. -EINVAL), opposed to the raw
+> errno (e.g,. -22) produced by PTR_ERR().
+> It also makes the code cleaner by saving a redundant call to PTR_ERR().
+> 
+> The script supports context, report, and org modes.
+> 
+> Example transformation:
+>     printk("Error: %ld\n", PTR_ERR(ptr));  // Before
+>     printk("Error: %pe\n", ptr);          // After
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Hi Julia, Nicolas,
+
+would you be willing to give us a review tag for this script?
+Would you prefer to take the script via your tree?
+
+https://lore.kernel.org/all/1758192227-701925-2-git-send-email-tariqt@nvidia.com/
