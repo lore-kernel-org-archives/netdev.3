@@ -1,244 +1,314 @@
-Received: from relay-b03.edpnet.be (relay-b03.edpnet.be [212.71.1.220])
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013070.outbound.protection.outlook.com [40.93.201.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B1B13D2B2
-	for <netdev@vger.kernel.org>; Mon, 22 Sep 2025 08:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.71.1.220
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758528361; cv=none; b=R31QuCjxyoeUVR4y+bs/67JA/JyY0vOFYrqFxibdwWcBiMIYG2k9PvS+7YPV80hz4wI9sAi1UodIwnNWa/cKzvqym8dPxJ8Abt2FwMz9KyxFSfpMK9TtmkgBdjopeBrKPqeJJBDAWtpIwUTzSuMz9zERALbuxaz2wrefJtQ6iM4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758528361; c=relaxed/simple;
-	bh=3SqsJuoPLh3/NAoETPjLQXzke4xB5rpaZWa/xQO6bjo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MGmkeRviNnXCjDUxhbMo4jHyMht7Hq7X81pdl5Pajjx4oi4baOO7X6amrEZfbhM3F5uI5zHyAbWVVbJjuMYzcfdZW/oD9sm+ePk84RurVikKnCh+fXYvIC+NyB6hZZLBsHwLxt83hZEExS9qsSuz/0sGefh2HZ+PFxxnC7X5I5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de; spf=fail smtp.mailfrom=kabelmail.de; arc=none smtp.client-ip=212.71.1.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=kabelmail.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kabelmail.de
-Received: from [192.168.177.65] (94.105.126.5.dyn.edpnet.net [94.105.126.5]) by relay-b03.edpnet.be with ESMTP id Nfbd1cZGAhyyOAzu; Mon, 22 Sep 2025 10:05:45 +0200 (CEST)
-X-Barracuda-Envelope-From: janpieter.sollie@kabelmail.de
-X-Barracuda-Effective-Source-IP: 94.105.126.5.dyn.edpnet.net[94.105.126.5]
-X-Barracuda-Apparent-Source-IP: 94.105.126.5
-Message-ID: <4683e9ea-f795-4dab-8a0a-bd0b0f4fbd99@kabelmail.de>
-Date: Mon, 22 Sep 2025 10:04:12 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359973208;
+	Mon, 22 Sep 2025 08:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758529014; cv=fail; b=LKFh1+63gNsuEa0iEr75q01eNIBC1ql4QZDRapzN9OM97UXr9AFKTuL8RxY+Ma/QuVHRkDwkeVUWV53rCa1WaprG8ZQwo1tQSzYO+uYBUnv5v9zUIXqskOlqDxpu4PMb7X8eE3hLWX233UcrRHElHJYvbDUhP93E17YLPkXwOZk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758529014; c=relaxed/simple;
+	bh=mVXOCyaEz8cjc0WIhn6EfOYdxRj2c/DetPo4OC/IL78=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S83znVjur8iiP4zz3lgE6s74tJJmAnrXMSkvQ/OxGRsrxuguuk9TKzolD76OPHc8rJia4d2UiU1GVoEt+17mZu+tAvsRuJ5FolWk1nTmxD1vQY9OtqFtBNRoZuquSNs40eBoVZ9zrkiI4ESMCAubAaxO9D6Sj8pWthlvT/HCg8I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hI3LTHdQ; arc=fail smtp.client-ip=40.93.201.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hI3LTHdQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VyXkGAOfezuNaZw/O7sBSpFQIuvG/IDjVz8nm04ZMZ64SkWfYMD7/wd5SOxJfzOdfFmY6UM4E03y1SzxbX+sMhnqfjG/VaxTBc81/hiqPibF04uZCBF7KhjgSbI/2e0QhbtFHoPhlhgXBJ5FywIHWR7kKCOWHP1iTNhagfCQM9H6ktt8xqyAuKNLmToHGAMHiH1rOYNXMal7CqUNygmvVVNTZ66K3Spn5iN26ZV3KdrNHgqQ6D5VbsY3DIjLuvUfyyCxp9RHcAokAZbu/dUkTPXIclhu+k3IgAgzrWFZSmeGao6xWx6Cp27txQOYaYoTOvMHvgmRmHRk8owNb4IBuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ck8wkHTqUm4dA07JLsfGtWJwNUYmpYOpgty2xl+OMk4=;
+ b=m//WWn/f4LCZShOaJilJe+q0hZo8ZRtNmVhUkl0QTu15/vmW1jDsoZtBg8g33DEnDThH2/vY9kpeqq4IyzbiLmex3B7qrOahgoMI45bLAZGYMu/J/wLxQbtG466vRxGJNFshkC44GWiMDa6Cm+fKe/xrzOZcR24E+WUmvozxavl5i0V8BRN72nXfjzFk+TEphIU9T7sVhtfl1Tp9LUTW2jwYS7/ghGJYuLqeoQlm916zjagso8YJbwfQtqnZ7QI7CfXrmogdJn3kUQgI44u2oTGukRIZyanyhwQ/kjC0jNRQIpGOoZ2HXtXY5WV2M8ArsoXabW43VWS8uQdkypAlfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=arm.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ck8wkHTqUm4dA07JLsfGtWJwNUYmpYOpgty2xl+OMk4=;
+ b=hI3LTHdQI+DBC4PY/2YXo1tjPb8KSGtpLZF2zDm98U+1BJLRO/2x+xeWqPqRaniYLGTUKHedCpCPnsnStyhFzkUDNFp4tyEjPLPTHh9aQJG2ZqUSV0PimGRJJ2F9+JqNRtMtWT10tVX9Klh+7ZR03LoXNSWaSkm1G+HdVGzrbYY+URkfWeQIsjwp65b5ts1o3KWwOviD4hc0qK/QmUnyHBmM9BKKN0TpoO3SsjjCNg3/rP5PxBgn9tmdn7ZfbYZSqp6FgVjZzCQbChtvZ1pPTlFZOC64weTZLnsdRq+HkITaBK+qeH8jp/pQE9+Tv2HBk6WNHIr4TEmuVWAiRAlKEA==
+Received: from BY1P220CA0010.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59d::12)
+ by MN0PR12MB5738.namprd12.prod.outlook.com (2603:10b6:208:371::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.19; Mon, 22 Sep
+ 2025 08:16:45 +0000
+Received: from SJ1PEPF000023DA.namprd21.prod.outlook.com
+ (2603:10b6:a03:59d:cafe::c0) by BY1P220CA0010.outlook.office365.com
+ (2603:10b6:a03:59d::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9137.20 via Frontend Transport; Mon,
+ 22 Sep 2025 08:16:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SJ1PEPF000023DA.mail.protection.outlook.com (10.167.244.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9182.0 via Frontend Transport; Mon, 22 Sep 2025 08:16:44 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 22 Sep
+ 2025 01:16:33 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 22 Sep 2025 01:16:32 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Mon, 22 Sep 2025 01:16:21 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>
+CC: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, "Leon
+ Romanovsky" <leonro@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, "Michael
+ Guralnik" <michaelgur@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, "Will
+ Deacon" <will@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Andrew Morton" <akpm@linux-foundation.org>, Christian Borntraeger
+	<borntraeger@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Gerald Schaefer
+	<gerald.schaefer@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "H. Peter Anvin" <hpa@zytor.com>, Justin Stitt
+	<justinstitt@google.com>, <linux-s390@vger.kernel.org>,
+	<llvm@lists.linux.dev>, Ingo Molnar <mingo@redhat.com>, Bill Wendling
+	<morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
+	<ndesaulniers@google.com>, Salil Mehta <salil.mehta@huawei.com>, "Sven
+ Schnelle" <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+	<x86@kernel.org>, Yisen Zhuang <yisen.zhuang@huawei.com>, Arnd Bergmann
+	<arnd@arndb.de>, Leon Romanovsky <leonro@mellanox.com>,
+	<linux-arch@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, "Mark
+ Rutland" <mark.rutland@arm.com>, Michael Guralnik <michaelgur@mellanox.com>,
+	<patches@lists.linux.dev>, Niklas Schnelle <schnelle@linux.ibm.com>, "Jijie
+ Shao" <shaojijie@huawei.com>, Simon Horman <horms@kernel.org>, "Patrisious
+ Haddad" <phaddad@nvidia.com>
+Subject: [PATCH net-next V4] net/mlx5: Improve write-combining test reliability for ARM64 Grace CPUs
+Date: Mon, 22 Sep 2025 11:15:51 +0300
+Message-ID: <1758528951-817323-1-git-send-email-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.8.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] increase MDIO i2c poll timeout gradually (including patch)
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-X-ASG-Orig-Subj: Re: [RFC] increase MDIO i2c poll timeout gradually (including patch)
-Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <971aaa4c-ee1d-4ca1-ba38-d65db776d869@kabelmail.de>
- <cbc4a620-36d3-409b-a248-a2b4add0016a@lunn.ch>
- <f86737b0-a0fe-49a6-aeca-9e51fbdf0f0d@kabelmail.de>
- <aM6Ng7tnEYdWmI1F@shell.armlinux.org.uk>
- <6d444507-1c97-4904-8edb-e8cc1aa4399e@kabelmail.de>
- <aM6xwq6Ns_LGxl4o@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Janpieter Sollie <janpieter.sollie@kabelmail.de>
-Autocrypt: addr=janpieter.sollie@kabelmail.de; keydata=
- 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
-In-Reply-To: <aM6xwq6Ns_LGxl4o@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-Barracuda-Connect: 94.105.126.5.dyn.edpnet.net[94.105.126.5]
-X-Barracuda-Start-Time: 1758528345
-X-Barracuda-URL: https://212.71.1.220:443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at edpnet.be
-X-Barracuda-Scan-Msg-Size: 5357
-X-Barracuda-BRTS-Status: 1
-Content-Transfer-Encoding: quoted-printable
-X-ASG-Debug-ID: 1758528345-24639c1e2d7b6630001-BZBGGp
-X-Barracuda-Spam-Score: 0.00
-X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=10.0 QUARANTINE_LEVEL=10.0 KILL_LEVEL=7.0 test= 
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.125474
-	Rule breakdown below
-	  pts rule name              description
-	 ---- ---------------------- --------------------------------------------------
-	
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023DA:EE_|MN0PR12MB5738:EE_
+X-MS-Office365-Filtering-Correlation-Id: 637fd0b1-da60-44d0-50ff-08ddf9b05e38
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?alMzRIBYv+/KiugOtKc5g0T/Z/yT4NQc1yVBVZHs8nyuLoDjqCmqfZ1q2/6l?=
+ =?us-ascii?Q?ywXbyF8Hwex6K+le5cOt/9kjCDhWnb1vZEdirJlHF67BzqrifnkVx5a0NUrK?=
+ =?us-ascii?Q?n56XNeK/tBT6ARwzDS9VBl1erZATFEPMsdHGbTPA9aELIFxP1xuXib5ogKHo?=
+ =?us-ascii?Q?EymvuOP2FQ1LvVGUujWotkRIxdwitmBrfo0oYR+Oe0UDYSZCtJdWJaAr6FkN?=
+ =?us-ascii?Q?FwBDReneI/jIdA6DGbR+Gv/6azq7vhWTPcjByDIjcDZvZfj5yJCdkZWh+78y?=
+ =?us-ascii?Q?I0BQMmgj/kpOQclsCH9ps+369bXGoUKaI7b0h65wQo5w7uLNIPydRswEL5b/?=
+ =?us-ascii?Q?xwvl0f4oQ7roc/s2gbtv4TjJFyW7dR6D9VcxqnsvDC+L9I+z7ea8vwqrcINL?=
+ =?us-ascii?Q?SNkVc7xE2s8YdFmuMIVOd/PAXXEulMu7CUdQ+cobfQI01faNOpNPC3gFqcUV?=
+ =?us-ascii?Q?+Ucbiq2+NmGWCq8+EO8VXegAcZQhm52Taqx8DOGQyZTPTxzIIbF2snz2rMT7?=
+ =?us-ascii?Q?7VvJfOfi7jRbkufi7Q5+fj1wFd4a2reT85ny7UnSsn8m2Xn8h9333VHVtaTO?=
+ =?us-ascii?Q?2SYYrA71qLd4sc1sghCek7YtPnGCqW8FV9S3Zi6IHZJieHpxD7LHLo8Nukv1?=
+ =?us-ascii?Q?DoaYFq9+hUStfpgCqFB3Dj9EM/YWoXr81E4D/FMHfDuvtMmQQ7OFImqMVZwn?=
+ =?us-ascii?Q?oDhC8KaoeDyGPwI30sIBSKzMkzKYSoIwXgeUPYdRa06h1SBGJL5zRN81wM6T?=
+ =?us-ascii?Q?3yPGYIkNwkKMB8KWSL6RPPG50CJsWjDtWXY4vzZ0Z7LLGLAvM4ql2CLtxU7i?=
+ =?us-ascii?Q?1ILQp9QDAeMFjX11/71HU/RrLpP4i4564Ec1LeolrK5Woy73MmScs6g8kiHF?=
+ =?us-ascii?Q?0f9x5KgXTZz/f8AuartxflO2o6ZZPNdZ5zy7AOEk+I6xXzaAWfl643RU/mgK?=
+ =?us-ascii?Q?i2T1D9GF5pH72G/kMd7BCkketx3Cna9qyfleoVmlzMXvB78gaktB9ln6q0iz?=
+ =?us-ascii?Q?N1Y3mhxRu7Mw6um8Kcp2WwBm3wKp3PYEkbwbEL2lWAFVbncfKr2JsFyqyLI1?=
+ =?us-ascii?Q?pmfZ5TgAibZS+M7RVTlct0imUonjE+slJu6i9cU6Nl8GAe811VxvJi6y0XEO?=
+ =?us-ascii?Q?BW4cJMT/mhEHoEvES6y7WLABxz6aqfVGC/bCPlWqMia2oX2P3xwpLEbLCdb+?=
+ =?us-ascii?Q?wZi09GRlYDrSpUw0ETyRLOLfdibqNY9Nt4xJWqD+LyXnKHzaaL7cOSYdS+OV?=
+ =?us-ascii?Q?Hr3X80hmyY8ZPy+ScllJH1RHBCu6w7woNPmTFSfby1NUaS+2kswvYNplFgVF?=
+ =?us-ascii?Q?YzBTa4BjtFhO4gfFdn3w1q0UIOykjCBEGrBXjUXFAx6t6vcc7Ib17Hc4NvAY?=
+ =?us-ascii?Q?DJvY5O5sUQP0I8WarQ8eDlkv1hythKa6AumGiRAIvNyfF9TwYae08sewrI6m?=
+ =?us-ascii?Q?rPURSHpB6p7zcJxM8wWNxt6qXiTO90wprkPOQcBRPep5hmFVhvBoK97+xLX2?=
+ =?us-ascii?Q?XKTHrtcRze08uBXjbHwJJD4aIuh+h0H0nqMxOo7RIWSqPBJVilNRG2D+fQ?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2025 08:16:44.6560
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 637fd0b1-da60-44d0-50ff-08ddf9b05e38
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023DA.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5738
 
-Op 20/09/2025 om 15:53 schreef Russell King (Oracle):
-> So, what we need you to do is to work out how long it takes this module
-> to respond, and whether it always takes a long time to respond. Please
-> add some debugging to i2c_rollball_mii_poll() to measure the amount of
-> time it takes for the module to respond - and please measure it for
-> several transactions.
->
-> You can use jiffies, and convert to msecs using jiffies_to_msecs(),
-> or you could use ktime_get_ns().
->
-> Thanks.
->
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-All right, so I changed the modification to a more debug-friendly functio=
-n (view below).
-I also changed the incremental wait() function from (20+10*(10-i)) to (20=
-+5*(10-i)) to be more=20
-accurate.
-When bringing up with "ip link set sfp-lan up", it starts printing
-It keeps polling (which, I guess, is what you expect, I guess the hwmon s=
-ubsystem, link=20
-detection, ... )
-Mostly, the output is 300-400us.
-When the module is up and running, and maintenance polls happen, I saw so=
-mething new:
-It starts responding with a much lower value: something like 30 us. At it=
-eration 10. occasionally.
-i =3D 10 means "immediately", i decrements from 10 to 0.
-I got no clarification for that.
-The thing I'm mostly sure of, is that no commands return an error, and no=
- mii_polls time out,
-but 300-400us is way too much for a loop which expects to return in 200us
-...
-156724.601882] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd suc=
-cess after 348074665 ns=20
-in iteration 4
-[156724.941879] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 328077236=20
-ns in iteration 4
-[156725.301889] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 348093665=20
-ns in iteration 4
-[156725.661896] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 348075511=20
-ns in iteration 4
-[156726.081885] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 408061414=20
-ns in iteration 3
-[156726.441997] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 348189434=20
-ns in iteration 4
-[156726.781885] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 327952775=20
-ns in iteration 4
-[156727.831885] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 30037797 ns=20
-in iteration 10
-[156728.241880] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 398062738=20
-ns in iteration 3
-[156728.591889] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 338068066=20
-ns in iteration 4
-[156728.941888] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 338062605=20
-ns in iteration 4
-[156729.351924] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 398101891=20
-ns in iteration 3
-[156729.692014] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 328135697=20
-ns in iteration 4
-[156730.041895] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 337947143=20
-ns in iteration 4
-[156730.391997] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 338162758=20
-ns in iteration 4
-[156730.741994] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 337980912=20
-ns in iteration 4
-[156731.831897] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 30043259 ns=20
-in iteration 10
-[156732.241897] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 398065122=20
-ns in iteration 3
-[156732.581982] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 328157082=20
-ns in iteration 4
-[156732.921978] i2c_rollball_mii_poll:267: mdio_bus i2c:sfp2: poll cmd su=
-ccess after 327986467=20
-ns in iteration 4
+Write combining is an optimization feature in CPUs that is frequently
+used by modern devices to generate 32 or 64 byte TLPs at the PCIe level.
+These large TLPs allow certain optimizations in the driver to HW
+communication that improve performance. As WC is unpredictable and
+optional the HW designs all tolerate cases where combining doesn't
+happen and simply experience a performance degradation.
 
-...
+Unfortunately many virtualization environments on all architectures have
+done things that completely disable WC inside the VM with no generic way
+to detect this. For example WC was fully blocked in ARM64 KVM until
+commit 8c47ce3e1d2c ("KVM: arm64: Set io memory s2 pte as normalnc for
+vfio pci device").
 
-This was an example of the output when using the patch below.
-No poll command returns an error state. No poll commands time out.
-all mii_poll commands return at i =3D 3 or i =3D 4,
-when the sfp module is completely up, i =3D 10 occurs from time to time.
+Trying to use WC when it is known not to work has a measurable
+performance cost (~5%). Long ago mlx5 developed an boot time algorithm
+to test if WC is available or not by using unique mlx5 HW features to
+measure how many large TLPs the device is receiving. The SW generates a
+large number of combining opportunities and if any succeed then WC is
+declared working.
 
-Thanks,
+In mlx5 the WC optimization feature is never used by the kernel except
+for the boot time test. The WC is only used by userspace in rdma-core.
 
-Janpieter Sollie
+Sadly modern ARM CPUs, especially NVIDIA Grace, have a combining
+implementation that is very unreliable compared to pretty much
+everything prior. This is being fixed architecturally in new CPUs with a
+new ST64B instruction, but current shipping devices suffer this problem.
 
---- a/drivers/net/mdio/mdio-i2c.c=C2=A0 =C2=A0 =C2=A0 =C2=A02025-09-22 08=
-:41:12.084752517 +0200
-+++ b/drivers/net/mdio/mdio-i2c.c=C2=A0 =C2=A0 =C2=A0 =C2=A02025-09-22 08=
-:47:20.230592266 +0200
-@@ -232,6 +232,7 @@
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct i2c_msg msgs[2];
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 u8 cmd_addr, tmp, *res;
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 int i, ret;
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0long uptime;
+Unreliable means the SW can present thousands of combining opportunities
+and the HW will not combine for any of them, which creates a performance
+degradation, and critically fails the mlx5 boot test. However, the CPU
+is very sensitive to the instruction sequence used, with the better
+options being sufficiently good that the performance loss from the
+unreliable CPU is not measurable.
 
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 cmd_addr =3D ROLLBALL_CMD_ADDR;
+Broadly there are several options, from worst to best:
+1) A C loop doing a u64 memcpy.
+   This was used prior to commit ef302283ddfc
+   ("IB/mlx5: Use __iowrite64_copy() for write combining stores")
+   and failed almost all the time on Grace CPUs.
 
-@@ -252,14 +253,19 @@
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* SFPs. Sleep 20ms between iterations =
-and try 10 times.
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 i =3D 10;
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0uptime =3D ktime_get_ns();
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 do {
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0msleep(20);
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0msleep(20 + 5*(10=
--i));
+2) ARM64 assembly with consecutive 8 byte stores. This was implemented
+   as an arch-generic __iowriteXX_copy() family of functions suitable
+   for performance use in drivers for WC. commit ead79118dae6
+   ("arm64/io: Provide a WC friendly __iowriteXX_copy()") provided the
+   ARM implementation.
 
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D i2c_tran=
-sfer_rollball(i2c, msgs, ARRAY_SIZE(msgs));
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret)
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0dev_dbg(&bus->dev, "poll cmd return %d after %d ns in iteration=
- %d\n",=20
-ret, (ktime_get_ns() - uptime), i);
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 return ret;
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
+3) ARM64 assembly with consecutive 16 byte stores. This was rejected
+   from kernel use over fears of virtualization failures. Common ARM
+   VMMs will crash if STP is used against emulated memory.
 
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (*res =3D=3D R=
-OLLBALL_CMD_DONE)
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (*res =3D=3D R=
-OLLBALL_CMD_DONE) {
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0dev_dbg(&bus->dev, "poll cmd success after %d ns in iteration %=
-d\n",=20
-(ktime_get_ns() - uptime), i);
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 return 0;
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 } while (i-- > 0);
+4) A single NEON store instruction. Userspace has used this option for a
+   very long time, it performs well.
+
+5) For future silicon the new ST64B instruction is guaranteed to
+   generate a 64 byte TLP 100% of the time
+
+The past upgrade from #1 to #2 was thought to be sufficient to solve
+this problem. However, more testing on more systems shows that #3 is
+still problematic at a low frequency and the kernel test fails.
+
+Thus, make the mlx5 use the same instructions as userspace during the
+boot time WC self test. This way the WC test matches the userspace and
+will properly detect the ability of HW to support the WC workload that
+userspace will generate. While #4 still has imperfect combining
+performance, it is substantially better than #2, and does actually give
+a performance win to applications. Self-test failures with #2 are like
+3/10 boots, on some systems, #4 has never seen a boot failure.
+
+There is no real general use case for a NEON based WC flow in the
+kernel. This is not suitable for any performance path work as getting
+into/out of a NEON context is fairly expensive compared to the gain of
+WC. Future CPUs are going to fix this issue by using an new ARM
+instruction and __iowriteXX_copy() will be updated to use that
+automatically, probably using the ALTERNATES mechanism.
+
+Since this problem is constrained to mlx5's unique situation of needing
+a non-performance code path to duplicate what mlx5 userspace is doing as
+a matter of self-testing, implement it as a one line inline assembly in
+the driver directly.
+
+Lastly, this was concluded from the discussion with ARM maintainers
+which confirms that this is the best approach for the solution:
+https://lore.kernel.org/r/aHqN_hpJl84T1Usi@arm.com
+
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/wc.c | 28 ++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
+
+Find V3 here:
+https://lore.kernel.org/all/1758178883-648295-1-git-send-email-tariqt@nvidia.com/
+
+V4:
+- Rebased.
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/wc.c b/drivers/net/ethernet/mellanox/mlx5/core/wc.c
+index 999d6216648a..9f988344d9c8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/wc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/wc.c
+@@ -7,6 +7,10 @@
+ #include "mlx5_core.h"
+ #include "wq.h"
+ 
++#ifdef CONFIG_KERNEL_MODE_NEON
++#include <asm/neon.h>
++#endif
++
+ #define TEST_WC_NUM_WQES 255
+ #define TEST_WC_LOG_CQ_SZ (order_base_2(TEST_WC_NUM_WQES))
+ #define TEST_WC_SQ_LOG_WQ_SZ TEST_WC_LOG_CQ_SZ
+@@ -255,6 +259,27 @@ static void mlx5_wc_destroy_sq(struct mlx5_wc_sq *sq)
+ 	mlx5_wq_destroy(&sq->wq_ctrl);
+ }
+ 
++static void mlx5_iowrite64_copy(struct mlx5_wc_sq *sq, __be32 mmio_wqe[16],
++				size_t mmio_wqe_size, unsigned int offset)
++{
++#ifdef CONFIG_KERNEL_MODE_NEON
++	if (cpu_has_neon()) {
++		kernel_neon_begin();
++		asm volatile
++		(".arch_extension simd;\n\t"
++		"ld1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%0]\n\t"
++		"st1 {v0.16b, v1.16b, v2.16b, v3.16b}, [%1]"
++		:
++		: "r"(mmio_wqe), "r"(sq->bfreg.map + offset)
++		: "memory", "v0", "v1", "v2", "v3");
++		kernel_neon_end();
++		return;
++	}
++#endif
++	__iowrite64_copy(sq->bfreg.map + offset, mmio_wqe,
++			 mmio_wqe_size / 8);
++}
++
+ static void mlx5_wc_post_nop(struct mlx5_wc_sq *sq, unsigned int *offset,
+ 			     bool signaled)
+ {
+@@ -289,8 +314,7 @@ static void mlx5_wc_post_nop(struct mlx5_wc_sq *sq, unsigned int *offset,
+ 	 */
+ 	wmb();
+ 
+-	__iowrite64_copy(sq->bfreg.map + *offset, mmio_wqe,
+-			 sizeof(mmio_wqe) / 8);
++	mlx5_iowrite64_copy(sq, mmio_wqe, sizeof(mmio_wqe), *offset);
+ 
+ 	*offset ^= buf_size;
+ }
+
+base-commit: 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
+-- 
+2.31.1
 
