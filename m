@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CC71B9831;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1052E221555;
 	Tue, 23 Sep 2025 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758636170; cv=none; b=UvMX1KKtUki41GzlWcvNMggZgWifEhB7m7O0kc2zE4GiWUEsh245N/Vw705QLiUulezYLX67pzz22bt/5gNg1u0JYWrUqaImS+M0/2fh2hX/xIBMSKcUxZx8Alt7hSawu4P9sZ3t814rsEkzgaItO0OGlcu8OQYNaAqX3aFpoeQ=
+	t=1758636171; cv=none; b=Y2naCPQ2R4N1qsepnkz6qJZKJUjfvW4rFGVF/s4ATutfsTUYqOrRSnzTZRTCqWYrUVEqdSsdo6lwQ2ZTkg4cbtYI0qeje/SU2EephOkdBbNsUb8VSFWraYi+Em7i2+0FzjqYn+UpC6UtLFBEqfV6hBE2GH25SSmC6j4Hi+Ga8LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758636170; c=relaxed/simple;
-	bh=HhxH6oHHh9exPTDIHT0zcp6L2eUxeGZB5IX0TTPVCb0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoiTdi57GZSfw8lmtRGGfioQRfa7zq8cYQb9/atTWlqtDPW/djYCuHfpXWobdQQrOcobCR9MmBwtr4bRKSZUdHP7f/Gd587e57S4q34vAq09b867z75szntK3TYTqYBSIcNTwIdSrkgK5PS3WL4q8AlKXl24fJsE6Z2Qs85HjBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjmhlK9i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758636171; c=relaxed/simple;
+	bh=Bdab41UPVGCNYNXeNsvpKwijaIhSb6VqLy0ymP3WGVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qOYb7Qyu2yomP8uz7cKv+zt0DFyUTi1zC9akuewBDPWdFZlCacZzTUk8qhXdyllz/V8rIxJGg+Vv/VhagLZdvHwCAYEt1gHDneU37A4zSM5rGvbipCmTbmS8PE32C5GuC7yTz15n5FJsEMdMcPjx7o4JOA5kvLdkn+M0wRhN3Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSih8M4O; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjmhlK9i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5806CC4CEF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSih8M4O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738F5C116D0;
 	Tue, 23 Sep 2025 14:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1758636170;
-	bh=HhxH6oHHh9exPTDIHT0zcp6L2eUxeGZB5IX0TTPVCb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjmhlK9ird7Yl4lwcw/cDjrGkrVJfbgcF+fsCiTJdSmQDNBs1m0SPWxQ1SKpOSXmX
-	 4jLB1NsTWhjPz3w8SlYYz3+cbqmrh/RJjcyiF4n3YrJH9FjhJWM3bhSOO8ex+fNBDl
-	 SEMsmtchvs6HVqYRm28Ae0zRGt9ThuPiq0N9yZ9kiot2TEvEyZD4NF4rQyrukodvxL
-	 m8m6CH6bl2gu/KQ2rRH+pWVMxTwc+ybgtvIh5j/+tAHTn/S0bQ8OpCQdXJdrXZx7rZ
-	 watOxq6Ga0Qdm8psAZTccu5ZU0dSgeCvoQUi+b+LASe4S18j9hPuxX5C2InSeOuPgE
-	 iIAlB3in8vneQ==
+	bh=Bdab41UPVGCNYNXeNsvpKwijaIhSb6VqLy0ymP3WGVo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZSih8M4O23EyUehproFaHkLhOvx3ZozQSLHdN5XkFKixHU7vmzVbtnynwCiTQBZZu
+	 Wzdr8L5iUviZG2yqgLdV+qBldayuPioFtn2T4dDGHnjeCnC3HIvyEiLz9B+QxuRuEX
+	 hat+0hQYIYzud0uYC6XRE1ML1r2CaES8R6pYT/FrlTWEJcKs46ZsqqZj1MwW0zHkLt
+	 5vxvn+rJQsA/LreTtRmGbCRSQ66hRVlmIB1Syju8h1EcIgiIJ7K2x7iK+R7Hqum9B7
+	 3P0m3kNwyyNdoIgSzuwFbCcVMPmlO7ZvYB3K35vNMPDtQLESmFPp0ChfSfBP5siJiF
+	 u4YzPsfJszNhQ==
 Received: by wens.tw (Postfix, from userid 1000)
-	id 21BAE5FEEE; Tue, 23 Sep 2025 22:02:48 +0800 (CST)
+	id 026905FC52; Tue, 23 Sep 2025 22:02:47 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,14 +44,11 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-sunxi@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>
-Subject: [PATCH net-next v7 3/6] arm64: dts: allwinner: a523: Add GMAC200 ethernet controller
-Date: Tue, 23 Sep 2025 22:02:43 +0800
-Message-ID: <20250923140247.2622602-4-wens@kernel.org>
+	Andre Przywara <andre.przywara@arm.com>
+Subject: [PATCH net-next v7 0/6] net: stmmac: Add support for Allwinner A523 GMAC200
+Date: Tue, 23 Sep 2025 22:02:40 +0800
+Message-ID: <20250923140247.2622602-1-wens@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250923140247.2622602-1-wens@kernel.org>
-References: <20250923140247.2622602-1-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,95 +59,109 @@ Content-Transfer-Encoding: 8bit
 
 From: Chen-Yu Tsai <wens@csie.org>
 
-The A523 SoC family has a second ethernet controller, called the
-GMAC200. It is not exposed on all the SoCs in the family.
+Hi everyone,
 
-Add a device node for it. All the hardware specific settings are from
-the vendor BSP.
+This is v7 of my Allwinner A523 GMAC200 support series. This is based on
+next-20250922.
 
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
----
+Changes since v6:
+- Collected acks for DT binding patch
+- Rebased onto next-20250922
+
+Changes since v5:
+- Use plat->phy_interface instead of plat->mac_interface (Russell)
+- Link to v5
+  https://lore.kernel.org/all/20250911174032.3147192-1-wens@kernel.org/
+
+Changes since v4:
+- Moved clock-names list to main schema in DT binding (Rob)
+- Dropped 4 patches that are already merged
+- Link to v4
+  https://lore.kernel.org/all/20250908181059.1785605-1-wens@kernel.org/
+
+Changes since v3:
+- driver
+  - Fixed printf format specifier warning
+- Link to v3
+  https://lore.kernel.org/all/20250906041333.642483-1-wens@kernel.org/
+
+Changes since v2:
+- DT binding
+  - Added "select" to avoid matching against all dwmac entries
+- driver
+  - Include "ps" unit in "... must be multiple of ..." error message
+  - Use FIELD_FIT to check if delay value is in range and FIELD_MAX to get
+    the maximum value
+  - Reword error message for delay value exceeding maximum
+  - Drop MASK_TO_VAL
+- Link to v2:
+  https://lore.kernel.org/all/20250813145540.2577789-1-wens@kernel.org/
 
 Changes since v1:
-- Fixed typo in tx-queues-config
----
- .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 55 +++++++++++++++++++
- 1 file changed, 55 insertions(+)
+- Dropped RFT tag
+- Switched to generic (tx|rx)-internal-delay-ps 
+- dwmac-sun55i driver bits
+  - Changed dev_err() + return to dev_err_probe()
+  - Added check of return value from syscon regmap write
+  - Changed driver name to match file name
+- sram driver bits
+  - Fixed check on return value
+  - Expanded commit message
+- dtsi
+  - Fixed typo in tx-queues-config
+- cubie a5e
+  - Add PHY regulator delay
+- Link to v1:
+  https://lore.kernel.org/all/20250701165756.258356-1-wens@kernel.org/
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
-index 7b36c47a3a13..a9e051a8bea3 100644
---- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
-@@ -182,6 +182,16 @@ rgmii0_pins: rgmii0-pins {
- 				bias-disable;
- 			};
- 
-+			rgmii1_pins: rgmii1-pins {
-+				pins = "PJ0", "PJ1", "PJ2", "PJ3", "PJ4",
-+				       "PJ5", "PJ6", "PJ7", "PJ8", "PJ9",
-+				       "PJ11", "PJ12", "PJ13", "PJ14", "PJ15";
-+				allwinner,pinmux = <5>;
-+				function = "gmac1";
-+				drive-strength = <40>;
-+				bias-disable;
-+			};
-+
- 			uart0_pb_pins: uart0-pb-pins {
- 				pins = "PB9", "PB10";
- 				allwinner,pinmux = <2>;
-@@ -603,6 +613,51 @@ mdio0: mdio {
- 			};
- 		};
- 
-+		gmac1: ethernet@4510000 {
-+			compatible = "allwinner,sun55i-a523-gmac200",
-+				     "snps,dwmac-4.20a";
-+			reg = <0x04510000 0x10000>;
-+			clocks = <&ccu CLK_BUS_EMAC1>, <&ccu CLK_MBUS_EMAC1>;
-+			clock-names = "stmmaceth", "mbus";
-+			resets = <&ccu RST_BUS_EMAC1>;
-+			reset-names = "stmmaceth";
-+			interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq";
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&rgmii1_pins>;
-+			power-domains = <&pck600 PD_VO1>;
-+			syscon = <&syscon>;
-+			snps,fixed-burst;
-+			snps,axi-config = <&gmac1_stmmac_axi_setup>;
-+			snps,mtl-rx-config = <&gmac1_mtl_rx_setup>;
-+			snps,mtl-tx-config = <&gmac1_mtl_tx_setup>;
-+			status = "disabled";
-+
-+			mdio1: mdio {
-+				compatible = "snps,dwmac-mdio";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+
-+			gmac1_mtl_rx_setup: rx-queues-config {
-+				snps,rx-queues-to-use = <1>;
-+
-+				queue0 {};
-+			};
-+
-+			gmac1_stmmac_axi_setup: stmmac-axi-config {
-+				snps,wr_osr_lmt = <0xf>;
-+				snps,rd_osr_lmt = <0xf>;
-+				snps,blen = <256 128 64 32 16 8 4>;
-+			};
-+
-+			gmac1_mtl_tx_setup: tx-queues-config {
-+				snps,tx-queues-to-use = <1>;
-+
-+				queue0 {};
-+			};
-+		};
-+
- 		ppu: power-controller@7001400 {
- 			compatible = "allwinner,sun55i-a523-ppu";
- 			reg = <0x07001400 0x400>;
+This series adds support for the second Ethernet controller found on the
+Allwinner A523 SoC family. This controller, dubbed GMAC200, is a DWMAC4
+core with an integration layer around it. The integration layer is
+similar to older Allwinner generations, but with an extra memory bus
+gate and separate power domain.
+
+Patch 1 adds a new compatible string combo to the existing Allwinner
+EMAC binding.
+
+Patch 2 adds a new driver for this core and integration combo.
+
+Patch 3 adds a device node and pinmux settings for the GMAC200.
+
+Patches 4, 5, and 6 enable the GMAC200 on three boards. I only tested
+the Orangepi 4A and Radxa Cubie A5E.
+
+
+Please have a look and help test on the Avaota A1. I don't expect
+any issues there though, since the PHY is always on, unlike on the
+Cubie A5E.
+
+Patches 1 and 2 should go through net-next, and I will take all the
+other patches through the sunxi tree. Hopefully we can get this merged
+for v6.18.
+
+
+Thanks
+ChenYu
+
+Chen-Yu Tsai (6):
+  dt-bindings: net: sun8i-emac: Add A523 GMAC200 compatible
+  net: stmmac: Add support for Allwinner A523 GMAC200
+  arm64: dts: allwinner: a523: Add GMAC200 ethernet controller
+  arm64: dts: allwinner: a527: cubie-a5e: Enable second Ethernet port
+  arm64: dts: allwinner: t527: avaota-a1: enable second Ethernet port
+  arm64: dts: allwinner: t527: orangepi-4a: Enable Ethernet port
+
+ .../net/allwinner,sun8i-a83t-emac.yaml        |  95 ++++++++++-
+ .../arm64/boot/dts/allwinner/sun55i-a523.dtsi |  55 ++++++
+ .../dts/allwinner/sun55i-a527-cubie-a5e.dts   |  28 ++-
+ .../dts/allwinner/sun55i-t527-avaota-a1.dts   |  26 ++-
+ .../dts/allwinner/sun55i-t527-orangepi-4a.dts |  23 +++
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 ++
+ drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
+ .../ethernet/stmicro/stmmac/dwmac-sun55i.c    | 159 ++++++++++++++++++
+ 8 files changed, 393 insertions(+), 6 deletions(-)
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-sun55i.c
+
 -- 
 2.47.3
 
