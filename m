@@ -1,105 +1,287 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8735E327A3D
-	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 16:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1270328587
+	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 16:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758645238; cv=none; b=YMFtH46C5ThP5RO2Rcc4tfmZwCoS/IMjLqJA1qbpc5pQowYTYFnKEVosW2Y4u87Oxa5UcOYR+n+hr1fjfeyr6gGCH+gfEPXxESnG5KOzo+mFDIOHy2OOMObP9nYdCtxOWPIhBMXAKjw91CIJ+s4y4DQ7tHqgv3/r3X4hk6XLCTI=
+	t=1758645399; cv=none; b=YHXSFUdGvnFMI03Jtf4mbRjCIBLUdwV3grt7zsgBWyDm8lK3p7le58ASTpayawLpfCpJMZH9paSh26CF/nBRxhGzeOClXmY+AstVpXSRS5EidyRQq0QWf9JBWL/RhpLkXSXcOEJjXN7O2lx59yts5/+/PFAxrm5UdUzRGF9G1H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758645238; c=relaxed/simple;
-	bh=oQO5uXI6/yKG4Ie6ao7EnmBkagYnHlh4OZll8X7T5H4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OChi5PO0HWHUIB/pNlPVfrMPGGzy5HGSG4JIjUdBUU24v6yLAmRYWxtIaZscBfRnpxrVVb8okiQsuOfovBAwQjiRhA/0k/nioFHq9LfK9gqXp8bshRYrpQRHV3waLoYUXynQqRUAc9uGqFAozad3f4iZgPImQOw17r8MndolIGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IxSv1tFb; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1758645399; c=relaxed/simple;
+	bh=WRbvQlH5wzDRTJnGfw2q29Hf/ZHyrfDOIIYTdpuj9BM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b842JnQVjJQhbwzBKOOErpR19KW0tay9h3p8QTRmwNWl7MkNqCCdKhGmhtsW3bPpCNbEZwGSzUdhxUFAv7X67qFWPqGFNcG1PggV3H2l0fwpCW3lXm+MT5HO2pjQRq82GINEnBZKzJ/swue7DqxQLwapU0DMogIzXelwpOhv9LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NBEcD5Qi; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IxSv1tFb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 8307C1A0EA4;
-	Tue, 23 Sep 2025 16:33:49 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4701860690;
-	Tue, 23 Sep 2025 16:33:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D8CC2102F1960;
-	Tue, 23 Sep 2025 18:33:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1758645227; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Nf6TbTTKpnL7mG5m//aAjoL13/cGP7KHINrrFH8p8l8=;
-	b=IxSv1tFbbPL+umkvEM7djR6Yg3cz7Q2UpQOiuIDLVBOMNmPas+rqfuSPpYEwwmPnwbbhX7
-	iyU8gRAEFEJxOGVjk8oFOFWqQuy193oS6ZkWZpkcspm4SOvyMGLSOcQiClfSkZGuzzMd/x
-	mLJHUPoAEORo8qPGaXuGZD9o2RMTCUz/YiULpu35NKxe33xKoLQGEGmuntusBxIE+/PuAx
-	bvmgZZ8PVFakA5zNOGZgzYYrnHournuWPnsbUmBuK43eReNjZ28U2VPgEmhK/7LSESXVZ/
-	wngvVxssQbdW6trXKSOS0w4l66tKt7FP4VecgcIMU7IYm57HE55YXPI6spxjHw==
-Message-ID: <bbcca781-9ac4-4eec-b3fb-ff4e01950127@bootlin.com>
-Date: Tue, 23 Sep 2025 22:03:09 +0530
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NBEcD5Qi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758645396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4zPpYQN6ZewmJa/VE3YRRkMpzAS6jQaLK0K7KotGZpQ=;
+	b=NBEcD5Qiv2gX0T753SGheBABSh8/ttSYFCmv1qWl/Fnx92Gwx+QC+gu4qg9iY7ONhdO9vu
+	awR7mU70XecMqFcCAp5QaqCC0jyNlOGrgM3u6avZOsijgGYhKF7dwSsNMDa3F6yaiX6Zc3
+	/b9J6z8PF8MUihh2N5/r4zsjF4DxjPI=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-Rt-GDcEINAu7w5_Y2vWbiw-1; Tue, 23 Sep 2025 12:36:35 -0400
+X-MC-Unique: Rt-GDcEINAu7w5_Y2vWbiw-1
+X-Mimecast-MFC-AGG-ID: Rt-GDcEINAu7w5_Y2vWbiw_1758645394
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ee10a24246so3975240f8f.3
+        for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 09:36:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758645394; x=1759250194;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4zPpYQN6ZewmJa/VE3YRRkMpzAS6jQaLK0K7KotGZpQ=;
+        b=cMXOptEFSZdFzzuvkSU0E44tB1sqZkvcrki2fQviGO87imXQs5gfJC1o0VfudzARlG
+         sg7sQUDHGjRl+rYlQtxgNDDP7mK17oID6YIjAn5GWOeGlOEIGKIpo7gtlNhv66uPmVBA
+         JUvvCgkusKPdImJiMfzyagn4iRroDlorSIr6EMrjc7CPbuYXn6rT7FYv0pxPKCh9aXY2
+         aUcAyuolR2Mjk2fO+TTOydGTNddMcMzAM9mEq3SOo7CiGAqG2gNHc1SpUbzs5+OeJQqW
+         TD/sE9GW8YgSBqeqch84GFIvP9AYVxTvcyOHcH1fCbH9OytEi69s+zarm75/Bmuvx8t6
+         Aeeg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9WX8R/9ARGoHJtElrevn0QTquFdibwdxxt4MLwHpIGk5S3+AiwOchYefn4t8JE6p0KapYn38=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLwvB+Qj3/IgLSGn3OddipFJZeI6GLn0hCtPHEEOApx1vWUOll
+	8gMBqVU7k2dz4qrc7b/0zvIKDf0X4imiTKVhFdnobzO/nxRpUx4gFO583METh68wQ7VwdEgQm18
+	Gx/lNNDbtNqG4MSU96vnT4LQ8GMEDfDanSP2xULfLIbi6ZERMa9/6f2vV9g==
+X-Gm-Gg: ASbGncuCOOidk/ggvXP/ZsLg+El7pMPD8ZsBaCmzmSQIXADuwazpntuP7nQ0iBzJSgp
+	fkWDTeJzvhn9dT9CUMYrBfCBx51vQjdvLwQYhZ5HOD33mx2/pgszHU3HpzotzGsLMJMBiO/Ey2P
+	XfJpYDzMrydjDsvm7HS2hZNGbxInQkZi5bngtuNrsb0Sf8zpTzrHibmjUGjXTjmKC7ZZr+FOvaO
+	vyCKRHl8JU7/9qA+wfyvgRkxBmC4iIZHFdl/HlZeeEe4BHbK1zzmMSnmxmcdxX+irqqLGqJL+la
+	M4h/pv5wdk3lS1tcylvvFN7LDRnMXbXR+G0=
+X-Received: by 2002:a05:6000:1a87:b0:3ff:f55b:274a with SMTP id ffacd0b85a97d-405cb6c6b56mr2974003f8f.43.1758645393685;
+        Tue, 23 Sep 2025 09:36:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOZ04vpd4BJvD9C2hR3DHmCmGT6e5v2KZ+8ep2PmkrMv09043lQZ0v8NtS5c34X1dkjLA54g==
+X-Received: by 2002:a05:6000:1a87:b0:3ff:f55b:274a with SMTP id ffacd0b85a97d-405cb6c6b56mr2973978f8f.43.1758645393257;
+        Tue, 23 Sep 2025 09:36:33 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73ea:f900:52ee:df2b:4811:77e0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-464f64ad359sm288273635e9.22.2025.09.23.09.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 09:36:32 -0700 (PDT)
+Date: Tue, 23 Sep 2025 12:36:30 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	eperezma@redhat.com, stephen@networkplumber.org, leiyang@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	Tim Gebauer <tim.gebauer@tu-dortmund.de>
+Subject: Re: [PATCH net-next v5 4/8] TUN & TAP: Wake netdev queue after
+ consuming an entry
+Message-ID: <20250923123101-mutt-send-email-mst@kernel.org>
+References: <20250922221553.47802-1-simon.schippers@tu-dortmund.de>
+ <20250922221553.47802-5-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/2] ethernet: eswin: Add eic7700 ethernet driver
-To: weishangjuan@eswincomputing.com, devicetree@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, vladimir.oltean@nxp.com,
- rmk+kernel@armlinux.org.uk, yong.liang.choong@linux.intel.com,
- anthony.l.nguyen@intel.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
- jan.petrous@oss.nxp.com, jszhang@kernel.org, inochiama@gmail.com,
- 0x1207@gmail.com, boon.khai.ng@altera.com, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
- lizhi2@eswincomputing.com, pinkesh.vaghela@einfochips.com
-References: <20250918085612.3176-1-weishangjuan@eswincomputing.com>
- <20250918090026.3280-1-weishangjuan@eswincomputing.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20250918090026.3280-1-weishangjuan@eswincomputing.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250922221553.47802-5-simon.schippers@tu-dortmund.de>
 
-Hi,
-
-On 18/09/2025 14:30, weishangjuan@eswincomputing.com wrote:
-> From: Shangjuan Wei <weishangjuan@eswincomputing.com>
+On Tue, Sep 23, 2025 at 12:15:49AM +0200, Simon Schippers wrote:
+> The new wrappers tun_ring_consume/tap_ring_consume deal with consuming an
+> entry of the ptr_ring and then waking the netdev queue when entries got
+> invalidated to be used again by the producer.
+> To avoid waking the netdev queue when the ptr_ring is full, it is checked
+> if the netdev queue is stopped before invalidating entries. Like that the
+> netdev queue can be safely woken after invalidating entries.
 > 
-> Add Ethernet controller support for Eswin's eic7700 SoC. The driver
-> implements hardware initialization, clock configuration, delay
-> adjustment functions based on DWC Ethernet controller, and supports
-> device tree configuration and platform driver integration.
+> The READ_ONCE in __ptr_ring_peek, paired with the smp_wmb() in
+> __ptr_ring_produce within tun_net_xmit guarantees that the information
+> about the netdev queue being stopped is visible after __ptr_ring_peek is
+> called.
 > 
-> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
-> Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
+> The netdev queue is also woken after resizing the ptr_ring.
+> 
+> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
 > ---
->   drivers/net/ethernet/stmicro/stmmac/Kconfig   |  11 +
->   drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
->   .../ethernet/stmicro/stmmac/dwmac-eic7700.c   | 230 ++++++++++++++++++
->   3 files changed, 242 insertions(+)
->   create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-eic7700.c
+>  drivers/net/tap.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
+>  drivers/net/tun.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 88 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> index 67fa879b1e52..a13b15ce1abd 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-> @@ -67,6 +67,17 @@ config DWMAC_ANARION
-> 
->   	  This selects the Anarion SoC glue layer support for the stmmac driver.
-> 
-> +config DWMAC_EIC7700
-> +	tristate "Support for Eswin eic7700 ethernet driver"
-> +	select CRC32
-> +	select MII
+> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> index 1197f245e873..f8292721a9d6 100644
+> --- a/drivers/net/tap.c
+> +++ b/drivers/net/tap.c
+> @@ -753,6 +753,46 @@ static ssize_t tap_put_user(struct tap_queue *q,
+>  	return ret ? ret : total;
+>  }
+>  
+> +static struct sk_buff *tap_ring_consume(struct tap_queue *q)
+> +{
+> +	struct netdev_queue *txq;
+> +	struct net_device *dev;
+> +	bool will_invalidate;
+> +	bool stopped;
+> +	void *ptr;
+> +
+> +	spin_lock(&q->ring.consumer_lock);
+> +	ptr = __ptr_ring_peek(&q->ring);
+> +	if (!ptr) {
+> +		spin_unlock(&q->ring.consumer_lock);
+> +		return ptr;
+> +	}
+> +
+> +	/* Check if the queue stopped before zeroing out, so no ptr get
+> +	 * produced in the meantime, because this could result in waking
+> +	 * even though the ptr_ring is full.
 
-Seems like CRC32 and MII are already selected by STMMAC_ETH. I guess 
-this is inspired by CONFIG_DWMAC_DWC_QOS_ETH that also seems to have 
-these unnecessary dependencies.
+So what? Maybe it would be a bit suboptimal? But with your design, I do
+not get what prevents this:
 
-Maxime
+
+	stopped? -> No
+		ring is stopped
+	discard
+
+and queue stays stopped forever
+
+
+> The order of the operations
+> +	 * is ensured by barrier().
+> +	 */
+> +	will_invalidate = __ptr_ring_will_invalidate(&q->ring);
+> +	if (unlikely(will_invalidate)) {
+> +		rcu_read_lock();
+> +		dev = rcu_dereference(q->tap)->dev;
+> +		txq = netdev_get_tx_queue(dev, q->queue_index);
+> +		stopped = netif_tx_queue_stopped(txq);
+> +	}
+> +	barrier();
+> +	__ptr_ring_discard_one(&q->ring, will_invalidate);
+> +
+> +	if (unlikely(will_invalidate)) {
+> +		if (stopped)
+> +			netif_tx_wake_queue(txq);
+> +		rcu_read_unlock();
+> +	}
+
+
+After an entry is consumed, you can detect this by checking
+
+	                r->consumer_head >= r->consumer_tail
+
+
+so it seems you could keep calling regular ptr_ring_consume
+and check afterwards?
+
+
+
+
+> +	spin_unlock(&q->ring.consumer_lock);
+> +
+> +	return ptr;
+> +}
+> +
+>  static ssize_t tap_do_read(struct tap_queue *q,
+>  			   struct iov_iter *to,
+>  			   int noblock, struct sk_buff *skb)
+> @@ -774,7 +814,7 @@ static ssize_t tap_do_read(struct tap_queue *q,
+>  					TASK_INTERRUPTIBLE);
+>  
+>  		/* Read frames from the queue */
+> -		skb = ptr_ring_consume(&q->ring);
+> +		skb = tap_ring_consume(q);
+>  		if (skb)
+>  			break;
+>  		if (noblock) {
+> @@ -1207,6 +1247,8 @@ int tap_queue_resize(struct tap_dev *tap)
+>  	ret = ptr_ring_resize_multiple_bh(rings, n,
+>  					  dev->tx_queue_len, GFP_KERNEL,
+>  					  __skb_array_destroy_skb);
+> +	if (netif_running(dev))
+> +		netif_tx_wake_all_queues(dev);
+>  
+>  	kfree(rings);
+>  	return ret;
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index c6b22af9bae8..682df8157b55 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -2114,13 +2114,53 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+>  	return total;
+>  }
+>  
+> +static void *tun_ring_consume(struct tun_file *tfile)
+> +{
+> +	struct netdev_queue *txq;
+> +	struct net_device *dev;
+> +	bool will_invalidate;
+> +	bool stopped;
+> +	void *ptr;
+> +
+> +	spin_lock(&tfile->tx_ring.consumer_lock);
+> +	ptr = __ptr_ring_peek(&tfile->tx_ring);
+> +	if (!ptr) {
+> +		spin_unlock(&tfile->tx_ring.consumer_lock);
+> +		return ptr;
+> +	}
+> +
+> +	/* Check if the queue stopped before zeroing out, so no ptr get
+> +	 * produced in the meantime, because this could result in waking
+> +	 * even though the ptr_ring is full. The order of the operations
+> +	 * is ensured by barrier().
+> +	 */
+> +	will_invalidate = __ptr_ring_will_invalidate(&tfile->tx_ring);
+> +	if (unlikely(will_invalidate)) {
+> +		rcu_read_lock();
+> +		dev = rcu_dereference(tfile->tun)->dev;
+> +		txq = netdev_get_tx_queue(dev, tfile->queue_index);
+> +		stopped = netif_tx_queue_stopped(txq);
+> +	}
+> +	barrier();
+> +	__ptr_ring_discard_one(&tfile->tx_ring, will_invalidate);
+> +
+> +	if (unlikely(will_invalidate)) {
+> +		if (stopped)
+> +			netif_tx_wake_queue(txq);
+> +		rcu_read_unlock();
+> +	}
+> +	spin_unlock(&tfile->tx_ring.consumer_lock);
+> +
+> +	return ptr;
+> +}
+> +
+>  static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
+>  {
+>  	DECLARE_WAITQUEUE(wait, current);
+>  	void *ptr = NULL;
+>  	int error = 0;
+>  
+> -	ptr = ptr_ring_consume(&tfile->tx_ring);
+> +	ptr = tun_ring_consume(tfile);
+>  	if (ptr)
+>  		goto out;
+>  	if (noblock) {
+> @@ -2132,7 +2172,7 @@ static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
+>  
+>  	while (1) {
+>  		set_current_state(TASK_INTERRUPTIBLE);
+> -		ptr = ptr_ring_consume(&tfile->tx_ring);
+> +		ptr = tun_ring_consume(tfile);
+>  		if (ptr)
+>  			break;
+>  		if (signal_pending(current)) {
+> @@ -3621,6 +3661,9 @@ static int tun_queue_resize(struct tun_struct *tun)
+>  					  dev->tx_queue_len, GFP_KERNEL,
+>  					  tun_ptr_free);
+>  
+> +	if (netif_running(dev))
+> +		netif_tx_wake_all_queues(dev);
+> +
+>  	kfree(rings);
+>  	return ret;
+>  }
+> -- 
+> 2.43.0
 
