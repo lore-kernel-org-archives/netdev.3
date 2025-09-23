@@ -1,130 +1,287 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281E0321F32;
-	Tue, 23 Sep 2025 16:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C0F327A2D
+	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 16:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758644806; cv=none; b=cvks4yk5sHXcoKTOFe1vCucitehfvUIQvUT7F/M4CMj7C0qW21qtxKXPkRCKcltzCckjnd5Mv7sIiodaH9tEqvFXTnITRm/Fk/kbiC/Iie94fkj//j58Pycpi0ib38bFiKQIOvPpoSKpJkD7s8H/hzlQgt9HTobv2ePNue96Ve0=
+	t=1758645214; cv=none; b=CJSr/pKqQh4ltwCVX0+wBdsY5NfPe+97U5P6XiqljHDJc/Kzu1eW2CVLtUL27fnPlHktgmb/Gwh28O32ayBP6HaHmFYMfYNpIPJnPNBQ7OaUmZCm/O0J3p0kVkk/NgBZ7HKWl7ehHPNvTaoxEBb08Y4awPxoKArzzXRZujBEXCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758644806; c=relaxed/simple;
-	bh=KrrHFMCnA6aF9D42XKfDP34xwEGQRzGrpfvKFl2dIlg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gfpx7nQAorQ5XAFJ0VqPD1PbASlmzJEAEpILRWAKgXN5jQrIFJ65SAvZ/C53HymV7hK15qOrYM756yk3CNcHC9gB96ODUNsrf4eZaY1kzYrVMvEHLQs7A9qWX09EtwCsOxDdhHV9NM+A7GPWf97fWsf9xktV/l9V0EjFu0JSEic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=LID7HP6c; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1758645214; c=relaxed/simple;
+	bh=yyxLKFRUSaOLMyipF1taoQiRhF8zu9NLYdzoTScfv00=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=US4YiP1IOm2vXuseDRMoO9NI9kx4U0XtrY4StQX4XjZ+1CCIJEjAzjKRfgzjohBj0j3zjjk4d7LEjqpFZBovQt/so4fCzA2TcHPLotRFZ9chutZAd0xGWPNm0U8bPyxbGhJ22KPM53VIWk1qljjnpD3/2LjJNBlSC4PnFOawvwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nemr63Fb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="LID7HP6c"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=nxbdRgQK7ciHStyImT6Z+i9IRJCZrEuPc/ZPzT/mo1c=; b=LID7HP6cYkhRWPwIQiarJCoQYr
-	Zg+DgrnU7iHE3z6Pq9f4BQHHFYTDTe8UVgrh3Rs9Dwn1nBoGW+Lzpb9De8dIeDRarmJx3ehwoJzBm
-	xfhsvy+ZOxW1q2Db3qNHZKEgYmYpvwb2FuKa9E4cBC0bNZoCqBkwpzGTcPJBnX86bRWwvEjG2tO3g
-	l7yYJOCFpfho9+gNKEm0R8exMBjRz67gMy50zmclZ45MWiWnyF7GbBeCeOCws49kcvXYcS1izI4oP
-	tW3+0DDBkxdd6UmO+8EgEimV4F0sMckWhPUxreOZZEVhBh7dm6JakHQOZgj8dtZXs0aOKzQs7polP
-	GePrgqUQ==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1v15qL-000OF5-0q;
-	Tue, 23 Sep 2025 18:26:17 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1v15qJ-000ECX-39;
-	Tue, 23 Sep 2025 18:26:16 +0200
-Message-ID: <3715920a-a8b6-4025-9f8f-ba847a5eb7f5@iogearbox.net>
-Date: Tue, 23 Sep 2025 18:26:15 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nemr63Fb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8014CC4CEF5;
+	Tue, 23 Sep 2025 16:33:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758645213;
+	bh=yyxLKFRUSaOLMyipF1taoQiRhF8zu9NLYdzoTScfv00=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Nemr63Fbqh6w+kFZnOKSJH+v2ugbEUdcPhuyOPLSRogRVG71ZKTMWINbpNzcLva4+
+	 NoZ0DRoKeiufTxGcBbRop4qB5to9LOxjbxvOPwDBnZiWXjXFzFt7p1XloX0GwqV2hx
+	 eZx6Y7FxB5siOUIpxRvjhuSlceFUaPC6ESyrW5WxbqjWbn1FVuFSt6xWNnP0FUx5cn
+	 fVlDnSgo0lbQzAIrTm9RxkCNi1jy7f+VuAS+RGz7VcOjnwMvZ9cHsGXNtPB1RcYSSt
+	 SpuKRCyMkIwAakpNLaQKHMxKB/HcziQih3MHSAoW+YJAGqzheEdIt8gPKIsYvtFhm6
+	 26KOXDYZ/SURg==
+Date: Tue, 23 Sep 2025 09:33:32 -0700
+From: Saeed Mahameed <saeed@kernel.org>
+To: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Cc: jgg@ziepe.ca, michael.chan@broadcom.com, dave.jiang@intel.com,
+	saeedm@nvidia.com, Jonathan.Cameron@huawei.com, davem@davemloft.net,
+	corbet@lwn.net, edumazet@google.com, gospo@broadcom.com,
+	kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, selvin.xavier@broadcom.com, leon@kernel.org,
+	kalesh-anakkur.purayil@broadcom.com
+Subject: Re: [PATCH net-next v2 1/6] bnxt_en: Move common definitions to
+ include/linux/bnxt/
+Message-ID: <aNLL3L2SERi2IRhg@x130>
+References: <20250923095825.901529-1-pavan.chebbi@broadcom.com>
+ <20250923095825.901529-2-pavan.chebbi@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 04/20] net: Add ndo_{peer,unpeer}_queues callback
-To: David Wei <dw@davidwei.uk>, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
- razor@blackwall.org, pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
- john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
- maciej.fijalkowski@intel.com, magnus.karlsson@intel.com
-References: <20250919213153.103606-1-daniel@iogearbox.net>
- <20250919213153.103606-5-daniel@iogearbox.net>
- <20250922182350.4a585fff@kernel.org>
- <dc23879e-1c63-4158-b002-c291548055cb@davidwei.uk>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <dc23879e-1c63-4158-b002-c291548055cb@davidwei.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27771/Tue Sep 23 10:26:39 2025)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250923095825.901529-2-pavan.chebbi@broadcom.com>
 
-On 9/23/25 6:06 PM, David Wei wrote:
-> On 2025-09-22 18:23, Jakub Kicinski wrote:
->> On Fri, 19 Sep 2025 23:31:37 +0200 Daniel Borkmann wrote:
->>> Add ndo_{peer,unpeer}_queues() callback which can be used by virtual drivers
->>> that implement rxq mapping to a real rxq to update their internal state or
->>> exposed capability flags from the set of rxq mappings.
->>
->> Why is this something that virtual drivers implement?
->> I'd think that queue forwarding can be almost entirely implemented
->> in the core.
-> 
-> I believe Daniel needs it for AF_XDP.
+On 23 Sep 02:58, Pavan Chebbi wrote:
+>We have common definitions that are now going to be used
+>by more than one component outside of bnxt (bnxt_re and
+>fwctl)
+>
+>Move bnxt_ulp.h to include/linux/bnxt/ as ulp.h.
+>Have a new common.h, also at the same place that will
+>have some non-ulp but shared bnxt declarations.
+>
+>Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
+>Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+>---
+> drivers/infiniband/hw/bnxt_re/debugfs.c       |  2 +-
+> drivers/infiniband/hw/bnxt_re/main.c          |  2 +-
+> drivers/infiniband/hw/bnxt_re/qplib_fp.c      |  2 +-
+> drivers/infiniband/hw/bnxt_re/qplib_res.h     |  2 +-
+> drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  2 +-
+> drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  7 +------
+> .../net/ethernet/broadcom/bnxt/bnxt_devlink.c |  2 +-
+> .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  2 +-
+> .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   |  2 +-
+> drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c |  2 +-
+> include/linux/bnxt/common.h                   | 20 +++++++++++++++++++
+> .../bnxt_ulp.h => include/linux/bnxt/ulp.h    |  0
+> 12 files changed, 30 insertions(+), 15 deletions(-)
+> create mode 100644 include/linux/bnxt/common.h
+> rename drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h => include/linux/bnxt/ulp.h (100%)
+>
+>diff --git a/drivers/infiniband/hw/bnxt_re/debugfs.c b/drivers/infiniband/hw/bnxt_re/debugfs.c
+>index e632f1661b92..a9dd3597cfbc 100644
+>--- a/drivers/infiniband/hw/bnxt_re/debugfs.c
+>+++ b/drivers/infiniband/hw/bnxt_re/debugfs.c
+>@@ -9,8 +9,8 @@
+> #include <linux/debugfs.h>
+> #include <linux/pci.h>
+> #include <rdma/ib_addr.h>
+>+#include <linux/bnxt/ulp.h>
+>
+>-#include "bnxt_ulp.h"
+> #include "roce_hsi.h"
+> #include "qplib_res.h"
+> #include "qplib_sp.h"
+>diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
+>index df7cf8d68e27..b773556fc5e9 100644
+>--- a/drivers/infiniband/hw/bnxt_re/main.c
+>+++ b/drivers/infiniband/hw/bnxt_re/main.c
+>@@ -55,8 +55,8 @@
+> #include <rdma/ib_umem.h>
+> #include <rdma/ib_addr.h>
+> #include <linux/hashtable.h>
+>+#include <linux/bnxt/ulp.h>
+>
+>-#include "bnxt_ulp.h"
+> #include "roce_hsi.h"
+> #include "qplib_res.h"
+> #include "qplib_sp.h"
+>diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+>index ee36b3d82cc0..bb252cd8509b 100644
+>--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+>+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
+>@@ -46,6 +46,7 @@
+> #include <linux/delay.h>
+> #include <linux/prefetch.h>
+> #include <linux/if_ether.h>
+>+#include <linux/bnxt/ulp.h>
+> #include <rdma/ib_mad.h>
+>
+> #include "roce_hsi.h"
+>@@ -55,7 +56,6 @@
+> #include "qplib_sp.h"
+> #include "qplib_fp.h"
+> #include <rdma/ib_addr.h>
+>-#include "bnxt_ulp.h"
+> #include "bnxt_re.h"
+> #include "ib_verbs.h"
+>
+>diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.h b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+>index 6a13927674b4..7cdddf921b48 100644
+>--- a/drivers/infiniband/hw/bnxt_re/qplib_res.h
+>+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.h
+>@@ -39,7 +39,7 @@
+> #ifndef __BNXT_QPLIB_RES_H__
+> #define __BNXT_QPLIB_RES_H__
+>
+>-#include "bnxt_ulp.h"
+>+#include <linux/bnxt/ulp.h>
+>
+> extern const struct bnxt_qplib_gid bnxt_qplib_gid_zero;
+>
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+>index d59612d1e176..917a39f8865c 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+>@@ -59,10 +59,10 @@
+> #include <net/netdev_rx_queue.h>
+> #include <linux/pci-tph.h>
+> #include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+>
+> #include "bnxt.h"
+> #include "bnxt_hwrm.h"
+>-#include "bnxt_ulp.h"
+> #include "bnxt_sriov.h"
+> #include "bnxt_ethtool.h"
+> #include "bnxt_dcb.h"
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+>index 06a4c2afdf8a..2578bac16f6c 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+>@@ -33,6 +33,7 @@
+> #ifdef CONFIG_TEE_BNXT_FW
+> #include <linux/firmware/broadcom/tee_bnxt_fw.h>
+> #endif
+>+#include <linux/bnxt/common.h>
+>
+> #define BNXT_DEFAULT_RX_COPYBREAK 256
+> #define BNXT_MAX_RX_COPYBREAK 1024
+>@@ -2075,12 +2076,6 @@ struct bnxt_fw_health {
+> #define BNXT_FW_IF_RETRY		10
+> #define BNXT_FW_SLOT_RESET_RETRY	4
+>
+>-struct bnxt_aux_priv {
+>-	struct auxiliary_device aux_dev;
+>-	struct bnxt_en_dev *edev;
+>-	int id;
+>-};
+>-
+> enum board_idx {
+> 	BCM57301,
+> 	BCM57302,
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+>index 02961d93ed35..cfcd3335a2d3 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+>@@ -13,12 +13,12 @@
+> #include <net/devlink.h>
+> #include <net/netdev_lock.h>
+> #include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+> #include "bnxt.h"
+> #include "bnxt_hwrm.h"
+> #include "bnxt_vfr.h"
+> #include "bnxt_devlink.h"
+> #include "bnxt_ethtool.h"
+>-#include "bnxt_ulp.h"
+> #include "bnxt_ptp.h"
+> #include "bnxt_coredump.h"
+> #include "bnxt_nvm_defs.h"
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+>index be32ef8f5c96..3231d3c022dc 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+>@@ -27,9 +27,9 @@
+> #include <net/netdev_queues.h>
+> #include <net/netlink.h>
+> #include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+> #include "bnxt.h"
+> #include "bnxt_hwrm.h"
+>-#include "bnxt_ulp.h"
+> #include "bnxt_xdp.h"
+> #include "bnxt_ptp.h"
+> #include "bnxt_ethtool.h"
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+>index 80fed2c07b9e..84c43f83193a 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+>@@ -17,9 +17,9 @@
+> #include <linux/etherdevice.h>
+> #include <net/dcbnl.h>
+> #include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+> #include "bnxt.h"
+> #include "bnxt_hwrm.h"
+>-#include "bnxt_ulp.h"
+> #include "bnxt_sriov.h"
+> #include "bnxt_vfr.h"
+> #include "bnxt_ethtool.h"
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+>index 61cf201bb0dc..992eec874345 100644
+>--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+>+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+>@@ -22,10 +22,10 @@
+> #include <linux/auxiliary_bus.h>
+> #include <net/netdev_lock.h>
+> #include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+>
+> #include "bnxt.h"
+> #include "bnxt_hwrm.h"
+>-#include "bnxt_ulp.h"
+>
+> static DEFINE_IDA(bnxt_aux_dev_ids);
+>
+>diff --git a/include/linux/bnxt/common.h b/include/linux/bnxt/common.h
+>new file mode 100644
+>index 000000000000..2ee75a0a1feb
+>--- /dev/null
+>+++ b/include/linux/bnxt/common.h
+>@@ -0,0 +1,20 @@
+>+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+>+/*
+>+ * Copyright (c) 2025, Broadcom Corporation
+>+ *
+>+ */
+>+
+>+#ifndef BNXT_COMN_H
+>+#define BNXT_COMN_H
+>+
+>+#include <linux/bnxt/hsi.h>
+>+#include <linux/bnxt/ulp.h>
+>+#include <linux/auxiliary_bus.h>
+>+
+>+struct bnxt_aux_priv {
+>+	struct auxiliary_device aux_dev;
+>+	struct bnxt_en_dev *edev;
+>+	int id;
+>+};
+>+
 
-Yes, in case of af_xdp we basically need to propagate related capabilities
-of the netdev, so that we can expose the given xdp flags in this case
-further to netkit which implements ndo_bpf etc. Thinking about it, maybe
-an alternative could be that netkit always exposes NETDEV_XDP_ACT_XSK etc
-and we catch it in netkit's ndo_bpf + ndo_xsk_wakeup implementation when
-checking peer queue's dev, and let it fail there instead. I'll play a bit
-with this idea instead, perhaps this simplifies things.
+This file is redundant since ulp.h already holds every thing "aux", so this
+struct belongs there. Also the only place you include this is file:
+   drivers/net/ethernet/broadcom/bnxt/bnxt.h
+
+So I am not sure if you have your include paths properly setup to avoid
+cross subsystem includes, in-case this was the point of this patch :).
+
+>diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h b/include/linux/bnxt/ulp.h
+>similarity index 100%
+>rename from drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
+>rename to include/linux/bnxt/ulp.h
+>-- 
+>2.39.1
+>
+>
