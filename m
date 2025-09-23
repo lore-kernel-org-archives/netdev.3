@@ -1,140 +1,175 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EF9255F31
-	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 16:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA8B26C3AC
+	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 16:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758643605; cv=none; b=KbR0slplMkOCnROIyNXw3KkFoKqHV0M05GtUc6D96Flcvqi+HJpPTYXj3gGhhMAP1C1lgOsj2W88lDUbjpAA+CwGXCgF9cuCBARVGDWODSdWZ6WP1mj6Mx1i8KXqQTXClIm9V49pOBcBcWnaqII56AQcbI//w5z26/tiHNyEzn0=
+	t=1758643615; cv=none; b=EPZ6+nB2tQV4tSpmTivkTndPQZqYsySVAxr0HAtvlZRvjHqPNRmFiYoRr7MWv0yS9OZICGWxX7hiBxaKc6vWVB7edSsPpl2r5hdPDUS8be/9STOZOdFnMAYyEFdcpt+VFDRyTl1PHNuiLGYSMZxYlPbz8b+Bsq2Qjrc+YDLLOYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758643605; c=relaxed/simple;
-	bh=yRZBREAJTaU8sSOhttVeLwSntMyFmzNWX36Gn0HWzTs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UrqriRe03DpWB2yqfpGaL3fXyV3NdPrW+KecpMeJGKIxpFktJNl1jAm/D61CCG14z6Dn6w55IcLWGgQkS28EU+mF6yiNLjdkPHuY2pjMJeP5veJ2Rql5hU7Rnc/VsObk0l5832xY2hMcJFeFw1qflhrz06DZx8bJh6EmDlzQ/oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHTTlYNn; arc=none smtp.client-ip=209.85.210.175
+	s=arc-20240116; t=1758643615; c=relaxed/simple;
+	bh=LSZaSxvgiNpblG6l7iGMnvMkhnGQyUdC6rYhgCCt/B4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=al3kWsaO1iOGacVVP9eBKFPfvMN7Den1EEO/Ex084EVbaLh+KMyyl3XplA8SjT0+E1qtCYsw1fnR70M0JEVAN59AsV8r/MUh/JblJaNJTb/UMsScgyb192QuxLEUZz72j9mfLtXd3G97r8I5tuXNXFMPgnszb026xRI9cnvyUXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDAZQFLb; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHTTlYNn"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-77f2a62e44dso3755894b3a.1
-        for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 09:06:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDAZQFLb"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-273a0aeed57so265025ad.1
+        for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 09:06:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758643603; x=1759248403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=t309JLGTHyrQ93SF2bmZLkppAVP5+5xihRdA8pDsPLU=;
-        b=KHTTlYNnAIQNuqe1lUUQzBojbUFsRc47g6kYMQEW+QXL4DC7XEF7C+8Ym9YB+XlhWh
-         ELPPA64yorVIMxjb8sKcdolAlOQvbnBfNUaCcS4V8zp/o5z+UxKyTx5q+mlTYHxhjfqG
-         0dk1fMG4Jt3wzc0HzOe8flQa8oW6KfRIkHnp884aABSFOOBve3b9S9pFAMxhLZQIrMFx
-         g0aVGlkBht2HLaInaFL7FGhClg5sbZSJ0i/HjJqHJyIMERJuUbTryTsXRbwlZ6DjmdWc
-         7o8xVenyxUUMjhZaemd30XDUfrmom3Jd27g8Cu7Z8H16rFWHThnBCxWM73UezRsgod4a
-         7kXw==
+        d=gmail.com; s=20230601; t=1758643614; x=1759248414; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lfZwWS5AXjSjh47+jujhHs0PNbVVMWVBOW1GeBhi9ZA=;
+        b=jDAZQFLbYRjypsVLouT9JktzAGT65qfWajmhbBYcLDoe6lf1WQ2s8ns7TuAb+y1buj
+         LqfsfmHJg20yW5zp7bsSRORX3VSChltKpnBt9nPYyWTRFw10QImNwec4CSoiif0F0zfN
+         qLIZdzu0zDbPAQ2DfoWZjUNgceQiBcRgfQCrZqA8EnyqRAhRg8T2r8HbzDuqtHOyTdEX
+         9Ur04TDIpRh71U5BB9NWJwklFZgnOD20VrXv/du4pYv9JCmQaHoAmOvW5ziY7t6Jm1Go
+         c7eWs8PU1CoWTtnxPY/yYgFKf++IvfK1o/qJDTg1v1JVWQ13z6J9/CeNpdNd4iVJy3Oj
+         kdqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758643603; x=1759248403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t309JLGTHyrQ93SF2bmZLkppAVP5+5xihRdA8pDsPLU=;
-        b=fl383MkcfH2HntpVpNHYJxYQjuF0KkFnFmWPyIt1MZ78LVy2lD6i+SUc0/jN3lhS6b
-         9D28YCz+D+3iFuges809Tsm/oUY7oHHnI+Fl/RudKk24XZvLF42tuTppy6kxRtYw89Lp
-         DtCA25/k1smB0MIma4Pvk+3kSa5uA1zZXl6PPjFRNjno+31vI6iv85Kvk1Fmln1e41tI
-         j7OyOJ1alj3bYSCNfzokb67G4V0HxSU29VZFxQvBu1Q38THt66Va6dDFLhgJseeE6FHl
-         2HJR7OY8xk4Gccws5lc0so1jNNYEdGUKWFYgVWwoYRrUcbhG8RvyveGW+ITkjn8Un/3U
-         gOBw==
-X-Gm-Message-State: AOJu0YxljV+WB3jiU8jv4QrQjAHvdVw77VZiPkrEW8FdaLSDRcPQsUK7
-	YJgWAVQ6ZC2LPVEE7DNOtkrzJIw2PNNDIAvFbmW1j5nE8kM01phuNivz
-X-Gm-Gg: ASbGncsfErFPYYZPZpztCABE6J9rwVe5McA9MrGBlat3mpov+t5COFn+fd5oIkiw4AR
-	A/ub2Gcag4kfhQmu8tkCb8fjzFp8xATmmxsIxkdpLtH1UE1nppH6fvzwVXwSaLseep5PZeW/kjF
-	XDCzQyMlkYA87GI44Y+QXtzKRKEA6rnlJujDyD9jT78coekXfcGpriARRQjcFNl9ViMBiptveRZ
-	L5EJ0xjKoA6woV3S+ZqTbsv6QtjLoApTysVacziTLRu+vkzMIr8iADOdbfL70x3g76m6GppszqD
-	DwEIRgl0Rj1a3NO0rYS5lU3EELuQu2I9gn2JKg/TMOk1QYpo1qIIueqSJS2THccA8pWXV2qFT0x
-	753JTArLNboCeVF4Bjzd3ponAfuL19tqOdp9i3Cpz26bubiRP0s4PYUvQljMQXAKtXpOImPjMlR
-	4pS2QjSlALMy8O
-X-Google-Smtp-Source: AGHT+IFkkB+3aFbUYjMbYAr5CaGup6768qgAaVamVl9anvKViE9FgNGhY1HvWcu+9yfaeLkmeqZekw==
-X-Received: by 2002:a17:903:2b10:b0:271:49f:eaf5 with SMTP id d9443c01a7336-27cc696e9efmr39277455ad.30.1758643603090;
-        Tue, 23 Sep 2025 09:06:43 -0700 (PDT)
-Received: from debian.domain.name ([223.181.105.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-269802df8aesm167167395ad.89.2025.09.23.09.06.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Sep 2025 09:06:42 -0700 (PDT)
-From: I Viswanath <viswanathiyyappan@gmail.com>
-To: richardcochran@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	david.hunter.linux@gmail.com,
-	I Viswanath <viswanathiyyappan@gmail.com>,
-	syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Subject: [RFC PATCH net v2] ptp: Add a hard upper bound on max_vclocks
-Date: Tue, 23 Sep 2025 21:36:22 +0530
-Message-ID: <20250923160622.8096-1-viswanathiyyappan@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20230601; t=1758643614; x=1759248414;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lfZwWS5AXjSjh47+jujhHs0PNbVVMWVBOW1GeBhi9ZA=;
+        b=pNdChRH8qX+3KTwk/2bFYAxQe89AFGbmkoLxnKIfJVrS9PY7wp2TsS3XN3H4GfmCo7
+         7BKuAEgQmWKEC3R+38uNRAMH4aAzUQDb3hHkGjor2ETmhGMZBXFzchT5l3owcB+veHzD
+         FxIL8eYzxJ36mmHWFfyY9tG57J4N8A8zS/jKRq72Ndwq5sV4Gh8n32jZsd6oCKUX9SO3
+         BkiMpVuHXzBFkOQbU61r/o1h4NDFWQFeRVEhorSG8zVHS/x+jrhgorng2TOnhKitGfR7
+         CkqX8BI6jrgEykPHRJUJl+U6CJzT2QlVwPReqIKQXxKtZV0675W78awJjF30s0OXXqFe
+         u7tA==
+X-Gm-Message-State: AOJu0Yyy1WlWeunHQeiObHLLG1HVZrJxMkiY2htchec4DCVk5z+lvwUT
+	hMvpywmzvZKmw3f/ck3wnXCflgXr8Hnf3S2JPcl0yxnpQSGLlEcf4qIc8G0tlcCtCniqNWZCk10
+	Tpkx7QNWER82TBOM43pXgwGc9zRP1E6w=
+X-Gm-Gg: ASbGncvvVCEjZ30TreLdTeJL3oSVTICjvBCMlHeuCIUdIdLsCBSCy1MxaceMFtLNLmU
+	vw0QP51iopsAiYYm0vuIwFs+yxP1q7q+vF4RJA03iOJib4WJPiTCRvYzPyFGjnHELJXd3y/O5U/
+	r4PoFigbHNtFEwE5deHMSDh7U1WRGBJZ3L6RVEvTDJ9xqL3i4MIwoqJ3XfgZstINL5hAeT5SXXU
+	MJgHnkkvjGiOar45nIFptna5J7M2cCe1egwCo4D6A==
+X-Google-Smtp-Source: AGHT+IElrnbiPc11xcIlgx/7eLp17j7KN5c1/0biJ0i/uJUb0MwRHW0VDJc6A4N7uhdDkUSkX1wG1aPAZnUI5GY+570=
+X-Received: by 2002:a17:903:2447:b0:266:3f63:3500 with SMTP id
+ d9443c01a7336-27cd7a31339mr34522615ad.12.1758643613364; Tue, 23 Sep 2025
+ 09:06:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1758234904.git.lucien.xin@gmail.com> <a7fb75136c7c2e51b7081d3bff421e01b435288f.1758234904.git.lucien.xin@gmail.com>
+ <871ed254-c3d8-49aa-9aac-eeb72e82f55d@redhat.com>
+In-Reply-To: <871ed254-c3d8-49aa-9aac-eeb72e82f55d@redhat.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 23 Sep 2025 12:06:41 -0400
+X-Gm-Features: AS18NWD1Po0NumxImO775C_7VSP655cJIPbmA0dWx2wuT8JxABkrL-E_ndi5lAw
+Message-ID: <CADvbK_e20TrcgprXmnZzvoEO6yzoo4Zx7B0qFS0kQPT8Sf63LQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 03/15] quic: provide common utilities and data structures
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev, davem@davemloft.net, 
+	kuba@kernel.org, Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Metzmacher <metze@samba.org>, Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli <tfanelli@redhat.com>, 
+	Pengtao He <hepengtao@xiaomi.com>, linux-cifs@vger.kernel.org, 
+	Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
+	Paulo Alcantara <pc@manguebit.com>, Tom Talpey <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev, 
+	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
+	Benjamin Coddington <bcodding@redhat.com>, Steve Dickson <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, 
+	Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, 
+	Jason Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+	Daniel Stenberg <daniel@haxx.se>, Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot reported WARNING in max_vclocks_store.
+On Tue, Sep 23, 2025 at 7:21=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> On 9/19/25 12:34 AM, Xin Long wrote:
+> > This patch provides foundational data structures and utilities used
+> > throughout the QUIC stack.
+> >
+> > It introduces packet header types, connection ID support, and address
+> > handling. Hash tables are added to manage socket lookup and connection
+> > ID mapping.
+> >
+> > A flexible binary data type is provided, along with helpers for parsing=
+,
+> > matching, and memory management. Helpers for encoding and decoding
+> > transport parameters and frames are also included.
+> >
+> > Signed-off-by: Xin Long <lucien.xin@gmail.com>
+> > ---
+> > v3:
+> >   - Rework hashtables: split into two types and size them based on
+> >     totalram_pages(), similar to SCTP (reported by Paolo).
+> >   - struct quic_shash_table: use rwlock instead of spinlock.
+>
+> Why? rwlock usage should be avoided in networking (as it's unfair, see
+> the many refactors replacing rwlock with rcu/plain spinlock)
+Interesting, I thought rwlock works better than spinlock in this case.
+I will change back to spinlock.
 
-This occurs when the argument max is too large for kcalloc to handle.
+>
+> [...]
+> > +
+> > +static int quic_uhash_table_init(struct quic_uhash_table *ht, u32 max_=
+size, int order)
+> > +{
+> > +     int i, max_order, size;
+> > +
+> > +     /* Same sizing logic as in quic_shash_table_init(). */
+> > +     max_order =3D get_order(max_size * sizeof(struct quic_uhash_head)=
+);
+> > +     order =3D min(order, max_order);
+> > +     do {
+> > +             ht->hash =3D (struct quic_uhash_head *)
+> > +                     __get_free_pages(GFP_KERNEL | __GFP_NOWARN, order=
+);
+> > +     } while (!ht->hash && --order > 0);
+>
+> You can avoid a little complexity, and see more consistent behaviour,
+> using plain vmalloc() or alloc_large_system_hash() with no fallback.
+>
+I wanted to use alloc_large_system_hash(), but the memory allocated
+by it is usually NOT meant to be freed at runtime. I don't see a free_
+function to do it either.
 
-Extend the guard to guard against values that are too large for
-kcalloc
+If QUIC works as a kernel module, what should I do with this memory
+in module_exit()?
 
-What would be a reasonable value for PTP_MAX_VCLOCKS_LIMIT?
+>
+> > +/* rfc9000#section-a.3: DecodePacketNumber()
+> > + *
+> > + * Reconstructs the full packet number from a truncated one.
+> > + */
+> > +s64 quic_get_num(s64 max_pkt_num, s64 pkt_num, u32 n)
+> > +{
+> > +     s64 expected =3D max_pkt_num + 1;
+> > +     s64 win =3D BIT_ULL(n * 8);
+> > +     s64 hwin =3D win / 2;
+> > +     s64 mask =3D win - 1;
+> > +     s64 cand;
+> > +
+> > +     cand =3D (expected & ~mask) | pkt_num;
+> > +     if (cand <=3D expected - hwin && cand < (1ULL << 62) - win)
+> > +             return cand + win;
+> > +     if (cand > expected + hwin && cand >=3D win)
+> > +             return cand - win;
+> > +     return cand;
+>
+> The above is a bit obscure to me; replacing magic nubers (62) with macro
+> could help. Some more comments also would do.
+>
+The code is exactly from the commented doc:
+/* rfc9000#section-a.3: DecodePacketNumber()
 
-KMALLOC_MAX_SIZE/(sizeof(int)) is the absolute max value for which the 
-memory allocation wouldn't fail
+See:
+https://datatracker.ietf.org/doc/html/rfc9000#section-a.3
 
-Reported-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=94d20db923b9f51be0df
-Tested-by: syzbot+94d20db923b9f51be0df@syzkaller.appspotmail.com
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: I Viswanath <viswanathiyyappan@gmail.com>
----
-v1:
-Link: https://lore.kernel.org/linux-mm/20250922170357.148588-1-viswanathiyyappan@gmail.com/T/#u
+I will bring some comments from there.
 
-v2:
-- Moved the validation to max_vclocks_store
-
- drivers/ptp/ptp_private.h | 1 +
- drivers/ptp/ptp_sysfs.c   | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index b352df4cd3f9..f329263f33aa 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -22,6 +22,7 @@
- #define PTP_MAX_TIMESTAMPS 128
- #define PTP_BUF_TIMESTAMPS 30
- #define PTP_DEFAULT_MAX_VCLOCKS 20
-+#define PTP_MAX_VCLOCKS_LIMIT (KMALLOC_MAX_SIZE/(sizeof(int)))
- #define PTP_MAX_CHANNELS 2048
- 
- enum {
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 6b1b8f57cd95..200eaf500696 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -284,7 +284,7 @@ static ssize_t max_vclocks_store(struct device *dev,
- 	size_t size;
- 	u32 max;
- 
--	if (kstrtou32(buf, 0, &max) || max == 0)
-+	if (kstrtou32(buf, 0, &max) || max == 0 || max > PTP_MAX_VCLOCKS_LIMIT)
- 		return -EINVAL;
- 
- 	if (max == ptp->max_vclocks)
--- 
-2.47.3
-
+Thanks.
