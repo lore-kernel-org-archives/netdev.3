@@ -1,93 +1,80 @@
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAC330B534;
-	Tue, 23 Sep 2025 20:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7372F56
+	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 20:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758659286; cv=none; b=VBmK48UGepQ5+LAMtbVEd71L4rxYeJwdxjSUaW9Ghwwf6tGiQyr0tl79l9VHD7tu/tAyWhT6X1yKx3KLtO2/SYtYirmURhfnXsjunGDkT3abasEmJRd0NRpX/WNtio9QiiTxhimzTKa0kXRv7jTaPjg2jgMJjhsCPKSTR2cPkP8=
+	t=1758660316; cv=none; b=TVwZjXjl2oTb1IF7yDlimh1LJp7AGncAKJKail8LloF9WNXD71waE/pmhEpKCNm9BFoO8fhz3ppOpaOuGQm0tB3uTDCUOEpS00tzeiP6NYESHxxgUSe+F3IjYXryscjutC+39tePxI7q2DBcNfkNnBdLjrmyqLLgIJ85W6cUXhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758659286; c=relaxed/simple;
-	bh=ZDi3YhpgKNuiA8C2o6Aww9+GP/AQl7UZ/GJyo6QlrLk=;
+	s=arc-20240116; t=1758660316; c=relaxed/simple;
+	bh=nGwmEIjf0Z80ZC/Qqkye+v7lXX7+Uyfj55BEPrjCfjk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ieow262auTV3xTRrWn+UM4LlN06ika5eGAff50Me57ZvHlFjrxhp0/GwgUW8/ilwG959j+6RuRMXMw3Pv+qDWACYwusE5MT1nrzR/SoyuBsZLvDLujjE0c8jTZ0OI/OK+P6ovvAlFsDA/L/pLJWZCrroiNTdlRZmerw6Dne1DmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=p2RpSxy1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=BjYOQ1x1; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=gfqnMpJSgCbnk+UIxLiEuj6fK8ATRWrCN4zrhT1ufl5NK/RTMRAEYCmNznLjfynpLl+0OIAho1aBunXYaH32VO8v293/wjOBZ/VZ2Vt14OTkkhuRF4yKd3Gc7Ksp7wOJoetnN4nE5UXA7+f1aeUd2objZUXc5X4bmBRYMzXJOdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ORs4JD8W; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="p2RpSxy1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BjYOQ1x1"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 543321D0032E;
-	Tue, 23 Sep 2025 16:28:01 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Tue, 23 Sep 2025 16:28:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1758659281; x=
-	1758745681; bh=TAjwu2nTa1m1E7lea16+hYCBQe7X9QJZoSoAAakz5Qo=; b=p
-	2RpSxy12FwYvIlO8s7l9U1plKdf+JfOL/b2JsA8vP20FQgz6J3MvfkGmpvECdJqB
-	YxJk7lw4B+NoBSDdOVD+fMj0mpPlEwPdOA0UU4ugJLpfPlmSzdZxT3dTsFdZI78h
-	lWpVKZurNDeJ7LmD0X+E/IBLGocOLeicF3hjL7zOmw2LLsBiWaLFZ98EmpMtU4j6
-	tQyJpMMdomuzrHl8+M2QpqfJ22Ih9KoTw123lhQMYJQWmxa/YGKglfw2nWd8SYVE
-	xk8D24WwRzY0/WOz+vPZvWKrZdQK/qelYGhKTN8jXS43ChDk9x4FRjO5vt0Z1W2u
-	Vs+4wF0qpryvLokXMaI7A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1758659281; x=1758745681; bh=TAjwu2nTa1m1E7lea16+hYCBQe7X9QJZoSo
-	AAakz5Qo=; b=BjYOQ1x1PXxzCHMYNha5rFMKdbSDyZcwGYkVpdQC0oaQ1f9aHbp
-	+h+hN1nga4bn1PUQldfg3Axb0KD/bVgPy0FLxKsljeZH1B5Z0xUU8cIN/EzFZKE3
-	Rd4vq1hvDME9Cv+uiq+9RfaYdLztQEyKBPLjPjyaauCqSdUU1XgyGtOEWTWrDlC0
-	BCMnXKOqb9RWp0OBuO0Mtci79XH3VfHjQ1HwNn3U4anXuOsCMK8Q2PCInbUuNLat
-	LAyysDQcgcxGHV7q1CxqE/tpJCFVPmZT0T08V9zI3J8aWW5Cb/s/fOxdDynmztI2
-	UsTkhtr6J7CVNXolDoAIx1Ej35tbJ5NNAgA==
-X-ME-Sender: <xms:0ALTaG8k1On13dYK0bM456ecQhYwstoYLkR_v8FJv-Mb2bKt6YLT7Q>
-    <xme:0ALTaCkQSPc5GxskB4WIi0qTvEhCJ6gpIk5qoe__B8iy1LFLPBM4imu0W9LXQPWQ0
-    yFBXzKfCvl0WQnviyfBSwVTiwyhL-jGgFsxszwlqMh_MeKMQ5-hFEc>
-X-ME-Received: <xmr:0ALTaJDSykt--mvZfLnqGAltZ5M3cVtCZqX57ZsEg2EbEHVqJyh_dU-qCRTa>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeiudeilecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
-    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
-    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddupdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehguhhsthgrvhhosegvmhgsvgguuggvughorh
-    drtghomhdprhgtphhtthhopehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvghmsegurghv
-    vghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtg
-    homhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
-    hhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgvrh
-    drkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:0ALTaDVyejjspvjPx0W5uK5pLqwub9OaiSoN496QSyHzCIi38UfyFw>
-    <xmx:0ALTaP936xUOruTSnkqBH14D_GogcNCFTSXGOF0aaft7xrNq5U-xcg>
-    <xmx:0ALTaNRu09bcksrAergZiclF21QvspxNj_5XcJLQ5p00L2MrS8dVcA>
-    <xmx:0ALTaMQ-k7f0TKsYp0GHwzWnhRxiLuSGNqKKKVMtnaD5E0cCnThXgw>
-    <xmx:0QLTaAIyFO9F61PYAGpNTwly6T8T5pWhHPEZR7W69B5xla1vYPCPVvg2>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 23 Sep 2025 16:28:00 -0400 (EDT)
-Date: Tue, 23 Sep 2025 22:27:58 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] tls: Avoid -Wflex-array-member-not-at-end warning
-Message-ID: <aNMCznixxL2veGxK@krikkit>
-References: <aNFfmBLEoDSBSLJe@kspp>
- <aNFpZ4zg5WIG6Rl6@krikkit>
- <c9cd2ebb-ecdb-4ba9-8d54-f01e3cd54929@embeddedor.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ORs4JD8W"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-24457f581aeso59824165ad.0
+        for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 13:45:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758660314; x=1759265114; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sipScXl1CFAIZEiqAz6v2zuPdeVOTifZUwgP7G5st/0=;
+        b=ORs4JD8Wq/POKafG29v8kG7lpNbTfeh62uOMPMZa3MrkfXUFlFPRvg95ct0NJ1UrMm
+         LZ5HwUAW0eNIzXL7+4s6lxO0j6/gvRMRdgnlwGwfe9FCHh0xiyDRXJMi3ilgSIKm/QM6
+         luv3G1al2u2FzioMDZwy3W+PF1kxxsO8QHINbx7D0mbUxPQZGfYmKzHRuLUYNEpohoNQ
+         8UvOAhQePxRRuq2iveUfhotQCBG2/+QUTOK13fjvEnkIjPGAC4CsEuYKwfwYtPj+32Vu
+         RkdT4s6VKwSm6KIJGwK8uqhL2h95jQU2rGJju/4RY9cFVB16H2lNTrp3CS1vAYfDDaIa
+         ywuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758660314; x=1759265114;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sipScXl1CFAIZEiqAz6v2zuPdeVOTifZUwgP7G5st/0=;
+        b=nknrSAot9jGOR1kQ7MgodnVhbIfyLCAV+Zw9zCDoG1P0UQ9tkABOhqIfTucY24Hvls
+         7xZ1qN7LoR0LuzvJ6ETebyxUIPPbGyq3LUTP5mVlD+65GHW1dQLPtLOQ5kcR1gEjSEu2
+         IrGZEJySfw6+DrEwUvnD/QqWPsf4Se6pwZTIf3TqjKik0PMcOn6b0TivLP7vgDap31xz
+         z+kcWs/L4Ag8rcgNDVBkVXDsh7fVfKeXp8QDQKYUB9W6bsxYnijkzHLFqD+3dNIJWFsl
+         BbYhil40iKUWfOB8aWT2DTXfLSLFC4Al6bEroThPoWNH+CBc9jMSlNra1MvI5Dz6OHdT
+         gvmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXj1Qqj5XsttJTmroxjnbdSp6KUrD9Fm7lMjxJECxmkJoUSUQJJIFR1NByOhQD0VW97KOxgQ1Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1pukFnLyj6d1TeBYpiCGr9SX0/MPVescsiPljGTO4Nr34Z5yM
+	uJnZGlXaD80SRDltPbpbrSnARc72EltNWympH7BGQC9ObJjSE4KR3jM=
+X-Gm-Gg: ASbGncseC3j7gjzXDMIcAoSTwJSQMZZscuKFABbFLjLBiRJ1DdpcltrYc05Jzca9hrF
+	NZqqGQw47er/6hylrpRHFgDQMlWoHdYS8vWIiyFcMNGDncfOICV2HGXG/9PK9LdWPMqtSIk+lDL
+	5VDjb5e7Y9LJ4ntnIKLxYWx5eslaAyuZc1pYHSolWy1ojat2urM6rGfmvxF0qKhXROrZ9orYvZ7
+	dS1bFSliy4Y2xj5ck2Wq93hs6TxcGWq/iosQmfuTRSe5OdKQE5pjmOC5a6AGj5kj/700aB9ks6d
+	N9lv+cUmvfRDyHZyRXO86qDf6+U0pB1EaCXvtOjytOzIwORobT8p7PEgoRFWhztygU4HX4f1qxb
+	IM4q13tJiLhmt1JIo2de/aOHn+t/aLuBrxBsdtaaaLAYUvWF+W8O+pAFCpJqn/yqyBDoNdpuATF
+	Ge4bX40KwAbceNTk+16h7uSf265dRkdXWI3Kg4il8AOo9a8ztcZeHA+ptaqHqDbBREfgxgcl0GS
+	Uvv
+X-Google-Smtp-Source: AGHT+IFlpvsj7lKaK/ZqzoeecXc8ehWZkc0IxVgAN+LI3oeEEkFfcubTmnGuNVbCi3mV+UCdDzJmEg==
+X-Received: by 2002:a17:903:190:b0:277:9193:f2da with SMTP id d9443c01a7336-27cc0dbb137mr49147325ad.5.1758660314194;
+        Tue, 23 Sep 2025 13:45:14 -0700 (PDT)
+Received: from localhost (c-73-158-218-242.hsd1.ca.comcast.net. [73.158.218.242])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2698016c098sm166380315ad.33.2025.09.23.13.45.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Sep 2025 13:45:13 -0700 (PDT)
+Date: Tue, 23 Sep 2025 13:45:13 -0700
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, donald.hunter@gmail.com, andrew+netdev@lunn.ch,
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+	john.fastabend@gmail.com, matttbe@kernel.org,
+	chuck.lever@oracle.com, jdamato@fastly.com, skhawaja@google.com,
+	dw@davidwei.uk, mkarsten@uwaterloo.ca, yoong.siang.song@intel.com,
+	david.hunter.linux@gmail.com, skhan@linuxfoundation.org,
+	horms@kernel.org, sdf@fomichev.me, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH RFC 0/4] Add XDP RX queue index metadata via kfuncs
+Message-ID: <aNMG2X2GLDLBIjzB@mini-arch>
+References: <20250923210026.3870-1-mehdi.benhadjkhelifa@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,42 +83,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <c9cd2ebb-ecdb-4ba9-8d54-f01e3cd54929@embeddedor.com>
+In-Reply-To: <20250923210026.3870-1-mehdi.benhadjkhelifa@gmail.com>
 
-2025-09-23, 11:37:55 +0200, Gustavo A. R. Silva wrote:
+On 09/23, Mehdi Ben Hadj Khelifa wrote:
+> ---
+> Mehdi Ben Hadj Khelifa (4):
+>   netlink: specs: Add XDP RX queue index to XDP metadata
+>   net: xdp: Add xmo_rx_queue_index callback
+>   uapi: netdev: Add XDP RX queue index metadata flags
+>   net: veth: Implement RX queue index XDP hint
 > 
-> 
-> On 9/22/25 17:21, Sabrina Dubroca wrote:
-> > 2025-09-22, 16:39:20 +0200, Gustavo A. R. Silva wrote:
-> > > -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> > > getting ready to enable it, globally.
-> > > 
-> > > Use the new TRAILING_OVERLAP() helper to fix the following warning:
-> > > 
-> > > net/tls/tls.h:131:29: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> > > 
-> > > This helper creates a union between a flexible-array member (FAM)
-> > > and a set of members that would otherwise follow it. This overlays
-> > > the trailing members onto the FAM while preserving the original
-> > > memory layout.
-> > 
-> > Do we need to keep aead_req_ctx in tls_rec? It doesn't seem to be
-> > used, and I don't see it ever being used since it was introduced in
-> > commit a42055e8d2c3 ("net/tls: Add support for async encryption of
-> > records for performance").
-> 
-> If this (flex array) is not going to be needed in the future, I'm
-> happy to remove it. :)
+>  Documentation/netlink/specs/netdev.yaml |  5 +++++
+>  drivers/net/veth.c                      | 12 ++++++++++++
+>  include/net/xdp.h                       |  5 +++++
+>  include/uapi/linux/netdev.h             |  3 +++
+>  net/core/xdp.c                          | 15 +++++++++++++++
+>  tools/include/uapi/linux/netdev.h       |  3 +++
+>  6 files changed, 43 insertions(+)
+>  ---
+>  base-commit: 07e27ad16399afcd693be20211b0dfae63e0615f
+>  this is the commit of tag: v6.17-rc7 on the mainline.
+>  This patch series is intended to make a base for setting
+>  queue_index in the xdp_rxq_info struct in bpf/cpumap.c to
+>  the right index. Although that part I still didn't figure
+>  out yet,I m searching for my guidance to do that as well
+>  as for the correctness of the patches in this series.
 
-I don't see what we'd use it for, aead_request.__ctx contains private
-data from the crypto code (all accesses seem to be through
-aead_request_ctx defined in include/crypto/internal/aead.h, see also
-the kdoc: "Start of private context data").
-And we haven't seen the author of a42055e8d2c3 in a while, so we can't
-ask about the intention behind this field.
-
-So IMO, tls_rec.aead_req_ctx can simply go away. Would you send the
-patch?
-
--- 
-Sabrina
+But why do you need a kfunc getter? You can already get rxq index
+via xdp_md rx_queue_index.
