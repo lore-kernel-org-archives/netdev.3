@@ -1,54 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3321FF30;
-	Tue, 23 Sep 2025 14:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151A3258EF3
+	for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 15:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758639448; cv=none; b=EG4WoSEsx03C0bB49eHbJ/gRRBbLMJy+newTdKJVH9XcffhLVb+p49vUKXE6YdWDRcP8XOz26mAL4bBV66UiQHgrcDXk3E8fjBJsiKY0WMYcNsoeBHzZdLt5ZMUHNcMicDUQnXcmRwWQEWM5a7gIMpCnMw/HEQVseD9+jjIvVMk=
+	t=1758640289; cv=none; b=sBz50ZebDkVRk7wxx2Vzvh8mctyHBtBdcHhwqA6W6TJ+el6/aKlry0UYWzPtEY3X5W44PNySDFT8wxRSWUa9g1V2WTIZYLWnI/ejtx7Q6UiksUytHFOGgmWwWPskNzfVkwiWeob47F4wKxdT97nxCAbqmGRVZS0wHrROqghJIP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758639448; c=relaxed/simple;
-	bh=TPA67cmguQKr0ItI5iaMlBmUJG37zNqxtvgxCiM/IW0=;
-	h=Date:From:To:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GujJjkCqzcPUImPNgrK0tKq5x492bMyrNYX4lQYVRBgmaNcH1icNyRt0J7wQGN5Q8dzn8Fwmj8Ov9SD4pBJFkDhEWSi0eQFw/svjhYM+PCHxi1NpL1prZmtwgUEhkZgkIuHbTVbkQWxU3DynaatDCAvb2Z7GnT172ARWG7yRMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hizHxt0Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1758640289; c=relaxed/simple;
+	bh=2xalF+7m57ElEXdS0zB4aMSONbCWcx/4NGwn1BHQCFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BuW2fBFaoM6O77lmoLtGg7mCHoSkUes/PUKdUICOQet6WqfnwDFrdnMPXaIVIE57T57brjzrWimDPbriz+ewgzrzWDyQQgLz78VoLm3b0DLLH+/c1waQKGsutn/C+dO4JHSBPzbxGgJfiP6YPhzvhRfy85oqTqaAgBFqfCQI8H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gO6kBQXR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hizHxt0Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2929C4CEF5;
-	Tue, 23 Sep 2025 14:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758639448;
-	bh=TPA67cmguQKr0ItI5iaMlBmUJG37zNqxtvgxCiM/IW0=;
-	h=Date:From:To:Subject:In-Reply-To:References:From;
-	b=hizHxt0ZT0P/OYcXi40mdUgrre1WySJR5b8SfyJhItNNJ9y7kksKkdjc3Gl1O2CdE
-	 m6iVrCE6lUbm79ZWftDEcPtjmRvyxuJBSrAq4vUCPCSGPS0tqxDkyqBDJS47+lQ3s3
-	 T6xkrK7b6MGaCXNw13dFnL++JbSOmmi5yJafEoKuCC91xVo7NO3Il7bBekmWt6MmpY
-	 L1zARCnA4aw7uX9UanI//GAB+HY9LNMXIlsYOFgKZGgH9yVYaiIrJlZPAOVsmhPBVU
-	 vIzvdng4OXSNp2fDnqZmYOYubvO5hgMdLoRAkwqdXILCsTHPSjhntcRyKDJpdzyPkY
-	 2exTG/GTHT3PA==
-Date: Tue, 23 Sep 2025 07:57:27 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev@vger.kernel.org, netdev-driver-reviewers@vger.kernel.org
-Subject: Re: [ANN] netdev call - Sep 23rd
-Message-ID: <20250923075727.49140bdf@kernel.org>
-In-Reply-To: <20250922105431.0389a849@kernel.org>
-References: <20250922105431.0389a849@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gO6kBQXR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=c0YBBI16LtLHGKkRM0lt84oqLrwr5eDKv4Sp7gkWX5U=; b=gO
+	6kBQXRMsiOlsb9B4pkwiiV5gncAxI/fhrWL10zkXcueSHkzCTEqYRf3Z8B6EF/DFqbYz75yhVlQXl
+	bXP5GhqsKeJjzryPwj5SirQwoCuRlR6JHBm6iZphSjAQTa7o2pYnA8CeSnmyiahKPSVBlB4sS80Db
+	AtR7yYA2sn7VTGg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1v14fg-009HBC-CF; Tue, 23 Sep 2025 17:11:12 +0200
+Date: Tue, 23 Sep 2025 17:11:12 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kamil =?iso-8859-1?Q?Hor=E1k?= - 2N <kamilh@axis.com>
+Cc: florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+	hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] net: phy: bcm5481x: Fix GMII/MII/MII-Lite selection
+Message-ID: <4d5f096a-49bd-4a4f-a9b9-d70610d0d1d6@lunn.ch>
+References: <20250923143453.1169098-1-kamilh@axis.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250923143453.1169098-1-kamilh@axis.com>
 
-On Mon, 22 Sep 2025 10:54:31 -0700 Jakub Kicinski wrote:
-> Hi!
+On Tue, Sep 23, 2025 at 04:34:53PM +0200, Kamil Horák - 2N wrote:
+> The Broadcom bcm54811 is hardware-strapped to select among RGMII and
+> MII/MII-Lite modes. However, the corresponding bit, RGMII Enable in
+> Miscellaneous Control Register must be also set to select desired RGMII
+> or MII(-lite)/GMII mode.
 > 
-> The bi-weekly call is scheduled for tomorrow at 8:30 am (PT) / 
-> 5:30 pm (~EU), at https://bbb.lwn.net/rooms/ldm-chf-zxx-we7/join
+> Signed-off-by: Kamil Horák - 2N <kamilh@axis.com>
+> ---
+>  drivers/net/phy/broadcom.c | 10 ++++++++++
+>  include/linux/brcmphy.h    |  1 +
+>  2 files changed, 11 insertions(+)
 > 
-> No agenda at this stage. Please reply with suggestions, if no topics
-> are proposed 2h before the meeting we'll cancel.
+> diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+> index a60e58ef90c4..492fbf506d49 100644
+> --- a/drivers/net/phy/broadcom.c
+> +++ b/drivers/net/phy/broadcom.c
+> @@ -436,6 +436,16 @@ static int bcm54811_config_init(struct phy_device *phydev)
+>  	if (err < 0)
+>  		return err;
+>  
+> +	if (!phy_interface_is_rgmii(phydev)) {
+> +		/* Misc Control: GMII/MII/MII-Lite Mode (not RGMII) */
+> +		err = bcm54xx_auxctl_write(phydev, MII_BCM54XX_AUXCTL_SHDWSEL_MISC,
+> +					   MII_BCM54XX_AUXCTL_MISC_WREN |
+> +					   MII_BCM54XX_AUXCTL_SHDWSEL_MISC_RGMII_SKEW_EN |
 
-No topics, so canceling.
+This is a bit confusing. If it is NOT RGMII, you set RGMII_SKEW_EN? I
+could understand the opposite, clear the bit...
+
+> +					   MII_BCM54XX_AUXCTL_SHDWSEL_MISC_RSVD);
+
+>  #define MII_BCM54XX_AUXCTL_SHDWSEL_MISC			0x07
+>  #define MII_BCM54XX_AUXCTL_SHDWSEL_MISC_WIRESPEED_EN	0x0010
+> +#define MII_BCM54XX_AUXCTL_SHDWSEL_MISC_RSVD		0x0060
+
+Does RSVD mean reserved? Are you saying these two reserved bits need
+to be set? They must be more than reserved if they need setting.
+
+	Andrew
