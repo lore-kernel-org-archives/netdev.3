@@ -1,178 +1,114 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F08C2248A4;
-	Wed, 24 Sep 2025 18:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318BD20FA81
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 18:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758738424; cv=none; b=NAVlMj/02Fyyl17IetoeRczuUmVEXAFgUx7NDH2dYb4uB/9DU7ADYTgzd+4oALXLrPeow6gXkLAYvhRI2yogUNzGNXlaOcWZU9Vdl/w8J+T+2YR6QO8Go86RCpjI2x49svBzLQV90bh9IY8+4pzEq1PCYjZpRekskvsuCJuTuFw=
+	t=1758738783; cv=none; b=BsXunk8grzvI5I6sXh9mUbHoUTBurvX2CAj8kCSYU+EJ//V/SJq/C3vrUDgmL87CAHSLbXjclWONlzXTeBJSnuQxvxf26aNb+LWpuydzIwpMqAWwOlAqfqir8pfhgNJLX2qhTpG3who+athyEoDDZ/irH6aa9MCkUnhQhUPJqFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758738424; c=relaxed/simple;
-	bh=FDZcBJR3wAx3Wc14mVEqdicWlTbd9loueIywMIB4qXs=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Y8qrHgX9fjNa24nzu/zYEW2Td/1SIYFCBB7U8KwdvHEaqVBLAavM81WSDtU7IEtsXEws7xX9NVCyISX9rJcrZ12TKOdbxOb6E6+Uiq9XCngFJY97iA3NMHIcItxB4RQ1svCEXeAirjRHn4+qfaBIPVgL3V+LxSLeqKyIut14tGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lwDhbTzN; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1758738783; c=relaxed/simple;
+	bh=BPmp7/HZwCEN2P3jkfww+6QmR4v0glh9O0ulkchMmyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gr9XYltIde6G58KDkHFQbdLv6MHB9Zhw5UoDUbTEOmbEn2pp6b9xDVNvVzX+eTG/ueGKj8c5MJgnrIaU0JtEioPQqRlLzsrxYGZgA2KtCYvFQbkDRytt09eOVebs8xQ5IdHQShxCRoB+G39sZeC5KJtQBEwrgPAK2Ojcitj41Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=efsmGQUS; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lwDhbTzN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=98biKbPuv+kbYg6hY3GxF0OjQQ/oXiCUuA+3Ci5wrLs=; b=lwDhbTzN76RteIqsY0gW6IRtx+
-	fm0t4/tLe6GHBxhVW+uzl/q/46ojJYlx2MV5+BleZVSzb2qw1LbImWMVeZwhFL0PWuvC1iEhG2uIE
-	5BCykL7bntdKeuBnULo6h2F7lq6taf75Qhs7XV/H6KFsGy6rhNGtkJr38I2yp6VMEPHo+7LkSg6Qr
-	cK2VCJn5Il+ylJ6QkYXPBSQWSqqo3tvVG75VinUw8FXOAo9LqxulWa/QG1BikVyyc8sjX/f3UHBku
-	L0Le6bb7VQPTsVJ2cBv08WvaBr0MVH0k9jLGDa2JBAhfb15dvwqbhz7uCF5ZO30mp1Y1ktZzrpGWO
-	FG+D3Z+A==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36588 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v1U6M-0000000012y-0Ch2;
-	Wed, 24 Sep 2025 19:20:27 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v1U68-00000007HwG-3nk3;
-	Wed, 24 Sep 2025 19:20:13 +0100
-In-Reply-To: <aNQ1oI0mt3VVcUcF@shell.armlinux.org.uk>
-References: <aNQ1oI0mt3VVcUcF@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexis Lothore <alexis.lothore@bootlin.com>,
-	"Alexis Lothor__" <alexis.lothore@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Boon Khai Ng <boon.khai.ng@altera.com>,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Swathi K S <swathi.ks@samsung.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Vinod Koul <vkoul@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next 7/9] net: stmmac: hw->ps becomes
- hw->reverse_sgmii_enable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="efsmGQUS"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-780f6632e64so83383b3a.2
+        for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 11:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758738780; x=1759343580; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0ZiGUngEg1bz9RIGYOxgVE+7eeU9JAJ9lijyiP/taFE=;
+        b=efsmGQUSpeAlPhYHne6mC9XC+C9cNzm6ws/4Ul28qA1tV22MQq/u+/O0JouKGUlWsB
+         Wg8aQR3IWtavWeaibMajUZYpQ73rb5v4O6F0KOmCFAq5Gz6PwNetVK7bWKp8Tw6mPL7E
+         5ZuAfkeO8xgdBah+Js9Z3uVhESeJZWIqvVbPgx3uF/xguI+WgG4yLngOl9cmHZTTn6Ng
+         LS/WfY3SG3CVQ37ATQh/qhypJX5s+AoKuctiUHKPWFvEPbAOkCNNC8g8OLLCR3UZ23Ka
+         g8HLw1zh61PvqSya2YzFZyovay2iCDkNmu+7zp5GQKFxoSswiC8LBZczkewG1LArYuuk
+         HlBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758738780; x=1759343580;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0ZiGUngEg1bz9RIGYOxgVE+7eeU9JAJ9lijyiP/taFE=;
+        b=DqDhHOsnROWL16wgWNjh+uGV7U9U6ji06TTOatYpUyCd+bTp3Eh+XGJctsbkwINH0M
+         C2kBCBAJjLd4AWyRyhbwDJ9TU6qqCrUIso8+OulU7Rh7MK2pkEyxW9LLWyYd8E0A7RjS
+         p0LQe/73Po6wmObnUpuRRyawQoiFQ8JcRX4GB8n2IABjqf38oj/N14jDu3kxn2ZrPaeT
+         bF+PGoAddfF55R1h9RIiBZqKN58UqqtByucawr2ftrB4sEqJJhHJZFH+1wCFI0J34EwY
+         4YNBivzQn5fpzok3PSHSD4u1B5rHWGXYwgzXyjyLPSmHGdkJpJCllmoRJfAESX2uNXG7
+         EW+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWKniJpJdZEUjlyvH98vDNUtEqhzMWmqtFkVIY299WD1yHS+L46K5CXaKcw394DDdWhMPNtvAQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzfHRMVXoqC8K4aJeVaidFQQxKOFkoqyDOq9mNHW5/P2JoV67F
+	vx6DNRRTsgt51Pf0MSZDZUrBW0JjMOZVFJleEOrg4zFa8Rj20SvXDM1x
+X-Gm-Gg: ASbGncvPeAtOkKZyM6iaDnRvK5C8Pe3cY+eWWmPh5kOWYYvhfBUe+SM0aYO/690fD1U
+	T6O8uXeP0XZBMfcT0mMJ06hs8OnuglHiz3RNnnGGFj939Clk70TaC0vIlWD68N450wEai/tbVTF
+	jMf3C74u5glodbr6Q77KpxSnfeiXf3rX3KN0mY000eV1e3ldH7mdRQnz6Vc1y2QrwAHFfmHpno5
+	Y1084dabMjmhvYCs1f9C4D4wU9aJRDn1pF7h1jAhkMfzDJp19hF+DywtpM3vMKwxu5CYog5a41G
+	lYL3tUwOUVfmdkj8olI1s12vSQi9LPK0DA2E9lubs6QEW11pc5QcCqFJtQortpjB8OrL/CNuvOX
+	hK9bW+XADw+Ob9dK+Dd6c7WM=
+X-Google-Smtp-Source: AGHT+IGjh8GHJkW4HrCxPM3eBOhaOjfwbgk4g/556B0RsOzYugb+CgPT02LHWIyv3xFJhWkcNdv5fA==
+X-Received: by 2002:a17:90b:3d4b:b0:32d:d4fa:4c3 with SMTP id 98e67ed59e1d1-3342a2ef04fmr506703a91.31.1758738780237;
+        Wed, 24 Sep 2025 11:33:00 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:f4c4:bad6:f33e:ddc9])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3341bda06ccsm3113092a91.7.2025.09.24.11.32.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Sep 2025 11:32:59 -0700 (PDT)
+Date: Wed, 24 Sep 2025 11:32:56 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, linux-media@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-spi@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Javier Carrasco <javier.carrasco@wolfvision.net>, 
+	Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, 
+	Matthias Fend <matthias.fend@emfend.at>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Paul Elder <paul.elder@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Mark Brown <broonie@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 02/16] ACPI: property: Use ACPI functions in
+ acpi_graph_get_next_endpoint() only
+Message-ID: <iqfarpvf72l7qbhfinopjb27qvfm7wg77d4yhuy5qyubcwtcd2@exmcuvgqr353>
+References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
+ <20250924074602.266292-3-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v1U68-00000007HwG-3nk3@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 24 Sep 2025 19:20:12 +0100
+In-Reply-To: <20250924074602.266292-3-sakari.ailus@linux.intel.com>
 
-After a lot of digging, it seems that the oddly named hw->ps member
-is all about setting the core into reverse SGMII speed. When set to
-a non-zero value, it:
+Hi Sakari,
 
-1. Configures the MAC at initialisation time to operate at a specific
-   speed.
-2. It _incorrectly_ enables the transmitter (GMAC_CONFIG_TE) which
-   makes no sense, rather than enabling the "transmit configuration"
-   bit (GMAC_CONFIG_TC).
-3. It configures the SGMII rate adapter layer to retrieve its speed
-   setting from the MAC configuration register rather than the PHY.
+On Wed, Sep 24, 2025 at 10:45:48AM +0300, Sakari Ailus wrote:
+> Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+> property API is somewhat problematic as the latter is used in the
 
-In the previous commit, we removed (1) and (2) as phylink overwrites
-the configuration set at that step.
+How exactly is this problematic?
 
-Thus, the only functional aspect is (3), which is a boolean operation.
-This means there is no need to store the actual speed, and just have a
-boolean flag.
+> impelementation of the former. Instead of using
+> fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+> acpi_get_next_subnode() directly instead.
 
-Convert the priv->ps member to a boolean, and rename it to
-priv->reverse_sgmii_enable to make it more understandable.
+I think we are moving into the world of mixed fwnode types with software
+nodes/secondary fwnodes, so I do not think this is a step in right
+direction.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/common.h      | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+Thanks.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 8ff3406cdfbf..87c3f0dd54f0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -599,13 +599,13 @@ struct mac_device_info {
- 	unsigned int mcast_bits_log2;
- 	unsigned int rx_csum;
- 	unsigned int pcs;
--	unsigned int ps;
- 	unsigned int xlgmac;
- 	unsigned int num_vlan;
- 	u32 vlan_filter[32];
- 	bool vlan_fail_q_en;
- 	u8 vlan_fail_q;
- 	bool hw_vlan_en;
-+	bool reverse_sgmii_enable;
- };
- 
- struct stmmac_rx_routing {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a90df69ac43f..dff3bba83969 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3476,10 +3476,10 @@ static int stmmac_hw_setup(struct net_device *dev)
- 
- 		if ((speed == SPEED_10) || (speed == SPEED_100) ||
- 		    (speed == SPEED_1000)) {
--			priv->hw->ps = speed;
-+			priv->hw->reverse_sgmii_enable = true;
- 		} else {
- 			dev_warn(priv->device, "invalid port speed\n");
--			priv->hw->ps = 0;
-+			priv->hw->reverse_sgmii_enable = false;
- 		}
- 	}
- 
-@@ -3520,7 +3520,7 @@ static int stmmac_hw_setup(struct net_device *dev)
- 	}
- 
- 	if (priv->hw->pcs)
--		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps);
-+		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->reverse_sgmii_enable);
- 
- 	/* set TX and RX rings length */
- 	stmmac_set_rings_length(priv);
 -- 
-2.47.3
-
+Dmitry
