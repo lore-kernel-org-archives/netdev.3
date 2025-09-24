@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47422248A5
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067D52900A8
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702119; cv=none; b=uZVUl5tmvMD5xS10Xvm0t8COtOY5y10zmXIHMiobOPPLi6QZNjmPvEgW1IY3rqTE5ILoQ2IfltAcnQhD1iDteNX4wYZg2aeYyFOKZa6v/tF0TV4A84X5cjqtRvo5YeEnNJLCV0P4U9jcEkArXga/n6R9mVZ7lIn7eaw7PeXMwLU=
+	t=1758702119; cv=none; b=REG5VaH2JJmsoEw1NxLxXdz+a/i1sPbHT17quFQ/kxNa5vitG26DSc74J1gYV5A9LQRocGyq65UzjJ63tVCFNjAg8IUXsmdqqD3Drmz7KqVJxce2mA8eazCg4w7qzGFUVtExLMwkppWQCkIiSkHUxTOl/5gphb0TzfE9Id/v7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702119; c=relaxed/simple;
-	bh=cFLbESbAIn/mr9J6GG4FjnQgFD5qgg6MmivH5+SLSRY=;
+	bh=r0K6zBVjEgBYjGTyxzYCSoQVT4JH6TkIW8VXS/p/Id8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RselIH0Jp9P3+eEf3Uvrn217EE64NO22QqKRsOuGNuyyDr5A+bJhmdUO1ZSNpIsnkeR/Ym8dmpY5oMooea2bGg4LrCVEB5UPy3TvUFDf15aQmW6bPH12Bhi2zOFAciTIK1XmwNdD+W3WPE/ke/cvs+YnT4wbmn8ghkkq1vS2utU=
+	 MIME-Version; b=lFCHSGEjVNAQOYhhGDCNA2DOTuHP94v95WOkuvMQ3noxCLk5vCb3j8sVaDllORZ85HEPizq+GEuCVEid9Los8h6R7q05RzW/jT0RRuPlo26lJ+YHPoTvfBcploW/hrumjuWoWbnKb99tn/GtUrBEPTOQrx2jYht12FNmGZRjtWc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkf-0001GX-Bw; Wed, 24 Sep 2025 10:21:25 +0200
+	id 1v1Kkd-0001EW-SC; Wed, 24 Sep 2025 10:21:23 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-000Dwi-29;
-	Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkc-000Dvj-2b;
+	Wed, 24 Sep 2025 10:21:22 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id F3771478869;
-	Wed, 24 Sep 2025 08:21:06 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 4944E4788C2;
+	Wed, 24 Sep 2025 08:21:11 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 03/48] can: dev: sort includes by alphabetical order
-Date: Wed, 24 Sep 2025 10:06:20 +0200
-Message-ID: <20250924082104.595459-4-mkl@pengutronix.de>
+Subject: [PATCH net-next 47/48] can: dev: add can_get_ctrlmode_str()
+Date: Wed, 24 Sep 2025 10:07:04 +0200
+Message-ID: <20250924082104.595459-48-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -60,46 +60,86 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-Includes are out of order in
+In an effort to give more human readable messages when errors occur
+because of conflicting options, it can be useful to convert the CAN
+control mode flags into text.
 
-  drivers/net/can/dev/dev.c
+Add a function which converts the first set CAN control mode into a
+human readable string. The reason to only convert the first one is to
+simplify edge cases: imagine that there are several invalid control
+modes, we would just return the first invalid one to the user, thus
+not having to handle complex string concatenation. The user can then
+solve the first problem, call the netlink interface again and see the
+next issue.
 
-Sort them by alphabetical order.
+People who wish to enumerate all the control modes can still do so by,
+for example, using this new function in a for_each_set_bit() loop.
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250830152107.694201-2-mailhol@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-19-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/dev.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/can/dev/dev.c | 33 +++++++++++++++++++++++++++++++++
+ include/linux/can/dev.h   |  2 ++
+ 2 files changed, 35 insertions(+)
 
 diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 3913971125de..99b78cbb2252 100644
+index fd72159d3803..e5a82aa77958 100644
 --- a/drivers/net/can/dev/dev.c
 +++ b/drivers/net/can/dev/dev.c
-@@ -4,17 +4,17 @@
-  * Copyright (C) 2008-2009 Wolfgang Grandegger <wg@grandegger.com>
-  */
+@@ -88,6 +88,39 @@ const char *can_get_state_str(const enum can_state state)
+ }
+ EXPORT_SYMBOL_GPL(can_get_state_str);
  
--#include <linux/kernel.h>
--#include <linux/slab.h>
--#include <linux/netdevice.h>
--#include <linux/if_arp.h>
--#include <linux/workqueue.h>
- #include <linux/can.h>
- #include <linux/can/can-ml.h>
- #include <linux/can/dev.h>
- #include <linux/can/skb.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/if_arp.h>
-+#include <linux/kernel.h>
-+#include <linux/netdevice.h>
- #include <linux/of.h>
-+#include <linux/slab.h>
-+#include <linux/workqueue.h>
++const char *can_get_ctrlmode_str(u32 ctrlmode)
++{
++	switch (ctrlmode & ~(ctrlmode - 1)) {
++	case 0:
++		return "none";
++	case CAN_CTRLMODE_LOOPBACK:
++		return "loopback";
++	case CAN_CTRLMODE_LISTENONLY:
++		return "listen-only";
++	case CAN_CTRLMODE_3_SAMPLES:
++		return "triple-sampling";
++	case CAN_CTRLMODE_ONE_SHOT:
++		return "one-shot";
++	case CAN_CTRLMODE_BERR_REPORTING:
++		return "berr-reporting";
++	case CAN_CTRLMODE_FD:
++		return "fd";
++	case CAN_CTRLMODE_PRESUME_ACK:
++		return "presume-ack";
++	case CAN_CTRLMODE_FD_NON_ISO:
++		return "fd-non-iso";
++	case CAN_CTRLMODE_CC_LEN8_DLC:
++		return "cc-len8-dlc";
++	case CAN_CTRLMODE_TDC_AUTO:
++		return "fd-tdc-auto";
++	case CAN_CTRLMODE_TDC_MANUAL:
++		return "fd-tdc-manual";
++	default:
++		return "<unknown>";
++	}
++}
++EXPORT_SYMBOL_GPL(can_get_ctrlmode_str);
++
+ static enum can_state can_state_err_to_state(u16 err)
+ {
+ 	if (err < CAN_ERROR_WARNING_THRESHOLD)
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index 8e75e9b3830a..a2229a61ccde 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -141,6 +141,8 @@ int can_restart_now(struct net_device *dev);
+ void can_bus_off(struct net_device *dev);
  
- static void can_update_state_error_stats(struct net_device *dev,
- 					 enum can_state new_state)
+ const char *can_get_state_str(const enum can_state state);
++const char *can_get_ctrlmode_str(u32 ctrlmode);
++
+ void can_state_get_by_berr_counter(const struct net_device *dev,
+ 				   const struct can_berr_counter *bec,
+ 				   enum can_state *tx_state,
 -- 
 2.51.0
 
