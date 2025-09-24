@@ -1,100 +1,119 @@
-Received: from mail-m21468.qiye.163.com (mail-m21468.qiye.163.com [117.135.214.68])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118B424677F
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 06:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.214.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2172E2472A5;
+	Wed, 24 Sep 2025 06:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758695511; cv=none; b=XQte8R6HjTQeQQ0oPCaSTwR+vSqZm3HEaly9ML8oXoqPphRV7Due9YsJNsruP7sxUklFFmhiYx5oaeiA8yMDVGklBTd5b6lihDPfKF2H/PsNmrFGP2XFaJFP8m/SZYWWYcBFMawd6T/Nzy4uDaTcMC6uQQvvCmG1WZ7nS4ygPT4=
+	t=1758696168; cv=none; b=UyAz7NZDjgHOy8zwnvjg5zvbSqosJtedYlHBPrgL0idza2+BA9BfaKhErIFkjfWvd+kqOelEGZFMG0+VwwI96jnGz43lpg/YzoscOfFdsDJVs3NOuK8Edot2+EJV7/dIhZRQ/DPd6l3O8txuMMa0A91yPQLy0Nk3fVYqYhmtv90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758695511; c=relaxed/simple;
-	bh=FeI2Z8PYG3Q79RX93AO97K9R9VFYKdxcHpYSpE64Nrc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SpOLo2kYQBSVwnAEhLYNMDeWf41a9lEYEYJsm4T8NyrJlnX1bIusjml3QcTzCDO2XifoLs6NguXscNg9CsezgMeD0vecpn175JFyRs4wR3mse5tUS55cS1gvtjqQbsXZ20ZBMRNAkwofpR8nHbW0uvnysDSdhGTDjyT0pJAlcB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn; spf=pass smtp.mailfrom=easystack.cn; arc=none smtp.client-ip=117.135.214.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=easystack.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=easystack.cn
-Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 10a847808;
-	Wed, 24 Sep 2025 11:02:29 +0800 (GMT+08:00)
-From: Zhen Ni <zhen.ni@easystack.cn>
-To: manishc@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH] net: qed: Remove redundant NULL checks after list_first_entry()
-Date: Wed, 24 Sep 2025 11:02:19 +0800
-Message-Id: <20250924030219.1252773-1-zhen.ni@easystack.cn>
-X-Mailer: git-send-email 2.20.1
+	s=arc-20240116; t=1758696168; c=relaxed/simple;
+	bh=/c5dobudUiACi9wzx/OWVC4PwhAIu8eq1izmPG6ec8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o1fCwf+XXpYrrpk3LUTKpa+bE2NEzarevSKoIGZo39DiZGCDXRM6RqsxWNrWP2hpcV2t98V+CArNg8nrfuXSz34JzCU21Qb82vAgc/SwaLbaOuArCRk6i08j1nU9sddQndqDC1dvE0DgjckzQFCWEfb6hUJo/A6ZfRL/4ZaOHek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MCk6Ie5f; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MCk6Ie5f"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 2C5714E40CF6;
+	Wed, 24 Sep 2025 06:42:42 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E9E65606B6;
+	Wed, 24 Sep 2025 06:42:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 97DC7102F18B7;
+	Wed, 24 Sep 2025 08:42:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1758696161; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=uwR8xkHqvdbsZ2Rwz4SDZ9pAbo90DWZtrHInkqgmHnQ=;
+	b=MCk6Ie5fIp/ifqSr2rxOGjB+NZRwX5RSCC9pQZTecRrwyl7nFkRDlO0bMu0eBgcrC9QEq4
+	ndxB/7lF3ckgivf534Gai2LrhJJlijdMd7RknPQQcOkfVSHzJAimW3UJAe7LsShaHVYWiR
+	H2duYIbTF/HjadicIb1fMd3TvYMtcitIk5CWXHtphPBeu7x1WSx6PJVhGyL13e/EjSXBJz
+	bSv9UJgIe4/3WikcNvVnUGYG9x2t+g5pPbLipKQ5euu9SEWgmn8/puZzajd0ryIiV22H0X
+	Whe2t2MBgqQLUkTbXYuWlfEpG14NxmS9eRyo1VGfL7cX87ijz7yy36X9C/TCyg==
+Message-ID: <b67b9041-71ac-4e60-86fc-9d59329719cf@bootlin.com>
+Date: Wed, 24 Sep 2025 12:12:17 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9979ac27520229kunm67902e9b181e88
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVlCS0hJVh5LHk9LSR5KHRpLGVYVFAkWGhdVGRETFh
-	oSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0lPT09IVUpLS1
-	VKQktLWQY+
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/7] net: rework SFP capability parsing and
+ quirks
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ linux-arm-msm@vger.kernel.org, =?UTF-8?Q?Marek_Beh=C3=BAn?=
+ <kabel@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>
+References: <aMnaoPjIuzEAsESZ@shell.armlinux.org.uk>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <aMnaoPjIuzEAsESZ@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-list_first_entry() never returns NULL — if the list is empty, it still
-returns a pointer to an invalid object, leading to potential invalid
-memory access when dereferenced.
-The calls to list_first_entry() are always guarded by !list_empty(),
-which guarantees a valid entry is returned. Therefore, the additional
-`if (!p_buffer) break;` checks in qed_ooo_release_connection_isles(),
-qed_ooo_release_all_isles(), and qed_ooo_free() are redundant and
-unreachable.
+Hi Russell,
 
-Remove the dead code for clarity and consistency with common list
-handling patterns in the kernel. No functional change intended.
+On 17/09/2025 03:16, Russell King (Oracle) wrote:
+> The original SPF module parsing was implemented prior to gaining any
+> quirks, and was designed such that the upstream calls the parsing
+> functions to get the translated capabilities of the module.
+> 
+> SFP quirks were then added to cope with modules that didn't correctly
+> fill out their ID EEPROM. The quirk function was called from
+> sfp_parse_support() to allow quirks to modify the ethtool link mode
+> masks.
+> 
+> Using just ethtool link mode masks eventually lead to difficulties
+> determining the correct phy_interface_t mode, so a bitmap of these
+> modes were added - needing both the upstream API and quirks to be
+> updated.
+> 
+> We have had significantly more SFP module quirks added since, some
+> which are modifying the ID EEPROM as a way of influencing the data
+> we provide to the upstream - for example, sfp_fixup_10gbaset_30m()
+> changes id.base.connector so we report PORT_TP. This could be done
+> more cleanly if the quirks had access to the parsed SFP port.
+> 
+> In order to improve flexibility, and to simplify some of the upstream
+> code, we group all module capabilities into a single structure that
+> the upstream can access via sfp_module_get_caps(). This will allow
+> the module capabilities to be expanded if required without reworking
+> all the infrastructure and upstreams again.
+> 
+> In this series, we rework the SFP code to use the capability structure
+> and then rework all the upstream implementations, finally removing the
+> old kernel internal APIs.
+> 
 
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
----
- drivers/net/ethernet/qlogic/qed/qed_ooo.c | 9 ---------
- 1 file changed, 9 deletions(-)
+That's some nice work !
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_ooo.c b/drivers/net/ethernet/qlogic/qed/qed_ooo.c
-index 5d725f59db24..8be567a6ad44 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_ooo.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_ooo.c
-@@ -183,9 +183,6 @@ void qed_ooo_release_connection_isles(struct qed_hwfn *p_hwfn,
- 						    struct qed_ooo_buffer,
- 						    list_entry);
- 
--			if (!p_buffer)
--				break;
--
- 			list_move_tail(&p_buffer->list_entry,
- 				       &p_ooo_info->free_buffers_list);
- 		}
-@@ -218,9 +215,6 @@ void qed_ooo_release_all_isles(struct qed_hwfn *p_hwfn,
- 						     struct qed_ooo_buffer,
- 						     list_entry);
- 
--				if (!p_buffer)
--					break;
--
- 				list_move_tail(&p_buffer->list_entry,
- 					       &p_ooo_info->free_buffers_list);
- 			}
-@@ -255,9 +249,6 @@ void qed_ooo_free(struct qed_hwfn *p_hwfn)
- 		p_buffer = list_first_entry(&p_ooo_info->free_buffers_list,
- 					    struct qed_ooo_buffer, list_entry);
- 
--		if (!p_buffer)
--			break;
--
- 		list_del(&p_buffer->list_entry);
- 		dma_free_coherent(&p_hwfn->cdev->pdev->dev,
- 				  p_buffer->rx_buffer_size,
--- 
-2.20.1
+I however would have like to be in CC for that, and to have gotten the
+information that you were working on that.
 
+You commented on the phy_port V10 that we were moving away from
+sfp_select_interface() and at the time, I asked if the approach I was
+considering for phy_port was correct or not [1].
+
+Without any reply from you I move on and implemented some reworks in the
+phy_port series, without comments from you on V11/12/13, only to find out
+now that this whole thing I've added since v10 to come-up with generic
+interface selection on PHY driver SFP is superseded by that work.
+
+While your approach is definitely better, I'd have appreciated a heads-up
+that you were working on that, or even be in CC: for that work, as I'm
+having very limited availabilities to parse the full netdev list :(
+
+In any case, this will make the phy_port series simpler, so thanks for
+that work
+
+[1] : https://lore.kernel.org/netdev/a30d00cd-9148-423b-a3e5-b11d6c5c270b@bootlin.com/
+
+Maxime
+> ---
