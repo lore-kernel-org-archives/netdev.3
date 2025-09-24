@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A402820BF
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB056285CA8
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702111; cv=none; b=TsBUz9gqMS1PtvGa1u5xuAbgTXm09wMLL++0B044rqQlnkkB0p6VVsTQyy3v9GzdtDXkpihe8oTIqrpuYASKWM8Hx4OFj3LCkp79qkQqE1Pzdp6PsSGnuYmHKBxcjg8YnnL5vP8tfRHK54E4KcsjrKpsEtjiBTk3tQaYTkLDups=
+	t=1758702111; cv=none; b=Lx9vvGyydCJ6wTWk+oXI+6euhPZFkV8Xy1cBiHaV3Q65g/3jUmBtRnQF+fdzVTnxgfV7IyRrZOqxecaFVV8CxRzxwCSWwPhd58WVP2UOP6xjEY4wpof/2gK26RDr6kEQdvSqqXP2jI70UD36+vWcbaV0xq00X8tCPAkuLiQ4Sng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702111; c=relaxed/simple;
-	bh=+1yQOwxQd/GNYq3gvYPG1yvFAgCAbDlUc60igkoTr1k=;
+	bh=mXR2/lLk1fN04LxFhL0kc6sgrTlJVDYCLSN7FHfUkyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FM1vzW2YpsaJf0ZMzaW3/T4sqNQyJ5i5V9weWBhUAhGxAYYdFtZ/7/pj5EoQuqxzAYOfHgzBfNP3EIzzxH8HpS8w1FZFjKgcuLu83qDINwczyO+7+JKEfxRexvxOP4s3Lzw+gQ5unkAFqc/B+dbql2IFpioCBuzufTazvaqSMYI=
+	 MIME-Version; b=mwF68U1TByXZ9Iq/D+gCKuSxIKayDpNbLjYjS3nCx7CnyD02TVxBljdFESFSPlqEn+uVtu5h8iCOxj+jF/gV+kjm2UnsDmgNXce+aAdGOZ3lDaXVqxBPYrY2YnnWXylyEfc0lnB30Q05nK8T4bFG+XM4ZNmD1xf3fFodshJKfWU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,31 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-0001ET-Sy; Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkd-0001Dy-BV; Wed, 24 Sep 2025 10:21:23 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkc-000Dvh-2B;
+	id 1v1Kkc-000DvE-0N;
 	Wed, 24 Sep 2025 10:21:22 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 454904788A8;
-	Wed, 24 Sep 2025 08:21:10 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 0CB52478878;
+	Wed, 24 Sep 2025 08:21:08 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 34/48] can: netlink: add can_validate_databittiming()
-Date: Wed, 24 Sep 2025 10:06:51 +0200
-Message-ID: <20250924082104.595459-35-mkl@pengutronix.de>
+Subject: [PATCH net-next 10/48] can: rcar_can: Add helper variable dev to rcar_can_probe()
+Date: Wed, 24 Sep 2025 10:06:27 +0200
+Message-ID: <20250924082104.595459-11-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -58,116 +59,99 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Factorise the databittiming validation out of can_validate() and move
-it in the new add can_validate_databittiming() function. Also move
-can_validate()'s comment because it is specific to CAN FD. This is a
-preparation patch for the introduction of CAN XL as this databittiming
-validation will be reused later on.
+rcar_can_probe() has many users of "pdev->dev".  Introduce a shorthand
+to simplify the code.
 
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-6-e720d28f66fe@kernel.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/baf34c8bef5625ae73c830dbb3c617eb8f7adddd.1755857536.git.geert+renesas@glider.be
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 64 ++++++++++++++++++++++++-----------
- 1 file changed, 44 insertions(+), 20 deletions(-)
+ drivers/net/can/rcar/rcar_can.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 25c08adee9ad..549a2247d847 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -100,10 +100,13 @@ static int can_validate_tdc(struct nlattr *data_tdc,
- 	return 0;
- }
+diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
+index 5b0b495d127c..57030992141c 100644
+--- a/drivers/net/can/rcar/rcar_can.c
++++ b/drivers/net/can/rcar/rcar_can.c
+@@ -738,6 +738,7 @@ static const char * const clock_names[] = {
  
--static int can_validate(struct nlattr *tb[], struct nlattr *data[],
--			struct netlink_ext_ack *extack)
-+static int can_validate_databittiming(struct nlattr *data[],
-+				      struct netlink_ext_ack *extack,
-+				      int ifla_can_data_bittiming, u32 flags)
+ static int rcar_can_probe(struct platform_device *pdev)
  {
--	bool is_can_fd = false;
-+	struct nlattr *data_tdc;
-+	u32 tdc_flags;
-+	bool is_on;
- 	int err;
++	struct device *dev = &pdev->dev;
+ 	struct rcar_can_priv *priv;
+ 	struct net_device *ndev;
+ 	void __iomem *addr;
+@@ -745,7 +746,7 @@ static int rcar_can_probe(struct platform_device *pdev)
+ 	int err = -ENODEV;
+ 	int irq;
  
- 	/* Make sure that valid CAN FD configurations always consist of
-@@ -113,35 +116,56 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
- 	 * - TDC parameters are coherent (details in can_validate_tdc())
- 	 */
+-	of_property_read_u32(pdev->dev.of_node, "renesas,can-clock-select",
++	of_property_read_u32(dev->of_node, "renesas,can-clock-select",
+ 			     &clock_select);
  
-+	if (ifla_can_data_bittiming == IFLA_CAN_DATA_BITTIMING) {
-+		data_tdc = data[IFLA_CAN_TDC];
-+		tdc_flags = flags & CAN_CTRLMODE_FD_TDC_MASK;
-+		is_on = flags & CAN_CTRLMODE_FD;
-+	} else {
-+		return -EOPNOTSUPP; /* Place holder for CAN XL */
-+	}
-+
-+	if (is_on) {
-+		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming])
-+			return -EOPNOTSUPP;
-+	}
-+
-+	if (data[ifla_can_data_bittiming] || data_tdc) {
-+		if (!is_on)
-+			return -EOPNOTSUPP;
-+	}
-+
-+	err = can_validate_bittiming(data, extack, ifla_can_data_bittiming);
-+	if (err)
-+		return err;
-+
-+	err = can_validate_tdc(data_tdc, extack, tdc_flags);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+static int can_validate(struct nlattr *tb[], struct nlattr *data[],
-+			struct netlink_ext_ack *extack)
-+{
-+	u32 flags = 0;
-+	int err;
-+
- 	if (!data)
- 		return 0;
+ 	irq = platform_get_irq(pdev, 0);
+@@ -762,30 +763,29 @@ static int rcar_can_probe(struct platform_device *pdev)
  
- 	if (data[IFLA_CAN_CTRLMODE]) {
- 		struct can_ctrlmode *cm = nla_data(data[IFLA_CAN_CTRLMODE]);
- 
--		is_can_fd = cm->flags & cm->mask & CAN_CTRLMODE_FD;
--
--		err = can_validate_tdc(data[IFLA_CAN_TDC], extack,
--				       cm->flags & CAN_CTRLMODE_FD_TDC_MASK);
--		if (err)
--			return err;
-+		flags = cm->flags & cm->mask;
+ 	ndev = alloc_candev(sizeof(struct rcar_can_priv), RCAR_CAN_FIFO_DEPTH);
+ 	if (!ndev) {
+-		dev_err(&pdev->dev, "alloc_candev() failed\n");
++		dev_err(dev, "alloc_candev() failed\n");
+ 		err = -ENOMEM;
+ 		goto fail;
  	}
  
- 	err = can_validate_bittiming(data, extack, IFLA_CAN_BITTIMING);
- 	if (err)
- 		return err;
+ 	priv = netdev_priv(ndev);
  
--	if (is_can_fd) {
--		if (!data[IFLA_CAN_BITTIMING] || !data[IFLA_CAN_DATA_BITTIMING])
--			return -EOPNOTSUPP;
--	}
--
--	if (data[IFLA_CAN_DATA_BITTIMING] || data[IFLA_CAN_TDC]) {
--		if (!is_can_fd)
--			return -EOPNOTSUPP;
--	}
--
--	err = can_validate_bittiming(data, extack, IFLA_CAN_DATA_BITTIMING);
-+	err = can_validate_databittiming(data, extack,
-+					 IFLA_CAN_DATA_BITTIMING, flags);
- 	if (err)
- 		return err;
+-	priv->clk = devm_clk_get(&pdev->dev, "clkp1");
++	priv->clk = devm_clk_get(dev, "clkp1");
+ 	if (IS_ERR(priv->clk)) {
+ 		err = PTR_ERR(priv->clk);
+-		dev_err(&pdev->dev, "cannot get peripheral clock, error %d\n",
+-			err);
++		dev_err(dev, "cannot get peripheral clock, error %d\n", err);
+ 		goto fail_clk;
+ 	}
  
+ 	if (!(BIT(clock_select) & RCAR_SUPPORTED_CLOCKS)) {
+ 		err = -EINVAL;
+-		dev_err(&pdev->dev, "invalid CAN clock selected\n");
++		dev_err(dev, "invalid CAN clock selected\n");
+ 		goto fail_clk;
+ 	}
+-	priv->can_clk = devm_clk_get(&pdev->dev, clock_names[clock_select]);
++	priv->can_clk = devm_clk_get(dev, clock_names[clock_select]);
+ 	if (IS_ERR(priv->can_clk)) {
+ 		err = PTR_ERR(priv->can_clk);
+-		dev_err(&pdev->dev, "cannot get CAN clock, error %d\n", err);
++		dev_err(dev, "cannot get CAN clock, error %d\n", err);
+ 		goto fail_clk;
+ 	}
+ 
+@@ -802,18 +802,17 @@ static int rcar_can_probe(struct platform_device *pdev)
+ 	priv->can.do_get_berr_counter = rcar_can_get_berr_counter;
+ 	priv->can.ctrlmode_supported = CAN_CTRLMODE_BERR_REPORTING;
+ 	platform_set_drvdata(pdev, ndev);
+-	SET_NETDEV_DEV(ndev, &pdev->dev);
++	SET_NETDEV_DEV(ndev, dev);
+ 
+ 	netif_napi_add_weight(ndev, &priv->napi, rcar_can_rx_poll,
+ 			      RCAR_CAN_NAPI_WEIGHT);
+ 	err = register_candev(ndev);
+ 	if (err) {
+-		dev_err(&pdev->dev, "register_candev() failed, error %d\n",
+-			err);
++		dev_err(dev, "register_candev() failed, error %d\n", err);
+ 		goto fail_candev;
+ 	}
+ 
+-	dev_info(&pdev->dev, "device registered (IRQ%d)\n", ndev->irq);
++	dev_info(dev, "device registered (IRQ%d)\n", ndev->irq);
+ 
+ 	return 0;
+ fail_candev:
 -- 
 2.51.0
 
