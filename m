@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E81286D49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6602877F6
 	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702115; cv=none; b=hvuGZGiHmslOXyg3mbwcS/agMDzwvdWQFIGJKwVAQ/UbFoHfnjLLWbh+gLCcEFsBWY2Y62DWSXgo1Oto7FZShxfRH+k5MQB7V+ZS+12v+zZ/jlCenbe8iTR2soBo1NIersPndH4Nn/RN1l1h35+7XW/o/73AAzQZS672ki24PVs=
+	t=1758702115; cv=none; b=ZWw4a/dNw6SwxUg8lvZmXmOvTy8hobVKw4rDaBo2xCczBXN8oJDCy91TlRY8xXgIUM0TrkPJV8HgtuN65WpG5wfVchz4YX+TnUNelVNn9+KHsSppE33Cc7bKgZoEMGzeqbLY92Y9Z9/wMs0+ZRSYRx6/Gu6AtF1Oe7IUKHJ1vWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702115; c=relaxed/simple;
-	bh=koejMSnOXLk+bOqf979uqmvE5afDfT8lXBoI2voiyMw=;
+	bh=DkjqKTodE1WppLOAjg5GgUwEWI9DeG5ZgFbctrtBv+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHjc3WhtykITzuMECPvVb/qr/4ebCvjqSuTTpMG4wIuVTIMukS2qwyuXUmZACWO86R75UHKAUSMGGOy9OFcxPfJYvdhxYU33XPm+I9+xFXNDkVnVAqSBFOPBtkiIDFRbTAv2VWNnsj0jZI2XIwJI44TZLF7cdoHKxeonTpv0KYU=
+	 MIME-Version; b=caLr7SgZz0zJB2TToxGug7DJPWauBO4dZz4C6R4rBAqO+651yefrWgMG2aVaoNSGR4T+JQw1zEBhkUH2ZFhA/T+Ls2msGREEmmhvoCFjJtduLGc+agHh8I59ctnpKVH0aUC8c2+Igdw6KnO+CdNL/g8BaCirMWkaIUV6EK8phNw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkf-0001GW-80; Wed, 24 Sep 2025 10:21:25 +0200
+	id 1v1Kke-0001Fx-VN; Wed, 24 Sep 2025 10:21:24 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-000Dwh-28;
+	id 1v1Kkd-000Dw7-1P;
 	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E55FD4788B8;
-	Wed, 24 Sep 2025 08:21:10 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 813AF478898;
+	Wed, 24 Sep 2025 08:21:09 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 42/48] can: netlink: add can_bittiming_fill_info()
-Date: Wed, 24 Sep 2025 10:06:59 +0200
-Message-ID: <20250924082104.595459-43-mkl@pengutronix.de>
+Subject: [PATCH net-next 26/48] can: dev: turn can_set_static_ctrlmode() into a non-inline function
+Date: Wed, 24 Sep 2025 10:06:43 +0200
+Message-ID: <20250924082104.595459-27-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -60,61 +60,95 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-Add can_bittiming_fill_info() to factorise the logic when filling the
-bittiming information for Classical CAN and CAN FD. This function will
-be reused later on for CAN XL.
+can_set_static_ctrlmode() is declared as a static inline. But it is
+only called in the probe function of the devices and so does not
+really benefit from any kind of optimization.
+
+Transform it into a "normal" function by moving it to
+
+  drivers/net/can/dev/dev.c
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-14-e720d28f66fe@kernel.org
+Link: https://patch.msgid.link/20250923-can-fix-mtu-v3-2-581bde113f52@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/can/dev/dev.c | 21 +++++++++++++++++++++
+ include/linux/can/dev.h   | 23 ++---------------------
+ 2 files changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 5d2b524daea9..bedd2611d358 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -559,6 +559,14 @@ static size_t can_get_size(const struct net_device *dev)
- 	return size;
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index 99b78cbb2252..02bfed37cc93 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -347,6 +347,27 @@ int can_change_mtu(struct net_device *dev, int new_mtu)
+ }
+ EXPORT_SYMBOL_GPL(can_change_mtu);
+ 
++/* helper to define static CAN controller features at device creation time */
++int can_set_static_ctrlmode(struct net_device *dev, u32 static_mode)
++{
++	struct can_priv *priv = netdev_priv(dev);
++
++	/* alloc_candev() succeeded => netdev_priv() is valid at this point */
++	if (priv->ctrlmode_supported & static_mode) {
++		netdev_warn(dev,
++			    "Controller features can not be supported and static at the same time\n");
++		return -EINVAL;
++	}
++	priv->ctrlmode = static_mode;
++
++	/* override MTU which was set by default in can_setup()? */
++	if (static_mode & CAN_CTRLMODE_FD)
++		dev->mtu = CANFD_MTU;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(can_set_static_ctrlmode);
++
+ /* generic implementation of netdev_ops::ndo_eth_ioctl for CAN devices
+  * supporting hardware timestamps
+  */
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index 9a92cbe5b2cb..5dc58360c2d7 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -125,27 +125,6 @@ static inline s32 can_get_relative_tdco(const struct can_priv *priv)
+ 	return (s32)priv->fd.tdc.tdco - sample_point_in_tc;
  }
  
-+static int can_bittiming_fill_info(struct sk_buff *skb, int ifla_can_bittiming,
-+				   struct can_bittiming *bittiming)
-+{
-+	return bittiming->bitrate != CAN_BITRATE_UNSET &&
-+		bittiming->bitrate != CAN_BITRATE_UNKNOWN &&
-+		nla_put(skb, ifla_can_bittiming, sizeof(*bittiming), bittiming);
-+}
-+
- static int can_tdc_fill_info(struct sk_buff *skb, const struct net_device *dev)
+-/* helper to define static CAN controller features at device creation time */
+-static inline int __must_check can_set_static_ctrlmode(struct net_device *dev,
+-						       u32 static_mode)
+-{
+-	struct can_priv *priv = netdev_priv(dev);
+-
+-	/* alloc_candev() succeeded => netdev_priv() is valid at this point */
+-	if (priv->ctrlmode_supported & static_mode) {
+-		netdev_warn(dev,
+-			    "Controller features can not be supported and static at the same time\n");
+-		return -EINVAL;
+-	}
+-	priv->ctrlmode = static_mode;
+-
+-	/* override MTU which was set by default in can_setup()? */
+-	if (static_mode & CAN_CTRLMODE_FD)
+-		dev->mtu = CANFD_MTU;
+-
+-	return 0;
+-}
+-
+ static inline u32 can_get_static_ctrlmode(struct can_priv *priv)
  {
- 	struct nlattr *nest;
-@@ -641,10 +649,8 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	if (priv->do_get_state)
- 		priv->do_get_state(dev, &state);
- 
--	if ((priv->bittiming.bitrate != CAN_BITRATE_UNSET &&
--	     priv->bittiming.bitrate != CAN_BITRATE_UNKNOWN &&
--	     nla_put(skb, IFLA_CAN_BITTIMING,
--		     sizeof(priv->bittiming), &priv->bittiming)) ||
-+	if (can_bittiming_fill_info(skb, IFLA_CAN_BITTIMING,
-+				    &priv->bittiming) ||
- 
- 	    (priv->bittiming_const &&
- 	     nla_put(skb, IFLA_CAN_BITTIMING_CONST,
-@@ -659,9 +665,8 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	     !priv->do_get_berr_counter(dev, &bec) &&
- 	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
- 
--	    (priv->fd.data_bittiming.bitrate &&
--	     nla_put(skb, IFLA_CAN_DATA_BITTIMING,
--		     sizeof(priv->fd.data_bittiming), &priv->fd.data_bittiming)) ||
-+	    can_bittiming_fill_info(skb, IFLA_CAN_DATA_BITTIMING,
-+				    &priv->fd.data_bittiming) ||
- 
- 	    (priv->fd.data_bittiming_const &&
- 	     nla_put(skb, IFLA_CAN_DATA_BITTIMING_CONST,
+ 	return priv->ctrlmode & ~priv->ctrlmode_supported;
+@@ -188,6 +167,8 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
+ int open_candev(struct net_device *dev);
+ void close_candev(struct net_device *dev);
+ int can_change_mtu(struct net_device *dev, int new_mtu);
++int __must_check can_set_static_ctrlmode(struct net_device *dev,
++					 u32 static_mode);
+ int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd);
+ int can_ethtool_op_get_ts_info_hwts(struct net_device *dev,
+ 				    struct kernel_ethtool_ts_info *info);
 -- 
 2.51.0
 
