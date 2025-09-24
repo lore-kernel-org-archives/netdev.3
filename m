@@ -1,258 +1,123 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7DF2727F3
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 19:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E8D30BF55;
+	Wed, 24 Sep 2025 20:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758743414; cv=none; b=D6e0d98vQLYOB6PjVDTaxWrFNmU57BAKNR5ok/sZDqjtrhnAOO+9fAV+gBfPcXfYpye1M/fR6IoNdWprM4sSeLPbpVvITlbEo7ki2mNO15I+0GA8QQZkgr8nMfyU/0enBp/6k1cvCX02ghpvfNqIaS9FD6DpJsD2KWOuJQi36GY=
+	t=1758745096; cv=none; b=J+ugFa8FGQEHh/f8BVyxlGw7KiFafMD/t7L9cptQi3/VqUDdVMOdlREah05vvWQ8HC0irrezoWo0+ZEnyQBqgAgBIrZT81IIJTo3/5myee8JjbNSOttzvmuIBcl14UjULXaClzxp+kzxPLyaex1L4rOz6QwJH1KFuTzf6SmZnYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758743414; c=relaxed/simple;
-	bh=S6ymSA79RMwt17MQczFLI1TKdpUBDxzN+89lEXhVBQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOF2w6JYon9NtkyCm0zHkvWhfobWPNqq8IymLa9PFDmTTLFKxyQ++vnMAkeLozu6az5QLn27pigQq+g2JCv8XQ5HelRZfg5nNGsIwTSU06aw+39cKY0zqDeGvK6FRRetKjK0L64REQu3ovhAy9weSx+vXhQze8EnO5rD7798KjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mv6BQMMN; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758745096; c=relaxed/simple;
+	bh=EqYtmV7TAcM2X9vdFPDPz8hYQ+v6LDf37ftyviq9hac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AJNnZaq6DoqzXX1oQsIk71Q1ECbEr10xObYfEhBmVO1Hmr3Q9v84Dz2yVFKmSB6SBupVLW9J4oiDmIDNgoRj65fF9s8Gxq6otHsOXCJxne/OLWxvnWudlsWsGGSKJy0M8Ic7MY1hiOGKBeqE2kRQFmUbqYmexkuBWxTJMmjs1OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=NESutuBM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=I+Wi1wBs; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mv6BQMMN"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e96e1c82b01so181932276.1
-        for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 12:50:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758743412; x=1759348212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aYLNBDG0NRlmzM4m8gS3v/gKeV3amcycvxjqyJSUjo4=;
-        b=Mv6BQMMNMVk0zvVhehtHw1PczbHRSlc8n8eSL2EzacsLcrGWIEu9hrYtPdE9SZ3pC3
-         meXQQyhkvzzLnxhSs44j6c+SEgJzrJOwBO/3RDoAHn+SifIiOmamISfUW2QYIjtb8Bbc
-         hyzbjG1DJvDEXvQ1ZYWpy+qJ98y3V3B4RKdggub/oKhgmT/PQaXhnUsPWc4+8yVUZXhq
-         p9KrJZsQVOfd40Z36spwaSd92aJBZj2GtJ7kJQV5DAV9N4BGnOxtG8tLmgfiqxWNK+j7
-         X1yomBSqIImutirqOcCUTQfsBk+6v01BXJEdhoqepI8/87+QGXbmaChyuY8+DR5EzjeS
-         fs2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758743412; x=1759348212;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aYLNBDG0NRlmzM4m8gS3v/gKeV3amcycvxjqyJSUjo4=;
-        b=hKqsapo99BuHBFl+VXr/8sxFhFPBUurBjeZqoE3/7VoUW1yiOx/ZOQ6kjOdFoB4yAj
-         bGo3skYp17wyicAyemWyjIx4SO9zSca0Hye5TQ9VkdLNIq6I4jEBCzxlVZ0MgenWqmZ5
-         nsO59Gf+JfxBOI+3ohfwcDJIf0fY0jpajn4wdSxOz836UU43mGTlr1/SrgfHe9esQDrI
-         ldW01+/OhBIS4hMIzLlGB1hDXVhLapkKssVAQ+zsptLd907o1KlljJHm72Q8IgQWx20W
-         IHu6UelZiB451uLwgo7cmxNxF2BkNQsy8GWNPZValFSLHT75iIA0mPyKGA/fO4GgibSQ
-         bBrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+e/43J1s65g51/Fa7Nm2P3I0XeBIzz4UVFk1WROCyDCF/yW8L+1x+nPdFshsHTcMdBcqQoD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFumVkkBvCX3G21gKT67BYr0t4OoVR2zymU7/rD6MGKRSvWLCb
-	n+ruMj4UHMicuAgt0aDHKGXTW4FZSXctKbmzGAKzB3Qnd8Uo979zkrAB
-X-Gm-Gg: ASbGnctCzJkCOUCxtgKXZlIg/8tZ/6NpBhjOqp+SRqLk9RU6aBtuTHThJw67kSBZSeP
-	1YPASwBikiYHcAFjX1xHP47C/jXstWTlQOkYC/U1x8obL49lWINY4xdybY1uMFbjAnbtXxgAxFf
-	IMYZjKs7i4VYh2JjdFYtqpxpVs0jQFwZSUi0S/HYW4Xn2goN6i/vg8j7LwlfckyxBQX3RL3s89e
-	KliNwoHoQVkip3TcrbJQ7uTtcNA1jqSdXp5jY5AROKeZQBDpz+7vOw6cXwulsUngSwoussjRYLs
-	W2iheuzer7EeT153xCEFzgGelIBJGYVINcZmJgqfLi9mw6jC2uArMMdIbxBwRBEoe1mY/4p3fXI
-	y4A62lzuxkzuZdRVAIOE=
-X-Google-Smtp-Source: AGHT+IGwXpljS88SJeGJJI0ul6IMSf2G2cNyQU2qalFmWCdkiuQdoes8B4yeD91INy1yeskEZh5zAg==
-X-Received: by 2002:a05:6902:100e:b0:e9d:75c1:7584 with SMTP id 3f1490d57ef6-eb37fc0e113mr1329552276.15.1758743411681;
-        Wed, 24 Sep 2025 12:50:11 -0700 (PDT)
-Received: from localhost ([2a03:2880:25ff:2::])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-eb37ebdb5b2sm339536276.20.2025.09.24.12.50.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 12:50:11 -0700 (PDT)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="NESutuBM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="I+Wi1wBs"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2FCEE1D0016F;
+	Wed, 24 Sep 2025 16:18:11 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Wed, 24 Sep 2025 16:18:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1758745091; x=
+	1758831491; bh=qIL7VdXNc2rL1a7aBbmlZN+TWI2aTIAh5NhrmccsOLI=; b=N
+	ESutuBMKprzGKlasl7bB81yqy3kNgkqfZ/UrWV+AaOPeCVMUJdwZHbOfI91qWYmo
+	pxSPQNPTMFT2rsMuegkN/lo5eI3spvBa1jvkr3FmCn1HgsUkPRJmD2w9YQZJJpg/
+	pWlHu3m+revuwLWpcE7Sk2IHDS0xc6zFHxKYWJCzysPieOIMfcBqaYMx3iiSC010
+	JKxN8d2czIlZjc6OUagwa5eRw2qH8BYlt7P2aW9lIxhdiRW0DD3jrMXSNc5ja/S7
+	Vr0PabSaH4TOptfoJdh6m7ytatm2zT0fEk6G02ZIoMQKnxl3/knKRLswqGWYScLP
+	C2hsryEmMEqhs71BlNTcQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1758745091; x=1758831491; bh=qIL7VdXNc2rL1a7aBbmlZN+TWI2aTIAh5Nh
+	rmccsOLI=; b=I+Wi1wBsacBuJbno012P9WTIM0Cx3c71U2kTZGHV6/qcNvOFp3U
+	ASiCDQhgrjPYLulxT1oGNRR8YhKuT6Pe5t4jhzYw3F6rNztxNkAqiIxivOQbicLQ
+	ke/xUXK/TmUCuchdILH6DuMqQVKvE1yA0LJxBbvNHjmJN1HInJkN5H1rvkQNaf15
+	xNlJEXEjqceQrZi3pA4Jm7aPLJxanJ24P7xjdp66MLmIVmDMs6jdF+BSkM3E3yVd
+	z82mZ7oAkWyJnv0lmYiheRbOuSatpQQ7JGA11hMosVlPW54Crs8d/v/3UukTpVYm
+	HPP7aV/0RaMXmZ+xZXAuy3YXy43gxD3xYdw==
+X-ME-Sender: <xms:AlLUaGx5YXB7uYB5WWY8tRLHtkPWJJ-m3MxnVgtqVAMzSRJXlxIwMA>
+    <xme:AlLUaIQyKt10OPXJ57PRh0betJur52udFVb3cRphm5iLJC5esTxLdlgDasJ-Z6HwW
+    30a9qFehtFDmk8NNd9q12CtXzsySirVioZwFREo7OOIpL7j8Hgn9w>
+X-ME-Received: <xmr:AlLUaDKDyrFU71yvBdqch4Nan_xSbZaynVrsKiK2RFq_RX3Bc4GAPyjIS8nm>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeigeehgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttdejnecuhfhrohhmpefurggsrhhinhgr
+    ucffuhgsrhhotggruceoshgusehquhgvrghshihsnhgrihhlrdhnvghtqeenucggtffrrg
+    htthgvrhhnpeeuhffhfffgfffhfeeuiedugedtfefhkeegteehgeehieffgfeuvdeuffef
+    gfduffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    hsugesqhhuvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopehguhhsthgrvhhorghrsheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghvvg
+    hmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtg
+    hpthhtohephhhorhhmsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvg
+    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:AlLUaPXYorV4qVyqlw1XAr2VdhCvVVutANTxN-0EVoa2uwx_J1mvmQ>
+    <xmx:AlLUaHRAmaYAOa_CXD8gtWAVfVVtU3h44Hg1tfzaBMHn2fShAHr4wA>
+    <xmx:AlLUaHAvkQRlISgtDaalEozoftsNbfBPpI46sN2MSIBv2cafBHjntQ>
+    <xmx:AlLUaGIW_jSQWWfjv_0yquDg5o69PNOq2ryL-X1aKu7_n7tsRYQIfg>
+    <xmx:AlLUaEzfnFaENQof4-wtZVQc70sNIK-rZjLPViKWRULNAKMtDCzOvzh2>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Sep 2025 16:18:09 -0400 (EDT)
+Date: Wed, 24 Sep 2025 22:18:08 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Willem de Bruijn <willemb@google.com>,
-	Breno Leitao <leitao@debian.org>,
-	Petr Machata <petrm@nvidia.com>,
-	Yuyang Huang <yuyanghuang@google.com>,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next 9/9] selftests: drv-net: psp: add tests for destroying devices
-Date: Wed, 24 Sep 2025 12:49:55 -0700
-Message-ID: <20250924194959.2845473-10-daniel.zahka@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20250924194959.2845473-1-daniel.zahka@gmail.com>
-References: <20250924194959.2845473-1-daniel.zahka@gmail.com>
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] tls: Avoid -Wflex-array-member-not-at-end
+ warning
+Message-ID: <aNRSACsf_h3ePDhf@krikkit>
+References: <aNMG1lyXw4XEAVaE@kspp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aNMG1lyXw4XEAVaE@kspp>
 
-From: Jakub Kicinski <kuba@kernel.org>
+Thanks for the updated patch.
 
-Add tests for making sure device can disappear while associations
-exist. This is netdevsim-only since destroying real devices is
-more tricky.
+A process nit: the correct subject prefix for this type of work within
+networking would be [PATCH net-next v2] (indicating it targets the
+"net-next" tree).
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
- .../drivers/net/hw/lib/py/__init__.py         |  2 +-
- .../selftests/drivers/net/lib/py/__init__.py  |  2 +-
- .../selftests/drivers/net/lib/py/env.py       |  5 ++
- tools/testing/selftests/drivers/net/psp.py    | 59 ++++++++++++++++++-
- tools/testing/selftests/net/lib/py/ksft.py    |  5 ++
- 5 files changed, 69 insertions(+), 4 deletions(-)
+2025-09-23, 22:45:10 +0200, Gustavo A. R. Silva wrote:
+> Remove unused flexible-array member in struct tls_rec and, with this,
+> fix the following warning:
+> 
+> net/tls/tls.h:131:29: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Also, add a comment to prevent people from adding any members
+> after struct aead_request, which is a flexible structure --this is
+> a structure that ends in a flexible-array member.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-index 1c631f3c81f1..0ceb297e7757 100644
---- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-@@ -22,7 +22,7 @@ try:
-     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-         ksft_setup
-     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
--        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt
-+        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
-     from net.lib.py import NetNSEnter
-     from drivers.net.lib.py import GenerateTraffic
-     from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index 8a795eeb5051..2a645415c4ca 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -21,7 +21,7 @@ try:
-     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-         ksft_setup
-     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
--        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt
-+        ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
- except ModuleNotFoundError as e:
-     ksft_pr("Failed importing `net` library from kernel sources")
-     ksft_pr(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index c1f3b608c6d8..fc12e20af880 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -7,6 +7,7 @@ from lib.py import KsftSkipEx, KsftXfailEx
- from lib.py import ksft_setup, wait_file
- from lib.py import cmd, ethtool, ip, CmdExitFailure
- from lib.py import NetNS, NetdevSimDev
-+from lib.py import KsftXfailEx
- from .remote import Remote
- 
- 
-@@ -245,6 +246,10 @@ class NetDrvEpEnv(NetDrvEnvBase):
-         if not self.addr_v[ipver] or not self.remote_addr_v[ipver]:
-             raise KsftSkipEx(f"Test requires IPv{ipver} connectivity")
- 
-+    def require_nsim(self):
-+        if self._ns is None:
-+            raise KsftXfailEx("Test only works on netdevsim")
-+
-     def _require_cmd(self, comm, key, host=None):
-         cached = self._required_cmd.get(comm, {})
-         if cached.get(key) is None:
-diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-index ee103b47568c..6a7f51801703 100755
---- a/tools/testing/selftests/drivers/net/psp.py
-+++ b/tools/testing/selftests/drivers/net/psp.py
-@@ -10,7 +10,7 @@ import termios
- import time
- 
- from lib.py import ksft_run, ksft_exit, ksft_pr
--from lib.py import ksft_true, ksft_eq, ksft_ne, ksft_gt, ksft_raises, KsftSkipEx
-+from lib.py import ksft_true, ksft_eq, ksft_ne, ksft_gt, ksft_raises, ksft_not_none, KsftSkipEx
- from lib.py import NetDrvEpEnv, PSPFamily, NlError
- from lib.py import bkg, rand_port, wait_port_listen
- 
-@@ -472,6 +472,61 @@ def data_stale_key(cfg):
-         _close_psp_conn(cfg, s)
- 
- 
-+def __nsim_psp_rereg(cfg):
-+    # The PSP dev ID will change, remember what was there before
-+    before = set([x['id'] for x in cfg.pspnl.dev_get({}, dump=True)])
-+
-+    cfg._ns.nsims[0].dfs_write('psp_rereg', '1')
-+
-+    after = set([x['id'] for x in cfg.pspnl.dev_get({}, dump=True)])
-+
-+    new_devs = list(after - before)
-+    ksft_eq(len(new_devs), 1)
-+    cfg.psp_dev_id = list(after - before)[0]
-+
-+
-+def removal_device_rx(cfg):
-+    """ Test removing a netdev / PSD with active Rx assoc """
-+
-+    # We could technically devlink reload real devices, too
-+    # but that kills the control socket. So test this on
-+    # netdevsim only for now
-+    cfg.require_nsim()
-+
-+    s = _make_clr_conn(cfg)
-+    try:
-+        rx_assoc = cfg.pspnl.rx_assoc({"version": 0,
-+                                       "dev-id": cfg.psp_dev_id,
-+                                       "sock-fd": s.fileno()})
-+        ksft_not_none(rx_assoc)
-+
-+        __nsim_psp_rereg(cfg)
-+    finally:
-+        _close_conn(cfg, s)
-+
-+
-+def removal_device_bi(cfg):
-+    """ Test removing a netdev / PSD with active Rx/Tx assoc """
-+
-+    # We could technically devlink reload real devices, too
-+    # but that kills the control socket. So test this on
-+    # netdevsim only for now
-+    cfg.require_nsim()
-+
-+    s = _make_clr_conn(cfg)
-+    try:
-+        rx_assoc = cfg.pspnl.rx_assoc({"version": 0,
-+                                       "dev-id": cfg.psp_dev_id,
-+                                       "sock-fd": s.fileno()})
-+        cfg.pspnl.tx_assoc({"dev-id": cfg.psp_dev_id,
-+                            "version": 0,
-+                            "tx-key": rx_assoc['rx-key'],
-+                            "sock-fd": s.fileno()})
-+        __nsim_psp_rereg(cfg)
-+    finally:
-+        _close_conn(cfg, s)
-+
-+
- def psp_ip_ver_test_builder(name, test_func, psp_ver, ipver):
-     """Build test cases for each combo of PSP version and IP version"""
-     def test_case(cfg):
-@@ -531,7 +586,7 @@ def main() -> None:
-                     ipver_test_builder("data_mss_adjust", _data_mss_adjust, ipver)
-                     for ipver in ("4", "6")
-                 ]
--                ksft_run(cases = cases, globs=globals(), case_pfx={"dev_", "data_", "assoc_"},
-+                ksft_run(cases = cases, globs=globals(), case_pfx={"dev_", "data_", "assoc_", "removal_"},
-                          args=(cfg, ), skip_all=(cfg.psp_dev_id is None))
-                 cfg.comm_sock.send(b"exit\0")
-                 cfg.comm_sock.close()
-diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
-index d65dd087c549..43b40a027f5e 100644
---- a/tools/testing/selftests/net/lib/py/ksft.py
-+++ b/tools/testing/selftests/net/lib/py/ksft.py
-@@ -72,6 +72,11 @@ def ksft_true(a, comment=""):
-         _fail("Check failed", a, "does not eval to True", comment)
- 
- 
-+def ksft_not_none(a, comment=""):
-+    if a is None:
-+        _fail("Check failed", a, "is None", comment)
-+
-+
- def ksft_in(a, b, comment=""):
-     if a not in b:
-         _fail("Check failed", a, "not in", b, comment)
+Once that warning is enabled, re-adding a field after aead_req will
+not be allowed by the compiler, right?  The comment is probably not
+really needed, but since there are "must be first" comments all over
+include/net, I guess it's useful.
+
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+
 -- 
-2.47.3
-
+Sabrina
