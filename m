@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5EA288524
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E57A28851F
 	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702116; cv=none; b=U82mattPKLiaB5a+gErpom5M3TrGFuY+VzpLZgX0VuBzDuVEYcwBXmKtiDZ3lDpv02mO/s6hPDCiViCT05DBDlKEmS7YugNbxIE3lZ90T5h0/IuftwbU+gsRDqWMKfgFZTNlM+alkpmXxJqgAtdYew7G57PuMciAFdrrGa3umn4=
+	t=1758702116; cv=none; b=itCQR59H9kmz2u3x4N8oHb6RFRegDOmqBqCfDgngZbTtpiOanSSs56De/8cnLeJbsJZ9ts4RYANawinW5nolkDZKlACiG28lIkm5skweuoGSdOtWE9tCmp+N7uCX1oH/aYUWmhYTMtvcX7J5lwIb78bci/xbhrxXBq1zVl573Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702116; c=relaxed/simple;
-	bh=8kazcmo+vnijgvTt+pY6bcaPfuTPkvoiYz3DMDAHuiE=;
+	bh=ARoB4N4UyQFWYljOs3TO8QYdImHXJ73Z2AEofYwRdnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eh815vK9VNyALkXijaMoVQV7FPT4+EUu/YbCo/oOluldHFR8nKJf9L0XkblTXggXAh2cMK+K7v/L8qDh/igyFivaVEldKlYGkpXzupLCqDRvssBdmzZbb/1hczI4+OEs+bidG8NXfAWC6dMw8v4icKrABFcPdCdtX9ADr88nTqQ=
+	 MIME-Version; b=mHYtYWoZMyVM7WoA6isSmzCNJ0qoBP8MEbOE32cWZ4avAQIDBSmdAkBrdAVlDwHu04SsNdkIB86pbSCgfCkqNNjMYIBzNwtelSLvuNawp/WhiuKrS4WeURrvbnQN4FjgBqw5iPcUny68JVkZf8zU5U4I7sR+f57n4E7S1ktK5fw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kke-0001Fm-Os; Wed, 24 Sep 2025 10:21:24 +0200
+	id 1v1Kke-0001FO-Dp; Wed, 24 Sep 2025 10:21:24 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-000Dw4-0n;
-	Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkc-000Dvu-2x;
+	Wed, 24 Sep 2025 10:21:22 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 776134788AE;
-	Wed, 24 Sep 2025 08:21:10 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 569894788C4;
+	Wed, 24 Sep 2025 08:21:11 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 37/48] can: netlink: make can_tdc_changelink() FD agnostic
-Date: Wed, 24 Sep 2025 10:06:54 +0200
-Message-ID: <20250924082104.595459-38-mkl@pengutronix.de>
+Subject: [PATCH net-next 48/48] can: netlink: add userland error messages
+Date: Wed, 24 Sep 2025 10:07:05 +0200
+Message-ID: <20250924082104.595459-49-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -60,58 +60,189 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-can_tdc_changelink() needs to access can_priv->fd making it
-specific to CAN FD. Change the function parameter from struct can_priv
-to struct data_bittiming_params. This way, the function becomes CAN FD
-agnostic and can be reused later on for the CAN XL TDC.
+Use NL_SET_ERR_MSG() and NL_SET_ERR_MSG_FMT() to return meaningful
+error messages to the userland whenever a -EOPNOTSUPP error is
+returned due to a failed validation of the CAN netlink arguments.
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-9-e720d28f66fe@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-20-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/can/dev/netlink.c | 82 ++++++++++++++++++++++++++---------
+ 1 file changed, 62 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 17ed52d238e3..abff7b84fdce 100644
+index 92d8df13e886..0591406b6f32 100644
 --- a/drivers/net/can/dev/netlink.c
 +++ b/drivers/net/can/dev/netlink.c
-@@ -172,12 +172,13 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
- 	return 0;
- }
- 
--static int can_tdc_changelink(struct can_priv *priv, const struct nlattr *nla,
-+static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
-+			      const struct nlattr *nla,
- 			      struct netlink_ext_ack *extack)
- {
- 	struct nlattr *tb_tdc[IFLA_CAN_TDC_MAX + 1];
- 	struct can_tdc tdc = { 0 };
--	const struct can_tdc_const *tdc_const = priv->fd.tdc_const;
-+	const struct can_tdc_const *tdc_const = dbt_params->tdc_const;
+@@ -64,15 +64,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
+ 	bool tdc_auto = tdc_flags & CAN_CTRLMODE_TDC_AUTO_MASK;
  	int err;
  
- 	if (!tdc_const)
-@@ -215,7 +216,7 @@ static int can_tdc_changelink(struct can_priv *priv, const struct nlattr *nla,
- 		tdc.tdcf = tdcf;
+-	/* CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive */
+-	if (tdc_auto && tdc_manual)
++	if (tdc_auto && tdc_manual) {
++		NL_SET_ERR_MSG(extack,
++			       "TDC manual and auto modes are mutually exclusive");
+ 		return -EOPNOTSUPP;
++	}
+ 
+ 	/* If one of the CAN_CTRLMODE_TDC_* flag is set then TDC
+ 	 * must be set and vice-versa
+ 	 */
+-	if ((tdc_auto || tdc_manual) != !!data_tdc)
++	if ((tdc_auto || tdc_manual) && !data_tdc) {
++		NL_SET_ERR_MSG(extack, "TDC parameters are missing");
+ 		return -EOPNOTSUPP;
++	}
++	if (!(tdc_auto || tdc_manual) && data_tdc) {
++		NL_SET_ERR_MSG(extack, "TDC mode (auto or manual) is missing");
++		return -EOPNOTSUPP;
++	}
+ 
+ 	/* If providing TDC parameters, at least TDCO is needed. TDCV
+ 	 * is needed if and only if CAN_CTRLMODE_TDC_MANUAL is set
+@@ -86,15 +94,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
+ 			return err;
+ 
+ 		if (tb_tdc[IFLA_CAN_TDC_TDCV]) {
+-			if (tdc_auto)
++			if (tdc_auto) {
++				NL_SET_ERR_MSG(extack,
++					       "TDCV is incompatible with TDC auto mode");
+ 				return -EOPNOTSUPP;
++			}
+ 		} else {
+-			if (tdc_manual)
++			if (tdc_manual) {
++				NL_SET_ERR_MSG(extack,
++					       "TDC manual mode requires TDCV");
+ 				return -EOPNOTSUPP;
++			}
+ 		}
+ 
+-		if (!tb_tdc[IFLA_CAN_TDC_TDCO])
++		if (!tb_tdc[IFLA_CAN_TDC_TDCO]) {
++			NL_SET_ERR_MSG(extack, "TDCO is missing");
+ 			return -EOPNOTSUPP;
++		}
  	}
  
--	priv->fd.tdc = tdc;
-+	dbt_params->tdc = tdc;
- 
  	return 0;
- }
-@@ -382,8 +383,8 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 		memset(&priv->fd.tdc, 0, sizeof(priv->fd.tdc));
- 		if (data[IFLA_CAN_TDC]) {
- 			/* TDC parameters are provided: use them */
--			err = can_tdc_changelink(priv, data[IFLA_CAN_TDC],
--						 extack);
-+			err = can_tdc_changelink(&priv->fd,
-+						 data[IFLA_CAN_TDC], extack);
- 			if (err) {
- 				priv->ctrlmode &= ~CAN_CTRLMODE_FD_TDC_MASK;
- 				return err;
+@@ -105,6 +121,7 @@ static int can_validate_databittiming(struct nlattr *data[],
+ 				      int ifla_can_data_bittiming, u32 flags)
+ {
+ 	struct nlattr *data_tdc;
++	const char *type;
+ 	u32 tdc_flags;
+ 	bool is_on;
+ 	int err;
+@@ -120,18 +137,31 @@ static int can_validate_databittiming(struct nlattr *data[],
+ 		data_tdc = data[IFLA_CAN_TDC];
+ 		tdc_flags = flags & CAN_CTRLMODE_FD_TDC_MASK;
+ 		is_on = flags & CAN_CTRLMODE_FD;
++		type = "FD";
+ 	} else {
+ 		return -EOPNOTSUPP; /* Place holder for CAN XL */
+ 	}
+ 
+ 	if (is_on) {
+-		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming])
++		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming]) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "Provide both nominal and %s data bittiming",
++					   type);
+ 			return -EOPNOTSUPP;
+-	}
+-
+-	if (data[ifla_can_data_bittiming] || data_tdc) {
+-		if (!is_on)
++		}
++	} else {
++		if (data[ifla_can_data_bittiming]) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "%s data bittiming requires CAN %s",
++					   type, type);
+ 			return -EOPNOTSUPP;
++		}
++		if (data_tdc) {
++			NL_SET_ERR_MSG_FMT(extack,
++					   "%s TDC requires CAN %s",
++					   type, type);
++			return -EOPNOTSUPP;
++		}
+ 	}
+ 
+ 	err = can_validate_bittiming(data, extack, ifla_can_data_bittiming);
+@@ -178,8 +208,7 @@ static int can_ctrlmode_changelink(struct net_device *dev,
+ {
+ 	struct can_priv *priv = netdev_priv(dev);
+ 	struct can_ctrlmode *cm;
+-	u32 maskedflags;
+-	u32 ctrlstatic;
++	u32 ctrlstatic, maskedflags, notsupp, ctrlstatic_missing;
+ 
+ 	if (!data[IFLA_CAN_CTRLMODE])
+ 		return 0;
+@@ -189,20 +218,28 @@ static int can_ctrlmode_changelink(struct net_device *dev,
+ 		return -EBUSY;
+ 
+ 	cm = nla_data(data[IFLA_CAN_CTRLMODE]);
+-	maskedflags = cm->flags & cm->mask;
+ 	ctrlstatic = can_get_static_ctrlmode(priv);
++	maskedflags = cm->flags & cm->mask;
++	notsupp = maskedflags & ~(priv->ctrlmode_supported | ctrlstatic);
++	ctrlstatic_missing = (maskedflags & ctrlstatic) ^ ctrlstatic;
+ 
+-	/* check whether provided bits are allowed to be passed */
+-	if (maskedflags & ~(priv->ctrlmode_supported | ctrlstatic))
++	if (notsupp) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "requested control mode %s not supported",
++				   can_get_ctrlmode_str(notsupp));
+ 		return -EOPNOTSUPP;
++	}
+ 
+ 	/* do not check for static fd-non-iso if 'fd' is disabled */
+ 	if (!(maskedflags & CAN_CTRLMODE_FD))
+ 		ctrlstatic &= ~CAN_CTRLMODE_FD_NON_ISO;
+ 
+-	/* make sure static options are provided by configuration */
+-	if ((maskedflags & ctrlstatic) != ctrlstatic)
++	if (ctrlstatic_missing) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "missing required %s static control mode",
++				   can_get_ctrlmode_str(ctrlstatic_missing));
+ 		return -EOPNOTSUPP;
++	}
+ 
+ 	/* If a top dependency flag is provided, reset all its dependencies */
+ 	if (cm->mask & CAN_CTRLMODE_FD)
+@@ -234,8 +271,10 @@ static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
+ 	const struct can_tdc_const *tdc_const = dbt_params->tdc_const;
+ 	int err;
+ 
+-	if (!tdc_const)
++	if (!tdc_const) {
++		NL_SET_ERR_MSG(extack, "The device does not support TDC");
+ 		return -EOPNOTSUPP;
++	}
+ 
+ 	err = nla_parse_nested(tb_tdc, IFLA_CAN_TDC_MAX, nla,
+ 			       can_tdc_policy, extack);
+@@ -450,8 +489,11 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		const unsigned int num_term = priv->termination_const_cnt;
+ 		unsigned int i;
+ 
+-		if (!priv->do_set_termination)
++		if (!priv->do_set_termination) {
++			NL_SET_ERR_MSG(extack,
++				       "Termination is not configurable on this device");
+ 			return -EOPNOTSUPP;
++		}
+ 
+ 		/* check whether given value is supported by the interface */
+ 		for (i = 0; i < num_term; i++) {
 -- 
 2.51.0
 
