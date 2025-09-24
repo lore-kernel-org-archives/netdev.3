@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57622283FE9
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D1928A1ED
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702117; cv=none; b=AqMKMURvtiun/Z+mEj/vzq0M3YPAVeUlpbfvzWAKd23MbQOdA55C5gaIatFWJFd8UjcIYl2MyuBREoIfoZZoh6xMoiKpO2oS1Dbl5k+2wtuV8JSACWuDnwpGpGNuwxuaC/W9idw23DggJet6uvDitCn+cuB8Igq8tfLDBcWJVX4=
+	t=1758702118; cv=none; b=q9X06ingsL0JIiYolCeM0IYw/JK6H2iM7uQHFxtHlyKRT89TajSSxGQPEzrO6rRqQWjsDeMUWbh+zlwlWRzAQGz7ZReM1r5lu4dFULgSqMojgUyEHY6LpAezo3V1i2bJpwe0t5tMzGxKraXhKkfz9kbjddwLz5lNtZDRxJQ0/yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702117; c=relaxed/simple;
-	bh=bcH/uHOd9zw7q0y3QEzwVum6jYZiiWlUjxls3Q1qReY=;
+	s=arc-20240116; t=1758702118; c=relaxed/simple;
+	bh=jASTsnIK7OTgRD4LiCCD2seVMSpdQs0xI3XkrxGHFZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8Gp1pE+oPMhPG9yNjhMCAg1cFm2wBudkP99B2/JGxH5/9J4/BLRuaJh5BBqxn7IQMFehtb6QGUjxhlrGFFwsWGbJiy4sLSTZCcuz195Ke+9ZjhHek+RRcpU+ZdbkIbLGRvsgu0T4VuHrRQYZEk0WtQyNn26TIrApBpxjLfr1hY=
+	 MIME-Version; b=TZAntPXKJ21QUCeJPxHqgABLt/Cntwcl3dt1MbUVZ0GGpmnDaKLSxDmwKqon+f3zFiVWmZ+mIpXKBCOKMTCzdY/4ktblekjszjZdlkyIYKboy8eFJVKbIMMzVyIj2ktNnSb7Gcp9Tgj5DtDMX6ENJ1Vn1fTEPzGasLyuSLf10NY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,32 +18,31 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kke-0001Ff-Mt; Wed, 24 Sep 2025 10:21:24 +0200
+	id 1v1Kkf-0001GN-7f; Wed, 24 Sep 2025 10:21:25 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-000DwF-11;
+	id 1v1Kkd-000Dwc-1j;
 	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9D94B478888;
-	Wed, 24 Sep 2025 08:21:08 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E4F55478866;
+	Wed, 24 Sep 2025 08:21:06 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 18/48] can: rcar_can: Do not print alloc_candev() failures
-Date: Wed, 24 Sep 2025 10:06:35 +0200
-Message-ID: <20250924082104.595459-19-mkl@pengutronix.de>
+Subject: [PATCH net-next 02/48] MAINTAINERS: update Vincent Mailhol's email address
+Date: Wed, 24 Sep 2025 10:06:19 +0200
+Message-ID: <20250924082104.595459-3-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -59,33 +58,64 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-If alloc_candev() failed due to out-of-memory, the core memory
-allocation code has already printed an error message.
-If alloc_candev() failed for a different reason, alloc_netdev_mqs() has
-already printed an error message.
+Now that I have received my kernel.org account, I am changing my email
+address from mailhol.vincent@wanadoo.fr to mailhol@kernel.org. The
+wanadoo.fr address was my first email which I created when I was a kid
+and has a special meaning to me, but it is restricted to a maximum of
+50 messages per hour which starts to be problematic on threads where
+many people are CC-ed.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/2d6ad4be211a35492570fd7219ca7a89b384bfad.1755857536.git.geert+renesas@glider.be
+Update all the MAINTAINERS entries accordingly and map the old address
+to the new one.
+
+I remain reachable from my old address. The different copyright
+notices mentioning my old address are kept as-is for the moment. I
+will update those one at a time only if I need to touch those files.
+
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250826105255.35501-2-mailhol@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_can.c | 1 -
- 1 file changed, 1 deletion(-)
+ .mailmap    | 1 +
+ MAINTAINERS | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index de1829477659..51bf8f7e7182 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -773,7 +773,6 @@ static int rcar_can_probe(struct platform_device *pdev)
+diff --git a/.mailmap b/.mailmap
+index aa09e792017f..4a5f2c8deeff 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -816,6 +816,7 @@ Veera Sundaram Sankaran <quic_veeras@quicinc.com> <veeras@codeaurora.org>
+ Veerabhadrarao Badiganti <quic_vbadigan@quicinc.com> <vbadigan@codeaurora.org>
+ Venkateswara Naralasetty <quic_vnaralas@quicinc.com> <vnaralas@codeaurora.org>
+ Vikash Garodia <quic_vgarodia@quicinc.com> <vgarodia@codeaurora.org>
++Vincent Mailhol <mailhol@kernel.org> <mailhol.vincent@wanadoo.fr>
+ Vinod Koul <vkoul@kernel.org> <vinod.koul@intel.com>
+ Vinod Koul <vkoul@kernel.org> <vinod.koul@linux.intel.com>
+ Vinod Koul <vkoul@kernel.org> <vkoul@infradead.org>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c930a961435e..65c0addba48a 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -5417,7 +5417,7 @@ F:	net/sched/sch_cake.c
  
- 	ndev = alloc_candev(sizeof(struct rcar_can_priv), RCAR_CAN_FIFO_DEPTH);
- 	if (!ndev) {
--		dev_err(dev, "alloc_candev() failed\n");
- 		err = -ENOMEM;
- 		goto fail;
- 	}
+ CAN NETWORK DRIVERS
+ M:	Marc Kleine-Budde <mkl@pengutronix.de>
+-M:	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
++M:	Vincent Mailhol <mailhol@kernel.org>
+ L:	linux-can@vger.kernel.org
+ S:	Maintained
+ W:	https://github.com/linux-can
+@@ -9080,7 +9080,7 @@ S:	Odd Fixes
+ F:	drivers/net/ethernet/agere/
+ 
+ ETAS ES58X CAN/USB DRIVER
+-M:	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
++M:	Vincent Mailhol <mailhol@kernel.org>
+ L:	linux-can@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/networking/devlink/etas_es58x.rst
 -- 
 2.51.0
 
