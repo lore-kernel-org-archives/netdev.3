@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A6423B628;
-	Wed, 24 Sep 2025 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DF828F4;
+	Wed, 24 Sep 2025 18:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758738075; cv=none; b=eSb2jxF/ETIHv3/5x4tH+YpqYlUuPbbVfizadm5nUi/OyrAy95AxUkSJh18pk0136PDlW0qF98YSvJBfcWwYxp0sRmIRNmj4AjYPfjvFoYUb+U4lbRIF2pcB7xV6BgLK5eJTFFsDLrecIAbjhm0bSM3mUndPcq2YsC43aSiXgIE=
+	t=1758738347; cv=none; b=oquuOFuZ+6bqR42f1xgZjVNDtxkOusdyrthO/J5eU9ANCbTVgf4PAdViC1rKAx3TyexwKWT376kaMqdrDl5Gnzt7SokVWvnsPBzCPRjQV3MlpGxcGUAAFTnkUv6GwoPe8JJDyoD4kxPinZDH4KYImJ9DZaFFAT0mtmetXZEBDGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758738075; c=relaxed/simple;
-	bh=XcMZNNLMtiKbA786j1tJuvBwn3efx6UCT9YPvujBkWk=;
+	s=arc-20240116; t=1758738347; c=relaxed/simple;
+	bh=4NaVTvzoompSCSVDePkvEmr8ice0pKKExKnyU91gka8=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=R+jDIozXXf/VsoOi07vBWXtZdHpvfLsM0a7NUY22ez4qFN1B9+Uj6wC9xdXmkgQK+AAFAYT+Y+/5IaHYKMJ1VKA3da9tntqKbv5yjBeEzCAEU2W+aqNELZqdnd73cRSqLvSXwtfW7HIBbcjEwSvmQbdq4P9vqe/dJV5wERWIzpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Mfsm26WH; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=OhxD8JpUNZ1PzFM3FYZpG3YspYC4QUR+WChc4iXRuNeP6GFDnvfA7xKsNIhPClvfZah2AldrVBhcOBAyHyIbDYzGSdZsAyDX8E67LhbdbtgDdgKE2pNQlROfSUcXH4kz+E2+nteODFkGhTB0jnR4PVAgPONVr1+fCUrPHrg5hw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=BtRj6eF+; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Mfsm26WH"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="BtRj6eF+"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PkzEXKrk7RiVwlShBSl0OJhiBXrJm3zMeL24zlXLNiM=; b=Mfsm26WH+2goMZ6MF6TD23QjuC
-	M6+OKzAdzbZ9hd7sId7lSAKuUmd2yXcjLgUzfUGcw+YME+5OKD5sNQk8dWQw6/z4NxjvXT+gSwzZh
-	ODQd3i/4mY3Ge5Q/rmDWVpt4DLlL+szbntW7U1/MtOJQoVmhAVi0Ca9LDZ39Xy51ESrRqdq6/D7dl
-	pOQP9yVaeVZebetULHVWJPAVr+pBAk/SDyCj38OezvImcdLZg+m5C+dIrp6sxtiWSDcs/73yphJsy
-	n++Bgn4BR9ETJ5NoYq+QfajdQsqMyPfRe/JLS69mM0+Kq8pQRBcyt6SjVbQLcCWB3U7SxaSw/BZKj
-	tFvf0W2w==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:36578 helo=rmk-PC.armlinux.org.uk)
+	bh=sn1ZFDSzFJkLngEARJHuY22uH7yWKmAMVE2CXHexSEU=; b=BtRj6eF+6JrnR1YG/J8gq97YlH
+	VCNiGny7IrJF4Q2gjOWggpL8oHKIFK29idUmAx2uuwxkvySflCSWoYDLfhiDHVTGiKULrgjsuMwbb
+	xjzXg83E9c36erK/rbEtw2y63PVGyYwzJrJXYnfC9lHSKSiYzk8whC7IlnfGhKenYOxtWc//yriem
+	YWLIbQsDsZic2xc8Xif4z+tg5yUTybUNhAJufQaDMc07qJhMpMGwyQTgInmJxkkbtc+UfuA39I5yV
+	mKn4+bBhQtSj5V1W6EuPny87rE0DWkO8V35QjnjynyuDIQLaplzyRwaUg1cr7gHA771xbGha60qwo
+	DUoDClbQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:55598 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v1U6E-0000000012o-0Obf;
-	Wed, 24 Sep 2025 19:20:19 +0100
+	id 1v1U6N-0000000013B-49A0;
+	Wed, 24 Sep 2025 19:20:28 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v1U63-00000007HwB-3LuU;
-	Wed, 24 Sep 2025 19:20:07 +0100
+	id 1v1U6E-00000007HwL-0Z32;
+	Wed, 24 Sep 2025 19:20:18 +0100
 In-Reply-To: <aNQ1oI0mt3VVcUcF@shell.armlinux.org.uk>
 References: <aNQ1oI0mt3VVcUcF@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,8 +85,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next 6/9] net: stmmac: remove hw->ps xxx_core_init()
- hardware setup
+Subject: [PATCH RFC net-next 8/9] net: stmmac: only call stmmac_pcs_ctrl_ane()
+ for integrated SGMII PCS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,169 +96,41 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v1U63-00000007HwB-3LuU@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v1U6E-00000007HwL-0Z32@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 24 Sep 2025 19:20:07 +0100
+Date: Wed, 24 Sep 2025 19:20:18 +0100
 
-After a lot of digging, it seems that the oddly named hw->ps member is
-all about configuring the core for reverse SGMII. This member is set to
-one of 0, SPEED_10, SPEED_100 or SPEED_1000 depending on
-priv->plat->mac_port_sel_speed. On DT systems, this comes from the
-"snps,ps-speed" DT property.
+The internal PCS registers only exist if the core is synthesized with
+SGMII, TBI or RTBI support. They have no relevance for RGMII.
 
-When set to a non-zero value, it:
-
-1. Configures the MAC at initialisation time to operate at a specific
-   speed. However, this will be overwritten by mac_link_up() when the
-   link comes up (e.g. with the fixed-link parameters.)
-
-   Note that dwxgmac2 wants to also support SPEED_2500 and SPEED_10000,
-   but both these values are impossible.
-
-2. It _incorrectly_ enables the transmitter (GMAC_CONFIG_TE) which
-   makes no sense, rather than enabling the "transmit configuration"
-   bit (GMAC_CONFIG_TC). Likely a typo.
-
-3. It configures the SGMII rate adapter layer to retrieve its speed
-   setting from the MAC configuration register rather than the PHY.
-
-There are two ways forward here:
-
-a) fixing (2) so that we set GMAC_CONFIG_TC. However, we have platform
-   that set the "snps,ps-speed" property and that work today. Fixing
-   this will cause the RGMII, SGMII or SMII inband configuration to be
-   transmitted, which will be a functional change which could cause a
-   regression.
-
-b) ripping out (1) and (2) as they are ineffective. This also has the
-   possibility of regressions, but the patch author believes this risk
-   is much lower than (a).
-
-Therefore, this commit takes the approach in (b).
+However, priv->hw->pcs contains a STMMAC_PCS_RGMII flag, which is set
+if a PCS has been synthesized but we are operating in RGMII mode. As
+the register has no effect for RGMII, there is no point calling
+stmmac_pcs_ctrl_ane() in this case. Add a comment describing this
+and make it conditional on STMMAC_PCS_SGMII.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../ethernet/stmicro/stmmac/dwmac1000_core.c  | 23 +++--------------
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c | 24 +++---------------
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 25 ++-----------------
- 3 files changed, 8 insertions(+), 64 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 5c653be3d453..d35db8958be1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -26,35 +26,18 @@ static void dwmac1000_core_init(struct mac_device_info *hw,
- 				struct net_device *dev)
- {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value = readl(ioaddr + GMAC_CONTROL);
- 	int mtu = dev->mtu;
-+	u32 value;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index dff3bba83969..fb5a51d16897 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3519,7 +3519,11 @@ static int stmmac_hw_setup(struct net_device *dev)
+ 		}
+ 	}
  
- 	/* Configure GMAC core */
--	value |= GMAC_CORE_INIT;
-+	value = readl(ioaddr + GMAC_CONTROL);
+-	if (priv->hw->pcs)
++	/* The PCS control register is only relevant for SGMII, TBI and RTBI
++	 * modes. We no longer support TBI or RTBI, so only configure this
++	 * register when operating in SGMII mode with the integrated PCS.
++	 */
++	if (priv->hw->pcs & STMMAC_PCS_SGMII)
+ 		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->reverse_sgmii_enable);
  
- 	if (mtu > 1500)
- 		value |= GMAC_CONTROL_2K;
- 	if (mtu > 2000)
- 		value |= GMAC_CONTROL_JE;
- 
--	if (hw->ps) {
--		value |= GMAC_CONTROL_TE;
--
--		value &= ~hw->link.speed_mask;
--		switch (hw->ps) {
--		case SPEED_1000:
--			value |= hw->link.speed1000;
--			break;
--		case SPEED_100:
--			value |= hw->link.speed100;
--			break;
--		case SPEED_10:
--			value |= hw->link.speed10;
--			break;
--		}
--	}
--
--	writel(value, ioaddr + GMAC_CONTROL);
-+	writel(value | GMAC_CORE_INIT, ioaddr + GMAC_CONTROL);
- 
- 	/* Mask GMAC interrupts */
- 	value = GMAC_INT_DEFAULT_MASK;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 21e4461db937..d855ab6b9145 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -27,29 +27,11 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value = readl(ioaddr + GMAC_CONFIG);
- 	unsigned long clk_rate;
-+	u32 value;
- 
--	value |= GMAC_CORE_INIT;
--
--	if (hw->ps) {
--		value |= GMAC_CONFIG_TE;
--
--		value &= hw->link.speed_mask;
--		switch (hw->ps) {
--		case SPEED_1000:
--			value |= hw->link.speed1000;
--			break;
--		case SPEED_100:
--			value |= hw->link.speed100;
--			break;
--		case SPEED_10:
--			value |= hw->link.speed10;
--			break;
--		}
--	}
--
--	writel(value, ioaddr + GMAC_CONFIG);
-+	value = readl(ioaddr + GMAC_CONFIG);
-+	writel(value | GMAC_CORE_INIT, ioaddr + GMAC_CONFIG);
- 
- 	/* Configure LPI 1us counter to number of CSR clock ticks in 1us - 1 */
- 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 00e929bf280b..0430af27da40 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -23,29 +23,8 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
- 	tx = readl(ioaddr + XGMAC_TX_CONFIG);
- 	rx = readl(ioaddr + XGMAC_RX_CONFIG);
- 
--	tx |= XGMAC_CORE_INIT_TX;
--	rx |= XGMAC_CORE_INIT_RX;
--
--	if (hw->ps) {
--		tx |= XGMAC_CONFIG_TE;
--		tx &= ~hw->link.speed_mask;
--
--		switch (hw->ps) {
--		case SPEED_10000:
--			tx |= hw->link.xgmii.speed10000;
--			break;
--		case SPEED_2500:
--			tx |= hw->link.speed2500;
--			break;
--		case SPEED_1000:
--		default:
--			tx |= hw->link.speed1000;
--			break;
--		}
--	}
--
--	writel(tx, ioaddr + XGMAC_TX_CONFIG);
--	writel(rx, ioaddr + XGMAC_RX_CONFIG);
-+	writel(tx | XGMAC_CORE_INIT_TX, ioaddr + XGMAC_TX_CONFIG);
-+	writel(rx | XGMAC_CORE_INIT_RX, ioaddr + XGMAC_RX_CONFIG);
- 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
- }
- 
+ 	/* set TX and RX rings length */
 -- 
 2.47.3
 
