@@ -1,132 +1,162 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1567028751A
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB50F27877B
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702384; cv=none; b=FLvZO7s9xZ/m5heNiDzjJ0IqYSVQ6AnvUfCQNyTIp9puVMKpPmiLSj8+YGFAZtpkSF19KZSKeHqPOCh7HdzBoLyAPljhY7XXVjOLJ0mVM/o+ppJSOKt3iVJx5oagI8Ge1vZgDt+tdphE7qiaS1c0dzetgQOp+JGTUyAQEiKPnlo=
+	t=1758702543; cv=none; b=Bdxjfwvuvkhoo8aL0SUIAXdiSQfaGSV096fRtFA/zjZ3hSPj+qvnT3dBBESvqKhGDG7AcfvHM8Az/dAyTltslttQc4GiodADuTrqHxBOMeSdeEOPtWX8XulRj05sfZDAZR2DWpvwaUCAzUoYfuEO3ofvpZbaINcxzCYP+VscjI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702384; c=relaxed/simple;
-	bh=+tUrgkxN/lp2KXqz828oyBVZ2yDGNOIKK7iRndNRB/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BngSDnuj83LgsUzFk/opdSCvrcxQClhdtgtDvVbefSGhRjNXfGxJ3etztSR1YmA2hWLz4UD+lA8aYBucOYAqVETdY/8Fgx4yJFTy5IEjf8/1JzIOGpoomNCJEVzeKBp53CJcpAWOF9C1dgml5gtQD7X/VNundig5V39ue+Gdj4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-631df7b2dffso1588532a12.1
-        for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 01:26:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758702379; x=1759307179;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ZeXGQPLJ237ts6pnuqslfPixY1clqbR+lLUJqF8pM0=;
-        b=hoTGh4OP3g2lz48ZeXr/tg6jVRd7/q+NL6MYDBgjIZQRdrjVxQammeqpXCXXKHAhNN
-         AFBJ/03ZDul9Qj80ftXUQgJCMTExsPGRgW4szc/14T2neDlIJUC0jHa1a9W4Hc0uEfDR
-         5zoo5Lby14t9ezuLtR6I4edYEBbnRsdCuYcursOFc37uwQXpFquQOFH8BPPcePPuhZ2n
-         hmN+9iKw+88Tt/S5pM21Y8ps3bCv+1OASO/tXcetbSLR1twyzW7t6hBOyVOMeaLKO2Ga
-         aIcwEU4Z8AlgEO0cd7idh6wMXr4S9uNMhscd+FCt4Oz4k6p8LQ9EjZ3WXSI8hvJgyBC1
-         5MvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVDqPnvy/V05o5axAAhXOc1aX3DDkMatsbn1/nLc4FbxTc5cr+at2kKqXjT0U6s3I5BPYP32aE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFZLauEb4p6tl6qvJlNd3IGncY/rSehxMLmcdNocCa0RV0/w09
-	O06fxq0NZWR38yujEJ6YsqFgl5a3KqGI3qb3npNaR+Gz37dsQmSzTvkc
-X-Gm-Gg: ASbGncsnNvNSuyHalmyh1eWbHZPIl61h/jEJjCQxPs8MgtanYcBR7aLKvPgV4+vWa9l
-	irWcuBMy4QGvVf4LlCBR7zXE/el43tbY7KYpN1dSMrjLBeEaxsuumjR1Zio6L7NagHEcqVBJpHu
-	ltANcHx+aUQFbIgbxxaQuPNGfl55DLdnYvGHMWSEyNqIf5QDmll3kOOG0fRRtRPwdZUFMsx7ZBK
-	ugEDWN9Xi7fJ2OKI7q0aoPiDrTDMSw335JkJvYJ9/23SCNqk2SWlrWLiANoXY3zFL/WH/Uk381+
-	kKSuk0it3uSrtPsJCDr5N1YxTLm/HniOx8OF0bLDnWyihJOToe+McpfO4WhS5tnCHRiYkq9qmbs
-	MX01WxHA49QyRlg==
-X-Google-Smtp-Source: AGHT+IFvEGn77kjtA6Y8SK5uc34FRU7qFYS3L/ZCPGwLjDFkpKGYZCp8QtLrY/o9FuB9JVbNkzTzQQ==
-X-Received: by 2002:a05:6402:50ce:b0:627:f96f:aa7b with SMTP id 4fb4d7f45d1cf-634839a09a0mr1588732a12.7.1758702379165;
-        Wed, 24 Sep 2025 01:26:19 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:70::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-62fa5cfa60dsm12473716a12.4.2025.09.24.01.26.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 01:26:18 -0700 (PDT)
-Date: Wed, 24 Sep 2025 01:26:16 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Andre Carvalho <asantostc@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/6] netconsole: resume previously
- deactivated target
-Message-ID: <aukchuzsfvztulvy4ibpfsw7srpbqm635e24azpcvnlgpmqxjm@e4mm3xoyvnu7>
-References: <20250921-netcons-retrigger-v2-0-a0e84006237f@gmail.com>
- <20250921-netcons-retrigger-v2-5-a0e84006237f@gmail.com>
- <t32t7uopvipphrbo7zsnkbayhpj5vgogfcagkt5sumknchmsia@n6znkrsulm4p>
- <4evp3lo4rg7lh2qs6gunocnk5xlx6iayruhb6eoolmah6qu3fp@bwwr3sf5tnno>
+	s=arc-20240116; t=1758702543; c=relaxed/simple;
+	bh=CkIj3HLmKf5jbUZiyRR0DSk//7gm34O50sX2+Lqsmvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aGdqXRv1lNWNtuPGodjDVNcypsF6GPRiCJEp8E+AnR1MJYHGSfg5AMjUFv35z1rfJcIv7fKtO3iQu/CFBjvKXTMflNchgdjbKEYbPEv1/tjW/MetMD2Ajh4j5ODzvE3ZYZ0aiYBQEWR5UoMPma280bp3StWdyL9TwmDsvxKtw84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v1Krx-0005Lj-I5; Wed, 24 Sep 2025 10:28:57 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v1Krx-000Dyw-13;
+	Wed, 24 Sep 2025 10:28:57 +0200
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id F225D4788A0;
+	Wed, 24 Sep 2025 08:21:09 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 30/48] can: dev: make can_get_relative_tdco() FD agnostic and move it to bittiming.h
+Date: Wed, 24 Sep 2025 10:06:47 +0200
+Message-ID: <20250924082104.595459-31-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
+References: <20250924082104.595459-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4evp3lo4rg7lh2qs6gunocnk5xlx6iayruhb6eoolmah6qu3fp@bwwr3sf5tnno>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello Andre, 
+From: Vincent Mailhol <mailhol@kernel.org>
 
-On Tue, Sep 23, 2025 at 08:30:39PM +0100, Andre Carvalho wrote:
-> On Tue, Sep 23, 2025 at 05:22:25AM -0700, Breno Leitao wrote:
-> > For targets that are set by the mac address, they don't necessarily get
-> > np.dev_name populated, do they?
-> > 
-> > I am double checking netpoll_setup(), and if
-> > is_valid_ether_addr(np->dev_mac), I don't see np.dev_name being
-> > populated.
-> 
-> I was not expecting it to be the case either, bu my understanding is that 
-> np.dev_name does get populated by __netpoll_setup, which is called unconditionally 
-> at the end of netpoll_setup. __netpoll_setup eventually does:
-> 
-> np->dev = ndev;
-> strscpy(np->dev_name, ndev->name, IFNAMSIZ);
-> 
-> I've confirmed that for targets bound by mac, np->dev_name is empty before these
-> lines but then it is correctly populated here. For targets create by name,
-> np->dev_name is already correctly set prior to this. 
-> Please, let me know if I'm missing something.
+can_get_relative_tdco() needs to access can_priv->fd making it
+specific to CAN FD. Change the function parameter from struct can_priv
+to struct data_bittiming_params. This way, the function becomes CAN FD
+agnostic and can be reused later on for the CAN XL TDC.
 
-Thanks for confirming it. I think this might cause some semantics
-confusion for the user, given it is asking it to bind to mac, and later,
-netconsole is binding by dev_name.
+Now that we dropped the dependency on struct can_priv, also move
+can_get_relative_tdco() back to bittiming.h where it was meant to
+belong to.
 
-Let's say the following case:
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-2-e720d28f66fe@kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ include/linux/can/bittiming.h | 29 +++++++++++++++++++++++++++++
+ include/linux/can/dev.h       | 29 -----------------------------
+ 2 files changed, 29 insertions(+), 29 deletions(-)
 
- 1) netconsole is configured to bind to mac X which happens to be on eth0.
- 2) there is a PCI downstream failure which causes a re-enumeration
- 3) netconsole will get DEACTIVATED during phase 2
- 4) After the re-enumeration, eth0 becomes some other and interface (not
- the one with mac X).
- 5) Now you are going to bind do eth0 which is not the one with mac X.
+diff --git a/include/linux/can/bittiming.h b/include/linux/can/bittiming.h
+index 6572ec1712ca..4d5f7794194a 100644
+--- a/include/linux/can/bittiming.h
++++ b/include/linux/can/bittiming.h
+@@ -160,6 +160,35 @@ int can_get_bittiming(const struct net_device *dev, struct can_bittiming *bt,
+ 		      const unsigned int bitrate_const_cnt,
+ 		      struct netlink_ext_ack *extack);
+ 
++/*
++ * can_get_relative_tdco() - TDCO relative to the sample point
++ *
++ * struct can_tdc::tdco represents the absolute offset from TDCV. Some
++ * controllers use instead an offset relative to the Sample Point (SP)
++ * such that:
++ *
++ * SSP = TDCV + absolute TDCO
++ *     = TDCV + SP + relative TDCO
++ *
++ * -+----------- one bit ----------+-- TX pin
++ *  |<--- Sample Point --->|
++ *
++ *                         --+----------- one bit ----------+-- RX pin
++ *  |<-------- TDCV -------->|
++ *                           |<------------------------>| absolute TDCO
++ *                           |<--- Sample Point --->|
++ *                           |                      |<->| relative TDCO
++ *  |<------------- Secondary Sample Point ------------>|
++ */
++static inline s32 can_get_relative_tdco(const struct data_bittiming_params *dbt_params)
++{
++	const struct can_bittiming *dbt = &dbt_params->data_bittiming;
++	s32 sample_point_in_tc = (CAN_SYNC_SEG + dbt->prop_seg +
++				  dbt->phase_seg1) * dbt->brp;
++
++	return (s32)dbt_params->tdc.tdco - sample_point_in_tc;
++}
++
+ /*
+  * can_bit_time() - Duration of one bit
+  *
+diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
+index c2fe956ab776..8e75e9b3830a 100644
+--- a/include/linux/can/dev.h
++++ b/include/linux/can/dev.h
+@@ -85,35 +85,6 @@ static inline bool can_fd_tdc_is_enabled(const struct can_priv *priv)
+ 	return !!(priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
+ }
+ 
+-/*
+- * can_get_relative_tdco() - TDCO relative to the sample point
+- *
+- * struct can_tdc::tdco represents the absolute offset from TDCV. Some
+- * controllers use instead an offset relative to the Sample Point (SP)
+- * such that:
+- *
+- * SSP = TDCV + absolute TDCO
+- *     = TDCV + SP + relative TDCO
+- *
+- * -+----------- one bit ----------+-- TX pin
+- *  |<--- Sample Point --->|
+- *
+- *                         --+----------- one bit ----------+-- RX pin
+- *  |<-------- TDCV -------->|
+- *                           |<------------------------>| absolute TDCO
+- *                           |<--- Sample Point --->|
+- *                           |                      |<->| relative TDCO
+- *  |<------------- Secondary Sample Point ------------>|
+- */
+-static inline s32 can_get_relative_tdco(const struct can_priv *priv)
+-{
+-	const struct can_bittiming *dbt = &priv->fd.data_bittiming;
+-	s32 sample_point_in_tc = (CAN_SYNC_SEG + dbt->prop_seg +
+-				  dbt->phase_seg1) * dbt->brp;
+-
+-	return (s32)priv->fd.tdc.tdco - sample_point_in_tc;
+-}
+-
+ static inline u32 can_get_static_ctrlmode(struct can_priv *priv)
+ {
+ 	return priv->ctrlmode & ~priv->ctrlmode_supported;
+-- 
+2.51.0
 
-> > Should we also compare that the mac doesn't match before returning?
-> 
-> Even though the above seem to work on my tests, I was not 100% sure we wanted
-> to also check the dev_name when we initially bound by mac.
-> I've also considered the approach below, which I think achieves what you are
-> suggesting:
-> 
-> if (!is_broadcast_ether_addr(nt->np.dev_mac)) {
-> 	if(memcmp(nt->np.dev_mac, ndev->dev_addr, ETH_ALEN))
-> 		return;
-> } else if (strncmp(nt->np.dev_name, ndev->name, IFNAMSIZ)) {
->         return;
-> }
-> 
-> Let me know if you prefer this approach, it would allow resuming targets in case
-> even if their dev_name changes.
-
-I would prefer this approach than the current one, this would avoid the
-problem above.
-
-The other option is to always populate the mac during netpoll setup and
-then always resume based on mac. This seems a more precise resume.
-
-In this case, if the device goes to DEACTIVATED, then np.dev_mac will be
-populated, and you only compare it to check if you want to resume it.
