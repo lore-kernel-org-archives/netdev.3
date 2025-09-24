@@ -1,789 +1,249 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3583317706;
-	Wed, 24 Sep 2025 17:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758736367; cv=none; b=BfshrRPnHMPLZUj377fnNaUkCfKiSPNiD3PDGsGIq8W+c6fnE2lAr5OaEsyZOco/bbxLRyrvt5D4qgPjUwbHzUEInROb07+MP6iakjJYFW5QafF06AJXRBDtOoJY1CJ79f90J6T29aWkVPy9MzNSeTivO0zmg6evSAFG9T2qZjk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758736367; c=relaxed/simple;
-	bh=rACRW+7255V0EuHCJ2HpGZUDVdsNreY2brExN5EpqnY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n93l9+81E8xcw7Kq4a1n9bem2XlqkKkzuaYr1a+GTZHhW6R3qfnYH1BwQaeP05Ih46Qssw1itd3EIyraOVrgrrl+ChzzPolFwTVk4wISjp1QtcgZSq9t8CqqruWFTcMfYwRh0wWKXnbB42tFCx183YRU4YqvJOo3wYi95YLBmM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LYvkg8J0; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59E1C8610
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 18:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.156.1
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758737172; cv=fail; b=MhivD39GizhQMNtWSaDy0OkyP830Y5VSbzeSIBUpL9sO8y1O4QHDPzu7ndxx+Na8ewZnH75mO8GkbnBJtMOkSlD+MVnKe1ekT+t/h7ccXAcQIgeERhADRQPb68CPi/4/SuXfnOhQBoZxTlmP/t4PpsV5JziOWU8pJN2F/QmFOhw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758737172; c=relaxed/simple;
+	bh=giJEbpZ6rRQnn+vkoERsqaENyXoEgUvZlnokGNoutAo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=STVwfLcqVRgel5CHpV/ouVbUdFHEhxBZX0rWzoPfTBZeGJR6gAyCmgkLlpq4FjSW94RZvRrvyBLmUyf9m5bLzCgPvU0gBJMOtVD405J7iPRiufA9FIapVTr0pJePp+eP24sNWNbtV51WzMyI2iimrHFv1YepF0c8iINJIaL9mZ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=pass smtp.mailfrom=us.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Bhov2gMZ; arc=fail smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=us.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LYvkg8J0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758736365; x=1790272365;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rACRW+7255V0EuHCJ2HpGZUDVdsNreY2brExN5EpqnY=;
-  b=LYvkg8J0HGCg3+gFjOTW8XfRls3Tqkzp33/bsjb+pXdRXHZQ8jg38BVr
-   kH7kIa/V4Te6HtmWOX/ACHI618pBIu4WateOoxCT53NBxgLiOI4AKa52t
-   gSO3wVGrPcPfwLip1NdlvplTCuKacqq5DR97RQrOc2NKtiMbbIubkGF8I
-   KoUpKVyr7q9gYDSrLMcbeBV7934GR2olf1X0e6VXijLcqpqejHTIKt8ID
-   4FM9xz5y0161D9/lfzZmjzXHljH79kidPdW5VeErxkJoAi3djRFBtyPHs
-   E5272tjyPWCCDiOEzXgF2C8hoInKLIoE0ClcKlufOVLwnrsxXd6Hq3H9j
-   w==;
-X-CSE-ConnectionGUID: 2VM7K4wCSQaNlenrG7iP1A==
-X-CSE-MsgGUID: i0W89CQwRvuvRcqBMWm8vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="61152261"
-X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
-   d="scan'208";a="61152261"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 10:52:44 -0700
-X-CSE-ConnectionGUID: Yo6JV70/Q9y17ZqRYeiC0w==
-X-CSE-MsgGUID: fabfzRA/SUW8mlZMbbr3ZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
-   d="scan'208";a="176701855"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa007.fm.intel.com with ESMTP; 24 Sep 2025 10:52:42 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	anthony.l.nguyen@intel.com,
-	michal.kubiak@intel.com,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	przemyslaw.kitszel@intel.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	horms@kernel.org,
-	sdf@fomichev.me,
-	nxne.cnse.osdt.itp.upstreaming@intel.com,
-	bpf@vger.kernel.org,
-	Ramu R <ramu.r@intel.com>
-Subject: [PATCH net-next 4/5] idpf: implement Rx path for AF_XDP
-Date: Wed, 24 Sep 2025 10:52:27 -0700
-Message-ID: <20250924175230.1290529-5-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250924175230.1290529-1-anthony.l.nguyen@intel.com>
-References: <20250924175230.1290529-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Bhov2gMZ"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58O9Wxvf023342;
+	Wed, 24 Sep 2025 18:06:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=s6RR42
+	VbBFdcrP5yBL2zUrKUMTVeg9VIGyEeAxs2hAM=; b=Bhov2gMZxBaTcYvSCqtn/e
+	qVj8OzUbH5CPL1VFcX84To6T+fyw5RQwQLxJM6p9KSoVJ+nrx4g/Ud1viig7mAUk
+	joDrD8PJogua+ZhQLdUZ603waHGxFVzgBvftUz8EaWgYQQ6BP/ex2CmWULjLXBHr
+	3fka+bxo+rZ0QMMh3B8bMQqQTqSKtwo/IGCp4IttkhelkVTNbOcCPcLputFgcQ60
+	2UmxJWfbp/zSSo450Z2iXTldmE/XPn+GNhCgQce64u7EZHUiSrSXBLXPmJ1Q91YF
+	pZzVPRVMD3lCCrypFZME2EhKglbPQErT5aOgb5+A6uTXhIo+kWcBxYG689HiTLmQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0js2wk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Sep 2025 18:06:00 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58OI60Cg005270;
+	Wed, 24 Sep 2025 18:06:00 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012025.outbound.protection.outlook.com [52.101.48.25])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 499n0js2wg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Sep 2025 18:06:00 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VQ4k5jcVQYyFJUhjO8MDdkcOP9NKgBvnnSo3rZIqcKBdZjds6fc2+Bt4jEEaBWEGkJbCjhSW38MpP4MpWZn96MGLvzzestN7hbD6BPAmW/Tr50CMvnKIm/kf2yip4ZIUur3LewB0/R7cZS9K0o3ox/BPXj17f8a7Xm1JmEzmSUgmxxVnteUR7lOT7tR2BGUrmx+HztlgBr0DRQ8mZYJwyFVscVouSzX8IM++9pWxrijDrbSCe1Agy8nOqw1n/X51sbrnFtXLeOyPRUspeU+3tMGnzGzTjpBEWbfAckOiptGIsLj+OGS5cI6IawnGEMZU6XEW0JjHIJLSW4ci4M13Gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s6RR42VbBFdcrP5yBL2zUrKUMTVeg9VIGyEeAxs2hAM=;
+ b=BbeCRbMUdLnkKtXhnOwstgqVkfUBHN5mqrY0t3uaq+7siwnRBbWr8LEfmN+oELs1oKuRe8YaFV0vd/UUFe6ChAqTpWxB3HgSEun7VZwRMv1P4eNnbkUrvdgNtjMR1l4LK0EhdFiewv9Q7SBl3Ub5Wug/kGFY4T07r1FuQG/4f/IZeKxzrqDWMKR/d5nl5IbWU1GzKC8EXCu9UF52TM+YtytSKz6NkBOZ4G+1v6J6Ob3JVtWxImghPeiW4lBeOnNS1xiZLX7c1wsnPRduIYFisg2qbAxESX8n8bL+T0I0jk+nONYClEAFyJypMwRW0+9WNggdQUIzxXvS3Du1Ejls4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=us.ibm.com; dmarc=pass action=none header.from=us.ibm.com;
+ dkim=pass header.d=us.ibm.com; arc=none
+Received: from MW3PR15MB3913.namprd15.prod.outlook.com (2603:10b6:303:42::22)
+ by DM4PR15MB5408.namprd15.prod.outlook.com (2603:10b6:8:8e::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9137.20; Wed, 24 Sep
+ 2025 18:05:57 +0000
+Received: from MW3PR15MB3913.namprd15.prod.outlook.com
+ ([fe80::a1f8:4258:a99:3490]) by MW3PR15MB3913.namprd15.prod.outlook.com
+ ([fe80::a1f8:4258:a99:3490%4]) with mapi id 15.20.9160.008; Wed, 24 Sep 2025
+ 18:05:56 +0000
+From: David Wilder <wilder@us.ibm.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "jv@jvosburgh.net" <jv@jvosburgh.net>,
+        Pradeep Satyanarayana
+	<pradeep@us.ibm.com>,
+        "i.maximets@ovn.org" <i.maximets@ovn.org>,
+        Adrian
+ Moreno Zapata <amorenoz@redhat.com>,
+        Hangbin Liu <haliu@redhat.com>,
+        "stephen@networkplumber.org" <stephen@networkplumber.org>,
+        "dsahern@gmail.com" <dsahern@gmail.com>
+Subject: Re: [PATCH iproute2-next v6 0/1] iproute2-next: Extending bonding's
+ arp_ip_target to include a list of vlan tags.
+Thread-Topic: [PATCH iproute2-next v6 0/1] iproute2-next: Extending bonding's
+ arp_ip_target to include a list of vlan tags.
+Thread-Index: AQHcLBFqg8EAKenGOEGaGmgCTfuScrSin6Yd
+Date: Wed, 24 Sep 2025 18:05:56 +0000
+Message-ID:
+ <MW3PR15MB391381C671346B5BA6802624FA1CA@MW3PR15MB3913.namprd15.prod.outlook.com>
+References: <20250922223640.2170084-1-wilder@us.ibm.com>
+In-Reply-To: <20250922223640.2170084-1-wilder@us.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW3PR15MB3913:EE_|DM4PR15MB5408:EE_
+x-ms-office365-filtering-correlation-id: 77520154-ef2e-4f97-44d7-08ddfb950284
+x-ld-processed: fcf67057-50c9-4ad4-98f3-ffca64add9e9,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|10070799003|1800799024|366016|7053199007|38070700021;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?phJ/7ITIH1GF1WomZOeYj5F/czt5R2atuoPxVT+6P3ICWJ+CcR9rTAKxB5?=
+ =?iso-8859-1?Q?V/lpC2k0L9+Yi4E/mKXIRqJVkD39cNTYwK0zYQGEgUGK1jZHACVoIe/Oon?=
+ =?iso-8859-1?Q?p2LabBtKcHVPRiK4HDZG2wOWGSEmvCoFVxcVwqa0jUQRP+7Eqbft/d+25B?=
+ =?iso-8859-1?Q?1VY7N+maXDqMNgMfn0c+11Vha5T8QeCaqGHqCX3MVvmyRajgMThwKv2OLy?=
+ =?iso-8859-1?Q?gKPvfG9+aFbZiXYNC3bixXTSoheUGKCf07BEymkDY8OnaNIrg0h0YnDdzi?=
+ =?iso-8859-1?Q?ez2Lx4yAhnmykiY18lpd2j4QCNAG6oKftegp7lTpmj7r1+skjMWOhS1aGi?=
+ =?iso-8859-1?Q?TudxkJaTCZ+LYuhrLqjJjnqmAAWFwWfwr2Cx3MPtjB7tCckbBI1rcpyrOe?=
+ =?iso-8859-1?Q?ZSJGl4xDw06FWfXYAk5mhRWnzC4hk0w3P/oCPrDUybLmZfvSeLMoskOO6d?=
+ =?iso-8859-1?Q?i9Gie14d9k6zw4J+E9AJEkDXvHH/qG6hy2s0bniyz5vlQcfuR5db7qobcG?=
+ =?iso-8859-1?Q?xxXmK4hbpgrib6CpQSz0GUHoXUH+5nHULObjmpkFxow29twnJZbooAtx2f?=
+ =?iso-8859-1?Q?Uci3pT6OlYJlvz7YDN8FfwxYR4o5Yd7QEUjtPJ6+anUctxt9OmxBR5AaGZ?=
+ =?iso-8859-1?Q?xSslbKXB2ApYGf8v+purf/YSzwfHZ4t66acC263fEZsHRKlIFoXiUbtTZ0?=
+ =?iso-8859-1?Q?TcuwT5FsMkVCgQbiq8W4rl6OMrGTzVBuwrMAl7GtTgLOmuceb6I4gCKjSK?=
+ =?iso-8859-1?Q?ahouuNp79ppoK54tSmz8X2up+7gbINdOMDwPQ9BL6oRpGtVPrp5mU/0Siq?=
+ =?iso-8859-1?Q?CHlFUHFG85vN7HXlzSWNAeL7ZrrWkgahuo7o9JHg9jt1g6TpBa10K4EPbb?=
+ =?iso-8859-1?Q?fmHIkUkCfKncjULwt4TlVzMTJv25mXqI/yHQFJlKJM/1KAvS+cw1rPgN6j?=
+ =?iso-8859-1?Q?MCmIIwJvqZM1yzGxSzHuwP6TUw4mzIRs609l36pmobGbi4TV7HlIC5hoyI?=
+ =?iso-8859-1?Q?RUiNhCiviMSl4KOmds0xBTLtxrRyJfFqBjbEU88uKaoQPpihImTEQxRb4g?=
+ =?iso-8859-1?Q?jb4wvke4O3woteh+y69RSmhRnGuTUkKrc4+SLApj6NI8PkbcLgRZ8Romi1?=
+ =?iso-8859-1?Q?KOqh0a6xMkbTTkK94XyxQS7JT1f2BsSJjLwZUdDGbq2+y0iQAaKgIDO8z+?=
+ =?iso-8859-1?Q?BtMw4g1+cmYHF/6oP9OOgxyix+x6APg1D3gjJo8+7SaTt7wSNNCB2Na1rn?=
+ =?iso-8859-1?Q?PuhaJDYxnxDBBM3U54nh7rEG2//XlVY9ZSxnS4cBa2N1aelcbrcJXVk7Ap?=
+ =?iso-8859-1?Q?4bPcYt/jEVCfavqIZ8Fzc5zKovxu6nh91eLJV4fBmi88RvnuqNCbC2HY5Q?=
+ =?iso-8859-1?Q?HsVMzd60pgnQ3U4HEWu3X5PfhBXt3TvApKl2xX9/5fxaubsISGjiubmQWd?=
+ =?iso-8859-1?Q?6bdahTG50pmmxOH4HA4VRqtxYxkk0jSjh7hVj6oV8voih+zV2y5akHV/ab?=
+ =?iso-8859-1?Q?t2DDpA+ulwBSJGtJtQ9nXicu78HG9+0RopeTig7zjRmqXi5VF0zn7chRnz?=
+ =?iso-8859-1?Q?xZy0QTg=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW3PR15MB3913.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(1800799024)(366016)(7053199007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?BfKSJpgHqNEKi53kzozSI7BTRV1P5Yzy6FYyWtvTT74/2wx45utV09YHkI?=
+ =?iso-8859-1?Q?/Q1e1F3fK3eepZEL97/CcdHlhdFAQQVZj7gsCGqm/3lNQUbCBmhgW2bb4s?=
+ =?iso-8859-1?Q?ZAJLVbmPuNRopeMfOt3PsWWMeh1mipXGZ/mHYijbhq63D1NiPxw1rOtafc?=
+ =?iso-8859-1?Q?3YUZRungFXjY9fV2hct+I3P/D+232hXMomzH/0UruPYJyPKCma8tA9Xhtr?=
+ =?iso-8859-1?Q?DVkjjl5xDyqPi8tG3rXN8QY1ZDzw4NPyGNwA4P4ECWmcbe9qXqOvy8NoIw?=
+ =?iso-8859-1?Q?+vbPvFp2+/w06VdQj3YVq5dF0qYYf+N9PS3TV8muHSzNoUR6JHrLGR9XsI?=
+ =?iso-8859-1?Q?Rokw4WBcAshEl8NYbvAN64GvIWV0MS261lDxBRgeejE3E04H2naAXht1ux?=
+ =?iso-8859-1?Q?FuJlUyOmnbuG2BJTPtL4PA2hahoEdKzPGNZhebjpxhK57igWZnctt0nD3y?=
+ =?iso-8859-1?Q?F2gMCIcvjTVCRmwHzESCADTmu/kSdJU3QWeHYu04jO+RUYZ2eApyvYm1FE?=
+ =?iso-8859-1?Q?oOgKZFSkIF4/xTGQCMmhy3jcaJQTu8Vd+PlzP5QsO+nKgUkY9l5FdapO3p?=
+ =?iso-8859-1?Q?5gFNvs9GdZwCzy7NgHxU2qoUu2jEx5SedMwVtcP2cPiXJ+Z5ifcnM0ul0Q?=
+ =?iso-8859-1?Q?Dvzvqx8bjBndeQntG344IateMTGQHIy6hymt/hiz6dQGZcfXj/2lXA0kwu?=
+ =?iso-8859-1?Q?gQq1A0de9sF4+Qj73RXkzyhaJi0iHUpmRLmmWsXj0XVUMIgi+1VhkG+/Yt?=
+ =?iso-8859-1?Q?9KtChWj5OYQkK3Vzzy77lSyw8jP+ef2r2qmAJCCREMbpd4qP2oIxxOrkV6?=
+ =?iso-8859-1?Q?pPeG5L35ex4uBgTBOPBD/Ij8yX3NSIcVl9CsAy4Z0+FpX+wMFRcXm7GyKn?=
+ =?iso-8859-1?Q?iD+Ep9g21wM5wrI5gLpoLsat2DqZmrbupx6DPWGvzzImWAyVxYqicx1c+S?=
+ =?iso-8859-1?Q?p84+1/719r/AAFWekze5N/8N8sxvaB+s8VvYMvPYHzQ8v7ssyBgrT/7cY2?=
+ =?iso-8859-1?Q?XbpSh1G7VyvGWln/TJ0iuoAQu4V3mBvJ7uttdt/wsEFmqutopWdC885peN?=
+ =?iso-8859-1?Q?7iEKXicKLqcJjXL/oW9MJrarCsLLshYEsfFbdIzZBOYkFpqwDyyfmMqx94?=
+ =?iso-8859-1?Q?AvRYKFps2xVGd2oTrgKv/s/Y4o3kAtYy4/Wv5Gzwcrv0A4vsXqbHJcgMuY?=
+ =?iso-8859-1?Q?JO0rhrFnr4UMwwt1pXtoux3zZuhvXqiWgni8mCR1IYYtQxGvq+ZmyZwzKI?=
+ =?iso-8859-1?Q?rQ7jIckiJ736hw7LQowiES2/oPAL0hmJ7mPsxIzq3Alfv9jpQ81z07nbyq?=
+ =?iso-8859-1?Q?J9nuryj9uiUwsCesTLI/4nSbDbaf/CVoYkekX2vTQ9S4LPQfVhVjWmWKDu?=
+ =?iso-8859-1?Q?bATnvN5rmsOQcLY3Rw6q5vletqwAHwJCyVHCXX729dwkboWOMek5sjSHw0?=
+ =?iso-8859-1?Q?XRj/ydlE2F3IW00PvSJdAeAVgQpVDNKDGV79Wpu6z4G4YkRTvRs18NmtOJ?=
+ =?iso-8859-1?Q?4gBBqHMgpb64K0xrrsmKmQjB4Hlukq7N6dwfFHAIsCNFh6rZoztk/597nk?=
+ =?iso-8859-1?Q?mqJzGTofVzmWgQ6XBN/rOArhJ0chQVQHwFZVRZEBWSrYvIcKo4Lv7CAbm3?=
+ =?iso-8859-1?Q?R3jxKZOw+hqtNMkqO/jUfvhPrmOJh47nW60DWskkVUhzYCPySnTUTGgZS2?=
+ =?iso-8859-1?Q?nhybMMc8UQW61+9lnwE=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: us.ibm.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR15MB3913.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 77520154-ef2e-4f97-44d7-08ddfb950284
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Sep 2025 18:05:56.7271
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: fcf67057-50c9-4ad4-98f3-ffca64add9e9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WJWlxplhfMsbE+nKn+GYqKL2an02sDEjod3kvZlLyEvnz5Zi5ELz+BQHclkYPc+EHMqyWOMoiwlkB3f4BXJluw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB5408
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTIwMDAzMyBTYWx0ZWRfX/CV4EAqvYuBq
+ wJVS+vh3nz00HGdAe/mE478gn3c4wD87BUQTly14wcexRf8QHO2fxI62XvAUierb6PdxXuuGyYg
+ wQPmAMTIjhGCxXSQrs+5quWLOmLer0/KqyPI7d5EWTe3Fe10On8Yq91dQHDepITU4nfEJ4IEMCB
+ U6OHA+8K9c5GbYgsT24ae3T1VM0N3+lJHU+pH5cg+ZCyBKsEUXOKCDBfWsBnudL87lbrc+zXUBS
+ ZeTZU0zNJhd7J9Gi7jjjwA+6L8rk5ZmC9Xhmwm8bcURp7AoIeCoS7n1rTYB5s/yo6VxjFSaRbPY
+ mpKBLgB9kh1FZ4e1uSPt6cnvyl0qRLC+pp0QALbdeViLWluS0yt5DuhEQ7IDai505gSYUXN9/u7
+ IOkS/Ubq
+X-Authority-Analysis: v=2.4 cv=TOlFS0la c=1 sm=1 tr=0 ts=68d43308 cx=c_pps
+ a=fLgsFiGMcCN2bMhaTK1NuA==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=2OjVGFKQAAAA:8
+ a=P8mRVJMrAAAA:8 a=jZVsG21pAAAA:8 a=pGLkceISAAAA:8 a=7yW8dvDIZ0mmvBN6QAEA:9
+ a=wPNLvfGTeEIA:10 a=IYbNqeBGBecwsX3Swn6O:22 a=Vc1QvrjMcIoGonisw6Ob:22
+ a=3Sh2lD0sZASs_lUdrUhf:22
+X-Proofpoint-ORIG-GUID: lkrEo5lNiso_1eUHUQ1-nN34FX5y5Onq
+X-Proofpoint-GUID: _2u2VQrxBh-ARfA6NfgeKU4jwO8WSY8S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-24_04,2025-09-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 phishscore=0 impostorscore=0 adultscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2509200033
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-
-Implement Rx packet processing specific to AF_XDP ZC using the libeth
-XSk infra. Initialize queue registers before allocating buffers to
-avoid redundant ifs when updating the queue tail.
-
-Co-developed-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Ramu R <ramu.r@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf_lib.c  |   8 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c |  35 ++-
- drivers/net/ethernet/intel/idpf/idpf_txrx.h |  38 ++-
- drivers/net/ethernet/intel/idpf/xdp.c       |  24 +-
- drivers/net/ethernet/intel/idpf/xsk.c       | 315 ++++++++++++++++++++
- drivers/net/ethernet/intel/idpf/xsk.h       |   6 +
- 6 files changed, 405 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 0559f1da88a9..9b8f7a6d65d6 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1424,16 +1424,16 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
- 		goto queues_rel;
- 	}
- 
--	err = idpf_rx_bufs_init_all(vport);
-+	err = idpf_queue_reg_init(vport);
- 	if (err) {
--		dev_err(&adapter->pdev->dev, "Failed to initialize RX buffers for vport %u: %d\n",
-+		dev_err(&adapter->pdev->dev, "Failed to initialize queue registers for vport %u: %d\n",
- 			vport->vport_id, err);
- 		goto queues_rel;
- 	}
- 
--	err = idpf_queue_reg_init(vport);
-+	err = idpf_rx_bufs_init_all(vport);
- 	if (err) {
--		dev_err(&adapter->pdev->dev, "Failed to initialize queue registers for vport %u: %d\n",
-+		dev_err(&adapter->pdev->dev, "Failed to initialize RX buffers for vport %u: %d\n",
- 			vport->vport_id, err);
- 		goto queues_rel;
- 	}
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 64d5211f6e51..67963c0f4541 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -389,6 +389,11 @@ static void idpf_rx_buf_rel_bufq(struct idpf_buf_queue *bufq)
- 	if (!bufq->buf)
- 		return;
- 
-+	if (idpf_queue_has(XSK, bufq)) {
-+		idpf_xskfq_rel(bufq);
-+		return;
-+	}
-+
- 	/* Free all the bufs allocated and given to hw on Rx queue */
- 	for (u32 i = 0; i < bufq->desc_count; i++)
- 		idpf_rx_page_rel(&bufq->buf[i]);
-@@ -437,11 +442,14 @@ static void idpf_rx_desc_rel(struct idpf_rx_queue *rxq, struct device *dev,
- 	if (!rxq)
- 		return;
- 
--	libeth_xdp_return_stash(&rxq->xdp);
-+	if (!idpf_queue_has(XSK, rxq))
-+		libeth_xdp_return_stash(&rxq->xdp);
- 
- 	if (!idpf_is_queue_model_split(model))
- 		idpf_rx_buf_rel_all(rxq);
- 
-+	idpf_xsk_clear_queue(rxq, VIRTCHNL2_QUEUE_TYPE_RX);
-+
- 	rxq->next_to_alloc = 0;
- 	rxq->next_to_clean = 0;
- 	rxq->next_to_use = 0;
-@@ -464,6 +472,7 @@ static void idpf_rx_desc_rel_bufq(struct idpf_buf_queue *bufq,
- 		return;
- 
- 	idpf_rx_buf_rel_bufq(bufq);
-+	idpf_xsk_clear_queue(bufq, VIRTCHNL2_QUEUE_TYPE_RX_BUFFER);
- 
- 	bufq->next_to_alloc = 0;
- 	bufq->next_to_clean = 0;
-@@ -751,6 +760,9 @@ static int idpf_rx_bufs_init(struct idpf_buf_queue *bufq,
- 	};
- 	int ret;
- 
-+	if (idpf_queue_has(XSK, bufq))
-+		return idpf_xskfq_init(bufq);
-+
- 	ret = libeth_rx_fq_create(&fq, &bufq->q_vector->napi);
- 	if (ret)
- 		return ret;
-@@ -846,6 +858,8 @@ static int idpf_rx_desc_alloc(const struct idpf_vport *vport,
- 	rxq->next_to_use = 0;
- 	idpf_queue_set(GEN_CHK, rxq);
- 
-+	idpf_xsk_setup_queue(vport, rxq, VIRTCHNL2_QUEUE_TYPE_RX);
-+
- 	return 0;
- }
- 
-@@ -871,9 +885,10 @@ static int idpf_bufq_desc_alloc(const struct idpf_vport *vport,
- 	bufq->next_to_alloc = 0;
- 	bufq->next_to_clean = 0;
- 	bufq->next_to_use = 0;
--
- 	idpf_queue_set(GEN_CHK, bufq);
- 
-+	idpf_xsk_setup_queue(vport, bufq, VIRTCHNL2_QUEUE_TYPE_RX_BUFFER);
-+
- 	return 0;
- }
- 
-@@ -3381,9 +3396,9 @@ __idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
- 	return 0;
- }
- 
--static bool idpf_rx_process_skb_fields(struct sk_buff *skb,
--				       const struct libeth_xdp_buff *xdp,
--				       struct libeth_rq_napi_stats *rs)
-+bool idpf_rx_process_skb_fields(struct sk_buff *skb,
-+				const struct libeth_xdp_buff *xdp,
-+				struct libeth_rq_napi_stats *rs)
- {
- 	struct idpf_rx_queue *rxq;
- 
-@@ -4242,7 +4257,9 @@ static bool idpf_rx_splitq_clean_all(struct idpf_q_vector *q_vec, int budget,
- 		struct idpf_rx_queue *rxq = q_vec->rx[i];
- 		int pkts_cleaned_per_q;
- 
--		pkts_cleaned_per_q = idpf_rx_splitq_clean(rxq, budget_per_q);
-+		pkts_cleaned_per_q = idpf_queue_has(XSK, rxq) ?
-+				     idpf_xskrq_poll(rxq, budget_per_q) :
-+				     idpf_rx_splitq_clean(rxq, budget_per_q);
- 		/* if we clean as many as budgeted, we must not be done */
- 		if (pkts_cleaned_per_q >= budget_per_q)
- 			clean_complete = false;
-@@ -4252,8 +4269,10 @@ static bool idpf_rx_splitq_clean_all(struct idpf_q_vector *q_vec, int budget,
- 
- 	nid = numa_mem_id();
- 
--	for (i = 0; i < q_vec->num_bufq; i++)
--		idpf_rx_clean_refillq_all(q_vec->bufq[i], nid);
-+	for (i = 0; i < q_vec->num_bufq; i++) {
-+		if (!idpf_queue_has(XSK, q_vec->bufq[i]))
-+			idpf_rx_clean_refillq_all(q_vec->bufq[i], nid);
-+	}
- 
- 	return clean_complete;
- }
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index e8e63027425c..a42aa4669c3c 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -141,6 +141,8 @@ do {								\
- #define IDPF_TX_FLAGS_TUNNEL		BIT(3)
- #define IDPF_TX_FLAGS_TSYN		BIT(4)
- 
-+struct libeth_rq_napi_stats;
-+
- union idpf_tx_flex_desc {
- 	struct idpf_flex_tx_desc q; /* queue based scheduling */
- 	struct idpf_flex_tx_sched_desc flow; /* flow based scheduling */
-@@ -491,6 +493,8 @@ struct idpf_tx_queue_stats {
-  * @next_to_clean: Next descriptor to clean
-  * @next_to_alloc: RX buffer to allocate at
-  * @xdp: XDP buffer with the current frame
-+ * @xsk: current XDP buffer in XSk mode
-+ * @pool: XSk pool if installed
-  * @cached_phc_time: Cached PHC time for the Rx queue
-  * @stats_sync: See struct u64_stats_sync
-  * @q_stats: See union idpf_rx_queue_stats
-@@ -546,7 +550,13 @@ struct idpf_rx_queue {
- 	u32 next_to_clean;
- 	u32 next_to_alloc;
- 
--	struct libeth_xdp_buff_stash xdp;
-+	union {
-+		struct libeth_xdp_buff_stash xdp;
-+		struct {
-+			struct libeth_xdp_buff *xsk;
-+			struct xsk_buff_pool *pool;
-+		};
-+	};
- 	u64 cached_phc_time;
- 
- 	struct u64_stats_sync stats_sync;
-@@ -711,16 +721,20 @@ libeth_cacheline_set_assert(struct idpf_tx_queue, 64,
- /**
-  * struct idpf_buf_queue - software structure representing a buffer queue
-  * @split_buf: buffer descriptor array
-- * @hdr_buf: &libeth_fqe for header buffers
-- * @hdr_pp: &page_pool for header buffers
-  * @buf: &libeth_fqe for data buffers
-  * @pp: &page_pool for data buffers
-+ * @xsk_buf: &xdp_buff for XSk Rx buffers
-+ * @pool: &xsk_buff_pool on XSk queues
-+ * @hdr_buf: &libeth_fqe for header buffers
-+ * @hdr_pp: &page_pool for header buffers
-  * @tail: Tail offset
-  * @flags: See enum idpf_queue_flags_t
-  * @desc_count: Number of descriptors
-+ * @thresh: refill threshold in XSk
-  * @next_to_use: Next descriptor to use
-  * @next_to_clean: Next descriptor to clean
-  * @next_to_alloc: RX buffer to allocate at
-+ * @pending: number of buffers to refill (Xsk)
-  * @hdr_truesize: truesize for buffer headers
-  * @truesize: truesize for data buffers
-  * @q_id: Queue id
-@@ -734,14 +748,24 @@ libeth_cacheline_set_assert(struct idpf_tx_queue, 64,
- struct idpf_buf_queue {
- 	__cacheline_group_begin_aligned(read_mostly);
- 	struct virtchnl2_splitq_rx_buf_desc *split_buf;
-+	union {
-+		struct {
-+			struct libeth_fqe *buf;
-+			struct page_pool *pp;
-+		};
-+		struct {
-+			struct libeth_xdp_buff **xsk_buf;
-+			struct xsk_buff_pool *pool;
-+		};
-+	};
- 	struct libeth_fqe *hdr_buf;
- 	struct page_pool *hdr_pp;
--	struct libeth_fqe *buf;
--	struct page_pool *pp;
- 	void __iomem *tail;
- 
- 	DECLARE_BITMAP(flags, __IDPF_Q_FLAGS_NBITS);
- 	u32 desc_count;
-+
-+	u32 thresh;
- 	__cacheline_group_end_aligned(read_mostly);
- 
- 	__cacheline_group_begin_aligned(read_write);
-@@ -749,6 +773,7 @@ struct idpf_buf_queue {
- 	u32 next_to_clean;
- 	u32 next_to_alloc;
- 
-+	u32 pending;
- 	u32 hdr_truesize;
- 	u32 truesize;
- 	__cacheline_group_end_aligned(read_write);
-@@ -1079,6 +1104,9 @@ netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- netdev_tx_t idpf_tx_start(struct sk_buff *skb, struct net_device *netdev);
- bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rxq,
- 				      u16 cleaned_count);
-+bool idpf_rx_process_skb_fields(struct sk_buff *skb,
-+				const struct libeth_xdp_buff *xdp,
-+				struct libeth_rq_napi_stats *rs);
- int idpf_tso(struct sk_buff *skb, struct idpf_tx_offload_params *off);
- 
- void idpf_wait_for_sw_marker_completion(const struct idpf_tx_queue *txq);
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index 2b8b75a16804..cde6d56553d2 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -46,7 +46,6 @@ static int __idpf_xdp_rxq_info_init(struct idpf_rx_queue *rxq, void *arg)
- {
- 	const struct idpf_vport *vport = rxq->q_vector->vport;
- 	bool split = idpf_is_queue_model_split(vport->rxq_model);
--	const struct page_pool *pp;
- 	int err;
- 
- 	err = __xdp_rxq_info_reg(&rxq->xdp_rxq, vport->netdev, rxq->idx,
-@@ -55,8 +54,18 @@ static int __idpf_xdp_rxq_info_init(struct idpf_rx_queue *rxq, void *arg)
- 	if (err)
- 		return err;
- 
--	pp = split ? rxq->bufq_sets[0].bufq.pp : rxq->pp;
--	xdp_rxq_info_attach_page_pool(&rxq->xdp_rxq, pp);
-+	if (idpf_queue_has(XSK, rxq)) {
-+		err = xdp_rxq_info_reg_mem_model(&rxq->xdp_rxq,
-+						 MEM_TYPE_XSK_BUFF_POOL,
-+						 rxq->pool);
-+		if (err)
-+			goto unreg;
-+	} else {
-+		const struct page_pool *pp;
-+
-+		pp = split ? rxq->bufq_sets[0].bufq.pp : rxq->pp;
-+		xdp_rxq_info_attach_page_pool(&rxq->xdp_rxq, pp);
-+	}
- 
- 	if (!split)
- 		return 0;
-@@ -65,6 +74,11 @@ static int __idpf_xdp_rxq_info_init(struct idpf_rx_queue *rxq, void *arg)
- 	rxq->num_xdp_txq = vport->num_xdp_txq;
- 
- 	return 0;
-+
-+unreg:
-+	xdp_rxq_info_unreg(&rxq->xdp_rxq);
-+
-+	return err;
- }
- 
- int idpf_xdp_rxq_info_init(struct idpf_rx_queue *rxq)
-@@ -84,7 +98,9 @@ static int __idpf_xdp_rxq_info_deinit(struct idpf_rx_queue *rxq, void *arg)
- 		rxq->num_xdp_txq = 0;
- 	}
- 
--	xdp_rxq_info_detach_mem_model(&rxq->xdp_rxq);
-+	if (!idpf_queue_has(XSK, rxq))
-+		xdp_rxq_info_detach_mem_model(&rxq->xdp_rxq);
-+
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
-index 5c9f6f0a9fae..ba35dca946d5 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.c
-+++ b/drivers/net/ethernet/intel/idpf/xsk.c
-@@ -9,6 +9,47 @@
- 
- static void idpf_xsk_tx_timer(struct work_struct *work);
- 
-+static void idpf_xsk_setup_rxq(const struct idpf_vport *vport,
-+			       struct idpf_rx_queue *rxq)
-+{
-+	struct xsk_buff_pool *pool;
-+
-+	pool = xsk_get_pool_from_qid(vport->netdev, rxq->idx);
-+	if (!pool || !pool->dev || !xsk_buff_can_alloc(pool, 1))
-+		return;
-+
-+	rxq->pool = pool;
-+
-+	idpf_queue_set(XSK, rxq);
-+}
-+
-+static void idpf_xsk_setup_bufq(const struct idpf_vport *vport,
-+				struct idpf_buf_queue *bufq)
-+{
-+	struct xsk_buff_pool *pool;
-+	u32 qid = U32_MAX;
-+
-+	for (u32 i = 0; i < vport->num_rxq_grp; i++) {
-+		const struct idpf_rxq_group *grp = &vport->rxq_grps[i];
-+
-+		for (u32 j = 0; j < vport->num_bufqs_per_qgrp; j++) {
-+			if (&grp->splitq.bufq_sets[j].bufq == bufq) {
-+				qid = grp->splitq.rxq_sets[0]->rxq.idx;
-+				goto setup;
-+			}
-+		}
-+	}
-+
-+setup:
-+	pool = xsk_get_pool_from_qid(vport->netdev, qid);
-+	if (!pool || !pool->dev || !xsk_buff_can_alloc(pool, 1))
-+		return;
-+
-+	bufq->pool = pool;
-+
-+	idpf_queue_set(XSK, bufq);
-+}
-+
- static void idpf_xsk_setup_txq(const struct idpf_vport *vport,
- 			       struct idpf_tx_queue *txq)
- {
-@@ -61,6 +102,12 @@ void idpf_xsk_setup_queue(const struct idpf_vport *vport, void *q,
- 		return;
- 
- 	switch (type) {
-+	case VIRTCHNL2_QUEUE_TYPE_RX:
-+		idpf_xsk_setup_rxq(vport, q);
-+		break;
-+	case VIRTCHNL2_QUEUE_TYPE_RX_BUFFER:
-+		idpf_xsk_setup_bufq(vport, q);
-+		break;
- 	case VIRTCHNL2_QUEUE_TYPE_TX:
- 		idpf_xsk_setup_txq(vport, q);
- 		break;
-@@ -75,9 +122,25 @@ void idpf_xsk_setup_queue(const struct idpf_vport *vport, void *q,
- void idpf_xsk_clear_queue(void *q, enum virtchnl2_queue_type type)
- {
- 	struct idpf_compl_queue *complq;
-+	struct idpf_buf_queue *bufq;
-+	struct idpf_rx_queue *rxq;
- 	struct idpf_tx_queue *txq;
- 
- 	switch (type) {
-+	case VIRTCHNL2_QUEUE_TYPE_RX:
-+		rxq = q;
-+		if (!idpf_queue_has_clear(XSK, rxq))
-+			return;
-+
-+		rxq->pool = NULL;
-+		break;
-+	case VIRTCHNL2_QUEUE_TYPE_RX_BUFFER:
-+		bufq = q;
-+		if (!idpf_queue_has_clear(XSK, bufq))
-+			return;
-+
-+		bufq->pool = NULL;
-+		break;
- 	case VIRTCHNL2_QUEUE_TYPE_TX:
- 		txq = q;
- 		if (!idpf_queue_has_clear(XSK, txq))
-@@ -197,6 +260,31 @@ static __always_inline u32 idpf_xsksq_complete(void *_xdpsq, u32 budget)
- 	return done_frames;
- }
- 
-+static u32 idpf_xsk_tx_prep(void *_xdpsq, struct libeth_xdpsq *sq)
-+{
-+	struct idpf_tx_queue *xdpsq = _xdpsq;
-+	u32 free;
-+
-+	libeth_xdpsq_lock(&xdpsq->xdp_lock);
-+
-+	free = xdpsq->desc_count - xdpsq->pending;
-+	if (free < xdpsq->thresh)
-+		free += idpf_xsksq_complete(xdpsq, xdpsq->thresh);
-+
-+	*sq = (struct libeth_xdpsq){
-+		.pool		= xdpsq->pool,
-+		.sqes		= xdpsq->tx_buf,
-+		.descs		= xdpsq->desc_ring,
-+		.count		= xdpsq->desc_count,
-+		.lock		= &xdpsq->xdp_lock,
-+		.ntu		= &xdpsq->next_to_use,
-+		.pending	= &xdpsq->pending,
-+		.xdp_tx		= &xdpsq->xdp_tx,
-+	};
-+
-+	return free;
-+}
-+
- static u32 idpf_xsk_xmit_prep(void *_xdpsq, struct libeth_xdpsq *sq)
- {
- 	struct idpf_tx_queue *xdpsq = _xdpsq;
-@@ -236,8 +324,225 @@ bool idpf_xsk_xmit(struct idpf_tx_queue *xsksq)
- 
- LIBETH_XDP_DEFINE_START();
- LIBETH_XDP_DEFINE_TIMER(static idpf_xsk_tx_timer, idpf_xsksq_complete);
-+LIBETH_XSK_DEFINE_FLUSH_TX(static idpf_xsk_tx_flush_bulk, idpf_xsk_tx_prep,
-+			   idpf_xdp_tx_xmit);
-+LIBETH_XSK_DEFINE_RUN(static idpf_xsk_run_pass, idpf_xsk_run_prog,
-+		      idpf_xsk_tx_flush_bulk, idpf_rx_process_skb_fields);
-+LIBETH_XSK_DEFINE_FINALIZE(static idpf_xsk_finalize_rx, idpf_xsk_tx_flush_bulk,
-+			   idpf_xdp_tx_finalize);
- LIBETH_XDP_DEFINE_END();
- 
-+static void idpf_xskfqe_init(const struct libeth_xskfq_fp *fq, u32 i)
-+{
-+	struct virtchnl2_splitq_rx_buf_desc *desc = fq->descs;
-+
-+	desc = &desc[i];
-+#ifdef __LIBETH_WORD_ACCESS
-+	*(u64 *)&desc->qword0 = i;
-+#else
-+	desc->qword0.buf_id = cpu_to_le16(i);
-+#endif
-+	desc->pkt_addr = cpu_to_le64(libeth_xsk_buff_xdp_get_dma(fq->fqes[i]));
-+}
-+
-+static bool idpf_xskfq_refill_thresh(struct idpf_buf_queue *bufq, u32 count)
-+{
-+	struct libeth_xskfq_fp fq = {
-+		.pool	= bufq->pool,
-+		.fqes	= bufq->xsk_buf,
-+		.descs	= bufq->split_buf,
-+		.ntu	= bufq->next_to_use,
-+		.count	= bufq->desc_count,
-+	};
-+	u32 done;
-+
-+	done = libeth_xskfqe_alloc(&fq, count, idpf_xskfqe_init);
-+	writel(fq.ntu, bufq->tail);
-+
-+	bufq->next_to_use = fq.ntu;
-+	bufq->pending -= done;
-+
-+	return done == count;
-+}
-+
-+static bool idpf_xskfq_refill(struct idpf_buf_queue *bufq)
-+{
-+	u32 count, rx_thresh = bufq->thresh;
-+
-+	count = ALIGN_DOWN(bufq->pending - 1, rx_thresh);
-+
-+	for (u32 i = 0; i < count; i += rx_thresh) {
-+		if (unlikely(!idpf_xskfq_refill_thresh(bufq, rx_thresh)))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+int idpf_xskfq_init(struct idpf_buf_queue *bufq)
-+{
-+	struct libeth_xskfq fq = {
-+		.pool	= bufq->pool,
-+		.count	= bufq->desc_count,
-+		.nid	= idpf_q_vector_to_mem(bufq->q_vector),
-+	};
-+	int ret;
-+
-+	ret = libeth_xskfq_create(&fq);
-+	if (ret)
-+		return ret;
-+
-+	bufq->xsk_buf = fq.fqes;
-+	bufq->pending = fq.pending;
-+	bufq->thresh = fq.thresh;
-+	bufq->rx_buf_size = fq.buf_len;
-+
-+	if (!idpf_xskfq_refill(bufq))
-+		netdev_err(bufq->pool->netdev,
-+			   "failed to allocate XSk buffers for qid %d\n",
-+			   bufq->pool->queue_id);
-+
-+	bufq->next_to_alloc = bufq->next_to_use;
-+
-+	idpf_queue_clear(HSPLIT_EN, bufq);
-+	bufq->rx_hbuf_size = 0;
-+
-+	return 0;
-+}
-+
-+void idpf_xskfq_rel(struct idpf_buf_queue *bufq)
-+{
-+	struct libeth_xskfq fq = {
-+		.fqes	= bufq->xsk_buf,
-+	};
-+
-+	libeth_xskfq_destroy(&fq);
-+
-+	bufq->rx_buf_size = fq.buf_len;
-+	bufq->thresh = fq.thresh;
-+	bufq->pending = fq.pending;
-+}
-+
-+struct idpf_xskfq_refill_set {
-+	struct {
-+		struct idpf_buf_queue	*q;
-+		u32			buf_id;
-+		u32			pending;
-+	} bufqs[IDPF_MAX_BUFQS_PER_RXQ_GRP];
-+};
-+
-+static bool idpf_xskfq_refill_set(const struct idpf_xskfq_refill_set *set)
-+{
-+	bool ret = true;
-+
-+	for (u32 i = 0; i < ARRAY_SIZE(set->bufqs); i++) {
-+		struct idpf_buf_queue *bufq = set->bufqs[i].q;
-+		u32 ntc;
-+
-+		if (!bufq)
-+			continue;
-+
-+		ntc = set->bufqs[i].buf_id;
-+		if (unlikely(++ntc == bufq->desc_count))
-+			ntc = 0;
-+
-+		bufq->next_to_clean = ntc;
-+		bufq->pending += set->bufqs[i].pending;
-+
-+		if (bufq->pending > bufq->thresh)
-+			ret &= idpf_xskfq_refill(bufq);
-+	}
-+
-+	return ret;
-+}
-+
-+int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget)
-+{
-+	struct idpf_xskfq_refill_set set = { };
-+	struct libeth_rq_napi_stats rs = { };
-+	bool wake, gen, fail = false;
-+	u32 ntc = rxq->next_to_clean;
-+	struct libeth_xdp_buff *xdp;
-+	LIBETH_XDP_ONSTACK_BULK(bq);
-+	u32 cnt = rxq->desc_count;
-+
-+	wake = xsk_uses_need_wakeup(rxq->pool);
-+	if (wake)
-+		xsk_clear_rx_need_wakeup(rxq->pool);
-+
-+	gen = idpf_queue_has(GEN_CHK, rxq);
-+
-+	libeth_xsk_tx_init_bulk(&bq, rxq->xdp_prog, rxq->xdp_rxq.dev,
-+				rxq->xdpsqs, rxq->num_xdp_txq);
-+	xdp = rxq->xsk;
-+
-+	while (likely(rs.packets < budget)) {
-+		const struct virtchnl2_rx_flex_desc_adv_nic_3 *rx_desc;
-+		struct idpf_xdp_rx_desc desc __uninitialized;
-+		struct idpf_buf_queue *bufq;
-+		u32 bufq_id, buf_id;
-+
-+		rx_desc = &rxq->rx[ntc].flex_adv_nic_3_wb;
-+
-+		idpf_xdp_get_qw0(&desc, rx_desc);
-+		if (idpf_xdp_rx_gen(&desc) != gen)
-+			break;
-+
-+		dma_rmb();
-+
-+		bufq_id = idpf_xdp_rx_bufq(&desc);
-+		bufq = set.bufqs[bufq_id].q;
-+		if (!bufq) {
-+			bufq = &rxq->bufq_sets[bufq_id].bufq;
-+			set.bufqs[bufq_id].q = bufq;
-+		}
-+
-+		idpf_xdp_get_qw1(&desc, rx_desc);
-+		buf_id = idpf_xdp_rx_buf(&desc);
-+
-+		set.bufqs[bufq_id].buf_id = buf_id;
-+		set.bufqs[bufq_id].pending++;
-+
-+		xdp = libeth_xsk_process_buff(xdp, bufq->xsk_buf[buf_id],
-+					      idpf_xdp_rx_len(&desc));
-+
-+		if (unlikely(++ntc == cnt)) {
-+			ntc = 0;
-+			gen = !gen;
-+			idpf_queue_change(GEN_CHK, rxq);
-+		}
-+
-+		if (!idpf_xdp_rx_eop(&desc) || unlikely(!xdp))
-+			continue;
-+
-+		fail = !idpf_xsk_run_pass(xdp, &bq, rxq->napi, &rs, rx_desc);
-+		xdp = NULL;
-+
-+		if (fail)
-+			break;
-+	}
-+
-+	idpf_xsk_finalize_rx(&bq);
-+
-+	rxq->next_to_clean = ntc;
-+	rxq->xsk = xdp;
-+
-+	fail |= !idpf_xskfq_refill_set(&set);
-+
-+	u64_stats_update_begin(&rxq->stats_sync);
-+	u64_stats_add(&rxq->q_stats.packets, rs.packets);
-+	u64_stats_add(&rxq->q_stats.bytes, rs.bytes);
-+	u64_stats_update_end(&rxq->stats_sync);
-+
-+	if (!wake)
-+		return unlikely(fail) ? budget : rs.packets;
-+
-+	if (unlikely(fail))
-+		xsk_set_rx_need_wakeup(rxq->pool);
-+
-+	return rs.packets;
-+}
-+
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- {
- 	struct xsk_buff_pool *pool = bpf->xsk.pool;
-@@ -245,6 +550,16 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- 	bool restart;
- 	int ret;
- 
-+	if (pool && !IS_ALIGNED(xsk_pool_get_rx_frame_size(pool),
-+				LIBETH_RX_BUF_STRIDE)) {
-+		NL_SET_ERR_MSG_FMT_MOD(bpf->extack,
-+				       "%s: HW doesn't support frames sizes not aligned to %u (qid %u: %u)",
-+				       netdev_name(vport->netdev),
-+				       LIBETH_RX_BUF_STRIDE, qid,
-+				       xsk_pool_get_rx_frame_size(pool));
-+		return -EINVAL;
-+	}
-+
- 	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
- 	if (!restart)
- 		goto pool;
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.h b/drivers/net/ethernet/intel/idpf/xsk.h
-index d08fd51b0fc6..d5338cbef8bd 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.h
-+++ b/drivers/net/ethernet/intel/idpf/xsk.h
-@@ -7,6 +7,8 @@
- #include <linux/types.h>
- 
- enum virtchnl2_queue_type;
-+struct idpf_buf_queue;
-+struct idpf_rx_queue;
- struct idpf_tx_queue;
- struct idpf_vport;
- struct netdev_bpf;
-@@ -15,7 +17,11 @@ void idpf_xsk_setup_queue(const struct idpf_vport *vport, void *q,
- 			  enum virtchnl2_queue_type type);
- void idpf_xsk_clear_queue(void *q, enum virtchnl2_queue_type type);
- 
-+int idpf_xskfq_init(struct idpf_buf_queue *bufq);
-+void idpf_xskfq_rel(struct idpf_buf_queue *bufq);
- void idpf_xsksq_clean(struct idpf_tx_queue *xdpq);
-+
-+int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget);
- bool idpf_xsk_xmit(struct idpf_tx_queue *xsksq);
- 
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *xdp);
--- 
-2.47.1
-
+=0A=
+=0A=
+=0A=
+________________________________________=0A=
+From: David Wilder <wilder@us.ibm.com>=0A=
+Sent: Monday, September 22, 2025 3:35 PM=0A=
+To: netdev@vger.kernel.org=0A=
+Cc: jv@jvosburgh.net; David Wilder; Pradeep Satyanarayana; i.maximets@ovn.o=
+rg; Adrian Moreno Zapata; Hangbin Liu; stephen@networkplumber.org; dsahern@=
+gmail.com=0A=
+Subject: [PATCH iproute2-next v6 0/1] iproute2-next: Extending bonding's ar=
+p_ip_target to include a list of vlan tags.=0A=
+=0A=
+>This change extends the "arp_ip_target" option format to allow for a list =
+of=0A=
+>vlan tags to be included for each arp target. This new list of tags is opt=
+ional=0A=
+>and may be omitted to preserve the current format and process of discoveri=
+ng=0A=
+>vlans.  The new logic preserves both forward and backward compatibility wi=
+th=0A=
+>the kernel and iproute2 versions.=0A=
+>=0A=
+>Changes since V5=0A=
+>Thanks to Stephen Hemminger for help on these changes:=0A=
+>- Use array for vlans=0A=
+>- Removed use of packed and Capitalization=0A=
+>- fix incorrect use of color=0A=
+>- Removed temporary string buffer.=0A=
+>- make vlan print a function for likely future IPv6 usage.=0A=
+>=0A=
+>Output for "ip -d --json <bond-name>" has been updated. Example:=0A=
+>"arp_ip_target":["addr":"10.0.0.1","vlan":[4080,4081,4082,4083,4084]],=0A=
+=0A=
+I did not get this right.  arp_ip_target should be a json array as well.=0A=
+Example:=0A=
+      "arp_ip_target":[=0A=
+                        {=0A=
+                                "addr": "10.0.0.1",=0A=
+                                "vlan_id":[100,200]=0A=
+                        },=0A=
+                        {=0A=
+                                "addr": "10.1.0.1",=0A=
+                                "vlan_id":[4080,4081,4082,4083,4084]=0A=
+                        }=0A=
+        ],=0A=
+=0A=
+This look correct?=
