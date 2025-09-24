@@ -1,73 +1,77 @@
-Received: from sender4-g3-154.zohomail360.com (sender4-g3-154.zohomail360.com [136.143.188.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06AF4A35
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 00:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.154
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758674751; cv=pass; b=Dx+pBkN2rKReWDH4FXeoIb7cthYaMiQ9jsmqQ7Dv+dKVZRaGCsejr/GyWDnLeATrrK3SkfoaE71ld5wBqQ6E32ZYaQs9U2VMuafsWS2/8iSB1xO6YfRenNmXfGvis45h3v1XYAL83woTd5IacxYmam7OcwusKA+H+tivQQ/qXi4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758674751; c=relaxed/simple;
-	bh=oi4R8c4MgwjwK+TTcFQxOesTdzAxcogkHs5IOioNJbM=;
-	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type; b=V2AJDDf0ylzOKP6mvmUSFSwLEexhARQvM/iki/f2VS4M16kNtl/VBl6Ssx3g2h0TvRN6Btdp9mJRvtP5afK3V5Y5p14YBWzRqy9smbIg4RP4K1WQ+GuW81IHlOGZwdAZTaAXivkctiirQUSy3Bb3eGo9tpiTRcSyRSksDy/P5wg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx; dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b=NdWVh3G1; arc=pass smtp.client-ip=136.143.188.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9453A4A35;
+	Wed, 24 Sep 2025 00:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758674859; cv=none; b=po1mqSrypg+nBMgXQy3WXQJ1WQOYBMVKBx145KYQjMnvN6Zp99B5MC4tfKBznwxE22OvmvJcttFbmZ/wpUStNmmcLn3y18Uq384nUHjYY+GPU3FSQ5NdaJ/gDaxfv8Rrh0pTNCqVQxS7QrrTwInv19vE3LiH2EB77tDmS+2AtMs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758674859; c=relaxed/simple;
+	bh=Bp3tHq3pjenL9flU3HYwhJiFub3m45DDOYq8H1LjgqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X+br2lgxglYHRGdBlS8/ndfm9ympuUygFwzaCNNX0OAMpcE74Hn5Dp4DKRSFdr7ei1XESSSiwDIGbR62M0ruH9Q2NQ6n5W2ahfonG3wfU5mD8gk/xVF5z0gGXg2LScS6bSto0xH8VvZsdA3QX4WNteID+dstuCQ6JpdL7Ee3/eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTyJmgcj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b="NdWVh3G1"
-ARC-Seal: i=1; a=rsa-sha256; t=1758674747; cv=none; 
-	d=us.zohomail360.com; s=zohoarc; 
-	b=e49lySlb9t7fjWi9tNku7JjkxXy07i/7wd50p/RW+tPQ0o68m4I3RICc+wN5YC9O8QIft6oVKcVyDWW3KSaz3z5c/qp7PjibQaOEfA38Hlk2jZvKgYX+5POy7IssSBNsZaVKR1i2Eh5snVL+ped3PHs4NsRUBxbbjqwPtG762gM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=us.zohomail360.com; s=zohoarc; 
-	t=1758674747; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id:Cc; 
-	bh=oi4R8c4MgwjwK+TTcFQxOesTdzAxcogkHs5IOioNJbM=; 
-	b=Zf1g4YSsH95AM+v+2qzHyZDntCN60JQLu7XfXqgsioZwG26erTkKX72r7lRglVNk3sDweDJhZC6CSsceA4nvw94z+oYQWilp+eJkIBHL/dlr2jd6NzdlcTklw3cf6LEGdt9f759jmD8D7IOHVVWK+QKsvTMZJUQhjej9sSFb9Gc=
-ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
-	dkim=pass  header.i=maguitec.com.mx;
-	spf=pass  smtp.mailfrom=investorrelations+1589c140-98d9-11f0-8217-5254007ea3ec_vt1@bounce-zem.maguitec.com.mx;
-	dmarc=pass header.from=<investorrelations@maguitec.com.mx>
-Received: by mx.zohomail.com with SMTPS id 175867185957018.91936189267051;
-	Tue, 23 Sep 2025 16:57:39 -0700 (PDT)
-DKIM-Signature: a=rsa-sha256; b=NdWVh3G1Xyv1ajd2jwWbUz4aU5m0bQcHK7UyH+eXKTUCInWQfr3mSU4pbW/6IjpE6WmbUj2v2cxpCXSnc02gqPmGXJlcH8yHzsNQaKgIVnF7a3BuxWjBj4Z+n2fMF1BKCIME1O8cwcl8geWkQeF2E+SwEk65EmXvM0sYvpq/sT0=; c=relaxed/relaxed; s=15205840; d=maguitec.com.mx; v=1; bh=oi4R8c4MgwjwK+TTcFQxOesTdzAxcogkHs5IOioNJbM=; h=date:from:reply-to:to:message-id:subject:mime-version:content-type:content-transfer-encoding:date:from:reply-to:to:message-id:subject;
-Date: Tue, 23 Sep 2025 16:57:39 -0700 (PDT)
-From: Al Sayyid Sultan <investorrelations@maguitec.com.mx>
-Reply-To: investorrelations@alhaitham-investment.ae
-To: netdev@vger.kernel.org
-Message-ID: <2d6f.1aedd99b146bc1ac.m1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54@bounce-zem.maguitec.com.mx>
-Subject: Thematic Funds Letter Of Intent
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTyJmgcj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF41AC4CEF5;
+	Wed, 24 Sep 2025 00:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758674859;
+	bh=Bp3tHq3pjenL9flU3HYwhJiFub3m45DDOYq8H1LjgqE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GTyJmgcjbSrgSGOai94m6h6uQ9mw+Dv2Bd8lWkApWlKlh3ifmD734L3iEeU+/Afk7
+	 +oEg/aliW3zbWOm7DEzPrUqfhD90ZKQc/672R95LhYzK7LWwN3++MNr/LKxLhQu/lU
+	 RtE4Ll6hzOvKfFPpUfriFN8Ur96vcuOyEfjBz3bVdLg4w491Qx+oYR1AfEyNiRyW+t
+	 D5y8HpRVBuiHdkYjZHnapGKkpoSpAZnbzYVJZ/S6g6+JGsxnfBFN+bV6ozoTDrOacx
+	 rK1uZnfEK11WJF4gyieB5mv+IBYaTMi2Z0AeN6m+ljSASZ67DjyKnElemHhHAo6/qs
+	 aq5BT8Zw2bJFQ==
+Date: Tue, 23 Sep 2025 17:47:37 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v11 5/5] net: dsa: yt921x: Add support for
+ Motorcomm YT921x
+Message-ID: <20250923174737.4759aaf4@kernel.org>
+In-Reply-To: <20250922131148.1917856-6-mmyangfl@gmail.com>
+References: <20250922131148.1917856-1-mmyangfl@gmail.com>
+	<20250922131148.1917856-6-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-content-transfer-encoding-Orig: quoted-printable
-content-type-Orig: text/plain;\r\n\tcharset="utf-8"
-Original-Envelope-Id: 2d6f.1aedd99b146bc1ac.m1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54
-X-JID: 2d6f.1aedd99b146bc1ac.s1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54
-TM-MAIL-JID: 2d6f.1aedd99b146bc1ac.m1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54
-X-App-Message-ID: 2d6f.1aedd99b146bc1ac.m1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54
-X-Report-Abuse: <abuse+2d6f.1aedd99b146bc1ac.m1.1589c140-98d9-11f0-8217-5254007ea3ec.1997902eb54@zeptomail.com>
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-To: netdev@vger.kernel.org
-Date: 24-09-2025
-Thematic Funds Letter Of Intent
+On Mon, 22 Sep 2025 21:11:43 +0800 David Yang wrote:
+> +	MIB_DESC(1, 0x00, "RxBroadcast", false),	/* rx broadcast pkts */
+> +	MIB_DESC(1, 0x04, "RxPause", false),		/* rx pause pkts */
+> +	MIB_DESC(1, 0x08, "RxMulticast", false),	/* rx multicast pkts, excluding pause and OAM */
+> +	MIB_DESC(1, 0x0c, "RxCrcErr", false),		/* rx crc err pkts, len >= 64B */
 
-It's a pleasure to connect with you
+Keeping the string names for every stat, and the boolean seems like 
+an overkill when there is grand total of 3 stats that set "true".
+The comments for IEEE stats can also go, there's no extra information
+here.
 
-Having been referred to your investment by my team, we would be=20
-honored to review your available investment projects for onward=20
-referral to my principal investors who can allocate capital for=20
-the financing of it.
+> +static void yt921x_mdio_remove(struct mdio_device *mdiodev)
+> +{
 
-kindly advise at your convenience
+> +		cancel_delayed_work_sync(&pp->mib_read);
+> +	}
+> +
+> +	dsa_unregister_switch(&priv->ds);
 
-Best Regards,
-
-Respectfully,
-Al Sayyid Sultan Yarub Al Busaidi
-Director
+The work canceling looks racy, the port can come up in between
+cancel_work and dsa_unregister ? disable_delayed_work.. will likely 
+do the job.
+-- 
+pw-bot: cr
