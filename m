@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D38285053
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB021FF29
 	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702109; cv=none; b=NoCD8GTK+3RAF41fQWMVGw85DziBSPiskfB3TDKWUXG5hD7tKDK8tRjddZGj8sOxMze9gXW2fsk9ENkf2wmdei+tMUurtMNdh8pcAQlUB9HN5/xY02d3AjfrYkqQu0gWTCRtz/y8RxdyPdyvqMBEO2596Pohyoq/RfS3SDDWWZk=
+	t=1758702110; cv=none; b=pKSggsXk0ENuy4FXVanJz/p4L9qOjllX5fnZfmJZJ43HOvBszPJxRanniFalsQ9pkh3zcVvvPcz9nSlqV7HJYHuc2gDamfHuwV6im99pZFIWUJWddpg+XLoIJdzjPn954rTLUJOmPyoKu0/epA0qJ6Fy3lNcBc2nTy7IB/bJbpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702109; c=relaxed/simple;
-	bh=v32u9sx+h2lMck8a93a/YOXyqKrFvoIeJWCYl2erV/I=;
+	s=arc-20240116; t=1758702110; c=relaxed/simple;
+	bh=M/ntwWkRcMSeeAuxA1GvbveI4LPTahtD5a0uxKFl5Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgE7HmOw7oRcdzYGJNUOB63wwHBZwtHgl1Pt06M6SVijY+ViBtRnjnKotHMw8NY64BtvtxG7Mv7/SKJqYAbCjZqWHSMXFFVPIvjcZTlcaaZuPIO5mbzJ3gZvoBweqZ9h+dIrCtGQ17x76Ylm5mekYeUcaUqb/Ym/hy8z2XhTodw=
+	 MIME-Version; b=mi/iS2OYQsLxWuDDiR0xDhoQ8shevjfLy6vhwDJFY+814g8gSsUVbbdUSScKuE70kzhP5sTN9NibLRFRflQ0b+1VVs+p1+7WvlB4b6pD6XgsphenLZRTTU7jqagHdngWjpwkvYaHN8pGcw/rWW0kQ8NS5TlQWgUSPAlSfPGr8BM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkf-0001GR-8A; Wed, 24 Sep 2025 10:21:25 +0200
+	id 1v1Kkd-0001Dz-BU; Wed, 24 Sep 2025 10:21:23 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-000DwR-1o;
-	Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkc-000DvG-0Q;
+	Wed, 24 Sep 2025 10:21:22 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C8D6147888A;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1D7BE47887A;
 	Wed, 24 Sep 2025 08:21:08 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -39,11 +39,10 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 19/48] can: rcar_can: Convert to %pe
-Date: Wed, 24 Sep 2025 10:06:36 +0200
-Message-ID: <20250924082104.595459-20-mkl@pengutronix.de>
+Subject: [PATCH net-next 11/48] can: rcar_can: Convert to Runtime PM
+Date: Wed, 24 Sep 2025 10:06:28 +0200
+Message-ID: <20250924082104.595459-12-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -61,64 +60,169 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Replace numerical error codes by mnemotechnic error codes, to improve
-the user experience in case of errors.
+The R-Car CAN module is part of a Clock Domain on all supported SoCs.
+Hence convert its driver from explicit clock management to Runtime PM.
+
+While at it, use %pe to format error codes.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/adb2dc49c78b45191de410f645a5e423d341f94e.1755857536.git.geert+renesas@glider.be
+Link: https://patch.msgid.link/68bfa5480a79c17c6ceec4fb073f33872e7ff5d0.1755857536.git.geert+renesas@glider.be
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_can.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/can/rcar/rcar_can.c | 48 ++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 51bf8f7e7182..5f85f4e27205 100644
+index 57030992141c..15dbaa52a7b1 100644
 --- a/drivers/net/can/rcar/rcar_can.c
 +++ b/drivers/net/can/rcar/rcar_can.c
-@@ -521,20 +521,20 @@ static int rcar_can_open(struct net_device *ndev)
+@@ -16,6 +16,7 @@
+ #include <linux/can/dev.h>
+ #include <linux/clk.h>
+ #include <linux/of.h>
++#include <linux/pm_runtime.h>
+ 
+ #define RCAR_CAN_DRV_NAME	"rcar_can"
+ 
+@@ -92,7 +93,6 @@ struct rcar_can_priv {
+ 	struct net_device *ndev;
+ 	struct napi_struct napi;
+ 	struct rcar_can_regs __iomem *regs;
+-	struct clk *clk;
+ 	struct clk *can_clk;
+ 	u32 tx_head;
+ 	u32 tx_tail;
+@@ -506,18 +506,17 @@ static int rcar_can_open(struct net_device *ndev)
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 	int err;
+ 
+-	err = clk_prepare_enable(priv->clk);
++	err = pm_runtime_resume_and_get(ndev->dev.parent);
+ 	if (err) {
+-		netdev_err(ndev,
+-			   "failed to enable peripheral clock, error %d\n",
+-			   err);
++		netdev_err(ndev, "pm_runtime_resume_and_get() failed %pe\n",
++			   ERR_PTR(err));
+ 		goto out;
  	}
  	err = clk_prepare_enable(priv->can_clk);
  	if (err) {
--		netdev_err(ndev, "failed to enable CAN clock, error %d\n",
--			   err);
-+		netdev_err(ndev, "failed to enable CAN clock: %pe\n",
-+			   ERR_PTR(err));
- 		goto out_rpm;
+ 		netdev_err(ndev, "failed to enable CAN clock, error %d\n",
+ 			   err);
+-		goto out_clock;
++		goto out_rpm;
  	}
  	err = open_candev(ndev);
  	if (err) {
--		netdev_err(ndev, "open_candev() failed, error %d\n", err);
-+		netdev_err(ndev, "open_candev() failed %pe\n", ERR_PTR(err));
- 		goto out_can_clock;
- 	}
- 	napi_enable(&priv->napi);
- 	err = request_irq(ndev->irq, rcar_can_interrupt, 0, ndev->name, ndev);
- 	if (err) {
--		netdev_err(ndev, "request_irq(%d) failed, error %d\n",
--			   ndev->irq, err);
-+		netdev_err(ndev, "request_irq(%d) failed %pe\n", ndev->irq,
-+			   ERR_PTR(err));
- 		goto out_close;
- 	}
- 	rcar_can_start(ndev);
-@@ -786,8 +786,8 @@ static int rcar_can_probe(struct platform_device *pdev)
- 	}
- 	priv->can_clk = devm_clk_get(dev, clock_names[clock_select]);
- 	if (IS_ERR(priv->can_clk)) {
-+		dev_err(dev, "cannot get CAN clock: %pe\n", priv->can_clk);
- 		err = PTR_ERR(priv->can_clk);
--		dev_err(dev, "cannot get CAN clock, error %d\n", err);
- 		goto fail_clk;
- 	}
+@@ -539,8 +538,8 @@ static int rcar_can_open(struct net_device *ndev)
+ 	close_candev(ndev);
+ out_can_clock:
+ 	clk_disable_unprepare(priv->can_clk);
+-out_clock:
+-	clk_disable_unprepare(priv->clk);
++out_rpm:
++	pm_runtime_put(ndev->dev.parent);
+ out:
+ 	return err;
+ }
+@@ -578,7 +577,7 @@ static int rcar_can_close(struct net_device *ndev)
+ 	free_irq(ndev->irq, ndev);
+ 	napi_disable(&priv->napi);
+ 	clk_disable_unprepare(priv->can_clk);
+-	clk_disable_unprepare(priv->clk);
++	pm_runtime_put(ndev->dev.parent);
+ 	close_candev(ndev);
+ 	return 0;
+ }
+@@ -721,12 +720,15 @@ static int rcar_can_get_berr_counter(const struct net_device *ndev,
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 	int err;
  
-@@ -813,7 +813,7 @@ static int rcar_can_probe(struct platform_device *pdev)
+-	err = clk_prepare_enable(priv->clk);
++	err = pm_runtime_resume_and_get(ndev->dev.parent);
+ 	if (err)
+ 		return err;
++
+ 	bec->txerr = readb(&priv->regs->tecr);
+ 	bec->rxerr = readb(&priv->regs->recr);
+-	clk_disable_unprepare(priv->clk);
++
++	pm_runtime_put(ndev->dev.parent);
++
+ 	return 0;
+ }
  
+@@ -770,13 +772,6 @@ static int rcar_can_probe(struct platform_device *pdev)
+ 
+ 	priv = netdev_priv(ndev);
+ 
+-	priv->clk = devm_clk_get(dev, "clkp1");
+-	if (IS_ERR(priv->clk)) {
+-		err = PTR_ERR(priv->clk);
+-		dev_err(dev, "cannot get peripheral clock, error %d\n", err);
+-		goto fail_clk;
+-	}
+-
+ 	if (!(BIT(clock_select) & RCAR_SUPPORTED_CLOCKS)) {
+ 		err = -EINVAL;
+ 		dev_err(dev, "invalid CAN clock selected\n");
+@@ -806,16 +801,20 @@ static int rcar_can_probe(struct platform_device *pdev)
+ 
+ 	netif_napi_add_weight(ndev, &priv->napi, rcar_can_rx_poll,
+ 			      RCAR_CAN_NAPI_WEIGHT);
++
++	pm_runtime_enable(dev);
++
  	err = register_candev(ndev);
  	if (err) {
--		dev_err(dev, "register_candev() failed, error %d\n", err);
-+		dev_err(dev, "register_candev() failed %pe\n", ERR_PTR(err));
- 		goto fail_rpm;
+ 		dev_err(dev, "register_candev() failed, error %d\n", err);
+-		goto fail_candev;
++		goto fail_rpm;
+ 	}
+ 
+ 	dev_info(dev, "device registered (IRQ%d)\n", ndev->irq);
+ 
+ 	return 0;
+-fail_candev:
++fail_rpm:
++	pm_runtime_disable(dev);
+ 	netif_napi_del(&priv->napi);
+ fail_clk:
+ 	free_candev(ndev);
+@@ -829,6 +828,7 @@ static void rcar_can_remove(struct platform_device *pdev)
+ 	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 
+ 	unregister_candev(ndev);
++	pm_runtime_disable(&pdev->dev);
+ 	netif_napi_del(&priv->napi);
+ 	free_candev(ndev);
+ }
+@@ -852,22 +852,22 @@ static int rcar_can_suspend(struct device *dev)
+ 	writew(ctlr, &priv->regs->ctlr);
+ 	priv->can.state = CAN_STATE_SLEEPING;
+ 
+-	clk_disable(priv->clk);
++	pm_runtime_put(dev);
+ 	return 0;
+ }
+ 
+ static int rcar_can_resume(struct device *dev)
+ {
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+-	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 	int err;
+ 
+ 	if (!netif_running(ndev))
+ 		return 0;
+ 
+-	err = clk_enable(priv->clk);
++	err = pm_runtime_resume_and_get(dev);
+ 	if (err) {
+-		netdev_err(ndev, "clk_enable() failed, error %d\n", err);
++		netdev_err(ndev, "pm_runtime_resume_and_get() failed %pe\n",
++			   ERR_PTR(err));
+ 		return err;
  	}
  
 -- 
