@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E57A28851F
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61976288CBF
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702116; cv=none; b=itCQR59H9kmz2u3x4N8oHb6RFRegDOmqBqCfDgngZbTtpiOanSSs56De/8cnLeJbsJZ9ts4RYANawinW5nolkDZKlACiG28lIkm5skweuoGSdOtWE9tCmp+N7uCX1oH/aYUWmhYTMtvcX7J5lwIb78bci/xbhrxXBq1zVl573Lg=
+	t=1758702117; cv=none; b=JziL/pH1uVMIjjRUwPdx3ujtVj1FkGhg1ltJhEQrwZOPj1BMbdmrHaA5HNPNGdMRBMmJpq6XU7Tk+liJXvlmrkz0v/lBPSGvS3QWe+hQENBCKsG7B2bYFaXfsp3cKEUFZOvKqXkYa/cNjOEfFbu5p/aaJhajoxhHXyRrT9xb6bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702116; c=relaxed/simple;
-	bh=ARoB4N4UyQFWYljOs3TO8QYdImHXJ73Z2AEofYwRdnA=;
+	s=arc-20240116; t=1758702117; c=relaxed/simple;
+	bh=dLRB8xSJ5Bf8h2CAv6aJzVHTA8Yj8WBCfUiaa37rtFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHYtYWoZMyVM7WoA6isSmzCNJ0qoBP8MEbOE32cWZ4avAQIDBSmdAkBrdAVlDwHu04SsNdkIB86pbSCgfCkqNNjMYIBzNwtelSLvuNawp/WhiuKrS4WeURrvbnQN4FjgBqw5iPcUny68JVkZf8zU5U4I7sR+f57n4E7S1ktK5fw=
+	 MIME-Version; b=Luxdp3XYYQGsW5n0N/4nk5t6c34s8G1ar9ImlBYHZ2nhU6XMAD8PUEzcyf/+CWnqcGPB1lO1aoml+3Zcmzt4P9C56IM6i6ruq/QkHAN4Xj1GpnyNSKzh775aW3AWSGQodW/XucrzMUlfAVYwMsVytBgSP+xPab055WGXfpmV62k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kke-0001FO-Dp; Wed, 24 Sep 2025 10:21:24 +0200
+	id 1v1Kke-0001Fo-UI; Wed, 24 Sep 2025 10:21:24 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkc-000Dvu-2x;
-	Wed, 24 Sep 2025 10:21:22 +0200
+	id 1v1Kkd-000DwI-0u;
+	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 569894788C4;
-	Wed, 24 Sep 2025 08:21:11 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A8B9E47889C;
+	Wed, 24 Sep 2025 08:21:09 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 48/48] can: netlink: add userland error messages
-Date: Wed, 24 Sep 2025 10:07:05 +0200
-Message-ID: <20250924082104.595459-49-mkl@pengutronix.de>
+Subject: [PATCH net-next 28/48] can: enable CAN XL for virtual CAN devices by default
+Date: Wed, 24 Sep 2025 10:06:45 +0200
+Message-ID: <20250924082104.595459-29-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -60,189 +60,59 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-Use NL_SET_ERR_MSG() and NL_SET_ERR_MSG_FMT() to return meaningful
-error messages to the userland whenever a -EOPNOTSUPP error is
-returned due to a failed validation of the CAN netlink arguments.
+In commit 97edec3a11cf ("can: enable CAN FD for virtual CAN devices by
+default"), vcan and vxcan default MTU was set to CANFD_MTU by default.
+The reason was that users were confused on how to activate CAN FD on
+virtual interfaces.
+
+Following the introduction of CAN XL, the same logic should be
+applied. Set the MTU to CANXL_MTU by default.
+
+The users who really wish to use a Classical CAN only or a CAN FD
+virtual device can do respectively:
+
+  $ ip link set vcan0 mtu 16
+
+or
+
+  $ ip link set vcan0 mtu 72
+
+to force the old behaviour.
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-20-e720d28f66fe@kernel.org
+Link: https://patch.msgid.link/20250923-can-fix-mtu-v3-4-581bde113f52@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 82 ++++++++++++++++++++++++++---------
- 1 file changed, 62 insertions(+), 20 deletions(-)
+ drivers/net/can/vcan.c  | 2 +-
+ drivers/net/can/vxcan.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 92d8df13e886..0591406b6f32 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -64,15 +64,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
- 	bool tdc_auto = tdc_flags & CAN_CTRLMODE_TDC_AUTO_MASK;
- 	int err;
- 
--	/* CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive */
--	if (tdc_auto && tdc_manual)
-+	if (tdc_auto && tdc_manual) {
-+		NL_SET_ERR_MSG(extack,
-+			       "TDC manual and auto modes are mutually exclusive");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* If one of the CAN_CTRLMODE_TDC_* flag is set then TDC
- 	 * must be set and vice-versa
- 	 */
--	if ((tdc_auto || tdc_manual) != !!data_tdc)
-+	if ((tdc_auto || tdc_manual) && !data_tdc) {
-+		NL_SET_ERR_MSG(extack, "TDC parameters are missing");
- 		return -EOPNOTSUPP;
-+	}
-+	if (!(tdc_auto || tdc_manual) && data_tdc) {
-+		NL_SET_ERR_MSG(extack, "TDC mode (auto or manual) is missing");
-+		return -EOPNOTSUPP;
-+	}
- 
- 	/* If providing TDC parameters, at least TDCO is needed. TDCV
- 	 * is needed if and only if CAN_CTRLMODE_TDC_MANUAL is set
-@@ -86,15 +94,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
- 			return err;
- 
- 		if (tb_tdc[IFLA_CAN_TDC_TDCV]) {
--			if (tdc_auto)
-+			if (tdc_auto) {
-+				NL_SET_ERR_MSG(extack,
-+					       "TDCV is incompatible with TDC auto mode");
- 				return -EOPNOTSUPP;
-+			}
- 		} else {
--			if (tdc_manual)
-+			if (tdc_manual) {
-+				NL_SET_ERR_MSG(extack,
-+					       "TDC manual mode requires TDCV");
- 				return -EOPNOTSUPP;
-+			}
- 		}
- 
--		if (!tb_tdc[IFLA_CAN_TDC_TDCO])
-+		if (!tb_tdc[IFLA_CAN_TDC_TDCO]) {
-+			NL_SET_ERR_MSG(extack, "TDCO is missing");
- 			return -EOPNOTSUPP;
-+		}
- 	}
- 
- 	return 0;
-@@ -105,6 +121,7 @@ static int can_validate_databittiming(struct nlattr *data[],
- 				      int ifla_can_data_bittiming, u32 flags)
+diff --git a/drivers/net/can/vcan.c b/drivers/net/can/vcan.c
+index f67e85807100..fdc662aea279 100644
+--- a/drivers/net/can/vcan.c
++++ b/drivers/net/can/vcan.c
+@@ -156,7 +156,7 @@ static const struct ethtool_ops vcan_ethtool_ops = {
+ static void vcan_setup(struct net_device *dev)
  {
- 	struct nlattr *data_tdc;
-+	const char *type;
- 	u32 tdc_flags;
- 	bool is_on;
- 	int err;
-@@ -120,18 +137,31 @@ static int can_validate_databittiming(struct nlattr *data[],
- 		data_tdc = data[IFLA_CAN_TDC];
- 		tdc_flags = flags & CAN_CTRLMODE_FD_TDC_MASK;
- 		is_on = flags & CAN_CTRLMODE_FD;
-+		type = "FD";
- 	} else {
- 		return -EOPNOTSUPP; /* Place holder for CAN XL */
- 	}
+ 	dev->type		= ARPHRD_CAN;
+-	dev->mtu		= CANFD_MTU;
++	dev->mtu		= CANXL_MTU;
+ 	dev->hard_header_len	= 0;
+ 	dev->addr_len		= 0;
+ 	dev->tx_queue_len	= 0;
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index 99a78a757167..b2c19f8c5f8e 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -156,7 +156,7 @@ static void vxcan_setup(struct net_device *dev)
+ 	struct can_ml_priv *can_ml;
  
- 	if (is_on) {
--		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming])
-+		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming]) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "Provide both nominal and %s data bittiming",
-+					   type);
- 			return -EOPNOTSUPP;
--	}
--
--	if (data[ifla_can_data_bittiming] || data_tdc) {
--		if (!is_on)
-+		}
-+	} else {
-+		if (data[ifla_can_data_bittiming]) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "%s data bittiming requires CAN %s",
-+					   type, type);
- 			return -EOPNOTSUPP;
-+		}
-+		if (data_tdc) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "%s TDC requires CAN %s",
-+					   type, type);
-+			return -EOPNOTSUPP;
-+		}
- 	}
- 
- 	err = can_validate_bittiming(data, extack, ifla_can_data_bittiming);
-@@ -178,8 +208,7 @@ static int can_ctrlmode_changelink(struct net_device *dev,
- {
- 	struct can_priv *priv = netdev_priv(dev);
- 	struct can_ctrlmode *cm;
--	u32 maskedflags;
--	u32 ctrlstatic;
-+	u32 ctrlstatic, maskedflags, notsupp, ctrlstatic_missing;
- 
- 	if (!data[IFLA_CAN_CTRLMODE])
- 		return 0;
-@@ -189,20 +218,28 @@ static int can_ctrlmode_changelink(struct net_device *dev,
- 		return -EBUSY;
- 
- 	cm = nla_data(data[IFLA_CAN_CTRLMODE]);
--	maskedflags = cm->flags & cm->mask;
- 	ctrlstatic = can_get_static_ctrlmode(priv);
-+	maskedflags = cm->flags & cm->mask;
-+	notsupp = maskedflags & ~(priv->ctrlmode_supported | ctrlstatic);
-+	ctrlstatic_missing = (maskedflags & ctrlstatic) ^ ctrlstatic;
- 
--	/* check whether provided bits are allowed to be passed */
--	if (maskedflags & ~(priv->ctrlmode_supported | ctrlstatic))
-+	if (notsupp) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "requested control mode %s not supported",
-+				   can_get_ctrlmode_str(notsupp));
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* do not check for static fd-non-iso if 'fd' is disabled */
- 	if (!(maskedflags & CAN_CTRLMODE_FD))
- 		ctrlstatic &= ~CAN_CTRLMODE_FD_NON_ISO;
- 
--	/* make sure static options are provided by configuration */
--	if ((maskedflags & ctrlstatic) != ctrlstatic)
-+	if (ctrlstatic_missing) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "missing required %s static control mode",
-+				   can_get_ctrlmode_str(ctrlstatic_missing));
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* If a top dependency flag is provided, reset all its dependencies */
- 	if (cm->mask & CAN_CTRLMODE_FD)
-@@ -234,8 +271,10 @@ static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
- 	const struct can_tdc_const *tdc_const = dbt_params->tdc_const;
- 	int err;
- 
--	if (!tdc_const)
-+	if (!tdc_const) {
-+		NL_SET_ERR_MSG(extack, "The device does not support TDC");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	err = nla_parse_nested(tb_tdc, IFLA_CAN_TDC_MAX, nla,
- 			       can_tdc_policy, extack);
-@@ -450,8 +489,11 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 		const unsigned int num_term = priv->termination_const_cnt;
- 		unsigned int i;
- 
--		if (!priv->do_set_termination)
-+		if (!priv->do_set_termination) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Termination is not configurable on this device");
- 			return -EOPNOTSUPP;
-+		}
- 
- 		/* check whether given value is supported by the interface */
- 		for (i = 0; i < num_term; i++) {
+ 	dev->type		= ARPHRD_CAN;
+-	dev->mtu		= CANFD_MTU;
++	dev->mtu		= CANXL_MTU;
+ 	dev->hard_header_len	= 0;
+ 	dev->addr_len		= 0;
+ 	dev->tx_queue_len	= 0;
 -- 
 2.51.0
 
