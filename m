@@ -1,328 +1,142 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7202256C8D;
-	Wed, 24 Sep 2025 07:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93260A95E;
+	Wed, 24 Sep 2025 07:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758699773; cv=none; b=lIm9G9vQAN4Mo+I4myZZSX2x65dAVh/2o1kVYH4KGiWep3AH6Uk8L8aYpC9MT7RomYayZsrlLywrjSsacohCFUvW9Q5L35HVjD8wrp+7v7CJOdHCdQxHzLajaHC7k51s1fpvD9EGOzVxkcigU9uwzZhdT1cRp+OnVUTb5Ln7WOU=
+	t=1758699979; cv=none; b=o24iPE9hBAFfFYPF+G4awDiGjtsP4eXzZys/Z1JAUeINsaZDGLoXwbAi92OT5XCLx9ci92EfGPojHaMvJPPhJ996iiOpQJE0Vm6mChvPYqMOXfLzbprwMNdPEKmMigEk0S0YGoH1VzTq+MWbSxfH0Oo3T5fMTKKJ9Je3Yu2nSlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758699773; c=relaxed/simple;
-	bh=9Ox1EhoWQK6hFEXyooqcxscAqHuiN+OgSq3p+I9BuPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=niXAsCLuyzLO0hrWGxNgUMEveEGVC8rnQI3DLtubYyfy953C9NaVME8zIMTrGfGId+tKrpQ6j5PWdkQbPNXUbpbnEE6wnfyYpZAHRFhfFmguW9ERGIj5tSYW0Q6ByVvIftkDmQohAMCn0GzzNzNZ9YVl1NenwnwaUMq5fhVPjPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=SeYMLR6b; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1758699979; c=relaxed/simple;
+	bh=JvDek3868I+EgXDu4lEVZh0rf97VIgk/Snbhy8YIQcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mTCbjTBvsB7QIwg7uxKDGqDuDWd98l0CSt4Rt0K1iCBiG3CrPcyiwqOfIB5iYj94TMbzelbm2p7WpuHHp1bjLLNkNi2hNOR4uscmbE1HfQz7gWgP0nkBuhtSfn8B1tUNrXxOEf1ZkAweGhb0yryIBKVndSYGALFOJVdGRUcigLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cRGsFYix; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="SeYMLR6b"
-Received: from [129.217.186.216] ([129.217.186.216])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 58O7gjOL011932
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 24 Sep 2025 09:42:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1758699766;
-	bh=9Ox1EhoWQK6hFEXyooqcxscAqHuiN+OgSq3p+I9BuPA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SeYMLR6bGhcLLYWNrXNf4bMue5zz7ORvDVDWF0JjQlOxjpyifZZ2+N6YjJ+dxiGdb
-	 4H7MvWGFJ/uBUJqr/Xr2i6Kc387vLTxByrdD0TlW4GRr8Ecc9w6pRsTWjSzrsCe6Rv
-	 sRUySTfeWfsFkfsjHVKmJ6pZdGId67amrR/eDRjU=
-Message-ID: <a16b643a-3cfe-4b95-b76a-100f512cdb79@tu-dortmund.de>
-Date: Wed, 24 Sep 2025 09:42:45 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cRGsFYix"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758699978; x=1790235978;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=JvDek3868I+EgXDu4lEVZh0rf97VIgk/Snbhy8YIQcw=;
+  b=cRGsFYix+th60d5bT9j2W5JeUssWOP5kIP2gD5kZlqT6YYx/nF6YbIZx
+   62tZRhS9uQcSK5WObFq6aH5Q0vS+Tc1Dywe4OzFh+9aO+rxgBNNzGw/No
+   gWgT5laNADXlhamO/1G3EUwXeelV97f/DSLQankUu4Nop2K7e4xhRvp+5
+   owf8BZjN97gDe6ROCjS7yd3UGRuUcH59HJ5iQVybhkeWkHt1n/IynV1Hb
+   qLHwrklpq2vr9xFMwkxthAyG8QL8v5TNGQVMEbbORkpVb2wYMO7/d45H5
+   Muf2KNh1Sj3DmfurB0yw7Uy7WraIo/G84bOfekRCXbVPysZw0xHXyH2fh
+   w==;
+X-CSE-ConnectionGUID: QkFjiIWARxe36aJDpBOpmA==
+X-CSE-MsgGUID: pjtkPmsURESCjazbaB+b2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11561"; a="72346910"
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="72346910"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 00:46:14 -0700
+X-CSE-ConnectionGUID: CScHHwNbR/K+jJNyCBGC2g==
+X-CSE-MsgGUID: O001B7FtQBqXhllo8rLSFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,290,1751266800"; 
+   d="scan'208";a="176552705"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.245.128])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 00:46:05 -0700
+Received: from punajuuri.localdomain (unknown [192.168.240.130])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 8EB9D1213E4;
+	Wed, 24 Sep 2025 10:46:02 +0300 (EEST)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.98.2)
+	(envelope-from <sakari.ailus@linux.intel.com>)
+	id 1v1KCQ-000000017Hv-2IyK;
+	Wed, 24 Sep 2025 10:46:02 +0300
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Javier Carrasco <javier.carrasco@wolfvision.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Matthias Fend <matthias.fend@emfend.at>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 03/16] ACPI: property: Rework acpi_graph_get_next_endpoint()
+Date: Wed, 24 Sep 2025 10:45:49 +0300
+Message-ID: <20250924074602.266292-4-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
+References: <20250924074602.266292-1-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v5 4/8] TUN & TAP: Wake netdev queue after consuming
- an entry
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com, eperezma@redhat.com,
-        stephen@networkplumber.org, leiyang@redhat.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
-        kvm@vger.kernel.org, Tim Gebauer <tim.gebauer@tu-dortmund.de>
-References: <20250922221553.47802-1-simon.schippers@tu-dortmund.de>
- <20250922221553.47802-5-simon.schippers@tu-dortmund.de>
- <20250923123101-mutt-send-email-mst@kernel.org>
- <aacb449c-ad20-48b0-aa0f-b3866a3ed7f6@tu-dortmund.de>
- <20250924024416-mutt-send-email-mst@kernel.org>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <20250924024416-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 24.09.25 08:55, Michael S. Tsirkin wrote:
-> On Wed, Sep 24, 2025 at 07:56:33AM +0200, Simon Schippers wrote:
->> On 23.09.25 18:36, Michael S. Tsirkin wrote:
->>> On Tue, Sep 23, 2025 at 12:15:49AM +0200, Simon Schippers wrote:
->>>> The new wrappers tun_ring_consume/tap_ring_consume deal with consuming an
->>>> entry of the ptr_ring and then waking the netdev queue when entries got
->>>> invalidated to be used again by the producer.
->>>> To avoid waking the netdev queue when the ptr_ring is full, it is checked
->>>> if the netdev queue is stopped before invalidating entries. Like that the
->>>> netdev queue can be safely woken after invalidating entries.
->>>>
->>>> The READ_ONCE in __ptr_ring_peek, paired with the smp_wmb() in
->>>> __ptr_ring_produce within tun_net_xmit guarantees that the information
->>>> about the netdev queue being stopped is visible after __ptr_ring_peek is
->>>> called.
->>>>
->>>> The netdev queue is also woken after resizing the ptr_ring.
->>>>
->>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>> ---
->>>>  drivers/net/tap.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
->>>>  drivers/net/tun.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
->>>>  2 files changed, 88 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
->>>> index 1197f245e873..f8292721a9d6 100644
->>>> --- a/drivers/net/tap.c
->>>> +++ b/drivers/net/tap.c
->>>> @@ -753,6 +753,46 @@ static ssize_t tap_put_user(struct tap_queue *q,
->>>>  	return ret ? ret : total;
->>>>  }
->>>>  
->>>> +static struct sk_buff *tap_ring_consume(struct tap_queue *q)
->>>> +{
->>>> +	struct netdev_queue *txq;
->>>> +	struct net_device *dev;
->>>> +	bool will_invalidate;
->>>> +	bool stopped;
->>>> +	void *ptr;
->>>> +
->>>> +	spin_lock(&q->ring.consumer_lock);
->>>> +	ptr = __ptr_ring_peek(&q->ring);
->>>> +	if (!ptr) {
->>>> +		spin_unlock(&q->ring.consumer_lock);
->>>> +		return ptr;
->>>> +	}
->>>> +
->>>> +	/* Check if the queue stopped before zeroing out, so no ptr get
->>>> +	 * produced in the meantime, because this could result in waking
->>>> +	 * even though the ptr_ring is full.
->>>
->>> So what? Maybe it would be a bit suboptimal? But with your design, I do
->>> not get what prevents this:
->>>
->>>
->>> 	stopped? -> No
->>> 		ring is stopped
->>> 	discard
->>>
->>> and queue stays stopped forever
->>>
->>>
->>
->> I totally missed this (but I am not sure why it did not happen in my 
->> testing with different ptr_ring sizes..).
->>
->> I guess you are right, there must be some type of locking.
->> It probably makes sense to lock the netdev txq->_xmit_lock whenever the 
->> consumer invalidates old ptr_ring entries (so when r->consumer_head >= 
->> r->consumer_tail). The producer holds this lock with dev->lltx=false. Then 
->> the consumer is able to wake the queue safely.
->>
->> So I would now just change the implementation to:
->> tun_net_xmit:
->> ...
->> if ptr_ring_produce
->>     // Could happen because of unproduce in vhost_net..
->>     netif_tx_stop_queue
->>     ...
->>     goto drop
->>
->> if ptr_ring_full
->>     netif_tx_stop_queue
->> ...
->>
->> tun_ring_recv/tap_do_read (the implementation for the batched methods 
->> would be done in the similar way):
->> ...
->> ptr_ring_consume
->> if r->consumer_head >= r->consumer_tail
->>     __netif_tx_lock_bh
->>     netif_tx_wake_queue
->>     __netif_tx_unlock_bh
->>
->> This implementation does not need any new ptr_ring helpers and no fancy 
->> ordering tricks.
->> Would this implementation be sufficient in your opinion?
-> 
-> 
-> Maybe you mean == ? Pls don't poke at ptr ring internals though.
-> What are we testing for here?
-> I think the point is that a batch of entries was consumed?
-> Maybe __ptr_ring_consumed_batch ? and a comment explaining
-> this returns true when last successful call to consume
-> freed up a batch of space in the ring for producer to make
-> progress.
->
+Rework the code obtaining the next endpoint in
+acpi_graph_get_next_endpoint(). The resulting code removes unnecessary
+contitionals and should be easier to follow.
 
-Yes, I mean ==.
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+ drivers/acpi/property.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-Having a dedicated helper for this purpose makes sense. I just find
-the name __ptr_ring_consumed_batch a bit confusing next to
-__ptr_ring_consume_batched, since they both refer to different kinds of
-batches.
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 3e85900080ac..5438592dc136 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1399,14 +1399,15 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
+ 
+-	endpoint = acpi_get_next_subnode(port, prev);
+-	while (!endpoint) {
+-		port = acpi_get_next_subnode(fwnode, port);
+-		if (!port)
++	do {
++		endpoint = acpi_get_next_subnode(port, prev);
++		if (endpoint)
+ 			break;
++
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = acpi_get_next_subnode(port, NULL);
+-	}
++			prev = NULL;
++	} while (port);
+ 
+ 	/*
+ 	 * The names of the endpoint nodes begin with "endpoint@" followed by
+-- 
+2.47.3
 
-> 
-> consumer_head == consumer_tail also happens rather a lot,
-> though thankfully not on every entry.
-> So taking tx lock each time this happens, even if queue
-> is not stopped, seems heavyweight.
-> 
-> 
-
-Yes, I agree — but avoiding locking probably requires some fancy
-ordering tricks again..
-
-
-> 
-> 
-> 
->>>> The order of the operations
->>>> +	 * is ensured by barrier().
->>>> +	 */
->>>> +	will_invalidate = __ptr_ring_will_invalidate(&q->ring);
->>>> +	if (unlikely(will_invalidate)) {
->>>> +		rcu_read_lock();
->>>> +		dev = rcu_dereference(q->tap)->dev;
->>>> +		txq = netdev_get_tx_queue(dev, q->queue_index);
->>>> +		stopped = netif_tx_queue_stopped(txq);
->>>> +	}
->>>> +	barrier();
->>>> +	__ptr_ring_discard_one(&q->ring, will_invalidate);
->>>> +
->>>> +	if (unlikely(will_invalidate)) {
->>>> +		if (stopped)
->>>> +			netif_tx_wake_queue(txq);
->>>> +		rcu_read_unlock();
->>>> +	}
->>>
->>>
->>> After an entry is consumed, you can detect this by checking
->>>
->>> 	                r->consumer_head >= r->consumer_tail
->>>
->>>
->>> so it seems you could keep calling regular ptr_ring_consume
->>> and check afterwards?
->>>
->>>
->>>
->>>
->>>> +	spin_unlock(&q->ring.consumer_lock);
->>>> +
->>>> +	return ptr;
->>>> +}
->>>> +
->>>>  static ssize_t tap_do_read(struct tap_queue *q,
->>>>  			   struct iov_iter *to,
->>>>  			   int noblock, struct sk_buff *skb)
->>>> @@ -774,7 +814,7 @@ static ssize_t tap_do_read(struct tap_queue *q,
->>>>  					TASK_INTERRUPTIBLE);
->>>>  
->>>>  		/* Read frames from the queue */
->>>> -		skb = ptr_ring_consume(&q->ring);
->>>> +		skb = tap_ring_consume(q);
->>>>  		if (skb)
->>>>  			break;
->>>>  		if (noblock) {
->>>> @@ -1207,6 +1247,8 @@ int tap_queue_resize(struct tap_dev *tap)
->>>>  	ret = ptr_ring_resize_multiple_bh(rings, n,
->>>>  					  dev->tx_queue_len, GFP_KERNEL,
->>>>  					  __skb_array_destroy_skb);
->>>> +	if (netif_running(dev))
->>>> +		netif_tx_wake_all_queues(dev);
->>>>  
->>>>  	kfree(rings);
->>>>  	return ret;
->>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>>> index c6b22af9bae8..682df8157b55 100644
->>>> --- a/drivers/net/tun.c
->>>> +++ b/drivers/net/tun.c
->>>> @@ -2114,13 +2114,53 @@ static ssize_t tun_put_user(struct tun_struct *tun,
->>>>  	return total;
->>>>  }
->>>>  
->>>> +static void *tun_ring_consume(struct tun_file *tfile)
->>>> +{
->>>> +	struct netdev_queue *txq;
->>>> +	struct net_device *dev;
->>>> +	bool will_invalidate;
->>>> +	bool stopped;
->>>> +	void *ptr;
->>>> +
->>>> +	spin_lock(&tfile->tx_ring.consumer_lock);
->>>> +	ptr = __ptr_ring_peek(&tfile->tx_ring);
->>>> +	if (!ptr) {
->>>> +		spin_unlock(&tfile->tx_ring.consumer_lock);
->>>> +		return ptr;
->>>> +	}
->>>> +
->>>> +	/* Check if the queue stopped before zeroing out, so no ptr get
->>>> +	 * produced in the meantime, because this could result in waking
->>>> +	 * even though the ptr_ring is full. The order of the operations
->>>> +	 * is ensured by barrier().
->>>> +	 */
->>>> +	will_invalidate = __ptr_ring_will_invalidate(&tfile->tx_ring);
->>>> +	if (unlikely(will_invalidate)) {
->>>> +		rcu_read_lock();
->>>> +		dev = rcu_dereference(tfile->tun)->dev;
->>>> +		txq = netdev_get_tx_queue(dev, tfile->queue_index);
->>>> +		stopped = netif_tx_queue_stopped(txq);
->>>> +	}
->>>> +	barrier();
->>>> +	__ptr_ring_discard_one(&tfile->tx_ring, will_invalidate);
->>>> +
->>>> +	if (unlikely(will_invalidate)) {
->>>> +		if (stopped)
->>>> +			netif_tx_wake_queue(txq);
->>>> +		rcu_read_unlock();
->>>> +	}
->>>> +	spin_unlock(&tfile->tx_ring.consumer_lock);
->>>> +
->>>> +	return ptr;
->>>> +}
->>>> +
->>>>  static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
->>>>  {
->>>>  	DECLARE_WAITQUEUE(wait, current);
->>>>  	void *ptr = NULL;
->>>>  	int error = 0;
->>>>  
->>>> -	ptr = ptr_ring_consume(&tfile->tx_ring);
->>>> +	ptr = tun_ring_consume(tfile);
->>>>  	if (ptr)
->>>>  		goto out;
->>>>  	if (noblock) {
->>>> @@ -2132,7 +2172,7 @@ static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
->>>>  
->>>>  	while (1) {
->>>>  		set_current_state(TASK_INTERRUPTIBLE);
->>>> -		ptr = ptr_ring_consume(&tfile->tx_ring);
->>>> +		ptr = tun_ring_consume(tfile);
->>>>  		if (ptr)
->>>>  			break;
->>>>  		if (signal_pending(current)) {
->>>> @@ -3621,6 +3661,9 @@ static int tun_queue_resize(struct tun_struct *tun)
->>>>  					  dev->tx_queue_len, GFP_KERNEL,
->>>>  					  tun_ptr_free);
->>>>  
->>>> +	if (netif_running(dev))
->>>> +		netif_tx_wake_all_queues(dev);
->>>> +
->>>>  	kfree(rings);
->>>>  	return ret;
->>>>  }
->>>> -- 
->>>> 2.43.0
->>>
-> 
