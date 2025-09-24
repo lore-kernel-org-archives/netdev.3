@@ -1,52 +1,42 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5D7199230;
-	Wed, 24 Sep 2025 18:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC142D6E60;
+	Wed, 24 Sep 2025 18:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758739286; cv=none; b=SqYr/aBfVXfKTPDf11BlnCExjUxl3HWwu66IunSAj4qcpNCOQ/tGCFsUKFNIJ39iA4pl45dZiJsgVEEApm97OyW/NWAvXJ/Kq7VDPyhlf9Xm9KAMCoK9tbCGsFJEtheJPAvmyluGtXUiYEbHo/9yRRZe93SJv/xuSqftgP7YgEw=
+	t=1758739496; cv=none; b=SRwjJExzyZYQfemEB7kbbRKMPLBv3axliJG+UVAoEXFIDVWBNYa1dPLssbfOL0b7eGLCeGkSgXfFKlqs8cwsAZ0F4JqgcsI35+8v+9+DqDJ677cA5WZnNr5loLu0O5xuvzaJe4xFhF/wm9VkKaKcQTMLEElLBgCVOUGD2k//8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758739286; c=relaxed/simple;
-	bh=rk/YqIAr3psTXwnRF88FFgZF0USARgQwHWYYUih+ZrM=;
+	s=arc-20240116; t=1758739496; c=relaxed/simple;
+	bh=s3dRdq6PwgkIrk5+XJTGO5HasYdONCC+41QAVNIIa+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sca7C1h8OAR5vO1NVVIFpVx8fo8HXFjEvhtC+pQZmFqj+HCbXFXrWXpMsfqqB+5SDp2+KwHGCiUlK3REiUE8XQy9gkpo88m0CGcF3S02j9aH6cNvMcoyOf9B9umqudDfAdIdm+5VgJxyvUAeRXIArNreC6Lq+oUZP1425gR60iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZG/ewCJR; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y6W7zrEVnOO+uKw9XXjkr02sIvylb0TSgaIp11pOLb22MyTOVLFYZr1KszK9GL88sY/SU2uQ3JutEAgrn1ocvMg/J7EGRN38mp+Azi2eectXr6qvYGar1wsO8nwE6agaUcqVzkjRmyomftfcg+/T6ojuYcJCGm+qb7fmRgETObI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCwnx/sL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZG/ewCJR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=oP/eS7INwt9yq8GjuQkiEiRAXKwufdViyrT21UpRM/o=; b=ZG/ewCJRLBP0Eckk7X8wsBMFes
-	jeE1L/DOiWCYl4VjvcHNgFgTV7ruTEtQIZnQM01o335XjkxyaOOr/npGPQFOwaC/oAGAcwfwwLyGi
-	0TSQznoCR2ukfEJ3Rm2DbMGCMdjcJ+7N8EsHE5QmhbGK0JUuILflNHW2bEvXmdtPU8Yc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v1UQM-009O1c-5E; Wed, 24 Sep 2025 20:41:06 +0200
-Date: Wed, 24 Sep 2025 20:41:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Simon Horman <horms@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v11 2/5] net: phy: introduce
- PHY_INTERFACE_MODE_REVSGMII
-Message-ID: <fe6a4073-eed0-499d-89ee-04559967b420@lunn.ch>
-References: <20250922131148.1917856-1-mmyangfl@gmail.com>
- <20250922131148.1917856-3-mmyangfl@gmail.com>
- <aNQvW54sk3EzmoJp@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCwnx/sL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A7C4CEE7;
+	Wed, 24 Sep 2025 18:44:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758739495;
+	bh=s3dRdq6PwgkIrk5+XJTGO5HasYdONCC+41QAVNIIa+4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XCwnx/sLppLAlEsG2RZHdRFC7/llTJBhKjGnRmH3vGrJUJZXaydMBt55KiV5MxBrc
+	 Vq9Y/ViYVDOd5bKoT6Gb+OODb96hSVVRgWN/O+D6IFZ66fqayXFXClus6RAdkkAGFQ
+	 yYWarW74B4mJyZYuFAg6XBC1iusz6xzYCJoz3eDQ/+ZS16CHMG/HtUu6tVT82zYjLF
+	 JPrBJT45JdbvGJJWn2sheXg59u2YWyTj26yXsOEI2+m8Xoppr6tIJe6yWTupHyCz4U
+	 spEG4sykcrRsmaBsqEHpTm3js4CKysLrZnZ1284NQSNbXMhWmlx3NIbpmgNLSypGT/
+	 AOAbDs8os+kCw==
+Date: Wed, 24 Sep 2025 19:44:51 +0100
+From: Simon Horman <horms@kernel.org>
+To: Deepak Sharma <deepak.sharma.472935@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, pwn9uin@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
+Subject: Re: [PATCH] Fix the cleanup on alloc_mpc failure in
+ atm_mpoa_mpoad_attach
+Message-ID: <20250924184451.GT836419@horms.kernel.org>
+References: <20250923132427.74242-1-deepak.sharma.472935@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,57 +45,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aNQvW54sk3EzmoJp@shell.armlinux.org.uk>
+In-Reply-To: <20250923132427.74242-1-deepak.sharma.472935@gmail.com>
 
-On Wed, Sep 24, 2025 at 06:50:19PM +0100, Russell King (Oracle) wrote:
-> On Mon, Sep 22, 2025 at 09:11:40PM +0800, David Yang wrote:
-> > The "reverse SGMII" protocol name is a personal invention, derived from
-> > "reverse MII" and "reverse RMII", this means: "behave like an SGMII
-> > PHY".
+On Tue, Sep 23, 2025 at 06:54:27PM +0530, Deepak Sharma wrote:
+> Syzbot reported a warning at `add_timer`, which is called from the
+> `atm_mpoa_mpoad_attach` function
 > 
-> Sorry to mess you around, but... I've been getting further with stmmac's
-> PCS stuff (I've started again with it) and I've come to realise that the
-> stmmac driver is full of worms here.
+> The reason for this warning is that in the allocation failure by `alloc_mpc`,
+> there is lack of proper cleanup. And in the event that ATMMPC_CTRL ioctl is
+> called on to again, it will lead to the attempt of starting an already 
+> started timer from the previous ioctl call
 > 
-> I think we need to have a bigger discussion here.
+> Do a `timer_delete` before returning from the `alloc_mpc` failure
 > 
-> Today, we have:
+> Reported-by: syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=07b635b9c111c566af8b
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Deepak Sharma <deepak.sharma.472935@gmail.com>
+> ---
+>  net/atm/mpc.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> - PHY_INTERFACE_MODE_REVMII
-> - PHY_INTERFACE_MODE_REVRMII
-> 
-> which both complement their _MII and _RMII definitions. So, it seems
-> entirely sensible to also introduce REVSGMII to complement SGMII.
+> diff --git a/net/atm/mpc.c b/net/atm/mpc.c
+> index f6b447bba329..cd3295c3c480 100644
+> --- a/net/atm/mpc.c
+> +++ b/net/atm/mpc.c
+> @@ -814,7 +814,10 @@ static int atm_mpoa_mpoad_attach(struct atm_vcc *vcc, int arg)
+>  		dprintk("allocating new mpc for itf %d\n", arg);
+>  		mpc = alloc_mpc();
+>  		if (mpc == NULL)
+> +		{
 
-Maybe we need to think about, what does REVfoo actually mean?
+Sorry for not mentioning this in my previous email.
 
-Is it simply about, who provides the clock? For MII, the 'PHY'
-provides the clock to the 'MAC;. So does REVMII simply mean a MAC in
-REVMII mode provides the clock? Is more needed? As far as i know MII
-does not have any inband signalling.
+The preferred coding style is:
 
-For RMII, it appears each side can provide the clock, or consume the
-clock, or a 3rd party can provide the clock. It is a hardware design
-choice. So does REVRMII actual mean anything? Again there is no inband
-signalling.
+		if (mpc == NULL) {
 
-GMII the transmit clock is provided by the transmitter, the receive
-clock by the receiver. It is symmetrical. REV has no meaning here?
+> +			timer_delete(&mpc_timer);
+>  			return -ENOMEM;
+> +		}
+>  		mpc->dev_num = arg;
+>  		mpc->dev = find_lec_by_itfnum(arg);
+>  					/* NULL if there was no lec */
 
-In theory, {R}GMII does have inband signalling, but it is pretty much
-never used. REV for GMII could thus indicate what role the device is
-playing in this in-band signalling?
-
-For any SERDES based links likes like SGMII, 1000Base-X and above,
-clocking is part of the SERDES, so symmetrical. There clearly is
-inband signalling, mostly, when it is not broken because of
-overclocked SGMII. But we have never needed to specify what role each
-end needs to play.
-
-> However, stmmac hardware supports "reverse" mode for more than just
-> SGMII, also RGMII and SMII.
-
-How does the databook describe reverse SGMII? How does it differ from
-SGMII?
-
-	Andrew
+-- 
+pw-bot: changes-requested
