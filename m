@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDE52877E5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E81286D49
 	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702115; cv=none; b=thMTBelb4hyP/ZxqSrCDKXHjxDsDNBD8grJx6ufYvhunw71wB2EaSALygtEDFqc8GKaJyVR+1Np/PSw0Eo64TgN+tvjfDnj+95rLgdapwCl9WUndGd4NAm95EKsgCdxhotIwHALgsGt2jsZyJhkC2XCYOX/vvR1oVHfyJRJ31ng=
+	t=1758702115; cv=none; b=hvuGZGiHmslOXyg3mbwcS/agMDzwvdWQFIGJKwVAQ/UbFoHfnjLLWbh+gLCcEFsBWY2Y62DWSXgo1Oto7FZShxfRH+k5MQB7V+ZS+12v+zZ/jlCenbe8iTR2soBo1NIersPndH4Nn/RN1l1h35+7XW/o/73AAzQZS672ki24PVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758702115; c=relaxed/simple;
-	bh=ufAB8RsL7GnbYV8hEwh8am0wgYyRKz5q9d9U4oB6K3g=;
+	bh=koejMSnOXLk+bOqf979uqmvE5afDfT8lXBoI2voiyMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQ6lvnckOH/J9yqNTjec75p0hhIEXzqZsPMhSdLohVTkC9eUgLsWRNpIAqDPcGToCS/ps6hZUu5cmhGhkYCMou0ofeW7kAwAU5YL3xPwLWvb7Wf+Qd8vmoWANk70eXUn1Q2yznTA7hATmgq2YbFigtqch1VyPhjxQzMple19MuA=
+	 MIME-Version; b=VHjc3WhtykITzuMECPvVb/qr/4ebCvjqSuTTpMG4wIuVTIMukS2qwyuXUmZACWO86R75UHKAUSMGGOy9OFcxPfJYvdhxYU33XPm+I9+xFXNDkVnVAqSBFOPBtkiIDFRbTAv2VWNnsj0jZI2XIwJI44TZLF7cdoHKxeonTpv0KYU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-0001E1-8h; Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkf-0001GW-80; Wed, 24 Sep 2025 10:21:25 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkc-000DvH-0T;
-	Wed, 24 Sep 2025 10:21:22 +0200
+	id 1v1Kkd-000Dwh-28;
+	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1052A478890;
-	Wed, 24 Sep 2025 08:21:09 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E55FD4788B8;
+	Wed, 24 Sep 2025 08:21:10 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,11 +39,10 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 22/48] can: raw: reorder struct uniqframe's members to optimise packing
-Date: Wed, 24 Sep 2025 10:06:39 +0200
-Message-ID: <20250924082104.595459-23-mkl@pengutronix.de>
+Subject: [PATCH net-next 42/48] can: netlink: add can_bittiming_fill_info()
+Date: Wed, 24 Sep 2025 10:06:59 +0200
+Message-ID: <20250924082104.595459-43-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -61,59 +60,61 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-struct uniqframe has one hole. Reorder the fields to save 8 bytes.
+Add can_bittiming_fill_info() to factorise the logic when filling the
+bittiming information for Classical CAN and CAN FD. This function will
+be reused later on for CAN XL.
 
-Statistics before:
-
-  $ pahole --class_name=uniqframe net/can/raw.o
-  struct uniqframe {
-  	int                        skbcnt;               /*     0     4 */
-
-  	/* XXX 4 bytes hole, try to pack */
-
-  	const struct sk_buff  *    skb;                  /*     8     8 */
-  	unsigned int               join_rx_count;        /*    16     4 */
-
-  	/* size: 24, cachelines: 1, members: 3 */
-  	/* sum members: 16, holes: 1, sum holes: 4 */
-  	/* padding: 4 */
-  	/* last cacheline: 24 bytes */
-  };
-
-...and after:
-
-  $ pahole --class_name=uniqframe net/can/raw.o
-  struct uniqframe {
-  	const struct sk_buff  *    skb;                  /*     0     8 */
-  	int                        skbcnt;               /*     8     4 */
-  	unsigned int               join_rx_count;        /*    12     4 */
-
-  	/* size: 16, cachelines: 1, members: 3 */
-  	/* last cacheline: 16 bytes */
-  };
-
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250917-can-raw-repack-v2-1-395e8b3a4437@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-14-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/raw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/netlink.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 76b867d21def..db21d8a8c54d 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -75,8 +75,8 @@ MODULE_ALIAS("can-proto-1");
-  */
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 5d2b524daea9..bedd2611d358 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -559,6 +559,14 @@ static size_t can_get_size(const struct net_device *dev)
+ 	return size;
+ }
  
- struct uniqframe {
--	int skbcnt;
- 	const struct sk_buff *skb;
-+	int skbcnt;
- 	unsigned int join_rx_count;
- };
++static int can_bittiming_fill_info(struct sk_buff *skb, int ifla_can_bittiming,
++				   struct can_bittiming *bittiming)
++{
++	return bittiming->bitrate != CAN_BITRATE_UNSET &&
++		bittiming->bitrate != CAN_BITRATE_UNKNOWN &&
++		nla_put(skb, ifla_can_bittiming, sizeof(*bittiming), bittiming);
++}
++
+ static int can_tdc_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+ 	struct nlattr *nest;
+@@ -641,10 +649,8 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	if (priv->do_get_state)
+ 		priv->do_get_state(dev, &state);
  
+-	if ((priv->bittiming.bitrate != CAN_BITRATE_UNSET &&
+-	     priv->bittiming.bitrate != CAN_BITRATE_UNKNOWN &&
+-	     nla_put(skb, IFLA_CAN_BITTIMING,
+-		     sizeof(priv->bittiming), &priv->bittiming)) ||
++	if (can_bittiming_fill_info(skb, IFLA_CAN_BITTIMING,
++				    &priv->bittiming) ||
+ 
+ 	    (priv->bittiming_const &&
+ 	     nla_put(skb, IFLA_CAN_BITTIMING_CONST,
+@@ -659,9 +665,8 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	     !priv->do_get_berr_counter(dev, &bec) &&
+ 	     nla_put(skb, IFLA_CAN_BERR_COUNTER, sizeof(bec), &bec)) ||
+ 
+-	    (priv->fd.data_bittiming.bitrate &&
+-	     nla_put(skb, IFLA_CAN_DATA_BITTIMING,
+-		     sizeof(priv->fd.data_bittiming), &priv->fd.data_bittiming)) ||
++	    can_bittiming_fill_info(skb, IFLA_CAN_DATA_BITTIMING,
++				    &priv->fd.data_bittiming) ||
+ 
+ 	    (priv->fd.data_bittiming_const &&
+ 	     nla_put(skb, IFLA_CAN_DATA_BITTIMING_CONST,
 -- 
 2.51.0
 
