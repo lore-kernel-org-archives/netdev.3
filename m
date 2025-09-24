@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCCF2820DB
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47422248A5
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702120; cv=none; b=EplvDYCuB7z1qKtbRUE7VSSlwQ1OOlZil/QYwd8hbm3rbkP3+5bP+uzPpI/2o7U0Mqtaoj1GBJFHlDVwH/WyqZmtEeTJesvjFuQYQnrluvpQaA0dNaiw6aOgQP12LAq7+QE5uhYeIsG7URnAWM5rwazk/7E+/CamrGmC7h+mT6c=
+	t=1758702119; cv=none; b=uZVUl5tmvMD5xS10Xvm0t8COtOY5y10zmXIHMiobOPPLi6QZNjmPvEgW1IY3rqTE5ILoQ2IfltAcnQhD1iDteNX4wYZg2aeYyFOKZa6v/tF0TV4A84X5cjqtRvo5YeEnNJLCV0P4U9jcEkArXga/n6R9mVZ7lIn7eaw7PeXMwLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702120; c=relaxed/simple;
-	bh=iH5KzvOv7o3ZOYjLFyCMelOKmNSVOW+JV24gPzCeZ8Y=;
+	s=arc-20240116; t=1758702119; c=relaxed/simple;
+	bh=cFLbESbAIn/mr9J6GG4FjnQgFD5qgg6MmivH5+SLSRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE1KEU9mJcQkn143OFEIo15wvaUmCOtegMI3yl/i2FwgHN/sk1sCHBdQnAnmTXqZy0Pl9RBIXJg2diLZCXIIbbYUfwHTCJntgVJI8mi74XLOCPm47F1gaX/mGX14ngPZQHA027KvWfcVmDoixJaGVAHIQHx13PZaQBTBe1wS6Z0=
+	 MIME-Version; b=RselIH0Jp9P3+eEf3Uvrn217EE64NO22QqKRsOuGNuyyDr5A+bJhmdUO1ZSNpIsnkeR/Ym8dmpY5oMooea2bGg4LrCVEB5UPy3TvUFDf15aQmW6bPH12Bhi2zOFAciTIK1XmwNdD+W3WPE/ke/cvs+YnT4wbmn8ghkkq1vS2utU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-0001E5-8j; Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkf-0001GX-Bw; Wed, 24 Sep 2025 10:21:25 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkc-000DvT-1M;
-	Wed, 24 Sep 2025 10:21:22 +0200
+	id 1v1Kkd-000Dwi-29;
+	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 2E56B478892;
-	Wed, 24 Sep 2025 08:21:09 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id F3771478869;
+	Wed, 24 Sep 2025 08:21:06 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,11 +39,10 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 23/48] can: raw: use bitfields to store flags in struct raw_sock
-Date: Wed, 24 Sep 2025 10:06:40 +0200
-Message-ID: <20250924082104.595459-24-mkl@pengutronix.de>
+Subject: [PATCH net-next 03/48] can: dev: sort includes by alphabetical order
+Date: Wed, 24 Sep 2025 10:06:20 +0200
+Message-ID: <20250924082104.595459-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -61,285 +60,46 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-The bound, loopback, recv_own_msgs, fd_frames, xl_frames and
-join_filters fields of struct raw_sock just need to store one bit of
-information.
+Includes are out of order in
 
-Declare all those members as a bitfields of type unsigned int and
-width one bit.
+  drivers/net/can/dev/dev.c
 
-Add a temporary variable to raw_setsockopt() and raw_getsockopt() to
-make the conversion between the stored bits and the socket interface.
+Sort them by alphabetical order.
 
-This reduces the size of struct raw_sock by sixteen bytes.
-
-Statistics before:
-
-  $ pahole --class_name=raw_sock net/can/raw.o
-  struct raw_sock {
-  	struct sock                sk __attribute__((__aligned__(8))); /*     0   776 */
-
-  	/* XXX last struct has 1 bit hole */
-
-  	/* --- cacheline 12 boundary (768 bytes) was 8 bytes ago --- */
-  	int                        bound;                /*   776     4 */
-  	int                        ifindex;              /*   780     4 */
-  	struct net_device *        dev;                  /*   784     8 */
-  	netdevice_tracker          dev_tracker;          /*   792     0 */
-  	struct list_head           notifier;             /*   792    16 */
-  	int                        loopback;             /*   808     4 */
-  	int                        recv_own_msgs;        /*   812     4 */
-  	int                        fd_frames;            /*   816     4 */
-  	int                        xl_frames;            /*   820     4 */
-  	struct can_raw_vcid_options raw_vcid_opts;       /*   824     4 */
-  	canid_t                    tx_vcid_shifted;      /*   828     4 */
-  	/* --- cacheline 13 boundary (832 bytes) --- */
-  	canid_t                    rx_vcid_shifted;      /*   832     4 */
-  	canid_t                    rx_vcid_mask_shifted; /*   836     4 */
-  	int                        join_filters;         /*   840     4 */
-  	int                        count;                /*   844     4 */
-  	struct can_filter          dfilter;              /*   848     8 */
-  	struct can_filter *        filter;               /*   856     8 */
-  	can_err_mask_t             err_mask;             /*   864     4 */
-
-  	/* XXX 4 bytes hole, try to pack */
-
-  	struct uniqframe *         uniq;                 /*   872     8 */
-
-  	/* size: 880, cachelines: 14, members: 20 */
-  	/* sum members: 876, holes: 1, sum holes: 4 */
-  	/* member types with bit holes: 1, total: 1 */
-  	/* forced alignments: 1 */
-  	/* last cacheline: 48 bytes */
-  } __attribute__((__aligned__(8)));
-
-...and after:
-
-  $ pahole --class_name=raw_sock net/can/raw.o
-  struct raw_sock {
-  	struct sock                sk __attribute__((__aligned__(8))); /*     0   776 */
-
-  	/* XXX last struct has 1 bit hole */
-
-  	/* --- cacheline 12 boundary (768 bytes) was 8 bytes ago --- */
-  	int                        ifindex;              /*   776     4 */
-
-  	/* XXX 4 bytes hole, try to pack */
-
-  	struct net_device *        dev;                  /*   784     8 */
-  	netdevice_tracker          dev_tracker;          /*   792     0 */
-  	struct list_head           notifier;             /*   792    16 */
-  	unsigned int               bound:1;              /*   808: 0  4 */
-  	unsigned int               loopback:1;           /*   808: 1  4 */
-  	unsigned int               recv_own_msgs:1;      /*   808: 2  4 */
-  	unsigned int               fd_frames:1;          /*   808: 3  4 */
-  	unsigned int               xl_frames:1;          /*   808: 4  4 */
-  	unsigned int               join_filters:1;       /*   808: 5  4 */
-
-  	/* XXX 2 bits hole, try to pack */
-  	/* Bitfield combined with next fields */
-
-  	struct can_raw_vcid_options raw_vcid_opts;       /*   809     4 */
-
-  	/* XXX 3 bytes hole, try to pack */
-
-  	canid_t                    tx_vcid_shifted;      /*   816     4 */
-  	canid_t                    rx_vcid_shifted;      /*   820     4 */
-  	canid_t                    rx_vcid_mask_shifted; /*   824     4 */
-  	int                        count;                /*   828     4 */
-  	/* --- cacheline 13 boundary (832 bytes) --- */
-  	struct can_filter          dfilter;              /*   832     8 */
-  	struct can_filter *        filter;               /*   840     8 */
-  	can_err_mask_t             err_mask;             /*   848     4 */
-
-  	/* XXX 4 bytes hole, try to pack */
-
-  	struct uniqframe *         uniq;                 /*   856     8 */
-
-  	/* size: 864, cachelines: 14, members: 20 */
-  	/* sum members: 852, holes: 3, sum holes: 11 */
-  	/* sum bitfield members: 6 bits, bit holes: 1, sum bit holes: 2 bits */
-  	/* member types with bit holes: 1, total: 1 */
-  	/* forced alignments: 1 */
-  	/* last cacheline: 32 bytes */
-  } __attribute__((__aligned__(8)));
-
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250917-can-raw-repack-v2-2-395e8b3a4437@kernel.org
+Link: https://patch.msgid.link/20250830152107.694201-2-mailhol@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/raw.c | 59 ++++++++++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 24 deletions(-)
+ drivers/net/can/dev/dev.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index db21d8a8c54d..5a5ded519cd1 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -82,20 +82,20 @@ struct uniqframe {
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index 3913971125de..99b78cbb2252 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -4,17 +4,17 @@
+  * Copyright (C) 2008-2009 Wolfgang Grandegger <wg@grandegger.com>
+  */
  
- struct raw_sock {
- 	struct sock sk;
--	int bound;
- 	int ifindex;
- 	struct net_device *dev;
- 	netdevice_tracker dev_tracker;
- 	struct list_head notifier;
--	int loopback;
--	int recv_own_msgs;
--	int fd_frames;
--	int xl_frames;
-+	unsigned int bound:1;
-+	unsigned int loopback:1;
-+	unsigned int recv_own_msgs:1;
-+	unsigned int fd_frames:1;
-+	unsigned int xl_frames:1;
-+	unsigned int join_filters:1;
- 	struct can_raw_vcid_options raw_vcid_opts;
- 	canid_t tx_vcid_shifted;
- 	canid_t rx_vcid_shifted;
- 	canid_t rx_vcid_mask_shifted;
--	int join_filters;
- 	int count;                 /* number of active filters */
- 	struct can_filter dfilter; /* default/single filter */
- 	struct can_filter *filter; /* pointer to filter(s) */
-@@ -560,8 +560,8 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 	struct can_filter sfilter;         /* single filter */
- 	struct net_device *dev = NULL;
- 	can_err_mask_t err_mask = 0;
--	int fd_frames;
- 	int count = 0;
-+	int flag;
- 	int err = 0;
+-#include <linux/kernel.h>
+-#include <linux/slab.h>
+-#include <linux/netdevice.h>
+-#include <linux/if_arp.h>
+-#include <linux/workqueue.h>
+ #include <linux/can.h>
+ #include <linux/can/can-ml.h>
+ #include <linux/can/dev.h>
+ #include <linux/can/skb.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/if_arp.h>
++#include <linux/kernel.h>
++#include <linux/netdevice.h>
+ #include <linux/of.h>
++#include <linux/slab.h>
++#include <linux/workqueue.h>
  
- 	if (level != SOL_CAN_RAW)
-@@ -682,44 +682,48 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case CAN_RAW_LOOPBACK:
--		if (optlen != sizeof(ro->loopback))
-+		if (optlen != sizeof(flag))
- 			return -EINVAL;
- 
--		if (copy_from_sockptr(&ro->loopback, optval, optlen))
-+		if (copy_from_sockptr(&flag, optval, optlen))
- 			return -EFAULT;
- 
-+		ro->loopback = !!flag;
- 		break;
- 
- 	case CAN_RAW_RECV_OWN_MSGS:
--		if (optlen != sizeof(ro->recv_own_msgs))
-+		if (optlen != sizeof(flag))
- 			return -EINVAL;
- 
--		if (copy_from_sockptr(&ro->recv_own_msgs, optval, optlen))
-+		if (copy_from_sockptr(&flag, optval, optlen))
- 			return -EFAULT;
- 
-+		ro->recv_own_msgs = !!flag;
- 		break;
- 
- 	case CAN_RAW_FD_FRAMES:
--		if (optlen != sizeof(fd_frames))
-+		if (optlen != sizeof(flag))
- 			return -EINVAL;
- 
--		if (copy_from_sockptr(&fd_frames, optval, optlen))
-+		if (copy_from_sockptr(&flag, optval, optlen))
- 			return -EFAULT;
- 
- 		/* Enabling CAN XL includes CAN FD */
--		if (ro->xl_frames && !fd_frames)
-+		if (ro->xl_frames && !flag)
- 			return -EINVAL;
- 
--		ro->fd_frames = fd_frames;
-+		ro->fd_frames = !!flag;
- 		break;
- 
- 	case CAN_RAW_XL_FRAMES:
--		if (optlen != sizeof(ro->xl_frames))
-+		if (optlen != sizeof(flag))
- 			return -EINVAL;
- 
--		if (copy_from_sockptr(&ro->xl_frames, optval, optlen))
-+		if (copy_from_sockptr(&flag, optval, optlen))
- 			return -EFAULT;
- 
-+		ro->xl_frames = !!flag;
-+
- 		/* Enabling CAN XL includes CAN FD */
- 		if (ro->xl_frames)
- 			ro->fd_frames = ro->xl_frames;
-@@ -739,12 +743,13 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		break;
- 
- 	case CAN_RAW_JOIN_FILTERS:
--		if (optlen != sizeof(ro->join_filters))
-+		if (optlen != sizeof(flag))
- 			return -EINVAL;
- 
--		if (copy_from_sockptr(&ro->join_filters, optval, optlen))
-+		if (copy_from_sockptr(&flag, optval, optlen))
- 			return -EFAULT;
- 
-+		ro->join_filters = !!flag;
- 		break;
- 
- 	default:
-@@ -758,6 +763,7 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
- {
- 	struct sock *sk = sock->sk;
- 	struct raw_sock *ro = raw_sk(sk);
-+	int flag;
- 	int len;
- 	void *val;
- 
-@@ -806,25 +812,29 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
- 	case CAN_RAW_LOOPBACK:
- 		if (len > sizeof(int))
- 			len = sizeof(int);
--		val = &ro->loopback;
-+		flag = ro->loopback;
-+		val = &flag;
- 		break;
- 
- 	case CAN_RAW_RECV_OWN_MSGS:
- 		if (len > sizeof(int))
- 			len = sizeof(int);
--		val = &ro->recv_own_msgs;
-+		flag = ro->recv_own_msgs;
-+		val = &flag;
- 		break;
- 
- 	case CAN_RAW_FD_FRAMES:
- 		if (len > sizeof(int))
- 			len = sizeof(int);
--		val = &ro->fd_frames;
-+		flag = ro->fd_frames;
-+		val = &flag;
- 		break;
- 
- 	case CAN_RAW_XL_FRAMES:
- 		if (len > sizeof(int))
- 			len = sizeof(int);
--		val = &ro->xl_frames;
-+		flag = ro->xl_frames;
-+		val = &flag;
- 		break;
- 
- 	case CAN_RAW_XL_VCID_OPTS: {
-@@ -849,7 +859,8 @@ static int raw_getsockopt(struct socket *sock, int level, int optname,
- 	case CAN_RAW_JOIN_FILTERS:
- 		if (len > sizeof(int))
- 			len = sizeof(int);
--		val = &ro->join_filters;
-+		flag = ro->join_filters;
-+		val = &flag;
- 		break;
- 
- 	default:
+ static void can_update_state_error_stats(struct net_device *dev,
+ 					 enum can_state new_state)
 -- 
 2.51.0
 
