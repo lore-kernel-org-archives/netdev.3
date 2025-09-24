@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23787285CAA
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BB22848BA
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 08:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758702111; cv=none; b=Nrxba8Pes4NChx5lnU9hyWnEulg0GDx7B0vM0+PMG3jaQtc1v687P0CPLHTFbm/ApUFR0BbhmQns/CPISzyKIM3tzzH531pGtj0m4eRn+rH+QnHTp3nWBNe/Czz66Opgqw6LrzS93bgcSggePtgUTgak6V1qmdqO8vlnEwgQYJc=
+	t=1758702110; cv=none; b=oezpQpOMYic3r1Cz4IhARgP0hBA0jacAZQFiSCD8t05AiOrpaeuf8o0uVjSt0FAEMUDllirj2c7O7H2jyVoZfYV+dRaAVVMCKlcu8CBH4nnDB6+Kh7brqpyWoJbe9B4xL7euGDz9HW9Hufo+n/+bykjOf7QTlMiorBKeNUKFTac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758702111; c=relaxed/simple;
-	bh=LXBwPtzIPzsiF9cPpC4tq+WoyqwIS/4mHj0clFC6H3g=;
+	s=arc-20240116; t=1758702110; c=relaxed/simple;
+	bh=685rTr9nCcwREiR08zo1S98YrF4qAPSK0xbXtvhANGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWI2yA/+XQ79P2bA/1CqEvnss/7i2qu+OUffqb7ENh8Fr95XFLRWYMtQZAJyCmByxYUNm4gF3vGtHMJqqmpVMQv/YL6AOkhV8LIOjHpzqT2ldr0THKT4Z8tkk8b8gPA35IAyr9ubNpRkLk8FxquQmVslbgACcjeOxBQyHLadaoU=
+	 MIME-Version; b=j8hVavvdjMOMUu5zWiFX+DZkUoV5u98U/uIGDyYPiN8/wwOxbZ9qozDSMPXsnsBV17tjrw/ZSk8FR6Dxze3T4zTBcqPH5cJYpAfvlN/2IhZ2FsQgSHTTvOPooRXd2WvU44n0jL8838rpXX4l6Ut1ofRCTJcl2P87MwjCyiTpqZM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkd-0001EU-Kp; Wed, 24 Sep 2025 10:21:23 +0200
+	id 1v1Kkf-0001GV-7u; Wed, 24 Sep 2025 10:21:25 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1Kkc-000Dvf-2N;
-	Wed, 24 Sep 2025 10:21:22 +0200
+	id 1v1Kkd-000Dwd-1y;
+	Wed, 24 Sep 2025 10:21:23 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 487E547887E;
-	Wed, 24 Sep 2025 08:21:08 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E8311478876;
+	Wed, 24 Sep 2025 08:21:07 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -39,10 +39,11 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 13/48] can: rcar_can: Convert to GENMASK()
-Date: Wed, 24 Sep 2025 10:06:30 +0200
-Message-ID: <20250924082104.595459-14-mkl@pengutronix.de>
+Subject: [PATCH net-next 09/48] can: rcar_can: Consistently use ndev for net_device pointers
+Date: Wed, 24 Sep 2025 10:06:26 +0200
+Message-ID: <20250924082104.595459-10-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250924082104.595459-1-mkl@pengutronix.de>
 References: <20250924082104.595459-1-mkl@pengutronix.de>
@@ -60,48 +61,46 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Use the GENMASK() macro instead of open-coding the same operation.
+Most net_device pointers are named "ndev", but some are called "dev".
+Increase uniformity by always using "ndev".
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/3f947f0f91a8857a2cbce74807e42258e9f209ca.1755857536.git.geert+renesas@glider.be
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patch.msgid.link/aac66fb5b5e1d6787121cf2ec36b551b41d4b32e.1755857536.git.geert+renesas@glider.be
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
  drivers/net/can/rcar/rcar_can.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index c47ee4e41eb6..7b94224bbc9b 100644
+index 87c134bcd48d..5b0b495d127c 100644
 --- a/drivers/net/can/rcar/rcar_can.c
 +++ b/drivers/net/can/rcar/rcar_can.c
-@@ -114,16 +114,16 @@ static const struct can_bittiming_const rcar_can_bittiming_const = {
- };
+@@ -420,9 +420,9 @@ static irqreturn_t rcar_can_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
  
- /* Control Register bits */
--#define RCAR_CAN_CTLR_BOM	(3 << 11) /* Bus-Off Recovery Mode Bits */
-+#define RCAR_CAN_CTLR_BOM	GENMASK(12, 11)	/* Bus-Off Recovery Mode Bits */
- #define RCAR_CAN_CTLR_BOM_ENT	(1 << 11) /* Entry to halt mode */
- 					/* at bus-off entry */
- #define RCAR_CAN_CTLR_SLPM	BIT(10)		/* Sleep Mode */
--#define RCAR_CAN_CTLR_CANM	(3 << 8) /* Operating Mode Select Bit */
-+#define RCAR_CAN_CTLR_CANM	GENMASK(9, 8)	/* Operating Mode Select Bit */
- #define RCAR_CAN_CTLR_CANM_HALT	(1 << 9)
- #define RCAR_CAN_CTLR_CANM_RESET (1 << 8)
- #define RCAR_CAN_CTLR_CANM_FORCE_RESET (3 << 8)
- #define RCAR_CAN_CTLR_MLM	BIT(3)		/* Message Lost Mode Select */
--#define RCAR_CAN_CTLR_IDFM	(3 << 1) /* ID Format Mode Select Bits */
-+#define RCAR_CAN_CTLR_IDFM	GENMASK(2, 1)	/* ID Format Mode Select Bits */
- #define RCAR_CAN_CTLR_IDFM_MIXED (1 << 2) /* Mixed ID mode */
- #define RCAR_CAN_CTLR_MBM	BIT(0)		/* Mailbox Mode select */
+-static void rcar_can_set_bittiming(struct net_device *dev)
++static void rcar_can_set_bittiming(struct net_device *ndev)
+ {
+-	struct rcar_can_priv *priv = netdev_priv(dev);
++	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 	struct can_bittiming *bt = &priv->can.bittiming;
+ 	u32 bcr;
  
-@@ -139,7 +139,7 @@ static const struct can_bittiming_const rcar_can_bittiming_const = {
- #define RCAR_CAN_RFCR_RFE	BIT(0)		/* Receive FIFO Enable */
+@@ -715,10 +715,10 @@ static int rcar_can_do_set_mode(struct net_device *ndev, enum can_mode mode)
+ 	}
+ }
  
- /* Transmit FIFO Control Register bits */
--#define RCAR_CAN_TFCR_TFUST	(7 << 1)	/* Transmit FIFO Unsent Message */
-+#define RCAR_CAN_TFCR_TFUST	GENMASK(3, 1)	/* Transmit FIFO Unsent Message */
- 						/* Number Status Bits */
- #define RCAR_CAN_TFCR_TFUST_SHIFT 1		/* Offset of Transmit FIFO Unsent */
- 						/* Message Number Status Bits */
+-static int rcar_can_get_berr_counter(const struct net_device *dev,
++static int rcar_can_get_berr_counter(const struct net_device *ndev,
+ 				     struct can_berr_counter *bec)
+ {
+-	struct rcar_can_priv *priv = netdev_priv(dev);
++	struct rcar_can_priv *priv = netdev_priv(ndev);
+ 	int err;
+ 
+ 	err = clk_prepare_enable(priv->clk);
 -- 
 2.51.0
 
