@@ -1,106 +1,134 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266973161AC
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 17:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034742F56;
+	Wed, 24 Sep 2025 17:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758736273; cv=none; b=CZUKHDpGJ9Xff4vUrk7PIIVyMuEWbQ/sugUpqb/NZPwi26aBia7DMTigWEK2ely85bwmq7B1EfIDFvyfeP7xgJjL03fMJxyXlQGYfL/mlE6c3oejz+IMr0y4Exc9RTMmpC8fruh3ekQQn0pMXqIUs+OORF+Eu9AgeqZTov693HU=
+	t=1758736362; cv=none; b=uAXgxKuBHUMrtS8pUZcy2G7+PSmC4/rZVOKycKfg43yWaMOF/8ZBucayQ21/FbswF5+B8JBK5jkZnewZGwXOlyGdrhUv6J207G+TyyYrwvqeZntQYiDD1gYWAoYY9HKLZrP10r9V4SpIH8tw+h52v58u311zP8BqVN9A/pSi2zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758736273; c=relaxed/simple;
-	bh=irDF2NGT01tFVGcKv8Aw+yXSxcZKqrHPtgX88XxrmqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhuXg1TammwC23niXRNcp8g71fGzggtRxUqVX20DpDzRSvlPwVQjEMB4k6KumXQrGtefZmlCX3iLGyPkoh3MZ9TDztWdeoAbDSfApJZgT8rFcQ6bceckcQYKXqht1ZW+RFqfpxqfIIa2vTlw4kDWFVG218GnTBmwCZKClVyMTBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgnCzGBT; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758736362; c=relaxed/simple;
+	bh=vAIbmnGn1LqX/ob/sk8mZRl/P2aV8mq0sMHp91VAbSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QnkTTiKfARjuzjtVeQeJlDLLwUXSgqUcNfUiSduBr9Tu+H1KamaxC13Kah+lqdGjvPiEKzWDWKhX0+cEcQttfVvGlZZfrQzYwyxNQ34ABeIE8Z5UcQreqx+9qC4UjfblcYDHzaFiO6Ca6Tek9994CYw4Cc7TdgVcOIzGMzx5Vfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FKuFRR6N; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgnCzGBT"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-57a59124323so40469e87.2
-        for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 10:51:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758736270; x=1759341070; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pquafnPzR8S6cEVo4ZSJasnk4ic+4rsTQNuSE4g5qVk=;
-        b=CgnCzGBTMYiRzSQuPlR/SAm+ecE/5DkRsGCNRhjv5VzXZMroiPF+xV8XhF9/Xt2utA
-         Oy33mz36r66ywcpgpc/+fYQ8wNQV/8beQSDK7ahgsx8/GIMHSA0Xj7DRNMrC/jXiGGPq
-         OOLmGeZW87uw9A20JrLRGU9yffNA3foBoe6AokC6okFGqoegv95dK0s09+oON5kD4nqT
-         j3CxD2WEoDGNEV3dHaEDa9LwHxyVx0aA5+vX3vMGSeD5LnCsOT3gi6jOc3dCiVzzp4v8
-         f1sH0GdTz//2gT7konbV3QrvIBOYmA+b5IS1a8NeZZOdwwn7mVqi/FE+V9OgWukIifkS
-         miMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758736270; x=1759341070;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pquafnPzR8S6cEVo4ZSJasnk4ic+4rsTQNuSE4g5qVk=;
-        b=Ic98Qn13krqeisdzSRCa1Qb1YCV5b7i6Ca0zNcmAZ9FxxSdPexuxD2QM+PWs1cXxWZ
-         1MhHNcOIkL4uX/uRfzJ8C94ELQ/Gjyid221t2yRbaLgrsVZwM3eczpcU+gtZDao+Yz3m
-         vXRDuFU4Gi2si5rKYZkcY9yyEv6vV97al+kUXTXIq3RvoPAf0mMV7Y5DOQC3BHDWpl8o
-         dJj2EDSONLiHKf0XMpOOh4dnacnEJ5YuLghSfMdiMQk707u76ufWgwAcVdRwXdPRb+La
-         QUj8pM7wZ6UgimugjOcsPQ8tqVfIUvYfBD3ukbvDkMwCwm4Nxa9xkYyRdGjNSMQGI0MK
-         nhqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7bkxwysPWppwVapvW2/mqXm3TBA77+PX3RelAuAJ00TdCbx6pfyZILRAqZcLg7SLwPQ1PJgk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhUn2N4rLgddB2v6F8qz2133bzXuIdbxc8AFaGNype5HNBMbsq
-	G1gZ8hMtI9P2jE89b48g6VRWz1SjeIX2S8LDD+kJzhcj11ux7z4GySJ9
-X-Gm-Gg: ASbGncuWnoOTjBhF42KyjgSf8yHfPYE27DpUtUuhCnuql7zSRCtFj3a3UdLFRqLQNkr
-	JZYmR5WZU59d0ZMx/Rt84uGD7AneB1/GtXxRgt5GHlCouVfspjxBIDtQhazWZTTJJKm3iUClfb1
-	x7VIIberQsPDbaOcO8m3emAd0YlnSE3nDPjvd6AK/e7v4FSa760CRC/pMmVjKgkWVRr458MYKim
-	5zIiwXKKuTykf07fwl8ejR8niG3w3BHPeC/hSvgC8LQMXYwkcxxi2j/fbSN7ozP6BgO7zmxywdk
-	tb7D89qLAos1xR+b9uk6GYIPHAotC3qbg6jDJrIWmbrtnBxgOMYkP1rnJrXHIJfPHLtugItkv13
-	zYE635ppRMwiVsu8CNYLIOl2g9gbIheXplAY=
-X-Google-Smtp-Source: AGHT+IFHPEAgajKTiH7Ls3GaEiRPS2Tkaju+/hcYdJg8P1mtwrJiU+kcknlPPPv2gncoIiP6NgFWvg==
-X-Received: by 2002:a05:6512:ac5:b0:55f:6d6e:1e97 with SMTP id 2adb3069b0e04-582d4257f20mr104190e87.52.1758736270018;
-        Wed, 24 Sep 2025 10:51:10 -0700 (PDT)
-Received: from foxbook (bfe191.neoplus.adsl.tpnet.pl. [83.28.42.191])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-578a5f44740sm5227645e87.14.2025.09.24.10.51.08
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Wed, 24 Sep 2025 10:51:09 -0700 (PDT)
-Date: Wed, 24 Sep 2025 19:50:55 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Petko Manolov <petkan@nucleusys.com>
-Cc: I Viswanath <viswanathiyyappan@gmail.com>, kuba@kernel.org,
- edumazet@google.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- pabeni@redhat.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linux.dev, david.hunter.linux@gmail.com,
- syzbot+78cae3f37c62ad092caa@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v3] net: usb: Remove disruptive netif_wake_queue in
- rtl8150_set_multicast
-Message-ID: <20250924195055.15735499.michal.pecio@gmail.com>
-In-Reply-To: <20250924135814.GC5387@cabron.k.g>
-References: <20250924134350.264597-1-viswanathiyyappan@gmail.com>
-	<20250924135814.GC5387@cabron.k.g>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FKuFRR6N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758736360; x=1790272360;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vAIbmnGn1LqX/ob/sk8mZRl/P2aV8mq0sMHp91VAbSg=;
+  b=FKuFRR6NrUC8bEP2k4SL82VwHkcf2RaAt5mhoXm+33HKM3idPVL3ZTeN
+   SD0etIvCwF8syNlCDKbqeOLUhIqpUFeNlS1OhK9cquq8/nyAuavdLy5fS
+   Q1y1eKji0PAwgmF1CumKuuCl9nKP9RzN93jDnzl4WhKp6XyC1tamf11xj
+   zp5nH+eH5w12y/4zRtJdQljDi8XxpFHLpaNJ7j8HrE6MSvU0bPfClyKlU
+   BxN/A3qshGJ3iN6yTSZmNPzGu0odm2XAXEhgA+QwoyuldExq5xt8TSIr1
+   4Jsq7deh5zRMkv0BkCzX0qrNQZgfXT88wZVPOiwmWarY+vODR99yqVx03
+   w==;
+X-CSE-ConnectionGUID: S1MnL4rrSS+JrelokzXjtg==
+X-CSE-MsgGUID: InCriXRxQK+J5ufRptRC/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="61152213"
+X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
+   d="scan'208";a="61152213"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 10:52:39 -0700
+X-CSE-ConnectionGUID: KMxoSUyCSVypizdtyEvZgA==
+X-CSE-MsgGUID: Ly4WvsvwT22ZCFX2IY1alg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,291,1751266800"; 
+   d="scan'208";a="176701831"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa007.fm.intel.com with ESMTP; 24 Sep 2025 10:52:38 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	aleksander.lobakin@intel.com,
+	michal.kubiak@intel.com,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	przemyslaw.kitszel@intel.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	nxne.cnse.osdt.itp.upstreaming@intel.com,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next 0/5][pull request] idpf: add XSk support
+Date: Wed, 24 Sep 2025 10:52:23 -0700
+Message-ID: <20250924175230.1290529-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 24 Sep 2025 16:58:14 +0300, Petko Manolov wrote:
-> netif_[stop|wake]_queue() should have been removed from rtl8150_set_multicast()
-> long time ago, but somehow it has slipped under the radar.  As far as i can tell
-> this is the only change needed.
+Alexander Lobakin says:
 
-Hi,
+Add support for XSk xmit and receive using libeth_xdp.
 
-Glad to see that you are still around.
+This includes adding interfaces to reconfigure/enable/disable only
+a particular set of queues and support for checksum offload XSk Tx
+metadata.
+libeth_xdp's implementation mostly matches the one of ice: batched
+allocations and sending, unrolled descriptor writes etc. But unlike
+other Intel drivers, XSk wakeup is implemented using CSD/IPI instead
+of HW "software interrupt". In lots of different tests, this yielded
+way better perf than SW interrupts, but also, this gives better
+control over which CPU will handle the NAPI loop (SW interrupts are
+a subject to irqbalance and stuff, while CSDs are strictly pinned
+1:1 to the core of the same index).
+Note that the header split is always disabled for XSk queues, as
+for now we see no reasons to have it there.
 
-Do you happen to remember what was the reason for padding all TX frames
-to at least 60 bytes?
+XSk xmit perf is up to 3x comparing to ice. XSk XDP_PASS is also
+faster a bunch as it uses system percpu page_pools, so that the
+only overhead left is memcpy(). The rest is at least comparable.
+---
+IWL: https://lore.kernel.org/intel-wired-lan/20250911162233.1238034-1-aleksander.lobakin@intel.com/
 
-This was apparently added in version "v0.5.0 (2002/03/28)".
+The following are changes since commit dc1dea796b197aba2c3cae25bfef45f4b3ad46fe:
+  tcp: Remove stale locking comment for TFO.
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 200GbE
 
-I'm yet to test the exact effect of this hack (will the HW really send
-frames with trailing garbage?) and what happens if it's removed (maybe
-nothing bad? or was there a HW bug?), but this part caught my attention
-because I think nowadays some people could consider it "information
-leak" ;) And it looks like a waste of bandwidth at least.
+Alexander Lobakin (3):
+  idpf: implement XSk xmit
+  idpf: implement Rx path for AF_XDP
+  idpf: enable XSk features and ndo_xsk_wakeup
 
-Regards,
-Michal
+Michal Kubiak (2):
+  idpf: add virtchnl functions to manage selected queues
+  idpf: add XSk pool initialization
+
+ drivers/net/ethernet/intel/idpf/Makefile      |    1 +
+ drivers/net/ethernet/intel/idpf/idpf.h        |    7 +
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    |    8 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |   10 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  451 ++++++-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   72 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 1160 +++++++++++------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   32 +-
+ drivers/net/ethernet/intel/idpf/xdp.c         |   44 +-
+ drivers/net/ethernet/intel/idpf/xdp.h         |    3 +
+ drivers/net/ethernet/intel/idpf/xsk.c         |  633 +++++++++
+ drivers/net/ethernet/intel/idpf/xsk.h         |   33 +
+ 12 files changed, 1977 insertions(+), 477 deletions(-)
+ create mode 100644 drivers/net/ethernet/intel/idpf/xsk.c
+ create mode 100644 drivers/net/ethernet/intel/idpf/xsk.h
+
+-- 
+2.47.1
+
