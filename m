@@ -1,30 +1,32 @@
 Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2510306B24
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 12:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CCD307486
+	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 12:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758717655; cv=none; b=nxvgGa7O+qXCM6qC9TZMu4kVltlyLwlVtIU/GoaGIARlD2iAPKRR5yzKEi7laFjQ1KJ3Y8oLAwaxMRlPCleMqxovcyzuvAhIxHNQzMZjKYrMjNfjQmBV1phRLovyOubQVK7IPYUp3SZIn9PJMeMAj1uwbxqO6AxljQ7vQbBXcx0=
+	t=1758717656; cv=none; b=Cgdodj8hQ+vizTsepBClj4VQV61n0FtsWo4S/JkPEnukPyLggDvlj+K1362Cs5iBNHH5FKRw+ocWPP1wQwSveu2Rgjg8cLAV75t+kRF9uEjICLozbIpRQhmIfEpQiaMRNQ2LJVQB9Wskl5NnjgENDFcBU7M14CZ3BZIVm9gqDdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758717655; c=relaxed/simple;
-	bh=KL1E8AHqn5C3mdmhcGrgCE3T2smnT7CodnJvHoVbP1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=otWojEg1MjGjeWvy1ZKIyqUxhxnjOlljzMv/jiX0W2ITXm3S84V9fpaiwoT7YTXvrSAiS6GcYxdqw3iT1QS7uv9K60RkK4G2JTzGeKRfe5JxbJoA/E0C/0GJB8OYQFNisKoI4nbJgb9buw/KiijwlATcPFPcZlOyKVWbU9iqWsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fVOzhOMG; arc=none smtp.client-ip=95.215.58.179
+	s=arc-20240116; t=1758717656; c=relaxed/simple;
+	bh=xK6ZNQiO8q9I6WhUYdmt8kq9K2Rwlm20XmybUxru0hQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LOifLMbwW2CrRn1xGKeOT4ZseiLcEf91hEOTx3NcHLt50Q9aRP449XrmrF0THgsRFkL206Ps4EDnFatnkxhcPUfpgtsQS1akFR763c8F4PJYCASPBXF1Cqry1TRlIq3lkuwD9BSHlwL+zrlJSzo5rzsIi3nLjl05jUZmNcPHfsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iHuLZ2Ql; arc=none smtp.client-ip=95.215.58.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fVOzhOMG"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iHuLZ2Ql"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1758717650;
+	t=1758717652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=10nL7bXwomAQHLnTpYVbxfBSNFJlIBNfZqpDvPIqdzU=;
-	b=fVOzhOMGJdle8yQ8r2sRlmImdLkDlfB2aw1iys0FfvCjmJnyhaBYDl7plUj+o+kvlLzl+l
-	iQh0/2yPSvsVTo2Mi5k9UNjFHRyl/C4h7wy37TUnUG0eEILUrJ7Q0nRrgUsYSulsJOlosS
-	lqSZB5UqvYNPfhTeCvB5GgrHqkU/5Zk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/TpAPgWJejoNMptW7LvqfFt/hMK/gaHXEvGCOvAL75o=;
+	b=iHuLZ2QlUkU788iumqlehwAt972NP8xjYQLZ8lA/EDYfQ0o3RwrtSqBRXcPkPil+ox8wBN
+	KbfF1lOkzMZaCmmukPp7ROtwiSs17xfS2TWAgkoQOE7IdM5sshEi5F+OIEjMRFrIDL2/Vq
+	FvIcmtyrCHncV8fOOXGdYFlKOs+96/M=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Jakub Kicinski <kuba@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -39,10 +41,14 @@ To: Jakub Kicinski <kuba@kernel.org>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v6 0/5] add FEC bins histogram report via ethtool
-Date: Wed, 24 Sep 2025 12:40:32 +0000
-Message-ID: <20250924124037.1508846-1-vadim.fedorenko@linux.dev>
+	netdev@vger.kernel.org,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>
+Subject: [PATCH net-next v6 2/5] net/mlx5e: Don't query FEC statistics when FEC is disabled
+Date: Wed, 24 Sep 2025 12:40:34 +0000
+Message-ID: <20250924124037.1508846-3-vadim.fedorenko@linux.dev>
+In-Reply-To: <20250924124037.1508846-1-vadim.fedorenko@linux.dev>
+References: <20250924124037.1508846-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,90 +58,59 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-IEEE 802.3ck-2022 defines counters for FEC bins and 802.3df-2024
-clarifies it a bit further. Implement reporting interface through as
-addition to FEC stats available in ethtool. NetDevSim driver has simple
-implementation as an example while mlx5 has much more complex solution.
+From: Carolina Jubran <cjubran@nvidia.com>
 
-The example query is the same as usual FEC statistics while the answer
-is a bit more verbose:
+Update mlx5e_stats_fec_get() to check the active FEC mode and skip
+statistics collection when FEC is disabled.
 
-[vmuser@archvm9 linux]$ ./tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/ethtool.yaml --do fec-get --json '{"header":{"dev-index": 10, "flags": 4}}'
-{'auto': 0,
- 'header': {'dev-index': 10, 'dev-name': 'eni10np1'},
- 'modes': {'bits': {}, 'nomask': True, 'size': 121},
- 'stats': {'corr-bits': [],
-           'corrected': [123],
-           'hist': [{'bin-high': 0,
-                     'bin-low': 0,
-                     'bin-val': 445,
-                     'bin-val-per-lane': [125, 120, 100, 100]},
-                    {'bin-high': 3, 'bin-low': 1, 'bin-val': 12},
-                    {'bin-high': 7,
-                     'bin-low': 4,
-                     'bin-val': 2,
-                     'bin-val-per-lane': [2, 0, 0, 0]}],
-           'uncorr': [4]}}
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_stats.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-v5 -> v6:
-* adjust yaml spec to have padding field within fec-hist namespace
-* mlx5: adjust max histogram entries check to match the size of array of
-  mapped registers
-v4 -> v5:
-* fix selftests error path
-v3 -> v4:
-* update spec to avoid using underscores
-* make core accumulate per-lane errors into bin error counter
-* adjust wording in Documentation
-* improve FEC type check in mlx5
-* add selftest to do sanity check of reported histogram
-* partially carry-over Rb tags from Aleksandr because of logical changes
-v3 Link - https://lore.kernel.org/netdev/20250916191257.13343-1-vadim.fedorenko@linux.dev/
-v2 -> v3:
-* fix yaml spec to use binary array for histogram per-lane values
-* fix spelling
-v1 -> v2:
-* fix memset size of FEC histogram bins in mlx5
-* adjust fbnic driver FEC stats callback
-
-Links to RFC discussions:
-v1 - https://lore.kernel.org/netdev/20250729102354.771859-1-vadfed@meta.com/
-v2 - https://lore.kernel.org/netdev/20250731231019.1809172-1-vadfed@meta.com/
-v3 - https://lore.kernel.org/netdev/20250802063024.2423022-1-vadfed@meta.com/
-v4 - https://lore.kernel.org/netdev/20250807155924.2272507-1-vadfed@meta.com/
-v5 - https://lore.kernel.org/netdev/20250815132729.2251597-1-vadfed@meta.com/
-
-Carolina Jubran (3):
-  net/mlx5e: Don't query FEC statistics when FEC is disabled
-  net/mlx5e: Add logic to read RS-FEC histogram bin ranges from PPHCR
-  net/mlx5e: Report RS-FEC histogram statistics via ethtool
-
-Vadim Fedorenko (2):
-  ethtool: add FEC bins histogram report
-  selftests: net-drv: stats: sanity check FEC histogram
-
- Documentation/netlink/specs/ethtool.yaml      |  29 ++++
- Documentation/networking/ethtool-netlink.rst  |   5 +
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |   3 +-
- .../ethernet/fungible/funeth/funeth_ethtool.c |   3 +-
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    |   3 +-
- drivers/net/ethernet/intel/ice/ice_ethtool.c  |   4 +-
- .../marvell/octeontx2/nic/otx2_ethtool.c      |   3 +-
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |   1 +
- .../ethernet/mellanox/mlx5/core/en_ethtool.c  |   5 +-
- .../net/ethernet/mellanox/mlx5/core/en_main.c |   8 ++
- .../ethernet/mellanox/mlx5/core/en_stats.c    | 127 +++++++++++++++++-
- .../ethernet/mellanox/mlx5/core/en_stats.h    |   3 +-
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |   3 +-
- drivers/net/ethernet/sfc/ethtool.c            |   3 +-
- drivers/net/ethernet/sfc/siena/ethtool.c      |   3 +-
- drivers/net/netdevsim/ethtool.c               |  25 +++-
- include/linux/ethtool.h                       |  25 +++-
- .../uapi/linux/ethtool_netlink_generated.h    |  12 ++
- net/ethtool/fec.c                             |  75 ++++++++++-
- tools/testing/selftests/drivers/net/stats.py  |  35 ++++-
- 20 files changed, 351 insertions(+), 24 deletions(-)
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+index 87536f158d07..aae0022e8736 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+@@ -1446,16 +1446,13 @@ static void fec_set_rs_stats(struct ethtool_fec_stats *fec_stats, u32 *ppcnt)
+ }
+ 
+ static void fec_set_block_stats(struct mlx5e_priv *priv,
++				int mode,
+ 				struct ethtool_fec_stats *fec_stats)
+ {
+ 	struct mlx5_core_dev *mdev = priv->mdev;
+ 	u32 out[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
+ 	u32 in[MLX5_ST_SZ_DW(ppcnt_reg)] = {};
+ 	int sz = MLX5_ST_SZ_BYTES(ppcnt_reg);
+-	int mode = fec_active_mode(mdev);
+-
+-	if (mode == MLX5E_FEC_NOFEC)
+-		return;
+ 
+ 	MLX5_SET(ppcnt_reg, in, local_port, 1);
+ 	MLX5_SET(ppcnt_reg, in, grp, MLX5_PHYSICAL_LAYER_COUNTERS_GROUP);
+@@ -1496,11 +1493,14 @@ static void fec_set_corrected_bits_total(struct mlx5e_priv *priv,
+ void mlx5e_stats_fec_get(struct mlx5e_priv *priv,
+ 			 struct ethtool_fec_stats *fec_stats)
+ {
+-	if (!MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
++	int mode = fec_active_mode(priv->mdev);
++
++	if (mode == MLX5E_FEC_NOFEC ||
++	    !MLX5_CAP_PCAM_FEATURE(priv->mdev, ppcnt_statistical_group))
+ 		return;
+ 
+ 	fec_set_corrected_bits_total(priv, fec_stats);
+-	fec_set_block_stats(priv, fec_stats);
++	fec_set_block_stats(priv, mode, fec_stats);
+ }
+ 
+ #define PPORT_ETH_EXT_OFF(c) \
 -- 
 2.47.3
 
