@@ -1,162 +1,90 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F408A1DB95E
-	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 01:12:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4C617C21B;
+	Wed, 24 Sep 2025 01:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758676332; cv=none; b=K9bWxVli2OxFujqIhNKeyakW6ZhSkZGM8Qv+3ETm/OsBK8L4RrUvCUYAD1ZDyEmWB2POIwWTbU92w089IugsSuV0AmPwAsf1LV6wdqAIwy1fO3nX1+NtudRyg1aj4/n7eeGLQd/r5BHUqlFUeD5x0dvGiKaC92ZnMzkNagSF+pE=
+	t=1758676601; cv=none; b=i2h52M6e+ZLQL2PD+r9b+jYcmNaEsgHHYaxTSjZJuMsESXn2z4qMUXK0VVEu00tFSzoxk7peTHxVc0h6dRvSSTcXXJw7ggJCqpPGn0mJ2g52/tm8rHUtmEvKfwoA3EjNyEPdOxnbMkftR9bz7XhWNfHOQ+UORrcGvMbpoDSsQzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758676332; c=relaxed/simple;
-	bh=DKLy9xSYdH2s+P4CanyQdvSo0zsUWoF7Fj9I7KFYkj0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HB5BzCsHgzyIpjxX+2lNLa49n41btepGLbkktdCGJV4ZMbOxa1b0JA3ey0nzL2pXcbTZJPJGkz9pfKlyKsrqugTMrGmtY0hihn4Fg4ZpOJzYOvG6Mie3a7RCLfSTvrlejkR1PkVYcj5f/VCd5gvFAAaGjN3QbGQKF6tEbi97Z14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KJrgGNt7; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758676601; c=relaxed/simple;
+	bh=8ePn7JLIUJhkEG1cge46lu2Tibuofo60ASXiwv4beHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VXeMvYd1q33W6Z/N5+Qski7QfAeevyvbtlHidN40gR6uPu670eQK7VqZ1SeiCSWjb+NgPKj7l/pnaklZOdaUq5bnKEPJNkstxAmldt3vb1MYZ8MIpaMTYkR0b4Dgg1HcTtBpTmDZH1RiN4OAdjLYr1kv4N3J5eM39SeITXeCrNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pgUSeSfy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KJrgGNt7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758676330;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e/Z9ru3yZuHgFLEyjMuFL1AU8zZki8asTUSFf8CWbuM=;
-	b=KJrgGNt7iMR7CHV28FnI+x1eFg4VgMaV9UTe435v5esqCu3PoF6ET5UP4Xx60JGXGG295i
-	pwYbu3Dii+tP5WFsr7tDFdU0eBVN/6C+1GKogt/xoa3UZpBrQ7G6kameKYHSBWtg7hrwvA
-	Jd16bFmlRbS5KaE80q3Mmi7iGg8c22I=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-ol5sZbTIOgKI37lQO8RQxA-1; Tue, 23 Sep 2025 21:12:08 -0400
-X-MC-Unique: ol5sZbTIOgKI37lQO8RQxA-1
-X-Mimecast-MFC-AGG-ID: ol5sZbTIOgKI37lQO8RQxA_1758676326
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-32ee62ed6beso8417225a91.2
-        for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 18:12:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758676326; x=1759281126;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e/Z9ru3yZuHgFLEyjMuFL1AU8zZki8asTUSFf8CWbuM=;
-        b=SV9x1/0NzhUZfj4edt2h7luAY0yewtc3QJA3W9xE67xIYLpmLsreNK7EUOkX7zk95d
-         NIA2Whw8CeRo8Sd/4iyrLN3EKQ+w8nkYXqD5J700omZ+XzYNjPzcM3DB7IcKsOr44p55
-         Wqmtx2udFm7DzqQgw5BcJ0y+nZ/YM0GBqYQ+mSwu26SUgRgM3btNjMC9SSnaHcVJ2PX8
-         YL5ckk1xlYVXTy1Adh2aOSHS+pB0SneLDgj74c1F5/QLVVPSIAn76Ty8iXCmMaDzCLE9
-         3/JXVAiRWKOr7C0O4wdQV9la7JoPcGoq1409wvc8a2IKy3n4BwH0oxPvtdaGmsz3h4vT
-         pHSg==
-X-Gm-Message-State: AOJu0Ywi/IJSF7SQtf9jgmRuq35utcKuVGnw7JHIwIB6s8SB/kfMqlYJ
-	ILK+KbJ7uBZzHBDDmlbb8EiomJMOt+Nk2wObZ6a/hfw4ZVapox6cwdi1htZfXKBvkRSI6GKgfEd
-	kJMBZT4SQJdfHa1F41VbaAgfqUIokmrJnYnu4E0KwbJPQ+8KN+E5Bs035H8sH6jk0rYTA3Hfz9M
-	V4bLS8wxIlnVMIPeBkWzoMFK8r6R39TOhW
-X-Gm-Gg: ASbGncsks1630DC+Jg2SeBULySJUfsxnPc/V9nw8/makxie/4oa0RP6BJ9dkub3fr0m
-	to0zvLM3LVZjvz0gr1KhJy5uaS8Md1hjvGM/HNwb9smYYLFv0Ybb72J1mXNSdZ/eLuFF1yoCcOA
-	7O3XciiaJjktE1l1O1og==
-X-Received: by 2002:a17:90b:4b8a:b0:32e:ca03:3d6 with SMTP id 98e67ed59e1d1-332a9a02e13mr4771505a91.36.1758676325633;
-        Tue, 23 Sep 2025 18:12:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzxYjJRjaWhGevKoPRjS74qdeEP5KEee76nkTOV7sNOGR794WkZrfNsw1UREBYwZf/IPytkduQWK66MGn7H/M=
-X-Received: by 2002:a17:90b:4b8a:b0:32e:ca03:3d6 with SMTP id
- 98e67ed59e1d1-332a9a02e13mr4771481a91.36.1758676325193; Tue, 23 Sep 2025
- 18:12:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pgUSeSfy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20FFAC4CEF5;
+	Wed, 24 Sep 2025 01:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758676601;
+	bh=8ePn7JLIUJhkEG1cge46lu2Tibuofo60ASXiwv4beHc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pgUSeSfy4qTNW1wzGNQ7A1uIyj4oHbxQMPINBfaiGF7/SAWYKc0yBGSInBGo8JYYW
+	 orpOLNMItg3EenItCqQOiYmFzkk68nvMvY6a9bMP+qwIOGdjRlmX8QGPbikVHCHyb0
+	 yBhmhgmIFNqxCC6VXHRS7AbgtAgr3A71i6z0cTaoa1wRLjuHHhwcrySVyen6ZFf2gM
+	 jb6kRLTYmr5uUJ0XVrM4NLRS8Lx/bkelQma+ZtDqspkvtQB360ic8yE9DztK94obfL
+	 LMUPu4nEyltMFjId7HOmYQ5yENY8IUbAlWDDnZ8+aPigzyMzlYDUdiWHhBQ7F4vNFT
+	 66anFEe6NvLqw==
+Date: Tue, 23 Sep 2025 18:16:39 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, gur.stavi@huawei.com,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, danishanwar@ti.com, lee@trager.us,
+ gongfan1@huawei.com, lorenzo@kernel.org, geert+renesas@glider.be,
+ Parthiban.Veerasooran@microchip.com, lukas.bulwahn@redhat.com,
+ alexanderduyck@fb.com, richardcochran@gmail.com, kees@kernel.org,
+ gustavoars@kernel.org, rdunlap@infradead.org, vadim.fedorenko@linux.dev,
+ joerg@jo-so.de, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v13 5/5] net: rnpgbe: Add register_netdev
+Message-ID: <20250923181639.6755cca4@kernel.org>
+In-Reply-To: <20250922014111.225155-6-dong100@mucse.com>
+References: <20250922014111.225155-1-dong100@mucse.com>
+	<20250922014111.225155-6-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250923202258.2738717-1-kshankar@marvell.com>
- <20250923202258.2738717-2-kshankar@marvell.com> <CACGkMEvUMq7xgOndvWUYU=BZL=ZZD1q_LRy=5YFL7k80cYBRRg@mail.gmail.com>
-In-Reply-To: <CACGkMEvUMq7xgOndvWUYU=BZL=ZZD1q_LRy=5YFL7k80cYBRRg@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 24 Sep 2025 09:11:53 +0800
-X-Gm-Features: AS18NWAFTXygnvQR_4lKDl_YKIGpGbmtcj7ZwTo_3ajzvVYk4XQXOBLzbMHHLNU
-Message-ID: <CACGkMEskxO4JKXZZiDSi6GgrTg1bRSteaYAAJe1wJ6=Lp5byeQ@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 1/3] net: implement virtio helper to handle
- outer nw offset
-To: Kommula Shiva Shankar <kshankar@marvell.com>
-Cc: netdev@vger.kernel.org, mst@redhat.com, pabeni@redhat.com, 
-	xuanzhuo@linux.alibaba.com, virtualization@lists.linux.dev, parav@nvidia.com, 
-	jerinj@marvell.com, ndabilpuram@marvell.com, sburla@marvell.com, 
-	schalla@marvell.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 24, 2025 at 8:51=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Wed, Sep 24, 2025 at 4:23=E2=80=AFAM Kommula Shiva Shankar
-> <kshankar@marvell.com> wrote:
-> >
-> > virtio specification introduced support for outer network
-> > header offset broadcast.
-> >
-> > This patch implements the needed defines and virtio header
-> > parsing capabilities.
-> >
-> > Signed-off-by: Kommula Shiva Shankar <kshankar@marvell.com>
-> > ---
-> >  include/linux/virtio_net.h      | 40 +++++++++++++++++++++++++++++++++
-> >  include/uapi/linux/virtio_net.h |  8 +++++++
-> >  2 files changed, 48 insertions(+)
-> >
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index 20e0584db1dd..e6153e9106d3 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
-> > @@ -374,6 +374,46 @@ static inline int virtio_net_handle_csum_offload(s=
-truct sk_buff *skb,
-> >         return 0;
-> >  }
-> >
-> > +static inline int
-> > +virtio_net_out_net_header_to_skb(struct sk_buff *skb,
-> > +                                struct virtio_net_hdr_v1_hash_tunnel_o=
-ut_net_hdr *vhdr,
-> > +                                bool out_net_hdr_negotiated,
-> > +                                bool little_endian)
-> > +{
-> > +       unsigned int out_net_hdr_off;
-> > +
-> > +       if (!out_net_hdr_negotiated)
-> > +               return 0;
-> > +
-> > +       if (vhdr->outer_nh_offset) {
-> > +               out_net_hdr_off =3D __virtio16_to_cpu(little_endian, vh=
-dr->outer_nh_offset);
-> > +               skb_set_network_header(skb, out_net_hdr_off);
-> > +       }
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static inline int
-> > +virtio_net_out_net_header_from_skb(const struct sk_buff *skb,
-> > +                                  struct virtio_net_hdr_v1_hash_tunnel=
-_out_net_hdr *vhdr,
-> > +                                  bool out_net_hdr_negotiated,
-> > +                                  bool little_endian)
-> > +{
-> > +       unsigned int out_net_hdr_off;
-> > +
-> > +       if (!out_net_hdr_negotiated) {
-> > +               vhdr->outer_nh_offset =3D 0;
-> > +               return 0;
-> > +       }
-> > +
-> > +       out_net_hdr_off =3D skb_network_offset(skb);
-> > +       if (out_net_hdr_off && skb->protocol =3D=3D htons(ETH_P_IP))
-> > +               vhdr->outer_nh_offset =3D __cpu_to_virtio16(little_endi=
-an,
-> > +                                                         out_net_hdr_o=
-ff);
->
-> I'd expect this to work for IPV6 as well.
+On Mon, 22 Sep 2025 09:41:11 +0800 Dong Yibo wrote:
+> +static const struct mucse_hw_operations rnpgbe_hw_ops = {
+> +	.reset_hw = rnpgbe_reset,
+> +	.get_perm_mac = rnpgbe_get_permanent_mac,
+> +	.mbx_send_notify = rnpgbe_mbx_send_notify,
 
-Or why it only works for IP/IPV6.
+Please don't add abstraction layers, you only have one set of ops right
+now call them directly. The abstractions layers make the code harder to
+follow.
 
->
-> Thanks
+> +static netdev_tx_t rnpgbe_xmit_frame(struct sk_buff *skb,
+> +				     struct net_device *netdev)
+> +{
+> +	dev_kfree_skb_any(skb);
+> +	netdev->stats.tx_dropped++;
 
-Thanks
+Please add your own stats, the stats in struct net_device
+are deprecated and should not be used by new drivers.
 
+>  	err = rnpgbe_init_hw(hw, board_type);
+>  	if (err) {
+>  		dev_err(&pdev->dev, "Init hw err %d\n", err);
+>  		goto err_free_net;
+>  	}
+> +	/* Step 1: Send power-up notification to firmware (no response expected)
+> +	 * This informs firmware to initialize hardware power state, but
+> +	 * firmware only acknowledges receipt without returning data. Must be
+> +	 * done before synchronization as firmware may be in low-power idle
+> +	 * state initially.
+> +	 */
+> +	err = hw->ops->mbx_send_notify(hw, true, mucse_fw_powerup);
+> +	if (err) {
+
+Don't you have to power it down on errors later in this function?
+-- 
+pw-bot: cr
