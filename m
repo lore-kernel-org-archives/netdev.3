@@ -1,63 +1,65 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F79D17BA6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB977218821
 	for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 02:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758679604; cv=none; b=Yq6BkLfJw/HBCj/aBDt01fgjbXuNUGD18LmEV3+CHKwJTZIXEUAcaVnijukZFG4VEEWXqWMXZkIElon2DKD6FmlGFt52FcOMn5G+Rg/3Qyy6YJcaUpBvLHrvfapoTmI1GQwwfIdJRJoY1E51xItOCOI5u1ijg9fHIJMaSrVWyOI=
+	t=1758679605; cv=none; b=BUPgzv1pEl4z8217dtFon9yf07Q+to+1lo9p2ytZigvESGt1dZI+gKM3Ab11T0RLOWeLDG9uajsw06EVMJaYY5UX2LugcRF5w9fJrgIqbbDYdMkj95xgpPXOJJuaCe6u6R6leUPNSKYpPxA64svwyUOemS+CfshSJuvRC6uwN2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758679604; c=relaxed/simple;
-	bh=zKlZGWoOmkq/pBFpjZDZhK0vM9ul0Y8n1dGY0HTd8EM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bpP3x1Ew1eliv7Zo1snhli47g/pFO48K3KaFTRuVhubXvxB7K5QlYHxDSdrDr29Y9U14KCrFBwHF+MUTDoWNrKBIAjxp8RmFbCaWYLHP1OIypRl0BFAx6IE7bMHHr2vGc8J+8dylMYdToGaDw86+ALxemEjekLBF1hg7pXQTIQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H7NFvb7/; arc=none smtp.client-ip=209.85.216.54
+	s=arc-20240116; t=1758679605; c=relaxed/simple;
+	bh=gaa3l1P1fPt9cEbyVgFnFgXGJaiAtmNJHG4wcmrJDkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h5Q4gJ52M+aVGgJZhrlRhWG/tCCHTC6OTerkfoIlrjwWLulW8P2kP6UiPW+vjP6kA91ccNnUGHrobl7SVel3gvkpLSBSBFwbvYpi/J3v5+v2UBPKwTYUMUjwUD3NcD3HHIUfx41ww1kv+m+pquZzmj8AAMpN4z3Gnd1KfM/QX7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nLygZeOK; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H7NFvb7/"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3306b83ebdaso5435795a91.3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nLygZeOK"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7704f3c46ceso5882749b3a.2
         for <netdev@vger.kernel.org>; Tue, 23 Sep 2025 19:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758679602; x=1759284402; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TTpEMsMEIs3fjA8nsBcCzWer07tvcAO2S5Gxt6Xbj7g=;
-        b=H7NFvb7/twYqyOncBE0BVVPwxw6fjLRta8iNaSk9Hm+QyB5LR8O8TLPwzPYa4Wgn1A
-         PgActhJGw1mgTHUeDlNiGtRYAZx7tiGnEl1F8VMhCbNrzrapXFuqkrQ6Fd1ycM2XXmM7
-         JAGSv9DK0vQYo6eTzTZ69iadX6qmgSRqprb5rFAPRs9XiG3l6W6fGE7hUeSWTg/bqHWq
-         5BvYH0Z7kFqMjv6XWvuCqcU/HSjqPvjxbG9bG8MkvQ0XoK6+sFDY7XbiRx6IrNGu/HjW
-         NJ9DtgaMmZjagePBwh9zzk1JRxPqwmqorNRd5Sw+QdBxeCz5Iv/s6MSBLRv12xzNrOgN
-         JKkQ==
+        d=gmail.com; s=20230601; t=1758679603; x=1759284403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fOz5HySBOFVhMskRvxrL+nmIrbz9l42R6X2LmKA1CXk=;
+        b=nLygZeOKsXzyNuc4lu8R8Z82vDCeU46USixky7KVjVHCoHU9dbHpw86dvx0QKXs4nJ
+         vJve6rPY4LLqYma5QkUlV1n/EeUP2j0tHs/5n4eTOKrY1//z08on+1laoFRf4aKrdzpJ
+         dCJIiaS4AFhoWY7rH7kPZ4TecvKYqo93riMNE/ZNZDBCel9v2uZgoy2QWFxs/pmfmOjP
+         V5ewFHBJ/VK3+7MfF17FlPDaiaPqKg5sYB0RyUTfwmxH/zqALX//zps0i9bmPHCphpK4
+         S8pWNBnTXk43aVVrIYFQ+YzRRHMGuVsAwKosQZXIHNNDL4Q3r1gjASfPP77lNSclkubC
+         uNBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758679602; x=1759284402;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TTpEMsMEIs3fjA8nsBcCzWer07tvcAO2S5Gxt6Xbj7g=;
-        b=grWwUlV1AOD9rNfecqSeqly6fC13ak9dV+ynO49YqOPiEz5L7Ollocp53Prq5Jmexg
-         KahynhkQ7ynOHwpLzyFstetObIfRJ+eYY4gkltjxv0n29dX4YQZGSagoqeCzHWT7/98W
-         8dfRChicE5x+361VuXFyyFmWdZN3pvUTxy5b71FhYjw7aT2r/+Or6kx6zmsgFkDfUqaC
-         pcOggrjVbQegOwyfq1bH9r7ZfNT1AXz4liLs36NUPLoyae7ErBG7dl/B8HWWCUX7+yde
-         rEMc27rZrvEBH3PAF04UbW+Obc9CKNLM8K6i9ZHPOJl9J09td7l5JMjQ83h6Cs5PmyFD
-         tfpg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1uBnRQ+2TgOlbEF06YyVs2qicMbAXTJ5Pu3v8YrzOuw9j4c5BmtVFC9UEA2UdSwvp4oozgVk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKatSycWRNXCTvIGD/2Uu//HvsGrVICGiZmJM2zFeWn/cwYNP4
-	sXZlyWnjeR6GdfDoAmYYxkgBLbeX3y7Q+MDmL9GsxjxGV40+Cnxr6WYG
-X-Gm-Gg: ASbGnctGFVIPlUPrSmOaLIE+nj+dG6FsmgJ+pELl9MMNG27MSicfTdw1zBH/2PnTHsu
-	WRNMf2UshOShpMbrGDrkGqIxTX4jU6pgvNBUHpfo1rQoBqi6o/+rAIZLm0SCVlEfEfjRhzwlRBv
-	oKoosn0MaTNukVJnLA8z5g9ZeXWAcH85atrHhMQ7kNHn6UNzq2q9CBBpX06SxK+gR8bGPZJfHEf
-	63Pf9r3cOXcHqPTX2/0Aa/vZAATDJQLBVQ025rdglKeRwhTKXDjWSuFPEj12NeRtR7c8JgZ8PQG
-	thV1BND86cg1hTiTXtjTOnjQCXE0FoV/5CoOoZXyPZVqBcfvFCIDwS0fyJLwjykoYHoX1wYR5B0
-	JT5irMaPXEZoWoPfsSccLKw==
-X-Google-Smtp-Source: AGHT+IF+tyYKZIXuXEet4Qn27ecJRbXmLmmKIAg+V0vsKXZxS07Fv8voBpsRFqNeRMVZK0GpM0AM8w==
-X-Received: by 2002:a17:90b:2e8d:b0:32e:d015:777b with SMTP id 98e67ed59e1d1-332a96fd52fmr5444528a91.18.1758679602327;
+        d=1e100.net; s=20230601; t=1758679603; x=1759284403;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fOz5HySBOFVhMskRvxrL+nmIrbz9l42R6X2LmKA1CXk=;
+        b=O6PzWbtN70czPMoDgVzw32hq4mLKNNrE4yMlpDQooKnS7DiFkLEo81vlcetW8MOvci
+         RYnxJrDVVzpnBmoxEWNzfM3l8oLhLyHzXKWhhHnOMl2y2bs8+eJBD1oEf5arQQnse+VM
+         bn2G01/RRYuxYjqcCJgN+64ebmKC7Es/hhLR0Iuv9agzFN7tJkKtUfZp+2ayAX95C+TI
+         1eo6GkYj699qtKKUGz2QI1AG0v1V5K5A0FzUu75VmJbF1O3Kzbc5Nnq0TJDaBpU7P/vA
+         1Y4wW188YRRppCgTEaPWl6qPdeYrWKCI0CBACTzcXzwRhgbQqEW1kqZRv/5C1HBSywKt
+         fDTg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0RIu5z43kmad/oVPhbDt0f1CzlrAtdijkSx9YFp/DMu2UiY2x2vMydJX8D8ZNE+WyzCkw9BY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCEy8RUsDx/TJsyVfxFCiJEQwKxWHlLNibVw64t1CzKBUo73q6
+	E1+8QCzSaoL7QUJjSiRrVnLouu6ElZCRGgA6lsIvEyvzYA/KYwFMj3B3
+X-Gm-Gg: ASbGncvOB6S4IUmgIQ8irnZILaVMpP+bJXdTmtL+lFplKhwOIyuhveNYQOR11L+Q+ki
+	vl2L4FrTMgVPi1Tlm9+r3/XKs4tLezbWJZDdp3cpUmgIfwAa/GJQ+g05eXUIIWqKsxeSjwWC7so
+	x6a4xDmlBAevIR8i501OS0hH5q0+R2bTF3QpCGWvg+qAYScuWiZ+5myWqqfxMfqjpnSC7b/d44i
+	Cq7KILQGuqrDQ9TF7c+dgi5Iha8wzfIfbxxyam+io+GFuFN1i689p0Atyv9MRiURJtgYCPi3QQv
+	eGUQ1o9+0LYWoCxc3rqiOyf3ht7NkeD+ZyToEXXysX/1e4z4hYQgNVxSAhOkVh5YusvYbYTsyDr
+	xg3SNUWl11d2/l4UVIqDZKODlF7MK59vw
+X-Google-Smtp-Source: AGHT+IEuUYkcZvVzgDknNU04kmG575LjqdFet88ax1daZh+11vPVjnvVKiaeqe4k8m0h/jJ+ROyOEQ==
+X-Received: by 2002:a05:6a00:987:b0:77c:ddd1:749e with SMTP id d2e1a72fcca58-77f53a08fd9mr4910651b3a.19.1758679602841;
         Tue, 23 Sep 2025 19:06:42 -0700 (PDT)
 Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3341bd90327sm542825a91.3.2025.09.23.19.06.41
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77f286119f4sm8955740b3a.74.2025.09.23.19.06.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 23 Sep 2025 19:06:41 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 57CDA4206928; Wed, 24 Sep 2025 09:06:39 +0700 (WIB)
+	id AEE7C41A2EE2; Wed, 24 Sep 2025 09:06:39 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -71,49 +73,47 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Kees Cook <kees@kernel.org>,
 	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH net-next v2 0/3] dns_resolver docs formatting cleanup
-Date: Wed, 24 Sep 2025 09:06:22 +0700
-Message-ID: <20250924020626.17073-1-bagasdotme@gmail.com>
+Subject: [PATCH net-next v2 3/3] net: dns_resolver: Fix request-key cross-reference
+Date: Wed, 24 Sep 2025 09:06:25 +0700
+Message-ID: <20250924020626.17073-4-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20250924020626.17073-1-bagasdotme@gmail.com>
+References: <20250924020626.17073-1-bagasdotme@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1013; i=bagasdotme@gmail.com; h=from:subject; bh=zKlZGWoOmkq/pBFpjZDZhK0vM9ul0Y8n1dGY0HTd8EM=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBmXAxPEa4J6WdkPl4VO3MDBwF/7Lj3S5qnLnWbFBwG9G +60W7p0lLIwiHExyIopskxK5Gs6vctI5EL7WkeYOaxMIEMYuDgFYCKzDRn+WWV5O6XO2La9yjnL 5OLPG/dcbRJC3572XSrc6906Xy6ghZFhzyXe6aeEl6+X0jaf1Nqa2XS8eqrX2ulPtQ3dwj5uZOb iAAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1143; i=bagasdotme@gmail.com; h=from:subject; bh=gaa3l1P1fPt9cEbyVgFnFgXGJaiAtmNJHG4wcmrJDkE=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBmXA9PaW66v+v921ueFSofW2qYIykxeHzzhu31D3iu9Q K65G1b87ChlYRDjYpAVU2SZlMjXdHqXkciF9rWOMHNYmUCGMHBxCsBErIwY/md9P9HC99X343pv o5iKRWsebGTclsWQXhW1bXu3w7P9rqKMDJv5d03mMDTkk96uY3ResJNrxcQMdRVxtt6c5/sL4gN XcwAA
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-Hi,
+Link to "Key Request Service" docs uses file:// scheme instead due to
+angled brackets markup. Fix it to proper cross-reference.
 
-Here are reST cleanups for DNS Resolver Module documentation. The shortlog
-below should be self-explanatory.
+Fixes: 3db38ed76890 ("doc: ReSTify keys-request-key.txt")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ Documentation/networking/dns_resolver.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Enjoy!
-
-netdev maintainers: Given the tight timeline before 6.17 release is cut
-next week, is it still feasible to merge this series to net-next (targeting
-6.18) before it is closed, or should I repost it once net-next reopens for
-6.19?
-
-Changes since v1 [1]:
-
-  * Apply proofreading suggestions (Simon, [2/3])
-  * Collect review tags (Simon)
-
-[1]: https://lore.kernel.org/linux-doc/20250922095647.38390-2-bagasdotme@gmail.com/
-
-Bagas Sanjaya (3):
-  net: dns_resolver: Use reST bullet list for features list
-  net: dns_resolver: Move dns_query() explanation out of code block
-  net: dns_resolver: Fix request-key cross-reference
-
- Documentation/networking/dns_resolver.rst | 52 +++++++++++------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
-
-
-base-commit: 312e6f7676e63bbb9b81e5c68e580a9f776cc6f0
+diff --git a/Documentation/networking/dns_resolver.rst b/Documentation/networking/dns_resolver.rst
+index fbbd2c4635cbd5..52f298834db67b 100644
+--- a/Documentation/networking/dns_resolver.rst
++++ b/Documentation/networking/dns_resolver.rst
+@@ -140,8 +140,8 @@ the key will be discarded and recreated when the data it holds has expired.
+ dns_query() returns a copy of the value attached to the key, or an error if
+ that is indicated instead.
+ 
+-See <file:Documentation/security/keys/request-key.rst> for further
+-information about request-key function.
++See Documentation/security/keys/request-key.rst for further information about
++request-key function.
+ 
+ 
+ Debugging
 -- 
 An old man doll... just what I always wanted! - Clara
 
