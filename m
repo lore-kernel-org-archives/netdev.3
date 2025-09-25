@@ -1,264 +1,247 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21B2E3B0D
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 15:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2EF2E1F0E
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 15:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758813891; cv=none; b=rhJju3jvzN2Oxh7t2CdWS14qlko+ELKa/vYpoBO7W/KOlTv6UtW/6Zl7y+r0v5gpReEaIKl4x9k8FdK/K2be9B+UGPcA60WTgACfcGA7vWQFSCvsM6BfnYVjsI23XnzT186GZuw9Z5VYIZHdVIF42Mj6z6D2w563WtTi9PvXdUU=
+	t=1758814017; cv=none; b=aXFWhRrRjinEKsvAF7QIkJ1PV26s8amcY8b/j0Qe6dhgA75aGRufXB1ky8G9uP6KK1EbXU3Ckuv90w1tgNyh/ZM2KFOD8jh5LWLYzy3uvEBSwvy00yhu5BOPA2XikAlc+Qgzl9wCg8Nq0/MpkXhxSZwyhB8Men+FgxjC2e2chIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758813891; c=relaxed/simple;
-	bh=yaPLH+CvbobB9/kM4hvtASC4VGUUgHoNNmrLgIbY30w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eTMI0iqnuc8EW01yZ2edW2Xl8fWPc5j/EFgBwElgqG3r7SCJweLi27kPksNAIcFBpxBpQdL+ZhurR7uzTv/PxzYxqVx+j+gCOIFlUFX96D8q4l+Awsxzp9nXpWU5sYDaSZ1MILrxXhFmh9+wY+hVa1bEBckV/Mxlg02djGrJOxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SDAMlfrm; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758814017; c=relaxed/simple;
+	bh=M0BwKYTKOwG+97x6OWWGb8iaLDGyWUbHd+kuVNpzX7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rdSw4Li/ch0FsJuUsxd6P7AcoNlCUWhiAK0YhoAzWWnImyPGRaRz2wdAWgkl2/4/d4KTRlPikJLLrwdVCryDnW+Vfb6Xc0TC/p0OV8y20B5ad93/m4irNTffqJkEgKZNu5WZ6ZyZrufaRrtetitb0Da4pkniOVSaGx28Wufl/w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=meBnsbbr; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SDAMlfrm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758813890; x=1790349890;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=yaPLH+CvbobB9/kM4hvtASC4VGUUgHoNNmrLgIbY30w=;
-  b=SDAMlfrmjYacVqTKWiKfSxH5wm+Y4B+LrooGEw3lkmoCcBx7R8n3DUvw
-   BAMRNFYK6nDsi+aGGtxHgX1ILdAjnf1MmTbc5zQt1xh6MH8ky2Ox9oiHJ
-   Esov26OSxupXGmUF5FPIMpznuE9G9S/QqYKjoFbdqVyrGwNjKRGjiBnbK
-   +sFKfsXeh19Fu1m+dGoGikTh7S00vywJ7kokLuE/c9QX8u4XKGIC3PlFB
-   AMpw3CFU5cxb82XWcRjBdB9nmJ3g6zYAaeCRTHNNainKsspqjmGnjhGQG
-   7MSfFGChMrBlujGMwUYBaeNivTHqlyBL8L3T+MsS7nw9NzxdaHNHPhuWB
-   Q==;
-X-CSE-ConnectionGUID: 1DbjHJblTiqc+AqT5YzrCg==
-X-CSE-MsgGUID: 1zGD21deTbKzMkPT8PIXSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="78777078"
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="78777078"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2025 08:24:49 -0700
-X-CSE-ConnectionGUID: Tpzf8DvCRzWDDtaae5hesg==
-X-CSE-MsgGUID: EVzQmLvLRG2DbtHYBA1ssw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
-   d="scan'208";a="177291718"
-Received: from aus-labsrv3.an.intel.com ([10.123.116.23])
-  by fmviesa006.fm.intel.com with ESMTP; 25 Sep 2025 08:24:49 -0700
-From: Sreedevi Joshi <sreedevi.joshi@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Erik Gabriel Carrillo <erik.g.carrillo@intel.com>,
-	Sreedevi Joshi <sreedevi.joshi@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH] idpf: fix issue with ethtool -n command display
-Date: Thu, 25 Sep 2025 10:24:40 -0500
-Message-Id: <20250925152440.142107-1-sreedevi.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="meBnsbbr"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b2dccb26f96so18699066b.3
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 08:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758814014; x=1759418814; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E4GUf5N/3YbcyD+8Oivhe9ak/JJo3vnWEVVy0baHt1Y=;
+        b=meBnsbbrQ1+cXIu2KeE0B3YgAaOSWBbJrVnA99keKkpM5KoVSMU5A5Vq5EE9up5xe2
+         kHkKdybgqxtc/+y9ax8DvQXWnxd8ZX6Af3leR2HrF/K5Vy1/IUOwDiTqB6e1L10p0hgp
+         UGDEM6nsIGly5RVa78NWZSmwSXLDlrK0UdzSo0ctLeznsML0LI68/PEQZiVcv1n7i+MK
+         LxwsQx4790bk1j2YKtEwoVnllMqVUUFQOztT2SdSVI9AQbmm7h+URIyS2npl43j4XVGU
+         6A1jQIFi8vxczMzd1UjcRRWRGZvZ2E0ZMxgoGexsjKoi5/OY2xXHC7ptBVPd/oFxPK2Q
+         9tYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758814014; x=1759418814;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4GUf5N/3YbcyD+8Oivhe9ak/JJo3vnWEVVy0baHt1Y=;
+        b=JFBdzOINdgFUUnKkTFSImDp2TZRvGZy28Ft1BIUspz/PCr7BUn7Y8+dtURxCKKrWH1
+         kelWQitPduwES7B73mRJpmrLabPrBFdn+552OGJV0GU1XeWcYmePXIqvAdi6jc1M5pHG
+         1S/EhLZPQ0rVJHUzpG4Ec8juGs/2PkzAXsr36/U8MmBTImbfu2i7oi2TxyDx2FvAeEJi
+         2ccgvuuNytZLgPsZf8D4RzxqI6lPBlIli2AKGbDyM6zv6I+uFp7uYNm62/WkuVsLYZKJ
+         ecOB2vYkMvenu4prYGeZ75iKJh+gKDFFQaMS0pplnJ9HIQrZpPftGTU2//hANl9Oh/WC
+         skzg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7U2qfhgWIt6VPfE2iLHVR6qgnoyMamMp9KIkecT+dPJbLbQsKyrCbZNyMWa7JpJeodEs57i4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxkwio5Auhv9SHxbppzvtufpR9d8pgX3d5oOgYQGRadkH/C1+lB
+	Y/hUwrFbITr3aWtnLc7/FjUOWYyq9BKLkyemxD8KIqvOxSlK58fuaH6V
+X-Gm-Gg: ASbGnctgdKXZAOTeob5RAjjXgeWjnMfdVNd/K+3wURjzUwTeeSKUYSUvTMr/w3DDsKm
+	PoQfqHfnUIpobdLiyri8a4jbguyXxsp1p5eo2VcxxW1pkqwkdMtlnGp1NzI2Nt+S8TH5LmQUxkP
+	SD4lmxPM6nLQOMlptrfNN19eEEMbKxQFSQYdX706QoY8Ha2vnb635q7V9qqDaywr9NDsXbhuQq+
+	zf0uxNnWIr8sUtlXL3u1IUrK/CXD1GOEgbgWbe70WcUE+6rrlOv2B46yZjpPcawAE2Rdk56Yk/U
+	sX5/UKNDjDPfaG8WDFAIGE0zynavl74Er+PoPVSbP/3E6CIThX/IM3ym858ZNzmjpB31LLH61uV
+	1eLPWnC5r3kzF6ETgMft8s62GCs4UnTEwHsGGOxEHqQ==
+X-Google-Smtp-Source: AGHT+IGDiS7N74oVbf2PUhKEBndwAEuvYhlHAhqWKLDD7n6ktQyQUWHg2Hw3sa9zB3n6Bnm5oDSerA==
+X-Received: by 2002:a17:907:1c15:b0:b04:2d89:5d3a with SMTP id a640c23a62f3a-b34bde1e594mr225468166b.7.1758814013323;
+        Thu, 25 Sep 2025 08:26:53 -0700 (PDT)
+Received: from [192.168.1.105] ([165.50.26.125])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b353f87511dsm192990966b.43.2025.09.25.08.26.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 08:26:53 -0700 (PDT)
+Message-ID: <4b77c830-2a7d-444a-adeb-4d1370f8923f@gmail.com>
+Date: Thu, 25 Sep 2025 17:26:48 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] selftests/bpf: Prepare to add -Wsign-compare for
+ bpf tests
+To: Daniel Borkmann <daniel@iogearbox.net>, andrii@kernel.org,
+ eddyz87@gmail.com, ast@kernel.org, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
+ matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, linux@jordanrome.com,
+ ameryhung@gmail.com, toke@redhat.com, houtao1@huawei.com,
+ emil@etsalapatis.com, yatsenko@meta.com, isolodrai@meta.com,
+ a.s.protopopov@gmail.com, dxu@dxuuu.xyz, memxor@gmail.com,
+ vmalik@redhat.com, bigeasy@linutronix.de, tj@kernel.org,
+ gregkh@linuxfoundation.org, paul@paul-moore.com,
+ bboscaccy@linux.microsoft.com, James.Bottomley@HansenPartnership.com,
+ mrpre@163.com, jakub@cloudflare.com
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+ mptcp@lists.linux.dev, linux-kernel-mentees@lists.linuxfoundation.org,
+ skhan@linuxfoundation.org, david.hunter.linux@gmail.com
+References: <20250925103559.14876-1-mehdi.benhadjkhelifa@gmail.com>
+ <20250925103559.14876-4-mehdi.benhadjkhelifa@gmail.com>
+ <5ad26663-a3cc-4bf4-9d6f-8213ac8e8ce6@iogearbox.net>
+Content-Language: en-US
+From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+In-Reply-To: <5ad26663-a3cc-4bf4-9d6f-8213ac8e8ce6@iogearbox.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Erik Gabriel Carrillo <erik.g.carrillo@intel.com>
+On 9/25/25 4:04 PM, Daniel Borkmann wrote:
+> On 9/25/25 12:35 PM, Mehdi Ben Hadj Khelifa wrote:
+>> -Change only variable types for correct sign comparisons
+>>
+>> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+> 
+> Pls write some better commit messages and not just copy/paste the same 
+> $subj/
+> message every time; proper sentences w/o the weird " -" indent.
 
-When ethtool -n is executed on an interface to display the flow steering
-rules, "rxclass: Unknown flow type" error is generated.
+Understood, though the changes are very similar / are the same with the 
+same goal that's why it made sense to me to do that and I will remove 
+the - in future commits.> Also say
+> why
+> this is needed in the commit message, and add a reference to the commit 
+> which
+> initially added this as a TODO, i.e. 495d2d8133fd ("selftests/bpf: 
+> Attempt to
+> build BPF programs with -Wsign-compare"). 
+I will do that in the upcoming version.
 
-The flow steering list maintained in the driver currently stores only the
-location and q_index but other fields of the ethtool_rx_flow_spec are not
-stored. This may be enough for the virtchnl command to delete the entry.
-However, when the ethtool -n command is used to query the flow steering
-rules, the ethtool_rx_flow_spec returned is not complete causing the
-error below.
+> If you group these, then maybe 
+> also
+> include the parts of the compiler-emitted warnings during build which are
+> relevant to the code changes you do here.
 
-Resolve this by storing the flow spec (fsp) when rules are added and
-returning the complete flow spec when rules are queried.
+Okay. I will do that. Should i send a v4 with the recommended changes 
+but not including the rest of the files meaning the ones that I haven't 
+uploaded in this patch series which contain type casting or should i 
+just make changes for these files in this series?
+Also will it be better if dropped these versions and made a new patch 
+with v1?
 
-Also, change the return value from EINVAL to ENOENT when flow steering
-entry is not found during query by location or when deleting an entry.
-
-Add logic to detect and reject duplicate filter entries at the same
-location.
-
-Example:
-Before the fix:
-ethtool -n eth1
-2 RX rings available
-Total 2 rules
-
-rxclass: Unknown flow type
-rxclass: Unknown flow type
-
-After the fix:
-ethtool -n eth1
-2 RX rings available
-Total 2 rules
-
-Filter: 0
-        Rule Type: TCP over IPv4
-        Src IP addr: 10.0.0.1 mask: 0.0.0.0
-        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
-        TOS: 0x0 mask: 0xff
-        Src port: 0 mask: 0xffff
-        Dest port: 0 mask: 0xffff
-        Action: Direct to queue 0
-
-Filter: 1
-        Rule Type: UDP over IPv4
-        Src IP addr: 10.0.0.1 mask: 0.0.0.0
-        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
-        TOS: 0x0 mask: 0xff
-        Src port: 0 mask: 0xffff
-        Dest port: 0 mask: 0xffff
-        Action: Direct to queue 0
-
-Fixes: ada3e24b84a0 ("idpf: add flow steering support")
-Signed-off-by: Erik Gabriel Carrillo <erik.g.carrillo@intel.com>
-Co-developed-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
-Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/idpf/idpf.h        |  3 +-
- .../net/ethernet/intel/idpf/idpf_ethtool.c    | 57 ++++++++++++-------
- 2 files changed, 38 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index 4f4cf21e3c46..ec759bc5b3ce 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -269,8 +269,7 @@ struct idpf_port_stats {
- 
- struct idpf_fsteer_fltr {
- 	struct list_head list;
--	u32 loc;
--	u32 q_index;
-+	struct ethtool_rx_flow_spec fs;
- };
- 
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 1352f18b60b0..6a39cc1feeb5 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -38,11 +38,13 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
- 		cmd->data = idpf_fsteer_max_rules(vport);
- 		break;
- 	case ETHTOOL_GRXCLSRULE:
--		err = -EINVAL;
-+		err = -ENOENT;
- 		spin_lock_bh(&vport_config->flow_steer_list_lock);
- 		list_for_each_entry(f, &user_config->flow_steer_list, list)
--			if (f->loc == cmd->fs.location) {
--				cmd->fs.ring_cookie = f->q_index;
-+			if (f->fs.location == cmd->fs.location) {
-+				/* Avoid infoleak from padding: zero first, then assign fields */
-+				memset(&cmd->fs, 0, sizeof(cmd->fs));
-+				cmd->fs = f->fs;
- 				err = 0;
- 				break;
- 			}
-@@ -56,7 +58,7 @@ static int idpf_get_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd,
- 				err = -EMSGSIZE;
- 				break;
- 			}
--			rule_locs[cnt] = f->loc;
-+			rule_locs[cnt] = f->fs.location;
- 			cnt++;
- 		}
- 		if (!err)
-@@ -158,7 +160,7 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 	struct idpf_vport *vport;
- 	u32 flow_type, q_index;
- 	u16 num_rxq;
--	int err;
-+	int err = 0;
- 
- 	vport = idpf_netdev_to_vport(netdev);
- 	vport_config = vport->adapter->vport_config[np->vport_idx];
-@@ -184,6 +186,29 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 	if (!rule)
- 		return -ENOMEM;
- 
-+	fltr = kzalloc(sizeof(*fltr), GFP_KERNEL);
-+	if (!fltr) {
-+		err = -ENOMEM;
-+		goto out_free_rule;
-+	}
-+
-+	/* detect duplicate entry and reject before adding rules */
-+	spin_lock_bh(&vport_config->flow_steer_list_lock);
-+	list_for_each_entry(f, &user_config->flow_steer_list, list) {
-+		if (f->fs.location == fsp->location) {
-+			err = -EEXIST;
-+			break;
-+		}
-+
-+		if (f->fs.location > fsp->location)
-+			break;
-+		parent = f;
-+	}
-+	spin_unlock_bh(&vport_config->flow_steer_list_lock);
-+
-+	if (err)
-+		goto out;
-+
- 	rule->vport_id = cpu_to_le32(vport->vport_id);
- 	rule->count = cpu_to_le32(1);
- 	info = &rule->rule_info[0];
-@@ -222,28 +247,20 @@ static int idpf_add_flow_steer(struct net_device *netdev,
- 		goto out;
- 	}
- 
--	fltr = kzalloc(sizeof(*fltr), GFP_KERNEL);
--	if (!fltr) {
--		err = -ENOMEM;
--		goto out;
--	}
-+	/* Save a copy of the user's flow spec so ethtool can later retrieve it */
-+	fltr->fs = *fsp;
- 
--	fltr->loc = fsp->location;
--	fltr->q_index = q_index;
- 	spin_lock_bh(&vport_config->flow_steer_list_lock);
--	list_for_each_entry(f, &user_config->flow_steer_list, list) {
--		if (f->loc >= fltr->loc)
--			break;
--		parent = f;
--	}
--
- 	parent ? list_add(&fltr->list, &parent->list) :
- 		 list_add(&fltr->list, &user_config->flow_steer_list);
- 
- 	user_config->num_fsteer_fltrs++;
- 	spin_unlock_bh(&vport_config->flow_steer_list_lock);
-+	goto out_free_rule;
- 
- out:
-+	kfree(fltr);
-+out_free_rule:
- 	kfree(rule);
- 	return err;
- }
-@@ -297,14 +314,14 @@ static int idpf_del_flow_steer(struct net_device *netdev,
- 	spin_lock_bh(&vport_config->flow_steer_list_lock);
- 	list_for_each_entry_safe(f, iter,
- 				 &user_config->flow_steer_list, list) {
--		if (f->loc == fsp->location) {
-+		if (f->fs.location == fsp->location) {
- 			list_del(&f->list);
- 			kfree(f);
- 			user_config->num_fsteer_fltrs--;
- 			goto out_unlock;
- 		}
- 	}
--	err = -EINVAL;
-+	err = -ENOENT;
- 
- out_unlock:
- 	spin_unlock_bh(&vport_config->flow_steer_list_lock);
--- 
-2.25.1
+Thank you for your review and time Daniel.
+Regards,
+Mehdi
+>> ---
+>>   tools/testing/selftests/bpf/progs/test_xdp_dynptr.c          | 2 +-
+>>   tools/testing/selftests/bpf/progs/test_xdp_loop.c            | 2 +-
+>>   tools/testing/selftests/bpf/progs/test_xdp_noinline.c        | 4 ++--
+>>   tools/testing/selftests/bpf/progs/uprobe_multi.c             | 4 ++--
+>>   .../selftests/bpf/progs/uprobe_multi_session_recursive.c     | 5 +++--
+>>   .../selftests/bpf/progs/verifier_iterating_callbacks.c       | 2 +-
+>>   6 files changed, 10 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/bpf/progs/test_xdp_dynptr.c b/ 
+>> tools/testing/selftests/bpf/progs/test_xdp_dynptr.c
+>> index 67a77944ef29..12ad0ec91021 100644
+>> --- a/tools/testing/selftests/bpf/progs/test_xdp_dynptr.c
+>> +++ b/tools/testing/selftests/bpf/progs/test_xdp_dynptr.c
+>> @@ -89,7 +89,7 @@ static __always_inline int handle_ipv4(struct xdp_md 
+>> *xdp, struct bpf_dynptr *xd
+>>       struct vip vip = {};
+>>       int dport;
+>>       __u32 csum = 0;
+>> -    int i;
+>> +    size_t i;
+>>       __builtin_memset(eth_buffer, 0, sizeof(eth_buffer));
+>>       __builtin_memset(iph_buffer_tcp, 0, sizeof(iph_buffer_tcp));
+>> diff --git a/tools/testing/selftests/bpf/progs/test_xdp_loop.c b/ 
+>> tools/testing/selftests/bpf/progs/test_xdp_loop.c
+>> index 93267a68825b..e9b7bbff5c23 100644
+>> --- a/tools/testing/selftests/bpf/progs/test_xdp_loop.c
+>> +++ b/tools/testing/selftests/bpf/progs/test_xdp_loop.c
+>> @@ -85,7 +85,7 @@ static __always_inline int handle_ipv4(struct xdp_md 
+>> *xdp)
+>>       struct vip vip = {};
+>>       int dport;
+>>       __u32 csum = 0;
+>> -    int i;
+>> +    size_t i;
+>>       if (iph + 1 > data_end)
+>>           return XDP_DROP;
+>> diff --git a/tools/testing/selftests/bpf/progs/test_xdp_noinline.c b/ 
+>> tools/testing/selftests/bpf/progs/test_xdp_noinline.c
+>> index fad94e41cef9..85ef3c0a3e20 100644
+>> --- a/tools/testing/selftests/bpf/progs/test_xdp_noinline.c
+>> +++ b/tools/testing/selftests/bpf/progs/test_xdp_noinline.c
+>> @@ -372,7 +372,7 @@ bool encap_v4(struct xdp_md *xdp, struct ctl_value 
+>> *cval,
+>>       next_iph_u16 = (__u16 *) iph;
+>>       __pragma_loop_unroll_full
+>> -    for (int i = 0; i < sizeof(struct iphdr) >> 1; i++)
+>> +    for (size_t i = 0; i < sizeof(struct iphdr) >> 1; i++)
+>>           csum += *next_iph_u16++;
+>>       iph->check = ~((csum & 0xffff) + (csum >> 16));
+>>       if (bpf_xdp_adjust_head(xdp, (int)sizeof(struct iphdr)))
+>> @@ -423,7 +423,7 @@ int send_icmp_reply(void *data, void *data_end)
+>>       iph->check = 0;
+>>       next_iph_u16 = (__u16 *) iph;
+>>       __pragma_loop_unroll_full
+>> -    for (int i = 0; i < sizeof(struct iphdr) >> 1; i++)
+>> +    for (size_t i = 0; i < sizeof(struct iphdr) >> 1; i++)
+>>           csum += *next_iph_u16++;
+>>       iph->check = ~((csum & 0xffff) + (csum >> 16));
+>>       return swap_mac_and_send(data, data_end);
+>> diff --git a/tools/testing/selftests/bpf/progs/uprobe_multi.c b/tools/ 
+>> testing/selftests/bpf/progs/uprobe_multi.c
+>> index 44190efcdba2..f99957773c3a 100644
+>> --- a/tools/testing/selftests/bpf/progs/uprobe_multi.c
+>> +++ b/tools/testing/selftests/bpf/progs/uprobe_multi.c
+>> @@ -20,13 +20,13 @@ __u64 uretprobe_multi_func_3_result = 0;
+>>   __u64 uprobe_multi_sleep_result = 0;
+>> -int pid = 0;
+>> +__u32 pid = 0;
+>>   int child_pid = 0;
+>>   int child_tid = 0;
+>>   int child_pid_usdt = 0;
+>>   int child_tid_usdt = 0;
+>> -int expect_pid = 0;
+>> +__u32 expect_pid = 0;
+>>   bool bad_pid_seen = false;
+>>   bool bad_pid_seen_usdt = false;
+>> diff --git a/tools/testing/selftests/bpf/progs/ 
+>> uprobe_multi_session_recursive.c b/tools/testing/selftests/bpf/progs/ 
+>> uprobe_multi_session_recursive.c
+>> index 8fbcd69fae22..017f1859ebe8 100644
+>> --- a/tools/testing/selftests/bpf/progs/uprobe_multi_session_recursive.c
+>> +++ b/tools/testing/selftests/bpf/progs/uprobe_multi_session_recursive.c
+>> @@ -3,6 +3,7 @@
+>>   #include <bpf/bpf_helpers.h>
+>>   #include <bpf/bpf_tracing.h>
+>>   #include <stdbool.h>
+>> +#include <stddef.h>
+>>   #include "bpf_kfuncs.h"
+>>   #include "bpf_misc.h"
+>> @@ -10,8 +11,8 @@ char _license[] SEC("license") = "GPL";
+>>   int pid = 0;
+>> -int idx_entry = 0;
+>> -int idx_return = 0;
+>> +size_t idx_entry = 0;
+>> +size_t idx_return = 0;
+>>   __u64 test_uprobe_cookie_entry[6];
+>>   __u64 test_uprobe_cookie_return[3];
+>> diff --git a/tools/testing/selftests/bpf/progs/ 
+>> verifier_iterating_callbacks.c b/tools/testing/selftests/bpf/progs/ 
+>> verifier_iterating_callbacks.c
+>> index 75dd922e4e9f..72f9f8c23c93 100644
+>> --- a/tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
+>> +++ b/tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
+>> @@ -593,7 +593,7 @@ int loop_inside_iter_volatile_limit(const void *ctx)
+>>   {
+>>       struct bpf_iter_num it;
+>>       int *v, sum = 0;
+>> -    __u64 i = 0;
+>> +    __s32 i = 0;
+>>       bpf_iter_num_new(&it, 0, ARR2_SZ);
+>>       while ((v = bpf_iter_num_next(&it))) {
+> 
 
