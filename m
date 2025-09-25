@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5793009F0
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F84C3009DC
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802453; cv=none; b=Hdcq9mu8JddTLcI5xv2ZWtsypXvyksoQUsp2oUdQFxA1e/4A5Vxq5a3fRkpo0pbjVY/eKgMPgvhzdSZZGNgxolOyTBJs9rPHNNqJ5MNsm0CCVReYhF8zXrdfD1gS9pgv7CgsjKoHiQn/egWa6r6n8lbbv1tqUYF2fEo1Wb+AVDw=
+	t=1758802453; cv=none; b=VurCEdB2Oe/thLvA/WlOgRTnpGfEOllq/rdthkGxIDA1wTZ9vj2ccyKSx2LlzMg8MUqcnuUCdFNdcMYbIWDB4rw2cD+59EEezBLPVm1aIYMxmp6ifDBDAh0FP4o3VoZiXJyoWz7gX0o8YmhEz5mMloXdFE+Z8eG2dLtQMmm0cGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758802453; c=relaxed/simple;
-	bh=ARoB4N4UyQFWYljOs3TO8QYdImHXJ73Z2AEofYwRdnA=;
+	bh=uewvFQnZ6Op17EalGgdORNAEuWb7ymuY72lGUXbAp6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3/MYaFrCWtgcDHN4HhT0Nl7X2+pObHWuAF56cUExvS3BZn5GG2mP8XRc+aewQsuYoe6WppkkFJ9sCLJA8XlTYFfTNO79o10vCRPBxAJgxtRNnZy8/jkujooOmgpHoWTbk0B4t4OCQIs8f7RoCu/nwOkcxtW2uubn4inwBhHQ4g=
+	 MIME-Version; b=Eo4XjhCChqyQmjDUc7zFdQ9u1Mo0j32fFT2EQ14qTZooh+1ju35CzC4OtxG9rBZlO2+FOmoP9KE52XRJcc7kh/JWE8EHj1F6auhoD+OastESGRPfXPZZ4jnAiCocAc2ZlIy0hNg2UZiZ2fQ9giu6oN3zSi++Iic4QpYtqhq13J4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqy-0000Zt-1s; Thu, 25 Sep 2025 14:13:40 +0200
+	id 1v1kqx-0000Yw-AM; Thu, 25 Sep 2025 14:13:39 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqw-000Pxk-0y;
-	Thu, 25 Sep 2025 14:13:38 +0200
+	id 1v1kqv-000Px9-1r;
+	Thu, 25 Sep 2025 14:13:37 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 0FB0047999C;
-	Thu, 25 Sep 2025 12:13:38 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5513C479992;
+	Thu, 25 Sep 2025 12:13:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 48/48] can: netlink: add userland error messages
-Date: Thu, 25 Sep 2025 14:08:25 +0200
-Message-ID: <20250925121332.848157-49-mkl@pengutronix.de>
+Subject: [PATCH net-next 38/48] can: netlink: add can_dtb_changelink()
+Date: Thu, 25 Sep 2025 14:08:15 +0200
+Message-ID: <20250925121332.848157-39-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -60,189 +60,200 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-Use NL_SET_ERR_MSG() and NL_SET_ERR_MSG_FMT() to return meaningful
-error messages to the userland whenever a -EOPNOTSUPP error is
-returned due to a failed validation of the CAN netlink arguments.
+Factorise the databittiming parsing out of can_changelink() and move
+it in the new can_dtb_changelink() function. This is a preparation
+patch for the introduction of CAN XL because the databittiming
+changelink logic will be reused later on.
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-20-e720d28f66fe@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-10-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 82 ++++++++++++++++++++++++++---------
- 1 file changed, 62 insertions(+), 20 deletions(-)
+ drivers/net/can/dev/netlink.c | 152 ++++++++++++++++++++--------------
+ 1 file changed, 88 insertions(+), 64 deletions(-)
 
 diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 92d8df13e886..0591406b6f32 100644
+index abff7b84fdce..5f2962aab576 100644
 --- a/drivers/net/can/dev/netlink.c
 +++ b/drivers/net/can/dev/netlink.c
-@@ -64,15 +64,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
- 	bool tdc_auto = tdc_flags & CAN_CTRLMODE_TDC_AUTO_MASK;
- 	int err;
- 
--	/* CAN_CTRLMODE_TDC_{AUTO,MANUAL} are mutually exclusive */
--	if (tdc_auto && tdc_manual)
-+	if (tdc_auto && tdc_manual) {
-+		NL_SET_ERR_MSG(extack,
-+			       "TDC manual and auto modes are mutually exclusive");
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* If one of the CAN_CTRLMODE_TDC_* flag is set then TDC
- 	 * must be set and vice-versa
- 	 */
--	if ((tdc_auto || tdc_manual) != !!data_tdc)
-+	if ((tdc_auto || tdc_manual) && !data_tdc) {
-+		NL_SET_ERR_MSG(extack, "TDC parameters are missing");
- 		return -EOPNOTSUPP;
-+	}
-+	if (!(tdc_auto || tdc_manual) && data_tdc) {
-+		NL_SET_ERR_MSG(extack, "TDC mode (auto or manual) is missing");
-+		return -EOPNOTSUPP;
-+	}
- 
- 	/* If providing TDC parameters, at least TDCO is needed. TDCV
- 	 * is needed if and only if CAN_CTRLMODE_TDC_MANUAL is set
-@@ -86,15 +94,23 @@ static int can_validate_tdc(struct nlattr *data_tdc,
- 			return err;
- 
- 		if (tb_tdc[IFLA_CAN_TDC_TDCV]) {
--			if (tdc_auto)
-+			if (tdc_auto) {
-+				NL_SET_ERR_MSG(extack,
-+					       "TDCV is incompatible with TDC auto mode");
- 				return -EOPNOTSUPP;
-+			}
- 		} else {
--			if (tdc_manual)
-+			if (tdc_manual) {
-+				NL_SET_ERR_MSG(extack,
-+					       "TDC manual mode requires TDCV");
- 				return -EOPNOTSUPP;
-+			}
- 		}
- 
--		if (!tb_tdc[IFLA_CAN_TDC_TDCO])
-+		if (!tb_tdc[IFLA_CAN_TDC_TDCO]) {
-+			NL_SET_ERR_MSG(extack, "TDCO is missing");
- 			return -EOPNOTSUPP;
-+		}
- 	}
- 
+@@ -221,12 +221,95 @@ static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
  	return 0;
-@@ -105,6 +121,7 @@ static int can_validate_databittiming(struct nlattr *data[],
- 				      int ifla_can_data_bittiming, u32 flags)
- {
- 	struct nlattr *data_tdc;
-+	const char *type;
- 	u32 tdc_flags;
- 	bool is_on;
- 	int err;
-@@ -120,18 +137,31 @@ static int can_validate_databittiming(struct nlattr *data[],
- 		data_tdc = data[IFLA_CAN_TDC];
- 		tdc_flags = flags & CAN_CTRLMODE_FD_TDC_MASK;
- 		is_on = flags & CAN_CTRLMODE_FD;
-+		type = "FD";
- 	} else {
- 		return -EOPNOTSUPP; /* Place holder for CAN XL */
- 	}
+ }
  
- 	if (is_on) {
--		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming])
-+		if (!data[IFLA_CAN_BITTIMING] || !data[ifla_can_data_bittiming]) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "Provide both nominal and %s data bittiming",
-+					   type);
- 			return -EOPNOTSUPP;
--	}
--
--	if (data[ifla_can_data_bittiming] || data_tdc) {
--		if (!is_on)
-+		}
++static int can_dbt_changelink(struct net_device *dev, struct nlattr *data[],
++			      bool fd, struct netlink_ext_ack *extack)
++{
++	struct nlattr *data_bittiming, *data_tdc;
++	struct can_priv *priv = netdev_priv(dev);
++	struct data_bittiming_params *dbt_params;
++	struct can_bittiming dbt;
++	bool need_tdc_calc = false;
++	u32 tdc_mask;
++	int err;
++
++	if (fd) {
++		data_bittiming = data[IFLA_CAN_DATA_BITTIMING];
++		data_tdc = data[IFLA_CAN_TDC];
++		dbt_params = &priv->fd;
++		tdc_mask = CAN_CTRLMODE_FD_TDC_MASK;
 +	} else {
-+		if (data[ifla_can_data_bittiming]) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "%s data bittiming requires CAN %s",
-+					   type, type);
- 			return -EOPNOTSUPP;
++		return -EOPNOTSUPP; /* Place holder for CAN XL */
++	}
++
++	if (!data_bittiming)
++		return 0;
++
++	/* Do not allow changing bittiming while running */
++	if (dev->flags & IFF_UP)
++		return -EBUSY;
++
++	/* Calculate bittiming parameters based on data_bittiming_const
++	 * if set, otherwise pass bitrate directly via do_set_bitrate().
++	 * Bail out if neither is given.
++	 */
++	if (!dbt_params->data_bittiming_const && !dbt_params->do_set_data_bittiming &&
++	    !dbt_params->data_bitrate_const)
++		return -EOPNOTSUPP;
++
++	memcpy(&dbt, nla_data(data_bittiming), sizeof(dbt));
++	err = can_get_bittiming(dev, &dbt, dbt_params->data_bittiming_const,
++				dbt_params->data_bitrate_const,
++				dbt_params->data_bitrate_const_cnt, extack);
++	if (err)
++		return err;
++
++	if (priv->bitrate_max && dbt.bitrate > priv->bitrate_max) {
++		NL_SET_ERR_MSG_FMT(extack,
++				   "CAN data bitrate %u bps surpasses transceiver capabilities of %u bps",
++				   dbt.bitrate, priv->bitrate_max);
++		return -EINVAL;
++	}
++
++	memset(&dbt_params->tdc, 0, sizeof(dbt_params->tdc));
++	if (data[IFLA_CAN_CTRLMODE]) {
++		struct can_ctrlmode *cm = nla_data(data[IFLA_CAN_CTRLMODE]);
++
++		need_tdc_calc = !(cm->mask & tdc_mask);
++	}
++	if (data_tdc) {
++		/* TDC parameters are provided: use them */
++		err = can_tdc_changelink(dbt_params, data_tdc, extack);
++		if (err) {
++			priv->ctrlmode &= ~tdc_mask;
++			return err;
 +		}
-+		if (data_tdc) {
-+			NL_SET_ERR_MSG_FMT(extack,
-+					   "%s TDC requires CAN %s",
-+					   type, type);
-+			return -EOPNOTSUPP;
-+		}
- 	}
- 
- 	err = can_validate_bittiming(data, extack, ifla_can_data_bittiming);
-@@ -178,8 +208,7 @@ static int can_ctrlmode_changelink(struct net_device *dev,
++	} else if (need_tdc_calc) {
++		/* Neither of TDC parameters nor TDC flags are provided:
++		 * do calculation
++		 */
++		can_calc_tdco(&dbt_params->tdc, dbt_params->tdc_const, &dbt,
++			      &priv->ctrlmode, priv->ctrlmode_supported);
++	} /* else: both CAN_CTRLMODE_TDC_{AUTO,MANUAL} are explicitly
++	   * turned off. TDC is disabled: do nothing
++	   */
++
++	memcpy(&dbt_params->data_bittiming, &dbt, sizeof(dbt));
++
++	if (dbt_params->do_set_data_bittiming) {
++		/* Finally, set the bit-timing registers */
++		err = dbt_params->do_set_data_bittiming(dev);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 			  struct nlattr *data[],
+ 			  struct netlink_ext_ack *extack)
  {
  	struct can_priv *priv = netdev_priv(dev);
- 	struct can_ctrlmode *cm;
--	u32 maskedflags;
--	u32 ctrlstatic;
-+	u32 ctrlstatic, maskedflags, notsupp, ctrlstatic_missing;
- 
- 	if (!data[IFLA_CAN_CTRLMODE])
- 		return 0;
-@@ -189,20 +218,28 @@ static int can_ctrlmode_changelink(struct net_device *dev,
- 		return -EBUSY;
- 
- 	cm = nla_data(data[IFLA_CAN_CTRLMODE]);
--	maskedflags = cm->flags & cm->mask;
- 	ctrlstatic = can_get_static_ctrlmode(priv);
-+	maskedflags = cm->flags & cm->mask;
-+	notsupp = maskedflags & ~(priv->ctrlmode_supported | ctrlstatic);
-+	ctrlstatic_missing = (maskedflags & ctrlstatic) ^ ctrlstatic;
- 
--	/* check whether provided bits are allowed to be passed */
--	if (maskedflags & ~(priv->ctrlmode_supported | ctrlstatic))
-+	if (notsupp) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "requested control mode %s not supported",
-+				   can_get_ctrlmode_str(notsupp));
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* do not check for static fd-non-iso if 'fd' is disabled */
- 	if (!(maskedflags & CAN_CTRLMODE_FD))
- 		ctrlstatic &= ~CAN_CTRLMODE_FD_NON_ISO;
- 
--	/* make sure static options are provided by configuration */
--	if ((maskedflags & ctrlstatic) != ctrlstatic)
-+	if (ctrlstatic_missing) {
-+		NL_SET_ERR_MSG_FMT(extack,
-+				   "missing required %s static control mode",
-+				   can_get_ctrlmode_str(ctrlstatic_missing));
- 		return -EOPNOTSUPP;
-+	}
- 
- 	/* If a top dependency flag is provided, reset all its dependencies */
- 	if (cm->mask & CAN_CTRLMODE_FD)
-@@ -234,8 +271,10 @@ static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
- 	const struct can_tdc_const *tdc_const = dbt_params->tdc_const;
+-	bool fd_tdc_flag_provided = false;
  	int err;
  
--	if (!tdc_const)
-+	if (!tdc_const) {
-+		NL_SET_ERR_MSG(extack, "The device does not support TDC");
- 		return -EOPNOTSUPP;
-+	}
+ 	/* We need synchronization with dev->stop() */
+@@ -273,8 +356,6 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		}
  
- 	err = nla_parse_nested(tb_tdc, IFLA_CAN_TDC_MAX, nla,
- 			       can_tdc_policy, extack);
-@@ -450,8 +489,11 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 		const unsigned int num_term = priv->termination_const_cnt;
- 		unsigned int i;
+ 		can_set_default_mtu(dev);
+-
+-		fd_tdc_flag_provided = cm->mask & CAN_CTRLMODE_FD_TDC_MASK;
+ 	}
  
--		if (!priv->do_set_termination)
-+		if (!priv->do_set_termination) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Termination is not configurable on this device");
- 			return -EOPNOTSUPP;
-+		}
+ 	if (data[IFLA_CAN_BITTIMING]) {
+@@ -347,67 +428,10 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 			return err;
+ 	}
  
- 		/* check whether given value is supported by the interface */
- 		for (i = 0; i < num_term; i++) {
+-	if (data[IFLA_CAN_DATA_BITTIMING]) {
+-		struct can_bittiming dbt;
+-
+-		/* Do not allow changing bittiming while running */
+-		if (dev->flags & IFF_UP)
+-			return -EBUSY;
+-
+-		/* Calculate bittiming parameters based on
+-		 * data_bittiming_const if set, otherwise pass bitrate
+-		 * directly via do_set_bitrate(). Bail out if neither
+-		 * is given.
+-		 */
+-		if (!priv->fd.data_bittiming_const && !priv->fd.do_set_data_bittiming &&
+-		    !priv->fd.data_bitrate_const)
+-			return -EOPNOTSUPP;
+-
+-		memcpy(&dbt, nla_data(data[IFLA_CAN_DATA_BITTIMING]),
+-		       sizeof(dbt));
+-		err = can_get_bittiming(dev, &dbt,
+-					priv->fd.data_bittiming_const,
+-					priv->fd.data_bitrate_const,
+-					priv->fd.data_bitrate_const_cnt,
+-					extack);
+-		if (err)
+-			return err;
+-
+-		if (priv->bitrate_max && dbt.bitrate > priv->bitrate_max) {
+-			NL_SET_ERR_MSG_FMT(extack,
+-					   "CANFD data bitrate %u bps surpasses transceiver capabilities of %u bps",
+-					   dbt.bitrate, priv->bitrate_max);
+-			return -EINVAL;
+-		}
+-
+-		memset(&priv->fd.tdc, 0, sizeof(priv->fd.tdc));
+-		if (data[IFLA_CAN_TDC]) {
+-			/* TDC parameters are provided: use them */
+-			err = can_tdc_changelink(&priv->fd,
+-						 data[IFLA_CAN_TDC], extack);
+-			if (err) {
+-				priv->ctrlmode &= ~CAN_CTRLMODE_FD_TDC_MASK;
+-				return err;
+-			}
+-		} else if (!fd_tdc_flag_provided) {
+-			/* Neither of TDC parameters nor TDC flags are
+-			 * provided: do calculation
+-			 */
+-			can_calc_tdco(&priv->fd.tdc, priv->fd.tdc_const, &dbt,
+-				      &priv->ctrlmode, priv->ctrlmode_supported);
+-		} /* else: both CAN_CTRLMODE_TDC_{AUTO,MANUAL} are explicitly
+-		   * turned off. TDC is disabled: do nothing
+-		   */
+-
+-		memcpy(&priv->fd.data_bittiming, &dbt, sizeof(dbt));
+-
+-		if (priv->fd.do_set_data_bittiming) {
+-			/* Finally, set the bit-timing registers */
+-			err = priv->fd.do_set_data_bittiming(dev);
+-			if (err)
+-				return err;
+-		}
+-	}
++	/* CAN FD */
++	err = can_dbt_changelink(dev, data, true, extack);
++	if (err)
++		return err;
+ 
+ 	if (data[IFLA_CAN_TERMINATION]) {
+ 		const u16 termval = nla_get_u16(data[IFLA_CAN_TERMINATION]);
 -- 
 2.51.0
 
