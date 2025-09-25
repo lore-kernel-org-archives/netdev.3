@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFA22FF658
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B8B2FE060
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802446; cv=none; b=R0ohmnrZg5v0ZitQTSkxcFhJFuK3kw+eV94nS0+CG2Mexal5Ix6fC0EEacJswLiIOxuC8R9tvw5HOBpAOPenF8CTDVzuUmbIn/3IUiYj8czDAWgKQYb16XROQQEnvyg0Ero9/P3jQR+xHGGSiwpPuDierzmO4CeQgp0H/63SSm4=
+	t=1758802446; cv=none; b=luNdhkp9nPzVndBOailqp3CflkmhntURSth8jj1BQdfY466BPHFUictBO8k9V3IjFz3nBpApZtwZlMMHxhq6Isp+rw/lXAADCaPXMBCWGzy2+75GR+Rz+nY6iPBLDIYVJTxD0qQO7Dpafy5cwTLtntcLupgW2Ixgms6jzzAuPRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758802446; c=relaxed/simple;
-	bh=NrdZIEdKemwhuR0SnronAVPstg2gY+k5b2/8NsWtUwQ=;
+	bh=z1hoAeLPRWC7NcOJpESTra10JJQKOu7Q3VlfNl5WIh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaxWtppXockhjXKLyCYggMyuXWIRt/m9tJh5NYq9x/O+TMjkPx1yL7nUiltRun+hEE8IKpOcXUHQuN/FxnbGzJhCMG0ZUSbwppo7K+/i7JNN6QFKDlEOPjn1VxM15obiytcCWH+Z2JdwJxEnwi39s6JZpub4zGxCAwk6a5M8xZc=
+	 MIME-Version; b=nuwjVoeCjOf3bEw1hSLZ+BuwFVzylImYF4f1lXsopKjj20E9HmyDzTdXDDpBo9cCbxu4TGv/GlvbQKiuI8j0bYWlnR7c8CpNp3ktfH8X2VAlS23i5EaEibaMqVyYaTgdU4HOHlQAJO//sGGtNTIUQad8CrZFm8qEwBzj6zoFdYk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,31 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqx-0000ZB-FL; Thu, 25 Sep 2025 14:13:39 +0200
+	id 1v1kqz-0000Vh-2R; Thu, 25 Sep 2025 14:13:41 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqv-000PxL-2X;
-	Thu, 25 Sep 2025 14:13:37 +0200
+	id 1v1kqt-000PvF-1b;
+	Thu, 25 Sep 2025 14:13:35 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8A1AA479995;
-	Thu, 25 Sep 2025 12:13:37 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 2C23F479971;
+	Thu, 25 Sep 2025 12:13:35 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 41/48] can: netlink: add can_data_bittiming_get_size()
-Date: Thu, 25 Sep 2025 14:08:18 +0200
-Message-ID: <20250925121332.848157-42-mkl@pengutronix.de>
+Subject: [PATCH net-next 05/48] can: rcar_canfd: Update bit rate constants for RZ/G3E and R-Car Gen4
+Date: Thu, 25 Sep 2025 14:07:42 +0200
+Message-ID: <20250925121332.848157-6-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -58,81 +59,36 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Vincent Mailhol <mailhol@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-Add the can_data_bittiming_get_size() function to factorise the logic
-to retrieve the size of below data bittiming parameters:
+The calculation formula for nominal bit rate of classical CAN is the same as
+that of nominal bit rate of CANFD on the RZ/G3E and R-Car Gen4 SoCs
+compared to other SoCs. Update nominal bit rate constants.
 
-  - data_bittiming
-  - data_bittiming_const
-  - data_bitrate_const
-  - tdc parameters
-
-This function will be reused later on for CAN XL.
-
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-13-e720d28f66fe@kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250908120940.147196-2-biju.das.jz@bp.renesas.com
+[mkl: slightly improve wording of commit message]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dev/netlink.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/net/can/rcar/rcar_canfd.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 3c0675877f5e..5d2b524daea9 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -504,6 +504,23 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
- 	return size;
- }
- 
-+static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_params,
-+					  u32 tdc_flags)
-+{
-+	size_t size = 0;
-+
-+	if (dbt_params->data_bittiming.bitrate)		/* IFLA_CAN_DATA_BITTIMING */
-+		size += nla_total_size(sizeof(dbt_params->data_bittiming));
-+	if (dbt_params->data_bittiming_const)		/* IFLA_CAN_DATA_BITTIMING_CONST */
-+		size += nla_total_size(sizeof(*dbt_params->data_bittiming_const));
-+	if (dbt_params->data_bitrate_const)		/* IFLA_CAN_DATA_BITRATE_CONST */
-+		size += nla_total_size(sizeof(*dbt_params->data_bitrate_const) *
-+				       dbt_params->data_bitrate_const_cnt);
-+	size += can_tdc_get_size(dbt_params, tdc_flags);/* IFLA_CAN_TDC */
-+
-+	return size;
-+}
-+
- static size_t can_ctrlmode_ext_get_size(void)
- {
- 	return nla_total_size(0) +		/* nest IFLA_CAN_CTRLMODE_EXT */
-@@ -525,10 +542,6 @@ static size_t can_get_size(const struct net_device *dev)
- 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_RESTART_MS */
- 	if (priv->do_get_berr_counter)				/* IFLA_CAN_BERR_COUNTER */
- 		size += nla_total_size(sizeof(struct can_berr_counter));
--	if (priv->fd.data_bittiming.bitrate)			/* IFLA_CAN_DATA_BITTIMING */
--		size += nla_total_size(sizeof(struct can_bittiming));
--	if (priv->fd.data_bittiming_const)			/* IFLA_CAN_DATA_BITTIMING_CONST */
--		size += nla_total_size(sizeof(struct can_bittiming_const));
- 	if (priv->termination_const) {
- 		size += nla_total_size(sizeof(priv->termination));		/* IFLA_CAN_TERMINATION */
- 		size += nla_total_size(sizeof(*priv->termination_const) *	/* IFLA_CAN_TERMINATION_CONST */
-@@ -537,14 +550,12 @@ static size_t can_get_size(const struct net_device *dev)
- 	if (priv->bitrate_const)				/* IFLA_CAN_BITRATE_CONST */
- 		size += nla_total_size(sizeof(*priv->bitrate_const) *
- 				       priv->bitrate_const_cnt);
--	if (priv->fd.data_bitrate_const)			/* IFLA_CAN_DATA_BITRATE_CONST */
--		size += nla_total_size(sizeof(*priv->fd.data_bitrate_const) *
--				       priv->fd.data_bitrate_const_cnt);
- 	size += sizeof(priv->bitrate_max);			/* IFLA_CAN_BITRATE_MAX */
--	size += can_tdc_get_size(&priv->fd,			/* IFLA_CAN_TDC */
--				 priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
- 	size += can_ctrlmode_ext_get_size();			/* IFLA_CAN_CTRLMODE_EXT */
- 
-+	size += can_data_bittiming_get_size(&priv->fd,
-+					    priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
-+
- 	return size;
- }
+diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
+index b3c8c592fb0e..4185fc5b4a70 100644
+--- a/drivers/net/can/rcar/rcar_canfd.c
++++ b/drivers/net/can/rcar/rcar_canfd.c
+@@ -1912,7 +1912,10 @@ static int rcar_canfd_channel_probe(struct rcar_canfd_global *gpriv, u32 ch,
+ 		priv->can.fd.do_get_auto_tdcv = rcar_canfd_get_auto_tdcv;
+ 	} else {
+ 		/* Controller starts in Classical CAN only mode */
+-		priv->can.bittiming_const = &rcar_canfd_bittiming_const;
++		if (gpriv->info->shared_can_regs)
++			priv->can.bittiming_const = gpriv->info->nom_bittiming;
++		else
++			priv->can.bittiming_const = &rcar_canfd_bittiming_const;
+ 		priv->can.ctrlmode_supported = CAN_CTRLMODE_BERR_REPORTING;
+ 	}
  
 -- 
 2.51.0
