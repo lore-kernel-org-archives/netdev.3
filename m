@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC4F2FF667
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192DA30170D
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802450; cv=none; b=LysTvlFZa6ObIK790AuO9DqE9Yh6RUh4qA+/mSQkcm3KFBsZ2HToATVA74MZ4tG3bXBc/Aw8jBkOTWgZX2w3O8ShAIx2t0BWTta6nH5FYWqhuGgwofD6YekB+jRQaPSsMMJriQlXAmVbxVquS8ir+rDqqeaJP91F5nDHcls4I2o=
+	t=1758802450; cv=none; b=mTwVYstIlwNLFNutwtaCHd/F7XtHExOuKjpE0M7cdLa/WquBa6Ofk4KZUL0tsqBXZxDdt6Ve6jx38VOWrtn/cW9dj9DW0gnEfv96OcYysCD3QPN41kVSPE3BascGvvV9ndwPs3Y1tVtNRZ1HwjiID9KAJ3EanM5sM8ObLdSyiKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758802450; c=relaxed/simple;
-	bh=jASTsnIK7OTgRD4LiCCD2seVMSpdQs0xI3XkrxGHFZ0=;
+	bh=TID6G+rLF2v38cQ038vN1hh/4REOykjC4eOmkObe34c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KSCu2AwbIxA37Cg5VxocQBO/NrngYHXyoXYfDY7l3reIE/pkJWQbJjg2PREyQ0ynDawnYEIT0BljlCcSPhB/ff4O0tI2+RZ0YCBvh+MsaoK9n1C+yvnLhjGIleXGxk8ya2QAPVjW/xWNDZokp10pzQrF7NkrzmdbTvGVJ7uPjcY=
+	 MIME-Version; b=re9EYT91uaf8hJp8MM4ls6mhtdyGHXTHTZjfj2ZPCnaRMrCb9lye7nQOH5sSeDiNe+7vC2WDwXd8P+mrWe1vPTIviEFJJDYa0cisUePjgF+KahSi7C/qDwN6ve7UzpXurqm+HOUTrdr1R4Zi7/qWdGUScEDBsXNC9eNdqPWnRkU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-0000Ve-BN; Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqx-0000ZN-MY; Thu, 25 Sep 2025 14:13:39 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqt-000Pv9-15;
-	Thu, 25 Sep 2025 14:13:35 +0200
+	id 1v1kqv-000PxV-37;
+	Thu, 25 Sep 2025 14:13:37 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EC1D947996E;
-	Thu, 25 Sep 2025 12:13:34 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id BCC79479998;
+	Thu, 25 Sep 2025 12:13:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -40,9 +40,9 @@ Cc: davem@davemloft.net,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 02/48] MAINTAINERS: update Vincent Mailhol's email address
-Date: Thu, 25 Sep 2025 14:07:39 +0200
-Message-ID: <20250925121332.848157-3-mkl@pengutronix.de>
+Subject: [PATCH net-next 44/48] can: netlink: add can_bitrate_const_fill_info()
+Date: Thu, 25 Sep 2025 14:08:21 +0200
+Message-ID: <20250925121332.848157-45-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -60,62 +60,61 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-Now that I have received my kernel.org account, I am changing my email
-address from mailhol.vincent@wanadoo.fr to mailhol@kernel.org. The
-wanadoo.fr address was my first email which I created when I was a kid
-and has a special meaning to me, but it is restricted to a maximum of
-50 messages per hour which starts to be problematic on threads where
-many people are CC-ed.
-
-Update all the MAINTAINERS entries accordingly and map the old address
-to the new one.
-
-I remain reachable from my old address. The different copyright
-notices mentioning my old address are kept as-is for the moment. I
-will update those one at a time only if I need to touch those files.
+Add can_bitrate_const_fill_info() to factorise the logic when filling
+the bitrate constant information for Classical CAN and CAN FD. This
+function will be reused later on for CAN XL.
 
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250826105255.35501-2-mailhol@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-16-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .mailmap    | 1 +
- MAINTAINERS | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/can/dev/netlink.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/.mailmap b/.mailmap
-index aa09e792017f..4a5f2c8deeff 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -816,6 +816,7 @@ Veera Sundaram Sankaran <quic_veeras@quicinc.com> <veeras@codeaurora.org>
- Veerabhadrarao Badiganti <quic_vbadigan@quicinc.com> <vbadigan@codeaurora.org>
- Venkateswara Naralasetty <quic_vnaralas@quicinc.com> <vnaralas@codeaurora.org>
- Vikash Garodia <quic_vgarodia@quicinc.com> <vgarodia@codeaurora.org>
-+Vincent Mailhol <mailhol@kernel.org> <mailhol.vincent@wanadoo.fr>
- Vinod Koul <vkoul@kernel.org> <vinod.koul@intel.com>
- Vinod Koul <vkoul@kernel.org> <vinod.koul@linux.intel.com>
- Vinod Koul <vkoul@kernel.org> <vkoul@infradead.org>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c930a961435e..65c0addba48a 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5417,7 +5417,7 @@ F:	net/sched/sch_cake.c
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index fa922a61f75a..9794f283ed58 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -576,6 +576,15 @@ static int can_bittiming_const_fill_info(struct sk_buff *skb,
+ 			sizeof(*bittiming_const), bittiming_const);
+ }
  
- CAN NETWORK DRIVERS
- M:	Marc Kleine-Budde <mkl@pengutronix.de>
--M:	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+M:	Vincent Mailhol <mailhol@kernel.org>
- L:	linux-can@vger.kernel.org
- S:	Maintained
- W:	https://github.com/linux-can
-@@ -9080,7 +9080,7 @@ S:	Odd Fixes
- F:	drivers/net/ethernet/agere/
++static int can_bitrate_const_fill_info(struct sk_buff *skb,
++				       int ifla_can_bitrate_const,
++				       const u32 *bitrate_const, unsigned int cnt)
++{
++	return bitrate_const &&
++		nla_put(skb, ifla_can_bitrate_const,
++			sizeof(*bitrate_const) * cnt, bitrate_const);
++}
++
+ static int can_tdc_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+ 	struct nlattr *nest;
+@@ -686,17 +695,13 @@ static int can_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 		      priv->termination_const_cnt,
+ 		      priv->termination_const))) ||
  
- ETAS ES58X CAN/USB DRIVER
--M:	Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-+M:	Vincent Mailhol <mailhol@kernel.org>
- L:	linux-can@vger.kernel.org
- S:	Maintained
- F:	Documentation/networking/devlink/etas_es58x.rst
+-	    (priv->bitrate_const &&
+-	     nla_put(skb, IFLA_CAN_BITRATE_CONST,
+-		     sizeof(*priv->bitrate_const) *
+-		     priv->bitrate_const_cnt,
+-		     priv->bitrate_const)) ||
++	    can_bitrate_const_fill_info(skb, IFLA_CAN_BITRATE_CONST,
++					priv->bitrate_const,
++					priv->bitrate_const_cnt) ||
+ 
+-	    (priv->fd.data_bitrate_const &&
+-	     nla_put(skb, IFLA_CAN_DATA_BITRATE_CONST,
+-		     sizeof(*priv->fd.data_bitrate_const) *
+-		     priv->fd.data_bitrate_const_cnt,
+-		     priv->fd.data_bitrate_const)) ||
++	    can_bitrate_const_fill_info(skb, IFLA_CAN_DATA_BITRATE_CONST,
++					priv->fd.data_bitrate_const,
++					priv->fd.data_bitrate_const_cnt) ||
+ 
+ 	    (nla_put(skb, IFLA_CAN_BITRATE_MAX,
+ 		     sizeof(priv->bitrate_max),
 -- 
 2.51.0
 
