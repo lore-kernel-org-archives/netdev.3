@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79DC3002D3
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5365A2FF67C
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802447; cv=none; b=pmfB0aDgzWNyK0vn7YGPEeqmpxwr1WLoSUoP9GwfVoTZVhPg7ktldH8POeEXA0d3WnI81dP48IzrrAvlFSR6z8hzBi/byHKJjFCLiO8AFQwferqUFIkFDsNA/EM5R2abKUknpic19iPGhB99fRf4C1fn8qi3vxBap3rHC993WNk=
+	t=1758802450; cv=none; b=Yp3HDj2CeeB6yukFBpXR4XYvSRqjh1FDaQDSc3B4w5nY3Em+2ySMSxm1ZC2O6GogHjoI2pjPconM+mlQZ+aFWshRo7Phh3nuQXpLRJkHtz1DiNNKAlnb9bhR6hE2CyL8v/2gRz1lQcZ1/svG3/7KuLEwOgI93gFCWSzUrCOEtYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758802447; c=relaxed/simple;
-	bh=LXBwPtzIPzsiF9cPpC4tq+WoyqwIS/4mHj0clFC6H3g=;
+	s=arc-20240116; t=1758802450; c=relaxed/simple;
+	bh=8kazcmo+vnijgvTt+pY6bcaPfuTPkvoiYz3DMDAHuiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcTHrUTH0rePqDGDW7r8k2xPySeaB6GXUsF+SuGc8dE+de0DlWApQmotrefwE07qeGR2enLqI63SvAz2JXWH9omix+qPyoOeCuYVq0CluxzRVWAIl2jz3P+jJ//K5s+jEVdxh4xr/Okz/hPkBqhIQCnKV4j7aWU/jMnJ4kQorz8=
+	 MIME-Version; b=TQ6whJ0GGXrDdHyr6bcorunVfIcugnmZsCg6odfqECPjygD5QFj/JY1TjNc8fx54TTCshrmtWdMEI6ADG5KZ6tFmetP3HdhxLz1MPKTOqITL3OZEMp4CvTscTwnfi+2E96GI5epb85YNK8Ew+3yrHWZuqG8MDBGjLklJBP3XHdU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,31 +18,31 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-0000Vr-Gw; Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqx-0000Yp-54; Thu, 25 Sep 2025 14:13:39 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-000Pvg-0B;
-	Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqv-000Px5-1i;
+	Thu, 25 Sep 2025 14:13:37 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id BEC10479979;
-	Thu, 25 Sep 2025 12:13:35 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 470F0479991;
+	Thu, 25 Sep 2025 12:13:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 13/48] can: rcar_can: Convert to GENMASK()
-Date: Thu, 25 Sep 2025 14:07:50 +0200
-Message-ID: <20250925121332.848157-14-mkl@pengutronix.de>
+Subject: [PATCH net-next 37/48] can: netlink: make can_tdc_changelink() FD agnostic
+Date: Thu, 25 Sep 2025 14:08:14 +0200
+Message-ID: <20250925121332.848157-38-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -58,50 +58,60 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-Use the GENMASK() macro instead of open-coding the same operation.
+can_tdc_changelink() needs to access can_priv->fd making it
+specific to CAN FD. Change the function parameter from struct can_priv
+to struct data_bittiming_params. This way, the function becomes CAN FD
+agnostic and can be reused later on for the CAN XL TDC.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/3f947f0f91a8857a2cbce74807e42258e9f209ca.1755857536.git.geert+renesas@glider.be
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-9-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_can.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/can/dev/netlink.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index c47ee4e41eb6..7b94224bbc9b 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -114,16 +114,16 @@ static const struct can_bittiming_const rcar_can_bittiming_const = {
- };
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 17ed52d238e3..abff7b84fdce 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -172,12 +172,13 @@ static int can_validate(struct nlattr *tb[], struct nlattr *data[],
+ 	return 0;
+ }
  
- /* Control Register bits */
--#define RCAR_CAN_CTLR_BOM	(3 << 11) /* Bus-Off Recovery Mode Bits */
-+#define RCAR_CAN_CTLR_BOM	GENMASK(12, 11)	/* Bus-Off Recovery Mode Bits */
- #define RCAR_CAN_CTLR_BOM_ENT	(1 << 11) /* Entry to halt mode */
- 					/* at bus-off entry */
- #define RCAR_CAN_CTLR_SLPM	BIT(10)		/* Sleep Mode */
--#define RCAR_CAN_CTLR_CANM	(3 << 8) /* Operating Mode Select Bit */
-+#define RCAR_CAN_CTLR_CANM	GENMASK(9, 8)	/* Operating Mode Select Bit */
- #define RCAR_CAN_CTLR_CANM_HALT	(1 << 9)
- #define RCAR_CAN_CTLR_CANM_RESET (1 << 8)
- #define RCAR_CAN_CTLR_CANM_FORCE_RESET (3 << 8)
- #define RCAR_CAN_CTLR_MLM	BIT(3)		/* Message Lost Mode Select */
--#define RCAR_CAN_CTLR_IDFM	(3 << 1) /* ID Format Mode Select Bits */
-+#define RCAR_CAN_CTLR_IDFM	GENMASK(2, 1)	/* ID Format Mode Select Bits */
- #define RCAR_CAN_CTLR_IDFM_MIXED (1 << 2) /* Mixed ID mode */
- #define RCAR_CAN_CTLR_MBM	BIT(0)		/* Mailbox Mode select */
+-static int can_tdc_changelink(struct can_priv *priv, const struct nlattr *nla,
++static int can_tdc_changelink(struct data_bittiming_params *dbt_params,
++			      const struct nlattr *nla,
+ 			      struct netlink_ext_ack *extack)
+ {
+ 	struct nlattr *tb_tdc[IFLA_CAN_TDC_MAX + 1];
+ 	struct can_tdc tdc = { 0 };
+-	const struct can_tdc_const *tdc_const = priv->fd.tdc_const;
++	const struct can_tdc_const *tdc_const = dbt_params->tdc_const;
+ 	int err;
  
-@@ -139,7 +139,7 @@ static const struct can_bittiming_const rcar_can_bittiming_const = {
- #define RCAR_CAN_RFCR_RFE	BIT(0)		/* Receive FIFO Enable */
+ 	if (!tdc_const)
+@@ -215,7 +216,7 @@ static int can_tdc_changelink(struct can_priv *priv, const struct nlattr *nla,
+ 		tdc.tdcf = tdcf;
+ 	}
  
- /* Transmit FIFO Control Register bits */
--#define RCAR_CAN_TFCR_TFUST	(7 << 1)	/* Transmit FIFO Unsent Message */
-+#define RCAR_CAN_TFCR_TFUST	GENMASK(3, 1)	/* Transmit FIFO Unsent Message */
- 						/* Number Status Bits */
- #define RCAR_CAN_TFCR_TFUST_SHIFT 1		/* Offset of Transmit FIFO Unsent */
- 						/* Message Number Status Bits */
+-	priv->fd.tdc = tdc;
++	dbt_params->tdc = tdc;
+ 
+ 	return 0;
+ }
+@@ -382,8 +383,8 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 		memset(&priv->fd.tdc, 0, sizeof(priv->fd.tdc));
+ 		if (data[IFLA_CAN_TDC]) {
+ 			/* TDC parameters are provided: use them */
+-			err = can_tdc_changelink(priv, data[IFLA_CAN_TDC],
+-						 extack);
++			err = can_tdc_changelink(&priv->fd,
++						 data[IFLA_CAN_TDC], extack);
+ 			if (err) {
+ 				priv->ctrlmode &= ~CAN_CTRLMODE_FD_TDC_MASK;
+ 				return err;
 -- 
 2.51.0
 
