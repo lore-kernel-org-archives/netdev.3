@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E832FF14D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFA22FF658
 	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802444; cv=none; b=qIp8HlOqeowMC1GZA3A2bsycy1YgMQlJI2NWqSf7toYJVeX+e8OKCVXjj6fSnnuiFKf7y2jbQejVgw44EzgCfT+mLqgHDLRkarKymVmdI2MRSunfc2TnLGJAd0Z60ibqlEG4pf1wqAYbSx2VAjUh1I4SkWNE4UqJX2OFfxw2MBs=
+	t=1758802446; cv=none; b=R0ohmnrZg5v0ZitQTSkxcFhJFuK3kw+eV94nS0+CG2Mexal5Ix6fC0EEacJswLiIOxuC8R9tvw5HOBpAOPenF8CTDVzuUmbIn/3IUiYj8czDAWgKQYb16XROQQEnvyg0Ero9/P3jQR+xHGGSiwpPuDierzmO4CeQgp0H/63SSm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758802444; c=relaxed/simple;
-	bh=a//sQLZz51Y+M3k7aHkH7nytzMli7QEPQmBRLgdfCi8=;
+	s=arc-20240116; t=1758802446; c=relaxed/simple;
+	bh=NrdZIEdKemwhuR0SnronAVPstg2gY+k5b2/8NsWtUwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lP8XESV3LS1E438X7G5AeTYa7sckeREgnN3H8y/JGw58OFzOCiYDiV0xRrRqFafD/Ie6SAK8whbNdiFBF5AMzitKJ/Q4upiU+wb+wtGl2dxtOdimtqjUtlJoaBn40R8Xhzb7IBmL28xg0HUknR3RbrfqI1K1mjfD3aEbcr9dM74=
+	 MIME-Version; b=TaxWtppXockhjXKLyCYggMyuXWIRt/m9tJh5NYq9x/O+TMjkPx1yL7nUiltRun+hEE8IKpOcXUHQuN/FxnbGzJhCMG0ZUSbwppo7K+/i7JNN6QFKDlEOPjn1VxM15obiytcCWH+Z2JdwJxEnwi39s6JZpub4zGxCAwk6a5M8xZc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,32 +18,31 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-0000Vt-Hj; Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqx-0000ZB-FL; Thu, 25 Sep 2025 14:13:39 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-000Pvl-0X;
-	Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqv-000PxL-2X;
+	Thu, 25 Sep 2025 14:13:37 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E512147997C;
-	Thu, 25 Sep 2025 12:13:35 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 8A1AA479995;
+	Thu, 25 Sep 2025 12:13:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 16/48] can: rcar_can: BCR bitfield conversion
-Date: Thu, 25 Sep 2025 14:07:53 +0200
-Message-ID: <20250925121332.848157-17-mkl@pengutronix.de>
+Subject: [PATCH net-next 41/48] can: netlink: add can_data_bittiming_get_size()
+Date: Thu, 25 Sep 2025 14:08:18 +0200
+Message-ID: <20250925121332.848157-42-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -59,55 +58,82 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-Convert CAN Bit Configuration Register field accesses to use the
-FIELD_PREP() bitfield access macro.  While at it, fix the misspelling of
-BRP.
+Add the can_data_bittiming_get_size() function to factorise the logic
+to retrieve the size of below data bittiming parameters:
 
-This gets rid of custom function-like field preparation macros.
+  - data_bittiming
+  - data_bittiming_const
+  - data_bitrate_const
+  - tdc parameters
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/01cfaedba2be22515ba8700893ea7f113df959c0.1755857536.git.geert+renesas@glider.be
+This function will be reused later on for CAN XL.
+
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-13-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_can.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/can/dev/netlink.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 6f28dc935451..4c5c1f044691 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -152,10 +152,10 @@ static const struct can_bittiming_const rcar_can_bittiming_const = {
- #define RCAR_CAN_N_RX_MKREGS2	8
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 3c0675877f5e..5d2b524daea9 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -504,6 +504,23 @@ static size_t can_tdc_get_size(struct data_bittiming_params *dbt_params,
+ 	return size;
+ }
  
- /* Bit Configuration Register settings */
--#define RCAR_CAN_BCR_TSEG1(x)	(((x) & 0x0f) << 20)
--#define RCAR_CAN_BCR_BPR(x)	(((x) & 0x3ff) << 8)
--#define RCAR_CAN_BCR_SJW(x)	(((x) & 0x3) << 4)
--#define RCAR_CAN_BCR_TSEG2(x)	((x) & 0x07)
-+#define RCAR_CAN_BCR_TSEG1	GENMASK(23, 20)
-+#define RCAR_CAN_BCR_BRP	GENMASK(17, 8)
-+#define RCAR_CAN_BCR_SJW	GENMASK(5, 4)
-+#define RCAR_CAN_BCR_TSEG2	GENMASK(2, 0)
++static size_t can_data_bittiming_get_size(struct data_bittiming_params *dbt_params,
++					  u32 tdc_flags)
++{
++	size_t size = 0;
++
++	if (dbt_params->data_bittiming.bitrate)		/* IFLA_CAN_DATA_BITTIMING */
++		size += nla_total_size(sizeof(dbt_params->data_bittiming));
++	if (dbt_params->data_bittiming_const)		/* IFLA_CAN_DATA_BITTIMING_CONST */
++		size += nla_total_size(sizeof(*dbt_params->data_bittiming_const));
++	if (dbt_params->data_bitrate_const)		/* IFLA_CAN_DATA_BITRATE_CONST */
++		size += nla_total_size(sizeof(*dbt_params->data_bitrate_const) *
++				       dbt_params->data_bitrate_const_cnt);
++	size += can_tdc_get_size(dbt_params, tdc_flags);/* IFLA_CAN_TDC */
++
++	return size;
++}
++
+ static size_t can_ctrlmode_ext_get_size(void)
+ {
+ 	return nla_total_size(0) +		/* nest IFLA_CAN_CTRLMODE_EXT */
+@@ -525,10 +542,6 @@ static size_t can_get_size(const struct net_device *dev)
+ 	size += nla_total_size(sizeof(u32));			/* IFLA_CAN_RESTART_MS */
+ 	if (priv->do_get_berr_counter)				/* IFLA_CAN_BERR_COUNTER */
+ 		size += nla_total_size(sizeof(struct can_berr_counter));
+-	if (priv->fd.data_bittiming.bitrate)			/* IFLA_CAN_DATA_BITTIMING */
+-		size += nla_total_size(sizeof(struct can_bittiming));
+-	if (priv->fd.data_bittiming_const)			/* IFLA_CAN_DATA_BITTIMING_CONST */
+-		size += nla_total_size(sizeof(struct can_bittiming_const));
+ 	if (priv->termination_const) {
+ 		size += nla_total_size(sizeof(priv->termination));		/* IFLA_CAN_TERMINATION */
+ 		size += nla_total_size(sizeof(*priv->termination_const) *	/* IFLA_CAN_TERMINATION_CONST */
+@@ -537,14 +550,12 @@ static size_t can_get_size(const struct net_device *dev)
+ 	if (priv->bitrate_const)				/* IFLA_CAN_BITRATE_CONST */
+ 		size += nla_total_size(sizeof(*priv->bitrate_const) *
+ 				       priv->bitrate_const_cnt);
+-	if (priv->fd.data_bitrate_const)			/* IFLA_CAN_DATA_BITRATE_CONST */
+-		size += nla_total_size(sizeof(*priv->fd.data_bitrate_const) *
+-				       priv->fd.data_bitrate_const_cnt);
+ 	size += sizeof(priv->bitrate_max);			/* IFLA_CAN_BITRATE_MAX */
+-	size += can_tdc_get_size(&priv->fd,			/* IFLA_CAN_TDC */
+-				 priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
+ 	size += can_ctrlmode_ext_get_size();			/* IFLA_CAN_CTRLMODE_EXT */
  
- /* Mailbox and Mask Registers bits */
- #define RCAR_CAN_IDE		BIT(31)		/* ID Extension */
-@@ -428,9 +428,10 @@ static void rcar_can_set_bittiming(struct net_device *ndev)
- 	struct can_bittiming *bt = &priv->can.bittiming;
- 	u32 bcr;
++	size += can_data_bittiming_get_size(&priv->fd,
++					    priv->ctrlmode & CAN_CTRLMODE_FD_TDC_MASK);
++
+ 	return size;
+ }
  
--	bcr = RCAR_CAN_BCR_TSEG1(bt->phase_seg1 + bt->prop_seg - 1) |
--	      RCAR_CAN_BCR_BPR(bt->brp - 1) | RCAR_CAN_BCR_SJW(bt->sjw - 1) |
--	      RCAR_CAN_BCR_TSEG2(bt->phase_seg2 - 1);
-+	bcr = FIELD_PREP(RCAR_CAN_BCR_TSEG1, bt->phase_seg1 + bt->prop_seg - 1) |
-+	      FIELD_PREP(RCAR_CAN_BCR_BRP, bt->brp - 1) |
-+	      FIELD_PREP(RCAR_CAN_BCR_SJW, bt->sjw - 1) |
-+	      FIELD_PREP(RCAR_CAN_BCR_TSEG2, bt->phase_seg2 - 1);
- 	/* Don't overwrite CLKR with 32-bit BCR access; CLKR has 8-bit access.
- 	 * All the registers are big-endian but they get byte-swapped on 32-bit
- 	 * read/write (but not on 8-bit, contrary to the manuals)...
 -- 
 2.51.0
 
