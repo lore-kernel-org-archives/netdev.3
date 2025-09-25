@@ -1,120 +1,261 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7018223B63E
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 20:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C9158545
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 20:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758832973; cv=none; b=Cpw+2RKUlqiwgr0pJtRXJNqyHDledfj0qQXqRvL/yH5sfQxy2oAwHuMdYF95d4UmTuobBX99MLqd3I+oph4doa465gpyXV/mARgUXF/UrMUmYHee5YjP4GyKPvIvjeGq55ZELe78r/4+wrbgBETYR+foHACzR7EsO5O1S4SWy40=
+	t=1758833083; cv=none; b=lN7P9zlyXX6VJg63f7NrEdefmveLblssecGtpNzbV7jjuRRPVvd/SgYx0LmBRlQETbPp2gFbg2zGXnCIOiZeINIT/YHeZLGzwPdmYrgJQpbD1jmA/pZZ0g1cbGk/mp/XcYxueN7FaA5nK9dTYdOYwX3GZ2VEHhjqqGyao6aB2Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758832973; c=relaxed/simple;
-	bh=8V7qNMYmqmW763GV+RmYh7nchonJ2A54SiLgvLE3h+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nsC2ztI8UI2lp1emdw4ixHZP6WLpZrSTBY9aznseWImaOEH4hnvq2XFy93aFLVuvGC2Z6p0j2IqaRQ2SpSGsOC/c95xJGCb0sVIBZWdt9VY8mW1SS1oFUHhfxRsa8uFppyRG290ppPv1r1PivC1FlhrKk8QjqL1oEm+Vr0L6VjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qt5DGaZX; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758833083; c=relaxed/simple;
+	bh=jpzz5KKu7mVLg8N2FkfRyC/LAAPNrS5m9LzOSfk036w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N6tw7gWtUJ/E1WhjKbHTcVIWXULDSfW1izvq7lJUDW6ykpUSriYD+NAkkp7QyHZjI7qADA6o1OwNDePIJGIdr5RqLh3ZZ6c4d/971rinhzn7O5ILcW4JNjoGpZKfxM6tyrXDnmglPJ2U42qIyD4pnPJvr32SugpOjMmYwsFhbxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UHkNnS6c; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qt5DGaZX"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so1379514b3a.1
-        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 13:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758832972; x=1759437772; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tRIuI240VxoL1i6yBF368B0vqwfoxg8/jQr7RxkgoA0=;
-        b=Qt5DGaZX1F6BcVfbDeh2pgYWbxoiB66CixaTCMS1X0qJgFJ7sv9zF4P8YUbusrCkZn
-         Thv1155lhm8WMqcY00/IfaUF7KErMHYwTifVuAz8O9tf4gH1zTuY4Tncl7SydHFU5nmb
-         QjreD15UthJ+EsSSTEndTu8Zobpn+8R7n2ho37j6TjAp7Zu+Stwkdp71DX1ZKA8ZFzJM
-         52d/eKyXP7MWiCg2/fcq0bS2XsD0NmQBxyE5chwrvlPLretPVq67UxFAtBnvAcaSSD9z
-         8q1jcnFPhpdBP8V1JMqmbmeVGu59A1ZjM77q8njJh/tieoOI0JCotccjAIibQEv9vamm
-         P1vQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UHkNnS6c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758833080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ShBc3sADi99pflzPAl7XYjx/t5NLl7U3ArESHdv2cJs=;
+	b=UHkNnS6cWNscB+XL1ElnghLWHCg6aXEki3uwmc2BzZjNbeedqRZ7KhMzPCcpzzmA6UVAYE
+	akZgfX6rXlW70xNViyakbCxau4fq0xn98xJrzToMhovh7LgAUqa2GUP4lJkfwdSHihG0Z3
+	+qPckF6zGRG5qijXOftKK6noU9Bxzl8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-296-qKxCWf57PLGkzyVvgZKPcA-1; Thu, 25 Sep 2025 16:44:39 -0400
+X-MC-Unique: qKxCWf57PLGkzyVvgZKPcA-1
+X-Mimecast-MFC-AGG-ID: qKxCWf57PLGkzyVvgZKPcA_1758833078
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ef9218daf5so1066663f8f.1
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 13:44:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758832972; x=1759437772;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tRIuI240VxoL1i6yBF368B0vqwfoxg8/jQr7RxkgoA0=;
-        b=xKG57obyR+1qZLlF/gvnZ4J8mj8g4NCjtm/GGQCp7aeAkgGV85waYC+92YklXl0V/N
-         5CeNcY7f6UkBy0NEVSVBlOA6gYGDrIE4+x06pXDUJRBLlvuVvllkCOVKqUnIFll41GWd
-         g+RwyZokHIxnfWsDh8B3mdyG5uRvIJSpdeNzPbMyRfduTSyZ95o4tVoRJ/ec4gB/rPBs
-         T92Z2+k6qhXVCQlnbE2KS6Sd4viGPfpWvTCIzddj6bCbFzeEXmqW48EUqklWdr7wk2k/
-         LhpY+Z+NQRTIEncH2kE+8F6f3YDp6ZercXof+jnHKpl3XMaINgWZIMPaXVguVB022mk4
-         ot3Q==
-X-Gm-Message-State: AOJu0YzipDZz4XVLZPnHCRZ2l0+dIrFXOKyZboY5ZC8/CjXhE4GqXpSj
-	GzVMV3BKmXYlWzOrDK+HoEUk5govO4TblsEe4XLQ6omD9G+1g3dhRVOu
-X-Gm-Gg: ASbGncsVvcjeXuBoP/3xgACP2Hpk3wy1D3e8XONho+K64URG63PHoTVy2SGPaty941X
-	WNGSpyHJfHylfniZgMN8xAL1RijiihxNyinJ8+acxm8MzFJcAPrXY9cArtcdC77XaXZlkP9csTF
-	bUFXVFTbYpnMT5QQ4JdlXGIGKdTkHHSM1+wrmOay9+TXv1o9BYzCppNVCw6jr42TNkDSoRnpniL
-	Wh6zu3alPuizvBVPRHK7TbRI9oN8KZZECJyoiRX33wHs0O5G9QPfvKAuAI8Jz6MjvE8IYUPY2EQ
-	i+urLTevEO3Q3JQfdM23krf4hcXsommuZCVLjUPG/lP8NqXL+3vLDkJRoJw4s08rnkNp/JagZQN
-	5Z2kItm3Z6R+PbgkCKIhLEsBI8z5pmHJuqL7R1889/jGj3Slvng==
-X-Google-Smtp-Source: AGHT+IHo+8YH1s6Kn9VIM6VMYyZ/zlt5SgSlU/3nbxh+7PNrXmK56rGw/QyVJYd5VmMl+Z4GFCp5WA==
-X-Received: by 2002:a05:6a00:2395:b0:772:397b:b270 with SMTP id d2e1a72fcca58-78100fcf632mr3840217b3a.10.1758832971587;
-        Thu, 25 Sep 2025 13:42:51 -0700 (PDT)
-Received: from cortexauth ([2401:4900:889b:7045:558:5033:2b7a:fd84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102c06b0dsm2618843b3a.82.2025.09.25.13.42.37
+        d=1e100.net; s=20230601; t=1758833078; x=1759437878;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ShBc3sADi99pflzPAl7XYjx/t5NLl7U3ArESHdv2cJs=;
+        b=M0wZUFv56HMK0f5CsBCwcGs2y98GCDMb9fTivkDVMJMGulouNU0qVzf5Upiv6DtTUk
+         81ZbopGWrYF41yW9GAdDouwnQQn34RKpGsgpv4csqoTlamS0wTLNIPRxR7EnigOPwZA3
+         AN3+S/WMOdSWTHaY6on0gwruVy3qwr80tcIIdrW9RDtBpXsks4SFo6DkFz0ntN8cmq0A
+         3PgVw2fj1WFsKe6iEH+wMEKcc+Y9lpcxRYMiso2a3Yro1Q3KZnjYPLwWo4jFwEOa21sT
+         YH4yrLhK5eBT0SkVaVxcWy6ClOYJmlmn5M0IFUEL1s8cyhlclk6erU16cE++3nuPShKt
+         9VLQ==
+X-Gm-Message-State: AOJu0Yy0GGAwjnKGe4U+XXEC62iZt9tC4U7cch5NBixBP7kC/35z/6D/
+	shLH3tREzZNIe0X7zcR1FTrYCHdaRnwv/rgetPqiK0k+e2C9oCLF5+M1LE17E7857F4BHYefXta
+	8rXnOQ9GfuCktJhXbgcO1p7rBZ1ZGKCJ3xVAqLDCBo0O6SaWrP32Ydnx9hw==
+X-Gm-Gg: ASbGncu/gmNeHiYOFKVLr12802mC+GCVnjaa3FmJP3bOqK6fmEmH5HuolwQmYH5Xw9h
+	36+WFdOEc8ek0IV2+GGYRxTpf6AJnPpG8GplPKvY90mYlhUl+MgYqv/VPACzgA64S7UQrvdho6o
+	1zajn8/jjKo5IkWv0WRcowRTGDC6VtVqKIshuRMmTrvyjwMfPfGyokwMjv7BDBoIX7KV2Q6JyNS
+	MtdoLuz8WV7ieplt8nyqS3LFEdwxKrojS3emx2ZB7ofF/xjLYZQEIfA8QIze1IoByxgUBjfj0VM
+	HDiZ7EBn3BDNN55ncd9IJSwfJYzBZ2g7Ig==
+X-Received: by 2002:a05:6000:22c2:b0:3d0:b3cc:c1ff with SMTP id ffacd0b85a97d-40e4b85109emr4402966f8f.39.1758833077594;
+        Thu, 25 Sep 2025 13:44:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF9H4pXgEJYp/mY+SLqo5SFM1q5iomjIiFq9veLNl2Kz6otc8g9RCutwaptKIXiHBawbLcNtg==
+X-Received: by 2002:a05:6000:22c2:b0:3d0:b3cc:c1ff with SMTP id ffacd0b85a97d-40e4b85109emr4402936f8f.39.1758833077095;
+        Thu, 25 Sep 2025 13:44:37 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1538:2200:56d4:5975:4ce3:246f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5602df0sm4230912f8f.36.2025.09.25.13.44.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 13:42:51 -0700 (PDT)
-From: Deepak Sharma <deepak.sharma.472935@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	pwn9uin@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	david.hunter.linux@gmail.com,
-	skhan@linuxfoundation.org,
-	syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com,
-	Deepak Sharma <deepak.sharma.472935@gmail.com>,
-	syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
-Subject: [PATCH] Fix the cleanup on alloc_mpc failure in atm_mpoa_mpoad_attach
-Date: Fri, 26 Sep 2025 02:10:28 +0530
-Message-ID: <20250925204028.232320-1-deepak.sharma.472935@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        Thu, 25 Sep 2025 13:44:36 -0700 (PDT)
+Date: Thu, 25 Sep 2025 16:44:33 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel Jurgens <danielj@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, alex.williamson@redhat.com,
+	pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
+	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
+	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
+	andrew+netdev@lunn.ch, edumazet@google.com
+Subject: Re: [PATCH net-next v3 11/11] virtio_net: Add get ethtool flow rules
+ ops
+Message-ID: <20250925164053-mutt-send-email-mst@kernel.org>
+References: <20250923141920.283862-1-danielj@nvidia.com>
+ <20250923141920.283862-12-danielj@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923141920.283862-12-danielj@nvidia.com>
 
-Syzbot reported a warning at `add_timer`, which is called from the
-`atm_mpoa_mpoad_attach` function
+On Tue, Sep 23, 2025 at 09:19:20AM -0500, Daniel Jurgens wrote:
+> - Get total number of rules. There's no user interface for this. It is
+>   used to allocate an appropriately sized buffer for getting all the
+>   rules.
+> 
+> - Get specific rule
+> $ ethtool -u ens9 rule 0
+> 	Filter: 0
+> 		Rule Type: UDP over IPv4
+> 		Src IP addr: 0.0.0.0 mask: 255.255.255.255
+> 		Dest IP addr: 192.168.5.2 mask: 0.0.0.0
+> 		TOS: 0x0 mask: 0xff
+> 		Src port: 0 mask: 0xffff
+> 		Dest port: 4321 mask: 0x0
+> 		Action: Direct to queue 16
+> 
+> - Get all rules:
+> $ ethtool -u ens9
+> 31 RX rings available
+> Total 2 rules
+> 
+> Filter: 0
+>         Rule Type: UDP over IPv4
+>         Src IP addr: 0.0.0.0 mask: 255.255.255.255
+>         Dest IP addr: 192.168.5.2 mask: 0.0.0.0
+> ...
+> 
+> Filter: 1
+>         Flow Type: Raw Ethernet
+>         Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+>         Dest MAC addr: 08:11:22:33:44:54 mask: 00:00:00:00:00:00
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/net/virtio_net/virtio_net_ff.c   | 48 ++++++++++++++++++++++++
+>  drivers/net/virtio_net/virtio_net_ff.h   |  6 +++
+>  drivers/net/virtio_net/virtio_net_main.c | 23 ++++++++++++
+>  3 files changed, 77 insertions(+)
+> 
+> diff --git a/drivers/net/virtio_net/virtio_net_ff.c b/drivers/net/virtio_net/virtio_net_ff.c
+> index d4a34958cc42..5488300a4fc3 100644
+> --- a/drivers/net/virtio_net/virtio_net_ff.c
+> +++ b/drivers/net/virtio_net/virtio_net_ff.c
+> @@ -809,6 +809,54 @@ int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location)
+>  	return err;
+>  }
+>  
+> +int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
+> +				   struct ethtool_rxnfc *info)
+> +{
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	info->rule_cnt = ff->ethtool.num_rules;
+> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit) | RX_CLS_LOC_SPECIAL;
 
-The reason for this warning is that in the allocation failure by `alloc_mpc`,
-there is lack of proper cleanup. And in the event that ATMMPC_CTRL ioctl is
-called on to again, it will lead to the attempt of starting an already 
-started timer from the previous ioctl call
+hmm. what if rules_limit has the high bit set?
+or matches any of
+#define RX_CLS_LOC_ANY          0xffffffff
+#define RX_CLS_LOC_FIRST        0xfffffffe
+#define RX_CLS_LOC_LAST         0xfffffffd
+by chance?
 
-Do a `timer_delete` before returning from the `alloc_mpc` failure
 
-Reported-by: syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07b635b9c111c566af8b
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Deepak Sharma <deepak.sharma.472935@gmail.com>
----
- net/atm/mpc.c | 3 +++
- 1 file changed, 3 insertions(+)
+> +
+> +	return 0;
+> +}
+> +
+> +int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
+> +			     struct ethtool_rxnfc *info)
+> +{
+> +	struct virtnet_ethtool_rule *eth_rule;
+> +
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	eth_rule = xa_load(&ff->ethtool.rules, info->fs.location);
+> +	if (!eth_rule)
+> +		return -ENOENT;
+> +
+> +	info->fs = eth_rule->flow_spec;
+> +
+> +	return 0;
+> +}
+> +
+> +int
+> +virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
+> +			      struct ethtool_rxnfc *info, u32 *rule_locs)
+> +{
+> +	struct virtnet_ethtool_rule *eth_rule;
+> +	unsigned long i = 0;
+> +	int idx = 0;
+> +
+> +	if (!ff->ff_supported)
+> +		return -EOPNOTSUPP;
+> +
+> +	xa_for_each(&ff->ethtool.rules, i, eth_rule)
+> +		rule_locs[idx++] = i;
+> +
+> +	info->data = le32_to_cpu(ff->ff_caps->rules_limit);
 
-diff --git a/net/atm/mpc.c b/net/atm/mpc.c
-index f6b447bba329..cd3295c3c480 100644
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -814,7 +814,10 @@ static int atm_mpoa_mpoad_attach(struct atm_vcc *vcc, int arg)
- 		dprintk("allocating new mpc for itf %d\n", arg);
- 		mpc = alloc_mpc();
- 		if (mpc == NULL)
-+		{
-+			timer_delete(&mpc_timer);
- 			return -ENOMEM;
-+		}
- 		mpc->dev_num = arg;
- 		mpc->dev = find_lec_by_itfnum(arg);
- 					/* NULL if there was no lec */
--- 
-2.51.0
+same question
+
+> +
+> +	return 0;
+> +}
+> +
+>  static size_t get_mask_size(u16 type)
+>  {
+>  	switch (type) {
+> diff --git a/drivers/net/virtio_net/virtio_net_ff.h b/drivers/net/virtio_net/virtio_net_ff.h
+> index 94b575fbd9ed..4bb41e64cc59 100644
+> --- a/drivers/net/virtio_net/virtio_net_ff.h
+> +++ b/drivers/net/virtio_net/virtio_net_ff.h
+> @@ -28,6 +28,12 @@ void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev);
+>  
+>  void virtnet_ff_cleanup(struct virtnet_ff *ff);
+>  
+> +int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
+> +				   struct ethtool_rxnfc *info);
+> +int virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
+> +				  struct ethtool_rxnfc *info, u32 *rule_locs);
+> +int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
+> +			     struct ethtool_rxnfc *info);
+>  int virtnet_ethtool_flow_insert(struct virtnet_ff *ff,
+>  				struct ethtool_rx_flow_spec *fs,
+>  				u16 curr_queue_pairs);
+> diff --git a/drivers/net/virtio_net/virtio_net_main.c b/drivers/net/virtio_net/virtio_net_main.c
+> index 808988cdf265..e8336925c912 100644
+> --- a/drivers/net/virtio_net/virtio_net_main.c
+> +++ b/drivers/net/virtio_net/virtio_net_main.c
+> @@ -5619,6 +5619,28 @@ static u32 virtnet_get_rx_ring_count(struct net_device *dev)
+>  	return vi->curr_queue_pairs;
+>  }
+>  
+> +static int virtnet_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info, u32 *rule_locs)
+> +{
+> +	struct virtnet_info *vi = netdev_priv(dev);
+> +	int rc = 0;
+> +
+> +	switch (info->cmd) {
+> +	case ETHTOOL_GRXCLSRLCNT:
+> +		rc = virtnet_ethtool_get_flow_count(&vi->ff, info);
+> +		break;
+> +	case ETHTOOL_GRXCLSRULE:
+> +		rc = virtnet_ethtool_get_flow(&vi->ff, info);
+> +		break;
+> +	case ETHTOOL_GRXCLSRLALL:
+> +		rc = virtnet_ethtool_get_all_flows(&vi->ff, info, rule_locs);
+> +		break;
+> +	default:
+> +		rc = -EOPNOTSUPP;
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+>  static int virtnet_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info)
+>  {
+>  	struct virtnet_info *vi = netdev_priv(dev);
+> @@ -5660,6 +5682,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
+>  	.get_rxfh_fields = virtnet_get_hashflow,
+>  	.set_rxfh_fields = virtnet_set_hashflow,
+>  	.get_rx_ring_count = virtnet_get_rx_ring_count,
+> +	.get_rxnfc = virtnet_get_rxnfc,
+>  	.set_rxnfc = virtnet_set_rxnfc,
+>  };
+>  
+> -- 
+> 2.45.0
 
