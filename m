@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CEE2FCC0F
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE082FF659
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802449; cv=none; b=AYeOfthkwUosEmIE1uhbEgP48hnoLV3ctf5Xj9+LLIEfEKywHicuqNKb0wTA4cstw8YGDLC9xfHJbk39F++n5Oq0S1H+H6PrXYoEdmW8gL1FjBUTV6y5gAWxCmaCxc91suOFGgV21hqyFzj0VEajSUeqx62R1LkHlKvUXq4kgik=
+	t=1758802449; cv=none; b=P+LBpCPa+a0DvaI3Ga0UlL7WIsT4G3SNMcAAwIo9Jc3LDPv1uJ5gwRBV/ZAycym/kH4I5ObIX5mo5XY1f4jsdggmjBLjT7Eo6KfuBF5VFqejzogxba4gDIwHE+s4ME0Qw2EUOVN2soCiRHpVrX93sJhOlApVuA2oK6aNO/X8ZeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1758802449; c=relaxed/simple;
-	bh=v32u9sx+h2lMck8a93a/YOXyqKrFvoIeJWCYl2erV/I=;
+	bh=dLRB8xSJ5Bf8h2CAv6aJzVHTA8Yj8WBCfUiaa37rtFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4mhAFu1a4omw5MvIuJgPwjQ+R6huZ1v99fphWgw3yiKhFXOqEH7+19QtY1FGDDlMzPNeXa2OOKJnG70lLKB8KrE0LJJoI66H/LPWD9zosuZkQIkYKHqcZigkTJHZKa0Av9Jsk/I+FcrSVJ2HfmRWcnfh8WHWzPsN01pcijAw28=
+	 MIME-Version; b=cvCNlBQwRGb4nDL+o+mUZ/1XYnZVpcp+B2VS4T2TYl+nfmt734XOgB7mC9Q1IpO6MTrKKKaqTiYFAuVdDIBhevViT+KjLJ1xEXsRznKF3s/69fuGhST1zVue5tgtMdgpZvrYp4Ot1qF4sYDSXFQh5HDZO9BEBG+AO4ofNvSoaHQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqv-0000WJ-8J; Thu, 25 Sep 2025 14:13:37 +0200
+	id 1v1kqw-0000YH-8M; Thu, 25 Sep 2025 14:13:38 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-000Pvs-14;
+	id 1v1kqu-000Pwd-36;
 	Thu, 25 Sep 2025 14:13:36 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 1508E47997F;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B118A479988;
 	Thu, 25 Sep 2025 12:13:36 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 19/48] can: rcar_can: Convert to %pe
-Date: Thu, 25 Sep 2025 14:07:56 +0200
-Message-ID: <20250925121332.848157-20-mkl@pengutronix.de>
+Subject: [PATCH net-next 28/48] can: enable CAN XL for virtual CAN devices by default
+Date: Thu, 25 Sep 2025 14:08:05 +0200
+Message-ID: <20250925121332.848157-29-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -59,68 +58,61 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Vincent Mailhol <mailhol@kernel.org>
 
-Replace numerical error codes by mnemotechnic error codes, to improve
-the user experience in case of errors.
+In commit 97edec3a11cf ("can: enable CAN FD for virtual CAN devices by
+default"), vcan and vxcan default MTU was set to CANFD_MTU by default.
+The reason was that users were confused on how to activate CAN FD on
+virtual interfaces.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/adb2dc49c78b45191de410f645a5e423d341f94e.1755857536.git.geert+renesas@glider.be
+Following the introduction of CAN XL, the same logic should be
+applied. Set the MTU to CANXL_MTU by default.
+
+The users who really wish to use a Classical CAN only or a CAN FD
+virtual device can do respectively:
+
+  $ ip link set vcan0 mtu 16
+
+or
+
+  $ ip link set vcan0 mtu 72
+
+to force the old behaviour.
+
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20250923-can-fix-mtu-v3-4-581bde113f52@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_can.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/can/vcan.c  | 2 +-
+ drivers/net/can/vxcan.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 51bf8f7e7182..5f85f4e27205 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -521,20 +521,20 @@ static int rcar_can_open(struct net_device *ndev)
- 	}
- 	err = clk_prepare_enable(priv->can_clk);
- 	if (err) {
--		netdev_err(ndev, "failed to enable CAN clock, error %d\n",
--			   err);
-+		netdev_err(ndev, "failed to enable CAN clock: %pe\n",
-+			   ERR_PTR(err));
- 		goto out_rpm;
- 	}
- 	err = open_candev(ndev);
- 	if (err) {
--		netdev_err(ndev, "open_candev() failed, error %d\n", err);
-+		netdev_err(ndev, "open_candev() failed %pe\n", ERR_PTR(err));
- 		goto out_can_clock;
- 	}
- 	napi_enable(&priv->napi);
- 	err = request_irq(ndev->irq, rcar_can_interrupt, 0, ndev->name, ndev);
- 	if (err) {
--		netdev_err(ndev, "request_irq(%d) failed, error %d\n",
--			   ndev->irq, err);
-+		netdev_err(ndev, "request_irq(%d) failed %pe\n", ndev->irq,
-+			   ERR_PTR(err));
- 		goto out_close;
- 	}
- 	rcar_can_start(ndev);
-@@ -786,8 +786,8 @@ static int rcar_can_probe(struct platform_device *pdev)
- 	}
- 	priv->can_clk = devm_clk_get(dev, clock_names[clock_select]);
- 	if (IS_ERR(priv->can_clk)) {
-+		dev_err(dev, "cannot get CAN clock: %pe\n", priv->can_clk);
- 		err = PTR_ERR(priv->can_clk);
--		dev_err(dev, "cannot get CAN clock, error %d\n", err);
- 		goto fail_clk;
- 	}
+diff --git a/drivers/net/can/vcan.c b/drivers/net/can/vcan.c
+index f67e85807100..fdc662aea279 100644
+--- a/drivers/net/can/vcan.c
++++ b/drivers/net/can/vcan.c
+@@ -156,7 +156,7 @@ static const struct ethtool_ops vcan_ethtool_ops = {
+ static void vcan_setup(struct net_device *dev)
+ {
+ 	dev->type		= ARPHRD_CAN;
+-	dev->mtu		= CANFD_MTU;
++	dev->mtu		= CANXL_MTU;
+ 	dev->hard_header_len	= 0;
+ 	dev->addr_len		= 0;
+ 	dev->tx_queue_len	= 0;
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index 99a78a757167..b2c19f8c5f8e 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -156,7 +156,7 @@ static void vxcan_setup(struct net_device *dev)
+ 	struct can_ml_priv *can_ml;
  
-@@ -813,7 +813,7 @@ static int rcar_can_probe(struct platform_device *pdev)
- 
- 	err = register_candev(ndev);
- 	if (err) {
--		dev_err(dev, "register_candev() failed, error %d\n", err);
-+		dev_err(dev, "register_candev() failed %pe\n", ERR_PTR(err));
- 		goto fail_rpm;
- 	}
- 
+ 	dev->type		= ARPHRD_CAN;
+-	dev->mtu		= CANFD_MTU;
++	dev->mtu		= CANXL_MTU;
+ 	dev->hard_header_len	= 0;
+ 	dev->addr_len		= 0;
+ 	dev->tx_queue_len	= 0;
 -- 
 2.51.0
 
