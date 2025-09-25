@@ -1,63 +1,89 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145032E8DFF
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 07:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4260A157A5A;
+	Thu, 25 Sep 2025 07:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758784745; cv=none; b=Y0FXCmf42g+9kPfbk2PLzvrbbcPkND8vE+ry+SbP2s59w+Vz/A68cQvQOSe+TatrPGVYlBeP3YD7dFpp5ZWEfA5x2khD4TcLfigRLN6YABgmu/jfZZOXVooqLjBOtYHnKuHeQ43D5dClO/YMJW+35tfiQa0hY5q2xBwhy+tzAQM=
+	t=1758784837; cv=none; b=L8jU20m/Ro3c4PgZq7t/+7X3qbrlP8xn17dCEYzelOMUmsZhsbZaXiPPdh0Igi6xDHMyBwmVL9+pR7FCP2XMCzcRCOI8zgcLAAQSvPwpy+72FZ6yJZOl0BcP3XJWPN1SRy+Nhz4yflfadn0tlWunna0nIjCkQ9Q33fMCSHBv2/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758784745; c=relaxed/simple;
-	bh=Ka6Xvi4Yww6lCaGWo00VHFXKK6uSJ9eN8nTKNsJT8aM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=Vxkytro8Ok4tTj/lWZSyODbMqbaDzFbq6C854Iu67q2bcVWr5ykutLKCLHmzkaFnC2f1xePR1dmmF7t3r0BOZvq62x/sDMFVIiOnouEXdwqw+adZpRQ8XsgBdtpY3L4LglZA6VXAipndj4YJ+4KeMTkQmhyVERGmmjzaF/hlcg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4247f4fda63so8224555ab.2
-        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 00:19:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758784742; x=1759389542;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ka6Xvi4Yww6lCaGWo00VHFXKK6uSJ9eN8nTKNsJT8aM=;
-        b=xGCgxUEKLUXVREGt1CBOjwLxG/bwsQIk80FS63bjG5dAPR0QIfamJZ56H7LDCFpS3N
-         Fig/Zpi/sfjMykA66LwTR6u4oeyyJiUL5ND9vk39/aUAxc+MZnRTHCwln4+qk8XnnZ6W
-         LvI9Xz/hYEU83f3X2Be4Ealq4ywt120LxRzJLx903Qq6Kt9Y0G38jA+/Vw0XJQ2luG49
-         sN63b0+IjiJlvc467kahI4IouDG+jjuLY3WeBb3m4QFz2IlDdphJdFHFoRlw/7krkUt+
-         F+woHMHLTYkaYUzD9PvrAF25rpr1muMQaQF9OZ5iYanLpjUEciRcBCLbOIRWlBG3Dn1Z
-         nxLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvpg5azMzSqUPxlIanRp8i852fDZvw+jEiQAwC9Gwpe/GIj42X6zDsblQ+uUq+TDQGTLYGCEc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVQQJAc4Z8KRh8SC1d/KFJyKus6I7K0GJCpdNgXyHf+rxE+THj
-	pr+lTEPicHVopHrtPC/mwnWsv/KRIM5gYW8kEgWT/6r4c869iLMGkFZAFNNzq+pkS0WyWtnN+DT
-	UWC/XjUkxWV656UMSkV6ykt72rHxBUbuqqgrGFYXi+VjKiYk8OAXWoyQlKjM=
-X-Google-Smtp-Source: AGHT+IFhvykbd4EPbrKfpqQ6rCbpWctQsXUWlvAS1AXrjYMd7F7GLkmW3ZINEeZTv6e4obpuAhGzkd+zVdFxfjKZ2tBjxKdeeQcI
+	s=arc-20240116; t=1758784837; c=relaxed/simple;
+	bh=gjHLPCBlwWxNDU5lSABc9GZLWQJ25pg9E2aj27Xg248=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lVPcacNFwP2cKvlYi7UKkY2ZpGSKuJCvLU5ZMwZHd7aZeY0Z/N7R/3PN9AS+IRzK0jmUGMNqp+uaW6J4EuQcFriFnc/4HdX6zIDgYmaj9q0mpcDYfp4g3BhhexXN6Ru8ud5SAGWnm6rBCMizbJkp5dFodf2WiY+kYMJ262cyPso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cXPrl13JMz9sRr;
+	Thu, 25 Sep 2025 09:06:15 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id rgCLZvrocVzQ; Thu, 25 Sep 2025 09:06:15 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cXPrl0LBsz9sRk;
+	Thu, 25 Sep 2025 09:06:15 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EF9D78B76D;
+	Thu, 25 Sep 2025 09:06:14 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id xlLlTdw8seGO; Thu, 25 Sep 2025 09:06:14 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 270738B76C;
+	Thu, 25 Sep 2025 09:06:14 +0200 (CEST)
+Message-ID: <f229764d-7dc5-4dfb-84d5-1dacec7edb86@csgroup.eu>
+Date: Thu, 25 Sep 2025 09:06:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1aae:b0:424:7ef5:aeb with SMTP id
- e9e14a558f8ab-4259563befbmr33661665ab.17.1758784742302; Thu, 25 Sep 2025
- 00:19:02 -0700 (PDT)
-Date: Thu, 25 Sep 2025 00:19:02 -0700
-In-Reply-To: <CANpmjNM7cCDoLUGV4J+MfAbQFedmEXhNrhf7fYiFs7Gi7Yz0mg@mail.gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d4ece6.a00a0220.303701.0004.GAE@google.com>
-Subject: Re: Re: [syzbot ci] Re: fixes two virtio-net related bugs.
-From: syzbot ci <syzbot@syzkaller.appspotmail.com>
-To: elver@google.com
-Cc: alvaro.karsz@solid-run.com, andrew@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, elver@google.com, eperezma@redhat.com, 
-	hengqi@linux.alibaba.com, jasowang@redhat.com, jiri@resnulli.us, 
-	kuba@kernel.org, mst@redhat.com, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
-	virtualization@lists.linux.dev, willemb@google.com, 
-	xuanzhuo@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] net: wan: framer: Add version sysfs attribute for the
+ Lantiq PEF2256 framer
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Herve Codina <herve.codina@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <77a27941d6924b1009df0162ed9f0fa07ed6e431.1758726302.git.christophe.leroy@csgroup.eu>
+ <20250924164811.3952a2d7@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250924164811.3952a2d7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Failed to process the command. Contact syzkaller@googlegroups.com.
 
+Le 25/09/2025 à 01:48, Jakub Kicinski a écrit :
+> On Wed, 24 Sep 2025 17:06:47 +0200 Christophe Leroy wrote:
+>> Lantiq PEF2256 framer has some little differences in behaviour
+>> depending on its version.
+>>
+>> Add a sysfs attribute to allow user applications to know the
+>> version.
+> 
+> Outsider question perhaps but what is the version of?
+> It sounds like a HW revision but point releases for ASICs are quite
+> uncommon. So I suspect it's some SW/FW version?
+
+The datasheet of the component just calls it 'version'.
+
+Among all registers there is a register called 'version status register' 
+which contains a single field named 'Version Number of chip'. This field 
+is an 8 bits value and the documentation tells that value 0x00 is 
+version 1.2, value 0x10 is version 2.1, etc...
+
+> 
+> We generally recommend using devlink dev info for reporting all sort
+> of versions...
+
+Ok, I'll look at devlink. Based on the above, what type of 
+DEVLINK_INFO_VERSION_GENERIC_XXXX would you use here ?
+
+Thanks
+Christophe
