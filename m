@@ -1,78 +1,164 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E3C286D46
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 14:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E124C98;
+	Thu, 25 Sep 2025 14:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758809541; cv=none; b=VF7z/3yYDqlt9rJBZRKzrfkBmGM//oKK3ZG1dcKxR+4HtQehvrMcGAxrE+ZBik5nhx+8pDaCkF5MromAsRKH+DRHEfLGcVEhzGsLPqEIBr03TtVH0eV3JXlarSz8YzVuOuCIVhcRoJiElRyNPdwWsvhY/ifx9UHZP6N49P6/xIA=
+	t=1758809627; cv=none; b=o/lqE4eYwxejBx+OZjj0khZvu3uVd1LKq/e5LCwmyrI1x9L5URlacVTSMMNzEHoEqGpTynf8GpKlc7akbkP0VY+R8o9hbM3yz45UfUva84mWdCxgKuI/Nh9dxPjto1GqqjvyWSPAFkPWDyIGdc136FIx5yALBcsVE++eOBTG9S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758809541; c=relaxed/simple;
-	bh=RHX32Lv0zBGA+Ifx4l3xidfpMlf4syedyCzARChzofA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KnxPjm6z4BMBm3h39uF+hsDpnFbp+1og9b88Hj1/Ex71a82bwR4yh2RSTPFpsUgmJ3G/AyBsd7FXHoGkx5E/B7bjR57mkB4iOFBMR8hOeIJtFxghis7X7Do4sY6KN5dJjtWNj5pCYEx2HDtb/Shb3T4fhLUfj5qleMC1EWi6RHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cXp43DwU; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1758809627; c=relaxed/simple;
+	bh=oQeUG9XGk5RTE/O8XVegSIwupJtyQgWbuQrCJEyfMNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TYKADN1t2SeK/NDq/A0yb60ofRTZ4D3J5Yn7YXQtveO0gv58M7pYk+5EB7xY90mto8PWMj6RWO5Ar4UMYbKtcgGsRcql0PXx05B+gLLzxO1FWWX9q+cks1uvL0Nlnb+bgjIDaiG4cZvQlgj3S4d9mLUi3htn1fQdjqmIDTG1wFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=FBqAIEjf; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cXp43DwU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0vsa83PWpYghu0vYpD8NlWR/z+L8lFEP0HBrSpLi7cw=; b=cXp43DwUOn+lTSYb/1IyyBOBXd
-	B4vgIhsgMELCNFSCRIaTz9ek2VarIFufohpmZsfokORdOPvv7tb2janxMc79CEr6L/dpee6tpKuJ3
-	Q77OXFDwduTysz6IvcNBgD3vx8fscFFQwdf0PtXbb6NVGE3x+SjJObSSvJDLEY8lUsnc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v1mhS-009TNG-0Z; Thu, 25 Sep 2025 16:11:58 +0200
-Date: Thu, 25 Sep 2025 16:11:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Dust Li <dust.li@linux.alibaba.com>
-Subject: Re: [PATCH net-next v3] eea: Add basic driver framework for Alibaba
- Elastic Ethernet Adaptor
-Message-ID: <bf3a6b81-de2e-4c63-968e-5f0937727855@lunn.ch>
-References: <20250919014856.20267-1-xuanzhuo@linux.alibaba.com>
- <cfae046e-106d-4963-88be-8ca116859538@intel.com>
- <1758782566.2551036-1-xuanzhuo@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="FBqAIEjf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=I0t7ozr8R0y7L7Ia/qOG5GKnLAJmLy1UlDO9kkxmSJw=; b=FBqAIEjfEYjB7gCRJfZ/zgmY87
+	mDOE39iI2LRBclqTdgQT8ldj1khf6g/FtegjZwMwBmxWPg3NWSBPyQcLNdqfLHPLXfePo1xaAHkY9
+	KfmAG1sJ/aY5STKe7z/qdgv+mkX4jlHWJqmjOnvzV6poZBfgZ8E61G6plgkdEUcruFyq0izcToLpA
+	s2q6bw8X1ZiL0bt16WdLnmnB8BbX/cyg6vjVaULT/Hc6blqANh6c9GxC6n8P9l5foJ1z7KZPj6gRc
+	HrUteKtA3XlO17gu+R0q7g0yT3w51lN8TqEiTuXdcv5F85OEPR6YWXCG9y5xr6xH6IqFx1MbnKfyT
+	LQz9WM8A==;
+Received: from [122.175.9.182] (port=9537 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1v1mj2-00000005fRb-1Afp;
+	Thu, 25 Sep 2025 10:13:36 -0400
+From: Parvathi Pudi <parvathi@couthit.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	danishanwar@ti.com,
+	parvathi@couthit.com,
+	rogerq@kernel.org,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	afd@ti.com
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	pratheesh@ti.com,
+	prajith@ti.com,
+	vigneshr@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com
+Subject: [PATCH net-next 0/3] RSTP SWITCH support for PRU-ICSSM Ethernet driver
+Date: Thu, 25 Sep 2025 19:32:09 +0530
+Message-ID: <20250925141246.3433603-1-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1758782566.2551036-1-xuanzhuo@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> > > +ALIBABA ELASTIC ETHERNET ADAPTOR DRIVER
-> > > +M:	Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> > > +M:	Wen Gu <guwen@linux.alibaba.com>
-> > > +R:	Philo Lu <lulie@linux.alibaba.com>
-> > > +L:	netdev@vger.kernel.org
-> > > +S:	Supported
-> >
-> > this is reserved for companies that run netdev-ci tests on their HW
-> 
-> Yes, so I think this is fine for us. In the future, the Alibaba Cloud instance
-> will provide the EEA NIC, and we will test it on such a machine.
+Hi,
 
-Until you do have such tests, and can show us the test reports, please
-don't use Supported.
+The DUAL-EMAC patch series for Megabit Industrial Communication Sub-system
+(ICSSM), which provides the foundational support for Ethernet functionality
+over PRU-ICSS on the TI SOCs (AM335x, AM437x, and AM57x), was merged into
+net-next recently [1].
 
-	Andrew
+This patch series enhances the PRU-ICSSM Ethernet driver to support
+RSTP SWITCH mode, which has been implemented based on "switchdev" and
+interacts with "mstp daemon" to support Rapid Spanning Tree Protocol
+(RSTP) as well.
+
+Once the RSTP SWITCH mode is enabled, forwarding of Ethernet packets using
+either the traditional store-and-forward mechanism or via cut-through is
+offloaded to the two PRU based Ethernet interfaces available within the
+ICSSM. The firmware running on the PRU inspects the STP port states and
+performs multiple checks before forwarding a packet. This improves the
+overall system performance and significantly reduces the packet forwarding
+latency.
+
+Protocol switching from dual EMAC to RSTP SWITCH mode can be done as follows.
+
+Assuming eth2 and eth3 are the two physical ports of the ICSS2 instance:
+
+>> brctl addbr br0
+>> ip maddr add 01:80:c2:00:00:00 dev br0
+>> ip link set dev br0 address $(cat /sys/class/net/eth2/address)
+>> brctl addif br0 eth2
+>> brctl addif br0 eth3
+>> mstpd
+>> brctl stp br0 on
+>> mstpctl setforcevers br0 rstp
+>> ip link set dev br0 up
+
+To revert back to the default dual EMAC mode, the steps are as follows:
+
+>> ip link set dev br0 down
+>> brctl delif br0 eth2
+>> brctl delif br0 eth3
+>> brctl delbr br0
+
+The patches presented in this series have gone through the patch verification
+tools and no warnings or errors are reported.
+
+Sample test logs obtained from AM33x, AM43x and AM57x verifying the
+functionality on Linux next kernel are available here:
+
+[Interface up Testing](https://gist.github.com/ParvathiPudi/ee90d6f7778f01660eec714d128ee224)
+
+[Ping Testing](https://gist.github.com/ParvathiPudi/ea7fc58da454b9c1d15517f84a502ae2)
+
+[Iperf Testing](https://gist.github.com/ParvathiPudi/505d8c6e9de231098215c59b66dee20b)
+
+[1] https://lore.kernel.org/all/20250912104741.528721-1-parvathi@couthit.com/
+
+Thanks and Regards,
+Parvathi.
+
+Roger Quadros (3):
+  net: ti: icssm-prueth: Adds helper functions to configure and maintain
+    FDB
+  net: ti: icssm-prueth: Adds switchdev support for icssm_prueth driver
+  net: ti: icssm-prueth: Adds support for ICSSM RSTP switch
+
+ drivers/net/ethernet/ti/Makefile              |   2 +-
+ drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 554 +++++++++-
+ drivers/net/ethernet/ti/icssm/icssm_prueth.h  |  27 +-
+ .../ethernet/ti/icssm/icssm_prueth_fdb_tbl.h  |  66 ++
+ .../ethernet/ti/icssm/icssm_prueth_switch.c   | 999 ++++++++++++++++++
+ .../ethernet/ti/icssm/icssm_prueth_switch.h   |  37 +
+ drivers/net/ethernet/ti/icssm/icssm_switch.h  |  82 ++
+ .../net/ethernet/ti/icssm/icssm_switchdev.c   | 332 ++++++
+ .../net/ethernet/ti/icssm/icssm_switchdev.h   |  13 +
+ .../ti/icssm/icssm_vlan_mcast_filter_mmap.h   | 120 +++
+ 10 files changed, 2209 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_fdb_tbl.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.c
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_switchdev.h
+ create mode 100644 drivers/net/ethernet/ti/icssm/icssm_vlan_mcast_filter_mmap.h
+
+-- 
+2.43.0
+
