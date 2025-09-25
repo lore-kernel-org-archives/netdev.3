@@ -1,120 +1,144 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEEC25F98A
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 10:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E4D2EE274
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 11:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758797899; cv=none; b=KBrXgGsDefZ2qPLBsRi/8JSTixWCIMb+fLiWVZ/FxDROAHMU8F9vsSn4+3kudokvOzizM/9x2oGNwaYz0f4K1vSI4ZW2OKZR7L1dNtl5tXhJ6flCNLFynhlS1B1oltc6FwvNuOQ4SOixRsaRqLdOdCsJT9Ony35uH+C72NnYi7E=
+	t=1758798198; cv=none; b=CnMq7ctTIEdB7naDDc2vfr3MciEkGkBt/k/Fz9gKmOw68lZuhZCva/mvsGtJwcq+BumkrnVq449qDVLHNNsQ6TIeIPgy2Xm8Xv2+xCBAtZiRNcV9mww+I91QexDZQ9eVR8aEg+UqnWNYlSTbbG3hyLS4HkrpDHRDU5Xw6mZQyU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758797899; c=relaxed/simple;
-	bh=goeEHV8pp0nSp3KK7+LsINEPmAxyg+E+nyBBoSFwzRE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=smZtPpTDp+w7Pif3I2U+HQpL93RLlXWW+qAYXdwGNuzeR04Qzvs/MIA3SezPUJkvTQdyjBpDFDPWJLP/SNxa+/Z0tDTwpRx1y/Ej5mypJPzDdhnrqNrmzWvPq/USjIvxLL9XlWTBtKCzLvp31fdV+7+xwW9P9NqAZKMJ9n49nKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=edjWrsJp; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1758798198; c=relaxed/simple;
+	bh=5f5jzmY/8z4+Z/yXxNdh/MioRwPbuZwA+8mB7aWl2NQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GtgG8y6miTZrkAe7JF/grQNNBc/Ndp8XCULUeRWPwxMR0RNI5iHqNpOT6M/Sf+ulFPn3gzn13G2ArduUa7Br/bTG/cRbd3eDoVVn0iEkd+NMdl/KtGh+iMsN+TQBv3w7cj77QGdBVxFdnBhjsBO2G/wJt30y4MSJg7UowBEoGBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObxWacTp; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="edjWrsJp"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b2e173b8364so135976666b.1
-        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 03:58:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObxWacTp"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b2a55c5dd2dso22382166b.1
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 04:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1758797896; x=1759402696; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qoutmRJfBiooSSHCtQV7QJz0oS7nanw5QS3919xibtc=;
-        b=edjWrsJpcWLUjAgftTi47573qE+Q2uX/ylea3V3EEONhCNHIf2DLvmZ8SvZQGb2KjT
-         afCEBcg3p72MbxotM1nz9kMB5kI/42aQ+B7POIUtqbeopzcAHrHKT347OIMG6aetH/RZ
-         XWOEOxsr+Ei3h6yBi6i5Amml64oj73cAtYwN5gI0NQPKDevh7WqD3ZRGlBW7cBiM5hAo
-         mJs71VaPRjU5N3bal6U+XTCx8+Tt47G8QNWHMptXPSIVeFQradmAWPlhUaUh533GhGrH
-         4mXKm3hk1g6BlfT/nJ77+7HTEWgSiKtd3QzRr1rPSpnMpAPGui+RFunYX5FHzElgO54A
-         Vsfw==
+        d=gmail.com; s=20230601; t=1758798195; x=1759402995; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kbayy13shJENppb8XOVzKg697zuEvFkUeRfz0DCdeZk=;
+        b=ObxWacTpU7Po3m5cDA2rCo7GRT5kKJHL3jxsWrtdYiMkwiGoMhZxEEmboziMo9JJFh
+         OWlXBt6dh4pUWNLU+RNNPGRI0gJBnvlLOuOOG8oM0xIhGVohcCUErFBFV+9Hhq9jL5fK
+         Hd2G9Hk3f/ZXgVp/McpZwVl5YO99Ook1E6onuuJ/rPxWkk2iVwQdYcAHZ4qTBKV0HHf9
+         ki7wvGfeiMUMuxXkWBdnFolxs0+xSydebIfhcfPBzH6Qbko5/mNRaVadckYwdNrJ3dSe
+         DHRj6jVf3qcgIEVaFQKVLgxGAGXFf3X/yehHOLmJlFP5B82RZiawoPsGsLw8YsHbuH+T
+         ptzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758797896; x=1759402696;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qoutmRJfBiooSSHCtQV7QJz0oS7nanw5QS3919xibtc=;
-        b=v2cKOdCLZh8YmzZHjwKCTuYOIo7SwkwUCrZy3VaWsNiRUg1OA7UtqqzD2PyZmhULKC
-         6GTJQXBcg/epCWqumJXFeR5VysSOVxKc64mt3sMjTj8I/p+JNELRfUOvVWD+AXYHhiF5
-         nB2dFcRLcmcQOwiAzfL3ATG8nhWMyWg8tVGscdWdFVpZCwU074DzwF4RTHjAzumtSHdt
-         8R5/D+d0xSBm9YU8ydOwjOJ+EhwVQeNxPuz6ZxqGwaYOt+VMa/5FR6wxH999iKcaG+FC
-         lmtp5gtJCmS2ge3nHGZVxpkuBRj5jzSZKOZYtZjgtgaqIVCYe6B9n+RawsQOwjtPWb0E
-         f9Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCVSnglhGshG8MC7XW33Vi3RQ6pnj35T4FTc9U1DWhqhZBZlKfCLyodayDWLDMNS+7W8KqbhlzI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG2jT0SHPkKPsmDHexsX7BcvvgyBZsznkBZEasAT5Ps3L4XXWw
-	NcYsxTMztsnnrL8LWFUhX3N8Aqt5vtKSHaxJZpnW/8vD/yXRzl8raqYGjwX8DGjNt6k=
-X-Gm-Gg: ASbGncu1T6xsUMxqxF7TOQODYlAhDDzKO6KAA38uADdesAo4XvvKRWamvbIINadaSSz
-	0UTq4uGvPuxpzkMl5T8BT6zKjEYaqhARsaZrZfVIbQkyMd5fLMjyK/dms++93P3OcpEzQJsM8Ci
-	9Ei67XG+GEnXRD4CmYk2MI6NX8TCNQJ6YzwrMO3R+uNjydd27f/nKi5gyXzVc4An6TqnZBeNiri
-	hUqWFZ9+udVRRLjDRIGM+Lsj0A6ct7Nc9EHM9Wrnenoo4IGe5qjP+4dog4n8zSgn03+Ho4r5FE3
-	vRcKq47Nk+tcKLiXqG3JToirAuGgh2R/CBvODSF7LlmBqiMx8turbz3Erof1fAM4d9+89hQTxmK
-	w4LlVjmmsTivljGo=
-X-Google-Smtp-Source: AGHT+IEinH3OcipauCDmRqja5aQEPZ/J+HFOTVgp17H/W3ZS2eXjpFNwJ5ilU5Q4ue35F4Z7ahPnlw==
-X-Received: by 2002:a17:907:3d90:b0:b10:3eb2:2074 with SMTP id a640c23a62f3a-b34baa34934mr375500866b.18.1758797896306;
-        Thu, 25 Sep 2025 03:58:16 -0700 (PDT)
-Received: from cloudflare.com ([2a09:bac6:d677:295f::41f:5e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b353efa4c35sm143452466b.26.2025.09.25.03.58.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 03:58:15 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>,  Jakub Kicinski
- <kuba@kernel.org>,  "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Simon Horman
- <horms@kernel.org>,  Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Jesper Dangaard Brouer <hawk@kernel.org>,  John
- Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
- <sdf@fomichev.me>,  Andrew Lunn <andrew+netdev@lunn.ch>,  Tony Nguyen
- <anthony.l.nguyen@intel.com>,  Przemek Kitszel
- <przemyslaw.kitszel@intel.com>,  Alexander Lobakin
- <aleksander.lobakin@intel.com>,  Andrii Nakryiko <andrii@kernel.org>,
-  Martin KaFai Lau <martin.lau@linux.dev>,  Eduard Zingerman
- <eddyz87@gmail.com>,  Song Liu <song@kernel.org>,  Yonghong Song
- <yonghong.song@linux.dev>,  KP Singh <kpsingh@kernel.org>,  Hao Luo
- <haoluo@google.com>,  Jiri Olsa <jolsa@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-  netdev@vger.kernel.org,  bpf@vger.kernel.org,
-  intel-wired-lan@lists.osuosl.org,  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC bpf-next v2 0/5] Add the the capability to load HW
- RX checsum in eBPF programs
-In-Reply-To: <aNUb2rB8QAJj-aUX@lore-desk> (Lorenzo Bianconi's message of "Thu,
-	25 Sep 2025 12:39:22 +0200")
-References: <20250925-bpf-xdp-meta-rxcksum-v2-0-6b3fe987ce91@kernel.org>
-	<87bjmy508n.fsf@cloudflare.com> <aNUb2rB8QAJj-aUX@lore-desk>
-Date: Thu, 25 Sep 2025 12:58:14 +0200
-Message-ID: <87tt0q3ik9.fsf@cloudflare.com>
+        d=1e100.net; s=20230601; t=1758798195; x=1759402995;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kbayy13shJENppb8XOVzKg697zuEvFkUeRfz0DCdeZk=;
+        b=A/LaAEGcMAGs4XHa8j2/j2OejifDoNkBCacbPmNm/Nq8Tklzuom5ddXoveKdxlbbD+
+         p1k4RvC5qXmlKb/YhjAsEvWbGFjJUacosXWzSgfh1Sk8t9jSkg+T2oe87KHY4kG26/6x
+         jtbEIPwUbP279RgUiQxLyr7Fnxf8gEVF3ITIoPTmxkn2Xa91lVfPPh4fM84zR5gX6MyH
+         I4oB30pToW9rOPTa/vmj/X/wt85G0MwU9Ou9Nh9+jur/6G50ZuQQv4HLbUuzMwoa42RX
+         m1dPpaW0imBuFvK8f9+t+V0uJx8RFwuGDw/sgqjTr+8LmuDIicWDLXEn1KRZRLPzkXGK
+         Y6FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWe+24RwGYLw2QOjwz1Jl4siLoWzHLKv6gX7e7wahbmqUKEXbzMUpHpexbdAmijj4VKkNtv2EE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1jgUFFUwOF8dk+AGy7tyF66OcqCmXJ+YimOoEt3Llxgjk88RI
+	cJZZVjr6eQgrYVyydBS9j2VRrbHKw3uZVPfLTWOPcEQsRufZydmmwi0+
+X-Gm-Gg: ASbGnctbTendwD2Oa4eFNIbDRR+QA79GHEyLSkkDSpnEOfD1f7j+38uphdYW0FrBK9d
+	Mv2IqwKryxy0vtvyzVOZ4lo80+1+aoWz864rQ/tyOse/jLjh+LyTs++7BbsH2s7kZKz/5ymKvn0
+	XdPmsL7nWneepkTLBf/W22EmTE3nwWlfygstk+RicDC73fFpEYC7DKcuY40iWEW4uGFXPITwzKv
+	wytd6uDI9VBVxYIhXBT1D3Tak0uG6nlFtmgwA+qWNmnRURB/qh/cT8lAW2Fn9s4oGsVveiALSi1
+	u9e3FEbI3JFErRCio/EzszmQW5bBESp2XJp20Y78j5KCPVnXfmxFsTVbOKjlskdH0ifPScXL7gb
+	Yl3fLkCsgFmAfuJ/szh5xHWG7khcNTPUXshAK7XC2d77s3yVzDdyv6NuR1Sc+Dg==
+X-Google-Smtp-Source: AGHT+IE+FDIp8REoReNlisltZxekgZurykBl8HQME4zI0tHguqI3KAp9IuApteihHX89I/9CUSSgZw==
+X-Received: by 2002:a17:907:868d:b0:afe:88ac:ab9 with SMTP id a640c23a62f3a-b34bbeba6d0mr166541366b.9.1758798195396;
+        Thu, 25 Sep 2025 04:03:15 -0700 (PDT)
+Received: from [192.168.1.105] ([165.50.112.244])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b35446f7806sm147331066b.70.2025.09.25.04.03.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Sep 2025 04:03:15 -0700 (PDT)
+Message-ID: <941fece6-9660-4aa8-91ed-346b0c2d97c1@gmail.com>
+Date: Thu, 25 Sep 2025 13:03:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/4] Add XDP RX queue index metadata via kfuncs
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, donald.hunter@gmail.com, andrew+netdev@lunn.ch,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, matttbe@kernel.org, chuck.lever@oracle.com,
+ jdamato@fastly.com, skhawaja@google.com, dw@davidwei.uk,
+ mkarsten@uwaterloo.ca, yoong.siang.song@intel.com,
+ david.hunter.linux@gmail.com, skhan@linuxfoundation.org, horms@kernel.org,
+ sdf@fomichev.me, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kernel-mentees@lists.linuxfoundation.org
+References: <20250923210026.3870-1-mehdi.benhadjkhelifa@gmail.com>
+ <87h5wq50l0.fsf@cloudflare.com>
+ <0cddb596-a70b-48d4-9d8e-c6cb76abd9d2@gmail.com>
+ <87348a4yyd.fsf@cloudflare.com>
+ <e85e7bb2-6229-4b04-9c2a-7a7b79497c6c@gmail.com>
+ <87y0q23j2w.fsf@cloudflare.com>
+Content-Language: en-US
+From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+In-Reply-To: <87y0q23j2w.fsf@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 25, 2025 at 12:39 PM +02, Lorenzo Bianconi wrote:
->> On Thu, Sep 25, 2025 at 11:30 AM +02, Lorenzo Bianconi wrote:
->> > Introduce bpf_xdp_metadata_rx_checksum() kfunc in order to load the HW
->> > RX cheksum results in the eBPF program binded to the NIC.
->> > Implement xmo_rx_checksum callback for veth and ice drivers.
->> 
->> What are going to do with HW RX checksum once XDP prog can access it?
->
-> I guess there are multiple use-cases for bpf_xdp_metadata_rx_checksum()
-> kfunc. The first the I have in mind is when packets are received by an af_xdp
-> application. In this case I think we currently do not have any way to check if
-> the packet checksum is correct, right?
-> I think Jesper has other use-cases in mind, I will let him comment
-> here.
+On 9/25/25 11:47 AM, Jakub Sitnicki wrote:
+> On Thu, Sep 25, 2025 at 12:28 PM +01, Mehdi Ben Hadj Khelifa wrote:
+>> On 9/25/25 11:18 AM, Jakub Sitnicki wrote:
+>>> On Thu, Sep 25, 2025 at 11:54 AM +01, Mehdi Ben Hadj Khelifa wrote:
+>>>> On 9/25/25 10:43 AM, Jakub Sitnicki wrote:
+>>>>> On Tue, Sep 23, 2025 at 10:00 PM +01, Mehdi Ben Hadj Khelifa wrote:
+>>>>>>     This patch series is intended to make a base for setting
+>>>>>>     queue_index in the xdp_rxq_info struct in bpf/cpumap.c to
+>>>>>>     the right index. Although that part I still didn't figure
+>>>>>>     out yet,I m searching for my guidance to do that as well
+>>>>>>     as for the correctness of the patches in this series.
+>>>>> What is the use case/movtivation behind this work?
+>>>>
+>>>> The goal of the work is to have xdp programs have the correct packet RX queue
+>>>> index after being redirected through cpumap because currently the queue_index
+>>>> gets unset or more accurately set to 0 as a default in xdp_rxq_info. This is my
+>>>> current understanding.I still have to know how I can propogate that HW hint from
+>>>> the NICs to the function where I need it.
+>>> This explains what this series does, the desired end state of
+>>> information passing, but not why is does it - how that information is
+>>> going to be consumed? To what end?
+>>
+>> In my vision,The queue index propagated correctly through cpumap can help xdp
+>> programs use it for things such as per queue load balancing,Adaptive RSS tuning
+>> and even maybe for DDoS mitigation where they can drop traffic per queue.I mean
+>> if these aren't correct intents or if they don't justify the added code, I can
+>> abort working on it. Even if they weren't I need more guidance on how I can have
+>> that metadata from HW hints...
+> 
+> Both filtering or load balancing you'd want to do early on - in the XDP
+> program invoked on receive from NIC, which as Stanislav pointed out
+> already has access to the RX queue index in its context. Not on the
+> remote CPU after spending cycles on a redirect.
+> 
+> And even if you wanted to pass that information to the remote XDP
+> program, to do something with it, you can already store it in custom XDP
+> metadata [1].
+> 
+> So while perhaps there is something that you can't do today but would be
+> useful, I don't know what it is. Hence my question about the use case.
+> 
+> [1] https://docs.ebpf.io/linux/helper-function/bpf_xdp_adjust_meta/
+> 
+Very clear,
+I will abort working on this since it can be passed as a custom XDP 
+metadata [1] until further valid use cases or when it proves to be more 
+useful.
+Thank you for your review and time.
+Best Regards,
+Mehdi
 
-Can you share more details on what the AF_XDP application would that
-info?
-
-Regarding the use cases that Jesper is trying to unlock, as things stand
-we don't have a way, or an agreement on how to inject/propagate even the
-already existing NIC hints back into the network stack.
-
-Hence my question - why do we want to expose another NIC hint to XDP
-that we can't consume in any useful way yet?
-
-Shouldn't we first figure out how we're planning to re-inject that info
-into the stack?
+[1] https://docs.ebpf.io/linux/helper-function/bpf_xdp_adjust_meta/
