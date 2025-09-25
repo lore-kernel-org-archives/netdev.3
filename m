@@ -1,126 +1,193 @@
-Received: from www642.your-server.de (www642.your-server.de [188.40.219.134])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A4F263F38;
-	Thu, 25 Sep 2025 21:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.219.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D89233707
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 21:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758834688; cv=none; b=tM2q9yWWFVpiuCxk93quTiN5Phga2euIbTHl9A07H/Ic5vw+zUvIdJdZ/Ij33ymJVW0+5jJWLnp3/77mak4YKcOIBAN413V60UGoAwS6A8Jdo+PuHHy20kwRLL98cq2ChWUImprnwh6gjBHFqlxgv50TzeUm+vliXHx5E705xYA=
+	t=1758834808; cv=none; b=CS7rzzDiYuFzUu1eFycNOsOCRhhjHVhK0kn+4Xdd883Ya9FiRdjAANSH+N6UbuhkI9rjCKQqZrdiB00c98FWLu1of0fDNvZwukVD1omJE3EhodF0suGh8M3Y0WQkFRLrlFuzGoDSM1XZna5lLsDP6jAqz3VtmwCjPWZXrIO8fBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758834688; c=relaxed/simple;
-	bh=PJA8i195WXxQigdsQuZPO61AlxwJ4EvrodBNERVbgfY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TiuQEkiflLjEy+qiPTkdiAZj5Wi/kJQZ9wPN9s8hzfj1XgtCfk8xQDAFoj4bwBUanaUWTop6RjR7VBccGuVq/ZqhId/QkkHCuolTx4JfB5OgFU6vI71+nAZEjvNL184vLMKSTqtpu2HV1lnDaYJkocgoNWxQo9xpQcIZuzYNxPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=raschen.org; spf=pass smtp.mailfrom=raschen.org; dkim=pass (2048-bit key) header.d=raschen.org header.i=@raschen.org header.b=FAHQKuOc; arc=none smtp.client-ip=188.40.219.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=raschen.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raschen.org
+	s=arc-20240116; t=1758834808; c=relaxed/simple;
+	bh=67sXkd/kZkyYEB3zDBgSHObSu79lmesE6k8OCRZWSZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F3Z8OTV73yLFoL88M/Nl2x4Bvq7eKMs3nb5Yza1ZSUFpmcagvwCrZu4QO6rit/ClVrWW7p1p0ZZ2nm9mnFj+SxgUHt6gh1VjvJ4FTU+YC8qvuyXN1SVQ3fD1Yj/0A7K33XGcNuFdOVT8ZxCmJD+Q9/us+SNSIOEYBWj4L9TNltc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PiywI9EG; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raschen.org header.i=@raschen.org header.b="FAHQKuOc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=raschen.org
-	; s=default2505; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=lRKe25XhJacBkOZi9mK3sD2wANF36h3/HXZ9eLBGgYY=; b=FAHQKuOczfqPK+aqKr6adzThxU
-	55wOTVgD6c547mYfAbfBd6Q4MUJY/4yR487cGyHKA2hGD9AT4km6yQzL723kqgPgsQAjbrOww0Y69
-	EgxB/Ah1W8vS2NMO0iJsKoZOIbIfncZxEbZn0LQL6JqjWuSQWqov+UTw4bPWEdjMHJFPKu5bQZj+A
-	CvqY7/MU2JdaKBiYkkOqgGitk7DiUKjTWhebWZ001wMNHRuAm+D6rRglFK3yc08r3h3rON4/1d19R
-	YUR/rZJX+J0carhqTRHdCPd034MGaHEBkXFx+ua965+P0j8OIiMPeZXcnNwKaMJDyaWSOqoN7YD4H
-	I7fCiiQw==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www642.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <josef@raschen.org>)
-	id 1v1sxs-000K6H-1P;
-	Thu, 25 Sep 2025 22:53:20 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <josef@raschen.org>)
-	id 1v1sxs-000MKE-1X;
-	Thu, 25 Sep 2025 22:53:20 +0200
-From: Josef Raschen <josef@raschen.org>
-To: 
-Cc: josef@raschen.org,
-	Arun Ramadoss <arun.ramadoss@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: phy: microchip_t1: LAN887X: Fix device init issues.
-Date: Thu, 25 Sep 2025 22:52:22 +0200
-Message-ID: <20250925205231.67764-1-josef@raschen.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PiywI9EG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758834806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ig3nBeCUwloN4LvzwfZMbkgJCfvy/bic/b84bOETkhM=;
+	b=PiywI9EGUm60HlNTtUQn2K/TKTrmw/pCi0R8q1IgsKgijyM5pAbc2HLAbCXqO+oVziWOrh
+	breGaov+fH27GhzX9OJQUo/7GSnUyJa1XT5q0xQtEjIr73vHvgr8CAfVw5OVgn8JXqrg1y
+	pirjYscMc6/7Xp2wA7xSoiuoocyxZfk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-397-6Um_cmUsOyu6dYnR_0uWXA-1; Thu, 25 Sep 2025 17:13:24 -0400
+X-MC-Unique: 6Um_cmUsOyu6dYnR_0uWXA-1
+X-Mimecast-MFC-AGG-ID: 6Um_cmUsOyu6dYnR_0uWXA_1758834803
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b986a7b8aso8849615e9.0
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 14:13:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758834803; x=1759439603;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ig3nBeCUwloN4LvzwfZMbkgJCfvy/bic/b84bOETkhM=;
+        b=LzV/C+PqiC3OKUEQpyeE8+qmU/+GmFOVFmt2rRxES0thN0TdvaWZ+/UIFdogZGetVI
+         9yNenz63/zizn7nWiF2k2j0kBtImXDf+9uttrGYnsUKlByGbsBPsqWmO3mya3IfRt8lh
+         W2lg38joHMQmxNi+Qx6iGYApP7z8xAKNoftc/Awitr3ehCLspdVUQN1WoE+afOsq7dNg
+         KyFDy2zuBmhS1jm57X35hQOaVuNriFP4S4WVbr7t8XoSLrTadFrjN5vZuK9AITOFpmun
+         dAI+cHbj02fm97X8ue2f1ydIm7RAlFtizmUe7ab/1qOXT+ADpX+BaRekZ9YMPpw0YwG+
+         xhHg==
+X-Gm-Message-State: AOJu0Yx621HNHaFdGOgTye9qBnJ9DSmdA0Mxh7ygvr0VMX1mqNmfdsM2
+	FFmSXcy3SLSx8feOOIuQkJ2ZoxSoohUudmCcmQ9AzhxDNz179aAK/SpKoYqltOieeGXsq0XVX4G
+	JeBH9xM+o4WTQegtL9CQCout0INRx3b9x5MJ4L5JSQMVpXkiSTXzBWUQrlw==
+X-Gm-Gg: ASbGncvI/FLVKlmPnza3CWdOPbWbT2jybcINltoZXrL13a5PfrRJa8rnj/C4cbnQEnT
+	H9vjsLO1ZZDbVECEMmFxi0LRklv98NZYuoQPaOiSX5ovYjsgSwTb+u6kcSQvauY5Y21kFLyExVn
+	a3oSV1H0iea/kkm6Q3QjbVQIuqwjr1EpiMiyq0a5D53veI87aQfCLMtaza5MnRIi0cM1faH7Kjd
+	MBz2ALZSAzJWPa8KWaBajZ7riro/8FgBHRr2TlD4K7/7oFivPyY+yP7X2bgwDI95EqwnOc6miNr
+	EzUw5swJiafNwIiaQH7atxhSsMFQdBStDQ==
+X-Received: by 2002:a05:600c:1d01:b0:45d:d9ab:b86d with SMTP id 5b1f17b1804b1-46e32a0bda9mr62544385e9.31.1758834803286;
+        Thu, 25 Sep 2025 14:13:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFHV5Q07RhN0juNlqporSm4E3ydRkAdaK/psjGehjTm2V7fiQhfIUNkC+PlQ7T9FIaIwtYHg==
+X-Received: by 2002:a05:600c:1d01:b0:45d:d9ab:b86d with SMTP id 5b1f17b1804b1-46e32a0bda9mr62544155e9.31.1758834802798;
+        Thu, 25 Sep 2025 14:13:22 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1538:2200:56d4:5975:4ce3:246f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5603365sm4468039f8f.37.2025.09.25.14.13.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 14:13:22 -0700 (PDT)
+Date: Thu, 25 Sep 2025 17:13:19 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel Jurgens <danielj@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, alex.williamson@redhat.com,
+	pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
+	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
+	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
+	andrew+netdev@lunn.ch, edumazet@google.com
+Subject: Re: [PATCH net-next v3 05/11] virtio_net: Create a FF group for
+ ethtool steering
+Message-ID: <20250925171105-mutt-send-email-mst@kernel.org>
+References: <20250923141920.283862-1-danielj@nvidia.com>
+ <20250923141920.283862-6-danielj@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27773/Thu Sep 25 10:27:35 2025)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923141920.283862-6-danielj@nvidia.com>
 
-Currently, for a LAN8870 phy, before link up, a call to ethtool to set
-master-slave fails with 'operation not supported'. Reason: speed, duplex
-and master/slave are not properly initialized.
+On Tue, Sep 23, 2025 at 09:19:14AM -0500, Daniel Jurgens wrote:
+> All ethtool steering rules will go in one group, create it during
+> initialization.
 
-This change sets proper initial states for speed and duplex and publishes
-master-slave states. A default link up for speed 1000, full duplex and
-slave mode then works without having to call ethtool.
 
-Signed-off-by: Josef Raschen <josef@raschen.org>
----
- drivers/net/phy/microchip_t1.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+document uapi changes pls.
 
-diff --git a/drivers/net/phy/microchip_t1.c b/drivers/net/phy/microchip_t1.c
-index 62b36a318100..5fcbfa730910 100644
---- a/drivers/net/phy/microchip_t1.c
-+++ b/drivers/net/phy/microchip_t1.c
-@@ -1319,7 +1319,12 @@ static int lan887x_phy_init(struct phy_device *phydev)
- 		return ret;
- 
- 	/* PHY interface setup */
--	return lan887x_config_phy_interface(phydev);
-+	ret = lan887x_config_phy_interface(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Make configuration visible for ethtool. */
-+	return genphy_c45_pma_baset1_read_master_slave(phydev);
- }
- 
- static int lan887x_phy_config(struct phy_device *phydev,
-@@ -1489,7 +1494,12 @@ static int lan887x_config_aneg(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
--	return lan887x_phy_reconfig(phydev);
-+	ret = lan887x_phy_reconfig(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Make configuration changes visible for ethtool. */
-+	return genphy_c45_pma_baset1_read_master_slave(phydev);
- }
- 
- static int lan887x_probe(struct phy_device *phydev)
-@@ -1503,6 +1513,10 @@ static int lan887x_probe(struct phy_device *phydev)
- 	priv->init_done = false;
- 	phydev->priv = priv;
- 
-+	/* Set default link parameters. */
-+	phydev->duplex = DUPLEX_FULL;
-+	phydev->speed = SPEED_1000;
-+
- 	return lan887x_phy_setup(phydev);
- }
- 
--- 
-2.43.0
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/net/virtio_net/virtio_net_ff.c | 25 +++++++++++++++++++++++++
+>  include/uapi/linux/virtio_net_ff.h     |  7 +++++++
+>  2 files changed, 32 insertions(+)
+> 
+> diff --git a/drivers/net/virtio_net/virtio_net_ff.c b/drivers/net/virtio_net/virtio_net_ff.c
+> index 61cb45331c97..0036c2db9f77 100644
+> --- a/drivers/net/virtio_net/virtio_net_ff.c
+> +++ b/drivers/net/virtio_net/virtio_net_ff.c
+> @@ -6,6 +6,9 @@
+>  #include <net/ip.h>
+>  #include "virtio_net_ff.h"
+>  
+> +#define VIRTNET_FF_ETHTOOL_GROUP_PRIORITY 1
+> +#define VIRTNET_FF_MAX_GROUPS 1
+> +
+>  static size_t get_mask_size(u16 type)
+>  {
+>  	switch (type) {
+> @@ -30,6 +33,7 @@ void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
+>  	size_t ff_mask_size = sizeof(struct virtio_net_ff_cap_mask_data) +
+>  			      sizeof(struct virtio_net_ff_selector) *
+>  			      VIRTIO_NET_FF_MASK_TYPE_MAX;
+> +	struct virtio_net_resource_obj_ff_group ethtool_group = {};
+>  	struct virtio_net_ff_selector *sel;
+>  	int err;
+>  	int i;
+> @@ -92,6 +96,12 @@ void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
+>  	if (err)
+>  		goto err_ff_action;
+>  
+> +	if (le32_to_cpu(ff->ff_caps->groups_limit) < VIRTNET_FF_MAX_GROUPS) {
+> +		err = -ENOSPC;
+> +		goto err_ff_action;
+> +	}
+> +	ff->ff_caps->groups_limit = cpu_to_le32(VIRTNET_FF_MAX_GROUPS);
+> +
+>  	err = virtio_device_cap_set(vdev,
+>  				    VIRTIO_NET_FF_RESOURCE_CAP,
+>  				    ff->ff_caps,
+> @@ -121,6 +131,17 @@ void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
+>  	if (err)
+>  		goto err_ff_action;
+>  
+> +	ethtool_group.group_priority = cpu_to_le16(VIRTNET_FF_ETHTOOL_GROUP_PRIORITY);
+> +
+> +	/* Use priority for the object ID. */
+> +	err = virtio_device_object_create(vdev,
+> +					  VIRTIO_NET_RESOURCE_OBJ_FF_GROUP,
+> +					  VIRTNET_FF_ETHTOOL_GROUP_PRIORITY,
+> +					  &ethtool_group,
+> +					  sizeof(ethtool_group));
+> +	if (err)
+> +		goto err_ff_action;
+> +
+>  	ff->vdev = vdev;
+>  	ff->ff_supported = true;
+>  
+> @@ -139,6 +160,10 @@ void virtnet_ff_cleanup(struct virtnet_ff *ff)
+>  	if (!ff->ff_supported)
+>  		return;
+>  
+> +	virtio_device_object_destroy(ff->vdev,
+> +				     VIRTIO_NET_RESOURCE_OBJ_FF_GROUP,
+> +				     VIRTNET_FF_ETHTOOL_GROUP_PRIORITY);
+> +
+>  	kfree(ff->ff_actions);
+>  	kfree(ff->ff_mask);
+>  	kfree(ff->ff_caps);
+> diff --git a/include/uapi/linux/virtio_net_ff.h b/include/uapi/linux/virtio_net_ff.h
+> index a35533bf8377..662693e1fefd 100644
+> --- a/include/uapi/linux/virtio_net_ff.h
+> +++ b/include/uapi/linux/virtio_net_ff.h
+> @@ -12,6 +12,8 @@
+>  #define VIRTIO_NET_FF_SELECTOR_CAP 0x801
+>  #define VIRTIO_NET_FF_ACTION_CAP 0x802
+>  
+> +#define VIRTIO_NET_RESOURCE_OBJ_FF_GROUP 0x0200
+> +
+>  struct virtio_net_ff_cap_data {
+>  	__le32 groups_limit;
+>  	__le32 classifiers_limit;
+> @@ -52,4 +54,9 @@ struct virtio_net_ff_actions {
+>  	__u8 reserved[7];
+>  	__u8 actions[];
+>  };
+> +
+> +struct virtio_net_resource_obj_ff_group {
+> +	__le16 group_priority;
+> +};
+> +
+>  #endif
+> -- 
+> 2.45.0
 
