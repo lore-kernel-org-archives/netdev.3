@@ -1,153 +1,258 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CB532126D
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 20:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F50F271A9A
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 20:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758833120; cv=none; b=euFe+Btk/y7g+sSQvbs8mXFJL6tos5qiSItoFgD0VwaOyXr3aoT3DRVypcRfB5JA+/A+v+OEd009tkeXMItKDGUuF4vkAJNK5tAADoasG3SjYE0VmzLcPztBAxCO6/YnEzfixSi6LCUaHxVE/YChLzWC51uODdm5rFsnfW2ThsQ=
+	t=1758833280; cv=none; b=gVSbyq7YVc6BpOgIyk5zW98Ktlf3fR1jIMQyiz1id/f3oWrQbUSvaxVxI+GcqY7gjziaL4f85xSd0fSCJZEciq786naq73kUXsL9+zxb7tQrhb/3T17HlqHrV0QMr61w5Gv+TnzMwsOuPv68uzuAA/pnxkMaJEjaOJ5TOndJd4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758833120; c=relaxed/simple;
-	bh=Ru0U+UR4TDnU4YEoC4bgh7/N8KX36OuOCEfHwKRdWLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rEE4PpL98eGOFc+w24KDkQ0q5KYTUgT/MlmLPF5tJNig6qNa/dhm/hjzlpiwUfrt9mZ+BzfmXjGDBrC9yH0LJ/LvHRzehU1SkxbeWTD538mS8yFWXapwYBmDgoCjqNIiB0sw7C0H2RNPal4nGi70XnizkPYieBvuIiMQy/YUyQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1XZ+xQH; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1758833280; c=relaxed/simple;
+	bh=vv1qT8fOOxz4P2aDEkoamPsKw/+5vRplAQYBiNFpwgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=utg5QVaT4JXjYGFAuv1NHQVGClF7qyI3NFHp8IUqwnOZ0lX23Wqm7Hhq+Opp+xiSD+6EnbYtKYaipdmrciO1YJXW7K4BgUYEJVZKv4JjfmCOiGilelyrC8ETdfyf/+PK/QVCFpTnjvV9D/Rle2ov7rSOV+rQ//pKquIdv7n8rv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SJKzv4Dj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1XZ+xQH"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-781001e3846so1400545b3a.2
-        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 13:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1758833118; x=1759437918; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3eDhSQL/LKEOp5/PaHTtO2MouZaE3+HdZOo9nr4tRw8=;
-        b=A1XZ+xQHdxJBef1PoAnWGxFrbUQn0d7bpnBx8nQ9EoGcG4AvVPZBheFTHlV/BG8Yal
-         bU15BYAQKUqkM2ww2GWfXF3QrXMh1l47yImEzghZBB7qoBfEW8O13LrAgoHKEdb3Ict3
-         Gj8PqM2ATXntQPp1nzARIjo6iHO2vX+hnXvIhDw39gVYPJbZg76gUgJdnQW40Zi7Kd7S
-         MxWfT2OO6ki//xxicMX4e9zT3TXH8VTtrziUkJsAIiJ4VsNIaB1OeMT+vx9do8moxFij
-         6cWUygD/zNqEho5rj9xcfruudU0PtQmeDzPhhu14UJgwoHHsln+CME2bhPTLBgexwoxh
-         12sw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SJKzv4Dj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758833277;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sG0c/Qg9PuQWEUfT6xJTnuG9wSgs8VT4bht8XQ+1qgg=;
+	b=SJKzv4DjxfxWlOCM4OzaHSt6+3rdGUd6I+/jNgLbgiPiIRtITlaCS/QGGdvgYMBRw0ugdW
+	+AbGZ5j7HCF+agiwEWsFSBiL2sCshsGGy7bIK+HBreqy3hJRDXsn4Y1aRxY/jK8GVbM/0q
+	tViPnk0ejhp+jiBbml+JeX35HLT9Rjg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-E28yWEFvO-iDkazVTLtEng-1; Thu, 25 Sep 2025 16:47:55 -0400
+X-MC-Unique: E28yWEFvO-iDkazVTLtEng-1
+X-Mimecast-MFC-AGG-ID: E28yWEFvO-iDkazVTLtEng_1758833275
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3f42b54d159so1030316f8f.2
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 13:47:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758833118; x=1759437918;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3eDhSQL/LKEOp5/PaHTtO2MouZaE3+HdZOo9nr4tRw8=;
-        b=wo7wveeI/gBPuSz0oQfZUzsoVQAsTdxLwcUjNZlprcGLKfO2+bX9ATBoMkAx+tZWok
-         f59isR361xhYDwLb7FBKX3RfuD+3f44dD8DSOkkxlRXnOqI5NZ+QVCemTaPYmorggRNt
-         2+hR349W4nqbak5d3iUFe+++7IiPP0NJvF0VVYdMx/ikT2s4G0YNFcJ8afZ8s3Gahoxz
-         FfnpHgIfHsVDOrGgVRlTnSjUJCCmzAdmKzUFyYXPJEgRU6VEF11ATCzfoWhFo/ClBWAI
-         KShf4omsk9qHu3GbCAkP3bhCR/tIUd+Dg+1WdVT5cF10T1Xg4czppFQ0JxHK0Mum8wYl
-         A2RA==
-X-Gm-Message-State: AOJu0YzMc4db5uJMcXaStqud6YqdqLDTsT/FHien6dXgKuY9mEN2LI8J
-	TH9Jll47g0tECNmBP6ubNJGRLGNu7nn4iGfjq6p2Y9I+FmfEijcxkaaw
-X-Gm-Gg: ASbGncvlhRh8E/AAlw4hnHy3+6TJOiNc9n+dxJ3o/0XaMeNxHyRdC/QskLhdVGbeC3T
-	qkQKDPKl2EwW0e45eykMq9iSZtFfrfBhYekaVK0/qUoW9PahKEJ7hwuOOgNMxS3WfAk+9hvsErZ
-	pGxhVzxsSb30yo4HOVN3JKJOmF+fqu/UAMza9gnhBxu+LThCn4QZHH8l10kQd6Z4GfPVUMGyJ5s
-	NObLn0GQltseYE+/wxu009uAXnL4YDZNX2/yiJrVbE2Qfl+zih7Lf+BTC+2xhsZz9nWrPqNdVcr
-	LHgL+eXoQC5Y48CSIAee4b0ItugD2Zhw9umXn5EpiH+knrX0+xaI1rgyMuYv4fHXtJi+nfS3i4g
-	GcRtrFJCAD3IIllLo/Br2AM44CU+p7PV/nDrMaEA=
-X-Google-Smtp-Source: AGHT+IHAMz5CMMWeR4tII30EjfIdX2VnbTPNJkIYi+47i3rAuGHIXnYdncaPKHzzQmFkMUxBtAQtoQ==
-X-Received: by 2002:a05:6a20:7348:b0:262:52de:c576 with SMTP id adf61e73a8af0-2e7d3db5fcdmr6163922637.29.1758833118401;
-        Thu, 25 Sep 2025 13:45:18 -0700 (PDT)
-Received: from cortexauth ([2401:4900:889b:7045:558:5033:2b7a:fd84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7810239d99dsm2675456b3a.21.2025.09.25.13.44.55
+        d=1e100.net; s=20230601; t=1758833275; x=1759438075;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sG0c/Qg9PuQWEUfT6xJTnuG9wSgs8VT4bht8XQ+1qgg=;
+        b=LsXSohGnmiFZWAPec3AKDiqyb2PWrQDBzG7s5B8R8Rcv78icWo1+JMHmiFanq0Ej+0
+         tMs8yOQR7R/eWm4MhX5lk2QDbpgIFXN3mY4HegtrMx31xwbukwBsCjIvHxru5K3bIR+w
+         phmigbkUKXtlDkTvJ9ClA+7W0wVn9L0/439HZLhZocQo6YZbI9njbVX0qePjHWYTCdF4
+         WIoUwTP/MV6UUWJzuJMeEbu8x4uqOXFeHGrku9nxlqB5p6iv9jXlaB+uMVv37BYCe5Tx
+         UnNnOq0KjFhVCzx6xMued1p2CFCQq2qCMDr5ybGZIgCynAP4YwDMgJwMaMGo/4CIxhlF
+         Fw2A==
+X-Gm-Message-State: AOJu0Yw1ati6FFeDiHhfU/icOG4v8DjjXZov5tyHR/rHE7fY+gN+9seW
+	v/VeJHMq6z7Pyi8hM4fQgyW3VNIftS3nx9T6pf9Mnl0ZS4pMHCZzWWtXP5mXRbXJb+TQLzJmEuD
+	K8041M6SFaE/eI9z5MIE+XYPJkh7mI8MTcyRk6R+jISDsQYhQv13rJBufog==
+X-Gm-Gg: ASbGncuczSVM+5Lt33CPskoVaGz/zizMkyj2NXHFhVsusxLLWuhcMC0oy3x/GTvhfhH
+	KB8bTGJIXIuNAM4+tE4g0f2oteP61Mv4KuVpFiQOreyZInB5wIGX0aEzgvx/3XXVUm19K4Dyjcz
+	DUFdowowhXziSRQGrxslWzxfcHPRnoQxMJuE26yWVmKq9ZIzv3O6bDje/5z/DQp+wL5I2NRXtPE
+	H/sAch94+U5CRB+ubXpajW0mJWN1kcWBEtHXWIP08qqno+ckyVzRiZ523I22MyPJ6i8MTc21i1Q
+	zOm/5vpRqw7osiQk3F7bPjrj29VeE+6AFw==
+X-Received: by 2002:a05:600c:3b8e:b0:45f:2cf9:c236 with SMTP id 5b1f17b1804b1-46e329d4744mr61060875e9.4.1758833274635;
+        Thu, 25 Sep 2025 13:47:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDfEyEaPjw+sH25J0AnTpfCAxI5nak9eeL4uYfANblZHdjS1y/uomSUQxYhcmeiuL/n546Ag==
+X-Received: by 2002:a05:600c:3b8e:b0:45f:2cf9:c236 with SMTP id 5b1f17b1804b1-46e329d4744mr61060695e9.4.1758833274178;
+        Thu, 25 Sep 2025 13:47:54 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1538:2200:56d4:5975:4ce3:246f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e2a9ac55esm100238695e9.6.2025.09.25.13.47.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Sep 2025 13:45:17 -0700 (PDT)
-From: Deepak Sharma <deepak.sharma.472935@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	pwn9uin@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	david.hunter.linux@gmail.com,
-	skhan@linuxfoundation.org,
-	syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com,
-	Deepak Sharma <deepak.sharma.472935@gmail.com>,
-	syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
-Subject: [PATCH net v2] atm: Fix the cleanup on alloc_mpc failure in atm_mpoa_mpoad_attach
-Date: Fri, 26 Sep 2025 02:12:51 +0530
-Message-ID: <20250925204251.232473-1-deepak.sharma.472935@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        Thu, 25 Sep 2025 13:47:53 -0700 (PDT)
+Date: Thu, 25 Sep 2025 16:47:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Daniel Jurgens <danielj@nvidia.com>
+Cc: netdev@vger.kernel.org, jasowang@redhat.com, alex.williamson@redhat.com,
+	pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
+	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
+	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
+	andrew+netdev@lunn.ch, edumazet@google.com
+Subject: Re: [PATCH net-next v3 09/11] virtio_net: Add support for IPv6
+ ethtool steering
+Message-ID: <20250925164519-mutt-send-email-mst@kernel.org>
+References: <20250923141920.283862-1-danielj@nvidia.com>
+ <20250923141920.283862-10-danielj@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250923141920.283862-10-danielj@nvidia.com>
 
-Syzbot reported a warning at `add_timer`, which is called from the
-`atm_mpoa_mpoad_attach` function
+On Tue, Sep 23, 2025 at 09:19:18AM -0500, Daniel Jurgens wrote:
+> Implement support for IPV6_USER_FLOW type rules.
+> 
+> Example:
+> $ ethtool -U ens9 flow-type ip6 src-ip fe80::2 dst-ip fe80::4 action 3
+> Added rule with ID 0
+> 
+> The example rule will forward packets with the specified soure and
 
-The reason for warning is that in the first call to the ioctl, if
-there is no MPOA client created yet (mpcs is the linked list for
-these MPOA clients) we do a `mpc_timer_refresh` to arm the timer.
-Later on, if the `alloc_mpc` fails (which on success will also
-initialize mpcs if it's first MPOA client created) and we didn't
-have any MPOA client yet, we return without the timer de-armed
 
-If the same ioctl is called again, since we don't have any MPOA
-clients yet we again arm the timer, which might already be left
-armed by the previous call to this ioctl in which `alloc_mpc` failed
+source
 
-Hence, de-arm the timer in the event that `alloc_mpc` fails and we
-don't have any other MPOA client (that is, `mpcs` is NULL)
 
-Do a `timer_delete_sync` instead of `timer_delete`, since the timer
-callback can arm it back again
-
-This does not need to be done at the early return in case of
-`mpc->mpoad_vcc`, or a control channel to MPOAD already exists.
-The timer should remain there to periodically process caches
-
-Reported-by: syzbot+07b635b9c111c566af8b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07b635b9c111c566af8b
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Deepak Sharma <deepak.sharma.472935@gmail.com>
----
-v2:
- - Improved commit message
- - Fix the faulty condition check to disarm the timer
- - Use `timer_delete_sync` instead to avoid re-arming of timer
-
-v1:
- - Disarm the timer using `timer_delete` in case `alloc_mpc`
-   fails`
-
- net/atm/mpc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/net/atm/mpc.c b/net/atm/mpc.c
-index f6b447bba329..4f67ad1d6bef 100644
---- a/net/atm/mpc.c
-+++ b/net/atm/mpc.c
-@@ -804,7 +804,7 @@ static int atm_mpoa_mpoad_attach(struct atm_vcc *vcc, int arg)
- 		/* This lets us now how our LECs are doing */
- 		err = register_netdevice_notifier(&mpoa_notifier);
- 		if (err < 0) {
--			timer_delete(&mpc_timer);
-+			timer_delete_sync(&mpc_timer);
- 			return err;
- 		}
- 	}
-@@ -813,8 +813,10 @@ static int atm_mpoa_mpoad_attach(struct atm_vcc *vcc, int arg)
- 	if (mpc == NULL) {
- 		dprintk("allocating new mpc for itf %d\n", arg);
- 		mpc = alloc_mpc();
--		if (mpc == NULL)
-+		if (!mpcs) {
-+			timer_delete_sync(&mpc_timer);
- 			return -ENOMEM;
-+		}
- 		mpc->dev_num = arg;
- 		mpc->dev = find_lec_by_itfnum(arg);
- 					/* NULL if there was no lec */
--- 
-2.51.0
+> destination IP addresses to RX ring 3.
+> 
+> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+> Reviewed-by: Parav Pandit <parav@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+> ---
+>  drivers/net/virtio_net/virtio_net_ff.c | 89 +++++++++++++++++++++++---
+>  1 file changed, 81 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net/virtio_net_ff.c b/drivers/net/virtio_net/virtio_net_ff.c
+> index 0374676d1342..ce59fb36dae9 100644
+> --- a/drivers/net/virtio_net/virtio_net_ff.c
+> +++ b/drivers/net/virtio_net/virtio_net_ff.c
+> @@ -118,6 +118,34 @@ static bool validate_ip4_mask(const struct virtnet_ff *ff,
+>  	return true;
+>  }
+>  
+> +static bool validate_ip6_mask(const struct virtnet_ff *ff,
+> +			      const struct virtio_net_ff_selector *sel,
+> +			      const struct virtio_net_ff_selector *sel_cap)
+> +{
+> +	bool partial_mask = !!(sel_cap->flags & VIRTIO_NET_FF_MASK_F_PARTIAL_MASK);
+> +	struct ipv6hdr *cap, *mask;
+> +
+> +	cap = (struct ipv6hdr *)&sel_cap->mask;
+> +	mask = (struct ipv6hdr *)&sel->mask;
+> +
+> +	if (!ipv6_addr_any(&mask->saddr) &&
+> +	    !check_mask_vs_cap(&mask->saddr, &cap->saddr,
+> +			       sizeof(cap->saddr), partial_mask))
+> +		return false;
+> +
+> +	if (!ipv6_addr_any(&mask->daddr) &&
+> +	    !check_mask_vs_cap(&mask->daddr, &cap->daddr,
+> +			       sizeof(cap->daddr), partial_mask))
+> +		return false;
+> +
+> +	if (mask->nexthdr &&
+> +	    !check_mask_vs_cap(&mask->nexthdr, &cap->nexthdr,
+> +	    sizeof(cap->nexthdr), partial_mask))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+>  static bool validate_mask(const struct virtnet_ff *ff,
+>  			  const struct virtio_net_ff_selector *sel)
+>  {
+> @@ -132,6 +160,9 @@ static bool validate_mask(const struct virtnet_ff *ff,
+>  
+>  	case VIRTIO_NET_FF_MASK_TYPE_IPV4:
+>  		return validate_ip4_mask(ff, sel, sel_cap);
+> +
+> +	case VIRTIO_NET_FF_MASK_TYPE_IPV6:
+> +		return validate_ip6_mask(ff, sel, sel_cap);
+>  	}
+>  
+>  	return false;
+> @@ -154,11 +185,38 @@ static void parse_ip4(struct iphdr *mask, struct iphdr *key,
+>  	}
+>  }
+>  
+> +static void parse_ip6(struct ipv6hdr *mask, struct ipv6hdr *key,
+> +		      const struct ethtool_rx_flow_spec *fs)
+> +{
+> +	const struct ethtool_usrip6_spec *l3_mask = &fs->m_u.usr_ip6_spec;
+> +	const struct ethtool_usrip6_spec *l3_val  = &fs->h_u.usr_ip6_spec;
+> +
+> +	if (!ipv6_addr_any((struct in6_addr *)l3_mask->ip6src)) {
+> +		memcpy(&mask->saddr, l3_mask->ip6src, sizeof(mask->saddr));
+> +		memcpy(&key->saddr, l3_val->ip6src, sizeof(key->saddr));
+> +	}
+> +
+> +	if (!ipv6_addr_any((struct in6_addr *)l3_mask->ip6dst)) {
+> +		memcpy(&mask->daddr, l3_mask->ip6dst, sizeof(mask->daddr));
+> +		memcpy(&key->daddr, l3_val->ip6dst, sizeof(key->daddr));
+> +	}
+> +
+> +	if (l3_mask->l4_proto) {
+> +		mask->nexthdr = l3_mask->l4_proto;
+> +		key->nexthdr = l3_val->l4_proto;
+> +	}
+> +}
+> +
+>  static bool has_ipv4(u32 flow_type)
+>  {
+>  	return flow_type == IP_USER_FLOW;
+>  }
+>  
+> +static bool has_ipv6(u32 flow_type)
+> +{
+> +	return flow_type == IPV6_USER_FLOW;
+> +}
+> +
+>  static int setup_classifier(struct virtnet_ff *ff,
+>  			    struct virtnet_classifier **c)
+>  {
+> @@ -291,6 +349,7 @@ static bool supported_flow_type(const struct ethtool_rx_flow_spec *fs)
+>  	switch (fs->flow_type) {
+>  	case ETHER_FLOW:
+>  	case IP_USER_FLOW:
+> +	case IPV6_USER_FLOW:
+>  		return true;
+>  	}
+>  
+> @@ -332,7 +391,8 @@ static void calculate_flow_sizes(struct ethtool_rx_flow_spec *fs,
+>  	(*num_hdrs)++;
+>  	if (has_ipv4(fs->flow_type))
+>  		size += sizeof(struct iphdr);
+> -
+> +	else if (has_ipv6(fs->flow_type))
+> +		size += sizeof(struct ipv6hdr);
+>  done:
+>  	*key_size = size;
+>  	/*
+> @@ -369,18 +429,31 @@ static int setup_ip_key_mask(struct virtio_net_ff_selector *selector,
+>  			     u8 *key,
+>  			     const struct ethtool_rx_flow_spec *fs)
+>  {
+> +	struct ipv6hdr *v6_m = (struct ipv6hdr *)&selector->mask;
+>  	struct iphdr *v4_m = (struct iphdr *)&selector->mask;
+> +	struct ipv6hdr *v6_k = (struct ipv6hdr *)key;
+>  	struct iphdr *v4_k = (struct iphdr *)key;
+>  
+> -	selector->type = VIRTIO_NET_FF_MASK_TYPE_IPV4;
+> -	selector->length = sizeof(struct iphdr);
+> +	if (has_ipv6(fs->flow_type)) {
+> +		selector->type = VIRTIO_NET_FF_MASK_TYPE_IPV6;
+> +		selector->length = sizeof(struct ipv6hdr);
+>  
+> -	if (fs->h_u.usr_ip4_spec.l4_4_bytes ||
+> -	    fs->h_u.usr_ip4_spec.tos ||
+> -	    fs->h_u.usr_ip4_spec.ip_ver != ETH_RX_NFC_IP4)
+> -		return -EOPNOTSUPP;
+> +		if (fs->h_u.usr_ip6_spec.l4_4_bytes ||
+> +		    fs->h_u.usr_ip6_spec.tclass)
+> +			return -EOPNOTSUPP;
+>  
+> -	parse_ip4(v4_m, v4_k, fs);
+> +		parse_ip6(v6_m, v6_k, fs);
+> +	} else {
+> +		selector->type = VIRTIO_NET_FF_MASK_TYPE_IPV4;
+> +		selector->length = sizeof(struct iphdr);
+> +
+> +		if (fs->h_u.usr_ip4_spec.l4_4_bytes ||
+> +		    fs->h_u.usr_ip4_spec.tos ||
+> +		    fs->h_u.usr_ip4_spec.ip_ver != ETH_RX_NFC_IP4)
+> +			return -EOPNOTSUPP;
+> +
+> +		parse_ip4(v4_m, v4_k, fs);
+> +	}
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.45.0
 
