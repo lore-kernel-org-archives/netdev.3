@@ -1,52 +1,72 @@
-Received: from forward200d.mail.yandex.net (forward200d.mail.yandex.net [178.154.239.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659894C81
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 16:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749CD306B15
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 17:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758819553; cv=none; b=qw/ApKw3TO4JrqrOU8NnnUAZjq4zIETSpglH0Nr0SNibO0BhwP9aXXKl2tFyFkvLLi4cCwqBR+79ZmRqMoSz/WqsT8MP/K/FedTziJ+6BL4dbwgSD4l8l/wZnbZJeSX7SgrQZz68Hscg/YrmrE2+g0TV9gbeps2j+MYvNE5HZh4=
+	t=1758819616; cv=none; b=Qy7LggLynBSc4hGeYBV4GbtVe2QT0jmwyeZiouguMFZRPh1tE4BQDRewUHi5jlFZbWzLoh/GeNxBQkOcw/K+qrbSXJZqp0xzIHH6wFYdG+9xSYQqeVMsNdU7aToFyphhNm/5spbOEoiTwGzJE9etxdbDdi/nYD2bQO9xInLadFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758819553; c=relaxed/simple;
-	bh=0lCscK2BUwlmCYeZ56ApcyvQzWJkaj6zoGHieFjSZt4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCxJ8Poz0KaqfOEFNnI4NCDt13sXkqLpGOBLKdTkrZN7J1+R3Bqesdbqel2HpkkeI8koXpPovDChqkWpMBU9tD/C8SYSEpX+/DJEhoo75DJVAAD3SFTCs6bxUS5aCtEIW+El/euoriA3dCK36SGMHiYuRpqSoz4jp8zstOT4GKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=k9kPDkkb; arc=none smtp.client-ip=178.154.239.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+	s=arc-20240116; t=1758819616; c=relaxed/simple;
+	bh=SPvutgf/0wlSxzU/BGGR07xozaCO3CWXty8/w3Fcp54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qtZ3+UgT2hmnh7sa1OOSDjhjbYXLgw96aqt7gPbv/tYND9DMupUOLk/KMOcIDjSqqcYmBqQPS4pmjsFpGBC+YfQ6XrPylTpATHo5zZzdvIeNDJSef8QCaLl1XpC+lmXfVjggiAIORSZ8d3ojXiVZJCidZYgU8Hb7i0rYaaViC0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJ/UgMLe; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="k9kPDkkb"
-Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d101])
-	by forward200d.mail.yandex.net (Yandex) with ESMTPS id C5BD4806CF
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 19:53:43 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:d7c6:0:640:5e67:0])
-	by forward101d.mail.yandex.net (Yandex) with ESMTPS id B04D7C0031;
-	Thu, 25 Sep 2025 19:53:34 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id VrcflPGN0eA0-IOiyDkTQ;
-	Thu, 25 Sep 2025 19:53:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1758819214; bh=lIBVZdVrbu4ylYsMG45LpvVbCXwF4ydETKjdIdX9mRA=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=k9kPDkkb1Snu8DCqDTSquKPedt/p6IgyveHJifHB1JHixYhDwXNNL1mrlwjdry6Lw
-	 VMWbcP3aUxuxYtNJ1axADrk3buwhIhyWo6H6eCLEqm0AJ1DqzNkge2QIDBGihjIWfz
-	 tspxKJtYdvDialtZ93xxYuKI9Z9ywM3qjt2lnEi0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-99.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Simon Horman <horms@kernel.org>
-Cc: Jon Maloy <jmaloy@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	tipc-discussion@lists.sourceforge.net,
-	netdev@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH v3 net-next] tipc: adjust tipc_nodeid2string() to check the length of the result
-Date: Thu, 25 Sep 2025 19:51:46 +0300
-Message-ID: <20250925165146.457412-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20250925124707.GH836419@horms.kernel.org>
-References: <20250925124707.GH836419@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJ/UgMLe"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b54dc768f11so1030921a12.0
+        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 10:00:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758819614; x=1759424414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wyDMrFJ10ozuZKJidiIpM+48MXCub922AW0orXQAw94=;
+        b=dJ/UgMLesl4e/UR6ScLdpZmcKEUnIPFFeato/M0guf6lPfmPXEfaSmu9xFKz4ua5KG
+         PrpbYqP9w6vvezHHoaRToOj7q3imKLy8bK5X7VN/WXLrfyrgTrlsUhA7faG3GIkorQWq
+         w0HDyDgwyQIKFuInD/hb5e44TqxUAfo+7wtcNxKS6X633PcloZS51BRatf3uoC/sR529
+         svPDukhNNTIQe7WUStYgrVfLodgn/C6gKcc/65HMyKzLs2u6zbpAB9RfbUzHQ+ohe41o
+         3s32zzkVV0rhzMQ5PScijs4ToGUTaWJpApGRvUH7wjQ5EBI784bNQdjqT2lZKJgBYsx4
+         0daw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758819614; x=1759424414;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wyDMrFJ10ozuZKJidiIpM+48MXCub922AW0orXQAw94=;
+        b=tz0Gdfx0pzflGBrmLJyXMid/WLeLYl+bVxQsiaRUxpuOnGtjuTucXL/FYp+CrnLroz
+         OgesBTFMWZ8UYoI321wLNWTgEq+zhzNEpASyF+Mtsc2tv50db0FjPQEUj7+6o1bHKvlJ
+         iM1V1LZtOwJBcEVKMqKrjsOaF461z9vXxsMcEwqwI6if8NY8ofH3fC3jF/hbYmmmduRZ
+         BRIL9t2bdejjaYiAvZZdsiKe4rM1Wm65Ibe7etL2ssALpNBZ9JqbiVcyqsKDW0Uk9h6t
+         ysR061KUqQoMmD18RqihLIkXRC0xso8eP8EqJXe4R3zwAGIqUKGP+t/ns7m7A5EvXsF7
+         3TIQ==
+X-Gm-Message-State: AOJu0Yws5SXEsZAgHP/sqNbTZTEzaCkmMpjfAc+gv4ZIHieI5Qc2VSmr
+	88oTJ+bPJfODr8y9pry1gDdr0bhpJAAVYWmnDphOTMBGgedqMh+qGzs8
+X-Gm-Gg: ASbGncvselIlIrp0+sq00IYxYyQz2eRJMOc7oYKVOkQWhOybBgvCOXtd/gFkpy/fBTJ
+	qp6fwxdM8vT9eykghH5Z0QfC5RxQHMwU7FSoS0411CC6LjKzo4rwmSEs0lAFixdlGo2i51Hd3eC
+	SK1prg16nRmjvCeQWHz5JyaCItScUj9/4ObsFxpoJIJK5Q+Ie9SPazieaCHMhfbbfp/Wau5fT08
+	kiecn4grLBRLapPjArPI9uY1WMFUlC/9+8JPcV6go5J6abSkeTV592wqHNia+e3efXqHe3itaTi
+	72rgZXKPOkVI1i1aDN1l5rSlycFuhGbZzLyid0jX2DqpIfcgWb7KuD/PTb76fJOuoAfDvl3dR25
+	zaFoczaHXQoJgiObM+hnWYyQ=
+X-Google-Smtp-Source: AGHT+IECup8tv/RPmEj9LeHqIi9Nezmq0eALAm1L5tBiIgzTFrtGP33k18mujwoJhJTZsvz//a8CCQ==
+X-Received: by 2002:a17:903:3d0e:b0:269:6e73:b90a with SMTP id d9443c01a7336-27ed49d0298mr42964225ad.15.1758819614292;
+        Thu, 25 Sep 2025 10:00:14 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:7::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-27ed69beeafsm29744395ad.126.2025.09.25.10.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Sep 2025 10:00:13 -0700 (PDT)
+From: Amery Hung <ameryhung@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	martin.lau@kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH bpf-next 1/2] bpf: Emit struct bpf_xdp_sock type in vmlinux BTF
+Date: Thu, 25 Sep 2025 10:00:12 -0700
+Message-ID: <20250925170013.1752561-1-ameryhung@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,91 +75,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since the value returned by 'tipc_nodeid2string()' is not used, the
-function may be adjusted to check the length of the result against
-NODE_ID_LEN, which is helpful to drop a few calls to 'strlen()' and
-simplify 'tipc_link_create()' and 'tipc_link_bc_create()'. Compile
-tested only.
+Similar to other BPF UAPI struct, force emit BTF of struct bpf_xdp_sock
+so that it is defined in vmlinux.h.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
-v3: convert to check against NODE_ID_LEN (Simon Horman)
-v2: adjusted to target net-next (Tung Quang Nguyen)
----
- net/tipc/addr.c | 6 +++---
- net/tipc/addr.h | 2 +-
- net/tipc/link.c | 9 +++------
- 3 files changed, 7 insertions(+), 10 deletions(-)
+In a later patch, a selftest will use vmlinux.h to get the definition of
+struct bpf_xdp_sock instead of bpf.h.
 
-diff --git a/net/tipc/addr.c b/net/tipc/addr.c
-index fd0796269eed..90e47add376e 100644
---- a/net/tipc/addr.c
-+++ b/net/tipc/addr.c
-@@ -79,7 +79,7 @@ void tipc_set_node_addr(struct net *net, u32 addr)
- 	pr_info("Node number set to %u\n", addr);
- }
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+---
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b20d59bb19b8..2af0a5f1d748 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7439,6 +7439,8 @@ u32 bpf_xdp_sock_convert_ctx_access(enum bpf_access_type type,
+ 				      offsetof(struct xdp_sock, FIELD)); \
+ 	} while (0)
  
--char *tipc_nodeid2string(char *str, u8 *id)
-+bool tipc_nodeid2string(char *str, u8 *id)
- {
- 	int i;
- 	u8 c;
-@@ -109,7 +109,7 @@ char *tipc_nodeid2string(char *str, u8 *id)
- 	if (i == NODE_ID_LEN) {
- 		memcpy(str, id, NODE_ID_LEN);
- 		str[NODE_ID_LEN] = 0;
--		return str;
-+		return false;
- 	}
- 
- 	/* Translate to hex string */
-@@ -120,5 +120,5 @@ char *tipc_nodeid2string(char *str, u8 *id)
- 	for (i = NODE_ID_STR_LEN - 2; str[i] == '0'; i--)
- 		str[i] = 0;
- 
--	return str;
-+	return i + 1 > NODE_ID_LEN;
- }
-diff --git a/net/tipc/addr.h b/net/tipc/addr.h
-index 93f82398283d..5e4fc27fe329 100644
---- a/net/tipc/addr.h
-+++ b/net/tipc/addr.h
-@@ -130,6 +130,6 @@ static inline int in_own_node(struct net *net, u32 addr)
- bool tipc_in_scope(bool legacy_format, u32 domain, u32 addr);
- void tipc_set_node_id(struct net *net, u8 *id);
- void tipc_set_node_addr(struct net *net, u32 addr);
--char *tipc_nodeid2string(char *str, u8 *id);
-+bool tipc_nodeid2string(char *str, u8 *id);
- 
- #endif
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 3ee44d731700..93181b1d8898 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -495,11 +495,9 @@ bool tipc_link_create(struct net *net, char *if_name, int bearer_id,
- 
- 	/* Set link name for unicast links only */
- 	if (peer_id) {
--		tipc_nodeid2string(self_str, tipc_own_id(net));
--		if (strlen(self_str) > 16)
-+		if (tipc_nodeid2string(self_str, tipc_own_id(net)))
- 			sprintf(self_str, "%x", self);
--		tipc_nodeid2string(peer_str, peer_id);
--		if (strlen(peer_str) > 16)
-+		if (tipc_nodeid2string(peer_str, peer_id))
- 			sprintf(peer_str, "%x", peer);
- 	}
- 	/* Peer i/f name will be completed by reset/activate message */
-@@ -570,8 +568,7 @@ bool tipc_link_bc_create(struct net *net, u32 ownnode, u32 peer, u8 *peer_id,
- 	if (peer_id) {
- 		char peer_str[NODE_ID_STR_LEN] = {0,};
- 
--		tipc_nodeid2string(peer_str, peer_id);
--		if (strlen(peer_str) > 16)
-+		if (tipc_nodeid2string(peer_str, peer_id))
- 			sprintf(peer_str, "%x", peer);
- 		/* Broadcast receiver link name: "broadcast-link:<peer>" */
- 		snprintf(l->name, sizeof(l->name), "%s:%s", tipc_bclink_name,
++	BTF_TYPE_EMIT(struct bpf_xdp_sock);
++
+ 	switch (si->off) {
+ 	case offsetof(struct bpf_xdp_sock, queue_id):
+ 		BPF_XDP_SOCK_GET(queue_id);
 -- 
-2.51.0
+2.47.3
 
