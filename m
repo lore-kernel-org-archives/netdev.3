@@ -1,231 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF672E8B67
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 06:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D46182B4
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 06:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758780972; cv=none; b=sDE1ozPdBbm4Pw9C9pgPkPRZiS6uOBNgcMn3NsiZnK0LrOPG7RbfT+uWRhWD1a5WJRfcGt/Bi+SnowlXwh8fFKeRe8h6l7c9vHc93nzfxMt4q9Ddzi+EvdXBRhE2DLstWuL3WLmTTBMggacyBVR2kzQxSar9v7r2VQWxZ3ewgMY=
+	t=1758782909; cv=none; b=SosTtOyj4V/7Vf666SC94hakSekesliFEtTTITdnPbdFrftG6t3f/SauVbijZdkd/lMpJuhtYpZFpAfMpJefqGK8WyxIaiFLa7QIA5ApY5jWqJUXDFAFMW8k3qSz8SkPYlTHEfIVsJWFg1MGieA0Wschtzvg/wmd+mykRpjItCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758780972; c=relaxed/simple;
-	bh=ym7Tpix1UpJDS1eczYUlio7mh2VZslazbbBaQQynEKI=;
+	s=arc-20240116; t=1758782909; c=relaxed/simple;
+	bh=/Jh9narK//Vdct6harcwA5oRwFRD6C/h9Pvtm7ja7UI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q9FygCJlZWPxsI6BJdTkR3h6wDa2G0CINStucJExQ/RFks1sUfeSzRfkebv51R4EnAIEPCQ8QXoMKzHGCO8FCBqyvjxsfFaLKppZLKeEeVkxSdLdamiEsn0XT7iDig9Lq7JAhZj2//4TE85G6kfIGWP1C9THN73HiWZPcPTQLwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=axFino1S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=r7++DlRgpUFGz3sxDHeh8MVNoXZF9ozMYRHi12Ff1YxisqleGB8org4SZNNlAA0KSdqY86KM9nHASE/ASic1QbkyAEJhm7iR2F7gWM5yVZbDl/wXk5blNpvCeBIeWp2g/QBCj5xeNd9lz71NgB1U1JfAov7UC6/4CNCkb/hHZU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TGYesiqm; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="axFino1S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758780968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aDuj6YD2Nx2N9l6bvv4bKsQHNR4fQToj5F1XqAc3+QM=;
-	b=axFino1ScEXaL7y5e0IfHTCesqzez+cd6PNwKwCECmAkFGBGE5PeZ42rTx2OhWeZN4b0UC
-	6IvsfJMghlhzjYactNGwbz+b6sjPRNusojBsuv7PzOv+tILHdYKh6umYHkm7zSq7ugqukL
-	gHdGO0Ys2fZAxvZjGurx+nI4WiEDG44=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-GTQQlspWNL6Iqxw_n2t4Bw-1; Thu, 25 Sep 2025 02:16:07 -0400
-X-MC-Unique: GTQQlspWNL6Iqxw_n2t4Bw-1
-X-Mimecast-MFC-AGG-ID: GTQQlspWNL6Iqxw_n2t4Bw_1758780966
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-40fd1b17d2bso119217f8f.1
-        for <netdev@vger.kernel.org>; Wed, 24 Sep 2025 23:16:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758780966; x=1759385766;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aDuj6YD2Nx2N9l6bvv4bKsQHNR4fQToj5F1XqAc3+QM=;
-        b=ZX00Sl0Ns+I65ua+1Pw7Gzj8clii0rUtts5kEpehz93rcUiEHXp47vADl9MdBi2r1r
-         IRvdAAS0xluM+Pr54uECdhgIrkMZsInV94C4LONUjoNZjLwIZZVlbBdXpKBWONQjbbsz
-         304zZ/Uw9WEmOA263lc2sMHsLz7FzdfiPaoultAWdsvnq7zyXG/MV6pmazNY6YOWOu9Z
-         I3y0NxVVpUdRnN7cI/v85VillxO5riBXxMxW8Q2kJC26/WjfPfOm8KRdXSIhxD6CXGPN
-         ulVB0ldtUJnd2B+GIXBmuGEltvbx0eOWj35YRM47eQLIRxHjJc/t8BKUWUDuKp3/Vax9
-         cl6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXfhXWCX7FYG+0UFwJ9nACEW2By41fUNcY/gtr6nTU3Bl3AU8oQenTijXll78bxqPht7Y0iUcY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzrP9PO2Hy0p/QtwknoqaFxaigfCCy4NR5SJmouQFkqjVJiwvS
-	UHyUbNrgxoy0sZoPLR/guK3opWf3vJd8F/A9TkaLDrlCmF7pN9jHbbdceTnYCjqGsfnxU7bLeDL
-	CaCd4ep3D7V+/ZMhUqGyX4YS+GgLYN4aSmmMDAuD5+VmuhmfrcFTzQ9Pi7g==
-X-Gm-Gg: ASbGncsdUZS8Kxl5EHQxI3QWqrGK+IM+1jr2YYyPDLDsr7ZIdnhJm64XeagddpTWirX
-	IXYn19ZVfXszLprIP2n78f9dbQ5N0kZGM9Os7rRgRk/9NjsBPNA5dHFWP8j2Z/IyhQ6mWaXyr1A
-	j3PlwzndoywTpbY5CcOzA/R0I3AqGucIdywOboimOpEYFLgot4uCp5MtlGALhW20YQbeDExUMam
-	/kqT/ZDKvaZ3XtakdEqVdLIr9zCp7XlLs+FTs3JRBN/ZNMUPi7vBzoq0nVost+LHIQzTL1jhPA/
-	5tj1a/gNLmj+ouE2HyRYCORt7q7qqNPZlQ==
-X-Received: by 2002:a05:6000:22c2:b0:3ea:3b7b:80bb with SMTP id ffacd0b85a97d-40e4ce4c5f2mr1725816f8f.58.1758780965684;
-        Wed, 24 Sep 2025 23:16:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7q5ckEjz8pOyeyqH1mIDx5fiKG27h6MzFg90NkhrZnyiihuwgGWe2ToiQYA4mHhDuOXqtWQ==
-X-Received: by 2002:a05:6000:22c2:b0:3ea:3b7b:80bb with SMTP id ffacd0b85a97d-40e4ce4c5f2mr1725790f8f.58.1758780965206;
-        Wed, 24 Sep 2025 23:16:05 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1538:2200:56d4:5975:4ce3:246f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fb72fb1a3sm1535900f8f.10.2025.09.24.23.16.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Sep 2025 23:16:04 -0700 (PDT)
-Date: Thu, 25 Sep 2025 02:16:01 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dan Jurgens <danielj@nvidia.com>
-Cc: Jason Wang <jasowang@redhat.com>, netdev@vger.kernel.org,
-	alex.williamson@redhat.com, pabeni@redhat.com,
-	virtualization@lists.linux.dev, parav@nvidia.com,
-	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
-	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
-	andrew+netdev@lunn.ch, edumazet@google.com,
-	Yishai Hadas <yishaih@nvidia.com>
-Subject: Re: [PATCH net-next v3 01/11] virtio-pci: Expose generic device
- capability operations
-Message-ID: <20250925021351-mutt-send-email-mst@kernel.org>
-References: <20250923141920.283862-1-danielj@nvidia.com>
- <20250923141920.283862-2-danielj@nvidia.com>
- <CACGkMEtkqhvsP1-b8zBnrFZwnK3LvEO4GBN52rxzdbOXJ3J7Qw@mail.gmail.com>
- <20250924021637-mutt-send-email-mst@kernel.org>
- <16019785-ca9e-4d63-8a0f-c2f3fdcd32b8@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TGYesiqm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1758782908; x=1790318908;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/Jh9narK//Vdct6harcwA5oRwFRD6C/h9Pvtm7ja7UI=;
+  b=TGYesiqmEDGqbMtrh3rI5tjrJQStiy+LXm73ZrUkZTP4anpSk3quje81
+   QOPgDBSHa/SJJ4FsjTOhK6jligCWT1zF+zppHus24ijadCJwKm1tsK4d4
+   PngO6HrWyDV/4h/AwfcAdHk7zs4VR0DBPoZdl/EcHjVwIo/uKUoK3JGCB
+   PwMMO3I6jd3Iy+scliDOI2gPh0r2oibLvEtov+lMZT11PLNNn/NWVh47d
+   eNR1kX6IJjFLykw/1XjSHt5Qr8X4sV4Kjrj6ELu5U/gCtE86rrlfrrvLQ
+   eX85/0qQ5CIyyjWxeIq4NsJCUQbm3Z8FkrZ2V4d+UMrIUTodY/wq8wgxo
+   Q==;
+X-CSE-ConnectionGUID: 22fAunL4RB2Yk5657G5/Jg==
+X-CSE-MsgGUID: 8JDbO5iJRxaVX4dcPMdP4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11563"; a="72520225"
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="72520225"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2025 23:48:27 -0700
+X-CSE-ConnectionGUID: 0laVTdjgR/O9U2gJbq7RfA==
+X-CSE-MsgGUID: 6hCP+bN0SLe9K0FCbDqTvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,292,1751266800"; 
+   d="scan'208";a="208185905"
+Received: from lkp-server02.sh.intel.com (HELO 84c55410ccf6) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 24 Sep 2025 23:48:23 -0700
+Received: from kbuild by 84c55410ccf6 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v1fm8-0004zj-31;
+	Thu, 25 Sep 2025 06:48:20 +0000
+Date: Thu, 25 Sep 2025 14:48:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Willem de Bruijn <willemb@google.com>,
+	Breno Leitao <leitao@debian.org>, Petr Machata <petrm@nvidia.com>,
+	Yuyang Huang <yuyanghuang@google.com>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: Re: [PATCH net-next 1/9] netdevsim: a basic test PSP implementation
+Message-ID: <202509251404.crckqEdD-lkp@intel.com>
+References: <20250924194959.2845473-2-daniel.zahka@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <16019785-ca9e-4d63-8a0f-c2f3fdcd32b8@nvidia.com>
+In-Reply-To: <20250924194959.2845473-2-daniel.zahka@gmail.com>
 
-On Wed, Sep 24, 2025 at 02:02:34PM -0500, Dan Jurgens wrote:
-> On 9/24/25 1:22 AM, Michael S. Tsirkin wrote:
-> > On Wed, Sep 24, 2025 at 09:16:32AM +0800, Jason Wang wrote:
-> >> On Tue, Sep 23, 2025 at 10:20 PM Daniel Jurgens <danielj@nvidia.com> wrote:
-> >>>
-> >>> Currently querying and setting capabilities is restricted to a single
-> >>> capability and contained within the virtio PCI driver. However, each
-> >>> device type has generic and device specific capabilities, that may be
-> >>> queried and set. In subsequent patches virtio_net will query and set
-> >>> flow filter capabilities.
-> >>>
-> >>> Move the admin related definitions to a new header file. It needs to be
-> >>> abstracted away from the PCI specifics to be used by upper layer
-> >>> drivers.
-> >>>
-> >>> Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-> >>> Reviewed-by: Parav Pandit <parav@nvidia.com>
-> >>> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-> >>> Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-> >>> ---
-> >>
-> >> [...]
-> >>
-> >>>
-> >>>  size_t virtio_max_dma_size(const struct virtio_device *vdev);
-> >>>
-> >>> diff --git a/include/linux/virtio_admin.h b/include/linux/virtio_admin.h
-> >>> new file mode 100644
-> >>> index 000000000000..bbf543d20be4
-> >>> --- /dev/null
-> >>> +++ b/include/linux/virtio_admin.h
-> >>> @@ -0,0 +1,68 @@
-> >>> +/* SPDX-License-Identifier: GPL-2.0-only
-> >>> + *
-> >>> + * Header file for virtio admin operations
-> >>> + */
-> >>> +#include <uapi/linux/virtio_pci.h>
-> >>> +
-> >>> +#ifndef _LINUX_VIRTIO_ADMIN_H
-> >>> +#define _LINUX_VIRTIO_ADMIN_H
-> >>> +
-> >>> +struct virtio_device;
-> >>> +
-> >>> +/**
-> >>> + * VIRTIO_CAP_IN_LIST - Check if a capability is supported in the capability list
-> >>> + * @cap_list: Pointer to capability list structure containing supported_caps array
-> >>> + * @cap: Capability ID to check
-> >>> + *
-> >>> + * The cap_list contains a supported_caps array of little-endian 64-bit integers
-> >>> + * where each bit represents a capability. Bit 0 of the first element represents
-> >>> + * capability ID 0, bit 1 represents capability ID 1, and so on.
-> >>> + *
-> >>> + * Return: 1 if capability is supported, 0 otherwise
-> >>> + */
-> >>> +#define VIRTIO_CAP_IN_LIST(cap_list, cap) \
-> >>> +       (!!(1 & (le64_to_cpu(cap_list->supported_caps[cap / 64]) >> cap % 64)))
-> >>> +
-> >>> +/**
-> >>> + * struct virtio_admin_ops - Operations for virtio admin functionality
-> >>> + *
-> >>> + * This structure contains function pointers for performing administrative
-> >>> + * operations on virtio devices. All data and caps pointers must be allocated
-> >>> + * on the heap by the caller.
-> >>> + */
-> >>> +struct virtio_admin_ops {
-> >>> +       /**
-> >>> +        * @cap_id_list_query: Query the list of supported capability IDs
-> >>> +        * @vdev: The virtio device to query
-> >>> +        * @data: Pointer to result structure (must be heap allocated)
-> >>> +        * Return: 0 on success, negative error code on failure
-> >>> +        */
-> >>> +       int (*cap_id_list_query)(struct virtio_device *vdev,
-> >>> +                                struct virtio_admin_cmd_query_cap_id_result *data);
-> >>> +       /**
-> >>> +        * @cap_get: Get capability data for a specific capability ID
-> >>> +        * @vdev: The virtio device
-> >>> +        * @id: Capability ID to retrieve
-> >>> +        * @caps: Pointer to capability data structure (must be heap allocated)
-> >>> +        * @cap_size: Size of the capability data structure
-> >>> +        * Return: 0 on success, negative error code on failure
-> >>> +        */
-> >>> +       int (*cap_get)(struct virtio_device *vdev,
-> >>> +                      u16 id,
-> >>> +                      void *caps,
-> >>> +                      size_t cap_size);
-> >>> +       /**
-> >>> +        * @cap_set: Set capability data for a specific capability ID
-> >>> +        * @vdev: The virtio device
-> >>> +        * @id: Capability ID to set
-> >>> +        * @caps: Pointer to capability data structure (must be heap allocated)
-> >>> +        * @cap_size: Size of the capability data structure
-> >>> +        * Return: 0 on success, negative error code on failure
-> >>> +        */
-> >>> +       int (*cap_set)(struct virtio_device *vdev,
-> >>> +                      u16 id,
-> >>> +                      const void *caps,
-> >>> +                      size_t cap_size);
-> >>> +};
-> >>
-> >> Looking at this, it's nothing admin virtqueue specific, I wonder why
-> >> it is not part of virtio_config_ops.
-> >>
-> >> Thanks
-> > 
-> > cap things are admin commands. But what I do not get is why they
-> > need to be callbacks.
-> > 
-> > The only thing about admin commands that is pci specific is finding
-> > the admin vq.
-> > 
-> > I'd expect an API for that in config then, and the rest of code can
-> > be completely transport independent.
-> > 
-> > 
-> 
-> The idea was that each transport would implement the callbacks, and we
-> have indirection at the virtio_device level. Similar to the config_ops.
-> So the drivers stay transport agnostic. I know these are PCI specific
-> now, but thought it should be implemented generically.
-> 
-> These could go in config ops. But I thought it was better to isolate
-> them in a new _ops structure.
-> 
-> An earlier implementation had the net driver accessing the admin_ops
-> directly. But Parav thought this was better.
+Hi Daniel,
 
-Right, but most stuff is not transport specific. If you are going to
-put in the work, what is transport specific is admin VQ access.
-Commands themselves are transport agnostic, we just did not need
-them in non-pci previously.
+kernel test robot noticed the following build errors:
 
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Zahka/netdevsim-a-basic-test-PSP-implementation/20250925-035305
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20250924194959.2845473-2-daniel.zahka%40gmail.com
+patch subject: [PATCH net-next 1/9] netdevsim: a basic test PSP implementation
+config: i386-buildonly-randconfig-003-20250925 (https://download.01.org/0day-ci/archive/20250925/202509251404.crckqEdD-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250925/202509251404.crckqEdD-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202509251404.crckqEdD-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/netdevsim/netdev.c: In function 'nsim_forward_skb':
+>> drivers/net/netdevsim/netdev.c:116:36: error: 'SKB_EXT_PSP' undeclared (first use in this function); did you mean 'SKB_EXT_NUM'?
+     116 |                 __skb_ext_set(skb, SKB_EXT_PSP, psp_ext);
+         |                                    ^~~~~~~~~~~
+         |                                    SKB_EXT_NUM
+   drivers/net/netdevsim/netdev.c:116:36: note: each undeclared identifier is reported only once for each function it appears in
+
+
+vim +116 drivers/net/netdevsim/netdev.c
+
+   102	
+   103	static int nsim_forward_skb(struct net_device *tx_dev,
+   104				    struct net_device *rx_dev,
+   105				    struct sk_buff *skb,
+   106				    struct nsim_rq *rq,
+   107				    struct skb_ext *psp_ext)
+   108	{
+   109		int ret;
+   110	
+   111		ret = __dev_forward_skb(rx_dev, skb);
+   112		if (ret)
+   113			return ret;
+   114	
+   115		if (psp_ext)
+ > 116			__skb_ext_set(skb, SKB_EXT_PSP, psp_ext);
+   117	
+   118		return nsim_napi_rx(tx_dev, rx_dev, rq, skb);
+   119	}
+   120	
 
 -- 
-MST
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
