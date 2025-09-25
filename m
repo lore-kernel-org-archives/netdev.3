@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D723019C1
-	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E5030276A
+	for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 12:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758802450; cv=none; b=WeQlBo0YbhfaA/3YVRsDwqcbaRCGfiRSDjXDa3wxitIWfylHvU+cKYXVRRKsiNVLY9esU70JwZPXDG7fGhscgcdmsH9hrbfT1JH4OdMMvIQEGlR3l1Cx5O+cWz49jnHgYmmm1xIzupXTqcE+fY3/Ce7sX9MZqwsXynoLksVJ6+g=
+	t=1758802453; cv=none; b=cMQ1MAGhWr2kt64J+QuTN3zRsQg2wwNDgzHLXUC5KQnHZr2MCiZILFwTRdRTKyp8gaHJTnr9wIU12tLQjStOcZV2fM3pZ0YO8PCnmYB1t9Tjv5DcLl30OysqVoedX+OOQn6Nfpq5LULtD62WAe6/1EylgLBTA/PdyG5vlD8C7YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758802450; c=relaxed/simple;
-	bh=ufAB8RsL7GnbYV8hEwh8am0wgYyRKz5q9d9U4oB6K3g=;
+	s=arc-20240116; t=1758802453; c=relaxed/simple;
+	bh=mexw+6/QkPDCqTEUy0EXdc2mcDcdrWUzyQaUleqEZ9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNIDk56SP4OzTk2JAzCmDSICVTtGepy67Vz3Yg/hw2yWRRxcBtDOisu3a3Nq/6ARIy2QSC4gaFUxAcIL+gk0xPYs+3HeI5ats3RcNKF6Ofk7cArnbsPSpGWiBVh60m7jei8rZNi3tvcXo6/d9n4o9mfSJpYdhk+6xq9lGyl+3iQ=
+	 MIME-Version; b=demQeAeJYHg0RnAQ28qG2n1vs1EwiW8jUzLH3mfPvSwsez6PNjQGdnWGu/aTfbOvHt+GiEshsqrD7C/GRfjythROFnygYv6v9vbGtJFMCcr7SlJLxk7OXor6qJtj6j7wz4smFz35/jgUFBX7NfA24A7GZpxRn4V+r04t+iWd2os=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqv-0000Wb-Em; Thu, 25 Sep 2025 14:13:37 +0200
+	id 1v1kqw-0000YQ-Ku; Thu, 25 Sep 2025 14:13:38 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v1kqu-000Pw3-1f;
-	Thu, 25 Sep 2025 14:13:36 +0200
+	id 1v1kqv-000Pwm-0V;
+	Thu, 25 Sep 2025 14:13:37 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3B925479982;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E3A8947998B;
 	Thu, 25 Sep 2025 12:13:36 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -39,11 +39,10 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Vincent Mailhol <mailhol@kernel.org>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 22/48] can: raw: reorder struct uniqframe's members to optimise packing
-Date: Thu, 25 Sep 2025 14:07:59 +0200
-Message-ID: <20250925121332.848157-23-mkl@pengutronix.de>
+Subject: [PATCH net-next 31/48] can: netlink: document which symbols are FD specific
+Date: Thu, 25 Sep 2025 14:08:08 +0200
+Message-ID: <20250925121332.848157-32-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250925121332.848157-1-mkl@pengutronix.de>
 References: <20250925121332.848157-1-mkl@pengutronix.de>
@@ -61,59 +60,67 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Vincent Mailhol <mailhol@kernel.org>
 
-struct uniqframe has one hole. Reorder the fields to save 8 bytes.
+The CAN XL netlink interface will also have data bitrate and TDC
+parameters. The current FD parameters do not have a prefix in their
+names to differentiate them.
 
-Statistics before:
+Because the netlink interface is part of the UAPI, it is unfortunately
+not feasible to rename the existing symbols to add an FD_ prefix. The
+best alternative is to add a comment for each of the symbols to notify
+the reader of which parts are CAN FD specific.
 
-  $ pahole --class_name=uniqframe net/can/raw.o
-  struct uniqframe {
-  	int                        skbcnt;               /*     0     4 */
+While at it, fix a typo: transiver -> transceiver.
 
-  	/* XXX 4 bytes hole, try to pack */
-
-  	const struct sk_buff  *    skb;                  /*     8     8 */
-  	unsigned int               join_rx_count;        /*    16     4 */
-
-  	/* size: 24, cachelines: 1, members: 3 */
-  	/* sum members: 16, holes: 1, sum holes: 4 */
-  	/* padding: 4 */
-  	/* last cacheline: 24 bytes */
-  };
-
-...and after:
-
-  $ pahole --class_name=uniqframe net/can/raw.o
-  struct uniqframe {
-  	const struct sk_buff  *    skb;                  /*     0     8 */
-  	int                        skbcnt;               /*     8     4 */
-  	unsigned int               join_rx_count;        /*    12     4 */
-
-  	/* size: 16, cachelines: 1, members: 3 */
-  	/* last cacheline: 16 bytes */
-  };
-
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
 Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20250917-can-raw-repack-v2-1-395e8b3a4437@kernel.org
+Link: https://patch.msgid.link/20250923-canxl-netlink-prep-v4-3-e720d28f66fe@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- net/can/raw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/can/netlink.h | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 76b867d21def..db21d8a8c54d 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -75,8 +75,8 @@ MODULE_ALIAS("can-proto-1");
-  */
+diff --git a/include/uapi/linux/can/netlink.h b/include/uapi/linux/can/netlink.h
+index 02ec32d69474..ef62f56eaaef 100644
+--- a/include/uapi/linux/can/netlink.h
++++ b/include/uapi/linux/can/netlink.h
+@@ -101,8 +101,8 @@ struct can_ctrlmode {
+ #define CAN_CTRLMODE_PRESUME_ACK	0x40	/* Ignore missing CAN ACKs */
+ #define CAN_CTRLMODE_FD_NON_ISO		0x80	/* CAN FD in non-ISO mode */
+ #define CAN_CTRLMODE_CC_LEN8_DLC	0x100	/* Classic CAN DLC option */
+-#define CAN_CTRLMODE_TDC_AUTO		0x200	/* CAN transiver automatically calculates TDCV */
+-#define CAN_CTRLMODE_TDC_MANUAL		0x400	/* TDCV is manually set up by user */
++#define CAN_CTRLMODE_TDC_AUTO		0x200	/* FD transceiver automatically calculates TDCV */
++#define CAN_CTRLMODE_TDC_MANUAL		0x400	/* FD TDCV is manually set up by user */
  
- struct uniqframe {
--	int skbcnt;
- 	const struct sk_buff *skb;
-+	int skbcnt;
- 	unsigned int join_rx_count;
+ /*
+  * CAN device statistics
+@@ -129,14 +129,14 @@ enum {
+ 	IFLA_CAN_RESTART_MS,
+ 	IFLA_CAN_RESTART,
+ 	IFLA_CAN_BERR_COUNTER,
+-	IFLA_CAN_DATA_BITTIMING,
+-	IFLA_CAN_DATA_BITTIMING_CONST,
++	IFLA_CAN_DATA_BITTIMING, /* FD */
++	IFLA_CAN_DATA_BITTIMING_CONST, /* FD */
+ 	IFLA_CAN_TERMINATION,
+ 	IFLA_CAN_TERMINATION_CONST,
+ 	IFLA_CAN_BITRATE_CONST,
+-	IFLA_CAN_DATA_BITRATE_CONST,
++	IFLA_CAN_DATA_BITRATE_CONST, /* FD */
+ 	IFLA_CAN_BITRATE_MAX,
+-	IFLA_CAN_TDC,
++	IFLA_CAN_TDC, /* FD */
+ 	IFLA_CAN_CTRLMODE_EXT,
+ 
+ 	/* add new constants above here */
+@@ -145,7 +145,7 @@ enum {
  };
  
+ /*
+- * CAN FD Transmitter Delay Compensation (TDC)
++ * CAN FD/XL Transmitter Delay Compensation (TDC)
+  *
+  * Please refer to struct can_tdc_const and can_tdc in
+  * include/linux/can/bittiming.h for further details.
 -- 
 2.51.0
 
