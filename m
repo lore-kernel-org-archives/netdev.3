@@ -1,134 +1,89 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2332922DFA7;
-	Fri, 26 Sep 2025 12:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360962F6593;
+	Fri, 26 Sep 2025 12:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758889930; cv=none; b=ZxKQaKRG3MB0nZv1qN9D2enf3B0ZVdMJJ2+0GmJ3/i1BZZLLyTNrR9qhSBc8birv4qsxCkb3BZJqB/eSv9svlZWxMEvwNYz4gVeewGZUutJbrfo2c+vhNRq2NBsbep4g1UKuG5hXpdpywA5HDTPxvRtEH6HNpm7RN53kgDFEYwE=
+	t=1758891006; cv=none; b=HZCUWW129ZF/ExghEMd9Vpd4jUtj4bkSpc85f8ag4WCONsLjj5ktqRnCT3xFaGi5rmwTH3DZUtCo+DcQ+WVXnFhSbJMVvI2H2cYMWNUT494qlOAWUuxY7uCFxFz3djkMXrSIVWSZlwN1JgkBtPoNBclUyNl0RzW4FdLM3EAfzUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758889930; c=relaxed/simple;
-	bh=4pBFQ0Uz5QjWbEEBpSwXpSmkcB3ILJpm6lt9YiLAyZ8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYGJJVIn/vfHC5y7m1tMmMggk9a5qIdHwfgE8JdwVgSgWkzHDjNfjgxhQD4B5PcBAOjcRYolhugaiHqIojURY+lpe3ahEwV86xvEQv7NgcTurUPogFvaOLz2FCOH72hQWabqu7XlOXnb8mYW/Aqrg8kVKGcMdWw/lFcv35VIy7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=YI9oPORa; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1758891006; c=relaxed/simple;
+	bh=023QJFGZmApyCBXIrm0J5kNm+LMuusbuLoFq4ytIvfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FaduaESsoA3GEVwKtUqleDQuEUKBbBNBXaHozZMuxHvUdEqG6u1P1J44MUYKAPVJstz1I8ogw6YN/rE3OPWWHZW9n4pKggDeCsUdrLTO190Y1FprRharu1As6Qb423WJaaid3ec82XLbKL66bjtxAw7c3xSTiEwkxrDjZXdFgC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GLoQJGl1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="YI9oPORa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1758889929; x=1790425929;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4pBFQ0Uz5QjWbEEBpSwXpSmkcB3ILJpm6lt9YiLAyZ8=;
-  b=YI9oPORaLlHTmuKQDQcDyimheHz+LVdwRsbNPHdrMT/ApVSwfm5Zi3jo
-   DSGZh5Tsx/+nKfB4DMs6k7Ou7kfsBJ8v/xORVaV8zSlEtj9CW1j9AOjge
-   XkX6dM6dDBZLVqxaXQvsniqrsNOQ+4R6azacEFD8e3q/haNzIXDYWUMij
-   SNJJjiRe05+5KXEj24shRmbAL0/VU5MYAvDwkDr/XHn6eZQ9JUkEU+vKV
-   EIrG2nqE74aFq1Y/OOqiR7xDAyCY5qJeGL9vLBp2zGTP6jKMgBAEL26dH
-   eZ/PzBXMMyrAmaUW2V6a44zybtK7yVNFHM7P/odBOe+Gyc59z6n9hVrDI
-   Q==;
-X-CSE-ConnectionGUID: lLFS1YPBTD+yAQfyZWaI6w==
-X-CSE-MsgGUID: +2RhxcgHRJK/5va2xXeGxQ==
-X-IronPort-AV: E=Sophos;i="6.18,295,1751266800"; 
-   d="scan'208";a="47547359"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Sep 2025 05:32:07 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 26 Sep 2025 05:31:09 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 26 Sep 2025 05:31:09 -0700
-Date: Fri, 26 Sep 2025 14:27:01 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Jakub Kicinski <kuba@kernel.org>, <andrew@lunn.ch>,
-	<hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <richardcochran@gmail.com>,
-	<vadim.fedorenko@linux.dev>, <rmk+kernel@armlinux.org.uk>,
-	<christophe.jaillet@wanadoo.fr>, <rosenp@gmail.com>,
-	<steen.hegelund@microchip.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2] phy: mscc: Fix PTP for vsc8574 and VSC8572
-Message-ID: <20250926122701.q2t7rk7vgccjzyi6@DEN-DL-M31836.microchip.com>
-References: <20250917113316.3973777-1-horatiu.vultur@microchip.com>
- <20250918160942.3dc54e9a@kernel.org>
- <20250922121524.3baplkjgw2xnwizr@skbuf>
- <20250922123301.y7qjguatajhci67o@DEN-DL-M31836.microchip.com>
- <20250922132846.jkch266gd2p6k4w5@skbuf>
- <20250923071924.mv6ytwtifuu5limg@DEN-DL-M31836.microchip.com>
- <20250926071111.bdxffjghguawcobp@DEN-DL-M31836.microchip.com>
- <20250926122038.3mv2plj3bvnfbple@skbuf>
- <20250926122116.iixyzxl3cjp2z66j@DEN-DL-M31836.microchip.com>
- <20250926122757.jvcl7xi6435wlztw@skbuf>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GLoQJGl1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FBFC113CF;
+	Fri, 26 Sep 2025 12:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758891005;
+	bh=023QJFGZmApyCBXIrm0J5kNm+LMuusbuLoFq4ytIvfI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GLoQJGl1cRrhWUs8qJO1wGZZwpBwYPcAKoQ/PmgIERSKgIk5UvotPcmUCwS7mhyg+
+	 rMtCLpNbueAqWVqerO2EkgfLtIQBo9KJkMQbRIy/b/181hVNECb5Dmvy/SR/FYwlcn
+	 wTWkpEVZOvfzCmU4fhBaezd3laOI50/muQGii50+4icMQdypZkMOXtKn+Ng3XxLQfq
+	 VvgdUWg37vomdeVgNXp81zcmMmBcNiHUk4958xXxDYtCuNa93DisazI+lySdFQBjnd
+	 BaU3WjarkDJ4nCvN9RpmiWmeuE+IROwUQ/rrtxNmBTIe394CiXOmwtV524HdbNPWq6
+	 uG05D4QYsHlsg==
+Date: Fri, 26 Sep 2025 13:49:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jiri Pirko <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+	Gal Pressman <gal@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Akiva Goldberger <agoldberger@nvidia.com>
+Subject: Re: [PATCH net-next] net/mlx5: Expose uar access and odp page fault
+ counters
+Message-ID: <aNaL90oj8vyq9-A9@horms.kernel.org>
+References: <1758797130-829564-1-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250926122757.jvcl7xi6435wlztw@skbuf>
+In-Reply-To: <1758797130-829564-1-git-send-email-tariqt@nvidia.com>
 
-The 09/26/2025 15:27, Vladimir Oltean wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+On Thu, Sep 25, 2025 at 01:45:30PM +0300, Tariq Toukan wrote:
+> From: Akiva Goldberger <agoldberger@nvidia.com>
 > 
-> On Fri, Sep 26, 2025 at 02:21:16PM +0200, Horatiu Vultur wrote:
-> > The 09/26/2025 15:20, Vladimir Oltean wrote:
-> > > EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
-> > >
-> > > On Fri, Sep 26, 2025 at 09:11:11AM +0200, Horatiu Vultur wrote:
-> > > > I have been asking around about these revisions of the PHYs and what is
-> > > > available:
-> > > > vsc856x - only rev B exists
-> > > > vsc8575 - only rev B exists
-> > > > vsc8582 - only rev B exists
-> > > > vsc8584 - only rev B exists
-> > > > vsc8574 - rev A,B,C,D,E exists
-> > > > vsc8572 - rev A,B,C,D,E exists
-> > > >
-> > > > For vsc856x, vsc8575, vsc8582, vsc8584 the lower 4 bits in register 3
-> > > > will have a value of 1.
-> > > > For vsc8574 and vsc8572 the lower 4 bits in register 3 will have a value
-> > > > of 0 for rev A, 1 for rev B and C, 2 for D and E.
-> > > >
-> > > > Based on this information, I think both commits a5afc1678044 and
-> > > > 75a1ccfe6c72 are correct regarding the revision check.
-> > > >
-> > > > So, now to be able to fix the PTP for vsc8574 and vsc8572, I can do the
-> > > > following:
-> > > > - start to use PHY_ID_MATCH_MODEL for vsc856x, vsc8575, vsc8582, vsc8584
-> > > > - because of this change I will need to remove also the WARN_ON() in the
-> > > >   function vsc8584_config_init()
-> > > > - then I can drop the check for revision in vsc8584_probe()
-> > > > - then I can make vsc8574 and vsc8572 to use vsc8584_probe()
-> > > >
-> > > > What do you think about this?
-> > >
-> > > This sounds good, however I don't exactly understand how it fits in with
-> > > your response to Russell to replace phydev->phy_id with phydev->drv->phy_id
-> > > in the next revision. If the revision check in vsc8584_probe() goes away,
-> > > where will you use phydev->drv->phy_id?
-> >
-> > I got a little bit confused here.
-> > Because no one answer to this email, I thought it might not be OK, so
-> > that is the reason why I said that I will go with Russell approach.
-> > But if you think that this approach that I proposed here is OK (as you seem
-> > to be). Then I will go with this and then I will not do Russell
-> > suggestion because it is not needed anymore.
+> Add three counters to vnic health reporter:
+> bar_uar_access, odp_local_triggered_page_fault, and
+> odp_remote_triggered_page_fault.
 > 
-> Yes, sorry, I am in the middle of some work and I'm not as responsive as
-> I should be.
+> - bar_uar_access
+>     number of WRITE or READ access operations to the UAR on the PCIe
+>     BAR.
+> - odp_local_triggered_page_fault
+>     number of locally-triggered page-faults due to ODP.
+> - odp_remote_triggered_page_fault
+>     number of remotly-triggered page-faults due to ODP.
+> 
+> Example access:
+>     $ devlink health diagnose pci/0000:08:00.0 reporter vnic
+> 	vNIC env counters:
+> 	total_error_queues: 0 send_queue_priority_update_flow: 0
+> 	comp_eq_overrun: 0 async_eq_overrun: 0 cq_overrun: 0
+> 	invalid_command: 0 quota_exceeded_command: 0
+> 	nic_receive_steering_discard: 0 icm_consumption: 1032
+> 	bar_uar_access: 1279 odp_local_triggered_page_fault: 20
+> 	odp_remote_triggered_page_fault: 34
+> 
+> Signed-off-by: Akiva Goldberger <agoldberger@nvidia.com>
+> Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 
-No worries.
-Thanks for all the help you provided to this patch and all the previous
-ones!
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-
--- 
-/Horatiu
+...
