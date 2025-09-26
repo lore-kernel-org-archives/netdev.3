@@ -1,219 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA47072633
-	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 04:55:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A34521E091
+	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 05:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758862531; cv=none; b=tPRQ2w0kyruX31ude29TdR4HCBe/kE70lYt5fzdupPdVKcQDuVARB2Lz8e4dm/ld+QUUuIuAo8VtvOy21TqeVa+VPg7znf0Ze3EBwMZ0C5vMzwHJrCx2vdNfkkX1SEj5+LJHyQBtOtB+KSFnNkskSfw/0YXFEDB3hCJwpbY8LHY=
+	t=1758864645; cv=none; b=n8rsjRO0yd2YFwv/jIU1/leWbG7ekKcGpUR57U+lWnzxLNvXUcabnekj1K92Gppzis9JnBT8dREgwM/0AUM5sxEYCTfIRxEVri8OJNiFTrNlgUAn5iYIVo3XBBVqfqYUycQv61JyEVXD7GfJLCOC2bX3dvpKsK4mhG16T2PFpSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758862531; c=relaxed/simple;
-	bh=Nej2v9PMt/WcbamJ+FX4ohIqCRqaL0Mql+6Jr/x2r7k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n/EEldkTrz0jPiTjP5dh+h3bz/ftrPCC9yA0GybXkNMSWXcNk3JoRa45xt4si8MNhoB2dHXtCL11/pFZUyNKuYhqFUxLgFula7bAbrFccrFsVyBtBWSh7I+N5XZHu1wK0bZ0Y84n+8w7KQwooQr+/cBRihi9wmvEuS6a4JfgFQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=huXFQuat; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1758864645; c=relaxed/simple;
+	bh=e8j1xOYIY4wKg7OHrCKZ4ZZZ2fHLQmJEhrsqZCD0yl0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CxlI+zwWmwHB/QuepDWo9anmJXh45RP+33xwT5j3Ax+BEeGsmnAigZULKfgscnELI/y6SCy4zESOqJ0Q30BTKEQLB7tqMPYxiGBKwAw/liz4hYUUlbPm9A6z1rRMJ0oyyhyubvi/C1q0OOCM/ftmqISkB/NOMHHj/j4e7r4lSDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=N+t0Qq/5; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="huXFQuat"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758862527;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PXIPhhw4tWLJ9v89faJ+PM4VIR9L03wMvBqNbKspOp8=;
-	b=huXFQuatLzatF17uX8jmZOBnRgD8BRKzFG548r5yhSwBsiHwxdnSwmBItSoVdUWf77oaZ0
-	diNLYP9B976ihr/REdUYUxTTdx81zlD+J+nR92nTp4yF3zDumhtV1Fvbkw7cuLfwFDm1QV
-	URGa+qtNbig6xVJg503XzUxoC28zxjk=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-472-FrEE7bACNfOngOs5ZZSWbg-1; Fri, 26 Sep 2025 00:55:26 -0400
-X-MC-Unique: FrEE7bACNfOngOs5ZZSWbg-1
-X-Mimecast-MFC-AGG-ID: FrEE7bACNfOngOs5ZZSWbg_1758862525
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-33428befc08so3580748a91.2
-        for <netdev@vger.kernel.org>; Thu, 25 Sep 2025 21:55:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758862525; x=1759467325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PXIPhhw4tWLJ9v89faJ+PM4VIR9L03wMvBqNbKspOp8=;
-        b=w4gM9wSbvGJV7+CN7TTkAoM53RYZDlNEOSB0nbv38AdCiDrjrARUTdN2i0eWSeXqLI
-         Pm3ftZ/XbtSND3Hod1JkURC7TkZl8UDFxGmrRjNQAusaOJzQzr5tOXPweAKa0WJZHQ6j
-         7qKnyqwrlOv0tRq5KvD79Zkm2ObBQCiHVIZFDN1ENX2zgHmwCJxpovf4hY+LU6JYODeP
-         gXCqk+EdS1hjz7BxwqqFrTxmIK1NDB7B1uhIcq5e6w6NbDVdFAZAD+SlA72O/viPaJKX
-         46XTAIaaLhjaKhBrl/z2FhwqPx0BQtlVGGf9FlkXf7WidzVG7MTJuDo2b8uhdzE9Wtdk
-         zuhg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/HsUcZi6M9gMOcs8y6zheKv1xymt2/C6noXyUrg7rY7ooBj8nDZpZMQDulLFu9zlURZ4devA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU158Ne/Sp3YSUCBVL7ry/7NDCBuq37p/ipvtdekembqwyHtgD
-	iQcUpr8E7BWeWBN2Bfl818OJSvPKNweeIoby2jCefmY0D5OIXvWGny58EuBUozMFL8JAq1Njqnf
-	Ksd14pDtDTC5dOUfIpJxRLe9eiSNSbgiVxOtCqgkD3G897gGkDv/qackiVdQZU5z9G6FvVrOzrY
-	xfzNLU0E9EBuH/It4Rx1/f92nwR7pw2VYh
-X-Gm-Gg: ASbGnctnzQPcBd00mMnw+0kf7gIUPglDFtReJjiiHfz5oT3mGbUb4dr6uAH5y55Hf/S
-	SVuNRP/ZLrAfjuxSNp5ggdjvdLQvBAwp0suWolrK1WBxPSULvxaGFgV3G0wfqodd4cnzz40HW5s
-	kfB9QYnFBKJUyfpzDxhA==
-X-Received: by 2002:a17:90b:3a8b:b0:330:4604:3ab6 with SMTP id 98e67ed59e1d1-3342a2b119emr6309519a91.18.1758862524855;
-        Thu, 25 Sep 2025 21:55:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhepOtBGMOoRmGAMGYvLYEEoIZzIxWPaI1wxI6nM9zltZDzQ31wVU9ghnTwZpyBnsfgfU1312VbBySpCVKrvw=
-X-Received: by 2002:a17:90b:3a8b:b0:330:4604:3ab6 with SMTP id
- 98e67ed59e1d1-3342a2b119emr6309485a91.18.1758862524392; Thu, 25 Sep 2025
- 21:55:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="N+t0Qq/5"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 8505E208A2;
+	Fri, 26 Sep 2025 07:30:36 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id BRut1hz1UCm4; Fri, 26 Sep 2025 07:30:36 +0200 (CEST)
+Received: from EXCH-01.secunet.de (unknown [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id EA539208B5;
+	Fri, 26 Sep 2025 07:30:35 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com EA539208B5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1758864636;
+	bh=unmvt9ys5atahR+Z4soQ9iesE7BgRtk3RTP3vtMslJQ=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=N+t0Qq/5gUkH6A1dA6AWzhv7oSczmJWLSuPNdhYyBW7LppcocI5DWrP/G309LgAcL
+	 3qJIMolfW5x8JcTpLHLTlneOEm5pZ7jIZRAxa91wvvpvhb6aQTRGvSF7dyefpsDz2i
+	 XU+CTLNpHSzC+ZvaSH5m3o2Q34J9Xqe1Vb+ynqv0qw/zfnQKmadQOF68s7KVDrhhR8
+	 GUCISFod2ZpFEoWYj70TJdILKFi7iq6njtc+atB87mLd3ZhB6/+0Km2kvn8fmpWQk9
+	 XNTm98m88hWF/quLPU5AdYfNFFx8pDOMNIXq8N0cSitjsnoqb84WMiXwfWXPN90TGE
+	 C9eGiNM3pWIxw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Fri, 26 Sep
+ 2025 07:30:35 +0200
+Received: (nullmailer pid 2242264 invoked by uid 1000);
+	Fri, 26 Sep 2025 05:30:33 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 2/2] xfrm: xfrm_user: use strscpy() for alg_name
+Date: Fri, 26 Sep 2025 07:30:10 +0200
+Message-ID: <20250926053025.2242061-3-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250926053025.2242061-1-steffen.klassert@secunet.com>
+References: <20250926053025.2242061-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250923141920.283862-1-danielj@nvidia.com> <20250923141920.283862-2-danielj@nvidia.com>
- <CACGkMEtkqhvsP1-b8zBnrFZwnK3LvEO4GBN52rxzdbOXJ3J7Qw@mail.gmail.com> <20250924021637-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20250924021637-mutt-send-email-mst@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 26 Sep 2025 12:55:11 +0800
-X-Gm-Features: AS18NWAP5nE5bSzUngmD74vhSZHIuWlJH1On-rHDVx-a53FiiQzgeN7bupN4ojc
-Message-ID: <CACGkMEuWRUANBCkeE5r+7+wob3nr-Mrnce_kLRHbpeF0OT_45Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 01/11] virtio-pci: Expose generic device
- capability operations
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Daniel Jurgens <danielj@nvidia.com>, netdev@vger.kernel.org, alex.williamson@redhat.com, 
-	pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com, 
-	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com, jgg@ziepe.ca, 
-	kevin.tian@intel.com, kuba@kernel.org, andrew+netdev@lunn.ch, 
-	edumazet@google.com, Yishai Hadas <yishaih@nvidia.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: cas-essen-01.secunet.de (10.53.40.201) To
+ EXCH-01.secunet.de (10.32.0.171)
 
-On Wed, Sep 24, 2025 at 2:22=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Wed, Sep 24, 2025 at 09:16:32AM +0800, Jason Wang wrote:
-> > On Tue, Sep 23, 2025 at 10:20=E2=80=AFPM Daniel Jurgens <danielj@nvidia=
-.com> wrote:
-> > >
-> > > Currently querying and setting capabilities is restricted to a single
-> > > capability and contained within the virtio PCI driver. However, each
-> > > device type has generic and device specific capabilities, that may be
-> > > queried and set. In subsequent patches virtio_net will query and set
-> > > flow filter capabilities.
-> > >
-> > > Move the admin related definitions to a new header file. It needs to =
-be
-> > > abstracted away from the PCI specifics to be used by upper layer
-> > > drivers.
-> > >
-> > > Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-> > > Reviewed-by: Parav Pandit <parav@nvidia.com>
-> > > Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-> > > Reviewed-by: Yishai Hadas <yishaih@nvidia.com>
-> > > ---
-> >
-> > [...]
-> >
-> > >
-> > >  size_t virtio_max_dma_size(const struct virtio_device *vdev);
-> > >
-> > > diff --git a/include/linux/virtio_admin.h b/include/linux/virtio_admi=
-n.h
-> > > new file mode 100644
-> > > index 000000000000..bbf543d20be4
-> > > --- /dev/null
-> > > +++ b/include/linux/virtio_admin.h
-> > > @@ -0,0 +1,68 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-only
-> > > + *
-> > > + * Header file for virtio admin operations
-> > > + */
-> > > +#include <uapi/linux/virtio_pci.h>
-> > > +
-> > > +#ifndef _LINUX_VIRTIO_ADMIN_H
-> > > +#define _LINUX_VIRTIO_ADMIN_H
-> > > +
-> > > +struct virtio_device;
-> > > +
-> > > +/**
-> > > + * VIRTIO_CAP_IN_LIST - Check if a capability is supported in the ca=
-pability list
-> > > + * @cap_list: Pointer to capability list structure containing suppor=
-ted_caps array
-> > > + * @cap: Capability ID to check
-> > > + *
-> > > + * The cap_list contains a supported_caps array of little-endian 64-=
-bit integers
-> > > + * where each bit represents a capability. Bit 0 of the first elemen=
-t represents
-> > > + * capability ID 0, bit 1 represents capability ID 1, and so on.
-> > > + *
-> > > + * Return: 1 if capability is supported, 0 otherwise
-> > > + */
-> > > +#define VIRTIO_CAP_IN_LIST(cap_list, cap) \
-> > > +       (!!(1 & (le64_to_cpu(cap_list->supported_caps[cap / 64]) >> c=
-ap % 64)))
-> > > +
-> > > +/**
-> > > + * struct virtio_admin_ops - Operations for virtio admin functionali=
-ty
-> > > + *
-> > > + * This structure contains function pointers for performing administ=
-rative
-> > > + * operations on virtio devices. All data and caps pointers must be =
-allocated
-> > > + * on the heap by the caller.
-> > > + */
-> > > +struct virtio_admin_ops {
-> > > +       /**
-> > > +        * @cap_id_list_query: Query the list of supported capability=
- IDs
-> > > +        * @vdev: The virtio device to query
-> > > +        * @data: Pointer to result structure (must be heap allocated=
-)
-> > > +        * Return: 0 on success, negative error code on failure
-> > > +        */
-> > > +       int (*cap_id_list_query)(struct virtio_device *vdev,
-> > > +                                struct virtio_admin_cmd_query_cap_id=
-_result *data);
-> > > +       /**
-> > > +        * @cap_get: Get capability data for a specific capability ID
-> > > +        * @vdev: The virtio device
-> > > +        * @id: Capability ID to retrieve
-> > > +        * @caps: Pointer to capability data structure (must be heap =
-allocated)
-> > > +        * @cap_size: Size of the capability data structure
-> > > +        * Return: 0 on success, negative error code on failure
-> > > +        */
-> > > +       int (*cap_get)(struct virtio_device *vdev,
-> > > +                      u16 id,
-> > > +                      void *caps,
-> > > +                      size_t cap_size);
-> > > +       /**
-> > > +        * @cap_set: Set capability data for a specific capability ID
-> > > +        * @vdev: The virtio device
-> > > +        * @id: Capability ID to set
-> > > +        * @caps: Pointer to capability data structure (must be heap =
-allocated)
-> > > +        * @cap_size: Size of the capability data structure
-> > > +        * Return: 0 on success, negative error code on failure
-> > > +        */
-> > > +       int (*cap_set)(struct virtio_device *vdev,
-> > > +                      u16 id,
-> > > +                      const void *caps,
-> > > +                      size_t cap_size);
-> > > +};
-> >
-> > Looking at this, it's nothing admin virtqueue specific, I wonder why
-> > it is not part of virtio_config_ops.
-> >
-> > Thanks
->
-> cap things are admin commands. But what I do not get is why they
-> need to be callbacks.
->
-> The only thing about admin commands that is pci specific is finding
-> the admin vq.
+From: Miguel García <miguelgarciaroman8@gmail.com>
 
-I think we had a discussion to decide to separate admin commands from
-the admin vq.
+Replace the strcpy() calls that copy the canonical algorithm name into
+alg_name with strscpy() to avoid potential overflows and guarantee NULL
+termination.
 
-Thanks
+Destination is alg_name in xfrm_algo/xfrm_algo_auth/xfrm_algo_aead
+(size CRYPTO_MAX_ALG_NAME).
+
+Tested in QEMU (BusyBox/Alpine rootfs):
+ - Added ESP AEAD (rfc4106(gcm(aes))) and classic ESP (sha256 + cbc(aes))
+ - Verified canonical names via ip -d xfrm state
+ - Checked IPComp negative (unknown algo) and deflate path
+
+Signed-off-by: Miguel García <miguelgarciaroman8@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_user.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 684239018bec..010c9e6638c0 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -593,7 +593,7 @@ static int attach_one_algo(struct xfrm_algo **algpp, u8 *props,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	strcpy(p->alg_name, algo->name);
++	strscpy(p->alg_name, algo->name);
+ 	*algpp = p;
+ 	return 0;
+ }
+@@ -620,7 +620,7 @@ static int attach_crypt(struct xfrm_state *x, struct nlattr *rta,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	strcpy(p->alg_name, algo->name);
++	strscpy(p->alg_name, algo->name);
+ 	x->ealg = p;
+ 	x->geniv = algo->uinfo.encr.geniv;
+ 	return 0;
+@@ -649,7 +649,7 @@ static int attach_auth(struct xfrm_algo_auth **algpp, u8 *props,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	strcpy(p->alg_name, algo->name);
++	strscpy(p->alg_name, algo->name);
+ 	p->alg_key_len = ualg->alg_key_len;
+ 	p->alg_trunc_len = algo->uinfo.auth.icv_truncbits;
+ 	memcpy(p->alg_key, ualg->alg_key, (ualg->alg_key_len + 7) / 8);
+@@ -684,7 +684,7 @@ static int attach_auth_trunc(struct xfrm_algo_auth **algpp, u8 *props,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	strcpy(p->alg_name, algo->name);
++	strscpy(p->alg_name, algo->name);
+ 	if (!p->alg_trunc_len)
+ 		p->alg_trunc_len = algo->uinfo.auth.icv_truncbits;
+ 
+@@ -714,7 +714,7 @@ static int attach_aead(struct xfrm_state *x, struct nlattr *rta,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	strcpy(p->alg_name, algo->name);
++	strscpy(p->alg_name, algo->name);
+ 	x->aead = p;
+ 	x->geniv = algo->uinfo.aead.geniv;
+ 	return 0;
+-- 
+2.43.0
 
