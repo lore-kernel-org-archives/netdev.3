@@ -1,189 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F71D5ACE
-	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 14:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68C71A3A80
+	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 14:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758896584; cv=none; b=OwGoXmWNrih5Q6eTTDgO8M//POduubi5+TsZeusUWusX9YZrN13VYa+RToCsXQFTniA94/SNVskEyEBLI3aS6bOq9fZeOqBKyIPhsi0f464dmmcgyPFXmuhahAsUVRDmFjUF0l3IiKOMCOBIeZQwzhqaH81adxNqrcs5XKzqNJo=
+	t=1758896809; cv=none; b=liekfDJmCOBgyw2HKSeG1X9Ksu86j3ONGpfyQcFYTqffTYrn4Lb9XfqHe3mmP4bgTLu1ep7GA4qdTlk0Wp+B3yILPjyPCTLuuvLXH9MovovGDc0zFHHPoApPzHQEcLhpwrhADYqof88ow2h5z0Wq6U3hPkUgyl3fh5cokV9jRv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758896584; c=relaxed/simple;
-	bh=PrNdObNwK8MyVUSlXClOFNlkhDifhAVkWnm+Rf0inck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iVxy9GrBhrpPblJUyLy0OBbvXqvjfTI0p3js8vFUFO877OBNc7l+XrEl1WkVJ7HMZc9Yl6pDocdDHQoWfnHt7hW+4uDoT/BebcLPC4H9CxsqCtVnQzqrdrkPLcJwApqDViKIg2GeHV2QAtFPxEvT78yi9TLUb1Yece4NATPOL8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G8pzvAcK; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1758896809; c=relaxed/simple;
+	bh=d6I6D4UoA2fdvHaowOZB0/hBshkYl4/Hv4eNcR8VvOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eari7LJG3n5gttJPPnZtmaXkm8kKpXOqugpQ4ze2pMbFxmtR4oEJUBqdTR09KTQPXFXwNTxm0BGxNA4NMFwMTa5LJdvgb5o+96cNu1YnUsROLzSUq1MUkUoNdQsaMjJdjC/bcXJE7qw13H2kwRownS2TB7gbFBgWbCHSRAV1tNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A2MvHb/I; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G8pzvAcK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A2MvHb/I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1758896582;
+	s=mimecast20190719; t=1758896805;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/lFxR1925+K2SMQxPr1ghXoGOdc0XoB4pfQ2tyX/Lkg=;
-	b=G8pzvAcKC19YZnTLEeQ9DpMJjtTNSTQqIIxovEdH1qhCaR4k1n+7opzLnoLCVfhuMvrCNh
-	GKfboUhFOpROo8RnJOSPr3d7DclWPs++Z099zF0CntO642w0jbU9uQFIkChs6dt3Mn0CM/
-	SQzsAYeG9JmYQNJA0wuzcSX9M9ei0kg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-517-tuL2aiKUNf6dUPswiR8cFw-1; Fri,
- 26 Sep 2025 10:21:56 -0400
-X-MC-Unique: tuL2aiKUNf6dUPswiR8cFw-1
-X-Mimecast-MFC-AGG-ID: tuL2aiKUNf6dUPswiR8cFw_1758896514
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E97A195605E;
-	Fri, 26 Sep 2025 14:21:53 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.45.225.247])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D28D330003BB;
-	Fri, 26 Sep 2025 14:21:47 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>
-Subject: [PATCH net-next 1/3] dpll: add phase-offset-avg-factor device attribute to netlink spec
-Date: Fri, 26 Sep 2025 16:21:38 +0200
-Message-ID: <20250926142140.691592-2-ivecera@redhat.com>
-In-Reply-To: <20250926142140.691592-1-ivecera@redhat.com>
-References: <20250926142140.691592-1-ivecera@redhat.com>
+	bh=iatcngeh1af6TFJNiZJ9BJOYb6Kr+OAIH3TZvj018HE=;
+	b=A2MvHb/Izj5Z2XpxEv4DOPPHKKrTGByq13jUz3qDImUZCjDEi2MSXyS6FSpEVXZsObs4hu
+	Pz7wRhxGJ4I57A+vVqMYU4wAdS2MrK3SlvwcQI/tltF2XVpWyObuq2jX4kUC4jOmG6k1AY
+	y3ImwkrIc/Wez2dqWrOxpOMaKsuUs+w=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-190-N6I4HquvN4iaYM1ixRuvoA-1; Fri, 26 Sep 2025 10:26:43 -0400
+X-MC-Unique: N6I4HquvN4iaYM1ixRuvoA-1
+X-Mimecast-MFC-AGG-ID: N6I4HquvN4iaYM1ixRuvoA_1758896802
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3ecdc9dbc5fso1615388f8f.1
+        for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 07:26:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758896802; x=1759501602;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iatcngeh1af6TFJNiZJ9BJOYb6Kr+OAIH3TZvj018HE=;
+        b=NMxyyJVhAKJmktnzWuPPHavN9J8epNG/sRRlqC/Wu43IEe+VbgOKI2spDN0wXIyi9l
+         coEajEOOADWc6xO2SrMEEUmYMpVwX1ABQo/SRKmeymmL68/eILwtmArftE7mugQqdfKO
+         g/ykmcLMcM/r3E9YoC/U7OwoVuizIhsW/rMmTGDotx1Kx40Fr6M7E97TbW5cF5VsPMEp
+         TkbOOSS8/l+RXWbBkjIEcf3FU4t4YbzdAmfxa1ZgKVrZwgS4V85alrUf0ODxlrdES07w
+         0ii+nBbYYEaxTqsAxpqV0VJbLG5YZm1XeK90PGouZPDdA9NDOk2DihZLBHIkKkD0+4+H
+         l4Og==
+X-Forwarded-Encrypted: i=1; AJvYcCX3zpArLrNYNVsFWU9WUTODHV4fL3vWaJDU0xY8CZIb4ty4P+4M3AYnsa9Kzj9y4ACCDSAMnL8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMltv2CjZ3qrW/rAgY3ZMrLcxN2o5J3GvFWHgmP2KGbfy1hSfe
+	LAPesYNwEFqugW7Gsg2rJBcH1b/a3dzROkG0VOFBYcFfDoPyyPmBW1DUKxc/JqeONntGS19lrE6
+	hA2jYr6ECE/uOOQ6NZXgeI06GkRYZCnJCC6L6u80tdSSvlP2aramot3qnoQ==
+X-Gm-Gg: ASbGncsz63jNqSdFl+7Lzc0lkBxvHONITf/YT/e5Ze1POr+k+JBmY3lJ3R+IOQOHjl7
+	hJwXZ5RkIpX6VR3SakDiayk0K4gnBbXAA7zZW7s3gfZ/sB4KHfjPfGDW4rfk/vWIhUSrawyFGlN
+	PuevsYo2a6YduurcHefZamZUwedEIjIOnRGSxR65Mcqxe7+dd9f5Z+cD7gMI/S0f3sy27j5ENIU
+	vksB5weTgmrW2hz1KOXlxqybEd5KvWebHVcryKtt6fBTaNWJ1608XOv1h3EEX6tgs1wEiUBrPqJ
+	hfinudi6mZLjei8zB40Fl44kjO7A20RsB6E=
+X-Received: by 2002:a05:6000:22c7:b0:3ec:e276:f3d5 with SMTP id ffacd0b85a97d-40e48a56cddmr7464909f8f.42.1758896801802;
+        Fri, 26 Sep 2025 07:26:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWQlwY9F5xZyQ8nyaSheZAwSNVELpvaScMCCct/EGl6ilha7T/oo9BNopzjhdDydTGuXSdgQ==
+X-Received: by 2002:a05:6000:22c7:b0:3ec:e276:f3d5 with SMTP id ffacd0b85a97d-40e48a56cddmr7464874f8f.42.1758896801163;
+        Fri, 26 Sep 2025 07:26:41 -0700 (PDT)
+Received: from redhat.com ([2a06:c701:73ea:f900:52ee:df2b:4811:77e0])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc5602efdsm7576564f8f.34.2025.09.26.07.26.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 07:26:40 -0700 (PDT)
+Date: Fri, 26 Sep 2025 10:26:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Daniel Jurgens <danielj@nvidia.com>, netdev@vger.kernel.org,
+	alex.williamson@redhat.com, pabeni@redhat.com,
+	virtualization@lists.linux.dev, parav@nvidia.com,
+	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
+	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
+	andrew+netdev@lunn.ch, edumazet@google.com,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH net-next v3 01/11] virtio-pci: Expose generic device
+ capability operations
+Message-ID: <20250926023237-mutt-send-email-mst@kernel.org>
+References: <20250923141920.283862-1-danielj@nvidia.com>
+ <20250923141920.283862-2-danielj@nvidia.com>
+ <CACGkMEtkqhvsP1-b8zBnrFZwnK3LvEO4GBN52rxzdbOXJ3J7Qw@mail.gmail.com>
+ <20250924021637-mutt-send-email-mst@kernel.org>
+ <CACGkMEuWRUANBCkeE5r+7+wob3nr-Mrnce_kLRHbpeF0OT_45Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACGkMEuWRUANBCkeE5r+7+wob3nr-Mrnce_kLRHbpeF0OT_45Q@mail.gmail.com>
 
-Add dpll device level attribute DPLL_A_PHASE_OFFSET_AVG_FACTOR to allow
-control over a calculation of reported phase offset value. Attribute is
-present, if the driver provides such capability, otherwise attribute
-shall not be present.
+On Fri, Sep 26, 2025 at 12:55:11PM +0800, Jason Wang wrote:
+> > > Looking at this, it's nothing admin virtqueue specific, I wonder why
+> > > it is not part of virtio_config_ops.
+> > >
+> > > Thanks
+> >
+> > cap things are admin commands. But what I do not get is why they
+> > need to be callbacks.
+> >
+> > The only thing about admin commands that is pci specific is finding
+> > the admin vq.
+> 
+> I think we had a discussion to decide to separate admin commands from
+> the admin vq.
+> 
+> Thanks
 
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- Documentation/driver-api/dpll.rst     | 18 +++++++++++++++++-
- Documentation/netlink/specs/dpll.yaml |  6 ++++++
- drivers/dpll/dpll_nl.c                |  5 +++--
- include/uapi/linux/dpll.h             |  1 +
- 4 files changed, 27 insertions(+), 3 deletions(-)
+If what you are saying is that core should expose APIs to
+submit admin commands, not to access admin vq, I think I agree.
 
-diff --git a/Documentation/driver-api/dpll.rst b/Documentation/driver-api/dpll.rst
-index eca72d9b9ed87..be1fc643b645e 100644
---- a/Documentation/driver-api/dpll.rst
-+++ b/Documentation/driver-api/dpll.rst
-@@ -179,7 +179,23 @@ Phase offset measurement and adjustment
- Device may provide ability to measure a phase difference between signals
- on a pin and its parent dpll device. If pin-dpll phase offset measurement
- is supported, it shall be provided with ``DPLL_A_PIN_PHASE_OFFSET``
--attribute for each parent dpll device.
-+attribute for each parent dpll device. The reported phase offset may be
-+computed as the average of prior values and the current measurement, using
-+the following formula:
-+
-+.. math::
-+   curr\_avg = prev\_avg * \frac{2^N-1}{2^N} + new\_val * \frac{1}{2^N}
-+
-+where `curr_avg` is the current reported phase offset, `prev_avg` is the
-+previously reported value, `new_val` is the current measurement, and `N` is
-+the averaging factor. Configured averaging factor value is provided with
-+``DPLL_A_PHASE_OFFSET_AVG_FACTOR`` attribute of a device and value change can
-+be requested with the same attribute with ``DPLL_CMD_DEVICE_SET`` command.
-+
-+  ================================== ======================================
-+  ``DPLL_A_PHASE_OFFSET_AVG_FACTOR`` attr configured value of phase offset
-+                                     averaging factor
-+  ================================== ======================================
- 
- Device may also provide ability to adjust a signal phase on a pin.
- If pin phase adjustment is supported, minimal and maximal values that pin
-diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
-index 5decee61a2c4c..cafb4ec20447e 100644
---- a/Documentation/netlink/specs/dpll.yaml
-+++ b/Documentation/netlink/specs/dpll.yaml
-@@ -315,6 +315,10 @@ attribute-sets:
-           If enabled, dpll device shall monitor and notify all currently
-           available inputs for changes of their phase offset against the
-           dpll device.
-+      -
-+        name: phase-offset-avg-factor
-+        type: u32
-+        doc: Averaging factor applied to calculation of reported phase offset.
-   -
-     name: pin
-     enum-name: dpll_a_pin
-@@ -523,6 +527,7 @@ operations:
-             - clock-id
-             - type
-             - phase-offset-monitor
-+            - phase-offset-avg-factor
- 
-       dump:
-         reply: *dev-attrs
-@@ -540,6 +545,7 @@ operations:
-           attributes:
-             - id
-             - phase-offset-monitor
-+            - phase-offset-avg-factor
-     -
-       name: device-create-ntf
-       doc: Notification about device appearing
-diff --git a/drivers/dpll/dpll_nl.c b/drivers/dpll/dpll_nl.c
-index 9f2efaf252688..3c6d570babf89 100644
---- a/drivers/dpll/dpll_nl.c
-+++ b/drivers/dpll/dpll_nl.c
-@@ -42,9 +42,10 @@ static const struct nla_policy dpll_device_get_nl_policy[DPLL_A_ID + 1] = {
- };
- 
- /* DPLL_CMD_DEVICE_SET - do */
--static const struct nla_policy dpll_device_set_nl_policy[DPLL_A_PHASE_OFFSET_MONITOR + 1] = {
-+static const struct nla_policy dpll_device_set_nl_policy[DPLL_A_PHASE_OFFSET_AVG_FACTOR + 1] = {
- 	[DPLL_A_ID] = { .type = NLA_U32, },
- 	[DPLL_A_PHASE_OFFSET_MONITOR] = NLA_POLICY_MAX(NLA_U32, 1),
-+	[DPLL_A_PHASE_OFFSET_AVG_FACTOR] = { .type = NLA_U32, },
- };
- 
- /* DPLL_CMD_PIN_ID_GET - do */
-@@ -112,7 +113,7 @@ static const struct genl_split_ops dpll_nl_ops[] = {
- 		.doit		= dpll_nl_device_set_doit,
- 		.post_doit	= dpll_post_doit,
- 		.policy		= dpll_device_set_nl_policy,
--		.maxattr	= DPLL_A_PHASE_OFFSET_MONITOR,
-+		.maxattr	= DPLL_A_PHASE_OFFSET_AVG_FACTOR,
- 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
-diff --git a/include/uapi/linux/dpll.h b/include/uapi/linux/dpll.h
-index 37b438ce8efc4..ab1725a954d74 100644
---- a/include/uapi/linux/dpll.h
-+++ b/include/uapi/linux/dpll.h
-@@ -216,6 +216,7 @@ enum dpll_a {
- 	DPLL_A_LOCK_STATUS_ERROR,
- 	DPLL_A_CLOCK_QUALITY_LEVEL,
- 	DPLL_A_PHASE_OFFSET_MONITOR,
-+	DPLL_A_PHASE_OFFSET_AVG_FACTOR,
- 
- 	__DPLL_A_MAX,
- 	DPLL_A_MAX = (__DPLL_A_MAX - 1)
 -- 
-2.49.1
+MST
 
