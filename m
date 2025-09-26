@@ -1,1033 +1,193 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94E9244661
-	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 08:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB1429A300
+	for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 08:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758876864; cv=none; b=cYhLYknR7h4MzINs+Jz0efkq7g1OOJHrbA7cJTTuKU0d30oEJJpzJAJZXlB9ACr9EMpk/v4VQQudYOKe3htVm//m3mzZMBYX0nUSy6T88NT1uoRVmS1JkBK7WjhRXkTT5G7alJb2kqL343BP+CKWG4L8ij6KcDsTAKaITDV4Tj0=
+	t=1758876966; cv=none; b=QN/vlODIBG9moRUBuPYLxys1tckk2ZUqk/khutW0syLETs1FtXgozWKGL1sx9YxQnP+Sh6EqvbOM8yFX/QcvNxRV336owuZKCqPur7+OMSRkVPzId9qy3O0CMIbuakjBUfSCyEW+sUiEKvz20wngl+f96F5xoDHhzyxmqXUq7H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758876864; c=relaxed/simple;
-	bh=8kwi1blCH8mi8VlZdqHBvqeAuxGdb1iOqG8zNo4Du1w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZJTBT1cR7Qg3IdUDNVoxw8Q3DCDPMB2HIQv5bYskzeS43AT6zCafc8LYlAIaDJWiDl9LnpbjQMHhDHV/LIJfax2mQc7GIqARSuUjq3Mcgtjli+Pk5b28moqPO0FwoNhrf4h4mFC3oNp3V45J6Hmb6uNsbeV7OJK2SFOs0npCBy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AiJ4eWFQ; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1758876966; c=relaxed/simple;
+	bh=wiLl+QzGP4jkl9gd7uZj88hnx36VRjSUVnnmvbJs20I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ES7ZgqU7RWd4BaoR0r3fV5q3g5JPLW29cp1lTIxp61OBmi1YAw1qAM4eyvEqbQRyLoeRjp8fukKnl8ORX8cJd+qSNu7FDbDij+qQPCnYCDoDX5qmvKWb4Ob11/XASM7oR0Gpwl3+KdCQiXtyN3dE8Y5lMp8FpuajeolHJar8yaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gGG2Y4LC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AiJ4eWFQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1758876862; x=1790412862;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8kwi1blCH8mi8VlZdqHBvqeAuxGdb1iOqG8zNo4Du1w=;
-  b=AiJ4eWFQsHIS9m8IDAmQNcJWu93MABwbnd+rribmUKCJ6PqCi8lXdwlm
-   8hgwlSgSievqY5OvZcTai/b3N1qo7JVgLdESZUZjEHgap3QxvPBDmIYbm
-   prKdaIvkNvZz4zpDgaZgkMhRzkyu+6rGi23FT8WdPj6oaXeJUvxtu/pHt
-   oBUq8lupqTk6t6DsLZUoGjDlr3IlkLBH3HJjbuBSVvN90OAPceuY08xay
-   yhXoAHCu6HH0a1NXwyz+bY8N/lvevW9yYG5XM31OoaV48K+rashksfiW3
-   7Ujwntsdaiid+Ign/YddqHYyozoVgBSrh7/NAAOb5g9Wa+xi48pWUG04B
-   A==;
-X-CSE-ConnectionGUID: nw1ChtHGRSagpkU6AdciUw==
-X-CSE-MsgGUID: YRCEQJ2jTlmsUgaRIjke8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11564"; a="60415924"
-X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="60415924"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2025 01:54:20 -0700
-X-CSE-ConnectionGUID: nXQqG2GgSv+A/2JYFUWJJA==
-X-CSE-MsgGUID: Zh5Z1ib4R1yXCd/KcKmkCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,294,1751266800"; 
-   d="scan'208";a="181961429"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by fmviesa005.fm.intel.com with ESMTP; 26 Sep 2025 01:54:18 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	pmenzel@molgen.mpg.de,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Subject: [PATCH v3 iwl-next] ice: add TS PLL control for E825 devices
-Date: Fri, 26 Sep 2025 10:52:15 +0200
-Message-Id: <20250926085215.2413595-1-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gGG2Y4LC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1758876963;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C67xH3Vlopkqdp7cUYZYysDv/9rtz6w4Y9k2ipC7sI4=;
+	b=gGG2Y4LCvq3lxbPJOprZ/ayf/KyShMJc8Y8HTfna6HqceUU0l6MTMOZqs7LM6KBQfCPFfV
+	GK+Ufc4hvs9k0Yc69NiOP5C/KAqu6Gl3dYMPk1ISKJbruXGdD3gx8UljUxYA41vGrJjgzw
+	AB+H3R71pt3UPXdlqKGQMxNEN3VHnY8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-75-lPTU8e7RMrOcQ_EWDRbO-w-1; Fri, 26 Sep 2025 04:56:02 -0400
+X-MC-Unique: lPTU8e7RMrOcQ_EWDRbO-w-1
+X-Mimecast-MFC-AGG-ID: lPTU8e7RMrOcQ_EWDRbO-w_1758876961
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6339aa08acfso2705823a12.0
+        for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 01:56:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758876961; x=1759481761;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C67xH3Vlopkqdp7cUYZYysDv/9rtz6w4Y9k2ipC7sI4=;
+        b=Kbv8SeRu2aEdJRvrHMs/Z4q3/qXbY4aB/7D7qB5GgXfYJ/hI4m7ifi5w2mSvhr15Wv
+         UzoyqQzBhkoDXLyqSfbWuLEafIoCDiPFD9QR84JHmCRM5bw3JW4x4aaDeAq+Kk766+Y5
+         Jeiieq8VfEQzxXL4DT4a0iWG45dzwaXKfYDLjbbc1TqhvmpJOXG/5c3F6kalG/TI7Wnn
+         4hhB//ex5JiGGCO1q1eBPlPtLD/IIK1Klcxh3/LYP6d+x0juMZ6f+pM8Fi3xxwDdWWyf
+         4dC6VP0Mzn1wDUpnPXQrHkM8CPMGjl9Hp9cLUAXsjY/l7B/vRnpI2umWBpXgtKHODREk
+         Wvlg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2a1lq44E9Xg8V84Zwq/93FH9bOj35IWkDUPmi4y6kGLJyd0/T3CpQ4OEGzxNkZ1hzP7/TV0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynYaNYemn5oJpe8mvkL/daa8mf05gs8lJMzs0elXKiIHUuL+fR
+	1AiD32HOItqxT9k3/y2sepszNeWF8hUMQ2p/4vASrCVbliqNZz6HWslEEgxg2zpehjwHoczSvo2
+	wYVBChJldTDimrceW22eoJPdHCUOwxWQ/f8drxjPU4qNQi8xCcscggLwHYneZrGwhqQ==
+X-Gm-Gg: ASbGncu4vnu+NAFuO6oIqvHUlbrpTyxqBC2mZYKJwKFNRjgRvRw2AWm6RWBPFgvOVVe
+	1OIxC77lE0TZQvISBoGx80MN3WexPbvCWkyxY+TSu2Sz0olAxCrYa20A2XQXB4k1uyhdnfNE0kn
+	uhLD7fuRdZl5jDbyQdOKT+6QEpLaBC0Ogpz/WubE17o77xc/kCIoogPjUUXJavBmNs2Ubi9IPSG
+	QZYGrgicfXWmViPYxTCtrBen/BBKV4fH/IAEZvIh88d/zadqKXdgqfADLxh+GeVtApeQF8LfFW8
+	+tGK9o6ZqpnebkQuSL24KtNb/G5aYOqzuVIcWPnFkizOOf/ABXmrAUZDj/1y5ZsJ
+X-Received: by 2002:a05:6402:23d6:b0:633:14bb:dcb1 with SMTP id 4fb4d7f45d1cf-634a332f3fcmr4932594a12.11.1758876960624;
+        Fri, 26 Sep 2025 01:56:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHab/SkJB4tH1HftkLBDBn0zd3NxTVPVjI7bTzKn4ouyJoGVkSgFQIIFCEApQe8Ufb4NT3s5w==
+X-Received: by 2002:a05:6402:23d6:b0:633:14bb:dcb1 with SMTP id 4fb4d7f45d1cf-634a332f3fcmr4932567a12.11.1758876960175;
+        Fri, 26 Sep 2025 01:56:00 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-634a3629cbdsm2546635a12.3.2025.09.26.01.55.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Sep 2025 01:55:58 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 641E7277197; Fri, 26 Sep 2025 10:55:57 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
+ razor@blackwall.org, pabeni@redhat.com, willemb@google.com,
+ sdf@fomichev.me, john.fastabend@gmail.com, martin.lau@kernel.org,
+ jordan@jrife.io, maciej.fijalkowski@intel.com, magnus.karlsson@intel.com,
+ David Wei <dw@davidwei.uk>
+Subject: Re: [PATCH net-next 19/20] netkit: Add xsk support for af_xdp
+ applications
+In-Reply-To: <5d139efa-c78e-4323-b79d-bbf566ac19b8@iogearbox.net>
+References: <20250919213153.103606-1-daniel@iogearbox.net>
+ <20250919213153.103606-20-daniel@iogearbox.net> <87zfalpf8w.fsf@toke.dk>
+ <5d139efa-c78e-4323-b79d-bbf566ac19b8@iogearbox.net>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Fri, 26 Sep 2025 10:55:57 +0200
+Message-ID: <87plbdoan6.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Add ability to control CGU (Clock Generation Unit) 1588 Clock Reference
-mux selection for E825 devices. There are two clock sources available
-which might serve as input source to TSPLL block:
-- internal cristal oscillator (TXCO)
-- signal from external DPLL
+Daniel Borkmann <daniel@iogearbox.net> writes:
 
-E825 does not provide control over platform level DPLL but it provides
-control over TIME_REF output from platform level DPLL.
-Introduce a software controlled layer of abstraction:
-- create a DPLL (referred as TSPLL DPLL) of PPS type for E825c,
-- define input pin for that DPLL to mock TIME_REF pin
-- define output pin for that DPLL to mock TIME_SYNC pin which supplies a
-  signal for master timer
+> On 9/23/25 1:42 PM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
+>> Daniel Borkmann <daniel@iogearbox.net> writes:
+>>=20
+>>> Enable support for AF_XDP applications to operate on a netkit device.
+>>> The goal is that AF_XDP applications can natively consume AF_XDP
+>>> from network namespaces. The use-case from Cilium side is to support
+>>> Kubernetes KubeVirt VMs through QEMU's AF_XDP backend. KubeVirt is a
+>>> virtual machine management add-on for Kubernetes which aims to provide
+>>> a common ground for virtualization. KubeVirt spawns the VMs inside
+>>> Kubernetes Pods which reside in their own network namespace just like
+>>> regular Pods.
+>>>
+>>> Raw QEMU AF_XDP backend example with eth0 being a physical device with
+>>> 16 queues where netkit is bound to the last queue (for multi-queue RSS
+>>> context can be used if supported by the driver):
+>>>
+>>>    # ethtool -X eth0 start 0 equal 15
+>>>    # ethtool -X eth0 start 15 equal 1 context new
+>>>    # ethtool --config-ntuple eth0 flow-type ether \
+>>>              src 00:00:00:00:00:00 \
+>>>              src-mask ff:ff:ff:ff:ff:ff \
+>>>              dst $mac dst-mask 00:00:00:00:00:00 \
+>>>              proto 0 proto-mask 0xffff action 15
+>>>    # ip netns add foo
+>>>    # ip link add numrxqueues 2 nk type netkit single
+>>>    # ynl-bind eth0 15 nk
+>>>    # ip link set nk netns foo
+>>>    # ip netns exec foo ip link set lo up
+>>>    # ip netns exec foo ip link set nk up
+>>>    # ip netns exec foo qemu-system-x86_64 \
+>>>            -kernel $kernel \
+>>>            -drive file=3D${image_name},index=3D0,media=3Ddisk,format=3D=
+raw \
+>>>            -append "root=3D/dev/sda rw console=3DttyS0" \
+>>>            -cpu host \
+>>>            -m $memory \
+>>>            -enable-kvm \
+>>>            -device virtio-net-pci,netdev=3Dnet0,mac=3D$mac \
+>>>            -netdev af-xdp,ifname=3Dnk,id=3Dnet0,mode=3Dnative,queues=3D=
+1,start-queue=3D1,inhibit=3Don,map-path=3D$dir/xsks_map \
+>>>            -nographic
+>>=20
+>> So AFAICT, this example relies on the control plane installing an XDP
+>> program on the physical NIC which will redirect into the right socket;
+>> and since in this example, qemu will install the XSK socket at index 1
+>> in the xsk map, that XDP program will also need to be aware of the queue
+>> index mapping. I can see from your qemu commit[0] that there's support
+>> on the qemu side for specifying an offset into the map to avoid having
+>> to do this translation in the XDP program, but at the very least that
+>> makes this example incomplete, no?
+>>=20
+>> However, even with a complete example, this breaks isolation in the
+>> sense that the entire XSK map is visible inside the pod, so a
+>> misbehaving qemu could interfere with traffic on other queues (by
+>> clearing the map, say). Which seems less than ideal?
+>
+> For getting to a first starting point to connect all things with KubeVirt,
+> bind mounting the xsk map from Cilium into the VM launcher Pod which acts
+> as a regular K8s Pod while not perfect, its not a big issue given its out
+> of reach from the application sitting inside the VM (and some of the
+> control plane aspects are baked in the launcher Pod already), so the
+> isolation barrier is still VM. Eventually my goal is to have a xdp/xsk
+> redirect extension where we don't need to have the xsk map, and can just
+> derive the target xsk through the rxq we received traffic on.
 
-Note:
-- There is only one frequency supported (156.25 MHz) for TIME_REF
-  signal for E825 devices.
-- TIME_SYNC pin is always connected, as it supplies either internal TXCO
-  signal or a signal from external DPLL always
+Right, okay, makes sense.
 
-Add kworker thread to track E825 TSPLL DPLL lock status. In case of
-lock status change, notify the user about the change, and try to lock it
-back (if lost). Lock status is checked every 500ms by default. The timer
-is decreased to 10ms in case of errors while accessing CGU registers.
-If error counter exceeds the threshold (50), the kworker thread is
-stopped and appropriate error message is displayed in dmesg log.
-Refactor the code by adding 'periodic_work' callback within ice_dplls
-structure to make the solution more generic and allow different type
-of devices to register their own callback.
+>> Taking a step back, for AF_XDP we already support decoupling the
+>> application-side access to the redirected packets from the interface,
+>> through the use of sockets. Meaning that your use case here could just
+>> as well be served by the control plane setting up AF_XDP socket(s) on
+>> the physical NIC and passing those into qemu, in which case we don't
+>> need this whole queue proxying dance at all.
+>
+> Cilium should not act as a proxy handing out xsk sockets. Existing
+> applications expect a netdev from kernel side and should not need to
+> rewrite just to implement one CNI's protocol. Also, all the memory
+> should not be accounted against Cilium but rather the application Pod
+> itself which is consuming af_xdp. Further, on up/downgrades we expect
+> the data plane to being completely decoupled from the control plane,
+> if Cilium would own the sockets that would be disruptive which is
+> nogo.
 
-Usage example (ynl is a part of kernel's tools located under
-tools/net/ynl path):
-- to get TSPLL DPLL info
-$ ynl --family dpll --dump device-get
-...
- {'clock-id': 0,
-  'id': 9,
-  'lock-status': 'locked',
-  'mode': 'manual',
-  'mode-supported': ['manual'],
-  'module-name': 'ice',
-  'type': 'pps'}]
-...
+Hmm, okay, so the kernel-side RXQ buffering is to make it transparent to
+the application inside the pod? I guess that makes sense; would be good
+to mention in the commit message, though (+ the bit about the map
+needing to be in sync) :)
 
-- to get TIMER_REF and TIME_SYNC pin info
-$ ynl --family dpll --dump pin-get
-...
- {'board-label': 'TIME_REF',
-  'capabilities': {'state-can-change'},
-  'clock-id': 0,
-  'frequency': 156250000,
-  'frequency-supported': [{'frequency-max': 156250000,
-                           'frequency-min': 156250000}],
-  'id': 38,
-  'module-name': 'ice',
-  'parent-device': [{'direction': 'input',
-                     'parent-id': 9,
-                     'state': 'connected'}],
-  'phase-adjust-max': 0,
-  'phase-adjust-min': 0,
-  'type': 'ext'},
- {'board-label': 'TIME_SYNC',
-  'capabilities': set(),
-  'clock-id': 0,
-  'id': 39,
-  'module-name': 'ice',
-  'parent-device': [{'direction': 'output',
-                     'parent-id': 9,
-                     'state': 'connected'}],
-  'phase-adjust-max': 0,
-  'phase-adjust-min': 0,
-  'type': 'int-oscillator'},
-...
+>> So, erm, what am I missing that makes this worth it (for AF_XDP; I can
+>> see how it is useful for other things)? :)
+> Yeap there are other use cases we've seen from Cilium users as well,
+> e.g. running dpdk applications on top of af_xdp in regular k8s Pods.
 
-- to enable TIME_REF output
-$ ynl --family dpll --do pin-set --json '{"id":38,"parent-device":\
-{"parent-id":9, "state":"connected"}}'
+Yeah, being able to do stuff like that without having to rely on SR-IOV
+would be cool, certainly!
 
-- to disable TIME_REF output (TXCO is enabled)
-$ ynl --family dpll --do pin-set --json '{"id":38,"parent-device":\
-{"parent-id":9, "state":"disconnected"}}'
-
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
----
-v2->v3:
-- replaced pf with hw struct as argument in ice_tspll_set_cfg 
-- improved worker for TSPLL control (reworded dmesg log, use already
-  exist cgu state error counter to limit dmesg spamming, disable the
-  thread after error threshold is exceeded)
-- doc strings updateds (missing newly added pins description)
-- addresses comments from v2: use ternanry when applicable, commit
-  message typos
-- rebased
-v1->v2:
-- updated pin_type_name array with the names for newly added pin
-  types
-- added TS PLL lock status monitor
----
- drivers/net/ethernet/intel/ice/ice_dpll.c  | 384 +++++++++++++++++++--
- drivers/net/ethernet/intel/ice/ice_dpll.h  |  12 +-
- drivers/net/ethernet/intel/ice/ice_tspll.c | 122 +++++++
- drivers/net/ethernet/intel/ice/ice_tspll.h |   5 +
- 4 files changed, 499 insertions(+), 24 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index ae9bb669df8f..00160c1f788e 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -7,6 +7,7 @@
- #include <linux/dpll.h>
- 
- #define ICE_CGU_STATE_ACQ_ERR_THRESHOLD		50
-+#define ICE_TSPLL_STATE_ERR_THRESHOLD		50
- #define ICE_DPLL_PIN_IDX_INVALID		0xff
- #define ICE_DPLL_RCLK_NUM_PER_PF		1
- #define ICE_DPLL_PIN_1588_NUM			1
-@@ -18,6 +19,9 @@
- #define ICE_DPLL_SW_PIN_INPUT_BASE_SFP		4
- #define ICE_DPLL_SW_PIN_INPUT_BASE_QSFP		6
- #define ICE_DPLL_SW_PIN_OUTPUT_BASE		0
-+#define ICE_DPLL_TSPLL_INPUT_NUM_E825		1
-+#define ICE_DPLL_TSPLL_OUTPUT_NUM_E825		1
-+#define ICE_DPLL_TSPLL_IDX_E825			1
- 
- #define ICE_DPLL_PIN_SW_INPUT_ABS(in_idx) \
- 	(ICE_DPLL_SW_PIN_INPUT_BASE_SFP + (in_idx))
-@@ -57,6 +61,10 @@
-  * @ICE_DPLL_PIN_TYPE_OUTPUT: output pin
-  * @ICE_DPLL_PIN_TYPE_RCLK_INPUT: recovery clock input pin
-  * @ICE_DPLL_PIN_TYPE_SOFTWARE: software controlled SMA/U.FL pins
-+ * @ICE_DPLL_PIN_TYPE_INPUT_E825: input pin on E825 device
-+ * @ICE_DPLL_PIN_TYPE_OUTPUT_E825: output pin on E825 device
-+ * @ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825: TSPLL input pin on E825 device
-+ * @ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825: TSPLL output pin on E825 device
-  */
- enum ice_dpll_pin_type {
- 	ICE_DPLL_PIN_INVALID,
-@@ -64,6 +72,10 @@ enum ice_dpll_pin_type {
- 	ICE_DPLL_PIN_TYPE_OUTPUT,
- 	ICE_DPLL_PIN_TYPE_RCLK_INPUT,
- 	ICE_DPLL_PIN_TYPE_SOFTWARE,
-+	ICE_DPLL_PIN_TYPE_INPUT_E825,
-+	ICE_DPLL_PIN_TYPE_OUTPUT_E825,
-+	ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825,
-+	ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825,
- };
- 
- static const char * const pin_type_name[] = {
-@@ -71,16 +83,26 @@ static const char * const pin_type_name[] = {
- 	[ICE_DPLL_PIN_TYPE_OUTPUT] = "output",
- 	[ICE_DPLL_PIN_TYPE_RCLK_INPUT] = "rclk-input",
- 	[ICE_DPLL_PIN_TYPE_SOFTWARE] = "software",
-+	[ICE_DPLL_PIN_TYPE_INPUT_E825] = "input-e825",
-+	[ICE_DPLL_PIN_TYPE_OUTPUT_E825] = "output-e825",
-+	[ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825] = "input-tspll-e825",
-+	[ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825] = "output-tspll-e825",
- };
- 
- static const char * const ice_dpll_sw_pin_sma[] = { "SMA1", "SMA2" };
- static const char * const ice_dpll_sw_pin_ufl[] = { "U.FL1", "U.FL2" };
- static const char ice_dpll_pin_1588[] = "pin_1588";
-+static const char ice_dpll_pin_time_ref_e825[] = "TIME_REF";
-+static const char ice_dpll_pin_time_sync_e825[] = "TIME_SYNC";
- 
- static const struct dpll_pin_frequency ice_esync_range[] = {
- 	DPLL_PIN_FREQUENCY_RANGE(0, DPLL_PIN_FREQUENCY_1_HZ),
- };
- 
-+static struct dpll_pin_frequency ice_cgu_pin_freq_156_25mhz[] = {
-+	DPLL_PIN_FREQUENCY_RANGE(156250000, 156250000),
-+};
-+
- /**
-  * ice_dpll_is_sw_pin - check if given pin shall be controlled by SW
-  * @pf: private board structure
-@@ -473,6 +495,16 @@ ice_dpll_pin_enable(struct ice_hw *hw, struct ice_dpll_pin *pin,
- 		ret = ice_aq_set_output_pin_cfg(hw, pin->idx, flags, dpll_idx,
- 						0, 0);
- 		break;
-+	case ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825:
-+		ret = ice_tspll_set_cfg(hw,
-+					ICE_TSPLL_FREQ_156_250,
-+					ICE_CLK_SRC_TIME_REF);
-+		/* Don't treat -EBUSY as an error. TSPLL lock status is
-+		 * tracked and restored (if possible) in DPLL periodic thread.
-+		 */
-+		if (ret == -EBUSY)
-+			ret = 0;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -518,6 +550,16 @@ ice_dpll_pin_disable(struct ice_hw *hw, struct ice_dpll_pin *pin,
- 			flags |= ICE_AQC_SET_CGU_OUT_CFG_ESYNC_EN;
- 		ret = ice_aq_set_output_pin_cfg(hw, pin->idx, flags, 0, 0, 0);
- 		break;
-+	case ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825:
-+		ret = ice_tspll_set_cfg(hw,
-+					ICE_TSPLL_FREQ_156_250,
-+					ICE_CLK_SRC_TCXO);
-+		/* Don't treat -EBUSY as an error. TSPLL lock status is
-+		 * tracked and restored (if possible) in DPLL periodic thread.
-+		 */
-+		if (ret == -EBUSY)
-+			ret = 0;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -641,6 +683,36 @@ static int ice_dpll_update_pin_1588_e825c(struct ice_hw *hw,
- 	return 0;
- }
- 
-+/**
-+ * ice_dpll_input_tspll_update_e825c - updates input TSPLL pin state on E825
-+ * @pf: private board struct
-+ * @pin: pointer to a pin
-+ *
-+ * Update struct holding pin states info.
-+ *
-+ * Context: Called under pf->dplls.lock
-+ * Return:
-+ * * 0 - OK
-+ * * negative - error
-+ */
-+static int ice_dpll_input_tspll_update_e825c(struct ice_pf *pf,
-+					     struct ice_dpll_pin *pin)
-+{
-+	enum ice_clk_src clk_src;
-+	struct ice_hw *hw;
-+	int err;
-+
-+	hw = &pf->hw;
-+	err = ice_tspll_get_clk_src(hw, &clk_src);
-+	if (err)
-+		return err;
-+
-+	pin->state[pf->dplls.tspll.dpll_idx] = clk_src == ICE_CLK_SRC_TIME_REF ?
-+					DPLL_PIN_STATE_CONNECTED :
-+					DPLL_PIN_STATE_DISCONNECTED;
-+	return 0;
-+}
-+
- /**
-  * ice_dpll_sw_pins_update - update status of all SW pins
-  * @pf: private board struct
-@@ -796,6 +868,11 @@ ice_dpll_pin_state_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
- 		if (ret)
- 			goto err;
- 		break;
-+	case ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825:
-+		ret = ice_dpll_input_tspll_update_e825c(pf, pin);
-+		if (ret)
-+			goto err;
-+		return 0;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -1117,7 +1194,8 @@ ice_dpll_pin_state_get(const struct dpll_pin *pin, void *pin_priv,
- 	if (ret)
- 		goto unlock;
- 	if (pin_type == ICE_DPLL_PIN_TYPE_INPUT ||
--	    pin_type == ICE_DPLL_PIN_TYPE_OUTPUT)
-+	    pin_type == ICE_DPLL_PIN_TYPE_OUTPUT ||
-+	    pin_type == ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825)
- 		*state = p->state[d->dpll_idx];
- 	ret = 0;
- unlock:
-@@ -1205,6 +1283,72 @@ ice_dpll_input_state_get(const struct dpll_pin *pin, void *pin_priv,
- 				      extack, ICE_DPLL_PIN_TYPE_INPUT);
- }
- 
-+/**
-+ * ice_dpll_input_tspll_state_get_e825 - get E825 TSPLL input pin state on DPLL
-+ * @pin: pointer to a pin
-+ * @pin_priv: private data pointer passed on pin registration
-+ * @dpll: registered DPLL pointer
-+ * @dpll_priv: private data pointer passed on DPLL registration
-+ * @state: on success holds state of the pin
-+ * @extack: error reporting
-+ *
-+ * DPLL subsystem callback. Check state of a input pin.
-+ *
-+ * Context: Calls a function which acquires and releases pf->dplls.lock
-+ * Return:
-+ * * 0 - success
-+ * * negative - failed to get state
-+ */
-+
-+static int
-+ice_dpll_input_tspll_state_get_e825(const struct dpll_pin *pin, void *pin_priv,
-+				    const struct dpll_device *dpll,
-+				    void *dpll_priv,
-+				    enum dpll_pin_state *state,
-+				    struct netlink_ext_ack *extack)
-+{
-+	return ice_dpll_pin_state_get(pin, pin_priv, dpll, dpll_priv, state,
-+				      extack,
-+				      ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825);
-+}
-+
-+/**
-+ * ice_dpll_input_tspll_state_set_e825 - set E825 TSPLL input pin state on DPLL
-+ * @pin: pointer to a pin
-+ * @pin_priv: private data pointer passed on pin registration
-+ * @dpll: registered DPLL pointer
-+ * @dpll_priv: private data pointer passed on DPLL registration
-+ * @state: requested state of the pin
-+ * @extack: error reporting
-+ *
-+ * DPLL subsystem callback. Set the state of a pin.
-+ *
-+ * Context: Acquires and releases pf->dplls.lock
-+ * Return:
-+ * * 0 - success
-+ * * negative - error
-+ */
-+static int
-+ice_dpll_input_tspll_state_set_e825(const struct dpll_pin *pin, void *pin_priv,
-+				    const struct dpll_device *dpll,
-+				    void *dpll_priv, enum dpll_pin_state state,
-+				    struct netlink_ext_ack *extack)
-+{
-+	bool enable = state == DPLL_PIN_STATE_CONNECTED;
-+	struct ice_dpll_pin *p = pin_priv;
-+	struct ice_dpll *d = dpll_priv;
-+
-+	if (state == DPLL_PIN_STATE_SELECTABLE)
-+		return -EINVAL;
-+
-+	if (!enable && p->state[d->dpll_idx] == DPLL_PIN_STATE_DISCONNECTED)
-+		return 0;
-+
-+	return ice_dpll_pin_state_set(pin, pin_priv, dpll, dpll_priv, enable,
-+				      extack,
-+				      ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825);
-+}
-+
- /**
-  * ice_dpll_sma_direction_set - set direction of SMA pin
-  * @p: pointer to a pin
-@@ -2662,6 +2806,18 @@ static const struct dpll_pin_ops ice_dpll_input_ops_e825c = {
- 	.state_on_dpll_get = ice_dpll_pin_state_get_e825c,
- };
- 
-+static const struct dpll_pin_ops ice_dpll_input_tspll_ops_e825 = {
-+	.direction_get = ice_dpll_input_direction,
-+	.state_on_dpll_get = ice_dpll_input_tspll_state_get_e825,
-+	.state_on_dpll_set = ice_dpll_input_tspll_state_set_e825,
-+	.frequency_get = ice_dpll_input_frequency_get,
-+};
-+
-+static const struct dpll_pin_ops ice_dpll_output_tspll_ops_e825 = {
-+	.direction_get = ice_dpll_output_direction,
-+	.state_on_dpll_get = ice_dpll_pin_state_get_e825c,
-+};
-+
- static const struct dpll_pin_ops ice_dpll_pin_sma_ops = {
- 	.state_on_dpll_set = ice_dpll_sma_pin_state_set,
- 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
-@@ -2982,9 +3138,9 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
- 	    d->periodic_counter % dp->phase_offset_monitor_period == 0)
- 		ret = ice_dpll_pps_update_phase_offsets(pf, &phase_offset_ntf);
- 	if (ret) {
--		d->cgu_state_acq_err_num++;
-+		d->cgu_state_err_num++;
- 		/* stop rescheduling this worker */
--		if (d->cgu_state_acq_err_num >
-+		if (d->cgu_state_err_num >
- 		    ICE_CGU_STATE_ACQ_ERR_THRESHOLD) {
- 			dev_err(ice_pf_to_dev(pf),
- 				"EEC/PPS DPLLs periodic work disabled\n");
-@@ -3006,6 +3162,65 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
- 				   msecs_to_jiffies(500));
- }
- 
-+/**
-+ * ice_dpll_periodic_work_e825 - DPLL periodic worker for E825 device
-+ * @work: pointer to kthread_work structure
-+ *
-+ * DPLL periodic worker is responsible for polling state of TSPLL.
-+ * Context: Holds pf->dplls.lock
-+ */
-+static void ice_dpll_periodic_work_e825(struct kthread_work *work)
-+{
-+	struct ice_dplls *d = container_of(work, struct ice_dplls, work.work);
-+	struct ice_pf *pf = container_of(d, struct ice_pf, dplls);
-+	struct ice_dpll *tp = &pf->dplls.tspll;
-+	bool lock_lost;
-+	int err = 0;
-+
-+	if (ice_is_reset_in_progress(pf->state))
-+		goto resched;
-+
-+	mutex_lock(&pf->dplls.lock);
-+
-+	err = ice_tspll_lost_lock_e825c(&pf->hw, &lock_lost);
-+	if (err) {
-+		dev_err(ice_pf_to_dev(pf),
-+			"Failed reading TimeSync PLL lock status (err: %d). Retrying.\n",
-+			err);
-+	} else if (lock_lost) {
-+		tp->dpll_state = DPLL_LOCK_STATUS_UNLOCKED;
-+		err = ice_tspll_restart_e825c(&pf->hw);
-+		if (err)
-+			dev_err(ice_pf_to_dev(pf), "Failed to restart TimeSync PLL (err: %d).\n",
-+				err);
-+	} else {
-+		tp->dpll_state = DPLL_LOCK_STATUS_LOCKED;
-+	}
-+
-+	mutex_unlock(&pf->dplls.lock);
-+
-+	if (tp->prev_dpll_state != tp->dpll_state) {
-+		tp->prev_dpll_state = tp->dpll_state;
-+		dpll_device_change_ntf(tp->dpll);
-+	}
-+
-+	if (err) {
-+		d->cgu_state_err_num++;
-+		/* stop rescheduling this worker */
-+		if (d->cgu_state_err_num > ICE_TSPLL_STATE_ERR_THRESHOLD) {
-+			dev_err(ice_pf_to_dev(pf),
-+				"TSPLL DPLL periodic work disabled\n");
-+			return;
-+		}
-+	}
-+	d->cgu_state_err_num = 0;
-+resched:
-+	/* Run twice a second or reschedule if update failed */
-+	kthread_queue_delayed_work(d->kworker, &d->work,
-+				   err ? msecs_to_jiffies(10) :
-+				   msecs_to_jiffies(MSEC_PER_SEC / 2));
-+}
-+
- /**
-  * ice_dpll_init_ref_sync_inputs - initialize reference sync pin pairs
-  * @pf: pf private structure
-@@ -3484,6 +3699,7 @@ static void ice_dpll_deinit_pins(struct ice_pf *pf, bool cgu)
- 	struct ice_dplls *d = &pf->dplls;
- 	struct ice_dpll *de = &d->eec;
- 	struct ice_dpll *dp = &d->pps;
-+	struct ice_dpll *dt = &d->tspll;
- 
- 	ice_dpll_deinit_rclk_pin(pf);
- 	if (cgu) {
-@@ -3492,9 +3708,20 @@ static void ice_dpll_deinit_pins(struct ice_pf *pf, bool cgu)
- 		ice_dpll_unregister_pins(de->dpll, inputs, &ice_dpll_input_ops,
- 					 num_inputs);
- 	}
--	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
- 		ice_dpll_unregister_pins(de->dpll, inputs,
- 					 &ice_dpll_input_ops_e825c, num_inputs);
-+		ice_dpll_unregister_pins(dt->dpll, &pf->dplls.tspll_in,
-+					 &ice_dpll_input_tspll_ops_e825,
-+					 ICE_DPLL_TSPLL_INPUT_NUM_E825);
-+		ice_dpll_unregister_pins(dt->dpll, &pf->dplls.tspll_out,
-+					 &ice_dpll_output_tspll_ops_e825,
-+					 ICE_DPLL_TSPLL_OUTPUT_NUM_E825);
-+		ice_dpll_release_pins(&pf->dplls.tspll_in,
-+				      ICE_DPLL_TSPLL_INPUT_NUM_E825);
-+		ice_dpll_release_pins(&pf->dplls.tspll_out,
-+				      ICE_DPLL_TSPLL_OUTPUT_NUM_E825);
-+	}
- 	ice_dpll_release_pins(inputs, num_inputs);
- 	if (cgu) {
- 		ice_dpll_unregister_pins(dp->dpll, outputs,
-@@ -3587,6 +3814,26 @@ static int ice_dpll_init_pins(struct ice_pf *pf, bool cgu)
- 						     ICE_DPLL_PIN_SW_NUM);
- 		if (ret)
- 			goto deinit_ufl;
-+	} else if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
-+		ret = ice_dpll_init_direct_pins(pf, cgu, &pf->dplls.tspll_in,
-+						count,
-+						ICE_DPLL_TSPLL_INPUT_NUM_E825,
-+						&ice_dpll_input_tspll_ops_e825,
-+						pf->dplls.tspll.dpll,
-+						NULL);
-+		if (ret)
-+			goto deinit_inputs;
-+		count += ICE_DPLL_TSPLL_INPUT_NUM_E825;
-+
-+		ret = ice_dpll_init_direct_pins(pf, cgu, &pf->dplls.tspll_out,
-+						count,
-+						ICE_DPLL_TSPLL_OUTPUT_NUM_E825,
-+						&ice_dpll_output_tspll_ops_e825,
-+						pf->dplls.tspll.dpll,
-+						NULL);
-+		if (ret)
-+			goto deinit_tspll_in;
-+		count += ICE_DPLL_TSPLL_OUTPUT_NUM_E825;
- 	} else {
- 		count += pf->dplls.num_outputs + 2 * ICE_DPLL_PIN_SW_NUM;
- 	}
-@@ -3596,7 +3843,7 @@ static int ice_dpll_init_pins(struct ice_pf *pf, bool cgu)
- 						     count,
- 						     &ice_dpll_pin_1588_ops);
- 			if (ret)
--				goto deinit_inputs;
-+				goto deinit_tspll_out;
- 		}
- 		count += ICE_DPLL_PIN_1588_NUM;
- 	}
-@@ -3624,6 +3871,26 @@ static int ice_dpll_init_pins(struct ice_pf *pf, bool cgu)
- 				    pf->dplls.num_outputs,
- 				    output_ops, pf->dplls.pps.dpll,
- 				    pf->dplls.eec.dpll);
-+deinit_tspll_out:
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
-+		ice_dpll_unregister_pins(pf->dplls.tspll.dpll,
-+					 &pf->dplls.tspll_out,
-+					 &ice_dpll_output_tspll_ops_e825,
-+					 ICE_DPLL_TSPLL_OUTPUT_NUM_E825);
-+		ice_dpll_release_pins(&pf->dplls.tspll_out,
-+				      ICE_DPLL_TSPLL_OUTPUT_NUM_E825);
-+	}
-+
-+deinit_tspll_in:
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
-+		ice_dpll_unregister_pins(pf->dplls.tspll.dpll,
-+					 &pf->dplls.tspll_in,
-+					 &ice_dpll_input_tspll_ops_e825,
-+					 ICE_DPLL_TSPLL_INPUT_NUM_E825);
-+		ice_dpll_release_pins(&pf->dplls.tspll_in,
-+				      ICE_DPLL_TSPLL_INPUT_NUM_E825);
-+	}
-+
- deinit_inputs:
- 	ice_dpll_deinit_direct_pins(pf, cgu, pf->dplls.inputs,
- 				    pf->dplls.num_inputs,
-@@ -3729,13 +3996,13 @@ static int ice_dpll_init_worker(struct ice_pf *pf)
- 	struct ice_dplls *d = &pf->dplls;
- 	struct kthread_worker *kworker;
- 
--	kthread_init_delayed_work(&d->work, ice_dpll_periodic_work);
-+	kthread_init_delayed_work(&d->work, d->periodic_work);
- 	kworker = kthread_run_worker(0, "ice-dplls-%s",
- 					dev_name(ice_pf_to_dev(pf)));
- 	if (IS_ERR(kworker))
- 		return PTR_ERR(kworker);
- 	d->kworker = kworker;
--	d->cgu_state_acq_err_num = 0;
-+	d->cgu_state_err_num = 0;
- 	kthread_queue_delayed_work(d->kworker, &d->work, 0);
- 
- 	return 0;
-@@ -3842,12 +4109,12 @@ static int ice_dpll_init_info_direct_pins_e825c(struct ice_pf *pf,
- 	bool input;
- 
- 	switch (pin_type) {
--	case ICE_DPLL_PIN_TYPE_INPUT:
-+	case ICE_DPLL_PIN_TYPE_INPUT_E825:
- 		pins = pf->dplls.inputs;
- 		num_pins = pf->dplls.num_inputs;
- 		input = true;
- 		break;
--	case ICE_DPLL_PIN_TYPE_OUTPUT:
-+	case ICE_DPLL_PIN_TYPE_OUTPUT_E825:
- 		pins = pf->dplls.outputs;
- 		num_pins = pf->dplls.num_outputs;
- 		input = false;
-@@ -3866,6 +4133,49 @@ static int ice_dpll_init_info_direct_pins_e825c(struct ice_pf *pf,
- 	return 0;
- }
- 
-+/**
-+ * ice_dpll_init_info_tspll_pins_e825 - initializes E825 TSPLL pins info
-+ * @pf: board private structure
-+ * @pin_type: type of pins being initialized
-+ *
-+ * Init information for E825 device TSPLL pins, cache them in pf's pins
-+ * structures.
-+ *
-+ * Return:
-+ * * 0 - success
-+ * * negative - init failure reason
-+ */
-+static int ice_dpll_init_info_tspll_pins_e825(struct ice_pf *pf,
-+					      enum ice_dpll_pin_type pin_type)
-+{
-+	struct ice_dpll_pin *pin;
-+
-+	switch (pin_type) {
-+	case ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825:
-+		pin = &pf->dplls.tspll_in;
-+		pin->prop.board_label = ice_dpll_pin_time_ref_e825;
-+		pin->prop.type = DPLL_PIN_TYPE_EXT;
-+		pin->prop.capabilities |=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
-+		pin->prop.freq_supported = ice_cgu_pin_freq_156_25mhz;
-+		pin->prop.freq_supported_num =
-+			ARRAY_SIZE(ice_cgu_pin_freq_156_25mhz);
-+		pin->freq = pin->prop.freq_supported[0].min;
-+		pin->pf = pf;
-+		break;
-+	case ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825:
-+		pin = &pf->dplls.tspll_out;
-+		pin->prop.board_label = ice_dpll_pin_time_sync_e825;
-+		pin->prop.type = DPLL_PIN_TYPE_INT_OSCILLATOR;
-+		pin->pf = pf;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_dpll_init_info_direct_pins - initializes direct pins info
-  * @pf: board private structure
-@@ -4104,11 +4414,7 @@ ice_dpll_init_pins_info(struct ice_pf *pf, enum ice_dpll_pin_type pin_type)
- 	switch (pin_type) {
- 	case ICE_DPLL_PIN_TYPE_INPUT:
- 	case ICE_DPLL_PIN_TYPE_OUTPUT:
--		if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
--			return ice_dpll_init_info_direct_pins_e825c(pf,
--								    pin_type);
--		else
--			return ice_dpll_init_info_direct_pins(pf, pin_type);
-+		return ice_dpll_init_info_direct_pins(pf, pin_type);
- 	case ICE_DPLL_PIN_TYPE_RCLK_INPUT:
- 		if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
- 			return ice_dpll_init_info_pin_on_pin_e825c(pf);
-@@ -4116,6 +4422,12 @@ ice_dpll_init_pins_info(struct ice_pf *pf, enum ice_dpll_pin_type pin_type)
- 			return ice_dpll_init_info_rclk_pin(pf);
- 	case ICE_DPLL_PIN_TYPE_SOFTWARE:
- 		return ice_dpll_init_info_sw_pins(pf);
-+	case ICE_DPLL_PIN_TYPE_INPUT_E825:
-+	case ICE_DPLL_PIN_TYPE_OUTPUT_E825:
-+		return ice_dpll_init_info_direct_pins_e825c(pf, pin_type);
-+	case ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825:
-+	case ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825:
-+		return ice_dpll_init_info_tspll_pins_e825(pf, pin_type);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -4150,18 +4462,28 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
- {
- 	struct ice_dplls *d = &pf->dplls;
- 	struct ice_dpll *de = &d->eec;
-+	struct ice_dpll *dt = &d->tspll;
- 	int ret = 0;
- 	int i;
- 
- 	d->clock_id = ice_generate_clock_id(pf);
- 	d->num_inputs = ICE_SYNCE_CLK_NUM;
- 	de->dpll_state = DPLL_LOCK_STATUS_LOCKED;
-+	dt->dpll_state = DPLL_LOCK_STATUS_LOCKED;
- 
- 	d->inputs = kcalloc(d->num_inputs, sizeof(*d->inputs), GFP_KERNEL);
- 	if (!d->inputs)
- 		return -ENOMEM;
- 
--	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT);
-+	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT_E825);
-+	if (ret)
-+		goto deinit_info;
-+
-+	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_INPUT_TSPLL_E825);
-+	if (ret)
-+		goto deinit_info;
-+
-+	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_OUTPUT_TSPLL_E825);
- 	if (ret)
- 		goto deinit_info;
- 
-@@ -4183,7 +4505,14 @@ static int ice_dpll_init_info_e825c(struct ice_pf *pf)
- 	ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_RCLK_INPUT);
- 	if (ret)
- 		return ret;
-+
-+	if (ice_pf_src_tmr_owned(pf))
-+		d->periodic_work = ice_dpll_periodic_work_e825;
-+
- 	de->mode = DPLL_MODE_MANUAL;
-+	dt->mode = DPLL_MODE_MANUAL;
-+	dt->dpll_idx = ICE_DPLL_TSPLL_IDX_E825;
-+
- 	dev_dbg(ice_pf_to_dev(pf),
- 		"%s - success, inputs: %u, outputs: %u, rclk-parents: %u, pin_1588-parents: %u\n",
- 		 __func__, d->num_inputs, d->num_outputs, d->rclk.num_parents,
-@@ -4267,6 +4596,8 @@ static int ice_dpll_init_info(struct ice_pf *pf, bool cgu)
- 		ret = ice_dpll_init_pins_info(pf, ICE_DPLL_PIN_TYPE_SOFTWARE);
- 		if (ret)
- 			goto deinit_info;
-+
-+		d->periodic_work = ice_dpll_periodic_work;
- 	}
- 
- 	ret = ice_get_cgu_rclk_pin_info(&pf->hw, &d->base_rclk_idx,
-@@ -4312,12 +4643,14 @@ void ice_dpll_deinit(struct ice_pf *pf)
- 	bool cgu = ice_is_feature_supported(pf, ICE_F_CGU);
- 
- 	clear_bit(ICE_FLAG_DPLL, pf->flags);
--	if (cgu)
-+	if (pf->dplls.periodic_work)
- 		ice_dpll_deinit_worker(pf);
- 
- 	ice_dpll_deinit_pins(pf, cgu);
- 	if (pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825)
- 		ice_dpll_deinit_dpll(pf, &pf->dplls.pps, cgu);
-+	else
-+		ice_dpll_deinit_dpll(pf, &pf->dplls.tspll, cgu);
- 	ice_dpll_deinit_dpll(pf, &pf->dplls.eec, cgu);
- 	ice_dpll_deinit_info(pf);
- 	mutex_destroy(&pf->dplls.lock);
-@@ -4350,16 +4683,20 @@ void ice_dpll_init(struct ice_pf *pf)
- 	err = ice_dpll_init_dpll(pf, &pf->dplls.eec, cgu, DPLL_TYPE_EEC);
- 	if (err)
- 		goto deinit_info;
--	if (pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825) {
-+
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
-+		err = ice_dpll_init_dpll(pf, &pf->dplls.tspll, cgu,
-+					 DPLL_TYPE_PPS);
-+	else
- 		err = ice_dpll_init_dpll(pf, &pf->dplls.pps, cgu,
- 					 DPLL_TYPE_PPS);
--		if (err)
--			goto deinit_eec;
--	}
-+	if (err)
-+		goto deinit_eec;
-+
- 	err = ice_dpll_init_pins(pf, cgu);
- 	if (err)
- 		goto deinit_pps;
--	if (cgu && pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825) {
-+	if (d->periodic_work) {
- 		err = ice_dpll_init_worker(pf);
- 		if (err)
- 			goto deinit_pins;
-@@ -4371,7 +4708,10 @@ void ice_dpll_init(struct ice_pf *pf)
- deinit_pins:
- 	ice_dpll_deinit_pins(pf, cgu);
- deinit_pps:
--	ice_dpll_deinit_dpll(pf, &pf->dplls.pps, cgu);
-+	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
-+		ice_dpll_deinit_dpll(pf, &pf->dplls.tspll, cgu);
-+	else
-+		ice_dpll_deinit_dpll(pf, &pf->dplls.pps, cgu);
- deinit_eec:
- 	ice_dpll_deinit_dpll(pf, &pf->dplls.eec, cgu);
- deinit_info:
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
-index 247b4f2727ea..6c2a79843cde 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.h
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
-@@ -99,19 +99,23 @@ struct ice_dpll {
-  * @lock: locks access to configuration of a dpll
-  * @eec: pointer to EEC dpll dev
-  * @pps: pointer to PPS dpll dev
-+ * @tspll: pointer to TSPLL dpll dev
-  * @inputs: input pins pointer
-  * @outputs: output pins pointer
-  * @pin_1588: pin controlling clock 1588 pointer
-  * @rclk: recovered pins pointer
-+ * @tspll_in: TSPLL input pin
-+ * @tspll_out: TSPLL output pin
-  * @num_inputs: number of input pins available on dpll
-  * @num_outputs: number of output pins available on dpll
-- * @cgu_state_acq_err_num: number of errors returned during periodic work
-+ * @cgu_state_err_num: number of errors returned during periodic work
-  * @base_rclk_idx: idx of first pin used for clock revocery pins
-  * @base_1588_idx: idx of first pin used for 1588 clock control pin
-  * @clock_id: clock_id of dplls
-  * @input_phase_adj_max: max phase adjust value for an input pins
-  * @output_phase_adj_max: max phase adjust value for an output pins
-  * @periodic_counter: counter of periodic work executions
-+ * @periodic_work: callback for periodic work thread to register
-  */
- struct ice_dplls {
- 	struct kthread_worker *kworker;
-@@ -119,23 +123,27 @@ struct ice_dplls {
- 	struct mutex lock;
- 	struct ice_dpll eec;
- 	struct ice_dpll pps;
-+	struct ice_dpll tspll;
- 	struct ice_dpll_pin *inputs;
- 	struct ice_dpll_pin *outputs;
- 	struct ice_dpll_pin pin_1588;
- 	struct ice_dpll_pin sma[ICE_DPLL_PIN_SW_NUM];
- 	struct ice_dpll_pin ufl[ICE_DPLL_PIN_SW_NUM];
- 	struct ice_dpll_pin rclk;
-+	struct ice_dpll_pin tspll_in;
-+	struct ice_dpll_pin tspll_out;
- 	u8 num_inputs;
- 	u8 num_outputs;
- 	u8 sma_data;
- 	u8 base_rclk_idx;
- 	u8 base_1588_idx;
--	int cgu_state_acq_err_num;
-+	int cgu_state_err_num;
- 	u64 clock_id;
- 	s32 input_phase_adj_max;
- 	s32 output_phase_adj_max;
- 	u32 periodic_counter;
- 	bool generic;
-+	void (*periodic_work)(struct kthread_work *work);
- };
- 
- static inline void
-diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
-index 78d74fb0d94b..e338c02aa4c7 100644
---- a/drivers/net/ethernet/intel/ice/ice_tspll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
-@@ -531,6 +531,64 @@ int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable)
- 	return ice_write_cgu_reg(hw, ICE_CGU_R9, val);
- }
- 
-+/**
-+ * ice_tspll_lost_lock_e825c - check if TSPLL lost lock
-+ * @hw: Pointer to the HW struct
-+ * @lost_lock: Output flag for reporting lost lock
-+ *
-+ * Get E825 device TSPLL DPLL lock status.
-+ *
-+ * Return:
-+ * * 0 - OK
-+ * * negative - error
-+ */
-+int ice_tspll_lost_lock_e825c(struct ice_hw *hw, bool *lost_lock)
-+{
-+	u32 val;
-+	int err;
-+
-+	err = ice_read_cgu_reg(hw, ICE_CGU_RO_LOCK, &val);
-+	if (err)
-+		return err;
-+
-+	*lost_lock = !FIELD_GET(ICE_CGU_RO_LOCK_TRUE_LOCK, val);
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_tspll_restart_e825c - trigger TSPLL restart
-+ * @hw: Pointer to the HW struct
-+ *
-+ * Re-enable TSPLL for E825 device.
-+ *
-+ * Return:
-+ * * 0 - OK
-+ * * negative - error
-+ */
-+int ice_tspll_restart_e825c(struct ice_hw *hw)
-+{
-+	u32 val;
-+	int err;
-+
-+	/* Read the initial values of r23 and disable the PLL */
-+	err = ice_read_cgu_reg(hw, ICE_CGU_R23, &val);
-+	if (err)
-+		return err;
-+
-+	val &= ~ICE_CGU_R23_R24_TSPLL_ENABLE;
-+	err = ice_write_cgu_reg(hw, ICE_CGU_R23, val);
-+	if (err)
-+		return err;
-+
-+	/* Wait at least 1 ms before reenabling PLL */
-+	usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
-+	val |= ICE_CGU_R23_R24_TSPLL_ENABLE;
-+	err = ice_write_cgu_reg(hw, ICE_CGU_R23, val);
-+
-+	return err;
-+}
-+
- /**
-  * ice_tspll_cfg - Configure the Clock Generation Unit TSPLL
-  * @hw: Pointer to the HW struct
-@@ -577,6 +635,70 @@ static int ice_tspll_dis_sticky_bits(struct ice_hw *hw)
- 	}
- }
- 
-+/**
-+ * ice_tspll_get_clk_src - get current TSPLL clock source
-+ * @hw: board private hw structure
-+ * @clk_src: pointer to store clk_src value
-+ *
-+ * Get current TSPLL clock source settings.
-+ *
-+ * Return:
-+ * * 0 - OK
-+ * * negative - error
-+ */
-+int ice_tspll_get_clk_src(struct ice_hw *hw, enum ice_clk_src *clk_src)
-+{
-+	int err;
-+	u32 val;
-+
-+	/* Disable sticky lock detection so lock status reported is accurate */
-+	err = ice_tspll_dis_sticky_bits(hw);
-+	if (err)
-+		return err;
-+
-+	err = (hw->mac_type == ICE_MAC_GENERIC_3K_E825) ?
-+		ice_read_cgu_reg(hw, ICE_CGU_R23, &val) :
-+		ice_read_cgu_reg(hw, ICE_CGU_R24, &val);
-+	if (err)
-+		return err;
-+
-+	*clk_src = (enum ice_clk_src)FIELD_GET(ICE_CGU_R23_R24_TIME_REF_SEL,
-+					       val);
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_tspll_set_cfg - configure TS PLL with new settings
-+ * @hw: board private hw structure
-+ * @clk_freq: clock frequency to program
-+ * @clk_src: clock source to select (TIME_REF, or TCXO)
-+ *
-+ * Configure CGU with new clock source and clock frequency settings.
-+ *
-+ * Return:
-+ * * 0 - OK
-+ * * negative - error
-+ */
-+int ice_tspll_set_cfg(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
-+		      enum ice_clk_src clk_src)
-+{
-+	int ret;
-+
-+	if (!ice_tspll_check_params(hw, clk_freq, clk_src))
-+		return -EINVAL;
-+
-+	ret = ice_tspll_dis_sticky_bits(hw);
-+	if (ret)
-+		return ret;
-+
-+	ret = ice_tspll_cfg(hw, clk_freq, clk_src);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- /**
-  * ice_tspll_init - Initialize TSPLL with settings from firmware
-  * @hw: Pointer to the HW structure
-diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.h b/drivers/net/ethernet/intel/ice/ice_tspll.h
-index cf5581f152e7..52a652ad3f1c 100644
---- a/drivers/net/ethernet/intel/ice/ice_tspll.h
-+++ b/drivers/net/ethernet/intel/ice/ice_tspll.h
-@@ -33,6 +33,9 @@ struct ice_tspll_params_e82x {
- #define ICE_TSPLL_FBDIV_INTGR_E825		256
- 
- int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable);
-+int ice_tspll_get_clk_src(struct ice_hw *hw, enum ice_clk_src *clk_src);
-+int ice_tspll_set_cfg(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
-+		      enum ice_clk_src clk_src);
- int ice_tspll_init(struct ice_hw *hw);
- int ice_tspll_bypass_mux_active_e825c(struct ice_hw *hw, u8 port, bool *active,
- 				      enum ice_synce_clk output);
-@@ -40,4 +43,6 @@ int ice_tspll_cfg_bypass_mux_e825c(struct ice_hw *hw, bool ena, u32 port_num,
- 				   enum ice_synce_clk output, bool clock_1588);
- int ice_tspll_cfg_synce_ethdiv_e825c(struct ice_hw *hw,
- 				     enum ice_synce_clk output);
-+int ice_tspll_lost_lock_e825c(struct ice_hw *hw, bool *lock_lost);
-+int ice_tspll_restart_e825c(struct ice_hw *hw);
- #endif /* _ICE_TSPLL_H_ */
-
-base-commit: 1cac4d3a9d6ab7c5bf52248f558cd2a41b820094
--- 
-2.39.3
+-Toke
 
