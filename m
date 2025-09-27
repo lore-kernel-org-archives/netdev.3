@@ -1,54 +1,45 @@
-Received: from mail-108-mta89.mxroute.com (mail-108-mta89.mxroute.com [136.175.108.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us.padl.com (us.padl.com [216.154.215.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1B52BE65C
-	for <netdev@vger.kernel.org>; Sat, 27 Sep 2025 07:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4F92D0C69
+	for <netdev@vger.kernel.org>; Sat, 27 Sep 2025 07:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758957675; cv=none; b=QCToTURIjzn72/eGs1pQR4NQuAkUdBZYfq/w/VzhkoVVxMh2giqCQpo0zsKWOS3SEDE1YjS+oea05nVdlt2deOZsOz5V3Sl24NS8mTl4RGJTghQmy9MHsszHeZ/MoBd+rAjTB+3l7MvSm0ANxShuV5JFW1cKNSOKV7d7H2sqWj0=
+	t=1758959355; cv=none; b=VoUTf1XCukHfXwMcFKY2NSQaEup7Qs00Hld5ZxWpHf/sPYJatzOUBiD7lGFNLFdBkAnf9K2D+ooqk80++ikQIvS7bxxs/jgSh3UL/ryjxOotuqp5xGFLdU1FiOoIyFX0HeTWSh88wuvUFr2v1Nr19Jl26SQ5WPps+TtGYDDE30k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758957675; c=relaxed/simple;
-	bh=xpWw1fr15ZnUBWMm4pgU2OOFI7SC2s3fG8d2luLclh0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ILXHHynVI9o9vtRwFMsVSITQI9ACYYd043rJ6X1jQBOMPMIwHoL5riAR5AjZsKxI7YjJSSEnXzzGaQPXnomZ6oXQWBgzP1y7Lk6oOifQMDITrJrHOjtmshJS/ynf7or4QkzJpta7/SnryA8eI0miXcWsE08WVscLZH7wLO4fY1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=f+hAjOKQ; arc=none smtp.client-ip=136.175.108.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
+	s=arc-20240116; t=1758959355; c=relaxed/simple;
+	bh=0SdfO78R3Ys/MvdDYyAvVvm5FyGOS0W6yqnZMeLOMQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QXh+zcyS6XKDAiIdrp/YJM62PhIS5LCaCrH6AcBoqvJ+nanWn/eEO71CkzMC84XgYxFytwW266OVZN1a3WiNcJHFG+2RgaksTE3AEzNvW9S4V0LkFSyho76ZQ9slJ/LVRz/EejaweZFr/lZU7A5iBKjE6QHnRtDcX9/I+8I/0VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=BRlqEDUJ; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="f+hAjOKQ"
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta89.mxroute.com (ZoneMTA) with ESMTPSA id 1998a07472a000c244.006
- for <netdev@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 27 Sep 2025 07:15:56 +0000
-X-Zone-Loop: 30c14d3cd7556ac1dd6f7d29952963d1d7ca84cc97f3
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=YPcuyd+/b8J7SuKFiIcya8aL9pWVP/wXtGAqhHA1mJw=; b=f+hAjOKQvWcpIlSSjO/K5rg4qm
-	41GHz8iloUtmbCJJhKT/it5R+4ySWzkFIBH9TV71seEmlaezmmCIfhx6vvEkI66W7wNrOBBYkTfwi
-	3AoOhCpQpwYQHswYuh1tHc2k8hdnXsjmJeBonvCEFs16AOYN2VLoZg6h5H7Wiu7/zqpvT9zBX+pyS
-	oFWTi8axoQEYydhEkXHdbV5jUzNyeZqDrU4OiQirbT41fUo+RickjElxSrJ+br8xJDwU/0s52stvE
-	mMg2QZsf6I6GTxrLYWI/UobLz7oUftWpD7Gs8Od3vQ9mQQ+oGZI8SLDOmeY5CyUUxCGrod7S5lq/o
-	+6UtU01A==;
-From: Bo Sun <bo@mboxify.com>
-To: sgoutham@marvell.com,
-	gakula@marvell.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bo Sun <bo@mboxify.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] octeontx2-vf: fix bitmap leak
-Date: Sat, 27 Sep 2025 15:15:04 +0800
-Message-Id: <20250927071505.915905-2-bo@mboxify.com>
-In-Reply-To: <20250927071505.915905-1-bo@mboxify.com>
-References: <20250927071505.915905-1-bo@mboxify.com>
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="BRlqEDUJ"
+Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 58R77w89026773
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sat, 27 Sep 2025 08:08:12 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 58R77w89026773
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1758956894; bh=nRMoFOSiaP1lYUNx1pFI27fFzLe4DmihyBhJ2UhrXEA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BRlqEDUJfLiv13J3Gr7HHS1rC+HtWV9Ch0IKejY2H7E5xL6sRHHo8vuUmybmfaDEf
+	 sF+6YLlhTfmKeQOZQdzKnKhuJ2VPaPYZSW/4KYUyNPuLsoW7PN63rOxp9Hqw4eJg0/
+	 DdwB/MUseMYxGRnSSo80EJXfp/BTPc6SuNEpMF/ReOcFv64rL0UrEvvShBjsItdK0m
+	 Zb2colZAeGHExpPRI9ycocL3pfIefpRC+D9Aur3DrHz6sygNs2fpK+0Kpr4ekQg54d
+	 TJiO2kqxH9Y6Jf5lzBdoJmQoe6+S042Txu2n0bQ0yuDFEorvBEv0ysLoaJ0zQ2Ap3S
+	 v/5yN71cq9tXw==
+From: Luke Howard <lukeh@padl.com>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch, vladimir.oltean@nxp.com, kieran@sienda.com,
+        jcschroeder@gmail.com, max@huntershome.org,
+        Luke Howard <lukeh@padl.com>
+Subject: [RFC net-next 1/5] net: dsa: mv88e6xxx: add num_tx_queues to chip info structure
+Date: Sat, 27 Sep 2025 17:07:04 +1000
+Message-ID: <20250927070724.734933-2-lukeh@padl.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250927070724.734933-1-lukeh@padl.com>
+References: <20250927070724.734933-1-lukeh@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,35 +47,148 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: bo@mboxify.com
 
-The bitmap allocated with bitmap_zalloc() in otx2vf_probe() was not
-released in otx2vf_remove(). Unbinding and rebinding the driver therefore
-triggers a kmemleak warning:
+In preparation for adding 802.1Qav support (FQTSS), add an element to
+struct mv88e6xxx_info indicating the number of transmit queues supported
+by each chip.
 
-    unreferenced object (size 8):
-      backtrace:
-        bitmap_zalloc
-        otx2vf_probe
-
-Call bitmap_free() in the remove path to fix the leak.
-
-Fixes: efabce290151 ("octeontx2-pf: AF_XDP zero copy receive support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bo Sun <bo@mboxify.com>
+Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 15 +++++++++++++++
+ drivers/net/dsa/mv88e6xxx/chip.h |  3 +++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-index 7ebb6e656884..25381f079b97 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
-@@ -854,6 +854,7 @@ static void otx2vf_remove(struct pci_dev *pdev)
- 		qmem_free(vf->dev, vf->dync_lmt);
- 	otx2vf_vfaf_mbox_destroy(vf);
- 	pci_free_irq_vectors(vf->pdev);
-+	bitmap_free(vf->af_xdp_zc_qidx);
- 	pci_set_drvdata(pdev, NULL);
- 	free_netdev(netdev);
- }
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index b4d48997bf467..42189aeb9aec0 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -4099,6 +4099,8 @@ static int mv88e6xxx_setup(struct dsa_switch *ds)
+ 			goto unlock;
+ 	}
+ 
++	ds->num_tx_queues = chip->info->num_tx_queues;
++
+ 	err = mv88e6xxx_stats_setup(chip);
+ 	if (err)
+ 		goto unlock;
+@@ -5863,6 +5865,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.pvt = true,
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6141_ops,
+ 	},
+ 
+@@ -5965,6 +5968,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.pvt = true,
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6172_ops,
+ 	},
+ 
+@@ -6016,6 +6020,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.pvt = true,
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6176_ops,
+ 	},
+ 
+@@ -6063,6 +6068,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.pvt = true,
+ 		.multi_chip = true,
+ 		.atu_move_port_mask = 0x1f,
++		.num_tx_queues = 8,
+ 		.ops = &mv88e6190_ops,
+ 	},
+ 
+@@ -6088,6 +6094,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.atu_move_port_mask = 0x1f,
+ 		.pvt = true,
+ 		.multi_chip = true,
++		.num_tx_queues = 8,
+ 		.ops = &mv88e6190x_ops,
+ 	},
+ 
+@@ -6217,6 +6224,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6240_ops,
+ 	},
+ 
+@@ -6264,6 +6272,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.pvt = true,
+ 		.multi_chip = true,
+ 		.ptp_support = true,
++		.num_tx_queues = 8,
+ 		.ops = &mv88e6290_ops,
+ 	},
+ 
+@@ -6292,6 +6301,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6320_ops,
+ 	},
+ 
+@@ -6320,6 +6330,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6321_ops,
+ 	},
+ 
+@@ -6347,6 +6358,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6341_ops,
+ 	},
+ 
+@@ -6424,6 +6436,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 4,
+ 		.ops = &mv88e6352_ops,
+ 	},
+ 	[MV88E6361] = {
+@@ -6477,6 +6490,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_UNDOCUMENTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 8,
+ 		.ops = &mv88e6390_ops,
+ 	},
+ 	[MV88E6390X] = {
+@@ -6503,6 +6517,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.multi_chip = true,
+ 		.edsa_support = MV88E6XXX_EDSA_UNDOCUMENTED,
+ 		.ptp_support = true,
++		.num_tx_queues = 8,
+ 		.ops = &mv88e6390x_ops,
+ 	},
+ 
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index 2f211e55cb47b..b861486a7065e 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -174,6 +174,9 @@ struct mv88e6xxx_info {
+ 	/* Supports PTP */
+ 	bool ptp_support;
+ 
++	/* Number of 802.1Qav TX queues */
++	u8 num_tx_queues;
++
+ 	/* Internal PHY start index. 0 means that internal PHYs range starts at
+ 	 * port 0, 1 means internal PHYs range starts at port 1, etc
+ 	 */
+-- 
+2.43.0
+
