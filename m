@@ -1,164 +1,345 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us.padl.com (us.padl.com [216.154.215.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA1919A2A3
-	for <netdev@vger.kernel.org>; Sat, 27 Sep 2025 06:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBD21EF38C
+	for <netdev@vger.kernel.org>; Sat, 27 Sep 2025 07:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.154.215.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758952823; cv=none; b=gSWOUb5XkgVDFoOtjZjbhOltoUPvJiSRxI3/UpBIa7eZEKKLec4o3KSM8M7XsGSFSwsjxiNgUVra/tvUQ7e34IVPvkITUasU3SXQpA3fLgRTBfxM74/K2alxB3CPQc7/Adq46741S7bPWpBfBHyWFP/RYreGK+MtmA55Qhl7Rzc=
+	t=1758956917; cv=none; b=onES7pyIKj5WVTpS6bGDcFBAO8p1om55HNLTjNusKm/LS7izonJIkCQnJpPTmpUeBWLACFPOdlsTvNsPnn8IMu32bYV6tArS6kmYOQZ1cqczhVGfk+z7nAuNiYNK4b447YgWCTfE8/16jsHhnUxcRrVdEfsDMYQvU0rcRbWFVJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758952823; c=relaxed/simple;
-	bh=FVQqXZ6vvoXNmyMYata7NERxIppVX1MU+bw6AFoO/xc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=AbfDwteUzPAZNnl3P1nBvSvhkeXqJbk9ZapZC9vcMYO4UKQQIr5MNsJ+M29vOnzeIqbYg4xouHRkUb3Tk0me6sXQywKh9vHan5uIfBUT1fxyVAgucOx96Iqda562AoN7YId8AxorSgIkqIfWKm3JhwCRKk48VdlJgNREejpklQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4257ae42790so43088775ab.1
-        for <netdev@vger.kernel.org>; Fri, 26 Sep 2025 23:00:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758952821; x=1759557621;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWqloIokgAjTlc/Iwy59kZ1QnAzpWW7VXmqR0dpPQns=;
-        b=nULrp/bIgnZWWoyG5V5yKGCeWIk7mLXqMZ6eTPWRYOpSjm01QxANBzseIC8Pmv7gBX
-         wKqocFnNczizx6/AnXuB7l1mhgMM1OqxxoENtgB+21Yy4flIZMfm4AseRjnyIlqO0yGJ
-         iLR0J8pTF+mYpxwsHDIAZNM1QJDb1PSAjISg+q2qR52j297gLlK5dTEg0q7GMNRfcl/4
-         yFyB1knkVXqJAzr5dhMAdY3vHrHOrAeMOTiehmKSGIQXoW4Q6YY0co1PdlQxNgQAvcii
-         RDhTfbMbbx6pNr6q7+LLl7oV+qpcH6HJuzVjGhLH7d3jUOkEJ2qmDP13vtq/DPnbfo7E
-         9Eiw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfPYxPGjZxaWeumKBw7O99QMYjsnH3dbJNz3NzkO31qHpAbOtPdpIQEdPEqkfEWN2922lMuK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8xzIWhBeF2Ho5pNBZQJraSw33mC6El1ZVcZTFz4SVTbUXUqnD
-	m/ZSCOVgdRCX8w34AWEqPsnugzwtNA0SkUmVnSmQGq1XMYV59vZfTOAyV6LIxXbJLlI+Nch/Akw
-	JpZfk+kAPUM/dARybaB8vctwiCS5BxBNWO7gweoamWqCUHwJXtkZaLGeOejE=
-X-Google-Smtp-Source: AGHT+IHe74HBd6XEftIHGctkYHXJNu2pVLYANpsk/N72/KgZxq1RUrUa6XMWAdCTD7RhQCvIKhavXgVuoTBzps71NWqb/YQd/ADv
+	s=arc-20240116; t=1758956917; c=relaxed/simple;
+	bh=pY9Oe4H9/Hsi9mdywL0+x6lWhR6pS0X2NE6BLR0QHJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KLcQ0Gz8YUcN+rkCj5YzQW2csZG0bqm5ndzkFzyXaVnsoQenZwT6aVDSWp/Y5Vi7IUqQqR+nx/xL+EaRpCwd4Q6R5xoMbhGdENaTthL66WU7aNH93TYVLlbkWJGwI/t4ImuEaXBhmF7KSNs7Nr9AaDVaWckVbYV47jRrQlLsOJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com; spf=pass smtp.mailfrom=padl.com; dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b=BkzzmCaw; arc=none smtp.client-ip=216.154.215.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=padl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=padl.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=padl.com header.i=@padl.com header.b="BkzzmCaw"
+Received: from auth (localhost [127.0.0.1]) by us.padl.com (8.14.7/8.14.7) with ESMTP id 58R77w8C026773
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sat, 27 Sep 2025 08:08:22 +0100
+DKIM-Filter: OpenDKIM Filter v2.11.0 us.padl.com 58R77w8C026773
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=padl.com; s=default;
+	t=1758956904; bh=/n1onkR8cW6xxlO1EXYkAG7CcZmC39dKOYNfLf8aXOo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BkzzmCaw08EIGiGH81S7C0C0JVoQ9hyBLVlwTNI6HUfmqshanxXPTq7BP9Avk4bls
+	 5poay9FH6MaaAiXYjpdTX77C7ryAbuTJhxcPQVDNh78lTo35NPRRlUd6UavYBvCDmw
+	 QrHv7TfVxExFvSQU7Y5yip2bUHTnxstRTQt0PGWbL/QLKEgXkHj/LIINoyJ7xhRpn5
+	 xlKLynhtTZDDpY/6ijKZZSahFV4v6PDym7y7Ds1TK7v0ae+Q40OrSdsnqLxRri14kN
+	 nxG5CmWgu0k0t8pxWVMHcQFfAfjcljfmK94IaM0kHfNSw7rf+pPiUC0qAfqiYnWCWv
+	 nlQFS7Gq5TJwg==
+From: Luke Howard <lukeh@padl.com>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch, vladimir.oltean@nxp.com, kieran@sienda.com,
+        jcschroeder@gmail.com, max@huntershome.org,
+        Luke Howard <lukeh@padl.com>
+Subject: [RFC net-next 4/5] net: dsa: mv88e6xxx: CBS support
+Date: Sat, 27 Sep 2025 17:07:07 +1000
+Message-ID: <20250927070724.734933-5-lukeh@padl.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250927070724.734933-1-lukeh@padl.com>
+References: <20250927070724.734933-1-lukeh@padl.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:218f:b0:405:5e08:a3e4 with SMTP id
- e9e14a558f8ab-425955c5585mr136861695ab.1.1758952820978; Fri, 26 Sep 2025
- 23:00:20 -0700 (PDT)
-Date: Fri, 26 Sep 2025 23:00:20 -0700
-In-Reply-To: <20250926-scratch-bobbyeshleman-devmem-tcp-token-upstream-v4-0-39156563c3ea@meta.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68d77d74.a00a0220.102ee.000e.GAE@google.com>
-Subject: [syzbot ci] Re: net: devmem: improve cpu cost of RX token management
-From: syzbot ci <syzbot+ci88b77c4aee0f7057@syzkaller.appspotmail.com>
-To: almasrymina@google.com, bobbyeshleman@gmail.com, bobbyeshleman@meta.com, 
-	davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, kuniyu@google.com, 
-	linux-kernel@vger.kernel.org, ncardwell@google.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, sdf@fomichev.me, willemb@google.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+Add support for the 802.1Qav Credit Based Shaper (CBS) to Marvell switches
+that support AVB. CBS policies can be configured per-port, but are subject
+to the global policy limitations imposed by the Marvell MQPRIO
+implementation.
 
-[v4] net: devmem: improve cpu cost of RX token management
-https://lore.kernel.org/all/20250926-scratch-bobbyeshleman-devmem-tcp-token-upstream-v4-0-39156563c3ea@meta.com
-* [PATCH net-next v4 1/2] net: devmem: rename tx_vec to vec in dmabuf binding
-* [PATCH net-next v4 2/2] net: devmem: use niov array for token management
-
-and found the following issue:
-general protection fault in sock_devmem_dontneed
-
-Full report is available here:
-https://ci.syzbot.org/series/b8209bd4-e9f0-4c54-bad3-613e8431151b
-
-***
-
-general protection fault in sock_devmem_dontneed
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      dc1dea796b197aba2c3cae25bfef45f4b3ad46fe
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/b4d90fd9-9fbe-4e17-8fc0-3d6603df09da/config
-C repro:   https://ci.syzbot.org/findings/ce81b3c3-3db8-4643-9731-cbe331c65fdb/c_repro
-syz repro: https://ci.syzbot.org/findings/ce81b3c3-3db8-4643-9731-cbe331c65fdb/syz_repro
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 5996 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:sock_devmem_dontneed+0x372/0x920 net/core/sock.c:1113
-Code: 48 44 8b 20 44 89 74 24 54 45 01 f4 48 8b 44 24 60 42 80 3c 28 00 74 08 48 89 df e8 e8 5a c9 f8 4c 8b 33 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 cf 5a c9 f8 4d 8b 3e 4c 89 f8 48
-RSP: 0018:ffffc90002a1fac0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88810a8ab710 RCX: 1ffff11023002f45
-RDX: ffff88801b339cc0 RSI: 0000000000002000 RDI: 0000000000000000
-RBP: ffffc90002a1fc50 R08: ffffc90002a1fbdf R09: 0000000000000000
-R10: ffffc90002a1fb60 R11: fffff52000543f7c R12: 0000000000f07000
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88810a8ab710
-FS:  000055556f85a500(0000) GS:ffff8881a3c3d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00002000000a2000 CR3: 0000000024516000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- sk_setsockopt+0x682/0x2dc0 net/core/sock.c:1304
- do_sock_setsockopt+0x11b/0x1b0 net/socket.c:2340
- __sys_setsockopt net/socket.c:2369 [inline]
- __do_sys_setsockopt net/socket.c:2375 [inline]
- __se_sys_setsockopt net/socket.c:2372 [inline]
- __x64_sys_setsockopt+0x13f/0x1b0 net/socket.c:2372
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fea0438ec29
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd04a8f368 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
-RAX: ffffffffffffffda RBX: 00007fea045d5fa0 RCX: 00007fea0438ec29
-RDX: 0000000000000050 RSI: 0000000000000001 RDI: 0000000000000003
-RBP: 00007fea04411e41 R08: 0000000000000010 R09: 0000000000000000
-R10: 00002000000a2000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fea045d5fa0 R14: 00007fea045d5fa0 R15: 0000000000000005
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:sock_devmem_dontneed+0x372/0x920 net/core/sock.c:1113
-Code: 48 44 8b 20 44 89 74 24 54 45 01 f4 48 8b 44 24 60 42 80 3c 28 00 74 08 48 89 df e8 e8 5a c9 f8 4c 8b 33 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 cf 5a c9 f8 4d 8b 3e 4c 89 f8 48
-RSP: 0018:ffffc90002a1fac0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88810a8ab710 RCX: 1ffff11023002f45
-RDX: ffff88801b339cc0 RSI: 0000000000002000 RDI: 0000000000000000
-RBP: ffffc90002a1fc50 R08: ffffc90002a1fbdf R09: 0000000000000000
-R10: ffffc90002a1fb60 R11: fffff52000543f7c R12: 0000000000f07000
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88810a8ab710
-FS:  000055556f85a500(0000) GS:ffff8881a3c3d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00002000000a2000 CR3: 0000000024516000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess):
-   0:	48                   	rex.W
-   1:	44 8b 20             	mov    (%rax),%r12d
-   4:	44 89 74 24 54       	mov    %r14d,0x54(%rsp)
-   9:	45 01 f4             	add    %r14d,%r12d
-   c:	48 8b 44 24 60       	mov    0x60(%rsp),%rax
-  11:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1)
-  16:	74 08                	je     0x20
-  18:	48 89 df             	mov    %rbx,%rdi
-  1b:	e8 e8 5a c9 f8       	call   0xf8c95b08
-  20:	4c 8b 33             	mov    (%rbx),%r14
-  23:	4c 89 f0             	mov    %r14,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
-  2f:	74 08                	je     0x39
-  31:	4c 89 f7             	mov    %r14,%rdi
-  34:	e8 cf 5a c9 f8       	call   0xf8c95b08
-  39:	4d 8b 3e             	mov    (%r14),%r15
-  3c:	4c 89 f8             	mov    %r15,%rax
-  3f:	48                   	rex.W
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Signed-off-by: Luke Howard <lukeh@padl.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/dsa/mv88e6xxx/avb.c  | 115 ++++++++++++++++++++++++++++++-
+ drivers/net/dsa/mv88e6xxx/avb.h  |  33 +++++++++
+ drivers/net/dsa/mv88e6xxx/chip.c |  27 ++++++++
+ drivers/net/dsa/mv88e6xxx/chip.h |   2 +
+ 4 files changed, 176 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/mv88e6xxx/avb.c b/drivers/net/dsa/mv88e6xxx/avb.c
+index 361e7ff821567..513e0504735a6 100644
+--- a/drivers/net/dsa/mv88e6xxx/avb.c
++++ b/drivers/net/dsa/mv88e6xxx/avb.c
+@@ -107,7 +107,16 @@ static int mv88e6xxx_tc_disable(struct mv88e6xxx_chip *chip)
+ 	return chip->info->ops->tc_ops->tc_disable(chip);
+ }
+ 
+-/* MQPRIO helpers */
++/* MQPRIO and CBS helpers */
++
++int mv88e6xxx_qav_set_port_cbs_qopt(struct mv88e6xxx_chip *chip, int port,
++				    const struct tc_cbs_qopt_offload *cbs_qopt)
++{
++	if (!chip->info->ops->tc_ops->set_port_cbs_qopt)
++		return -EOPNOTSUPP;
++
++	return chip->info->ops->tc_ops->set_port_cbs_qopt(chip, port, cbs_qopt);
++}
+ 
+ /* Set the AVB global policy limit registers. Caller must acquired register
+  * lock.
+@@ -330,6 +339,26 @@ int mv88e6xxx_avb_tc_disable(struct mv88e6xxx_chip *chip)
+ 	return 0;
+ }
+ 
++static int mv88e6xxx_qav_set_port_config(struct mv88e6xxx_chip *chip, int port,
++					 int queue, u16 rate, u16 hilimit)
++{
++	int err;
++
++	err = mv88e6xxx_port_qav_write(chip, port,
++				       MV88E6XXX_PORT_QAV_CFG_RATE(queue),
++				       rate);
++	if (err)
++		return err;
++
++	err = mv88e6xxx_port_qav_write(chip, port,
++				       MV88E6XXX_PORT_QAV_CFG_HI_LIMIT(queue),
++				       hilimit);
++	if (err)
++		return err;
++
++	return 0;
++}
++
+ /* Assign FPri to QPri mappings for each traffic class
+  *
+  * @param chip		Marvell switch chip instance
+@@ -456,14 +485,77 @@ static int mv88e6352_tc_disable(struct mv88e6xxx_chip *chip)
+ 	return 0;
+ }
+ 
++static int mv88e6341_set_port_cbs_qopt(struct mv88e6xxx_chip *chip, int port,
++				       const struct tc_cbs_qopt_offload *cbs_qopt)
++{
++	u16 rate, hilimit;
++
++	if (cbs_qopt->enable) {
++		rate = DIV_ROUND_UP(cbs_qopt->idleslope, MV88E6341_AVB_CFG_RATE_UNITS);
++		rate = clamp_t(u16, rate, 1, MV88E6341_AVB_CFG_RATE_MASK);
++
++		hilimit = cbs_qopt->hicredit;
++		hilimit = clamp_t(u16, hilimit, 1, MV88E6341_AVB_CFG_HI_LIMIT_MASK);
++	} else {
++		rate = 0;
++		hilimit = MV88E6341_AVB_CFG_HI_LIMIT_MASK;
++	}
++
++	return mv88e6xxx_qav_set_port_config(chip, port, cbs_qopt->queue,
++					     rate, hilimit);
++}
++
+ const struct mv88e6xxx_tc_ops mv88e6341_tc_ops = {
+ 	.tc_enable		= mv88e6352_tc_enable,
+ 	.tc_disable		= mv88e6352_tc_disable,
++	.set_port_cbs_qopt	= mv88e6341_set_port_cbs_qopt,
+ };
+ 
++static int mv88e6352_set_port_cbs_qopt(struct mv88e6xxx_chip *chip, int port,
++				       const struct tc_cbs_qopt_offload *cbs_qopt)
++{
++	u16 rate, hilimit;
++	u16 cfg;
++	int err;
++
++	if (cbs_qopt->enable) {
++		rate = DIV_ROUND_UP(cbs_qopt->idleslope, MV88E6352_AVB_CFG_RATE_UNITS);
++		rate = clamp_t(u16, rate, 1, MV88E6352_AVB_CFG_RATE_MASK);
++
++		hilimit = cbs_qopt->hicredit;
++		hilimit = clamp_t(u16, hilimit, 1, MV88E6352_AVB_CFG_HI_LIMIT_MASK);
++	} else {
++		rate = 0;
++		hilimit = MV88E6352_AVB_CFG_HI_LIMIT_MASK;
++	}
++
++	err = mv88e6xxx_qav_set_port_config(chip, port, cbs_qopt->queue,
++					    rate, hilimit);
++	if (err)
++		return err;
++
++	/* Set undocumented enable register */
++
++	err = mv88e6xxx_port_qav_read(chip, port, MV88E6352_PORT_QAV_CFG, &cfg, 1);
++	if (err)
++		return err;
++
++	if (cbs_qopt->enable)
++		cfg |= MV88E6352_PORT_QAV_CFG_ENABLE;
++	else
++		cfg &= ~(MV88E6352_PORT_QAV_CFG_ENABLE);
++
++	err = mv88e6xxx_port_qav_write(chip, port, MV88E6352_PORT_QAV_CFG, cfg);
++	if (err)
++		return err;
++
++	return 0;
++}
++
+ const struct mv88e6xxx_tc_ops mv88e6352_tc_ops = {
+ 	.tc_enable		= mv88e6352_tc_enable,
+ 	.tc_disable		= mv88e6352_tc_disable,
++	.set_port_cbs_qopt	= mv88e6352_set_port_cbs_qopt,
+ };
+ 
+ static inline u16 mv88e6390_avb_pri_map_to_reg(const struct mv88e6xxx_avb_priority_map map[])
+@@ -544,7 +636,28 @@ static int mv88e6390_tc_disable(struct mv88e6xxx_chip *chip)
+ 	return err;
+ }
+ 
++static int mv88e6390_set_port_cbs_qopt(struct mv88e6xxx_chip *chip, int port,
++				       const struct tc_cbs_qopt_offload *cbs_qopt)
++{
++	u16 rate, hilimit;
++
++	if (cbs_qopt->enable) {
++		rate = DIV_ROUND_UP(cbs_qopt->idleslope, MV88E6390_AVB_CFG_RATE_UNITS);
++		rate = clamp_t(u16, rate, 1, MV88E6390_AVB_CFG_RATE_MASK);
++
++		hilimit = cbs_qopt->hicredit;
++		hilimit = clamp_t(u16, hilimit, 1, MV88E6390_AVB_CFG_HI_LIMIT_MASK);
++	} else {
++		rate = 0;
++		hilimit = MV88E6390_AVB_CFG_HI_LIMIT_MASK;
++	}
++
++	return mv88e6xxx_qav_set_port_config(chip, port, cbs_qopt->queue,
++					     rate, hilimit);
++}
++
+ const struct mv88e6xxx_tc_ops mv88e6390_tc_ops = {
+ 	.tc_enable		= mv88e6390_tc_enable,
+ 	.tc_disable		= mv88e6390_tc_disable,
++	.set_port_cbs_qopt	= mv88e6390_set_port_cbs_qopt,
+ };
+diff --git a/drivers/net/dsa/mv88e6xxx/avb.h b/drivers/net/dsa/mv88e6xxx/avb.h
+index d049e30c5c0e2..b83db1e9878bf 100644
+--- a/drivers/net/dsa/mv88e6xxx/avb.h
++++ b/drivers/net/dsa/mv88e6xxx/avb.h
+@@ -94,6 +94,9 @@
+ #define MV88E6XXX_AVB_CFG_OUI_HI		0x0C
+ #define MV88E6XXX_AVB_CFG_OUI_LO		0x0D
+ 
++#define MV88E6XXX_PORT_QAV_CFG_RATE(queue)	(((queue) & 0x7) << 1)
++#define MV88E6XXX_PORT_QAV_CFG_HI_LIMIT(queue)	((((queue) & 0x7) << 1) + 1)
++
+ /* 6352 Family AVB Global Config (4 TX queues) */
+ 
+ #define MV88E6352_AVB_CFG_AVB_HI_FPRI_GET(p)	MV88E6XXX_AVB_CFG_AVB_HI_FPRI_GET(p)
+@@ -110,6 +113,18 @@
+ #define MV88E6352_AVB_CFG_AVB_LO_QPRI_GET(p)	FIELD_GET(MV88E6352_AVB_CFG_AVB_LO_QPRI_MASK, p)
+ #define MV88E6352_AVB_CFG_AVB_LO_QPRI_SET(p)	FIELD_PREP(MV88E6352_AVB_CFG_AVB_LO_QPRI_MASK, p)
+ 
++#define MV88E6352_AVB_CFG_RATE_UNITS		32 /* 32Kbps */
++#define MV88E6352_AVB_CFG_RATE_MASK		GENMASK(14, 0) /* 1Gbps */
++#define MV88E6352_AVB_CFG_HI_LIMIT_MASK		GENMASK(14, 0) /* 32k */
++
++#define MV88E6352_PORT_QAV_CFG			0x08
++#define MV88E6352_PORT_QAV_CFG_ENABLE		0x8000
++
++/* 6341 Family AVB Global Config (4 TX queues) */
++#define MV88E6341_AVB_CFG_RATE_UNITS		64 /* 64Kbps */
++#define MV88E6341_AVB_CFG_RATE_MASK		GENMASK(15, 0) /* 4Gbps */
++#define MV88E6341_AVB_CFG_HI_LIMIT_MASK		GENMASK(13, 0) /* 16k */
++
+ /* 6390 Family AVB Global Config (8 TX queues) */
+ 
+ #define MV88E6390_AVB_CFG_AVB_HI_FPRI_GET(p)	MV88E6XXX_AVB_CFG_AVB_HI_FPRI_GET(p)
+@@ -126,6 +141,10 @@
+ #define MV88E6390_AVB_CFG_AVB_LO_QPRI_GET(p)	FIELD_GET(MV88E6390_AVB_CFG_AVB_LO_QPRI_MASK, p)
+ #define MV88E6390_AVB_CFG_AVB_LO_QPRI_SET(p)	FIELD_PREP(MV88E6390_AVB_CFG_AVB_LO_QPRI_MASK, p)
+ 
++#define MV88E6390_AVB_CFG_RATE_UNITS		64 /* 64Kbps */
++#define MV88E6390_AVB_CFG_RATE_MASK		GENMASK(15, 0) /* 4Gbps */
++#define MV88E6390_AVB_CFG_HI_LIMIT_MASK		GENMASK(13, 0) /* 16k */
++
+ #define MV88E6352_AVB_QUEUE_MIN(tc)		(tc)
+ #define MV88E6352_AVB_QUEUE_MAX(tc)		((tc) + 1)
+ 
+@@ -194,6 +213,20 @@ int mv88e6xxx_avb_tc_enable(struct mv88e6xxx_chip *chip,
+  */
+ int mv88e6xxx_avb_tc_disable(struct mv88e6xxx_chip *chip);
+ 
++struct tc_cbs_qopt_offload;
++
++/* Set AVB credit based shaper policy. Caller must acquire register lock.
++ *
++ * @param chip		Marvell switch chip instance
++ * @param port		Switch port
++ * @param cbs_qopt	CBS policy to apply
++ *
++ * @return		0 on success, or a negative error value otherwise
++ */
++int mv88e6xxx_qav_set_port_cbs_qopt(struct mv88e6xxx_chip *chip,
++				    int port,
++				    const struct tc_cbs_qopt_offload *cbs_qopt);
++
+ /* The MAAP address range is 91:E0:F0:00:00:00 thru 91:E0:F0:00:FF:FF
+  * (IEEE 1722 Annex D)
+  */
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 6ba2179d1c4ee..16f41604b932b 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -7003,6 +7003,31 @@ static int mv88e6xxx_qos_port_mqprio(struct dsa_switch *ds, int port,
+ 	return err;
+ }
+ 
++static int mv88e6xxx_qos_port_cbs_set(struct dsa_switch *ds, int port,
++				      struct tc_cbs_qopt_offload *cbs_qopt)
++{
++	struct mv88e6xxx_chip *chip = ds->priv;
++	int err;
++
++	if (cbs_qopt->queue >= chip->info->num_tx_queues) {
++		dev_info(ds->dev, "p%d: invalid AVB queue %d\n", port, cbs_qopt->queue);
++		return -EINVAL;
++	}
++
++	mutex_lock(&chip->reg_lock);
++
++	err = mv88e6xxx_qav_set_port_cbs_qopt(chip, port, cbs_qopt);
++
++	mutex_unlock(&chip->reg_lock);
++
++	if (err) {
++		dev_info(ds->dev, "p%d: failed to %s AVB CBS policy: %d\n",
++			 port, cbs_qopt->enable ? "enable" : "disable", err);
++	}
++
++	return err;
++}
++
+ static int mv88e6xxx_port_setup_tc(struct dsa_switch *ds, int port,
+ 				   enum tc_setup_type type,
+ 				   void *type_data)
+@@ -7017,6 +7042,8 @@ static int mv88e6xxx_port_setup_tc(struct dsa_switch *ds, int port,
+ 		return mv88e6xxx_qos_query_caps(type_data);
+ 	case TC_SETUP_QDISC_MQPRIO:
+ 		return mv88e6xxx_qos_port_mqprio(ds, port, type_data);
++	case TC_SETUP_QDISC_CBS:
++		return mv88e6xxx_qos_port_cbs_set(ds, port, type_data);
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index 71e536fbd2d24..6bbfb503b237f 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -833,6 +833,8 @@ struct mv88e6xxx_tc_ops {
+ 	int (*tc_enable)(struct mv88e6xxx_chip *chip,
+ 			 const struct mv88e6xxx_avb_tc_policy *policy);
+ 	int (*tc_disable)(struct mv88e6xxx_chip *chip);
++	int (*set_port_cbs_qopt)(struct mv88e6xxx_chip *chip, int port,
++				 const struct tc_cbs_qopt_offload *cbs_qopt);
+ };
+ 
+ static inline bool mv88e6xxx_has_stu(struct mv88e6xxx_chip *chip)
+-- 
+2.43.0
+
