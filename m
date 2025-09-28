@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFB52D5934;
-	Sun, 28 Sep 2025 09:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD142D1911;
+	Sun, 28 Sep 2025 09:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051888; cv=none; b=l6bGEFHGn7bjjGo9mALpMLY9duc0pCMR2q9cVu1M65k1bHiUX2mDeaX1yiRctyTEfqIk5ZpZsqitBnDT+ONXLY+mdltu219Y7MNOfEfgD9m/d8JUqCDeNVLnOins50AUTKExMuLWPqPq2WNQOqajHHGBDO3Qg9+/LIe05PfbCCk=
+	t=1759051927; cv=none; b=uEq6lxulXdcb79tJYACgvs3Fm7YuGX2gZ/pGs0sZkU0BOp6Q3ct89GnWQGZkls0PxDgTmGFRKBFIeDx5EKiYSh/gJQ2MPDt7wDyeYgCpD+dVM2kEKK7aTnxC/1e3p/9up8288Thr7Mti1GbgTMOEBjGNaOJSj/v6fW46Gj4bmp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051888; c=relaxed/simple;
-	bh=XJ6+tuJ3N/r1xl3DHl2X1hO2gGU/tJ6flQmBncYKEag=;
+	s=arc-20240116; t=1759051927; c=relaxed/simple;
+	bh=02bdbx2BJXCEsXK+z/k1M0YnhLUUK/Ev2PI05TK5PIE=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=aKKtxKv2b0U4Rr4d0y4RPfOLGWUiU06/M0xcbzxSB4l5onkctBit32l9z/bhGj/GK7saIbozzEjhr12+ZwDBRBVGu3suY+fe5/AheiqCJmTy3etQYdBfiEJBhh7vdVLw2CnuHH/st9scFvEQyTQKuluStBIW6ASP+QRJHv8cOA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=b0YB/fWY; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=djKwzRHoZXtx/6DcXz5AyMlfSNNto2FXlTuTatH+rCCNAkkA/dKYd1dcC5KYh9WUOURhW01MP26teXfy1JLFRLVx06Fo8eMvEw38gv1SgZcOl04lk6n+X0P2oB3cetcZnQ/HyXykArwJQhq6puRkk+9Ydu8QRR/IKd6vG+Co2Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uiaHdb/F; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="b0YB/fWY"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uiaHdb/F"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MNOZmw3HtaFRWdz6EHC2zGJXiMWEH1txyyxtpZBUbwg=; b=b0YB/fWY4dyY3S1p/hX/kOEMCf
-	5CCTur0h6mYe9Fw/9++a6hGWZXDQ2bbOQAb6nAaor4mcQ5qLCXB5iPTDXCBldAcAAoBMWQFpSrbV8
-	YYvwRDoBVzgTcS0rJNtYnXXYroq9lMoqVMfH7fz374HCgO7dqIeZdSaRbr2O6a3qGbfuwyDGOSWUe
-	8Dgt/WLIRcqgJlj8+HCZwN6V4zVvVa7GyFcYiBCHNQjJtDiUJ8tr6U0eWuXBMw9Dim8Y1MAWg2L/7
-	bLToqGBVCfPaT8iLCUCedPjYqundxRmEU/4e8TUSpy3E3fmSjEn31R045BA2Kl53Wldo13ta4DrID
-	sZBOFZAQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39922 helo=rmk-PC.armlinux.org.uk)
+	bh=D3L8M7KQsmj1QF5jxJrVPkmo8sZwN7kGHH+0baoZXkA=; b=uiaHdb/FaZ3xmVmWegeOz5YPJR
+	RMb7DyL5dDuc1dJyBSGZVFEZxTVh5cWDCRchGkM8/Ep4q0R4frUjS6oa2ZQPNJt0j65myRbkDV/N6
+	cQbbz496gZiY0dfpnvjaizRH47xuSUI2yJMxHZNyvSK86E7w7ZIbFLUVt0fDtt67+RWrd+19VBu2m
+	RY+R/6qL06yyeccXCLnu1psjpPd82hyPAiSSpCrDSUOiCPDf+JlRIKJrJzmYhmSofmHiitX4kchlU
+	7gAwonw2hO4w7nvOTxw/4nzFWmQ9/soXVTiECous4LLc9u0SjoKn/A8+pPX76gSOQpzpJwyums0K9
+	/31HMCbA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:45574 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v2nb8-000000005K9-166L;
-	Sun, 28 Sep 2025 10:21:38 +0100
+	id 1v2nas-000000005Ij-1a39;
+	Sun, 28 Sep 2025 10:21:22 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v2nb6-00000007oLW-1mfh;
-	Sun, 28 Sep 2025 10:21:36 +0100
+	id 1v2nal-00000007oJ8-0D5B;
+	Sun, 28 Sep 2025 10:21:15 +0100
 In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,8 +85,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next v2 18/19] net: stmmac: report PCS configuration
- changes
+Subject: [PATCH RFC net-next v2 14/19] net: stmmac: only initialise PCS when
+ present
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,42 +96,148 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v2nb6-00000007oLW-1mfh@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v2nal-00000007oJ8-0D5B@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sun, 28 Sep 2025 10:21:36 +0100
+Date: Sun, 28 Sep 2025 10:21:15 +0100
 
-Report if/when qcom-ethqos changes the PCS configuration. With phylink
-now setting the PCS configuration, there should be no need for drivers
-to change this.
+dwmac1000 and dwmac4 both provide a hardware feature bit to indicate
+when the PCS block is present. There is little point initialising the
+PCS support when the hardware is not present.
+
+Add a new callback which will be made after the hardware features have
+been read, and heck whether the PCS is present.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../net/ethernet/stmicro/stmmac/dwmac1000_core.c    | 11 ++++++++++-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c   | 13 ++++++++++++-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h          |  4 ++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c   |  4 ++++
+ 4 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index cda93894168e..e42a98162c2b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -109,6 +109,7 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 				  bool srgmi_ral)
- {
- 	u32 value = readl(ioaddr + GMAC_AN_CTRL(reg));
-+	u32 old = value;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
+index b01c0fc822f9..571e48362444 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
+@@ -22,6 +22,14 @@
+ #include "stmmac_ptp.h"
+ #include "dwmac1000.h"
  
- 	/* Enable and restart the Auto-Negotiation */
- 	if (ane)
-@@ -122,6 +123,10 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 	if (srgmi_ral)
- 		value |= GMAC_AN_CTRL_SGMRAL;
- 
-+	if (old != value)
-+		pr_warn("dwmac: PCS configuration changed from phylink by glue, please report: 0x%08x -> 0x%08x\n",
-+			old, value);
++static int dwmac1000_pcs_init(struct stmmac_priv *priv)
++{
++	if (!priv->dma_cap.pcs)
++		return 0;
 +
- 	writel(value, ioaddr + GMAC_AN_CTRL(reg));
++	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
++}
++
+ static void dwmac1000_core_init(struct mac_device_info *hw,
+ 				struct net_device *dev)
+ {
+@@ -435,6 +443,7 @@ static void dwmac1000_set_mac_loopback(void __iomem *ioaddr, bool enable)
  }
- #endif /* __STMMAC_PCS_H__ */
+ 
+ const struct stmmac_ops dwmac1000_ops = {
++	.pcs_init = dwmac1000_pcs_init,
+ 	.core_init = dwmac1000_core_init,
+ 	.set_mac = stmmac_set_mac,
+ 	.rx_ipc = dwmac1000_rx_ipc_enable,
+@@ -484,7 +493,7 @@ int dwmac1000_setup(struct stmmac_priv *priv)
+ 	mac->mii.clk_csr_shift = 2;
+ 	mac->mii.clk_csr_mask = GENMASK(5, 2);
+ 
+-	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
++	return 0;
+ }
+ 
+ /* DWMAC 1000 HW Timestaming ops */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+index 688e45b440dd..0b785389b7ef 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
+@@ -22,6 +22,14 @@
+ #include "dwmac4.h"
+ #include "dwmac5.h"
+ 
++static int dwmac4_pcs_init(struct stmmac_priv *priv)
++{
++	if (!priv->dma_cap.pcs)
++		return 0;
++
++	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
++}
++
+ static void dwmac4_core_init(struct mac_device_info *hw,
+ 			     struct net_device *dev)
+ {
+@@ -875,6 +883,7 @@ static int dwmac4_config_l4_filter(struct mac_device_info *hw, u32 filter_no,
+ }
+ 
+ const struct stmmac_ops dwmac4_ops = {
++	.pcs_init = dwmac4_pcs_init,
+ 	.core_init = dwmac4_core_init,
+ 	.update_caps = dwmac4_update_caps,
+ 	.set_mac = stmmac_set_mac,
+@@ -909,6 +918,7 @@ const struct stmmac_ops dwmac4_ops = {
+ };
+ 
+ const struct stmmac_ops dwmac410_ops = {
++	.pcs_init = dwmac4_pcs_init,
+ 	.core_init = dwmac4_core_init,
+ 	.update_caps = dwmac4_update_caps,
+ 	.set_mac = stmmac_dwmac4_set_mac,
+@@ -945,6 +955,7 @@ const struct stmmac_ops dwmac410_ops = {
+ };
+ 
+ const struct stmmac_ops dwmac510_ops = {
++	.pcs_init = dwmac4_pcs_init,
+ 	.core_init = dwmac4_core_init,
+ 	.update_caps = dwmac4_update_caps,
+ 	.set_mac = stmmac_dwmac4_set_mac,
+@@ -1017,5 +1028,5 @@ int dwmac4_setup(struct stmmac_priv *priv)
+ 	mac->mii.clk_csr_mask = GENMASK(11, 8);
+ 	mac->num_vlan = stmmac_get_num_vlan(priv->ioaddr);
+ 
+-	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
++	return 0;
+ }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index 7796f5f3c96f..82cfb6bec334 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -313,6 +313,8 @@ enum stmmac_lpi_mode {
+ 
+ /* Helpers to program the MAC core */
+ struct stmmac_ops {
++	/* Initialise any PCS instances */
++	int (*pcs_init)(struct stmmac_priv *priv);
+ 	/* MAC core initialization */
+ 	void (*core_init)(struct mac_device_info *hw, struct net_device *dev);
+ 	/* Update MAC capabilities */
+@@ -413,6 +415,8 @@ struct stmmac_ops {
+ 					u32 pclass);
+ };
+ 
++#define stmmac_mac_pcs_init(__priv) \
++	stmmac_do_callback(__priv, mac, pcs_init, __priv)
+ #define stmmac_core_init(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, mac, core_init, __args)
+ #define stmmac_mac_update_caps(__priv) \
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 2cf6e69f3303..0f243f207f99 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7240,6 +7240,10 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 			 "Enable RX Mitigation via HW Watchdog Timer\n");
+ 	}
+ 
++	ret = stmmac_mac_pcs_init(priv);
++	if (ret != -EINVAL)
++		return ret;
++
+ 	return 0;
+ }
+ 
 -- 
 2.47.3
 
