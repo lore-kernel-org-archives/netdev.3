@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC232D24B3;
-	Sun, 28 Sep 2025 09:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341C5212562;
+	Sun, 28 Sep 2025 09:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051778; cv=none; b=kb1GZGtcIt19916oVhHE87YAW63u3huZbhVSJtMwsD6oNmR3RwgRATakqQdKJ4A+PLFsehev94YXUhRLr4i7IP6lS7UU6ScbWe+RBCcnHd9b3E0m6QTD4dhVbp9rnffZy8VPCKdalyljYf0M0FtUMgMY5JlOroCacQV4vrg/nbQ=
+	t=1759051812; cv=none; b=Clxp4uqF/GTuuauwHw4+58oArVCAXptVfE6DtI53vzmZMMnQRD7eFv2m+TmxuC8RKU7kkdDNGF6iOu02qRk4nOFTz86p8I2+gr1PAIt+Oju+I7ti/rwbxthA8xj0RHikxut4OBp0VmTOXEHRwsReaVJfQtwcV2vwMNWHDoQ6pRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051778; c=relaxed/simple;
-	bh=0Oh9nq8WHYN8tagc311+j+ES+QmW0LY5FvjoQ9QYP00=;
+	s=arc-20240116; t=1759051812; c=relaxed/simple;
+	bh=VvaMrE0CNxv5pCeExQ/kHw77un3pG7xNKUpaOaU1jb0=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=YH/6rjC24gwkd/bxMZyZs0pHKdwmhKB5l7KRywvq8d+vbPyLFwcuMktuwqt1fGA3B4/EZqY8o13uKq89e9pKPerdL2pKkMZJnf0q2UwXvbw3qbVfxmDbfEVaAtIJ8t/jQnWhp3tOq8hk/1UuUwfGl454zEUQ9FPkfuv2bIR/zpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=m8ff6BJo; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=oDwvM00WFhz0Cj3FY3Bk1aYFBgdEC9FA9vj6WyRFzwlGiuuQflspGPbqTvLr8GMEKeCkYILwvuDNS0rCiZATmGSH2FMMaoAVeYlSLsuDZMgBaLHMNnHEP1J/EwXgDwdtaB2KwYX2BXST744ADT/RGdnTh2ZAeheHhGiGs/dxWTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=j33weVGz; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="m8ff6BJo"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="j33weVGz"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=udgkfF0ry2TPncaft7Bejiy3NFobaHN1nyNn/+MizWE=; b=m8ff6BJou+O2Xj8SZZ+mXnbC1O
-	O13UgaCqTiDlD4h1WM8L/OD/BmB+uwVeS9reo3J05Xsp7f+zdOcf3MW+iaaEw92P0IrZdrxkVDb0L
-	aXm4e+KzscZEKHdxFMb+16s3GAt9X5MGoYBXJp/q5+zuet2yxd+s6uxuxrlLqYLlR4zW80tyOArQr
-	xA7GpDLhgeacvlnQBYUSM9EN4VkPX65jORpmyZJ+m34nsF1lLEt85RJRd0OOsTIlITr/V5qMsRF85
-	vaiOPQOCKY5sNS//v/L1/2x6mEqT1BMMmvQ8+l/ZEugg2lld7/P+cDklBR8+wCLyTkApyLJvvBI0n
-	L62i8Y6g==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:34136 helo=rmk-PC.armlinux.org.uk)
+	bh=e/o+nUzd6QInr6Je88IK6BznxBIP/hyub+kKCuKpaJA=; b=j33weVGz4hapihnqPltKciR7qA
+	t30D2Oxvclo4OJ885OzrXzCxM789x0qKkCqWB/ejNs9BJJdgDrq4VWHFBP302nrRDI6e5oR7uRIxC
+	Mk4Qkx/msCZu25nuqVpsj7MVl8LTJhc9Gww55CFocZ0b31R6E0VLHV8i0v5pWypx0VQE+FFRve+wA
+	6dXBSh+sVgOtWf+Gxt36TyYjGu4zUsR1oUIAgky/AHow1xxL34K7mTA54qB45rtsbp195exES8xof
+	OvrKjRNls+KYVGUQDvbUSDr8ZsbLuxuEian8GXQJ9fmJppDzLsTtNhqX8+vNA3yDbS52/3I9pvWZ9
+	0xDz+wWg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46452 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v2nai-000000005I7-2lXl;
-	Sun, 28 Sep 2025 10:21:13 +0100
+	id 1v2naW-000000005HZ-2LJe;
+	Sun, 28 Sep 2025 10:21:00 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v2naV-00000007oGl-2Xbn;
-	Sun, 28 Sep 2025 10:20:59 +0100
+	id 1v2naL-00000007oFE-0d6b;
+	Sun, 28 Sep 2025 10:20:49 +0100
 In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,8 +85,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next v2 11/19] net: stmmac: do not require
- snps,ps-speed for SGMII
+Subject: [PATCH RFC net-next v2 09/19] net: stmmac: simplify
+ stmmac_check_pcs_mode()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,40 +96,53 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v2naV-00000007oGl-2Xbn@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v2naL-00000007oFE-0d6b@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sun, 28 Sep 2025 10:20:59 +0100
+Date: Sun, 28 Sep 2025 10:20:49 +0100
 
-SGMII mode does not require port-speed to be specified; this only
-switches SGMII to use the MAC configuration register speed settings
-and the actual value is irrelevant when the link comes up.
-
-As it seems the intention was to support "reverse SGMII" with this
-setting, but the code didn't actually configure that due to a typo,
-the warning and bad DT binding documentation has led people to
-specify snps,ps-speed in their DT files inappropriately.
-
-If mac_port_sel_speed is zero, then don't complain that the speed
-is invalid, as this means we're using "normal" SGMII.
+Now that we only support one mode, simplify stmmac_check_pcs_mode().
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 60fcf3feac31..e2d9c08aace8 100644
+index 414a00ab5012..94b615444734 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1101,6 +1101,8 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+@@ -1086,22 +1086,23 @@ static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
+ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ {
+ 	int interface = priv->plat->phy_interface;
++	int speed = priv->plat->mac_port_sel_speed;
  
- 		default:
+ 	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
+ 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+ 		priv->hw->pcs = STMMAC_PCS_SGMII;
+-	}
+-
+-	/* PS and related bits will be programmed according to the speed */
+-	if (priv->hw->pcs) {
+-		int speed = priv->plat->mac_port_sel_speed;
+ 
+-		if ((speed == SPEED_10) || (speed == SPEED_100) ||
+-		    (speed == SPEED_1000)) {
++		switch (speed) {
++		case SPEED_10:
++		case SPEED_100:
++		case SPEED_1000:
+ 			priv->hw->ps = speed;
+-		} else {
++			break;
++
++		default:
  			dev_warn(priv->device, "invalid port speed\n");
-+			fallthrough;
-+		case 0:
- 			priv->hw->reverse_sgmii_enable = false;
- 			break;
+ 			priv->hw->ps = 0;
++			break;
  		}
+ 	}
+ }
 -- 
 2.47.3
 
