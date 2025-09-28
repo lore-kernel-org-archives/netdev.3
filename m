@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BC12D0617;
-	Sun, 28 Sep 2025 09:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094082D027F;
+	Sun, 28 Sep 2025 09:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051290; cv=none; b=ZTVe+5qaYTFjWnv3J20NB9wNngql4m40k7S0zfmT8O/f5+FgxBvnAtFvkobdAb9WGm5byxqrJgZ0v6Q6wZkw93fOWKrazXVyVS4+BAs5Ew8C8kAVi9+lS+jeNNUTUmQB6VOCu4JPZrx356fzKRSlFW3Ml/vjBv1PJb7FC/U5u9U=
+	t=1759051296; cv=none; b=jPyzAcU5OQZ3LC0Y0iY8iN6J/Ru6iebyHVdHl5LD7lgKYiQlxiaxs5nnHv+GCPr+9u6hXD3Q8b2zsCEzDtl29lBRezlMUoJhtrtWVxv0nmCJEaJl2auuBKICvHkBB4ntHN4K6McpAfz0FwN5Ryz7/g1S7hONSgWfR8Zq0EB3PXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051290; c=relaxed/simple;
-	bh=P0MjpZAOJgomSiQMu1qt2sW60fA3nWzZ2SZakhkLZWk=;
+	s=arc-20240116; t=1759051296; c=relaxed/simple;
+	bh=6IBCBKy1UWJY39f7AojMVi4v7vS9sCVxML7TTvSNURE=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=InwC088QW8gsi/rh0QL46Z1XUf76xGMrlrMpG06vWdbE6yUAd6MCNpT74ts72BniaaBmIIXdD/78vUx12i0AtTqHZGYbFn6PnP1VKIpPJkrP+T0rrIgG6ixSLcztBiAFEVIjpchbVWvOoX5Hm9PyRRMrLWqXzjWDV7bFp/0Cs9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=R5sxjT0z; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=igLtcnT3f6XlruaON7ml+J6w4aUwDvs/PHnIh69CrMHEU0jJG5ToUHAJBlmTWbMnfYTt8t8X9z/Y53fXdIXgIyH3UdDR31xau5EVlffFspbHWgngiXFgQz+jvwt+KQjsa68Y6BWkXWJ/wojT3e2GfhnHW4M+9yU7h3C2ltk2PwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FOKnGYzg; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="R5sxjT0z"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FOKnGYzg"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=LGPzF9dfN0BwNNAMP6+edKFGJ24TiblnDHG0vkTA1C8=; b=R5sxjT0zdEKrnbb9oK34bI/a2T
-	lJaPuNrPaDoUhw/A2mAhDn6xJGk2VEOCd0ujYtmTqOjPX27ywx24i8xZLkiSKDa4WvzQGHxJF6UxP
-	H4xkqXpPKAIJEZNWJiamPSvh9yWdLUJLNqV5K2TR41SMAkaBY5jcmquvPOLCBoo0+kCX5nifPsIXw
-	KF/9VWZAm5fn6fSn2CnIqghId3Yp1MkYVYnvY8o3mLa/56fRCk0aeLbRF4UJt4G5PdorCLdgo/cBN
-	WluvHBkika4B0pYoFFzZWIKnSBETq1lsatOMX8ieAuYh8IuKmPlJir7cVup4Zg0S0jYaqgRdDmSeV
-	Rb+uqqgA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51462 helo=rmk-PC.armlinux.org.uk)
+	bh=i4U+n0+LDpB6o+oYTuhjNX6V+2p2KHQ4b5vR51LIfV4=; b=FOKnGYzgUH2IAgZXH2iluCx76i
+	vLaXGX5xa4MtNBrV04dPkqxBKT7/FDLYyKkMqUiUPjOELZN5FqdFaRhhW6qNWGBml+dDa6aXHsI2D
+	U+V3GJ4YsvFw0XtM2x3AOAMNWaDGEcLS3f2wa+p/bSEgKjATDHDte32w6muzWrWtfksBh70HtvcgS
+	CvDFlJyAkcS4evUQ6mAdIkLfxAmN+hBcZ+GKNqa6aLQS6jXjp9OEbziNDhKKIPLtGRbaMXYygRMa8
+	lGW8NAawQBf41LYmDlg3fSdcwwuYdttLcdUtbiD87MeYBwFkip16augPyc+5w1eqjqi+nS6/N+fQ1
+	v7SnzltQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:52248 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v2na2-000000005Fu-2sPe;
-	Sun, 28 Sep 2025 10:20:31 +0100
+	id 1v2naF-000000005Ge-3PEh;
+	Sun, 28 Sep 2025 10:20:44 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v2na0-00000007oC3-1T7E;
-	Sun, 28 Sep 2025 10:20:28 +0100
+	id 1v2naA-00000007oDn-2lDN;
+	Sun, 28 Sep 2025 10:20:38 +0100
 In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,8 +85,7 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next v2 05/19] net: stmmac: remove unused PCS loopback
- support
+Subject: [PATCH RFC net-next v2 07/19] net: stmmac: remove RGMII "pcs" mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,127 +95,63 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v2na0-00000007oC3-1T7E@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v2naA-00000007oDn-2lDN@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sun, 28 Sep 2025 10:20:28 +0100
+Date: Sun, 28 Sep 2025 10:20:38 +0100
 
-Nothing calls stmmac_pcs_ctrl_ane() with the "loopback" argument set to
-anything except zero, so this serves no useful purpose. Remove the
-argument to reduce the code complexity.
+Remove the RGMII "pcs" code in stmmac_check_pcs_mode() due to:
+
+1) This should never have been conditional on a PCS being present, as
+   when a core is synthesised using only RGMII, the PCS won't be present
+   and priv->dma_cap.pcs will be false. Only multi-interface cores which
+   have a PCS present would have detected RGMII.
+
+2) STMMAC_PCS_RGMII has no effect since the broken netif_carrier and
+   ethtool code was removed.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c    | 4 ++--
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c       | 5 ++---
- drivers/net/ethernet/stmicro/stmmac/hwif.h              | 4 ++--
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c       | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h        | 6 +-----
- 6 files changed, 9 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h      |  1 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 14 +++-----------
+ 2 files changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index f62825220cf7..32244217d952 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -622,7 +622,7 @@ static void ethqos_set_serdes_speed(struct qcom_ethqos *ethqos, int speed)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 8ff3406cdfbf..6c152be9ff5f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -269,7 +269,6 @@ struct stmmac_safety_stats {
+ #define FLOW_AUTO	(FLOW_TX | FLOW_RX)
  
- static void ethqos_pcs_set_inband(struct stmmac_priv *priv, bool enable)
- {
--	stmmac_pcs_ctrl_ane(priv, enable, 0, 0);
-+	stmmac_pcs_ctrl_ane(priv, enable, 0);
- }
+ /* PCS defines */
+-#define STMMAC_PCS_RGMII	(1 << 0)
+ #define STMMAC_PCS_SGMII	(1 << 1)
  
- /* On interface toggle MAC registers gets reset.
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 654331b411f4..5c653be3d453 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -358,9 +358,9 @@ static void dwmac1000_set_eee_timer(struct mac_device_info *hw, int ls, int tw)
- }
- 
- static void dwmac1000_ctrl_ane(struct stmmac_priv *priv, bool ane,
--			       bool srgmi_ral, bool loopback)
-+			       bool srgmi_ral)
- {
--	dwmac_ctrl_ane(priv->ioaddr, GMAC_PCS_BASE, ane, srgmi_ral, loopback);
-+	dwmac_ctrl_ane(priv->ioaddr, GMAC_PCS_BASE, ane, srgmi_ral);
- }
- 
- static void dwmac1000_debug(struct stmmac_priv *priv, void __iomem *ioaddr,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index bff4c371c1d2..21e4461db937 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -583,10 +583,9 @@ static void dwmac4_flow_ctrl(struct mac_device_info *hw, unsigned int duplex,
- 	}
- }
- 
--static void dwmac4_ctrl_ane(struct stmmac_priv *priv, bool ane, bool srgmi_ral,
--			    bool loopback)
-+static void dwmac4_ctrl_ane(struct stmmac_priv *priv, bool ane, bool srgmi_ral)
- {
--	dwmac_ctrl_ane(priv->ioaddr, GMAC_PCS_BASE, ane, srgmi_ral, loopback);
-+	dwmac_ctrl_ane(priv->ioaddr, GMAC_PCS_BASE, ane, srgmi_ral);
- }
- 
- static int dwmac4_irq_mtl_status(struct stmmac_priv *priv,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 14dbe0685997..7796f5f3c96f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -374,8 +374,8 @@ struct stmmac_ops {
- 		      struct stmmac_extra_stats *x, u32 rx_queues,
- 		      u32 tx_queues);
- 	/* PCS calls */
--	void (*pcs_ctrl_ane)(struct stmmac_priv *priv, bool ane, bool srgmi_ral,
--			     bool loopback);
-+	void (*pcs_ctrl_ane)(struct stmmac_priv *priv, bool ane,
-+			     bool srgmi_ral);
- 	/* Safety Features */
- 	int (*safety_feat_config)(void __iomem *ioaddr, unsigned int asp,
- 				  struct stmmac_safety_feature_cfg *safety_cfg);
+ #define SF_DMA_MODE 1		/* DMA STORE-AND-FORWARD Operation Mode */
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index d5e345c6f6eb..05eb4b5fbf04 100644
+index 05eb4b5fbf04..f90742ab68ae 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3494,7 +3494,7 @@ static int stmmac_hw_setup(struct net_device *dev)
- 	}
- 
- 	if (priv->hw->pcs)
--		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps, 0);
-+		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps);
- 
- 	/* set TX and RX rings length */
- 	stmmac_set_rings_length(priv);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index 4a684c97dfae..5778f5b2f313 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -82,13 +82,12 @@ static inline void dwmac_pcs_isr(void __iomem *ioaddr, u32 reg,
-  * @reg: Base address of the AN Control Register.
-  * @ane: to enable the auto-negotiation
-  * @srgmi_ral: to manage MAC-2-MAC SGMII connections.
-- * @loopback: to cause the PHY to loopback tx data into rx path.
-  * Description: this is the main function to configure the AN control register
-  * and init the ANE, select loopback (usually for debugging purpose) and
-  * configure SGMII RAL.
-  */
- static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
--				  bool srgmi_ral, bool loopback)
-+				  bool srgmi_ral)
+@@ -1087,17 +1087,9 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
  {
- 	u32 value = readl(ioaddr + GMAC_AN_CTRL(reg));
+ 	int interface = priv->plat->phy_interface;
  
-@@ -104,9 +103,6 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
- 	if (srgmi_ral)
- 		value |= GMAC_AN_CTRL_SGMRAL;
- 
--	if (loopback)
--		value |= GMAC_AN_CTRL_ELE;
--
- 	writel(value, ioaddr + GMAC_AN_CTRL(reg));
+-	if (priv->dma_cap.pcs) {
+-		if ((interface == PHY_INTERFACE_MODE_RGMII) ||
+-		    (interface == PHY_INTERFACE_MODE_RGMII_ID) ||
+-		    (interface == PHY_INTERFACE_MODE_RGMII_RXID) ||
+-		    (interface == PHY_INTERFACE_MODE_RGMII_TXID)) {
+-			netdev_dbg(priv->dev, "PCS RGMII support enabled\n");
+-			priv->hw->pcs = STMMAC_PCS_RGMII;
+-		} else if (interface == PHY_INTERFACE_MODE_SGMII) {
+-			netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+-			priv->hw->pcs = STMMAC_PCS_SGMII;
+-		}
++	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
++		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
++		priv->hw->pcs = STMMAC_PCS_SGMII;
+ 	}
  }
- #endif /* __STMMAC_PCS_H__ */
+ 
 -- 
 2.47.3
 
