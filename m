@@ -1,27 +1,27 @@
-Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C162D9EFE
-	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CA52D94B6
+	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759052483; cv=none; b=Cax5OKrGzsLCPFfxpOspKDZ7auE4fm7KRt3HwFWE7zC333BF6GijeKsHSxcSFqMNml2TgrFX0jbbRiE8mnRJNJo2+LYvaJhKt8Vk0PkYthFkuPIyjcC/ofb9aH0vGhPzE4IdDUSw2HypokILIzfFHMAdC70+HVAM0oSowbHlFyc=
+	t=1759052489; cv=none; b=cvnvHLZoKaiKUhelZ6zM/HBDacTKZrZCiKMEoSi6qgIUYS6j79Pikmx+SJQrCwBg+Tc3ZIRgU5Sm0JK8YEODATCgmiJZST+aqcTDEAWk6kPh8USLdOp7/amzW90VUqLF2wKI1mP+Ly3GvMpmCOPc6ugIR/4YhcLaev9gQvrzEX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759052483; c=relaxed/simple;
-	bh=UY7r4pvsQQZiuZWi1VNOgYBterjSoxTSbe9K4qOw2Ho=;
+	s=arc-20240116; t=1759052489; c=relaxed/simple;
+	bh=Egggm009o9ydsBPYkkTMiLNXjMsxR3MW0UWUMx0t3fE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kjtdCo3l0iY84YjL9nNKFMrMwKgwEvG1S+BuGF8fDgTlQxx3r4W7OHch0AhjexwEU2I9LbOmbWK5eiArYIWoxYwQNrkWd53GTE2CEPExLcXrwQyipEbniWOL4FwL4/85oG0PHAdDWw/2L6vGRqGi9rOA036Z87RV6EiudeS9pJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
+	 MIME-Version; b=CFSNuHKfw1yYibQASUcysypk/DXcJv0Z/0d3x6YoKCypDW0YABcqwrlfcNEsRlWG/HL7wZavqjoj4v9GGE7diNaLxI8P18rmZtBmv2jhe1D/dfgDyudNmrkZS/6V0VWac6Sn9VNgUcPxz4QczFHGFUa/tu5lt8XqU5mOEcJddIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.169.211.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz1t1759052373t245302ba
-X-QQ-Originating-IP: JCkdoqmOyBziEXaBQ7AJ4xI1prm2JELfS57y0uSVzAM=
+X-QQ-mid: zesmtpgz1t1759052378t180050c8
+X-QQ-Originating-IP: DLdCGOK+JfJ4nPQvNeRfYVVJmj11ybUjOrsC8eZ1BDc=
 Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.164])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 28 Sep 2025 17:39:32 +0800 (CST)
+	id ; Sun, 28 Sep 2025 17:39:37 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5898771607975799624
+X-BIZMAIL-ID: 18066968773018638031
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -34,9 +34,9 @@ To: netdev@vger.kernel.org,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next 1/3] net: txgbe: expend SW-FW mailbox buffer size to identify QSFP module
-Date: Sun, 28 Sep 2025 17:39:21 +0800
-Message-Id: <20250928093923.30456-2-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 3/3] net: txgbe: rename txgbe_get_phy_link()
+Date: Sun, 28 Sep 2025 17:39:23 +0800
+Message-Id: <20250928093923.30456-4-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20250928093923.30456-1-jiawenwu@trustnetic.com>
 References: <20250928093923.30456-1-jiawenwu@trustnetic.com>
@@ -49,48 +49,57 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MqpbfLd4w2KNuVBZXG/MthMvLdM/upgDVEdvawib+YXxSvb6FzGPDyGM
-	G+Q54KCXjK29bBVDPNSNF8AR0uLh7Nu9nmVRtRVl29tteBwYcNcvUJd8ULB9I45MTKPrJkx
-	sZ682+YJKPE0HC67b0e/XASRWZ0xQPXoVGq2uEYVEyh/0r29y9PCRJv73qvj2fNmTgY7koi
-	VtIfcasP5II0Wl0PuotKCyQnhH8P75Mokt5aCdwwv8xILJA+EsV2nxQSanEsEdueuzktCRi
-	OeyQWb76wjPI2f0AaepJMMKTTlb78JNsyh1VfxKSVFvsKd0ZxULzkmQ1ixnDfIQn2rEel7Q
-	otEjibtR8vSVZTBz6ZxBX1nkmr4TRwW1LTTOy4gdxmW9PpuWi4fgd6WY3cqY8ywlfnOaquF
-	Jlbo7MdMvKUZ4UMU1TC4BpMpXTUoS/bFu+yDcbi7zUp3I66XT7OxYmS5fW8tgqVXe6v4ZGH
-	MzkWYTmL26iHwWlAXmRtH+aezjzrUHvZnSvh1xx6WUoCy41H0M/rzZex0dI5WWj8Yr7++HK
-	Q5y/FLWFaslCiJDAwRg7eo3q4GDpZBd5WfVs9TiNHUHAf+MRWyCmNOPe6mcLajvsvQVPStr
-	W1CnMZzHckan/aaRTs91uUpLnSRSiAnEvKPXIodRZBXuZFTZseiT2xcBTG13j1nhY8HDxYh
-	PzH2shduXlFfh4KnI7Bv6a0sWzhcdhEIVvEIvQT2izlgBbI/g4IIotTOZDeXZXG67kEBqWS
-	UuRmyKUipAnxshAZwWT7fkrt/msqPkdtIH+55Ia0iNNAOJkYkalBeZqJuvYOm2q8WRb8wJ9
-	qfhPoDmH4RrlCYZXDiuBv5FJNmzrWgBi9hlujoLAZp4vzRRE92vDpBeX9rPfr3zhl9sT1c9
-	1J3Q/k7JiyhhB1iKkmvY2/Y88CrjBGQ/SGhPRjL4B2X2v6Vul/tx9mDwEmUd3n4pPRrRw3k
-	HG9yshYl/+oXTE4dV8U+vCaOOolNxxqAuhynxtY8zC0ZPx+Wuu/rJA2/wkgubrIeqRC2fVi
-	YTIJHeZGqF/+Te15SD7eZGT1fYApaXR+UJLy9P3yCCr6NBxCbZq9OfwT0F1s4=
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-QQ-XMAILINFO: MH85Y1C9n92PxIdxquD1sjfGIWO5Jl8E+JFnIvTxguJ/wWcpb14NyLHN
+	XT6V6OCNd62cKwNCKk5jfWAoIBmAQYrfeP9te2ltdJ089Do+/9wF/ikGloICF1qImO04saN
+	ezs/IndBUu8xokzv6poVBqZ3ojyUvW57YFB4HxsLv0TlzGNVeDt82QeN7oZmdgNwSF7dtHZ
+	nvZo2q2sIR+ONd4NS53+zReOK9x8r9eLfcAzqGuI77yf5BXxyJ3oBTYkinF1PQUrY4xSOuB
+	l4TEjYszMRT8JE5EYU3K58zfw5Y6Aew4G4ZjMXx0bdiqlupSWRM6QPNdD20RWDGInuws05G
+	EQVWLVPU0bx/BDAY//ZspOPDJhdYQokNip2TFb/2okcO+pCbUCe1hNZXJfCnGLE4iB9JLHN
+	+F4IhVzMxSJZ0EX8znxGEdVxzYSqabDtdOHM1svNTMSdHHdlIUNpA7TgLuHfVJq2B7yXi+J
+	VfKGrbxGfyHexJgl9U8pC0iZQU/sUU+SVd9JIEhY0Iqtzmq0gGlHQU4IBh3yczwlSsiHOFW
+	tImwE5LQmZyuQ+bOE4qSlcsBPqNwyLs8ia1g3OVbBKsMBrNuee0aPsBqe8W+FK50wajhteP
+	b5Hhi4VTm2mFrLGORA2Hh5LEsdn/5oMxeI6Tw+GU5RgBTKUoTtUx3SocoarV2MbdZ7GtUfc
+	/uuRYvw6DkEmGLwuMfL5Job+OcFyJUUr2fHAE8QJOh1nUEK0mse2soVBW+ltcCFQqKCb+5N
+	zoMmT+mDGZViejhsC9lyEDSy0Wmm43fJG4IcjZzQHSu+3IwS2WTS0WsTcXZxNU7cz33bEMI
+	O0n0AjFCcIxwR+n48kz2iU/1ILent0KCcvD5Fs2Y9t6wqcZUyxIH/ioZz3qVxo1UHAy1SuX
+	3KAot8aCu6XCJrSL1kjJvH/WX0KJd5zjOGL1OM2kLxlBntSmZ5GrAdjy4M5ig5VJ8ZEkfl2
+	vA12d/97mPa+te3/Cha8AKHKEO0P7Xal9AZc5K20CCRV0bEc5DtCGS3eA3HiKUWoN86GV59
+	YWsqruIhdnvGbIttGTRQJmBvBwxTE95/y1r/cyKHhFY6iFKGvhyWwZRSxJbxWIjKBNRIL5C
+	wkVNLqIP2fO
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
 X-QQ-RECHKSPAM: 0
 
-In order to identify 40G and 100G QSFP modules, expend mailbox buffer
-size to store more information read from the firmware.
+The function txgbe_get_phy_link() is more appropriately named
+txgbe_get_mac_link(), since it reads the link status from the MAC
+register.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 41915d7dd372..9d53c7413f7b 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -352,7 +352,9 @@ struct txgbe_sfp_id {
- 	u8 vendor_oui0;		/* A0H 0x25 */
- 	u8 vendor_oui1;		/* A0H 0x26 */
- 	u8 vendor_oui2;		/* A0H 0x27 */
--	u8 reserved[3];
-+	u8 transceiver_type;	/* A0H 0x83 */
-+	u8 sff_opt1;		/* A0H 0xC0 */
-+	u8 reserved[5];
- };
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 1da92431c324..35eebdb07761 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -118,7 +118,7 @@ static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
+ 	*duplex = *speed == SPEED_UNKNOWN ? DUPLEX_HALF : DUPLEX_FULL;
+ }
  
- struct txgbe_hic_i2c_read {
+-static void txgbe_get_phy_link(struct wx *wx, int *speed)
++static void txgbe_get_mac_link(struct wx *wx, int *speed)
+ {
+ 	u32 status;
+ 
+@@ -234,7 +234,7 @@ static void txgbe_get_link_state(struct phylink_config *config,
+ 	struct wx *wx = phylink_to_wx(config);
+ 	int speed;
+ 
+-	txgbe_get_phy_link(wx, &speed);
++	txgbe_get_mac_link(wx, &speed);
+ 	state->link = speed != SPEED_UNKNOWN;
+ 	state->speed = speed;
+ 	state->duplex = state->link ? DUPLEX_FULL : DUPLEX_UNKNOWN;
 -- 
 2.48.1
 
