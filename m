@@ -1,265 +1,180 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EA5944F
-	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051836; cv=fail; b=IhTAWLARSr0ojyQBQoBVcHAlYCTSIxY8ksYzfGkb6NA/REp6eadNNe6PUJ3BwVXJhijSWRxojCO0UyWtE9+dawLYeqF4pGaGI0U6z9atafqmWgwL2X1an0fwngIdAzi8h//+QRWWprrCTrEQ4skZ1wizj09TJHQPUu4FLBmUJTM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051836; c=relaxed/simple;
-	bh=h3srFU4sovE/+dSAwA+VFQy5sM8lFkaCOfldt+q7Fvs=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nXwxBQSXBdJ3WwCFOb21GjMG1MX+BFtT9Jpi6pDuHRCPvO/YR2wpYwlP0brakH6/GgNEXnK+MMGVSc/fJIgqD3o2dzhkUAwRmhDIQEdpkdouFxU6Iz84mByNyRpySh/+jzHbBBVv2JRECDYA2G4ADcoezNWwSm7X6wBJbFChlag=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X4T3GK/P; arc=fail smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E662D94BE;
+	Sun, 28 Sep 2025 09:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759051852; cv=none; b=fEQTz1nSy8Yt6DEli228R9JiKq2Q0tZytKgQmE1je+pr7UnUbywV9OHYPFunFJFYmqOt+vgPx0fCQfQMQDqtGBq1840UznB3rLoOBJ4zBe5grVtMyr2hUkp6V7aJ8rypVwhEEvHdVwzLD8s27L05CUgrq1+nUcKjKojuC0Q1CgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759051852; c=relaxed/simple;
+	bh=SjCJVksY9BdNWmvOkSR1pUxGTo/xeOi1jzZlRufBIAE=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=NN8WwkaVUhAFoTBT+/D6MIkvkRthBfRQForLE6qQODQaO/ckk94PRKOVwRLTPgztleyAf0eDNEC+E9Vg0VX4jid4Ika9vtim29eQJ45nWGLIZ44EGRj8znnuKArBWYcKbVK9AKzVcKI4fK+9vmnxiKIFJmQkqcwQkoxt9Rg1f6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=d7FVhRTy; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X4T3GK/P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759051834; x=1790587834;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=h3srFU4sovE/+dSAwA+VFQy5sM8lFkaCOfldt+q7Fvs=;
-  b=X4T3GK/PQRDetep0dGamdbL+duc1FnlmV3pNnarukTo+G9OKc2ZuVPvz
-   iGO6feZIJJesmEw20iH9Q4aNodFFuyQ0POZljL90G6L6ZZwQpQbJ+jMcb
-   IrGnUMEVcaz2din4uqD3LqV/y7f5XFXIQjPXTTNCYALaGxEVA344JJaTl
-   s8NxXAk/4/9ixJ4bckXlskT3Edxo8fuI4XHqY/fEk1suPOzpvA7cEdYVq
-   zohuOeL+nujfmCWYrdw4uuEutqHRZjR7t1xOuboqn5kMLWSjxKh9Mmmnx
-   yXONUr56zE9vhxxB5b1sC+g9jqgNw8koacRe2XCwy2belNdcfjiReGU4i
-   Q==;
-X-CSE-ConnectionGUID: 5If+d0gRTuCMxOBHXzqdVw==
-X-CSE-MsgGUID: +FN6wZB1TISGhJbLybXRyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="61234457"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="61234457"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2025 02:30:34 -0700
-X-CSE-ConnectionGUID: bADRklYtRjuxQNvz6hJLIQ==
-X-CSE-MsgGUID: MfAqD1vCREiQRSgImAsdww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,299,1751266800"; 
-   d="scan'208";a="182286622"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2025 02:30:34 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 28 Sep 2025 02:30:33 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Sun, 28 Sep 2025 02:30:33 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.36) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Sun, 28 Sep 2025 02:30:33 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fHEluN349x3CihfBXmonkq++a0OXnFVUSDzrZ2v8TQWCBawqQiBxsZt32aaMs7e8roCxC+LiqSLGEYB1XczUoG3dxvzPUiH198TzoPtm2Q55LDrGmYsA/Z7eP/4o82i79ebZxGi6xvDX3ci0880OmXFb2+0p9wrzn4z4h7M8x2dHqwxd3ghKalmeD02xxSLifHuW7aDrxqCpKA1JVFfiEfbW5QO2QyUt9bMrwdHgQAEPXm6nyJ6vxTR2c5DAY8UV3sK6iyZxvqTmW7f0uStnD5nU/o9RhtOU6j/1Ls1hQrDYVucXVwL98vg6bS/yyiBPFz5qWkCs0fijgHzU2TayqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=whl4NhkQLpvFu1s0edRft0u5PQGCyeqCIADZwdU3BNs=;
- b=YXGf0Rxzihk1IbaOkCh8pXkEjGuu7Wn4/W8TR+Ob5EweLTLGml7aYV2qDYmLeCvbmTR5Lzw/k4JSHSaGxnohEr+nnBI5HrhYRiozaiEkAuhig7spshgnTUO06DIbC7nlh/3TrH4jWEhRDQuzn8ctXJxfJJqrrKA1SoZtv63Ayu715p2U1d5ntTzJs/wC/ePM2mv9DqMCuhXxOJ3HV7wDGdaHzFY8tiGT/7rtxZbMY+5FDt+JPG1oet1XdCdAyKHaWRblV8Xw4P/aOwCGtR0+4lnDVO9+oKzBdRCgaC1cdEKvM0fp96JyL7q5RtSnamADnT1AQ0TWzuz/0Qul9MXozw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BY1PR11MB8032.namprd11.prod.outlook.com (2603:10b6:a03:524::8)
- by DS0PR11MB6544.namprd11.prod.outlook.com (2603:10b6:8:d0::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9160.15; Sun, 28 Sep 2025 09:30:31 +0000
-Received: from BY1PR11MB8032.namprd11.prod.outlook.com
- ([fe80::f469:1c21:72a6:af47]) by BY1PR11MB8032.namprd11.prod.outlook.com
- ([fe80::f469:1c21:72a6:af47%6]) with mapi id 15.20.9160.014; Sun, 28 Sep 2025
- 09:30:31 +0000
-Message-ID: <fd1e8bbe-199f-4771-ab14-086bd21d0b1d@intel.com>
-Date: Sun, 28 Sep 2025 12:30:24 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2 iwl-net] igc: power up the PHY before
- the link test
-To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>, Kohei Enju
-	<enjuk@amazon.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<aleksandr.loktionov@intel.com>, <kohei.enju@gmail.com>
-References: <20250920063923.31468-1-enjuk@amazon.com>
- <625ae122-7cfc-4297-9b98-8495c3d0f237@intel.com>
-Content-Language: en-US
-From: Avigail Dahan <Avigailx.dahan@intel.com>
-In-Reply-To: <625ae122-7cfc-4297-9b98-8495c3d0f237@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TLZP290CA0009.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::18) To BY1PR11MB8032.namprd11.prod.outlook.com
- (2603:10b6:a03:524::8)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="d7FVhRTy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=/yY9BS9Pyyjx2WtLFFhs9ym1FuqX6gP5yPopcKP9vLs=; b=d7FVhRTyvHnHFWzkkhnZbINzsT
+	qoAkLo+Ellb/IkK+E4Iocn0o7J4Va/3bdUiiTlJlVe8WhTN1V7Ji7I2kse5dGpAEt5y+kM7GCqUdj
+	PUpj0QCoTfwhKE+B6A7cVktBePhFWBC9ug/5edVMmoFwrv9wg1lu6KjBrqqzLcKhV2pHRMc5Zxpxy
+	ryipnKTB8kD7y1rRXfILPfNmHHUdPYWjn/6gUPdwPwQuhPKj9phLZv6SazbFjvScHCtgekUhKwyK5
+	KMe2IpyS6AV3whck/5Gp19YttDiJ6ll9p5aaTCmJARwdTNqpTFNGDXPyRyTFzy4zsXfsy52d6cgGh
+	1KhTOAYA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46462 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1v2nac-000000005Hs-3JT1;
+	Sun, 28 Sep 2025 10:21:07 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1v2naQ-00000007oFx-1nuV;
+	Sun, 28 Sep 2025 10:20:54 +0100
+In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
+References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alexis Lothore <alexis.lothore@bootlin.com>,
+	"Alexis Lothor__" <alexis.lothore@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Boon Khai Ng <boon.khai.ng@altera.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	netdev@vger.kernel.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rohan G Thomas <rohan.g.thomas@altera.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Swathi K S <swathi.ks@samsung.com>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Vinod Koul <vkoul@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>
+Subject: [PATCH RFC net-next v2 10/19] net: stmmac: hw->ps becomes
+ hw->reverse_sgmii_enable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PR11MB8032:EE_|DS0PR11MB6544:EE_
-X-MS-Office365-Filtering-Correlation-Id: e88b51cb-217a-4680-6a57-08ddfe71ab26
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?SitiMFdTUndsMnhCUnpDd1NiSnVmT3pjaW9VcXp5Mjc3aTBDRk8zRGltM09k?=
- =?utf-8?B?Z3haRy9SNDNlc0NUTS9PRlJoVnVUTWpMTHBDOHNrTVlDZThXUEtYY25WanN0?=
- =?utf-8?B?YTJPR2Y0S2QyRk83N2R0OGNmeGhzV1lqdEp3YjFsaTE1QWJMdXh4R082cys2?=
- =?utf-8?B?ai9jZkNoWnFQbFVaQjAvNmtvYktvcDI5eEY5LzBHOFMxSnZtSGkyWFJVZ3Bo?=
- =?utf-8?B?S21hSGhKSFlWMXVXTTZhOGVUdTNhNXRVbTI1WG9aY2V3Z3JLaWdTNHhCS0Np?=
- =?utf-8?B?dnVUZlJTM0hYZDF6NEtQd3hGMk84UnNoejdEODJrTHFSeTEyUkFYRksvcUlU?=
- =?utf-8?B?Z0ZIMWNXZ3QzNW5VSkVHQTUvZWdWbGZkWExGUVlLZDY1bVAwOU5XdkVVbEN4?=
- =?utf-8?B?aHJhMVpFSm9kMGJPb3lrdHRZYkllenhiQlhtSFcxYmNXNVRVOEFUeDNHN2pC?=
- =?utf-8?B?ZXRWRFVvb09HbnZNTXY3R0FnemlzR3FuVUJBeXRsSUZMRks1UmtaTlFVaUpL?=
- =?utf-8?B?d3d1YXZ6enJ2OGlSK0lEVE13ZSs5MlE0RC8zQzRzdWtiN0h0WnpOeXBKa1I3?=
- =?utf-8?B?TGtnQXhtc0gzK0hQOWwwbGxIYndNazh2ZU9PVTgvSDZXYnBUd2JySFg1RnFU?=
- =?utf-8?B?cG1zMUlnZS9qTlNPQlNBcFYwOWUzV3J2cXpLaFdEVEZYVlZaSWsrbzRBRi8y?=
- =?utf-8?B?RUt2clpSbWpqVUpCd3JJNW1nVmdPRllBaWhPL295L2lFKzVZSlpxMC9CbkVp?=
- =?utf-8?B?amplamZqV1Z4NXpVTkFybUNaQTdYdXVya1dHYlp0TWxNclo1N2FvRnNST2ZX?=
- =?utf-8?B?TG0yZ3ZSSEhWbU1Wc2I1WGFKWkV5dThFRVVvWHJQN3FSV1JIUDZwcUlBRGFj?=
- =?utf-8?B?QzV4aWVRNkxjNU9RY0FhZFoyMGlCbjhKUm9DcHhHMzNhaTg1YXRMVGw5NStK?=
- =?utf-8?B?NXR1Y28rTWVNbmd2LzF4YjVEZ09BU3dFMjZlbGRBU2h0ek9uRjJyZkJHUnJU?=
- =?utf-8?B?THp6VVA3WDR3OUlqdFJHTS9HbjhXN3U0U05IOHRtcVlWeWtFaXpKRW16dDFl?=
- =?utf-8?B?a25XZDRoOGhSVVZFVVdxbmJDeWlIaWZSY1NER0V4aDZCSmlUYkM1SFUwMm9Q?=
- =?utf-8?B?L25TcFkraTEwd1F1QnB3SUNxNFlCWmU1TllmMzFHeE5rVElFM0tDampxWmZx?=
- =?utf-8?B?b0ZEUGt5MklzKzNKQ1ArUnVacEZjaE5sT3oyalJaWDBjTmNMcXlWcm9kYjlF?=
- =?utf-8?B?cnV6UkJ2ZkdGU3NDaEJGR3hyUW55NHlNa1NBQ0RPSUVxTkU2QTFHOGdFVGJY?=
- =?utf-8?B?VFVYSGs2bWpWUHV0VnY2ZTVmaURNVXZNMlozQTQ0TzA3SVZGaDlLTGhGVGZ1?=
- =?utf-8?B?U0dQN0R3WE9qM1JBTmdjUjg2NzZVUitxWkxYeEsyWnh0bDNkZG5KZUdKTDZF?=
- =?utf-8?B?UDF6YnJoVDZ5MjZWdW1IUCtkTkJLc0N1ejJuWnhjRm05SG0yeFB0UDhRTUZB?=
- =?utf-8?B?dERFZFVRajRjOHVUQWxzSVFyTm1IL0hRNWN6N1M4Tnhyc3JSYm44aU50ZmFK?=
- =?utf-8?B?ZjBLU2IvRnlwNVlCL1BRQUxyZXNKeWRqMnpMaENWMXo3MlR1U0lySnBnTENC?=
- =?utf-8?B?YlBvUWl4NGdzWmo5dTdHMGNFb1pFcms1L2dTSjA1YlZobTJ2T2N0elAyMDNK?=
- =?utf-8?B?RHA3bDJIQ0pUVDY1YjZsSXBGczVRTXZlRFZ2emNoVThKREdLUjE5RGJHTVVm?=
- =?utf-8?B?VWlNQkM1VmhieG13OFNrQ1VCZ2xldlAyZGJuZytONHRYeHR4Z3NyQmNLOWo5?=
- =?utf-8?B?NE1aTWNMOHpXQnl2Rjg2Z0N4aGJDcUo1dUEzaWNmeUQ3Q1dETk04VFFJWmVN?=
- =?utf-8?B?TVFTenREVmtHc1NhWVp4YjJhNnhIRHh1ZDE3M0hWNlhPVG5yYURNOVZzRFNI?=
- =?utf-8?Q?tiCwvdzYOLxbaI02aHIqDR9KzTWTGtCm?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY1PR11MB8032.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MGd2OE1xVzkxZWozaHQ5c0ZyVDVMK1MxZWhBeGltL1RwRUkyQlNhTDZQUkVX?=
- =?utf-8?B?NHZjRHh0aVVRRW9vdWZkN084c0tYMG12Q2VFY3ZxbmNIQnY2SlZEMWE2S1VE?=
- =?utf-8?B?ditDYTFqaEZyKzY3bHU2R21TK3d6aWF3d1JoRGRhbnFyRkZKNEJOb0NITUZX?=
- =?utf-8?B?Y1M2bVlLSjRBK0lURjBodVp3RUhTSkJ0T0dVRVJVRlFWQ3RlYTltTzNmNUpW?=
- =?utf-8?B?emdDVTF6bzVrQnZTVkpObW0ydmlvd0JGbHBwTEwwNnlNdXZTVGZBTWQydW5H?=
- =?utf-8?B?SGZML25ZQ2FTN3I3U1R5dVNIMU9qSHBOTXdQODZLc3FNKzlrclJSRFY3eTV6?=
- =?utf-8?B?bXNXMUMxTVF6WUtTZEtod0JPM2UySWM0a3B0QU9iQ3F2bDRKTlFqR0FESkVE?=
- =?utf-8?B?ZWtLZU1CRkVTdGtQMDNMRC92bnRFYkExSWQ5SFJrWjhpZmFZdkZhSllRbTd5?=
- =?utf-8?B?NGdCRDJtRkFrcSt1U1JucUVLMFNpRENQaUh1N1pLWFFCeHZRTHQwK2xCazhK?=
- =?utf-8?B?UkFXUldrOG96a0VwT3RobUhGbmRQcTVVM3FYay9WdE9zTEdUZGpST290N0x0?=
- =?utf-8?B?OVdTUXlmdlUza3dTTTN3c0hCbkJNWXdKQlNYcloyemdjSENwc3ovbGloR2Zr?=
- =?utf-8?B?WlhCRDVBL05ScmxNdmJIYlhoclpmS0o1UGdQY1Y0bWlRenZ0aTQ4cnJJT1BG?=
- =?utf-8?B?S2srNVNPaWcxNm56VGpGVFg4SEkyWGRzR0NMSHNIWHhMVVFaaW4xeHJRM29a?=
- =?utf-8?B?UktSSXM3czhhVUdQLzVhRWU4ejlqSC8vOElRQkhucVd0SlBWSW9ZTE5oWmwy?=
- =?utf-8?B?eXlYd3lFcUdvc1NkRVhsQUI3MFlhMXpza2tkNTJCYWxVWnBTODlWdW5LRExJ?=
- =?utf-8?B?NDNZZHdIbHpVeEMzbkJGVUxQWDhtbHJxUjRLdTlUeTNXSGV6N1hmeHozUFVn?=
- =?utf-8?B?cUNIK09UQXFCMmxuNGJQRmEvVU1Ya2VUZmZuYmlYOERXaCs3ZWZqSGQwbGJF?=
- =?utf-8?B?YUtzeEYvVDRlVHU3bDc4andYYndtUVN1WTVhREVyTXRsckNDNDdpY3RlWjV0?=
- =?utf-8?B?L0VHdkRHdEZySDZJN011U1BPTUgxb2xiY1F3aUx3MzIycXJzclV5NWRsbTF4?=
- =?utf-8?B?eDQ3alhQMVBoNzZjdFBQWFVQU0lqbDVKbGNuQ0ZtWUduOXZ3czRBSmsrQm40?=
- =?utf-8?B?R3dQWjRmb3VPRjk4R2lZNS9LVy9uM05rOVlTRmh0WjlrWjdsOWV6U1orQW1Q?=
- =?utf-8?B?N2Joc3JuVTlJOVliWm1lQkZMMHpjWFV6V0pNZWxUYmJvY3JING50ZnZxUTcv?=
- =?utf-8?B?MUN6VFVLbTV5M01CWElFKzY4QnNrdFhyaVB5aWxWTUV1VmlORUhvcjF1YmdL?=
- =?utf-8?B?L2FBNmhMb2M5Y1J5ZmFVV1lJaldXWmFUREx1b1gwL2hwMjZlT1ZiU0VobkhI?=
- =?utf-8?B?UXNqdVFaOSsvSE1pdEYrL3owalNLNUluYitOSU52bUNmMTRCZW5WRTlxai9L?=
- =?utf-8?B?N01NYUhWZFJFV2JhVU4vVWVZWlI1bGZqVmhwaGs2UU1Gb2dJa2FpNkZ5c0Zq?=
- =?utf-8?B?MlhHU0cxQnFmKzg3eUY2VEpkOUgvVmZrUzhCMWFsN2s2NDZpNDBES1NIVlJF?=
- =?utf-8?B?c0JIelVZU3NuTVVFb0UvZ1lCcmVQNk5IaXpCUWowMUdabUthR3Q2U1lDSFc5?=
- =?utf-8?B?OG0zUnNlbzFPK29Hb2FJTFpkRG9zQitxbkN4UE1IR2tUYjJmZzAwMmxoQkdG?=
- =?utf-8?B?NWlEamE0Wk1IM1ZoK1FxVkNzdzZWWHBGWm5nR3l2eExKR0lyYWhJRks0MzRm?=
- =?utf-8?B?a1pPY2UrNHZnemxUbWk1clV0RlMwYlY2Vnlmd2hGYWFLWEJobVNZQytrUUlL?=
- =?utf-8?B?S3VGMDI2NkVsRXhDVzAvb3BXbERIV2laY3h0RnhyWVJzc01IejBsc0RVWERs?=
- =?utf-8?B?d29lbTRnWkpKSlVSLzRZbTYybVNaMXVJbWlRSytPakt3RkQyeEZnVnFZazhs?=
- =?utf-8?B?MGU4eS9LcUc4bC9CZjQ0aEVGV2kyVFF3dUo0NDY3cEkvRGZXY3YxaHBrTFgv?=
- =?utf-8?B?cnZFSkZXR09Ba3p2WktTY0NMQXN5d2s0ejBBTHBUK1lOSkVwR2R5MDNCTHg5?=
- =?utf-8?B?SXNoQ2J3OE1mVU1La3lzaHg5dVZJeUlTSXB5WVRWMzdXaWczYnFTK1JKQmpP?=
- =?utf-8?B?cVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e88b51cb-217a-4680-6a57-08ddfe71ab26
-X-MS-Exchange-CrossTenant-AuthSource: BY1PR11MB8032.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2025 09:30:31.5720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BthI0Re8chFqozbN4X7iroLNEylxidfOzCci8K0gl9yhZjz2L4GxJ1GdVuP7gvBTQcSfv9DHMftVXZpc+aTpmrvwND+1iL5RNbIrEaQnFr4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6544
-X-OriginatorOrg: intel.com
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1v2naQ-00000007oFx-1nuV@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Sun, 28 Sep 2025 10:20:54 +0100
 
+After a lot of digging, it seems that the oddly named hw->ps member
+is all about setting the core into reverse SGMII speed. When set to
+a non-zero value, it:
 
+1. Configures the MAC at initialisation time to operate at a specific
+   speed.
+2. It _incorrectly_ enables the transmitter (GMAC_CONFIG_TE) which
+   makes no sense, rather than enabling the "transmit configuration"
+   bit (GMAC_CONFIG_TC).
+3. It configures the SGMII rate adapter layer to retrieve its speed
+   setting from the MAC configuration register rather than the PHY.
 
-On 21/09/2025 9:41, Lifshits, Vitaly wrote:
-> On 9/20/2025 9:39 AM, Kohei Enju wrote:
->> The current implementation of the igc driver doesn't power up the PHY
->> before the link test in igc_ethtool_diag_test(), causing the link test
->> to always report FAIL when admin state is down and the PHY is
->> consequently powered down.
->>
->> To test the link state regardless of admin state, power up the PHY
->> before the link test in the offline test path. After the link test, the
->> original PHY state is restored by igc_reset(), so additional code which
->> explicitly restores the original state is not necessary.
->>
->> Note that this change is applied only for the offline test path. This is
->> because in the online path we shouldn't interrupt normal networking
->> operation and powering up the PHY and restoring the original state would
->> interrupt that.
->>
->> This implementation also uses igc_power_up_phy_copper() without checking
->> the media type, since igc devices are currently only copper devices and
->> the function is called in other places without checking the media type.
->>
->> Furthermore, the powering up is on a best-effort basis, that is, we
->> don't handle failures of powering up (e.g. bus error) and just let the
->> test report FAIL.
->>
->> Tested on Intel Corporation Ethernet Controller I226-V (rev 04) with
->> cable connected and link available.
->>
->> Set device down and do ethtool test.
->>    # ip link set dev enp0s5 down
->>
->> Without patch:
->>    # ethtool --test enp0s5
->>    The test result is FAIL
->>    The test extra info:
->>    Register test  (offline)         0
->>    Eeprom test    (offline)         0
->>    Interrupt test (offline)         0
->>    Loopback test  (offline)         0
->>    Link test   (on/offline)         1
->>
->> With patch:
->>    # ethtool --test enp0s5
->>    The test result is PASS
->>    The test extra info:
->>    Register test  (offline)         0
->>    Eeprom test    (offline)         0
->>    Interrupt test (offline)         0
->>    Loopback test  (offline)         0
->>    Link test   (on/offline)         0
->>
->> Fixes: f026d8ca2904 ("igc: add support to eeprom, registers and link 
->> self-tests")
->> Signed-off-by: Kohei Enju <enjuk@amazon.com>
->> ---
->> Changes:
->> v1->v2:
->>    - rephrase commit message to clarify:
->>      - applied only for offline test path
->>      - original power state is restored by igc_reset()
->>      - powering up the PHY is on a best-effort basis
->> v1: https://lore.kernel.org/intel-wired-lan/20250830170656.61496-1- 
->> enjuk@amazon.com/
->> ---
->>   drivers/net/ethernet/intel/igc/igc_ethtool.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+In the previous commit, we removed (1) and (2) as phylink overwrites
+the configuration set at that step.
+
+Thus, the only functional aspect is (3), which is a boolean operation.
+This means there is no need to store the actual speed, and just have a
+boolean flag.
+
+Convert the priv->ps member to a boolean, and rename it to
+priv->reverse_sgmii_enable to make it more understandable.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/common.h      | 2 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 6c152be9ff5f..9758d768fd0a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -598,13 +598,13 @@ struct mac_device_info {
+ 	unsigned int mcast_bits_log2;
+ 	unsigned int rx_csum;
+ 	unsigned int pcs;
+-	unsigned int ps;
+ 	unsigned int xlgmac;
+ 	unsigned int num_vlan;
+ 	u32 vlan_filter[32];
+ 	bool vlan_fail_q_en;
+ 	u8 vlan_fail_q;
+ 	bool hw_vlan_en;
++	bool reverse_sgmii_enable;
+ };
+ 
+ struct stmmac_rx_routing {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 94b615444734..60fcf3feac31 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1096,12 +1096,12 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ 		case SPEED_10:
+ 		case SPEED_100:
+ 		case SPEED_1000:
+-			priv->hw->ps = speed;
++			priv->hw->reverse_sgmii_enable = true;
+ 			break;
+ 
+ 		default:
+ 			dev_warn(priv->device, "invalid port speed\n");
+-			priv->hw->ps = 0;
++			priv->hw->reverse_sgmii_enable = false;
+ 			break;
+ 		}
+ 	}
+@@ -3487,7 +3487,7 @@ static int stmmac_hw_setup(struct net_device *dev)
+ 	}
+ 
+ 	if (priv->hw->pcs)
+-		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps);
++		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->reverse_sgmii_enable);
+ 
+ 	/* set TX and RX rings length */
+ 	stmmac_set_rings_length(priv);
+-- 
+2.47.3
+
