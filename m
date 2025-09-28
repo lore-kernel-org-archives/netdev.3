@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E662D94BE;
-	Sun, 28 Sep 2025 09:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFB52D5934;
+	Sun, 28 Sep 2025 09:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759051852; cv=none; b=fEQTz1nSy8Yt6DEli228R9JiKq2Q0tZytKgQmE1je+pr7UnUbywV9OHYPFunFJFYmqOt+vgPx0fCQfQMQDqtGBq1840UznB3rLoOBJ4zBe5grVtMyr2hUkp6V7aJ8rypVwhEEvHdVwzLD8s27L05CUgrq1+nUcKjKojuC0Q1CgI=
+	t=1759051888; cv=none; b=l6bGEFHGn7bjjGo9mALpMLY9duc0pCMR2q9cVu1M65k1bHiUX2mDeaX1yiRctyTEfqIk5ZpZsqitBnDT+ONXLY+mdltu219Y7MNOfEfgD9m/d8JUqCDeNVLnOins50AUTKExMuLWPqPq2WNQOqajHHGBDO3Qg9+/LIe05PfbCCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759051852; c=relaxed/simple;
-	bh=SjCJVksY9BdNWmvOkSR1pUxGTo/xeOi1jzZlRufBIAE=;
+	s=arc-20240116; t=1759051888; c=relaxed/simple;
+	bh=XJ6+tuJ3N/r1xl3DHl2X1hO2gGU/tJ6flQmBncYKEag=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=NN8WwkaVUhAFoTBT+/D6MIkvkRthBfRQForLE6qQODQaO/ckk94PRKOVwRLTPgztleyAf0eDNEC+E9Vg0VX4jid4Ika9vtim29eQJ45nWGLIZ44EGRj8znnuKArBWYcKbVK9AKzVcKI4fK+9vmnxiKIFJmQkqcwQkoxt9Rg1f6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=d7FVhRTy; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=aKKtxKv2b0U4Rr4d0y4RPfOLGWUiU06/M0xcbzxSB4l5onkctBit32l9z/bhGj/GK7saIbozzEjhr12+ZwDBRBVGu3suY+fe5/AheiqCJmTy3etQYdBfiEJBhh7vdVLw2CnuHH/st9scFvEQyTQKuluStBIW6ASP+QRJHv8cOA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=b0YB/fWY; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="d7FVhRTy"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="b0YB/fWY"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/yY9BS9Pyyjx2WtLFFhs9ym1FuqX6gP5yPopcKP9vLs=; b=d7FVhRTyvHnHFWzkkhnZbINzsT
-	qoAkLo+Ellb/IkK+E4Iocn0o7J4Va/3bdUiiTlJlVe8WhTN1V7Ji7I2kse5dGpAEt5y+kM7GCqUdj
-	PUpj0QCoTfwhKE+B6A7cVktBePhFWBC9ug/5edVMmoFwrv9wg1lu6KjBrqqzLcKhV2pHRMc5Zxpxy
-	ryipnKTB8kD7y1rRXfILPfNmHHUdPYWjn/6gUPdwPwQuhPKj9phLZv6SazbFjvScHCtgekUhKwyK5
-	KMe2IpyS6AV3whck/5Gp19YttDiJ6ll9p5aaTCmJARwdTNqpTFNGDXPyRyTFzy4zsXfsy52d6cgGh
-	1KhTOAYA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46462 helo=rmk-PC.armlinux.org.uk)
+	bh=MNOZmw3HtaFRWdz6EHC2zGJXiMWEH1txyyxtpZBUbwg=; b=b0YB/fWY4dyY3S1p/hX/kOEMCf
+	5CCTur0h6mYe9Fw/9++a6hGWZXDQ2bbOQAb6nAaor4mcQ5qLCXB5iPTDXCBldAcAAoBMWQFpSrbV8
+	YYvwRDoBVzgTcS0rJNtYnXXYroq9lMoqVMfH7fz374HCgO7dqIeZdSaRbr2O6a3qGbfuwyDGOSWUe
+	8Dgt/WLIRcqgJlj8+HCZwN6V4zVvVa7GyFcYiBCHNQjJtDiUJ8tr6U0eWuXBMw9Dim8Y1MAWg2L/7
+	bLToqGBVCfPaT8iLCUCedPjYqundxRmEU/4e8TUSpy3E3fmSjEn31R045BA2Kl53Wldo13ta4DrID
+	sZBOFZAQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39922 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v2nac-000000005Hs-3JT1;
-	Sun, 28 Sep 2025 10:21:07 +0100
+	id 1v2nb8-000000005K9-166L;
+	Sun, 28 Sep 2025 10:21:38 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v2naQ-00000007oFx-1nuV;
-	Sun, 28 Sep 2025 10:20:54 +0100
+	id 1v2nb6-00000007oLW-1mfh;
+	Sun, 28 Sep 2025 10:21:36 +0100
 In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,8 +85,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next v2 10/19] net: stmmac: hw->ps becomes
- hw->reverse_sgmii_enable
+Subject: [PATCH RFC net-next v2 18/19] net: stmmac: report PCS configuration
+ changes
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,85 +96,42 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v2naQ-00000007oFx-1nuV@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v2nb6-00000007oLW-1mfh@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sun, 28 Sep 2025 10:20:54 +0100
+Date: Sun, 28 Sep 2025 10:21:36 +0100
 
-After a lot of digging, it seems that the oddly named hw->ps member
-is all about setting the core into reverse SGMII speed. When set to
-a non-zero value, it:
-
-1. Configures the MAC at initialisation time to operate at a specific
-   speed.
-2. It _incorrectly_ enables the transmitter (GMAC_CONFIG_TE) which
-   makes no sense, rather than enabling the "transmit configuration"
-   bit (GMAC_CONFIG_TC).
-3. It configures the SGMII rate adapter layer to retrieve its speed
-   setting from the MAC configuration register rather than the PHY.
-
-In the previous commit, we removed (1) and (2) as phylink overwrites
-the configuration set at that step.
-
-Thus, the only functional aspect is (3), which is a boolean operation.
-This means there is no need to store the actual speed, and just have a
-boolean flag.
-
-Convert the priv->ps member to a boolean, and rename it to
-priv->reverse_sgmii_enable to make it more understandable.
+Report if/when qcom-ethqos changes the PCS configuration. With phylink
+now setting the PCS configuration, there should be no need for drivers
+to change this.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h      | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 6c152be9ff5f..9758d768fd0a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -598,13 +598,13 @@ struct mac_device_info {
- 	unsigned int mcast_bits_log2;
- 	unsigned int rx_csum;
- 	unsigned int pcs;
--	unsigned int ps;
- 	unsigned int xlgmac;
- 	unsigned int num_vlan;
- 	u32 vlan_filter[32];
- 	bool vlan_fail_q_en;
- 	u8 vlan_fail_q;
- 	bool hw_vlan_en;
-+	bool reverse_sgmii_enable;
- };
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
+index cda93894168e..e42a98162c2b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
+@@ -109,6 +109,7 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
+ 				  bool srgmi_ral)
+ {
+ 	u32 value = readl(ioaddr + GMAC_AN_CTRL(reg));
++	u32 old = value;
  
- struct stmmac_rx_routing {
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 94b615444734..60fcf3feac31 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1096,12 +1096,12 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
- 		case SPEED_10:
- 		case SPEED_100:
- 		case SPEED_1000:
--			priv->hw->ps = speed;
-+			priv->hw->reverse_sgmii_enable = true;
- 			break;
+ 	/* Enable and restart the Auto-Negotiation */
+ 	if (ane)
+@@ -122,6 +123,10 @@ static inline void dwmac_ctrl_ane(void __iomem *ioaddr, u32 reg, bool ane,
+ 	if (srgmi_ral)
+ 		value |= GMAC_AN_CTRL_SGMRAL;
  
- 		default:
- 			dev_warn(priv->device, "invalid port speed\n");
--			priv->hw->ps = 0;
-+			priv->hw->reverse_sgmii_enable = false;
- 			break;
- 		}
- 	}
-@@ -3487,7 +3487,7 @@ static int stmmac_hw_setup(struct net_device *dev)
- 	}
- 
- 	if (priv->hw->pcs)
--		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->ps);
-+		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->reverse_sgmii_enable);
- 
- 	/* set TX and RX rings length */
- 	stmmac_set_rings_length(priv);
++	if (old != value)
++		pr_warn("dwmac: PCS configuration changed from phylink by glue, please report: 0x%08x -> 0x%08x\n",
++			old, value);
++
+ 	writel(value, ioaddr + GMAC_AN_CTRL(reg));
+ }
+ #endif /* __STMMAC_PCS_H__ */
 -- 
 2.47.3
 
