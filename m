@@ -1,26 +1,27 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80E1298CA4
-	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27997298CA4
+	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759052473; cv=none; b=Q9F1sw9l2FxypSFl+RmIIL0UxWKEnvFNZX+QHft+fkENw5L5wDbWMzO1CQCKJmO9web5a10Hh0czTM72rqn8vj7p7GjgxuFpKGGRc+CTrn5DjIjBIdAJgi2Tsit9EBRwVfbEY0y27beH1LVHY3f9GyUo6ME389ojkIjhzVFtCiM=
+	t=1759052480; cv=none; b=BVj/fbTlD4982uBYFY1JDGOyZ/rPlcw7BB+R7gpDi1nNXuTMp1jMv8XpZkEKBtkquMgt6dkHBUSOcd37XcUHC571WTVsDu9hgI1ahSwzJOQnw/WTZPslEbeRNBj4NcuAnjFd+Uk1bxCmL7XkWtmvjR0CxNIX0+spp8cbaFjLHKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759052473; c=relaxed/simple;
-	bh=zxWj32avZExS1tw2SyLgeX/kHceIkgtpT+OeM0Jy7U0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HyLzpQmWwU1aEIxRZ2BlsKOrUzOmaNPPbpCyTx7hPMA7DsCjgBYPinnRv+UUWnBkOuVswgTGS4y9ofT8ABnZ6U4rbBCiOivjLVHCQOZheXA+5qrdmd3t96w4VdHdHXlYJZWR/jmkwJc7KGF/GuUcaiwR5vO249d6Q3PFomG2KcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
+	s=arc-20240116; t=1759052480; c=relaxed/simple;
+	bh=F757+4oZetXObBRm+rOjXJW873ZbZU8DI21Mx/4vTDQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dWKsA3U5OWwHSm5x79mqL01Kk2b0v2I4J1gvBMlQFSh7WX1sBxWp/ySAkEzin//PyrZZSBITdmKTkH4YMAgyJt+zpljt9VfdNCJ7x/P24EvFvjEPyVUxbzXEmfnV542dEg9dtl6Um2HMVL00px5vXOw18WwEcrvLD2Rx/cBBPXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: zesmtpgz1t1759052370t05b9b0ad
-X-QQ-Originating-IP: hbfx45qwpWhSZhdgNkzIvzLUjqNnqkgceTV5/v+S7Ok=
+X-QQ-mid: zesmtpgz1t1759052375t81f4bace
+X-QQ-Originating-IP: 0Afv/VXnDj9dXCef1Wl2mMU4GLrsc3b9/df8lOdmd2o=
 Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.164])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 28 Sep 2025 17:39:27 +0800 (CST)
+	id ; Sun, 28 Sep 2025 17:39:34 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17010562721259606880
+X-BIZMAIL-ID: 922774199149405414
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ To: netdev@vger.kernel.org,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next 0/3] TXGBE feat new AML firmware
-Date: Sun, 28 Sep 2025 17:39:20 +0800
-Message-Id: <20250928093923.30456-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 2/3] net: txgbe: optimize the flow to setup PHY for AML devices
+Date: Sun, 28 Sep 2025 17:39:22 +0800
+Message-Id: <20250928093923.30456-3-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20250928093923.30456-1-jiawenwu@trustnetic.com>
+References: <20250928093923.30456-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,38 +49,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: N/EN6P+BmEafCy/1keUGfUTmpgzKdOsNFzEHxHvbeJwdsrucTfoOkA/Z
-	UL4EVtwVjtDBttXnSA9kht38FOWDUlTDdWgK4WcyBV5OMaJYQb5PX0FqxdZZaWBebHiI/7G
-	Tt6IJUyB3UNESPnf2Z0DU3WGvF/YlubiBsu9NJATJstnSFej40Dh73njxA6RDvXGoD1uQ7+
-	pt9AQ3CvEX0j4s3A1rt9qIQxKOeQctJnuzil09JAB/hxcwkQpERFG8u42JrMgA9VTc1lo8l
-	+rOESJMjuMVFtj66SKgY76PmDJsleL2Wfe4LDCCVWG/EC9Xb+0bvyl0hYy0AtWCyuHuF4ir
-	pf3Vw2yKVEVdmnqgkQFSV4o8rPnWRD6CA8q1+ZhYOEZO/EkHQlDQQaKfEzH1s377fsHZ6PX
-	mFN6hwxnUT7NeFtxsfpb040Ecyw707zpdR5Hgxp2Sv3nRLl0J6ojJEBrD8fbt7Ukiksc++3
-	kL+6EvFziFkb2302rO7WEzgjnDjzC/zfx54YhzSp04sUBDqwqICQyUZD6DVEmjep3Q9rB0g
-	giAndqKrYgV6YDPEgLKTLlQrK8kyB06WLObB5ReVYr9YEJUL3/lh+NKKlJVILUzskZ+tniP
-	9MeAAd4/Xww77PpMAu9XLFcCbkkbRgwa3i3TspU8pvk+W0S5hV9yf8GVWy8bboAnPsVx/6c
-	QHwwmozyFEEcbyrv67g2yc9Pt3dH+ksUbIMEUw7Sr7Q8JEKUYEnPePc7JKC1s0kbu56ByND
-	Iwbw2wSZhLOvzESbP5dnLz+Yn/8e8j4YDhJKBCHWvnKvYvw9uWpLdQrCRJNHuftlivBNewg
-	+tvaYZHIJXhhVdDbH8g9vFe0vwlffSEB2Olz4avNopsy34Jf98FrFP2zYK2kV5CATiD3jbK
-	GlcHxnmiSsv7ksNvnT5hltWSSyWULpAVtjieRz+sYbO1MIDeepclEc1/xbjXNI5Y9Mh6eA9
-	TbeW/JLa4VggLupFPjG9esqu+fe0H2NXr+ZY8p+2vDFqB9rEu8Mh91aH41HquIZXnxfAiPf
-	rcGVGCWAqCGw7XuBXu2IuHEdPUWT6hV8r1wvu+0A==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-XMAILINFO: Nw9C1WBu09hPrsWKhf+6FARvU+13FG4Wnt4GKXEx0qMPmZlMz6jU9AUQ
+	XUuj1uD6r2aRI3mG+wzFH2GmyjVx/Yis4ioLK/DrzURQ35H6U+BtAsd5L3U+5lynmV0oGMT
+	R/51JKwuyj0u35MSKeiN4DCsD+jQr5+S5mmABsrY2Bo5uu+nvB0uOlL4wCHlzBsQLAscG6f
+	Xh/SdgpB3rJc2iZm7QIAtPeIra10eC1Ng3w4Yu5aHxdJbtkxghsh3z9yWLNXA5e3+NWrFru
+	Ucsqh2lD8BF8a0+/uj8exb+oYu5MveNAqT2Q4YmmPyMDsws6BSdul6tY7Rjkhk1ER4a1WXe
+	AXVeF/AKqio5VYPQq08KCkSYyYbolsCsVq+QqiLkcSULQI8K7LyLdR9lpaT8/D8kHRC6Mlg
+	5aMxMeyifKxEInXsO90hKGVdDObQxSmnNg0wXiB1EfksstUb43JFRecxpHmK1W0cxeSTz1h
+	311pWt6dyajWo7eiqSJEBi1ZegrYEp7Knb7UNGdYRwysUF7w6yz8z5PX3rEa6ZRCQozCAoD
+	YOMOO/6v7AJ2skz9HJOx+zHwU35ePBEBCcRhYLpGYg+eTLvKRUZhM3iK/9wwxmCxaphGH3+
+	Bl4yLkZQeZ51vZ/nsmLU39kx4Q5IZbBbs3XxFx2WnB1mAi/93iMIyESfK1Stx361yZcoTt0
+	MSwMnawXVeBEnWR/cjOqW90m3E0pdvH4v9/XEAPRpMbEDZhEHVHWuF8ppetrX5tEl3GPVPr
+	GLULBBSYSQoBezuqc2qnGT4iXmimLCQqBvlRL0iJhgg5u/OsvcNWyhFK1RcVmqzW++TxyoO
+	waqh+D+wGGETnZ+UfygmZRoCoV9sr8eHTCOQdVu416OX/6AQ1XqFF9pcvA+PI/U683ZboOp
+	osdBILp0A9z6e86RGb0oslx5P5eePdRncpBajfdjrQks5UEdoj3+/zVjDASoMaywwpO7vJx
+	nmkm5inCqQkk6CdsH5WHMEtPHkFV/x/H6M9MPWs3stiNBeRKwE8Rt3rYGX1Jqvrz8F+bdSf
+	rCBQlHik1jDnUtkovrDIcHgUudEvt+S57pbJCLOwoo68dgG6B1
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
 X-QQ-RECHKSPAM: 0
 
-The firmware of AML devices are redesigned to adapt to more PHY
-interfaces. Optimize the driver to be compatible with the new firmware.
+To adapt to new firmware for AML devices, the driver should send the
+"SET_LINK_CMD" to the firmware only once when switching PHY interface
+mode. And the unknown link speed is permitted in the mailbox buffer. The
+firmware will configure the PHY completely when the conditions are met.
 
-Jiawen Wu (3):
-  net: txgbe: expend SW-FW mailbox buffer size to identify QSFP module
-  net: txgbe: optimize the flow to setup PHY for AML devices
-  net: txgbe: rename txgbe_get_phy_link()
-
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
  drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 -
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 54 ++++++-------------
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  5 +-
- 3 files changed, 20 insertions(+), 41 deletions(-)
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 50 ++++++-------------
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  1 +
+ 3 files changed, 15 insertions(+), 38 deletions(-)
 
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+index d89b9b8a0a2c..4880268b620e 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -1271,8 +1271,6 @@ struct wx {
+ 
+ 	/* PHY stuff */
+ 	bool notify_down;
+-	int adv_speed;
+-	int adv_duplex;
+ 	unsigned int link;
+ 	int speed;
+ 	int duplex;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index dc87ccad9652..1da92431c324 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -19,8 +19,8 @@ void txgbe_gpio_init_aml(struct wx *wx)
+ {
+ 	u32 status;
+ 
+-	wr32(wx, WX_GPIO_INTTYPE_LEVEL, TXGBE_GPIOBIT_2 | TXGBE_GPIOBIT_3);
+-	wr32(wx, WX_GPIO_INTEN, TXGBE_GPIOBIT_2 | TXGBE_GPIOBIT_3);
++	wr32(wx, WX_GPIO_INTTYPE_LEVEL, TXGBE_GPIOBIT_2);
++	wr32(wx, WX_GPIO_INTEN, TXGBE_GPIOBIT_2);
+ 
+ 	status = rd32(wx, WX_GPIO_INTSTATUS);
+ 	for (int i = 0; i < 6; i++) {
+@@ -42,11 +42,6 @@ irqreturn_t txgbe_gpio_irq_handler_aml(int irq, void *data)
+ 		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_2);
+ 		wx_service_event_schedule(wx);
+ 	}
+-	if (status & TXGBE_GPIOBIT_3) {
+-		set_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags);
+-		wx_service_event_schedule(wx);
+-		wr32(wx, WX_GPIO_EOI, TXGBE_GPIOBIT_3);
+-	}
+ 
+ 	wr32(wx, WX_GPIO_INTMASK, 0);
+ 	return IRQ_HANDLED;
+@@ -96,6 +91,9 @@ static int txgbe_set_phy_link_hostif(struct wx *wx, int speed, int autoneg, int
+ 	case SPEED_10000:
+ 		buffer.speed = TXGBE_LINK_SPEED_10GB_FULL;
+ 		break;
++	default:
++		buffer.speed = TXGBE_LINK_SPEED_UNKNOWN;
++		break;
+ 	}
+ 
+ 	buffer.fec_mode = TXGBE_PHY_FEC_AUTO;
+@@ -106,19 +104,18 @@ static int txgbe_set_phy_link_hostif(struct wx *wx, int speed, int autoneg, int
+ 					 WX_HI_COMMAND_TIMEOUT, true);
+ }
+ 
+-static void txgbe_get_link_capabilities(struct wx *wx)
++static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
+ {
+ 	struct txgbe *txgbe = wx->priv;
+ 
+ 	if (test_bit(PHY_INTERFACE_MODE_25GBASER, txgbe->sfp_interfaces))
+-		wx->adv_speed = SPEED_25000;
++		*speed = SPEED_25000;
+ 	else if (test_bit(PHY_INTERFACE_MODE_10GBASER, txgbe->sfp_interfaces))
+-		wx->adv_speed = SPEED_10000;
++		*speed = SPEED_10000;
+ 	else
+-		wx->adv_speed = SPEED_UNKNOWN;
++		*speed = SPEED_UNKNOWN;
+ 
+-	wx->adv_duplex = wx->adv_speed == SPEED_UNKNOWN ?
+-			 DUPLEX_HALF : DUPLEX_FULL;
++	*duplex = *speed == SPEED_UNKNOWN ? DUPLEX_HALF : DUPLEX_FULL;
+ }
+ 
+ static void txgbe_get_phy_link(struct wx *wx, int *speed)
+@@ -138,23 +135,11 @@ static void txgbe_get_phy_link(struct wx *wx, int *speed)
+ 
+ int txgbe_set_phy_link(struct wx *wx)
+ {
+-	int speed, err;
+-	u32 gpio;
++	int speed, duplex, err;
+ 
+-	/* Check RX signal */
+-	gpio = rd32(wx, WX_GPIO_EXT);
+-	if (gpio & TXGBE_GPIOBIT_3)
+-		return -ENODEV;
++	txgbe_get_link_capabilities(wx, &speed, &duplex);
+ 
+-	txgbe_get_link_capabilities(wx);
+-	if (wx->adv_speed == SPEED_UNKNOWN)
+-		return -ENODEV;
+-
+-	txgbe_get_phy_link(wx, &speed);
+-	if (speed == wx->adv_speed)
+-		return 0;
+-
+-	err = txgbe_set_phy_link_hostif(wx, wx->adv_speed, 0, wx->adv_duplex);
++	err = txgbe_set_phy_link_hostif(wx, speed, 0, duplex);
+ 	if (err) {
+ 		wx_err(wx, "Failed to setup link\n");
+ 		return err;
+@@ -230,14 +215,7 @@ int txgbe_identify_sfp(struct wx *wx)
+ 		return -ENODEV;
+ 	}
+ 
+-	err = txgbe_sfp_to_linkmodes(wx, id);
+-	if (err)
+-		return err;
+-
+-	if (gpio & TXGBE_GPIOBIT_3)
+-		set_bit(WX_FLAG_NEED_LINK_CONFIG, wx->flags);
+-
+-	return 0;
++	return txgbe_sfp_to_linkmodes(wx, id);
+ }
+ 
+ void txgbe_setup_link(struct wx *wx)
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 9d53c7413f7b..b9a4ba48f5b9 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -314,6 +314,7 @@ void txgbe_up(struct wx *wx);
+ int txgbe_setup_tc(struct net_device *dev, u8 tc);
+ void txgbe_do_reset(struct net_device *netdev);
+ 
++#define TXGBE_LINK_SPEED_UNKNOWN        0
+ #define TXGBE_LINK_SPEED_10GB_FULL      4
+ #define TXGBE_LINK_SPEED_25GB_FULL      0x10
+ 
 -- 
 2.48.1
 
