@@ -1,98 +1,227 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012010.outbound.protection.outlook.com [52.101.53.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08DB17C91
-	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 06:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759040351; cv=none; b=MkHSyrqyLdvg20xn9ivjOn93NYMLZcKypIhUJdMgdwtkEUgCyOk+P/MEkpEz27jtqpY7LVCD/x3s+BxNHEDuaJjEPiWOTtUIV/c/Gs9UfjN5tRr95/kWxLrZkPEoficWjtEKvyAh6ysJT5buIO8mRmJBepyW+rJo3a7r5spvBfo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759040351; c=relaxed/simple;
-	bh=FHSh68POuZci0soOBMqYretNIENx6qAcTuhOTMHoj+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tT3tWD1lHduBm1vhrtkHpV88osld77Qem8sHxiguFnmmjQq8LWwlrcnX/kMnnFPTHSij/TLY2NyKj9NR5iRNs2DeylzwGliqvL1VXU3kMcEjdsFoSomOOnwshftMpqbMJ7dPu7S1VmHy1kO68jSWhO+P27XVqKWU9EZzLgCEGBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VP4pDlUU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2A52248AF;
+	Sun, 28 Sep 2025 06:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759041350; cv=fail; b=n3/J8+4nRlWFYa2MVOxyenrteIRB1irapFSJrhXhK7Msv1PbXc6HD89WnjUejf2L2piQe0GVYCtOgrv2Mo7ZvsRRaoj4iDvtQJo2SQFCVr/3yulnY2PY3jhvLT8VLPibNhkaXSBxjHQIgi9ARg2i6MjrksLrIsPcOru6TzrPLtI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759041350; c=relaxed/simple;
+	bh=wYJjYKK6YDAtuRLNAStMbHRf6sUs/XjJMsn33BFqpVI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=msnIvySEMgw40dIUsOhk0fF0QzxWa5PNZpGLbsSZe+kITAT2WMX84JzbSoSS/d+6T9x/wfJVQe96J7xWwQ7g04MRI/52N1kGPB1n6u0zJzfLArgxrreOOIP/YjtHJY4iv3/0n0v13+g6v4ahrWqXNSw7q2RZxP7kv8gMFixUlgs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nE8AZ8dn; arc=fail smtp.client-ip=52.101.53.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VP4pDlUU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1759040348;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FHSh68POuZci0soOBMqYretNIENx6qAcTuhOTMHoj+s=;
-	b=VP4pDlUUZMZzNSuvClhZcCENbwTPgnRm/gkvcu0TYPMoui6gib3Z6bZHtbRQVtLi83OyG8
-	pkR4eaSi8QhTTqqdm4bm7OUzARrayysJ4Qy7kGQAEFOvnonDNLujpIPFjZR2zl8xzsX+8R
-	J7a61DNwYLYGC6d6C6N5ZuvG7shRar0=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-aOybh8_UN5yA-9Nbg7LEcg-1; Sun, 28 Sep 2025 02:19:06 -0400
-X-MC-Unique: aOybh8_UN5yA-9Nbg7LEcg-1
-X-Mimecast-MFC-AGG-ID: aOybh8_UN5yA-9Nbg7LEcg_1759040345
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3ee13e43dd9so1681959f8f.1
-        for <netdev@vger.kernel.org>; Sat, 27 Sep 2025 23:19:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759040345; x=1759645145;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FHSh68POuZci0soOBMqYretNIENx6qAcTuhOTMHoj+s=;
-        b=Hq13bxTemKwk1BGGsIwmv03gy5a9xIW4vJe34y/6LZkoCgW46I2IyZGlDfJOyQEtIQ
-         Wv2Zno/hK/YNnVxEdl808Rz16TGhHJblWI0hPcyzYsbKw1gDM157xklQfKgoi+gmejpv
-         nFwPZGLn5DAEbohP0Zw3AiHfrA6SS3J5F13yj/dAe21Ju4zC08+VE5XmjXGn1XXMddaA
-         04Wq/Alh8oI6dPKZYbfLCV9GAD9IKSThCLrgV54Pt57PqQzgox7I4MKr9YEwgPUIseqK
-         Rghp/NkX+Qj7OL9YC9JtAFDQ/mLcnnZL9sFe8cFsxM7a5+KHvRsNf4BF+jYHTwG3WZbd
-         WBhQ==
-X-Gm-Message-State: AOJu0Yy/hox+9wY47mSuw6txGe3iPaht61EYhsDET5SHEoMjZ0EiEZTU
-	563SqpYb1lWd7dktQ9Qb27V3s+2g7vkkEkDYn8+wJ6Qk/fLQr0JnyNz+k1UVYAn0+Ek4xg8ShYy
-	xX13323pEl5A3v8pTTXreRFO72LQOpbbRdTWaMI+ooQM4BY1bwjiexsoB0Q==
-X-Gm-Gg: ASbGncvFMlxlC0cUWuhvpohVIPondD7XgDY1X0nebf2qMGQ4VEbx5OolfZx2kCrja9a
-	QvYO0VWh/VZ4gUJNyEHz9HHXgNdot+cTYjwkl0k9VOUg6xnpDt5wGqjUouSclNaUlVn6eTDj+jj
-	rDPy2c3fcEEfWaylvdWuQyDnltTAjww47EswmFp0e1N58kCGe/Qf7rGxV7ER6BFKnkfeUXRkYwo
-	nmF+KQxt1c0ip5Kwix5rUy7/Mh5kOrWNaIwr8kR/SmuvqCLbRxdaFC7HRWUTjPktWRtRPfOHVtw
-	shy/TnjRgH5UyWDl7y+4sbhEbgUuijw/
-X-Received: by 2002:a05:6000:2f87:b0:3e9:2fea:6795 with SMTP id ffacd0b85a97d-40e4b389223mr12613879f8f.53.1759040345051;
-        Sat, 27 Sep 2025 23:19:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEGyAlosu7SLyYtGgUxUn7flP3QvS+gTogdl7QE3/POUYAQejBg7RyfeWxq6205Wv9jdzXgeg==
-X-Received: by 2002:a05:6000:2f87:b0:3e9:2fea:6795 with SMTP id ffacd0b85a97d-40e4b389223mr12613844f8f.53.1759040344431;
-        Sat, 27 Sep 2025 23:19:04 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1515:800:cc29:ccef:c1e8:5fd4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fe4237f32sm13263126f8f.63.2025.09.27.23.19.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Sep 2025 23:19:03 -0700 (PDT)
-Date: Sun, 28 Sep 2025 02:19:00 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Dan Jurgens <danielj@nvidia.com>
-Cc: netdev@vger.kernel.org, jasowang@redhat.com, alex.williamson@redhat.com,
-	pabeni@redhat.com, virtualization@lists.linux.dev, parav@nvidia.com,
-	shshitrit@nvidia.com, yohadt@nvidia.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, shameerali.kolothum.thodi@huawei.com,
-	jgg@ziepe.ca, kevin.tian@intel.com, kuba@kernel.org,
-	andrew+netdev@lunn.ch, edumazet@google.com
-Subject: Re: [PATCH net-next v3 11/11] virtio_net: Add get ethtool flow rules
- ops
-Message-ID: <20250928021714-mutt-send-email-mst@kernel.org>
-References: <20250923141920.283862-1-danielj@nvidia.com>
- <20250923141920.283862-12-danielj@nvidia.com>
- <20250925164053-mutt-send-email-mst@kernel.org>
- <4532bc48-ca59-4f04-a3f4-a66d4be4ac1b@nvidia.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nE8AZ8dn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=scDw85p9A4nOOytev+DG7FOCjbzvqF13ttF/8Nu5LgZxLngiyw83V75Zdic6Ec7hzA+o9sgektsVVv26yZOz1YehrM6xnAog9tXBp3bH9UBJ3LICKZx0GVRVHDCPPD8YGWA5dFpgpBnkkgSOQ1NBnKY6W52gC1wSuGei4AuM/2FOLmwjzZKfuv78wT1i60KuhGxulJ/80PcoCv5Vr5QB1KnrLXiwYu62admrsnDln825wfWz/E5qyL56k/p4APrKGPMdkfRvMqRdAi+Kerrlhne1zpAFI5vDD3qTqVd2yHyNe6lmqc2jzkcpnqjJhsobSF4jJB2G4W8keCSwWj5cHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n5uHLEfQQ3Fy1kQqJGZq4VRpEPa6tWpqhTFtEYGIUbg=;
+ b=rZqjbr8pTH04yPLSVtMxslDHjzD6HRymI6xi1Enqp2AoYF18zJ8C2c4AA4hgsIDHjQxzZ0W+u3oSbc99EnQvIKCnpPOY+jozBiX4DBq+2Nir/5tUtad9kYrU03LdGfGLN+eE/Gre8i1EKPbRU6PavBZzBkshpCnhXj2eBpRyYJ8YgUNVzy41pj223mNIGNj7ARdZ8tihknquYT6L7+bMIZU1EGH7UdXn5zBMBa8PkqaBzJzS3y5kwBJjfD1sAU/hqHF4B2PB24IcKN9GeWwM+31895M0Xca6Wl8GLYxdXou+KnZ9hsUnd2cYFSRAtV8Xaw40o8cozODfEAQQiLyxqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n5uHLEfQQ3Fy1kQqJGZq4VRpEPa6tWpqhTFtEYGIUbg=;
+ b=nE8AZ8dnx0kcCm/pscyWV81cx9Yv6k5oRzuZuHnyYRS1VSJBniSS1lTvW5hL0tuUSamsoysLWfqWLwoaSwO/X/EtCxCHTMUNos+Reo9IY0yMxbcMkP+SBD6PI9afP+wqljYTA8gIbzP9rr2RrH2BE+r6a65e8y7OHlI5I0DTMFFHJv2+AH5/ACwoAEq9StTJoXTA0cPqq6vsiI3j2yf/kMiSCSLsOLeJrr59M3URgi7hy27rbyG1+wWp1nHlS73z0qc+NwXHtQpjfDjfph+6YMLuUYhMg+5VUMrSCAKCYLXZar4mq2CDrvTXZaN2gx22v+1dvzQF3Pl90X2z+AY+ww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BL0PR12MB5505.namprd12.prod.outlook.com (2603:10b6:208:1ce::7)
+ by MW3PR12MB4473.namprd12.prod.outlook.com (2603:10b6:303:56::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9160.15; Sun, 28 Sep
+ 2025 06:35:45 +0000
+Received: from BL0PR12MB5505.namprd12.prod.outlook.com
+ ([fe80::9329:96cf:507a:eb21]) by BL0PR12MB5505.namprd12.prod.outlook.com
+ ([fe80::9329:96cf:507a:eb21%4]) with mapi id 15.20.9160.014; Sun, 28 Sep 2025
+ 06:35:43 +0000
+Message-ID: <cd0210cc-2531-4711-8a15-2fbae77cbf0a@nvidia.com>
+Date: Sun, 28 Sep 2025 09:35:48 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/3] net: tls: Cancel RX async resync request on
+ rdc_delta overflow
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Jakub Kicinski <kuba@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+ John Fastabend <john.fastabend@gmail.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Gal Pressman <gal@nvidia.com>, Boris Pismenny <borisp@nvidia.com>
+References: <1757486861-542133-1-git-send-email-tariqt@nvidia.com>
+ <1757486861-542133-3-git-send-email-tariqt@nvidia.com>
+ <20250914115308.6e991f7d@kernel.org>
+ <0b7a83ec-d505-40c3-afa4-8f6474cd78d9@nvidia.com> <aNFxIfD2aPpB11dC@krikkit>
+Content-Language: en-US
+From: Shahar Shitrit <shshitrit@nvidia.com>
+In-Reply-To: <aNFxIfD2aPpB11dC@krikkit>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TL0P290CA0013.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::20) To BL0PR12MB5505.namprd12.prod.outlook.com
+ (2603:10b6:208:1ce::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4532bc48-ca59-4f04-a3f4-a66d4be4ac1b@nvidia.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB5505:EE_|MW3PR12MB4473:EE_
+X-MS-Office365-Filtering-Correlation-Id: b02411b9-f3a1-4c6e-b1ef-08ddfe59400b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?c0I1MTZ1aEhEdDRtdEpQcTFBUFZOWWVZRlMrWTIzbW9kUWVPY3NmTlZpNlJX?=
+ =?utf-8?B?NXg3elVwLzBCMWMwY0dDS2owNFNTQkZSZ3RkMU1vaTBIOC8ycFFuOC85eHlI?=
+ =?utf-8?B?eEVFcWUvZ01GWEVsQ0M3YzRzZjhaRHMwUUJXeVJrWkVTbndjVTFFd2VwU3BG?=
+ =?utf-8?B?dmZVRndaVGlzZHAzc3JkV25RYS9tQWl6Nnd6MU5uYU5RWE01ZTlNK09icFds?=
+ =?utf-8?B?QTVoVE9SWStIcEhzcVlYNnRNQWJlYnhBL1dPYktYYm5QcG8xWURNUHE0dHdQ?=
+ =?utf-8?B?THhRY2RIUGErT3Q3amZHcjI0TmZ0QUdzbkMrQTdqS2ZkVEs0eG1VTlk0RVBQ?=
+ =?utf-8?B?UHNqTzJqTkEzaXNmSXE3Y1psYWFEbzZQOTQyN0FFWER4d0NEQWNEa0dhMUNz?=
+ =?utf-8?B?cnZ2VGR6OEVhTUM0Y2tUdFBXMmJWZ3dNT3EzcHZkR2R1bHhhSFpQQzcySFBn?=
+ =?utf-8?B?MUxacUl3cWxIeTY4Wnk5NHpsTFU5cTNpaHB3RDVwYVhOOEFWd2xhemQ4V3Iw?=
+ =?utf-8?B?QllHTW1RcGpIdmdhUEVvcHdZTjhKY1p6MVVOcFRPWXl4TG85UTJOdG5sWWtE?=
+ =?utf-8?B?NXNyT0tQWWpkV1VYa05pc2J2WnRCRm9DNFArcFhjdWtMdng0bHVrM2Z1Ulpr?=
+ =?utf-8?B?K3BYNnBPL0I0QTdqcUgwbHJjcERzcGl0RFFhTkV5bkNpdWxmQTF6aFAyVzVh?=
+ =?utf-8?B?VTRVMFo5VlFjVk56OEV3ellEcmNEdTN1TGJIN3ZYMVJlaTVPUS9LOEgvTWVE?=
+ =?utf-8?B?cDRtZFRFN3dKWGIyVjRXeXpxNTVhR1VsaUZqWmdhQUQ3bnVrKzI1b2lWTHRn?=
+ =?utf-8?B?emdYdTBReFlNV08wblBrMWdERGJTMFhldnNUcmMwbnhDUWZqWEFSWm9uVWc1?=
+ =?utf-8?B?N3pPZXVWSHBMWmc5L2g0WUdiQ3YyK01EMUNmVjF3eXkrZWJIb0dKelBQcVRC?=
+ =?utf-8?B?VU96eDM4MThHTGFoclhETzM5dEFRUUcyWWs5QXlGQzNVQk5pek5JaFVKb2hh?=
+ =?utf-8?B?dHA1UUtiNEhLbnYzVklpUzVjMzlOeEpuRWkyM0pGVElNM3M3WjhpaWtRTUlQ?=
+ =?utf-8?B?WFV5ZTdMb2h6WEVmdlB6OWFCLzQ1dU5lVVBlOXQxSC9GL1k2VUEzaGFaTTVO?=
+ =?utf-8?B?K3lIQ1BDOUROM2VJMlFGdklQdGptTUVabXpVVGV0K28yb0JzdUR0dGlDbEp3?=
+ =?utf-8?B?bktOUjJpaGR0NnpIdzVTdm9ISmRQMVV4UzBYczdTekJXQUVoMjYvREZBNUJk?=
+ =?utf-8?B?VWNreTg0MXlXTjI5eTFucStrVm40THdITUdoZFhnMmxHakd5a1J6R3RmSExB?=
+ =?utf-8?B?L2t1ZzhGLzZjaHV1cHllbTBldUh1TWY1V3dDUWNOTHE2a1JRMzRVR1NxZXRH?=
+ =?utf-8?B?RytqTGlvSHU5KzgrcUxwVTJGZUpJeXZiSHowL1luY1psRHZnbWZ1dWZHaXNT?=
+ =?utf-8?B?dC81VHkyL1JQRFRZbXpBTWZKK1Q3cEFQVEU0Mnp0VnJyLzVuT2g0MTFXL0hD?=
+ =?utf-8?B?N091YUNjdFNZdkpTMzlhdTRGU1dEdWhHOXdzdVd5RW9zbUZqKzlLN3VIQzI5?=
+ =?utf-8?B?Yzk4K2JieGtVc1JzSFNoMGRqZ1hJbG9GL3BSOXhNMElkbnNnKzdwdE8veXlC?=
+ =?utf-8?B?dGNneVZNbDA4c1ZSOCtCcUpEZ1lHQkZHa3kxcUVIUllSRnpXTVNNcnExN0pn?=
+ =?utf-8?B?amVadWJwaHcrZEpNa0VxaGoxTFdNNGovdUdjZjVESFdBMFhySGdXck11Sk50?=
+ =?utf-8?B?UEVJZC9OejB6OEF5MzV4d0Vodk52QlYyN1JsQ0NjMnpKZ3J2VW1aaTNKVG1a?=
+ =?utf-8?B?enhGaXd4WkRjZWlIeFJnTFNlajFQbUFqbFc5dEhzNmVmTlNxditSVWFSdDkr?=
+ =?utf-8?B?ZFduVjczdnE5U3ZXS3pBVFRTUzN3M0ZudDRlSktGaWNYSzlINHhvUnY2Z1oz?=
+ =?utf-8?Q?s7L4hZxBxBB8D5D+3YPbrHo3J8+7QBOD?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB5505.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZkxzTG5sR1hzalJNV2tDc1dMNzl2WjdpTm8vcGRpbXF2dUtQZFArdkwrZVp2?=
+ =?utf-8?B?TWJWOGpITi8vcW9zcmo0UmZaQzE2SVU5TG5vNEpLNnJSZzNDYVBuVGhBZUlt?=
+ =?utf-8?B?WVQzRUhqOXl5V3o5c2dvVmRBUjh0T3Q5Sm5nMFkzRklmL211M3hteFNmV2lN?=
+ =?utf-8?B?MnBRSmxHOFkyM0xyVS9BNS9DZHVMaUZTMXpiRUYyRWFQbllRUHpoOW9HcGlm?=
+ =?utf-8?B?eDBaOFlkcjBnLzM5WEhWb05TR3lIWFZNSGRUSWs5UzdEdUVQakxyeDZDUDQv?=
+ =?utf-8?B?cGFSQ3o2OUwvd05zcUlsQjR2ZDF1SDEvVVFnRUZiQjBtYzZGanJtZjdGRGJM?=
+ =?utf-8?B?N2JGVytsb3N6Wmt1VnJ3TFFrU3R0UEF4M09QUUpPUnNsRStMN1hSb09QdXZ2?=
+ =?utf-8?B?QnU4STUvck9VNHBBdVJXbjRYTnN4anAyMWI2clNPbmlFRHkxbkNFaDc2OFpB?=
+ =?utf-8?B?YVMrZE9sZjJoTDdaN29jSG5BRDM4SS96MHAydm9ibFlnNmNFeUpuUnphZDVS?=
+ =?utf-8?B?R3JYSElCeTJNZnFKeUQ3UkU2bnVsUjM2MTVIZGFnTzlvZXY4MDNqejBzWmxU?=
+ =?utf-8?B?Z2dId1dNVE5WaWZOSXBCeWNrWDFFT3pHd3FaZUNTbUhkc1p5QmR1cXZhL29u?=
+ =?utf-8?B?WFROWVdQOU5BbjhyQmhmdXFMT3NYR3BNRnhoamdoZTBrblp6dnp4dFhJMjFH?=
+ =?utf-8?B?QTFhY1M3RnI4QjJQNlIwTW1idnh1anA4K2Q4ZzE5SDhBZVo1SUVQbmVMS1J5?=
+ =?utf-8?B?bk1yckFMN2JPeFhCZ1RXZU5IeE8rVlNyOUdib0tsY1FYYU55S285NWMwL2xJ?=
+ =?utf-8?B?b3ErMDY1MnVZdVJ0RVRoNXVDQit3a01scUxrWlpmL2dpR05Fdkg0NExHU0wv?=
+ =?utf-8?B?bTVoeDNjT2pQdGhUa1FuanEzTUNMYmppV3F5UVF2QnFKNFNhVWNmdXc4QTJh?=
+ =?utf-8?B?dU5SdkdkdXJRYkl5WE01TDNOKzA2cmdWaGhRWjl5VlF3Rm1SUzUrN2R0TTVS?=
+ =?utf-8?B?MXF3blcwNU9rNjlOQTJKTTNBU3E5bFNrZ1YzWVk5czRNR2QzVStyVkxJTEE4?=
+ =?utf-8?B?V1Nlck1RaDV4NjJYMEFVTm1rRVN3RmVSWXdhQk5ZQWtyRzlsVEM1U0NUUjBv?=
+ =?utf-8?B?QzZab3g1M0owWC9JWlpJMHIwc1JpK0VIcTJpaHhBNUkvbkdzMVB5a25RY1FX?=
+ =?utf-8?B?MThyV3hXN2RyNTRaUFhVMjFUT1VpaWdocnh2ckRkTWtIcmlPUlNJVXVWUTRT?=
+ =?utf-8?B?WU9mdFZ4QzNhODV5MzJrRVprYm50Z2JSZThzQmhmK21ZNWxEVHJ6dWtHV1lM?=
+ =?utf-8?B?NkkzSktqU3Q3RytRTytrWlQyNHJ3SnZnaHFVV2dsZHBnT3UrTm5DaDhYZUwv?=
+ =?utf-8?B?N3dnTWJYaktDb2tpelVpbnBadjZld0x0L002OWxSaUVqWU1GYVNEWk1aeVZY?=
+ =?utf-8?B?Z2xIVDBZMm5TeS9qMU1yMlB2VTFDelhDR2hRenpMNUNqcGo2SXBFa1poRm94?=
+ =?utf-8?B?V1lNd0xjcGlpdksrd2FsMlFHbmNTcjdvV0MvOXVpeExtWWsweURjMHV2eVJo?=
+ =?utf-8?B?cG9tWVkrV25hSGRZMTRmbklGaDRsWVhjUEZZY0ZsT0lZMHBNb3ZmcTFhWitZ?=
+ =?utf-8?B?WTVCOEhXS0RmYVBBeGhuT3Z3NzJyMTlUS1NndmYzV0x5VzF4N0xTZEl3TnFI?=
+ =?utf-8?B?ckNmUXhGYlFNTXdYR1RzQjVLMVpYT0VDTFFnVHhybEptVnB2YXh4alRmOHZu?=
+ =?utf-8?B?TGFia2dpR1dkUkwzRFJiZmNqNnpWRGJNOHF2MVBqR0o4cTJtTDB3T2tQZ0dV?=
+ =?utf-8?B?SmRSajlrMEhsMVRNbjJtazgvRkxzS2F2V01FZk5FU3F3enpHRnQ3dGVrRk5N?=
+ =?utf-8?B?eVozQitQb1FwbXJNaysvb3hERXJpZ2dVcTk3SXRCdFZZSzk4RkZaZzlSREtj?=
+ =?utf-8?B?TGtmWllmL1NMalgyTjhJdVc1Z2kwTXlvM1RkdEI4TVppVnJVbHlxdTlKUEQy?=
+ =?utf-8?B?VURXcVFCK1k1dTdQTUVGYzVjZkFsaFErTzlRUVBNTUNiRkhXT0tQb2s1dVVV?=
+ =?utf-8?B?QnZURlY2VXVudCswYXlZa2JnZmZxdE1oSjU2S0F1V0JUWnA0OFpOTFZKUE9S?=
+ =?utf-8?Q?Lpgy/yYk9G/9sQc0uXXiryNLe?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b02411b9-f3a1-4c6e-b1ef-08ddfe59400b
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB5505.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2025 06:35:43.8907
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JoM5GUv+fYFlP8e3mHX9438P1tZvqr3raR5B7P2TMuocCQKH1jvEsW+70hyXoho9jQ7jgLRCqZjXpXCY4HGEbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4473
 
-On Sat, Sep 27, 2025 at 11:39:28PM -0500, Dan Jurgens wrote:
-> As a practical matter I can't imagine a rules within 3 orders of
-> magnitude of 2B.
 
-Thinking about malicious devices here - virtio is commonly used with
-CoCo. I don't specifically ask to validate everything if bugs are
-not exploitable. Just that you keep this usecase in mind.
+
+On 22/09/2025 18:54, Sabrina Dubroca wrote:
+> 2025-09-22, 10:18:52 +0300, Shahar Shitrit wrote:
+>>
+>>
+>> On 14/09/2025 21:53, Jakub Kicinski wrote:
+>>> On Wed, 10 Sep 2025 09:47:40 +0300 Tariq Toukan wrote:
+>>>> When a netdev issues an RX async resync request, the TLS module
+>>>> increments rcd_delta for each new record that arrives. This tracks
+>>>> how far the current record is from the point where synchronization
+>>>> was lost.
+>>>>
+>>>> When rcd_delta reaches its threshold, it indicates that the device
+>>>> response is either excessively delayed or unlikely to arrive at all
+>>>> (at that point, tcp_sn may have wrapped around, so a match would no
+>>>> longer be valid anyway).
+>>>>
+>>>> Previous patch introduced tls_offload_rx_resync_async_request_cancel()
+>>>> to explicitly cancel resync requests when a device response failure
+>>>> is detected.
+>>>>
+>>>> This patch adds a final safeguard: cancel the async resync request when
+>>>> rcd_delta crosses its threshold, as reaching this point implies that
+>>>> earlier cancellation did not occur.
+>>>
+>>> Missing a Fixes tag
+>> Will add
+>>>
+>>>> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+>>>> index f672a62a9a52..56c14f1647a4 100644
+>>>> --- a/net/tls/tls_device.c
+>>>> +++ b/net/tls/tls_device.c
+>>>> @@ -721,8 +721,11 @@ tls_device_rx_resync_async(struct tls_offload_resync_async *resync_async,
+>>>>  		/* shouldn't get to wraparound:
+>>>>  		 * too long in async stage, something bad happened
+>>>>  		 */
+>>>> -		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX))
+>>>> +		if (WARN_ON_ONCE(resync_async->rcd_delta == USHRT_MAX)) {
+>>>> +			/* cancel resync request */
+>>>> +			atomic64_set(&resync_async->req, 0);
+>>>
+>>> we should probably use the helper added by the previous patch (I'd
+>>> probably squash them TBH)
+>>
+>> It's not trivial to use the helper here, since we don't have the socket.
+> 
+> tls_device_rx_resync_async doesn't currently get the socket, but it
+> has only one caller, tls_device_rx_resync_new_rec, which does. So
+> tls_device_rx_resync_async could easily get the socket. Or just pass
+> resync_async to tls_offload_rx_resync_async_request_cancel, since
+> that's what it really needs?
+> 
+yes these are options, but we don't like too much passing the socket to
+tls_device_rx_resync_new_rec() merely for this matter. Also we wanted to
+keep tls_offload_rx_resync_async_request_cancel in the same format of
+tls_offload_rx_resync_async_request_start/end meaning to have the socket
+as a parameter.
 
