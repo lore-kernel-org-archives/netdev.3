@@ -1,280 +1,83 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E7D2D7DF2;
-	Sun, 28 Sep 2025 09:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80E1298CA4
+	for <netdev@vger.kernel.org>; Sun, 28 Sep 2025 09:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759052112; cv=none; b=WVXBKpJXtpYKNwKQDmcp2ZrbfL/f6pOrWHYi2fdPl/5pSUSj7zRDsrTk2hCNGYJErc7rZiN+PYPgNdfimQPTkWsPU0k4BqXqZD4x9+e46Gx/YftA/s3+refvwwAs3p9xHdrqZoewl6Quhloixql3U2e1LYrHQh0eJA5Qm73BB1U=
+	t=1759052473; cv=none; b=Q9F1sw9l2FxypSFl+RmIIL0UxWKEnvFNZX+QHft+fkENw5L5wDbWMzO1CQCKJmO9web5a10Hh0czTM72rqn8vj7p7GjgxuFpKGGRc+CTrn5DjIjBIdAJgi2Tsit9EBRwVfbEY0y27beH1LVHY3f9GyUo6ME389ojkIjhzVFtCiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759052112; c=relaxed/simple;
-	bh=x7LcanOO5jUguzsWnaHVqCWZyFdBRCdPYyuW7ZwxcCs=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=be0TSYl1pheP9CAQKzyp92kTXLnMIDwN/nigB7gwutgVus0IyKq+ZSL0S4AviU78tPGyaP+bkzKGFWe+5N8MOpxzSLxE1fRqR8IYtdgp8KLatYVRLftKvCgsLWSB46WvWyicb8fswOc7tuM5yTXcLJoOc6qN3hfRKwz733Rk470=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gdUNi+A7; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gdUNi+A7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lZxI4ElVQRDHDwUjNlzEzvtgHXaIDyFC91nvXTxngLA=; b=gdUNi+A7vfiFM3CdZ6SL8iWd+E
-	M/vDY6RAvRvGEtk/TtKx3F/LKwBNU1qwqngZB4hRcZ/FL1N81QoSTBBJ5f5PLbYaD80tcFdBpd+Dv
-	5HIeRlIbg2h+3V3JxtzRunxwBrbtBBoIDBCsWbBrlk2Rex2gh/NGYjI3ILssewggenfUqvQOWFKfn
-	KsnYAGLOPTQGAg44aacgShs73pCE3x5XZP0jxhZdbYY4kPAFT58DrrwS1+HQjshCVol3n4xtVEhQ6
-	fysj9obdVcATONK5WMrNRflNoHwRfwEyg4WcdZ8QUR8JYjBUlHHrY4yg3JQUl44AKo4bckn5F0rU1
-	F2uf7P3w==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54368 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v2nay-000000005JU-3JTA;
-	Sun, 28 Sep 2025 10:21:29 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v2naw-00000007oKg-0c8B;
-	Sun, 28 Sep 2025 10:21:26 +0100
-In-Reply-To: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
-References: <aNj8U4xPJ0JepmZs@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alexis Lothore <alexis.lothore@bootlin.com>,
-	"Alexis Lothor__" <alexis.lothore@bootlin.com>,
+	s=arc-20240116; t=1759052473; c=relaxed/simple;
+	bh=zxWj32avZExS1tw2SyLgeX/kHceIkgtpT+OeM0Jy7U0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HyLzpQmWwU1aEIxRZ2BlsKOrUzOmaNPPbpCyTx7hPMA7DsCjgBYPinnRv+UUWnBkOuVswgTGS4y9ofT8ABnZ6U4rbBCiOivjLVHCQOZheXA+5qrdmd3t96w4VdHdHXlYJZWR/jmkwJc7KGF/GuUcaiwR5vO249d6Q3PFomG2KcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpgz1t1759052370t05b9b0ad
+X-QQ-Originating-IP: hbfx45qwpWhSZhdgNkzIvzLUjqNnqkgceTV5/v+S7Ok=
+Received: from lap-jiawenwu.trustnetic.com ( [115.220.225.164])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 28 Sep 2025 17:39:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 17010562721259606880
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Boon Khai Ng <boon.khai.ng@altera.com>,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	"Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Ley Foon Tan <leyfoon.tan@starfivetech.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Rohan G Thomas <rohan.g.thomas@altera.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
 	Simon Horman <horms@kernel.org>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Swathi K S <swathi.ks@samsung.com>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Vinod Koul <vkoul@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH RFC net-next v2 16/19] net: stmmac: add support for
- controlling PCS interrupts
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next 0/3] TXGBE feat new AML firmware
+Date: Sun, 28 Sep 2025 17:39:20 +0800
+Message-Id: <20250928093923.30456-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v2naw-00000007oKg-0c8B@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Sun, 28 Sep 2025 10:21:26 +0100
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N/EN6P+BmEafCy/1keUGfUTmpgzKdOsNFzEHxHvbeJwdsrucTfoOkA/Z
+	UL4EVtwVjtDBttXnSA9kht38FOWDUlTDdWgK4WcyBV5OMaJYQb5PX0FqxdZZaWBebHiI/7G
+	Tt6IJUyB3UNESPnf2Z0DU3WGvF/YlubiBsu9NJATJstnSFej40Dh73njxA6RDvXGoD1uQ7+
+	pt9AQ3CvEX0j4s3A1rt9qIQxKOeQctJnuzil09JAB/hxcwkQpERFG8u42JrMgA9VTc1lo8l
+	+rOESJMjuMVFtj66SKgY76PmDJsleL2Wfe4LDCCVWG/EC9Xb+0bvyl0hYy0AtWCyuHuF4ir
+	pf3Vw2yKVEVdmnqgkQFSV4o8rPnWRD6CA8q1+ZhYOEZO/EkHQlDQQaKfEzH1s377fsHZ6PX
+	mFN6hwxnUT7NeFtxsfpb040Ecyw707zpdR5Hgxp2Sv3nRLl0J6ojJEBrD8fbt7Ukiksc++3
+	kL+6EvFziFkb2302rO7WEzgjnDjzC/zfx54YhzSp04sUBDqwqICQyUZD6DVEmjep3Q9rB0g
+	giAndqKrYgV6YDPEgLKTLlQrK8kyB06WLObB5ReVYr9YEJUL3/lh+NKKlJVILUzskZ+tniP
+	9MeAAd4/Xww77PpMAu9XLFcCbkkbRgwa3i3TspU8pvk+W0S5hV9yf8GVWy8bboAnPsVx/6c
+	QHwwmozyFEEcbyrv67g2yc9Pt3dH+ksUbIMEUw7Sr7Q8JEKUYEnPePc7JKC1s0kbu56ByND
+	Iwbw2wSZhLOvzESbP5dnLz+Yn/8e8j4YDhJKBCHWvnKvYvw9uWpLdQrCRJNHuftlivBNewg
+	+tvaYZHIJXhhVdDbH8g9vFe0vwlffSEB2Olz4avNopsy34Jf98FrFP2zYK2kV5CATiD3jbK
+	GlcHxnmiSsv7ksNvnT5hltWSSyWULpAVtjieRz+sYbO1MIDeepclEc1/xbjXNI5Y9Mh6eA9
+	TbeW/JLa4VggLupFPjG9esqu+fe0H2NXr+ZY8p+2vDFqB9rEu8Mh91aH41HquIZXnxfAiPf
+	rcGVGCWAqCGw7XuBXu2IuHEdPUWT6hV8r1wvu+0A==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-RECHKSPAM: 0
 
-Add support to the PCS instance for controlling the PCS interrupts
-depending on whether the PCS is used.
+The firmware of AML devices are redesigned to adapt to more PHY
+interfaces. Optimize the driver to be compatible with the new firmware.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/dwmac1000.h   |  7 +++---
- .../ethernet/stmicro/stmmac/dwmac1000_core.c  | 11 ++++------
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h  |  2 --
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c | 10 +++------
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 22 ++++++++++++++++++-
- .../net/ethernet/stmicro/stmmac/stmmac_pcs.h  |  4 +++-
- 6 files changed, 34 insertions(+), 22 deletions(-)
+Jiawen Wu (3):
+  net: txgbe: expend SW-FW mailbox buffer size to identify QSFP module
+  net: txgbe: optimize the flow to setup PHY for AML devices
+  net: txgbe: rename txgbe_get_phy_link()
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-index 8f3002d9de78..697bba641e05 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-@@ -38,11 +38,10 @@
- #define	GMAC_INT_DISABLE_PCSAN		BIT(2)
- #define	GMAC_INT_DISABLE_PMT		BIT(3)
- #define	GMAC_INT_DISABLE_TIMESTAMP	BIT(9)
--#define	GMAC_INT_DISABLE_PCS	(GMAC_INT_DISABLE_PCSLINK | \
--				 GMAC_INT_DISABLE_PCSAN)
- #define	GMAC_INT_DEFAULT_MASK	(GMAC_INT_DISABLE_RGMII | \
--				 GMAC_INT_DISABLE_TIMESTAMP | \
--				 GMAC_INT_DISABLE_PCS)
-+				 GMAC_INT_DISABLE_PCSLINK | \
-+				 GMAC_INT_DISABLE_PCSAN | \
-+				 GMAC_INT_DISABLE_TIMESTAMP)
- 
- /* PMT Control and Status */
- #define GMAC_PMT		0x0000002c
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 2ca94bfd3f71..a2ae136d2c0e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -27,7 +27,9 @@ static int dwmac1000_pcs_init(struct stmmac_priv *priv)
- 	if (!priv->dma_cap.pcs)
- 		return 0;
- 
--	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
-+	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE,
-+					  GMAC_INT_DISABLE_PCSLINK |
-+					  GMAC_INT_DISABLE_PCSAN);
- }
- 
- static void dwmac1000_core_init(struct mac_device_info *hw,
-@@ -48,12 +50,7 @@ static void dwmac1000_core_init(struct mac_device_info *hw,
- 	writel(value | GMAC_CORE_INIT, ioaddr + GMAC_CONTROL);
- 
- 	/* Mask GMAC interrupts */
--	value = GMAC_INT_DEFAULT_MASK;
--
--	if (hw->pcs)
--		value &= ~GMAC_INT_DISABLE_PCS;
--
--	writel(value, ioaddr + GMAC_INT_MASK);
-+	writel(GMAC_INT_DEFAULT_MASK, ioaddr + GMAC_INT_MASK);
- 
- #ifdef STMMAC_VLAN_TAG_USED
- 	/* Tag detection without filtering */
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-index 6dd84b6544cc..3cb733781e1e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4.h
-@@ -106,8 +106,6 @@
- #define GMAC_INT_LPI_EN			BIT(5)
- #define GMAC_INT_TSIE			BIT(12)
- 
--#define	GMAC_PCS_IRQ_DEFAULT	(GMAC_INT_PCS_LINK | GMAC_INT_PCS_ANE)
--
- #define	GMAC_INT_DEFAULT_ENABLE	(GMAC_INT_PMT_EN | GMAC_INT_LPI_EN | \
- 				 GMAC_INT_TSIE)
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 6269407d70cd..a4282fd7c3c7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -27,7 +27,8 @@ static int dwmac4_pcs_init(struct stmmac_priv *priv)
- 	if (!priv->dma_cap.pcs)
- 		return 0;
- 
--	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE);
-+	return stmmac_integrated_pcs_init(priv, GMAC_PCS_BASE,
-+					  GMAC_INT_PCS_LINK | GMAC_INT_PCS_ANE);
- }
- 
- static void dwmac4_core_init(struct mac_device_info *hw,
-@@ -46,12 +47,7 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- 	writel((clk_rate / 1000000) - 1, ioaddr + GMAC4_MAC_ONEUS_TIC_COUNTER);
- 
- 	/* Enable GMAC interrupts */
--	value = GMAC_INT_DEFAULT_ENABLE;
--
--	if (hw->pcs)
--		value |= GMAC_PCS_IRQ_DEFAULT;
--
--	writel(value, ioaddr + GMAC_INT_EN);
-+	writel(GMAC_INT_DEFAULT_ENABLE, ioaddr + GMAC_INT_EN);
- 
- 	if (GMAC_INT_DEFAULT_ENABLE & GMAC_INT_TSIE)
- 		init_waitqueue_head(&priv->tstamp_busy_wait);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-index 50ea51d7a1cc..e2f531c11986 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
-@@ -2,6 +2,22 @@
- #include "stmmac.h"
- #include "stmmac_pcs.h"
- 
-+static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
-+{
-+	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
-+
-+	stmmac_mac_irq_modify(spcs->priv, 0, spcs->int_mask);
-+
-+	return 0;
-+}
-+
-+static void dwmac_integrated_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
-+
-+	stmmac_mac_irq_modify(spcs->priv, spcs->int_mask, 0);
-+}
-+
- static void dwmac_integrated_pcs_get_state(struct phylink_pcs *pcs,
- 					   unsigned int neg_mode,
- 					   struct phylink_link_state *state)
-@@ -23,11 +39,14 @@ static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
- }
- 
- static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
-+	.pcs_enable = dwmac_integrated_pcs_enable,
-+	.pcs_disable = dwmac_integrated_pcs_disable,
- 	.pcs_get_state = dwmac_integrated_pcs_get_state,
- 	.pcs_config = dwmac_integrated_pcs_config,
- };
- 
--int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset)
-+int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset,
-+			       u32 int_mask)
- {
- 	struct stmmac_pcs *spcs;
- 
-@@ -37,6 +56,7 @@ int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset)
- 
- 	spcs->priv = priv;
- 	spcs->base = priv->ioaddr + offset;
-+	spcs->int_mask = int_mask;
- 	spcs->pcs.ops = &dwmac_integrated_pcs_ops;
- 
- 	__set_bit(PHY_INTERFACE_MODE_SGMII, spcs->pcs.supported_interfaces);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-index 64397ac8ecab..cda93894168e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
-@@ -52,6 +52,7 @@ struct stmmac_priv;
- struct stmmac_pcs {
- 	struct stmmac_priv *priv;
- 	void __iomem *base;
-+	u32 int_mask;
- 	struct phylink_pcs pcs;
- };
- 
-@@ -61,7 +62,8 @@ phylink_pcs_to_stmmac_pcs(struct phylink_pcs *pcs)
- 	return container_of(pcs, struct stmmac_pcs, pcs);
- }
- 
--int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset);
-+int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset,
-+			       u32 int_mask);
- 
- /**
-  * dwmac_pcs_isr - TBI, RTBI, or SGMII PHY ISR
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 -
+ .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 54 ++++++-------------
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  5 +-
+ 3 files changed, 20 insertions(+), 41 deletions(-)
+
 -- 
-2.47.3
+2.48.1
 
