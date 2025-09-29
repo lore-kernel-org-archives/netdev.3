@@ -1,191 +1,165 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D18E555
-	for <netdev@vger.kernel.org>; Mon, 29 Sep 2025 15:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4850C3090C9
+	for <netdev@vger.kernel.org>; Mon, 29 Sep 2025 15:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759158219; cv=none; b=aO2XpCfHfHs56bIQdFb6rWLSzbPBvvhg0yeIk85U1a6a9bMtJkfHczeS4+0U35JUjVyXGY3pQBHXI9iQfhBs1pWwBxzJY1ryui4qZR7IHlqTLrDnx5C0xPJmw2OJirmWpyfJ+vyRgrJd3yktrzciTkQoz76egALBJ33izOMxcrc=
+	t=1759159862; cv=none; b=rCU17fEEglA5fI2lz1/OU+kk73WLD69cKKIYPrx1uRDDI2uSPIzTbnEacg6e9RCEkdWMva/HBSrnZjNQfVe6Z44ChyRsxUj5r5jpmWZwaDE/Od8/jvrKzcv9Q32TsrC0hYeoCWBCRi00pDkGqNDcuo8DdX8z0TtjxqpHk/zcGno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759158219; c=relaxed/simple;
-	bh=Txljvt4Nq0aTqDJEu/ZXvtErmn62T+wSfeV8ckXdBe8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UDpgnbXnDvEcH6ADDF+yxRRwEbvAsAM5EfjoQCPqYvWgsahLuRi7+sKKdaXdIsAj1uYaYu4/YOTofm+ff70p7aHxYMsj34lLt0LcVBoXmI4AdK1MqSC5wBF9Pg2xQvTSQWEtyUg5uJ+kKh19RFVwVRFuxdrJKGnfWvVuBQMZHsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MX0j0bys; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759159862; c=relaxed/simple;
+	bh=ABwM0eGVQ7WQM24CLNELoH9xGXewKt4+TlK7a0k4I7E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=e4VtJ4+6oW9o8m456qmVzUtU8Hr6b5TKNkPE9maKkbMo+a+e6FznoNU2tOR+Bw9Ge5D7oFOmcMyXxbSngE45/1EmtS3BWLxKkvWvb0QK5PJExwW2K7A/Tp/pj6iBtv+yVfSzWSqpqwRz0jE1kOxe5AVmlg+k4bHxvpaC/rwP8Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MweA0EAR; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MX0j0bys"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-62fe4a1d872so906173a12.0
-        for <netdev@vger.kernel.org>; Mon, 29 Sep 2025 08:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759158216; x=1759763016; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n1XrYQjyYcqW6k1KsAQsJ4lFAw/seygwzewKvhwTUHM=;
-        b=MX0j0bys+2sTRt04ax4Cv9+y88VhGGSiPiDidNJNjjci3SaJGmGJBGXUiLuN+2cv+/
-         sEA6MkKd5jJexcg8wgFweiMNKgkwi0Jc3Nlo7OIUa0cw9Y8R7hvYNxmqLwA7LBx5zwdP
-         M5zT+87/VSqx2Q/JQEe11mId4Rik7YkqnPVo+0KfMyIyPxAs9jLI14Z5QzcBPTv8zyky
-         7qMudrMAedHjqUior0bWZiabfSO1jLK7SqdlPKK5BRrWBDD+nfbbq1wT9j9IJdXjzSpB
-         mtECKRv7ATv0XLmwNta0ExKMd7JLN6fDtzUPqsfJj8VyE5IydH8qBgNZvQHKXKp7EDnQ
-         G3Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759158216; x=1759763016;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n1XrYQjyYcqW6k1KsAQsJ4lFAw/seygwzewKvhwTUHM=;
-        b=jdD3hMqdwQeBeNUi3ugjFMXmHyRopEXnFX3QzyY9HjGunt+VhQwqzibwL7hmEEfdJN
-         AEa89ghWWqEyhvktwALOl3fQ0hmfRYqy7KkmrfWolwXb15qExNaazDsNwaYlBxxXH5WQ
-         S5/cI8UQWM2TYjlOw138CHOHSE8dFfjoDHmhMGMONbGhGAC1gx+1tSmUCWhsmnrxMLrm
-         BswdTXQetNesT+qwmD0yJLFZwa9KauQkWaojdYhBxI7nflCgYSWOBH/t34Jc+5O5eJZl
-         YsUJBxMZ1sOeaIYdKuEv2cPWoAI2AOlA21xrpHT72nblJX+pkPFanl3AsN7xEDds0djY
-         kxcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFzoaaC1M9pdLbwllAHlarIOb7aGAUXfcDM1R1HaisdRFaV4ErSlHtqX73OtaES6wvWPwITeg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMXYR9mCYAO38wDQVfmEMm2YQ0a0Iflz2xV2KgZeHIlAB5Nzlt
-	0DTfXUQKIPtJam244zGYTrb7H7s2Otax80+CJqMeQJtDQ2FsR+O0jLiH
-X-Gm-Gg: ASbGncuD4do630h0NYJuuHvvAWeFOrdap7xT0Q7vQOmFN3s1sqGRRzIwX71TMZEG7Xv
-	outoTczO/SxMu6lPLAjeBcdTWbbzzngriLIzKDO4h156Q5tDfcl0Xip+omB8qOMDzurbCoG5MUl
-	XjPOKv+7p4TjNoe0epW6WnP2hlIe8ACnULZ52d+CykCHH1SyPUGuoLZwE+Vis90evkqoOo64AYz
-	KJ2lJkRquE1ppGJfRZTClo0Tga9vDMu2fLjaCctGYxvnrBnNTHT6gexPdJu6Kf63yw5GxzEkUyd
-	3gaKgsNEcFMfyOmTs+luVDjSzNQBVSYDgqvDEuuQQ3hH1GIDowq5tmMVvOcwDALVp+0e2zTehyf
-	uatRdvfOc2y5e6edGs5wc9kJ7sJ+Ey14GU4rp1yXRYdkK
-X-Google-Smtp-Source: AGHT+IGB16HNv+Jp1bLAOldcBF3kwkXvbqxilb33Pzgtml+xb1qiDD8br1uCM6zm8zTtfrtEl6gFPw==
-X-Received: by 2002:a17:906:c14b:b0:b07:c715:1e44 with SMTP id a640c23a62f3a-b34b8999455mr944929466b.5.1759158215348;
-        Mon, 29 Sep 2025 08:03:35 -0700 (PDT)
-Received: from [192.168.1.105] ([165.50.77.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b3d461a411fsm309818066b.10.2025.09.29.08.03.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Sep 2025 08:03:35 -0700 (PDT)
-Message-ID: <e3a0d8ff-d03d-4854-bf04-8ff8265b0257@gmail.com>
-Date: Mon, 29 Sep 2025 17:03:29 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MweA0EAR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1759159862; x=1790695862;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ABwM0eGVQ7WQM24CLNELoH9xGXewKt4+TlK7a0k4I7E=;
+  b=MweA0EARt4OiIcx4OIVbNquFT7qqB1xaDVyZJls+0sxUhFMM2F6sJZmu
+   hQMgRlqBz8fsG5WNYiPs5s3HNrjM9kChZmlOiLzaiuu0SjDn00MfQlW0K
+   7jUYAbhdARTfWQhIN5CtWwy+zrEnkuNE2lNlZvX+idKJIg3wltFqvmr6z
+   6YPsfUxrluxvnFOLEnxXnKrrIleWYEqgd3TIh6vd2+bc6cs/i4OaGkUkt
+   q2AkuoCK8z4p/VUqF3BL6UtlJDpgPoMy4BnqmZsJH8Oj4FvPfeQ3Duf0N
+   N03gjW5OjYbJhRWVZp6uOh+39Tc+UXGEZrRchZ1djx2Le92USrQQR+bLg
+   w==;
+X-CSE-ConnectionGUID: KYlh5LSBRE6auyQ1MOL2lQ==
+X-CSE-MsgGUID: +OOJrRa5S/aQxiaw5OI2dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11568"; a="71650111"
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
+   d="scan'208";a="71650111"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2025 08:30:59 -0700
+X-CSE-ConnectionGUID: bYpCuTx4SXmxry8ZwD7tLA==
+X-CSE-MsgGUID: ohGdYomQRiGnqPnwTNjFOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,301,1751266800"; 
+   d="scan'208";a="178072611"
+Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
+  by orviesa007.jf.intel.com with ESMTP; 29 Sep 2025 08:30:57 -0700
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH v2 iwl-net] ice: fix destination CGU for dual complex E825
+Date: Mon, 29 Sep 2025 17:29:05 +0200
+Message-Id: <20250929152905.2947520-1-grzegorz.nitka@intel.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-Subject: Re: [PATCH] selftests/bpf: Add -Wsign-compare C compilation flag
-To: David Laight <david.laight.linux@gmail.com>
-Cc: andrii@kernel.org, eddyz87@gmail.com, ast@kernel.org,
- daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, shuah@kernel.org,
- matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, linux@jordanrome.com,
- ameryhung@gmail.com, toke@redhat.com, houtao1@huawei.com,
- emil@etsalapatis.com, yatsenko@meta.com, isolodrai@meta.com,
- a.s.protopopov@gmail.com, dxu@dxuuu.xyz, memxor@gmail.com,
- vmalik@redhat.com, bigeasy@linutronix.de, tj@kernel.org,
- gregkh@linuxfoundation.org, paul@paul-moore.com,
- bboscaccy@linux.microsoft.com, James.Bottomley@HansenPartnership.com,
- mrpre@163.com, jakub@cloudflare.com, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel-mentees@lists.linuxfoundation.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com
-References: <20250924162408.815137-1-mehdi.benhadjkhelifa@gmail.com>
- <20250926124555.009bfcd6@pumpkin>
-Content-Language: en-US
-In-Reply-To: <20250926124555.009bfcd6@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/26/25 12:45 PM, David Laight wrote:
-> On Wed, 24 Sep 2025 17:23:49 +0100
-> Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com> wrote:
-> 
->> -Change all the source files and the corresponding headers
->> to having matching sign comparisons.
+On dual complex E825, only complex 0 has functional CGU (Clock
+Generation Unit), powering all the PHYs.
+SBQ (Side Band Queue) destination device 'cgu' in current implementation
+points to CGU on current complex and, in order to access primary CGU
+from the secondary complex, the driver should use 'cgu_peer' as
+a destination device in read/write CGU registers operations.
 
-Hi david,
-sorry for the late reply.
+Define new 'cgu_peer' (15) as RDA (Remote Device Access) client over
+SB-IOSF interface and use it as device target when accessing CGU from
+secondary complex.
 
-> 'Fixing' -Wsign-compare by adding loads of casts doesn't seem right.
-> The only real way is to change all the types to unsigned ones.
-The last v3 did only do that with no casting as it was suggested by 
-David too.
+This problem has been identified when working on recovery clock
+enablement [1]. In existing implementation for E825 devices, only PF0,
+which is clock owner, is involved in CGU configuration, thus the
+problem was not exposed to the user.
 
-> Consider the following:
-> 	int x = read(fd, buf, len);
-> 	if (x < 0)
-> 		return -1;
-> 	if (x > sizeof (struct fubar))
-> 		return -1;
-> That will generate a 'sign-compare' error, but min(x, sizeof (struct fubar))
-> doesn't generate an error because the compiler knows 'x' isn't negative.
+[1] https://patchwork.ozlabs.org/project/intel-wired-lan/patch/20250905150947.871566-1-grzegorz.nitka@intel.com/
 
-  Yes,-Wsign-compare does add errors with -Werror enabled in that case 
-and many other cases where the code is perfectly fine which is one of 
-it's drawbacks.Also I though that because of GCC/Clang heuristics 
-sometimes min() suppress the warning not because that the compiler knows 
-that x isn't negative.I'm probably wrong here.
-> A well known compiler also rejects:
-> 	unsigned char a;
-> 	unsigned int b;
-> 	if (b > a)
-> 		return;
-> because 'a' is promoted to 'signed int' before it does the check.
+Fixes: e2193f9f9ec9 ("ice: enable timesync operation on 2xNAC E825 devices")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Arkadiusz Kubalewski <Arkadiusz.kubalewski@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+v1->v2:
+- rebased
+- fixed code style coomments (skipped redundant 'else', improved
+  'Return'
+  description in function doc-string)
+---
+ drivers/net/ethernet/intel/ice/ice_common.c  | 26 ++++++++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_sbq_cmd.h |  1 +
+ 2 files changed, 25 insertions(+), 2 deletions(-)
 
-In my knowledge,compilers don't necessarily reject the above code by 
-default. Since -Wall in GCC includes -Wsign-compare but -Wall in clang 
-doesn't, doing -Wall -Werror for clang compiler won't trigger an error 
-in the case above not even a warning.My changes are to make those 
-comparisons produce an error since the -Werror flag is already enabled 
-in the Makefile.
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index eb6abf452b05..a2a8e4cfa01f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -6382,6 +6382,28 @@ u32 ice_get_link_speed(u16 index)
+ 	return ice_aq_to_link_speed[index];
+ }
+ 
++/**
++ * ice_get_dest_cgu - get destination CGU dev for given HW
++ * @hw: pointer to the HW struct
++ *
++ * Get CGU client id for CGU register read/write operations.
++ *
++ * Return: CGU device id to use in SBQ transactions.
++ */
++static enum ice_sbq_dev_id ice_get_dest_cgu(struct ice_hw *hw)
++{
++	/* On dual complex E825 only complex 0 has functional CGU powering all
++	 * the PHYs.
++	 * SBQ destination device cgu points to CGU on a current complex and to
++	 * access primary CGU from the secondary complex, the driver should use
++	 * cgu_peer as a destination device.
++	 */
++	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 && ice_is_dual(hw) &&
++	    !ice_is_primary(hw))
++		return ice_sbq_dev_cgu_peer;
++	return ice_sbq_dev_cgu;
++}
++
+ /**
+  * ice_read_cgu_reg - Read a CGU register
+  * @hw: Pointer to the HW struct
+@@ -6396,8 +6418,8 @@ u32 ice_get_link_speed(u16 index)
+ int ice_read_cgu_reg(struct ice_hw *hw, u32 addr, u32 *val)
+ {
+ 	struct ice_sbq_msg_input cgu_msg = {
++		.dest_dev = ice_get_dest_cgu(hw),
+ 		.opcode = ice_sbq_msg_rd,
+-		.dest_dev = ice_sbq_dev_cgu,
+ 		.msg_addr_low = addr
+ 	};
+ 	int err;
+@@ -6428,8 +6450,8 @@ int ice_read_cgu_reg(struct ice_hw *hw, u32 addr, u32 *val)
+ int ice_write_cgu_reg(struct ice_hw *hw, u32 addr, u32 val)
+ {
+ 	struct ice_sbq_msg_input cgu_msg = {
++		.dest_dev = ice_get_dest_cgu(hw),
+ 		.opcode = ice_sbq_msg_wr,
+-		.dest_dev = ice_sbq_dev_cgu,
+ 		.msg_addr_low = addr,
+ 		.data = val
+ 	};
+diff --git a/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h b/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
+index 183dd5457d6a..21bb861febbf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_sbq_cmd.h
+@@ -50,6 +50,7 @@ enum ice_sbq_dev_id {
+ 	ice_sbq_dev_phy_0	= 0x02,
+ 	ice_sbq_dev_cgu		= 0x06,
+ 	ice_sbq_dev_phy_0_peer	= 0x0D,
++	ice_sbq_dev_cgu_peer	= 0x0F,
+ };
+ 
+ enum ice_sbq_msg_opcode {
 
-> So until the compilers start looking at the known domain of the value
-> (not just the type) I enabling -Wsign-compare' is pretty pointless.
-
-I agree that enabling -Wsign-compare is pretty noisy. But it does have 
-some usefulness. Take for example this code:
-	int n = -5;
-	for (unsigned i = 0; i < n; i++) {
-     	// ...
-	}
-Since this is valid code by the compiler, it will allow it but n here is 
-promoted to an unsigned which converts -5 to being 4294967291 thus 
-making the loop run more than what was desired.of course,here the 
-example is much easy to follow and variables are very well set but the 
-point is that these could cause issues when hidden inside a lot of macro 
-code.
-
-> As a matter of interest did you actually find any bugs?
-No,I have not found any bug related to the current state of code in bpf 
-selftests but It works as a prevention mechanism for future bugs.Rather 
-than wait until something breaks in future code.
-> 	David
-> 
-
-Thank you for your time David.I would appreciate if you suggest on how I 
-can have a useful patch on this or if I should drop this.
-Best Regards,
-Mehdi
-> 
->>
->> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
->> ---
->> As suggested by the TODO, -Wsign-compare was added to the C compilation
->> flags for the selftests/bpf/Makefile and all corresponding files in
->> selftests and a single file under tools/lib/bpf/usdt.bpf.h have been
->> carefully changed to account for correct sign comparisons either by
->> explicit casting or changing the variable type.Only local variables
->> and variables which are in limited scope have been changed in cases
->> where it doesn't break the code.Other struct variables or global ones
->> have left untouched to avoid other conflicts and opted to explicit
->> casting in this case.This change will help avoid implicit type
->> conversions and have predictable behavior.
->>
->> I have already compiled all bpf tests with no errors as well as the
->> kernel and have ran all the selftests with no obvious side effects.
->> I would like to know if it's more convinient to have all changes as
->> a single patch like here or if it needs to be divided in some way
->> and sent as a patch series.
->>
->> Best Regards,
->> Mehdi Ben Hadj Khelifa
-> ...
+base-commit: 32228c42b96884ecb91bd420d8a8fddaece24df5
+-- 
+2.39.3
 
