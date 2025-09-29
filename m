@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979B12641E3;
-	Mon, 29 Sep 2025 07:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3358C261B92;
+	Mon, 29 Sep 2025 07:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759132495; cv=none; b=Xj4MKy07S8yTX+PgOXjAMr3W88KvsfIRCR9vgssUUmK0Qza5R99ETYL8YAGHzn+ZC+PoD3AODby+AJVX4J24B7tlC7oYt+cxqwLEpnzVlc3GxRpe/uc7GW1XgV2lTN/07P9Z/A1w6SCvNTwcH+AQoP6mp6FtrvafEi4OoV/apec=
+	t=1759132501; cv=none; b=Pz2TKDTtcF2qBRywvP8fyn/ZUBBkIg4ysG6NDM5n57V8HYFRNezErxSHYiuWC5ibksR0HVJXU5vhDhuD/2m6WZT58Aj5Lhe0wmighJVcqj6SKBAm0HUY4sUwZbSsgFdqGnvnxDgJRx1GJ/pR0hMkw1EXUAQxFG5x2zPBHAQbSLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759132495; c=relaxed/simple;
-	bh=9WGAd4vVIKc3s7UlQIBT25/OrUd3rKMdavQMSCnYfy4=;
+	s=arc-20240116; t=1759132501; c=relaxed/simple;
+	bh=A8hSnozwrZ6u84etwYiLlGN46MNAswFgw/kuE4h2a5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iejJM+Rd4K8tXVQ96Xj4sGIZVMRpIAaRrYjxAvKGEbJDCR8oZeC9WrElSBNfbPmDGr/o7ycQpBik8HLNj7pbBBqQo5D9rXwmlGw7C0NK/HauU9uBwt/lbEay8igzr8hYAZxtYtjG2VKOM9qY8Lu5IiBRZnSsSLw3IEEdvDh9IzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DHaGPUi+; arc=none smtp.client-ip=117.135.210.4
+	 MIME-Version; b=ZQHljcCOXBcPRlc7GrTxBRLYNQGDtTGFgEWfcpdP9MWng1gB6ysL2fyMEcmpii0ydY3WrLwNU8sw9KJkODinwn93s7ioQ9xZZPobTYMDvauXwxTdEyt9W5WfNCPgvRMrIeBNDtzX3G1iKvPT/yIjSTKj+tkdjiFs8jZ5lg46Le4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JgdzlENL; arc=none smtp.client-ip=220.197.31.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DHaGPUi+"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JgdzlENL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=hc
-	njkVa6WlJcQUTouHtEfydAEfTLWoPvCPrVuyQadMo=; b=DHaGPUi+6laqBEWJP2
-	r+jlsQFTogORsn3b3IU7EazRljm1kbySEqBy1m/FiLsnjr8msRNdrdsbeus/E6zJ
-	xw9pgP6DMTl8/VAxNfoHlfnsy4EiXKXcpCcdCK0O94ot5KwfqFPA25T6o+p+8pwJ
-	ifQWl67LP//6Is9pXbhuqKnN0=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=gp
+	UbwNbQnfvLoVX63WNhLorivcOQ+ivqwrrVHACGIpM=; b=JgdzlENLwF1SRbT8Uo
+	HBRGOFb+I45JJx2lDnOXSnFLLM8Nja0yGmcUL0hpbkLhjDNKqijqDKDSG3JnieBY
+	RdUA4E0KTomaSpztJIx+bg965upFDK/NVZ6gBC3U1LcJUgNoOSns/3HzMmItIj1A
+	1S8ScMTUeydXFCU7mjvm5KYqY=
 Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDnD_0bO9poz8vCAQ--.15003S2;
-	Mon, 29 Sep 2025 15:54:04 +0800 (CST)
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDnD_0bO9poz8vCAQ--.15003S4;
+	Mon, 29 Sep 2025 15:54:07 +0800 (CST)
 From: yicongsrfy@163.com
 To: michal.pecio@gmail.com,
 	oneukum@suse.com,
@@ -37,12 +37,13 @@ Cc: marcan@marcan.st,
 	linux-usb@vger.kernel.org,
 	netdev@vger.kernel.org,
 	yicong@kylinos.cn
-Subject: [PATCH v3 1/3] Revert "net: usb: ax88179_178a: Bind only to vendor-specific interface"
-Date: Mon, 29 Sep 2025 15:53:59 +0800
-Message-Id: <20250929075401.3143438-1-yicongsrfy@163.com>
+Subject: [PATCH v3 3/3] net: usb: ax88179_178a: add USB device driver for config selection
+Date: Mon, 29 Sep 2025 15:54:01 +0800
+Message-Id: <20250929075401.3143438-3-yicongsrfy@163.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250929054246.3118527-1-yicongsrfy@163.com>
+In-Reply-To: <20250929075401.3143438-1-yicongsrfy@163.com>
 References: <20250929054246.3118527-1-yicongsrfy@163.com>
+ <20250929075401.3143438-1-yicongsrfy@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,112 +51,132 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDnD_0bO9poz8vCAQ--.15003S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJFWDCw17AFWkKFWkXr4fKrg_yoWrCr43pF
-	43KryF9rZxWFW5Krnavr1kua98Aws7K39Ika12gw17Z3Z3JF1SqasxAF47A34UXr4rAw12
-	vr97ArW2kF1kGwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j05l8UUUUU=
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/xtbBFBfX22jaOQ8x8AAAsK
+X-CM-TRANSID:PCgvCgDnD_0bO9poz8vCAQ--.15003S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw4DWryxGF48tw1rXw18Krg_yoW5Kw47pF
+	4qgF90krW7JF4fJrs3JrWkZFy5Zan2k3yv9ryxK3Wa9r93A3s7t3WkKry5AF1DGrW8WF12
+	ya1UJa13uF4UGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j4OJ5UUUUU=
+X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/xtbBFAPX22jaOQ8yRQAAso
 
 From: Yi Cong <yicong@kylinos.cn>
 
-This reverts commit c67cc4315a8e605ec875bd3a1210a549e3562ddc.
+A similar reason was raised in commit ec51fbd1b8a2 ("r8152: add USB
+device driver for config selection"):
+Linux prioritizes probing non-vendor-specific configurations.
 
-Currently, in the Linux kernel, USB NIC with ASIX chips use the cdc_ncm
-driver. However, this driver lacks functionality and performs worse than
-the vendor's proprietary driver. In my testing, I have identified the
-following issues:
+Referring to the implementation of this patch, cfgselect is also
+used for ax88179 to override the default configuration selection.
 
-1. The cdc_ncm driver does not support changing the link speed via
-   ethtool because the corresponding callback function is set to NULL.
-2. The CDC protocol does not support retrieving the network duplex status.
-3. In TCP_RR and UDP_RR tests, the performance of the cdc_ncm driver
-   is significantly lower than that of the vendor's driver:
-Average of three netperf runs: `netperf -t {TCP/UDP_RR} -H serverIP -l 120`
-- cdc_ncm.ko: TCP_RR: 740, UDP_RR: 750
-- ax88179_178a.ko: TCP_RR: 8900, UDP_RR: 9200
-
-Issues related to the vendor's driver ax88179_178a.ko will be addressed
-in the next patch.
+v2: fix warning from checkpatch
 
 Signed-off-by: Yi Cong <yicong@kylinos.cn>
 ---
- drivers/net/usb/ax88179_178a.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 70 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 67 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index b034ef8a73ea..29cbe9ddd610 100644
+index 29cbe9ddd610..f2e86b9256dc 100644
 --- a/drivers/net/usb/ax88179_178a.c
 +++ b/drivers/net/usb/ax88179_178a.c
-@@ -1885,55 +1885,55 @@ static const struct driver_info at_umc2000sp_info = {
- static const struct usb_device_id products[] = {
- {
- 	/* ASIX AX88179 10/100/1000 */
--	USB_DEVICE_AND_INTERFACE_INFO(0x0b95, 0x1790, 0xff, 0xff, 0),
-+	USB_DEVICE(0x0b95, 0x1790),
- 	.driver_info = (unsigned long)&ax88179_info,
- }, {
- 	/* ASIX AX88178A 10/100/1000 */
--	USB_DEVICE_AND_INTERFACE_INFO(0x0b95, 0x178a, 0xff, 0xff, 0),
-+	USB_DEVICE(0x0b95, 0x178a),
- 	.driver_info = (unsigned long)&ax88178a_info,
- }, {
- 	/* Cypress GX3 SuperSpeed to Gigabit Ethernet Bridge Controller */
--	USB_DEVICE_AND_INTERFACE_INFO(0x04b4, 0x3610, 0xff, 0xff, 0),
-+	USB_DEVICE(0x04b4, 0x3610),
- 	.driver_info = (unsigned long)&cypress_GX3_info,
- }, {
- 	/* D-Link DUB-1312 USB 3.0 to Gigabit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x4a00, 0xff, 0xff, 0),
-+	USB_DEVICE(0x2001, 0x4a00),
- 	.driver_info = (unsigned long)&dlink_dub1312_info,
- }, {
- 	/* Sitecom USB 3.0 to Gigabit Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0072, 0xff, 0xff, 0),
-+	USB_DEVICE(0x0df6, 0x0072),
- 	.driver_info = (unsigned long)&sitecom_info,
- }, {
- 	/* Samsung USB Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x04e8, 0xa100, 0xff, 0xff, 0),
-+	USB_DEVICE(0x04e8, 0xa100),
- 	.driver_info = (unsigned long)&samsung_info,
- }, {
- 	/* Lenovo OneLinkDock Gigabit LAN */
--	USB_DEVICE_AND_INTERFACE_INFO(0x17ef, 0x304b, 0xff, 0xff, 0),
-+	USB_DEVICE(0x17ef, 0x304b),
- 	.driver_info = (unsigned long)&lenovo_info,
- }, {
- 	/* Belkin B2B128 USB 3.0 Hub + Gigabit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x0128, 0xff, 0xff, 0),
-+	USB_DEVICE(0x050d, 0x0128),
- 	.driver_info = (unsigned long)&belkin_info,
- }, {
- 	/* Toshiba USB 3.0 GBit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x0930, 0x0a13, 0xff, 0xff, 0),
-+	USB_DEVICE(0x0930, 0x0a13),
- 	.driver_info = (unsigned long)&toshiba_info,
- }, {
- 	/* Magic Control Technology U3-A9003 USB 3.0 Gigabit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x0711, 0x0179, 0xff, 0xff, 0),
-+	USB_DEVICE(0x0711, 0x0179),
- 	.driver_info = (unsigned long)&mct_info,
- }, {
- 	/* Allied Telesis AT-UMC2000 USB 3.0/USB 3.1 Gen 1 to Gigabit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x07c9, 0x000e, 0xff, 0xff, 0),
-+	USB_DEVICE(0x07c9, 0x000e),
- 	.driver_info = (unsigned long)&at_umc2000_info,
- }, {
- 	/* Allied Telesis AT-UMC200 USB 3.0/USB 3.1 Gen 1 to Fast Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x07c9, 0x000f, 0xff, 0xff, 0),
-+	USB_DEVICE(0x07c9, 0x000f),
- 	.driver_info = (unsigned long)&at_umc200_info,
- }, {
- 	/* Allied Telesis AT-UMC2000/SP USB 3.0/USB 3.1 Gen 1 to Gigabit Ethernet Adapter */
--	USB_DEVICE_AND_INTERFACE_INFO(0x07c9, 0x0010, 0xff, 0xff, 0),
-+	USB_DEVICE(0x07c9, 0x0010),
- 	.driver_info = (unsigned long)&at_umc2000sp_info,
- },
- 	{ },
+@@ -14,6 +14,7 @@
+ #include <uapi/linux/mdio.h>
+ #include <linux/mdio.h>
+ 
++#define MODULENAME "ax88179_178a"
+ #define AX88179_PHY_ID				0x03
+ #define AX_EEPROM_LEN				0x100
+ #define AX88179_EEPROM_MAGIC			0x17900b95
+@@ -1713,6 +1714,14 @@ static int ax88179_stop(struct usbnet *dev)
+ 	return 0;
+ }
+ 
++static int ax88179_probe(struct usb_interface *intf, const struct usb_device_id *i)
++{
++	if (intf->cur_altsetting->desc.bInterfaceClass != USB_CLASS_VENDOR_SPEC)
++		return -ENODEV;
++
++	return usbnet_probe(intf, i);
++}
++
+ static const struct driver_info ax88179_info = {
+ 	.description = "ASIX AX88179 USB 3.0 Gigabit Ethernet",
+ 	.bind = ax88179_bind,
+@@ -1941,9 +1950,9 @@ static const struct usb_device_id products[] = {
+ MODULE_DEVICE_TABLE(usb, products);
+ 
+ static struct usb_driver ax88179_178a_driver = {
+-	.name =		"ax88179_178a",
++	.name =		MODULENAME,
+ 	.id_table =	products,
+-	.probe =	usbnet_probe,
++	.probe =	ax88179_probe,
+ 	.suspend =	ax88179_suspend,
+ 	.resume =	ax88179_resume,
+ 	.reset_resume =	ax88179_resume,
+@@ -1952,7 +1961,62 @@ static struct usb_driver ax88179_178a_driver = {
+ 	.disable_hub_initiated_lpm = 1,
+ };
+ 
+-module_usb_driver(ax88179_178a_driver);
++static int ax88179_cfgselector_probe(struct usb_device *udev)
++{
++	struct usb_host_config *c;
++	int i, num_configs;
++
++	/* The vendor mode is not always config #1, so to find it out. */
++	c = udev->config;
++	num_configs = udev->descriptor.bNumConfigurations;
++	for (i = 0; i < num_configs; (i++, c++)) {
++		struct usb_interface_descriptor	*desc = NULL;
++
++		if (!c->desc.bNumInterfaces)
++			continue;
++		desc = &c->intf_cache[0]->altsetting->desc;
++		if (desc->bInterfaceClass == USB_CLASS_VENDOR_SPEC)
++			break;
++	}
++
++	if (i == num_configs)
++		return -ENODEV;
++
++	if (usb_set_configuration(udev, c->desc.bConfigurationValue)) {
++		dev_err(&udev->dev, "Failed to set configuration %d\n",
++			c->desc.bConfigurationValue);
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static struct usb_device_driver ax88179_cfgselector_driver = {
++	.name =		MODULENAME "-cfgselector",
++	.probe =	ax88179_cfgselector_probe,
++	.id_table =	products,
++	.generic_subclass = 1,
++	.supports_autosuspend = 1,
++};
++
++static int __init ax88179_driver_init(void)
++{
++	int ret;
++
++	ret = usb_register_device_driver(&ax88179_cfgselector_driver, THIS_MODULE);
++	if (ret)
++		return ret;
++	return usb_register(&ax88179_178a_driver);
++}
++
++static void __exit ax88179_driver_exit(void)
++{
++	usb_deregister(&ax88179_178a_driver);
++	usb_deregister_device_driver(&ax88179_cfgselector_driver);
++}
++
++module_init(ax88179_driver_init);
++module_exit(ax88179_driver_exit);
+ 
+ MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
+ MODULE_LICENSE("GPL");
 -- 
 2.25.1
 
