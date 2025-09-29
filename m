@@ -1,236 +1,135 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F648263F52;
-	Mon, 29 Sep 2025 07:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2399266B67;
+	Mon, 29 Sep 2025 07:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759132519; cv=none; b=CdL3DCJR5J4RcLYiIN/zEYHKYBXtS1UDbnZ14rDijD46MDye/SWWYvuCDwVtfYmI/Bc5xSZLDUM35hFlaaB2lxtR25PQSKr/gXQPj1DavjhGGVRY2DVn+mACAjiNFzoYEcOLf2tr4rNPytVXlnSzYbR2AlW6vyV3oj5WbDVAiEc=
+	t=1759132541; cv=none; b=kS3Ez0qjVqHJzSO/cNCpY3NJoHmeszhyW/UMPqzC4MCmseu6b8yD3Xo7zcdi4cp03X8xWTEBsUCC5jiv3TXZoP0y2EFMYvjAAKCU1SFdyyW/v5RmllV2fOoGaB92CpWSwB55nVG+QW8/cn0IjKffrRVolti1YozfCHrwt+fKj4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759132519; c=relaxed/simple;
-	bh=y1QE/W8km7w2lPYgONVEgf6wAKpLWSjvD7ttfAPWznw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pGxeMiUWT1/AfpZvfuVw0EfUyu/1U1LiOn2poahM72m+q98YAzuHqffArbWCn6iN3DpnOE3nVCt+lIaP+wl4yED+i1m01Iwlky2I1qN7mtengr6LDiiLe53E+2+evBCZ9WRZFmcS5S+34KCeiW6n+ISeYrSnOGAVzmD3Kf0hw9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gi9We8f0; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1759132541; c=relaxed/simple;
+	bh=s9duhkn+Oy/8XxWsWjAIhr4fGMNSAQzlL72/A49WId8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WWoc+OguZUaNJ1t5dMbiGig5GCxztmeu8/kvz6YAubBbzn5DhACi9eips64qQPCw/qdgvYcsktjysG/dcy0/XjCGdsmyc8dszLoqcjC5ZS8ufC+ciXVkeWMZAVeCoyw2+QkdYDaTHU1B4qDGpIW4kBUs6hRCwOTduPHYoOY5icU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=iJLGwQjv; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gi9We8f0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=2iuuoMH8QKC001oZ53wy8yFFv7a0CYpxZPdGXe9xKes=;
-	b=gi9We8f06CF5jnUZOq2ylKu6GHSXTcrLMxJ0EjDKrpKriWS8CXv+1U5Zary+64
-	0Jag8X8m6H24XyjeK/ovRuCoZ+/8nkqCd4sBm6jhOgg2FgvLMhsZSNU2HD25rcyp
-	/RmLtfDWMGOFunqFuBCOalcbPeMYlmG9rqvhDH90hlh5s=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgDnD_0bO9poz8vCAQ--.15003S3;
-	Mon, 29 Sep 2025 15:54:05 +0800 (CST)
-From: yicongsrfy@163.com
-To: michal.pecio@gmail.com,
-	oneukum@suse.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org
-Cc: marcan@marcan.st,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	yicong@kylinos.cn
-Subject: [PATCH v3 2/3] net: usb: support quirks in usbnet
-Date: Mon, 29 Sep 2025 15:54:00 +0800
-Message-Id: <20250929075401.3143438-2-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250929075401.3143438-1-yicongsrfy@163.com>
-References: <20250929054246.3118527-1-yicongsrfy@163.com>
- <20250929075401.3143438-1-yicongsrfy@163.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="iJLGwQjv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=iVR1ip5/1sScn5VRVaoazvic8ifwlUIPspBFeeJkQs8=; b=iJLGwQjvpqBMXN1G846iNF0D6t
+	LmUf/oK5hnBAYoNHpDn67CduF9jgZa9G9VupzbxWFdpfhadpgJUn8JoMIt7jYqoxPPaXpumnqDU/d
+	IX5ZX+NzER+QAYowPwPQCtkjGbl0YalyivuefD0StGQJptCaTWsF8Z+QyOKqveSMik9StMVrHMsVQ
+	yP9AD1pFtPTUvAcd5rhJdapV3lzzESu5cCJ/wVTSSm96Cu6k6O05P2WSwzWHTVZd3VDuhd/E7LlHo
+	0hoal2jcFTXVCiCTkzvpgyBLj2VBFUeBnn0/eMpDfjDRP0WALTFCWlQsIdH+5WutDAC2HPec4DD2i
+	aRDna6cA==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1v38jJ-000G4v-0B;
+	Mon, 29 Sep 2025 09:55:29 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1v38jI-000B9y-0z;
+	Mon, 29 Sep 2025 09:55:28 +0200
+Message-ID: <5950fc56-bfbb-4dc0-9f9e-e84117b0b550@iogearbox.net>
+Date: Mon, 29 Sep 2025 09:55:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgDnD_0bO9poz8vCAQ--.15003S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3XFWkXF1UCF15uw48Ww4Uurg_yoWxAF4xpa
-	nxKrZ3tr4DJr45X34fJr48Za45Xw4kA3y7Cry7X34fX397A34vqr1Ut3ySkF9FyrWrG3Wa
-	vF1UW3yUWr15J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j2lksUUUUU=
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbiUBbX22jaNUiPfAAAs2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 14/20] netkit: Add single device mode for netkit
+To: Jordan Rife <jordan@jrife.io>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, kuba@kernel.org,
+ davem@davemloft.net, razor@blackwall.org, pabeni@redhat.com,
+ willemb@google.com, sdf@fomichev.me, john.fastabend@gmail.com,
+ martin.lau@kernel.org, maciej.fijalkowski@intel.com,
+ magnus.karlsson@intel.com, David Wei <dw@davidwei.uk>
+References: <20250919213153.103606-1-daniel@iogearbox.net>
+ <20250919213153.103606-15-daniel@iogearbox.net>
+ <mcwr6vpkmbmkrixfnwyxuph6ziy5r2of67vvhgkvpiwxezfdtu@mitfrbd52rty>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <mcwr6vpkmbmkrixfnwyxuph6ziy5r2of67vvhgkvpiwxezfdtu@mitfrbd52rty>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.0.9/27776/Sun Sep 28 10:26:36 2025)
 
-From: Yi Cong <yicong@kylinos.cn>
+On 9/27/25 3:10 AM, Jordan Rife wrote:
+> On Fri, Sep 19, 2025 at 11:31:47PM +0200, Daniel Borkmann wrote:
+[...]
+> 
+> This seems very cool. I'm curious, in single device mode, how would
+> traffic originating in the host ns make its way into a pod hosting a
+> QEMU VM using an AF_XDP backend? How would redirection work between two
+> such VMs on the same host?
 
-Some vendors' USB network interface controllers (NICs) may be compatible
-with multiple drivers.
+For this case the plan would be to have the regular netkit pair connecting
+host to Pod through skbs and then we'd direct traffic to that queue bound
+netkit device which injects it into the af_xdp socket in ndo_start_xmit.
 
-I consulted with relevant vendors. Taking the AX88179 chip as an example,
-NICs based on this chip may be used across various OS—for instance,
-cdc_ncm is used on macOS, while ax88179_178a.ko is the intended driver
-on Linux (despite a previous patch having disabled it).
-Therefore, the firmware must support multiple protocols.
+[...]
+>> +	if (pair != NETKIT_DEVICE_PAIR &&
+> 
+> nit: IMO this would be a little clearer without the inverted logic:
 
-Currently, both cdc_ncm and ax88179_178a coexist in the Linux kernel.
-Supporting both drivers simultaneously leads to the following issues:
+Ack, will fix.
 
-1. Inconsistent driver loading order during reboot stress testing:
-   The order in which drivers are loaded can vary across reboots,
-   potentially resulting in the unintended driver being loaded. For
-   example:
-[    4.239893] cdc_ncm 2-1:2.0: MAC-Address: c8:a3:62:ef:99:8e
-[    4.239897] cdc_ncm 2-1:2.0: setting rx_max = 16384
-[    4.240149] cdc_ncm 2-1:2.0: setting tx_max = 16384
-[    4.240583] cdc_ncm 2-1:2.0 usb0: register 'cdc_ncm' at usb-
-xxxxx:00-1, CDC NCM, c8:a3:62:ef:99:8e
-[    4.240627] usbcore: registered new interface driver cdc_ncm
-[    4.240908] usbcore: registered new interface driver ax88179_178a
+[...]
+> 
+> Reviewed-by: Jordan Rife <jordan@jrife.io>
 
-In this case, network connectivity functions, but the cdc_ncm driver is
-loaded instead of the expected ax88179_178a.
-
-2. Similar issues during cable plug/unplug testing:
-   The same race condition can occur when reconnecting the USB device:
-[   79.879922] usb 4-1: new SuperSpeed USB device number 3 using xhci_hcd
-[   79.905168] usb 4-1: New USB device found, idVendor=0b95, idProduct=
-1790, bcdDevice= 2.00
-[   79.905185] usb 4-1: New USB device strings: Mfr=1, Product=2,
-SerialNumber=3
-[   79.905191] usb 4-1: Product: AX88179B
-[   79.905198] usb 4-1: Manufacturer: ASIX
-[   79.905201] usb 4-1: SerialNumber: 00EF998E
-[   79.915215] ax88179_probe, bConfigurationValue:2
-[   79.952638] cdc_ncm 4-1:2.0: MAC-Address: c8:a3:62:ef:99:8e
-[   79.952654] cdc_ncm 4-1:2.0: setting rx_max = 16384
-[   79.952919] cdc_ncm 4-1:2.0: setting tx_max = 16384
-[   79.953598] cdc_ncm 4-1:2.0 eth0: register 'cdc_ncm' at usb-0000:04:
-00.2-1, CDC NCM (NO ZLP), c8:a3:62:ef:99:8e
-[   79.954029] cdc_ncm 4-1:2.0 eth0: unregister 'cdc_ncm' usb-0000:04:
-00.2-1, CDC NCM (NO ZLP)
-
-At this point, the network becomes unusable.
-
-To resolve these issues, introduce a *quirks* mechanism into the usbnet
-module. By adding chip-specific identification within the generic usbnet
-framework, we can skip the usbnet probe process for devices that require a
-dedicated driver.
-
-v2: Correct the description of usbnet_quirks.h and modify the code style
-v3: Add checking whether the CONFIG_USB_NET_AX88179_178A is enabled
-
-Signed-off-by: Yi Cong <yicong@kylinos.cn>
----
- drivers/net/usb/cdc_ncm.c       |  2 +-
- drivers/net/usb/usbnet.c        | 14 +++++++++++
- drivers/net/usb/usbnet_quirks.h | 41 +++++++++++++++++++++++++++++++++
- include/linux/usb/usbnet.h      |  2 ++
- 4 files changed, 58 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/usb/usbnet_quirks.h
-
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 5d123df0a866..6fa03e5bd054 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -2117,7 +2117,7 @@ MODULE_DEVICE_TABLE(usb, cdc_devs);
- static struct usb_driver cdc_ncm_driver = {
- 	.name = "cdc_ncm",
- 	.id_table = cdc_devs,
--	.probe = usbnet_probe,
-+	.probe = usbnet_probe_quirks,
- 	.disconnect = usbnet_disconnect,
- 	.suspend = usbnet_suspend,
- 	.resume = usbnet_resume,
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 511c4154cf74..51ba466057f9 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -31,6 +31,7 @@
- #include <linux/kernel.h>
- #include <linux/pm_runtime.h>
- 
-+#include "usbnet_quirks.h"
- /*-------------------------------------------------------------------------*/
- 
- /*
-@@ -1697,6 +1698,19 @@ static const struct device_type wwan_type = {
- 	.name	= "wwan",
- };
- 
-+int usbnet_probe_quirks(struct usb_interface *udev,
-+			const struct usb_device_id *prod)
-+{
-+	/* Should it be ignored? */
-+	if (unlikely(usbnet_ignore(udev))) {
-+		dev_dbg(&udev->dev, "usbnet ignore this device!\n");
-+		return -ENODEV;
-+	}
-+
-+	return usbnet_probe(udev, prod);
-+}
-+EXPORT_SYMBOL_GPL(usbnet_probe_quirks);
-+
- int
- usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- {
-diff --git a/drivers/net/usb/usbnet_quirks.h b/drivers/net/usb/usbnet_quirks.h
-new file mode 100644
-index 000000000000..859004046a86
---- /dev/null
-+++ b/drivers/net/usb/usbnet_quirks.h
-@@ -0,0 +1,41 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * A collection of chip information to be ignored
-+ */
-+
-+#ifndef __USB_NET_IGNORE_H__
-+#define __USB_NET_IGNORE_H__
-+
-+#include <linux/usb.h>
-+
-+/* usbnet_ignore_list:
-+ * Chip info which already support int vendor specific driver,
-+ * and then should be ignored in generic usbnet
-+ */
-+static const struct usb_device_id usbnet_ignore_list[] = {
-+#if IS_ENABLED(CONFIG_USB_NET_AX88179_178A)
-+	/* Chips already support in ax88179_178a.c */
-+	{ USB_DEVICE(0x0b95, 0x1790) },
-+	{ USB_DEVICE(0x0b95, 0x178a) },
-+	{ USB_DEVICE(0x04b4, 0x3610) },
-+	{ USB_DEVICE(0x2001, 0x4a00) },
-+	{ USB_DEVICE(0x0df6, 0x0072) },
-+	{ USB_DEVICE(0x04e8, 0xa100) },
-+	{ USB_DEVICE(0x17ef, 0x304b) },
-+	{ USB_DEVICE(0x050d, 0x0128) },
-+	{ USB_DEVICE(0x0930, 0x0a13) },
-+	{ USB_DEVICE(0x0711, 0x0179) },
-+	{ USB_DEVICE(0x07c9, 0x000e) },
-+	{ USB_DEVICE(0x07c9, 0x000f) },
-+	{ USB_DEVICE(0x07c9, 0x0010) },
-+	/* End of support in ax88179_178a.c */
-+#endif
-+
-+	{ } /*END*/
-+};
-+
-+static inline bool usbnet_ignore(struct usb_interface *intf)
-+{
-+	return !!usb_match_id(intf, usbnet_ignore_list);
-+}
-+#endif
-diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index a2d54122823d..de198fcaf76d 100644
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -188,6 +188,8 @@ struct driver_info {
-  * much everything except custom framing and chip-specific stuff.
-  */
- extern int usbnet_probe(struct usb_interface *, const struct usb_device_id *);
-+extern int usbnet_probe_quirks(struct usb_interface *udev,
-+			       const struct usb_device_id *prod);
- extern int usbnet_suspend(struct usb_interface *, pm_message_t);
- extern int usbnet_resume(struct usb_interface *);
- extern void usbnet_disconnect(struct usb_interface *);
--- 
-2.25.1
-
+Thanks!
