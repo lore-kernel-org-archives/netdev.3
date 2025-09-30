@@ -1,115 +1,115 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F8A2F547D
-	for <netdev@vger.kernel.org>; Tue, 30 Sep 2025 09:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CC724A076
+	for <netdev@vger.kernel.org>; Tue, 30 Sep 2025 09:16:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759223625; cv=none; b=b6g6qsgOSBcFmFc2yWI+kbAYwy9b6Fb2jJz0n3eM3Vw3Awi3QFeEaCNa805GtiOrMot6B4Wq+mGZ8CAz0PtiZg9PUeGMbjsE00paveNrfjRj+xnFVPZ0fLWP3sU+EawoxezdoYQHwqq2yyaabBgZUDP0aehA2WFvlBFyxeKaNyM=
+	t=1759223769; cv=none; b=uCcMikjk9eD2/RFP18Wl+d9zMTxNn5x5/7OY5aHqzKhDd4n3TVdWzCljFTm28YR74GaFHw06okUo1AkhUutxL1ns70fr82kw6gVSWXtalfVAGx6V8QsEvNOzgl/XsdVRYr8GBzFq/aPQL9Pu8i2JH0ZhPFcVQqNcc05Uk+V0S0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759223625; c=relaxed/simple;
-	bh=geg8I+nETxI5ziYpbXwdwpnNQV78XDqit9OZRAJWrwA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aaWAjJvjttXqyzQt/ObEo+2rAErZITCtpm22NeogszFo/VgyEmbUxR1A8li79Pa4I48qfXxzh3ZwQ4jgCNoFYloMjrXs6rzt8A45QRrKPMIHR/T8YFjBLintm/WpI5OxTXEguUv1SB/65IogwoxL/dAaRnDdH+Kgb+YO77u9HPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=y38eQjeQ; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1759223769; c=relaxed/simple;
+	bh=DhVxX6nOFn/AJnMi25R+uMYpH2MejrrzwYzAdY7Psec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JIp9eoMAd2qsQ6230tBbIS3E3hDVy9Ew+oq1dCXFpzDr+3HmrQKNy45MOCqb+XV1aGO13zLHaHRgPDyqBJveaXI7zGXGG0jd35hp+DMVLAGR1Nr1kL+EGFjkxYihCyaiAgYpnPX9WTgVZ9LLwBuZoHvgbBjC/RVRQ+L4k6X9Z+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LkQTqxgI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="y38eQjeQ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 32D741A0EC3;
-	Tue, 30 Sep 2025 09:13:33 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0A051606E4;
-	Tue, 30 Sep 2025 09:13:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F7AF102F17CA;
-	Tue, 30 Sep 2025 11:13:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1759223612; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=DJ6bl9fexgWAE7x+Dsr/tcexKmnyGVcgwz9KluNOsM8=;
-	b=y38eQjeQHkCpAmVNFJQ2i6p9/yrVr6GDHCQiwBHgrZCnL+f1Yt/U5rdM+SSGc8U0xWHgjo
-	81Ko8MKhtWurFgJMBaK610YHymGdF0SNOJR1pI2HVuvJYenQBRQrF/hLcD8vMc+2IG9aDB
-	yv2ubbDtFlUFjUMNAIQxaKaIgwmHjB4f9cPwNjVDLGO9/dCwXgw+l+QGke+rdXN4v0Q/kf
-	RsTaYNF3ct+iGpInqNsNVLrfiaYMoTvY77DXNIeV5+QN9jA7ofgsAQLsL443VN6O0MUNGx
-	wgNIYEwN8lZBjp/6AeppmoD6+orKAPC82gpBORIhlsGbAR6Q4KWWCE5tYzogzg==
-From: Kory Maincent <kory.maincent@bootlin.com>
-Date: Tue, 30 Sep 2025 11:13:00 +0200
-Subject: [PATCH net-next 1/3] net: pse-pd: pd692x0: Replace __free macro
- with explicit kfree calls
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LkQTqxgI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759223765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5mzLW36l3vHTN0xGG7e1jWdQ3WYx1BRHAB26zy8eZkI=;
+	b=LkQTqxgIhwdpZbsWv35ulst7BFzko5Hw7MmL9g/Zm4dvhrXsd2D8CZPnMBw3bEgKEZSfh5
+	h+a1oMQ7AuuEpqbNdFydscd12/60RxUFJ5UlNVKuj5KQ4bcZ9MbEJAJN6B53HNcB8gWVVj
+	7FmaIsozkp37AsBBXPLlI1KNwqwilZM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-iDoCgkyzNXSp5oYbCkKHVQ-1; Tue, 30 Sep 2025 05:16:04 -0400
+X-MC-Unique: iDoCgkyzNXSp5oYbCkKHVQ-1
+X-Mimecast-MFC-AGG-ID: iDoCgkyzNXSp5oYbCkKHVQ_1759223763
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3f3c118cbb3so3693331f8f.3
+        for <netdev@vger.kernel.org>; Tue, 30 Sep 2025 02:16:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759223763; x=1759828563;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5mzLW36l3vHTN0xGG7e1jWdQ3WYx1BRHAB26zy8eZkI=;
+        b=TpmbRl2Tyqm4ziaxIHLpr7YHicSmGKgZzbkh/4fVAyTVche75lHRbOtNTNPgf+Fw+b
+         4xmIcj1YzUm46Usd4gWjZUYenebPaCHg3pakd/y1jdntvUi1XM9OCfulp8h3VS+cyjzu
+         AuOcRsK/mWPQ87Ma8Ka9Ruxdp9gqsBbxvTGboe2vlbx8l5w26HZ1YZ6/tDCicYzRyKSh
+         M05BkT0D2IcqJqRHBZKwjO3/beWp2JEeTHhz2FEPRSCW+iX4HcHZ9nMwxI+Y4NXdcnQX
+         E+tAEYFJYtlD4IFBMHWmBwHzqoDDScgNhn+quysfu1y4xjklIFW27d+0l2IooO1WvCXr
+         k2cA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRPwfrpLGmrHUnlcNH3CUHXNr/MHNYfXPWeyE0MsqAPziVjRkScMXotiIKl6V8DuLq12yMSIQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2PNBsBRH+js3qf7UiO12mLcvL3tdSYsvBXu9SGaONbslYMmoU
+	K3e8sTLrKZKY7+YdtQTCv1DyfeJBZl6DrZ8rFlqAcet1GBSkwA13aRBOQW4tYjT8KYcGOOtJT9G
+	3A9MMh9ybrUberDdkjJu7UX8fgcVMfISCkEpYdAnzRxjwysVvNiH1iDVONQ==
+X-Gm-Gg: ASbGncuUFTi/lyEVL8JN8XZB0QImOpmE/rD+NkQwBEnXaKj531Tgl/Nn233RhwcnEEa
+	5WNEfY/LCdeXflW3w95RWWuaTlkFFOduH4di9novbhjmmysNa2Xtqrl1exjKgdB6GWc91zTLVCw
+	pr46zO3RLIp70Q9RBgST/xzUsHTf7Hd/R6oohV1xjVutbhPob/cINp8HKv8oVFvUTCnrTPc2WjS
+	WB7nLFe66MSczNlQ5df/exoOhurLgRbOBAk3Di9taMN5MORho5pdj8JTjXLas1hFvEkhBgHho6h
+	ao1X+/K2TW3tUlXZUQ/dV+JJ6lFeJY60+ojs+4CjJi4696jf8NfIo172OaMTSFM+HSBOg7zzNwN
+	pHhN2VkxWVrTe+iizlw==
+X-Received: by 2002:a5d:64e8:0:b0:3ff:17ac:a34b with SMTP id ffacd0b85a97d-40e499acbf7mr18158161f8f.42.1759223762677;
+        Tue, 30 Sep 2025 02:16:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPJYHsMgzyYX8n1S+NMBgDuxjdaGhUBWCQvgO9dlxbt4WgqHiEtGqYpfzNw/zyFhzKp+42mA==
+X-Received: by 2002:a5d:64e8:0:b0:3ff:17ac:a34b with SMTP id ffacd0b85a97d-40e499acbf7mr18158140f8f.42.1759223762234;
+        Tue, 30 Sep 2025 02:16:02 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-40fc82f2965sm21712072f8f.55.2025.09.30.02.16.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Sep 2025 02:16:01 -0700 (PDT)
+Message-ID: <f64b89b1-d01c-41d6-9158-e7c14d236d2d@redhat.com>
+Date: Tue, 30 Sep 2025 11:16:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 1/3] rculist: Add hlist_nulls_replace_rcu()
+ and hlist_nulls_replace_init_rcu()
+To: xuanqiang.luo@linux.dev, edumazet@google.com, kuniyu@google.com,
+ "Paul E. McKenney" <paulmck@kernel.org>
+Cc: kerneljasonxing@gmail.com, davem@davemloft.net, kuba@kernel.org,
+ netdev@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+References: <20250926074033.1548675-1-xuanqiang.luo@linux.dev>
+ <20250926074033.1548675-2-xuanqiang.luo@linux.dev>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20250926074033.1548675-2-xuanqiang.luo@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250930-feature_pd692x0_reboot_keep_conf-v1-1-620dce7ee8a2@bootlin.com>
-References: <20250930-feature_pd692x0_reboot_keep_conf-v1-0-620dce7ee8a2@bootlin.com>
-In-Reply-To: <20250930-feature_pd692x0_reboot_keep_conf-v1-0-620dce7ee8a2@bootlin.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, kernel@pengutronix.de, 
- Dent Project <dentproject@linuxfoundation.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kory Maincent <kory.maincent@bootlin.com>
-X-Mailer: b4 0.15-dev-8cb71
-X-Last-TLS-Session-Version: TLSv1.3
 
-From: Kory Maincent (Dent Project) <kory.maincent@bootlin.com>
+On 9/26/25 9:40 AM, xuanqiang.luo@linux.dev wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+> 
+> Add two functions to atomically replace RCU-protected hlist_nulls entries.
+> 
+> Keep using WRITE_ONCE() to assign values to ->next and ->pprev, as
+> mentioned in the patch below:
+> commit efd04f8a8b45 ("rcu: Use WRITE_ONCE() for assignments to ->next for
+> rculist_nulls")
+> commit 860c8802ace1 ("rcu: Use WRITE_ONCE() for assignments to ->pprev for
+> hlist_nulls")
+> 
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Replace __free(kfree) with explicit kfree() calls to follow the net
-subsystem policy of avoiding automatic cleanup macros as described in
-the documentation.
+This deserves explicit ack from RCU maintainers.
 
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
----
- drivers/net/pse-pd/pd692x0.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Since we are finalizing the net-next PR, I suggest to defer this series
+to the next cycle, to avoid rushing such request.
 
-diff --git a/drivers/net/pse-pd/pd692x0.c b/drivers/net/pse-pd/pd692x0.c
-index f4e91ba64a66..055e925c853e 100644
---- a/drivers/net/pse-pd/pd692x0.c
-+++ b/drivers/net/pse-pd/pd692x0.c
-@@ -1200,9 +1200,9 @@ static void pd692x0_managers_free_pw_budget(struct pd692x0_priv *priv)
- 
- static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
- {
--	struct pd692x0_manager *manager __free(kfree) = NULL;
- 	struct pd692x0_priv *priv = to_pd692x0_priv(pcdev);
- 	struct pd692x0_matrix port_matrix[PD692X0_MAX_PIS];
-+	struct pd692x0_manager *manager;
- 	int ret, nmanagers;
- 
- 	/* Should we flash the port matrix */
-@@ -1216,7 +1216,7 @@ static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
- 
- 	ret = pd692x0_of_get_managers(priv, manager);
- 	if (ret < 0)
--		return ret;
-+		goto err_free_manager;
- 
- 	nmanagers = ret;
- 	ret = pd692x0_register_managers_regulator(priv, manager, nmanagers);
-@@ -1236,12 +1236,15 @@ static int pd692x0_setup_pi_matrix(struct pse_controller_dev *pcdev)
- 		goto err_managers_req_pw;
- 
- 	pd692x0_of_put_managers(priv, manager, nmanagers);
-+	kfree(manager);
- 	return 0;
- 
- err_managers_req_pw:
- 	pd692x0_managers_free_pw_budget(priv);
- err_of_managers:
- 	pd692x0_of_put_managers(priv, manager, nmanagers);
-+err_free_manager:
-+	kfree(manager);
- 	return ret;
- }
- 
+Thanks,
 
--- 
-2.43.0
+Paolo
 
