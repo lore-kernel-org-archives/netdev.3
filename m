@@ -1,47 +1,47 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from fllvem-ot04.ext.ti.com (fllvem-ot04.ext.ti.com [198.47.19.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779D827D771;
-	Wed,  1 Oct 2025 10:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336342C0F61;
+	Wed,  1 Oct 2025 10:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759316076; cv=none; b=mFM6TI/IT7hA1oVkkm0PoqWAyAw/vDxCckBVF8DjL/RcWblTAvqG3DQ2TFlV+Aupg+ObQ2XX4wrA5pKEmnoxgWAzfL+jsJ1SGpnixubb8RooJVa6ON462m8JOOpsvVQsz0LwhEsF3w9+Q3zge9cyiK6QmQ4ROO9ATSe6YLvmBH4=
+	t=1759316264; cv=none; b=WBZNiX4XeINCLDp4DFy62QDYVWdQ7Xg4msKmVijzihDb28wkPTnZcR1Zi7Oibhqz2OI15KG7rtf43YQ+nZ5K0Rlo/geR5RGf+FUcDETMxW3PhqVUbAF9XKFF04aLWHI8gJbsZUXu0ZtUFqW1hYeU52v0jkEiFJ9lnuJIl5cbq1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759316076; c=relaxed/simple;
-	bh=fCcJjN3ZPSE7Fa2VbJuzxB9W3FCX1nVxcbuvxXsy43Q=;
+	s=arc-20240116; t=1759316264; c=relaxed/simple;
+	bh=9c53hXG+6jzoglFgEFrmZbtBT75TA8bAs8sQ8A5GACA=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mbyYcCkYA3+/XmXWiGuXqcz2OccORiufV8ZK2Muce3sQK9cWkDM3xS1o9OpPn+RH5+m+YH/ULhMjcC2fylLg6Vo4IZwfJX2s5Lsq7q7SfguobZVDRrSfExBSC0yv+BHs/Oyc5nsDWfNGsSQEgX9b1WzO/H+kXrZJzKzUWEwahP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fZz5QBbl; arc=none smtp.client-ip=198.47.23.235
+	 Content-Type:Content-Disposition:In-Reply-To; b=m0G66jLX21yQ2q78EGnrF9jSkZUP7NFjpikWuxj1Q1T+wNvZm+ClHo1ClFiWrJa7mc4st+m5JTPjCjmZgiA8WJgHTkwnF8enAb/VFozIJOuQ0dzfj62RJP4VFjsjSPVI20sZP1BBkPs+H8ZRe8IEWvoPtqr2t2p41KMlG+oo788=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Wm9PpVq/; arc=none smtp.client-ip=198.47.19.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fZz5QBbl"
-Received: from lelvem-sh01.itg.ti.com ([10.180.77.71])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 591AsHEv3111395;
-	Wed, 1 Oct 2025 05:54:17 -0500
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Wm9PpVq/"
+Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
+	by fllvem-ot04.ext.ti.com (8.15.2/8.15.2) with ESMTP id 591AvLaP3063484;
+	Wed, 1 Oct 2025 05:57:21 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1759316057;
-	bh=UYdxBV+94zA32DysCLFBKsalzqZRzMhjxb0wxmqa7s4=;
+	s=ti-com-17Q1; t=1759316241;
+	bh=JxzG4NDNtvyZtWrcwERf/N9ajidnNL4jpz7ADaJTFuI=;
 	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=fZz5QBblX+c4TKgL0/CJxr6HPdTftxvkONJ2Fqj0ceZTEvUYMzt4SwyI5djQdfTCn
-	 KuSu3Td7ukii5E4y7T+g8FoyW37HJIt562gD4oJ1OlmfYtZBlfFcYJN+5WkTQILaKz
-	 Vj6JU2YLFimotW3XjP8xeRUbCjwsFunu7EB4gEIM=
-Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
-	by lelvem-sh01.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 591AsGCd2811532
+	b=Wm9PpVq/HHp38jQfqHex6preKa42kLW+ISLJc7uf/PXrJSm/unAifRXnLT8E6G9xU
+	 D1fjvcLqFWcVnSV+4Zd6UKGbjxpmtgYk1rkO0PczEmAIYTOKG5SpsXE60nrTlHRQHU
+	 BpeH1YB57SRBvABeRBlHJZVaQiuUU+IOBrnZNoec=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 591AvLgT425510
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-SHA256 bits=128 verify=FAIL);
-	Wed, 1 Oct 2025 05:54:16 -0500
-Received: from DLEE200.ent.ti.com (157.170.170.75) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 1 Oct 2025 05:57:21 -0500
+Received: from DFLE200.ent.ti.com (10.64.6.58) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.55; Wed, 1
- Oct 2025 05:54:16 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE200.ent.ti.com
- (157.170.170.75) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2025 05:57:21 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE200.ent.ti.com
+ (10.64.6.58) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Wed, 1 Oct 2025 05:54:16 -0500
+ Transport; Wed, 1 Oct 2025 05:57:21 -0500
 Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 591AsGAW205422;
-	Wed, 1 Oct 2025 05:54:16 -0500
-Date: Wed, 1 Oct 2025 05:54:16 -0500
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 591AvLV7463660;
+	Wed, 1 Oct 2025 05:57:21 -0500
+Date: Wed, 1 Oct 2025 05:57:21 -0500
 From: Nishanth Menon <nm@ti.com>
 To: Jacob Keller <jacob.e.keller@intel.com>
 CC: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
@@ -58,12 +58,12 @@ CC: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
         Siddharth Vadapalli <s-vadapalli@ti.com>,
         <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <netdev@vger.kernel.org>
-Subject: Re: [PATCH V2 3/3] net: ethernet: ti: Remove IS_ERR_OR_NULL checks
- for knav_dma_open_channel
-Message-ID: <20251001105416.frbebh5ws2rnxquu@quality>
+Subject: Re: [PATCH V2 2/3] soc: ti: knav_dma: Make knav_dma_open_channel
+ return NULL on error
+Message-ID: <20251001105721.wf6mr2ysj34uhkhh@rendition>
 References: <20250930121609.158419-1-nm@ti.com>
- <20250930121609.158419-4-nm@ti.com>
- <0cae855b-e842-47a1-9aaf-b2a297ec32d6@intel.com>
+ <20250930121609.158419-3-nm@ti.com>
+ <c8d9f60a-341a-4386-afc6-b7a9451cda9f@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,35 +72,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <0cae855b-e842-47a1-9aaf-b2a297ec32d6@intel.com>
+In-Reply-To: <c8d9f60a-341a-4386-afc6-b7a9451cda9f@intel.com>
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 On 16:59-20250930, Jacob Keller wrote:
 > 
 > 
 > On 9/30/2025 5:16 AM, Nishanth Menon wrote:
-> > knav_dma_open_channel now only returns NULL on failure instead of error
-> > pointers. Replace IS_ERR_OR_NULL checks with simple NULL checks.
+> > Make knav_dma_open_channel consistently return NULL on error instead of
+> > ERR_PTR. Currently the header include/linux/soc/ti/knav_dma.h returns NUL
+> > when the driver is disabled, but the driver implementation returns
+> > ERR_PTR(-EINVAL), creating API inconsistency for users.
+> > 
+> 
+> I would word this as indicating that we don't even use ERR_PTR here at all!
+
+Thanks. Yep, will do for the next respin.
+
+> 
+> > Standardize the error handling by making the function return NULL on all
+> > error conditions.
 > > 
 > > Suggested-by: Simon Horman <horms@kernel.org>
 > > Signed-off-by: Nishanth Menon <nm@ti.com>
 > > ---
 > > Changes in V2:
 > > * renewed version
-> > * Dropped the fixes since code refactoring was involved.
 > > 
+> >  drivers/soc/ti/knav_dma.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/drivers/soc/ti/knav_dma.c b/drivers/soc/ti/knav_dma.c
+> > index a25ebe6cd503..e69f0946de29 100644
+> > --- a/drivers/soc/ti/knav_dma.c
+> > +++ b/drivers/soc/ti/knav_dma.c
+> > @@ -402,7 +402,7 @@ static int of_channel_match_helper(struct device_node *np, const char *name,
+> >   * @name:	slave channel name
+> >   * @config:	dma configuration parameters
+> >   *
+> > - * Returns pointer to appropriate DMA channel on success or error.
+> > + * Returns pointer to appropriate DMA channel on success or NULL on error.
+> >   */
+> >  void *knav_dma_open_channel(struct device *dev, const char *name,
+> >  					struct knav_dma_cfg *config)
+> > @@ -414,13 +414,13 @@ void *knav_dma_open_channel(struct device *dev, const char *name,
+> >  
+> >  	if (!kdev) {
+> >  		pr_err("keystone-navigator-dma driver not registered\n");
+> > -		return (void *)-EINVAL;
+> > +		return NULL;
 > 
-> Whats the justification for splitting this apart from patch 1 of 3?
+> Wow. The driver doesn't even return ERR_PTR, but just directly casts
+> -EINVAL to a void *... thats quite ugly. Good to remove this.
 > 
-> It seems like we ought to just do all this in a single patch. I don't
-> see the value in splitting this apart into 3 patches, unless someone
-> else on the list thinks it is valuable.
 
-The only reason I have done that is to ensure the patches are
-bisectable. at patch #1, we are still returning -EINVAL, the driver
-should still function when we switch the return over to NULL.
 
-[...]
+
 
 -- 
 Regards,
