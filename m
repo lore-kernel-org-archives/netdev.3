@@ -1,202 +1,163 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1832C0F61
-	for <netdev@vger.kernel.org>; Wed,  1 Oct 2025 10:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8486B284681
+	for <netdev@vger.kernel.org>; Wed,  1 Oct 2025 11:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759316316; cv=none; b=Fx2KGvOcarceZyUvSB4xOz+MCqx6plfxsht+dIqkAQaoeuBfTSSYU5j/dJXTXWwjND6UB40jl03ZbP3bqzxm2XZXCsTGgEdl5bbKoK9QAwAWcJKB0/isa1LAV99WiPcI0Nak7/CFgXThVnzrdAQ/ZtRsYTHAC09Hfsi0Ku1l/0o=
+	t=1759316602; cv=none; b=J75vfng3r8EsQY+0JTyMuO/M4fUVBkUsn90A93Bx/dEMAf23HgSPrlqGSHO60tBFkR2OyiuJJ0SH+c/RB5EUXEG9At8S7G/yKwP8hYph5qtAe7EytbT5327ykpnjANjpts01uliUyP6owPhRhJHIlneq8J2XMFBVJlKdbAo0a1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759316316; c=relaxed/simple;
-	bh=/IYSV63F/1m3PQjyG9fAEJ3srxPO2l7np0mTFe5/Tzw=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rwsiN+WkFh6knk8p/zxuqmEWNzVpbsZddDQ/Cb3zY0YYpAUHvJyKn7N/4D/pqW+xndbpfzDYMbBiD2zYyX+oft4QKkvtQ6gdJadX1u+JCodlwT8p/CDf9iC9i2BofK2qdKZleGJhaH7Z6tsTe6lC+9bm1sTuelbAvWp4Rlp50YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FzHFmtNw; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1759316602; c=relaxed/simple;
+	bh=ayH6eU74HGK2Uw8pBU8RG4fsbY2PSfyyn49rkqPJ7Vc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=plA6v2131nXJSDK5bS5B7EYLrrkFelgty+Lu6BaGowxyu5yKDkUBhwHGHgnBWAyxi+pBn3cU89sAuf+MZxgJkm6fw5Tg0vhMW9TSCpAxORL1yM562lovWZuz9qZ1nTdToj/L+3EZ12RSlQXtDcfkTRQ5BwHR24Bof/No7XM8HJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e8L9CGvB; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FzHFmtNw"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-46e4ad36541so47460835e9.0
-        for <netdev@vger.kernel.org>; Wed, 01 Oct 2025 03:58:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e8L9CGvB"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-33082c95fd0so7228801a91.1
+        for <netdev@vger.kernel.org>; Wed, 01 Oct 2025 04:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759316312; x=1759921112; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=jgTf8OFmZbVt9M6n37Tqho0gXB+F57yDDcMKmNn8RI8=;
-        b=FzHFmtNwD1xd+ZU9W0RowK5UoDpwXGWhkptj9C7LBvnuhRGGJ6ER9AeJLwNmycQuaI
-         KsMquDpdqa5cTwHD8mLsGJLfZebRAw1G7KXjqCxvUXwWOwab+y8OlM5M4gcTtG8fu8Di
-         rnZEgZFdeBywNpCxv7Zug4A1u6oWiec0+Yt7Qn7Kjhiq+e0kLSI3nSihXN8e9KPuFmqK
-         +Rqc17FS1EnBGXGR0cyt4Ic8o5xnUa3F+qrI9zo2omtru4SiRyr6gyLNAEc0ncRBXv0q
-         /+i3/RxMQfO45KXh8SWsAzA7qMjzge9u7Zeps8lK/9E+Z9Ku8uCxRa1XN2Xo6QLwxyEy
-         DoaA==
+        d=gmail.com; s=20230601; t=1759316601; x=1759921401; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9V28geYs6+fybVTeARjUscAK9N0tpW7+cMdGRd5q3Us=;
+        b=e8L9CGvB0rCx0sshlkGmL7R9LEouH1QywFa9lzsQmJ1JhgE0OEiKeAbkEETjya5z+p
+         MTWA9bH/Ole6l3gKOk137zJnrOK+p/Wwk7HnC+EDM7GGpv+HJyl5NEAEflofoQVrdNFY
+         nG2jNc990tXilfTQXZmk6crLKTVa/d8R1oW+lXe2qR6ST9CDflY87v7qTvoYsv1hIAKn
+         CHTRHtgQyrdLLnyhag8lO+8GP1MyBYoVAsn3udd3T/FNXKEceUXLxF7faKjbaQMo+43c
+         oLHBFtpAo6IRrtZpQiCAPoQ8KCo47y0xKUr/EZAdf2CzmONrp6L13hu+6DzYsYNL8wFW
+         sF+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759316312; x=1759921112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jgTf8OFmZbVt9M6n37Tqho0gXB+F57yDDcMKmNn8RI8=;
-        b=Aot2BN2rak27fQLEaSCexoiXlRZj1ZwMazeVYecgRehIvjR38GISI33Qp/lmo56Kx7
-         UI9D12cTvp3F45D/o0cZW0ZULTQq0UabMRYHYthovewEj27iPwXgqtG6QrUIP1hui32C
-         q/1IIofoLU2JFeztg0nhESchGLStWgSFiB7U9usMZidX4OtFnZBOEBhUveZMkZ5HHiLZ
-         IugBQov0cCrEWvzDGbw0k0tpS/AQbm0MSI3HGZAZ13TRhwJHC70hYaYdiQYvFmuJvim9
-         kQZEqHZ4xIy5Lr6LVM8brnhJjMCND9th2/7ksGlLrOwcq4JjXIuIMy/6ICjnF3c3aJ7d
-         XGhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ1nWiUSrd4JZv8imIcxk+mtbz3CxpCQLDhLhNSg/YnlVQ440YSpHCEaZWCltuT4XhG0aIrr0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJZeUqYXMl+z5naEAxV69oTX3GtDaFMQZdA4n/w5zWqMsseTNn
-	gwfDtuGvw1fJ8xo/qRRsC1FFs7vXLVZzdSiJ50vM+733fJ/v8JT3T9HfWqFCMg==
-X-Gm-Gg: ASbGnct1xExxA1n7WeV8SnbTkMtGkcEKFsxDy4gTdLW8eMC7rYcuc0hk65P+az5TTjF
-	kh4xG+ewS1aFnR8KusNgpk4i1l4WYF3YmnwIEBEgS+CTZWhdFqpXHdXNTZQhkSGOmLQ18T2sneL
-	MXvCaZk+mPdNh/i5E5Xcz2mT9igaqG2EOFjY/hBeuTa+kXQFwbVseqyGus7ypralIF35yOxtsWg
-	4pldHDWOjdYEUZFCaWMXJWJEM/A1PlWVEgwc1IL4QVP4smo1uWSqWygzAslPlu3XWBasaCqDNCF
-	/h+1E/4R4HIu4t646DHsmyO7X120RyEssaCXRR9i6IBxpErg5Tn9d8L5Ie8WVPOXkRjApXlTdFQ
-	KREHMvnmhtA7j83P2D11b
-X-Google-Smtp-Source: AGHT+IETvY4nPwFmCDnck2+Me06qm/+E1HwxuuyzfVMchJwNS3fwOfFmJvBmtJ4GPxRZiTy3sRbd6A==
-X-Received: by 2002:a05:600c:820c:b0:46e:4882:94c7 with SMTP id 5b1f17b1804b1-46e612cb269mr24565545e9.28.1759316311314;
-        Wed, 01 Oct 2025 03:58:31 -0700 (PDT)
-Received: from krava ([2a02:8308:a00c:e200::31e0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e61a0204fsm34308255e9.14.2025.10.01.03.58.30
+        d=1e100.net; s=20230601; t=1759316601; x=1759921401;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9V28geYs6+fybVTeARjUscAK9N0tpW7+cMdGRd5q3Us=;
+        b=WsRhf7KypKz9UOLSfwGKUWeMveCv8Hi1zi6qJg5sIf73lyS3ELI/aYl06Yq9wxylqA
+         5+EMHuCDjNGXJy8SYym49G6qwRV59UHze7f14RbpTsmm0ggFO38pB+wCu9ltsVIZE7+R
+         XUhohN94wBIfywuqFs/JohLswMvtvBgfLNY7B6wbPPwiOp945Qktyi5kpuiUmDhcDGFv
+         yyoCCxLTx1SQGfKPgAvs2G3LkOXx+IS8OjccCAhgoOT03lih5GxltZtmh3APcCEinNwm
+         wC0Ze6C2PaM582PsCSvZIi97KIPhS8FHFUTj7ezEDKnExxNTgfB0H3wtbnJ/6EaiXiyR
+         D0CQ==
+X-Gm-Message-State: AOJu0YzYFp0srWMMthVUaiRYmTpXDaFFCkGqRA8A7GTDce27oSKarirC
+	3aHlpJh0UBX58fAhW4WpB0tTXvexkyIdkSZRGbScv3D6NWXKqaDOBG9e
+X-Gm-Gg: ASbGncuaGoC3aTJOMTkUREb0iozRVXCjzdgEqWOwkkBsVRwD3UgLHdpA/1zzPVepyDL
+	R17EvImxSzkMBRgbWtMvPcnktA+5KkjDN4VsNHz8njDbWq0F7D/mTcsO9OtPV+Me95LAQp07+30
+	M9dTGfxs1fx9ApYNceLlFTgx5LszxiYa5f5MhRJxjKIGyq1UQMckWMqCAuz7HxrovFuDD8yhC9I
+	gpY8lfXHyrI5XNeRYMoqOcOWTvNPjYmaJRKWe+qOOfIP56AUKPBxJ4wqWx9aiICRRSqM0toLCXs
+	Cp0FuoZXrD0haEoKWLhpByp0+G+WpdiMhV+BaWSnNbszozc5VrBwy+RLDoH5bQIRs3zKOmPfPWP
+	MwF3NjxIBF+M1cj12kjjJsE10bn5WI2DZF9JDinQTErYsS/KUzevE8OFyiRCKUiNOBcjEZo31FA
+	==
+X-Google-Smtp-Source: AGHT+IF6egVDTn5Ywg4HO8cRrcaXb7fIR+VPczMNX7N1WKOEThRzIZRtsgAxQPHJcsd40gZ+gXw7rQ==
+X-Received: by 2002:a17:90b:314e:b0:335:228c:6f1f with SMTP id 98e67ed59e1d1-339a6e95d23mr3939304a91.12.1759316600367;
+        Wed, 01 Oct 2025 04:03:20 -0700 (PDT)
+Received: from ti-am64x-sdk.. ([157.50.93.46])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-339a6f15fbfsm2073476a91.21.2025.10.01.04.03.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 03:58:30 -0700 (PDT)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Wed, 1 Oct 2025 12:58:29 +0200
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, bpf@vger.kernel.org,
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@kernel.org,
-	peterz@infradead.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
-	mingo@kernel.org, netdev@vger.kernel.org
-Subject: Re: [GIT PULL] BPF changes for 6.18
-Message-ID: <aN0JVRynHxqKy4lw@krava>
-References: <20250928154606.5773-1-alexei.starovoitov@gmail.com>
- <CAHk-=whR4OLqN_h1Er14wwS=FcETU9wgXVpgvdzh09KZwMEsBA@mail.gmail.com>
+        Wed, 01 Oct 2025 04:03:19 -0700 (PDT)
+From: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	bhanuseshukumar@gmail.com
+Subject: [PATCH v2] net: doc: Fix typos in docs
+Date: Wed,  1 Oct 2025 16:27:15 +0530
+Message-Id: <20251001105715.50462-1-bhanuseshukumar@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=whR4OLqN_h1Er14wwS=FcETU9wgXVpgvdzh09KZwMEsBA@mail.gmail.com>
 
-On Tue, Sep 30, 2025 at 07:09:43PM -0700, Linus Torvalds wrote:
-> [ Jiri added to participants ]
-> 
-> On Sun, 28 Sept 2025 at 08:46, Alexei Starovoitov
-> <alexei.starovoitov@gmail.com> wrote:
-> >
-> > Note, there is a trivial conflict between tip and bpf-next trees:
-> > in kernel/events/uprobes.c between commit:
-> >   4363264111e12 ("uprobe: Do not emulate/sstep original instruction when ip is changed")
-> > from the bpf-next tree and commit:
-> >   ba2bfc97b4629 ("uprobes/x86: Add support to optimize uprobes")
-> > from the tip tree:
-> > https://lore.kernel.org/all/aNVMR5rjA2geHNLn@sirena.org.uk/
-> > since Jiri's two separate uprobe/bpf related patch series landed
-> > in different trees. One was mostly uprobe. Another was mostly bpf.
-> 
-> So the conflict isn't complicated and I did it the way linux-next did
-> it, but honestly, the placement of that arch_uprobe_optimize() thing
-> isn't obvious.
-> 
-> My first reaction was to put it before the instruction_pointer()
-> check, because it seems like whatever rewriting the arch wants to do
-> might as well be done regardless.
-> 
-> It's very confusing how it's sometimes skipped, and sometimes not
-> skipped. For example. if the uprobe is skipped because of
-> single-stepping disabling it, the arch optimization still *will* be
-> done, because the "skip_sstep()" test is done after - but other
-> skipping tests are done before.
-> 
-> Jiri, it would be good to just add a note about when that optimization
-> is done and when not done. Because as-is, it's very confusing.
-> 
-> The answer may well be "it doesn't matter, semantics are the same" (I
-> suspect that _is_ the answer), but even so that current ordering is
-> just confusing when it sometimes goes through that
-> arch_uprobe_optimize() and sometimes skips it.
+Fix typos in doc comments.
 
-yes, either way will work fine, but perhaps the other way round to
-first optimize and then skip uprobe if needed is less confusing
-
-> 
-> Side note: the conflict in the selftests was worse, and the magic to
-> build it is not obvious. It errors out randomly with various kernel
-> configs with useless error messages, and I eventually just gave up
-> entirely with a
-> 
->    attempt to use poisoned ‘gettid’
-> 
-> error.
-> 
->              Linus
-
-I ended up with changes below, should I send formal patches?
-
-thanks,
-jirka
-
-
+Signed-off-by: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
 ---
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 5dcf927310fd..c14ec27b976d 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2765,6 +2765,9 @@ static void handle_swbp(struct pt_regs *regs)
+ Note: No functionality change intended.
+
+ Change log:
+ v1->v2 changes:
+  fixed pertaing to pertaining.
+  Link to v1: https://lore.kernel.org/all/20251001064102.42296-1-bhanuseshukumar@gmail.com/
  
- 	handler_chain(uprobe, regs);
- 
-+	/* Try to optimize after first hit. */
-+	arch_uprobe_optimize(&uprobe->arch, bp_vaddr);
-+
- 	/*
- 	 * If user decided to take execution elsewhere, it makes little sense
- 	 * to execute the original instruction, so let's skip it.
-@@ -2772,9 +2775,6 @@ static void handle_swbp(struct pt_regs *regs)
- 	if (instruction_pointer(regs) != bp_vaddr)
- 		goto out;
- 
--	/* Try to optimize after first hit. */
--	arch_uprobe_optimize(&uprobe->arch, bp_vaddr);
--
- 	if (arch_uprobe_skip_sstep(&uprobe->arch, regs))
- 		goto out;
- 
-diff --git a/tools/testing/selftests/bpf/prog_tests/uprobe_syscall.c b/tools/testing/selftests/bpf/prog_tests/uprobe_syscall.c
-index 6d75ede16e7c..955a37751b52 100644
---- a/tools/testing/selftests/bpf/prog_tests/uprobe_syscall.c
-+++ b/tools/testing/selftests/bpf/prog_tests/uprobe_syscall.c
-@@ -661,7 +661,7 @@ static void *worker_trigger(void *arg)
- 		rounds++;
- 	}
- 
--	printf("tid %d trigger rounds: %lu\n", gettid(), rounds);
-+	printf("tid %ld trigger rounds: %lu\n", sys_gettid(), rounds);
- 	return NULL;
- }
- 
-@@ -704,7 +704,7 @@ static void *worker_attach(void *arg)
- 		rounds++;
- 	}
- 
--	printf("tid %d attach rounds: %lu hits: %d\n", gettid(), rounds, skel->bss->executed);
-+	printf("tid %ld attach rounds: %lu hits: %d\n", sys_gettid(), rounds, skel->bss->executed);
- 	uprobe_syscall_executed__destroy(skel);
- 	free(ref);
- 	return NULL;
-diff --git a/tools/testing/selftests/bpf/prog_tests/usdt.c b/tools/testing/selftests/bpf/prog_tests/usdt.c
-index 4f7f45e69315..f4be5269fa90 100644
---- a/tools/testing/selftests/bpf/prog_tests/usdt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/usdt.c
-@@ -142,7 +142,7 @@ static void subtest_basic_usdt(bool optimized)
- 		goto cleanup;
- #endif
- 
--	alled = TRIGGER(1);
-+	called = TRIGGER(1);
- 
- 	ASSERT_EQ(bss->usdt0_called, called, "usdt0_called");
- 	ASSERT_EQ(bss->usdt3_called, called, "usdt3_called");
+ include/linux/phy.h | 4 ++--
+ net/tipc/crypto.c   | 2 +-
+ net/tipc/topsrv.c   | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index bb45787d8684..de786fc2169b 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -292,7 +292,7 @@ static inline const char *phy_modes(phy_interface_t interface)
+  *
+  * Description: maps RGMII supported link speeds into the clock rates.
+  * This can also be used for MII, GMII, and RMII interface modes as the
+- * clock rates are indentical, but the caller must be aware that errors
++ * clock rates are identical, but the caller must be aware that errors
+  * for unsupported clock rates will not be signalled.
+  *
+  * Returns: clock rate or negative errno
+@@ -514,7 +514,7 @@ enum phy_state {
+  * struct phy_c45_device_ids - 802.3-c45 Device Identifiers
+  * @devices_in_package: IEEE 802.3 devices in package register value.
+  * @mmds_present: bit vector of MMDs present.
+- * @device_ids: The device identifer for each present device.
++ * @device_ids: The device identifier for each present device.
+  */
+ struct phy_c45_device_ids {
+ 	u32 devices_in_package;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index ea5bb131ebd0..751904f10aab 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -1797,7 +1797,7 @@ int tipc_crypto_xmit(struct net *net, struct sk_buff **skb,
+  * @b: bearer where the message has been received
+  *
+  * If the decryption is successful, the decrypted skb is returned directly or
+- * as the callback, the encryption header and auth tag will be trimed out
++ * as the callback, the encryption header and auth tag will be trimmed out
+  * before forwarding to tipc_rcv() via the tipc_crypto_rcv_complete().
+  * Otherwise, the skb will be freed!
+  * Note: RX key(s) can be re-aligned, or in case of no key suitable, TX
+diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+index ffe577bf6b51..aad7f96b6009 100644
+--- a/net/tipc/topsrv.c
++++ b/net/tipc/topsrv.c
+@@ -57,7 +57,7 @@
+  * @conn_idr: identifier set of connection
+  * @idr_lock: protect the connection identifier set
+  * @idr_in_use: amount of allocated identifier entry
+- * @net: network namspace instance
++ * @net: network namespace instance
+  * @awork: accept work item
+  * @rcv_wq: receive workqueue
+  * @send_wq: send workqueue
+@@ -83,7 +83,7 @@ struct tipc_topsrv {
+  * @sock: socket handler associated with connection
+  * @flags: indicates connection state
+  * @server: pointer to connected server
+- * @sub_list: lsit to all pertaing subscriptions
++ * @sub_list: list to all pertaining subscriptions
+  * @sub_lock: lock protecting the subscription list
+  * @rwork: receive work item
+  * @outqueue: pointer to first outbound message in queue
+-- 
+2.34.1
+
