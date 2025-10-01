@@ -1,67 +1,55 @@
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6DC1DA62E;
-	Wed,  1 Oct 2025 13:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC26230171A;
+	Wed,  1 Oct 2025 14:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759324825; cv=none; b=u0onedwJOMT0xigUuP5J14/FPWV68PLtVTCuXO5XslnP4DJ6yUXgjHej/WgfYqJP9kxEL27eqqbQr80GqJB/Ii79UhjwjYPeksqNmWiWNtGYDxgf6HD5+OvpMJ7UwAy5p53oGgDck5giISkZP/Vpt6NYmrHvHXiE/EwfIFWqfvI=
+	t=1759327249; cv=none; b=F9wQIH1kE+Yk6MnbQU3/ge5ZQD1WxlDNRby+goa5xx6JDniLqB+NmFlm0IKTRts9oljzZSOqiZALB6iabuIGjUii0i/7hHCtFLwxxj26V01u7RdJlb+BiU/Xl6UQuyUuEgnKqv3iRm+LUHOdLhM3e/fMSw1PtOD2ncgLUaRy8yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759324825; c=relaxed/simple;
-	bh=Uctcsfz4nNrfaQk5rKvvDsfcCV9RMgYtVLuLHqiRaLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SjjEXakmwiyeDxSVhhJ1vnQf/HCvVvHX90NddnkrlJx2DUJuSUa/ELynAQz3so7kA4L1lGZ/PU3KXcDHyG93BgrvbZJ86b28Vc/Km5l3qCSYfQKIaIBqTvFRyeBZ6Mq0X/6hOSoJSZ0iuRFAkFU7KSPrngH+ts+hCQEOuGqRi2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 621F82C0A2C6;
-	Wed,  1 Oct 2025 15:10:14 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4BEE65F82FE; Wed,  1 Oct 2025 15:10:14 +0200 (CEST)
-Date: Wed, 1 Oct 2025 15:10:14 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Hubert Wi??niewski <hubert.wisniewski.25632@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
-	Xu Yang <xu.yang_2@nxp.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH net v2 1/1] net: usb: asix: hold PM usage ref to avoid
- PM/MDIO + RTNL deadlock
-Message-ID: <aN0oNgEp08BaGeTJ@wunner.de>
-References: <20251001130432.2444863-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1759327249; c=relaxed/simple;
+	bh=pOd1BvnuzhfzaFifmVUeHSLOXMN8uAeuiuOhBxWEacA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fUokCtwR7qTEF4aql8EVxuUXdfnJXgi5xVHKF5BHt7eeK3eabGNywvorpTJYCoIRVCjp0dpvrm5xo565uJs3JNozQXqYkoZMY0Et6Xriy5mv4VCSzTRYFRoZ6rxga3mxgqpueEc7VrbIdyoEiDnWcbQxLwmary0+4LmtO2rN3t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enmNegtf; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enmNegtf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E72C4CEF5;
+	Wed,  1 Oct 2025 14:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759327249;
+	bh=pOd1BvnuzhfzaFifmVUeHSLOXMN8uAeuiuOhBxWEacA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=enmNegtfjCmxv7B0haPoSP+16jl1bWZm1STOzUMfW1Ww1EBmr+33tqzjZvfswIjvB
+	 RX8rXA/izNUsxyDxPaTFa8+zWUXDEOMS75bXznnSdzRtfikgd6LPV7a7tZSVuWf8N0
+	 ZRkXgcMPZMxnZVA1FHzLCDHmnxzKR/77iw6m80R6aiEduzS1rHFSWEhAYvS+BDAIy6
+	 DLuKj06+iPOIIVfwsdR6btAWve4ltyHunBUJirBi0srkvML73h+SJo5R3d2gBVqp8q
+	 Agf5busOQ8M8EINAbS11fDZ2UsfBoaIN+lbao+Mf1mJx1ZS/pae1IKdqGoDHmkK4uJ
+	 ym840VENb1coA==
+Date: Wed, 1 Oct 2025 07:00:48 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: patchwork-bot+netdevbpf@kernel.org, linux-kernel@vger.kernel.org,
+ zhangjiao2@cmss.chinamobile.com, jasowang@redhat.com, eperezma@redhat.com,
+ kvm@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH net] vhost: vringh: Fix copy_to_iter return value check
+Message-ID: <20251001070048.29d71d65@kernel.org>
+In-Reply-To: <20251001071456-mutt-send-email-mst@kernel.org>
+References: <cd637504a6e3967954a9e80fc1b75e8c0978087b.1758723310.git.mst@redhat.com>
+	<175893420700.108864.10199269230355246073.git-patchwork-notify@kernel.org>
+	<20251001071456-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251001130432.2444863-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 01, 2025 at 03:04:32PM +0200, Oleksij Rempel wrote:
-> @@ -1600,6 +1624,10 @@ static struct usb_driver asix_driver = {
->  	.resume =	asix_resume,
->  	.reset_resume =	asix_resume,
->  	.disconnect =	usbnet_disconnect,
-> +	/* usbnet will force supports_autosuspend=1; we explicitly forbid RPM
-> +	 * per-interface in bind to keep autosuspend disabled for this driver
-> +	 * by using pm_runtime_forbid().
-> +	 */
+On Wed, 1 Oct 2025 07:22:00 -0400 Michael S. Tsirkin wrote:
+> It's probably stable material. Does netdev still have a separate
+> stable process? I'm not sure I remember.
 
-Looks like this code comment needs an update, now that you're no longer
-using pm_runtime_forbid()?
-
-Thanks,
-
-Lukas
+Not any more. FWIW Paolo posted our -next PR earlier today, so the fix
+should reach Linus within the next couple of days.
