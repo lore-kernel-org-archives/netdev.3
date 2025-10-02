@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE55430EF96;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB1E30F807;
 	Thu,  2 Oct 2025 08:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759392847; cv=none; b=EdTlffe7vCKyRfrJbIjWD24W1U9BngPrYY8FSXHqzsipNSwYyTmIjW7bB7xMcC3ytkMvsQ5JSds6+aruTzqKPioVhwboxQ2SE7S6AhUZAKrFjrn2dwAwqCGBe/NDJnwsYoQacMrCjP5F6VAJXW/cqGYzezngzcEarrUob3Yz2z4=
+	t=1759392849; cv=none; b=ex+QB8Iw8G1zQrcW3Y0Sw1RxIbewGjS/K26AyjWm1Pv7dtESUjLTdbwYygpvjVQcHikh9iBXqOMyJ3EQLMzo8Z3zw79reiQtWU08LSmwiwoy3aZoMei8A4xldzQQDBUcQRpE8y32s11c8pp2n0HbuNYTfAdJCUC2Rf7betQ5VLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759392847; c=relaxed/simple;
-	bh=ie7Z6O65nZEyytmhWplooZ/RfzjoEP4K1Lb9yqntV+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=C+suj5YHGyIbYx4rEjEvxFzLzMkWqGSHcpE+BLKcYhGdtL1k+m3igarCvMPRfhAAjNDOQmwgVudRy8lI8E5ZkedU5WmskYwlkHzR81PlKo1v/Z/xjFAVkKTOJ0yPPvQcBiq45KCrCsQX58YcEYPlyEKmtA9K+xoDkEqP4WFQxMs=
+	s=arc-20240116; t=1759392849; c=relaxed/simple;
+	bh=wPgCGFth3sUpJztlYzWQSwfpstbJ+L/W/hvoYDKPCvA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qUvI2P5esdgB4ic+bq+OH6bWT5XqhhNMl+BmowQS+Z8JqB8deFpKUNpnfQ8tWc/Sc4zfquJJ9Zo2+5gRsIvA7GBZDQgMfBK6Rz2antpFZz5t64RXpMm5HH5ve15UCaPofGhsflfucLXdDj5Ois7NN3cBTuQPcIUHTzQGKJk/Bjw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-65-68de3412b98e
+X-AuditID: a67dfc5b-c45ff70000001609-c0-68de3413dcb9
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -162,45 +162,43 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 32/47] dept: assign unique dept_key to each distinct dma fence caller
-Date: Thu,  2 Oct 2025 17:12:32 +0900
-Message-Id: <20251002081247.51255-33-byungchul@sk.com>
+Subject: [PATCH v17 35/47] i2c: rename wait_for_completion callback to wait_for_completion_cb
+Date: Thu,  2 Oct 2025 17:12:35 +0900
+Message-Id: <20251002081247.51255-36-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTHfe597m1pbHJTiF5hkaUJmimy4Zg5i25xZB9ulhi36BdfEi1y
-	Y7vRYlpF0JlQeRFdkY4IZK0oWGk6QGlaq0KoFordSMUVO6EpYBWhIC82U4pBUVZq/PY75/87
-	53w5QlIyRCULFaqjvFoly5PSIiyaXdm4KTHrsfwL0xLAgNaFITpXgSEUrUDw+q2RhLL2JQxz
-	C0MCWHJ6ELTe0BLwyvqehmn3SwQRsw6BIWyMpSMTBAzOzyAwj70nYMx1BsHlK3Ya6mp8CCat
-	sdJpOU3DuN5Bwr/RCA29Nb/RMNt/kYAXVhrqjdUISkxtNNTW2zC0P+kQQP/0IgHDtdUEtNh2
-	QMgcxlD3nAZj3SQBC+ZmAdw3DWNYfJoJnpYJAYxU1WC4PvsPBaG/yim4VfxEAK26MAkVHVEM
-	tmcDFDiDG6Gx/CqGTmcvBs/tUQL8HRdp0FkdFPhcXgraJgIEeD1/Y+g1/ImhabCfAHvffRLm
-	z6dAQD+O4NqLKzQ8dDUQoO0yYQg/Kie253Kvy85jrtl+k+BaL7Uibq6phOTK9DFyz0RIrtR+
-	nGvyztDcm+gjmvu9bxPXbhgRcKV3ggKuwXaMK+2ZpTi7ZQNn6nxO/Lhur2hbLp+nKODVn397
-	UCQPVF6gjox+XXj2xmm6GLVnnEMJQpbJYsf7HPgjTw3qqGWmmfVsILBALnMS8ylrrwzH+yTj
-	/YQd6E9f5kRmD2trGY87mEljh18Z446Y2cJeC18gPuxMZVusrriTEOv7n3rjtyTMV2xZpDTm
-	iGLO5QR2tHaI/DCwhu2yBLAeiRvQimYkUagKlDJFXlaGvEilKMw4lK+0odjLmU8t7ruNXvp2
-	dSNGiKQrxb60EbmEkhVoipTdiBWS0iTxQcuwXCLOlRWd4NX5B9TH8nhNN0oRYulq8eb547kS
-	5rDsKP8Lzx/h1R9TQpiQXIzqUh9nOH7NfntvTU56pf+bMYPzgSKS4jmwUbnb72gorJjKFq21
-	ZO/wKoN/TFU+/Gk6aed/BdWrDN8h1Wd9Pu3OkIn0zzvr3Tn5iSV6pmqpq8f8pfuHs1cntyYP
-	ZfeE1gU1736e0e5PPadL4+9+vzbJTaafXC/YZ1aN4dptUHUoKMUauSxzA6nWyP4HRuiAZm4D
-	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93nHK0uy+imQbEwIdIKepweRATRJbIHhWV/lLNubjgfbD6y
-	qHxsZWZmo01yWT5yiVtp0yITQ7TWY1kuy6ycpi0rH62HK8y5NY3+OXzO+X44nD+OABffJoME
-	8oRkXpkgVUgoISHcuiY7TLysW7ZE7ZoHHZlNBLhHcgi4VG2mIMdykYS2GyYEPe4cBL/HDDho
-	6n0EjGutNIyMvqPB12hFoLdrcTDXZWLws8ZLwWDLDwS6XicFhV8yCXAZ8xAU9Rto+PJgEwz3
-	NJDgc3zC4PWvIQRGpxcDZ9MpBOP6OLhSVkvBWOtzHAp1bQhKex04fK7xh3XWbgSNlVkUfCy4
-	hUO7cxq8dLsoeKw7Q8Gw/RIGX2soKMlqJKHYoEWQXV5Ngb7YQkD9+7s02Ac9GHTptRiYLBHQ
-	Y+wnwFZQhvnv81s3Z4GhMBvzl88Y6K43YDBqrKLhaXkXAcaMEDC0tpPQV1lEg6d3KfhKEsFq
-	+kSD45yOgBvDz8n1OsT91uQTXFXtbYzTvBinOPNlM+LG/mgRN1KRjXOaAn/bMuTCOXVtGldh
-	G6K4P+5XFNf4q4TgnpSx3PnWMK6+yEFz6ntv6e2r9wrXHuQV8lReuXhdtFDWefYCmdS36vDp
-	uiwqA9WH56IAAcssYwde55ETTDGhbGfnKD7Bgcw8tvZs/+QcZ2xz2A77ogmewUSxFtPHSYdg
-	Qtiun4ZJR8SsYK/3X8D+7ZzLmmqaJp0A/7y910ZMsJhZzmpcaqwACUvQlCoUKE9IjZfKFcvD
-	VXGy9AT54fADifEW5P8m4zHP+TtopH1TM2IESDJVZA9xyMSkNFWVHt+MWAEuCRRFV3bJxKKD
-	0vQjvDJxvzJFwauaUbCAkMwSbd7NR4uZWGkyH8fzSbzyf4oJAoIyUH7U5dmD72I33Fw3f2bq
-	fl6WPBU2+HIPFb/91rS5w/PwSdDxgZ07vm9V2FY7d6kj9q6tDj40X4SH6o0nIvJUaZ7IxdO9
-	36/CyukfWk/uuY8aHlm+BR8tMtv6Nlrdu1Lyo7YtKD21sjJyjbbq2j5FSu6bRZYYb0zuM1eo
-	d4vzx8CLi8USQiWTLl2IK1XSv193NrNJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzXSeUiTcRgH8H7v7XD0Ms3eUihWEahph9VTSPRfb4JoSASG5Mi3ttRls5Yr
+	CiNnS6xMyDwqPGoe82IrvDLKY5aWObI5xZmr6DRHprNpVpvRfx+e6/vPw+CSHHIlo1CeFFRK
+	WYqUEhGib75lG/wixuQbC2cjYWZaR8BAvQHB7HwJDgv5Zhr+tJsRFFjycai9fwEDpz4XwZBr
+	AsFCQTIMzjgpmGyk4GJFAwWjBfkYGIzR4NbX0GA2fKSh/ttLEt70ZJNgHO5GoGudIaB9JAQy
+	S2ZJeFZcTYBj3EaC6cVzHFxXA6FuspyCry49DheeVBDw4XU2BubSAMj+8ZuES5/aPCFXvxAw
+	ONyG4JFuHANjrZWCj8W3Mei1/6DBZLyBw5y9mYS5Sk+eNtdNg8FCgK7LhcOD7lka5n/eonZv
+	5Gvv1CJ+fi4f8do8jzonnDifZTrN3+uboPiWYjvNZz0aoXlTVTBf8fAzxhtrLlP8qPUhxU/2
+	99N8i2MH/37wJsaXZd7AY7l4UWSSkKJQC6rwXYki+VtjPZ1Wx2WU6W14JnL45yCG4dgIrqJ6
+	fw7yWWR1Xg/ymmLXczabG/fan13Nma58IL3G2b4gzmoJ9dqPTeDKe4Zorwl2HfeuvAHzWsxu
+	48Z6i/B/N1dxhsbHi/bx1F85+givJexWTuvM8syLPDMlPly/2439W1jBPamyEXlIXIqW1CCJ
+	QqlOlSlSIsLkGqUiI+zw8VQj8nyI/tyvg81oaiCuA7EMkvqKB9bZ5RJSpk7XpHYgjsGl/uLE
+	qlG5RJwk05wRVMcPqU6lCOkdKJAhpMvFm12nkyTsUdlJIVkQ0gTV/y7G+KzMRNqwZWhki0U7
+	HZd8fqdy7+e7J3p3Nm3XhhZeFy9NjBwvCcJizpRHMSFr9jisCXvPBk+1rVXrnzVej/4Vmyb+
+	8ic0ICqg6+w13hoR3jpvs5o7GLXUZe3Uaaoj4yuPzBzjimMypl2yon2atZV2v+n1KxxTTQvf
+	DxzZXz/U/r6AeRolJdLlsk3BuCpd9hfDyDU/HQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0hTcRQA8P733t07V4vrHHgxoRjZi+wBGgezJ1G3oEgixCBy5aUNNx+b
+	rUwLTUf2nqMpuR66cJjvtrTMVqK4HlN0WTbKaatlVppUWphT24q+HH7nweF8OHxc1MgL48tT
+	MjhVilQhIQWEYNfavMiQqH7ZKlf7XOjNbSFgfKyAgKt11SQUWK7woLu2CsHAeAGCX5NGHLRN
+	MwRM6e0UjE28oWDGZkdQ5NTjUH0nF4Mf9dMkfGn7jsDg8ZJQ/CmXgFHzeQQlg0YKPrVvg5GB
+	Zh7MuD9i8OrnMAKzdxoDb8tpBFNFyXDDZCVhsrMLh2JDN4IyjxuHoXp/8469H4Gt4hQJH3QN
+	OPR458KL8VESnhrOkTDivIrB13oSSk/ZeHDNqEeQd7OOhKJrFgKa3t6nwPnFh0FfkR6DKstO
+	GDAPEuDQmTD/ff6p26FgLM7D/GEIA0NNMwYT5koKOm72EWDOiQBjZw8P3lWUUODzrIaZ0lSw
+	V32kwH3JQEDtSBdvowGxv7QXCbbS2oix2udTJFt9vRqxk7/1iB0rz8NZrc6ftg2P4my+9Shb
+	7hgm2d/jL0nW9rOUYJ+ZGLawM5JtKnFTbP7D19TumH2C2CROIddwqpXrEwWyd5ZaKq2GOVZm
+	duE5yCM+i4L4DB3F3NI9RgGT9GLG5ZrAAxbTCxjrhUFewDjtCGd6ncsDDqH3M6bHr6iACTqC
+	eW+qwwIW0muY/mdX8H875zNV9S1/HeSv93gcRMAiOprRjuZjOiQoRbMqkVieolFK5YroFepk
+	WWaK/NiKQ6lKC/J/k/mEr/AeGuvZ1opoPpLMEToj3DIRT6pRZypbEcPHJWJhYkWfTCRMkmYe
+	51SpB1RHFJy6Fc3jE5JQ4Y54LlFEH5ZmcMkcl8ap/ncxflBYDtpZ+UBhrwl7szDjQqEuoW3V
+	7KwnCYetrnXB3opZn38sQXHlJxuncgyPjp9Nt/E7CtKn4+bE6kuUxGnN8uy4lqyt2d2HOnzf
+	Y4bD1WKlJnRffNumzdtj1jr2Nmhysy4HBy2at6U3+q4eZYcEx5dtWPrNW5t817cnITz24LkO
+	VdKZ5nYJoZZJVy/DVWrpH7oHRxxJAwAA
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -208,209 +206,77 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-dma fence can be used at various points in the code and it's very hard
-to distinguish dma fences between different usages.  Using a single
-dept_key for all the dma fences could trigger false positive reports.
+Functionally no change.  This patch is a preparation for DEPT(DEPendency
+Tracker) to track dependencies related to a scheduler API,
+wait_for_completion().
 
-Assign unique dept_key to each distinct dma fence wait to avoid false
-positive reports.
+Unfortunately, struct i2c_algo_pca_data has a callback member named
+wait_for_completion, that is the same as the scheduler API, which makes
+it hard to change the scheduler API to a macro form because of the
+ambiguity.
+
+Add a postfix _cb to the callback member to remove the ambiguity.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- drivers/dma-buf/dma-fence.c | 18 ++++-----
- include/linux/dma-fence.h   | 74 +++++++++++++++++++++++++++++--------
- 2 files changed, 68 insertions(+), 24 deletions(-)
+ drivers/i2c/algos/i2c-algo-pca.c      | 2 +-
+ drivers/i2c/busses/i2c-pca-isa.c      | 2 +-
+ drivers/i2c/busses/i2c-pca-platform.c | 2 +-
+ include/linux/i2c-algo-pca.h          | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma-buf/dma-fence.c b/drivers/dma-buf/dma-fence.c
-index 0a4b519e3351..df52a7ae336a 100644
---- a/drivers/dma-buf/dma-fence.c
-+++ b/drivers/dma-buf/dma-fence.c
-@@ -481,7 +481,7 @@ int dma_fence_signal(struct dma_fence *fence)
- EXPORT_SYMBOL(dma_fence_signal);
+diff --git a/drivers/i2c/algos/i2c-algo-pca.c b/drivers/i2c/algos/i2c-algo-pca.c
+index 74b66aec33d4..ee86df4cff4b 100644
+--- a/drivers/i2c/algos/i2c-algo-pca.c
++++ b/drivers/i2c/algos/i2c-algo-pca.c
+@@ -30,7 +30,7 @@ static int i2c_debug;
+ #define pca_clock(adap) adap->i2c_clock
+ #define pca_set_con(adap, val) pca_outw(adap, I2C_PCA_CON, val)
+ #define pca_get_con(adap) pca_inw(adap, I2C_PCA_CON)
+-#define pca_wait(adap) adap->wait_for_completion(adap->data)
++#define pca_wait(adap) adap->wait_for_completion_cb(adap->data)
  
- /**
-- * dma_fence_wait_timeout - sleep until the fence gets signaled
-+ * __dma_fence_wait_timeout - sleep until the fence gets signaled
-  * or until timeout elapses
-  * @fence: the fence to wait on
-  * @intr: if true, do an interruptible wait
-@@ -499,7 +499,7 @@ EXPORT_SYMBOL(dma_fence_signal);
-  * See also dma_fence_wait() and dma_fence_wait_any_timeout().
-  */
- signed long
--dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
-+__dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
+ static void pca_reset(struct i2c_algo_pca_data *adap)
  {
- 	signed long ret;
+diff --git a/drivers/i2c/busses/i2c-pca-isa.c b/drivers/i2c/busses/i2c-pca-isa.c
+index 85e8cf58e8bf..0cbf2f509527 100644
+--- a/drivers/i2c/busses/i2c-pca-isa.c
++++ b/drivers/i2c/busses/i2c-pca-isa.c
+@@ -95,7 +95,7 @@ static struct i2c_algo_pca_data pca_isa_data = {
+ 	/* .data intentionally left NULL, not needed with ISA */
+ 	.write_byte		= pca_isa_writebyte,
+ 	.read_byte		= pca_isa_readbyte,
+-	.wait_for_completion	= pca_isa_waitforcompletion,
++	.wait_for_completion_cb	= pca_isa_waitforcompletion,
+ 	.reset_chip		= pca_isa_resetchip,
+ };
  
-@@ -528,7 +528,7 @@ dma_fence_wait_timeout(struct dma_fence *fence, bool intr, signed long timeout)
+diff --git a/drivers/i2c/busses/i2c-pca-platform.c b/drivers/i2c/busses/i2c-pca-platform.c
+index 87da8241b927..c0f35ebbe37d 100644
+--- a/drivers/i2c/busses/i2c-pca-platform.c
++++ b/drivers/i2c/busses/i2c-pca-platform.c
+@@ -180,7 +180,7 @@ static int i2c_pca_pf_probe(struct platform_device *pdev)
  	}
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_wait_timeout);
-+EXPORT_SYMBOL(__dma_fence_wait_timeout);
  
- /**
-  * dma_fence_release - default release function for fences
-@@ -764,7 +764,7 @@ dma_fence_default_wait_cb(struct dma_fence *fence, struct dma_fence_cb *cb)
- }
- 
- /**
-- * dma_fence_default_wait - default sleep until the fence gets signaled
-+ * __dma_fence_default_wait - default sleep until the fence gets signaled
-  * or until timeout elapses
-  * @fence: the fence to wait on
-  * @intr: if true, do an interruptible wait
-@@ -776,7 +776,7 @@ dma_fence_default_wait_cb(struct dma_fence *fence, struct dma_fence_cb *cb)
-  * functions taking a jiffies timeout.
-  */
- signed long
--dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
-+__dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
- {
- 	struct default_wait_cb cb;
- 	unsigned long flags;
-@@ -825,7 +825,7 @@ dma_fence_default_wait(struct dma_fence *fence, bool intr, signed long timeout)
- 	spin_unlock_irqrestore(fence->lock, flags);
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_default_wait);
-+EXPORT_SYMBOL(__dma_fence_default_wait);
- 
- static bool
- dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
-@@ -845,7 +845,7 @@ dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
- }
- 
- /**
-- * dma_fence_wait_any_timeout - sleep until any fence gets signaled
-+ * __dma_fence_wait_any_timeout - sleep until any fence gets signaled
-  * or until timeout elapses
-  * @fences: array of fences to wait on
-  * @count: number of fences to wait on
-@@ -865,7 +865,7 @@ dma_fence_test_signaled_any(struct dma_fence **fences, uint32_t count,
-  * See also dma_fence_wait() and dma_fence_wait_timeout().
-  */
- signed long
--dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
-+__dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
- 			   bool intr, signed long timeout, uint32_t *idx)
- {
- 	struct default_wait_cb *cb;
-@@ -933,7 +933,7 @@ dma_fence_wait_any_timeout(struct dma_fence **fences, uint32_t count,
- 
- 	return ret;
- }
--EXPORT_SYMBOL(dma_fence_wait_any_timeout);
-+EXPORT_SYMBOL(__dma_fence_wait_any_timeout);
- 
- /**
-  * DOC: deadline hints
-diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
-index 64639e104110..1062fbb637e5 100644
---- a/include/linux/dma-fence.h
-+++ b/include/linux/dma-fence.h
-@@ -369,8 +369,22 @@ int dma_fence_signal_locked(struct dma_fence *fence);
- int dma_fence_signal_timestamp(struct dma_fence *fence, ktime_t timestamp);
- int dma_fence_signal_timestamp_locked(struct dma_fence *fence,
- 				      ktime_t timestamp);
--signed long dma_fence_default_wait(struct dma_fence *fence,
-+signed long __dma_fence_default_wait(struct dma_fence *fence,
- 				   bool intr, signed long timeout);
-+
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_default_wait(f, intr, t)				\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_default_wait(f, intr, t);			\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
-+
- int dma_fence_add_callback(struct dma_fence *fence,
- 			   struct dma_fence_cb *cb,
- 			   dma_fence_func_t func);
-@@ -607,12 +621,37 @@ static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
- 	return fence->timestamp;
- }
- 
--signed long dma_fence_wait_timeout(struct dma_fence *,
-+signed long __dma_fence_wait_timeout(struct dma_fence *,
- 				   bool intr, signed long timeout);
--signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
-+signed long __dma_fence_wait_any_timeout(struct dma_fence **fences,
- 				       uint32_t count,
- 				       bool intr, signed long timeout,
- 				       uint32_t *idx);
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_wait_timeout(f, intr, t)				\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_wait_timeout(f, intr, t);			\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
-+
-+/*
-+ * Associate every caller with its own dept map.
-+ */
-+#define dma_fence_wait_any_timeout(fpp, count, intr, t, idx)		\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, t);				\
-+	__ret = __dma_fence_wait_any_timeout(fpp, count, intr, t, idx);	\
-+	sdt_might_sleep_end();						\
-+	__ret;								\
-+})
- 
- /**
-  * dma_fence_wait - sleep until the fence gets signaled
-@@ -628,19 +667,24 @@ signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
-  * fence might be freed before return, resulting in undefined behavior.
-  *
-  * See also dma_fence_wait_timeout() and dma_fence_wait_any_timeout().
-+ *
-+ * Associate every caller with its own dept map.
-  */
--static inline signed long dma_fence_wait(struct dma_fence *fence, bool intr)
--{
--	signed long ret;
--
--	/* Since dma_fence_wait_timeout cannot timeout with
--	 * MAX_SCHEDULE_TIMEOUT, only valid return values are
--	 * -ERESTARTSYS and MAX_SCHEDULE_TIMEOUT.
--	 */
--	ret = dma_fence_wait_timeout(fence, intr, MAX_SCHEDULE_TIMEOUT);
--
--	return ret < 0 ? ret : 0;
--}
-+#define dma_fence_wait(f, intr)						\
-+({									\
-+	signed long __ret;						\
-+									\
-+	sdt_might_sleep_start_timeout(NULL, MAX_SCHEDULE_TIMEOUT);	\
-+	__ret = __dma_fence_wait_timeout(f, intr, MAX_SCHEDULE_TIMEOUT);\
-+	sdt_might_sleep_end();						\
-+									\
-+	/*								\
-+	 * Since dma_fence_wait_timeout cannot timeout with		\
-+	 * MAX_SCHEDULE_TIMEOUT, only valid return values are		\
-+	 * -ERESTARTSYS and MAX_SCHEDULE_TIMEOUT.			\
-+	 */								\
-+	__ret < 0 ? __ret : 0;						\
-+})
- 
- void dma_fence_set_deadline(struct dma_fence *fence, ktime_t deadline);
- 
+ 	i2c->algo_data.data = i2c;
+-	i2c->algo_data.wait_for_completion = i2c_pca_pf_waitforcompletion;
++	i2c->algo_data.wait_for_completion_cb = i2c_pca_pf_waitforcompletion;
+ 	if (i2c->gpio)
+ 		i2c->algo_data.reset_chip = i2c_pca_pf_resetchip;
+ 	else
+diff --git a/include/linux/i2c-algo-pca.h b/include/linux/i2c-algo-pca.h
+index 7c522fdd9ea7..e305bf32e40a 100644
+--- a/include/linux/i2c-algo-pca.h
++++ b/include/linux/i2c-algo-pca.h
+@@ -71,7 +71,7 @@ struct i2c_algo_pca_data {
+ 	void 				*data;	/* private low level data */
+ 	void (*write_byte)		(void *data, int reg, int val);
+ 	int  (*read_byte)		(void *data, int reg);
+-	int  (*wait_for_completion)	(void *data);
++	int  (*wait_for_completion_cb)	(void *data);
+ 	void (*reset_chip)		(void *data);
+ 	/* For PCA9564, use one of the predefined frequencies:
+ 	 * 330000, 288000, 217000, 146000, 88000, 59000, 44000, 36000
 -- 
 2.17.1
 
