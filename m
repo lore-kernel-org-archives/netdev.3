@@ -1,127 +1,88 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482C8EEBA
-	for <netdev@vger.kernel.org>; Thu,  2 Oct 2025 01:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10D5224F6;
+	Thu,  2 Oct 2025 01:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759366974; cv=none; b=H5dc9HUEYmN7MRQGYUoiS09iVNGR8KvwSAyG4iRf09gft8uIA/Y9hdJTpJL2Sr+tpMKAx14Rf78AVERa+6vdTUViGQE3EQEeAhdBgOELpIoJx3NYInjCx8VTtBC2I/CtYsX/LJ3P0OH4ThLuQGVIyvzqqbK/rr1qMuFKINe4oJY=
+	t=1759367738; cv=none; b=A6XdMEdUl7YY5TOJ/z8ZK29t5LVleDjQsdOYnP7WirRjfwQyRWz8OK5zUoTYTcy/ZXwqBWlOzsjsmEQjK+wcEqwJ+YsICOeGxWnKPWPPetekX9ZE0mUMfK4DC2516CGk1luGxy/U8R7yQ4rj1FvoWTVg2jPb1DMPK6zkSrNBzBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759366974; c=relaxed/simple;
-	bh=fJCwtgPNSFcKZik/xWzuJ2Nl9DLm4510nRoTtppN+sE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sDyR1gTqfQyVlS3QXEdJP/5R8WS0C3wdpwTugQ1UzsO8VbVJGY0hxE8LHwSg84ndwNiMin1CKAgSlRqT6uZxGsQ2w8Fr3vl/RuaPqcYlOxYvARcuMlUzhWSqwIX+LUjtSs5Otwzb7/pJZo1nhbhS176+AZthMKv2gWCw7mFcNoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0IU2CV5s; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1759367738; c=relaxed/simple;
+	bh=ybWFhd4Bl669wN6zdk9DEt87ykdf3WJUYTYkdhjzDkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jf8cjtpGr7dBQXRfXDF3XMyut4s8qLe+tgr7oEAnNaGK59eYfjIjGOqkokCmS0oXX6JYxdMGDqCDLsE0BQDBmKzf5n9OXmblqlRUXtwPeMAAYCba+aGKYk50ep+x5fghFB7tKHiH60G7CH6IXjuKTY9wgloLlXPPNoIhozW5WD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojSiId7B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0IU2CV5s"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4de66881569so230911cf.0
-        for <netdev@vger.kernel.org>; Wed, 01 Oct 2025 18:02:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759366972; x=1759971772; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tBSLRY4fID/cBiXqIe6h5ynAijHxdNPdDw4ZDrWAVg0=;
-        b=0IU2CV5sj5hPfnBH2FVtwOIbgIdQUoYdtcCFPwpBrJ10zV/5kuT72lUi+fx/SrJPv6
-         Kswxx202dz+07bb2iSREeC2PVRfT0XHW+tYTs7Y+YLnkWrsCmwcJqoiDQOWpuz+GhbjJ
-         6m184GmROfBvUVBj4FhfwMkA2ZbEJmEwAcDAmO5VF4OSMROCXCIywjqApxYBvOXPuatL
-         lQEcrn1RI8Rl4e61tKFu/29JIAhk828YPDSTuNBRGFEt/o2HuF94YmGIF53f3lTvmeD/
-         hxbCkoHBJ5nN6TVmJ3yiOPsbyP4RMJ3UZ+O+z2Q4m7e4EpYmVasgNhZaodb68380hY6o
-         CzUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759366972; x=1759971772;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tBSLRY4fID/cBiXqIe6h5ynAijHxdNPdDw4ZDrWAVg0=;
-        b=wLkVd12LEOs5SbkRDAFD3ztDC8T+73B/uyDaRVZVwZ6I64nLylioRs+lDxG7FVMLQ9
-         eZyGpNoy0Zkcbl238vtDyW5SQPkcNZXdJ41VOJ7JhFjTdKFMHQNsU3zyBzVmCU7j2yyz
-         z2qbI377QUHXH35J2ry2rCbCrz4gdeHIDb4UhsDxlvbSwBZ9rp14+8n/ZjgS2utqTWX5
-         /3E3LhJ4uk84pjANYEI40tyKJrHVOiHXuut1pJLGTUe1vhKPO2hSYJ7j85wmmA9poTV6
-         /FtArMXZPG+gUKiaO4qiyi8KrLsSPYb5qcWlw+aJuDuKv28VLauQFcHlZACCBFvPOilm
-         2vwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZpC6jEwpXao0dqSAnOTHnyo6DQDrH5AGPu4cIPUXabp6F2FZuuasWrA9n4LwprNFof4TPRDo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN3UBLU/RvcyIfz4CHmon33En5Xg8d9cgV7MU0x2RgH9l3/TxZ
-	Eif82v34zSRrJZvhVBIL8mFpiQH0rpO/q8enBmHPmdGiw9NrzeqES59OJF2TSVhfnnM0EF0snuT
-	QbURzaLr6Wup8vyAAjhDi9Q9tG5mxp5vxTk5EzUZR
-X-Gm-Gg: ASbGncvYVRbPMHU6zRY+T8Y3o65gaN3uyN99i8Lu0MspyV6NudqXEt1DqtxHtelwqv0
-	IPS+kpQ2Dp7qwYu914Itx1Vm/4W0i0VJmwO8A09x75ee+cV3x0J5iU9zJeiHXWnY546YxTjUB6n
-	UJEgmMBbzo0V2UpT42+5+uf3K18nuWoE7gkYx36BjEM3XAZqPC6G2aICS85+x+Nxfg0fFZ3SYSH
-	Kv7OGcmlKmdI5aGSzS1vHIU7OO+BUC6/0/2LFlSEgvhuCUyU6tBOxqJkO4W3nt7TC3j29w=
-X-Google-Smtp-Source: AGHT+IFKtuOO3BtBnInFtghLuT5oaAytbfqlQqxfSONe+I5mErf4jp5CofBK43lV+XX895cBXqbbRtKUWjZVcfWVw4Q=
-X-Received: by 2002:ac8:5d0b:0:b0:4b4:979d:8764 with SMTP id
- d75a77b69052e-4e56c85df41mr1485761cf.19.1759366971654; Wed, 01 Oct 2025
- 18:02:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojSiId7B"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B43C4CEF1;
+	Thu,  2 Oct 2025 01:15:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759367738;
+	bh=ybWFhd4Bl669wN6zdk9DEt87ykdf3WJUYTYkdhjzDkI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ojSiId7BoaS8UNz6oiQJrQVUImuzaY/mzCOniA7rvODFJU4GAwUFv3dAgCJ9KmWI9
+	 1rb7vwOLVXCWEKDPZVA/QFcQ8hNXvZwihE9EUDqzN0i0LGKz3mZuFkIl+BeojgiBCU
+	 6foF4q0z6vt1vPHkePosD2qlYpq2eRtrg4Yc8uAvb+RdqD/+Kaq6mAQj3hAwsvJkjt
+	 3azSV6vbvVsz+lvu0jLtVusygK4HGehccP5CclvEsKavXAfPgmSPpGgH6h/OOEfeBH
+	 Uz3jG6rmCjTj3suHzJb09+WYEWjJH3rEfjUL2aKnnt+rELnYhKCKu0hL7aghTc4jW8
+	 qhgxpAinpzLCQ==
+Date: Wed, 1 Oct 2025 20:15:36 -0500
+From: Rob Herring <robh@kernel.org>
+To: Luo Jie <quic_luoj@quicinc.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Varadarajan Narayanan <quic_varada@quicinc.com>,
+	Georgi Djakov <djakov@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Anusha Rao <quic_anusha@quicinc.com>,
+	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+	Devi Priya <quic_devipriy@quicinc.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com,
+	quic_leiwei@quicinc.com, quic_pavir@quicinc.com,
+	quic_suruchia@quicinc.com
+Subject: Re: [PATCH v6 02/10] dt-bindings: clock: Add "interconnect-cells"
+ property in IPQ9574 example
+Message-ID: <20251002011536.GA2828951-robh@kernel.org>
+References: <20250925-qcom_ipq5424_nsscc-v6-0-7fad69b14358@quicinc.com>
+ <20250925-qcom_ipq5424_nsscc-v6-2-7fad69b14358@quicinc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251001074704.2817028-1-tavip@google.com> <5af7b3b9-3ee1-4ef6-8431-72b40445eacd@linux.dev>
-In-Reply-To: <5af7b3b9-3ee1-4ef6-8431-72b40445eacd@linux.dev>
-From: Octavian Purdila <tavip@google.com>
-Date: Wed, 1 Oct 2025 18:02:40 -0700
-X-Gm-Features: AS18NWDZeq6U-ZXXr8a17ILJl2kRgvXE7gR_7txM0W8s-hT-w__IrWCljO_KFB4
-Message-ID: <CAGWr4cQ6g5xw_iJK2KbyTbSszsf2gacUZ9v0wKAVWnyBAYz9nA@mail.gmail.com>
-Subject: Re: [PATCH net v2] xdp: update mem type when page pool is used for
- generic XDP
-To: Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, ast@kernel.org, daniel@iogearbox.net, 
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, kuniyu@google.com, 
-	aleksander.lobakin@intel.com, maciej.fijalkowski@intel.com, toke@redhat.com, 
-	lorenzo@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com, 
-	Kernel Team <kernel-team@meta.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250925-qcom_ipq5424_nsscc-v6-2-7fad69b14358@quicinc.com>
 
-On Wed, Oct 1, 2025 at 1:26=E2=80=AFPM Ihor Solodrai <ihor.solodrai@linux.d=
-ev> wrote:
->
-> Hi Octavian,
->
+On Thu, Sep 25, 2025 at 10:05:36PM +0800, Luo Jie wrote:
+> The Networking Subsystem (NSS) clock controller acts as both a clock
+> provider and an interconnect provider. The #interconnect-cells property
+> is needed in the Device Tree Source (DTS) to ensure that client drivers
+> such as the PPE driver can correctly acquire ICC clocks from the NSS ICC
+> provider.
+> 
+> Add the #interconnect-cells property to the IPQ9574 Device Tree binding
+> example to complete it.
 
-Hi Ihor,
+The subject is wrong as it #interconnect-cells, not interconnect-cells.
 
-> This patch seems to be causing a null pointer dereference.
-> See a splat caught by BPF CI below.
->
-> You might be able to reproduce with:
->
-> cd tools/testing/selftests/bpf
-> make test_progs
-> # in kernel with this patch
-> ./test_progs -t xdp_veth
->
-> Reverting this commit mitigates the failure:
-> https://github.com/linux-netdev/testing-bpf-ci/commit/9e1eab63cd1bcbe37e2=
-05856f7ff7d1ad49669f5
->
-> Could you please take a look?
->
+> 
+> Fixes: 28300ecedce4 ("dt-bindings: clock: Add ipq9574 NSSCC clock and reset definitions")
+> Signed-off-by: Luo Jie <quic_luoj@quicinc.com>
+> ---
+>  Documentation/devicetree/bindings/clock/qcom,ipq9574-nsscc.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Thanks for the report, it looks like dev needs to be set in
-xdp_rxq_info. The following fix works me:
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 365c43ffc9c1..85b52c28660b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5449,7 +5449,9 @@ int do_xdp_generic(const struct bpf_prog
-*xdp_prog, struct sk_buff **pskb)
-        struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
-
-        if (xdp_prog) {
--               struct xdp_rxq_info rxq =3D {};
-+               struct xdp_rxq_info rxq =3D {
-+                       .dev =3D (*pskb)->dev,
-+               };
-                struct xdp_buff xdp =3D {
-                        .rxq =3D &rxq,
-                };
-
-But probably Maciej approach is better.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
