@@ -1,17 +1,17 @@
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D0130FC1A;
-	Thu,  2 Oct 2025 08:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE88313550;
+	Thu,  2 Oct 2025 08:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759392850; cv=none; b=GgmuPpg0a/No81937zVxpLFPFEtt5WVDmieYlaa6B+/ptorgyc7Im+O03mhznYF5cnHUQmX5GcVPjxIGRL5EwD+QgOLyjVgnAUQJ1sWyzriEc0MC+ywxpIUlO3IHK2XK0KmO8PgDtAGuC0PGfX6W7Z8unoQlRyZ+qwZCMWbv5nc=
+	t=1759392856; cv=none; b=r7sQrBMXmvCX//IyXNexpa/bAey87iRfq4JPeYRZqyueouFIAEczqcl9sCN6MiS5k2P22UyPR5U0FJnWuad1lvH2EXlmSyanSzNLSOOOZLFakJnDf6iH6j4PsxPIQ2aZ9j4Ovay7gPITw+czOTHMcnh2z9TDu2fuCazkTPSa6lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759392850; c=relaxed/simple;
-	bh=314TpUAkZxMvbV2pk3wlciVKMbaC2tgJL1bvCZ48Y0A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Sac3Qf6jSpUyrGaqaVlHLoD0a9ZPJdMrx/5YZDq+rYWqQFAjDHCaHB1yvEJBn87RosyMYKeQbZkSkrlQzyNtynbzWn6pGXhmPt7IJWzQWUh1Ioyrs0yPjqHStb8mExK6hFV3oe8RxB7GbW32rnogUznSV0hGqc4yQT6OsS5W7ak=
+	s=arc-20240116; t=1759392856; c=relaxed/simple;
+	bh=IVs7UrTREahv4P4gaL8VNCv4Y1x1l3V8HrPMnx32xWM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=swBig1ZXSKmh8yS8vWNYC7NeZXXjWIOWt4DYgNi5aaLf383i+10qvXgmppvsMKiP6fC1fihZq7RUaJeYUEq36N10qEy152YcbTpXX24tcn49riXzuVYn7w4OnElIncIcsGr8AIuXvGBHjGnswaHrwGJr1jPBId2jXw3t/3qI0iI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-fb-68de341380ef
+X-AuditID: a67dfc5b-c45ff70000001609-32-68de34199879
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: kernel_team@skhynix.com,
@@ -162,44 +162,43 @@ Cc: kernel_team@skhynix.com,
 	rcu@vger.kernel.org,
 	linux-nfs@vger.kernel.org,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH v17 37/47] completion, dept: introduce init_completion_dmap() API
-Date: Thu,  2 Oct 2025 17:12:37 +0900
-Message-Id: <20251002081247.51255-38-byungchul@sk.com>
+Subject: [PATCH v17 47/47] mm: percpu: increase PERCPU_DYNAMIC_SIZE_SHIFT on DEPT and large PAGE_SIZE
+Date: Thu,  2 Oct 2025 17:12:47 +0900
+Message-Id: <20251002081247.51255-48-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20251002081247.51255-1-byungchul@sk.com>
 References: <20251002081247.51255-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0xTdxQAcP/3WarVm0riHbKhTfCBr8mYniVmaGLi/8sSnR+Mr0iFG9tI
-	0bUKMrOslaLI3MQmLa4XGSAllRaBgkaqRKnCYA3aWodsAZSJlWZgM7Q4oIa1Or+c/HLOyTnn
-	w5GQ8t/pJIk675igzVPmKhgpJR2fV70mMWNI9emzjmToM9yhIPK6hIKKRicDvqsOBE8iJQje
-	zIgkFLfNUvDW1MWCxW8iwdlqIMA8PMJAechAQbjuHAJrUGQh1LkNZgdfEPB4cgzBW8thKDf7
-	EIw2nUHQ2jWEoN1+ioHnZddICIzMh0eRMAM95h8YeNnEwCXRhKDociMDlksuCtqeulnw/x0l
-	YMBiIsDh+gq8ZTVEbGWsoXkRiOVFRCyMxi5puEnAVF09C3X6VBB7AzT8ZbeyEB1eD12OFywM
-	njdT0DPUR8OTX0/T4PqjE4HzXJCEEneEAtezWKH9z1VQfbqWgp8rBxgIuCsYGHLO0qAX39Dw
-	0OGjwNvVHRtivULBA3cDDbbHfmJzDnZWOhGemTYh/NpWROK7Y2ESG1sK8G81PL7Quwa3WQdZ
-	XOU6jo33xmncYk/Dl2+FCFw9EaGxq/4sg10TJhZXz4yS21fukW7KEXLV+YJ23ZdZUpWtUWSO
-	tq88ce9VGdKj6ZRSlCDhuQz+Qccs8cHNPVVM3Ay3nO/vnyLjTuSW8C0/Bum4Sc6bzPf5V8e9
-	kNvBN5Z7UNwUl8rXhBzvemTcBr679ify/cwU3tF0550TYvnAsJeKW859zheHjf/v/SWBH764
-	7L0/4jvs/VQZklWhOfVIrs7L1yjVuRlrVYV56hNrs49oXCj2bHXfRffeQBO+nR7ESZBinsyX
-	OqiS08p8XaHGg3gJqUiUZdkHVHJZjrLwW0F75ID2eK6g86DFEkqxSJY+WZAj5w4pjwmHBeGo
-	oP1QJSQJSXqURhiyvbXpKZ3+bmVbb7Z+bHPmNx+HjXNPvuyfPqteYNu4rmH/luD1gi8Yn3Hk
-	kGZp88nCvl3BpwJ73vAJJiqem5dvu75inyhqdyd9PZlZ/Ojg7QarasHELY3tXyb5e11NemD8
-	sxv/ZL7yb9zgDm3tKJ7yJN/cXbn1frS01HLKEZUqKJ1KuT6N1OqU/wF0GbkcaAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXSa0xScRQA8P73Xu5Firojl7ds2Sh7LTOX1lnvrQ/+q9V6fGhruWR5C+ar
-	oEzbWhqyXE+ioUu0yJIcaCLaw4pyWPYwZmRpD8hsplk+WmmlIgS1vpz9zmNn58MRkpIbgilC
-	Rdp+XpkmS5HSIkq0cZk6amLse/nCi1fnQ0tOHQWDA3kUFFWW05BnOy+A59csCNoG8xD8GjGQ
-	oKn1UzCqa2BgYOgdA357A4J8l46E8pocAn5YfTR8rf+OQN/eQUNBdw4F/aaTCAo7DQx0P4yH
-	3rY7AvB7ugho/dmDwNThI6Cj7hiC0fxkuFhSTcOIs4mEAv1zBJfaPSR8tgaaNQ3vEdjLjtLw
-	SXudhOaO8fBysJ+GJ/oTNPS6igjos9JgPGoXQLFBh0B9uZKG/GIbBbUfbjPg+uolwJ2vI8Bi
-	2wBtpk4KGrUlROC+wFRVGBgK1EQgfCZAX3GHgCGTmYFnl90UmLIjweBsFsDHskIGvO0x4Dem
-	Q4OliwHPGT0F13qbBKv1CP/SnKawufoGgTUvRmlcfqEc4ZFhHcIDpWoSa7SBtL6nn8S51Qdx
-	aWMPjYcHX9HY/tNI4aclHD7rjMK1hR4G5957y2xaul20PIlPUWTwyuiViSJ5aaWB3mufm/ng
-	hxZlo+GI4yhEyLGxXNUTIx00zc7mXr8eIoMOZadz1ac6BUGTbONUrsU1P+iJ7GaussCBgqbY
-	SK6k2/J3Rswu5h5fOU3+2xnBWax1fx0SqDe3N1JBS9g4TtOfS2iRyIjGmFGoIi0jVaZIiVug
-	SpZnpSkyF+xKT7WhwDeZDnvP3kIDzfEOxAqRdJzYFemRSwSyDFVWqgNxQlIaKk4sc8sl4iRZ
-	1iFemb5TeSCFVzlQuJCShonXbeMTJewe2X4+mef38sr/XUIYMiUbjd0Q/U0YPkP1Mjz6Q0Wr
-	8UhTws0R36Sbrc43C/eZ+yxhpebUNerM1b74SXBs+qyKCbcdw4v84qbJ0mLPzKgdR7y+rbE5
-	9c+u4BY2Zp3jyyP3rS3rE/LcK+Zg/9i7v21FkyOSlmyMc+4+k31y5dqumiT025y7tq9t1btz
-	xdbl3vvT1kgplVwWM49UqmR/AOk0IJhJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTYRTHfe597t3dcHRdoVeLiqUEUpmhcqyQ6IPc6ksRUVZQIy9t+Npm
+	vhTCTKUlmUMwccul5XuTdCapaJjmu9BCWitcZaROIcWXpalpW+WXw4//+fHnfDgMKcunAhhV
+	YoqgTlTEy2kJlvzwLt8fEPZZedDZR4NrUYdBZymh4ItLh2Bp1UiC+UUWAQsN6zQUjX2noXgq
+	C4NhwiiCDcckAb8fxkFxkRXBuL6ZhLI7HRQ8LLVgaP3aJoIvVRMYhvRPCDAWZ3uGk4AqbRB8
+	qzGIwFFQhMHysQeBrs2FocQ0SkN7xwCGkbZHNNxvaKZAa1yi4PmknYCh3n4MlR/eETD21U5B
+	/cwTGnrLfGG+4ieGvvxOAioXZ0iYNJQSMOhYEMFKtbt4cGWQgPnSdQoa5qppWF12F9f/tiGY
+	0S9Sxw7yS7kPMG82mRG/WJlN8jlNafyK6z3NtxocIr7McpNvqgnmn7ZPEXz5vIviLXX3aH7U
+	1k7z5doikjcNnOHnxj9hvrWwgzjtd1FyNFaIV6UK6pCoqxKl/Y2dSm4Wp7/UbYi06JsoD4kZ
+	jg3jHLW/qE1erh2nPUyzezm7/Rfp4W3sbq4pf+KvQ7JDOzjbu30e3soKXNt0i9thGMwGcabs
+	GE8sZSO42Z5a8l/lLu5ZQ+dfFrvzkbEh7GEZG87lzuYQeUjidp6KuZmxuf/3+HOva+xYj6Rl
+	yKsOyVSJqQkKVXzYAWVGoir9wLWkBAtyP0lV5tqlFjRvPduFWAbJvaXWIIdSRilSNRkJXYhj
+	SPk26dWaUaVMGqvIuCWok66ob8YLmi60ncFyP+mhn2mxMva6IkWIE4RkQb25JRhxgBbdsQXf
+	6I5cut9YVRFzvqS2c7Q/tzBVH3hKEhIWQcs1lrXjTSknjzwavtw4fbvl6Fp0jiTad/Ze7Fun
+	/zFzY7TN18eUvSpnHwfmkedM1i3lBVu9FpwRh63Dp3yyzJnkerW/6ULoQsURwvhitW6XM33n
+	q8Huc5EvTxga94QHRoXcjZJjjVIRGkyqNYo/BDYaliADAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSXUyTdxTG/b/fbax500H6jo2pNcRoJorKcqbG6IXh1UTizbKoF9LoG1op
+	H7YCZZuGUhrJhA2bFIQqVogNX2qlwKimC4JUsRCsVSBKZZBSUMBmE2QI2LWa3Zz8zvM8OXku
+	DoNL28g4RpV1VtBkKdRySkyIU3cbtny585VyW5FzAwzqOwmYnysh4MrtZgpKWqpIeHKrCcHo
+	fAmChSULDkZnmIAVk5uGucWXNIRdbgQVXhMOza16DN7ZP1Iw3f0PAvNYgILK13oCQrZSBNVB
+	Cw2ve1JgdvQeCWH/JAZD72cQ2AIfMQh0XkCwUpEB12odFCz1D+BQaX6C4PqYH4cpe8Rsdb9C
+	4KovomCivA0HX2ANPJsPUdBrvkjBrPcKBm/tFFiLXCRctZgQGOpuU1BxtYUA5193afBOL2Mw
+	UmHCoKnlMIzaggR4ymuxSL9I6o4MLJUGLDKmMDDfvIfBoq2Rhr66EQJshQlg6feRMF5fTcPy
+	WBKErdngbpqkwf+7mYBbswPkPjPiF4y/EXyjox3jjU9XKL65phnxSx9MiJ+7YcB5Y3lk7Z4J
+	4XyxI5+/4Zmh+A/zzyne9d5K8I9rOf5S/xbeWe2n+eI/X9BHdh0T7zklqFV5gmbr3jSxcvjB
+	MJnTJtL9URKmC9E4/SsSMRy7k/u3YYKKMsVu5IaHF/Eox7DrOEdZkIwyznq+5ga930b5C1bg
+	7r7piGQYhmATuBrD0agsYb/jQj0N+OeTa7kme+cnFkV035iHiLKUTeaMoWKsHImtaFUjilFl
+	5WUqVOrkRG2GsiBLpUs8mZ3ZgiLPZDu3fKkDzflSuhDLIPlqiTfBr5SSijxtQWYX4hhcHiNJ
+	qx9RSiWnFAU/CZrsE5pctaDtQl8xhFwmOfSjkCZl0xVnhQxByBE0/7sYI4orRPe/CQbzN+oa
+	7HT7YYv4oUO3Y2j/NVtsaezlX2JdPQe7c55bRb1Jsvjk0qKB9b7l3X2bJzpO63MT/e369B9k
+	lqGA2r6neMOChq5xn1fVulKdcoXgkf68nZAdonSbvj9Z2l125u/BxLbc1Ibt8Qf0+HR6X1Vw
+	ZrTV/Ch/U//+3uNyQqtUJG3GNVrFfyOFB8lIAwAA
 X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -207,157 +206,41 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-Currently, dept uses dept's map embedded in task_struct to track
-dependencies related to wait_for_completion() and its family.  So it
-doesn't need an explicit map basically.
+Yunseong reported a build failure due to the BUILD_BUG_ON() statement in
+alloc_kmem_cache_cpus().  In the following test:
 
-However, for those who want to set the maps with customized class or
-key, introduce a new API to use external maps.
+  PERCPU_DYNAMIC_EARLY_SIZE < NR_KMALLOC_TYPES * KMALLOC_SHIFT_HIGH * sizeof(struct kmem_cache_cpu)
 
+The following factors increase the right side of the equation:
+
+  1. PAGE_SIZE > 4KiB increases KMALLOC_SHIFT_HIGH.
+  2. DEPT increases the size of the local_lock_t in kmem_cache_cpu.
+
+Increase PERCPU_DYNAMIC_SIZE_SHIFT to 11 on configs with PAGE_SIZE
+larger than 4KiB and DEPT enabled.
+
+Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/completion.h | 40 +++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ include/linux/percpu.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/completion.h b/include/linux/completion.h
-index 4d8fb1d95c0a..e50f7d9b4b97 100644
---- a/include/linux/completion.h
-+++ b/include/linux/completion.h
-@@ -27,17 +27,15 @@
- struct completion {
- 	unsigned int done;
- 	struct swait_queue_head wait;
-+	struct dept_map *dmap;
- };
- 
--#define init_completion(x)				\
--do {							\
--	__init_completion(x);				\
--} while (0)
-+#define init_completion(x) init_completion_dmap(x, NULL)
- 
- /*
-- * XXX: No use cases for now. Fill the body when needed.
-+ * XXX: This usage using lockdep's map should be deprecated.
-  */
--#define init_completion_map(x, m) init_completion(x)
-+#define init_completion_map(x, m) init_completion_dmap(x, NULL)
- 
- static inline void complete_acquire(struct completion *x, long timeout)
- {
-@@ -48,8 +46,11 @@ static inline void complete_release(struct completion *x)
- }
- 
- #define COMPLETION_INITIALIZER(work) \
--	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
-+	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), .dmap = NULL, }
- 
-+/*
-+ * XXX: This usage using lockdep's map should be deprecated.
-+ */
- #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
- 	(*({ init_completion_map(&(work), &(map)); &(work); }))
- 
-@@ -90,15 +91,18 @@ static inline void complete_release(struct completion *x)
+diff --git a/include/linux/percpu.h b/include/linux/percpu.h
+index 85bf8dd9f087..dd74321d4bbd 100644
+--- a/include/linux/percpu.h
++++ b/include/linux/percpu.h
+@@ -43,7 +43,11 @@
+ # define PERCPU_DYNAMIC_SIZE_SHIFT      12
+ #endif /* LOCKDEP and PAGE_SIZE > 4KiB */
+ #else
++#if defined(CONFIG_DEPT) && !defined(CONFIG_PAGE_SIZE_4KB)
++#define PERCPU_DYNAMIC_SIZE_SHIFT      11
++#else
+ #define PERCPU_DYNAMIC_SIZE_SHIFT      10
++#endif /* DEPT and PAGE_SIZE > 4KiB */
  #endif
  
- /**
-- * __init_completion - Initialize a dynamically allocated completion
-+ * init_completion_dmap - Initialize a dynamically allocated completion
-  * @x:  pointer to completion structure that is to be initialized
-+ * @dmap:  pointer to external dept's map to be used as a separated map
-  *
-  * This inline function will initialize a dynamically created completion
-  * structure.
-  */
--static inline void __init_completion(struct completion *x)
-+static inline void init_completion_dmap(struct completion *x,
-+		struct dept_map *dmap)
- {
- 	x->done = 0;
-+	x->dmap = dmap;
- 	init_swait_queue_head(&x->wait);
- }
- 
-@@ -136,13 +140,13 @@ extern void complete_all(struct completion *);
- 
- #define wait_for_completion(x)						\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion(x);					\
- 	sdt_might_sleep_end();						\
- })
- #define wait_for_completion_io(x)					\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion_io(x);					\
- 	sdt_might_sleep_end();						\
- })
-@@ -150,7 +154,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_interruptible(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -159,7 +163,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_killable(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -168,7 +172,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_state(x, s);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -177,7 +181,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -186,7 +190,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_io_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -195,7 +199,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -204,7 +208,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_killable_timeout(x, t);		\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
+ /*
 -- 
 2.17.1
 
