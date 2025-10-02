@@ -1,101 +1,66 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726B129A2
-	for <netdev@vger.kernel.org>; Thu,  2 Oct 2025 02:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D39E1411DE;
+	Thu,  2 Oct 2025 03:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759373349; cv=none; b=KWBHjQ5oWo48UsyrItjnLMxdPNhXol1tSXqY6Oh/v8Wwkstt4lw/wDenoonByCY3z2kNtH278pas+M4Yt8VyOTYyY2r42FuClcNmurtrDIYEoOrQumLS7MG402Em6u0wAg64iqntsDSr9UOwZ90u9f+Kc1E6MO0pxKubZddENh0=
+	t=1759375751; cv=none; b=Vj4kzoDdoxxXrjg6VaWeGK81fjlNNlLpYOlJUiCrclOspE5NoSEJx7/gMkiCapP9uoyAS5GFrNuNQBqKrpEJPsVd07h98jE7OXAOqidDB1x1Ihg+UEvcy2BO9dgYTdnaRL10/pJ2BL8v/d8y2Lj38A4ZsZaUNfxJaTCugSx8D4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759373349; c=relaxed/simple;
-	bh=Rlm3SRdluo6yATbX4oF9ZqGmVsyUJvCoJRvFMc9x7uE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nW41ywMaZDdYg1P2STvPP39vL+uhWgOyHoRJcUH+2lcPkpg3O5KZjCMw1at88iPPQsXMFTTTBHfUx6S7Y34+Eujk5b9VjBn00S4qNw7/CodBPJ5jTVrxfplB/hjdyIz0NInAHSu7fiRI0K66H20XXJ3aGjBBrkN4L6hnnR+5aGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RX2k/IDB; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759375751; c=relaxed/simple;
+	bh=BvDPI/4IuPDJZpOnpNE5Q57W9CRHGfyMP9sQtv6gKEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ry6chcLAPftNC3vi+++5QdaqV4EGZR3BAfyzJXTcs85l7FVG7h7xqcEJen74GCHSEx+u7qZfXmO7rc5ouUNS0fxbbpb+/H/MCZ749OUlyw4++e53or+4N/GEHsSMJzRKo9Bb0rYZ+jCTAv4nukDSubvo5MSZPcTXl+lGSR6aTj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RNNgzr2r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RX2k/IDB"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76e6cbb991aso544325b3a.1
-        for <netdev@vger.kernel.org>; Wed, 01 Oct 2025 19:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759373346; x=1759978146; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tx+T52VXaGxHIwE5ue3lwEYrArbLgvH+yochMGJeg3w=;
-        b=RX2k/IDBFpj7OaiBMMNw2ldViDFkCSCVMLjiRm9ajwCmkjJdz/7W7a0ZEjwKSqktUI
-         xn+zO/YTabnn/CAjD+gU36LXyet0alW1Sx1uj5cSQ0zepUpsd7yNNawoDFvhPuzXuCOw
-         scCkIPjZa4Vdjb+BGVveCM9EAO01sTRdiyGmlLZGN5QNOS9rpUFKT44a+PYc/qMvEHNH
-         LM2D485bez5S7WPnsZiol/R98+9t024VbuTZIvVnLumcyt7JlXHupaUPBXZGkmRFdMBs
-         UQvpagS9hbPihMnv9oAKEYaOE6hB6ayfOSA0Ci7Osr5YdlMsCs6rFvhMjb0Mn32Tlcjf
-         PAzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759373346; x=1759978146;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tx+T52VXaGxHIwE5ue3lwEYrArbLgvH+yochMGJeg3w=;
-        b=BwRD3tTVSS3qnFQVLMo570rJoENNfLMmlTVNxhhL1UZ+Lf2IzA8k+p5y+YjlyhTrvM
-         I5tZR2baRDronA+x6ighIoZB3yjmoFlcouu4AQLDob3+4SpvnVwEyqvKSag+uNb9TIwT
-         yoU5oeKycdOUk5kI2+9u8sMciyhJpqfy78s2JNu73Rk+0YTTfV/LOdbefmXlwCfZsmKX
-         lonBefltdsNh8JTFCeetW7T0foIzM7wdIh6TQU1HKRHr7UCJbDOba9BY3rNIIwqkaVGA
-         JmY3jWg8MdOyybP80sSoxJCWFoIgkxtntkbQOebrt1p3XcuYuKMCkBXFxO9ImQFMFs+1
-         FLbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVN/bFUSvp9SiW9GdqHx+ZRJauR7AfYyS77LMr/8wjzEzccBsiuLEISOPGyoWBCPGCBZlOCe/w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgAcP/JOxig6XwsV/A5GvxQJRftvqLC20ccgAXlaBJInEeqynU
-	cp1NSopEJn4R8ow91T/cm24LiLKwESWiKHfvGeIaAnn8No4Nw45zittT
-X-Gm-Gg: ASbGncuS45zjimSV0J2gZjNF7iURHmdiCEneQQfTpE4w7EqFrjfGr4Wf5Cf4MNUcEGm
-	khjQk4aAihCZ5wxqHdDlRv29V+a+Ftb8ywpuDTbGm8Jq1WnH9J43Jo4FHJ50cTv+uW1RvjEdueQ
-	55QPAqzf59FUY1fVpqbzJGR565KRv+plh8KdNnxIwcJTFBDC2GdR4KzoXUiE+44xTAR+DuetFvl
-	oai726cB7uQIQSmHyYVoYwGvNHARBWDQjQc2e87GJDmrL0gZl9hqRkoOCN09OzRBGP7OtmguXP3
-	wt/GwIO/+EIjjWgISlObtP+rBXY78bP6ouWBVWI8fjTw3BVO8dhUmoOKV1YctfbFVo1PCkrvY49
-	uJfkJ7ITtlp/49dTDxufdvxGWakps2VbXydhYNJgFmG832jCVMwrBwwAg0BpbUi6d1HyNOzk=
-X-Google-Smtp-Source: AGHT+IETH7I1DUb42a6zVBccP/CPta+Puwg/XA6sZLcvnAAu5JdYF0uhLuw9HJFtEs02mk+EPLAu+w==
-X-Received: by 2002:a05:6a20:d306:b0:263:3b40:46d4 with SMTP id adf61e73a8af0-321eb7f0ea7mr7236687637.56.1759373345690;
-        Wed, 01 Oct 2025 19:49:05 -0700 (PDT)
-Received: from u.. (61-222-64-201.hinet-ip.hinet.net. [61.222.64.201])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6099f72f99sm845643a12.47.2025.10.01.19.49.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Oct 2025 19:49:05 -0700 (PDT)
-From: Sammy Hsu <zelda3121@gmail.com>
-X-Google-Original-From: Sammy Hsu <sammy.hsu@wnc.com.tw>
-To: chandrashekar.devegowda@intel.com
-Cc: chiranjeevi.rapolu@linux.intel.com,
-	haijun.liu@mediatek.com,
-	ricardo.martinez@linux.intel.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sammy Hsu <sammy.hsu@wnc.com.tw>
-Subject: [PATCH] net: wwan: t7xx: add support for HP DRMR-H01
-Date: Thu,  2 Oct 2025 10:48:41 +0800
-Message-ID: <20251002024841.5979-1-sammy.hsu@wnc.com.tw>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNNgzr2r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E777C4CEF9;
+	Thu,  2 Oct 2025 03:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759375747;
+	bh=BvDPI/4IuPDJZpOnpNE5Q57W9CRHGfyMP9sQtv6gKEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RNNgzr2rdi+C8IDTWCyckUg3LpN7BNsefhA5z81rBhrGppBzA/QwjIGUhZJD1c5Uu
+	 N95RMC2emcEtbR+X5tep5Aghvp1hljM6v9+3//KzF3qBklchmTlahhH7jXgUS7LIF+
+	 mnYm4MYR8K/PzGibXijcjR1YzeS0gFmujnzyWMdkjyUhegcgXHZx1ji7hol8pv/zCP
+	 NVQvMwQLj8+od7LD0PvGRWaTu9pIw+hgygikt+1H9+jnOuh58kinOex3EEmpEYUl8E
+	 QNmcqPAh7hID4S4720Uo3PQjQqw5LJyXv16VbbYbT71YEAvOdVJm2rcc2qUbN3Flwf
+	 GxYugl0oa5T6g==
+Date: Wed, 1 Oct 2025 22:29:06 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Conor Dooley <conor+dt@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-mediatek@lists.infradead.org, Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/3] dt-bindings: net: airoha: npu: Add
+ AN7583 support
+Message-ID: <175937574555.3012205.7371321429695114509.robh@kernel.org>
+References: <20250927-airoha-npu-7583-v2-0-e12fac5cce1f@kernel.org>
+ <20250927-airoha-npu-7583-v2-1-e12fac5cce1f@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250927-airoha-npu-7583-v2-1-e12fac5cce1f@kernel.org>
 
-add support for HP DRMR-H01 (0x03f0, 0x09c8)
 
-Signed-off-by: Sammy Hsu <sammy.hsu@wnc.com.tw>
----
- drivers/net/wwan/t7xx/t7xx_pci.c | 1 +
- 1 file changed, 1 insertion(+)
+On Sat, 27 Sep 2025 16:03:40 +0200, Lorenzo Bianconi wrote:
+> Introduce AN7583 NPU support to Airoha EN7581 NPU device-tree bindings.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
-index 8bf63f2dcbbf..00c0161f0c78 100644
---- a/drivers/net/wwan/t7xx/t7xx_pci.c
-+++ b/drivers/net/wwan/t7xx/t7xx_pci.c
-@@ -940,6 +940,7 @@ static void t7xx_pci_remove(struct pci_dev *pdev)
- static const struct pci_device_id t7xx_pci_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x4d75) },
- 	{ PCI_DEVICE(0x14c0, 0x4d75) }, // Dell DW5933e
-+	{ PCI_DEVICE(0x03f0, 0x09c8) }, // HP DRMR-H01
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, t7xx_pci_table);
--- 
-2.43.0
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
