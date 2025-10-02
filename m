@@ -1,51 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5650C18B0F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6378128819;
 	Thu,  2 Oct 2025 00:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759364235; cv=none; b=Btrjhc9gvoF43K+8sY9rDwPuQwssu5SKKC7A5nrkzdNg3XbSrAzFJWY1nUAmBdhTEPjR3P1brr2HtTawcokfXsLnCwA20IWSdNO9YhdJytcUs8qBEQQFwHmF0xkmUmAnjFZqNNHOgmMDKafB3pAEdNZbHeUAXVjn2nfyA+msCxs=
+	t=1759364236; cv=none; b=iA1RB6gvnUwoZvYUUoMIEJRJwaupVNuVbINyFN1Uz3d5+HVt/4KLPNDGZmTBEAKGpCyFJVUUMn+fNbZRwR0Be445yfmzIECsFsl72CxoXASVYJ/P7L3INwhss20Pp9s/7OC95kAKJMUoEnTFLVFZgxlU+JpJYw7KAy5n8Roaw9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759364235; c=relaxed/simple;
-	bh=zcUrMzhHcVZxKF8fljqX7zU35Og17vkLTC/PtnCKYz0=;
+	s=arc-20240116; t=1759364236; c=relaxed/simple;
+	bh=O9736vGye7zARQ7yYhr2uIOLI2z+hAzdLYQ7XO+C8OY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g/pBbE3UbpZgVlfeDoDi1+Oyf8AyEKmulrblHeJZ8ibf5GCQGQse7OsSKXTiBjtLHveEpW+ArZ7Ekjg1XZQ9BCXlo3hrybdz/0JClDZmDBVJMP53C/td5FOGM8WveakMwhEU3OM2VJLU4YpuBZKb8iBzuLo3HdKzNLLth6w66Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W0MTKCUK; arc=none smtp.client-ip=192.198.163.17
+	 In-Reply-To:To:Cc; b=g3dfsfauiPyPlk4hDAmM+vtanGL6toI42qGn1SDvMNqggvby1WE4uhTJZtNqPygvVSRzbx1WU/Twdy2ELCBc6/Pf4Z3gYgAjwUZ9u6ArL97y84kiEQ1/435NiVIgHPHTgzhcYlYEFuvhw2RoeS0kRSK5skF/XGFhlk0uYLiUpeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Po9keonQ; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W0MTKCUK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Po9keonQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759364233; x=1790900233;
+  t=1759364235; x=1790900235;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=zcUrMzhHcVZxKF8fljqX7zU35Og17vkLTC/PtnCKYz0=;
-  b=W0MTKCUKi8TPy6j1lLitJ7oMXHasCQh5Psn8wdUV5aa/WoRjD22ePeVr
-   Py2bjF5kSekDBfieq47O3TwgLRMl/vkmVgi5I1AMM5zI1NKL03Z7RLauC
-   pEUf7ataRO8fOZ0B8powxpBURv20mRvkVXenN2fUcDjshW/aNnJixtGtg
-   hI4SecsLQvuv26kAP0cK3de6DVwxycqBv40stJ7/0iS2vdpwBEosDjoxh
-   5DCHNnDRCxHpRQbVo+4VftpT1tkCsBJbzz5yIc/+q4cfxnXtg98OPodhv
-   8NhrYLxhiF8kpe+6BIWakQHIM0zNGfE4cBoVYD0jKivso8UYRv8LM+tmf
-   A==;
-X-CSE-ConnectionGUID: J1I/RGsxRKeHgHAkdJW8LA==
-X-CSE-MsgGUID: fQx4D2YJRGGd/04EjEwxSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61561607"
+  bh=O9736vGye7zARQ7yYhr2uIOLI2z+hAzdLYQ7XO+C8OY=;
+  b=Po9keonQvvC6rMhP7Jov5ch3KKS/HRtw20+imK3Qt1ebwYe0077q/doH
+   zcJiqQwqKvQH7h0q+Hroreu4ouyhd13jOGYbEdKlk3KltYDeoUhVdD/sE
+   kCDeV81CNEMRpUhoBgcthEq0Y9k3mvRVhOctfF/4r1buqiBl+84o0qpp/
+   UKRqjdsfksRw9P4k8Z5NfyB398IwV+pKLAzG9i/akjpQ23AfcEE8Wrwcc
+   Ce0SL5ZJyKUH9EfYba+Y+tc8be4JwJniCZeTpz8tkGLCHmxmVvgs3VXPn
+   AUDvbhD5Bbxz3X4yZ/LSsPJMPhDntsONFUovTq8pq6PRJr1wlWf4bZcCl
+   w==;
+X-CSE-ConnectionGUID: RE8XIz83SfaPwUDxfPNXSQ==
+X-CSE-MsgGUID: McvroVzHTVS4wSTMFmXghw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11569"; a="61561616"
 X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
-   d="scan'208";a="61561607"
+   d="scan'208";a="61561616"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:17:10 -0700
-X-CSE-ConnectionGUID: yQCzogjDQPe+Vg3R3iXRfQ==
-X-CSE-MsgGUID: vuFunNifQwiNVB3FG1+nRg==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:17:11 -0700
+X-CSE-ConnectionGUID: xctyEyMBQHm8JnQViV1fWQ==
+X-CSE-MsgGUID: iLXdyT8zTV+xjYN5GWDrZQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,308,1751266800"; 
-   d="scan'208";a="184105717"
+   d="scan'208";a="184105723"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
   by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2025 17:17:09 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 01 Oct 2025 17:14:12 -0700
-Subject: [PATCH net 2/8] idpf: convert vport state to bitmap
+Date: Wed, 01 Oct 2025 17:14:14 -0700
+Subject: [PATCH net 4/8] ixgbevf: fix getting link speed data for E610
+ devices
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251001-jk-iwl-net-2025-10-01-v1-2-49fa99e86600@intel.com>
+Message-Id: <20251001-jk-iwl-net-2025-10-01-v1-4-49fa99e86600@intel.com>
 References: <20251001-jk-iwl-net-2025-10-01-v1-0-49fa99e86600@intel.com>
 In-Reply-To: <20251001-jk-iwl-net-2025-10-01-v1-0-49fa99e86600@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -75,285 +76,318 @@ Cc: Anton Nadezhdin <anton.nadezhdin@intel.com>,
  Konstantin Ilichev <konstantin.ilichev@intel.com>, 
  Milena Olech <milena.olech@intel.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Chittim Madhu <madhu.chittim@intel.com>, 
- Samuel Salin <Samuel.salin@intel.com>
+ Andrzej Wilczynski <andrzejx.wilczynski@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, stable@vger.kernel.org, 
+ Rafal Romanowski <rafal.romanowski@intel.com>
 X-Mailer: b4 0.15-dev-cbe0e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9941;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10286;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=9kFg7yE9fFG8aNMXu0iUB+HAE2YsjKmMp1ucoLrlBoo=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoy7R5p5VuWYSrEI39fxfF75K7Fpmn7lcsbVWqIfjvPuq
- b/kdkm/o5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgIlwP2dk2Lx/lfk/D3YRjneS
- vrMcmBo7zpsz/TqeMcH6m8ZNN1eBbYwM/fIB9Xop4UV53zRsVjbfCv7k05/2o4FVu+ur1pOVJrX
- MAA==
+ bh=vtc5tf9lUD7arwHn3euJtQxtOGRnt+sjAVU6WqrHaww=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoy7R1pWnVN9f39q8i2GJEbp63tyFDPSotJe37mo9/vck
+ bfytb8SO0pZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZjILWaG/+FlJQY3N7qV5p6s
+ 3aX0/LDB3RfuBY+SCvwD5OLPJW/M+sLIsIGrneOgN1v4tr4jr7/mLpq5x26py6NFPKf8Ovcqvq2
+ L4wQA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-Convert vport state to a bitmap and remove the DOWN state which is
-redundant in the existing logic. There are no functional changes aside
-from the use of bitwise operations when setting and checking the states.
-Removed the double underscore to be consistent with the naming of other
-bitmaps in the header and renamed current_state to vport_is_up to match
-the meaning of the new variable.
+E610 adapters no longer use the VFLINKS register to read PF's link
+speed and linkup state. As a result VF driver cannot get actual link
+state and it incorrectly reports 10G which is the default option.
+It leads to a situation where even 1G adapters print 10G as actual
+link speed. The same happens when PF driver set speed different than 10G.
 
+Add new mailbox operation to let the VF driver request a PF driver
+to provide actual link data. Update the mailbox api to v1.6.
+
+Incorporate both ways of getting link status within the legacy
+ixgbe_check_mac_link_vf() function.
+
+Fixes: 4c44b450c69b ("ixgbevf: Add support for Intel(R) E610 device")
+Co-developed-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
+Signed-off-by: Andrzej Wilczynski <andrzejx.wilczynski@intel.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Chittim Madhu <madhu.chittim@intel.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h             | 12 +++++------
- drivers/net/ethernet/intel/idpf/idpf_ethtool.c     | 10 ++++-----
- drivers/net/ethernet/intel/idpf/idpf_lib.c         | 24 +++++++++++-----------
- .../net/ethernet/intel/idpf/idpf_singleq_txrx.c    |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_txrx.c        |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c    |  4 ++--
- 6 files changed, 26 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/defines.h      |   1 +
+ drivers/net/ethernet/intel/ixgbevf/mbx.h          |   4 +
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c |   6 +-
+ drivers/net/ethernet/intel/ixgbevf/vf.c           | 137 +++++++++++++++++-----
+ 4 files changed, 116 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index f4c0eaf9bde3..cfbf3a716f34 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -130,14 +130,12 @@ enum idpf_cap_field {
+diff --git a/drivers/net/ethernet/intel/ixgbevf/defines.h b/drivers/net/ethernet/intel/ixgbevf/defines.h
+index a9bc96f6399d..e177d1d58696 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/defines.h
++++ b/drivers/net/ethernet/intel/ixgbevf/defines.h
+@@ -28,6 +28,7 @@
  
- /**
-  * enum idpf_vport_state - Current vport state
-- * @__IDPF_VPORT_DOWN: Vport is down
-- * @__IDPF_VPORT_UP: Vport is up
-- * @__IDPF_VPORT_STATE_LAST: Must be last, number of states
-+ * @IDPF_VPORT_UP: Vport is up
-+ * @IDPF_VPORT_STATE_NBITS: Must be last, number of states
-  */
- enum idpf_vport_state {
--	__IDPF_VPORT_DOWN,
--	__IDPF_VPORT_UP,
--	__IDPF_VPORT_STATE_LAST,
-+	IDPF_VPORT_UP,
-+	IDPF_VPORT_STATE_NBITS
+ /* Link speed */
+ typedef u32 ixgbe_link_speed;
++#define IXGBE_LINK_SPEED_UNKNOWN	0
+ #define IXGBE_LINK_SPEED_1GB_FULL	0x0020
+ #define IXGBE_LINK_SPEED_10GB_FULL	0x0080
+ #define IXGBE_LINK_SPEED_100_FULL	0x0008
+diff --git a/drivers/net/ethernet/intel/ixgbevf/mbx.h b/drivers/net/ethernet/intel/ixgbevf/mbx.h
+index 835bbcc5cc8e..c1494fd1f67b 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/mbx.h
++++ b/drivers/net/ethernet/intel/ixgbevf/mbx.h
+@@ -66,6 +66,7 @@ enum ixgbe_pfvf_api_rev {
+ 	ixgbe_mbox_api_13,	/* API version 1.3, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
++	ixgbe_mbox_api_16,      /* API version 1.6, linux/freebsd VF driver */
+ 	/* This value should always be last */
+ 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
  };
+@@ -102,6 +103,9 @@ enum ixgbe_pfvf_api_rev {
  
+ #define IXGBE_VF_GET_LINK_STATE 0x10 /* get vf link state */
+ 
++/* mailbox API, version 1.6 VF requests */
++#define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
++
+ /* length of permanent address message returned from PF */
+ #define IXGBE_VF_PERMADDR_MSG_LEN	4
+ /* word in permanent address message with the current multicast type */
+diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+index 535d0f71f521..574714764791 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -2275,6 +2275,7 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	static const int api[] = {
++		ixgbe_mbox_api_16,
+ 		ixgbe_mbox_api_15,
+ 		ixgbe_mbox_api_14,
+ 		ixgbe_mbox_api_13,
+@@ -2294,7 +2295,8 @@ static void ixgbevf_negotiate_api(struct ixgbevf_adapter *adapter)
+ 		idx++;
+ 	}
+ 
+-	if (hw->api_version >= ixgbe_mbox_api_15) {
++	/* Following is not supported by API 1.6, it is specific for 1.5 */
++	if (hw->api_version == ixgbe_mbox_api_15) {
+ 		hw->mbx.ops.init_params(hw);
+ 		memcpy(&hw->mbx.ops, &ixgbevf_mbx_ops,
+ 		       sizeof(struct ixgbe_mbx_operations));
+@@ -2651,6 +2653,7 @@ static void ixgbevf_set_num_queues(struct ixgbevf_adapter *adapter)
+ 		case ixgbe_mbox_api_13:
+ 		case ixgbe_mbox_api_14:
+ 		case ixgbe_mbox_api_15:
++		case ixgbe_mbox_api_16:
+ 			if (adapter->xdp_prog &&
+ 			    hw->mac.max_tx_queues == rss)
+ 				rss = rss > 3 ? 2 : 1;
+@@ -4645,6 +4648,7 @@ static int ixgbevf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		netdev->max_mtu = IXGBE_MAX_JUMBO_FRAME_SIZE -
+ 				  (ETH_HLEN + ETH_FCS_LEN);
+ 		break;
+diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
+index dcaef34b88b6..f05246fb5a74 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -313,6 +313,7 @@ int ixgbevf_get_reta_locked(struct ixgbe_hw *hw, u32 *reta, int num_rx_queues)
+ 	 * is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -382,6 +383,7 @@ int ixgbevf_get_rss_key_locked(struct ixgbe_hw *hw, u8 *rss_key)
+ 	 * or if the operation is not supported for this device type.
+ 	 */
+ 	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_15:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+@@ -552,6 +554,7 @@ static s32 ixgbevf_update_xcast_mode(struct ixgbe_hw *hw, int xcast_mode)
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -624,6 +627,48 @@ static s32 ixgbevf_hv_get_link_state_vf(struct ixgbe_hw *hw, bool *link_state)
+ 	return -EOPNOTSUPP;
+ }
+ 
++/**
++ * ixgbevf_get_pf_link_state - Get PF's link status
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Ask PF to provide link_up state and speed of the link.
++ *
++ * Return: IXGBE_ERR_MBX in the case of mailbox error,
++ * -EOPNOTSUPP if the op is not supported or 0 on success.
++ */
++static int ixgbevf_get_pf_link_state(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++				     bool *link_up)
++{
++	u32 msgbuf[3] = {};
++	int err;
++
++	switch (hw->api_version) {
++	case ixgbe_mbox_api_16:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	msgbuf[0] = IXGBE_VF_GET_PF_LINK_STATE;
++
++	err = ixgbevf_write_msg_read_ack(hw, msgbuf, msgbuf,
++					 ARRAY_SIZE(msgbuf));
++	if (err || (msgbuf[0] & IXGBE_VT_MSGTYPE_FAILURE)) {
++		err = IXGBE_ERR_MBX;
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++		/* No need to set @link_up to false as it will be done by
++		 * ixgbe_check_mac_link_vf().
++		 */
++	} else {
++		*speed = msgbuf[1];
++		*link_up = msgbuf[2];
++	}
++
++	return err;
++}
++
  /**
-@@ -159,7 +157,7 @@ struct idpf_netdev_priv {
- 	u32 link_speed_mbps;
- 	u16 vport_idx;
- 	u16 max_tx_hdr_size;
--	enum idpf_vport_state state;
-+	DECLARE_BITMAP(state, IDPF_VPORT_STATE_NBITS);
- 	struct rtnl_link_stats64 netstats;
- 	spinlock_t stats_lock;
- };
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-index 0eb812ac19c2..f84e247399a7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ethtool.c
-@@ -386,7 +386,7 @@ static int idpf_get_rxfh(struct net_device *netdev,
- 	}
- 
- 	rss_data = &adapter->vport_config[np->vport_idx]->user_config.rss_data;
--	if (np->state != __IDPF_VPORT_UP)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		goto unlock_mutex;
- 
- 	rxfh->hfunc = ETH_RSS_HASH_TOP;
-@@ -436,7 +436,7 @@ static int idpf_set_rxfh(struct net_device *netdev,
- 	}
- 
- 	rss_data = &adapter->vport_config[vport->idx]->user_config.rss_data;
--	if (np->state != __IDPF_VPORT_UP)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		goto unlock_mutex;
- 
- 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-@@ -1167,7 +1167,7 @@ static void idpf_get_ethtool_stats(struct net_device *netdev,
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
--	if (np->state != __IDPF_VPORT_UP) {
-+	if (!test_bit(IDPF_VPORT_UP, np->state)) {
- 		idpf_vport_ctrl_unlock(netdev);
- 
- 		return;
-@@ -1319,7 +1319,7 @@ static int idpf_get_q_coalesce(struct net_device *netdev,
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
--	if (np->state != __IDPF_VPORT_UP)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		goto unlock_mutex;
- 
- 	if (q_num >= vport->num_rxq && q_num >= vport->num_txq) {
-@@ -1507,7 +1507,7 @@ static int idpf_set_coalesce(struct net_device *netdev,
- 	idpf_vport_ctrl_lock(netdev);
- 	vport = idpf_netdev_to_vport(netdev);
- 
--	if (np->state != __IDPF_VPORT_UP)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		goto unlock_mutex;
- 
- 	for (i = 0; i < vport->num_txq; i++) {
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 513032cb5f08..89d30c395533 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -517,7 +517,7 @@ static int idpf_del_mac_filter(struct idpf_vport *vport,
- 	}
- 	spin_unlock_bh(&vport_config->mac_filter_list_lock);
- 
--	if (np->state == __IDPF_VPORT_UP) {
-+	if (test_bit(IDPF_VPORT_UP, np->state)) {
- 		int err;
- 
- 		err = idpf_add_del_mac_filters(vport, np, false, async);
-@@ -588,7 +588,7 @@ static int idpf_add_mac_filter(struct idpf_vport *vport,
- 	if (err)
- 		return err;
- 
--	if (np->state == __IDPF_VPORT_UP)
-+	if (test_bit(IDPF_VPORT_UP, np->state))
- 		err = idpf_add_del_mac_filters(vport, np, true, async);
- 
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+@@ -658,6 +703,58 @@ static s32 ixgbevf_set_vfta_vf(struct ixgbe_hw *hw, u32 vlan, u32 vind,
  	return err;
-@@ -888,7 +888,7 @@ static void idpf_vport_stop(struct idpf_vport *vport)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 
--	if (np->state <= __IDPF_VPORT_DOWN)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		return;
- 
- 	netif_carrier_off(vport->netdev);
-@@ -911,7 +911,7 @@ static void idpf_vport_stop(struct idpf_vport *vport)
- 	idpf_vport_intr_deinit(vport);
- 	idpf_vport_queues_rel(vport);
- 	idpf_vport_intr_rel(vport);
--	np->state = __IDPF_VPORT_DOWN;
-+	clear_bit(IDPF_VPORT_UP, np->state);
  }
  
++/**
++ * ixgbe_read_vflinks - Read VFLINKS register
++ * @hw: pointer to the HW structure
++ * @speed: link speed
++ * @link_up: indicate if link is up/down
++ *
++ * Get linkup status and link speed from the VFLINKS register.
++ */
++static void ixgbe_read_vflinks(struct ixgbe_hw *hw, ixgbe_link_speed *speed,
++			       bool *link_up)
++{
++	u32 vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++	/* if link status is down no point in checking to see if PF is up */
++	if (!(vflinks & IXGBE_LINKS_UP)) {
++		*link_up = false;
++		return;
++	}
++
++	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
++	 * before the link status is correct
++	 */
++	if (hw->mac.type == ixgbe_mac_82599_vf) {
++		for (int i = 0; i < 5; i++) {
++			udelay(100);
++			vflinks = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
++
++			if (!(vflinks & IXGBE_LINKS_UP)) {
++				*link_up = false;
++				return;
++			}
++		}
++	}
++
++	/* We reached this point so there's link */
++	*link_up = true;
++
++	switch (vflinks & IXGBE_LINKS_SPEED_82599) {
++	case IXGBE_LINKS_SPEED_10G_82599:
++		*speed = IXGBE_LINK_SPEED_10GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_1G_82599:
++		*speed = IXGBE_LINK_SPEED_1GB_FULL;
++		break;
++	case IXGBE_LINKS_SPEED_100_82599:
++		*speed = IXGBE_LINK_SPEED_100_FULL;
++		break;
++	default:
++		*speed = IXGBE_LINK_SPEED_UNKNOWN;
++	}
++}
++
  /**
-@@ -1332,7 +1332,7 @@ static int idpf_up_complete(struct idpf_vport *vport)
- 		netif_tx_start_all_queues(vport->netdev);
+  * ixgbevf_hv_set_vfta_vf - * Hyper-V variant - just a stub.
+  * @hw: unused
+@@ -705,7 +802,6 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
+ 	struct ixgbe_mbx_info *mbx = &hw->mbx;
+ 	struct ixgbe_mac_info *mac = &hw->mac;
+ 	s32 ret_val = 0;
+-	u32 links_reg;
+ 	u32 in_msg = 0;
+ 
+ 	/* If we were hit with a reset drop the link */
+@@ -715,36 +811,14 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
+ 	if (!mac->get_link_status)
+ 		goto out;
+ 
+-	/* if link status is down no point in checking to see if pf is up */
+-	links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-	if (!(links_reg & IXGBE_LINKS_UP))
+-		goto out;
+-
+-	/* for SFP+ modules and DA cables on 82599 it can take up to 500usecs
+-	 * before the link status is correct
+-	 */
+-	if (mac->type == ixgbe_mac_82599_vf) {
+-		int i;
+-
+-		for (i = 0; i < 5; i++) {
+-			udelay(100);
+-			links_reg = IXGBE_READ_REG(hw, IXGBE_VFLINKS);
+-
+-			if (!(links_reg & IXGBE_LINKS_UP))
+-				goto out;
+-		}
+-	}
+-
+-	switch (links_reg & IXGBE_LINKS_SPEED_82599) {
+-	case IXGBE_LINKS_SPEED_10G_82599:
+-		*speed = IXGBE_LINK_SPEED_10GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_1G_82599:
+-		*speed = IXGBE_LINK_SPEED_1GB_FULL;
+-		break;
+-	case IXGBE_LINKS_SPEED_100_82599:
+-		*speed = IXGBE_LINK_SPEED_100_FULL;
+-		break;
++	if (hw->mac.type == ixgbe_mac_e610_vf) {
++		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
++		if (ret_val)
++			goto out;
++	} else {
++		ixgbe_read_vflinks(hw, speed, link_up);
++		if (*link_up == false)
++			goto out;
  	}
  
--	np->state = __IDPF_VPORT_UP;
-+	set_bit(IDPF_VPORT_UP, np->state);
- 
- 	return 0;
- }
-@@ -1377,7 +1377,7 @@ static int idpf_vport_open(struct idpf_vport *vport)
- 	struct idpf_vport_config *vport_config;
- 	int err;
- 
--	if (np->state != __IDPF_VPORT_DOWN)
-+	if (test_bit(IDPF_VPORT_UP, np->state))
- 		return -EBUSY;
- 
- 	/* we do not allow interface up just yet */
-@@ -1569,7 +1569,7 @@ void idpf_init_task(struct work_struct *work)
- 
- 	/* Once state is put into DOWN, driver is ready for dev_open */
- 	np = netdev_priv(vport->netdev);
--	np->state = __IDPF_VPORT_DOWN;
-+	clear_bit(IDPF_VPORT_UP, np->state);
- 	if (test_and_clear_bit(IDPF_VPORT_UP_REQUESTED, vport_config->flags))
- 		idpf_vport_open(vport);
- 
-@@ -1768,7 +1768,7 @@ static void idpf_set_vport_state(struct idpf_adapter *adapter)
- 			continue;
- 
- 		np = netdev_priv(adapter->netdevs[i]);
--		if (np->state == __IDPF_VPORT_UP)
-+		if (test_bit(IDPF_VPORT_UP, np->state))
- 			set_bit(IDPF_VPORT_UP_REQUESTED,
- 				adapter->vport_config[i]->flags);
- 	}
-@@ -1906,7 +1906,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 			     enum idpf_vport_reset_cause reset_cause)
- {
- 	struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
--	enum idpf_vport_state current_state = np->state;
-+	bool vport_is_up = test_bit(IDPF_VPORT_UP, np->state);
- 	struct idpf_adapter *adapter = vport->adapter;
- 	struct idpf_vport *new_vport;
- 	int err;
-@@ -1957,7 +1957,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 		goto free_vport;
- 	}
- 
--	if (current_state <= __IDPF_VPORT_DOWN) {
-+	if (!vport_is_up) {
- 		idpf_send_delete_queues_msg(vport);
- 	} else {
- 		set_bit(IDPF_VPORT_DEL_QUEUES, vport->flags);
-@@ -1990,7 +1990,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 	if (err)
- 		goto err_open;
- 
--	if (current_state == __IDPF_VPORT_UP)
-+	if (vport_is_up)
- 		err = idpf_vport_open(vport);
- 
- 	goto free_vport;
-@@ -2000,7 +2000,7 @@ int idpf_initiate_soft_reset(struct idpf_vport *vport,
- 				 vport->num_rxq, vport->num_bufq);
- 
- err_open:
--	if (current_state == __IDPF_VPORT_UP)
-+	if (vport_is_up)
- 		idpf_vport_open(vport);
- 
- free_vport:
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index b19b462e0bb6..06199fde3b57 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -571,7 +571,7 @@ static bool idpf_tx_singleq_clean(struct idpf_tx_queue *tx_q, int napi_budget,
- 	np = netdev_priv(tx_q->netdev);
- 	nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 
--	dont_wake = np->state != __IDPF_VPORT_UP ||
-+	dont_wake = !test_bit(IDPF_VPORT_UP, np->state) ||
- 		    !netif_carrier_ok(tx_q->netdev);
- 	__netif_txq_completed_wake(nq, ss.packets, ss.bytes,
- 				   IDPF_DESC_UNUSED(tx_q), IDPF_TX_WAKE_THRESH,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index eaad52a83b04..d6affa6535f7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -1869,7 +1869,7 @@ static bool idpf_tx_clean_complq(struct idpf_compl_queue *complq, int budget,
- 		/* Update BQL */
- 		nq = netdev_get_tx_queue(tx_q->netdev, tx_q->idx);
- 
--		dont_wake = !complq_ok || np->state != __IDPF_VPORT_UP ||
-+		dont_wake = !complq_ok || !test_bit(IDPF_VPORT_UP, np->state) ||
- 			    !netif_carrier_ok(tx_q->netdev);
- 		/* Check if the TXQ needs to and can be restarted */
- 		__netif_txq_completed_wake(nq, tx_q->cleaned_pkts, tx_q->cleaned_bytes,
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index c1f34381333d..e68572c602eb 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -68,7 +68,7 @@ static void idpf_handle_event_link(struct idpf_adapter *adapter,
- 
- 	vport->link_up = v2e->link_status;
- 
--	if (np->state != __IDPF_VPORT_UP)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
- 		return;
- 
- 	if (vport->link_up) {
-@@ -2432,7 +2432,7 @@ int idpf_send_get_stats_msg(struct idpf_vport *vport)
- 
- 
- 	/* Don't send get_stats message if the link is down */
--	if (np->state <= __IDPF_VPORT_DOWN)
-+	if (!test_bit(IDPF_VPORT_UP, np->state))
+ 	/* if the read failed it could just be a mailbox collision, best wait
+@@ -951,6 +1025,7 @@ int ixgbevf_get_queues(struct ixgbe_hw *hw, unsigned int *num_tcs,
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_15:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
  		return 0;
- 
- 	stats_msg.vport_id = cpu_to_le32(vport->vport_id);
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
