@@ -1,62 +1,62 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4CA126F0A
-	for <netdev@vger.kernel.org>; Thu,  2 Oct 2025 22:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B3F274B3C
+	for <netdev@vger.kernel.org>; Thu,  2 Oct 2025 22:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759445641; cv=none; b=EeCxCVen6rKJL484MdmN/eNVEY0Z8XfVulMCOQL0eHGwtQAmTlH3h5ix7oy8nTk1LvWT66SJ/Ccuc0oTM3HHEnPpJSF/e8W+pq1h555QrYWHLB5/Kz22K8kVFQe0cCbg61EhZ0aFOR9bDFIJi7J7jFG2MgdBcZG/Ii3A3YCLBa8=
+	t=1759445643; cv=none; b=Rj9zotU8r9dtSHymTjkVnAK2rK7bp00rCDouBm3/Fj4i4ljVYYLhaw9Ziaj5oTqa7w5FQudN7RqFYK+NjHszbYp3TnWiZ+8L/tp+t5rOi6sdCaXBQQihQExEkBBbqPAawrDU2y6mQAs0zG+ndRb+9KXgFRN7RmG9BvvTpKVyDGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759445641; c=relaxed/simple;
-	bh=fG1YuI52b5BEc90LLlrZF2VWyj63t69/EC0cK4J+sKo=;
+	s=arc-20240116; t=1759445643; c=relaxed/simple;
+	bh=Rs9pgGg/MaOj4sf2rEKqNeDIwa6UCmWYcj/0CuhdxVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONfdlFyDIfAKRlXWNiYkE8IfO1x3lj+h4HWG1afKIcdrgpqfRwTtmsksyyjtjNwPJ1kw5GzoR/xFenPf08OVYpfzcQ+DhTue4YI3uRXfSaKLokymkCAnDv6wPAedXmgDFm3XEiRVsCXkpnt50kbhTQEJeWtk9NKC2K0OYD0JMms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZF7dgAi; arc=none smtp.client-ip=209.85.216.50
+	 MIME-Version; b=ruqwaQu+oIWt71+XsCw6e5DS9FwJIazC5btUQTQ9FCe4MWYmf/GAhL6MXPMk1DeT96h7Zdok7J6s9Z3pBzJhwWMOFYX9/NlyxhU5GD0UBQuaVPa4GD8KheIMRwnmP0JBUjAwBSZI6wpU0R33JdofsYjYbOD2UlRTd1dCdwa1/8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWiYc89n; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZF7dgAi"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-32eb45ab7a0so1776391a91.0
-        for <netdev@vger.kernel.org>; Thu, 02 Oct 2025 15:53:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWiYc89n"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-267f0fe72a1so11897315ad.2
+        for <netdev@vger.kernel.org>; Thu, 02 Oct 2025 15:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759445639; x=1760050439; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1759445641; x=1760050441; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/DTn3L9/UuOkcltPOJYswaA4ZGWd2YeJHE0d3yQetD8=;
-        b=mZF7dgAixoGMXHPC2OrJv24Fa7TT9xi7lFSNF5MTnh6o7NIWhEnkU0M+A86l9sIlL8
-         kWNyoH0nFTZVc6uSr9oybdwbZj2xsO0ioTrBIQsJBzzfWx+Fpn0lW+9MGVVx+Fbtg6Dz
-         cgh+e8rE3EsaTUxcNJAjJGS5P0WZ3y4hABQvaZ3rdoXMipW4YJjS06f/dUz3lf6DKYDm
-         VS1TTmu+qQL8ba8XZrTTgY9HGcLm8lEvXf7t//o01txn6JtVIBRRS9TzUD8L1m9w0Vkw
-         hB6GU3EthAg6Ci7oMkvBqFmtcTgoitppovZVVW3TudZKx7vQlvTlv3jsp65UyaP2iONj
-         YhvA==
+        bh=lYm5JWPj4dm6GLlb/3HSk+8LUYIu6E/uVIIRsCYD7NQ=;
+        b=FWiYc89nlCPurnSVVg8W3eG+yKXF3bJpbNc1L7xi3bbzdxHzXzw15IXUsZGHz0P9DW
+         5iTsClt+4dVD+A4WQB7csRwRMkSe2zLHcyuxYhavY6GOu9ykZcn8TsFBwh/oSZ+TO0m/
+         dpATqmaJ5nK7bCsaGrkrD30RBcHwX8RzsrVr78xhYZV6h6RzbNir86auRhLy1ArZG8nr
+         RDKydwpwJXhzsQBrF92SKgvSV5hFUuO5F34zn+0HkTTyGuknFb2qAfQZKfiI1DiUj+EB
+         mBLq91d6M0XSDr7BZiMO+PLluElcF0mBj8nXp6dhhaaa8vdDqnPuuxLnAhcbDkb6HZ7e
+         yxgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759445639; x=1760050439;
+        d=1e100.net; s=20230601; t=1759445641; x=1760050441;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/DTn3L9/UuOkcltPOJYswaA4ZGWd2YeJHE0d3yQetD8=;
-        b=qNFAEKIdzlkO2S6RfIAm0vlCs9F8LL9p9UhS9BCdcYR9G3Al518Ccf7YLXrr0FbTZl
-         6TGEic2yE3GBSIkjwy3tmQhXoOx2bShObft3tzVonHzfSnZpym8s7aCV0ajJtuI/c8SI
-         8iUHOpNSipq3DC8YJL2yOAF1EdTCVu8dDAqzBRq69PfaCtbVSPEG6797c/4PId1xMb0P
-         1Hf7Z4bf5SJorzIrnM/aJVaW26gtwFFyBCzKl2BFqkkAJ06HGD5EVWcHy+a0e+csLL3W
-         3MMFhRv0XpQf+u3RDSJ3h9UVYk07BJQGNCRwdaXgegYj51VnYRCqJviRbBd+l4TgVGXo
-         fmzQ==
-X-Gm-Message-State: AOJu0Yyg5WzO+qD/ruFrx9KJkZUzzbU5/JMcsqmKNP8s0h3D13ci59v6
-	4ZtoLfsbHjFSFjl6otA20oV1u81/mirbirKCUz48uN4+WLzV5TlTwmV+
-X-Gm-Gg: ASbGncuzpviJP7tV6Ml0UWL0zgITQd6zmyH94yZ4Vbf+OuncNr5TuBq7WNMzd76o2kp
-	6bL0ZEIMK2Zudl+St4HrPzdUS1AW0IXvLAoGuRwADk6pwr0ROJ3oWn0nhB82+hooBd/SpyrAUMo
-	QrBNCrlgAaCVF04gzl0vk66NByBEXWMgGeMgUyB1QXty54+FyyyX/bO8e+5wCeK6EZZ+cw46FmA
-	KVoicsyai33D3lMmkqC4jOmrWxzQmItehD4D4vu6qe+RXnS9lICa14CPbNWfflbvwU8Y1Uq7kw5
-	aVy0wrt+w1Apig2GffB2NZ8ZxwPV8/w9m/8/2qYT2cEEmxwxM512rFZvxpYFZ4mUNmTHht/1l4T
-	8sKWpO0jW9nBk4kj/wA8za7ZaBgz1yKF2RQcz9+1i7VhqSBE=
-X-Google-Smtp-Source: AGHT+IFFH1Yye0wqvzEUNPJTmqr+fbfxZkCDwZiYtcBJcGMGv3jsoyH8HjVgJOywKtLR7kFmEhj/9w==
-X-Received: by 2002:a17:90b:38cc:b0:32b:bc2c:f9fd with SMTP id 98e67ed59e1d1-339c276e82amr1128776a91.24.1759445639117;
-        Thu, 02 Oct 2025 15:53:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:f::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6099ad8dc6sm2860777a12.2.2025.10.02.15.53.58
+        bh=lYm5JWPj4dm6GLlb/3HSk+8LUYIu6E/uVIIRsCYD7NQ=;
+        b=vqO2or32ifufhObzeajN3QUUhDBd+Xt+sCNPeWl8m0gw75hj5KsRF/MwxL6sGOC1in
+         sA65faIWsOYBQpKZmTLDhSajE3LI093XgoPfrCQMNv18rJOhtU5iSjkWxRopJmlg7YIS
+         GCmWVRWBmHOF2S19oZEbn8CcqQ9MLNE9A4lKbpWagwgmDd2k+xwyi7a8IdynZaUQxtMF
+         Zmd1fmIHF0bxgYJAsoi5nflNWCt/+F+hQQB8AcnrdveGe/R09k6RUc3Krm5tXiEvJR0E
+         /zbtFmgU+7+jSn2XV5SVO6X8Ndm+hgeRDp+DFfFsDPvxdJPacDrKYf1COHtuoOhMA8G1
+         melA==
+X-Gm-Message-State: AOJu0YydJTzFDHQv6JzD5hAgnpzkZd9HD5jxJ4aUCW50xLz4Vo11xRaa
+	MIwMmJrIRh04AC9ss5hy0mEnLiytRaRaAPAVD3g470IxEDABGYpMw8oY
+X-Gm-Gg: ASbGncvlUmVgd83HHR20oSIQ9XChNhrJYPxg4q+8MGzw5jf9oLirIird4MNwLO0NZ5C
+	UPgmdooNIooY2B2IJnvx4fVOl6YMcMyFHVkBW62c5ul6IlDc0uw7XtFhtKNeCbF6we7j/dORlja
+	YalcFc26W8k9TbseHqVDPzy8F/qRSwQj3Hd57DNT9pOlBM7ApILgqi+gYKU9oqLBbdyEO1aymqj
+	6nd/ZehtAMXR1mWsI5u2Ed7pW/hK32VeJGuj5LxNTNO1t0frXZ/hGBEJ0D0PftwJCD4jZ2DAL6i
+	DC9tGg6Nfz6ohyFhKWXZwQ5gszyBIXcaTM16oesXJBi4rd887Ar0Y4j+RwGwZru559fkbUYej0u
+	ro3aB7QtCrGt2wvQJgZLdLXMsw6ITemzet9+GA30pMHiXrg5V
+X-Google-Smtp-Source: AGHT+IElOJDaVI9CSgOz5Xw1RqoJKG1VmL7+FqLJItrI7Kx5/HrYdLTgUuv/9IesdEQJPBr4IZZ4rg==
+X-Received: by 2002:a17:903:2411:b0:269:6e73:b90a with SMTP id d9443c01a7336-28e9a5f9e35mr9807015ad.15.1759445640938;
+        Thu, 02 Oct 2025 15:54:00 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:4f::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-28e8d1b87acsm31229365ad.76.2025.10.02.15.54.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Oct 2025 15:53:58 -0700 (PDT)
+        Thu, 02 Oct 2025 15:54:00 -0700 (PDT)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc: netdev@vger.kernel.org,
 	haoluo@google.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [RFC PATCH bpf-next v2 02/12] bpf: Convert bpf_selem_unlink_map to failable
-Date: Thu,  2 Oct 2025 15:53:41 -0700
-Message-ID: <20251002225356.1505480-3-ameryhung@gmail.com>
+Subject: [RFC PATCH bpf-next v2 04/12] bpf: Open code bpf_selem_unlink_storage in bpf_selem_unlink
+Date: Thu,  2 Oct 2025 15:53:43 -0700
+Message-ID: <20251002225356.1505480-5-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251002225356.1505480-1-ameryhung@gmail.com>
 References: <20251002225356.1505480-1-ameryhung@gmail.com>
@@ -85,203 +85,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To prepare for changing bpf_local_storage_map_bucket::lock to rqspinlock,
-convert bpf_selem_unlink_map() to failable. It still always succeeds and
-returns 0 for now.
-
-Since some operations updating local storage cannot fail in the middle,
-open-code bpf_selem_unlink_map() to take the b->lock before the
-operation. There are two such locations:
-
-- bpf_local_storage_alloc()
-
-  The first selem will be unlinked from smap if cmpxchg owner_storage_ptr
-  fails, which should not fail. Therefore, hold b->lock when linking
-  until allocation complete. Helpers that assume b->lock is held by
-  callers are introduced: bpf_selem_link_map_nolock() and
-  bpf_selem_unlink_map_nolock().
-
-- bpf_local_storage_update()
-
-  The three step update process: link_map(new_selem),
-  link_storage(new_selem), and unlink_map(old_selem) should not fail in
-  the middle.
-
-In bpf_selem_unlink(), bpf_selem_unlink_map() and
-bpf_selem_unlink_storage() should either all succeed or fail as a whole
-instead of failing in the middle. So, return if unlink_map() failed.
-
-In bpf_local_storage_destroy(), since it cannot deadlock with itself or
-bpf_local_storage_map_free() who the function might be racing with,
-retry if bpf_selem_unlink_map() fails due to rqspinlock returning
-errors.
+To prepare for changing bpf_local_storage::lock to rqspinlock, open code
+bpf_selem_unlink_storage() in the only caller, bpf_selem_unlink(), since
+unlink_map and unlink_storage must be done together after all the
+necessary locks are acquired.
 
 Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- kernel/bpf/bpf_local_storage.c | 54 ++++++++++++++++++++++++++++------
- 1 file changed, 45 insertions(+), 9 deletions(-)
+ kernel/bpf/bpf_local_storage.c | 71 ++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 38 deletions(-)
 
 diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
-index e4a7cd33b455..cbccf6b77f10 100644
+index 682409fb22a2..9c2b041ae9ca 100644
 --- a/kernel/bpf/bpf_local_storage.c
 +++ b/kernel/bpf/bpf_local_storage.c
-@@ -409,7 +409,7 @@ void bpf_selem_link_storage_nolock(struct bpf_local_storage *local_storage,
- 	hlist_add_head_rcu(&selem->snode, &local_storage->list);
+@@ -371,37 +371,6 @@ static bool check_storage_bpf_ma(struct bpf_local_storage *local_storage,
+ 	return selem_smap->bpf_ma;
  }
  
--static void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
-+static int bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- {
- 	struct bpf_local_storage *local_storage;
- 	struct bpf_local_storage_map *smap;
-@@ -418,7 +418,7 @@ static void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- 
- 	if (unlikely(!selem_linked_to_map_lockless(selem)))
- 		/* selem has already be unlinked from smap */
+-static void bpf_selem_unlink_storage(struct bpf_local_storage_elem *selem,
+-				     bool reuse_now)
+-{
+-	struct bpf_local_storage_map *storage_smap;
+-	struct bpf_local_storage *local_storage;
+-	bool bpf_ma, free_local_storage = false;
+-	HLIST_HEAD(selem_free_list);
+-	unsigned long flags;
+-
+-	if (unlikely(!selem_linked_to_storage_lockless(selem)))
+-		/* selem has already been unlinked from sk */
 -		return;
-+		return 0;
+-
+-	local_storage = rcu_dereference_check(selem->local_storage,
+-					      bpf_rcu_lock_held());
+-	storage_smap = rcu_dereference_check(local_storage->smap,
+-					     bpf_rcu_lock_held());
+-	bpf_ma = check_storage_bpf_ma(local_storage, storage_smap, selem);
+-
+-	raw_spin_lock_irqsave(&local_storage->lock, flags);
+-	if (likely(selem_linked_to_storage(selem)))
+-		free_local_storage = bpf_selem_unlink_storage_nolock(
+-			local_storage, selem, true, &selem_free_list);
+-	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
+-
+-	bpf_selem_free_list(&selem_free_list, reuse_now);
+-
+-	if (free_local_storage)
+-		bpf_local_storage_free(local_storage, storage_smap, bpf_ma, reuse_now);
+-}
+-
+ void bpf_selem_link_storage_nolock(struct bpf_local_storage *local_storage,
+ 				   struct bpf_local_storage_elem *selem)
+ {
+@@ -466,17 +435,43 @@ static void bpf_selem_link_map_nolock(struct bpf_local_storage_map *smap,
  
- 	local_storage = rcu_dereference_check(selem->local_storage,
- 					      bpf_rcu_lock_held());
-@@ -428,6 +428,14 @@ static void bpf_selem_unlink_map(struct bpf_local_storage_elem *selem)
- 	if (likely(selem_linked_to_map(selem)))
- 		hlist_del_init_rcu(&selem->map_node);
- 	raw_spin_unlock_irqrestore(&b->lock, flags);
-+
-+	return 0;
-+}
-+
-+static void bpf_selem_unlink_map_nolock(struct bpf_local_storage_elem *selem)
-+{
-+	if (likely(selem_linked_to_map(selem)))
-+		hlist_del_init_rcu(&selem->map_node);
- }
- 
- void bpf_selem_link_map(struct bpf_local_storage_map *smap,
-@@ -446,13 +454,26 @@ void bpf_selem_link_map(struct bpf_local_storage_map *smap,
- 	raw_spin_unlock_irqrestore(&b->lock, flags);
- }
- 
-+static void bpf_selem_link_map_nolock(struct bpf_local_storage_map *smap,
-+				      struct bpf_local_storage_elem *selem,
-+				      struct bpf_local_storage_map_bucket *b)
-+{
-+	RCU_INIT_POINTER(SDATA(selem)->smap, smap);
-+	hlist_add_head_rcu(&selem->map_node, &b->list);
-+}
-+
  void bpf_selem_unlink(struct bpf_local_storage_elem *selem, bool reuse_now)
  {
-+	int err;
-+
- 	/* Always unlink from map before unlinking from local_storage
- 	 * because selem will be freed after successfully unlinked from
- 	 * the local_storage.
- 	 */
--	bpf_selem_unlink_map(selem);
-+	err = bpf_selem_unlink_map(selem);
-+	if (err)
-+		return;
-+
- 	bpf_selem_unlink_storage(selem, reuse_now);
- }
- 
-@@ -494,6 +515,8 @@ int bpf_local_storage_alloc(void *owner,
- {
- 	struct bpf_local_storage *prev_storage, *storage;
- 	struct bpf_local_storage **owner_storage_ptr;
-+	struct bpf_local_storage_map_bucket *b;
++	struct bpf_local_storage_map *storage_smap;
++	struct bpf_local_storage *local_storage;
++	bool bpf_ma, free_local_storage = false;
++	HLIST_HEAD(selem_free_list);
 +	unsigned long flags;
  	int err;
  
- 	err = mem_charge(smap, owner, sizeof(*storage));
-@@ -516,7 +539,10 @@ int bpf_local_storage_alloc(void *owner,
- 	storage->owner = owner;
+-	/* Always unlink from map before unlinking from local_storage
+-	 * because selem will be freed after successfully unlinked from
+-	 * the local_storage.
+-	 */
+-	err = bpf_selem_unlink_map(selem);
+-	if (err)
++	if (unlikely(!selem_linked_to_storage_lockless(selem)))
++		/* selem has already been unlinked from sk */
+ 		return;
  
- 	bpf_selem_link_storage_nolock(storage, first_selem);
--	bpf_selem_link_map(smap, first_selem);
+-	bpf_selem_unlink_storage(selem, reuse_now);
++	local_storage = rcu_dereference_check(selem->local_storage,
++					      bpf_rcu_lock_held());
++	storage_smap = rcu_dereference_check(local_storage->smap,
++					     bpf_rcu_lock_held());
++	bpf_ma = check_storage_bpf_ma(local_storage, storage_smap, selem);
 +
-+	b = select_bucket(smap, storage);
-+	raw_spin_lock_irqsave(&b->lock, flags);
-+	bpf_selem_link_map_nolock(smap, first_selem, b);
- 
- 	owner_storage_ptr =
- 		(struct bpf_local_storage **)owner_storage(smap, owner);
-@@ -532,7 +558,8 @@ int bpf_local_storage_alloc(void *owner,
- 	 */
- 	prev_storage = cmpxchg(owner_storage_ptr, NULL, storage);
- 	if (unlikely(prev_storage)) {
--		bpf_selem_unlink_map(first_selem);
-+		bpf_selem_unlink_map_nolock(first_selem);
-+		raw_spin_unlock_irqrestore(&b->lock, flags);
- 		err = -EAGAIN;
- 		goto uncharge;
- 
-@@ -546,6 +573,7 @@ int bpf_local_storage_alloc(void *owner,
- 		 * bucket->list under rcu_read_lock().
- 		 */
- 	}
-+	raw_spin_unlock_irqrestore(&b->lock, flags);
- 
- 	return 0;
- 
-@@ -567,8 +595,9 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 	struct bpf_local_storage_data *old_sdata = NULL;
- 	struct bpf_local_storage_elem *alloc_selem, *selem = NULL;
- 	struct bpf_local_storage *local_storage;
-+	struct bpf_local_storage_map_bucket *b;
- 	HLIST_HEAD(old_selem_free_list);
--	unsigned long flags;
-+	unsigned long flags, b_flags;
- 	int err;
- 
- 	/* BPF_EXIST and BPF_NOEXIST cannot be both set */
-@@ -652,20 +681,26 @@ bpf_local_storage_update(void *owner, struct bpf_local_storage_map *smap,
- 		goto unlock;
- 	}
- 
-+	b = select_bucket(smap, local_storage);
++	raw_spin_lock_irqsave(&local_storage->lock, flags);
++	if (likely(selem_linked_to_storage(selem))) {
++		/* Always unlink from map before unlinking from local_storage
++		 * because selem will be freed after successfully unlinked from
++		 * the local_storage.
++		 */
++		err = bpf_selem_unlink_map(selem);
++		if (err)
++			goto out;
 +
-+	raw_spin_lock_irqsave(&b->lock, b_flags);
++		free_local_storage = bpf_selem_unlink_storage_nolock(
++			local_storage, selem, true, &selem_free_list);
++	}
++out:
++	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
 +
- 	alloc_selem = NULL;
- 	/* First, link the new selem to the map */
--	bpf_selem_link_map(smap, selem);
-+	bpf_selem_link_map_nolock(smap, selem, b);
- 
- 	/* Second, link (and publish) the new selem to local_storage */
- 	bpf_selem_link_storage_nolock(local_storage, selem);
- 
- 	/* Third, remove old selem, SELEM(old_sdata) */
- 	if (old_sdata) {
--		bpf_selem_unlink_map(SELEM(old_sdata));
-+		bpf_selem_unlink_map_nolock(SELEM(old_sdata));
- 		bpf_selem_unlink_storage_nolock(local_storage, SELEM(old_sdata),
- 						true, &old_selem_free_list);
- 	}
- 
-+	raw_spin_unlock_irqrestore(&b->lock, b_flags);
++	bpf_selem_free_list(&selem_free_list, reuse_now);
 +
- unlock:
- 	raw_spin_unlock_irqrestore(&local_storage->lock, flags);
- 	bpf_selem_free_list(&old_selem_free_list, false);
-@@ -743,6 +778,7 @@ void bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
- 	HLIST_HEAD(free_selem_list);
- 	struct hlist_node *n;
- 	unsigned long flags;
-+	int err;
++	if (free_local_storage)
++		bpf_local_storage_free(local_storage, storage_smap, bpf_ma, reuse_now);
+ }
  
- 	storage_smap = rcu_dereference_check(local_storage->smap, bpf_rcu_lock_held());
- 	bpf_ma = check_storage_bpf_ma(local_storage, storage_smap, NULL);
-@@ -761,7 +797,7 @@ void bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
- 		/* Always unlink from map before unlinking from
- 		 * local_storage.
- 		 */
--		bpf_selem_unlink_map(selem);
-+		while (bpf_selem_unlink_map(selem));
- 		/* If local_storage list has only one element, the
- 		 * bpf_selem_unlink_storage_nolock() will return true.
- 		 * Otherwise, it will return false. The current loop iteration
+ void __bpf_local_storage_insert_cache(struct bpf_local_storage *local_storage,
 -- 
 2.47.3
 
