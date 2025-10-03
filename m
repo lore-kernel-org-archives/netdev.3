@@ -1,86 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE42DF128;
-	Fri,  3 Oct 2025 18:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E582DE6F8
+	for <netdev@vger.kernel.org>; Fri,  3 Oct 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759514423; cv=none; b=cs3dOIh9x7Sy0V9EThDma/0V0N3p1fqm7u1yUjd9U0103OoAMRswynBsZxsG6JUmIpD1zoex0YhEP4JUft/oggmWZt+556bclkPtHlu1F3G+mM15qEbVXWKU3xQen+9WoOCwvq4mkaewsJ+6a3vpTA7BKnZcuhMRF2Nx/Z5VyaE=
+	t=1759514737; cv=none; b=YXcXKU7VfOeX3k/Vz/chbFDcwMMub57zlWu0gzp3uxfT0JhWWz7Jg/iKFosnvRfDoy8ujpO5VO6L7aIU3V8XNxafHQYKVl3WZKzkBkmQergZWNDf/RV0Uq2fM7tUfTre5R7LlXS6GvLN776dNe/fovJojj+VH9MAI2znndniPJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759514423; c=relaxed/simple;
-	bh=GecTde0LWdZKHylj78jeHskxHfBTpN0ZQIUAes50qz4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Bzge0wqnb7SwDdUx87zWYVgOjjYV1k/BumLJ+Ij76f5g8RWotYsBGyeWOlCprDcwzDouKgrwj0MCLj8yC1Zm8uqcV6rEDLoFz6nOHGZywdc68CihBBxanpYWtKijvXRSdSyRobXzL1gLqRcrWjH1N+Lmq3i//4X9BVhhtz9rB4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlHGidax; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759514737; c=relaxed/simple;
+	bh=6L7RZAh2Bya8EY2kgBTE/qiJkE645lMzjMuULXh5YP8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fzklyj+ob6yrHw8fFzF4LmfhISSKJxtgn95DUOfuIEpwdLg9xfIgEC5ZeuAlTcwTDCgTOClXJQ/TdHFvUukxalvTX3mXZiu9lWEQeyH5/GEB3/RxFGgB/84YYXfKGeihnzIEN0xg3pjAILhH1EeykoRZhJbOVUnM0TQYLltczaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHiwnXTI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlHGidax"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8D7C4CEFF;
-	Fri,  3 Oct 2025 18:00:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHiwnXTI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859B6C4CEF5;
+	Fri,  3 Oct 2025 18:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759514421;
-	bh=GecTde0LWdZKHylj78jeHskxHfBTpN0ZQIUAes50qz4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=TlHGidaxC6KWNp2mHI0e3FgjafWc/rSwWp6jU2CpUkczW7MOxLVXjo4RnUCmeual3
-	 ajne2os+ekU1DZ7lSitPB1RGqiZO2ZPA5+xZQr4aQDqtFN7qsb08UfZGg0sgfUCcdz
-	 gKtmGRB671jO2XFm41VEWFfU2jZw+ugm6/2zoE8K4JoAC4IrszJicYjYWDpgOgSgQf
-	 XMN6zmgj2up75DXC7OpMvj70RJJvsR70lmHry6wUTsbkLZriwIie4GCP2UDXqTlZ9l
-	 HiItgW3RZNlkMJwuhyYeomXVgIUjm+gWA3oNA0YbYFcUOmQ9gfPEz4wudimdsk2+OU
-	 +/+DYppCJnqMw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70EEA39D0C1A;
-	Fri,  3 Oct 2025 18:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1759514736;
+	bh=6L7RZAh2Bya8EY2kgBTE/qiJkE645lMzjMuULXh5YP8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fHiwnXTISIDNEFZ1l0FKAt8xMoL1yRj+BUYpdgcEowOsw7wKYhaxMWLYwoviVbeCe
+	 W0yfio31oDZV4CHbdmMkqKwyE/apzCjtOheu8X+GnQ6I73b8K7hWqexJCP5JBOzm/H
+	 7TXt8/wkGIb1wxiWDHT468PRpVFu3695oULfeP189WGD7NjeDAOpRvDEOpAjMqklYX
+	 oEsS32juDu6G9TLEpCK8uY7jA2oV44QFcrePid8Ylm5xQBGO1uKVp8bACeyriqhmHO
+	 8L1dw+VvYhcbjMP7XsiGkaERWgxkh0AAbmPhIxeikbOrpyS1CPYIXiV6vMUc4ElD5W
+	 hR4nXPbtXoBiw==
+Date: Fri, 3 Oct 2025 11:05:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Remy D. Farley" <one-d-wide@protonmail.com>
+Cc: Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH] doc/netlink: Expand nftables specification
+Message-ID: <20251003110535.350f2597@kernel.org>
+In-Reply-To: <JUuZco3v6YeIraurnU7qR-yqiNiPq8B5F6MJDG_2_tIrtMvkLEFhhPnns2BV7YCvAYkBLlhkadllZyRgQ7LmNWyWihwYr1dU9526sV63Ew4=@protonmail.com>
+References: <20251002184950.1033210-1-one-d-wide@protonmail.com>
+	<20251002151133.6a8db5ea@kernel.org>
+	<JUuZco3v6YeIraurnU7qR-yqiNiPq8B5F6MJDG_2_tIrtMvkLEFhhPnns2BV7YCvAYkBLlhkadllZyRgQ7LmNWyWihwYr1dU9526sV63Ew4=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: lan78xx: Fix lost EEPROM read timeout
- error(-ETIMEDOUT) in lan78xx_read_raw_eeprom
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175951441326.20895.16161652671675865420.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Oct 2025 18:00:13 +0000
-References: <20250930084902.19062-1-bhanuseshukumar@gmail.com>
-In-Reply-To: <20250930084902.19062-1-bhanuseshukumar@gmail.com>
-To: Bhanu Seshu Kumar Valluri <bhanuseshukumar@gmail.com>
-Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- o.rempel@pengutronix.de, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+62ec8226f01cb4ca19d9@syzkaller.appspotmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 30 Sep 2025 14:19:02 +0530 you wrote:
-> Syzbot reported read of uninitialized variable BUG with following call stack.
+On Fri, 03 Oct 2025 17:51:54 +0000 Remy D. Farley wrote:
+> Also, it caught another issue. Python yaml doesn't distinguish an empty
+> attrset/list and a null-value:
 > 
-> lan78xx 8-1:1.0 (unnamed net_device) (uninitialized): EEPROM read operation timeout
-> =====================================================
-> BUG: KMSAN: uninit-value in lan78xx_read_eeprom drivers/net/usb/lan78xx.c:1095 [inline]
-> BUG: KMSAN: uninit-value in lan78xx_init_mac_address drivers/net/usb/lan78xx.c:1937 [inline]
-> BUG: KMSAN: uninit-value in lan78xx_reset+0x999/0x2cd0 drivers/net/usb/lan78xx.c:3241
->  lan78xx_read_eeprom drivers/net/usb/lan78xx.c:1095 [inline]
->  lan78xx_init_mac_address drivers/net/usb/lan78xx.c:1937 [inline]
->  lan78xx_reset+0x999/0x2cd0 drivers/net/usb/lan78xx.c:3241
->  lan78xx_bind+0x711/0x1690 drivers/net/usb/lan78xx.c:3766
->  lan78xx_probe+0x225c/0x3310 drivers/net/usb/lan78xx.c:4707
+> ```yaml
+>   dump: # attrset
+>     reply: # null (but attrset expected in code)
+>       # no attribute here => dump["reply"] is None
+> ```
 > 
-> [...]
+> I think it's useful to have a machine readable mark to signal that the
+> operation supports dump flag, even though there're no attributes outlined yet.
+> I fixed it by simply checking for null in ynl_gen_rst.py .
 
-Here is the summary with links:
-  - net: usb: lan78xx: Fix lost EEPROM read timeout error(-ETIMEDOUT) in lan78xx_read_raw_eeprom
-    https://git.kernel.org/netdev/net/c/49bdb63ff644
+Hm, hm, hm. So for "do" we use empty replies to mean that the reply
+_will actually arrive_ but it will have no attributes. Whether an
+operation returns a reply or not cannot be changed once operation
+was added without breaking uAPI. So the empty reply is a way for us
+to "reserve" the reply because we think we may need it in the future.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Or at least that's what my faulty memory of the situation is.
 
-
+What an empty dump reply is I do not know. How we could have a dump
+enumerating objects without producing replies!? :$
