@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F912DCF71;
-	Fri,  3 Oct 2025 18:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B592DF12B
+	for <netdev@vger.kernel.org>; Fri,  3 Oct 2025 18:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759514421; cv=none; b=osF6IXCrSEGGr7nlq7TQRfaVbptrnzaErM9EeAUAuIyb2bZLOCYfnYxXAxQiDEaXK3akmFAE0Iam437deW/d4UQkVmZGO1Sy9+8QjsdtlQmHVLm73hlE+aAL6Xy7h0t4lzDgQUfBZI6TEOdqGnY9wcZaQY0hpcZXqC1qEhIgwyE=
+	t=1759514423; cv=none; b=R1Sdu1SKR7MREJQYodnrNIJslA9Fd5FI3xS1iItqfnDBUKODUhYG9bOqjFGYfqKfr32LW3iX89rre6RZ45FSMqiG3OceHnehIxrAsbDXa+ifXXriuT4jrm8ZpUK0Xpruu6ehYC3zeCo8qejgJotuc5M4B9N6+xf0WmFytt3QJig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759514421; c=relaxed/simple;
-	bh=yfWkw1eJRdgMFAVUHp1HPAsHB8VP3RjWjRR3B4uC/OY=;
+	s=arc-20240116; t=1759514423; c=relaxed/simple;
+	bh=3dx5eI4il0St06QxrDb++DjweIwiK2sKsQ4gHUBCMIo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=d5lqUqJJAMHEiDzeGyJRGOfRdOdf/lNS+zmQPSAYGdKKT7FmdZaBha+TXBPsEIhEnkodHhUZZWzw9WKN9F6XusV3E7N+4Ednv79734s8UgdphWYCOuKIDgENKHgJDbuY1xjOce9ZQJr6g19Es3eFJc8MNSyMVq6guDbcw+6l4FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MrGBwjGL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pEaQCOzUbu3IMPaulssaBD0wKbNKPvThfKs912xL38CzV+VgOhaoUqJ3IbeIMlFtBvB21lWQS5aGRA3EXQ7Df6U+OIWf1jdrGv/XfKFkBsSKal/klCO2sJvPRrI1hpkIULCYtiLn4SIlcwj2PQl53gcP/GbbBxLTokb6jHRZeNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBs3pbsJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MrGBwjGL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1908C4CEFB;
-	Fri,  3 Oct 2025 18:00:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBs3pbsJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4ACC4CEF5;
+	Fri,  3 Oct 2025 18:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759514420;
-	bh=yfWkw1eJRdgMFAVUHp1HPAsHB8VP3RjWjRR3B4uC/OY=;
+	s=k20201202; t=1759514423;
+	bh=3dx5eI4il0St06QxrDb++DjweIwiK2sKsQ4gHUBCMIo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=MrGBwjGLfR4uMhLcJU9FA7rJWOo9z+BxdF32WHyKTnoLKpGJqPnqQCovQJHJqiL8l
-	 rODHXEI/2yZ7f8KNY9PL3c4QJWmOoXZIDxZPRnOxUVyqF7sdTKN4F0nZFNIH9NusAk
-	 RZ1qNUJZLT3Xwmlg5T/0VOulGeVvN8EiP3Q5r5SCGGIBB7P7C3amviTLyoDZWxR9Wx
-	 i2YKAgqFuuiAK5f7DS2kH6noWdN9djKA2eeMWVVme1NFRn17xT4ox1aN57HaGxnwc2
-	 B+CE/80W4LEXoteTY62N1Y0MS4g//4fcJ43DFbmTLn3mQE48rD4n3FkZKJgMVVtsJ6
-	 YIaUpilhEHBTQ==
+	b=oBs3pbsJ6m7fXwO0h3WKAnL4IpPvR2oFO9qebybDD5H48WG6xhRgMr7s93OprD8g7
+	 UoC/TeBz4ssJgS3mHTfjvoOg7xUrn4tRpPb8yvTQPbl4jzEkvVtZF4ijYrbKlS49/c
+	 LXy+GTdEk3SlrENI63wkWDZ+dxQathYm2BuTIazRItkdKBWwJNh7atwRc+JptkQGlQ
+	 De778qUxnLBEe+5/s0ME+vXzJXwkhrXw9i079MnJlE7UUWXlwAGFYydHGj2qj1tGEO
+	 taItaXpgTiwRpkF1hiX6rd4UgZMP1MAEUAl4kUb4l1lDih9zE6lujGW7sNmVWmTxvM
+	 n73neQgG1DqIg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E1F39D0C1A;
-	Fri,  3 Oct 2025 18:00:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCBF39D0C1A;
+	Fri,  3 Oct 2025 18:00:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net/mlx4: prevent potential use after free in
- mlx4_en_do_uc_filter()
+Subject: Re: [PATCH net-next] net: psp: don't assume reply skbs will have a
+ socket
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175951441174.20895.398410972294228091.git-patchwork-notify@kernel.org>
-Date: Fri, 03 Oct 2025 18:00:11 +0000
-References: <aNvMHX4g8RksFFvV@stanley.mountain>
-In-Reply-To: <aNvMHX4g8RksFFvV@stanley.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: yanb@mellanox.com, tariqt@nvidia.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- amirv@mellanox.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+ <175951441449.20895.2740639730759580288.git-patchwork-notify@kernel.org>
+Date: Fri, 03 Oct 2025 18:00:14 +0000
+References: <20251001022426.2592750-1-kuba@kernel.org>
+In-Reply-To: <20251001022426.2592750-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, daniel.zahka@gmail.com,
+ willemb@google.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 30 Sep 2025 15:25:01 +0300 you wrote:
-> Print "entry->mac" before freeing "entry".  The "entry" pointer is
-> freed with kfree_rcu() so it's unlikely that we would trigger this
-> in real life, but it's safer to re-order it.
+On Tue, 30 Sep 2025 19:24:26 -0700 you wrote:
+> Rx path may be passing around unreferenced sockets, which means
+> that skb_set_owner_edemux() may not set skb->sk and PSP will crash:
 > 
-> Fixes: cc5387f7346a ("net/mlx4_en: Add unicast MAC filtering")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+>   KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+>   RIP: 0010:psp_reply_set_decrypted (./include/net/psp/functions.h:132 net/psp/psp_sock.c:287)
+>     tcp_v6_send_response.constprop.0 (net/ipv6/tcp_ipv6.c:979)
+>     tcp_v6_send_reset (net/ipv6/tcp_ipv6.c:1140 (discriminator 1))
+>     tcp_v6_do_rcv (net/ipv6/tcp_ipv6.c:1683)
+>     tcp_v6_rcv (net/ipv6/tcp_ipv6.c:1912)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net/mlx4: prevent potential use after free in mlx4_en_do_uc_filter()
-    https://git.kernel.org/netdev/net/c/4f0d91ba7281
+  - [net-next] net: psp: don't assume reply skbs will have a socket
+    https://git.kernel.org/netdev/net/c/7a0f94361ffd
 
 You are awesome, thank you!
 -- 
