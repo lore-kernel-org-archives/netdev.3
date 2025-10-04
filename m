@@ -1,44 +1,44 @@
-Received: from out21.tophost.ch (out21.tophost.ch [46.232.182.230])
+Received: from out10.tophost.ch (out10.tophost.ch [46.232.182.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFE3A926;
-	Sat,  4 Oct 2025 18:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B467260F;
+	Sat,  4 Oct 2025 18:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759602764; cv=none; b=OsQHhR4sq+mhen5iBpYmgt7RHHJcez4KTa3O65iTh1LqZeQND1bBAV22lWkPAb3/fHRYZXTYCleAALfoM0iWRZGHPiCR7u+anSyxTBH/HgDFxK0R5QRpQZQFrriki1zc8dcF4FVruQF2Zr4oRY35njNg+wfj6Uakf0PSs+1zysM=
+	t=1759603260; cv=none; b=q1ekXwu5BQOfrHWiVcUC1bd7i9uPTV0Thd8RAokGqpAOHb8humWKLKLDMHdqXR+QxMd4SGKyZSU7WjKgMEho5Zgg1kObKCHKU1xL7PeN5vvYvJZTwLlSyFPqepZ4k9IkqiFNmu+ORjezY45HEd7xUXHZVUDK3WxGjM6uVZwlCyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759602764; c=relaxed/simple;
-	bh=dhLuQ36EqVPpgpUvPcZt+Uq6tFevtT36Fr+HU1vUztM=;
+	s=arc-20240116; t=1759603260; c=relaxed/simple;
+	bh=pMJSuCl+TAn4TlJ1+CiVZJ/lbugUWZ++SAVWt3hVpVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oe5BCpP0lOxnCtNoZiPzi9UvWLVWSpjmiMkydbHG5BTH05ieka1oM+vA7UIJxvyw/fqyeMahy2pXwAgEqzfH8/kBzyo2JcR2n76TzMq+2F0wUzfP+u9iSAl7laFTPcdhQ9MafX8bb7K1z4AFqXpJyWcgmw30XSbUEQKGcFMFnn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=J9Zig0om; arc=none smtp.client-ip=46.232.182.230
+	 MIME-Version; b=gZhayyImTpF3u4/trN6afRs1ntwI6t3/vmg15muUx08vEpNeLfiC3BKAaXHdDlM/ZPO+bQexvFqClYcHLo5xR4e1bKoHCN23wwuV5zLq8dg0EmE9p+CjB9E5XY/VJj1xxWRqCm03ED0A5/fCNjwGevZsIS1dusLh+op+XUbP830=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=HrgV/qn4; arc=none smtp.client-ip=46.232.182.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="J9Zig0om"
+	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="HrgV/qn4"
 Received: from srv125.tophost.ch ([194.150.248.5])
-	by filter1.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by filter2.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <thomas@wismer.xyz>)
-	id 1v56cy-0022UG-97; Sat, 04 Oct 2025 20:05:07 +0200
+	id 1v56dQ-007JNM-7o; Sat, 04 Oct 2025 20:05:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
 	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
 	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=ge0m7y+x+0Q1fWZRZAOH/ZPRQgmovtE9EcWz9JWjBDk=; b=J9Zig0omEQ3siayFSZxWW5XgMs
-	tI3YuYIZ8d2Lh87sdPSxHwtzalRfn1zbtjKUJqDhpT6JLTRieqkvH8uuA1x6h5jEzzJs+llsZgWkq
-	PdVh8xIIqPSkqwlVLLsMIZ7xbHPV3PbCazpH/MbbbUDYPA+Cc4cy+f2CiM9V2HUNCPTuHpyDaGApv
-	ZQ6jsiPrV14x49j7BtcAeIg1zC/wuYPabdMVt/FD5UpOvnARD75FoIUhFVwc1dbhgbJvERQiZHjYA
-	qJhkaeVVUN9VO8lQIVx4MIZfdUm9d7Gq9tmoqNC0Lr6Qx4+Sr0mQKBvnpaEqxjmhilROahUS473NK
-	X2H+efDw==;
+	bh=El79h/tKOjOUBJeKnSvCr7/LIlvQMxmr8FHQYThloIY=; b=HrgV/qn40leBtb5c4pMoRTIJ+p
+	HoQ0bTOShVg/derjWVMFRs9hL2M9Z22r3iTSzZwMtSkgMisVFQQ/kHlq/4Orc9o+Z4HrTE4aNhA4G
+	/WCLpklKavKYa67Enm6Ex+b+EXTFbuEaglO61WdxZdHSfWjJOvbhtsvE7lE6c8wE3mCHwg3tLW8pw
+	FXjipppA3N8qu10k1i/Juu4zAVvrx4ozbq2vToIkEzxTTcyIll7P26dhiyGBaykp7pHo+mtwpxDMb
+	z4/jsQELRntsyM0dXj+UZkIPokSfZW5+V/U/MgVvL6cu7tOSVyxxBBjpa7IDDXNS+iYD63YzC6u4I
+	R/JEbyyQ==;
 Received: from 82-220-106-230.ftth.solnet.ch ([82.220.106.230]:60199 helo=pavilion.lan)
 	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <thomas@wismer.xyz>)
-	id 1v56cy-00000001wpX-180A;
-	Sat, 04 Oct 2025 20:05:02 +0200
+	id 1v56dS-00000001wpX-0lQM;
+	Sat, 04 Oct 2025 20:05:31 +0200
 From: Thomas Wismer <thomas@wismer.xyz>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -46,13 +46,17 @@ To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
 Cc: Thomas Wismer <thomas.wismer@scs.ch>,
 	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] net: pse-pd: tps23881: Fix current measurement scaling
-Date: Sat,  4 Oct 2025 20:03:49 +0200
-Message-ID: <20251004180351.118779-4-thomas@wismer.xyz>
+Subject: [PATCH 3/3] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
+Date: Sat,  4 Oct 2025 20:03:53 +0200
+Message-ID: <20251004180351.118779-8-thomas@wismer.xyz>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251004180351.118779-2-thomas@wismer.xyz>
 References: <20251004180351.118779-2-thomas@wismer.xyz>
@@ -72,51 +76,50 @@ X-Spampanel-Outgoing-Class: unsure
 X-Spampanel-Outgoing-Evidence: Combined (0.50)
 X-Recommended-Action: accept
 X-Filter-ID: 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
- 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
+ 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
- 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
+ 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
 X-Report-Abuse-To: spam@filter1.tophost.ch
 X-Complaints-To: abuse@filter1.tophost.ch
 
 From: Thomas Wismer <thomas.wismer@scs.ch>
 
-The TPS23881 improves on the TPS23880 with current sense resistors reduced
-from 255 mOhm to 200 mOhm. This has a direct impact on the scaling of the
-current measurement. However, the latest TPS23881 data sheet from May 2023
-still shows the scaling of the TPS23880 model.
+Add the TPS23881B I2C power sourcing equipment controller to the list of
+supported devices.
 
 Signed-off-by: Thomas Wismer <thomas.wismer@scs.ch>
 ---
- drivers/net/pse-pd/tps23881.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/pse-pd/tps23881.c b/drivers/net/pse-pd/tps23881.c
-index 63f8f43062bc..b724b222ab44 100644
---- a/drivers/net/pse-pd/tps23881.c
-+++ b/drivers/net/pse-pd/tps23881.c
-@@ -62,7 +62,7 @@
- #define TPS23881_REG_SRAM_DATA	0x61
+diff --git a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
+index bb1ee3398655..0b3803f647b7 100644
+--- a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
++++ b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
+@@ -16,6 +16,7 @@ properties:
+   compatible:
+     enum:
+       - ti,tps23881
++      - ti,tps23881b
  
- #define TPS23881_UV_STEP	3662
--#define TPS23881_NA_STEP	70190
-+#define TPS23881_NA_STEP	89500
- #define TPS23881_MW_STEP	500
- #define TPS23881_MIN_PI_PW_LIMIT_MW	2000
- 
+   reg:
+     maxItems: 1
 -- 
 2.43.0
 
