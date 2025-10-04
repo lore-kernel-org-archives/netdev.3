@@ -1,51 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC56E60B8A;
-	Sat,  4 Oct 2025 01:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B63374420;
+	Sat,  4 Oct 2025 01:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759540307; cv=none; b=D2Qm9X9oqi/LZ+tMu3a4q2fvSEnQhb8dNOl/TlNub45ARkESQYjrGOMZPOrYUOYJkarnh+E24KaZCej8robolJZBYibD1cdGrf8c3J53W6VzhnQR0skCQGD4oghCnGgpzp3p6muVmkCBhruHJ2KDuITI30Ok/z8QQ+gvRS46Yfw=
+	t=1759540307; cv=none; b=Pm4cDrn5EmvT1Qd2hE2h14JUWb5Fgbz1eZVddjMoSL66xEkS3sUo/RnokanjyH40Qvj41ny6QMjbCkqtJt65DCXRNWltlMvWxH+h3UZ2b2GyGJLMWK/Fxf/IItgyhnwE+qQ8p0yhLxIoSDucs70HMAuptDiCdQ+Szcd/z6VekmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759540307; c=relaxed/simple;
-	bh=/nvbjXQhHGoPrj6j5QCUqDUp1UeAzBBe3M8LhztO918=;
+	bh=+V5lrywCj3i8hHmaCLmJst2BSMbLJiNvxdIn69lTYRc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jkc04YI7LiRyEx224yXcok9/RBS7guPs0msvn6IgDGAKSbX8PIWJdHEd2mkPbGfQTAnLjJe+Wd0rUWPDF3kzUX65UblGJDUTBTQ9coFtvyFeUZk0betxvtOlt3GOpu+NEGrMbNJaKN88iK9jZOl/UU+/5FYR2f3WYGAq2mW/1Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fJ8htmBn; arc=none smtp.client-ip=198.175.65.14
+	 In-Reply-To:To:Cc; b=cAUH6AcQGIRvGrPJTDrZxi9vfLHXeikWB3plMBdFn1fPj+Eet67ai++3B2ZjsJyzzmuCQ75YDn+BuyT7M+7IUVNuSSknERmBxHCuskf3OSZYOtu6G4YVWm1cGzpx7WKM2NMstU09xq5nPiN9W6aCamJdsjFn1p1907jCxm4Iv24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CHCiKpVI; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fJ8htmBn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CHCiKpVI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759540305; x=1791076305;
+  t=1759540306; x=1791076306;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=/nvbjXQhHGoPrj6j5QCUqDUp1UeAzBBe3M8LhztO918=;
-  b=fJ8htmBnoiD+Pf633vgVYOu2wH9nEwUOaoIPyhXF8vgACykDY0WBzv9C
-   KmRnevB0AfgSwbTG4ospvNUT2M4MyIn4WFUuEQKkWx1eOCHmeN5rmA5pP
-   voHVkfFPM2dU2DH1P7hr/u0zAaPlyCCPfjnSeSdYg19iWmbsraHK32R0I
-   k/hIB0rn+QhvP+LSSOQ10rNdtGBE+JwuEnDuYHo69U9EBE6kpygAR8VZW
-   J1J4Z+qImGmINuccU4y3BFhTG9iAcRgZtuN3gYyPPTPH1N6blwjYaVEuJ
-   f51MjepODjRLmVNrvXtsaFwQ685Ftq5Xsi1EGV3vHV9P7FdhIzocidcVa
-   Q==;
-X-CSE-ConnectionGUID: MMZXDIy4QHqwNMwJCepBDw==
-X-CSE-MsgGUID: I2xwcgjTQKyt7XXG5PS/YQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65650010"
+  bh=+V5lrywCj3i8hHmaCLmJst2BSMbLJiNvxdIn69lTYRc=;
+  b=CHCiKpVIq0Pt69NW4FqRTfJd/QBOPiEorEgXmHbeXtjnmof+Nb4N1t1+
+   WM12/590VrWb3kqhI55aOznrnLECOSCvIjZK1oMiMrmeCELo00kvKYai1
+   1UBsINSEbRbV8UxYt08nQVIU2l0becI/PUDqtMXAOuh6Oig4/OhzKEGZG
+   wKElP90t2rDTsPS9lYSlfJLHHWqsH8JQ7OOcBZE8/9G6XQWgwMQgTOKpX
+   cco1UABPU/6U9JHvUcX+3OTOkwh8ZlyWYpChsPpYfsNeZv+z56ZL2Oi3a
+   sSBWbTJJrWlcHd+ARMfizw/qzTUvgyyq/lsY0oRfcxdeQ1oVArdSCmmwM
+   A==;
+X-CSE-ConnectionGUID: f5cawgTgROevYLgzB4X9rA==
+X-CSE-MsgGUID: NQrFCQKUT72U1g9Oi9Gf1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="65650027"
 X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="65650010"
+   d="scan'208";a="65650027"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 18:11:43 -0700
-X-CSE-ConnectionGUID: G9KVYypUQA69GqeoQPIzYg==
-X-CSE-MsgGUID: qT1tqsntSLq4DFXsoiuzgQ==
+X-CSE-ConnectionGUID: uKkO4qApSqaE4eYNVF7aMA==
+X-CSE-MsgGUID: 07LUFJtPSE2ymsQ/qtOtFQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,314,1751266800"; 
-   d="scan'208";a="178543203"
+   d="scan'208";a="178543209"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
   by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2025 18:11:43 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Fri, 03 Oct 2025 18:09:44 -0700
-Subject: [PATCH net v2 1/6] idpf: cleanup remaining SKBs in PTP flows
+Date: Fri, 03 Oct 2025 18:09:46 -0700
+Subject: [PATCH net v2 3/6] ixgbe: handle IXGBE_VF_GET_PF_LINK_STATE
+ mailbox operation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251003-jk-iwl-net-2025-10-01-v2-1-e59b4141c1b5@intel.com>
+Message-Id: <20251003-jk-iwl-net-2025-10-01-v2-3-e59b4141c1b5@intel.com>
 References: <20251003-jk-iwl-net-2025-10-01-v2-0-e59b4141c1b5@intel.com>
 In-Reply-To: <20251003-jk-iwl-net-2025-10-01-v2-0-e59b4141c1b5@intel.com>
 To: Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
@@ -74,67 +75,167 @@ Cc: Anton Nadezhdin <anton.nadezhdin@intel.com>,
  Milena Olech <milena.olech@intel.com>, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Samuel Salin <Samuel.salin@intel.com>
+ Rafal Romanowski <rafal.romanowski@intel.com>
 X-Mailer: b4 0.15-dev-cbe0e
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2261;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5618;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=oKXqI4YTMQx2dy9Gya7ZUcsXVqRMlRSihLt9ec21Nbc=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowHJb5zdA7/lbG0/5NhcWULa2+ap5p/4131Lf2FvtsdT
- i/fFVjVUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwESUehn+GXTPWBLMdfX5ZiHr
- HrfozsNVeQZz/26xyKyWs87RX39ei+Gfdk70k3BeQSu+B37TX/F/Zli1WmbLmuhNi07t8FG99HA
- +KwA=
+ bh=WveGSDHApHh1gyC1vDVAz7ivD6vjeZ/2lXnfVNk+0nM=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhowHJX4XX3tuyXtV0+59RGbukRcXLBccdDn2Wirwsfqmy
+ Knb6hrsOkpZGMS4GGTFFFkUHEJWXjeeEKb1xlkOZg4rE8gQBi5OAZjIz90M/8NkfgSufNp7ePb5
+ cmXPQk09tZnnWNf7aJ1f1jnt7stSiUkMv5hjon4vL5Ow2vnu44XWx+wyVjcP2Yc+LfxpunTy60n
+ b1zIBAA==
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Milena Olech <milena.olech@intel.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-When the driver requests Tx timestamp value, one of the first steps is
-to clone SKB using skb_get. It increases the reference counter for that
-SKB to prevent unexpected freeing by another component.
-However, there may be a case where the index is requested, SKB is
-assigned and never consumed by PTP flows - for example due to reset during
-running PTP apps.
+Update supported API version and provide handler for
+IXGBE_VF_GET_PF_LINK_STATE cmd.
+Simply put stored values of link speed and link_up from adapter context.
 
-Add a check in release timestamping function to verify if the SKB
-assigned to Tx timestamp latch was freed, and release remaining SKBs.
-
-Fixes: 4901e83a94ef ("idpf: add Tx timestamp capabilities negotiation")
-Signed-off-by: Milena Olech <milena.olech@intel.com>
-Signed-off-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Link: https://lore.kernel.org/stable/20250828095227.1857066-3-jedrzej.jagielski%40intel.com
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_ptp.c          | 3 +++
- drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h   |  5 +++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 42 ++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-index ee21f2ff0cad..63a41e688733 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_ptp.c
-@@ -855,6 +855,9 @@ static void idpf_ptp_release_vport_tstamp(struct idpf_vport *vport)
- 	head = &vport->tx_tstamp_caps->latches_in_use;
- 	list_for_each_entry_safe(ptp_tx_tstamp, tmp, head, list_member) {
- 		list_del(&ptp_tx_tstamp->list_member);
-+		if (ptp_tx_tstamp->skb)
-+			consume_skb(ptp_tx_tstamp->skb);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
+index 4af149b63a39..f7256a339c99 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_mbx.h
+@@ -50,6 +50,8 @@ enum ixgbe_pfvf_api_rev {
+ 	ixgbe_mbox_api_12,	/* API version 1.2, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_13,	/* API version 1.3, linux/freebsd VF driver */
+ 	ixgbe_mbox_api_14,	/* API version 1.4, linux/freebsd VF driver */
++	ixgbe_mbox_api_15,	/* API version 1.5, linux/freebsd VF driver */
++	ixgbe_mbox_api_16,	/* API version 1.6, linux/freebsd VF driver */
+ 	/* This value should always be last */
+ 	ixgbe_mbox_api_unknown,	/* indicates that API version is not known */
+ };
+@@ -86,6 +88,9 @@ enum ixgbe_pfvf_api_rev {
+ 
+ #define IXGBE_VF_GET_LINK_STATE 0x10 /* get vf link state */
+ 
++/* mailbox API, version 1.6 VF requests */
++#define IXGBE_VF_GET_PF_LINK_STATE	0x11 /* request PF to send link info */
 +
- 		kfree(ptp_tx_tstamp);
- 	}
+ /* length of permanent address message returned from PF */
+ #define IXGBE_VF_PERMADDR_MSG_LEN 4
+ /* word in permanent address message with the current multicast type */
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 32ac1e020d91..b09271d61a4e 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -510,6 +510,7 @@ static int ixgbe_set_vf_lpe(struct ixgbe_adapter *adapter, u32 max_frame, u32 vf
+ 		case ixgbe_mbox_api_12:
+ 		case ixgbe_mbox_api_13:
+ 		case ixgbe_mbox_api_14:
++		case ixgbe_mbox_api_16:
+ 			/* Version 1.1 supports jumbo frames on VFs if PF has
+ 			 * jumbo frames enabled which means legacy VFs are
+ 			 * disabled
+@@ -1046,6 +1047,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
+ 	case ixgbe_mbox_api_12:
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
++	case ixgbe_mbox_api_16:
+ 		adapter->vfinfo[vf].vf_api = api;
+ 		return 0;
+ 	default:
+@@ -1072,6 +1074,7 @@ static int ixgbe_get_vf_queues(struct ixgbe_adapter *adapter,
+ 	case ixgbe_mbox_api_12:
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -1;
+@@ -1112,6 +1115,7 @@ static int ixgbe_get_vf_reta(struct ixgbe_adapter *adapter, u32 *msgbuf, u32 vf)
  
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-index 4f1fb0cefe51..688a6f4e0acc 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
-@@ -517,6 +517,7 @@ idpf_ptp_get_tstamp_value(struct idpf_vport *vport,
- 	shhwtstamps.hwtstamp = ns_to_ktime(tstamp);
- 	skb_tstamp_tx(ptp_tx_tstamp->skb, &shhwtstamps);
- 	consume_skb(ptp_tx_tstamp->skb);
-+	ptp_tx_tstamp->skb = NULL;
+ 	/* verify the PF is supporting the correct API */
+ 	switch (adapter->vfinfo[vf].vf_api) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_12:
+@@ -1145,6 +1149,7 @@ static int ixgbe_get_vf_rss_key(struct ixgbe_adapter *adapter,
  
- 	list_add(&ptp_tx_tstamp->list_member,
- 		 &tx_tstamp_caps->latches_free);
+ 	/* verify the PF is supporting the correct API */
+ 	switch (adapter->vfinfo[vf].vf_api) {
++	case ixgbe_mbox_api_16:
+ 	case ixgbe_mbox_api_14:
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_12:
+@@ -1174,6 +1179,7 @@ static int ixgbe_update_vf_xcast_mode(struct ixgbe_adapter *adapter,
+ 		fallthrough;
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -1244,6 +1250,7 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
+ 	case ixgbe_mbox_api_12:
+ 	case ixgbe_mbox_api_13:
+ 	case ixgbe_mbox_api_14:
++	case ixgbe_mbox_api_16:
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -1254,6 +1261,38 @@ static int ixgbe_get_vf_link_state(struct ixgbe_adapter *adapter,
+ 	return 0;
+ }
+ 
++/**
++ * ixgbe_send_vf_link_status - send link status data to VF
++ * @adapter: pointer to adapter struct
++ * @msgbuf: pointer to message buffers
++ * @vf: VF identifier
++ *
++ * Reply for IXGBE_VF_GET_PF_LINK_STATE mbox command sending link status data.
++ *
++ * Return: 0 on success or -EOPNOTSUPP when operation is not supported.
++ */
++static int ixgbe_send_vf_link_status(struct ixgbe_adapter *adapter,
++				     u32 *msgbuf, u32 vf)
++{
++	struct ixgbe_hw *hw = &adapter->hw;
++
++	switch (adapter->vfinfo[vf].vf_api) {
++	case ixgbe_mbox_api_16:
++		if (hw->mac.type != ixgbe_mac_e610)
++			return -EOPNOTSUPP;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++	/* Simply provide stored values as watchdog & link status events take
++	 * care of its freshness.
++	 */
++	msgbuf[1] = adapter->link_speed;
++	msgbuf[2] = adapter->link_up;
++
++	return 0;
++}
++
+ static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
+ {
+ 	u32 mbx_size = IXGBE_VFMAILBOX_SIZE;
+@@ -1328,6 +1367,9 @@ static int ixgbe_rcv_msg_from_vf(struct ixgbe_adapter *adapter, u32 vf)
+ 	case IXGBE_VF_IPSEC_DEL:
+ 		retval = ixgbe_ipsec_vf_del_sa(adapter, msgbuf, vf);
+ 		break;
++	case IXGBE_VF_GET_PF_LINK_STATE:
++		retval = ixgbe_send_vf_link_status(adapter, msgbuf, vf);
++		break;
+ 	default:
+ 		e_err(drv, "Unhandled Msg %8.8x\n", msgbuf[0]);
+ 		retval = -EIO;
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
