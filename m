@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092F9226D14;
-	Mon,  6 Oct 2025 20:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3272DEA6E
+	for <netdev@vger.kernel.org>; Mon,  6 Oct 2025 20:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759782882; cv=none; b=YAfDjJUGuTYWR88Q0O/hopTRAgUEQq21PZ5o1s7ys6K6SML+uwnv4b8vL+6ZIFwlf/uqT7hIkfM6VFgjrQlkTfOZ1oZ2YyWEgwbDad6i365UUs3qjbm0ppvaj4JdybeY42/H/pR3T4ImqKpZzdC5GYPDh0FE5MBfuaD9PQhOIRM=
+	t=1759782883; cv=none; b=EwvFI92lOsMa3FnX20X1q5nN60fDLgLCi37ALKzCNgGip6bHV6Yb8NllOsbl3Z3iblL9how6S9+eCWtaK3tG/ugYe0QJwnJ+YrI5fcMlC1YSERQVI3miDijGEUaMFE+ipHQ48/bCTKAvmXcdslr02H3pFFKQ02lHDdX9OSFIYaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759782882; c=relaxed/simple;
-	bh=d+y6omQk0t67tX/0s0nTa0zg+8eiPBRJp5qGjl+9eR4=;
+	s=arc-20240116; t=1759782883; c=relaxed/simple;
+	bh=EStykIO0RnsOoqJCqqXdOHSyfx5KfVQYep5tsfOo2J4=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EZivMo0lCwCBlp4s0FOLhC2+yDSOnZ+lwPT2WgrY/llBoDq/4njEK/ljnVEhTUfewD2VtoEVqkK48zHlbO3sZo4AbfG7muXWG+EBNZXBdXmOS6eQBvsbiOVrBqxgmpP6CJVUpwDByfHpxGJufms/zQDWLTO83cEpCWjVVJ4Wtw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFncaIqP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=DNylOTmPLCiChCqiAEVZGo/hBGXowvmannn67TYEuRNmguoyOrjWWDIiuVeEIq79QzpQ5ZVt7l5fSOYZLcoaYXXyh6waJcyHzY924IP9wECzmZef9kSDmf5Z9mkD8VkzeEznOsLYrGPDrlpfYXdqN5IuBtEVXrhsou69YinQ+64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=graBK8TN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFncaIqP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5C1C4CEF5;
-	Mon,  6 Oct 2025 20:34:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="graBK8TN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0879C4CEF7;
+	Mon,  6 Oct 2025 20:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759782881;
-	bh=d+y6omQk0t67tX/0s0nTa0zg+8eiPBRJp5qGjl+9eR4=;
+	s=k20201202; t=1759782882;
+	bh=EStykIO0RnsOoqJCqqXdOHSyfx5KfVQYep5tsfOo2J4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tFncaIqPIbKIR1EH8d7lKTAUDLkPpsXRz5lJlXkAMODPVsRFAZKh/n1jTXa0rWrwB
-	 klVi7DuqOhkRFWPEzlvvNABZZeBLKFqc5ZzD6VupCYVrakbB2BERykS828bHrOYyfn
-	 zpSwjYNYHgUoRfpm3jvVSjPaxGn07hyYa5V2vXonA09EzvndR029apYw1FRGBcx4C2
-	 yzthcuz3Wx84VTABIsygz+I3NFXO+beYg9VTBLkioNPvaz4z7SrnIRVUOUwr3rGP+o
-	 Enacn2nH7BUyWrWuzUfYqOoZHywO+V4JnbRsMvu05fLY8j31vRrZ/D4TG6LX918+D9
-	 bo2suM1Lek9nA==
+	b=graBK8TNAyL9dLL7TiInYBSINs+F4xLaM2CZIE1Y5I0WUOIbr+P2MsbUKdED1m4mG
+	 /eHDqRgWLnInGvuqTw21FhQyL0FNk2F60PbAqFagNT+l2lCNlu/is2O1N39ZbsJqfy
+	 Z3We+cI2ZpQDozLYYddfYMmcj6vtNjAH4XzqA5AiDDTyvSx9b7TIeVZhKQyaIVDclf
+	 qyE2mQ0OmhHfBXKum48Wc0AoNjVBscfwXqTEZLEt753J4ob2UdzzDyTIBMZhfpxk4r
+	 QUQ2DrmWtQt2Onv0lQO/3XoTF3yn9No3b8rwelyNeqTFfh9YAKQsBpAwtEBdSSgUY8
+	 ZD0ZW+sacZuTg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BA339D0C1B;
-	Mon,  6 Oct 2025 20:34:31 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD4239D0C1A;
+	Mon,  6 Oct 2025 20:34:33 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net repost] selftests: net: sort configs
+Subject: Re: [PATCH net] tcp: take care of zero tp->window_clamp in
+ tcp_set_rcvlowat()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <175978286999.1522677.4107409489422965360.git-patchwork-notify@kernel.org>
-Date: Mon, 06 Oct 2025 20:34:29 +0000
-References: <20251003205736.1019673-1-kuba@kernel.org>
-In-Reply-To: <20251003205736.1019673-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, phil@nwl.cc,
- matttbe@kernel.org, fw@strlen.de, antonio@openvpn.net, jv@jvosburgh.net,
- shuah@kernel.org, kuniyu@google.com, martineau@kernel.org,
- geliang@kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
- sd@queasysnail.net, razor@blackwall.org, idosch@nvidia.com,
- yongwang@nvidia.com, jiri@resnulli.us, danishanwar@ti.com,
- linux-kselftest@vger.kernel.org, mptcp@lists.linux.dev,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org
+ <175978287249.1522677.593941136577699237.git-patchwork-notify@kernel.org>
+Date: Mon, 06 Oct 2025 20:34:32 +0000
+References: <20251003184119.2526655-1-edumazet@google.com>
+In-Reply-To: <20251003184119.2526655-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, willemb@google.com, kuniyu@google.com,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  3 Oct 2025 13:57:36 -0700 you wrote:
-> Sort config files for networking selftests. This should help us
-> avoid merge conflicts between net and net-next. patchwork check
-> will be added to prevent new issues.
+On Fri,  3 Oct 2025 18:41:19 +0000 you wrote:
+> Some applications (like selftests/net/tcp_mmap.c) call SO_RCVLOWAT
+> on their listener, before accept().
 > 
-> Acked-by: Phil Sutter <phil@nwl.cc>
-> Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Acked-by: Florian Westphal <fw@strlen.de>
-> Acked-by: Antonio Quartulli <antonio@openvpn.net>
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> This has an unfortunate effect on wscale selection in
+> tcp_select_initial_window() during 3WHS.
+> 
+> For instance, tcp_mmap was negotiating wscale 4, regardless
+> of tcp_rmem[2] and sysctl_rmem_max.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,repost] selftests: net: sort configs
-    https://git.kernel.org/netdev/net/c/2aa74c625897
+  - [net] tcp: take care of zero tp->window_clamp in tcp_set_rcvlowat()
+    https://git.kernel.org/netdev/net/c/21b29e74ffe5
 
 You are awesome, thank you!
 -- 
