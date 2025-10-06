@@ -1,128 +1,92 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911203BB5A
-	for <netdev@vger.kernel.org>; Mon,  6 Oct 2025 08:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85571DF26A;
+	Mon,  6 Oct 2025 08:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759740216; cv=none; b=Mu7vVaWWoGfxzsA83vB4hscmyj+5ZP6r/YfhUbmsZoWBsydabf8RlMoVubOqOS/pAo2Xp8Mw/tHxiocyIk//lQ0SctSpyElQg5PPwzeUca9D6EjKZbiT27hEocvnjSlm7n8xUTe4FesDQmRQGoF717nJb764YUbOrvEn4HjJfZU=
+	t=1759740862; cv=none; b=YgSln4ZqZPCjmDvmABcqDDWZiWAbJWweO+5hnATtqXuEQh3FsUgEtfDKsvu+hCqeFZqOPTuzuf3qUBIbNX5g298Cn8RKfzeiLivZtATBZiO7DbTi3H21Y1p+Qaw0mLRVvMjbhZDQxRKnMzLUnxXzeJgh/vBBfnRwqxxP/kfK0ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759740216; c=relaxed/simple;
-	bh=0rqNTIzuAUmGUZmDFajGT6N8yRPrwxMpdo1LXU+gh4k=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=rE4S0y41cE6lrv9XBXqdGuApLzuEsmqDPQJK6QIS36w3FR2jbgT7QabqZgjEJ84yTk3/JEPB1htQIyPsfqtyU9P9uhsC9PNFW9zehpSehThefIpejwNaIyT5G5a+Oe22OXQ5wVbXGySNug47mi2TnywtFQloMnKbCw2DgkSdcG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cJ8YUCzB; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cJ8YUCzB"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-27c369f898fso54160875ad.3
-        for <netdev@vger.kernel.org>; Mon, 06 Oct 2025 01:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1759740214; x=1760345014; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XbkOLsSeEc4de19QVHiox7c6UUo78PKyegeBXplGkhg=;
-        b=cJ8YUCzBb5G9PfkgAPSMa4Iy5wp8EC8wwtX5dLd6yab9UyLYGfLtlB13fZ8tkOPFCj
-         SsafTvLDf8M7ksnNllYQlRCCChJ5rrr0dDGXTAb0Ujq2BYRjhlDiWNEyOKNWN7t5mtzf
-         oyKYAh525eoDu59Xd/ecekpQkJUuh0Uzbz5rrcSnAyvVda3GKVch8xj5XeQfGGqDTuq2
-         wGgq82HHwMo8gpuB+CEk5x9Ri3FmQY4vlAHAcQ3gaa/mXcc471cdwegDcl6PFUGx2axn
-         pRprrRAUGmyvYb+BE0GTSVrGay2gZa+hhYgmHtMAzg/PRe2Pydl6H7cUB+jJwS/WbZq8
-         3rIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759740214; x=1760345014;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XbkOLsSeEc4de19QVHiox7c6UUo78PKyegeBXplGkhg=;
-        b=shlxIp6nEmBY77sGh3qe5I608e+/9FZJJJlR+IKLW7fFqURwp5e0fzf0mvTb4EeoLv
-         CWpDKlE6Cdw08guWBiU9jqz7mpUYY6M9F/brS/m7MtL6YaOwbITBvgsjL3lbfZQ6NmQ2
-         r9aZq9OGM8D01UaJhvaJ3ufCr50sh4+OWX9F4CTfuRwDvLGMkuTHfT9swmvHgcMwl0mu
-         NpdU1ghphs3LwN7eTMu8qU1yrKHWsQ8z/H0hucEvMfQgd5BP1KgeYwWs3aDz8e0clpiJ
-         Wgyj0EHTDHE/grvykiZ1eimKGNS8YAIx1fwS4pBFRXD7mtOSB0aqF9Mji24nt9pMsCeP
-         cq/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXd5pPBBbjJ3/4QAAtTjASjKNW3RsutawtXa/vOqus/lzCuzlLfvtz/rj/poEfebA7dOhARgGg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKU08ONK/8X71wjJ7NEn9PQVk/wov8KYqi/deZTd+GsDnzHOTd
-	61oP1+ks93ejsdFhnt1DGu+XcIaKnTMrhLdOMYQVO2CbhM27oBYcr3K34EF5IeFrxOHYUw+6lT5
-	SvVbTUXSRmmt16o9A629SD569I8hGQV+CiT2HrqvOyA==
-X-Gm-Gg: ASbGncuWP6Md6Xfucw8gRTU0jWfCOhNNR/SvRKcrZO1Lwud8ZbHMnW9GAv7wglytXR/
-	DX5MF/YEuLctkxj30QbCU8OlfEwcxe1bq1sF5tSwe5ynzdmbFPeIOUCoc0ij26sQSW8mg7j/Zc8
-	1jy5y2QNAGh0tCduqgOzNU2cO78AtJ74GzycUbINNZqlORPR9uPAXNVQUIpqYkPt/KJGOxDkEtR
-	bPrh3azajQnSwxRuwXCpsSJSUvaYXS6m6sc1cADHF03feiN8NRZFuEAJ9W8IURyIayA1X/f5anT
-	eXWTnDJ6X6jpM4krxC9uuNoIVpArpMp8XI5AoPlUxbR/0g==
-X-Google-Smtp-Source: AGHT+IG70fTPRSenFkY+h0Ci4bsOWclGRtd5+NQm5QtlMXDZUWAfWyV7v3HpmAz+QpEftxA1fNt3+ZAYzqOOG5usHHU=
-X-Received: by 2002:a17:903:2f4c:b0:27e:d4a8:56ad with SMTP id
- d9443c01a7336-28e9a6a2eb6mr138892325ad.61.1759740213842; Mon, 06 Oct 2025
- 01:43:33 -0700 (PDT)
+	s=arc-20240116; t=1759740862; c=relaxed/simple;
+	bh=rDlg60WTok6XQfPMcJSecnQEE3DmDi1J2hdP+Bhurjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S9Q+gvj/ZTLd2bXO8cnlp0nu9CBtUJTvJ72MNNkRg2fw0pyfZaYfvJZ+qWOhz9EBixJAMB88RooAQshAEzmut3fczyhS2jFLIYaD4M0r4NUybR7UBYIGY/PAd5w/t5kbsT6y8xysbq7gB2Q2FXwf/b91FEcdDkqyUsw8q0t/FIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 583051515;
+	Mon,  6 Oct 2025 01:54:12 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0BE423F66E;
+	Mon,  6 Oct 2025 01:54:17 -0700 (PDT)
+Date: Mon, 6 Oct 2025 09:54:15 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>,
+	Adam Young <admiyo@amperemail.onmicrosoft.com>
+Cc: Adam Young <admiyo@os.amperecomputing.com>, netdev@vger.kernel.org,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-kernel@vger.kernel.org,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>
+Subject: Re: [PATCH net-next v29 1/3] mailbox: add callback function for rx
+ buffer allocation
+Message-ID: <aOODt2lj--GOZkhU@bogus>
+References: <20250925190027.147405-1-admiyo@os.amperecomputing.com>
+ <20250925190027.147405-2-admiyo@os.amperecomputing.com>
+ <5dacc0c7-0399-4363-ba9c-944a95afab20@amperemail.onmicrosoft.com>
+ <CABb+yY3T6LdPoGysNAyNr_EgCAcq2Vxz3V1ReDgF_fGYcqRrbw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 6 Oct 2025 14:13:22 +0530
-X-Gm-Features: AS18NWA6yLhMUIQR5RWLa0LAv-ggCbP2Rb4RY4ONcT6ZxSvFVMy57u3jDGKEbJ4
-Message-ID: <CA+G9fYsZvF1f25x10oL=Gs=+f_AFmaUFtUT8Qs1bXugEaJeoMA@mail.gmail.com>
-Subject: next-20250102: arm64: gcc-8-defconfig: Assembler messages: Error:
- unknown architectural extension `simd;'
-To: linux-rdma@vger.kernel.org, Netdev <netdev@vger.kernel.org>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
-	Linux Regressions <regressions@lists.linux.dev>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Patrisious Haddad <phaddad@nvidia.com>, Michael Guralnik <michaelgur@nvidia.com>, 
-	Moshe Shemesh <moshe@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
-	Ben Copeland <benjamin.copeland@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABb+yY3T6LdPoGysNAyNr_EgCAcq2Vxz3V1ReDgF_fGYcqRrbw@mail.gmail.com>
 
-The arm64 defconfig builds failed on the Linux next-20251002 tag build due
-to following build warnings / errors with gcc-8 toolchain.
+On Sun, Oct 05, 2025 at 06:34:51PM -0500, Jassi Brar wrote:
+> On Sun, Oct 5, 2025 at 12:13 AM Adam Young
+> <admiyo@amperemail.onmicrosoft.com> wrote:
+> >
+> > Jassi, this one needs your attention specifically.
+> >
+> > Do you have an issue with adding this callback?  I think it will add an
+> > important ability to the receive path for the mailbox API: letting the
+> > client driver specify how to allocate the memory that the message is
+> > coming in.  For general purpose mechanisms like PCC, this is essential:
+> > the mailbox cannot know all of the different formats that the drivers
+> > are going to require.  For example, the same system might have MPAM
+> > (Memory Protection) and MCTP (Network Protocol) driven by the same PCC
+> > Mailbox.
+> >
+> Looking at the existing code, I am not even sure if rx_alloc() is needed at all.
+> 
+> Let me explain...
+> 1) write_response, via rx_alloc, is basically asking the client to
+> allocate a buffer of length parsed from the pcc header in shmem.
+> 2) write_response is called from isr and even before the
+> mbox_chan_received_data() call.
+> 
+> Why can't you get rid of write_response() and simply call
+>     mbox_chan_received_data(chan, pchan->chan.shmem)
+> for the client to allocate and memcpy_fromio itself?
+> Ideally, the client should have the buffer pre-allocated and only have
+> to copy the data into it, but even if not it will still not be worse
+> than what you currently have.
+> 
 
-* arm64, build
-  - gcc-8-defconfig
+Exactly, this is what I have been telling.
 
-First seen on next-20251002
-Good: next-20250929
-Bad: next-20251002..next-20251003
+Adam,
 
-Regression Analysis:
-- New regression? yes
-- Reproducibility? yes
+Please share the code that you have attempted with this approach and the
+problems you have faced.
 
-Build regression: next-20250102: arm64: gcc-8-defconfig: Assembler
-messages: Error: unknown architectural extension `simd;'
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-### Build error log
-/tmp/cclfMnj9.s: Assembler messages:
-/tmp/cclfMnj9.s:656: Error: unknown architectural extension `simd;'
-make[8]: *** [scripts/Makefile.build:287:
-drivers/net/ethernet/mellanox/mlx5/core/wc.o] Error 1
-
-Suspecting commit,
-$ git blame -L 269 drivers/net/ethernet/mellanox/mlx5/core/wc.c
-fd8c8216648cd8 (Patrisious Haddad 2025-09-29 00:08:08 +0300 269)
-         (".arch_extension simd;\n\t"
-fd8c8216648cd net/mlx5: Improve write-combining test reliability for
-ARM64 Grace CPUs
-
-## Source
-* Kernel version: 6.17.0
-* Git tree: https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next.git
-* Git commit: 47a8d4b89844f5974f634b4189a39d5ccbacd81c
-* Architectures: arm64
-* Toolchains: gcc-8
-* Kconfigs: defconfig
-
-## Build
-* Build log: https://storage.tuxsuite.com/public/linaro/lkft/builds/33YUHcFKTLSBTOxNIJqF9vJqcxt/build.log
-* Build details:
-https://regressions.linaro.org/lkft/linux-next-master/next-20251003/build/gcc-8-defconfig/
-* Build plan: https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/builds/33YUHcFKTLSBTOxNIJqF9vJqcxt
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/33YUHcFKTLSBTOxNIJqF9vJqcxt/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/33YUHcFKTLSBTOxNIJqF9vJqcxt/config
-
---
-Linaro LKFT
+-- 
+Regards,
+Sudeep
