@@ -1,152 +1,84 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566B1DB12E
-	for <netdev@vger.kernel.org>; Mon,  6 Oct 2025 20:19:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A08244685;
+	Mon,  6 Oct 2025 20:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759781994; cv=none; b=fST26ajP0FzR5QBoEtB7KRX1ab4i28X0526gelTNI9ogJQ3JE4Dl+t82Kq47u4Rc+6LSvkR50wg/Das1lXAvXeq2pCFzzqDtJuSsR0ztO3qd5+e9mTwuYS3LHQeB1L0zKJQ0NdZ+Xp4O7taH84prtAzwxY3Jzvz96e+kYVOSB+c=
+	t=1759782882; cv=none; b=tPlPf6JzuCjHakVw5JF4AUt0xX/MnHn1CuiAjo1STUl17pSZ3iNduwTC+KCCPMJHsdEd283aRSHR6fjZQ4JeRH21XJEjZH4IgsLy6HH13omRXxvBCPP+g/ADCdWlyKq8pyoUlaoHIhE2ZgSCde6Y48Ab+R+Wr5UM6rC86qis3DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759781994; c=relaxed/simple;
-	bh=SQlc/yrGAX9hmo3SfLH4AECETZDXLCtokCVF3sm4WK0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BvJtv+mRitrP6xKOcf38nxDKo4iN5W0ez2yZdQO8jmlyoTZLP7wHC/eQMJpvX/BHYs9Es8VG66zqQGp7oYxsAmoT/BsmBjMQKu7ZtUHyYwLaAWSbrbnkte75616FTgEEaIWw+MGmfRyHYsrQxSwS2DLrsovm08SYcbnNM2DOsL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ovlTV1jW; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1759782882; c=relaxed/simple;
+	bh=c3t15lOefwVAAOuvSSShpCGZ3VoHfG+ZXf5muYks8Ao=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kjV1aa+M9K068s28BPWaFyWsuDyPfNVFhAHRqrRKe/I0eblTOBYlXG7Si3V/cAEj6pZK04f/v4raWlQyfPL7hOaP4gmMvYuhj2MZuVqQMRqmify03Cj8U0ieuDC/sBpawUhEQyu/fEWkbFQByc6iv4O9f6SOUK561/5yir/9tdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZBtdUVa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ovlTV1jW"
-Message-ID: <d88addc3-bd10-4923-9ded-10fd999f39e7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1759781989;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H25UD2zYRPwdqIMTTOsqvjFnpku+oOdMSbrffDJoc1A=;
-	b=ovlTV1jWZkWhWZ8BCHisF3RGMbpfyerSfxz8CaeBcPS1duwE4XR8S+bTbNXwyB/erwovXS
-	MWV/HcFMHp5ilBoq+y79eifeYvIokCZH/y1iezjTv23PtYDlCAt/goF/IOqvLLBKjyhwju
-	CjrSAyT1Q9v2X7Es8Jy3nByqJZJZdf0=
-Date: Mon, 6 Oct 2025 13:19:43 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZBtdUVa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB5C4CEFE;
+	Mon,  6 Oct 2025 20:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759782881;
+	bh=c3t15lOefwVAAOuvSSShpCGZ3VoHfG+ZXf5muYks8Ao=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=QZBtdUVaB/vr8yjrPFPdFk/BaAjok3QsdyhQOTFxmddT51D5FqoqKlQHNwJQeoPo8
+	 Uxo+h2WQS32HlsrrxedD/xaNoFFHq8tPMT8O27UWeZIRKlydjm/mNR6ooRuZOKjVc0
+	 idYxTx5Ofo7bXJ1h3Qf4+6jf6TkgbHGB9FQHGx43kGV0FpuDU4SIlkR6s5cnmEglYn
+	 O5g0TbG6DJ3XecHcx/44NQO+8nk3gtFwA2elL1Gu9pIa+DYQ3Wv8H6+4K6aItrOBQs
+	 4C4a1kvpqssXWGwUbrF56Dk5Oo6AXOFnBkOyKcWOjJ1iXIshqempi9MG36WDvJ5Co9
+	 /iku2fzIT/wLg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70CA039D0C1A;
+	Mon,  6 Oct 2025 20:34:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH bpf-next v2 06/12] bpf: Change local_storage->lock and
- b->lock to rqspinlock
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Amery Hung <ameryhung@gmail.com>
-Cc: bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@kernel.org>, KP Singh <kpsingh@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Song Liu <song@kernel.org>,
- Hao Luo <haoluo@google.com>, Kernel Team <kernel-team@meta.com>
-References: <20251002225356.1505480-1-ameryhung@gmail.com>
- <20251002225356.1505480-7-ameryhung@gmail.com>
- <CAADnVQ+X1Otu+hrBeCq6Zr9vAaH5vGU42s6jLdBiDiLQcwpj4Q@mail.gmail.com>
- <CAMB2axOUU5J4Ec=tuBDYePzucw1QQLciFWC01=eVQdPOhT1BGQ@mail.gmail.com>
- <CAADnVQ+=F5SkoRA4LU+JE+u87TLFp-mTS4bv+u9MUST2+CX8AA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <CAADnVQ+=F5SkoRA4LU+JE+u87TLFp-mTS4bv+u9MUST2+CX8AA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Subject: Re: [PATCH net v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on
+ some
+ 32-bit arches
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175978287125.1522677.13468458175773865166.git-patchwork-notify@kernel.org>
+Date: Mon, 06 Oct 2025 20:34:31 +0000
+References: <20250930114331.675412-1-toke@redhat.com>
+In-Reply-To: <20250930114331.675412-1-toke@redhat.com>
+To: =?utf-8?b?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2VuIDx0b2tlQHJlZGhhdC5jb20+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hawk@kernel.org, ilias.apalodimas@linaro.org,
+ kuba@kernel.org, almasrymina@google.com, stable@vger.kernel.org,
+ deller@gmx.de, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
 
-On 10/6/25 10:58 AM, Alexei Starovoitov wrote:
-> On Fri, Oct 3, 2025 at 3:03 PM Amery Hung <ameryhung@gmail.com> wrote:
->>
->> On Thu, Oct 2, 2025 at 4:37 PM Alexei Starovoitov
->> <alexei.starovoitov@gmail.com> wrote:
->>>
->>> On Thu, Oct 2, 2025 at 3:54 PM Amery Hung <ameryhung@gmail.com> wrote:
->>>>
->>>>          bpf_selem_free_list(&old_selem_free_list, false);
->>>>          if (alloc_selem) {
->>>>                  mem_uncharge(smap, owner, smap->elem_size);
->>>> @@ -791,7 +812,7 @@ void bpf_local_storage_destroy(struct bpf_local_storage *local_storage)
->>>>           * when unlinking elem from the local_storage->list and
->>>>           * the map's bucket->list.
->>>>           */
->>>> -       raw_spin_lock_irqsave(&local_storage->lock, flags);
->>>> +       while (raw_res_spin_lock_irqsave(&local_storage->lock, flags));
->>>
->>> This pattern and other while(foo) doesn't make sense to me.
->>> res_spin_lock will fail only on deadlock or timeout.
->>> We should not spin, since retry will likely produce the same
->>> result. So the above pattern just enters into infinite spin.
->>
->> I only spin in destroy() and map_free(), which cannot deadlock with
->> itself or each other. However, IIUC, a head waiter that detects
->> deadlock will cause other queued waiters to also return -DEADLOCK. I
->> think they should be able to make progress with a retry.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 30 Sep 2025 13:43:29 +0200 you wrote:
+> Helge reported that the introduction of PP_MAGIC_MASK let to crashes on
+> boot on his 32-bit parisc machine. The cause of this is the mask is set
+> too wide, so the page_pool_page_is_pp() incurs false positives which
+> crashes the machine.
 > 
-> If it's in map_free() path then why are we taking the lock at all?
-> There are supposed to be no active users of it.
-
-There is no user from the syscall or from the bpf prog.
-
-There are still kernel users, bpf_cgrp_storage_free() and bpf_sk_storage_free(), 
-that can race with map_free().
-
-> If there are users and we actually need that lock then the deadlock
-> is possible and retrying will deadlock the same way.
-> I feel AI explained it better:
-> "
-> raw_res_spin_lock_irqsave() can return -ETIMEDOUT (after 250ms) or
-> -EDEADLK. Both are non-zero, so the while() loop continues. The commit
-> message says "it cannot deadlock with itself or
-> bpf_local_storage_map_free", but:
+> Just disabling the check in page_pool_is_pp() will lead to the page_pool
+> code itself malfunctioning; so instead of doing this, this patch changes
+> the define for PP_DMA_INDEX_BITS to avoid mistaking arbitrary kernel
+> pointers for page_pool-tagged pages.
 > 
-> 1. If -ETIMEDOUT is returned because the lock holder is taking too long,
->     retrying immediately won't help. The timeout means progress isn't
->     being made, and spinning in a retry loop without any backoff or
->     limit will prevent other work from proceeding.
-> 
-> 2. If -EDEADLK is returned, it means the deadlock detector found a
->     cycle. Retrying immediately without any state change won't break the
->     deadlock cycle.
-> "
-> 
->> Or better if
->> rqspinlock does not force queued waiters to exit the queue if it is
->> deadlock not timeout.
-> 
-> If a deadlock is detected, it's the same issue for all waiters.
-> I don't see the difference between timeout and deadlock.
-> Both are in the "do-not-retry" category.
-> Both mean that there is a bug somewhere.
+> [...]
 
-Both bpf_cgrp_storage_free() and map_free() are the only remaining kernel users 
-of the locks, so no deadlock is expected unless there is a bug. The busy percpu 
-counter is currently not used in both of them also. Theoretically, the 
-res_spin_lock (and the current regular spin_lock) should never fail here in 
-bpf_cgrp_storage_free() and map_free(). If res_spin_lock returns error, there is 
-a bug somewhere.
+Here is the summary with links:
+  - [net,v2] page_pool: Fix PP_MAGIC_MASK to avoid crashing on some 32-bit arches
+    https://git.kernel.org/netdev/net/c/95920c2ed02b
 
-> 
->>>
->>> If it should never fail in practice then pr_warn_once and goto out
->>> leaking memory. Better yet defer to irq_work and cleanup there.>>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Not sure how to handle the bug. yeah, maybe just leak it and then splat.
-I think deferring it still need to take the lock.
-
->> Hmm, both functions are already called in some deferred callbacks.
->> Even if we defer the cleanup again, they still need to grab locks and
->> still might fail, no?
-> 
-> If it's a map destroy path and we waited for RCU GP, there shouldn't be
-> a need to take a lock.
-> The css_free_rwork_fn() -> bpf_cgrp_storage_free() path
-> is currently implemented like it's similar to:
-> bpf_cgrp_storage_delete() which needs a lock.
-> But bpf_cgrp_storage_free() doesn't have to.
-> In css_free_rwork_fn() no prog or user space
-> should see 'cgrp' pointer, since we're about to kfree(cgrp); it.
-> I could be certainly missing something.
 
