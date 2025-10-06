@@ -1,1269 +1,428 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E0F275860;
-	Mon,  6 Oct 2025 10:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18049221FD0
+	for <netdev@vger.kernel.org>; Mon,  6 Oct 2025 11:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759747803; cv=none; b=lE2kha1QEeWi+imF8m0ybS1bWMwmlHAOYisNoRquwHD0HkfbeVr1zFwozINAgSWAxmhm8AIqgpmq8qTZLGB4/0kDatRAElN3GYz3dF/oTmv9lPT9CM022o1PKLviMab3vKKJWGifgf3w5WAbpsgaj4cDsL9tZAs4ID61GPRIB7k=
+	t=1759749270; cv=none; b=PaFAjeNLOsOrWz4Q8+KxuUL2DpgpDzQxwAyASPs45EXpdxws8lXUJr7281ja75/H8w5IuzEC/8ZYnaGGJgBNnAVz4ZR3H1/4hzcD1fwvuBMJM4Si8wygkc9mbqOoeMfvA61u8Lacv2jc8efVbcFvgRNgmyYsHR0hE9ktDZSD9uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759747803; c=relaxed/simple;
-	bh=20PxXMUAX09UCRjRYQP7H/E8ucSDq1Jx/VpXVBRrdu4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIdsFfOAprxiM/REEWDtA5Fpc9iw4lqxxDmc2OuUjwNWD/9iFHBy721/qoj3SKwZskZK9wpaMItnmKxcdp21jIfXfF78/bu4aSzIMpVazPEUrie+s8Cs1hFsw5VL5vExE0rEWNYgqNTcq5/F6SdRpX9OfRq5I+1yYDkA75o17Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=NhdCppiz; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="NhdCppiz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=f8Yg/MT1zNUv9Zgyc5MkPXR2UR3u3SFBEvUmeM5IZhc=; b=NhdCppiz1KA0HQ7TikvjCGB+g2
-	Pf538NtVnRH6HXsaloZ7QFDUa76ZT2G8EzrxWpB8QudHeA6Bj1O3uM7t94JrVkZs+VHtnmUo0KA9p
-	mBlphTgr9fGIFS4ccYre6CwVz9ZWWjLfylfMABnHNYcrXExVZLKI5j4HWPF4xEpM2Rv8E/zAQbj+o
-	SL9maIPVYs6RWQAKoGEEF+1/cLg8/5mCNfZp4OBBuo72hnSXqA8O45JS/3F4zB89PI/HXCwBvJPeH
-	DEE71MCO1Iexvx2jJudO51tGyIcoQu5rUuEBkUFm8+ktnyJwFF4QERZstehT2cvXQfY5KlOEuRHaD
-	wvMU6HFQ==;
-Received: from [122.175.9.182] (port=2645 helo=cypher.couthit.local)
-	by server.couthit.com with esmtpa (Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1v5in0-0000000Fe4a-0PFh;
-	Mon, 06 Oct 2025 06:49:58 -0400
-From: Parvathi Pudi <parvathi@couthit.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	danishanwar@ti.com,
-	parvathi@couthit.com,
-	rogerq@kernel.org,
-	pmohan@couthit.com,
-	basharath@couthit.com,
-	afd@ti.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	pratheesh@ti.com,
-	prajith@ti.com,
-	vigneshr@ti.com,
-	praneeth@ti.com,
-	srk@ti.com,
-	rogerq@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com
-Subject: [RFC PATCH net-next v2 3/3] net: ti: icssm-prueth: Adds support for ICSSM RSTP switch
-Date: Mon,  6 Oct 2025 16:17:19 +0530
-Message-ID: <20251006104908.775891-4-parvathi@couthit.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251006104908.775891-1-parvathi@couthit.com>
-References: <20251006104908.775891-1-parvathi@couthit.com>
+	s=arc-20240116; t=1759749270; c=relaxed/simple;
+	bh=2ZfK3mxL95iY2yc+z3P/tsHAcixg2rIy+6norGnkVBM=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=fGDLoHLrFnp832aNXbZaEgIcCmFNUPjBLiaDG+FfsQg3nZ5uzX2ve7XeNwjC9H140NMcLa+H87Y02bhg32Z/vC7RvBrNko/NERdXlm7xsmEyYg2klvdcu58AzTMosGro69GVD/PLLS2xd8FKsITMkUvr2lqjRZ82Ty4b5QxJTlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-92c4374566fso349908739f.1
+        for <netdev@vger.kernel.org>; Mon, 06 Oct 2025 04:14:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759749267; x=1760354067;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M1Xw0RAg+/SQNCr22MZdXUP4HQD3a4czEYIh0YzOjoA=;
+        b=GwcAxFMCEajlneNPuihEBeznKCRKkTxf8/zePviFK+JFiE+6Y5E5CA2Q7XwEeuygi6
+         bLDNeakMTciJ0FDkQQ4m8SDcepqCwR5ANxwSInwDSYmUz8ICSuVKcafiKvGCUHeWRthT
+         Ijl79tr7L/VemAQeDrOgy58r6K78HwKZmnVDVQEGJQr5C+rG36HGgnpI+twrq2jmfYCG
+         yCgpqPWKv8NCe6ZJOetfhTnClkbaEF1wzYicp/sLkc3dbGsmjG26FS0FsVF9J2D+y1Qv
+         XLkSkZ3vT5d/n38pS2Swf7TBqPUh6Mkvlrbkig46jDhPh2/eLoc8bLu/kymZcGqRz+Rd
+         6Ebw==
+X-Forwarded-Encrypted: i=1; AJvYcCUatbUMHuxH6bblKd+ju7/nmVSI/kW1X/PonIyMz1hoswcNFl6bA98fIAlMjxaYpj8HiOWejoU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUjluqHlVpAkP2L9yg5vXQPbEYlDAfmRkWfNjNZTw5PqG6XrqF
+	gmbl540435KCgDHgiaM01dDm3K864i5pN2PvV+TpjXrh6IczU3bY2O3n3Xg60sLftos6JfX1Fjg
+	W0C43gSmNsfhbH2ac8meSi0JyRYg1I4R0XI5Xdohcr6pssymEBdahe5TLNE8=
+X-Google-Smtp-Source: AGHT+IFY0Oq5VlhuyXLScGa+y3hzdMog2aZ9WAg5tPWpZz7PiXsyN5Ewq+nVS974FSTibQng2dxNzZ5mugvvZXmKbnblu6/YInFs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
-X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-Received: by 2002:a05:6e02:228f:b0:42e:7273:a370 with SMTP id
+ e9e14a558f8ab-42e7acd28f4mr148435055ab.5.1759749267075; Mon, 06 Oct 2025
+ 04:14:27 -0700 (PDT)
+Date: Mon, 06 Oct 2025 04:14:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68e3a493.a00a0220.298cc0.045f.GAE@google.com>
+Subject: [syzbot] [mptcp?] possible deadlock in mptcp_pm_nl_add_addr_doit
+From: syzbot <syzbot+7fb125d1bae280dc4749@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, geliang@kernel.org, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	martineau@kernel.org, matttbe@kernel.org, mptcp@lists.linux.dev, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Roger Quadros <rogerq@ti.com>
+Hello,
 
-Adds support for RSTP switch mode by enhancing the existing ICSSM dual EMAC
-driver with switchdev support.
+syzbot found the following issue on:
 
-With this patch, the PRU-ICSSM is now capable of operating in switch mode
-with the 2 PRU ports acting as external ports and the host acting as an
-internal port. Packets received from the PRU ports will be forwarded to
-the host (store and forward mode) and also to the other PRU port (either
-using store and forward mode or via cut-through mode). Packets coming
-from the host will be transmitted either from one or both of the PRU ports
-(depending on the FDB decision).
+HEAD commit:    3b9b1f8df454 Add linux-next specific files for 20250929
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=133df05b980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3c7c078c891391b1
+dashboard link: https://syzkaller.appspot.com/bug?extid=7fb125d1bae280dc4749
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-By default, the dual EMAC firmware will be loaded in the PRU-ICSS
-subsystem. To configure the PRU-ICSS to operate as a switch, a different
-firmware must to be loaded.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Reviewed-by: Mohan Reddy Putluru <pmohan@couthit.com>
-Signed-off-by: Roger Quadros <rogerq@ti.com>
-Signed-off-by: Andrew F. Davis <afd@ti.com>
-Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
-Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/1ccfc1a8eb22/disk-3b9b1f8d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c4e52fa84079/vmlinux-3b9b1f8d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9eacf34feeec/bzImage-3b9b1f8d.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7fb125d1bae280dc4749@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.5.3503/26785 is trying to acquire lock:
+ffffffff8e645220 (fs_reclaim){+.+.}-{0:0}, at: might_alloc include/linux/sched/mm.h:318 [inline]
+ffffffff8e645220 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook mm/slub.c:4897 [inline]
+ffffffff8e645220 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node mm/slub.c:5221 [inline]
+ffffffff8e645220 (fs_reclaim){+.+.}-{0:0}, at: kmem_cache_alloc_node_noprof+0x48/0x710 mm/slub.c:5297
+
+but task is already holding lock:
+ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1679 [inline]
+ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_create_listen_socket net/mptcp/pm_kernel.c:866 [inline]
+ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_add_addr_doit+0x1150/0x1460 net/mptcp/pm_kernel.c:1005
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #7 (k-sk_lock-AF_INET){+.+.}-{0:0}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       lock_sock_nested+0x48/0x100 net/core/sock.c:3720
+       lock_sock include/net/sock.h:1679 [inline]
+       __inet_bind+0x392/0xa90 net/ipv4/af_inet.c:524
+       mptcp_bind+0x128/0x1d0 net/mptcp/protocol.c:3846
+       __sys_bind_socket net/socket.c:1861 [inline]
+       __sys_bind+0x2c6/0x3e0 net/socket.c:1892
+       __do_sys_bind net/socket.c:1897 [inline]
+       __se_sys_bind net/socket.c:1895 [inline]
+       __x64_sys_bind+0x7a/0x90 net/socket.c:1895
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #6 (sk_lock-AF_INET){+.+.}-{0:0}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       lock_sock_nested+0x48/0x100 net/core/sock.c:3720
+       lock_sock include/net/sock.h:1679 [inline]
+       inet_shutdown+0x6a/0x390 net/ipv4/af_inet.c:907
+       nbd_mark_nsock_dead+0x2e9/0x560 drivers/block/nbd.c:318
+       sock_shutdown+0x15e/0x260 drivers/block/nbd.c:411
+       nbd_clear_sock drivers/block/nbd.c:1424 [inline]
+       nbd_config_put+0x342/0x790 drivers/block/nbd.c:1448
+       nbd_release+0xfe/0x140 drivers/block/nbd.c:1753
+       bdev_release+0x536/0x650 block/bdev.c:-1
+       blkdev_release+0x15/0x20 block/fops.c:702
+       __fput+0x44c/0xa70 fs/file_table.c:468
+       task_work_run+0x1d4/0x260 kernel/task_work.c:227
+       resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+       exit_to_user_mode_loop+0xe9/0x130 kernel/entry/common.c:43
+       exit_to_user_mode_prepare include/linux/irq-entry-common.h:225 [inline]
+       syscall_exit_to_user_mode_work include/linux/entry-common.h:175 [inline]
+       syscall_exit_to_user_mode include/linux/entry-common.h:210 [inline]
+       do_syscall_64+0x2bd/0xfa0 arch/x86/entry/syscall_64.c:100
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #5 (&nsock->tx_lock){+.+.}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       __mutex_lock_common kernel/locking/mutex.c:598 [inline]
+       __mutex_lock+0x187/0x1350 kernel/locking/mutex.c:760
+       nbd_handle_cmd drivers/block/nbd.c:1140 [inline]
+       nbd_queue_rq+0x257/0xf10 drivers/block/nbd.c:1204
+       blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+       blk_mq_run_hw_queue+0x348/0x4f0 block/blk-mq.c:2367
+       blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
+       blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
+       __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
+       blk_finish_plug block/blk-core.c:1252 [inline]
+       __submit_bio+0x2d3/0x5a0 block/blk-core.c:651
+       __submit_bio_noacct_mq block/blk-core.c:724 [inline]
+       submit_bio_noacct_nocheck+0x2fb/0xa50 block/blk-core.c:755
+       submit_bh fs/buffer.c:2829 [inline]
+       block_read_full_folio+0x599/0x830 fs/buffer.c:2447
+       filemap_read_folio+0x117/0x380 mm/filemap.c:2444
+       do_read_cache_folio+0x350/0x590 mm/filemap.c:4024
+       read_mapping_folio include/linux/pagemap.h:999 [inline]
+       read_part_sector+0xb6/0x2b0 block/partitions/core.c:722
+       adfspart_check_ICS+0xa4/0xa50 block/partitions/acorn.c:360
+       check_partition block/partitions/core.c:141 [inline]
+       blk_add_partitions block/partitions/core.c:589 [inline]
+       bdev_disk_changed+0x75f/0x14b0 block/partitions/core.c:693
+       blkdev_get_whole+0x380/0x510 block/bdev.c:748
+       bdev_open+0x31e/0xd30 block/bdev.c:957
+       blkdev_open+0x457/0x600 block/fops.c:694
+       do_dentry_open+0x953/0x13f0 fs/open.c:965
+       vfs_open+0x3b/0x340 fs/open.c:1097
+       do_open fs/namei.c:3975 [inline]
+       path_openat+0x2ee5/0x3830 fs/namei.c:4134
+       do_filp_open+0x1fa/0x410 fs/namei.c:4161
+       do_sys_openat2+0x121/0x1c0 fs/open.c:1437
+       do_sys_open fs/open.c:1452 [inline]
+       __do_sys_openat fs/open.c:1468 [inline]
+       __se_sys_openat fs/open.c:1463 [inline]
+       __x64_sys_openat+0x138/0x170 fs/open.c:1463
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #4 (&cmd->lock){+.+.}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       __mutex_lock_common kernel/locking/mutex.c:598 [inline]
+       __mutex_lock+0x187/0x1350 kernel/locking/mutex.c:760
+       nbd_queue_rq+0xc8/0xf10 drivers/block/nbd.c:1196
+       blk_mq_dispatch_rq_list+0x4c0/0x1900 block/blk-mq.c:2129
+       __blk_mq_do_dispatch_sched block/blk-mq-sched.c:168 [inline]
+       blk_mq_do_dispatch_sched block/blk-mq-sched.c:182 [inline]
+       __blk_mq_sched_dispatch_requests+0xda4/0x1570 block/blk-mq-sched.c:307
+       blk_mq_sched_dispatch_requests+0xd7/0x190 block/blk-mq-sched.c:329
+       blk_mq_run_hw_queue+0x348/0x4f0 block/blk-mq.c:2367
+       blk_mq_dispatch_list+0xd0c/0xe00 include/linux/spinlock.h:-1
+       blk_mq_flush_plug_list+0x469/0x550 block/blk-mq.c:2976
+       __blk_flush_plug+0x3d3/0x4b0 block/blk-core.c:1225
+       blk_finish_plug block/blk-core.c:1252 [inline]
+       __submit_bio+0x2d3/0x5a0 block/blk-core.c:651
+       __submit_bio_noacct_mq block/blk-core.c:724 [inline]
+       submit_bio_noacct_nocheck+0x2fb/0xa50 block/blk-core.c:755
+       submit_bh fs/buffer.c:2829 [inline]
+       block_read_full_folio+0x599/0x830 fs/buffer.c:2447
+       filemap_read_folio+0x117/0x380 mm/filemap.c:2444
+       do_read_cache_folio+0x350/0x590 mm/filemap.c:4024
+       read_mapping_folio include/linux/pagemap.h:999 [inline]
+       read_part_sector+0xb6/0x2b0 block/partitions/core.c:722
+       adfspart_check_ICS+0xa4/0xa50 block/partitions/acorn.c:360
+       check_partition block/partitions/core.c:141 [inline]
+       blk_add_partitions block/partitions/core.c:589 [inline]
+       bdev_disk_changed+0x75f/0x14b0 block/partitions/core.c:693
+       blkdev_get_whole+0x380/0x510 block/bdev.c:748
+       bdev_open+0x31e/0xd30 block/bdev.c:957
+       blkdev_open+0x457/0x600 block/fops.c:694
+       do_dentry_open+0x953/0x13f0 fs/open.c:965
+       vfs_open+0x3b/0x340 fs/open.c:1097
+       do_open fs/namei.c:3975 [inline]
+       path_openat+0x2ee5/0x3830 fs/namei.c:4134
+       do_filp_open+0x1fa/0x410 fs/namei.c:4161
+       do_sys_openat2+0x121/0x1c0 fs/open.c:1437
+       do_sys_open fs/open.c:1452 [inline]
+       __do_sys_openat fs/open.c:1468 [inline]
+       __se_sys_openat fs/open.c:1463 [inline]
+       __x64_sys_openat+0x138/0x170 fs/open.c:1463
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #3 (set->srcu){.+.+}-{0:0}:
+       lock_sync+0xba/0x160 kernel/locking/lockdep.c:5916
+       srcu_lock_sync include/linux/srcu.h:173 [inline]
+       __synchronize_srcu+0x96/0x3a0 kernel/rcu/srcutree.c:1439
+       elevator_switch+0x12b/0x640 block/elevator.c:588
+       elevator_change+0x315/0x4c0 block/elevator.c:691
+       elevator_set_default+0x186/0x260 block/elevator.c:767
+       blk_register_queue+0x34e/0x3f0 block/blk-sysfs.c:942
+       __add_disk+0x677/0xd50 block/genhd.c:528
+       add_disk_fwnode+0xfc/0x480 block/genhd.c:597
+       add_disk include/linux/blkdev.h:775 [inline]
+       nbd_dev_add+0x717/0xae0 drivers/block/nbd.c:1981
+       nbd_init+0x168/0x1f0 drivers/block/nbd.c:2688
+       do_one_initcall+0x236/0x820 init/main.c:1283
+       do_initcall_level+0x104/0x190 init/main.c:1345
+       do_initcalls+0x59/0xa0 init/main.c:1361
+       kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+       kernel_init+0x1d/0x1d0 init/main.c:1483
+       ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #2 (&q->elevator_lock){+.+.}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       __mutex_lock_common kernel/locking/mutex.c:598 [inline]
+       __mutex_lock+0x187/0x1350 kernel/locking/mutex.c:760
+       elevator_change+0x1e5/0x4c0 block/elevator.c:689
+       elevator_set_none+0x42/0xb0 block/elevator.c:782
+       blk_mq_elv_switch_none block/blk-mq.c:5032 [inline]
+       __blk_mq_update_nr_hw_queues block/blk-mq.c:5075 [inline]
+       blk_mq_update_nr_hw_queues+0x598/0x1ab0 block/blk-mq.c:5133
+       nbd_start_device+0x17f/0xb10 drivers/block/nbd.c:1486
+       nbd_genl_connect+0x135b/0x18f0 drivers/block/nbd.c:2236
+       genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+       genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+       genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+       netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+       netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+       netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
+       netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+       sock_sendmsg_nosec net/socket.c:714 [inline]
+       __sock_sendmsg+0x21c/0x270 net/socket.c:729
+       ____sys_sendmsg+0x505/0x830 net/socket.c:2617
+       ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2671
+       __sys_sendmsg net/socket.c:2703 [inline]
+       __do_sys_sendmsg net/socket.c:2708 [inline]
+       __se_sys_sendmsg net/socket.c:2706 [inline]
+       __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2706
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #1 (&q->q_usage_counter(io)#49){++++}-{0:0}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       blk_alloc_queue+0x538/0x620 block/blk-core.c:461
+       blk_mq_alloc_queue block/blk-mq.c:4399 [inline]
+       __blk_mq_alloc_disk+0x15c/0x340 block/blk-mq.c:4446
+       nbd_dev_add+0x46c/0xae0 drivers/block/nbd.c:1951
+       nbd_init+0x168/0x1f0 drivers/block/nbd.c:2688
+       do_one_initcall+0x236/0x820 init/main.c:1283
+       do_initcall_level+0x104/0x190 init/main.c:1345
+       do_initcalls+0x59/0xa0 init/main.c:1361
+       kernel_init_freeable+0x334/0x4b0 init/main.c:1593
+       kernel_init+0x1d/0x1d0 init/main.c:1483
+       ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       __fs_reclaim_acquire mm/page_alloc.c:4269 [inline]
+       fs_reclaim_acquire+0x72/0x100 mm/page_alloc.c:4283
+       might_alloc include/linux/sched/mm.h:318 [inline]
+       slab_pre_alloc_hook mm/slub.c:4897 [inline]
+       slab_alloc_node mm/slub.c:5221 [inline]
+       kmem_cache_alloc_node_noprof+0x48/0x710 mm/slub.c:5297
+       __alloc_skb+0x112/0x2d0 net/core/skbuff.c:660
+       alloc_skb include/linux/skbuff.h:1383 [inline]
+       nlmsg_new include/net/netlink.h:1055 [inline]
+       mptcp_event_pm_listener+0x134/0x520 net/mptcp/pm_netlink.c:532
+       mptcp_pm_nl_create_listen_socket net/mptcp/pm_kernel.c:870 [inline]
+       mptcp_pm_nl_add_addr_doit+0x11da/0x1460 net/mptcp/pm_kernel.c:1005
+       genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+       genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+       genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+       netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+       netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+       netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
+       netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+       sock_sendmsg_nosec net/socket.c:714 [inline]
+       __sock_sendmsg+0x21c/0x270 net/socket.c:729
+       ____sys_sendmsg+0x505/0x830 net/socket.c:2617
+       ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2671
+       __sys_sendmsg net/socket.c:2703 [inline]
+       __do_sys_sendmsg net/socket.c:2708 [inline]
+       __se_sys_sendmsg net/socket.c:2706 [inline]
+       __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2706
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> sk_lock-AF_INET --> k-sk_lock-AF_INET
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(k-sk_lock-AF_INET);
+                               lock(sk_lock-AF_INET);
+                               lock(k-sk_lock-AF_INET);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+3 locks held by syz.5.3503/26785:
+ #0: ffffffff8f9c7350 (cb_lock){++++}-{4:4}, at: genl_rcv+0x19/0x40 net/netlink/genetlink.c:1218
+ #1: ffffffff8f9c7168 (genl_mutex){+.+.}-{4:4}, at: genl_lock net/netlink/genetlink.c:35 [inline]
+ #1: ffffffff8f9c7168 (genl_mutex){+.+.}-{4:4}, at: genl_op_lock net/netlink/genetlink.c:60 [inline]
+ #1: ffffffff8f9c7168 (genl_mutex){+.+.}-{4:4}, at: genl_rcv_msg+0x10d/0x790 net/netlink/genetlink.c:1209
+ #2: ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1679 [inline]
+ #2: ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_create_listen_socket net/mptcp/pm_kernel.c:866 [inline]
+ #2: ffff888066ee0f18 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: mptcp_pm_nl_add_addr_doit+0x1150/0x1460 net/mptcp/pm_kernel.c:1005
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 26785 Comm: syz.5.3503 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
+ check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+ __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ __fs_reclaim_acquire mm/page_alloc.c:4269 [inline]
+ fs_reclaim_acquire+0x72/0x100 mm/page_alloc.c:4283
+ might_alloc include/linux/sched/mm.h:318 [inline]
+ slab_pre_alloc_hook mm/slub.c:4897 [inline]
+ slab_alloc_node mm/slub.c:5221 [inline]
+ kmem_cache_alloc_node_noprof+0x48/0x710 mm/slub.c:5297
+ __alloc_skb+0x112/0x2d0 net/core/skbuff.c:660
+ alloc_skb include/linux/skbuff.h:1383 [inline]
+ nlmsg_new include/net/netlink.h:1055 [inline]
+ mptcp_event_pm_listener+0x134/0x520 net/mptcp/pm_netlink.c:532
+ mptcp_pm_nl_create_listen_socket net/mptcp/pm_kernel.c:870 [inline]
+ mptcp_pm_nl_add_addr_doit+0x11da/0x1460 net/mptcp/pm_kernel.c:1005
+ genl_family_rcv_msg_doit+0x215/0x300 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x60e/0x790 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2552
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ __sock_sendmsg+0x21c/0x270 net/socket.c:729
+ ____sys_sendmsg+0x505/0x830 net/socket.c:2617
+ ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2671
+ __sys_sendmsg net/socket.c:2703 [inline]
+ __do_sys_sendmsg net/socket.c:2708 [inline]
+ __se_sys_sendmsg net/socket.c:2706 [inline]
+ __x64_sys_sendmsg+0x19b/0x260 net/socket.c:2706
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7275b8eec9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f7276a69038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f7275de5fa0 RCX: 00007f7275b8eec9
+RDX: 0000000000000000 RSI: 0000200000000400 RDI: 0000000000000005
+RBP: 00007f7275c11f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f7275de6038 R14: 00007f7275de5fa0 R15: 00007ffd45086ec8
+ </TASK>
+
+
 ---
- drivers/net/ethernet/ti/icssm/icssm_prueth.c  | 355 +++++++++++++++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.h  |   6 +
- .../ethernet/ti/icssm/icssm_prueth_switch.c   | 385 ++++++++++++++++++
- .../ethernet/ti/icssm/icssm_prueth_switch.h   |   8 +
- drivers/net/ethernet/ti/icssm/icssm_switch.h  |  77 ++++
- 5 files changed, 810 insertions(+), 21 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-index 9bcece1b09fc..3c8befdea1e7 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-@@ -162,7 +162,7 @@ static const struct prueth_queue_info queue_infos[][NUM_QUEUES] = {
- 	},
- };
- 
--static const struct prueth_queue_desc queue_descs[][NUM_QUEUES] = {
-+const struct prueth_queue_desc queue_descs[][NUM_QUEUES] = {
- 	[PRUETH_PORT_QUEUE_HOST] = {
- 		{ .rd_ptr = P0_Q1_BD_OFFSET, .wr_ptr = P0_Q1_BD_OFFSET, },
- 		{ .rd_ptr = P0_Q2_BD_OFFSET, .wr_ptr = P0_Q2_BD_OFFSET, },
-@@ -222,9 +222,9 @@ static void icssm_prueth_hostconfig(struct prueth *prueth)
- 
- static void icssm_prueth_mii_init(struct prueth *prueth)
- {
-+	u32 txcfg_reg, txcfg, txcfg2;
- 	struct regmap *mii_rt;
- 	u32 rxcfg_reg, rxcfg;
--	u32 txcfg_reg, txcfg;
- 
- 	mii_rt = prueth->mii_rt;
- 
-@@ -252,17 +252,23 @@ static void icssm_prueth_mii_init(struct prueth *prueth)
- 		(TX_START_DELAY << PRUSS_MII_RT_TXCFG_TX_START_DELAY_SHIFT) |
- 		(TX_CLK_DELAY_100M << PRUSS_MII_RT_TXCFG_TX_CLK_DELAY_SHIFT);
- 
-+	txcfg2 = txcfg;
-+	if (!PRUETH_IS_EMAC(prueth))
-+		txcfg2 |= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
-+
- 	/* Configuration of Port 0 Tx */
- 	txcfg_reg = PRUSS_MII_RT_TXCFG0;
- 
--	regmap_write(mii_rt, txcfg_reg, txcfg);
-+	regmap_write(mii_rt, txcfg_reg, txcfg2);
- 
--	txcfg |= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
-+	txcfg2 = txcfg;
-+	if (PRUETH_IS_EMAC(prueth))
-+		txcfg2 |= PRUSS_MII_RT_TXCFG_TX_MUX_SEL;
- 
- 	/* Configuration of Port 1 Tx */
- 	txcfg_reg = PRUSS_MII_RT_TXCFG1;
- 
--	regmap_write(mii_rt, txcfg_reg, txcfg);
-+	regmap_write(mii_rt, txcfg_reg, txcfg2);
- 
- 	txcfg_reg = PRUSS_MII_RT_RX_FRMS0;
- 
-@@ -309,7 +315,10 @@ static void icssm_prueth_hostinit(struct prueth *prueth)
- 		icssm_prueth_clearmem(prueth, PRUETH_MEM_DRAM1);
- 
- 	/* Initialize host queues in shared RAM */
--	icssm_prueth_hostconfig(prueth);
-+	if (!PRUETH_IS_EMAC(prueth))
-+		icssm_prueth_sw_hostconfig(prueth);
-+	else
-+		icssm_prueth_hostconfig(prueth);
- 
- 	/* Configure MII_RT */
- 	icssm_prueth_mii_init(prueth);
-@@ -517,19 +526,24 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
- 	struct prueth_queue_desc __iomem *queue_desc;
- 	const struct prueth_queue_info *txqueue;
- 	struct net_device *ndev = emac->ndev;
-+	struct prueth *prueth = emac->prueth;
- 	unsigned int buffer_desc_count;
- 	int free_blocks, update_block;
- 	bool buffer_wrapped = false;
- 	int write_block, read_block;
- 	void *src_addr, *dst_addr;
- 	int pkt_block_size;
-+	void __iomem *sram;
- 	void __iomem *dram;
- 	int txport, pktlen;
- 	u16 update_wr_ptr;
- 	u32 wr_buf_desc;
- 	void *ocmc_ram;
- 
--	dram = emac->prueth->mem[emac->dram].va;
-+	if (!PRUETH_IS_EMAC(prueth))
-+		dram = prueth->mem[PRUETH_MEM_DRAM1].va;
-+	else
-+		dram = emac->prueth->mem[emac->dram].va;
- 	if (eth_skb_pad(skb)) {
- 		if (netif_msg_tx_err(emac) && net_ratelimit())
- 			netdev_err(ndev, "packet pad failed\n");
-@@ -542,7 +556,10 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
- 	pktlen = skb->len;
- 	/* Get the tx queue */
- 	queue_desc = emac->tx_queue_descs + queue_id;
--	txqueue = &queue_infos[txport][queue_id];
-+	if (!PRUETH_IS_EMAC(prueth))
-+		txqueue = &sw_queue_infos[txport][queue_id];
-+	else
-+		txqueue = &queue_infos[txport][queue_id];
- 
- 	buffer_desc_count = icssm_get_buff_desc_count(txqueue);
- 
-@@ -608,7 +625,11 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
-        /* update first buffer descriptor */
- 	wr_buf_desc = (pktlen << PRUETH_BD_LENGTH_SHIFT) &
- 		       PRUETH_BD_LENGTH_MASK;
--	writel(wr_buf_desc, dram + readw(&queue_desc->wr_ptr));
-+	sram = prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-+	if (!PRUETH_IS_EMAC(prueth))
-+		writel(wr_buf_desc, sram + readw(&queue_desc->wr_ptr));
-+	else
-+		writel(wr_buf_desc, dram + readw(&queue_desc->wr_ptr));
- 
- 	/* update the write pointer in this queue descriptor, the firmware
- 	 * polls for this change so this will signal the start of transmission
-@@ -622,7 +643,6 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac *emac,
- void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
- 			     struct prueth_packet_info *pkt_info)
- {
--	pkt_info->shadow = !!(buffer_descriptor & PRUETH_BD_SHADOW_MASK);
- 	pkt_info->port = (buffer_descriptor & PRUETH_BD_PORT_MASK) >>
- 			 PRUETH_BD_PORT_SHIFT;
- 	pkt_info->length = (buffer_descriptor & PRUETH_BD_LENGTH_MASK) >>
-@@ -731,11 +751,19 @@ int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
- 		src_addr += actual_pkt_len;
- 	}
- 
-+	if (PRUETH_IS_SWITCH(emac->prueth)) {
-+		skb->offload_fwd_mark = emac->offload_fwd_mark;
-+		if (!pkt_info->lookup_success)
-+			icssm_prueth_sw_learn_fdb(emac, skb->data + ETH_ALEN);
-+	}
-+
- 	skb_put(skb, actual_pkt_len);
- 
- 	/* send packet up the stack */
- 	skb->protocol = eth_type_trans(skb, ndev);
-+	local_bh_disable();
- 	netif_receive_skb(skb);
-+	local_bh_enable();
- 
- 	/* update stats */
- 	emac->stats.rx_bytes += actual_pkt_len;
-@@ -761,6 +789,7 @@ static int icssm_emac_rx_packets(struct prueth_emac *emac, int budget)
- 
- 	shared_ram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
- 
-+	/* Start and end queue is made common for EMAC, RSTP */
- 	start_queue = emac->rx_queue_start;
- 	end_queue = emac->rx_queue_end;
- 
-@@ -771,8 +800,10 @@ static int icssm_emac_rx_packets(struct prueth_emac *emac, int budget)
- 	/* search host queues for packets */
- 	for (i = start_queue; i <= end_queue; i++) {
- 		queue_desc = emac->rx_queue_descs + i;
--		rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
--
-+		if (PRUETH_IS_SWITCH(emac->prueth))
-+			rxqueue = &sw_queue_infos[PRUETH_PORT_HOST][i];
-+		else
-+			rxqueue = &queue_infos[PRUETH_PORT_HOST][i];
- 		overflow_cnt = readb(&queue_desc->overflow_cnt);
- 		if (overflow_cnt > 0) {
- 			emac->stats.rx_over_errors += overflow_cnt;
-@@ -897,6 +928,13 @@ static int icssm_emac_request_irqs(struct prueth_emac *emac)
- 	return ret;
- }
- 
-+/* Function to free memory related to sw */
-+static void icssm_prueth_free_memory(struct prueth *prueth)
-+{
-+	if (PRUETH_IS_SWITCH(prueth))
-+		icssm_prueth_sw_free_fdb_table(prueth);
-+}
-+
- static void icssm_ptp_dram_init(struct prueth_emac *emac)
- {
- 	void __iomem *sram = emac->prueth->mem[PRUETH_MEM_SHARED_RAM].va;
-@@ -959,20 +997,38 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- 	if (!prueth->emac_configured)
- 		icssm_prueth_init_ethernet_mode(prueth);
- 
--	icssm_prueth_emac_config(emac);
-+	/* reset and start PRU firmware */
-+	if (PRUETH_IS_SWITCH(prueth)) {
-+		ret = icssm_prueth_sw_emac_config(emac);
-+		if (ret)
-+			return ret;
-+
-+		ret = icssm_prueth_sw_init_fdb_table(prueth);
-+		if (ret)
-+			return ret;
-+	} else {
-+		icssm_prueth_emac_config(emac);
-+	}
- 
- 	if (!prueth->emac_configured) {
- 		icssm_ptp_dram_init(emac);
- 		ret = icss_iep_init(prueth->iep, NULL, NULL, 0);
- 		if (ret) {
- 			netdev_err(ndev, "Failed to initialize iep: %d\n", ret);
--			goto iep_exit;
-+			goto free_mem;
- 		}
- 	}
- 
--	ret = icssm_emac_set_boot_pru(emac, ndev);
--	if (ret)
--		goto iep_exit;
-+	if (!PRUETH_IS_EMAC(prueth)) {
-+		ret = icssm_prueth_sw_boot_prus(prueth, ndev);
-+		if (ret)
-+			goto iep_exit;
-+	} else {
-+		/* boot the PRU */
-+		ret = icssm_emac_set_boot_pru(emac, ndev);
-+		if (ret)
-+			goto iep_exit;
-+	}
- 
- 	ret = icssm_emac_request_irqs(emac);
- 	if (ret)
-@@ -987,19 +1043,25 @@ static int icssm_emac_ndo_open(struct net_device *ndev)
- 	icssm_prueth_port_enable(emac, true);
- 
- 	prueth->emac_configured |= BIT(emac->port_id);
--
-+	if (PRUETH_IS_SWITCH(prueth))
-+		icssm_prueth_sw_port_set_stp_state(prueth, emac->port_id,
-+						   BR_STATE_LEARNING);
- 	if (netif_msg_drv(emac))
- 		dev_notice(&ndev->dev, "started\n");
- 
- 	return 0;
- 
- rproc_shutdown:
--	rproc_shutdown(emac->pru);
-+	if (!PRUETH_IS_EMAC(prueth))
-+		icssm_prueth_sw_shutdown_prus(emac, ndev);
-+	else
-+		rproc_shutdown(emac->pru);
- 
- iep_exit:
- 	if (!prueth->emac_configured)
- 		icss_iep_exit(prueth->iep);
--
-+free_mem:
-+	icssm_prueth_free_memory(emac->prueth);
- 	return ret;
- }
- 
-@@ -1028,17 +1090,109 @@ static int icssm_emac_ndo_stop(struct net_device *ndev)
- 	hrtimer_cancel(&emac->tx_hrtimer);
- 
- 	/* stop the PRU */
--	rproc_shutdown(emac->pru);
-+	if (!PRUETH_IS_EMAC(prueth))
-+		icssm_prueth_sw_shutdown_prus(emac, ndev);
-+	else
-+		rproc_shutdown(emac->pru);
-+
-+	/* free table memory of the switch */
-+	if (PRUETH_IS_SWITCH(emac->prueth))
-+		icssm_prueth_sw_free_fdb_table(prueth);
- 
- 	/* free rx interrupts */
- 	free_irq(emac->rx_irq, ndev);
- 
-+	/* free memory related to sw */
-+	icssm_prueth_free_memory(emac->prueth);
-+
- 	if (netif_msg_drv(emac))
- 		dev_notice(&ndev->dev, "stopped\n");
- 
- 	return 0;
- }
- 
-+static void icssm_prueth_change_to_switch_mode(struct prueth *prueth)
-+{
-+	bool portstatus[PRUETH_NUM_MACS];
-+	struct prueth_emac *emac;
-+	struct net_device *ndev;
-+	int i, ret;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		emac = prueth->emac[i];
-+		ndev = emac->ndev;
-+
-+		portstatus[i] = netif_running(ndev);
-+		if (!portstatus[i])
-+			continue;
-+
-+		ret = ndev->netdev_ops->ndo_stop(ndev);
-+		if (ret < 0) {
-+			netdev_err(ndev, "failed to stop: %d", ret);
-+			return;
-+		}
-+	}
-+
-+	prueth->eth_type = PRUSS_ETHTYPE_SWITCH;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		emac = prueth->emac[i];
-+		ndev = emac->ndev;
-+
-+		if (!portstatus[i])
-+			continue;
-+
-+		ret = ndev->netdev_ops->ndo_open(ndev);
-+		if (ret < 0) {
-+			netdev_err(ndev, "failed to start: %d", ret);
-+			return;
-+		}
-+	}
-+
-+	dev_info(prueth->dev, "TI PRU ethernet now in Switch mode\n");
-+}
-+
-+static void icssm_prueth_change_to_emac_mode(struct prueth *prueth)
-+{
-+	bool portstatus[PRUETH_NUM_MACS];
-+	struct prueth_emac *emac;
-+	struct net_device *ndev;
-+	int i, ret;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		emac = prueth->emac[i];
-+		ndev = emac->ndev;
-+
-+		portstatus[i] = netif_running(ndev);
-+		if (!portstatus[i])
-+			continue;
-+
-+		ret = ndev->netdev_ops->ndo_stop(ndev);
-+		if (ret < 0) {
-+			netdev_err(ndev, "failed to stop: %d", ret);
-+			return;
-+		}
-+	}
-+
-+	prueth->eth_type = PRUSS_ETHTYPE_EMAC;
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++) {
-+		emac = prueth->emac[i];
-+		ndev = emac->ndev;
-+
-+		if (!portstatus[i])
-+			continue;
-+
-+		ret = ndev->netdev_ops->ndo_open(ndev);
-+		if (ret < 0) {
-+			netdev_err(ndev, "failed to start: %d", ret);
-+			return;
-+		}
-+	}
-+
-+	dev_info(prueth->dev, "TI PRU ethernet now in Dual EMAC mode\n");
-+}
-+
- /* VLAN-tag PCP to priority queue map for EMAC/Switch/HSR/PRP used by driver
-  * Index is PCP val / 2.
-  *   low  - pcp 0..3 maps to Q4 for Host
-@@ -1313,6 +1467,15 @@ static void icssm_emac_ndo_set_rx_mode(struct net_device *ndev)
- 		icssm_emac_mc_filter_bin_allow(emac, hash);
- 	}
- 
-+	/* Add bridge device's MC addresses as well */
-+	if (prueth->hw_bridge_dev) {
-+		netdev_for_each_mc_addr(ha, prueth->hw_bridge_dev) {
-+			hash = icssm_emac_get_mc_hash(ha->addr,
-+						      emac->mc_filter_mask);
-+			icssm_emac_mc_filter_bin_allow(emac, hash);
-+		}
-+	}
-+
- unlock:
- 	spin_unlock_irqrestore(&emac->addr_lock, flags);
- }
-@@ -1375,6 +1538,7 @@ static enum hrtimer_restart icssm_emac_tx_timer_callback(struct hrtimer *timer)
- static int icssm_prueth_netdev_init(struct prueth *prueth,
- 				    struct device_node *eth_node)
- {
-+	const struct prueth_private_data *fw_data = prueth->fw_data;
- 	struct prueth_emac *emac;
- 	struct net_device *ndev;
- 	enum prueth_port port;
-@@ -1461,6 +1625,14 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Pause_BIT);
- 	phy_remove_link_mode(emac->phydev, ETHTOOL_LINK_MODE_Asym_Pause_BIT);
- 
-+	/* Protocol switching
-+	 * Enabling L2 Firmware offloading
-+	 */
-+	if (fw_data->support_switch) {
-+		ndev->features |= NETIF_F_HW_L2FW_DOFFLOAD;
-+		ndev->hw_features |= NETIF_F_HW_L2FW_DOFFLOAD;
-+	}
-+
- 	ndev->dev.of_node = eth_node;
- 	ndev->netdev_ops = &emac_netdev_ops;
- 
-@@ -1508,6 +1680,122 @@ bool icssm_prueth_sw_port_dev_check(const struct net_device *ndev)
- 	return false;
- }
- 
-+static void icssm_prueth_port_offload_fwd_mark_update(struct prueth *prueth)
-+{
-+	int set_val = 0;
-+	u8 all_slaves;
-+	int i;
-+
-+	all_slaves = BIT(PRUETH_PORT_MII0) | BIT(PRUETH_PORT_MII1);
-+
-+	if (prueth->br_members == all_slaves)
-+		set_val = 1;
-+
-+	dev_dbg(prueth->dev, "set offload_fwd_mark %d, mbrs=0x%x\n",
-+		set_val, prueth->br_members);
-+
-+	for (i = 0; i < PRUETH_NUM_MACS; i++)
-+		prueth->emac[i]->offload_fwd_mark = set_val;
-+
-+	/* Bridge is created, load switch firmware,
-+	 * if not already in that mode
-+	 */
-+	if (set_val && !PRUETH_IS_SWITCH(prueth))
-+		icssm_prueth_change_to_switch_mode(prueth);
-+
-+	/* Bridge is deleted, switch to Dual EMAC mode */
-+	if (!prueth->br_members && !PRUETH_IS_EMAC(prueth))
-+		icssm_prueth_change_to_emac_mode(prueth);
-+}
-+
-+static int icssm_prueth_ndev_port_link(struct net_device *ndev,
-+				       struct net_device *br_ndev)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	dev_dbg(prueth->dev, "%s: br_mbrs=0x%x %s\n",
-+		__func__, prueth->br_members, ndev->name);
-+
-+	if (!prueth->br_members) {
-+		prueth->hw_bridge_dev = br_ndev;
-+	} else {
-+		/* This is adding the port to a second bridge,
-+		 * this is unsupported
-+		 */
-+		if (prueth->hw_bridge_dev != br_ndev)
-+			return -EOPNOTSUPP;
-+	}
-+
-+	prueth->br_members |= BIT(emac->port_id);
-+
-+	icssm_prueth_port_offload_fwd_mark_update(prueth);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void icssm_prueth_ndev_port_unlink(struct net_device *ndev)
-+{
-+	struct prueth_emac *emac = netdev_priv(ndev);
-+	struct prueth *prueth = emac->prueth;
-+
-+	dev_dbg(prueth->dev, "emac_sw_ndev_port_unlink\n");
-+
-+	prueth->br_members &= ~BIT(emac->port_id);
-+
-+	icssm_prueth_port_offload_fwd_mark_update(prueth);
-+
-+	if (!prueth->br_members)
-+		prueth->hw_bridge_dev = NULL;
-+}
-+
-+static int icssm_prueth_ndev_event(struct notifier_block *unused,
-+				   unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
-+	struct netdev_notifier_changeupper_info *info;
-+	int ret = NOTIFY_DONE;
-+
-+	if (!icssm_prueth_sw_port_dev_check(ndev))
-+		return NOTIFY_DONE;
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		info = ptr;
-+		if (netif_is_bridge_master(info->upper_dev)) {
-+			if (info->linking)
-+				ret = icssm_prueth_ndev_port_link
-+					(ndev, info->upper_dev);
-+			else
-+				icssm_prueth_ndev_port_unlink(ndev);
-+		}
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
-+static int icssm_prueth_register_notifiers(struct prueth *prueth)
-+{
-+	int ret = 0;
-+
-+	prueth->prueth_netdevice_nb.notifier_call = icssm_prueth_ndev_event;
-+	ret = register_netdevice_notifier(&prueth->prueth_netdevice_nb);
-+	if (ret) {
-+		dev_err(prueth->dev,
-+			"register netdevice notifier failed ret: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = icssm_prueth_sw_register_notifiers(prueth);
-+	if (ret)
-+		unregister_netdevice_notifier(&prueth->prueth_netdevice_nb);
-+
-+	return ret;
-+}
-+
- static int icssm_prueth_probe(struct platform_device *pdev)
- {
- 	struct device_node *eth0_node = NULL, *eth1_node = NULL;
-@@ -1728,6 +2016,12 @@ static int icssm_prueth_probe(struct platform_device *pdev)
- 			prueth->emac[PRUETH_MAC1]->ndev;
- 	}
- 
-+	ret = icssm_prueth_register_notifiers(prueth);
-+	if (ret) {
-+		dev_err(dev, "can't register switchdev notifiers");
-+		goto netdev_unregister;
-+	}
-+
- 	dev_info(dev, "TI PRU ethernet driver initialized: %s EMAC mode\n",
- 		 (!eth0_node || !eth1_node) ? "single" : "dual");
- 
-@@ -1788,6 +2082,9 @@ static void icssm_prueth_remove(struct platform_device *pdev)
- 	struct device_node *eth_node;
- 	int i;
- 
-+	unregister_netdevice_notifier(&prueth->prueth_netdevice_nb);
-+	icssm_prueth_sw_unregister_notifiers(prueth);
-+
- 	for (i = 0; i < PRUETH_NUM_MACS; i++) {
- 		if (!prueth->registered_netdevs[i])
- 			continue;
-@@ -1887,11 +2184,16 @@ static struct prueth_private_data am335x_prueth_pdata = {
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am335x-pru0-prueth-fw.elf",
-+		.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am335x-pru0-prusw-fw.elf",
- 	},
- 	.fw_pru[PRUSS_PRU1] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am335x-pru1-prueth-fw.elf",
-+		.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am335x-pru1-prusw-fw.elf",
- 	},
-+	.support_switch = true,
- };
- 
- /* AM437x SoC-specific firmware data */
-@@ -1900,11 +2202,16 @@ static struct prueth_private_data am437x_prueth_pdata = {
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am437x-pru0-prueth-fw.elf",
-+		.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am437x-pru0-prusw-fw.elf",
- 	},
- 	.fw_pru[PRUSS_PRU1] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am437x-pru1-prueth-fw.elf",
-+		.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am437x-pru1-prusw-fw.elf",
- 	},
-+	.support_switch = true,
- };
- 
- /* AM57xx SoC-specific firmware data */
-@@ -1913,11 +2220,17 @@ static struct prueth_private_data am57xx_prueth_pdata = {
- 	.fw_pru[PRUSS_PRU0] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am57xx-pru0-prueth-fw.elf",
-+	.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am57xx-pru0-prusw-fw.elf",
- 	},
- 	.fw_pru[PRUSS_PRU1] = {
- 		.fw_name[PRUSS_ETHTYPE_EMAC] =
- 			"ti-pruss/am57xx-pru1-prueth-fw.elf",
-+		.fw_name[PRUSS_ETHTYPE_SWITCH] =
-+			"ti-pruss/am57xx-pru1-prusw-fw.elf",
-+
- 	},
-+	.support_switch = true,
- };
- 
- static const struct of_device_id prueth_dt_match[] = {
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.h b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-index c98ed2cd76e7..a4e3d0ac96c7 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.h
-@@ -189,10 +189,12 @@ struct prueth_fw_offsets {
-  * struct prueth_private_data - PRU Ethernet private data
-  * @driver_data: PRU Ethernet device name
-  * @fw_pru: firmware names to be used for PRUSS ethernet usecases
-+ * @support_switch: boolean to indicate if switch is enabled
-  */
- struct prueth_private_data {
- 	enum pruss_device driver_data;
- 	const struct prueth_firmware fw_pru[PRUSS_NUM_PRUS];
-+	bool support_switch;
- };
- 
- struct prueth_emac_stats {
-@@ -240,6 +242,7 @@ struct prueth_emac {
- 
- 	struct hrtimer tx_hrtimer;
- 	struct prueth_emac_stats stats;
-+	int offload_fwd_mark;
- };
- 
- struct prueth {
-@@ -268,8 +271,11 @@ struct prueth {
- 	unsigned int eth_type;
- 	size_t ocmc_ram_size;
- 	u8 emac_configured;
-+	u8 br_members;
- };
- 
-+extern const struct prueth_queue_desc queue_descs[][NUM_QUEUES];
-+
- void icssm_parse_packet_info(struct prueth *prueth, u32 buffer_descriptor,
- 			     struct prueth_packet_info *pkt_info);
- int icssm_emac_rx_packet(struct prueth_emac *emac, u16 *bd_rd_ptr,
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
-index fdd349a8bc72..e837e127510b 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.c
-@@ -25,6 +25,176 @@ struct icssm_prueth_sw_fdb_work {
- 	int event;
- };
- 
-+const struct prueth_queue_info sw_queue_infos[][NUM_QUEUES] = {
-+	[PRUETH_PORT_QUEUE_HOST] = {
-+		[PRUETH_QUEUE1] = {
-+			P0_Q1_BUFFER_OFFSET,
-+			P0_QUEUE_DESC_OFFSET,
-+			P0_Q1_BD_OFFSET,
-+			P0_Q1_BD_OFFSET + ((HOST_QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P0_Q2_BUFFER_OFFSET,
-+			P0_QUEUE_DESC_OFFSET + 8,
-+			P0_Q2_BD_OFFSET,
-+			P0_Q2_BD_OFFSET + ((HOST_QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P0_Q3_BUFFER_OFFSET,
-+			P0_QUEUE_DESC_OFFSET + 16,
-+			P0_Q3_BD_OFFSET,
-+			P0_Q3_BD_OFFSET + ((HOST_QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P0_Q4_BUFFER_OFFSET,
-+			P0_QUEUE_DESC_OFFSET + 24,
-+			P0_Q4_BD_OFFSET,
-+			P0_Q4_BD_OFFSET + ((HOST_QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII0] = {
-+		[PRUETH_QUEUE1] = {
-+			P1_Q1_BUFFER_OFFSET,
-+			P1_Q1_BUFFER_OFFSET +
-+				((QUEUE_1_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P1_Q1_BD_OFFSET,
-+			P1_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P1_Q2_BUFFER_OFFSET,
-+			P1_Q2_BUFFER_OFFSET +
-+				((QUEUE_2_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P1_Q2_BD_OFFSET,
-+			P1_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P1_Q3_BUFFER_OFFSET,
-+			P1_Q3_BUFFER_OFFSET +
-+				((QUEUE_3_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P1_Q3_BD_OFFSET,
-+			P1_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P1_Q4_BUFFER_OFFSET,
-+			P1_Q4_BUFFER_OFFSET +
-+				((QUEUE_4_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P1_Q4_BD_OFFSET,
-+			P1_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII1] = {
-+		[PRUETH_QUEUE1] = {
-+			P2_Q1_BUFFER_OFFSET,
-+			P2_Q1_BUFFER_OFFSET +
-+				((QUEUE_1_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P2_Q1_BD_OFFSET,
-+			P2_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P2_Q2_BUFFER_OFFSET,
-+			P2_Q2_BUFFER_OFFSET +
-+				((QUEUE_2_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P2_Q2_BD_OFFSET,
-+			P2_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P2_Q3_BUFFER_OFFSET,
-+			P2_Q3_BUFFER_OFFSET +
-+				((QUEUE_3_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P2_Q3_BD_OFFSET,
-+			P2_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P2_Q4_BUFFER_OFFSET,
-+			P2_Q4_BUFFER_OFFSET +
-+				((QUEUE_4_SIZE - 1) * ICSS_BLOCK_SIZE),
-+			P2_Q4_BD_OFFSET,
-+			P2_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+};
-+
-+static const struct prueth_queue_info rx_queue_infos[][NUM_QUEUES] = {
-+	[PRUETH_PORT_QUEUE_HOST] = {
-+		[PRUETH_QUEUE1] = {
-+			P0_Q1_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET,
-+			P0_Q1_BD_OFFSET,
-+			P0_Q1_BD_OFFSET + ((HOST_QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P0_Q2_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 8,
-+			P0_Q2_BD_OFFSET,
-+			P0_Q2_BD_OFFSET + ((HOST_QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P0_Q3_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 16,
-+			P0_Q3_BD_OFFSET,
-+			P0_Q3_BD_OFFSET + ((HOST_QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P0_Q4_BUFFER_OFFSET,
-+			HOST_QUEUE_DESC_OFFSET + 24,
-+			P0_Q4_BD_OFFSET,
-+			P0_Q4_BD_OFFSET + ((HOST_QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII0] = {
-+		[PRUETH_QUEUE1] = {
-+			P1_Q1_BUFFER_OFFSET,
-+			P1_QUEUE_DESC_OFFSET,
-+			P1_Q1_BD_OFFSET,
-+			P1_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P1_Q2_BUFFER_OFFSET,
-+			P1_QUEUE_DESC_OFFSET + 8,
-+			P1_Q2_BD_OFFSET,
-+			P1_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P1_Q3_BUFFER_OFFSET,
-+			P1_QUEUE_DESC_OFFSET + 16,
-+			P1_Q3_BD_OFFSET,
-+			P1_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P1_Q4_BUFFER_OFFSET,
-+			P1_QUEUE_DESC_OFFSET + 24,
-+			P1_Q4_BD_OFFSET,
-+			P1_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+	[PRUETH_PORT_QUEUE_MII1] = {
-+		[PRUETH_QUEUE1] = {
-+			P2_Q1_BUFFER_OFFSET,
-+			P2_QUEUE_DESC_OFFSET,
-+			P2_Q1_BD_OFFSET,
-+			P2_Q1_BD_OFFSET + ((QUEUE_1_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE2] = {
-+			P2_Q2_BUFFER_OFFSET,
-+			P2_QUEUE_DESC_OFFSET + 8,
-+			P2_Q2_BD_OFFSET,
-+			P2_Q2_BD_OFFSET + ((QUEUE_2_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE3] = {
-+			P2_Q3_BUFFER_OFFSET,
-+			P2_QUEUE_DESC_OFFSET + 16,
-+			P2_Q3_BD_OFFSET,
-+			P2_Q3_BD_OFFSET + ((QUEUE_3_SIZE - 1) * BD_SIZE),
-+		},
-+		[PRUETH_QUEUE4] = {
-+			P2_Q4_BUFFER_OFFSET,
-+			P2_QUEUE_DESC_OFFSET + 24,
-+			P2_Q4_BD_OFFSET,
-+			P2_Q4_BD_OFFSET + ((QUEUE_4_SIZE - 1) * BD_SIZE),
-+		},
-+	},
-+};
-+
- void icssm_prueth_sw_free_fdb_table(struct prueth *prueth)
- {
- 	if (prueth->emac_configured)
-@@ -617,3 +787,218 @@ int icssm_prueth_sw_purge_fdb(struct prueth_emac *emac)
- 	queue_work(system_long_wq, &fdb_work->work);
- 	return 0;
- }
-+
-+void icssm_prueth_sw_hostconfig(struct prueth *prueth)
-+{
-+	void __iomem *dram1_base = prueth->mem[PRUETH_MEM_DRAM1].va;
-+	void __iomem *dram;
-+
-+	/* queue information table */
-+	dram = dram1_base + P0_Q1_RX_CONTEXT_OFFSET;
-+	memcpy_toio(dram, sw_queue_infos[PRUETH_PORT_QUEUE_HOST],
-+		    sizeof(sw_queue_infos[PRUETH_PORT_QUEUE_HOST]));
-+
-+	/* buffer descriptor offset table*/
-+	dram = dram1_base + QUEUE_DESCRIPTOR_OFFSET_ADDR;
-+	writew(P0_Q1_BD_OFFSET, dram);
-+	writew(P0_Q2_BD_OFFSET, dram + 2);
-+	writew(P0_Q3_BD_OFFSET, dram + 4);
-+	writew(P0_Q4_BD_OFFSET, dram + 6);
-+
-+	/* buffer offset table */
-+	dram = dram1_base + QUEUE_OFFSET_ADDR;
-+	writew(P0_Q1_BUFFER_OFFSET, dram);
-+	writew(P0_Q2_BUFFER_OFFSET, dram + 2);
-+	writew(P0_Q3_BUFFER_OFFSET, dram + 4);
-+	writew(P0_Q4_BUFFER_OFFSET, dram + 6);
-+
-+	/* queue size lookup table */
-+	dram = dram1_base + QUEUE_SIZE_ADDR;
-+	writew(HOST_QUEUE_1_SIZE, dram);
-+	writew(HOST_QUEUE_1_SIZE, dram + 2);
-+	writew(HOST_QUEUE_1_SIZE, dram + 4);
-+	writew(HOST_QUEUE_1_SIZE, dram + 6);
-+
-+	/* queue table */
-+	dram = dram1_base + P0_QUEUE_DESC_OFFSET;
-+	memcpy_toio(dram, queue_descs[PRUETH_PORT_QUEUE_HOST],
-+		    sizeof(queue_descs[PRUETH_PORT_QUEUE_HOST]));
-+}
-+
-+static int icssm_prueth_sw_port_config(struct prueth *prueth,
-+				       enum prueth_port port_id)
-+{
-+	unsigned int tx_context_ofs_addr, rx_context_ofs, queue_desc_ofs;
-+	void __iomem *dram, *dram_base, *dram_mac;
-+	struct prueth_emac *emac;
-+	void __iomem *dram1_base;
-+
-+	dram1_base = prueth->mem[PRUETH_MEM_DRAM1].va;
-+	emac = prueth->emac[port_id - 1];
-+	switch (port_id) {
-+	case PRUETH_PORT_MII0:
-+		tx_context_ofs_addr     = TX_CONTEXT_P1_Q1_OFFSET_ADDR;
-+		rx_context_ofs          = P1_Q1_RX_CONTEXT_OFFSET;
-+		queue_desc_ofs          = P1_QUEUE_DESC_OFFSET;
-+
-+		/* for switch PORT MII0 mac addr is in DRAM0. */
-+		dram_mac = prueth->mem[PRUETH_MEM_DRAM0].va;
-+		break;
-+	case PRUETH_PORT_MII1:
-+		tx_context_ofs_addr     = TX_CONTEXT_P2_Q1_OFFSET_ADDR;
-+		rx_context_ofs          = P2_Q1_RX_CONTEXT_OFFSET;
-+		queue_desc_ofs          = P2_QUEUE_DESC_OFFSET;
-+
-+		/* for switch PORT MII1 mac addr is in DRAM1. */
-+		dram_mac = prueth->mem[PRUETH_MEM_DRAM1].va;
-+		break;
-+	default:
-+		netdev_err(emac->ndev, "invalid port\n");
-+		return -EINVAL;
-+	}
-+
-+	/* setup mac address */
-+	memcpy_toio(dram_mac + PORT_MAC_ADDR, emac->mac_addr, 6);
-+
-+	/* Remaining switch port configs are in DRAM1 */
-+	dram_base = prueth->mem[PRUETH_MEM_DRAM1].va;
-+
-+	/* queue information table */
-+	memcpy_toio(dram_base + tx_context_ofs_addr,
-+		    sw_queue_infos[port_id],
-+		    sizeof(sw_queue_infos[port_id]));
-+
-+	memcpy_toio(dram_base + rx_context_ofs,
-+		    rx_queue_infos[port_id],
-+		    sizeof(rx_queue_infos[port_id]));
-+
-+	/* buffer descriptor offset table*/
-+	dram = dram_base + QUEUE_DESCRIPTOR_OFFSET_ADDR +
-+	       (port_id * NUM_QUEUES * sizeof(u16));
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE1].buffer_desc_offset, dram);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE2].buffer_desc_offset,
-+	       dram + 2);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE3].buffer_desc_offset,
-+	       dram + 4);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE4].buffer_desc_offset,
-+	       dram + 6);
-+
-+	/* buffer offset table */
-+	dram = dram_base + QUEUE_OFFSET_ADDR +
-+	       port_id * NUM_QUEUES * sizeof(u16);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE1].buffer_offset, dram);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE2].buffer_offset,
-+	       dram + 2);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE3].buffer_offset,
-+	       dram + 4);
-+	writew(sw_queue_infos[port_id][PRUETH_QUEUE4].buffer_offset,
-+	       dram + 6);
-+
-+	/* queue size lookup table */
-+	dram = dram_base + QUEUE_SIZE_ADDR +
-+	       port_id * NUM_QUEUES * sizeof(u16);
-+	writew(QUEUE_1_SIZE, dram);
-+	writew(QUEUE_2_SIZE, dram + 2);
-+	writew(QUEUE_3_SIZE, dram + 4);
-+	writew(QUEUE_4_SIZE, dram + 6);
-+
-+	/* queue table */
-+	memcpy_toio(dram_base + queue_desc_ofs,
-+		    &queue_descs[port_id][0],
-+		    4 * sizeof(queue_descs[port_id][0]));
-+
-+	emac->rx_queue_descs = dram1_base + P0_QUEUE_DESC_OFFSET;
-+	emac->tx_queue_descs = dram1_base +
-+		rx_queue_infos[port_id][PRUETH_QUEUE1].queue_desc_offset;
-+
-+	return 0;
-+}
-+
-+int icssm_prueth_sw_emac_config(struct prueth_emac *emac)
-+{
-+	struct prueth *prueth = emac->prueth;
-+	u32 sharedramaddr, ocmcaddr;
-+	int ret;
-+
-+	/* PRU needs local shared RAM address for C28 */
-+	sharedramaddr = ICSS_LOCAL_SHARED_RAM;
-+	/* PRU needs real global OCMC address for C30*/
-+	ocmcaddr = (u32)prueth->mem[PRUETH_MEM_OCMC].pa;
-+
-+	if (prueth->emac_configured & BIT(emac->port_id))
-+		return 0;
-+
-+	ret = icssm_prueth_sw_port_config(prueth, emac->port_id);
-+	if (ret)
-+		return ret;
-+
-+	if (!prueth->emac_configured) {
-+		/* Set in constant table C28 of PRUn to ICSS Shared memory */
-+		pru_rproc_set_ctable(prueth->pru0, PRU_C28, sharedramaddr);
-+		pru_rproc_set_ctable(prueth->pru1, PRU_C28, sharedramaddr);
-+
-+		/* Set in constant table C30 of PRUn to OCMC memory */
-+		pru_rproc_set_ctable(prueth->pru0, PRU_C30, ocmcaddr);
-+		pru_rproc_set_ctable(prueth->pru1, PRU_C30, ocmcaddr);
-+	}
-+	return 0;
-+}
-+
-+int icssm_prueth_sw_boot_prus(struct prueth *prueth, struct net_device *ndev)
-+{
-+	const struct prueth_firmware *pru_firmwares;
-+	const char *fw_name, *fw_name1;
-+	int ret;
-+
-+	if (prueth->emac_configured)
-+		return 0;
-+
-+	pru_firmwares = &prueth->fw_data->fw_pru[PRUSS_PRU0];
-+	fw_name = pru_firmwares->fw_name[prueth->eth_type];
-+	pru_firmwares = &prueth->fw_data->fw_pru[PRUSS_PRU1];
-+	fw_name1 = pru_firmwares->fw_name[prueth->eth_type];
-+
-+	ret = rproc_set_firmware(prueth->pru0, fw_name);
-+	if (ret) {
-+		netdev_err(ndev, "failed to set PRU0 firmware %s: %d\n",
-+			   fw_name, ret);
-+		return ret;
-+	}
-+	ret = rproc_boot(prueth->pru0);
-+	if (ret) {
-+		netdev_err(ndev, "failed to boot PRU0: %d\n", ret);
-+		return ret;
-+	}
-+
-+	ret = rproc_set_firmware(prueth->pru1, fw_name1);
-+	if (ret) {
-+		netdev_err(ndev, "failed to set PRU1 firmware %s: %d\n",
-+			   fw_name1, ret);
-+		goto rproc0_shutdown;
-+	}
-+	ret = rproc_boot(prueth->pru1);
-+	if (ret) {
-+		netdev_err(ndev, "failed to boot PRU1: %d\n", ret);
-+		goto rproc0_shutdown;
-+	}
-+
-+	return 0;
-+
-+rproc0_shutdown:
-+	rproc_shutdown(prueth->pru0);
-+	return ret;
-+}
-+
-+int icssm_prueth_sw_shutdown_prus(struct prueth_emac *emac,
-+				  struct net_device *ndev)
-+{
-+	struct prueth *prueth = emac->prueth;
-+
-+	if (prueth->emac_configured)
-+		return 0;
-+
-+	rproc_shutdown(prueth->pru0);
-+	rproc_shutdown(prueth->pru1);
-+
-+	return 0;
-+}
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
-index d1a092b173a5..fa71b48ea63e 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_prueth_switch.h
-@@ -16,6 +16,8 @@ void icssm_prueth_sw_port_set_stp_state(struct prueth *prueth,
- u8 icssm_prueth_sw_port_get_stp_state(struct prueth *prueth,
- 				      enum prueth_port port);
- 
-+extern const struct prueth_queue_info sw_queue_infos[][4];
-+
- void icssm_prueth_sw_fdb_tbl_init(struct prueth *prueth);
- int icssm_prueth_sw_init_fdb_table(struct prueth *prueth);
- void icssm_prueth_sw_free_fdb_table(struct prueth *prueth);
-@@ -26,4 +28,10 @@ void icssm_prueth_sw_fdb_del(struct prueth_emac *emac,
- 			     struct switchdev_notifier_fdb_info *fdb);
- int icssm_prueth_sw_learn_fdb(struct prueth_emac *emac, u8 *src_mac);
- int icssm_prueth_sw_purge_fdb(struct prueth_emac *emac);
-+void icssm_prueth_sw_hostconfig(struct prueth *prueth);
-+int icssm_prueth_sw_emac_config(struct prueth_emac *emac);
-+int icssm_prueth_sw_boot_prus(struct prueth *prueth, struct net_device *ndev);
-+int icssm_prueth_sw_shutdown_prus(struct prueth_emac *emac,
-+				  struct net_device *ndev);
-+
- #endif /* __NET_TI_PRUETH_SWITCH_H */
-diff --git a/drivers/net/ethernet/ti/icssm/icssm_switch.h b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-index 44b8ae06df9c..6469dda7ad66 100644
---- a/drivers/net/ethernet/ti/icssm/icssm_switch.h
-+++ b/drivers/net/ethernet/ti/icssm/icssm_switch.h
-@@ -117,6 +117,15 @@
- #define STATISTICS_OFFSET	0x1F00
- #define STAT_SIZE		0x98
- 
-+/* The following offsets indicate which sections of the memory are used
-+ * for switch internal tasks
-+ */
-+#define SWITCH_SPECIFIC_DRAM0_START_SIZE		0x100
-+#define SWITCH_SPECIFIC_DRAM0_START_OFFSET		0x1F00
-+
-+#define SWITCH_SPECIFIC_DRAM1_START_SIZE		0x300
-+#define SWITCH_SPECIFIC_DRAM1_START_OFFSET		0x1D00
-+
- /* Offset for storing
-  * 1. Storm Prevention Params
-  * 2. PHY Speed Offset
-@@ -146,6 +155,74 @@
- /* 4 bytes ? */
- #define STP_INVALID_STATE_OFFSET	(STATISTICS_OFFSET + STAT_SIZE + 33)
- 
-+/* DRAM1 Offsets for Switch */
-+/* 4 queue descriptors for port 0 (host receive) */
-+#define P0_QUEUE_DESC_OFFSET		0x1E7C
-+#define P1_QUEUE_DESC_OFFSET		0x1E9C
-+#define P2_QUEUE_DESC_OFFSET		0x1EBC
-+/* collision descriptor of port 0 */
-+#define P0_COL_QUEUE_DESC_OFFSET	0x1E64
-+#define P1_COL_QUEUE_DESC_OFFSET	0x1E6C
-+#define P2_COL_QUEUE_DESC_OFFSET	0x1E74
-+/* Collision Status Register
-+ *    P0: bit 0 is pending flag, bit 1..2 indicates which queue,
-+ *    P1: bit 8 is pending flag, 9..10 is queue number
-+ *    P2: bit 16 is pending flag, 17..18 is queue number, remaining bits are 0.
-+ */
-+#define COLLISION_STATUS_ADDR		0x1E60
-+
-+#define INTERFACE_MAC_ADDR		0x1E58
-+#define P2_MAC_ADDR			0x1E50
-+#define P1_MAC_ADDR			0x1E48
-+
-+#define QUEUE_SIZE_ADDR			0x1E30
-+#define QUEUE_OFFSET_ADDR		0x1E18
-+#define QUEUE_DESCRIPTOR_OFFSET_ADDR	0x1E00
-+
-+#define COL_RX_CONTEXT_P2_OFFSET_ADDR	(COL_RX_CONTEXT_P1_OFFSET_ADDR + 12)
-+#define COL_RX_CONTEXT_P1_OFFSET_ADDR	(COL_RX_CONTEXT_P0_OFFSET_ADDR + 12)
-+#define COL_RX_CONTEXT_P0_OFFSET_ADDR	(P2_Q4_RX_CONTEXT_OFFSET + 8)
-+
-+/* Port 2 Rx Context */
-+#define P2_Q4_RX_CONTEXT_OFFSET		(P2_Q3_RX_CONTEXT_OFFSET + 8)
-+#define P2_Q3_RX_CONTEXT_OFFSET		(P2_Q2_RX_CONTEXT_OFFSET + 8)
-+#define P2_Q2_RX_CONTEXT_OFFSET		(P2_Q1_RX_CONTEXT_OFFSET + 8)
-+#define P2_Q1_RX_CONTEXT_OFFSET		RX_CONTEXT_P2_Q1_OFFSET_ADDR
-+#define RX_CONTEXT_P2_Q1_OFFSET_ADDR	(P1_Q4_RX_CONTEXT_OFFSET + 8)
-+
-+/* Port 1 Rx Context */
-+#define P1_Q4_RX_CONTEXT_OFFSET		(P1_Q3_RX_CONTEXT_OFFSET + 8)
-+#define P1_Q3_RX_CONTEXT_OFFSET		(P1_Q2_RX_CONTEXT_OFFSET + 8)
-+#define P1_Q2_RX_CONTEXT_OFFSET		(P1_Q1_RX_CONTEXT_OFFSET + 8)
-+#define P1_Q1_RX_CONTEXT_OFFSET		(RX_CONTEXT_P1_Q1_OFFSET_ADDR)
-+#define RX_CONTEXT_P1_Q1_OFFSET_ADDR	(P0_Q4_RX_CONTEXT_OFFSET + 8)
-+
-+/* Host Port Rx Context */
-+#define P0_Q4_RX_CONTEXT_OFFSET		(P0_Q3_RX_CONTEXT_OFFSET + 8)
-+#define P0_Q3_RX_CONTEXT_OFFSET		(P0_Q2_RX_CONTEXT_OFFSET + 8)
-+#define P0_Q2_RX_CONTEXT_OFFSET		(P0_Q1_RX_CONTEXT_OFFSET + 8)
-+#define P0_Q1_RX_CONTEXT_OFFSET		RX_CONTEXT_P0_Q1_OFFSET_ADDR
-+#define RX_CONTEXT_P0_Q1_OFFSET_ADDR	(COL_TX_CONTEXT_P2_Q1_OFFSET_ADDR + 8)
-+
-+/* Port 2 Tx Collision Context */
-+#define COL_TX_CONTEXT_P2_Q1_OFFSET_ADDR (COL_TX_CONTEXT_P1_Q1_OFFSET_ADDR + 8)
-+/* Port 1 Tx Collision Context */
-+#define COL_TX_CONTEXT_P1_Q1_OFFSET_ADDR (P2_Q4_TX_CONTEXT_OFFSET + 8)
-+
-+/* Port 2 */
-+#define P2_Q4_TX_CONTEXT_OFFSET		(P2_Q3_TX_CONTEXT_OFFSET + 8)
-+#define P2_Q3_TX_CONTEXT_OFFSET		(P2_Q2_TX_CONTEXT_OFFSET + 8)
-+#define P2_Q2_TX_CONTEXT_OFFSET		(P2_Q1_TX_CONTEXT_OFFSET + 8)
-+#define P2_Q1_TX_CONTEXT_OFFSET		TX_CONTEXT_P2_Q1_OFFSET_ADDR
-+#define TX_CONTEXT_P2_Q1_OFFSET_ADDR	(P1_Q4_TX_CONTEXT_OFFSET + 8)
-+
-+/* Port 1 */
-+#define P1_Q4_TX_CONTEXT_OFFSET		(P1_Q3_TX_CONTEXT_OFFSET + 8)
-+#define P1_Q3_TX_CONTEXT_OFFSET		(P1_Q2_TX_CONTEXT_OFFSET + 8)
-+#define P1_Q2_TX_CONTEXT_OFFSET		(P1_Q1_TX_CONTEXT_OFFSET + 8)
-+#define P1_Q1_TX_CONTEXT_OFFSET		TX_CONTEXT_P1_Q1_OFFSET_ADDR
-+#define TX_CONTEXT_P1_Q1_OFFSET_ADDR	SWITCH_SPECIFIC_DRAM1_START_OFFSET
-+
- /* DRAM Offsets for EMAC
-  * Present on Both DRAM0 and DRAM1
-  */
--- 
-2.43.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
