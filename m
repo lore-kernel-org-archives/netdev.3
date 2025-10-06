@@ -1,87 +1,146 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx13.kaspersky-labs.com (mx13.kaspersky-labs.com [91.103.66.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E662C2363;
-	Mon,  6 Oct 2025 13:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ADE274FC2;
+	Mon,  6 Oct 2025 13:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.103.66.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759758121; cv=none; b=ISwATG+0cgyRiJtWBz8qW5nfUZNFONq6mPbdeWnoC8huiFtV6C6Y+X4OTQutTqTK1pndT+2Lo0jge3y5tulIh8u4FJzVonocd8Fx0SF7+8PNPTeZfQXQgIqxwyEmZTgjMsTAUR2kNCp32HtA3a7o4YfibhjHfNZKb23BMacCYJY=
+	t=1759758476; cv=none; b=RoEly4VMuNDq3gU100PmmRi6mR2MEGNBfOsaxLr+w4K7xKw7WuIU9g8fjI3UrML0TFNfPH5GnDc73uxhoULypT6/YWKhcki0AFcgNhzTejhV+nfhSHcXGpj12D/WBo+f1ZJ/23Td4QGSeP3oU2A0/SiqJzdxc9iY3mCiYsunPec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759758121; c=relaxed/simple;
-	bh=SvGNA3biD3p7PNApXQAQZfYrxtxMq+LnJ/RTYtZRyMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1hYyaoBl0j6pesXCCuhwqIg2g0AWRZDBfH7JJKEzoI2ZthQAgSZCoJSuORJdy0wgPcjdxOFIeTj1DSlMYxsIAKE5PrgyenzQf4PSUWsKzJoU1JyVaOPCVp6wxnoTGqGG+2XSngh5fD9IuIStn2vZ49uiso9lprPkrMluycLW1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=jb2neMW/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1759758476; c=relaxed/simple;
+	bh=TAG55uiiUbhrwQ+QhBag41HYjSMXPzpiS1Ng4Z7Kgew=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lc0vIBJC/Er50/hvUINfnPh7Uzt78luk7uftPQO2Vyn2r1+wYOgS2/jJ0oC6lf6qsS9y1qDWIBsHzFP8al+yfvFjsYbL5LBrF6JRm+W1OXF90qAvZAt3woHpaIoY1lyetCDuI4xJwy9h7VuQNJj6gPdZRLeBmxRUxPspBdSgup4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=mNOxjnud; arc=none smtp.client-ip=91.103.66.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="jb2neMW/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LJFH/pv0PFB0lu4tjG3fuRh4o1/y+rQZOvxxLCSVrAo=; b=jb2neMW/DaCSMATGGmun/jxo9G
-	5udYjZmFg/6TlMIHS+9cWAeFLbQ8rxU4xmUh0gacchFcQwVycXqC8QODsZA8PWEGRAOv8SAAKY5Ql
-	q6BI+G5wu2c3ghl8ggsFeNHTDD9PJXh2Zsu9axiaGNT8TzWlkHTII2KFcgzorrnTSdhg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v5lCh-00AISc-TX; Mon, 06 Oct 2025 15:24:39 +0200
-Date: Mon, 6 Oct 2025 15:24:39 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	=?iso-8859-1?Q?K=F6ry?= Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>
-Subject: Re: [PATCH net] net: mdio: mdio-i2c: Hold the i2c bus lock during
- smbus transactions
-Message-ID: <13a81c5e-3dc8-44fe-aa04-5239c328c0c5@lunn.ch>
-References: <20251003070311.861135-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="mNOxjnud"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1759758471;
+	bh=JR8w+XJMq7rbMSTQ6INf3Mk3He6RC/flSOlBjnEJ1Jo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=mNOxjnud2l2D1t8Tn/PftDr+3JEO/Ia7lHT4AGndBNClJuHML6bqgerjTKsNyBCHW
+	 n1lu3n+dGmHvHrNp5I6jbTyYJrzApsqBNYsv2JISgEA7rtyTOTAqTIeyg/aL9YxOVH
+	 P4W4q52mvD2qWzOM7O9RGxPalsVb3g3tdIAoxOdT1qHg3Y6qEXwvoplJ4GxNIiVNMT
+	 7Iz7X0CjI1FQvQQGgYwHvGQKOXO04LPm9w9d96qzEcxkKyLYx6CcoE6mmrEhUrYoQu
+	 ULuwdbCaW8drNxrevNKyrE06Yft+rkrVoPWgDVwt3nirDbEt55FBRzcXfsaKZOjPm7
+	 QSnx1ca4vT65A==
+Received: from relay13.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay13.kaspersky-labs.com (Postfix) with ESMTP id 483B33E4517;
+	Mon,  6 Oct 2025 16:47:51 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub13.kaspersky-labs.com (Postfix) with ESMTPS id 0047E3E48AC;
+	Mon,  6 Oct 2025 16:47:48 +0300 (MSK)
+Received: from zhigulin-p.avp.ru (10.16.104.190) by HQMAILSRV2.avp.ru
+ (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.36; Mon, 6 Oct
+ 2025 16:47:48 +0300
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+CC: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Leon Romanovsky <leon@kernel.org>, Steffen Klassert
+	<steffen.klassert@secunet.com>, Cosmin Ratiu <cratiu@nvidia.com>, Ayush Sawal
+	<ayush.sawal@chelsio.com>, Harsh Jain <harsh@chelsio.com>, Atul Gupta
+	<atul.gupta@chelsio.com>, Herbert Xu <herbert@gondor.apana.org.au>, Ganesh
+ Goudar <ganeshgr@chelsio.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH net v2] net: cxgb4/ch_ipsec: fix potential use-after-free in ch_ipsec_xfrm_add_state() callback
+Date: Mon, 6 Oct 2025 16:47:20 +0300
+Message-ID: <20251006134726.1232320-1-Pavel.Zhigulin@kaspersky.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251003070311.861135-1-maxime.chevallier@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
+ (10.64.57.52)
+X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 10/06/2025 13:28:38
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 196841 [Oct 06 2025]
+X-KSE-AntiSpam-Info: Version: 6.1.1.11
+X-KSE-AntiSpam-Info: Envelope from: Pavel.Zhigulin@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 69 0.3.69
+ 3c9ee7b2dda8a12f0d3dc9d3a59fa717913bd018
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: kaspersky.com:5.0.1,7.1.1;zhigulin-p.avp.ru:5.0.1,7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/06/2025 13:30:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 10/6/2025 12:01:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/10/06 10:59:00
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/10/06 03:36:00 #27884816
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/10/06 10:59:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-On Fri, Oct 03, 2025 at 09:03:06AM +0200, Maxime Chevallier wrote:
-> When accessing an MDIO register using single-byte smbus accesses, we have to
-> perform 2 consecutive operations targeting the same address,
-> first accessing the MSB then the LSB of the 16 bit register:
-> 
->   read_1_byte(addr); <- returns MSB of register at address 'addr'
->   read_1_byte(addr); <- returns LSB
-> 
-> Some PHY devices present in SFP such as the Broadcom 5461 don't like
-> seeing foreign i2c transactions in-between these 2 smbus accesses, and
-> will return the MSB a second time when trying to read the LSB :
-> 
->   read_1_byte(addr); <- returns MSB
-> 
->   	i2c_transaction_for_other_device_on_the_bus();
-> 
->   read_1_byte(addr); <- returns MSB again
-> 
-> Given the already fragile nature of accessing PHYs/SFPs with single-byte
-> smbus accesses, it's safe to say that this Broadcom PHY may not be the
-> only one acting like this.
-> 
-> Let's therefore hold the i2c bus lock while performing our smbus
-> transactions to avoid interleaved accesses.
-> 
-> Fixes: d4bd3aca33c2 ("net: mdio: mdio-i2c: Add support for single-byte SMBus operations")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In ch_ipsec_xfrm_add_state() there is not check of try_module_get
+return value. It is very unlikely, but try_module_get() could return
+false value, which could cause use-after-free error.
+Conditions: The module count must be zero, and a module unload in
+progress. The thread doing the unload is blocked somewhere.
+Another thread makes a callback into the module for some request
+that (for instance) would need to create a kernel thread.
+It tries to get a reference for the thread.
+So try_module_get(THIS_MODULE) is the right call - and will fail here.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+This fix adds checking the result of try_module_get call
 
-    Andrew
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 6dad4e8ab3ec ("chcr: Add support for Inline IPSec")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+---
+v2: Remove redundant headers. Provide better description.
+v1: https://lore.kernel.org/all/20251001111646.806130-1-Pavel.Zhigulin@kaspersky.com/
+
+ .../net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c   | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c b/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
+index ecd9a0bd5e18..29dbc3b6e9e2 100644
+--- a/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
++++ b/drivers/net/ethernet/chelsio/inline_crypto/ch_ipsec/chcr_ipsec.c
+@@ -301,7 +301,8 @@ static int ch_ipsec_xfrm_add_state(struct net_device *dev,
+ 		sa_entry->esn = 1;
+ 	ch_ipsec_setkey(x, sa_entry);
+ 	x->xso.offload_handle = (unsigned long)sa_entry;
+-	try_module_get(THIS_MODULE);
++	if (unlikely(!try_module_get(THIS_MODULE)))
++		res = -ENODEV;
+ out:
+ 	return res;
+ }
+--
+2.43.0
+
