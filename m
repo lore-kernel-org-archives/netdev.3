@@ -1,386 +1,139 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010063.outbound.protection.outlook.com [52.101.85.63])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234012222A1;
-	Mon,  6 Oct 2025 10:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759745082; cv=fail; b=EOAt9glJVaITg3VoJ0cML8e+OU86kVkSKzKBNR1D54zr4wx3ksv6/meA5KyMKKF7TJmuy4qNPMKYwDUR1r7GgLYrvO4WPKNw45snOgnVmhmLdA7Mv8pJh/UDmNjWOk5USdeguI7Q+2Fwn+vE+xlhsJZOY3LIuTFka4dipm7c9pw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759745082; c=relaxed/simple;
-	bh=9sIMN7ppZiZ8+ZgtcaWQTQNzuzrlyEPTydZSBEEwJIY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BH4w+//9tBwrb8P6OWWVNTMa3Ua+3cZKgwvZUm1hKreFgGWxBtHHUkc2rxYsYjWNpg1TlPLNw6Ry5ktznzGnRBZr1DOSQHAyP8mJufHdMJACYmAr1QmrNcI/ZFGjDpvx/BEboGhhhetvckP36UYFk4bQN6KxCkdkORxhIVD3TDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tPTcQCIX; arc=fail smtp.client-ip=52.101.85.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8D4259C83;
+	Mon,  6 Oct 2025 10:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759747669; cv=none; b=tml4xtVwYWs7mwKu465pxaD9M1wNYmsIhsvhYxtQe8J4IYyauWoIwFyBOajIomUKRi+FbYs4heASeBAJovYd3/4qXOaToPNs2uKLWlmDGAxuudifybv/pb6Jz16G0BR61jbzOUzpKpUlXQcLdtryVBvskiTo1m9DbqRTPnXAq0k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759747669; c=relaxed/simple;
+	bh=FX1Lzu7+bvM9e8qmukvbO1hpPMzmlxgfp1qFo7AK/EQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=miDG5M6zH2nR+N4KhMGspZyicQXFTmDEh9ybswXjTlXN3HR+mLrxpPwebHxHysiiOqDHjMS/H8EKFHhQdNj4df9F7p4DBzVyfAygw1GCUL1GC9xovSEVk5dzcfGjbrAE8tYY2km5ucrFKZ8EY44tph7O1wcpbAS0IbE7mE7jP10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E597mMN/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tPTcQCIX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D6yJ96R9RkmcrKivcKBj7piTPwWPn7L9yzLaba312go30IwEwlicC1DpNjTgiZxr1IGkSe/zdYHziq0BPc6rd3ATARjPccJKs5XhaJQ+aIlxcMv2SfwsbGSjlJu0ktX40sw+yYL3f1dM7y+CGSxL8lxFqCFQIRxgCcXLB3gbeTuX4cX6BB8NWte/XkXyqLfTXsESPc/EsDSgJlgvqs5m2ibhsC6+53mGEQymX/LjtUL+9Cjq8k5vzD+EhzFlswM6Sp9WA35eKTMwqbbReIvlW8rUh5keKGA/RvCR/346dpxZrAkRQnBZGSJVlFJXM4iiPCWukJRo3PV+mQS4eOpyYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vyXBMvWNF34IOQwh3my2/HbCSb9rzIAq5LYWPFJ58P0=;
- b=IaFRYDw9MjOCfU2BsoZ4NOMQ2LbFVeJwUdRNzKt5aKlKmnAr/49EbE5sQiPdY6fBWx6UQvMAI6kb7o/DQRlE1fwY906d31MmUmt4pc6s8/KeqFaLZ8i8z+x8M/2tBNzbETcIKG2rXVthnEaMsCELDL2JWk6gWtwhLUp2avXTxgup8Y7MHxXZZJDsXE6+vXlDNQo1Pdl2cFqW9wZeFQkTKoiloKO5QhdXkKgLLlb3xnTBRVu5E+jkdfOMpEmzcddBUTVR0cMg+weZOVIfPjXE6YFASvGtRR1hNbcyeuWj3ZZcw9j3osBG+nJqnpmzhIUj+Cxdo8OiurKiMyLudz84Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vyXBMvWNF34IOQwh3my2/HbCSb9rzIAq5LYWPFJ58P0=;
- b=tPTcQCIX7lsW18EeVm+G2Fbw1aIn303LRlaq8Lm7HfPUh5wkidi1ua5QyYuRIHeoscpYfPnd6zuHm6su2qnWC9jHgSRfiTUGVs0KiL0EfmvVcJi4xYqCusRW6XxA5Bc2V6obj1gLAGXwmHILes1X7C18HfqoXe8vZedU6WuBaVo=
-Received: from SJ0PR03CA0173.namprd03.prod.outlook.com (2603:10b6:a03:338::28)
- by DS7PR12MB6240.namprd12.prod.outlook.com (2603:10b6:8:94::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Mon, 6 Oct
- 2025 10:04:31 +0000
-Received: from MWH0EPF000A6732.namprd04.prod.outlook.com
- (2603:10b6:a03:338:cafe::18) by SJ0PR03CA0173.outlook.office365.com
- (2603:10b6:a03:338::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9182.20 via Frontend Transport; Mon,
- 6 Oct 2025 10:04:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MWH0EPF000A6732.mail.protection.outlook.com (10.167.249.24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9203.9 via Frontend Transport; Mon, 6 Oct 2025 10:04:30 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 6 Oct
- 2025 03:02:42 -0700
-Received: from xcbalucerop40x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 6 Oct 2025 03:02:41 -0700
-From: <alejandro.lucero-palau@amd.com>
-To: <linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<dave.jiang@intel.com>
-CC: Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH v19 22/22] sfc: support pio mapping based on cxl
-Date: Mon, 6 Oct 2025 11:01:30 +0100
-Message-ID: <20251006100130.2623388-23-alejandro.lucero-palau@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251006100130.2623388-1-alejandro.lucero-palau@amd.com>
-References: <20251006100130.2623388-1-alejandro.lucero-palau@amd.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E597mMN/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD7C4CEF5;
+	Mon,  6 Oct 2025 10:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1759747669;
+	bh=FX1Lzu7+bvM9e8qmukvbO1hpPMzmlxgfp1qFo7AK/EQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E597mMN/x7YVkjNX1Bc0G8W7GHt89kk8u2seksXgi5q2H3Gw9DqBry/MoIgd7Hl/f
+	 QcuYuZ/DwxfZxXg04LwRoNwgtiAl8T7SsOstK7UXK8SyqkUmffohAckrwzORjzcTe+
+	 /i/1SV3Pn0pttPu3dXePy8Hlmyjuwx9fL801o6Qw=
+Date: Mon, 6 Oct 2025 12:47:45 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Eliav Farber <farbere@amazon.com>
+Cc: jdike@addtoit.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, tony.luck@intel.com, qiuxu.zhuo@intel.com,
+	james.morse@arm.com, rric@kernel.org, airlied@linux.ie,
+	daniel@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, robdclark@gmail.com,
+	sean@poorly.run, jdelvare@suse.com, linux@roeck-us.net,
+	linus.walleij@linaro.org, dmitry.torokhov@gmail.com, maz@kernel.org,
+	wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
+	snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
+	kuba@kernel.org, mcoquelin.stm32@gmail.com,
+	krzysztof.kozlowski@canonical.com, malattia@linux.it,
+	hdegoede@redhat.com, mgross@linux.intel.com, jejb@linux.ibm.com,
+	martin.petersen@oracle.com, sakari.ailus@linux.intel.com,
+	clm@fb.com, josef@toxicpanda.com, dsterba@suse.com, jack@suse.com,
+	tytso@mit.edu, adilger.kernel@dilger.ca, dushistov@mail.ru,
+	luc.vanoostenryck@gmail.com, rostedt@goodmis.org, pmladek@suse.com,
+	senozhatsky@chromium.org, andriy.shevchenko@linux.intel.com,
+	linux@rasmusvillemoes.dk, minchan@kernel.org, ngupta@vflare.org,
+	akpm@linux-foundation.org, yoshfuji@linux-ipv6.org,
+	dsahern@kernel.org, pablo@netfilter.org, kadlec@netfilter.org,
+	fw@strlen.de, jmaloy@redhat.com, ying.xue@windriver.com,
+	shuah@kernel.org, willy@infradead.org, sashal@kernel.org,
+	quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
+	David.Laight@aculab.com, herve.codina@bootlin.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
+	linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
+	linux-kselftest@vger.kernel.org, stable@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
+ min_t()/max_t() implementation
+Message-ID: <2025100648-capable-register-101b@gregkh>
+References: <20251003130006.41681-1-farbere@amazon.com>
+ <20251003130006.41681-8-farbere@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6732:EE_|DS7PR12MB6240:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ec11255-8b07-4a1a-6280-08de04bfbe03
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hcaj0SUYoYNafLC6L4UFdrvBw6dY+q/3bgj7c2s10MHNKnNkl8TDgCfV2Mli?=
- =?us-ascii?Q?NG9UqS79cWwBFxiYjw5g6kXSrDd4cdKX/hhwwUgCieI2pfk6rxZ+CYMu0D4w?=
- =?us-ascii?Q?PcdjxEo9873HdRPO73+JaVsONmQPLP4jLA7/l8DW++HpVi50FmR7If/cNvLp?=
- =?us-ascii?Q?01H8mN46X3r8IE5uD9m3EgWOpPw2oNwW24zjyGQFZ+UDYTsmQrN8XsHL+Kkv?=
- =?us-ascii?Q?SFRYYbZEgPKJo6zDY/GeCvJSulpzUXaZWslZM16b4GIS60SDf6HVOy0hG4hu?=
- =?us-ascii?Q?58MKHvBgHhQHo5rk+fJLE5EySfFT4ZhnIYxmLe7YMK4/DzWKHJq3xGHrKEni?=
- =?us-ascii?Q?K8G2vmoMSm25iOz05Ma+ldIgHD9JRB9QuJWiFM+a4bHT+obZqYu3oWvP/H7y?=
- =?us-ascii?Q?aL63WGr93oGo2w6XOeWYWJB/OFu0ojSXDkFCzK0ncM6bTYZ4Jc3xXena5Xfn?=
- =?us-ascii?Q?yvovuQ392f5XdDIa8RRLXAeTQIUn8s7RCZPkURKkAdEYnlWsY1vC8L//CDqi?=
- =?us-ascii?Q?S4MYLvPCZ5+BHyRw4H6RWeFfxTD+A0BLHIDkuXPldaW+gHHRqZEh8opCFfee?=
- =?us-ascii?Q?+3tFgxBIy65khwChJq70F1ieohb+M2UsaBm8UUhCrFBYZXHMdLSC9V2qXhWQ?=
- =?us-ascii?Q?CNH5v9yebbZmQyOsoL1L9YL7yiHQmkcG8CN9pF6Sy2vslXTht/XvPMJsz+bZ?=
- =?us-ascii?Q?LkfLb/BQnU2dDA+RqFX3RHLpdahsPUIiUCqUmSYhS268eNT2sCnkT0LUHCuD?=
- =?us-ascii?Q?8JfBBw3kmS1cRLZp4iItxUrYRSDzudoC5eEhMHKU7KeRhxITrP7/r8av7pmC?=
- =?us-ascii?Q?/fvbUejZ1vPKKJtvlCJs9Krk7Cj2R6VdvHbU0w0BzYIubejFoVZGChsxI65b?=
- =?us-ascii?Q?YhSixRiHm7xRu6oct7ikBrlfGt9AqGHmQ6hnkGGsWPbOkQhwUZhwfMvJM+xE?=
- =?us-ascii?Q?oCJlHXN+lfZHjVtnAjK2GIypV7nr7WbeIjkL4lE+iwPuIMHpglc9c5o1DSyK?=
- =?us-ascii?Q?GziRHc/gbDf4GnP/J/2FotLIm9HJRl1nZTfohQJvlZQSAVLV6hFKG0i2QrR5?=
- =?us-ascii?Q?7eBDY1KSKUHZtnkwO/fq9a2mdc7zwZsPk+6DlJH8zEzX8HuWtGbk2tn7zvJH?=
- =?us-ascii?Q?KOc7S54HtsfUIVdH6JGH1lEF8sTFuNo8GU9+7bOfVvL4QmnLVEcYs/s9rFAY?=
- =?us-ascii?Q?rCuDIqCRwqSV70TxOgz6fB0d3+hh0T5ZRH9RPHjFMwlxgTjFvJborX/OA3S+?=
- =?us-ascii?Q?Cp+0o9+nGOmaumm1ii698WsPxmG3HPnF7b2/RMJg0zhXzIgoZMzfNwUiFEdM?=
- =?us-ascii?Q?dfYeDdu8oh2uZOlVuaQ+bbPmyIl0u4lGO6PivxBfqJJDJS3dSLXfW5BMm6+G?=
- =?us-ascii?Q?6iyrTrS/mt9pzDgBR0Mhez5bygKXV95w2wTb2RRIWAP9qyPigcZ6VMrhqcck?=
- =?us-ascii?Q?TK33WJAo0PHFuIPxioOqKXuVoTezsIJB+Bc+0oRMls4tuUVhYZnkGqtLEonL?=
- =?us-ascii?Q?sfi3PtzSe4WPOjwvg2gXR1Sk2CpSxrufmkxDuNxLBcJ+7uI9DkXz66d7kWRV?=
- =?us-ascii?Q?pYeu6Mt4omEd5uHorn4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2025 10:04:30.4989
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ec11255-8b07-4a1a-6280-08de04bfbe03
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6732.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6240
+In-Reply-To: <20251003130006.41681-8-farbere@amazon.com>
 
-From: Alejandro Lucero <alucerop@amd.com>
+On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
+> From: Linus Torvalds <torvalds@linux-foundation.org>
+> 
+> [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
+> 
+> This simplifies the min_t() and max_t() macros by no longer making them
+> work in the context of a C constant expression.
+> 
+> That means that you can no longer use them for static initializers or
+> for array sizes in type definitions, but there were only a couple of
+> such uses, and all of them were converted (famous last words) to use
+> MIN_T/MAX_T instead.
+> 
+> Cc: David Laight <David.Laight@aculab.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
 
-A PIO buffer is a region of device memory to which the driver can write a
-packet for TX, with the device handling the transmit doorbell without
-requiring a DMA for getting the packet data, which helps reducing latency
-in certain exchanges. With CXL mem protocol this latency can be lowered
-further.
+Eliav, your testing infrastructure needs some work, this patch breaks
+the build on this kernel tree:
 
-With a device supporting CXL and successfully initialised, use the cxl
-region to map the memory range and use this mapping for PIO buffers.
+In file included from ./include/linux/kernel.h:16,
+                 from ./include/linux/list.h:9,
+                 from ./include/linux/wait.h:7,
+                 from ./include/linux/wait_bit.h:8,
+                 from ./include/linux/fs.h:6,
+                 from fs/erofs/internal.h:10,
+                 from fs/erofs/zdata.h:9,
+                 from fs/erofs/zdata.c:6:
+fs/erofs/zdata.c: In function ‘z_erofs_decompress_pcluster’:
+fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array ‘pages_onstack’ [-Werror=vla]
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |                                                             ^~~~
+./include/linux/minmax.h:49:23: note: in definition of macro ‘__cmp_once_unique’
+   49 |         ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
+      |                       ^
+./include/linux/minmax.h:164:27: note: in expansion of macro ‘__cmp_once’
+  164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
+      |                           ^~~~~~~~~~
+fs/erofs/zdata.h:185:9: note: in expansion of macro ‘min_t’
+  185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page *), 96U)
+      |         ^~~~~
+fs/erofs/zdata.c:847:36: note: in expansion of macro ‘Z_EROFS_VMAP_ONSTACK_PAGES’
+  847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
 
-Add the disabling of those CXL-based PIO buffers if the callback for
-potential cxl endpoint removal by the CXL code happens.
 
-Signed-off-by: Alejandro Lucero <alucerop@amd.com>
----
- drivers/net/ethernet/sfc/ef10.c       | 50 +++++++++++++++++++++++----
- drivers/net/ethernet/sfc/efx.h        |  1 -
- drivers/net/ethernet/sfc/efx_cxl.c    | 31 ++++++++++++++---
- drivers/net/ethernet/sfc/net_driver.h |  2 ++
- drivers/net/ethernet/sfc/nic.h        |  3 ++
- 5 files changed, 75 insertions(+), 12 deletions(-)
+I'll drop this whole series, please do a bit more testing before sending
+out a new version.
 
-diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
-index 47349c148c0c..1a13fdbbc1b3 100644
---- a/drivers/net/ethernet/sfc/ef10.c
-+++ b/drivers/net/ethernet/sfc/ef10.c
-@@ -24,6 +24,7 @@
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- #include <net/udp_tunnel.h>
-+#include "efx_cxl.h"
- 
- /* Hardware control for EF10 architecture including 'Huntington'. */
- 
-@@ -106,7 +107,7 @@ static int efx_ef10_get_vf_index(struct efx_nic *efx)
- 
- static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- {
--	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V4_OUT_LEN);
-+	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_CAPABILITIES_V7_OUT_LEN);
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	size_t outlen;
- 	int rc;
-@@ -177,6 +178,12 @@ static int efx_ef10_init_datapath_caps(struct efx_nic *efx)
- 			  efx->num_mac_stats);
- 	}
- 
-+	if (outlen < MC_CMD_GET_CAPABILITIES_V7_OUT_LEN)
-+		nic_data->datapath_caps3 = 0;
-+	else
-+		nic_data->datapath_caps3 = MCDI_DWORD(outbuf,
-+						      GET_CAPABILITIES_V7_OUT_FLAGS3);
-+
- 	return 0;
- }
- 
-@@ -919,6 +926,9 @@ static void efx_ef10_forget_old_piobufs(struct efx_nic *efx)
- static void efx_ef10_remove(struct efx_nic *efx)
- {
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
-+#ifdef CONFIG_SFC_CXL
-+	struct efx_probe_data *probe_data;
-+#endif
- 	int rc;
- 
- #ifdef CONFIG_SFC_SRIOV
-@@ -949,7 +959,12 @@ static void efx_ef10_remove(struct efx_nic *efx)
- 
- 	efx_mcdi_rx_free_indir_table(efx);
- 
-+#ifdef CONFIG_SFC_CXL
-+	probe_data = container_of(efx, struct efx_probe_data, efx);
-+	if (nic_data->wc_membase && !probe_data->cxl_pio_in_use)
-+#else
- 	if (nic_data->wc_membase)
-+#endif
- 		iounmap(nic_data->wc_membase);
- 
- 	rc = efx_mcdi_free_vis(efx);
-@@ -1140,6 +1155,9 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	unsigned int channel_vis, pio_write_vi_base, max_vis;
- 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
- 	unsigned int uc_mem_map_size, wc_mem_map_size;
-+#ifdef CONFIG_SFC_CXL
-+	struct efx_probe_data *probe_data;
-+#endif
- 	void __iomem *membase;
- 	int rc;
- 
-@@ -1263,8 +1281,25 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 	iounmap(efx->membase);
- 	efx->membase = membase;
- 
--	/* Set up the WC mapping if needed */
--	if (wc_mem_map_size) {
-+	if (!wc_mem_map_size)
-+		goto skip_pio;
-+
-+	/* Set up the WC mapping */
-+
-+#ifdef CONFIG_SFC_CXL
-+	probe_data = container_of(efx, struct efx_probe_data, efx);
-+	if ((nic_data->datapath_caps3 &
-+	    (1 << MC_CMD_GET_CAPABILITIES_V7_OUT_CXL_CONFIG_ENABLE_LBN)) &&
-+	    probe_data->cxl_pio_initialised) {
-+		/* Using PIO through CXL mapping? */
-+		nic_data->pio_write_base = probe_data->cxl->ctpio_cxl +
-+					   (pio_write_vi_base * efx->vi_stride +
-+					    ER_DZ_TX_PIOBUF - uc_mem_map_size);
-+		probe_data->cxl_pio_in_use = true;
-+	} else
-+#endif
-+	{
-+		/* Using legacy PIO BAR mapping */
- 		nic_data->wc_membase = ioremap_wc(efx->membase_phys +
- 						  uc_mem_map_size,
- 						  wc_mem_map_size);
-@@ -1279,12 +1314,13 @@ static int efx_ef10_dimension_resources(struct efx_nic *efx)
- 			nic_data->wc_membase +
- 			(pio_write_vi_base * efx->vi_stride + ER_DZ_TX_PIOBUF -
- 			 uc_mem_map_size);
--
--		rc = efx_ef10_link_piobufs(efx);
--		if (rc)
--			efx_ef10_free_piobufs(efx);
- 	}
- 
-+	rc = efx_ef10_link_piobufs(efx);
-+	if (rc)
-+		efx_ef10_free_piobufs(efx);
-+
-+skip_pio:
- 	netif_dbg(efx, probe, efx->net_dev,
- 		  "memory BAR at %pa (virtual %p+%x UC, %p+%x WC)\n",
- 		  &efx->membase_phys, efx->membase, uc_mem_map_size,
-diff --git a/drivers/net/ethernet/sfc/efx.h b/drivers/net/ethernet/sfc/efx.h
-index 45e191686625..057d30090894 100644
---- a/drivers/net/ethernet/sfc/efx.h
-+++ b/drivers/net/ethernet/sfc/efx.h
-@@ -236,5 +236,4 @@ static inline bool efx_rwsem_assert_write_locked(struct rw_semaphore *sem)
- 
- int efx_xdp_tx_buffers(struct efx_nic *efx, int n, struct xdp_frame **xdpfs,
- 		       bool flush);
--
- #endif /* EFX_EFX_H */
-diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
-index 79fe99d83f9f..a84ce45398c1 100644
---- a/drivers/net/ethernet/sfc/efx_cxl.c
-+++ b/drivers/net/ethernet/sfc/efx_cxl.c
-@@ -11,6 +11,7 @@
- #include <cxl/pci.h>
- #include "net_driver.h"
- #include "efx_cxl.h"
-+#include "efx.h"
- 
- #define EFX_CTPIO_BUFFER_SIZE	SZ_256M
- 
-@@ -20,6 +21,7 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
- 	struct pci_dev *pci_dev = efx->pci_dev;
- 	resource_size_t max_size;
- 	struct efx_cxl *cxl;
-+	struct range range;
- 	u16 dvsec;
- 	int rc;
- 
-@@ -119,19 +121,40 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
- 	cxl->efx_region = cxl_create_region(cxl->cxlrd, &cxl->cxled, 1);
- 	if (IS_ERR(cxl->efx_region)) {
- 		pci_err(pci_dev, "CXL accel create region failed");
--		cxl_put_root_decoder(cxl->cxlrd);
--		cxl_dpa_free(cxl->cxled);
--		return PTR_ERR(cxl->efx_region);
-+		rc = PTR_ERR(cxl->efx_region);
-+		goto err_dpa;
-+	}
-+
-+	rc = cxl_get_region_range(cxl->efx_region, &range);
-+	if (rc) {
-+		pci_err(pci_dev, "CXL getting regions params failed");
-+		goto err_detach;
-+	}
-+
-+	cxl->ctpio_cxl = ioremap(range.start, range.end - range.start + 1);
-+	if (!cxl->ctpio_cxl) {
-+		pci_err(pci_dev, "CXL ioremap region (%pra) failed", &range);
-+		rc = -ENOMEM;
-+		goto err_detach;
- 	}
- 
- 	probe_data->cxl = cxl;
-+	probe_data->cxl_pio_initialised = true;
- 
- 	return 0;
-+
-+err_detach:
-+	cxl_decoder_detach(NULL, cxl->cxled, 0, DETACH_INVALIDATE);
-+err_dpa:
-+	cxl_put_root_decoder(cxl->cxlrd);
-+	cxl_dpa_free(cxl->cxled);
-+	return rc;
- }
- 
- void efx_cxl_exit(struct efx_probe_data *probe_data)
- {
--	if (probe_data->cxl) {
-+	if (probe_data->cxl_pio_initialised) {
-+		iounmap(probe_data->cxl->ctpio_cxl);
- 		cxl_decoder_detach(NULL, probe_data->cxl->cxled, 0,
- 				   DETACH_INVALIDATE);
- 		cxl_dpa_free(probe_data->cxl->cxled);
-diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
-index 0e685b8a9980..894b62d6ada9 100644
---- a/drivers/net/ethernet/sfc/net_driver.h
-+++ b/drivers/net/ethernet/sfc/net_driver.h
-@@ -1209,6 +1209,7 @@ struct efx_cxl;
-  * @efx: Efx NIC details
-  * @cxl: details of related cxl objects
-  * @cxl_pio_initialised: cxl initialization outcome.
-+ * @cxl_pio_in_use: PIO using CXL mapping
-  */
- struct efx_probe_data {
- 	struct pci_dev *pci_dev;
-@@ -1216,6 +1217,7 @@ struct efx_probe_data {
- #ifdef CONFIG_SFC_CXL
- 	struct efx_cxl *cxl;
- 	bool cxl_pio_initialised;
-+	bool cxl_pio_in_use;
- #endif
- };
- 
-diff --git a/drivers/net/ethernet/sfc/nic.h b/drivers/net/ethernet/sfc/nic.h
-index 9fa5c4c713ab..c87cc9214690 100644
---- a/drivers/net/ethernet/sfc/nic.h
-+++ b/drivers/net/ethernet/sfc/nic.h
-@@ -152,6 +152,8 @@ enum {
-  *	%MC_CMD_GET_CAPABILITIES response)
-  * @datapath_caps2: Further Capabilities of datapath firmware (FLAGS2 field of
-  * %MC_CMD_GET_CAPABILITIES response)
-+ * @datapath_caps3: Further Capabilities of datapath firmware (FLAGS3 field of
-+ * %MC_CMD_GET_CAPABILITIES response)
-  * @rx_dpcpu_fw_id: Firmware ID of the RxDPCPU
-  * @tx_dpcpu_fw_id: Firmware ID of the TxDPCPU
-  * @must_probe_vswitching: Flag: vswitching has yet to be setup after MC reboot
-@@ -186,6 +188,7 @@ struct efx_ef10_nic_data {
- 	bool must_check_datapath_caps;
- 	u32 datapath_caps;
- 	u32 datapath_caps2;
-+	u32 datapath_caps3;
- 	unsigned int rx_dpcpu_fw_id;
- 	unsigned int tx_dpcpu_fw_id;
- 	bool must_probe_vswitching;
--- 
-2.34.1
+thanks,
 
+greg k-h
