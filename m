@@ -1,201 +1,144 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out8.tophost.ch (out8.tophost.ch [46.232.182.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77902DCC1F
-	for <netdev@vger.kernel.org>; Mon,  6 Oct 2025 20:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A68F1D6DDD;
+	Mon,  6 Oct 2025 20:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759782910; cv=none; b=qX4qXr6xZlXw/B3V17QdhKusF7isHDP0UO+4HytwIsCeNfxbFv28coLgP1rMGF97t1E2JqOxlSte941FFz/vCcD0g/di6QM7lw498C6uh8UMdtXMekvqw5396WJA8sFg6W/aOgVFTa2UkSV7a/6P3ca/RgtnIt7UiXj2AlrKq+U=
+	t=1759783583; cv=none; b=H2Nq+ysig67fCgevuOqb3PFqojGY7v7X0NsFlayRJ3R93WlDDqL/8bXb20P4xu7CsNp5Guc1Z02Qx948pqh5bdCVQUUIwd/cLAlWHj2BeyvEsdlmz2mvGO39cmSRP9Ac1G8A9QP1N9YmJwjAlJYvk/4lbsdaqgYgqM0bVXdjBds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759782910; c=relaxed/simple;
-	bh=wRqM1wL0rtVZzWbUB1vZjAZ//+DX1ksR98VvmNXh1Ag=;
+	s=arc-20240116; t=1759783583; c=relaxed/simple;
+	bh=bQ2/QXeOHuR4GdYWKjJISIBBy8VABAMrNvPe2K3zZwg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WOgSxxD/m6G3IYOu5F5GhuGsYMoHZ5k6obWzpLX1xgiSRkL0dLFsZWCp04b0PTNW3cCdpdYGJLKh2nnvzZl9bI51tkLNx4qn0QGaZc5PjUNcf0hCfJZFg6x77vuj2kAGHucYJ4ucIZ4m8s2Uap4E6ngAjcvKAqGg2wFWnFnUUzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLcuykQW; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 MIME-Version:Content-Type; b=NL+upcQd6OUPrAViZclyt/sVnotUNQusXQRbEc4/eZl75IrIL3n9ETPjIMGQ+coIq2tXqgWRRACyshr22Cq/JectRshg7Cao6iBvq76KrBAmmVjH2bkarTNLJXwReKy+42IIPpWWuxvwykmJfm2UACVOs+oIxYoXc1o3oO0EDIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=HjBGwMPv; arc=none smtp.client-ip=46.232.182.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLcuykQW"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-46e326e4e99so33435705e9.1
-        for <netdev@vger.kernel.org>; Mon, 06 Oct 2025 13:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759782907; x=1760387707; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
-        b=JLcuykQWTX1qhWoGcyL4rEQ654Dn8fEafHNnYaDb6dJmDejlYhMexc8dmKE0V+67KA
-         VXeK/+jdcGamwSsNrowIARdasb/A3kfrVP+mYMrjG2fMDyohKFx1OR/CBHF/NQieDvTm
-         nYhYkQLV5FmuVpoGFvxSlH9sEY7KtEtF6AA69dHyfafQLyW7FbgGfvjK7QzAsZKhJRxF
-         6b1Bh3dSp4xPjBWSZAhhNHoWPX4ZTv1vyvmhV1EfLHKX0+BMy3LeCJPJ/qPM7TxeZzUu
-         gAvPPXnbv8/OFMtna0TOzl2h/DsQ3zNdQkpQ+LVjhXyApki4ODJMjXgeiBA/a3ojS0nY
-         rm8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759782907; x=1760387707;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w8A8mrbjHOp4I+EQv9aLZuINyxZFXeZgTqLUL4/gbts=;
-        b=BjL4rYrsNTeatQ+I7yjESLEdn3urqWG+mIFuNsi6Op+8ibN4vZWHcSZzAdKT9gNAde
-         raXM05eq1FP6M1BMox2EtZyMJbvKEj2M4uFogPtUOdh3G87aEYVd4ukTQyXEOP4zgsGZ
-         z/25g502YVhcbq10ggEYQzgPqwZwQnPL7iKDRx8IrJD6fq2qh5czO9sSy0GEVdxQq7A7
-         d/2GVf/ORv9RC3QVfK6O/Y2Ra+Fj3FM2SisAfZj2e9jzBMVQJPloVMd2J4Hiy42QM/5j
-         qcs8GhDTaD+A8bxMyoGqXINY3BZZeVAo+5sFl3ni55dheSp4hkcE4zFAJXjM9ms3wfps
-         E9ew==
-X-Forwarded-Encrypted: i=1; AJvYcCXtXjEb33I145vtgvC+lplYoaoF6R6vOGOVw+JrYiXB2Y2N6WRcEJbjqxQd7sU3D35eQS2xzzg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvXA2MDDll4NHrcbtZj0r48XOpi00moqlQ4dfCG8GRXIB/GHFB
-	GkvlKNvKy7ID7Abo45PMUz8KJZxk9UD1Eb1ZtRGJnWuTQwU56dNPeIuj
-X-Gm-Gg: ASbGnctjVPaNkxpF6FdGKD93OG+TM70BRlZAYy5fNxwgK3FngpbjPPnLnLHBruK6t/I
-	HPJ9SyGwhl+PJqOiECXnFN/HMqIcxnURQCn2SIrofsNU0hVjE3iylavH4tiHn/oU9gWizsOH3sx
-	Np9sO5m6LHWvZm0Ae1JsLR5jlIcV0kB38AdO5fFh7TYQ4g6cOTvZVeiLORBWheHE5Gh62820Pwh
-	q+Yq3165CRnzX4xzK/wH/SY82hZJfkvr6XSQZ7WD/QCm7/O1IAsT9JPX9CrX3OCzddO+pKMpq6/
-	0rlvXsn7NBA7KXsx0Lp0eCUpdjoSa8oor4CxLcLbDQ8KiSf0i0Tpz/l9XQKkLcrLfXycT3cw0aN
-	uqaT/0uTkgGrPhjNxMw83VGRrr3UWIwdICFDAtoiCYynPIqzkW46qMT0M/aVhMoHpelkx0mz8l9
-	cCe+3ob9wFWJcU
-X-Google-Smtp-Source: AGHT+IEnzSpQE+ROtayFnE2b4dPjTQF2CaZO9TdUfVNFcX6ejR4aNYCswD7XdVH/ajIMwYylIXY+YQ==
-X-Received: by 2002:a05:600c:2287:b0:45d:d86b:b386 with SMTP id 5b1f17b1804b1-46fa29f13dfmr4596085e9.14.1759782906754;
-        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46e723591fcsm172334545e9.10.2025.10.06.13.35.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Oct 2025 13:35:06 -0700 (PDT)
-Date: Mon, 6 Oct 2025 21:35:03 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Eliav Farber <farbere@amazon.com>, dave.hansen@linux.intel.com,
- peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- x86@kernel.org, hpa@zytor.com, james.morse@arm.com, rric@kernel.org,
- daniel@ffwll.ch, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, sean@poorly.run, jdelvare@suse.com,
- linux@roeck-us.net, linus.walleij@linaro.org, dmitry.torokhov@gmail.com,
- maz@kernel.org, wens@csie.org, jernej.skrabec@gmail.com, agk@redhat.com,
- snitzer@redhat.com, dm-devel@redhat.com, davem@davemloft.net,
- kuba@kernel.org, mcoquelin.stm32@gmail.com,
- krzysztof.kozlowski@canonical.com, malattia@linux.it, hdegoede@redhat.com,
- mgross@linux.intel.com, jejb@linux.ibm.com, martin.petersen@oracle.com,
- sakari.ailus@linux.intel.com, clm@fb.com, josef@toxicpanda.com,
- dsterba@suse.com, jack@suse.com, tytso@mit.edu, adilger.kernel@dilger.ca,
- dushistov@mail.ru, luc.vanoostenryck@gmail.com, rostedt@goodmis.org,
- pmladek@suse.com, senozhatsky@chromium.org,
- andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
- minchan@kernel.org, ngupta@vflare.org, akpm@linux-foundation.org,
- yoshfuji@linux-ipv6.org, dsahern@kernel.org, pablo@netfilter.org,
- kadlec@netfilter.org, fw@strlen.de, jmaloy@redhat.com,
- ying.xue@windriver.com, shuah@kernel.org, willy@infradead.org,
- sashal@kernel.org, quic_akhilpo@quicinc.com, ruanjinjie@huawei.com,
- David.Laight@aculab.com, herve.codina@bootlin.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-um@lists.infradead.org, linux-edac@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-input@vger.kernel.org,
- linux-sunxi@lists.linux.dev, linux-media@vger.kernel.org,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- platform-driver-x86@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-staging@lists.linux.dev, linux-btrfs@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-sparse@vger.kernel.org,
- linux-mm@kvack.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, tipc-discussion@lists.sourceforge.net,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH v2 07/19 5.15.y] minmax: simplify and clarify
- min_t()/max_t() implementation
-Message-ID: <20251006213242.3462e746@pumpkin>
-In-Reply-To: <2025100648-capable-register-101b@gregkh>
-References: <20251003130006.41681-1-farbere@amazon.com>
-	<20251003130006.41681-8-farbere@amazon.com>
-	<2025100648-capable-register-101b@gregkh>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="HjBGwMPv"
+Received: from srv125.tophost.ch ([194.150.248.5])
+	by filter2.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1v5s5j-007RhQ-Pz; Mon, 06 Oct 2025 22:45:58 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=L3YTjzbsOYjUbsbU/Wy3ta9LHNYn+m0h3PqY4SwxINU=; b=HjBGwMPvj6P/BcnFLl/tx2TtCP
+	qiZJVV6u2o2odvH01Fy29kUzG6HlcwznDBaEq27P5Va+cjYDK+4k3h2MC8phg/xYWplo1Y6jNHUuC
+	RtS/5V4UbOkhVgiErB+Uwav7mXn7NLXHP9ElUeqIu2qSFq1/fd3EOZkrtGr7NB+E6QmNLi3GUlOFO
+	Bp+r1YFgFZc0pA7lLwpAPNAIqhisMAae6QlUqsufr+AQDHVQJ6XszK2k6prTjPMAookHmCpc6kvJf
+	QvGKV5jtZwBmiHSdc59SKyS5gImeafIUeHSrTV9W4ptbCRb1mKkMzOlbBN6OUTdXoL+1nvVYKTMUQ
+	izCXpjfA==;
+Received: from [213.55.237.208] (port=11652 helo=pavilion)
+	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1v5s5i-0000000D8Ee-1jUB;
+	Mon, 06 Oct 2025 22:45:54 +0200
+Date: Mon, 6 Oct 2025 22:45:47 +0200
+From: Thomas Wismer <thomas@wismer.xyz>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Thomas Wismer <thomas.wismer@scs.ch>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] net: pse-pd: tps23881: Fix current measurement
+ scaling
+Message-ID: <20251006224301.4dcf3878@pavilion>
+In-Reply-To: <20251006144911.702fed49@kmaincent-XPS-13-7390>
+References: <20251004180351.118779-2-thomas@wismer.xyz>
+ <20251004180351.118779-4-thomas@wismer.xyz>
+ <20251006144911.702fed49@kmaincent-XPS-13-7390>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
+X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
+X-Spampanel-Domain: smtpout.tophost.ch
+X-Spampanel-Username: 194.150.248.5
+Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
+X-Spampanel-Outgoing-Class: ham
+X-Spampanel-Outgoing-Evidence: SB/global_tokens (0.00821288287289)
+X-Recommended-Action: accept
+X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuXM471z1iVsQgpD2K0Yb0CXtnosJVX7rrLt
+ siJdZCHJ+iu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zMpj
+ vEVOTsR2BCGQHEe9o6DxcwM0aDExi5MlveCS7R16CtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
+ daZjkYsG4jVZi5Tfop5qjCZejidXzthz0vNkOX8Em4cj6D/wdR983ISMXlZYfkTQnVvsLb89W7vD
+ 6C469DIPe8wH3iOJTcWsqU26dvDcYIYzaKVPzizNp/gleLRyr2ddmlcu+i1jPgDrl7KDWN+JeAU8
+ 1aNgksp0UtIrN0U07614AkdB++MTbkn6z1fsm8NoMVdUr8MDPUrsZkS8fIjQg/OlnCq9era6RvWE
+ xGjaMpBDSCziBywD4A8JEs8nAB07i3qQt2GCxqdhJ42egOXnLvBjaBHojvcdCFSGnAoJdmBrbnML
+ ysTZI7fFfQwiuwD2LcLdqjNFmtMtCFuKzK3WYzvpld0/yccMnl06aHo07R+V2VbvDXc+galx1KGI
+ Pp5jnkiI48S3blKfwQpggXpr4ijI5V97nizzgiBlcUwLhZK/ZHw1RdpNQJ37uqLsFt7+YGhJkDU9
+ 4+PQCJgyeQ5hmX4W3XfjuZq3ey7jWD75mz2FgepuKE1QHL+v8HSjw4E9FZ48n35YGxLcRm31r7HJ
+ L906rtNSlbyOZqJAl0NcWR3h5RCCpdhlI2FswyUM1YB4pb6NihzVEQJD0k3NJ3BxI7jJWMBode2U
+ Svel4Ph4LtRWGzmVykX/svZHtlcv4/x61HBbxR8gr/U0flMcy2Vi/IcBgY4ane5tOXPRIqHUx6+W
+ zGK5Hg6zly/hm7kTCa25PmFuNjYUvwsQEI5UkfpCg7AUhDMCozAGWaBw5toun3z41wwqu6OADWMC
+ 9+/HEHYskr6LOFgfNJTYgMI1RqtgWZEsuX9H7fs8i/Lg4VMmqeqQOhF8kMn3arb1xVlaLjgbxjTB
+ gAHkgTtbIGX4Gktj7c2CONolFYbP7eetTUcNPZF8UuWWRQPHxHs4uWfEMXRAPK2SKfAoiYNGqK33
+ DNrpuCWt66XitN3uNQC5yiFHVtp2XHTC/tXl1Kc2a+wlKs+ogYIxcMllcGL2FYQA/TYqr07UQr9N
+ 8YzZ1OXdAJhrEGn8vjZdfatsJHAzgC46MYYXOcKJkR5mWDA3wLMqtkpqhq8QHjwHB17Mh03hOC2D
+ 8X08bmfUo2hx63fUqSBCUpmH010fZI9bHEjTkiJxSPqFbdrqtFE8gK0UxPGon/0gulkiYXfVWWO3
+ KRWMcR+Z5yTvtzkwsDU=
+X-Report-Abuse-To: spam@filter1.tophost.ch
+X-Complaints-To: abuse@filter1.tophost.ch
 
-On Mon, 6 Oct 2025 12:47:45 +0200
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Am Mon, 6 Oct 2025 14:50:29 +0200
+schrieb Kory Maincent <kory.maincent@bootlin.com>:
 
-(I've had to trim the 'To' list to send this...)
+> On Sat,  4 Oct 2025 20:03:49 +0200
+> Thomas Wismer <thomas@wismer.xyz> wrote:
+> 
+> > From: Thomas Wismer <thomas.wismer@scs.ch>
+> > 
+> > The TPS23881 improves on the TPS23880 with current sense resistors
+> > reduced from 255 mOhm to 200 mOhm. This has a direct impact on the
+> > scaling of the current measurement. However, the latest TPS23881
+> > data sheet from May 2023 still shows the scaling of the TPS23880
+> > model.  
+> 
+> Didn't know that. Where did you get that new current step value if
+> it's not from the datasheet?
 
-> On Fri, Oct 03, 2025 at 12:59:54PM +0000, Eliav Farber wrote:
-> > From: Linus Torvalds <torvalds@linux-foundation.org>
-> >=20
-> > [ Upstream commit 017fa3e89187848fd056af757769c9e66ac3e93d ]
-> >=20
-> > This simplifies the min_t() and max_t() macros by no longer making them
-> > work in the context of a C constant expression.
-> >=20
-> > That means that you can no longer use them for static initializers or
-> > for array sizes in type definitions, but there were only a couple of
-> > such uses, and all of them were converted (famous last words) to use
-> > MIN_T/MAX_T instead.
-> >=20
-> > Cc: David Laight <David.Laight@aculab.com>
-> > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> > Signed-off-by: Eliav Farber <farbere@amazon.com> =20
->=20
-> Eliav, your testing infrastructure needs some work, this patch breaks
-> the build on this kernel tree:
->=20
-> In file included from ./include/linux/kernel.h:16,
->                  from ./include/linux/list.h:9,
->                  from ./include/linux/wait.h:7,
->                  from ./include/linux/wait_bit.h:8,
->                  from ./include/linux/fs.h:6,
->                  from fs/erofs/internal.h:10,
->                  from fs/erofs/zdata.h:9,
->                  from fs/erofs/zdata.c:6:
-> fs/erofs/zdata.c: In function =E2=80=98z_erofs_decompress_pcluster=E2=80=
-=99:
-> fs/erofs/zdata.h:185:61: error: ISO C90 forbids variable length array =E2=
-=80=98pages_onstack=E2=80=99 [-Werror=3Dvla]
->   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
-*), 96U)
->       |                                                             ^~~~
+The correct current measurement scaling can either be found in the
+TPS23881B datasheet revised in May 2025 or computed from the legacy sense
+resistor value (255 mOhm / 200 mOhm * 70.19 uA = 89.50 uA). I was able to
+verify the corrected scaling using power measurement instruments.
 
-That constant seems to get (renamed and) changed to 32 in a later patch.
-I'm not sure of the rational for the min() at all.
-I think THREAD_SIZE is the size of the kernel stack? Or at least related to=
- it.
-The default seems to be 8k on x86-64 and 4k or 8k on i386.
-So it is pretty much always going to be 96.
+> Also as the value reported was wrong maybe we need a fix tag here and
+> send it to net instead of net-next.
 
-Linus added MIN() that can be used for array sizes.
-But I'd guess this could just be changed to 32 - need to ask the erofs guys.
+Right. I'll resubmit this patch to net.
 
-	David
-
-
-> ./include/linux/minmax.h:49:23: note: in definition of macro =E2=80=98__c=
-mp_once_unique=E2=80=99
->    49 |         ({ type ux =3D (x); type uy =3D (y); __cmp(op, ux, uy); })
->       |                       ^
-> ./include/linux/minmax.h:164:27: note: in expansion of macro =E2=80=98__c=
-mp_once=E2=80=99
->   164 | #define min_t(type, x, y) __cmp_once(min, type, x, y)
->       |                           ^~~~~~~~~~
-> fs/erofs/zdata.h:185:9: note: in expansion of macro =E2=80=98min_t=E2=80=
-=99
->   185 |         min_t(unsigned int, THREAD_SIZE / 8 / sizeof(struct page =
-*), 96U)
->       |         ^~~~~
-> fs/erofs/zdata.c:847:36: note: in expansion of macro =E2=80=98Z_EROFS_VMA=
-P_ONSTACK_PAGES=E2=80=99
->   847 |         struct page *pages_onstack[Z_EROFS_VMAP_ONSTACK_PAGES];
->       |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: all warnings being treated as errors
->=20
->=20
-> I'll drop this whole series, please do a bit more testing before sending
-> out a new version.
->=20
-> thanks,
->=20
-> greg k-h
->=20
+> > Signed-off-by: Thomas Wismer <thomas.wismer@scs.ch>
+> > ---
+> >  drivers/net/pse-pd/tps23881.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/pse-pd/tps23881.c
+> > b/drivers/net/pse-pd/tps23881.c index 63f8f43062bc..b724b222ab44
+> > 100644 --- a/drivers/net/pse-pd/tps23881.c
+> > +++ b/drivers/net/pse-pd/tps23881.c
+> > @@ -62,7 +62,7 @@
+> >  #define TPS23881_REG_SRAM_DATA	0x61
+> >  
+> >  #define TPS23881_UV_STEP	3662
+> > -#define TPS23881_NA_STEP	70190
+> > +#define TPS23881_NA_STEP	89500
+> >  #define TPS23881_MW_STEP	500
+> >  #define TPS23881_MIN_PI_PW_LIMIT_MW	2000
+> >    
+> 
+> 
+> 
 
