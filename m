@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235C7235C01;
-	Tue,  7 Oct 2025 23:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE9025B1D2;
+	Tue,  7 Oct 2025 23:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759879627; cv=none; b=YaDBRZbQOT4HnVG2ozuEBhQEzn5W8HS0CjqPLAH4UoiYAf8dRgtYX79Fao4ebusFWL1xghW8b8qUpiiQiveBSTF0liYIsDbmCNcSITHKmMZhvlfbexZy4PrI1O5c5jvi5ViBtb21G8J5D+eWokjBoOm171ghAg/mo/CfacqYXNg=
+	t=1759879627; cv=none; b=SNSVLPectg4QOJV0FvKFfJsNL27I6H1pQmqmJ3MI1IJ848nT/BCgdeBxNPJETWj+rq9537MGhJkJZr37nbRTsVl8t5OsMyUlKNhM/OYLH1Oj9pIwjdll5NtQxQeJzGb2IKz+9K1eCT9FrSe/IhQzlHvjwL2xBUC+cFz07uQh1/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1759879627; c=relaxed/simple;
-	bh=CaUXBZMISbzNhTMO0YWfXfkTC2QagyAT/MAcDC++FeQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TjkPG1zVz0FK2yAvmc78/C0rCy4JMFDU6HJ8o6yXiG6vkVQ1IQPYrM5IJRu9NwzqFuqFk/FoFWGIs6Rj+L/swxXeqVPcgL/vlT43wXDZutWuwGUu7hIM7MJeJ3WLUQCspfO1mVEiPHjT75BI2sLqON4JQmoI08CfXFlt3wB1+Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8CajmAf; arc=none smtp.client-ip=10.30.226.201
+	bh=FZp/QJgmUeFs62yBV0C+XcnnFXtFRRU0YETbztvBe9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LL6v914lUNR77vFR0Z6kftmlt2V2Vg9cN/LDgreq+sh7WWIUBeVc/hUawpuRTwLT6Ry697ZrklzkvVG2TNhz6Sirf70ghyV9476URDza1kSkI0xq/+Skv3HkzIh5rx8IaCnv6zNuuem6c5zC217Ukn9r2OegBIWvesLAD/ARfhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJn1hHYe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8CajmAf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C122C4CEF1;
-	Tue,  7 Oct 2025 23:27:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJn1hHYe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2129C4CEF7;
+	Tue,  7 Oct 2025 23:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759879625;
-	bh=CaUXBZMISbzNhTMO0YWfXfkTC2QagyAT/MAcDC++FeQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=S8CajmAf0ZHhErOJHTIVdQoZ9hHeSqr4IuXHqg3albYqq9pgAgkaC62FNRpjqUwOh
-	 ALyG0Z0xsWOwYDZVKFIg7+sG9ENCf0fLJT72OGrXtArkWQwe/ZagPBUZJblCUHvelz
-	 F2O+HkyjoAMSFSczWesuT3JkZguGaGAN6RILVxBkYJ9rcE8QoYWgF3fgi3WdA7ac9d
-	 JEp7cqC+Sc7nN7vinmCkL/ScJkeoBuZ4xv55ejqeLvoDz/C/3uDfarieVRv/06r1+D
-	 ZcL7RNhwE39CuWNhTD/g+Eh09u7flfK8JSvDfF+GzXVsl60ABriJLKBAceewLWkF6V
-	 vLjNTYgisLJUQ==
+	s=k20201202; t=1759879627;
+	bh=FZp/QJgmUeFs62yBV0C+XcnnFXtFRRU0YETbztvBe9I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BJn1hHYeHpTo/6JXCdasQJ3AnNRjFQh2ACMUIiu6zflai195N8D8SUggdt7AvRRIk
+	 KTuH0jDJWpYgZ9589qz+KGddLyjjXk2DGEXKim79j8HXJJUuU6NiSm40xjI16ryxq9
+	 +MIWBubl63pTmRrFZpj+tFpyuxcNuZgBGzppZQQT8n0YgWlNr1xoAMF/HTNhw4q/Du
+	 1txFYFaJDP+l82LguiuLHZw62+9QWraOSU9yzsEXH4+ufan3nYeEAkQvVZlOoD8tU/
+	 oW1cXQJafZ1FFfSBbpN6Ayk3CT+6Ilub9jeWGMc9Z1qVYroYEOoHtyVwruGYmxr7Aa
+	 U/2hqMxV7iAew==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,11 +34,16 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	bpf@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net v2 0/9] eth: fbnic: fix XDP_TX and XDP vs qstats
-Date: Tue,  7 Oct 2025 16:26:44 -0700
-Message-ID: <20251007232653.2099376-1-kuba@kernel.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	alexanderduyck@fb.com,
+	sdf@fomichev.me,
+	mohsin.bashr@gmail.com
+Subject: [PATCH net v2 2/9] eth: fbnic: fix accounting of XDP packets
+Date: Tue,  7 Oct 2025 16:26:46 -0700
+Message-ID: <20251007232653.2099376-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251007232653.2099376-1-kuba@kernel.org>
+References: <20251007232653.2099376-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,81 +52,120 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix XDP_TX hangs and adjust the XDP statistics to match the definition
-of qstats. The three problems are somewhat distinct.
+Make XDP-handled packets appear in the Rx stats. The driver has been
+counting XDP_TX packets on the Tx ring, but there wasn't much accounting
+on the Rx side (the Rx bytes appear to be incremented on XDP_TX but
+XDP_DROP / XDP_ABORT are only counted as Rx drops).
 
-XDP_TX hangs is a simple coding bug (patch 1).
+Counting XDP_TX packets (not just bytes) in Rx stats looks like
+a simple bug of omission.
 
-The accounting of XDP packets is all over the place. Fix it to obey
-qstat rules (packets seen by XDP always counted as Rx packets).
-Patch 2 fixes the basic accounting, patch 3 touches up saving
-the stats when rings are freed.
+The XDP_DROP handling appears to be intentional. Whether XDP_DROP
+packets should be counted in interface-level Rx stats is a bit
+unclear historically. When we were defining qstats, however,
+we clarified based on operational experience that in this context:
 
-Patch 6 corrects reporting of alloc_fail stats which prevented
-the pp_alloc_fail test from passing.
+  name: rx-packets
+  doc: |
+    Number of wire packets successfully received and passed to the stack.
+    For drivers supporting XDP, XDP is considered the first layer
+    of the stack, so packets consumed by XDP are still counted here.
 
-Patches 4, 5, 7, 8, 9 add or fix related test cases.
+fbnic does not obey this requirement. Since XDP support has been added
+in current release cycle, instead of splitting interface and qstat
+handling - make them both follow the qstat definition.
 
+Another small tweak here is that we count bytes as received on the wire
+rather than post-XDP bytes (xdp_get_buff_len() vs skb->len).
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 5213ff086344 ("eth: fbnic: Collect packet statistics for XDP")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
 v2:
- - [patch 2] remove now unnecessary byte adjustment
- - [patch 8] use seen_fails more
-v1: https://lore.kernel.org/20251003233025.1157158-1-kuba@kernel.org
+ - remove now unnecessary adjustment to bytes
 
-Testing on fbnic below:
+CC: alexanderduyck@fb.com
+CC: sdf@fomichev.me
+CC: mohsin.bashr@gmail.com
+CC: bpf@vger.kernel.org
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 30 ++++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
- $ ./tools/testing/selftests/drivers/net/hw/pp_alloc_fail.py
- TAP version 13
- 1..1
- fbnic-err: bad MMIO read address 0x80074
- fbnic-err: bad MMIO read address 0x80074
- # Seen: pkts:20605 fails:40 (pass thrs:12)
- # ethtool -G change retval: success
- ok 1 pp_alloc_fail.test_pp_alloc
- # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-
- $ ./tools/testing/selftests/drivers/net/xdp.py
- TAP version 13
- 1..13
- ok 1 xdp.test_xdp_native_pass_sb
- ok 2 xdp.test_xdp_native_pass_mb
- ok 3 xdp.test_xdp_native_drop_sb
- ok 4 xdp.test_xdp_native_drop_mb
- ok 5 xdp.test_xdp_native_tx_sb
- ok 6 xdp.test_xdp_native_tx_mb
- # Failed run: pkt_sz 2048, offset 1. Last successful run: pkt_sz 1024, offset 256. Reason: Adjustment failed
- ok 7 xdp.test_xdp_native_adjst_tail_grow_data
- ok 8 xdp.test_xdp_native_adjst_tail_shrnk_data
- # Failed run: pkt_sz 512, offset -256. Last successful run: pkt_sz 512, offset -128. Reason: Adjustment failed
- ok 9 xdp.test_xdp_native_adjst_head_grow_data
- # Failed run: pkt_sz (2048) > HDS threshold (1536) and offset 64 > 48
- ok 10 xdp.test_xdp_native_adjst_head_shrnk_data
- ok 11 xdp.test_xdp_native_qstats_pass
- ok 12 xdp.test_xdp_native_qstats_drop
- ok 13 xdp.test_xdp_native_qstats_tx
- # Totals: pass:13 fail:0 xfail:0 xpass:0 skip:0 error:0
-
-Jakub Kicinski (9):
-  eth: fbnic: fix missing programming of the default descriptor
-  eth: fbnic: fix accounting of XDP packets
-  eth: fbnic: fix saving stats from XDP_TX rings on close
-  selftests: drv-net: xdp: rename netnl to ethnl
-  selftests: drv-net: xdp: add test for interface level qstats
-  eth: fbnic: fix reporting of alloc_failed qstats
-  selftests: drv-net: fix linter warnings in pp_alloc_fail
-  selftests: drv-net: pp_alloc_fail: lower traffic expectations
-  selftests: drv-net: pp_alloc_fail: add necessary optoins to config
-
- .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  1 +
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |  7 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  6 +-
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |  8 ++
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 23 ++++-
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 74 +++++++++-----
- tools/testing/selftests/drivers/net/hw/config |  4 +
- .../selftests/drivers/net/hw/pp_alloc_fail.py | 36 ++++---
- tools/testing/selftests/drivers/net/xdp.py    | 99 +++++++++++++++++--
- 9 files changed, 209 insertions(+), 49 deletions(-)
-
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index cf773cc78e40..a56dc148f66d 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -1242,6 +1242,7 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 	/* Walk the completion queue collecting the heads reported by NIC */
+ 	while (likely(packets < budget)) {
+ 		struct sk_buff *skb = ERR_PTR(-EINVAL);
++		u32 pkt_bytes;
+ 		u64 rcd;
+ 
+ 		if ((*raw_rcd & cpu_to_le64(FBNIC_RCD_DONE)) == done)
+@@ -1272,37 +1273,38 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 			/* We currently ignore the action table index */
+ 			break;
+ 		case FBNIC_RCD_TYPE_META:
+-			if (unlikely(pkt->add_frag_failed))
+-				skb = NULL;
+-			else if (likely(!fbnic_rcd_metadata_err(rcd)))
++			if (likely(!fbnic_rcd_metadata_err(rcd) &&
++				   !pkt->add_frag_failed)) {
++				pkt_bytes = xdp_get_buff_len(&pkt->buff);
+ 				skb = fbnic_run_xdp(nv, pkt);
++			}
+ 
+ 			/* Populate skb and invalidate XDP */
+ 			if (!IS_ERR_OR_NULL(skb)) {
+ 				fbnic_populate_skb_fields(nv, rcd, skb, qt,
+ 							  &csum_complete,
+ 							  &csum_none);
+-
+-				packets++;
+-				bytes += skb->len;
+-
+ 				napi_gro_receive(&nv->napi, skb);
+ 			} else if (skb == ERR_PTR(-FBNIC_XDP_TX)) {
+ 				pkt_tail = nv->qt[0].sub1.tail;
+-				bytes += xdp_get_buff_len(&pkt->buff);
++			} else if (PTR_ERR(skb) == -FBNIC_XDP_CONSUME) {
++				fbnic_put_pkt_buff(qt, pkt, 1);
+ 			} else {
+-				if (!skb) {
++				if (!skb)
+ 					alloc_failed++;
+-					dropped++;
+-				} else if (skb == ERR_PTR(-FBNIC_XDP_LEN_ERR)) {
++
++				if (skb == ERR_PTR(-FBNIC_XDP_LEN_ERR))
+ 					length_errors++;
+-				} else {
++				else
+ 					dropped++;
+-				}
+ 
+ 				fbnic_put_pkt_buff(qt, pkt, 1);
++				goto next_dont_count;
+ 			}
+ 
++			packets++;
++			bytes += pkt_bytes;
++next_dont_count:
+ 			pkt->buff.data_hard_start = NULL;
+ 
+ 			break;
+@@ -1319,8 +1321,6 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
+ 	u64_stats_update_begin(&rcq->stats.syncp);
+ 	rcq->stats.packets += packets;
+ 	rcq->stats.bytes += bytes;
+-	/* Re-add ethernet header length (removed in fbnic_build_skb) */
+-	rcq->stats.bytes += ETH_HLEN * packets;
+ 	rcq->stats.dropped += dropped;
+ 	rcq->stats.rx.alloc_failed += alloc_failed;
+ 	rcq->stats.rx.csum_complete += csum_complete;
 -- 
 2.51.0
 
