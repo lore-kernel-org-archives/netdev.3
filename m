@@ -1,82 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CF517C91;
-	Tue,  7 Oct 2025 12:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D7E2135C5
+	for <netdev@vger.kernel.org>; Tue,  7 Oct 2025 12:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759841422; cv=none; b=pMrVsM9tEr2HVIqy87gqzKC5JAA5XjkWRYsft2vnfHs7DIOxFKUtnIIOTVpGcj9JmqyBVaevSipl1F+lpa+yYMP4ROK/2ZaheLO/vkcUjotO4xSK+5maDMIB6TtxRYFk0qEc5yTYjj1lAgK4f/h7x90dPVfCtr/uuy7fhmplgJE=
+	t=1759841714; cv=none; b=fKGD7qOxNMKXKNYraQs1OzwxP/ETNNzM/VveL/1XtFqFt5XITIMzxw+WdAeM28W9tUvWy8t8GRT/slRur17d4L8WifnEvn5RlX/TMFDzGxEkpc6NMEEMh5tANUGyRoitGbmFalrO36GhPhKKN4kBh/lG6Ow/9bHEkEck2wSLjMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759841422; c=relaxed/simple;
-	bh=A/m4zs0K8YnLbS88ViLhtm5ahaKgRDfC5LduiNaaPGc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EJzBeb/HMT2LBEIUnFYJGeOFTZbVCC4Ui7Y4u0Ffp8Ij0AodR4E/YOW/ng2iyE92qwiJ37YH+sQXzuKvQ2h7TGH6yOF/ZH3+Y/8TY5mnDtXbTAlTdBT/XM4oT5aBYXCKJZog3vVDojrZCQ1b6WuN+DDQ45pOiusnUo7Fb4W5eB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPDo3GUT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759841714; c=relaxed/simple;
+	bh=sskRBZIq3ZV/qQ1N2FKi74Cz4KCa9C3J5w4ehhfzGn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CIb9WMWJTqKzKd7Sa1DngilqE65GdGecBqDTbjLMWRw+rXhLMriGcS9uC/qeYGN8r8rdZXUVVuuQcBmTXamz7qZGgJKdm5KRRiTN7ktkdk9FKXNkjnSRnZ343r5aF+NTKKa8MJxWcDiEhuKEARVuuU7F+Q3xFAxnnVCMaFwNnqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KJOeaBtU; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPDo3GUT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3EFC4CEF1;
-	Tue,  7 Oct 2025 12:50:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759841421;
-	bh=A/m4zs0K8YnLbS88ViLhtm5ahaKgRDfC5LduiNaaPGc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=VPDo3GUT+AKxSU4d1zVUNzivkV5HMUvD2I/9I38GNDtndn5pMLhQJYt8f4R5+z77d
-	 i7pCC4Y7g3Bq4WREUF8GHAp6wMRsuMsnkx+Yac1fvQr1fMf7QLzNvZ5WpluIYbZDul
-	 q6k6RJUL2BYrPbkUGklBdyuNElpDOhX50dXunD5a2z1BAGH8Qzol2pOmvwIYo1C0wG
-	 x35QlB2QQT1o1VV562BuDnqYLgWgtAC3G0+Em1G23GJorgOcTI1oUr6Ae2vSXRiiPH
-	 v8+8I7f45pjpKSurwu5iifDSgnDswpDp81pxO2BJgyn0ECvE7En+J3J1JtD9vNRtDt
-	 yrZAw6VADVueQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB44D39EFA66;
-	Tue,  7 Oct 2025 12:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KJOeaBtU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1759841711;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JObPDM43kbrRGTVx2qicxdWSHWXv4jr/i/WMIAB1AqU=;
+	b=KJOeaBtUmy1sGi+3AtW7QjtVJcRVGFdp/84lKPZRo+ApPzZeyoGkFIrscoXdo2dShFVhak
+	ISPISpRxQg97lrL3o1iF1twusvAC1im4Lt0XJkybplCNxQRPswALwI8JF5GAMTQbmHANp0
+	3IskintkSTV7Cwz38HMdR4ClQfr7STo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-Q-ITudcEP2ev9VmSy59g1Q-1; Tue, 07 Oct 2025 08:55:10 -0400
+X-MC-Unique: Q-ITudcEP2ev9VmSy59g1Q-1
+X-Mimecast-MFC-AGG-ID: Q-ITudcEP2ev9VmSy59g1Q_1759841709
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-46e39567579so27201355e9.0
+        for <netdev@vger.kernel.org>; Tue, 07 Oct 2025 05:55:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759841709; x=1760446509;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JObPDM43kbrRGTVx2qicxdWSHWXv4jr/i/WMIAB1AqU=;
+        b=Xwn/vbxvGF5GJQOaPDTcyGxgq/h8toozowlsTOwcBy+ST5qbb9yzaAhF9COiybhumW
+         ohJ60wNr08EGAFeiw+PhPfEotk3mkf3XNOQrtvTQv80/4WubImfUQbYrk6+AqBlFdc4f
+         7uHUuHNqUfukJ03ILWzIsULPaKwcrkNPj1JWdzRc1+bjo0CRbQZpvQgi7DcwgAgKt1U6
+         +ykR7sdn67/awdD3i8Te6xxX8JOGyT0h/wmRnmHBrysYtncZjH8Byd3BY6Us9pU9Uhqo
+         GRUjNKe0rsvHL5kGIhJpjmrRvOSiJuYqg3o3dCw9qeRgQM7Wchj37TlF16JAmp/1c0vj
+         5DAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqcfSQhxDyqvWveeujwK1GjWJz8foq3TCJAv2QI9SJKgtc6LqknZ4ZnKIa5FSUxvOpbYp31HQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3HN2lpnSIM0Smz4UutabMDZkwFgeAiBAbkUT5NGt5Pe3wFT79
+	hbmVK69fQyMHAC0AdYa4urPg30cmFZc3iwJZRGYFsn5k+ArAsH8aX5zp4cZbjV5TrXB8qJZW6Aa
+	AMfWGFlI3CZD/bg4WVOIVSBBaAASDqY197aA2KxnF+62XaClNOgB1Nqbjmg==
+X-Gm-Gg: ASbGnctTkgC759Q39jWvdqZro2c0kD0asQ+U0ntwhuIhLaTgBgY1v7QmMAtGCsBT4ik
+	GV0NkqXDVR6Wa5xv2NzZd2Xl+xWXhmPFF9dj393CJ/m+EtG9DjitGuxRY5UrmspzVUDLwduUao6
+	v7/wDpK72ZvSNxyzkvn8DyvALRdpQ7YwAhbfZsaXpGsmkldWvIF2DMG6asAtjBJ7KxmVOHm3Mzy
+	SuewYsYY8NvqddDSWdf/vQ/KQIGBRUdXf3n/J0+xr6m8YjT5taHVe4PeVCnjyR/JyJUB5E0ojAc
+	E+KKfSaLkI/ZiioE1A7E6IjVhl6+LlbSM74vot4xEJxfGWWvBf75t4Sk4DPnbvaYoIrwYsXq6Mv
+	GYGvlfMtyPoFomQsweg==
+X-Received: by 2002:a05:600c:83cf:b0:46e:38f7:625f with SMTP id 5b1f17b1804b1-46e7110e4edmr114208155e9.10.1759841709262;
+        Tue, 07 Oct 2025 05:55:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEf+yr0C4xLuJM/GLkBC+pknfkcsjQX8ZNgouB/KZMa7StJI4sxuc/r62BoMnwYLfDYtvHz+g==
+X-Received: by 2002:a05:600c:83cf:b0:46e:38f7:625f with SMTP id 5b1f17b1804b1-46e7110e4edmr114207955e9.10.1759841708852;
+        Tue, 07 Oct 2025 05:55:08 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8e9703sm25776462f8f.30.2025.10.07.05.55.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Oct 2025 05:55:08 -0700 (PDT)
+Message-ID: <af6253a8-5b21-4e32-84bf-62d11c7ce251@redhat.com>
+Date: Tue, 7 Oct 2025 14:55:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] mlx5 misc fixes 2025-10-05
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175984141076.2242311.3420628871601969254.git-patchwork-notify@kernel.org>
-Date: Tue, 07 Oct 2025 12:50:10 +0000
-References: <1759652999-858513-1-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1759652999-858513-1-git-send-email-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wireguard: allowedips: Use kfree_rcu() instead of
+ call_rcu()
+To: Fushuai Wang <wangfushuai@baidu.com>, Jason@zx2c4.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251005133936.32667-1-wangfushuai@baidu.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251005133936.32667-1-wangfushuai@baidu.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun, 5 Oct 2025 11:29:56 +0300 you wrote:
-> Hi,
+On 10/5/25 3:39 PM, Fushuai Wang wrote:
+> Replace call_rcu() + kmem_cache_free() with kfree_rcu() to simplify
+> the code and reduce function size.
 > 
-> This patchset provides misc bug fixes from the team to the mlx5 core and
-> Eth drivers.
+> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+> ---
+>  drivers/net/wireguard/allowedips.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
 > 
-> Thanks,
-> Tariq.
-> 
-> [...]
+> diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
+> index 09f7fcd7da78..5ece9acad64d 100644
+> --- a/drivers/net/wireguard/allowedips.c
+> +++ b/drivers/net/wireguard/allowedips.c
+> @@ -48,11 +48,6 @@ static void push_rcu(struct allowedips_node **stack,
+>  	}
+>  }
+>  
+> -static void node_free_rcu(struct rcu_head *rcu)
+> -{
+> -	kmem_cache_free(node_cache, container_of(rcu, struct allowedips_node, rcu));
+> -}
+> -
+>  static void root_free_rcu(struct rcu_head *rcu)
+>  {
+>  	struct allowedips_node *node, *stack[MAX_ALLOWEDIPS_DEPTH] = {
+> @@ -271,13 +266,13 @@ static void remove_node(struct allowedips_node *node, struct mutex *lock)
+>  	if (free_parent)
+>  		child = rcu_dereference_protected(parent->bit[!(node->parent_bit_packed & 1)],
+>  						  lockdep_is_held(lock));
+> -	call_rcu(&node->rcu, node_free_rcu);
+> +	kfree_rcu(node, rcu);
+>  	if (!free_parent)
+>  		return;
+>  	if (child)
+>  		child->parent_bit_packed = parent->parent_bit_packed;
+>  	*(struct allowedips_node **)(parent->parent_bit_packed & ~3UL) = child;
+> -	call_rcu(&parent->rcu, node_free_rcu);
+> +	kfree_rcu(parent, rcu);
+>  }
+>  
+>  static int remove(struct allowedips_node __rcu **trie, u8 bits, const u8 *key,
 
-Here is the summary with links:
-  - [net,1/3] net/mlx5: Prevent tunnel mode conflicts between FDB and NIC IPsec tables
-    https://git.kernel.org/netdev/net/c/7593439c1393
-  - [net,2/3] net/mlx5e: Prevent tunnel reformat when tunnel mode not allowed
-    https://git.kernel.org/netdev/net/c/22239eb258bc
-  - [net,3/3] net/mlx5e: Do not fail PSP init on missing caps
-    https://git.kernel.org/netdev/net/c/8e87b3edd078
+This is net-next material, and net-next is currently closed for the
+merge window, but I guess Jason will take this patch in his tree.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Cheers,
 
+Paolo
 
