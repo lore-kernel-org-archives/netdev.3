@@ -1,191 +1,133 @@
-Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4512FD7A7;
-	Wed,  8 Oct 2025 15:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C811010957
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 16:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759937739; cv=none; b=oAUyECiUOIR0Gj0zTxNjfO3KiPqdQy1CUUGkTl4bit2WZbHjmHy+DTUg03upICoNwGZ7Z+k2Pfns9xrd4sGKQ1pdIQ5kw09JKF0AISHQHZ0h1N7G+Bb8IumkPlrt368YBxI1/D0kTofVp7Qnrv1S+O3kStiLtTboRMgvX6721uE=
+	t=1759940173; cv=none; b=Bk+2oNvdsBn4te8e59nHJ9o7IkZvCiQsfK05DclPOXGgknvILQQ04asSwFiYJnyBMQ3IqV9r5XazHw/4USajg5nsg9FatjBfzJgkQzZqV9u4kUeIvdDgMzeobCay78CeispNIHS1NTuHjanClWWtMYew5TAAHZdVtjknNTjR+Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759937739; c=relaxed/simple;
-	bh=V2L3IilwofpV6SrsfVTvut5ipDXkokIOm+dTBT4i7eQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tBYrY89q0c3mGEZg6x4AdA00N5Sm1cO6DZp95oGR6zx0RYNsg5RGkCwzkLZ4yMEqvsJAu6I5Rjnzj3EHeKp+TPdGuOYw25fToPZHLi71Q58g9Az1yjQtS/PrO3rVO0KwJWJ7pJD2rTSi0tFugKSszq1Zk+39vStN+VXgM1tOTFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=N2qfZelM; arc=none smtp.client-ip=52.12.53.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1759940173; c=relaxed/simple;
+	bh=uEGenzvUyzBkuEtUVn+BvDaUco6V3TK5byPQuBV+0Co=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kd32iQfG9vPwfbrMp1Az2O0WK+0hdoznHjkumez7WSLb7JPY01cgoI8BzD0eHFvDbIjzdYGRVkaiDjSWiYnssA971SvEyYzO9zJNjtS1ho0fwNvFY/hy13zgxAIe8JZm0BaOM0izFH8irJtLBlIZrBe596od1CAYcFOJyoWfleY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UkdwCwvG; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="N2qfZelM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UkdwCwvG"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb78ead12so1387600066b.1
+        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 09:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1759937737; x=1791473737;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=k0dUe76w+6n5/NfsPbyefGVCom+xh3GGcFcV3Olhmks=;
-  b=N2qfZelMt7jwppptReH5RJjvLCAq/b1xUidl0CPU0Jqs9jNAU3oMFvB9
-   XYCZdeHegjtZW/9XGw/3HUhrp+yq6EAvzU6sYt8/fK9EVwmrSvRq21SRk
-   prqQkmq+gGIlkZz6INpg5ORldB3fmTgFPpCCXqNXDmlRRlquoLq9MKWsP
-   yZgTngtkf9dwOXU/mZxmw7V0MgJpLWy/T6ygeYDI42YS55Cc+DnARBUnI
-   BGYgpx02EFU10P1sE5xYiEFez+kjhdOIf7lWCrPzIjLLXHT/ZEPDHlvOC
-   VkTVVcI3OmX/zpBsRGH/sD87HOfAnJl+gAqhSgcxm0KjcwIoExm5b91OJ
-   w==;
-X-CSE-ConnectionGUID: b75d3iYwTRuB7tX10Wtizg==
-X-CSE-MsgGUID: Px2S2wuYSNWDoNTkGsZEDg==
-X-IronPort-AV: E=Sophos;i="6.19,213,1754956800"; 
-   d="scan'208";a="4410969"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 15:35:35 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:3268]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.171:2525] with esmtp (Farcaster)
- id b6cae892-4a8e-4639-abaf-f3ab0bbe7767; Wed, 8 Oct 2025 15:35:35 +0000 (UTC)
-X-Farcaster-Flow-ID: b6cae892-4a8e-4639-abaf-f3ab0bbe7767
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Wed, 8 Oct 2025 15:35:34 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Wed, 8 Oct 2025
- 15:35:20 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <jdike@addtoit.com>, <richard@nod.at>,
-	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
-	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
-	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <james.morse@arm.com>,
-	<rric@kernel.org>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
-	<jdelvare@suse.com>, <linux@roeck-us.net>, <linus.walleij@linaro.org>,
-	<dmitry.torokhov@gmail.com>, <maz@kernel.org>, <wens@csie.org>,
-	<jernej.skrabec@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
-	<dm-devel@redhat.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<mcoquelin.stm32@gmail.com>, <krzysztof.kozlowski@canonical.com>,
-	<malattia@linux.it>, <hdegoede@redhat.com>, <mgross@linux.intel.com>,
-	<jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
-	<sakari.ailus@linux.intel.com>, <clm@fb.com>, <josef@toxicpanda.com>,
-	<dsterba@suse.com>, <jack@suse.com>, <tytso@mit.edu>,
-	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
-	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
-	<senozhatsky@chromium.org>, <andriy.shevchenko@linux.intel.com>,
-	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
-	<akpm@linux-foundation.org>, <yoshfuji@linux-ipv6.org>, <dsahern@kernel.org>,
-	<pablo@netfilter.org>, <kadlec@netfilter.org>, <fw@strlen.de>,
-	<jmaloy@redhat.com>, <ying.xue@windriver.com>, <shuah@kernel.org>,
-	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
-	<quic_akhilpo@quicinc.com>, <ruanjinjie@huawei.com>,
-	<David.Laight@ACULAB.COM>, <herve.codina@bootlin.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-um@lists.infradead.org>, <linux-edac@vger.kernel.org>,
-	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
-	<linux-hwmon@vger.kernel.org>, <linux-input@vger.kernel.org>,
-	<linux-sunxi@lists.linux.dev>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <linux-sparse@vger.kernel.org>,
-	<linux-mm@kvack.org>, <netfilter-devel@vger.kernel.org>,
-	<coreteam@netfilter.org>, <tipc-discussion@lists.sourceforge.net>,
-	<linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>
-CC: Arnd Bergmann <arnd@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>, "Jason A. Donenfeld"
-	<Jason@zx2c4.com>, Jens Axboe <axboe@kernel.dk>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, Mateusz Guzik <mjguzik@gmail.com>, "Pedro
- Falcato" <pedro.falcato@gmail.com>
-Subject: [PATCH v3 19/19 5.15.y] minmax.h: remove some #defines that are only expanded once
-Date: Wed, 8 Oct 2025 15:29:44 +0000
-Message-ID: <20251008152946.29285-20-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251008152946.29285-1-farbere@amazon.com>
-References: <20251008152946.29285-1-farbere@amazon.com>
+        d=linux-foundation.org; s=google; t=1759940170; x=1760544970; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wafGHdomjeTMWOaW1CHD+uCxSHknTrB56S6k0QVoIaI=;
+        b=UkdwCwvGeprzmnUJT0VslBL3TFeZXaXJ71qE+O0aiugDMXUermNrtZAV92kuuNfxjx
+         33G2FEFmOr7R4KFxRHcehbNlcGL7pnW9RAPgOKnmqfqNA3A5tjtGsyjUQv5Gvql+xaj6
+         G9AEyyNFuKQp4j79ucmrtczyQ99Q8bGUZvGoY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759940170; x=1760544970;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wafGHdomjeTMWOaW1CHD+uCxSHknTrB56S6k0QVoIaI=;
+        b=bbGGaF/KKRz11eAzO3CqVpciOAfbZTkj4bKqDiWAIJi1KaiH9T5U45obKDjrsfD6Z4
+         fq0Bi5CoWqG5QgYPmESoa1ka939s4W6UD39yDlU1zS/uU2UIC8mLudEkczH8KT9lgjEo
+         WNF0LPlKHQhCJzvoG8JrBqP3mrZNWPwexMZTwhwIv7F82es6z85SFQGUw/VFH5ZMoG+f
+         mVN9gqHYypSWd2rmVDa4wAjZypG9yIDvnK6rvJY6wFBTSx9a1qJCl2GlPtst1O1TTnZ5
+         /zG5o53bAUVNhui/1jqNL4rvl6VVoAIvMhp08utzCLYVrXDvPb0kHkDE6479Az+V+d0U
+         3fSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWq0IlHmfT3gkKj7bcMs/0VkIWBR8+66Vs55Dh22u79kpeaBWemJmTYLKWDBzaQnzx5myAJ5FY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLFsHxwyGdrvHygYmqxqohDHXDi0c0amowH6s9tkeUEQrvlu7s
+	muoPCD5ZLPqi0xyUhddeJx+ViynU73m2qPzmw2pzAe1YDShlPxYtheGb4YwhtN/KEPzWttdOzih
+	dZQS+dOI=
+X-Gm-Gg: ASbGncsJ1STpjIJroVpupZG4RX3aYw/MQoCTxC1LY2BBKMlMIr/acLRl5LhwdBA+jaU
+	fTqs6EYCLIxGk6/LEaQmEe95sMeJYUjtLb3LZNfpPRlMRrADN19eVGyEn9FyNkbqL9PGK7t+9N2
+	8QZ8Hp7lpxeKc9S88zJv+Xb3UwrTkkF8vZiclAWA+wHphFGVW0Nxi1rF+2ecbdP1yozU+GkxwQX
+	d4QV8EHU65EqWKMtzqXWFRef/0HdLMEL3sAZZ6DVQdU1jdeg/j57s8E3SrPpnyAPEXtH+JFKglJ
+	PKO2OOLRF/m9O5ZBiRGDcijJRk98Jw2f1GQKW1u8ajpGJzyTeFs+xLCmCr6k3e48SiBozBqxG0S
+	bMclp/AOSFGAm+9aUsxNsNAnEzCDpkF7ei+Z6shm21Gy/jU6F9l8eXbuICEx+5Q/z3v6WsBDJ+l
+	NSkHLd4FIKVVMljSy1YbWv
+X-Google-Smtp-Source: AGHT+IEFIjOZRZc5i1Hs98v/erwlPwVn2CcyvG0BPXM+1Lm9iNgFlnTWL3j/qv1firYt6FX1Y5JvyQ==
+X-Received: by 2002:a17:907:9404:b0:b07:c1df:875 with SMTP id a640c23a62f3a-b50acc2f5camr493757966b.56.1759940169649;
+        Wed, 08 Oct 2025 09:16:09 -0700 (PDT)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b4869c4f314sm1671246466b.69.2025.10.08.09.16.07
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Oct 2025 09:16:07 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-62ec5f750f7so13207274a12.3
+        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 09:16:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVeT/afjts2fMiUczrk+Bu72Tnh+GrhOjrWlPZWxZ7I9wIDbAApVT8wMV7evnp8C3m/mP3xnyM=@vger.kernel.org
+X-Received: by 2002:a05:6402:1ed0:b0:639:e469:8ad1 with SMTP id
+ 4fb4d7f45d1cf-639e469a2e6mr1978291a12.20.1759940166695; Wed, 08 Oct 2025
+ 09:16:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWC004.ant.amazon.com (10.13.139.205) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+References: <1a71398e-637f-4aa5-b4c6-0d3502a62a0c@kernel.org>
+ <f31dbb22-0add-481c-aee0-e337a7731f8e@oracle.com> <20251002172310.GC1697@sol>
+ <2981dc1d-287f-44fc-9f6f-a9357fb62dbf@oracle.com> <CAHk-=wjcXn+uPu8h554YFyZqfkoF=K4+tFFtXHsWNzqftShdbQ@mail.gmail.com>
+ <3b1ff093-2578-4186-969a-3c70530e57b7@oracle.com> <CAHk-=whzJ1Bcx5Yi5JC57pLsJYuApTwpC=WjNi28GLUv7HPCOQ@mail.gmail.com>
+ <e1dc974a-eb36-4090-8d5f-debcb546ccb7@oracle.com> <20251006192622.GA1546808@google.com>
+ <0acd44b257938b927515034dd3954e2d36fc65ac.camel@redhat.com> <20251008121316.GJ386127@mit.edu>
+In-Reply-To: <20251008121316.GJ386127@mit.edu>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 8 Oct 2025 09:15:49 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whTKNg8+F5EUP2oxcfr14P7geOOpaPBwhxF7a0jjBm2GA@mail.gmail.com>
+X-Gm-Features: AS18NWCvIhnESJ0gUsT-9HGa5XjpSt2eBl3AMS3_hBGymdQg0Vd76BELyTS6HCA
+Message-ID: <CAHk-=whTKNg8+F5EUP2oxcfr14P7geOOpaPBwhxF7a0jjBm2GA@mail.gmail.com>
+Subject: Re: 6.17 crashes in ipv6 code when booted fips=1 [was: [GIT PULL]
+ Crypto Update for 6.17]
+To: "Theodore Ts'o" <tytso@mit.edu>
+Cc: Simo Sorce <simo@redhat.com>, Eric Biggers <ebiggers@kernel.org>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Jiri Slaby <jirislaby@kernel.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, netdev@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, "nstange@suse.de" <nstange@suse.de>, "Wang, Jay" <wanjay@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: David Laight <David.Laight@ACULAB.COM>
+On Wed, 8 Oct 2025 at 05:13, Theodore Ts'o <tytso@mit.edu> wrote:
+>
+> If there is something beyond hard-disabling CONFIG_CRYPTO_SHA1 which
+> all distributions could agree with --- what would that set of patches
+> look like, and would it be evenly vaguely upstream acceptable.  It
+> could even hidden behind CONFIG_BROKEN.  :-)
 
-[ Upstream commit 2b97aaf74ed534fb838d09867d09a3ca5d795208 ]
+Maybe just
 
-The bodies of __signed_type_use() and __unsigned_type_use() are much the
-same size as their names - so put the bodies in the only line that expands
-them.
+ (a) make it a runtime flag - so that it can't mess up the boot, at least
 
-Similarly __signed_type() is defined separately for 64bit and then used
-exactly once just below.
+ (b) make it ternary so that you get a "warn vs turn off"
 
-Change the test for __signed_type from CONFIG_64BIT to one based on gcc
-defined macros so that the code is valid if it gets used outside of a
-kernel build.
+ (c) and allow people to clear it too - so that you can sanely *test*
+it without forcing a possibly unusable machine
 
-Link: https://lkml.kernel.org/r/9386d1ebb8974fbabbed2635160c3975@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
----
- include/linux/minmax.h | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+and then
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 2bbdd5b5e07e..eaaf5c008e4d 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -46,10 +46,8 @@
-  * comparison, and these expressions only need to be careful to not cause
-  * warnings for pointer use.
-  */
--#define __signed_type_use(ux) (2 + __is_nonneg(ux))
--#define __unsigned_type_use(ux) (1 + 2 * (sizeof(ux) < 4))
- #define __sign_use(ux) (is_signed_type(typeof(ux)) ? \
--	__signed_type_use(ux) : __unsigned_type_use(ux))
-+	(2 + __is_nonneg(ux)) : (1 + 2 * (sizeof(ux) < 4)))
- 
- /*
-  * Check whether a signed value is always non-negative.
-@@ -57,7 +55,7 @@
-  * A cast is needed to avoid any warnings from values that aren't signed
-  * integer types (in which case the result doesn't matter).
-  *
-- * On 64-bit any integer or pointer type can safely be cast to 'long'.
-+ * On 64-bit any integer or pointer type can safely be cast to 'long long'.
-  * But on 32-bit we need to avoid warnings about casting pointers to integers
-  * of different sizes without truncating 64-bit values so 'long' or 'long long'
-  * must be used depending on the size of the value.
-@@ -66,12 +64,12 @@
-  * them, but we do not use s128 types in the kernel (we do use 'u128',
-  * but they are handled by the !is_signed_type() case).
-  */
--#ifdef CONFIG_64BIT
--  #define __signed_type(ux) long
-+#if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
-+#define __is_nonneg(ux) statically_true((long long)(ux) >= 0)
- #else
--  #define __signed_type(ux) typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L))
-+#define __is_nonneg(ux) statically_true( \
-+	(typeof(__builtin_choose_expr(sizeof(ux) > 4, 1LL, 1L)))(ux) >= 0)
- #endif
--#define __is_nonneg(ux) statically_true((__signed_type(ux))(ux) >= 0)
- 
- #define __types_ok(ux, uy) \
- 	(__sign_use(ux) & __sign_use(uy))
--- 
-2.47.3
+ (d) make the clearing be dependent on that 'lockdown' set that nobody
+remotely normal uses anyway
 
+would make this thing a whole lot more testable, and a whole lot less abrupt.
+
+Christ, if even FIPS went "we know this is a big thing, we'll give you
+a decade to sort things out", then the kernel damn well shouldn't make
+it some black-and-white sudden flag.
+
+So we should *NOT* say "FIPS says turn it off eventually, so we should
+turn it off". No. That was very very wrong.
+
+We should say "FIPS says turn it off eventually, so we should give
+users simple tools to find problem spots".
+
+And that "simple tools" very much is about not making it some kind of
+"Oh, what happens is that the machine is unusable". It should be that
+"Oh, look, now it gives a warning that I would have a problem in XYZ
+if it wasn't available".
+
+                   Linus
