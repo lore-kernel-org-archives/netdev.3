@@ -1,143 +1,200 @@
-Received: from out4.tophost.ch (out4.tophost.ch [46.232.182.213])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010002.outbound.protection.outlook.com [52.101.193.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473FB21B9C0;
-	Wed,  8 Oct 2025 12:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.213
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759926511; cv=none; b=Y9H0RaQVK8z/4H1TzDaRwoIOB/M0uA1GSqvKkxjCvKiMw1UsCBhP8C7jclwsf1OYkB3qt/1nz8ti8uwcBCrSzCFoFTgT+xAUVQXIg1qQi1OejfVHnqkmLGZHU3nWijBk3bpbg1sisy/C5CO3CDc/mxnt6K7ve0Te5N2E8a6eQHc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759926511; c=relaxed/simple;
-	bh=bJZwQB0eD/a80IPP/m1ic8+FM4WfH8rPsVolRrikLtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SIhR5MXafh2USq3PLWEH97X7bTbo4CMbf+FBFpJzVaLAtXh37JdbYrXavy0QJkTUKUfKw/LM/TQAs6QnQwxg6m/ngVbC112kRNexUPlyq0N7HL9FdFQji58hjbJdtJmLNxM+5jbD2TZUluGpudpSeA/GLsHxD/aR95c/FPu6PyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=k/nuk2hb; arc=none smtp.client-ip=46.232.182.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5956624166D;
+	Wed,  8 Oct 2025 12:28:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1759926524; cv=fail; b=XtFbSbPS6JanO8AAl5JnmqbuWxle3/tqq+/ghsy/RcbbYV7KZ8dH072rzj/Xx8FO67UhPt7YqM/QZVb/nYX+jSzYfLrDYJenKRdTQDacpMTto9lf0czLoe1pbLB2fTg4ZgU+2lUF2hWj3AR/o8hgW3np1ttMeGSNB9QB5s9OtZo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1759926524; c=relaxed/simple;
+	bh=VdqWBu6mQFgeOm1n8yihIW0dyTESfIbt+Z0mKdlY5pA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=N1U7UGWsG7n6aeEEM1huIJJNmBXnkJY3x1AuZCxH/cCebsD86kRPu3z2T1IErR+Gz1VXqyBiD7SGibafEiVjCmUwsRwk6Y2LOD+OxRZrxym+Om+butN+blKkkjfXYPIlwYok/qCoC1aulgX3eli55mJMh3c7hBQUC8G+3tqHyIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=aiuuGMHb reason="signature verification failed"; arc=fail smtp.client-ip=52.101.193.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="k/nuk2hb"
-Received: from srv125.tophost.ch ([194.150.248.5])
-	by filter3.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1v6Siu-00HEio-1b; Wed, 08 Oct 2025 13:52:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=jcrzgQaRo1s3Zc3rxVMNCH6Ga4jTLLoMlb1z0pI42TQ=; b=k/nuk2hb22e48eTiuOitgKNYnS
-	S6S+PxKSnOb0A/DjeNt+6wofSRKNGY34A2/XEAUq7QqQ5VyV7pTUL7GG6thx3tJYXEQit2zcHyCRL
-	8QswE0ABV3qgGyxpQVVcGImMHl3V5GbTnfyTrF20eaGHSTra+SGREiZascklXWkK3J3xN9drEEPs9
-	F9MNvA+UIeV1V888hTDQSyQ6Xe4fiu5y6FuaMMU13f1mlXMdsOd2hgFdilNgPtHBtPO7EAyYY7hhY
-	Cs0x9+sLanO4DYTP6Pjoh1Zw+M7VSHmLiVGUmo5lDoW/B7dhjev0EOEr+5QuoNiWBRa1zVkAF2zXG
-	FZwk7zfA==;
-Received: from [213.55.186.58] (port=20306 helo=pavilion)
-	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1v6Sit-00000004Xlh-0ZFe;
-	Wed, 08 Oct 2025 13:52:45 +0200
-Date: Wed, 8 Oct 2025 13:52:43 +0200
-From: Thomas Wismer <thomas@wismer.xyz>
-To: Conor Dooley <conor@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Kory Maincent
- <kory.maincent@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Wismer <thomas.wismer@scs.ch>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
-Message-ID: <20251008135243.22a908ec@pavilion>
-In-Reply-To: <20251007-stipulate-replace-1be954b0e7d2@spud>
-References: <20251004180351.118779-2-thomas@wismer.xyz>
-	<20251004180351.118779-8-thomas@wismer.xyz>
-	<20251007-stipulate-replace-1be954b0e7d2@spud>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="aiuuGMHb"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aOTUYWELzZS3hCkp8XUfOgc8B3W2eKYM/yKR41lbvnXgfJdNd3GjgMDkTsU4LTuytunIqs8BpfMHUeNvbOWCd845m6zOl/BSjqiQpB1YGalPIZngu0nlDJ4nhuzLIxi6lvwp1c1LYO0YbmELEuS4F37N5POgePPtyYaY1wFZ5wmvQgfPE1DjKy50oVb62/NdJ/7gLmpxQJZ8ldxeTbe5Zix9EBrz5KzV4X1UCfFzGnyb1zbqjly2MUGCTEqTvUSX1IkD3MDgsACSqzMysT0KBvT/Lmum+1osV+Maj+v9szmW38Kw9KKlvYTR2p3NG5LBwt5OxATno3WzIfpKx/ACZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=upNBhTjAhA53Xu3yAuIXFByRXRZXJfo2DtGmyvTssZY=;
+ b=FJFSqt0zUnc5/q6HoyPrMLfno7zM4M4FWABaTkDYKiHi+DM5925cKx2yArZfmAY3axHwVlYnbrnBBN/ZRnW513nfehFiofAZY5LiLLYP09mHRr98PDLcSv3S2nDAFhyebAcZyxQcv+MwtkCEaoqZoQbK4gQPCLkcvn058xpfJzTnOX9DrDVZpzuF9qVFcAau/TUqKVO9euOrXricr9kCVxM3zbp10XEZz3aaqwJ8iBixMHqBd3G3Ngz7JDmCkxL9tDVvJTaf2I7MmysleiFTNLDsnlVvvlpHzPbr3XGDKRkuGNARQnoH8XkiQ5+aoyvyD6kMVpSBCjlGyhu0kQyVZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=upNBhTjAhA53Xu3yAuIXFByRXRZXJfo2DtGmyvTssZY=;
+ b=aiuuGMHbfJKwWm1/imHY8Mycrmvs7/Wn3fqZjSTYSo7jILZd5nIvcX1YmK5auZJqmfobLPmZV3wixQNFPFzkFGtP1ul7PFWyewjKons7+MPSqCXd/0G5LufXaDPfeiYqhw2G9JI+7aQL79RUbK4YWNhQzHvyWK17xrcgQJ6CdA6ml1yPmRYPFHm8oiiNODMl/tbpjAJRCnp0bLxLNDrg5kCWPD+DQcYikZvdMkc33hetRuqzVIVzq0dvVY5CzI+M3+lMBLh8bIqcp5x/z5J790ZqoFnDrj3X8JXXHyz+69doGtX5lbPpelofEDX6Ja+tpgCqz8w0mDSbjwlGyhRW8g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
+ by CH1PR12MB9693.namprd12.prod.outlook.com (2603:10b6:610:2b0::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9182.20; Wed, 8 Oct
+ 2025 12:28:35 +0000
+Received: from SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
+ ([fe80::6f7f:5844:f0f7:acc2%7]) with mapi id 15.20.9182.017; Wed, 8 Oct 2025
+ 12:28:34 +0000
+Date: Wed, 8 Oct 2025 15:28:23 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: "Huang, Joseph" <joseph.huang.at.garmin@gmail.com>,
+	linus.luessing@c0d3.blue
+Cc: Joseph Huang <Joseph.Huang@garmin.com>, netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Ahern <dsahern@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-kernel@vger.kernel.org, bridge@lists.linux.dev
+Subject: Re: [PATCH net] net: bridge: Trigger host query on v6 addr valid
+Message-ID: <aOZY5yYiKtfUrLZr@shredder>
+References: <20250912223937.1363559-1-Joseph.Huang@garmin.com>
+ <aMW2lvRboW_oPyyP@shredder>
+ <be567dd9-fe5d-499d-960d-c7b45f242343@gmail.com>
+ <aMqb63dWnYDZANdb@shredder>
+ <aOEu6uQ4pP4PJH-y@sellars>
+ <9cc66694-6fcd-4460-9bce-cdbcb0153a89@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9cc66694-6fcd-4460-9bce-cdbcb0153a89@gmail.com>
+X-ClientProxiedBy: TL2P290CA0001.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:2::19) To SA3PR12MB7901.namprd12.prod.outlook.com
+ (2603:10b6:806:306::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
-X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
-X-Spampanel-Domain: smtpout.tophost.ch
-X-Spampanel-Username: 194.150.248.5
-Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
-X-Spampanel-Outgoing-Class: unsure
-X-Spampanel-Outgoing-Evidence: Combined (0.50)
-X-Recommended-Action: accept
-X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
- 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zEtV
- 5r/L4Ot8UddBJecz0vF0xYCHwzEoZpUBagq+YQPMCtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
- daZjkYsG4jVZi5Tfop5qjCZejidXzthz0vNkOX8Em4cj6D/wddIY3ooDH3xmALJ0KCcsszI9W7vD
- 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
- L25JS816nuiE0t5pG6MLXGczoaQ34/6XxaNTDAhv7aV57JsPc1xQig4or8SGp+oEgVY8m5YhXjt1
- 1mZXDl6SZZzjGdqG2Lj5rCXX7a7k66n+dqZH8SumKJ6G2ITZ1QpN+fKl6MqQzpHx+R/se4ridaNZ
- B8TZI7fFfQwiuwD2LcLdqjNzWvfUWpSzeqsU5PCGCDUFaU8uhHiAnATVZ6fUz0ieq3c+galx1KGI
- Pp5jnkiI48QcVV/sevQbkxCuiwh6Dw2ezHpzBWCNEjuWRvIT4EJ2lr2fnvN0vyHJPWrtFePT1LWJ
- YkjVkiWyun89aYjOQVn+0u9hv6vc4kaDyrzZqOtFmCYx9ZUW4uF3IsCR4FQZzMS1+iCTTpBSBU9f
- +Vf3ILgJPePj0AiYMnkOYZl+Ft134+Tg4Kc9J0hnMXKx8pjHWEGHlWxPsl3WEfCK++QP7hwqRAUa
- ZyvXYsGqun+gsnRrwx4NiFDSlcM+Wn9owyaX/KlLn/njN5eSj526f3kLYY1TsMEeeHi+U6STQXMQ
- D692EpmpxHPQ6fdixDnE+NhRq2DzlcAJUjaLcRLsWJVw5FAS+DG0fESebuRosX/9DvJ1PqhoyZO+
- 55MGpfuy7J6qK9cOuNFQ+5eGIII/qgXB3gv2NI/ukWuQBNrXV+EmIqM8SxKOhcObZXWnkEw+6F9C
- GyYaSNdYCqWjx7tVBcUyWD6tuli72Uhh4KMdzekambyQyMd4zC4QeDwRSaOU1duojVsD0mcRXp3i
- H/O1nLlsNVT2ZXBi9hWEAP02Kq9O1EK/TYp24VOsP5eu885wo+t+ynT3Y80OmAux3oN13+ztUzne
- WewwEyDnbwd6egxf+5+PsAe2KUEdvp80LOErjFwUf/rlg8VmOc5TmmgdvZqrRINDmcHx2hb+kvjY
- MSg1O9jlcFeiwd6G/JABbKl/d5wvz25WxpLvJQch9a84ocD+HpMJ647lNwN4qOsSZg+fYhVZG4mh
- yjRtVCRmo/KLfKlWmgufHFIwhu0oznfSscIjbgCEW8FLB4OaDyJuGHToBIYrrlDXmPN7G7txF2nS
- g2cyQb8Y5qkVLHiOZSn5k9NADD0BBW1oT5qIEWguCTF5tOP3jj0yLjiiCMcv+tRXcSj1CD4=
-X-Report-Abuse-To: spam@filter1.tophost.ch
-X-Complaints-To: abuse@filter1.tophost.ch
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH1PR12MB9693:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24be0855-6563-4180-fbb1-08de066632f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?+cywiKz2gz/+LBAOusxphyagJ4R29fARWDmQlPJdpe8CatP3CZ3jQJkg2X?=
+ =?iso-8859-1?Q?1wjl6JkZrFZ6O3t1VL1+IvnSuYQG3f+TdtSvkel2wLGG8foMlR6KsUllmf?=
+ =?iso-8859-1?Q?5UhsW8ZJ9+jmmEWrgah6NzDBPcX0KRx0AkAYE27wHN5KwMtZ0i//+FoR4/?=
+ =?iso-8859-1?Q?7bem+M3i3fzFasDuwEP0Ai6njIfQHzxqwb2nk60L2+yIZ8ron96RRExqE+?=
+ =?iso-8859-1?Q?3mNC1T4rych7WB69aspiBJGXy4UpiNI6yqYbDOHUbbqzB0mQ4GHLig8nXi?=
+ =?iso-8859-1?Q?NIKhrOOlwZObDNe8jV12uEgoKdRox9g8Xxg2XydsdDipt+dQ7WV76arD/w?=
+ =?iso-8859-1?Q?aX0MYKjc6SzVsjOCRyJlwaQjrEql5xUSfL1K76QEPnHY2Wmsl+hTElM/c5?=
+ =?iso-8859-1?Q?bjr3crNmfdJwQkNm9iVINg7aYWU7rjNdkJ1xifq/23CzW2WlVETpRcLDxd?=
+ =?iso-8859-1?Q?VTnH5nvYTye6h77tUr6cclZjgchMri/b7Qq0pnGFw7NggbLFWY753B06la?=
+ =?iso-8859-1?Q?XKi8co0RfkqnSW8U3bvjaEwlHTjQXYCPvNxqgDuNKIRvtUaL4gEqMQHB+S?=
+ =?iso-8859-1?Q?T06pYOFQEaDVnuig2x0sXFZ/C8cB/2H8C8ve6xkLUNXLDCgh2nc7NBBQwC?=
+ =?iso-8859-1?Q?lounNxTAfdMPnieAkvQ+/rnt13Zx7yoFpOmPL/JIgwfWxv/Dluw0lTfyt2?=
+ =?iso-8859-1?Q?Qg4KTZg3KnofUyUBbtT/6gNxL/yaGxloVUj3eztEp2aiJ54SSp/5yQsfN2?=
+ =?iso-8859-1?Q?2IQrKPIJWzyaWqPDWzgGynhHriuEfl9nJk+WbE78qjmGX19U861WAblBKR?=
+ =?iso-8859-1?Q?YgydbxI5K/3+DC491TkCHkmkVMnDdXrdMkDy3CXLpMullzunyMsDCV3QVW?=
+ =?iso-8859-1?Q?ZyhQBBvHq04gFW96VfPN/lhvf+lKeXZ8pSh9yu5U70RcppRMrRCE0VNALH?=
+ =?iso-8859-1?Q?7pkZrSOY8isG2Xeaz4KIwK/eV8sd5Em83JFCMv0C58R8YB3W4TES4WL6nw?=
+ =?iso-8859-1?Q?Ekz9hrEaHSAXWBSxQbnXC/+bRcN8Hko4xT7r24ydmX07ffEEQ8Qf6qfZH2?=
+ =?iso-8859-1?Q?J6ObRVjld45O7jxOWUkzaVlRXbP491CGg6/PJDJQHrx0j1f7rFeTNRSMb7?=
+ =?iso-8859-1?Q?RKwdvMXcac4LTBxsU7W5UR9S/SNffkJG1t86v7zVJJTR0R9p7h2Q5k2P6X?=
+ =?iso-8859-1?Q?UMHJri1Z2vwQG5fV9M9hV9GTBB57lVVTaFbnVRTuatBId4INSJ8vp3H1l+?=
+ =?iso-8859-1?Q?fcicANh87A5a+SbgyGqIRT8JshwekA+uPfuiKmbMrRLIJy03Kzv/QBOoxp?=
+ =?iso-8859-1?Q?o8HUxWnFsBgw3wb7rUA2buO1B+KypIa9e2KQPKAeTirBMkVmAlJC98UyGN?=
+ =?iso-8859-1?Q?3JF+X0ttckGa3qZ0Un53i9yxFMPAr74lk+L8lP7Gtr335Aq9vlXK+dCyEi?=
+ =?iso-8859-1?Q?4mawXRpQ/u5pocNAvJbOGqa5hYdL2v6rR0fqzabVkYaQ0Ju8U8kvBTnnyD?=
+ =?iso-8859-1?Q?tn6OtrkeXqh/4TF1bWU7OZ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?Q0XSo/lMxUfG4YJQrbynQ45P7FW+Fu/P60fdAHswxpjbZtFjmQAlMO9ItT?=
+ =?iso-8859-1?Q?BohIzoLssqn+wN5o2I/9sX7RO3Gztb6V5F9C51WbU2xsFDxxcizX1dB8sO?=
+ =?iso-8859-1?Q?NswwydSIJyjZLShYyZJimI4axQ2Vt3RZP7VBS59V4X+S/0VOd88zg1HzYb?=
+ =?iso-8859-1?Q?tUW6Rx2kONqSx9/dQuflqwzYuLmzGgQYSO2I7ibVI7swnC0bTsv2qYxvtw?=
+ =?iso-8859-1?Q?u/Y6dVrjGJQqptYnOChB1S4iYzA9V/hzKXmEmcT/Mq/TTHwbSqp22eoJpZ?=
+ =?iso-8859-1?Q?V8KXLq5UnGio82NX/p3d5mp1x6eZu5OtDdDVEIV18xspxNXUtKWvpiwl6z?=
+ =?iso-8859-1?Q?QipAsRE0CVsweMyMewa5wYRT1P0sZoGU1CR4zM8oXQdpwVgLhfnzzcdbcJ?=
+ =?iso-8859-1?Q?6KsxdcpU3i0VbIP9x5pPfzH+FdJaLfodhrEY4cmcXamTUUAiq5620wBgfb?=
+ =?iso-8859-1?Q?FfCH0ItITNrLXR2Nv35mzYIR/1qURA5cy74E88V2RIayHQeTocqFRjDfJ+?=
+ =?iso-8859-1?Q?X/xE5lPSwePs/7TggSHeoMNNLAYDc3Bi6rmp+SuVRQ2XKiMi9n7CbN5oBY?=
+ =?iso-8859-1?Q?dCUerkW/ihfJR7ycG2uyJENn2ItlDgLs7r1qTUT3Rj0fSjTnoBUJyRrIR4?=
+ =?iso-8859-1?Q?8JWCSY6xBqxiobDcjwZMqr+MoUtF2u0uPeCQjU+AgS+Un6JJsA0ng7SU4g?=
+ =?iso-8859-1?Q?vQyeoThSMOXnrpLRCByB4qxl9gOewAaBFf3QjeCAmCQmJN2+DitiB7wQUl?=
+ =?iso-8859-1?Q?HoH7sadB7tQ0m2RlvvRBgTMDnXmsNjiBbOWtZkmnlUX5LdQ6HIKGMxkRlX?=
+ =?iso-8859-1?Q?NfruXdImZZ5MUVoWAamtHuU17kS9Z1OOgH1bXo3JEhXezrp36VFzOArAfp?=
+ =?iso-8859-1?Q?7LSXiQzue8cuIV6O5j62JSOUU50AAuDEEn0t+lmQ4TJvCTTwz60t9AZMZd?=
+ =?iso-8859-1?Q?9kbdS5t20N/M5EZoFF1M92PiMADWkBK7JiQ6bGGH4cElunla8GkhFNZgT1?=
+ =?iso-8859-1?Q?Dsz+yD+qTs6nHcMMEFvb/er2UQVN6dVxh5RcC+t/t6PWclFJYDXQLi148N?=
+ =?iso-8859-1?Q?tPshiJfXDHSqn6JSgcRz90Enbejy6xm5fG3xis9vAA4dgF3vFaUSPOYLqt?=
+ =?iso-8859-1?Q?JTpcL+hfshwVKgCog9gO1+OSVlMpur+HdN9SGVeht3HNxJWF5MH3E8rsB2?=
+ =?iso-8859-1?Q?DzoWorcSQ7sAiyb48ura5b4z1ZWrJVnf9FyA+HXhfnTBbFf28dyoMB3aHu?=
+ =?iso-8859-1?Q?C80484fvgH3MNdimneCsIbHxkFP2wz/3H0K//cdAh3xWdQJq8Ig1Q7X7OW?=
+ =?iso-8859-1?Q?1sB7K1E9IKLVh7sRsZPzGxXo68lz9O9im6ELPHZ2Ud7RQtmd3B5LL5/d6z?=
+ =?iso-8859-1?Q?EnVKsFTRUsYAjO7XO2pZLDtsirLzmo48EctG1ROHRlqGw810TrtMsu8gQi?=
+ =?iso-8859-1?Q?i5PTTrCIYg8SLTI4X6mSwDu6wggqGDv+Zrswpo7r8bTZ1FCK3ycM01SDKL?=
+ =?iso-8859-1?Q?b0lCXVJlFEjwS4bxcVxKI6hbzHNbcjG89fQruUP6b9kwJLn3YySDVvziqv?=
+ =?iso-8859-1?Q?JYaX+TYjuh3wGPLBMc9KgOerMYgvbaRnMZ3HXKFLh34/6x1YrS/UHyIQUI?=
+ =?iso-8859-1?Q?V5nRU/roXf0oUJVREKHghn8qRwlCSQ+fDP?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24be0855-6563-4180-fbb1-08de066632f9
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2025 12:28:34.7586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZT83W4cnc2upfDI+1cbHhz33NbAvX0W4FHfBsoLqECL6So+6nOncKlDhD48j1/CDWO+ZR6MRV/UU8l+loH8g5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9693
 
-Am Tue, 7 Oct 2025 21:40:03 +0100
-schrieb Conor Dooley <conor@kernel.org>:
+On Mon, Oct 06, 2025 at 11:43:02AM -0400, Huang, Joseph wrote:
+> On 10/4/2025 10:27 AM, Linus Lüssing wrote:
+> > However (at least for a non-hardware-offloaded) bridge as far as I
+> > recall this shouldn't create any multicast packet loss and should
+> > operate as "normal" with flooding multicast data packets first,
+> > with multicast snooping activating on multicast data
+> > after another IGMP/MLD querier interval has elapsed (default:
+> > 125 sec.)?
 
-> On Sat, Oct 04, 2025 at 08:03:53PM +0200, Thomas Wismer wrote:
-> > From: Thomas Wismer <thomas.wismer@scs.ch>
+Isn't this 10 seconds (default mcast_query_response_interval)?
+
+BTW, I see that delay_timer is started in br_multicast_set_querier()
+which is called from br_changelink(). Isn't this problematic if querier
+is enabled while the bridge is administratively down? It's possible for
+this timer to expire by the time the bridge is opened.
+
+> Some systems could not afford to flood multicast traffic. Think of some
+> resource-constrained low power sensors connected to a network with high
+> volume multicast video traffic for example. The multicast traffic could
+> easily choke the sensors and is essentially a DDoS attack.
+
+Note that even with your patch (or optimistic DAD) there will still be a
+time period where multicast traffic is flooded to give responses enough
+time to arrive.
+
+Can you clarify how you observed the problem? Did you observe packet
+loss with hardware offload or did you observe excessive flooding with
+the software data path?
+
+> > Which indeed could be optimized and is confusing, this delay could
+> > be avoided. Is that that the issue you mean, Joseph?
+> > (I'd consider it more an optimization, so for net-next, not
+> > net though.)
 > > 
-> > Add the TPS23881B I2C power sourcing equipment controller to the
-> > list of supported devices.  
 > 
-> Missing an explanation for why a fallback compatible is not suitable
-> here. Seems like it is, if the only difference is that the firmware is
-> not required to be refreshed, provided that loading the non-B firmware
-> on a B device would not be problematic.
+> I'm not sure this should be categorized as an optimization. If we never
+> intend to send Startup Queries, that's a different story. But if we intend
+> to send it but failed, I think that should be a bug.
 
-Loading the non-B firmware on a B device is indeed problematic. I'll
-append the following paragraph to the patch when reposting it after
-the current merge window has closed.
-
-Falling back to the TPS23881 predecessor device is not suitable as firmware
-loading needs to handled differently by the driver. The TPS23881 and
-TPS23881B devices require different firmware. Trying to load the TPS23881
-firmware on a TPS23881B device fails and must therefore be omitted.
-
-> > 
-> > Signed-off-by: Thomas Wismer <thomas.wismer@scs.ch>
-> > ---
-> >  Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git
-> > a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
-> > b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
-> > index bb1ee3398655..0b3803f647b7 100644 ---
-> > a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml +++
-> > b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml @@
-> > -16,6 +16,7 @@ properties: compatible: enum:
-> >        - ti,tps23881
-> > +      - ti,tps23881b
-> >  
-> >    reg:
-> >      maxItems: 1
-> > -- 
-> > 2.43.0
-> >   
-
+I would say that the deciding factor should be if it's a regression or
+not.
