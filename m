@@ -1,100 +1,92 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E288224B15
-	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 12:37:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3E4224B15
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 12:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759927052; cv=none; b=MqYnHONz4hgiEC4IjdhOsJXd9E0cO37CNqCKNzSaJVUFlSwX0YwRo3M73QX8Mek+7OYXK28fbAA9h6cmrB9c6CHn+9nYcLOAhndxNv0PpNekvzcffH6ztMWSQbdvANLt4NvG/PmT0VYbbEOK4J/k9+3iC6MiY99sd6kBDj2cx0Q=
+	t=1759927056; cv=none; b=bLrrq2fGXllbo3OS2trOB3VXIdpmiPldG0ZRheA6xgj0M/6PwnQX2GwL9yo6nMGWm8OHPk/ChP/zhAtR7Z2ANWIecfGQzUy+7oSg8kTSO9LJ4Svi+tJgsrbfNvn0cPiU6F6oj9MHZUhuKdRkk2T4Fj4tY5VNkGg2GX9oxpcAYYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759927052; c=relaxed/simple;
-	bh=V0yyKxqZgbFO/0v6WO5ujCe0dE9JkSsBVJjkd3iB3MY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U3piYmuTbUxAsYvkZp0QDJlowOwLlvMaWbFrCYCmvfjuLozManzgZUT7RQy5cY8i3UKRTm3SwI53RJA+vv5L0kNCgx/wnbD919JCOPqJPrA4YW24L+A6ANmyN0wSKXpLKv2eqKYBDtllFaVlLMjdsvKAx08+DFYUIfJZK3vYQHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O3wOw4R+; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1759927056; c=relaxed/simple;
+	bh=la5UGkrChP41nMA8ubVJ6aDpaA9vwENHhK+zqCfr9go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C6wmrTdYi4cEZ4hiLmIYpeZpWGhv9UqMAzqxCI2Z7GYzuh5K045/iwaHmBInxjy5CWXbGAkbvBYMfQ2toA0aI4zRxdT1gEsf90S8BvI3lij4BegG+6s8ToHgpWOHXYWroJENipU6nly3laeg2oZWMe+e7YYv9JL4XR7fYP8HV0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jOI2jsR8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O3wOw4R+"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4257aafab98so2922768f8f.3
-        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 05:37:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1759927049; x=1760531849; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E2TnAZHPDozLT5yZkEQn3hUFYpt7Se4zx7CRpBYQteU=;
-        b=O3wOw4R+3mpFzsTbjWPo7xmxvqC7o9eL/zeXWB6zf6doU/HrlHW4xirCdykDrCJtOs
-         EagQgH4HgbcqUUNii1c2i3ATcavt8Anh47RfErpDDyNhtOBLQ4XjIoUWdWk6CNGtGwCO
-         CVDzt1AsUktpk2O0H1Q9C3D7rsAEWNZHyX3KWrRVhhq2UQgulYfGgCWmckp1mRjxyEyP
-         2Eu1QRqpcyFF+zNPEattuAQvWMDUcCfIK4Rus9k3sAjhfuG30SaMP7+THnHrMFiqp+CW
-         aflVMijw1EPXB4DEZzq2c7TYbYDSoNyL4Jgd5VweG7sfYrrhGouT6qsY5g2XppccsIhd
-         97OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759927049; x=1760531849;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E2TnAZHPDozLT5yZkEQn3hUFYpt7Se4zx7CRpBYQteU=;
-        b=c2UfjxuJ1SJAeuhjKSV40NXsVMMj1y6+LCIZcXy7AJtOZ4OKfxPzaPWEYjnlK+S7Ah
-         hMEB52PmrTfDfaj1y81qlcUghQJGli+epbBSxgmsozuGTyQvVO1MlRs5IdQPyk+dykWo
-         AGVc0DIUoSPZlSrTW2pOePdzSt2QFYC43pVBUCqVCrXFOTfiLgTlYXtgMwAj7Lq49M3Y
-         vGdB/in/GgPjYXFefOakaZySsn6EWapqCdmLaKvjqmnapl9/axhNz5DQrrVuNVYDqLCa
-         /n3GI1Jpdcjur4Gxi9+3UHIp/nbXaAhruPv66QL3z0/RFENJgsUSZ2Ylq1R8RLWbqs2x
-         KYlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVBTxFqwJKhoJeJL2VhpLc7PJRh3dCrkca9PHnF7+KO/JxwCYJZ/ouco0BEEldenSbJeGcdlxU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJKE+KiKw6FlG1QI+2NgXLWMRJl9StIRk/Hn3g8fb7+zIbsqPn
-	BGZwzUIAYJmyfxh67j33f2wvtnFgJiWORvGjN6SztWo16NUI8YG2e04u
-X-Gm-Gg: ASbGncuSNMMnmuB2yDCS1ncTcXwTUhC8ghODPW7KmaPDVhNioqK227g/aw3ds7npqwj
-	BLjiv3brhzd//KS4qEuOCrYPjRpZgjpKJ9Sw6jRE1LowPYOmr77sdqpfvG7u/SzvyeT4v7SfQPt
-	n+FGhAZdMv6Nyj66gnecyGMn1zQtFexwnJxBT/8N3gSDXE00hofLnJDSNlDK6deL8et2cWpJxAW
-	ImehxtBxIydbpDw+DIErNByAapz9Pz76SjOcKh2kFQ31/RXZS9yx2fjHL+ZcKmfqAfUPlXX77jx
-	ErrDUAty1sdKBd4IlaMbhixhrZEIMiRTXkING7IHvIXQRCKhgSJl0r580tHgBmb1q3w1DOH7Nh+
-	Qy/aqVA92Ux7qjspoNOJ0Y/Jcjl6yBocPMESfzQsL
-X-Google-Smtp-Source: AGHT+IFw4s1qDph/qnRfxEwZxh0I5sK3smzwrgDVM16o1rujr89ogmGIxIuGoFXY4FIUDR/y29IEaw==
-X-Received: by 2002:a05:6000:438a:b0:425:86ae:b0b with SMTP id ffacd0b85a97d-4266e7d9330mr2343788f8f.38.1759927048667;
-        Wed, 08 Oct 2025 05:37:28 -0700 (PDT)
-Received: from 127.com ([2620:10d:c092:600::1:b002])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4255d8a6b8bsm29727055f8f.4.2025.10.08.05.37.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 05:37:27 -0700 (PDT)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	axboe@kernel.dk,
-	netdev@vger.kernel.org
-Subject: [PATCH 1/1] io_uring/zcrx: increment fallback loop src offset
-Date: Wed,  8 Oct 2025 13:39:01 +0100
-Message-ID: <1b3a55134d4a9a39acab74b8566bf99864393efc.1759914262.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jOI2jsR8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54BA3C4CEF4;
+	Wed,  8 Oct 2025 12:37:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759927056;
+	bh=la5UGkrChP41nMA8ubVJ6aDpaA9vwENHhK+zqCfr9go=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jOI2jsR8CxcKyy6uc5misn1Qu/ayWTCBtndON+96E7TP5Ye+qvksJGxAzH30GzNb5
+	 gdln0W0RWs/qqI87aKJTjGG4zyp16K0qA8D1fEcplk6IIhiX21x+lMgEaFCytYdcD7
+	 XhSOSOuZ1BpmTzSTtT9IPYT23B20TvmxvnRE4TjUP8KO79kHkL5qKbTkX9Ov+z0DBF
+	 05s1D2kDjbQ3JQOwGPgirQeJjVo5uVE0bfEtXhFpvsbj3KxnYWlcC9N738wl+vzd27
+	 tc7DtgdJxbKXBAitmEyLtZ6nBaKC4llBvDUh3F/8TwvMbBE3vBGpJ+fdQeLeliUXjT
+	 othLSO+snPIxA==
+Date: Wed, 8 Oct 2025 13:37:31 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, Rex Lu <rex.lu@mediatek.com>,
+	Daniel Pawlik <pawlik.dan@gmail.com>,
+	Matteo Croce <teknoraver@meta.com>
+Subject: Re: [PATCH net] net: mtk: wed: add dma mask limitation and GFP_DMA32
+ for device with more than 4GB DRAM
+Message-ID: <20251008123731.GR3060232@horms.kernel.org>
+References: <20251008-wed-4g-ram-limitation-v1-1-16fe55e1d042@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251008-wed-4g-ram-limitation-v1-1-16fe55e1d042@kernel.org>
 
-Don't forget to adjust the source offset in io_copy_page(), otherwise
-it'll be copying into the same location in some cases for highmem
-setups.
+On Wed, Oct 08, 2025 at 12:48:05PM +0200, Lorenzo Bianconi wrote:
+> From: Rex Lu <rex.lu@mediatek.com>
+> 
+> Limit tx/rx buffer address to 32-bit address space for board with more
+> than 4GB DRAM.
+> 
 
-Fixes: e67645bb7f3f4 ("io_uring/zcrx: prepare fallback for larger pages")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/zcrx.c | 1 +
- 1 file changed, 1 insertion(+)
+Hi Lorenzo, Rex, all,
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index eb023c4bc0ff..0a43acbdef98 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -1079,6 +1079,7 @@ static ssize_t io_copy_page(struct io_copy_cache *cc, struct page *src_page,
- 
- 		cc->size -= n;
- 		cc->offset += n;
-+		src_offset += n;
- 		len -= n;
- 		copied += n;
- 	}
+As a fix for net a Fixes tag should probably go here.
+> Tested-by: Daniel Pawlik <pawlik.dan@gmail.com>
+> Tested-by: Matteo Croce <teknoraver@meta.com>
+> Signed-off-by: Rex Lu <rex.lu@mediatek.com>
+> Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+...
+
+> @@ -2426,6 +2426,10 @@ mtk_wed_attach(struct mtk_wed_device *dev)
+>  	dev->version = hw->version;
+>  	dev->hw->pcie_base = mtk_wed_get_pcie_base(dev);
+>  
+> +	ret = dma_set_mask_and_coherent(hw->dev, DMA_BIT_MASK(32));
+> +	if (ret)
+> +		return ret;
+
+I think 'goto out' is needed here to avoid leaking hw_lock.
+
+> +
+>  	if (hw->eth->dma_dev == hw->eth->dev &&
+>  	    of_dma_is_coherent(hw->eth->dev->of_node))
+>  		mtk_eth_set_dma_device(hw->eth, hw->dev);
+> 
+
 -- 
-2.49.0
-
+pw-bot: changes-requested
