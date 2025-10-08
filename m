@@ -1,136 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DDE2F3C38
-	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 12:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884A2F7AD0
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 12:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759924812; cv=none; b=T7uvoUKT1FX+XWSOo2FMtMIsj3qJm6IcMo+e3QHkRz0898burI3qyMATo1FpGXw4kBjNIUqM2UVTVMOB3Z+r8j/LiQ33yxxK+GDHyJCxd/rZbIHYIET0EsCJMhv7sAnO+DRb440wsQWUNvGq5QhJe42AzQ6GVGZIgm4ZYvhTgwA=
+	t=1759925655; cv=none; b=UQlz3Jm3zsVikwSmQKwysxTBGFgzQt5X2LoNNBojVqV+Vljoyzl/o0s5bvdYUjgXf+rg45iMvcQ9CuzSajgmhMbdzLM2LTa2GnN8vP85j56moU10z02Vwe3BrA+sEb+/NN+w6gc0ZCaasHuDKUdH9n4Bsn5x+KbQ4XYt6zng+28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759924812; c=relaxed/simple;
-	bh=XGOe8jWd4nVrbi8ZdLlMxwTp5ZPj5CcYqRnLiotT1vI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZNMHZfRqWaPvse8ZyaorKF65h2EnRjntGa/ruNjPsI2u+1oH9Y0rKR7O8OVucZadX5HVJTBuxXezZmi3gquDFL2Gz+T5UZp+fjhtHmvBPxg/qS67TZWtLvgNtmdkbOZNjPF3TBKX4h28YpNgFZwjFS+qF4I150Y1jCXl9nG28Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mez3PiSk; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1759925655; c=relaxed/simple;
+	bh=/FJgVIhyEdN2o1Z6gxhSpN/SUCrOw+mDyn0/IXLBcvE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgbdEk51IVxDUHmSOlZFH52lh0+Xol2o1KUKVs8ycJjFfziIUgafvtN0TObO6whTJ0qkyn4Yuf0etN+lu5lqZ3wSTYrR7k+oH/pOLFe4RFBMp6uAopK8N5H+aYzSsBFPbqx6F1WhVPC4cUDeflvlGNAk/xycUcsqCDHdHaRfQfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=TDMFBW9j; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mez3PiSk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1759924810; x=1791460810;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=XGOe8jWd4nVrbi8ZdLlMxwTp5ZPj5CcYqRnLiotT1vI=;
-  b=Mez3PiSkWjl4p27TKlTHKa886Xkp6yN52pv/Jm4TLXiXtjGNkweKASFp
-   oFSywbfRnDUBaSqhOSays5jUoxotNEy+OK4MmlUuQNFsXgKyheH0NKpw1
-   9/UsaB7jHbMB7H3NDzXhPj8IapmLTlocamWq6mRc8319+9XgkJJxHCZcD
-   OOd6OLik40ZZwIS9uCCJPUvgxzz7CwqD+nu/4xaSK4QmQpOoqwviS2p30
-   BG0D/V57TAq5Lx2dT/rkbZMCE1J6cMS3BFAvxDgbbVEeYMPlEaHOyrsfy
-   VrIGlKwfoE4TXkBXyIc00h39FbVrjBZXmNOcEAygxbA1acjQf80LVHcid
-   A==;
-X-CSE-ConnectionGUID: 6oQehOrIScWqtnOp7SMkUQ==
-X-CSE-MsgGUID: TRPrMd/7SCieTNsGKRr0sw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11575"; a="73541158"
-X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; 
-   d="scan'208";a="73541158"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2025 05:00:06 -0700
-X-CSE-ConnectionGUID: qlmCwMTjQZKyzrMO7KmdDQ==
-X-CSE-MsgGUID: BZJmvj+ZRPKr6FtJHShHNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,323,1754982000"; 
-   d="scan'208";a="180090586"
-Received: from gklab-003-001.igk.intel.com ([10.91.173.48])
-  by fmviesa007.fm.intel.com with ESMTP; 08 Oct 2025 05:00:04 -0700
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-net] ice: fix PTP cleanup on driver removal in error path
-Date: Wed,  8 Oct 2025 13:58:11 +0200
-Message-Id: <20251008115811.1578695-1-grzegorz.nitka@intel.com>
-X-Mailer: git-send-email 2.39.3
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="TDMFBW9j"
+Received: from trampoline.thunk.org (pool-173-48-102-192.bstnma.fios.verizon.net [173.48.102.192])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 598CDGF0026282
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 8 Oct 2025 08:13:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1759925615; bh=kwti+J23zAyIXFnhzpTdkk/4xOFi3nZKWO5T9JLhw6Q=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=TDMFBW9jTsNS5yFyaJQgzdFDDay8k+jhDgMmVCLoZBppHe68wgRLt1068J6N/+wi/
+	 UhbE3Lwg3GJkFk0dOxpHTrojoyofUYgS2mnBufSQJbeb9oEmqnl2oZh7kLR//Mnphg
+	 FvZbpMSqQ3foGKPVSccMCwejQLYSZ7JxEnPbZMG3RI5zyQpKKf1EAXMIEl5NJFI6O6
+	 EIkj7qIoZdEVOiLK/7qifURmYmCs7FAK61n+ENsVDnhVXNZR8ZuHW8hNyy87dzIefu
+	 BcoYZQZTfErKqNhJNPJY7X0vWvLAJ9eSNSD8ERP8WUsPEcf810vB3kIiRGJc4ehwAa
+	 zLzn3vWM3LKDQ==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id 9DFC02E00D9; Wed, 08 Oct 2025 08:13:16 -0400 (EDT)
+Date: Wed, 8 Oct 2025 08:13:16 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Simo Sorce <simo@redhat.com>
+Cc: Eric Biggers <ebiggers@kernel.org>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        "nstange@suse.de" <nstange@suse.de>, "Wang, Jay" <wanjay@amazon.com>
+Subject: Re: 6.17 crashes in ipv6 code when booted fips=1 [was: [GIT PULL]
+ Crypto Update for 6.17]
+Message-ID: <20251008121316.GJ386127@mit.edu>
+References: <1a71398e-637f-4aa5-b4c6-0d3502a62a0c@kernel.org>
+ <f31dbb22-0add-481c-aee0-e337a7731f8e@oracle.com>
+ <20251002172310.GC1697@sol>
+ <2981dc1d-287f-44fc-9f6f-a9357fb62dbf@oracle.com>
+ <CAHk-=wjcXn+uPu8h554YFyZqfkoF=K4+tFFtXHsWNzqftShdbQ@mail.gmail.com>
+ <3b1ff093-2578-4186-969a-3c70530e57b7@oracle.com>
+ <CAHk-=whzJ1Bcx5Yi5JC57pLsJYuApTwpC=WjNi28GLUv7HPCOQ@mail.gmail.com>
+ <e1dc974a-eb36-4090-8d5f-debcb546ccb7@oracle.com>
+ <20251006192622.GA1546808@google.com>
+ <0acd44b257938b927515034dd3954e2d36fc65ac.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0acd44b257938b927515034dd3954e2d36fc65ac.camel@redhat.com>
 
-Improve PTP feature cleanup in error path by adding explicit call to
-ice_ptp_cleanup_pf in the case in which PTP feature is not fully
-operational at the time of driver removal (which is indicated by
-ptp->state flag).
-At the driver probe, if PTP feature is supported, each PF adds its own
-port to the list of ports controlled by ice_adapter object.
-Analogously, at the driver remove, it's expected each PF is
-responsible for removing previously added port from the list.
-If for some reason (like errors in reset handling, NVM update etc.), PTP
-feature has not rebuilt successfully, the driver is still responsible for
-proper clearing ice_adapter port list. It's done by calling
-ice_ptp_cleanup_pf function.
-Otherwise, the following call trace is observed when ice_adapter object
-is freed (port list is not empty, as it is expected at this stage):
+On Mon, Oct 06, 2025 at 03:45:46PM -0400, Simo Sorce wrote:
+> Note: this may change going forward, but I am confident that as issues
+> arise people will propose upstream patches to keep it as close as
+> possible within acceptable parameters for upstream behavior.
 
-[  T93022] ------------[ cut here ]------------
-[  T93022] WARNING: CPU: 10 PID: 93022 at
-ice/ice_adapter.c:67 ice_adapter_put+0xef/0x100 [ice]
-...
-[  T93022] RIP: 0010:ice_adapter_put+0xef/0x100 [ice]
-...
-[  T93022] Call Trace:
-[  T93022]  <TASK>
-[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
-33d2647ad4f6d866d41eefff1806df37c68aef0c]
-[  T93022]  ? __warn.cold+0xb0/0x10e
-[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
-33d2647ad4f6d866d41eefff1806df37c68aef0c]
-[  T93022]  ? report_bug+0xd8/0x150
-[  T93022]  ? handle_bug+0xe9/0x110
-[  T93022]  ? exc_invalid_op+0x17/0x70
-[  T93022]  ? asm_exc_invalid_op+0x1a/0x20
-[  T93022]  ? ice_adapter_put+0xef/0x100 [ice
-33d2647ad4f6d866d41eefff1806df37c68aef0c]
-[  T93022]  pci_device_remove+0x42/0xb0
-[  T93022]  device_release_driver_internal+0x19f/0x200
-[  T93022]  driver_detach+0x48/0x90
-[  T93022]  bus_remove_driver+0x70/0xf0
-[  T93022]  pci_unregister_driver+0x42/0xb0
-[  T93022]  ice_module_exit+0x10/0xdb0 [ice
-33d2647ad4f6d866d41eefff1806df37c68aef0c]
-...
-[  T93022] ---[ end trace 0000000000000000 ]---
-[  T93022] ice: module unloaded
+What I'm curious about is what falls within the acceptable parameters
+of *distro* behavior.  If NIST-certified labs really insist that
+certifying requires making the kernel completely unsupportable from a
+commercial perspective, at what point will *distros* decide to give it
+up as a bad idea, or to have a completely different binary kernel
+package that only crazy customers would be willing to use?
 
-Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_ptp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+If there is something beyond hard-disabling CONFIG_CRYPTO_SHA1 which
+all distributions could agree with --- what would that set of patches
+look like, and would it be evenly vaguely upstream acceptable.  It
+could even hidden behind CONFIG_BROKEN.  :-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index fb0f6365a6d6..c43a7973d70f 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -3282,8 +3282,10 @@ void ice_ptp_init(struct ice_pf *pf)
-  */
- void ice_ptp_release(struct ice_pf *pf)
- {
--	if (pf->ptp.state != ICE_PTP_READY)
-+	if (pf->ptp.state != ICE_PTP_READY) {
-+		ice_ptp_cleanup_pf(pf);
- 		return;
-+	}
- 
- 	pf->ptp.state = ICE_PTP_UNINIT;
- 
-
-base-commit: 8b223715f39c8a944abff2831c47d5509fdb6e57
--- 
-2.39.3
-
+						- Ted
+						
