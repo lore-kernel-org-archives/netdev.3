@@ -1,105 +1,163 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D562EB870;
-	Wed,  8 Oct 2025 14:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEBC2EB870
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 14:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759934256; cv=none; b=L6zYhCoxr4eTkJQgJWI3of7Lv2muCz6aKD2zFlhlYDDISEy/xwVt5NYc4zUOjN9MeStPffO2GEySAc1U41derYSkWBRRnYDAEHtLNLWxVdUUE4uv9BZ59vOHPwZPbca65/POh67Ia7PQTZmdr3KlmaRLkflO6j/WllwAd2HEyzM=
+	t=1759934305; cv=none; b=HPjjFCh1WFk5vKmMMYJZxUUssmmP9+RO+YMwL3/dRM3+fPQiABi/2TQ0gPaj9XlqSN1N3aGZUPsbW3e6SbkHJRR9xiEM42Ciji4S+IKxlod/b1/PNrhpwaCyEmF9nKdcMxE4V6d7hTe6pWKNd2cR352Oo/YWXFTUsBkywgAfuvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759934256; c=relaxed/simple;
-	bh=fM/soW1wxcm6ZUoUCSrXUsq1Ch641FejBxdWZ2T9VTY=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RP5mZRQ0fLWRtYpLvlvoEZKmvK4Iavn4+YMrZrjc5vxVkUUkBU5xDWFueylwAFXMqZ/JSK2h0FYtrzzlWsZfj4M/EgfS5Yq5AKsNxx8Gbc9aZ0ZSj+DjkRl7A6dgUqIJUfV6mFReX6AXyJI3OrdwxXH6FgVLfTEzTEEJ/imj6iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PYiweDzo; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1759934305; c=relaxed/simple;
+	bh=SrtzxNYZutf6BwHG4n+K6AlkJu7JpINi17ZxbnnlwE4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gh1LB+rkMPQmI8Gg32S/mlS4mnMrFz0GL2IKPiVfgSdlal37oaCUElbef+TLNUaGGHOrZ+9bZcqObN9/GEbVeIyB0+fB27h/ty84lC+hPgTU7quuCQUZK8oZ6s8FTVkAh2Ci03GN6nTucsMuGVnLoNgQfSWXAU6/8wUB7UA5r4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2gcrsA+b; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="PYiweDzo"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1759934244; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=y8JH2A/X+FfSGLqk5PRkD3V44OnLqwLLX/lM69mSF2o=;
-	b=PYiweDzo0YOeOsiHJRq0QGRmJ9YqbxqcuL9iWNng1x09kPqvoXGqNwd4OkNnfukheFXOny3gBGe03TOO1dX55vQ9oua8uirGGE34OHhIw/OjYMnzoFT13PRP7a/CLvBK7yUsU2ZKhQXe7p97lzCkAv5TQiosJyA8Wn9kZ4rGzA0=
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0WpfC3B0_1759932368 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 08 Oct 2025 22:06:08 +0800
-Date: Wed, 8 Oct 2025 22:06:08 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH net-next v5 2/2] net/smc: handle -ENOMEM from
- smc_wr_alloc_link_mem gracefully
-Message-ID: <aOZv0NmekKIgpc5M@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20250929000001.1752206-1-pasic@linux.ibm.com>
- <20250929000001.1752206-3-pasic@linux.ibm.com>
- <aNnl_CfV0EvIujK0@linux.alibaba.com>
- <de0baa92-417c-475a-a342-9041f8fb5b8e@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2gcrsA+b"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4da7a3d0402so151831cf.0
+        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 07:38:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1759934303; x=1760539103; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IQAe1RWYiO8eaSsTMxNUYAthxYIo/4FVZiTeoT4U2VE=;
+        b=2gcrsA+bIZIXRf2l5HeATIHIz3sRjLiaeFXEYHmHNlcFakoVNI2/IXpHOqR23gDDsR
+         jpRv6tCtXN3OwR3CGwoE5F92FIGnqrEJEeduRGRIEVtIt8yAMdwbqB0jHV6KgUvOSKB/
+         YrN5MXn4dhwwngjP28ouYqgiVc5tkduceFFwRf8oCuCYAfASDjvRAM93xEQDUCw1bGd4
+         nUWfhjgXlvnmrEPYgzje35e0p4b8B7RxwbjMMXh1tfmgVdUgCaFxOTLagWX7ooUkIHC+
+         /YHc5yTCHMbeAN3H27MBJL+xiC+vGb0XCDJYNeWeGpso4m7yj4VvRlrtyiD8yuPsAm4a
+         RioQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759934303; x=1760539103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IQAe1RWYiO8eaSsTMxNUYAthxYIo/4FVZiTeoT4U2VE=;
+        b=ZH6Cse/7j2gM2AXUNeeLJDdj5Ha0ANAlnuvLFm4sQ569gX1+lDnvAB0TQJ2i2AdFav
+         tVl836d9rvPya/stMOlfuydQ3Q3E4AyDJeXtSf6tiEDKUuXPq4Tx1A0oD3skgNBrUfAo
+         1duHsxebegFNsGasVUJN/KGlMr0Z9Hk395EgZA+1neTa8Y1oqoMAUYamWTot7j4JwdrF
+         cZHvr4VWOpOBkG4QjveHuiVb+fH0XWJgq2r1SeyZTpQFdwfRFyVfhbf7CTBc/1hkcHOH
+         4Pso6x6dghwBj0tn5DSR+yzSCMmb08CFtRZw7MCYWDmiiEz+Y3tquS23VLqfuFO81yX7
+         g4xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcmx/QnDzC2zfjtvpRxKU/AaPLdbuqP3bsWKdtk5mXEXvwyQRPWAfQelXaG6mdIkOrgKqMbzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyadX2e6o5Dt1SqttrimfWGtMI7QmWZZJqW94TaXT1213asgbbM
+	HSi3emeN1HxYPfp5yS6cy70lJ68X/VJzGkJBWV1QyrbruRw/XwbsXoPwvRQEwV05S1delNpB8Bu
+	V7cd6yrnHRi4dJz8EZrjZKSaoC2LtMzuQc1ZO0ZKBZWfIVPgANPqQEI0E
+X-Gm-Gg: ASbGncs3EBZoPoZXa67Ed8EZrxgcx7sS1NaBq/8XrVSPfEfqRIltQCOgqOkYspd9bLk
+	frolfDGrsrZ4RKC/QZQXiKb9pBLZd1lfBXJvA5WFKCnVnGEtX/gtAXNXyN2MTZbAHtS6auXimvL
+	fzTYiI+yPmDfUQL+Hm0TPwI30RJrDLJOiXDIfcdgmmFJazHvlg/UoX7q36beFqXUzhOloFDhc3V
+	Wi9ZE8GakOcnwVTM5zBCJ68wQ2rJ21Pb38dCwTqif9kxgZ0/jeFBrLhfYrM4LvgDoK/F4ZZSVva
+	f2tf+iU=
+X-Google-Smtp-Source: AGHT+IGVUpjJchPu+vPamAJhw8xsrfE9y3+Pkxcl6IrNWNKXnIBP+rCUEhatTUFXvPuOjFhH2r3W4mp1YS41ZQ1/6jM=
+X-Received: by 2002:a05:622a:109:b0:4c7:a8ed:af3e with SMTP id
+ d75a77b69052e-4e6eb068d26mr55279861cf.40.1759934301269; Wed, 08 Oct 2025
+ 07:38:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <de0baa92-417c-475a-a342-9041f8fb5b8e@linux.ibm.com>
+References: <20251008104612.1824200-1-edumazet@google.com> <20251008104612.1824200-5-edumazet@google.com>
+ <willemdebruijn.kernel.5c18588531fd@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.5c18588531fd@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 8 Oct 2025 07:38:09 -0700
+X-Gm-Features: AS18NWCboG3OVnA0r7i0GTLYz_uYK6ygB8UYXSfoYEaaKEyq1KxH80Nq6jHcGQ8
+Message-ID: <CANn89iJQzoaP1-o-GLDGcGPRTAuZxGX0H8FSV+CxJ=dPEWnB_g@mail.gmail.com>
+Subject: Re: [PATCH RFC net-next 4/4] net: allow busy connected flows to
+ switch tx queues
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025-10-06 11:25:22, Mahanta Jambigi wrote:
->On 29/09/25 7:20 am, Dust Li wrote:
->>> diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
->>> index 8d06c8bb14e9..5c18f08a4c8a 100644
->>> --- a/net/smc/smc_core.h
->>> +++ b/net/smc/smc_core.h
->>> @@ -175,6 +175,8 @@ struct smc_link {
->>> 	struct completion	llc_testlink_resp; /* wait for rx of testlink */
->>> 	int			llc_testlink_time; /* testlink interval */
->>> 	atomic_t		conn_cnt; /* connections on this link */
->>> +	u16			max_send_wr;
->>> +	u16			max_recv_wr;
->> 
->> Here, you've moved max_send_wr/max_recv_wr from the link group to individual links.
->> This means we can now have different max_send_wr/max_recv_wr values on two
->> different links within the same link group.
->> Since in Alibaba we doesn't use multi-link configurations, we haven't tested
+On Wed, Oct 8, 2025 at 6:38=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
 >
->Does Alibaba always use a single RoCE device for SMC-R? In that case how
->redundancy is achieved if that link goes down?
-
-We expose a virtual RDMA device to our client inside their virtual
-machine. The underlying network is already redundant, so it’s got
-built-in reliability. You can think of it kind of like virtio-net, but
-instead of a regular virtual NIC, it’s an RDMA device.
-
+> Eric Dumazet wrote:
+> > This is a followup of commit 726e9e8b94b9 ("tcp: refine
+> > skb->ooo_okay setting") and to the prior commit in this series
+> > ("net: control skb->ooo_okay from skb_set_owner_w()")
+> >
+> > skb->ooo_okay might never be set for bulk flows that always
+> > have at least one skb in a qdisc queue of NIC queue,
+> > especially if TX completion is delayed because of a stressed cpu.
+> >
+> > The so-called "strange attractors" has caused many performance
+> > issues, we need to do better.
+> >
+> > We have tried very hard to avoid reorders because TCP was
+> > not dealing with them nicely a decade ago.
+> >
+> > Use the new net.core.txq_reselection_ms sysctl to let
+> > flows follow XPS and select a more efficient queue.
+> >
+> > After this patch, we no longer have to make sure threads
+> > are pinned to cpus, they now can be migrated without
+> > adding too much spinlock/qdisc/TX completion pressure anymore.
+> >
+> > TX completion part was problematic, because it added false sharing
+> > on various socket fields, but also added false sharing and spinlock
+> > contention in mm layers. Calling skb_orphan() from ndo_start_xmit()
+> > is not an option unfortunately.
+> >
+> > Note for later: move sk->sk_tx_queue_mapping closer
+> > to sk_tx_queue_mapping_jiffies for better cache locality.
+> >
+> > Tested:
+> >
+> > Used a host with 32 TX queues, shared by groups of 8 cores.
+> > XPS setup :
+> >
+> > echo ff >/sys/class/net/eth1/queue/tx-0/xps_cpus
+> > echo ff00 >/sys/class/net/eth1/queue/tx-1/xps_cpus
+> > echo ff0000 >/sys/class/net/eth1/queue/tx-2/xps_cpus
+> > echo ff000000 >/sys/class/net/eth1/queue/tx-3/xps_cpus
+> > echo ff,00000000 >/sys/class/net/eth1/queue/tx-4/xps_cpus
+> > echo ff00,00000000 >/sys/class/net/eth1/queue/tx-5/xps_cpus
+> > echo ff0000,00000000 >/sys/class/net/eth1/queue/tx-6/xps_cpus
+> > echo ff000000,00000000 >/sys/class/net/eth1/queue/tx-7/xps_cpus
+> > ...
+> >
+> > Launched a tcp_stream with 15 threads and 1000 flows, initially affined=
+ to core 0-15
+> >
+> > taskset -c 0-15 tcp_stream -T15 -F1000 -l1000 -c -H target_host
+> >
+> > Checked that only queues 0 and 1 are used as instructed by XPS :
+> > tc -s qdisc show dev eth1|grep backlog|grep -v "backlog 0b 0p"
+> >  backlog 123489410b 1890p
+> >  backlog 69809026b 1064p
+> >  backlog 52401054b 805p
 >
->> this scenario. Have you tested the link-down handling process in a multi-link
->> setup?
->I did test this after you query & don't see any issues. As Halil
->mentioned in worst case scenario one link might perform lesser than the
->other, that too if the kcalloc() failed for that link in
->smc_wr_alloc_link_mem() & succeeded in subsequent request with reduced
->max_send_wr/max_recv_wr size(half).
+> Just in case it's not clear to all readers, this implies MQ + some
+> per queue qdisc, right. Here MQ + FQ.
+>
+> > Then force each thread to run on cpu 1,9,17,25,33,41,49,57,65,73,81,89,=
+97,105,113,121
+> >
+> > C=3D1;PID=3D`pidof tcp_stream`;for P in `ls /proc/$PID/task`; do taskse=
+t -pc $C $P; C=3D$(($C + 8));done
+> >
+> > Set txq_reselection_ms to 1000
+> > echo 1000 > /proc/sys/net/core/txq_reselection_ms
+>
+> Just curious: is the once per second heuristic based on anything. Is
+> it likely to set another (more aggressive) value here?
 
-Great! You can add my
+Just an initial number, I do not have a strong opinion on the precise numbe=
+r.
 
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+More for discussion would be to decide if the default should be set to
+<disable>,
+but I suspect it will take five years for everybody to catch up.
 
->> Otherwise, the patch looks good to me.
->> 
->> Best regards,
->> Dust
+Note that in RFC, <disable> would be a big value, we could also decide
+to reserve 0 as "this feature is disabled".
