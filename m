@@ -1,458 +1,169 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE542F60D8
-	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 10:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA96B2F6183
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 10:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759920381; cv=none; b=ENUaYKADWgD2iT/jLAS/umScjvmuieQRWj1qW4aCYsfZB8e01eJ1KdIDnmEHipNObyq3X8CKbdTIUGtpeXakgmIYfG/ioHEbX7zQt3gRqf5MQDaKXSMtdpeN/PovnIbj1Wy1zHeMfZgf2dZmEdiQEfPKWIJxVx6KUgits8CtUF4=
+	t=1759920382; cv=none; b=Sh0r6XN0m6yZ6XWSFSpOHZ+iqWLjEJEdu8vbpY9kyspDNh057x4CF4Yw4bkxehH5GXZAaI4SJBoNUx4uMxcmEbOQXgQSB2bCN57NmrOaQyfSAbI709t17jqYfXiDeeV33c+y0MLtUZHzex2liSfnUitDaABTE4iXQVCxMxQ4Rvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759920381; c=relaxed/simple;
-	bh=hLyq2Y02XYLZ0CgsHPEzkblDFsf+saob8IdPk+unP8s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n2n6Ku8wKkJUeqGuiMvwhjCoUCSGVUbKDG3YFkaVNRh4rnJmY7x5feQNmHxYxtI/ejreeFsUbsZluuuiI9S7SQ3kr+McgO9ubmT3zGtbQ07sPJ6sxGtbE4sxKxFcq8bO1CiYrqPNW8wAV20/MfuGr51/Wa9N4WveeLi1cWwZGb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rCLoIrtU; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1759920382; c=relaxed/simple;
+	bh=jXK9plrnWpdcG1P9wFguvBYw5XCYHL1nqMkUo1NYVe8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eqCYYGXovT4zfsRKVKvQl3I5I5/3pB1vI8QZrVy955Sw7YyFASRCNGCVTwRC3YkRX73Mgd427ec3Z4nOLxjGF7fPYLwuiZmx2AIYNblqsmWfBJhk/TWjzlob+hOPssVrhbiNMeJ4wgA/DwjdYAFrOiYNFZaN2RLf2XqKk1Wge18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OIviolnK; arc=none smtp.client-ip=209.85.222.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rCLoIrtU"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4df81016e59so68160731cf.3
-        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 03:46:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OIviolnK"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-829080582b4so1723227185a.0
+        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 03:46:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1759920378; x=1760525178; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PeMukUCEkNXr9P8yFYMnCM/evUrszYLEmgjwRk4oT34=;
-        b=rCLoIrtUyIkqHhxLigv1kIUVWwQlYTX6hX0PbIAoLM+e+lh1/WlWXNfNfFOLNGRePR
-         ebLakU4G2RJj9jjpf0SfUs5Lyl78HtdDvTFRPezi99G5+1fA3y5wnThBdNSOqfwQV87H
-         gwoPaZj/+2cruxLQzS2Ihzt9DEZs6hDUcTwAH8IMNnskyl2oWH9ePYU3tWBfY+rDydGc
-         hnat64Orfm3RQ9e13hl9K26TDR+QE5nrTAT7LyDWO6BLGNJK1OgMRUQVqtS2JVPksmLy
-         MkTlMr4O3EkGTZ7WsXLApbQVZvhxNXjeZMNWhlF8v+PrNmt23bqjEQY4TTPG5MX0FR4H
-         GH3Q==
+        d=google.com; s=20230601; t=1759920380; x=1760525180; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mspX0Cndg7foCr8RWp/98mA4nBTHoKbfVmF6ljYPfb0=;
+        b=OIviolnK2J7l1Sex7wMsbJvLa7bI7pM0BTgZtK25jejha2tV84PYi1ZZjOqvyIDuL+
+         71It5yjTqoTYhSlq08UYzJgenhs/rvETo6Bw0kG7oN/UduFMUiMrMrdOsQLD++Hkv1pm
+         nsyVUC+jXcWD0vrxDzQidEE2muqOuWapZeiDJVP9pA/cVEL6Zy0Si93e718u8vIwmrlF
+         Qwr9pgBeBi3n5viI72ZvfPiKVpjCmenMvCvVG1wyrAzEE4FN6rf3b9Ijzt7whWMFubKm
+         5l66Vpic+Scznzv5ROh4p2j8YCc+kVaMptjnC8Rojwk6+6DPsjKhM7aZRjb5hmd71BrO
+         A7iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759920378; x=1760525178;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PeMukUCEkNXr9P8yFYMnCM/evUrszYLEmgjwRk4oT34=;
-        b=xMV6fzHX8E/31pIJinLRMekF6ARvoW0mte2ESpUKY6U2+xUVzoKEHPIuRGguXfVR5A
-         hEExF/dkMB9tGjMw+obMrbNSi+C5z07SbB04oK01ZrIiF1nFbMbkWMQJ/UQjSgtuoGMd
-         mS97wf2bJfTFIuKX1/wdwGEV3NglrEMXBHpWrB0Cxf8XT9293g0Q/M33Ic/6GB2VUvb3
-         AGYxEgDQ8GbpNxZAMntnBY93F4XrjbiTPZSkRb9dNKnRrSSzKi/xGp9qwP/ydbEnMf0c
-         13cOmlpSwsFm/Zu5RyVZU0gbJ5d5ihYCw/t4K5QZ+wnc6z68X5q5wchaBsdTDUeYLZJl
-         G+6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW3MaN9uWey7GmQpM54g0q44qrmSImX4bnZ1djCZC58ZrkpsCkT9wcbKdKiWJs/+xESN+qp05Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypGRi5KVKRc8JR2IbUmqwHNdlYXTKY8bM/oonNE/xdQBxqIYBR
-	WorjgU35kdyWLj2Ey/laa6BWflDqIsjDIyiA1r7rGOcZYiq0l2ee/LY266X1GH4mhceIArO8PZj
-	5SD1wKnve7aEEdp8URUASPlP7cVHFzg58VjAeznuN
-X-Gm-Gg: ASbGncsSqfljTSbQ084IC+ZCUSQjltc4j3fqazQH3l58bXDlPreprYEes8Oo21Xgyvs
-	X8S+j2twXL9ikI/wN0AUORm4URWSzirntWxxGPUzi5D7/NAJmR2MUMESNyYnySP0JCNzVfvoxmD
-	UJjgI2u2BzUlduYQWsMOjsC0bijwUfIX5fMX/8B1oreTavFwMjK8E1dkmta9MjDvb+U/RWLq0kO
-	59kZEj4LSRDWo69USbKK1evqt5mHfBCC3pWacXsoizE10ZgViscOFkhU+p94oBXRETUOppE
-X-Google-Smtp-Source: AGHT+IH8t5CzAx7e7IXUVj3tTKWlWCXTe/yXHwss2uOcX8wO07O8y17Yrew7KuUJuovRb89gdfJeT5HNX4fhlSZW/cI=
-X-Received: by 2002:ac8:7e96:0:b0:4e0:a9d6:d554 with SMTP id
- d75a77b69052e-4e6ead5427emr39493091cf.38.1759920377598; Wed, 08 Oct 2025
- 03:46:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1759920380; x=1760525180;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mspX0Cndg7foCr8RWp/98mA4nBTHoKbfVmF6ljYPfb0=;
+        b=WzQd8f1KjWpv3a/3ID4pi5q1PjWocwWTYLp0c9jAVa0y4+YuCEjO8CKUmrg3QN1a8/
+         VgnVVKH2xvjtMRl/sSQeCHsWWbm3wKLNdk2y5JAhOudlVrZRtHJMcX6TsKVdNBzPTzdd
+         AU49T5nbAUMhAgW4xPfWrYU/TV2nDOdt2pk08ZPVLKlMCKoqzQkJ2qJUa8eiVFlJe2vC
+         8TMC9PHoO7LoU9JG+B1DSTbJA+ervqzn1ESXDyHb7Oh87gs70WHHq0nM2exFmLQnjHbU
+         fpRd6mR6fn1ObztJELfckAMQhc/QEHdctq+1bq9z2B9os7GopGlvR9ru/b9d7KKn/dYN
+         K0/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUv6K1kThRqJOpuqyF/gSI6JCC8eIxUdUtRq1tA81otvD6IplTXpQO3TsOTSl6RnWnQ+qrAFcE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsh9dlzUg4JpuOZvFs99InHVe5soZ7TB1DdHubCaxxV1dFr+II
+	bC7uY/z/t8vJMY+swxhQMLBIrmfuDTIAL7I1Fod/SxOuJ34/q2p8LZFt2yovtJpUkg9weJgds8j
+	D/uLEGdojs+GJBQ==
+X-Google-Smtp-Source: AGHT+IHcso8YoxHzVghKmHiW0eO+xfx1P9MfU03tT6u88FdTD5cd8xV3XrvSuQWsE0r5x3CUdFFuYoLpSbGH1Q==
+X-Received: from qkph19.prod.google.com ([2002:a05:620a:2853:b0:856:f2ec:2971])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:a1cc:b0:883:c768:1fff with SMTP id af79cd13be357-883c76827a5mr150182985a.3.1759920378677;
+ Wed, 08 Oct 2025 03:46:18 -0700 (PDT)
+Date: Wed,  8 Oct 2025 10:46:09 +0000
+In-Reply-To: <20251008104612.1824200-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251006193103.2684156-1-edumazet@google.com> <20251006193103.2684156-6-edumazet@google.com>
- <87wm55kcdr.fsf@toke.dk> <CANn89iKoMHvYsvmqHB2HmCPp3H8Mmz1FwDD1XmqM6oDJS9+vTA@mail.gmail.com>
- <87tt09k8se.fsf@toke.dk>
-In-Reply-To: <87tt09k8se.fsf@toke.dk>
+Mime-Version: 1.0
+References: <20251008104612.1824200-1-edumazet@google.com>
+X-Mailer: git-send-email 2.51.0.710.ga91ca5db03-goog
+Message-ID: <20251008104612.1824200-3-edumazet@google.com>
+Subject: [PATCH RFC net-next 2/4] net: control skb->ooo_okay from skb_set_owner_w()
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 8 Oct 2025 03:46:06 -0700
-X-Gm-Features: AS18NWDDL7GL7o7b9o6GYAo8NFD3kocma1fvCP9H7L7vTWQAQ5xwHsWcvLgOkjw
-Message-ID: <CANn89i+iHPB1UVS+qB95MLUXvq9KnbYPbbZvNW7f_d3XMfwD6w@mail.gmail.com>
-Subject: Re: [PATCH RFC net-next 5/5] net: dev_queue_xmit() llist adoption
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 8, 2025 at 3:05=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <to=
-ke@redhat.com> wrote:
->
-> Eric Dumazet <edumazet@google.com> writes:
->
-> > On Wed, Oct 8, 2025 at 1:48=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen=
- <toke@redhat.com> wrote:
-> >>
-> >> Eric Dumazet <edumazet@google.com> writes:
-> >>
-> >> > Remove busylock spinlock and use a lockless list (llist)
-> >> > to reduce spinlock contention to the minimum.
-> >> >
-> >> > Idea is that only one cpu might spin on the qdisc spinlock,
-> >> > while others simply add their skb in the llist.
-> >> >
-> >> > After this patch, we get a 300 % improvement on heavy TX workloads.
-> >> > - Sending twice the number of packets per second.
-> >> > - While consuming 50 % less cycles.
-> >> >
-> >> > Tested:
-> >> >
-> >> > - Dual Intel(R) Xeon(R) 6985P-C  (480 hyper threads).
-> >> > - 100Gbit NIC, 30 TX queues with FQ packet scheduler.
-> >> > - echo 64 >/sys/kernel/slab/skbuff_small_head/cpu_partial (avoid con=
-tention in mm)
-> >> > - 240 concurrent "netperf -t UDP_STREAM -- -m 120 -n"
-> >> >
-> >> > Before:
-> >> >
-> >> > 16 Mpps (41 Mpps if each thread is pinned to a different cpu)
-> >> >
-> >> > vmstat 2 5
-> >> > procs -----------memory---------- ---swap-- -----io---- -system-- --=
-----cpu-----
-> >> >  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us=
- sy id wa st
-> >> > 243  0      0 2368988672  51036 1100852    0    0   146     1  242  =
- 60  0  9 91  0  0
-> >> > 244  0      0 2368988672  51036 1100852    0    0   536    10 487745=
- 14718  0 52 48  0  0
-> >> > 244  0      0 2368988672  51036 1100852    0    0   512     0 503067=
- 46033  0 52 48  0  0
-> >> > 244  0      0 2368988672  51036 1100852    0    0   512     0 494807=
- 12107  0 52 48  0  0
-> >> > 244  0      0 2368988672  51036 1100852    0    0   702    26 492845=
- 10110  0 52 48  0  0
-> >> >
-> >> > Lock contention (1 second sample taken on 8 cores)
-> >> > perf lock record -C0-7 sleep 1; perf lock contention
-> >> >  contended   total wait     max wait     avg wait         type   cal=
-ler
-> >> >
-> >> >     442111      6.79 s     162.47 ms     15.35 us     spinlock   dev=
-_hard_start_xmit+0xcd
-> >> >       5961      9.57 ms      8.12 us      1.60 us     spinlock   __d=
-ev_queue_xmit+0x3a0
-> >> >        244    560.63 us      7.63 us      2.30 us     spinlock   do_=
-softirq+0x5b
-> >> >         13     25.09 us      3.21 us      1.93 us     spinlock   net=
-_tx_action+0xf8
-> >> >
-> >> > If netperf threads are pinned, spinlock stress is very high.
-> >> > perf lock record -C0-7 sleep 1; perf lock contention
-> >> >  contended   total wait     max wait     avg wait         type   cal=
-ler
-> >> >
-> >> >     964508      7.10 s     147.25 ms      7.36 us     spinlock   dev=
-_hard_start_xmit+0xcd
-> >> >        201    268.05 us      4.65 us      1.33 us     spinlock   __d=
-ev_queue_xmit+0x3a0
-> >> >         12     26.05 us      3.84 us      2.17 us     spinlock   do_=
-softirq+0x5b
-> >> >
-> >> > @__dev_queue_xmit_ns:
-> >> > [256, 512)            21 |                                          =
-          |
-> >> > [512, 1K)            631 |                                          =
-          |
-> >> > [1K, 2K)           27328 |@                                         =
-          |
-> >> > [2K, 4K)          265392 |@@@@@@@@@@@@@@@@                          =
-          |
-> >> > [4K, 8K)          417543 |@@@@@@@@@@@@@@@@@@@@@@@@@@                =
-          |
-> >> > [8K, 16K)         826292 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=
-@@@@@@@@@@|
-> >> > [16K, 32K)        733822 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=
-@@@@      |
-> >> > [32K, 64K)         19055 |@                                         =
-          |
-> >> > [64K, 128K)        17240 |@                                         =
-          |
-> >> > [128K, 256K)       25633 |@                                         =
-          |
-> >> > [256K, 512K)           4 |                                          =
-          |
-> >> >
-> >> > After:
-> >> >
-> >> > 29 Mpps (57 Mpps if each thread is pinned to a different cpu)
-> >> >
-> >> > vmstat 2 5
-> >> > procs -----------memory---------- ---swap-- -----io---- -system-- --=
-----cpu-----
-> >> >  r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us=
- sy id wa st
-> >> > 78  0      0 2369573632  32896 1350988    0    0    22     0  331  2=
-54  0  8 92  0  0
-> >> > 75  0      0 2369573632  32896 1350988    0    0    22    50 425713 =
-280199  0 23 76  0  0
-> >> > 104  0      0 2369573632  32896 1350988    0    0   290     0 430238=
- 298247  0 23 76  0  0
-> >> > 86  0      0 2369573632  32896 1350988    0    0   132     0 428019 =
-291865  0 24 76  0  0
-> >> > 90  0      0 2369573632  32896 1350988    0    0   502     0 422498 =
-278672  0 23 76  0  0
-> >> >
-> >> > perf lock record -C0-7 sleep 1; perf lock contention
-> >> >  contended   total wait     max wait     avg wait         type   cal=
-ler
-> >> >
-> >> >       2524    116.15 ms    486.61 us     46.02 us     spinlock   __d=
-ev_queue_xmit+0x55b
-> >> >       5821    107.18 ms    371.67 us     18.41 us     spinlock   dev=
-_hard_start_xmit+0xcd
-> >> >       2377      9.73 ms     35.86 us      4.09 us     spinlock   ___=
-slab_alloc+0x4e0
-> >> >        923      5.74 ms     20.91 us      6.22 us     spinlock   ___=
-slab_alloc+0x5c9
-> >> >        121      3.42 ms    193.05 us     28.24 us     spinlock   net=
-_tx_action+0xf8
-> >> >          6    564.33 us    167.60 us     94.05 us     spinlock   do_=
-softirq+0x5b
-> >> >
-> >> > If netperf threads are pinned (~54 Mpps)
-> >> > perf lock record -C0-7 sleep 1; perf lock contention
-> >> >      32907    316.98 ms    195.98 us      9.63 us     spinlock   dev=
-_hard_start_xmit+0xcd
-> >> >       4507     61.83 ms    212.73 us     13.72 us     spinlock   __d=
-ev_queue_xmit+0x554
-> >> >       2781     23.53 ms     40.03 us      8.46 us     spinlock   ___=
-slab_alloc+0x5c9
-> >> >       3554     18.94 ms     34.69 us      5.33 us     spinlock   ___=
-slab_alloc+0x4e0
-> >> >        233      9.09 ms    215.70 us     38.99 us     spinlock   do_=
-softirq+0x5b
-> >> >        153    930.66 us     48.67 us      6.08 us     spinlock   net=
-_tx_action+0xfd
-> >> >         84    331.10 us     14.22 us      3.94 us     spinlock   ___=
-slab_alloc+0x5c9
-> >> >        140    323.71 us      9.94 us      2.31 us     spinlock   ___=
-slab_alloc+0x4e0
-> >> >
-> >> > @__dev_queue_xmit_ns:
-> >> > [128, 256)       1539830 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@        =
-          |
-> >> > [256, 512)       2299558 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=
-@@@@@@@@@@|
-> >> > [512, 1K)         483936 |@@@@@@@@@@                                =
-          |
-> >> > [1K, 2K)          265345 |@@@@@@                                    =
-          |
-> >> > [2K, 4K)          145463 |@@@                                       =
-          |
-> >> > [4K, 8K)           54571 |@                                         =
-          |
-> >> > [8K, 16K)          10270 |                                          =
-          |
-> >> > [16K, 32K)          9385 |                                          =
-          |
-> >> > [32K, 64K)          7749 |                                          =
-          |
-> >> > [64K, 128K)        26799 |                                          =
-          |
-> >> > [128K, 256K)        2665 |                                          =
-          |
-> >> > [256K, 512K)         665 |                                          =
-          |
-> >> >
-> >> > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> >>
-> >> This is very cool! One question below, just to make sure I understand
-> >> this correctly:
-> >>
-> >> > ---
-> >> >  include/net/sch_generic.h |  4 +-
-> >> >  net/core/dev.c            | 85 ++++++++++++++++++++++--------------=
+15 years after Tom Herbert added skb->ooo_okay, only TCP transport
+benefits from it.
+
+We can support other transports directly from skb_set_owner_w().
+
+If no other TX packet for this socket is in a host queue (qdisc, NIC queue)
+there is no risk of self-inflicted reordering, we can set skb->ooo_okay.
+
+This allows netdev_pick_tx() to choose a TX queue based on XPS settings,
+instead of reusing the queue chosen at the time the first packet was sent
+for connected sockets.
+
+Tested:
+  500 concurrent UDP_RR connected UDP flows, host with 32 TX queues, XPS setup.
+
+  super_netperf 500 -t UDP_RR -H <host> -l 1000 -- -r 100,100 -Nn &
+
+This patch saves between 10% and 20% of cycles, depending on how
+process scheduler migrates threads among cpus.
+
+Using following bpftrace script, we can see the effect on Qdisc/NIC tx queues
+being better used (less cache line misses).
+
+bpftrace -e '
+k:__dev_queue_xmit { @start[cpu] = nsecs; }
+kr:__dev_queue_xmit {
+ if (@start[cpu]) {
+    $delay = nsecs - @start[cpu];
+    delete(@start[cpu]);
+    @__dev_queue_xmit_ns = hist($delay);
+ }
+}
+END { clear(@start); }'
+
+Before:
+@__dev_queue_xmit_ns:
+[128, 256)             6 |                                                    |
+[256, 512)        116283 |                                                    |
+[512, 1K)        1888205 |@@@@@@@@@@@                                         |
+[1K, 2K)         8106167 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    |
+[2K, 4K)         8699293 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[4K, 8K)         2600676 |@@@@@@@@@@@@@@@                                     |
+[8K, 16K)         721688 |@@@@                                                |
+[16K, 32K)        122995 |                                                    |
+[32K, 64K)         10639 |                                                    |
+[64K, 128K)          119 |                                                    |
+[128K, 256K)           1 |                                                    |
+
+After:
+@__dev_queue_xmit_ns:
+[128, 256)             3 |                                                    |
+[256, 512)        651112 |@@                                                  |
+[512, 1K)        8109938 |@@@@@@@@@@@@@@@@@@@@@@@@@@                          |
+[1K, 2K)        16081031 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
+[2K, 4K)         2411692 |@@@@@@@                                             |
+[4K, 8K)           98994 |                                                    |
+[8K, 16K)           1536 |                                                    |
+[16K, 32K)           587 |                                                    |
+[32K, 64K)             2 |                                                    |
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-> >> >  net/sched/sch_generic.c   |  5 ---
-> >> >  3 files changed, 52 insertions(+), 42 deletions(-)
-> >> >
-> >> > diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-> >> > index 31561291bc92fd70d4d3ca8f5f7dbc4c94c895a0..94966692ccdf51db085c=
-236319705aecba8c30cf 100644
-> >> > --- a/include/net/sch_generic.h
-> >> > +++ b/include/net/sch_generic.h
-> >> > @@ -115,7 +115,9 @@ struct Qdisc {
-> >> >       struct Qdisc            *next_sched;
-> >> >       struct sk_buff_head     skb_bad_txq;
-> >> >
-> >> > -     spinlock_t              busylock ____cacheline_aligned_in_smp;
-> >> > +     atomic_long_t           defer_count ____cacheline_aligned_in_s=
-mp;
-> >> > +     struct llist_head       defer_list;
-> >> > +
-> >> >       spinlock_t              seqlock;
-> >> >
-> >> >       struct rcu_head         rcu;
-> >> > diff --git a/net/core/dev.c b/net/core/dev.c
-> >> > index 0ff178399b2d28ca2754b3f06d69a97f5d6dcf71..6094768bf3c028f0ad1e=
-52b9b12b7258fa0ecff6 100644
-> >> > --- a/net/core/dev.c
-> >> > +++ b/net/core/dev.c
-> >> > @@ -4125,9 +4125,10 @@ static inline int __dev_xmit_skb(struct sk_bu=
-ff *skb, struct Qdisc *q,
-> >> >                                struct net_device *dev,
-> >> >                                struct netdev_queue *txq)
-> >> >  {
-> >> > +     struct sk_buff *next, *to_free =3D NULL;
-> >> >       spinlock_t *root_lock =3D qdisc_lock(q);
-> >> > -     struct sk_buff *to_free =3D NULL;
-> >> > -     bool contended;
-> >> > +     struct llist_node *ll_list, *first_n;
-> >> > +     unsigned long defer_count =3D 0;
-> >> >       int rc;
-> >> >
-> >> >       qdisc_calculate_pkt_len(skb, q);
-> >> > @@ -4167,61 +4168,73 @@ static inline int __dev_xmit_skb(struct sk_b=
-uff *skb, struct Qdisc *q,
-> >> >               return rc;
-> >> >       }
-> >> >
-> >> > -     /*
-> >> > -      * Heuristic to force contended enqueues to serialize on a
-> >> > -      * separate lock before trying to get qdisc main lock.
-> >> > -      * This permits qdisc->running owner to get the lock more
-> >> > -      * often and dequeue packets faster.
-> >> > -      * On PREEMPT_RT it is possible to preempt the qdisc owner dur=
-ing xmit
-> >> > -      * and then other tasks will only enqueue packets. The packets=
- will be
-> >> > -      * sent after the qdisc owner is scheduled again. To prevent t=
-his
-> >> > -      * scenario the task always serialize on the lock.
-> >> > +     /* Open code llist_add(&skb->ll_node, &q->defer_list) + queue =
-limit.
-> >> > +      * In the try_cmpxchg() loop, we want to increment q->defer_co=
-unt
-> >> > +      * at most once to limit the number of skbs in defer_list.
-> >> > +      * We perform the defer_count increment only if the list is no=
-t empty,
-> >> > +      * because some arches have slow atomic_long_inc_return().
-> >> > +      */
-> >> > +     first_n =3D READ_ONCE(q->defer_list.first);
-> >> > +     do {
-> >> > +             if (first_n && !defer_count) {
-> >> > +                     defer_count =3D atomic_long_inc_return(&q->def=
-er_count);
-> >> > +                     if (unlikely(defer_count > q->limit)) {
-> >> > +                             kfree_skb_reason(skb, SKB_DROP_REASON_=
-QDISC_DROP);
-> >> > +                             return NET_XMIT_DROP;
-> >> > +                     }
-> >> > +             }
-> >> > +             skb->ll_node.next =3D first_n;
-> >> > +     } while (!try_cmpxchg(&q->defer_list.first, &first_n, &skb->ll=
-_node));
-> >> > +
-> >> > +     /* If defer_list was not empty, we know the cpu which queued
-> >> > +      * the first skb will process the whole list for us.
-> >> >        */
-> >> > -     contended =3D qdisc_is_running(q) || IS_ENABLED(CONFIG_PREEMPT=
-_RT);
-> >> > -     if (unlikely(contended))
-> >> > -             spin_lock(&q->busylock);
-> >> > +     if (first_n)
-> >> > +             return NET_XMIT_SUCCESS;
-> >> >
-> >> >       spin_lock(root_lock);
-> >> > +
-> >> > +     ll_list =3D llist_del_all(&q->defer_list);
-> >> > +     /* There is a small race because we clear defer_count not atom=
-ically
-> >> > +      * with the prior llist_del_all(). This means defer_list could=
- grow
-> >> > +      * over q->limit.
-> >> > +      */
-> >> > +     atomic_long_set(&q->defer_count, 0);
-> >> > +
-> >> > +     ll_list =3D llist_reverse_order(ll_list);
-> >> > +
-> >> >       if (unlikely(test_bit(__QDISC_STATE_DEACTIVATED, &q->state))) =
-{
-> >> > -             __qdisc_drop(skb, &to_free);
-> >> > +             llist_for_each_entry_safe(skb, next, ll_list, ll_node)
-> >> > +                     __qdisc_drop(skb, &to_free);
-> >> >               rc =3D NET_XMIT_DROP;
-> >> > -     } else if ((q->flags & TCQ_F_CAN_BYPASS) && !qdisc_qlen(q) &&
-> >> > -                qdisc_run_begin(q)) {
-> >> > +             goto unlock;
-> >> > +     }
-> >> > +     rc =3D NET_XMIT_SUCCESS;
-> >> > +     if ((q->flags & TCQ_F_CAN_BYPASS) && !qdisc_qlen(q) &&
-> >> > +         !llist_next(ll_list) && qdisc_run_begin(q)) {
-> >> >               /*
-> >> >                * This is a work-conserving queue; there are no old s=
-kbs
-> >> >                * waiting to be sent out; and the qdisc is not runnin=
-g -
-> >> >                * xmit the skb directly.
-> >> >                */
-> >> >
-> >> > +             skb =3D llist_entry(ll_list, struct sk_buff, ll_node);
-> >>
-> >> I was puzzled by this^. But AFAICT, the idea is that in the
-> >> non-contended path we're in here (no other CPU enqueueing packets), we
-> >> will still have added the skb to the llist before taking the root_lock=
-,
-> >> and here we pull it back off the list, right?
-> >>
-> >> Even though this is technically not needed (we'll always get the same
-> >> skb back, I think?), so this is mostly for consistency(?)
-> >
-> > Exactly. I guess we could instead add an assert like
-> >
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 1a0baedc4f39e17efd21b0e48a7373a394bcbfa6..4f0e448558a6d2c070d93c4=
-74698d904d0b864f6
-> > 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -4135,7 +4135,7 @@ static inline int __dev_xmit_skb(struct sk_buff
-> > *skb, struct Qdisc *q,
-> >                  * xmit the skb directly.
-> >                  */
-> >
-> > -               skb =3D llist_entry(ll_list, struct sk_buff, ll_node);
-> > +               DEBUG_NET_WARN_ON_ONCE(skb !=3D llist_entry(ll_list,
-> > struct sk_buff, ll_node));
-> >                 qdisc_bstats_update(q, skb);
-> >                 if (sch_direct_xmit(skb, q, dev, txq, root_lock, true))
-> >                         __qdisc_run(q);
->
-> OK, so thinking about this some more, isn't there a race between the
->
->         if (first_n)
->                 return NET_XMIT_SUCCESS;
->
-> and taking the lock? I.e., two different CPUs can pass that check in
-> which case one of them will end up spinning on the lock, and by the time
-> it acquires it, there is no longer any guarantee that the skb on the
-> llist will be the same one that we started with? Or indeed that there
-> will be any skbs on the list at all?
+ net/core/sock.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-Only one cpu can observe the list was empty.
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 542cfa16ee125f6c8487237c9040695d42794087..08ae20069b6d287745800710192396f76c8781b4 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2694,6 +2694,8 @@ void __sock_wfree(struct sk_buff *skb)
+ 
+ void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
+ {
++	int old_wmem;
++
+ 	skb_orphan(skb);
+ #ifdef CONFIG_INET
+ 	if (unlikely(!sk_fullsock(sk)))
+@@ -2707,7 +2709,15 @@ void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
+ 	 * is enough to guarantee sk_free() won't free this sock until
+ 	 * all in-flight packets are completed
+ 	 */
+-	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
++	__refcount_add(skb->truesize, &sk->sk_wmem_alloc, &old_wmem);
++
++	/* (old_wmem == SK_WMEM_ALLOC_BIAS) if no other TX packet for this socket
++	 * is in a host queue (qdisc, NIC queue).
++	 * Set skb->ooo_okay so that netdev_pick_tx() can choose a TX queue
++	 * based on XPS for better performance.
++	 * Otherwise clear ooo_okay to not risk Out Of Order delivery.
++	 */
++	skb->ooo_okay = (old_wmem == SK_WMEM_ALLOC_BIAS);
+ }
+ EXPORT_SYMBOL(skb_set_owner_w);
+ 
+-- 
+2.51.0.710.ga91ca5db03-goog
 
-This (spinlock)less list still has atomic guarantees, thanks to cmpxchg().
-
-So after this only cpu passes the spinlock() barrier, the list has at
-least one skb in it.
-
-If there is a single skb in the list after the xchg() got it
-atomically, then it must be its own skb.
-
->
-> In which case, shouldn't there be a:
->
-> if (unlikely(llist_empty(ll_list)))
->         goto unlock;
->
-> after the llist_del_all() assignment inside the lock? (and we should
-> retain the skb =3D llist_entry()) assignment I was confused about).
->
-> Or am I missing some reason this can't happen?
->
-> -Toke
->
