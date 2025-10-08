@@ -1,100 +1,85 @@
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A13214801
-	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 17:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD2D2BDC32;
+	Wed,  8 Oct 2025 18:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759944731; cv=none; b=HBlBJED29uJ3+mOZr2SSLZVx8NFQ1Y7RUk0tWYrie+78IexY//yUxYgjW05IvHIBI/CU66mDijUUdxN3/cf+hsrN7FojbSgNdzKet9FyjRpHvWlIOCMri9aA9vNVSy2dRP/jzOUKz0rwu5NsJ3kALdaCK20+Ge3nsFX6BAtlMpA=
+	t=1759947477; cv=none; b=JaVB2tzkzYnlJt2b+3FNPmNK5UaPKhEuBJ2/eb7F8TKsSDOk7Z1RMpp+ScpQWn0YYCCNr8lMogTBhIwMWFglaNg5V4czHEmNV1FOXs+UdOtcUWSyo+3q/vrA+sTXJbKWjRSMwXlwTdEz0P74Sm8nl+yhnIXv+F6Mr/Yvmz9c8R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759944731; c=relaxed/simple;
-	bh=R6F57YDITyqieFRSeJYftHE+oqSvEakx9pph8j301Tc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UV7FB9hUIBfWHPRykTaaECIf5xI6DozByTxpd3SBibxuDjUf0TJ30k3gVvuaGgpwkLlAz315uX1JEaSzxGu6ST8/kiuhZVAx5ADW+64c+5QFR3BfGd0blmu+8pp2NzxV0vmSD3M5bPFq+fDi8QUzcob4FZLxGQqzf7L8ZE/werw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ui4fiZw/; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1759947477; c=relaxed/simple;
+	bh=4aQzZE4dPKYLC7wE9e+3mYUgK3sZmtIL+KSSPfosfqc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AUHMQXV9xvk6mUqbADeS7rK+R0U40X8mcBP4NNIsZXJqpJM9Xp7TCHDvflWY1grGYqSVLNZ49QlOzvg0r9ni2uKHlT0oYKR7LEsmAzUdCbnLGbPOJ8WL0CVats7crbnZEdbG2cxIL8Y/61n+p87UQGhxOb9AD/iLiIw7Xb6f/yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUt9NBVm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ui4fiZw/"
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-887764c2868so3427939f.1
-        for <netdev@vger.kernel.org>; Wed, 08 Oct 2025 10:32:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1759944723; x=1760549523; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s07bq3yefwfB+/Gr+LJUgvY+fKCLyAq4B8pbnxhVLw0=;
-        b=ui4fiZw/rGVErBEQRgobDqtWl8vWgZ+tQLOUBlxmj01ZYuUCIUd7SePdzBV6ZSDVoy
-         unr+a0tIsuecdeSdcX5MYc6LZ/YS6iIU6zCY3xyfnSMrEWcu1tdKSxQuZOy2GX+y21sz
-         JE0CybEsgihe46JB4KleWdXgza5y3KsaYQPFHj8ScXaHG1JgOsRMqbHnN6GcjbUDlpau
-         /QChKsSXNomrzyCPX7Gupj2QCTPGMlDM8OYMskJ4ezUQKWWh5o5dBri8pYCizCdLjp2f
-         X95G7RelTxsORt8RqZtPbgGTS2kOvZ89cQNfTj7i+mvrWQAu538TgdLWLm49+BsbzIrC
-         OUxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759944723; x=1760549523;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s07bq3yefwfB+/Gr+LJUgvY+fKCLyAq4B8pbnxhVLw0=;
-        b=OtHvr7qrJBOGxjA8biYfEE6lwl/lkvARC/94IZfrtcL/dB/ljI6/7z1JD2RfL7Efnx
-         xmWcZR42k+x6BkpDrmOhQAavrSgByhI1/B68nJM47ypWu6sY6AurDnGQucQdt6g9Ahc+
-         /2eTY9j1JiXh5fmjGJrmWEstQNYL+zu7CliIyoy59cXsOlRSqluXMahri9VxHAj7i1Ri
-         0ibHZbZThKVYFGbuM0qLFaqzDI6Sr7pyw1LyLZdz5km8WcIrO3uWDNWbgYczHWCRakHm
-         Nutnhv8l3oZ5m6FoxdGwmuJXETvHBAm8tb6DTKytFZgZ0S5YhkPhww0qqfF5a3zfAwyB
-         6Wvw==
-X-Gm-Message-State: AOJu0YzzAAHnRSoNS7JZ49dBy7REZkfZ+Egj8T8cLWGtT5D7vVMJVDNW
-	9Q5m+zOMtJnnxVPKcjmVSrT9iTzUFNS/AycXEVG/Bf39wB6Y9jvYZ8lmOr/ObVUtRgCRcPDCxat
-	JJ0Q53bw=
-X-Gm-Gg: ASbGncuhG8qshtySH+MEpEHRXaNoMj/RRVLpMB8uWUIm5pb+dubnk+asRM5UWRF4F52
-	qKxriveq/LigbqNPDgnEPg/xOJ+xmCoaFBkgogqjoLYycWJnEZQ7D5tfIzSYr5oeGVL5v6lrx7y
-	TH2KmTVtOx7Cz2+htSm4UrcNASIrNip1hhE2wjoRp8BJdzW53bFs0acRcRdKCGyV2UqWgZZvZYd
-	qfVYeOihjeP+VY0WFsLfktzfQIKZzR+o1B51qnqYiSNY/rjrgoHNc12eUsyfGVCwEZ/wLnzjgxa
-	J9vu6hc0Q71eJAKjySJypw0unodiVG4l142lyctnJC6yPOUPoDoIFNgh6HnOCRyrIuOKOK6u+HL
-	kNhYHNX/pR5iDR7yiX6jzsnsf1alFudSdoqRxQw==
-X-Google-Smtp-Source: AGHT+IHKT/Ts5Q1f0eBOyGJ/SqRQvtvv14mZDbGopPP+3ngExKSfBHL0g1I+xOXweyXm4CrMKSFCpA==
-X-Received: by 2002:a05:6e02:1806:b0:42f:8633:bfd3 with SMTP id e9e14a558f8ab-42f873fe7aemr41500515ab.25.1759944723118;
-        Wed, 08 Oct 2025 10:32:03 -0700 (PDT)
-Received: from [127.0.0.1] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-42f9027872csm1366205ab.10.2025.10.08.10.32.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Oct 2025 10:32:02 -0700 (PDT)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org, Matthias Jasny <matthiasjasny@gmail.com>
-In-Reply-To: <b0441e746c0a840908ec3e3881f782b5e84aa6d3.1759914280.git.asml.silence@gmail.com>
-References: <b0441e746c0a840908ec3e3881f782b5e84aa6d3.1759914280.git.asml.silence@gmail.com>
-Subject: Re: [PATCH 1/1] io_uring/zcrx: fix overshooting recv limit
-Message-Id: <175994472198.2061199.6935762244237340434.b4-ty@kernel.dk>
-Date: Wed, 08 Oct 2025 11:32:01 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUt9NBVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F88AC4CEE7;
+	Wed,  8 Oct 2025 18:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1759947476;
+	bh=4aQzZE4dPKYLC7wE9e+3mYUgK3sZmtIL+KSSPfosfqc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GUt9NBVmokoT4ZHWQS2ZfEzYW9YwNbuP1F8iFd9oXTaOge9DACR/POTm/b7hf7nTE
+	 D8NeRBhkov7umkM+ojr4jlvj5K5NMZ2jC1tTJUGLS6APxkkFjdJrvD7R6eSz26xPUy
+	 OSwziBUZXFcoLJIyC7ffGhxPeJm0XRHHnUjtVHB2pV6MDugaF3Z02jU9/fquKH+XES
+	 kVm4CQhouvOLTs6je5l1/iKeXfqH8aPwKl0DVwfP31DtHo0R9u6V1KARZi1qBLlIF1
+	 rFkJuO/nZENaLaTWVGNKuJoCf9QYxinbpR1Hu84vXb8otD+PMj4mbhMRdPZE1mFAUJ
+	 vyv2kaNgm3NEg==
+Date: Wed, 8 Oct 2025 08:17:55 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Matyas Hurtik <matyas.hurtik@cdn77.com>
+Cc: Daniel Sedlak <daniel.sedlak@cdn77.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org,
+	netdev@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+Message-ID: <aOaq07jS60mHYGBe@slm.duckdns.org>
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+ <aOVxrwQ8MHbaRk6J@slm.duckdns.org>
+ <6cbf24f6-bd05-45d0-9bc8-5369f3708d02@cdn77.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6cbf24f6-bd05-45d0-9bc8-5369f3708d02@cdn77.com>
 
-
-On Wed, 08 Oct 2025 13:38:06 +0100, Pavel Begunkov wrote:
-> It's reported that sometimes a zcrx request can receive more than was
-> requested. It's caused by io_zcrx_recv_skb() adjusting desc->count for
-> all received buffers including frag lists, but then doing recursive
-> calls to process frag list skbs, which leads to desc->count double
-> accounting and underflow.
+On Wed, Oct 08, 2025 at 02:46:23PM +0200, Matyas Hurtik wrote:
+> Hello,
+> > I'm not against going 1) but let's not do a separate file for this. Can't
+> > you do memory.stat.local?
 > 
+> I can't find memory.stat.local, so should we create it and add the counter
+> as an entry there?
+
+Yes.
+
+> Regarding the code, is there anything you would like us to improve? I had to
+> rewrite it a bit
 > 
-> [...]
+> because of the recent changes.
 
-Applied, thanks!
+I think memcg guys will have much better idea on the actual code. Let's wait
+for them to chime in.
 
-[1/1] io_uring/zcrx: fix overshooting recv limit
-      commit: 09cfd3c52ea76f43b3cb15e570aeddf633d65e80
+Thanks.
 
-Best regards,
 -- 
-Jens Axboe
-
-
-
+tejun
