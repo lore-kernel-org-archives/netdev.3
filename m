@@ -1,112 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50852EC09B
-	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 10:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE1E46BF
+	for <netdev@vger.kernel.org>; Wed,  8 Oct 2025 11:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759920515; cv=none; b=Z2bI1I0SzTug8P7Roza9hkZT6cH96F+SAI3wPYfCecolVULMMyRZ+ZHWf0QOiRZUSdf87FmyeiKuK/EWfqn7xXmNnzWXd3LkKrPlY6eHTLutqMnXxHnmtLaB/3gpbV1vL41WgMamCZU/LDCh6mB604dr2XVLZbDPcCDj6r/hIvM=
+	t=1759921230; cv=none; b=aN+BDmfo7qnKsp01CCp4xgDnjFF5GwMHrdjoCOEtmbSm/YHj/AEGkiP4QBET9yAiyx+rk/cRm0PfP0V1nro38erAQKyWBOHhSwiPneXrbOJpIucctEROL8zZluI2L6x0nbRBphAgO1UDL3OQGlql0wnwpWuqTuVy0AUKY60Sb5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759920515; c=relaxed/simple;
-	bh=r8JHW7S9t8XtUom2huYwx+1JK/cKzVt5jAQ2jApdSJ4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=R1M59zoB1QxhjKtDLD6WeU6/PNrjO5xmVuP0Emw4PwJbFk15jR+mVqJcqVJBGYOlHleHlsEu7AaYDlxE5e279xOlH/I7xOHbytt+OTctkORBMWQ5yz1cvoPaJp6+JwRqEOvLrEXbTjkJKmY/J9Xa1GU+fytXvu6QRgz/WKoHaNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jh27gp3r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1759921230; c=relaxed/simple;
+	bh=DMDLqAxGvfxYLLXVkUc7oZOxgv5Q4Bp+XqEMyh/04Tw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cM56gUPBNfkHxxKRmNbC1KEilR5rErVqp6n92CU0RQ/Mhry7uw8IZGBAi07yReWNHPs7kcW675fhgV7a0eX0jQC3wDJ2tpfwiVX47uUnHNKZU10lxKgUWs2yEZ36JtXxt0HkWN8q9ow9zETL2ahhSuwpMHsXwmN7+t+TtVU6IuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hzyk49Pa; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jh27gp3r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CA2C4CEF4;
-	Wed,  8 Oct 2025 10:48:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759920515;
-	bh=r8JHW7S9t8XtUom2huYwx+1JK/cKzVt5jAQ2jApdSJ4=;
-	h=From:Date:Subject:To:Cc:From;
-	b=jh27gp3rw022a1h/WWr+t1wM0U5EPs25PS24UudRsvMvW7VuFNgttsy1GgDnKTtOE
-	 fJy2IBNDNmHfBsGgVXOuQhiY/2uVhdRXyxjViLozWaO5OtoeEKYnQVCKAyogH5fWkw
-	 O4L4XaH2//EYfNKzmkmT7znzYUWq5PFSUH2X7hz7TGr0wdeHvdbfqdhH0q/0TXB6M5
-	 Px2bnP5mAsnm0130NIgU98b6Of7kZyGZ1FB0Td96nq92zEog71n0wX8Xg26Oll+B1F
-	 NzioWB/ah65ZPpHNtDTd9tUPpR1QacxVqKJXSdnZ+uFtCkDGtA83RymnbEOHYZhEIn
-	 /BZqFWAU1f/HA==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 08 Oct 2025 12:48:05 +0200
-Subject: [PATCH net] net: mtk: wed: add dma mask limitation and GFP_DMA32
- for device with more than 4GB DRAM
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hzyk49Pa"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5985vFNH030966;
+	Wed, 8 Oct 2025 04:00:15 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=1
+	+JfJUBIPlAHGggebfceQZ4CBuFZijcQqS8VfV8TY9c=; b=hzyk49PaVsMw7Q2VE
+	5jBJVBpj5TLXa73WImurkZaS2PbJVW8j/DlEE4plyEziixTwyp1DucPLZywAcrf4
+	wqoKRyvOY/nvTeBkjdTCTVGHsGGyUxRBlJN58W0hP1u0sVsJg7I7fo7XVKZRHONH
+	FyXKoFkBIVNT7HmXScD1oAPomCQpBHZIUc6PJrHrcUylY23oj+6GVCUh49EVWyMj
+	aSSME7H+jsQwMpH4oobpwHRURqjO05PVA+lp0MQ9/BU9eeLBx8VfoyfyIzOfhbsZ
+	cYRlkn6GfZQ4FjVY/CnTfrN9rLlFyLXiZeX1h2rtR3QFYSMjUbNuotiIHew0QiqE
+	MGh8g==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 49nj8t0fwa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Oct 2025 04:00:15 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 8 Oct 2025 04:00:13 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 8 Oct 2025 04:00:13 -0700
+Received: from 5810.caveonetworks.com (unknown [10.29.45.105])
+	by maili.marvell.com (Postfix) with ESMTP id 0DDCC5B6940;
+	Wed,  8 Oct 2025 04:00:09 -0700 (PDT)
+From: Kommula Shiva Shankar <kshankar@marvell.com>
+To: <netdev@vger.kernel.org>, <mst@redhat.com>, <jasowang@redhat.com>,
+        <pabeni@redhat.com>, <xuanzhuo@linux.alibaba.com>
+CC: <virtualization@lists.linux.dev>, <parav@nvidia.com>, <jerinj@marvell.com>,
+        <ndabilpuram@marvell.com>, <sburla@marvell.com>, <schalla@marvell.com>
+Subject: [PATCH v2 net-next  1/3] net: implement virtio helper to handle outer nw offset
+Date: Wed, 8 Oct 2025 16:30:02 +0530
+Message-ID: <20251008110004.2933101-2-kshankar@marvell.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251008110004.2933101-1-kshankar@marvell.com>
+References: <20251008110004.2933101-1-kshankar@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251008-wed-4g-ram-limitation-v1-1-16fe55e1d042@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAGRB5mgC/x3MQQrDIBBG4avIrDtgE5Ngr1KykPonGYi2qCSF4
- N0rXb7F9y7KSIJMD3VRwiFZ3rHF/abotbm4gsW3pk53g7a95hOezcrJBd4lSHGlCR6N1Zjgre8
- tNftJWOT7/z4potBc6w9l4YGwbAAAAA==
-X-Change-ID: 20250930-wed-4g-ram-limitation-6490e7ed9d39
-To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, Rex Lu <rex.lu@mediatek.com>, 
- Daniel Pawlik <pawlik.dan@gmail.com>, Matteo Croce <teknoraver@meta.com>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDA4MDAzNyBTYWx0ZWRfXwh6SXolXpjkX
+ Gv2iqn96Fwj1iX5A7+Q+GCbamW8HKbSsadN0ZnZYNLaj+DfBJCVY8HJC/BmPcPF5SiLeeanlx8x
+ B7l9MooGG+5GyheDJOStjMX291T2kKbVaQsllzG8QF8SGbFa7dK06A5S+aRW/BgOoCH0Cjm+RGl
+ GYxKOxW1Kl+RieGnRF4n2VgpsZTxR5lLOWsE+m07wDSkXENHyesnmHzCvWZ4GieWvXGSrc2/oMh
+ 2n1Xgoap5OgY+oWOBDMKd6tQgdFjt97F5b89v0TF3eWUEhcri7BKhmfcM+XT8iCjxSkHJWGDQES
+ 4AZR5nF2og6b2F09pktTxlPbj6igzhmUh3S+1LP6e/W8VrH+ts6xhXqLDd/sDoEyJn2n6i+XK70
+ ZBgtip6PfndAbEtrLkjXmek/RqIZjQ==
+X-Proofpoint-ORIG-GUID: TfNttCXlxW3kkdb6Yz0tlyrfLAsdcQ1c
+X-Proofpoint-GUID: TfNttCXlxW3kkdb6Yz0tlyrfLAsdcQ1c
+X-Authority-Analysis: v=2.4 cv=fuHRpV4f c=1 sm=1 tr=0 ts=68e6443f cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=x6icFKpwvdMA:10 a=M5GUcnROAAAA:8 a=rBhPDSTWFrAT6I7GfMQA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-08_03,2025-10-06_01,2025-03-28_01
 
-From: Rex Lu <rex.lu@mediatek.com>
+virtio specification introduced support for outer network
+header offset broadcast.
 
-Limit tx/rx buffer address to 32-bit address space for board with more
-than 4GB DRAM.
+This patch implements the needed defines and virtio header
+parsing capabilities.
 
-Tested-by: Daniel Pawlik <pawlik.dan@gmail.com>
-Tested-by: Matteo Croce <teknoraver@meta.com>
-Signed-off-by: Rex Lu <rex.lu@mediatek.com>
-Co-developed-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Kommula Shiva Shankar <kshankar@marvell.com>
 ---
- drivers/net/ethernet/mediatek/mtk_wed.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/virtio_net.h      | 40 +++++++++++++++++++++++++++++++++
+ include/uapi/linux/virtio_net.h |  8 +++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
-index 3dbb113b792cf00fb4f89ab20f7e7fa72ecac260..cc3f3380a9980a6525921205dc7adaf321a099ae 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed.c
-+++ b/drivers/net/ethernet/mediatek/mtk_wed.c
-@@ -677,7 +677,7 @@ mtk_wed_tx_buffer_alloc(struct mtk_wed_device *dev)
- 		void *buf;
- 		int s;
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 20e0584db1dd..7ab872a11a21 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -374,6 +374,46 @@ static inline int virtio_net_handle_csum_offload(struct sk_buff *skb,
+ 	return 0;
+ }
  
--		page = __dev_alloc_page(GFP_KERNEL);
-+		page = __dev_alloc_page(GFP_KERNEL | GFP_DMA32);
- 		if (!page)
- 			return -ENOMEM;
- 
-@@ -800,7 +800,7 @@ mtk_wed_hwrro_buffer_alloc(struct mtk_wed_device *dev)
- 		struct page *page;
- 		int s;
- 
--		page = __dev_alloc_page(GFP_KERNEL);
-+		page = __dev_alloc_page(GFP_KERNEL | GFP_DMA32);
- 		if (!page)
- 			return -ENOMEM;
- 
-@@ -2426,6 +2426,10 @@ mtk_wed_attach(struct mtk_wed_device *dev)
- 	dev->version = hw->version;
- 	dev->hw->pcie_base = mtk_wed_get_pcie_base(dev);
- 
-+	ret = dma_set_mask_and_coherent(hw->dev, DMA_BIT_MASK(32));
-+	if (ret)
-+		return ret;
++static inline int
++virtio_net_out_net_header_to_skb(struct sk_buff *skb,
++				 struct virtio_net_hdr_v1_hash_tunnel_out_net_hdr *vhdr,
++				 bool out_net_hdr_negotiated,
++				 bool little_endian)
++{
++	unsigned int out_net_hdr_off;
 +
- 	if (hw->eth->dma_dev == hw->eth->dev &&
- 	    of_dma_is_coherent(hw->eth->dev->of_node))
- 		mtk_eth_set_dma_device(hw->eth, hw->dev);
-
----
-base-commit: 07fdad3a93756b872da7b53647715c48d0f4a2d0
-change-id: 20250930-wed-4g-ram-limitation-6490e7ed9d39
-
-Best regards,
++	if (!out_net_hdr_negotiated)
++		return 0;
++
++	if (vhdr->outer_nh_offset) {
++		out_net_hdr_off = le16_to_cpu(vhdr->outer_nh_offset);
++		skb_set_network_header(skb, out_net_hdr_off);
++	}
++
++	return 0;
++}
++
++static inline int
++virtio_net_out_net_header_from_skb(const struct sk_buff *skb,
++				   struct virtio_net_hdr_v1_hash_tunnel_out_net_hdr *vhdr,
++				   bool out_net_hdr_negotiated,
++				   bool little_endian)
++{
++	unsigned int out_net_hdr_off;
++
++	if (!out_net_hdr_negotiated) {
++		vhdr->outer_nh_offset = 0;
++		return 0;
++	}
++
++	out_net_hdr_off = skb_network_offset(skb);
++	if (out_net_hdr_off && (skb->protocol == htons(ETH_P_IP) ||
++				skb->protocol == htons(ETH_P_IPV6)))
++		vhdr->outer_nh_offset = cpu_to_le16(out_net_hdr_off);
++
++	return 0;
++}
++
+ /*
+  * vlan_hlen always refers to the outermost MAC header. That also
+  * means it refers to the only MAC header, if the packet does not carry
+diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+index 8bf27ab8bcb4..6032b9e443bb 100644
+--- a/include/uapi/linux/virtio_net.h
++++ b/include/uapi/linux/virtio_net.h
+@@ -86,6 +86,7 @@
+ 						  * packets with partial csum
+ 						  * for the outer header
+ 						  */
++#define VIRTIO_NET_F_OUT_NET_HEADER 69	/* Outer network header offset */
+ 
+ /* Offloads bits corresponding to VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO{,_CSUM}
+  * features
+@@ -214,6 +215,13 @@ struct virtio_net_hdr_v1_hash_tunnel {
+ 	__le16 inner_nh_offset;
+ };
+ 
++/* outer network header */
++struct virtio_net_hdr_v1_hash_tunnel_out_net_hdr {
++	struct virtio_net_hdr_v1_hash_tunnel tnl_hdr;
++	__le16 outer_nh_offset;
++	__u8 padding_reserved_2[6];
++};
++
+ #ifndef VIRTIO_NET_NO_LEGACY
+ /* This header comes first in the scatter-gather list.
+  * For legacy virtio, if VIRTIO_F_ANY_LAYOUT is not negotiated, it must
 -- 
-Lorenzo Bianconi <lorenzo@kernel.org>
+2.48.1
 
