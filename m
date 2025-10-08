@@ -1,85 +1,73 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail-internal.sh.cz (mail-internal.sh.cz [95.168.196.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB153F9FB;
-	Wed,  8 Oct 2025 12:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BB7246BB6;
+	Wed,  8 Oct 2025 12:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.168.196.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759927151; cv=none; b=gI86qg/p4uGyz7+YePmVKSHnF6upVS6o64AO0/J0Enx+UrCR1Tl4ohP219RnpnsFC0R3zC7hNw/cCfIDomP//5ALBcZWyRWj6Po5YaAn8jcfZd82HpwqdFmjU62Ck288vOpBM9mUpD+C/TY28PF7bpf/e3nFW2wS9H6qwYkMlMc=
+	t=1759927590; cv=none; b=o7OuPiU3BGOLIx33JlIDLKuY61F6PsHMY7mA9i1fC6pDKicaNAXNeN8TZks/EvSH9YAwLH7FiLFSFmK4d4DuLMpbfDJyrz7WXdjxBAoNgF9941qjV1d/O3RqTcH2qJVHGO9aXbma/7QskQRw7+QZ5fBRnyNRRvWGjKulewtwwM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759927151; c=relaxed/simple;
-	bh=uqFeHCHEdmppnNDUEAbUawlRMRfJfab7jqYkIwxENrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p3KmCKw6FXhKDq1F8W1P7uBHnQ9uP0M2YliTA1BzJHzK005GupNYzfxMi/feBRFlxWdJNgwhrdRt4z5mILMBbtfQsvVV+pCZ0FzRYbaOuJfCafbRGCsDWwx+pbDl+wf1Le0jJ8Uc8AMf7R+vuujh25Wrb6p34iEwgzaU2Id7y+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GuevdtlZ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1759927590; c=relaxed/simple;
+	bh=bdplL2rpAWNb4aoW6dsVwxjpIpkkjgM+sJAhQTqcmy4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BvjPgMrI7rckN5aIyLdJgsWdV3mXrgqeeBRNLlj5bx/2Dpfz6H6OAtk4g6Cwcdj9JBJ1yd1Dd0U26SN+tFTt8hH+CPp4/s6z3pvzoE802EgOzHHW71a9sQv8/C7gnZ6klbX01VRy5mivtdURlyF/OWC667aWVdkIaM1P0c3ZLaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cdn77.com; spf=pass smtp.mailfrom=cdn77.com; dkim=pass (1024-bit key) header.d=cdn77.com header.i=@cdn77.com header.b=JDPCBdIo; arc=none smtp.client-ip=95.168.196.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cdn77.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cdn77.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GuevdtlZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=TshhvW/gfh9QydjJNrssGopp+xrjGD3PPRULh3PF/6U=; b=GuevdtlZX8wZReV4UBX9KFEzPJ
-	ZvH8nuYFtri8zX9f6B70qlx1Odq92d5zqNEL3kqqTUeb5uZ5tkQM2CDxgBWpCCimzZpJKqsoP3gnh
-	XCJjl/wRU+vXVdcxjpJTgbPazVirD5PcMgNy9tt0xtkihYS3y/XrPWXmSruvA2vQJndg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v6TRU-00AR9B-LO; Wed, 08 Oct 2025 14:38:52 +0200
-Date: Wed, 8 Oct 2025 14:38:52 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thomas Wismer <thomas@wismer.xyz>
-Cc: Conor Dooley <conor@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Wismer <thomas.wismer@scs.ch>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
-Message-ID: <e14c6932-efc9-4bf2-a07b-6bbb56d7ffbd@lunn.ch>
-References: <20251004180351.118779-2-thomas@wismer.xyz>
- <20251004180351.118779-8-thomas@wismer.xyz>
- <20251007-stipulate-replace-1be954b0e7d2@spud>
- <20251008135243.22a908ec@pavilion>
+	dkim=pass (1024-bit key) header.d=cdn77.com header.i=@cdn77.com header.b="JDPCBdIo"
+DKIM-Signature: a=rsa-sha256; t=1759927585; x=1760532385; s=dkim2019; d=cdn77.com; c=relaxed/relaxed; v=1; bh=YsJun95Wxhwf/ur9MneaPmQvhR6RH8R5auchgi1X7Ng=; h=From:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References;
+   b=JDPCBdIoNeGiQm2XgBrPzRm1JA4dH2d+wbkdxjyXuiLKON0wMnxiV3hSDcXJvM/cqQltBzkVLBC4+EwMbH2NBg5qdQMkMm0Oh3Hcc1dO3WWd10o9PIdC0aWRP2+3wrqy1lzVJtjk7gOa29oc1EEy+hOerDNGcGSMabahNOv1kZw=
+Received: from [10.26.2.242] ([80.250.18.198])
+        by mail.sh.cz (14.1.0 build 17 ) with ASMTP (SSL) id 202510081446246620;
+        Wed, 08 Oct 2025 14:46:24 +0200
+Message-ID: <6cbf24f6-bd05-45d0-9bc8-5369f3708d02@cdn77.com>
+Date: Wed, 8 Oct 2025 14:46:23 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251008135243.22a908ec@pavilion>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] memcg: expose socket memory pressure in a cgroup
+To: Tejun Heo <tj@kernel.org>, Daniel Sedlak <daniel.sedlak@cdn77.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry.ahmed@linux.dev>,
+ linux-mm@kvack.org, netdev@vger.kernel.org,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+References: <20251007125056.115379-1-daniel.sedlak@cdn77.com>
+ <aOVxrwQ8MHbaRk6J@slm.duckdns.org>
+Content-Language: en-US, cs
+From: Matyas Hurtik <matyas.hurtik@cdn77.com>
+In-Reply-To: <aOVxrwQ8MHbaRk6J@slm.duckdns.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CTCH: RefID="str=0001.0A2D0331.68E65D20.0068,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0"; Spam="Unknown"; VOD="Unknown"
 
-On Wed, Oct 08, 2025 at 01:52:43PM +0200, Thomas Wismer wrote:
-> Am Tue, 7 Oct 2025 21:40:03 +0100
-> schrieb Conor Dooley <conor@kernel.org>:
-> 
-> > On Sat, Oct 04, 2025 at 08:03:53PM +0200, Thomas Wismer wrote:
-> > > From: Thomas Wismer <thomas.wismer@scs.ch>
-> > > 
-> > > Add the TPS23881B I2C power sourcing equipment controller to the
-> > > list of supported devices.  
-> > 
-> > Missing an explanation for why a fallback compatible is not suitable
-> > here. Seems like it is, if the only difference is that the firmware is
-> > not required to be refreshed, provided that loading the non-B firmware
-> > on a B device would not be problematic.
-> 
-> Loading the non-B firmware on a B device is indeed problematic. I'll
-> append the following paragraph to the patch when reposting it after
-> the current merge window has closed.
+Hello,
+> I'm not against going 1) but let's not do a separate file for this. Can't
+> you do memory.stat.local?
 
-Is it possible to ask the device what it is?
+I can't find memory.stat.local, so should we create it and add the 
+counter as an entry there?
 
-If you can, maybe you don't even need a new compatible, just load the
-appropriate firmware depending on what the device says it is.
 
-	Andrew
+Regarding the code, is there anything you would like us to improve? I 
+had to rewrite it a bit
+
+because of the recent changes.
+
+
+Thanks,
+
+Matyas
+
