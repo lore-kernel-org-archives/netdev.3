@@ -1,300 +1,104 @@
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9997B30FC1F
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5678E30F937
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431281; cv=none; b=Y1Ut67vb9zbmX3iJgGl5vofSo0/URkcntDU1oWoG6hwV7QmzwDvMCL56wnP3E4wdpFU/xjDKSiwQ2ldQx8SJy2nQXZZ4yzkPf3Zmk8aENxmic1yPURsndUFJubr6NQz9DFkL0kZYpdRTvLAfxKhQxOxNBKae9tZe09SCIrgC7aw=
+	t=1760431299; cv=none; b=cqSB0kC4nQgI6CuiOvUVijpVRqG0spz0Seof7vvf0nUIIEe5tV1/rck1VS2bAjD9a8nB8QYDExo62pqIm86wMAY3UfGFizaG9BMpN2g65rhrjs8BMJAdOuSDE64q6NHjG3xTCxTRRgB0AB5y4Shrb8Y7P78njBYsSNmXvetV1vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431281; c=relaxed/simple;
-	bh=4pd6qA2EReuxMPBiXivPPDfhOf+67BL73FWrtpDGWEM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nL9h5OM1DJX3mMXQtAunfueCXaiT6JrV1d+PRQ8MLGOfcaVbF/VLUVBNdU6C+qfJeno5+dZ9Ui2dOiV9p4NSDD+FJQ6fgn5UzUOB2fK7nzFkew12sttRskdxCPtDe4rh0zPPqy76V22voeuZMP4nEt9HOZZ7r7jWyRtEIvV0c8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IuqKNsxw; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760431299; c=relaxed/simple;
+	bh=VQQ0cSA27uMDgoOksZ9nAA8/qTPIu0hBMexqjmJ6kwc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ezoagAntnbXM7wJeh7XdVs6hNTuZ8K1mHfk9NN3lYwdMZja30sh+ALtAMAGr2D47uVMG2IUiFzh1LsNQCt9BDhl4snFyf7vKeJG2DlrjTRYSNIAvrnglQwwiy2pJKIFjCthx+9QCLVROORkiEI+ctj+Gv7y+h61TklIz5T1K4UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VTLIt68X; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IuqKNsxw"
-Message-ID: <5d0df381-5a17-4b90-92dc-0d2976b585e0@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760431275;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VTLIt68X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760431296;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=na4/rjwMlhKsgYN1lEawrQoNJRk4x8k14iu6ZeKXBPk=;
-	b=IuqKNsxw09wHTm9oGS3iFYk0vDrZB1Qu/kzTm+6bN1FcjJpMzeBqi1IYxh5lxVpZ9weg1p
-	dKB3NgF/8xItxriEV3Px9BcvrlKQPDHnzhAR6+VqE6zEAklq8+zkusARBaUqkq8rzZPuL/
-	GjKTG+ZMsnmcHEFh2HyZKfSd+LjexJA=
-Date: Tue, 14 Oct 2025 16:40:22 +0800
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=g+5bhDzSA+Udc5qJjyVCOEZAN6FwwM9bAyimGF6b+f0=;
+	b=VTLIt68XJFcBGoOk4QiOID1QEZMojU6n7D0dfRWMOGrH2BDk6XWOzF/ICGwmRRlb7Ksbu4
+	5Sqd7E1nqIc93od/wJ0NFt6ItGSBUhzgdz4YnbiZAwFfiQfSMuZaE2NlQecDWmsFNQdLfs
+	5kIOpTcWM44v2/gEJWOSRs/SyOhVAms=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-iFG2ai3bNhGcMraI2mrl1A-1; Tue,
+ 14 Oct 2025 04:41:32 -0400
+X-MC-Unique: iFG2ai3bNhGcMraI2mrl1A-1
+X-Mimecast-MFC-AGG-ID: iFG2ai3bNhGcMraI2mrl1A_1760431291
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95EE1180057B;
+	Tue, 14 Oct 2025 08:41:31 +0000 (UTC)
+Received: from fedora (unknown [10.44.34.41])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85A601800577;
+	Tue, 14 Oct 2025 08:41:29 +0000 (UTC)
+From: Jan Vaclav <jvaclav@redhat.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Jan Vaclav <jvaclav@redhat.com>
+Subject: [PATCH v3 net-next] net/hsr: add protocol version to fill_info output
+Date: Thu,  9 Oct 2025 23:09:08 +0200
+Message-ID: <20251009210903.1055187-6-jvaclav@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next v7 1/3] rculist: Add hlist_nulls_replace_rcu()
- and hlist_nulls_replace_init_rcu()
-To: Eric Dumazet <edumazet@google.com>
-Cc: kuniyu@google.com, "Paul E. McKenney" <paulmck@kernel.org>,
- kerneljasonxing@gmail.com, davem@davemloft.net, kuba@kernel.org,
- netdev@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-References: <20250926074033.1548675-1-xuanqiang.luo@linux.dev>
- <20250926074033.1548675-2-xuanqiang.luo@linux.dev>
- <CANn89iJ15RFYq65t57sW=F1jZigbr5xTbPNLVY53cKtpMKLotA@mail.gmail.com>
- <d6a43fe1-2e00-4df4-b4a8-04facd8f05d4@linux.dev>
- <CANn89iLQMVms1GF_oY1WSCtmxLZaBJrTKaeHnwRo5p9uzFwnVw@mail.gmail.com>
- <82a04cb1-9451-493c-9b1e-b4a34f2175cd@linux.dev>
- <CANn89iJdXiE3b8x8vQtbOOi2DTC5P9bOO1HsnRwSPC8qQC--8g@mail.gmail.com>
- <7d89cff3-1045-4901-bdd3-f669eecfee97@linux.dev>
- <CANn89iJtMVRhcdfaH3Qz0cLf30cV32jYpAA5YBcL1Auovccdug@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: luoxuanqiang <xuanqiang.luo@linux.dev>
-In-Reply-To: <CANn89iJtMVRhcdfaH3Qz0cLf30cV32jYpAA5YBcL1Auovccdug@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
+Currently, it is possible to configure IFLA_HSR_VERSION, but
+there is no way to check in userspace what the currently
+configured HSR protocol version is.
 
-在 2025/10/14 16:09, Eric Dumazet 写道:
-> On Tue, Oct 14, 2025 at 1:05 AM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
->>
->> 在 2025/10/14 15:34, Eric Dumazet 写道:
->>> On Tue, Oct 14, 2025 at 12:21 AM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
->>>> 在 2025/10/13 17:49, Eric Dumazet 写道:
->>>>> On Mon, Oct 13, 2025 at 1:26 AM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
->>>>>> 在 2025/10/13 15:31, Eric Dumazet 写道:
->>>>>>> On Fri, Sep 26, 2025 at 12:41 AM <xuanqiang.luo@linux.dev> wrote:
->>>>>>>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>>>>>>>
->>>>>>>> Add two functions to atomically replace RCU-protected hlist_nulls entries.
->>>>>>>>
->>>>>>>> Keep using WRITE_ONCE() to assign values to ->next and ->pprev, as
->>>>>>>> mentioned in the patch below:
->>>>>>>> commit efd04f8a8b45 ("rcu: Use WRITE_ONCE() for assignments to ->next for
->>>>>>>> rculist_nulls")
->>>>>>>> commit 860c8802ace1 ("rcu: Use WRITE_ONCE() for assignments to ->pprev for
->>>>>>>> hlist_nulls")
->>>>>>>>
->>>>>>>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
->>>>>>>> ---
->>>>>>>>      include/linux/rculist_nulls.h | 59 +++++++++++++++++++++++++++++++++++
->>>>>>>>      1 file changed, 59 insertions(+)
->>>>>>>>
->>>>>>>> diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist_nulls.h
->>>>>>>> index 89186c499dd4..c26cb83ca071 100644
->>>>>>>> --- a/include/linux/rculist_nulls.h
->>>>>>>> +++ b/include/linux/rculist_nulls.h
->>>>>>>> @@ -52,6 +52,13 @@ static inline void hlist_nulls_del_init_rcu(struct hlist_nulls_node *n)
->>>>>>>>      #define hlist_nulls_next_rcu(node) \
->>>>>>>>             (*((struct hlist_nulls_node __rcu __force **)&(node)->next))
->>>>>>>>
->>>>>>>> +/**
->>>>>>>> + * hlist_nulls_pprev_rcu - returns the dereferenced pprev of @node.
->>>>>>>> + * @node: element of the list.
->>>>>>>> + */
->>>>>>>> +#define hlist_nulls_pprev_rcu(node) \
->>>>>>>> +       (*((struct hlist_nulls_node __rcu __force **)(node)->pprev))
->>>>>>>> +
->>>>>>>>      /**
->>>>>>>>       * hlist_nulls_del_rcu - deletes entry from hash list without re-initialization
->>>>>>>>       * @n: the element to delete from the hash list.
->>>>>>>> @@ -152,6 +159,58 @@ static inline void hlist_nulls_add_fake(struct hlist_nulls_node *n)
->>>>>>>>             n->next = (struct hlist_nulls_node *)NULLS_MARKER(NULL);
->>>>>>>>      }
->>>>>>>>
->>>>>>>> +/**
->>>>>>>> + * hlist_nulls_replace_rcu - replace an old entry by a new one
->>>>>>>> + * @old: the element to be replaced
->>>>>>>> + * @new: the new element to insert
->>>>>>>> + *
->>>>>>>> + * Description:
->>>>>>>> + * Replace the old entry with the new one in a RCU-protected hlist_nulls, while
->>>>>>>> + * permitting racing traversals.
->>>>>>>> + *
->>>>>>>> + * The caller must take whatever precautions are necessary (such as holding
->>>>>>>> + * appropriate locks) to avoid racing with another list-mutation primitive, such
->>>>>>>> + * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), running on this same
->>>>>>>> + * list.  However, it is perfectly legal to run concurrently with the _rcu
->>>>>>>> + * list-traversal primitives, such as hlist_nulls_for_each_entry_rcu().
->>>>>>>> + */
->>>>>>>> +static inline void hlist_nulls_replace_rcu(struct hlist_nulls_node *old,
->>>>>>>> +                                          struct hlist_nulls_node *new)
->>>>>>>> +{
->>>>>>>> +       struct hlist_nulls_node *next = old->next;
->>>>>>>> +
->>>>>>>> +       WRITE_ONCE(new->next, next);
->>>>>>>> +       WRITE_ONCE(new->pprev, old->pprev);
->>>>>>> I do not think these two WRITE_ONCE() are needed.
->>>>>>>
->>>>>>> At this point new is not yet visible.
->>>>>>>
->>>>>>> The following  rcu_assign_pointer() is enough to make sure prior
->>>>>>> writes are committed to memory.
->>>>>> Dear Eric,
->>>>>>
->>>>>> I’m quoting your more detailed explanation from the other patch [0], thank
->>>>>> you for that!
->>>>>>
->>>>>> However, regarding new->next, if the new object is allocated with
->>>>>> SLAB_TYPESAFE_BY_RCU, would we still encounter the same issue as in commit
->>>>>> efd04f8a8b45 (“rcu: Use WRITE_ONCE() for assignments to ->next for
->>>>>> rculist_nulls”)?
->>>>>>
->>>>>> Also, for the WRITE_ONCE() assignments to ->pprev introduced in commit
->>>>>> 860c8802ace1 (“rcu: Use WRITE_ONCE() for assignments to ->pprev for
->>>>>> hlist_nulls”) within hlist_nulls_add_head_rcu(), is that also unnecessary?
->>>>> I forgot sk_unhashed()/sk_hashed() could be called from lockless contexts.
->>>>>
->>>>> It is a bit weird to annotate the writes, but not the lockless reads,
->>>>> even if apparently KCSAN
->>>>> is okay with that.
->>>>>
->>>> Dear Eric,
->>>>
->>>> I’m sorry—I still haven’t fully grasped the scenario you mentioned where
->>>> sk_unhashed()/sk_hashed() can be called from lock‑less contexts. It seems
->>>> similar to the race described in commit 860c8802ace1 (“rcu: Use
->>>> WRITE_ONCE() for assignments to ->pprev for hlist_nulls”), e.g.: [0].
->>>>
->>> inet_unhash() does a lockless sk_unhash(sk) call, while no lock is
->>> held in some cases (look at tcp_done())
->>>
->>> void inet_unhash(struct sock *sk)
->>> {
->>> struct inet_hashinfo *hashinfo = tcp_get_hashinfo(sk);
->>>
->>> if (sk_unhashed(sk))    // Here no lock is held
->>>       return;
->>>
->>> Relevant lock (depending on (sk->sk_state == TCP_LISTEN)) is acquired
->>> a few lines later.
->>>
->>> Then
->>>
->>> __sk_nulls_del_node_init_rcu() is called safely, while the bucket lock is held.
->>>
->> Dear Eric,
->>
->> Thanks for the quick response!
->>
->> In the call path:
->>           tcp_retransmit_timer()
->>                   tcp_write_err()
->>                           tcp_done()
->>
->> tcp_retransmit_timer() already calls lockdep_sock_is_held(sk) to check the
->> socket‑lock state.
->>
->> void tcp_retransmit_timer(struct sock *sk)
->> {
->>           struct tcp_sock *tp = tcp_sk(sk);
->>           struct net *net = sock_net(sk);
->>           struct inet_connection_sock *icsk = inet_csk(sk);
->>           struct request_sock *req;
->>           struct sk_buff *skb;
->>
->>           req = rcu_dereference_protected(tp->fastopen_rsk,
->>                                    lockdep_sock_is_held(sk)); // Check here
->>
->> Does that mean we’re already protected by lock_sock(sk) or
->> bh_lock_sock(sk)?
-> But the socket lock is not protecting ehash buckets. These are other locks.
->
-> Also, inet_unhash() can be called from other paths, without a socket
-> lock being held.
+Add it to the output of hsr_fill_info(), when the interface
+is using the HSR protocol. Let's not expose it when using
+the PRP protocol, since it only has one version and it's
+not possible to set it from userspace.
 
-Dear Eric,
+This info could then be used by e.g. ip(8), like so:
+$ ip -d link show hsr0
+12: hsr0: <BROADCAST,MULTICAST> mtu ...
+    ...
+    hsr slave1 veth0 slave2 veth1 ... proto 0 version 1
+---
+v3: Changed after discussion so that IFLA_HSR_VERSION is filled
+    only when the protocol is HSR (and not PRP, since setting
+    the version is prohibited if the protocol is PRP).
 
-I understand the distinction now, but looking at the call stack in [0],
-both CPUs reach inet_unhash() via the tcp_retransmit_timer() path, so only
-one of them should pass the check, right?
+v2: https://lore.kernel.org/netdev/20250922093743.1347351-3-jvaclav@redhat.com/
 
-I’m still not clear how this race condition arises.
+v1: https://lore.kernel.org/netdev/20250918125337.111641-2-jvaclav@redhat.com/
 
-After encountering the issue, we used WRITE_ONCE() to assign n->pprev in
-hlist_nulls_add_head_rcu().
+ net/hsr/hsr_netlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thank you very much for taking the time to discuss this with me!
-
-Thanks!
-
-[0]:
-------------------------------------------------------------------------
-
-BUG: KCSAN: data-race in inet_unhash / inet_unhash
-
-write to 0xffff8880a69a0170 of 8 bytes by interrupt on cpu 1:
-  __hlist_nulls_del include/linux/list_nulls.h:88 [inline]
-  hlist_nulls_del_init_rcu include/linux/rculist_nulls.h:36 [inline]
-  __sk_nulls_del_node_init_rcu include/net/sock.h:676 [inline]
-  inet_unhash+0x38f/0x4a0 net/ipv4/inet_hashtables.c:612
-  tcp_set_state+0xfa/0x3e0 net/ipv4/tcp.c:2249
-  tcp_done+0x93/0x1e0 net/ipv4/tcp.c:3854
-  tcp_write_err+0x7e/0xc0 net/ipv4/tcp_timer.c:56
-  tcp_retransmit_timer+0x9b8/0x16d0 net/ipv4/tcp_timer.c:479	<===
-  tcp_write_timer_handler+0x42d/0x510 net/ipv4/tcp_timer.c:599
-  tcp_write_timer+0xd1/0xf0 net/ipv4/tcp_timer.c:619
-  call_timer_fn+0x5f/0x2f0 kernel/time/timer.c:1404
-  expire_timers kernel/time/timer.c:1449 [inline]
-  __run_timers kernel/time/timer.c:1773 [inline]
-  __run_timers kernel/time/timer.c:1740 [inline]
-  run_timer_softirq+0xc0c/0xcd0 kernel/time/timer.c:1786
-  __do_softirq+0x115/0x33f kernel/softirq.c:292
-  invoke_softirq kernel/softirq.c:373 [inline]
-  irq_exit+0xbb/0xe0 kernel/softirq.c:413
-  exiting_irq arch/x86/include/asm/apic.h:536 [inline]
-  smp_apic_timer_interrupt+0xe6/0x280 arch/x86/kernel/apic/apic.c:1137
-  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:830
-  native_safe_halt+0xe/0x10 arch/x86/kernel/paravirt.c:71
-  arch_cpu_idle+0x1f/0x30 arch/x86/kernel/process.c:571
-  default_idle_call+0x1e/0x40 kernel/sched/idle.c:94
-  cpuidle_idle_call kernel/sched/idle.c:154 [inline]
-  do_idle+0x1af/0x280 kernel/sched/idle.c:263
-  cpu_startup_entry+0x1b/0x20 kernel/sched/idle.c:355
-  start_secondary+0x208/0x260 arch/x86/kernel/smpboot.c:264
-  secondary_startup_64+0xa4/0xb0 arch/x86/kernel/head_64.S:241
-
-read to 0xffff8880a69a0170 of 8 bytes by interrupt on cpu 0:
-  sk_unhashed include/net/sock.h:607 [inline]
-  inet_unhash+0x3d/0x4a0 net/ipv4/inet_hashtables.c:592
-  tcp_set_state+0xfa/0x3e0 net/ipv4/tcp.c:2249
-  tcp_done+0x93/0x1e0 net/ipv4/tcp.c:3854
-  tcp_write_err+0x7e/0xc0 net/ipv4/tcp_timer.c:56
-  tcp_retransmit_timer+0x9b8/0x16d0 net/ipv4/tcp_timer.c:479	<===
-  tcp_write_timer_handler+0x42d/0x510 net/ipv4/tcp_timer.c:599
-  tcp_write_timer+0xd1/0xf0 net/ipv4/tcp_timer.c:619
-  call_timer_fn+0x5f/0x2f0 kernel/time/timer.c:1404
-  expire_timers kernel/time/timer.c:1449 [inline]
-  __run_timers kernel/time/timer.c:1773 [inline]
-  __run_timers kernel/time/timer.c:1740 [inline]
-  run_timer_softirq+0xc0c/0xcd0 kernel/time/timer.c:1786
-  __do_softirq+0x115/0x33f kernel/softirq.c:292
-  invoke_softirq kernel/softirq.c:373 [inline]
-  irq_exit+0xbb/0xe0 kernel/softirq.c:413
-  exiting_irq arch/x86/include/asm/apic.h:536 [inline]
-  smp_apic_timer_interrupt+0xe6/0x280 arch/x86/kernel/apic/apic.c:1137
-  apic_timer_interrupt+0xf/0x20 arch/x86/entry/entry_64.S:830
-  native_safe_halt+0xe/0x10 arch/x86/kernel/paravirt.c:71
-  arch_cpu_idle+0x1f/0x30 arch/x86/kernel/process.c:571
-  default_idle_call+0x1e/0x40 kernel/sched/idle.c:94
-  cpuidle_idle_call kernel/sched/idle.c:154 [inline]
-  do_idle+0x1af/0x280 kernel/sched/idle.c:263
-  cpu_startup_entry+0x1b/0x20 kernel/sched/idle.c:355
-  rest_init+0xec/0xf6 init/main.c:452
-  arch_call_rest_init+0x17/0x37
-  start_kernel+0x838/0x85e init/main.c:786
-  x86_64_start_reservations+0x29/0x2b arch/x86/kernel/head64.c:490
-  x86_64_start_kernel+0x72/0x76 arch/x86/kernel/head64.c:471
-  secondary_startup_64+0xa4/0xb0 arch/x86/kernel/head_64.S:241
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.4.0-rc6+ #0
-Hardware name: Google Google Compute Engine/Google Compute Engine,
-BIOS Google 01/01/2011
-
-------------------------------------------------------------------------
+diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
+index b12047024..4461adf69 100644
+--- a/net/hsr/hsr_netlink.c
++++ b/net/hsr/hsr_netlink.c
+@@ -166,6 +166,8 @@ static int hsr_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 		goto nla_put_failure;
+ 	if (hsr->prot_version == PRP_V1)
+ 		proto = HSR_PROTOCOL_PRP;
++	else if (nla_put_u8(skb, IFLA_HSR_VERSION, hsr->prot_version))
++		goto nla_put_failure;
+ 	if (nla_put_u8(skb, IFLA_HSR_PROTOCOL, proto))
+ 		goto nla_put_failure;
+ 
+-- 
+2.51.0
 
