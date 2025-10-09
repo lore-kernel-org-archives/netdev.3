@@ -1,103 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C251F7569;
-	Thu,  9 Oct 2025 08:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3808626B97E;
+	Thu,  9 Oct 2025 08:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759998021; cv=none; b=B+V5B83Q8yonwBha4T4HDwxtSNBEKn8f1cv/sWyHIdo5Ot3y9mDcBBb9dGnFVdnvxRC81nm0bR9kt5ZHg5yccQwfBJR4oFj1PSFlVZ8Vjf8Fp2vfmxd27SNKpiTPKw2VhRYKr4z3rgv207O7xORuomgtTbcetpzZQmp1yQHDQ7A=
+	t=1759998038; cv=none; b=cWmqDwSIO66TD1ZBMCMVgwKNRiWvloggY2coS4at9fXePtT8MOw51LxiJ3XQhX92RBO2kvrWeULSy1z11gjjqEX91CtHVp9hyl4m1xDT1NTmCwNYMEusO/TBwx94MyoKt/W2QGQylRwQ9Se7lj6O6UvccDXgDB4BWi7iECcMy7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759998021; c=relaxed/simple;
-	bh=+LilCkN8Rg/+FE6al4QbLxMtRzCZS/9knQIipOo+qGw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sTOQuq+TUNLYOYGeHuWLDn6AQ3s+tndPtcwjFx2OohS8HFxlBwTm1AW88SkFBNbmtZzDsfdhoUhzmpRfc56JY4uY73NHCJAG3gW/8scQBx82IDzqBzvDRX/7JNuM8opgcQPkbYJWuMs63GnrHil4SJLvHIFLPEabq2NyL782NUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZ32/4sI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZ32/4sI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411F2C4CEE7;
-	Thu,  9 Oct 2025 08:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759998021;
-	bh=+LilCkN8Rg/+FE6al4QbLxMtRzCZS/9knQIipOo+qGw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EZ32/4sInmVutnElkHLlbY7Mm9CMbp5mExAuh3Xanv/ivS+/fEZm9Gp99NggEyye4
-	 V/f3vgpOFD95GBsdnk/8qD5WQE2r5NzgY0r4W1JPl9u2SLiDFI4rbLyjqmeCmbnWV/
-	 +Pr1fW7VBgMPCfBe0voWVXPd9uUBTbJWWKnBv648YQmrjfrZAjcQ6gS7Qif0FTX5Aq
-	 s/QhuIT00HaXqS92Z9YMlprP18P1Okkm27hh3SZ2ZwJUWPBH5p+YLMUKUve/GrfUMP
-	 HEbXvUoQlZEi5EVwzyLmbm5tjRLmWgPulb0j8YgkczBlM8qanuqSmTPYij33bcjlCc
-	 NzQvNSWp74y0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADF693A41039;
-	Thu,  9 Oct 2025 08:20:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1759998038; c=relaxed/simple;
+	bh=r4j7KL3ZDY2ItBlX7tAcF4DYZ7j4P2ykR08zNx+Sdac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pUAvLRyzDeAVWYHKe7DJyGMf6wyYuSYTyZSEMDvDgsCP1+IwyuQ9+Ssk/26PD+pRfNG8XC8eUSzEFd1W0/YGDQEecLLr6zS8P8rnaictPJvLiO1Z56HTtRRundgDFDYU9IMVfjP+mDDcMRos/Py0Xz21XRAFFzIZ+Z+zWmqiIAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cj2Td0Mj6z9sSL;
+	Thu,  9 Oct 2025 10:04:37 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id qQ36Dhni13kk; Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj2Tc5kJ8z9sSC;
+	Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A8FDF8B770;
+	Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id CnXkw3FAfnqR; Thu,  9 Oct 2025 10:04:36 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id AE04F8B76D;
+	Thu,  9 Oct 2025 10:04:34 +0200 (CEST)
+Message-ID: <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
+Date: Thu, 9 Oct 2025 10:04:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
+ folio sizes when registering hstate
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ iommu@lists.linux.dev, io-uring@vger.kernel.org,
+ Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ kasan-dev@googlegroups.com, kvm@vger.kernel.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
+ wireguard@lists.zx2c4.com, x86@kernel.org,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20250901150359.867252-1-david@redhat.com>
+ <20250901150359.867252-9-david@redhat.com>
+ <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
+ <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/4] netfilter: nft_objref: validate objref and
- objrefmap
- expressions
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175999800951.3823315.17284395638131592357.git-patchwork-notify@kernel.org>
-Date: Thu, 09 Oct 2025 08:20:09 +0000
-References: <20251008125942.25056-2-fw@strlen.de>
-In-Reply-To: <20251008125942.25056-2-fw@strlen.de>
-To: Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, netfilter-devel@vger.kernel.org,
- pablo@netfilter.org
 
-Hello:
 
-This series was applied to netdev/net.git (main)
-by Florian Westphal <fw@strlen.de>:
 
-On Wed,  8 Oct 2025 14:59:39 +0200 you wrote:
-> From: Fernando Fernandez Mancera <fmancera@suse.de>
+Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
+> On 09.10.25 09:14, Christophe Leroy wrote:
+>> Hi David,
+>>
+>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 1e777cc51ad04..d3542e92a712e 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
+>>>        BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+>>>                __NR_HPAGEFLAGS);
+>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>>>        if (!hugepages_supported()) {
+>>>            if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int order)
+>>>        }
+>>>        BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
+>>>        BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
+>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
+>>>        h = &hstates[hugetlb_max_hstate++];
+>>>        __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+>>>        h->order = order;
 > 
-> Referencing a synproxy stateful object from OUTPUT hook causes kernel
-> crash due to infinite recursive calls:
+> We end up registering hugetlb folios that are bigger than 
+> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that 
+> (and if we have to support that).
 > 
-> BUG: TASK stack guard page was hit at 000000008bda5b8c (stack is 000000003ab1c4a5..00000000494d8b12)
-> [...]
-> Call Trace:
->  __find_rr_leaf+0x99/0x230
->  fib6_table_lookup+0x13b/0x2d0
->  ip6_pol_route+0xa4/0x400
->  fib6_rule_lookup+0x156/0x240
->  ip6_route_output_flags+0xc6/0x150
->  __nf_ip6_route+0x23/0x50
->  synproxy_send_tcp_ipv6+0x106/0x200
->  synproxy_send_client_synack_ipv6+0x1aa/0x1f0
->  nft_synproxy_do_eval+0x263/0x310
->  nft_do_chain+0x5a8/0x5f0 [nf_tables
->  nft_do_chain_inet+0x98/0x110
->  nf_hook_slow+0x43/0xc0
->  __ip6_local_out+0xf0/0x170
->  ip6_local_out+0x17/0x70
->  synproxy_send_tcp_ipv6+0x1a2/0x200
->  synproxy_send_client_synack_ipv6+0x1aa/0x1f0
-> [...]
-> 
-> [...]
 
-Here is the summary with links:
-  - [net,1/4] netfilter: nft_objref: validate objref and objrefmap expressions
-    https://git.kernel.org/netdev/net/c/f359b809d54c
-  - [net,2/4] bridge: br_vlan_fill_forward_path_pvid: use br_vlan_group_rcu()
-    https://git.kernel.org/netdev/net/c/bbf0c98b3ad9
-  - [net,3/4] selftests: netfilter: nft_fib.sh: fix spurious test failures
-    https://git.kernel.org/netdev/net/c/a126ab6b26f1
-  - [net,4/4] selftests: netfilter: query conntrack state to check for port clash resolution
-    https://git.kernel.org/netdev/net/c/e84945bdc619
+MAX_FOLIO_ORDER is defined as:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+#ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+#define MAX_FOLIO_ORDER		PUD_ORDER
+#else
+#define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
+#endif
+
+MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via 
+/sys/kernel/mm/hugepages/ but bigger pages can be created at boottime 
+with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
+
+   hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
+
+Gives:
+
+HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
+HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
+HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
+HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
+HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
 
 
+Christophe
