@@ -1,162 +1,112 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAAB285CBD;
-	Thu,  9 Oct 2025 09:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8934BA49;
+	Thu,  9 Oct 2025 09:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760003447; cv=none; b=jmYMuSQtUTHTiC5DjXF8xDiedKAKNXC/YmoV/+wkFGG94UGWV/xT06mLyV1pjbW3svLSCgiU4vf4yF8Xyn0TFcfzxNGeDnzWAu/hyzX+izokIL+hKjVJnkFdm8erk62vJTmdiyjxF8E7wEFOwJto2aG6GeN13aPL982WsFDS2sc=
+	t=1760003676; cv=none; b=cP847d0EtYVIMai4jqxb6VQwHs7Dmf9m843oxGjS6pmlDZa8IQrqMnUX2kqWL0wRynPOPJqfrwtr/E46WfoJtVqP3/EDAsDgquNdVLQsK5y18MheGjxNfBrh/FHK6ggqnx1GjlkrA+tEWA8yLR0GgGohKsqD+/VFlTyE5XrsrRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760003447; c=relaxed/simple;
-	bh=ZXgbwBHA9qFuE8PSbkjw8vBx6WQRoHNm2LVPscYqR6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kwwn/zPxhggRvVrza/JU+xd0DOTrC4YoDvTpoPZQ6lDhtenl1nwYpFIyG8SifG6yfrQigu/QW9a4PywwaFcvbH8saK2gFwQTwjj2wICJ2Xj6KcL0KCNK02FnLRyY7k856FaAN9cWnWNnl0YIad6LdS5jy6yFUNGiKMgAEwxWfyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cj4530nVNz9sSY;
-	Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 1xW49BLVjvgf; Thu,  9 Oct 2025 11:16:55 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cj4526L27z9sSX;
-	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC2658B773;
-	Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ecZHQXz6ERX1; Thu,  9 Oct 2025 11:16:54 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BE4258B770;
-	Thu,  9 Oct 2025 11:16:52 +0200 (CEST)
-Message-ID: <03671aa8-4276-4707-9c75-83c96968cbb2@csgroup.eu>
-Date: Thu, 9 Oct 2025 11:16:52 +0200
+	s=arc-20240116; t=1760003676; c=relaxed/simple;
+	bh=1r8ZrXO6FZCz8lgLSeUUy6k+MSy8tL1yra+LYnXAQEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nNfqdAkbgaY7zARL/Y7Fc7x5EJ5sF4fzHxhFBuLRWKBiyupjgxofCSand+Y7+8ruGaSuL5NSTqXeMu1SOgArOylxmCJnTV1BVpo56KE+t6MxMTuN8h+EOxFL3f9p0vqdtUUauDpOV63ZEF3XXPheRMkq2Wt48F1qWp3YQLEL+Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2JtDQ8l; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2JtDQ8l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B63C4CEE7;
+	Thu,  9 Oct 2025 09:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1760003675;
+	bh=1r8ZrXO6FZCz8lgLSeUUy6k+MSy8tL1yra+LYnXAQEU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D2JtDQ8lS0g6y2LyZvcXdP+aSqSDrYfEmJD2E+tbAkwWkdznNjO66fWTfJqNGaXDy
+	 Nad4VTMiSn9uhvC14ZqV0cM/YrJCipNFjKmTG+H80/BXeKAPAWfrs5L0XMWBnOkHpy
+	 U+XZZSNDcQtPgiwyWlkdimPQKRy/hn/YFmln9Tg4=
+Date: Thu, 9 Oct 2025 11:54:32 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: yicongsrfy@163.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	oneukum@suse.com, kuba@kernel.org, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, yicong@kylinos.cn
+Subject: Re: [PATCH] net: usb: r8152: add error handling in
+ rtl8152_driver_init
+Message-ID: <2025100920-savanna-relatable-49ca@gregkh>
+References: <20251009075833.103523-1-yicongsrfy@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: (bisected) [PATCH v2 08/37] mm/hugetlb: check for unreasonable
- folio sizes when registering hstate
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Alexander Potapenko <glider@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>,
- Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- iommu@lists.linux.dev, io-uring@vger.kernel.org,
- Jason Gunthorpe <jgg@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- kasan-dev@googlegroups.com, kvm@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-arm-kernel@axis.com,
- linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
- linux-ide@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mmc@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, Marco Elver <elver@google.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- netdev@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
- Peter Xu <peterx@redhat.com>, Robin Murphy <robin.murphy@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- virtualization@lists.linux.dev, Vlastimil Babka <vbabka@suse.cz>,
- wireguard@lists.zx2c4.com, x86@kernel.org,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20250901150359.867252-1-david@redhat.com>
- <20250901150359.867252-9-david@redhat.com>
- <3e043453-3f27-48ad-b987-cc39f523060a@csgroup.eu>
- <d3fc12d4-0b59-4b1f-bb5c-13189a01e13d@redhat.com>
- <faf62f20-8844-42a0-a7a7-846d8ead0622@csgroup.eu>
- <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <9361c75a-ab37-4d7f-8680-9833430d93d4@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251009075833.103523-1-yicongsrfy@163.com>
 
-
-
-Le 09/10/2025 à 10:14, David Hildenbrand a écrit :
-> On 09.10.25 10:04, Christophe Leroy wrote:
->>
->>
->> Le 09/10/2025 à 09:22, David Hildenbrand a écrit :
->>> On 09.10.25 09:14, Christophe Leroy wrote:
->>>> Hi David,
->>>>
->>>> Le 01/09/2025 à 17:03, David Hildenbrand a écrit :
->>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>> index 1e777cc51ad04..d3542e92a712e 100644
->>>>> --- a/mm/hugetlb.c
->>>>> +++ b/mm/hugetlb.c
->>>>> @@ -4657,6 +4657,7 @@ static int __init hugetlb_init(void)
->>>>>         BUILD_BUG_ON(sizeof_field(struct page, private) * 
->>>>> BITS_PER_BYTE <
->>>>>                 __NR_HPAGEFLAGS);
->>>>> +    BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->>>>>         if (!hugepages_supported()) {
->>>>>             if (hugetlb_max_hstate || default_hstate_max_huge_pages)
->>>>> @@ -4740,6 +4741,7 @@ void __init hugetlb_add_hstate(unsigned int 
->>>>> order)
->>>>>         }
->>>>>         BUG_ON(hugetlb_max_hstate >= HUGE_MAX_HSTATE);
->>>>>         BUG_ON(order < order_base_2(__NR_USED_SUBPAGE));
->>>>> +    WARN_ON(order > MAX_FOLIO_ORDER);
->>>>>         h = &hstates[hugetlb_max_hstate++];
->>>>>         __mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
->>>>>         h->order = order;
->>>
->>> We end up registering hugetlb folios that are bigger than
->>> MAX_FOLIO_ORDER. So we have to figure out how a config can trigger that
->>> (and if we have to support that).
->>>
->>
->> MAX_FOLIO_ORDER is defined as:
->>
->> #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
->> #define MAX_FOLIO_ORDER        PUD_ORDER
->> #else
->> #define MAX_FOLIO_ORDER        MAX_PAGE_ORDER
->> #endif
->>
->> MAX_PAGE_ORDER is the limit for dynamic creation of hugepages via
->> /sys/kernel/mm/hugepages/ but bigger pages can be created at boottime
->> with kernel boot parameters without CONFIG_ARCH_HAS_GIGANTIC_PAGE:
->>
->>     hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1
->>
->> Gives:
->>
->> HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
->> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
->> HugeTLB: registered 64.0 MiB page size, pre-allocated 1 pages
->> HugeTLB: 0 KiB vmemmap can be freed for a 64.0 MiB page
->> HugeTLB: registered 256 MiB page size, pre-allocated 1 pages
->> HugeTLB: 0 KiB vmemmap can be freed for a 256 MiB page
->> HugeTLB: registered 4.00 MiB page size, pre-allocated 0 pages
->> HugeTLB: 0 KiB vmemmap can be freed for a 4.00 MiB page
->> HugeTLB: registered 16.0 MiB page size, pre-allocated 0 pages
->> HugeTLB: 0 KiB vmemmap can be freed for a 16.0 MiB page
+On Thu, Oct 09, 2025 at 03:58:33PM +0800, yicongsrfy@163.com wrote:
+> From: Yi Cong <yicong@kylinos.cn>
 > 
-> I think it's a violation of CONFIG_ARCH_HAS_GIGANTIC_PAGE. The existing 
-> folio_dump() code would not handle it correctly as well.
-
-I'm trying to dig into history and when looking at commit 4eb0716e868e 
-("hugetlb: allow to free gigantic pages regardless of the 
-configuration") I understand that CONFIG_ARCH_HAS_GIGANTIC_PAGE is 
-needed to be able to allocate gigantic pages at runtime. It is not 
-needed to reserve gigantic pages at boottime.
-
-What am I missing ?
-
+> rtl8152_driver_init missing error handling.
+> If cannot register rtl8152_driver, rtl8152_cfgselector_driver
+> should be deregistered.
 > 
-> See how snapshot_page() uses MAX_FOLIO_NR_PAGES.
+> Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+> Signed-off-by: Yi Cong <yicong@kylinos.cn>
+> ---
+>  drivers/net/usb/r8152.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+> index 44cba7acfe7d..a64bcb744fad 100644
+> --- a/drivers/net/usb/r8152.c
+> +++ b/drivers/net/usb/r8152.c
+> @@ -10122,7 +10122,14 @@ static int __init rtl8152_driver_init(void)
+>  	ret = usb_register_device_driver(&rtl8152_cfgselector_driver, THIS_MODULE);
+>  	if (ret)
+>  		return ret;
+> -	return usb_register(&rtl8152_driver);
+> +
+> +	ret = usb_register(&rtl8152_driver);
+> +	if (ret) {
+> +		usb_deregister_device_driver(&rtl8152_cfgselector_driver);
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static void __exit rtl8152_driver_exit(void)
+> -- 
+> 2.25.1
+> 
 > 
 
+Hi,
+
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
+
+You are receiving this message because of the following common error(s)
+as indicated below:
+
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
+
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
+
+thanks,
+
+greg k-h's patch email bot
