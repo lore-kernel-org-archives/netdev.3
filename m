@@ -1,52 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28D322D781;
-	Thu,  9 Oct 2025 15:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F622D781;
+	Thu,  9 Oct 2025 15:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025312; cv=none; b=Qtgsrn++Y1RD6LChNEoZ1sV6gEHqC7jSI3BlJIttixMBQCfSG9ggxNg3KLgzmZqnNHGDY1cOecxuC7r9ahxufQHsSM08kkGBQ17H+vmhW84tiFCt2UdRrPfHSGJTkbN/Bu5WecqTLJ3hs5adAf/imBAH6genap45GYVZTjjamdg=
+	t=1760025322; cv=none; b=seBv7tP3HDu0tiijrZ5Yy2p9Y1H4J06rPt80zBFwo6I9PV4p9OeNs94B4jvE4oSuW+zbKZjiFPnZPjeMDjBODRN4TsCivfd0WLKV4cGXBwAOAwDiJ+zWug4y2qQe8CfL5nF/l1V8sJeO4ruA6t3ZfJZFFfr076Y23a28gYG7SW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025312; c=relaxed/simple;
-	bh=2OQ78RzTvUpT3PPmqGoxYSCqgJDwbNTUAvYItTqop8U=;
+	s=arc-20240116; t=1760025322; c=relaxed/simple;
+	bh=2Se7zj33Lgo/YtUKTOpJ2DSK5Pf7p9rJmkBLoSnWiHc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WOpjsApt6WxV9EjTAubNmnRnWoIlxtjSFCgx/6Ok/3Fz5KfbRez3gUYOX25iQ4xdXfunK+FsbjM1ZuRWR9OSqAvl3yfTFIVf5jpKfyMw11CMQLz1IrTiKI4Vf3G117MnX1SLXhwTN+WJ3QXl1xSFS0acB8lCFQL+cxXhSaPGI/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UQW5iOOY; arc=none smtp.client-ip=68.232.153.233
+	 MIME-Version:Content-Type; b=thEQbivUUcptO+Y5rlK7GtZUQ6XMymQGXMutocWT8n8RkcRHU5Sj/SVe7Z3x9JEbh8BsMqEBHC1a/W5U0cabSHHeUXpyLapLGdR9Dgi/am7zisp62mosGDK4RJdn34xrRRzRWpqGJ0472JExJNgqGNEyUOeqECorfkYOtBq8omA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Lat76oqH; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UQW5iOOY"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Lat76oqH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1760025311; x=1791561311;
+  t=1760025321; x=1791561321;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2OQ78RzTvUpT3PPmqGoxYSCqgJDwbNTUAvYItTqop8U=;
-  b=UQW5iOOYHEYOL6Vjn5y3xcP93gftqZ66VS1AlAlLBX+aYrBC2wMazsMz
-   9bt0frNfdW0EDyVTSlEJx4yaWt0ybEsMJqn6rpl1HSWL6R05V5CMIzhyG
-   Zo9EeBk145O6REkk0sKPB2doV7EDBY4CqblY2m92/bAG/FHtAfIYYf/cl
-   RSGHY3+ultXilOFKI6RTWDzGl8BVjinBPY5gZCi83a9Xo0GKELdxV7Jcs
-   JU6CRtBR5hpu3sCr2YifOpKlQKn4m4oUkjJA6H1PxHih99ELDH8KqNQMV
-   DdxVlsF/zkmN4SirEd9gn0M18SUQs9TXeUd6Vq3qtPBm7zYvsQhvYcpdD
+  bh=2Se7zj33Lgo/YtUKTOpJ2DSK5Pf7p9rJmkBLoSnWiHc=;
+  b=Lat76oqH5XxuMIrYEAmXB3RHC7CU0I5CwtyNSheFvdWfnpklX7ci+oDd
+   U9sbOpumIlWyxoakXfiIWTQctJoJ0RZPq2l25mKbYG8E1OhWx0zN9GkBy
+   RXdh8f68eEtMrLmCVubqEix/yDMAf+BdbQ36YHz5h5SXfAKci0Ua6+pku
+   T7symft7ZG+hm1LBrCyoY0Be2NmZPi3/JtU8JkXUFHGgLJW4ejNS3PNAU
+   kJt46GZZWuHP8VvBucF5utmWlbVKHDYR5IBBdYSQgF6eB9XADRVA+cE7g
+   3Jhj+E2btVxh5D32EOa+TdsfucQNV5DmrpsUjUTT10gXE3huWEl6pRuPp
    A==;
-X-CSE-ConnectionGUID: BprCE2jSRKSS2v2IfjkHsw==
-X-CSE-MsgGUID: jQG7AlzZQJ+bbtCotqDlLQ==
+X-CSE-ConnectionGUID: zFf2VAeJSDmWhPAONYY24w==
+X-CSE-MsgGUID: 7xgqSkgPTC+yiXsQ9TcNyg==
 X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
-   d="scan'208";a="278928750"
+   d="scan'208";a="214905374"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2025 08:55:10 -0700
-Received: from chn-vm-ex3.mchp-main.com (10.10.87.32) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2025 08:55:19 -0700
+Received: from chn-vm-ex1.mchp-main.com (10.10.87.30) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 9 Oct 2025 08:54:48 -0700
+ 15.1.2507.58; Thu, 9 Oct 2025 08:55:14 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1748.10; Thu, 9 Oct 2025 08:54:48 -0700
+ 15.2.2562.20; Thu, 9 Oct 2025 08:55:13 -0700
 Received: from che-lt-i64410lx.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 9 Oct 2025 08:54:39 -0700
+ 15.1.2507.58 via Frontend Transport; Thu, 9 Oct 2025 08:55:05 -0700
 From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>
 CC: Eugen Hristev <eugen.hristev@linaro.org>, Chas Williams
@@ -60,11 +60,10 @@ CC: Eugen Hristev <eugen.hristev@linaro.org>, Chas Williams
 	<dan.scally+renesas@ideasonboard.com>, Tomi Valkeinen
 	<tomi.valkeinen@ideasonboard.com>, <linux-kernel@vger.kernel.org>,
 	<linux-media@vger.kernel.org>, <linux-atm-general@lists.sourceforge.net>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
-Subject: [PATCH 11/18] media: microchip-isc: expose hue and saturation as v4l2 controls
-Date: Thu, 9 Oct 2025 21:22:44 +0530
-Message-ID: <20251009155251.102472-12-balamanikandan.gunasundar@microchip.com>
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>
+Subject: [PATCH 14/18] media: microchip-isc: fix histogram state initialization order
+Date: Thu, 9 Oct 2025 21:22:47 +0530
+Message-ID: <20251009155251.102472-15-balamanikandan.gunasundar@microchip.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
 References: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
@@ -77,99 +76,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Expose hue and saturation as adjustable controls allowing users to modify
-it. Write the user specified values to the hardware registers. Additionally
-write the brightness and contrast values to the registers that were
-missing.
+From: Balakrishnan Sambath <balakrishnan.s@microchip.com>
 
-Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+Move hist_stat assignment before profile update to ensure histogram state
+is properly set when update_profile triggers register writes. This prevents
+race conditions during histogram initialization.
+
+Signed-off-by: Balakrishnan Sambath <balakrishnan.s@microchip.com>
 ---
- .../platform/microchip/microchip-isc-base.c     | 17 +++++++++++++++++
- .../platform/microchip/microchip-isc-regs.h     |  3 +++
- .../media/platform/microchip/microchip-isc.h    |  2 ++
- 3 files changed, 22 insertions(+)
+ drivers/media/platform/microchip/microchip-isc-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/media/platform/microchip/microchip-isc-base.c b/drivers/media/platform/microchip/microchip-isc-base.c
-index e6d7f59893ac..ce22b4789ebd 100644
+index 6651be6fcb57..e9f14de7ae32 100644
 --- a/drivers/media/platform/microchip/microchip-isc-base.c
 +++ b/drivers/media/platform/microchip/microchip-isc-base.c
-@@ -1520,6 +1520,7 @@ static int isc_s_ctrl(struct v4l2_ctrl *ctrl)
- 	struct isc_device *isc = container_of(ctrl->handler,
- 					     struct isc_device, ctrls.handler);
- 	struct isc_ctrls *ctrls = &isc->ctrls;
-+	struct regmap *regmap = isc->regmap;
+@@ -275,10 +275,10 @@ static void isc_set_histogram(struct isc_device *isc, bool enable)
+ 			     ISC_HIS_CTRL_EN);
+ 		regmap_write(regmap, ISC_INTEN, ISC_INT_HISDONE);
+ 		ctrls->hist_id = ISC_HIS_CFG_MODE_GR;
++		ctrls->hist_stat = HIST_ENABLED;
+ 		isc_update_profile(isc);
+ 		regmap_write(regmap, ISC_CTRLEN, ISC_CTRL_HISREQ);
  
- 	if (ctrl->flags & V4L2_CTRL_FLAG_INACTIVE)
- 		return 0;
-@@ -1527,9 +1528,19 @@ static int isc_s_ctrl(struct v4l2_ctrl *ctrl)
- 	switch (ctrl->id) {
- 	case V4L2_CID_BRIGHTNESS:
- 		ctrls->brightness = ctrl->val & ISC_CBC_BRIGHT_MASK;
-+		regmap_write(regmap, ISC_CBC_BRIGHT + isc->offsets.cbc, ctrls->brightness);
- 		break;
- 	case V4L2_CID_CONTRAST:
- 		ctrls->contrast = ctrl->val & ISC_CBC_CONTRAST_MASK;
-+		regmap_write(regmap, ISC_CBC_CONTRAST + isc->offsets.cbc, ctrls->contrast);
-+		break;
-+	case V4L2_CID_HUE:
-+		ctrls->hue = ctrl->val & ISC_CBCHS_HUE_MASK;
-+		regmap_write(regmap, ISC_CBCHS_HUE, ctrls->hue);
-+		break;
-+	case V4L2_CID_SATURATION:
-+		ctrls->saturation = ctrl->val & ISC_CBCHS_SAT_MASK;
-+		regmap_write(regmap, ISC_CBCHS_SAT, ctrls->saturation);
- 		break;
- 	case V4L2_CID_GAMMA:
- 		ctrls->gamma_index = ctrl->val;
-@@ -1538,6 +1549,10 @@ static int isc_s_ctrl(struct v4l2_ctrl *ctrl)
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&isc->awb_mutex);
-+	isc_update_profile(isc);
-+	mutex_unlock(&isc->awb_mutex);
-+
- 	return 0;
- }
- 
-@@ -1714,6 +1729,8 @@ static int isc_ctrl_init(struct isc_device *isc)
- 	ctrls->brightness = 0;
- 
- 	v4l2_ctrl_new_std(hdl, ops, V4L2_CID_BRIGHTNESS, -1024, 1023, 1, 0);
-+	v4l2_ctrl_new_std(hdl, ops, V4L2_CID_HUE, -180, 180, 1, 0);
-+	v4l2_ctrl_new_std(hdl, ops, V4L2_CID_SATURATION, 0, 100, 1, 16);
- 	v4l2_ctrl_new_std(hdl, ops, V4L2_CID_GAMMA, 0, isc->gamma_max, 1, 1);
- 	isc->awb_ctrl = v4l2_ctrl_new_std(hdl, &isc_awb_ops,
- 					  V4L2_CID_AUTO_WHITE_BALANCE,
-diff --git a/drivers/media/platform/microchip/microchip-isc-regs.h b/drivers/media/platform/microchip/microchip-isc-regs.h
-index e77e1d9a1db8..2593bd533cac 100644
---- a/drivers/media/platform/microchip/microchip-isc-regs.h
-+++ b/drivers/media/platform/microchip/microchip-isc-regs.h
-@@ -270,8 +270,11 @@
- 
- /* Hue Register */
- #define ISC_CBCHS_HUE	0x4e0
-+#define ISC_CBCHS_HUE_MASK	GENMASK(8, 0)
-+
- /* Saturation Register */
- #define ISC_CBCHS_SAT	0x4e4
-+#define ISC_CBCHS_SAT_MASK	GENMASK(11, 0)
- 
- /* Offset for SUB422 register specific to sama5d2 product */
- #define ISC_SAMA5D2_SUB422_OFFSET	0
-diff --git a/drivers/media/platform/microchip/microchip-isc.h b/drivers/media/platform/microchip/microchip-isc.h
-index 5245e2790268..7afba3c04dfb 100644
---- a/drivers/media/platform/microchip/microchip-isc.h
-+++ b/drivers/media/platform/microchip/microchip-isc.h
-@@ -139,6 +139,8 @@ struct isc_ctrls {
- 
- 	u32 brightness;
- 	u32 contrast;
-+	u32 hue;
-+	u32 saturation;
- 	u8 gamma_index;
- #define ISC_WB_NONE	0
- #define ISC_WB_AUTO	1
+-		ctrls->hist_stat = HIST_ENABLED;
+ 	} else {
+ 		regmap_write(regmap, ISC_INTDIS, ISC_INT_HISDONE);
+ 		regmap_write(regmap, ISC_HIS_CTRL + isc->offsets.his,
 -- 
 2.34.1
 
