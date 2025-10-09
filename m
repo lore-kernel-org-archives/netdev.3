@@ -1,142 +1,84 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFEE1E1E04
-	for <netdev@vger.kernel.org>; Thu,  9 Oct 2025 16:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2391A9F96
+	for <netdev@vger.kernel.org>; Thu,  9 Oct 2025 16:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760026689; cv=none; b=YS2rDPRxLT7rlf9UmfPcjT0srNa/DX5V9mf31smUBJdT12oAA30sa77xofOcxbDFGuO5az7I6cfKcmDvtU/fAx+TAhk/xHQSwsdzALmsS4ZbHtkYc9ovAIE9aaHqtlX2fAein6Eefz8HD8UWYNcsA25c0mmhXfLrgWcjVrbhCPY=
+	t=1760027492; cv=none; b=S6lVF+5oXHRXWiXM2dc8hEhZmdrIj6x+gaEYqxHQume0UTjPIktmHAo8qaA697Nuu9s+AsdIwnVSj5UinU7Rwme0PO0R3KPqde9C+ZC3Y1sGgSWkvLphHL3kBJsbEVdl+pAiALHKc7EdV7uf6otVTSGBU5M/TAJz6znGQklYAL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760026689; c=relaxed/simple;
-	bh=W67vTmrsYh6ioc3TPmM1/PN+zzN5kNCzEFDvZm3korY=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=q1dkfrGONOxX8ELuG/AN9zv4gn19cMapHfO9IHcpd4/dLCFeLjgDT0GP1QfalOsBWWyRiqbTy7Ed/Pz26NrbnuWIk3q0XLdB040T2hg97wOCwlH5SXnfke24WohMmmgh0fmKDkXg1DAk0T9xTe2gBMlGQMewcZwF/0zTeprrQnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org; spf=pass smtp.mailfrom=pmachata.org; dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b=RFC3ufez; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pmachata.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b="RFC3ufez"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4cjFQv4CSWz9v6w;
-	Thu,  9 Oct 2025 18:17:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmachata.org;
-	s=MBO0001; t=1760026679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DP1mtsYsSXLzCSMmFGYExwu1vKSH1khVfWyAj29Tkqk=;
-	b=RFC3ufezZ4P4SVVnzvIhzwWgLO347+8VyLL3oxc3qW2EJjeI7QgMOTBztjKFEMHI+mT6N8
-	Z78PTxJBROPvM4Aj31b+P616iAijkOsntFsSu+8bfIY0X7XrPPPcXEXJ0ZD7NAfVqVMGTm
-	GClgCC2kRDuZELJNVAssEl3tZH752XjSef6eFXJsYalEafN/SJC4LJE0JZOnmGZdjoKTj3
-	BgmGlpril+p5nsSF1KIO6pUs+F4W6Nvh7ZBBkYtD/tecP88wsPlCoSaQwJTjfqdEwIfucb
-	ubqcGc1+qd/EORrX+aYQRehjbsSL51OOwos3y8MQitY9p+R4CFw0YZkIwB3dXA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of me@pmachata.org designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=me@pmachata.org
-References: <20251008031640.25870-1-zengyijing19900106@gmail.com>
-From: Petr Machata <me@pmachata.org>
-To: Yijing Zeng <zengyijing19900106@gmail.com>
-Cc: netdev@vger.kernel.org, stephen@networkplumber.org, me@pmachata.org,
- kuba@kernel.org, yijingzeng@meta.com
-Subject: Re: [PATCH] dcb: fix tc-maxrate unit conversions
-Date: Thu, 09 Oct 2025 18:01:57 +0200
-In-reply-to: <20251008031640.25870-1-zengyijing19900106@gmail.com>
-Message-ID: <87frbscamm.fsf@nvidia.com>
+	s=arc-20240116; t=1760027492; c=relaxed/simple;
+	bh=qrYoADEnVXD0we0CMIGwA9CwQG9JnCQdKbRtnkxQ5RI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pJEEhhCKBtIvhqo/uXlXK5Rz9ohfgupUABp/ZQdgru0CMN9+xjNrgdrB4fmiDdmpgW2uJpXBeNwJpeHADRLfoWQ6D7w5ynH27Jv9inuS6Aukle1zyOWdMa+0lBO1qn8YvqB90HqMKmWfhL8MJ/ADbhx5eDMpf/Qypc8sGuLk35c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-42f8a89bb47so27992405ab.2
+        for <netdev@vger.kernel.org>; Thu, 09 Oct 2025 09:31:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760027490; x=1760632290;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cvA/J4dyztXMhogEO5JrwyKZPNKcLHZNyBJCUhQ7UMw=;
+        b=KPrLQwJk9O6dvn9ED7gCTcm25AQQmyHLcyq3qVRG0RPGOOiQu6pqQrGgR8BVdrkw2d
+         IYTZ6nR2u8Qwse9UwzsqwQVtsRD4/hdVitLt5Buds0t349jzl8fvPLcrT6k7mL/lmZqC
+         W4RBVxD6XzLrqlapx3uIhN1NNmPYPklUSpEseuKq6snIVpCZc2oIM0MoOylxIz2M0qtD
+         Lj7ngiBHFq2ZzznAsKh3DL3tGo2lIHUsZycfYPuDDl5lOBWyWVbFiKm7PlyrnKi053hQ
+         7ihHErNQEx6SvatKOUve2ODWHSC4HDv7I4PuAmjYkigChfizfeHEeUGbl4wydNBuvf3j
+         9ECQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUp/fZL+EMRVxMV0/MzF+yKqcPHugM3GkOVoAKyIwyxyPFLdrrZ4SzW2R9aDIAe6tcwOVh39xw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVDPWF+l/1ezUGqSyDuDP+Z37nOvOjhC60LnS0c+mnZkFbpb0P
+	9ZRA2JJWpDInRYexfRWGi0E2+iTkk1TPk3dRVIvnjAhn0GAA7aY0IL456ak4UabSZU62cxl2iYf
+	Yk2i9d8sgMZxieIhCXv3WdmUzD5PXwmZzHYQvpRLuNJ7b9KpJuzQcIQzBeMQ=
+X-Google-Smtp-Source: AGHT+IH+3ddjgqrEcOVhLcyur4IziVSjaf1FPkRItg24ZYiymtjP8/LF++Mm4T8LVfUSNmSyxqfMm/gjl+oHOieZ3ps/9zMniNVy
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4cjFQv4CSWz9v6w
+X-Received: by 2002:a05:6e02:18cf:b0:428:24b4:42d3 with SMTP id
+ e9e14a558f8ab-42f873e3dc8mr69617735ab.15.1760027490108; Thu, 09 Oct 2025
+ 09:31:30 -0700 (PDT)
+Date: Thu, 09 Oct 2025 09:31:30 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68e7e362.050a0220.1186a4.0000.GAE@google.com>
+Subject: [syzbot] Monthly mptcp report (Oct 2025)
+From: syzbot <syzbot+listd2daf64d46ed16abd4d5@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, martineau@kernel.org, matttbe@kernel.org, 
+	mptcp@lists.linux.dev, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
+Hello mptcp maintainers/developers,
 
-Yijing Zeng <zengyijing19900106@gmail.com> writes:
+This is a 31-day syzbot report for the mptcp subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/mptcp
 
-> From: Yijing Zeng <yijingzeng@meta.com>
->
-> The ieee_maxrate UAPI is defined as kbps, but dcb_maxrate uses Bps.
+During the period, 2 new issues were detected and 5 were fixed.
+In total, 4 issues are still open and 33 have already been fixed.
 
-Hmm, indeed, "values are 64 bits long and specified in Kbps to enable
-usage over both slow and very fast networks". Good catch.
+Some of the still happening issues:
 
-I think that if anyone actually tried to use this in the wild, the issue
-would have been discovered and reported already, so this might be
-actually safe to fix without breaking the world.
+Ref Crashes Repro Title
+<1> 9       No    WARNING in subflow_data_ready (4)
+                  https://syzkaller.appspot.com/bug?extid=0ff6b771b4f7a5bce83b
+<2> 1       No    possible deadlock in mptcp_pm_nl_add_addr_doit
+                  https://syzkaller.appspot.com/bug?extid=7fb125d1bae280dc4749
+<3> 1       No    possible deadlock in mptcp_subflow_create_socket (2)
+                  https://syzkaller.appspot.com/bug?extid=fb2c3fa2ba28aec94627
 
-Thanks for the patch. I have a number of relatively minor coding style
-points. Please correct them and send v2. You may want to pass the
-candidate patch through checkpatch:
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- # ../linux-source/scripts/checkpatch.pl --max-line-length=80 the.patch
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-> This fix patch converts Bps to kbps for parse, and convert kbps to Bps for print_rate().
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-Please wrap this line to 75 characters.
-
-> Fixes: 117939d9 ("dcb: Add a subtool for the DCB maxrate object")
-
-This should show 12 characters of the hash.
-
-> Signed-off-by: Yijing Zeng <yijingzeng@meta.com>
-> ---
->  dcb/dcb_maxrate.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
->
-> diff --git a/dcb/dcb_maxrate.c b/dcb/dcb_maxrate.c
-> index 1538c6d7..af012dba 100644
-> --- a/dcb/dcb_maxrate.c
-> +++ b/dcb/dcb_maxrate.c
-> @@ -42,13 +42,16 @@ static void dcb_maxrate_help(void)
->  
->  static int dcb_maxrate_parse_mapping_tc_maxrate(__u32 key, char *value, void *data)
->  {
-> -	__u64 rate;
-> +	__u64 rate_Bps;
-
-Lowercase this, please.
-
->  
-> -	if (get_rate64(&rate, value))
-> +	if (get_rate64(&rate_Bps, value))
->  		return -EINVAL;
->  
-> +	/* get_rate64() returns Bps. ieee_maxrate UAPI expects kbps. */
-> +	__u64 rate_kbps = (rate_Bps * 8) / 1000;
-
-Keep all the declarations at the top of the function, please.
-Make sure they are ordered longest line to shortest (RXT, reverse xmass tree).
-
-There's a small concern regarding the * 8 overflowing (likewise * 1000
-below). But it's u64, I don't feel like we need to really worry about it.
-
-> +
->  	return dcb_parse_mapping("TC", key, IEEE_8021QAZ_MAX_TCS - 1,
-> -				 "RATE", rate, -1,
-> +				 "RATE", rate_kbps, -1,
->  				 dcb_set_u64, data);
->  }
->  
-> @@ -62,8 +65,11 @@ static void dcb_maxrate_print_tc_maxrate(struct dcb *dcb, const struct ieee_maxr
->  	print_string(PRINT_FP, NULL, "tc-maxrate ", NULL);
->  
->  	for (i = 0; i < size; i++) {
-> +		/* ieee_maxrate UAPI returns kbps. print_rate() expects Bps for display */
-
-This line is too long.
-
-> +		__u64 rate_Bps  = maxrate->tc_maxrate[i] * 1000 / 8;
-
-This variable can stay here, it's start of the block, but it should be
-lowercased.
-
->  		snprintf(b, sizeof(b), "%zd:%%s ", i);
-> -		print_rate(dcb->use_iec, PRINT_ANY, NULL, b, maxrate->tc_maxrate[i]);
-> +		print_rate(dcb->use_iec, PRINT_ANY, NULL, b, rate_Bps);
->  	}
->  
->  	close_json_array(PRINT_JSON, "tc_maxrate");
+You may send multiple commands in a single email message.
