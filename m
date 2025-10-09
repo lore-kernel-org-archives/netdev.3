@@ -1,51 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B6F21CA0D;
-	Thu,  9 Oct 2025 15:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C661A2D0625;
+	Thu,  9 Oct 2025 15:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025258; cv=none; b=fK33PHXpd9VetmbnWVBf73+GXNLtgd1vKDEvej0/GDMWlUI6XWDUIBh+1DJkq9d4LGMmLjIjBlMRDEicyZoskdON/Bnc3RE5BofncUd7omZvCuaxkK8U9NwQYQSHb2rlU9BLDniQ7e/5tftHGF27SlEVIIsQfq+r8Io7yvrowWc=
+	t=1760025260; cv=none; b=tYvELHBtRdfz+IQKLqVu+rvRCwWvAKYTtEGrPLAOFmIlr6NO3JxA6LmA3IrKsS4F+cy9u+PYTNLiJLC4/4ZeghhEiKdDqk4RBRP6OEu2DnuxI5FjquQ79M8SELygTojRjtIHP8V2YAsl08PXxfCurH5dPCiYgZSAdFnlhW23p8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025258; c=relaxed/simple;
-	bh=Zz+Uj157nUwkCRjTCQp7hgcM6Q5j7SCBgxkxYDjw0r4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EFt/a/gWAYrTYryq6L/q18ezhninfxNpAnM6oxK/kENJSUg74svQgFSu07co6IbIsLUKBoI/xeXO/lUG5tFxDu8V9UYPjKS9ZpTbeGks879ii+s0jIAHJUZs6kOZ1tI6OIR/qgWVACgDIolWdF6/3shXlaCkDBtdcsKYvYJ/O/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FW3SZRJU; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1760025260; c=relaxed/simple;
+	bh=qXM0Jk9e9PDmlzrnKOt8OyL9XYsdR0MVRMfDApa5rJg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A1k5smb6gMqwAMktPTGMqsYjVmjxS/jWof8gdch63qgPthDRYTa59cRgUT+KNUQIKcsV6tLxENSj9Vua2KwnqgD6SGyvJ4VQnH4DWBQAUZR69EXvb1uDNh7i6ad3HMQkuIHyiLsRC6qQIWCQbO4iA0aA3Fvh137vNkYJIQQdwyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Uu1pPfmZ; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FW3SZRJU"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Uu1pPfmZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1760025257; x=1791561257;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Zz+Uj157nUwkCRjTCQp7hgcM6Q5j7SCBgxkxYDjw0r4=;
-  b=FW3SZRJU/MXVdB0TMdhe0Y1EQymFXT+NyrSiyKopCMA7Uj0HWVZlcbPf
-   8R1hxXiwoOcahS/a3yJmEzUMxolCPOZ0IyVgp3owlBeEGl9E8PzDC1o4l
-   Vog05tfDc4zAmWwi31gQMijQSuk/1V7gOvfD7DKNZUtf3upjsQAcwzRzT
-   yG2PE6z7MdWDfPIItHCSKin3gxBdqK9Vs/pCB1V+gP15kTTuhh0npn7bl
-   sO8JxpAWMV4jpUqS7G4eF2VIdtFW+33Mf0zqhPoIzJ4Ns3vHd95nPwR2r
-   TaM4b69DFk1X1RvWGADCMdZGktgdpTTh7AaLYygQgRmJC/wjqy2T+RKA/
-   g==;
+  t=1760025259; x=1791561259;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qXM0Jk9e9PDmlzrnKOt8OyL9XYsdR0MVRMfDApa5rJg=;
+  b=Uu1pPfmZJnikLzsIp3wwKa6/XHGkmKiy1kk0HmLxJYyxKbbj5J/t42Ai
+   a2G9BYF7sj2QgfyVctUXE8gWkLvEvlWYJMqPjF+cWnfHU8BgjyMmLqnKh
+   o6cj+1PsQf3ayY4diHt8/Wfg/VpZFu4k1hyLjFTrUBLIhXWTQcCU6LjUH
+   S+K5lBg419pFKPA9vnnxQhqN4p0Wew67eMa+3BCmAnANHob+F9uU8LLHJ
+   rXEgfSaiYlyU4VesNJURg9HT8RDx+Cgd0yBihKnaJTAp6O6GAVC8jH6ZF
+   Ukga+moEGDnAOYS45xZ6ohorP8dJ4cP4VjLx5xKYt9wpgGxjWoy5IyMuH
+   w==;
 X-CSE-ConnectionGUID: lBmy0Ek5QtOpGZTOa4YF8Q==
-X-CSE-MsgGUID: VHYNVfB/TiC0i/p9yG12qQ==
+X-CSE-MsgGUID: frcHL7zpRxCKgrAqNEreXA==
 X-IronPort-AV: E=Sophos;i="6.19,216,1754982000"; 
-   d="scan'208";a="278928714"
+   d="scan'208";a="278928715"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2025 08:54:10 -0700
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2025 08:54:11 -0700
 Received: from chn-vm-ex1.mchp-main.com (10.10.87.30) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 9 Oct 2025 08:53:19 -0700
+ 15.1.2507.58; Thu, 9 Oct 2025 08:53:35 -0700
 Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
  chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Thu, 9 Oct 2025 08:53:19 -0700
+ 15.2.2562.20; Thu, 9 Oct 2025 08:53:35 -0700
 Received: from che-lt-i64410lx.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 9 Oct 2025 08:53:11 -0700
+ 15.1.2507.58 via Frontend Transport; Thu, 9 Oct 2025 08:53:28 -0700
 From: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>
 CC: Eugen Hristev <eugen.hristev@linaro.org>, Chas Williams
@@ -61,10 +62,12 @@ CC: Eugen Hristev <eugen.hristev@linaro.org>, Chas Williams
 	<linux-media@vger.kernel.org>, <linux-atm-general@lists.sourceforge.net>,
 	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
-Subject: [PATCH 00/18] media: microchip-isc: Color correction and histogram stats
-Date: Thu, 9 Oct 2025 21:22:33 +0530
-Message-ID: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
+Subject: [PATCH 02/18] media: platform: microchip: Include DPC modules flags in pipeline
+Date: Thu, 9 Oct 2025 21:22:35 +0530
+Message-ID: <20251009155251.102472-3-balamanikandan.gunasundar@microchip.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
+References: <20251009155251.102472-1-balamanikandan.gunasundar@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,55 +77,29 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Hi,
+Add DPC_DPCENABLE, DPC_GDCENABLE, and DPC_BLCENABLE enable bits to
+ISC_SAMA7G5_PIPELINE macro to prevent isc_sama7g5_adapt_pipeline() from
+masking out DPC modules during pipeline configuration
 
-This patch series has a set of enhancements to the Microchip Image Sensor
-Controller driver. The objective is to expand its image processing
-capabilities and to improve the colors.
+Signed-off-by: Balamanikandan Gunasundar <balamanikandan.gunasundar@microchip.com>
+---
+ drivers/media/platform/microchip/microchip-sama7g5-isc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This series also introduces a new stats driver that exposes the histogram
-data to userspace via v4l2 controls. This allows applications such as
-libcamera to access real time image statistics for advanced image
-processing like automatic exposure, white balance adjustments etc.
-
-Balakrishnan Sambath (11):
-  media: microchip-isc: Enable GDC and CBC module flags for RGB formats
-  media: microchip-isc: Improve histogram calculation with outlier
-    rejection
-  media: microchip-isc: Use channel averages for Grey World AWB
-  media: microchip-isc: Add range based black level correction
-  media: platform: microchip: Extend gamma table and control range
-  media: platform: microchip: Add new histogram submodule
-  media: microchip-isc: Register and unregister statistics device
-  media: microchip-isc: Always enable histogram for all RAW formats
-  media: microchip-isc: fix histogram state initialization order
-  media: microchip-isc: decouple histogram cycling from AWB mode
-  media: microchip-isc: enable userspace histogram statistics export
-
-Balamanikandan Gunasundar (7):
-  media: platform: microchip: set maximum resolution for sam9x7
-  media: platform: microchip: Include DPC modules flags in pipeline
-  media: microchip-isc: expose hue and saturation as v4l2 controls
-  media: microchip-isc: Rename CBC to CBHS
-  media: microchip-isc: Store histogram data of all channels
-  media: videodev2.h, v4l2-ioctl: Add microchip statistics format
-  media: microchip-isc: expose color correction registers as v4l2
-    controls
-
- drivers/media/platform/microchip/Kconfig      |   2 +
- drivers/media/platform/microchip/Makefile     |   2 +-
- .../platform/microchip/microchip-isc-base.c   | 373 ++++++++++--
- .../platform/microchip/microchip-isc-regs.h   |   3 +
- .../platform/microchip/microchip-isc-stats.c  | 549 ++++++++++++++++++
- .../media/platform/microchip/microchip-isc.h  |  44 +-
- .../microchip/microchip-sama5d2-isc.c         |   2 +-
- .../microchip/microchip-sama7g5-isc.c         |  73 ++-
- drivers/media/v4l2-core/v4l2-ioctl.c          |   1 +
- include/linux/atmel-isc-media.h               |  13 +
- include/uapi/linux/videodev2.h                |   3 +
- 11 files changed, 1001 insertions(+), 64 deletions(-)
- create mode 100644 drivers/media/platform/microchip/microchip-isc-stats.c
-
+diff --git a/drivers/media/platform/microchip/microchip-sama7g5-isc.c b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
+index 36c3f4ba1962..03f7a46acd47 100644
+--- a/drivers/media/platform/microchip/microchip-sama7g5-isc.c
++++ b/drivers/media/platform/microchip/microchip-sama7g5-isc.c
+@@ -59,7 +59,8 @@
+ #define ISC_SAM9X7_MAX_SUPPORT_HEIGHT   1920
+ 
+ #define ISC_SAMA7G5_PIPELINE \
+-	(WB_ENABLE | CFA_ENABLE | CC_ENABLE | GAM_ENABLES | CSC_ENABLE | \
++	(DPC_DPCENABLE | DPC_GDCENABLE | DPC_BLCENABLE | \
++	WB_ENABLE | CFA_ENABLE | CC_ENABLE | GAM_ENABLES | CSC_ENABLE | \
+ 	CBC_ENABLE | SUB422_ENABLE | SUB420_ENABLE)
+ 
+ /* This is a list of the formats that the ISC can *output* */
 -- 
 2.34.1
 
