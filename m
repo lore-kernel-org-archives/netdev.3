@@ -1,147 +1,204 @@
-Received: from out14.tophost.ch (out14.tophost.ch [46.232.182.223])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012028.outbound.protection.outlook.com [52.101.48.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6968326F28B;
-	Thu,  9 Oct 2025 20:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.223
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760043023; cv=none; b=BHLOShrtDi2k2qpUpxs+KBYKCeU60aNQHZUs1o5E+wQ38iwvhR5c9x8roYr1YuO1QPx3GUbpM8N9b4Woz2mzMV82bRQ6y7H0euWCLiDDMO+NY/zoQqaVZ+A8ZdMPfHDLI77gZncM/n2A+Bw9/rRHwkziUQ74bs7+qob3jkNUfJ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760043023; c=relaxed/simple;
-	bh=h7C8bbH7FTsJm/m6VuuDxPp60Ab4hcjl9IC2Mx8oSSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gEJQ18x5zWdSgPhbtJG4QuEyB0tVOUKcDKEvBJl/J54LgoBLWJGhFKG9z3tLLYQsaH8YlnO7OUV8s/fOUUsAU52dE29cfok5uoi7QGuv6h8NTl0b0KJwkrT9cZuxuvmvEFcfDp4UG9vbcJa2SEkS+xR/Tdl7wPhtHirQ0y6v3QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=a1mEsrWo; arc=none smtp.client-ip=46.232.182.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF5E27381C;
+	Thu,  9 Oct 2025 20:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760043363; cv=fail; b=bPddqyULR8Me01EPGWTpGKq5f5AaU5rondMi68zTMOR/zqQKpnAjAtKcBZ5j1FHqMIEp6KABXvsyLc09omqvbMdZbOAUpvRAYKOgUviwWMT9fPisBnneqtj+ruik4vS68X35xhf3P1uQyh+5Ad5/+Occ972Gf43Sqe4Ky8kaxA8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760043363; c=relaxed/simple;
+	bh=kXAT5isOoTrVT0kGhjZVtAe6RHD75lxZdzTDMQnnXbA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=OHxVozDiP0ZIXtbXoguKR/nz+kIco7r4kasLmCiJouIN81QdNZ0JlOmyttmFxT6dszO5IokHiTFvHD7Ho+Ik9UG3YczHApG6Al91npXURYBp2mOQdQEJAkzWt3aMqudH6g8x5vMJc9poddCVI9/TJ7nGb0YVFHQ99AkQ1p+9yLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=LS49J9Ma; arc=fail smtp.client-ip=52.101.48.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="a1mEsrWo"
-Received: from srv125.tophost.ch ([194.150.248.5])
-	by filter3.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1v6xK6-00EmFi-9Q; Thu, 09 Oct 2025 22:33:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=r+FQKIahc4AdcTu9MP/YjPLvJqAErAgW2W1JFVZbD+0=; b=a1mEsrWo4avpTkrhSImsB5UGm4
-	N5yv8KrVx/bwIrUIo99WxMp0TJJoJNvJzG7PBqUmfXM0NG6qTH1BqA3iwo70QX8c6PWirlQNJdHPd
-	GeSil43TtrWcV1KyOWJgb6v8qaBTytMER+gknEgOHn3Rfc65qQoUBlOPqVOzbYrH5DJo/EskQD10w
-	TKExlEi2D7xnC12cmCr7W459SOMo72PorS2/8tde3fOHpqIz4kK1m2hbQHqzTDWfmHAbLj6F0vSA+
-	I4YnYgIC0B/ICz9kJ0GKvMf8k4jTekv3epFZlQqzBlVU73V3ksi4KjfAa09FZUyVsosRc7CCFt9a7
-	4Y6QPS6w==;
-Received: from [213.55.187.112] (port=29561 helo=pavilion)
-	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1v6xK6-0000000Bolp-3cxo;
-	Thu, 09 Oct 2025 22:33:12 +0200
-Date: Thu, 9 Oct 2025 22:33:02 +0200
-From: Thomas Wismer <thomas@wismer.xyz>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Conor Dooley <conor@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Kory Maincent <kory.maincent@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thomas Wismer <thomas.wismer@scs.ch>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
-Message-ID: <20251009223302.306e036a@pavilion>
-In-Reply-To: <e14c6932-efc9-4bf2-a07b-6bbb56d7ffbd@lunn.ch>
-References: <20251004180351.118779-2-thomas@wismer.xyz>
-	<20251004180351.118779-8-thomas@wismer.xyz>
-	<20251007-stipulate-replace-1be954b0e7d2@spud>
-	<20251008135243.22a908ec@pavilion>
-	<e14c6932-efc9-4bf2-a07b-6bbb56d7ffbd@lunn.ch>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="LS49J9Ma"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WQs4t4MGbkVtEL0h+Gvra4GFJmK2uTXiABoLqlRWbBgrj+9zV/8VzjM2YtDsBKNuHmxImPoBOKpLJgKZV3ZbbY9jV6AapVAdupWH1nCS/GF/qsmpdlXj/iHsQgbMiJT2fAm3R/oUY2Uo/FQl8qhET9RjAymPwq8YELELucv91ObiGsEWKONqTHp1gBZ71yyNo0OBijFhxv7RrskTRX7rKusv4bxvFZvs2lr16O/rMcj2G6my/yV0vKPO7kxjzR/Da4CRL/mT0jCZadIXPoagIObzwy37MC+zISjBkPxX+Fwi6dtfwmkMoZcp9W5jliCaH6OgMGaFpe5b8ny9easLwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PcAnCT4w3/469ATGI3dKyZV++xHVHdQ07/8PBksOuqc=;
+ b=dhxTCZpzFSxi7Yu1wWE6L39z8LIOPh/dnV58i92KmdceEHE8W0lrECPOKhN4hW8Lx+0fEvboNiiIkIENwEjLlo2kjAB89iuo6mLhUa+0v7CJFx9QM+0DZooU9HgLkBQp9NtdUwNk5+Yp2MrhiTT0Lp4h7Cw2IDaBDHwXRlev2e0it1wxFoOyWCV1EQDSz0/XGaSZ+5sANKjDqgBTFAAZLfma0RauZeXLvS7sVJ6Jxdg5Rh3VW20HVpdYWDBGeP8mLBB8SiOxkH8i2D2h6XQKdUsA7OOBti3h7kVvRNTG6rF1/RQS3Uk6GKVh//1UFj4yIO5sCaWCPiWQiJlZfwO9YQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=huawei.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PcAnCT4w3/469ATGI3dKyZV++xHVHdQ07/8PBksOuqc=;
+ b=LS49J9MaE1ueTd7fNkq/dNzZ4qZUP2p0y+JXSEe6eljmZ6KH7tb4yepgIpBSZYatu4WbY4Fvv2dPwvENSeSBOH1mqAmrxPf+I0oDUK6fg9YA9fVf7JUSVwHpVLfPgbpdVwAyD4mN/VPWROFAtHBBSI482xGAgNODx6q72EObrCo=
+Received: from BYAPR01CA0049.prod.exchangelabs.com (2603:10b6:a03:94::26) by
+ DS2PR12MB9773.namprd12.prod.outlook.com (2603:10b6:8:2b1::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.10; Thu, 9 Oct 2025 20:55:55 +0000
+Received: from SJ1PEPF00001CEA.namprd03.prod.outlook.com
+ (2603:10b6:a03:94:cafe::d5) by BYAPR01CA0049.outlook.office365.com
+ (2603:10b6:a03:94::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9203.9 via Frontend Transport; Thu, 9
+ Oct 2025 20:56:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF00001CEA.mail.protection.outlook.com (10.167.242.26) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9203.9 via Frontend Transport; Thu, 9 Oct 2025 20:55:53 +0000
+Received: from [10.236.184.171] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 9 Oct
+ 2025 13:55:52 -0700
+Message-ID: <7a3d3249-ee08-4fe0-a016-829ece6f7b8e@amd.com>
+Date: Thu, 9 Oct 2025 15:55:51 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH v19 11/22] cxl: Define a driver interface for HPA free
+ space enumeration
+To: <alejandro.lucero-palau@amd.com>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	<linux-cxl@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <edward.cree@amd.com>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <edumazet@google.com>,
+	<dave.jiang@intel.com>
+References: <20251006100130.2623388-1-alejandro.lucero-palau@amd.com>
+ <20251006100130.2623388-12-alejandro.lucero-palau@amd.com>
+Content-Language: en-US
+In-Reply-To: <20251006100130.2623388-12-alejandro.lucero-palau@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
-X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
-X-Spampanel-Domain: smtpout.tophost.ch
-X-Spampanel-Username: 194.150.248.5
-Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
-X-Spampanel-Outgoing-Class: unsure
-X-Spampanel-Outgoing-Evidence: Combined (0.50)
-X-Recommended-Action: accept
-X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
- 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zCvB
- nHFO2C20Agb2jY8TN+tZAgLCw6A7Sh9BwFiRtflYCtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
- daZjkYsG4jVZi5Tfop5qjCZejidXzthz0vNkOX8Em4cj6D/wddIY3ooDH3xmALJ0KCcsszI9W7vD
- 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
- L25JS816nuiE0t5pG6MLXGczoaa3aob+2ep/i3+axOc3wuNrBFopv3W0A/6jdtvQFsFcEZ6r1mIX
- TkUcixE/iazZc2YO2mSYszIDlxkwEZ8fnuR7LXwCeCXaZcCIsMJ2o/2ujxmhezcbEYEnpDmAcTfE
- 51BQLRIJ0/39Sx8paaNvJtgjTd22pIMOV6MGf1IoEnGcoojFFzGYcVBOELIFSPRcJvCCGRwzGhIB
- n8K8QObBEcFy1rHCr/p9+O1cMFuPCw8Rw9bimy3J24SMAfwTPM20rmcIMnYyRa+Bc9vTSIXNo6NG
- jc0E8ca/vyZdGzimB4971HTxt1KgeGT0AYbCA9JcYz9+MmwS2ESJ9FbsMjQvPUE4US07ML7bZl3B
- 4ELDaI1Br8bNxUUhGgM9iMk00Ol1lR+PUJGNrv8YmVULgw8ynq3PwqXDlE/GOTxn2uh+ba1iSzzB
- zDg3BItzbKnXDzHjtYwak50DLeVtBir2eUz0vtJvzgRrucRkwUB/zcu0o0WjWBsS3EZt9a+xyS/d
- Oq7TUhP+6w9smK/hg5o9u16qyIzlag+DgD9xY7Yj7fvC65xWAU3TJceJXG+jXar6FtDTl0oJdoJl
- 7aEINilYsbM6oAZrC6sT/uNPEeEqTef/Ol/iIK/1NH5THMtlYvyHAYGOGmt9snL6N2Lurj43vXKI
- A3wrdQGYbD42gELmInj8QJZkozR5O9XsbZeBMYvhp9yUjVB76PAdPOZc5pCcLmx6HKVOK2srP1V3
- FBjQKvmhoLnK6kP1PdPHwcRpK1Jfq8KXZJCOHPPfveAz91ASJF2pOtB5TU55xiswakgM5lOd+GWz
- 5IE7WyBl+BpLY+3NgjjaJatsJHAzgC46MYYXOcKJkR7v8ULU8lsSL+ZtOiP52Ihta1zoSEKZCyqy
- 2ggLPoY1IxZ8QhrAYAPpA+rFW/t09L+dJR8RoVtd/HdiZZXcS7V1ZXBi9hWEAP02Kq9O1EK/TUyG
- hPICNC2zTh4DKhoaqzbtHxt9xuMG1/ohztXDro3vjaZ+6AQSCtYoWH/x+cNDkrnpHUIpm7ZLrjsD
- ZQ6GNZpocet31KkgQlKZh9NdH2SPoVBq1Qsh973/NcIMY8uCXoCtFMTxqJ/9ILpZImF31Vkhp7tU
- 3Sz1xIwbpb/q5AsF
-X-Report-Abuse-To: spam@filter1.tophost.ch
-X-Complaints-To: abuse@filter1.tophost.ch
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CEA:EE_|DS2PR12MB9773:EE_
+X-MS-Office365-Filtering-Correlation-Id: 382d83b2-abd9-49ba-1ef2-08de07763c7f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?L0tvNVZqby93Q2NDRHdrM0lQRDRCaS8zTkdlQVRBa0g3eUhXQ2VuWVBwKzJJ?=
+ =?utf-8?B?R3pYbWNIaG1PS3dmQnQyVFluWnBCTFFGWUVicXR2bkRKd1FkWS9lelN3QUJV?=
+ =?utf-8?B?QUMzTldTajBsZ2dwMjJIZTlZWmUxNUN2VTNuai9RK0VSbE4xU3M1RXlMMUpx?=
+ =?utf-8?B?Nk9xd3NkSURNUmx2VGJmdlRJYWJ3bldPaTZuY2l3aEJqVTBBMHR6RmZkUjN0?=
+ =?utf-8?B?R2xCbFJqNWkvZTF2cWxuQ2xnMHF1QWYzdy9LUkRrc3lKUVExaVJ0aDAxWXdJ?=
+ =?utf-8?B?eGlOMi9PQ1R4cUMzQjB4cjRmWDFENFVOYVl5R2ZZU1BkK1E0VVd2Y3g3dU05?=
+ =?utf-8?B?RkYreUVSZ0U2ZDNmSHJMZDlxczhIaEZvdVNxcDJrd1NxbE45VVhXTmtCZ3pa?=
+ =?utf-8?B?OUFzRnBjeU1TNHBNOTd5MTUybVNBUDBOcC9RZ3IxeklURFRSZlBHanRXbDNx?=
+ =?utf-8?B?SlRzSFpLeERCMlpFdTRlWVd4aW1BQ1lZQTcycnp3WkppaXREMVpXTlpoZjN2?=
+ =?utf-8?B?Y1JJeDdjWU1XN3QrSXcxQnpFcDYwUGJXdTZUOEtVMXYxOThhWW9yU1NId1Az?=
+ =?utf-8?B?UHYxcU1iekhyeGFDdENQaldjRkx6WjJQbXgzU0U5d2dHNFN4MEFFZmE5dVRn?=
+ =?utf-8?B?emoyRU4xYTFDU0ZML0ZUdjM1aXN3SnNYMFZlaGRKaEtjanBlZzVINi8vSCtC?=
+ =?utf-8?B?M09OUlV5U3hRTmZkS2ZkTHlNMk9tNXpaQ1J2UVVPWCtCcEg0VzN4d1IrOTht?=
+ =?utf-8?B?clNJeEg5dzF5SFZmUmZqTDJUSk9qalFzWVdyUE9rODZ4Ny82STk1VlRvdis3?=
+ =?utf-8?B?MGI1aXNZL0Z0U0o5V0VtOUgrNUlVdllWQmx5VkV1MnlHVWxNY2R4M21FK1Vj?=
+ =?utf-8?B?ak1JWDlNN2lOSFliV0plTEZmdUNoM0dXVFZRQ2RIUHFrRVJITUtvYmRXOTEy?=
+ =?utf-8?B?RXF6Vk1OcXc3NzkrRlowaG5OY3dDbWprM01TWDMvaVZpdWRqQ240ZkN2Q2Ft?=
+ =?utf-8?B?UGE2MUt0dFRZd3lGMlY1b0V1OHYrcjdrTU5SSEJxdXJmNEN0Y2hrekQxTGpL?=
+ =?utf-8?B?c1I1dGcxd1hobmlWYWdyeENGWkNvNUVsTGQzTEo2UHZOenZGN3lHUUFuTWgy?=
+ =?utf-8?B?UFJuMDNDcG9jZUdMUmVjR2lTd3VZdUc4ZkExWWxoaGpJZEQ2OTYrWC9sRlIy?=
+ =?utf-8?B?bGNIY2pQbG1oNEpCaEJhYXVCd2JsaGxCS2NOdUFTMTJtUXY1YzhnNlo2R3Bk?=
+ =?utf-8?B?ODVwWUQ3QllvL0paT3FKNUVkOFBIbGh4dHM1ZHJxMGhuWGhjR0VBOXpxc0N4?=
+ =?utf-8?B?SDB3K2cxUVEzbEY4bHhrMmVqWVJHdHRldXgrNUlWZkJwRkhOMHA2TkdmSi9u?=
+ =?utf-8?B?MmhZYk9SWjBJN1NHNkVicGNpWGhJbEtDWWg4RmJybFJLVU8zeGVTSExpdlRp?=
+ =?utf-8?B?QkNQbVo5dU05N2RTMUMwTVozOTN3YWFOeTlWbzBLUkIydnJnNENETGFNckIv?=
+ =?utf-8?B?MVhqS283NElTWWZUN3NMMHJ5Y3dFYm9wK3JJaFBMNSt6b3Q5WUZkeENEMTZy?=
+ =?utf-8?B?eFFpZjNUc3M1eXlmeGhKbVhOSDFSdVltaEJGd0g5aC9xdHNTZnVxeDBBYllt?=
+ =?utf-8?B?cFg5UXo2V1ZuelhJajFsSUl1MHJuSEYwMVBzcWtuWTk1Q2JiRlhDai9Ncm9n?=
+ =?utf-8?B?eHV2b1NYOW1oa0xjTEM1d1RuZkxLODBjbG85UWpGRFhZbFdJYnBJaThCN2Vn?=
+ =?utf-8?B?TnVpdHd5UFk5N05qQTFpUW1xa2d1enQ3ci91bHBqRk45R0J1ei9ick5wMTFj?=
+ =?utf-8?B?QUNhWmx6T3JpVXA5enJvY2JzV1FhZTdxUFg1ZFBFNDdJWEdFcEwxcUE1TkhK?=
+ =?utf-8?B?MkhES0krdFkyZ1VGdThEb2YzNEk5ZkNVWG1tcGFLeU1XbjNHT0tOQmpMaFZm?=
+ =?utf-8?B?RzhybVJ2d2FmU0VFYWF0Tnc5cWthSHYxRmFsREs2eW1BQ2Qxd2ROL2lFTElp?=
+ =?utf-8?B?SUpVYzQzUGY4TXpNdThGb2VWcVNPSktTL3hqTU56Y3V5S01scGpsUFVZUVNY?=
+ =?utf-8?Q?W0jMmM?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2025 20:55:53.4287
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 382d83b2-abd9-49ba-1ef2-08de07763c7f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CEA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9773
 
-Am Wed, 8 Oct 2025 14:38:52 +0200
-schrieb Andrew Lunn <andrew@lunn.ch>:
-
-> On Wed, Oct 08, 2025 at 01:52:43PM +0200, Thomas Wismer wrote:
-> > Am Tue, 7 Oct 2025 21:40:03 +0100
-> > schrieb Conor Dooley <conor@kernel.org>:
-> >   
-> > > On Sat, Oct 04, 2025 at 08:03:53PM +0200, Thomas Wismer wrote:  
-> > > > From: Thomas Wismer <thomas.wismer@scs.ch>
-> > > > 
-> > > > Add the TPS23881B I2C power sourcing equipment controller to the
-> > > > list of supported devices.    
-> > > 
-> > > Missing an explanation for why a fallback compatible is not
-> > > suitable here. Seems like it is, if the only difference is that
-> > > the firmware is not required to be refreshed, provided that
-> > > loading the non-B firmware on a B device would not be
-> > > problematic.  
-> > 
-> > Loading the non-B firmware on a B device is indeed problematic. I'll
-> > append the following paragraph to the patch when reposting it after
-> > the current merge window has closed.  
+On 10/6/2025 5:01 AM, alejandro.lucero-palau@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
 > 
-> Is it possible to ask the device what it is?
+> CXL region creation involves allocating capacity from Device Physical Address
+> (DPA) and assigning it to decode a given Host Physical Address (HPA). Before
+> determining how much DPA to allocate the amount of available HPA must be
+> determined. Also, not all HPA is created equal, some HPA targets RAM, some
+> targets PMEM, some is prepared for device-memory flows like HDM-D and HDM-DB,
+> and some is HDM-H (host-only).
+> 
+> In order to support Type2 CXL devices, wrap all of those concerns into
+> an API that retrieves a root decoder (platform CXL window) that fits the
+> specified constraints and the capacity available for a new region.
+> 
+> Add a complementary function for releasing the reference to such root
+> decoder.
+> 
+> Based on https://lore.kernel.org/linux-cxl/168592159290.1948938.13522227102445462976.stgit@dwillia2-xfh.jf.intel.com/
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-Yes, the devices allow the silicon revision to be read, which would
-enable a driver to correctly handle the case distinctions.
+Hey Alejandro,
 
-> If you can, maybe you don't even need a new compatible, just load the
-> appropriate firmware depending on what the device says it is.
+I've been testing this on my setup and noticed a few issues when BIOS sets up the HDM decoders. It came down to 2 issues:
+	1) Enabling "Specific Purpose Memory" added a Soft Reserve resource below the CXL window resource and broke
+	this patch (more below)
+	2) The endpoint decoder was already set up which broke DPA allocation and then CXL region creation (see my response
+	to patch 18/22 for fix and explanation)
 
-When adapting the driver, I also considered an auto-detection mechanism.
-However, it felt safer to rely on the devicetree information than reading
-a silicon revision register, which has a totally different meaning on
-some other device. I have therefore decided to make the driver behaviour
-solely dependent on the devicetree information and to use the silicon
-revision only as a sanity check (as already implemented in the driver).
-Is there any best practice when to use auto-detection with I2C devices?
+The fix I did for 1 is a bit hacky but it's essentially checking none of the resources below the CXL window are onlined as
+system memory. It's roughly equivalent to what's being done in the CXL_PARTMODE_RAM case of cxl_region_probe(), but
+I'm restricting the resources to "Soft Reserved" to be safe.
 
-Regardless of whether the driver queries the silicon revision, the B
-device declaration would look somehow strange to me with a driver having
-one single compatible, i.e. compatible = "ti,tps23881b", "ti,tps23881".
-The first one specifically names the hardware, the fallback is actually
-the name of its predecessor, which is strictly speaking not 100%
-compatible but required to have the driver loaded.
+The diff for 2 is pretty big. If you don't want to take it at this point I can send it as a follow up. In that case I'd definitely
+add that auto regions won't work in at least the cover letter (and in the description of 18/22 as well?).
+
+---
+
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index acaca64764bf..2d60131edff3 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -784,6 +784,19 @@ static int find_max_hpa(struct device *dev, void *data)
+        lockdep_assert_held_read(&cxl_rwsem.region);
+        res = cxlrd->res->child;
+
++       /*
++        * BIOS may have marked the CXL window as soft reserved. Make sure it's
++        * free to use.
++        */
++       while (res && resource_size(res) == resource_size(cxlrd->res)) {
++               if ((res->flags & IORESOURCE_BUSY) ||
++                   (res->flags & IORESOURCE_SYSRAM) ||
++                   strcmp(res->name, "Soft Reserved") != 0)
++                       return 0;
++
++               res = res->child;
++       }
++
+        /* With no resource child the whole parent resource is available */
+        if (!res)
+                max = resource_size(cxlrd->res);
