@@ -1,147 +1,192 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0012EF64C
-	for <netdev@vger.kernel.org>; Thu,  9 Oct 2025 15:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCC62264D3;
+	Thu,  9 Oct 2025 15:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760025513; cv=none; b=GvhRhMARyecF6QgipzCk5ybOF1K16MsW3gLcvrb5V6A6GAjnJnmv/Bo/MbQKhj53kOdhbZTWXIBTf1uLw6QoPJpeUznoY3W5ryVe310rwhPz3tdfVw9OSINiLu1w2j3JAqC0Lf71qA/yTZli7Ej5siV1YtiaQ3ses+eHOhEb3cY=
+	t=1760025547; cv=none; b=s/45o5ZICHUj5JzUTDofSqu1/htD4aBGy7/44YI6mt+ZT9jekVG/PDtMki/8XAKumWriK4HztGS/SfSdV9ZPZJTrHZ/N0hKpnA05bHv0hwaQxsnOMTapZkj3Y+fbNbmgegvrQMPBjeN29+tPjciopfaeUL0NSaOn6SAFPsWdWqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760025513; c=relaxed/simple;
-	bh=8OZiH1BDPLJdfYF0II7is8iKCCoKggl/I/ld9NWAY60=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oNTvynThIwPkRVqRfFqT8RkTshn1o2pwQAHo5tIgeF7IOs0vaTk8ZPWgXGH1L4lOmQVfkzWHEBLOwmDQZUAOxMMK/aWqqnrxqtlnNLiOv8G8GDr/S6SQ0ybQlq/YQp3u7jhrlvDeH+NcuhnXc9obpnN8ykjybhMVI0mHgKY0iCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2Rwh1V6; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760025547; c=relaxed/simple;
+	bh=HO4+Tz4jqsYdxeLaF83ztinV6zh0jqaeIA+sMbiq7lI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XObbmA/TsA87cZN+xE3buNrvN4xrBKedLRVLPMUkvzAxOYqMN7jPlt7MpqjYt8G7lb6IHsh/6kXO86Mko527m6SA2dl/PEoEdFVQvp/UweynYJJ45r23cq2ybQ9roU+6R6Dl+XRQrf8ul0V9Fq34lestUHnSldNqvYo8twFyYg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgQvjLTe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2Rwh1V6"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b60971c17acso956428a12.3
-        for <netdev@vger.kernel.org>; Thu, 09 Oct 2025 08:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760025512; x=1760630312; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAdLvpKJCv4jbHmMWHwPbYfzoSafhf17EqbwEP2QLrE=;
-        b=B2Rwh1V6gts6iIuIMsEzf7WL/5UrgNanQjsNccUtZ3RRhDYGWsGgkseljHazD1Zkaq
-         NRxZz6j8b3TAau/Urexf7coUW+LPRnSyuDvjQqaWxMVSVMRonPS00WfeNTSpd1wwLHmI
-         T8CLJwJTSHSIKcoyZZBi1BI6QQ3aKkdLnUjj9b5jBynY4Wd44BdcE4dKaLbJ9CRnFCdB
-         /jq15Pafb8FjSRFnSUfvYd+8jBqt2CjyKXcPh4fyIXHi+i2SD2zNsNPKHlsWM1nBq4l4
-         MR1VhOg+Ary13CsqogyPZlVIocW//BdR6tRN5BHKpTchPZFd7CUpgkoyWUTdiT+2wWhe
-         4i1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760025512; x=1760630312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gAdLvpKJCv4jbHmMWHwPbYfzoSafhf17EqbwEP2QLrE=;
-        b=CnMDfHeWgP00eLQwV4Q4NXdAUzGZICmuSe8UxpIJuPNBnhf2cnD8mNdyf+pHzX1nLg
-         j4773pC0+Q81lvcAL6u651QIbWnO7B8mR05WXysGRoPt1bnDFmB7xoAMC9rzMQI3lKQp
-         saxSEEhcK0MCGWHnDLYkaVRDf0WMfylSvBF9D2UPdnIGuLVomKNRh4QtWO4Tu7bLBaYH
-         0M4WI4zYhxot8C933eX2b+JSjzHRDQmhfI1MCbhaBu6Bl+K3NULld0nkaTfpl0UJHS4D
-         SVHhW4kaqImXI5dzs0KxlJhLxSfNJeFLNnI6zJ5cbABfAB/fimWQpArbq8WQzuKdvYBE
-         pd8A==
-X-Gm-Message-State: AOJu0YxPduPMC9mGexKuvujI3YSrH0SuPhRqJXIVOQN/wZ1OMUcOVY/h
-	ABqTdrFeb3A9Q/1xTunmYgMnOqE57YeKqrfj+vrH8fZ+En4ht7G8gWn9
-X-Gm-Gg: ASbGncvdZ4gVTIUBlc6Fe8EdxxROl0AHrHqr8Y9E/j7lC0NEGUE2pfp8HqazlT/LOBR
-	8BPVGY5OA8nOH/vlq5QDg8HTDiwDlsD4PGfGYNnUD4X2iFjYFUgHuyOoOcE3En7k8cqCpmXnMx8
-	IcLENwq3uMdXBWtbPi5OtN7fSPZs2j/ZolyYgKK1bBiPPytk3i1SbzUqeO1RwJ3PjPOtxcxDHpQ
-	sWX9Y0IfeXfgloDzgysqtV3fFIJwwiIvu63xdg+2oiECKsBvD3D/TRM4jNQh6EanipqEnAp8qUw
-	tlJsHqcCMoAUtiT9hHZR7b9CQeW9QGxqM1zRxXbRrQXrFt/ToYyeXJBkK5SZQJhRNZ0H9K/QF42
-	4qNVqRt2dwbaf7zjz3sKmEq7Evg/I+NUVLXs2mzGLDf1pufCX0wtw8l5kAA==
-X-Google-Smtp-Source: AGHT+IH6oXZ0R/UodGK/kVJXi2B1T3lBvL0TuIS/Hh1ntLXXA4peFkl0J++JBh6etU+8qLRjDNuweA==
-X-Received: by 2002:a17:903:3885:b0:256:9c51:d752 with SMTP id d9443c01a7336-290273069bbmr105229465ad.56.1760025511618;
-        Thu, 09 Oct 2025 08:58:31 -0700 (PDT)
-Received: from mythos-cloud ([175.204.162.54])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e44ef9sm32585005ad.52.2025.10.09.08.58.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Oct 2025 08:58:31 -0700 (PDT)
-From: Yeounsu Moon <yyyynoom@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yeounsu Moon <yyyynoom@gmail.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net v2] net: dlink: handle dma_map_single() failure properly
-Date: Fri, 10 Oct 2025 00:57:16 +0900
-Message-ID: <20251009155715.1576-2-yyyynoom@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgQvjLTe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2C3C4CEF8;
+	Thu,  9 Oct 2025 15:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760025546;
+	bh=HO4+Tz4jqsYdxeLaF83ztinV6zh0jqaeIA+sMbiq7lI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GgQvjLTeICefoY6klw103aff944WF6zlyHIkctkguQq2tYPlkcKy6D/u7MVsMPK1t
+	 uO8PkYMacQD2F785YQ0iee6pDN6MaDS3zQBME7piNKs2SN/bmL4aUHvcOpe/jDglg+
+	 OR2NKuLGI+RAbtZPHmYiZUVFMNXDriyTI+0Fah5M9NPkG3T+K4czv/owYQQIsc6yNj
+	 zUmLK/0OIn9FYFyOf996bCLBjlO9kQqiMfollCxVAsrK2euS1is79Nvny7lRKjq1df
+	 7/hNNjlJape19ZpmUtCxAKbblzcnpc69JSORzmQnjaZLoV3F8BL/4zbW8UgsF0Zire
+	 GQhHQ58FYKATA==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.17-6.1] bpf: Clear pfmemalloc flag when freeing all fragments
+Date: Thu,  9 Oct 2025 11:55:05 -0400
+Message-ID: <20251009155752.773732-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251009155752.773732-1-sashal@kernel.org>
+References: <20251009155752.773732-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.17.1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-There is no error handling for `dma_map_single()` failures.
+From: Amery Hung <ameryhung@gmail.com>
 
-Add error handling by checking `dma_mapping_error()` and freeing
-the `skb` using `dev_kfree_skb()` (process context) when it fails.
+[ Upstream commit 8f12d1137c2382c80aada8e05d7cc650cd4e403c ]
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Yeounsu Moon <yyyynoom@gmail.com>
-Tested-on: D-Link DGE-550T Rev-A3
-Suggested-by: Simon Horman <horms@kernel.org>
+It is possible for bpf_xdp_adjust_tail() to free all fragments. The
+kfunc currently clears the XDP_FLAGS_HAS_FRAGS bit, but not
+XDP_FLAGS_FRAGS_PF_MEMALLOC. So far, this has not caused a issue when
+building sk_buff from xdp_buff since all readers of xdp_buff->flags
+use the flag only when there are fragments. Clear the
+XDP_FLAGS_FRAGS_PF_MEMALLOC bit as well to make the flags correct.
+
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20250922233356.3356453-2-ameryhung@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changelog:
-v2:
-- fix one thing properly
-- use goto statement, per Simon's suggestion
-v1: https://lore.kernel.org/netdev/20251002152638.1165-1-yyyynoom@gmail.com/
----
- drivers/net/ethernet/dlink/dl2k.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 1996d2e4e3e2..7077d705e471 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -508,25 +508,34 @@ static int alloc_list(struct net_device *dev)
- 	for (i = 0; i < RX_RING_SIZE; i++) {
- 		/* Allocated fixed size of skbuff */
- 		struct sk_buff *skb;
-+		dma_addr_t addr;
- 
- 		skb = netdev_alloc_skb_ip_align(dev, np->rx_buf_sz);
- 		np->rx_skbuff[i] = skb;
--		if (!skb) {
--			free_list(dev);
--			return -ENOMEM;
--		}
-+		if (!skb)
-+			goto err_free_list;
-+
-+		addr = dma_map_single(&np->pdev->dev, skb->data,
-+				      np->rx_buf_sz, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(&np->pdev->dev, addr))
-+			goto err_kfree_skb;
- 
- 		np->rx_ring[i].next_desc = cpu_to_le64(np->rx_ring_dma +
- 						((i + 1) % RX_RING_SIZE) *
- 						sizeof(struct netdev_desc));
- 		/* Rubicon now supports 40 bits of addressing space. */
--		np->rx_ring[i].fraginfo =
--		    cpu_to_le64(dma_map_single(&np->pdev->dev, skb->data,
--					       np->rx_buf_sz, DMA_FROM_DEVICE));
-+		np->rx_ring[i].fraginfo = cpu_to_le64(addr);
- 		np->rx_ring[i].fraginfo |= cpu_to_le64((u64)np->rx_buf_sz << 48);
- 	}
- 
- 	return 0;
-+
-+err_kfree_skb:
-+	dev_kfree_skb(np->rx_skbuff[i]);
-+	np->rx_skbuff[i] = NULL;
-+err_free_list:
-+	free_list(dev);
-+	return -ENOMEM;
+LLM Generated explanations, may be completely bogus:
+
+YES
+
+- What it fixes
+  - When shrinking non-linear XDP buffers, bpf_xdp_adjust_tail() can
+    free all frags but previously only cleared the HAS_FRAGS bit,
+    leaving XDP_FLAGS_FRAGS_PF_MEMALLOC set. This makes xdp_buff->flags
+    inconsistent: “no frags, but pfmemalloc set”.
+  - The fix adds an explicit clear for the pfmemalloc-frags bit when the
+    last frag is freed, ensuring flags correctly reflect state.
+
+- Precise code changes
+  - Adds an inline helper to clear the pfmemalloc-frags bit:
+    - include/net/xdp.h:139: xdp_buff_clear_frag_pfmemalloc(struct
+      xdp_buff *xdp) clears XDP_FLAGS_FRAGS_PF_MEMALLOC by masking it
+      off.
+  - Invokes the helper when all fragments are freed in the shrink path:
+    - net/core/filter.c: in bpf_xdp_frags_shrink_tail(), after computing
+      that all frags are gone, it previously did:
+      - xdp_buff_clear_frags_flag(xdp);
+      - xdp->data_end -= offset;
+      Now it also does:
+      - xdp_buff_clear_frag_pfmemalloc(xdp);
+    - Concretely, in this tree: net/core/filter.c:4198 starts
+      bpf_xdp_frags_shrink_tail; when sinfo->nr_frags drops to zero, it
+      now calls both xdp_buff_clear_frags_flag(xdp) and
+      xdp_buff_clear_frag_pfmemalloc(xdp) before adjusting data_end.
+
+- Why it matters
+  - pfmemalloc indicates frags came from memory under pressure. With no
+    frags, the flag must be false; leaving it set is incorrect state.
+  - Current skb-build paths only read the pfmemalloc flag when there are
+    frags (e.g., xdp_build_skb_from_buff uses pfmemalloc bit only if
+    xdp_buff_has_frags is true; see net/core/xdp.c:666-667, 720, 826 in
+    this tree). That’s why this hasn’t caused user-visible bugs yet.
+    However, correctness of flags avoids subtle future regressions and
+    makes the state coherent for any readers that don’t gate on
+    HAS_FRAGS.
+
+- Scope and risk assessment
+  - Small, contained change: one new inline helper in a header and one
+    extra call in a single function.
+  - No API or ABI changes; no architectural refactoring.
+  - Touches BPF/XDP fast path but only modifies a bit when
+    sinfo->nr_frags becomes zero, which is the correct behavior by
+    definition.
+  - Extremely low regression risk; clearing a now-irrelevant bit cannot
+    break consumers and only improves state consistency.
+
+- Backport considerations
+  - The bug and code paths exist in stable lines which support non-
+    linear XDP buffers:
+    - v6.1.y and v6.6.y have XDP_FLAGS_FRAGS_PF_MEMALLOC and the same
+      shrink path which only clears HAS_FRAGS, not PF_MEMALLOC (e.g.,
+      v6.6.99 net/core/filter.c shows only xdp_buff_clear_frags_flag();
+      include/net/xdp.h lacks the clear helper).
+  - The backport is trivial: add the inline clear helper to
+    include/net/xdp.h and invoke it in bpf_xdp_frags_shrink_tail()
+    alongside the existing HAS_FRAGS clear.
+  - No dependencies on recent infrastructure beyond the
+    FRAGS_PF_MEMALLOC flag (present since the XDP frags work was
+    introduced).
+
+- Stable criteria fit
+  - Fixes a correctness bug that could lead to subtle misbehavior.
+  - Minimal and surgical; not a feature.
+  - No behavioral surprises or architectural changes.
+  - Applies cleanly to affected stable branches that have non-linear XDP
+    and the FRAGS_PF_MEMALLOC flag.
+
+Conclusion: This is a low-risk correctness fix in BPF/XDP flag handling
+and should be backported to stable.
+
+ include/net/xdp.h | 5 +++++
+ net/core/filter.c | 1 +
+ 2 files changed, 6 insertions(+)
+
+diff --git a/include/net/xdp.h b/include/net/xdp.h
+index b40f1f96cb117..f288c348a6c13 100644
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -115,6 +115,11 @@ static __always_inline void xdp_buff_set_frag_pfmemalloc(struct xdp_buff *xdp)
+ 	xdp->flags |= XDP_FLAGS_FRAGS_PF_MEMALLOC;
  }
  
- static void rio_hw_init(struct net_device *dev)
++static __always_inline void xdp_buff_clear_frag_pfmemalloc(struct xdp_buff *xdp)
++{
++	xdp->flags &= ~XDP_FLAGS_FRAGS_PF_MEMALLOC;
++}
++
+ static __always_inline void
+ xdp_init_buff(struct xdp_buff *xdp, u32 frame_sz, struct xdp_rxq_info *rxq)
+ {
+diff --git a/net/core/filter.c b/net/core/filter.c
+index da391e2b0788d..43408bd3a87a4 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4210,6 +4210,7 @@ static int bpf_xdp_frags_shrink_tail(struct xdp_buff *xdp, int offset)
+ 
+ 	if (unlikely(!sinfo->nr_frags)) {
+ 		xdp_buff_clear_frags_flag(xdp);
++		xdp_buff_clear_frag_pfmemalloc(xdp);
+ 		xdp->data_end -= offset;
+ 	}
+ 
 -- 
 2.51.0
 
