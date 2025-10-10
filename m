@@ -1,125 +1,191 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012023.outbound.protection.outlook.com [52.101.66.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F64D1E1A17
-	for <netdev@vger.kernel.org>; Fri, 10 Oct 2025 09:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760088659; cv=none; b=DFQCQlaKBJDE+1GAgo9cQ1UmfNwfVwEXrL3bhws11se37vE39HyLHEvk6fIgQxTUJjonOsrPTke80a+DOJXCGUCdN6LOvdalmifav8lp1bC7A6Q/EGe0TK/LKF2qWJZkItlmgvcPMU9iNyWOIqzO3/Gj1oK2vfXCI60c8P1IjDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760088659; c=relaxed/simple;
-	bh=4/XrG5PFmpmGq5nwHCDDNxEsjc4lGUshvcIpVr75m1g=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=TqpZA5dCuiyp0olgkQmJUSAeKZLEAiVzUwYAPBKDtk0en7JJ5AtgqV8cRDHSKFKRRSlKPesaJErhNXI5P0Okcv4eIyEURRcXt0IVsXoVzs7gltAMIV8d/4ZZNwCrpVMJwTn2ad/aK7sXFLYfBH4VWAC3YejVjU/QDfREoaQX/tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5P0z8Ne; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A263C231A55;
+	Fri, 10 Oct 2025 09:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760088702; cv=fail; b=JZJtBkMTNaLVvVGlEll/EBMO3u5Q8msyFooEuGcpCHXUNss3FGHoeRDzZZktcDCAb08v77BaypqSCoiXKv8xk7/AaejxGGQhMyKQuVWhtb/CBN6KN0vhZy97nXEH3kFOawZulCuQCRzqWbtVJvmT3y6OjrPIOSjiPJx6nxCNFjI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760088702; c=relaxed/simple;
+	bh=x3jIrsJR2QTy9lamiLskF7cyXY72Zuqwo69W76fLMg0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oFa7TWFpS1CqCLexxXgzsm9Myx0aRWN9KEXHnY6rn+espi6pKdgGAV5JluqbezpGbuJQawRpMiVwqQNprBfHEKWHbSUMIVPWViRnq4kUtgtw6pMivhAWuDLaQWGJ0MpwrpzAQUi+OZa8TS7o77P2JPdwBKgN8WxTt1hy1wNgTFs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aFlo9lDT; arc=fail smtp.client-ip=52.101.66.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5P0z8Ne"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3f0134ccc0cso1344172f8f.1
-        for <netdev@vger.kernel.org>; Fri, 10 Oct 2025 02:30:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760088655; x=1760693455; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TFJ6old9nUlBmY/4fR9bSen5WXePWEpLvyE08+MYzgM=;
-        b=D5P0z8NeOwhC+ncd3ADAQMH+fV3tqJqCF0Mg/gDI/fD+fzpKH1LE3UK6yIwtDbSS+b
-         1fdoih6cGfObO/zb6qJ0ikLnar5QH+zuBQnMYzRrk6WpJIf6U+1iwZhkKno4k8yfh4n8
-         sAwL8wAFPvOIl0nwmT2jNyHTaSpwxjGBvfbnzMxKxmcpNDoe3Ob+jklSssXBU9Fk63ek
-         5+/0RusTFnnDakOwrblB6SS8hxhp/XhQCT9ITTz7CHBbu2bFfjp4RkofJslJvbYLyqtq
-         v7928ndWsRRQrHegEAJ6q3fnInnY2FxI6nLrwiwGkj/skE7m/6UsPqjqG6TDR4tK8Iwu
-         /Nrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760088655; x=1760693455;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TFJ6old9nUlBmY/4fR9bSen5WXePWEpLvyE08+MYzgM=;
-        b=p39OTVAiAT/KA0TXPS9nXqXZa1WwUr5bvjLNZg+mgo7sehl5zHEt7Mz4NNfT56Zf6s
-         /q/c1V5xXErx23RntAbqKjVIfpD3QRclbU6tYDW2Bx/TqKDWFL/Lfkvs2mzHbTmjssr3
-         nbi95MdIxjugeustjHLx+AdkzfJPqieXKKqh01ZwHr4TvPMmAIrf+zA6MYQWr7kw4lYa
-         MSgQKS+t7tDETtwVRlJ00AVN+NiHCtLO7cmyKAglmHgUYG4D/QhlAb9G2MUX8PBgsQk7
-         u7m4gHAS2mgP7+DcDdFfhLbU8hVwC4Ll1J7MeLLhhEuqbKJ/Cpb3iiBihJpw5JmCevQT
-         mHKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGe/pYdqjCo76v/df/yyQ5R6Ho/I1/B+9FCoU+gzD0TBry87Oav2Zfyfc3nPmJeg2qx5Oi7EU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwuTd7mA/jVRDr2oC6DyEAAfI6DPga6q5x0yGHcwZ9MYneMwe7
-	gU/JCnWgR1LIzYU2Oh6tkESOZ8Fx1m+qKQjkROtJOtVye4HLahcoid2EsvxM9EbN
-X-Gm-Gg: ASbGncusS3kRPcn6oxAngqiS1HNc0YNb7Kyrth8l9iBurxddeGwUZoZFCDUgIib/wzA
-	766VtfFdMGVoS1V5EJIb06zW5af4y4ZtCS5SlPWfY0xfUuca4TtK90ETlB3tXBVtDn1/qnPIYD+
-	5oidCLmUAu2M4vX5EUys7VEtjQYmKfYnPfs9vI1xvXeIlxtAFAt+g5CUflhuuxIb3eJgQClBZNH
-	/D47S8xV4Atul8nzpYPfp/5cNi47PTMLv0HoHzIaWdyvloEyiApwFKFLFMX4vuE+Og0Vqby856u
-	dlqu/TvPUrVWcekKo4wSqSa1Ok6zNHQuGuWHEj6vCnNzBpMagleD76YneTBIp6p80R6yGajjFEJ
-	nS+5iY5+EVmf92WB+YKAhCGHL79QR00dz9Y2nLuEA2aXSVxTlYDGxET4t+NE07F01
-X-Google-Smtp-Source: AGHT+IFt1xQ74S5Ke1UQseKyET1bLEGVp+DpW6Ffi8A4nhrpaTuLG8N5bOYRpVweYCjrPKJn0DiHug==
-X-Received: by 2002:a5d:5f54:0:b0:3ee:1586:6c73 with SMTP id ffacd0b85a97d-42667177de1mr6757870f8f.19.1760088655365;
-        Fri, 10 Oct 2025 02:30:55 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:38af:2eee:bf04:9187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb489ad27sm38636895e9.15.2025.10.10.02.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Oct 2025 02:30:54 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: "Remy D. Farley" <one-d-wide@protonmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,  netdev@vger.kernel.org
-Subject: Re: [PATCH] doc/netlink: Expand nftables specificaion
-In-Reply-To: <20251009203324.1444367-1-one-d-wide@protonmail.com>
-Date: Fri, 10 Oct 2025 10:21:23 +0100
-Message-ID: <m2v7knqfho.fsf@gmail.com>
-References: <20251002184950.1033210-1-one-d-wide@protonmail.com>
-	<20251009203324.1444367-1-one-d-wide@protonmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aFlo9lDT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fF/IvQIbb6dYgVdp46/mljeheUpuz7qxZt3E/87gNPh1ofmlf4Evi9VieIQzgtPj3Tp0WyhAXFPriPRCphJ6TKjoBRl3K9h2hndcVbpBsBW/bEnnDPIRPVScD1utf/E2ERNq8LHfAcVtELxv5D4nsEd0Jynxacl0/Kc1oCZ9XFNETayz0dM/Lecmv8CujDQhoic4N8eAzlCBlPLZwiDQ3PZNcOYA2ZDCYBRu1GWlhn66URu8aP17hSfchGZNE4sIAvclbR799NtxCroD+RiyPLqVgvpOEY2tiVsc7w48hUxt0eyxGJkanz1z4llfvrrHKcYNkS0xWjpSmnYMt8QDUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pkV2UObwL4ElrZvvpKDsLNxfT/P6dKNtvCqV6cYWBmU=;
+ b=Zs0N22W9wwxYZyQHwhx96TWOsK5z+iEKUkIzL0zEA9JPpJmTnckHZsWFXfCIdQCPA58ah9TLsdePjFiXMZFFHAgsmg5a8X8FKEnILrHdh0dQfhLFCyQKDVGdNj+Y5/zbr02f/dCjaY/Eg+NKP0nHNkXTGkV9aUx8Iawl1Tgk113hwkBK3e8pNupufETvv6tIR/ZRWAVb4tGtt0oP0f0LCj+INowdrUdDswljbzjshA3Dp3NfEnc0Tr4zDM0fHUWddrjNzbktsePcXjaRjR56PQG/Yfs4EcQpX7CMI8CfNkCHVN5kH33sK/0H4ZqjmW3ji4GHHyALe1du4SE/8EiMow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pkV2UObwL4ElrZvvpKDsLNxfT/P6dKNtvCqV6cYWBmU=;
+ b=aFlo9lDTi6EqUkTYoV78RJqe+NztC5i50EHOMntFvyTHWItzV9jXFLLk1xgppYHSifCDIZSwA6vijAKU2bDCGXxjpAxZyHIr6NqA2knBJKkcGFpOZkq9ortxGzzDoe6dkuZ8LVEbq3Rid/tJA3MtIR+R7kfvmSHtG5I3Notqpf82BhUnzPfvZnM6CoLdAuxo0aVgLNhysdm2OgHV1DIP2PWm5V22Jvf51HeCZNwWblo2OgnsoTXCN7/CiT2q+EXbQiu0izTqRvEsYJYRbFLuePz9OXpj6uN0usw7lfC8BgyOBx/663zrrP5R0/mdYNhaAwdNa906OxT/xh0ZInaiWg==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AS8PR04MB8899.eurprd04.prod.outlook.com (2603:10a6:20b:42e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.9; Fri, 10 Oct
+ 2025 09:31:37 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9203.009; Fri, 10 Oct 2025
+ 09:31:37 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, Alexandru
+ Marginean <alexandru.marginean@nxp.com>
+Subject: RE: [v3 PATCH net] net: enetc: fix the deadlock of enetc_mdio_lock
+Thread-Topic: [v3 PATCH net] net: enetc: fix the deadlock of enetc_mdio_lock
+Thread-Index: AQHcOLyl4vHcP8LukUGQcvWe857yFbS7GIsQ
+Date: Fri, 10 Oct 2025 09:31:37 +0000
+Message-ID:
+ <PAXPR04MB85109BDA9DCBE103B0EE1F8F88EFA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20251009013215.3137916-1-jianpeng.chang.cn@windriver.com>
+In-Reply-To: <20251009013215.3137916-1-jianpeng.chang.cn@windriver.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS8PR04MB8899:EE_
+x-ms-office365-filtering-correlation-id: 3277cedc-c671-48c5-b016-08de07dfcf95
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?PF1tyy9TTArgRtQkOrba2dsHgqSbhwJjxPEtykh6uneCXMcAY8oAlrbm/spM?=
+ =?us-ascii?Q?rmbXRjFdbN6q0LxGTBdTocrNN7X+kEojl+czY9wJoMuBmDt8jn4yIaBkwNHO?=
+ =?us-ascii?Q?/IYNjodUi0YEKPOYqrcnl2ugUdVALy0HgMhfbwNhM+l4bofHkvHkXQIXtJxs?=
+ =?us-ascii?Q?G6cVwZTQwX/lUX6g/d8l6HaAtjGbuDj8FZ6xMDiE0ccuwmUQlYoZDBKO9GX+?=
+ =?us-ascii?Q?WkEvW+2LcYoGt7HgKq7FuFhZiHpPWkskT276xsVVMbYP/DMzplX4T2JjnTx2?=
+ =?us-ascii?Q?Gpv2tJnufCSIwMeVWiL8983RwW9nqmT3twBEq98hyO2q3hnm/ZLCU+TcJmWF?=
+ =?us-ascii?Q?Iz8YMKWY1uP+jhQtlJV+0xF8p5dy4DCZhm4mhqzFkiZ3SKx1axlwe/TShJN4?=
+ =?us-ascii?Q?wdrPXJsnQhAuYhOaLqufgm+xAu1jDWBJSOOlVwKXVPxdGkQSsURZWl0CkAdq?=
+ =?us-ascii?Q?BiWvR51KZ08etdG0/opF+n8iE4P1J1cpbxiV0KdHATIktAB+ju3ToVi5C0EL?=
+ =?us-ascii?Q?P7wbqptVrZy+MYVr0O/ykg7fok8vhIaTqjSAg0Zw9n8DtsBPI26sroVVnTRd?=
+ =?us-ascii?Q?mCIK7/v5rW6flMi862okSVtUwpjIJ+2NCpkmK/DitZuu5tDBJ86f6tJN1LYl?=
+ =?us-ascii?Q?wBezMfGH10EWtUrC/iYPfatQOrvlwQJXVHHIhVelNuC74zCi+qMTTeTe22mN?=
+ =?us-ascii?Q?omDFWiBe6u1Dcdp2J6liSk40beQ4YL3bGD8TQVpwCZnbDf9UVTwDQbjQVL7E?=
+ =?us-ascii?Q?QH7wcFDR4QOKNSX5hoYl4oBYCgwqPx6WP8CiNe5NfuFfaJYsFF6Vx43DEdai?=
+ =?us-ascii?Q?1MJMutgHbScV1sc3w4VTbXv/goRkn6ti2oO0tSSP7uKvFQ/WM0I6eUl4J3Ma?=
+ =?us-ascii?Q?U0POYloW9dpnxIuG43uUnn3GmTMeXSl9czVWHSYxG/EatkOmCcAnQDb8NqHj?=
+ =?us-ascii?Q?kZjUKwWcTbXI8apPERxRX2k+8y7/Ds9h/yOewTbWSRfaAWJiXRT0qB1j8OZQ?=
+ =?us-ascii?Q?dM5cWNbwbvcAFvCEDroC+amZzwEaCjI4mSqoUSvVWw0RuPuEzT+0BlFHTULa?=
+ =?us-ascii?Q?5+1p53ZFJF7/Drwojz/5YohhU/iRBNX+yJlHlWW6DgzRIJRx7k7jmw9/m0VL?=
+ =?us-ascii?Q?HWHNUpyed58cex04ZBSrxJYq8tADfT7qoD/ZY1HI7hmY5bGYFkC5DblCyiBi?=
+ =?us-ascii?Q?DAEX/PNLmzpXkyh/aGedFDB6G7WkooqVhn5YyLjlVjNJyqprIpiuNkofpLWo?=
+ =?us-ascii?Q?oLMmgSEivZNSnEuZ9U09XJ+KWkOLMdQuWH89iNFCCEIF/ol5mfl9m70WX9ra?=
+ =?us-ascii?Q?zAYYh8D46c8yrYE0Hob6enivOvu2kthpA4CRx6EF1EZ6o8J33zfzB3j+Z8ge?=
+ =?us-ascii?Q?mgbM2ebWPtwLXwZ2ZHNhDOOLmnsbYeEqxRjRQuyT3eKgL9PlryhHP270zh8o?=
+ =?us-ascii?Q?5Elfj1Myu0aPGqHaEU/4O4RKd5uiwBafMXLOfOxhdwPVw4c6jSmXUdzhHhpo?=
+ =?us-ascii?Q?JHMKa2tEoIBhe8jYpjaWPWSEgt0/VqRil8r1?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?z3kaUzTIwz92NLiquNMPdEmjzp+JrEwUj2HJGLDjSwSL6x19oIp+oaJEUTKm?=
+ =?us-ascii?Q?+GGPM5T7Y3hrDZjrv2XidEC3P/Whaf60+sdq6GGrCT8qlZetljeE7crDxbsa?=
+ =?us-ascii?Q?Dl7qviQ0iIxLC52BdKW1/aKiu5W116EZD0fpepAKBrMaGeeuwxMF4GGUHrN6?=
+ =?us-ascii?Q?h0zGIAUQ5ZP1O3Iw+XyTIyTaDXSHL8L34zcZDL7SK9hNJm6PtpSsOrF049zp?=
+ =?us-ascii?Q?O/d9AU+HCejxEdyvZopeP9ShwSgvat7eRAPeR7jDagXoHT/O+Jobz7Yb31v3?=
+ =?us-ascii?Q?Fqom8O8x+xsirIZXRJcm52148xynS67u23TJRqZSJi4Wx3wo5yss8NdRthg8?=
+ =?us-ascii?Q?JLo5rtVgS0diVsgqvWAhs0mlR6jy8JgSCNbd/exOcPxQXq8GyQrN9yQc7TWh?=
+ =?us-ascii?Q?K3ftQ8hkuXD9Uhw/sJIZk6MARW/nGqFiCTfdMLC3uLPlEkmNfynMbSJlVGJG?=
+ =?us-ascii?Q?PXoPvinP813Jl77dnx5vH/IRmWlQR1DlWL7O8tU7JP7tDnETj3cp6ZrXghxB?=
+ =?us-ascii?Q?BObdAg/KKzXVSFAJbGSizbUonPteEKq8mlCg8rvrIkEETNUxr+62yGEUbVRk?=
+ =?us-ascii?Q?/LiUl086u8zG5vBsjIM2gcwx0JdL1sSLmK4vD6hdKc/dB8ABOEluVU0tk5KO?=
+ =?us-ascii?Q?s/fZlEQZoIOloX/yvWHEeyQcMn3Ri6sfGbr8bhflsJutu4Ei7fUEixqnzT8F?=
+ =?us-ascii?Q?XK6NY/khgge4mgetJxxPnsnamjXvlRdZwb9c+GMFFrYkZn3s4Dn44O5CIYBq?=
+ =?us-ascii?Q?u+bJiVk3gGFIo2JiO9Ayk97bwwDkpksLIxyYeX7oY5bnybGpalTcZb20u8oU?=
+ =?us-ascii?Q?X3/mFF8aLpsY2Z3YHkvWAOt64feHU9yG17YmhYgQyUOmNVa7OT59XHk6zL3m?=
+ =?us-ascii?Q?p0TDs0C+Y+AETHq9H9h8/mE59nztXBGFZ6+mc2vwFHovbE1DFC+AaoJxw3nF?=
+ =?us-ascii?Q?W0ibF5TU5Opskt7vzg0v50tV1zSAsrVK+QiHdLmjbcQr8407bXwCLWeQnYlq?=
+ =?us-ascii?Q?VKNC3A9vlYzqMtPrJ8xfmTTQKf6A/Q+Sm+5snWCvrDvMVkChqwbVJzMA/d1A?=
+ =?us-ascii?Q?gXcVsnKddoG7JHXxo1GOr78kIr3yPaM3LBep0uhqRsAQL530AxIG3M04P2G4?=
+ =?us-ascii?Q?+eoyibV6tYxvB7ON5vT/XDd6Pn74mZyk8NUBDzbNeQoj2tXf0rWQSgVIdmay?=
+ =?us-ascii?Q?BH/Or5YZEX+Yc54A2uOqukJIbb5mxyueK/yiJH/SisM8TJCZhX9tHuYw3SvR?=
+ =?us-ascii?Q?DOEQRneZvYjIqwZY5NPsUOVJ9Rojjs3OazoNOO3dO5mI2cNNTzNoQIfubFkD?=
+ =?us-ascii?Q?vw/dAaKU4oqz4+zHyV+qrP1wldBF/pzpwe4ThWB3F/8EkkBHDw5h2KNx5Ph/?=
+ =?us-ascii?Q?cc6WcOKAjjD7Y3vMmKkh3attQOjg4jNmCf6eP0Af6q/a5mtZDU4ct3e+jmgt?=
+ =?us-ascii?Q?1YzZRjYUHzIpM6V3vDznuxiD+9PH9L49Q+dKIKa4b2kgwM71fMVY4f4TE0cQ?=
+ =?us-ascii?Q?Pta/0Wy8OHmme9cuur1i7mxxdVjhQDUMkz8ECnznvTY6rgHujv/MUaFRh2QJ?=
+ =?us-ascii?Q?ZLGzTz/kq8qWa/Kuroo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3277cedc-c671-48c5-b016-08de07dfcf95
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Oct 2025 09:31:37.4603
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: j/gH6v/4llLujiiyadOdT3zdkuhgJbEcih1O8+kA+1mW9GtXr+oOWIYiiuv1ugl2y0A1voLI6H+Gl9CnI57mYA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8899
 
-"Remy D. Farley" <one-d-wide@protonmail.com> writes:
+> After applying the workaround for err050089, the LS1028A platform
+> experiences RCU stalls on RT kernel. This issue is caused by the
+> recursive acquisition of the read lock enetc_mdio_lock. Here list some
+> of the call stacks identified under the enetc_poll path that may lead to
+> a deadlock:
+>=20
+> enetc_poll
+>   -> enetc_lock_mdio
+>   -> enetc_clean_rx_ring OR napi_complete_done
+>      -> napi_gro_receive
+>         -> enetc_start_xmit
+>            -> enetc_lock_mdio
+>            -> enetc_map_tx_buffs
+>            -> enetc_unlock_mdio
+>   -> enetc_unlock_mdio
+>=20
+> After enetc_poll acquires the read lock, a higher-priority writer attempt=
+s
+> to acquire the lock, causing preemption. The writer detects that a
+> read lock is already held and is scheduled out. However, readers under
+> enetc_poll cannot acquire the read lock again because a writer is already
+> waiting, leading to a thread hang.
+>=20
+> Currently, the deadlock is avoided by adjusting enetc_lock_mdio to preven=
+t
+> recursive lock acquisition.
+>=20
+> Fixes: 6d36ecdbc441 ("net: enetc: take the MDIO lock only once per NAPI p=
+oll
+> cycle")
+> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
 
-> Getting out some changes I've accumulated while making nftables to work with
-> Rust netlink-bindings. Hopefully, this will be useful upstream.
->
-> This patch:
->
-> - Fills out missing attributes in operations.
-> - Adds missing annotations: dump ops, byte-order, checks.
-> - Adds some missing sub-options (and their associated attributes).
-> - Adds (copying over) documentation for some attributes/enum members.
-> - Adds "getcompat" operation.
-> - Adds max check in netlink-raw specification (suggested by Donald Hunter).
->
-> Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
+Acked-by: Wei Fang <wei.fang@nxp.com>
 
-Hi Remy,
+Hi Vladimir,
 
-Is this v3? It should say v3 in the subject and it should contain a list
-of the changes since v2 and v1. It's hard for reviewers to follow what
-is going on otherwise.
+Do you have any comments? This patch will cause the regression of performan=
+ce
+degradation, but the RCU stalls are more severe.
 
-https://docs.kernel.org/process/submitting-patches.html#commentary
-
-> On Friday, October 3rd, 2025 at 9:04 PM, Jakub Kicinski <kuba@kernel.org> wrote:
->> Please don't send a reply in a previous thread and 4 min later a new
->> version of the patch :(
-
-You did it again, reply and new patch minutes apart. The commentary in
-the reply could instead have been in the changelog of this patch.
-
-> ---
->  Documentation/netlink/netlink-raw.yaml    |  11 +-
->  Documentation/netlink/specs/nftables.yaml | 656 ++++++++++++++++++++--
->  2 files changed, 617 insertions(+), 50 deletions(-)
-
-I think this should a 2 patch series since the schema update is a
-logical change that is independent of the nftables.yaml changes.
-
-Also, net-next is closed until Oct 13 so you should resubmit when net-next
-is open again.
-
-https://netdev.bots.linux.dev/net-next.html
-
-I will review the rest of the nftables.yaml changes in the meantime.
-
-Thanks,
-Donald.
