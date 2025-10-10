@@ -1,84 +1,109 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978092FC876;
-	Fri, 10 Oct 2025 16:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894B32FC024
+	for <netdev@vger.kernel.org>; Fri, 10 Oct 2025 16:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760115309; cv=none; b=a0Eyq7QNRnlA2/G04uhf1e3Rc6ycje/GXUaLYPMYkDA3cv3vy0St4J3iPYSXGKOAkkcQUlhXD40PCMrMkAok8z7uBAMj3SwrcWaFAQCh0c21ytJZ5GXNZvji0LJZcpPRWJeY5gP0THDHg1ywsy8jHsnp7+0F5tKyylKictTv714=
+	t=1760115493; cv=none; b=tL4szsMNZoxEyY7h5yH9bIiqF9BEXL/cs42U6G7i8YmkL54SuZ4wc3YDa9yezjia8lRhRRd561BQNdHjxFgI6ld8g9w3lk8Qo8cichhgM6aG/QFkDnQfCaV/PTCmP1GsxO+O8iunD9HDtTuTHUxA/bzzQkRTkSrdFRZ8pecdeP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760115309; c=relaxed/simple;
-	bh=suRumcgYqoCReE8eyejZ0DNC/ShHcuzZ9zg6cgvFHCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YjaWV+S50zk2riFKqaI7zPK14D3yL+cAPN3dEbxOf1LinDmIONht2+JMEgweio/v+6zuXAn8s3akHwpJ9gV+u3dC8X8BRK2pBUGmn3NN3iGEj+0JtJquirqg0UVYB2xhuBNrF6RTNOrKtMClhzDxF0T5zWyzzjfQySvV8wzGzjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BmJ6TLz+; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1760115493; c=relaxed/simple;
+	bh=YQIzgJBxlzPG5AlRv9L+UYbZx6Wu2WPPbf0x9Y29Mts=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=eNjVRN+tVl74KvVPhJ6xX+ZG3ucvvagy6pj/bfUigGzdseprpxHol8IjZnoW2UUzkgGEAvf3kiOe/yu6rpq/2KGF2GhCCy8WLKBt8xtraa3ukde1uuRuFDCyEet2nntQKhr802TuMwZy55kID81dhO8CTswjsDNRed93bFyNggk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IVTg8c3A; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BmJ6TLz+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vscTT9HApN3I/7J7o6eTXeB4kqT2Uq/JxUsNpPc9x4c=; b=BmJ6TLz+3ImZgyegUyiBhBdxD6
-	6t7z+p3q0qqdz29e9/eJ53uRu+bGZ1JD+F4O8+/JkzDTC0o1kuaU72MG9wZAY+OV7uRg1f7MlAwY1
-	fxV7oYk88oPiZ73BA+Net4WlYvnjkrZ7uTsUByCBLA/Kegb9P0cyY4nR6GrNremzyFGY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v7GOE-00AcUe-SN; Fri, 10 Oct 2025 18:54:46 +0200
-Date: Fri, 10 Oct 2025 18:54:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Conor Dooley <conor@kernel.org>
-Cc: Thomas Wismer <thomas@wismer.xyz>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Wismer <thomas.wismer@scs.ch>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
-Message-ID: <d93573b4-6faa-4af5-80ae-32d68092ff30@lunn.ch>
-References: <20251004180351.118779-2-thomas@wismer.xyz>
- <20251004180351.118779-8-thomas@wismer.xyz>
- <20251007-stipulate-replace-1be954b0e7d2@spud>
- <20251008135243.22a908ec@pavilion>
- <e14c6932-efc9-4bf2-a07b-6bbb56d7ffbd@lunn.ch>
- <20251009223302.306e036a@pavilion>
- <8395a77f-b3ae-4328-9acb-58c6ac00bf9e@lunn.ch>
- <20251010-gigahertz-parakeet-4e8b62ffa9fd@spud>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IVTg8c3A"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b5515eaefceso1964130a12.2
+        for <netdev@vger.kernel.org>; Fri, 10 Oct 2025 09:58:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760115491; x=1760720291; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YQIzgJBxlzPG5AlRv9L+UYbZx6Wu2WPPbf0x9Y29Mts=;
+        b=IVTg8c3Aj6VRZ9oSUNVWWb31sDwJwi0JGoyCtWNmkGB5qHshdK2u0c2b9ZDYDaY1Fd
+         a1QCDSfJSM/Ova+7O48NUEprNfuOl6BytiBe/JgG7mn5w41qVIeZGgFwg1SFOtbPr0DI
+         H2IskcjC/CfgqGcr8/K127IDoXaomYcf0f/vPnnBqCM4ZIFKaY1KJRymUb0kamswiFA8
+         neAq970dBldmoB9PfEtXmEpTgJwMCebbebDD1qWl4CcnFTHDIF1ahj0gUTc/OCVrvvQ2
+         hwXfmKOMyR7iuFMscZGwVa8dM7MJ5JeCazeb5xvEnPbIiZxaavNcIbMPjUI4Lq8RUDj8
+         EZMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760115491; x=1760720291;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YQIzgJBxlzPG5AlRv9L+UYbZx6Wu2WPPbf0x9Y29Mts=;
+        b=dUk583oqXz9Kn03pyrjTroRvvCb9lkun+5adPZqCX1nYwJHzjbtB6V+Q9yy0goWo9S
+         rVBacfmE52+WiY7z6zeCHZoHFpt1gqsuByuJjF63egyBdx2Dn3vPwB2XBK30+TGT2YFQ
+         kQVKuT/a+7EFLZmktnzE+E1uKprfCuqS/tGgd0kMWZ1nqhfGLJ9XqvC6ZhRNMDrCkb7l
+         f4zTN42C9/ne86YIgSGDj/q9+vtU7u7LXaCMQ2O947IRKADtCMfs2SBio44nJ8lbbd7d
+         yXdcqhDAYGesNawf2kzTYFtmZSh4GPZywRVuAbJgkDdo5H0BCMW1nxHYbnFn8uD++WTO
+         HJEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYo7cJbVpfuboGm4WJ/Ztinazd1PrLWHnPEoouhKDBpRSqUeOwtnV4vkQRwLqd6O2nwYh1Ggo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTqzaM2Vkh9eTRAUrnDzPblTkBQ5qiH2+PFaVLmrLMGjFQ/XvG
+	odTQQ2OJOEsi4TCYmdapa2T+1opSFRdIl29e6ASuFia3lgXWvEq0G/tL
+X-Gm-Gg: ASbGncuWiUr0L+grbh3lkMfw3MyPjx/VjTb+jmRuH7ci/B7iNfmrlUHsuiRMxmuy1l8
+	vqZqWR1YOL91+ghQlnSJbuicw2MIENrkLw75V76qXVyHrEF/L8bCrffFtScTebgiFtMKqb6uarN
+	IvioTxk3i8E8SVyVvS2GJ8Xo5qlVTp3tgd6FkkGGQFsKMFNo/dPrORZt6H8xSfnFp6P89tDeExA
+	nwKh9tOC2WjdG3kXULEtX6B3ZoCTOfTU2J5561bEeZSk9+t29qKDeTN2I02dufi2iLcahP5O1I4
+	C2vqCR4yWdAx6jweQpEGtfEub1LUWTrXTHN7RXBTeqH6JAjtpS4zstKOocr/GbThkXMDBFwVip+
+	k+UGXqzK4YF+WDKpm1zQ9di3d+LQvJ5HoWcWYNw==
+X-Google-Smtp-Source: AGHT+IFe5XfGJsLG96cHOz2cIoZiFjCxmIX4mzf9nbE5HrQUc4cqUqYqn0FJn0Nd1KULwqb0Pe1Evg==
+X-Received: by 2002:a17:902:fc46:b0:27e:ef12:6e94 with SMTP id d9443c01a7336-29027418f97mr154166675ad.55.1760115490627;
+        Fri, 10 Oct 2025 09:58:10 -0700 (PDT)
+Received: from localhost ([175.204.162.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034f362fasm61712045ad.97.2025.10.10.09.58.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Oct 2025 09:58:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251010-gigahertz-parakeet-4e8b62ffa9fd@spud>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 11 Oct 2025 01:58:07 +0900
+Message-Id: <DDESV8839WLY.MLMFM3ZOOQPN@gmail.com>
+Subject: Re: [PATCH net] net: dlink: fix null dereference in
+ receive_packet()
+Cc: "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Simon Horman" <horms@kernel.org>
+From: "Yeounsu Moon" <yyyynoom@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20251009190222.4777-1-yyyynoom@gmail.com>
+ <20251010071835.GB3115768@horms.kernel.org>
+In-Reply-To: <20251010071835.GB3115768@horms.kernel.org>
 
-> > So if the silicon and the DT disagree, you get -ENODEV or similar?
-> > That is what i would recommend, so that broken DT blobs get found by
-> > the developer.
-> 
-> I'm personally not a big fan of this kind of thing, as it prevents using
-> fallbacks for new devices when done strictly. I only really like it
-> being done this way if the driver does not produce errors for unknown
-> part numbers, only if (using this case as an example) a b device is
-> labeled as a non-b, or vice-versa. IOW, if the driver doesn't recognise
-> the ID, believe what's in DT.
+On Fri Oct 10, 2025 at 4:18 PM KST, Simon Horman wrote:
+> On Fri, Oct 10, 2025 at 04:02:22AM +0900, Yeounsu Moon wrote:
+>> If `np->rx_skbuff[entry]` was not allocated before
+>> reuse, `receive_packet()` will cause null dereference.
+>>=20
+>> This patch fixes the issue by breaking out of the loop when
+>> `np->rx_skbuff[entry]` is `NULL`.
+>
+> I see that if np->rx_skbuff[entry] there will be a dereference.
+> But I'm less clear on how this situation can occur.
+When it failed to reallocate `skb`, and then a lot of packets come in at
+that time, `skb_put()` in `receive_packet()` will cause a null dereference
+and the kernel will panic.
 
-The issue we have seen in the past when not strictly checking the
-compatible against the hardware, is that a number of DT blob ship with
-the wrong compatible. Then sometime later you find you need to key
-some feature off the compatible, but you cannot without breaking all
-those devices which have the wrong compatible.
-
-In order to be able to use the compatible, it has to be correct.
-
-   Andrew
+> So I think it would be worth adding some explanation of that
+> to the commit message.
+Sorry, I'll make sure to describe the scenario more clearly in the commit
+message next time.
+>
+> Also, I do see that break will result in np->rx_skbuff[entry],
+> and other empty entries in that array, being refilled.
+> This is due to the refill loop that towards the end of receive_packet().
+Exactly, that is correct.
+> But perhaps it is worth mentioning that in the commit message too?
+You are right. I should mention the effect of the break in the commit
+message as well. Sorry for making you point it out twice.
