@@ -1,28 +1,29 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A750242D92
-	for <netdev@vger.kernel.org>; Sat, 11 Oct 2025 09:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B645417597
+	for <netdev@vger.kernel.org>; Sat, 11 Oct 2025 09:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760175682; cv=none; b=Bt+RXEcP1724o1jw7d9kijr+ZmQkGTePaOjJEjHCkaukUI8jCSyO8uqpeOd0kWLBVu9/IwtxK+Atn5Js1tx8q/XUdrPZFKxnIGxkqPPGFghcfxfo2A4CpYy5kyUly8gMG4CjH2PHkqI3rSxZbwMUG6BwgwWxPH/WeHQ08hvnfW0=
+	t=1760175683; cv=none; b=t/3Acnv7xX3AtzCe9x05DxKoRkvkTYtpIqiQvbGM5n43RXjn+SowMRguOk6x/7yUm2P+X6nJJ2lEhgFPLZ1wjLHAAK5iaGuqhpv9v2/ys26hbh3XXu8wbkBj+oHalan1cFKDW+xCrJA4Wt01S5imnd0h/lV7i7Zj9wQcHgcBuBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760175682; c=relaxed/simple;
-	bh=JQeci8kKFhUqNqSiKukDhGQ1oMGj2u2fkEVG4LJqWeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CkuhsrbhxCsuO9JMApLVK+wF9IgLQ/2syaAxUhS4F/ceAG6cV210z0tTqLXjgDiQakTRIQ3qGBlQJItpj6aRNlT85+38IAvG4S8N0sTAu6Jc0N3odi6P3jMdCl2Zn5ku7cvnsiAI4n95ISEjO1qQ2MbPLNerDoJCFYVox54Jxfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=FPGVTCke; arc=none smtp.client-ip=115.124.30.101
+	s=arc-20240116; t=1760175683; c=relaxed/simple;
+	bh=2ftEhwT8vUHKGHuGqY8DO57WBQM25XEuR/HRLrPTmcA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DrdZKVviYdKZ6e9u8T7UGrFjdnj8FKzmNRlTBP2kFiJb8wsflP/TnxGHgP+eTPJv9nIhJVAQlxII5N5czT2YzqNB9aRPWEciqNfYHDcaiXNXgvtxF2fWMAiXFn1rDaUMaaIiQDKy7YRelLO/3UoYwTlPBB0l3+IWqXE3gbTZMnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ijuT/kIQ; arc=none smtp.client-ip=115.124.30.113
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="FPGVTCke"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ijuT/kIQ"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1760175668; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=0KMzj+miCiTqLWcLN1eA5YLqErPlKnWHSP2dVaYTGYY=;
-	b=FPGVTCkevAMrqE9HcNogKgNRqmG5IdIHODK2j1pLlqUVr+n9Yjfsu/d2nZt+nd5g6PHwfHSkhGKUC4cn6wsYR2uGQUySnzNOxPThT+I3OxwGRq+/c9u/oa/x3nUTF5CKb0FvSWs3W1aQVQDzZy7be2GuxoqsMmkksiCMD+oSG1I=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wpw8kFU_1760175667 cluster:ay36)
+	t=1760175670; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=gcduihWCBwhR60cdi2sYGwEeNHZOzlxkQW0v0v5sXrc=;
+	b=ijuT/kIQnO5KP28OFsvJhkXFkfTqB0pFau2GS5yRVdMdKCQmwRyJzkq4gZt3JL2oBthNLQfG072Y3duqDIxsXqK2O/qx9tHPUiSCgp3DZNsTLYf1X3BZ9ixVjMpO1cGem3Z8kpuOn316UFOdEjrHUXmi2mTHA5f6+hkIwF5Kuc0=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WpwEbRm_1760175669 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 11 Oct 2025 17:41:08 +0800
+          Sat, 11 Oct 2025 17:41:09 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -39,10 +40,12 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
 	Alvaro Karsz <alvaro.karsz@solid-run.com>,
 	Heng Qi <hengqi@linux.alibaba.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v1 0/3] fixes two virtio-net related bugs.
-Date: Sat, 11 Oct 2025 17:41:04 +0800
-Message-Id: <20251011094107.16439-1-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net v1 2/3] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
+Date: Sat, 11 Oct 2025 17:41:06 +0800
+Message-Id: <20251011094107.16439-3-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
+In-Reply-To: <20251011094107.16439-1-xuanzhuo@linux.alibaba.com>
+References: <20251011094107.16439-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,27 +55,70 @@ MIME-Version: 1.0
 X-Git-Hash: 94b35d9b48af
 Content-Transfer-Encoding: 8bit
 
-As discussed in http://lore.kernel.org/all/20250919013450.111424-1-xuanzhuo@linux.alibaba.com
-Commit #1 Move the flags into the existing if condition; the issue is that it introduces a
-small amount of code duplication.
+The commit be50da3e9d4a ("net: virtio_net: implement exact header length
+guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
+feature in virtio-net.
 
-Commit #3 is new to fix the hdr len in tunnel gso feature.
+This feature requires virtio-net to set hdr_len to the actual header
+length of the packet when transmitting, the number of
+bytes from the start of the packet to the beginning of the
+transport-layer payload.
 
-Hi @Paolo Abenchi,
-Could you please test commit #3? I don't have a suitable test environment, as
-QEMU doesn't currently support the tunnel GSO feature.
+However, in practice, hdr_len was being set using skb_headlen(skb),
+which is clearly incorrect. This commit fixes that issue.
 
-Thanks.
+Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length guest feature")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+---
+ include/linux/virtio_net.h | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-Xuan Zhuo (3):
-  virtio-net: fix incorrect flags recording in big mode
-  virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
-  virtio-net: correct hdr_len handling for tunnel gso
-
- drivers/net/virtio_net.c   | 16 ++++++++-----
- include/linux/virtio_net.h | 46 ++++++++++++++++++++++++++++++++------
- 2 files changed, 50 insertions(+), 12 deletions(-)
-
---
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 20e0584db1dd..10ca53b3a399 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -217,20 +217,34 @@ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 
+ 	if (skb_is_gso(skb)) {
+ 		struct skb_shared_info *sinfo = skb_shinfo(skb);
++		u16 hdr_len;
+ 
+-		/* This is a hint as to how much should be linear. */
+-		hdr->hdr_len = __cpu_to_virtio16(little_endian,
+-						 skb_headlen(skb));
+ 		hdr->gso_size = __cpu_to_virtio16(little_endian,
+ 						  sinfo->gso_size);
+-		if (sinfo->gso_type & SKB_GSO_TCPV4)
++		if (sinfo->gso_type & SKB_GSO_TCPV4) {
+ 			hdr->gso_type = VIRTIO_NET_HDR_GSO_TCPV4;
+-		else if (sinfo->gso_type & SKB_GSO_TCPV6)
++			hdr_len = tcp_hdrlen(skb);
++		} else if (sinfo->gso_type & SKB_GSO_TCPV6) {
+ 			hdr->gso_type = VIRTIO_NET_HDR_GSO_TCPV6;
+-		else if (sinfo->gso_type & SKB_GSO_UDP_L4)
++			hdr_len = tcp_hdrlen(skb);
++		} else if (sinfo->gso_type & SKB_GSO_UDP_L4) {
+ 			hdr->gso_type = VIRTIO_NET_HDR_GSO_UDP_L4;
+-		else
++			hdr_len = sizeof(struct udphdr);
++		} else {
+ 			return -EINVAL;
++		}
++
++		/* In certain code paths (such as the TUN receive path), this
++		 * function may be called without a transport header.
++		 */
++		if (skb_transport_header_was_set(skb)) {
++			hdr_len += skb_transport_offset(skb);
++			hdr->hdr_len = __cpu_to_virtio16(little_endian,
++							 hdr_len);
++		} else {
++			hdr->hdr_len = 0;
++		}
++
+ 		if (sinfo->gso_type & SKB_GSO_TCP_ECN)
+ 			hdr->gso_type |= VIRTIO_NET_HDR_GSO_ECN;
+ 	} else
+-- 
 2.32.0.3.g01195cf9f
 
