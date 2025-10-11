@@ -1,29 +1,29 @@
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268022422E
-	for <netdev@vger.kernel.org>; Sat, 11 Oct 2025 09:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514D524A078
+	for <netdev@vger.kernel.org>; Sat, 11 Oct 2025 09:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760175683; cv=none; b=uK0x3+S6VcLCw2ZXqw4ndZX/qqrCpmUNAbsE6mcQCtgVUJ6qE8nvXtCZQ4h1BoDFgBlPLfE1y4LF5nvkm+dJa19cyi4R5BOCbfB2CX7lSD8wNh6JGp9RW3jIZP2i1onqTquU5tbutuR2KXE1e6ek8qb0j21MIRdDuPCPgxCZCZA=
+	t=1760175685; cv=none; b=S1hj3jb0GacMId42KCXdTVVpV7N00tMUK3BzgbHbm7jKtc7HSLiY5Sixmb6yVM/BfUJPgjz/jlYDVXhf4ynLHpVHMeudNmQTisDXRvsCqCw96rpr+3XHLAw3xc8vNaQ23Y9+WwWIDohw0/BfuDVxHsBQVvlMN+eCXtvFjxpx8lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760175683; c=relaxed/simple;
-	bh=9jWpdexeslocZY1OgfoeF+e/supLded3SAgaBRJBMnc=;
+	s=arc-20240116; t=1760175685; c=relaxed/simple;
+	bh=yOC2W4AFAHNzbRkZyMvk/V8kIPUGlFo3ypCuZsKGecw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZhU5K3e7yhUrngaDnYw/ksDNmjXjLIfSI7hQEjeeak/JcaPMceu3Q1ma3nd9q1NfvNXzxv7e1NCAq6ZBgplPCkyJ1tOsng9XMivHkfI+oi3AtIkYcnpQTAOSxNvMP2buZKWaZMUR8gHKAE4ADhoV5rVnecSFlh7OqxP66TC1wh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=GKSy6QRZ; arc=none smtp.client-ip=115.124.30.118
+	 MIME-Version; b=FXwaAWl1gKDOp9OT1rSAtI1ij8/rE7Spt+qz3ppQoAh3Pk3MgO25EZYRX30RcIZEHOZrjlCv4+BjkKPZDfGXV9nNO6EWkWq090SvwlCPhbdF6Sy5fiLNxyOEMJLN7qR//UazLAZ3vdR6D/9xNLgl3tP13Ju/XxeLLqLlk2U98Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=k7NRotCd; arc=none smtp.client-ip=115.124.30.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="GKSy6QRZ"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="k7NRotCd"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1760175669; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=5lIGO5dOqEn/E9rtaIo990T2KqDRJ8uzmlBX+DLJftU=;
-	b=GKSy6QRZDY2If3NOHzAZGz6bhPGBexN02kyxmL69iXaDfMLdgvilFz/TEFqy/nLXaPThZuGj4U0eCJiGZakuBVght46zO/4sWqmE1La/KuxvU0sN0CS1i3/8CUuFIrDGjKyoRqIfO2UeqvumGi1lLxPym27vngjgbEo1SItmEOY=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WpwHC-P_1760175668 cluster:ay36)
+	t=1760175670; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=Jw5BqqpTvIzAnNPz6JCxpDFItwpfORs8DdZpnP0dnNE=;
+	b=k7NRotCdPOPpIb9Vd7gli/lYsKyzWN2cNdiJ/+oZtgZlvCIk7MFG+CdkZ4V6Q/TfBIjB9rPzgWvr2g6MUy3H46jGCITRcharyHuowPOFpdsQGBErs6BtNXjQN2rWKDUwPFp2QbKY1OlJhSZEkLTxrm6nj3o0xhxmVUs7/fWhkok=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WpwGqHK_1760175669 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Sat, 11 Oct 2025 17:41:08 +0800
+          Sat, 11 Oct 2025 17:41:10 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -40,9 +40,9 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
 	Alvaro Karsz <alvaro.karsz@solid-run.com>,
 	Heng Qi <hengqi@linux.alibaba.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v1 1/3] virtio-net: fix incorrect flags recording in big mode
-Date: Sat, 11 Oct 2025 17:41:05 +0800
-Message-Id: <20251011094107.16439-2-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net v1 3/3] virtio-net: correct hdr_len handling for tunnel gso
+Date: Sat, 11 Oct 2025 17:41:07 +0800
+Message-Id: <20251011094107.16439-4-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20251011094107.16439-1-xuanzhuo@linux.alibaba.com>
 References: <20251011094107.16439-1-xuanzhuo@linux.alibaba.com>
@@ -55,61 +55,60 @@ MIME-Version: 1.0
 X-Git-Hash: 94b35d9b48af
 Content-Transfer-Encoding: 8bit
 
-The purpose of commit 703eec1b2422 ("virtio_net: fixing XDP for fully
-checksummed packets handling") is to record the flags in advance, as
-their value may be overwritten in the XDP case. However, the flags
-recorded under big mode are incorrect, because in big mode, the passed
-buf does not point to the rx buffer, but rather to the page of the
-submitted buffer. This commit fixes this issue.
+The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
+GSO tunneling.") introduces support for the UDP GSO tunnel feature in
+virtio-net.
 
-For the small mode, the commit c11a49d58ad2 ("virtio_net: Fix mismatched
-buf address when unmapping for small packets") fixed it.
+The virtio spec says:
 
-Fixes: 703eec1b2422 ("virtio_net: fixing XDP for fully checksummed packets handling")
+    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
+    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
+    all the headers up to and including the inner transport.
+
+The commit did not update the hdr_len to include the inner transport.
+
+Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
 Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
 ---
- drivers/net/virtio_net.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ include/linux/virtio_net.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 7da5a37917e9..22f7725798e3 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2620,22 +2620,28 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 		return;
- 	}
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index 10ca53b3a399..742cce34a24e 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -403,6 +403,7 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
+ 	unsigned int inner_nh, outer_th;
+ 	int tnl_gso_type;
++	u16 hdr_len;
+ 	int ret;
  
--	/* 1. Save the flags early, as the XDP program might overwrite them.
-+	/* About the flags below:
-+	 * 1. Save the flags early, as the XDP program might overwrite them.
- 	 * These flags ensure packets marked as VIRTIO_NET_HDR_F_DATA_VALID
- 	 * stay valid after XDP processing.
- 	 * 2. XDP doesn't work with partially checksummed packets (refer to
- 	 * virtnet_xdp_set()), so packets marked as
- 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
- 	 */
--	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 
--	if (vi->mergeable_rx_bufs)
-+	if (vi->mergeable_rx_bufs) {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
- 					stats);
--	else if (vi->big_packets)
-+	} else if (vi->big_packets) {
-+		void *p = page_address((struct page *)buf);
+ 	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
+@@ -434,6 +435,23 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	outer_th = skb->transport_header - skb_headroom(skb);
+ 	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
+ 	vhdr->outer_th_offset = cpu_to_le16(outer_th);
 +
-+		flags = ((struct virtio_net_common_hdr *)p)->hdr.flags;
- 		skb = receive_big(dev, vi, rq, buf, len, stats);
--	else
-+	} else {
-+		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
- 		skb = receive_small(dev, vi, rq, buf, ctx, len, xdp_xmit, stats);
++	switch (skb->inner_ipproto) {
++	case IPPROTO_TCP:
++		hdr_len = inner_tcp_hdrlen(skb);
++		break;
++
++	case IPPROTO_UDP:
++		hdr_len = sizeof(struct udphdr);
++		break;
++
++	default:
++		return -EINVAL;
 +	}
++
++	hdr_len += skb_inner_transport_offset(skb);
++	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
++
+ 	return 0;
+ }
  
- 	if (unlikely(!skb))
- 		return;
 -- 
 2.32.0.3.g01195cf9f
 
