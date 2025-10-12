@@ -1,149 +1,72 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A762C1A314E;
-	Sun, 12 Oct 2025 13:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6344E33D8
+	for <netdev@vger.kernel.org>; Sun, 12 Oct 2025 14:22:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760277416; cv=none; b=PgrTqeUh3vfu60ZYs15lEZn/ShHQf/TOgA3z7FAzVxOtlc9++xLiLHBJPoyjOOXfneAhFTrcJNdW1dp8/cwLluWsJrg9y9Gdwa+c8TSxVRKvxSwi1CCLJDxuDfZ4jZEzU7WFQAA7pUOC1F9+0Yffx6oTxu4KibHTiA6hpweCw90=
+	t=1760278927; cv=none; b=GP4zAcEPLofbeOJfGOp9AEfWRQ5fR7iQBdZrX2Seqey2iUo23a49P6s3inPBKIfckTNiEHwLVYOmjD7YRBm8h9EGNmFcLbn3nZw3QfBPF0jM4IIYtd/nSx1riNOgP47nUB3W0DwGonskmbjfGoXxMpZpBcKPlrO6Bc2hrxaf+98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760277416; c=relaxed/simple;
-	bh=dfHmpJ3HxLV4gF+y5WmcffGIAAXZtrfoTvfesEZafuE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhorDEr9dtwPDED9/IG/3I+eZ0a4aMExoh8lbg+ac4JrjPVj/4RLHjHtQojAaWWKgvNQhS5iJ10wSEi1KoUxFMKTIOZwcJH0T7Q3d3MXxIc/SEssLxmHLNOS/JHJStetynhfztBOgu9CKMEr5tPtjQ8e7kCKR19PrKPXXdUPlyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from 7cf34ddaca59.ant.amazon.com (unknown [89.100.17.9])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 5E5814018F;
-	Sun, 12 Oct 2025 13:56:50 +0000 (UTC)
-Authentication-Results: Plesk;
-	spf=pass (sender IP is 89.100.17.9) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=7cf34ddaca59.ant.amazon.com
-Received-SPF: pass (Plesk: connection is authenticated)
-From: Arnaud lecomte <contact@arnaud-lcm.com>
-To: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
-Cc: bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	contact@arnaud-lcm.com
-Subject: test
-Date: Sun, 12 Oct 2025 14:56:49 +0100
-Message-ID: <20251012135649.59492-1-contact@arnaud-lcm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <688809c1.a00a0220.b12ec.00b7.GAE@google.com>
-References: <688809c1.a00a0220.b12ec.00b7.GAE@google.com>
+	s=arc-20240116; t=1760278927; c=relaxed/simple;
+	bh=9pESG64miPasLo7bV0CQgEu8LhHCXPWVa/VPYfrhM1U=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=cuXgQbiDkveJZIfzYYAbkNJERTNMF5wIQgTeK+rwAMDpLQKpB7fnMaGjjZ5YoFrlh5dX2R+BnIk3ny7JMTWXWAct6pcRU1NfSuedTPJU03kcILbftt1aeYO6S+GABe2rymZBXYy/FHVHoZTye5ENgEHuH1fCBUlPEhHr445XYCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4257567fb7cso113011845ab.2
+        for <netdev@vger.kernel.org>; Sun, 12 Oct 2025 07:22:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760278925; x=1760883725;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U0rSnZy6IeqJJ4+YGSwK6X2T8neJu8Zh87YZ79NTSbY=;
+        b=qmXsgce+qzBtracVj2NRJbiR2IJe4+E4jBa1knwMrTwne5/pX2NipO7n5h9iDHvYPl
+         dFDpFO1iKbaC3uJDMwQ/qo5m3yXwnNPht3ROhEeO64MCSJyraRHjABTFZo04GdwupHNC
+         CWJaBsHV0r0ejSPimNGVaSUD0gE+fj4ynA8LZQtDoq9A4gvR0Vw7GSsTWB9QQ1wu4/M6
+         ZNmVR8J0ViNLhBwsHMJ/oB8AcfXoQBA0OO73EeoAVBQif5kFyclXQt+psk/0rIL7hb8Q
+         dk15dF0QNUmqBPDha2BbGM6VzBvnRj3VkwmN5oZ4klE9ReOJ3vKGNirowWUIHjfBZ5P+
+         l4MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXzJ/8ZcVl0zdMPdgmYF4rdT9jPfx1ORSfDlVX8ZVPsUlFh6Wax29dLado4jzLtU1URqI/pnw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynZQWDRkYeTRpqfs8Z93GBWlo0mZ+qi3mpuPqUIi8XpeYRujy3
+	jF71QL+wTpdNj33qj74D7CKg3d5iWmUsa4jDPQqT+vAZkcuWdlqKDywkPgVQOLc3VCZPVE6ZwsG
+	ptjdVNezpBTRtJB3WRA1aGccNJE0mrM4Qo7LPBUqhybVIJiftTfw5XxKRK+I=
+X-Google-Smtp-Source: AGHT+IEOWVreDJCAhWA6Zb9zMGM0Ep8ZtoYXbNbJhScWAxb5UUqEZQDZ24kOeejx3drWf4EUBDskyIE9dfZCe8SyAQ+ioqPyW0JO
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <176027741085.28150.16747354518360343128@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+X-Received: by 2002:a05:6e02:12c5:b0:426:39a:90f1 with SMTP id
+ e9e14a558f8ab-42f873d62c7mr207144655ab.18.1760278925708; Sun, 12 Oct 2025
+ 07:22:05 -0700 (PDT)
+Date: Sun, 12 Oct 2025 07:22:05 -0700
+In-Reply-To: <20251012135649.59492-1-contact@arnaud-lcm.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68ebb98d.050a0220.91a22.01d9.GAE@google.com>
+Subject: Re: [syzbot] [bpf?] KASAN: slab-out-of-bounds Write in __bpf_get_stackid
+From: syzbot <syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com>
+To: bpf@vger.kernel.org, contact@arnaud-lcm.com, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test
+Hello,
 
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 3615c06b7dfa..c0ee51db8eed 100644
---- a/kernel/bpf/stackmap.c
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
- BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struct bpf_map *, map,
-           u64, flags)
- {
--       u32 max_depth = map->value_size / stack_map_data_size(map);
--       u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-+       u32 elem_size = stack_map_data_size(map);
-        bool user = flags & BPF_F_USER_STACK;
-        struct perf_callchain_entry *trace;
-        bool kernel = !user;
-+       u32 max_depth;
+Reported-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
+Tested-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
 
-        if (unlikely(flags & ~(BPF_F_SKIP_FIELD_MASK | BPF_F_USER_STACK |
-                               BPF_F_FAST_STACK_CMP | BPF_F_REUSE_STACKID)))
-                return -EINVAL;
+Tested on:
 
--       max_depth += skip;
--       if (max_depth > sysctl_perf_event_max_stack)
--               max_depth = sysctl_perf_event_max_stack;
--
-+       max_depth = stack_map_calculate_max_depth(map->value_size, elem_size, flags);
-        trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
-                                   false, false);
+commit:         67029a49 Merge tag 'trace-v6.18-3' of git://git.kernel..
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=16848c58580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=308983f9c02338e8
+dashboard link: https://syzkaller.appspot.com/bug?extid=c9b724fbb41cf2538b7b
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=175d3304580000
 
-@@ -371,15 +391,11 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
-                return -EFAULT;
-
-        nr_kernel = count_kernel_ip(trace);
-+       __u64 nr = trace->nr; /* save original */
-
-        if (kernel) {
--               __u64 nr = trace->nr;
--
-                trace->nr = nr_kernel;
-                ret = __bpf_get_stackid(map, trace, flags);
--
--               /* restore nr */
--               trace->nr = nr;
-        } else { /* user */
-                u64 skip = flags & BPF_F_SKIP_FIELD_MASK;
-
-@@ -390,6 +406,10 @@ BPF_CALL_3(bpf_get_stackid_pe, struct bpf_perf_event_data_kern *, ctx,
-                flags = (flags & ~BPF_F_SKIP_FIELD_MASK) | skip;
-                ret = __bpf_get_stackid(map, trace, flags);
-        }
-+
-+       /* restore nr */
-+       trace->nr = nr;
-+
-        return ret;
- }
-
-@@ -406,7 +426,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
-                            struct perf_callchain_entry *trace_in,
-                            void *buf, u32 size, u64 flags, bool may_fault)
- {
--       u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
-+       u32 trace_nr, copy_len, elem_size, max_depth;
-        bool user_build_id = flags & BPF_F_USER_BUILD_ID;
-        bool crosstask = task && task != current;
-        u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
-@@ -438,21 +458,20 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
-                goto clear;
-        }
-
--       num_elem = size / elem_size;
--       max_depth = num_elem + skip;
--       if (sysctl_perf_event_max_stack < max_depth)
--               max_depth = sysctl_perf_event_max_stack;
-+       max_depth = stack_map_calculate_max_depth(size, elem_size, flags);
-
-        if (may_fault)
-                rcu_read_lock(); /* need RCU for perf's callchain below */
-
--       if (trace_in)
-+       if (trace_in) {
-                trace = trace_in;
--       else if (kernel && task)
-+               trace->nr = min_t(u32, trace->nr, max_depth);
-+       } else if (kernel && task) {
-                trace = get_callchain_entry_for_task(task, max_depth);
--       else
-+       } else {
-                trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
-                                           crosstask, false);
-+       }
-
-        if (unlikely(!trace) || trace->nr < skip) {
-                if (may_fault)
-@@ -461,7 +480,6 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
-        }
-
-        trace_nr = trace->nr - skip;
--       trace_nr = (trace_nr <= num_elem) ? trace_nr : num_elem;
-        copy_len = trace_nr * elem_size;
-
-        ips = trace->ip + skip;
---
-2.47.3
+Note: testing is done by a robot and is best-effort only.
