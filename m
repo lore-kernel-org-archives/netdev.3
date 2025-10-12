@@ -1,72 +1,94 @@
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6344E33D8
-	for <netdev@vger.kernel.org>; Sun, 12 Oct 2025 14:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CE5286D69
+	for <netdev@vger.kernel.org>; Sun, 12 Oct 2025 14:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760278927; cv=none; b=GP4zAcEPLofbeOJfGOp9AEfWRQ5fR7iQBdZrX2Seqey2iUo23a49P6s3inPBKIfckTNiEHwLVYOmjD7YRBm8h9EGNmFcLbn3nZw3QfBPF0jM4IIYtd/nSx1riNOgP47nUB3W0DwGonskmbjfGoXxMpZpBcKPlrO6Bc2hrxaf+98=
+	t=1760279333; cv=none; b=EVFcthVjFfaF4BsoMUHb5bsF3bGUbadJZ3zzaYCJQhSHh7QUDllDg7C97L5gG1divSDsugfr3eou4YegEYIuvg3mHCTsXaQxZNvCLmSSlmcaijZOitC6+hM/LvguSpHAOOK6aPP/IlYkbtwipBcDO6/GYGOkLRtjaYRpuJtub2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760278927; c=relaxed/simple;
-	bh=9pESG64miPasLo7bV0CQgEu8LhHCXPWVa/VPYfrhM1U=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=cuXgQbiDkveJZIfzYYAbkNJERTNMF5wIQgTeK+rwAMDpLQKpB7fnMaGjjZ5YoFrlh5dX2R+BnIk3ny7JMTWXWAct6pcRU1NfSuedTPJU03kcILbftt1aeYO6S+GABe2rymZBXYy/FHVHoZTye5ENgEHuH1fCBUlPEhHr445XYCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4257567fb7cso113011845ab.2
-        for <netdev@vger.kernel.org>; Sun, 12 Oct 2025 07:22:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760278925; x=1760883725;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U0rSnZy6IeqJJ4+YGSwK6X2T8neJu8Zh87YZ79NTSbY=;
-        b=qmXsgce+qzBtracVj2NRJbiR2IJe4+E4jBa1knwMrTwne5/pX2NipO7n5h9iDHvYPl
-         dFDpFO1iKbaC3uJDMwQ/qo5m3yXwnNPht3ROhEeO64MCSJyraRHjABTFZo04GdwupHNC
-         CWJaBsHV0r0ejSPimNGVaSUD0gE+fj4ynA8LZQtDoq9A4gvR0Vw7GSsTWB9QQ1wu4/M6
-         ZNmVR8J0ViNLhBwsHMJ/oB8AcfXoQBA0OO73EeoAVBQif5kFyclXQt+psk/0rIL7hb8Q
-         dk15dF0QNUmqBPDha2BbGM6VzBvnRj3VkwmN5oZ4klE9ReOJ3vKGNirowWUIHjfBZ5P+
-         l4MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXzJ/8ZcVl0zdMPdgmYF4rdT9jPfx1ORSfDlVX8ZVPsUlFh6Wax29dLado4jzLtU1URqI/pnw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynZQWDRkYeTRpqfs8Z93GBWlo0mZ+qi3mpuPqUIi8XpeYRujy3
-	jF71QL+wTpdNj33qj74D7CKg3d5iWmUsa4jDPQqT+vAZkcuWdlqKDywkPgVQOLc3VCZPVE6ZwsG
-	ptjdVNezpBTRtJB3WRA1aGccNJE0mrM4Qo7LPBUqhybVIJiftTfw5XxKRK+I=
-X-Google-Smtp-Source: AGHT+IEOWVreDJCAhWA6Zb9zMGM0Ep8ZtoYXbNbJhScWAxb5UUqEZQDZ24kOeejx3drWf4EUBDskyIE9dfZCe8SyAQ+ioqPyW0JO
+	s=arc-20240116; t=1760279333; c=relaxed/simple;
+	bh=Og6m1KJ/1oagFeEPSJ3qBstH2NMkDrVm7ArdQVT4A0g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AY3XMpkjk51eA++Ij7tVtTw4qCKi34g/IfJ4rP2Pa8L2NCFq0CMRUS9pJibcFZvNxEXUVGyFJSewvUNGPg5h4w2tATdiDCzGkXV5HGoIadbKBe1vR87R2vX2xt41Mam6oXJyFknNy4WBjyB9XoAOJj2qjQsU3EfFCWi+7xTJpqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v7x3w-00044l-8V; Sun, 12 Oct 2025 16:28:40 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1v7x3v-003EUq-1u;
+	Sun, 12 Oct 2025 16:28:39 +0200
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 4E436484062;
+	Sun, 12 Oct 2025 14:28:39 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Markus Schneider-Pargmann <msp@baylibre.com>
+Subject: [PATCH net 5/9] can: m_can: m_can_chip_config(): bring up interface in correct state
+Date: Sun, 12 Oct 2025 16:20:49 +0200
+Message-ID: <20251012142836.285370-6-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251012142836.285370-1-mkl@pengutronix.de>
+References: <20251012142836.285370-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12c5:b0:426:39a:90f1 with SMTP id
- e9e14a558f8ab-42f873d62c7mr207144655ab.18.1760278925708; Sun, 12 Oct 2025
- 07:22:05 -0700 (PDT)
-Date: Sun, 12 Oct 2025 07:22:05 -0700
-In-Reply-To: <20251012135649.59492-1-contact@arnaud-lcm.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68ebb98d.050a0220.91a22.01d9.GAE@google.com>
-Subject: Re: [syzbot] [bpf?] KASAN: slab-out-of-bounds Write in __bpf_get_stackid
-From: syzbot <syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com>
-To: bpf@vger.kernel.org, contact@arnaud-lcm.com, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello,
+In some SoCs (observed on the STM32MP15) the M_CAN IP core keeps the
+CAN state and CAN error counters over an internal reset cycle. An
+external reset is not always possible, due to the shared reset with
+the other CAN core. This caused the core not always be in Error Active
+state when bringing up the controller.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Instead of always setting the CAN state to Error Active in
+m_can_chip_config(), fix this by reading and decoding the Protocol
+Status Regitser (PSR) and set the CAN state accordingly.
 
-Reported-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
-Tested-by: syzbot+c9b724fbb41cf2538b7b@syzkaller.appspotmail.com
+Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-3-682b49b49d9a@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/m_can/m_can.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested on:
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index ac864183a536..b6db5b57241c 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -1617,7 +1617,7 @@ static int m_can_start(struct net_device *dev)
+ 	netdev_queue_set_dql_min_limit(netdev_get_tx_queue(cdev->net, 0),
+ 				       cdev->tx_max_coalesced_frames);
+ 
+-	cdev->can.state = CAN_STATE_ERROR_ACTIVE;
++	cdev->can.state = m_can_state_get_by_psr(cdev);
+ 
+ 	m_can_enable_all_interrupts(cdev);
+ 
+-- 
+2.51.0
 
-commit:         67029a49 Merge tag 'trace-v6.18-3' of git://git.kernel..
-git tree:       bpf
-console output: https://syzkaller.appspot.com/x/log.txt?x=16848c58580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=308983f9c02338e8
-dashboard link: https://syzkaller.appspot.com/bug?extid=c9b724fbb41cf2538b7b
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=175d3304580000
-
-Note: testing is done by a robot and is best-effort only.
