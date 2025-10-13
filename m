@@ -1,63 +1,66 @@
-Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9037430FC07
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 15:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6FC30FC10
+	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 15:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368962; cv=none; b=q+XKYseRb0UCpmbWjO3EZoyRVHO0NHXy7kLVY6uOQdIaDathYME8OpzKYXggAt6zvUfMyS7tYb46obhnnuY5Dh+EvtQsA7wcutvb/xSABIkqpCrXdbpbJ7rBEZGi6vTtUJfPpUmmuFT+wnRDHcx+r2Ca5wpb4foMx8EHnKcehic=
+	t=1760368963; cv=none; b=ryIoidpx/ncYVEGRv5S7ugga84tp6q2nmVyxgisZWVJUNxgDCntfCg4LpDeEVFlYAhRTG+ZkYzi/lUMqZG2vOvVyFGzMTG/wiu6j4JZiQLd1MEhv+Y3x+KDsHFCf44V9KBQ+yRn7TXJF0HbAzZDTg9rvexTd6UVbfeeAj8Dv1CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368962; c=relaxed/simple;
-	bh=IrGcc/fUYm/awy/FFZ4qpvnOt9+H1F6Hd3xkzVvJdWc=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=s6MesOGaQFf+1yBAgtKvHIkE1DY1+pNz3mKffIs0JPIY2XD4LsWhETTicwFxHgKo2PbbZd5a7SW2wTxPV6GPjk1BcAYR0WPw8G/iD1LU6Rp/V+mJ7SMKkjkH5OV56h3NhQiiUNv5luVyhHGIzKgPVevsmxlI6mkMyLQKOd8jqvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xgv4Ddiu; arc=none smtp.client-ip=209.85.219.74
+	s=arc-20240116; t=1760368963; c=relaxed/simple;
+	bh=3PKT5F5Wu6Ai67ZeyOe3ty9uHQ3wmdloW6fOxBrZ0g0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fhwTDqTyyiOVcVgx+oyS7eGFf00AcRPDFnc9b8c90pRh/RDaEAVFGl1GihqfYO/2b3P7JrVF7lMM45I88LvW9z63KGSKlayO9bjYLgNmaRsnTwIdZyE696ouE3rX8f7ZphBK5jR12QlogxCpUoksqSqcIVEmZLlhBNAvwvMl+yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RWDRL0Ix; arc=none smtp.client-ip=209.85.222.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xgv4Ddiu"
-Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-78efb3e2738so229036736d6.3
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 08:22:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RWDRL0Ix"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-857003e911fso2378500885a.3
+        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 08:22:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760368959; x=1760973759; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iPlTcMR97wTpj295G35svJne+HxDAA/5taUo7lkfVUM=;
-        b=Xgv4DdiuaCtcHlk26rpb93mjxeP/eKdOPrVogVJrc7XcDAH2N/qqx6P0yyp8qKofd5
-         aWcnBHVO+GduibTpFj8mcUfB38mtUGRsHceFKaqGieqeg+4474+jUl0luzxx8oiqGw+d
-         Ph4jh2hhXviePo+MZK7EughfX8ST6N2LfBlK5nY0LJKkUzNjTZHTU0WD8Zq3ek80GScn
-         u6CY0Weoixjw5juOA6LL+hNDgC/TWpzhJxlUZENICTBVxM18RW0qWKY3HRLEfngrEW+z
-         FCaJqTymKzUDX0mtxJRZGJviXZkBjRtz87rHJgGEsDtzfSknLD694dB9FkxNhOXco/wL
-         +cbA==
+        d=google.com; s=20230601; t=1760368961; x=1760973761; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXcXLtIs4pgi4OktKnuw1LX3MXBscDyEYwVUphhECoQ=;
+        b=RWDRL0IxicWvLFxVghZ+B+6FSwFyxcob3ksqBSxRgjFsskywBRhcOgaHDrLJ2FjmIc
+         OyyWMIr4j+bdFidMV0UBlD4xHRwkrBXNbDXGNWVPl4whxNx8cySmG60ArUuIfqtDk3fk
+         zapkuz9fpluYNNHMgYiwhzXkco+atVHRbumFYzYZe3aoyk9DSN9P2msKuZVZePVWBv9A
+         BJKHU1X5XknnyidwzDq06R0Zj9M1FfxW27l9AbS5pB3CxjeTwqMMXV69Tsk5f3J66EOU
+         EyKig01DLNnu3SryB4B9feRxoUmTuw3Ww3/R8jgrNy4rw308WAqCkwJEFMXFuTYzsQs7
+         k8eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760368959; x=1760973759;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iPlTcMR97wTpj295G35svJne+HxDAA/5taUo7lkfVUM=;
-        b=DB/D8OphI8uDsJM/CMRXU86Ak+NRB0NnNRH2gce4hPGV04bBwhADTaMjnr0K4qBRRZ
-         wSTXDiTeJmG5Wp0MVZIoPt08VqsKebFSNxKLb8FRwigMccFe47OBacDoJ0dK6VbdaEzz
-         dRLeKdQ3pSDE0+9QdWQsvB29BPcG0CmPsPJuwJWOgbcv/ZTEG+58MQDpRtwlYruR7IuQ
-         rwbQWNYeFzGy8GqE7RiaUN46z1QU1QfnqNN2/Ru5TvLf/ZKM9w8xsxT9XE9usSWKD+Mp
-         pK2LuYQxz8+0BhmmAHUZ3pEuVLPiNCSKF2m9gsUIFbBwIoQ6mHKwUiupl4D/P8Ttv5CF
-         6m0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUCn27puIfXVSvFon+kUB0exxj5PsZqihtzXf3ZHDjEbyBt2tdPDIvlruTFlkw4EwpMGPzJb70=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx78VTCvp/9Z6NPSZWxrtG682VVHdxS7Qc43/gFf6b9zXkDi4Ya
-	2KGBVrp7f0nqib5fEjTgu3Tqp0KmhcuoOh1ee9CLxq6iytm6UR/dy0NR/sYvCpVxrbBr/hsedvV
-	U4+J8J3uLGjiH1Q==
-X-Google-Smtp-Source: AGHT+IHHDQlyWrLveSE3nBNaprg+a9VLpxG+uBfNa+NpkYJbhL+MMBFSOW/NEstzaUX+zCur1t+sU6hm2VHn0g==
-X-Received: from qvbrc4.prod.google.com ([2002:a05:6214:4e84:b0:877:d57:1ce8])
+        d=1e100.net; s=20230601; t=1760368961; x=1760973761;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXcXLtIs4pgi4OktKnuw1LX3MXBscDyEYwVUphhECoQ=;
+        b=SBEoePcQqfq4sqXrnk8pHuTnCWc/+ffMAKU1aq2WHUJxU0patOsotUhTH1RmTbcXHb
+         yAjVrU9rxE5XuG5wNlqU9wnQeVKz09v/TUcLnZHOdQHwH7a2hBpQsDOda33xzQPjImyT
+         iBmHB5FBb1yYE/Vqt+HyApNRd2fChPLu4QkmhokDqFHcX5QU7EWx4i+xttPWxsWbbue9
+         sNZb6EXc6zKALkhKdIN83gV3BiAbmvBiMVDDLa+WRkEuEbMtAuhMPWYUAsDFFe7tLyT/
+         uTUDdyaPnTkRdU5cbeIeFNKrNZUhgCMMQEpR+eP6PbrDw+f8pIaPOyt4dGj/qUzHN7FQ
+         xepw==
+X-Forwarded-Encrypted: i=1; AJvYcCX2XdX2y3n7QhUMtfmMUlSu+TRPLop7YxGI/8mvaNWsR82rbELkIY5uFbROu3POad+DraFeuF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJVS9jOe2Kqd6E2DU1ljYjad5loTflZQ7p6d9mLvyKF+IqeGu/
+	M06Ok1GTbJyypd6oyfcS27C27b6MeoMU2JrpG2uDKcAuQehOlQAIKVPV9+WCx0z7esPg2H60jQk
+	Lt4zYhBYhyGH1Kw==
+X-Google-Smtp-Source: AGHT+IEi91BGSYBG/rPMUUyyAXc7pAOvyG1U6x8+GyhLvazrulBdxlOGgCKnQc/LqMOU780+TFsbyMGsYXHMsg==
+X-Received: from qkbee9.prod.google.com ([2002:a05:620a:8009:b0:82b:426f:1315])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ad4:4e21:0:b0:87b:b3a2:6727 with SMTP id 6a1803df08f44-87bb3a26daemr227595846d6.45.1760368959356;
- Mon, 13 Oct 2025 08:22:39 -0700 (PDT)
-Date: Mon, 13 Oct 2025 15:22:30 +0000
+ 2002:a05:620a:3909:b0:7e8:46ff:baac with SMTP id af79cd13be357-883502b5152mr2962019885a.1.1760368960991;
+ Mon, 13 Oct 2025 08:22:40 -0700 (PDT)
+Date: Mon, 13 Oct 2025 15:22:31 +0000
+In-Reply-To: <20251013152234.842065-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20251013152234.842065-1-edumazet@google.com>
 X-Mailer: git-send-email 2.51.0.740.g6adb054d12-goog
-Message-ID: <20251013152234.842065-1-edumazet@google.com>
-Subject: [PATCH v1 net-next 0/4] net: deal with sticky tx queues
+Message-ID: <20251013152234.842065-2-edumazet@google.com>
+Subject: [PATCH v1 net-next 1/4] net: add SK_WMEM_ALLOC_BIAS constant
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
@@ -66,42 +69,76 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Back in 2010, Tom Herbert added skb->ooo_okay to TCP flows.
+sk->sk_wmem_alloc is initialized to 1, and sk_wmem_alloc_get()
+takes care of this initial value.
 
-Extend the feature to connected flows for other protocols like UDP.
+Add SK_WMEM_ALLOC_BIAS define to not spread this magic value.
 
-skb->ooo_okay might never be set for bulk flows that always
-have at least one skb in a qdisc queue of NIC queue,
-especially if TX completion is delayed because of a stressed cpu
-or aggressive interrupt mitigation.
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+---
+ include/net/sock.h | 3 ++-
+ net/atm/common.c   | 2 +-
+ net/core/sock.c    | 5 ++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-The so-called "strange attractors" has caused many performance
-issues, we need to do better now that TCP reacts better to
-potential reorders.
-
-Add new net.core.txq_reselection_ms sysctl to let
-flows follow XPS and select a more efficient queue.
-
-After this series, we no longer have to make sure threads
-are pinned to cpus, they can migrate without adding
-too much [spinlock, qdisc, TX completion] pressure anymore.
-
-Eric Dumazet (4):
-  net: add SK_WMEM_ALLOC_BIAS constant
-  net: control skb->ooo_okay from skb_set_owner_w()
-  net: add /proc/sys/net/core/txq_reselection_ms control
-  net: allow busy connected flows to switch tx queues
-
- Documentation/admin-guide/sysctl/net.rst | 17 ++++++++++++++
- include/net/netns/core.h                 |  1 +
- include/net/sock.h                       | 29 ++++++++++++------------
- net/atm/common.c                         |  2 +-
- net/core/dev.c                           | 29 ++++++++++++++++++++++--
- net/core/net_namespace.c                 |  1 +
- net/core/sock.c                          | 17 ++++++++++----
- net/core/sysctl_net_core.c               |  7 ++++++
- 8 files changed, 81 insertions(+), 22 deletions(-)
-
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60bcb13f045c3144609908a36960528b33e4f71c..2794bc5c565424491a064049d3d76c3fb7ba1ed8 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2303,6 +2303,7 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
+ 	return 0;
+ }
+ 
++#define SK_WMEM_ALLOC_BIAS 1
+ /**
+  * sk_wmem_alloc_get - returns write allocations
+  * @sk: socket
+@@ -2311,7 +2312,7 @@ static inline int skb_copy_to_page_nocache(struct sock *sk, struct iov_iter *fro
+  */
+ static inline int sk_wmem_alloc_get(const struct sock *sk)
+ {
+-	return refcount_read(&sk->sk_wmem_alloc) - 1;
++	return refcount_read(&sk->sk_wmem_alloc) - SK_WMEM_ALLOC_BIAS;
+ }
+ 
+ /**
+diff --git a/net/atm/common.c b/net/atm/common.c
+index 881c7f259dbd46be35d71e558a73eb2f26223963..cecc71a8bee1176518a2d63b4613dbd243543695 100644
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -157,7 +157,7 @@ int vcc_create(struct net *net, struct socket *sock, int protocol, int family, i
+ 	memset(&vcc->local, 0, sizeof(struct sockaddr_atmsvc));
+ 	memset(&vcc->remote, 0, sizeof(struct sockaddr_atmsvc));
+ 	vcc->qos.txtp.max_sdu = 1 << 16; /* for meta VCs */
+-	refcount_set(&sk->sk_wmem_alloc, 1);
++	refcount_set(&sk->sk_wmem_alloc, SK_WMEM_ALLOC_BIAS);
+ 	atomic_set(&sk->sk_rmem_alloc, 0);
+ 	vcc->push = NULL;
+ 	vcc->pop = NULL;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index dc03d4b5909a2a68aee84eb9a153b2c3970f6b32..542cfa16ee125f6c8487237c9040695d42794087 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2313,7 +2313,7 @@ struct sock *sk_alloc(struct net *net, int family, gfp_t priority,
+ 		}
+ 
+ 		sock_net_set(sk, net);
+-		refcount_set(&sk->sk_wmem_alloc, 1);
++		refcount_set(&sk->sk_wmem_alloc, SK_WMEM_ALLOC_BIAS);
+ 
+ 		mem_cgroup_sk_alloc(sk);
+ 		cgroup_sk_alloc(&sk->sk_cgrp_data);
+@@ -2494,8 +2494,7 @@ struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority)
+ 
+ 	atomic_set(&newsk->sk_rmem_alloc, 0);
+ 
+-	/* sk_wmem_alloc set to one (see sk_free() and sock_wfree()) */
+-	refcount_set(&newsk->sk_wmem_alloc, 1);
++	refcount_set(&newsk->sk_wmem_alloc, SK_WMEM_ALLOC_BIAS);
+ 
+ 	atomic_set(&newsk->sk_omem_alloc, 0);
+ 	sk_init_common(newsk);
 -- 
 2.51.0.740.g6adb054d12-goog
 
