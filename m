@@ -1,206 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046830B52B;
-	Mon, 13 Oct 2025 20:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F69617A305
+	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 20:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760387773; cv=none; b=gQCCDVuN8AlBew5eTV9o7AMJ0Wz16kYGXHSCwSz53DRTQeFtWtp5bUvghzTTarlzvsTLGv/ELTimOs6mlfsmtndpru1E9ZiXdCgJ5z8/oY5nbFNUz5DNuglSJLLbFLMG4FrwFQx75jTIURWw5Xff8+kvD4IJRhn9QJ5zZu/FdwY=
+	t=1760388616; cv=none; b=ri6w8gFcw/eMG95WeGCQOAEcCJECbI94iRiPdDiyPBaztHBSZfTujLv4AzwVGlTRoLRcP2tjz48y9Tp1GOjh4b2cxwV/8b98jksMqRHXlyi36IfoylV7C2S42EQXOx/3yqtRNWhpSCAM2tGMBpAS72YeLgPIe2mv9zGFkkGkDzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760387773; c=relaxed/simple;
-	bh=Jrc2SP9zuO/q8lVKXeMSZQ2TjjYp5fXU9+UkI2oxxh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HoFZGWdCdS+K3Mu/wuTIxxSJAs7qthkVW7M58yBCvqiy+ztm0lrRk6QOzNycjYuDs014TgAgfap9NmYdUjdKlBMyFIF3Pn6hAQH7n44nTXAJFKVJaT8iTLgmmqmCuiJDcOcZHvYI3hARE4ePWx/SuH4nlsLifGu/4R3m0hl8KNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNXB3QYp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760388616; c=relaxed/simple;
+	bh=uX6Zif+1qT0JzNLV2frHwDsRIRvKf+Y6E3GbB3L6M/Q=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=EIeVzyseIBgW6fhD/oeQBAx/SnOmZA7G4fGKQRspkCL1Omy1ggLs+73YAWyjsexiIezFqIabFrZHJl5uejv6EMneJt3L9g6Dr7VyfcOW28dhKWomcIIlbwYVFM+hLVe2AqlmlEKXajfDy5pnp5z2R1Hv4lPUR81YSuyO0xXM5MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Soww1+nu; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNXB3QYp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE06C4CEFE;
-	Mon, 13 Oct 2025 20:36:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760387772;
-	bh=Jrc2SP9zuO/q8lVKXeMSZQ2TjjYp5fXU9+UkI2oxxh8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNXB3QYpRdiFAXcP7KGkH3KNjLbcjQHAsJUVDtmk1f1HjTTwa3KUIDoyy0ULi5OFa
-	 G1hHGn/dxaQZ5Faqttp9F5o8lS4K3lzl0oO8h4XvBxDmB4CI1ocOlhB7mpTBWczRpe
-	 cbVl6Dc2oGcHw4ioesDHnycePL5mRzpUCYfbh5z7fE5bL75KqCXtrMmz/4W+3XrleP
-	 oMKdy9NKWu7KiOETV1Hlg3Uaq2OhxJGJs/UZbbod9e6FJHRwmIGt7Ub1FGi7gJ7Djf
-	 hDJsEwtgnaPJvOgCNXijznnVNxp9lEDzhx4vKFkdU9oGt6aKkRvBpZLinF55YVRxcr
-	 7ZyPgB0llmwOw==
-From: Frederic Weisbecker <frederic@kernel.org>
-To: LKML <linux-kernel@vger.kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 33/33] doc: Add housekeeping documentation
-Date: Mon, 13 Oct 2025 22:31:46 +0200
-Message-ID: <20251013203146.10162-34-frederic@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251013203146.10162-1-frederic@kernel.org>
-References: <20251013203146.10162-1-frederic@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Soww1+nu"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42420c7de22so2108920f8f.1
+        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 13:50:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760388613; x=1760993413; darn=vger.kernel.org;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4Q922gVEErvw+bV0VIWVXamxIoZHRHe+sbt9JiWHba0=;
+        b=Soww1+nu+UQxAhJfHCJZvjwaJnJ14MTHR0NYN0o9o86s9k6JfHXmCNsAzsOLiIpOdT
+         iUJ8QGYfwrzs0c6iJYUCss7OKKakKctpPrhAo8GCEDM5PFGeBss8vzGZxWz9WbH2YhI7
+         zf5ifPklU7EcdcXxcfZIsSEzH8o9F8flPah3OoKvlxgfpBVYDjeVRkIaNQz6ONukbp6b
+         aB5gLZy6yp6DmKhhaidp6z5g06CqbiEP9R81C1G+2qrnBMjeenC+73X6DmOUzgo/Tbuo
+         T5bibCq+auOayhQ8qhKQeuenduyg0D02knf4o5jt6+A9ZmuJPIafdb9OsjQj6jfK9e9H
+         pGFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760388613; x=1760993413;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Q922gVEErvw+bV0VIWVXamxIoZHRHe+sbt9JiWHba0=;
+        b=LzuQV9GEag1r6WFE04UXVJJuFgOl298FYkOPjoRoR7Dd5ot6PIe/vqy/NWY6BvJvgv
+         XgjU/RSth4nk/UeBoWS6peQGGLciZ+rsKmRotSeGKybFN4tYR1BT19gnAW18esnB5uT8
+         fIpIVTNJiLwrI6mtuC2r16/nZfG+s/2g5q3IlqSU+bSqKYJCS+wIKjL14Ve3Z0ZfuVc1
+         dwJFGEuET1+RwV9uKBZ0J8w6bV9QikAdDlJPPffhPLZ7asUvQY3G/jM4K0n94EK2FPmE
+         0JZHM9ghNbYGt4tFUPYfOnK0doVJ6leA8NU5Ezfr+FyD1NW2ktjV5ngN7sy9Oyuxro0J
+         q8EA==
+X-Gm-Message-State: AOJu0YxdVa/gkMcE1sYPBRWf+jEgt5KW7OAwSWbOJewk5IdDmzmoH09C
+	GLvnVeNRi4Xq7B38Iha4DQ+J5tvfLszveNh8tiqgYKRf6ywHaJ1LlhtA
+X-Gm-Gg: ASbGncuBKsP+Zxd9G3vFsVn8UvcHSha0mpsRpK0luYarInXUU7LXPqgkMRWw4Eo5Obk
+	jIZRidxQAUiTigvTUjInvms1dckiWGCQXv1I7Cjp3EdeFHfCXcpEcQyIdJTwW073Jbcau6zheuj
+	cTUWeShM6/fxL1//yC90f8v7L0W/LHvrAErS2FWLaku6DAFX23lQqeTyfOIkzPhvDOoge+47rEf
+	Ipm89ORo1DLdNkuAa0o7nqCxtmL0+I+D+IQl5V+Bk+65T0OD6uMRyT0g6Ra/j+rodm+vS6+I/MM
+	SrUXWW431CyUswfQVt4qvskSP/fHg4RR4WEHt+c4DaUszc7hbzhNNxWGJJOKSVgE6R7F5+kEQ9U
+	lXx/GuwBjgvXHKZ25bP7i05lKtlgYmcBoFrWvHK8GRIpLlJ5FLPQWnkRrOhHRwhAEA1YEa+2nLi
+	VASx036zTFe2/kSLfmaO7K3/22jkSp/pkvW2CwktbCM0uMfzlcwG6QF56aBccDOCGv8m7ysHVOG
+	8UeJfPi
+X-Google-Smtp-Source: AGHT+IHLd9twqMEn00/yigpX27JCrmySZamuxgBupuZ85MJni6E+FhzZakN9mzQf0mfWNJS/h4pE1A==
+X-Received: by 2002:a05:6000:250c:b0:3e8:71ad:de53 with SMTP id ffacd0b85a97d-4266e8e8ff9mr13844872f8f.59.1760388612580;
+        Mon, 13 Oct 2025 13:50:12 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f35:3c00:45f6:d7f9:ba96:7758? (p200300ea8f353c0045f6d7f9ba967758.dip0.t-ipconnect.de. [2003:ea:8f35:3c00:45f6:d7f9:ba96:7758])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-46fb484c71csm209882735e9.8.2025.10.13.13.50.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Oct 2025 13:50:12 -0700 (PDT)
+Message-ID: <e5c37417-4984-4b57-8154-264deef61e0d@gmail.com>
+Date: Mon, 13 Oct 2025 22:50:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Andrew Lunn <andrew@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next] net: mdio: use macro module_driver to avoid
+ boilerplate code
+Autocrypt: addr=hkallweit1@gmail.com; keydata=
+ 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
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Use macro module_driver to avoid boilerplate code.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- Documentation/cpu_isolation/housekeeping.rst | 111 +++++++++++++++++++
- 1 file changed, 111 insertions(+)
- create mode 100644 Documentation/cpu_isolation/housekeeping.rst
+ include/linux/mdio.h | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/cpu_isolation/housekeeping.rst b/Documentation/cpu_isolation/housekeeping.rst
-new file mode 100644
-index 000000000000..e5417302774c
---- /dev/null
-+++ b/Documentation/cpu_isolation/housekeeping.rst
-@@ -0,0 +1,111 @@
-+======================================
-+Housekeeping
-+======================================
-+
-+
-+CPU Isolation moves away kernel work that may otherwise run on any CPU.
-+The purpose of its related features is to reduce the OS jitter that some
-+extreme workloads can't stand, such as in some DPDK usecases.
-+
-+The kernel work moved away by CPU isolation is commonly described as
-+"housekeeping" because it includes ground work that performs cleanups,
-+statistics maintainance and actions relying on them, memory release,
-+various deferrals etc...
-+
-+Sometimes housekeeping is just some unbound work (unbound workqueues,
-+unbound timers, ...) that gets easily assigned to non-isolated CPUs.
-+But sometimes housekeeping is tied to a specific CPU and requires
-+elaborated tricks to be offloaded to non-isolated CPUs (RCU_NOCB, remote
-+scheduler tick, etc...).
-+
-+Thus, a housekeeping CPU can be considered as the reverse of an isolated
-+CPU. It is simply a CPU that can execute housekeeping work. There must
-+always be at least one online housekeeping CPU at any time. The CPUs that
-+are not	isolated are automatically assigned as housekeeping.
-+
-+Housekeeping is currently divided in four features described
-+by the ``enum hk_type type``:
-+
-+1.	HK_TYPE_DOMAIN matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` boot parameter or
-+	isolated cpuset partitions in cgroup v2. This includes scheduler
-+	load balancing, unbound workqueues and timers.
-+
-+2.	HK_TYPE_KERNEL_NOISE matches the work moved away by tick isolation
-+	performed through ``nohz_full=`` or ``isolcpus=nohz`` boot
-+	parameters. This includes remote scheduler tick, vmstat and lockup
-+	watchdog.
-+
-+3.	HK_TYPE_MANAGED_IRQ matches the IRQ handlers moved away by managed
-+	IRQ isolation performed through ``isolcpus=managed_irq``.
-+
-+4.	HK_TYPE_DOMAIN_BOOT matches the work moved away by scheduler domain
-+	isolation performed through ``isolcpus=domain`` only. It is similar
-+	to HK_TYPE_DOMAIN except it ignores the isolation performed by
-+	cpusets.
-+
-+
-+Housekeeping cpumasks
-+=================================
-+
-+Housekeeping cpumasks include the CPUs that can execute the work moved
-+away by the matching isolation feature. These cpumasks are returned by
-+the following function::
-+
-+	const struct cpumask *housekeeping_cpumask(enum hk_type type)
-+
-+By default, if neither ``nohz_full=``, nor ``isolcpus``, nor cpuset's
-+isolated partitions are used, which covers most usecases, this function
-+returns the cpu_possible_mask.
-+
-+Otherwise the function returns the cpumask complement of the isolation
-+feature. For example:
-+
-+With isolcpus=domain,7 the following will return a mask with all possible
-+CPUs except 7::
-+
-+	housekeeping_cpumask(HK_TYPE_DOMAIN)
-+
-+Similarly with nohz_full=5,6 the following will return a mask with all
-+possible CPUs except 5,6::
-+
-+	housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)
-+
-+
-+Synchronization against cpusets
-+=================================
-+
-+Cpuset can modify the HK_TYPE_DOMAIN housekeeping cpumask while creating,
-+modifying or deleting an isolated partition.
-+
-+The users of HK_TYPE_DOMAIN cpumask must then make sure to synchronize
-+properly against cpuset in order to make sure that:
-+
-+1.	The cpumask snapshot stays coherent.
-+
-+2.	No housekeeping work is queued on a newly made isolated CPU.
-+
-+3.	Pending housekeeping work that was queued to a non isolated
-+	CPU which just turned isolated through cpuset must be flushed
-+	before the related created/modified isolated partition is made
-+	available to userspace.
-+
-+This synchronization is maintained by an RCU based scheme. The cpuset update
-+side waits for an RCU grace period after updating the HK_TYPE_DOMAIN
-+cpumask and before flushing pending works. On the read side, care must be
-+taken to gather the housekeeping target election and the work enqueue within
-+the same RCU read side critical section.
-+
-+A typical layout example would look like this on the update side
-+(``housekeeping_update()``)::
-+
-+	rcu_assign_pointer(housekeeping_cpumasks[type], trial);
-+	synchronize_rcu();
-+	flush_workqueue(example_workqueue);
-+
-+And then on the read side::
-+
-+	rcu_read_lock();
-+	cpu = housekeeping_any_cpu(HK_TYPE_DOMAIN);
-+	queue_work_on(cpu, example_workqueue, work);
-+	rcu_read_unlock();
+diff --git a/include/linux/mdio.h b/include/linux/mdio.h
+index c640ba44d..42d6d47e4 100644
+--- a/include/linux/mdio.h
++++ b/include/linux/mdio.h
+@@ -689,16 +689,7 @@ struct phy_device *mdiobus_get_phy(struct mii_bus *bus, int addr);
+  * init/exit. Each module may only use this macro once, and calling it
+  * replaces module_init() and module_exit().
+  */
+-#define mdio_module_driver(_mdio_driver)				\
+-static int __init mdio_module_init(void)				\
+-{									\
+-	return mdio_driver_register(&_mdio_driver);			\
+-}									\
+-module_init(mdio_module_init);						\
+-static void __exit mdio_module_exit(void)				\
+-{									\
+-	mdio_driver_unregister(&_mdio_driver);				\
+-}									\
+-module_exit(mdio_module_exit)
++#define mdio_module_driver(_mdio_driver) \
++	module_driver(_mdio_driver, mdio_driver_register, mdio_driver_unregister)
+ 
+ #endif /* __LINUX_MDIO_H__ */
 -- 
 2.51.0
 
