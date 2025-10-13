@@ -1,55 +1,55 @@
-Received: from mail-qv1-f73.google.com (mail-qv1-f73.google.com [209.85.219.73])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C91830FC1E
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 15:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283F830FC15
+	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 15:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760368965; cv=none; b=jjL+eugbmrhQ+QUNybwGslQIcAn1yWIdbwmNxDm63G9Hd0Qx9yRAcFvzZCkP5EUygjGoxrw5TXolZPZlF6p4RjJNBGrstM3JXIy2TqK9pGsoXjXhyvQdEKj3J+Y6CEXX1yfnSmAcHuAAH1ei/yf1Wd/miMXxkGeo1t4YoLsko28=
+	t=1760368966; cv=none; b=qwY4Zm+jLleBOJEcYIgpir8Yvo89JU/RV/05RFKv/p6zaxYiveIC0K7RsdFYInJuYI9U1Gowi3uPwd40MO3T4Zwav2pFO4p+Erd0jOhtphTw2fQ7NXVgqh6eP9sItUcmEeQb6AGPuxMUmcUIS5FMpeFuwbO08VvUfUg2n/BHRpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760368965; c=relaxed/simple;
-	bh=W/FhKPyfUQJb/Ya4MUXFAbT1Kn1iW4GE9BqBVPYLLpI=;
+	s=arc-20240116; t=1760368966; c=relaxed/simple;
+	bh=E+7n9u5GVio0lTpz4cAzVxwQWAXK0PzviTrxpvgA4xM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RfecyUFsoNJBSCw4DmV61duVnykZoFM/FXLimBrzKGGwWZ83kjlts3yFYvdDGeqOuK9sUHFs5dt2Xa5OQq9UJjcIerMEukUha11JGjvkIKH8cMP24YEhoGv06TrR2j04nmd5wfgJ3DU6Kbe4vitcpA9jg6IBBwUJGhy2u07Klh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ebBRRL2c; arc=none smtp.client-ip=209.85.219.73
+	 To:Cc:Content-Type; b=st9EF82GXALHSOl2b2p3ozJP0Fn0Nfi63J32fesQUn7+GvE/k1WI+10sNO757Eo+YFGGM4L1quT9r8DyI2fx3RqgBVYuqEPyle2KT87h/mUwjkw9vNO2D5sK0WCwoP/0mBqfTWXWdL2uyvaYQsKl+4k2DY8HRi+Wj3qG3fuTGOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mQkWchd6; arc=none smtp.client-ip=209.85.219.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ebBRRL2c"
-Received: by mail-qv1-f73.google.com with SMTP id 6a1803df08f44-78ea15d3583so210220686d6.1
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 08:22:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mQkWchd6"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-78e30eaca8eso353690326d6.2
+        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 08:22:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760368962; x=1760973762; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1760368964; x=1760973764; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hSenOxfpzGyhimu2TeoZHCz9ukEC8GdZb9vsU+8yLOs=;
-        b=ebBRRL2cVcfTktA34nDrzwQJI9FS2beKE/cH3ud+zSYolbQl9KssuYuuHAYx3r+5Ay
-         ByEo+SfVSBSx/O0yVwVWZgzlg195VsEGZcsiWN6mM9qK7FUNJL0f4555L4UwRHhj9OUl
-         Elm3fQpG6HoZ3MBNM2sqPdvmh7B+aYUVJoM4xLHO4gok7aQJXtPPBlyBThmQaq0uNIZ2
-         RIvZghARUhyRSIhlmh/bK49YIaa7PUYfy3yIHRvp2XHeYNk1qtFfJ7BDYPUdOgB0ZQ74
-         oLppz6EOSWL+Q5G3gT0ts61SgXUantRuJbb1U9VsqIO0sUe3a3sfxeZ0hrlsCR0dBOZs
-         zd8Q==
+        bh=YVF8yg0BdQ9CbjB7tliRtsM/S4VUaU8cby62JgJB72E=;
+        b=mQkWchd6nlTz0UhQNoP+DYRIiNL6kOmx6QT0JH+K3wbqYIUsOqnCMnK7Tc4jAlvMkc
+         KvE0YAOHRlcSwkdQzSFi3kgy/EYHwXHnvMooMZ6nmtYxU8yO6I8eFU1ksoTzoUuu/VxN
+         OiElVC1CR7cll7Fxj2bSaoORmmSTLki5uh822lW2pUBavctzo79NrDf9vI3hyGz+CVpP
+         qNbU2XDTj9lWdVzN7aH+oIS15kLzBkQXI5qxD4aPJGP2Kh7sHJICtc3pt38jQjjv4dAX
+         cNkp7TM/QAp+Z6LASMFOybmNg7U4N/+Jmv1WjboEAad4p104FS2W9OYFkFtXsFu0i5Z+
+         nWCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760368962; x=1760973762;
+        d=1e100.net; s=20230601; t=1760368964; x=1760973764;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hSenOxfpzGyhimu2TeoZHCz9ukEC8GdZb9vsU+8yLOs=;
-        b=Co2rtN2O4Y1rn2x4WFVLXGYzaL9aZ1uKk0fYqo1atB07D4YLERkWpselI08ShqmCDL
-         jeP7bsCGGyCBJmcVBhAXHqXcpsBi4EP7anGoBUpf0+rVapQfGVoPgKG+cKrBiQzjJ84t
-         8x1+5AhVgOplbu2XujzmBN43KXGthT4pQFPfXvbux+GNNrMLyfNhRcLmyb5Hjlh92h3a
-         9CFiEOENRqH07v903Ghjbf4LNv2xlsMFb67VKgXn2hlIZ649voyJCMH29AXWyerFHeFH
-         GngwZyUDRETT3bM8dO7r3co8hj9yotKCjETPU3ik+iIV5+58YDygE3UDS1ywVrJ61Jbj
-         0AYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxf7Q+cb2k6uEzk8/Mytt8m3+nstWdX6+F2v+Ka9jcLaPwem9DnY0kE1uyQehtCoBNX0IXci4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys9SEKhYjUIGvf9UwJjo6VT7ELhWoSNKByQj8+j+BYT+Of3Yzz
-	+v+uoVXshNhVoxsLwIcZ8ekvkQ/Wf7g3EBLa4F3BnECj7Nk/CaA0Mn67i5wo20TvYNa92mAZM0X
-	HfXPU5hle82S1zA==
-X-Google-Smtp-Source: AGHT+IH9B++kVAn2yoPFF0DDeADQDBaSMUuMeERI1HukXWiY9N0S0GBs4wfoPl976nlcDYnaT0hCq1x2uvNQrQ==
-X-Received: from qtnc15.prod.google.com ([2002:ac8:518f:0:b0:4d8:7e57:97d3])
+        bh=YVF8yg0BdQ9CbjB7tliRtsM/S4VUaU8cby62JgJB72E=;
+        b=l2R6Gf+rp7yc/fe0fBU4ngOxwQMuLAJ1WikD/hTM9dDwH5HH0FllTEbOBxSqfdQiQL
+         CX6em8K+N8YKJETiLIhw+zObk37Leyb5JPqPPLKjEdu0hECynrw4IvwPsDL343+B2f2A
+         KY3jihMMwPqlgBMTeE27sTiBqFhN3E8HDRR8BvQ7Ut1U4OYKiXbU7uXs5x6j/dJCplol
+         B6y7fbtTFKnis3VRqMTpZ1N2JzrETgoxTugl0n/h5YafXWf6u84K3JgUE2YKUdoDmDzy
+         xyQhl97JPG/eA1De6wdVbK21q6TmcadLvstA08mtjvXNWIiv2a+XRiyNXwqRA1nO7Vy3
+         IdBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWMUApvnyZvC3VfhUkH5IxiWWQVwCoGP9nNS8hA9I4SgGuKhVO92Mlj4z84hRhkp3OxPVG95W0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuog/sL5av1aWRnVyLazhP0kpRD1fR0QN+H4Z9zTCnsXILd0uJ
+	AZAVOvViq/Bw111h/3UP5Ve4C5W7RnDJ1Din4wDr/cBk56xX2FrynvUK3IvjsjkxBfnJY/SFNRb
+	reL63ULlFCb/3/w==
+X-Google-Smtp-Source: AGHT+IHNfsKe1nW6sacXFqp3oUppZjr3P2R4+2H9y0EFxPA3VdaGl4r0S9jbjN+UlKFKClBi9/xATC385bE0Zw==
+X-Received: from qtbew10.prod.google.com ([2002:a05:622a:514a:b0:4b3:ba3:354e])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:5a0a:b0:4ce:dcd9:20ea with SMTP id d75a77b69052e-4e6ead59f50mr321557781cf.57.1760368962576;
- Mon, 13 Oct 2025 08:22:42 -0700 (PDT)
-Date: Mon, 13 Oct 2025 15:22:32 +0000
+ 2002:a05:622a:996:b0:4d0:cf85:9f9b with SMTP id d75a77b69052e-4e6ead54473mr344132461cf.46.1760368964007;
+ Mon, 13 Oct 2025 08:22:44 -0700 (PDT)
+Date: Mon, 13 Oct 2025 15:22:33 +0000
 In-Reply-To: <20251013152234.842065-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20251013152234.842065-1-edumazet@google.com>
 X-Mailer: git-send-email 2.51.0.740.g6adb054d12-goog
-Message-ID: <20251013152234.842065-3-edumazet@google.com>
-Subject: [PATCH v1 net-next 2/4] net: control skb->ooo_okay from skb_set_owner_w()
+Message-ID: <20251013152234.842065-4-edumazet@google.com>
+Subject: [PATCH v1 net-next 3/4] net: add /proc/sys/net/core/txq_reselection_ms
+ control
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>
@@ -69,103 +70,95 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-15 years after Tom Herbert added skb->ooo_okay, only TCP transport
-benefits from it.
+Add a new sysctl to control how often a queue reselection
+can happen even if a flow has a persistent queue of skbs
+in a Qdisc or NIC queue.
 
-We can support other transports directly from skb_set_owner_w().
+A value of zero means the feature is disabled.
 
-If no other TX packet for this socket is in a host queue (qdisc, NIC queue)
-there is no risk of self-inflicted reordering, we can set skb->ooo_okay.
+Default is 1000 (1 second).
 
-This allows netdev_pick_tx() to choose a TX queue based on XPS settings,
-instead of reusing the queue chosen at the time the first packet was sent
-for connected sockets.
-
-Tested:
-  500 concurrent UDP_RR connected UDP flows, host with 32 TX queues,
-  512 cpus, XPS setup.
-
-  super_netperf 500 -t UDP_RR -H <host> -l 1000 -- -r 100,100 -Nn &
-
-This patch saves between 10% and 20% of cycles, depending on how
-process scheduler migrates threads among cpus.
-
-Using following bpftrace script, we can see the effect on Qdisc/NIC tx queues
-being better used (less cache line misses).
-
-bpftrace -e '
-k:__dev_queue_xmit { @start[cpu] = nsecs; }
-kr:__dev_queue_xmit {
- if (@start[cpu]) {
-    $delay = nsecs - @start[cpu];
-    delete(@start[cpu]);
-    @__dev_queue_xmit_ns = hist($delay);
- }
-}
-END { clear(@start); }'
-
-Before:
-@__dev_queue_xmit_ns:
-[128, 256)             6 |                                                    |
-[256, 512)        116283 |                                                    |
-[512, 1K)        1888205 |@@@@@@@@@@@                                         |
-[1K, 2K)         8106167 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    |
-[2K, 4K)         8699293 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[4K, 8K)         2600676 |@@@@@@@@@@@@@@@                                     |
-[8K, 16K)         721688 |@@@@                                                |
-[16K, 32K)        122995 |                                                    |
-[32K, 64K)         10639 |                                                    |
-[64K, 128K)          119 |                                                    |
-[128K, 256K)           1 |                                                    |
-
-After:
-@__dev_queue_xmit_ns:
-[128, 256)             3 |                                                    |
-[256, 512)        651112 |@@                                                  |
-[512, 1K)        8109938 |@@@@@@@@@@@@@@@@@@@@@@@@@@                          |
-[1K, 2K)        16081031 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[2K, 4K)         2411692 |@@@@@@@                                             |
-[4K, 8K)           98994 |                                                    |
-[8K, 16K)           1536 |                                                    |
-[16K, 32K)           587 |                                                    |
-[32K, 64K)             2 |                                                    |
+This sysctl is used in the following patch.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Neal Cardwell <ncardwell@google.com>
 ---
- net/core/sock.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/net.rst | 17 +++++++++++++++++
+ include/net/netns/core.h                 |  1 +
+ net/core/net_namespace.c                 |  1 +
+ net/core/sysctl_net_core.c               |  7 +++++++
+ 4 files changed, 26 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 542cfa16ee125f6c8487237c9040695d42794087..08ae20069b6d287745800710192396f76c8781b4 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2694,6 +2694,8 @@ void __sock_wfree(struct sk_buff *skb)
+diff --git a/Documentation/admin-guide/sysctl/net.rst b/Documentation/admin-guide/sysctl/net.rst
+index 2ef50828aff16b01baf32f5ded9b75a6e699b184..40749b3cd356973b9990add5dfdc87bb18711e2d 100644
+--- a/Documentation/admin-guide/sysctl/net.rst
++++ b/Documentation/admin-guide/sysctl/net.rst
+@@ -406,6 +406,23 @@ to SOCK_TXREHASH_DEFAULT (i. e. not overridden by setsockopt).
+ If set to 1 (default), hash rethink is performed on listening socket.
+ If set to 0, hash rethink is not performed.
  
- void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
- {
-+	int old_wmem;
++txq_reselection_ms
++------------------
 +
- 	skb_orphan(skb);
- #ifdef CONFIG_INET
- 	if (unlikely(!sk_fullsock(sk)))
-@@ -2707,7 +2709,15 @@ void skb_set_owner_w(struct sk_buff *skb, struct sock *sk)
- 	 * is enough to guarantee sk_free() won't free this sock until
- 	 * all in-flight packets are completed
- 	 */
--	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
-+	__refcount_add(skb->truesize, &sk->sk_wmem_alloc, &old_wmem);
++Controls how often (in ms) a busy connected flow can select another tx queue.
 +
-+	/* (old_wmem == SK_WMEM_ALLOC_BIAS) if no other TX packet for this socket
-+	 * is in a host queue (qdisc, NIC queue).
-+	 * Set skb->ooo_okay so that netdev_pick_tx() can choose a TX queue
-+	 * based on XPS for better performance.
-+	 * Otherwise clear ooo_okay to not risk Out Of Order delivery.
-+	 */
-+	skb->ooo_okay = (old_wmem == SK_WMEM_ALLOC_BIAS);
++A resection is desirable when/if user thread has migrated and XPS
++would select a different queue. Same can occur without XPS
++if the flow hash has changed.
++
++But switching txq can introduce reorders, especially if the
++old queue is under high pressure. Modern TCP stacks deal
++well with reorders if they happen not too often.
++
++To disable this feature, set the value to 0.
++
++Default : 1000
++
+ gro_normal_batch
+ ----------------
+ 
+diff --git a/include/net/netns/core.h b/include/net/netns/core.h
+index 9b36f0ff0c200c9cf89753f2c78a3ee0fe5256b7..cb9c3e4cd7385016de3ac87dac65411d54bd093b 100644
+--- a/include/net/netns/core.h
++++ b/include/net/netns/core.h
+@@ -13,6 +13,7 @@ struct netns_core {
+ 	struct ctl_table_header	*sysctl_hdr;
+ 
+ 	int	sysctl_somaxconn;
++	int	sysctl_txq_reselection;
+ 	int	sysctl_optmem_max;
+ 	u8	sysctl_txrehash;
+ 	u8	sysctl_tstamp_allow_data;
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index b0e0f22d7b213c522c2b83a5fcbcabb43e72cd11..adcfef55a66f1691cb76d954af32334e532864bb 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -395,6 +395,7 @@ static __net_init void preinit_net_sysctl(struct net *net)
+ 	net->core.sysctl_optmem_max = 128 * 1024;
+ 	net->core.sysctl_txrehash = SOCK_TXREHASH_ENABLED;
+ 	net->core.sysctl_tstamp_allow_data = 1;
++	net->core.sysctl_txq_reselection = msecs_to_jiffies(1000);
  }
- EXPORT_SYMBOL(skb_set_owner_w);
  
+ /* init code that must occur even if setup_net() is not called. */
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 8cf04b57ade1e0bf61ad4ac219ab4eccf638658a..f79137826d7f9d653e2e22d8f42e23bec08e083c 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -667,6 +667,13 @@ static struct ctl_table netns_core_table[] = {
+ 		.extra2		= SYSCTL_ONE,
+ 		.proc_handler	= proc_dou8vec_minmax,
+ 	},
++	{
++		.procname	= "txq_reselection_ms",
++		.data		= &init_net.core.sysctl_txq_reselection,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_ms_jiffies,
++	},
+ 	{
+ 		.procname	= "tstamp_allow_data",
+ 		.data		= &init_net.core.sysctl_tstamp_allow_data,
 -- 
 2.51.0.740.g6adb054d12-goog
 
