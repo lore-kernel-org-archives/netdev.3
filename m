@@ -1,116 +1,128 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C9C304BC5
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 17:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD23081A3;
+	Mon, 13 Oct 2025 17:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760376498; cv=none; b=XoS09GEDTrwlhDiKWIxS5NVZNfp0ZpE7L2I7AWWsJg5+Vf1wx/BRAJUmeppIFgeKZYYyTXkq9pQY/1LHt7N7Gc/E/UulSHOq0mc8caxTFEBvIeohHRl9EQRiF8szUw5iY5hZviadm/v0QgUJx89Zs0pF3Ym4emd/sv+0IGX5A38=
+	t=1760376622; cv=none; b=kwiRSGwPeGWztKD4lJAZRNgc2t5Ec5kC9Yf+nuoot+cqsnDjBsIWbk19MHxHSf8OtXNuXMevveXfjTTD5uxsGGzc90C6/xo+CoEjyHTFBitSnzOGOU8psRChC9Et8ulYwWT7z1moOcpMRrXtNKDSpuNyymwNq7TqOuGztu9nsOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760376498; c=relaxed/simple;
-	bh=KQY1hataPeuBtpGwZ6zSDU3DH0WtfgAwetJ9z7XB0Sk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fpia29Lt1PfolGqnpLWpHO4jxJq+nKCdb8qDGURKB8/M/boN57IYwd4hVMf04qHain4kAXnH1d3d8sDEEEU4VE+toXPv4Z4e9ZkOkA9o55RhhJYlkrJyFOjBhrcSjaLr3vDflHl2w4rrfzyl5VpQstTqw2QwxYiiUSGTfyCqcj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b50206773adso998324966b.0
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 10:28:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760376493; x=1760981293;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bp7iPh/+dWBwTL1akrhieR7+Yb8elv0601JNgSVEhEA=;
-        b=YouQgPnVGQM0DKOZoxorFvCUMHe8HZArF0HQp63STPF6ryqhqVOPvq44AbidQIs4Gj
-         YXetXGT+asrrcTQ9iQTE/jLyEitQMX1c8HVrVlcu3IyiZ6wF2c1UR2lf7PIHcjO44pMc
-         qy3+Gc8T/XlMepRAj3CNvzOXu0ratLQNHjLgRvGq5iVoYIOvRP5YEF9M7TmcU7g7YNF+
-         U6JomKXW7XpZuBYvvDGx50wczwVp+DY2ZoiAIeDWSAZTfy9rYbgoBSuc30UImZDKC1nk
-         humUNItGBVE5ZapkdpQoTsZQT1lnhF892ryhXbzXFGLl7ipC1OJkkhZnToUlfcVjthlA
-         Rxnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl72qi7JHhGAuxpplijkf32/9qy23B8vab8cXS72YXdcpB3UOw+9rTOb8b2U2YQtDSthE6cjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIlmeN9asZZKL3ntwxbW2vVSk+roGYflWxXY4LhT8wsdtRSxth
-	Gtj7mjRWQDz5mOX98Zd2YDSVK40I8OAye8tcwTEwYDpOxPVcpfttpoR/
-X-Gm-Gg: ASbGncsvjntM/SaOBqB5KTSfusxKkjhrtLINB2i/Bu0F7b0no1sPz2L0hXPu3r2wnDn
-	k0++ogLEXjaZI7y/7UfxVK/S5sEkJ2zm5EHqyAWukEuBJ6V/+uPm+X6qrmYIUaQFqQoqh4hB/RD
-	CLkpyNsF0zo49tPvQhtghcgJr+KG98q3CpHJR9RVaDb7tNWNdP++bzC6mQ1VgxKwR5SFZX3t48t
-	LJMW/5He23oxGeM9zQBXail/SHPTyLgzaxgGdINKz6q0Z+l/ggmGnQTw01S6I+wkZQe9YrYc49C
-	4epObhid62hLm6lYXa7sgpC78oyvIWRs7GPyAuDp1RRmgNSYxPXPDKSX2yhqtjnAUV+VbLWmbps
-	wRXth8HjZiA3QA0NhxqGakRieCCJV68icHK4=
-X-Google-Smtp-Source: AGHT+IE1dNy8sZMQ1etsuqp+Iq7aHMYbaFTc/gwrBE/njgDpnk152KciCb7i5X233OmPpKSNbCv8bQ==
-X-Received: by 2002:a17:907:d48d:b0:b4d:71e9:1662 with SMTP id a640c23a62f3a-b4f43730a39mr3130006766b.30.1760376493324;
-        Mon, 13 Oct 2025 10:28:13 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:2::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b55d67d2ce9sm967025666b.35.2025.10.13.10.28.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 10:28:12 -0700 (PDT)
-Date: Mon, 13 Oct 2025 10:28:10 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
-	david decotigny <decot@googlers.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, calvin@wbinvd.org, 
-	kernel-team@meta.com, jv@jvosburgh.net
-Subject: Re: [PATCH net v7 4/4] selftest: netcons: add test for netconsole
- over bonded interfaces
-Message-ID: <poknlppzfnzkaxkiz5schua5tuwbssaimihaht3ebvxzwxgztg@jfkdpdri6n4r>
-References: <20251003-netconsole_torture-v7-0-aa92fcce62a9@debian.org>
- <20251003-netconsole_torture-v7-4-aa92fcce62a9@debian.org>
- <e6764450-b0f8-4f50-b761-6321dfe2ad71@redhat.com>
- <m2dwihyj3vddvipam555ewxej663brejyv5gdnsw4ks5mis2y7@2mu2gus2o7ys>
+	s=arc-20240116; t=1760376622; c=relaxed/simple;
+	bh=4AIX/fhBXi6apAU21YIhJmoAOPOGxuGkR0jEWrkHbcg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F59/x/SPUSMwZ4fcDwCzP4B4VGyD1AM4V+Zrxbq8BFNpypZyy7gCeBIboa5CMseVuQ0xhEWTVsDEH9AC/G6j+HjbWKDYyuV6Ubq/IF7iMUyOku52WfxAN3dzY2CfVookEw7GlSakYyg0uX9f7D8ZonkV+kvHGKm1N21wNX94l7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=v6PXfwYo; arc=none smtp.client-ip=192.19.166.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="v6PXfwYo"
+Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 699FDC0000D0;
+	Mon, 13 Oct 2025 10:23:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 699FDC0000D0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+	s=dkimrelay; t=1760376189;
+	bh=4AIX/fhBXi6apAU21YIhJmoAOPOGxuGkR0jEWrkHbcg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=v6PXfwYoxcVVyVdt1q8wOHZmeXc2IlTkefj+c/SMnSP6SUYQTwFnp1ZePvkNLd/JA
+	 EkNi1t8aMo6MYJSfLLeJ17LDhmsT6O0+O5Ky6IOlt7B9e5pEeHqarID7G6OipzrNvI
+	 nJawqeuZSxBT+WGVobHxQkPzLnNtXScIUmCv3qQU=
+Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 68C394002F44;
+	Mon, 13 Oct 2025 13:23:08 -0400 (EDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM ASP 2.0 ETHERNET DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: bcmasp: Add support for PHY-based Wake-on-LAN
+Date: Mon, 13 Oct 2025 10:23:06 -0700
+Message-Id: <20251013172306.2250223-1-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m2dwihyj3vddvipam555ewxej663brejyv5gdnsw4ks5mis2y7@2mu2gus2o7ys>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 08, 2025 at 06:02:56AM -0700, Breno Leitao wrote:
+If available, interrogate the PHY to find out whether we can use it for
+Wake-on-LAN. This can be a more power efficient way of implementing that
+feature, especially when the MAC is powered off in low power states.
 
-> > Note that with the create_netdevsim() helper from
-> > tools/testing/selftests/net/lib.sh you could create the netdevsim device
-> > directly in the target namespace and avoid some duplicate code.
-> 
-> Awesome. I am more than happy to create_netdevsim() in this selftest,
-> and move the others to use it as well.
-> 
-> > It would be probably safer to create both rx and tx devices in child
-> > namespaces.
-> 
-> Sure, that is doable, but, I need to change a few common helpers, to
-> start netconsole from inside the "tx namespace" instead of the default
-> namespace.
-> 
-> Given all the other netconsole selftest uses TX from the default net
-> namespace, I would like to move them at all the same time.
-> 
-> Do you think it is Ok to have this test using TX interfaces from the
-> main net namespace (as is now), and then I submit a follow patch to
-> migrate all the netcons tests (including this one) to use a TX
-> namespace? Then I can change the helpers at the same time, simplifying
-> the code review.
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ .../ethernet/broadcom/asp2/bcmasp_ethtool.c   | 34 +++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-In fact, I was able to isolate the functions for the isolation in the
-self test, and now I have a test that relies on create_netdevsim() and
-have two namespaces, one for TX and one for RX.
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+index 63f1a8c3a7fb..dd80ccfca19d 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_ethtool.c
+@@ -163,11 +163,30 @@ static void bcmasp_set_msglevel(struct net_device *dev, u32 level)
+ static void bcmasp_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+ {
+ 	struct bcmasp_intf *intf = netdev_priv(dev);
++	struct bcmasp_priv *priv = intf->parent;
++	struct device *kdev = &priv->pdev->dev;
++	u32 phy_wolopts = 0;
++
++	if (dev->phydev) {
++		phy_ethtool_get_wol(dev->phydev, wol);
++		phy_wolopts = wol->wolopts;
++	}
++
++	/* MAC is not wake-up capable, return what the PHY does */
++	if (!device_can_wakeup(kdev))
++		return;
++
++	/* Overlay MAC capabilities with that of the PHY queried before */
++	wol->supported |= BCMASP_SUPPORTED_WAKE;
++	wol->wolopts |= intf->wolopts;
++
++	/* Return the PHY configured magic password */
++	if (phy_wolopts & WAKE_MAGICSECURE)
++		return;
+ 
+-	wol->supported = BCMASP_SUPPORTED_WAKE;
+-	wol->wolopts = intf->wolopts;
+ 	memset(wol->sopass, 0, sizeof(wol->sopass));
+ 
++	/* Otherwise the MAC one */
+ 	if (wol->wolopts & WAKE_MAGICSECURE)
+ 		memcpy(wol->sopass, intf->sopass, sizeof(intf->sopass));
+ }
+@@ -177,10 +196,21 @@ static int bcmasp_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+ 	struct bcmasp_intf *intf = netdev_priv(dev);
+ 	struct bcmasp_priv *priv = intf->parent;
+ 	struct device *kdev = &priv->pdev->dev;
++	int ret = 0;
++
++	/* Try Wake-on-LAN from the PHY first */
++	if (dev->phydev) {
++		ret = phy_ethtool_set_wol(dev->phydev, wol);
++		if (ret != -EOPNOTSUPP && wol->wolopts)
++			return ret;
++	}
+ 
+ 	if (!device_can_wakeup(kdev))
+ 		return -EOPNOTSUPP;
+ 
++	if (wol->wolopts & ~BCMASP_SUPPORTED_WAKE)
++		return -EINVAL;
++
+ 	/* Interface Specific */
+ 	intf->wolopts = wol->wolopts;
+ 	if (intf->wolopts & WAKE_MAGICSECURE)
+-- 
+2.34.1
 
-The problem is that it hits a bug on netdevsim that doesn't allow it to
-run properly. Basically create_netdevsim() put the interface up, and
-I need to get the interface down in order to enslaved it, losing the
-carrier.
-
-I've propsoed a fix in here:
-
-https://lore.kernel.org/all/20251013-netdevsim_fix-v1-1-357b265dd9d0@debian.org/
-
-So, I will send a new version for this patchset soon, but, it will
-probably not pass the CI, given it will not have the fix aboveyet. But
-I will send it anyway, so, people can further review the patchset.
-
-Thanks
---breno
