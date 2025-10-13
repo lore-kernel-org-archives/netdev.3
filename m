@@ -1,79 +1,92 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38ED2FDC41
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 09:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FFF2FDC37;
+	Mon, 13 Oct 2025 09:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760348224; cv=none; b=Gp/3cIeXisk7++Bi/cBFRUvIRsXLNboIaarfyJn35yWdMHwpvdOq3KBxIjUZ4N2Ikj+iPiUyWQYB2eWTwftUjIEfyab8j0q5jmcGwtx5fyGjowV8yNFkKdgoti0TZQ9qyFF6wGWhw+PNd8SS+6zNvuS/ZEsv/WVSu/6vF38JW2Y=
+	t=1760348524; cv=none; b=LLPV7H08odDwD3BpY3wcR+fEcVqCQKkCZUbHYmFM6iKzwZpxD9ltvQprW3oqVx/jLjA5SoX3QAVH9jASgm4Lcw9kOMsUsGVxSyamA9O/TKXminhYgT5Gc3mph1XY4FNRsO3A/TroQCak89V8p9kb8fgaFXO9KbLigeQusAmaXpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760348224; c=relaxed/simple;
-	bh=6LWJAszpBzDDNcwsP7mxSu6hCo8vBo3umaJU9IG9AP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K0F5Xezk+aIoUQwd7TxtTuHog5teeWjEYlWmFRrvM1bsvtf66/ARgbuHtWHDljZNRjbrpwSbYJ2GWonYaOUq2GgSCmoK0rXmFEanpmd7NHn/4Ozqu0Abqznuu0C31Y/URLcURS+WlimZ7LVSmkreeFCfRf9nx7AEsOvVagJBJRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dF2aK5md; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1760348524; c=relaxed/simple;
+	bh=Dq6ZKmGKWvTKtvAhFBNYFdmRJyRHvn6MwrRh7IEywa0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RB11kHE3N9VVxmjZTF6y8Aa0q66lTKUzJKqghgU1tyIL7eHlqKr7mVDDR3mU/COEf2yLpZao7RVaQTU+z0+jSJe+GCrcLfRYCeiTK2hpbczKVkhFy9AvfvZOGTLxA0THtTBwCld0MI47IDiLxAhcdk5ozYb4tO0YgOsE43rjfHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fI7fvj74; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dF2aK5md"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D8C04E41064;
-	Mon, 13 Oct 2025 09:36:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E04CD606C6;
-	Mon, 13 Oct 2025 09:36:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 636D8102F2259;
-	Mon, 13 Oct 2025 11:36:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760348213; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=GttWDttud3s8DcIDHj6W8PemmzlZdLiY0kQdEAtHOtU=;
-	b=dF2aK5mdeEn7pAgB9mHN5tqumXkPEF/bibVs7yjA/xahD27fzrPbBgkVsf7REjxjkjTUrd
-	VbItglTchQQ0L5v+yazSwvc5MO51yx7a96RbZvWJd9rVjHvQIh80SHv+NTYA/dbs4OaKbM
-	CJiFZfuKM2movztZpQmCYIf2QAkQJyK3+0gOwaTRa2pKAKD7dCMvWIg9p1m+ysA0gnGMrg
-	qwid3vV/GeFENuifz2eH2lT083FS1pDFCwSWuE5rpQgLTNUZiknxNXb69AqLuOEpfz7Gzl
-	xQJFCK+FebdOYbsW3i/bUyBi5nOW6wu9iK7LTBXSADzUH617Ht04XkwFJq7MiA==
-Message-ID: <3da0cdaf-d337-4c67-acdd-2f07e686e4f6@bootlin.com>
-Date: Mon, 13 Oct 2025 11:36:32 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fI7fvj74"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C84C4CEF8;
+	Mon, 13 Oct 2025 09:42:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760348524;
+	bh=Dq6ZKmGKWvTKtvAhFBNYFdmRJyRHvn6MwrRh7IEywa0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fI7fvj74d18uSqd+s0VwIDsAqrArJ7M/vsIGRmKpuE8z/Ls93sfmKTOAOUq1VNZYw
+	 3tX11HnVA5DW49jJS3u5QpH6teZoY8tIDr/WkE5N2GB5zYxiI9/iClcRZclFolXbtY
+	 cGJcDBTDibstnd90rU7+yJoBkHv3W6nTyypmXnCNuqJV1IZL5vKASDL70Fo+PjoE2m
+	 gtEU75M4aR9UAkCrbkxAcDgoS+IcMJY9eUaE/PWc57vuWj5iLKu3DV0Y1Z/nZL2gNr
+	 Ls6JFBKNV209DkF0BNMsZu7/eQfFvCH6nrHuzPt33k9oUkhojdYEUkmKDIpf1niipf
+	 f8coVV1hZfs5g==
+Date: Mon, 13 Oct 2025 10:41:59 +0100
+From: Simon Horman <horms@kernel.org>
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-can@vger.kernel.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] can: add Transmitter Delay Compensation (TDC)
+ documentation
+Message-ID: <aOzJZ1NsKxNMvIzJ@horms.kernel.org>
+References: <20251012-can-fd-doc-v1-0-86cc7d130026@kernel.org>
+ <20251012-can-fd-doc-v1-2-86cc7d130026@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net,PATCH] net: phy: realtek: Avoid PHYCR2 access if PHYCR2 not
- present
-To: Marek Vasut <marek.vasut@mailbox.org>, netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>,
- Daniel Golle <daniel@makrotopia.org>, Eric Dumazet <edumazet@google.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- Markus Stockhausen <markus.stockhausen@gmx.de>,
- Michael Klein <michael@fossekall.de>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>
-References: <20251011110309.12664-1-marek.vasut@mailbox.org>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20251011110309.12664-1-marek.vasut@mailbox.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251012-can-fd-doc-v1-2-86cc7d130026@kernel.org>
 
-Hi Marek,
+On Sun, Oct 12, 2025 at 08:23:43PM +0900, Vincent Mailhol wrote:
 
-On 11/10/2025 13:02, Marek Vasut wrote:
-> The driver is currently checking for PHYCR2 register presence in
-> rtl8211f_config_init(), but it does so after accessing PHYCR2 to
-> disable EEE. This was introduced in commit bfc17c165835 ("net:
-> phy: realtek: disable PHY-mode EEE"). Move the PHYCR2 presence
-> test before the EEE disablement and simplify the code.
-> 
-> Fixes: bfc17c165835 ("net: phy: realtek: disable PHY-mode EEE")
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+...
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> @@ -1464,6 +1464,66 @@ Example when 'fd-non-iso on' is added on this switchable CAN FD adapter::
+>     can <FD,FD-NON-ISO> state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+>  
+>  
+> +Transmitter Delay Compensation
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +At high bit rates, the propagation delay from the TX pin to the RX pin of
+> +the transceiver might become greater than the actual bit time causing
+> +measurement errors: the RX pin would still be measuring the previous bit.
+> +
+> +The Transmitter Delay Compensation (thereafter, TDC) resolves this problem
+> +by introducing a Secondary Sample Point (SSP) equal to the distance, in
+> +minimum time quantum, from the start of the bit time on the TX pin to the
+> +actual measurement on the RX pin. The SSP is calculated as the sum of two
+> +configurable values: the TDC Value (TDCV) and the TDC offset (TDCO).
+> +
+> +TDC, if supported by the device, can be configured together with CAN-FD
+> +using the ip tool's "tdc-mode" argument as follow::
+> +
+> +- **omitted**: when no "tdc-mode" option is provided, the kernel will
 
-Thanks,
+Hi Vincent,
 
-Maxime
+I'm unsure why, but make htmldocs reports:
 
+.../can.rst:1484: ERROR: Unexpected indentation. [docutils]
+
+> +  automatically decide whether TDC should be turned on, in which case it
+> +  will calculate a default TDCO and use the TDCV as measured by the
+> +  device. This is the recommended method to use TDC.
+
+...
