@@ -1,123 +1,190 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589811E7C2E
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 07:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC0B34BA46
+	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 08:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760342204; cv=none; b=L3QG+Qmdl5p1rPyry50RBBIoW/IWrz7hNjTN4NeLoBOR2jrXSiLrwwJ6UnQyaR/V8uCJWtyAtG/f8bpjm+V88giyxomAz6C3kUjldjpBbEjclkc5YJw9P0ki4SjNEfJR0meumo1yGWKUKJ0wZB8i9KoJ7K3Kk/PB8toNtXl6F84=
+	t=1760342554; cv=none; b=g7ZhQRhosuhFLimNpPt4hrUDSczvkQqG8q4FQVoqP1bUHcIXIYHgXUiDz6ytmpapHbMs+GH8Dngnur+YEe2e/R3Qc3GsSihUP8Ys9VbFswnlwuzmtTpuMfxO7NPfyCnrSbSWwlehyae74YvKnf8RF/VUUB4L1FwBZ7w1COAq3nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760342204; c=relaxed/simple;
-	bh=NpLaP+rsLewThnjQB4w1PUgdf62FT8lHd6eNEqewl1o=;
+	s=arc-20240116; t=1760342554; c=relaxed/simple;
+	bh=8y7npeoubO3H8H77lKJkzLHi0X3x+Hnyl5zda7h0GE0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iyrri2lIiEIp0AovUb4U/9fQ4615wzXYBLSi8KBJossVGWCgOX+Hx4FCeCbUTegao6p6sNaNZga1KQaNFQOywWjypC1lxuedXQkTTG5JT+9IsZPvItFgnsUoOAC/7xKcsKVv0tPBGxcTtxMvu3UNMK1PB6gziu8f9WkYx/oawwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LmlpaA4q; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=L/frnBAkPNxi8Uqfx3acBnu5La5q6yFj0jJH+GGERdUDpPRxPi5l5CEw4oLvarp1bD4QUL/KH1kNJFjSiypf0FK3PMQRGE8mG0u/8eobX3zjSeBu347qqIArTLNiNp4ODJb7i0EWhbtOlja56oHGGmf9UX205Kli4wLtS0zwvg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LqT5YqsW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vgVVVQMS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=oEiSGFhA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=7whrss6A; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LmlpaA4q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760342202;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="LqT5YqsW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vgVVVQMS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="oEiSGFhA";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="7whrss6A"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C9F21F798;
+	Mon, 13 Oct 2025 08:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342550; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=COB7VRuwmjnty8tx1CERez8NmWoPvxynkLju3lUiCLM=;
-	b=LmlpaA4q+HRnThexAKfYY06mZh4I1I75uR+mpb2QiqJhds4niS6U3z0KD/q1B1D7i+B01m
-	QOsT+wCzFWq/P9tYGaBuqo7M9nO4v7ioWIMCNTbfVJNh8RsRKDohLMbWTJtWCw1ASvB8aX
-	kGHapUa+9youvmBBOHyKFWH1RVaplkA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-oA0woLmJN9WAT9enH9Oo4A-1; Mon, 13 Oct 2025 03:56:40 -0400
-X-MC-Unique: oA0woLmJN9WAT9enH9Oo4A-1
-X-Mimecast-MFC-AGG-ID: oA0woLmJN9WAT9enH9Oo4A_1760342199
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-46eee58d405so23471245e9.1
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 00:56:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760342199; x=1760946999;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=COB7VRuwmjnty8tx1CERez8NmWoPvxynkLju3lUiCLM=;
-        b=OdVPF/V7smcJUPlmuvWN9Xl3Zdinv8JCQ0RtxRxoy0J3TzleDwmPazCefLl4iftvWP
-         0UUalbfkIuqRra0YwwStAaLtxApED2ZkHeZ1+WpZkLgBB7AEUjMsCfdOCR5wxtaNvZ+z
-         tRcLdV4Tep3qoKsv5JxPd1Cyc6CcfZLGYBCzjZpQKMQrMSNpjChIHAomg1siDpWZRw35
-         qr9d50t3772+W9CStm4R/QyZa5cNRznDsdjWj2LRPTScf8TXQsWypsE9gU/ccU0Pdgv4
-         jNSBCmkNderxk8KE/0b5RaNPIm2jXPivgEhj8ElPRSQ08JypWUe+29c0stIi4/fIFU4I
-         3P4g==
-X-Gm-Message-State: AOJu0YwJvauOmMRVetR3UT5vA8KS4DkKbNvTVf+q6GNVLvGQ509kiWSz
-	1A6F0HrVxokI7iyY4v59lsJAYVxMdMr/KzUDpvqG0jARv3URatPucpJ7HqksLRMQ060gIXjWu9e
-	KGnGiw1UvJkH53KmRkfgnkQVRNk1BisfAVqcSBf0U++6+eggxhoOtKg/T5Q==
-X-Gm-Gg: ASbGncu6Fo2Pb9wa1+Ddkk/lobYRfzGBcR75bXuXKSjR21djDX3TsSy1HGPRPZ89Yzr
-	gWmcTjzqFxZBGYNRxH5FJHpRzkrU/rE7e89OpvjqSiWzIfZ6BXUDHZTXSMA6RRtniicgZMRJc3B
-	IFsyWxxiu47yhpgnnA6NPmze2xmLYcDKc5P9SJIR/u8c6AglRYLBAlOP8dFZkdWE0qTu1dtek5w
-	Uydhw/1lBUljkhXHv9T+mrvn2ekhm26kT3imVkHTI21i+7HJOF7dq9f57T5o39nT30LaC9TIwor
-	QLKqoUHMfFUYtAEA26XM3n3AN9h4hA==
-X-Received: by 2002:a05:600c:4586:b0:46e:45d3:82fd with SMTP id 5b1f17b1804b1-46fa9b086e1mr152062335e9.31.1760342199389;
-        Mon, 13 Oct 2025 00:56:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7mWHcHxbSz7cXD/T4m4MEkNzKAin9UCeRsZR4UXAfwmea+Xa32Gmelt4UQkO7u0wdOAsgNA==
-X-Received: by 2002:a05:600c:4586:b0:46e:45d3:82fd with SMTP id 5b1f17b1804b1-46fa9b086e1mr152062125e9.31.1760342198918;
-        Mon, 13 Oct 2025 00:56:38 -0700 (PDT)
-Received: from redhat.com ([31.187.78.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fb4982b25sm172918555e9.7.2025.10.13.00.56.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 00:56:38 -0700 (PDT)
-Date: Mon, 13 Oct 2025 03:56:35 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Alvaro Karsz <alvaro.karsz@solid-run.com>,
-	Heng Qi <hengqi@linux.alibaba.com>, virtualization@lists.linux.dev
-Subject: Re: [PATCH net v2 0/3] fixes two virtio-net related bugs.
-Message-ID: <20251013035059-mutt-send-email-mst@kernel.org>
-References: <20251013020629.73902-1-xuanzhuo@linux.alibaba.com>
+	bh=+SMGMAUukUxpNjNcKVJwA9a+7Snorm+D13jrnLntxKU=;
+	b=LqT5YqsWJ0Vgpux0nxYmAAOYFr7l3RBYqrewCzQXffUENxnRGvclxlDr6L6nV8PBlATwcI
+	xc6u+Giab0ktqrnOdOOzmAGYZhnH7m8cusJJJ0QBQxgpWA30Ca2WUNXCjrSlPpShILrmq2
+	xzoXL6BivvfunDbvRHAZd9hnJ9rcfdI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342550;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SMGMAUukUxpNjNcKVJwA9a+7Snorm+D13jrnLntxKU=;
+	b=vgVVVQMSlR9JSz7QkBw/COiNTfIyqbaJ8RZ/R+ae7iRS9uxPJ6wOrtgrUUCYf6+4m1syfh
+	WxQLeoRnDQ+a9nBA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oEiSGFhA;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7whrss6A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1760342548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SMGMAUukUxpNjNcKVJwA9a+7Snorm+D13jrnLntxKU=;
+	b=oEiSGFhAR2iiY5Lfsas+XhOzSRRyNJtHAnV8zGMdHGiFSVvDG4LKwwTjR+UuZchXcSP8pX
+	vCGSl1eG4qMWBOV0FROTQ1vgbsbCM/BgWN9aNu20FXoPGBoYJDNYyyPm6O+NTAaEwt5P4s
+	h+DkDrUvD+BV+CX5rsIuSQqEFhkGkH8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1760342548;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SMGMAUukUxpNjNcKVJwA9a+7Snorm+D13jrnLntxKU=;
+	b=7whrss6AXT0MVcTpt+7UM2abqodWxJ7/XZDk2FsS83j5C8mKART2fb8FVK8G4vJODeCGMG
+	JOXtoO6uOci1yWAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 96E9A13874;
+	Mon, 13 Oct 2025 08:02:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Gq0FIhOy7GjQEwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 13 Oct 2025 08:02:27 +0000
+Date: Mon, 13 Oct 2025 10:02:25 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Network Development <netdev@vger.kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
+	Vlastimil Babka <vbabka@suse.cz>, ziy@nvidia.com,
+	bpf <bpf@vger.kernel.org>
+Subject: Re: [syzbot] [mm?] WARNING: locking bug in __set_page_owner (2)
+Message-ID: <aOyyER1uSsPl5b7a@localhost.localdomain>
+References: <68e7e6ad.a70a0220.126b66.0043.GAE@google.com>
+ <20251009165241.4d78dc5d9fa5525d988806b5@linux-foundation.org>
+ <CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251013020629.73902-1-xuanzhuo@linux.alibaba.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQK_8bNYEA7TJYgwTYR57=TTFagsvRxp62pFzS_z129eTg@mail.gmail.com>
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 5C9F21F798
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=5bcbbf19237350b5];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,localhost.localdomain:mid,storage.googleapis.com:url,syzkaller.appspot.com:url,suse.de:dkim,suse.de:email];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[8259e1d0e3ae8ed0c490];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	SUBJECT_HAS_QUESTION(0.00)[]
+X-Spam-Score: -2.01
 
-On Mon, Oct 13, 2025 at 10:06:26AM +0800, Xuan Zhuo wrote:
-> As discussed in http://lore.kernel.org/all/20250919013450.111424-1-xuanzhuo@linux.alibaba.com
-> Commit #1 Move the flags into the existing if condition; the issue is that it introduces a
-> small amount of code duplication.
-
-
-How were commits 1 and 2 tested?
-
-
-> Commit #3 is new to fix the hdr len in tunnel gso feature.
+On Thu, Oct 09, 2025 at 05:26:21PM -0700, Alexei Starovoitov wrote:
+> On Thu, Oct 9, 2025 at 4:52 PM Andrew Morton <akpm@linux-foundation.org> wrote:
+> >
+> > On Thu, 09 Oct 2025 09:45:33 -0700 syzbot <syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com> wrote:
+> >
+> > > Hello,
+> > >
+> > > syzbot found the following issue on:
+> > >
+> > > HEAD commit:    2c95a756e0cf net: pse-pd: tps23881: Fix current measuremen..
+> > > git tree:       net
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=16e1852f980000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=5bcbbf19237350b5
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=8259e1d0e3ae8ed0c490
+> > > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> > >
+> > > Unfortunately, I don't have any reproducer for this issue yet.
+> > >
+> > > Downloadable assets:
+> > > disk image: https://storage.googleapis.com/syzbot-assets/8272657e4298/disk-2c95a756.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/4e53ba690f28/vmlinux-2c95a756.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/6112d620d6fc/bzImage-2c95a756.xz
+> > >
+> > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > Reported-by: syzbot+8259e1d0e3ae8ed0c490@syzkaller.appspotmail.com
+> >
+> > At 2c95a756e0cf, page_owner.c hasn't been modified in a couple of years.
+> >
+> > How can add_stack_record_to_list()'s spin_lock_irqsave() be "invalid
+> > wait context"?  In NMI, yes, but the trace doesn't indicate that we're
+> > in an NMI.
+> >
+> > Confused.  I'm suspecting BPF involvement.  Cc'ed for help, please.
 > 
-> Hi @Paolo Abenchi,
-> Could you please test commit #3? I don't have a suitable test environment, as
-> QEMU doesn't currently support the tunnel GSO feature.
-> 
-> Thanks.
+> The attached patch should fix it.
+> There are different options, but this one is the simplest.
+
+Seems quite trivial to backport, so:
+
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
 
-AFAIK host_tunnel and guest_tunnel flags enable exactly that.
 
 
-> Xuan Zhuo (3):
->   virtio-net: fix incorrect flags recording in big mode
->   virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
->   virtio-net: correct hdr_len handling for tunnel gso
-> 
->  drivers/net/virtio_net.c   | 16 ++++++++-----
->  include/linux/virtio_net.h | 46 ++++++++++++++++++++++++++++++++------
->  2 files changed, 50 insertions(+), 12 deletions(-)
-> 
-> --
-> 2.32.0.3.g01195cf9f
-
+-- 
+Oscar Salvador
+SUSE Labs
