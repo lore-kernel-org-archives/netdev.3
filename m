@@ -1,92 +1,69 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E1F2FBDE2
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 09:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CDC2FD7D3
+	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 09:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760348103; cv=none; b=qpjRqOrosDcGod/W6uYBYAyS0C2rBPSkwbA6GEnUStVP3MMqTe7y7BOi3csHEcTLvTVartdklbv30SUb8NrdsovYe0GOuBHGPPQYVMH35LA0PxuUyx4l6yKprPGLwJKuaA4/Bn8KDQx0+12fAJEjKeRoZQVmeJCEE36xVVPwdEU=
+	t=1760348218; cv=none; b=aM7TUiO2YYPN4aFywQWu2K5tseogeE9Y5JmcVhyRnjJjEwrq/fEmFcH6MjifnFkH7E6KXPaP3ESRthEFUT+C6dBIAGox+uSJkKUJlMTW8+Nn6aEqynMIRrYF8+Th2F6A/y5xZjlY66juTETDXUngqUbw6/DMVTQ7OJ8frlIXfcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760348103; c=relaxed/simple;
-	bh=h/7JTy6TbprU+dCtnUq5sVaFosiidQqOxR/pPvZSvKA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vFCtYpF2WeJFqPytoiPS71BAGpgu4viaWSI1fAPRsai3crqoFwDOHY7tW+hFVMb/DEIr6nCGisCvkvTEej5qUSsVB+qSXxHlI0QU+ct4uIZ3BHk+hsEGbCmQi4zm1iSFTBNhUkTsCC6ePguYWvFX5+II+8gEKqQvCY9YT70BWeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnx1SxTk; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760348218; c=relaxed/simple;
+	bh=Yn7TjBfBuD0cTKnd++PHp7G1b/Ur34AI7puSNAOld80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iYeJjuSANxmT8B/Po1oaV4zJ1CEae1ysERdyQR7NSBtF0qMA6q7vEVJ/eVqHyEfhobIMlp3g7xlMwLSIJrkzzPQQk7z8yINj/2MKwb3JecSl7nym3G5P/P+NowUKOYMwHKPmI7nhHZfVYV4CL3oBQS2CHgIpnYaW02Va9r9F09E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6NvnqAC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnx1SxTk"
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-7833765433cso5322684b3a.0
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 02:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760348101; x=1760952901; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=H5bKclxFecJJ5GNJZlIb9xGDoD2UnMroqAQc+H9CWag=;
-        b=mnx1SxTkrQzHYji3aeb3q4OJ91PiRt+A7UU+c/8zJExuePN2QeB0IklJwTH08iodb9
-         88kDaaj4FBNqNOtBTe+OejuT3GlNCJcZwjgASUnCU4a0lR1yY7M6QZR6UMYWSiSh5+GO
-         Tx9y1tJ+iZiuZITt5suiuPdQ8g+j6ane0nytRhF/zsYd6TqiinT29kbbjZ70akhtMZz1
-         gFItwEi5eZMaL56EE8dNlJGvP1yNkZmlgkCw3CxS2OJ+o/H2ayhEoUVgXk9QYP8jfPEG
-         9VDEIuB/nihlBX/vMp1CSrmHCqgPinTh+LVg7YqCqf5zQyg0oGEC9NUJm0Go6V+SR27i
-         L8/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760348101; x=1760952901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=H5bKclxFecJJ5GNJZlIb9xGDoD2UnMroqAQc+H9CWag=;
-        b=LfMpQlhJZatWVFC27X3eNuHaVgLqaJdoTNcMsI7R91Zw4nBHyqAn7nPPQ+94qo6DlE
-         uV8eoNuPJOB8Me7Uq4fj6GQ9SWoY9SxeR0peHFfbLK2jd69Yy8NGjgQRSdznjxcfRLfJ
-         jRP3/7XL6nzf/6jIffZp2JJVCPIZ9gk8vrqpEVV89rPub2z+69uHzrPCZlC7jxAz2EgE
-         ZAITe3EouJXnrpkqU9lkAC+Ai+z+2DAZYNJc3isoRTCj/QYmeOk0tvn9nAScEuZ17CX6
-         YZh70QZqfMkKaVqAIZqeCX284A20pxyW+GYqR6ZITjyyC+qbGEJ8wHskcfMMQVZCs6gA
-         N5qg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/W2qC91X8+5qEj9El0D/fubAGfpgPs6LWnUB+93XmJer5xlKP9VXrpLOTQVyYWCQSZJ55YWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7aOo+CLixItaminiN3BMSfwqVa8sv/Lr7EObWGCzdXyf+5+T6
-	ZxnFPDfrvP4Eba3DALjkffh4OipkS4kRUq+CUeVzfOauSYNLIVxubBao
-X-Gm-Gg: ASbGncslnc9AA1l4tpeUUxW0oIe4MZyDu5Q12tJEKCqFUpubuGbMtfD5qbxttg4P+1f
-	SDyDLdrLRP06lYTU29j82dqc4X4F9DJjU5Egd7tu4B0EOYC7WnHeTB/haxW+WVqYxTcjsC3kCLP
-	LvqgjC4771HS9ubznmVBzdSACm23Xe+b2kpRX2RPTQaXIyNzl8veEfxe/XRFZQklnKbSVrVQ+Nt
-	D11oclTz5OM3NhBbAf+uaNgCTIJHGzi9FViXpLZ/n120J0vENjNxTAMRpETftBN5snhMKR5dQYm
-	4L9PXO3yv25c11ssRKZb7vMiEYt2/+5N2sK4HLRpN2+KXOir7x65fK27JMyLn0ogzpNEUkqM1kL
-	NE6K9ZIDh+Ut1Osr5uw79Lmz757Q4sA1MAibkRI9jAeg1QhfnM/KtnTdwnmzg9XQS0VutOkMfVQ
-	==
-X-Google-Smtp-Source: AGHT+IGPAzAetlOptAzw9GaNxbD3zKkFT2GadJ1WyMX5hnKkmmcKAsypxbC/VTf8veeCOAjENtE2yQ==
-X-Received: by 2002:a05:6a20:7291:b0:2fc:a1a1:4839 with SMTP id adf61e73a8af0-32da80da6dfmr27467709637.10.1760348101035;
-        Mon, 13 Oct 2025 02:35:01 -0700 (PDT)
-Received: from LAPTOP-PN4ROLEJ.localdomain ([222.191.246.242])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b678df952cbsm8693944a12.45.2025.10.13.02.34.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Oct 2025 02:35:00 -0700 (PDT)
-From: Slavin Liu <slavin452@gmail.com>
-To: stable@vger.kernel.org
-Cc: Slavin Liu <slavin452@gmail.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
-	Simon Horman <horms@verge.net.au>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	lvs-devel@vger.kernel.org
-Subject: Backport request for commit 134121bfd99a ("ipvs: Defer ip_vs_ftp unregister during netns cleanup")
-Date: Mon, 13 Oct 2025 17:34:49 +0800
-Message-Id: <20251013093449.465-1-slavin452@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6NvnqAC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E215EC4CEFE;
+	Mon, 13 Oct 2025 09:36:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760348217;
+	bh=Yn7TjBfBuD0cTKnd++PHp7G1b/Ur34AI7puSNAOld80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n6NvnqACa97Q5EohDysILSyqPs2pPG8bBTEgVxKXb7GRMJFkAK4Tvs2H3jAQMmOxo
+	 5QETZF33oLTnRK2QXovE7gy6jQY5BFwrK2v15NpwI1jalM9WXNOAAZrdApBmWga8B/
+	 47REY+apf591ZtewkgH4WjoA7hvR/5pzeX1XLXEUKHMDzcjzTmHLz38KNscoednQJq
+	 8M7fN5eJCcZKsIY9zrAOeDcepo2hnEI3nCO2PvCbSCXdxToNoE3SyOw3exEuD7mAz/
+	 +rZJp0VeQ9avfdO19WODybyFrwk7faBRvxR1lPVbz3TKbjpOx4dg+xduOXvjX93ysz
+	 VWTr63UmwYmrA==
+Date: Mon, 13 Oct 2025 10:36:53 +0100
+From: Simon Horman <horms@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v2] net: airoha: Take into account out-of-order tx
+ completions in airoha_dev_xmit()
+Message-ID: <aOzINXtv-gu50mJ7@horms.kernel.org>
+References: <20251012-airoha-tx-busy-queue-v2-1-a600b08bab2d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251012-airoha-tx-busy-queue-v2-1-a600b08bab2d@kernel.org>
 
-Hi,
+On Sun, Oct 12, 2025 at 11:19:44AM +0200, Lorenzo Bianconi wrote:
+> Completion napi can free out-of-order tx descriptors if hw QoS is
+> enabled and packets with different priority are queued to same DMA ring.
+> Take into account possible out-of-order reports checking if the tx queue
+> is full using circular buffer head/tail pointer instead of the number of
+> queued packets.
+> 
+> Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+> Suggested-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+> Changes in v2:
+> - Fix corner case when the queue is full
+> - Link to v1: https://lore.kernel.org/r/20251010-airoha-tx-busy-queue-v1-1-9e1af5d06104@kernel.org
 
-I would like to request backporting 134121bfd99a ("ipvs: Defer ip_vs_ftp 
-unregister during netns cleanup") to all LTS kernels.
+Thanks for the update.
 
-This fixes a UAF vulnerability in IPVS that was introduced since v2.6.39, and 
-the patch applies cleanly to the LTS kernels.
-
-thanks,
-
-Slavin Liu
+Reviewed-by: Simon Horman <horms@kernel.org>
