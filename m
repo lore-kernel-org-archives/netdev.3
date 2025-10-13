@@ -1,292 +1,243 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012001.outbound.protection.outlook.com [52.101.43.1])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AA03128AB
-	for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 15:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369331; cv=fail; b=bMJM9nlGQLx22bu8BN66KskjL3T/BuuHoazbiLvSFw+HLLhiwy7IyqU/xzvnGPJHRvAmTeJU7p30zYf7TkGqFqnYBhr6b20IZsPCPJxm7OgBpHPDTLVEILC3Ftxbm9jLED7AVtktJC4DanEStY/HSQNzGUwwHCsKrW/Vx9pR7IY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369331; c=relaxed/simple;
-	bh=xA1WWvqGpsyPC68U2FFk/MMojWg4wn4uGRi+B5JkvIk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RVjuM+eIjke9rohBsnPty44XH/h7hbNYYJEiC5fiM+grDiQhu/qkRc69/xlZZW4Z30CsVolFT+ZEsD+T9QEHuMW61b9LjhCyT3U5GQh34JoO4hrlQ/AEh9m0Ykfoo0nyLLxMJwA+MHOrx6ztpHDKNoCSIwyzo9nBhCSaUCPVecE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m7cwT0Hz; arc=fail smtp.client-ip=52.101.43.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m7cwT0Hz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=M8R/QrlqChww/K/DqablW4tGxg4R3WsyV+tueAIdDZ/t1C2G2M9bcI565BJq5PdtL5WnB4mTDxUNT97W4Aggu6QRQMGn23t7+m4ok4j3uX/aCmVWbeY3Zbm/e99vtuIZpDECj0SJCWyoVWDQ3jOqbcjLOuK7GTplu1fxOgM7Z8bHLYpjX9hSBv/H7ZENRUANaeO7aD2AqNV7xxu/KJ7rAshsZyCuLG520V5q+3IYB4BIk9QZep3PQi3bnZNITP3eUAx/8bZ8E+eSsJ2pz8lZheRfgbXUAgtNLJwXcdTWIbVlGcloE0JjH5hF3Pjbar07v9QNlHJieJqR6F8x6KF0ZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5zu0MGXbGDp36+OxeQPsmfhtxqpbirutruqg/W6avWc=;
- b=YgxgxjOqFBo+IL7H+7SlFm3rEErr7XmYU8SF6EKRNos/M37cp0VQbvDmXnP9r+guk214LkdviQhDNHlNtS7D+WYu0Od+nuiAB8yqGkSeRPg22VlJoU5H077KtlxxX3gvN1o70E7qpCsfTJg2iqvIKNoqxNuEdpe1gbkexWBLB6DQcersXIuQJIF64gTcwlGPg8JxrbK7m9BTm0oy1DduJNkiUIbPJjMmoGeHMrcrQcQo5WSXLW1Nebg7podC7oLRC8DfeDu/6VnrR90B5rL63X27Ch0/nZYRZJXnyIcbtThlfiqyTrzY8qibbXhzeAy/1Zre40jIEd9mhGJyKdmsbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5zu0MGXbGDp36+OxeQPsmfhtxqpbirutruqg/W6avWc=;
- b=m7cwT0HzGfaOmlrY/S6xagUJTAIUEPuXqtHDguq9HJbl9REWwGLOP0xP/7C8jMY5yyNv75svVBWd+4TFCq++vEW9lZhp3ahS3hGscROErCPDYBCAh3l6+e1FzJVzomrOFCWsPNOocokm7g6i75vy9pVpigpS8tZtT9UunwjqKYnV3NNOQBZxgjt/0yMD0SnzWKH04+3e1r5QaJhVwkP2fqZu7CFVV0l5lL5aAICsCvkwb2KiWnywT7+ShpQ7hm8LLOImBDLy95Z7/Ibm0TljbgN/MmmL0lDEs1hW/KT0CaLMmDcEOMOt08Oy4WAQ4auW2Q0aJBWpbtKPBQJDvITQrQ==
-Received: from SJ0PR05CA0112.namprd05.prod.outlook.com (2603:10b6:a03:334::27)
- by IA0PR12MB7651.namprd12.prod.outlook.com (2603:10b6:208:435::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9203.12; Mon, 13 Oct
- 2025 15:28:39 +0000
-Received: from SJ1PEPF000023D4.namprd21.prod.outlook.com
- (2603:10b6:a03:334:cafe::1e) by SJ0PR05CA0112.outlook.office365.com
- (2603:10b6:a03:334::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.8 via Frontend Transport; Mon,
- 13 Oct 2025 15:28:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SJ1PEPF000023D4.mail.protection.outlook.com (10.167.244.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.0 via Frontend Transport; Mon, 13 Oct 2025 15:28:37 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 13 Oct
- 2025 08:28:26 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Mon, 13 Oct 2025 08:28:26 -0700
-Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
- Transport; Mon, 13 Oct 2025 08:28:24 -0700
-From: Daniel Jurgens <danielj@nvidia.com>
-To: <netdev@vger.kernel.org>, <mst@redhat.com>, <jasowang@redhat.com>,
-	<alex.williamson@redhat.com>, <pabeni@redhat.com>
-CC: <virtualization@lists.linux.dev>, <parav@nvidia.com>,
-	<shshitrit@nvidia.com>, <yohadt@nvidia.com>, <xuanzhuo@linux.alibaba.com>,
-	<eperezma@redhat.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<jgg@ziepe.ca>, <kevin.tian@intel.com>, <kuba@kernel.org>,
-	<andrew+netdev@lunn.ch>, <edumazet@google.com>, Daniel Jurgens
-	<danielj@nvidia.com>
-Subject: [PATCH net-next v4 12/12] virtio_net: Add get ethtool flow rules ops
-Date: Mon, 13 Oct 2025 10:27:42 -0500
-Message-ID: <20251013152742.619423-13-danielj@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251013152742.619423-1-danielj@nvidia.com>
-References: <20251013152742.619423-1-danielj@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6246B30C612;
+	Mon, 13 Oct 2025 16:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760371325; cv=none; b=q7NqOTF5Hdy5iTDuGLA65H2LkQHPedHVDvouPL5myjFJFK51h1AhHPl5wnUHhyCGtOVzvMcXkeEujXyJBu/uVoxS3G+BcM2W+gtkhFYoXnFkMYX6DSPQCkD6NM8l14ui1annmFADW7hreAdO5aSvC3OxEITlCPZaseqfX5cAwAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760371325; c=relaxed/simple;
+	bh=U+bQZlFoG7hW3T+en4GDNEj1wbxRlsKAiPfRXeex2bk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AJl8W4FYv3sff4acURklU8b/f4wgfczzixbOHex50DNRMWzrjY5XyMufHp0GNx/emGnaoUkk2S3INs+IhML28wx3UjSKH5vlQgRxgU27+TdZETcPh/vpb0PRqx4slZ5/3r9vqTSeFyfl1voUkdGkcS1fnpky28Tw6cUXLBKK4ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id CBEBD48531; Mon, 13 Oct 2025 15:54:14 +0000 (UTC)
+X-Spam-Level: 
+Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:94d3:d213:724a:4e07])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 6E89648525;
+	Mon, 13 Oct 2025 15:54:13 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Date: Mon, 13 Oct 2025 17:54:11 +0200
+Subject: [PATCH net-next] ixgbe: Add 10G-BX support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D4:EE_|IA0PR12MB7651:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ffd5e3d-5217-45aa-c200-08de0a6d2e68
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XJTzDZu/CvzxMCaoRNuIuWx1+j/EDwDaxTRyy5NBzMFpEUof5ksBdnFscJT2?=
- =?us-ascii?Q?dffh62n/uLcAGdUqnOqnZI/XsvUtZd9d5VAmGt2LTpLibp54MFulv70sPcHp?=
- =?us-ascii?Q?QJCVkQGSfy09vpWNk2XUhRwrQC5OI0uwGqi2JDspTkVOGEYpQ0eWYHbJImBk?=
- =?us-ascii?Q?ftWdVehkIYQtb9ZaXLXkmtUiCaNSfpdzZdByg49PcmgYtC8jFcIC6tcNJKvZ?=
- =?us-ascii?Q?8bUhVcYMZxjZRFA0/Lf6SWiIoQlfeYMdrJyQN5nVU7e+D4F84B2nhVvwZFFQ?=
- =?us-ascii?Q?wUC//2W8fMClBkwUrnAKNt0F8fySaHqvEKEvCceZIIFL4XTitmqrIo4fYhCg?=
- =?us-ascii?Q?IuSuIv8QR4UDdS7mZPQUvc94QdGp9EqM7MyQn2NsZQG9FasCco7NCa6bRFmh?=
- =?us-ascii?Q?+4wbWxb0B+xuIUPrwloOoyhFXXHYIg038gR0tD0eFq2NN7MKHUAFPDBVRMsT?=
- =?us-ascii?Q?m0ChHtZIujS+Jg7vbNGNTwShsNB2o3zJ3AdqJIaoIIdNrTHOk5vLKY5NqQ9u?=
- =?us-ascii?Q?J9BbXDyvNewxdy5+zxfV5IVjGsvCOmVJXFoqol43+gTyDlXBZpKqa0RIczuu?=
- =?us-ascii?Q?yQiA0XnYtjt4+d5ucQgjXfVK0+bNUUgpebcaKtYXxgZ+yTTKSllZmhGJL/LY?=
- =?us-ascii?Q?YvDUTE2B+b+rDnk/QMypRUlWShUHrtziT0r1du2DIz8mUYSNngJjpukzDBai?=
- =?us-ascii?Q?enr6P1nzWT8sqm/by9vsIXoyf2srSQT908jXhX0MipPOR6lFJgVprwpLS0BM?=
- =?us-ascii?Q?Aq9hmAbGN6kkkQucXnmmtqzoJqy7hnD8rIGx194tZQYyG46FDEIIzD+TIma+?=
- =?us-ascii?Q?jxfFZM4nN8Xfam/QAiQhoijc9HQpfFkw1wBX0+fqjxM31T8kussWJ0db9CNg?=
- =?us-ascii?Q?W40DyOfQTGHk+k57DFLGuQYsTCBLLVwd+9sae31thvkMQw0IzO3d1GxCFHkx?=
- =?us-ascii?Q?ScX7InbKp5nI+A5xh9J1GOG3fTb3J3x7jv92K9aMxGZ36duonxGPQqvXjTBx?=
- =?us-ascii?Q?zcU4sRULz25htjg8KOnnePaMImaGuPMiobiyOyBkF8x0ADQE6EWDJ9sKg4ti?=
- =?us-ascii?Q?fw3+9M6dh28cAhF6N0Wdl+OfnAfOdxCSjjZwIKnLmEHEcdUIi1ynykbRBFU/?=
- =?us-ascii?Q?sfaCI0NbERfkJbcdEi420cQRQcy642qhN006EMUF45YWK5As9Wv5COJ3iDDP?=
- =?us-ascii?Q?G9EXbuUzOWpZcgYuU2mQOTv3hhpwbYVGH/TPZCSrH9vCgcPs49V4rSJeGSeO?=
- =?us-ascii?Q?u9hwmplhX6BqWyu5dEKB0DPrz/OhU2CQfSrDPYEm7OKJfCNHdTbuoODWdBYA?=
- =?us-ascii?Q?HfZmKWLAvFS8jpgwW/geE7bTI+iQKnbHnNwbdhXRTijz2ZjoFzOAjjaDq0+I?=
- =?us-ascii?Q?o99qHmGVhtSHd9dT1PfOgyXrhKSIVJI/f7I8JGUTvl2fXy5f1ry2XTMwzhcR?=
- =?us-ascii?Q?zUorm9hHghq5YggFdDnGbsNxik52rx0lRymkCAUpcnGBMgMLmjOP1ivVD2ZT?=
- =?us-ascii?Q?QrvPzumffmQWYO+uQ/aOD5V2cvxUxEvjZkxPzaP8k1wyNt+0dqNraK6af7MU?=
- =?us-ascii?Q?axpn8bJZeQFZFgWtyp8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2025 15:28:37.9206
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ffd5e3d-5217-45aa-c200-08de0a6d2e68
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D4.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7651
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251013-10gbx-v1-1-ab9896af3d58@birger-koblitz.de>
+X-B4-Tracking: v=1; b=H4sIAKIg7WgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA0MjXUOD9KQK3cQkEwujZNNUwxRTEyWg2oKi1LTMCrA50bG1tQDHcVV
+ uVwAAAA==
+X-Change-ID: 20251012-10gbx-ab482c5e1d54
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>
+X-Mailer: b4 0.14.2
 
-- Get total number of rules. There's no user interface for this. It is
-  used to allocate an appropriately sized buffer for getting all the
-  rules.
+Adds support for 10G-BX modules, i.e. 10GBit Ethernet over a single strand
+Single-Mode fiber
+The initialization of a 10G-BX SFP+ is the same as for a 10G SX/LX module,
+and is identified according to SFF-8472 table 5-3, footnote 3 by the
+10G Ethernet Compliance Codes field being empty, the Nominal Bit
+Rate being compatible with 12.5GBit, and the module being a fiber module
+with a Single Mode fiber link length.
 
-- Get specific rule
-$ ethtool -u ens9 rule 0
-	Filter: 0
-		Rule Type: UDP over IPv4
-		Src IP addr: 0.0.0.0 mask: 255.255.255.255
-		Dest IP addr: 192.168.5.2 mask: 0.0.0.0
-		TOS: 0x0 mask: 0xff
-		Src port: 0 mask: 0xffff
-		Dest port: 4321 mask: 0x0
-		Action: Direct to queue 16
+This was tested using a Lightron WSPXG-HS3LC-IEA 1270/1330nm 10km
+transceiver:
+$ sudo ethtool -m enp1s0f1
+   Identifier                          : 0x03 (SFP)
+   Extended identifier                 : 0x04 (GBIC/SFP defined by 2-wire interface ID)
+   Connector                           : 0x07 (LC)
+   Transceiver codes                   : 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+   Encoding                            : 0x01 (8B/10B)
+   BR Nominal                          : 10300MBd
+   Rate identifier                     : 0x00 (unspecified)
+   Length (SMF)                        : 10km
+   Length (OM2)                        : 0m
+   Length (OM1)                        : 0m
+   Length (Copper or Active cable)     : 0m
+   Length (OM3)                        : 0m
+   Laser wavelength                    : 1330nm
+   Vendor name                         : Lightron Inc.
+   Vendor OUI                          : 00:13:c5
+   Vendor PN                           : WSPXG-HS3LC-IEA
+   Vendor rev                          : 0000
+   Option values                       : 0x00 0x1a
+   Option                              : TX_DISABLE implemented
+   BR margin max                       : 0%
+   BR margin min                       : 0%
+   Vendor SN                           : S142228617
+   Date code                           : 140611
+   Optical diagnostics support         : Yes
 
-- Get all rules:
-$ ethtool -u ens9
-31 RX rings available
-Total 2 rules
-
-Filter: 0
-        Rule Type: UDP over IPv4
-        Src IP addr: 0.0.0.0 mask: 255.255.255.255
-        Dest IP addr: 192.168.5.2 mask: 0.0.0.0
-...
-
-Filter: 1
-        Flow Type: Raw Ethernet
-        Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
-        Dest MAC addr: 08:11:22:33:44:54 mask: 00:00:00:00:00:00
-
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 ---
-v4: Answered questions about rules_limit overflow with no changes.
----
- drivers/net/virtio_net.c | 78 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c   |  7 +++++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c |  2 ++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c     | 37 ++++++++++++++++++++----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h     |  1 +
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h    |  2 ++
+ 5 files changed, 44 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 2878a1b9bc62..9dfa534d2130 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -307,6 +307,13 @@ static int virtnet_ethtool_flow_insert(struct virtnet_ff *ff,
- 				       struct ethtool_rx_flow_spec *fs,
- 				       u16 curr_queue_pairs);
- static int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location);
-+static int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
-+					  struct ethtool_rxnfc *info);
-+static int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
-+				    struct ethtool_rxnfc *info);
-+static int
-+virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
-+			      struct ethtool_rxnfc *info, u32 *rule_locs);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c
+index d5b1b974b4a33e7dd51b7cfe5ea211ff038a36f0..892a73a4bc6b0bb1c976ca95bf874059b987054f 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_82599.c
+@@ -342,6 +342,13 @@ static int ixgbe_get_link_capabilities_82599(struct ixgbe_hw *hw,
+ 		return 0;
+ 	}
  
- #define VIRTNET_Q_TYPE_RX 0
- #define VIRTNET_Q_TYPE_TX 1
-@@ -5645,6 +5652,28 @@ static u32 virtnet_get_rx_ring_count(struct net_device *dev)
- 	return vi->curr_queue_pairs;
- }
- 
-+static int virtnet_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info, u32 *rule_locs)
-+{
-+	struct virtnet_info *vi = netdev_priv(dev);
-+	int rc = 0;
-+
-+	switch (info->cmd) {
-+	case ETHTOOL_GRXCLSRLCNT:
-+		rc = virtnet_ethtool_get_flow_count(&vi->ff, info);
-+		break;
-+	case ETHTOOL_GRXCLSRULE:
-+		rc = virtnet_ethtool_get_flow(&vi->ff, info);
-+		break;
-+	case ETHTOOL_GRXCLSRLALL:
-+		rc = virtnet_ethtool_get_all_flows(&vi->ff, info, rule_locs);
-+		break;
-+	default:
-+		rc = -EOPNOTSUPP;
++	if (hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core0 ||
++	    hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core1) {
++		*speed = IXGBE_LINK_SPEED_10GB_FULL;
++		*autoneg = false;
++		return 0;
 +	}
 +
-+	return rc;
-+}
-+
- static int virtnet_set_rxnfc(struct net_device *dev, struct ethtool_rxnfc *info)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-@@ -5686,6 +5715,7 @@ static const struct ethtool_ops virtnet_ethtool_ops = {
- 	.get_rxfh_fields = virtnet_get_hashflow,
- 	.set_rxfh_fields = virtnet_set_hashflow,
- 	.get_rx_ring_count = virtnet_get_rx_ring_count,
-+	.get_rxnfc = virtnet_get_rxnfc,
- 	.set_rxnfc = virtnet_set_rxnfc,
- };
+ 	/*
+ 	 * Determine link capabilities based on the stored value of AUTOC,
+ 	 * which represents EEPROM defaults.  If AUTOC value has not been
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index 2d660e9edb80af8fc834e097703dfd6a82b8c45b..76edf02bc47e5dd24bb0936f730f036181f6dc2a 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -351,6 +351,8 @@ static int ixgbe_get_link_ksettings(struct net_device *netdev,
+ 		case ixgbe_sfp_type_1g_lx_core1:
+ 		case ixgbe_sfp_type_1g_bx_core0:
+ 		case ixgbe_sfp_type_1g_bx_core1:
++		case ixgbe_sfp_type_10g_bx_core0:
++		case ixgbe_sfp_type_10g_bx_core1:
+ 			ethtool_link_ksettings_add_link_mode(cmd, supported,
+ 							     FIBRE);
+ 			ethtool_link_ksettings_add_link_mode(cmd, advertising,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index 2449e4cf2679ddf3277f4ada7619303eb618d393..99959602a33105c81206b5c711a0f9dfdc5c5d4a 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -1541,6 +1541,7 @@ int ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw)
+ 	u8 identifier = 0;
+ 	u8 cable_tech = 0;
+ 	u8 cable_spec = 0;
++	u8 sm_length;
+ 	int status;
  
-@@ -7605,6 +7635,54 @@ static int virtnet_ethtool_flow_remove(struct virtnet_ff *ff, int location)
- 	return err;
- }
+ 	if (hw->mac.ops.get_media_type(hw) != ixgbe_media_type_fiber) {
+@@ -1678,6 +1679,26 @@ int ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw)
+ 			else
+ 				hw->phy.sfp_type =
+ 					ixgbe_sfp_type_1g_bx_core1;
++		/* Support Ethernet 10G-BX, checking the Bit Rate
++		 * Nominal Value as per SFF-8472 to be 12.5 Gb/s (67h) and
++		 * Single Mode fibre with at least 1km link length
++		 */
++		} else if ((!comp_codes_10g) && (bitrate_nominal == 0x67) &&
++			   (!(cable_tech & IXGBE_SFF_DA_PASSIVE_CABLE)) &&
++			   (!(cable_tech & IXGBE_SFF_DA_ACTIVE_CABLE))) {
++			status = hw->phy.ops.read_i2c_eeprom(hw,
++					    IXGBE_SFF_SM_LENGTH,
++					    &sm_length);
++			if (status != 0)
++				goto err_read_i2c_eeprom;
++			if (sm_length > 0) {
++				if (hw->bus.lan_id == 0)
++					hw->phy.sfp_type =
++						ixgbe_sfp_type_10g_bx_core0;
++				else
++					hw->phy.sfp_type =
++						ixgbe_sfp_type_10g_bx_core1;
++			}
+ 		} else {
+ 			hw->phy.sfp_type = ixgbe_sfp_type_unknown;
+ 		}
+@@ -1768,7 +1789,9 @@ int ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw)
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_sx_core0 ||
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_sx_core1 ||
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core0 ||
+-	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core1)) {
++	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core1 ||
++	      hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core0 ||
++	      hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core1)) {
+ 		hw->phy.type = ixgbe_phy_sfp_unsupported;
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -1786,7 +1809,9 @@ int ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw)
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_sx_core0 ||
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_sx_core1 ||
+ 	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core0 ||
+-	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core1)) {
++	      hw->phy.sfp_type == ixgbe_sfp_type_1g_bx_core1 ||
++	      hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core0 ||
++	      hw->phy.sfp_type == ixgbe_sfp_type_10g_bx_core1)) {
+ 		/* Make sure we're a supported PHY type */
+ 		if (hw->phy.type == ixgbe_phy_sfp_intel)
+ 			return 0;
+@@ -2016,20 +2041,22 @@ int ixgbe_get_sfp_init_sequence_offsets(struct ixgbe_hw *hw,
+ 		return -EOPNOTSUPP;
  
-+static int virtnet_ethtool_get_flow_count(struct virtnet_ff *ff,
-+					  struct ethtool_rxnfc *info)
-+{
-+	if (!ff->ff_supported)
-+		return -EOPNOTSUPP;
-+
-+	info->rule_cnt = ff->ethtool.num_rules;
-+	info->data = le32_to_cpu(ff->ff_caps->rules_limit) | RX_CLS_LOC_SPECIAL;
-+
-+	return 0;
-+}
-+
-+static int virtnet_ethtool_get_flow(struct virtnet_ff *ff,
-+				    struct ethtool_rxnfc *info)
-+{
-+	struct virtnet_ethtool_rule *eth_rule;
-+
-+	if (!ff->ff_supported)
-+		return -EOPNOTSUPP;
-+
-+	eth_rule = xa_load(&ff->ethtool.rules, info->fs.location);
-+	if (!eth_rule)
-+		return -ENOENT;
-+
-+	info->fs = eth_rule->flow_spec;
-+
-+	return 0;
-+}
-+
-+static int
-+virtnet_ethtool_get_all_flows(struct virtnet_ff *ff,
-+			      struct ethtool_rxnfc *info, u32 *rule_locs)
-+{
-+	struct virtnet_ethtool_rule *eth_rule;
-+	unsigned long i = 0;
-+	int idx = 0;
-+
-+	if (!ff->ff_supported)
-+		return -EOPNOTSUPP;
-+
-+	xa_for_each(&ff->ethtool.rules, i, eth_rule)
-+		rule_locs[idx++] = i;
-+
-+	info->data = le32_to_cpu(ff->ff_caps->rules_limit);
-+
-+	return 0;
-+}
-+
- static size_t get_mask_size(u16 type)
- {
- 	switch (type) {
+ 	/*
+-	 * Limiting active cables and 1G Phys must be initialized as
++	 * Limiting active cables, 10G BX and 1G Phys must be initialized as
+ 	 * SR modules
+ 	 */
+ 	if (sfp_type == ixgbe_sfp_type_da_act_lmt_core0 ||
+ 	    sfp_type == ixgbe_sfp_type_1g_lx_core0 ||
+ 	    sfp_type == ixgbe_sfp_type_1g_cu_core0 ||
+ 	    sfp_type == ixgbe_sfp_type_1g_sx_core0 ||
+-	    sfp_type == ixgbe_sfp_type_1g_bx_core0)
++	    sfp_type == ixgbe_sfp_type_1g_bx_core0 ||
++	    sfp_type == ixgbe_sfp_type_10g_bx_core0)
+ 		sfp_type = ixgbe_sfp_type_srlr_core0;
+ 	else if (sfp_type == ixgbe_sfp_type_da_act_lmt_core1 ||
+ 		 sfp_type == ixgbe_sfp_type_1g_lx_core1 ||
+ 		 sfp_type == ixgbe_sfp_type_1g_cu_core1 ||
+ 		 sfp_type == ixgbe_sfp_type_1g_sx_core1 ||
+-		 sfp_type == ixgbe_sfp_type_1g_bx_core1)
++		 sfp_type == ixgbe_sfp_type_1g_bx_core1 ||
++		 sfp_type == ixgbe_sfp_type_10g_bx_core1)
+ 		sfp_type = ixgbe_sfp_type_srlr_core1;
+ 
+ 	/* Read offset to PHY init contents */
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+index 81179c60af4e0199a8b9d0fcdf34654b02eedfac..fc875ce33d5d3ed08906ad91b3312c522ab09960 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+@@ -32,6 +32,7 @@
+ #define IXGBE_SFF_QSFP_1GBE_COMP	0x86
+ #define IXGBE_SFF_QSFP_CABLE_LENGTH	0x92
+ #define IXGBE_SFF_QSFP_DEVICE_TECH	0x93
++#define IXGBE_SFF_SM_LENGTH		0xE
+ 
+ /* Bitmasks */
+ #define IXGBE_SFF_DA_PASSIVE_CABLE		0x4
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+index b1bfeb21537acc44c31aedcb0584374e8f6ecd45..61f2ef67defddeab9ff4aa83c8f017819594996b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+@@ -3286,6 +3286,8 @@ enum ixgbe_sfp_type {
+ 	ixgbe_sfp_type_1g_lx_core1 = 14,
+ 	ixgbe_sfp_type_1g_bx_core0 = 15,
+ 	ixgbe_sfp_type_1g_bx_core1 = 16,
++	ixgbe_sfp_type_10g_bx_core0 = 17,
++	ixgbe_sfp_type_10g_bx_core1 = 18,
+ 
+ 	ixgbe_sfp_type_not_present = 0xFFFE,
+ 	ixgbe_sfp_type_unknown = 0xFFFF
+
+---
+base-commit: 67029a49db6c1f21106a1b5fcdd0ea234a6e0711
+change-id: 20251012-10gbx-ab482c5e1d54
+
+Best regards,
 -- 
-2.50.1
+Birger Koblitz <mail@birger-koblitz.de>
 
