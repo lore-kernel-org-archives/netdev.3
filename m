@@ -1,102 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from localhost.localdomain (unknown [147.136.157.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118C730C371;
-	Tue, 14 Oct 2025 12:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F0030C371;
+	Tue, 14 Oct 2025 12:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760445352; cv=none; b=ilgK6zH0AtT58u537RTFowaxi0C86GJj/VN2SGc39YXEw9wgGgzHzfsQSzU0l+ILCF0mU97IMpaAmIhL2w66/7Oj0dUkOzBt49LH6byFFihMYCcYk6Ii7FSSmSuKsxizBNH02M4Vm3RQN6nZbu0O1uviQedg2+RLf2EYrGc4RVo=
+	t=1760445400; cv=none; b=CIH6ki/YlZhqRw40B3XvtxKS3nr6WqA034rTumCSv44tp8spW1ZGweIDccM+BZv/HpMTPT13aSYPqCDFlMU/ZiQbdjkkZStNRv3OuEvmfhYXLbr8gXocmXxrgCd0d1FDwHmW2XM74dDFY8tz72pZInWnqnQdZYna6wf8h0KPk9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760445352; c=relaxed/simple;
-	bh=veFrev4WHDqJr8PvwptdqQ0qevY7NBnf6uVDF8KwJvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BxmTxoxjML0O3WpvgiLc3Rlkh8W/6MwJ80l5McQjRg52Z3AJeqyzk9+pDR9Jd7dEUyCKX0/Tgc+1aAHdP7KBbp2P1xVFH/IuG+U7MNj1Gp4V5rJo9L94Em2SeyfX6x4DoT/VbJSlKlDRirutcIWdNhXIadbSr0DxvLNPcYy9Qcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ex+R3y//; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ex+R3y//"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613B6C4CEE7;
-	Tue, 14 Oct 2025 12:35:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760445351;
-	bh=veFrev4WHDqJr8PvwptdqQ0qevY7NBnf6uVDF8KwJvU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ex+R3y//T9kDG4MIndwspLzW9Vx5zWHgE/EaFVi2WPfvoDb9Wm53ZgK3WweiF8OFR
-	 UUpPSvNXvWaVMMSpa2NFfFoaYru8wVeUVp9LWCfqdK4O6GNUzIU3ucGrpMQufywb47
-	 kOIrAwSVguW0XyImU4o61QWE8OzcAoMP5nF5hHqTTSVn/s4CFrSlHrUfEukcVzsd7q
-	 KdYC4RfDc08pweMnxmXVaFZYxFRHfmp2XAIaBzqAfakhF25hwmpiq40lUfIiv+6zWC
-	 FcLWsoZRYCArglDakt8a2zEa8ZDsd246egHvmkRQV9YE36MTf7aguEqQQhhipNbJvY
-	 GuHfp8lhzzwuQ==
-Date: Tue, 14 Oct 2025 13:35:43 +0100
-From: Simon Horman <horms@kernel.org>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+	s=arc-20240116; t=1760445400; c=relaxed/simple;
+	bh=k/Tok6k6D/CdQpW7VbJVnHdNR0BBriLH6Ww7ZjTcrIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kbvPHOH0fgUzpTp5YUDpPUaTxTMBPjzEYi8EaZHuGlcXWrBwgZ91VJ+I90xXUKeAPhD/1PR1O/U3C1SNTJWkYBGbuMGLCdX76Jyi2aUiAEqDFrMle8+kYdtwFdaiHs120NPumZpAE0K18cZChUFR5CImGoV8zvdycCJn/NnPu5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
+Received: by localhost.localdomain (Postfix, from userid 1007)
+	id C29D98B2A56; Tue, 14 Oct 2025 20:26:36 +0800 (+08)
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Davide Caratti <dcaratti@redhat.com>,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 30/33] kthread: Add API to update preferred affinity on
- kthread runtime
-Message-ID: <aO5Dn2AwQWn0SQKQ@horms.kernel.org>
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-31-frederic@kernel.org>
+Subject: [PATCH net-next v1] mptcp: fix incorrect IPv4/IPv6 check
+Date: Tue, 14 Oct 2025 20:26:18 +0800
+Message-ID: <20251014122619.316463-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013203146.10162-31-frederic@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 13, 2025 at 10:31:43PM +0200, Frederic Weisbecker wrote:
+When MPTCP falls back to normal TCP, it needs to reset proto_ops. However,
+for sockmap and TLS, they have their own custom proto_ops, so simply
+checking sk->sk_prot is insufficient.
 
-...
+For example, an IPv6 request might incorrectly follow the IPv4 code path,
+leading to kernel panic.
 
-> @@ -900,6 +899,46 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
->  }
->  EXPORT_SYMBOL_GPL(kthread_affine_preferred);
->  
-> +/**
-> + * kthread_affine_preferred_update - update a kthread's preferred affinity
-> + * @p: thread created by kthread_create().
-> + * @cpumask: new mask of CPUs (might not be online, must be possible) for @k
-> + *           to run on.
+Note that Golang has enabled MPTCP by default [1]
 
-nit: @mask: ...
+[1] https://go-review.googlesource.com/c/go/+/607715
 
-Likewise for the documentation of kthread_affine_preferred()
-in a subsequent patch in this series.
+Fixes: 8e2b8a9fa512 ("mptcp: don't overwrite sock_ops in mptcp_is_tcpsk()")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ net/mptcp/protocol.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> + *
-> + * Update the cpumask of the desired kthread's affinity that was passed by
-> + * a previous call to kthread_affine_preferred(). This can be called either
-> + * before or after the first wakeup of the kthread.
-> + *
-> + * Returns 0 if the affinity has been applied.
-> + */
-> +int kthread_affine_preferred_update(struct task_struct *p,
-> +				    const struct cpumask *mask)
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 0292162a14ee..efcdaeff91f8 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -62,10 +62,10 @@ static u64 mptcp_wnd_end(const struct mptcp_sock *msk)
+ static const struct proto_ops *mptcp_fallback_tcp_ops(const struct sock *sk)
+ {
+ #if IS_ENABLED(CONFIG_MPTCP_IPV6)
+-	if (sk->sk_prot == &tcpv6_prot)
++	if (sk->sk_family == AF_INET6)
+ 		return &inet6_stream_ops;
+ #endif
+-	WARN_ON_ONCE(sk->sk_prot != &tcp_prot);
++	WARN_ON(sk->sk_family != AF_INET);
+ 	return &inet_stream_ops;
+ }
+ 
+-- 
+2.43.0
 
-...
