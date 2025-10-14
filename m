@@ -1,139 +1,138 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E2B202997
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F81C2DCF65
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431732; cv=none; b=KHe89kIrj2mMRbFbQsId+S5ge5KS3zR7NhpzH5MoVAzsRqRTEskE3aEuXP7Lf0PROgOQd5UV44es17AoUhPyyHkhF+GvjNr7mUNqqNv/mUz70dKnyH1/Uaxi25m++RBnKP1YVgQ5SkdysQehviOpkB5qygG+RoLdgIjghja+kI4=
+	t=1760432078; cv=none; b=cpgD9kzfxBY3RS7ZY10mpFvQcJOLLB6BJc3rcxVavKbMNsMm//1GUvAUUtqMZx06El7LUwyw1BjexyWa1XHVePHY/KAJNapQFuABaRZj5nnLdNxPlIp7ntFQhXTWBQvOS0ZjgErMdJ3toFJDjhlCZ3M5WgNUX4INq68wV7ZhIis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431732; c=relaxed/simple;
-	bh=+RQaq5vqP59DNT8zkULHUKzCvsuMS8MlEztgp4oLc3w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dsvnLDhgaW+IJVzfHSRxVc1SJikhHiVnAuxbC19ljYtZj7R0KowiZoB5IDpmikbYPvrRwpcnfBvmjvAh57Qm/clF9Yz9/+uVmpmrzMgCnF8momNB28Ho8I4jYC4jdExaZ3H1JiLx0wHx1H0ZahEEE/+tee2VIPfzLZiY7A4y8hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nRvV0Fza; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LZrzqOwc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nRvV0Fza; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=LZrzqOwc; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1760432078; c=relaxed/simple;
+	bh=6LgNKZNmgF10jIXqxGjeEBugATe/LKxXcOJp3lARXDc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aLIShMZT7V+UeovGeR4+SCq731lHVEsG5XsffX8tQY1qdb0wfeD1myWZ3y2yLRHnFfdDIeovZryI4Pc+t934GM95FIYPc+0Tzrmvhi/2eqvVNwZuVFBnDJ2I2WeYrx0ikIMvgIclUo/Sz9NI5DQQ1RFDEii5mhlSbmU7obSb3CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x1oG+WBJ; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nRvV0Fza";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LZrzqOwc";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nRvV0Fza";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="LZrzqOwc"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5517521E7B;
-	Tue, 14 Oct 2025 08:48:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760431729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YLfbWqw2DUKPdHxynRii/9hz+IfkKtwNMprspvuWD0Y=;
-	b=nRvV0FzaigLhb8FuB25fq7kEgOqgNhIPtIZ1fpR5pEyu55IYWCa+xLK8TBmrz92geI0b7g
-	nmtvPXQvnSVMJFNlBmDAKKQVTsjM66rKYa6XHlodt9R3c71weW2wd3dJa5iMeuh06DIAKp
-	vplFazF0CNftGsT+naC4Ewil5djRNTc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760431729;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YLfbWqw2DUKPdHxynRii/9hz+IfkKtwNMprspvuWD0Y=;
-	b=LZrzqOwcj27rzis2iqSLMOaFp6Y5ZSoXyIzmWviafx/cIetUSJHDT13dLKa/7uMPITJ/YD
-	09cTMnnw0DlU+FCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760431729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YLfbWqw2DUKPdHxynRii/9hz+IfkKtwNMprspvuWD0Y=;
-	b=nRvV0FzaigLhb8FuB25fq7kEgOqgNhIPtIZ1fpR5pEyu55IYWCa+xLK8TBmrz92geI0b7g
-	nmtvPXQvnSVMJFNlBmDAKKQVTsjM66rKYa6XHlodt9R3c71weW2wd3dJa5iMeuh06DIAKp
-	vplFazF0CNftGsT+naC4Ewil5djRNTc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760431729;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YLfbWqw2DUKPdHxynRii/9hz+IfkKtwNMprspvuWD0Y=;
-	b=LZrzqOwcj27rzis2iqSLMOaFp6Y5ZSoXyIzmWviafx/cIetUSJHDT13dLKa/7uMPITJ/YD
-	09cTMnnw0DlU+FCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E512313A44;
-	Tue, 14 Oct 2025 08:48:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id AJ4ONXAO7mhKKAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 14 Oct 2025 08:48:48 +0000
-Message-ID: <b25a73bf-1309-4f9f-9cd7-795e0615635b@suse.de>
-Date: Tue, 14 Oct 2025 10:48:44 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x1oG+WBJ"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-78f15d5846dso83975176d6.0
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 01:54:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760432076; x=1761036876; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T4VySRwz9m1JU+ZDg+Fh3/d34BuS0ZBZLOysYt4I24I=;
+        b=x1oG+WBJhate8zQn30/BPtcFzz2cgKy0LbB1TwuFmClLe4MIfjkNJqoFuvP+D0YmkL
+         WWQ1OKApyOt0SshG/dfPy5zlL/qS4R/87Nx6g2WzRjX6OHF0rFEUSm8SdMpPPeq75wgo
+         iliBuQChj8EWtwLF+N25ApN8QzjGgRsTqYLaCQwaU3Sq4QJ6clRSye1+bqWODYERTVSj
+         7Zbvi4Kv2aNAU5gRNO1lawGyjKq337+5gztuHsnYLmM+MoHqN9+tp92pkaL8Y324fwmU
+         w0CMdNIXjuW1ZOXyKHJCLuJgW2yWiVDahmea/asR60BFT1+klc9U0AVTvnrIArAC5TCC
+         fbdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760432076; x=1761036876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T4VySRwz9m1JU+ZDg+Fh3/d34BuS0ZBZLOysYt4I24I=;
+        b=w63OOq+TmLTioZd7vWMxsM1YEjnJnnpuF2kMqKMXMFDVdZyuLfm2MDiEcN7TdRNhKs
+         AZg0EuJLc4vfDEjuLWFuUg66zna0Wlg0p2Xz5jnfKELy7Z/uTlBFwYjRodeFhRC1wsU0
+         zMmI15PGMmIcfaMvSS9GyS/Di/ui8uOIOcwXim3DB9SLJF8uqchH2+uqmUt/lR+AXHde
+         KDsUNBYJxZRlTc0VVa91VyKDLcAL/WGAVqRWesSzquzsDFwWqt3394NDQ29MLHvZAdh2
+         1scJgiMN24PEMgWSfgzypXTDqVv6WHKnA+OI4rvL6cGUAKBDXBTHWStcRMo0PImh2t+r
+         K7jg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSH/8cTWC8+auLD76M59OHe5D4Ib6O2fLqdp9uwUQsPsgavJo+gOj3Du/zF1BVMAmJJ5Kb0DM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCiRWvYzwtNjlAnvsHbuRZ+0sXTCT/UUtOSIxk5nH2IP6IxiR0
+	hTnibnzfwbUjqug7NZaYhlBAdYdYqfXMHOfILxJg+ebDUJsVjxoUCWiGDW5pIJRlzcLekyvR1iQ
+	NmiAthK2nogaBqewyFBnc3qRIGt4p9YFAQ1/eS2Z0
+X-Gm-Gg: ASbGncv6+2hIDMqHUmJtmNBmG538O0JQ7eB58eom4I0YVdzObwHcsRitaQ7EvuAkuqo
+	gQeJccJn9WpFWixP+3EG4UWrhmiaqZtL9ZTHbZR4n6H+FZjpJXlW8MfKAggjIYV3WDRkJnYSi/l
+	JDuAwvZkN6/IYC/k0jiReBsTGBtqrsNeZ2BNaHYh813rJKzecULeeaVr4rPkfp68//GpfSR3Hxw
+	5g+ysqfYcMv2DXAE6ktXhtAU0h4y3f/
+X-Google-Smtp-Source: AGHT+IFA8xut4GWM2ihOQCr4R8bWnXf5T+nPRO/dqWNWbF48zVbKNVA6mwY9MPlWQGhl4PI0B5Nf/QP3ZfC1nQzoVWM=
+X-Received: by 2002:a05:622a:8a:b0:4df:4174:8239 with SMTP id
+ d75a77b69052e-4e6eaceafe1mr343666951cf.29.1760432075575; Tue, 14 Oct 2025
+ 01:54:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next] net/hsr: add protocol version to fill_info
- output
-To: Jan Vaclav <jvaclav@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-References: <20251009210903.1055187-6-jvaclav@redhat.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20251009210903.1055187-6-jvaclav@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+References: <20251013145926.833198-1-edumazet@google.com> <3b20bfde-1a99-4018-a8d9-bb7323b33285@redhat.com>
+ <CANn89iKu7jjnjc1QdUrvbetti2AGhKe0VR+srecrpJ2s-hfkKA@mail.gmail.com>
+In-Reply-To: <CANn89iKu7jjnjc1QdUrvbetti2AGhKe0VR+srecrpJ2s-hfkKA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 01:54:24 -0700
+X-Gm-Features: AS18NWABPuN2ltBmI73WriTakkV-8ehTeL9FJW2CFHXHDKq3zSwQiuxYu4RFeag
+Message-ID: <CANn89iL8YKZZQZSmg5WqrYVtyd2PanNXzTZ2Z0cObpv9_XSmoQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] tcp: better handle TCP_TX_DELAY on established flows
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/9/25 11:09 PM, Jan Vaclav wrote:
-> Currently, it is possible to configure IFLA_HSR_VERSION, but
-> there is no way to check in userspace what the currently
-> configured HSR protocol version is.
-> 
-> Add it to the output of hsr_fill_info(), when the interface
-> is using the HSR protocol. Let's not expose it when using
-> the PRP protocol, since it only has one version and it's
-> not possible to set it from userspace.
-> 
-> This info could then be used by e.g. ip(8), like so:
-> $ ip -d link show hsr0
-> 12: hsr0: <BROADCAST,MULTICAST> mtu ...
->      ...
->      hsr slave1 veth0 slave2 veth1 ... proto 0 version 1
+On Tue, Oct 14, 2025 at 1:29=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Tue, Oct 14, 2025 at 1:22=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> w=
+rote:
+> >
+> > On 10/13/25 4:59 PM, Eric Dumazet wrote:
+> > > Some applications uses TCP_TX_DELAY socket option after TCP flow
+> > > is established.
+> > >
+> > > Some metrics need to be updated, otherwise TCP might take time to
+> > > adapt to the new (emulated) RTT.
+> > >
+> > > This patch adjusts tp->srtt_us, tp->rtt_min, icsk_rto
+> > > and sk->sk_pacing_rate.
+> > >
+> > > This is best effort, and for instance icsk_rto is reset
+> > > without taking backoff into account.
+> > >
+> > > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> >
+> > The CI is consistently reporting pktdrill failures on top of this patch=
+:
+> >
+> > # selftests: net/packetdrill: tcp_user_timeout_user-timeout-probe.pkt
+> > # TAP version 13
+> > # 1..2
+> > # tcp_user_timeout_user-timeout-probe.pkt:35: error in Python code
+> > # Traceback (most recent call last):
+> > #   File "/tmp/code_T7S7S4", line 202, in <module>
+> > #     assert tcpi_probes =3D=3D 6, tcpi_probes; \
+> > # AssertionError: 0
+> > # tcp_user_timeout_user-timeout-probe.pkt: error executing code:
+> > 'python3' returned non-zero status 1
+> >
+> > To be accurate, the patches batch under tests also includes:
+> >
+> > https://patchwork.kernel.org/project/netdevbpf/list/?series=3D1010780
+> >
+> > but the latter looks even more unlikely to cause the reported issues?!?
 
-I think this is missing the 'Signed-off-by' tag. Other than that, it 
-looks good to me. Not sure if it can be added while merging.
+Not sure, look at the packetdrill test "`tc qdisc delete dev tun0 root
+2>/dev/null ; tc qdisc add dev tun0 root pfifo limit 0`"
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+After "net: dev_queue_xmit() llist adoption" __dev_xmit_skb() might
+return NET_XMIT_SUCCESS instead of NET_XMIT_DROP
+
+__tcp_transmit_skb() has some code to detect NET_XMIT_DROP
+immediately, instead of relying on a timer.
+
+I can fix the 'single packet' case, but not the case of many packets
+being sent in //
+
+Note this issue was there already, for qdisc with TCQ_F_CAN_BYPASS :
+We were returning NET_XMIT_SUCCESS even if the driver had to drop the packe=
+t.
+
+Test is flaky even without the
+https://patchwork.kernel.org/project/netdevbpf/list/?series=3D1010780
+series.
