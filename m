@@ -1,133 +1,131 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BC3248F57;
-	Tue, 14 Oct 2025 15:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1331E2FE059
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 15:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760454097; cv=none; b=KpDVhd+ZdmBCN3eG6Dmu+yaQMEMmk70B5hMkbEfXqFRvnhfLbG+5/YsG9AjUL3LBGKWYprPrmp1Zoz5o5yQmp8VCnALmdY8dzE9F9dJotKJN30uVgg3aRPSwBDJNs6UWyAzjvXk2IRtpdjQixgNLdD/Sk0DW98xTWYThgKj14Yg=
+	t=1760454892; cv=none; b=GqbMHnw+vZBxLXDm39rHMlf/bzJUN96yUl9i7NNuP1KjTQiglL4TAVdDUl2sXtbctvX0hqP2liLLuaeJ1m1XJY2fuu7hN97PH05wuigW527BOrmA0F8ew/fPf95TqbqDlgc9I3yXabWIpCWs85o1nId9Qs3FU/F4tXPAez864PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760454097; c=relaxed/simple;
-	bh=+ujCgxgAAIF4L1KvIGIUshzkJZHITRYMYqfQjfVGgyE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mqAi1j1Um9JaQKsrUKsZmwGN9AdKYvoZ6EEDzPF8zBg9MlxJI3QDeLJhn4oqDTPxph/RfFlLkTsk8lJ0iXmsescA3WmwQW0Su+MM8PCLBaTxkMcJcRCXIykMBUyRElSElFoLQuQnURptftUAo1lIyHxS72n6VgVuO5UFSIK0ne4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=L/UY+e4p; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1760454892; c=relaxed/simple;
+	bh=PhjtL3HD6534h9vTcz70HRQ4Ghvd6KaR4lsu8s+WwWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OBmm9Hcttu/urXfJCsj1Hp1/7C5U4JbarKzhHHbqNDxdhUhk8bY2KmOistX6p9BqDG2KRYOmgAADkwUbENNCKI0p17EwfjVTi2PjGlOiXqDZieaAtH/mpv9GN1p0Vjgghw1K8KAL7BV1zXsWQNYZZtkNouqkGWohSVhtgaOsf1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZeXvKawD; arc=none smtp.client-ip=209.85.128.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="L/UY+e4p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=5q2iC5zPcXK3xlUDOAaWe2+B0c/tJD3Z4QsVnNBkokg=; b=L/UY+e4pUMqNrNX9X5xwINWFEq
-	Q80imNTlWqy9zHYWtPXr75Ad7BQwWR6gAToCW8hS2fgQ3jQkhas4nS95EKtdvHX07WWWXL86sebVk
-	11iH7kaTxNLa7LUcO8EMfcdi+LyyIm6rrZ13fEv41oxoI3TtZGMQjbYyTf1fHt8NxnQRThFCjb8Ph
-	88SSvLvRixSaI+/gNhozwTxtfhhiayTNKMqF3k1AehCLG9AeKBs+50Wdk/QnpFsZXWR91U3EPiDpF
-	StJ1fvfo2ne7UhQtmc22r2phvOdSiPOa3q+LS0Ny5Dq0hAP9zWWXiPaR5t+bHBcdsZBfkC+M8MD+R
-	ObcZs3sQ==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1v8gGx-00023C-1r;
-	Tue, 14 Oct 2025 16:45:07 +0200
-Received: from localhost ([127.0.0.1])
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1v8gGw-000N8c-1U;
-	Tue, 14 Oct 2025 16:45:06 +0200
-Message-ID: <95cf5afd-7e93-4a4f-b01e-3cfec094ddd4@iogearbox.net>
-Date: Tue, 14 Oct 2025 16:45:05 +0200
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZeXvKawD"
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-46e491a5b96so30932315e9.2
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1760454888; x=1761059688; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xQLfTHNnTKNjH+34TPL7Pi8OhXbeEQ0J4cWXx6jAeow=;
+        b=ZeXvKawD1Tj/ucKm6ywTes/XRey9q5W9b146tXZlHWh3i8RMXKREAE6WQzD3JMbrLv
+         CmBEKfgGnIVFQRYN8Tq06YaKVtZNvRqozEkPbW6FPKWZ3pLVOP9s7IjfSThQ9iT4Si4J
+         fN+VbPJGoJgrhJyZDurPKz0AG+ol5cCNS0mnPqesXsN6Kz12exiOX1ugKLfQvppybecy
+         gXfYKnP75sQnm5M+2s+ZzDbpAuHPkG1/d3Y06xPnonQr29FSN367krqdWuS4Uiu3lWsp
+         LzNzdoKzaq4wrM5EQ3wEjflxJ7WLZqfUvTEGsDKuwvj2crreP0qgWzyaxm7arXLFgW3N
+         nCpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760454888; x=1761059688;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xQLfTHNnTKNjH+34TPL7Pi8OhXbeEQ0J4cWXx6jAeow=;
+        b=llzKO+wMZtw/frlxvz3RG4xG9N7+0EvWaEdVRpMiBgg1MZz1Kq4PEegvdUREKLehzK
+         suLC3u983yc3I2DKFwBSkNZhBRPoRDT6uqrxalPiyvSz/lH8BeR8IGq2V/gqE/1qxsQX
+         bu7fS96ZHDR6Ib8I41Wc1ATuXgRnLfgDfPHBze05aqE8rLXw2h2Rm9KMuz+btcVfaEEw
+         RmNHDf5nkG2UR0tAvs0DtJzfFXArOe49Esa5O5+iehEg8cz7T6uT4V7bRixeKBW+j3c8
+         Mk2rcI2c5J3nISMLR55dPOhkkasT6m2RxcCz+tXLDyFXy7i0DqT5yCU5wY+ENooG6tLx
+         0+lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbq14I+aZNXklzyVRKRkid41+ChLhDtXd7eOGcap5+Han1Q8jYcndNRU4eblzxe6iSGiBkOSc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9Su6kWEiJb2Q801qrMZM5UYNvW8EQuFdek2t9ihF+QtEPznE/
+	PSyyScer+SUuNGVOSk2sGApqeYZ8VNTY5yuoCmPfDoFiqyqrD0X0p2mEDE/F6aht7Xs=
+X-Gm-Gg: ASbGncvdoj55KabD9y1pTZpJolC7/6s3ZOVEmc00LwVnjgjXzExs6eXms37UrmGAdlu
+	5aB0unq82MZ4WjHQA1TiY2VaZtaMHqzDxAEdlbWYEGw46pxbylldFAbpzH8vzKJzBHSwGf9Alwe
+	qW74/XvPdlo/MHEZKAyrxbQZdrZ0fl3VqPPtKeRZ8UVwLkc8sFty65Jn5IhJ5KurUnAXpKjxuBq
+	DEcfRVzbiPQkUERq8jyzuyZvzGi0Z6UGOdyZYRqHpLFczIWeePbrDEAXG7Xi95DnXWx1ZAYsePs
+	xGigK2gXmwqwzqY/aQQPjWB5gYvUQxnYvhnSGkVSzGA0+5CosR5XmCniV3tZypL2wPYRIv3SiQq
+	wJ4ISE0x+VOwl6T6e28pB0JiRXG7IdPw8bLnQonREsthMVrZUaZeav+cEJpsCc1hwZcarz8Z3SA
+	==
+X-Google-Smtp-Source: AGHT+IFTHGjFphXZexQjbUWRV0zNN1oAawyBZFjG8j79GJAZYI0e5RFLHEUzsaTaFKvHfVpvOLq1+w==
+X-Received: by 2002:a05:600c:6818:b0:46e:36fa:6b40 with SMTP id 5b1f17b1804b1-46fa9af915emr172798525e9.24.1760454888343;
+        Tue, 14 Oct 2025 08:14:48 -0700 (PDT)
+Received: from localhost (109-81-16-57.rct.o2.cz. [109.81.16.57])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-46fab500706sm157838725e9.3.2025.10.14.08.14.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 08:14:47 -0700 (PDT)
+Date: Tue, 14 Oct 2025 17:14:47 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Barry Song <21cnbao@gmail.com>,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Barry Song <v-songbaohua@oppo.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Huacai Zhou <zhouhuacai@oppo.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network
+ buffer allocation
+Message-ID: <aO5o548uQAuBcw0P@tiehlicka>
+References: <20251013101636.69220-1-21cnbao@gmail.com>
+ <927bcdf7-1283-4ddd-bd5e-d2e399b26f7d@suse.cz>
+ <aO37Od0VxOGmWCjm@tiehlicka>
+ <qztimgoebp5ecdmvvgro6sdsng6r7t3pnddg7ddlxagaom73ge@a5wta5ym7enu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf 1/1] bpf: test_run: fix ctx leak in
- bpf_prog_test_run_xdp error path
-To: Shardul Bankar <shardulsb08@gmail.com>, bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20251014120037.1981316-1-shardulsb08@gmail.com>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- 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
-In-Reply-To: <20251014120037.1981316-1-shardulsb08@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27792/Tue Oct 14 11:28:49 2025)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <qztimgoebp5ecdmvvgro6sdsng6r7t3pnddg7ddlxagaom73ge@a5wta5ym7enu>
 
-On 10/14/25 2:00 PM, Shardul Bankar wrote:
-> Fix a memory leak in bpf_prog_test_run_xdp() where the context buffer
-> allocated by bpf_ctx_init() is not freed when the function returns early
-> due to a data size check.
+On Tue 14-10-25 07:27:06, Shakeel Butt wrote:
+> On Tue, Oct 14, 2025 at 09:26:49AM +0200, Michal Hocko wrote:
+> > On Mon 13-10-25 20:30:13, Vlastimil Babka wrote:
+> > > On 10/13/25 12:16, Barry Song wrote:
+> > > > From: Barry Song <v-songbaohua@oppo.com>
+> > [...]
+> > > I wonder if we should either:
+> > > 
+> > > 1) sacrifice a new __GFP flag specifically for "!allow_spin" case to
+> > > determine it precisely.
+> > 
+> > As said in other reply I do not think this is a good fit for this
+> > specific case as it is all or nothing approach. Soon enough we discover
+> > that "no effort to reclaim/compact" hurts other usecases. So I do not
+> > think we need a dedicated flag for this specific case. We need a way to
+> > tell kswapd/kcompactd how much to try instead.
 > 
-> On the failing path:
->    ctx = bpf_ctx_init(...);
->    if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
->        return -EINVAL;
-> 
-> The early return bypasses the cleanup label that kfree()s ctx, leading to a
-> leak detectable by kmemleak under fuzzing. Change the return to jump to the
-> existing free_ctx label.
-> 
-> Fixes: fe9544ed1a2e ("bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN")
-> Reported-by: BPF Runtime Fuzzer (BRF)
-> Signed-off-by: Shardul Bankar <shardulsb08@gmail.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> To me this new floag is to decouple two orthogonal requests i.e. no lock
+> semantic and don't wakeup kswapd. At the moment the lack of kswapd gfp
+> flag convey the semantics of no lock. This can lead to unintended usage
+> of no lock semantics by users which for whatever reason don't want to
+> wakeup kswapd.
+
+I would argue that callers should have no business into saying whether
+the MM should wake up kswapd or not. The flag name currently suggests
+that but that is mostly for historic reasons. A random page allocator
+user shouldn't really care about this low level detail, really.
+-- 
+Michal Hocko
+SUSE Labs
