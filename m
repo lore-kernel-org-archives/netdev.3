@@ -1,73 +1,73 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1AE35979
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 00:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42E11A26B
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 00:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760400656; cv=none; b=Sx2+L62e0dQcdkxjaR+x7fYtkS4yob0nKUD3lfYoLhIs8uFAHWkeYKSl3j65p/0R5U3llpd4d0RmB2aVQ+oi7yZqAHdWInwIrn0AEJTS0kAYY/MC5O6G2HqCmDl/ikhWBVcQhr2O3IutP70OtRAUqaXsUcXwXNaslp++KHWwdAs=
+	t=1760400666; cv=none; b=sQKMCjrc2Fa2PwvafznTFDqLo6SVyt5/LZvXNY0fE/HI9HKxpX+4BxFEAHXGR+qINg8UeH3dhLP4aHkQEsgCzwt1/pJa3OFHcTm7/rzp4Wriic/nmlQnjz7FtSz22CBcBI/P7EiKG6rTIZGIHSnuxv217wgGhEdhZ87z4GZJyvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760400656; c=relaxed/simple;
-	bh=8ru111iLduW/SQbvH1cBCdiF2qH6GRIYQ5yNIJbh204=;
+	s=arc-20240116; t=1760400666; c=relaxed/simple;
+	bh=PmJmwnxzQbiXdVq7YPn+LyjsMeAreUe9WlflIcSK7WY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gy5WKCoNT/XHQBjYqKB0ZxxkN3EfsWAEOIOsrK0mqFjfsTALYkcnFx+hR5BlgjDBQlakSOkN4OvaxCKkipQPlXZ9dQKUr4bsZszi7frLzK9yyruyQLfakXmF1JhH7o9TDyzKHD1887l1wnrCMd7XN9yLx1e7tq1UpFqWZcU2vMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FFfTQus/; arc=none smtp.client-ip=209.85.216.41
+	 To:Cc:Content-Type; b=itEs9NmzQJYrud3JvnPKgpkSJzaxvV6oXNHOR+AUFFM3WIjYDYvp8lPQMt4l+8+ljRdQ8NIWZ9ZaMIkgJ/Es2/SJS7t/RQt4KiKj52NhhIkKV5mLPRI9NkI363YWmbd1x1ardeV0bBrDbHKLzihnnZolP3SJBNz9mKd6FskQp6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsQLX4tG; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FFfTQus/"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-32ee4817c43so3791760a91.0
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 17:10:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsQLX4tG"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-33067909400so3505921a91.2
+        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 17:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760400654; x=1761005454; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760400664; x=1761005464; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VbcpRCJDEHo//qzyYOyiFq5QvBec4rDUzd8LJzXJAJA=;
-        b=FFfTQus/T4vTnjK789ouEcL+NMu35HXXRqOzIkDClTX7sdQouWtUkc/WYcS/kJ+8Zq
-         S2cqkCIMfhje38OkwYXGArNSd04tnDDKTyXg3nu8kDQCHST4aNCg/w3NC0+z9wyvcFIU
-         l4Sq3lp7eJw+xfdb7zSyUd2Qu002AskN/T+ZZKmAZuDHrkKznBnihfz5YiAHrLPzITt0
-         GDGiNR/zw8ZlW8Kv2mZXbAcNKa91tAsxy/KJwWKg1WcIBlG5DHuGoK2gWd45FtNdRyhh
-         CroYC73ypL40AGj74MEKL59YPcWzEKvvIdn8UcTXbameCTjmHSopXy5kx1zQsIKOID1y
-         n2PQ==
+        bh=EUoHlBrtr6CHTQT/miISpVT7kYYDapO491CV2JbqrHM=;
+        b=YsQLX4tGlniZlRP9yWzrLDhdqWj9Ff5oOQrAeRH0jOWar4GqLbxRNoXQVT58TH9xEf
+         ovGQt9poJIjLv25Wh/rprG/tUQzskOTV/QyEFAoU2pHSaMIkQd7Q+lniuoTeSznP6ED5
+         ZYSQ0W0GL2C9Qzcdr4zu5ahowbs/14U/FABzRNydmS3CyC+hSSFWlo9aY8z6vO7EVwwA
+         0tzj34hMAbbgg1H/ymYE1vURObO/HmTnn6012knyk4q872+D430b/xmbaGWvoJs/CJj0
+         AsUdxrUMlwDTOZqUJr8KHq3y6n0JLl5hzD4fKrnA8t22mI8fw24oiLycXN1U9QRRG/Sb
+         KHrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760400654; x=1761005454;
+        d=1e100.net; s=20230601; t=1760400664; x=1761005464;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VbcpRCJDEHo//qzyYOyiFq5QvBec4rDUzd8LJzXJAJA=;
-        b=VzzLnGUUuRHIUDB+1Mw9LvfQk3d6fgS7uJLNmuMm4EVrdlT+FJNxssaJ97zw9dlV/k
-         t+3f98RSgGaFQwLxLsK1b2FTjaRUcKDpqPXFqXqFo9kcKkPcvkH5MWUryiXBhMMxjJIC
-         ZbfUsaWJRSkn6jywxjGPgeZtWFthjqFdwsVaxuWQtm7J3bLVRpQMGVRI/h7Z7f2jEi2K
-         vCuJWuqcZK/AdvZA4cfA7rHIc/JywI7Lvc+P662KGqpn2ec3DDy8tn/8d7DasHIo/XeC
-         lSBwV4/22MuVJJEiV6nV/6MXQ5mkelD9wo5hC2Q7PSiHf6kEq5WDWMIMFb9ZbRCZDegC
-         g0yg==
-X-Forwarded-Encrypted: i=1; AJvYcCWK0BTpeFpxrAMOD2eGzI0LLFKK2ssO2gYsdpY3/aszUgwIEROQjrgRjWF1VhMhEET0aJEmyys=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9py14ev6IZEGZYVmEAGbXlDZcHxFJUqZ/IRes8Tf/tstFMU7T
-	6oHxSETa2oLECE6RLU2V0Wlbio5P5ZmeYtnT7SARIjzlOu3kgQBms9V/LD3k34rKPGVdw7tW/SS
-	avVUJTZtwYdGfy3FJFhJ1bWtf+OzmS63/5w==
-X-Gm-Gg: ASbGncvQUbfG9ZIDdPpCnXa79ZXiEf2fnLp+xaP0Z7d2W/hAtpUHYoegZmSb+Tu5KPt
-	kyduMP3tvKimyi6zU9FaTAkkoZzWBWOOyiWAC9THkzFed6L+4EW8bxOxagSrdsb5AHJhCwSeeEq
-	EYvg+lvNuszhvSjomURdSbLe/AJgbCV5Wqyyyysx5d3LOVZ+Fu0IoWrUqB2PaMhwLjkkGsVLFWX
-	I8kpu1sKOKx4kiQq30FJ5LbyIFU6qrhZXjQ7npj+NX6qfhmlFf7
-X-Google-Smtp-Source: AGHT+IEWbZtzHpoOcDBxrMHzaXNIhPzZNIw2yHDxV7R5XpEk+lJFsx8p21+/tNZb5/tfUldRmHEAWgO0+Qhj5baRUWo=
-X-Received: by 2002:a17:90b:3e83:b0:32e:23c9:6f41 with SMTP id
- 98e67ed59e1d1-33b51676ef2mr30394459a91.5.1760400654171; Mon, 13 Oct 2025
- 17:10:54 -0700 (PDT)
+        bh=EUoHlBrtr6CHTQT/miISpVT7kYYDapO491CV2JbqrHM=;
+        b=fHtgsMe8Z0Pa8nbmJiQZ1AjAAYY/XeAzlPISTIIckx3bdbQC9BqjbCFECJyLcLm3z6
+         eM8nxOzqFUkPaZaPRbyeNBX2VFnDjf42Pn6vUEkh3DsaCPiFVUnGR2AmyAQxxEVjc5vX
+         q2omU3yS7/AYTP5k7EJJFblqrvaXX7vZggzRjZg6InMC5f5wAeTQy1C4fgbPKy56cLdW
+         f6ikZ80J133kgRc4/mK0NOferPw7W+RnhBNycV2eyHIRfZYz8Js0QpOxBiuvfJF7wuUD
+         673IzNyX6Htkwo/+bos0FEKDxmnJqAnG6fWnjCTsMmY2zXeI6CH2xNZOJ8q9yCiqLucu
+         dyOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFctcgmdPcTWYIX9raRwwKlNrQKzMJSAevQz6ass1kiRWcCF2S1VmR3AnN96Kz7C4dsix7TIQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwQJJAlWXGVY5ZskcGpoLLQUt3SX8JFZCNl0+IE6oot4zcR2fo
+	HkSmeg/XUkxxoxGJP9OgbRjoQCLmmX5kCEo1h8ntaAxtuDXHom7YORVVpfukiV/f5W7TXK89Qsj
+	N9535VCDZqF9BrSb+XHUkY3LLRUJhPwRnVw==
+X-Gm-Gg: ASbGncuOGdkoHrHHDEns1AKv4Lf1aAp0W/Js7vkRM0/dvL3seAUdYHRDzWFD61MvoI6
+	PzQaSqZBIvdrvSXQgsTS4SX2IAmx8m0Z56rjQ29ixwckk7mhzTXk+kxEWPruy9ClSAuoF7Bjx/b
+	s2qq2KAmvM2D9axMSl9QeRvjfQedrNaySYBMEXgRBv1FFMVAHY5sj34FYFtGalJAuyE7/9vXvN1
+	Ail0+l5k5QAfKxShfdfYmK/UC45i7PP+e9vkZI0jA==
+X-Google-Smtp-Source: AGHT+IG7tjm/UVzlDeCLVcdxN8Dx9aB/YxtYqhwqnA6LojzbBF/WPp0andbmQnhQ7blP7XJdl0pSI7oF+qa5n46wCLs=
+X-Received: by 2002:a17:90b:4990:b0:338:3b73:39ce with SMTP id
+ 98e67ed59e1d1-33b5138e3a7mr30543519a91.25.1760400664111; Mon, 13 Oct 2025
+ 17:11:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251010174953.2884682-1-ameryhung@gmail.com> <20251010174953.2884682-5-ameryhung@gmail.com>
-In-Reply-To: <20251010174953.2884682-5-ameryhung@gmail.com>
+References: <20251010174953.2884682-1-ameryhung@gmail.com> <20251010174953.2884682-2-ameryhung@gmail.com>
+In-Reply-To: <20251010174953.2884682-2-ameryhung@gmail.com>
 From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Mon, 13 Oct 2025 17:10:37 -0700
-X-Gm-Features: AS18NWBtihG1LV8irrv6A-cAtlchD8NblynvmTc5wUG5LCWQ3EPmJitiC7xs4Rw
-Message-ID: <CAEf4BzYVn=TQnF-Wfum=eQG0PsKwzySow+WFjon8D_1624ZnDA@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 bpf-next 4/4] selftests/bpf: Test
- BPF_STRUCT_OPS_ASSOCIATE_PROG command
+Date: Mon, 13 Oct 2025 17:10:30 -0700
+X-Gm-Features: AS18NWCacFMkX4SFcVRfh02uzNmUrvCIqHbTtFb96eJqekyjz_BKBYhnvGI98HM
+Message-ID: <CAEf4Bzaqw2N58jCiApr6awfpub_8W6cTJMWuY75VpCCLMLjQBw@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 bpf-next 1/4] bpf: Allow verifier to fixup kernel
+ module kfuncs
 To: Amery Hung <ameryhung@gmail.com>
 Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
 	andrii@kernel.org, daniel@iogearbox.net, tj@kernel.org, martin.lau@kernel.org, 
@@ -75,81 +75,44 @@ Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 10, 2025 at 10:50=E2=80=AFAM Amery Hung <ameryhung@gmail.com> w=
+On Fri, Oct 10, 2025 at 10:49=E2=80=AFAM Amery Hung <ameryhung@gmail.com> w=
 rote:
 >
-> Test BPF_STRUCT_OPS_ASSOCIATE_PROG command that associates a BPF program
-> with a struct_ops. The test follows the same logic in commit
-> ba7000f1c360 ("selftests/bpf: Test multi_st_ops and calling kfuncs from
-> different programs"), but instead of using map id to identify a specific
-> struct_ops this test uses the new BPF command to associate a struct_ops
-> with a program.
->
-> The test consists of two set of almost identical struct_ops maps and BPF
-> programs associated with the map. Their only difference is a unique value
-> returned by bpf_testmod_multi_st_ops::test_1().
->
-> The test first loads the programs and associates them with struct_ops
-> maps. Then, the test exercises the BPF programs. They will in turn call
-> kfunc bpf_kfunc_multi_st_ops_test_1_prog_arg() to trigger test_1()
-> of the associated struct_ops map, and then check if the right unique
-> value is returned.
+> Allow verifier to fixup kfuncs in kernel module to support kfuncs with
+> __prog arguments. Currently, special kfuncs and kfuncs with __prog
+> arguments are kernel kfuncs. As there is no safety reason that prevents
+> a kernel module kfunc from accessing prog->aux, allow it by removing the
+> kernel BTF check.
+
+I'd just clarify that this should be fine and shouldn't confuse all
+those desc->func_id comparisons because BTF IDs in module BTF are
+always greater than any of vmlinux BTF ID due to split BTF setup.
+
+
 >
 > Signed-off-by: Amery Hung <ameryhung@gmail.com>
 > ---
->  .../bpf/prog_tests/test_struct_ops_assoc.c    |  76 +++++++++++++
->  .../selftests/bpf/progs/struct_ops_assoc.c    | 105 ++++++++++++++++++
->  .../selftests/bpf/test_kmods/bpf_testmod.c    |  17 +++
->  .../bpf/test_kmods/bpf_testmod_kfunc.h        |   1 +
->  4 files changed, 199 insertions(+)
->  create mode 100644 tools/testing/selftests/bpf/prog_tests/test_struct_op=
-s_assoc.c
->  create mode 100644 tools/testing/selftests/bpf/progs/struct_ops_assoc.c
+>  kernel/bpf/verifier.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-
-[...]
-
-> +/* Call test_1() of the associated struct_ops map */
-> +int bpf_kfunc_multi_st_ops_test_1_prog_arg(struct st_ops_args *args, voi=
-d *aux__prog)
-> +{
-> +       struct bpf_prog_aux *prog_aux =3D (struct bpf_prog_aux *)aux__pro=
-g;
-> +       struct bpf_testmod_multi_st_ops *st_ops;
-> +       int ret =3D -1;
-> +
-> +       st_ops =3D (struct bpf_testmod_multi_st_ops *)prog_aux->st_ops_as=
-soc;
-
-let's have internal helper API to fetch struct_ops association, this
-will give us a bit more freedom in handling various edge cases (like
-the poisoning I mentioned)
-
-
-> +       if (st_ops)
-> +               ret =3D st_ops->test_1(args);
-> +
-> +       return ret;
-> +}
-> +
->  static int multi_st_ops_reg(void *kdata, struct bpf_link *link)
->  {
->         struct bpf_testmod_multi_st_ops *st_ops =3D
-> diff --git a/tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h b=
-/tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h
-> index 4df6fa6a92cb..d40f4cddbd1e 100644
-> --- a/tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h
-> +++ b/tools/testing/selftests/bpf/test_kmods/bpf_testmod_kfunc.h
-> @@ -162,5 +162,6 @@ struct task_struct *bpf_kfunc_ret_rcu_test(void) __ks=
-ym;
->  int *bpf_kfunc_ret_rcu_test_nostruct(int rdonly_buf_size) __ksym;
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index e892df386eed..d5f1046d08b7 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -21889,8 +21889,7 @@ static int fixup_kfunc_call(struct bpf_verifier_e=
+nv *env, struct bpf_insn *insn,
 >
->  int bpf_kfunc_multi_st_ops_test_1(struct st_ops_args *args, u32 id) __ks=
-ym;
-> +int bpf_kfunc_multi_st_ops_test_1_prog_arg(struct st_ops_args *args, voi=
-d *aux__prog) __ksym;
->
->  #endif /* _BPF_TESTMOD_KFUNC_H */
+>         if (!bpf_jit_supports_far_kfunc_call())
+>                 insn->imm =3D BPF_CALL_IMM(desc->addr);
+> -       if (insn->off)
+> -               return 0;
+> +
+>         if (desc->func_id =3D=3D special_kfunc_list[KF_bpf_obj_new_impl] =
+||
+>             desc->func_id =3D=3D special_kfunc_list[KF_bpf_percpu_obj_new=
+_impl]) {
+>                 struct btf_struct_meta *kptr_struct_meta =3D env->insn_au=
+x_data[insn_idx].kptr_struct_meta;
 > --
 > 2.47.3
 >
