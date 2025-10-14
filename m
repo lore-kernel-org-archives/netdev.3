@@ -1,104 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5678E30F937
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1372C305E00
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431299; cv=none; b=cqSB0kC4nQgI6CuiOvUVijpVRqG0spz0Seof7vvf0nUIIEe5tV1/rck1VS2bAjD9a8nB8QYDExo62pqIm86wMAY3UfGFizaG9BMpN2g65rhrjs8BMJAdOuSDE64q6NHjG3xTCxTRRgB0AB5y4Shrb8Y7P78njBYsSNmXvetV1vs=
+	t=1760431320; cv=none; b=ZjOBcLeAaZGrvtazHCkzcmCFW9jqdJqFx0/ts9cFNLRYWZ9RFWGLdPU2Vu1Fi5AN88GpQGvCU9w2lqGkcqvuNlTSw7grNtOdbHbW3pyFOPWLT9pb2G7XoULISM2mLwOIQHh2LJPA52yjcpk67iiEGQNloAqfCCXrVnqMDIZUQzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431299; c=relaxed/simple;
-	bh=VQQ0cSA27uMDgoOksZ9nAA8/qTPIu0hBMexqjmJ6kwc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ezoagAntnbXM7wJeh7XdVs6hNTuZ8K1mHfk9NN3lYwdMZja30sh+ALtAMAGr2D47uVMG2IUiFzh1LsNQCt9BDhl4snFyf7vKeJG2DlrjTRYSNIAvrnglQwwiy2pJKIFjCthx+9QCLVROORkiEI+ctj+Gv7y+h61TklIz5T1K4UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VTLIt68X; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1760431320; c=relaxed/simple;
+	bh=nlpGDMe6o7pi8ZnueCZPCmlCM43jnCjNlheYWarkCUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CSyGplEw7qHhc8QuVR3epbvhFnd8ZeTf33Mm9bnWTsZ5SWyVtLNZ2MPwJjbKOGbJtyQnszgQuCbTM/Ilu3pKdC4WGxk41QW4nek6gsvEcykB8++NskP2QpFgEYoqAq9eovkbOkv+vxyYF8jNJcJ+xDyJDySLM5KsUGJvT3io7do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efmvhSkD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VTLIt68X"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760431296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g+5bhDzSA+Udc5qJjyVCOEZAN6FwwM9bAyimGF6b+f0=;
-	b=VTLIt68XJFcBGoOk4QiOID1QEZMojU6n7D0dfRWMOGrH2BDk6XWOzF/ICGwmRRlb7Ksbu4
-	5Sqd7E1nqIc93od/wJ0NFt6ItGSBUhzgdz4YnbiZAwFfiQfSMuZaE2NlQecDWmsFNQdLfs
-	5kIOpTcWM44v2/gEJWOSRs/SyOhVAms=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-589-iFG2ai3bNhGcMraI2mrl1A-1; Tue,
- 14 Oct 2025 04:41:32 -0400
-X-MC-Unique: iFG2ai3bNhGcMraI2mrl1A-1
-X-Mimecast-MFC-AGG-ID: iFG2ai3bNhGcMraI2mrl1A_1760431291
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 95EE1180057B;
-	Tue, 14 Oct 2025 08:41:31 +0000 (UTC)
-Received: from fedora (unknown [10.44.34.41])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85A601800577;
-	Tue, 14 Oct 2025 08:41:29 +0000 (UTC)
-From: Jan Vaclav <jvaclav@redhat.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Jan Vaclav <jvaclav@redhat.com>
-Subject: [PATCH v3 net-next] net/hsr: add protocol version to fill_info output
-Date: Thu,  9 Oct 2025 23:09:08 +0200
-Message-ID: <20251009210903.1055187-6-jvaclav@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efmvhSkD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B230EC4CEE7;
+	Tue, 14 Oct 2025 08:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760431319;
+	bh=nlpGDMe6o7pi8ZnueCZPCmlCM43jnCjNlheYWarkCUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=efmvhSkDrII9E9e33qpaN0ACT0uQvw0dPbAAyxZzRO43s/GAwyfwh5qfsVyGYgL1E
+	 ZsrR0QeMfCIvrQBReiHdQGjMGnB8+Oa4C/O0Fodti45pie0hgEU6VRnN6a4mWCV3Ga
+	 kHweCpLz5FI+3Arm027VlPyp/9K+ydEzMgRaRJUr5DNiPLFZLhxj+KUF/S+sRsl7dA
+	 iSTM72ORfdBQswxTiXOgds6EyaKwPJHkRmHNzNySUfN+ZOXkAahVxaHEpVCz48bAR6
+	 Vp14CJDQe43fKJqcYf0kJG/3tqcjJi7AMD+K4EHdRYxc305rHwlwngYJ8HGNqfYxZL
+	 1LaaMrDbRin3A==
+Message-ID: <628aec1c-a989-4806-b3f4-d109d15b3dc4@kernel.org>
+Date: Tue, 14 Oct 2025 10:41:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v8 1/3] net: bonding: add broadcast_neighbor option for
+ 802.3ad
+To: Tonghao Zhang <tonghao@bamaicloud.com>, netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Zengbing Tu <tuzengbing@didiglobal.com>
+References: <cover.1751031306.git.tonghao@bamaicloud.com>
+ <84d0a044514157bb856a10b6d03a1028c4883561.1751031306.git.tonghao@bamaicloud.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <84d0a044514157bb856a10b6d03a1028c4883561.1751031306.git.tonghao@bamaicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Currently, it is possible to configure IFLA_HSR_VERSION, but
-there is no way to check in userspace what the currently
-configured HSR protocol version is.
+On 27. 06. 25, 15:49, Tonghao Zhang wrote:
+> Stacking technology is a type of technology used to expand ports on
+> Ethernet switches. It is widely used as a common access method in
+> large-scale Internet data center architectures. Years of practice
+> have proved that stacking technology has advantages and disadvantages
+> in high-reliability network architecture scenarios. For instance,
+> in stacking networking arch, conventional switch system upgrades
+> require multiple stacked devices to restart at the same time.
+> Therefore, it is inevitable that the business will be interrupted
+> for a while. It is for this reason that "no-stacking" in data centers
+> has become a trend. Additionally, when the stacking link connecting
+> the switches fails or is abnormal, the stack will split. Although it is
+> not common, it still happens in actual operation. The problem is that
+> after the split, it is equivalent to two switches with the same
+> configuration appearing in the network, causing network configuration
+> conflicts and ultimately interrupting the services carried by the
+> stacking system.
+> 
+> To improve network stability, "non-stacking" solutions have been
+> increasingly adopted, particularly by public cloud providers and
+> tech companies like Alibaba, Tencent, and Didi. "non-stacking" is
+> a method of mimicing switch stacking that convinces a LACP peer,
+> bonding in this case, connected to a set of "non-stacked" switches
+> that all of its ports are connected to a single switch
+> (i.e., LACP aggregator), as if those switches were stacked. This
+> enables the LACP peer's ports to aggregate together, and requires
+> (a) special switch configuration, described in the linked article,
+> and (b) modifications to the bonding 802.3ad (LACP) mode to send
+> all ARP/ND packets across all ports of the active aggregator.
+> 
+> Note that, with multiple aggregators, the current broadcast mode
+> logic will send only packets to the selected aggregator(s).
+> 
+>   +-----------+   +-----------+
+>   |  switch1  |   |  switch2  |
+>   +-----------+   +-----------+
+>           ^           ^
+>           |           |
+>        +-----------------+
+>        |   bond4 lacp    |
+>        +-----------------+
+>           |           |
+>           | NIC1      | NIC2
+>        +-----------------+
+>        |     server      |
+>        +-----------------+
 
-Add it to the output of hsr_fill_info(), when the interface
-is using the HSR protocol. Let's not expose it when using
-the PRP protocol, since it only has one version and it's
-not possible to set it from userspace.
+Hi,
 
-This info could then be used by e.g. ip(8), like so:
-$ ip -d link show hsr0
-12: hsr0: <BROADCAST,MULTICAST> mtu ...
-    ...
-    hsr slave1 veth0 slave2 veth1 ... proto 0 version 1
----
-v3: Changed after discussion so that IFLA_HSR_VERSION is filled
-    only when the protocol is HSR (and not PRP, since setting
-    the version is prohibited if the protocol is PRP).
+this breaks broadcast bonding in 6.17. Reverting these three (the two 
+depend on this one) makes 6.17 work again:
+2f9afffc399d net: bonding: send peer notify when failure recovery
+3d98ee52659c net: bonding: add broadcast_neighbor netlink option
+ce7a381697cb net: bonding: add broadcast_neighbor option for 802.3ad
 
-v2: https://lore.kernel.org/netdev/20250922093743.1347351-3-jvaclav@redhat.com/
+This was reported downstream as an error in our openQA:
+https://bugzilla.suse.com/show_bug.cgi?id=1250894
 
-v1: https://lore.kernel.org/netdev/20250918125337.111641-2-jvaclav@redhat.com/
+I bisected using this in qemu:
+systemctl stop network
+ip link del bond0 || true
+ip link set dev eth0 down
+ip addr flush eth0
+ip link add bond0 type bond mode broadcast
+ip link set dev eth0 master bond0
+ip addr add 10.0.2.15/24 dev bond0
+ip link set bond0 up
+sleep 1
+exec nmap -sS 10.0.2.2/32
 
- net/hsr/hsr_netlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+Any ideas?
 
-diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-index b12047024..4461adf69 100644
---- a/net/hsr/hsr_netlink.c
-+++ b/net/hsr/hsr_netlink.c
-@@ -166,6 +166,8 @@ static int hsr_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 		goto nla_put_failure;
- 	if (hsr->prot_version == PRP_V1)
- 		proto = HSR_PROTOCOL_PRP;
-+	else if (nla_put_u8(skb, IFLA_HSR_VERSION, hsr->prot_version))
-+		goto nla_put_failure;
- 	if (nla_put_u8(skb, IFLA_HSR_PROTOCOL, proto))
- 		goto nla_put_failure;
- 
+> - https://www.ruijie.com/fr-fr/support/tech-gallery/de-stack-data-center-network-architecture/
+> 
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+> Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+> Signed-off-by: Zengbing Tu <tuzengbing@didiglobal.com>
+> ---
+
 -- 
-2.51.0
+js
+suse labs
 
