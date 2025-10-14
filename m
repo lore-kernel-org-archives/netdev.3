@@ -1,107 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B8230DEDA;
-	Tue, 14 Oct 2025 22:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47CC23373D
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 22:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760481815; cv=none; b=rVYQj2efLS97/fVpFb+Q8b0Mh1NpnleTtQvkGnbBqQbTHPNFbzGcE2BpYQVlBLyjDVNbzMeUUL9O6ZYkIAxcWd02+PsxnCQwIlrFA9TpGQzJuLtJOhN5Cvr/qtUp4JdyqfnED1MH7ImpHdD5QndHS2S+E2XD3eWf3pZXTcckQi8=
+	t=1760481881; cv=none; b=Qb65xJEXrY9fgfM1LtSluAVvLeoroxpCpVOaJ1yPrP4RsnbeL5xYicq8pZDIvzoB136Eq1+wj28/WoaTdqnNfQHmcthrGFiR/Tr7AVGMK3Uug79qN1IOBReuKwuP9kbA9YbjM0ncl4lxP290f+hlwBky3FTrpiV61Afq8wXA+BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760481815; c=relaxed/simple;
-	bh=bQd5cenkOht/JSwBufm7hRn/50ULrFrxuspR8e8U7QY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oakcMpA3rfXxDGCxl0bF0EyA0PdJB5q8gK+Ky8h2rgW7sIBvLEBvTsIHGCDaAa/qgGozaOWhe01hYGys1lFsRxvIp8W91x8EdTAuP7LtVtXFHjrJShy7DSO8BKked7ghrd4ywLKMxGlJPSB4XkXOveC5JJUN2HFWHasNIzdPZoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udPoxrTH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760481881; c=relaxed/simple;
+	bh=zHsgcirQ3hJPe4cOierAdbG+OvVam/Rz0POuOUnCfII=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tNAgytHsLRAVQoVK75jiTmqbyMyx0Px1dZKERIq+4feYc8/Xw30IVq5H+tKydKqBqSYfJoqLFNn7ARJFXPdmcLRIaedYCExrbVhf4s+6Sq37TzwsuJTV4OrCrFEGpWmKom76MrM+BoIlqAFuMHQSmcgBm+HOZWuEZOtabiU1Ta4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=de+88Uec; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udPoxrTH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D2FC2BCB5;
-	Tue, 14 Oct 2025 22:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760481814;
-	bh=bQd5cenkOht/JSwBufm7hRn/50ULrFrxuspR8e8U7QY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udPoxrTHWEDQ+gJCeS8kApqDbTMhjp1jRMk8TQ+jcn2prM640JHFTaAqmyM7BEmZP
-	 1NQb6/yAApY1FjFoaY740NjCy6RWecGnvqjBPscLfG5lZgx5kC32Pnk6M2Ie0SvmhD
-	 8NS071K59cQcoSDmgrOVnDXesh02Ld54LOQ7VdaHkHD4bMDFYnNuyG1EJZuwm0u2qJ
-	 Bf/HQMBySvBmnVYV1GKq8U+9FKU3VSM01Mbn8y6v17FgUXIpdVV6/faD2eFKhrN2lq
-	 02Ydhg9Q0iZcOSZMd8e8/Djj6BHpkBgrV7YrCt08zjiuUfw52xOFAgKYlZlB+57YQg
-	 lqRAMrs/OBD2w==
-From: Kees Cook <kees@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="de+88Uec"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760481877;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DOQhJNApP637yKZOlWq+admvYqYUfORtGKxHlSzHZjs=;
+	b=de+88UecqJr/NJzrc8CQVTx/9w2OtRREGt9KIN/+cpd9XOw2IEpP6quirWFOUVbQEOX1PY
+	BLKzUAk/F8FCQfOsfnHNNi15mRPGMs8FYSdkE0jbAWd/9016hSSdNdbigMlq4F76gjUbHv
+	rQYQZH7o4BMfFSdbKkik/6tGKrrnJnI=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Egor Pomozov <epomozov@marvell.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Dimitris Michailidis <dmichail@fungible.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v2 09/10] bpf: Add size validation to bpf_sock_addr_set_sun_path()
-Date: Tue, 14 Oct 2025 15:43:31 -0700
-Message-Id: <20251014224334.2344521-9-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251014223349.it.173-kees@kernel.org>
-References: <20251014223349.it.173-kees@kernel.org>
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v2 0/7] convert net drivers to ndo_hwtstamp API part 1
+Date: Tue, 14 Oct 2025 22:42:09 +0000
+Message-ID: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1715; i=kees@kernel.org; h=from:subject; bh=bQd5cenkOht/JSwBufm7hRn/50ULrFrxuspR8e8U7QY=; b=owGbwMvMwCVmps19z/KJym7G02pJDBnvLgnnm3fu9I/70BjY4n/SKTnewur1to+njWeLtTvnr WZzm+/aUcrCIMbFICumyBJk5x7n4vG2Pdx9riLMHFYmkCEMXJwCMJFZFYwMP/nZFk88dfDaBsVF z1Ny/+zaNSGlfVZIylG/RPddR13v3WRkuKT0u4G7cdpihVrBL/tcP/3OOzVJ+neiBPu8jYf2PHh 6kxkA
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Add defensive size validation to bpf_sock_addr_set_sun_path() before
-writing to the sockaddr buffer. While the underlying buffer is guaranteed
-to be sockaddr_storage (128 bytes) from the bind() syscall path, the
-function should validate that "sa_kern->uaddrlen" is sufficient for the
-sockaddr_un structure being written.
+This is part 1 of patchset to convert drivers which support HW 
+timestamping to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+The new API uses netlink to communicate with user-space and have some
+test coverage. Part 2 will contain another 6 patches from v1 of the
+series.
+There are some drivers left with old ioctl interface after this series:
+- mlx5 driver be shortly converted by nVidia folks
+- TI netcp ethss driver which needs separate series which I'll post
+  after this one. 
 
-The validation checks that the available buffer size ("sa_kern->uaddrlen")
-can accommodate both the sockaddr_un header and the requested path length
-before performing the memcpy() operation.
+v1 -> v2:
+- split series into 2 to avoid spamming a lot of maintainers
 
-Signed-off-by: Kees Cook <kees@kernel.org>
----
- net/core/filter.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Vadim Fedorenko (7):
+  net: ti: am65-cpsw: move hw timestamping to ndo callback
+  ti: icssg: convert to ndo_hwtstamp API
+  amd-xgbe: convert to ndo_hwtstamp callbacks
+  net: atlantic: convert to ndo_hwtstamp API
+  cxgb4: convert to ndo_hwtstamp API
+  tsnep: convert to ndo_hwtstatmp API
+  funeth: convert to ndo_hwtstamp API
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b96b5ffc7eb3..fa6c5baf0bf3 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -12089,6 +12089,7 @@ __bpf_kfunc int bpf_sock_addr_set_sun_path(struct bpf_sock_addr_kern *sa_kern,
- 					   const u8 *sun_path, u32 sun_path__sz)
- {
- 	struct sockaddr_un *un;
-+	size_t required_size;
- 
- 	if (sa_kern->sk->sk_family != AF_UNIX)
- 		return -EINVAL;
-@@ -12099,9 +12100,14 @@ __bpf_kfunc int bpf_sock_addr_set_sun_path(struct bpf_sock_addr_kern *sa_kern,
- 	if (sun_path__sz == 0 || sun_path__sz > UNIX_PATH_MAX)
- 		return -EINVAL;
- 
-+	/* Validate that the buffer is large enough for sockaddr_un + path */
-+	required_size = offsetof(struct sockaddr_un, sun_path) + sun_path__sz;
-+	if (sa_kern->uaddrlen < required_size)
-+		return -EINVAL;
-+
- 	un = (struct sockaddr_un *)sa_kern->uaddr;
- 	memcpy(un->sun_path, sun_path, sun_path__sz);
--	sa_kern->uaddrlen = offsetof(struct sockaddr_un, sun_path) + sun_path__sz;
-+	sa_kern->uaddrlen = required_size;
- 
- 	return 0;
- }
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      |  24 +--
+ drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c |  28 ++--
+ drivers/net/ethernet/amd/xgbe/xgbe.h          |  11 +-
+ .../net/ethernet/aquantia/atlantic/aq_main.c  |  66 ++------
+ .../net/ethernet/aquantia/atlantic/aq_ptp.c   |   6 +-
+ .../net/ethernet/aquantia/atlantic/aq_ptp.h   |   8 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |   2 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   | 154 +++++++++---------
+ drivers/net/ethernet/engleder/tsnep.h         |   8 +-
+ drivers/net/ethernet/engleder/tsnep_main.c    |  14 +-
+ drivers/net/ethernet/engleder/tsnep_ptp.c     |  88 +++++-----
+ drivers/net/ethernet/fungible/funeth/funeth.h |   4 +-
+ .../ethernet/fungible/funeth/funeth_main.c    |  40 ++---
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c      |  44 +++--
+ drivers/net/ethernet/ti/icssg/icssg_common.c  |  47 ++----
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c  |   4 +-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h  |   6 +-
+ .../net/ethernet/ti/icssg/icssg_prueth_sr1.c  |   4 +-
+ 18 files changed, 235 insertions(+), 323 deletions(-)
+
 -- 
-2.34.1
-
+2.47.3
