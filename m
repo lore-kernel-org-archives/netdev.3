@@ -1,32 +1,32 @@
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9507A30CDB8
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 22:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D54A30E0E1
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 22:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760481885; cv=none; b=ugZcF+u1qibn+Y7UL4q9tjh/gEnn+ryeEPCArenD9tNgbOwRQsFEFb0aKEl34EV7WPLyjQ3gjN0FrMhKfUzvIIX01eeHomLEHObzovoAJBXoGMfxarzzzlLhlSTqEZJI8pdaVWiqZfmvOJjjT3yP7DSVULV5ylSBSU4cu9wCKOg=
+	t=1760481912; cv=none; b=jqlrBXDhjvfaXj5FQbPlRhg/PU8M7mA0VZVcDSo1NfuI2OAlR7DomJ9QJthdC9tX36bgKCYVyh043J+IZ8rTlVPRhha6mKjZwQKt1ZZcZW2lUDwYOBFfDFSDk1ZDckDLqUvX+4zaIUoxpvUszDGu05pDjj6YY+I2DV0cH7N7xnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760481885; c=relaxed/simple;
-	bh=kPFWeIVJHmjgwbCS3W1rTJ0fWkunYSUIc/xBpAfeCHs=;
+	s=arc-20240116; t=1760481912; c=relaxed/simple;
+	bh=4NG9Htk1GpOI46dcEfovdMbs32W7tUBdC7TC6aiE3Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVcSBwWBy9qMBn62ORh2mRbevsarD4vBWE706k9buvP3e3wcqjs6cl6af5VaImGmHkWoLpiIfFgLPHzCaDRxKbF2Wr9OKKz51z689g+bZo7I8Y1bOzSu2Uk893HLn2JPyKWr9F5WhWarxi1j1y03UHUdrnG3j0Q7Iagco7h223U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eOoYIGX9; arc=none smtp.client-ip=95.215.58.181
+	 MIME-Version; b=YymoYxzxb+pOvf0Roo2Vl4bfegy5Ui5h/Ebh7eEDk+aocqR5CuQ1zGh+XK19MCx8ZvN+dtmwuuvCWr32xIjc8/QqWTYtgez27ZeMEW2+m7Lrr5jFvwjVQzOym8WtI0rrfU1nTAx5ydW7B2YEcf/qOo/synQ5QK9dfFZkx6hY65o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rbbnbOPB; arc=none smtp.client-ip=91.218.175.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eOoYIGX9"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rbbnbOPB"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760481881;
+	t=1760481908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nMFHKI6GQ8Thw8jdx3XowrWr2CenLBelY55MpRZyuzg=;
-	b=eOoYIGX9m/jvCGeESV+FHE01N+yYb9ZXet1WCp4d5lXHs+0r6c7QNwvtOgB83PgtKVZ5SS
-	Y9HaxHMa8JXEtFXbbI8v+SjC4Skb51RMWb8x5q/6d3SQYcgD2NX6/5REpcF3s0wa0uy0Zk
-	9VKwSnk8L1HZkSsY+dQo2ys3Dae4fSQ=
+	bh=0URge+g5fQn3HMy2oQmsnD03+4HFmUsxA0K5zCUVeic=;
+	b=rbbnbOPBxidcT0ievDRrsdINmzVayxOcttPPUcoEea+Dmpine3mPSytlFc1NtbLR8DpubP
+	VAHcTf+ypVV8RCXUxiBDMC/u8DSOCA8agPmliAhSw6bM1g7NGBU4wk9T1ENtc3EbeUgFna
+	ltOvyYPvIPyUc4mI48obtzyKmWq+uhc=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -45,9 +45,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v2 3/7] amd-xgbe: convert to ndo_hwtstamp callbacks
-Date: Tue, 14 Oct 2025 22:42:12 +0000
-Message-ID: <20251014224216.8163-4-vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v2 5/7] cxgb4: convert to ndo_hwtstamp API
+Date: Tue, 14 Oct 2025 22:42:14 +0000
+Message-ID: <20251014224216.8163-6-vadim.fedorenko@linux.dev>
 In-Reply-To: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
 References: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
@@ -59,154 +59,213 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
-.ndo_eth_ioctl() becomes empty function, remove it.
+Convert to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+
+Though I'm not quite sure it worked properly before the conversion.
 
 Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c      | 24 ++--------------
- drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c | 28 +++++++++----------
- drivers/net/ethernet/amd/xgbe/xgbe.h          | 11 ++++----
- 3 files changed, 21 insertions(+), 42 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |   2 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   | 154 +++++++++---------
+ 2 files changed, 79 insertions(+), 77 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index f0989aa01855..16160e19e07a 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1755,27 +1755,6 @@ static int xgbe_set_mac_address(struct net_device *netdev, void *addr)
- 	return 0;
- }
- 
--static int xgbe_ioctl(struct net_device *netdev, struct ifreq *ifreq, int cmd)
--{
--	struct xgbe_prv_data *pdata = netdev_priv(netdev);
--	int ret;
--
--	switch (cmd) {
--	case SIOCGHWTSTAMP:
--		ret = xgbe_get_hwtstamp_settings(pdata, ifreq);
--		break;
--
--	case SIOCSHWTSTAMP:
--		ret = xgbe_set_hwtstamp_settings(pdata, ifreq);
--		break;
--
--	default:
--		ret = -EOPNOTSUPP;
--	}
--
--	return ret;
--}
--
- static int xgbe_change_mtu(struct net_device *netdev, int mtu)
- {
- 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
-@@ -2021,7 +2000,6 @@ static const struct net_device_ops xgbe_netdev_ops = {
- 	.ndo_set_rx_mode	= xgbe_set_rx_mode,
- 	.ndo_set_mac_address	= xgbe_set_mac_address,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= xgbe_ioctl,
- 	.ndo_change_mtu		= xgbe_change_mtu,
- 	.ndo_tx_timeout		= xgbe_tx_timeout,
- 	.ndo_get_stats64	= xgbe_get_stats64,
-@@ -2034,6 +2012,8 @@ static const struct net_device_ops xgbe_netdev_ops = {
- 	.ndo_fix_features	= xgbe_fix_features,
- 	.ndo_set_features	= xgbe_set_features,
- 	.ndo_features_check	= xgbe_features_check,
-+	.ndo_hwtstamp_get	= xgbe_get_hwtstamp_settings,
-+	.ndo_hwtstamp_set	= xgbe_set_hwtstamp_settings,
- };
- 
- const struct net_device_ops *xgbe_get_netdev_ops(void)
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c b/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
-index bc52e5ec6420..0127988e10be 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
-@@ -157,26 +157,24 @@ void xgbe_tx_tstamp(struct work_struct *work)
- 	spin_unlock_irqrestore(&pdata->tstamp_lock, flags);
- }
- 
--int xgbe_get_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
-+int xgbe_get_hwtstamp_settings(struct net_device *netdev,
-+			       struct kernel_hwtstamp_config *config)
- {
--	if (copy_to_user(ifreq->ifr_data, &pdata->tstamp_config,
--			 sizeof(pdata->tstamp_config)))
--		return -EFAULT;
-+	struct xgbe_prv_data *pdata = netdev_priv(netdev);
-+
-+	*config = pdata->tstamp_config;
- 
- 	return 0;
- }
- 
--int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
-+int xgbe_set_hwtstamp_settings(struct net_device *netdev,
-+			       struct kernel_hwtstamp_config *config,
-+			       struct netlink_ext_ack *extack)
- {
--	struct hwtstamp_config config;
--	unsigned int mac_tscr;
--
--	if (copy_from_user(&config, ifreq->ifr_data, sizeof(config)))
--		return -EFAULT;
--
--	mac_tscr = 0;
-+	struct xgbe_prv_data *pdata = netdev_priv(netdev);
-+	unsigned int mac_tscr = 0;
- 
--	switch (config.tx_type) {
-+	switch (config->tx_type) {
- 	case HWTSTAMP_TX_OFF:
- 		break;
- 
-@@ -188,7 +186,7 @@ int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
- 		return -ERANGE;
- 	}
- 
--	switch (config.rx_filter) {
-+	switch (config->rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		break;
- 
-@@ -290,7 +288,7 @@ int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
- 
- 	xgbe_config_tstamp(pdata, mac_tscr);
- 
--	memcpy(&pdata->tstamp_config, &config, sizeof(config));
-+	pdata->tstamp_config = *config;
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index e8bbb6805901..381f72a33d1a 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1146,7 +1146,7 @@ struct xgbe_prv_data {
- 	spinlock_t tstamp_lock;
- 	struct ptp_clock_info ptp_clock_info;
- 	struct ptp_clock *ptp_clock;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index 0d85198fb03d..f20f4bc58492 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -674,7 +674,7 @@ struct port_info {
+ 	struct cxgb_fcoe fcoe;
+ #endif /* CONFIG_CHELSIO_T4_FCOE */
+ 	bool rxtstamp;  /* Enable TS */
 -	struct hwtstamp_config tstamp_config;
 +	struct kernel_hwtstamp_config tstamp_config;
- 	unsigned int tstamp_addend;
- 	struct work_struct tx_tstamp_work;
- 	struct sk_buff *tx_tstamp_skb;
-@@ -1307,10 +1307,11 @@ void xgbe_update_tstamp_addend(struct xgbe_prv_data *pdata,
- void xgbe_set_tstamp_time(struct xgbe_prv_data *pdata, unsigned int sec,
- 			  unsigned int nsec);
- void xgbe_tx_tstamp(struct work_struct *work);
--int xgbe_get_hwtstamp_settings(struct xgbe_prv_data *pdata,
--			       struct ifreq *ifreq);
--int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata,
--			       struct ifreq *ifreq);
-+int xgbe_get_hwtstamp_settings(struct net_device *netdev,
-+			       struct kernel_hwtstamp_config *config);
-+int xgbe_set_hwtstamp_settings(struct net_device *netdev,
-+			       struct kernel_hwtstamp_config *config,
-+			       struct netlink_ext_ack *extack);
- void xgbe_prep_tx_tstamp(struct xgbe_prv_data *pdata,
- 			 struct sk_buff *skb,
- 			 struct xgbe_packet_data *packet);
+ 	bool ptp_enable;
+ 	struct sched_table *sched_tbl;
+ 	u32 eth_flags;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 392723ef14e5..7e2283c95b97 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3042,12 +3042,87 @@ static void cxgb_get_stats(struct net_device *dev,
+ 		ns->rx_length_errors + stats.rx_len_err + ns->rx_fifo_errors;
+ }
+ 
++static int cxgb_hwtstamp_get(struct net_device *dev,
++			     struct kernel_hwtstamp_config *config)
++{
++	struct port_info *pi = netdev_priv(dev);
++
++	*config = pi->tstamp_config;
++	return 0;
++}
++
++static int cxgb_hwtstamp_set(struct net_device *dev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack)
++{
++	struct port_info *pi = netdev_priv(dev);
++	struct adapter *adapter = pi->adapter;
++
++	if (is_t4(adapter->params.chip)) {
++		/* For T4 Adapters */
++		switch (config->rx_filter) {
++		case HWTSTAMP_FILTER_NONE:
++			pi->rxtstamp = false;
++			break;
++		case HWTSTAMP_FILTER_ALL:
++			pi->rxtstamp = true;
++			break;
++		default:
++			return -ERANGE;
++		}
++		pi->tstamp_config = *config;
++		return 0;
++	}
++
++	switch (config->tx_type) {
++	case HWTSTAMP_TX_OFF:
++	case HWTSTAMP_TX_ON:
++		break;
++	default:
++		return -ERANGE;
++	}
++
++	switch (config->rx_filter) {
++	case HWTSTAMP_FILTER_NONE:
++		pi->rxtstamp = false;
++		break;
++	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
++	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
++		cxgb4_ptprx_timestamping(pi, pi->port_id, PTP_TS_L4);
++		break;
++	case HWTSTAMP_FILTER_PTP_V2_EVENT:
++		cxgb4_ptprx_timestamping(pi, pi->port_id, PTP_TS_L2_L4);
++		break;
++	case HWTSTAMP_FILTER_ALL:
++	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
++	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
++	case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
++	case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
++		pi->rxtstamp = true;
++		break;
++	default:
++		return -ERANGE;
++	}
++
++	if (config->tx_type == HWTSTAMP_TX_OFF &&
++	    config->rx_filter == HWTSTAMP_FILTER_NONE) {
++		if (cxgb4_ptp_txtype(adapter, pi->port_id) >= 0)
++			pi->ptp_enable = false;
++	}
++
++	if (config->rx_filter != HWTSTAMP_FILTER_NONE) {
++		if (cxgb4_ptp_redirect_rx_packet(adapter, pi) >= 0)
++			pi->ptp_enable = true;
++	}
++	pi->tstamp_config = *config;
++	return 0;
++}
++
+ static int cxgb_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
+ {
+ 	unsigned int mbox;
+ 	int ret = 0, prtad, devad;
+ 	struct port_info *pi = netdev_priv(dev);
+-	struct adapter *adapter = pi->adapter;
+ 	struct mii_ioctl_data *data = (struct mii_ioctl_data *)&req->ifr_data;
+ 
+ 	switch (cmd) {
+@@ -3076,81 +3151,6 @@ static int cxgb_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
+ 			ret = t4_mdio_wr(pi->adapter, mbox, prtad, devad,
+ 					 data->reg_num, data->val_in);
+ 		break;
+-	case SIOCGHWTSTAMP:
+-		return copy_to_user(req->ifr_data, &pi->tstamp_config,
+-				    sizeof(pi->tstamp_config)) ?
+-			-EFAULT : 0;
+-	case SIOCSHWTSTAMP:
+-		if (copy_from_user(&pi->tstamp_config, req->ifr_data,
+-				   sizeof(pi->tstamp_config)))
+-			return -EFAULT;
+-
+-		if (!is_t4(adapter->params.chip)) {
+-			switch (pi->tstamp_config.tx_type) {
+-			case HWTSTAMP_TX_OFF:
+-			case HWTSTAMP_TX_ON:
+-				break;
+-			default:
+-				return -ERANGE;
+-			}
+-
+-			switch (pi->tstamp_config.rx_filter) {
+-			case HWTSTAMP_FILTER_NONE:
+-				pi->rxtstamp = false;
+-				break;
+-			case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+-			case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
+-				cxgb4_ptprx_timestamping(pi, pi->port_id,
+-							 PTP_TS_L4);
+-				break;
+-			case HWTSTAMP_FILTER_PTP_V2_EVENT:
+-				cxgb4_ptprx_timestamping(pi, pi->port_id,
+-							 PTP_TS_L2_L4);
+-				break;
+-			case HWTSTAMP_FILTER_ALL:
+-			case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+-			case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+-			case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
+-			case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
+-				pi->rxtstamp = true;
+-				break;
+-			default:
+-				pi->tstamp_config.rx_filter =
+-					HWTSTAMP_FILTER_NONE;
+-				return -ERANGE;
+-			}
+-
+-			if ((pi->tstamp_config.tx_type == HWTSTAMP_TX_OFF) &&
+-			    (pi->tstamp_config.rx_filter ==
+-				HWTSTAMP_FILTER_NONE)) {
+-				if (cxgb4_ptp_txtype(adapter, pi->port_id) >= 0)
+-					pi->ptp_enable = false;
+-			}
+-
+-			if (pi->tstamp_config.rx_filter !=
+-				HWTSTAMP_FILTER_NONE) {
+-				if (cxgb4_ptp_redirect_rx_packet(adapter,
+-								 pi) >= 0)
+-					pi->ptp_enable = true;
+-			}
+-		} else {
+-			/* For T4 Adapters */
+-			switch (pi->tstamp_config.rx_filter) {
+-			case HWTSTAMP_FILTER_NONE:
+-			pi->rxtstamp = false;
+-			break;
+-			case HWTSTAMP_FILTER_ALL:
+-			pi->rxtstamp = true;
+-			break;
+-			default:
+-			pi->tstamp_config.rx_filter =
+-			HWTSTAMP_FILTER_NONE;
+-			return -ERANGE;
+-			}
+-		}
+-		return copy_to_user(req->ifr_data, &pi->tstamp_config,
+-				    sizeof(pi->tstamp_config)) ?
+-			-EFAULT : 0;
+ 	default:
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -3875,6 +3875,8 @@ static const struct net_device_ops cxgb4_netdev_ops = {
+ 	.ndo_setup_tc         = cxgb_setup_tc,
+ 	.ndo_features_check   = cxgb_features_check,
+ 	.ndo_fix_features     = cxgb_fix_features,
++	.ndo_hwtstamp_get     = cxgb_hwtstamp_get,
++	.ndo_hwtstamp_set     = cxgb_hwtstamp_set,
+ };
+ 
+ #ifdef CONFIG_PCI_IOV
 -- 
 2.47.3
 
