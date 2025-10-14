@@ -1,270 +1,139 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD8530EF72
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58E2DA776
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760429369; cv=none; b=ent0ES4ORZj2Tf3m6Gl7NBwbijvduyfgv/6kH4ODFnEYk9Zv5/1kVtE9Ci2uzHaInd4pac1511YK5XHu5ySA2Obsxw/cZI2bp/0qKgdeiL/80Zn/r7kP8xTF4BBGoFppT1qnNkeYguuSi5QslBKSae8tkD2temxYTaZfMc2Zqt8=
+	t=1760429862; cv=none; b=Ydefuf2RglXAJAjSpsKltxRwcPXm8tVJd662dpKMTuOQEe8W0xBixmvPhnHtUsTnUHIRw9soIrikJFlkbImc6xk1mnuRUgLBW+cngbPiKL+za8B1LRNCst6vr6Z4ERA4UJgKjtVfV7ON6pq/1x1v2g0rRapIM2a7I/UVQ2M5SsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760429369; c=relaxed/simple;
-	bh=0hOs6lNwFmOYVzCI4EOSKUppB0EOJbNGTp7yW01ruws=;
+	s=arc-20240116; t=1760429862; c=relaxed/simple;
+	bh=ZenOGeLl3E07i4+rFBn+dvevjdsbRCIJ235ulzP9wXQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=djFM9DjgEux2C05CXvwkRvX0HMzj7LN2RtMfeEf3/E9yzvheMdYJJNnDScnWHwrJirN+Jpg+nZVb5me2I3zvAqglWvSahQBA+n2rhVLwx1KiEPhFY9IpBcmb183JIOPt7RjbLX+C0FpaNdZQnS8/P1By+rKFT2jE1+k+R8KJnZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4DqThMo5; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=l6Q7mBMWlJpFFXv4yLxSY1qBd1DFkQm55IWOKkBngxFvUj3Lj8kmVjzd5+VY75EkbeEGptS6hAW6kjGT8iR6hfHlZalM5UMULs+oZEn0QNRyoUxr3EYFGbsmYAbywYztgRBpmUoKa6Ru2gk+4ziR5/hcABgutnnmxPri0UBP0R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bgyuLe8E; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4DqThMo5"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-85cee530df9so790171685a.3
-        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 01:09:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bgyuLe8E"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-930c304d1a4so776172241.2
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 01:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760429366; x=1761034166; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760429860; x=1761034660; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lQxQ7zEJyamO3FYp7h53BV/ghyg1BHfo8dZmUXKe5TE=;
-        b=4DqThMo5/mjLJ8RUlOo5IroQ5HS2vHy4N4TdTr/3uvhhUqt/Ci50dAQ/mEhoibI3BQ
-         S/3/DuLUnpkbNT0B3di/oywudn8o4uYDWhqmK01o4Uznhal6Vcg2HWUDaYnet61L3e3G
-         kFkapnAUuAU65mxcRR/lLc4PjbEvp+/VZluVt3TvsMKm6JcVYRnb1WmkDEKMls1LYyvc
-         6YI6UEJL6T1ixSU2GrbYz8C4kiCs60V3HAFznDuWktkrRxt5Tz90Fxj3Z1tYDnCcA6/5
-         HVoDrXdLJOCbmMRITi1EM8xwIp09w2325AeGPWqrIhy4B+tiNl6kCFqal5YwGVjdeS0+
-         5k5g==
+        bh=hB5XUi1+cDwXRPWde5CzSKgVrGaXvz4WI2PJ/mRCG6U=;
+        b=bgyuLe8ExLUhNGvtBKCIGR1wNkk2Xc0z0JCYLYkJFQ4uugGucHzJIFAlC/8sHbJzWo
+         AhM57hqCDwsFeyRbrFzw4bgufX+sSPq+i4V392HFVmN2p1IobGdw1ilLJck2hhh085LN
+         2XyfgVU5eWwIvf5SYbB1b3nusA16BrmfUpPfh9usHfvjgF5YVs6SOR6GYzLXIXG+XYTg
+         mWtzlL84GGWlG4+efMubetaMcLIDNHDAngbZ5Ptrhl9vR3ybOzsyFWxRivIsnouRnnm0
+         thVYt2k7RXbLCSgnyE10z1xr2KqiTxLYOVtOzY5qX3CMWQFj5cjLsp9CCAFe6RFOGM2y
+         96xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760429366; x=1761034166;
+        d=1e100.net; s=20230601; t=1760429860; x=1761034660;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lQxQ7zEJyamO3FYp7h53BV/ghyg1BHfo8dZmUXKe5TE=;
-        b=MpbX9OkWHn7rXAP7bz7j18IaCNOpfCgVN5PEmMAExvaGGaf/wemX2jIZgyoTulV87g
-         DFlMTTyVqbqidyt+3mgCnxLCZcs0eyEefI423osAw+VJFeHyc830OFAC5hhAG+QTwCmy
-         ZIVrtXhBsks6XyOnhq+K2Wq180mF4RgXvPKfrCxTo2MHyCfuaotgGLHnJR19lSknwBQ4
-         kXKD40WQIXFt8Gq5OJokPub3e5InfwT97ZDMO6aBdbI2bDpaXII7TRVckuAPzH007mvq
-         tjCNZSU7OmZwT72qT2+hD+vBSziAzH4TMP6Gr97w0HlqQ41/FJ7ouk3cqvAGQcgxbNq5
-         F8Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcmfkudGKfwW7Q6j8HgEmmDgUUeaQy8Nz8UZ0/hcaTqypwJX55YbDoy9FPtpqvPUtxdJbFqKg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwT+FNWB+RB5H4draTUgTJ3gOEhtaLidhD7gs+/UXAQRQ9YH2N
-	7oLClM6SJdJwE3jDHirYc9g81zsKCs27fwH+0X+QLPmAnpTRs1tUOniBftEaM4ge+SrxfODzX5M
-	uVyFnpgZDgF8Vof0N++NwAU6uuIuRieTmDwYiosMA
-X-Gm-Gg: ASbGncsqMA97OFNO6vMg07E5+VUYGvj8ZqRv4NaNU8bhHSN1NRgyxhk10ETLLN3cyXY
-	bXx71/Kli4S8/cLz5rUxIzGbjMx7bRx6g71dCxVY7tmnyYqrX3oU4o10hDM4GyFh+B7B6Nz6qvb
-	KS6ANDSM8ijo6Pd+hV6I3LGCFJHsXPxfwvoVHyTVl+F7VB1G9XkWr0F6Y+KwJ//T5o2GZtct2Oj
-	am5e8CxJH5munxnJB1uGgYLTBnVGNgYMxNWyCcEIHpp9pU+LVBqWw==
-X-Google-Smtp-Source: AGHT+IH/dWhoPzEyfqKZhpl9EUBKcY5MZWG2lOi5ULZT6oxI9zLixwvwXY8shOQq/o9+wnzOHkuxLWFiUbdQzIXiPa4=
-X-Received: by 2002:a05:622a:2cf:b0:4b4:9522:67a with SMTP id
- d75a77b69052e-4e6ead12f0amr298247811cf.33.1760429365512; Tue, 14 Oct 2025
- 01:09:25 -0700 (PDT)
+        bh=hB5XUi1+cDwXRPWde5CzSKgVrGaXvz4WI2PJ/mRCG6U=;
+        b=kX7Rk3QlNcYouVbib4rw4yI8K7rKiv8uBFqiT1b4K7UnNZ7Z8q9A33FcsNiNGNtlgl
+         P/yPSh6YGdncStq6bSO0+wPsG75x0JoyBYs8recZfTI2B15kEvetjlCCkFDTch0mdJa7
+         3PMOIPVU8lXLCDXEmEHr5Pu63pOcvqwPRLwmSIigLWTHOV+kGo0ZCfBL66ebqGXRzTn7
+         nb3Sf3V4Je0XgNiLPmzycknm6lM3rrA/Ix+e3vyhU+gkBOuW69Dg+TYET5ttBw2hyrw1
+         qZiTKpa9rEI9RY6HsHSGLLxBO7II4pCfsaAk5DerTspUZ1SH9DiDTfKtlv7vlwLN0nlQ
+         jdog==
+X-Forwarded-Encrypted: i=1; AJvYcCUisTh7Wi09fg4j1m1JUXFrXUQkT2zdHfNWobpIvvlp96vsBMtRW87+KRGeEqMqKHJZuKPeN8Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjUcvXwUFe2N3XTQBMSTgZbJlQOZsPhMQ3aVLl6aMJq7kW/1PD
+	Z4wIXucNf3VfLGwpIKoA5supsXfhU3/BkU+/LnMy2lBG7P0ZiLYXJDbudlK9OSwv5yxP3wg5eDu
+	Cdqa6phr2pyHbZumN1hCwTGPoaujD5JY=
+X-Gm-Gg: ASbGncut97YavwcdQ7GYIFj5NV5Oy9UpTVJ0u7maoltKsgJiv4oZfBneYcbS3Wno+83
+	m8a0bsmox4HQGcKJcwMqAIIT2jFP5KJula8ARD5OQ34xtO0AUsLAY+PCVRHBkjJK61rqWYOOxjY
+	2C+EF8YGPO5JipXzAT6ScGlgPghXLs3eI1babBjtUbkXxla7QWoQ3sTRSvRWan6rDZOH6Qi0fXd
+	BEzXRpE4CtPt8f5ZLSDPWoytnyYzs+A0vHz171G12Cl64AHfRpFaT9xKGWt0lEL/S53
+X-Google-Smtp-Source: AGHT+IE74/+9NMWbvU+qO/+W07sc5FWF1iW+Jodkjrw6Ldi09g2hF8G7tsWXqr3Kth9KAyQqpDa/9zGf3F+nkghdsOo=
+X-Received: by 2002:a05:6102:f07:b0:4fc:1a18:aaa2 with SMTP id
+ ada2fe7eead31-5d5e2217442mr8155988137.5.1760429859483; Tue, 14 Oct 2025
+ 01:17:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250926074033.1548675-1-xuanqiang.luo@linux.dev>
- <20250926074033.1548675-2-xuanqiang.luo@linux.dev> <CANn89iJ15RFYq65t57sW=F1jZigbr5xTbPNLVY53cKtpMKLotA@mail.gmail.com>
- <d6a43fe1-2e00-4df4-b4a8-04facd8f05d4@linux.dev> <CANn89iLQMVms1GF_oY1WSCtmxLZaBJrTKaeHnwRo5p9uzFwnVw@mail.gmail.com>
- <82a04cb1-9451-493c-9b1e-b4a34f2175cd@linux.dev> <CANn89iJdXiE3b8x8vQtbOOi2DTC5P9bOO1HsnRwSPC8qQC--8g@mail.gmail.com>
- <7d89cff3-1045-4901-bdd3-f669eecfee97@linux.dev>
-In-Reply-To: <7d89cff3-1045-4901-bdd3-f669eecfee97@linux.dev>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 14 Oct 2025 01:09:14 -0700
-X-Gm-Features: AS18NWDvY5FrE0lRRsQ5p3vmdjBROe3O0IUuYTIr4LtgXah8la5zPqyw2r_AeyU
-Message-ID: <CANn89iJtMVRhcdfaH3Qz0cLf30cV32jYpAA5YBcL1Auovccdug@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 1/3] rculist: Add hlist_nulls_replace_rcu()
- and hlist_nulls_replace_init_rcu()
-To: luoxuanqiang <xuanqiang.luo@linux.dev>
-Cc: kuniyu@google.com, "Paul E. McKenney" <paulmck@kernel.org>, kerneljasonxing@gmail.com, 
-	davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org, 
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
+References: <CANn89i+wikOQQrGFXu=L3nKPG62rsBmWer5WpLg5wmBN+RdMqA@mail.gmail.com>
+ <20251014035846.1519-1-21cnbao@gmail.com> <CANn89iKCZyYi+J=5t2sdmvtERnknkwXrGi4QRzM9btYUywkDfw@mail.gmail.com>
+ <CAGsJ_4ySSn6B+x+4zE0Ld1+AM4q-WnS0LfxzWw22oXr7n5NZ=g@mail.gmail.com> <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com>
+In-Reply-To: <CANn89i+j_CZM9Q=xTkSq-7cjeRkt29JikD3WqvmPihDrUHBQEQ@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 14 Oct 2025 16:17:21 +0800
+X-Gm-Features: AS18NWDxwbBeHYYzY9zkajM9730iY7yUrkf_deZ_-1VTrKeqK4m8413YWm5g-Tc
+Message-ID: <CAGsJ_4xC=5nCSOv9P7ySONeXwdXN-YK2V+4OZ2zdCOeYiQHvzQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Eric Dumazet <edumazet@google.com>
+Cc: corbet@lwn.net, davem@davemloft.net, hannes@cmpxchg.org, horms@kernel.org, 
+	jackmanb@google.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linyunsheng@huawei.com, mhocko@suse.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, surenb@google.com, v-songbaohua@oppo.com, vbabka@suse.cz, 
+	willemb@google.com, zhouhuacai@oppo.com, ziy@nvidia.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 14, 2025 at 1:05=E2=80=AFAM luoxuanqiang <xuanqiang.luo@linux.d=
-ev> wrote:
->
->
-> =E5=9C=A8 2025/10/14 15:34, Eric Dumazet =E5=86=99=E9=81=93:
-> > On Tue, Oct 14, 2025 at 12:21=E2=80=AFAM luoxuanqiang <xuanqiang.luo@li=
-nux.dev> wrote:
-> >>
-> >> =E5=9C=A8 2025/10/13 17:49, Eric Dumazet =E5=86=99=E9=81=93:
-> >>> On Mon, Oct 13, 2025 at 1:26=E2=80=AFAM luoxuanqiang <xuanqiang.luo@l=
-inux.dev> wrote:
-> >>>> =E5=9C=A8 2025/10/13 15:31, Eric Dumazet =E5=86=99=E9=81=93:
-> >>>>> On Fri, Sep 26, 2025 at 12:41=E2=80=AFAM <xuanqiang.luo@linux.dev> =
+On Tue, Oct 14, 2025 at 3:01=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
 wrote:
-> >>>>>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> >>>>>>
-> >>>>>> Add two functions to atomically replace RCU-protected hlist_nulls =
-entries.
-> >>>>>>
-> >>>>>> Keep using WRITE_ONCE() to assign values to ->next and ->pprev, as
-> >>>>>> mentioned in the patch below:
-> >>>>>> commit efd04f8a8b45 ("rcu: Use WRITE_ONCE() for assignments to ->n=
-ext for
-> >>>>>> rculist_nulls")
-> >>>>>> commit 860c8802ace1 ("rcu: Use WRITE_ONCE() for assignments to ->p=
-prev for
-> >>>>>> hlist_nulls")
-> >>>>>>
-> >>>>>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-> >>>>>> ---
-> >>>>>>     include/linux/rculist_nulls.h | 59 +++++++++++++++++++++++++++=
-++++++++
-> >>>>>>     1 file changed, 59 insertions(+)
-> >>>>>>
-> >>>>>> diff --git a/include/linux/rculist_nulls.h b/include/linux/rculist=
-_nulls.h
-> >>>>>> index 89186c499dd4..c26cb83ca071 100644
-> >>>>>> --- a/include/linux/rculist_nulls.h
-> >>>>>> +++ b/include/linux/rculist_nulls.h
-> >>>>>> @@ -52,6 +52,13 @@ static inline void hlist_nulls_del_init_rcu(str=
-uct hlist_nulls_node *n)
-> >>>>>>     #define hlist_nulls_next_rcu(node) \
-> >>>>>>            (*((struct hlist_nulls_node __rcu __force **)&(node)->n=
-ext))
-> >>>>>>
-> >>>>>> +/**
-> >>>>>> + * hlist_nulls_pprev_rcu - returns the dereferenced pprev of @nod=
-e.
-> >>>>>> + * @node: element of the list.
-> >>>>>> + */
-> >>>>>> +#define hlist_nulls_pprev_rcu(node) \
-> >>>>>> +       (*((struct hlist_nulls_node __rcu __force **)(node)->pprev=
-))
-> >>>>>> +
-> >>>>>>     /**
-> >>>>>>      * hlist_nulls_del_rcu - deletes entry from hash list without =
-re-initialization
-> >>>>>>      * @n: the element to delete from the hash list.
-> >>>>>> @@ -152,6 +159,58 @@ static inline void hlist_nulls_add_fake(struc=
-t hlist_nulls_node *n)
-> >>>>>>            n->next =3D (struct hlist_nulls_node *)NULLS_MARKER(NUL=
-L);
-> >>>>>>     }
-> >>>>>>
-> >>>>>> +/**
-> >>>>>> + * hlist_nulls_replace_rcu - replace an old entry by a new one
-> >>>>>> + * @old: the element to be replaced
-> >>>>>> + * @new: the new element to insert
-> >>>>>> + *
-> >>>>>> + * Description:
-> >>>>>> + * Replace the old entry with the new one in a RCU-protected hlis=
-t_nulls, while
-> >>>>>> + * permitting racing traversals.
-> >>>>>> + *
-> >>>>>> + * The caller must take whatever precautions are necessary (such =
-as holding
-> >>>>>> + * appropriate locks) to avoid racing with another list-mutation =
-primitive, such
-> >>>>>> + * as hlist_nulls_add_head_rcu() or hlist_nulls_del_rcu(), runnin=
-g on this same
-> >>>>>> + * list.  However, it is perfectly legal to run concurrently with=
- the _rcu
-> >>>>>> + * list-traversal primitives, such as hlist_nulls_for_each_entry_=
-rcu().
-> >>>>>> + */
-> >>>>>> +static inline void hlist_nulls_replace_rcu(struct hlist_nulls_nod=
-e *old,
-> >>>>>> +                                          struct hlist_nulls_node=
- *new)
-> >>>>>> +{
-> >>>>>> +       struct hlist_nulls_node *next =3D old->next;
-> >>>>>> +
-> >>>>>> +       WRITE_ONCE(new->next, next);
-> >>>>>> +       WRITE_ONCE(new->pprev, old->pprev);
-> >>>>> I do not think these two WRITE_ONCE() are needed.
-> >>>>>
-> >>>>> At this point new is not yet visible.
-> >>>>>
-> >>>>> The following  rcu_assign_pointer() is enough to make sure prior
-> >>>>> writes are committed to memory.
-> >>>> Dear Eric,
-> >>>>
-> >>>> I=E2=80=99m quoting your more detailed explanation from the other pa=
-tch [0], thank
-> >>>> you for that!
-> >>>>
-> >>>> However, regarding new->next, if the new object is allocated with
-> >>>> SLAB_TYPESAFE_BY_RCU, would we still encounter the same issue as in =
-commit
-> >>>> efd04f8a8b45 (=E2=80=9Crcu: Use WRITE_ONCE() for assignments to ->ne=
-xt for
-> >>>> rculist_nulls=E2=80=9D)?
-> >>>>
-> >>>> Also, for the WRITE_ONCE() assignments to ->pprev introduced in comm=
-it
-> >>>> 860c8802ace1 (=E2=80=9Crcu: Use WRITE_ONCE() for assignments to ->pp=
-rev for
-> >>>> hlist_nulls=E2=80=9D) within hlist_nulls_add_head_rcu(), is that als=
-o unnecessary?
-> >>> I forgot sk_unhashed()/sk_hashed() could be called from lockless cont=
-exts.
-> >>>
-> >>> It is a bit weird to annotate the writes, but not the lockless reads,
-> >>> even if apparently KCSAN
-> >>> is okay with that.
-> >>>
-> >> Dear Eric,
-> >>
-> >> I=E2=80=99m sorry=E2=80=94I still haven=E2=80=99t fully grasped the sc=
-enario you mentioned where
-> >> sk_unhashed()/sk_hashed() can be called from lock=E2=80=91less context=
-s. It seems
-> >> similar to the race described in commit 860c8802ace1 (=E2=80=9Crcu: Us=
-e
-> >> WRITE_ONCE() for assignments to ->pprev for hlist_nulls=E2=80=9D), e.g=
-.: [0].
-> >>
-> > inet_unhash() does a lockless sk_unhash(sk) call, while no lock is
-> > held in some cases (look at tcp_done())
-> >
-> > void inet_unhash(struct sock *sk)
-> > {
-> > struct inet_hashinfo *hashinfo =3D tcp_get_hashinfo(sk);
-> >
-> > if (sk_unhashed(sk))    // Here no lock is held
-> >      return;
-> >
-> > Relevant lock (depending on (sk->sk_state =3D=3D TCP_LISTEN)) is acquir=
-ed
-> > a few lines later.
-> >
-> > Then
-> >
-> > __sk_nulls_del_node_init_rcu() is called safely, while the bucket lock =
-is held.
-> >
-> Dear Eric,
 >
-> Thanks for the quick response!
+> On Mon, Oct 13, 2025 at 11:43=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
+rote:
+> >
+> > > >
+> > > > A problem with the existing sysctl is that it only covers the TX pa=
+th;
+> > > > for the RX path, we also observe that kswapd consumes significant p=
+ower.
+> > > > I could add the patch below to make it support the RX path, but it =
+feels
+> > > > like a bit of a layer violation, since the RX path code resides in =
+mm
+> > > > and is intended to serve generic users rather than networking, even
+> > > > though the current callers are primarily network-related.
+> > >
+> > > You might have a buggy driver.
+> >
+> > We are observing the RX path as follows:
+> >
+> > do_softirq
+> >     taskset_hi_action
+> >        kalPacketAlloc
+> >            __netdev_alloc_skb
+> >                page_frag_alloc_align
+> >                    __page_frag_cache_refill
+> >
+> > This appears to be a fairly common stack.
+> >
+> > So it is a buggy driver?
 >
-> In the call path:
->          tcp_retransmit_timer()
->                  tcp_write_err()
->                          tcp_done()
+> No idea, kalPacketAlloc is not in upstream trees.
 >
-> tcp_retransmit_timer() already calls lockdep_sock_is_held(sk) to check th=
-e
-> socket=E2=80=91lock state.
+> It apparently needs high order allocations. It will fail at some point.
 >
-> void tcp_retransmit_timer(struct sock *sk)
-> {
->          struct tcp_sock *tp =3D tcp_sk(sk);
->          struct net *net =3D sock_net(sk);
->          struct inet_connection_sock *icsk =3D inet_csk(sk);
->          struct request_sock *req;
->          struct sk_buff *skb;
+> >
+> > >
+> > > High performance drivers use order-0 allocations only.
+> > >
+> >
+> > Do you have an example of high-performance drivers that use only order-=
+0 memory?
 >
->          req =3D rcu_dereference_protected(tp->fastopen_rsk,
->                                   lockdep_sock_is_held(sk)); // Check her=
-e
+> About all drivers using XDP, and/or using napi_get_frags()
 >
-> Does that mean we=E2=80=99re already protected by lock_sock(sk) or
-> bh_lock_sock(sk)?
+> XDP has been using order-0 pages from the very beginning.
 
-But the socket lock is not protecting ehash buckets. These are other locks.
+Thanks! But there are still many drivers using netdev_alloc_skb()=E2=80=94w=
+e
+shouldn=E2=80=99t overlook them, right?
 
-Also, inet_unhash() can be called from other paths, without a socket
-lock being held.
+net % git grep netdev_alloc_skb | wc -l
+     359
+
+Thanks
+Barry
