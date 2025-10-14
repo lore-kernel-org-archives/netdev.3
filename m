@@ -1,26 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56823314A97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5689F314A9D
 	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 13:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760447388; cv=none; b=fYIHhLqTPiLivGFlc617euRYnl4iFWTERToKs3KeLRjj5tcDNRoSaikMXTWdtCHEvU5+fOjM3kA+Ny4NrUZG29HVHME1gPXG60mPJOiqRcvQfMMwR5w4bc1Nf7qGeKBIjD05dNOvJ41BAQgMJPi6OBBQoEOUTxl2aEQxFr005Kg=
+	t=1760447388; cv=none; b=ptVzO3dvevGqbOr1Sw1+GPEYEYE2gYulx67F/tvJj+uv7Df5jUTxSijrV1WqJuoOk8nsBZTCAKwt8j/BpTA9y/sOVwIfhRJg+Allo8Ev9P2N3clXh3/jhq0/qMyKO/dYO2CBGbpV1BtlT/yVnSDL+ptj3XTgmE9HUr1G2rCRh7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760447388; c=relaxed/simple;
-	bh=2tt4zSuVjsO7A5I6VZ49Wzvg4d7IGcTk/fszUM8KpGE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Bm3HXQ9mg6W3a/YyGJtptQqjCF5yWK75QnY/rwVH8MXWO6JtYhr20s76SoWMuPD8yeRjxNqe2PxvaT5oT+NOKp18ARLLzGtUR2Jb/ynj6xuNCxzR95e/Onqt+hXJyuXjVQKnu6Yvz+5N0Tbchwt5EQEC+jvcxMu2yr2gcSTn3do=
+	bh=GNqHj6mz7L69st3749kFreNZKm9/OQuktPIJLosGyN4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KLXIaBp8y65ROlhHTlvHX02f8pYIfLndbTyIVF40ZcDerTJCQJHwCi4BWSOhXC8GGyqVpDlIcKRr4YnQvG8cS3HDDFUO8Z0ou18MAQ+YYM1+F/WS6SUU3Q+ofhhRQeXKQlAcZ8sTWoc5mH61h7BulYYxz+6J2SV6uAGg6cV6css=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1v8emV-0007EX-7j; Tue, 14 Oct 2025 15:09:35 +0200
+	id 1v8emV-0007EX-D1; Tue, 14 Oct 2025 15:09:35 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Subject: [PATCH v4 0/2] Mainline Protonic PRT8ML board
-Date: Tue, 14 Oct 2025 15:09:30 +0200
-Message-Id: <20251014-imx8mp-prt8ml-v4-0-88fed69b1af2@pengutronix.de>
+Date: Tue, 14 Oct 2025 15:09:32 +0200
+Subject: [PATCH v4 2/2] arm64: dts: add Protonic PRT8ML board
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -29,11 +29,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIpL7mgC/23OTQ6CMBCG4auQrq3pzxSKK+9hXICdQhOBpiDBE
- O5uwQ1Bl++XzJOZSY/BYU8uyUwCjq53XRsDTgl51EVbIXUmNhFMKJYxTl0z6cZTHwbdPCnjJUp
- INaQqJ/HGB7Ru2rzbPXbt+qEL740f+bp+pZyzgzRyyqg1DAo0XKUZu3psq9cQutZNZ4Nk5UaxJ
- /SREJGQRkMJFpU0+JeQO0LAkZDrF5Brk9mMFzn8EMuyfABQVCBoNQEAAA==
-X-Change-ID: 20250701-imx8mp-prt8ml-01be34684659
+Message-Id: <20251014-imx8mp-prt8ml-v4-2-88fed69b1af2@pengutronix.de>
+References: <20251014-imx8mp-prt8ml-v4-0-88fed69b1af2@pengutronix.de>
+In-Reply-To: <20251014-imx8mp-prt8ml-v4-0-88fed69b1af2@pengutronix.de>
 To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -51,12 +49,12 @@ Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
  Lucas Stach <l.stach@pengutronix.de>, 
  Oleksij Rempel <o.rempel@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1732; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=2tt4zSuVjsO7A5I6VZ49Wzvg4d7IGcTk/fszUM8KpGE=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh4590zpX7/AScjzaOeE/jEDCeLfg54/7/Lk/e1XZc9a
- 82plvYdHaUsDGJcDLJiiiyxanIKQsb+180q7WJh5rAygQxh4OIUgIkI32D4p3204cQBibtq+i5V
- UVqbpdczaV2c6vY/wf1r/buOuUfcbBkZdny5vndi3az3j9/aHkxeuSPAizO6P3fu5qsHf73prpn
- 9lRkA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13769; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=GNqHj6mz7L69st3749kFreNZKm9/OQuktPIJLosGyN4=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsh459070+7ihK2N7DHHNKJl2Sx+JCh/Pnr14QUfUbXgV
+ de/nPBi6ChlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEzEIYuRYbNCiOFmle97AsIL
+ HXdlTWgXb1ylUDftP5+KqG5qdee0LoZ/tm1/OmQWPLniWqhS273r4UcfRdHCBjk+ttM3Du1YrD+
+ RBQA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::ac
@@ -64,46 +62,548 @@ X-SA-Exim-Mail-From: jre@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This series adds the Protonic PRT8ML device tree as well as some minor
-corrections to the devicetree bindings used.
+Add devicetree for the Protonic PRT8ML.
 
+The board is similar to the Protonic PRT8MM but i.MX8MP based.
+
+Some features have been removed as the drivers haven't been mainlined
+yet or other issues where encountered:
+ - Stepper motors to be controlled using motion control subsystem
+ - MIPI/DSI to eDP USB alt-mode
+ - Onboard T1 ethernet (10BASE-T1L+PoDL, 100BASE-T1+PoDL, 1000BASE-T1)
+
+Signed-off-by: David Jander <david@protonic.nl>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
-Changes in v4:
-- Dropped "dt-bindings: net: dsa: nxp,sja1105: Add reset-gpios
-  property", applied to netdev/net-next.git (Thanks, Jakub)
-- Comment on deleted OPP and deleted dma, correct tps65987ddh node names
-  (Thanks, Peng)
-- Link to v3: https://lore.kernel.org/r/20250924-imx8mp-prt8ml-v3-0-f498d7f71a94@pengutronix.de
-
-Changes in v3:
-- Add comment on the intentional limitation to 100Mbps RGMII
-- Link to v2: https://lore.kernel.org/r/20250918-imx8mp-prt8ml-v2-0-3d84b4fe53de@pengutronix.de
-
-Changes in v2:
-- Dropped "ASoC: dt-bindings: asahi-kasei,ak4458: Reference common DAI
-  properties", applied to broonie/sound for-next (Thanks, Mark)
-- Updated description of the reset-gpios property in sja1105 binding to
-  address the issues of connecting this pin to GPIO (Thanks, Vladimir)
-- Added the fec, switch and phy for RJ45 onboard ethernet after
-  successful testing
-- Consistently use interrupts-extended
-- Link to v1: https://lore.kernel.org/r/20250910-imx8mp-prt8ml-v1-0-fd04aed15670@pengutronix.de
-
----
-Jonas Rebmann (2):
-      dt-bindings: arm: fsl: Add Protonic PRT8ML
-      arm64: dts: add Protonic PRT8ML board
-
- Documentation/devicetree/bindings/arm/fsl.yaml  |   1 +
  arch/arm64/boot/dts/freescale/Makefile          |   1 +
  arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts | 504 ++++++++++++++++++++++++
- 3 files changed, 506 insertions(+)
----
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20250701-imx8mp-prt8ml-01be34684659
+ 2 files changed, 505 insertions(+)
 
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index 525ef180481d..0c9abfa8d23d 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -228,6 +228,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-nitrogen-smarc-universal-board.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk.dtb
+ imx8mp-phyboard-pollux-rdk-no-eth-dtbs += imx8mp-phyboard-pollux-rdk.dtb imx8mp-phycore-no-eth.dtbo
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-phyboard-pollux-rdk-no-eth.dtb
++dtb-$(CONFIG_ARCH_MXC) += imx8mp-prt8ml.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-basic.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-hdmi.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx8mp-skov-revb-lt6.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts b/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts
+new file mode 100644
+index 000000000000..30616218017b
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx8mp-prt8ml.dts
+@@ -0,0 +1,504 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright 2020 Protonic Holland
++ * Copyright 2019 NXP
++ */
++
++/dts-v1/;
++
++#include "imx8mp.dtsi"
++
++/ {
++	model = "Protonic PRT8ML";
++	compatible = "prt,prt8ml", "fsl,imx8mp";
++
++	chosen {
++		stdout-path = &uart4;
++	};
++
++	pcie_refclk: pcie0-refclk {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <100000000>;
++	};
++
++	pcie_refclk_oe: pcie0-refclk-oe {
++		compatible = "gpio-gate-clock";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pcie_refclk>;
++		clocks = <&pcie_refclk>;
++		#clock-cells = <0>;
++		enable-gpios = <&gpio5 23 GPIO_ACTIVE_HIGH>;
++	};
++};
++
++&A53_0 {
++	cpu-supply = <&fan53555>;
++};
++
++&A53_1 {
++	cpu-supply = <&fan53555>;
++};
++
++&A53_2 {
++	cpu-supply = <&fan53555>;
++};
++
++&A53_3 {
++	cpu-supply = <&fan53555>;
++};
++
++&a53_opp_table {
++	opp-1200000000 {
++		opp-microvolt = <900000>;
++	};
++
++	opp-1600000000 {
++		opp-microvolt = <980000>;
++	};
++
++	/* Power supply insuffient for 1.8 GHz */
++	/delete-node/ opp-1800000000;
++};
++
++&ecspi2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi2>;
++	cs-gpios = <&gpio5 13 GPIO_ACTIVE_HIGH>;
++
++	/* Disable DMA to meet performance requirements */
++	/delete-property/ dmas;
++	/delete-property/ dma-names;
++	status = "okay";
++
++	switch@0 {
++		compatible = "nxp,sja1105q";
++		reg = <0>;
++		reset-gpios = <&gpio_exp_1 4 GPIO_ACTIVE_LOW>;
++		spi-cpha;
++		spi-max-frequency = <4000000>;
++		spi-rx-delay-us = <1>;
++		spi-tx-delay-us = <1>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@3 {
++				reg = <3>;
++				label = "rj45";
++				phy-handle = <&rj45_phy>;
++				phy-mode = "rgmii-id";
++			};
++
++			port@4 {
++				reg = <4>;
++				ethernet = <&fec>;
++				label = "cpu";
++				phy-mode = "rgmii-id";
++				rx-internal-delay-ps = <2000>;
++				tx-internal-delay-ps = <2000>;
++
++				/* Unreliable at 1000Mbps, limit RGMII to 100Mbps */
++				fixed-link {
++					full-duplex;
++					speed = <100>;
++				};
++			};
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec>;
++	phy-mode = "rgmii"; /* switch inserts delay */
++	rx-internal-delay-ps = <0>;
++	tx-internal-delay-ps = <0>;
++	status = "okay";
++
++	fixed-link {
++		full-duplex;
++		speed = <100>;
++	};
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		rj45_phy: ethernet-phy@2 {
++			reg = <2>;
++			reset-gpios = <&gpio_exp_1 1 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <80000>;
++		};
++	};
++};
++
++&flexcan1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan1>;
++	status = "okay";
++};
++
++&flexcan2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan2>;
++	status = "okay";
++};
++
++&i2c1 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c1>;
++	status = "okay";
++
++	ak5558: codec@10 {
++		compatible = "asahi-kasei,ak5558";
++		reg = <0x10>;
++		reset-gpios = <&gpio_exp_1 2 GPIO_ACTIVE_LOW>;
++	};
++
++	gpio_exp_1: gpio@25 {
++		compatible = "nxp,pca9571";
++		reg = <0x25>;
++		gpio-controller;
++		#gpio-cells = <2>;
++	};
++};
++
++&i2c2 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2>;
++	status = "okay";
++
++	tps65987ddh_0: usb-pd@20 {
++		compatible = "ti,tps6598x";
++		reg = <0x20>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_tps65987ddh_0>;
++		interrupts-extended = <&gpio1 12 IRQ_TYPE_LEVEL_LOW>;
++	};
++
++	gpio_exp_2: gpio@25 {
++		compatible = "nxp,pca9571";
++		reg = <0x25>;
++		gpio-controller;
++		#gpio-cells = <2>;
++
++		c0-hreset-hog {
++			gpio-hog;
++			gpios = <7 GPIO_ACTIVE_LOW>;
++			line-name = "c0-hreset";
++			output-low;
++		};
++
++		c1-hreset-hog {
++			gpio-hog;
++			gpios = <6 GPIO_ACTIVE_LOW>;
++			line-name = "c1-hreset";
++			output-low;
++		};
++	};
++
++	fan53555: regulator@60 {
++		compatible = "fcs,fan53555";
++		reg = <0x60>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_fan53555>;
++		regulator-name = "fan53555";
++		regulator-min-microvolt = <900000>;
++		regulator-max-microvolt = <980000>;
++		regulator-always-on;
++		regulator-boot-on;
++		fcs,suspend-voltage-selector = <1>;
++	};
++};
++
++&i2c3 {
++	clock-frequency = <400000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c3>;
++	status = "okay";
++
++	ak4458: codec@11 {
++		compatible = "asahi-kasei,ak4458";
++		reg = <0x11>;
++		#sound-dai-cells = <0>;
++		reset-gpios = <&gpio_exp_2 5 GPIO_ACTIVE_LOW>;
++	};
++
++	tps65987ddh_1: usb-pd@20 {
++		compatible = "ti,tps6598x";
++		reg = <0x20>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_tps65987ddh_1>;
++		interrupts-extended = <&gpio1 15 IRQ_TYPE_LEVEL_LOW>;
++	};
++};
++
++&lcdif1 {
++	status = "okay";
++};
++
++&snvs_pwrkey {
++	status = "okay";
++};
++
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++};
++
++&usb3_0 {
++	status = "okay";
++};
++
++&usb3_1 {
++	status = "okay";
++};
++
++&usb3_phy0 {
++	status = "okay";
++};
++
++&usb3_phy1 {
++	status = "okay";
++};
++
++&usb_dwc3_0 {
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usb_dwc3_1 {
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usdhc2 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
++	assigned-clock-rates = <100000000>;
++	bus-width = <4>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	no-1-8-v;
++	sd-uhs-sdr12;
++	sd-uhs-sdr25;
++	status = "okay";
++};
++
++&usdhc3 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC3_ROOT>;
++	assigned-clock-rates = <400000000>;
++	bus-width = <8>;
++	non-removable;
++	no-sdio;
++	no-sd;
++	status = "okay";
++};
++
++&wdog1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_wdog>;
++	fsl,ext-reset-output;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl_ecspi2: ecspi2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x154
++			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x154
++			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x154
++			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x154
++		>;
++	};
++
++	pinctrl_fan53555: fan53555grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_EXT_CLK__GPIO5_IO05		0x114
++		>;
++	};
++
++	pinctrl_fec: fecgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC		0x3
++			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO		0x3
++			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0		0x91
++			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1		0x91
++			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2		0x91
++			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3		0x91
++			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC		0x91
++			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL	0x91
++			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0		0x1f
++			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1		0x1f
++			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2		0x1f
++			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x1f
++			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x1f
++			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x1f
++		>;
++	};
++
++	pinctrl_flexcan1: flexcan1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SPDIF_RX__CAN1_RX		0x154
++			MX8MP_IOMUXC_SPDIF_TX__CAN1_TX		0x154
++		>;
++	};
++
++	pinctrl_flexcan2: flexcan2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART3_TXD__CAN2_RX		0x154
++			MX8MP_IOMUXC_UART3_RXD__CAN2_TX		0x154
++		>;
++	};
++
++	pinctrl_i2c1: i2c1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ECSPI1_SCLK__I2C1_SCL	0x400000c3
++			MX8MP_IOMUXC_ECSPI1_MOSI__I2C1_SDA	0x400000c3
++		>;
++	};
++
++	pinctrl_i2c2: i2c2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL		0x400000c3
++			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA		0x400000c3
++		>;
++	};
++
++	pinctrl_i2c3: i2c3grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL		0x400000c3
++			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA		0x400000c3
++		>;
++	};
++
++	pinctrl_pcie_refclk: pcierefclkgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART1_TXD__GPIO5_IO23	0xc6
++		>;
++	};
++
++	pinctrl_tps65987ddh_0: tps65987ddh-0grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x1d0
++		>;
++	};
++
++	pinctrl_tps65987ddh_1: tps65987ddh-1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15	0x1d0
++		>;
++	};
++
++	pinctrl_uart4: uart4grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX		0x040
++			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX		0x040
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12		0x0d4
++		>;
++	};
++
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x190
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d0
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d0
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d0
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d0
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d0
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d0
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d0
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d0
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d0
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x190
++		>;
++	};
++
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x194
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d4
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d4
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d4
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d4
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d4
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d4
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d4
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d4
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d4
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x194
++		>;
++	};
++
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x196
++			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d6
++			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d6
++			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d6
++			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d6
++			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d6
++			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d6
++			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d6
++			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d6
++			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d6
++			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x196
++		>;
++	};
++
++	pinctrl_wdog: wdoggrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B		0x166
++		>;
++	};
++};
+
+-- 
+2.51.0.297.gca2559c1d6
 
