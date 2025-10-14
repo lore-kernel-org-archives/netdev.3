@@ -1,88 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FED305063;
-	Tue, 14 Oct 2025 11:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B7330C628
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 11:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441214; cv=none; b=CXrgIQYmI11zGU5ZUH8ZD0CygiYPo4qBKJc8z+H6W+OhBbrknqPXSAxeXmkFMiZsm9Y/J3B71gmROdvBDACSKbr5IhGXIc6YzbmQbaon4uLl8czjBTHrct9d3ogX8wRyHnLpej7/rcZChMLh6Mu4IzPO+TDmeABABwphv7cDcZo=
+	t=1760441219; cv=none; b=sJPK4ty0RSPzLG1vgcBgXDcTIxt0/t7rA9HKMrIOlM61YSjIKkdeJ6OqgWYhFaTjPjHcfpyt9+ipWbdw11CW0QYy44X8rlZ45d8EWsUVX1N8FN8xC/jtLz3yVDfLeK7IUouXN9saAFZc3lger8BVCXBVsy3923RCCfSOAuerzM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441214; c=relaxed/simple;
-	bh=qaxYZXuRXFgjBi4WTEOpecu/+I6bHI2yH4gD7lgIbPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s9UTixPKeu+ET/H1YR3uuFFt/Xg4PleI0GJ1RmGLX8GAF3cjiJwUHDI+Pcw7aWWvzyZMR8Cb1/3anVd+z9SeQmuwQordnszmeNtOZvbfmjU+ajWiVHKpdz++odoUcpVpysEuei/VDrWRycTt1gjJGlvXOuzx5z0tA46D8IkHAlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJwTX4Ey; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760441219; c=relaxed/simple;
+	bh=9UBTPaJM795jgL9QFzpBm8/hFhK0/nTuD4q5tVTvhPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YBwUzF4wRtuAGcPqEP+GZZI/ngn+SqD7Q25VJutjBneqopUDmhWcO+LyvtgRBFS/BUvoZPIbaOUyn1TOHCZew93yZQfzivSIX+avfZFzMD1gRS0c0iRN0OUdpJRcrs32w2MUgiqz7zMZsObP7YW3fnkPkL44yW7WfZz0msquE6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fa28oB77; arc=none smtp.client-ip=209.85.215.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJwTX4Ey"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2D8C4CEE7;
-	Tue, 14 Oct 2025 11:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760441213;
-	bh=qaxYZXuRXFgjBi4WTEOpecu/+I6bHI2yH4gD7lgIbPs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VJwTX4EytJ0bCdLya9AnSUbpbOVEWuSkrdULKQtKBnuqle10jIzs0xDyfzYsoeFvn
-	 YRGAcDKcBrcFBKW/DEMDYVh307onwvMOYGiij0iCiUatwgBoilU2zW5Nwc3gYATBKj
-	 VtfvyzEwGrLdaQBDBpo5UnmunD0dDVehQRkMoNfwNhKBhIArj7My3ZCWgmR2pnQHKv
-	 /wSym03EXY0L5DgciTSXJBR2L5mFSIPndTYUKlgSKbyHctWYigmhQ/2z7pZhIVzVEm
-	 DlDdrbEhW4mS0a/F/VHyIHR43oWGzja4MOoXN46AFMs9QIPTy4UOZT0I1ZSgYXT6RM
-	 zeKzWzWV853Ng==
-Date: Tue, 14 Oct 2025 12:26:46 +0100
-From: Simon Horman <horms@kernel.org>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Egor Pomozov <epomozov@marvell.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Dimitris Michailidis <dmichail@fungible.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Paul Barker <paul@pbarker.dev>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH net-next 13/14] net: hns3: add hwtstamp_get/hwtstamp_set
- ops
-Message-ID: <aO4zdkFjMlv5trhB@horms.kernel.org>
-References: <20251013163749.5047-1-vadim.fedorenko@linux.dev>
- <20251013163749.5047-8-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fa28oB77"
+Received: by mail-pg1-f193.google.com with SMTP id 41be03b00d2f7-b57bffc0248so3690626a12.0
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 04:26:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760441217; x=1761046017; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UUUWsY7ufR6oqn2huC+LiTtkNemBc7wwNq571Svxhxg=;
+        b=Fa28oB775qTKKYLCutJH9HB1NJGHWdnuHe8YyZEzlnCGkAtNn82UtCSnR2bpes+Y2p
+         qce5MNCf/qhajwosxaXhIujakgaD1Kx3eVqAjX0kKVc8wrb0epRpBh8i6xkd2wQcJFkT
+         ppUBAzEGdfgOhST6vKBb4/Y6j6/2p8gHzCufzRMwFpE4B+PaLsEVC6GZMwhrzdqz/ufG
+         e36eKh0FZCOxnqx5gRIaiJLgR4wytTJU3e8U7G1jfCthQac7geQYJdXfi9C6juJFvx+N
+         Vy07JN9+NheSS/d5FpAuLFkSw5bRx1Zdinb4jF3gHu1UE7/LGNIRhSAEDGaPb4mYDGIQ
+         FwEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760441217; x=1761046017;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UUUWsY7ufR6oqn2huC+LiTtkNemBc7wwNq571Svxhxg=;
+        b=JU58x1hXxNUz8+okfEesYY2fJOwP+FecoDHXquir/Z0wpWzbXaChgGx6XzFaiY2ByD
+         G4UOB2Nauma0XkgvqzVfPJQNyRUUgh6Ic5aygl6Jg/7cYgKWkvlu4n/eQHGbxg4coVpG
+         pQOHGaIWw5a4BoI1ojcaGiCp9xCkQIVWaKw1A5m9ScfFRGz3dSKHt5I3fzw0NReOk1EC
+         D/kS5pwzCqvTWmn6+C2tub93TuBMC7M6Sfkc5gnCiQdRgrY7p+6frqUK/pIC1LouG9KE
+         iOD1TNbJ3gUjJIpTNW58pik/+527shQHKQ838LkQgnNYMrjs6nA/hOtPWyFrx3mhQzOX
+         sLMw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+8KpIudlLF+s43nP8J2BE1prJd8Wqan45Z2SNl4xZK+4CzdDDJqCfdiCZHtfWW76stSaQRPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwM6IrtCv8HhbWkE4tYbZzqqQdYv6eFhyzZitLBqIInYhbvYZ3
+	1CjA6CNCu760E30o+O3SBrW15G7bQ2EGsahBcFoP65L5oRjy8dfYTg1U
+X-Gm-Gg: ASbGncvHGfNI1CvF/Pss/9Iu64CiF8MQ8ts3coVQyYXWZ2jq1p4ani6qEVKmv3Z70iB
+	/vcczpQUSPBLbjpj0PG0tKa1UMma82WjQsY8MSV1lSVOPKPTIShigDMuu9v2zH7BOSn8/MMmQrr
+	CMD1Npcp5Se4hkWrl7amn6NeKqCb1JTgCnMsn1BgzxwGWX8gRHMiV/3icPddpxtLyJYWUFEV8bn
+	Y97AADExXYYcn7PUB3ux9b8fSvTKjPHxD08AN2lYJZ/l+MubsDp3TCSXLOcIYn78nqG7kPixkA/
+	iN2K27i2zDVG2s2ZW0xOkufDRzggmDBHr3NPRj9+Bpu+l5XQxj6/r3+y43O1DdNmyugRR3jhskr
+	/3a/8tHdjkH/glSRPszsl6sXLDvFtyOgJyFvYNGUX/WWCZfKHj+BD
+X-Google-Smtp-Source: AGHT+IHwj+Dz4L8DnGND7olSFpVsnMTn5Lw/TEHpx72gcX3uQG8ce7dMeM/FZb/y/sUkqHY1JHLYcw==
+X-Received: by 2002:a17:902:f788:b0:274:506d:7fcc with SMTP id d9443c01a7336-28ec9c0c7e1mr394581375ad.6.1760441217252;
+        Tue, 14 Oct 2025 04:26:57 -0700 (PDT)
+Received: from 7950hx ([43.129.244.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29034e2062fsm161807285ad.48.2025.10.14.04.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Oct 2025 04:26:56 -0700 (PDT)
+From: Menglong Dong <menglong8.dong@gmail.com>
+X-Google-Original-From: Menglong Dong <dongml2@chinatelecom.cn>
+To: ast@kernel.org,
+	paulmck@kernel.org
+Cc: daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	jakub@cloudflare.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jiang.biao@linux.dev,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf-next 1/4] rcu: factor out migrate_enable_rcu and migrate_disable_rcu
+Date: Tue, 14 Oct 2025 19:26:37 +0800
+Message-ID: <20251014112640.261770-2-dongml2@chinatelecom.cn>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251014112640.261770-1-dongml2@chinatelecom.cn>
+References: <20251014112640.261770-1-dongml2@chinatelecom.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013163749.5047-8-vadim.fedorenko@linux.dev>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 13, 2025 at 04:37:48PM +0000, Vadim Fedorenko wrote:
-> And .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks to HNS3 framework
-> to support HW timestamp configuration via netlink.
-> 
-> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Factor out migrate_enable_rcu/migrate_disable_rcu from
+rcu_read_lock_dont_migrate/rcu_read_unlock_migrate.
 
-Hi Vadim,
+These functions will be used in the following patches.
 
-This patch adds warnings about the functions it adds being unused.
+It's a little weird to define them in rcupdate.h. Maybe we should move
+them to sched.h?
 
-I would suggest addressing this by simply squashing this and the following
-patch, which uses these new functions, into one patch. I think the
-resulting patch would still be small, internally consistent, and easy
-enough to review.
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+---
+ include/linux/rcupdate.h | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index c5b30054cd01..43626ccc07e2 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -988,18 +988,32 @@ static inline notrace void rcu_read_unlock_sched_notrace(void)
+ 	preempt_enable_notrace();
+ }
+ 
+-static __always_inline void rcu_read_lock_dont_migrate(void)
++/* This can only be used with rcu_read_lock held */
++static inline void migrate_enable_rcu(void)
++{
++	WARN_ON_ONCE(!rcu_read_lock_held());
++	if (IS_ENABLED(CONFIG_PREEMPT_RCU))
++		migrate_enable();
++}
++
++/* This can only be used with rcu_read_lock held */
++static inline void migrate_disable_rcu(void)
+ {
++	WARN_ON_ONCE(!rcu_read_lock_held());
+ 	if (IS_ENABLED(CONFIG_PREEMPT_RCU))
+ 		migrate_disable();
++}
++
++static __always_inline void rcu_read_lock_dont_migrate(void)
++{
+ 	rcu_read_lock();
++	migrate_disable_rcu();
+ }
+ 
+ static inline void rcu_read_unlock_migrate(void)
+ {
++	migrate_enable_rcu();
+ 	rcu_read_unlock();
+-	if (IS_ENABLED(CONFIG_PREEMPT_RCU))
+-		migrate_enable();
+ }
+ 
+ /**
+-- 
+2.51.0
 
