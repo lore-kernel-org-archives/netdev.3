@@ -1,160 +1,132 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980322D876F;
-	Tue, 14 Oct 2025 08:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760432103; cv=pass; b=HdXXWotKYh78/i9u3Ee8gxHFjW7QX28rWvMiTaRTiMzPVEYuLGadcjsV5qgdjxACbrKWcrkxoXHR68VilpwuBklc7w2Yful0S1WG5F1VzwHYWfU1cJLqCKMD74rt+Xt4RbcgcLKvtiJPoCoTYJg6gne6iwnnPaIDWRjLKULL8qw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760432103; c=relaxed/simple;
-	bh=+KOCzTUQxF7tBG8tIQArtu0WukAm1yPCMNY0jgO/01A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=smv8gHCiwesSzU+oIEYpj60FlXuKxrJEASsKgW8RbToAgs5xovNLKTTjGGMPRW7+qZ/BDwXQqktxzHnQuwyqhXmXDVyYNOpq5BZTCPsAiTLxZuRc9fs/Lw9vpWBcVHYPJpL30f6ELim9fnf4gFxCKft+jCBwEA2alaecAQV68xI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=ngGd1scu; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=cxNKIHTN; arc=pass smtp.client-ip=185.56.87.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A76E2DC785
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 08:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760432112; cv=none; b=kbu7//Z3NLz2tdMUfCkLS14I75ZgAh985Gwt3ntWY8Qd1if/Sr51BCUsw+vJwpde/1VVjdhkGyFFifLexCUTz00ndYo7KfPzKq4Y3QLIPGvPZhnHVUbmFSUxEMQBX67RdyHh75KGcwMhmromflsRjFZQ96d6aDH5LXRbpPLVESw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760432112; c=relaxed/simple;
+	bh=XmVZxL3Grj83XcH+ZS+ytQRp6em9DeekCbOWgku9hIM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hVd7kiab5i8R0SYqp+nHTTwVw42l49G/L+tDdf7xHM9ZoojHDST3nsmhLmfnVeQ6t7yXuhj5yFv8ba2S7ap23j46spwDZMt5mtkyRiwIjh3LemadcDO1BkzYVQ+w0g+DI/F93htW61iZ/DnyMITnTrBYEU/qJqtAFGwfQQmyVTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=StxdurEr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="ngGd1scu";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="cxNKIHTN"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-glw0.prod.antispam.mailspamprotection.com; s=arckey; t=1760432100;
-	 b=JXCtVIFRhgOtJzCDDH7CiOqK13YaILrtEmI0Xf8JaWJxVRurBpqZzySPpjzngQIeEiW2Sh1rac
-	  4fxqvP0MK2UZNBrFCUfX4JEThWQIjyA00+yAkdQkPS36mvo9/MNWe+OoLQ93122pO34TnuLKmu
-	  MxCf4xXD5AkJTnujWBMaTNBrKrqDLMfS2Trvslnt/bJRqyL2JquYP6kxDASdsBDcY6EIdInVfd
-	  XAzU9fp+aXcbajV31S7E7P1imt2Ug+ac8dCY2Fxk2owvYGq21mXWZ9iI9A9cv9o8aKmDkrn49o
-	  2k8z1bZR4dUS3Y0GV1Oqu4uEjGMemMjZhPT7uviXXawPZg==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-glw0.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-glw0.prod.antispam.mailspamprotection.com; s=arckey; t=1760432100;
-	bh=+KOCzTUQxF7tBG8tIQArtu0WukAm1yPCMNY0jgO/01A=;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	  Message-ID:Date:Subject:Cc:To:From:DKIM-Signature:DKIM-Signature;
-	b=EpwfR2gcZL36igiG1iyKMBxqn8SQEm/gyy9Flsaq6Tk6oENFTBeJlbnxQEy/GxDyte92MJtPGB
-	  adDhjb11fnnfMzzSiV3wFEGgDo4l8xowWMfDMEinnWgFsMGbQAizI0Rxb4SgnnXQVioCLeCbjL
-	  pSXHGPEJZqUv4YjKPqT2k21deQhRTHwggBL+7bKqYbwdYtuLhJklyytKUoeAHEKFhKLoh1b47C
-	  8UYH1I0rwE6RIalvqzm69Cf2Db1z+oJyHlctIhFY9YnNndfLXEGC/4Qs0PbelzVFhNymjh/H12
-	  8BjJ+KV91ZYPlcVKNpFJ+csRmEyrXoTgM+2+2d+tpyg7Kw==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Reply-To:List-Unsubscribe;
-	bh=+RRcVYG+JUhl3wwxa7uQJx37j5Sku3cHAniytdo2VwQ=; b=ngGd1scuyL146Rjl0fZAqcXeID
-	F+xueOFpnVES7xVlo3yf0p6UVSbP9rsn4pkn5ahUdYTMeecTqKCvag8favFgXYywFlYzOsBkmfCQ1
-	K3R/FwBKEtBd6Ahew60E42MCpAnQRkmrR7O2sA78LZFDwsSrWSoBgVWdu+cu5co/KgsE=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-drbk.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1v8Yvg-000000063Jf-1U9W;
-	Tue, 14 Oct 2025 06:54:42 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Date:Subject:Cc:To:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=+RRcVYG+JUhl3wwxa7uQJx37j5Sku3cHAniytdo2VwQ=; b=cxNKIHTNYmuzDNfeOKfMSXI46U
-	HXOanL9R91tN80jMXt+g62vZhFF46VPRinAMUPxr1ZCeUnrqsYsyLtmQPuLt/vJPwGCGUsGLbGvFu
-	1tKEk4BT3+rasp2VKC1WjtVb0M9JQDmAuFt1Vp1/6BE7axLKcgmUCvGCczdUGS7ikmQ0=;
-Received: from [87.16.13.60] (port=63318 helo=fedora.fritz.box)
-	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1v8YvQ-000000003P6-0BXm;
-	Tue, 14 Oct 2025 06:54:24 +0000
-From: Francesco Valla <francesco@valla.it>
-To: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Paolo Abeni <pabeni@redhat.com>,
- Harald Mommer <harald.mommer@opensynergy.com>,
- Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- Wolfgang Grandegger <wg@grandegger.com>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Damir Shaikhutdinov <Damir.Shaikhutdinov@opensynergy.com>,
- linux-kernel@vger.kernel.org, linux-can@vger.kernel.org,
- netdev@vger.kernel.org, virtualization@lists.linux.dev,
- development@redaril.me
-Subject: Re: [PATCH v5] can: virtio: Initial virtio CAN driver.
-Date: Tue, 14 Oct 2025 08:54:23 +0200
-Message-ID: <2332595.vFx2qVVIhK@fedora.fritz.box>
-In-Reply-To: <aO0qZ4kKcgpRmlIl@fedora>
-References:
- <20240108131039.2234044-1-Mikhail.Golubev-Ciuchea@opensynergy.com>
- <2243144.yiUUSuA9gR@fedora.fritz.box> <aO0qZ4kKcgpRmlIl@fedora>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="StxdurEr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760432109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oqPRg2ro9xBxSN344p+L1BaUDWdpu8yzEem7qRevF4M=;
+	b=StxdurErTIoq+NM1wwW/TnqHu/8aytOHZ5WFOOJcbmZ98gx59zfPUSz7FaTMBxyybx2skr
+	RAq5rKrm4mDCZeku++WUxEkB/pq5sDl2oGGhI2Wm5zIRqyHmMRrvRdkDQM/tIzOMClbECh
+	QHd+aOgyDzg3lL5vCrESwTID7/24T4A=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-377-z3Rwr1oROGeL4Tnngyqi8w-1; Tue, 14 Oct 2025 04:55:08 -0400
+X-MC-Unique: z3Rwr1oROGeL4Tnngyqi8w-1
+X-Mimecast-MFC-AGG-ID: z3Rwr1oROGeL4Tnngyqi8w_1760432107
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3fba0d9eb87so3157099f8f.0
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 01:55:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760432107; x=1761036907;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oqPRg2ro9xBxSN344p+L1BaUDWdpu8yzEem7qRevF4M=;
+        b=QYXzuX13wxeUDUmEkcqyWmhk9Zf9uccR8r8886fk0pUTcahiOhcpL1pgouF/2qfrdt
+         /bzPab7h8OhENXSRFwmgKPTr00f1Mq5ThiS2eaXAPV2yxN2l7Wlvm0uliSEq1sz/lMAN
+         u1ZSfkbVUo4dxtA+CvtS1MJhAtQD5VHee8SXzj1fgwlYKOCwDAhTZeB2sTDvZTrWDTEe
+         XJGORUvPWJ+COqqbihi9SnkToM5LT7eB/LWh4P1zBAGc+qDF0DZI7UlTzDh09qJ5nHOv
+         Au2WEUZ9+QRuRteaMxys5ODwwap+Jnbda0C+7pZh+pXafCVXCB29ES9CBA5b26/NcDmg
+         xeNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWBXcSn2RcYI/32QXI3GoRJP7gyzZDAK8bmNhEyEi+/rwobRgygKUjSRenQz4DXBnfaKdGlLiY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5uO7vwcyC25u89qts0EgtLirw/ejElt0DcYUGqzT67BJaFzeb
+	i6MM6YjBKDxoKhQ217aFVXmqAaW/EDii3PhH3bHovrJGAQsKt6ugnS01qpCXd/Kho0zBV5KaOln
+	seFdTBcMK8s5ox8kPWsWDl+2HD9HSdxwfHAnWUnUXbCibyGjdpTwlBVmo6g==
+X-Gm-Gg: ASbGncvqyuZy4dQhn2StdS3k7HZsCK6o7Lqw+5IabP5kkhkURlSMo5x6UGmduAxmJVq
+	MzWfvcavQeMPPEt5/nOyagSM5eL1ZdAfTEa3ejUY9RO5sut+y1SaYD9octkWdkYUnA+/pJTjwcA
+	/4XkjEUUlqmlK0HoX9t7f5DcWxgajF7vt6FV9NamYW6xhwsEtxeYxmH/LbhRf7PnbdtD1Lk6HYN
+	o5RS3W99/bHN1ww3fPKafwke6ky0SUWu3NJv8wtcSeD8fuTYPMVsYmy3XaCZ4POvlyCgDoLnJkw
+	dmchiW0q9RyTPpgsR1Oiwv+kFAiZrQYIK9OQOoLD932dbYg58kzLfs+BRGUZRh0GCZOX24e2lJZ
+	y42UvfeT6rI/f
+X-Received: by 2002:a05:600c:3b11:b0:46e:59aa:cd51 with SMTP id 5b1f17b1804b1-46fa9a86409mr173314155e9.6.1760432106984;
+        Tue, 14 Oct 2025 01:55:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHX8BWcTcunxn8A9kC7sxirtAX54R59ktx6EDeNPIPV0tcKePqF0T2wrbrVTpQwz92Plcrflg==
+X-Received: by 2002:a05:600c:3b11:b0:46e:59aa:cd51 with SMTP id 5b1f17b1804b1-46fa9a86409mr173313855e9.6.1760432106631;
+        Tue, 14 Oct 2025 01:55:06 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-46fab36a773sm153672205e9.0.2025.10.14.01.55.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Oct 2025 01:55:06 -0700 (PDT)
+Message-ID: <22bfd253-7d0b-4323-8314-5f4f49cc3dd0@redhat.com>
+Date: Tue, 14 Oct 2025 10:55:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: daf0a63d4e4924339fe71702a2ced5de
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1v8Yvg-000000063Jf-1U9W-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-glw0.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] udp: drop secpath before storing an skb in a receive
+ queue
+To: Eric Dumazet <edumazet@google.com>
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ Michal Kubecek <mkubecek@suse.cz>
+References: <20251014060454.1841122-1-edumazet@google.com>
+ <aO3voj4IbAoHgDoP@krikkit> <c502f3e2-7d6b-4510-a812-c5b656d081d6@redhat.com>
+ <CANn89i+t9e6qRwvkc70dbxAXLz2bGC6uamB==cfcJee3d8tbgQ@mail.gmail.com>
+ <CANn89iJguZEYBP7K_x9LmWGhJw0zf7msbxrVHM0m99pS3dYKKg@mail.gmail.com>
+ <CANn89iK6w0CNzMqRJiA7QN2Ap3AFWpqWYhbB55RcHPeLq6xzyg@mail.gmail.com>
+ <CANn89iLKAm=Pe=S=7727hDZSTGhrodqO-9aMhT0c4sFYE38jxA@mail.gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <CANn89iLKAm=Pe=S=7727hDZSTGhrodqO-9aMhT0c4sFYE38jxA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Monday, 13 October 2025 at 18:35:51 Matias Ezequiel Vara Larsen <mvaralar@redhat.com> wrote:
-> On Thu, Sep 11, 2025 at 10:59:40PM +0200, Francesco Valla wrote:
-> > [...]
-> > 
-> > > +
-> > > +/* TX queue message types */
-> > > +struct virtio_can_tx_out {
-> > > +#define VIRTIO_CAN_TX                   0x0001
-> > > +	__le16 msg_type;
-> > > +	__le16 length; /* 0..8 CC, 0..64 CAN-FD, 0..2048 CAN-XL, 12 bits */
-> > > +	__u8 reserved_classic_dlc; /* If CAN classic length = 8 then DLC can be 8..15 */
-> > > +	__u8 padding;
-> > > +	__le16 reserved_xl_priority; /* May be needed for CAN XL priority */
-> > > +	__le32 flags;
-> > > +	__le32 can_id;
-> > > +	__u8 sdu[64];
-> > > +};
-> > > +
-> > 
-> > sdu[] here might be a flexible array, if the driver allocates
-> > virtio_can_tx_out structs dyncamically (see above). This would be
-> > beneficial in case of CAN-XL frames (if/when they will be supported).
-> > 
+On 10/14/25 10:27 AM, Eric Dumazet wrote:
+> On Tue, Oct 14, 2025 at 1:06 AM Eric Dumazet <edumazet@google.com> wrote:
+>> Perhaps not use skb_release_head_state() ?
+>>
+>> We know there is no dst, and no destructor.
+>>
 > 
-> If we use a flexible array for sdu[] here, then we will have a problem
-> when defining the virtio_can_tx struct since it is not in the end of the
-> structure. I think it is a good idea to define it as a flexible array
-> but I do not know how. 
+> An no conntrack either from UDP
+> 
+> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> index 95241093b7f0..932c21838b9b 100644
+> --- a/net/ipv4/udp.c
+> +++ b/net/ipv4/udp.c
+> @@ -1851,8 +1851,13 @@ void skb_consume_udp(struct sock *sk, struct
+> sk_buff *skb, int len)
+>                 sk_peek_offset_bwd(sk, len);
+> 
+>         if (!skb_shared(skb)) {
+> -               if (unlikely(udp_skb_has_head_state(skb)))
+> -                       skb_release_head_state(skb);
+> +               if (unlikely(udp_skb_has_head_state(skb))) {
+> +                       /* Make sure that skb_release_head_state()
+> will have nothing to do. */
+> +                       DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
+> +                       DEBUG_NET_WARN_ON_ONCE(skb->destructor);
+> +                       DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
+> +                       skb_ext_reset(skb);
+> +               }
+>                 skb_attempt_defer_free(skb);
+>                 return;
+>         }
 
-In this case, I'd move struct virtio_can_tx_out at the end of the
-virtio_can_tx struct - in this way, sdu[] would be at the end:
+LGTM, thanks!
 
-struct virtio_can_tx {
-	struct list_head list;
-	unsigned int putidx;
-	struct virtio_can_tx_in tx_in;
-	struct virtio_can_tx_out tx_out;
-};
-
-Maybe an additional comment declaring why it is done this way would
-be a good idea? Also considering that the two structures are defined
-in different files.
-
-Francesco
-
-
-
+/P
 
