@@ -1,197 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69F326E701;
-	Tue, 14 Oct 2025 14:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E2523CF12
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 14:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760450549; cv=none; b=Y+Zqf+JVWga+1uKvT/v9a777A9hC9DcitaZ56HrIt8zjv4syhxxngf32s4f+xJp4AQPSCDC9i1enck/TxkQR0s9MFnVuAoapl5lUD266BXOK/qNoCapo1LuuxL0ASlv6VYxK07cfgClnFl/PJBk9OYgqKOMChoTt8L0AqNsvS0o=
+	t=1760450770; cv=none; b=j4n1xLP9sQDmP4Xwt8k7OUzyuHnSVQJTNLkSHd/HCZbxDnTdhnlqHQxAmyh+qe8F8lOa78QU80fqduFdJPKMIL9k8TJkpbVxKYMXaSbRbXYn9FTqZ3RAHB7k98sAUP3THOOr7rJyN6OO5Oxe8YXtyYTAe4FslsM6pdYiL2AS6Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760450549; c=relaxed/simple;
-	bh=gIcKOwx7EBDgW8Sx478GJcKsfrDPtNKXx+9x9gVAaNU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kUZzrAhuna4iwpAcgqIm5baVTACq7QtMj6ay18TKL0D5FW7b4uanHPt9BNoZ/SrY2hQhb+4UAs5XMytb0doB8jwtfJ5Tlf8h5OVFMAAT2Xmd0DLnPhZRhedNBYzxOvktu+lQJ6usluljC/VLq2KOAxKdXRHX6dnqqH+okdVBuXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nedNbgJF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760450770; c=relaxed/simple;
+	bh=jhannrCm8CWJqz/tOI+AykLTPiPDGW6YO2bj3rwLjaA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CPB3dkmIVGQllh+xI/n4pj6hHBv3tQhPLh9nmECURn43POLa/Ha3798AefhU9cNFCsYAnIv8syiuDrZoxh/946wZTPVj6fZe5VAiY07DLrtjg4J40sC2DjKiw55LDn92to0H1yiqMVtcaErmULv9AHxkzFLpYRj00OCP2LgICic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u3Q9XE7E; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nedNbgJF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07C1C4CEE7;
-	Tue, 14 Oct 2025 14:02:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760450549;
-	bh=gIcKOwx7EBDgW8Sx478GJcKsfrDPtNKXx+9x9gVAaNU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nedNbgJFCTR6PipWLNxn35PwEW/5hZVqWfKAmrr3PQTFbhqOtXh31W1eTJt64QDus
-	 xvMIKJU/k6xj78Ekk3e12lofNXOkh7w+qaf7Hdp6SgQPx9MjfdIimwYCqNBb7zuGwi
-	 r8Sns5mQq9jdDdi9Y8VTVT7tOEH9+AyyXfMoVm1N8kcbZ0243CKWDRkZimAmcJWSNj
-	 nnnEi+xwdKvIudYbEO5BlLGsjW2F6dIWlvVrvJlfPOmCiikS9AN3CYnqnwnUlsysO4
-	 /fDtRzrpbVjKaaUnLOVBge7UDWVynh6unm/MWnT5u7pnUXDKUvW1Roy9MvvuuTEwOB
-	 ghx4UEbVOAg2g==
-Date: Tue, 14 Oct 2025 15:02:23 +0100
-From: Simon Horman <horms@kernel.org>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sdubroca@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>, Ido Schimmel <idosch@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	bridge@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCHv4 net-next 1/4] net: add a common function to compute
- features from lowers devices
-Message-ID: <aO5X7368r8veRe5J@horms.kernel.org>
-References: <20251014080217.47988-1-liuhangbin@gmail.com>
- <20251014080217.47988-2-liuhangbin@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u3Q9XE7E"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8635d47553dso2195421985a.0
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 07:06:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760450768; x=1761055568; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iwTyqm/sWCOtZoRMpHHi+4z0gvyQdk6zxy+CdY4PJig=;
+        b=u3Q9XE7Ed/Z3/ep7pesZyglxSf64QZFRpoF5QjMkDalnmps+Zl95OnL//qan38EMl9
+         JDGsN4DY2ar7MMd3VK/71v0E7AuXwVwgTHddPsGKz/z3X9X4/yCAUrSPJaIOoT09iSpH
+         H6vEOQCztbfrKdS8v2AByr2ILBixGEj1eG3hXsrBVq/8h+OY7qKv2c0qXi0CDW4Hmhi7
+         RetBvOm3s9GPNavKcNuhUTtEzufShrY99a47P+k2N31FZ05xYheqtGhqGVW6rnrZXhpS
+         heAQO7tKyk8vbaB9xsz3EJ9m0draWzaRxrVpHuF3hrPXXAxYzez0s0MidsYm4JVQdRK8
+         n54Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760450768; x=1761055568;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iwTyqm/sWCOtZoRMpHHi+4z0gvyQdk6zxy+CdY4PJig=;
+        b=C+5H/FyoQFAM9xu9Q6ecwxzC5te4C0tlv8dD5gfgh/S0LyKP+gGtbrrcnNk9n/K/Qk
+         dpeUotsXGPh718/of8OQQigIi0FTaIZWb5KJoB+BLJJ1ZHUJIqmQbNWz7dRFzaTyVp9t
+         H8bY8TnvDTuxHwZm8xneL1mUAhBpFToe/ekc/e6YNo4AhakPe/0Y0mgD7bbAKbYUZ6yp
+         cEVjUjuOm2e8yyla2qhgIay8TZgF2phuCDjGqILMSjQkoDtSwmRwsrZFd4mTZjh/aZJI
+         07fUY4bMvg3h4u4DO4ad1oHL6eEzILKBQGllvotgFTwa944Tt91+ZOQOjHu1ua2v/afK
+         8LKA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4iuxXKeXshTkkxEfGfo3Melz2C/3uJm1Rm2s62EM2FSaNiVUvL5GdPvx4OWr/z+Sb7uPoJSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxwb/AjilJA4aneeW1M3EE7SVCPtOy2HKsAK9QX8XrH+21o8IYc
+	18zM43TKJp+oqDBD+WZpZk5Gas+WSW53I7j1sssDa8v8bqBpsE68f6rzD20J5jvBvOBpsZG+Q0H
+	NW+4lDA23oCVaNg==
+X-Google-Smtp-Source: AGHT+IHl/efKOW7OOAcv9y4p5cSOHVqCh0xiiMmf67mP8Oj+qkTlEDWdG+Hl7EnRxqidCtzddoHnEslZIeQFFw==
+X-Received: from qklq22.prod.google.com ([2002:a05:620a:d96:b0:887:8dc6:8e3f])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:199a:b0:855:cfe0:b6eb with SMTP id af79cd13be357-88352d9628fmr3572103185a.75.1760450767488;
+ Tue, 14 Oct 2025 07:06:07 -0700 (PDT)
+Date: Tue, 14 Oct 2025 14:06:05 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251014080217.47988-2-liuhangbin@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
+Message-ID: <20251014140605.2982703-1-edumazet@google.com>
+Subject: [PATCH net-next] net: remove obsolete WARN_ON(refcount_read(&sk->sk_refcnt)
+ == 1)
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>, 
+	Kuniyuki Iwashima <kuniyu@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 14, 2025 at 08:02:14AM +0000, Hangbin Liu wrote:
+sk->sk_refcnt has been converted to refcount_t in 2017.
 
-...
+__sock_put(sk) being refcount_dec(&sk->sk_refcnt), it will complain
+loudly if the current refcnt is 1 (or less) in a non racy way.
 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index a64cef2c537e..54f0e792fbd2 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -12616,6 +12616,101 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
->  }
->  EXPORT_SYMBOL(netdev_increment_features);
->  
-> +/**
-> + *	netdev_compute_features_from_lowers - compute feature from lowers
-> + *	@dev: the upper device
-> + *	@update_header: whether to update upper device's header_len/headroom/tailroom
-> + *
-> + *	Recompute the upper device's feature based on all lower devices.
-> + */
-> +void netdev_compute_features_from_lowers(struct net_device *dev, bool update_header)
-> +{
-> +	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;
-> +	netdev_features_t gso_partial_features = VIRTUAL_DEV_GSO_PARTIAL_FEATURES;
-> +#ifdef CONFIG_XFRM_OFFLOAD
-> +	netdev_features_t xfrm_features = VIRTUAL_DEV_XFRM_FEATURES;
-> +#endif
+We can remove four WARN_ON() in favor of the generic refcount_dec()
+check.
 
-Hi Hangbin,
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ include/net/sock.h       | 12 ++++--------
+ net/netlink/af_netlink.c |  4 +---
+ net/tipc/socket.c        |  4 +---
+ 3 files changed, 6 insertions(+), 14 deletions(-)
 
-It would be nice to avoid the #ifdefs in this function.
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 60bcb13f045c..596302bffedf 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -828,11 +828,9 @@ static inline bool sk_del_node_init(struct sock *sk)
+ {
+ 	bool rc = __sk_del_node_init(sk);
+ 
+-	if (rc) {
+-		/* paranoid for a while -acme */
+-		WARN_ON(refcount_read(&sk->sk_refcnt) == 1);
++	if (rc)
+ 		__sock_put(sk);
+-	}
++
+ 	return rc;
+ }
+ #define sk_del_node_init_rcu(sk)	sk_del_node_init(sk)
+@@ -850,11 +848,9 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
+ {
+ 	bool rc = __sk_nulls_del_node_init_rcu(sk);
+ 
+-	if (rc) {
+-		/* paranoid for a while -acme */
+-		WARN_ON(refcount_read(&sk->sk_refcnt) == 1);
++	if (rc)
+ 		__sock_put(sk);
+-	}
++
+ 	return rc;
+ }
+ 
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 2b46c0cd752a..687a84c48882 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -596,10 +596,8 @@ static void netlink_remove(struct sock *sk)
+ 
+ 	table = &nl_table[sk->sk_protocol];
+ 	if (!rhashtable_remove_fast(&table->hash, &nlk_sk(sk)->node,
+-				    netlink_rhashtable_params)) {
+-		WARN_ON(refcount_read(&sk->sk_refcnt) == 1);
++				    netlink_rhashtable_params))
+ 		__sock_put(sk);
+-	}
+ 
+ 	netlink_table_grab();
+ 	if (nlk_sk(sk)->subscriptions) {
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index 1574a83384f8..bc614a1f019c 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -3031,10 +3031,8 @@ static void tipc_sk_remove(struct tipc_sock *tsk)
+ 	struct sock *sk = &tsk->sk;
+ 	struct tipc_net *tn = net_generic(sock_net(sk), tipc_net_id);
+ 
+-	if (!rhashtable_remove_fast(&tn->sk_rht, &tsk->node, tsk_rht_params)) {
+-		WARN_ON(refcount_read(&sk->sk_refcnt) == 1);
++	if (!rhashtable_remove_fast(&tn->sk_rht, &tsk->node, tsk_rht_params))
+ 		__sock_put(sk);
+-	}
+ }
+ 
+ static const struct rhashtable_params tsk_rht_params = {
+-- 
+2.51.0.788.g6d19910ace-goog
 
-Could xfrm_features be declared unconditoinally.
-And then used behind if(IS_ENABLED(CONFIG_XFRM_OFFLOAD)) conditions?
-This would increase compile coverage (and readability IMHO).
-
-> +	netdev_features_t mpls_features = VIRTUAL_DEV_MPLS_FEATURES;
-> +	netdev_features_t vlan_features = VIRTUAL_DEV_VLAN_FEATURES;
-> +	netdev_features_t enc_features = VIRTUAL_DEV_ENC_FEATURES;
-> +	unsigned short max_header_len = ETH_HLEN;
-> +	unsigned int tso_max_size = TSO_MAX_SIZE;
-> +	u16 tso_max_segs = TSO_MAX_SEGS;
-> +	struct net_device *lower_dev;
-> +	unsigned short max_headroom;
-> +	unsigned short max_tailroom;
-> +	struct list_head *iter;
-> +
-> +	mpls_features = netdev_base_features(mpls_features);
-> +	vlan_features = netdev_base_features(vlan_features);
-> +	enc_features = netdev_base_features(enc_features);
-> +
-> +	netdev_for_each_lower_dev(dev, lower_dev, iter) {
-> +		gso_partial_features = netdev_increment_features(gso_partial_features,
-> +								 lower_dev->gso_partial_features,
-> +								 VIRTUAL_DEV_GSO_PARTIAL_FEATURES);
-> +
-> +		vlan_features = netdev_increment_features(vlan_features,
-> +							  lower_dev->vlan_features,
-> +							  VIRTUAL_DEV_VLAN_FEATURES);
-> +
-> +		enc_features = netdev_increment_features(enc_features,
-> +							 lower_dev->hw_enc_features,
-> +							 VIRTUAL_DEV_ENC_FEATURES);
-> +
-> +#ifdef CONFIG_XFRM_OFFLOAD
-> +		xfrm_features = netdev_increment_features(xfrm_features,
-> +							  lower_dev->hw_enc_features,
-> +							  VIRTUAL_DEV_XFRM_FEATURES);
-> +#endif
-> +
-> +		mpls_features = netdev_increment_features(mpls_features,
-> +							  lower_dev->mpls_features,
-> +							  VIRTUAL_DEV_MPLS_FEATURES);
-> +
-> +		dst_release_flag &= lower_dev->priv_flags;
-> +
-> +		if (update_header) {
-> +			max_header_len = max_t(unsigned short, max_header_len,
-> +					lower_dev->hard_header_len);
-
-Both the type of max_header_len and .hard_header_len is unsigned short.
-So I think max() can be used here instead of max_t(). Likewise for the
-following two lines.
-
-> +			max_headroom = max_t(unsigned short, max_headroom,
-> +					lower_dev->needed_headroom);
-
-Max Headroom [1] is used uninitialised the first time we reach here.
-Likewise for max_tailroom below.
-
-[1] https://en.wikipedia.org/wiki/Max_Headroom
-
-Flagged by Smatch.
-
-> +			max_tailroom = max_t(unsigned short, max_tailroom,
-> +					lower_dev->needed_tailroom);
-> +		}
-> +
-> +		tso_max_size = min(tso_max_size, lower_dev->tso_max_size);
-> +		tso_max_segs = min(tso_max_segs, lower_dev->tso_max_segs);
-> +	}
-> +
-> +	dev->gso_partial_features = gso_partial_features;
-> +	dev->vlan_features = vlan_features;
-> +	dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
-> +				    NETIF_F_HW_VLAN_CTAG_TX |
-> +				    NETIF_F_HW_VLAN_STAG_TX;
-> +#ifdef CONFIG_XFRM_OFFLOAD
-> +	dev->hw_enc_features |= xfrm_features;
-> +#endif
-> +	dev->mpls_features = mpls_features;
-> +
-> +	dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
-> +	if ((dev->priv_flags & IFF_XMIT_DST_RELEASE_PERM) &&
-> +	    dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
-> +		dev->priv_flags |= IFF_XMIT_DST_RELEASE;
-> +
-> +	if (update_header) {
-> +		dev->hard_header_len = max_header_len;
-> +		dev->needed_headroom = max_headroom;
-> +		dev->needed_tailroom = max_tailroom;
-
-Also, maybe it can't happen in practice. But I think that max_headroom and
-max_tailroom will may be used uninitialised here if the previous
-'update_header' condition is never reached/met.
-
-Also flagged by Smatch.
-
-> +	}
-> +
-> +	netif_set_tso_max_segs(dev, tso_max_segs);
-> +	netif_set_tso_max_size(dev, tso_max_size);
-> +
-> +	netdev_change_features(dev);
-> +}
-> +EXPORT_SYMBOL(netdev_compute_features_from_lowers);
-> +
-
-...
