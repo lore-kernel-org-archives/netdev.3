@@ -1,26 +1,27 @@
 Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F9A1A23A0
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 06:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4843F15B0EC
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 06:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760422755; cv=none; b=NPq2oeukxKa1MCXKOc0wAqgFcYTGh6/VU2JaczP1/cuYVyfTz2trCu9BWOxSaM7Q/IPAl53/430j9KGS4oDcBiwFxPmxuMHYjRhJTmuK8NPVac3jMRirEjOoQf/f6XZH/pB7VgFxLDGus3mu1fzVU/q2RNJeDNlglOiHz++72Ww=
+	t=1760422765; cv=none; b=eBsT/ZTTkmb0XxzRdroD92rmUUDWvjOS6wD677dD0LNSWis5xUAaFqGFKpTw4vX1PDva+2UeZb17MMI1+dRaqiyJlvVQLPkeBiD4pI5KSSPFEA9j7SZhZMSqmzYbzY6GQ4QvZJEPVtn5hPv/lwsnM9wtir3zwTOJgd688WpaPvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760422755; c=relaxed/simple;
-	bh=KADnc6FYFhT+mAO5ecPEUZciFiQDrW5WoDtOvn/KKW4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WZfu/Vh3YlCuk/8CLYclaXMVkbBqWemZiL0AsPorf8d0NUMZwYI5PlqGR+VIjJKmxirJqtpfd3iTbe4WLFvzaNkg/62HSb4z7J2TwZzxwoOqhfG2BEGZ2g74Qn8GCruk+RlJBIWGJ9yaRlBeNk0aXqkXYfFuv06SdNYVrBVyvqE=
+	s=arc-20240116; t=1760422765; c=relaxed/simple;
+	bh=Egggm009o9ydsBPYkkTMiLNXjMsxR3MW0UWUMx0t3fE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IEvy2OXGbd2sv6EDSTL8x5MuDEex4AhlFvGDJO3zbrqC0fDfpGIikD4jJHMo3AQZxBgUYo7vi6xI78DswYMemOccxYBAMAylOcva2F1kGhkf8kJuj3y8MvbIQjliJMPdQZKtM8+2GIGjezb9MqbMyFq7PDn3ByCUEiyWIISN9YY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz16t1760422653t009f0fa7
-X-QQ-Originating-IP: 5fZZJH7c5gw42oYKPlVJ4FGJy4kp9eDSwLyLiG2qs4o=
+X-QQ-mid: esmtpsz16t1760422660tdeea5d8d
+X-QQ-Originating-IP: UHyDY2fCvo0xvl4bWNEOk96lqyco3/Xh1grFXEsoKd8=
 Received: from lap-jiawenwu.trustnetic.com ( [36.27.111.193])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 14 Oct 2025 14:17:30 +0800 (CST)
+	id ; Tue, 14 Oct 2025 14:17:39 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10539563720760952196
+X-BIZMAIL-ID: 575422392541965307
 EX-QQ-RecipientCnt: 10
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ To: netdev@vger.kernel.org,
 	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 0/3] TXGBE feat new AML firmware
-Date: Tue, 14 Oct 2025 14:17:23 +0800
-Message-Id: <20251014061726.36660-1-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 3/3] net: txgbe: rename txgbe_get_phy_link()
+Date: Tue, 14 Oct 2025 14:17:26 +0800
+Message-Id: <20251014061726.36660-4-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20251014061726.36660-1-jiawenwu@trustnetic.com>
+References: <20251014061726.36660-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,45 +49,57 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MxpHmR/vpz48En5r9w2oW3CvpfUZ9ji2Qt1Ej+7OGgUVEyACdLSCdr8r
-	XmUNzXqhNsSBG/IkbT6IrWXQlwILiuGIZg108K7XQ0GDczZc7zE9KoITvOhk9IRsnWHJXYV
-	4+E1cjN7tcXHnmiagykPJzKVDfewoqzzzygeIw83ZS8MyFlgz93ui4oQZOahjs8teh+i4In
-	7yi0SKCDop5yE7UfkpQ1KmVHGYDSJUHfLvdQxuHnkm4CtZQ3wIiQlC7osfmI9WpAwNIM3z5
-	n1dlYvsJ5LSHfuEvS/q481iRWW24RRR7ojaKHrjOq2N+V1RW0Rncz2O3/HP/wobbyKXNMVk
-	wbARWzeBOJ4IIBxyNONa3cnj030Folfw0sm+1jknoq9SQSZrukELNZ4Dan31TKgKkEWZIkR
-	apk42eTF4kQ2E96xItciLL1nVQ+xd6z+wcEMfab3uUGdIjxyHEEXykRTh934lvdM5/H+6au
-	pegkdD8HrZBrNJJWxLDq4CWvETX5qewYSfTKTztZDaqftktqlx4znJofZ4NwrwKfBkShHaH
-	tCNzeb/KxVZUoCbzL6kUtUUgpM5unablMk7+BOhTd437BkRLrKmRWullzCuWeB2zKJ6+YeO
-	ukjOqx4ih7lUt51Xsp1rzzyJsFkd8h+ba+/8VmT4tvwgesH4vBPTorZ17ktE9ld9U6n+MVb
-	jVjpJ6dgqCnrv5AzSoEk2IfZ/pMKex8Ji1tWSYSm9lAvOcnDNoPR4MTMkxJeix0paDVwPVZ
-	lCnbQzwsbSdz/BkwkvQkL51kRu9knQqKMMXbzQroRpjghfp8XhconxT04zhCx9JAs24XHkl
-	dOLRI8+2j68nEV7WJl/snZvSYLUkM6R6LjIo0y3e1YRvQhzly8jFpL+USRLlBa4gox/22so
-	J+cvR4FEGDxjPDWZacEsjcIXfrhN3OTHlX1yzQmkeXy9POZxDYh9uGjax8OyHN53SfI/4wg
-	32Kguha9Bkq+JoZo9NWt6AxvJJqPSmNG6WNhel01IiJtG00uAmPaTS7cZohhgt4J+hdqZUF
-	jVVRPZKEL2x3alxCAF1/lz7yDOaZjs9Gn5CGjFlazYcFkOZTZ82oIOUavHipM=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-XMAILINFO: MrTVJ9obs/HI5XA+DCOXmCIuNSOGWUIY3mCZmqluZp3NFuJwfxqRdrif
+	Pey3PbOwPCm4bXFA9dXYehhb5CJlBowFo3kgUmhef/1VkpTegmshBOQTNPVPAZyCf74qClw
+	kEP48EEPb9Attm/okcAMmRv+9mplVnG43NbI1gQ2XSUYI3SznxYYzurmYgvSkiEd0pGSguK
+	M9o/cZqro6/CW8/pWGV6EbJIY5UhG7UF1IputORUrImyC5ryGcvdaCDqTolxha+wUx4OIfR
+	1hsyG162KJL5BUFKavE+lahcFj3qu+2pck97eKQ5N+oKHvZ45WsHn+GLsy24jwT+9bKjRqK
+	477lhW7pBLH+xsIOrrOEU96VcNwjy8CuHwuR4NQPaCb/wFlZFMemOAJbITf9p+Hf60eT9Ld
+	glPEcUntZcXcExgPJwEvofbBcJJ8/BdIcLca3tgDQIcDb9Uhmj6QzjSIM8h5iajn9PfDAan
+	NcekSeuCgCYkHus3Npmh+uE/nagCNt7pBT/iJwb0A9gj5nLceREqBYAhtVpz1/iOAbLm+Vr
+	WlHVdd7wfeNM8fSQftJZN/2BK7on6XKt1eDuRaLh75ORNlpyccFrpb/9ogLwbhnTlQuKaZ4
+	rlA/OlleeXKhzjFbq9EhkWYnIBuFDFcn8Vo9wLVkp+2i9beY3A2TiLEcOIk7fU0uv+8D9aa
+	zIWBW5xb6mNNPnWFfi6hL9MpawryINzirdcuPEgWV+nEROE72jxMLRVSDrxyDFGuS3ubNFV
+	mVuBFZvBIlX/l0ZZRcY9u40huvOA+0eeioUCyfiNxjNcEhkuf5jWrrGhGDlAQmOu989rBeZ
+	hqmJiwl/LiNyn5lObzdpe8eYwnDk35QCZATVhIu1iQMN1qE/lFuK2sb026jJ49K72NLw7Yx
+	8YbLjJcvqysJ0kQQjCpIfs0kRvVSz00bC09AH8cxmUxK/CyNrwGuHtzFzTq5ZOvYdRsukr8
+	KAlo+9KeJmQHK6bU6bSOAy+EACZ5duaCMS5IPKMqQVDP6ysKHKIB/rB1tFnmZ+cmUg0Mgxn
+	dGGFI4+2f80yHTH8+Wt5GBotRCEhNiWSk059DbVEV3+jSgHU3dXpbaVFwP0Bm7XZiC7mvbC
+	xQWU5t0zzgz
+X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
 X-QQ-RECHKSPAM: 0
 
-The firmware of AML devices are redesigned to adapt to more PHY
-interfaces. Optimize the driver to be compatible with the new firmware.
+The function txgbe_get_phy_link() is more appropriately named
+txgbe_get_mac_link(), since it reads the link status from the MAC
+register.
 
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
-v2:
-- Detail the commit logs.
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v1: https://lore.kernel.org/all/20250928093923.30456-1-jiawenwu@trustnetic.com/
---- 
-
-Jiawen Wu (3):
-  net: txgbe: expend SW-FW mailbox buffer size to identify QSFP module
-  net: txgbe: optimize the flow to setup PHY for AML devices
-  net: txgbe: rename txgbe_get_phy_link()
-
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  2 -
- .../net/ethernet/wangxun/txgbe/txgbe_aml.c    | 54 ++++++-------------
- .../net/ethernet/wangxun/txgbe/txgbe_type.h   |  5 +-
- 3 files changed, 20 insertions(+), 41 deletions(-)
-
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+index 1da92431c324..35eebdb07761 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c
+@@ -118,7 +118,7 @@ static void txgbe_get_link_capabilities(struct wx *wx, int *speed, int *duplex)
+ 	*duplex = *speed == SPEED_UNKNOWN ? DUPLEX_HALF : DUPLEX_FULL;
+ }
+ 
+-static void txgbe_get_phy_link(struct wx *wx, int *speed)
++static void txgbe_get_mac_link(struct wx *wx, int *speed)
+ {
+ 	u32 status;
+ 
+@@ -234,7 +234,7 @@ static void txgbe_get_link_state(struct phylink_config *config,
+ 	struct wx *wx = phylink_to_wx(config);
+ 	int speed;
+ 
+-	txgbe_get_phy_link(wx, &speed);
++	txgbe_get_mac_link(wx, &speed);
+ 	state->link = speed != SPEED_UNKNOWN;
+ 	state->speed = speed;
+ 	state->duplex = state->link ? DUPLEX_FULL : DUPLEX_UNKNOWN;
 -- 
 2.48.1
 
