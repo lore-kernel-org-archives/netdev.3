@@ -1,180 +1,222 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11021114.outbound.protection.outlook.com [52.101.62.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99433315D25
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 14:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760451038; cv=none; b=ppVdz7Iq3DLvRulJE7I4SaRLgzpJs7jE7/gxE7YKsmo4+DwaBZKSo2+cQLpkfskfrcd+4w9kdxHS/kCqK/0ff6GOKeDgU9j++EG1ZVfzQOEzVybJd7gNOTFf05asFRbD54CcQqNi8WzTVLipxWvWXQRkqYsRQsCLbZsvlBetrLk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760451038; c=relaxed/simple;
-	bh=zkX2Q58K2Q/Ts4j32RbqD+OkAZHda5+HV3RfXV9Wxpk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmpVYx0NLqsonz8RREFfPI7vkbBUiVawHSz1Ebd+w2/QmIJ2siQCg1YkqbdYIXoO/Hu5/qfJ5crc9OQuyOHp2XQLMEwY7sdz8XHHeGafWEMU2x/k5hQZZc3bl9+qSO3yBVXuc+m5bVVxnUWiDX19GMBpRlhOwrbQrPpaHO/EzYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v8fjM-0008IF-0u; Tue, 14 Oct 2025 16:10:24 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v8fjK-003ZPr-0O;
-	Tue, 14 Oct 2025 16:10:22 +0200
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id BC1F3485F15;
-	Tue, 14 Oct 2025 14:10:21 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Celeste Liu <uwu@coelacanthus.name>,
-	Runcheng Lu <runcheng.lu@hpmicro.com>,
-	stable@vger.kernel.org,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 01/10] can: gs_usb: increase max interface to U8_MAX
-Date: Tue, 14 Oct 2025 14:17:48 +0200
-Message-ID: <20251014122140.990472-2-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251014122140.990472-1-mkl@pengutronix.de>
-References: <20251014122140.990472-1-mkl@pengutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA57314B8F;
+	Tue, 14 Oct 2025 14:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.114
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760451089; cv=fail; b=kh55EMnHdY2vzd152dNzRKdha04gvO0siqAA5/zreQHPPzV7mmkhAWAx3d/0m9pQFlNxSgj6bIVsiU0byharxleOB/hG377HlfnCEiegHVIM3vYzJKRUu5gXozYTj+VssAOcQ2ny6T+e4gnsIExJ38UaGhTVzVsttyYcpqtRWhQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760451089; c=relaxed/simple;
+	bh=eQ39fwvvLTjgmiclGQ7dke6aBejGNso7NUaEaHf0bi8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cCye+SMdvnljpAR3Fg0f3xC90cZ0YMPv4dlpHKdjUVzAoAGXvMGMPIfcdLQwAl68jL7OJ2S93nWqT1NDB3E8tvh3KxW/ugcqnGRYwx5A93N2tENm/xIRmvg5Ms3fPoV7D4gKO10BAqfqO/i7/ehsbPMM4QT9T1Qk7RLZdc20CwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=JgTiJ7yl; arc=fail smtp.client-ip=52.101.62.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="JgTiJ7yl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=d1fr1OE7hXzIuwj3fYYtWlhV0W5hqnHvAWFbYDvQ4e/JeP9+8fYNB2NHMvPwjug4d1ICRznqznhDegw6FGkCh0iWtdyVpe6IMEpo3U57CD1KG1zYNj3MWnqC0FpHmG44K9SqJI8p8i2fs12+63kvkF/ugKfJikNlGh8q3lxz5I9H535HnSttay3Ds6xJ49SOeqqfkyow694yh5yJtzWnq9XOSTRYahC1UnKD9d13rcW+IVmbDnJ04RX5GtRx/q7aS5Yjx9fSILTY7v1Y1kodx4YC/4B73RlqIT5OSn7TE02UlepWm6XY8RslOE4MWGMoL0KFq2p8ztXOj45WxpLayQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gkHJh8c6Q1yMVnr/bmhbsgKkA8gowdlPpT1699pkHBk=;
+ b=W23EZnqfGrzXqHy3pmUQAIzcS1QyxXpuWnTdp9aMreszhtqJtmCLFqftfTFEDZ7LUjeNLDAAN2JoCPd5tAuQbjz8vogghyHTjwnkdQVMBdIPB6WbDmhEzrjqIf7fQEZSOIk4DpgfDQGNHsv0SAfYsK6zgqAAze1nfjsy4UqH6pWdcdSZjX7XZGrCTTI3jwHuoxPDK+wbuyJhfDP1L27WOmkqCaQvUfp4wk6TLVXTBO5DifYgQTfU7UhBKDyX3r7LVLRz6P2FlFuj4IF3yuU3eQhYc2P3PCR4Pxx+rSNrMpHMplpUZCSFVqGTDTSJIVE8AC1aPsIbbH5HPaZRoxTItg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gkHJh8c6Q1yMVnr/bmhbsgKkA8gowdlPpT1699pkHBk=;
+ b=JgTiJ7ylgJQx5yn3NBa3U11yodTpVMu6Z1GDA+m2tp0P7nYady7b1Oj0GtF9xGZ2udE71YWXz7Y/zH0EHHnqBWQl6Vg3hVp12W4YN2+NYTDuFkTMe02SdTxp1Y3jzmnVcYXq6HHF9Oq1DzX8Zg70MLpwSaeQDWWJWA7rD7njEfM=
+Received: from CY5PR21MB3447.namprd21.prod.outlook.com (2603:10b6:930:c::15)
+ by CY5PR21MB3711.namprd21.prod.outlook.com (2603:10b6:930:2f::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.7; Tue, 14 Oct
+ 2025 14:11:24 +0000
+Received: from CY5PR21MB3447.namprd21.prod.outlook.com
+ ([fe80::a6a7:e6e:ce3d:15bf]) by CY5PR21MB3447.namprd21.prod.outlook.com
+ ([fe80::a6a7:e6e:ce3d:15bf%4]) with mapi id 15.20.9253.002; Tue, 14 Oct 2025
+ 14:11:24 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Haiyang Zhang <haiyangz@linux.microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Paul Rosswurm
+	<paulros@microsoft.com>, Dexuan Cui <DECUI@microsoft.com>, KY Srinivasan
+	<kys@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"edumazet@google.com" <edumazet@google.com>, "davem@davemloft.net"
+	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Long Li <longli@microsoft.com>,
+	"ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
+	"ernis@linux.microsoft.com" <ernis@linux.microsoft.com>,
+	"dipayanroy@linux.microsoft.com" <dipayanroy@linux.microsoft.com>, Konstantin
+ Taranov <kotaranov@microsoft.com>, "horms@kernel.org" <horms@kernel.org>,
+	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
+	"leon@kernel.org" <leon@kernel.org>, "mlevitsk@redhat.com"
+	<mlevitsk@redhat.com>, "yury.norov@gmail.com" <yury.norov@gmail.com>, Shiraz
+ Saleem <shirazsaleem@microsoft.com>, "andrew+netdev@lunn.ch"
+	<andrew+netdev@lunn.ch>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [EXTERNAL] Re: [PATCH net-next] net: mana: Support HW link state
+ events
+Thread-Topic: [EXTERNAL] Re: [PATCH net-next] net: mana: Support HW link state
+ events
+Thread-Index: AQHcPHhE0kkRC6B4zEaD5wgJwu71ibTAk3YAgAADFDCAACDNgIAA+DfQ
+Date: Tue, 14 Oct 2025 14:11:24 +0000
+Message-ID:
+ <CY5PR21MB34476DA4115A6C5D6B76E12DCAEBA@CY5PR21MB3447.namprd21.prod.outlook.com>
+References: <1760384001-30805-1-git-send-email-haiyangz@linux.microsoft.com>
+ <74490632-68da-401d-89a7-3d937d63cbe3@lunn.ch>
+ <CY5PR21MB3447B6D69542EA4532547A5FCAEAA@CY5PR21MB3447.namprd21.prod.outlook.com>
+ <4ea9acfd-be02-4299-b8c4-95bb69ad04cd@lunn.ch>
+In-Reply-To: <4ea9acfd-be02-4299-b8c4-95bb69ad04cd@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=5ca48914-a98f-440d-8292-5d58f25161f3;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-10-14T14:10:08Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY5PR21MB3447:EE_|CY5PR21MB3711:EE_
+x-ms-office365-filtering-correlation-id: c55a8a08-60b1-4558-d28a-08de0b2b8efb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?JzkqUdT4PYifx3CqnJqaK3wUeHiySEomyBDZamSNo8AyHl3DE/aNkYX+rJzu?=
+ =?us-ascii?Q?zUznmRqOjbw9RrvdzpIHUXgvMMEGxiirY6qEYT8RWOyL0xl/fpF9RSCyzhDG?=
+ =?us-ascii?Q?HUcq/GU3+5gXg+Io418MiHqZgriBQQqqhgKwarK4UBjCCjtk+Azp/sN2cptj?=
+ =?us-ascii?Q?5CRQYY+BLiDy6XHLozM81HkJ3nhntKbwyUIIZaJq5Giut5XlGlMu6MkZ4aLD?=
+ =?us-ascii?Q?8gj/XGY/EgHllEbcpD7EhMzKwzsSFb+LVUTV7l6XxjhbrmXqSc7MJ2TeR4XP?=
+ =?us-ascii?Q?iYFwmmcwKZJCPxWxiiGUr31tuOhmCNjABQIpGXzomcuwQbCA8dJLkhOwQuGs?=
+ =?us-ascii?Q?Cz8zvCHL42mXkjZDaJWQIwBkGVOJ/FQVInG6KJfHS+uEsTrcWhOlGOGLk5Vr?=
+ =?us-ascii?Q?dPRi1zVHPVA0nZqgRetbDqrGjJhcK/BA8Oemdyip/tEsSHESCXU27Zyw+HTd?=
+ =?us-ascii?Q?VyLUk1fjobCDizxvLgur3UAnavNI/Y/4BdTV0/wEcgHbdT7GAYjmeMa+Lyty?=
+ =?us-ascii?Q?lYEFeiIPGxjn129z6GQn1TwJmPG3rXmaH0idV1fNWDuFjJOmhz0hWy9xuQIU?=
+ =?us-ascii?Q?4xm03byYAcRvmyR0skWptizPE4ME8vD4/Agq3espSBQ7qmiMR77vn5BaO1Jv?=
+ =?us-ascii?Q?CnQcDvAuZwKk7IT9Bt5lK+YZnq8Oy4q/rQknu1wKIQVi4mOj3eZleyo2HDrn?=
+ =?us-ascii?Q?XRfGnt71tTmTd9ykdGy85/b865JHOPoMlAoDfXYc4bIr975GSuqVqNtj8kUu?=
+ =?us-ascii?Q?IAsvFDJVwCDEEtXZwyfS9fleMOJyIHJvHIX0IbzP0ik95Ju8uWLl2hB0KNh5?=
+ =?us-ascii?Q?n0uPdNIz5ptAIA8j9PLuHHejpIb7q9sxX7RJQy29DLiR9VczCMy2luciovuL?=
+ =?us-ascii?Q?QMBQz4HUQyi70wyRWbM9jT5gfTxdzWLVVh27ZrgUcmk/tqVXsuoko/DfOCkH?=
+ =?us-ascii?Q?TkQfBStAl5Uv0FrQnO4Jj4jK/0AC5tKdQg6xqLEk5M1xmLyg9nYmNSMNjKCM?=
+ =?us-ascii?Q?HzjKyXTSjhkUuVRMrcvyZgrJv3Ecc0eWU2Y/Pn6njy7OcTGvOMBoqIHd4I8J?=
+ =?us-ascii?Q?GA5O3Y7D9qp0KE8rxYOLKB4CAGMaAf1zrzK6mICgq5Lekg96JiP4IMUsXvoz?=
+ =?us-ascii?Q?DH/cnNAd7zMByyMa2+kUGq34sZGb+4KNxgumAfMlimpWcR6Goe6yxJM2AE2B?=
+ =?us-ascii?Q?GqEAbssQ0dcxEeHd/JpXi1aEWXAAAEsdWGBYkfRsqSSHq33Ug7m9mR+aL//u?=
+ =?us-ascii?Q?X2WeZyCLoTynOimC2AQokS8KtgYdNI+bQr1dxts7Wcc8xnWztJ9SvJ8qSRCh?=
+ =?us-ascii?Q?zdvAwu96D4l480f87iD0gAwKF/+F8xRSS3BS0fstk6Z4ztgXJIce3Y8OfDzg?=
+ =?us-ascii?Q?kT21wz2FsMN4FlPfbwKoCjGgbyeTMPep+QRWa7QS2vG9ghdgyeJt8nlZeYU+?=
+ =?us-ascii?Q?ixQB0rPK1d+TWH8Y/D6BaxsLMHzY7Zwj4EAiq8mZyGTlGRCIGlc2SbT7zgS1?=
+ =?us-ascii?Q?QQsiwgbZ8dO+Z74t2efevk5oO26ya3hbihbl?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR21MB3447.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?nLaVy4Itg+rVbxWNH/FQtQifDvVTmhZD5mh5hQOEZQwar2IVE012JYcsQKGh?=
+ =?us-ascii?Q?3PEygLLQdmQifxuPDqlLxDg89CsG4m/LR2pyR9AQkJvpUIaZEDKz4EPMLUCX?=
+ =?us-ascii?Q?TMvpnh/DWXt9jIWXATnN1FmzL1rqUk6GKQ2WgLj6KPkurBztPQz5mE6KiMXW?=
+ =?us-ascii?Q?mtHN28glL+S66IpDMqnYy+mPaOEuASBSIaZ1rvqzJGlm4e6/pzSlK37cMOSE?=
+ =?us-ascii?Q?Bu+I2hFyfz6EMz+sglQ3YMYEvi3tWk74XJJVyjcHAtcsPdGp1sQTLQ2F9KII?=
+ =?us-ascii?Q?oSaUwgdA6jROL8pi/rhazmayUey7F8fomMs0I/juTQUxTVIRE2FpJHNqvDCS?=
+ =?us-ascii?Q?YzI/ORsKE8ZqeeAW6rn/TYoHr21YHFD9nLTopXkhuPItf5cd3G3SPYa09ROD?=
+ =?us-ascii?Q?HZfVcw2zynuYKBEG6KvHgnA5HjCvYzPdBlvUhAniO/ZV2eIIgmRVuwPnFnFD?=
+ =?us-ascii?Q?jWBAz2kibC6tJZ51uMjadCwcEfy2x7ufCb9GFAXGnsf9CLzkwsU6n00K+6JK?=
+ =?us-ascii?Q?GkQs7dnkUaQ/w63eca/c41FvhOz//g1Q6cCoPhHAAm6Csf4opPC9UN9TVsUG?=
+ =?us-ascii?Q?KCM+LNzRAW5EjGewPdRWfjlPvtSrFPqCVnrRpiS9hiA9HXdfemj6HfkS0Uri?=
+ =?us-ascii?Q?6RX8ljHcPD7jdTL7C3zUebV4GyJNXbQ0iUqXDM9RF4AaqMz8R/vkHfpYzZvr?=
+ =?us-ascii?Q?SW0HOC0W0VVrxL2POFUDKZr6IEni7nc0iVVWpUlooj/YdbvZCq7pQY7L8UQT?=
+ =?us-ascii?Q?bBqb/juzXplgknIt16a7qPws7YEYGmRhV838bq2fzw6oyHrolAaAyUQ6gZys?=
+ =?us-ascii?Q?8a74Fy3SLRXCOEaQPbFHhny1FUm1uu/kG8iN/9KiQj/Wc3qszmVE+aIODTE6?=
+ =?us-ascii?Q?IpZKNasWWgv5bTzGlnKGu0locm3xZeKv4oGuHV86h7lSszBwUf/hkVtL0ijX?=
+ =?us-ascii?Q?BMa0d4LL3KViRt/X39mk4BbUlw4YYV9ZE5Zbz0Q9HSSqtNXA8+to76tQBopE?=
+ =?us-ascii?Q?yTMNC7hA/XZh8E+TVxaO+SQSrKm7aTF+/XJ/3Z2k2MrOVN3IgnZdu8ZXbYK3?=
+ =?us-ascii?Q?cNaxcBTg0RAjaafU9m78hoFYxIv355lWcUOQEUpJaGpqkPpTyE45IGj8XQV+?=
+ =?us-ascii?Q?6qG1mRa+J4eNtpBQO/OfTbKCvUUY2rY9DklJHkgea3c5Mzs0uUhieOIwE/fr?=
+ =?us-ascii?Q?3YfwI44JOL7B8m+w11ZfOKXkQ5xysjZSkDPseVP/WE8HqE6PJNT8jYxznau+?=
+ =?us-ascii?Q?aTiHsOOqmDGTLJqYRvJFsdAbBvLUhZaBQIBKHB55Sjp3ETmPtAAojlX6F8rP?=
+ =?us-ascii?Q?HAPgZev5B9F2Hz7oAmLLoX6TfvshKc0rKPPHpNDZCGm5RL2cKlSPP3RUDAYd?=
+ =?us-ascii?Q?mvy8f7L7ktg+izR1wjtul5vyP5SY8TtKGaRWD+Ixo+hdCdMCM7m10f5lqXfB?=
+ =?us-ascii?Q?dMZvJV8zfWx8GpIgmNNUHQbm0T7k4SjbdpnS+szV3reXHrYNvKmqJM+yFT8X?=
+ =?us-ascii?Q?4x8rCJZQktUfgFw55WYqDS+Ur1ADDMFi++lZ5RP0XYAHPDCMIGzluB7+rj5j?=
+ =?us-ascii?Q?C0NWwrkjCHbRXFjPKOTZyqAGNGXFzPQprTniuwcq?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR21MB3447.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c55a8a08-60b1-4558-d28a-08de0b2b8efb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2025 14:11:24.3253
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tH3H88g0LjpIGh2BY+6g3FMYJjRbi5/kBO3CAEWIWjzUH6jgFpU52i4UNWXP7BnoVm3Z93s1SvDR/gw/PRbWbg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR21MB3711
 
-From: Celeste Liu <uwu@coelacanthus.name>
 
-This issue was found by Runcheng Lu when develop HSCanT USB to CAN FD
-converter[1]. The original developers may have only 3 interfaces
-device to test so they write 3 here and wait for future change.
 
-During the HSCanT development, we actually used 4 interfaces, so the
-limitation of 3 is not enough now. But just increase one is not
-future-proofed. Since the channel index type in gs_host_frame is u8,
-just make canch[] become a flexible array with a u8 index, so it
-naturally constraint by U8_MAX and avoid statically allocate 256
-pointer for every gs_usb device.
+> -----Original Message-----
+> From: Andrew Lunn <andrew@lunn.ch>
+> Sent: Monday, October 13, 2025 7:22 PM
+> To: Haiyang Zhang <haiyangz@microsoft.com>
+> Cc: Haiyang Zhang <haiyangz@linux.microsoft.com>; linux-
+> hyperv@vger.kernel.org; netdev@vger.kernel.org; Paul Rosswurm
+> <paulros@microsoft.com>; Dexuan Cui <decui@microsoft.com>; KY Srinivasan
+> <kys@microsoft.com>; wei.liu@kernel.org; edumazet@google.com;
+> davem@davemloft.net; kuba@kernel.org; pabeni@redhat.com; Long Li
+> <longli@microsoft.com>; ssengar@linux.microsoft.com;
+> ernis@linux.microsoft.com; dipayanroy@linux.microsoft.com; Konstantin
+> Taranov <kotaranov@microsoft.com>; horms@kernel.org;
+> shradhagupta@linux.microsoft.com; leon@kernel.org; mlevitsk@redhat.com;
+> yury.norov@gmail.com; Shiraz Saleem <shirazsaleem@microsoft.com>;
+> andrew+netdev@lunn.ch; linux-rdma@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: Re: [EXTERNAL] Re: [PATCH net-next] net: mana: Support HW link
+> state events
+>=20
+> > > > +		if (link_up) {
+> > > > +			netif_carrier_on(ndev);
+> > > > +
+> > > > +			if (apc->port_is_up)
+> > > > +				netif_tx_wake_all_queues(ndev);
+> > > > +
+> > > > +			__netdev_notify_peers(ndev);
+> > > > +		} else {
+> > > > +			if (netif_carrier_ok(ndev)) {
+> > > > +				netif_tx_disable(ndev);
+> > > > +				netif_carrier_off(ndev);
+> > > > +			}
+> > > > +		}
+> > >
+> > > It is odd this is asymmetric. Up and down should really be opposites.
+> > For the up event, we need to delay the wake up queues if the
+> > mana_close() is called, or mana_open() isn't called yet.
+> >
+> > Also, we notify peers only when link up.
+>=20
+> But why is this not symmetric?
+>=20
+> On down, if port_is_up is not true, there is no need to disable tx and
+> set the carrier off. There are also counters associated with
+> netif_carrier_off() and netif_carrier_on(), and if you don't call them
+> in symmetric pairs, the counters are going to look odd.
 
-[1]: https://github.com/cherry-embedded/HSCanT-hardware
+I see. Will update the patch.
 
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Reported-by: Runcheng Lu <runcheng.lu@hpmicro.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Link: https://patch.msgid.link/20250930-gs-usb-max-if-v5-1-863330bf6666@coelacanthus.name
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/gs_usb.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index c9482d6e947b..9fb4cbbd6d6d 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -289,11 +289,6 @@ struct gs_host_frame {
- #define GS_MAX_RX_URBS 30
- #define GS_NAPI_WEIGHT 32
- 
--/* Maximum number of interfaces the driver supports per device.
-- * Current hardware only supports 3 interfaces. The future may vary.
-- */
--#define GS_MAX_INTF 3
--
- struct gs_tx_context {
- 	struct gs_can *dev;
- 	unsigned int echo_id;
-@@ -324,7 +319,6 @@ struct gs_can {
- 
- /* usb interface struct */
- struct gs_usb {
--	struct gs_can *canch[GS_MAX_INTF];
- 	struct usb_anchor rx_submitted;
- 	struct usb_device *udev;
- 
-@@ -336,9 +330,11 @@ struct gs_usb {
- 
- 	unsigned int hf_size_rx;
- 	u8 active_channels;
-+	u8 channel_cnt;
- 
- 	unsigned int pipe_in;
- 	unsigned int pipe_out;
-+	struct gs_can *canch[] __counted_by(channel_cnt);
- };
- 
- /* 'allocate' a tx context.
-@@ -599,7 +595,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	}
- 
- 	/* device reports out of range channel id */
--	if (hf->channel >= GS_MAX_INTF)
-+	if (hf->channel >= parent->channel_cnt)
- 		goto device_detach;
- 
- 	dev = parent->canch[hf->channel];
-@@ -699,7 +695,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	/* USB failure take down all interfaces */
- 	if (rc == -ENODEV) {
- device_detach:
--		for (rc = 0; rc < GS_MAX_INTF; rc++) {
-+		for (rc = 0; rc < parent->channel_cnt; rc++) {
- 			if (parent->canch[rc])
- 				netif_device_detach(parent->canch[rc]->netdev);
- 		}
-@@ -1460,17 +1456,19 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	icount = dconf.icount + 1;
- 	dev_info(&intf->dev, "Configuring for %u interfaces\n", icount);
- 
--	if (icount > GS_MAX_INTF) {
-+	if (icount > type_max(parent->channel_cnt)) {
- 		dev_err(&intf->dev,
- 			"Driver cannot handle more that %u CAN interfaces\n",
--			GS_MAX_INTF);
-+			type_max(parent->channel_cnt));
- 		return -EINVAL;
- 	}
- 
--	parent = kzalloc(sizeof(*parent), GFP_KERNEL);
-+	parent = kzalloc(struct_size(parent, canch, icount), GFP_KERNEL);
- 	if (!parent)
- 		return -ENOMEM;
- 
-+	parent->channel_cnt = icount;
-+
- 	init_usb_anchor(&parent->rx_submitted);
- 
- 	usb_set_intfdata(intf, parent);
-@@ -1531,7 +1529,7 @@ static void gs_usb_disconnect(struct usb_interface *intf)
- 		return;
- 	}
- 
--	for (i = 0; i < GS_MAX_INTF; i++)
-+	for (i = 0; i < parent->channel_cnt; i++)
- 		if (parent->canch[i])
- 			gs_destroy_candev(parent->canch[i]);
- 
-
-base-commit: 2c95a756e0cfc19af6d0b32b0c6cf3bada334998
--- 
-2.51.0
-
+Thanks,
+- Haiyang
