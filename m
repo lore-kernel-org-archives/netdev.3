@@ -1,303 +1,201 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407C086342
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 05:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861CE13DBA0;
+	Tue, 14 Oct 2025 05:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760419465; cv=none; b=BRoOCjRq5GHg7eY4ansXm8YjwH8fm32PAOjJeMary7gwftwI2UNjj4xXNkAO57Dm1onB/otOWbczTXhg5SvwNpaEIegztY1LN9PsOSGROeuxolsuhp18PqzpT+8Oxe8T/KUrxsgL+INPjwe3Hf8Pv9GYQlfn35KQnFikd4mxqg0=
+	t=1760420101; cv=none; b=uql13z7X+xXzIiYlu646JIWcKnkDlDOPyAwu7tkm/ZejwmE9ud1esGWpdc4WQn2no8qD+KVV0l8uzWcEz54CwjplhpNwv48qO6Qz+rcJc3MIQzNp24InsM0RNhoXdXruwDuTPPnDhRCmnpDGSmtbMqIl0zKvlzRcnqymn8dMqG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760419465; c=relaxed/simple;
-	bh=BGq6gtuVw1ZkzpsV6xc9p1v0Lm/eZZH90GULnLK4vPM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=T3p/ApWK/wsDsPLLW9WJNe4YHh6PHLfmUNuRuim0whhOkJpC4tRMFzI63hFu2XZLV+3rHRnmAbGnuE7Yv1ASn/l5MStd3SMmi/pPZtE7CaZpbSq6SUYh8JyV+s+/JSM6NaLe+bfCQ4Zv+kydnm0GoyPTTa0xdk6JGqfIPcPRqtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p8leib+/; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760420101; c=relaxed/simple;
+	bh=X5WPVB8Em/gBcebUeg/HDVgnFFFK8ttMHgLzywHakA4=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=qFzThTzxYIDivtZcTbW1KntBvvXOrmNP++4/WVC5ujNMN+If8IJX2toWZGghvVHLKDCUdLe8eomN8kVm5wIgftB+BRKN8vhpTVLYxKatvcqdXmOwBQq1dsBEngmYIFAj65iwarrhHA6gm44yyy1p5lhtkBVvTOQpL/cA6RcFnAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=EMHXmtH6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ih+RDekg; arc=none smtp.client-ip=202.12.124.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p8leib+/"
-Message-ID: <588c1935-835f-4cab-9679-f31c1e903a9a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760419449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rpX3fKP+qE+Cx5wSUCGxJKl073ySrCz333lfcH4KD3U=;
-	b=p8leib+/+Uzn8bRajg1xnIwVcJSrt3m0lLnVFEIkwQAkMvKJQmbU9EGJUvpUGsXfHbBKMz
-	ViA1mGiVwlTmDegFHZtPQpjF1hQMZ/LGvEipWPUwAW24TAK7NbpWInZInaEKhsMcGnXez2
-	/yS+HTRDNOUcLHOMcRQGei7svVjH4HY=
-Date: Tue, 14 Oct 2025 13:23:58 +0800
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="EMHXmtH6";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ih+RDekg"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailflow.stl.internal (Postfix) with ESMTP id 9C94F1300216;
+	Tue, 14 Oct 2025 01:34:57 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Tue, 14 Oct 2025 01:34:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm2; t=
+	1760420097; x=1760427297; bh=sKvX0cwi5L2mQqOKfWbZAQQCGUflq024x5h
+	ZczDrYtI=; b=EMHXmtH6b1fssNuWNAbg39nPBc2L6iLo9Ov6TFV9qllyxag3kQl
+	VvtR8X+4Za9g2Vw/Na+uS9UetgsfpRkZL1jz1/auc6Oy9Fq/N3API8bZzlIeqS+8
+	OjId+x1I54l5gE4nOruTpTX/eIn+DMjXL5K+xkpQQMMBYqKYZbAoJbxHVEnJCxyO
+	GuwVNtYCGxxVYsar+VUXpQgttiAqGWRjkt15aK64LQqfqxqxFr0g6wXKB/Ibf2XG
+	/cxaxnXKKVd6RVbRRMfLB3f2m4fsB0FeJxFOUSfB6WZiuqXvwmbis9V2yhheF05K
+	VmxNfUjA1k1l+mLURd+ZuZFqVsb6BMYN94A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1760420097; x=
+	1760427297; bh=sKvX0cwi5L2mQqOKfWbZAQQCGUflq024x5hZczDrYtI=; b=i
+	h+RDekgtuViqOuIRe5nRpsoy76Bx+bzGVh5cBTj8/X62C0XR7TEIA2xbt2Ubxpid
+	ZHq1+y+7InziK5qe1r9LHucLnuKtgHqiO+FJDRNHoj+tR9Q3PyID4LVM/3M3ybRX
+	tIH70Tx5Za71PjvLbkA/yeToEismdKYiPPzND/ygwI7geT796CZq/6emzH7eNm4V
+	Kce1Eyi/Y3RiDRX6XMGOfP6tmK6MicTRdw6J7gWuQcQoU6VJmgQ73wKrjDyZY++8
+	u8xiIYup5XPh8TtZB2Jq/GVp2aBKUBf6LKfVQd6UoWatyJpdJXN19DN+foHp9Ekz
+	zoZtogTA7a4Db2it5V2NQ==
+X-ME-Sender: <xms:_-DtaGDSStk9-hdw2H6ZL83waWfdVJ9YX5PyZE66IpkrirSbEhiR2w>
+    <xme:_-DtaPgz524KR1bIMerhs2C7YXAmbZW4Lsj3EsWSvpJwVeGY-BzhhonTtr5xmV6Ss
+    GpABGkyA-RB0RJhi2Lq8cCoQS1KXsJC00AQOjfMWlRhV5yMIA>
+X-ME-Received: <xmr:_-DtaB2IaBnzbz1hHV5senq7g_aSWzgh3eK-gJYcQFcoiXy_Aqk709eaLtyG4VXyvm7TKsTwnzEKdhghfx2bsou0ue1yREccsDhltZNVqC4X>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudeljeduucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epleejtdefgeeukeeiteduveehudevfeffvedutefgteduhfegvdfgtdeigeeuudejnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepgeefpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqgihfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhunhhiohhnfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhinhhugidqtghifhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepvggtrhihphhtfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:_-DtaBIY-oFTdHKRTw3D8L3q4PTHVD4zpV8goGnqHXyVH0nbHG8b-g>
+    <xmx:_-DtaE2CVchSpis3kE9Qdx37fJ6LzhXT6BNt0IM3jeZVpKMoYnyecg>
+    <xmx:_-DtaL64I2eH2ZO8gGbqN6_6BowsHFpdQspB-a4TT9QeVF7PfU6YCw>
+    <xmx:_-DtaBHiAd6eRDoVhivjdRfsp-KtS_QT_guqr2aFH_bbkXfblrXRRA>
+    <xmx:AeHtaDciWRkXrzOWRd6sH4KgBlnrwJkD0ZAWHMp6JhGiQZ8mFgAE876O>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 Oct 2025 01:34:44 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH][v3] hung_task: Panic after fixed number of hung tasks
-Content-Language: en-US
-To: lirongqing <lirongqing@baidu.com>
-References: <20251012115035.2169-1-lirongqing@baidu.com>
-Cc: wireguard@lists.zx2c4.com, linux-arm-kernel@lists.infradead.org,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, linux-doc@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-aspeed@lists.ozlabs.org,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Russell King <linux@armlinux.org.uk>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
- Petr Mladek <pmladek@suse.com>, Joel Granados <joel.granados@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Phil Auld <pauld@redhat.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Masami Hiramatsu <mhiramat@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Simon Horman <horms@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
- Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Feng Tang <feng.tang@linux.alibaba.com>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20251012115035.2169-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Chuck Lever" <chuck.lever@oracle.com>,
+ "Alexander Aring" <alex.aring@gmail.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Steve French" <sfrench@samba.org>,
+ "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>, "Tom Talpey" <tom@talpey.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>,
+ "David Howells" <dhowells@redhat.com>, "Tyler Hicks" <code@tyhicks.com>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Amir Goldstein" <amir73il@gmail.com>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Steve French" <smfrench@gmail.com>,
+ "Sergey Senozhatsky" <senozhatsky@chromium.org>,
+ "Carlos Maiolino" <cem@kernel.org>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, netfs@lists.linux.dev,
+ ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ linux-xfs@vger.kernel.org, netdev@vger.kernel.org,
+ "Jeff Layton" <jlayton@kernel.org>
+Subject:
+ Re: [PATCH 02/13] filelock: add a lm_may_setlease lease_manager callback
+In-reply-to: <20251013-dir-deleg-ro-v1-2-406780a70e5e@kernel.org>
+References: <20251013-dir-deleg-ro-v1-0-406780a70e5e@kernel.org>,
+ <20251013-dir-deleg-ro-v1-2-406780a70e5e@kernel.org>
+Date: Tue, 14 Oct 2025 16:34:43 +1100
+Message-id: <176042008301.1793333.506325387242251221@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-Thanks for the patch!
-
-I noticed the implementation panics only when N tasks are detected
-within a single scan, because total_hung_task is reset for each
-check_hung_uninterruptible_tasks() run.
-
-So some suggestions to align the documentation with the code's
-behavior below :)
-
-On 2025/10/12 19:50, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> Currently, when 'hung_task_panic' is enabled, the kernel panics
-> immediately upon detecting the first hung task. However, some hung
-> tasks are transient and the system can recover, while others are
-> persistent and may accumulate progressively.
-> 
-> This patch extends the 'hung_task_panic' sysctl to allow specifying
-> the number of hung tasks that must be detected before triggering
-> a kernel panic. This provides finer control for environments where
-> transient hangs may occur but persistent hangs should still be fatal.
-> 
-> The sysctl can be set to:
-> - 0: disabled (never panic)
-> - 1: original behavior (panic on first hung task)
-> - N: panic when N hung tasks are detected
-> 
-> This maintains backward compatibility while providing more flexibility
-> for handling different hang scenarios.
-> 
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+On Tue, 14 Oct 2025, Jeff Layton wrote:
+> The NFSv4.1 protocol adds support for directory delegations, but it
+> specifies that if you already have a delegation and try to request a new
+> one on the same filehandle, the server must reply that the delegation is
+> unavailable.
+>=20
+> Add a new lease manager callback to allow the lease manager (nfsd in
+> this case) to impose this extra check when performing a setlease.
+>=20
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
-> Diff with v2: not add new sysctl, extend hung_task_panic
-> 
->   Documentation/admin-guide/kernel-parameters.txt      | 20 +++++++++++++-------
->   Documentation/admin-guide/sysctl/kernel.rst          |  3 ++-
->   arch/arm/configs/aspeed_g5_defconfig                 |  2 +-
->   kernel/configs/debug.config                          |  2 +-
->   kernel/hung_task.c                                   | 16 +++++++++++-----
->   lib/Kconfig.debug                                    | 10 ++++++----
->   tools/testing/selftests/wireguard/qemu/kernel.config |  2 +-
->   7 files changed, 35 insertions(+), 20 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index a51ab46..7d9a8ee 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -1992,14 +1992,20 @@
->   			the added memory block itself do not be affected.
->   
->   	hung_task_panic=
-> -			[KNL] Should the hung task detector generate panics.
-> -			Format: 0 | 1
-> +			[KNL] Number of hung tasks to trigger kernel panic.
-> +			Format: <int>
+>  fs/locks.c               |  5 +++++
+>  include/linux/filelock.h | 14 ++++++++++++++
+>  2 files changed, 19 insertions(+)
+>=20
+> diff --git a/fs/locks.c b/fs/locks.c
+> index 0b16921fb52e602ea2e0c3de39d9d772af98ba7d..9e366b13674538dbf482ffdeee9=
+2fc717733ee20 100644
+> --- a/fs/locks.c
+> +++ b/fs/locks.c
+> @@ -1826,6 +1826,11 @@ generic_add_lease(struct file *filp, int arg, struct=
+ file_lease **flp, void **pr
+>  			continue;
+>  		}
+> =20
+> +		/* Allow the lease manager to veto the setlease */
+> +		if (lease->fl_lmops->lm_may_setlease &&
+> +		    !lease->fl_lmops->lm_may_setlease(lease, fl))
+> +			goto out;
 > +
-> +			Set this to the number of hung tasks that must be
-> +			detected before triggering a kernel panic.
+
+I don't see any locking around this.  What if the condition which
+triggers a veto happens after this check, and before the lm_change
+below?
+Should lm_change implement the veto?  Return -EAGAIN?
+
+NeilBrown
+
+
+>  		/*
+>  		 * No exclusive leases if someone else has a lease on
+>  		 * this file:
+> diff --git a/include/linux/filelock.h b/include/linux/filelock.h
+> index c2ce8ba05d068b451ecf8f513b7e532819a29944..70079beddf61aa32ef01f1114cf=
+0cb3ffaf2131a 100644
+> --- a/include/linux/filelock.h
+> +++ b/include/linux/filelock.h
+> @@ -49,6 +49,20 @@ struct lease_manager_operations {
+>  	int (*lm_change)(struct file_lease *, int, struct list_head *);
+>  	void (*lm_setup)(struct file_lease *, void **);
+>  	bool (*lm_breaker_owns_lease)(struct file_lease *);
 > +
-> +			0: don't panic
-> +			1: panic immediately on first hung task
-> +			N: panic after N hung tasks are detect
-
-The description should be more specific :)
-
-N: panic after N hung tasks are detected in a single scan
-
-Would it be better and cleaner?
-
->   
-> -			A value of 1 instructs the kernel to panic when a
-> -			hung task is detected. The default value is controlled
-> -			by the CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time
-> -			option. The value selected by this boot parameter can
-> -			be changed later by the kernel.hung_task_panic sysctl.
-> +			The default value is controlled by the
-> +			CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time option. The value
-> +			selected by this boot parameter can be changed later by the
-> +			kernel.hung_task_panic sysctl.
->   
->   	hvc_iucv=	[S390]	Number of z/VM IUCV hypervisor console (HVC)
->   				terminal devices. Valid values: 0..8
-> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-> index f3ee807..0a8dfab 100644
-> --- a/Documentation/admin-guide/sysctl/kernel.rst
-> +++ b/Documentation/admin-guide/sysctl/kernel.rst
-> @@ -397,7 +397,8 @@ a hung task is detected.
->   hung_task_panic
->   ===============
->   
-> -Controls the kernel's behavior when a hung task is detected.
-> +When set to a non-zero value, a kernel panic will be triggered if the
-> +number of detected hung tasks reaches this value
-
-Hmm... that is also ambiguous ...
-
-+When set to a non-zero value, a kernel panic will be triggered if the
-+number of hung tasks found during a single scan reaches this value.
-
->   This file shows up if ``CONFIG_DETECT_HUNG_TASK`` is enabled.
->   
->   = =================================================
-> diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
-> index 61cee1e..c3b0d5f 100644
-> --- a/arch/arm/configs/aspeed_g5_defconfig
-> +++ b/arch/arm/configs/aspeed_g5_defconfig
-> @@ -308,7 +308,7 @@ CONFIG_PANIC_ON_OOPS=y
->   CONFIG_PANIC_TIMEOUT=-1
->   CONFIG_SOFTLOCKUP_DETECTOR=y
->   CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
-> -CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
->   CONFIG_WQ_WATCHDOG=y
->   # CONFIG_SCHED_DEBUG is not set
->   CONFIG_FUNCTION_TRACER=y
-> diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
-> index e81327d..9f6ab7d 100644
-> --- a/kernel/configs/debug.config
-> +++ b/kernel/configs/debug.config
-> @@ -83,7 +83,7 @@ CONFIG_SLUB_DEBUG_ON=y
->   #
->   # Debug Oops, Lockups and Hangs
->   #
-> -# CONFIG_BOOTPARAM_HUNG_TASK_PANIC is not set
-> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=0
->   # CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC is not set
->   CONFIG_DEBUG_ATOMIC_SLEEP=y
->   CONFIG_DETECT_HUNG_TASK=y
-> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-> index b2c1f14..3929ed9 100644
-> --- a/kernel/hung_task.c
-> +++ b/kernel/hung_task.c
-> @@ -81,7 +81,7 @@ static unsigned int __read_mostly sysctl_hung_task_all_cpu_backtrace;
->    * hung task is detected:
->    */
->   static unsigned int __read_mostly sysctl_hung_task_panic =
-> -	IS_ENABLED(CONFIG_BOOTPARAM_HUNG_TASK_PANIC);
-> +	CONFIG_BOOTPARAM_HUNG_TASK_PANIC;
->   
->   static int
->   hung_task_panic(struct notifier_block *this, unsigned long event, void *ptr)
-> @@ -218,8 +218,11 @@ static inline void debug_show_blocker(struct task_struct *task, unsigned long ti
->   }
->   #endif
->   
-> -static void check_hung_task(struct task_struct *t, unsigned long timeout)
-> +static void check_hung_task(struct task_struct *t, unsigned long timeout,
-> +		unsigned long prev_detect_count)
->   {
-> +	unsigned long total_hung_task;
-> +
->   	if (!task_is_hung(t, timeout))
->   		return;
->   
-> @@ -229,9 +232,11 @@ static void check_hung_task(struct task_struct *t, unsigned long timeout)
->   	 */
->   	sysctl_hung_task_detect_count++;
->   
-> +	total_hung_task = sysctl_hung_task_detect_count - prev_detect_count;
->   	trace_sched_process_hang(t);
->   
-> -	if (sysctl_hung_task_panic) {
-> +	if (sysctl_hung_task_panic &&
-> +			(total_hung_task >= sysctl_hung_task_panic)) {
->   		console_verbose();
->   		hung_task_show_lock = true;
->   		hung_task_call_panic = true;
-> @@ -300,6 +305,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
->   	int max_count = sysctl_hung_task_check_count;
->   	unsigned long last_break = jiffies;
->   	struct task_struct *g, *t;
-> +	unsigned long prev_detect_count = sysctl_hung_task_detect_count;
->   
->   	/*
->   	 * If the system crashed already then all bets are off,
-> @@ -320,7 +326,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
->   			last_break = jiffies;
->   		}
->   
-> -		check_hung_task(t, timeout);
-> +		check_hung_task(t, timeout, prev_detect_count);
->   	}
->    unlock:
->   	rcu_read_unlock();
-> @@ -389,7 +395,7 @@ static const struct ctl_table hung_task_sysctls[] = {
->   		.mode		= 0644,
->   		.proc_handler	= proc_dointvec_minmax,
->   		.extra1		= SYSCTL_ZERO,
-> -		.extra2		= SYSCTL_ONE,
-> +		.extra2		= SYSCTL_INT_MAX,
->   	},
->   	{
->   		.procname	= "hung_task_check_count",
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index 3034e294..077b9e4 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -1258,12 +1258,14 @@ config DEFAULT_HUNG_TASK_TIMEOUT
->   	  Keeping the default should be fine in most cases.
->   
->   config BOOTPARAM_HUNG_TASK_PANIC
-> -	bool "Panic (Reboot) On Hung Tasks"
-> +	int "Number of hung tasks to trigger kernel panic"
->   	depends on DETECT_HUNG_TASK
-> +	default 0
->   	help
-> -	  Say Y here to enable the kernel to panic on "hung tasks",
-> -	  which are bugs that cause the kernel to leave a task stuck
-> -	  in uninterruptible "D" state.
-> +	  The number of hung tasks must be detected to trigger kernel panic.
-> +
-> +	  - 0: Don't trigger panic
-> +	  - N: Panic when N hung tasks are detected
-
-+	  - N: Panic when N hung tasks are detected in a single scan
-
-With these documentation changes, this patch would accurately describe 
-its behavior, IMHO.
-
->   
->   	  The panic can be used in combination with panic_timeout,
->   	  to cause the system to reboot automatically after a
-> diff --git a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
-> index 936b18b..0504c11 100644
-> --- a/tools/testing/selftests/wireguard/qemu/kernel.config
-> +++ b/tools/testing/selftests/wireguard/qemu/kernel.config
-> @@ -81,7 +81,7 @@ CONFIG_WQ_WATCHDOG=y
->   CONFIG_DETECT_HUNG_TASK=y
->   CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=y
->   CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
-> -CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
->   CONFIG_PANIC_TIMEOUT=-1
->   CONFIG_STACKTRACE=y
->   CONFIG_EARLY_PRINTK=y
+> +	/**
+> +	 * lm_may_setlease - extra conditions for setlease
+> +	 * @new: new file_lease being set
+> +	 * @old: old (extant) file_lease
+> +	 *
+> +	 * This allows the lease manager to add extra conditions when
+> +	 * setting a lease, based on the presence of an existing lease.
+> +	 *
+> +	 * Return values:
+> +	 *   %false: @new and @old conflict
+> +	 *   %true: No conflict detected
+> +	 */
+> +	bool (*lm_may_setlease)(struct file_lease *new, struct file_lease *old);
+>  };
+> =20
+>  struct lock_manager {
+>=20
+> --=20
+> 2.51.0
+>=20
+>=20
 
