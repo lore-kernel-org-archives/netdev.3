@@ -1,182 +1,204 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E0B30E84B
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 22:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DE017A2EA
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 23:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760481914; cv=none; b=JzDSaNJOYhZFPoXrukXE04Irx8l1qeztD5MYd2QH/bLQXTYP7SUhBj94BZbkg7a1OmdJxWmMtltbzN8HK0dKinTFx9g18Ey4J3GIa54QUy71q9uDdodGqcRvFSkXWMGBAr3aCzp9x+fZiy+EQ9VfYi3ADHLkPr54KAc48ep/rZ8=
+	t=1760483360; cv=none; b=VMdfk6Mti/qMGwkrhLwt+lYq8iJx61DWQqx1366Kwo07PgOFC3qgr0jza4hvz+Pcid6SgGen3Vvz8OUFuUbDSBX/KXkjTxQQvHZv85XjbwZt5NcDnMKmp1Lxg0z+ACt1PYqRVKKO98Gz6znfocLfl97q62FTlSpks6Y+X1VUYG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760481914; c=relaxed/simple;
-	bh=HAAZOzmH1YE2EtOhwnrx1f4Hq32SdMRExouviIWnQJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZr94UzGKfgwevGht3M3VqD7Z3T8+lcoC9mjTvCicxnYZK/yTZeIBQF8GIR7PtQPVxUXSdoRHEWhSLhr3IgPoH0BvAGDSIYPHRLYmbtNP9At0Xh4PMSv9o/FiuJG8xuX3WaxZSj5cnWpyjdFay+UwqLiRWHlRDMd0PxpwR0kNIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WOjXdRaS; arc=none smtp.client-ip=91.218.175.178
+	s=arc-20240116; t=1760483360; c=relaxed/simple;
+	bh=vu4nw3WfFop+3BzE1QhLywGaWk937F1FIkK9sJLlHE0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ArjufMUsQ0Q7zzuyYXBg0p715MGxKDNlYvfHhyXB1NR/nTfvEIMmr4M5FjtvJXbQjpzs/IRyL0/IBmUPZkTSxNrtK4Q+3qKl99JyYumY+gdEmzyzNNaN2Raq7/XVWftwZ/WXCBXPXdIOQCeu7cGRyvNNwJdzghA8HUN5Hrceq6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iV86aDRd; arc=none smtp.client-ip=91.218.175.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WOjXdRaS"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iV86aDRd"
+Message-ID: <6e790a70-bb02-47d2-9330-f2eb9078c671@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760481910;
+	t=1760483355;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=c4YLeJeO2zsMVmpGaNcq2NA4cUB3VmM8bAEBpWfr3ps=;
-	b=WOjXdRaSNcuJHG5dqr5UcvCwWnzscfRaHnYgjJWjGtae37jw7DeP5KwxdnU380Lr7Qzj/V
-	B1AMJYBOWeq4O9MPxhNLXNA74n16MsmwPXpURMCEa07pDE3RL79kRY0Ja6M6KD8KQwlmPX
-	R2etH+6JFxxd/fL9Yw1XBHAMNkw7Wu0=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Egor Pomozov <epomozov@marvell.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Dimitris Michailidis <dmichail@fungible.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next v2 7/7] funeth: convert to ndo_hwtstamp API
-Date: Tue, 14 Oct 2025 22:42:16 +0000
-Message-ID: <20251014224216.8163-8-vadim.fedorenko@linux.dev>
-In-Reply-To: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
-References: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
+	bh=nMZ0tOuQFw64RjaBh1c7+1IgZYvZYBxMu7v4FXEnQN8=;
+	b=iV86aDRdppgZQ/WU9jXSXqShVzK2luXQE4yXHNRZgnZER6MIr+lUj34Ro8z6cbdzLLheAU
+	mgjofJUcKZ7i4aIKrpo6ICf66xoqS5+8y7pWx5ex9ThsIW4N8w22qCg0jp7Nk1yNqHhlXV
+	PEd9fvo+MAW6ffmFPeqBRedAO7TVO5c=
+Date: Tue, 14 Oct 2025 16:09:08 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf-next/net 6/6] selftest: bpf: Add test for
+ sk->sk_bypass_prot_mem.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
+ Mina Almasry <almasrymina@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251007001120.2661442-1-kuniyu@google.com>
+ <20251007001120.2661442-7-kuniyu@google.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+Content-Language: en-US
+In-Reply-To: <20251007001120.2661442-7-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
-.ndo_eth_ioctl() implementation becomes empty, remove it.
+On 10/6/25 5:07 PM, Kuniyuki Iwashima wrote:
+> +static int tcp_create_sockets(struct test_case *test_case, int sk[], int len)
+> +{
+> +	int server, i;
+> +
+> +	server = start_server(test_case->family, test_case->type, NULL, 0, 0);
+> +	ASSERT_GE(server, 0, "start_server_str");
+> +
+> +	/* Keep for-loop so we can change NR_SOCKETS easily. */
+> +	for (i = 0; i < len; i += 2) {
+> +		sk[i] = connect_to_fd(server, 0);
+> +		if (sk[i] < 0) {
+> +			ASSERT_GE(sk[i], 0, "connect_to_fd");
+> +			return sk[i];
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- drivers/net/ethernet/fungible/funeth/funeth.h |  4 +-
- .../ethernet/fungible/funeth/funeth_main.c    | 40 +++++++------------
- 2 files changed, 16 insertions(+), 28 deletions(-)
+The "server" fd is leaked, and...
 
-diff --git a/drivers/net/ethernet/fungible/funeth/funeth.h b/drivers/net/ethernet/fungible/funeth/funeth.h
-index 1250e10d21db..55e705e239f8 100644
---- a/drivers/net/ethernet/fungible/funeth/funeth.h
-+++ b/drivers/net/ethernet/fungible/funeth/funeth.h
-@@ -4,7 +4,7 @@
- #define _FUNETH_H
- 
- #include <uapi/linux/if_ether.h>
--#include <uapi/linux/net_tstamp.h>
-+#include <linux/net_tstamp.h>
- #include <linux/mutex.h>
- #include <linux/seqlock.h>
- #include <linux/xarray.h>
-@@ -121,7 +121,7 @@ struct funeth_priv {
- 	u8 rx_coal_usec;
- 	u8 rx_coal_count;
- 
--	struct hwtstamp_config hwtstamp_cfg;
-+	struct kernel_hwtstamp_config hwtstamp_cfg;
- 
- 	/* cumulative queue stats from earlier queue instances */
- 	u64 tx_packets;
-diff --git a/drivers/net/ethernet/fungible/funeth/funeth_main.c b/drivers/net/ethernet/fungible/funeth/funeth_main.c
-index ac86179a0a81..792cddac6f1b 100644
---- a/drivers/net/ethernet/fungible/funeth/funeth_main.c
-+++ b/drivers/net/ethernet/fungible/funeth/funeth_main.c
-@@ -1014,26 +1014,25 @@ static int fun_get_port_attributes(struct net_device *netdev)
- 	return 0;
- }
- 
--static int fun_hwtstamp_get(struct net_device *dev, struct ifreq *ifr)
-+static int fun_hwtstamp_get(struct net_device *dev,
-+			    struct kernel_hwtstamp_config *config)
- {
- 	const struct funeth_priv *fp = netdev_priv(dev);
- 
--	return copy_to_user(ifr->ifr_data, &fp->hwtstamp_cfg,
--			    sizeof(fp->hwtstamp_cfg)) ? -EFAULT : 0;
-+	*config = fp->hwtstamp_cfg;
-+	return 0;
- }
- 
--static int fun_hwtstamp_set(struct net_device *dev, struct ifreq *ifr)
-+static int fun_hwtstamp_set(struct net_device *dev,
-+			    struct kernel_hwtstamp_config *config,
-+			    struct netlink_ext_ack *extack)
- {
- 	struct funeth_priv *fp = netdev_priv(dev);
--	struct hwtstamp_config cfg;
--
--	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
--		return -EFAULT;
- 
- 	/* no TX HW timestamps */
--	cfg.tx_type = HWTSTAMP_TX_OFF;
-+	config->tx_type = HWTSTAMP_TX_OFF;
- 
--	switch (cfg.rx_filter) {
-+	switch (config->rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		break;
- 	case HWTSTAMP_FILTER_ALL:
-@@ -1051,26 +1050,14 @@ static int fun_hwtstamp_set(struct net_device *dev, struct ifreq *ifr)
- 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
- 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
- 	case HWTSTAMP_FILTER_NTP_ALL:
--		cfg.rx_filter = HWTSTAMP_FILTER_ALL;
-+		config->rx_filter = HWTSTAMP_FILTER_ALL;
- 		break;
- 	default:
- 		return -ERANGE;
- 	}
- 
--	fp->hwtstamp_cfg = cfg;
--	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
--}
--
--static int fun_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
--{
--	switch (cmd) {
--	case SIOCSHWTSTAMP:
--		return fun_hwtstamp_set(dev, ifr);
--	case SIOCGHWTSTAMP:
--		return fun_hwtstamp_get(dev, ifr);
--	default:
--		return -EOPNOTSUPP;
--	}
-+	fp->hwtstamp_cfg = *config;
-+	return 0;
- }
- 
- /* Prepare the queues for XDP. */
-@@ -1340,7 +1327,6 @@ static const struct net_device_ops fun_netdev_ops = {
- 	.ndo_change_mtu		= fun_change_mtu,
- 	.ndo_set_mac_address	= fun_set_macaddr,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= fun_ioctl,
- 	.ndo_uninit		= fun_uninit,
- 	.ndo_bpf		= fun_xdp,
- 	.ndo_xdp_xmit		= fun_xdp_xmit_frames,
-@@ -1348,6 +1334,8 @@ static const struct net_device_ops fun_netdev_ops = {
- 	.ndo_set_vf_vlan	= fun_set_vf_vlan,
- 	.ndo_set_vf_rate	= fun_set_vf_rate,
- 	.ndo_get_vf_config	= fun_get_vf_config,
-+	.ndo_hwtstamp_get	= fun_hwtstamp_get,
-+	.ndo_hwtstamp_set	= fun_hwtstamp_set,
- };
- 
- #define GSO_ENCAP_FLAGS (NETIF_F_GSO_GRE | NETIF_F_GSO_IPXIP4 | \
--- 
-2.47.3
+> +		}
+> +
+> +		sk[i + 1] = accept(server, NULL, NULL);
+> +		if (sk[i + 1] < 0) {
+> +			ASSERT_GE(sk[i + 1], 0, "accept");
+> +			return sk[i + 1];
 
+same here.
+
+> +		}
+> +	}
+> +
+> +	close(server);
+> +
+> +	return 0;
+> +}
+> +
+> +static int udp_create_sockets(struct test_case *test_case, int sk[], int len)
+> +{
+> +	int i, j, err, rcvbuf = BUF_TOTAL;
+> +
+> +	/* Keep for-loop so we can change NR_SOCKETS easily. */
+> +	for (i = 0; i < len; i += 2) {
+> +		sk[i] = start_server(test_case->family, test_case->type, NULL, 0, 0);
+> +		if (sk[i] < 0) {
+> +			ASSERT_GE(sk[i], 0, "start_server");
+> +			return sk[i];
+> +		}
+> +
+> +		sk[i + 1] = connect_to_fd(sk[i], 0);
+> +		if (sk[i + 1] < 0) {
+> +			ASSERT_GE(sk[i + 1], 0, "connect_to_fd");
+> +			return sk[i + 1];
+> +		}
+> +
+> +		err = connect_fd_to_fd(sk[i], sk[i + 1], 0);
+> +		if (err) {
+> +			ASSERT_EQ(err, 0, "connect_fd_to_fd");
+> +			return err;
+> +		}
+> +
+> +		for (j = 0; j < 2; j++) {
+> +			err = setsockopt(sk[i + j], SOL_SOCKET, SO_RCVBUF, &rcvbuf, sizeof(int));
+> +			if (err) {
+> +				ASSERT_EQ(err, 0, "setsockopt(SO_RCVBUF)");
+> +				return err;
+> +			}
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+
+
+> +
+> +static int check_bypass(struct test_case *test_case,
+> +			struct sk_bypass_prot_mem *skel, bool bypass)
+> +{
+> +	char buf[BUF_SINGLE] = {};
+> +	long memory_allocated[2];
+> +	int sk[NR_SOCKETS] = {};
+> +	int err, i, j;
+> +
+> +	err = test_case->create_sockets(test_case, sk, ARRAY_SIZE(sk));
+> +	if (err)
+> +		goto close;
+> +
+> +	memory_allocated[0] = test_case->get_memory_allocated(test_case, skel);
+> +
+> +	/* allocate pages >= NR_PAGES */
+> +	for (i = 0; i < ARRAY_SIZE(sk); i++) {
+> +		for (j = 0; j < NR_SEND; j++) {
+> +			int bytes = send(sk[i], buf, sizeof(buf), 0);
+> +
+> +			/* Avoid too noisy logs when something failed. */
+> +			if (bytes != sizeof(buf)) {
+> +				ASSERT_EQ(bytes, sizeof(buf), "send");
+> +				if (bytes < 0) {
+> +					err = bytes;
+> +					goto drain;
+> +				}
+> +			}
+> +		}
+> +	}
+> +
+> +	memory_allocated[1] = test_case->get_memory_allocated(test_case, skel);
+> +
+> +	if (bypass)
+> +		ASSERT_LE(memory_allocated[1], memory_allocated[0] + 10, "bypass");
+> +	else
+> +		ASSERT_GT(memory_allocated[1], memory_allocated[0] + NR_PAGES, "no bypass");
+> +
+> +drain:
+> +	if (test_case->type == SOCK_DGRAM) {
+> +		/* UDP starts purging sk->sk_receive_queue after one RCU
+> +		 * grace period, then udp_memory_allocated goes down,
+> +		 * so drain the queue before close().
+> +		 */
+> +		for (i = 0; i < ARRAY_SIZE(sk); i++) {
+> +			for (j = 0; j < NR_SEND; j++) {
+> +				int bytes = recv(sk[i], buf, 1, MSG_DONTWAIT | MSG_TRUNC);
+> +
+> +				if (bytes == sizeof(buf))
+> +					continue;
+> +				if (bytes != -1 || errno != EAGAIN)
+> +					PRINT_FAIL("bytes: %d, errno: %s\n", bytes, strerror(errno));
+> +				break;
+> +			}
+> +		}
+> +	}
+> +
+> +close:
+> +	for (i = 0; i < ARRAY_SIZE(sk); i++)
+> +		close(sk[i]);
+
+It could close(0) here depending on how the "->create_sockets()" above has 
+failed. The fd 0 could be something useful for the test_progs.
+
+Other than that, the set lgtm. Please re-spin and carry the review/ack tags.
+
+pw-bot: cr
+
+> +
+> +	return err;
+> +}
+> +
