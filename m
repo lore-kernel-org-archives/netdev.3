@@ -1,77 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3A2226863
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 17:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4FB3043B3;
+	Tue, 14 Oct 2025 17:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760461499; cv=none; b=jkW9/khO340JRbduPQMmnOrA+Mfgh7LyZ1q4NNeRNaIjfy6BNiUUgOduXHBqWnKVdgEXhnw1xq8KqPB+5IWskKV41hy6z8r6RMsX3Rl66CZcs+0n1uHPMOPUXLOjUNLAAKufUbkB2+R1nLYdE2Vm0pGstkbW46DjEvpdmW+Gyr4=
+	t=1760461751; cv=none; b=P+Bhw7o4sHQ8KcVbaSuYjIODJ/BorPRzAjhlWuLHXZzWqpqT5D4XLdkiPBvwYJ2pw05z2GIOo84EIEfZHJU6dlumq7Y1MkL8l9Ma9Dgb9nea0xvi/mVkAQyo0qR/dAPiN0mt3hL3VWlAH1kDH+qLPsw5fklCUz757TnAaO77n0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760461499; c=relaxed/simple;
-	bh=zR4mj2V8xlY6/bkgaX0KeLu9NGXdt0uBdeyroBZnuXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FXxPvUSATUiuPllXGw+hRos/nxNZoxcjphtF0HRC71jkzQT70NP/w5rBeIiUeB9pYAO0/TycXMhGE0mfs6lu6RZlxXoJrUk3qET+xnmzqIwQvCbv9yE6BKczWgB01GFhqV/YYVwkmo+YEMK79/Yblkc+/0nTIeDmwOljhp31hR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFyoYh9o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760461751; c=relaxed/simple;
+	bh=D5RNv6Lympg2EKcNdy//QfQ4OP1+anSrTZWzx6lRuhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VOIPDVFYS5Qp5XcfMIMSkjSoYaJbf/MZkGex0ajlNU3ZWLo1Vu2ceBXkePxvul13n5XEWV8cQhin+u/0bVYC0z/ddPhwMBxpwji4c06kv+gUTvRB4Ol7VVwqJKcQEtIBO/W5sbWbMIi3ff5L+t7tRY5J5WsW/jD8fMtN52R9Hsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ix1n2ti2; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFyoYh9o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458A5C4CEE7;
-	Tue, 14 Oct 2025 17:04:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760461498;
-	bh=zR4mj2V8xlY6/bkgaX0KeLu9NGXdt0uBdeyroBZnuXA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TFyoYh9o1mQ5kRzm/lKPzZS2fjgxXcSn1Nnr/oXwplmENuJsQ+unynLLSU53rtYdL
-	 fAIcSo1h9oE85Jn9xsptxcJlQMdKWMvYCqYTCka57w5BqgLpeBa+d1sT3b4Rkllj0e
-	 DaiXXRkC6PdSyHDUdgLtPCWxVmemEQ6h+DYZV2p7JZf7iI930fNlfEj316TfVyGAhm
-	 LUjFzZr0a1iKMjZkwq8vjcOtWFPxNmWCeW0XfgV+hurQL2dga+fuhYRTXIDXauS8Uv
-	 N5flbSPxy8AHQXimgfErnfv+DD7BXSOZ9iU+d/FMlC0oUf9whZq75iglUtwQ8O6Yes
-	 ZMip35fh/+gdg==
-Date: Tue, 14 Oct 2025 10:04:57 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, "David S . Miller"
- <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Neal Cardwell
- <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] tcp: better handle TCP_TX_DELAY on established
- flows
-Message-ID: <20251014100457.3f6de3e0@kernel.org>
-In-Reply-To: <CANn89iL0ZjuH-YiuBbm2+s_2adQzVUVOi4VYDvwGBXjTBYHb=A@mail.gmail.com>
-References: <20251013145926.833198-1-edumazet@google.com>
-	<3b20bfde-1a99-4018-a8d9-bb7323b33285@redhat.com>
-	<CANn89iKu7jjnjc1QdUrvbetti2AGhKe0VR+srecrpJ2s-hfkKA@mail.gmail.com>
-	<CANn89iL8YKZZQZSmg5WqrYVtyd2PanNXzTZ2Z0cObpv9_XSmoQ@mail.gmail.com>
-	<ffa599b8-2a9c-4c25-a65f-ed79cee4fa21@redhat.com>
-	<CANn89iLyO66z_r0hfY62dFBuhA-WmYcW+YhuAkDHaShmhUMZwQ@mail.gmail.com>
-	<20251014090629.7373baa7@kernel.org>
-	<CANn89iL0ZjuH-YiuBbm2+s_2adQzVUVOi4VYDvwGBXjTBYHb=A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ix1n2ti2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=akANej3KnfR5Xc6slbiz9S+LMJbfcs8ehgT6M3+S6Yk=; b=ix1n2ti2DG9FaABLNWgSrQDGXI
+	DwHazrHX/96rMxm96KA2xk1NIdXbB7uHtfXKD/zhXcDilhen6ATndJwA9j4Qpg2zZDsyHMycsJl20
+	WHSjgtg+1UW0rZ98E+8XKKo49C0s9gZ9eou2HhsAa1QuoqT2yYRcqSoW1uwRRWoBZS9Ws+q7CFm9G
+	omLZE6VUje0oait9q8HgM0JSaWmjuiYfUsoxac8stuXtaMfQ2ROz4kqu/G75/MOSJ5OmpApixKikx
+	C16Lh8AaksqaKwsmqMaQu8BZchg5J5BJNn5efXv4ct1rmsfbedLcECD7osHx8CTQyrlSF5t4w9ZcU
+	b2chNtWQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60862)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1v8iVt-000000003an-33Dr;
+	Tue, 14 Oct 2025 18:08:41 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1v8iVn-000000001Sp-174h;
+	Tue, 14 Oct 2025 18:08:35 +0100
+Date: Tue, 14 Oct 2025 18:08:35 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Yao Zi <ziyao@disroot.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH net-next 2/4] net: phy: motorcomm: Support YT8531S PHY in
+ YT6801 Ethernet controller
+Message-ID: <aO6Dk0rK0nobGClc@shell.armlinux.org.uk>
+References: <20251014164746.50696-2-ziyao@disroot.org>
+ <20251014164746.50696-4-ziyao@disroot.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251014164746.50696-4-ziyao@disroot.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, 14 Oct 2025 09:16:23 -0700 Eric Dumazet wrote:
-> On Tue, Oct 14, 2025 at 9:06=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > On Tue, 14 Oct 2025 02:40:39 -0700 Eric Dumazet wrote: =20
-> > > Or add a best effort, so that TCP can have some clue, vast majority of
-> > > cases is that the batch is 1 skb :) =20
-> >
-> > FWIW I don't see an official submission and CI is quite behind
-> > so I'll set the test to ignored for now. =20
->=20
-> You mean this TCP_TX_DELAY patch ? Or the series ?
->=20
-> I will send V2 of the series soon.  (I added the test unflake in it)
+On Tue, Oct 14, 2025 at 04:47:45PM +0000, Yao Zi wrote:
+> YT6801's internal PHY is confirmed as a GMII-capable variant of YT8531S
+> by a previous series[1] and reading PHY ID. Add support for
+> PHY_INTERFACE_MODE_INTERNAL for YT8531S to allow the Ethernet driver to
+> reuse the PHY code for its internal PHY.
 
-Great, I wasn't clear whether you'll send a separate fix or v2.
-So I disabled the test itself.=20
-Not the patches, patches are still queued.=20
+If it's known to be connected via a GMII interface, even if it's on the
+SoC, please use PHY_INTERFACE_MODE_GMII in preference to
+PHY_INTERFACE_MODE_INTERNAL. PHY_INTERFACE_MODE_INTERNAL is really for
+"we don't know what the internal interface is".
 
-Sorry for the confusion, our CI is what it is - just carry on as normal
-and I'll try to keep up.
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
