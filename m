@@ -1,199 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C3A2080C1;
-	Tue, 14 Oct 2025 09:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B0725D546
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 09:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760433820; cv=none; b=i7GFO+8YncyvBJR3uSFs5oFpBR9IXZ4y0+jZqn01mbmVRZIbHO4MzgkYl28WNOUq+DTxncTSrmygTA0KhRv2obuqx+B/oKhDyFpFtFdNFzCzOYSJ5MTiuyD3SRIhynJtJ0BS6zjEcnyFcOnMIduHmMbcV5AM7Q/4cA8foR9kSe4=
+	t=1760433935; cv=none; b=q/QvSSZcCpN8lic6y3j5Q5gUX7f1+suTwAnlCcB1zJkO20UxrlveaHkZX1RXoqCLgjg0fi6ZrcAwg7BNQsXRAYkzcSVwmF4AThfydQN1cJ1cidJ2ghpqMc/H3q+VLiQ/1LengEBsGMW7XEbP6wB2C9apho0diFlQP/kmOXCZyh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760433820; c=relaxed/simple;
-	bh=8UMDWUKXnpdCQC7p8eOw9etMN6k4kyh9pwqfBIRJJR4=;
+	s=arc-20240116; t=1760433935; c=relaxed/simple;
+	bh=8Mpb15od7JA5MjgB34GiY42X9T1Dma3DJCUBcLWR5Uo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S+/2PPU5IKa0qBPoYOX7y6j8jRDf+r07skhyDQIHtZBaas+m0ltctjcdz3mBAUilriQNRwfBD1Eo7b9M6+lSF/aHf0VujRecqcopPeUx37ZRXHubB5X/PJDXItz+TdSWDM+eaSS0iMwUZdjmF0jlR7u5/VRG8re5UOlqbvl6WK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OxijG8Ee; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SMR4Mo2+zBHpg5fT3H/81nv+tfrmQKX1IRqlDzuM12NWqgBl3qLuol1pIi8uF2vw/ChDlO6FlncRI2nupV4EVPcwm0nQte7ppem4tZgWx4rXHRsJd37b5U4DIgBtmqGcWZQlqoLAOuAGJqD/HHhpwqHQGdkOB+qs/3UWn19ruiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2VIJnvj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OxijG8Ee"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEAEC113D0;
-	Tue, 14 Oct 2025 09:23:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2VIJnvj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD8FC4CEE7;
+	Tue, 14 Oct 2025 09:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760433820;
-	bh=8UMDWUKXnpdCQC7p8eOw9etMN6k4kyh9pwqfBIRJJR4=;
+	s=k20201202; t=1760433934;
+	bh=8Mpb15od7JA5MjgB34GiY42X9T1Dma3DJCUBcLWR5Uo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OxijG8Ee2g5+wVQnN1qVAuG8VcAY4HRVLn8vhSjOM7j7u/qSgp3Y1jBaIy50zEbUr
-	 3UmR+WU+NNvFUBOoKX6jegmuW9xrZ8b3jTnCKA0LccwLcM2WJIhKjzkQzokmU4GCFT
-	 p1C4gatH3OkYEwhVTUhG1+NaJsdWUZ6u4LIBleck60/q1eijpfs6FEBPl83NKAHsC+
-	 hb+6Zyq4fTx4ghfJ8XGh0t4prBJwWp5HAK7oJ5X35ixzuIz3ouRm6F9xM23i35s67o
-	 jW1aP4lFTsRyNPTSqQOGbBsTROYsZh7oszs1QwFMgghXEnRl9odRaf3Kl12TqZ48Z8
-	 3NVfLEmJjjzkg==
-Date: Tue, 14 Oct 2025 11:23:37 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net-next v3 2/3] net: airoha: npu: Add
- airoha_npu_soc_data struct
-Message-ID: <aO4WmeuoAcZLFSBo@lore-desk>
-References: <20251013-airoha-npu-7583-v3-0-00f748b5a0c7@kernel.org>
- <20251013-airoha-npu-7583-v3-2-00f748b5a0c7@kernel.org>
- <aO4LL8racazLjjzk@horms.kernel.org>
+	b=K2VIJnvjeULkqo+jYu3MvXTdSpkss5eKcDIMzGYsUp3pWCeEXwq+shs9TcZ4PxS/V
+	 GpMekWpp7laGilxhFxm4nwbvwhNL1qw32IaJfSvItJxyh4CmM/RtUl93JR9ex1ohCY
+	 znUyPA0CmOYaYXnWOxPeJULE+yQIeoYJLcoqiEY5hhB7tK01obDPy101yM7pK4xDjj
+	 UMCVcJtT0yvKXp1ITzvmMhH9yWZI5OpzZ4zKH/guopeGKH8LpeKEtZQeGIX9akt//R
+	 0566OisOS/MhbuLghBymw8ZOkxOc1+1sRewCBbMawDo/6Ii+vE04JTPBYSjcAIqN2Q
+	 FmIU3KgDSK3GQ==
+Date: Tue, 14 Oct 2025 10:25:29 +0100
+From: Simon Horman <horms@kernel.org>
+To: Emil Tantilov <emil.s.tantilov@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	przemyslaw.kitszel@intel.com, anthony.l.nguyen@intel.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, decot@google.com,
+	willemb@google.com, joshua.a.hay@intel.com, madhu.chittim@intel.com
+Subject: Re: [PATCH iwl-net] idpf: fix possible vport_config NULL pointer
+ deref in remove
+Message-ID: <aO4XCSu0jZ57k-1Z@horms.kernel.org>
+References: <20251013150824.28705-1-emil.s.tantilov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RC3OzpSHrP3UiKaL"
-Content-Disposition: inline
-In-Reply-To: <aO4LL8racazLjjzk@horms.kernel.org>
-
-
---RC3OzpSHrP3UiKaL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251013150824.28705-1-emil.s.tantilov@intel.com>
 
-> On Mon, Oct 13, 2025 at 03:58:50PM +0200, Lorenzo Bianconi wrote:
->=20
+On Mon, Oct 13, 2025 at 08:08:24AM -0700, Emil Tantilov wrote:
+> Attempting to remove the driver will cause a crash in cases where
+> the vport failed to initialize. Following trace is from an instance where
+> the driver failed during an attempt to create a VF:
+> [ 1661.543624] idpf 0000:84:00.7: Device HW Reset initiated
+> [ 1722.923726] idpf 0000:84:00.7: Transaction timed-out (op:1 cookie:2900 vc_op:1 salt:29 timeout:60000ms)
+> [ 1723.353263] BUG: kernel NULL pointer dereference, address: 0000000000000028
 > ...
->=20
-> > @@ -182,49 +192,53 @@ static int airoha_npu_send_msg(struct airoha_npu =
-*npu, int func_id,
-> >  	return ret;
-> >  }
-> > =20
-> > -static int airoha_npu_run_firmware(struct device *dev, void __iomem *b=
-ase,
-> > -				   struct resource *res)
-> > +static int airoha_npu_load_firmware(struct device *dev, void __iomem *=
-addr,
-> > +				    const struct airoha_npu_fw *fw_info)
-> >  {
-> >  	const struct firmware *fw;
-> > -	void __iomem *addr;
-> >  	int ret;
-> > =20
-> > -	ret =3D request_firmware(&fw, NPU_EN7581_FIRMWARE_RV32, dev);
-> > +	ret =3D request_firmware(&fw, fw_info->name, dev);
-> >  	if (ret)
-> >  		return ret =3D=3D -ENOENT ? -EPROBE_DEFER : ret;
-> > =20
-> > -	if (fw->size > NPU_EN7581_FIRMWARE_RV32_MAX_SIZE) {
-> > +	if (fw->size > fw_info->max_size) {
-> >  		dev_err(dev, "%s: fw size too overlimit (%zu)\n",
-> > -			NPU_EN7581_FIRMWARE_RV32, fw->size);
-> > +			fw_info->name, fw->size);
-> >  		ret =3D -E2BIG;
-> >  		goto out;
-> >  	}
-> > =20
-> > -	addr =3D devm_ioremap_resource(dev, res);
-> > -	if (IS_ERR(addr)) {
-> > -		ret =3D PTR_ERR(addr);
-> > -		goto out;
-> > -	}
-> > -
-> >  	memcpy_toio(addr, fw->data, fw->size);
-> > +out:
-> >  	release_firmware(fw);
-> > =20
-> > -	ret =3D request_firmware(&fw, NPU_EN7581_FIRMWARE_DATA, dev);
-> > -	if (ret)
-> > -		return ret =3D=3D -ENOENT ? -EPROBE_DEFER : ret;
-> > +	return ret;
-> > +}
-> > =20
-> > -	if (fw->size > NPU_EN7581_FIRMWARE_DATA_MAX_SIZE) {
-> > -		dev_err(dev, "%s: fw size too overlimit (%zu)\n",
-> > -			NPU_EN7581_FIRMWARE_DATA, fw->size);
-> > -		ret =3D -E2BIG;
-> > -		goto out;
-> > -	}
-> > +static int airoha_npu_run_firmware(struct device *dev, void __iomem *b=
-ase,
-> > +				   struct resource *res)
-> > +{
-> > +	const struct airoha_npu_soc_data *soc;
-> > +	void __iomem *addr;
-> > +	int ret;
-> > =20
-> > -	memcpy_toio(base + REG_NPU_LOCAL_SRAM, fw->data, fw->size);
-> > -out:
-> > -	release_firmware(fw);
-> > +	soc =3D of_device_get_match_data(dev);
-> > +	if (!soc)
-> > +		return -EINVAL;
-> > =20
-> > -	return ret;
-> > +	addr =3D devm_ioremap_resource(dev, res);
-> > +	if (IS_ERR(addr))
-> > +		return PTR_ERR(addr);
-> > +
-> > +	/* Load rv32 npu firmware */
-> > +	ret =3D airoha_npu_load_firmware(dev, addr, &soc->fw_rv32);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Load data npu firmware */
-> > +	return airoha_npu_load_firmware(dev, base + REG_NPU_LOCAL_SRAM,
-> > +					&soc->fw_data);
->=20
-> Hi Lorenzo,
-
-Hi Simon,
-
->=20
-> There are two calls to airoha_npu_load_firmware() above.
-> And, internally, airoha_npu_load_firmware() will call release_firmware()
-> if an error is encountered.
->=20
-> But should release_firmware() be called for the firmware requested
-> by the first call to airoha_npu_load_firmware() if the second call fails?
-> Such clean-up seems to have been the case prior to this patch.
-
-release_firmware() is intended to release the resources allocated by the
-corresponding call to request_firmware() in airoha_npu_load_firmware().
-According to my understanding we always run release_firmware() in
-airoha_npu_load_firmware() before returning to the caller. Even before this
-patch we run release_firmware() on the 'first' firmware image before reques=
-ting
-the second one. Am I missing something?
-
->=20
-> Also, not strictly related. Should release_firmware() be called (twice)
-> when the driver is removed?
-
-For the above reasons, it is not important to call release_firmware() remov=
-ing
-the module. Agree?
-
-Regards,
-Lorenzo
-
->=20
-> >  }
-> > =20
-> >  static irqreturn_t airoha_npu_mbox_handler(int irq, void *npu_instance)
->=20
+> [ 1723.358472] RIP: 0010:idpf_remove+0x11c/0x200 [idpf]
 > ...
+> [ 1723.364973] Call Trace:
+> [ 1723.365475]  <TASK>
+> [ 1723.365972]  pci_device_remove+0x42/0xb0
+> [ 1723.366481]  device_release_driver_internal+0x1a9/0x210
+> [ 1723.366987]  pci_stop_bus_device+0x6d/0x90
+> [ 1723.367488]  pci_stop_and_remove_bus_device+0x12/0x20
+> [ 1723.367971]  pci_iov_remove_virtfn+0xbd/0x120
+> [ 1723.368309]  sriov_disable+0x34/0xe0
+> [ 1723.368643]  idpf_sriov_configure+0x58/0x140 [idpf]
+> [ 1723.368982]  sriov_numvfs_store+0xda/0x1c0
+> 
+> Avoid the NULL pointer dereference by adding NULL pointer check for
+> vport_config[i], before freeing user_config.q_coalesce.
+> 
+> Fixes: e1e3fec3e34b ("idpf: preserve coalescing settings across resets")
+> Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+> Reviewed-by: Chittim Madhu <madhu.chittim@intel.com>
 
---RC3OzpSHrP3UiKaL
-Content-Type: application/pgp-signature; name=signature.asc
+Thanks,
 
------BEGIN PGP SIGNATURE-----
+I agree that prior to the cited commit adapter->vport_config[i] being
+NULL was harmless. But afterwards a NULL pointer dereference would occur.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaO4WmQAKCRA6cBh0uS2t
-rMoTAP9HdqSplLptTvESowj2txGAcrb/gc17fXY3RbXV9I2MoQEAokKGOUSeg9My
-inH68eZk4H3dQS+CcqdVfpLwtEramQU=
-=2u0A
------END PGP SIGNATURE-----
+It also seems to me that the possibility of adapter->vport_config[i]
+being null, via an error in idpf_vport_alloc() has existed since
+vport configuration was added by commit 0fe45467a104 ("idpf: add create
+vport and netdev configuration"). (Which predates the cited commit.)
 
---RC3OzpSHrP3UiKaL--
+Reviewed-by: Simon Horman <horms@kernel.org>
+
