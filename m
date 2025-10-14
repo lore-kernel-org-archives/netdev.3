@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E0531576D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF21314D1F
 	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 14:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760451033; cv=none; b=u250Rvv9nj2iJbbuUhJZBeW8KaSpcadsUXrrTHUPPXvfwPa5P3gNtaLnEyNnzo7fup74aBBT97fAjCh9QJlleiJbCe+1Hn73OjtqMCuYsH5TgD983QCkD8H/Kq5R5K6qoDiXgSEOWl4Ff9EfitPxgpGjakeX/kKQbS4tkB4JVho=
+	t=1760451034; cv=none; b=r7hRkiGWJk+BaRzIHTUBSpOVWT+FJbgsQs0UoK+jqm+5DYe5qlrAbxc5swxqp1P99MQVtlZgPVNghROUqqixdGaYh1dDbmNBfwv3xkk32EVsH2UeArkCvk+YYTVv7jU5J0W6c2GBOzeP65NPR/aRneUj4ZoMtcMxaHuSuGkpiP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760451033; c=relaxed/simple;
-	bh=Og6m1KJ/1oagFeEPSJ3qBstH2NMkDrVm7ArdQVT4A0g=;
+	s=arc-20240116; t=1760451034; c=relaxed/simple;
+	bh=WKHVSqC33oDJZ1LHGZ1FtHI86lXopX31clBfEzUHW1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck6kDn5DzIBFWHnHEPgXBe2Hcp4n9IfgeEmbCpE8ys6pNk1kzjIOp8AJHF5K0tlykz2hVlhVLs10OYFgltAxmElaEeClNV7I9wn2CvQ5BY/SpUB5JWUCMJxX0GVko14nJXaGlJ59kANTJm97rkdERfD5CxzPx8oQdJOksBwCOiE=
+	 MIME-Version; b=B9nd70+Qqr/sFvfIsvbAfpTImyXzRf/8CVttuWKH47/2a6xfG3NDdKuXR+FIGU06bh/qiSW+uIKwUtOvT5EWYX8QSNz+sfHEkQd6WBUhs4qgTmvU5VEWFXkAIr31yIdnB+gCtMXc/qv94LMCiw51oOcGf2foO/WWAESu0lO67Yg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v8fjK-0008IJ-Ta; Tue, 14 Oct 2025 16:10:22 +0200
+	id 1v8fjK-0008IM-UN; Tue, 14 Oct 2025 16:10:22 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v8fjK-003ZPx-17;
+	id 1v8fjK-003ZQA-2B;
 	Tue, 14 Oct 2025 16:10:22 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 14E2B485F19;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5F9E6485F1C;
 	Tue, 14 Oct 2025 14:10:22 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,11 +38,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Markus Schneider-Pargmann <msp@baylibre.com>
-Subject: [PATCH net 05/10] can: m_can: m_can_chip_config(): bring up interface in correct state
-Date: Tue, 14 Oct 2025 14:17:52 +0200
-Message-ID: <20251014122140.990472-6-mkl@pengutronix.de>
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 08/10] can: remove false statement about 1:1 mapping between DLC and length
+Date: Tue, 14 Oct 2025 14:17:55 +0200
+Message-ID: <20251014122140.990472-9-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251014122140.990472-1-mkl@pengutronix.de>
 References: <20251014122140.990472-1-mkl@pengutronix.de>
@@ -58,37 +58,65 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-In some SoCs (observed on the STM32MP15) the M_CAN IP core keeps the
-CAN state and CAN error counters over an internal reset cycle. An
-external reset is not always possible, due to the shared reset with
-the other CAN core. This caused the core not always be in Error Active
-state when bringing up the controller.
+From: Vincent Mailhol <mailhol@kernel.org>
 
-Instead of always setting the CAN state to Error Active in
-m_can_chip_config(), fix this by reading and decoding the Protocol
-Status Regitser (PSR) and set the CAN state accordingly.
+The CAN-FD section of can.rst still states that there is a 1:1 mapping
+between the Classical CAN DLC and its length. This is only true for
+the DLC values up to 8. Beyond that point, the length remains at 8.
 
-Fixes: e0d1f4816f2a ("can: m_can: add Bosch M_CAN controller support")
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Link: https://patch.msgid.link/20250929-m_can-fix-state-handling-v4-3-682b49b49d9a@pengutronix.de
+For reference, the mapping between the CAN DLC and the length is given
+in below table [1]:
+
+	 DLC value	CBFF and CEFF	FBFF and FEFF
+	 [decimal]	    [byte]	    [byte]
+	----------------------------------------------
+		 0		 0		 0
+		 1		 1		 1
+		 2		 2		 2
+		 3		 3		 3
+		 4		 4		 4
+		 5		 5		 5
+		 6		 6		 6
+		 7		 7		 7
+		 8		 8		 8
+		 9		 8		12
+		10		 8		16
+		11		 8		20
+		12		 8		24
+		13		 8		32
+		14		 8		48
+		15		 8		64
+
+Remove the erroneous statement. Instead just state that the length of
+a Classical CAN frame ranges from 0 to 8.
+
+[1] ISO 11898-1:2024, Table 5 -- DLC: coding of the four LSB
+
+Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20251013-can-fd-doc-v2-1-5d53bdc8f2ad@kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/m_can/m_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/networking/can.rst | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index ac864183a536..b6db5b57241c 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1617,7 +1617,7 @@ static int m_can_start(struct net_device *dev)
- 	netdev_queue_set_dql_min_limit(netdev_get_tx_queue(cdev->net, 0),
- 				       cdev->tx_max_coalesced_frames);
+diff --git a/Documentation/networking/can.rst b/Documentation/networking/can.rst
+index 7650c4b5be5f..ccd321d29a8a 100644
+--- a/Documentation/networking/can.rst
++++ b/Documentation/networking/can.rst
+@@ -1398,10 +1398,9 @@ second bit timing has to be specified in order to enable the CAN FD bitrate.
+ Additionally CAN FD capable CAN controllers support up to 64 bytes of
+ payload. The representation of this length in can_frame.len and
+ canfd_frame.len for userspace applications and inside the Linux network
+-layer is a plain value from 0 .. 64 instead of the CAN 'data length code'.
+-The data length code was a 1:1 mapping to the payload length in the Classical
+-CAN frames anyway. The payload length to the bus-relevant DLC mapping is
+-only performed inside the CAN drivers, preferably with the helper
++layer is a plain value from 0 .. 64 instead of the Classical CAN length
++which ranges from 0 to 8. The payload length to the bus-relevant DLC mapping
++is only performed inside the CAN drivers, preferably with the helper
+ functions can_fd_dlc2len() and can_fd_len2dlc().
  
--	cdev->can.state = CAN_STATE_ERROR_ACTIVE;
-+	cdev->can.state = m_can_state_get_by_psr(cdev);
- 
- 	m_can_enable_all_interrupts(cdev);
- 
+ The CAN netdevice driver capabilities can be distinguished by the network
 -- 
 2.51.0
 
