@@ -1,94 +1,135 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F48730BF6B
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 11:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E4F1F239B
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 11:35:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760441616; cv=none; b=u3wnhq2gIk/NTqi8H+KYCF0DvOdm9C6YxRhTPE6wdloVQEXJzj/5IBjpYfnEggcDVqyS+fsoFgAWCIJZ8GAFgOpcNl/K2gWkBCmcDsf8u8kXgxOfWJDt9pHAstL12u2pZekw5o0WC3nLs2vJW9JC28qAhDLL1gXIWgrzExu/00s=
+	t=1760441707; cv=none; b=c05LSi76x8cWcRF4tuwH5Qnc9OIxltC7yPdLfrT+EFpp/igCyAMhdEkHCaQ8k+aRAFTAwKuw/rj4g60ah4iXC1M+Uj3r3TDuyMySxXP3LziBS5E/vVkz/jECRsIpNCk7Bgku7MkSKtSqkA3cnzUcyIr6ylp0xK2HSAnSNaGZ0QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760441616; c=relaxed/simple;
-	bh=EOiBoMq8sLGDd3lfmeBPzgdelZvp0tOnl2eG6FrkpzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q/PhxikDTpMNpjdEOQTX0fbQZgPfJooK8m+eNR92VVhpa2Dd/J5ddjEdHupnEj1CYL+AcaWCQcbI//+/GBPtb6EsfvEIJDx8cpMiiLp6Ebmufxv8SZDK96xyOc6tIo2Cl7NzhZy6PBBQhE3lZWdux2yXSo4MFAEGDR9BfkqrIPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nr04E4ei; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760441707; c=relaxed/simple;
+	bh=T3t0+cYCuL3VKAnxS7+KPj15eJ+4z2KvH9LNLJxNSNc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YuxsCMliaI/sshPHd161/7RUljaUQ7ODBoi55KAcIGsYTUgqI/eGLfyAvehZX+6BAQrM5spUbcj8SFn9lq+PewwnF6dsF1uEoQt/V5JzrG/8P5sFWwS32zGTEbXkpnwooxwNWs9f5xICjTnC5SOiLX7BDKB3xG298vIvaH6KNNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jX+0Belh; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nr04E4ei"
-Message-ID: <fb93e416-1a6c-4c3c-9621-03deb8bc34aa@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760441602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TCxzBWmpERGaNbcd7P2dfHjWYxDzYzg8wdZKfHQFXKQ=;
-	b=nr04E4eiX7LIJzoKhkxJrfJGLTm++4OCq7ELggnOG2SHf1meAouxCgrl1KwLUuQ3ypmAA6
-	aNWjBAcNdJZJTWp2QowDUrCpem+qdcVfQ9IN/yz/i3mtm3zZKVqHpWd6CbMHoEVjT42Tcb
-	mOI8X88kDZHGVQsLROdUsk62sp0+n0Q=
-Date: Tue, 14 Oct 2025 12:33:15 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jX+0Belh"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-791fd6bffbaso81442586d6.3
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 04:35:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760441704; x=1761046504; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dVR3/U6+ocxlCfncD6DTY1Wi6NUabWM18tL8EPxbc4Y=;
+        b=jX+0BelhB8lxTjS2WHUN00H1b5qUxNC1UR5HsXAvRrWLBSOfI9Y9yjfqw0JaHoFY7P
+         EHNhUexNSLw58+60kIx9JvUJz8PCPobaNnlAvdTilfSgLsznbtRhnsJDtCFzSN7llCS7
+         2Ms5qLGRPuL5pHhX2VfKLjA4WBFLR5Mz9JXArSVKnkstfuSLA2Vb6IcIZCmU8gBiHggf
+         Z3+oqfDcFGpBk6rvfpBbtES0FrGn4sj2qe+Kse1Phow8a3AjZ6sJCMUqIPJWIRvqr+e/
+         ceErRjXozyEUeODKJ25Q5DEt+a2QBMAyt/dXkGjq4Ma3/P0e9cFEsTJE/JvJWFUrfzrW
+         hj9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760441704; x=1761046504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dVR3/U6+ocxlCfncD6DTY1Wi6NUabWM18tL8EPxbc4Y=;
+        b=i9mmlYv3yBXSHJ4sgA4upryGMf+AYlp61YQMbXi1L920herf/Oj6zOIVCtDjxtQXCy
+         5LqC8F+2pQEAguUjq61gsuYlNIGAC832vtJt34XwbHEn723IGhTgxdvYwamNvwOr9xTy
+         kQ7cxV3uqDIPx7SPb5AgOOqegnz4D/WL0Dm/J4YY2+XBZuJCPr6cYCgHD1qsVyegQTto
+         Y2a8iNktPbvqE26SirBr1++rlJl+f0jpjZLWW33ZmYOkbQjMuhJQJO5+hz0OJk7DqLSB
+         9GMZVFW7jVDHSpwGEwfiEwyAxz3AiEwrYEDuu3//wxsTd06A2+G2KixR9+LwJTc40kfT
+         Z05Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVziaGagH//fHfDeFyTfBldpXR3LsgLYeTxK9rm0CbZpDjlHDYjDXQOvzav+q6xKnff5gKiasU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE0FLyyhV6vkkwMl6JXBavbWVTijESHsiZwl8KhNxdBu9+XOgU
+	SXMFS7lFiHJSL310/RLPoOBl06hSPQnaMMQybVmN5gu9bcgw0uuCzpBxTV57WCYAKtf7Du2XMmg
+	aeMUlkAITCDYcu2BDUdrwx9PnEuZj8cF5Ql7pUmBT
+X-Gm-Gg: ASbGncvldNJnbL8gCu9vsVhOwN1R0PCCJC1VK5S8gerZuxV10tD9SDkRvAAIDqsBkJ7
+	CfulL/V6WUvclibJOuigOMwoK8l9x76SqOfCaNn+czn7ZBQlYAgWrp6r1mE3nOwCy/zlQ71lmjq
+	W8cUwsycvK0wYMtI/h0Kx7kzVuABCi6e1r80QkFsQ413NCNYZCKx7DH0F5qM8Xg1w0dnX7ZGF2N
+	HMst8I/xYCv2a+2hc61rpBIRuiNGWTHhTjXlLbNPzM=
+X-Google-Smtp-Source: AGHT+IErcRymCqmHzYzspQCDTX2dPgmRiGtPAAIxOL8F0bRuGV7TpK34yxFU37vdJGxxLCf7JJaaqFOhRNfZu9x3EEM=
+X-Received: by 2002:a05:622a:250d:b0:4b5:e9e3:3c90 with SMTP id
+ d75a77b69052e-4e6eacceb54mr399056251cf.9.1760441704251; Tue, 14 Oct 2025
+ 04:35:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 13/14] net: hns3: add hwtstamp_get/hwtstamp_set
- ops
-To: Simon Horman <horms@kernel.org>
-Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Igor Russkikh <irusskikh@marvell.com>, Egor Pomozov <epomozov@marvell.com>,
- Potnuri Bharat Teja <bharat@chelsio.com>,
- Dimitris Michailidis <dmichail@fungible.com>,
- Jian Shen <shenjian15@huawei.com>, Salil Mehta <salil.mehta@huawei.com>,
- Jijie Shao <shaojijie@huawei.com>, Sunil Goutham <sgoutham@marvell.com>,
- Geetha sowjanya <gakula@marvell.com>, Subbaraya Sundeep
- <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>,
- Tariq Toukan <tariqt@nvidia.com>, Brett Creeley <brett.creeley@amd.com>,
- =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
- Paul Barker <paul@pbarker.dev>,
- Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
- MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org
-References: <20251013163749.5047-1-vadim.fedorenko@linux.dev>
- <20251013163749.5047-8-vadim.fedorenko@linux.dev>
- <aO4zdkFjMlv5trhB@horms.kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <aO4zdkFjMlv5trhB@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251014060454.1841122-1-edumazet@google.com> <aO3voj4IbAoHgDoP@krikkit>
+ <c502f3e2-7d6b-4510-a812-c5b656d081d6@redhat.com> <CANn89i+t9e6qRwvkc70dbxAXLz2bGC6uamB==cfcJee3d8tbgQ@mail.gmail.com>
+ <CANn89iJguZEYBP7K_x9LmWGhJw0zf7msbxrVHM0m99pS3dYKKg@mail.gmail.com>
+ <CANn89iK6w0CNzMqRJiA7QN2Ap3AFWpqWYhbB55RcHPeLq6xzyg@mail.gmail.com>
+ <CANn89iLKAm=Pe=S=7727hDZSTGhrodqO-9aMhT0c4sFYE38jxA@mail.gmail.com> <tdxplao4k3tru2ydqrjg5wzt4mmllblmilys456y7latayvdex@3l7xabhdjf2d>
+In-Reply-To: <tdxplao4k3tru2ydqrjg5wzt4mmllblmilys456y7latayvdex@3l7xabhdjf2d>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 04:34:52 -0700
+X-Gm-Features: AS18NWAmZCgDyqvKRL6Rox3zhzKYp8P6DV9AS8hTvm7VAVuJ3moVlXts4gNWtVs
+Message-ID: <CANn89iKQYN1qTZoSW4+1v6scDgH53zi9pP_O_mEbTdYQYie1uQ@mail.gmail.com>
+Subject: Re: [PATCH net] udp: drop secpath before storing an skb in a receive queue
+To: Michal Kubecek <mkubecek@suse.cz>
+Cc: Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 14/10/2025 12:26, Simon Horman wrote:
-> On Mon, Oct 13, 2025 at 04:37:48PM +0000, Vadim Fedorenko wrote:
->> And .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks to HNS3 framework
->> to support HW timestamp configuration via netlink.
->>
->> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> 
-> Hi Vadim,
-> 
-> This patch adds warnings about the functions it adds being unused.
-> 
-> I would suggest addressing this by simply squashing this and the following
-> patch, which uses these new functions, into one patch. I think the
-> resulting patch would still be small, internally consistent, and easy
-> enough to review.
-> 
+On Tue, Oct 14, 2025 at 4:20=E2=80=AFAM Michal Kubecek <mkubecek@suse.cz> w=
+rote:
+>
+> On Tue, Oct 14, 2025 at 01:27:13AM GMT, Eric Dumazet wrote:
+> > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > index 95241093b7f0..932c21838b9b 100644
+> > --- a/net/ipv4/udp.c
+> > +++ b/net/ipv4/udp.c
+> > @@ -1851,8 +1851,13 @@ void skb_consume_udp(struct sock *sk, struct
+> > sk_buff *skb, int len)
+> >                 sk_peek_offset_bwd(sk, len);
+> >
+> >         if (!skb_shared(skb)) {
+> > -               if (unlikely(udp_skb_has_head_state(skb)))
+> > -                       skb_release_head_state(skb);
+> > +               if (unlikely(udp_skb_has_head_state(skb))) {
+> > +                       /* Make sure that skb_release_head_state()
+> > will have nothing to do. */
+> > +                       DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
+> > +                       DEBUG_NET_WARN_ON_ONCE(skb->destructor);
+> > +                       DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
+> > +                       skb_ext_reset(skb);
+> > +               }
+> >                 skb_attempt_defer_free(skb);
+> >                 return;
+> >         }
+>
+> Tested this version on my system (with DEBUG_NET enabled) and everything
+> seems to work fine so far.
+>
+> Tested-by: Michal Kubecek <mkubecek@suse.cz>
 
-Hi Simon!
+Thanks for testing. I will follow Sabrina suggestion and send :
 
-Thanks for the review. I was thinking about it while writing the code,
-but thought it would be clearer to have it split. Apparently, I forgot
-about warnings in this case, which is definitely an issue here.
-Thanks for flagging, I'll merge these 2 patches in the next version.
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 95241093b7f0..d66f273f9070 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1851,8 +1851,13 @@ void skb_consume_udp(struct sock *sk, struct
+sk_buff *skb, int len)
+                sk_peek_offset_bwd(sk, len);
 
+        if (!skb_shared(skb)) {
+-               if (unlikely(udp_skb_has_head_state(skb)))
+-                       skb_release_head_state(skb);
++               /* Make sure that this skb has no dst, destructor
++                * or conntracking parts, because it might stay
++                * in a remote cpu list for a very long time.
++                */
++               DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
++               DEBUG_NET_WARN_ON_ONCE(skb->destructor);
++               DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
+                skb_attempt_defer_free(skb);
+                return;
+        }
