@@ -1,28 +1,28 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3428A30DEC7;
-	Tue, 14 Oct 2025 07:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E665730DEDA;
+	Tue, 14 Oct 2025 07:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760426869; cv=none; b=jsL94+ofnZCGC4GM0Nlb95nUrmb2xXFtY7pCyim2J8W5UMzc0DPFKF0wN/a3cpdXj+idol7SjRPmcG+qQLBM78VElBw//bC47gQT4ekgh56h1OHTgkDuHxebTK47ILjaJF0RW72w8a+wHNUnVsPpyg9VfC3reEsUjJDolrLM53c=
+	t=1760426873; cv=none; b=lm+/nZmrfGIgw18veNIheG7wvxp2Rh+K8400880MFaCq8/kxuCg+pAL8DZMKgkz+uQDLQI07KARf0je4NiaHolZrmiD6EwYvkAhdEVQ4gPavBcPZIoRNfwptmDHvcoF5K9F26pVHLQXNDuh55vsuA64PVqJ5GxatYM0oZSRUo2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760426869; c=relaxed/simple;
-	bh=yn4iYc6Q+9rTh+d6+br1jedfv4PoV8MNgzX6VzISiBA=;
+	s=arc-20240116; t=1760426873; c=relaxed/simple;
+	bh=Gw0kS6MfKMn5a9ABcytBo6kusWBX6HUjXXjCnSLOoM8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BkQbs6e++HjsIUjG+qzzq48tmHwOlCFOouyprkoDD6JQOimPheCJVTlETEgCtKNBq5Y4aHYhxRG3FhJPNrSQQ88uj7rPYVe7ESGfpRfY+LMWUTdGy0kWWvVTn5PnGmJBu/7tEitgqs5umXiko1G3U424geycnXtQjS8dfEEShCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.207.19.206
+	 MIME-Version; b=IJkoUYTI1ZOb5gHWOBKWZMmehPH4JlL0FiiOH7cf5GEOSs72SMV8baQyDom/K7N5ndpaClbZbG2V80xT9mrJsxgoLo3/MdrQ9T4Uto351cF/BxRa8mGl3tdTWLIxgf8nu98XH4VMyARI6fG3ORaXRF2NDViI57cV2PsXNKA93RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.169.211.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpsz2t1760426851t7c7a94bb
-X-QQ-Originating-IP: t0/DdO03VGAft0eHZoEq9RQ0Z/aAWWLFjFtMVMJgcwI=
+X-QQ-mid: zesmtpsz2t1760426860t6f534f5b
+X-QQ-Originating-IP: YMWdd08nqTJKzbxUXvjjF+DV3mo55BgnvU4rM74e7ds=
 Received: from localhost.localdomain ( [203.174.112.180])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 14 Oct 2025 15:27:29 +0800 (CST)
+	id ; Tue, 14 Oct 2025 15:27:38 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12547808997197274816
-EX-QQ-RecipientCnt: 14
+X-BIZMAIL-ID: 9935090016473382452
+EX-QQ-RecipientCnt: 13
 From: Dong Yibo <dong100@mucse.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -36,11 +36,10 @@ To: davem@davemloft.net,
 Cc: netdev@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	dong100@mucse.com,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v14 1/5] net: rnpgbe: Add build support for rnpgbe
-Date: Tue, 14 Oct 2025 15:27:07 +0800
-Message-Id: <20251014072711.13448-2-dong100@mucse.com>
+	dong100@mucse.com
+Subject: [PATCH net-next v14 4/5] net: rnpgbe: Add basic mbx_fw support
+Date: Tue, 14 Oct 2025 15:27:10 +0800
+Message-Id: <20251014072711.13448-5-dong100@mucse.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251014072711.13448-1-dong100@mucse.com>
 References: <20251014072711.13448-1-dong100@mucse.com>
@@ -53,345 +52,422 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: NlWvLSkfVnGcNNmx9WgBH4NdQCs1T41AWp61rPmPsWvNRjxlfWvZhBAb
-	bJ6wqa+nED6rEZ+MY8FYwhJikl32agosJ3WQqybCQEaGuHhxgYcLe+S87U0KQJlTdak8JNM
-	q3zyGUcUYjKsZ88QRSVmaa9hwxR6jyzCZXVUXery+fxTYupDStIjnq1ECJj+oczqipoW036
-	JnbXO7M6E2VlenCuhyMqajaoihWOFw2Y4LKMiIqRjrPFH3dGuEEl7zfVb5mN/mojq5rJk+Y
-	vjz/Sy4h4YbFLl4BFYzMNoz2qhSw1/UQK25Oqg4Em9iz6m4bFlcspHU0bonBkjvevVNEyli
-	ytU+1TPsdYBRqbxHRAHYR0Jp/FuCKhdRCFL5H+PIjmZTpKAbHBtOqx8r/Wg2QftT2XmpAJg
-	2hxfWRZDe9JlVPsPAXiIFJJsFwAtTQAfx71UdgtfDYcRJoidnOBfHf5YO+KHZq1xKme3Cm1
-	IgSqchZ6D125ZxghxXCt5gx2mX12CyCs1cevzadF0YFSE3i0NVVVhB3faln5DSlQUrayglc
-	86aGHsgbHjPUVqokkt3rG+q0HklrU/diPKEOBCrVGN1wFmTun27tJgG17QFZWb7ILuk+Z5s
-	gyHFuqngeL+XASraRVwg47l+3t8TL/oJU8Y8rWG9ixJRsseTBaeFGO9OC2AUGGgl8+ikrii
-	nlFRuq0C5gqxN9m+CSvyC3jhaT5L+FY7DWoU8rT0gj4QTNRAwPJK74Z3RwCJNbCjUD9+/Gg
-	8v0oypOu4SX9Ja/jtPqnsZejCA+F+5AvRAoPwl0LhJA2KTbGoFteoyjNXzFlq8EiB3MWkOe
-	Dh20erppxP4Kep/wIfUO1pUzwjeeR6Uj2pPQ5qf7zMy+1SHT4lCI+zU20NeRvsYIRnUVXmP
-	KoAqdmkS8DnemlE6KW6jrHVJhn/GtFuGx8jhMD4RVFsN5ElQKvjkyhrogaBR27uMKYRyvQK
-	lzuDNkqYMPhBHZHuFo8QHfAg1w1OD2x0fg5iYd5aAs3UovrkBmubTw1Xtfab9CMMFtmI/AZ
-	tl0eSJMJCyL1RNuh07Kw94vh486/Q=
-X-QQ-XMRINFO: OD9hHCdaPRBwq3WW+NvGbIU=
+X-QQ-XMAILINFO: MeVue4XBoBLbiyiADvXC8nAzOzpb9IQNDFj20jJPdK5+c95sVRXI9Xx/
+	aG2mS7ACCjgQVP2BIjAgXz+0BEEqzkBWAMe3i1hy9JpcoPa6VtDZSMyCXx97+YQKPMPif1b
+	m3dBPvg+ifRLPHtJQnxZnRiycwDI8otC6KgobGu+y/SMVDKUmeE6TPmkATG8WwvOLtI108B
+	fNVzkMe8TOSc06yeo++HG2sSeGksXHkOI4WLW77nfizKcWZJ+4D7YQbjlswUWXVym5d7J9g
+	PJu6Ho+0mzT9cKTVqKuiO9z9i/+pUql+aNkFtLrDlT9uFOgWKd2RrG3U76AlGDeFuaKqymC
+	7KWCUgqOsGHaLT7U0cNb1IVi7184zEtE8GQ0u1HDB07rlzwoitcPOWhJcKkB6zjq+8CLAdc
+	vSxu1hT8eqYPZZSkGb3slEFq+rAeDcZkelEPgijTS5pxonsvyew2pyuPMqO29g2HIAaL5H4
+	bnLZfZIePfv1JNEwdJ7MLhXDi8X9Vw5rmItI3pkkvgwZC6EWAsb09uplADxX1bS2SsoVaZM
+	QH2dPc3fwV4qBlzV4NGjWP0MSAex0KVYNvoH7PzXLzqdSEDHN2bCZK935U1YxFfbf/oK1Zl
+	wYHVhb35vrjqmircbSlv8aJ2qxRfr+YFVS1cDgMSVxGUraLV1zSatj4SoBVbullCPG6qtA8
+	Ss/Xf48FAngXDxCdHIupJguSDJtAck2yoCBerNvP1KUjtSD9n/TRs7f/KsS9MKpnJKBrnuD
+	ggckU+ojhyhe7J2rso2bHi53sbN/YghSKgz+LUT5M+iO71mLGVdFgT8649nCK/91ks8/Xvh
+	0bz1pDxCqxMKsNJsrufcDMxxj+KAhrx71+f+4MDIoqT3jN+PcJaSdl3abGKJoZvt1619Im1
+	e/O8EdeXxaEk+GmxzbHxkN6EFWsoJnlSP5RIOS25bj0RqZOml7a2H2CzVUzAb9RaB2etv7K
+	uKBXN58shI0RQ4GWKEd9zMWHeIJxvkItv3z6vUihvmBhZCoZYwqg5ultKogUyrun7sPYgBV
+	+dQPyMYchxD/MTQg8qog726IpUPgN+2U0B7/9h6g==
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
 X-QQ-RECHKSPAM: 0
 
-Add build options and doc for mucse.
-Initialize pci device access for MUCSE devices.
+Add fundamental firmware (FW) communication operations via PF-FW
+mailbox, including:
+- FW sync (via HW info query with retries)
+- HW reset (post FW command to reset hardware)
+- MAC address retrieval (request FW for port-specific MAC)
+- Power management (powerup/powerdown notification to FW)
 
 Signed-off-by: Dong Yibo <dong100@mucse.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
 ---
- .../device_drivers/ethernet/index.rst         |   1 +
- .../device_drivers/ethernet/mucse/rnpgbe.rst  |  17 +++
- MAINTAINERS                                   |   8 ++
- drivers/net/ethernet/Kconfig                  |   1 +
- drivers/net/ethernet/Makefile                 |   1 +
- drivers/net/ethernet/mucse/Kconfig            |  33 +++++
- drivers/net/ethernet/mucse/Makefile           |   7 +
- drivers/net/ethernet/mucse/rnpgbe/Makefile    |   8 ++
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  18 +++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   | 120 ++++++++++++++++++
- 10 files changed, 214 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
- create mode 100644 drivers/net/ethernet/mucse/Kconfig
- create mode 100644 drivers/net/ethernet/mucse/Makefile
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/Makefile
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+ drivers/net/ethernet/mucse/rnpgbe/Makefile    |   3 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |   4 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |   1 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c | 195 ++++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h | 121 +++++++++++
+ 5 files changed, 323 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
 
-diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
-index 7cfcd183054f..bcc02355f828 100644
---- a/Documentation/networking/device_drivers/ethernet/index.rst
-+++ b/Documentation/networking/device_drivers/ethernet/index.rst
-@@ -47,6 +47,7 @@ Contents:
-    mellanox/mlx5/index
-    meta/fbnic
-    microsoft/netvsc
-+   mucse/rnpgbe
-    neterion/s2io
-    netronome/nfp
-    pensando/ionic
-diff --git a/Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst b/Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
-new file mode 100644
-index 000000000000..d35cf8a46b6c
---- /dev/null
-+++ b/Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst
-@@ -0,0 +1,17 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===========================================================
-+Linux Base Driver for MUCSE(R) Gigabit PCI Express Adapters
-+===========================================================
-+
-+Contents
-+========
-+
-+- Identifying Your Adapter
-+
-+Identifying Your Adapter
-+========================
-+The driver is compatible with devices based on the following:
-+
-+ * MUCSE(R) Ethernet Controller N210 series
-+ * MUCSE(R) Ethernet Controller N500 series
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3a27901781c2..0f3faf35a597 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17588,6 +17588,14 @@ T:	git git://linuxtv.org/media.git
- F:	Documentation/devicetree/bindings/media/i2c/aptina,mt9v111.yaml
- F:	drivers/media/i2c/mt9v111.c
- 
-+MUCSE ETHERNET DRIVER
-+M:	Yibo Dong <dong100@mucse.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+W:	https://www.mucse.com/en/
-+F:	Documentation/networking/device_drivers/ethernet/mucse/
-+F:	drivers/net/ethernet/mucse/
-+
- MULTIFUNCTION DEVICES (MFD)
- M:	Lee Jones <lee@kernel.org>
- S:	Maintained
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index aead145dd91d..4a1b368ca7e6 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -129,6 +129,7 @@ source "drivers/net/ethernet/microchip/Kconfig"
- source "drivers/net/ethernet/mscc/Kconfig"
- source "drivers/net/ethernet/microsoft/Kconfig"
- source "drivers/net/ethernet/moxa/Kconfig"
-+source "drivers/net/ethernet/mucse/Kconfig"
- source "drivers/net/ethernet/myricom/Kconfig"
- 
- config FEALNX
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index 998dd628b202..2e18df8ca8ec 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -65,6 +65,7 @@ obj-$(CONFIG_NET_VENDOR_MICREL) += micrel/
- obj-$(CONFIG_NET_VENDOR_MICROCHIP) += microchip/
- obj-$(CONFIG_NET_VENDOR_MICROSEMI) += mscc/
- obj-$(CONFIG_NET_VENDOR_MOXART) += moxa/
-+obj-$(CONFIG_NET_VENDOR_MUCSE) += mucse/
- obj-$(CONFIG_NET_VENDOR_MYRI) += myricom/
- obj-$(CONFIG_FEALNX) += fealnx.o
- obj-$(CONFIG_NET_VENDOR_NATSEMI) += natsemi/
-diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
-new file mode 100644
-index 000000000000..0b3e853d625f
---- /dev/null
-+++ b/drivers/net/ethernet/mucse/Kconfig
-@@ -0,0 +1,33 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Mucse network device configuration
-+#
-+
-+config NET_VENDOR_MUCSE
-+	bool "Mucse devices"
-+	default y
-+	help
-+	  If you have a network (Ethernet) card from Mucse(R), say Y.
-+
-+	  Note that the answer to this question doesn't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all
-+	  the questions about Mucse(R) cards. If you say Y, you will
-+	  be asked for your specific card in the following questions.
-+
-+if NET_VENDOR_MUCSE
-+
-+config MGBE
-+	tristate "Mucse(R) 1GbE PCI Express adapters support"
-+	depends on PCI
-+	help
-+	  This driver supports Mucse(R) 1GbE PCI Express family of
-+	  adapters.
-+
-+	  More specific information on configuring the driver is in
-+	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
-+
-+	  To compile this driver as a module, choose M here. The module
-+	  will be called rnpgbe.
-+
-+endif # NET_VENDOR_MUCSE
-+
-diff --git a/drivers/net/ethernet/mucse/Makefile b/drivers/net/ethernet/mucse/Makefile
-new file mode 100644
-index 000000000000..675173fa05f7
---- /dev/null
-+++ b/drivers/net/ethernet/mucse/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright(c) 2020 - 2025 MUCSE Corporation.
-+#
-+# Makefile for the MUCSE(R) network device drivers
-+#
-+
-+obj-$(CONFIG_MGBE) += rnpgbe/
 diff --git a/drivers/net/ethernet/mucse/rnpgbe/Makefile b/drivers/net/ethernet/mucse/rnpgbe/Makefile
-new file mode 100644
-index 000000000000..9df536f0d04c
---- /dev/null
+index 5fc878ada4b1..de8bcb7772ab 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/Makefile
 +++ b/drivers/net/ethernet/mucse/rnpgbe/Makefile
-@@ -0,0 +1,8 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright(c) 2020 - 2025 MUCSE Corporation.
-+#
-+# Makefile for the MUCSE(R) 1GbE PCI Express ethernet driver
-+#
-+
-+obj-$(CONFIG_MGBE) += rnpgbe.o
-+rnpgbe-objs := rnpgbe_main.o
+@@ -7,4 +7,5 @@
+ obj-$(CONFIG_MGBE) += rnpgbe.o
+ rnpgbe-objs := rnpgbe_main.o\
+ 	       rnpgbe_chip.o\
+-	       rnpgbe_mbx.o
++	       rnpgbe_mbx.o\
++	       rnpgbe_mbx_fw.o
 diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-new file mode 100644
-index 000000000000..d3439d28c654
---- /dev/null
+index f4af04b3117e..794581471b22 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
 +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h
-@@ -0,0 +1,18 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright(c) 2020 - 2025 Mucse Corporation. */
-+
-+#ifndef _RNPGBE_H
-+#define _RNPGBE_H
-+
-+enum rnpgbe_boards {
-+	board_n500,
-+	board_n210
-+};
-+
-+/* Device IDs */
-+#define PCI_VENDOR_ID_MUCSE               0x8848
-+#define RNPGBE_DEVICE_ID_N500_QUAD_PORT   0x8308
-+#define RNPGBE_DEVICE_ID_N500_DUAL_PORT   0x8318
-+#define RNPGBE_DEVICE_ID_N210             0x8208
-+#define RNPGBE_DEVICE_ID_N210L            0x820a
-+#endif /* _RNPGBE_H */
-diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+@@ -5,6 +5,7 @@
+ #define _RNPGBE_H
+ 
+ #include <linux/types.h>
++#include <linux/mutex.h>
+ 
+ enum rnpgbe_boards {
+ 	board_n500,
+@@ -24,6 +25,8 @@ struct mucse_mbx_info {
+ 	u32 delay_us;
+ 	u16 fw_req;
+ 	u16 fw_ack;
++	/* lock for only one use mbx */
++	struct mutex lock;
+ 	/* fw <--> pf mbx */
+ 	u32 fwpf_shm_base;
+ 	u32 pf2fw_mbx_ctrl;
+@@ -34,6 +37,7 @@ struct mucse_mbx_info {
+ struct mucse_hw {
+ 	void __iomem *hw_addr;
+ 	struct mucse_mbx_info mbx;
++	u8 pfvfnum;
+ };
+ 
+ struct mucse {
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+index b7e3d5dbadad..9c0e62ed33d4 100644
+--- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+@@ -411,5 +411,6 @@ void mucse_init_mbx_params_pf(struct mucse_hw *hw)
+ 	mbx->stats.msgs_rx = 0;
+ 	mbx->stats.reqs = 0;
+ 	mbx->stats.acks = 0;
++	mutex_init(&mbx->lock);
+ 	mucse_mbx_reset(hw);
+ }
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
 new file mode 100644
-index 000000000000..019e819fb497
+index 000000000000..2eaf24aa117e
 --- /dev/null
-+++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-@@ -0,0 +1,120 @@
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+@@ -0,0 +1,195 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright(c) 2020 - 2025 Mucse Corporation. */
 +
-+#include <linux/pci.h>
++#include <linux/if_ether.h>
++#include <linux/bitfield.h>
 +
 +#include "rnpgbe.h"
-+
-+static const char rnpgbe_driver_name[] = "rnpgbe";
-+
-+/* rnpgbe_pci_tbl - PCI Device ID Table
-+ *
-+ * { PCI_VDEVICE(Vendor ID, Device ID),
-+ *   private_data (used for different hw chip) }
-+ */
-+static struct pci_device_id rnpgbe_pci_tbl[] = {
-+	{ PCI_VDEVICE(MUCSE, RNPGBE_DEVICE_ID_N210), board_n210 },
-+	{ PCI_VDEVICE(MUCSE, RNPGBE_DEVICE_ID_N210L), board_n210 },
-+	{ PCI_VDEVICE(MUCSE, RNPGBE_DEVICE_ID_N500_DUAL_PORT), board_n500 },
-+	{ PCI_VDEVICE(MUCSE, RNPGBE_DEVICE_ID_N500_QUAD_PORT), board_n500 },
-+	/* required last entry */
-+	{0, },
-+};
++#include "rnpgbe_mbx.h"
++#include "rnpgbe_mbx_fw.h"
 +
 +/**
-+ * rnpgbe_probe - Device initialization routine
-+ * @pdev: PCI device information struct
-+ * @id: entry in rnpgbe_pci_tbl
++ * mucse_fw_send_cmd_wait_resp - Send cmd req and wait for response
++ * @hw: pointer to the HW structure
++ * @req: pointer to the cmd req structure
++ * @reply: pointer to the fw reply structure
 + *
-+ * rnpgbe_probe initializes a PF adapter identified by a pci_dev
-+ * structure.
++ * mucse_fw_send_cmd_wait_resp sends req to pf-fw mailbox and wait
++ * reply from fw.
 + *
 + * Return: 0 on success, negative errno on failure
 + **/
-+static int rnpgbe_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static int mucse_fw_send_cmd_wait_resp(struct mucse_hw *hw,
++				       struct mbx_fw_cmd_req *req,
++				       struct mbx_fw_cmd_reply *reply)
 +{
++	int len = le16_to_cpu(req->datalen);
++	int retry_cnt = 3;
 +	int err;
 +
-+	err = pci_enable_device_mem(pdev);
++	mutex_lock(&hw->mbx.lock);
++	err = mucse_write_and_wait_ack_mbx(hw, (u32 *)req, len);
 +	if (err)
-+		return err;
++		goto out;
++	do {
++		err = mucse_poll_and_read_mbx(hw, (u32 *)reply,
++					      sizeof(*reply));
++		if (err)
++			goto out;
++		/* mucse_write_and_wait_ack_mbx return 0 means fw has
++		 * received request, wait for the expect opcode
++		 * reply with 'retry_cnt' times.
++		 */
++	} while (--retry_cnt >= 0 && reply->opcode != req->opcode);
++out:
++	mutex_unlock(&hw->mbx.lock);
++	if (!err && retry_cnt < 0)
++		return -ETIMEDOUT;
++	if (!err && reply->error_code)
++		return -EIO;
 +
-+	err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(56));
-+	if (err) {
-+		dev_err(&pdev->dev,
-+			"No usable DMA configuration, aborting %d\n", err);
-+		goto err_disable_dev;
-+	}
-+
-+	err = pci_request_mem_regions(pdev, rnpgbe_driver_name);
-+	if (err) {
-+		dev_err(&pdev->dev,
-+			"pci_request_selected_regions failed %d\n", err);
-+		goto err_disable_dev;
-+	}
-+
-+	pci_set_master(pdev);
-+	err = pci_save_state(pdev);
-+	if (err) {
-+		dev_err(&pdev->dev, "pci_save_state failed %d\n", err);
-+		goto err_free_regions;
-+	}
-+
-+	return 0;
-+err_free_regions:
-+	pci_release_mem_regions(pdev);
-+err_disable_dev:
-+	pci_disable_device(pdev);
 +	return err;
 +}
 +
 +/**
-+ * rnpgbe_remove - Device removal routine
-+ * @pdev: PCI device information struct
++ * mucse_mbx_get_info - Get hw info from fw
++ * @hw: pointer to the HW structure
 + *
-+ * rnpgbe_remove is called by the PCI subsystem to alert the driver
-+ * that it should release a PCI device. This could be caused by a
-+ * Hot-Plug event, or because the driver is going to be removed from
-+ * memory.
++ * mucse_mbx_get_info tries to get hw info from hw.
++ *
++ * Return: 0 on success, negative errno on failure
 + **/
-+static void rnpgbe_remove(struct pci_dev *pdev)
++static int mucse_mbx_get_info(struct mucse_hw *hw)
 +{
-+	pci_release_mem_regions(pdev);
-+	pci_disable_device(pdev);
++	struct mbx_fw_cmd_req req = {
++		.datalen = cpu_to_le16(MUCSE_MBX_REQ_HDR_LEN),
++		.opcode  = cpu_to_le16(GET_HW_INFO),
++	};
++	struct mbx_fw_cmd_reply reply = {};
++	struct mucse_hw_info info = {};
++	int err;
++
++	err = mucse_fw_send_cmd_wait_resp(hw, &req, &reply);
++	if (!err) {
++		memcpy(&info, &reply.hw_info, sizeof(struct mucse_hw_info));
++		mucse_hw_info_update_host_endian(&info);
++		hw->pfvfnum = FIELD_GET(GENMASK_U16(7, 0),
++					le16_to_cpu(info.pfnum));
++	}
++
++	return err;
 +}
 +
 +/**
-+ * rnpgbe_dev_shutdown - Device shutdown routine
-+ * @pdev: PCI device information struct
++ * mucse_mbx_sync_fw - Try to sync with fw
++ * @hw: pointer to the HW structure
++ *
++ * mucse_mbx_sync_fw tries to sync with fw. It is only called in
++ * probe. Nothing (register network) todo if failed.
++ * Try more times to do sync.
++ *
++ * Return: 0 on success, negative errno on failure
 + **/
-+static void rnpgbe_dev_shutdown(struct pci_dev *pdev)
++int mucse_mbx_sync_fw(struct mucse_hw *hw)
 +{
-+	pci_disable_device(pdev);
++	int try_cnt = 3;
++	int err;
++
++	do {
++		err = mucse_mbx_get_info(hw);
++	} while (err == -ETIMEDOUT && try_cnt--);
++
++	return err;
 +}
 +
 +/**
-+ * rnpgbe_shutdown - Device shutdown routine
-+ * @pdev: PCI device information struct
++ * mucse_mbx_powerup - Echo fw to powerup
++ * @hw: pointer to the HW structure
++ * @is_powerup: true for powerup, false for powerdown
 + *
-+ * rnpgbe_shutdown is called by the PCI subsystem to alert the driver
-+ * that os shutdown. Device should setup wakeup state here.
++ * mucse_mbx_powerup echo fw to change working frequency
++ * to normal after received true, and reduce working frequency
++ * if false.
++ *
++ * Return: 0 on success, negative errno on failure
 + **/
-+static void rnpgbe_shutdown(struct pci_dev *pdev)
++int mucse_mbx_powerup(struct mucse_hw *hw, bool is_powerup)
 +{
-+	rnpgbe_dev_shutdown(pdev);
++	struct mbx_fw_cmd_req req = {
++		.datalen = cpu_to_le16(sizeof(req.powerup) +
++				       MUCSE_MBX_REQ_HDR_LEN),
++		.opcode  = cpu_to_le16(POWER_UP),
++		.powerup = {
++			/* fw needs this to reply correct cmd */
++			.version = cpu_to_le32(GENMASK_U32(31, 0)),
++			.status  = cpu_to_le32(is_powerup ? 1 : 0),
++		},
++	};
++	int len, err;
++
++	len = le16_to_cpu(req.datalen);
++	mutex_lock(&hw->mbx.lock);
++	err = mucse_write_and_wait_ack_mbx(hw, (u32 *)&req, len);
++	mutex_unlock(&hw->mbx.lock);
++
++	return err;
 +}
 +
-+static struct pci_driver rnpgbe_driver = {
-+	.name     = rnpgbe_driver_name,
-+	.id_table = rnpgbe_pci_tbl,
-+	.probe    = rnpgbe_probe,
-+	.remove   = rnpgbe_remove,
-+	.shutdown = rnpgbe_shutdown,
++/**
++ * mucse_mbx_reset_hw - Posts a mbx req to reset hw
++ * @hw: pointer to the HW structure
++ *
++ * mucse_mbx_reset_hw posts a mbx req to firmware to reset hw.
++ * We use mucse_fw_send_cmd_wait_resp to wait hw reset ok.
++ *
++ * Return: 0 on success, negative errno on failure
++ **/
++int mucse_mbx_reset_hw(struct mucse_hw *hw)
++{
++	struct mbx_fw_cmd_req req = {
++		.datalen = cpu_to_le16(MUCSE_MBX_REQ_HDR_LEN),
++		.opcode  = cpu_to_le16(RESET_HW),
++	};
++	struct mbx_fw_cmd_reply reply = {};
++
++	return mucse_fw_send_cmd_wait_resp(hw, &req, &reply);
++}
++
++/**
++ * mucse_mbx_get_macaddr - Posts a mbx req to request macaddr
++ * @hw: pointer to the HW structure
++ * @pfvfnum: index of pf/vf num
++ * @mac_addr: pointer to store mac_addr
++ * @port: port index
++ *
++ * mucse_mbx_get_macaddr posts a mbx req to firmware to get mac_addr.
++ *
++ * Return: 0 on success, negative errno on failure
++ **/
++int mucse_mbx_get_macaddr(struct mucse_hw *hw, int pfvfnum,
++			  u8 *mac_addr,
++			  int port)
++{
++	struct mbx_fw_cmd_req req = {
++		.datalen      = cpu_to_le16(sizeof(req.get_mac_addr) +
++					    MUCSE_MBX_REQ_HDR_LEN),
++		.opcode       = cpu_to_le16(GET_MAC_ADDRESS),
++		.get_mac_addr = {
++			.port_mask = cpu_to_le32(BIT(port)),
++			.pfvf_num  = cpu_to_le32(pfvfnum),
++		},
++	};
++	struct mbx_fw_cmd_reply reply = {};
++	int err;
++
++	err = mucse_fw_send_cmd_wait_resp(hw, &req, &reply);
++	if (err)
++		return err;
++
++	if (le32_to_cpu(reply.mac_addr.ports) & BIT(port))
++		memcpy(mac_addr, reply.mac_addr.addrs[port].mac, ETH_ALEN);
++	else
++		return -ENODATA;
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+new file mode 100644
+index 000000000000..375b8b86303e
+--- /dev/null
++++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h
+@@ -0,0 +1,121 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright(c) 2020 - 2025 Mucse Corporation. */
++
++#ifndef _RNPGBE_MBX_FW_H
++#define _RNPGBE_MBX_FW_H
++
++#include <linux/types.h>
++
++#include "rnpgbe.h"
++
++#define MUCSE_MBX_REQ_HDR_LEN 24
++
++enum MUCSE_FW_CMD {
++	GET_HW_INFO     = 0x0601,
++	GET_MAC_ADDRESS = 0x0602,
++	RESET_HW        = 0x0603,
++	POWER_UP        = 0x0803,
 +};
 +
-+module_pci_driver(rnpgbe_driver);
++struct mucse_hw_info {
++	u8 link_stat;
++	u8 port_mask;
++	__le32 speed;
++	__le16 phy_type;
++	__le16 nic_mode;
++	__le16 pfnum;
++	__le32 fw_version;
++	__le32 axi_mhz;
++	union {
++		u8 port_id[4];
++		__le32 port_ids;
++	};
++	__le32 bd_uid;
++	__le32 phy_id;
++	__le32 wol_status;
++	union {
++		__le32 ext_info;
++		struct {
++			u32 valid : 1;
++			u32 wol_en : 1;
++			u32 pci_preset_runtime_en : 1;
++			u32 smbus_en : 1;
++			u32 ncsi_en : 1;
++			u32 rpu_en : 1;
++			u32 v2 : 1;
++			u32 pxe_en : 1;
++			u32 mctp_en : 1;
++			u32 yt8614 : 1;
++			u32 pci_ext_reset : 1;
++			u32 rpu_availble : 1;
++			u32 fw_lldp_ability : 1;
++			u32 lldp_enabled : 1;
++			u32 only_1g : 1;
++			u32 force_down_en: 1;
++		} e_host;
++	};
++} __packed;
 +
-+MODULE_DEVICE_TABLE(pci, rnpgbe_pci_tbl);
-+MODULE_AUTHOR("Yibo Dong, <dong100@mucse.com>");
-+MODULE_DESCRIPTION("Mucse(R) 1 Gigabit PCI Express Network Driver");
-+MODULE_LICENSE("GPL");
++/* FW stores extended information in 'ext_info' as a 32-bit
++ * little-endian value. To make these flags easily accessible in the
++ * kernel (via named 'bitfields' instead of raw bitmask operations),
++ * we use the union's 'e_host' struct, which provides named bits
++ * (e.g., 'wol_en', 'smbus_en')
++ */
++static inline void mucse_hw_info_update_host_endian(struct mucse_hw_info *info)
++{
++	u32 host_val = le32_to_cpu(info->ext_info);
++
++	memcpy(&info->e_host, &host_val, sizeof(info->e_host));
++}
++
++struct mbx_fw_cmd_req {
++	__le16 flags;
++	__le16 opcode;
++	__le16 datalen;
++	__le16 ret_value;
++	__le32 cookie_lo;
++	__le32 cookie_hi;
++	__le32 reply_lo;
++	__le32 reply_hi;
++	union {
++		u8 data[32];
++		struct {
++			__le32 version;
++			__le32 status;
++		} powerup;
++		struct {
++			__le32 port_mask;
++			__le32 pfvf_num;
++		} get_mac_addr;
++	};
++} __packed;
++
++struct mbx_fw_cmd_reply {
++	__le16 flags;
++	__le16 opcode;
++	__le16 error_code;
++	__le16 datalen;
++	__le32 cookie_lo;
++	__le32 cookie_hi;
++	union {
++		u8 data[40];
++		struct mac_addr {
++			__le32 ports;
++			struct _addr {
++				/* for macaddr:01:02:03:04:05:06
++				 * mac-hi=0x01020304 mac-lo=0x05060000
++				 */
++				u8 mac[8];
++			} addrs[4];
++		} mac_addr;
++		struct mucse_hw_info hw_info;
++	};
++} __packed;
++
++int mucse_mbx_sync_fw(struct mucse_hw *hw);
++int mucse_mbx_powerup(struct mucse_hw *hw, bool is_powerup);
++int mucse_mbx_reset_hw(struct mucse_hw *hw);
++int mucse_mbx_get_macaddr(struct mucse_hw *hw, int pfvfnum,
++			  u8 *mac_addr, int port);
++#endif /* _RNPGBE_MBX_FW_H */
 -- 
 2.25.1
 
