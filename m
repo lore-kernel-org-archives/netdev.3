@@ -1,101 +1,103 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C461C30DEA1
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 06:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CC7256D
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 06:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760421899; cv=none; b=YOGvaz7blgaB7l+zKJhPCHMz/dcMievLJ2mKozJPI25tljD1nYeHZxELdxh7JgJkOmaYPofkPdK94VcLlMg8dUHLBjDkUwRDyGIApPKdADy1Cgs7ZEmsNNGajjS0MgePCLSigmFHTnm43Cn8wcXw/ZZ7GQUfgo//DY6X8t315rQ=
+	t=1760422743; cv=none; b=SNr+3czsR/KY4oBxNZQHS7XXfSOvomnuZDc2GP0VHS2sPC4IzNlCFrSj7hf7setU7v0slyUdu8DA6Ol+rzX9x9YNaaif5jLUrFf7mroNTIaxUlOHVLXeB0ERO17So7vKDkRnZwnEGtj2NNQlyuhDxn8OQCnYXJqrU8T8qJXGAjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760421899; c=relaxed/simple;
-	bh=EDi2Vfmr6DMcd0Dgtmokflpcv7CbpxRKL19zpeZeMXU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WVJaIjDwpxPKUryJoWTN8q30MiFe0crF8j5778pcuBaJolzmZKPVP+Xeohc2u+biVQ+o3yI2SQafyXwuzQGTLzOQTapyq+wlQq+DE80IDwLVvzfN/ZRgnhSVTC+Ez+D95+jQ2Qz7uJVk32RorAag2U0LOgNDtzFk/ARG3R4yq6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SWOmFP5T; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SWOmFP5T"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-746b28ff4c5so76613427b3.3
-        for <netdev@vger.kernel.org>; Mon, 13 Oct 2025 23:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760421896; x=1761026696; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qPNCDJIzcKxMd1XqXNf1X1HrtdQFSscOSVjaL4HJWrM=;
-        b=SWOmFP5TeWTE0y2FvEj//LFbfLALE7l2+LZxpldkooxpcpzNUyDZomc7RUPaCQvqR/
-         qFkT02QxCPdJcbE2Fmj/vqsNm04lIavdwY0hCRDOC9+7lmENqQys8//Rq6VS4CF569XX
-         QbsepjUCS+yG3SqTQaVBJ6dAMVA13zRfDg8BwH2LbCcO1ZGkVEDIgqzo+qhEAsFvKxx2
-         KypkQ69U1qkZd/TZhUNVVtbc/aEXASFJoP2FHz9WL66aihiwG0BZZfETB6/drefsJkZI
-         +5L1b8u1UEUFKzYepMZoPZuSqsF9DTc/aw6anVuQKbhaiyOAyU5avML2rO8DHuz2VAtl
-         Oq1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760421896; x=1761026696;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qPNCDJIzcKxMd1XqXNf1X1HrtdQFSscOSVjaL4HJWrM=;
-        b=Ju8vUiwB420jh93HnGDuvmS1foHDfT2kRKX1xSwH8F5lA13vmVjuUSaY/Kj3OLUld3
-         czee7e9LZG7He3hFFYbtkeSqECRE1JtJW6bFnPSWWvoc0ujizpTQb97/ufnqTSy9f66I
-         78BUYxMjht6aBcuN8EOo9Nwr6WGJ2xzYXaum71qo+sHjuww17AC8e0sGjj6V/S9YIlXu
-         Uy3rrVg40UO+/V2S+aDkBlNOUoxtEnGBQBMnm1kq+b8aeWjjGV+mmPZkv20vVz2vSFVN
-         VYy5uP3A4euwQ/qxj3Voa5Z5YrXS1zbF7okumln5KiiQoTVHt7fxwCDZFewgZpNQk/iM
-         8xtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV101MIl1FRvjwWufcwCEGp4Vk4AlEWFiynQTssT9wuLSTvjCBv3aLnApicfN0kKMGZgs67/Ms=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywl78WFu0qWzVczSfmi5V3ser1W0oznoNVly7fapDp6FH6uBwft
-	SMum/YmyGrMeAx8zNRy1B4q6jcqK64QwgA+ekK3MPo/3cCcyGXfbq6bcBkoaA0XUrHdML80MdMp
-	z+3QWdYTkcRHQfw==
-X-Google-Smtp-Source: AGHT+IGGjydkMU8y2HBYukSQ/01VRT2Uf2efwwq+fN40nai1KLsLqJyEBgWeZun2RwFLI8tHOX4Cbm0nKrs/CA==
-X-Received: from ywbcm30.prod.google.com ([2002:a05:690c:c9e:b0:780:fdca:f834])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:690c:3686:b0:71f:9a36:d33e with SMTP id 00721157ae682-780e17cd77amr255519667b3.48.1760421896521;
- Mon, 13 Oct 2025 23:04:56 -0700 (PDT)
-Date: Tue, 14 Oct 2025 06:04:54 +0000
+	s=arc-20240116; t=1760422743; c=relaxed/simple;
+	bh=7Kf9ZvAycRhTL1CqAA14NKEo5Exe8sTW1+WxD8NkPjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FnzmV1O3S7LnJzhnn25qKvg8CNGdaBstUnvXAJjRxjKdE4oWysUzXRXTOV74xfTDWpgNmZEARi93VZzdx0NSfGt4O0UVqDmGLFV2rJTg08RGnqY0BO9vSp74xUwc8Zx+MH4hpD+6b0BBPh7L9uly7UsDpjhT+RbA4LL4yj7Hl5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz16t1760422655t49ccc1a4
+X-QQ-Originating-IP: RTxrthsil0aJzArw8c4wFuML3qFvSiKfjF/coGdxASk=
+Received: from lap-jiawenwu.trustnetic.com ( [36.27.111.193])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 14 Oct 2025 14:17:34 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 8812132578749970895
+EX-QQ-RecipientCnt: 10
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 1/3] net: txgbe: expend SW-FW mailbox buffer size to identify QSFP module
+Date: Tue, 14 Oct 2025 14:17:24 +0800
+Message-Id: <20251014061726.36660-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20251014061726.36660-1-jiawenwu@trustnetic.com>
+References: <20251014061726.36660-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
-Message-ID: <20251014060454.1841122-1-edumazet@google.com>
-Subject: [PATCH net] udp: drop secpath before storing an skb in a receive queue
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Michal Kubecek <mkubecek@suse.cz>, Sabrina Dubroca <sd@queasysnail.net>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N/EN6P+BmEaf/8NNAZVY+Fufyzk+Y2KQmjCmbDzIHO2hrv178JElKf0H
+	BnTb5QnhIOr5xqcXz4Zx+D0inxWmxLb1XfY3f3ETrXX4DrW5Ji9CsRtdOB8lAOEj5zWteZP
+	kTq07poogVwetw5HJaCjf8MhR9HEmuhJALV8o6eVUMODFW6Z7x/B7xideHmavsElOB3/Rh/
+	HUj5gWp2f6gNHfXmHJlO7SjKwmkCfmGlUSelsefgKvnTZfWdA3MsjXY6DM169CaFVgC/AVB
+	afwzLM4ZdxYz7t4IWBlED1Wtmn33zBGv7qAEJpqdkwfKcFmFCd8FxBD8sZeoxzhNC2BDPLJ
+	lRUhQZwVLttgbhS/qcCgUi+2463Wk/er3WG6zVTUDFjbgzNv2UDccMIoZE/nhSBqbNqjfBy
+	3G9ktlfR6vaXMWCUe44UrV4Ct/0vAp03jMg9spvLcmLhU0rK/AhwfSXfreaP5vVfYFI0l9m
+	Xpn0dYzQbY4z9BJfG6lAPYp11WuFoJel4tQRhV+ypP6qbhlicWhwvWLN8ewWiF9H2T7Xk8k
+	akIu26Eg71HQmcEKiOhtT4U878OeL6wp5vYtxo9VLh5Bo+nAXu6v+WBjWXso2BHr9jBHIhs
+	kFOx36ts43QMLQQR5BWd17nU88eZ3mBKUYBmBY8ZXAPTNXnLiF/uR1WRrFvGLJ5mYCQfejT
+	tUgS8Z03UHU9BBymBNT346FZPuSAE726mtGsa/MPvkEXgXqAUVp1WWZ+m1K62GcGM8XC/fm
+	U+InbRTEI+Dd7Lxo4B8cAVuJNKE8NUgmVG1AucW67Po74TTQ+LiYzvYCs77OwCvYnnJubJG
+	bSvzzf+C4NWHi+HPpinJAwd7pwkPQjyULXr4S5tnTAZ0haB02NWr8E7RlGEUS8DGKw5pyeu
+	MaTIvC4EZ4UWdka+JmcY5rYL0vwQpumqJoBhdwXq3fn+VCnyka206rfj4eLkHFb8rUfUJxc
+	6ZthRSHT3I/+B2bH/Cm5yl0c+rwQ/m4vfJe5c+54kD4k/P+LlyZljOusE1LWn3sujI0Ir0c
+	XWQK3rhJbLmRG/dyi6YZ35oxRXDgZKRf2XRzylRoiVhujiudnZ
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+X-QQ-RECHKSPAM: 0
 
-Michal reported and bisected an issue after recent adoption
-of skb_attempt_defer_free() in UDP.
+Recent firmware updates introduce additional fields in the mailbox message
+to provide more information for identifying 40G and 100G QSFP modules.
+To accommodate these new fields, expand the mailbox buffer size by 4 bytes.
 
-We had the same issue for TCP, that Sabrina fixed in commit 9b6412e6979f
-("tcp: drop secpath at the same time as we currently drop dst")
+Without this change, drivers built against the updated firmware cannot
+properly identify modules due to mismatched mailbox message lengths.
 
-Many thanks to Michal and Sabrina.
+The old firmware version that used the smaller mailbox buffer has never
+been publicly released, so there are no backward-compatibility concerns.
 
-Fixes: 6471658dc66c ("udp: use skb_attempt_defer_free()")
-Reported-and-bisected-by: Michal Kubecek <mkubecek@suse.cz>
-Closes: https://lore.kernel.org/netdev/gpjh4lrotyephiqpuldtxxizrsg6job7cvhiqrw72saz2ubs3h@g6fgbvexgl3r/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- net/ipv4/udp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 95241093b7f0..3f05ee70029c 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1709,6 +1709,8 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
- 	int dropcount;
- 	int nb = 0;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 41915d7dd372..9d53c7413f7b 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -352,7 +352,9 @@ struct txgbe_sfp_id {
+ 	u8 vendor_oui0;		/* A0H 0x25 */
+ 	u8 vendor_oui1;		/* A0H 0x26 */
+ 	u8 vendor_oui2;		/* A0H 0x27 */
+-	u8 reserved[3];
++	u8 transceiver_type;	/* A0H 0x83 */
++	u8 sff_opt1;		/* A0H 0xC0 */
++	u8 reserved[5];
+ };
  
-+	secpath_reset(skb);
-+
- 	rmem = atomic_read(&sk->sk_rmem_alloc);
- 	rcvbuf = READ_ONCE(sk->sk_rcvbuf);
- 	size = skb->truesize;
+ struct txgbe_hic_i2c_read {
 -- 
-2.51.0.788.g6d19910ace-goog
+2.48.1
 
