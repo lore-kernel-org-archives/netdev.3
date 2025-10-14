@@ -1,131 +1,287 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5438430F81C
-	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 11:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC6C304968
+	for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 11:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442075; cv=none; b=ExN1mtCSoRG7Vbrif5bw1aKo1vkgeEmSWUMBwYhE5WCkyOMAf2QH5dqIvNZaJvbpo94kYny1zLfrCgfRyzrIuB0CQz0LSsY49X5G+/NznJRwYDgmO0N2DSg+ZlEmfxI0tA1WvGjuKNxBjMbozsYCsOs5q1AM0XtxHofrO/AIffQ=
+	t=1760442199; cv=none; b=dHUTSg+f/MMl0cp6oJ2KMwbhNxzKZFrkiVJkTel7qBlCDnggDxIGFeIPXDlBn5+K1WvkWhoQzGZo3SC5JJy/bbDXE1Pr/Tc4Xs5Rq2N27jDkdFPN0PJirSHx0PEnPyIWquP8/5ZoJSmpt0r4KQyIlWkG0YD3Tf2P+7BgbpVJPFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442075; c=relaxed/simple;
-	bh=k7rFzhGNs/kmpPOUNJY06YMKy6Ze1Yf7spWA+73lqVs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IhTOH10ErxQLjpDcCdA//on7loo95nkj1dWuCFAmY1MzJHu++kXpqmaHc3I0kRAEq6RHGqIq5lppuOUG9hoNmDZtSHnbP2kH2WmNEJoDYVHDhOTNGORvua6V/+9lgbj9f78gWT2mROf+mwwhXE2yNB2Wwxeiw/+cBKw2//U2M5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VK9bY4Lu; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760442199; c=relaxed/simple;
+	bh=fop943o6Wr7krlLuhY+A/L0lmKCKTRtK52xoFzXNEsk=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=bzyD9L0j3B28uhGx9TSQskeC1rc8xaMgQh3uGFdpfZNpeQipGmJXblQ6MOsPEBFZEkVuGpJFngrZV31bI5EbhqCAD2B860gWh14Gi0aR3rkA5ZnJeYylwBvflJDviBLBrvBPS7qBI8kfBXyBv+nFO4EgtZ8k1O3lYzkergLtHmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MuGny2fw; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VK9bY4Lu"
-Message-ID: <096168a6-8687-4dae-a774-0741d3e5a891@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760442070;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hd2PoIE+rPMCr6jd3OwU3he0uZl4CmPgrMZ61+ge710=;
-	b=VK9bY4LuIi4ji669KYN12TIOH35WJDu8pKASGIJSdi9qQhdHcSOS9ZOqAwGKpQPsCsa/MC
-	Any8FgOqFuOI1eRpcwlhhwocJFbU9rKLsGQh3WYropHOaMHnqd5PxuOYzCW6qqbWxTyanS
-	cCDvtJaYV62OHRnEZ5m/iARM6dBj9oQ=
-Date: Tue, 14 Oct 2025 19:40:58 +0800
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MuGny2fw"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760442194; h=Message-ID:Subject:Date:From:To;
+	bh=P0z2O4rxFMH3PJkgW9Ke1tx+hDmvIb6pYaqqJlalReM=;
+	b=MuGny2fw+PZKmfdHbF++YbCpruY7YrzqHGRIzqImYSw42Rz7WIVKJoZUQbZjgdMjhR8vhnFMuCJoQUyd5gQnUnSkKnlCq45dhdJ4Id3J3M4SZ6BIF1ZSBSQpCb4mftciZ9+Wjr2mHKT66zKpENnjEgrxro7wz7dshYZJKkygYy8=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WqBpOpH_1760442192 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 14 Oct 2025 19:43:12 +0800
+Message-ID: <1760441688.9352384-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next v5] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Tue, 14 Oct 2025 19:34:48 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Wen Gu <guwen@linux.alibaba.com>,
+ Philo Lu <lulie@linux.alibaba.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+ Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Vivian Wang <wangruikang@iscas.ac.cn>,
+ Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+ Dust Li <dust.li@linux.alibaba.com>,
+ alok.a.tiwari@oracle.com,
+ kalesh-anakkur.purayil@broadcom.com,
+ netdev@vger.kernel.org
+References: <20251013021833.100459-1-xuanzhuo@linux.alibaba.com>
+ <8b853379-1601-4387-adaf-31f786f306ca@redhat.com>
+In-Reply-To: <8b853379-1601-4387-adaf-31f786f306ca@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: =?UTF-8?B?UmU6IFvlpJbpg6jpgq7ku7ZdIFJlOiBbUEFUQ0hdW3YzXSBodW5nX3Rh?=
- =?UTF-8?Q?sk=3A_Panic_after_fixed_number_of_hung_tasks?=
-Content-Language: en-US
-To: "Li,Rongqing" <lirongqing@baidu.com>, Petr Mladek <pmladek@suse.com>
-Cc: "wireguard@lists.zx2c4.com" <wireguard@lists.zx2c4.com>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- David Hildenbrand <david@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
- Stanislav Fomichev <sdf@fomichev.me>,
- "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- Russell King <linux@armlinux.org.uk>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Jonathan Corbet <corbet@lwn.net>,
- Joel Granados <joel.granados@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Phil Auld <pauld@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Simon Horman <horms@kernel.org>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Florian Westphal <fw@strlen.de>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Kees Cook <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "Paul E . McKenney" <paulmck@kernel.org>,
- Feng Tang <feng.tang@linux.alibaba.com>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>
-References: <20251012115035.2169-1-lirongqing@baidu.com>
- <588c1935-835f-4cab-9679-f31c1e903a9a@linux.dev>
- <aO4boXFaIb0_Wiif@pathway.suse.cz>
- <3acdcd15-7e52-4a9a-9492-a434ed609dcc@linux.dev>
- <38af4922ca44433fa7cd168f7c520dc9@baidu.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <38af4922ca44433fa7cd168f7c520dc9@baidu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+
+On Tue, 14 Oct 2025 13:25:47 +0200, Paolo Abeni <pabeni@redhat.com> wrote:
+> On 10/13/25 4:18 AM, Xuan Zhuo wrote:
+> > Add a driver framework for EEA that will be available in the future.
+> >
+> > This driver is currently quite minimal, implementing only fundamental
+> > core functionalities. Key features include: I/O queue management via
+> > adminq, basic PCI-layer operations, and essential RX/TX data
+> > communication capabilities. It also supports the creation,
+> > initialization, and management of network devices (netdev). Furthermore,
+> > the ring structures for both I/O queues and adminq have been abstracted
+> > into a simple, unified, and reusable library implementation,
+> > facilitating future extension and maintenance.
+> >
+> > Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+> > Reviewed-by: Philo Lu <lulie@linux.alibaba.com>
+> > Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+> > Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> > ---
+> >
+> > v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
+> > v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
+> > v3: Thanks for the comments from Paolo Abenchi
+> > v2: Thanks for the comments from Simon Horman and Andrew Lunn
+> > v1: Thanks for the comments from Simon Horman and Andrew Lunn
+>
+> You should add a synopsis of the major changes vs the previous revision
+> to make reiviewer's work easier.
+
+Generally yes, but all the changes are so minor that I can't possibly list them
+all, so I'm using this format.
+
+>
+> >
+> > This commit is indeed quite large, but further splitting it would not be
+> > meaningful. Historically, many similar drivers have been introduced with
+> > commits of similar size and scope, so we chose not to invest excessive
+> > effort into finer-grained splitting.
+>
+> That also means that you require the reviewers to invest a lot of extra
+> effort here, which in turn does not help making progresses.
+
+Indeed, it's been quite a while, but I haven't made any substantial progress on
+this patchset, and I'm really considering this. Would splitting up a few commits
+speed up the review process?
+
+>
+> [...]> +/* resources: ring, buffers, irq */
+> > +int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_tmp *tmp)
+> > +{
+> > +	struct eea_net_tmp _tmp = {};
+> > +	int err;
+> > +
+> > +	if (!tmp) {
+> > +		enet_mk_tmp_cfg(enet, &_tmp);
+> > +		tmp = &_tmp;
+> This is quite ugly. Let the caller always pass non zero 'tmp'. Also a
+> more describing name would help.
+>
+> > +	}
+> > +
+> > +	if (!netif_running(enet->netdev)) {
+> > +		enet->cfg = tmp->cfg;
+> > +		return 0;
+> > +	}
+> > +
+> > +	err = eea_alloc_rxtx_q_mem(tmp);
+> > +	if (err) {
+> > +		netdev_warn(enet->netdev,
+> > +			    "eea reset: alloc q failed. stop reset. err %d\n",
+> > +			    err);
+> > +		return err;
+> > +	}
+> > +
+> > +	eea_netdev_stop(enet->netdev);
+> > +
+> > +	enet_bind_new_q_and_cfg(enet, tmp);
+> > +
+> > +	err = eea_active_ring_and_irq(enet);
+> > +	if (err) {
+> > +		netdev_warn(enet->netdev,
+> > +			    "eea reset: active new ring and irq failed. err %d\n",
+> > +			    err);
+> > +		return err;
+> > +	}
+> > +
+> > +	err = eea_start_rxtx(enet->netdev);
+> > +	if (err)
+> > +		netdev_warn(enet->netdev,
+> > +			    "eea reset: start queue failed. err %d\n", err);
+>
+> I'm unsure why you ignore my feedback on v2 WRT errors generated here?
+
+Do you mean this?
+
+	Here you should try harder to avoid any NIC changes in case of failure.
+	i.e. you could activate and start only the new queues, and destroy the
+	to-be-deleted one only after successful real queues update.
+
+Sorry, I missed that. This function handles the scenario where the entire setup
+fails, not just a few queues, so I need to allocate all the queues and
+reactivate them.
+
+Thanks.
 
 
-
-On 2025/10/14 19:18, Li,Rongqing wrote:
->>>>> Currently, when 'hung_task_panic' is enabled, the kernel panics
->>>>> immediately upon detecting the first hung task. However, some hung
->>>>> tasks are transient and the system can recover, while others are
->>>>> persistent and may accumulate progressively.
->>>
->>> My understanding is that this patch wanted to do:
->>>
->>>      + report even temporary stalls
->>>      + panic only when the stall was much longer and likely persistent
->>>
->>> Which might make some sense. But the code does something else.
->>
->> Cool. Sounds good to me!
->>
->>>
->>>>> --- a/kernel/hung_task.c
->>>>> +++ b/kernel/hung_task.c
->>>>> @@ -229,9 +232,11 @@ static void check_hung_task(struct task_struct
->> *t, unsigned long timeout)
->>>>>     	 */
->>>>>     	sysctl_hung_task_detect_count++;
->>>>> +	total_hung_task = sysctl_hung_task_detect_count -
->>>>> +prev_detect_count;
->>>>>     	trace_sched_process_hang(t);
->>>>> -	if (sysctl_hung_task_panic) {
->>>>> +	if (sysctl_hung_task_panic &&
->>>>> +			(total_hung_task >= sysctl_hung_task_panic)) {
->>>>>     		console_verbose();
->>>>>     		hung_task_show_lock = true;
->>>>>     		hung_task_call_panic = true;
->>>
->>> I would expect that this patch added another counter, similar to
->>> sysctl_hung_task_detect_count. It would be incremented only once per
->>> check when a hung task was detected. And it would be cleared (reset)
->>> when no hung task was found.
->>
->> Much cleaner. We could add an internal counter for that, yeah. No need to
->> expose it to userspace ;)
->>
->> Petr's suggestion seems to align better with the goal of panicking on
->> persistent hangs, IMHO. Panic after N consecutive checks with hung tasks.
->>
->> @RongQing does that work for you?
-> 
-> 
-> In my opinion, a single task hang is not a critical issue, fatal hangs—such as those caused by I/O hangs, network card failures, or hangs while holding locks—will inevitably lead to multiple tasks being hung. In such scenarios, users cannot even log in to the machine, making it extremely difficult to investigate the root cause. Therefore, I believe the current approach is sound. What's your opinion?
-
-Thanks! I'm fine with either approach. Let's hear what the other folks 
-think ;)
-
+>
+> > +
+> > +	return err;
+> > +}
+> > +
+> > +int eea_queues_check_and_reset(struct eea_device *edev)
+> > +{
+> > +	struct eea_aq_dev_status *dstatus __free(kfree) = NULL;
+> > +	struct eea_aq_queue_status *qstatus;
+> > +	struct eea_aq_queue_status *qs;
+> > +	bool need_reset = false;
+> > +	int num, i, err = 0;
+> > +
+> > +	num = edev->enet->cfg.tx_ring_num * 2 + 1;
+>
+> The above should probably moved under the RTNL lock or you could access
+> stale values.
+>
+> > +
+> > +	rtnl_lock();
+> > +
+> > +	dstatus = eea_adminq_dev_status(edev->enet);
+> > +	if (!dstatus) {
+> > +		netdev_warn(edev->enet->netdev, "query queue status failed.\n");
+>
+>
+> 		err = -ENOMEM;
+> 		goto out_unlock;
+>
+>
+> > +		rtnl_unlock();
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	if (le16_to_cpu(dstatus->link_status) == EEA_LINK_DOWN_STATUS) {
+> > +		eea_netdev_stop(edev->enet->netdev);
+> > +		edev->enet->link_err = EEA_LINK_ERR_LINK_DOWN;
+> > +		netdev_warn(edev->enet->netdev, "device link is down. stop device.\n");
+> > +		rtnl_unlock();
+> > +		return 0;
+>
+> 		goto out_unlock;
+>
+> > +	}
+> > +
+> > +	qstatus = dstatus->q_status;
+> > +
+> > +	for (i = 0; i < num; ++i) {
+> > +		qs = &qstatus[i];
+> > +
+> > +		if (le16_to_cpu(qs->status) == EEA_QUEUE_STATUS_NEED_RESET) {
+> > +			netdev_warn(edev->enet->netdev,
+> > +				    "queue status: queue %u needs to reset\n",
+> > +				    le16_to_cpu(qs->qidx));
+> > +			need_reset = true;
+> > +		}
+> > +	}
+> > +
+> > +	if (need_reset)
+> > +		err = eea_reset_hw_resources(edev->enet, NULL);
+> > +
+>
+> out_unlock:> +	rtnl_unlock();
+> > +	return err;
+>
+>
+> [...]> +/* ha handle code */
+> > +static void eea_ha_handle_work(struct work_struct *work)
+> > +{
+> > +	struct eea_pci_device *ep_dev;
+> > +	struct eea_device *edev;
+> > +	struct pci_dev *pci_dev;
+> > +	u16 reset;
+> > +
+> > +	ep_dev = container_of(work, struct eea_pci_device, ha_handle_work);
+> > +	edev = &ep_dev->edev;
+> > +
+> > +	/* Ha interrupt is triggered, so there maybe some error, we may need to
+> > +	 * reset the device or reset some queues.
+> > +	 */
+> > +	dev_warn(&ep_dev->pci_dev->dev, "recv ha interrupt.\n");
+> > +
+> > +	if (ep_dev->reset_pos) {
+> > +		pci_read_config_word(ep_dev->pci_dev, ep_dev->reset_pos,
+> > +				     &reset);
+> > +		/* clear bit */
+> > +		pci_write_config_word(ep_dev->pci_dev, ep_dev->reset_pos,
+> > +				      0xFFFF);
+> > +
+> > +		if (reset & EEA_PCI_CAP_RESET_FLAG) {
+> > +			dev_warn(&ep_dev->pci_dev->dev,
+> > +				 "recv device reset request.\n");
+> > +
+> > +			pci_dev = ep_dev->pci_dev;
+> > +
+> > +			/* The pci remove callback may hold this lock. If the
+> > +			 * pci remove callback is called, then we can ignore the
+> > +			 * ha interrupt.
+> > +			 */
+> > +			if (mutex_trylock(&edev->ha_lock)) {
+> > +				edev->ha_reset = true;
+> > +
+> > +				__eea_pci_remove(pci_dev, false);
+> > +				__eea_pci_probe(pci_dev, ep_dev);
+> > +
+> > +				edev->ha_reset = false;
+> > +				mutex_unlock(&edev->ha_lock);
+> > +			} else {
+> > +				dev_warn(&ep_dev->pci_dev->dev,
+> > +					 "ha device reset: trylock failed.\n");
+>
+> Nesting here is quite high, possibly move the above in a separate helper.
+>
+> > +			}
+> > +			return;
+> > +		}
+> > +	}
+> > +
+> > +	eea_queues_check_and_reset(&ep_dev->edev);
+> > +}
+>
+>
+> I'm sorry, EPATCHISTOOBIG I can't complete the review even in with an
+> unreasonable amount of time.
+>
+> /P
+>
