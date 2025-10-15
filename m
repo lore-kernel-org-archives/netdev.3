@@ -1,147 +1,157 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6688337687
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 16:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4560205AB6;
+	Wed, 15 Oct 2025 16:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760545770; cv=none; b=QlxzQzyLSrUgZcF5jgH03+XPLT4/+HSC61oB51sZhd4c6SZ/e7ZUAc/3SY7An1wPu1TsMMK/QAd8Bs5aVkeS4CYljDfltCKIxJKrf6AYTC2xS8ndvZUXGQhpi1Ph1M9pgDWuWmeNJGSwta/2AOLr1VmqVFwMgNtvabtSi57Cu1s=
+	t=1760545918; cv=none; b=RhgGGzicslwt0u18fYk6jCc/j0Oae5Z1rGnH0PhzO6edMEmhex2EangBKy6/xREUTZgYA/HtLsXM6tjcHDwXi9ePnuueHGvZYPCEuhYSZpeqxYCO7GuBXOYZe7PxrJVP9WCJiHpEg/NMVdocbCQ9xleCAWU4KaL4iKem0XEQ0qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760545770; c=relaxed/simple;
-	bh=Gk08VLbkpFi1ZC2IutxuohSOPRuJHP5SOA0jS5dQ+Uw=;
+	s=arc-20240116; t=1760545918; c=relaxed/simple;
+	bh=BDBgHqGKg8kxASakOnsE9eu2W0NBeHR9L7btp+ec49k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eA0irRLoxW4i+wXYqSMGij3NiRUczE+mriQyqr2e4HDawypTyhRw1CS+cngQrXnV4hI0odF2otekT/CGY4DYryPOAH3gXo8iodJbZUx4X+4ZoHnOMlUEEFnB8M79qtEBXykfvkT4BRYN+Tcr9grr6yixUoenQrm+50Rmi0sp2Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AtcptlUP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iDgGd8K0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTVGKqxHb46MhKlbhtaA6C8FcgnKfJqHnJQo8ewImhBHn9c4rvbQ1XPyV2KLXkPil2V7p/295c3+6D350X/dJFRpggN0Hw2oDvZ8gHWGh5qtqa1Oj0hUMXssukxdpYPqGI70NquuBe4cwD0ROmVkSn2YWZwgoYWbiD4K4ApMb1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyQfhI81; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AtcptlUP";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iDgGd8K0"
-Date: Wed, 15 Oct 2025 18:23:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760545421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MGbjAiF1jSY4711BNsD/ZIqHEDwtp6KfdPgBKFfNs1k=;
-	b=AtcptlUPp5d4CErT0D0hFhCau1ubgfYZ6RZPhpKlXTgRfNAQHpPDHWEujZA9Gp3DuOQ7+y
-	7fABLmbJLPDYnjNjfXjFeBkgfQGYFRzu1M8OThwd2h6Zoq270jEcglnZpu4TNNwUpG9CWL
-	ojGX7I+xUKLmWKPqrOao5IedfOzUA+8B5oP9L1J2ZI9XCkeCUB25bxSJcEN7BnFchDTDrX
-	a0zj8wrGMFzeBHIfJu1QFi2jKj0k5g56OMza7ha6QWTma0snSzd3qqCKySZvfpZbDpLf1i
-	xufRBHuhMIkI+O5DVy026bsM/2+6cLLQGCouXUdXlTsstOUsemGS4bsRk9cvxg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760545421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MGbjAiF1jSY4711BNsD/ZIqHEDwtp6KfdPgBKFfNs1k=;
-	b=iDgGd8K03a9bWMEnFJyasLik3s7j5+HKVWjWIvnlBN4gmGC0jyT6tujdcyfP+cZJVyFH+L
-	+/duVBhJKivkvPDA==
-From: "bigeasy@linutronix.de" <bigeasy@linutronix.de>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"andrew@lunn.ch" <andrew@lunn.ch>,
-	"clrkwllms@kernel.org" <clrkwllms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: RE: Query about the impact of using CONFIG_PREEMPT_RT on locking
- mechanisms within networking drivers
-Message-ID: <20251015162340.i7K71rpM@linutronix.de>
-References: <TYCPR01MB12093B8476E1B9EC33CBA4953C2E8A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
- <20251015110809.324e980e@gandalf.local.home>
- <TYCPR01MB120933E9C8A96EE9CF617CF1BC2E8A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyQfhI81"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF2CC4CEF8;
+	Wed, 15 Oct 2025 16:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760545918;
+	bh=BDBgHqGKg8kxASakOnsE9eu2W0NBeHR9L7btp+ec49k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MyQfhI81TQhBnjopIRKsT6OpIuahtU9FssuD/WqoqsswyzKW6JnWA+xQc757bJQeW
+	 e2brIY6CGQ5WYCVpyLd2XMQoXcU3RTDWB2MP282SIip/+mUz1ZPQvubWMKfhRmc0rX
+	 Fi8MrcjB7zgmmki2Qs5Df8WywUwqUoFk8vRbRXRgutVC1OoAZw4bNu59UMyRN/Nf+9
+	 e9pAznvqX6zMoE0ZS7jo5Y7ehmbyqoadfzcXkI11Y0OmUJymVtaoCNImp9T2HdDsK6
+	 +9ksMjXgzkz9nX/Q/TtT/wvQdaZfdojKymCaEUaYQjn7ZIZAqcpOWFZmi1Kv9z2GyZ
+	 No774+bwlAO6Q==
+Date: Wed, 15 Oct 2025 17:31:53 +0100
+From: Simon Horman <horms@kernel.org>
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux Networking <netdev@vger.kernel.org>,
+	Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+Subject: Re: [PATCH net] net: rmnet: Fix checksum offload header v5 and
+ aggregation packet formatting
+Message-ID: <aO_MefPIlQQrCU3j@horms.kernel.org>
+References: <20251015092540.32282-2-bagasdotme@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <TYCPR01MB120933E9C8A96EE9CF617CF1BC2E8A@TYCPR01MB12093.jpnprd01.prod.outlook.com>
+In-Reply-To: <20251015092540.32282-2-bagasdotme@gmail.com>
 
-On 2025-10-15 15:48:46 [+0000], Fabrizio Castro wrote:
-> > The reason for the spin locks conversion to mutexes is simply to allow for
-> > more preemption. A raw spin lock can not be preempted. If a lock is held
-> > for more than a microsecond, you can consider it too long. There's a few
+On Wed, Oct 15, 2025 at 04:25:41PM +0700, Bagas Sanjaya wrote:
+> Packet format for checksum offload header v5 and aggregation, and header
+> type table for the former, are shown in normal paragraphs instead.
 > 
-> That actually gives us a good way of gauging when holding a lock is not
-> appropriate. Thanks for this.
-
-Other than that, the other thing is that if you have acquired a
-raw_spinlock_t the resulting API of what can be used is minimized. You
-can't invoke any function that acquires a spinlock_t which includes
-something like kmalloc(, GFP_ATOMIC).
-
-> > places that may hold locks longer (like the scheduler) but there's no
-> > choice.
-> > 
-> > To allow spin locks to become mutexes, interrupts are also converted into
-> > threads (including softirqs). There are also "local locks" that are used
-> > for places that need to protect per-cpu data that is usually protected by
-> > preempt_disable().
-> > 
-> > What issues are you having? It's likely that it can be tweaked so that you
-> > do not have issues with PREEMPT_RT.
+> Use appropriate markup.
 > 
-> The first issue (which is the one that sparked this discussion) has been
-> addressed by a patch that was sent out today.
-> While the issue addressed by that patch is not related in any way to locking,
-> it sparked a series of discussions within my team about locking because when
-> PREEMPT_RT is used there are cases where the driver gets preempted at
-> inconvenient times (while holding a spin lock, that gets translated to an
-> rtmutex with PREEMPT_RT), and the issue itself is fully masked when using
-> raw spin locks (and that's because the code doesn't get preempted, making
-> the issue a lot less likely to show up).
+> Fixes: 710b797cf61b ("docs: networking: Add documentation for MAPv5")
+> Fixes: ceed73a2cf4a ("drivers: net: ethernet: qualcomm: rmnet: Initial implementation")
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-The driver shouldn't get preempted under normal circumstances. It (the
-threaded interrupt where the NAPI callback gets invoked) runs by default
-at SCHED_FIFO 50 which is higher than any user thread (there are some HI
-priority kernel threads, yes). Unless there is a user thread with a
-higher priority there is no preemption.
-If it gets preempted due to $reason, the "time out check function"
-should check if the condition is true before reporting a failure due to
-timeout. (Which mean if the timeout is exceeded but the waiting
-condition is met then it should not report an error due to timeout).
+Thanks Bagas,
 
-> The above picked our curiosity, and therefore we had a look at what's
-> under `drivers/net` and there doesn't seem to be much code using raw spin
-> locks directly, hence the question.  
-> 
-> Here is a link to the patch I was mentioning (although not relevant to
-> locking):
-> https://lore.kernel.org/netdev/20251015150026.117587-4-prabhakar.mahadev-lad.rj@bp.renesas.com/T/#u
-> 
-> Another issue we have seen is around CPU stalling on a couple of drivers
-> when PREEMPT_RT is enabled:
-> https://lore.kernel.org/all/CA+V-a8tWytDVmsk-PK23e4gChXH0pMDR9cKc_xEO4WXpNtr3eA@mail.gmail.com/
-> 
-> The above is more luckily related to locking issues, even though we didn't
-> have the time to dive into it just yet, so we are not 100% sure about what's
-> happening just yet.
+I agree these are all good improvements.
 
-It shouldn't stall. From the backtrace, stmmac_tx_clean() blocks on
-spinlock_t so someone should own it. Why is the owner not making
-progress?
-The second backtrace originates from trylock from within in
-mem_cgroup_sk_charge()/ try_charge_memcg(). As far as I remember the
-code, it does trylock once and if it fails it moves on. So it could show
-up by chance in the backtrace while it got preempted. If it spins on the
-lock via trylock then it will lockup as in the backtrace.
-If it got preempted, then there needs to be a thread with higher
-priority. 
+I would like to add the following, which I noticed during review, for your
+consideration.
 
-LOCKDEP and CONFIG_DEBUG_ATOMIC_SLEEP might show where something goes
-wrong.
+diff --git a/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst b/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
+index 6877a3260582..b532128ee709 100644
+--- a/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
++++ b/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
+@@ -27,7 +27,8 @@ these MAP frames and send them to appropriate PDN's.
+ 2. Packet format
+ ================
 
-> Again, thanks a lot for your answer.
-> 
-> Kind regards,
-> Fab
+-a. MAP packet v1 (data / control)
++A. MAP packet v1 (data / control)
++---------------------------------
 
-Sebastian
+ MAP header fields are in big endian format.
+
+@@ -53,7 +54,8 @@ Multiplexer ID is to indicate the PDN on which data has to be sent.
+ Payload length includes the padding length but does not include MAP header
+ length.
+
+-b. Map packet v4 (data / control)
++B. Map packet v4 (data / control)
++---------------------------------
+
+ MAP header fields are in big endian format.
+
+@@ -80,7 +82,7 @@ Payload length includes the padding length but does not include MAP header
+ length.
+
+ Checksum offload header, has the information about the checksum processing done
+-by the hardware.Checksum offload header fields are in big endian format.
++by the hardware. Checksum offload header fields are in big endian format.
+
+ Packet format::
+
+@@ -106,7 +108,8 @@ over which checksum is computed.
+
+ Checksum value, indicates the checksum computed.
+
+-c. MAP packet v5 (data / control)
++C. MAP packet v5 (data / control)
++---------------------------------
+
+ MAP header fields are in big endian format.
+
+@@ -133,7 +136,8 @@ Multiplexer ID is to indicate the PDN on which data has to be sent.
+ Payload length includes the padding length but does not include MAP header
+ length.
+
+-d. Checksum offload header v5
++D. Checksum offload header v5
++-----------------------------
+
+ Checksum offload header fields are in big endian format.
+
+@@ -158,7 +162,10 @@ indicates that the calculated packet checksum is invalid.
+
+ Reserved bits must be zero when sent and ignored when received.
+
+-e. MAP packet v1/v5 (command specific)::
++E. MAP packet v1/v5 (command specific)
++--------------------------------------
++
++Packet format::
+
+     Bit             0             1         2-7      8 - 15           16 - 31
+     Function   Command         Reserved     Pad   Multiplexer ID    Payload length
+@@ -169,7 +176,7 @@ e. MAP packet v1/v5 (command specific)::
+     Bit          96 - 127
+     Function   Command data
+
+-Command 1 indicates disabling flow while 2 is enabling flow
++Command 1 indicates disabling flow while 2 enables flow.
+
+ Command types
+
+@@ -180,7 +187,8 @@ Command types
+ 3 is for error during processing of commands
+ = ==========================================
+
+-f. Aggregation
++F. Aggregation
++--------------
+
+ Aggregation is multiple MAP packets (can be data or command) delivered to
+ rmnet in a single linear skb. rmnet will process the individual
+
