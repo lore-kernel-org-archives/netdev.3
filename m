@@ -1,146 +1,128 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f73.google.com (mail-yx1-f73.google.com [74.125.224.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F62302153
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 05:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ABB4438B
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 05:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760505992; cv=none; b=kxVPVimCILMdgxusTYar150y66Iv0jQeBBcOnwIvcXP/e9oEUkAyGJkimJJgu2vJP8uy2vfyoiCWa+bWIGAdtng2yV23d8By7whXmMHTjgPrIoANYsSByzT6MaPkitK0l3euCnqO7l7e40YzW21EaNB+5oRraeUatZakbtNQbyw=
+	t=1760506038; cv=none; b=oVzg9Cpe4Ob0+sjs7JhG+Ya+DZeV3j7edHRMcT3tzOpz+7JjbkFdLFOshpXC84KmMdOy8+ynl9ElNNiBQ/JrhZEft32KL6VOEVyoxWjTsrdrvmyaJhXROeAeBnvIXmpaIvGWEawxS7QVP3t+6xrVMuZrjR+wzikhKUnXPF5MKqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760505992; c=relaxed/simple;
-	bh=hrl3vFnKAOqCCVFG9AbVN3NMQWug1hhBxWaMMxlGFJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fOZ/10LWXbLCN5r3h6aIWH29JKINRg4pk8wqmhyd3bK31ba/DXuAC1Lx14yZsR9txmf7iI8YYqZWIYQcyapC2m4CcFkbA/XDC52+6ksmss+dqOP4bQHy+OX/doUkoDMznKU4pBIUsYz3kGZOIWFGiog5ZZYM//VsTrasrFhH1dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YyFcMZs2; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1760506038; c=relaxed/simple;
+	bh=2W3gN6TRewnOg/fzXKZYVhkMESd+wxhtXahoUvYsdqk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n/n8HfBIja1PbZSucXap8lw5CMVd3YTXGnoZjtOi9OK1jnC+ooaiiClAr7r5ASm8I9ZTJU/zzNWeyTJcOoXc4ej3lFktlqLcKxWDs+SPHloVn39GJ/tY+UhKFwK6bn2hbg0mDOBZBXjXlERFbXhsnBIlevMZzfTHdJZs1aBW6EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d4t8vmcg; arc=none smtp.client-ip=74.125.224.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YyFcMZs2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760505991; x=1792041991;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hrl3vFnKAOqCCVFG9AbVN3NMQWug1hhBxWaMMxlGFJI=;
-  b=YyFcMZs2ax1FEEFlOxbYuPAjJbWrsBtdZG/WxSyilZn8mwx7jjybblkT
-   pkLnpm1r+LlSmhWvEjaWcakdJA2La71Y89yryrdzoMqLhVkQu+iTGZa8Z
-   VjSq0aESdnHVWFhdNjitw4K2r5kiyNM75qepVbN9YJPSKwvYNCYbsKAu7
-   1zFNW6Z3dMfcDBkPN5QXvKi4lWSKxfJn1ZGHcC9DdpM3hDXutzppdkygD
-   zWtmQBbmqOqwPo7JVEHWpvdHOVdFchBckHVhgrTgjhjX2cmQEJP9eCRk4
-   jujnuOsN606xQ2O4S1nv3mOU2bfAVb09/MBtSU2OxDqXk8XHWlyEuuJf5
-   Q==;
-X-CSE-ConnectionGUID: nxvRxY+ERrC951qQTFsT6w==
-X-CSE-MsgGUID: ojPfmGo/QR+GozBiRDFkOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11582"; a="62568944"
-X-IronPort-AV: E=Sophos;i="6.19,230,1754982000"; 
-   d="scan'208";a="62568944"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 22:26:30 -0700
-X-CSE-ConnectionGUID: Gm74usyYTzy8Qm24W+ta6Q==
-X-CSE-MsgGUID: 0YHKjawzQ5eRor79W+kOCQ==
-X-ExtLoop1: 1
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2025 22:26:28 -0700
-Date: Wed, 15 Oct 2025 07:24:30 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1] ixgbe: guard fwlog code by
- CONFIG_DEBUG_FS
-Message-ID: <aO8wDmPWWEV6+tkZ@mev-dev.igk.intel.com>
-References: <20251014141110.751104-1-michal.swiatkowski@linux.intel.com>
- <11eac3d4-d81c-42e2-b9e3-d6f715a946b2@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d4t8vmcg"
+Received: by mail-yx1-f73.google.com with SMTP id 956f58d0204a3-6365645cadeso11694347d50.1
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 22:27:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760506036; x=1761110836; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Rw+0kverG215wGe8RQhNHv5DUKqtftfJ5u2Nyg9VGSs=;
+        b=d4t8vmcglf+wcCADjN1RjQcMS8TSBRKMyhdMyKqISuzpWaAcLeJ5bxzComP5WFA5dz
+         aQLLnY1r+CzTXgUd+ZXlHom7cgg1VRV4Vt8hfm5obr5tr2xt5IcHJvVbT20/2w9eOShJ
+         MPuxx5VArBajdOb/0y7AIEfLBLcHhjFFrZn1nQrewuKUOJpl51DgQHoINXFOny/BAc5g
+         epVyPsdLXMWUBwVZ7HyRFaWWINbucQVxxODeY4ZU12hHCxp9rHL7DMQqmRkcxoy5DlUa
+         kGP1sULz1UqUrGOKoYvNO7ETSyOB6n3/dnWXxgQdnqkEClV5qkCVrGrZ+9wszhE68lo6
+         KNLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760506036; x=1761110836;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Rw+0kverG215wGe8RQhNHv5DUKqtftfJ5u2Nyg9VGSs=;
+        b=toVTvvk8ZYkPXefejrKkIbH3qm/RwjkrE/0xMCiRwU2UfYTLTJ78G0dWoyu5ZfTXBH
+         +i3yQf5uP2U1r7tKoIiC2An7+NUyW8sg6R7f5gCwgYKWQxHI5iVWbiOYz2v8sEqHOGQZ
+         ROA75X8uuum5gnhKqSiMiqM8E3yonv0YuGSDCQ07jMOemze3RDxLinQDXLnYLI3KeZns
+         5l3Ys0qi++zbQT6zk5xjX0ynZxBjzUorllnY4ROS8Uvli73gQmTY6cKPbvRo4mcJN6Kx
+         oVGL4CpaNlZwH4Fbhs3AaLL9qNfcrH+N3RaN3DXvwMIGzRke5vxyoHcVgulHh/nfU9bI
+         Xx4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWRmF/Az5Pb2wTyHE6Tc1jP5c6LLKBoLuZPfCxmm1hkVYN76BHRMvspuLgCyQNxNv8zEdEZ/S4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlfu++YSwWpzdzRokuDLqn4t/rNF7DTfZQurhh4PtoXzGysS68
+	p7tzjmUSzwkYYSw/UqYAUhue1d0JThE6rO7IxB3qw/Xndl4Ch7LK+JZxibelYfolI7FXs0XsiJq
+	aIZtJsAFWGLwyNA==
+X-Google-Smtp-Source: AGHT+IFadogCQ8vsK6QxutuWIEOoCmQsK+BNNfOwevfFULjFbL+kB3D9864RSC2TvZ8sMAkQDTjrH/MeWrwmYg==
+X-Received: from ywbju2.prod.google.com ([2002:a05:690c:7442:b0:780:e432:6fe1])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:441:b0:63b:a9d6:78c with SMTP id 956f58d0204a3-63ccb932fc3mr19307310d50.45.1760506036180;
+ Tue, 14 Oct 2025 22:27:16 -0700 (PDT)
+Date: Wed, 15 Oct 2025 05:27:15 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11eac3d4-d81c-42e2-b9e3-d6f715a946b2@intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.0.788.g6d19910ace-goog
+Message-ID: <20251015052715.4140493-1-edumazet@google.com>
+Subject: [PATCH v3 net] udp: do not use skb_release_head_state() before skb_attempt_defer_free()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
+	Michal Kubecek <mkubecek@suse.cz>, Sabrina Dubroca <sd@queasysnail.net>, Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 14, 2025 at 04:41:43PM -0700, Jacob Keller wrote:
-> 
-> 
-> On 10/14/2025 7:11 AM, Michal Swiatkowski wrote:
-> > Building the ixgbe without CONFIG_DEBUG_FS leads to a build error. Fix
-> > that by guarding fwlog code.
-> > 
-> > Fixes: 641585bc978e ("ixgbe: fwlog support for e610")
-> > Reported-by: Guenter Roeck <linux@roeck-us.net>
-> > Closes: https://lore.kernel.org/lkml/f594c621-f9e1-49f2-af31-23fbcb176058@roeck-us.net/
-> > Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> > ---
-> 
-> Hm. It probably is best to make this optional and not require debugfs
-> via kconfig.
+Michal reported and bisected an issue after recent adoption
+of skb_attempt_defer_free() in UDP.
 
-Make sense
+The issue here is that skb_release_head_state() is called twice per skb,
+one time from skb_consume_udp(), then a second time from skb_defer_free_flush()
+and napi_consume_skb().
 
-> 
-> >  drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 2 ++
-> >  drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h | 8 ++++++++
-> >  2 files changed, 10 insertions(+)
-> > 
-> > diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> > index c2f8189a0738..c5d76222df18 100644
-> > --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> > +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> > @@ -3921,6 +3921,7 @@ static int ixgbe_read_pba_string_e610(struct ixgbe_hw *hw, u8 *pba_num,
-> >  	return err;
-> >  }
-> >  
-> > +#ifdef CONFIG_DEBUG_FS
-> >  static int __fwlog_send_cmd(void *priv, struct libie_aq_desc *desc, void *buf,
-> >  			    u16 size)
-> >  {
-> > @@ -3952,6 +3953,7 @@ void ixgbe_fwlog_deinit(struct ixgbe_hw *hw)
-> >  
-> >  	libie_fwlog_deinit(&hw->fwlog);
-> >  }
-> > +#endif /* CONFIG_DEBUG_FS */
-> >  
-> 
-> What does the fwlog module from libie do? Seems likely that it won't
-> compile without CONFIG_DEBUG_FS either...
+As Sabrina suggested, remove skb_release_head_state() call from
+skb_consume_udp().
 
-Right, it shouldn't, because there is a dependency on fs/debugfs.
-It is building on my env, but maybe I don't have it fully cleaned.
-I wonder, because in ice there wasn't a check (or select) for
-CONFIG_DEBUG_FS for fwlog code.
+Add a DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb)) in skb_attempt_defer_free()
 
-Looks like LIBIE_FWLOG should select DEBUG_FS, right?
-I will send v2 with that, if it is fine.
+Many thanks to Michal, Sabrina, Paolo and Florian for their help.
 
-Thanks
+Fixes: 6471658dc66c ("udp: use skb_attempt_defer_free()")
+Reported-and-bisected-by: Michal Kubecek <mkubecek@suse.cz>
+Closes: https://lore.kernel.org/netdev/gpjh4lrotyephiqpuldtxxizrsg6job7cvhiqrw72saz2ubs3h@g6fgbvexgl3r/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Michal Kubecek <mkubecek@suse.cz>
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Cc: Florian Westphal <fw@strlen.de>
+---
+v3: Florian suggested skb_attempt_defer_free() as a better place for the DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb)),
+    since it already had the skb_dst(skb) and skb->destructor checks.
+v2: Adopted Sabrina suggestion.
+    https://lore.kernel.org/netdev/20251014132917.2841932-1-edumazet@google.com/T/#u
+v1: https://lore.kernel.org/netdev/aO3_hBg5expKNv6v@krikkit/T/#m8a88669b801d85f57b73710cdb0c8ee63854af11
 
-> 
-> >  static const struct ixgbe_mac_operations mac_ops_e610 = {
-> >  	.init_hw			= ixgbe_init_hw_generic,
-> > diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-> > index 11916b979d28..5317798b3263 100644
-> > --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-> > +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.h
-> > @@ -96,7 +96,15 @@ int ixgbe_aci_update_nvm(struct ixgbe_hw *hw, u16 module_typeid,
-> >  			 bool last_command, u8 command_flags);
-> >  int ixgbe_nvm_write_activate(struct ixgbe_hw *hw, u16 cmd_flags,
-> >  			     u8 *response_flags);
-> > +#ifdef CONFIG_DEBUG_FS
-> >  int ixgbe_fwlog_init(struct ixgbe_hw *hw);
-> >  void ixgbe_fwlog_deinit(struct ixgbe_hw *hw);
-> > +#else
-> > +static inline int ixgbe_fwlog_init(struct ixgbe_hw *hw)
-> > +{
-> > +	return -EOPNOTSUPP;
-> > +}
-> > +static inline void ixgbe_fwlog_deinit(struct ixgbe_hw *hw) {}
-> > +#endif /* CONFIG_DEBUG_FS */
-> >  
-> >  #endif /* _IXGBE_E610_H_ */
-> 
+ net/core/skbuff.c | 1 +
+ net/ipv4/udp.c    | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index bc12790017b0b5c0be99f8fb9d362b3730fa4eb0..6be01454f262a2acbf3f5905498961d132442d2c 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7200,6 +7200,7 @@ nodefer:	kfree_skb_napi_cache(skb);
+ 
+ 	DEBUG_NET_WARN_ON_ONCE(skb_dst(skb));
+ 	DEBUG_NET_WARN_ON_ONCE(skb->destructor);
++	DEBUG_NET_WARN_ON_ONCE(skb_nfct(skb));
+ 
+ 	sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + numa_node_id();
+ 
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 95241093b7f01b2dc31d9520b693f46400e545ff..30dfbf73729dad1e7b26c74a4791fe0a82682a6d 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1851,8 +1851,6 @@ void skb_consume_udp(struct sock *sk, struct sk_buff *skb, int len)
+ 		sk_peek_offset_bwd(sk, len);
+ 
+ 	if (!skb_shared(skb)) {
+-		if (unlikely(udp_skb_has_head_state(skb)))
+-			skb_release_head_state(skb);
+ 		skb_attempt_defer_free(skb);
+ 		return;
+ 	}
+-- 
+2.51.0.788.g6d19910ace-goog
 
