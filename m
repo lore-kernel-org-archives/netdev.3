@@ -1,187 +1,99 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDBD3054EB
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 22:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7463054E4
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 22:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760566295; cv=none; b=MSo576vBMlWt+dtJH5b4jI5sf0mVUy4fcNPSjTf1F1X6hzwIQ6t1YbYwczrDa4lvMneTzfy5foyBKwiY6bC5TApARCLHR5OV0hTrX0atpeN8bwVW32uULi6Q2Cpy6wSYHAVgJrtvBITt3A/egCHUnti2DKe3Aw1SqOOQOi7wMAM=
+	t=1760566364; cv=none; b=KLwFYuTdk08mV4U4JGCvvcm4Q8vK45i3xbQnyq3fB0Mqa0L8oQNp5F04mSzFTTlOTwuzUx3gGBRcpdp8aHMs4MYCWZdUt1h6JEKziImZXwZMkrx7o8VqbI5HzxORwGgebvIo/29FtM2TnxboIbn762xEvfKUZ+5478oSpoiMtqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760566295; c=relaxed/simple;
-	bh=/3xLeGVpCG0FWHzbS3rmzGN0Id/obwSwxO71DnBB3Fg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gz5miRtZxen+RS1e5ASIvK7odi7KSNJxgcRTD7ImsVfm5rr0alFrJl9P2GB3zdzygZ6Y545pkU63wHJfW5lbXtfSnS2+zhx07WGPNo6QNJCOCV4PJRK2R/aKdzhag/h+G9IkbiUold4It/sSyJJp+hsrnMHR8qxX8O4zgmgAMPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VjzPbQCt; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1760566364; c=relaxed/simple;
+	bh=4IKbAWgA3H6OC5oCFfEcR4k3LkR86GPruUZV2iVfAJ8=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=WsJQyLeiqbKGBj+9F6FRkvXEAda08tGu6DIsG2K/+Ji7IYHRewJ6c8pl/i783wGe6XzCSPe/JUehYQXz7mQqaEbaQn0SlrTmHfwNo+Dge5HWyoep2I+Ak7YjsEBskb3xoWMkO8Sy45vIx2Ee2rf8qbkzzksbkjjTQepwb2wHZXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S2x6/4kw; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VjzPbQCt"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-85ed0a1b35dso7454685a.2
-        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 15:11:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S2x6/4kw"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-639fb035066so61417a12.0
+        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 15:12:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760566293; x=1761171093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SzZfgHtklE4QWAAmvOKjfOnZJ/3N2hqit7xP4/xmVtk=;
-        b=VjzPbQCtDd9B6Hg6+mtutfWhK3K6JUUY++Jkb8mN+B76OHH9ngN4FJOn2AgLwfxDbT
-         1RL7E3QXYDgAyOZ1xzSPSDme5uyiG+eiPDc43vZsjjY6w48v6MLtq7nxsJWhQ5EfgHDM
-         JNOBl4UeYBI2HkYXaKlXQ6hPTNVFutxAgrgVCyAGuPiOThxPY316Sk9H6VdLWgo9A+k+
-         u9xc29EM69Oe/TZ/1G8xS0yNxp4fXQSdosZgKfEhO/dudOS7Row36uaRwKMd3IRFnxrc
-         vKmsX0NvqyT/ff8zoTIiaHpS8czxAjWAppm8FsNgFbvFElNCLc5BM/zvxW+dtLnnWJCq
-         yGaQ==
+        d=gmail.com; s=20230601; t=1760566360; x=1761171160; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4IKbAWgA3H6OC5oCFfEcR4k3LkR86GPruUZV2iVfAJ8=;
+        b=S2x6/4kwvfr/a4WwHAI9GCDDtx/U3GK5S8Ty2JHDaejDTH7YTcNb78LleERJZI5Y7S
+         sYKLjLDBLDY/x89PyVbjfvSBnMCCFg/aShboylEgCvR62fckn5YJ3b9JZDWdeFl8cMbm
+         4ROvcmi0vqDNn0SV3Hz8/N7spjsm9EeZTH16i8zU75ZxDorgCXk6Inb5hA8+alGOkuEq
+         3EEcRLkeLFSnofT5SjGI91QI95zmYb+syoUMSp6pC4S8CF9Nf+p4jpQK8epm9ZqQWuOK
+         12O7jbGG/iFv+/vjxBhy0UYcl3pI0wO6uXK/KKjjf16QTbHsrRrfqWUgEBuGXfXWNMYA
+         Wv+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760566293; x=1761171093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzZfgHtklE4QWAAmvOKjfOnZJ/3N2hqit7xP4/xmVtk=;
-        b=k1roQDmWqc2uSyrpjqyfzcU+dGNL+mj4RdqcHdrfZvKWRnTKz6ZykL9V1YYOz3rlI6
-         Fdc2zlpxba2M8LC3SNxP25TrK+rVAgnfed00aly3D48lEanwoP6HyZlapX6fo1XkgFAM
-         Wwq5cs7YE+hu7qm/QT+pfFVn56VCJ4ihUrn8voU613gx4F5AMlwcmP5qOOjqXztgrjpi
-         TnPxca77cjwvR6sNPr1pV9nSiUqZtuCyYVbl88kJVkI+azkT8cfLndzNgg2czgUNO4Vg
-         llilW5Ru0Rvqm69bujJlO+GYDQqBS0y3v7RFos1k9PQRXPIrrXAsgkHWkl6k6RS0mLzr
-         Af8A==
-X-Forwarded-Encrypted: i=1; AJvYcCWLYah4+1Ut+jVLnUg8zTS7mVuVgt5CyCBeH9Jt3YKE10/tFqC9AdPw3pGbuKAaV8jH+x4HSMw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVLd6FRud5G2odQ2wzPoJ9MKaJ2EsBm7Z9UhyFkh+wKCEWsNVT
-	92qbDMCfA00JuqLkvWASmhVyV7b0K7E9pyBYG1J9p6LogUa6RaCR+sGE19R34TZuyqN7XfqCUiE
-	KpyuPjRqwN5Vef2F614hOJZT0yUdHN9m+gn9z13am
-X-Gm-Gg: ASbGnct2Lj9yKgGYv9kFrkTld0akPh+Put1rYCSbFY/KyvT0Pi/KdypoE9X6kAr5EsG
-	dtlrX8Jhdu2sod3Phzia2pUFX9PeBhHvo7cKnQOwcowQXYsxh3VndHwT9hZiiZYUja8bLK4EwOG
-	/piHlVuByw8wrqbfqs0XvW+4spOx2OTqNPR/9uA3ABKyKwrtYPro+KKjmPLTizv7fkzZS6MUd4z
-	vGq7ZtiS+rfUmYpnWEuUsxOpkcbg/7pkOPXwpbxZVndMKE+6DlGJDRF+9k4R7yu5/nP
-X-Google-Smtp-Source: AGHT+IHq5F7PvBRhSIBljInBxjJ+6AVdvwCnPPbwGOvZ6u6pphFffgVa7O7xadBWIyUSYoexgKeDJeS1kqJwlWaHY7I=
-X-Received: by 2002:a05:622a:1f0b:b0:4cf:8fa2:ccd2 with SMTP id
- d75a77b69052e-4e6eacb3b68mr469348801cf.13.1760566292313; Wed, 15 Oct 2025
- 15:11:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760566360; x=1761171160;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4IKbAWgA3H6OC5oCFfEcR4k3LkR86GPruUZV2iVfAJ8=;
+        b=TodRAPbCnLSWFPQZP5qcuroT77dalQhxSpyPgJrc07oEx4P2ALc10UezIaKolmK9wa
+         0T914MpFheV565S+k61979/BSCdyxpXWu7Gb50V7UGzpCh40LYIBQuicK7x1PmEpRUM7
+         U4tiJQ3sltzDrboAAJVEBMT5xSuiGPkkB6eEhXn+ZFPjzLTaEowqHgy8f3oG+YeOUcUz
+         0hkpNVdDlaazGjBi8nuEADlTvtmpQK+HXnPH1PgbzB7u5gxHVXSZQTtgTPg7oPszKP3y
+         2LDpDI6A+nRs1ubNVmJAKaBt26QbyCleH3WpU1hRF3oGQ19m/zzAoiHNAypPamQoW+gB
+         B+4A==
+X-Gm-Message-State: AOJu0Yy239TPU4gYIuUHmot4Xi5mSjh72/h29pLaHmmHaNNdR784X4SU
+	WF5JkSQVsXKVb+gRqJNVlUaoVSEMCpXXT/K1yfvKuzxamamKYLJcVEOrNl7oHQ==
+X-Gm-Gg: ASbGncvWcMfxMSs8wAjzC4MbAbEzBgyu4FG2Av2ToK0hLGJhawnsqQZf9x+h26Wyoyf
+	YMGirlhFcMQ1V1p8VjkpE4HmYys6eOZLLJJcLPSo3yIIg084bSC9gBB6kolntWLSPH3t3ynLBbA
+	kFmJnwUJu9DXWnMkt8VDaVK0XJ/4PncucnP0PzjyIXIg7q/SzxmyRjbNS5aI6PwupVRAinjvCrc
+	mosTHmO9NRF057Yws2/OFtN4hFVmRjcD4L6+a4JqDWm+RXjZ7EENuHHSP5wZ2SWhvZM/4ftyf79
+	kPg61TKuyDbMU/OfTUy3S8TGJM7mvs5JG4osDtAmA78BCBp1wattrL/Pyp06pJto7lzht5Gbg+w
+	Ag5yByIStMjLqT9KeTVwS/8IxHSnkpo9iewZKYlIAHpyE88hw+cy+Ey0u1ccmD69imQZWd/zZfQ
+	tf/KOGUwrsWVhePbvjeA2/BPs5cNaOyGqArPz2Ua55ChPlfqX2Y3MTpZtskcuWwW4V0zP4A7LzH
+	ov0gDO+KzXKC/uYlV7k4oo=
+X-Google-Smtp-Source: AGHT+IFR0KR2S5pXLFC44VWWdTv98MquvdPb2nW+92laXAi8QPBUxX9Ll1PRJMHw+6eTcri5M61anA==
+X-Received: by 2002:a05:6402:1ed1:b0:63b:f59b:e5ff with SMTP id 4fb4d7f45d1cf-63bf59be8f8mr3395459a12.22.1760566360136;
+        Wed, 15 Oct 2025 15:12:40 -0700 (PDT)
+Received: from ?IPv6:2001:1c00:5609:8e00:d43c:e712:50a6:eb5? (2001-1c00-5609-8e00-d43c-e712-50a6-0eb5.cable.dynamic.v6.ziggo.nl. [2001:1c00:5609:8e00:d43c:e712:50a6:eb5])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63a52b0f750sm14137720a12.14.2025.10.15.15.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Oct 2025 15:12:39 -0700 (PDT)
+Message-ID: <ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com>
+Subject: ipv6_route flags RTF_ADDRCONF and RTF_PREFIX_RT are not cleared
+ when static on-link routes are added during IPv6 address configuration
+From: Garri Djavadyan <g.djavadyan@gmail.com>
+To: netdev@vger.kernel.org
+Cc: 1117959@bugs.debian.org
+Date: Thu, 16 Oct 2025 00:12:40 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251014171907.3554413-1-edumazet@google.com> <CAM0EoMnvMZQpjNP5vCneur8GR+3oW3PxvzjtthNjFTtLBF5GtA@mail.gmail.com>
-In-Reply-To: <CAM0EoMnvMZQpjNP5vCneur8GR+3oW3PxvzjtthNjFTtLBF5GtA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 15 Oct 2025 15:11:21 -0700
-X-Gm-Features: AS18NWDR0AFXqHr5k51YHXbel6-d-Hjqjpy-QXxhYrp_RS9y0a_x0CppWXdwg2I
-Message-ID: <CANn89iKb1a9-dS7g6zauBAechM6Ji7S1F0WAXtSAjYP34+QSqg@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 0/6] net: optimize TX throughput and efficiency
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 15, 2025 at 3:00=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
->
-> On Tue, Oct 14, 2025 at 1:19=E2=80=AFPM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > In this series, I replace the busylock spinlock we have in
-> > __dev_queue_xmit() and use lockless list (llist) to reduce
-> > spinlock contention to the minimum.
-> >
-> > Idea is that only one cpu might spin on the qdisc spinlock,
-> > while others simply add their skb in the llist.
-> >
-> > After this series, we get a 300 % (4x) improvement on heavy TX workload=
-s,
-> > sending twice the number of packets per second, for half the cpu cycles=
-.
-> >
->
-> Not important but i am curious: you didnt mention what NIC this was in
-> the commit messages ;->
+Hi Everyone,
 
-I have used two NIC : IDPF (200Gbit), and GQ (100Gbit Google NIC)
-(Usually with 32 TX queues)
+A year ago I noticed a problem with handling ipv6_route flags that in
+some scenarios can lead to reachability issues. It was reported here:
 
-And a variety of platforms, up to 512 cores sharing these 32 TX queues.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219205
 
->
-> For the patchset, I have done testing with existing tdc tests and no
-> regression..
-> It does inspire new things when time becomes available.... so will be
-> doing more testing and likely small extensions etc.
-> So:
-> Tested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-Thanks Jamal !
+Also it was recently reported in the Debian tracker after checking if
+the latest Debian stable is still affected:
 
-I also have this idea:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1117959
 
-cpus serving NIC interrupts and specifically TX completions are often
-trapped in also restarting a busy qdisc (because it was stopped by BQL
-or the driver's own flow control).
 
-We can do better:
+Unfortunately, the Debian team cannot act on the report because no one
+from the upstream kernel team has confirmed if the report in the
+upstream tracker is valid or not. Therefore, I am checking if anyone
+can help confirm if the observed behavior is indeed a bug.
 
-1) In the TX completion loop, collect the skbs and do not free them immedia=
-tely.
+Many thanks in advance!
 
-2) Store them in a private list and sum their skb->len while doing so.
-
-3) Then call netdev_tx_completed_queue() call and netif_tx_wake_queue().
-
-If the queue was stopped, this might add the qdisc in our per-cpu
-private list (sd->output_queue), raising NET_TX_SOFTIRQ (no immediate
-action because napi poll runs while BH are blocked)
-
-4) Then, take care of all dev_consume_skb_any().
-
-Quite often freeing these skbs can take a lot of time, because of mm
-contention, and other false sharing, or expensive skb->destructor like
-TCP.
-
-5) By the time net_tx_action() finally runs, perhaps another cpu saw
-the queue being in XON state and was able to push more packets to the
-queue.
-
-This means net_tx_action() might have nothing to do, saving precious cycles=
-.
-
-We should add extra logic in net_tx_action() to not even grab
-qdisc_lock() spinlock at all.
-
-My thinking is to add back a sequence (to replace q->running boolean),
-and store a snapshot of this sequence every time we restart a queue.
--> net_tx_action can compare the sequence against the last snapshot.
-
-> (For the tc bits, since the majority of the code touches tc related stuff=
-)
->
-> cheers,
-> jamal
->
->
-> > v2: deflake tcp_user_timeout_user-timeout-probe.pkt.
-> >     Ability to return a different code than NET_XMIT_SUCCESS
-> >     when __dev_xmit_skb() has a single skb to send.
-> >
-> > Eric Dumazet (6):
-> >   selftests/net: packetdrill: unflake
-> >     tcp_user_timeout_user-timeout-probe.pkt
-> >   net: add add indirect call wrapper in skb_release_head_state()
-> >   net/sched: act_mirred: add loop detection
-> >   Revert "net/sched: Fix mirred deadlock on device recursion"
-> >   net: sched: claim one cache line in Qdisc
-> >   net: dev_queue_xmit() llist adoption
-> >
-> >  include/linux/netdevice_xmit.h                |  9 +-
-> >  include/net/sch_generic.h                     | 23 ++---
-> >  net/core/dev.c                                | 97 +++++++++++--------
-> >  net/core/skbuff.c                             | 11 ++-
-> >  net/sched/act_mirred.c                        | 62 +++++-------
-> >  net/sched/sch_generic.c                       |  7 --
-> >  .../tcp_user_timeout_user-timeout-probe.pkt   |  6 +-
-> >  7 files changed, 111 insertions(+), 104 deletions(-)
-> >
-> > --
-> > 2.51.0.788.g6d19910ace-goog
-> >
+Regards,
+Garri
