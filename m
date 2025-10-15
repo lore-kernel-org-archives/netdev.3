@@ -1,140 +1,81 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0648231B11C
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 10:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AF431B12B;
+	Wed, 15 Oct 2025 11:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760524847; cv=none; b=eq5pQxRsqBFa9ByE7ydEERpG2e77qGFnFIlT9Dm/HZ3RaV7dQeEKEXT12Gej9s67ICMZqX9PPM8tDO2Dy7BLWEpALaGrnCbgtOiA78LFAYmGRoUssWlC9g4QrKeQIS6BXPS8w35sE4iZp1Hd1GqgTLOaRYPNzlPc5ips0DmILTE=
+	t=1760526372; cv=none; b=l5KE8qbAv1gGKoYm0rivOnApdxI27IIzHdIKEPOgVtWg3a9Q0G/q2Eimp+3tRcveFDbpf9nwU3Yr/BEURQupzG7sOJbzD+Sie09xqxxEApnMrcqKkbWdcQpZ2EBJnfYUSQFO2wyLeYQnIfxjcaMYgOINMVgB37sL8KoyCDD1dzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760524847; c=relaxed/simple;
-	bh=J3keoaIKR6jiGAqY3loIQe49C02ju3/VcU8EQo5I3NY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N++odzmfchsiKNZryoaFHYRrBM9yTo0osE6KY4LaPyzsHPw7uz62jVr4kultW3lmw82vyaxSz6+JQu1Wau7iomojP4zbY4WhGEU9uhQ7o3DUY+wcQKZ9uC98NH9rSE1rkVwpc715RVkVG4W6mf+xSp5MLPZuEMoeE8EB0oYGIEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1pEoY+yP; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1pEoY+yP"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-862cbf9e0c0so807018385a.0
-        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 03:40:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760524845; x=1761129645; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n0C67Rez8jNbQi/FTuBuwdBEEDVIvW5Ga9c16aQCFpE=;
-        b=1pEoY+yPXy2R5ejKFaa1w/qbhpgbe900Igr9BkcdfIoLK1ScO/DHf56dUnevi1KNSw
-         9/JCsnhBpSGI39Aws+YPMr5ha2Z4GJYBMPbxdKOcvfmb85EradyYa1ZFVXxYy1CpIXIX
-         +ijFoE5XZEpQZMjs4MYtp1vSriDThOcaA4jND7vLkI9Lo7e3JUUY9winf64cZ5foM+bx
-         8UF1wLnt1BZ6lO6gfqVNKNFlDDJ1ca3RbzKGZrbU3Hnsm/2D4F6SZJpRvBVnZMC6PYjN
-         C5Si/IHajsMbly3APskzLHf4HMWx3RVsI9xLSFFBZVG1oFAmhM3wByXi+FacbqwfnEnp
-         Ae+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760524845; x=1761129645;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n0C67Rez8jNbQi/FTuBuwdBEEDVIvW5Ga9c16aQCFpE=;
-        b=BmhqM0LFWbOpBIFOh2YZMRkYUo2tiSTZFAAVNvm5lpNcGRj54xxk0/3TeKTwFAdvGR
-         tb/ezaloIkjPZOw2PG3PI+uADzBPcmPvHn/JG8OD6MOp+Uq2adsHERFaEi+iQ/K9Ofen
-         XiMZcOG3XBnZgL1q2meTxl2HdxBPuRZi3mLobbdIS9QXko5bdQOtQQKbLBkObuB/msZC
-         pGGkNbMOHudyJyFEdAgXuglpPckm4IWrg4uk66bvaX3Iic85sqVuWWhWtsaO+tlfCkNV
-         RCDUGaRz3plkIdq+LVh1gI0/xDweVtQzs1ppm0z9qY1Ubj2Miln+T5YxhchNdz+Khkxx
-         cG5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWZmUu220k+Wi61WmCesspLGyPPg6yTFsxhD7+GH0WR5+5wtn39HsxnU78Mths9NPgyIUchyd8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVtFBbLQZ1ljc7MffXxK/X7Q6S/PmXAi0AVQcDKs4rEMkZHJYQ
-	bBIYZPXZE9Ih8agRP690a+u9m1bEhwwUBsBuci/lij8cHvljlej1DM619P8KxkvUy+jGeBh18rf
-	0LeyD/rmeN2Pxy9UZHgW5M2giY9GDVYRVKSSYGex0
-X-Gm-Gg: ASbGncvXN4N3qhBww94WA7qiZncQ7O/khqgnJYVSDcNtfV9xQsX3Yn6/wi1kyULiuuq
-	CHpjj2vglx2QH89fymC9dWfcsFhREAs5ybrRFJFemctit3v3a0fg8znQNcOpOulI9SdmrKBWFTz
-	BcWCNclwFny8EgKD+IqkQEnyEn9ZatJrl/fCAQBZwNjVzzQZxwbHrDSdZRB0p2SfucOVgohD661
-	uXy4AJxZszKD3fAZE9Bf1/X3xi+ta/M9A==
-X-Google-Smtp-Source: AGHT+IFpKiB8l5sJXgqXrxFIDHsEAdxSp5hBT8fr88c6BsttKayM9LMDHyRVDEWhht18AqHem6pvE5WJNEYxAaTUh4Y=
-X-Received: by 2002:ac8:5a0a:0:b0:4e8:8a5e:6dbf with SMTP id
- d75a77b69052e-4e88a5e712dmr10420031cf.83.1760524844485; Wed, 15 Oct 2025
- 03:40:44 -0700 (PDT)
+	s=arc-20240116; t=1760526372; c=relaxed/simple;
+	bh=awaQU58vXl4YAKLmdMe+GNPZ/adtnwxXxxI5nntmTTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D6h+/j/qlQMJT5/kIycJDWw1QXqBALrf73wb8dKmANzdwJd6LzVGQBpQXqeesvJ+2HY/XCvPpJ32bYj/AlIv+hUbalbTZ3tA1cuc04f+5xgPGMQ0RMgJUSscmhzy4zdZzqfxN00c9QjkuwaNDD2kZX7l5lRHERs1lt0+zJpafy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 84ACD60186; Wed, 15 Oct 2025 13:06:01 +0200 (CEST)
+Date: Wed, 15 Oct 2025 13:06:01 +0200
+From: Florian Westphal <fw@strlen.de>
+To: "Li,Rongqing" <lirongqing@baidu.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"netfilter-devel@vger.kernel.org" <netfilter-devel@vger.kernel.org>,
+	"coreteam@netfilter.org" <coreteam@netfilter.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org
+Subject: Re: [PATCH net-next] netfilter: conntrack: Reduce cond_resched
+ frequency in gc_worker
+Message-ID: <aO-ADi4UJhOFz4zr@strlen.de>
+References: <20251014115103.2678-1-lirongqing@baidu.com>
+ <aO5K4mICGHVNlkHJ@strlen.de>
+ <13de94827815469193e10d6fb0c0d45b@baidu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015101417.1511732-1-wangliang74@huawei.com>
-In-Reply-To: <20251015101417.1511732-1-wangliang74@huawei.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 15 Oct 2025 03:40:33 -0700
-X-Gm-Features: AS18NWD7kex-EyZWDoaEndbSnHbz2_cerLFXLa6_UQRwZL16Wzh9UttwcoHnbxI
-Message-ID: <CANn89iLZBMWpU7kMjd8akT+L8FbsnO+wqgjCaXF2KOCFz9Hiag@mail.gmail.com>
-Subject: Re: [PATCH RFC net-next] net: drop_monitor: Add debugfs support
-To: Wang Liang <wangliang74@huawei.com>
-Cc: nhorman@tuxdriver.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, yuehaibing@huawei.com, 
-	zhangchangzhong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13de94827815469193e10d6fb0c0d45b@baidu.com>
 
-On Wed, Oct 15, 2025 at 2:51=E2=80=AFAM Wang Liang <wangliang74@huawei.com>=
- wrote:
->
-> This patch add debugfs interfaces for drop monitor. Similar to kmemleak, =
-we
-> can use the monitor by below commands:
->
->   echo clear > /sys/kernel/debug/drop_monitor/trace
->   echo start > /sys/kernel/debug/drop_monitor/trace
->   echo stop  > /sys/kernel/debug/drop_monitor/trace
->   cat /sys/kernel/debug/drop_monitor/trace
->
-> The trace skb number limit can be set dynamically:
->
->   cat /sys/kernel/debug/drop_monitor/trace_limit
->   echo 200 > /sys/kernel/debug/drop_monitor/trace_limit
->
-> Compare to original netlink method, the callstack dump is supported. Ther=
-e
-> is a example for received udp packet with error checksum:
->
->   reason   : UDP_CSUM (11)
->   pc       : udp_queue_rcv_one_skb+0x14b/0x350
->   len      : 12
->   protocol : 0x0800
->   stack    :
->     sk_skb_reason_drop+0x8f/0x120
->     udp_queue_rcv_one_skb+0x14b/0x350
->     udp_unicast_rcv_skb+0x71/0x90
->     ip_protocol_deliver_rcu+0xa6/0x160
->     ip_local_deliver_finish+0x90/0x100
->     ip_sublist_rcv_finish+0x65/0x80
->     ip_sublist_rcv+0x130/0x1c0
->     ip_list_rcv+0xf7/0x130
->     __netif_receive_skb_list_core+0x21d/0x240
->     netif_receive_skb_list_internal+0x186/0x2b0
->     napi_complete_done+0x78/0x190
->     e1000_clean+0x27f/0x860
->     __napi_poll+0x25/0x1e0
->     net_rx_action+0x2ca/0x330
->     handle_softirqs+0xbc/0x290
->     irq_exit_rcu+0x90/0xb0
->
-> It's more friendly to use and not need user application to cooperate.
-> Furthermore, it is easier to add new feature. We can add reason/ip/port
-> filter by debugfs parameters, like ftrace, rather than netlink msg.
+Li,Rongqing <lirongqing@baidu.com> wrote:
 
-I do not understand the fascination with net/core/drop_monitor.c,
-which looks very old school to me,
-and misses all the features,  flexibility, scalability  that 'perf',
-eBPF tracing, bpftrace, .... have today.
+[ CC scheduler experts & drop netfilter maintainers ]
 
-Adding  /sys/kernel/debug/drop_monitor/* is even more old school.
+Context: proposed patch
+(https://patchwork.ozlabs.org/project/netfilter-devel/patch/20251014115103.2678-1-lirongqing@baidu.com/)
+does:
 
-Not mentioning the maintenance burden.
+-		cond_resched();
++		if (jiffies - resched_time > msecs_to_jiffies(1)) {
++			cond_resched();
++			resched_time = jiffies;
++		}
 
-For me the choice is easy :
+... and my knee-jerk reaction was "reject".
 
-# CONFIG_NET_DROP_MONITOR is not set
+But author pointed me at:
+commit 271557de7cbfdecb08e89ae1ca74647ceb57224f
+xfs: reduce the rate of cond_resched calls inside scrub
 
-perf record -ag -e skb:kfree_skb sleep 1
+So:
 
-perf script # or perf report
+Is calling cond_resched() unconditionally while walking hashtable/tree etc.
+really discouraged?  I see a truckload of cond_resched() calls in similar
+walkers all over networking. I find it hard to believe that conntrack is
+somehow special and should call it only once per ms.
+
+If cond_resched() is really so expensive even just for *checking*
+(retval 0), then maybe we should only call it for every n-th hash slot?
+(every L1_CACHE_BYTES?).
+
+But even in that case it would be good to have a comment or documentation
+entry about recommended usage, or better yet, make a variant of
+xchk_maybe_relax() available via sched.h...
