@@ -1,356 +1,188 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9C631B805;
-	Wed, 15 Oct 2025 09:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4152308F2E;
+	Wed, 15 Oct 2025 09:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760521873; cv=none; b=bjIqLCuCK2RYnV3sJVlF46dZKKOYnBJNQ/iBrqOhDNQy4X9ypta/ckr2iE9KPzK4mIzDeCYG60EsACEwnCTfCddN2WWuHCze8muJnb9xB6qYC9JZF+kpxoObpkwT1in1g3zIXA2FS1OwPI+DiaBN7h59DkHvYw1OB2SVC5+ANXg=
+	t=1760521992; cv=none; b=qTLv8XWBQTN2SMiARpKeSuIrmgYjzJq3QCCoSzf0lvi9HPQ8xVRbaP72m0Mx8KsWS98ZgVbZwDpAiMF8ynKFp1BmbVJdLBaTXjYtt1H42jzgZzd7r6vFt0QicGY2bwfsdgdTqcdIXyxzeJBYLKuUV0pIPNJihRv8OPXzadJIp3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760521873; c=relaxed/simple;
-	bh=EQxNKNke9gX0XYA/V0M+H1+7qAdQ38O3TXmITQZdJI8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nvW1HpRqh+1UVUf4FTi3ibjUmx50W6rCIJDpd9QJU4z5vArGtol/le4VlnPWoQLxWZxi+E3SEr4pzFZ1HnmSiQdAM74AQNXrR3jeZYPsqEkPatiHqybbURLXaZTj/0gFyKe27aR3zq/sJab3ZgpIkaIIo0K3XG4mJ1ng/LLITsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ktvPzeiR; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1760521992; c=relaxed/simple;
+	bh=iziB5jyiF6mHDkiY6ZCk+Wow33XGRZNsyWDK/NaIZQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EUJylbaEVQeHZxtPLKJvaLb6VApUUayJ/gUDw+rOKEbdFQ5hI1ljdtSyF9tdszqX283hCTqYGjBV57qCf90DLItmL/pE7OTVS5YU2U7zhDiBOvzTTTUwa9mrfFV6EHbQuycrQqdItfGQz5ODfmNjr6lQmJYmzOnCcO9uque3eys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=R1r9qTW4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OakFG2EL; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ktvPzeiR"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=pb1FEeW6OvnR/nSC7HJl57XnSy3f3DvA8j0ii52hBVI=;
-	b=ktvPzeiRLZ9B8YaGsvE3bUAuozxorei71FQQFh0QQKEKxYF86DoHE8vz6mtwemGZbpTLbKezW
-	jHkJ3u3EbZ+p006oc7wW7RZJkBOIdPkmItZ0sip6TiiC+q65o1KxXSb/eKACLGT+0jvYhqnYcbo
-	24je0w8z5IVOtjIaLgFatEw=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cmmXb6b7FzcZyT;
-	Wed, 15 Oct 2025 17:50:07 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 50F3118048B;
-	Wed, 15 Oct 2025 17:51:06 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 15 Oct
- 2025 17:51:05 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <nhorman@tuxdriver.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>
-Subject: [PATCH RFC net-next] net: drop_monitor: Add debugfs support
-Date: Wed, 15 Oct 2025 18:14:17 +0800
-Message-ID: <20251015101417.1511732-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="R1r9qTW4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OakFG2EL"
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id C8894EC0110;
+	Wed, 15 Oct 2025 05:53:07 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Wed, 15 Oct 2025 05:53:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1760521987; x=
+	1760608387; bh=ZRcJTFRWGK7NOr5KnRDlG6z7tyzDX/Z+zt3DwkntsFA=; b=R
+	1r9qTW4ibBV4NbFPgVBitEjstKh6c7MHolCH0qVsCyEqZmp+3ae/R0glqvb4gQSz
+	G5VM5Y1Vw4Bsp4dJhRs6lzBkKIGuKj1QGzyCEt99q3Q/8WV6U0NG4nngyEsRx2I0
+	+TAQCJS8TcRXTNtWj4Z2vAaO83ZO6b0p2EUc6L+SUMqDRCOYVsgGPCcjJnFCh4bT
+	LhUldd58ZeOKVFBqr6MgzOCbDUse0V02o9eTgmkfB++2fCzHQD7X/wk7Jm1BtDU5
+	0b9D2GfzXM6b8EIifPZywoHrhq6DQSNxvJsG2tlqErzAtdtVFNsRaY2foJXN+xX1
+	cmxLhpV80vYGRS2XDQ1aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1760521987; x=1760608387; bh=ZRcJTFRWGK7NOr5KnRDlG6z7tyzDX/Z+zt3
+	DwkntsFA=; b=OakFG2EL23EDKU0Aiuh6rFoSz3h7uE+h2JUUo92X/j4lsaGOQrw
+	t1OM7Vj1zEFaFnlaRLE0qxNknyzURm8HF/InI/dnuDG4FX40gVK3Yx7qJF0PPwZW
+	nn09l/7Alqtb3j9Mubi17QEzDmhGMon/+3i2z3CpP6d7ujZD6U1Bl7RbaXD9ROEv
+	frOhZGxOmEgByROBxJ45Wut9DmeExgHQczH1vqNcHRSjegiZrc3EQ7Kqjz8ZEZJk
+	VZ/2m1Gs66qebDRYznALwsykaLFxxqzQjDI6SwYR6XDP6BJbbyFVQib/Du16lLCp
+	tW3M/KzRp8f4kbdbedE6rLExKtQ5m7GE8Jw==
+X-ME-Sender: <xms:Am_vaCTqocvZRgtz9fiW0XvRu5Ol0lveXTGovW8sH0d0bgxF_kIQeg>
+    <xme:Am_vaJVGK3BDWr0CRcvFCJv_DnLsy62l3WwmbcpLasms6YTOYhnAGTzDtAjcKUtpL
+    0sMr4jGl3zjo9DcvLEjHljP8XfA2ukxcgxP6BEveSqS06qGGA6vTtw>
+X-ME-Received: <xmr:Am_vaPGBvTG2QKbZkR1V9-YRyAdM0eeGkPXI0LBfc0CFo0k0lj4Swe0FiYvT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduvdefuddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegouf
+    hushhpvggtthffohhmrghinhculdegledmnecujfgurhepfffhvfevuffkfhggtggujges
+    thdtredttddtjeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqh
+    huvggrshihshhnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepveekhffgtddvveej
+    vedvgffffeeftedtfefhtdfgueetgeevuefftdffhfduhedvnecuffhomhgrihhnpehshi
+    iikhgrlhhlvghrrdgrphhpshhpohhtrdgtohhmpdhgohhoghhlvggrphhishdrtghomhen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqh
+    huvggrshihshhnrghilhdrnhgvthdpnhgspghrtghpthhtohepuddupdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopehsthgvfhhfvghnrdhklhgrshhsvghrthesshgvtghunh
+    gvthdrtghomhdprhgtphhtthhopehshiiisghothdohegtugeivdellegvuggvgegugehf
+    jedtleekjegssehshiiikhgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhmpdhrtg
+    hpthhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughu
+    mhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohephhgvrhgsvghrthesghhonh
+    guohhrrdgrphgrnhgrrdhorhhgrdgruhdprhgtphhtthhopehhohhrmhhssehkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Am_vaEermWOTEaHSXCemuj5res_AHg5uzYJwEjrE7n9uUwZQpDDTng>
+    <xmx:Am_vaArFXLnncdG7io31n2ZDW_U0SrSFOozS-EfP3hamUc56Z3mVog>
+    <xmx:Am_vaNBfKenHPKIPyoe_zUqnwPg8xC3Vz2j5xzuBh-ZmkjT9FBAGvQ>
+    <xmx:Am_vaBfNYqPwIW0_K9Oswa4FjG6n_QFXfbreCspptYWNbGCUqGTXCg>
+    <xmx:A2_vaJ9L5nzLrXNwURqQBoq1i6TdFkK4dBA6HYXSxjtbDkaX4O_hJnlr>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 15 Oct 2025 05:53:05 -0400 (EDT)
+Date: Wed, 15 Oct 2025 11:53:04 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: syzbot <syzbot+5cd6299ede4d4f70987b@syzkaller.appspotmail.com>,
+	davem@davemloft.net, edumazet@google.com,
+	herbert@gondor.apana.org.au, horms@kernel.org, kuba@kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot] [net?] WARNING in xfrm_state_migrate (2)
+Message-ID: <aO9vAIsmgNx4j1Sf@krikkit>
+References: <68e2ad62.a00a0220.2ba410.0018.GAE@google.com>
+ <aO5PnU4dhUuzM34e@krikkit>
+ <aO9QkNNkZ1JLnnIl@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aO9QkNNkZ1JLnnIl@secunet.com>
 
-This patch add debugfs interfaces for drop monitor. Similar to kmemleak, we
-can use the monitor by below commands:
+2025-10-15, 09:43:12 +0200, Steffen Klassert wrote:
+> On Tue, Oct 14, 2025 at 03:26:53PM +0200, Sabrina Dubroca wrote:
+> > 2025-10-05, 10:39:46 -0700, syzbot wrote:
+> > > Hello,
+> > > 
+> > > syzbot found the following issue on:
+> > > 
+> > > HEAD commit:    4b946f6bb7d6 selftests/bpf: Fix realloc size in bpf_get_ad..
+> > > git tree:       bpf
+> > > console output: https://syzkaller.appspot.com/x/log.txt?x=13be46e2580000
+> > > kernel config:  https://syzkaller.appspot.com/x/.config?x=8f1ac8502efee0ee
+> > > dashboard link: https://syzkaller.appspot.com/bug?extid=5cd6299ede4d4f70987b
+> > > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> > > 
+> > > Unfortunately, I don't have any reproducer for this issue yet.
+> > > 
+> > > Downloadable assets:
+> > > disk image: https://storage.googleapis.com/syzbot-assets/f0ef71bdead6/disk-4b946f6b.raw.xz
+> > > vmlinux: https://storage.googleapis.com/syzbot-assets/0c8251d5df12/vmlinux-4b946f6b.xz
+> > > kernel image: https://storage.googleapis.com/syzbot-assets/29bad3cdad16/bzImage-4b946f6b.xz
+> > > 
+> > > IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> > > Reported-by: syzbot+5cd6299ede4d4f70987b@syzkaller.appspotmail.com
+> > > 
+> > > ------------[ cut here ]------------
+> > > WARNING: CPU: 0 PID: 30386 at net/xfrm/xfrm_state.c:800 __xfrm_state_destroy net/xfrm/xfrm_state.c:800 [inline]
+> > > WARNING: CPU: 0 PID: 30386 at net/xfrm/xfrm_state.c:800 xfrm_state_put include/net/xfrm.h:928 [inline]
+> > > WARNING: CPU: 0 PID: 30386 at net/xfrm/xfrm_state.c:800 xfrm_state_migrate+0x13bc/0x1b10 net/xfrm/xfrm_state.c:2165
+> > 
+> > Steffen, this looks like we simply forgot to set XFRM_STATE_DEAD
+> > before the final put() in the error path of xfrm_state_migrate (and
+> > xfrm_state_clone_and_setup):
+> > 
+> > 
+> > diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> > index 9ea1d45b79e3..7ae10fac7b31 100644
+> > --- a/net/xfrm/xfrm_state.c
+> > +++ b/net/xfrm/xfrm_state.c
+> > @@ -2074,6 +2074,7 @@ static struct xfrm_state *xfrm_state_clone_and_setup(struct xfrm_state *orig,
+> >  	return x;
+> >  
+> >   error:
+> > +	x->km.state = XFRM_STATE_DEAD;
+> >  	xfrm_state_put(x);
+> >  out:
+> >  	return NULL;
+> > @@ -2163,6 +2164,7 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
+> >  
+> >  	return xc;
+> >  error:
+> > +	xc->km.state = XFRM_STATE_DEAD;
+> >  	xfrm_state_put(xc);
+> >  	return NULL;
+> >  }
+> > 
+> > 
+> > Does that look reasonable? The state was never add()/insert()'ed, so
+> > it goes through put()/destroy() without delete() first that would set
+> > XFRM_STATE_DEAD.
+> 
+> Right. Looks like this is broken since the migrate API exists.
+> 
+> > It also looks like we're missing a xfrm_dev_state_delete if
+> > xfrm_state_migrate -> xfrm_state_add fails, since
+> > xfrm_dev_state_delete gets called during __xfrm_state_delete, and this
+> > new state will only see xfrm_state_put/__xfrm_state_destroy:
+> > 
+> > @@ -2159,10 +2159,13 @@ struct xfrm_state *xfrm_state_migrate(struct xfrm_state *x,
+> >  		xfrm_state_insert(xc);
+> >  	} else {
+> >  		if (xfrm_state_add(xc) < 0)
+> > -			goto error;
+> > +			goto error_add;
+> >  	}
+> >  
+> >  	return xc;
+> > +error_add:
+> > +	if (xuo)
+> > +		xfrm_dev_state_delete(xc);
+> 
+> This is correct as well. Thanks for catching these!
 
-  echo clear > /sys/kernel/debug/drop_monitor/trace
-  echo start > /sys/kernel/debug/drop_monitor/trace
-  echo stop  > /sys/kernel/debug/drop_monitor/trace
-  cat /sys/kernel/debug/drop_monitor/trace
+Thanks for confirming. I'll post the patches (with a few other fixes I
+have) today or tomorrow.
 
-The trace skb number limit can be set dynamically:
-
-  cat /sys/kernel/debug/drop_monitor/trace_limit
-  echo 200 > /sys/kernel/debug/drop_monitor/trace_limit
-
-Compare to original netlink method, the callstack dump is supported. There
-is a example for received udp packet with error checksum:
-
-  reason   : UDP_CSUM (11)
-  pc       : udp_queue_rcv_one_skb+0x14b/0x350
-  len      : 12
-  protocol : 0x0800
-  stack    :
-    sk_skb_reason_drop+0x8f/0x120
-    udp_queue_rcv_one_skb+0x14b/0x350
-    udp_unicast_rcv_skb+0x71/0x90
-    ip_protocol_deliver_rcu+0xa6/0x160
-    ip_local_deliver_finish+0x90/0x100
-    ip_sublist_rcv_finish+0x65/0x80
-    ip_sublist_rcv+0x130/0x1c0
-    ip_list_rcv+0xf7/0x130
-    __netif_receive_skb_list_core+0x21d/0x240
-    netif_receive_skb_list_internal+0x186/0x2b0
-    napi_complete_done+0x78/0x190
-    e1000_clean+0x27f/0x860
-    __napi_poll+0x25/0x1e0
-    net_rx_action+0x2ca/0x330
-    handle_softirqs+0xbc/0x290
-    irq_exit_rcu+0x90/0xb0
-
-It's more friendly to use and not need user application to cooperate.
-Furthermore, it is easier to add new feature. We can add reason/ip/port
-filter by debugfs parameters, like ftrace, rather than netlink msg.
-
-As the first version, only enable the sw switch when starting the monitor
-and save drop skb info in kfree_skb_probe hook.
-
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- net/core/drop_monitor.c | 198 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 198 insertions(+)
-
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 60d31c2feed3..d790439bbc77 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -38,10 +38,35 @@
- #include <trace/events/devlink.h>
- 
- #include <linux/unaligned.h>
-+#include <linux/debugfs.h>
- 
- #define TRACE_ON 1
- #define TRACE_OFF 0
- 
-+static struct dentry *dm_debugfs_dir;
-+static LIST_HEAD(dm_entry_list);
-+static DEFINE_RAW_SPINLOCK(dm_entry_lock);
-+
-+#define DM_MAX_STACK_TRACE_ENTRIES 16
-+#define DM_MAX_STACK_TRACE_SKIP 1
-+
-+struct dm_skb_info {
-+	unsigned int len;
-+	unsigned short protocol;
-+};
-+
-+struct dm_entry {
-+	struct list_head dm_list;
-+	void *pc;
-+	enum skb_drop_reason reason;
-+	unsigned int stack_len;
-+	unsigned long stack[DM_MAX_STACK_TRACE_ENTRIES];
-+	struct dm_skb_info skb_info;
-+};
-+
-+static unsigned int dm_trace_limit = 100;
-+static void init_dm_entry(struct sk_buff *skb, void *location, enum skb_drop_reason reason);
-+
- /*
-  * Globals, our netlink socket pointer
-  * and the work handle that will send up
-@@ -268,6 +293,7 @@ static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb,
- 				enum skb_drop_reason reason,
- 				struct sock *rx_sk)
- {
-+	init_dm_entry(skb, location, reason);
- 	trace_drop_common(skb, location);
- }
- 
-@@ -502,6 +528,8 @@ static void net_dm_packet_trace_kfree_skb_hit(void *ignore,
- 	struct sk_buff *nskb;
- 	unsigned long flags;
- 
-+	init_dm_entry(skb, location, reason);
-+
- 	if (!skb_mac_header_was_set(skb))
- 		return;
- 
-@@ -1723,6 +1751,173 @@ static void net_dm_hw_cpu_data_fini(int cpu)
- 	__net_dm_cpu_data_fini(hw_data);
- }
- 
-+static void init_dm_entry(struct sk_buff *skb, void *location, enum skb_drop_reason reason)
-+{
-+	struct dm_entry *entry;
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&dm_entry_lock, flags);
-+	if (list_count_nodes(&dm_entry_list) >= dm_trace_limit) {
-+		raw_spin_unlock_irqrestore(&dm_entry_lock, flags);
-+		return;
-+	}
-+	raw_spin_unlock_irqrestore(&dm_entry_lock, flags);
-+
-+	entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
-+	if (!entry)
-+		return;
-+	entry->pc = location;
-+	entry->reason = reason;
-+	entry->skb_info.len = skb->len;
-+	entry->skb_info.protocol = be16_to_cpu(skb->protocol);
-+
-+	raw_spin_lock_irqsave(&dm_entry_lock, flags);
-+	entry->stack_len = stack_trace_save(entry->stack, ARRAY_SIZE(entry->stack),
-+					    DM_MAX_STACK_TRACE_SKIP);
-+	list_add_tail(&entry->dm_list, &dm_entry_list);
-+	raw_spin_unlock_irqrestore(&dm_entry_lock, flags);
-+}
-+
-+static void clear_dm_entry(void)
-+{
-+	struct dm_entry *entry, *tmp;
-+
-+	raw_spin_lock(&dm_entry_lock);
-+	list_for_each_entry_safe(entry, tmp, &dm_entry_list, dm_list) {
-+		list_del(&entry->dm_list);
-+		kfree(entry);
-+	}
-+	raw_spin_unlock(&dm_entry_lock);
-+}
-+
-+static void *dm_debugfs_seq_start(struct seq_file *seq, loff_t *pos)
-+{
-+	raw_spin_lock(&dm_entry_lock);
-+	return seq_list_start_head(&dm_entry_list, *pos);
-+}
-+
-+static void dm_debugfs_seq_stop(struct seq_file *seq, void *v)
-+{
-+	raw_spin_unlock(&dm_entry_lock);
-+}
-+
-+static void *dm_debugfs_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-+{
-+	return seq_list_next(v, &dm_entry_list, pos);
-+}
-+
-+static const char *dm_show_reason_str(enum skb_drop_reason reason)
-+{
-+	const struct drop_reason_list *list;
-+	unsigned int subsys, subsys_reason;
-+
-+	subsys = u32_get_bits(reason, SKB_DROP_REASON_SUBSYS_MASK);
-+	if (subsys >= SKB_DROP_REASON_SUBSYS_NUM)
-+		return NULL;
-+	list = rcu_dereference(drop_reasons_by_subsys[subsys]);
-+
-+	subsys_reason = reason & ~SKB_DROP_REASON_SUBSYS_MASK;
-+	if (subsys_reason >= list->n_reasons)
-+		return NULL;
-+	return list->reasons[subsys_reason];
-+}
-+
-+static int dm_debugfs_seq_show(struct seq_file *seq, void *v)
-+{
-+	struct dm_entry *entry;
-+	unsigned int i;
-+
-+	if (v == &dm_entry_list) {
-+		seq_printf(seq, "drop count: %zu\n", list_count_nodes(&dm_entry_list));
-+		return 0;
-+	}
-+
-+	entry = list_entry(v, struct dm_entry, dm_list);
-+	seq_puts(seq, "\n");
-+	seq_printf(seq, "reason   : %s (%d)\n", dm_show_reason_str(entry->reason), entry->reason);
-+	seq_printf(seq, "pc       : %pS\n", entry->pc);
-+	seq_printf(seq, "len      : %d\n", entry->skb_info.len);
-+	seq_printf(seq, "protocol : 0x%04x\n", entry->skb_info.protocol);
-+	seq_puts(seq, "stack    :\n");
-+	for (i = 0; i < entry->stack_len; i++)
-+		seq_printf(seq, "  %pS\n", (void *)entry->stack[i]);
-+	return 0;
-+}
-+
-+static const struct seq_operations dm_debugfs_seq_ops = {
-+	.start	= dm_debugfs_seq_start,
-+	.next	= dm_debugfs_seq_next,
-+	.stop	= dm_debugfs_seq_stop,
-+	.show	= dm_debugfs_seq_show,
-+};
-+
-+static int dm_debugfs_open(struct inode *inode, struct file *file)
-+{
-+	return seq_open(file, &dm_debugfs_seq_ops);
-+}
-+
-+static void dm_debugfs_set_trace_sw(int state)
-+{
-+	mutex_lock(&net_dm_mutex);
-+
-+	if (state == TRACE_ON)
-+		net_dm_monitor_start(true, false, NULL);
-+	else
-+		net_dm_monitor_stop(true, false, NULL);
-+
-+	mutex_unlock(&net_dm_mutex);
-+}
-+
-+static ssize_t dm_debugfs_write(struct file *file, const char __user *user_buf,
-+				size_t size, loff_t *ppos)
-+{
-+	char buf[64];
-+	int buf_size;
-+
-+	buf_size = min(size, (sizeof(buf) - 1));
-+	if (strncpy_from_user(buf, user_buf, buf_size) < 0)
-+		return -EFAULT;
-+	buf[buf_size] = 0;
-+
-+	if (strncmp(buf, "clear", strlen("clear")) == 0)
-+		clear_dm_entry();
-+	else if (strncmp(buf, "start", strlen("start")) == 0)
-+		dm_debugfs_set_trace_sw(TRACE_ON);
-+	else if (strncmp(buf, "stop", strlen("stop")) == 0)
-+		dm_debugfs_set_trace_sw(TRACE_OFF);
-+	else
-+		return -EINVAL;
-+
-+	return size;
-+}
-+
-+static const struct file_operations dm_debugfs_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= dm_debugfs_open,
-+	.read		= seq_read,
-+	.write		= dm_debugfs_write,
-+	.llseek		= seq_lseek,
-+	.release	= seq_release,
-+};
-+
-+static void net_dm_create_debugfs(void)
-+{
-+	dm_debugfs_dir = debugfs_create_dir("drop_monitor", NULL);
-+	if (IS_ERR_OR_NULL(dm_debugfs_dir)) {
-+		pr_warn("Cannot create drop monitor debugfs directory\n");
-+		return;
-+	}
-+
-+	debugfs_create_u32("trace_limit", 0644, dm_debugfs_dir, &dm_trace_limit);
-+	debugfs_create_file("trace", 0644, dm_debugfs_dir, NULL, &dm_debugfs_fops);
-+}
-+
-+static void net_dm_destroy_debugfs(void)
-+{
-+	debugfs_remove_recursive(dm_debugfs_dir);
-+	clear_dm_entry();
-+}
-+
- static int __init init_net_drop_monitor(void)
- {
- 	int cpu, rc;
-@@ -1754,6 +1949,7 @@ static int __init init_net_drop_monitor(void)
- 
- 	rc = 0;
- 
-+	net_dm_create_debugfs();
- 	goto out;
- 
- out_unreg:
-@@ -1766,6 +1962,8 @@ static void exit_net_drop_monitor(void)
- {
- 	int cpu;
- 
-+	net_dm_destroy_debugfs();
-+
- 	/*
- 	 * Because of the module_get/put we do in the trace state change path
- 	 * we are guaranteed not to have any current users when we get here
 -- 
-2.34.1
-
+Sabrina
