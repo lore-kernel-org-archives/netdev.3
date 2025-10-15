@@ -1,235 +1,737 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD3A31352C;
-	Wed, 15 Oct 2025 07:15:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512559; cv=none; b=LYhcAGen3BoI6KGUb+gS5ZR1vr473a0LcDMCfmfiPtpj87OsOGDVN8MKEWLGIWkiXrym5kKCMkoDlda8jaWkyI87rCDH6YLVcn4yFrrL06OHpyvG76ytB4Vyk5xZKNnQ5gLRi6knpH2hGZj0JAUZsUPJC+FvhaCjQH+guHGJ4p0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512559; c=relaxed/simple;
-	bh=PieS47PQvx6O4BGuXJE65xiustPAR1BCwqadpxxW9K8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=itZkWynU65MPRJaHmS8KT/MH4kLucPgdjDt5V7n7MGXZMOxZvrZDyEZcSExPj0JvwF/AllaTK2A5ewnXykrKPLNyWMiNU4chxxjN0mWcdHxne2HSy0JTpHP0dSoIahgNf5NsG5f1kbPWcenUgwGI4CwQnf6eLlct6ve/2rQuOZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CT82OD0j; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CT82OD0j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61CCC4CEF8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A286E314D2F;
 	Wed, 15 Oct 2025 07:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760512559;
-	bh=PieS47PQvx6O4BGuXJE65xiustPAR1BCwqadpxxW9K8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CT82OD0jngPS+9HrPHLQYy0QaY9WDAH8EU9zQlATpEHFgiIeSvbJBF/dNpPUtIZmQ
-	 1nMFD8eULZzuoxafmPBSX51ntpM0qk1iocDhh/tYR8KKWfXuMjllf5CDnu+PUHdzCz
-	 LuiySiuYp791rVHqr8PTKNHmtKHwvSz4D+g8Ve0qmwStAqdxUq6+ER13lUHFJ9tWVf
-	 HGhRdbh/JMTODcJ6QS4X0v3YT40zBCu6yQmtlaCuxz/LjjfCggS/q2EiKXthKc21wd
-	 mGzim/u46I57QBqWDJoBb4ol5vNUswMTzCx4o8p8tQnxqMYKD7mK4SLPMjx//8V3Qe
-	 aQGN7O3leh90Q==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Wed, 15 Oct 2025 09:15:11 +0200
-Subject: [PATCH net-next 11/12] net: airoha: Refactor src port
- configuration in airhoha_set_gdm2_loopback
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760512561; cv=none; b=Qd68EcsX/EjbpTKyAjWJHjyJ1oiDa2amn2IUHQDxLf+IzhuAOolz5V+Ad1IiXqF2zQDsqrrkvNFaqv4bqHhBInsJVr5RiBErcpna1yeIRgQkfG+qUwqQ3JJS01WltMKZsvYvnEK2RJjNadzGrxwh7ftGXd2ysgAr01BfBMgswYQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760512561; c=relaxed/simple;
+	bh=JzPAE8H1IxbQD9GoFKM9rAOQXTHY8vCLGGASrsnimjo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SdheKGs4d1KBsrhFpS+G6vWxSvNfU32lTlImzBs91+t7Bh0/CjN+FyMyd29ewK/WrM5MP5xPGwtFsDJ4agY6OP5GH4ooGPmK7u6vmuRoFo2QHvmr62Ch5V7o87xBUuD1BZ80w/y4odISBI8reitjdkvpb13dlr5XHip8iep3pXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=fZ7/eOSZ; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="fZ7/eOSZ"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=bpeoM1uJa2XDspK2w+cqJRAKeMxLtl/cRkem2EvhK8A=;
+	b=fZ7/eOSZixK0mvfNW3To4XK+Blqb7bdoTZ/s/h4MnhTSJtiSchqtSDrRS7WE1ZSg6KGUQPrtm
+	pMLu71SlcyB9VKH751aodhT5Aen6UFgohmHlB+FG9XDWF+kIRTd9QkJBP6wDft0/BO6MVBX7qKO
+	E39gBQHtBOPOL5TQjRFiuoM=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cmj6J30JyzmV6g;
+	Wed, 15 Oct 2025 15:15:36 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9483A1A016C;
+	Wed, 15 Oct 2025 15:15:56 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 15 Oct 2025 15:15:54 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	<linux-doc@vger.kernel.org>, Jonathan Corbet <corbet@lwn.net>, Bjorn Helgaas
+	<helgaas@kernel.org>, luosifu <luosifu@huawei.com>, Xin Guo
+	<guoxin09@huawei.com>, Shen Chenyang <shenchenyang1@hisilicon.com>, Zhou
+ Shuai <zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Luo Yang <luoyang82@h-partners.com>, Meny Yossefi
+	<meny.yossefi@huawei.com>, Gur Stavi <gur.stavi@huawei.com>, Lee Trager
+	<lee@trager.us>, Michael Ellerman <mpe@ellerman.id.au>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>, Suman Ghosh <sumang@marvell.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Joe Damato <jdamato@fastly.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH net-next v01 4/9] hinic3: Add mac filter ops
+Date: Wed, 15 Oct 2025 15:15:30 +0800
+Message-ID: <643f505afd6feb5736e2ab21f00b695be62b6932.1760502478.git.zhuyikai1@h-partners.com>
+X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <cover.1760502478.git.zhuyikai1@h-partners.com>
+References: <cover.1760502478.git.zhuyikai1@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251015-an7583-eth-support-v1-11-064855f05923@kernel.org>
-References: <20251015-an7583-eth-support-v1-0-064855f05923@kernel.org>
-In-Reply-To: <20251015-an7583-eth-support-v1-0-064855f05923@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
- Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
-AN7583 chipset relies on different definitions for source-port
-identifier used for hw offloading. In order to support hw offloading
-in AN7583 controller, refactor src port configuration in
-airhoha_set_gdm2_loopback routine and introduce get_src_port_id
-callback.
+Add ops to support unicast and multicast to filter mac address and
+forward packages.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- drivers/net/ethernet/airoha/airoha_eth.c  | 75 +++++++++++++++++++++----------
- drivers/net/ethernet/airoha/airoha_eth.h  | 11 +++--
- drivers/net/ethernet/airoha/airoha_regs.h |  5 +--
- 3 files changed, 60 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/huawei/hinic3/Makefile   |   1 +
+ .../ethernet/huawei/hinic3/hinic3_filter.c    | 420 ++++++++++++++++++
+ .../net/ethernet/huawei/hinic3/hinic3_main.c  |   6 +
+ .../huawei/hinic3/hinic3_mgmt_interface.h     |  17 +
+ .../huawei/hinic3/hinic3_netdev_ops.c         |  15 +
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.c   |  24 +
+ .../ethernet/huawei/hinic3/hinic3_nic_cfg.h   |   1 +
+ .../ethernet/huawei/hinic3/hinic3_nic_dev.h   |  32 ++
+ 8 files changed, 516 insertions(+)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-index 5f6b5ab52e0265f7bb56b008ca653d64e04ff2d2..76c82750b3ae89a9fa81c64d3b7c3578b369480c 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -1682,11 +1682,14 @@ static int airoha_dev_set_macaddr(struct net_device *dev, void *p)
+diff --git a/drivers/net/ethernet/huawei/hinic3/Makefile b/drivers/net/ethernet/huawei/hinic3/Makefile
+index c3efa45a6a42..26c05ecf31c9 100644
+--- a/drivers/net/ethernet/huawei/hinic3/Makefile
++++ b/drivers/net/ethernet/huawei/hinic3/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_HINIC3) += hinic3.o
+ hinic3-objs := hinic3_cmdq.o \
+ 	       hinic3_common.o \
+ 	       hinic3_eqs.o \
++	       hinic3_filter.o \
+ 	       hinic3_hw_cfg.o \
+ 	       hinic3_hw_comm.o \
+ 	       hinic3_hwdev.o \
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_filter.c b/drivers/net/ethernet/huawei/hinic3/hinic3_filter.c
+new file mode 100644
+index 000000000000..cb1d1637cb38
+--- /dev/null
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_filter.c
+@@ -0,0 +1,420 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
++
++#include <linux/kernel.h>
++#include <linux/pci.h>
++#include <linux/device.h>
++#include <linux/types.h>
++#include <linux/errno.h>
++#include <linux/etherdevice.h>
++#include <linux/netdevice.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++
++#include "hinic3_hwif.h"
++#include "hinic3_nic_dev.h"
++#include "hinic3_nic_cfg.h"
++
++static int hinic3_uc_sync(struct net_device *netdev, u8 *addr)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	return hinic3_set_mac(nic_dev->hwdev, addr, 0,
++			      hinic3_global_func_id(nic_dev->hwdev));
++}
++
++static int hinic3_uc_unsync(struct net_device *netdev, u8 *addr)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	/* The addr is in use */
++	if (ether_addr_equal(addr, netdev->dev_addr))
++		return 0;
++
++	return hinic3_del_mac(nic_dev->hwdev, addr, 0,
++			      hinic3_global_func_id(nic_dev->hwdev));
++}
++
++void hinic3_clean_mac_list_filter(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++
++	list_for_each_entry_safe(f, ftmp, &nic_dev->uc_filter_list, list) {
++		if (f->state == HINIC3_MAC_HW_SYNCED)
++			hinic3_uc_unsync(netdev, f->addr);
++		list_del(&f->list);
++		kfree(f);
++	}
++
++	list_for_each_entry_safe(f, ftmp, &nic_dev->mc_filter_list, list) {
++		if (f->state == HINIC3_MAC_HW_SYNCED)
++			hinic3_uc_unsync(netdev, f->addr);
++		list_del(&f->list);
++		kfree(f);
++	}
++}
++
++static struct hinic3_mac_filter *hinic3_find_mac(const struct list_head *filter_list,
++						 u8 *addr)
++{
++	struct hinic3_mac_filter *f;
++
++	list_for_each_entry(f, filter_list, list) {
++		if (ether_addr_equal(addr, f->addr))
++			return f;
++	}
++	return NULL;
++}
++
++static void hinic3_add_filter(struct net_device *netdev,
++			      struct list_head *mac_filter_list,
++			      u8 *addr)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct hinic3_mac_filter *f;
++
++	f = kzalloc(sizeof(*f), GFP_ATOMIC);
++	if (!f)
++		return;
++
++	ether_addr_copy(f->addr, addr);
++
++	INIT_LIST_HEAD(&f->list);
++	list_add_tail(&f->list, mac_filter_list);
++
++	f->state = HINIC3_MAC_WAIT_HW_SYNC;
++	set_bit(HINIC3_MAC_FILTER_CHANGED, &nic_dev->flags);
++}
++
++static void hinic3_del_filter(struct net_device *netdev,
++			      struct hinic3_mac_filter *f)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	set_bit(HINIC3_MAC_FILTER_CHANGED, &nic_dev->flags);
++
++	if (f->state == HINIC3_MAC_WAIT_HW_SYNC) {
++		/* have not added to hw, delete it directly */
++		list_del(&f->list);
++		kfree(f);
++		return;
++	}
++
++	f->state = HINIC3_MAC_WAIT_HW_UNSYNC;
++}
++
++static struct hinic3_mac_filter *hinic3_mac_filter_entry_clone(const struct hinic3_mac_filter *src)
++{
++	struct hinic3_mac_filter *f;
++
++	f = kzalloc(sizeof(*f), GFP_ATOMIC);
++	if (!f)
++		return NULL;
++
++	*f = *src;
++	INIT_LIST_HEAD(&f->list);
++
++	return f;
++}
++
++static void hinic3_undo_del_filter_entries(struct list_head *filter_list,
++					   const struct list_head *from)
++{
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++
++	list_for_each_entry_safe(f, ftmp, from, list) {
++		if (hinic3_find_mac(filter_list, f->addr))
++			continue;
++
++		if (f->state == HINIC3_MAC_HW_SYNCED)
++			f->state = HINIC3_MAC_WAIT_HW_UNSYNC;
++
++		list_move_tail(&f->list, filter_list);
++	}
++}
++
++static void hinic3_undo_add_filter_entries(struct list_head *filter_list,
++					   const struct list_head *from)
++{
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *tmp;
++	struct hinic3_mac_filter *f;
++
++	list_for_each_entry_safe(f, ftmp, from, list) {
++		tmp = hinic3_find_mac(filter_list, f->addr);
++		if (tmp && tmp->state == HINIC3_MAC_HW_SYNCED)
++			tmp->state = HINIC3_MAC_WAIT_HW_SYNC;
++	}
++}
++
++static void hinic3_cleanup_filter_list(const struct list_head *head)
++{
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++
++	list_for_each_entry_safe(f, ftmp, head, list) {
++		list_del(&f->list);
++		kfree(f);
++	}
++}
++
++static int hinic3_mac_filter_sync_hw(struct net_device *netdev,
++				     struct list_head *del_list,
++				     struct list_head *add_list)
++{
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++	int err, add_count = 0;
++
++	if (!list_empty(del_list)) {
++		list_for_each_entry_safe(f, ftmp, del_list, list) {
++			/* ignore errors when deleting mac */
++			hinic3_uc_unsync(netdev, f->addr);
++			list_del(&f->list);
++			kfree(f);
++		}
++	}
++
++	if (!list_empty(add_list)) {
++		list_for_each_entry_safe(f, ftmp, add_list, list) {
++			err = hinic3_uc_sync(netdev, f->addr);
++			if (err) {
++				netdev_err(netdev, "Failed to add mac\n");
++				return err;
++			}
++
++			add_count++;
++			list_del(&f->list);
++			kfree(f);
++		}
++	}
++
++	return add_count;
++}
++
++static int hinic3_mac_filter_sync(struct net_device *netdev,
++				  struct list_head *mac_filter_list, bool uc)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	struct list_head tmp_del_list, tmp_add_list;
++	struct hinic3_mac_filter *fclone;
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++	int err = 0, add_count;
++
++	INIT_LIST_HEAD(&tmp_del_list);
++	INIT_LIST_HEAD(&tmp_add_list);
++
++	list_for_each_entry_safe(f, ftmp, mac_filter_list, list) {
++		if (f->state != HINIC3_MAC_WAIT_HW_UNSYNC)
++			continue;
++
++		f->state = HINIC3_MAC_HW_UNSYNCED;
++		list_move_tail(&f->list, &tmp_del_list);
++	}
++
++	list_for_each_entry_safe(f, ftmp, mac_filter_list, list) {
++		if (f->state != HINIC3_MAC_WAIT_HW_SYNC)
++			continue;
++
++		fclone = hinic3_mac_filter_entry_clone(f);
++		if (!fclone) {
++			err = -ENOMEM;
++			break;
++		}
++
++		f->state = HINIC3_MAC_HW_SYNCED;
++		list_add_tail(&fclone->list, &tmp_add_list);
++	}
++
++	if (err) {
++		hinic3_undo_del_filter_entries(mac_filter_list, &tmp_del_list);
++		hinic3_undo_add_filter_entries(mac_filter_list, &tmp_add_list);
++		netdev_err(netdev, "Failed to clone mac_filter_entry\n");
++
++		hinic3_cleanup_filter_list(&tmp_del_list);
++		hinic3_cleanup_filter_list(&tmp_add_list);
++		goto err_out;
++	}
++
++	add_count = hinic3_mac_filter_sync_hw(netdev, &tmp_del_list,
++					      &tmp_add_list);
++	if (!list_empty(&tmp_add_list)) {
++		/* there were errors, delete all mac in hw */
++		hinic3_undo_add_filter_entries(mac_filter_list, &tmp_add_list);
++		/* VF does not support promiscuous mode, don't delete any other uc mac */
++		if (!HINIC3_IS_VF(nic_dev->hwdev) || !uc) {
++			list_for_each_entry_safe(f, ftmp, mac_filter_list,
++						 list) {
++				if (f->state != HINIC3_MAC_HW_SYNCED)
++					continue;
++
++				fclone = hinic3_mac_filter_entry_clone(f);
++				if (!fclone)
++					break;
++
++				f->state = HINIC3_MAC_WAIT_HW_SYNC;
++				list_add_tail(&fclone->list, &tmp_del_list);
++			}
++		}
++
++		hinic3_cleanup_filter_list(&tmp_add_list);
++		hinic3_mac_filter_sync_hw(netdev, &tmp_del_list, &tmp_add_list);
++
++		/* need to enter promiscuous/allmulti mode */
++		err = -ENOMEM;
++		goto err_out;
++	}
++
++	return add_count;
++
++err_out:
++	return err;
++}
++
++static void hinic3_mac_filter_sync_all(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	int add_count;
++
++	if (test_bit(HINIC3_MAC_FILTER_CHANGED, &nic_dev->flags)) {
++		clear_bit(HINIC3_MAC_FILTER_CHANGED, &nic_dev->flags);
++		add_count = hinic3_mac_filter_sync(netdev,
++						   &nic_dev->uc_filter_list,
++						   true);
++		if (add_count < 0 &&
++		    hinic3_test_support(nic_dev, HINIC3_NIC_F_PROMISC))
++			set_bit(HINIC3_PROMISC_FORCE_ON,
++				&nic_dev->rx_mod_state);
++		else if (add_count)
++			clear_bit(HINIC3_PROMISC_FORCE_ON,
++				  &nic_dev->rx_mod_state);
++
++		add_count = hinic3_mac_filter_sync(netdev,
++						   &nic_dev->mc_filter_list,
++						   false);
++		if (add_count < 0 &&
++		    hinic3_test_support(nic_dev, HINIC3_NIC_F_ALLMULTI))
++			set_bit(HINIC3_ALLMULTI_FORCE_ON,
++				&nic_dev->rx_mod_state);
++		else if (add_count)
++			clear_bit(HINIC3_ALLMULTI_FORCE_ON,
++				  &nic_dev->rx_mod_state);
++	}
++}
++
++#define HINIC3_DEFAULT_RX_MODE \
++	(L2NIC_RX_MODE_UC | L2NIC_RX_MODE_MC | L2NIC_RX_MODE_BC)
++
++static void hinic3_update_mac_filter(struct net_device *netdev,
++				     const struct netdev_hw_addr_list *src_list,
++				     struct list_head *filter_list)
++{
++	struct hinic3_mac_filter *filter;
++	struct hinic3_mac_filter *ftmp;
++	struct hinic3_mac_filter *f;
++	struct netdev_hw_addr *ha;
++
++	/* add addr if not already in the filter list */
++	netif_addr_lock_bh(netdev);
++	netdev_hw_addr_list_for_each(ha, src_list) {
++		filter = hinic3_find_mac(filter_list, ha->addr);
++		if (!filter)
++			hinic3_add_filter(netdev, filter_list, ha->addr);
++		else if (filter->state == HINIC3_MAC_WAIT_HW_UNSYNC)
++			filter->state = HINIC3_MAC_HW_SYNCED;
++	}
++	netif_addr_unlock_bh(netdev);
++
++	/* delete addr if not in netdev list */
++	list_for_each_entry_safe(f, ftmp, filter_list, list) {
++		bool found = false;
++
++		netif_addr_lock_bh(netdev);
++		netdev_hw_addr_list_for_each(ha, src_list)
++			if (ether_addr_equal(ha->addr, f->addr)) {
++				found = true;
++				break;
++			}
++		netif_addr_unlock_bh(netdev);
++
++		if (found)
++			continue;
++
++		hinic3_del_filter(netdev, f);
++	}
++}
++
++static void update_mac_filter(struct net_device *netdev)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	if (test_and_clear_bit(HINIC3_UPDATE_MAC_FILTER, &nic_dev->flags)) {
++		hinic3_update_mac_filter(netdev, &netdev->uc,
++					 &nic_dev->uc_filter_list);
++		hinic3_update_mac_filter(netdev, &netdev->mc,
++					 &nic_dev->mc_filter_list);
++	}
++}
++
++static void sync_rx_mode_to_hw(struct net_device *netdev, int promisc_en,
++			       int allmulti_en)
++{
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++	u32 rx_mod = HINIC3_DEFAULT_RX_MODE;
++	int err;
++
++	rx_mod |= (promisc_en ? L2NIC_RX_MODE_PROMISC : 0);
++	rx_mod |= (allmulti_en ? L2NIC_RX_MODE_MC_ALL : 0);
++
++	if (promisc_en != test_bit(HINIC3_HW_PROMISC_ON, &nic_dev->rx_mod_state))
++		netdev_dbg(netdev, "%s promisc mode\n",
++			   promisc_en ? "Enter" : "Left");
++	if (allmulti_en !=
++	    test_bit(HINIC3_HW_ALLMULTI_ON, &nic_dev->rx_mod_state))
++		netdev_dbg(netdev, "%s all_multi mode\n",
++			   allmulti_en ? "Enter" : "Left");
++
++	err = hinic3_set_rx_mode(nic_dev->hwdev, rx_mod);
++	if (err) {
++		netdev_err(netdev, "Failed to set rx_mode\n");
++		return;
++	}
++
++	promisc_en ? set_bit(HINIC3_HW_PROMISC_ON, &nic_dev->rx_mod_state) :
++		clear_bit(HINIC3_HW_PROMISC_ON, &nic_dev->rx_mod_state);
++
++	allmulti_en ? set_bit(HINIC3_HW_ALLMULTI_ON, &nic_dev->rx_mod_state) :
++		clear_bit(HINIC3_HW_ALLMULTI_ON, &nic_dev->rx_mod_state);
++}
++
++void hinic3_set_rx_mode_work(struct work_struct *work)
++{
++	int promisc_en = 0, allmulti_en = 0;
++	struct hinic3_nic_dev *nic_dev;
++	struct net_device *netdev;
++
++	nic_dev = container_of(work, struct hinic3_nic_dev, rx_mode_work);
++	netdev = nic_dev->netdev;
++
++	update_mac_filter(netdev);
++
++	hinic3_mac_filter_sync_all(netdev);
++
++	if (hinic3_test_support(nic_dev, HINIC3_NIC_F_PROMISC))
++		promisc_en = !!(netdev->flags & IFF_PROMISC) ||
++			test_bit(HINIC3_PROMISC_FORCE_ON,
++				 &nic_dev->rx_mod_state);
++
++	if (hinic3_test_support(nic_dev, HINIC3_NIC_F_ALLMULTI))
++		allmulti_en = !!(netdev->flags & IFF_ALLMULTI) ||
++			test_bit(HINIC3_ALLMULTI_FORCE_ON,
++				 &nic_dev->rx_mod_state);
++
++	if (promisc_en != test_bit(HINIC3_HW_PROMISC_ON, &nic_dev->rx_mod_state) ||
++	    allmulti_en != test_bit(HINIC3_HW_ALLMULTI_ON, &nic_dev->rx_mod_state))
++		sync_rx_mode_to_hw(netdev, promisc_en, allmulti_en);
++}
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+index baedf1589a49..6b8cca66f0e9 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+@@ -154,6 +154,10 @@ static int hinic3_init_nic_dev(struct net_device *netdev,
+ 	INIT_DELAYED_WORK(&nic_dev->periodic_work,
+ 			  hinic3_periodic_work_handler);
+ 
++	INIT_LIST_HEAD(&nic_dev->uc_filter_list);
++	INIT_LIST_HEAD(&nic_dev->mc_filter_list);
++	INIT_WORK(&nic_dev->rx_mode_work, hinic3_set_rx_mode_work);
++
  	return 0;
  }
  
--static void airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
-+static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
- {
- 	u32 pse_port = port->id == 3 ? FE_PSE_PORT_GDM3 : FE_PSE_PORT_GDM4;
- 	struct airoha_eth *eth = port->qdma->eth;
- 	u32 chan = port->id == 3 ? 4 : 0;
-+	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
-+	u32 nbq = port->id == 3 ? 4 : 0;
-+	int src_port;
+@@ -220,6 +224,7 @@ static void hinic3_sw_uninit(struct net_device *netdev)
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
  
- 	/* Forward the traffic to the proper GDM port */
- 	airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(2), pse_port);
-@@ -1709,29 +1712,23 @@ static void airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
- 	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(2));
- 	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(2));
+ 	hinic3_free_txrxqs(netdev);
++	hinic3_clean_mac_list_filter(netdev);
+ 	hinic3_del_mac(nic_dev->hwdev, netdev->dev_addr, 0,
+ 		       hinic3_global_func_id(nic_dev->hwdev));
+ 	hinic3_clear_rss_config(netdev);
+@@ -408,6 +413,7 @@ static void hinic3_nic_remove(struct auxiliary_device *adev)
+ 	unregister_netdev(netdev);
  
--	if (port->id == 3) {
--		/* FIXME: handle XSI_PCE1_PORT */
--		airoha_fe_rmw(eth, REG_FE_WAN_PORT,
--			      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
--			      FIELD_PREP(WAN0_MASK, HSGMII_LAN_PCIE0_SRCPORT));
--		airoha_fe_rmw(eth,
--			      REG_SP_DFT_CPORT(HSGMII_LAN_PCIE0_SRCPORT >> 3),
--			      SP_CPORT_PCIE0_MASK,
--			      FIELD_PREP(SP_CPORT_PCIE0_MASK,
--					 FE_PSE_PORT_CDM2));
--	} else {
--		/* FIXME: handle XSI_USB_PORT */
-+	src_port = eth->soc->ops.get_src_port_id(port, nbq);
-+	if (src_port < 0)
-+		return src_port;
+ 	cancel_delayed_work_sync(&nic_dev->periodic_work);
++	cancel_work_sync(&nic_dev->rx_mode_work);
+ 	destroy_workqueue(nic_dev->workq);
+ 
+ 	hinic3_update_nic_feature(nic_dev, 0);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+index 68dfdfa1b1ba..a69778b09c83 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mgmt_interface.h
+@@ -115,6 +115,22 @@ struct l2nic_cmd_set_vport_state {
+ 	u8                   rsvd2[3];
+ };
+ 
++/* *
++ * Definition of the NIC receiving mode
++ */
++#define L2NIC_RX_MODE_UC       0x01
++#define L2NIC_RX_MODE_MC       0x02
++#define L2NIC_RX_MODE_BC       0x04
++#define L2NIC_RX_MODE_MC_ALL   0x08
++#define L2NIC_RX_MODE_PROMISC  0x10
 +
-+	airoha_fe_rmw(eth, REG_FE_WAN_PORT,
-+		      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
-+		      FIELD_PREP(WAN0_MASK, src_port));
-+	airoha_fe_rmw(eth, REG_SP_DFT_CPORT(src_port >> 3),
-+		      SP_CPORT_MASK(src_port & 0x7),
-+		      FE_PSE_PORT_CDM2 << __ffs(SP_CPORT_MASK(src_port & 0x7)));
++struct l2nic_rx_mode_config {
++	struct mgmt_msg_head msg_head;
++	u16                  func_id;
++	u16                  rsvd1;
++	u32                  rx_mode;
++};
 +
-+	if (port->id != 3)
- 		airoha_fe_rmw(eth, REG_SRC_PORT_FC_MAP6,
- 			      FC_ID_OF_SRC_PORT24_MASK,
- 			      FIELD_PREP(FC_ID_OF_SRC_PORT24_MASK, 2));
--		airoha_fe_rmw(eth, REG_FE_WAN_PORT,
--			      WAN1_EN_MASK | WAN1_MASK | WAN0_MASK,
--			      FIELD_PREP(WAN0_MASK, HSGMII_LAN_ETH_SRCPORT));
--		airoha_fe_rmw(eth,
--			      REG_SP_DFT_CPORT(HSGMII_LAN_ETH_SRCPORT >> 3),
--			      SP_CPORT_ETH_MASK,
--			      FIELD_PREP(SP_CPORT_ETH_MASK, FE_PSE_PORT_CDM2));
--	}
-+
-+	return 0;
+ struct l2nic_cmd_set_dcb_state {
+ 	struct mgmt_msg_head head;
+ 	u16                  func_id;
+@@ -205,6 +221,7 @@ enum l2nic_cmd {
+ 	/* FUNC CFG */
+ 	L2NIC_CMD_SET_FUNC_TBL        = 5,
+ 	L2NIC_CMD_SET_VPORT_ENABLE    = 6,
++	L2NIC_CMD_SET_RX_MODE         = 7,
+ 	L2NIC_CMD_SET_SQ_CI_ATTR      = 8,
+ 	L2NIC_CMD_CLEAR_QP_RESOURCE   = 11,
+ 	L2NIC_CMD_CFG_RX_LRO          = 13,
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+index 0cc2fcf3efa5..e749bc09c493 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_netdev_ops.c
+@@ -828,6 +828,20 @@ static void hinic3_get_stats64(struct net_device *netdev,
+ 	stats->rx_dropped = dropped;
  }
  
- static int airoha_dev_init(struct net_device *dev)
-@@ -1748,8 +1745,13 @@ static int airoha_dev_init(struct net_device *dev)
- 	case 3:
- 	case 4:
- 		/* If GDM2 is active we can't enable loopback */
--		if (!eth->ports[1])
--			airhoha_set_gdm2_loopback(port);
-+		if (!eth->ports[1]) {
-+			int err;
-+
-+			err = airhoha_set_gdm2_loopback(port);
-+			if (err)
-+				return err;
-+		}
- 		fallthrough;
- 	case 2:
- 		if (airoha_ppe_is_enabled(eth, 1)) {
-@@ -3055,11 +3057,38 @@ static const char * const en7581_xsi_rsts_names[] = {
- 	"xfp-mac",
- };
- 
-+static int airoha_en7581_get_src_port_id(struct airoha_gdm_port *port, int nbq)
++static void hinic3_nic_set_rx_mode(struct net_device *netdev)
 +{
-+	switch (port->id) {
-+	case 3:
-+		/* 7581 SoC supports PCIe serdes on GDM3 port */
-+		if (nbq == 4)
-+			return HSGMII_LAN_7581_PCIE0_SRCPORT;
-+		if (nbq == 5)
-+			return HSGMII_LAN_7581_PCIE1_SRCPORT;
-+		break;
-+	case 4:
-+		/* 7581 SoC supports eth and usb serdes on GDM4 port */
-+		if (!nbq)
-+			return HSGMII_LAN_7581_ETH_SRCPORT;
-+		if (nbq == 1)
-+			return HSGMII_LAN_7581_USB_SRCPORT;
-+		break;
-+	default:
-+		break;
++	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
++
++	if (netdev_uc_count(netdev) != nic_dev->netdev_uc_cnt ||
++	    netdev_mc_count(netdev) != nic_dev->netdev_mc_cnt) {
++		set_bit(HINIC3_UPDATE_MAC_FILTER, &nic_dev->flags);
++		nic_dev->netdev_uc_cnt = netdev_uc_count(netdev);
++		nic_dev->netdev_mc_cnt = netdev_mc_count(netdev);
 +	}
 +
-+	return -EINVAL;
++	queue_work(nic_dev->workq, &nic_dev->rx_mode_work);
 +}
 +
- static const struct airoha_eth_soc_data en7581_soc_data = {
- 	.version = 0x7581,
- 	.xsi_rsts_names = en7581_xsi_rsts_names,
- 	.num_xsi_rsts = ARRAY_SIZE(en7581_xsi_rsts_names),
- 	.num_ppe = 2,
-+	.ops = {
-+		.get_src_port_id = airoha_en7581_get_src_port_id,
-+	},
+ static const struct net_device_ops hinic3_netdev_ops = {
+ 	.ndo_open             = hinic3_open,
+ 	.ndo_stop             = hinic3_close,
+@@ -840,6 +854,7 @@ static const struct net_device_ops hinic3_netdev_ops = {
+ 	.ndo_vlan_rx_kill_vid = hinic3_vlan_rx_kill_vid,
+ 	.ndo_tx_timeout       = hinic3_tx_timeout,
+ 	.ndo_get_stats64      = hinic3_get_stats64,
++	.ndo_set_rx_mode      = hinic3_nic_set_rx_mode,
+ 	.ndo_start_xmit       = hinic3_xmit_frame,
  };
  
- static const struct of_device_id of_airoha_match[] = {
-diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-index df168d798699d50c70fa5f87764de24e85994dfd..1b83b935520cd736a1eb376eff937340ed99a49a 100644
---- a/drivers/net/ethernet/airoha/airoha_eth.h
-+++ b/drivers/net/ethernet/airoha/airoha_eth.h
-@@ -67,10 +67,10 @@ enum {
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+index fb2437bce1ed..7bfd7967967d 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.c
+@@ -495,6 +495,30 @@ int hinic3_force_drop_tx_pkt(struct hinic3_hwdev *hwdev)
+ 	return pkt_drop.msg_head.status;
+ }
+ 
++int hinic3_set_rx_mode(struct hinic3_hwdev *hwdev, u32 enable)
++{
++	struct l2nic_rx_mode_config rx_mode_cfg = {};
++	struct mgmt_msg_params msg_params = {};
++	int err;
++
++	rx_mode_cfg.func_id = hinic3_global_func_id(hwdev);
++	rx_mode_cfg.rx_mode = enable;
++
++	mgmt_msg_params_init_default(&msg_params, &rx_mode_cfg,
++				     sizeof(rx_mode_cfg));
++
++	err = hinic3_send_mbox_to_mgmt(hwdev, MGMT_MOD_L2NIC,
++				       L2NIC_CMD_SET_RX_MODE, &msg_params);
++
++	if (err || rx_mode_cfg.msg_head.status) {
++		dev_err(hwdev->dev, "Failed to set rx mode, err: %d, status: 0x%x\n",
++			err, rx_mode_cfg.msg_head.status);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int hinic3_config_vlan(struct hinic3_hwdev *hwdev,
+ 			      u8 opcode, u16 vlan_id, u16 func_id)
+ {
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
+index bb7c2a67dd4b..2c129de241eb 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_cfg.h
+@@ -77,6 +77,7 @@ int hinic3_set_ci_table(struct hinic3_hwdev *hwdev,
+ 			struct hinic3_sq_attr *attr);
+ int hinic3_flush_qps_res(struct hinic3_hwdev *hwdev);
+ int hinic3_force_drop_tx_pkt(struct hinic3_hwdev *hwdev);
++int hinic3_set_rx_mode(struct hinic3_hwdev *hwdev, u32 enable);
+ 
+ int hinic3_sync_dcb_state(struct hinic3_hwdev *hwdev, u8 op_code, u8 state);
+ int hinic3_set_port_enable(struct hinic3_hwdev *hwdev, bool enable);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+index b628294b375c..508e3f047d19 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_nic_dev.h
+@@ -17,7 +17,9 @@
+ #define HINIC3_MODERATONE_DELAY  HZ
+ 
+ enum hinic3_flags {
++	HINIC3_MAC_FILTER_CHANGED,
+ 	HINIC3_RSS_ENABLE,
++	HINIC3_UPDATE_MAC_FILTER,
  };
  
- enum {
--	HSGMII_LAN_PCIE0_SRCPORT = 0x16,
--	HSGMII_LAN_PCIE1_SRCPORT,
--	HSGMII_LAN_ETH_SRCPORT,
--	HSGMII_LAN_USB_SRCPORT,
-+	HSGMII_LAN_7581_PCIE0_SRCPORT	= 0x16,
-+	HSGMII_LAN_7581_PCIE1_SRCPORT,
-+	HSGMII_LAN_7581_ETH_SRCPORT,
-+	HSGMII_LAN_7581_USB_SRCPORT,
+ enum hinic3_event_work_flags {
+@@ -40,6 +42,26 @@ struct hinic3_nic_stats {
+ 	struct u64_stats_sync syncp;
  };
  
- enum {
-@@ -555,6 +555,9 @@ struct airoha_eth_soc_data {
- 	const char * const *xsi_rsts_names;
- 	int num_xsi_rsts;
- 	int num_ppe;
-+	struct {
-+		int (*get_src_port_id)(struct airoha_gdm_port *port, int nbq);
-+	} ops;
- };
++enum hinic3_rx_mode_state {
++	HINIC3_HW_PROMISC_ON,
++	HINIC3_HW_ALLMULTI_ON,
++	HINIC3_PROMISC_FORCE_ON,
++	HINIC3_ALLMULTI_FORCE_ON,
++};
++
++enum hinic3_mac_filter_state {
++	HINIC3_MAC_WAIT_HW_SYNC,
++	HINIC3_MAC_HW_SYNCED,
++	HINIC3_MAC_WAIT_HW_UNSYNC,
++	HINIC3_MAC_HW_UNSYNCED,
++};
++
++struct hinic3_mac_filter {
++	struct list_head list;
++	u8               addr[ETH_ALEN];
++	unsigned long    state;
++};
++
+ enum hinic3_rss_hash_type {
+ 	HINIC3_RSS_HASH_ENGINE_TYPE_XOR  = 0,
+ 	HINIC3_RSS_HASH_ENGINE_TYPE_TOEP = 1,
+@@ -125,8 +147,15 @@ struct hinic3_nic_dev {
+ 	struct workqueue_struct         *workq;
+ 	struct delayed_work             periodic_work;
+ 	struct delayed_work             moderation_task;
++	struct work_struct              rx_mode_work;
+ 	struct semaphore                port_state_sem;
  
- struct airoha_eth {
-diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
-index 69c5a143db8c079be0a6ecf41081cd3f5048c090..cc230f61c0049a663c011556280af736284d018d 100644
---- a/drivers/net/ethernet/airoha/airoha_regs.h
-+++ b/drivers/net/ethernet/airoha/airoha_regs.h
-@@ -383,10 +383,7 @@
- #define REG_MC_VLAN_DATA		0x2108
++	struct list_head                uc_filter_list;
++	struct list_head                mc_filter_list;
++	unsigned long                   rx_mod_state;
++	int                             netdev_uc_cnt;
++	int                             netdev_mc_cnt;
++
+ 	/* flag bits defined by hinic3_event_work_flags */
+ 	unsigned long                   event_flag;
+ 	bool                            link_status_up;
+@@ -137,4 +166,7 @@ int hinic3_set_hw_features(struct net_device *netdev);
+ int hinic3_qps_irq_init(struct net_device *netdev);
+ void hinic3_qps_irq_uninit(struct net_device *netdev);
  
- #define REG_SP_DFT_CPORT(_n)		(0x20e0 + ((_n) << 2))
--#define SP_CPORT_PCIE1_MASK		GENMASK(31, 28)
--#define SP_CPORT_PCIE0_MASK		GENMASK(27, 24)
--#define SP_CPORT_USB_MASK		GENMASK(7, 4)
--#define SP_CPORT_ETH_MASK		GENMASK(7, 4)
-+#define SP_CPORT_MASK(_n)		GENMASK(3 + ((_n) << 2), ((_n) << 2))
- 
- #define REG_SRC_PORT_FC_MAP6		0x2298
- #define FC_ID_OF_SRC_PORT27_MASK	GENMASK(28, 24)
-
++void hinic3_set_rx_mode_work(struct work_struct *work);
++void hinic3_clean_mac_list_filter(struct net_device *netdev);
++
+ #endif
 -- 
-2.51.0
+2.43.0
 
