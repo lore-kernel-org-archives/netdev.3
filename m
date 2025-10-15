@@ -1,52 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E42A3112D9;
-	Wed, 15 Oct 2025 19:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05573115AE;
+	Wed, 15 Oct 2025 19:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760556806; cv=none; b=HrH6p1TVsvjZtVqD2taRHy/QqKHJM5Jfpu741L9IT4ZN/1BHKm/e9rXbndS4xlOzEd37uTBVWhdH//fA92ChbuDt1gz8aIAmKidAikYy+7X3kHYuMgt2hn2+h0QexrVZQuzazpkb7iLjI/FE7RcDCnqrFrkSX8tjSReZj8sCRq8=
+	t=1760556808; cv=none; b=WWHLUwv9u+Rl4rsmkgaCOENppwVjYmvhELFUpOPsx0ILt1XPWFN3JvPQy2jWMQ6kXCSFuS98SaMOkZ6w/91zTWkTMUDlA5BCU2H4P44Bmw40DbwcXT3oFAlFM5tPHq0iswXSV8UC4awiz/eZ4V61BfG+RIj2g/d6C/yyV6w8OSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760556806; c=relaxed/simple;
-	bh=VkEW/b94qsJPRgbIyueNOXpcoYsgPly1CazSFtbBMjE=;
+	s=arc-20240116; t=1760556808; c=relaxed/simple;
+	bh=LiNjAvEUfwKqlelMoWP87m05arWgFoqi+Up7J3CDK4c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uLVRSPxKgXwJc6AyqjFQIALRx7zbFAhb6D+KPb2sLnkSInTTi8B4PuaBBHqfJQABgPCMI0W4/T4OAWCD0VZETZoXyF8bDM1LjCBzGmCfO93qqE8nBnKlERaGDo8TCAKSkWVWkfwyAKfDKcizbHJKdZx8J2cKa4qPsJCI+Z977Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M/lRm2wW; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:To:Cc; b=kqyHFvDufudG/+fUWTsFlzpe2ZGbWrJ4HSPRBriRzaox6r1Wf5IEaDiz4wTWdGA4nfPt+8e9lKck+7WclaRt93T6y2MXd1jPz2AupwNynYw2Jfwr4jMQqNb5bTtt2OIctOlPgcG9/tAqI01AlLwN/kzplROsLEjZEnyDHyfxWOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aUGJ9lap; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M/lRm2wW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aUGJ9lap"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760556804; x=1792092804;
+  t=1760556806; x=1792092806;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=VkEW/b94qsJPRgbIyueNOXpcoYsgPly1CazSFtbBMjE=;
-  b=M/lRm2wWzdJ+3mh68LCWwT1DoqrNm/cmnd+mSAq/talSmDKBxK8IPzw1
-   W8eR2tHHHF/lRr5ByV3B5uGS81Z5vSS6KvZPQdTl6ZdBhGwk/Jtqg6YbX
-   S4BOPNkhPloN/ubCBliENSlSdHHvwGG++hgqSTgsZ+V1Bvq4Ij5fSW8Hq
-   2Iu5DHCV2alB24oXZyoCVGeitAhOawqtHRBjpGzEKMMJSfnO6V0efYfY8
-   nSHsmWzrmkzVGLi72v48VWmDf7tiz4XYVHxgz992hCJ5ffqjonJuH8Fq5
-   d9GFVn5PydmN0pyboI3g/lcFFzkYd5ev1jJxO4rfYxwG9pjMlmB2YKrsM
-   Q==;
-X-CSE-ConnectionGUID: K3rqcqPSR7OVJMDFo7Zk1A==
-X-CSE-MsgGUID: C08YrlicTuSVKKnWWCTqJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="74083503"
+  bh=LiNjAvEUfwKqlelMoWP87m05arWgFoqi+Up7J3CDK4c=;
+  b=aUGJ9lapkOcDDG16iRPNrHS1VlZtE52b+oudMSbIudJ1TvIUsSD4MUWY
+   TCWOuxtrJlXjeqCDyIVVwmHokb0THnkBGRCLEmCFUKLxT2536fMCfFQFd
+   gQenO1XDXFmF7QxBePwB0UvgaCgQXoX8PZp0ChkGgmTC33bi1DtwNPNhA
+   Lvs0ADw49OHusPzN9AEytQqMg2xEBAqOvadoOznC//Qn3eCHuowVwiQ3p
+   kfUFNfYwMlG6UwRCeXwT6e1WYPfyZBcX7wnGqvk3NyIuphYFPS6pHSFwL
+   RgBh8uK/xNTi843HsWtYLUyD0cKNjflgg4VWDpyJRh1jhRmdXqGfmrG8q
+   g==;
+X-CSE-ConnectionGUID: qThAPweTRpC29+ZmuHMWmA==
+X-CSE-MsgGUID: V+1TQ037TNCr1vPFxLyUGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="74083539"
 X-IronPort-AV: E=Sophos;i="6.19,232,1754982000"; 
-   d="scan'208";a="74083503"
+   d="scan'208";a="74083539"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 12:33:14 -0700
-X-CSE-ConnectionGUID: SDo0dXZ7RkW1kCwPTO3low==
-X-CSE-MsgGUID: 0wxrywheT4m7RPplXTOzWA==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 12:33:15 -0700
+X-CSE-ConnectionGUID: +65oSb1qRHylObNX1s647g==
+X-CSE-MsgGUID: oGd6I336SuO8upHvMdUE1Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,232,1754982000"; 
-   d="scan'208";a="182044882"
+   d="scan'208";a="182044898"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
   by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 12:33:14 -0700
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 15 Oct 2025 12:32:01 -0700
-Subject: [PATCH net-next 05/14] ice: improve TCAM priority handling for RSS
- profiles
+Date: Wed, 15 Oct 2025 12:32:05 -0700
+Subject: [PATCH net-next 09/14] ice: implement ethtool standard stats
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251015-jk-iwl-next-2025-10-15-v1-5-79c70b9ddab8@intel.com>
+Message-Id: <20251015-jk-iwl-next-2025-10-15-v1-9-79c70b9ddab8@intel.com>
 References: <20251015-jk-iwl-next-2025-10-15-v1-0-79c70b9ddab8@intel.com>
 In-Reply-To: <20251015-jk-iwl-next-2025-10-15-v1-0-79c70b9ddab8@intel.com>
 To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
@@ -67,235 +66,174 @@ To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
  Alexander Lobakin <aleksander.lobakin@intel.com>
 Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Marcin Szycik <marcin.szycik@linux.intel.com>, 
+ Rinitha S <sx.rinitha@intel.com>, 
  Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Dan Nowlin <dan.nowlin@intel.com>, 
- Rafal Romanowski <rafal.romanowski@intel.com>
+ jbrandeburg@cloudflare.com
 X-Mailer: b4 0.15-dev-96507
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7192;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5906;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=smGgpvfX+gSDBMANc31Roi2reIHrxuqN9JAOIexBwC4=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoz33755zU+zljsc33x8ta2Aaun9JU5yns/jTGxUvv42C
- nBd4Xiwo5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgImoCzH8M1tc9WCb2C9TF1HG
- qFqJivcfPkb+rzvx8XP21iz1r1ziIowMFz+FiG098aBbf8Y93Q7p99l6m4zy18YcuPn3s8B3k7n
- J7AA=
+ bh=OrcedSEU691fMnjIymWsfS+Vv0QwuQSkuaeedWKY8Ac=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoz3374rcP8oFZ4lbC5cILfFbd4XTsYW9voXEnI+Jy3Ws
+ PAqX5DsKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCIVkxj+F/k9uP6iZu5B1aar
+ L5LnLPpsNGV2lFGY/0Shsydz+Jx3mDP8lb35zCU+/vFv5+9LhR8ZHJlStmeD04TUTUnTp75a81Z
+ ClQEA
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-Enhance TCAM priority logic to avoid conflicts between RSS profiles
-with overlapping PTGs and attributes.
+Add support for MAC/pause/RMON stats. This enables reporting hardware
+statistics in a common way via:
 
-Track used PTG and attribute combinations.
-Ensure higher-priority profiles override lower ones.
-Add helper for setting TCAM flags and masks.
+ethtool -S eth0 --all-groups
+and
+ethtool --include-statistics --show-pause eth0
 
-Ensure RSS rule consistency and prevent unintended matches.
+While doing so, add support for one new stat, receive length error
+(RLEC), which is extremely unlikely to happen since most L2 frames have
+a type/length field specifying a "type", and raw ethernet frames aren't
+used much any longer.
 
-Co-developed-by: Dan Nowlin <dan.nowlin@intel.com>
-Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+NOTE: I didn't implement Ctrl aka control frame stats because the
+hardware doesn't seem to implement support.
+
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_flex_type.h |  1 +
- drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 91 ++++++++++++++++++++++----
- 2 files changed, 78 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_type.h    |  1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 78 ++++++++++++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_main.c    |  3 ++
+ 3 files changed, 82 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_flex_type.h b/drivers/net/ethernet/intel/ice/ice_flex_type.h
-index 817beca591e0..80c9e7c749c2 100644
---- a/drivers/net/ethernet/intel/ice/ice_flex_type.h
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_type.h
-@@ -187,6 +187,7 @@ struct ice_prof_map {
- };
- 
- #define ICE_INVALID_TCAM	0xFFFF
-+#define ICE_MAX_PTG_ATTRS	1024
- 
- struct ice_tcam_inf {
- 	u16 tcam_idx;
-diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-index 363ae79a3620..fc94e189e52e 100644
---- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-@@ -3581,6 +3581,20 @@ ice_move_vsi(struct ice_hw *hw, enum ice_block blk, u16 vsi, u16 vsig,
- 	return 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_type.h b/drivers/net/ethernet/intel/ice/ice_type.h
+index b0a1b67071c5..6a2ec8389a8f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_type.h
++++ b/drivers/net/ethernet/intel/ice/ice_type.h
+@@ -1063,6 +1063,7 @@ struct ice_hw_port_stats {
+ 	u64 error_bytes;		/* errbc */
+ 	u64 mac_local_faults;		/* mlfc */
+ 	u64 mac_remote_faults;		/* mrfc */
++	u64 rx_len_errors;		/* rlec */
+ 	u64 link_xon_rx;		/* lxonrxc */
+ 	u64 link_xoff_rx;		/* lxoffrxc */
+ 	u64 link_xon_tx;		/* lxontxc */
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index dc131779d426..d1ec7e6f12bf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -4661,6 +4661,81 @@ static void ice_get_fec_stats(struct net_device *netdev,
+ 			    pi->lport, err);
  }
  
-+/**
-+ * ice_set_tcam_flags - set TCAM flag don't care mask
-+ * @mask: mask for flags
-+ * @dc_mask: pointer to the don't care mask
-+ */
-+static void ice_set_tcam_flags(u16 mask, u8 dc_mask[ICE_TCAM_KEY_VAL_SZ])
++static void ice_get_eth_mac_stats(struct net_device *netdev,
++				  struct ethtool_eth_mac_stats *mac_stats)
 +{
-+	u16 *flag_word;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
++	struct ice_hw_port_stats *ps = &pf->stats;
 +
-+	/* flags are lowest u16 */
-+	flag_word = (u16 *)dc_mask;
-+	*flag_word = ~mask;
++	mac_stats->FramesTransmittedOK = ps->eth.tx_unicast +
++					 ps->eth.tx_multicast +
++					 ps->eth.tx_broadcast;
++	mac_stats->FramesReceivedOK = ps->eth.rx_unicast +
++				      ps->eth.rx_multicast +
++				      ps->eth.rx_broadcast;
++	mac_stats->FrameCheckSequenceErrors = ps->crc_errors;
++	mac_stats->OctetsTransmittedOK = ps->eth.tx_bytes;
++	mac_stats->OctetsReceivedOK = ps->eth.rx_bytes;
++	mac_stats->MulticastFramesXmittedOK = ps->eth.tx_multicast;
++	mac_stats->BroadcastFramesXmittedOK = ps->eth.tx_broadcast;
++	mac_stats->MulticastFramesReceivedOK = ps->eth.rx_multicast;
++	mac_stats->BroadcastFramesReceivedOK = ps->eth.rx_broadcast;
++	mac_stats->InRangeLengthErrors = ps->rx_len_errors;
++	mac_stats->FrameTooLongErrors = ps->rx_oversize;
 +}
 +
- /**
-  * ice_rem_chg_tcam_ent - remove a specific TCAM entry from change list
-  * @hw: pointer to the HW struct
-@@ -3651,6 +3665,9 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
- 	if (!p)
- 		return -ENOMEM;
- 
-+	/* set don't care masks for TCAM flags */
-+	ice_set_tcam_flags(tcam->attr.mask, dc_msk);
-+
- 	status = ice_tcam_write_entry(hw, blk, tcam->tcam_idx, tcam->prof_id,
- 				      tcam->ptg, vsig, 0, tcam->attr.flags,
- 				      vl_msk, dc_msk, nm_msk);
-@@ -3676,6 +3693,32 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
- 	return status;
- }
- 
-+/**
-+ * ice_ptg_attr_in_use - determine if PTG and attribute pair is in use
-+ * @ptg_attr: pointer to the PTG and attribute pair to check
-+ * @ptgs_used: bitmap that denotes which PTGs are in use
-+ * @attr_used: array of PTG and attributes pairs already used
-+ * @attr_cnt: count of entries in the attr_used array
-+ */
-+static bool
-+ice_ptg_attr_in_use(struct ice_tcam_inf *ptg_attr, unsigned long *ptgs_used,
-+		    struct ice_tcam_inf *attr_used[], u16 attr_cnt)
++static void ice_get_pause_stats(struct net_device *netdev,
++				struct ethtool_pause_stats *pause_stats)
 +{
-+	u16 i;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
++	struct ice_hw_port_stats *ps = &pf->stats;
 +
-+	if (!test_bit(ptg_attr->ptg, ptgs_used))
-+		return false;
-+
-+	/* the PTG is used, so now look for correct attributes */
-+	for (i = 0; i < attr_cnt; i++)
-+		if (attr_used[i]->ptg == ptg_attr->ptg &&
-+		    attr_used[i]->attr.flags == ptg_attr->attr.flags &&
-+		    attr_used[i]->attr.mask == ptg_attr->attr.mask)
-+			return true;
-+
-+	return false;
++	pause_stats->tx_pause_frames = ps->link_xon_tx + ps->link_xoff_tx;
++	pause_stats->rx_pause_frames = ps->link_xon_rx + ps->link_xoff_rx;
 +}
 +
- /**
-  * ice_adj_prof_priorities - adjust profile based on priorities
-  * @hw: pointer to the HW struct
-@@ -3688,10 +3731,17 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
- 			struct list_head *chg)
- {
- 	DECLARE_BITMAP(ptgs_used, ICE_XLT1_CNT);
-+	struct ice_tcam_inf **attr_used;
- 	struct ice_vsig_prof *t;
--	int status;
-+	u16 attr_used_cnt = 0;
-+	int status = 0;
- 	u16 idx;
- 
-+	attr_used = devm_kcalloc(ice_hw_to_dev(hw), ICE_MAX_PTG_ATTRS,
-+				 sizeof(*attr_used), GFP_KERNEL);
-+	if (!attr_used)
-+		return -ENOMEM;
++static const struct ethtool_rmon_hist_range ice_rmon_ranges[] = {
++	{    0,    64 },
++	{   65,   127 },
++	{  128,   255 },
++	{  256,   511 },
++	{  512,  1023 },
++	{ 1024,  1522 },
++	{ 1523,  9522 },
++	{}
++};
 +
- 	bitmap_zero(ptgs_used, ICE_XLT1_CNT);
- 	idx = vsig & ICE_VSIG_IDX_M;
- 
-@@ -3709,11 +3759,15 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
- 		u16 i;
- 
- 		for (i = 0; i < t->tcam_count; i++) {
-+			bool used;
++static void ice_get_rmon_stats(struct net_device *netdev,
++			       struct ethtool_rmon_stats *rmon,
++			       const struct ethtool_rmon_hist_range **ranges)
++{
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
++	struct ice_hw_port_stats *ps = &pf->stats;
 +
- 			/* Scan the priorities from newest to oldest.
- 			 * Make sure that the newest profiles take priority.
- 			 */
--			if (test_bit(t->tcam[i].ptg, ptgs_used) &&
--			    t->tcam[i].in_use) {
-+			used = ice_ptg_attr_in_use(&t->tcam[i], ptgs_used,
-+						   attr_used, attr_used_cnt);
++	rmon->undersize_pkts	= ps->rx_undersize;
++	rmon->oversize_pkts	= ps->rx_oversize;
++	rmon->fragments		= ps->rx_fragments;
++	rmon->jabbers		= ps->rx_jabber;
 +
-+			if (used && t->tcam[i].in_use) {
- 				/* need to mark this PTG as never match, as it
- 				 * was already in use and therefore duplicate
- 				 * (and lower priority)
-@@ -3723,9 +3777,8 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
- 							       &t->tcam[i],
- 							       chg);
- 				if (status)
--					return status;
--			} else if (!test_bit(t->tcam[i].ptg, ptgs_used) &&
--				   !t->tcam[i].in_use) {
-+					goto free_attr_used;
-+			} else if (!used && !t->tcam[i].in_use) {
- 				/* need to enable this PTG, as it in not in use
- 				 * and not enabled (highest priority)
- 				 */
-@@ -3734,15 +3787,21 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
- 							       &t->tcam[i],
- 							       chg);
- 				if (status)
--					return status;
-+					goto free_attr_used;
- 			}
- 
- 			/* keep track of used ptgs */
--			__set_bit(t->tcam[i].ptg, ptgs_used);
-+			set_bit(t->tcam[i].ptg, ptgs_used);
-+			if (attr_used_cnt < ICE_MAX_PTG_ATTRS)
-+				attr_used[attr_used_cnt++] = &t->tcam[i];
-+			else
-+				ice_debug(hw, ICE_DBG_INIT, "Warn: ICE_MAX_PTG_ATTRS exceeded\n");
- 		}
- 	}
- 
--	return 0;
-+free_attr_used:
-+	devm_kfree(ice_hw_to_dev(hw), attr_used);
-+	return status;
- }
- 
- /**
-@@ -3825,11 +3884,15 @@ ice_add_prof_id_vsig(struct ice_hw *hw, enum ice_block blk, u16 vsig, u64 hdl,
- 		p->vsig = vsig;
- 		p->tcam_idx = t->tcam[i].tcam_idx;
- 
-+		/* set don't care masks for TCAM flags */
-+		ice_set_tcam_flags(t->tcam[i].attr.mask, dc_msk);
++	rmon->hist[0]		= ps->rx_size_64;
++	rmon->hist[1]		= ps->rx_size_127;
++	rmon->hist[2]		= ps->rx_size_255;
++	rmon->hist[3]		= ps->rx_size_511;
++	rmon->hist[4]		= ps->rx_size_1023;
++	rmon->hist[5]		= ps->rx_size_1522;
++	rmon->hist[6]		= ps->rx_size_big;
 +
- 		/* write the TCAM entry */
- 		status = ice_tcam_write_entry(hw, blk, t->tcam[i].tcam_idx,
- 					      t->tcam[i].prof_id,
--					      t->tcam[i].ptg, vsig, 0, 0,
--					      vl_msk, dc_msk, nm_msk);
-+					      t->tcam[i].ptg, vsig, 0,
-+					      t->tcam[i].attr.flags, vl_msk,
-+					      dc_msk, nm_msk);
- 		if (status) {
- 			devm_kfree(ice_hw_to_dev(hw), p);
- 			goto err_ice_add_prof_id_vsig;
-@@ -4143,9 +4206,6 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
- 	u16 vsi_num;
- 	int status;
- 
--	if (blk != ICE_BLK_FD)
--		return -EINVAL;
--
- 	vsi_num = ice_get_hw_vsi_num(hw, dest_vsi);
- 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
- 	if (status) {
-@@ -4154,6 +4214,9 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
- 		return status;
- 	}
- 
-+	if (blk != ICE_BLK_FD)
-+		return 0;
++	rmon->hist_tx[0]	= ps->tx_size_64;
++	rmon->hist_tx[1]	= ps->tx_size_127;
++	rmon->hist_tx[2]	= ps->tx_size_255;
++	rmon->hist_tx[3]	= ps->tx_size_511;
++	rmon->hist_tx[4]	= ps->tx_size_1023;
++	rmon->hist_tx[5]	= ps->tx_size_1522;
++	rmon->hist_tx[6]	= ps->tx_size_big;
 +
- 	vsi_num = ice_get_hw_vsi_num(hw, fdir_vsi);
- 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
- 	if (status) {
++	*ranges = ice_rmon_ranges;
++}
++
+ #define ICE_ETHTOOL_PFR (ETH_RESET_IRQ | ETH_RESET_DMA | \
+ 	ETH_RESET_FILTER | ETH_RESET_OFFLOAD)
+ 
+@@ -4744,6 +4819,9 @@ static const struct ethtool_ops ice_ethtool_ops = {
+ 	.get_link_ksettings	= ice_get_link_ksettings,
+ 	.set_link_ksettings	= ice_set_link_ksettings,
+ 	.get_fec_stats		= ice_get_fec_stats,
++	.get_eth_mac_stats	= ice_get_eth_mac_stats,
++	.get_pause_stats	= ice_get_pause_stats,
++	.get_rmon_stats		= ice_get_rmon_stats,
+ 	.get_drvinfo		= ice_get_drvinfo,
+ 	.get_regs_len		= ice_get_regs_len,
+ 	.get_regs		= ice_get_regs,
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 86f5859e88ef..3d5615caf6d1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7138,6 +7138,9 @@ void ice_update_pf_stats(struct ice_pf *pf)
+ 			  &prev_ps->mac_remote_faults,
+ 			  &cur_ps->mac_remote_faults);
+ 
++	ice_stat_update32(hw, GLPRT_RLEC(port), pf->stat_prev_loaded,
++			  &prev_ps->rx_len_errors, &cur_ps->rx_len_errors);
++
+ 	ice_stat_update32(hw, GLPRT_RUC(port), pf->stat_prev_loaded,
+ 			  &prev_ps->rx_undersize, &cur_ps->rx_undersize);
+ 
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
