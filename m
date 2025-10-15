@@ -1,293 +1,106 @@
-Received: from baidu.com (mx24.baidu.com [111.206.215.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BD43126CE;
-	Wed, 15 Oct 2025 06:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6003128D9
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 06:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760510434; cv=none; b=tlHskyFuxrX4PZESdCL6dlmdE174+WIHQoHv8H8TLjQ1ud1lLPqLdnS/vIe3x1nKIz9mHA+9Iq7o9Bb44cTBmGoooxRykBYpSvBeIgaOO3jLI7wlUH9gfmcJgs8fGGevTMqatQAW3gqc0OybcemLny0V98ZaSH/JEJG7fn7EPoY=
+	t=1760510659; cv=none; b=oLfIcyHTt1fiwcsU1ef3e4D31nniqDSsMeGLRVr3GkSYEfvCXa7gdWphwiLk3lmGK8s8I4Ls+6dc5HnVTg8+ZPX6hT+2V/CvigaesqowzSklDARCi9DgGXDgMqGMdsoqxsVyc8FX7OUQNh6R8VxxuWl6z90b8ocmrC2xoWkRs2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760510434; c=relaxed/simple;
-	bh=WKmoCAdhwJeXGa3LefrmfEnCthO+1fO4s7DJYsIMQTA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S0tfa3xL5fsHoYl2XY2UiVb1jlWUq0lZzmwlCiep68kdBZLOD9DNeacLfYl3XR2RmpkewhcN37StpCwwb3vGrVoWqnzsCOCQz6Q5Z86a+x4sTRz5VZhkycsbOW2/ztYKcr7R9Czj+B51SMf1azFBJ9L2M1f0lMSCHib+5mrV+3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: lirongqing <lirongqing@baidu.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Lance Yang
-	<lance.yang@linux.dev>, Masami Hiramatsu <mhiramat@kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <linux-doc@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-aspeed@lists.ozlabs.org>, <wireguard@lists.zx2c4.com>,
-	<netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, Li RongQing
-	<lirongqing@baidu.com>, Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Anshuman Khandual <anshuman.khandual@arm.com>, Arnd Bergmann <arnd@arndb.de>,
-	David Hildenbrand <david@redhat.com>, Florian Wesphal <fw@strlen.de>, Jakub
- Kacinski <kuba@kernel.org>, "Jason A . Donenfeld" <jason@zx2c4.com>, Joel
- Granados <joel.granados@kernel.org>, Joel Stanley <joel@jms.id.au>, Jonathan
- Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>, Liam Howlett
-	<liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>, Pawan Gupta
-	<pawan.kumar.gupta@linux.intel.com>, Petr Mladek <pmladek@suse.com>, Phil
- Auld <pauld@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Russell King
-	<linux@armlinux.org.uk>, Shuah Khan <shuah@kernel.org>, Simon Horman
-	<horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Steven Rostedt
-	<rostedt@goodmis.org>
-Subject: [PATCH][v4] hung_task: Panic when there are more than N hung tasks at the same time
-Date: Wed, 15 Oct 2025 14:36:15 +0800
-Message-ID: <20251015063615.2632-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1760510659; c=relaxed/simple;
+	bh=5vozDEb0LYycMaeMPVwxAxC/Y3/90+e5ay47FO2hKKQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BqVClL+WP26ykUdTUWQg5U71qIgvWQef9uNIl4dRrQoiUdZGpkuAp327LTgqZX10qLCCBY2eOK6oA8GbE7P007kD+07xlIWFlKwo28guX5YQ/bIZz1oWQQylB9Aib4MjpMhcIlLkJUobT5+neKJAM2kkDIrfplPsGLmimoOoqbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MSD+44Bj; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MSD+44Bj"
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-88e32ad012cso54323085a.2
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 23:44:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760510656; x=1761115456; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5vozDEb0LYycMaeMPVwxAxC/Y3/90+e5ay47FO2hKKQ=;
+        b=MSD+44BjNg2HTDIvjKtNcgaI3DYRsInSo17I7I8kGBjsmqz+obXMh7Gvm5E5xYHjdC
+         aow426pH8aaJSngqFl0i0w5G7xUyo4Yl8cnoRhdswus0o9AyY/spGp09sqi2I8d5dNu4
+         RkXeL2WSb8iWtL4RJyk+IsM7r20ZL3N+Mfno77r/Dj+ThhYecT5KTq6d6OWWeIJIVBVO
+         rkJIdLrGgZpfxQm+Z0nmycQDfysTIZ17e1xzLNbQMeAI2OC2zsB6qEGXkI6EQXXF2T3y
+         gWjzkvHzPdkfwdKBeLv3q0u8wvMQnSGVhwM29sS/VVgK/nAGFYz5It54nT1PPWQa42Yp
+         Hwyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760510656; x=1761115456;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5vozDEb0LYycMaeMPVwxAxC/Y3/90+e5ay47FO2hKKQ=;
+        b=kGY6uW3qZRPJCKmjHTRZQaFo6onEaroNk9Uj0wtWZukKqnS+GcOe0kJsvkcynWjgSt
+         PuMkslUiQmGA1l0pxyKpRkXBHbeOMf17b7va3JGH+8tvj5E0FNCTd/0zp4AZXQz3SwUr
+         ljmXUq6UGm1w4O7+903Vumv84rRNmVB8aIhUrMfhpZG2iCwGnm9K++fis5a8R4G9pat1
+         1cKIcaBPZhHLEv16PiWLWy/a7fgT3PA5/doueXchq8oBxRffxMZo0x86GV+FnAh6fpr8
+         daoBQ5jemwqAnDWvPhfM6aZc0xFYdfhMUveHYz9Bq0z1MoTF+VAKSUwMyiEjlTb14sc7
+         spNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUao/J4XBsf/pkc6anM0R4LHuJex24xrpMfKPWS57c2lBcx4yBjAMqZuZ8GttqKy1IOKms9t6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHfQw8YxMrMWsTSTvJ1DRKqsB7daqSb47RUTRNJhu4EGVJtzOC
+	A9uYYr8LdiopSmfH0oZTKhTVs+FyCTHOfHFbi3ZeObIfnVAfBGmpBOcCD4NyYzo6ReEMk8sk0kH
+	t6QOkJJs/xqVX73FeOIe5l45q5UH20NIiJJ9WNiJY
+X-Gm-Gg: ASbGncu4wNmxzEANnB3m5Pcv3m5lLDVe6ngNY8qlM7iXhD94GiNsZgy3JvKdQWGVYQp
+	WWBfwgmi7iI6P/zBtbZ3lemu4bc2sO1+Dnd+c9nkcam4l6/cm6tFZQGbQXUROVnWCnN1/8KypYX
+	4YFVeHUmg6wzmqUX1+Hgp9jO5lLUnZrxLVmwQB1n6awGcI/8qipTBSmyf87kq95KBZyqZTwWUPv
+	GbypLmyx7jAktYZEqiHKWlxeY12g+LR4g==
+X-Google-Smtp-Source: AGHT+IECy59A890wq3a2KaQniANJoAlkp9kyZDXlqKYOC5DftviYiCqQF5O0BTKZ8orKrKjBg8QJmeUrfmmUWZ2jftg=
+X-Received: by 2002:a05:622a:2c06:b0:4d9:f384:769f with SMTP id
+ d75a77b69052e-4e6eacccf16mr275159231cf.12.1760510655891; Tue, 14 Oct 2025
+ 23:44:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc9.internal.baidu.com (172.31.3.19) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
+References: <20251014140605.2982703-1-edumazet@google.com> <9e7530fc-c546-4420-9ca7-0e3d0a7b63e5@linux.dev>
+In-Reply-To: <9e7530fc-c546-4420-9ca7-0e3d0a7b63e5@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 14 Oct 2025 23:44:04 -0700
+X-Gm-Features: AS18NWAQbjB_FhT4juVSkx59GqdVtyxs-9ikOEVUEl-VAnRFJ4mGMux_5FwuByI
+Message-ID: <CANn89i+_1Y_ARBnZO0H-DvSrT0N6+YcUy+S6Xi4Lw0VXgaSrRA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: remove obsolete WARN_ON(refcount_read(&sk->sk_refcnt)
+ == 1)
+To: luoxuanqiang <xuanqiang.luo@linux.dev>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Kuniyuki Iwashima <kuniyu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Li RongQing <lirongqing@baidu.com>
+On Tue, Oct 14, 2025 at 11:04=E2=80=AFPM luoxuanqiang <xuanqiang.luo@linux.=
+dev> wrote:
+>
+>
+> =E5=9C=A8 2025/10/14 22:06, Eric Dumazet =E5=86=99=E9=81=93:
+> > sk->sk_refcnt has been converted to refcount_t in 2017.
+> >
+> > __sock_put(sk) being refcount_dec(&sk->sk_refcnt), it will complain
+> > loudly if the current refcnt is 1 (or less) in a non racy way.
+> >
+> > We can remove four WARN_ON() in favor of the generic refcount_dec()
+> > check.
+> >
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+>
+> Reviewed-by: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
+>
+> Dear Eric,
+>
+> Following your line of thought, I found there's also a point in btrfs tha=
+t
+> needs modification.
+>
+> Would you like to modify it together? Though it has nothing to do with
+> socket, or shall I modify it separately later?
 
-Currently, when 'hung_task_panic' is enabled, the kernel panics
-immediately upon detecting the first hung task. However, some hung
-tasks are transient and allow system recovery, while persistent hangs
-should trigger a panic when accumulating beyond a threshold.
+I removed stuff around sk_refcnt only.
 
-Extend the 'hung_task_panic' sysctl to accept a threshold value
-specifying the number of hung tasks that must be detected before
-triggering a kernel panic. This provides finer control for environments
-where transient hangs may occur but persistent hangs should be fatal.
-
-The sysctl now accepts:
-- 0: don't panic (maintains original behavior)
-- 1: panic on first hung task (maintains original behavior)
-- N > 1: panic after N hung tasks are detected in a single scan
-
-This maintains backward compatibility while providing flexibility for
-different hang scenarios.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Cc: Andrew Jeffery <andrew@codeconstruct.com.au>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Florian Wesphal <fw@strlen.de>
-Cc: Jakub Kacinski <kuba@kernel.org>
-Cc: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Joel Stanley <joel@jms.id.au>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: "Paul E . McKenney" <paulmck@kernel.org>
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Phil Auld <pauld@redhat.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: Steven Rostedt <rostedt@goodmis.org>
----
-diff with v3: comments modification, suggested by Lance, Masami, Randy and Petr
-diff with v2: do not add a new sysctl, extend hung_task_panic, suggested by Kees Cook
-
- Documentation/admin-guide/kernel-parameters.txt      | 20 +++++++++++++-------
- Documentation/admin-guide/sysctl/kernel.rst          |  9 +++++----
- arch/arm/configs/aspeed_g5_defconfig                 |  2 +-
- kernel/configs/debug.config                          |  2 +-
- kernel/hung_task.c                                   | 15 ++++++++++-----
- lib/Kconfig.debug                                    |  9 +++++----
- tools/testing/selftests/wireguard/qemu/kernel.config |  2 +-
- 7 files changed, 36 insertions(+), 23 deletions(-)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a51ab46..492f0bc 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1992,14 +1992,20 @@
- 			the added memory block itself do not be affected.
- 
- 	hung_task_panic=
--			[KNL] Should the hung task detector generate panics.
--			Format: 0 | 1
-+			[KNL] Number of hung tasks to trigger kernel panic.
-+			Format: <int>
-+
-+			When set to a non-zero value, a kernel panic will be triggered if
-+			the number of detected hung tasks reaches this value.
-+
-+			0: don't panic
-+			1: panic immediately on first hung task
-+			N: panic after N hung tasks are detected in a single scan
- 
--			A value of 1 instructs the kernel to panic when a
--			hung task is detected. The default value is controlled
--			by the CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time
--			option. The value selected by this boot parameter can
--			be changed later by the kernel.hung_task_panic sysctl.
-+			The default value is controlled by the
-+			CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time option. The value
-+			selected by this boot parameter can be changed later by the
-+			kernel.hung_task_panic sysctl.
- 
- 	hvc_iucv=	[S390]	Number of z/VM IUCV hypervisor console (HVC)
- 				terminal devices. Valid values: 0..8
-diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
-index f3ee807..0065a55 100644
---- a/Documentation/admin-guide/sysctl/kernel.rst
-+++ b/Documentation/admin-guide/sysctl/kernel.rst
-@@ -397,13 +397,14 @@ a hung task is detected.
- hung_task_panic
- ===============
- 
--Controls the kernel's behavior when a hung task is detected.
-+When set to a non-zero value, a kernel panic will be triggered if the
-+number of hung tasks found during a single scan reaches this value.
- This file shows up if ``CONFIG_DETECT_HUNG_TASK`` is enabled.
- 
--= =================================================
-+= =======================================================
- 0 Continue operation. This is the default behavior.
--1 Panic immediately.
--= =================================================
-+N Panic when N hung tasks are found during a single scan.
-+= =======================================================
- 
- 
- hung_task_check_count
-diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
-index 61cee1e..c3b0d5f 100644
---- a/arch/arm/configs/aspeed_g5_defconfig
-+++ b/arch/arm/configs/aspeed_g5_defconfig
-@@ -308,7 +308,7 @@ CONFIG_PANIC_ON_OOPS=y
- CONFIG_PANIC_TIMEOUT=-1
- CONFIG_SOFTLOCKUP_DETECTOR=y
- CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
--CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-+CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
- CONFIG_WQ_WATCHDOG=y
- # CONFIG_SCHED_DEBUG is not set
- CONFIG_FUNCTION_TRACER=y
-diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
-index e81327d..9f6ab7d 100644
---- a/kernel/configs/debug.config
-+++ b/kernel/configs/debug.config
-@@ -83,7 +83,7 @@ CONFIG_SLUB_DEBUG_ON=y
- #
- # Debug Oops, Lockups and Hangs
- #
--# CONFIG_BOOTPARAM_HUNG_TASK_PANIC is not set
-+CONFIG_BOOTPARAM_HUNG_TASK_PANIC=0
- # CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC is not set
- CONFIG_DEBUG_ATOMIC_SLEEP=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/kernel/hung_task.c b/kernel/hung_task.c
-index b2c1f14..84b4b04 100644
---- a/kernel/hung_task.c
-+++ b/kernel/hung_task.c
-@@ -81,7 +81,7 @@ static unsigned int __read_mostly sysctl_hung_task_all_cpu_backtrace;
-  * hung task is detected:
-  */
- static unsigned int __read_mostly sysctl_hung_task_panic =
--	IS_ENABLED(CONFIG_BOOTPARAM_HUNG_TASK_PANIC);
-+	CONFIG_BOOTPARAM_HUNG_TASK_PANIC;
- 
- static int
- hung_task_panic(struct notifier_block *this, unsigned long event, void *ptr)
-@@ -218,8 +218,11 @@ static inline void debug_show_blocker(struct task_struct *task, unsigned long ti
- }
- #endif
- 
--static void check_hung_task(struct task_struct *t, unsigned long timeout)
-+static void check_hung_task(struct task_struct *t, unsigned long timeout,
-+		unsigned long prev_detect_count)
- {
-+	unsigned long total_hung_task;
-+
- 	if (!task_is_hung(t, timeout))
- 		return;
- 
-@@ -229,9 +232,10 @@ static void check_hung_task(struct task_struct *t, unsigned long timeout)
- 	 */
- 	sysctl_hung_task_detect_count++;
- 
-+	total_hung_task = sysctl_hung_task_detect_count - prev_detect_count;
- 	trace_sched_process_hang(t);
- 
--	if (sysctl_hung_task_panic) {
-+	if (sysctl_hung_task_panic && total_hung_task >= sysctl_hung_task_panic) {
- 		console_verbose();
- 		hung_task_show_lock = true;
- 		hung_task_call_panic = true;
-@@ -300,6 +304,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
- 	int max_count = sysctl_hung_task_check_count;
- 	unsigned long last_break = jiffies;
- 	struct task_struct *g, *t;
-+	unsigned long prev_detect_count = sysctl_hung_task_detect_count;
- 
- 	/*
- 	 * If the system crashed already then all bets are off,
-@@ -320,7 +325,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
- 			last_break = jiffies;
- 		}
- 
--		check_hung_task(t, timeout);
-+		check_hung_task(t, timeout, prev_detect_count);
- 	}
-  unlock:
- 	rcu_read_unlock();
-@@ -389,7 +394,7 @@ static const struct ctl_table hung_task_sysctls[] = {
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
--		.extra2		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname	= "hung_task_check_count",
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 3034e294..3976c90 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1258,12 +1258,13 @@ config DEFAULT_HUNG_TASK_TIMEOUT
- 	  Keeping the default should be fine in most cases.
- 
- config BOOTPARAM_HUNG_TASK_PANIC
--	bool "Panic (Reboot) On Hung Tasks"
-+	int "Number of hung tasks to trigger kernel panic"
- 	depends on DETECT_HUNG_TASK
-+	default 0
- 	help
--	  Say Y here to enable the kernel to panic on "hung tasks",
--	  which are bugs that cause the kernel to leave a task stuck
--	  in uninterruptible "D" state.
-+	  When set to a non-zero value, a kernel panic will be triggered
-+	  if the number of hung tasks found during a single scan reaches
-+	  this value.
- 
- 	  The panic can be used in combination with panic_timeout,
- 	  to cause the system to reboot automatically after a
-diff --git a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
-index 936b18b..0504c11 100644
---- a/tools/testing/selftests/wireguard/qemu/kernel.config
-+++ b/tools/testing/selftests/wireguard/qemu/kernel.config
-@@ -81,7 +81,7 @@ CONFIG_WQ_WATCHDOG=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=y
- CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
--CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
-+CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
- CONFIG_PANIC_TIMEOUT=-1
- CONFIG_STACKTRACE=y
- CONFIG_EARLY_PRINTK=y
--- 
-2.9.4
-
+If you want, please send a patch to the appropriate lists and maintainers.
