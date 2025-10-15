@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D261E2D373E
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4C62C0278
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 14:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760539241; cv=none; b=SW/jDQBXVY9H1APh/l03v58YLI6gL/jzhn4EvGwoix1yYM5qni8U59wlpIp9G+bksO7OTerClHVhsshj7xBlvFckUganTzmE7MWq+symkcqRSZRjMs8VSRBg9lREtAfNZRORyDFThOI4E+z4/uRN5iPFo1ajq7eMbo4ZdEd7c0E=
+	t=1760539255; cv=none; b=SEz0kyKBrOf2VlhKj3Q7yOKRoZ8KSV8kH3tVKmN7dAQGphVtwQ3NRPn9jlkIsX8cgIgQFIsT/Wu8m8s9XhT6kTxFqAsuL6FpnhNoegVjzyJuZW2PSZ8MvbD/Ux1eY79Ics9A1ShSXwN1FHPtYaHDXTkL6QCn0swOZNHKFspxDgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760539241; c=relaxed/simple;
-	bh=wIDmIYUrvpRsKFioX8rKlOh94AODCVu7475ZZLL0EiM=;
+	s=arc-20240116; t=1760539255; c=relaxed/simple;
+	bh=koO2xyvwa0fJSPSIQAfcP0phePRAWpFPiP1iReyMWkg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TfVDxQYtvOGFh+ik/63w3+5L09/8aDaOIXPJsEyLTcRC75fd4s4satH7aZy+YDy72fEjk1O6fTPxy5YFj+EeS+64XQVC8Fvco+xay29C3kS71EtoYv98DAeBrxcl50GjY46tn/WAXFFYFMonj/E1rz/LW3HiTMyUt1nTnisf7FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rjqocMhx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qglHHnjG9YH3CHn8Z9hU/GqqlLrtyDVVFyTUqCgMmRWUGS5XRbLk6bUQHwS60eW0d4wVICQPKfsjDy45osEhAQ5ab2eRQQ8LhRYVSIyrrKO+6IkFNPQ1ZF1ceKXna0A/NEyjx+74mKfgQb3nfjWONZgD0VUOIoQiefrpvoTvxfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrtwihAJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rjqocMhx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594F7C4CEF8;
-	Wed, 15 Oct 2025 14:40:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrtwihAJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7324EC4CEF8;
+	Wed, 15 Oct 2025 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760539241;
-	bh=wIDmIYUrvpRsKFioX8rKlOh94AODCVu7475ZZLL0EiM=;
+	s=k20201202; t=1760539255;
+	bh=koO2xyvwa0fJSPSIQAfcP0phePRAWpFPiP1iReyMWkg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rjqocMhxUu2vCVL6pV/zMSGv9OxhSo6sKgQ5mXmT06a1bzLLPtuAlEiF5GZ3UN5c1
-	 3to6TOdSphRztMugQhmAGgiz2Lv6xnPIJnexDcQQUYffOtHBIJ8C58m3rw/2585miM
-	 DbPSpl59ZlZiXgaG1yCJuOMD6PlCTpnW6XncQ2yenvzG4m5FwmMwV2TAzQ16ojT4mf
-	 9+iNqSLb8hd3SJWkqybepL4l0WhwJv2rYNcRbE99YtFchuluJtcXZpnhRCT5xJrmgm
-	 z3eQvmUB/KuHRWqhOwHdLrQ8E8xwWdn3dQOkQbyHELhDDuT2NVq7OHZewE5IfN2WYJ
-	 NzoD6c8/UCSGA==
-Date: Wed, 15 Oct 2025 15:40:36 +0100
+	b=QrtwihAJ1J4ksE6SvNI8K3AKaym9HNTunwdJv2evs+wf2aYRNGkQMrz4Vxjcpa33W
+	 xmGOMptoib4h1emaX5dbvrdcsLAkG8+zDUDBd6o42bkMnXaOHsqzapi3gpjoFCbYXb
+	 hM5UAO2sOTsV1iGaIxCVe3rTY0AprRUXUyQc94QS/BtWbx/VnJwD5J+pqR+LwuVHTI
+	 Gre3mDtt7mSnIJj+HPhOvH6lkFD/R6YJsYFlYX+8AAkdkDsGPRMPLqCC7ZNM5+H5BY
+	 UCmdZLVVifsEKnYHc4qV0bWXU1HUybRes6wcIamAWG1jstkNfTnrgujtRU7spz9UeF
+	 FogrbLzPWx3Wg==
+Date: Wed, 15 Oct 2025 15:40:50 +0100
 From: Simon Horman <horms@kernel.org>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
@@ -42,11 +42,10 @@ Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 4/7] net: atlantic: convert to ndo_hwtstamp
- API
-Message-ID: <aO-yZKCDHggMRR1y@horms.kernel.org>
+Subject: Re: [PATCH net-next v2 7/7] funeth: convert to ndo_hwtstamp API
+Message-ID: <aO-ycuW7B0zzHjG0@horms.kernel.org>
 References: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
- <20251014224216.8163-5-vadim.fedorenko@linux.dev>
+ <20251014224216.8163-8-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,12 +54,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014224216.8163-5-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251014224216.8163-8-vadim.fedorenko@linux.dev>
 
-On Tue, Oct 14, 2025 at 10:42:13PM +0000, Vadim Fedorenko wrote:
-> Convert driver to .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
-> .ndo_eth_ioctl() becomes empty so remove it. Also simplify code with no
-> functional changes.
+On Tue, Oct 14, 2025 at 10:42:16PM +0000, Vadim Fedorenko wrote:
+> Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+> .ndo_eth_ioctl() implementation becomes empty, remove it.
 > 
 > Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
