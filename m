@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE4B26B0AE;
-	Wed, 15 Oct 2025 14:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCF6264A76;
+	Wed, 15 Oct 2025 14:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760538534; cv=none; b=mVq2/haRtXIa+I+XsHK9ISe2f0Inw8XKoC1mxu3GS8a2ybTm7AWPVSjH1krGohxP6eLuPqjOtDlgkO50PjzL5Ee1TjvkoZb0SSYKIk9Q0gTd4taiLrahMnjhv3EHVruyj62CNvH3CpHyfzU+Wg14VAtxtmESpjLTYpuuOqFOY6U=
+	t=1760538542; cv=none; b=lJUPh+bMzP+t5zIRL55HB/gld9Xy0eS3E2FJH04qUKu4K9X1IWwNHrr/dtjfrD5kQMFOdqUBdD3F++yvkYKjoIU671Pa8/N4CodnzYl8XCxdUVBzrRihA1uliZHK0ANyRRRSdoy+V3Sx7urvfLeQsHagndS65g6g3GcREyvMTIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760538534; c=relaxed/simple;
-	bh=B1VVoWhfacnXQagaHmoDWRltXqGPMqOKLNCIwp88VTY=;
+	s=arc-20240116; t=1760538542; c=relaxed/simple;
+	bh=/GMfkXWKD7Mo4HCkD4StbktXGTZARPv9fiXJGQdP/Co=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=pg+R1+ZF7FNe+E70YZTIOqWdFB+Z3QrsTO00H5wijELJvjk/UKd5EIjZs0JNhB0cQBgQoJeP2/szzyzWgcnoMl4IS8d3g8pYKXD5x/bjrh0CtetDOIjhphAu4NaSw+6t91wJsXtleIKileL5dbrL+bfr9ar+jQPBXqRxoqdA3Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=f2zkT/al; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=fU0uWxN1YGHjcfoRpVfhVyX4tq/r5o9Z07iusdmgD10zmg/Jf9kvqh/4DeohJtlZjDfukGQfrQX+nIPWwAoXc9K+zUVqIZby2USQYaWJA4hjzNUJRrt734SBYy7kyq5TtykhIuCe5Y2IKpXU2HwMkEO1pDasfUMf5Bm3gEwXcRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=VXEYYjC9; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="f2zkT/al"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="VXEYYjC9"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=k++NOzDiNb27hLDKjlUMeDDn+u3bsze6iAKn/JJT5GA=; b=f2zkT/aluwKOFxG5BV1+M1aS37
-	BAFn2ANdCjKeehxBylnqfVsdmZH5mkC6269wHlSSI2+XluTe7zgOjGSjJBjw3+MNdCdFicjenKUx1
-	mS5FrVu+cSiVNy+d7aU2n36GpJN6Jo9RIhe4XnCXkoTsnwLPJVNfpsQON6mDl9a/c/fEHe++EV4qE
-	Vk4p/V7PD9D0URzLnPlvyBxdYkv2LtzcgCY1H7hW2nO8FeJukb3ppf/vuhdyt32MEjO5PlzrvcCkx
-	bsEullaWVYCLFZ8DF2bsBDYXesUMYF9nafpSf/I0R4jMhkE0/+x67A7GBVPp68TAv/uGxoQ6xv9Y1
-	QLgqFTng==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46532 helo=rmk-PC.armlinux.org.uk)
+	bh=aaUd4tWFZNUKcPxnE7KNdvYW06fqH0+s6HREJdLSzmQ=; b=VXEYYjC9FYzhm8DfEcHVVCdcvC
+	DTBEQrBNMkmHoLbTuNdF9ytUM83G0bfKuyXJctRaxJHhY9xjuEJ3YcgaqZubRsJXZTqewOtyC3pBO
+	xVDhK8u0El36GrgatZLs9b7JLcc69MYjCZONELmE+J45cInBU8RPzmYJDcrfU2/0QTCAbzGv6bx64
+	ZOt0Aw6cwwSDwwU07u9pMhVK1hAdqqjVa+Vw6DwIF7ZjB8M9epfY06LKI2lUuYeI8+a7n9TtafOll
+	YUeXivdsF2WoG1qBuDVhCYhQPaLiGS05R0Wm0n0U3c8ZgAnvbZx5DhqOnCjN4YOnLEnlCH5GD6y5Q
+	2SejqPkA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46036 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v92NO-000000004hK-3q4i;
-	Wed, 15 Oct 2025 15:21:15 +0100
+	id 1v92N7-000000004gb-2Of4;
+	Wed, 15 Oct 2025 15:20:58 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v92NE-0000000AmHd-15fv;
-	Wed, 15 Oct 2025 15:21:04 +0100
+	id 1v92Mt-0000000AmHF-3AQR;
+	Wed, 15 Oct 2025 15:20:43 +0100
 In-Reply-To: <aO-tbQCVu47R3izM@shell.armlinux.org.uk>
 References: <aO-tbQCVu47R3izM@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -85,7 +85,7 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH net-next 13/14] net: stmmac: provide PCS initialisation hook
+Subject: [PATCH net-next 09/14] net: stmmac: simplify stmmac_check_pcs_mode()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,63 +95,53 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v92NE-0000000AmHd-15fv@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v92Mt-0000000AmHF-3AQR@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 15 Oct 2025 15:21:04 +0100
+Date: Wed, 15 Oct 2025 15:20:43 +0100
 
-dwmac cores provide a feature bit to indicate when the PCS block is
-present, but features are only read after the core's setup() function
-has been called, meaning we can't decide whether to initialise the
-integrated PCS in the setup function. Provide a new MAC core hook
-for PCS initialisation, which will be called after the feature
-registers have been read.
+Now that we only support one mode, simplify stmmac_check_pcs_mode().
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/hwif.h        | 4 ++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 +++++++
- 2 files changed, 11 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index 7796f5f3c96f..82cfb6bec334 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -313,6 +313,8 @@ enum stmmac_lpi_mode {
- 
- /* Helpers to program the MAC core */
- struct stmmac_ops {
-+	/* Initialise any PCS instances */
-+	int (*pcs_init)(struct stmmac_priv *priv);
- 	/* MAC core initialization */
- 	void (*core_init)(struct mac_device_info *hw, struct net_device *dev);
- 	/* Update MAC capabilities */
-@@ -413,6 +415,8 @@ struct stmmac_ops {
- 					u32 pclass);
- };
- 
-+#define stmmac_mac_pcs_init(__priv) \
-+	stmmac_do_callback(__priv, mac, pcs_init, __priv)
- #define stmmac_core_init(__priv, __args...) \
- 	stmmac_do_void_callback(__priv, mac, core_init, __args)
- #define stmmac_mac_update_caps(__priv) \
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index c3633baf5180..35cd881b3496 100644
+index 013a2f3684c7..611197cfa34f 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7238,6 +7238,13 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 			 "Enable RX Mitigation via HW Watchdog Timer\n");
- 	}
+@@ -1086,22 +1086,23 @@ static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
+ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ {
+ 	int interface = priv->plat->phy_interface;
++	int speed = priv->plat->mac_port_sel_speed;
  
-+	/* Unimplemented PCS init (as indicated by stmmac_do_callback()
-+	 * perversely returning -EINVAL) is non-fatal.
-+	 */
-+	ret = stmmac_mac_pcs_init(priv);
-+	if (ret != -EINVAL)
-+		return ret;
+ 	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
+ 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+ 		priv->hw->pcs = STMMAC_PCS_SGMII;
+-	}
+-
+-	/* PS and related bits will be programmed according to the speed */
+-	if (priv->hw->pcs) {
+-		int speed = priv->plat->mac_port_sel_speed;
+ 
+-		if ((speed == SPEED_10) || (speed == SPEED_100) ||
+-		    (speed == SPEED_1000)) {
++		switch (speed) {
++		case SPEED_10:
++		case SPEED_100:
++		case SPEED_1000:
+ 			priv->hw->ps = speed;
+-		} else {
++			break;
 +
- 	return 0;
++		default:
+ 			dev_warn(priv->device, "invalid port speed\n");
+ 			priv->hw->ps = 0;
++			break;
+ 		}
+ 	}
  }
- 
 -- 
 2.47.3
 
