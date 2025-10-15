@@ -1,162 +1,93 @@
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DFC1DED64
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 02:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2246C25C711
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 02:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760493866; cv=none; b=BZ5I2d01yDBs3vKF70RZVn7X5k4XkTkh/nC8L/U5txtF1QwsGENXZqQkHmDMJ5a6PdB3MGzgclhmOl08CnmNp471RUWzfZr3I95fGPdKJLwF1xVxfIRoQ8ynpNrIPVCWdCiinQXTtAOI/3w+xg/4Y4QzgnXjbHW12JROmEu1/Po=
+	t=1760494006; cv=none; b=Ab4xCVk5cYvMTgsIiITsOMo6h/mZcPOaeOlakv1Se83rdYNnAKerfJQCLARmWVrmtzQHnLQjFVNMVrrFG3/2sv4jdoD/k6pptbFZD0jv5N+dYU6aDtVNNUzVa74pgOVtu6sHJKafhB4lZxSJtfPBqT5ytTnerKOGlzsigOme1YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760493866; c=relaxed/simple;
-	bh=ksZiRo2nynoYSBmv3cDqsAe2cNViVYNgp/q0GzE1Gxc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tzdc6P9s5ciqYKaUmjsmyLc7QcsqlYh3oBU9700/pweB+1D2cb8aAO2jvGZfIew6vZrP3flGA1i44BEciXEu4FBKKsnGyKIdUwlf+DbjbRszw2kDsvFrQv+05fS0q3vcIaJ0Zbmqj5YFXf5xHmeFJY+5g7GuE/lvIkIs8z397r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YL5+l60U; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760494006; c=relaxed/simple;
+	bh=WK14FIORj96xH40drvBlojMi5RAPdVR4haPtDwAaIaw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uHZaDfACuhpVDJM2oY/UU16oeFWiwQ9TsnUaGMc6WharZHW85Pn8Br2NL4jUOx2rKujnFKee416CgyFf9FqjtZrbLSy41taV3pUPQmHwrTFLWSWqhZb6M+awkVMVoBESMin7PELnW9UOT9RtTBTaJxrZIQ4MERwUz8MnR3TfTqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pOFfHOG/; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YL5+l60U"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760493862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PPjkTJOkbszO5j/VYiQ1emN/R2k1X+fYunWZQdT/Y3A=;
-	b=YL5+l60UQ0wu87MDb+Szj6uGGOUGTUc0JBGei5V73DKLQ0ji3RX+h4LzIccU4Y+IaVRJuc
-	Jm2UbhS04bzhry1XqjI+GxTGaPIQ+FdfM1lBjUeggnR+tWeo1UwmxA9qpBvloN8Lp/dRrn
-	tGTJwi/QJlBoYadcSRZHMz7T66Y7M4c=
-From: xuanqiang.luo@linux.dev
-To: edumazet@google.com,
-	kuniyu@google.com,
-	pabeni@redhat.com
-Cc: kerneljasonxing@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	horms@kernel.org,
-	jiayuan.chen@linux.dev,
-	ncardwell@google.com,
-	dsahern@kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net-next v8 3/3] inet: Avoid ehash lookup race in inet_twsk_hashdance_schedule()
-Date: Wed, 15 Oct 2025 10:02:36 +0800
-Message-Id: <20251015020236.431822-4-xuanqiang.luo@linux.dev>
-In-Reply-To: <20251015020236.431822-1-xuanqiang.luo@linux.dev>
-References: <20251015020236.431822-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pOFfHOG/"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-27ee41e0798so95569505ad.1
+        for <netdev@vger.kernel.org>; Tue, 14 Oct 2025 19:06:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760494004; x=1761098804; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WK14FIORj96xH40drvBlojMi5RAPdVR4haPtDwAaIaw=;
+        b=pOFfHOG/kMZe4bKVKv4Skq55zdhbRtJiMrF9nuu1s+iWFj2dZRMIS6nIBaLGaKVSYm
+         qQkRqicJ5QTTRxDdoTK+S7kjj4DjSZxiwIZr/fkuHH8Gm7Q2JMUOOLZrtkQNmZAYH9aT
+         BP18ye3soGvUzXIgv1is23eXMuCF5mtwiYSWTqwkTuCBFhfz4KTVOnXbixicnrF/YyLN
+         D5Z16hDAv9hlrNfNL6E/cqA+aJLH4FmTjdDb/I5O58h5DPYmsDvzpyI9pI95HnhNdqGu
+         Xm1Ry7KTYTjWs2lExwimlOq5trFbdc0sha/eT7ad6AoVTTKo3cSjOeO6OyyBZiqM1cYp
+         JcNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760494004; x=1761098804;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WK14FIORj96xH40drvBlojMi5RAPdVR4haPtDwAaIaw=;
+        b=IP3ytdwEJqzphrp9Z3bF3jGuonhPyuAcdO2JSZFZ/haBAZ0rkJr6q3yflvk9TXnn6k
+         rDaq2JQ1tnlDjP8Q8NO4gmWyFxreLTWm1hYf3brkEAdg++L4zgFcH3LZDU7/tHaYidpk
+         CQ648m1Cye3t7bM0UlsUAslnUBioSWvH7SjTH38IH1AkJAyjOb/Sox/fQMXPZwCaSwP1
+         87CzC35aBzxu8VXuSS6/RjLaqkYR0j/JJ0xsgW6PRDuNC0Qk/QzyHxg2tuJs8rElO4nC
+         5xz7X2Gtci4ON+TWYALqSJcSkrTPIa7NLvR/X0yL9NI4M5keuTSSzaKJMgggb/ASPpra
+         zBhg==
+X-Forwarded-Encrypted: i=1; AJvYcCXG8yGQZtr6DAJCI1SLDbju/hdg99gknq5H392sebnyq+1itdTgF0SO2ezY0P4T64V5Jxxwgac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDk7YU1hpmm75+Siz0UePHULKpYgmky32U3bpivnlI+788T+I/
+	5IiIz5o6h7nlcFWHrSqCVPMIoC6UYev1boTAbSZNy8n1RItUMhhURzWaL4o3i1KBTjoMERolOD1
+	dKBYUmsl5ltaSEtyazEJyj9mNSOqbJ2Ldc0IGxqwp
+X-Gm-Gg: ASbGncvsbqkPQRFDN9+JpMCys9AmrXqnTng5QfsdXwySvJWCYcXrgWSp8Eg/7eed7qZ
+	pEaHtM4k0AEDqcnfWTpifKSniH9v5FJMwOk/kma77roQ6vmt6xuJYaXiu+O8oNu6wW67ZjDtgWC
+	IDqWp6Vb6Yt64kgTnjyhpGpHPrEqGtMaSso+zzzIPEUqjcXevcDZkKeEBIuLFotw28LEw64S2YD
+	iA1HZ5mq5XAuJbziyKR12M3DyRvberOi8JdAR4gkKIq4x1W8L8EiREYXu/4xYxmigTqyD7k1Uc=
+X-Google-Smtp-Source: AGHT+IE+6xoTU5MkWj/sHFLyhIBmLNIIb/miQp3rwgY8IcgZYwbb6VMBbVj8iz0to3PmSJIk8XQOERtbEhug4WNeTLY=
+X-Received: by 2002:a17:902:e785:b0:288:e46d:b32b with SMTP id
+ d9443c01a7336-290273748d3mr362575005ad.17.1760494004090; Tue, 14 Oct 2025
+ 19:06:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20251014140605.2982703-1-edumazet@google.com>
+In-Reply-To: <20251014140605.2982703-1-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 14 Oct 2025 19:06:32 -0700
+X-Gm-Features: AS18NWDQCPY9TkLsO9LhTxHRoAIQ93p7CGMcYNKUFNdDjnHRN-YoDW13snzI22k
+Message-ID: <CAAVpQUCUYCA4_EchpaaZ8SafmtYkYAMKCmS9oDM3bCxzeo5Ebw@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: remove obsolete WARN_ON(refcount_read(&sk->sk_refcnt)
+ == 1)
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On Tue, Oct 14, 2025 at 7:06=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> sk->sk_refcnt has been converted to refcount_t in 2017.
+>
+> __sock_put(sk) being refcount_dec(&sk->sk_refcnt), it will complain
+> loudly if the current refcnt is 1 (or less) in a non racy way.
+>
+> We can remove four WARN_ON() in favor of the generic refcount_dec()
+> check.
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Since ehash lookups are lockless, if another CPU is converting sk to tw
-concurrently, fetching the newly inserted tw with tw->tw_refcnt == 0 cause
-lookup failure.
-
-The call trace map is drawn as follows:
-   CPU 0                                CPU 1
-   -----                                -----
-				     inet_twsk_hashdance_schedule()
-				     spin_lock()
-				     inet_twsk_add_node_rcu(tw, ...)
-__inet_lookup_established()
-(find tw, failure due to tw_refcnt = 0)
-				     __sk_nulls_del_node_init_rcu(sk)
-				     refcount_set(&tw->tw_refcnt, 3)
-				     spin_unlock()
-
-By replacing sk with tw atomically via hlist_nulls_replace_init_rcu() after
-setting tw_refcnt, we ensure that tw is either fully initialized or not
-visible to other CPUs, eliminating the race.
-
-It's worth noting that we held lock_sock() before the replacement, so
-there's no need to check if sk is hashed. Thanks to Kuniyuki Iwashima!
-
-Fixes: 3ab5aee7fe84 ("net: Convert TCP & DCCP hash tables to use RCU / hlist_nulls")
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- net/ipv4/inet_timewait_sock.c | 35 ++++++++++++-----------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
 
-diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-index c96d61d08854..d4c781a0667f 100644
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -88,12 +88,6 @@ void inet_twsk_put(struct inet_timewait_sock *tw)
- }
- EXPORT_SYMBOL_GPL(inet_twsk_put);
- 
--static void inet_twsk_add_node_rcu(struct inet_timewait_sock *tw,
--				   struct hlist_nulls_head *list)
--{
--	hlist_nulls_add_head_rcu(&tw->tw_node, list);
--}
--
- static void inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo)
- {
- 	__inet_twsk_schedule(tw, timeo, false);
-@@ -113,13 +107,12 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
- {
- 	const struct inet_sock *inet = inet_sk(sk);
- 	const struct inet_connection_sock *icsk = inet_csk(sk);
--	struct inet_ehash_bucket *ehead = inet_ehash_bucket(hashinfo, sk->sk_hash);
- 	spinlock_t *lock = inet_ehash_lockp(hashinfo, sk->sk_hash);
- 	struct inet_bind_hashbucket *bhead, *bhead2;
- 
--	/* Step 1: Put TW into bind hash. Original socket stays there too.
--	   Note, that any socket with inet->num != 0 MUST be bound in
--	   binding cache, even if it is closed.
-+	/* Put TW into bind hash. Original socket stays there too.
-+	 * Note, that any socket with inet->num != 0 MUST be bound in
-+	 * binding cache, even if it is closed.
- 	 */
- 	bhead = &hashinfo->bhash[inet_bhashfn(twsk_net(tw), inet->inet_num,
- 			hashinfo->bhash_size)];
-@@ -141,19 +134,6 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
- 
- 	spin_lock(lock);
- 
--	/* Step 2: Hash TW into tcp ehash chain */
--	inet_twsk_add_node_rcu(tw, &ehead->chain);
--
--	/* Step 3: Remove SK from hash chain */
--	if (__sk_nulls_del_node_init_rcu(sk))
--		sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
--
--
--	/* Ensure above writes are committed into memory before updating the
--	 * refcount.
--	 * Provides ordering vs later refcount_inc().
--	 */
--	smp_wmb();
- 	/* tw_refcnt is set to 3 because we have :
- 	 * - one reference for bhash chain.
- 	 * - one reference for ehash chain.
-@@ -163,6 +143,15 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
- 	 */
- 	refcount_set(&tw->tw_refcnt, 3);
- 
-+	/* Ensure tw_refcnt has been set before tw is published.
-+	 * smp_wmb() provides the necessary memory barrier to enforce this
-+	 * ordering.
-+	 */
-+	smp_wmb();
-+
-+	hlist_nulls_replace_init_rcu(&sk->sk_nulls_node, &tw->tw_node);
-+	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
-+
- 	inet_twsk_schedule(tw, timeo);
- 
- 	spin_unlock(lock);
--- 
-2.25.1
-
+Thanks for catching this!
