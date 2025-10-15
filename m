@@ -1,91 +1,160 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4F6313E27
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 07:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40C62727E2
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 07:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760512958; cv=none; b=cu8sZdp/idcLhOK6GyXjUCpfHarOz/SVqJDJ+oSudhQ/puIR0W5JS9xBncuuZ4JfSYFSNsVCh8HBBs22DnCct5f94oVGBhchdKRhzfNqNAuslvtwLD249MXobj6pdFJhzW6BlSAgVaSDIAWpAnDxhf9sRZg8TO8YYR4RwT6sa8M=
+	t=1760513715; cv=none; b=WPSqIq2GEyZl4FpjxDaCThnuAshGYJJyC0jH5puduCWqZ62HallsBICcMicfjcXaVWB5xjov1PlyTyacDXsutC1+6+N4xsFXeEVi+h9mIf4XoJ2zppiJ+k+X69m7z1iuGE8BsV27EinVOYHyRwgMJeAHU34x1V1Bn9UDI2DuoJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760512958; c=relaxed/simple;
-	bh=w1LfZIAVjLm5WI2OE3Pkuv4PXUTL7V7lh0IXWER6m4I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KTqIktKKzeSZKDvVzE7AT+x5r5WC/6vI/SiqskEb5flZeGr7yYQeQLv5vb55UBtGjl6/lUxE8hHC4DpPkBZXpgz42yNOtpEcOR3tkttJ5jTb48tHsbxz1fQoLO1B/lzMu++GUFRkPsSvz/KBfssZqX5xRcWXre6cDbIXwzoFpEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.2.212] (p57bd968e.dip0.t-ipconnect.de [87.189.150.142])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 7CE5161E647AB;
-	Wed, 15 Oct 2025 09:22:15 +0200 (CEST)
-Message-ID: <a49a045c-b01a-48d2-a02c-23540f799f8a@molgen.mpg.de>
-Date: Wed, 15 Oct 2025 09:22:14 +0200
+	s=arc-20240116; t=1760513715; c=relaxed/simple;
+	bh=IFw0y3HFIK1S4mkksxahSnq3lwF6loF4/RY4O+5S2hw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q1ZZlsa7KsmmuLvlKNl4w18RhmIhkf9Q2zwZ64t4m7gTgvlbmyfk+c965Y/iyCbgJwxNhTcZ1LG6tIRQyQQaqFT8ivS6lMQaRh0AGtui/iT0kvcnd6ARo9jgSm+EI5tOE5TA9pxzLxnilliB0hVbXM2NdTQSf97j+5ikjL1VMjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjwe29+4; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjwe29+4"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-862cbf9e0c0so788487685a.0
+        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 00:35:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760513712; x=1761118512; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BA3o1cHbuC0FFSVH6LGwTjiyg5Fjt24vDKqsTK1XeKk=;
+        b=jjwe29+4qmJsV84FQDy6csUxIAZD0pT0J6kHJC/UbOV0BMdELqMhhAe8ajWGNJUKge
+         wmmewbooap7ypZpybealvtsGslHYecWfsW7BSjjKIm3AUy8Qucc/YEJFm74OnZsopEcq
+         k5WUsQ7UNCINTVIZe2Ajd+Ca5xZ8PTZP0t47gtyFawr4V15M3LNo8Khy3VgkBPBz9COM
+         IeGizAYCHg6qx/MGRgFIBS331Iu4RcdboAnjvweBCY05z3je2ie/FpuXHLGD+ql8HwAF
+         Pdp/J0qLu9G3EpII8k3+a46YD42gCvOKn5FcvbX6i7p8AveQBu/ovRRkfoTIi28weK05
+         POgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760513712; x=1761118512;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BA3o1cHbuC0FFSVH6LGwTjiyg5Fjt24vDKqsTK1XeKk=;
+        b=MpkfTs8G2NSoNoWziFqhR0BQa8DNaSa/ho3dV3Pb8qZ464oBC2VtC2JcdIuxY2nCQt
+         JmQ8p0ouggVX3ENlA0rwfrv+Alprzm1j8b0UFqNWPlvFHEvz0bhR4MF4E7rE2dFT/6qX
+         lHgqLmqEtb+eddEWqXrPJiAmBgWzzP/jC4HQIVJLXN969L6Gz5w6g8jd32O7qiXRIuGK
+         tOCGFM6p9HMe6aL+AZEKosCfUA8Pm7DdEJ7w0abGFLVUa1RCAyFdlT15AiGxC5m2KmPQ
+         8uQ71HR46x7nSI75fG/sh4t+/Y+W2pRdcKkjBWC8nGmaeVCG0tXPY9tUzM/lyXxvtSM9
+         Gb6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXlL++/6oX9ev+ZoQl7zPu0Pd3jnmsnE6FPm96PPyhTb5Wygm5P+E8wSFyA8H/pfM+uF+T4ND0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzi3HQgix4KYH/RSmRR93O4H5ugFL2AuoiJy99/1xIv8v3Je5oX
+	EX2w8COgvWirs6jez6bFWXCJbH/pa6m8T8WsvpHbgRgGyFr3kwt9DkL4C3KqJgMN74oiS0eLdQC
+	70kAUcFyG6RlSFjUDjvPWR43G9V8y3Dc=
+X-Gm-Gg: ASbGncuD7FoPUDc7TNCB8EbF5Sr5bFAqqVdoBgSSQfHXZIGrbmed5PbPjaM9hXa+/BZ
+	oRU3p0W77TlPDfP0g/TekdmU/T+LAu2/FH8U0nwLjCgU3z1EaNwLIkwOK6LC9DItz1xOKSfhXrM
+	hvsCEHzIuEKQTD2vKXvZ1rKASfonMH/1OkhrczqrBC8q68hHZDbADGBTipOMD/Ut9AgdfI7YTpF
+	4zk9MWxgMpQeDe6CPtx242/Y2KAv016gRQ50ibb4AnwPBTnqOIywag9nU3FtO06DBcp
+X-Google-Smtp-Source: AGHT+IEKuviABuf8paTr2eaaeUlS/nUOTJ25Ra9gag22Alb6I0Md3LX7r3aaI+eo4s+XoFak3t65ds9W83VxSzBmJiE=
+X-Received: by 2002:a05:620a:f13:b0:812:c6e3:6663 with SMTP id
+ af79cd13be357-88350c678bdmr3682430585a.34.1760513711989; Wed, 15 Oct 2025
+ 00:35:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v8 3/9] idpf: move queue
- resources to idpf_q_vec_rsrc structure
-To: Joshua Hay <joshua.a.hay@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-References: <20251013231341.1139603-1-joshua.a.hay@intel.com>
- <20251013231341.1139603-4-joshua.a.hay@intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251013231341.1139603-4-joshua.a.hay@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251013101636.69220-1-21cnbao@gmail.com> <aO11jqD6jgNs5h8K@casper.infradead.org>
+ <CAGsJ_4x9=Be2Prbjia8-p97zAsoqjsPHkZOfXwz74Z_T=RjKAA@mail.gmail.com>
+ <CANn89iJpNqZJwA0qKMNB41gKDrWBCaS+CashB9=v1omhJncGBw@mail.gmail.com>
+ <CAGsJ_4xGSrfori6RvC9qYEgRhVe3bJKYfgUM6fZ0bX3cjfe74Q@mail.gmail.com>
+ <CANn89iKSW-kk-h-B0f1oijwYiCWYOAO0jDrf+Z+fbOfAMJMUbA@mail.gmail.com>
+ <CAGsJ_4wJHpD10ECtWJtEWHkEyP67sNxHeivkWoA5k5++BCfccA@mail.gmail.com>
+ <CANn89iKC_y6Fae9E5ETOE46y-RCqD6cLHnp=7GynL_=sh3noKg@mail.gmail.com>
+ <CAGsJ_4x5v=M0=jYGOqy1rHL9aVg-76OgiE0qQMdEu70FhZcmUg@mail.gmail.com> <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com>
+In-Reply-To: <CANn89iJYaNZ+fkKosRVx+8i17HJAB4th645ySMWQEAo6WoCg3w@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 15 Oct 2025 15:35:00 +0800
+X-Gm-Features: AS18NWAHXtYVOjzGMsZVpeCyed9cBDk9Qc-GpblFolpgSoSOaZV2-smc5Nm5TAA
+Message-ID: <CAGsJ_4wYrQuhGY6FuZJzQJjQfx6udRAbP4XZvEevknrpqnkv8g@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: net: disable kswapd for high-order network buffer allocation
+To: Eric Dumazet <edumazet@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Barry Song <v-songbaohua@oppo.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Huacai Zhou <zhouhuacai@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Dear Joshua,
+On Wed, Oct 15, 2025 at 2:39=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 
+> > >
+> > > Tell them they are wrong.
+> >
+> > Well, we checked Qualcomm and MTK, and it seems both set these values
+> > relatively high. In other words, all the AOSP products we examined also
+> > use high values for these settings. Nobody is using tcp_wmem[0]=3D4096.
+> >
+>
+> The (fine and safe) default should be PAGE_SIZE.
+>
+> Perhaps they are dealing with systems with PAGE_SIZE=3D65536, but then
+> the skb_page_frag_refill() would be a non issue there, because it would
+> only allocate order-0 pages.
 
-Thank you for the patch.
+I am 100% sure that all of them handle PAGE_SIZE=3D4096. Google is working =
+on
+16KB page size for Android, but it is not ready yet(Please correct me
+if 16KB has been
+ready, Suren).
 
-Am 14.10.25 um 01:13 schrieb Joshua Hay:
-> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> 
-> Move both TX and RX queue resources to the newly introduced
-> idpf_q_vec_rsrc structure.
+>
+> > We=E2=80=99ll need some time to understand why these are configured thi=
+s way in
+> > AOSP hardware.
+> >
+> > >
+> > > >
+> > > > It might be worth exploring these settings further, but I can=E2=80=
+=99t quite see
+> > > > their connection to high-order allocations, since high-order alloca=
+tions are
+> > > > kernel macros.
+> > > >
+> > > > #define SKB_FRAG_PAGE_ORDER     get_order(32768)
+> > > > #define PAGE_FRAG_CACHE_MAX_SIZE        __ALIGN_MASK(32768, ~PAGE_M=
+ASK)
+> > > > #define PAGE_FRAG_CACHE_MAX_ORDER       get_order(PAGE_FRAG_CACHE_M=
+AX_SIZE)
+> > > >
+> > > > Is there anything I=E2=80=99m missing?
+> > >
+> > > What is your question exactly ? You read these macros just fine. What
+> > > is your point ?
+> >
+> > My question is whether these settings influence how often high-order
+> > allocations occur. In other words, would lowering these values make
+> > high-order allocations less frequent? If so, why?
+>
+> Because almost all of the buffers stored in TCP write queues are using
+> order-3 pages
+> on arches with 4K pages.
+>
+> I am a bit confused because you posted a patch changing skb_page_frag_ref=
+ill()
+> without realizing its first user is TCP.
+>
+> Look for sk_page_frag_refill() in tcp_sendmsg_locked()
 
-What is the motivation for doing this?
+Sure. Let me review the code further. The problem was observed on the MM
+side, causing over-reclamation and phone heating, while the source of the
+allocations lies in network activity. I am not a network expert and may be
+missing many network details, so I am raising this RFC to both lists to see
+if the network and MM folks can discuss together to find a solution.
 
+As you can see, the discussion has absolutely forked into two branches. :-)
 
-> While at it, declare the loop iterator in loop and use the correct type.
-
-Please make this a separate commit, as the diff is already big enough.
-
-
-Kind regards,
-
-Paul
-
-
-> Reviewed-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
-> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-> ---
-> v8:
-> - rebase on AF_XDP series
-> - remove dev param from rx_desc_rel and access through q_vector
-> - introduce per queue RSC flag to avoid vport check
-> ---
->   drivers/net/ethernet/intel/idpf/idpf.h        |  69 +--
->   .../net/ethernet/intel/idpf/idpf_ethtool.c    |  91 ++--
->   drivers/net/ethernet/intel/idpf/idpf_lib.c    |  71 +--
->   drivers/net/ethernet/intel/idpf/idpf_ptp.c    |  17 +-
->   drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 451 +++++++++---------
->   drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  21 +-
->   .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 258 +++++-----
->   .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  12 +-
->   drivers/net/ethernet/intel/idpf/xdp.c         |  37 +-
->   drivers/net/ethernet/intel/idpf/xdp.h         |   6 +-
->   drivers/net/ethernet/intel/idpf/xsk.c         |   7 +-
->   11 files changed, 561 insertions(+), 479 deletions(-)
-
-[…]
+Thanks
+Barry
