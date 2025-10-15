@@ -1,253 +1,69 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76C8281370;
-	Wed, 15 Oct 2025 14:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0BB76026;
+	Wed, 15 Oct 2025 14:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760536939; cv=none; b=USufrnTfvAlpghJd1HlDMnvYJ6XCq2U+h/WyqmIYxtq5kzHYEYEusLqAuLQXeCRynHlQ4cwAlH7SbIUqvUYR0J7x5xaMbckdHxrrV4qXw/Qh21qVXwnqUXKrbZ8KPxo7Q9auVeqcWJxRQBcmJB+3KWlX3AbKrTKZW6swVVdZm64=
+	t=1760536946; cv=none; b=MY8pDFQblWEDIwz8LRpb4bImqzQuLGZrIqBGFlQhE2oPLYgcSF/XwxLFX4HIf6IWCcZtzNh4fUNZ+dDGbV+gxZ2r4aQ5caZ3932Wvw5fnfZFDXTnNVhKSzk3g0KNgLDOG1fMwuwWT/hDnvq01rGp8tgnhtbOtSZ6tQhmqLKriWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760536939; c=relaxed/simple;
-	bh=vDuddxKDKfuRa5uZb2BTTgdzpnwGbouQzlPO+IFBaQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGu6WLgRI2GwZ3OUiirV6EZz3HCoZHepA9PLnBjdGoj4EiQ+hE9MPLkNKh3Dz6UlVma1Ru+aE94B1Xh5UqK1HRpbDIJ51DvDgVzeKAM32EfND2mWBHVd8bqx0697FtCiTq1XwVeWg53GgjjwsI4lOgRi4IJzG9BDodEbtsDC5P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=aO0+Qm/c; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1760536946; c=relaxed/simple;
+	bh=6nvpRL+w3yMGwSCxrLlHi6Jp9XUA2RlHNIJiHeRHwsQ=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EbvFOhD4sVgPAADn4PjWCGcTPqoBs3YSrfh0SOaM3JGpQV9T/mkG0A0EOM7uFhOlZ7ddec7/cjoak/7XPDF1MghuRWOchpEcAN+Yxjgdo2F8jm3VussImtyh7mgML+Sg7uM1hnpBAVeYH2L1QG49Y5Rfp+PMzwYyQRPKUEJ8c0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=mNpSdK7Q; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="aO0+Qm/c"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=o31ouC9o8L0ZOuDXmkhH3liZxZE3/bUFbGm/4K5bh+s=; b=aO0+Qm/cyxlHcyX/7HDANQ+Rlf
-	hSTVgC/y4/LJ3HwkoEzmAlyxbf1QGvH4nCX2DFiGYcKp7Awlr5U25p8DSDwO9ni5jkQmzZtj4t2pX
-	fOQjJnMFK+Ksguhx/I4Z5ydDrixN1r7BQYTbNRgcQTetpvvSNINjpegl/OINihFRS22lAuodraz1x
-	EzbbSrxQRDhkFoSj1/IcKU/xn3pw2ldN3QeSpHO6SeD0w/wRm0xfv8USKAwzjNvoUh7ZysYtd7Cbu
-	J0e2zy5nFW/c4KyG3JLbJeKOp3McWqzxSUXb2MEyM2iQBLvd10Ym7CvyoGZ+a9DzpyA26xLBIFpI9
-	pK1mQt9w==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1v924l-000H9K-00;
-	Wed, 15 Oct 2025 16:01:59 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sdf@fomichev.me,
-	john.fastabend@gmail.com,
-	martin.lau@kernel.org,
-	jordan@jrife.io,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	dw@davidwei.uk,
-	toke@redhat.com,
-	yangzhenze@bytedance.com,
-	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v2 15/15] netkit: Add xsk support for af_xdp applications
-Date: Wed, 15 Oct 2025 16:01:40 +0200
-Message-ID: <20251015140140.62273-16-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251015140140.62273-1-daniel@iogearbox.net>
-References: <20251015140140.62273-1-daniel@iogearbox.net>
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="mNpSdK7Q"
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 8E925A0D06;
+	Wed, 15 Oct 2025 16:02:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=mail;
+	 bh=6nvpRL+w3yMGwSCxrLlHi6Jp9XUA2RlHNIJiHeRHwsQ=; b=mNpSdK7QZuNc
+	k/Wymn9abrPlG/o8jt1BE6i36xozmG0hgxwwbSFA5PzA5DCr79idbsORw+7m8BIU
+	3HB4yTVOlzR/5/HX4gtPBNIHGmbDGHc3yl09T07IhqdzFdlk2T9T5NHy2ukL896a
+	25KCxxCx2dOZQUCZ7Sk2gEaGc2iRIHYEgdOuZbGRLTsRzAKcUn80s9cGV0+jmOR/
+	BH0oG4w1TnenlAzKXjG6PiO/F25M8oJ6A0YCVn8bypoKZqHESpyFOIRK4tvzAQCB
+	g5ugfzcsjSmLwI9G40xKzVGOXOJutfExw0ufspu3XJGpi69q3XUY68fPIXkXHLqo
+	isNMC8P2heHm7/kwYFsHI3AR91XIxI0JUdoIfoxrbFw/Wu/yO0uDRBn2IStk/B11
+	9LiIP8sYQ+o7bC51svWH7iVtCGJ+Z3ZZTZjCjyi62UlN0Gt/fAq8NQDgQYdBHYbV
+	2WXXvZGBAz9CbFnJfggAWq82uU+jrY7diXBKGm1/qw11F/CqP3LLv30SQ/0xFWjB
+	q1kx5IQFLd0qn9HBdYJsUYDjeFDFimd5vxtTy+bWs0YLsJAR36wXX7jRl7A787RF
+	8M+HTat2Zafze9tEUxnKZAmMERfZPKUeblpX0yIk18UwY8g+YD0oW7BMtbPSdcze
+	hubWQw9wOFtfLtVb1+n6upoGKyXVpfo=
+Date: Wed, 15 Oct 2025 16:02:21 +0200
+From: Buday Csaba <buday.csaba@prolan.hu>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Florian Fainelli <f.fainelli@gmail.com>,
+	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] net: mdio: common handling of phy reset properties
+Message-ID: <aO-pbUEzbNGFwNHT@debianbuilder>
+References: <20251015134503.107925-1-buday.csaba@prolan.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27793/Wed Oct 15 11:29:40 2025)
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20251015134503.107925-1-buday.csaba@prolan.hu>
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1760536941;VERSION=8000;MC=3282358105;ID=541937;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2998FD515F64756A
 
-Enable support for AF_XDP applications to operate on a netkit device.
-The goal is that AF_XDP applications can natively consume AF_XDP
-from network namespaces. The use-case from Cilium side is to support
-Kubernetes KubeVirt VMs through QEMU's AF_XDP backend. KubeVirt is a
-virtual machine management add-on for Kubernetes which aims to provide
-a common ground for virtualization. KubeVirt spawns the VMs inside
-Kubernetes Pods which reside in their own network namespace just like
-regular Pods.
+This is the refined v2 patchset of my previous patches, addressing the
+issues found in them.
 
-Raw QEMU AF_XDP backend example with eth0 being a physical device with
-16 queues where netkit is bound to the last queue (for multi-queue RSS
-context can be used if supported by the driver):
-
-  # ethtool -X eth0 start 0 equal 15
-  # ethtool -X eth0 start 15 equal 1 context new
-  # ethtool --config-ntuple eth0 flow-type ether \
-            src 00:00:00:00:00:00 \
-            src-mask ff:ff:ff:ff:ff:ff \
-            dst $mac dst-mask 00:00:00:00:00:00 \
-            proto 0 proto-mask 0xffff action 15
-  [ ... setup BPF/XDP prog on eth0 to steer into shared xsk map ... ]
-  # ip netns add foo
-  # ip link add numrxqueues 2 nk type netkit single
-  # ./pyynl/cli.py --spec ~/netlink/specs/netdev.yaml \
-                   --do bind-queue \
-                   --json "{"src-ifindex": $(ifindex eth0), "src-queue-id": 15, \
-                            "dst-ifindex": $(ifindex nk), "queue-type": "rx"}"
-  {'dst-queue-id': 1}
-  # ip link set nk netns foo
-  # ip netns exec foo ip link set lo up
-  # ip netns exec foo ip link set nk up
-  # ip netns exec foo qemu-system-x86_64 \
-          -kernel $kernel \
-          -drive file=${image_name},index=0,media=disk,format=raw \
-          -append "root=/dev/sda rw console=ttyS0" \
-          -cpu host \
-          -m $memory \
-          -enable-kvm \
-          -device virtio-net-pci,netdev=net0,mac=$mac \
-          -netdev af-xdp,ifname=nk,id=net0,mode=native,queues=1,start-queue=1,inhibit=on,map-path=$dir/xsks_map \
-          -nographic
-
-We have tested the above against a dual-port Nvidia ConnectX-6 (mlx5)
-100G NIC with successful network connectivity out of QEMU. An earlier
-iteration of this work was presented at LSF/MM/BPF [0].
-
-For getting to a first starting point to connect all things with
-KubeVirt, bind mounting the xsk map from Cilium into the VM launcher
-Pod which acts as a regular Kubernetes Pod while not perfect, is not
-a big problem given its out of reach from the application sitting
-inside the VM (and some of the control plane aspects are baked in
-the launcher Pod already), so the isolation barrier is still the VM.
-Eventually the goal is to have a XDP/XSK redirect extension where
-there is no need to have the xsk map, and the BPF program can just
-derive the target xsk through the queue where traffic was received
-on.
-
-The exposure through netkit is because Cilium should not act as a
-proxy handing out xsk sockets. Existing applications expect a netdev
-from kernel side and should not need to rewrite just to implement
-against a CNI's protocol. Also, all the memory should not be accounted
-against Cilium but rather the application Pod itself which is consuming
-AF_XDP. Further, on up/downgrades we expect the data plane to being
-completely decoupled from the control plane; if Cilium would own the
-sockets that would be disruptive. Another use-case which opens up and
-is regularly asked from users would be to have DPDK applications on
-top of AF_XDP in regular Kubernetes Pods.
-
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Co-developed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://bpfconf.ebpf.io/bpfconf2025/bpfconf2025_material/lsfmmbpf_2025_netkit_borkmann.pdf [0]
----
- drivers/net/netkit.c | 71 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 70 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index 2f591d1ac61d..f6a73c828e2e 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -11,6 +11,7 @@
- 
- #include <net/netdev_queues.h>
- #include <net/netdev_rx_queue.h>
-+#include <net/xdp_sock_drv.h>
- #include <net/netkit.h>
- #include <net/dst.h>
- #include <net/tcx.h>
-@@ -234,6 +235,71 @@ static void netkit_get_stats(struct net_device *dev,
- 	stats->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
- }
- 
-+static bool netkit_xsk_supported_at_phys(const struct net_device *dev)
-+{
-+	if (!dev->netdev_ops->ndo_bpf ||
-+	    !dev->netdev_ops->ndo_xdp_xmit ||
-+	    !dev->netdev_ops->ndo_xsk_wakeup)
-+		return false;
-+	if ((dev->xdp_features & NETDEV_XDP_ACT_XSK) != NETDEV_XDP_ACT_XSK)
-+		return false;
-+	return true;
-+}
-+
-+static int netkit_xsk(struct net_device *dev, struct netdev_bpf *xdp)
-+{
-+	struct netkit *nk = netkit_priv(dev);
-+	struct netdev_bpf xdp_lower;
-+	struct netdev_rx_queue *rxq;
-+	struct net_device *phys;
-+
-+	switch (xdp->command) {
-+	case XDP_SETUP_XSK_POOL:
-+		if (nk->pair == NETKIT_DEVICE_PAIR)
-+			return -EOPNOTSUPP;
-+		if (xdp->xsk.queue_id >= dev->real_num_rx_queues)
-+			return -EINVAL;
-+
-+		rxq = __netif_get_rx_queue(dev, xdp->xsk.queue_id);
-+		if (!rxq->peer)
-+			return -EOPNOTSUPP;
-+
-+		phys = rxq->peer->dev;
-+		if (!netkit_xsk_supported_at_phys(phys))
-+			return -EOPNOTSUPP;
-+
-+		memcpy(&xdp_lower, xdp, sizeof(xdp_lower));
-+		xdp_lower.xsk.queue_id = get_netdev_rx_queue_index(rxq->peer);
-+		break;
-+	case XDP_SETUP_PROG:
-+		return -EPERM;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return phys->netdev_ops->ndo_bpf(phys, &xdp_lower);
-+}
-+
-+static int netkit_xsk_wakeup(struct net_device *dev, u32 queue_id, u32 flags)
-+{
-+	struct netdev_rx_queue *rxq;
-+	struct net_device *phys;
-+
-+	if (queue_id >= dev->real_num_rx_queues)
-+		return -EINVAL;
-+
-+	rxq = __netif_get_rx_queue(dev, queue_id);
-+	if (!rxq->peer)
-+		return -EOPNOTSUPP;
-+
-+	phys = rxq->peer->dev;
-+	if (!netkit_xsk_supported_at_phys(phys))
-+		return -EOPNOTSUPP;
-+
-+	return phys->netdev_ops->ndo_xsk_wakeup(phys,
-+			get_netdev_rx_queue_index(rxq->peer), flags);
-+}
-+
- static void netkit_uninit(struct net_device *dev);
- 
- static const struct net_device_ops netkit_netdev_ops = {
-@@ -247,6 +313,8 @@ static const struct net_device_ops netkit_netdev_ops = {
- 	.ndo_get_peer_dev	= netkit_peer_dev,
- 	.ndo_get_stats64	= netkit_get_stats,
- 	.ndo_uninit		= netkit_uninit,
-+	.ndo_bpf		= netkit_xsk,
-+	.ndo_xsk_wakeup		= netkit_xsk_wakeup,
- 	.ndo_features_check	= passthru_features_check,
- };
- 
-@@ -401,10 +469,11 @@ static void netkit_setup(struct net_device *dev)
- 	dev->hw_enc_features = netkit_features;
- 	dev->mpls_features = NETIF_F_HW_CSUM | NETIF_F_GSO_SOFTWARE;
- 	dev->vlan_features = dev->features & ~netkit_features_hw_vlan;
--
- 	dev->needs_free_netdev = true;
- 
- 	netif_set_tso_max_size(dev, GSO_MAX_SIZE);
-+
-+	xdp_set_features_flag_locked(dev, NETDEV_XDP_ACT_XSK);
- }
- 
- static struct net *netkit_get_link_net(const struct net_device *dev)
--- 
-2.43.0
+See the previous thread here:
+https://lore.kernel.org/lkml/20251015134503.107925-1-buday.csaba@prolan.hu/
 
