@@ -1,150 +1,759 @@
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0517829BD91
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 18:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A697D288515
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 18:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760554011; cv=none; b=RHXSTRH/Zyqc0dveTv77id0sm19v7ISkP1W5snf15N32D25MiNe+LXNjWQsE199qt9ioOMGJ75QEzBHNy2MPo5yL783mIJraefdLRlXMlpF4YX0QF9944BYBea9wIfBkMst59seaaEoGU2K6bQdQ6nQqrIjoHS133/IWNyWgHIc=
+	t=1760554311; cv=none; b=gUTl3OFrDK9H9GJdDHXrFFibHybMYgypsiv1lAvRfPfocKgBF7ibbssswqY6M095MpCKJQ7TIQf2tTe2iCd1M1PHnQXSHKus1VbOOefjEc4uoqQmP7neCwtYqLRxe+nMf+UlyRkKN6ZUIWUpzrX4qtYnVJhiSMp/GgT0QtH+aN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760554011; c=relaxed/simple;
-	bh=2DaIaoIXWN56Be8bR2S9RRLT3aBPlvYLWdZ9/CV3OeQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=nQs7PzsXdCkQ71JPpbaDWYIN4DugA6tfT91RJz7asSZh5ISCU6UFJiEUJZEjXq0f4kCoPA/XonSN9saPsxq17h7J3OhJsmfvPVTBKBM/69RIHeOrnqUxD8XrG8S8DqQDbtdNzVIrtij69eVYjKt6Yv5ELxQE1Wjn7WI5ApGTWCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-9286199b46fso1302532539f.3
-        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 11:46:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760554007; x=1761158807;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DS4Sxr0k4RTUlUgBlQ5Ey66j42nijDvXrm5qaLRzbiU=;
-        b=LxbwXp/65hfrlOiQzmN9iRHgUAH5pZVYHgNoxkMCXqZQS1vaBlCCk7JI+17FpDcpfb
-         DhrV6hQ7jeuiLEleJsn3mQqnHpQfay8UghSh65XeyvPm9Y5iAhWG34xscck+8hKZQv2P
-         ZpL5GenGCx4S3K9j2v8ij5kSxzHHR1kUcZsUYaULTHF8g+faUYG7MqMnJ+y6hhhvj8aV
-         bNBaj4C7LXnRJra6jBWoMvVZLBfocWyEdU+3/V924hDwIK1ctTvoT4EvTbTqwtW+3Qwe
-         B1XIh3+wIELYOrH20t3WLFBs/gSLwaBTwaFMeIealnha8XcW6gUMEnCH0TouoDFJrjlm
-         LhIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlbijO4xfn13Z0qh3c+MnY/0PbN/v3tx5uTDIyGeNRUK9L6HKLLNndH9+HhEds8LwWZdLhZgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxclXhwMD2AAEiJpnOvgFYv/hapQUMXIfZ6dtNpURpSduFfPQ29
-	L58fOxFXNuAn2Cw9K0tqNF9rJRc9TyM0sMk+dgBxWqJbST1KxJGrFSbIjphM1rjwaZOz2W+wnfR
-	b1ds+lFdbM2RJfBc9K0UAWCOEzT7ZE7YOUufZP9n3IZJzt800aHc7dGuM8SA=
-X-Google-Smtp-Source: AGHT+IF1Nhhx8xlXgwy7bHy4Bj/MouB5mfv4Es/HoDZfRYkKDe+frFhndkYR8i0znrnn8O5rkHCRZqvTVzzaQoFlCeUPsA0/6JQL
+	s=arc-20240116; t=1760554311; c=relaxed/simple;
+	bh=XSic+4zDB6iSmjSpeDtr0Q6cX77Iab70u45smXDKTAM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=f6XzqlXQeIfrdBKOrG33HdJBXtutIc/sjRBcT5AaM6I2EMGjHsLUHCh/CLo506/YPOD7D//zTfrZJNJH68a9ltzQEKVrUsSbyIFB/f83lCJbCWKF9WmzBowLuh9SoqYmqY3MaGtXqbNzXS8wWvBts+pYXMOcNv/YpXZ8LeuC6Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=OwPsEayy; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="OwPsEayy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=le5rMYATWqYdZ9jsloqoIfOuqDFpv7PENiTiYZrAzS0=; t=1760554305; x=1761418305; 
+	b=OwPsEayy1Qq4ZOIdcnhp8yYjO89R2Va36mEczv2uuM/yPbNzULKvp5zUCScWeUMV67Kf+OOjFgC
+	oECiv9qMCpgtl65ybOaYLja0W35ZBNuIIYo5BZN3RZzD1ObfWBmBvfva/ZiLdMEWgTDqTe0jT+0Oz
+	TITnEGXz+qGqXqmGqH9qwh9vCDwEluNzNsLZ2ALT/k2FfKI5I2de2Jvd8t+IlUfczd1qARyLXQu5v
+	FX6CikBASt8buk4SI95Kjy1gu8+59IGLpzQewWbDTtF2I4i3cvxspGYFlWgrAOiGZKCbKlD2ZkgeF
+	Pvclqx8syABJG1HOt/LuyRdWGD4FIeokwV3Q==;
+Received: from ouster448.stanford.edu ([172.24.72.71]:50623 helo=localhost.localdomain)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1v96b9-00063x-8n; Wed, 15 Oct 2025 11:51:45 -0700
+From: John Ousterhout <ouster@cs.stanford.edu>
+To: netdev@vger.kernel.org
+Cc: pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	John Ousterhout <ouster@cs.stanford.edu>
+Subject: [PATCH net-next v16 04/14] net: homa: create homa_pool.h and homa_pool.c
+Date: Wed, 15 Oct 2025 11:50:51 -0700
+Message-ID: <20251015185102.2444-5-ouster@cs.stanford.edu>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20251015185102.2444-1-ouster@cs.stanford.edu>
+References: <20251015185102.2444-1-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:160d:b0:42f:991f:60a9 with SMTP id
- e9e14a558f8ab-42f991f6190mr218827185ab.7.1760554007102; Wed, 15 Oct 2025
- 11:46:47 -0700 (PDT)
-Date: Wed, 15 Oct 2025 11:46:47 -0700
-In-Reply-To: <20251015140140.62273-1-daniel@iogearbox.net>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68efec17.050a0220.91a22.02ca.GAE@google.com>
-Subject: [syzbot ci] Re: netkit: Support for io_uring zero-copy and AF_XDP
-From: syzbot ci <syzbot+ci7c73a60f40f79ce2@syzkaller.appspotmail.com>
-To: bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
-	dw@davidwei.uk, john.fastabend@gmail.com, jordan@jrife.io, kuba@kernel.org, 
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
-	martin.lau@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	razor@blackwall.org, sdf@fomichev.me, toke@redhat.com, 
-	wangdongdong.6@bytedance.com, willemb@google.com, yangzhenze@bytedance.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -101.0
+X-Scan-Signature: 97306571ea59926db9c3504cf134252e
 
-syzbot ci has tested the following series
+These files implement Homa's mechanism for managing application-level
+buffer space for incoming messages This mechanism is needed to allow
+Homa to copy data out to user space in parallel with receiving packets;
+it was discussed in a talk at NetDev 0x17.
 
-[v2] netkit: Support for io_uring zero-copy and AF_XDP
-https://lore.kernel.org/all/20251015140140.62273-1-daniel@iogearbox.net
-* [PATCH net-next v2 01/15] net: Add bind-queue operation
-* [PATCH net-next v2 02/15] net: Implement netdev_nl_bind_queue_doit
-* [PATCH net-next v2 03/15] net: Add peer info to queue-get response
-* [PATCH net-next v2 04/15] net, ethtool: Disallow peered real rxqs to be resized
-* [PATCH net-next v2 05/15] net: Proxy net_mp_{open,close}_rxq for mapped queues
-* [PATCH net-next v2 06/15] xsk: Move NETDEV_XDP_ACT_ZC into generic header
-* [PATCH net-next v2 07/15] xsk: Move pool registration into single function
-* [PATCH net-next v2 08/15] xsk: Add small helper xp_pool_bindable
-* [PATCH net-next v2 09/15] xsk: Change xsk_rcv_check to check netdev/queue_id from pool
-* [PATCH net-next v2 10/15] xsk: Proxy pool management for mapped queues
-* [PATCH net-next v2 11/15] netkit: Add single device mode for netkit
-* [PATCH net-next v2 12/15] netkit: Document fast vs slowpath members via macros
-* [PATCH net-next v2 13/15] netkit: Implement rtnl_link_ops->alloc and ndo_queue_create
-* [PATCH net-next v2 14/15] netkit: Add io_uring zero-copy support for TCP
-* [PATCH net-next v2 15/15] netkit: Add xsk support for af_xdp applications
-
-and found the following issue:
-WARNING in netif_get_rx_queue_peer_locked
-
-Full report is available here:
-https://ci.syzbot.org/series/19b5990a-1eef-44da-a6f0-ffb03bd8adff
-
-***
-
-WARNING in netif_get_rx_queue_peer_locked
-
-tree:      net-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/netdev/net-next.git
-base:      18a7e218cfcdca6666e1f7356533e4c988780b57
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/7583f7f3-9e92-4fe2-85f2-761655062852/config
-C repro:   https://ci.syzbot.org/findings/75520448-5da8-4fc1-817b-a6c9e4d487e1/c_repro
-syz repro: https://ci.syzbot.org/findings/75520448-5da8-4fc1-817b-a6c9e4d487e1/syz_repro
-
-UDPLite6: UDP-Lite is deprecated and scheduled to be removed in 2025, please contact the netdev mailing list
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 5959 at ./include/net/netdev_lock.h:17 netdev_assert_locked include/net/netdev_lock.h:17 [inline]
-WARNING: CPU: 1 PID: 5959 at ./include/net/netdev_lock.h:17 netif_get_rx_queue_peer_locked+0x2f1/0x3a0 net/core/netdev_rx_queue.c:71
-Modules linked in:
-CPU: 1 UID: 0 PID: 5959 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:netdev_assert_locked include/net/netdev_lock.h:17 [inline]
-RIP: 0010:netif_get_rx_queue_peer_locked+0x2f1/0x3a0 net/core/netdev_rx_queue.c:71
-Code: 6c 7e f8 eb 08 e8 3f 6c 7e f8 45 31 f6 4c 89 f0 48 83 c4 38 5b 41 5c 41 5d 41 5e 41 5f 5d e9 c6 1c 0d 02 cc e8 20 6c 7e f8 90 <0f> 0b 90 e9 a9 fd ff ff 48 c7 c1 90 44 9e 8f 80 e1 07 80 c1 03 38
-RSP: 0018:ffffc90003f17ab0 EFLAGS: 00010293
-RAX: ffffffff894127e0 RBX: ffffc90003f17b60 RCX: ffff8881709cba00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffffffff8f4df8a7 R09: 1ffffffff1e9bf14
-R10: dffffc0000000000 R11: fffffbfff1e9bf15 R12: dffffc0000000000
-R13: 0000000000000001 R14: 1ffff920007e2f6c R15: ffff8881b1832000
-FS:  0000555580884500(0000) GS:ffff8882a9d0f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555580884808 CR3: 00000001ba58c000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- xsk_reg_pool_at_qid+0x20b/0x630 net/xdp/xsk.c:159
- xp_assign_dev+0x115/0x760 net/xdp/xsk_buff_pool.c:181
- xsk_bind+0x473/0xf90 net/xdp/xsk.c:1407
- __sys_bind_socket net/socket.c:1874 [inline]
- __sys_bind+0x2c6/0x3e0 net/socket.c:1905
- __do_sys_bind net/socket.c:1910 [inline]
- __se_sys_bind net/socket.c:1908 [inline]
- __x64_sys_bind+0x7a/0x90 net/socket.c:1908
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb19bd8eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd789e00a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
-RAX: ffffffffffffffda RBX: 00007fb19bfe5fa0 RCX: 00007fb19bd8eec9
-RDX: 0000000000000010 RSI: 0000200000000180 RDI: 0000000000000003
-RBP: 00007fb19be11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fb19bfe5fa0 R14: 00007fb19bfe5fa0 R15: 0000000000000003
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
+Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Changes for v16:
+* Add homa_pool_avail_bytes() for new HOMAIOCINFO ioctl
+
+Changes for v11:
+* Rework the mechanism for waking up RPCs that stalled waiting for
+  buffer pool space
+
+Changes for v10:
+* Fix minor syntactic issues such as reverse xmas tree
+
+Changes for v9:
+* Eliminate use of _Static_assert
+* Use new homa_clock abstraction layer.
+* Allow memory to be allocated without GFP_ATOMIC
+* Various name improvements (e.g. use "alloc" instead of "new" for functions
+  that allocate memory)
+* Remove sync.txt, move its contents into comments (mostly in homa_impl.h)
+
+Changes for v8:
+* Refactor homa_pool APIs (move allocation/deallocation into homa_pool.c,
+  move locking responsibility out)
+
+Changes for v7:
+* Use u64 and __u64 properly
+* Eliminate extraneous use of RCU
+* Refactor pool->cores to use percpu variable
+* Use smp_processor_id instead of raw_smp_processor_id
+---
+ net/homa/homa_pool.c | 507 +++++++++++++++++++++++++++++++++++++++++++
+ net/homa/homa_pool.h | 137 ++++++++++++
+ 2 files changed, 644 insertions(+)
+ create mode 100644 net/homa/homa_pool.c
+ create mode 100644 net/homa/homa_pool.h
+
+diff --git a/net/homa/homa_pool.c b/net/homa/homa_pool.c
+new file mode 100644
+index 000000000000..556d898b22cf
+--- /dev/null
++++ b/net/homa/homa_pool.c
+@@ -0,0 +1,507 @@
++// SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+
++
++#include "homa_impl.h"
++#include "homa_pool.h"
++
++/* This file contains functions that manage user-space buffer pools. */
++
++/* Pools must always have at least this many bpages (no particular
++ * reasoning behind this value).
++ */
++#define MIN_POOL_SIZE 2
++
++/* Used when determining how many bpages to consider for allocation. */
++#define MIN_EXTRA 4
++
++/**
++ * set_bpages_needed() - Set the bpages_needed field of @pool based
++ * on the length of the first RPC that's waiting for buffer space.
++ * The caller must own the lock for @pool->hsk.
++ * @pool: Pool to update.
++ */
++static void set_bpages_needed(struct homa_pool *pool)
++{
++	struct homa_rpc *rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++						struct homa_rpc, buf_links);
++
++	pool->bpages_needed = (rpc->msgin.length + HOMA_BPAGE_SIZE - 1) >>
++			      HOMA_BPAGE_SHIFT;
++}
++
++/**
++ * homa_pool_alloc() - Allocate and initialize a new homa_pool (it will have
++ * no region associated with it until homa_pool_set_region is invoked).
++ * @hsk:          Socket the pool will be associated with.
++ * Return: A pointer to the new pool or a negative errno.
++ */
++struct homa_pool *homa_pool_alloc(struct homa_sock *hsk)
++{
++	struct homa_pool *pool;
++
++	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
++	if (!pool)
++		return ERR_PTR(-ENOMEM);
++	pool->hsk = hsk;
++	return pool;
++}
++
++/**
++ * homa_pool_set_region() - Associate a region of memory with a pool.
++ * @hsk:          Socket whose pool the region will be associated with.
++ *                Must not be locked, and the pool must not currently
++ *                have a region associated with it.
++ * @region:       First byte of the memory region for the pool, allocated
++ *                by the application; must be page-aligned.
++ * @region_size:  Total number of bytes available at @buf_region.
++ * Return: Either zero (for success) or a negative errno for failure.
++ */
++int homa_pool_set_region(struct homa_sock *hsk, void __user *region,
++			 u64 region_size)
++{
++	struct homa_pool_core __percpu *cores;
++	struct homa_bpage *descriptors;
++	int i, result, num_bpages;
++	struct homa_pool *pool;
++
++	if (((uintptr_t)region) & ~PAGE_MASK)
++		return -EINVAL;
++
++	/* Allocate memory before locking the socket, so we can allocate
++	 * without GFP_ATOMIC.
++	 */
++	num_bpages = region_size >> HOMA_BPAGE_SHIFT;
++	if (num_bpages < MIN_POOL_SIZE)
++		return -EINVAL;
++	descriptors = kmalloc_array(num_bpages, sizeof(struct homa_bpage),
++				    GFP_KERNEL | __GFP_ZERO);
++	if (!descriptors)
++		return -ENOMEM;
++	cores = alloc_percpu_gfp(struct homa_pool_core, __GFP_ZERO);
++	if (!cores) {
++		result = -ENOMEM;
++		goto error;
++	}
++
++	homa_sock_lock(hsk);
++	pool = hsk->buffer_pool;
++	if (pool->region) {
++		result = -EINVAL;
++		homa_sock_unlock(hsk);
++		goto error;
++	}
++
++	pool->region = (char __user *)region;
++	pool->num_bpages = num_bpages;
++	pool->descriptors = descriptors;
++	atomic_set(&pool->free_bpages, pool->num_bpages);
++	pool->bpages_needed = INT_MAX;
++	pool->cores = cores;
++	pool->check_waiting_invoked = 0;
++
++	for (i = 0; i < pool->num_bpages; i++) {
++		struct homa_bpage *bp = &pool->descriptors[i];
++
++		spin_lock_init(&bp->lock);
++		bp->owner = -1;
++	}
++
++	homa_sock_unlock(hsk);
++	return 0;
++
++error:
++	kfree(descriptors);
++	free_percpu(cores);
++	return result;
++}
++
++/**
++ * homa_pool_free() - Destructor for homa_pool. After this method
++ * returns, the object should not be used (it will be freed here).
++ * @pool: Pool to destroy.
++ */
++void homa_pool_free(struct homa_pool *pool)
++{
++	if (pool->region) {
++		kfree(pool->descriptors);
++		free_percpu(pool->cores);
++		pool->region = NULL;
++	}
++	kfree(pool);
++}
++
++/**
++ * homa_pool_get_rcvbuf() - Return information needed to handle getsockopt
++ * for HOMA_SO_RCVBUF.
++ * @pool:         Pool for which information is needed.
++ * @args:         Store info here.
++ */
++void homa_pool_get_rcvbuf(struct homa_pool *pool,
++			  struct homa_rcvbuf_args *args)
++{
++	args->start = (uintptr_t)pool->region;
++	args->length = pool->num_bpages << HOMA_BPAGE_SHIFT;
++}
++
++/**
++ * homa_bpage_available() - Check whether a bpage is available for use.
++ * @bpage:      Bpage to check
++ * @now:        Current time (homa_clock() units)
++ * Return:      True if the bpage is free or if it can be stolen, otherwise
++ *              false.
++ */
++bool homa_bpage_available(struct homa_bpage *bpage, u64 now)
++{
++	int ref_count = atomic_read(&bpage->refs);
++
++	return ref_count == 0 || (ref_count == 1 && bpage->owner >= 0 &&
++			bpage->expiration <= now);
++}
++
++/**
++ * homa_pool_get_pages() - Allocate one or more full pages from the pool.
++ * @pool:         Pool from which to allocate pages
++ * @num_pages:    Number of pages needed
++ * @pages:        The indices of the allocated pages are stored here; caller
++ *                must ensure this array is big enough. Reference counts have
++ *                been set to 1 on all of these pages (or 2 if set_owner
++ *                was specified).
++ * @set_owner:    If nonzero, the current core is marked as owner of all
++ *                of the allocated pages (and the expiration time is also
++ *                set). Otherwise the pages are left unowned.
++ * Return: 0 for success, -1 if there wasn't enough free space in the pool.
++ */
++int homa_pool_get_pages(struct homa_pool *pool, int num_pages, u32 *pages,
++			int set_owner)
++{
++	int core_num = smp_processor_id();
++	struct homa_pool_core *core;
++	u64 now = homa_clock();
++	int alloced = 0;
++	int limit = 0;
++
++	core = this_cpu_ptr(pool->cores);
++	if (atomic_sub_return(num_pages, &pool->free_bpages) < 0) {
++		atomic_add(num_pages, &pool->free_bpages);
++		return -1;
++	}
++
++	/* Once we get to this point we know we will be able to find
++	 * enough free pages; now we just have to find them.
++	 */
++	while (alloced != num_pages) {
++		struct homa_bpage *bpage;
++		int cur;
++
++		/* If we don't need to use all of the bpages in the pool,
++		 * then try to use only the ones with low indexes. This
++		 * will reduce the cache footprint for the pool by reusing
++		 * a few bpages over and over. Specifically this code will
++		 * not consider any candidate page whose index is >= limit.
++		 * Limit is chosen to make sure there are a reasonable
++		 * number of free pages in the range, so we won't have to
++		 * check a huge number of pages.
++		 */
++		if (limit == 0) {
++			int extra;
++
++			limit = pool->num_bpages -
++				atomic_read(&pool->free_bpages);
++			extra = limit >> 2;
++			limit += (extra < MIN_EXTRA) ? MIN_EXTRA : extra;
++			if (limit > pool->num_bpages)
++				limit = pool->num_bpages;
++		}
++
++		cur = core->next_candidate;
++		core->next_candidate++;
++		if (cur >= limit) {
++			core->next_candidate = 0;
++
++			/* Must recompute the limit for each new loop through
++			 * the bpage array: we may need to consider a larger
++			 * range of pages because of concurrent allocations.
++			 */
++			limit = 0;
++			continue;
++		}
++		bpage = &pool->descriptors[cur];
++
++		/* Figure out whether this candidate is free (or can be
++		 * stolen). Do a quick check without locking the page, and
++		 * if the page looks promising, then lock it and check again
++		 * (must check again in case someone else snuck in and
++		 * grabbed the page).
++		 */
++		if (!homa_bpage_available(bpage, now))
++			continue;
++		if (!spin_trylock_bh(&bpage->lock))
++			/* Rather than wait for a locked page to become free,
++			 * just go on to the next page. If the page is locked,
++			 * it probably won't turn out to be available anyway.
++			 */
++			continue;
++		if (!homa_bpage_available(bpage, now)) {
++			spin_unlock_bh(&bpage->lock);
++			continue;
++		}
++		if (bpage->owner >= 0)
++			atomic_inc(&pool->free_bpages);
++		if (set_owner) {
++			atomic_set(&bpage->refs, 2);
++			bpage->owner = core_num;
++			bpage->expiration = now +
++					    pool->hsk->homa->bpage_lease_cycles;
++		} else {
++			atomic_set(&bpage->refs, 1);
++			bpage->owner = -1;
++		}
++		spin_unlock_bh(&bpage->lock);
++		pages[alloced] = cur;
++		alloced++;
++	}
++	return 0;
++}
++
++/**
++ * homa_pool_alloc_msg() - Allocate buffer space for an incoming message.
++ * @rpc:  RPC that needs space allocated for its incoming message (space must
++ *        not already have been allocated). The fields @msgin->num_buffers
++ *        and @msgin->buffers are filled in. Must be locked by caller.
++ * Return: The return value is normally 0, which means either buffer space
++ * was allocated or the @rpc was queued on @hsk->waiting. If a fatal error
++ * occurred, such as no buffer pool present, then a negative errno is
++ * returned.
++ */
++int homa_pool_alloc_msg(struct homa_rpc *rpc)
++	__must_hold(rpc->bucket->lock)
++{
++	struct homa_pool *pool = rpc->hsk->buffer_pool;
++	int full_pages, partial, i, core_id;
++	struct homa_pool_core *core;
++	u32 pages[HOMA_MAX_BPAGES];
++	struct homa_bpage *bpage;
++	struct homa_rpc *other;
++
++	if (!pool->region)
++		return -ENOMEM;
++
++	/* First allocate any full bpages that are needed. */
++	full_pages = rpc->msgin.length >> HOMA_BPAGE_SHIFT;
++	if (unlikely(full_pages)) {
++		if (homa_pool_get_pages(pool, full_pages, pages, 0) != 0)
++			goto out_of_space;
++		for (i = 0; i < full_pages; i++)
++			rpc->msgin.bpage_offsets[i] = pages[i] <<
++					HOMA_BPAGE_SHIFT;
++	}
++	rpc->msgin.num_bpages = full_pages;
++
++	/* The last chunk may be less than a full bpage; for this we use
++	 * the bpage that we own (and reuse it for multiple messages).
++	 */
++	partial = rpc->msgin.length & (HOMA_BPAGE_SIZE - 1);
++	if (unlikely(partial == 0))
++		goto success;
++	core_id = smp_processor_id();
++	core = this_cpu_ptr(pool->cores);
++	bpage = &pool->descriptors[core->page_hint];
++	spin_lock_bh(&bpage->lock);
++	if (bpage->owner != core_id) {
++		spin_unlock_bh(&bpage->lock);
++		goto new_page;
++	}
++	if ((core->allocated + partial) > HOMA_BPAGE_SIZE) {
++		if (atomic_read(&bpage->refs) == 1) {
++			/* Bpage is totally free, so we can reuse it. */
++			core->allocated = 0;
++		} else {
++			bpage->owner = -1;
++
++			/* We know the reference count can't reach zero here
++			 * because of check above, so we won't have to decrement
++			 * pool->free_bpages.
++			 */
++			atomic_dec_return(&bpage->refs);
++			spin_unlock_bh(&bpage->lock);
++			goto new_page;
++		}
++	}
++	bpage->expiration = homa_clock() +
++			    pool->hsk->homa->bpage_lease_cycles;
++	atomic_inc(&bpage->refs);
++	spin_unlock_bh(&bpage->lock);
++	goto allocate_partial;
++
++	/* Can't use the current page; get another one. */
++new_page:
++	if (homa_pool_get_pages(pool, 1, pages, 1) != 0) {
++		homa_pool_release_buffers(pool, rpc->msgin.num_bpages,
++					  rpc->msgin.bpage_offsets);
++		rpc->msgin.num_bpages = 0;
++		goto out_of_space;
++	}
++	core->page_hint = pages[0];
++	core->allocated = 0;
++
++allocate_partial:
++	rpc->msgin.bpage_offsets[rpc->msgin.num_bpages] = core->allocated
++			+ (core->page_hint << HOMA_BPAGE_SHIFT);
++	rpc->msgin.num_bpages++;
++	core->allocated += partial;
++
++success:
++	return 0;
++
++	/* We get here if there wasn't enough buffer space for this
++	 * message; add the RPC to hsk->waiting_for_bufs. The list is sorted
++	 * by RPC length in order to implement SRPT.
++	 */
++out_of_space:
++	homa_sock_lock(pool->hsk);
++	list_for_each_entry(other, &pool->hsk->waiting_for_bufs, buf_links) {
++		if (other->msgin.length > rpc->msgin.length) {
++			list_add_tail(&rpc->buf_links, &other->buf_links);
++			goto queued;
++		}
++	}
++	list_add_tail(&rpc->buf_links, &pool->hsk->waiting_for_bufs);
++
++queued:
++	set_bpages_needed(pool);
++	homa_sock_unlock(pool->hsk);
++	return 0;
++}
++
++/**
++ * homa_pool_get_buffer() - Given an RPC, figure out where to store incoming
++ * message data.
++ * @rpc:        RPC for which incoming message data is being processed; its
++ *              msgin must be properly initialized and buffer space must have
++ *              been allocated for the message.
++ * @offset:     Offset within @rpc's incoming message.
++ * @available:  Will be filled in with the number of bytes of space available
++ *              at the returned address (could be zero if offset is
++ *              (erroneously) past the end of the message).
++ * Return:      The application's virtual address for buffer space corresponding
++ *              to @offset in the incoming message for @rpc.
++ */
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available)
++{
++	int bpage_index, bpage_offset;
++
++	bpage_index = offset >> HOMA_BPAGE_SHIFT;
++	if (offset >= rpc->msgin.length) {
++		WARN_ONCE(true, "%s got offset %d >= message length %d\n",
++			  __func__, offset, rpc->msgin.length);
++		*available = 0;
++		return NULL;
++	}
++	bpage_offset = offset & (HOMA_BPAGE_SIZE - 1);
++	*available = (bpage_index < (rpc->msgin.num_bpages - 1))
++			? HOMA_BPAGE_SIZE - bpage_offset
++			: rpc->msgin.length - offset;
++	return rpc->hsk->buffer_pool->region +
++			rpc->msgin.bpage_offsets[bpage_index] + bpage_offset;
++}
++
++/**
++ * homa_pool_release_buffers() - Release buffer space so that it can be
++ * reused.
++ * @pool:         Pool that the buffer space belongs to. Doesn't need to
++ *                be locked.
++ * @num_buffers:  How many buffers to release.
++ * @buffers:      Points to @num_buffers values, each of which is an offset
++ *                from the start of the pool to the buffer to be released.
++ * Return:        0 for success, otherwise a negative errno.
++ */
++int homa_pool_release_buffers(struct homa_pool *pool, int num_buffers,
++			      u32 *buffers)
++{
++	int result = 0;
++	int i;
++
++	if (!pool->region)
++		return result;
++	for (i = 0; i < num_buffers; i++) {
++		u32 bpage_index = buffers[i] >> HOMA_BPAGE_SHIFT;
++		struct homa_bpage *bpage = &pool->descriptors[bpage_index];
++
++		if (bpage_index < pool->num_bpages) {
++			if (atomic_dec_return(&bpage->refs) == 0)
++				atomic_inc(&pool->free_bpages);
++		} else {
++			result = -EINVAL;
++		}
++	}
++	return result;
++}
++
++/**
++ * homa_pool_check_waiting() - Checks to see if there are enough free
++ * bpages to wake up any RPCs that were blocked. Whenever
++ * homa_pool_release_buffers is invoked, this function must be invoked later,
++ * at a point when the caller holds no locks (homa_pool_release_buffers may
++ * be invoked with locks held, so it can't safely invoke this function).
++ * This is regrettably tricky, but I can't think of a better solution.
++ * @pool:         Information about the buffer pool.
++ */
++void homa_pool_check_waiting(struct homa_pool *pool)
++{
++	if (!pool->region)
++		return;
++	while (atomic_read(&pool->free_bpages) >= pool->bpages_needed) {
++		struct homa_rpc *rpc;
++
++		homa_sock_lock(pool->hsk);
++		if (list_empty(&pool->hsk->waiting_for_bufs)) {
++			pool->bpages_needed = INT_MAX;
++			homa_sock_unlock(pool->hsk);
++			break;
++		}
++		rpc = list_first_entry(&pool->hsk->waiting_for_bufs,
++				       struct homa_rpc, buf_links);
++		if (!homa_rpc_try_lock(rpc)) {
++			/* Can't just spin on the RPC lock because we're
++			 * holding the socket lock and the lock order is
++			 * rpc-then-socket (see "Homa Locking Strategy" in
++			 * homa_impl.h). Instead, release the socket lock
++			 * and try the entire operation again.
++			 */
++			homa_sock_unlock(pool->hsk);
++			continue;
++		}
++		list_del_init(&rpc->buf_links);
++		if (list_empty(&pool->hsk->waiting_for_bufs))
++			pool->bpages_needed = INT_MAX;
++		else
++			set_bpages_needed(pool);
++		homa_sock_unlock(pool->hsk);
++		homa_pool_alloc_msg(rpc);
++		homa_rpc_unlock(rpc);
++	}
++}
++
++/**
++ * homa_pool_avail_bytes() - Return a count of the number of bytes currently
++ * unused and available for allocation in a pool.
++ * @pool:    Pool of interest.
++ * Return:    See above.
++ */
++u64 homa_pool_avail_bytes(struct homa_pool *pool)
++{
++	struct homa_pool_core *core;
++	u64 avail;
++	int cpu;
++
++	if (!pool->region)
++		return 0;
++	avail = atomic_read(&pool->free_bpages);
++	avail *= HOMA_BPAGE_SIZE;
++	for (cpu = 0; cpu < nr_cpu_ids; cpu++) {
++		core = per_cpu_ptr(pool->cores, cpu);
++		if (pool->descriptors[core->page_hint].owner == cpu)
++			avail += HOMA_BPAGE_SIZE - core->allocated;
++	}
++	return avail;
++}
+diff --git a/net/homa/homa_pool.h b/net/homa/homa_pool.h
+new file mode 100644
+index 000000000000..1f5455665c5d
+--- /dev/null
++++ b/net/homa/homa_pool.h
+@@ -0,0 +1,137 @@
++/* SPDX-License-Identifier: BSD-2-Clause or GPL-2.0+ */
++
++/* This file contains definitions used to manage user-space buffer pools.
++ */
++
++#ifndef _HOMA_POOL_H
++#define _HOMA_POOL_H
++
++#include <linux/percpu.h>
++
++#include "homa_rpc.h"
++
++/**
++ * struct homa_bpage - Contains information about a single page in
++ * a buffer pool.
++ */
++struct homa_bpage {
++	/** @lock: to synchronize shared access. */
++	spinlock_t lock;
++
++	/**
++	 * @refs: Counts number of distinct uses of this
++	 * bpage (1 tick for each message that is using
++	 * this page, plus an additional tick if the @owner
++	 * field is set).
++	 */
++	atomic_t refs;
++
++	/**
++	 * @owner: kernel core that currently owns this page
++	 * (< 0 if none).
++	 */
++	int owner;
++
++	/**
++	 * @expiration: homa_clock() time after which it's OK to steal this
++	 * page from its current owner (if @refs is 1).
++	 */
++	u64 expiration;
++} ____cacheline_aligned_in_smp;
++
++/**
++ * struct homa_pool_core - Holds core-specific data for a homa_pool (a bpage
++ * out of which that core is allocating small chunks).
++ */
++struct homa_pool_core {
++	/**
++	 * @page_hint: Index of bpage in pool->descriptors,
++	 * which may be owned by this core. If so, we'll use it
++	 * for allocating partial pages.
++	 */
++	int page_hint;
++
++	/**
++	 * @allocated: if the page given by @page_hint is
++	 * owned by this core, this variable gives the number of
++	 * (initial) bytes that have already been allocated
++	 * from the page.
++	 */
++	int allocated;
++
++	/**
++	 * @next_candidate: when searching for free bpages,
++	 * check this index next.
++	 */
++	int next_candidate;
++};
++
++/**
++ * struct homa_pool - Describes a pool of buffer space for incoming
++ * messages for a particular socket; managed by homa_pool.c. The pool is
++ * divided up into "bpages", which are a multiple of the hardware page size.
++ * A bpage may be owned by a particular core so that it can more efficiently
++ * allocate space for small messages.
++ */
++struct homa_pool {
++	/**
++	 * @hsk: the socket that this pool belongs to.
++	 */
++	struct homa_sock *hsk;
++
++	/**
++	 * @region: beginning of the pool's region (in the app's virtual
++	 * memory). Divided into bpages. 0 means the pool hasn't yet been
++	 * initialized.
++	 */
++	char __user *region;
++
++	/** @num_bpages: total number of bpages in the pool. */
++	int num_bpages;
++
++	/** @descriptors: kmalloced area containing one entry for each bpage. */
++	struct homa_bpage *descriptors;
++
++	/**
++	 * @free_bpages: the number of pages still available for allocation
++	 * by homa_pool_get pages. This equals the number of pages with zero
++	 * reference counts, minus the number of pages that have been claimed
++	 * by homa_get_pool_pages but not yet allocated.
++	 */
++	atomic_t free_bpages;
++
++	/**
++	 * @bpages_needed: the number of free bpages required to satisfy the
++	 * needs of the first RPC on @hsk->waiting_for_bufs, or INT_MAX if
++	 * that queue is empty.
++	 */
++	int bpages_needed;
++
++	/** @cores: core-specific info; dynamically allocated. */
++	struct homa_pool_core __percpu *cores;
++
++	/**
++	 * @check_waiting_invoked: incremented during unit tests when
++	 * homa_pool_check_waiting is invoked.
++	 */
++	int check_waiting_invoked;
++};
++
++bool     homa_bpage_available(struct homa_bpage *bpage, u64 now);
++struct   homa_pool *homa_pool_alloc(struct homa_sock *hsk);
++int      homa_pool_alloc_msg(struct homa_rpc *rpc);
++u64      homa_pool_avail_bytes(struct homa_pool *pool);
++void     homa_pool_check_waiting(struct homa_pool *pool);
++void     homa_pool_free(struct homa_pool *pool);
++void __user *homa_pool_get_buffer(struct homa_rpc *rpc, int offset,
++				  int *available);
++int      homa_pool_get_pages(struct homa_pool *pool, int num_pages,
++			     u32 *pages, int leave_locked);
++void     homa_pool_get_rcvbuf(struct homa_pool *pool,
++			      struct homa_rcvbuf_args *args);
++int      homa_pool_release_buffers(struct homa_pool *pool,
++				   int num_buffers, u32 *buffers);
++int      homa_pool_set_region(struct homa_sock *hsk, void __user *region,
++			      u64 region_size);
++
++#endif /* _HOMA_POOL_H */
+-- 
+2.43.0
+
