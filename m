@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B57283FDF
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 14:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD4714EC73
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760539043; cv=none; b=ZRjIu8LTE5SeNHzOPkP1/sqUYSrCicK2ZCz5dxALyOGbiuGD5iT3ONbx9WuuQHkA9X17EGrdbr1VkXRZ5xy4L/O9CF91zKwvYmfxclZDDM/kVyLfLNPiYiPUeQ9NMOYzL1Y6SdG6H+sP0r4l+206BuO7+wNept2mgWORAQEWnzI=
+	t=1760539133; cv=none; b=Bfv99nwBo8wl/I3XkJlU0o0ev925/rwTiuzF330s4yZRgAPGEl6PG21v3p1RqKpEzq0XDSsPXieh4wtaCIK5R/j8a+0jLd8AWA6H+TGeAAr2i/53oqQzrYKyU9X+sCtWunxXOsAIPHK+3z3W2j8xLINPGlnI1OwMyx13CmgNdY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760539043; c=relaxed/simple;
-	bh=/2gI+636tBEBq7DiKIxWzRYsD1U4kAVIaDoBdFJ+3Jo=;
+	s=arc-20240116; t=1760539133; c=relaxed/simple;
+	bh=J2jlVNY+Ql6C7yC24t4oJxTsfBnVTegJ+Ra9bugJaqI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Llpk/1bF3htITkv10JJC2trZKyrJWql4DS1Vbli4oi9rxmXrg6huIDCKyRh7hC/qZt1QBmvOvxXiHDBRcHQ7SMtgY+ao0Id3OXn26plMXYnlaNvLxwL1h1JWgLnzk2QBMRj27k6THp/C/E+ZErfLs6vz2kAFWjMwswxhtpDomTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeFdLECT; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dsbe5JJkL18aueAgu31kVmZdv9dzGH3ozS+yItIqHiPH/EGkHc7KLM8uqKhmJQoHZRF0MWlSrcfvjB+9cIQ3Mn5hC6dMPSXiuDYQ5JKNK+0XVQG9TXQN6ADImREreU6LfhUhVzqxUKFMbWQLUktPXD58FJOp0RLP9Z87VwJJ354=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpDIjLla; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeFdLECT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C04C4CEF8;
-	Wed, 15 Oct 2025 14:37:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpDIjLla"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61943C4CEF8;
+	Wed, 15 Oct 2025 14:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760539042;
-	bh=/2gI+636tBEBq7DiKIxWzRYsD1U4kAVIaDoBdFJ+3Jo=;
+	s=k20201202; t=1760539133;
+	bh=J2jlVNY+Ql6C7yC24t4oJxTsfBnVTegJ+Ra9bugJaqI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BeFdLECTeLiSOFkOLCVpIfe9JsF5ztywXHkt+0E6idregTEmhiGgogWA0X6QLL9q9
-	 UpB4vDzo16G1rwN4HN1GKtXG0UWpth8wzKfT9ZDkqFqIZvxrRyS1XdxXYgD+IvEOuJ
-	 WO0lktEQE/Tq3icY+JxmOk01fBt1Xp8fOzztSwTeSUXKye2n19qSbKxZCtrR4FVwM8
-	 39Gu24g5GOWmuhZ5xXS0D03760TYzSyiBhipS9tjx0pTcTKAKCycfFU6+OX//xLDw2
-	 4Hv6uQ1FtevLwW9vawsEivhj/K21wsLAhlHM3AiOiytYj+aF/rLFbyy+xoPuOLneH7
-	 8YZORNoqATdNg==
-Date: Wed, 15 Oct 2025 15:37:17 +0100
+	b=NpDIjLlakrDrStn/aCEoMfCMto5rf27dTKyALVmHllkUPgDoq72u8E8355Uhi208/
+	 6RIhfZ6vDamw/Ch6XgdoHF3i9EuDYqmem9JG5XaiKPV/ZAH6ilvmr141DfibFU8BPY
+	 Ke7PakYbfHxbOnQfU9/DR91LyG8Nvx+goSRfktykzZqqcnISn4uyv67sPmwPPjTPtq
+	 mLF4F+Jpb+y9wwUXIld5VnParUzRCxuIMSrtJu4DVO6WWxa64ct1XNGAMVNaMZmFMq
+	 T7BB25aRUdAJCiG2nrjGiceaqh29uYO3/7OoHFO5j0bIqEVU+EXEHXEMl4HlFTCBBf
+	 a28Q8tlkAA8NQ==
+Date: Wed, 15 Oct 2025 15:38:48 +0100
 From: Simon Horman <horms@kernel.org>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
@@ -42,12 +42,12 @@ Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 5/7] cxgb4: convert to ndo_hwtstamp API
-Message-ID: <aO-xnXskSie2PKQq@horms.kernel.org>
+Subject: Re: [PATCH net-next v2 6/7] tsnep: convert to ndo_hwtstatmp API
+Message-ID: <aO-x-PNBhSxDf6_z@horms.kernel.org>
 References: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
- <20251014224216.8163-6-vadim.fedorenko@linux.dev>
- <aO9x7EpgTMiBBfER@horms.kernel.org>
- <193627cf-a8c7-4428-a5d3-8813b1edc04d@linux.dev>
+ <20251014224216.8163-7-vadim.fedorenko@linux.dev>
+ <aO9xf0gW9F0qsaCz@horms.kernel.org>
+ <d160e924-dee1-46b9-8d24-71c3d9c00ea1@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,43 +56,31 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <193627cf-a8c7-4428-a5d3-8813b1edc04d@linux.dev>
+In-Reply-To: <d160e924-dee1-46b9-8d24-71c3d9c00ea1@linux.dev>
 
-On Wed, Oct 15, 2025 at 11:33:02AM +0100, Vadim Fedorenko wrote:
-> On 15/10/2025 11:05, Simon Horman wrote:
-> > On Tue, Oct 14, 2025 at 10:42:14PM +0000, Vadim Fedorenko wrote:
-> > > Convert to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
-> > > 
-> > > Though I'm not quite sure it worked properly before the conversion.
-> > > 
-> > > Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> > 
+On Wed, Oct 15, 2025 at 11:38:34AM +0100, Vadim Fedorenko wrote:
+> On 15/10/2025 11:03, Simon Horman wrote:
+> > On Tue, Oct 14, 2025 at 10:42:15PM +0000, Vadim Fedorenko wrote:
+
+...
+
 > > Hi Vadim,
 > > 
-> > There is quite a lot of change here. Probably it's not worth "fixing"
-> > the current code before migrating it. But I think it would be worth
-> > expanding a bit on the statement about not being sure it worked?
+> > I'm probably missing something obvious, but it's not clear to me why
+> > removing the inner switch statements above is ok. Or, perhaps more to the
+> > point, it seems inconsistent with other patches in this series.
+> > 
+> > OTOH, I do see why dropping the outer if conditions makes sense.
 > 
-> Hi Simon!
+> I believe it's just a question for git diff. It replaces original
+> tsnep_ptp_ioctl() function with get() callback. The only thing that new
+> function does is copying actual config into reply.
 > 
-> Well, let me try to explain the statement about not being sure it
-> worked. The original code was copying new configuration into netdev's
-> private structure before validating that the values are acceptable by
-> the hardware. In case of error, the driver was not restoring original
-> values, and after the call:
-> 
-> ioctl(SIOCSHWTSTAMP, <unsupported_config>) = -ERANGE
-> 
-> the driver would have configuration which could not be reapplied and not
-> synced to the actual hardware config:
-> 
-> ioctl(SIOCGHWTSTAMP) = <unsupported_config>
-> 
-> The logic change in the patch is to just keep original configuration in
-> case of -ERANGE error. Otherwise the logic is not changed.
+> The switch statement goes to set() callback where the logic is kept as
+> is. Original tsnep_ptp_ioctl() was serving both get and set operations,
+> but the logic was applied to set operation only.
 
-Thanks Vadim,
+Thanks, silly me. I see that now.
 
-I see that now and it makes sense to me.
-I do think it would be worth mentioning in the patch description.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
