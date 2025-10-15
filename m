@@ -1,108 +1,102 @@
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4F2200110
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 13:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB0C229B2E;
+	Wed, 15 Oct 2025 13:41:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760535022; cv=none; b=RZp4CL0IekXk/LrKKSNQSiccgwux56/QBc6Eoa6Mo1N4TJJbqZlR1rCut1jusrK1gd/ktl1iBc3BiBg5yjYpUGlioGo57iGTV1lwKYyEiKQSZwQueikQ5mFswIGE0ht8l1nGhqxTU484IJaaIzGod2m/Wo8TWNpKAtpM9nyprbI=
+	t=1760535715; cv=none; b=OW0EA2g1gJFT6suLIpVb/4BZSD1lUuPEv70X9gYXzZZJfmu11nn3lS3btnNiapy2B8Dm4rpGS41LwQO+dae1WioF/m9j8x7Yqld+rEBxab72V7OH17ZcBGn6n5MwPfKOraS2fsxp01fWAc40YOwX+oEKgZu3EjRq96GyhfAoS88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760535022; c=relaxed/simple;
-	bh=5kr4CynRWs8NnUlJaLPnv24HH1xj837lJx6KhFVhzmM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=jHEO9e+MKhfMamllC7oAHeVm/uZxD2VHLyHQVVDpcqbqG3v/FrdpEhZXY0OF/bzqoknAIYPdvT0etp//SiOMYR4W/8Js3InYVHdTNoo8ClnWUVFPyHu1sZQKdR4eeYaRzzQpLE26eSoBNjDASDzWpa1wehztp76duJCwVGXknCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com; spf=pass smtp.mailfrom=bamaicloud.com; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bamaicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bamaicloud.com
-X-QQ-mid: esmtpsz18t1760534958t943b810c
-X-QQ-Originating-IP: tOkafuf8a5Rpz5FsvzFavqN0RPcOTLTIoVfamWtGpMM=
-Received: from smtpclient.apple ( [111.204.182.100])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 15 Oct 2025 21:29:15 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 17336877705939878109
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1760535715; c=relaxed/simple;
+	bh=0+udvwqXk3pMUuV5a3E5/kGYHpUynWhFjTBJiTghSno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5cDAx/lZpoMmApceU9d17RR+Y3oxksDaKKOrXkf61GtXBEGG9FQV8zrTJ225Ph/V6LsvXQ1vBFt93kkQMv6ArvVW91qWHkIyVQswAtiBW/MoDpjvORpbL4FShdQ3MpmQ2NF5aBQbmF3ogDRzwQ4vT//Z/yhZWUKQyqoHbGQalA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=PpEwZzlg; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="PpEwZzlg"
+Received: from mail01.disroot.lan (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 1448F22F40;
+	Wed, 15 Oct 2025 15:41:51 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id E3_5OJxubVeS; Wed, 15 Oct 2025 15:41:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1760535710; bh=0+udvwqXk3pMUuV5a3E5/kGYHpUynWhFjTBJiTghSno=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PpEwZzlg/BI/Hcu/apLLJ3kweCff9EOMZxnrgY5bOpuzbDqccQExq6wYKeuQofRO+
+	 mY7lXrUNGF6VJohT/qGVoBSByDuCt7XqQZoS/G95emBvViDaROxbUstGqse9DFF0wx
+	 gkDAzng9Hkg0NeGGKv4hlxSefXYKUELcj3TRDXKy5CWM0HUX4e7wqHK0UFYwOAWhld
+	 mdSap61d8i/zp692PPtqoXeoNro/rpY5iH2fUGGdNIM8qSkknwFNqsu6EYaw3px6bH
+	 IhuY9wrfZPwiyy8e9fSJ0I4oTMBvOHMRRyBOoPfrgSX/0u8ZPsUsshUKEU6lXAZ+bk
+	 ki+5cpE/qh6gA==
+Date: Wed, 15 Oct 2025 13:41:31 +0000
+From: Yao Zi <ziyao@disroot.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
+	Furong Xu <0x1207@gmail.com>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH net-next 2/4] net: phy: motorcomm: Support YT8531S PHY in
+ YT6801 Ethernet controller
+Message-ID: <aO-kH5-CVt5Gbd3C@pie>
+References: <20251014164746.50696-2-ziyao@disroot.org>
+ <20251014164746.50696-4-ziyao@disroot.org>
+ <aO6Dk0rK0nobGClc@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
-Subject: Re: [net-next v8 3/3] net: bonding: send peer notify when failure
- recovery
-From: Tonghao Zhang <tonghao@bamaicloud.com>
-In-Reply-To: <aO8WsjvT_kY_rL2v@fedora>
-Date: Wed, 15 Oct 2025 21:29:03 +0800
-Cc: netdev@vger.kernel.org,
- Jay Vosburgh <jv@jvosburgh.net>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Zengbing Tu <tuzengbing@didiglobal.com>,
- Antoine Tenart <atenart@kernel.org>
-Content-Transfer-Encoding: 7bit
-Message-Id: <3BB6FFF9-7987-4FB0-B98F-B423C1A77B09@bamaicloud.com>
-References: <cover.1751031306.git.tonghao@bamaicloud.com>
- <3993652dc093fffa9504ce1c2448fb9dea31d2d2.1751031306.git.tonghao@bamaicloud.com>
- <aO8WsjvT_kY_rL2v@fedora>
-To: Hangbin Liu <liuhangbin@gmail.com>
-X-Mailer: Apple Mail (2.3826.700.81)
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:bamaicloud.com:qybglogicsvrsz:qybglogicsvrsz4a-0
-X-QQ-XMAILINFO: OH2bKVRJtexUrVWDchlr7xv87Qhgy5Ui0F33ECsVkGMwfTIiua0V7j/s
-	W/UHbWkQo2z5E14j8Opsxp6JJhbnWQ9tvqW02nnUy+T3ycKXlTdZviIgI8lXuMUD19cI7VL
-	5eSNVYEH436sGt/CHDCQnSl1JgvUvE52W+m1f2alIP0X2SQG1m20sKWeepP/rQV/ISscVb5
-	fcI6yJXY12jdB9e3wD5jdu59AWbHnDmFDdcbadVco/SpytliGJJUZlt+47X5zF2ZYNeX7R4
-	pcpndGRdEmMr3gSDgb3UFP2ipeyBWvJjamvJ+yYzdegqN+qDEpk9pGUaMySLhPMzOR8atR8
-	f0UIh4CwyC2CgVB6KmdYtRB3w6+PzpyhR513EywjaYXhokhBiQkCxspI6AlDMU35axvNkYJ
-	7iVIEU7sMuFll06AsGjDOQ9Z93OVyt4Vchh6BtnrZRwuj1N1t2ovkDs79wZV0NSY86POo28
-	fiJ+DP+hPSvFBDzaVYTs2taI8YvICSFHtVcYB6xFc/M7vxoz0vuiWa2DES4wCOwbEwALzDb
-	8fdVMLzzjWC5cSmkYmUX7X17c81obcV0un4Ejjjp1G3N4jPJ4bnsIFhlpwRLHaHzdnlZec5
-	6NXT60kKt4VFLiViVzw0Ho/RC+fvWVJSZ2Obq6fL6RmPnRMs6C510sjcfbdn216EOh6q2Bd
-	HK8TNzGErjToTCiJzHItyd3KiCpebE1i1trPxj6iG2Bo/7KYeFKFDCQYClEDlst4D2cdep9
-	CTrm50MDJdM6/dFUR0gpxWqQZtbsDknU1YkpoiUH0IX0PGg/CvTwrrfGoqOk0jvs89LGvMV
-	oPyADVtquUdT+PJk6nCkOoVBN5pw7V+tjksvf2fx4FFLV2xjoU/VoYGyTBmje0Pdg6lf55b
-	i2t2Zl7SQFfXXohdove7z/+P2o8O6UONd5Ht0NRRlIUvPQiVT1/ujMfqMHoJw7wXNQwlxtu
-	yp/DvSbnQGuu2ZuQlRcMsgV2k8LpkRc05/wVyzsZbigM5GIen95afgIn6oEMjeRnCmNk=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aO6Dk0rK0nobGClc@shell.armlinux.org.uk>
 
+On Tue, Oct 14, 2025 at 06:08:35PM +0100, Russell King (Oracle) wrote:
+> On Tue, Oct 14, 2025 at 04:47:45PM +0000, Yao Zi wrote:
+> > YT6801's internal PHY is confirmed as a GMII-capable variant of YT8531S
+> > by a previous series[1] and reading PHY ID. Add support for
+> > PHY_INTERFACE_MODE_INTERNAL for YT8531S to allow the Ethernet driver to
+> > reuse the PHY code for its internal PHY.
+> 
+> If it's known to be connected via a GMII interface, even if it's on the
+> SoC, please use PHY_INTERFACE_MODE_GMII in preference to
+> PHY_INTERFACE_MODE_INTERNAL. PHY_INTERFACE_MODE_INTERNAL is really for
+> "we don't know what the internal interface is".
 
+I use PHY_INTERFACE_MODE_INTERNAL for the driver based on Andrew's
+feedback[1] on the series submitted by Motorcomm people,
 
-> On Oct 15, 2025, at 11:36, Hangbin Liu <liuhangbin@gmail.com> wrote:
-> 
-> On Fri, Jun 27, 2025 at 09:49:30PM +0800, Tonghao Zhang wrote:
->> +static void ad_cond_set_peer_notif(struct port *port)
->> +{
->> + struct bonding *bond = port->slave->bond;
->> +
->> + if (bond->params.broadcast_neighbor && rtnl_trylock()) {
-> 
-> Hi Tonghao,
-> 
-> When do our internal review, Antoine pointed that this rtnl_trylock() may
-> fail and cause the notify not send. The other places of bonding using
-> workqueues to reschedule when the rtnl_trylock() failed. Do you think
-> if we should also do some similar thing to avoid notify failed?
-This is indeed a good optimization. I will submit the patch later.
-> 
-> Thanks
-> Hangbin
->> + bond->send_peer_notif = bond->params.num_peer_notif *
->> + max(1, bond->params.peer_notif_delay);
->> + rtnl_unlock();
->> + }
->> +}
-> 
-> 
+> Is it really GMII? If so, add GMII to the yt8531 driver.
+>
+> Often this is described as PHY_INTERFACE_MODE_INTERNAL, meaning it
+> does not matter what is being used between the MAC and the PHY, it is
+> internal to the SoC. You might want to add that to the PHY driver.
 
+Does PHY_INTERFACE_MODE_INTERNAL mean "unknown interface" or "interface
+that doesn't matter"? I think this could lead to different choices for
+the mode in YT6801's case.
+
+Thanks for your answer,
+
+Best regards,
+Yao Zi
+
+> Thanks.
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+
+[1]: https://lore.kernel.org/all/fde04f06-df39-41a8-8f74-036e315e9a8b@lunn.ch/
