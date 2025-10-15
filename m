@@ -1,115 +1,139 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3680F3376BE
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 16:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C6826B764
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 16:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760545226; cv=none; b=eNc4k8bdkO02mTi+RhPu3mdgpR7e8+d4wVzKipRN4/qMfPJIgBkvD1Tp7+vQiRuZF/Xifze+97i4eYSMdGHv+k8EkED4LeTz1e2n06m3zZ72zjtHViPjtBFsfa7O4Q8buRB3a79zsXFKrQt2jwkDp17/v6Ek8PAkAg33UZa+9d8=
+	t=1760545487; cv=none; b=XdhRfXLFQ0r4YmQxagdoLA5IEzWJpk2VZke+fH2pDfgxVeN+kNuZwXm/RsrdoGW4Dy9+XpzyVDmBlZ5dyrIkQoZfAa84+GyN6eOjVsV/ylLYwaI8qVpD9G/f5ehx3T0qeJlrU6FLUdRxQdMeBn3sZ8lB3eZ/JCXCawqk2OSXd88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760545226; c=relaxed/simple;
-	bh=0bPnnNJxYEoXI1b70YZlgulOQQNFqx0526wcE/urorU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sB0ttLn7EX904H2IZqewj17kB0PfszWSKTZedVw8StkrJ38mQOB4GPb4l/8TrN1wi5JKFopM9G8AQ1Kr9J5RcXfC/7frijk6OBMGze81axWib4ROg7HYB5fRJUqrvYUp5F6VMVqvHwZ1Hdchq3cH1bFT6n7MgFYZZjCCJYZ6zyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wtHq3Gd0; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1760545487; c=relaxed/simple;
+	bh=5dmSHYaCSlL5DE484eUuB+gCCkzOeT/39M3pRYLgteA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NOD8QCqM2cyiqX2WzpEcmDxsXAfqSVkx5J6w2d7rbpxY+TaUqhfiPOqNbViCEBf7dwGTpL8Qa0EKQ1vgcUAIJRW0ySEXcRPXoeXqy6AjRTeB7/OUp7os8hNiS2tzUErUtcxbvjQsXx+yvRI/JyGwXfxrinUHoVSKOTJIWMlxYoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MAOl7XQD; arc=none smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wtHq3Gd0"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4C1EEC09FBB;
-	Wed, 15 Oct 2025 16:20:01 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 487D560673;
-	Wed, 15 Oct 2025 16:20:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 138CA102F22DF;
-	Wed, 15 Oct 2025 18:20:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1760545219; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=JJ6rH+xzmRM4qbGD1O8szCgtSQ2QdUeo9drcU82TAhs=;
-	b=wtHq3Gd0pQyjV6eyAK7fkRd9w/l0K0lC4FEfqkfWEo6k637Nboqx9312H1X9fnaRV/2wfb
-	QaZ6QKn/SgxEG7NppA04nggZ69c6MQyB2QdfPZpPZs7aRKxHJD8eY66Gr283U2WCMTmDak
-	88guPcGFdZVaksfpnPKksUJJnae0T4LLkdX0RllszUHzwp8koW7AkW3d42+ZT82a7iuP7G
-	nDuOFOMUrmu/iMcqebvj3mX2x8m7+8+umoL7QjmNGO4Lxs1r06oZx9uCz+/jpvM07WporL
-	jqoVHJIuWENfI7kHqcyASHjuMNN1yYfK86sc1rke62SvxbTpWJvvR1KIZpJ/0g==
-Message-ID: <27800f8c-eb0d-41c2-9e45-b45cf1767c23@bootlin.com>
-Date: Wed, 15 Oct 2025 18:20:03 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MAOl7XQD"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-633be3be1e6so1764721d50.1
+        for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 09:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760545485; x=1761150285; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Oca03mfHwwbupYnaH4z5NUyICPNpnwdM0yH9k7Bfwcg=;
+        b=MAOl7XQDi3AWkwANc8dyL7U63h+UtqUWw8xFTDn7nJByDOsiDC4vQrxN5yA3wpRwsp
+         JMvLV5Dr4aZ2EA854j0X5ESnKYySJOFknY+t7frXKP6Emyc45N20Vk5azF2OPjLSfFHS
+         q0bWJmyr2WcACk3aKQWXsj4+pZCNAJuxpod1b79XP+EgmrX0i+Md8vRWYGk3xdHDWAmY
+         0hRp9fN2dbtNBXj8r2bWksC7Utm6DbSZ1DIeXE0fNV5oHIph5LIn7I6AK7tveXN7pPWC
+         kioGNGVe6ChXPg38lnMUw8GpSobvYFa6HRuN3Vf0xkYxMxLoMxrZjSOmOr+4SKhG7SZa
+         bf4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760545485; x=1761150285;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Oca03mfHwwbupYnaH4z5NUyICPNpnwdM0yH9k7Bfwcg=;
+        b=jeMVdIwRlay6jhwcdoQqi97k6R+xipKMdMhyLuXbmICoFuyxhwQQ773ZIpLwU5VZBN
+         dUMhRv+QCLGkZnUJkw45+8OxkDdr4zGfb8dkUgK2D49f2lY2EbyzVUl2tKpbz0fq9fNi
+         i5aXbrKWNwXnBRpa4oyS77Vo0jROcgSSq8Y32FAS/TX8mpwMnkt5hrZg8uV5hJttm+bO
+         VJMDiMwrF8aVWt3f3fJ2UQ8vD9s2Fn+0jkiO2/Jh10nsUDsMTITfV5jtfnbb+a9U5ACk
+         yRZkS9KweROsNFw6Q06CzAHRtMEW5kQtFWJRtyzqarLAVM5hIGa+2L4Z55pyiGgZ0TN5
+         o8qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUe/BfgueJ0KgwhznSEBT2zFH+cJH9DpR2Rcp1hfGCGokazuKvrv83N3fhQ1b+sWxujgbTtzF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSX11MW22Gwc0x8hUbabAf1yi8Ie8iNv1S4uvL7Obskv11ydLB
+	nUvJqajpqYRGbS5IwmgRlNKIaRJySBwuckG9ETjOXa0ALaKF8NPEVBFIRA4xXOuUmU6FZAH2Doo
+	pZ7zxaB6f/P7V8+W7u/q9Wj0Un7p/wD1AowLl
+X-Gm-Gg: ASbGnctTq3+CClsByUgpIl8wtXgg9YqciFmzAr7GFqvuZZ4cZ9Xc8zJ/4ZU/czq4+GP
+	8tGL3NyMrOOTxh5USkSGmqNRgYQb/CKlBTFdlRmN6YzZoNj8AZ44h/vs7cMXYxqdqqhBLuU0NNL
+	tGDy3mD8UeMa5RVUSSptdP3gTelpWO8nYtAy+AXi4MjTJUsza6beTehwCSsU8qU8McROExr2Cn2
+	o0oWGPwRKRFhjVQ6GOtC++a
+X-Google-Smtp-Source: AGHT+IFfqn8fLPcF2mb1gVi+G41RV2YT7DE1gzY6TrJFfSruChGkTvfZPHEqftOuvKHznTZtaSaFI1V7ACaXcJIiywE=
+X-Received: by 2002:a05:690e:108e:b0:5f3:317e:40af with SMTP id
+ 956f58d0204a3-63e08fd5e43mr308137d50.19.1760545484844; Wed, 15 Oct 2025
+ 09:24:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] net: stmmac: Move subsecond increment
- configuration in dedicated helper
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251015102725.1297985-1-maxime.chevallier@bootlin.com>
- <20251015102725.1297985-2-maxime.chevallier@bootlin.com>
- <aO-4hnUINpQ0JORE@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aO-4hnUINpQ0JORE@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20251015070854.36281-1-jonas.gorski@gmail.com> <aO_H6187Oahh24IX@horms.kernel.org>
+In-Reply-To: <aO_H6187Oahh24IX@horms.kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Wed, 15 Oct 2025 18:24:33 +0200
+X-Gm-Features: AS18NWB5lthoC5h8fYZc_CEg6WuMBx-FRcGPGIiwRRyZzUYMwsRaOF117HRUBPs
+Message-ID: <CAOiHx=nbRAkFW2KMHwFoF3u6yoN28_LbMrar1BoF37SA=Mz4gg@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: tag_brcm: legacy: fix untagged rx on
+ unbridged ports for bcm63xx
+To: Simon Horman <horms@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	=?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Russell,
+On Wed, Oct 15, 2025 at 6:12=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Wed, Oct 15, 2025 at 09:08:54AM +0200, Jonas Gorski wrote:
+> > The internal switch on BCM63XX SoCs will unconditionally add 802.1Q VLA=
+N
+> > tags on egress to CPU when 802.1Q mode is enabled. We do this
+> > unconditionally since commit ed409f3bbaa5 ("net: dsa: b53: Configure
+> > VLANs while not filtering").
+> >
+> > This is fine for VLAN aware bridges, but for standalone ports and vlan
+> > unaware bridges this means all packets are tagged with the default VID,
+> > which is 0.
+> >
+> > While the kernel will treat that like untagged, this can break userspac=
+e
+> > applications processing raw packets, expecting untagged traffic, like
+> > STP daemons.
+> >
+> > This also breaks several bridge tests, where the tcpdump output then
+> > does not match the expected output anymore.
+> >
+> > Since 0 isn't a valid VID, just strip out the VLAN tag if we encounter
+> > it, unless the priority field is set, since that would be a valid tag
+> > again.
+> >
+> > Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
+> > Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+>
+> ...
+>
+> > @@ -237,8 +239,14 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_=
+buff *skb,
+> >       if (!skb->dev)
+> >               return NULL;
+> >
+> > -     /* VLAN tag is added by BCM63xx internal switch */
+> > -     if (netdev_uses_dsa(skb->dev))
+> > +     /* The internal switch in BCM63XX SoCs will add a 802.1Q VLAN tag=
+ on
+> > +      * egress to the CPU port for all packets, regardless of the unta=
+g bit
+> > +      * in the VLAN table.  VID 0 is used for untagged traffic on unbr=
+idged
+> > +      * ports and vlan unaware bridges. If we encounter a VID 0 tagged
+> > +      * packet, we know it is supposed to be untagged, so strip the VL=
+AN
+> > +      * tag as well in that case.
+>
+> Maybe it isn't important, but here it is a TCI 0 that is being checked:
+> VID 0, PCP 0, and DEI 0.
 
-On 15/10/2025 17:06, Russell King (Oracle) wrote:
-> On Wed, Oct 15, 2025 at 12:27:21PM +0200, Maxime Chevallier wrote:
->> +static void stmmac_update_subsecond_increment(struct stmmac_priv *priv)
->> +{
->> +	bool xmac = priv->plat->has_gmac4 || priv->plat->has_xgmac;
-> 
-> Just to say that I have patches that get rid of these has_xxx flags for
-> the cores, and these changes (and the additional platform glue patches
-> that have been posted) will conflict with them.
+Right, that is intentional (I tried to convey it in the commit
+message, though should probably also extend it here).
 
-Fair, I was in your position not so long ago :)
+If any of the fields is non-zero, then the tag is meaningful, and we
+don't want to strip it (e.g. 802.1p tagged packets).
 
-For this particular series, it should be straightforward to fix the
-conflict, but for the pending new glue divers we'll have to
-find the sweet spot for these changes.
-
-Maybe send it as an RFC so that people can see what to expect ?
-
-> Given the rate of change in stmmac, at some point we're going to have
-> to work out some way of stopping stmmac development to get such an
-> invasive cleanup change merged
-
-Agreed.
-
- - but with my variability and pressures
-> on the time I can spend even submitting patches, I've no idea how that
-> will work... I was going to send them right at the start of this
-> cycle, but various appointments on Monday and Tuesday this week plus
-> work pressures prevented that happening.
-
-To give your more visibility, that's the only work I plan to do on
-stmmac for that cycle, the rest is going to be phy_port,
-and probably some netdevsim-phy.
-
-> So, I decided instead to send out the first stmmac PCS series... which
-> means I now need to wait for that to be merged before I can think about
-> sending out anything else stmmac-related. (and there's more PCS patches
-> to come beyond the 14 I sent today.)
-
-Do you plan to send the next round of PCS stuff next, or the cleanups
-for the has_xxx flags you were mentioning ?
-
-In any case, I'll be happy to help testing :)
-
-Maxime
+Best regards,
+Jonas
