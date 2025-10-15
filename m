@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7334B19F48D;
-	Wed, 15 Oct 2025 21:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727A41C84AB;
+	Wed, 15 Oct 2025 21:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760562037; cv=none; b=U0dsZR3flcGPpCsGbXjSV6UWDThCfpphyiY1FiE78yYC3jRaT31TyCDLrqXkkJRTzP6sQ1/Qim/5IvyM3RfNeTT5ZYB1nr0jzqSzKFmTjR1co5gzYwWPO92foGxet4FGg47Yl+4P2BufdkKpHy51KfkDPv6h2Gm69ctYc99wKkc=
+	t=1760562120; cv=none; b=nm0hknOpA/ysVRmA1IybUCtbj6XaqxQydHe5KaMOns7T83FgBPiCvxyv+Vz5/P+3hCsPq2FD3e29MCEhLhsl+XCHM+rkxk4VAKMt7GcZ2YnG4DLDIBuqpayzM/3TojU0274m12h/khB68GpIwnnkgvLf4GiV9q8iJckaCBPpVgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760562037; c=relaxed/simple;
-	bh=M1qczSmkw0158XadgJhT0mwOxC+0MpFlEOPojPneZxM=;
+	s=arc-20240116; t=1760562120; c=relaxed/simple;
+	bh=oPqga1R+Lw5csFQdmxSTZ2j5nvk6/0nsHqsHDe3Scrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o65yMBOftS8mmyR8QKVYQd68+93VXcI0WNJ9FTXPBeW2IwPXnrD7etdZuNsixBkmm4DgMW/3M6tpKmELCAV/2mcqe/5bLVYMV7md92e8qwpmx/HvrvCCPtq6s9WAdcFXzdgiMPFlwsSXzHJfZCti5W3tpfIZzNX5eanW3FzgW7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bWeEwmMz; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=mCTUVhEA1p0Jfb+ACeGvq3KUcQj8JQ3Kth5MkVEd+dfSEz5tOSHYipMZSrcl+UjMni4Xnvk1s/yPfvT9NUAL3xDa2Ru+Zvenj0uBTVFK+9x4TPmb/WhQ4sEeuOa1jTVokkDApKMgcRAig+sRnrmpXLNF0OjEYD6ohlNUBLkBJww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lPN1FzPv; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bWeEwmMz"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lPN1FzPv"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Qzau+2IiMd5fmjjZsXIksbdqUfY4ALqFsU+r0yQdOvs=; b=bWeEwmMzbtp8+O05AdPNYgUu/p
-	IHmi13D2KzF4+B2uUu7P5mN5YC0vx9H9yt1W3M/jt5+nyXLLufX1sIpO1lHgAwuVQYtjGGCXU+283
-	Teq6AgAqfQtLuX4SjkpxzdGWvUhiN0AIeYSMOf9IUphj3KXEAsvZEZdIns31ljTxiYLQ=;
+	bh=u9Vd50llGKlJUDtO+EduzVWWAqtczGOx8sjS49cA9dk=; b=lPN1FzPvrEnEGdf/5DGvQidRRO
+	KJ5J8zqk9k3JB5y6fJ14/5mp2e7wWv7356ulG6IYc49OvXw1+rc7IsCUxnOMNW0jrCSAwMv5KTL9J
+	n5pz55iGmNuvnBdS7skj93TFnJjxmMFG6vWzjb/DsgBMNNgo/nn4VPY8j77XEDzXTMyQ=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1v98bR-00B4m9-2I; Wed, 15 Oct 2025 23:00:09 +0200
-Date: Wed, 15 Oct 2025 23:00:09 +0200
+	id 1v98cr-00B4oN-8p; Wed, 15 Oct 2025 23:01:37 +0200
+Date: Wed, 15 Oct 2025 23:01:37 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>,
@@ -68,11 +68,11 @@ Cc: Heiner Kallweit <hkallweit1@gmail.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: Re: [PATCH net-next 11/14] net: stmmac: do not require snps,ps-speed
- for SGMII
-Message-ID: <5c5b0dd4-0c08-48f0-bbb8-21afcdfc102e@lunn.ch>
+Subject: Re: [PATCH net-next 12/14] net: stmmac: only call
+ stmmac_pcs_ctrl_ane() for integrated SGMII PCS
+Message-ID: <79822da1-d797-43f5-b0d3-533d5e914b07@lunn.ch>
 References: <aO-tbQCVu47R3izM@shell.armlinux.org.uk>
- <E1v92N3-0000000AmHQ-4Bm2@rmk-PC.armlinux.org.uk>
+ <E1v92N9-0000000AmHV-0WAA@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,20 +81,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1v92N3-0000000AmHQ-4Bm2@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1v92N9-0000000AmHV-0WAA@rmk-PC.armlinux.org.uk>
 
-On Wed, Oct 15, 2025 at 03:20:53PM +0100, Russell King (Oracle) wrote:
-> SGMII mode does not require port-speed to be specified; this only
-> switches SGMII to use the MAC configuration register speed settings
-> and the actual value is irrelevant when the link comes up.
+On Wed, Oct 15, 2025 at 03:20:59PM +0100, Russell King (Oracle) wrote:
+> The internal PCS registers only exist if the core is synthesized with
+> SGMII, TBI or RTBI support. They have no relevance for RGMII.
 > 
-> As it seems the intention was to support "reverse SGMII" with this
-> setting, but the code didn't actually configure that due to a typo,
-> the warning and bad DT binding documentation has led people to
-> specify snps,ps-speed in their DT files inappropriately.
-> 
-> If mac_port_sel_speed is zero, then don't complain that the speed
-> is invalid, as this means we're using "normal" SGMII.
+> However, priv->hw->pcs contains a STMMAC_PCS_RGMII flag, which is set
+> if a PCS has been synthesized but we are operating in RGMII mode. As
+> the register has no effect for RGMII, there is no point calling
+> stmmac_pcs_ctrl_ane() in this case. Add a comment describing this
+> and make it conditional on STMMAC_PCS_SGMII.
 > 
 > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
