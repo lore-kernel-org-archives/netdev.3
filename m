@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D897E2010EE
-	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 10:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639982C237E
+	for <netdev@vger.kernel.org>; Wed, 15 Oct 2025 10:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760522629; cv=none; b=U7CrggcWis94VuLxL0XIxvLul63fg4l52k1e+q0ARQ5I7SEqAJWvBz1jJ6kZRjqtTkc0ff8ROFAPw0qd/edKa7glU+OD6OPXbSmFeKmF4STZ3y9WWrfUAtR0jw5e9Ljpekq39hNbcfuCJa50wf5kIqSgEipPWYqev3awDKWOSLg=
+	t=1760522738; cv=none; b=nYGaaZQXVolLI0Igz7IbF7kXYCOIs5r7P42LDxeO2bA1NuXUPKbeoW2CsPhU02fBthunRq17AzVSeQ1MKwpoosKNtDNiMlsXsgU7BS1yVB8bnBD6OB4LZugucceZnsqzbsWg9pTr3612g62gnvhFdiRSqjH6SZA/GuNq0clJ/58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760522629; c=relaxed/simple;
-	bh=AOexYLNyunoqnZbJBr1FOIKM+Gw3dlR/VOzYqaZ29d4=;
+	s=arc-20240116; t=1760522738; c=relaxed/simple;
+	bh=92fgc6wjIMGw7LTmauWhWBOHs4s7IIEuiYJcbbf25TQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LNMUQgc3TD2qhbN4l6NVVd4WGm4LeEjZFDIEDPzZy3uVk3pele5bZdC0cgsua7i5NcEEJLdj5n+FYie/MlEQ1OcQqf+dDXqLAAzWoqcX8lY50KUbftmbbtQoa48CtmNy1ZMOSy4bvfURRPZxRECru38HX2pn+ZHhVYpMlczrlOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VjwUJy2v; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=uLE7vWopTkU8NAf6yOSPgxCn9RWG6z5CgMp0EW5jNHLMVoKkzwo9ZZAxR21Wyr+F0BWHIK+1hoNZJ6OlzcJgWYVXTefQa+1ZTpHDMJMi/QWjnIOegitNLgmKJzqd4yAQ87ys/nEKw/il4m9SR9HZu0b66wFEkWHsUbc2UXyfahc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKoNui74; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VjwUJy2v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758DDC4CEF8;
-	Wed, 15 Oct 2025 10:03:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKoNui74"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041D7C4CEF8;
+	Wed, 15 Oct 2025 10:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760522628;
-	bh=AOexYLNyunoqnZbJBr1FOIKM+Gw3dlR/VOzYqaZ29d4=;
+	s=k20201202; t=1760522738;
+	bh=92fgc6wjIMGw7LTmauWhWBOHs4s7IIEuiYJcbbf25TQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VjwUJy2vpOKs9PjYDHB8THRL8BTrBBvnaVumBSwQy0fIXp4pKWZmAXS9RqQtigdQE
-	 hHepklNzYn0Mwieso9HsQxwwwaI0777hG0iWb+agbi5tGqG089OIzlUqxpth3rAu+F
-	 +py7YJN67VXlbdMgO5I83HMDPN8GwWTXiSQ2XGM+tgl+W6UPh/z8SSR46vXrLZ0GQs
-	 pRQfosOcjOTRgGwq32hYo62FDw5YTeAA/5UK6CTZW5x+MadZWQvWnotVVduH+O2C8O
-	 qEDKZ6yL8lo0eXgjaKoQ5G9kNtiVDx1wPT0r8AG9cUoro5GgFeR2k8X/3k4IPJyEeg
-	 fpWqAI+D1juEQ==
-Date: Wed, 15 Oct 2025 11:03:43 +0100
+	b=OKoNui74xqk+3x18X7WSMNzENqhdSjbg2U3n1jFzELWmU38YGvHUUH+4L8oIuV0aj
+	 01YMHDBbjYspSsKhKz3qsPtKFQ4vXyou8Owvhb/Telo3u44wL74/lbQxD1m0qnvtjb
+	 FmgxMb7NKF/BtzIKaRr1Ho83usqEVLAIa+N1IpMOz9RqJRmH3S623YzL/+DluOOCXK
+	 eNBkA/ZfIognNBi72k2ti7frnXFGVk1eIgfRoKIeIJUjxED+FhxV2dRmZMYtSMvyai
+	 YDTyxOq+7TkRFa/ELMOgI6zhKJB22jJAVF8v5AW3fNpjDiby410n3IbDK2wNLgqeYc
+	 d0tWG+MxEX6Dg==
+Date: Wed, 15 Oct 2025 11:05:32 +0100
 From: Simon Horman <horms@kernel.org>
 To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
@@ -42,10 +42,10 @@ Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	Richard Cochran <richardcochran@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 6/7] tsnep: convert to ndo_hwtstatmp API
-Message-ID: <aO9xf0gW9F0qsaCz@horms.kernel.org>
+Subject: Re: [PATCH net-next v2 5/7] cxgb4: convert to ndo_hwtstamp API
+Message-ID: <aO9x7EpgTMiBBfER@horms.kernel.org>
 References: <20251014224216.8163-1-vadim.fedorenko@linux.dev>
- <20251014224216.8163-7-vadim.fedorenko@linux.dev>
+ <20251014224216.8163-6-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,85 +54,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251014224216.8163-7-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251014224216.8163-6-vadim.fedorenko@linux.dev>
 
-On Tue, Oct 14, 2025 at 10:42:15PM +0000, Vadim Fedorenko wrote:
-> Convert to .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
-> After conversions the rest of tsnep_netdev_ioctl() becomes pure
-> phy_do_ioctl_running(), so remove tsnep_netdev_ioctl() and replace
-> it with phy_do_ioctl_running() in .ndo_eth_ioctl.
+On Tue, Oct 14, 2025 at 10:42:14PM +0000, Vadim Fedorenko wrote:
+> Convert to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+> 
+> Though I'm not quite sure it worked properly before the conversion.
 > 
 > Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
-...
-
-> diff --git a/drivers/net/ethernet/engleder/tsnep_ptp.c b/drivers/net/ethernet/engleder/tsnep_ptp.c
-> index 54fbf0126815..ae1308eb813d 100644
-> --- a/drivers/net/ethernet/engleder/tsnep_ptp.c
-> +++ b/drivers/net/ethernet/engleder/tsnep_ptp.c
-> @@ -19,57 +19,53 @@ void tsnep_get_system_time(struct tsnep_adapter *adapter, u64 *time)
->  	*time = (((u64)high) << 32) | ((u64)low);
->  }
->  
-> -int tsnep_ptp_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
-> +int tsnep_ptp_hwtstamp_get(struct net_device *netdev,
-> +			   struct kernel_hwtstamp_config *config)
->  {
->  	struct tsnep_adapter *adapter = netdev_priv(netdev);
-> -	struct hwtstamp_config config;
-> -
-> -	if (!ifr)
-> -		return -EINVAL;
-> -
-> -	if (cmd == SIOCSHWTSTAMP) {
-> -		if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
-> -			return -EFAULT;
-> -
-> -		switch (config.tx_type) {
-> -		case HWTSTAMP_TX_OFF:
-> -		case HWTSTAMP_TX_ON:
-> -			break;
-> -		default:
-> -			return -ERANGE;
-> -		}
-> -
-> -		switch (config.rx_filter) {
-> -		case HWTSTAMP_FILTER_NONE:
-> -			break;
-> -		case HWTSTAMP_FILTER_ALL:
-> -		case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
-> -		case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-> -		case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
-> -		case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
-> -		case HWTSTAMP_FILTER_PTP_V2_L4_SYNC:
-> -		case HWTSTAMP_FILTER_PTP_V2_L4_DELAY_REQ:
-> -		case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
-> -		case HWTSTAMP_FILTER_PTP_V2_L2_SYNC:
-> -		case HWTSTAMP_FILTER_PTP_V2_L2_DELAY_REQ:
-> -		case HWTSTAMP_FILTER_PTP_V2_EVENT:
-> -		case HWTSTAMP_FILTER_PTP_V2_SYNC:
-> -		case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
-> -		case HWTSTAMP_FILTER_NTP_ALL:
-> -			config.rx_filter = HWTSTAMP_FILTER_ALL;
-> -			break;
-> -		default:
-> -			return -ERANGE;
-> -		}
-
 Hi Vadim,
 
-I'm probably missing something obvious, but it's not clear to me why
-removing the inner switch statements above is ok. Or, perhaps more to the
-point, it seems inconsistent with other patches in this series.
-
-OTOH, I do see why dropping the outer if conditions makes sense.
-
-> -
-> -		memcpy(&adapter->hwtstamp_config, &config,
-> -		       sizeof(adapter->hwtstamp_config));
-> +
-> +	*config = adapter->hwtstamp_config;
-> +	return 0;
-> +}
+There is quite a lot of change here. Probably it's not worth "fixing"
+the current code before migrating it. But I think it would be worth
+expanding a bit on the statement about not being sure it worked?
 
 ...
+
