@@ -1,178 +1,113 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E27B33468B;
-	Thu, 16 Oct 2025 23:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from rn-mx03.apple.com (rn-mx03.apple.com [17.132.108.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC312DEA94
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.132.108.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760657514; cv=none; b=XX403+4cy49ebQOXfAB9259GfBLwDMZM6cqjHK3LHOwwO8pQi2Ivwc1dEsVK1/6dxL89Fs90qocAtYq3KUGu/TtZSX+njqQW3Xb7n3Ez4hl0oMTJ9ZeaSlbck1z5vinTulMwpK44m/OBiOi3sZZ39qWCPwSSzAqdBTO+lCxfbjs=
+	t=1760657600; cv=none; b=hd4hKpCRcLHx903zNUporVBnF5/V2S2J/ISAgun02H003WJBivp887jZP3OgCCtQgmgK25V4W9l1ow4NzbEzwnYcZai3AOroHe53ZWnFs7tHd22+L8BdCd9XpxBZEqnPFCnFCEMCOj6e4Q9+H1A8NIz5nk88dQvvdu7C9yMBpto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760657514; c=relaxed/simple;
-	bh=6jNU4d/KiNNzDU38nskytHoALT5q/NWETL5gYn1PHUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BxjXmbaXQnEdSk5BoIleJM9wvKKRfdM1FkLjTMzewNIns2Q733UZ30L0Ngy7lIrOsiasQqFc7UKntgNpGxuWqIOWqf5vebd4Rb9dH+IpSv/gvqi+FF/QHYGILgRhZr8Xv25Bn4MMbP/KBi63ESKBKBelVQTmRoGT6kcNMj/ix6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-85-68f180618d69
-Date: Fri, 17 Oct 2025 08:31:39 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: axboe@kernel.dk, kuba@kernel.org, pabeni@redhat.com,
-	almasrymina@google.com, asml.silence@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
-	hawk@kernel.org, ilias.apalodimas@linaro.org, sdf@fomichev.me,
-	dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com,
-	toke@redhat.com, io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	kernel_team@skhynix.com, max.byungchul.park@gmail.com,
-	ziy@nvidia.com, willy@infradead.org, david@redhat.com
-Subject: Re: [PATCH net-next] page_pool: check if nmdesc->pp is !NULL to
- confirm its usage as pp for net_iov
-Message-ID: <20251016233139.GA37304@system.software.com>
-References: <20251016063657.81064-1-byungchul@sk.com>
+	s=arc-20240116; t=1760657600; c=relaxed/simple;
+	bh=DCzEcb0EbjY1g8s20TbAhSfGBhmj/YWS4n3dfbHCgmE=;
+	h=From:To:Cc:Subject:Date:Message-id:MIME-version; b=daGOOtoYzerIblVpQ0xWoiXxKCAhQv4/C1Kss1RyR0+5pxmxBl/cdVCgVrFcR9iYjVVp6GjX0wlijnlR9DgUfj92Y48/+gUVXcWLYj/5ZMOrwH0YVvRJWFEQX7Yacc8xmTS754MHzv5XjSf9z7b+ny+1SQWpTgUgYzstiJPokug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=apple.com; spf=pass smtp.mailfrom=apple.com; dkim=pass (2048-bit key) header.d=apple.com header.i=@apple.com header.b=d6RNMENY; arc=none smtp.client-ip=17.132.108.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=apple.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apple.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=apple.com header.i=@apple.com header.b="d6RNMENY"
+Received: from mr55p01nt-mtap02.apple.com
+ (mr55p01nt-mtap02.ise.apple.com [10.170.185.211]) by mr55p01nt-mxp03.apple.com
+ (Oracle Communications Messaging Server 8.1.0.28.20250821 64bit (built Aug 21
+ 2025)) with ESMTPS id <0T48248J8XBCNB10@mr55p01nt-mxp03.apple.com> for
+ netdev@vger.kernel.org; Thu, 16 Oct 2025 22:33:13 +0000 (GMT)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_04,2025-10-13_01,2025-03-28_01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=apple.com; h=cc :
+ content-transfer-encoding : date : from : message-id : mime-version : subject
+ : to; s=20180706; bh=5oAD5oOer419JlgdycYn7yg2e5s40AR7Miv8f7yrRho=;
+ b=d6RNMENY7L83Q2Plfmelzg4NhOhrh30kekbCHM0MouRx5VhJpB3uf1E3ArixgdhhF0xf
+ rd3VPf4UYG5YgKosYtEBRBDxLGxJgGRd/CNnRD0mLV0n+pqjz5rKl2Bi4MfPpX9112uS
+ Lr1QmPY67s+/TUhWIOfw3vOf4PlJ+NDu6RMxqzpmivdIViTnk9TBzzzieCZ994UjR4Bx
+ COVyEGoow2S2CuAPAfLUIfONn2H1+shWNUtQ3oVPZpODEwNlzyAg0COeuL/5v3cNiiG4
+ XWkkgqGxWDAG0hHVM0V9ISZHT/4SEiIJi4eUwJpPf2ob/asZ0C/Q3ZmK/zxXPY7Im+Yb nQ==
+Received: from mr55p01nt-mmpp03.apple.com
+ (mr55p01nt-mmpp03.ise.apple.com [10.170.185.208])
+ by mr55p01nt-mtap02.apple.com
+ (Oracle Communications Messaging Server 8.1.0.28.20250821 64bit (built Aug 21
+ 2025)) with ESMTPS id <0T481TPFDXBCVHV0@mr55p01nt-mtap02.apple.com>; Thu,
+ 16 Oct 2025 22:33:12 +0000 (GMT)
+Received: from process_milters-daemon.mr55p01nt-mmpp03.apple.com by
+ mr55p01nt-mmpp03.apple.com
+ (Oracle Communications Messaging Server 8.1.0.28.20250821 64bit (built Aug 21
+ 2025)) id <0T4824Z00X7ATV00@mr55p01nt-mmpp03.apple.com>; Thu,
+ 16 Oct 2025 22:33:12 +0000 (GMT)
+X-Va-A:
+X-Va-T-CD: 5c1d590bbb3e9640019563b4ec412a7e
+X-Va-E-CD: 7634ee1c9f2a9e46db68005ed32c5d68
+X-Va-R-CD: 9cc962ae69cb668f1f695ab9a070da32
+X-Va-ID: f093272d-667f-4240-92aa-f411f2c52dbd
+X-Va-CD: 0
+X-V-A:
+X-V-T-CD: 5c1d590bbb3e9640019563b4ec412a7e
+X-V-E-CD: 7634ee1c9f2a9e46db68005ed32c5d68
+X-V-R-CD: 9cc962ae69cb668f1f695ab9a070da32
+X-V-ID: 69d21ee1-e5fc-4eca-8136-b7659b4d75c9
+X-V-CD: 0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-16_04,2025-10-13_01,2025-03-28_01
+Received: from M4Max.scv.apple.com (unknown [17.192.171.196])
+ by mr55p01nt-mmpp03.apple.com
+ (Oracle Communications Messaging Server 8.1.0.28.20250821 64bit (built Aug 21
+ 2025)) with ESMTPSA id <0T4824Z2EXB5MK00@mr55p01nt-mmpp03.apple.com>; Thu,
+ 16 Oct 2025 22:33:12 +0000 (GMT)
+From: Wen Xin <w_xin@apple.com>
+To: netdev@vger.kernel.org
+Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
+ eperezma@redhat.com, virtualization@lists.linux.dev, Wen Xin <w_xin@apple.com>
+Subject: [PATCH net] virtio_net: fix header access in big_packets mode
+Date: Thu, 16 Oct 2025 15:33:05 -0700
+Message-id: <20251016223305.51435-1-w_xin@apple.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251016063657.81064-1-byungchul@sk.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLIsWRmVeSWpSXmKPExsXC9ZZnkW5iw8cMg/+tfBarf1RY/FzznMli
-	zqptjBar7/azWcw538Ji8XX9L2aLnbueM1q8mrGWzeLpsUfsFnvatzNbPOo/wWbR2/Kb2eJd
-	6zkWiwvb+lgtLu+aw2ZxYWIvq8WxBWIW306/YbS4OnMXk8Wlw49YLH7/AErOPnqP3UHMY8vK
-	m0we12ZMZPG4se8Uk8fOWXfZPRZsKvXYvELL4/LZUo9NqzrZPO5c28Pm0dv8js3j/b6rbB6f
-	N8kF8ERx2aSk5mSWpRbp2yVwZbzeqVFwXKHi6e2lLA2M86S6GDk5JARMJN7tP8QKY0/YPI0Z
-	xGYRUJX4u2YxO4jNJqAucePGT7C4iECmRNfk60A2FwezwERmiSUn9rJ1MbJzCAvkSTwzBinh
-	FbCQ2HuwmxHEFhIwlXh7/gMzRFxQ4uTMJywgNrOAlsSNfy+Zuhg5gGxpieX/OEDCnAJmEt/n
-	vQO7RlRAWeLAtuNMIJskBI6xS9y/MYkJ4kxJiYMrbrBMYBSYhWTsLCRjZyGMXcDIvIpRKDOv
-	LDcxM8dEL6MyL7NCLzk/dxMjMFKX1f6J3sH46ULwIUYBDkYlHt4FRh8zhFgTy4orcw8xSnAw
-	K4nwMhR8yBDiTUmsrEotyo8vKs1JLT7EKM3BoiTOa/StPEVIID2xJDU7NbUgtQgmy8TBKdXA
-	WPHjiuWtmiNbnKOUJK+sVrhS+cWB66vj98qDz03i9vg/eqlQddq0M5u34ZDoVSFJufS2P4tr
-	3tYzM6xc0SiqMs2e5dreTnO2X7p20Y6Tsv2eHnket0z8JeMNxW7Xpb33y4Kqvnqf+T1LZ+rZ
-	P1Ft4j8a7rtcndeg/pZ14t/wmjjLUsP24xnKSizFGYmGWsxFxYkAk0r85tACAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrMIsWRmVeSWpSXmKPExsXC5WfdrJvY8DHDYG2axeofFRY/1zxnspiz
-	ahujxeq7/WwWc863sFh8Xf+L2WLnrueMFq9mrGWzeHrsEbvFnvbtzBaP+k+wWfS2/Ga2eNd6
-	jsXi8NyTrBYXtvWxWlzeNYfN4sLEXlaLYwvELL6dfsNocXXmLiaLS4cfsVj8/gGUnH30HruD
-	uMeWlTeZPK7NmMjicWPfKSaPnbPusnss2FTqsXmFlsfls6Uem1Z1snncubaHzaO3+R2bx/t9
-	V9k8Fr/4wOTxeZNcAG8Ul01Kak5mWWqRvl0CV8brnRoFxxUqnt5eytLAOE+qi5GTQ0LARGLC
-	5mnMIDaLgKrE3zWL2UFsNgF1iRs3foLFRQQyJbomXweyuTiYBSYySyw5sZeti5GdQ1ggT+KZ
-	MUgJr4CFxN6D3YwgtpCAqcTb8x+YIeKCEidnPmEBsZkFtCRu/HvJ1MXIAWRLSyz/xwES5hQw
-	k/g+7x0riC0qoCxxYNtxpgmMvLOQdM9C0j0LoXsBI/MqRpHMvLLcxMwcU73i7IzKvMwKveT8
-	3E2MwKhbVvtn4g7GL5fdDzEKcDAq8fAuNPqYIcSaWFZcmXuIUYKDWUmEl6HgQ4YQb0piZVVq
-	UX58UWlOavEhRmkOFiVxXq/w1AQhgfTEktTs1NSC1CKYLBMHp1QDY2eb98OQ+f0Biit0TZf7
-	va6y8dS7EHH2wCquCqaV81//MNaqOnWUbSNnyZcXb6YcF39YkJv4lWdP7ccD+68HulxamyvW
-	v/zgXKaJN7iCt3IWVDFeryp8FpR+rU+usHhr0N/81WUH/aaYdT59W/M74YaphNaBVKlLpyUT
-	1hiy1Vt/O80psFvpnRJLcUaioRZzUXEiAMSUyx22AgAA
-X-CFilter-Loop: Reflected
+MIME-version: 1.0
+Content-transfer-encoding: 8bit
 
-On Thu, Oct 16, 2025 at 03:36:57PM +0900, Byungchul Park wrote:
-> ->pp_magic field in struct page is current used to identify if a page
-> belongs to a page pool.  However, ->pp_magic will be removed and page
-> type bit in struct page e.g. PGTY_netpp should be used for that purpose.
-> 
-> As a preparation, the check for net_iov, that is not page-backed, should
-> avoid using ->pp_magic since net_iov doens't have to do with page type.
-> Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
-> page pool, by making sure nmdesc->pp is NULL otherwise.
-> 
-> For page-backed netmem, just leave unchanged as is, while for net_iov,
-> make sure nmdesc->pp is initialized to NULL and use nmdesc->pp for the
-> check.
+In Linux virtio-net driver's (drivers/net/virtio_net.c) big packets mode (vi->big_packets && vi->mergeable_rx_bufs), the buf
+pointer passed to receive_buf() is a struct page pointer, not a buffer
+pointer. The current code incorrectly casts this page pointer directly as
+a virtio_net_common_hdr, causing it to read flags from the page struct
+memory instead of the actual packet data.
 
-+cc David Hildenbrand <david@redhat.com>
-+cc Zi Yan <ziy@nvidia.com>
-+cc willy@infradead.org
+Signed-off-by: Wen Xin <w_xin@apple.com>
+---
+ drivers/net/virtio_net.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-	Byungchul
-> 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> ---
->  io_uring/zcrx.c        |  4 ++++
->  net/core/devmem.c      |  1 +
->  net/core/netmem_priv.h |  6 ++++++
->  net/core/page_pool.c   | 16 ++++++++++++++--
->  4 files changed, 25 insertions(+), 2 deletions(-)
-> 
-> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-> index 723e4266b91f..cf78227c0ca6 100644
-> --- a/io_uring/zcrx.c
-> +++ b/io_uring/zcrx.c
-> @@ -450,6 +450,10 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
->  		area->freelist[i] = i;
->  		atomic_set(&area->user_refs[i], 0);
->  		niov->type = NET_IOV_IOURING;
-> +
-> +		/* niov->desc.pp is already initialized to NULL by
-> +		 * kvmalloc_array(__GFP_ZERO).
-> +		 */
->  	}
->  
->  	area->free_count = nr_iovs;
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index d9de31a6cc7f..f81b700f1fd1 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -291,6 +291,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
->  			niov = &owner->area.niovs[i];
->  			niov->type = NET_IOV_DMABUF;
->  			niov->owner = &owner->area;
-> +			niov->desc.pp = NULL;
->  			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
->  						      net_devmem_get_dma_addr(niov));
->  			if (direction == DMA_TO_DEVICE)
-> diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-> index 23175cb2bd86..fb21cc19176b 100644
-> --- a/net/core/netmem_priv.h
-> +++ b/net/core/netmem_priv.h
-> @@ -22,6 +22,12 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
->  
->  static inline bool netmem_is_pp(netmem_ref netmem)
->  {
-> +	/* Use ->pp for net_iov to identify if it's pp, which requires
-> +	 * that non-pp net_iov should have ->pp NULL'd.
-> +	 */
-> +	if (netmem_is_net_iov(netmem))
-> +		return !!netmem_to_nmdesc(netmem)->pp;
-> +
->  	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
->  }
->  
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 1a5edec485f1..2756b78754b0 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -699,7 +699,13 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
->  void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
->  {
->  	netmem_set_pp(netmem, pool);
-> -	netmem_or_pp_magic(netmem, PP_SIGNATURE);
-> +
-> +	/* For page-backed, pp_magic is used to identify if it's pp.
-> +	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
-> +	 * and nmdesc->pp is NULL if it's not.
-> +	 */
-> +	if (!netmem_is_net_iov(netmem))
-> +		netmem_or_pp_magic(netmem, PP_SIGNATURE);
->  
->  	/* Ensuring all pages have been split into one fragment initially:
->  	 * page_pool_set_pp_info() is only called once for every page when it
-> @@ -714,7 +720,13 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
->  
->  void page_pool_clear_pp_info(netmem_ref netmem)
->  {
-> -	netmem_clear_pp_magic(netmem);
-> +	/* For page-backed, pp_magic is used to identify if it's pp.
-> +	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
-> +	 * and nmdesc->pp is NULL if it's not.
-> +	 */
-> +	if (!netmem_is_net_iov(netmem))
-> +		netmem_clear_pp_magic(netmem);
-> +
->  	netmem_set_pp(netmem, NULL);
->  }
->  
-> 
-> base-commit: e1f5bb196f0b0eee197e06d361f8ac5f091c2963
-> -- 
-> 2.17.1
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 7646ddd9bef7..c10f5585bc88 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2566,7 +2566,13 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ 	 * virtnet_xdp_set()), so packets marked as
+ 	 * VIRTIO_NET_HDR_F_NEEDS_CSUM get dropped during XDP processing.
+ 	 */
+-	flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
++	if (vi->big_packets && !vi->mergeable_rx_bufs) {
++		struct virtio_net_common_hdr *hdr = page_address((struct page *)buf);
++
++		flags = hdr->hdr.flags;
++	} else {
++		flags = ((struct virtio_net_common_hdr *)buf)->hdr.flags;
++	}
+ 
+ 	if (vi->mergeable_rx_bufs)
+ 		skb = receive_mergeable(dev, vi, rq, buf, ctx, len, xdp_xmit,
+-- 
+2.39.5 (Apple Git-154)
+
