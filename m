@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E62329C51;
-	Thu, 16 Oct 2025 15:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07934DCF7;
+	Thu, 16 Oct 2025 16:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760630379; cv=none; b=loYXHeaanJ4KHXCrcbqVH6wVHvvMcOKMih3LG1iAgEStne+NDrXOUcPr9rek0o7Jz9EDnpYmgmcYALeVkYVX7tbocGA/FXAA1IF8kAMLspUeu4huPIFJ0He3XHmeQoFAr8og0mcrqrGCuoRFVFxgj1WVqOqtSKPyJTmlPA7sDJ0=
+	t=1760630416; cv=none; b=chxwtRTF6NxjYz7PuVYiB1RuoEjIgV02afc+Gg+PJvfr5KdIpfwLbWsKkyfV9aZltY0GYH0cdQnJfuFnw0w6wxt5vyE/sUFbW+AClpgHxyKRVg//2WijedqgjGACP3YaxXyhcihOzBaANsqi973I+9Y6OmJyNms0XC6qU/LMcPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760630379; c=relaxed/simple;
-	bh=SJlzwOOY6t7zuzTUWnggtH3r47vy917/ILKlY4X2z2Q=;
+	s=arc-20240116; t=1760630416; c=relaxed/simple;
+	bh=NuqUOPCKexSPVN6pyx9qmVQ4zuprW6Q0ZQJ3dbKvATs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HwxyIyC3til7CxMeXSLpgxFMimS6zewYD+wij5WU87EVN2MElc3pSS26M5m8etXg+YJFNLeev9n6FejVA2Rt15U1enZBlq4BsdQ/z36f6BNcoUvASd9u1bQ/LseQvhj2NCYAPtD6BkdKjY2GhtN0tsxAZ04wR+HgHBXf1yFspiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6wE2v29; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=iU2nBFNrwl3nJ5WrhzLqYPpeieeRjvNDCVWlnYMtw/C/xafuDlm3Ql6N7bS8QDEq3oYGnD1eu+4vQP1vc5CLKM9kpu+bZZ3nv1TVrfhsNcF3N6fcFQT5eouo+S0Csb/e/8BRBnZzXAjSy3D3vfLvRsPtMSXT2rZ/YyYkGdO/i00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1OZNxhA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6wE2v29"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CE6C4CEF1;
-	Thu, 16 Oct 2025 15:59:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1OZNxhA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BD5C4CEF1;
+	Thu, 16 Oct 2025 16:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760630379;
-	bh=SJlzwOOY6t7zuzTUWnggtH3r47vy917/ILKlY4X2z2Q=;
+	s=k20201202; t=1760630416;
+	bh=NuqUOPCKexSPVN6pyx9qmVQ4zuprW6Q0ZQJ3dbKvATs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k6wE2v29DTycMLwHb8XFJFqEWdwScI3nta6k826+Pg1j67L2VFtrhbBTmBaugVUej
-	 a+2ERtrJD+AOE15b+x1ojsY5O5/mNRHit3m6j81bDRTPLggc6kDN/01J4kiVela95u
-	 3iUEvnxEZjzfswNFVKsvBGsvPrvsZV9PK2IqAr6Ucmk/wU+At16EPsw5wH41aWp1s+
-	 dJs4ufb0xmzWOwFoAIfLqOAOtZ+OsmNL67vpBBaeFtwkvR/LkAVjnnhJ/DU4mGtLkc
-	 aV2S/KL9pUSZBuMpgvNmMVsR8qHaHR5XDuqbkcr4ffMAxDkXf9AdkP3UzUU2pA6Hzi
-	 3Q4X0CkfTXEaQ==
-Date: Thu, 16 Oct 2025 16:59:34 +0100
+	b=V1OZNxhAC/VFy5c2v7Clp9XcpcWIZEQoDmeu8dfrVkzFV81Ty+TppXZ7CBIMZt6Oq
+	 yCpaRt4YuBqED+M9qz7KOHUM3GdjmowtScYZWMePVmuNGzbyb1BS3Z1cmyNfrbWt50
+	 mfEMqlKqaI6Ovopzjf6FngMC9/jwJyrSXDsEgOhEZnaMdRkliP+2S0BPnmSlFX9QMH
+	 bByZBmnkIrkpZ6M9zAEOpzPxFHf6PwYexqX/tN/PfYeQoCgqON5r2/HPeBID30HghQ
+	 VCKVdLtDaOUQS8BJFOdpDSX/o8jfvRK5oMYoklNCSyIWFZdZ8sRfupt8h42ITDpGVZ
+	 67TV4890pnI/w==
+Date: Thu, 16 Oct 2025 17:00:11 +0100
 From: Simon Horman <horms@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -40,11 +40,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 10/13] net: airoha: Select default ppe cpu
- port in airoha_dev_init()
-Message-ID: <aPEWZhetZ74NVgjr@horms.kernel.org>
+Subject: Re: [PATCH net-next v2 11/13] net: airoha: Refactor src port
+ configuration in airhoha_set_gdm2_loopback
+Message-ID: <aPEWiwy_ebWLDnNa@horms.kernel.org>
 References: <20251016-an7583-eth-support-v2-0-ea6e7e9acbdb@kernel.org>
- <20251016-an7583-eth-support-v2-10-ea6e7e9acbdb@kernel.org>
+ <20251016-an7583-eth-support-v2-11-ea6e7e9acbdb@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,15 +53,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251016-an7583-eth-support-v2-10-ea6e7e9acbdb@kernel.org>
+In-Reply-To: <20251016-an7583-eth-support-v2-11-ea6e7e9acbdb@kernel.org>
 
-On Thu, Oct 16, 2025 at 12:28:24PM +0200, Lorenzo Bianconi wrote:
-> Select the PPE default cpu port in airoha_dev_init routine.
-> This patch allows to distribute the load between the two available cpu
-> ports (FE_PSE_PORT_CDM1 and FE_PSE_PORT_CDM2) if the device is running a
-> single PPE module (e.g. 7583) selecting the cpu port based on the use
-> QDMA device. For multi-PPE device (e.g. 7581) assign FE_PSE_PORT_CDM1 to
-> PPE1 and FE_PSE_PORT_CDM2 to PPE2.
+On Thu, Oct 16, 2025 at 12:28:25PM +0200, Lorenzo Bianconi wrote:
+> AN7583 chipset relies on different definitions for source-port
+> identifier used for hw offloading. In order to support hw offloading
+> in AN7583 controller, refactor src port configuration in
+> airhoha_set_gdm2_loopback routine and introduce get_src_port_id
+> callback.
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
