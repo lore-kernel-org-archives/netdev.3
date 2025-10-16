@@ -1,75 +1,134 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD482E0B68;
-	Thu, 16 Oct 2025 12:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169252E6106;
+	Thu, 16 Oct 2025 12:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760618811; cv=none; b=PtctpODMfUjItKK5CnYwCN40fi55No/+g/M5sc5xIG0XIJEKmIOe0mr47tG74RWcYayS+elAnzBwpct3iCw3q6e4L3HobvyPZiWLB9clNrGkwzSQsDDEGyikgkaAzKbE8ms/DdU150YqRC6tjSVhl9JqFO9a/x/oROHxTKSLQkw=
+	t=1760619053; cv=none; b=Ge5LluXuNZsLM+DJvzEzib6HOTTJK+gRhWizXEFbeqIhuW8CWEo8jlDtpsStzSk7H4HXTRQTC2IFWonXXzLCtamx94d8vqj9JJYOgZTapxiHpZVUQ5pN4K1jqb9mZLKa9hqNp/1MUsHfPkdgBrxEO6fb6RKONlNGhDXgAVaottY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760618811; c=relaxed/simple;
-	bh=GHsqNwbBs+RY3YlPhmUDhL0sPZiEyt+4voPj0oucKHw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZKaCOj1oRWCD4nruy5OrWLPFMeOaYjCnOejvxneQMdsT3eY8KUW/wF77JunZzRxhu35l1IAMBCd3RQHnplpEgeNeiPD5/Tb7QPUaex+bDvOi2ZMPVyqNlCt9vD30Pm/tBOQ59yqNqQTCmPCIm2w+IlD0qQyRQSDdw21XWTLga+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=YpjSCUFX; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="YpjSCUFX"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=CnOT0cTwvlqTalnJASPuCRhhj5GVC1YdHDfSyx0BSi4=;
-	b=YpjSCUFXiA03oETD/wr7Zvxp0ZjXe3bqcf4rkflZfNasrIxHdbdq8wYZULCPt3KSW9ZH+DQI5
-	c88pzOfggkb8o4Nevc3kAqWbSsWSX4m9GtL0qsnUGkQVWc52iltoal/EZa7ScQNSk0tSBEEu7bZ
-	ZKEypDUYk99OIEv3/QN2VkA=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cnSNn0Bl6zcb3n;
-	Thu, 16 Oct 2025 20:45:45 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6CF4E140156;
-	Thu, 16 Oct 2025 20:46:45 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 16 Oct 2025 20:46:43 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: <markus.elfring@web.de>
-CC: <andrew+netdev@lunn.ch>, <christophe.jaillet@wanadoo.fr>,
-	<corbet@lwn.net>, <davem@davemloft.net>, <edumazet@google.com>,
-	<gongfan1@huawei.com>, <guoxin09@huawei.com>, <gur.stavi@huawei.com>,
-	<helgaas@kernel.org>, <horms@kernel.org>, <jdamato@fastly.com>,
-	<kuba@kernel.org>, <lee@trager.us>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <luosifu@huawei.com>,
-	<luoyang82@h-partners.com>, <meny.yossefi@huawei.com>, <mpe@ellerman.id.au>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>,
-	<przemyslaw.kitszel@intel.com>, <shenchenyang1@hisilicon.com>,
-	<shijing34@huawei.com>, <sumang@marvell.com>, <vadim.fedorenko@linux.dev>,
-	<wulike1@huawei.com>, <zhoushuai28@huawei.com>, <zhuyikai1@h-partners.com>
-Subject: Re: [PATCH net-next 2/9] hinic3: Add PF management interfaces
-Date: Thu, 16 Oct 2025 20:46:38 +0800
-Message-ID: <20251016124639.1927-1-gongfan1@huawei.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <3ed166fc-6641-4e7b-a2ba-2f17081af1d3@web.de>
-References: <3ed166fc-6641-4e7b-a2ba-2f17081af1d3@web.de>
+	s=arc-20240116; t=1760619053; c=relaxed/simple;
+	bh=RbKXxJipkxv3szJ7ubKMKmJKkxHW5F5FH0QrFfAjvq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YoP28UwQpmzRTB2ltlAHYrNwpIvMGCsBPgAjG/LFX6bM8FwLClvRElJYlOqjXGGkeFk8Obllay+X92mktYMYOEtu23yunw7FWXyPWYyRTO3ne8yFMOS2vYt+K3w4paqPFSn70DnPgIy5qxzNidtCwn8p2++MsfZpwP87e0yQAPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 343CE1688;
+	Thu, 16 Oct 2025 05:50:42 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19DB33F738;
+	Thu, 16 Oct 2025 05:50:48 -0700 (PDT)
+Date: Thu, 16 Oct 2025 13:50:46 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Jassi Brar <jassisinghbrar@gmail.com>,
+	Adam Young <admiyo@os.amperecomputing.com>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH] Revert "mailbox/pcc: support mailbox management of the
+ shared buffer"
+Message-ID: <20251016-swift-of-unmatched-luck-dfdebe@sudeepholla>
+References: <20250926153311.2202648-1-sudeep.holla@arm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250926153311.2202648-1-sudeep.holla@arm.com>
 
-On 10/16/2025 6:26 PM, Markus Elfring wrote:
->
-> Can it occasionally be more desirable to specify other recipients
-> in the field “To” (instead of “Cc”)?
->
-> Regards,
-> Markus
+On Fri, Sep 26, 2025 at 04:33:11PM +0100, Sudeep Holla wrote:
+> This reverts commit 5378bdf6a611a32500fccf13d14156f219bb0c85.
+> 
+> Commit 5378bdf6a611 ("mailbox/pcc: support mailbox management of the shared buffer")
+> attempted to introduce generic helpers for managing the PCC shared memory,
+> but it largely duplicates functionality already provided by the mailbox
+> core and leaves gaps:
+> 
+> 1. TX preparation: The mailbox framework already supports this via
+>   ->tx_prepare callback for mailbox clients. The patch adds
+>   pcc_write_to_buffer() and expects clients to toggle pchan->chan.manage_writes,
+>   but no drivers set manage_writes, so pcc_write_to_buffer() has no users.
+> 
+> 2. RX handling: Data reception is already delivered through
+>    mbox_chan_received_data() and client ->rx_callback. The patch adds an
+>    optional pchan->chan.rx_alloc, which again has no users and duplicates
+>    the existing path.
+> 
+> 3. Completion handling: While adding last_tx_done is directionally useful,
+>    the implementation only covers Type 3/4 and fails to handle the absence
+>    of a command_complete register, so it is incomplete for other types.
+> 
+> Given the duplication and incomplete coverage, revert this change. Any new
+> requirements should be addressed in focused follow-ups rather than bundling
+> multiple behavioral changes together.
+> 
 
-Thanks for your suggesion. We will adopt your suggestion in next 
-version.
+The discussion on this revert stopped and I am not sure if we agreed to
+revert it or not.
+
+> Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> ---
+>  drivers/mailbox/pcc.c | 102 ++----------------------------------------
+>  include/acpi/pcc.h    |  29 ------------
+>  2 files changed, 4 insertions(+), 127 deletions(-)
+> 
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 0a00719b2482..f6714c233f5a 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -306,22 +306,6 @@ static void pcc_chan_acknowledge(struct pcc_chan_info *pchan)
+>  		pcc_chan_reg_read_modify_write(&pchan->db);
+>  }
+>  
+> -static void *write_response(struct pcc_chan_info *pchan)
+> -{
+> -	struct pcc_header pcc_header;
+> -	void *buffer;
+> -	int data_len;
+> -
+> -	memcpy_fromio(&pcc_header, pchan->chan.shmem,
+> -		      sizeof(pcc_header));
+> -	data_len = pcc_header.length - sizeof(u32) + sizeof(struct pcc_header);
+> -
+> -	buffer = pchan->chan.rx_alloc(pchan->chan.mchan->cl, data_len);
+> -	if (buffer != NULL)
+> -		memcpy_fromio(buffer, pchan->chan.shmem, data_len);
+> -	return buffer;
+> -}
+> -
+>  /**
+>   * pcc_mbox_irq - PCC mailbox interrupt handler
+>   * @irq:	interrupt number
+> @@ -333,8 +317,6 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>  {
+>  	struct pcc_chan_info *pchan;
+>  	struct mbox_chan *chan = p;
+> -	struct pcc_header *pcc_header = chan->active_req;
+> -	void *handle = NULL;
+>  
+>  	pchan = chan->con_priv;
+>  
+> @@ -358,17 +340,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>  	 * required to avoid any possible race in updatation of this flag.
+>  	 */
+>  	pchan->chan_in_use = false;
+> -
+> -	if (pchan->chan.rx_alloc)
+> -		handle = write_response(pchan);
+> -
+> -	if (chan->active_req) {
+> -		pcc_header = chan->active_req;
+> -		if (pcc_header->flags & PCC_CMD_COMPLETION_NOTIFY)
+> -			mbox_chan_txdone(chan, 0);
+
+The above change in the original patch has introduced race on my platform
+where the mbox_chan_txdone() kicks the Tx while the response to the
+command is read in the below mbox_chan_received_data().
+
+So I am going to repost/resend this revert as a fix now.
+
+-- 
+Regards,
+Sudeep
