@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DC31CEAD6;
-	Thu, 16 Oct 2025 15:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E352E1742;
+	Thu, 16 Oct 2025 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760626895; cv=none; b=llt4mSk7kZHu6jrlKaSejsftAffMv8b5YYw0tMBdhb2BKxO3BEFC3eyMIqjF0QwuvxVglBVVnCqt0m3N6RtVqllxB/68d2yx8rnCCvBkxSKBfwoVMIxUkBzaX2LHiWHONVedqvy3RArqe9bLQg6CtHBMbsk9LFJXkQCLmJR3+n0=
+	t=1760626930; cv=none; b=a3yKkP44zndsGmPtk/yTadsrBTpNULnBvhGr+MIXx3xOkslBC8FrItGAvEBnAz8101I9GNUpU8YjspAMzZjmH05vranfbKLUra1wdU9Eum5EAYB77eTeB6GoUzBMGBE0zcmNpUqo3Y4HiDJZ8vYgIQ5cfXRpsXiAYW6H+lODitU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760626895; c=relaxed/simple;
-	bh=acIiVBZYAMOQ0q1mTLQ5Z+M0bKNk55oQQw05t4Z02AM=;
+	s=arc-20240116; t=1760626930; c=relaxed/simple;
+	bh=qAMFXjV5Wygod75EJcG5GjSFzUgCajUCdp/7cq0fS60=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=c3jWfcShV7pVnA6AJ0n/Cz7jy2Biz0/wnDDuVY8MfVMhbqnjc/qFcCP3tsmD314gt1qpxEtDtCHY9JVL2/LTcSUqNbZg9IRz/4BNW3LRJIm1hL1+dyRGmo/31atJDvIQwK95FE4qQsbGI7vMeOzXgdvJC/OAYAr2IcYjYmLzVAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Pb+rBSVW; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=muIcrkI0YoUqK8vry2vcuQiaroOSydjho08P9vK2i6w7z09i7F3/BfOUuFjfcRVQ/ZlRY9Dgx44Udw6bf2aKsNXtPcM357L5SlEzhHqtZ1TijseFjni4oP5D1pdBdMp3wuWGv8nkcNn+q2Mc7cCrzpxuqI65ZkcoB9Tjmf7dbEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=JY1QJQX6; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Pb+rBSVW"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="JY1QJQX6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HsMK/bmbWguoakn1MaiGae60AekG39Umlv+LVUeDN1A=; b=Pb+rBSVWgKCXzOyAGG3LCjTLwg
-	ivESwePLU8+0O+2lzGyVur3sNNhCDM9dIBWlG8QLrojK57R7g2dtBktUAPvjotW2tRkzI+XTbIlAS
-	E/YKnbqnVj06WJCWBo5p3jZMF4U11wjssJb52Rx+qRmTaNoLExK1IgwPzSOiTE6ZsYWDfvtExG7FW
-	PYwae1cIgG249/cZecDhL3yjCApSQK8w42rfXa6pePHzbz98WsBsyQGKXIicajHvdkSmuF8l5F36J
-	ZZxgEiNS0mnwUf/DSQmZX9rvii7sVdabVdWVfn2x+1wvuwOVh9NDPsP/9wZaSueV4ceZDmd9XCJgE
-	PWBbJ+Cw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43252 helo=rmk-PC.armlinux.org.uk)
+	bh=0yEtuL6Yu0FKqib6cgRo1k9CMeFeuQV0Wr+Nu8JvdTY=; b=JY1QJQX68k8QQTQtHSOalCgCME
+	9LWOr0HwQFGrM1Ox96A77gID9gq0sG70YDK4Il9ANVwgowZQdh2Iuo81GcSf6dsCcgDTyP4riowWG
+	p1c/WUyo2vBmhGHLXFaZxJEhXALRdb+/xhHHENN4AY7Pon32/wpB+2SvWH5zx2B4C0afBy6c5q3bU
+	BVm0MtS23pj3cSxvHvnLOq8xCKXL2f1FpTrh1fTLula8MeVdXkho7HghGKUuCgfABaA9Pji6ueW7i
+	AlxElsZNvj/uU1xt2Y19M+2+avee7X+/Ds9g2/zZGLDkegvFU7hEJ1tBBSrek2Ojd2ZYSDHcmWtuf
+	OVRRDfOw==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41228 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v9P75-000000006SI-0xXN;
-	Thu, 16 Oct 2025 15:37:55 +0100
+	id 1v9P6s-000000006Ro-2y2U;
+	Thu, 16 Oct 2025 15:37:43 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v9P6s-0000000AomE-2pAa;
-	Thu, 16 Oct 2025 15:37:42 +0100
+	id 1v9P6d-0000000Aolw-1T7d;
+	Thu, 16 Oct 2025 15:37:27 +0100
 In-Reply-To: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 References: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -84,8 +84,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH net-next v2 12/14] net: stmmac: only call
- stmmac_pcs_ctrl_ane() for integrated SGMII PCS
+Subject: [PATCH net-next v2 09/14] net: stmmac: simplify
+ stmmac_check_pcs_mode()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,42 +95,54 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v9P6s-0000000AomE-2pAa@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v9P6d-0000000Aolw-1T7d@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 16 Oct 2025 15:37:42 +0100
+Date: Thu, 16 Oct 2025 15:37:27 +0100
 
-The internal PCS registers only exist if the core is synthesized with
-SGMII, TBI or RTBI support. They have no relevance for RGMII.
-
-However, priv->hw->pcs contains a STMMAC_PCS_RGMII flag, which is set
-if a PCS has been synthesized but we are operating in RGMII mode. As
-the register has no effect for RGMII, there is no point calling
-stmmac_pcs_ctrl_ane() in this case. Add a comment describing this
-and make it conditional on STMMAC_PCS_SGMII.
+Now that we only support one mode, simplify stmmac_check_pcs_mode().
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 79d09b40dbcc..c3633baf5180 100644
+index 013a2f3684c7..611197cfa34f 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3487,7 +3487,11 @@ static int stmmac_hw_setup(struct net_device *dev)
+@@ -1086,22 +1086,23 @@ static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
+ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ {
+ 	int interface = priv->plat->phy_interface;
++	int speed = priv->plat->mac_port_sel_speed;
+ 
+ 	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
+ 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+ 		priv->hw->pcs = STMMAC_PCS_SGMII;
+-	}
+-
+-	/* PS and related bits will be programmed according to the speed */
+-	if (priv->hw->pcs) {
+-		int speed = priv->plat->mac_port_sel_speed;
+ 
+-		if ((speed == SPEED_10) || (speed == SPEED_100) ||
+-		    (speed == SPEED_1000)) {
++		switch (speed) {
++		case SPEED_10:
++		case SPEED_100:
++		case SPEED_1000:
+ 			priv->hw->ps = speed;
+-		} else {
++			break;
++
++		default:
+ 			dev_warn(priv->device, "invalid port speed\n");
+ 			priv->hw->ps = 0;
++			break;
  		}
  	}
- 
--	if (priv->hw->pcs)
-+	/* The PCS control register is only relevant for SGMII, TBI and RTBI
-+	 * modes. We no longer support TBI or RTBI, so only configure this
-+	 * register when operating in SGMII mode with the integrated PCS.
-+	 */
-+	if (priv->hw->pcs & STMMAC_PCS_SGMII)
- 		stmmac_pcs_ctrl_ane(priv, 1, priv->hw->reverse_sgmii_enable);
- 
- 	/* set TX and RX rings length */
+ }
 -- 
 2.47.3
 
