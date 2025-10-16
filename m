@@ -1,165 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1AA2F1FDB
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 06:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C9A72622;
+	Thu, 16 Oct 2025 06:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760597651; cv=none; b=ok8GWNuhpBuRcqo9I5q9fswSX4hq5ogCv929IIiCiqTK4hLc4EG65Ed7uZMiCERW0OB80C1GGScoTKoS39UHyiKgIzOBA1eD9fqfwMqQp7dVbW69cLdHeY28on0OJzdtcONA25+0Rinp/kDAb5Ao0huJFGrbz6u/UFPes2k0mV0=
+	t=1760597871; cv=none; b=JXtPyge0yFYM3OhXon6GVDePCaXD2j+i4iHhXtoU/GWtwaWcbB+PdQfUeCMVmLVtNjzQKLfVSpek47uk77H9JX7xu+Tg2PqE4fhcHN4vo2sP2tnE+fAmIZv0qjJBYTx1citEX2uTIpQ0c0eN9YymlMdFhuGWE6t9pSzQFEaX8DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760597651; c=relaxed/simple;
-	bh=y9g7++ThMeSMQPh1ylrPaNSSi2JtgH52izVD4ZWgxXk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WxRAPDVbDLh8wb8TKtH3okCyvMSru+atxOqJu/8NqD4gRVc7ONUeub97rl0f4M8/Dmll8p7IL+7mee1lOlf5lHMIbCy+laJcf3Lj3fXo7yO4Uz6FbtcO4HwD5meMJLZAk9SBZYtSCnVfWf/UH8I8J4rJt2wMo/EXjduUbzGweNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PQEqKfXR; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1760597871; c=relaxed/simple;
+	bh=PVIGP3Mk4x0juJB1vGos8zMhjY0qV8iKWIM/SK3yIuU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=azCmxPvzf53lsbAtk8wFR+puSlbUOsZPzAMUVOyvDj8oWGqoAUg8EeFqVYSGNi9t8sWtJujI9TtwUZDI3nvNvGodd64aIyA2UT4HlB1i9i9cXNMlycrt4Nyytelqd5ABpivZNglkehPrFePS4FepX76Nc/MTU+C3aJaligh03/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g9VRK7cJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PQEqKfXR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760597649; x=1792133649;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=y9g7++ThMeSMQPh1ylrPaNSSi2JtgH52izVD4ZWgxXk=;
-  b=PQEqKfXRu3hGcUI3YUYnCaLte8mD36rTsUyff9Y4lePB/rBpkbBa4p7u
-   YubSLyumijUxY13eE018wp+gpHCIaP1HyPnGJi72THAMT0+4iOIgh/Xsj
-   r2gF7bnhqhhe9TIy7ifUQ0xe/uZNDDZ6NSLRaeYesPnVKhUSfLV5PbMSz
-   x7QcCP6V9C6Q3E7Kz/wmYjYNtyJLDpnOlyaa2DN3rJqV+PoRzIgOPyote
-   HZut19xdwntnOxBXq4BWjMtkiwyerQNED3unM400jXeZrnj1200huTAN5
-   E5rq7jP4E3Y1XkEAH8B4hqOcLKCXiuwYXPTS80lFdgD+Q7P8I9/tCA2u7
-   Q==;
-X-CSE-ConnectionGUID: ZCSr+9XaTcuW+wy4c7q2GQ==
-X-CSE-MsgGUID: WffLNjaqQTyRtRlb7ozSMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62492419"
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
-   d="scan'208";a="62492419"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 23:54:06 -0700
-X-CSE-ConnectionGUID: I6iY64mQTWC/a991+Jt4HQ==
-X-CSE-MsgGUID: 8onTWFUhRnez5NMIY1Nqsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
-   d="scan'208";a="181582344"
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by orviesa010.jf.intel.com with ESMTP; 15 Oct 2025 23:54:05 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH iwl-next v1] ice: lower default irq/queue counts on high-core systems
-Date: Thu, 16 Oct 2025 08:22:50 +0200
-Message-ID: <20251016062250.1461903-1-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g9VRK7cJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E808C4CEFB;
+	Thu, 16 Oct 2025 06:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760597870;
+	bh=PVIGP3Mk4x0juJB1vGos8zMhjY0qV8iKWIM/SK3yIuU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=g9VRK7cJPnLoUtostILIrziJBq3RCLYCfeXbGrYQGxKTB5jmb0yB7ihlFWw6HdcDG
+	 dwyYLGl3uobdbICzJuwaO4AbS1Sx4aV35LuiuMTXPJA8eKnHZUqr+rp1y+qPP7gsr3
+	 OUaLXPb7JfdPiIMtwH/x71sAde2yScjjs/Uc17UpeD0cZx8nkO5SQdaRHBwwSxmCbz
+	 wBIb5f9zBhdWGcLNjdW8IFfRqH3XRewvQoVyJQUIE6HA5MafWWUZf2OSb4OgG384Dz
+	 K7rLB9jY0ijTCmVrXFq+5iL2iGlV6IgbDzCVzBcYG/pv7kLyxsWsTx6kF0bmQmCGIJ
+	 yC2R65Az7VGwg==
+Message-ID: <de3bab41-0ea6-4c1d-9350-2c73ba464b10@kernel.org>
+Date: Thu, 16 Oct 2025 08:57:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>,
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Daire McNamara <daire.mcnamara@microchip.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-phy@lists.infradead.org
+References: <20251015232015.846282-1-robh@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On some high-core systems loading ice driver with default values can
-lead to queue/irq exhaustion. It will result in no additional resources
-for SR-IOV.
+On 16/10/2025 01:16, Rob Herring (Arm) wrote:
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
 
-In most cases there is no performance reason for more than 64 queues.
-Limit the default value to 64. Still, using ethtool the number of
-queues can be changed up to num_online_cpus().
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-This change affects only the default queue amount on systems with more
-than 64 cores.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice.h     | 20 ++++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_irq.c |  6 ++++--
- drivers/net/ethernet/intel/ice/ice_lib.c |  8 ++++----
- 3 files changed, 28 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 3d4d8b88631b..354ec2950ff3 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1133,4 +1133,24 @@ static inline struct ice_hw *ice_get_primary_hw(struct ice_pf *pf)
- 	else
- 		return &pf->adapter->ctrl_pf->hw;
- }
-+
-+/**
-+ * ice_capped_num_cpus - normalize the number of CPUs to a reasonable limit
-+ *
-+ * This function returns the number of online CPUs, but caps it at suitable
-+ * default to prevent excessive resource allocation on systems with very high
-+ * CPU counts.
-+ *
-+ * Note: suitable default is currently at 64, which is reflected in default_cpus
-+ * constant. In most cases there is no much benefit for more than 64 and it is a
-+ * power of 2 number.
-+ *
-+ * Return: number of online CPUs, capped at suitable default.
-+ */
-+static inline u16 ice_capped_num_cpus(void)
-+{
-+	const int default_cpus = 64;
-+
-+	return min(num_online_cpus(), default_cpus);
-+}
- #endif /* _ICE_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
-index 30801fd375f0..df4d847ca858 100644
---- a/drivers/net/ethernet/intel/ice/ice_irq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_irq.c
-@@ -106,9 +106,11 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
- #define ICE_RDMA_AEQ_MSIX 1
- static int ice_get_default_msix_amount(struct ice_pf *pf)
- {
--	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
-+	u16 cpus = ice_capped_num_cpus();
-+
-+	return ICE_MIN_LAN_OICR_MSIX + cpus +
- 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
--	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
-+	       (ice_is_rdma_ena(pf) ? cpus + ICE_RDMA_AEQ_MSIX : 0);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index bac481e8140d..3c5f8a4b6c6d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -159,12 +159,12 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
- 
- static u16 ice_get_rxq_count(struct ice_pf *pf)
- {
--	return min(ice_get_avail_rxq_count(pf), num_online_cpus());
-+	return min(ice_get_avail_rxq_count(pf), ice_capped_num_cpus());
- }
- 
- static u16 ice_get_txq_count(struct ice_pf *pf)
- {
--	return min(ice_get_avail_txq_count(pf), num_online_cpus());
-+	return min(ice_get_avail_txq_count(pf), ice_capped_num_cpus());
- }
- 
- /**
-@@ -907,13 +907,13 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
- 		if (vsi->type == ICE_VSI_CHNL)
- 			vsi->rss_size = min_t(u16, vsi->num_rxq, max_rss_size);
- 		else
--			vsi->rss_size = min_t(u16, num_online_cpus(),
-+			vsi->rss_size = min_t(u16, ice_capped_num_cpus(),
- 					      max_rss_size);
- 		vsi->rss_lut_type = ICE_LUT_PF;
- 		break;
- 	case ICE_VSI_SF:
- 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
--		vsi->rss_size = min_t(u16, num_online_cpus(), max_rss_size);
-+		vsi->rss_size = min_t(u16, ice_capped_num_cpus(), max_rss_size);
- 		vsi->rss_lut_type = ICE_LUT_VSI;
- 		break;
- 	case ICE_VSI_VF:
--- 
-2.49.0
-
+Best regards,
+Krzysztof
