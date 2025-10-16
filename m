@@ -1,110 +1,136 @@
-Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3452D2495;
-	Thu, 16 Oct 2025 12:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009A132BF4E;
+	Thu, 16 Oct 2025 12:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760616305; cv=none; b=XT1scaBPVgN619PsebDDn9YUnEV18rm9Oux4jwpjYMuscrOao5usJL5xoHTU4nKyXnhhQuvdpjo9M4KS23s53IR/h3OV3k2SPgD/DzpwG7e86C7yjVtW/do3hwaD/IP6Z0wKQdWb3kO8hzDwghmGIUiFRwaWj64297OyMSDgBKI=
+	t=1760616713; cv=none; b=EdA4v/uRIlZBZUUmZXFRK9g+Qk0Hxo0hPh66iRDEq9du5my8Wd979UiMPnFkWukNvPCUldWGafhrJjB2WZUj7LHqqD2MEVGUbSF9NY+h4tLF9N4kKTx8hP90YX9GoBRvX57vk6vjNbmAyHXxr0LxmZtFRnr5KPw8cSX9B1CTtDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760616305; c=relaxed/simple;
-	bh=r6wUi3xcLjSainNg2mWEJLiS/UtI/590E6KLLtoGu9I=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U1ApuNAJVEqJEL+AICdkt01Z+KRvRfA4B//p5uejAO6YEt3jVOqBs4kJaU7c8/222Zf+ZON67YH+PUG9eNmHwyitYpdl+pcMYohJljaMdtfoNP611gxmgmeyQnxbusCsq2bwvH2YsFqi7BoC/AQyjgEq9fgnXqdD0RxJeKBtZVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=S/yKF7YM; arc=none smtp.client-ip=198.47.23.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1760616713; c=relaxed/simple;
+	bh=fXQW5LlY3uriTrQKws57EZgohSd4auvpbv1xc5ox9X8=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=SQHIiPesggPqOvg+rEUZaY6CtQT0miG6dbMoq+7/ly42guBX93SuQC4lS8XiQLVDVcW4PV158y/KOf1R0edxAP/E96sirijKa+1hBtCO1lrmb5+ZFK44APvdjnEs+bY88CJPP8n5IEfUtlgPuNV3qXn6PxWlhpuGo4rGS2igGLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eCGlCg3K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="S/yKF7YM"
-Received: from fllvem-sh04.itg.ti.com ([10.64.41.54])
-	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTP id 59GC4r752097423;
-	Thu, 16 Oct 2025 07:04:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1760616293;
-	bh=iKKzurQ0ZXO5q18t5L5wXU2cS1JLQhkE6vGidqQGQvE=;
-	h=Subject:From:To:CC:Date:In-Reply-To:References;
-	b=S/yKF7YMR4y3sz40L0oCv/9276eTWXAZlruX6A1fME/T0/m1t1T//RQS4OJ159xad
-	 YOWYtS+JxicglGuPF1fAHB8sD257K1dGS+8vGhrjWDHit5r2gawZhew8DPNYBaz2Wv
-	 JdAhwcBA1ZWss58cl/l4EauPEU1uUxOZz0wTeeI8=
-Received: from DLEE212.ent.ti.com (dlee212.ent.ti.com [157.170.170.114])
-	by fllvem-sh04.itg.ti.com (8.18.1/8.18.1) with ESMTPS id 59GC4rPL1187214
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 16 Oct 2025 07:04:53 -0500
-Received: from DLEE200.ent.ti.com (157.170.170.75) by DLEE212.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 16 Oct
- 2025 07:04:53 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE200.ent.ti.com
- (157.170.170.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Thu, 16 Oct 2025 07:04:53 -0500
-Received: from [10.24.73.74] (uda0492258.dhcp.ti.com [10.24.73.74])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 59GC4nM23691442;
-	Thu, 16 Oct 2025 07:04:50 -0500
-Message-ID: <809b0315205e08f3e490fd0fc6ba4496683b04b2.camel@ti.com>
-Subject: Re: [PATCH net v2] net: ethernet: ti: am65-cpts: fix timestamp loss
- due to race conditions
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
-To: Aksh Garg <a-garg7@ti.com>, <netdev@vger.kernel.org>,
-        <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <andrew+netdev@lunn.ch>, <edumazet@google.com>
-CC: <linux-kernel@vger.kernel.org>, <c-vankar@ti.com>, <danishanwar@ti.com>,
-        <s-vadapalli@ti.com>
-Date: Thu, 16 Oct 2025 17:34:56 +0530
-In-Reply-To: <20251016115755.1123646-1-a-garg7@ti.com>
-References: <20251016115755.1123646-1-a-garg7@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eCGlCg3K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B81FC116B1;
+	Thu, 16 Oct 2025 12:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760616712;
+	bh=fXQW5LlY3uriTrQKws57EZgohSd4auvpbv1xc5ox9X8=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=eCGlCg3KYMaFDE2I2HYQ7UC4kwzdvab0JbYJVvZAIfFSwgJmC0SB5HqFzEGD9ZZqp
+	 jb/4lrvvl2gEnH2Vghh5t2+K3E+ZRQGeKQucfabea2klGQZcznjEk6dzgAGmFPUTxJ
+	 VTI+W/ZI/mayVy6PKH65vrqZaaPD+aruuabmgxuQmi76C7T5OUyL0OcJZ9tngqCPhl
+	 3pYB3ttdZvDvWPoqfhueWGjBZXkYMCD4CHHM9+ZBFTI4MYxmHPp5JuZkhGv+GU/ojH
+	 VWGulZT4+pnvDgwrO8dYGkY0qwv+Yjb6Zpck1/Au5A+AowNEUEXA+VoCVqL60veqzz
+	 9gToVZtXMD6WQ==
+Date: Thu, 16 Oct 2025 07:11:51 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: krzk+dt@kernel.org, davem@davemloft.net, richardcochran@gmail.com, 
+ Frank.Li@nxp.com, vladimir.oltean@nxp.com, andrew+netdev@lunn.ch, 
+ kuba@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, claudiu.manoil@nxp.com, pabeni@redhat.com, 
+ edumazet@google.com, xiaoning.wang@nxp.com, netdev@vger.kernel.org, 
+ conor+dt@kernel.org
+To: Wei Fang <wei.fang@nxp.com>
+In-Reply-To: <20251016102020.3218579-1-wei.fang@nxp.com>
+References: <20251016102020.3218579-1-wei.fang@nxp.com>
+Message-Id: <176061621269.2563112.3282967985432898709.robh@kernel.org>
+Subject: Re: [PATCH net-next 0/8] net: enetc: Add i.MX94 ENETC support
 
-On Thu, 2025-10-16 at 17:27 +0530, Aksh Garg wrote:
-> Resolve race conditions in timestamp events list handling between TX
-> and RX paths causing missed timestamps.
->=20
-> The current implementation uses a single events list for both TX and RX
-> timestamps. The am65_cpts_find_ts() function acquires the lock,
-> splices all events (TX as well as RX events) to a temporary list,
-> and releases the lock. This function performs matching of timestamps
-> for TX packets only. Before it acquires the lock again to put the
-> non-TX events back to the main events list, a concurrent RX
-> processing thread could acquire the lock (as observed in practice),
-> find an empty events list, and fail to attach timestamp to it,=20
-> even though a relevant event exists in the spliced list which is yet to
-> be restored to the main list.
->=20
-> Fix this by creating separate events lists to handle TX and RX
-> timestamps independently.
->=20
-> Fixes: c459f606f66df ("net: ethernet: ti: am65-cpts: Enable RX HW timesta=
-mp for PTP packets using CPTS FIFO")
-> Signed-off-by: Aksh Garg <a-garg7@ti.com>
+
+On Thu, 16 Oct 2025 18:20:11 +0800, Wei Fang wrote:
+> i.MX94 NETC has two kinds of ENETCs, one is the same as i.MX95, which
+> can be used as a standalone network port. The other one is an internal
+> ENETC, it connects to the CPU port of NETC switch through the pseudo
+> MAC. Also, i.MX94 have multiple PTP Timers, which is different from
+> i.MX95. Any PTP Timer can be bound to a specified standalone ENETC by
+> the IERB ETBCR registers. Currently, this patch only add ENETC support
+> and Timer support for i.MX94. The switch will be added by a separate
+> patch set.
+> 
 > ---
->=20
-> Link to v1:
-> https://lore.kernel.org/all/20251010150821.838902-1-a-garg7@ti.com/
->=20
-> Changes from v1 to v2:
-> - Created a helper function am65_cpts_purge_event_list() to avoid
->   code duplication
-> - Removed RX timestamp lookup optimization from am65_cpts_find_rx_ts(),=
-=20
->   which will be handled in a separate patch series
-> - Fixed function name: am65_cpts_cpts_purge_events() to=20
->   am65_cpts_purge_events()
->  =20
->  drivers/net/ethernet/ti/am65-cpts.c | 63 ++++++++++++++++++++---------
->  1 file changed, 43 insertions(+), 20 deletions(-)
+> Note that the DTS patch (patch 8/8) is just for referenece, it will be
+> removed from this patch set when the dt-bindings patches have been
+> reviewed. It will be sent for review by another thread in the future.
+> ---
+> 
+> Clark Wang (1):
+>   net: enetc: add ptp timer binding support for i.MX94
+> 
+> Wei Fang (7):
+>   dt-bindings: net: netc-blk-ctrl: add compatible string for i.MX94
+>     platforms
+>   dt-bindings: net: enetc: add compatible string for ENETC with pseduo
+>     MAC
+>   dt-bindings: net: ethernet-controller: remove the enum values of speed
+>   net: enetc: add preliminary i.MX94 NETC blocks control support
+>   net: enetc: add basic support for the ENETC with pseudo MAC for i.MX94
+>   net: enetc: add standalone ENETC support for i.MX94
+>   arm64: dts: imx94: add basic NETC nodes and properties
+> 
+>  .../bindings/net/ethernet-controller.yaml     |   1 -
+>  .../devicetree/bindings/net/fsl,enetc.yaml    |   1 +
+>  .../bindings/net/nxp,netc-blk-ctrl.yaml       |   1 +
+>  arch/arm64/boot/dts/freescale/imx94.dtsi      | 118 ++++++++++
+>  arch/arm64/boot/dts/freescale/imx943-evk.dts  | 100 +++++++++
+>  drivers/net/ethernet/freescale/enetc/enetc.c  |  28 ++-
+>  drivers/net/ethernet/freescale/enetc/enetc.h  |   8 +
+>  .../net/ethernet/freescale/enetc/enetc4_hw.h  |  32 ++-
+>  .../net/ethernet/freescale/enetc/enetc4_pf.c  |  37 ++--
+>  .../ethernet/freescale/enetc/enetc_ethtool.c  |  64 ++++++
+>  .../net/ethernet/freescale/enetc/enetc_hw.h   |   1 +
+>  .../freescale/enetc/enetc_pf_common.c         |   5 +-
+>  .../ethernet/freescale/enetc/netc_blk_ctrl.c  | 202 ++++++++++++++++++
+>  13 files changed, 574 insertions(+), 24 deletions(-)
+> 
+> --
+> 2.34.1
+> 
+> 
+> 
 
-Thank you for fixing the issue.
 
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Regards,
-Siddharth.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/next-20251015 (exact match)
+ Base: tags/next-20251015 (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20251016102020.3218579-1-wei.fang@nxp.com:
+
+arch/arm64/boot/dts/freescale/imx943-evk.dtb: system-controller@4ceb0000 (nxp,imx94-netc-blk-ctrl): 'anyOf' conditional failed, one must be fixed:
+	'clocks' is a required property
+	'#clock-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/clock/clock.yaml#
+
+
+
+
+
