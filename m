@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A6A33A003;
-	Thu, 16 Oct 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5122DF6E6;
+	Thu, 16 Oct 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760626739; cv=none; b=oampWjMc8VuWOBuWSKhlQ3tlI5E5aN8RrNoWOnyGCKLT/0d9chNjEeo9vP2arZ7ke9eFr+Ww4iLcNHYrUziUg7S4sBDDZOK1/sbNO2FiPdU1dk14nHpevnJF490LH643pWg+9E/Z83TlXqOdlmS+5F9iMUNKyiUN0J2Kb3sC5Fw=
+	t=1760626787; cv=none; b=PfjbTPeHu0TOBFglvG3Zlu/TKVga6O1x3z24GtW+nJM+v/WYqeOe40wmNq7wwnxTgIjD3eQfE3aMMc22lKDUY5+ikMtp6qZ5nQIPlUTeJ0zzR2H8fmmGIVl9ptQZP/oZjmt8vXqAdk3Lam1cd/+gvHnJxQfLj6aW+cclhqEryZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760626739; c=relaxed/simple;
-	bh=KcvoRU24NHWkD9NyILmMcK2gV/2qBEEKQRSifS45tL8=;
+	s=arc-20240116; t=1760626787; c=relaxed/simple;
+	bh=ywlLgvA+bBZEIWtQo0kwXN2Wp8Uht1l9bbFfQZxMiwM=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=dPXa62DmwFySoy2203u0uQBJY6YW8X0gCgtapcf65BKBdf9MsRV0ZDTYxLZvlhI7ylq+Qs2rDzl3lFWlPPUS2JnACNnAY8dfuJawjalhy/VtdMZYiToysSd5R9DOJoBnqVnhSLNN4244CiMuOmwM3q1+iL3KrD7N6f76D83xbiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=C6w//HGX; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=H7wVTIE8JPghO0CDG1rrt3xNxzjroE8E82XKHCoEL1Ruimm7+CkXBbfxHT35ZgCB2xIKitt5j2QTM1JQ9AD9AEh9uJmKoS6dKqgSHwfewBi5HlktW3cYDJB9A4e4LIYTPkVnFlwMu5eohuMcgKps2dSLfcGdFcqDhZQih2kjBmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=BKPV3HuR; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="C6w//HGX"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="BKPV3HuR"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=nncZ0AXhmzc7/NiLcTF1jzX+v3g0XKRPuyG12twUDVY=; b=C6w//HGXJIo4YeoCwKqlhB0Uzl
-	aHMM2r/jvyPB18t4W8inTpq2Ok6wHSJf3SByTgWGo7mAR6yIuS6TOadke8K8jA/PtpqKctE5IG5Nr
-	UiET2Bk9omHT/0c5K9j03/8krLZFjn9WMSUSF+z2A4xDVLdIJuRvKzpEat/8wPr+h7h6K9XZNCHmL
-	AlnT8acCcfujnqKjy1HUO4wbSsrTD63NSld1Xive3sEAy479GuJwXD2bkmm4snMCThXUQnZXykG8J
-	Ms6Q/WfOMnpD2u/gnlnfEVvts6iM92Xym7sPlHcf/XB7gK9hapgQ+Rl+cx6ED7EIT74RMesZ8RKVM
-	Q6t7/qPA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43238 helo=rmk-PC.armlinux.org.uk)
+	bh=MwUEqOLFxWpUzct285C2ApYhavg8AhF7TZo9DSyOqQ4=; b=BKPV3HuRNlEliX0LVe28KRVYhx
+	RjiIUUwxKVARp6XLMajHZ9D/XCISc6HL6n8nSYzRkrMrHdh9nNCncGmMsTQkQ2ufXP9zaBnuPwHVr
+	ddsAw/wtZBSDiEMRBFlI0zMRqUxI1k2t/aQeEoN8KVwF17ciNQ52+OIfAYxlTl8Mn8Z7yW651dZkG
+	4ajxPjuuiv4Sna0kpb69FG+zDGs5HPSlxl1BN++UcRK2F1E+VTPtczWf0KiD4nsJJb7dTkHCHNJSR
+	77ENqOFL2GTxUwwbXE225UalfjVdw+jcXZzypP/nHerYovmVyf6UPL9rHB/sTbJQQE54rjLTI4Q7I
+	l5486IxA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50476 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v9P71-000000006S8-17lh;
-	Thu, 16 Oct 2025 15:37:52 +0100
+	id 1v9P76-000000006SR-36Mx;
+	Thu, 16 Oct 2025 15:37:56 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v9P6n-0000000Aom9-2LuZ;
-	Thu, 16 Oct 2025 15:37:37 +0100
+	id 1v9P6x-0000000AomL-3OKd;
+	Thu, 16 Oct 2025 15:37:47 +0100
 In-Reply-To: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 References: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -84,8 +84,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH net-next v2 11/14] net: stmmac: do not require snps,ps-speed
- for SGMII
+Subject: [PATCH net-next v2 13/14] net: stmmac: provide PCS initialisation
+ hook
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,49 +95,64 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v9P6n-0000000Aom9-2LuZ@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v9P6x-0000000AomL-3OKd@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 16 Oct 2025 15:37:37 +0100
+Date: Thu, 16 Oct 2025 15:37:47 +0100
 
-SGMII mode does not require port-speed to be specified; this only
-switches SGMII to use the MAC configuration register speed settings
-and the actual value is irrelevant when the link comes up.
-
-As it seems the intention was to support "reverse SGMII" with this
-setting, but the code didn't actually configure that due to a typo,
-the warning and bad DT binding documentation has led people to
-specify snps,ps-speed in their DT files inappropriately.
-
-If mac_port_sel_speed is zero, then don't complain that the speed
-is invalid, as this means we're using "normal" SGMII.
-
-This does _not_ obsolete snps,ps-speed, nor does it change the
-behaviour of that property, with the exception of not making people
-mistakenly believe that they need to specify this option to use
-normal SGMII. There is no need to modify the binding.
+dwmac cores provide a feature bit to indicate when the PCS block is
+present, but features are only read after the core's setup() function
+has been called, meaning we can't decide whether to initialise the
+integrated PCS in the setup function. Provide a new MAC core hook
+for PCS initialisation, which will be called after the feature
+registers have been read.
 
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
-v2: add comment about why there's no requirement to change the DT
-binding.
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/hwif.h        | 4 ++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 +++++++
+ 2 files changed, 11 insertions(+)
 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index 7796f5f3c96f..82cfb6bec334 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -313,6 +313,8 @@ enum stmmac_lpi_mode {
+ 
+ /* Helpers to program the MAC core */
+ struct stmmac_ops {
++	/* Initialise any PCS instances */
++	int (*pcs_init)(struct stmmac_priv *priv);
+ 	/* MAC core initialization */
+ 	void (*core_init)(struct mac_device_info *hw, struct net_device *dev);
+ 	/* Update MAC capabilities */
+@@ -413,6 +415,8 @@ struct stmmac_ops {
+ 					u32 pclass);
+ };
+ 
++#define stmmac_mac_pcs_init(__priv) \
++	stmmac_do_callback(__priv, mac, pcs_init, __priv)
+ #define stmmac_core_init(__priv, __args...) \
+ 	stmmac_do_void_callback(__priv, mac, core_init, __args)
+ #define stmmac_mac_update_caps(__priv) \
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 8f08366c25a4..79d09b40dbcc 100644
+index c3633baf5180..35cd881b3496 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1101,6 +1101,8 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+@@ -7238,6 +7238,13 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 			 "Enable RX Mitigation via HW Watchdog Timer\n");
+ 	}
  
- 		default:
- 			dev_warn(priv->device, "invalid port speed\n");
-+			fallthrough;
-+		case 0:
- 			priv->hw->reverse_sgmii_enable = false;
- 			break;
- 		}
++	/* Unimplemented PCS init (as indicated by stmmac_do_callback()
++	 * perversely returning -EINVAL) is non-fatal.
++	 */
++	ret = stmmac_mac_pcs_init(priv);
++	if (ret != -EINVAL)
++		return ret;
++
+ 	return 0;
+ }
+ 
 -- 
 2.47.3
 
