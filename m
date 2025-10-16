@@ -1,45 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3512F1A9F83
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 19:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32EE22068F
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 19:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760644150; cv=none; b=QHZcW9fAhire3pQDYi3sCGw/Qn2/cOnBjiVrhGqmRavWaYUUnu7+tjsaHNOdgqIE2m4nYv23RbffE96rXpEcn97gR+Cvs28waNau3VPoYR1YeO+FdrbcdgBkSWcANy32aI37/zn1jL+ewOQCMAamwQez1hSAwuFaItV5W3qbxaQ=
+	t=1760644532; cv=none; b=aGOwonhu6HFg5OvDhWjqaHgnPPNiYIkXrS5Z7bE+DMa75fNrfppUmARG2b6VZzPs+Nf3qXcUe6te2UZfNC33fwbxmxg5HpMNCoeRJaoXzpV9qekwICgY2uR4/P9YY0IlPGgv9m6ux+Hsyq8HiHyzyi/qnh1xxHLPFfVuxCY+iNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760644150; c=relaxed/simple;
-	bh=3rIyLJ6m1xES1cMpV+PoF9iUemm/uAax2YAU6H4WgLE=;
+	s=arc-20240116; t=1760644532; c=relaxed/simple;
+	bh=hZSmXladyKgEFllZdlGDz7bcaCzmzj6Btx/snCWNZGM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=trxZTZvO5Y73Vl2YNfvSVEFo/fKPswNf62JALO5aB4BnndpzC3ZwId7L2jFaI7ipnR+DLN4BP1uYUA1c+Dy8CgO/DTmRpc01/sl5iBfVezxeRLoPkwR9H4ZWc+BUyLf9Ee1MuehtqRlq65cQr87UR7VGUA0/LcJsFE7rGxmEUn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDMMjER2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=TLJFSQ4Qmdtw+w/zMkB1UPRJvIlKJPxd9vOG1szi0ELqIQli7bL5ve7sWdlA1TsF8532EZuaTS8iXg1U7yNc/22guL99SvoJoDe5yUqpEMovv2N+HmgCD1c9Shj2+CY9Q3vnTF3o0gvP98RQsvEgze71TCqoRfR43ms5VF833ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvKU2EsD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDMMjER2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272B0C4CEF1;
-	Thu, 16 Oct 2025 19:49:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvKU2EsD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D41CC4CEF1;
+	Thu, 16 Oct 2025 19:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760644149;
-	bh=3rIyLJ6m1xES1cMpV+PoF9iUemm/uAax2YAU6H4WgLE=;
+	s=k20201202; t=1760644531;
+	bh=hZSmXladyKgEFllZdlGDz7bcaCzmzj6Btx/snCWNZGM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nDMMjER2iHcxRYJZ1I1F5pTXd85RpeEX50RXiH6k4Q5+xyRRdFsLrSqsCMKjXUNhN
-	 6SOEG87jDhg4WgrntNjjRjPljlQK75moe9nSOZkbxgKCgTguzWxhGH9iJNUwYxS+aH
-	 8U5yP7XWSq+JMYYT8QQcgFUK416Sd/PwDRWVIc9jhK9qzkeJQQdCpXHcGxvap1VjKv
-	 QLo8cpzFrJM0xFcEnjDsQ3BbiZKZoKQdMRU7QYSc2Q7p9KZQie8173pr+BEDAx2Xvd
-	 cXn/2rMQ6uHiljvsb30lDx8eyGiwqV1vby0KdXpa9+8u3apV/DzfyFvDbaTvb0t1m4
-	 p6BM3i5ULnqZg==
-Date: Thu, 16 Oct 2025 12:49:08 -0700
+	b=HvKU2EsD8Gyf17lIk/uVYcCRXuEziYtr//SgrJdAYRBU3DUVlw88Qyo98R2SZIoMQ
+	 2/Nz9TcxC0VnzC65l1CKt3A92GPoRvDKSO7mp2KHYUdfpHYq8G7rqYOvn860oSjEaF
+	 +c6Xa+x0WU5+mYxuMEJBvJWgtt2mkXB1PYu8NtLBa/RTrVGvQFnyLTxK7e6p2wK2zS
+	 U5Obbh30yOxDZ1dJ/nz5w9FnIuYBpzFSgpo8GJcn5k4kF/aSQ7mT4nklhGWN/VPv8d
+	 VrhwVgLwrYz2InzrCQblrGhdXmR4Nzjc2gvHbt4zpj94EkaykuSrV7GKM0clDq9lcp
+	 UPBhEylW55ykw==
+Date: Thu, 16 Oct 2025 12:55:30 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: David Wilder <wilder@us.ibm.com>, netdev@vger.kernel.org,
- jv@jvosburgh.net, pradeep@us.ibm.com, i.maximets@ovn.org,
- amorenoz@redhat.com, haliu@redhat.com, stephen@networkplumber.org,
- horms@kernel.org, andrew+netdev@lunn.ch, edumazet@google.com
-Subject: Re: [PATCH net-next v13 6/7] bonding: Update for extended
- arp_ip_target format.
-Message-ID: <20251016124908.759bbb63@kernel.org>
-In-Reply-To: <ef443366-f841-4a84-9409-818fc31b2c0c@redhat.com>
-References: <20251013235328.1289410-1-wilder@us.ibm.com>
-	<20251013235328.1289410-7-wilder@us.ibm.com>
-	<ef443366-f841-4a84-9409-818fc31b2c0c@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>, John Ousterhout
+ <ouster@cs.stanford.edu>
+Cc: Netdev <netdev@vger.kernel.org>, Simon Horman <horms@kernel.org>
+Subject: Re: Build commit for Patchwork?
+Message-ID: <20251016125530.44f9934b@kernel.org>
+In-Reply-To: <fe1c04ba-3964-4293-b2d2-667fdbdc8f8a@ovn.org>
+References: <CAGXJAmwrPr46Ju-ZiLa7prnNFAcGr7Hu-vpk1B6-Q9Ks8fu8wQ@mail.gmail.com>
+	<aPEcgcsqFJAEYD_2@horms.kernel.org>
+	<fe1c04ba-3964-4293-b2d2-667fdbdc8f8a@ovn.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,26 +46,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Oct 2025 13:50:52 +0200 Paolo Abeni wrote:
-> > +		if (nla_put(skb, i, size, &data))
-> > +			goto nla_put_failure;
-> >  	}
-> >  
-> >  	if (targets_added)  
-> 
-> I guess you should update bond_get_size() accordingly???
-> 
-> Also changing the binary layout of an existing NL type does not feel
-> safe. @Jakub: is that something we can safely allow?
+On Thu, 16 Oct 2025 18:57:31 +0200 Ilya Maximets wrote:
+> My understanding is that it just builds on the tip of net-next/main
+> whatever it is at the moment the build starts.
 
-In general extending attributes is fine, but going from a scalar 
-to a struct is questionable. YNL for example will not allow it.
+That's right. Check out a branch matching net-next and you can run all
+the checks locally:
 
-I haven't looked at the series more closely until now.
+https://github.com/linux-netdev/nipa?tab=readme-ov-file#running-locally
 
-Why are there multiple vlan tags per target?
-
-Is this configuration really something we should support in the kernel?
-IDK how much we should push "OvS-compatibility" into other parts of the
-stack. If user knows that they have to apply this funny configuration
-on the bond maybe they should just arp from user space?
