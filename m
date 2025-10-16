@@ -1,32 +1,32 @@
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FDD34575D
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 15:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA5346A06
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 15:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760628428; cv=none; b=GwboqI1SJOTDQH3YlpkbJ39t3sKyya8677VuC/RK1rNyUz10HjPkUwhjDcDV4mvgEfDO1fiD8+QGvx/+6CvhRfCjerB2KEKZ8vybF40y0zmMDJje61fkUjIflalNrOGBl9MXlQRX5LMjo8IxnzFWphEoNR5EFtjeyi1vKaasFro=
+	t=1760628428; cv=none; b=EWN2VBxt8FIvtKIcnHPYWd499WlqBSYUwSovQgfHU8NiAUM4yP+/N5wKJywrzlJ97+rmYK7liZTIHAqn2VVBCqB3qYV6gwyc6QfuJ1XVoLVFz5J9myKpUkhTLlLj7YgHl02a8fygom51pVfAz8S55R1oUGU+cNt0Ji15RsOjASU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760628428; c=relaxed/simple;
-	bh=d8vxjs5D0HAwNMZbb0vxY1waT8UIH8Mc2Eyy7UDNZ3o=;
+	bh=nU+1AdiWD+lp88coYlypaw2xsWTfqiTrS+zoU8nT40k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUbb41q6ss3hK/cWe3Vu0dBuKfbL6kAllzBs6TCtChVxu0yKCgGevPE+mw/ncjLKP1G1JFakRdkG/L2FbaUbsHPoChgAf6JNGiiHs5jBREUmj6xh8WAfS9PMk371wVPBgIqn9jrVAmPMapCCL6B+C7Xp2xQFKium5b9OWyEuusc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CDZlWuTt; arc=none smtp.client-ip=95.215.58.170
+	 MIME-Version; b=LpCLDR9/HDEWAqqIGm4J8cgGqB/vXn49KBXYqGt1JWBkaHHnT2IiKQzXU5nMBbs+j52ARXUOiwNE7Q+ePRBpQsigeli+7sP7mXSrcs9KdEpuYZb3KgOQkH83HL7UKHaRvmKbvxe+VqVYcPzJwqVdWHJLNHgOnEdxwv3GGpZwMB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U/DCXHsB; arc=none smtp.client-ip=95.215.58.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CDZlWuTt"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U/DCXHsB"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760628422;
+	t=1760628424;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z2BPxfqLmeYHCAUJ3okUNNiUDmEsl5m9E5HV6C4SLfY=;
-	b=CDZlWuTtBjHNOED9OO8MRPGwnyE1nvwpzWoeA1jpjlSBrfXDKj07WuOw1r9FBq06hYc6LT
-	OdkylcNS9WCOLYKZY0GuRkX7O+aMvUNrrVJU8PK6LRueCcJM+X5r0eMDJo/P8BlaSrEiRa
-	2pAvNyMUwCrdx1NtHlIgNfkxa9zc1Mo=
+	bh=EdTPYbXwDfJU9vRUxXz3+0YIH5ybEPVQauVkggBtiWY=;
+	b=U/DCXHsBcsfJpgUYUN7kEVhLEhUpAtB5UmzBLdG6WrZEf6W9j4B2+DP7jp+vrBL+iu+rax
+	MyllAzfLO9mTuMGwXv3TrMQja9f41/3Unku7OrgR2JeD7TDNngM4eGjRQhwNzOrAiYUzqC
+	MVxLpVw7SWPvHCrYaJFrVMAUFofmc6A=
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -46,9 +46,9 @@ Cc: Richard Cochran <richardcochran@gmail.com>,
 	netdev@vger.kernel.org,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH net-next v3 1/7] net: ti: am65-cpsw: move hw timestamping to ndo callback
-Date: Thu, 16 Oct 2025 15:25:09 +0000
-Message-ID: <20251016152515.3510991-2-vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v3 3/7] amd-xgbe: convert to ndo_hwtstamp callbacks
+Date: Thu, 16 Oct 2025 15:25:11 +0000
+Message-ID: <20251016152515.3510991-4-vadim.fedorenko@linux.dev>
 In-Reply-To: <20251016152515.3510991-1-vadim.fedorenko@linux.dev>
 References: <20251016152515.3510991-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
@@ -60,133 +60,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Migrate driver to new API for HW timestamping.
+Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+.ndo_eth_ioctl() becomes empty function, remove it.
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 44 +++++++++++-------------
- 1 file changed, 20 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      | 24 ++--------------
+ drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c | 28 +++++++++----------
+ drivers/net/ethernet/amd/xgbe/xgbe.h          | 11 ++++----
+ 3 files changed, 21 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 110eb2da8dbc..d5f358ec9820 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1788,28 +1788,28 @@ static int am65_cpsw_nuss_ndo_slave_set_mac_address(struct net_device *ndev,
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index f0989aa01855..16160e19e07a 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1755,27 +1755,6 @@ static int xgbe_set_mac_address(struct net_device *netdev, void *addr)
+ 	return 0;
  }
  
- static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
--				       struct ifreq *ifr)
-+				       struct kernel_hwtstamp_config *cfg,
-+				       struct netlink_ext_ack *extack)
- {
- 	struct am65_cpsw_port *port = am65_ndev_to_port(ndev);
- 	u32 ts_ctrl, seq_id, ts_ctrl_ltype2, ts_vlan_ltype;
--	struct hwtstamp_config cfg;
- 
--	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS))
-+	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS)) {
-+		NL_SET_ERR_MSG(extack, "Time stamping is not supported");
- 		return -EOPNOTSUPP;
+-static int xgbe_ioctl(struct net_device *netdev, struct ifreq *ifreq, int cmd)
+-{
+-	struct xgbe_prv_data *pdata = netdev_priv(netdev);
+-	int ret;
 -
--	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
--		return -EFAULT;
-+	}
- 
- 	/* TX HW timestamp */
--	switch (cfg.tx_type) {
-+	switch (cfg->tx_type) {
- 	case HWTSTAMP_TX_OFF:
- 	case HWTSTAMP_TX_ON:
- 		break;
- 	default:
-+		NL_SET_ERR_MSG(extack, "TX mode is not supported");
- 		return -ERANGE;
- 	}
- 
--	switch (cfg.rx_filter) {
-+	switch (cfg->rx_filter) {
- 	case HWTSTAMP_FILTER_NONE:
- 		port->rx_ts_enabled = false;
- 		break;
-@@ -1826,17 +1826,19 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
- 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
- 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
- 		port->rx_ts_enabled = true;
--		cfg.rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
-+		cfg->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT | HWTSTAMP_FILTER_PTP_V1_L4_EVENT;
- 		break;
- 	case HWTSTAMP_FILTER_ALL:
- 	case HWTSTAMP_FILTER_SOME:
- 	case HWTSTAMP_FILTER_NTP_ALL:
-+		NL_SET_ERR_MSG(extack, "RX filter is not supported");
- 		return -EOPNOTSUPP;
- 	default:
-+		NL_SET_ERR_MSG(extack, "RX filter is not supported");
- 		return -ERANGE;
- 	}
- 
--	port->tx_ts_enabled = (cfg.tx_type == HWTSTAMP_TX_ON);
-+	port->tx_ts_enabled = (cfg->tx_type == HWTSTAMP_TX_ON);
- 
- 	/* cfg TX timestamp */
- 	seq_id = (AM65_CPSW_TS_SEQ_ID_OFFSET <<
-@@ -1872,25 +1874,24 @@ static int am65_cpsw_nuss_hwtstamp_set(struct net_device *ndev,
- 	       AM65_CPSW_PORTN_REG_TS_CTL_LTYPE2);
- 	writel(ts_ctrl, port->port_base + AM65_CPSW_PORTN_REG_TS_CTL);
- 
--	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
-+	return 0;
- }
- 
- static int am65_cpsw_nuss_hwtstamp_get(struct net_device *ndev,
--				       struct ifreq *ifr)
-+				       struct kernel_hwtstamp_config *cfg)
- {
- 	struct am65_cpsw_port *port = am65_ndev_to_port(ndev);
--	struct hwtstamp_config cfg;
- 
- 	if (!IS_ENABLED(CONFIG_TI_K3_AM65_CPTS))
- 		return -EOPNOTSUPP;
- 
--	cfg.flags = 0;
--	cfg.tx_type = port->tx_ts_enabled ?
-+	cfg->flags = 0;
-+	cfg->tx_type = port->tx_ts_enabled ?
- 		      HWTSTAMP_TX_ON : HWTSTAMP_TX_OFF;
--	cfg.rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
-+	cfg->rx_filter = port->rx_ts_enabled ? HWTSTAMP_FILTER_PTP_V2_EVENT |
- 			HWTSTAMP_FILTER_PTP_V1_L4_EVENT : HWTSTAMP_FILTER_NONE;
- 
--	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
-+	return 0;
- }
- 
- static int am65_cpsw_nuss_ndo_slave_ioctl(struct net_device *ndev,
-@@ -1901,13 +1902,6 @@ static int am65_cpsw_nuss_ndo_slave_ioctl(struct net_device *ndev,
- 	if (!netif_running(ndev))
- 		return -EINVAL;
- 
 -	switch (cmd) {
--	case SIOCSHWTSTAMP:
--		return am65_cpsw_nuss_hwtstamp_set(ndev, req);
 -	case SIOCGHWTSTAMP:
--		return am65_cpsw_nuss_hwtstamp_get(ndev, req);
+-		ret = xgbe_get_hwtstamp_settings(pdata, ifreq);
+-		break;
+-
+-	case SIOCSHWTSTAMP:
+-		ret = xgbe_set_hwtstamp_settings(pdata, ifreq);
+-		break;
+-
+-	default:
+-		ret = -EOPNOTSUPP;
 -	}
 -
- 	return phylink_mii_ioctl(port->slave.phylink, req, cmd);
- }
- 
-@@ -1991,6 +1985,8 @@ static const struct net_device_ops am65_cpsw_nuss_netdev_ops = {
- 	.ndo_set_tx_maxrate	= am65_cpsw_qos_ndo_tx_p0_set_maxrate,
- 	.ndo_bpf		= am65_cpsw_ndo_bpf,
- 	.ndo_xdp_xmit		= am65_cpsw_ndo_xdp_xmit,
-+	.ndo_hwtstamp_get       = am65_cpsw_nuss_hwtstamp_get,
-+	.ndo_hwtstamp_set       = am65_cpsw_nuss_hwtstamp_set,
+-	return ret;
+-}
+-
+ static int xgbe_change_mtu(struct net_device *netdev, int mtu)
+ {
+ 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
+@@ -2021,7 +2000,6 @@ static const struct net_device_ops xgbe_netdev_ops = {
+ 	.ndo_set_rx_mode	= xgbe_set_rx_mode,
+ 	.ndo_set_mac_address	= xgbe_set_mac_address,
+ 	.ndo_validate_addr	= eth_validate_addr,
+-	.ndo_eth_ioctl		= xgbe_ioctl,
+ 	.ndo_change_mtu		= xgbe_change_mtu,
+ 	.ndo_tx_timeout		= xgbe_tx_timeout,
+ 	.ndo_get_stats64	= xgbe_get_stats64,
+@@ -2034,6 +2012,8 @@ static const struct net_device_ops xgbe_netdev_ops = {
+ 	.ndo_fix_features	= xgbe_fix_features,
+ 	.ndo_set_features	= xgbe_set_features,
+ 	.ndo_features_check	= xgbe_features_check,
++	.ndo_hwtstamp_get	= xgbe_get_hwtstamp_settings,
++	.ndo_hwtstamp_set	= xgbe_set_hwtstamp_settings,
  };
  
- static void am65_cpsw_disable_phy(struct phy *phy)
+ const struct net_device_ops *xgbe_get_netdev_ops(void)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c b/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
+index bc52e5ec6420..0127988e10be 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-hwtstamp.c
+@@ -157,26 +157,24 @@ void xgbe_tx_tstamp(struct work_struct *work)
+ 	spin_unlock_irqrestore(&pdata->tstamp_lock, flags);
+ }
+ 
+-int xgbe_get_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
++int xgbe_get_hwtstamp_settings(struct net_device *netdev,
++			       struct kernel_hwtstamp_config *config)
+ {
+-	if (copy_to_user(ifreq->ifr_data, &pdata->tstamp_config,
+-			 sizeof(pdata->tstamp_config)))
+-		return -EFAULT;
++	struct xgbe_prv_data *pdata = netdev_priv(netdev);
++
++	*config = pdata->tstamp_config;
+ 
+ 	return 0;
+ }
+ 
+-int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
++int xgbe_set_hwtstamp_settings(struct net_device *netdev,
++			       struct kernel_hwtstamp_config *config,
++			       struct netlink_ext_ack *extack)
+ {
+-	struct hwtstamp_config config;
+-	unsigned int mac_tscr;
+-
+-	if (copy_from_user(&config, ifreq->ifr_data, sizeof(config)))
+-		return -EFAULT;
+-
+-	mac_tscr = 0;
++	struct xgbe_prv_data *pdata = netdev_priv(netdev);
++	unsigned int mac_tscr = 0;
+ 
+-	switch (config.tx_type) {
++	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		break;
+ 
+@@ -188,7 +186,7 @@ int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
+ 		return -ERANGE;
+ 	}
+ 
+-	switch (config.rx_filter) {
++	switch (config->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		break;
+ 
+@@ -290,7 +288,7 @@ int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata, struct ifreq *ifreq)
+ 
+ 	xgbe_config_tstamp(pdata, mac_tscr);
+ 
+-	memcpy(&pdata->tstamp_config, &config, sizeof(config));
++	pdata->tstamp_config = *config;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index e8bbb6805901..381f72a33d1a 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -1146,7 +1146,7 @@ struct xgbe_prv_data {
+ 	spinlock_t tstamp_lock;
+ 	struct ptp_clock_info ptp_clock_info;
+ 	struct ptp_clock *ptp_clock;
+-	struct hwtstamp_config tstamp_config;
++	struct kernel_hwtstamp_config tstamp_config;
+ 	unsigned int tstamp_addend;
+ 	struct work_struct tx_tstamp_work;
+ 	struct sk_buff *tx_tstamp_skb;
+@@ -1307,10 +1307,11 @@ void xgbe_update_tstamp_addend(struct xgbe_prv_data *pdata,
+ void xgbe_set_tstamp_time(struct xgbe_prv_data *pdata, unsigned int sec,
+ 			  unsigned int nsec);
+ void xgbe_tx_tstamp(struct work_struct *work);
+-int xgbe_get_hwtstamp_settings(struct xgbe_prv_data *pdata,
+-			       struct ifreq *ifreq);
+-int xgbe_set_hwtstamp_settings(struct xgbe_prv_data *pdata,
+-			       struct ifreq *ifreq);
++int xgbe_get_hwtstamp_settings(struct net_device *netdev,
++			       struct kernel_hwtstamp_config *config);
++int xgbe_set_hwtstamp_settings(struct net_device *netdev,
++			       struct kernel_hwtstamp_config *config,
++			       struct netlink_ext_ack *extack);
+ void xgbe_prep_tx_tstamp(struct xgbe_prv_data *pdata,
+ 			 struct sk_buff *skb,
+ 			 struct xgbe_packet_data *packet);
 -- 
 2.47.3
 
