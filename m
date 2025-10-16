@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07934DCF7;
-	Thu, 16 Oct 2025 16:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE87350D68;
+	Thu, 16 Oct 2025 16:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760630416; cv=none; b=chxwtRTF6NxjYz7PuVYiB1RuoEjIgV02afc+Gg+PJvfr5KdIpfwLbWsKkyfV9aZltY0GYH0cdQnJfuFnw0w6wxt5vyE/sUFbW+AClpgHxyKRVg//2WijedqgjGACP3YaxXyhcihOzBaANsqi973I+9Y6OmJyNms0XC6qU/LMcPw=
+	t=1760630431; cv=none; b=HjRZJlmGEH9XCrie5duZpiI/cam1kx7mN8jRmtidjKU+l048erJiJarllel9gH0DjT7j8HMxxRvRKNC4Q3XACOPIT8DTAS4d7jbH/C8S+o+MDs5NTQaNhg0Q+flg9sN57aLCsssEyccLAEsDrJEn5cggpb/AdvFjrQ3PdplGTiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760630416; c=relaxed/simple;
-	bh=NuqUOPCKexSPVN6pyx9qmVQ4zuprW6Q0ZQJ3dbKvATs=;
+	s=arc-20240116; t=1760630431; c=relaxed/simple;
+	bh=nORpSP6NrI6Qmuqm66M/ilyzrD8flM0QSTQ4gbzBGi8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iU2nBFNrwl3nJ5WrhzLqYPpeieeRjvNDCVWlnYMtw/C/xafuDlm3Ql6N7bS8QDEq3oYGnD1eu+4vQP1vc5CLKM9kpu+bZZ3nv1TVrfhsNcF3N6fcFQT5eouo+S0Csb/e/8BRBnZzXAjSy3D3vfLvRsPtMSXT2rZ/YyYkGdO/i00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1OZNxhA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=U/LaO7j6Hjv/vkKKqbenRLIGANWaFo/D88Xi10NXyEDjijgN1MOydgLfLVyr1ITWKztdc89og2r6NtLW32TfW69h0To/r1kkgDRgIJJfvukEAA6Et9/hBOlfUEqVB0u2V5xjW7Two6e/RV+URVNPfTfR1Nz/SWVACc8anxP2RQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6erMQRw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1OZNxhA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BD5C4CEF1;
-	Thu, 16 Oct 2025 16:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6erMQRw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF95C4CEF1;
+	Thu, 16 Oct 2025 16:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760630416;
-	bh=NuqUOPCKexSPVN6pyx9qmVQ4zuprW6Q0ZQJ3dbKvATs=;
+	s=k20201202; t=1760630431;
+	bh=nORpSP6NrI6Qmuqm66M/ilyzrD8flM0QSTQ4gbzBGi8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V1OZNxhAC/VFy5c2v7Clp9XcpcWIZEQoDmeu8dfrVkzFV81Ty+TppXZ7CBIMZt6Oq
-	 yCpaRt4YuBqED+M9qz7KOHUM3GdjmowtScYZWMePVmuNGzbyb1BS3Z1cmyNfrbWt50
-	 mfEMqlKqaI6Ovopzjf6FngMC9/jwJyrSXDsEgOhEZnaMdRkliP+2S0BPnmSlFX9QMH
-	 bByZBmnkIrkpZ6M9zAEOpzPxFHf6PwYexqX/tN/PfYeQoCgqON5r2/HPeBID30HghQ
-	 VCKVdLtDaOUQS8BJFOdpDSX/o8jfvRK5oMYoklNCSyIWFZdZ8sRfupt8h42ITDpGVZ
-	 67TV4890pnI/w==
-Date: Thu, 16 Oct 2025 17:00:11 +0100
+	b=r6erMQRwckQ6A4zou04gI0aaPdOBZOubgDi7fAVY6xKulEcsY1GWnGPpOOaMHwnXX
+	 GkX9JWq2f1Htn1vUgbbi18LINXvee8aLd41Y8Sk6x9VzCvIRXEwHS7nHlNatdxhSMD
+	 8PhOhXvxuUlUOm4z1Md06yNnNcrfyqxbuOxzctZ7W9zwuBnaYKl8+8NCiw5nWDBoUJ
+	 9R89LQBk9cOsZHe1nCBEFiELV/oBteEcH8bbV5N+UgQHpTd6bpXclhtkVS11Hubxa4
+	 2OGv3/98XaU8adyPEQBuCToDHaxJSQO0OZnCNh9NnywXTahukgnoFuPiZ8Ad1qLsoV
+	 FH3/olxFBwC/Q==
+Date: Thu, 16 Oct 2025 17:00:26 +0100
 From: Simon Horman <horms@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -40,11 +40,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 11/13] net: airoha: Refactor src port
- configuration in airhoha_set_gdm2_loopback
-Message-ID: <aPEWiwy_ebWLDnNa@horms.kernel.org>
+Subject: Re: [PATCH net-next v2 12/13] net: airoha: ppe: Do not use magic
+ numbers in airoha_ppe_foe_get_entry_locked()
+Message-ID: <aPEWmlok8qlV8UCY@horms.kernel.org>
 References: <20251016-an7583-eth-support-v2-0-ea6e7e9acbdb@kernel.org>
- <20251016-an7583-eth-support-v2-11-ea6e7e9acbdb@kernel.org>
+ <20251016-an7583-eth-support-v2-12-ea6e7e9acbdb@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,14 +53,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251016-an7583-eth-support-v2-11-ea6e7e9acbdb@kernel.org>
+In-Reply-To: <20251016-an7583-eth-support-v2-12-ea6e7e9acbdb@kernel.org>
 
-On Thu, Oct 16, 2025 at 12:28:25PM +0200, Lorenzo Bianconi wrote:
-> AN7583 chipset relies on different definitions for source-port
-> identifier used for hw offloading. In order to support hw offloading
-> in AN7583 controller, refactor src port configuration in
-> airhoha_set_gdm2_loopback routine and introduce get_src_port_id
-> callback.
+On Thu, Oct 16, 2025 at 12:28:26PM +0200, Lorenzo Bianconi wrote:
+> Explicit the size of entries pointed by hwe pointer in
+> airoha_ppe_foe_get_entry_locked routine
 > 
 > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
