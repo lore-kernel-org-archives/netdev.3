@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EE93314BB;
-	Thu, 16 Oct 2025 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097EC3314BB;
+	Thu, 16 Oct 2025 14:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760625510; cv=none; b=NqNfbGGDkFPNUuxxYMCKXdd24t1HylpYdfO9akGOnd7ETZqJJpYOc4O3wMDrlPEaKtgDeV0FP5vLogsxBUgEgwf1k5YLsCljqdN/VmIKR809IW1hbBW8YKHc9091Q+aQiiC/FPBuzqBkyNdc58+LIY8eUgUf3HxMHNtBc/3+siE=
+	t=1760625514; cv=none; b=DeZ/eBH3PXzd+Stx8K64tNnGyKi5cPbYgR5K9iaJrB4qHjyrn7OPBq1GUt73k08uPPt9ukzO6JZkCm8+4Grr+PthUYSsDKFiadHOy7XLXAywswX9oa00u2RbSv16+NGI+ae7TeAzKdql5pGbpqwg/1RkRMgixw+LpAh8ziw3Id8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760625510; c=relaxed/simple;
-	bh=XcMZNNLMtiKbA786j1tJuvBwn3efx6UCT9YPvujBkWk=;
+	s=arc-20240116; t=1760625514; c=relaxed/simple;
+	bh=q8YZ9RsHa4hGJ4Opo0x6+hT6sKIuFfCy6YQ0w+kTL9A=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=iMvehKKPOGuIAqaDpny6oRIR7KA73AIa8T2MRYy6c7SHSY9lRiMWTiiDjEt3dVWlxKaMvlJMPSWMYXb/FlBVt8pE5nP/ztCJFmPMLqf2DWS266BxK40enqbNfEv1Md1oSiVC3uuBidwwkTSgxay/4ysYZ7rbqtSQ+QUTmU1ZBqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TIgWNPeU; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=hPyDblYHaZAH74fMrAYGUHtYZ2enR8B27QoS5MCWx3X4zc3vMlj5+6XD1Sk1LcYILsJuY0SDt3Ry9dgRU7N2TZf4+Hki0SC+WyVul410wy6gRTsfuG4jVmlXzCnIFQtZiqN6qxmalqR4o4g2cLeaa6hQ1fw3YXJILrRiO34LO5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CjXOylw2; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TIgWNPeU"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CjXOylw2"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PkzEXKrk7RiVwlShBSl0OJhiBXrJm3zMeL24zlXLNiM=; b=TIgWNPeUzSzB3Kno3hPmRsaonf
-	x+nfvROU0Df6TQf1HI/2FBPViH7ltI2gQR57cpD3Z68ucMgCrmeibKj1CCyQmqwEf4YQEofUumSoj
-	uBLERzJeVB1p+/btdxTuXiY3aXksY7ijzUGyFCh+8ktUH9+qB+sdgrYNYa2vBlwHUuB69ynKHh7C/
-	9fT3GObX+TVA4MTK5R3e+7w3dYho3esCjsnl3lu/RUO2vJYsVFSAYagXGcVWF9JIZOj4luFezSFsW
-	o8RXF63Abtm3UFDA04KW8VkjG4AHv6p6/XcQrvLDIHHG/APt5OUFbwzXC4UqmtFAhxbHq2qZH8BmT
-	q9cPPRPQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:44420 helo=rmk-PC.armlinux.org.uk)
+	bh=zKZGKGy/Hhc0gUrzCRXsRGfkbT59NKMuOwnA6gRxZjc=; b=CjXOylw28mx9iSDQpfU74yDKsJ
+	XWP3yFEZ+aev9rG07hI86dRj71356k7+B8UGfdKSXHiD6P5ni3RPxUpWe9Mtnc8Jcw3lAu+eFBKQL
+	c8qNNH6QnftrxCDEiemSWfM8taGRu0y0ec/dmmWORLdsOoVApJIF3bjt8tnL6RgQk5fRlRQjXA0x5
+	UUakKRuesSOR6kHUD1Aq74UHjyvs5zcvk2hmiT5Imw2zcWQ10thpDf8Aer8jCK0RbyMV9nnri7CWG
+	k7y67VyswX9RSrQLkhVPo2IeHSIb38MFr0/MBHlqgmetkhjG3nerqY4UwUpT7iO3hgFlgiRL7zN+R
+	jN/8I+Mw==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:53902 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1v9P6S-000000006RB-3imm;
-	Thu, 16 Oct 2025 15:37:17 +0100
+	id 1v9P6e-000000006Rb-47Xm;
+	Thu, 16 Oct 2025 15:37:29 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1v9P6N-0000000Aolg-3y0a;
-	Thu, 16 Oct 2025 15:37:11 +0100
+	id 1v9P6Y-0000000Aolr-0vLH;
+	Thu, 16 Oct 2025 15:37:22 +0100
 In-Reply-To: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 References: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -84,8 +84,8 @@ Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Yu-Chun Lin <eleanor15x@gmail.com>
-Subject: [PATCH net-next v2 06/14] net: stmmac: remove hw->ps xxx_core_init()
- hardware setup
+Subject: [PATCH net-next v2 08/14] net: stmmac: move reverse-"pcs" mode setup
+ to stmmac_check_pcs_mode()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,168 +95,69 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1v9P6N-0000000Aolg-3y0a@rmk-PC.armlinux.org.uk>
+Message-Id: <E1v9P6Y-0000000Aolr-0vLH@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 16 Oct 2025 15:37:11 +0100
+Date: Thu, 16 Oct 2025 15:37:22 +0100
 
-After a lot of digging, it seems that the oddly named hw->ps member is
-all about configuring the core for reverse SGMII. This member is set to
-one of 0, SPEED_10, SPEED_100 or SPEED_1000 depending on
-priv->plat->mac_port_sel_speed. On DT systems, this comes from the
-"snps,ps-speed" DT property.
+The broken reverse-mode, selected by snps,ps-speed, is configured when
+the platform provides a valid port speed and a PCS is being used.
 
-When set to a non-zero value, it:
+Both these remain constant after the driver has probed, so the software
+state doesn't need to be re-initialised each time stmmac_hw_setup() is
+called (which is called at open and resume time.)
 
-1. Configures the MAC at initialisation time to operate at a specific
-   speed. However, this will be overwritten by mac_link_up() when the
-   link comes up (e.g. with the fixed-link parameters.)
+Move the software setup of reverse-mode to stmmac_check_pcs_mode()
+which is called from the driver probe function.
 
-   Note that dwxgmac2 wants to also support SPEED_2500 and SPEED_10000,
-   but both these values are impossible.
-
-2. It _incorrectly_ enables the transmitter (GMAC_CONFIG_TE) which
-   makes no sense, rather than enabling the "transmit configuration"
-   bit (GMAC_CONFIG_TC). Likely a typo.
-
-3. It configures the SGMII rate adapter layer to retrieve its speed
-   setting from the MAC configuration register rather than the PHY.
-
-There are two ways forward here:
-
-a) fixing (2) so that we set GMAC_CONFIG_TC. However, we have platform
-   that set the "snps,ps-speed" property and that work today. Fixing
-   this will cause the RGMII, SGMII or SMII inband configuration to be
-   transmitted, which will be a functional change which could cause a
-   regression.
-
-b) ripping out (1) and (2) as they are ineffective. This also has the
-   possibility of regressions, but the patch author believes this risk
-   is much lower than (a).
-
-Therefore, this commit takes the approach in (b).
-
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../ethernet/stmicro/stmmac/dwmac1000_core.c  | 23 +++--------------
- .../net/ethernet/stmicro/stmmac/dwmac4_core.c | 24 +++---------------
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 25 ++-----------------
- 3 files changed, 8 insertions(+), 64 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 5c653be3d453..d35db8958be1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -26,35 +26,18 @@ static void dwmac1000_core_init(struct mac_device_info *hw,
- 				struct net_device *dev)
- {
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value = readl(ioaddr + GMAC_CONTROL);
- 	int mtu = dev->mtu;
-+	u32 value;
- 
- 	/* Configure GMAC core */
--	value |= GMAC_CORE_INIT;
-+	value = readl(ioaddr + GMAC_CONTROL);
- 
- 	if (mtu > 1500)
- 		value |= GMAC_CONTROL_2K;
- 	if (mtu > 2000)
- 		value |= GMAC_CONTROL_JE;
- 
--	if (hw->ps) {
--		value |= GMAC_CONTROL_TE;
--
--		value &= ~hw->link.speed_mask;
--		switch (hw->ps) {
--		case SPEED_1000:
--			value |= hw->link.speed1000;
--			break;
--		case SPEED_100:
--			value |= hw->link.speed100;
--			break;
--		case SPEED_10:
--			value |= hw->link.speed10;
--			break;
--		}
--	}
--
--	writel(value, ioaddr + GMAC_CONTROL);
-+	writel(value | GMAC_CORE_INIT, ioaddr + GMAC_CONTROL);
- 
- 	/* Mask GMAC interrupts */
- 	value = GMAC_INT_DEFAULT_MASK;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-index 21e4461db937..d855ab6b9145 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c
-@@ -27,29 +27,11 @@ static void dwmac4_core_init(struct mac_device_info *hw,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	void __iomem *ioaddr = hw->pcsr;
--	u32 value = readl(ioaddr + GMAC_CONFIG);
- 	unsigned long clk_rate;
-+	u32 value;
- 
--	value |= GMAC_CORE_INIT;
--
--	if (hw->ps) {
--		value |= GMAC_CONFIG_TE;
--
--		value &= hw->link.speed_mask;
--		switch (hw->ps) {
--		case SPEED_1000:
--			value |= hw->link.speed1000;
--			break;
--		case SPEED_100:
--			value |= hw->link.speed100;
--			break;
--		case SPEED_10:
--			value |= hw->link.speed10;
--			break;
--		}
--	}
--
--	writel(value, ioaddr + GMAC_CONFIG);
-+	value = readl(ioaddr + GMAC_CONFIG);
-+	writel(value | GMAC_CORE_INIT, ioaddr + GMAC_CONFIG);
- 
- 	/* Configure LPI 1us counter to number of CSR clock ticks in 1us - 1 */
- 	clk_rate = clk_get_rate(priv->plat->stmmac_clk);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 00e929bf280b..0430af27da40 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -23,29 +23,8 @@ static void dwxgmac2_core_init(struct mac_device_info *hw,
- 	tx = readl(ioaddr + XGMAC_TX_CONFIG);
- 	rx = readl(ioaddr + XGMAC_RX_CONFIG);
- 
--	tx |= XGMAC_CORE_INIT_TX;
--	rx |= XGMAC_CORE_INIT_RX;
--
--	if (hw->ps) {
--		tx |= XGMAC_CONFIG_TE;
--		tx &= ~hw->link.speed_mask;
--
--		switch (hw->ps) {
--		case SPEED_10000:
--			tx |= hw->link.xgmii.speed10000;
--			break;
--		case SPEED_2500:
--			tx |= hw->link.speed2500;
--			break;
--		case SPEED_1000:
--		default:
--			tx |= hw->link.speed1000;
--			break;
--		}
--	}
--
--	writel(tx, ioaddr + XGMAC_TX_CONFIG);
--	writel(rx, ioaddr + XGMAC_RX_CONFIG);
-+	writel(tx | XGMAC_CORE_INIT_TX, ioaddr + XGMAC_TX_CONFIG);
-+	writel(rx | XGMAC_CORE_INIT_RX, ioaddr + XGMAC_RX_CONFIG);
- 	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d440b1c2b7ff..013a2f3684c7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1091,6 +1091,19 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
+ 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
+ 		priv->hw->pcs = STMMAC_PCS_SGMII;
+ 	}
++
++	/* PS and related bits will be programmed according to the speed */
++	if (priv->hw->pcs) {
++		int speed = priv->plat->mac_port_sel_speed;
++
++		if ((speed == SPEED_10) || (speed == SPEED_100) ||
++		    (speed == SPEED_1000)) {
++			priv->hw->ps = speed;
++		} else {
++			dev_warn(priv->device, "invalid port speed\n");
++			priv->hw->ps = 0;
++		}
++	}
  }
+ 
+ /**
+@@ -3435,19 +3448,6 @@ static int stmmac_hw_setup(struct net_device *dev)
+ 	stmmac_set_umac_addr(priv, priv->hw, dev->dev_addr, 0);
+ 	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+-	/* PS and related bits will be programmed according to the speed */
+-	if (priv->hw->pcs) {
+-		int speed = priv->plat->mac_port_sel_speed;
+-
+-		if ((speed == SPEED_10) || (speed == SPEED_100) ||
+-		    (speed == SPEED_1000)) {
+-			priv->hw->ps = speed;
+-		} else {
+-			dev_warn(priv->device, "invalid port speed\n");
+-			priv->hw->ps = 0;
+-		}
+-	}
+-
+ 	/* Initialize the MAC Core */
+ 	stmmac_core_init(priv, priv->hw, dev);
  
 -- 
 2.47.3
