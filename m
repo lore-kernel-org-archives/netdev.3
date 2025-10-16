@@ -1,430 +1,457 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013048.outbound.protection.outlook.com [52.101.72.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4B93314A1;
-	Thu, 16 Oct 2025 10:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760611418; cv=fail; b=cyVSavKShka6UdkREyLcAXKYZUyokzQYjwfpwZ7FwdzmP+gMHLQdFU/pj79eSJbplMZNRhlKtUWS/r/uIQDqDcx/pr94uk32aNh1/jLxwMjceqZiZBIq1++m8A08PYSoM5Xp1EbxdFBALePN+Fl2PdncJ1UCkkciOE1vFMeZfzw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760611418; c=relaxed/simple;
-	bh=92dmqAY44VpNMWWeRWsRepxZkWZRDtLdWIuUR9GNHHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aBK2Y0DqYfQMviXMomKju9ZIq/UZvvzWq+rjhBhXzrPt+HXsZtphRMOF9dtbT0do6tcQVrOt01P44T3EQq87EN91AGlMJiVHxoEavwslTO+3uj/RQKi/V8kgO+gKm/0hbAKm+0EZKMimOnKjFlv4tU41/fkYyku/iz7JHvGnArw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XvBrAX3w; arc=fail smtp.client-ip=52.101.72.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9442430FF03
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 10:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760611690; cv=none; b=a3ezG87vRPSPf/ZiJMpa62WugAUcElNhnMcfFY1Rn5GoVGUHUjrIFWeJjnIWZbgQxT/iSy1lojp3ZK7Wsv7dQwuywBCuxo5K5PaumuLjnXSsvwuxsAokTKJhxEI9M06pb9PAxrxCfKqMoVcOi7uR+v5ZPu2s9eMBG9HHJ/TBTug=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760611690; c=relaxed/simple;
+	bh=yFEsYiCogN+aow2kZWzorI6R4zVGJwnbnGGcQnCPf6E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iGsDY0hljQAv/FkpOwmVBqu2HJWCZ/nakmkbazNNACqa2DJZSj/jMB4NIts9Ngbb7hGh0BaOK6HIydgVI296Jjon0Obwg8y1cXBPq/xwyOziVBXQ0MDp468dBW2ms9Os5XcCfyE9jPgncR47D02lJeEoOjCZES1SifM6mycknf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vyos.io; spf=pass smtp.mailfrom=vyos.io; dkim=pass (2048-bit key) header.d=vyos.io header.i=@vyos.io header.b=uQ91b1ik; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=vyos.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vyos.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XvBrAX3w"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qUqCu3m9BKAiwMhv9yANXcMJMuhngbVjNodACuiwi4/c5Irwey1qjdT0L0jib7H43KzVeTy2L1pCKUcftjTC22KtqW1or0KnOsK5nspDGMeUxK1PHJARrg1vWouL/fRgXKnSvdp5IY7gobCEzy5VTqv0rNFEjxWyzu2G6MhAi5bRJJhJ6gJN4pHo0G47jMb6iahsOo6wzcVGvuDRfLVohaUKKgKKV6wtERLh8GWJWe7NFfW8HPnO+/X9dB8cK5NqKoXXsG3YoWB7n5ONnRB76LmKbArV4HlJBaaoPvLRu2i+mWgk9FTVVn5S6ZmLLKV1L1eiLmeM6kHNon1ygh4TAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RaHmohhqSF4ekkaWtnwCa+u1MwgU1GGDT1UNVgDD+jQ=;
- b=K/SyKwMAovy9W2Qxucbx2l93WBYr4resTS6rVthXm089mI5FOcDn4IyWw5/v2wWg27Zt2ebLwvfeMIkxdrdvgu1qBWlXdvOJnLulJgc9JiHKUf7uHRC+TOzCao7YfRjjVphFRVWXiaX/6kJJ9H4b6LBOVBNEXwS0NCfeNvpRz28VjaW3mGiCV3r5/LBVcs02+JSIMFY2PZbvukvIyjMs0ohmPRnU41fa6W6PzPUiDGLF0tt7ESZL/qs0zTN9Nf9tGFDXKjjXKgzDXF9wytVCzaeqUbi9yZXoxPwVM7Dj5eoGIx+mH2li5PuEC8NoWMKk1QxogyrR+BZXF0JxOPCQmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RaHmohhqSF4ekkaWtnwCa+u1MwgU1GGDT1UNVgDD+jQ=;
- b=XvBrAX3wRf1tIuqgVQcClbiwh0+NCayVDswQIAC+zCCSIJKYOGD9588w9HUdyrOaelBMJSKOhD4N8RUcIZpVA/JI3n2cmDUT0YcffWikA2wgVexagQJOUl3pVuzU3WIgLYwLHLfZ/SoW2RNmMS8PqvwHRMSszv6sq+r6qMYWMxB70TL0KirJUVv+2q6OzOFP5lrgoLfxLKwEc11KA4MR/P9K7vzILJli0DMxzGC8+BiFLh8fdqx5uRR4wXONbdXxkCYIAkQr1hdrxMVaQ2V0WS0bxDAeenB+zRWnMuslmL976xGrMhDooygeRF9t+0YiiasIqZPAe+3iMDJGtyEdcA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS8PR04MB9096.eurprd04.prod.outlook.com (2603:10a6:20b:447::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.11; Thu, 16 Oct
- 2025 10:43:33 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9228.011; Thu, 16 Oct 2025
- 10:43:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=vyos.io header.i=@vyos.io header.b="uQ91b1ik"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso608626f8f.2
+        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 03:48:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vyos.io; s=google; t=1760611686; x=1761216486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vj2yUb8R3eX7RD7UoPcqhNO1Z4bWlgfrzVLfpWFTIbM=;
+        b=uQ91b1ikE4WTd2xbGpJQzsJWHaqMQx/MPJyNmslQytKypjAaG2BB7yVofq2WSZn2pu
+         +BF3UzskR5vefXIST+NOZo+V8tfVet3kmKUmPA5L8CLcOoqOlDBg/DzrNh/+paq7MFAA
+         mZUki3SCJMDVYMGbc0PShz2TXTi1mkmqOzMJyKbsBnvfEj92tIPqYqqVl2IUiVtvczWs
+         beA+z+AXorg9FLGz1Fawu6/zOLlpENI+zhrxmvmQjFbP69e0EWZgq5xU0Ma65pJK70go
+         pxRnDWk7EuBbLbmuxFKCSlMlgm4smN7lAq3fQW9SGwJC477K/a/+OKYYEZl8Lw0l5GkD
+         YHrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760611686; x=1761216486;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vj2yUb8R3eX7RD7UoPcqhNO1Z4bWlgfrzVLfpWFTIbM=;
+        b=L9Lj/F2vH9zTtUbuGzVHLKc7fBzEtF0QrupWyunzYI5P4hnM0vukAAtv4eWWD52s5d
+         BbaIM8qLdzSUpr17fJm0BdKTj3Y151ugJYJkAwXuV0o6zqGzM31BaeyTYAXqLe8p7HaT
+         Dxst6zDl9bnMUubNEeOyvJcvBOej9cItTrDpF6bGMHHdtS0jR3EiYIZt/voKEfvQKNOC
+         eFUav9XjXciVFxUsIkIYVT46pHQPbtEc7DoTh4tDtIluOJLZTkKbRBUrBKBWpFt/UD3N
+         iMpC8WA1FROTAX64PrbH4dKxQTBbXmq757v2myV6ZtxgwVtsT0p34oLJD0wP05lTZGev
+         nOPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCqkI9zyCcwB9zSzrJ7llFOmE7k43OY0ZceBPQEnPHAtKVh6pTrDxRntDbORsuNlnleK5w4XE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzareyFP4xrdMCqWhXtAxyBLO2M2quffO7QgCsVzniF+7t2NKUj
+	IXYywDfieRSnGCjOIteONQBZ0JT4N6h/rdm7gT1z+S/hS0ZssdjvHByOeXqd6g3hYF0=
+X-Gm-Gg: ASbGncuPVaIli0dmeRj43Dzd0SS0sEH9GV4+8j3fOBCLzZzms799bBcLZOpoerRcBkH
+	/G5ea7ilBtfRrS9V+YRzh/PiqszNdTMvU0ZHAPXXH88ioXYNLICuPSPFzpMo+/49QPotvMfXwPe
+	MyC+D5kuLzCb6SKPXUDwQL/aP4gdf0DNTGRsWsjBFZPF4IHR47/A57KI9gXh0SWpG7fBtHwKies
+	zYOdF4iEAlbedPIEx0XMh3R4dLSOjp8hpEIe3hMSfUeDpqx2tdvPapFxl3Q//4BfXx6Q1H3FlyD
+	KwkOPsPmmhYD615NdojeolYv+Vt2DPqeNXJax7Eb3kD1WC+JdvL57QKWFiJgFWKnn5fdc+zxvGv
+	RHvvgW8vIWKz9LtHM+1A1HwPiX3NdVIQyK3nj4NL8oFXunuvzjNPRGg9WZ+EyEZ4bT3k+AwhBlA
+	TTAi6nfa2QNLDx22C9ZwZsds/Gw8D5yQ3s/kTISWR17y0qC2b2
+X-Google-Smtp-Source: AGHT+IGgaLPcwdWJH9Gy8ifJz8LWBEVC3gErvq1D1L4gZqOK9ngjbpyI1DEFb6w04ucdJmWpEr+g5w==
+X-Received: by 2002:a5d:5d11:0:b0:425:8502:f8c3 with SMTP id ffacd0b85a97d-42666ab95a3mr18043363f8f.1.1760611685676;
+        Thu, 16 Oct 2025 03:48:05 -0700 (PDT)
+Received: from VyOS.. (089144196114.atnat0005.highway.a1.net. [89.144.196.114])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-426ff84cbb7sm2729374f8f.23.2025.10.16.03.48.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 03:48:05 -0700 (PDT)
+From: Andrii Melnychenko <a.melnychenko@vyos.io>
+To: pablo@netfilter.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc
+Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	richardcochran@gmail.com
-Cc: imx@lists.linux.dev,
+	horms@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH 8/8] arm64: dts: imx94: add basic NETC nodes and properties
-Date: Thu, 16 Oct 2025 18:20:19 +0800
-Message-Id: <20251016102020.3218579-9-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251016102020.3218579-1-wei.fang@nxp.com>
-References: <20251016102020.3218579-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0180.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::36) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/1] nf_conntrack_ftp: Added nfct_seqadj_ext_add().
+Date: Thu, 16 Oct 2025 12:48:00 +0200
+Message-ID: <20251016104802.567812-1-a.melnychenko@vyos.io>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|AS8PR04MB9096:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4304c9d-8069-430e-74c7-08de0ca0d9f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|7416014|376014|19092799006|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?p8ZJyvsopgcZ+aKQQrCdbutrpvuDHXvvZg4mpDJufY2KwuLYC027CsjxhsQ9?=
- =?us-ascii?Q?ZIFQVCr/176kAYuRaEesriQP49QLrbGePABQzxRSR/Gxs58opBkdaPWNNO3+?=
- =?us-ascii?Q?pd6x8lhQq0VXdKoYvPOyl00vNSf4hgrd0Mus7f0vS5DHbXEMlCg/qlW9N9CB?=
- =?us-ascii?Q?awdSJyDNx1z1zwqyJPwC8J2QNvaAvnAXYQqAiKMvNt8D6S8gls8QwARm0p9n?=
- =?us-ascii?Q?sFY3qoC/1XxkUXQVtoi/e9LuSv8/nDhfp2ZWtRZ2zlwx3204WuL4F2Q9/+5t?=
- =?us-ascii?Q?3MT+UOpR4Jq9TiyTu9V3AaNHQUpsuCwEYvjzR0yVJEaPc70r3UFAXEqC9Tf1?=
- =?us-ascii?Q?Nq7GlS63MmDOTnWTNJds0C9j0wYemjp+qvIx4EG24CqQHe3Vt7L4+wlDO5It?=
- =?us-ascii?Q?8F9ybCyyVxsfs0+iV1pZejKQF4ua74/qKPkFJs263B4KbdCXoq4NTsPIqPD6?=
- =?us-ascii?Q?BJHellF1tiuNBYohoeEJckzLA8AWqMIyAdtlR5jhM5pVH6djZgsBACEqRq6q?=
- =?us-ascii?Q?v2gQJrsO0sduy9z0kZ8EpZ1+tgMfcmoxp5u05E+Ym94I74OSsKJRLe3fa7Gl?=
- =?us-ascii?Q?J/krYKhNK4VGUHmt3zTiWIf3gOD6AYHxY4cuJc0kq3NkjWMEwsQ3Vpx391QG?=
- =?us-ascii?Q?KKKjbdBqm3syk7eFAeOtENW6AGUm1QW83ZuI1zqkA6HRstkj38V40MuYDkmD?=
- =?us-ascii?Q?spl8B4cS9s5XjvE3a++uYotqyNmRgu+G0+Sk30JGZMVJY3BHqKzrIbICmvZw?=
- =?us-ascii?Q?pypHANK7yV2lbJvu+WjWs2fK8lJ2g8RwIIlZ5tBw0q1TOQMV6OghGOBDDrCJ?=
- =?us-ascii?Q?M1r46rkzxsLzUOJITxsYT5ecc7d8SvTyo2KlorXTA558UEdIUH/xsVITzaVI?=
- =?us-ascii?Q?Y+lacB4W2/k9UxY0oF8/jmIlk++o5SfM8Ay7+e70/y3JyK5FwD1nadpnAoEC?=
- =?us-ascii?Q?kMybO45I+elukVuoHNT5GEh5RrwZQbHwget0vixXYowKvTw5cDZC8knyGff5?=
- =?us-ascii?Q?MENAk0lWjV4RMu3+dmq2b5IMOxEmV6BHKaXaCW5h+AE9u/b3PhwHHaXhNZ6M?=
- =?us-ascii?Q?UjSbfv3zr57Zl4IaXtES3gDxV2GLMQI4nAflrf/baM+U8AieQtCmFfgDk9hf?=
- =?us-ascii?Q?bM1pCtInHJvDjbhn4xV1isVpjDLEb9W0K+Gi+InCbUB7AUflSnEL6ulTkHrr?=
- =?us-ascii?Q?3VvzLDIC5hXpg5bNpi6EnspPzsD5tiWcfLQpLQkEZY24WqtS5w0m+1R+WGxo?=
- =?us-ascii?Q?IvFwuJgvTjWTQK+nPUfjHQaY2HS5OHUlZYwtmA5yPaP29daWKumF1o8Y/U4K?=
- =?us-ascii?Q?L1naOB5jJS6JptPF+sOQ346D2/gfG8jrsxcTmG096GKTwwgng4SVfsy2Mlx2?=
- =?us-ascii?Q?u8tx7MvlSMuHLc13NO6UiLxD8JQkug9XkkregHTYnWBkH0Vg3xccpiY+5yHQ?=
- =?us-ascii?Q?tr4++P/E5aAJSR7R+KQs2wU4xzp01oSvqIcLvbq7u+LI9G8StIxAVqGSkJSQ?=
- =?us-ascii?Q?zpEL90esfvo/tDNE/rM0qkuEXtW5GEz+Ey6FLSLsPrphH/db6CtrmTUsnQ?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(7416014)(376014)(19092799006)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tX48YiD5oFop11sKzZavPHQnBlQn8yovL4o6tbKeDHwBL68TJbiFPD2ARSrf?=
- =?us-ascii?Q?zIwDzl2mC6rHWH09ezPRKtWW+PnAX0aZ+kHZeOphCCPNyr0gUd3wkBDAnh9F?=
- =?us-ascii?Q?B6AcxfpjpaTy7oPDDrlc2kaEfhv+17bCv+CLw7SuaADAJaKdaS9QdQZr3dte?=
- =?us-ascii?Q?1o6WJH1KyS/A9JSXp9UNO3aj6+MSn5b/hj0fgvpOABooGh2DKhZ4/o4v8nx4?=
- =?us-ascii?Q?FyzwU0E1MVJ80cFSADVAhn87vvuJNJxcLStirpW/VOWZuqnK4bsQyS8JThrv?=
- =?us-ascii?Q?NVAPVNO4LGhROUu6UHtwEL7XD39RTrNeCEKgA3oyqT3Df1PHjn73su+Z7Pjl?=
- =?us-ascii?Q?SNV7jMWmtIx5g63wHEWQKGAtLaDUYTfOGRIca/OiFAI1mXyz55yiIxbS837d?=
- =?us-ascii?Q?sfOr7fCADqNMkA5DMqMYYT83Pnh0xy2bb2qAw5NKn5Fv6Mi4Yyk//V5zXVTR?=
- =?us-ascii?Q?dY4DhDeIwplxfLAN7jZezFYQVfJpML2jNSB6tl+l7acmF+wsLMFa+q9c+yn6?=
- =?us-ascii?Q?MziUd0sKlR48n4JmOaj+UkK5HMxHLJ4fZCx1VVZTYymwEDUFiEPZmvXfRhyO?=
- =?us-ascii?Q?tQuLYP74Tbcis9GK3Aw8DaD5t4J+ZhnSI/D205MMGT/3/IGFPWjiWtZ8lq7o?=
- =?us-ascii?Q?1uMxVq52r9TAvnnmQl0z+N5HvfJN/OA3tRF0JyoWYTzliQHKe7mPxWRTKOOL?=
- =?us-ascii?Q?tu53myo26eq8j/LSfjthjN4Ubr2lNNPX4gaJX5D0vofWt4sePaKvGmCi3Yaa?=
- =?us-ascii?Q?TNACbQ56eKqQUc3yDg1mZt6Qs5PWThwZFxxo6zx7OH3ckR5WzfzkZz2Erwtg?=
- =?us-ascii?Q?2aCQrC0a1X3yEoaeMDrmj0I5TrfoK82QEeaXxQA1FJd59ABGd5u657/Y+GP3?=
- =?us-ascii?Q?B1wBgDvoO+cSAl73VI+un2SjtZWO4SJGP53wucshmUZY9DiVJSpDUQyGkoxy?=
- =?us-ascii?Q?r3ckEJr9C56dwdANtTC1OD0DFuh4//aQhDJ+BWQluwGMd98uSm+kxs62xSZC?=
- =?us-ascii?Q?pXeUBesWrqsJrJWtpAGhPIbZW7DVd0PcjjQsjX1rCbqssKoIi0bMwwQRZj/R?=
- =?us-ascii?Q?MptnvcYED3Htry0eFbi4lz1zJKCaGuWLUbdY0PM1WY2OfHkMoI3zLL6HkNcr?=
- =?us-ascii?Q?GSLFv/Y/Ee55EHkqarE4IpoBtnRibkqcvV234hKd5wJtqDp3kH/bCtwMtbfS?=
- =?us-ascii?Q?Z0Mu6PGwGwNEY5lxo5ftdLiki+OMNev1ypbvhejdA9TuV6kKQvw9ubTBIZKi?=
- =?us-ascii?Q?bMUqvPuG9ViElMmT6+yJ8WgvEdRAEgsWSu2aK9x7VvBm9UJqNPpT1+Pa1FEY?=
- =?us-ascii?Q?8P1UENPcRwghpNbyshB+oXzDKg/pIZLI2k8BJRxp1VplK7noA7m7ZfDnCziq?=
- =?us-ascii?Q?n1N117S4/hLYev1J5hPYp0jI9V53kbc7WrTj1hwa6C79+J0nVxPXiTiZPEfx?=
- =?us-ascii?Q?778LYLYA1wemr+ge+wFX2KYkhG74OU0rzqqjO3KSSjgzySYe5HNsPxGxW4eh?=
- =?us-ascii?Q?clb6uyGeybfeHYXo4ql7QtYsr5GBOers69f3KImbJDcBEICo/hx3XAHBWUti?=
- =?us-ascii?Q?bAPe47tZ0lSRwro5oeoyVoXYeRH9NoVUsFTEH7Jr?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4304c9d-8069-430e-74c7-08de0ca0d9f3
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2025 10:43:32.6853
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z8+OE+KglIFcOd4h+P/WDfwJlzdLKH5uGCYVK8/u2cTAnuv8TtBU4IY3NERhCEfjflmgCL/Z2l5rRfkHCdbeVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9096
+Content-Transfer-Encoding: quoted-printable
 
-Add ENETC, EMDIO and Timer support.
+There is an issue with FTP SNAT/DNAT. When the PASV/EPSV message is altered
+The sequence adjustment is required, and there is an issue that seqadj is
+not set up at that moment.
 
-Note that this patch is for reference only. It will be removed once the
-related dt-bindings patches have been reviewed.
+The easiest way to reproduce this issue is with PASV mode.
+Topoloy:=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+```=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20
+ +-------------------+     +----------------------------------+=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+ | FTP: 192.168.13.2 | <-> | NAT: 192.168.13.3, 192.168.100.1 |=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+ +-------------------+     +----------------------------------+=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+                                      |=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20
+                         +-----------------------+
+                         | Client: 192.168.100.2 |
+                         +-----------------------+
+```
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx94.dtsi     | 118 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx943-evk.dts | 100 ++++++++++++++++
- 2 files changed, 218 insertions(+)
+nft ruleset:
+```
+nft flush ruleset
+sudo nft add table inet ftp_nat
+sudo nft add ct helper inet ftp_nat ftp_helper { type \"ftp\" protocol tcp\=
+; }
+sudo nft add chain inet ftp_nat prerouting { type filter hook prerouting pr=
+iority 0 \; policy accept \; }
+sudo nft add rule inet ftp_nat prerouting tcp dport 21 ct state new ct help=
+er set "ftp_helper"
+nft add table ip nat
+nft add chain ip nat prerouting { type nat hook prerouting priority dstnat =
+\; policy accept \; }
+nft add chain ip nat postrouting { type nat hook postrouting priority srcna=
+t \; policy accept \; }
+nft add rule ip nat prerouting tcp dport 21 dnat ip prefix to ip daddr map =
+{ 192.168.100.1 : 192.168.13.2/32 }
+nft add rule ip nat postrouting tcp sport 21 snat ip prefix to ip saddr map=
+ { 192.168.13.2 : 192.168.100.1/32 }
 
-diff --git a/arch/arm64/boot/dts/freescale/imx94.dtsi b/arch/arm64/boot/dts/freescale/imx94.dtsi
-index d4a880496b0e..0527046601e5 100644
---- a/arch/arm64/boot/dts/freescale/imx94.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx94.dtsi
-@@ -1190,5 +1190,123 @@ wdog3: watchdog@49220000 {
- 				status = "disabled";
- 			};
- 		};
-+
-+		netc_blk_ctrl: system-controller@4ceb0000 {
-+			compatible = "nxp,imx94-netc-blk-ctrl";
-+			reg = <0x0 0x4ceb0000 0x0 0x10000>,
-+			      <0x0 0x4cec0000 0x0 0x10000>,
-+			      <0x0 0x4c810000 0x0 0x7C>;
-+			reg-names = "ierb", "prb", "netcmix";
-+			ranges;
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+			power-domains = <&scmi_devpd IMX94_PD_NETC>;
-+			status = "disabled";
-+
-+			netc_bus0: pcie@4ca00000 {
-+				compatible = "pci-host-ecam-generic";
-+				reg = <0x0 0x4ca00000 0x0 0x100000>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
-+				linux,pci-domain = <0>;
-+				bus-range = <0x0 0x0>;
-+				msi-map = <0x00 &its 0x68 0x1>, //ENETC3 PF
-+					  <0x01 &its 0x61 0x1>, //Timer0
-+					  <0x02 &its 0x64 0x1>, //Switch
-+					  <0x40 &its 0x69 0x1>, //ENETC3 VF0
-+					  <0x80 &its 0x6a 0x1>, //ENETC3 VF1
-+					  <0xC0 &its 0x6b 0x1>; //ENETC3 VF2
-+					 /* Switch BAR0 - non-prefetchable memory */
-+				ranges = <0x02000000 0x0 0x4cc00000  0x0 0x4cc00000  0x0 0x80000
-+					 /* ENETC 3 and Timer 0 BAR0 - non-prefetchable memory */
-+					 0x02000000 0x0 0x4cd40000  0x0 0x4cd40000  0x0 0x60000
-+					 /* Switch and Timer 0 BAR2 - prefetchable memory */
-+					 0x42000000 0x0 0x4ce00000  0x0 0x4ce00000  0x0 0x20000
-+					 /* ENETC 3 VF0-2 BAR0 - non-prefetchable memory */
-+					 0x02000000 0x0 0x4ce50000  0x0 0x4ce50000  0x0 0x30000
-+					 /* ENETC 3 VF0-2 BAR2 - prefetchable memory */
-+					 0x42000000 0x0 0x4ce80000  0x0 0x4ce80000  0x0 0x30000>;
-+
-+				enetc3: ethernet@0,0 {
-+					compatible = "pci1131,e110";
-+					reg = <0x0 0 0 0 0>;
-+					phy-mode = "internal";
-+					status = "disabled";
-+
-+					fixed-link {
-+						speed = <2680>;
-+						full-duplex;
-+						pause;
-+					};
-+				};
-+
-+				netc_timer0: ptp-timer@0,1 {
-+					compatible = "pci1131,ee02";
-+					reg = <0x100 0 0 0 0>;
-+					status = "disabled";
-+				};
-+			};
-+
-+			netc_bus1: pcie@4cb00000 {
-+				compatible = "pci-host-ecam-generic";
-+				reg = <0x0 0x4cb00000 0x0 0x100000>;
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				device_type = "pci";
-+				linux,pci-domain = <1>;
-+				bus-range = <0x1 0x1>;
-+				msi-map = <0x100 &its 0x65 0x1>, //ENETC0 PF
-+					  <0x101 &its 0x62 0x1>, //Timer1
-+					  <0x140 &its 0x66 0x1>, //ENETC1 PF
-+					  <0x180 &its 0x67 0x1>, //ENETC2 PF
-+					  <0x181 &its 0x63 0x1>, //Timer2
-+					  <0x1C0 &its 0x60 0x1>; //EMDIO
-+					 /* ENETC 0-2 BAR0 - non-prefetchable memory */
-+				ranges = <0x02000000 0x0 0x4cC80000  0x0 0x4cc80000  0x0 0xc0000
-+					 /* Timer 1-2 and EMDIO BAR0 - non-prefetchable memory */
-+					 0x02000000 0x0 0x4cda0000  0x0 0x4cda0000  0x0 0x60000
-+					 /* Timer 1-2 and EMDIO BAR2 - prefetchable memory */
-+					 0x42000000 0x0 0x4ce20000  0x0 0x4ce20000  0x0 0x30000>;
-+
-+				enetc0: ethernet@0,0 {
-+					compatible = "pci1131,e101";
-+					reg = <0x10000 0 0 0 0>;
-+					status = "disabled";
-+				};
-+
-+				netc_timer1: ptp-timer@0,1 {
-+					compatible = "pci1131,ee02";
-+					reg = <0x10100 0 0 0 0>;
-+					status = "disabled";
-+				};
-+
-+				enetc1: ethernet@8,0 {
-+					compatible = "pci1131,e101";
-+					reg = <0x14000 0 0 0 0>;
-+					status = "disabled";
-+				};
-+
-+				enetc2: ethernet@10,0 {
-+					compatible = "pci1131,e101";
-+					reg = <0x18000 0 0 0 0>;
-+					status = "disabled";
-+				};
-+
-+				netc_timer2: ptp-timer@10,1 {
-+					compatible = "pci1131,ee02";
-+					reg = <0x18100 0 0 0 0>;
-+					status = "disabled";
-+				};
-+
-+				netc_emdio: mdio@18,0 {
-+					compatible = "pci1131,ee00";
-+					reg = <0x1c000 0 0 0 0>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					status = "disabled";
-+				};
-+			};
-+		};
- 	};
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-index c8c3eff9df1a..91c579ef31fe 100644
---- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-@@ -12,6 +12,9 @@ / {
- 	model = "NXP i.MX943 EVK board";
- 
- 	aliases {
-+		ethernet0 = &enetc3;
-+		ethernet1 = &enetc1;
-+		ethernet2 = &enetc2;
- 		i2c2 = &lpi2c3;
- 		i2c3 = &lpi2c4;
- 		i2c5 = &lpi2c6;
-@@ -127,6 +130,30 @@ memory@80000000 {
- 	};
- };
- 
-+&enetc1 {
-+	clocks = <&scmi_clk IMX94_CLK_MAC4>;
-+	clock-names = "ref";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_eth3>;
-+	phy-handle = <&ethphy3>;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+};
-+
-+&enetc2 {
-+	clocks = <&scmi_clk IMX94_CLK_MAC5>;
-+	clock-names = "ref";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_eth4>;
-+	phy-handle = <&ethphy4>;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+};
-+
-+&enetc3 {
-+	status = "okay";
-+};
-+
- &lpi2c3 {
- 	clock-frequency = <400000>;
- 	pinctrl-0 = <&pinctrl_lpi2c3>;
-@@ -396,6 +423,39 @@ &micfil {
- 	status = "okay";
- };
- 
-+&netc_blk_ctrl {
-+	assigned-clocks = <&scmi_clk IMX94_CLK_MAC4>,
-+			  <&scmi_clk IMX94_CLK_MAC5>;
-+	assigned-clock-parents = <&scmi_clk IMX94_CLK_SYSPLL1_PFD0>,
-+				 <&scmi_clk IMX94_CLK_SYSPLL1_PFD0>;
-+	assigned-clock-rates = <250000000>, <250000000>;
-+	status = "okay";
-+};
-+
-+&netc_emdio {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_emdio>;
-+	status = "okay";
-+
-+	ethphy3: ethernet-phy@6 {
-+		reg = <0x6>;
-+		realtek,clkout-disable;
-+	};
-+
-+	ethphy4: ethernet-phy@7 {
-+		reg = <0x7>;
-+		realtek,clkout-disable;
-+	};
-+};
-+
-+&netc_timer0 {
-+	status = "okay";
-+};
-+
-+&netc_timer1 {
-+	status = "okay";
-+};
-+
- &sai1 {
- 	assigned-clocks = <&scmi_clk IMX94_CLK_AUDIOPLL1_VCO>,
- 			  <&scmi_clk IMX94_CLK_AUDIOPLL2_VCO>,
-@@ -431,6 +491,46 @@ &sai3 {
- };
- 
- &scmi_iomuxc {
-+	pinctrl_emdio: emdiogrp{
-+		fsl,pins = <
-+			IMX94_PAD_ETH4_MDC_GPIO1__NETC_EMDC		0x57e
-+			IMX94_PAD_ETH4_MDIO_GPIO2__NETC_EMDIO		0x97e
-+		>;
-+	};
-+
-+	pinctrl_eth3: eth3grp {
-+		fsl,pins = <
-+			IMX94_PAD_ETH3_TXD3__NETC_PINMUX_ETH3_TXD3		0x51e
-+			IMX94_PAD_ETH3_TXD2__NETC_PINMUX_ETH3_TXD2		0x51e
-+			IMX94_PAD_ETH3_TXD1__NETC_PINMUX_ETH3_TXD1		0x51e
-+			IMX94_PAD_ETH3_TXD0__NETC_PINMUX_ETH3_TXD0		0x51e
-+			IMX94_PAD_ETH3_TX_CTL__NETC_PINMUX_ETH3_TX_CTL		0x51e
-+			IMX94_PAD_ETH3_TX_CLK__NETC_PINMUX_ETH3_TX_CLK		0x59e
-+			IMX94_PAD_ETH3_RX_CTL__NETC_PINMUX_ETH3_RX_CTL		0x51e
-+			IMX94_PAD_ETH3_RX_CLK__NETC_PINMUX_ETH3_RX_CLK		0x59e
-+			IMX94_PAD_ETH3_RXD0__NETC_PINMUX_ETH3_RXD0		0x51e
-+			IMX94_PAD_ETH3_RXD1__NETC_PINMUX_ETH3_RXD1		0x51e
-+			IMX94_PAD_ETH3_RXD2__NETC_PINMUX_ETH3_RXD2		0x51e
-+			IMX94_PAD_ETH3_RXD3__NETC_PINMUX_ETH3_RXD3		0x51e
-+		>;
-+	};
-+
-+	pinctrl_eth4: eth4grp {
-+		fsl,pins = <
-+			IMX94_PAD_ETH4_TXD3__NETC_PINMUX_ETH4_TXD3		0x51e
-+			IMX94_PAD_ETH4_TXD2__NETC_PINMUX_ETH4_TXD2		0x51e
-+			IMX94_PAD_ETH4_TXD1__NETC_PINMUX_ETH4_TXD1		0x51e
-+			IMX94_PAD_ETH4_TXD0__NETC_PINMUX_ETH4_TXD0		0x51e
-+			IMX94_PAD_ETH4_TX_CTL__NETC_PINMUX_ETH4_TX_CTL		0x51e
-+			IMX94_PAD_ETH4_TX_CLK__NETC_PINMUX_ETH4_TX_CLK		0x59e
-+			IMX94_PAD_ETH4_RX_CTL__NETC_PINMUX_ETH4_RX_CTL		0x51e
-+			IMX94_PAD_ETH4_RX_CLK__NETC_PINMUX_ETH4_RX_CLK		0x59e
-+			IMX94_PAD_ETH4_RXD0__NETC_PINMUX_ETH4_RXD0		0x51e
-+			IMX94_PAD_ETH4_RXD1__NETC_PINMUX_ETH4_RXD1		0x51e
-+			IMX94_PAD_ETH4_RXD2__NETC_PINMUX_ETH4_RXD2		0x51e
-+			IMX94_PAD_ETH4_RXD3__NETC_PINMUX_ETH4_RXD3		0x51e
-+		>;
-+	};
- 
- 	pinctrl_ioexpander_int2: ioexpanderint2grp {
- 		fsl,pins = <
--- 
-2.34.1
+# nft -s list ruleset
+table inet ftp_nat {
+        ct helper ftp_helper {
+                type "ftp" protocol tcp
+                l3proto inet
+        }
+
+        chain prerouting {
+                type filter hook prerouting priority filter; policy accept;
+                tcp dport 21 ct state new ct helper set "ftp_helper"
+        }
+}
+table ip nat {
+        chain prerouting {
+                type nat hook prerouting priority dstnat; policy accept;
+                tcp dport 21 dnat ip prefix to ip daddr map { 192.168.100.1=
+ : 192.168.13.2/32 }
+        }
+
+        chain postrouting {
+                type nat hook postrouting priority srcnat; policy accept;
+                tcp sport 21 snat ip prefix to ip saddr map { 192.168.13.2 =
+: 192.168.100.1/32 }
+        }
+}
+
+```
+
+Connecting the client:
+```
+# ftp 192.168.100.1
+Connected to 192.168.100.1.
+220 Welcome to my FTP server.
+Name (192.168.100.1:dev): user
+331 Username ok, send password.
+Password:=20
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> epsv
+EPSV/EPRT on IPv4 off.
+EPSV/EPRT on IPv6 off.
+ftp> ls
+227 Entering passive mode (192,168,100,1,209,129).
+421 Service not available, remote server has closed connection.
+```
+
+Kernel logs:
+```
+Oct 16 10:24:37 vyos kernel: nf_conntrack_ftp: ftp: Conntrackinfo =3D 2
+Oct 16 10:24:37 vyos kernel: nf_conntrack_ftp: ftp: dataoff(60) >=3D skblen=
+(60)
+Oct 16 10:24:37 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:37 vyos kernel: nf_conntrack_ftp: nf_conntrack_ftp: wrong seq =
+pos (UNSET)(0) or (UNSET)(0)
+Oct 16 10:24:37 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:38 vyos kernel: nf_conntrack_ftp: nf_conntrack_ftp: wrong seq =
+pos (UNSET)(0) or (UNSET)(0)
+Oct 16 10:24:38 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:38 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 33
+Oct 16 10:24:38 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 33
+Oct 16 10:24:38 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `PORT': dlen =
+=3D 8
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `EPRT': dlen =
+=3D 8
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 23
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 23
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `PORT': dlen =
+=3D 6
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `EPRT': dlen =
+=3D 6
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 19
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 19
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `PORT': dlen =
+=3D 6
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `EPRT': dlen =
+=3D 6
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 25
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 25
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 133
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 133
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 15
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: find_pattern `229 ': dlen =
+=3D 15
+Oct 16 10:24:40 vyos kernel: nf_conntrack_ftp: ftp: dataoff(52) >=3D skblen=
+(52)
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: find_pattern `PORT': dlen =
+=3D 6
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: find_pattern `EPRT': dlen =
+=3D 6
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 51
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: Pattern matches!
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: Skipped up to 0x0 delimiter!
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: Match succeeded!
+Oct 16 10:24:44 vyos kernel: nf_conntrack_ftp: conntrack_ftp: match `192,16=
+8,13,2,209,129' (20 bytes at 2149072380)=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: ------------[ cut here ]------------
+Oct 16 10:24:44 vyos kernel: Missing nfct_seqadj_ext_add() setup call
+Oct 16 10:24:44 vyos kernel: WARNING: CPU: 1 PID: 0 at net/netfilter/nf_con=
+ntrack_seqadj.c:41 nf_ct_seqadj_set+0xbf/0xe0 [nf_conntrack]=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: Modules linked in: nf_nat_ftp(E) nft_nat(E) nf=
+_conntrack_ftp(E) af_packet(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_tabl=
+es(E) nfnetlink_cthelper(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv=
+4(E) nfnetlink(E) binfmt_misc(E) intel_rapl_common(E) crct10dif_pclmul(E) c=
+rc32_pclmul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) sha1_=
+ssse3(E) aesni_intel(E) crypto_simd(E) cryptd(E) rapl(E) iTCO_wdt(E) iTCO_v=
+endor_support(E) button(E) virtio_console(E) virtio_balloon(E) pcspkr(E) ev=
+dev(E) tcp_bbr(E) sch_fq_codel(E) mpls_iptunnel(E) mpls_router(E) ip_tunnel=
+(E) br_netfilter(E) bridge(E) stp(E) llc(E) fuse(E) efi_pstore(E) configfs(=
+E) virtio_rng(E) rng_core(E) ip_tables(E) x_tables(E) autofs4(E) usb_storag=
+e(E) ohci_hcd(E) uhci_hcd(E) ehci_hcd(E) sd_mod(E) squashfs(E) lz4_decompre=
+ss(E) loop(E) overlay(E) ext4(E) crc16(E) mbcache(E) jbd2(E) nls_cp437(E) v=
+fat(E) fat(E) efivarfs(E) nls_ascii(E) hid_generic(E) usbhid(E) hid(E) virt=
+io_net(E) net_failover(E) virtio_blk(E) failover(E) ahci(E) libahci(E)=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel:  crc32c_intel(E) i2c_i801(E) i2c_smbus(E) liba=
+ta(E) lpc_ich(E) scsi_mod(E) scsi_common(E) xhci_pci(E) xhci_hcd(E) virtio_=
+pci(E) virtio_pci_legacy_dev(E) virtio_pci_modern_dev(E) virtio(E) virtio_r=
+ing(E)=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: CPU: 1 PID: 0 Comm: swapper/1 Tainted: G      =
+      E      6.6.108-vyos #1
+Oct 16 10:24:44 vyos kernel: Hardware name: QEMU Standard PC (Q35 + ICH9, 2=
+009), BIOS Arch Linux 1.17.0-2-2 04/01/2014=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20
+Oct 16 10:24:44 vyos kernel: RIP: 0010:nf_ct_seqadj_set+0xbf/0xe0 [nf_connt=
+rack]
+Oct 16 10:24:44 vyos kernel: Code: ea 44 89 20 89 50 08 eb db 45 85 ed 74 d=
+e 80 3d 51 6d 00 00 00 75 d5 48 c7 c7 68 57 ad c0 c6 05 41 6d 00 00 01 e8 7=
+1 28 dd dc <0f> 0b eb be be 02 00 00 00 e8 63 fc ff ff 48 89 c3 e9 66 ff ff=
+ ff=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: RSP: 0018:ffff9a66c00e8910 EFLAGS: 00010286
+Oct 16 10:24:44 vyos kernel: RAX: 0000000000000000 RBX: 0000000000000014 RC=
+X: 000000000000083f
+Oct 16 10:24:44 vyos kernel: RDX: 0000000000000000 RSI: 00000000000000f6 RD=
+I: 000000000000083f
+Oct 16 10:24:44 vyos kernel: RBP: ffff89387978fb00 R08: 0000000000000000 R0=
+9: ffff9a66c00e87a8
+Oct 16 10:24:44 vyos kernel: R10: 0000000000000003 R11: ffffffff9ecbab08 R1=
+2: ffff89387978fb00
+Oct 16 10:24:44 vyos kernel: R13: 0000000000000001 R14: ffff893872e18862 R1=
+5: ffff893842f8c700
+Oct 16 10:24:44 vyos kernel: FS:  0000000000000000(0000) GS:ffff893bafc8000=
+0(0000) knlGS:0000000000000000=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050=
+033
+Oct 16 10:24:44 vyos kernel: CR2: 000055fbc64ec690 CR3: 000000011de22001 CR=
+4: 0000000000370ee0
+Oct 16 10:24:44 vyos kernel: Call Trace:
+Oct 16 10:24:44 vyos kernel:  <IRQ>
+Oct 16 10:24:44 vyos kernel:  __nf_nat_mangle_tcp_packet+0x100/0x160 [nf_na=
+t]
+Oct 16 10:24:44 vyos kernel:  nf_nat_ftp+0x142/0x280 [nf_nat_ftp]
+Oct 16 10:24:44 vyos kernel:  ? kmem_cache_alloc+0x157/0x290
+Oct 16 10:24:44 vyos kernel:  ? help+0x4d1/0x880 [nf_conntrack_ftp]
+Oct 16 10:24:44 vyos kernel:  help+0x4d1/0x880 [nf_conntrack_ftp]
+Oct 16 10:24:44 vyos kernel:  ? nf_confirm+0x122/0x2e0 [nf_conntrack]
+Oct 16 10:24:44 vyos kernel:  nf_confirm+0x122/0x2e0 [nf_conntrack]
+Oct 16 10:24:44 vyos kernel:  nf_hook_slow+0x3c/0xb0
+Oct 16 10:24:44 vyos kernel:  ip_output+0xb6/0xf0
+Oct 16 10:24:44 vyos kernel:  ? __pfx_ip_finish_output+0x10/0x10
+Oct 16 10:24:44 vyos kernel:  ip_sublist_rcv_finish+0x90/0xa0
+Oct 16 10:24:44 vyos kernel:  ip_sublist_rcv+0x190/0x220
+Oct 16 10:24:44 vyos kernel:  ? __pfx_ip_rcv_finish+0x10/0x10
+Oct 16 10:24:44 vyos kernel:  ip_list_rcv+0x134/0x160
+Oct 16 10:24:44 vyos kernel:  __netif_receive_skb_list_core+0x299/0x2c0
+Oct 16 10:24:44 vyos kernel:  netif_receive_skb_list_internal+0x1a7/0x2d0
+Oct 16 10:24:44 vyos kernel:  napi_complete_done+0x69/0x1a0
+Oct 16 10:24:44 vyos kernel:  virtnet_poll+0x3c0/0x540 [virtio_net]
+Oct 16 10:24:44 vyos kernel:  __napi_poll+0x26/0x1a0
+Oct 16 10:24:44 vyos kernel:  net_rx_action+0x141/0x2c0
+Oct 16 10:24:44 vyos kernel:  ? lock_timer_base+0x5c/0x80
+Oct 16 10:24:44 vyos kernel:  handle_softirqs+0xd5/0x280
+Oct 16 10:24:44 vyos kernel:  __irq_exit_rcu+0x95/0xb0
+Oct 16 10:24:44 vyos kernel:  common_interrupt+0x7a/0xa0
+Oct 16 10:24:44 vyos kernel:  </IRQ>
+Oct 16 10:24:44 vyos kernel:  <TASK>
+Oct 16 10:24:44 vyos kernel:  asm_common_interrupt+0x22/0x40
+Oct 16 10:24:44 vyos kernel: RIP: 0010:pv_native_safe_halt+0xb/0x10
+Oct 16 10:24:44 vyos kernel: Code: 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1=
+f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d 29 9a 3=
+e 00 fb f4 <c3> cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90=
+ 8b=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20
+Oct 16 10:24:44 vyos kernel: RSP: 0018:ffff9a66c009bed8 EFLAGS: 00000252
+Oct 16 10:24:44 vyos kernel: RAX: ffff893bafcaaca8 RBX: 0000000000000001 RC=
+X: 0000000000000001
+Oct 16 10:24:44 vyos kernel: RDX: 0000000000000000 RSI: 0000000000000083 RD=
+I: 0000000000064cec
+Oct 16 10:24:44 vyos kernel: RBP: ffff8938401f2200 R08: 0000000000000001 R0=
+9: 0000000000000000
+Oct 16 10:24:44 vyos kernel: R10: 000000000001ffc0 R11: 0000000000000000 R1=
+2: 0000000000000000
+Oct 16 10:24:44 vyos kernel: R13: 0000000000000000 R14: ffff8938401f2200 R1=
+5: 0000000000000000
+Oct 16 10:24:44 vyos kernel:  default_idle+0x5/0x20
+Oct 16 10:24:44 vyos kernel:  default_idle_call+0x28/0xb0
+Oct 16 10:24:44 vyos kernel:  do_idle+0x1ec/0x230
+Oct 16 10:24:44 vyos kernel:  cpu_startup_entry+0x21/0x30
+Oct 16 10:24:44 vyos kernel:  start_secondary+0x11a/0x140
+Oct 16 10:24:44 vyos kernel:  secondary_startup_64_no_verify+0x178/0x17b
+Oct 16 10:24:44 vyos kernel:  </TASK>
+Oct 16 10:24:44 vyos kernel: ---[ end trace 0000000000000000 ]---
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: find_pattern `227 ': dlen =
+=3D 51
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: Pattern matches!
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: Skipped up to 0x0 delimiter!
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: Match succeeded!
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: conntrack_ftp: match `192,16=
+8,13,2,209,129' (20 bytes at 2149072380)=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20
+Oct 16 10:24:45 vyos kernel: nf_conntrack_ftp: ftp: dataoff(40) >=3D skblen=
+(40)
+```
+
+According to callstack, despite installing nf_nat_follow_master() helper,
+the nfct_seqadj() call comes almost immediately after, before any
+potential setups on already confirmed conntrack.
+
+```
+net/netfilter/nf_conntrack_proto.c: nf_confirm()
+
+net/netfilter/nf_conntrack_ftp.c: help()
+        nf_ct_expect_init()
+        nf_nat_ftp()
+
+net/netfilter/nf_nat_ftp.c: nf_nat_ftp()
+        exp->expectfn =3D nf_nat_follow_master;
+        nf_nat_mangle_tcp_packet()
+
+net/netfilter/nf_nat_helper.c: __nf_nat_mangle_tcp_packet()
+    nf_ct_seqadj_set()
+
+net/netfilter/nf_conntrack_seqadj.c: nf_ct_seqadj_set()
+        if (unlikely(!seqadj)) {
+                WARN_ONCE(1, "Missing nfct_seqadj_ext_add() setup call\n");
+                return 0;
+        }
+```
+
+Andrii Melnychenko (1):
+  nf_conntrack_ftp: Added nfct_seqadj_ext_add() for ftp's conntrack.
+
+ net/netfilter/nf_conntrack_ftp.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+--=20
+2.43.0
 
