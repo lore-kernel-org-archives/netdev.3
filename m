@@ -1,35 +1,56 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6AC239E63;
-	Thu, 16 Oct 2025 06:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1AA2F1FDB
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 06:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760597429; cv=none; b=tX5gFL9q1Z+S4Krpj5355hK0x4i9Mlj2vKgTsA4Op4P51fPPK/5p+PcU55z9X+6SzjQA7b/qXC2e+6vrsExwJlwiogCwyl2KO1+nAi40n6XpSTGHPhFgsgtDv2Q1Hz4FVxVqZZ+LEbzOQ5o/wZJaidCsD6ftv7tLyvlfn4MkAFA=
+	t=1760597651; cv=none; b=ok8GWNuhpBuRcqo9I5q9fswSX4hq5ogCv929IIiCiqTK4hLc4EG65Ed7uZMiCERW0OB80C1GGScoTKoS39UHyiKgIzOBA1eD9fqfwMqQp7dVbW69cLdHeY28on0OJzdtcONA25+0Rinp/kDAb5Ao0huJFGrbz6u/UFPes2k0mV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760597429; c=relaxed/simple;
-	bh=5nAl/JapwFNY3OyQHlzk+hzxps0TpN4jCMXVZiiK2hg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=taNIU07/OHlYeDISvcjf1cx/2r+hSojx6ODNgrKO2Xd9X3/W34CdDYz5MIJhyUo27WE7axLh0vwxD/kV9jUHTulD9H60iZvDKDkKxlrSx7YUUGCY7YOWZIpUwgwlb1FMTcE+XRwsyDEJAYJEqO38m93/solFxcUfgtRUt7y9tqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8yMnM5E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760597651; c=relaxed/simple;
+	bh=y9g7++ThMeSMQPh1ylrPaNSSi2JtgH52izVD4ZWgxXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WxRAPDVbDLh8wb8TKtH3okCyvMSru+atxOqJu/8NqD4gRVc7ONUeub97rl0f4M8/Dmll8p7IL+7mee1lOlf5lHMIbCy+laJcf3Lj3fXo7yO4Uz6FbtcO4HwD5meMJLZAk9SBZYtSCnVfWf/UH8I8J4rJt2wMo/EXjduUbzGweNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PQEqKfXR; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8yMnM5E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5521C4CEF1;
-	Thu, 16 Oct 2025 06:50:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760597428;
-	bh=5nAl/JapwFNY3OyQHlzk+hzxps0TpN4jCMXVZiiK2hg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=P8yMnM5EAoAsDgEHOM9S8eJ3SeCAoFGEum+vS0rKYeqXBBwPUQNeTFJZZ3R+nVepb
-	 B94nwKqrcmwoUR3md3StGUsQat6okBKa5re2gwXe/aU0LUAndmNJUpQqfYMWUPt4Pp
-	 csE5DqKKitFgE7RPYOBwAVek7uFMRvOINhF432nZN9v56CYyjFpDaTlEFN3/HJ/YqK
-	 1qUR4eD+fljqjAn50lPFHUbwCDmfYExBGqZWVX0DFCds4GdmDzV3X8hsQaKP6FwTAO
-	 HIAKMpKIWdno7OnxLUD4P9CjUdJUzCCu+ULJsnKZQQz00wdqI/UP9J8BgFSFZyQtlC
-	 Vhb0RdFxnSULg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DCE38111E3;
-	Thu, 16 Oct 2025 06:50:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PQEqKfXR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760597649; x=1792133649;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y9g7++ThMeSMQPh1ylrPaNSSi2JtgH52izVD4ZWgxXk=;
+  b=PQEqKfXRu3hGcUI3YUYnCaLte8mD36rTsUyff9Y4lePB/rBpkbBa4p7u
+   YubSLyumijUxY13eE018wp+gpHCIaP1HyPnGJi72THAMT0+4iOIgh/Xsj
+   r2gF7bnhqhhe9TIy7ifUQ0xe/uZNDDZ6NSLRaeYesPnVKhUSfLV5PbMSz
+   x7QcCP6V9C6Q3E7Kz/wmYjYNtyJLDpnOlyaa2DN3rJqV+PoRzIgOPyote
+   HZut19xdwntnOxBXq4BWjMtkiwyerQNED3unM400jXeZrnj1200huTAN5
+   E5rq7jP4E3Y1XkEAH8B4hqOcLKCXiuwYXPTS80lFdgD+Q7P8I9/tCA2u7
+   Q==;
+X-CSE-ConnectionGUID: ZCSr+9XaTcuW+wy4c7q2GQ==
+X-CSE-MsgGUID: WffLNjaqQTyRtRlb7ozSMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="62492419"
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="62492419"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2025 23:54:06 -0700
+X-CSE-ConnectionGUID: I6iY64mQTWC/a991+Jt4HQ==
+X-CSE-MsgGUID: 8onTWFUhRnez5NMIY1Nqsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
+   d="scan'208";a="181582344"
+Received: from os-delivery.igk.intel.com ([10.102.21.165])
+  by orviesa010.jf.intel.com with ESMTP; 15 Oct 2025 23:54:05 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH iwl-next v1] ice: lower default irq/queue counts on high-core systems
+Date: Thu, 16 Oct 2025 08:22:50 +0200
+Message-ID: <20251016062250.1461903-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,57 +58,108 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 bpf-next/net 0/6] bpf: Allow opt-out from
- sk->sk_prot->memory_allocated.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176059741325.1205767.12458760043676255932.git-patchwork-notify@kernel.org>
-Date: Thu, 16 Oct 2025 06:50:13 +0000
-References: <20251014235604.3057003-1-kuniyu@google.com>
-In-Reply-To: <20251014235604.3057003-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
- martin.lau@linux.dev, john.fastabend@gmail.com, sdf@fomichev.me,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ncardwell@google.com, willemb@google.com, almasrymina@google.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, kuni1840@gmail.com,
- bpf@vger.kernel.org, netdev@vger.kernel.org
 
-Hello:
+On some high-core systems loading ice driver with default values can
+lead to queue/irq exhaustion. It will result in no additional resources
+for SR-IOV.
 
-This series was applied to bpf/bpf-next.git (net)
-by Martin KaFai Lau <martin.lau@kernel.org>:
+In most cases there is no performance reason for more than 64 queues.
+Limit the default value to 64. Still, using ethtool the number of
+queues can be changed up to num_online_cpus().
 
-On Tue, 14 Oct 2025 23:54:53 +0000 you wrote:
-> This series allows opting out of the global per-protocol memory
-> accounting if socket is configured as such by sysctl or BPF prog.
-> 
-> This series is the successor of the series below [0], but the changes
-> now fall in net and bpf subsystems only.
-> 
-> I discussed with Roman Gushchin offlist, and he suggested not mixing
-> two independent subsystems and it would be cleaner not to depend on
-> memcg.
-> 
-> [...]
+This change affects only the default queue amount on systems with more
+than 64 cores.
 
-Here is the summary with links:
-  - [v2,bpf-next/net,1/6] tcp: Save lock_sock() for memcg in inet_csk_accept().
-    https://git.kernel.org/bpf/bpf-next/c/8c52ab2e9b34
-  - [v2,bpf-next/net,2/6] net: Allow opt-out from global protocol memory accounting.
-    https://git.kernel.org/bpf/bpf-next/c/d5728fed86f6
-  - [v2,bpf-next/net,3/6] net: Introduce net.core.bypass_prot_mem sysctl.
-    https://git.kernel.org/bpf/bpf-next/c/543cf9b90ce5
-  - [v2,bpf-next/net,4/6] bpf: Support bpf_setsockopt() for BPF_CGROUP_INET_SOCK_CREATE.
-    https://git.kernel.org/bpf/bpf-next/c/13b77b283f2b
-  - [v2,bpf-next/net,5/6] bpf: Introduce SK_BPF_BYPASS_PROT_MEM.
-    https://git.kernel.org/bpf/bpf-next/c/58e1d04e5e34
-  - [v2,bpf-next/net,6/6] selftest: bpf: Add test for sk->sk_bypass_prot_mem.
-    https://git.kernel.org/bpf/bpf-next/c/71295ac94281
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice.h     | 20 ++++++++++++++++++++
+ drivers/net/ethernet/intel/ice/ice_irq.c |  6 ++++--
+ drivers/net/ethernet/intel/ice/ice_lib.c |  8 ++++----
+ 3 files changed, 28 insertions(+), 6 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 3d4d8b88631b..354ec2950ff3 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -1133,4 +1133,24 @@ static inline struct ice_hw *ice_get_primary_hw(struct ice_pf *pf)
+ 	else
+ 		return &pf->adapter->ctrl_pf->hw;
+ }
++
++/**
++ * ice_capped_num_cpus - normalize the number of CPUs to a reasonable limit
++ *
++ * This function returns the number of online CPUs, but caps it at suitable
++ * default to prevent excessive resource allocation on systems with very high
++ * CPU counts.
++ *
++ * Note: suitable default is currently at 64, which is reflected in default_cpus
++ * constant. In most cases there is no much benefit for more than 64 and it is a
++ * power of 2 number.
++ *
++ * Return: number of online CPUs, capped at suitable default.
++ */
++static inline u16 ice_capped_num_cpus(void)
++{
++	const int default_cpus = 64;
++
++	return min(num_online_cpus(), default_cpus);
++}
+ #endif /* _ICE_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index 30801fd375f0..df4d847ca858 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -106,9 +106,11 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
+ #define ICE_RDMA_AEQ_MSIX 1
+ static int ice_get_default_msix_amount(struct ice_pf *pf)
+ {
+-	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
++	u16 cpus = ice_capped_num_cpus();
++
++	return ICE_MIN_LAN_OICR_MSIX + cpus +
+ 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
+-	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
++	       (ice_is_rdma_ena(pf) ? cpus + ICE_RDMA_AEQ_MSIX : 0);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index bac481e8140d..3c5f8a4b6c6d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -159,12 +159,12 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
+ 
+ static u16 ice_get_rxq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_rxq_count(pf), num_online_cpus());
++	return min(ice_get_avail_rxq_count(pf), ice_capped_num_cpus());
+ }
+ 
+ static u16 ice_get_txq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_txq_count(pf), num_online_cpus());
++	return min(ice_get_avail_txq_count(pf), ice_capped_num_cpus());
+ }
+ 
+ /**
+@@ -907,13 +907,13 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
+ 		if (vsi->type == ICE_VSI_CHNL)
+ 			vsi->rss_size = min_t(u16, vsi->num_rxq, max_rss_size);
+ 		else
+-			vsi->rss_size = min_t(u16, num_online_cpus(),
++			vsi->rss_size = min_t(u16, ice_capped_num_cpus(),
+ 					      max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_PF;
+ 		break;
+ 	case ICE_VSI_SF:
+ 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
+-		vsi->rss_size = min_t(u16, num_online_cpus(), max_rss_size);
++		vsi->rss_size = min_t(u16, ice_capped_num_cpus(), max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_VSI;
+ 		break;
+ 	case ICE_VSI_VF:
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.49.0
 
