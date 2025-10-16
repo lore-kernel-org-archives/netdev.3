@@ -1,97 +1,240 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1057464
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 18:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BC333469B
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 18:08:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760637683; cv=none; b=HY9A1gAJNxL4r9Z9IBfCiHsx8J7Rk9LKUw/4BIs19DOPsUURT38S/tYi3RLP/tL+j2YCfWhGcAzweCXlYXgCifSxPFfN6qyT8uBLPJLGfd4TAxNL4c/+2sOk2ssErCrSlPjKCGwmrecDJy5Z8pt5yUKrIuDEwQ5kYFmCrBVTHFM=
+	t=1760638139; cv=none; b=ihx6Vl0HqqjOa7Daz5NVfxVOjDUIzvxTijcfcFfD1Ufd020p7P25gY6y0VvBfPIyvL+3ioog6AvOgRuxw5tYwMQLPKoAao73wnmNLWEETcFX+SpXRf/OiL7JR50i4tpGr4E2xEOMPwrv8/x9aRFuYl4WMeFU3H6f2lrPk278a4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760637683; c=relaxed/simple;
-	bh=efm1aAhK9B0AUbBIga9BbPWfhxR3h/kATOEoWO0lXSs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ixkuf7bzv8oWhms95LfFPfH5/gLgzX9ikvounRcRhgVdPqwKk52lZyUryXnetPn31kcS7NQAPMnjXI3uYlwLP5azYPXTK8iOSdRIm6uGhaX9t+YtKd8wvUZwbntLvJUuGtdhEZEgdl1a2i+hAmjj4BV+tBGT7qdWTgGDVCBbJ+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KCAzbcHv; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1760638139; c=relaxed/simple;
+	bh=1F2fw3zczGI81JdRBOlSZBJBqXWd49SMfjnOTq+TE44=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dV5/35McEn3kXmmy7/GvU0/vrAAZKygr1m/TzBQjfkKEGMgh1dj6b6fy2MEWCEXwPt1qGgKnMlejfTy5CvkVCXYCMsPlU+lgdJd/yHtWeQ0bLw/kN8TAaB0QSISUX0Vwhlx7tJ6sStvRkYcRHBIXawLS9E0s1Mk1FgrpeA4BMZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GbP9NS/Y; arc=none smtp.client-ip=91.218.175.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KCAzbcHv"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-88f2b29b651so145884685a.0
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 11:01:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760637680; x=1761242480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fQDQw2Zz7nPALlC+aZk2XdJIOsrHB67rv/4hINgyaKQ=;
-        b=KCAzbcHvNDmlmDrFV7F07b9HCi5z0zeQPHmicem1Bck/zpg/16nFHKjZetJLlNFr4g
-         XXimvtukdRM4BiBMUZbYtoicevdZa440TzyNukqYW5/nSPUWrDD4c6NXTLYsU0lqgZlr
-         w692RpnIIei/3xEmJS34DLYxzyJnhzBH9RdQ8dA1hd8kpI2Hm6CgIwGbhb6oB4vai5FR
-         4vDQU+8LTqOxkQaWoyohSoFo+eURESpciwEu80T9CKXHShiUXNcNg+lPVWQbC2dLimF8
-         LrRR5/3fMw3IocshVipvXieYAv/jzoDRoBw1G0xIRKb4fDIZnVlrvh+w5wfT5l0zlJ/G
-         9FLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760637680; x=1761242480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fQDQw2Zz7nPALlC+aZk2XdJIOsrHB67rv/4hINgyaKQ=;
-        b=nYVRm+Xx/ERymHmikth1fbkQ+pldidNcGaYjGLk30JP6F4zhGoQaa3SakpWN3kR/uV
-         ioGl5sJ/CQsWOozRzBu+Jee4yPz88/WUwKISpfy4IoW9uLj9guLBzvBv+4hNP5TmXkb6
-         TVe9hmzzmMlPZIM66DIvsEMQE+5TlGfmuj+krPH59Jx/OvCM1SuPtT6mDidIRdzYlzoF
-         o8zUAMIcx++y2lRYpFTL87aRU5nXjZzFLdiI03aY+PYwS38MRenZPBiTTCCkpd3EO4rd
-         ozvNeozpDUhXWMA/Lpv+AIwcC7NyQly5SFyiQi4JZnhhIJVeSbJFT/9m5mKFE+Izxfor
-         ldRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsPkLZlfFLbhaehbWku2ZckiasqMKm8AIAImuAbRlcdc9v9LTbZjwEIt1bci1HfYtnp+QXylg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCrfyWiqIJSMOwHc8dU/YrsEIdHcckISDL0UL4AXSu3IfbnBZT
-	oTIjwyKpZZSrF9uRwGAoJMpwT4bT/vr4X/V7shvYjq/2t6+5MWYBf7NfM4QXEfhU9H+lHcBIAiL
-	2/x1/bjACRd/lzDDG1/mXNG8BYYxO3DxMF5iY/Bs1
-X-Gm-Gg: ASbGncsAOL74K1As/7ae2KXMfm+aUX9iFLLnKOnCAAW9SKVUDWlZQ9+xmrmFwlKocHS
-	HAvH6Icw9OjQMktJ51zVsO2OwXHva92ob8zVTvAcpGFHRdphfZRJeiISI/YVUKelveOhIVxpGut
-	wfbRlEQZzXFBId3rk4ixadOTm+Whp1fjfqMx9ZQjJGI+ilqRn9qtkukk0kHdiRqz2DrEazQBxH4
-	HUHjSKJYZsrHNIXAgkXaA23nNIw07NcPvciqbR2W1qiO7WayW1J2xHeNdrOHw==
-X-Google-Smtp-Source: AGHT+IE3ZvZtDScoLeW07g1X4xgiOQoi68aAnngD/UQ2PdkMefEfYvNx365v2bnhIeN5LzO5IOz7pWiJZcEJW9j15qE=
-X-Received: by 2002:ac8:41cc:0:b0:4e8:9e9d:556b with SMTP id
- d75a77b69052e-4e89e9d5611mr4695711cf.54.1760637680070; Thu, 16 Oct 2025
- 11:01:20 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GbP9NS/Y"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760638135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VLdXb05s0WYbZTpQ719etyy1IRRzOpdwBC2/F78OAUo=;
+	b=GbP9NS/YOGBnZkLQBH/RlMZlYwrKpjEEblixSoCWgqyabLD1+U5C2Np4cOHbi+kDRk+GTb
+	XuioAtSYFlb2Bf0bVi2NkyXuaElb10kD+6c+uWDXciqUg2w0LJb/3hY06nmHx1xZOTmgtF
+	MrjADH2+hA6jJg8rOZKyvqUjS330Ddg=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Jian Shen <shenjian15@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Paul Barker <paul@pbarker.dev>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: linux-renesas-soc@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	netdev@vger.kernel.org,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next 1/6] octeontx2: convert to ndo_hwtstamp API
+Date: Thu, 16 Oct 2025 18:07:22 +0000
+Message-ID: <20251016180727.3511399-2-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251016180727.3511399-1-vadim.fedorenko@linux.dev>
+References: <20251016180727.3511399-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251016115147.18503-1-fw@strlen.de> <aPEkQA6cF2-STgv2@horms.kernel.org>
-In-Reply-To: <aPEkQA6cF2-STgv2@horms.kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 16 Oct 2025 11:01:08 -0700
-X-Gm-Features: AS18NWC4zZq0A28fXWQuCEeJejhPcJJRqdWp22EZA7o2fLqmE1E1GlRlxsCKuAs
-Message-ID: <CANn89iJDMuzUDP=NBk+nV-i7kWqsLyXFY4KyXehr3_pdsp5qGw@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: Kconfig: discourage drop_monitor enablement
-To: Simon Horman <horms@kernel.org>
-Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Oct 16, 2025 at 9:58=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Thu, Oct 16, 2025 at 01:51:47PM +0200, Florian Westphal wrote:
-> > Quoting Eric Dumazet:
-> > "I do not understand the fascination with net/core/drop_monitor.c [..]
-> > misses all the features, flexibility, scalability  that 'perf',
-> > eBPF tracing, bpftrace, .... have today."
-> >
-> > Reword DROP_MONITOR kconfig help text to clearly state that its not
-> > related to perf-based drop monitoring and that its safe to disable
-> > this unless support for the older netlink-based tools is needed.
-> >
-> > Signed-off-by: Florian Westphal <fw@strlen.de>
->
-> I think it is always good to guide people in the right direction.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
+Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+otx2_ioctl() becomes empty, remove it.
 
-Thanks Florian :)
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ .../marvell/octeontx2/nic/otx2_common.h       |  9 ++-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 56 +++++++++----------
+ .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  3 +-
+ 3 files changed, 33 insertions(+), 35 deletions(-)
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 1c8a3c078a64..ec26d1b6c789 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -527,7 +527,7 @@ struct otx2_nic {
+ 	u32			nix_lmt_size;
+ 
+ 	struct otx2_ptp		*ptp;
+-	struct hwtstamp_config	tstamp;
++	struct kernel_hwtstamp_config tstamp;
+ 
+ 	unsigned long		rq_bmap;
+ 
+@@ -1098,8 +1098,11 @@ int otx2_open(struct net_device *netdev);
+ int otx2_stop(struct net_device *netdev);
+ int otx2_set_real_num_queues(struct net_device *netdev,
+ 			     int tx_queues, int rx_queues);
+-int otx2_ioctl(struct net_device *netdev, struct ifreq *req, int cmd);
+-int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr);
++int otx2_config_hwtstamp_get(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config);
++int otx2_config_hwtstamp_set(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack);
+ 
+ /* MCAM filter related APIs */
+ int otx2_mcam_flow_init(struct otx2_nic *pf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index e808995703cf..cf5a2d9fb0c7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -2445,18 +2445,26 @@ static int otx2_config_hw_tx_tstamp(struct otx2_nic *pfvf, bool enable)
+ 	return 0;
+ }
+ 
+-int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
++int otx2_config_hwtstamp_get(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config)
++{
++	struct otx2_nic *pfvf = netdev_priv(netdev);
++
++	*config = pfvf->tstamp;
++	return 0;
++}
++EXPORT_SYMBOL(otx2_config_hwtstamp_get);
++
++int otx2_config_hwtstamp_set(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack)
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+-	struct hwtstamp_config config;
+ 
+ 	if (!pfvf->ptp)
+ 		return -ENODEV;
+ 
+-	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
+-		return -EFAULT;
+-
+-	switch (config.tx_type) {
++	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		if (pfvf->flags & OTX2_FLAG_PTP_ONESTEP_SYNC)
+ 			pfvf->flags &= ~OTX2_FLAG_PTP_ONESTEP_SYNC;
+@@ -2465,8 +2473,11 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 		otx2_config_hw_tx_tstamp(pfvf, false);
+ 		break;
+ 	case HWTSTAMP_TX_ONESTEP_SYNC:
+-		if (!test_bit(CN10K_PTP_ONESTEP, &pfvf->hw.cap_flag))
++		if (!test_bit(CN10K_PTP_ONESTEP, &pfvf->hw.cap_flag)) {
++			NL_SET_ERR_MSG(extack,
++				       "One-step time stamping is not supported");
+ 			return -ERANGE;
++		}
+ 		pfvf->flags |= OTX2_FLAG_PTP_ONESTEP_SYNC;
+ 		schedule_delayed_work(&pfvf->ptp->synctstamp_work,
+ 				      msecs_to_jiffies(500));
+@@ -2478,7 +2489,7 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 		return -ERANGE;
+ 	}
+ 
+-	switch (config.rx_filter) {
++	switch (config->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		otx2_config_hw_rx_tstamp(pfvf, false);
+ 		break;
+@@ -2497,35 +2508,17 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+ 		otx2_config_hw_rx_tstamp(pfvf, true);
+-		config.rx_filter = HWTSTAMP_FILTER_ALL;
++		config->rx_filter = HWTSTAMP_FILTER_ALL;
+ 		break;
+ 	default:
+ 		return -ERANGE;
+ 	}
+ 
+-	memcpy(&pfvf->tstamp, &config, sizeof(config));
++	pfvf->tstamp = *config;
+ 
+-	return copy_to_user(ifr->ifr_data, &config,
+-			    sizeof(config)) ? -EFAULT : 0;
+-}
+-EXPORT_SYMBOL(otx2_config_hwtstamp);
+-
+-int otx2_ioctl(struct net_device *netdev, struct ifreq *req, int cmd)
+-{
+-	struct otx2_nic *pfvf = netdev_priv(netdev);
+-	struct hwtstamp_config *cfg = &pfvf->tstamp;
+-
+-	switch (cmd) {
+-	case SIOCSHWTSTAMP:
+-		return otx2_config_hwtstamp(netdev, req);
+-	case SIOCGHWTSTAMP:
+-		return copy_to_user(req->ifr_data, cfg,
+-				    sizeof(*cfg)) ? -EFAULT : 0;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
++	return 0;
+ }
+-EXPORT_SYMBOL(otx2_ioctl);
++EXPORT_SYMBOL(otx2_config_hwtstamp_set);
+ 
+ static int otx2_do_set_vf_mac(struct otx2_nic *pf, int vf, const u8 *mac)
+ {
+@@ -2942,7 +2935,6 @@ static const struct net_device_ops otx2_netdev_ops = {
+ 	.ndo_set_features	= otx2_set_features,
+ 	.ndo_tx_timeout		= otx2_tx_timeout,
+ 	.ndo_get_stats64	= otx2_get_stats64,
+-	.ndo_eth_ioctl		= otx2_ioctl,
+ 	.ndo_set_vf_mac		= otx2_set_vf_mac,
+ 	.ndo_set_vf_vlan	= otx2_set_vf_vlan,
+ 	.ndo_get_vf_config	= otx2_get_vf_config,
+@@ -2951,6 +2943,8 @@ static const struct net_device_ops otx2_netdev_ops = {
+ 	.ndo_xdp_xmit           = otx2_xdp_xmit,
+ 	.ndo_setup_tc		= otx2_setup_tc,
+ 	.ndo_set_vf_trust	= otx2_ndo_set_vf_trust,
++	.ndo_hwtstamp_get	= otx2_config_hwtstamp_get,
++	.ndo_hwtstamp_set	= otx2_config_hwtstamp_set,
+ };
+ 
+ int otx2_wq_init(struct otx2_nic *pf)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index 25381f079b97..f4fdbfba8667 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -534,8 +534,9 @@ static const struct net_device_ops otx2vf_netdev_ops = {
+ 	.ndo_set_features = otx2vf_set_features,
+ 	.ndo_get_stats64 = otx2_get_stats64,
+ 	.ndo_tx_timeout = otx2_tx_timeout,
+-	.ndo_eth_ioctl	= otx2_ioctl,
+ 	.ndo_setup_tc = otx2_setup_tc,
++	.ndo_hwtstamp_get = otx2_config_hwtstamp_get,
++	.ndo_hwtstamp_set = otx2_config_hwtstamp_set,
+ };
+ 
+ static int otx2_vf_wq_init(struct otx2_nic *vf)
+-- 
+2.47.3
+
