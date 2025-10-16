@@ -1,34 +1,80 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E885C2D9EE6;
-	Thu, 16 Oct 2025 11:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02CC2E172E
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 11:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760613622; cv=none; b=bgreac74YDb7M8u7o+u2WkiGmyim7eHEpHRtS3a24HMP7xF0yLs24iTUS29jBj+SUbXdNKbhiqU+gEW5h6lJyEIOQgYXp3zAgLphmQK5kh1688uTWHPbAihHaEIWWQqkuYdsON9bZr8EK7T9L7/5wfPLRmkJ9ZQIM3d0nyhHO7Y=
+	t=1760614028; cv=none; b=Z+Iz5n89xkgyjeYG9hJ4wKDEaCw0mL0onc5s5SPBujYzf30M2FX6PMoXupmTshkJYCEtj+0daUSd3uM/kYggbAa3aVW899ztOkUUSbgRaSLzCW2+7GGZ2xfPnnhBgpeFKtKxPk7nXbZEc6tZ+nu0OKLOmDAi2uOHlPKiuLfMYvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760613622; c=relaxed/simple;
-	bh=JRUebYVubCL3QW0KC1pAGr7YuA/5oFFXVxgrLB0FVJM=;
+	s=arc-20240116; t=1760614028; c=relaxed/simple;
+	bh=rOYcDSrhRWLgtnzpoeHuge7O06Ip2GR7UW51Bh01bCo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nq0FluebpG5VXXv0y+e1qD7hTWMJxo+/CIXrulWLSiVwXP9tEVRBBCo51RJ3YG46WAXgehlx0vN4Fq3F+5aNHfwSockFHgB+Eooza03/ZKzIrIscbcvfRGtaENk1t261ltXgBOpH7V7bqStxWeX8XJhDsfflXW2DkMfkUP+7PHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 14D8361A14; Thu, 16 Oct 2025 13:20:11 +0200 (CEST)
-Date: Thu, 16 Oct 2025 13:20:10 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Andrii Melnychenko <a.melnychenko@vyos.io>
-Cc: pablo@netfilter.org, kadlec@netfilter.org, phil@nwl.cc,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] nf_conntrack_ftp: Added nfct_seqadj_ext_add() for
- ftp's conntrack.
-Message-ID: <aPDU6i1HKhy5v-nh@strlen.de>
-References: <20251016104802.567812-1-a.melnychenko@vyos.io>
- <20251016104802.567812-2-a.melnychenko@vyos.io>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OWQPSMP+33xmgobIJBj8me3XIf5TUdjvFNlpJG6MLtBdNiEePC2Jn/9Vki6SOHiwPAC35mUBjdmR895rpRhZEf982YLRbPjjn6YWa1/ZWeFw3FyzWL0FFKAqwMULPs5dkujBO9D61CbvAitTUtwAvAFouY2dnLhFkh1q0NPhfp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=NjbsrNeS; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="NjbsrNeS"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-471066cfc2aso5676175e9.0
+        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 04:27:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1760614024; x=1761218824; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S9hYzjpUktnCETUL8826o3/CkmCIwf0/rTKQ/FR1f+M=;
+        b=NjbsrNeSpJ1RJxnSHSXWFZR16nyPfWuxIv2onWfekEwqQamNRboNFm6T0D3/k+X0ts
+         9b8VPZkdNOYvMVp5bq93V1xWcQjQ/t16kKPNKSYuutTtLcISzQgg6ofIMq6ZzMUeB43F
+         CacM0/EW/sS8Rhb68TO0pGVF0CsqmFcXioQS23QLIvJhcGqIpidlWcSx3cOC/358CgyO
+         +tMbD0f8qXSoj4jnDBOfJSHHq/lxW5oPa5wXi7d2xO0oqJN3eel7M6dwjw7P3Ajy0vOf
+         wkegVFKuZO7mHt3cVD9byoaXgYG73UCqZm9cl0dQizCRDQ5DfTbi8m4QFm2mXIuPGXlF
+         gfvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760614024; x=1761218824;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S9hYzjpUktnCETUL8826o3/CkmCIwf0/rTKQ/FR1f+M=;
+        b=ZxTCyW8rc4LlsQcRvy0S4kaX9rTW+4ZunS1jc3DdGigQSIev5zPyFH9ZIx5te/T1B8
+         66fcdLx4iIViqfOnkdvN2RboZ9GXuyl7/WbQHyOIe/zZGcj0Q/FyjbHA/63sst7442a9
+         FkFDyjgImN91p4PwJjvAcFwUvtgPOEOySzBWDRGlseS92iODilfCWUcUVIVnRerRdFBr
+         dHFUE+HOcsWauzNc3yN/0tS0MZU6csvaW6+12DgzvSQHmGG4Qc8DwcXlu6JtiwN+q3FZ
+         cY60eAFcoHDYRvlpGQOH+To/U1+A2unIo4HtQ6eSb+48mhEXnOTgr2yvEvYqpUd8KRyF
+         uRmw==
+X-Gm-Message-State: AOJu0YyUt6dp6ruMMGhKyX1Ks6AalQVfJxwKLWZ39GznWZ2IHRMKHw62
+	yvbEYgxa9A6ZESrF5i8aOFBB3FlQO0zi3z9o7xSyrgC7E6j8SF+mwNfkE516k/Ix2ZU=
+X-Gm-Gg: ASbGncvE+oHIlHLnguf/g7BHkPHtxX8ZNBERiWTsZMzLmM59Osg0Rg1kll6YbCtqeqd
+	/K3aUVDpaAcQjyyMNSswaTZDTd90cRyOo3DHmQboUYwTueDV0o2hfstrBKnC+JlhljAmerUP5BP
+	0P52JjSJcuBpdCLF8rRCs8L+6FxIuIeDlBz2e9xLF42ntkU67d+d8/Hzl3ShJKyY6kgWXiM5F1R
+	FdabM7kewOeBwp7sUrhJzrVobXxVccr1rUxQF/d1gVABYCuOImc/681gvLchJyDZA5xj8P+wvk6
+	gQyrZ+tL7JmsjhF0TNHQ2mG/Csfyr4m6JlpuKtWG7AiGGOwm21wpisQzt9lQrnLSxGuf3RMMj/m
+	CqIkAQYRedRf1veT3JXVuuTkYzpRqeqNDFDTXN5ujwai61d4iYiGP8DBzfvGkNTUnSrQsJFoyFp
+	1Y53xIoXk7ZRy7nsghAbPXHYgy9RLsYlmNARHirw==
+X-Google-Smtp-Source: AGHT+IFb112ZtZLsO+hoNYz2HxlsdyYfC7JZQ7Gax5FlERbPuY4E7182eA14h+MSwUZXQUmyS7FO8A==
+X-Received: by 2002:a05:600c:8719:b0:45d:d97c:235e with SMTP id 5b1f17b1804b1-46fa9aa0edfmr226344305e9.12.1760614023765;
+        Thu, 16 Oct 2025 04:27:03 -0700 (PDT)
+Received: from jiri-mlt.client.nvidia.com ([140.209.217.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144d17cdsm20097575e9.18.2025.10.16.04.27.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 04:27:03 -0700 (PDT)
+Date: Thu, 16 Oct 2025 13:27:00 +0200
+From: Jiri Pirko <jiri@resnulli.us>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sdubroca@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Stanislav Fomichev <stfomichev@gmail.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	bridge@lists.linux.dev, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCHv4 net-next 1/4] net: add a common function to compute
+ features from lowers devices
+Message-ID: <to4zjjo5wfd5suootcy2v7n7kuc6rym3ld4jov26nunnarji2u@2hr7jyiq36pj>
+References: <20251014080217.47988-1-liuhangbin@gmail.com>
+ <20251014080217.47988-2-liuhangbin@gmail.com>
+ <sfjjkeub7fmvsktzrx6mmv6zvilno3un665tbqe2punw4azefo@jwuhk23763gc>
+ <aO74J20k16L7jS15@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,59 +83,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251016104802.567812-2-a.melnychenko@vyos.io>
+In-Reply-To: <aO74J20k16L7jS15@fedora>
 
-Andrii Melnychenko <a.melnychenko@vyos.io> wrote:
-> There was an issue with NAT'ed ftp and replaced messages
-> for PASV/EPSV mode. "New" IP in the message may have a
-> different length that would require sequence adjustment.
-> 
-> Signed-off-by: Andrii Melnychenko <a.melnychenko@vyos.io>
-> ---
->  net/netfilter/nf_conntrack_ftp.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/net/netfilter/nf_conntrack_ftp.c b/net/netfilter/nf_conntrack_ftp.c
-> index 617f744a2..0216bc099 100644
-> --- a/net/netfilter/nf_conntrack_ftp.c
-> +++ b/net/netfilter/nf_conntrack_ftp.c
-> @@ -25,6 +25,7 @@
->  #include <net/netfilter/nf_conntrack_ecache.h>
->  #include <net/netfilter/nf_conntrack_helper.h>
->  #include <linux/netfilter/nf_conntrack_ftp.h>
-> +#include <net/netfilter/nf_conntrack_seqadj.h>
->  
->  #define HELPER_NAME "ftp"
->  
-> @@ -390,6 +391,8 @@ static int help(struct sk_buff *skb,
->  	/* Until there's been traffic both ways, don't look in packets. */
->  	if (ctinfo != IP_CT_ESTABLISHED &&
->  	    ctinfo != IP_CT_ESTABLISHED_REPLY) {
-> +		if (!nf_ct_is_confirmed(ct))
-> +			nfct_seqadj_ext_add(ct);
+Wed, Oct 15, 2025 at 03:25:59AM +0200, liuhangbin@gmail.com wrote:
+>Hi Jiri,
+>On Tue, Oct 14, 2025 at 11:40:12AM +0200, Jiri Pirko wrote:
+>> >+#define VIRTUAL_DEV_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
+>> 
+>> I don't like the "virtual" naming. In the past, we always tried to avoid
+>> that for lower-upper devices like bond/team/bridge/others. Soft-device
+>> was the used term. Please let the "virtual" term for vitrualization,
+>> would that be possible?
+>
+>Sure
+>> 
+>> How about "master_upper"? This is already widely used to refer to
+>> bond/team/bridge/other master soft devices.
+>> 
+>> MASTER_UPPER_DEV_VLAN_FEATURES?
+>
+>I'm not sure if we should avoid using "master" now. Maybe just UPPER_DEV_VLAN_FEATURES?
 
-Still not convinced this is the correct place.
+Why? We have "master_upper" to point exactly at this kind of device.
 
-In nf_nat_setup_info we have:
 
-                if (nfct_help(ct) && !nfct_seqadj(ct))
-                        if (!nfct_seqadj_ext_add(ct))
-                                return NF_DROP;
-
-Looking at your cover letter (some of that info should be in
-patch changelog, it provides essential context), I would say
-that dnat rule is evaluated before the helper gets attached.
-
-If so, the bug is in nft_ct_helper_obj_eval, and the Fixes
-tag should be set to
-
-Fixes: 1a64edf54f55 ("netfilter: nft_ct: add helper set support")
-
-Probably something like:
-
-if ((ct->status & IPS_NAT_MASK) && !!nfct_seqadj(ct))
-	if (!nfct_seqadj_ext_add(ct)) ...
-
-Could you please investigate a bit futher? To me it looks
-like all other helpers have the same issue, a generic fix would
-be better.
+>
+>> [..]
+>> 
+>> 
+>> >+void netdev_compute_features_from_lowers(struct net_device *dev, bool update_header)
+>> 
+>> netdev_compute_master_upper_features?
+>
+>netdev_compute_upper_features?
+>
+>Thanks
+>Hangbin
