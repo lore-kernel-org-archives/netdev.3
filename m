@@ -1,90 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9A11E1C22;
-	Thu, 16 Oct 2025 15:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E342E62D4
+	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 15:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760628588; cv=none; b=q+u1CUCPHfJCODH3Zqia2Qr6CPO99Jl5JsnKy28ley6I8MC9GV73G7e2hn2wGbwZ0HX7Tgjzem1PxYCuT/LnDMOEkXyIxCeZon7isdzLKQLOEeR8GXFpYNKEqGligsVneYpk5hYwjh+D30JrljVU7kb45cvu7Eha0wTNfJ7l5PI=
+	t=1760628629; cv=none; b=s9Q7zvp8/m5BFBjDUPJ7IbDyTokiCUB8qXQ6qt5LdmyWtTRkyFNwkU2xeSrg5FAqa3sM4YLfmWrlQMUrYJd8fPCy4h5jUmLO6zaGJSIAo3T05Ndsnd+AEDNuPOsAuweV8lR+ju0NwX4KyirEE0GvsVXb3MaBOuG50L4jO5BO6qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760628588; c=relaxed/simple;
-	bh=5zk1p7uXJyG52PlTiJ7jqUnfX5vE/Lrp7UbPQeEvOJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsV6dBthZQSa0ik/KHTOud9+vvBH4R27O3BixFVFCVYqh+cJkx0R/lLfKUlQMc0Y/4J+9sSYJVxR80JLFqWJsr7bX8ZXMvhIPsapdrxXTu1vD0Q1UAX2r8PdCJoYvJC9vNCeAUp5gigTphrgn8Onh0w/g/sORorHay29OGtMGFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQneNmV3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760628629; c=relaxed/simple;
+	bh=JR0IPU7PxFXpfgWYzXY12lPBiLM1O9zhJ5yP9OtWp3U=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E+PuUnKbbjsWT5Wesh56RWDsauKfkSQQByjcRB50EeH5x9CTYsIPC+CFzj0gkaEPTdgp1Kfw+P5efTLIwHvGDHN50PRfFlYl8qIDv4m2eT7+oOHppwqT1+Cdn4gmzw+TeCyGun8QUBQsxCz9pvihU7i/PN7cnCewMNGfLngUn64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lo5InIkx; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQneNmV3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E988C4CEF1;
-	Thu, 16 Oct 2025 15:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760628588;
-	bh=5zk1p7uXJyG52PlTiJ7jqUnfX5vE/Lrp7UbPQeEvOJM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FQneNmV3fhnPk6gQ3KzkiuR6069UmCX3IsMiH2yV1uc64GIREVNxD8GqCuiqG7bio
-	 5muhMwudzSKyN6C7D1PT5JKk8gK/7ZuusIDrooi9VlwIRctSC5n5CLd3SOzdIzHu1K
-	 +5ZpI5+caDru2iwMUIeW9y7TC3G3fb2JYdwgAoxAfTlpwyCTQJ2sBZDgctDGAXTk/k
-	 H/ZJsknAWP7DS9JqRd6w6rK0YFXgAsSXnCGUy5hrtRTE8FQty6go27xad5eGL73mKf
-	 xAyFB00JW4JZWPtYMMQPUpPq0cPq+OmrWO+5Xc/+H27GeonxjVJsGaV64b16ehpn2J
-	 Yj1+MNOa0JZjQ==
-Date: Thu, 16 Oct 2025 16:29:40 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Sjoerd Simons <sjoerd@collabora.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Jianjun Wang <jianjun.wang@mediatek.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Chunfeng Yun <chunfeng.yun@mediatek.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Lee Jones <lee@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lo5InIkx"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47100eae3e5so8885515e9.1
+        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 08:30:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760628626; x=1761233426; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ietOkeWTDnClykDeSgCRmDi1+eHw6qsXZBfGYbeOrE8=;
+        b=Lo5InIkx0iWn8NLs4ifoap7z/6chVScpDsrnX8aTw7wZRA6q0rKmnYaxqCDSX/FGeP
+         BHPevq0P2K1FfFaodTdfgGbEWlNNP+bP3oioNY4frzUk9mtqGtXdtu+cJZQba/CfmoaK
+         4zP0in8F9eUqeCHS4P15r3gFuxbc9pReIWaYGNg9kAQxD7FArQFrF/DlXTXH3TJFxkAc
+         27TCuzpUqldZkWZXdwT0zwxRGJp8a05d2YK2qydYrB+pr3xCuRlGC4ESz8PgNdgANEdt
+         WdLihxXtPdQAIDabPMV6jQAOHnBuVVq6BFuc/VJp6gr1uxFwkg3rG2JW7MUQtgcg4WpN
+         TJeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760628626; x=1761233426;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ietOkeWTDnClykDeSgCRmDi1+eHw6qsXZBfGYbeOrE8=;
+        b=jSLPe3B6Boz/YpYWolDik48AGX8STQseyesrHYZyu7dVM+Qb90yh7KhDZCtwBHLTdH
+         OW4j18Kk2n0HUBbjrrJ54aSNEZ5h+sUNMpG9r2LYC0hKeCMz2qPrfmY4CKJQQkepZKrj
+         CmNCqHjbWdDCcK7ACAc6O0nmtObDBn69lyeaRFv0x9u/clHm08WwbpUvr6MoYyAouIKY
+         NnG8fMjrMy+C/iE+lfBE5dkAsUOorv/aGTN0l7QAMrN5g++bbKDGP1a2c64BDi/TyIjV
+         ezwFAoEfmrNem95vuNfTpE8bY+gmh8q848m1XhtjUZ2dZxfUBbRX3C6CQjyfY3QN4MRr
+         U24A==
+X-Forwarded-Encrypted: i=1; AJvYcCW8rllM3nKqMp624kknCigS1+JqkstvAwMD+7fxZXnXKn7HtHKz/XmY1iQtzV9mvF/ro1DTo2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMhaezGXeqfvelt/eGvY/DQe/UTUJDTgTqZr6CuVZ85dXGbzFP
+	S6eBylIuNyJKwkUq5EnxtAH7l6UCuCxmOjbtBB9h3UvJnlxIc8ZMjNbx
+X-Gm-Gg: ASbGncvvi7HWyVtqVjGKlhn/JEDQfe+90pTShVZkwSPgkSkIIQPzXcjUQpH76yNFYBq
+	vcLBisEcDEdrFgPbvDU35hD/fBpUQu5duDOv7nJ1+na09lZTeBZRZKmOaRR0Al55jDIGXWlYSHl
+	RI/u4R+MN3Q76pXr8fveycCtGyW/P1YIgAOZESX9G0DghaD0+8tXi5sKcZaq0YavbpJEf50bt/R
+	K4b5ECIwclMTkWFw0jxzj4AtGX9jQBZ3YyacHpEhykjuQxTPNevvcCBY27r/gbT69gGGd+rztBF
+	VabzEq1WV8RBtwIYfSxEvTAZps1bnhWCmkbMQyat+9cVvGIFCMXgTtaDVTjOLRttoWO28xXPxrS
+	bw/n6Bd+r3zw5vKw6MyJS2SGGhC8e1DOc2cBgyAdz/Qv+eSY9tt5X6s87xmPV9YPe8PRexcS/FS
+	5uXjCE3+xHN4nvLYAvUgmvuinjP8ym5KubF3r21AJ5/g==
+X-Google-Smtp-Source: AGHT+IE83L633qvtvU9yjysbdYdlIQn21EV/wagnBNKOZgnU2CqBGKS2iMtK+HobtWHJlzyFyVaiQQ==
+X-Received: by 2002:a05:600c:45c9:b0:46e:4b79:551 with SMTP id 5b1f17b1804b1-47117913764mr3709145e9.31.1760628626015;
+        Thu, 16 Oct 2025 08:30:26 -0700 (PDT)
+Received: from Ansuel-XPS. (93-34-92-177.ip49.fastwebnet.it. [93.34.92.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144c82b8sm31899495e9.15.2025.10.16.08.30.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 08:30:25 -0700 (PDT)
+Message-ID: <68f10f91.050a0220.3778ad.a4b3@mx.google.com>
+X-Google-Original-Message-ID: <aPEPj0R2k64GH7kW@Ansuel-XPS.>
+Date: Thu, 16 Oct 2025 17:30:23 +0200
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	kernel@collabora.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-phy@lists.infradead.org, netdev@vger.kernel.org,
-	Daniel Golle <daniel@makrotopia.org>,
-	Bryan Hinton <bryan@bryanhinton.com>
-Subject: Re: [PATCH 04/15] dt-bindings: mfd: syscon: Add mt7981-topmisc
-Message-ID: <20251016-pellet-speckled-fab8e8690051@spud>
-References: <20251016-openwrt-one-network-v1-0-de259719b6f2@collabora.com>
- <20251016-openwrt-one-network-v1-4-de259719b6f2@collabora.com>
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frank-w@public-files.de>
+Subject: Re: [net-next PATCH] net: phy: as21xxx: fill in inband caps and
+ better handle inband
+References: <20251016152013.4004-1-ansuelsmth@gmail.com>
+ <aPEOBRytURg6vKqN@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="It0qxNZczVw/gaKL"
-Content-Disposition: inline
-In-Reply-To: <20251016-openwrt-one-network-v1-4-de259719b6f2@collabora.com>
-
-
---It0qxNZczVw/gaKL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <aPEOBRytURg6vKqN@shell.armlinux.org.uk>
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+On Thu, Oct 16, 2025 at 04:23:49PM +0100, Russell King (Oracle) wrote:
+> On Thu, Oct 16, 2025 at 05:20:07PM +0200, Christian Marangi wrote:
+> > +static int as21xxx_config_inband(struct phy_device *phydev,
+> > +				 unsigned int modes)
+> > +{
+> > +	if (modes == LINK_INBAND_ENABLE)
+> > +		return aeon_dpc_ra_enable(phydev);
+> 
+> So what happens when phylink requests inband to be disabled?
+> 
+> I really don't like implementations that enable something but then
+> provide no way to disable it.
+>
 
---It0qxNZczVw/gaKL
-Content-Type: application/pgp-signature; name="signature.asc"
+On firmware load it's disabled by default. Can phylink ask to disable
+inband at runtime?
 
------BEGIN PGP SIGNATURE-----
+I will try to check if there is a way to disable it.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPEPZAAKCRB4tDGHoIJi
-0i02AQCtlo1PhEBtOSpa9tHFh/btZnLURhGuXrndCwW9sNu9YAEAgh9CEJPYY+RU
-n/3HO7MCmrIAjvCB4YbZBXt04Uzn6Qw=
-=0tqc
------END PGP SIGNATURE-----
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
---It0qxNZczVw/gaKL--
+-- 
+	Ansuel
