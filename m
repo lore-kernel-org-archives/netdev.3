@@ -1,83 +1,98 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF862D3725
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 22:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004E72D47EA;
+	Thu, 16 Oct 2025 22:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760653496; cv=none; b=plUvLCv2yUVGA9iirhHBmj5eFhKteIhfcgmwQISBwn3gQuGtDtxYC65Teh04tY9MuztDQ8neChISCGn6LHQkwUAulb4rOX4c2n+8j3Iqmd+8aIPSDnyGbGlyH3GzzggZe+Tlnoiebu8sHxJ69S1vehP8PKsD0h8vpdaImRl6t2o=
+	t=1760654308; cv=none; b=Fr1FEdTHRy6kBvaOcwtbAe+bI2NmB3IJnidqCJNrQ75np+057l52TrVEzj+nI6OvzxCdP3/n1TZ4+Gw8RLsI5wIov3KZlm3kfx+eR5U+F/WbpfGvhEfOdxTZfXH9sxKHD65dSblzJUgJhevPNI6UCQk/CcZU5fLeWEmJNd8RXhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760653496; c=relaxed/simple;
-	bh=lQaQAods4Cd4zp4Oh6gyQgqNPPOylZ+td+/oxzjvOGw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MYgogjo/aKCC056JLxcjIuNGPez2C4/Y0xWECvJl6hXeFTF4EcOirYdFuSDRf1n1zSdPNOXeBh/BIKNC2P/dANs0CtNFV+xmS2fsSi4k0SHbUyDgXkwFwkJpCfUdrF+tPNhgWvWifxnKrSDWySCBM0s0HByKXu2MV4GLffHXnm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vsMsg8PM; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1760654308; c=relaxed/simple;
+	bh=wKiMbSW2btYDCEkP84aOaJFVlmVRonaPBFbWDEDZHFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DVgCiQ0dErC8Cs23MDY9y6cP3xaqdQl8F67s/AGAO1Oolwd2P5yy+sDoabMM+79eRFsjjGt3xWRnUpz75O0xGJgiOpro2Rzp2I96+bYJSWo7j5R02KpleGPR3TIxVGYz4+wRYgb7NFrsawAK3C3qU+1DGrLkLvWn3+EAf+/riUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/stxcCn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vsMsg8PM"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760653491;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Xm8jvNKL/thtQYSSarOS/S/a1pF3fC0Ry8sZYSkKtGs=;
-	b=vsMsg8PMjPp4NevIQWDDFjlwdwZKIjpd/ZTN9OB4XVpKFEFicagtdtAlq5cV0dgIrKJm+K
-	h37IC0mEMPEwpckTT5LVgy6MSOGcCpeULQMATMuBlYGNnMA3MrHfvfMPU9oAzmzZmdl4HQ
-	sqotdpfwFqu4FxcWZHpKb2mP83tGMi0=
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-To: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH net-next] bnxt_en: support PPS in/out on all pins
-Date: Thu, 16 Oct 2025 22:23:17 +0000
-Message-ID: <20251016222317.3512207-1-vadim.fedorenko@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/stxcCn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF5AC4CEF1;
+	Thu, 16 Oct 2025 22:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760654307;
+	bh=wKiMbSW2btYDCEkP84aOaJFVlmVRonaPBFbWDEDZHFs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=H/stxcCnyU19kW79L2FppuFlO8lYB5qFsnejfj8L2Q4yE+5XxPaFW7fqbjFymaMhT
+	 ui2hEnh0ZWj8ydcpC38Yi6vEOzcogIigVULPG2On2iUDljyjynurBYY+fKLOfaYBjz
+	 gQW2i/SnzDSXHdIcJIfgMEWmmNNT0Y5qc+Rl31hYFLmxzvc/jYtowDQ+62nx218lhg
+	 IrAmWqHEOe1jb6VGo8c1Z24/35soaWGBZmnURt20/OlzCwFvYaHdTJ/o9/PO32pShq
+	 dxa2FkfC0bX9LG9zPUBR0kTDWf/7D6WRBnfyKj3MzOSo54CZgXQCfYkUyCnCG/DVuP
+	 qrL3uSJyTh45g==
+Date: Thu, 16 Oct 2025 15:38:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v13 3/3] net: dsa: yt921x: Add support for
+ Motorcomm YT921x
+Message-ID: <20251016153826.70867a6e@kernel.org>
+In-Reply-To: <20251014033551.200692-4-mmyangfl@gmail.com>
+References: <20251014033551.200692-1-mmyangfl@gmail.com>
+	<20251014033551.200692-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-n_ext_ts and n_per_out from ptp_clock_caps are checked as a max number
-of pins rather than max number of active pins.
+On Tue, 14 Oct 2025 11:35:47 +0800 David Yang wrote:
+> Motorcomm YT921x is a series of ethernet switches developed by Shanghai
+> Motorcomm Electronic Technology, including:
 
-supported_extts_flags and supported_perout_flags have to be added as
-well to make the driver complaint with the latest API.
+>  drivers/net/dsa/Kconfig  |    7 +
+>  drivers/net/dsa/Makefile |    1 +
+>  drivers/net/dsa/yt921x.c | 2898 ++++++++++++++++++++++++++++++++++++++
+>  drivers/net/dsa/yt921x.h |  504 +++++++
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+We need a MAINTAINERS entry covering the new driver. See also:
+https://docs.kernel.org/next/maintainer/feature-and-driver-maintainers.html
+And: 
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#supported-status-for-drivers
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index db81cf6d5289..c9b7df669415 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -965,10 +965,12 @@ static int bnxt_ptp_pps_init(struct bnxt *bp)
- 	hwrm_req_drop(bp, req);
- 
- 	/* Only 1 each of ext_ts and per_out pins is available in HW */
--	ptp_info->n_ext_ts = 1;
--	ptp_info->n_per_out = 1;
-+	ptp_info->n_ext_ts = pps_info->num_pins;
-+	ptp_info->n_per_out = pps_info->num_pins;
- 	ptp_info->pps = 1;
- 	ptp_info->verify = bnxt_ptp_verify;
-+	ptp_info->supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS;
-+	ptp_info->supported_perout_flags = PTP_PEROUT_DUTY_CYCLE;
- 
- 	return 0;
- }
+> +
+> +	pp->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
+> +			mib->rx_128_255byte + mib->rx_256_511byte +
+> +			mib->rx_512_1023byte + mib->rx_1024_1518byte +
+> +			mib->rx_jumbo;
+> +	pp->tx_frames = mib->tx_64byte + mib->tx_65_127byte +
+> +			mib->tx_128_255byte + mib->tx_256_511byte +
+> +			mib->tx_512_1023byte + mib->tx_1024_1518byte +
+> +			mib->tx_jumbo;
+> +
+> +	/* Flush all writes */
+> +	smp_wmb();
+
+Barriers don't flush anything, they order visibility of writes.
+You don't have a matching smp_rmb() AFAICT so this looks unnecessary.
+
+> +	/* other mirror tasks & different dst port -> conflict */
+> +	if ((val & ~srcs & (YT921X_MIRROR_EGR_PORTS_M |
+> +			    YT921X_MIRROR_IGR_PORTS_M)) != 0 &&
+
+nit: you can delete the != 0
+
+> +	    (val & YT921X_MIRROR_PORT_M) != dst) {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "Sniffer port is already configured, "
+> +				   "delete existing rules & retry");
+
+please don't wrap strings, it's okay to go over 80 chars
+Makes it easier to find them by grepping if they are not broken up
 -- 
-2.47.3
-
+pw-bot: cr
