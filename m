@@ -1,149 +1,320 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE83D1A2C11
-	for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 08:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB52641D8;
+	Thu, 16 Oct 2025 08:02:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760601662; cv=none; b=aAiYSASXI2mGO+1Fg6jaLox92yIaQHI8Nwjaa43a96U43p5gIDXTCxo3uAkTu9o14zK87DzRPclnDw/noAUBs2jcagZDoyRBvxjVnCCo68TXJEQvI5bv8r5w+yqhHTJgWn2er8ZXuspJ8wI/+JkdDLp8JmSP+bm49lx1ZA7uU5A=
+	t=1760601738; cv=none; b=O7jm9Fq/6DGvwvGwhihNUG6BP7eslBwZbHk5hM558HqjPtTsoTfmTb422eA9g6qRvNAEZRxHY2DuGQGtYILw0FZMWmUyt9jZ+pr0sQB4Px+By2uZKB9gVavOqsg57T6cMLNoWR67z7tH179gJlatHklQmjgGulmfgmUqJU8mNOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760601662; c=relaxed/simple;
-	bh=h+tjwbov4toO89eFNGZs8DnejPpuFk+UUy6nIXggJB4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i3TtKZb5tpjUR/9oKTLQZka9PIEQz3te83514jYN5iR5xXFiiXE3/aycuYRzNwxOb2zxhUZA/hDzoKxMMINu4cKdrxCLfIBaNXIDRban3zGomFHia+xk/Vsc3NQoF7yG7Xsq1FW5mAg5D8ggGcQ0hhkTieS4rZ9zZTp1wyTQ9XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BlLbutCj; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1760601738; c=relaxed/simple;
+	bh=T/QAZeUOl1WroCJzhqOuuzeJ0heu4oxs6E+NuNYSyJ4=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=IyOHDrtAByExjNezsOkmnKIuxdyGc2YcEv7wpWsOMXG9EXkZEb4Vm8G4PZryfhOLZo/S3e1t12+lGHNBHR1W3r1Zkw5d7gt31kIcTKpAYMFKpS2R16o3F+mekCeHSJh1jI65s0L1ND7xS+hQPjdE+qkPTeKEnATWr/eaago/tKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ty129H83; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BlLbutCj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760601660; x=1792137660;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=h+tjwbov4toO89eFNGZs8DnejPpuFk+UUy6nIXggJB4=;
-  b=BlLbutCj26sEkkVAoXPKmDUV2yGek8KOUutK2HhZ92SFuK4JTaQYvTu2
-   LG7Be4aqva9EOvvT/0BaFSo+GTpJeDSjgrSmupxgP4INYeh9OJlqNX76h
-   B+7paQWi7uI0PDTPBvdqoN+DyC82rKS4Vdk7GXsgu9arB6eydMReXjCgV
-   DGO0RN7m2Yeg9Ycyw0UJJrH1Vl8JVe/fry7rjbwbTU3o7zPRIMWRF+0gt
-   cTuvxcyFBaULeU1KRws2WMPZL4XDVGSuU1YFKvgAOqgGJA5XbOEEhgGBV
-   bHZ3b8YEe/Gl5UlHmfqbCqKFNfnaQ8PCUq92JwLC25EbXZwYhCTzQ2fwK
-   g==;
-X-CSE-ConnectionGUID: /6AyeFZmR5WGj3KM3NZ+aw==
-X-CSE-MsgGUID: V3ccV/u5RwC8zZihXA47MA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11583"; a="73070701"
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
-   d="scan'208";a="73070701"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 01:00:59 -0700
-X-CSE-ConnectionGUID: s3aezF74Q5urookK9cQ8Sw==
-X-CSE-MsgGUID: 4LOPsJF4R0WMZS9Zy3qUwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,233,1754982000"; 
-   d="scan'208";a="212986455"
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by orviesa002.jf.intel.com with ESMTP; 16 Oct 2025 01:00:55 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	jacob.e.keller@intel.com,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH iwl-net v2] libie: depend on DEBUG_FS when building LIBIE_FWLOG
-Date: Thu, 16 Oct 2025 09:29:40 +0200
-Message-ID: <20251016072940.1661485-1-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ty129H83"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2A4C4CEF1;
+	Thu, 16 Oct 2025 08:02:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760601738;
+	bh=T/QAZeUOl1WroCJzhqOuuzeJ0heu4oxs6E+NuNYSyJ4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ty129H83xsriYCQCtEDyF8wzp/ar6C6Ib5FFd7wTqimz3iGENAWUYHmSTehnbC/wq
+	 LhCNUhxKGJXjVYxCa7i6nOT4pEH8CEVCGAVqFog7+Typi8flSNFXoUy51tp74l++uj
+	 6wQp/KUN7qeqLH/Q6jwnhV6hyUy34r2AIUOLlMpW856vtyVHcMVpDbso6A/gsWbBJs
+	 LN+SOz1tIlXv/oL2m7BK+KtQgW/0U/xlFhC3udqi+oc+vTTq9gslKu6vFmby17qyju
+	 S/iGBjXRBFrmVX/MnCnb2PLlSVjKSF4i9PdMmAx31JM6c9b1GRf735QldRy8nPQz7X
+	 T5PK50pcnMZtQ==
+Date: Thu, 16 Oct 2025 17:02:12 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lance Yang
+ <lance.yang@linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-aspeed@lists.ozlabs.org>, <wireguard@lists.zx2c4.com>,
+ <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Anshuman Khandual
+ <anshuman.khandual@arm.com>, Arnd Bergmann <arnd@arndb.de>, David
+ Hildenbrand <david@redhat.com>, Florian Wesphal <fw@strlen.de>, Jakub
+ Kacinski <kuba@kernel.org>, "Jason A . Donenfeld" <jason@zx2c4.com>, Joel
+ Granados <joel.granados@kernel.org>, Joel Stanley <joel@jms.id.au>,
+ Jonathan Corbet <corbet@lwn.net>, Kees Cook <kees@kernel.org>, Liam Howlett
+ <liam.howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Paul E . McKenney" <paulmck@kernel.org>, Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>, Petr Mladek <pmladek@suse.com>, Phil
+ Auld <pauld@redhat.com>, Randy Dunlap <rdunlap@infradead.org>, Russell King
+ <linux@armlinux.org.uk>, Shuah Khan <shuah@kernel.org>, Simon Horman
+ <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Steven Rostedt
+ <rostedt@goodmis.org>
+Subject: Re: [PATCH][v4] hung_task: Panic when there are more than N hung
+ tasks at the same time
+Message-Id: <20251016170212.65e2ad95b80cdeeb6f7d7ce3@kernel.org>
+In-Reply-To: <20251015063615.2632-1-lirongqing@baidu.com>
+References: <20251015063615.2632-1-lirongqing@baidu.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-LIBIE_FWLOG is unusable without DEBUG_FS. Mark it in Kconfig.
+On Wed, 15 Oct 2025 14:36:15 +0800
+lirongqing <lirongqing@baidu.com> wrote:
 
-Fix build error on ixgbe when DEBUG_FS is not set. To not add another
-layer of #if IS_ENABLED(LIBIE_FWLOG) in ixgbe fwlog code define debugfs
-dentry even when DEBUG_FS isn't enabled. In this case the dummy
-functions of LIBIE_FWLOG will be used, so not initialized dentry isn't a
-problem.
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> Currently, when 'hung_task_panic' is enabled, the kernel panics
+> immediately upon detecting the first hung task. However, some hung
+> tasks are transient and allow system recovery, while persistent hangs
+> should trigger a panic when accumulating beyond a threshold.
+> 
+> Extend the 'hung_task_panic' sysctl to accept a threshold value
+> specifying the number of hung tasks that must be detected before
+> triggering a kernel panic. This provides finer control for environments
+> where transient hangs may occur but persistent hangs should be fatal.
+> 
+> The sysctl now accepts:
+> - 0: don't panic (maintains original behavior)
+> - 1: panic on first hung task (maintains original behavior)
+> - N > 1: panic after N hung tasks are detected in a single scan
+> 
+> This maintains backward compatibility while providing flexibility for
+> different hang scenarios.
 
-Fixes: 641585bc978e ("ixgbe: fwlog support for e610")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/lkml/f594c621-f9e1-49f2-af31-23fbcb176058@roeck-us.net/
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
-v1 --> v2 [1]:
- * add DEBUG_FS dependency in LIBIE_FWLOG
+Looks good to me.
 
-[1] https://lore.kernel.org/netdev/20251014141110.751104-1-michal.swiatkowski@linux.intel.com/
----
- drivers/net/ethernet/intel/Kconfig       |  4 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe.h |  2 --
- include/linux/net/intel/libie/fwlog.h    | 12 ++++++++++++
- 3 files changed, 14 insertions(+), 4 deletions(-)
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-diff --git a/drivers/net/ethernet/intel/Kconfig b/drivers/net/ethernet/intel/Kconfig
-index a563a94e2780..122ee23497e6 100644
---- a/drivers/net/ethernet/intel/Kconfig
-+++ b/drivers/net/ethernet/intel/Kconfig
-@@ -146,7 +146,7 @@ config IXGBE
- 	tristate "Intel(R) 10GbE PCI Express adapters support"
- 	depends on PCI
- 	depends on PTP_1588_CLOCK_OPTIONAL
--	select LIBIE_FWLOG
-+	select LIBIE_FWLOG if DEBUG_FS
- 	select MDIO
- 	select NET_DEVLINK
- 	select PLDMFW
-@@ -298,7 +298,7 @@ config ICE
- 	select DIMLIB
- 	select LIBIE
- 	select LIBIE_ADMINQ
--	select LIBIE_FWLOG
-+	select LIBIE_FWLOG if DEBUG_FS
- 	select NET_DEVLINK
- 	select PACKING
- 	select PLDMFW
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 14d275270123..dce4936708eb 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -821,9 +821,7 @@ struct ixgbe_adapter {
- #ifdef CONFIG_IXGBE_HWMON
- 	struct hwmon_buff *ixgbe_hwmon_buff;
- #endif /* CONFIG_IXGBE_HWMON */
--#ifdef CONFIG_DEBUG_FS
- 	struct dentry *ixgbe_dbg_adapter;
--#endif /*CONFIG_DEBUG_FS*/
- 
- 	u8 default_up;
- 	/* Bitmask indicating in use pools */
-diff --git a/include/linux/net/intel/libie/fwlog.h b/include/linux/net/intel/libie/fwlog.h
-index 36b13fabca9e..7273c78c826b 100644
---- a/include/linux/net/intel/libie/fwlog.h
-+++ b/include/linux/net/intel/libie/fwlog.h
-@@ -78,8 +78,20 @@ struct libie_fwlog {
- 	);
- };
- 
-+#if IS_ENABLED(CONFIG_LIBIE_FWLOG)
- int libie_fwlog_init(struct libie_fwlog *fwlog, struct libie_fwlog_api *api);
- void libie_fwlog_deinit(struct libie_fwlog *fwlog);
- void libie_fwlog_reregister(struct libie_fwlog *fwlog);
- void libie_get_fwlog_data(struct libie_fwlog *fwlog, u8 *buf, u16 len);
-+#else
-+static inline int libie_fwlog_init(struct libie_fwlog *fwlog,
-+				   struct libie_fwlog_api *api)
-+{
-+	return -EOPNOTSUPP;
-+}
-+static inline void libie_fwlog_deinit(struct libie_fwlog *fwlog) { }
-+static inline void libie_fwlog_reregister(struct libie_fwlog *fwlog) { }
-+static inline void libie_get_fwlog_data(struct libie_fwlog *fwlog, u8 *buf,
-+					u16 len) { }
-+#endif /* CONFIG_LIBIE_FWLOG */
- #endif /* _LIBIE_FWLOG_H_ */
+Thank you,
+
+> 
+> Signed-off-by: Li RongQing <lirongqing@baidu.com>
+> Cc: Andrew Jeffery <andrew@codeconstruct.com.au>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Florian Wesphal <fw@strlen.de>
+> Cc: Jakub Kacinski <kuba@kernel.org>
+> Cc: Jason A. Donenfeld <jason@zx2c4.com>
+> Cc: Joel Granados <joel.granados@kernel.org>
+> Cc: Joel Stanley <joel@jms.id.au>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: Liam Howlett <liam.howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+> Cc: "Paul E . McKenney" <paulmck@kernel.org>
+> Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> Cc: Petr Mladek <pmladek@suse.com>
+> Cc: Phil Auld <pauld@redhat.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> ---
+> diff with v3: comments modification, suggested by Lance, Masami, Randy and Petr
+> diff with v2: do not add a new sysctl, extend hung_task_panic, suggested by Kees Cook
+> 
+>  Documentation/admin-guide/kernel-parameters.txt      | 20 +++++++++++++-------
+>  Documentation/admin-guide/sysctl/kernel.rst          |  9 +++++----
+>  arch/arm/configs/aspeed_g5_defconfig                 |  2 +-
+>  kernel/configs/debug.config                          |  2 +-
+>  kernel/hung_task.c                                   | 15 ++++++++++-----
+>  lib/Kconfig.debug                                    |  9 +++++----
+>  tools/testing/selftests/wireguard/qemu/kernel.config |  2 +-
+>  7 files changed, 36 insertions(+), 23 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index a51ab46..492f0bc 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1992,14 +1992,20 @@
+>  			the added memory block itself do not be affected.
+>  
+>  	hung_task_panic=
+> -			[KNL] Should the hung task detector generate panics.
+> -			Format: 0 | 1
+> +			[KNL] Number of hung tasks to trigger kernel panic.
+> +			Format: <int>
+> +
+> +			When set to a non-zero value, a kernel panic will be triggered if
+> +			the number of detected hung tasks reaches this value.
+> +
+> +			0: don't panic
+> +			1: panic immediately on first hung task
+> +			N: panic after N hung tasks are detected in a single scan
+>  
+> -			A value of 1 instructs the kernel to panic when a
+> -			hung task is detected. The default value is controlled
+> -			by the CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time
+> -			option. The value selected by this boot parameter can
+> -			be changed later by the kernel.hung_task_panic sysctl.
+> +			The default value is controlled by the
+> +			CONFIG_BOOTPARAM_HUNG_TASK_PANIC build-time option. The value
+> +			selected by this boot parameter can be changed later by the
+> +			kernel.hung_task_panic sysctl.
+>  
+>  	hvc_iucv=	[S390]	Number of z/VM IUCV hypervisor console (HVC)
+>  				terminal devices. Valid values: 0..8
+> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+> index f3ee807..0065a55 100644
+> --- a/Documentation/admin-guide/sysctl/kernel.rst
+> +++ b/Documentation/admin-guide/sysctl/kernel.rst
+> @@ -397,13 +397,14 @@ a hung task is detected.
+>  hung_task_panic
+>  ===============
+>  
+> -Controls the kernel's behavior when a hung task is detected.
+> +When set to a non-zero value, a kernel panic will be triggered if the
+> +number of hung tasks found during a single scan reaches this value.
+>  This file shows up if ``CONFIG_DETECT_HUNG_TASK`` is enabled.
+>  
+> -= =================================================
+> += =======================================================
+>  0 Continue operation. This is the default behavior.
+> -1 Panic immediately.
+> -= =================================================
+> +N Panic when N hung tasks are found during a single scan.
+> += =======================================================
+>  
+>  
+>  hung_task_check_count
+> diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
+> index 61cee1e..c3b0d5f 100644
+> --- a/arch/arm/configs/aspeed_g5_defconfig
+> +++ b/arch/arm/configs/aspeed_g5_defconfig
+> @@ -308,7 +308,7 @@ CONFIG_PANIC_ON_OOPS=y
+>  CONFIG_PANIC_TIMEOUT=-1
+>  CONFIG_SOFTLOCKUP_DETECTOR=y
+>  CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
+> -CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
+> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
+>  CONFIG_WQ_WATCHDOG=y
+>  # CONFIG_SCHED_DEBUG is not set
+>  CONFIG_FUNCTION_TRACER=y
+> diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
+> index e81327d..9f6ab7d 100644
+> --- a/kernel/configs/debug.config
+> +++ b/kernel/configs/debug.config
+> @@ -83,7 +83,7 @@ CONFIG_SLUB_DEBUG_ON=y
+>  #
+>  # Debug Oops, Lockups and Hangs
+>  #
+> -# CONFIG_BOOTPARAM_HUNG_TASK_PANIC is not set
+> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=0
+>  # CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC is not set
+>  CONFIG_DEBUG_ATOMIC_SLEEP=y
+>  CONFIG_DETECT_HUNG_TASK=y
+> diff --git a/kernel/hung_task.c b/kernel/hung_task.c
+> index b2c1f14..84b4b04 100644
+> --- a/kernel/hung_task.c
+> +++ b/kernel/hung_task.c
+> @@ -81,7 +81,7 @@ static unsigned int __read_mostly sysctl_hung_task_all_cpu_backtrace;
+>   * hung task is detected:
+>   */
+>  static unsigned int __read_mostly sysctl_hung_task_panic =
+> -	IS_ENABLED(CONFIG_BOOTPARAM_HUNG_TASK_PANIC);
+> +	CONFIG_BOOTPARAM_HUNG_TASK_PANIC;
+>  
+>  static int
+>  hung_task_panic(struct notifier_block *this, unsigned long event, void *ptr)
+> @@ -218,8 +218,11 @@ static inline void debug_show_blocker(struct task_struct *task, unsigned long ti
+>  }
+>  #endif
+>  
+> -static void check_hung_task(struct task_struct *t, unsigned long timeout)
+> +static void check_hung_task(struct task_struct *t, unsigned long timeout,
+> +		unsigned long prev_detect_count)
+>  {
+> +	unsigned long total_hung_task;
+> +
+>  	if (!task_is_hung(t, timeout))
+>  		return;
+>  
+> @@ -229,9 +232,10 @@ static void check_hung_task(struct task_struct *t, unsigned long timeout)
+>  	 */
+>  	sysctl_hung_task_detect_count++;
+>  
+> +	total_hung_task = sysctl_hung_task_detect_count - prev_detect_count;
+>  	trace_sched_process_hang(t);
+>  
+> -	if (sysctl_hung_task_panic) {
+> +	if (sysctl_hung_task_panic && total_hung_task >= sysctl_hung_task_panic) {
+>  		console_verbose();
+>  		hung_task_show_lock = true;
+>  		hung_task_call_panic = true;
+> @@ -300,6 +304,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+>  	int max_count = sysctl_hung_task_check_count;
+>  	unsigned long last_break = jiffies;
+>  	struct task_struct *g, *t;
+> +	unsigned long prev_detect_count = sysctl_hung_task_detect_count;
+>  
+>  	/*
+>  	 * If the system crashed already then all bets are off,
+> @@ -320,7 +325,7 @@ static void check_hung_uninterruptible_tasks(unsigned long timeout)
+>  			last_break = jiffies;
+>  		}
+>  
+> -		check_hung_task(t, timeout);
+> +		check_hung_task(t, timeout, prev_detect_count);
+>  	}
+>   unlock:
+>  	rcu_read_unlock();
+> @@ -389,7 +394,7 @@ static const struct ctl_table hung_task_sysctls[] = {
+>  		.mode		= 0644,
+>  		.proc_handler	= proc_dointvec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+> -		.extra2		= SYSCTL_ONE,
+> +		.extra2		= SYSCTL_INT_MAX,
+>  	},
+>  	{
+>  		.procname	= "hung_task_check_count",
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 3034e294..3976c90 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1258,12 +1258,13 @@ config DEFAULT_HUNG_TASK_TIMEOUT
+>  	  Keeping the default should be fine in most cases.
+>  
+>  config BOOTPARAM_HUNG_TASK_PANIC
+> -	bool "Panic (Reboot) On Hung Tasks"
+> +	int "Number of hung tasks to trigger kernel panic"
+>  	depends on DETECT_HUNG_TASK
+> +	default 0
+>  	help
+> -	  Say Y here to enable the kernel to panic on "hung tasks",
+> -	  which are bugs that cause the kernel to leave a task stuck
+> -	  in uninterruptible "D" state.
+> +	  When set to a non-zero value, a kernel panic will be triggered
+> +	  if the number of hung tasks found during a single scan reaches
+> +	  this value.
+>  
+>  	  The panic can be used in combination with panic_timeout,
+>  	  to cause the system to reboot automatically after a
+> diff --git a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
+> index 936b18b..0504c11 100644
+> --- a/tools/testing/selftests/wireguard/qemu/kernel.config
+> +++ b/tools/testing/selftests/wireguard/qemu/kernel.config
+> @@ -81,7 +81,7 @@ CONFIG_WQ_WATCHDOG=y
+>  CONFIG_DETECT_HUNG_TASK=y
+>  CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=y
+>  CONFIG_BOOTPARAM_SOFTLOCKUP_PANIC=y
+> -CONFIG_BOOTPARAM_HUNG_TASK_PANIC=y
+> +CONFIG_BOOTPARAM_HUNG_TASK_PANIC=1
+>  CONFIG_PANIC_TIMEOUT=-1
+>  CONFIG_STACKTRACE=y
+>  CONFIG_EARLY_PRINTK=y
+> -- 
+> 2.9.4
+> 
+
+
 -- 
-2.49.0
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
