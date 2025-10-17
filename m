@@ -1,162 +1,79 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EC5320A3B;
-	Fri, 17 Oct 2025 10:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2F4325481
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 10:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760698253; cv=none; b=QF0pjfCMfsMJMQtwFjKhklzhB4/Kcad8a9PjY5FjuDD9waARCheqedRSdTQsVa08KcX1X2TdpkxBpinrCtR1AXVD0qI+CR4q6+4Kyv0i43Ude0qPcj3ef+wlEatczqoWFkyE+o98aARnfC2qQ0G47I4gJaOzFxssALM2qeA4a+s=
+	t=1760698386; cv=none; b=gw0g7LsAs4kbD440pMxidBZmCT/Yp0yc0uYn6cqZF96hjeAY4iZ239HDUstdulryEcf0m5Q+Wskwyag0K8SZ0FD7RVZhSUUM8CmvhI3gXcPS4nQjA3LakpdhiZP0UoRuY5ZvFosg3XNCoe+LAehcqLDS1Zah1MuMAw3WnRIS4AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760698253; c=relaxed/simple;
-	bh=NGpRihvRGLmZxaUb7q6Kyg1zoqkKk067tACLVGmS4Z0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SZm2LbVRh57nyjRXmeQd7cFy10GtVgB3IOwuvirXxexTxOp8uwQHuThu6niuM+WJDFAOZkiKgBW51EAm9Zg8puBbXMaKKNWahvjD7xA+hACF3XsBukPVgzEbgSkhjmHJVFJe+LgpKMygRlaiM56FiNOFgdtc31td37AXW8KCckk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cp17m0sBZz9sSC;
-	Fri, 17 Oct 2025 12:21:24 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Ma1A-_kW4Zjq; Fri, 17 Oct 2025 12:21:24 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cp17l6vfqz9sS7;
-	Fri, 17 Oct 2025 12:21:23 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D03878B786;
-	Fri, 17 Oct 2025 12:21:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id UGiDsfLHLJ0I; Fri, 17 Oct 2025 12:21:23 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A28178B776;
-	Fri, 17 Oct 2025 12:21:22 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Andre Almeida" <andrealmeid@igalia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 00/10] powerpc: Implement masked user access
-Date: Fri, 17 Oct 2025 12:20:56 +0200
-Message-ID: <cover.1760529207.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1760698386; c=relaxed/simple;
+	bh=UZ84pK8EZum2L4NrxRfDoOLY6Mk6uo+z6/MO8unb2Dc=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=XcyOc1LicPv3dHag9ADf0AIe93PPVHcJE0EdYpMu7PDpUyh+ccXUkEI2nOhfsYuZzPdU0dGYEQBP+Wbe2yqZ9Zixy+rdyrwhSFxBmAmgEcO9s+uxojZ62OwmQgj4m8EANajPCHAdPSeQEYVMubSWVpytxUE6g+OXUlRzyv9w4/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-42f989e2030so22905255ab.2
+        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 03:53:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760698384; x=1761303184;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NPL3Arg3gcXkbhPv1W9tkdK4HJ9POrjtlajg24JkOqE=;
+        b=ahHo/r1SoPMBoewiTaXYcmZh+TMxBg3MPzK4eT0xL671fmqTdYV18t9TGdgQVNOl6d
+         cTt/Fbt8izJjvJUZJfa+cFJIE3Beq7zdVyXbRLmfBl/dOAWjDptoUbozCXAADeHKOIR6
+         SsJ8h0ESMDWPj9AriVUcoE+0uwOI9jLO4Mso3LVa/gfncdbEBZ9VDx1eSlvCKH47ylRh
+         xtefDUMH3SJECQ3c933Fm6UtVp97mzEajF81eTe/9ZEYXWdbmZRlgpXQ9ez9IBpdOPD5
+         TdQ9hbCCEk5cvVr2WzUko+Fv5mn5VwXZde10zdkQHFvvwdfXRuYHyza3mY3iR904TSID
+         hEbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZM22ptKEeL0Y8FH4RlHVVa9UvizXqYewASjrqBchp9OAHHTm/+LX7QGMq/hK3mHdJncx64WE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy2uGe+t0yj8AxRPHmSKORbVR8UMo8lmS590iwE1vVvDSXusRj8
+	Z9DYge3WGM1e/EgbZOQskLi0+bhtmvgpzNNeUUP0/Dmjy/KoYSnzbSLviH9MOv5pfJyvXj0jo7a
+	z23q0me+fmZ3ElOdR4I4z190XMagYlIVk7vhwUYme7jp9ctrvZ7lrCDp5d2c=
+X-Google-Smtp-Source: AGHT+IHmxJ13Rz2Lu+NbMBxEXD8Heu8HuIssxc/gVTc21ECqI5eDExNTc4rXaDI9jqlDn4xLtV8QBDUtIbnuo7atZCPhjPPp+y2d
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4010; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=NGpRihvRGLmZxaUb7q6Kyg1zoqkKk067tACLVGmS4Z0=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWR8kuhat/+o4e3tgp5tNjx394ivT+xa9eDbmm+PUyqZn IUta/dYdpSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJaM5lZJjpeWpinm69h/uD SOaEmFJVg/NP3//+LLx0a+I3V8WXt18xMsxzqhEpyjOV21GwfsPh5xfF7zzLP22mMnXRZv2nxeu azDkB
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1445:b0:430:aec5:9bee with SMTP id
+ e9e14a558f8ab-430c524ce95mr42601305ab.7.1760698384460; Fri, 17 Oct 2025
+ 03:53:04 -0700 (PDT)
+Date: Fri, 17 Oct 2025 03:53:04 -0700
+In-Reply-To: <68f1d9d6.050a0220.91a22.0419.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68f22010.050a0220.91a22.041c.GAE@google.com>
+Subject: Re: [syzbot] [net?] kernel BUG in set_ipsecrequest
+From: syzbot <syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com>
+To: alexanderduyck@fb.com, chuck.lever@oracle.com, davem@davemloft.net, 
+	edumazet@google.com, herbert@gondor.apana.org.au, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linyunsheng@huawei.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, steffen.klassert@secunet.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Masked user access avoids the address/size verification by access_ok().
-Allthough its main purpose is to skip the speculation in the
-verification of user address and size hence avoid the need of spec
-mitigation, it also has the advantage to reduce the amount of
-instructions needed so it also benefits to platforms that don't
-need speculation mitigation, especially when the size of the copy is
-not know at build time.
+syzbot has bisected this issue to:
 
-Patches 1,2,4 are cleaning up some redundant barrier_nospec()
-introduced by commit 74e19ef0ff80 ("uaccess: Add speculation barrier
-to copy_from_user()"). To do that, a speculation barrier is added to
-copy_from_user_iter() so that the barrier in powerpc raw_copy_from_user()
-which is redundant with the one in copy_from_user() can be removed. To
-avoid impacting x86, copy_from_user_iter() is first converted to using
-masked user access.
+commit 14ad6ed30a10afbe91b0749d6378285f4225d482
+Author: Paolo Abeni <pabeni@redhat.com>
+Date:   Tue Feb 18 18:29:39 2025 +0000
 
-Patch 3 adds masked_user_read_access_begin() and
-masked_user_write_access_begin() to match with user_read_access_end()
-and user_write_access_end().
+    net: allow small head cache usage with large MAX_SKB_FRAGS values
 
-Patches 5,6,7 are cleaning up powerpc uaccess functions.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=177a35e2580000
+start commit:   48a97ffc6c82 bpf: Consistently use bpf_rcu_lock_held() eve..
+git tree:       bpf-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=14fa35e2580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=10fa35e2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9ad7b090a18654a7
+dashboard link: https://syzkaller.appspot.com/bug?extid=be97dd4da14ae88b6ba4
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16f7e5e2580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11ecec58580000
 
-Patches 8 and 9 prepare powerpc/32 for the necessary gap at the top
-of userspace.
+Reported-by: syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com
+Fixes: 14ad6ed30a10 ("net: allow small head cache usage with large MAX_SKB_FRAGS values")
 
-Last patch implements masked user access.
-
-Changes in v3:
-- Rebased on top of v6.18-rc1
-- Patch 3: Impact on recently modified net/core/scm.c
-- Patch 10: Rewrite mask_user_address_simple() for a smaller result on powerpc64, suggested by Gabriel
-
-Changes in v2:
-- Converted copy_from_user_iter() to using masked user access.
-- Cleaned up powerpc uaccess function to minimise code duplication
-when adding masked user access
-- Automated TASK_SIZE calculation to minimise use of BUILD_BUG_ON()
-- Tried to make some commit messages more clean based on feedback from
-version 1 of the series.
-
-Christophe Leroy (10):
-  iter: Avoid barrier_nospec() in copy_from_user_iter()
-  uaccess: Add speculation barrier to copy_from_user_iter()
-  uaccess: Add masked_user_{read/write}_access_begin
-  powerpc/uaccess: Move barrier_nospec() out of
-    allow_read_{from/write}_user()
-  powerpc/uaccess: Remove unused size and from parameters from
-    allow_access_user()
-  powerpc/uaccess: Remove
-    {allow/prevent}_{read/write/read_write}_{from/to/}_user()
-  powerpc/uaccess: Refactor user_{read/write/}_access_begin()
-  powerpc/32s: Fix segments setup when TASK_SIZE is not a multiple of
-    256M
-  powerpc/32: Automatically adapt TASK_SIZE based on constraints
-  powerpc/uaccess: Implement masked user access
-
- arch/powerpc/Kconfig                          |   3 +-
- arch/powerpc/include/asm/barrier.h            |   2 +-
- arch/powerpc/include/asm/book3s/32/kup.h      |   3 +-
- arch/powerpc/include/asm/book3s/32/mmu-hash.h |   5 +-
- arch/powerpc/include/asm/book3s/32/pgtable.h  |   4 -
- arch/powerpc/include/asm/book3s/64/kup.h      |   6 +-
- arch/powerpc/include/asm/kup.h                |  52 +------
- arch/powerpc/include/asm/nohash/32/kup-8xx.h  |   3 +-
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h  |   4 -
- arch/powerpc/include/asm/nohash/kup-booke.h   |   3 +-
- arch/powerpc/include/asm/task_size_32.h       |  28 +++-
- arch/powerpc/include/asm/uaccess.h            | 135 +++++++++++++-----
- arch/powerpc/kernel/asm-offsets.c             |   2 +-
- arch/powerpc/kernel/head_book3s_32.S          |   6 +-
- arch/powerpc/mm/book3s32/mmu.c                |   4 +-
- arch/powerpc/mm/mem.c                         |   2 -
- arch/powerpc/mm/nohash/8xx.c                  |   2 -
- arch/powerpc/mm/ptdump/segment_regs.c         |   2 +-
- fs/select.c                                   |   2 +-
- include/linux/uaccess.h                       |   7 +
- kernel/futex/futex.h                          |   4 +-
- lib/iov_iter.c                                |  22 ++-
- lib/strncpy_from_user.c                       |   2 +-
- lib/strnlen_user.c                            |   2 +-
- net/core/scm.c                                |   2 +-
- 25 files changed, 174 insertions(+), 133 deletions(-)
-
--- 
-2.49.0
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
