@@ -1,313 +1,304 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C2D311587
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994BC3115B8;
+	Fri, 17 Oct 2025 06:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760681458; cv=none; b=TLF2rtRnBSOECWBw9iJz+y/iT9biIdZaLMTrdxLvP8PGjh80J70oScec2PqXDJUtnsq/cRQ79zoc5PxtI/kKkKraREwosQRb545h8mXUKJXN0fZtF31wW8K0EjwWS9h8neWo8/AItqcy98KbutFOyX8cNG0QkxgYbKT73T3hiKw=
+	t=1760681459; cv=none; b=StXLo8D+X+cTqmmvOq3y5NUW5R8SWAhJLzE4/RCOQBZxahRWfqQ+XxhxgnV7hmkRdoBbYfaZ3USe6EnzNrBdOQDmjknyNqXFPYV0szfZ/Yt0MhO5YBKVK6uvvQtDZMCPYg5keR1bdbJlk1uhmZdcgAbyiyBr/PZcKdosdjPJnKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760681458; c=relaxed/simple;
-	bh=SZ2v3HFrpzfTIKrJkGYFsVPTstS5wi/CPHBzBdXSC5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQj9HD3iFfsyuUrdlB4mXEJEKh47/Ff7A/t1EPfyajqaiCBjDo2eSbkNMEV9iqQ9vSMF32f0PqNTMdIBs0+WjMM0EAQg4Zt7e1VWH6M6vcrl422cd7zcthEwLBFwq4ydmj3Za8lDL3nFIIUcG0LVmCAcD8ACPqw5A6r7F74SzCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvLVzntC; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760681459; c=relaxed/simple;
+	bh=Vb26T4wuCx0RJ+b8eWNBVw7n18jw2O+S0FURsNBBnOg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IOCDMm5nL4aqrCC9NT411Q9eBCXhtFzQH7Ed+7Vdlp4pwXCAGWoycO7XzunS1dqFB7zKXC8+kU9BPihnDp8iCPdzb+eebIGd6V3XXg6hWpk/o8R8PcpM7axwbGaEzdOm0DDqDygRHoi/RdyOozuPwvSsnP/06uiQ3sNCeRRoLwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i6ZMgfVQ; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvLVzntC"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6a0a7f3a47so1428337a12.1
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:10:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760681455; x=1761286255; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8JgmLAllM6GJ7LAy07OgoFPN7Fl/16NMS6tmzU8OBXw=;
-        b=WvLVzntCfvS5/Vq/lZg8ZixQKbrbAUAtD80px+jaWmNSi7Ve7/OhSWmeWUv1XuCsMT
-         pResmIvalaqMb/WTjHZaESVd+zB/Nd+9ra3POuY+Zftd6cV8h3xX+O1dAGM4vgSLW9H1
-         aNMmUoUAujvOvZDKsrBslJeMRUitWloYANLOdSFaXo/VjbRqM7tL5GGACB6xNama0ZCh
-         JPvdlPaucmOsREkUNpvAGI1Zpd1i/C3BvFNcuAoh+Olbgf9BzRfxssfUgQ6RTiwrNKlQ
-         ipGPgCzG+cAuUfCPBEUAyteKQlDYON0bsSMxSSint9G3uRaHCrbfPTvWIa/tNBoSeaX/
-         Mgiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760681455; x=1761286255;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8JgmLAllM6GJ7LAy07OgoFPN7Fl/16NMS6tmzU8OBXw=;
-        b=me77tIYSVI1aB7S3de+JxvLQrtT8AEsZyKv8YchwlgyYKfQUgM5VUi2skwXYSJBH0M
-         dZmGNRg5iH/BwzVXy1XLihhZKz85VZqqFr8834yD4RK0+5E9P+uTr8Btf7l1zwDGOHX5
-         Z8M/aZUur0hRPqlM03frHW0sbRk0Ht21XyZIWwuLBPMx8gwv8IAmVvtcdOByjHbnMMYN
-         MxenYBSoSH4l7veP32GdFRfyz21Q1yV7tD4kObem6adPoa7eixG9P5Dx1HudijsOo9SW
-         cGcFCk1S7aI7kUU9D0c87v5UjcSZ9KTFDWQh7z2Rhcf/gy2oaPl8U0j4b9fvq0Lh8x2m
-         3vAA==
-X-Gm-Message-State: AOJu0YwtzmA2KiLzMqJrU5y32nOh5Mgx3dhkwLWrOUiKPPQQG4KVZ8rT
-	B9O+C9ZwzXPPDKDm4CYrWnXq3IjPz2ISw090CcY/nsY+HPNACcg0AizjoyJmYMlbjN+s7g==
-X-Gm-Gg: ASbGncv3wmagvOLVhVJ4TUt9NMwWxJUvm5BX1EL99BLZQz1fyBZAbEVgwRsjWBfH4xA
-	ygmNgEE59mQQnIJDwyHWT41UDP6WyvMj5ryv6qjkXK5gUY0PkBQ1e4TP8bRZfDZZWc8iIvtB7Oz
-	76XtBYabGNZnYnmDxCdMvJOhePRu0i5taQACP31ZkCBSPnC6Buvxu1WX6KoVEUmADXKHWUsg3Yb
-	LDfaattLG6MO4FP57Ajy28ybc88rTMxNKNPkw1XhQumSns18Kq1LFFiZDFmQFUTcbHihWXpfzKp
-	2CYPOSXczazuJyPzo1jkq0+0KjBlZg9hcyF/2xchmPov0H7908dQQBNqkay7SBcYVhqFeTU0zVJ
-	h+y8KsXi3iSDxZcgNNGlKd6qgEMF2Qc8rTSgdlOcvsCBhuBeLMqnaV1Vc7TsC8hwPWqa3ndVMrY
-	57J6yu52U=
-X-Google-Smtp-Source: AGHT+IFKNlUGd77HJp6lqwdMELTbCyo0X1PX8FzE5gdrFbZSybR3+v68V/bEtn1N86LrgF+55w58Jg==
-X-Received: by 2002:a17:902:e84b:b0:290:c0ed:de42 with SMTP id d9443c01a7336-290caf8582emr36540205ad.36.1760681455198;
-        Thu, 16 Oct 2025 23:10:55 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([45.32.227.231])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2909938759dsm51315475ad.49.2025.10.16.23.10.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 23:10:54 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v14 2/4] net: dsa: tag_yt921x: add support for Motorcomm YT921x tags
-Date: Fri, 17 Oct 2025 14:08:54 +0800
-Message-ID: <20251017060859.326450-3-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017060859.326450-1-mmyangfl@gmail.com>
-References: <20251017060859.326450-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i6ZMgfVQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760681456; x=1792217456;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=Vb26T4wuCx0RJ+b8eWNBVw7n18jw2O+S0FURsNBBnOg=;
+  b=i6ZMgfVQHbTRt//7hVCneXjNxmQVOF2D6pGS1TV7UCBFVdjXHvfDt5j4
+   x5cHvYjqwMGiUs5DeS8QFof6PpV1GGE4JibeqFa4Hhya8oVepmOIn3W0+
+   DXRSAO2mZXKUQ8N8pkHmfZEAm2CqOviiWoMJhJPrQH0ZgMNjnYhBWnm7k
+   hcY0L2nubpK8E9bZgJW3Hob2xODNyIx2Ucs9t/XiCwOw9Ze2R9ey17X01
+   GmwqVTfktK+4PaFwhqwfPu6cukn5YfFfAHi/8okQYG2iPVy6WwRoAMc+b
+   S8EG73QXl2mYauebbxhKrzkfepDzKKoNv1LT3O2HSODZZvfdLE5WKGk7d
+   w==;
+X-CSE-ConnectionGUID: eOm9CrcZQ0i8qEe5Z5hFhQ==
+X-CSE-MsgGUID: eZ3mDEZwRKGwIhuR5IURmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="50453953"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="50453953"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:53 -0700
+X-CSE-ConnectionGUID: F7Q/GiWqSSy4dxdoGTtr5g==
+X-CSE-MsgGUID: JwOoqSwJRcyZllMWW4bd9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="183059487"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:52 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 16 Oct 2025 23:08:34 -0700
+Subject: [PATCH net-next v2 05/14] ice: improve TCAM priority handling for
+ RSS profiles
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251016-jk-iwl-next-2025-10-15-v2-5-ff3a390d9fc6@intel.com>
+References: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
+In-Reply-To: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Dan Nowlin <dan.nowlin@intel.com>, 
+ Rafal Romanowski <rafal.romanowski@intel.com>
+X-Mailer: b4 0.15-dev-f4b34
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7264;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=kaRQti9fcXHcdZTxDIahk0M7iew4tDgcVjF/jRss1o8=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoyPd5+zvV3j3vbQJH/7kXpftW8MlbycN91lXrC47fif6
+ aOv3GrVUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwEQ6pBj+x7z9Lz1f4OrSC3tb
+ On5t+SbPYmWqdHfRw0UVYT5rtsXHyjH8lc+P3Hyt5brB5fRZJ3LYBd7FBX/1cc5hfKr28WdXyHR
+ 7ZgA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Add support for Motorcomm YT921x tags, which includes a proper
-configurable ethertype field (default to 0x9988).
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Enhance TCAM priority logic to avoid conflicts between RSS profiles
+with overlapping PTGs and attributes.
+
+Track used PTG and attribute combinations.
+Ensure higher-priority profiles override lower ones.
+Add helper for setting TCAM flags and masks.
+
+Ensure RSS rule consistency and prevent unintended matches.
+
+Co-developed-by: Dan Nowlin <dan.nowlin@intel.com>
+Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
+Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- include/net/dsa.h             |   2 +
- include/uapi/linux/if_ether.h |   1 +
- net/dsa/Kconfig               |   6 ++
- net/dsa/Makefile              |   1 +
- net/dsa/tag_yt921x.c          | 141 ++++++++++++++++++++++++++++++++++
- 5 files changed, 151 insertions(+)
- create mode 100644 net/dsa/tag_yt921x.c
+ drivers/net/ethernet/intel/ice/ice_flex_type.h |  1 +
+ drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 93 ++++++++++++++++++++++----
+ 2 files changed, 80 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index d73ea0880066..67762fdaf3c7 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -55,6 +55,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_LAN937X_VALUE		27
- #define DSA_TAG_PROTO_VSC73XX_8021Q_VALUE	28
- #define DSA_TAG_PROTO_BRCM_LEGACY_FCS_VALUE	29
-+#define DSA_TAG_PROTO_YT921X_VALUE		30
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -87,6 +88,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_RZN1_A5PSW	= DSA_TAG_PROTO_RZN1_A5PSW_VALUE,
- 	DSA_TAG_PROTO_LAN937X		= DSA_TAG_PROTO_LAN937X_VALUE,
- 	DSA_TAG_PROTO_VSC73XX_8021Q	= DSA_TAG_PROTO_VSC73XX_8021Q_VALUE,
-+	DSA_TAG_PROTO_YT921X		= DSA_TAG_PROTO_YT921X_VALUE,
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_type.h b/drivers/net/ethernet/intel/ice/ice_flex_type.h
+index 817beca591e0..80c9e7c749c2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_type.h
++++ b/drivers/net/ethernet/intel/ice/ice_flex_type.h
+@@ -187,6 +187,7 @@ struct ice_prof_map {
  };
  
- struct dsa_switch;
-diff --git a/include/uapi/linux/if_ether.h b/include/uapi/linux/if_ether.h
-index 69e0457eb200..cfd200c87e5e 100644
---- a/include/uapi/linux/if_ether.h
-+++ b/include/uapi/linux/if_ether.h
-@@ -114,6 +114,7 @@
- #define ETH_P_QINQ1	0x9100		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
- #define ETH_P_QINQ2	0x9200		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
- #define ETH_P_QINQ3	0x9300		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
-+#define ETH_P_YT921X	0x9988		/* Motorcomm YT921x DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
- #define ETH_P_EDSA	0xDADA		/* Ethertype DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
- #define ETH_P_DSA_8021Q	0xDADB		/* Fake VLAN Header for DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
- #define ETH_P_DSA_A5PSW	0xE001		/* A5PSW Tag Value [ NOT AN OFFICIALLY REGISTERED ID ] */
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 869cbe57162f..6b94028b1fcc 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -190,4 +190,10 @@ config NET_DSA_TAG_XRS700X
- 	  Say Y or M if you want to enable support for tagging frames for
- 	  Arrow SpeedChips XRS700x switches that use a single byte tag trailer.
+ #define ICE_INVALID_TCAM	0xFFFF
++#define ICE_MAX_PTG_ATTRS	1024
  
-+config NET_DSA_TAG_YT921X
-+	tristate "Tag driver for Motorcomm YT921x switches"
-+	help
-+	  Say Y or M if you want to enable support for tagging frames for
-+	  Motorcomm YT921x switches.
-+
- endif
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index 555c07cfeb71..4b011a1d5c87 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -39,6 +39,7 @@ obj-$(CONFIG_NET_DSA_TAG_SJA1105) += tag_sja1105.o
- obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
- obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
- obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
-+obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
+ struct ice_tcam_inf {
+ 	u16 tcam_idx;
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+index 363ae79a3620..f21b9f86a049 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -3581,6 +3581,20 @@ ice_move_vsi(struct ice_hw *hw, enum ice_block blk, u16 vsi, u16 vsig,
+ 	return 0;
+ }
  
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
-diff --git a/net/dsa/tag_yt921x.c b/net/dsa/tag_yt921x.c
-new file mode 100644
-index 000000000000..995da44f0a2a
---- /dev/null
-+++ b/net/dsa/tag_yt921x.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Motorcomm YT921x Switch Extended CPU Port Tagging
-+ *
-+ * Copyright (c) 2025 David Yang <mmyangfl@gmail.com>
-+ *
-+ * +----+----+-------+-----+----+---------
-+ * | DA | SA | TagET | Tag | ET | Payload ...
-+ * +----+----+-------+-----+----+---------
-+ *   6    6      2      6    2       N
-+ *
-+ * Tag Ethertype: CPU_TAG_TPID_TPID (default: ETH_P_YT921X = 0x9988)
-+ *   * Hardcoded for the moment, but still configurable. Discuss it if there
-+ *     are conflicts somewhere and/or you want to change it for some reason.
-+ * Tag:
-+ *   2: VLAN Tag
-+ *   2: Rx Port
-+ *     15b: Rx Port Valid
-+ *     14b-11b: Rx Port
-+ *     10b-0b: Cmd?
-+ *   2: Tx Port(s)
-+ *     15b: Tx Port(s) Valid
-+ *     10b-0b: Tx Port(s) Mask
++/**
++ * ice_set_tcam_flags - set TCAM flag don't care mask
++ * @mask: mask for flags
++ * @dc_mask: pointer to the don't care mask
 + */
-+
-+#include <linux/etherdevice.h>
-+
-+#include "tag.h"
-+
-+#define YT921X_TAG_NAME	"yt921x"
-+
-+#define YT921X_TAG_LEN	8
-+
-+#define YT921X_TAG_PORT_EN		BIT(15)
-+#define YT921X_TAG_RX_PORT_M		GENMASK(14, 11)
-+#define YT921X_TAG_RX_CMD_M		GENMASK(10, 0)
-+#define  YT921X_TAG_RX_CMD(x)			FIELD_PREP(YT921X_TAG_RX_CMD_M, (x))
-+#define  YT921X_TAG_RX_CMD_FORWARDED		0x80
-+#define  YT921X_TAG_RX_CMD_UNK_UCAST		0xb2
-+#define  YT921X_TAG_RX_CMD_UNK_MCAST		0xb4
-+#define YT921X_TAG_TX_PORTS_M		GENMASK(10, 0)
-+#define YT921X_TAG_TX_PORTn(port)	BIT(port)
-+
-+static struct sk_buff *
-+yt921x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
++static void ice_set_tcam_flags(u16 mask, u8 dc_mask[ICE_TCAM_KEY_VAL_SZ])
 +{
-+	struct dsa_port *dp = dsa_user_to_port(netdev);
-+	unsigned int port = dp->index;
-+	__be16 *tag;
-+	u16 tx;
++	u16 *flag_word;
 +
-+	skb_push(skb, YT921X_TAG_LEN);
-+	dsa_alloc_etype_header(skb, YT921X_TAG_LEN);
-+
-+	tag = dsa_etype_header_pos_tx(skb);
-+
-+	tag[0] = htons(ETH_P_YT921X);
-+	/* VLAN tag unrelated when TX */
-+	tag[1] = 0;
-+	tag[2] = 0;
-+	tx = YT921X_TAG_PORT_EN | YT921X_TAG_TX_PORTn(port);
-+	tag[3] = htons(tx);
-+
-+	return skb;
++	/* flags are lowest u16 */
++	flag_word = (u16 *)dc_mask;
++	*flag_word = ~mask;
 +}
 +
-+static struct sk_buff *
-+yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
+ /**
+  * ice_rem_chg_tcam_ent - remove a specific TCAM entry from change list
+  * @hw: pointer to the HW struct
+@@ -3651,6 +3665,9 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
+ 	if (!p)
+ 		return -ENOMEM;
+ 
++	/* set don't care masks for TCAM flags */
++	ice_set_tcam_flags(tcam->attr.mask, dc_msk);
++
+ 	status = ice_tcam_write_entry(hw, blk, tcam->tcam_idx, tcam->prof_id,
+ 				      tcam->ptg, vsig, 0, tcam->attr.flags,
+ 				      vl_msk, dc_msk, nm_msk);
+@@ -3676,6 +3693,34 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
+ 	return status;
+ }
+ 
++/**
++ * ice_ptg_attr_in_use - determine if PTG and attribute pair is in use
++ * @ptg_attr: pointer to the PTG and attribute pair to check
++ * @ptgs_used: bitmap that denotes which PTGs are in use
++ * @attr_used: array of PTG and attributes pairs already used
++ * @attr_cnt: count of entries in the attr_used array
++ *
++ * Return: True if PTG and attribute is in use, false otherwise.
++ */
++static bool
++ice_ptg_attr_in_use(struct ice_tcam_inf *ptg_attr, unsigned long *ptgs_used,
++		    struct ice_tcam_inf *attr_used[], u16 attr_cnt)
 +{
-+	unsigned int port;
-+	__be16 *tag;
-+	u16 cmd;
-+	u16 rx;
++	u16 i;
 +
-+	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN)))
-+		return NULL;
++	if (!test_bit(ptg_attr->ptg, ptgs_used))
++		return false;
 +
-+	tag = dsa_etype_header_pos_rx(skb);
++	/* the PTG is used, so now look for correct attributes */
++	for (i = 0; i < attr_cnt; i++)
++		if (attr_used[i]->ptg == ptg_attr->ptg &&
++		    attr_used[i]->attr.flags == ptg_attr->attr.flags &&
++		    attr_used[i]->attr.mask == ptg_attr->attr.mask)
++			return true;
 +
-+	if (unlikely(tag[0] != htons(ETH_P_YT921X))) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Unexpected EtherType 0x%04x\n",
-+				     ntohs(tag[0]));
-+		return NULL;
-+	}
-+
-+	/* Locate which port this is coming from */
-+	rx = ntohs(tag[2]);
-+	if (unlikely((rx & YT921X_TAG_PORT_EN) == 0)) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Unexpected rx tag 0x%04x\n", rx);
-+		return NULL;
-+	}
-+
-+	port = FIELD_GET(YT921X_TAG_RX_PORT_M, rx);
-+	skb->dev = dsa_conduit_find_user(netdev, 0, port);
-+	if (unlikely(!skb->dev)) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Couldn't decode source port %u\n", port);
-+		return NULL;
-+	}
-+
-+	cmd = FIELD_GET(YT921X_TAG_RX_CMD_M, rx);
-+	switch (cmd) {
-+	case YT921X_TAG_RX_CMD_FORWARDED:
-+		/* Already forwarded by hardware */
-+		dsa_default_offload_fwd_mark(skb);
-+		break;
-+	case YT921X_TAG_RX_CMD_UNK_UCAST:
-+	case YT921X_TAG_RX_CMD_UNK_MCAST:
-+		/* NOTE: hardware doesn't distinguish between TRAP (copy to CPU
-+		 * only) and COPY (forward and copy to CPU). In order to perform
-+		 * a soft switch, NEVER use COPY action in the switch driver.
-+		 */
-+		break;
-+	default:
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Unexpected rx cmd 0x%02x\n", cmd);
-+		break;
-+	}
-+
-+	/* Remove YT921x tag and update checksum */
-+	skb_pull_rcsum(skb, YT921X_TAG_LEN);
-+	dsa_strip_etype_header(skb, YT921X_TAG_LEN);
-+
-+	return skb;
++	return false;
 +}
 +
-+static const struct dsa_device_ops yt921x_netdev_ops = {
-+	.name	= YT921X_TAG_NAME,
-+	.proto	= DSA_TAG_PROTO_YT921X,
-+	.xmit	= yt921x_tag_xmit,
-+	.rcv	= yt921x_tag_rcv,
-+	.needed_headroom = YT921X_TAG_LEN,
-+};
+ /**
+  * ice_adj_prof_priorities - adjust profile based on priorities
+  * @hw: pointer to the HW struct
+@@ -3688,10 +3733,17 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 			struct list_head *chg)
+ {
+ 	DECLARE_BITMAP(ptgs_used, ICE_XLT1_CNT);
++	struct ice_tcam_inf **attr_used;
+ 	struct ice_vsig_prof *t;
+-	int status;
++	u16 attr_used_cnt = 0;
++	int status = 0;
+ 	u16 idx;
+ 
++	attr_used = devm_kcalloc(ice_hw_to_dev(hw), ICE_MAX_PTG_ATTRS,
++				 sizeof(*attr_used), GFP_KERNEL);
++	if (!attr_used)
++		return -ENOMEM;
 +
-+MODULE_DESCRIPTION("DSA tag driver for Motorcomm YT921x switches");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_YT921X, YT921X_TAG_NAME);
+ 	bitmap_zero(ptgs_used, ICE_XLT1_CNT);
+ 	idx = vsig & ICE_VSIG_IDX_M;
+ 
+@@ -3709,11 +3761,15 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 		u16 i;
+ 
+ 		for (i = 0; i < t->tcam_count; i++) {
++			bool used;
 +
-+module_dsa_tag_driver(yt921x_netdev_ops);
+ 			/* Scan the priorities from newest to oldest.
+ 			 * Make sure that the newest profiles take priority.
+ 			 */
+-			if (test_bit(t->tcam[i].ptg, ptgs_used) &&
+-			    t->tcam[i].in_use) {
++			used = ice_ptg_attr_in_use(&t->tcam[i], ptgs_used,
++						   attr_used, attr_used_cnt);
++
++			if (used && t->tcam[i].in_use) {
+ 				/* need to mark this PTG as never match, as it
+ 				 * was already in use and therefore duplicate
+ 				 * (and lower priority)
+@@ -3723,9 +3779,8 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 							       &t->tcam[i],
+ 							       chg);
+ 				if (status)
+-					return status;
+-			} else if (!test_bit(t->tcam[i].ptg, ptgs_used) &&
+-				   !t->tcam[i].in_use) {
++					goto free_attr_used;
++			} else if (!used && !t->tcam[i].in_use) {
+ 				/* need to enable this PTG, as it in not in use
+ 				 * and not enabled (highest priority)
+ 				 */
+@@ -3734,15 +3789,21 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 							       &t->tcam[i],
+ 							       chg);
+ 				if (status)
+-					return status;
++					goto free_attr_used;
+ 			}
+ 
+ 			/* keep track of used ptgs */
+-			__set_bit(t->tcam[i].ptg, ptgs_used);
++			set_bit(t->tcam[i].ptg, ptgs_used);
++			if (attr_used_cnt < ICE_MAX_PTG_ATTRS)
++				attr_used[attr_used_cnt++] = &t->tcam[i];
++			else
++				ice_debug(hw, ICE_DBG_INIT, "Warn: ICE_MAX_PTG_ATTRS exceeded\n");
+ 		}
+ 	}
+ 
+-	return 0;
++free_attr_used:
++	devm_kfree(ice_hw_to_dev(hw), attr_used);
++	return status;
+ }
+ 
+ /**
+@@ -3825,11 +3886,15 @@ ice_add_prof_id_vsig(struct ice_hw *hw, enum ice_block blk, u16 vsig, u64 hdl,
+ 		p->vsig = vsig;
+ 		p->tcam_idx = t->tcam[i].tcam_idx;
+ 
++		/* set don't care masks for TCAM flags */
++		ice_set_tcam_flags(t->tcam[i].attr.mask, dc_msk);
++
+ 		/* write the TCAM entry */
+ 		status = ice_tcam_write_entry(hw, blk, t->tcam[i].tcam_idx,
+ 					      t->tcam[i].prof_id,
+-					      t->tcam[i].ptg, vsig, 0, 0,
+-					      vl_msk, dc_msk, nm_msk);
++					      t->tcam[i].ptg, vsig, 0,
++					      t->tcam[i].attr.flags, vl_msk,
++					      dc_msk, nm_msk);
+ 		if (status) {
+ 			devm_kfree(ice_hw_to_dev(hw), p);
+ 			goto err_ice_add_prof_id_vsig;
+@@ -4143,9 +4208,6 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
+ 	u16 vsi_num;
+ 	int status;
+ 
+-	if (blk != ICE_BLK_FD)
+-		return -EINVAL;
+-
+ 	vsi_num = ice_get_hw_vsi_num(hw, dest_vsi);
+ 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
+ 	if (status) {
+@@ -4154,6 +4216,9 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
+ 		return status;
+ 	}
+ 
++	if (blk != ICE_BLK_FD)
++		return 0;
++
+ 	vsi_num = ice_get_hw_vsi_num(hw, fdir_vsi);
+ 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
+ 	if (status) {
+
 -- 
-2.51.0
+2.51.0.rc1.197.g6d975e95c9d7
 
