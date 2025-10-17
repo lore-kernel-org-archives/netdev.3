@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06B631062D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D9C310635;
 	Fri, 17 Oct 2025 06:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760681493; cv=none; b=oKqOMOl+sRxVC6p41HZ/Fvibfhm81SdJN4m6wpWNYQIdTOfOZ+DkR6iyklNGoJ8EeoO35e+zaZ+OfFGa4wFEv74HVUM1qDc++6FVmub3gW8bH15R1SbE+6h3IIi1yLIEF6X0UWTGBswNSoxsMUTuOJT9VnPUThL4ITnp64wLk1A=
+	t=1760681493; cv=none; b=lTuXOj0+qEH/oVPWcg+/oDvCu2a7sOedLjGUT4hAJnOgvDsPtD4zZla31uLyY97AtjOSOg7vaZl1buIhS5i0kPZXWxnUR1LfpJD/LilDYUgiX2CyodyBmO3BwNCtQ6xyRF+FZm1bGnC5i/fd7l9svP30xGTg2BKAajgFlxa8sKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760681493; c=relaxed/simple;
-	bh=cErZl+Aef5mADFNSRF/CqGvdSUgsvsLw4QmBcD8g+xk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Dn7m3jAGqOEY61KPvf0o/QsNr1BRS74C7ybYowiU7EpzOdQhZYWzXPIOCBaa0HglkeAzsUuPt0uIxrkqZqlIs5uzQx9a8SEG1GjVuAiCHLm1EpiZfCkXnMxWklLWMptO6C3+i3En4z+f6lbaX+mqfNy4jraNenqj0e1gTnqQrrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MT6cKJFY; arc=none smtp.client-ip=10.30.226.201
+	bh=NTA7XXehFna8Lnz9z9hQDJQmt5EcD5cxGnspoWjl5V8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iBdJZAUvAXRPDQvTXKdO8GemFoJqEqMa6+1wa571bDoCkdb4CG/Mb2Mn2wKedcFCz84xggkYoXx8J3H+JaF4f+lyR86A+CoH8iYJjx2O7ljSH0Tp9iQZenYAFR3xzb3XKfqShX7YAfMh0WzlTqAE9CSwH6TZQrpprouHAluD9oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDT2h+jN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MT6cKJFY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7D742C4CEF9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDT2h+jN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A785AC116B1;
 	Fri, 17 Oct 2025 06:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1760681492;
-	bh=cErZl+Aef5mADFNSRF/CqGvdSUgsvsLw4QmBcD8g+xk=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=MT6cKJFYzJ3pBJEuKuESMxdf7EH9u5wfrYkkU+lKVz8703gzHd+LUzyk5lM7+NmNt
-	 f0i1MO+wMJNzdPas6FAmlNm1rPHsYmJxjJpKhz7kOcl/8NHhQtjQbvzyXJZh3sDql1
-	 C8gtV7BMUIyjV8suK0sw0PoxdxWFJhmxn6EY+l5JOWgXc1mnbahErLXgOnc2NYqOxi
-	 7QuxMVknIysqBGwqOVB0Jaks4is7of1j7INOjcgMv32PvsSXXHFBnm0B9PsX982MkT
-	 HvXic2raDBD8IYHdoLEYcNW/5BqMP/s/V+vY8jEgAhSUjgKGjiRcpWFnZVcvsfwpuM
-	 FAAusoxikX8ag==
+	bh=NTA7XXehFna8Lnz9z9hQDJQmt5EcD5cxGnspoWjl5V8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=NDT2h+jN4Fo/V782pJVCyAoFMDQnca+b11ea9IbVH3hZjx0JvKZtsDb6BBFbxJjEW
+	 KgBXOBYWrEY29jdKBiR3vbIBwAvxiCfFNcudI8kD5AngbnR6YCXGd7Gm/Un9geOOhy
+	 D77x5NWxRh1HnfG5BNY2cWp5KPcDogJIY8suYnFlWyVt8y6Y1DXGOic69Oiyeaku6O
+	 jiFtYZC1AUghnKzEeE8N/MiZXcEBeLnF3tKQAUsTXa2lO5xM7Z9LrWnpYHdCdguVeL
+	 bcGn/MEskl7O9AeiTXgrczZsx8a2QjKycNOYotd5N4YdFzfYbTDfRO3+PgA6xYZSvE
+	 hyX8lEwLBY9nA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70F4DCCD195;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F8C4CCD1A2;
 	Fri, 17 Oct 2025 06:11:32 +0000 (UTC)
 From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
-Subject: [PATCH net v3 0/3] net: stmmac: Fixes for stmmac Tx VLAN insert
- and EST
-Date: Fri, 17 Oct 2025 14:11:18 +0800
-Message-Id: <20251017-qbv-fixes-v3-0-d3a42e32646a@altera.com>
+Date: Fri, 17 Oct 2025 14:11:21 +0800
+Subject: [PATCH net v3 3/3] net: stmmac: est: Fix GCL bounds checks
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,11 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAbe8WgC/22MSw7CIBRFt2LeWAzQD8WR+zAOKL21JNoqNETTd
- O8io5o4vJ9zFgrwDoGOu4U8ogtuGlMo9juygxmvYK5LmSSXFddCsGcbWe9eCKw0qMsOTQ0oSv+
- HRx7S/UwjZrqkcnBhnvw7+6PI0x9VFIwzNAK60sr2oj+Z2wxvDna6Z02UW7TaovKLWs1rVbSt6
- sofdF3XD9HhEPXjAAAA
-X-Change-ID: 20250911-qbv-fixes-4ae64de86ee7
+Message-Id: <20251017-qbv-fixes-v3-3-d3a42e32646a@altera.com>
+References: <20251017-qbv-fixes-v3-0-d3a42e32646a@altera.com>
+In-Reply-To: <20251017-qbv-fixes-v3-0-d3a42e32646a@altera.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -59,11 +56,11 @@ Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  Rohan G Thomas <rohan.g.thomas@altera.com>, 
  Matthew Gerlach <matthew.gerlach@altera.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1760681491; l=1667;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1760681491; l=1340;
  i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
- bh=cErZl+Aef5mADFNSRF/CqGvdSUgsvsLw4QmBcD8g+xk=;
- b=tRc0k49q8CDclLGLO8HNDIxA1auXJjd1G977SPRKTM0FDT3tlempIlYU7PezAgMqrysJSBVVv
- sqfIJaS6wkUDmvWgknuvKjgJnkl44nHVL3pEswrkq2bEt3YogBF5+rW
+ bh=mX5G4ROq0gDY4G0a4Qm/T3N17XaJr2mEhgFfcjCdoJk=;
+ b=z8V58A1VlIr5ekLOqI6PBxwoKAM5sCuB+v2xtlazP8QRxqeoIu3e4AOJzUJiniz/MDLjGmNFn
+ YWFLDF9+3quBrbhbs5cVU0EvUePkFdXCjLg7rESERbIkmMEmkC4wGuz
 X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
  pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
 X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
@@ -71,44 +68,42 @@ X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
 X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
 Reply-To: rohan.g.thomas@altera.com
 
-This patchset includes following fixes for stmmac Tx VLAN insert and
-EST implementations:
-   1. Disable STAG insertion offloading, as DWMAC IPs doesn't support
-      offload of STAG for double VLAN packets and CTAG for single VLAN
-      packets when using the same register configuration. The current
-      configuration in the driver is undocumented and is adding an
-      additional 802.1Q tag with VLAN ID 0 for double VLAN packets.
-   2. Consider Tx VLAN offload tag length for maxSDU estimation.
-   3. Fix GCL bounds check
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
+Fix the bounds checks for the hw supported maximum GCL entry
+count and gate interval time.
+
+Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
 Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
 ---
-Changes in v3:
-- Commit for disabling 802.1AD tag insertion offload is introduced in
-  to this patchset
-- Add just VLAN_HLEN to sdu_len when 802.1Q tag offload is requested
-- Link to v2: https://lore.kernel.org/r/20250915-qbv-fixes-v2-0-ec90673bb7d4@altera.com
+ drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changes in v2:
-- Use GENMASK instead of BIT for clarity and consistency
-- Link to v1: https://lore.kernel.org/r/20250911-qbv-fixes-v1-0-e81e9597cf1f@altera.com
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 97e89a604abd7a01bb8e904c38f10716e0a911c1..3b4d4696afe96afe58e0c936429f51c22ae145be 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -981,7 +981,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 	if (qopt->cmd == TAPRIO_CMD_DESTROY)
+ 		goto disable;
+ 
+-	if (qopt->num_entries >= dep)
++	if (qopt->num_entries > dep)
+ 		return -EINVAL;
+ 	if (!qopt->cycle_time)
+ 		return -ERANGE;
+@@ -1012,7 +1012,7 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+ 		s64 delta_ns = qopt->entries[i].interval;
+ 		u32 gates = qopt->entries[i].gate_mask;
+ 
+-		if (delta_ns > GENMASK(wid, 0))
++		if (delta_ns > GENMASK(wid - 1, 0))
+ 			return -ERANGE;
+ 		if (gates > GENMASK(31 - wid, 0))
+ 			return -ERANGE;
 
----
-Rohan G Thomas (3):
-      net: stmmac: vlan: Disable 802.1AD tag insertion offload
-      net: stmmac: Consider Tx VLAN offload tag length for maxSDU
-      net: stmmac: est: Fix GCL bounds checks
-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 37 ++++++++++-------------
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c   |  4 +--
- drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c |  2 +-
- 3 files changed, 19 insertions(+), 24 deletions(-)
----
-base-commit: cb85ca4c0a349e246cd35161088aa3689ae5c580
-change-id: 20250911-qbv-fixes-4ae64de86ee7
-
-Best regards,
 -- 
-Rohan G Thomas <rohan.g.thomas@altera.com>
+2.43.7
 
 
