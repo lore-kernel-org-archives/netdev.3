@@ -1,164 +1,95 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869AB337117;
-	Fri, 17 Oct 2025 14:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C020A5E5;
+	Fri, 17 Oct 2025 14:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713007; cv=none; b=fGcgdOdn27gwnEay6ua6vPsCkauRYqKWBLc98GLnn/AqlPSaXJ/Ql0ne+JmQ2YATmKAaFipWIwZNkQdgaIZARtJeUwWkK2DayTAXhUb31qqBiSsOR8zpDR7rtKTnWkZ5WrK91g0N9/ViQp9eVUSEi2VzQTmNYIJh44nyouTWFzc=
+	t=1760713038; cv=none; b=dnvJJWMaBNu9xYCPDoLSKAo0+1MwVdgOgLpD0A4Jn9Oug7HObShAVUPHJrNFUaejcIR2/pEsevzkPS0sn6xx0MOzGsDwrpG0LN8yjZIMnxX9tr7SCIjF3INvLs+WbCeSfm7k0Jeukhr9nsvXoWnWY2ZVvbr6+B6U4a/R6izxV2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713007; c=relaxed/simple;
-	bh=mK9ZbonMbWsp633o910gNhAdgygON/96T9uAKGz/UkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LZ5P374PxPtrSZWOqCDs2zd2tm3AgquNX3yA6gBljydT6Y/LGTY1A7jDWpD3cqzQ9movlgyIke2YDBa4RqHwxpIKSJKMoS1q9m5VjknLtNCmfsMj6cZShGH1/I+DdDsxkrB8/aOi+la42lIggrO2GNqed5K2/L8lFsBMMbVu8nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NN54Td8G; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NN54Td8G"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0iQ5uE1LF/9zrVlIEvBCEHh+yAwilCOCDNUE/+lsYd4=; b=NN54Td8GpX/6qu3eC9n9KLc0e7
-	UdzjNrtf2+m6LjnRy+XewIM6D+E+zI3KKlbsuLEsR9mRmnAP9ZF/9eIMYcar2BfC/SRUWV7KzS51C
-	IwvjJOfSkKdAgDjK9UBCnRwkQEc9n/7e1UqLyu8FcIXtYkiDx3JzN2mTU98vMqn8dDl0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1v9lsV-00BID6-6i; Fri, 17 Oct 2025 16:56:23 +0200
-Date: Fri, 17 Oct 2025 16:56:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yao Zi <ziyao@disroot.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Frank <Frank.Sae@motor-comm.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
-	Chen-Yu Tsai <wens@csie.org>, Jisheng Zhang <jszhang@kernel.org>,
-	Furong Xu <0x1207@gmail.com>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH net-next 3/4] net: stmmac: Add glue driver for Motorcomm
- YT6801 ethernet controller
-Message-ID: <81124574-48ab-4297-9a74-bba7df68b973@lunn.ch>
-References: <20251014164746.50696-2-ziyao@disroot.org>
- <20251014164746.50696-5-ziyao@disroot.org>
- <f1de6600-4de9-4914-95e6-8cdb3481e364@lunn.ch>
- <aPJMsNKwBYyrr-W-@pie>
+	s=arc-20240116; t=1760713038; c=relaxed/simple;
+	bh=e3mc8mzlkB9PwjVdtejEw8It9IQJRLvlgGVuPMXrDMs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kYAPABRQHyWM3hXyXeTrE8tEYDxRfdD8R0Bc7B4golCeNI7VseT0VI9BljU/51HYNGBKCogt+ILWYI2i94wkyK8K7OkLVZsAHV9E6CbKfqXf3KiAFqPIk5hxr9t+Ly403ziLFzYBLo9QdworQnRsQNRM1936ebcKY4tEMtfKES4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D59E389DCE;
+	Fri, 17 Oct 2025 16:47:27 +0200 (CEST)
+Date: Fri, 17 Oct 2025 16:47:27 +0200
+From: Gabriel Goller <g.goller@proxmox.com>
+To: "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Wrong source address selection in arp_solicit for forwarded packets
+Message-ID: <eykjh3y2bse2tmhn5rn2uvztoepkbnxpb7n2pvwq62pjetdu7o@r46lgxf4azz7>
+Mail-Followup-To: "David S. Miller" <davem@davemloft.net>, 
+	David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aPJMsNKwBYyrr-W-@pie>
+Content-Transfer-Encoding: 8bit
+User-Agent: NeoMutt/20241002-35-39f9a6
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1760712443410
 
-> > > +static void motorcomm_reset_phy(struct dwmac_motorcomm_priv *priv)
-> > > +{
-> > > +	u32 reg = readl(priv->base + EPHY_CTRL);
-> > > +
-> > > +	reg &= ~EPHY_RESET;
-> > > +	writel(reg, priv->base + EPHY_CTRL);
-> > > +
-> > > +	reg |= EPHY_RESET;
-> > > +	writel(reg, priv->base + EPHY_CTRL);
-> > > +}
-> > 
-> > How does this differ to the PHY doing its own reset via BMCR?
-> 
-> It's named as EPHY_RESET according to the vendor driver, but with my
-> testing, it seems to reset at least the internal MDIO bus as well: with
-> this reset asserted (which is the default state after power on or
-> resumption from D3hot), mdiobus_scan() considers each possible MDIO
-> address corresponds to a PHY, while no one could be connected
-> successfully.
-> 
-> > We need to be careful of lifetimes here. It would be better if the PHY
-> > controlled its own reset. We don't want phylib to configure the PHY
-> > and then the MAC driver reset it etc.
-> 
-> Though it's still unclear the exact effect of the bit on the PHY since
-> there's no public documentation, it's essential to deassert it in MAC
-> code before registering and scanning the MDIO bus, or we could even not
-> probe the PHY correctly.
-> 
-> For the motorcomm_reset_phy() performed in probe function, it happens
-> before the registration of MDIO bus, and the PHY isn't probed yet, thus
-> I think it should be okay.
+Hi,
+I have a question about the arp solicit behavior:
 
-Since it resets more than the PHY, it probably should have a different
-name, and maybe a comment describing what is actually resets.
+I have the following simple infrastructure with linux hosts where the ip
+addresses are configured on dummy interfaces and all other interfaces are
+unnumbered:
 
-And maybe rather than asserting and then deasserting reset, maybe just
-deassert the reset? That makes it less dangerous in terms of
-lifetimes.
+   ┌────────┐     ┌────────┐     ┌────────┐  
+   │ node1  ├─────┤ node2  ├─────┤ node3  │  
+   │10.0.1.1│     │10.0.1.2│     │10.0.1.3│  
+   └────────┘     └────────┘     └────────┘  
 
-> > > +static int motorcomm_resume(struct device *dev, void *bsp_priv)
-> > > +{
-> > > +	struct dwmac_motorcomm_priv *priv = bsp_priv;
-> > > +	struct pci_dev *pdev = to_pci_dev(dev);
-> > > +	int ret;
-> > > +
-> > > +	pci_restore_state(pdev);
-> > > +	pci_set_power_state(pdev, PCI_D0);
-> > > +
-> > > +	ret = pcim_enable_device(pdev);
-> > > +	if (ret)
-> > > +		return ret;
-> > > +
-> > > +	pci_set_master(pdev);
-> > > +
-> > > +	motorcomm_reset_phy(priv);
-> > 
-> > Does the PHY support WoL? You probably should not be touching it if it
-> > can wake the system.
-> 
-> Yes, it supports WoL, though the functionality isn't implemented in this
-> series.
->
-> As I mentioned before, it's necesasry to at least deassert EPHY_RESET
-> after resuming from D3hot state, or phy_check_link_status() will always
-> fail with -EBUSY for the PHY and it cannot be correctly resumed.
+All nodes have routes configured and can ping each other. ipv4 forwarding is
+enabled on all nodes, so pinging from node1 to node3 should work. However, I'm
+encountering an issue where node2 does not send correct arp solicitation
+packets when forwarding icmp packets from node1 to node3.
 
-When WoL is implemented, what state will the MAC and the PHY be in? Is
-it possible to put the MAC into a deeper suspend state than the PHY,
-since the MAC is probably not needed? The PHY obviously needs to keep
-working, so it cannot be put into a reset state. So resume should not
-need to take it out of reset. Also, i _think_ the phylib core will
-assume a PHY used for WoL is kept alive and configured, so it will not
-reconfigure it on resume.
+For example, when pinging from node1 to node3, node2 sends out the
+following arp packet:
 
-So it seems like this code will need some changes when WoL is
-implemented. So leave it as is for the moment.
+13:57:43.198959 bc:24:11:a4:f6:cd > ff:ff:ff:ff:ff:ff, ethertype 802.1Q (0x8100),
+length 46: vlan 300, p 0, ethertype ARP (0x0806), Ethernet (len 6),
+IPv4 (len 4), Request who-has 10.0.1.3 tell 172.16.0.102, length 28
 
-> > Is this required? If you look at other glue drivers which allocate
-> > such a structure, they set members in it:
-> > 
-> > dwmac-intel.c:	plat->mdio_bus_data->needs_reset = true;
-> > dwmac-loongson.c:		plat->mdio_bus_data->needs_reset = true;
-> > dwmac-tegra.c:	plat->mdio_bus_data->needs_reset = true;
-> > stmmac_pci.c:	plat->mdio_bus_data->needs_reset = true;
-> > stmmac_platform.c:		plat->mdio_bus_data->needs_reset = true;
-> > 
-> > You don't set anything.
-> 
-> Yes, it's required, since stmmac_mdio.c won't register a MDIO bus if
-> plat_stmmacenet_data.mdio_bus_data is NULL.
+Here, 172.16.0.102 is an ip address configured on a different interface on
+node2. This request will never receive a response because `rp_filter=2`.
 
-Why? Maybe zoom out, look at the big picture for this driver, and
-figure out if that is the correct behaviour for stmmac_mdio to
-implement. Is it possible to synthesizer this IP without MDIO?
+node2 has the following (correct) routes installed:
 
-I was also wondering about all the other parameters you set. Why have
-i not seen any other glue driver with similar code? What makes this
-glue driver different?
+10.0.1.3 nhid 18 via 10.0.1.3 dev ens22 proto openfabric src 10.0.1.2 metric 20 onlink
 
-	   Andrew
+Since arp_announce is set to 0 (the default), arp_solicit selects the first
+interface with an ip address (inet_select_addr), which results in
+selecting the wrong source address (172.16.0.102) for the arp request.
+Because rp_filter is set to 2, we won't receive an answer to this arp
+packet, and the ping will fail unless we explicitly ping from node2 to
+node3.
+
+I'm wondering if it would be possible (and correct) to modify arp_solicit to
+perform a fib lookup to check if there's a route with an explicit source
+address (e.g., the route above using src 10.0.1.2) and use that address as the
+source address for the arp packet. Of course, this wouldn't be backward
+compatible, as some users might rely on the current interface ordering behavior
+(or the loopback interface being selected first), so it would need to be
+controlled via a sysctl configuration flag. Perhaps I'm missing something
+obvious here though.
+
+Any insights would be appreciated!
+
+Gabriel
+
