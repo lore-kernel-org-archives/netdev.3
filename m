@@ -1,296 +1,241 @@
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588822D8362;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35772D8362;
 	Fri, 17 Oct 2025 09:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760692027; cv=none; b=iCmzWoQCOweR+A4ZEEe6HiEc/v47uMXACtEsgog62iWW+ulIYxrvRL0bfNx3tbqu6+Y4NyyrCY8+ICKT7SLYJnhUWHfUjbETe/+ui1W5ZefhmCzwIDLPGlKnyJ/XwJSIJgmDf3ey9FpvGqZKI5WkeUq9YaD/RPQ+edSGVA8BeMg=
+	t=1760692028; cv=none; b=IhAnXgNM1dJS0wmCri+mZ+fDIVrky6BIJL6C5KKn0PirFlZ0tK6PTdvxCLTw1YtVPMXvcUh0PfSLjRHE1PPYQl9bGcinexcSN/+HzEAf/4y3DoSlu44M6P8lZg3kHO29RA6LBUzw+2ibcaIMKrByn1QBt40VAAJ9dawJjv6OjMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760692027; c=relaxed/simple;
-	bh=ZIkIyBZT+cexEU5uLcfEMRzmnbO+QDNdOsXSlsvYz9g=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LQA5v0SU3boxQp/svrrWcqHHfEfwj18ke37Ty/kOIPToSTfPK+100YmuEOlrkceFNvjmwE1+8hfBswdpgnOZdiCluiytFtuhx19QEEMOUsKdEzpPJyRCC4SffY+kj7O//IDCJk0oBjnKA+Vz2tNhrX205gfnJtn0620RTueOhj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Yd8UEXR8; arc=none smtp.client-ip=35.162.73.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1760692028; c=relaxed/simple;
+	bh=0B65CqGzJEK6ceaUHrNKfW0NJ7hQsUV/sEi/kCYzBAw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=YTNd0DNlo271W0H9ev4UGjp2ptztMDlt3l6KZl33qjPSPAbUI6ryOmvyebbyVVcW+FD3WQ0u98+ATLFR72o7HzDpuDT8uYuHZBGSgCS/jjmK4H1FMX9rZUGaEprdwKPd8ENMX7ejp6HVKxDkBlL2G1xQ8jqcZnBESvF2hoKacfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oP2P2nq9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Yd8UEXR8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760692025; x=1792228025;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=QGaAvozmIqIzV143yBTS5nQtsGF8X9DZFIMkdv4YYLs=;
-  b=Yd8UEXR8ZkW7J62SObDSixe/qokBwbqVLe6Ol8r8m6ywfAs5/vKOeRpT
-   0OxfcEkl6IzEt2HuKXUNuIwHHd0HpRGSfcFbgK3pD4gEtadRoFxMcXGy0
-   OQ8x1ustAqvGVq9C8vaz36tzRRIhU/G4SXm1yVUflaHZ51Se0epGYnvGf
-   2ZOGK3S7ijgi/kseGobwf3FzibU7CeSFvUvGho3KUs4hzdEi+dr31/KHV
-   9kX8AhvFwryxkzMkeT0NyoSXGt6847ZNtLfEbBb53U5lwmGRWRQ771A7y
-   WkvUTBBLKhhkzYat/eVJ6hMiWD//vWURHQAv/WbULw8k0bwv2dtXUOQ1v
-   w==;
-X-CSE-ConnectionGUID: zWrYvXLbQjiOYymOyGvz5A==
-X-CSE-MsgGUID: 76/3AHtyRme5brVPZGOntA==
-X-IronPort-AV: E=Sophos;i="6.19,236,1754956800"; 
-   d="scan'208";a="4877962"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:07:02 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:7581]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.167:2525] with esmtp (Farcaster)
- id c402a081-eaf9-4041-86d8-805021e16bf5; Fri, 17 Oct 2025 09:07:01 +0000 (UTC)
-X-Farcaster-Flow-ID: c402a081-eaf9-4041-86d8-805021e16bf5
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:07:01 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:06:46 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
-	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
-	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
-	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
-	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>,
-	<james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>,
-	<sunpeng.li@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-	<evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>,
-	<mihail.atanassov@arm.com>, <brian.starkey@arm.com>,
-	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
-	<jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>,
-	<dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
-	<dm-devel@redhat.com>, <rajur@chelsio.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>,
-	<joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>,
-	<hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>,
-	<artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
-	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>,
-	<josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>,
-	<chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>,
-	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
-	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
-	<sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>,
-	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
-	<akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>,
-	<yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>,
-	<fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>,
-	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
-	<ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>,
-	<herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>,
-	<kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>,
-	<ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
-	<linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>,
-	<freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
-	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
-	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<tipc-discussion@lists.sourceforge.net>
-Subject: [PATCH v2 04/27 5.10.y] minmax: clamp more efficiently by avoiding extra comparison
-Date: Fri, 17 Oct 2025 09:04:56 +0000
-Message-ID: <20251017090519.46992-5-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
-References: <20251017090519.46992-1-farbere@amazon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oP2P2nq9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33E8C4CEE7;
+	Fri, 17 Oct 2025 09:07:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760692025;
+	bh=0B65CqGzJEK6ceaUHrNKfW0NJ7hQsUV/sEi/kCYzBAw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=oP2P2nq9WZa8iQ6R+VCwTi0eH2hwOQ/biFYbUmiKYFKJECaYdfW0+/JCL2uZwMcy8
+	 HPHVzN1PSBUF0ZhjtPz/+mUNGN34VBoDkLfMR1SX/FPCgegjv8GTRj1Jx2lChBB5At
+	 c0oxRNe+6zjxYMgt5+2tdzDG4Ug0R84cDZKZ0eMsW/g8BuJ+t+atqQgWq47kf+UetI
+	 F8kLZNUd5A/Ix4AeHXaDr+mSv9fwIgk3ndUnae9OSloEWjaMMXHVpAmu3nsgdYd50x
+	 PvQtFpnzn/y8vUmSzhy877IEeKfq4IptYYohKiJD4NmVPqZVVBpacAP0O/dMoVLL8W
+	 DQBU2XNgHpZHw==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Fri, 17 Oct 2025 11:06:22 +0200
+Subject: [PATCH net-next v3 13/13] net: airoha: Add AN7583 SoC support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251017-an7583-eth-support-v3-13-f28319666667@kernel.org>
+References: <20251017-an7583-eth-support-v3-0-f28319666667@kernel.org>
+In-Reply-To: <20251017-an7583-eth-support-v3-0-f28319666667@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.14.2
 
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Introduce support for AN7583 ethernet controller to airoha-eth dirver.
 
-[ Upstream commit 2122e2a4efc2cd139474079e11939b6e07adfacd ]
-
-Currently the clamp algorithm does:
-
-    if (val > hi)
-        val = hi;
-    if (val < lo)
-        val = lo;
-
-But since hi > lo by definition, this can be made more efficient with:
-
-    if (val > hi)
-        val = hi;
-    else if (val < lo)
-        val = lo;
-
-So fix up the clamp and clamp_t functions to do this, adding the same
-argument checking as for min and min_t.
-
-For simple cases, code generation on x86_64 and aarch64 stay about the
-same:
-
-    before:
-            cmp     edi, edx
-            mov     eax, esi
-            cmova   edi, edx
-            cmp     edi, esi
-            cmovnb  eax, edi
-            ret
-    after:
-            cmp     edi, esi
-            mov     eax, edx
-            cmovnb  esi, edi
-            cmp     edi, edx
-            cmovb   eax, esi
-            ret
-
-    before:
-            cmp     w0, w2
-            csel    w8, w0, w2, lo
-            cmp     w8, w1
-            csel    w0, w8, w1, hi
-            ret
-    after:
-            cmp     w0, w1
-            csel    w8, w0, w1, hi
-            cmp     w0, w2
-            csel    w0, w8, w2, lo
-            ret
-
-On MIPS64, however, code generation improves, by removing arithmetic in
-the second branch:
-
-    before:
-            sltu    $3,$6,$4
-            bne     $3,$0,.L2
-            move    $2,$6
-
-            move    $2,$4
-    .L2:
-            sltu    $3,$2,$5
-            bnel    $3,$0,.L7
-            move    $2,$5
-
-    .L7:
-            jr      $31
-            nop
-    after:
-            sltu    $3,$4,$6
-            beq     $3,$0,.L13
-            move    $2,$6
-
-            sltu    $3,$4,$5
-            bne     $3,$0,.L12
-            move    $2,$4
-
-    .L13:
-            jr      $31
-            nop
-
-    .L12:
-            jr      $31
-            move    $2,$5
-
-For more complex cases with surrounding code, the effects are a bit
-more complicated. For example, consider this simplified version of
-timestamp_truncate() from fs/inode.c on x86_64:
-
-    struct timespec64 timestamp_truncate(struct timespec64 t, struct inode *inode)
-    {
-        struct super_block *sb = inode->i_sb;
-        unsigned int gran = sb->s_time_gran;
-
-        t.tv_sec = clamp(t.tv_sec, sb->s_time_min, sb->s_time_max);
-        if (t.tv_sec == sb->s_time_max || t.tv_sec == sb->s_time_min)
-            t.tv_nsec = 0;
-        return t;
-    }
-
-    before:
-            mov     r8, rdx
-            mov     rdx, rsi
-            mov     rcx, QWORD PTR [r8]
-            mov     rax, QWORD PTR [rcx+8]
-            mov     rcx, QWORD PTR [rcx+16]
-            cmp     rax, rdi
-            mov     r8, rcx
-            cmovge  rdi, rax
-            cmp     rdi, rcx
-            cmovle  r8, rdi
-            cmp     rax, r8
-            je      .L4
-            cmp     rdi, rcx
-            jge     .L4
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            mov     rax, r8
-            ret
-
-    after:
-            mov     rax, QWORD PTR [rdx]
-            mov     rdx, QWORD PTR [rax+8]
-            mov     rax, QWORD PTR [rax+16]
-            cmp     rax, rdi
-            jg      .L6
-            mov     r8, rax
-            xor     edx, edx
-    .L2:
-            mov     rax, r8
-            ret
-    .L6:
-            cmp     rdx, rdi
-            mov     r8, rdi
-            cmovge  r8, rdx
-            cmp     rax, r8
-            je      .L4
-            xor     eax, eax
-            cmp     rdx, rdi
-            cmovl   rax, rsi
-            mov     rdx, rax
-            mov     rax, r8
-            ret
-    .L4:
-            xor     edx, edx
-            jmp     .L2
-
-In this case, we actually gain a branch, unfortunately, because the
-compiler's replacement axioms no longer as cleanly apply.
-
-So all and all, this change is a bit of a mixed bag.
-
-Link: https://lkml.kernel.org/r/20220926133435.1333846-2-Jason@zx2c4.com
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- include/linux/minmax.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 68 +++++++++++++++++++++++++++++---
+ drivers/net/ethernet/airoha/airoha_eth.h | 11 ++++++
+ drivers/net/ethernet/airoha/airoha_ppe.c |  3 ++
+ 3 files changed, 77 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/minmax.h b/include/linux/minmax.h
-index 8b092c66c5aa..abdeae409dad 100644
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -38,7 +38,7 @@
- 		__cmp_once(x, y, __UNIQUE_ID(__x), __UNIQUE_ID(__y), op))
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 4671f906a68c794d2ad05fbf5777fe22405c3d8f..8483ea02603e24de5eb37654452f8c2b21b9bff4 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -1684,10 +1684,8 @@ static int airoha_dev_set_macaddr(struct net_device *dev, void *p)
  
- #define __clamp(val, lo, hi)	\
--	__cmp(__cmp(val, lo, >), hi, <)
-+	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ {
+-	u32 val, pse_port, chan = port->id == AIROHA_GDM3_IDX ? 4 : 0;
+ 	struct airoha_eth *eth = port->qdma->eth;
+-	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
+-	u32 nbq = port->id == AIROHA_GDM3_IDX ? 4 : 0;
++	u32 val, pse_port, chan, nbq;
+ 	int src_port;
  
- #define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
- 		typeof(val) unique_val = (val);				\
+ 	/* Forward the traffic to the proper GDM port */
+@@ -1699,6 +1697,8 @@ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 	/* Enable GDM2 loopback */
+ 	airoha_fe_wr(eth, REG_GDM_TXCHN_EN(2), 0xffffffff);
+ 	airoha_fe_wr(eth, REG_GDM_RXCHN_EN(2), 0xffff);
++
++	chan = port->id == AIROHA_GDM3_IDX ? airoha_is_7581(eth) ? 4 : 3 : 0;
+ 	airoha_fe_rmw(eth, REG_GDM_LPBK_CFG(2),
+ 		      LPBK_CHAN_MASK | LPBK_MODE_MASK | LPBK_EN_MASK,
+ 		      FIELD_PREP(LPBK_CHAN_MASK, chan) |
+@@ -1713,6 +1713,8 @@ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 	airoha_fe_clear(eth, REG_FE_VIP_PORT_EN, BIT(2));
+ 	airoha_fe_clear(eth, REG_FE_IFC_PORT_EN, BIT(2));
+ 
++	/* XXX: handle XSI_USB_PORT and XSI_PCE1_PORT */
++	nbq = port->id == AIROHA_GDM3_IDX && airoha_is_7581(eth) ? 4 : 0;
+ 	src_port = eth->soc->ops.get_src_port_id(port, nbq);
+ 	if (src_port < 0)
+ 		return src_port;
+@@ -1726,7 +1728,7 @@ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 		      SP_CPORT_MASK(val),
+ 		      FE_PSE_PORT_CDM2 << __ffs(SP_CPORT_MASK(val)));
+ 
+-	if (port->id != AIROHA_GDM3_IDX)
++	if (port->id != AIROHA_GDM3_IDX && airoha_is_7581(eth))
+ 		airoha_fe_rmw(eth, REG_SRC_PORT_FC_MAP6,
+ 			      FC_ID_OF_SRC_PORT24_MASK,
+ 			      FIELD_PREP(FC_ID_OF_SRC_PORT24_MASK, 2));
+@@ -1895,6 +1897,22 @@ static bool airoha_dev_tx_queue_busy(struct airoha_queue *q, u32 nr_frags)
+ 	return index >= tail;
+ }
+ 
++static int airoha_get_fe_port(struct airoha_gdm_port *port)
++{
++	struct airoha_qdma *qdma = port->qdma;
++	struct airoha_eth *eth = qdma->eth;
++
++	switch (eth->soc->version) {
++	case 0x7583:
++		return port->id == AIROHA_GDM3_IDX ? FE_PSE_PORT_GDM3
++						   : port->id;
++	case 0x7581:
++	default:
++		return port->id == AIROHA_GDM4_IDX ? FE_PSE_PORT_GDM4
++						   : port->id;
++	}
++}
++
+ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 				   struct net_device *dev)
+ {
+@@ -1935,7 +1953,7 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 		}
+ 	}
+ 
+-	fport = port->id == 4 ? FE_PSE_PORT_GDM4 : port->id;
++	fport = airoha_get_fe_port(port);
+ 	msg1 = FIELD_PREP(QDMA_ETH_TXMSG_FPORT_MASK, fport) |
+ 	       FIELD_PREP(QDMA_ETH_TXMSG_METER_MASK, 0x7f);
+ 
+@@ -3098,6 +3116,35 @@ static int airoha_en7581_get_src_port_id(struct airoha_gdm_port *port, int nbq)
+ 	return -EINVAL;
+ }
+ 
++static const char * const an7583_xsi_rsts_names[] = {
++	"xsi-mac",
++	"hsi0-mac",
++	"hsi1-mac",
++	"xfp-mac",
++};
++
++static int airoha_an7583_get_src_port_id(struct airoha_gdm_port *port, int nbq)
++{
++	switch (port->id) {
++	case 3:
++		/* 7583 SoC supports eth serdes on GDM3 port */
++		if (!nbq)
++			return HSGMII_LAN_7583_ETH_SRCPORT;
++		break;
++	case 4:
++		/* 7583 SoC supports PCIe and USB serdes on GDM4 port */
++		if (!nbq)
++			return HSGMII_LAN_7583_PCIE_SRCPORT;
++		if (nbq == 1)
++			return HSGMII_LAN_7583_USB_SRCPORT;
++		break;
++	default:
++		break;
++	}
++
++	return -EINVAL;
++}
++
+ static const struct airoha_eth_soc_data en7581_soc_data = {
+ 	.version = 0x7581,
+ 	.xsi_rsts_names = en7581_xsi_rsts_names,
+@@ -3108,8 +3155,19 @@ static const struct airoha_eth_soc_data en7581_soc_data = {
+ 	},
+ };
+ 
++static const struct airoha_eth_soc_data an7583_soc_data = {
++	.version = 0x7583,
++	.xsi_rsts_names = an7583_xsi_rsts_names,
++	.num_xsi_rsts = ARRAY_SIZE(an7583_xsi_rsts_names),
++	.num_ppe = 1,
++	.ops = {
++		.get_src_port_id = airoha_an7583_get_src_port_id,
++	},
++};
++
+ static const struct of_device_id of_airoha_match[] = {
+ 	{ .compatible = "airoha,en7581-eth", .data = &en7581_soc_data },
++	{ .compatible = "airoha,an7583-eth", .data = &an7583_soc_data },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, of_airoha_match);
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index e09579da8c78a99ef07ee7eef7be3cd6c1b5be76..eb27a4ff51984ef376c6e94607ee2dc1a806488b 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -73,6 +73,12 @@ enum {
+ 	HSGMII_LAN_7581_USB_SRCPORT,
+ };
+ 
++enum {
++	HSGMII_LAN_7583_ETH_SRCPORT	= 0x16,
++	HSGMII_LAN_7583_PCIE_SRCPORT	= 0x18,
++	HSGMII_LAN_7583_USB_SRCPORT,
++};
++
+ enum {
+ 	XSI_PCIE0_VIP_PORT_MASK	= BIT(22),
+ 	XSI_PCIE1_VIP_PORT_MASK	= BIT(23),
+@@ -629,6 +635,11 @@ static inline bool airoha_is_7581(struct airoha_eth *eth)
+ 	return eth->soc->version == 0x7581;
+ }
+ 
++static inline bool airoha_is_7583(struct airoha_eth *eth)
++{
++	return eth->soc->version == 0x7583;
++}
++
+ bool airoha_is_valid_gdm_port(struct airoha_eth *eth,
+ 			      struct airoha_gdm_port *port);
+ 
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index eda95107cd1daf6ff00a85abc72313a509ed67e9..c373f21d95f5a610deae365c64bc589c21f5e1a0 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -37,6 +37,9 @@ static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
+ 	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
+ 		return -EOPNOTSUPP;
+ 
++	if (airoha_is_7583(ppe->eth))
++		return -EOPNOTSUPP;
++
+ 	return PPE_STATS_NUM_ENTRIES;
+ }
+ 
+
 -- 
-2.47.3
+2.51.0
 
