@@ -1,128 +1,154 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012044.outbound.protection.outlook.com [52.101.43.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40873101BC
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760683554; cv=none; b=m9/KwpoSzvcehHElTqkYA0XgOUX5GsyVfqnVWgHmTeUhoTjsSiWN1GKtDNwKhj7+F1THdJZZ8XmROtL0csNGDifhxko6m4scgZXoo7QwkZz9EN/w/8YNKbkclmJegXpbAH+dSG4ToCWDE8MSfjCFkP7hywr5eQbN5dkgbrTD0L0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760683554; c=relaxed/simple;
-	bh=ZLH3av1Lf6WPtlvrbUqYje4yk116CuTGkXGsaAWaNvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRKXnM13v22EzALcLr6vh1+c+LDOSZJccpbpAFEsK2KnnRqCNys7YHgMibQ9JYR61auYiLs1Q2mvyUAjzRIW7xgnkaSHY0E8wDqCmsowDhCd4rhXNB6L8/s9R08fujjgc31CPLgzTzxbGcxJflImVoHM98dVt693CH98OL5Xh5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/fwrg0v; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B157B3346A8
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760683661; cv=fail; b=PRPdoKhzA+pgeNiHsUYim3lqePe1nOKL2WsF9apBIsqu9Aef245wPAdlx1MHvuf0WBVzLe4nAES71+jZOamvoe365aMhrEnumSBU/eeccHcxy+ICfJNnMzXbX46kQIlhVBaEyTkR4J1uwtuKuIbgLehcckZfTj/VFnr9uQBafF0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760683661; c=relaxed/simple;
+	bh=5DTKAzuXIjb82hiP7A5FEk8eHgJwNFk2hgLEdRcRDQY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hS/783BBFJTH20J4k5GoUZdsjl9q5E4siIGC8CHABKrSxv7lDTMz1D3ih/Te4QmbEiBYn+zdNfY02p4Z6+RhOci7dZ443aJHs6FAoprd3TRwHPQbqB5S3S+SOLfFgsDTQl6vN5uNLqV6oBN4SuTUXKWF8rFwBfmELHwJ0l7Xfac=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IDobiweH; arc=fail smtp.client-ip=52.101.43.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/fwrg0v"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b57bffc0248so1082730a12.0
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760683552; x=1761288352; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IdshIMlRNJU3RJEsxCqgBNsG9buJVWf/bkHbjQKkwss=;
-        b=P/fwrg0vpZ1aNbMdSmU+PzI9lcPE9RK8OnNQdK6PwctUsC0pGjMxtffYJR0acuLE6y
-         MzuslzCfODLPbiLeeDoaRjC7s2G2RuKSdItJIyZ/A+EtwCIPjgH/epZAjF9HfHRHyYfJ
-         C2v3ufCVDXfmM7YfugwoKXWqkfuu5e1nbaTNETykVyctQwL6dJIDOPt3B1431PpkHAL4
-         pLhmsbyxHSNkXP5y1NudfU4gSCZvvggiYY6MryPEIs8R7UxQjb1u8L6KOZv9BiFut0/c
-         wkFIVUX6qzdjjEiS4V3iEy/WRHP8M9KZFc2aQ4+xz7S+VIZBZY7S8rhnknOE21SbRIY4
-         lVsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760683552; x=1761288352;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IdshIMlRNJU3RJEsxCqgBNsG9buJVWf/bkHbjQKkwss=;
-        b=KotU3P1zU01CWqSa9k9j80I+3enjJGgb6nqQEdnvQ4T7zYZgpa5wqDd4pw7yqUer1R
-         7rB7uMfZyCNK1xN9IRfZSoMNp56aKU9DM60hpzSPW5qnCruYeOL/Rcy+Zkq7/GvHgEBM
-         9G5fmtsPCTEKGdpPucXfw5JG91eX78On+qpKJhb5mxa/VMnbsFRcEuiHwhymlcPhe26e
-         Zy0LLS0Gg33SCFdGpxkYQrfST62MsvoIuVrj9tMJwzmDL/znyxbTLuOu5jJCF0K8hKdU
-         dpFYCxkVNBsFPSQzgonKl19JWd2DMtHGaf3h73H6JoYjXy0gUVbb/8dLROm+MGznL/k+
-         kKoA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxWy1n/sodRmvPdzjZ97zimG9DB/8UjjFo7AoaMaq6BDE10d5d1DFNGLShbpNdAYPSZ59gOr0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEDT5fcv/iG4MpIpFkPKiqVYD2jD+FiHFyw+bOrmiiX7hRqkAD
-	HNSP6NywC0IVqhGZgY31FCBu+b8KwKa/MrzJZjfG58ZoAwz/oTCn65gm
-X-Gm-Gg: ASbGncscZKbfRKjYuUKlwbjXCjd0+hvbbJ52YBKkS71MpjXg39kXUv/mah1xCXxAI5M
-	nFLQ4MBod2/e+P0Yrn7sADXqB3jbek0AwegUD8czmQPYf8AJPZfHNm0Fi1dSxMzUxwE2tG75hcL
-	WgeqxAH7WkHuEXmf+5mUjJHFd+rgLeGCJjKVA7HhyuFtOfrIIxRjbDP81rwVAYH+GQ6rky8t331
-	b0PnqqJdB2gdsmcWT2DxGHmbcjTZLQBe/fAKqZNXTFxq+YiZlttcI143Y0rqexC4GTd6JM4AJsq
-	2xpSq2sTxA4HL0okGiBosEv0ewew9wDvr3AR8EsI+IeX5lWvL0ty619eFs2ZpkWhwa586zRXlWs
-	N/vGlh9ZusWydeOZyq3ivhdDlUw170zwYxoovsBOJ8ohh4NvyViPswrqgcPGgdgP3uxW37fShXB
-	nAMEs=
-X-Google-Smtp-Source: AGHT+IFsyPzxxs80uuv3DSh602TaCVol8BZqwzAMzN7CXGrpFxd3J3/c9RZiykQ01q/KKGXKyCcwJA==
-X-Received: by 2002:a05:6a20:1a83:b0:334:a854:64a7 with SMTP id adf61e73a8af0-334a85464afmr2701069637.3.1760683551802;
-        Thu, 16 Oct 2025 23:45:51 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7992d0e1336sm24360687b3a.59.2025.10.16.23.45.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 23:45:50 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 8DDBB4528ADE; Fri, 17 Oct 2025 13:45:44 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	linux-hams@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Andreas Koensgen <ajk@comnets.uni-bremen.de>,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH net-next 1/2] net: nfc: Format userspace interface subsection headings
-Date: Fri, 17 Oct 2025 13:45:25 +0700
-Message-ID: <20251017064525.28836-3-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017064525.28836-2-bagasdotme@gmail.com>
-References: <20251017064525.28836-2-bagasdotme@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IDobiweH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MDZjrvMdr0XMrOoQkMbWmz4DdCKf3d3aUyPXmSZLIcB7Cong8UJd27SJlamB9w3Sf3wqYGCfzRLb7f0IhUHhus3XDcEFgDuIRedk0RalgdRXYYD8JSWEcc9pYya5clrs+rL9ucFfkABHX9t3+aE6Zyf0NxdZjgQ/GJwrtaxhJlSQ5PgnhHBHFFvkZaiuXd6ZeV0JQly7G5UF+5zP1vGyH1g9mVQb7quTAzeKIA/XoQlN/YAr0sGfrceOgRa/681vDyZjel60IoAQdr7XyXyhyvph1bGsbe8oYR/R48M8YyknbPIn54feIxeQN9euUhxRZVYUXuf3uqg/WPkOHlZXGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2gDHY+1PjQsXLWjRs9H7afypIijKAx436y+WEFwJxpc=;
+ b=F3L+yvVFnj4xUJsLvhM2jdKgdkPtD1n98Fn4UcxCtG1yY3WGIbCrycYTN5Y9NCDqVuRGW2Fti4/9t6r17ZinioQgdXZyfg08xw6rTu4fUK7lxEX71JuPhh/CZx1Mllyem92uz4eCxFTIyx/5YiUIUIv9SmV9T+M27QkJ7cFI5iYQpzTl71cq/G1UbXE0qB5qKfdjn/GZr/BLhHga1dh/I/dW4JkmXpYkQnzWs1mn93qRqP54eozEu3HvGkk8R/CngJVSqAFIZksVQSW092XmE2YtINlLlidEddgS2WY/5OkP8kW1Ages5roCzQyu1xUKZE348iS33BftvU0ifHW7sg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2gDHY+1PjQsXLWjRs9H7afypIijKAx436y+WEFwJxpc=;
+ b=IDobiweHVstbwTBAn/CHLuVFSbPnhae94aSDTxEDiO4a300aXV46c3zt9sSQ8PDAgriyM2c9avPQt6wd9coM68HmPX8xyZt8R6D1d30bYLUWGBbhejPQqarWOR+NgfaxeOuiv0Th1h+Oa1ZKwbeACm90EaSbj0G44oRQM0zOda0=
+Received: from DM6PR17CA0034.namprd17.prod.outlook.com (2603:10b6:5:1b3::47)
+ by PH8PR12MB6745.namprd12.prod.outlook.com (2603:10b6:510:1c0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.12; Fri, 17 Oct
+ 2025 06:47:34 +0000
+Received: from DS2PEPF00003445.namprd04.prod.outlook.com
+ (2603:10b6:5:1b3:cafe::77) by DM6PR17CA0034.outlook.office365.com
+ (2603:10b6:5:1b3::47) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.13 via Frontend Transport; Fri,
+ 17 Oct 2025 06:47:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS2PEPF00003445.mail.protection.outlook.com (10.167.17.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9253.7 via Frontend Transport; Fri, 17 Oct 2025 06:47:33 +0000
+Received: from airavat.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 16 Oct
+ 2025 23:47:19 -0700
+From: Raju Rangoju <Raju.Rangoju@amd.com>
+To: <netdev@vger.kernel.org>
+CC: <pabeni@redhat.com>, <kuba@kernel.org>, <edumazet@google.com>,
+	<davem@davemloft.net>, <andrew+netdev@lunn.ch>, <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>
+Subject: [PATCH net-next v2 0/4] amd-xgbe: introduce support for ethtool selftests
+Date: Fri, 17 Oct 2025 12:17:00 +0530
+Message-ID: <20251017064704.3911798-1-Raju.Rangoju@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1301; i=bagasdotme@gmail.com; h=from:subject; bh=ZLH3av1Lf6WPtlvrbUqYje4yk116CuTGkXGsaAWaNvY=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDBkfnxw0OmArXbRC9PMe94q9n9c7ap7WabPsXVqmpbzxn eKEmI66jlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAExEWYHhN+veBwWaHtFtX3e0 2MplFO4LLtaoYb2uUJa+rVSUa407J8M//d2GPot45n/8N23t461REzO/b5U4Ptf0Z/5b2blue5p EeQA=
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003445:EE_|PH8PR12MB6745:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef58600f-e92f-4831-49e3-08de0d490d4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WaEQyG68M0govyH/Aq9b4utuVXzdsOhPov4T+dC3YGMZf7WI6r6RUMQosQyn?=
+ =?us-ascii?Q?ZbX03moFFgVZlYjck2XEdnp3ciFIT3se7hEh3EMf3gE/dBpqn96bmmRcTL2p?=
+ =?us-ascii?Q?xDU4pm2yspIfZ7GbHvOiwqWjff4dzly+owcUTT9dJlZsGC2Z59RqX1EU2P0E?=
+ =?us-ascii?Q?DJhFxiWDoQXTX0wGjm8gBn2UMR3/yHCjV69RPvIqUqu1RzdzC4bQxUTozfY0?=
+ =?us-ascii?Q?lblQYKb/By+bamCRScMSPmvHaHnGzxzA3+uR9ltN2UNRCdJdijW9gSU3iFN0?=
+ =?us-ascii?Q?zdG6mHzVvWaRe2ExZR+5Sg3VyEm2GJ/Q+A7SQibcjhSPOYJv0qZT93KhLcuz?=
+ =?us-ascii?Q?LR8+8apDG7oObvmwXOBJ5Y14qNmk5FRqt4boaFcQFplnIFFSyWyxVDuLLRgN?=
+ =?us-ascii?Q?96YjteKF3OPAeGj3NTbHKLmdc7vivZmaEe3xCnE8I5rKV1ay2lFMloX4yUNh?=
+ =?us-ascii?Q?NlTIwJzg+47VzLjQFx8h9dwZWUP9Ivy2l6qJvShreU8AcYiAux01vhapv50e?=
+ =?us-ascii?Q?rm80XuEdovfR/ApkugHtE48DQ9nAK0WOx06wtcnWBcbol/Y9wg6kqeSZx/vH?=
+ =?us-ascii?Q?uFDq8Ju2JN5KaH3iF5TsWxU7Q1DDCuI9EIg14xYceQdq11uWLXGB16P6Boeh?=
+ =?us-ascii?Q?2H0nkR+CwK2mHzD/3dA6roL3bSq5I+VRoSGTTaw7Ys3rt65vVM/joaLydOb6?=
+ =?us-ascii?Q?YxYHSv5pagork8sqLbyOnUnhVScHu9oj+KmAgVU4kvccKXpvdcfSrfCpweSz?=
+ =?us-ascii?Q?yiomzHeqxO1nIZBWKgVbYhClor2bTMK/4NJPZMlv7NIhM9h3yCabhBruLmBw?=
+ =?us-ascii?Q?M1qntfgrKCxGjIeC3J6T3aP23EBcj9+Pj46e09reIi1FrOMXjBs0pt0n/JIZ?=
+ =?us-ascii?Q?Dxh/uz1x8Te6DUhKErsLwYeVWluwl4SJ73uZBVZVZnLd5PcN/Ab/mn1/YOZQ?=
+ =?us-ascii?Q?fztlB6pMZ8a3Fyv1FE8WMECzb0Ix+QjudQPxjzuLXNvXeJZVAvIrwBnmf4r7?=
+ =?us-ascii?Q?qFMFfl17WE5tmSyZ/cIoqzDr/Zf3VJQDpCjRy0RwGx+zH0ogm+WeUfSjbRw2?=
+ =?us-ascii?Q?MetqIoVZHd25f+X3C3CjMaJR8OWPu6yQW6OzMJCgmzdEHRyaU+xku+Rx6ngn?=
+ =?us-ascii?Q?htfO8YsBnvTi/e4anblgykGIeByZKHJPq9IPr6c0IT8CjHKNodMvwrrq30Zm?=
+ =?us-ascii?Q?iRYf0/gbObpxe50aF/Fr0GEiSTH81tpn6fWKG9K2Sc4Ke+7EhiWZqieHsoyF?=
+ =?us-ascii?Q?KYVylFLsTxd96+mpMIh1RfXzKQ8zyl2XxrvLh1X03emU7rBNIm2C/o7jttlM?=
+ =?us-ascii?Q?LzGHyzsE5ChyYQp+yGCfClFhVs0RA/gFMgH1t3loHIoPeN30Jq7D8a4VSZrQ?=
+ =?us-ascii?Q?BKA5M+IKStEUhnrORivSe6fuH/tSMstX4w0fMeN7jgUZsqMxyjSXKJACDsw9?=
+ =?us-ascii?Q?ztbGjKtgmiMk8KvUDOz2f7COnDj9+Qpen6M57W8i/iqd8r36IDU/e8BJkkmi?=
+ =?us-ascii?Q?l7zEik/OfSDJMnu7yg+rbTk2Qg8ymVdXbIqy4lH0W3bLbTRx4KRoM5hDmuLw?=
+ =?us-ascii?Q?gUfT3H2yucMOvWCqPo0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2025 06:47:33.9121
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef58600f-e92f-4831-49e3-08de0d490d4a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003445.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6745
 
-Subsection headings of "Userspace interface" is written in normal
-paragraph, all-capped. Properly format them as reST section headings.
+This patch series introduces support for ethtool selftests, which
+helps in finding the misconfiguration of HW. Supports the following
+tests:
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/networking/nfc.rst | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ - MAC loopback selftest
+ - PHY loopback selftest
+ - Split header selftest
+ - Jubmo frame selftest
 
-diff --git a/Documentation/networking/nfc.rst b/Documentation/networking/nfc.rst
-index 9aab3a88c9b298..40173500614332 100644
---- a/Documentation/networking/nfc.rst
-+++ b/Documentation/networking/nfc.rst
-@@ -71,7 +71,8 @@ Userspace interface
- The userspace interface is divided in control operations and low-level data
- exchange operation.
- 
--CONTROL OPERATIONS:
-+Control operations
-+------------------
- 
- Generic netlink is used to implement the interface to the control operations.
- The operations are composed by commands and events, all listed below:
-@@ -100,7 +101,8 @@ relevant information such as the supported NFC protocols.
- All polling operations requested through one netlink socket are stopped when
- it's closed.
- 
--LOW-LEVEL DATA EXCHANGE:
-+Low-level data exchange
-+-----------------------
- 
- The userspace must use PF_NFC sockets to perform any data communication with
- targets. All NFC sockets use AF_NFC::
+Changes since v1:
+ - fix build warnings for s390 arch reported by kernel test robot
+
+Raju Rangoju (4):
+  amd-xgbe: introduce support ethtool selftest
+  amd-xgbe: add ethtool phy selftest
+  amd-xgbe: add ethtool split header selftest
+  amd-xgbe: add ethtool jumbo frame selftest
+
+ drivers/net/ethernet/amd/xgbe/Makefile        |   2 +-
+ drivers/net/ethernet/amd/xgbe/xgbe-dev.c      |   2 +
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c  |   7 +
+ drivers/net/ethernet/amd/xgbe/xgbe-selftest.c | 506 ++++++++++++++++++
+ drivers/net/ethernet/amd/xgbe/xgbe.h          |   6 +
+ 5 files changed, 522 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/amd/xgbe/xgbe-selftest.c
+
 -- 
-An old man doll... just what I always wanted! - Clara
+2.34.1
 
