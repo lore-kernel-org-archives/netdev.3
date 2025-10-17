@@ -1,146 +1,124 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A02D543A
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 10:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B676F2D595F
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 10:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760696253; cv=none; b=upKWGWNXyQ/01C+Mu3PEH/YBtP10h1v/5kfJyWFBOTaXdMM9M5RnuTl73PjTE+SxVld10Exf5VAD/gkp3l89roDxjpcjFYuIh2dryq9eI5FgI2RvejA/3kPUWD3HeSL3ouwQKAlhj89pJGP5+Cn67jr/PgGWvpDgTxpMZA/3Pes=
+	t=1760696548; cv=none; b=CNaWQKTBshyOKfxtgtK/w3qDzSpRhHtpZK8V/ictql58h6A06Yn8fnsSI//E8A5UM3B5P59hx8klCMRLYMoZ0BiUhUz4ZPHt3wv8y3TrLSIVB6R+P+KGJClxvJdZ3+InLa0Wds/95TJAXSXI8xHoaRN4Tdwir8oCtbEsWb90fOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760696253; c=relaxed/simple;
-	bh=1QLU/gVVgYDO8JWw4ge7c5jK05jF3XWennbUt0+E7Eo=;
+	s=arc-20240116; t=1760696548; c=relaxed/simple;
+	bh=LTAr1hY9HCJyR9LS20fLPV2AY9+9mh+4PjZlB1H/b04=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dR2aKjuOxmDh1mZQk+UiVrmeM/CxD+Dlsmkw8ZOLh06u9za8koQJQjG2WEuZEHvTxTIzX2IHzcEE7C6RuCFiwvVkgy1p/e4naGqqZPPC9m1JZjkOiJR3loD4YUQp2e4UpTNyf+9g86lM9aDf+QIr6fIv3KdeoTqnFHf9fBWapBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ayCSq4Eg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/JU05BQm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ayCSq4Eg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/JU05BQm; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=SMB/F9ZnqCMwnFFuA/91khHftzXlTEAqJWtEBRVln9ghkOVtECrFhruq3PemQY8WdoZxsI/efYpGQtK+w8kLyAlkOnBR/vCk6/HE8H5ROVncSWkG5PzhnoqWu9u63h7eLvqvF8i7dyo1voBIkcsBFZKP6Xhe+SI7ymmnLhezC2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wKH0rRrt; arc=none smtp.client-ip=95.215.58.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ayCSq4Eg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/JU05BQm";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ayCSq4Eg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/JU05BQm"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7EA8921CDB;
-	Fri, 17 Oct 2025 10:17:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760696249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wKH0rRrt"
+Message-ID: <438f350d-df66-4d51-8827-c686ef0f8da9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760696534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x28IZ01xRWN9EmhKGWtiepea9Jiz+TrC/Yq2xTTPlMw=;
-	b=ayCSq4EgWGymcuLjQ4RxcaFdHokUyxFH1/bOmjo0xX2QGbLSxEi5qOj0hEc216aKFPrh8P
-	ExrZuMWzGr860NG/imznoc9VdMcpp7hp5BTaqrSxikkNftTzgmyL2arA7nDk8pioo5qalV
-	Ub/UNT14/yeWJ3YfhEJVKU8dYRnrJAs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760696249;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x28IZ01xRWN9EmhKGWtiepea9Jiz+TrC/Yq2xTTPlMw=;
-	b=/JU05BQmGHctXQTf2OaJ/0oMnAlx1suG7kwEOvReciVa2VobXC9aFMiRIxc2VrBeBE/8IO
-	xltPIncwP+uXgYCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1760696249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x28IZ01xRWN9EmhKGWtiepea9Jiz+TrC/Yq2xTTPlMw=;
-	b=ayCSq4EgWGymcuLjQ4RxcaFdHokUyxFH1/bOmjo0xX2QGbLSxEi5qOj0hEc216aKFPrh8P
-	ExrZuMWzGr860NG/imznoc9VdMcpp7hp5BTaqrSxikkNftTzgmyL2arA7nDk8pioo5qalV
-	Ub/UNT14/yeWJ3YfhEJVKU8dYRnrJAs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1760696249;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x28IZ01xRWN9EmhKGWtiepea9Jiz+TrC/Yq2xTTPlMw=;
-	b=/JU05BQmGHctXQTf2OaJ/0oMnAlx1suG7kwEOvReciVa2VobXC9aFMiRIxc2VrBeBE/8IO
-	xltPIncwP+uXgYCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 116C4136C6;
-	Fri, 17 Oct 2025 10:17:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nVwhAbkX8mhYXwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Fri, 17 Oct 2025 10:17:29 +0000
-Message-ID: <6f9742f5-8889-449d-8354-572d2f8a711b@suse.de>
-Date: Fri, 17 Oct 2025 12:17:21 +0200
+	bh=M7LSmPEchHZRoXeuYfgrqGXC5NdIshmVzOumLFM3Pgk=;
+	b=wKH0rRrtB4vow9oxFnRDGJZ1EQNHsicS7o1uaefQBLONOA4+wLYvu5BTXxcrvyckvryCUk
+	PBlT1wlw2UqJJEpgM3kr7HVw6zlpmqV9n1OE0dziJUNB/9X35S/t2WmWO2nGBCjMnazMAH
+	UvqwuiiUW0PsGHeyBI0Ua8llyZl2yrg=
+Date: Fri, 17 Oct 2025 11:22:06 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/hsr: add interlink to fill_info output
-To: Jakub Kicinski <kuba@kernel.org>, Jan Vaclav <jvaclav@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-References: <20251015101001.25670-2-jvaclav@redhat.com>
- <20251016155731.47569d75@kernel.org>
+Subject: Re: [PATCH net-next 6/6] net: hns3: add hwtstamp_get/hwtstamp_set ops
+To: Simon Horman <horms@kernel.org>
+Cc: Jian Shen <shenjian15@huawei.com>, Salil Mehta <salil.mehta@huawei.com>,
+ Jijie Shao <shaojijie@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
+ Subbaraya Sundeep <sbhatta@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Brett Creeley <brett.creeley@amd.com>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Paul Barker <paul@pbarker.dev>,
+ Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+ linux-renesas-soc@vger.kernel.org, Richard Cochran
+ <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org
+References: <20251016180727.3511399-1-vadim.fedorenko@linux.dev>
+ <20251016180727.3511399-7-vadim.fedorenko@linux.dev>
+ <aPIJIhSXUPODqfZH@horms.kernel.org>
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20251016155731.47569d75@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <aPIJIhSXUPODqfZH@horms.kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+X-Migadu-Flow: FLOW_OUT
 
-
-
-On 10/17/25 12:57 AM, Jakub Kicinski wrote:
-> On Wed, 15 Oct 2025 12:10:02 +0200 Jan Vaclav wrote:
->> Currently, it is possible to configure the interlink port, but no
->> way to read it back from userspace.
->> 
->> Add it to the output of hsr_fill_info(), so it can be read from
->> userspace, for example:
->> 
->> $ ip -d link show hsr0 12: hsr0: <BROADCAST,MULTICAST> mtu ... ... 
->> hsr slave1 veth0 slave2 veth1 interlink veth2 ...
+On 17/10/2025 10:15, Simon Horman wrote:
+> On Thu, Oct 16, 2025 at 06:07:27PM +0000, Vadim Fedorenko wrote:
 > 
-> Not entirely cleat at a glance how this driver deals with the slaves
-> or interlink being in a different netns, but I guess that's a pre-
-> existing problem..
+> ...
 > 
+>> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> index bfa5568baa92..1e9388f1115c 100644
+>> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+>> @@ -2419,6 +2419,35 @@ static int hns3_nic_do_ioctl(struct net_device *netdev,
+>>   	return h->ae_algo->ops->do_ioctl(h, ifr, cmd);
+>>   }
+>>   
+>> +static int hns3_nic_hwtstamp_get(struct net_device *netdev,
+>> +				 struct kernel_hwtstamp_config *config)
+>> +{
+>> +	struct hnae3_handle *h = hns3_get_handle(netdev);
+>> +
+>> +	if (!netif_running(netdev))
+>> +		return -EINVAL;
+>> +
+>> +	if (!h->ae_algo->ops->hwtstamp_get)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	return h->ae_algo->ops->hwtstamp_get(h, config);
+>> +}
+>> +
+>> +static int hns3_nic_hwtstamp_set(struct net_device *netdev,
+>> +				 struct kernel_hwtstamp_config *config,
+>> +				 struct netlink_ext_ack *extack)
+>> +{
+>> +	struct hnae3_handle *h = hns3_get_handle(netdev);
+>> +
+>> +	if (!netif_running(netdev))
+>> +		return -EINVAL;
+>> +
+>> +	if (!h->ae_algo->ops->hwtstamp_set)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	return h->ae_algo->ops->hwtstamp_set(h, config, extack);
+>> +}
+>> +
+>>   static int hns3_nic_set_features(struct net_device *netdev,
+>>   				 netdev_features_t features)
+>>   {
+> 
+> Hi Vadim,
+> 
+> I'm sorry to raise this topic again.
+> But I see the functions above flagged as unused with
+> this patch applied (for allmodconfig builds).
+> 
+> ...
 
-FTR, I just did a quick round of testing and it handles it correctly. 
-When moving a port to a different netns it notifies NETDEV_UNREGISTER - 
-net/hsr/hsr_main.c handles the notification removing the port from the 
-list. If the port list is empty, removes the hsr link.
+Hi Simon,
 
-All good or at least as I would expect.
-
-Thanks,
-Fernando.
+looks like actual .ndo_hwtstamp_get/.ndo_hwtstamp_set initialization is
+missing... dunno how that happened, but v2 will be on the list once 24h
+wait period is passed.
+Thanks for flagging the issue!
