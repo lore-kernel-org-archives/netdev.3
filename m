@@ -1,108 +1,59 @@
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FEC29D26D;
-	Fri, 17 Oct 2025 09:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844CD2D5A19;
+	Fri, 17 Oct 2025 09:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760691974; cv=none; b=fHxqY/VGXBu9R3slcwIviotXHG0nBUmj6z+4GKiLoO+U+Z0YZIkLsohoOwDn1e1CyDU586sGt8fwCvhvzevGlQcMB8t08gvaoe6ucr4gQciQqLQIBSpRYoDhLJ5avaP8seEidLIfIS7ExX8kbDetSYeXsxGcidUmNMi1t7ZtUu8=
+	t=1760691974; cv=none; b=B7fnMElZ/1dTvaZ8tmf6wO7kE7JzQvwvJurmnqlt4ERndD61yrTksWVO0MX1kPYiWCfQbkheATEuINKOUsxYHOjpokF2fgPj27N+LF4P0LpYvwupJg91+jfNrUPREbqeNublhWXivIWtyIlA9HzhSuGPvF54761BggoHn6SukaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760691974; c=relaxed/simple;
-	bh=ayCRqn1mKWSk2aNQRMk6LR7k5BI9OhzNYZIKkPjA9GI=;
+	bh=LoX/Lxbv304qvjIS2a1OaSK5tvEqDMSDHw8eDppiorE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B0AAr6ysSCMmR2uqQqEyM9zKQoknKUxgbveXCZmyX25zmLk0cklj+PNtAKWSHrc1nzQDZ/aj4zW+ci1PLsWd/EuY7QFXkrT4NeA3BWETProDGPie90R1AzbE6ifNWxCcl/LiUHDFjm8h5mAFe0//e4mwjdfvd/6NOKf2cx3l8e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=j40xlnNq; arc=none smtp.client-ip=52.26.1.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	 MIME-Version:Content-Type; b=St08W0OAEEEqOlsLP5kGpa//4+rCxFtF4530W9b3sOBuNLcOaNVIOqyIA6JsiwfJCSR6nTV99dRaayEpJSARZ9iCHAN6w9He6WspGd6+hoajYZyFEKdAI4I6k3yQncBQ4P/D0PiAaVO7Dv2p83egtKptwtgnwH2tRa492mwuWdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=NgmAaihE; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="j40xlnNq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1760691972; x=1792227972;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=LUfhSEtyrzlTvFjtMARdG8e1ebgK9JT+esac/DH/XMI=;
-  b=j40xlnNqiZF4YGP9xI7yXh1U46qPj7tY/Qtz+bGvYP8a7y0upjUSdvcW
-   /1w4bMMYIbXVK3Eyl++jeO0UXACSMxS1mzb4AyKoeHgCVr9lVywuUs8l3
-   u19OCgLzVk7SRxY8gIt4kOWHojSdx0AXDto9YChkz3qTYpQaz9MS/taL4
-   rb1Egi8muWueEOmHlRQDiU8mm4KTezJDi0+1pLG3vgRWnkW+ADlJHR9v/
-   2mQtoyd7H3dBd9VFuvrLaXpteN9mp8dq5OY9dwIqXDa4bxknAzu9LV837
-   Blxof+fAet8y6PGmZqqJDH/rDJIjtQIfNx06QcdcDroZw0GVMJyAdh5Dr
-   w==;
-X-CSE-ConnectionGUID: 81vXbaCaRnGCbaxjqgyfrw==
-X-CSE-MsgGUID: HnF/i6jVSpy9xn0uhETRhA==
-X-IronPort-AV: E=Sophos;i="6.18,281,1751241600"; 
-   d="scan'208";a="5073896"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 09:06:10 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:20862]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.18.50:2525] with esmtp (Farcaster)
- id 7be30397-534c-444c-a389-19ecfbe849c7; Fri, 17 Oct 2025 09:06:10 +0000 (UTC)
-X-Farcaster-Flow-ID: 7be30397-534c-444c-a389-19ecfbe849c7
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Fri, 17 Oct 2025 09:06:09 +0000
-Received: from dev-dsk-farbere-1a-46ecabed.eu-west-1.amazon.com
- (172.19.116.181) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20; Fri, 17 Oct 2025
- 09:05:54 +0000
-From: Eliav Farber <farbere@amazon.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
-	<linux@armlinux.org.uk>, <jdike@addtoit.com>, <richard@nod.at>,
-	<anton.ivanov@cambridgegreys.com>, <dave.hansen@linux.intel.com>,
-	<luto@kernel.org>, <peterz@infradead.org>, <tglx@linutronix.de>,
-	<mingo@redhat.com>, <bp@alien8.de>, <x86@kernel.org>, <hpa@zytor.com>,
-	<tony.luck@intel.com>, <qiuxu.zhuo@intel.com>, <mchehab@kernel.org>,
-	<james.morse@arm.com>, <rric@kernel.org>, <harry.wentland@amd.com>,
-	<sunpeng.li@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-	<evan.quan@amd.com>, <james.qian.wang@arm.com>, <liviu.dudau@arm.com>,
-	<mihail.atanassov@arm.com>, <brian.starkey@arm.com>,
-	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <robdclark@gmail.com>, <sean@poorly.run>,
-	<jdelvare@suse.com>, <linux@roeck-us.net>, <fery@cypress.com>,
-	<dmitry.torokhov@gmail.com>, <agk@redhat.com>, <snitzer@redhat.com>,
-	<dm-devel@redhat.com>, <rajur@chelsio.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>,
-	<joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <malattia@linux.it>,
-	<hdegoede@redhat.com>, <mgross@linux.intel.com>, <intel-linux-scu@intel.com>,
-	<artur.paszkiewicz@intel.com>, <jejb@linux.ibm.com>,
-	<martin.petersen@oracle.com>, <sakari.ailus@linux.intel.com>, <clm@fb.com>,
-	<josef@toxicpanda.com>, <dsterba@suse.com>, <xiang@kernel.org>,
-	<chao@kernel.org>, <jack@suse.com>, <tytso@mit.edu>,
-	<adilger.kernel@dilger.ca>, <dushistov@mail.ru>,
-	<luc.vanoostenryck@gmail.com>, <rostedt@goodmis.org>, <pmladek@suse.com>,
-	<sergey.senozhatsky@gmail.com>, <andriy.shevchenko@linux.intel.com>,
-	<linux@rasmusvillemoes.dk>, <minchan@kernel.org>, <ngupta@vflare.org>,
-	<akpm@linux-foundation.org>, <kuznet@ms2.inr.ac.ru>,
-	<yoshfuji@linux-ipv6.org>, <pablo@netfilter.org>, <kadlec@netfilter.org>,
-	<fw@strlen.de>, <jmaloy@redhat.com>, <ying.xue@windriver.com>,
-	<willy@infradead.org>, <farbere@amazon.com>, <sashal@kernel.org>,
-	<ruanjinjie@huawei.com>, <David.Laight@ACULAB.COM>,
-	<herve.codina@bootlin.com>, <Jason@zx2c4.com>, <keescook@chromium.org>,
-	<kbusch@kernel.org>, <nathan@kernel.org>, <bvanassche@acm.org>,
-	<ndesaulniers@google.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
-	<linux-edac@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-arm-msm@vger.kernel.org>,
-	<freedreno@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
-	<linux-input@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-	<platform-driver-x86@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<linux-staging@lists.linux.dev>, <linux-btrfs@vger.kernel.org>,
-	<linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
-	<linux-sparse@vger.kernel.org>, <linux-mm@kvack.org>,
-	<netfilter-devel@vger.kernel.org>, <coreteam@netfilter.org>,
-	<tipc-discussion@lists.sourceforge.net>
-CC: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Subject: [PATCH v2 02/27 5.10.y] btrfs: remove duplicated in_range() macro
-Date: Fri, 17 Oct 2025 09:04:54 +0000
-Message-ID: <20251017090519.46992-3-farbere@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251017090519.46992-1-farbere@amazon.com>
-References: <20251017090519.46992-1-farbere@amazon.com>
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="NgmAaihE"
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59H5efbc2691225;
+	Fri, 17 Oct 2025 09:05:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	PPS06212021; bh=/JgYiI9yeG91Adi49Cc7NZy4njx/Viy4D1GT0w1uQr4=; b=
+	NgmAaihE4W7EaDnOTKsLS6JMJdRgsgFM/GyZJGuaJeLyklP8yp8pLs45Y+1Lp15q
+	vlxAFd8+IVdsKr/w1hPzJMnK4vZ1JbtAi3C7IWRZQryZYSixx0sOKjZlca6nGvvU
+	kjYhy/KWAuUc7tzCJtD9YC1UxOWGouRTDY68q1qLG0zlHoeLV0lj4f8RU2hTRVdf
+	z3ggUdVoOwjYw7CYllg4uXdbqLL1OF5hrxCkOM8iVZdiCUogK+wAlmJ7k/L29pS1
+	zHxdveM0LbND1kHmtvPB9ckoZeFqLDVxdCLFehCv94RbK0SoduWTCcM44lMor1MU
+	6h/Dv8sEaPIuDvGgBBBbzQ==
+Received: from ala-exchng01.corp.ad.wrs.com ([128.224.246.36])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 49sthhbuxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 17 Oct 2025 09:05:48 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.59; Fri, 17 Oct 2025 02:05:46 -0700
+Received: from pek-lpd-ccm6.wrs.com (10.11.232.110) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
+ 15.1.2507.59 via Frontend Transport; Fri, 17 Oct 2025 02:05:42 -0700
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <lizhi.xu@windriver.com>
+CC: <ahmed.zaki@intel.com>, <aleksander.lobakin@intel.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
+        <kuba@kernel.org>, <kuniyu@amazon.com>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+        <samsun1006219@gmail.com>, <sdf@fomichev.me>,
+        <syzkaller-bugs@googlegroups.com>, <syzkaller@googlegroups.com>
+Subject: [PATCH V2] usbnet: Prevents free active kevent
+Date: Fri, 17 Oct 2025 17:05:41 +0800
+Message-ID: <20251017090541.3705538-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251017084918.3637324-1-lizhi.xu@windriver.com>
+References: <20251017084918.3637324-1-lizhi.xu@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -111,78 +62,67 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Proofpoint-GUID: VV4ZH7_U5ea0fMZ3gSC0haIyQafL_hv8
+X-Proofpoint-ORIG-GUID: VV4ZH7_U5ea0fMZ3gSC0haIyQafL_hv8
+X-Authority-Analysis: v=2.4 cv=QLBlhwLL c=1 sm=1 tr=0 ts=68f206ec cx=c_pps
+ a=AbJuCvi4Y3V6hpbCNWx0WA==:117 a=AbJuCvi4Y3V6hpbCNWx0WA==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=edf1wS77AAAA:8 a=pGLkceISAAAA:8
+ a=t7CeM3EgAAAA:8 a=eAUpJhlxHBEC5-Y6-xsA:9 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=FdTzh2GWekK77mhwV6Dw:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=poXaRoVlC6wW9_mwW8W4:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=SsAZrZ5W_gNWK9tOzrEV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE3MDA2NyBTYWx0ZWRfX5zONk/G5X5FH
+ nWSMnMoqLtuUXccvjZwjgnyNGg6TARIIFRPymMslnOI9l0mEywrpYLZX34bfR5KbkK0URov24VI
+ TmcbWd45O36+7TMCPDjQzPJ9v81UUQvJb8B7MgPvmb/J2t6Y4xJI0IyfqQPhW4K0Pk5nHdwDUXK
+ ad+ZhY7+ItFENsWnFNW7CXUoH986ywwi7odeRSfGEhuBcT6b8GDdRn5wvRTmQgg7S2VG2m/qDql
+ 0tGgcAgapT1fS6ynW4Pfg6ltrHG5gv2ORqsUgkj6QlkY1oRcTldaLE6+f0z7qezYiOTf5W/z9OX
+ yKWd0Pv+xCjs9bzmhDIuaBK9D9DTJ/nM7frtvBX3XUV+LX9Z+eQtbGjHnyLIoFowOt0Hh7dRwyK
+ oGJoGOKbN+iNSlLICCnpXFggM3ypIg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-17_03,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510170067
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+The root cause of this issue are:
+1. When probing the usbnet device, executing usbnet_link_change(dev, 0, 0);
+put the kevent work in global workqueue. However, the kevent has not yet
+been scheduled when the usbnet device is unregistered. Therefore, executing
+free_netdev() results in the "free active object (kevent)" error reported
+here.
 
-[ Upstream commit cea628008fc8c6c9c7b53902f6659e040f33c790 ]
+2. Another factor is that when calling usbnet_disconnect()->unregister_netdev(),
+if the usbnet device is up, ndo_stop() is executed to cancel the kevent.
+However, because the device is not up, ndo_stop() is not executed.
 
-The in_range() macro is defined twice in btrfs' source, once in ctree.h
-and once in misc.h.
+The solution to this problem is to cancel the kevent before executing
+free_netdev(), which also deletes the delay timer.
 
-Remove the definition in ctree.h and include misc.h in the files depending
-on it.
-
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Eliav Farber <farbere@amazon.com>
+Reported-by: Sam Sun <samsun1006219@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=8bfd7bcc98f7300afb84
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
 ---
- fs/btrfs/ctree.h     | 2 --
- fs/btrfs/extent_io.c | 1 +
- fs/btrfs/file-item.c | 1 +
- fs/btrfs/raid56.c    | 1 +
- 4 files changed, 3 insertions(+), 2 deletions(-)
+V1 -> V2: update comments for typos
 
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index d9d6a57acafe..a9926fb10c49 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -3597,8 +3597,6 @@ static inline int btrfs_defrag_cancelled(struct btrfs_fs_info *fs_info)
- 	return signal_pending(current);
- }
+ drivers/net/usb/usbnet.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index bf01f2728531..f0294f0e6612 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1672,6 +1672,9 @@ void usbnet_disconnect (struct usb_interface *intf)
+ 	usb_free_urb(dev->interrupt);
+ 	kfree(dev->padding_pkt);
  
--#define in_range(b, first, len) ((b) >= (first) && (b) < (first) + (len))
--
- /* Sanity test specific functions */
- #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- void btrfs_test_destroy_inode(struct inode *inode);
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 8498994ef5c6..489d370ddd60 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -13,6 +13,7 @@
- #include <linux/pagevec.h>
- #include <linux/prefetch.h>
- #include <linux/cleancache.h>
-+#include "misc.h"
- #include "extent_io.h"
- #include "extent-io-tree.h"
- #include "extent_map.h"
-diff --git a/fs/btrfs/file-item.c b/fs/btrfs/file-item.c
-index cbea4f572155..6e46da3ee433 100644
---- a/fs/btrfs/file-item.c
-+++ b/fs/btrfs/file-item.c
-@@ -9,6 +9,7 @@
- #include <linux/highmem.h>
- #include <linux/sched/mm.h>
- #include <crypto/hash.h>
-+#include "misc.h"
- #include "ctree.h"
- #include "disk-io.h"
- #include "transaction.h"
-diff --git a/fs/btrfs/raid56.c b/fs/btrfs/raid56.c
-index 9678d7fa4dcc..ed3e40a4a3cb 100644
---- a/fs/btrfs/raid56.c
-+++ b/fs/btrfs/raid56.c
-@@ -13,6 +13,7 @@
- #include <linux/list_sort.h>
- #include <linux/raid/xor.h>
- #include <linux/mm.h>
-+#include "misc.h"
- #include "ctree.h"
- #include "disk-io.h"
- #include "volumes.h"
++	cancel_work_sync(&dev->kevent);
++	timer_delete_sync(&dev->delay);
++
+ 	free_netdev(net);
+ }
+ EXPORT_SYMBOL_GPL(usbnet_disconnect);
 -- 
-2.47.3
+2.43.0
 
