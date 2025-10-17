@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943DB3370FE
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C4632E14A
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713716; cv=none; b=qw5mf3V+RstxJ96127CG5TC+SnSqcIeBG5NNA5Ml3+hw1cRz0kmMKxWUJoLqUm7t0x1/iY1u5RQvgPtmqBkUrRMgD97hNcfFhnXqqq1Vlr8WDEi02mS/3t7omB585kc/HMGJi6ZHgqSRX0x6tH2dzm2JbtMmdfq5XLnWK2cGJdE=
+	t=1760713720; cv=none; b=LebXUXPd0a+lsuaNgLutzC/cuVR6e6bNrTb6dY4ivaJYunSDVQgYJRz0dP4u8tInUDnNC9UTvukiNirgJBhwQ5SiDQciE/xi80zQSYLdkLySzCjWMHR7N+Ws/K7BsxR8z6Xx7O9yOVHwrBeXK27HwxpUwp5dfOUIjOJ5RcIQnPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713716; c=relaxed/simple;
-	bh=usb4dRiFLvjbM3q6c6DenTpAsRJFcg4O5Ag2iVo/emo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nuIz/KBEUPtqAjfa516+vYyT8mVmCH2GNjYFGkHF4TvBniHwOAG0K3KxXLA/aUDF/D8UIO92Eg/pgqIExbo7OJmSDY9R0n01c1IF8gOXbiLPFT9S5QkeZBsT7z8idt+hk5vCqU/ikH67EF1svakoAw+IsAq9GFGfkh4cJXt35sY=
+	s=arc-20240116; t=1760713720; c=relaxed/simple;
+	bh=nYaJvHpbGLuKJ5+CLiuvaLgt7AyJ1CPkeMz9DS9ghXQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oUN0K5BHW9m4OhyEf8u87PIHUoHoKy35f+ExbgSjAbL9kDpiEMAYHeA9fbe1W1O1EgTXJZNoMwPvrb+YJv4RxfDhjPJc/X0Sx4ASIpJ2sF2KqgpnnmwLsdfcxfmRDxLh241iRzeEtMrlNe+GnwAIpW/28PIBdjDX13zCgpmtHYU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,30 +18,33 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4E-0003Mv-2Q; Fri, 17 Oct 2025 17:08:30 +0200
+	id 1v9m4E-0003NN-2R; Fri, 17 Oct 2025 17:08:30 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4D-00450U-0o;
+	id 1v9m4D-00450j-2W;
 	Fri, 17 Oct 2025 17:08:29 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E97A94892B1;
-	Fri, 17 Oct 2025 15:08:28 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 869224892B8;
+	Fri, 17 Oct 2025 15:08:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/13] pull-request: can-next 2025-10-17
-Date: Fri, 17 Oct 2025 17:04:08 +0200
-Message-ID: <20251017150819.1415685-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 07/13] can: m_can: m_can_init_ram(): make static
+Date: Fri, 17 Oct 2025 17:04:15 +0200
+Message-ID: <20251017150819.1415685-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251017150819.1415685-1-mkl@pengutronix.de>
+References: <20251017150819.1415685-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,108 +57,91 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+Since commit eaacfeaca7ad ("can: m_can: Call the RAM init directly from
+m_can_chip_config") m_can_init_ram() is not used outside of m_can.c.
 
-this is a pull request of 13 patches for net-next/main.
+Mark as static and remove the EXPORT_SYMBOL_GPL().
 
-The first patch is by me and adds support for an optional reset to the
-m_can drivers.
-
-Vincent Mailhol's patch targets all drivers and removes the
-can_change_mtu() function, since the netdev's min and max MTU are
-populated.
-
-Markus Schneider-Pargmann contributes 4 patches to the m_can driver to
-add am62 wakeup support.
-
-The last 7 patches are by me and provide various cleanups to the m_can
-driver.
-
-regards,
-Marc
-
+Link: https://patch.msgid.link/20251008-m_can-cleanups-v1-1-1784a18eaa84@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ drivers/net/can/m_can/m_can.c | 43 +++++++++++++++++------------------
+ drivers/net/can/m_can/m_can.h |  1 -
+ 2 files changed, 21 insertions(+), 23 deletions(-)
 
-The following changes since commit 7e0d4c111369ed385ec4aaa6c9c78c46efda54d0:
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index 8569596ae830..9f4002f3481e 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -1380,6 +1380,27 @@ static const struct can_bittiming_const m_can_data_bittiming_const_31X = {
+ 	.brp_inc = 1,
+ };
+ 
++static int m_can_init_ram(struct m_can_classdev *cdev)
++{
++	int end, i, start;
++	int err = 0;
++
++	/* initialize the entire Message RAM in use to avoid possible
++	 * ECC/parity checksum errors when reading an uninitialized buffer
++	 */
++	start = cdev->mcfg[MRAM_SIDF].off;
++	end = cdev->mcfg[MRAM_TXB].off +
++		cdev->mcfg[MRAM_TXB].num * TXB_ELEMENT_SIZE;
++
++	for (i = start; i < end; i += 4) {
++		err = m_can_fifo_write_no_off(cdev, i, 0x0);
++		if (err)
++			break;
++	}
++
++	return err;
++}
++
+ static int m_can_set_bittiming(struct net_device *dev)
+ {
+ 	struct m_can_classdev *cdev = netdev_priv(dev);
+@@ -2374,28 +2395,6 @@ static void m_can_of_parse_mram(struct m_can_classdev *cdev,
+ 		cdev->mcfg[MRAM_TXB].off, cdev->mcfg[MRAM_TXB].num);
+ }
+ 
+-int m_can_init_ram(struct m_can_classdev *cdev)
+-{
+-	int end, i, start;
+-	int err = 0;
+-
+-	/* initialize the entire Message RAM in use to avoid possible
+-	 * ECC/parity checksum errors when reading an uninitialized buffer
+-	 */
+-	start = cdev->mcfg[MRAM_SIDF].off;
+-	end = cdev->mcfg[MRAM_TXB].off +
+-		cdev->mcfg[MRAM_TXB].num * TXB_ELEMENT_SIZE;
+-
+-	for (i = start; i < end; i += 4) {
+-		err = m_can_fifo_write_no_off(cdev, i, 0x0);
+-		if (err)
+-			break;
+-	}
+-
+-	return err;
+-}
+-EXPORT_SYMBOL_GPL(m_can_init_ram);
+-
+ int m_can_class_get_clocks(struct m_can_classdev *cdev)
+ {
+ 	int ret = 0;
+diff --git a/drivers/net/can/m_can/m_can.h b/drivers/net/can/m_can/m_can.h
+index f2f89687bbd2..4743342b2fba 100644
+--- a/drivers/net/can/m_can/m_can.h
++++ b/drivers/net/can/m_can/m_can.h
+@@ -139,7 +139,6 @@ void m_can_class_free_dev(struct net_device *net);
+ int m_can_class_register(struct m_can_classdev *cdev);
+ void m_can_class_unregister(struct m_can_classdev *cdev);
+ int m_can_class_get_clocks(struct m_can_classdev *cdev);
+-int m_can_init_ram(struct m_can_classdev *priv);
+ int m_can_check_mram_cfg(struct m_can_classdev *cdev, u32 mram_max_size);
+ 
+ int m_can_class_suspend(struct device *dev);
+-- 
+2.51.0
 
-  Merge branch 'net-macb-various-cleanups' (2025-10-16 16:59:32 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.19-20251017
-
-for you to fetch changes up to e41287a079224dcb49da5c8f710e9cb88763a71c:
-
-  Merge patch series "can: m_can: various cleanups" (2025-10-17 15:18:25 +0200)
-
-----------------------------------------------------------------
-linux-can-next-for-6.19-20251017
-
-----------------------------------------------------------------
-Marc Kleine-Budde (10):
-      can: m_can: add support for optional reset
-      Merge patch series "can: m_can: Add am62 wakeup support"
-      can: m_can: m_can_init_ram(): make static
-      can: m_can: hrtimer_callback(): rename to m_can_polling_timer()
-      net: m_can: convert dev_{dbg,info,err} -> netdev_{dbg,info,err}
-      can: m_can: m_can_interrupt_enable(): use m_can_write() instead of open coding it
-      can: m_can: m_can_class_register(): remove error message in case devm_kzalloc() fails
-      can: m_can: m_can_tx_submit(): remove unneeded sanity checks
-      can: m_can: m_can_get_berr_counter(): don't wake up controller if interface is down
-      Merge patch series "can: m_can: various cleanups"
-
-Markus Schneider-Pargmann (TI.com) (4):
-      dt-bindings: can: m_can: Add wakeup properties
-      can: m_can: Map WoL to device_set_wakeup_enable
-      can: m_can: Return ERR_PTR on error in allocation
-      can: m_can: Support pinctrl wakeup state
-
-Vincent Mailhol (1):
-      can: treewide: remove can_change_mtu()
-
- .../devicetree/bindings/net/can/bosch,m_can.yaml   |  25 ++
- drivers/net/can/at91_can.c                         |   1 -
- drivers/net/can/bxcan.c                            |   1 -
- drivers/net/can/c_can/c_can_main.c                 |   1 -
- drivers/net/can/can327.c                           |   1 -
- drivers/net/can/cc770/cc770.c                      |   1 -
- drivers/net/can/ctucanfd/ctucanfd_base.c           |   1 -
- drivers/net/can/dev/dev.c                          |  38 ---
- drivers/net/can/esd/esd_402_pci-core.c             |   1 -
- drivers/net/can/flexcan/flexcan-core.c             |   1 -
- drivers/net/can/grcan.c                            |   1 -
- drivers/net/can/ifi_canfd/ifi_canfd.c              |   1 -
- drivers/net/can/janz-ican3.c                       |   1 -
- drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c |   1 -
- drivers/net/can/m_can/m_can.c                      | 256 +++++++++++++++------
- drivers/net/can/m_can/m_can.h                      |   5 +-
- drivers/net/can/m_can/m_can_pci.c                  |   4 +-
- drivers/net/can/m_can/m_can_platform.c             |   4 +-
- drivers/net/can/m_can/tcan4x5x-core.c              |   4 +-
- drivers/net/can/mscan/mscan.c                      |   1 -
- drivers/net/can/peak_canfd/peak_canfd.c            |   1 -
- drivers/net/can/rcar/rcar_can.c                    |   1 -
- drivers/net/can/rcar/rcar_canfd.c                  |   1 -
- drivers/net/can/rockchip/rockchip_canfd-core.c     |   1 -
- drivers/net/can/sja1000/sja1000.c                  |   1 -
- drivers/net/can/slcan/slcan-core.c                 |   1 -
- drivers/net/can/softing/softing_main.c             |   1 -
- drivers/net/can/spi/hi311x.c                       |   1 -
- drivers/net/can/spi/mcp251x.c                      |   1 -
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |   1 -
- drivers/net/can/sun4i_can.c                        |   1 -
- drivers/net/can/ti_hecc.c                          |   1 -
- drivers/net/can/usb/ems_usb.c                      |   1 -
- drivers/net/can/usb/esd_usb.c                      |   1 -
- drivers/net/can/usb/etas_es58x/es58x_core.c        |   1 -
- drivers/net/can/usb/f81604.c                       |   1 -
- drivers/net/can/usb/gs_usb.c                       |   1 -
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c   |   1 -
- drivers/net/can/usb/mcba_usb.c                     |   1 -
- drivers/net/can/usb/nct6694_canfd.c                |   1 -
- drivers/net/can/usb/peak_usb/pcan_usb_core.c       |   1 -
- drivers/net/can/usb/ucan.c                         |   1 -
- drivers/net/can/usb/usb_8dev.c                     |   1 -
- drivers/net/can/xilinx_can.c                       |   1 -
- include/linux/can/dev.h                            |   1 -
- 45 files changed, 222 insertions(+), 152 deletions(-)
