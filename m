@@ -1,181 +1,194 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FA73126DB;
-	Fri, 17 Oct 2025 06:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A446B33F9
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 07:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760684054; cv=none; b=JMvS/bdZshNjwTGkpnP6+AoIk6erX8VnvJanIQe0nPFHDyiS/PpkNgPUJOko7YnSG8GUPzpnFZ7l1iLUJiZNObyBr42tzr7cpkNUDrX2vBt6pdaAVOh/6ioqMHC/Sv/oBx+wlXs8xYmTd+0bfhKWxlllepvGF2s3m5/1ADkMfag=
+	t=1760684741; cv=none; b=P0J+eKhwUB28JiJxRkUu6VOk55OOI+e+eAr6T7ly94XIseVj3ySvm6if64ocWH2jjsMicQwJRLk1UK4rGNmDj3cdZ3av3dLrzJLycY5mDz+lJwS9eJkDAhHN03PNu51fh4qWYzfYpa+GUhgqmPgbPPQKREX7lYkqcCnXWb+o5dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760684054; c=relaxed/simple;
-	bh=3A0XwV/s9Cz0cJD1NLMBEssaMoEiPQPonBn6LqMuYqw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmjobL3SUWQ5XeIp2vV8dyAJaLE03xM+29N5tNZ0uGlizzhewVs2fBH2jyON2jyB4MuCEm1BpyvEWRas47I54rEiGAfDiP4m3Wy0pgqeOj6WFyB6TTb8dfZ581nC9g+sYM8u3vjgSdrz0qr7EbqAr8YYxpj7tB07oUbpkr1rXqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HlcA9J5B; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1760684741; c=relaxed/simple;
+	bh=l9RIq9pv47w7bEV5KWrnvIb9LJMvjqefg4292JUfx3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PccKkDpCbtjnTdG8VELqSg3OPiefiM88cNUSs2Clk0N5nKSP0q+jrI2RD1Y7wEVEOKAxkqVH5ufCeA6J6nPyYKZgkCS2jF8c+JG/5E5P0Cw+uqp8sl1RbRYlF80b9U8lC3tDBRc3WV2lZ5relXk8Or+qB/EGk4PZxz4DjEcZBJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sjVqtIm4; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HlcA9J5B"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1760684052; x=1792220052;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3A0XwV/s9Cz0cJD1NLMBEssaMoEiPQPonBn6LqMuYqw=;
-  b=HlcA9J5BeQH/XenE2g2PkzjIh32ocdDLKhSAq5ERg2LdKV+Z4eLPWzig
-   fG20FQ+Qi68EvBnOsquCACuZDeOry2fYoMx161F9/Ev32P0tEyg1Uvz6l
-   fKHHjg+hSX8IvZmuUSXEVUOrJt/ahKCFeB8w/fJH/Sdh+I5r2mhvJJZ5d
-   D+tAvh+gzHFEVI/xo/i7yCygF3e/YILwN5pjsTKaE+Nv9G7/E8FEKp+hf
-   8QW9pbFkFcJh8vWey7vblwYoo/FkbwpzWAnHajazfkKRtn0a62K179bCI
-   3i41c6xLUObsaalwKeR6MKsm0ScFCTbY7Sy3rZ0uzdDGH9oWwqMz+6sD1
-   Q==;
-X-CSE-ConnectionGUID: +cWLnLSSQKWQk8EtywTa8g==
-X-CSE-MsgGUID: qg+5549WSdKhK3uu7QmnNQ==
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="215250385"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2025 23:54:04 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 16 Oct 2025 23:53:46 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 16 Oct 2025 23:53:43 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>, <vladimir.oltean@nxp.com>,
-	<vadim.fedorenko@linux.dev>, <rmk+kernel@armlinux.org.uk>,
-	<christophe.jaillet@wanadoo.fr>, <rosenp@gmail.com>,
-	<steen.hegelund@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v4 1/2] phy: mscc: Use PHY_ID_MATCH_MODEL for VSC8584, VSC8582, VSC8575, VSC856X
-Date: Fri, 17 Oct 2025 08:48:18 +0200
-Message-ID: <20251017064819.3048793-2-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251017064819.3048793-1-horatiu.vultur@microchip.com>
-References: <20251017064819.3048793-1-horatiu.vultur@microchip.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sjVqtIm4"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 36315C041DD;
+	Fri, 17 Oct 2025 07:05:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 651C9606DB;
+	Fri, 17 Oct 2025 07:05:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00B0D102F22FF;
+	Fri, 17 Oct 2025 09:04:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1760684733; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=8Txvygtf95T8nvPnqElNFv3jlBIUlCRN1Ha31LP6OZM=;
+	b=sjVqtIm4RJwQ4q/9IDLKMSW6riYcV/yNt+HFk6E2Z9iRJ7mcel14odvS1qcyV6Zojb2ZL/
+	UjK86X1GZjeFt8l4tTWqqX5GMkhp2tz//ZFswJJxaec0tbucR/wHOUZPsTXsOTWqF6Hkcy
+	PsT3RCGuLuL3pIzCuxEBS19909xxzsZzs/iU/so1N2Ny/VakwLErGxdMdFvoTDEZfIGP7c
+	1q7q03jcaA/Jdyzq66uIb9IX6f6YcMZtfsL6xNXl25uo1acubbem9B/PXBj+xHKuu2fXEd
+	CJGlJW9d8NPHglu7w1OISAR7MVpEiXJ497Z1xlPBUvJt0TtWvMd4li2EVhgW5g==
+Message-ID: <1f9d856f-4cfb-472c-abec-96ce55f4db81@bootlin.com>
+Date: Fri, 17 Oct 2025 09:04:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 00/14] net: stmmac: phylink PCS conversion
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Abhishek Chauhan <quic_abchauha@quicinc.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Alexis Lothore <alexis.lothore@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Boon Khai Ng <boon.khai.ng@altera.com>,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Daniel Machon <daniel.machon@microchip.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Drew Fustini <dfustini@tenstorrent.com>,
+ Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+ Eric Dumazet <edumazet@google.com>,
+ Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+ Furong Xu <0x1207@gmail.com>, Inochi Amaoto <inochiama@gmail.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>,
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>,
+ Jisheng Zhang <jszhang@kernel.org>, Kees Cook <kees@kernel.org>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Ley Foon Tan <leyfoon.tan@starfivetech.com>,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Matthew Gerlach <matthew.gerlach@altera.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ netdev@vger.kernel.org, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Paolo Abeni <pabeni@redhat.com>, Rohan G Thomas <rohan.g.thomas@altera.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>, Simon Horman <horms@kernel.org>,
+ Song Yoong Siang <yoong.siang.song@intel.com>,
+ Swathi K S <swathi.ks@samsung.com>, Tiezhu Yang <yangtiezhu@loongson.cn>,
+ Vinod Koul <vkoul@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Yu-Chun Lin <eleanor15x@gmail.com>
+References: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <aPECqg0vZGnBFCbh@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-As the PHYs VSC8584, VSC8582, VSC8575 and VSC856X exists only as rev B,
-we can use PHY_ID_MATCH_MODEL to match exactly on revision B of the PHY.
-Because of this change then there is not need the check if it is a
-different revision than rev B in the function vsc8584_probe() as we
-already know that this will never happen.
-These changes are a preparation for the next patch because in that patch
-we will make the PHYs VSC8574 and VSC8572 to use vsc8584_probe() and
-these PHYs have multiple revision.
+Hello,
 
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
----
- drivers/net/phy/mscc/mscc.h      |  8 ++++----
- drivers/net/phy/mscc/mscc_main.c | 23 ++++-------------------
- 2 files changed, 8 insertions(+), 23 deletions(-)
+On 16/10/2025 16:35, Russell King (Oracle) wrote:
+> This series is radical - it takes the brave step of ripping out much of
+> the existing PCS support code and throwing it all away.
+> 
+> I have discussed the introduction of the STMMAC_FLAG_HAS_INTEGRATED_PCS
+> flag with Bartosz Golaszewski, and the conclusion I came to is that
+> this is to workaround the breakage that I've been going on about
+> concerning the phylink conversion for the last five or six years.
+> 
+> The problem is that the stmmac PCS code manipulates the netif carrier
+> state, which confuses phylink.
+> 
+> There is a way of testing this out on the Jetson Xavier NX platform as
+> the "PCS" code paths can be exercised while in RGMII mode - because
+> RGMII also has in-band status and the status register is shared with
+> SGMII. Testing this out confirms my long held theory: the interrupt
+> handler manipulates the netif carrier state before phylink gets a
+> look-in, which means that the mac_link_up() and mac_link_down() methods
+> are never called, resulting in the device being non-functional.
+> 
+> Moreover, on dwmac4 cores, ethtool reports incorrect information -
+> despite having a full-duplex link, ethtool reports that it is
+> half-dupex.
+> 
+> Thus, this code is completely broken - anyone using it will not have
+> a functional platform, and thus it doesn't deserve to live any longer,
+> especially as it's a thorn in phylink.
+> 
+> Rip all this out, leaving just the bare bones initialisation in place.
+> 
+> However, this is not the last of what's broken. We have this hw->ps
+> integer which is really not descriptive, and the DT property from
+> which it comes from does little to help understand what's going on.
+> Putting all the clues together:
+> 
+> - early configuration of the GMAC configuration register for the
+>   speed.
+> - setting the SGMII rate adapter layer to take its speed from the
+>   GMAC configuration register.
+> 
+> Lastly, setting the transmit enable (TE) bit, which is a typo that puts
+> the nail in the coffin of this code. It should be the transmit
+> configuration (TC) bit. Given that when the link comes up, phylink
+> will call mac_link_up() which will overwrite the speed in the GMAC
+> configuration register, the only part of this that is functional is
+> changing where the SGMII rate adapter layer gets its speed from,
+> which is a boolean.
+> 
+> From what I've found so far, everyone who sets the snps,ps-speed
+> property which configures this mode also configures a fixed link,
+> so the pre-configuration is unnecessary - the link will come up
+> anyway.
+> 
+> So, this series rips that out the preconfiguration as well, and
+> replaces hw->ps with a boolean hw->reverse_sgmii_enable flag.
+> 
+> We then move the sole PCS configuration into a phylink_pcs instance,
+> which configures the PCS control register in the same way as is done
+> during the probe function.
+> 
+> Thus, we end up with much easier and simpler conversion to phylink PCS
+> than previous attempts.
+> 
+> Even so, this still results in inband mode always being enabled at the
+> moment in the new .pcs_config() method to reflect what the probe
+> function was doing. The next stage will be to change that to allow
+> phylink to correctly configure the PCS. This needs fixing to allow
+> platform glue maintainers who are currently blocked to progress.
+> 
+> Please note, however, that this has not been tested with any SGMII
+> platform.
+> 
+> I've tried to get as many people into the Cc list with get_maintainers,
+> I hope that's sufficient to get enough eyeballs on this.
+> 
+> Changes since RFC:
+> - new patch (7) to remove RGMII "pcs" mode
+> - new patch (8) to move reverse "pcs" mode to stmmac_check_pcs_mode()
+> - new patch (9) to simplify the code moved in the previous patch
+> - new patch (10) to rename the confusing hw->ps to something more
+>   understandable.
+> - new patch (11) to shut up inappropriate complaints about
+>   "snps,ps-speed" being invalid.
+> - new patch (13) to add a MAC .pcs_init method, which will only be
+>   called when core has PCS present.
+> - modify patch 14 to use this new pcs_init method.
+> 
+> Despite getting a couple of responses to the RFC series posted in
+> September, I have had nothing testing this on hardware. I have tested
+> this on the Jetson Xavier NX, which included trial runs with enabling
+> the RGMII "pcs" mode, hence the new patches that rip out this mode. I
+> have come to the conclusion that the only way to get stmmac changes
+> tested is to get them merged into net-next, thereby forcing people to
+> have to run with them... and we'll deal with any fallout later.
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index 2d8eca54c40a2..2eef5956b9cc5 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -289,12 +289,12 @@ enum rgmii_clock_delay {
- #define PHY_ID_VSC8540			  0x00070760
- #define PHY_ID_VSC8541			  0x00070770
- #define PHY_ID_VSC8552			  0x000704e0
--#define PHY_ID_VSC856X			  0x000707e0
-+#define PHY_ID_VSC856X			  0x000707e1
- #define PHY_ID_VSC8572			  0x000704d0
- #define PHY_ID_VSC8574			  0x000704a0
--#define PHY_ID_VSC8575			  0x000707d0
--#define PHY_ID_VSC8582			  0x000707b0
--#define PHY_ID_VSC8584			  0x000707c0
-+#define PHY_ID_VSC8575			  0x000707d1
-+#define PHY_ID_VSC8582			  0x000707b1
-+#define PHY_ID_VSC8584			  0x000707c1
- #define PHY_VENDOR_MSCC			0x00070400
- 
- #define MSCC_VDDMAC_1500		  1500
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index ef0ef1570d392..d05f6ed052ad0 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -1724,12 +1724,6 @@ static int vsc8584_config_init(struct phy_device *phydev)
- 	 * in this pre-init function.
- 	 */
- 	if (phy_package_init_once(phydev)) {
--		/* The following switch statement assumes that the lowest
--		 * nibble of the phy_id_mask is always 0. This works because
--		 * the lowest nibble of the PHY_ID's below are also 0.
--		 */
--		WARN_ON(phydev->drv->phy_id_mask & 0xf);
--
- 		switch (phydev->phy_id & phydev->drv->phy_id_mask) {
- 		case PHY_ID_VSC8504:
- 		case PHY_ID_VSC8552:
-@@ -2290,11 +2284,6 @@ static int vsc8584_probe(struct phy_device *phydev)
- 	   VSC8531_DUPLEX_COLLISION};
- 	int ret;
- 
--	if ((phydev->phy_id & MSCC_DEV_REV_MASK) != VSC8584_REVB) {
--		dev_err(&phydev->mdio.dev, "Only VSC8584 revB is supported.\n");
--		return -ENOTSUPP;
--	}
--
- 	vsc8531 = devm_kzalloc(&phydev->mdio.dev, sizeof(*vsc8531), GFP_KERNEL);
- 	if (!vsc8531)
- 		return -ENOMEM;
-@@ -2587,9 +2576,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC856X,
-+	PHY_ID_MATCH_MODEL(PHY_ID_VSC856X),
- 	.name		= "Microsemi GE VSC856X SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2667,9 +2655,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8575,
-+	PHY_ID_MATCH_MODEL(PHY_ID_VSC8575),
- 	.name		= "Microsemi GE VSC8575 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2693,9 +2680,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8582,
-+	PHY_ID_MATCH_MODEL(PHY_ID_VSC8582),
- 	.name		= "Microsemi GE VSC8582 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
-@@ -2719,9 +2705,8 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_inband  = vsc85xx_config_inband,
- },
- {
--	.phy_id		= PHY_ID_VSC8584,
-+	PHY_ID_MATCH_MODEL(PHY_ID_VSC8584),
- 	.name		= "Microsemi GE VSC8584 SyncE",
--	.phy_id_mask	= 0xfffffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.soft_reset	= &genphy_soft_reset,
- 	.config_init    = &vsc8584_config_init,
--- 
-2.34.1
+I have tested this on :
+ - dwmac-socfpga w/ Lynx, SGMII and 1000BaseX mode
+ - dwmac-socfpga w/ RGMII mode
+ - stm32-dwmac (on stm32mp157a), w/ RGMII mode
 
+I don't have any device available with stmmac using the internal PCS
+implementation, but at least the 2 platforms above don't regress with
+this series.
+
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
