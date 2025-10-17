@@ -1,40 +1,38 @@
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F95E2777E0;
-	Fri, 17 Oct 2025 16:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E4A2253EC;
+	Fri, 17 Oct 2025 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760717425; cv=none; b=mHrkT5ZYyWE3N79erz2PaiXhsf5T2eMcd+k6BRbNtor/DmIcXFGCYjMDu4yalwc/1UIrsAIrDlGgb8WbJq/l+JTrHEJ/1g42sNhR8YKEhwwOu/rtJ40kfUChs5LVG9qnwDfUre5ZWCkVikMzlp8NL8yFx4TJo0LBQ3D45i7Iaus=
+	t=1760717425; cv=none; b=tch38qhLW3+NH+JIapFriNOgbHl6tEGOohb83Y1sDDDsy6Yl3kXemP4yI5Bx/NBbFQvnRsXHRyDG4Eu3rdHHU6cIm5TH4K8/qy0OJiu1Gz1C92Zz55CE/QVo4+EE2tte9uo/Ir000AC6YOpLWicUbVeIwKVdJjf4JBFWE6S4B1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760717425; c=relaxed/simple;
-	bh=g413N2EtaCoE+cYgVBHxXA81wiQqN+EXKGi0nWOzH4o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UzFNNcgxN/1NCRI87fpbLbGg/Ta21086BINRlCzBFgf0H9vzD3jLfhfw/seCOq7/LyTPviVyeJR4h0p+xuZaD/C5sZv/mymdz9jm1plPZ0iGkyEZ7xLkn4o4q05a4d6afpJrkzPgXrV0QRrjKWjgmbJJMLDDQ/gJF1jp7PkgV20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=om70ofu3; arc=none smtp.client-ip=193.68.50.107
+	bh=6KhZzuB5RgPXRnk3z3pqPv5g/6A72xiksTm8KdGgFOc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GfVXYIs9he1S7tPtILRY9WghCT5Ax7fCFh+Gh/3oIejn4bqnsViowmF+ZxmUHmn8GkXm4XoMuuoCXX/Qe+cGW49SFcllWxnnpZtG3LDVOK4NJNUVkba/9YWJ5Yyk6irl3kTCX+LSPaIUdI3/q2ls7B2w7kmcLG062f9j6kKrXRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=DVJDUqr8; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="om70ofu3"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="DVJDUqr8"
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id ED31AA0A26;
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 2C860A10D7;
 	Fri, 17 Oct 2025 18:10:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=mIQwReTUSM4NJP0VNgJN
-	29BzTbzQt8jrZ9Cb25wJHqw=; b=om70ofu3asdgwp07pI8ZHK3fnEnGCc/4dhu8
-	k1/PIuGbctoZ2lfMU7v+7YrzMdrceUA6cnRaAuzULsb8bQVvqtpkU6yzbvFDmv+I
-	b1qCWFVENgAUMWFguRQq7y6JyDDAaAQ4tXmzqjdLF7URY8wlVroXEV17APUQXuTj
-	nUtweVfNHqiQbPg/KM0+Xz8sa7+k8JRiwaHEOP5fEWgC4D+WTlDUNIiGiwP8NE10
-	Zbxiy8XYxg3OQMEFn4qgbBVkiWNhL8gd5Zu0cIGF9b+9r5vRVHDt9rZmCgTj8zQm
-	km8UuTOr1LXnBlCmQ2mNeGih6+ZysGN2+NPntDYjIsIBYnayUxL5l3rK4VBiieB2
-	UuWEGbbDoqfyRRJZVZO+Q/Vd2wTJmJQiJpydw8pmvY4y/3Tn4NQOfbfAvNj9JCZN
-	7kWeIP9fIbdFyWR8WEnjlGd/NAtQJBcUBAz6L80hfJdV3mk8fkFY+fhw4dWf+fxp
-	/r0zN1Ui21n0CJlOP4J3ZTpzjNETvDc4lnGJtrpJgbMwsvtKZrxu8uqivCB+Wd05
-	Plf8dgLRev2OjlU/GV0ztrgQsVh81B7J+glLjE9NV7jvJ6/dXF+uakA2S6Ay2F/j
-	BzQaA+X52yoV/yBg4CXiHq1FQR/q5M0+pUW3vgCMWYdcdNvbIrFk1qdXNpUqDL+0
-	QJt21mM=
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=qdHFeu7J/stvY65dY6buBrBVhFapjPw5TmtVfzS/XXk=; b=
+	DVJDUqr8F1ubGCEo4HU7/D7OEq3IWQUG1YSmnvsprjPJLt49uPYTyOtmAJr1DTaq
+	9BYcrHWj9bUOCBQ0eUoDNWKQrLakhCD3D7JxOuhDw9uQUNY0yfAs03PxYf7FxZr5
+	3aSwEcNaXAV3wKjlwP0G7inQgFY2dYpQ69oWji7rqvFbZR9IIY09x0wZk1iDD8cu
+	CtSGJ5zDvGM939Nz1N2lw2bqH+S8BPvsGLSAm3YxyvNEq99O4DBX213qC+Neh71A
+	n0obF7nPjePKelFGScADayhQD2rMOCsv87/V3Pt1RqwPguhvpWvRg/OCcYLc3roM
+	gToix5XkTrsgZYIIRhHW5IluXOJtXlO33DXfYnItCjLanOHDZn1fc3rRbuC1ExuD
+	+q0g/NbQLYOWZFF3ou9+X1Fw0hIwfr+A6Zu60t6y+O3prQvJsPPEcjUJKS0YFAcE
+	fokUQBNw7bO/bdsIWrNNgNiNUHPoUVH1bCw22+pIps7FLSJ6x/AQn05YW4zF7AJ5
+	XHCrwyZuUWsmnUNIhiFQ7S24tMvEFYXModada3Bi4s3OuELzoVBWdgD6YaZdN2rN
+	X9Sd8aDfXYo1M3t4MfcXNgdDklPFJDRJuQU8oDuf2GF+yKFnk11ns84VUSE+V2ko
+	xeg2dcSg03zMNx787BOo4v+n4EYha8n4v3osBZI4mzk=
 From: Buday Csaba <buday.csaba@prolan.hu>
 To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>, "David S. Miller"
@@ -45,12 +43,10 @@ To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
  Fainelli" <f.fainelli@gmail.com>, <netdev@vger.kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: Buday Csaba <buday.csaba@prolan.hu>
-Subject: [PATCH net-next v3 4/4] net: mdio: reset PHY before attempting to access registers in fwnode_mdiobus_register_phy
-Date: Fri, 17 Oct 2025 18:10:11 +0200
-Message-ID: <cb6640fa11e4b148f51d4c8553fe177d5bdb4d37.1760620093.git.buday.csaba@prolan.hu>
+Subject: [PATCH net-next v3 0/4] net: mdio: implement optional PHY reset before MDIO access
+Date: Fri, 17 Oct 2025 18:10:07 +0200
+Message-ID: <cover.1760620093.git.buday.csaba@prolan.hu>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1760620093.git.buday.csaba@prolan.hu>
-References: <cover.1760620093.git.buday.csaba@prolan.hu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,90 +55,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1760717419;VERSION=8000;MC=3822495923;ID=62086;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1760717418;VERSION=8000;MC=4017348431;ID=38906;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
 X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
-X-EsetId: 37303A296767155F647660
+X-EsetId: 37303A2998FD515F647660
 
-Implement support for the `phy-id-read-needs-reset` device tree
-property.
+Some Ethernet PHY devices require a hard reset before any MDIO access can
+be safely performed. This includes the auto-detection of the PHY ID, which
+is necessary to bind the correct driver to the device.
 
-When the ID of an ethernet PHY is not provided by the 'compatible'
-string in the device tree, its actual ID is read via the MDIO bus.
-For some PHYs this could be unsafe, since a hard reset may be
-necessary to safely access the MDIO registers.
+The kernel currently does not provide a way to assert the reset before
+reading the ID, making these devices usable only when the ID is hardcoded
+in the Device Tree 'compatible' string.
+(One notable exception is the FEC driver and its now deprecated
+`phy-reset-gpios` property).
 
-This patch performs the hard-reset before attempting to read the ID,
-when the mentioned device tree property is present.
+This patchset implements an optional reset before reading of the PHY ID
+register, allowing such PHYs to be used with auto-detected ID. The reset
+is controlled by a newly defined DT property, so it should not break
+compatibility with existing systems.
 
-Signed-off-by: Buday Csaba <buday.csaba@prolan.hu>
----
-V2 -> V3: kernel-doc replaced with a comment (fixed warning)
-V1 -> V2:
- - renamed DT property `reset-phy-before-probe` to
-  `phy-id-read-needs-reset`
- - renamed fwnode_reset_phy_before_probe() to
-   fwnode_reset_phy()
- - added kernel-doc for fwnode_reset_phy()
- - improved error handling in fwnode_reset_phy()
----
- drivers/net/mdio/fwnode_mdio.c | 35 +++++++++++++++++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+There have been several earlier attempts to implement such functionality,
+of which I have collected a few in the links section.
 
-diff --git a/drivers/net/mdio/fwnode_mdio.c b/drivers/net/mdio/fwnode_mdio.c
-index ba7091518..8e8f9182a 100644
---- a/drivers/net/mdio/fwnode_mdio.c
-+++ b/drivers/net/mdio/fwnode_mdio.c
-@@ -114,6 +114,36 @@ int fwnode_mdiobus_phy_device_register(struct mii_bus *mdio,
- }
- EXPORT_SYMBOL(fwnode_mdiobus_phy_device_register);
- 
-+/* Hard-reset a PHY before registration */
-+static int fwnode_reset_phy(struct mii_bus *bus, u32 addr,
-+			    struct fwnode_handle *phy_node)
-+{
-+	struct mdio_device *tmpdev;
-+	int err;
-+
-+	tmpdev = mdio_device_create(bus, addr);
-+	if (IS_ERR(tmpdev))
-+		return PTR_ERR(tmpdev);
-+
-+	fwnode_handle_get(phy_node);
-+	device_set_node(&tmpdev->dev, phy_node);
-+	err = mdio_device_register_reset(tmpdev);
-+	if (err) {
-+		mdio_device_free(tmpdev);
-+		return err;
-+	}
-+
-+	mdio_device_reset(tmpdev, 1);
-+	mdio_device_reset(tmpdev, 0);
-+
-+	mdio_device_unregister_reset(tmpdev);
-+
-+	mdio_device_free(tmpdev);
-+	fwnode_handle_put(phy_node);
-+
-+	return 0;
-+}
-+
- int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 				struct fwnode_handle *child, u32 addr)
- {
-@@ -129,8 +159,11 @@ int fwnode_mdiobus_register_phy(struct mii_bus *bus,
- 		return PTR_ERR(mii_ts);
- 
- 	is_c45 = fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45");
--	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
-+	if (is_c45 || fwnode_get_phy_id(child, &phy_id)) {
-+		if (fwnode_property_present(child, "reset-phy-before-probe"))
-+			fwnode_reset_phy(bus, addr, child);
- 		phy = get_phy_device(bus, addr, is_c45);
-+	}
- 	else
- 		phy = phy_device_create(bus, addr, phy_id, 0, NULL);
- 	if (IS_ERR(phy)) {
+The links to my own v1 and v2 versions are also provided.
+
+Link: https://lore.kernel.org/lkml/1499346330-12166-2-git-send-email-richard.leitner@skidata.com/
+Link: https://lore.kernel.org/all/20230405-net-next-topic-net-phy-reset-v1-0-7e5329f08002@pengutronix.de/
+Link: https://lore.kernel.org/netdev/20250709133222.48802-4-buday.csaba@prolan.hu/
+Link: https://lore.kernel.org/all/20251013135557.62949-1-buday.csaba@prolan.hu/
+Link: https://lore.kernel.org/all/20251015134503.107925-1-buday.csaba@prolan.hu/
+
+Buday Csaba (4):
+  net: mdio: common handling of phy reset properties
+  net: mdio: change property read from fwnode_property_read_u32() to
+    device_property_read_u32()
+  dt-bindings: net: mdio: add phy-id-read-needs-reset property
+  net: mdio: reset PHY before attempting to access registers in
+    fwnode_mdiobus_register_phy
+
+ .../devicetree/bindings/net/ethernet-phy.yaml |  8 +++
+ drivers/net/mdio/fwnode_mdio.c                | 40 +++++++++++---
+ drivers/net/phy/mdio_bus.c                    | 39 +-------------
+ drivers/net/phy/mdio_device.c                 | 52 +++++++++++++++++++
+ include/linux/mdio.h                          |  2 +
+ 5 files changed, 98 insertions(+), 43 deletions(-)
+
+
+base-commit: 00922eeaca3c5c2001781bcad40e0bd54d0fdbb6
 -- 
 2.39.5
 
