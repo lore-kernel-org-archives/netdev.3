@@ -1,103 +1,225 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C8E312830
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 10:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6973191D3
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 10:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760697615; cv=none; b=Qi85jcWXDqtZcuuiLnZsf0u1sPmxnOpfLDYoaB1JXR+gKlRGT4jNiArF9koxUOAIP+bqxn8woX5nrkPtNdkS7YqYwRDPH8ViW+2xlObXuNyW6AU+MQcjIdvqFwZgRHmD8qQXdFYG1J1zbB3DOdlcZcsV8y4vciDbxTaFCbyA3T0=
+	t=1760698086; cv=none; b=X5hatKK1sW7BAnxL+CVv5JV0inW7No085SVqo2Vnla/y2ZJ8+JIfRyqf22bqO2ocjzrfFJopLDaZUkAGPX51YxahhL6hQYH5Iw1ARjDurF/zbil2VDxg41GRT1TP+YeXl1jkRhxFWZUc+wh8CReQy/xV24+VDR9lrKmmG61fNSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760697615; c=relaxed/simple;
-	bh=a+hvGxKx1Du6F+rVTvciS2Wx/2H8wYZ7X85wqZaoa1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L8A+J6yWDr1F5jFMguhVWrgJ+9WZAmGa+jMwByJ5zfRX6sCt05HIn1Xf/OyazG5u/BbeZp9X7m2R07l83AtZALm4SPosxaDdvsoWwFYh5plWJ2WPZPHGZCfD+/fESg8qSaXi3hgF6PigkUxhncP1Z9ZOqxm5YVQqaD4a+LIQB6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=IrCwwfqA; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="IrCwwfqA"
-Message-ID: <f1c42ecd-57c0-4cea-906e-aebcd583944a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760697610;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LFyQCMCCHGMPfi0FFUJoBlhmXM+s+mfhayyuqlJUZRM=;
-	b=IrCwwfqATAnxjV3v6eo40dN7MQpExXvn4KpmsRLsj4P1yKbfRadQ5ZZbSPFqWT4GLdXB9K
-	4/JcOwGtEoIoVkemQgx8voxN406BcWpa1zOAw0CN0IUfio6/J49iOyc9Ux9/WJqAUOQLga
-	2lUVcYSkKR2mXdcjBUf5G+OVPRBCU+k=
-Date: Fri, 17 Oct 2025 11:40:05 +0100
+	s=arc-20240116; t=1760698086; c=relaxed/simple;
+	bh=ykBbgf2/fNUtX94ceKDhfpaP/FVkhDKE9c1gT3f6TJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G8A2DSEG8Gfzc7dyiT4SBgnUKIkV8PZD26wDkTRkVLZ44XH3h1l+/i+CAQT+XCP3rV/oAk0EgPY7FpPsOoFy6+UA8W1Fj+7elpouAJRdaBRjiuihnj4HFRIPjpetBLcDhmYPyql5EFr5xPuDESP2ZtgjTqxhsQ588kRCEKVs7P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v9hzn-0000AK-1j; Fri, 17 Oct 2025 12:47:39 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v9hzl-0042n8-0w;
+	Fri, 17 Oct 2025 12:47:37 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1v9hzl-0000000F0Am-0eSY;
+	Fri, 17 Oct 2025 12:47:37 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Nishanth Menon <nm@ti.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH net-next v6 4/5] net: phy: micrel: add MSE interface support for KSZ9477 family
+Date: Fri, 17 Oct 2025 12:47:31 +0200
+Message-ID: <20251017104732.3575484-5-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251017104732.3575484-1-o.rempel@pengutronix.de>
+References: <20251017104732.3575484-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next] bnxt_en: support PPS in/out on all pins
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Cc: Michael Chan <michael.chan@broadcom.com>, Jakub Kicinski
- <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- netdev@vger.kernel.org
-References: <20251016222317.3512207-1-vadim.fedorenko@linux.dev>
- <CALs4sv2gcHTpGRhZOPQqd+JrNnL05xLFYWB3uaznNbcGt=x03A@mail.gmail.com>
- <20f633b9-8a49-4240-8cb8-00309081ab73@linux.dev>
- <CALs4sv0ehFVMMB2HPqUkGnv5iRW-VYKpeFf3QtRDgThVH=XQYQ@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CALs4sv0ehFVMMB2HPqUkGnv5iRW-VYKpeFf3QtRDgThVH=XQYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On 17/10/2025 10:15, Pavan Chebbi wrote:
-> On Fri, Oct 17, 2025 at 2:21 PM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
->>
->> On 17.10.2025 04:45, Pavan Chebbi wrote:
->>> On Fri, Oct 17, 2025 at 3:54 AM Vadim Fedorenko
->>> <vadim.fedorenko@linux.dev> wrote:
->>>>
->>>> n_ext_ts and n_per_out from ptp_clock_caps are checked as a max number
->>>> of pins rather than max number of active pins.
->>>
->>> I am not 100pc sure. How is n_pins going to be different then?
->>> https://elixir.bootlin.com/linux/v6.17/source/include/linux/ptp_clock_kernel.h#L69
->>
->> So in general it's more for the case where HW has pins connected through mux to
->> the DPLL channels. According to the bnxt_ptp_cfg_pin() bnxt HW has pins
->> hardwired to channels and NVM has pre-defined configuration of pins' functions.
->>
->> [host ~]# ./testptp -d /dev/ptp2 -l
->> name bnxt_pps0 index 0 func 0 chan 0
->> name bnxt_pps1 index 1 func 0 chan 1
->> name bnxt_pps2 index 2 func 0 chan 2
->> name bnxt_pps3 index 3 func 0 chan 3
->>
->> without the change user cannot configure EXTTS or PEROUT function on pins
->> 1-3 preserving channels 1-3 on them.
->>
->> The user can actually use channel 0 on every pin because bnxt driver doesn't
->> care about channels at all, but it's a bit confusing that it sets up different
->> channels during init phase.
-> 
-> You are right that we don't care about the channels. So I think
-> ideally it should have been set to 0 for all the pins.
-> Does that not make a better fix? Meaning to say, we don't care about
-> the channel but/therefore please use 0 for all pins.
-> What I am not sure about the proposed change in your patch is that it
-> may be overriding the definition of the n_ext_ts and n_per_out in
-> order to provide flexibility to users to change channels, no?
+Implement the get_mse_capability() and get_mse_snapshot() PHY driver ops
+for KSZ9477-series integrated PHYs to demonstrate the new PHY MSE
+UAPI.
 
-Well, yeah, the overriding exists, but that's mostly the artifact of not
-so flexible API. But I agree, we can improve init part to make it clear.
-But one more thing has just come to my mind - is it
-really possible to configure PPS-in/PPS-out on pins 0-1?
-AFAIU, there are functions assigned to each pin, which can only be
-enabled or disabled by the user-space app, and in this case
-bnxt_ptp_verify() should be improved to validate function per pin,
-right?
+These PHYs do not expose a documented direct MSE register, but the
+Signal Quality Indicator (SQI) registers are derived from the
+internal MSE computation. This hook maps SQI readings into the MSE
+interface so that tooling can retrieve the raw value together with
+metadata for correct interpretation in userspace.
+
+Behaviour:
+  - For 1000BASE-T, report per-channel (A–D) values and support a
+    WORST channel selector.
+  - For 100BASE-TX, only LINK-wide measurements are available.
+  - Report average MSE only, with a max scale based on
+    KSZ9477_MMD_SQI_MASK and a fixed refresh rate of 2 µs.
+
+This mapping differs from the OPEN Alliance SQI definition, which
+assigns thresholds such as pre-fail indices; the MSE interface
+instead provides the raw measurement, leaving interpretation to
+userspace.
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+changes v6:
+- update comments
+- s/get_mse_config/get_mse_capability/
+---
+ drivers/net/phy/micrel.c | 101 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 101 insertions(+)
+
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 79ce3eb6752b..08c2dbc933a0 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2323,6 +2323,105 @@ static int kszphy_get_sqi_max(struct phy_device *phydev)
+ 	return KSZ9477_SQI_MAX;
+ }
+ 
++static int kszphy_get_mse_capability(struct phy_device *phydev,
++				     struct phy_mse_capability *cap)
++{
++	/* Capabilities depend on link mode:
++	 * - 1000BASE-T: per-pair SQI registers exist => expose A..D
++	 *   and a WORST selector.
++	 * - 100BASE-TX: HW provides a single MSE/SQI reading in the "channel A"
++	 *   register, but with auto MDI-X there is no MDI-X resolution bit,
++	 *   so we cannot map that register to a specific wire pair reliably.
++	 *   To avoid misleading per-channel data, advertise only LINK.
++	 * Other speeds: no MSE exposure via this driver.
++	 *
++	 * Note: WORST is *not* a hardware selector on this family.
++	 * We expose it because the driver computes it in software
++	 * by scanning per-channel readouts (A..D) and picking the
++	 * maximum average MSE.
++	 */
++	if (phydev->speed == SPEED_1000)
++		cap->supported_caps = PHY_MSE_CAP_CHANNEL_A |
++				      PHY_MSE_CAP_CHANNEL_B |
++				      PHY_MSE_CAP_CHANNEL_C |
++				      PHY_MSE_CAP_CHANNEL_D |
++				      PHY_MSE_CAP_WORST_CHANNEL;
++	else if (phydev->speed == SPEED_100)
++		cap->supported_caps = PHY_MSE_CAP_LINK;
++	else
++		return -EOPNOTSUPP;
++
++	cap->max_average_mse = FIELD_MAX(KSZ9477_MMD_SQI_MASK);
++	cap->refresh_rate_ps = 2000000; /* 2 us */
++	/* Estimated from link modulation (125 MBd per channel) and documented
++	 * refresh rate of 2 us
++	 */
++	cap->num_symbols = 250;
++
++	cap->supported_caps |= PHY_MSE_CAP_AVG;
++
++	return 0;
++}
++
++static int kszphy_get_mse_snapshot(struct phy_device *phydev, u32 channel,
++				   struct phy_mse_snapshot *snapshot)
++{
++	u8 num_channels;
++	int ret;
++
++	if (phydev->speed == SPEED_1000)
++		num_channels = 4;
++	else if (phydev->speed == SPEED_100)
++		num_channels = 1;
++	else
++		return -EOPNOTSUPP;
++
++	if (channel == PHY_MSE_CHANNEL_WORST) {
++		u32 worst_val = 0;
++		int i;
++
++		/* WORST is implemented in software: select the maximum
++		 * average MSE across the available per-channel registers.
++		 * Only defined when multiple channels exist (1000BASE-T).
++		 */
++		if (num_channels < 2)
++			return -EOPNOTSUPP;
++
++		for (i = 0; i < num_channels; i++) {
++			ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++					KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + i);
++			if (ret < 0)
++				return ret;
++
++			ret = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++			if (ret > worst_val)
++				worst_val = ret;
++		}
++		snapshot->average_mse = worst_val;
++	} else if (channel == PHY_MSE_CHANNEL_LINK && num_channels == 1) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else if (channel >= PHY_MSE_CHANNEL_A &&
++		   channel <= PHY_MSE_CHANNEL_D) {
++		/* Per-channel readouts are valid only for 1000BASE-T. */
++		if (phydev->speed != SPEED_1000)
++			return -EOPNOTSUPP;
++
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + channel);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else {
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
+ static void kszphy_enable_clk(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+@@ -6463,6 +6562,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_sqi	= kszphy_get_sqi,
+ 	.get_sqi_max	= kszphy_get_sqi_max,
++	.get_mse_capability = kszphy_get_mse_capability,
++	.get_mse_snapshot = kszphy_get_mse_snapshot,
+ } };
+ 
+ module_phy_driver(ksphy_driver);
+-- 
+2.47.3
 
