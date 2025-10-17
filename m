@@ -1,647 +1,288 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FC136CDFB
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76D12F692A
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:11:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713728; cv=none; b=pJRhHVQdwEDnEfYY6po0ZKlJ0x/RRDxzWAM/hPEB8Pe2a2ettyLVKWs/CaRsql2djyLn3EqFC8ERJ1Rdkbswup1pHUNpE05cbs5Kr3KPJhgj4BozxrTtpqV3dTM8V9LjOdxUhArCdoHFAem7FXWBYzBqY6A6CD9oFLa4rsahxgs=
+	t=1760713876; cv=none; b=gHjoDh+EdVQh0VS54p09BuYaF6o3yGYs4DekdgC87Of0GVoG3RgovmGdkYN/5x0Co68Hdm+UEuVW1atUzW2pA7lxTcrtr46rFZyb76AiFYBwxIJ42dm7Fv7pAB6/M7dhXKDel/oiznLiDJPDLCMBKD3JUDMk2t8v8C/n9UwcU9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713728; c=relaxed/simple;
-	bh=i7GlmmzGrsWId0qWdurB13ekKjuFl1J3TBA+cQzYW70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5R3sNRas2Ih3zAvZAxZppdUQVUVF1R8ZPfQvCW0yoPHLkJXvc2LPxZuX9Uftqz+dGuT3Zp/JIK721KyEx1AghswosPltBlmXcXryoUznxGcG2jzpHlxzFQ0RhPvFJ2rKWXTYfSyAqo8sbjH389xSdgBBe1ZFi+pXEwyl0qwYYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4E-0003NG-2U; Fri, 17 Oct 2025 17:08:30 +0200
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4D-00450Y-1e;
-	Fri, 17 Oct 2025 17:08:29 +0200
-Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 17AD04892B3;
-	Fri, 17 Oct 2025 15:08:29 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 02/13] can: treewide: remove can_change_mtu()
-Date: Fri, 17 Oct 2025 17:04:10 +0200
-Message-ID: <20251017150819.1415685-3-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017150819.1415685-1-mkl@pengutronix.de>
-References: <20251017150819.1415685-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1760713876; c=relaxed/simple;
+	bh=H/95EBfuWUHWxUFD4Lyj6YbVhj1SzAqoMPXpyRPBk2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9qx1kulGhef/RIR9PuH8v0mJgq7r3+80nMlc9NRRW1lXQo8iefKs6EwH5NYGoGzWS5Y+qyhSJgfsScP9dllfFkAEh0FWorhGQ18/ds/CBmzwDlm9CBDaVcrXrKQQcJ6Q6jWcIx/ikK2qVEetSVXDtWUHyYkdy2rNYdnor9k7Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ka27QqaR; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ka27QqaR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760713872; x=1792249872;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=H/95EBfuWUHWxUFD4Lyj6YbVhj1SzAqoMPXpyRPBk2w=;
+  b=ka27QqaRRoRggjZsqsD/a8tSmwz65Iy7PQLIJDA5a8hzaTKud6XopuXV
+   BwqTMLpqlenmDBQayBZeKuLJIl+wbqGk4C1wznAapNjnekmjBcOSRsDEi
+   SWlzod5paBwCYmjJgYwqr+Kq5Y3ucfewsfI2gvLNuEsIzBRg01KkfhFlo
+   wKtA6de/Ol1oZNJhHbpfGUJS0gI74b4fdPJC5mkNeggGoFBykoKiG/STw
+   0Av8V8GaIYosY57N3TQukP8AeCWBNHwOKy/4yJa6lra0FwDDE/5gkRzDa
+   SUaJCd7zHiVnlQ4iqH3vWA+8Y0Pb0FFF+TooMy1gVophWz4jxwnoTFA82
+   A==;
+X-CSE-ConnectionGUID: tnHLLRqTQbmNcb6M1Y0mnQ==
+X-CSE-MsgGUID: sDDN3WLUSl+3vRtEt+ZZWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11585"; a="62828489"
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="62828489"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2025 08:11:11 -0700
+X-CSE-ConnectionGUID: xIfHTDIaS7SpR8XqiWWhNg==
+X-CSE-MsgGUID: SruBDmDyTRC4zskXL5JwOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,236,1754982000"; 
+   d="scan'208";a="183245944"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 17 Oct 2025 08:11:09 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1v9m6l-0006GF-0V;
+	Fri, 17 Oct 2025 15:11:07 +0000
+Date: Fri, 17 Oct 2025 23:10:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, steffen.klassert@secunet.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Alexey Dobriyan <adobriyan@gmail.com>
+Subject: Re: [PATCH ipsec 6/6] xfrm: check all hash buckets for leftover
+ states during netns deletion
+Message-ID: <202510172159.iLR9bfcc-lkp@intel.com>
+References: <2a743a05bbad7ebdc36c2c86a5fcbb9e99071c7b.1760610268.git.sd@queasysnail.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2a743a05bbad7ebdc36c2c86a5fcbb9e99071c7b.1760610268.git.sd@queasysnail.net>
 
-From: Vincent Mailhol <mailhol@kernel.org>
+Hi Sabrina,
 
-can_change_mtu() became obsolete by commit 23049938605b ("can: populate the
-minimum and maximum MTU values"). Now that net_device->min_mtu and
-net_device->max_mtu are populated, all the checks are already done by
-dev_validate_mtu() in net/core/dev.c.
+kernel test robot noticed the following build warnings:
 
-Remove the net_device_ops->ndo_change_mtu() callback of all the physical
-interfaces, then remove can_change_mtu(). Only keep the vcan_change_mtu()
-and vxcan_change_mtu() because the virtual interfaces use their own
-different MTU logic.
+[auto build test WARNING on klassert-ipsec-next/master]
+[also build test WARNING on klassert-ipsec/master net/main net-next/main linus/master v6.18-rc1 next-20251016]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The only functional change this patch introduces is that now the user will
-be able to change the MTU even if the interface is up. This does not matter
-for Classical CAN and CAN FD because their MTU range is composed of only
-one value, respectively CAN_MTU and CANFD_MTU. For the upcoming CAN XL, the
-MTU will be configurable within the CANXL_MIN_MTU to CANXL_MAX_MTU range at
-any time, even if the interface is up. This is consistent with the other
-net protocols and does not contradict ISO 11898-1:2024 as having a
-modifiable MTU is a kernel extension.
+url:    https://github.com/intel-lab-lkp/linux/commits/Sabrina-Dubroca/xfrm-drop-SA-reference-in-xfrm_state_update-if-dir-doesn-t-match/20251016-184507
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git master
+patch link:    https://lore.kernel.org/r/2a743a05bbad7ebdc36c2c86a5fcbb9e99071c7b.1760610268.git.sd%40queasysnail.net
+patch subject: [PATCH ipsec 6/6] xfrm: check all hash buckets for leftover states during netns deletion
+config: x86_64-randconfig-r123-20251017 (https://download.01.org/0day-ci/archive/20251017/202510172159.iLR9bfcc-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251017/202510172159.iLR9bfcc-lkp@intel.com/reproduce)
 
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20251003-remove-can_change_mtu-v1-1-337f8bc21181@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/at91_can.c                    |  1 -
- drivers/net/can/bxcan.c                       |  1 -
- drivers/net/can/c_can/c_can_main.c            |  1 -
- drivers/net/can/can327.c                      |  1 -
- drivers/net/can/cc770/cc770.c                 |  1 -
- drivers/net/can/ctucanfd/ctucanfd_base.c      |  1 -
- drivers/net/can/dev/dev.c                     | 38 -------------------
- drivers/net/can/esd/esd_402_pci-core.c        |  1 -
- drivers/net/can/flexcan/flexcan-core.c        |  1 -
- drivers/net/can/grcan.c                       |  1 -
- drivers/net/can/ifi_canfd/ifi_canfd.c         |  1 -
- drivers/net/can/janz-ican3.c                  |  1 -
- .../can/kvaser_pciefd/kvaser_pciefd_core.c    |  1 -
- drivers/net/can/m_can/m_can.c                 |  1 -
- drivers/net/can/mscan/mscan.c                 |  1 -
- drivers/net/can/peak_canfd/peak_canfd.c       |  1 -
- drivers/net/can/rcar/rcar_can.c               |  1 -
- drivers/net/can/rcar/rcar_canfd.c             |  1 -
- .../net/can/rockchip/rockchip_canfd-core.c    |  1 -
- drivers/net/can/sja1000/sja1000.c             |  1 -
- drivers/net/can/slcan/slcan-core.c            |  1 -
- drivers/net/can/softing/softing_main.c        |  1 -
- drivers/net/can/spi/hi311x.c                  |  1 -
- drivers/net/can/spi/mcp251x.c                 |  1 -
- .../net/can/spi/mcp251xfd/mcp251xfd-core.c    |  1 -
- drivers/net/can/sun4i_can.c                   |  1 -
- drivers/net/can/ti_hecc.c                     |  1 -
- drivers/net/can/usb/ems_usb.c                 |  1 -
- drivers/net/can/usb/esd_usb.c                 |  1 -
- drivers/net/can/usb/etas_es58x/es58x_core.c   |  1 -
- drivers/net/can/usb/f81604.c                  |  1 -
- drivers/net/can/usb/gs_usb.c                  |  1 -
- .../net/can/usb/kvaser_usb/kvaser_usb_core.c  |  1 -
- drivers/net/can/usb/mcba_usb.c                |  1 -
- drivers/net/can/usb/nct6694_canfd.c           |  1 -
- drivers/net/can/usb/peak_usb/pcan_usb_core.c  |  1 -
- drivers/net/can/usb/ucan.c                    |  1 -
- drivers/net/can/usb/usb_8dev.c                |  1 -
- drivers/net/can/xilinx_can.c                  |  1 -
- include/linux/can/dev.h                       |  1 -
- 40 files changed, 77 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510172159.iLR9bfcc-lkp@intel.com/
 
-diff --git a/drivers/net/can/at91_can.c b/drivers/net/can/at91_can.c
-index 191707d7e3da..c2a3a4eef5b2 100644
---- a/drivers/net/can/at91_can.c
-+++ b/drivers/net/can/at91_can.c
-@@ -948,7 +948,6 @@ static const struct net_device_ops at91_netdev_ops = {
- 	.ndo_open	= at91_open,
- 	.ndo_stop	= at91_close,
- 	.ndo_start_xmit	= at91_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops at91_ethtool_ops = {
-diff --git a/drivers/net/can/bxcan.c b/drivers/net/can/bxcan.c
-index bfc60eb33dc3..9c3af7049814 100644
---- a/drivers/net/can/bxcan.c
-+++ b/drivers/net/can/bxcan.c
-@@ -881,7 +881,6 @@ static const struct net_device_ops bxcan_netdev_ops = {
- 	.ndo_open = bxcan_open,
- 	.ndo_stop = bxcan_stop,
- 	.ndo_start_xmit = bxcan_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops bxcan_ethtool_ops = {
-diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
-index cc371d0c9f3c..3702cac7fbf0 100644
---- a/drivers/net/can/c_can/c_can_main.c
-+++ b/drivers/net/can/c_can/c_can_main.c
-@@ -1362,7 +1362,6 @@ static const struct net_device_ops c_can_netdev_ops = {
- 	.ndo_open = c_can_open,
- 	.ndo_stop = c_can_close,
- 	.ndo_start_xmit = c_can_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- int register_c_can_dev(struct net_device *dev)
-diff --git a/drivers/net/can/can327.c b/drivers/net/can/can327.c
-index 24af63961030..b66fc16aedd2 100644
---- a/drivers/net/can/can327.c
-+++ b/drivers/net/can/can327.c
-@@ -849,7 +849,6 @@ static const struct net_device_ops can327_netdev_ops = {
- 	.ndo_open = can327_netdev_open,
- 	.ndo_stop = can327_netdev_close,
- 	.ndo_start_xmit = can327_netdev_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops can327_ethtool_ops = {
-diff --git a/drivers/net/can/cc770/cc770.c b/drivers/net/can/cc770/cc770.c
-index 30909f3aab57..8d5abd643c06 100644
---- a/drivers/net/can/cc770/cc770.c
-+++ b/drivers/net/can/cc770/cc770.c
-@@ -834,7 +834,6 @@ static const struct net_device_ops cc770_netdev_ops = {
- 	.ndo_open = cc770_open,
- 	.ndo_stop = cc770_close,
- 	.ndo_start_xmit = cc770_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops cc770_ethtool_ops = {
-diff --git a/drivers/net/can/ctucanfd/ctucanfd_base.c b/drivers/net/can/ctucanfd/ctucanfd_base.c
-index 8bd3f0fc385c..1e6b9e3dc2fe 100644
---- a/drivers/net/can/ctucanfd/ctucanfd_base.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
-@@ -1301,7 +1301,6 @@ static const struct net_device_ops ctucan_netdev_ops = {
- 	.ndo_open	= ctucan_open,
- 	.ndo_stop	= ctucan_close,
- 	.ndo_start_xmit	= ctucan_start_xmit,
--	.ndo_change_mtu	= can_change_mtu,
- };
- 
- static const struct ethtool_ops ctucan_ethtool_ops = {
-diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
-index 15ccedbb3f8d..0cc3d008adb3 100644
---- a/drivers/net/can/dev/dev.c
-+++ b/drivers/net/can/dev/dev.c
-@@ -359,44 +359,6 @@ void can_set_default_mtu(struct net_device *dev)
- 	}
- }
- 
--/* changing MTU and control mode for CAN/CANFD devices */
--int can_change_mtu(struct net_device *dev, int new_mtu)
--{
--	struct can_priv *priv = netdev_priv(dev);
--	u32 ctrlmode_static = can_get_static_ctrlmode(priv);
--
--	/* Do not allow changing the MTU while running */
--	if (dev->flags & IFF_UP)
--		return -EBUSY;
--
--	/* allow change of MTU according to the CANFD ability of the device */
--	switch (new_mtu) {
--	case CAN_MTU:
--		/* 'CANFD-only' controllers can not switch to CAN_MTU */
--		if (ctrlmode_static & CAN_CTRLMODE_FD)
--			return -EINVAL;
--
--		priv->ctrlmode &= ~CAN_CTRLMODE_FD;
--		break;
--
--	case CANFD_MTU:
--		/* check for potential CANFD ability */
--		if (!(priv->ctrlmode_supported & CAN_CTRLMODE_FD) &&
--		    !(ctrlmode_static & CAN_CTRLMODE_FD))
--			return -EINVAL;
--
--		priv->ctrlmode |= CAN_CTRLMODE_FD;
--		break;
--
--	default:
--		return -EINVAL;
--	}
--
--	WRITE_ONCE(dev->mtu, new_mtu);
--	return 0;
--}
--EXPORT_SYMBOL_GPL(can_change_mtu);
--
- /* helper to define static CAN controller features at device creation time */
- int can_set_static_ctrlmode(struct net_device *dev, u32 static_mode)
- {
-diff --git a/drivers/net/can/esd/esd_402_pci-core.c b/drivers/net/can/esd/esd_402_pci-core.c
-index 5d6d2828cd04..05adecae6375 100644
---- a/drivers/net/can/esd/esd_402_pci-core.c
-+++ b/drivers/net/can/esd/esd_402_pci-core.c
-@@ -86,7 +86,6 @@ static const struct net_device_ops pci402_acc_netdev_ops = {
- 	.ndo_open = acc_open,
- 	.ndo_stop = acc_close,
- 	.ndo_start_xmit = acc_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
- };
- 
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 06d5d35fc1b5..f5d22c61503f 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -1867,7 +1867,6 @@ static const struct net_device_ops flexcan_netdev_ops = {
- 	.ndo_open	= flexcan_open,
- 	.ndo_stop	= flexcan_close,
- 	.ndo_start_xmit	= flexcan_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static int register_flexcandev(struct net_device *dev)
-diff --git a/drivers/net/can/grcan.c b/drivers/net/can/grcan.c
-index c5784d9779ef..3b1b09943436 100644
---- a/drivers/net/can/grcan.c
-+++ b/drivers/net/can/grcan.c
-@@ -1561,7 +1561,6 @@ static const struct net_device_ops grcan_netdev_ops = {
- 	.ndo_open	= grcan_open,
- 	.ndo_stop	= grcan_close,
- 	.ndo_start_xmit	= grcan_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops grcan_ethtool_ops = {
-diff --git a/drivers/net/can/ifi_canfd/ifi_canfd.c b/drivers/net/can/ifi_canfd/ifi_canfd.c
-index 2eeee65f606f..0f83335e4d07 100644
---- a/drivers/net/can/ifi_canfd/ifi_canfd.c
-+++ b/drivers/net/can/ifi_canfd/ifi_canfd.c
-@@ -944,7 +944,6 @@ static const struct net_device_ops ifi_canfd_netdev_ops = {
- 	.ndo_open	= ifi_canfd_open,
- 	.ndo_stop	= ifi_canfd_close,
- 	.ndo_start_xmit	= ifi_canfd_start_xmit,
--	.ndo_change_mtu	= can_change_mtu,
- };
- 
- static const struct ethtool_ops ifi_canfd_ethtool_ops = {
-diff --git a/drivers/net/can/janz-ican3.c b/drivers/net/can/janz-ican3.c
-index bfa5cbe88017..1efdd1fd8caa 100644
---- a/drivers/net/can/janz-ican3.c
-+++ b/drivers/net/can/janz-ican3.c
-@@ -1752,7 +1752,6 @@ static const struct net_device_ops ican3_netdev_ops = {
- 	.ndo_open	= ican3_open,
- 	.ndo_stop	= ican3_stop,
- 	.ndo_start_xmit	= ican3_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops ican3_ethtool_ops = {
-diff --git a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
-index 0880023611be..705f9bb74cd2 100644
---- a/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
-+++ b/drivers/net/can/kvaser_pciefd/kvaser_pciefd_core.c
-@@ -904,7 +904,6 @@ static const struct net_device_ops kvaser_pciefd_netdev_ops = {
- 	.ndo_stop = kvaser_pciefd_stop,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
- 	.ndo_start_xmit = kvaser_pciefd_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static int kvaser_pciefd_set_phys_id(struct net_device *netdev,
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 48b7a67336b5..873f5991fc5a 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -2148,7 +2148,6 @@ static const struct net_device_ops m_can_netdev_ops = {
- 	.ndo_open = m_can_open,
- 	.ndo_stop = m_can_close,
- 	.ndo_start_xmit = m_can_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static int m_can_get_coalesce(struct net_device *dev,
-diff --git a/drivers/net/can/mscan/mscan.c b/drivers/net/can/mscan/mscan.c
-index 8c2a7bc64d3d..39c7aa2a0b2f 100644
---- a/drivers/net/can/mscan/mscan.c
-+++ b/drivers/net/can/mscan/mscan.c
-@@ -607,7 +607,6 @@ static const struct net_device_ops mscan_netdev_ops = {
- 	.ndo_open	= mscan_open,
- 	.ndo_stop	= mscan_close,
- 	.ndo_start_xmit	= mscan_start_xmit,
--	.ndo_change_mtu	= can_change_mtu,
- };
- 
- static const struct ethtool_ops mscan_ethtool_ops = {
-diff --git a/drivers/net/can/peak_canfd/peak_canfd.c b/drivers/net/can/peak_canfd/peak_canfd.c
-index b5bc80ac7876..a53c9d347b7b 100644
---- a/drivers/net/can/peak_canfd/peak_canfd.c
-+++ b/drivers/net/can/peak_canfd/peak_canfd.c
-@@ -773,7 +773,6 @@ static const struct net_device_ops peak_canfd_netdev_ops = {
- 	.ndo_stop = peak_canfd_close,
- 	.ndo_eth_ioctl = peak_eth_ioctl,
- 	.ndo_start_xmit = peak_canfd_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static int peak_get_ts_info(struct net_device *dev,
-diff --git a/drivers/net/can/rcar/rcar_can.c b/drivers/net/can/rcar/rcar_can.c
-index 5f85f4e27205..fc3df328e877 100644
---- a/drivers/net/can/rcar/rcar_can.c
-+++ b/drivers/net/can/rcar/rcar_can.c
-@@ -635,7 +635,6 @@ static const struct net_device_ops rcar_can_netdev_ops = {
- 	.ndo_open = rcar_can_open,
- 	.ndo_stop = rcar_can_close,
- 	.ndo_start_xmit = rcar_can_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops rcar_can_ethtool_ops = {
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 45d36adb51b7..49ab65274b51 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -1818,7 +1818,6 @@ static const struct net_device_ops rcar_canfd_netdev_ops = {
- 	.ndo_open = rcar_canfd_open,
- 	.ndo_stop = rcar_canfd_close,
- 	.ndo_start_xmit = rcar_canfd_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops rcar_canfd_ethtool_ops = {
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
-index 046f0a0ae4d4..29de0c01e4ed 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-core.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
-@@ -761,7 +761,6 @@ static const struct net_device_ops rkcanfd_netdev_ops = {
- 	.ndo_open = rkcanfd_open,
- 	.ndo_stop = rkcanfd_stop,
- 	.ndo_start_xmit = rkcanfd_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static int __maybe_unused rkcanfd_runtime_suspend(struct device *dev)
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index 4d245857ef1c..acfa49db3907 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -697,7 +697,6 @@ static const struct net_device_ops sja1000_netdev_ops = {
- 	.ndo_open	= sja1000_open,
- 	.ndo_stop	= sja1000_close,
- 	.ndo_start_xmit	= sja1000_start_xmit,
--	.ndo_change_mtu	= can_change_mtu,
- };
- 
- static const struct ethtool_ops sja1000_ethtool_ops = {
-diff --git a/drivers/net/can/slcan/slcan-core.c b/drivers/net/can/slcan/slcan-core.c
-index 58ff2ec1d975..cd789e178d34 100644
---- a/drivers/net/can/slcan/slcan-core.c
-+++ b/drivers/net/can/slcan/slcan-core.c
-@@ -774,7 +774,6 @@ static const struct net_device_ops slcan_netdev_ops = {
- 	.ndo_open               = slcan_netdev_open,
- 	.ndo_stop               = slcan_netdev_close,
- 	.ndo_start_xmit         = slcan_netdev_xmit,
--	.ndo_change_mtu         = can_change_mtu,
- };
- 
- /******************************************
-diff --git a/drivers/net/can/softing/softing_main.c b/drivers/net/can/softing/softing_main.c
-index 278ee8722770..79bc64395ac4 100644
---- a/drivers/net/can/softing/softing_main.c
-+++ b/drivers/net/can/softing/softing_main.c
-@@ -609,7 +609,6 @@ static const struct net_device_ops softing_netdev_ops = {
- 	.ndo_open = softing_netdev_open,
- 	.ndo_stop = softing_netdev_stop,
- 	.ndo_start_xmit	= softing_netdev_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops softing_ethtool_ops = {
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index 6d4b643e135f..e00d3dbc4cf4 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -799,7 +799,6 @@ static const struct net_device_ops hi3110_netdev_ops = {
- 	.ndo_open = hi3110_open,
- 	.ndo_stop = hi3110_stop,
- 	.ndo_start_xmit = hi3110_hard_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops hi3110_ethtool_ops = {
-diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
-index b797e08499d7..1e54e1a22702 100644
---- a/drivers/net/can/spi/mcp251x.c
-+++ b/drivers/net/can/spi/mcp251x.c
-@@ -1270,7 +1270,6 @@ static const struct net_device_ops mcp251x_netdev_ops = {
- 	.ndo_open = mcp251x_open,
- 	.ndo_stop = mcp251x_stop,
- 	.ndo_start_xmit = mcp251x_hard_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops mcp251x_ethtool_ops = {
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-index 7450ea42c1ea..9402530ba3d4 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -1715,7 +1715,6 @@ static const struct net_device_ops mcp251xfd_netdev_ops = {
- 	.ndo_stop = mcp251xfd_stop,
- 	.ndo_start_xmit	= mcp251xfd_start_xmit,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static void
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 53bfd873de9b..6fcb301ef611 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -768,7 +768,6 @@ static const struct net_device_ops sun4ican_netdev_ops = {
- 	.ndo_open = sun4ican_open,
- 	.ndo_stop = sun4ican_close,
- 	.ndo_start_xmit = sun4ican_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops sun4ican_ethtool_ops = {
-diff --git a/drivers/net/can/ti_hecc.c b/drivers/net/can/ti_hecc.c
-index e6d6661a908a..1d3dbf28b105 100644
---- a/drivers/net/can/ti_hecc.c
-+++ b/drivers/net/can/ti_hecc.c
-@@ -829,7 +829,6 @@ static const struct net_device_ops ti_hecc_netdev_ops = {
- 	.ndo_open		= ti_hecc_open,
- 	.ndo_stop		= ti_hecc_close,
- 	.ndo_start_xmit		= ti_hecc_xmit,
--	.ndo_change_mtu		= can_change_mtu,
- };
- 
- static const struct ethtool_ops ti_hecc_ethtool_ops = {
-diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
-index 5355bac4dccb..de8e212a1366 100644
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -885,7 +885,6 @@ static const struct net_device_ops ems_usb_netdev_ops = {
- 	.ndo_open = ems_usb_open,
- 	.ndo_stop = ems_usb_close,
- 	.ndo_start_xmit = ems_usb_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops ems_usb_ethtool_ops = {
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 9bc1824d7be6..08da507faef4 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -1011,7 +1011,6 @@ static const struct net_device_ops esd_usb_netdev_ops = {
- 	.ndo_open = esd_usb_open,
- 	.ndo_stop = esd_usb_close,
- 	.ndo_start_xmit = esd_usb_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops esd_usb_ethtool_ops = {
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index adc91873c083..47d9e03f3044 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -1977,7 +1977,6 @@ static const struct net_device_ops es58x_netdev_ops = {
- 	.ndo_stop = es58x_stop,
- 	.ndo_start_xmit = es58x_start_xmit,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops es58x_ethtool_ops = {
-diff --git a/drivers/net/can/usb/f81604.c b/drivers/net/can/usb/f81604.c
-index e0cfa1460b0b..efe61ece79ea 100644
---- a/drivers/net/can/usb/f81604.c
-+++ b/drivers/net/can/usb/f81604.c
-@@ -1052,7 +1052,6 @@ static const struct net_device_ops f81604_netdev_ops = {
- 	.ndo_open = f81604_open,
- 	.ndo_stop = f81604_close,
- 	.ndo_start_xmit = f81604_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct can_bittiming_const f81604_bittiming_const = {
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 69b8d6da651b..30608901a974 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -1101,7 +1101,6 @@ static const struct net_device_ops gs_usb_netdev_ops = {
- 	.ndo_open = gs_can_open,
- 	.ndo_stop = gs_can_close,
- 	.ndo_start_xmit = gs_can_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- 	.ndo_eth_ioctl = gs_can_eth_ioctl,
- };
- 
-diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-index 90e77fa0ff4a..89e22b66f919 100644
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -786,7 +786,6 @@ static const struct net_device_ops kvaser_usb_netdev_ops = {
- 	.ndo_stop = kvaser_usb_close,
- 	.ndo_eth_ioctl = can_eth_ioctl_hwts,
- 	.ndo_start_xmit = kvaser_usb_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops kvaser_usb_ethtool_ops = {
-diff --git a/drivers/net/can/usb/mcba_usb.c b/drivers/net/can/usb/mcba_usb.c
-index 1f9b915094e6..41c0a1c399bf 100644
---- a/drivers/net/can/usb/mcba_usb.c
-+++ b/drivers/net/can/usb/mcba_usb.c
-@@ -761,7 +761,6 @@ static const struct net_device_ops mcba_netdev_ops = {
- 	.ndo_open = mcba_usb_open,
- 	.ndo_stop = mcba_usb_close,
- 	.ndo_start_xmit = mcba_usb_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops mcba_ethtool_ops = {
-diff --git a/drivers/net/can/usb/nct6694_canfd.c b/drivers/net/can/usb/nct6694_canfd.c
-index 8deff16491a1..dd6df2ec3742 100644
---- a/drivers/net/can/usb/nct6694_canfd.c
-+++ b/drivers/net/can/usb/nct6694_canfd.c
-@@ -690,7 +690,6 @@ static const struct net_device_ops nct6694_canfd_netdev_ops = {
- 	.ndo_open = nct6694_canfd_open,
- 	.ndo_stop = nct6694_canfd_close,
- 	.ndo_start_xmit = nct6694_canfd_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops nct6694_canfd_ethtool_ops = {
-diff --git a/drivers/net/can/usb/peak_usb/pcan_usb_core.c b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-index c74302ca7cee..94b1d7f15d27 100644
---- a/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-+++ b/drivers/net/can/usb/peak_usb/pcan_usb_core.c
-@@ -814,7 +814,6 @@ static const struct net_device_ops peak_usb_netdev_ops = {
- 	.ndo_stop = peak_usb_ndo_stop,
- 	.ndo_eth_ioctl = peak_eth_ioctl,
- 	.ndo_start_xmit = peak_usb_ndo_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- /* CAN-USB devices generally handle 32-bit CAN channel IDs.
-diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
-index 07406daf7c88..de61d9da99e3 100644
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -1233,7 +1233,6 @@ static const struct net_device_ops ucan_netdev_ops = {
- 	.ndo_open = ucan_open,
- 	.ndo_stop = ucan_close,
- 	.ndo_start_xmit = ucan_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops ucan_ethtool_ops = {
-diff --git a/drivers/net/can/usb/usb_8dev.c b/drivers/net/can/usb/usb_8dev.c
-index 8a5596ce4e46..7449328f7cd7 100644
---- a/drivers/net/can/usb/usb_8dev.c
-+++ b/drivers/net/can/usb/usb_8dev.c
-@@ -868,7 +868,6 @@ static const struct net_device_ops usb_8dev_netdev_ops = {
- 	.ndo_open = usb_8dev_open,
- 	.ndo_stop = usb_8dev_close,
- 	.ndo_start_xmit = usb_8dev_start_xmit,
--	.ndo_change_mtu = can_change_mtu,
- };
- 
- static const struct ethtool_ops usb_8dev_ethtool_ops = {
-diff --git a/drivers/net/can/xilinx_can.c b/drivers/net/can/xilinx_can.c
-index a25a3ca62c12..43d7f22820b8 100644
---- a/drivers/net/can/xilinx_can.c
-+++ b/drivers/net/can/xilinx_can.c
-@@ -1702,7 +1702,6 @@ static const struct net_device_ops xcan_netdev_ops = {
- 	.ndo_open	= xcan_open,
- 	.ndo_stop	= xcan_close,
- 	.ndo_start_xmit	= xcan_start_xmit,
--	.ndo_change_mtu	= can_change_mtu,
- };
- 
- static const struct ethtool_ops xcan_ethtool_ops = {
-diff --git a/include/linux/can/dev.h b/include/linux/can/dev.h
-index a2229a61ccde..0fe8f80f223e 100644
---- a/include/linux/can/dev.h
-+++ b/include/linux/can/dev.h
-@@ -127,7 +127,6 @@ struct can_priv *safe_candev_priv(struct net_device *dev);
- int open_candev(struct net_device *dev);
- void close_candev(struct net_device *dev);
- void can_set_default_mtu(struct net_device *dev);
--int can_change_mtu(struct net_device *dev, int new_mtu);
- int __must_check can_set_static_ctrlmode(struct net_device *dev,
- 					 u32 static_mode);
- int can_eth_ioctl_hwts(struct net_device *netdev, struct ifreq *ifr, int cmd);
+sparse warnings: (new ones prefixed by >>)
+   net/xfrm/xfrm_state.c:1737:9: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1744:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct hlist_head *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:1744:17: sparse:     expected struct hlist_head *h
+   net/xfrm/xfrm_state.c:1744:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1751:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct hlist_head *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:1751:17: sparse:     expected struct hlist_head *h
+   net/xfrm/xfrm_state.c:1751:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1871:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct hlist_head *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:1871:17: sparse:     expected struct hlist_head *h
+   net/xfrm/xfrm_state.c:1871:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:1874:17: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct hlist_head *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:1874:17: sparse:     expected struct hlist_head *h
+   net/xfrm/xfrm_state.c:1874:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2506:9: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: cast removes address space '__rcu' of expression
+   net/xfrm/xfrm_state.c:2605:25: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct hlist_head *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:2605:25: sparse:     expected struct hlist_head *h
+   net/xfrm/xfrm_state.c:2605:25: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:3270:31: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct hlist_head [noderef] __rcu *state_bydst @@     got struct hlist_head * @@
+   net/xfrm/xfrm_state.c:3270:31: sparse:     expected struct hlist_head [noderef] __rcu *state_bydst
+   net/xfrm/xfrm_state.c:3270:31: sparse:     got struct hlist_head *
+   net/xfrm/xfrm_state.c:3273:31: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct hlist_head [noderef] __rcu *state_bysrc @@     got struct hlist_head * @@
+   net/xfrm/xfrm_state.c:3273:31: sparse:     expected struct hlist_head [noderef] __rcu *state_bysrc
+   net/xfrm/xfrm_state.c:3273:31: sparse:     got struct hlist_head *
+   net/xfrm/xfrm_state.c:3276:31: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct hlist_head [noderef] __rcu *state_byspi @@     got struct hlist_head * @@
+   net/xfrm/xfrm_state.c:3276:31: sparse:     expected struct hlist_head [noderef] __rcu *state_byspi
+   net/xfrm/xfrm_state.c:3276:31: sparse:     got struct hlist_head *
+   net/xfrm/xfrm_state.c:3279:31: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct hlist_head [noderef] __rcu *state_byseq @@     got struct hlist_head * @@
+   net/xfrm/xfrm_state.c:3279:31: sparse:     expected struct hlist_head [noderef] __rcu *state_byseq
+   net/xfrm/xfrm_state.c:3279:31: sparse:     got struct hlist_head *
+   net/xfrm/xfrm_state.c:3297:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_byseq @@
+   net/xfrm/xfrm_state.c:3297:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3297:33: sparse:     got struct hlist_head [noderef] __rcu *state_byseq
+   net/xfrm/xfrm_state.c:3299:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_byspi @@
+   net/xfrm/xfrm_state.c:3299:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3299:33: sparse:     got struct hlist_head [noderef] __rcu *state_byspi
+   net/xfrm/xfrm_state.c:3301:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_bysrc @@
+   net/xfrm/xfrm_state.c:3301:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3301:33: sparse:     got struct hlist_head [noderef] __rcu *state_bysrc
+   net/xfrm/xfrm_state.c:3303:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_bydst @@
+   net/xfrm/xfrm_state.c:3303:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3303:33: sparse:     got struct hlist_head [noderef] __rcu *state_bydst
+>> net/xfrm/xfrm_state.c:3320:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head const *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:3320:17: sparse:     expected struct hlist_head const *h
+   net/xfrm/xfrm_state.c:3320:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:3321:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head const *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:3321:17: sparse:     expected struct hlist_head const *h
+   net/xfrm/xfrm_state.c:3321:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:3322:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head const *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:3322:17: sparse:     expected struct hlist_head const *h
+   net/xfrm/xfrm_state.c:3322:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:3323:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head const *h @@     got struct hlist_head [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:3323:17: sparse:     expected struct hlist_head const *h
+   net/xfrm/xfrm_state.c:3323:17: sparse:     got struct hlist_head [noderef] __rcu *
+   net/xfrm/xfrm_state.c:3327:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_byseq @@
+   net/xfrm/xfrm_state.c:3327:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3327:33: sparse:     got struct hlist_head [noderef] __rcu *state_byseq
+   net/xfrm/xfrm_state.c:3328:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_byspi @@
+   net/xfrm/xfrm_state.c:3328:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3328:33: sparse:     got struct hlist_head [noderef] __rcu *state_byspi
+   net/xfrm/xfrm_state.c:3329:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_bysrc @@
+   net/xfrm/xfrm_state.c:3329:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3329:33: sparse:     got struct hlist_head [noderef] __rcu *state_bysrc
+   net/xfrm/xfrm_state.c:3330:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct hlist_head *n @@     got struct hlist_head [noderef] __rcu *state_bydst @@
+   net/xfrm/xfrm_state.c:3330:33: sparse:     expected struct hlist_head *n
+   net/xfrm/xfrm_state.c:3330:33: sparse:     got struct hlist_head [noderef] __rcu *state_bydst
+   net/xfrm/xfrm_state.c: note: in included file (through include/linux/rbtree.h, include/linux/mm_types.h, include/linux/uio.h, ...):
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_register_type' - unexpected unlock
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_unregister_type' - unexpected unlock
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_get_type' - unexpected unlock
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_register_type_offload' - unexpected unlock
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_unregister_type_offload' - unexpected unlock
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'xfrm_set_type_offload' - unexpected unlock
+   net/xfrm/xfrm_state.c:934:17: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:976:17: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1655:9: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:58:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
+   net/xfrm/xfrm_state.c:58:39: sparse:     expected struct refcount_struct [usertype] *r
+   net/xfrm/xfrm_state.c:58:39: sparse:     got struct refcount_struct [noderef] __rcu *
+   net/xfrm/xfrm_state.c:1778:9: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:1814:9: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:2094:17: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:2113:17: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c:2315:17: sparse: sparse: dereference of noderef expression
+   net/xfrm/xfrm_state.c: note: in included file:
+   include/net/xfrm.h:1971:16: sparse: sparse: incompatible types in comparison expression (different address spaces):
+   include/net/xfrm.h:1971:16: sparse:    struct sock [noderef] __rcu *
+   include/net/xfrm.h:1971:16: sparse:    struct sock *
+
+vim +3320 net/xfrm/xfrm_state.c
+
+  3307	
+  3308	void xfrm_state_fini(struct net *net)
+  3309	{
+  3310		unsigned int sz;
+  3311		int i;
+  3312	
+  3313		flush_work(&net->xfrm.state_hash_work);
+  3314		xfrm_state_flush(net, 0, false);
+  3315		flush_work(&xfrm_state_gc_work);
+  3316	
+  3317		WARN_ON(!list_empty(&net->xfrm.state_all));
+  3318	
+  3319		for (i = 0; i <= net->xfrm.state_hmask; i++) {
+> 3320			WARN_ON(!hlist_empty(net->xfrm.state_byseq + i));
+  3321			WARN_ON(!hlist_empty(net->xfrm.state_byspi + i));
+  3322			WARN_ON(!hlist_empty(net->xfrm.state_bysrc + i));
+  3323			WARN_ON(!hlist_empty(net->xfrm.state_bydst + i));
+  3324		}
+  3325	
+  3326		sz = (net->xfrm.state_hmask + 1) * sizeof(struct hlist_head);
+  3327		xfrm_hash_free(net->xfrm.state_byseq, sz);
+  3328		xfrm_hash_free(net->xfrm.state_byspi, sz);
+  3329		xfrm_hash_free(net->xfrm.state_bysrc, sz);
+  3330		xfrm_hash_free(net->xfrm.state_bydst, sz);
+  3331		free_percpu(net->xfrm.state_cache_input);
+  3332	}
+  3333	
+
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
