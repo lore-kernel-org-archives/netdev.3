@@ -1,38 +1,66 @@
-Received: from mx39lb.world4you.com (mx39lb.world4you.com [81.19.149.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3502247DEA;
-	Fri, 17 Oct 2025 21:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.149.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6132219ABC6
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 21:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760736698; cv=none; b=B5l7XfGN70IJmu7H3u4OarUXP+DKO/fDBCXLY3BKNcBjnAu528Rza0beU0mdryHmEE0NNVtv+NhtIECqLMHZom/O2AliJMvKXAYY1ElI/LfLKTSC/F+cEq4cK830veodHAq+Kq7awtVdZPTwdqDIhhTQUE12COe0w7xGOt50TrI=
+	t=1760737889; cv=none; b=rNPREn6xlnYCecEhBC7vjtCRMnqEmcOyktoTK0eBQZtHWM+SA9MctPhmIdhnmjbLXbkVTIbWb4TEmKaeewWsiRioNfjdTKCpsOw2CJYgopHD3dnRM2HIJY30orR6Q6KuffPzjyCmIKQw//ftE1pXinTrBC5lz16zMjuq/qztKLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760736698; c=relaxed/simple;
-	bh=gm9Yi3sx/kWicfL9RWWXdAcEElUO61mEIkpUJvmbf+U=;
+	s=arc-20240116; t=1760737889; c=relaxed/simple;
+	bh=rr8FFcSI+YkQ2QDg5eA9OEZHkaqwFttCqNcWzgW2LSw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DKrGVWRGOKKjwMF2H8LxhLO3NEshZXcv2Hv1Op+QMmZNt9WEL45tgqgC5pvIl08N1kootI1WBBJbkvstfg+v2y1TMbdlaPWXNv/iKxkDgWrJsL27RUI1RzkqHzbb1rZbj0UNF3Upztt8ELQhRBT4mHsQq5UWRcVU0APkdogoTtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; spf=pass smtp.mailfrom=engleder-embedded.com; dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b=fjlTA41M; arc=none smtp.client-ip=81.19.149.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=engleder-embedded.com
+	 In-Reply-To:Content-Type; b=Dp9VRuGkEYJg4ImS7C+6LiIkJegasynzByJHePbDWfiYcwUSKv563/T64HpYEP/wspWqNZQ1V8k9tOBqYaFDOTrULQt26rxLdowNZoPq1vk0UmFtuJK+JABGEjo69MfJZCkFoNGKaC3i6o+qaNje0SNcURAsJsIq2RhQVPN8thw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wg7YV4fN; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.b="fjlTA41M"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BLthG6nGUCqm0GR2fabqqpjxkTBEQ9HRzUm3hiA+XNU=; b=fjlTA41MybLxAT7C2zAuo+4JIc
-	/o1cIkpy8ttE2m3YycvxXLWSihtECLVTWqkZ5Hqa2a9bxacyGw5N+xTMfEoXhQzs8e10WYyaP8anz
-	4Bt8QVep65YSG10Rrd6+HPp40eNh5bvqlURgLH0k52uFS3xcRpo9rsnJF1Idjo0HPj8w=;
-Received: from [93.82.65.102] (helo=[10.0.0.160])
-	by mx39lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <gerhard@engleder-embedded.com>)
-	id 1v9rnH-000000001XB-0NQs;
-	Fri, 17 Oct 2025 23:15:23 +0200
-Message-ID: <79f403f0-84ed-43fe-b093-d7ce122d41fd@engleder-embedded.com>
-Date: Fri, 17 Oct 2025 23:15:21 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wg7YV4fN"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-81fdd5d7b59so33670426d6.3
+        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 14:51:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760737887; x=1761342687; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rBDZ8eKanHvxL3YLLQ+3ZgNlXjyzZ6dSLC56hDdauow=;
+        b=Wg7YV4fNk+qNxPCnCFEJZ73+XUX6o/DAG5ft52lUzEeDX8zrJuHx68+yVF13PdSHmA
+         rWHgHIatJSv67F3MmuPCl5+Qzq4O8gEr7SqdaxIqeAkux39XtwqGdTdbnC77csYOd8If
+         PgEcd8b1ZdeDmSBKCtLb0jtmXFJEhYjpvodbXAQw7XlvP29HiSDgcx1OTu+wYJSDnK0I
+         76sROh5d4DzDBxuk05WdzfoUWm+EfPDfG8v/ZbZcRV1sC6NLDlOIpAHOJj27xb0tI0Tu
+         MhnlSc+n5iDMmC5Ut0ZzgXlgRyNphKaOt7ATh1GjXYjJn2FTQEb2s4XeLgy0bcsGB4rC
+         0s/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760737887; x=1761342687;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rBDZ8eKanHvxL3YLLQ+3ZgNlXjyzZ6dSLC56hDdauow=;
+        b=BhJQU5e7cVI6ykl53tLFIKQ+Hjc+3Ihrp6NP9oqdZ6xq9aXKZA0gh/ejD+rkQZH9en
+         N388n4YN0G6qetA4rRIwzapRaiTBvPv9UoQcyRhNIXv3yeIjqkAkVjMGQeI0V7izI7JZ
+         Y43j2uOWTWhAjv/jfJy0TqYrkLUiIsVwDz43runHeqZdNawKQQWpzcAc6zMoA62N4k/N
+         CJ16zT8C4gY8pjPW3ih1RApuQBro+PUQlaxYf+LuVHU10h/b2MOWNReYiE0DrJ3Pbm3J
+         NdhWRuSYQGyThJ3dsPv/5CYJ+wQ6Gs/uNpBkB6Wk7Uqgx3whhlzXtyYoxgzAMA9zs+6P
+         vp/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXaWjkAdsjNw0K/KSbZxOc1wxAZ2tx7hFUqKjDrHSzmYlOk4Gza+vjyxodx6GHxx41GOQIbWVw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIevOiARu5UwNYQIcB51gfT0irRKalnwjAQMTRVnubIAyTsuLA
+	Fikc15ZnqeS+rb5XQJctrzB8lUiVMjJuVwZ7vfpw3ZidGgBswTrgGo9a
+X-Gm-Gg: ASbGncuZQproFnQimkqIix84wup0WPhuPlk1lPODsz4tZsGfySwpGuQpnknPWYiz9X6
+	j3cjReqyUE0lVWO6XW1e2KClm1xtN0MK62jApx2u7MvP0tDGV7860K8IlKoLOwfhoasQfVd+9jK
+	E3VmEAOwtoGBXYNJgYDaybyuBb2OpG7yStAOtgi1W0BaG9iJ9e/5h81A0b+PfVnd6nlReXlwwgq
+	bmHuh107ZHDC0aNDa85RkKJbIdB18giJ+iN/pQFvO7HHhB7bkuwznTk4EgzHWEuisv6EBzWQP1E
+	Wn342hABhQcsCCCoJ84YJxClRXz+WDYnlEIhvRjujRrj9vxONjqkXR1YnA0sBBBKXOFVHj/3Xql
+	+ZTe2SRgREZbGHsONFwSsN5Oz8ylUG4rEA/xeMYyn3Sm+Q2gE3JQrCDjhQMWwCk6NoQ18RyaYeO
+	cv4uJ+KMDswwpp/fQ=
+X-Google-Smtp-Source: AGHT+IE0/YRi/FfDvq7MkavqX8vHUTJt7cEzm2HUboMT0ZApMJrV+n4njtzUp5c9Vr8RaI4t9Ggdog==
+X-Received: by 2002:a05:622a:754c:b0:4e8:9fc2:6ed3 with SMTP id d75a77b69052e-4e89fc2714bmr45297341cf.25.1760737887214;
+        Fri, 17 Oct 2025 14:51:27 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c0a8:11c9::10a9? ([2620:10d:c091:400::5:6f38])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4e8ab0eb034sm5870511cf.30.2025.10.17.14.51.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Oct 2025 14:51:26 -0700 (PDT)
+Message-ID: <ec51df17-260e-4ec9-a44a-9f0c3d3a2766@gmail.com>
+Date: Fri, 17 Oct 2025 17:51:25 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,138 +68,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phy: micrel: Add support for non PTP SKUs
- for lan8814
-To: Horatiu Vultur <horatiu.vultur@microchip.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com
-References: <20251017074730.3057012-1-horatiu.vultur@microchip.com>
+Subject: Re: [PATCH V7 net-next 02/11] net/mlx5: Implement cqe_compress_type
+ via devlink params
+To: Saeed Mahameed <saeed@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, netdev@vger.kernel.org,
+ Tariq Toukan <tariqt@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, Simon Horman <horms@kernel.org>
+References: <20250907012953.301746-1-saeed@kernel.org>
+ <20250907012953.301746-3-saeed@kernel.org>
 Content-Language: en-US
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
-In-Reply-To: <20251017074730.3057012-1-horatiu.vultur@microchip.com>
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <20250907012953.301746-3-saeed@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AV-Do-Run: Yes
+Content-Transfer-Encoding: 8bit
 
-On 17.10.25 09:47, Horatiu Vultur wrote:
-> The lan8814 has 4 different SKUs and for 2 of these SKUs the PTP is
-> disabled. All these SKUs have the same value in the register 2 and 3
-> meaning we can't differentiate them based on device id therefore check
 
-Did you miss to start a new sentence?
 
-> the SKU register and based on this allow or not to create a PTP device.
-> 
-> Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-> ---
->   drivers/net/phy/micrel.c | 38 ++++++++++++++++++++++++++++++++++++++
->   1 file changed, 38 insertions(+)
-> 
-> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> index 79ce3eb6752b6..16855bf8c3916 100644
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -101,6 +101,8 @@
->   #define LAN8814_CABLE_DIAG_VCT_DATA_MASK	GENMASK(7, 0)
->   #define LAN8814_PAIR_BIT_SHIFT			12
->   
-> +#define LAN8814_SKUS				0xB
-> +
->   #define LAN8814_WIRE_PAIR_MASK			0xF
->   
->   /* Lan8814 general Interrupt control/status reg in GPHY specific block. */
-> @@ -367,6 +369,9 @@
->   
->   #define LAN8842_REV_8832			0x8832
->   
-> +#define LAN8814_REV_LAN8814			0x8814
-> +#define LAN8814_REV_LAN8818			0x8818
-> +
->   struct kszphy_hw_stat {
->   	const char *string;
->   	u8 reg;
-> @@ -449,6 +454,7 @@ struct kszphy_priv {
->   	bool rmii_ref_clk_sel;
->   	bool rmii_ref_clk_sel_val;
->   	bool clk_enable;
-> +	bool is_ptp_available;
->   	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
->   	struct kszphy_phy_stats phy_stats;
->   };
-> @@ -4130,6 +4136,17 @@ static int lan8804_config_intr(struct phy_device *phydev)
->   	return 0;
->   }
->   
-> +/* Check if the PHY has 1588 support. There are multiple skus of the PHY and
-> + * some of them support PTP while others don't support it. This function will
-> + * return true is the sku supports it, otherwise will return false.
-> + */
+On 9/6/25 9:29 PM, Saeed Mahameed wrote:
+> From: Saeed Mahameed <saeedm@nvidia.com>
+>
+> Selects which algorithm should be used by the NIC in order to decide rate of
+> CQE compression dependeng on PCIe bus conditions.
+>
+> Supported values:
+>
+> 1) balanced, merges fewer CQEs, resulting in a moderate compression ratio
+>     but maintaining a balance between bandwidth savings and performance
+> 2) aggressive, merges more CQEs into a single entry, achieving a higher
+>     compression rate and maximizing performance, particularly under high
+>     traffic loads.
+>
 
-Hasn't net also switched to the common kernel multiline comment style
-starting with an empty line?
+Hello,
 
-> +static bool lan8814_has_ptp(struct phy_device *phydev)
-> +{
-> +	struct kszphy_priv *priv = phydev->priv;
-> +
-> +	return priv->is_ptp_available;
-> +}
-> +
->   static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
->   {
->   	int ret = IRQ_NONE;
-> @@ -4146,6 +4163,9 @@ static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
->   		ret = IRQ_HANDLED;
->   	}
->   
-> +	if (!lan8814_has_ptp(phydev))
-> +		return ret;
-> +
->   	while (true) {
->   		irq_status = lanphy_read_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
->   						  PTP_TSU_INT_STS);
-> @@ -4207,6 +4227,9 @@ static void lan8814_ptp_init(struct phy_device *phydev)
->   	    !IS_ENABLED(CONFIG_NETWORK_PHY_TIMESTAMPING))
->   		return;
->   
-> +	if (!lan8814_has_ptp(phydev))
-> +		return;
-> +
->   	lanphy_write_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
->   			      TSU_HARD_RESET, TSU_HARD_RESET_);
->   
-> @@ -4336,6 +4359,9 @@ static int __lan8814_ptp_probe_once(struct phy_device *phydev, char *pin_name,
->   
->   static int lan8814_ptp_probe_once(struct phy_device *phydev)
->   {
-> +	if (!lan8814_has_ptp(phydev))
-> +		return 0;
-> +
->   	return __lan8814_ptp_probe_once(phydev, "lan8814_ptp_pin",
->   					LAN8814_PTP_GPIO_NUM);
->   }
-> @@ -4450,6 +4476,18 @@ static int lan8814_probe(struct phy_device *phydev)
->   	devm_phy_package_join(&phydev->mdio.dev, phydev,
->   			      addr, sizeof(struct lan8814_shared_priv));
->   
-> +	/* There are lan8814 SKUs that don't support PTP. Make sure that for
-> +	 * those skus no PTP device is created. Here we check if the SKU
-> +	 * supports PTP.
-> +	 */
+I'm facing some issues when trying to use the devlink param introduced 
+in this patch. I have a multihost system with two hosts per CX7.
 
-Check comment style.
+My NIC is:
+$ lshw -C net
+   *-network
+        description: Ethernet interface
+        product: MT2910 Family [ConnectX-7]
+        vendor: Mellanox Technologies
 
-> +	err = lanphy_read_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-> +				   LAN8814_SKUS);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	priv->is_ptp_available = err == LAN8814_REV_LAN8814 ||
-> +				 err == LAN8814_REV_LAN8818;
-> +
->   	if (phy_package_init_once(phydev)) {
->   		err = lan8814_release_coma_mode(phydev);
->   		if (err)
+My fw version is: 28.43.1014
 
+To reproduce the problem I simply read the current cqe_compress_type 
+setting and then change it:
+
+$ devlink dev param show pci/0000:56:00.0 name cqe_compress_type
+pci/0000:56:00.0:
+   name cqe_compress_type type driver-specific
+     values:
+       cmode permanent value balanced
+
+$ devlink dev param set pci/0000:56:00.0 name cqe_compress_type value 
+"aggressive" cmode permanent
+kernel answers: Connection timed out
+
+from dmesg:
+[  257.111349] mlx5_core 0000:56:00.0: 
+wait_func_handle_exec_timeout:1159:(pid 72061): cmd[0]: 
+ACCESS_REG(0x805) No done completion
+[  257.137072] mlx5_core 0000:56:00.0: wait_func:1189:(pid 72061): 
+ACCESS_REG(0x805) timeout. Will cause a leak of a command resource
+[  270.871521] mlx5_core 0000:56:00.0: mlx5_cmd_comp_handler:1709:(pid 
+0): Command completion arrived after timeout (entry idx = 0).
+
+
+subsequent attempts to use mstfwreset hang:
+
+$ ./mstfwreset -y -d 56:00.0 reset
+-E- Failed to send Register MFRL: Timed out trying to take the ICMD 
+semaphore (520).
+
+I can toggle the parameter ok using the mstconfig binary built from the 
+mstflint github repo.
+
+Let me know if I can provide any more information.
+
+Daniel
