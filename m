@@ -1,120 +1,372 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54D314B7C
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C03148D4;
+	Fri, 17 Oct 2025 06:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760681468; cv=none; b=MIJPMBkKjXM0mRGZ7CnHoTF4YZ3rQsGVNGSw8JkVAchGv+Vtj/iUSDWWMLO5VXe98k/GcbxYFvQpz29KncnyorrFzCeupfeer+kj8M6rRWrffc6JNGUBhIK6pN8n209xFsYLMjlKJc3s0MWl7/HnqdUcFrGjAv5VRw7A3D5wsNU=
+	t=1760681468; cv=none; b=JtNcK5AdXMPqC+TBk4qX/uAnDHFdkkeDxVrwHs14EaRja14iWAbv/jw2uKLX4RsrBHPnQscFKFMW7dI4N3V0w54vCLwKj+fF150sL8j0QW78o5qiaFv4OVO3L+8dUS5POO4Md+s1np4Z4Z+07qQ+N4G7iQyMHIC1+a5fUIcLQMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760681468; c=relaxed/simple;
-	bh=pCrMlpjFzN/XrjcWfs3YB+fSeVkmexAvaoC91gKso/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bF9jN+FSEr7+XjIhJOl9fJ65Zwv1hLrCBuU+xHfzFeZbw3Kb3fhts1OYNjOBw1WVvgIoe1rKGiYwgqft4MrDEe3PU68OWyt2nRvzmqzzWCdg/Kz9OpcljU89p4Gl6TFQ8kiLEunxq7PeZAY1U2np/PpjvsLbgadmDMJVvqp4gnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VoxFuiqz; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=PfFyxtAXmVzgm7ySD5/ARxlZjDDMhRPDwlNCiLIixDs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dkziaBOGnEbuJmcb1HxJrGOpQ2FJM35SdQVMm8k6HVCqTxXsx2xCDMiLueiCCV1rj5wZrt/lyXHUAm+iLwpmRTh+75DHUsWSwuMQpczLLSmoMUuGvryfmsiXKRoeCro3f7SNTnqSncvjVOoV5Qy7R3WAJm/b/LL2tQ11OuEb1ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y25DMYw4; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VoxFuiqz"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-27d3540a43fso16689025ad.3
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:11:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760681464; x=1761286264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a4jV3SckoWHX2zGnHC+rYU8Ui0+E0D3XKDL6jcUcIDA=;
-        b=VoxFuiqzPS2WN95byxDpAHHFuGK3A15yl3clLQgoImTK8+v/0M6fgtDzoPpUppIMEi
-         Zger2TJmeNiLNj6XtNeZJY31ZP+oed9qFKOM3XsAy4/ehnA8dYmAPKBrC2mWcPzoiCps
-         lF0VYLPBiWUT3uexc+agBjwS6IXT+tdysYQ8vj498JX2jQyDdD4MhHf5+uiAOXoFfPpz
-         LaHt1syjxUxzpZtGmpzawp8nBYDiDmZAWMX/BggTQqM+HO+4OJ8HxULU9NNrdr46R/QE
-         PMB8s30WLiZAd0ylucVjjxY+nasjbqt/ZYinPA6sKq9bA0ODboU01ngYN6gC5qUQV7dI
-         zbwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760681464; x=1761286264;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a4jV3SckoWHX2zGnHC+rYU8Ui0+E0D3XKDL6jcUcIDA=;
-        b=YRNscUsATVutjUrgmvqzHRRosK8beKFrLMDR8UrmxrIYy8t+0eVllY6QaM6sd8lJj7
-         U5W11Zp+X/JjtcbSOLDWGACkd/XqkYb07b6iiNmUx/kkME/g9zw9Z9/iEXSktxl5ey7R
-         kXmq51QPE2cpo7Jbk1+tpuBfk2JD+0aKXXLsSU25LtlT6hpmxOjnwuaMQMJ8UbS8dLzR
-         MrOiqJyHY4fn+HLfsO/aiPY4Bh/q3smUOo8LcIin1OdJ5Uy8jm4CiKYwrXkNAznlgwfj
-         JfFb2Xr18pKUQlH381NrjTHUA0YSTg/EbLS47FmEoU8fShEtRJjx25qDqNNoDidgNReE
-         TQcw==
-X-Gm-Message-State: AOJu0Yz0ibpePCBu/tVnbplaWLeYolOr6+FZxex3kHWE/Xjcjnra3yXN
-	vAKN7DVPkBpHUFJpbTICZwB5F9/RfoiElu5AeXKso4sY/SRm1zn29St8Kph89rW5YOCerg==
-X-Gm-Gg: ASbGnctvVtJFPQSZLnRjDLUyhCyOCn7Oh9izKtGa65x2ukgWYIc5Try80uUk4b9hJ2T
-	Nu6hnI74jWNTmjuc9VnRFMKTd5KgRnPgZCRrIdWmBD1sRG8/Q7Jauvdg6UnlJtXo7kgR9GgSV83
-	Kwq7IQgIgHNxIyTgFJmi5XtmLFE2gbJ/lBD2a7/oDAp9jJJYib0Kc1Bw4uUwnVKKJp4vlYLREpP
-	O77I5JsL7+ZjZYOt+J7J062FLT7+lepJDqe5mEIYQB3eCm8e/aqNWuz2IP3j8j/WLbTqD06+gNK
-	Rozn0HhTl8x7ASv0GbooF75vOrTRaLugHYeU8MrCeHy2d/zVudeWoHqFkDJMTzh5qj4gDxU6cft
-	2iFV8Km4/h0pSKjoetGA2LTZKekmJWrkTMSaQqQLhs8GOWCzvCfR71X0xBaHE7DPSQigzolet87
-	w6TqQmQ0f/zbzFFJb/O+bsMFDgCRJz
-X-Google-Smtp-Source: AGHT+IH5ImymZLKDALz+oetlYqaue91LhCFN2bDDJh6sQMmR3UMcGoG20bbqt1QrYkz1S4wAj3MGrA==
-X-Received: by 2002:a17:903:3d0c:b0:27f:1c1a:ee43 with SMTP id d9443c01a7336-290caf83123mr30401595ad.29.1760681464290;
-        Thu, 16 Oct 2025 23:11:04 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([45.32.227.231])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2909938759dsm51315475ad.49.2025.10.16.23.11.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 23:11:04 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v14 4/4] MAINTAINERS: add entry for Motorcomm YT921x ethernet switch driver
-Date: Fri, 17 Oct 2025 14:08:56 +0800
-Message-ID: <20251017060859.326450-5-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251017060859.326450-1-mmyangfl@gmail.com>
-References: <20251017060859.326450-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y25DMYw4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1760681465; x=1792217465;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=PfFyxtAXmVzgm7ySD5/ARxlZjDDMhRPDwlNCiLIixDs=;
+  b=Y25DMYw471p+b6XItAc/ONJ0CjhCB+IWK+FXWOuihuSadbIpaAcxDlVX
+   0hXaSFjIVdyHoh4rK8biOxCNiK4/Qo+I1Cliw4fLxVew+/9rxgOyINPS2
+   3qCEHAK25x42dbuUcoF9PZkEzqG7/RM/Fu4Nxkvk2exqTGFtSzG7D04Ih
+   oo/3bZbSkLuEdCiBe63jJF3xrZuOoE9wGAX4iFGafGep36wjnMfLB4JWW
+   kFa2Ryt75gIEBU+62AjOHyVtF3BhSGTGCpDtocOFz/HkPSHrMdf8o9Bvv
+   cqXENAb8ebImseP5euy3tHXeyxoQ9sow425EbPmg37P/xAt22dNnRI08p
+   g==;
+X-CSE-ConnectionGUID: LBhhxV6VTj2jWskneRZfmw==
+X-CSE-MsgGUID: QQd+ykPFQvGzbFBuDzHSNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="50454017"
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="50454017"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:55 -0700
+X-CSE-ConnectionGUID: FnRR1meHS7S6a4czO6U6dQ==
+X-CSE-MsgGUID: rwrNF+yqQzKL+NJrjZO7PA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
+   d="scan'208";a="183059514"
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:55 -0700
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Thu, 16 Oct 2025 23:08:41 -0700
+Subject: [PATCH net-next v2 12/14] ice: refactor to use helpers
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251016-jk-iwl-next-2025-10-15-v2-12-ff3a390d9fc6@intel.com>
+References: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
+In-Reply-To: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+ Rinitha S <sx.rinitha@intel.com>, jbrandeburg@cloudflare.com
+X-Mailer: b4 0.15-dev-f4b34
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11520;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=MHa9O69pa1NbdBgHw5fZGpMA1oGHUNyCZVP8K7pBpGo=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoyPd1+6XueZnVK750Gk5I9Pa79HK+0Q3bRc4U57/uHbf
+ 4Nj/3++1VHKwiDGxSArpsii4BCy8rrxhDCtN85yMHNYmUCGMHBxCsBElmczMuxJez5nzpF1O9hL
+ Mmy1TuYFvP6bHc2z6dabvuSKJdWloqcYGa5KtIX1vjh837tOL8L4ZoDLC6cHC38G5jixzX38b/o
+ zRmYA
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-Add a MAINTAINERS entry for the Motorcomm YT921x ethernet switch driver
-and its DT binding.
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+Use the ice_netdev_to_pf() helper in more places and remove a bunch of
+boilerplate code. Not every instance could be replaced due to use of the
+netdev_priv() output or the vsi variable within a bunch of functions.
+
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ethtool.c   | 48 ++++++++------------------
+ drivers/net/ethernet/intel/ice/ice_flex_pipe.c |  8 ++---
+ drivers/net/ethernet/intel/ice/ice_lag.c       |  3 +-
+ drivers/net/ethernet/intel/ice/ice_main.c      | 10 ++----
+ drivers/net/ethernet/intel/ice/ice_ptp.c       |  6 ++--
+ drivers/net/ethernet/intel/ice/ice_sriov.c     |  3 +-
+ 6 files changed, 24 insertions(+), 54 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4faa7719bf86..ea72b3bd2248 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17435,6 +17435,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
- F:	drivers/net/phy/motorcomm.c
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 75492a720c68..cb34d4675a78 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -794,8 +794,7 @@ static int ice_get_extended_regs(struct net_device *netdev, void *p)
+ static void
+ ice_get_regs(struct net_device *netdev, struct ethtool_regs *regs, void *p)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	struct ice_hw *hw = &pf->hw;
+ 	u32 *regs_buf = (u32 *)p;
+ 	unsigned int i;
+@@ -810,8 +809,7 @@ ice_get_regs(struct net_device *netdev, struct ethtool_regs *regs, void *p)
  
-+MOTORCOMM YT921X ETHERNET SWITCH DRIVER
-+M:	David Yang <mmyangfl@gmail.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
-+F:	drivers/net/dsa/yt921x.*
-+F:	net/dsa/tag_yt921x.c
-+
- MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
- M:	Jiri Slaby <jirislaby@kernel.org>
- S:	Maintained
+ static u32 ice_get_msglevel(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ #ifndef CONFIG_DYNAMIC_DEBUG
+ 	if (pf->hw.debug_mask)
+@@ -824,8 +822,7 @@ static u32 ice_get_msglevel(struct net_device *netdev)
+ 
+ static void ice_set_msglevel(struct net_device *netdev, u32 data)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ #ifndef CONFIG_DYNAMIC_DEBUG
+ 	if (ICE_DBG_USER & data)
+@@ -840,16 +837,14 @@ static void ice_set_msglevel(struct net_device *netdev, u32 data)
+ static void ice_get_link_ext_stats(struct net_device *netdev,
+ 				   struct ethtool_link_ext_stats *stats)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ 	stats->link_down_events = pf->link_down_events;
+ }
+ 
+ static int ice_get_eeprom_len(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ 	return (int)pf->hw.flash.flash_size;
+ }
+@@ -858,9 +853,7 @@ static int
+ ice_get_eeprom(struct net_device *netdev, struct ethtool_eeprom *eeprom,
+ 	       u8 *bytes)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	struct ice_hw *hw = &pf->hw;
+ 	struct device *dev;
+ 	int ret;
+@@ -959,8 +952,7 @@ static u64 ice_link_test(struct net_device *netdev)
+  */
+ static u64 ice_eeprom_test(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ 	netdev_info(netdev, "EEPROM test\n");
+ 	return !!(ice_nvm_validate_checksum(&pf->hw));
+@@ -1274,9 +1266,8 @@ static int ice_lbtest_receive_frames(struct ice_rx_ring *rx_ring)
+  */
+ static u64 ice_loopback_test(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *orig_vsi = np->vsi, *test_vsi;
+-	struct ice_pf *pf = orig_vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
++	struct ice_vsi *test_vsi;
+ 	u8 *tx_frame __free(kfree) = NULL;
+ 	u8 broadcast[ETH_ALEN], ret = 0;
+ 	int num_frames, valid_frames;
+@@ -1365,8 +1356,7 @@ static u64 ice_loopback_test(struct net_device *netdev)
+  */
+ static u64 ice_intr_test(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	u16 swic_old = pf->sw_int_count;
+ 
+ 	netdev_info(netdev, "interrupt test\n");
+@@ -1394,9 +1384,8 @@ static void
+ ice_self_test(struct net_device *netdev, struct ethtool_test *eth_test,
+ 	      u64 *data)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	bool if_running = netif_running(netdev);
+-	struct ice_pf *pf = np->vsi->back;
+ 	struct device *dev;
+ 
+ 	dev = ice_pf_to_dev(pf);
+@@ -1720,9 +1709,7 @@ static int ice_nway_reset(struct net_device *netdev)
+  */
+ static u32 ice_get_priv_flags(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	u32 i, ret_flags = 0;
+ 
+ 	for (i = 0; i < ICE_PRIV_FLAG_ARRAY_SIZE; i++) {
+@@ -4417,9 +4404,7 @@ static int
+ ice_get_module_info(struct net_device *netdev,
+ 		    struct ethtool_modinfo *modinfo)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	struct ice_hw *hw = &pf->hw;
+ 	u8 sff8472_comp = 0;
+ 	u8 sff8472_swap = 0;
+@@ -4491,12 +4476,10 @@ static int
+ ice_get_module_eeprom(struct net_device *netdev,
+ 		      struct ethtool_eeprom *ee, u8 *data)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ #define SFF_READ_BLOCK_SIZE 8
+ 	u8 value[SFF_READ_BLOCK_SIZE] = { 0 };
+ 	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
+ 	struct ice_hw *hw = &pf->hw;
+ 	bool is_sfp = false;
+ 	unsigned int i, j;
+@@ -4774,8 +4757,7 @@ static void ice_get_ts_stats(struct net_device *netdev,
+  */
+ static int ice_ethtool_reset(struct net_device *dev, u32 *flags)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(dev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(dev);
+ 	enum ice_reset_req reset;
+ 
+ 	switch (*flags) {
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+index f21b9f86a049..10fdc9f32db5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -574,9 +574,7 @@ ice_destroy_tunnel(struct ice_hw *hw, u16 index, enum ice_tunnel_type type,
+ int ice_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
+ 			    unsigned int idx, struct udp_tunnel_info *ti)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	enum ice_tunnel_type tnl_type;
+ 	int status;
+ 	u16 index;
+@@ -598,9 +596,7 @@ int ice_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
+ int ice_udp_tunnel_unset_port(struct net_device *netdev, unsigned int table,
+ 			      unsigned int idx, struct udp_tunnel_info *ti)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	enum ice_tunnel_type tnl_type;
+ 	int status;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+index aebf8e08a297..d2576d606e10 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.c
++++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+@@ -2177,8 +2177,7 @@ static void ice_lag_chk_disabled_bond(struct ice_lag *lag, void *ptr)
+  */
+ static void ice_lag_disable_sriov_bond(struct ice_lag *lag)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(lag->netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(lag->netdev);
+ 
+ 	ice_clear_feature_support(pf, ICE_F_SRIOV_LAG);
+ 	ice_clear_feature_support(pf, ICE_F_SRIOV_AA_LAG);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 3d5615caf6d1..ca95b8800bb3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8074,9 +8074,7 @@ static int
+ ice_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
+ 		   struct net_device *dev, u32 filter_mask, int nlflags)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(dev);
+-	struct ice_vsi *vsi = np->vsi;
+-	struct ice_pf *pf = vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(dev);
+ 	u16 bmode;
+ 
+ 	bmode = pf->first_sw->bridge_mode;
+@@ -8146,8 +8144,7 @@ ice_bridge_setlink(struct net_device *dev, struct nlmsghdr *nlh,
+ 		   u16 __always_unused flags,
+ 		   struct netlink_ext_ack __always_unused *extack)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(dev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(dev);
+ 	struct nlattr *attr, *br_spec;
+ 	struct ice_hw *hw = &pf->hw;
+ 	struct ice_sw *pf_sw;
+@@ -9581,8 +9578,7 @@ ice_indr_setup_tc_cb(struct net_device *netdev, struct Qdisc *sch,
+  */
+ int ice_open(struct net_device *netdev)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ 	if (ice_is_reset_in_progress(pf->state)) {
+ 		netdev_err(netdev, "can't open net device while reset is in progress");
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index 4f50e952bfb5..985b3e79b312 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2215,8 +2215,7 @@ static int ice_ptp_getcrosststamp(struct ptp_clock_info *info,
+ int ice_ptp_hwtstamp_get(struct net_device *netdev,
+ 			 struct kernel_hwtstamp_config *config)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 
+ 	if (pf->ptp.state != ICE_PTP_READY)
+ 		return -EIO;
+@@ -2287,8 +2286,7 @@ int ice_ptp_hwtstamp_set(struct net_device *netdev,
+ 			 struct kernel_hwtstamp_config *config,
+ 			 struct netlink_ext_ack *extack)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	int err;
+ 
+ 	if (pf->ptp.state != ICE_PTP_READY)
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index 843e82fd3bf9..6b1126ddb561 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -1190,8 +1190,7 @@ ice_vf_lan_overflow_event(struct ice_pf *pf, struct ice_rq_event_info *event)
+  */
+ int ice_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
+ {
+-	struct ice_netdev_priv *np = netdev_priv(netdev);
+-	struct ice_pf *pf = np->vsi->back;
++	struct ice_pf *pf = ice_netdev_to_pf(netdev);
+ 	struct ice_vsi *vf_vsi;
+ 	struct device *dev;
+ 	struct ice_vf *vf;
+
 -- 
-2.51.0
+2.51.0.rc1.197.g6d975e95c9d7
 
