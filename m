@@ -1,115 +1,187 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20F423C513
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 02:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB0F187332;
+	Fri, 17 Oct 2025 02:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760669651; cv=none; b=RqSzhI+KMKnzXReCyMkKf1a7OgrVe9AtQQ1n6AdP7NbVMM91DZDULiql/DTGKDexwFtLkmqzF6TNKE/8FPjB1r8iFDl8TE/qDFdncQOnfP8dFRo1G85+1ttuN5FqNZQ2KfJ8M4JMZEOqt4wISvk1OtNGh2Wu3Jn4r/04wl+oSMA=
+	t=1760669693; cv=none; b=CJx522JmUSqvl0rzu9rkRppfHaH7Tjf9J3nDOAMK5qwINPVymghECVuS+kYjn6teh7xSU7AbqzUq537/HYZIvaBJSNFNiFb6hj/Q7pogYGx5btL5kbOYCVyacEtmISkblg22jNyE+hSD9qsCAaVQ86s5WyT/37QaveWj7LaWwYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760669651; c=relaxed/simple;
-	bh=8NiRwe3AAfFzQraWgyYBbLfsnHjwYW4yzgTVKceBqbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hvJ9iq5SL7iIIcqs2AqExb/cgg6z7zB5NvGXgAQvpKuJHZqnMIn4aySZ3A6S3b/Szuf2qEUY/AtJ9TdveLLZ1FnJYv3262f+GHu+YNWHZD/328+O//KlztAy2ZFdzYgqRnqqs3+1Gp3knDGIA/0XFFO/RtIqwrIbBb6Uq8wy1/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fp7Nge6+; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760669693; c=relaxed/simple;
+	bh=QCuBG31j7JNxgiRmeVMe7LjlOlUlW8gE0Wk+uZvSL3Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Le1il0TsSDBne8bUakz7ldQ6/gVMO863InwPo1Ug9EhmfTgx3f5XERy5V2IBU7yeRkxLnf+Zu5LxuD1CDK0jxawKf9+nnInNLR2ccKf6ttA9JaJM77iCsC1e9owxFgnbMXPgSsfNo4qBkbQynHPFJAb3FjsEr9yY+Ot/TM5eQfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FHOQjxsD; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fp7Nge6+"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-290dc630a07so1287715ad.1
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 19:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760669649; x=1761274449; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rSQYaGp05AgjNcRCXlpxVBC+oAL0afxX158+woz27Ds=;
-        b=fp7Nge6+VBWpUR2VdhzVukWYVYymU+xbw6ig/uk9xJaa94AOzXBB91IdutBALAPt4O
-         K8Rpa7ymUC9gRNzBQbnkQHIfucAgh77XxXprNPdt6JVS9K8bbseeW3xhmegViAUImOcc
-         zhcKmdY88X1W35tD6heualeJOBYCrv5Ird2+vmDtE2cRCDPdE0qINkCIBlCWnOk0+/iI
-         RksRM+1oDmlvjNiZt3HAl0fBpi+2dE6Z2FFY0nObbHfd5JKDjNCuGr7R4F4XbpoYhx+w
-         Iq8bplDdD9SLSLSixhFJ8u9gf2BeQibsi8TdL/rBMLpbt/1VmUieEzVEP/3P9bV/5gH6
-         O++g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760669649; x=1761274449;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rSQYaGp05AgjNcRCXlpxVBC+oAL0afxX158+woz27Ds=;
-        b=Hc+YjiU32D4EeF+OsgYNGKH/91e/ICzkKDWf6PTw/qKAQYF2hnUZzNyuUe9fEi70JL
-         apxbjQVQ22+kBiPqlNKXTkL4IMgXaE/zOYX52W3aUAxtvWyEyjgWuAxseKHyWNqaGkEF
-         o2nuf07TM3Qcgx/nG2VUnA2pWlRsZgnx9oAAO8oQnUrtLVSQgq+WneETaIWOm4JMFj2Z
-         Ypc/h5kCf/KrlHhZ+skU3n86JGpCl46Q9585vEh2Y72T4ocDFZVh16ogU3rcdI2ybRku
-         wibbAfZ0RS/honuNShPhOErWNN4JDhmjCOIsQTb9RUghs1tPRVt0pPi5caiEvyd0CtVS
-         Hpvg==
-X-Gm-Message-State: AOJu0YzTIn1WzzocekMPqHwfHkO2i0YzZHzFvluAqXZcsdar9OXxkEjJ
-	LEICBx4VSZ4Sv3D8zW9X3cp8EsS2ivQc6Ht24QVGJii63WgK0Ra4Uj2k
-X-Gm-Gg: ASbGncsGzkd3UsX9t4SDdIkP1nV3ZGF+H5kXhzcbmG/wyAV/tLdGu1Cwqtojo50sGNc
-	Iw+hwZDmoQNgXEKteTe7ICkuBk9Wzze2rSUMsqgSRBlA0oNiuJm0kC1JRIyucmySbxQz6bzvR8q
-	BP2bn9iVj7d2P8ZLdxGFwryyo8Kwyh8rmGNKK9OTl2lBmPqBUWECHiyKw36GQCpzVbBfseFcM4G
-	NcfsT+TJyJGqL7rfVh8uvIIcweeqj5wB2PAIcZW/27nZtGnez6snZZrWz4xu2+yBACQoLU+2YNc
-	pbcYz+5TC8Ng2e/EcxPS1+ByI4c7sT5Ne2hTHHw67fJnrao6N4RcXByVsclPIxfaK9pYUsfjpLn
-	2umg0u04HxK1ufYV5PlMEFgRtOpEnJhSWcwZHQuXC1C2HtZTh5x3hIZ7+ryx5saq0VSg4XWfrSv
-	zVY8tQ
-X-Google-Smtp-Source: AGHT+IGQi3U8O3cPAK1IhHTZZ8syKPaPbEumFj3MTl163+GXW0epQ+kNRrCWpnDLoeWcdl0oOcSMxw==
-X-Received: by 2002:a17:902:d60d:b0:28e:acf2:a782 with SMTP id d9443c01a7336-290cba4edf7mr24841635ad.37.1760669648941;
-        Thu, 16 Oct 2025 19:54:08 -0700 (PDT)
-Received: from fedora ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29099a7c23fsm46176465ad.74.2025.10.16.19.54.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Oct 2025 19:54:08 -0700 (PDT)
-Date: Fri, 17 Oct 2025 02:53:59 +0000
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: Jiri Pirko <jiri@resnulli.us>
-Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sdubroca@redhat.com>,
-	Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	bridge@lists.linux.dev, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCHv4 net-next 1/4] net: add a common function to compute
- features from lowers devices
-Message-ID: <aPGvxybFp42UN_f5@fedora>
-References: <20251014080217.47988-1-liuhangbin@gmail.com>
- <20251014080217.47988-2-liuhangbin@gmail.com>
- <sfjjkeub7fmvsktzrx6mmv6zvilno3un665tbqe2punw4azefo@jwuhk23763gc>
- <aO74J20k16L7jS15@fedora>
- <to4zjjo5wfd5suootcy2v7n7kuc6rym3ld4jov26nunnarji2u@2hr7jyiq36pj>
- <aPDnN072argrq23q@fedora>
- <fw4pvt7morcydktpqmmotab7pyvbixhrszgdfpl4dut52rfesf@4fztqcywdwpm>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FHOQjxsD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=3x5jY4dxpD3e0qjylTqUnYFYx0ZyeNE/xmjdYygE+4Y=;
+	b=FHOQjxsD2gLElQX3ee9ovkjU6aQ63S4akydtlX4YDKyY8Zi3UVVH1SNTxNbErd
+	HJf7VIDZm7EIXrbYznxKtdiDrmUhxlbLK8wEEsoosTgcWFIE7i+9uZHxdlIgw7Ee
+	iADC1ed/eofk3WFgTrszDeGcpBP/KPHlPV4Gs+uwN3PT4=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgAn2XPOr_FoPz7CAQ--.949S3;
+	Fri, 17 Oct 2025 10:54:09 +0800 (CST)
+From: yicongsrfy@163.com
+To: michal.pecio@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	oliver@neukum.org,
+	pabeni@redhat.com
+Cc: linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Yi Cong <yicong@kylinos.cn>
+Subject: [PATCH net v6 1/3] net: usb: support quirks in cdc_ncm
+Date: Fri, 17 Oct 2025 10:54:02 +0800
+Message-Id: <20251017025404.1962110-2-yicongsrfy@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20251017025404.1962110-1-yicongsrfy@163.com>
+References: <20251017025404.1962110-1-yicongsrfy@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fw4pvt7morcydktpqmmotab7pyvbixhrszgdfpl4dut52rfesf@4fztqcywdwpm>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgAn2XPOr_FoPz7CAQ--.949S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF1kWw4DKw4UKrWfWr1xZrb_yoW7JF1Upa
+	15KrZYqr4DGw13Ja4fJr48ZFWrXw4vy3y5Gr17Ga43Z3yfA3Z0qr1Ut3yFvF9Fkr4rX3Wa
+	vF1UG3yUWr4UA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jxL0nUUUUU=
+X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/1tbixxrp22jxris21gAAsT
 
-On Thu, Oct 16, 2025 at 03:24:59PM +0200, Jiri Pirko wrote:
-> Thu, Oct 16, 2025 at 02:38:15PM +0200, liuhangbin@gmail.com wrote:
-> >On Thu, Oct 16, 2025 at 01:27:00PM +0200, Jiri Pirko wrote:
-> >> >> How about "master_upper"? This is already widely used to refer to
-> >> >> bond/team/bridge/other master soft devices.
-> >> >> 
-> >> >> MASTER_UPPER_DEV_VLAN_FEATURES?
-> >> >
-> >> >I'm not sure if we should avoid using "master" now. Maybe just UPPER_DEV_VLAN_FEATURES?
-> >> 
-> >> Why? We have "master_upper" to point exactly at this kind of device.
-> >
-> >I mean try not use "master/slave" words. I'm OK to use UPPER_DEV_* prefix.
-> 
-> If you don't want to use that, change the existing code. But when the
-> existing code uses that, new code should be consistent with it.
+From: Yi Cong <yicong@kylinos.cn>
 
-OK, I will update the name.
+Some vendors' USB network interface controllers (NICs) may be compatible
+with multiple drivers.
 
-Thanks
-Hangbin
+I consulted with relevant vendors. Taking the AX88179 chip as an example,
+NICs based on this chip may be used across various OS—for instance,
+cdc_ncm is used on macOS, while ax88179_178a.ko is the intended driver
+on Linux (despite a previous patch having disabled it).
+Therefore, the firmware must support multiple protocols.
+
+Currently, both cdc_ncm and ax88179_178a coexist in the Linux kernel.
+Supporting both drivers simultaneously leads to the following issues:
+
+1. Inconsistent driver loading order during reboot stress testing:
+   The order in which drivers are loaded can vary across reboots,
+   potentially resulting in the unintended driver being loaded. For
+   example:
+[    4.239893] cdc_ncm 2-1:2.0: MAC-Address: c8:a3:62:ef:99:8e
+[    4.239897] cdc_ncm 2-1:2.0: setting rx_max = 16384
+[    4.240149] cdc_ncm 2-1:2.0: setting tx_max = 16384
+[    4.240583] cdc_ncm 2-1:2.0 usb0: register 'cdc_ncm' at usb-
+xxxxx:00-1, CDC NCM, c8:a3:62:ef:99:8e
+[    4.240627] usbcore: registered new interface driver cdc_ncm
+[    4.240908] usbcore: registered new interface driver ax88179_178a
+
+In this case, network connectivity functions, but the cdc_ncm driver is
+loaded instead of the expected ax88179_178a.
+
+2. Similar issues during cable plug/unplug testing:
+   The same race condition can occur when reconnecting the USB device:
+[   79.879922] usb 4-1: new SuperSpeed USB device number 3 using xhci_hcd
+[   79.905168] usb 4-1: New USB device found, idVendor=0b95, idProduct=
+1790, bcdDevice= 2.00
+[   79.905185] usb 4-1: New USB device strings: Mfr=1, Product=2,
+SerialNumber=3
+[   79.905191] usb 4-1: Product: AX88179B
+[   79.905198] usb 4-1: Manufacturer: ASIX
+[   79.905201] usb 4-1: SerialNumber: 00EF998E
+[   79.915215] ax88179_probe, bConfigurationValue:2
+[   79.952638] cdc_ncm 4-1:2.0: MAC-Address: c8:a3:62:ef:99:8e
+[   79.952654] cdc_ncm 4-1:2.0: setting rx_max = 16384
+[   79.952919] cdc_ncm 4-1:2.0: setting tx_max = 16384
+[   79.953598] cdc_ncm 4-1:2.0 eth0: register 'cdc_ncm' at usb-0000:04:
+00.2-1, CDC NCM (NO ZLP), c8:a3:62:ef:99:8e
+[   79.954029] cdc_ncm 4-1:2.0 eth0: unregister 'cdc_ncm' usb-0000:04:
+00.2-1, CDC NCM (NO ZLP)
+
+At this point, the network becomes unusable.
+
+To resolve these issues, introduce a *quirks* mechanism into the usbnet
+module. By adding chip-specific identification within the generic usbnet
+framework, we can skip the usbnet probe process for devices that require a
+dedicated driver.
+
+Signed-off-by: Yi Cong <yicong@kylinos.cn>
+
+---
+v2: Correct the description of usbnet_quirks.h and modify the code style
+v3: Add checking whether the CONFIG_USB_NET_AX88179_178A is enabled
+v4: Move quirks from usbnet.ko to cdc_ncm.ko
+v5: Move the ignored product information to cdc_ncm.c and delete the
+    unlikely call in the if judgement
+---
+ drivers/net/usb/cdc_ncm.c | 44 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 5d123df0a866..7b68706b8a8a 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -2114,10 +2114,52 @@ static const struct usb_device_id cdc_devs[] = {
+ };
+ MODULE_DEVICE_TABLE(usb, cdc_devs);
+ 
++/* cdc_ncm_ignore_list:
++ * Chip info which already support int vendor specific driver,
++ * and then should be ignored in generic cdc_ncm
++ */
++static const struct usb_device_id cdc_ncm_ignore_list[] = {
++#if IS_ENABLED(CONFIG_USB_NET_AX88179_178A)
++	/* Chips already support in ax88179_178a.c */
++	{ USB_DEVICE(0x0b95, 0x1790) },
++	{ USB_DEVICE(0x0b95, 0x178a) },
++	{ USB_DEVICE(0x04b4, 0x3610) },
++	{ USB_DEVICE(0x2001, 0x4a00) },
++	{ USB_DEVICE(0x0df6, 0x0072) },
++	{ USB_DEVICE(0x04e8, 0xa100) },
++	{ USB_DEVICE(0x17ef, 0x304b) },
++	{ USB_DEVICE(0x050d, 0x0128) },
++	{ USB_DEVICE(0x0930, 0x0a13) },
++	{ USB_DEVICE(0x0711, 0x0179) },
++	{ USB_DEVICE(0x07c9, 0x000e) },
++	{ USB_DEVICE(0x07c9, 0x000f) },
++	{ USB_DEVICE(0x07c9, 0x0010) },
++	/* End of support in ax88179_178a.c */
++#endif
++
++	{ } /*END*/
++};
++
++static inline bool cdc_ncm_ignore(struct usb_interface *intf)
++{
++	return !!usb_match_id(intf, cdc_ncm_ignore_list);
++}
++
++static int cdc_ncm_probe(struct usb_interface *intf, const struct usb_device_id *prod)
++{
++	/* Should it be ignored? */
++	if (cdc_ncm_ignore(intf)) {
++		dev_dbg(&intf->dev, "cdc_ncm ignore this device!\n");
++		return -ENODEV;
++	}
++
++	return usbnet_probe(intf, prod);
++}
++
+ static struct usb_driver cdc_ncm_driver = {
+ 	.name = "cdc_ncm",
+ 	.id_table = cdc_devs,
+-	.probe = usbnet_probe,
++	.probe = cdc_ncm_probe,
+ 	.disconnect = usbnet_disconnect,
+ 	.suspend = usbnet_suspend,
+ 	.resume = usbnet_resume,
+-- 
+2.25.1
+
