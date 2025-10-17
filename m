@@ -1,173 +1,140 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57D6256C9F
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 05:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6524F30F54C
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760680486; cv=none; b=uuqjGkSY+b/F+gSbGF4BLwr1L6IBPsGwAzh0M1e8L+4DOX2EpPMFY/iAFEe3ODuZ/QjH+kZ0XrPS1pyuJ2QF9dK233GiJbTqC0bN50QkaHiShGQXmvkJVb+w8ihrRyqG8KfgPLm6Mxhujwy4WAJL7sh0WlK8t50mYn6Ys3MHEEg=
+	t=1760681414; cv=none; b=FpI5Ms01PArucCQNDrN69IkF28Jz2DKN5qqkkSJEbIdZCUgI0X/hXF4Bsqx3SChv07AH+alIeXu2nXVptOoVAW9/6bVA6ZGbzfiV/L7L0pAKbhLMPSyQ65eOTjzQKYr90xNDOVldArEB2wh1hSm0h97yEpnQCJOcrmYuhIuW2CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760680486; c=relaxed/simple;
-	bh=AzoQ4i/srN8FpTZFrJJz4zAfUAY4stVL58foSLnf8aw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZVuGSZofjmCrQA2PtIRQMFQ+iZVPbmKqdGa+FYDPEFO03fAFX9xtmRUdE6FZ9Y+EL60d+MFdyLu66d4OgabiR5qcPm+P5X6f0KRjRTQ5jtNA7kBWginnDFjP42rwW4N3q668OAlv8JapZoXl8nrPFuhTUX9MGsMdxe7+G+2G+js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YVYPJ5xJ; arc=none smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1760681414; c=relaxed/simple;
+	bh=tzvj+dF7GYN05CycS5ptnofaexzJ2122giVs3WVtybQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TGbQsh5xyO5jNzg7MnXWQ/pzhIAzGm0SvZrg9zXiZ788hyhjKCyb6CuNuC62C2CmWX9tYSh9WdraDFpDi7bCBPQrRM53rP6cn54Vi3BLlZ4lhfcKSW3R3zBBPWVwI870K/aNca3t7bZtli6KGruJ2QpiSvNHltGEeomR/CgpiWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=ZKZ55eRj; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YVYPJ5xJ"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-633be3be1e6so2443803d50.1
-        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 22:54:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="ZKZ55eRj"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b48d8deafaeso320860166b.1
+        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1760680484; x=1761285284; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=26UkdI1wBp0Xi61UmFjaGlIQEnXQ+0LgrUBcqpJYfDU=;
-        b=YVYPJ5xJz5DjfRTUt3IakV/uIpcmUTe7xVV7l7vG5DOcHtbm9OySV/oHs/DWg4HOIM
-         J3CH+kYYKmNG1EcZyUXb7r8vB8PzwWfRXIeoXmj5htH/5EOTTUDhwLRfV3NOAWjW1CVS
-         N/1jFj64F7cZLt7FElmAj18gb5dDqhi3Jz7x0+a6Ja09KRIi8L9nUjN1UUwWbrGYBwKz
-         YRigM97U3KHj4NJp9jlFV8YS/5QiqVXIPY26mabJyHemtxZK5DLJ+auAhHmKaxqxv7Ht
-         4qR0U4HOgJ8ojOqfHEb/6itYvVfF1DAIWNtY0dQqHB+jOwV1gP86JcvRsUQHyqk0FZbE
-         VrXw==
+        d=blackwall.org; s=google; t=1760681411; x=1761286211; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b6waZ7M3zINDb7ZucUBWuxq4+vcAnZAQSMKo/t03dBg=;
+        b=ZKZ55eRjp2PPbtOSo/tCzyqUvdmFQ0hDpRxmcwnztEoih5nSOM68YyC609ljp1eocw
+         4F41+AkJ9sVkyP93wQCR0Ohn63zepCFXW/2b0WjROi2gertFy9ByZXi+rVmvDHp74ML9
+         7smAddL56WOWchBc7RRMhl8x3pzbvz5M0l5XCgFKJqtgV0ctEQiROIU7HyaZgHyzLzyX
+         QceR3ZRLs9nNY7jMLu+h+M8DSE1j4d+FIcOYixDMVlKVfFfxYX1hd9kY0qiWIjNI4ha0
+         x8XoRnSJHIY+xph0WtnBTQ5xe/gnrpH/hM8veNQVmyWDD/AhVsMTGbCq7QutlJ5ys6UT
+         NJfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760680484; x=1761285284;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=26UkdI1wBp0Xi61UmFjaGlIQEnXQ+0LgrUBcqpJYfDU=;
-        b=XVpB1lnAoAGVk7E5fwatN2c88cz+aNAI5ThMDvPii6mmg449+hGaO9YzVLys6fXlZm
-         15JbJFxlp4OkaZGHh2O9QUWw+gt90O6JeJ+U5rBwgZPfhHjjDOAx59xsqhIaqEKC36EI
-         Xf8MtxL1xDvWDZhRp0C4dWmizheiVUgzTUTYyFO+P21nfQ0dqvotmd6Tb2Xm8fW/U6AM
-         PUDzAgyLFfJyf2Yd5+XvPB9Vwcx7a9AK5x/bpPsi2II9ISGVYdx8xzkArPo7E75UvEiK
-         7OhWbOTheF9PBQOxPRyfPIDoqgHs+WhknnhlxCYmDL36jOuEs4KLLpX0hlNGuu3gkv4e
-         6Pzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWx6BhtgTP+xTvtbs6Pvkktxml0S/KlO+NB85LXl7TcCSL0s/9u+yfjDwPDEtS48ZkRm+NbYGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+R0OQ4kFOFhLf9/FWEokcap+dQGB4qYwd9lqR52YRIF7JiRUo
-	GlcZ/Xhay4n8/vzkaaYmc13JhApZvw3oCAca5F4zCosekblRfnSDk2VHT2MdJQtrRd/uC2nnVuv
-	fu89/WKuRyuiN/m8kEm+alNfAJM4d/ieB3Unh5TF4
-X-Gm-Gg: ASbGnctYBITpaKetk8MIzrlJy9gBIL9JqDIXt1Wkrt2DNcxyY3j5DA/1QP8N+gUrrhx
-	LgVH5W6nLAzVAG60sAtQiFGYktDGqo491LwOxuQOEWLdm1E6X2nnugfuH2FVtv03pYpz986jaL2
-	GgckR/y0ENBA/RgUk6DuFGVSJgRDwhABxJaWGD59PwbSCcTvnECx6NPRAn5iVAgwe8JRurAdQCF
-	S4Sc+mjnuXATNiPv7+dF6XayIbhTxfv1PKf9JtOv4LMmxkBLJgiGrtpe/s=
-X-Google-Smtp-Source: AGHT+IHsN8XKGFc1pmq1dLy5gZIAu/2/L7IYb6L12Ta0DohYp6BNuhOBNV89pr4e5xJtcC1TCmMzZcpB8Bt4srH6t4M=
-X-Received: by 2002:a05:690e:168b:b0:63e:1113:bde2 with SMTP id
- 956f58d0204a3-63e1113c469mr2815324d50.20.1760680483191; Thu, 16 Oct 2025
- 22:54:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1760681411; x=1761286211;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b6waZ7M3zINDb7ZucUBWuxq4+vcAnZAQSMKo/t03dBg=;
+        b=kzSOAc4cF1ftG0HIbU7P4OAitBWd/9zXj/oRycSsPVedExOGeP/Tg7hbPmtoOCsabk
+         QkuFwrRlFOzvyR/D1mNydhvkA7WsQH4NCNCLWbyfF8ZmgYoo+eRrFYExZ6FOKMufU0n6
+         dmMPVRsp9/30y5t0pOQLqim1fzLzFqcsCTDYrsLwEnbjscO8vFTjAzScdS8idU32kAlH
+         VACfGaO7csk4EK6UQ7GRCNfDLjM0+XJQUv4kbj6icvZfV7QEWp34/fXoIKuDxZkGCi9/
+         p9gQlgOCEyLpoF2y6tKROhR5VxNI+21TcNykiZHVS4jLG92I2noKnofu+0x/xZLqxcpZ
+         UFFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJHFmT6Fufta5ck5c5xNM/Ny5iciHsYC74NORvbFJRXRtQMW643gfpxAmTJj1Xei4yhSWFFRY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVeS7Ddeo/PcqcA70gdrMK8KxpxSvl+WFoV2k/v6/IBeqNBY4v
+	aF47JoFhXMfB+aLlBPpH83Xqw2AdezgSvWZ+gt6JlhYOkHElzfstaMU/z8hl/AJTLjo=
+X-Gm-Gg: ASbGncvcmhh76idnYDPgekf/BXEHQaU/ffY9UhN9h3jO9n9FKxCV4n1/OS0qWfgKxrc
+	8KVmGr73GyAqd7UeWpq0qHBC8UOU53BhX4ZE2ABD7FY1MfyrNGyA0PgqfewQ5P+Dme2YoFFRMBl
+	ZI5iYKHqek/G+eAVQExcxUI0XJgqMRUFZ84/NN52ErI8VYpuO3E+w66PnNLuXClzE3Awr8sm3zV
+	LnbAIu1zZJrnaF+VhiEMFqzdkIjyieC0ReyvOj2LlPoqmqA7F4Ps7HIprFv2fRVtblqcDohiS2K
+	avyU2u2WLk3ntm02M/tVkGLw+qault0ci6KAnNTdyv2UPR1kLA7rzYhDpLeP7iuq2w965MmvCiv
+	/ELAmGGSk1huqrgQXASitafmn72jd+0AUPpG6scu1tXQm6hPplZI2QR7kMldRnNk/XeVIm075kE
+	g5wmejjhlcwDz0Ax4E/F/LnrGB+YdMz9+rceVLNYp7Ctk=
+X-Google-Smtp-Source: AGHT+IECBBefYDxm3VztfrVoSJFgzWCxr6FwbCzBp/zx5ySKXbWRJApWHiTT/WyzbR2JJ2GvkAYP0A==
+X-Received: by 2002:a17:907:fd15:b0:b47:de64:df34 with SMTP id a640c23a62f3a-b6474241266mr309874466b.51.1760681410460;
+        Thu, 16 Oct 2025 23:10:10 -0700 (PDT)
+Received: from [192.168.0.205] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b5cccdaa2c8sm735915766b.46.2025.10.16.23.10.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Oct 2025 23:10:10 -0700 (PDT)
+Message-ID: <0be57e07-3b90-44f7-85d5-97a90ac13831@blackwall.org>
+Date: Fri, 17 Oct 2025 09:10:09 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251017024827.3137512-1-wangliang74@huawei.com> <20251017055106.3603987-1-kuniyu@google.com>
-In-Reply-To: <20251017055106.3603987-1-kuniyu@google.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 16 Oct 2025 22:54:31 -0700
-X-Gm-Features: AS18NWCfR7jSXBSalgtHDaSKYVywq8UEZkUHYIuFi4bvybirdzcP5DjBZY6mcTU
-Message-ID: <CANn89iKXU71cZYefVSQDa-1rc0oGs0vjFUkL=oPyG93c-ezP1A@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/smc: fix general protection fault in __smc_diag_dump
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: wangliang74@huawei.com, alibuda@linux.alibaba.com, davem@davemloft.net, 
-	dust.li@linux.alibaba.com, guwen@linux.alibaba.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-s390@vger.kernel.org, mjambigi@linux.ibm.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, sidraya@linux.ibm.com, tonylu@linux.alibaba.com, 
-	wenjia@linux.ibm.com, yuehaibing@huawei.com, zhangchangzhong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] bonding: show master index when dumping slave
+ info
+To: Hangbin Liu <liuhangbin@gmail.com>, netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Stephen Hemminger <stephen@networkplumber.org>,
+ David Ahern <dsahern@gmail.com>, linux-kselftest@vger.kernel.org
+References: <20251017030310.61755-1-liuhangbin@gmail.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20251017030310.61755-1-liuhangbin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 16, 2025 at 10:51=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
-om> wrote:
->
-> From: Wang Liang <wangliang74@huawei.com>
-> Date: Fri, 17 Oct 2025 10:48:27 +0800
-> > The syzbot report a crash:
-> >
-> >   Oops: general protection fault, probably for non-canonical address 0x=
-fbd5a5d5a0000003: 0000 [#1] SMP KASAN NOPTI
-> >   KASAN: maybe wild-memory-access in range [0xdead4ead00000018-0xdead4e=
-ad0000001f]
-> >   CPU: 1 UID: 0 PID: 6949 Comm: syz.0.335 Not tainted syzkaller #0 PREE=
-MPT(full)
-> >   Hardware name: Google Compute Engine/Google Compute Engine, BIOS Goog=
-le 08/18/2025
-> >   RIP: 0010:smc_diag_msg_common_fill net/smc/smc_diag.c:44 [inline]
-> >   RIP: 0010:__smc_diag_dump.constprop.0+0x3ca/0x2550 net/smc/smc_diag.c=
-:89
-> >   Call Trace:
-> >    <TASK>
-> >    smc_diag_dump_proto+0x26d/0x420 net/smc/smc_diag.c:217
-> >    smc_diag_dump+0x27/0x90 net/smc/smc_diag.c:234
-> >    netlink_dump+0x539/0xd30 net/netlink/af_netlink.c:2327
-> >    __netlink_dump_start+0x6d6/0x990 net/netlink/af_netlink.c:2442
-> >    netlink_dump_start include/linux/netlink.h:341 [inline]
-> >    smc_diag_handler_dump+0x1f9/0x240 net/smc/smc_diag.c:251
-> >    __sock_diag_cmd net/core/sock_diag.c:249 [inline]
-> >    sock_diag_rcv_msg+0x438/0x790 net/core/sock_diag.c:285
-> >    netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
-> >    netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
-> >    netlink_unicast+0x5a7/0x870 net/netlink/af_netlink.c:1346
-> >    netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1896
-> >    sock_sendmsg_nosec net/socket.c:714 [inline]
-> >    __sock_sendmsg net/socket.c:729 [inline]
-> >    ____sys_sendmsg+0xa95/0xc70 net/socket.c:2614
-> >    ___sys_sendmsg+0x134/0x1d0 net/socket.c:2668
-> >    __sys_sendmsg+0x16d/0x220 net/socket.c:2700
-> >    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-> >    do_syscall_64+0xcd/0x4e0 arch/x86/entry/syscall_64.c:94
-> >    entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> >    </TASK>
-> >
-> > The process like this:
-> >
-> >                (CPU1)              |             (CPU2)
-> >   ---------------------------------|-------------------------------
-> >   inet_create()                    |
-> >     // init clcsock to NULL        |
-> >     sk =3D sk_alloc()                |
-> >                                    |
-> >     // unexpectedly change clcsock |
-> >     inet_init_csk_locks()          |
-> >                                    |
-> >     // add sk to hash table        |
-> >     smc_inet_init_sock()           |
-> >       smc_sk_init()                |
-> >         smc_hash_sk()              |
-> >                                    | // traverse the hash table
-> >                                    | smc_diag_dump_proto
-> >                                    |   __smc_diag_dump()
-> >                                    |     // visit wrong clcsock
-> >                                    |     smc_diag_msg_common_fill()
-> >     // alloc clcsock               |
-> >     smc_create_clcsk               |
-> >       sock_create_kern             |
-> >
-> > With CONFIG_DEBUG_LOCK_ALLOC=3Dy, the smc->clcsock is unexpectedly chan=
-ged
-> > in inet_init_csk_locks(). The INET_PROTOSW_ICSK flag is no need by smc,
-> > just remove it.
-> >
-> > After removing the INET_PROTOSW_ICSK flag, this patch alse revert
-> > commit 6fd27ea183c2 ("net/smc: fix lacks of icsk_syn_mss with IPPROTO_S=
-MC")
-> > to avoid casting smc_sock to inet_connection_sock.
-> >
-> > Reported-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3Df775be4458668f7d220e
-> > Tested-by: syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com
->
-> nit: looks like this diff is not tested by syzbot, you may
-> want to send diff to syzbot.
->
->
-> > Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
-> > Signed-off-by: Wang Liang <wangliang74@huawei.com>
->
-> Change itself looks good.
->
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+On 10/17/25 06:03, Hangbin Liu wrote:
+> Currently, there is no straightforward way to obtain the master/slave
+> relationship via netlink. Users have to retrieve all slaves through sysfs
+> to determine these relationships.
+> 
 
-Agreed
+How about IFLA_MASTER? Why not use that?
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+> To address this, we can either list all slaves under the bond interface
+> or display the master index in each slave. Since the number of slaves could
+> be quite large (e.g., 100+), it is more efficient to show the master
+> information in the slave entry.
+> 
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+> ---
+>  drivers/net/bonding/bond_netlink.c | 4 ++++
+>  include/uapi/linux/if_link.h       | 1 +
+>  2 files changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
+> index 286f11c517f7..ff3f11674a8b 100644
+> --- a/drivers/net/bonding/bond_netlink.c
+> +++ b/drivers/net/bonding/bond_netlink.c
+> @@ -29,6 +29,7 @@ static size_t bond_get_slave_size(const struct net_device *bond_dev,
+>  		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE */
+>  		nla_total_size(sizeof(s32)) +	/* IFLA_BOND_SLAVE_PRIO */
+>  		nla_total_size(sizeof(u16)) +	/* IFLA_BOND_SLAVE_ACTOR_PORT_PRIO */
+> +		nla_total_size(sizeof(u32)) +	/* IFLA_BOND_SLAVE_MASTER */
+>  		0;
+>  }
+>  
+> @@ -38,6 +39,9 @@ static int bond_fill_slave_info(struct sk_buff *skb,
+>  {
+>  	struct slave *slave = bond_slave_get_rtnl(slave_dev);
+>  
+> +	if (nla_put_u32(skb, IFLA_BOND_SLAVE_MASTER, bond_dev->ifindex))
+> +		goto nla_put_failure;
+> +
+>  	if (nla_put_u8(skb, IFLA_BOND_SLAVE_STATE, bond_slave_state(slave)))
+>  		goto nla_put_failure;
+>  
+> diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+> index 3b491d96e52e..bad41a1807f7 100644
+> --- a/include/uapi/linux/if_link.h
+> +++ b/include/uapi/linux/if_link.h
+> @@ -1567,6 +1567,7 @@ enum {
+>  	IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
+>  	IFLA_BOND_SLAVE_PRIO,
+>  	IFLA_BOND_SLAVE_ACTOR_PORT_PRIO,
+> +	IFLA_BOND_SLAVE_MASTER,
+>  	__IFLA_BOND_SLAVE_MAX,
+>  };
+>  
+
