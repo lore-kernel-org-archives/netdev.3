@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B7232E141
-	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FAC3328EF
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760713720; cv=none; b=DD672WsPJNuApHGCOBSUNOJqS3s6HBwoZyjVCIMorG77DHTRhmX+of+i3ziZLCv/V04JMXWv3LTHOzRnFX9Gw/Wgwu5Cd/MNeYfzn9wXo8l9Zk5zLYRfJkKqcBYVY3xTtLOleTSsxnzYtLBUfQHDquP7NxkTYGkovsaXxUDVnDs=
+	t=1760713721; cv=none; b=pbbII2TMPtAkyI6rF5EB5xeN0TULPUko5ijcRz7/z31YKdiQwLbJfc40PrlbaLxYRIv5m9sazpytVGEoTA0TmTZBODd+49ZaQeEMC/dtHew/2LV2eNw3AoMrMDaxNxtNMTHbKDXiGB4QeSY4uT0GDRbjK92IhhK83Tb5SWeyX0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760713720; c=relaxed/simple;
-	bh=MqwY1f71HV4MQYkm9sC8OJmjO7tDWOavvgdZJ2JhYGk=;
+	s=arc-20240116; t=1760713721; c=relaxed/simple;
+	bh=PgAVlU0p78/Y0TsSgUE3KhKk5RF1WmvQ0WRjSSHkvOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfWC8eMh4VQybxvOCFVd8xJ9PxJ0JUC9krVDNV7A1v3XgedBlfVVQsc4AQDVp+lEvTy1/b99/H0KNcjrsEPpq3Gqq5SI7cph5WcUkLT4KrQDjociSxogioTj7jd1Lhu3Ail/D/i7m4V74OD0PJ8OE6Hr8j8chRaKfWraDUoYTvM=
+	 MIME-Version; b=H8cPZCRI+uJfZhXHw+Ig69rMJUsYMFVdvXBnQ/952wIAkZMUV+Dlw66Flu6Xo3lphuWuo8plN6sP2QOGYabiYy0hcORbX7iJV7Lm/I6ZcC02mDE5MT7tM3ORXt3jKg99czTQP+SKVswCwNmJJVjRcfP/GUAXDQHuhyy7iY5QpQs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4E-0003NM-2R; Fri, 17 Oct 2025 17:08:30 +0200
+	id 1v9m4E-0003NO-2L; Fri, 17 Oct 2025 17:08:30 +0200
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1v9m4D-00450h-2U;
+	id 1v9m4D-00450k-2i;
 	Fri, 17 Oct 2025 17:08:29 +0200
 Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 75B004892B7;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 95F084892B9;
 	Fri, 17 Oct 2025 15:08:29 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,11 +38,10 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	"Markus Schneider-Pargmann (TI.com)" <msp@baylibre.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 06/13] can: m_can: Support pinctrl wakeup state
-Date: Fri, 17 Oct 2025 17:04:14 +0200
-Message-ID: <20251017150819.1415685-7-mkl@pengutronix.de>
+Subject: [PATCH net-next 08/13] can: m_can: hrtimer_callback(): rename to m_can_polling_timer()
+Date: Fri, 17 Oct 2025 17:04:16 +0200
+Message-ID: <20251017150819.1415685-9-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251017150819.1415685-1-mkl@pengutronix.de>
 References: <20251017150819.1415685-1-mkl@pengutronix.de>
@@ -58,144 +57,44 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: "Markus Schneider-Pargmann (TI.com)" <msp@baylibre.com>
+The original use of struct m_can_classdev::hrtimer was to support polling
+for devices without IRQ, with the timer function called hrtimer_callback().
 
-TI AM62x SoC requires a wakeup flag being set in pinctrl when mcan pins
-act as a wakeup source. Add support to select the wakeup state if WOL
-is enabled.
+Commit 07f25091ca02 ("can: m_can: Implement receive coalescing") uses the
+hrtimer for software-supported IRQ coalescence, with the timer function
+called m_can_coalescing_timer().
 
-Signed-off-by: Markus Schneider-Pargmann (TI.com) <msp@baylibre.com>
-Link: https://patch.msgid.link/20251001-topic-mcan-wakeup-source-v6-12-v10-4-4ab508ac5d1e@baylibre.com
+To improve the readability of the driver, rename hrtimer_callback() to
+m_can_polling_timer(), which better describes the functionality.
+
+Link: https://patch.msgid.link/20251008-m_can-cleanups-v1-2-1784a18eaa84@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/m_can/m_can.c | 69 ++++++++++++++++++++++++++++++++++-
- drivers/net/can/m_can/m_can.h |  3 ++
- 2 files changed, 70 insertions(+), 2 deletions(-)
+ drivers/net/can/m_can/m_can.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 10b5862b4880..8569596ae830 100644
+index 9f4002f3481e..110cfd54b669 100644
 --- a/drivers/net/can/m_can/m_can.c
 +++ b/drivers/net/can/m_can/m_can.c
-@@ -2265,7 +2265,26 @@ static int m_can_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- 		return ret;
- 	}
- 
-+	if (!IS_ERR_OR_NULL(cdev->pinctrl_state_wakeup)) {
-+		if (wol_enable)
-+			ret = pinctrl_select_state(cdev->pinctrl, cdev->pinctrl_state_wakeup);
-+		else
-+			ret = pinctrl_pm_select_default_state(cdev->dev);
-+
-+		if (ret) {
-+			netdev_err(cdev->net, "Failed to select pinctrl state %pE\n",
-+				   ERR_PTR(ret));
-+			goto err_wakeup_enable;
-+		}
-+	}
-+
- 	return 0;
-+
-+err_wakeup_enable:
-+	/* Revert wakeup enable */
-+	device_set_wakeup_enable(cdev->dev, !wol_enable);
-+
-+	return ret;
- }
- 
- static const struct ethtool_ops m_can_ethtool_ops_coalescing = {
-@@ -2393,6 +2412,42 @@ int m_can_class_get_clocks(struct m_can_classdev *cdev)
- }
- EXPORT_SYMBOL_GPL(m_can_class_get_clocks);
- 
-+static bool m_can_class_wakeup_pinctrl_enabled(struct m_can_classdev *class_dev)
-+{
-+	return device_may_wakeup(class_dev->dev) && class_dev->pinctrl_state_wakeup;
-+}
-+
-+static int m_can_class_parse_pinctrl(struct m_can_classdev *class_dev)
-+{
-+	struct device *dev = class_dev->dev;
-+	int ret;
-+
-+	class_dev->pinctrl = devm_pinctrl_get(dev);
-+	if (IS_ERR(class_dev->pinctrl)) {
-+		ret = PTR_ERR(class_dev->pinctrl);
-+		class_dev->pinctrl = NULL;
-+
-+		if (ret == -ENODEV)
-+			return 0;
-+
-+		return dev_err_probe(dev, ret, "Failed to get pinctrl\n");
-+	}
-+
-+	class_dev->pinctrl_state_wakeup =
-+		pinctrl_lookup_state(class_dev->pinctrl, "wakeup");
-+	if (IS_ERR(class_dev->pinctrl_state_wakeup)) {
-+		ret = PTR_ERR(class_dev->pinctrl_state_wakeup);
-+		class_dev->pinctrl_state_wakeup = NULL;
-+
-+		if (ret == -ENODEV)
-+			return 0;
-+
-+		return dev_err_probe(dev, ret, "Failed to lookup pinctrl wakeup state\n");
-+	}
-+
-+	return 0;
-+}
-+
- struct m_can_classdev *m_can_class_allocate_dev(struct device *dev,
- 						int sizeof_priv)
- {
-@@ -2434,7 +2489,15 @@ struct m_can_classdev *m_can_class_allocate_dev(struct device *dev,
- 	m_can_of_parse_mram(class_dev, mram_config_vals);
- 	spin_lock_init(&class_dev->tx_handling_spinlock);
- 
-+	ret = m_can_class_parse_pinctrl(class_dev);
-+	if (ret)
-+		goto err_free_candev;
-+
- 	return class_dev;
-+
-+err_free_candev:
-+	free_candev(net_dev);
-+	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(m_can_class_allocate_dev);
- 
-@@ -2563,7 +2626,8 @@ int m_can_class_suspend(struct device *dev)
- 		cdev->can.state = CAN_STATE_SLEEPING;
- 	}
- 
--	pinctrl_pm_select_sleep_state(dev);
-+	if (!m_can_class_wakeup_pinctrl_enabled(cdev))
-+		pinctrl_pm_select_sleep_state(dev);
- 
+@@ -2058,7 +2058,7 @@ static netdev_tx_t m_can_start_xmit(struct sk_buff *skb,
  	return ret;
  }
-@@ -2575,7 +2639,8 @@ int m_can_class_resume(struct device *dev)
- 	struct net_device *ndev = cdev->net;
- 	int ret = 0;
  
--	pinctrl_pm_select_default_state(dev);
-+	if (!m_can_class_wakeup_pinctrl_enabled(cdev))
-+		pinctrl_pm_select_default_state(dev);
+-static enum hrtimer_restart hrtimer_callback(struct hrtimer *timer)
++static enum hrtimer_restart m_can_polling_timer(struct hrtimer *timer)
+ {
+ 	struct m_can_classdev *cdev = container_of(timer, struct
+ 						   m_can_classdev, hrtimer);
+@@ -2545,7 +2545,7 @@ int m_can_class_register(struct m_can_classdev *cdev)
  
- 	if (netif_running(ndev)) {
- 		ret = m_can_clk_start(cdev);
-diff --git a/drivers/net/can/m_can/m_can.h b/drivers/net/can/m_can/m_can.h
-index 7b7600697c6b..f2f89687bbd2 100644
---- a/drivers/net/can/m_can/m_can.h
-+++ b/drivers/net/can/m_can/m_can.h
-@@ -129,6 +129,9 @@ struct m_can_classdev {
- 	struct mram_cfg mcfg[MRAM_CFG_NUM];
- 
- 	struct hrtimer hrtimer;
-+
-+	struct pinctrl *pinctrl;
-+	struct pinctrl_state *pinctrl_state_wakeup;
- };
- 
- struct m_can_classdev *m_can_class_allocate_dev(struct device *dev, int sizeof_priv);
+ 	if (!cdev->net->irq) {
+ 		dev_dbg(cdev->dev, "Polling enabled, initialize hrtimer");
+-		hrtimer_setup(&cdev->hrtimer, &hrtimer_callback, CLOCK_MONOTONIC,
++		hrtimer_setup(&cdev->hrtimer, m_can_polling_timer, CLOCK_MONOTONIC,
+ 			      HRTIMER_MODE_REL_PINNED);
+ 	} else {
+ 		hrtimer_setup(&cdev->hrtimer, m_can_coalescing_timer, CLOCK_MONOTONIC,
 -- 
 2.51.0
 
