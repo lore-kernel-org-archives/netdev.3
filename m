@@ -1,96 +1,107 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A315F190685;
-	Fri, 17 Oct 2025 06:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B2981720;
+	Fri, 17 Oct 2025 06:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760682323; cv=none; b=O+KDI9kXen8JGarN0ZIyHK9Cbe3EThGGNfl7OAG7+wziCuXwf/Y+zTIDdLZgao7HGxenLeTEcWvKPFsCMADhJeAx1H+3Yx4xITso1vRCi/GOEqFVW9v2yxe2O3xiv8eQDyOqtH0rqoSxUMJ2SdOe77CEGpyHJVZF9Lhg4MTLFt4=
+	t=1760682388; cv=none; b=OSTKSAvKn3x15ye2+qauWIHcj446IJFODmhNmBMfHcKQmy1326QOoiKWwhXHafmsgqsedcG2FxpJ4bUVJQcATGW12vCp36vhDJFZuoTNYDmUnfn1zGmXOJpx9Ip10jz4aRgm0q4bOnioh+B/LhDxh7WwvWGQIc+mXy+p0XyCZ9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760682323; c=relaxed/simple;
-	bh=7etpPFxmDoHeFqMLgTVURFSBEnY5w9kZFx1G/B7x+qk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PkMZBh2eoKWr0ggLQ2mUHikgKSYqgHcs/ZwZMLDcqEJPjvnUTYgN8xuD2kud3aErJF4V14QtqtRkNvb9scQFkekk8QZOD7BU884xKU88ffzEFfipPYcuzlAkIddy5hLQ7ktyzfv8ZJW7gxQlHJkPtoeTSkJ7Sy8NhnF2vmP6TBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tctNvCZQ; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1760682388; c=relaxed/simple;
+	bh=Xim6qWFGZ+WXmsN/CH8emkwIniPHErnqJeZArc8D40Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tzNqBAOo1OwO1ETrn6K0I4hy0+4yj0gG9yXoM61zUBcFbCjV4pbDol+Xow9oNSxtKAESXro1pd3jboHmctXkyr04MqgAArDLnfuLw/x9CicaWTOtjWgRnIrkZmhB3b76QOrTrw7s11r6CcDKqAlYHi2tnoZwxvm/ZB3K/XUd4+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=k15RyFdy; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tctNvCZQ"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=hf3s6IotuP8hPtMIWtNOWIPPdPC89JlbFcmRlpjDvK0=;
-	b=tctNvCZQg2dyAE6oTFninje0M0O50QZC6fhyfXcVU04yK0oQCf9lB3lcUaROxVZ/uflAlMHJQ
-	fJxdr+S9GKU4S5Dp/QHSFHQF6LVuR/TqZ0RULBGARSZ6vXoYgxMcSxMMRN75wmOVV41hVkJGzgp
-	oHFaOTW/GBHctH02235OLIQ=
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cnvtv095mzmV66;
-	Fri, 17 Oct 2025 14:24:55 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6E68A140120;
-	Fri, 17 Oct 2025 14:25:16 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 17 Oct
- 2025 14:25:15 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <syzbot+f775be4458668f7d220e@syzkaller.appspotmail.com>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <syzkaller-bugs@googlegroups.com>
-Subject: Re: [syzbot] [smc?] general protection fault in __smc_diag_dump (4)
-Date: Fri, 17 Oct 2025 14:48:23 +0800
-Message-ID: <20251017064823.1639083-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="k15RyFdy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1760682385;
+	bh=Xim6qWFGZ+WXmsN/CH8emkwIniPHErnqJeZArc8D40Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=k15RyFdyVoJeYb08mMxu9adUujB7QSVw0G8fEYvyrO1hC267ta5tTk7xCiorfMzFY
+	 dcaqex8C4Z/PhhZbi/JLLMBLfbHE4sg+dE8wShuqba2NgcTLaL/LisqwJ4qBj84rYP
+	 ILfzVe5i4ngO6+IFyR6aj+1FiHo2d1OVgetdauhjzGJZj60QekvzgKyD8T/0X6yqFA
+	 ciQK0hoEQTN3K3XPo02a5DmhUlAhRcpoR2xO2CUGfUQszFmaWu8tV3NdoCFO8xah4l
+	 XJsNP2GCSaOrHjLJwB8oNVjnU6+k5yO5U52I/inTnecgBf7vDqohqdobpbimsbuRh5
+	 eaq60xEt/THHw==
+Received: from [192.168.68.113] (unknown [180.150.112.213])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 539D56477A;
+	Fri, 17 Oct 2025 14:26:20 +0800 (AWST)
+Message-ID: <23813eab1406130dfdb6b63615fe1c1b4b634e29.camel@codeconstruct.com.au>
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: "Rob Herring (Arm)" <robh@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stephen Boyd	
+ <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, Linus
+ Walleij	 <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Shawn Guo	 <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?=	 <nuno.sa@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich	 <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Jassi Brar <jassisinghbrar@gmail.com>, Mauro Carvalho Chehab	
+ <mchehab@kernel.org>, Lee Jones <lee@kernel.org>, Joel Stanley
+ <joel@jms.id.au>,  Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>,  Daire McNamara <daire.mcnamara@microchip.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
+ =?UTF-8?Q?Wilczy=C5=84ski?=	 <kwilczynski@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod
+ Koul <vkoul@kernel.org>, Kishon Vijay Abraham I	 <kishon@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Geert Uytterhoeven	
+ <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Florian Fainelli	 <f.fainelli@gmail.com>, Tony
+ Lindgren <tony@atomide.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org, 
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+ linux-pci@vger.kernel.org, 	linux-phy@lists.infradead.org
+Date: Fri, 17 Oct 2025 16:56:19 +1030
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+References: <20251015232015.846282-1-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500016.china.huawei.com (7.185.36.197)
 
-diff --git a/net/smc/smc_inet.c b/net/smc/smc_inet.c
-index a944e7dcb8b9..a94084b4a498 100644
---- a/net/smc/smc_inet.c
-+++ b/net/smc/smc_inet.c
-@@ -56,7 +56,6 @@ static struct inet_protosw smc_inet_protosw = {
- 	.protocol	= IPPROTO_SMC,
- 	.prot		= &smc_inet_prot,
- 	.ops		= &smc_inet_stream_ops,
--	.flags		= INET_PROTOSW_ICSK,
- };
- 
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -104,27 +103,15 @@ static struct inet_protosw smc_inet6_protosw = {
- 	.protocol	= IPPROTO_SMC,
- 	.prot		= &smc_inet6_prot,
- 	.ops		= &smc_inet6_stream_ops,
--	.flags		= INET_PROTOSW_ICSK,
- };
- #endif /* CONFIG_IPV6 */
- 
--static unsigned int smc_sync_mss(struct sock *sk, u32 pmtu)
--{
--	/* No need pass it through to clcsock, mss can always be set by
--	 * sock_create_kern or smc_setsockopt.
--	 */
--	return 0;
--}
--
- static int smc_inet_init_sock(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
- 
- 	/* init common smc sock */
- 	smc_sk_init(net, sk, IPPROTO_SMC);
--
--	inet_csk(sk)->icsk_sync_mss = smc_sync_mss;
--
- 	/* create clcsock */
- 	return smc_create_clcsk(net, sk, sk->sk_family);
- }
--- 
-2.34.1
+On Wed, 2025-10-15 at 18:16 -0500, Rob Herring (Arm) wrote:
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
+>=20
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+> =C2=A0.../arm/altera/socfpga-clk-manager.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0.../bindings/clock/nvidia,tegra124-car.yaml=C2=A0=C2=A0 |=C2=A0 8 +=
++++----
+> =C2=A0.../bindings/clock/nvidia,tegra20-car.yaml=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 6 +++---
+> =C2=A0.../devicetree/bindings/gpio/gpio-mxs.yaml=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 9 +++++----
+> =C2=A0.../bindings/gpio/snps,dw-apb-gpio.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0.../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++-------=
+---
+> =C2=A0.../mailbox/qcom,apcs-kpss-global.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 16 +++++++--------
+> =C2=A0.../mailbox/xlnx,zynqmp-ipi-mailbox.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 2 +-
+> =C2=A0.../bindings/media/fsl,imx6q-vdoa.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0.../devicetree/bindings/mfd/aspeed-lpc.yaml=C2=A0=C2=A0 |=C2=A0 4 +=
++--
 
+For aspeed-lpc.yaml:
+
+Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
