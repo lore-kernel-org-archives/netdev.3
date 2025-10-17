@@ -1,624 +1,313 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F212830F928;
-	Fri, 17 Oct 2025 06:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C2D311587
+	for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 06:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760681457; cv=none; b=UEJBkcEDQf/Cz8GPMNpfAC16Piy4NXU055Ta9QqAO/DlGgAvnrQQhenC3DkX/ImkLL0J/z+mATo22aDa8DYRcFFDZcuGH6NGBt3ntiSbQ5nzpmrMXP95Q9/0tVXu7t2HTqDFqH+PI2m3OPKSNW3TrrKk5s0DufBaDdg1u7XtgaA=
+	t=1760681458; cv=none; b=TLF2rtRnBSOECWBw9iJz+y/iT9biIdZaLMTrdxLvP8PGjh80J70oScec2PqXDJUtnsq/cRQ79zoc5PxtI/kKkKraREwosQRb545h8mXUKJXN0fZtF31wW8K0EjwWS9h8neWo8/AItqcy98KbutFOyX8cNG0QkxgYbKT73T3hiKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760681457; c=relaxed/simple;
-	bh=yUuGLMu0DgdztSvXlksn2ZXtdxXq2Ghxbu9PF3DLDxQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XV4wAdG3Pjdgdk6ElU0z/X/dNm239W1zFm1PmVzIqOb23OfJ1m5KTNyWiLZj/XS7ufV/Syi9lXB8+7CsLUgUDVuc2d9DBRg9FeTUAr+GBdFHQXZmgwTUOM3IhsTg9rqZybb6OmbvjGX/FpGL2LTnI0n3ZAbwIEg4XnoYlpf2LC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HmFuZysb; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1760681458; c=relaxed/simple;
+	bh=SZ2v3HFrpzfTIKrJkGYFsVPTstS5wi/CPHBzBdXSC5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cQj9HD3iFfsyuUrdlB4mXEJEKh47/Ff7A/t1EPfyajqaiCBjDo2eSbkNMEV9iqQ9vSMF32f0PqNTMdIBs0+WjMM0EAQg4Zt7e1VWH6M6vcrl422cd7zcthEwLBFwq4ydmj3Za8lDL3nFIIUcG0LVmCAcD8ACPqw5A6r7F74SzCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvLVzntC; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HmFuZysb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1760681455; x=1792217455;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=yUuGLMu0DgdztSvXlksn2ZXtdxXq2Ghxbu9PF3DLDxQ=;
-  b=HmFuZysbOEWI5GQENqRiNwL/F1lUUdPF/NPKZtjZ0hmVlyak8Pqmw3gI
-   wqSc1OZeT4iXaq0iHYeauUNcN2cdAWojYx7YPdGaid1gBn1HRmydAthAV
-   Dwkq6sz4YOVvSQLniWZ1HLWDo+W+ziw7zEIekgUImOHRk+8+tpGuyUNrC
-   A6UU2y/6iLFOuP4dgX6Br30srEg9E3hZTHTbfF4USAfpifVwi44GSGf+5
-   +T+IBGq79Ei/mbIEhh2QrOZ+St2nfdDWC8RmujmppMmnM2nIf0+DL9wV7
-   7YcGCOZYxT6TT5npB9gb8XQuziXk0srTNwPogHsgq8hJo4X1XDpr635m5
-   g==;
-X-CSE-ConnectionGUID: Ch4MwSQVTya+YstxBBAOdA==
-X-CSE-MsgGUID: ErLsQOQGTkuoJno7Zk0Q0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11584"; a="50453937"
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="50453937"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:52 -0700
-X-CSE-ConnectionGUID: Axzcv1BiRs2Jcm4j0zAnSw==
-X-CSE-MsgGUID: 07Hp3eOHRsOC967Sb/nM0A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,234,1754982000"; 
-   d="scan'208";a="183059479"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.70]) ([10.166.28.70])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2025 23:10:52 -0700
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Thu, 16 Oct 2025 23:08:32 -0700
-Subject: [PATCH net-next v2 03/14] ice: add flow parsing for GTP and new
- protocol field support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvLVzntC"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6a0a7f3a47so1428337a12.1
+        for <netdev@vger.kernel.org>; Thu, 16 Oct 2025 23:10:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760681455; x=1761286255; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8JgmLAllM6GJ7LAy07OgoFPN7Fl/16NMS6tmzU8OBXw=;
+        b=WvLVzntCfvS5/Vq/lZg8ZixQKbrbAUAtD80px+jaWmNSi7Ve7/OhSWmeWUv1XuCsMT
+         pResmIvalaqMb/WTjHZaESVd+zB/Nd+9ra3POuY+Zftd6cV8h3xX+O1dAGM4vgSLW9H1
+         aNMmUoUAujvOvZDKsrBslJeMRUitWloYANLOdSFaXo/VjbRqM7tL5GGACB6xNama0ZCh
+         JPvdlPaucmOsREkUNpvAGI1Zpd1i/C3BvFNcuAoh+Olbgf9BzRfxssfUgQ6RTiwrNKlQ
+         ipGPgCzG+cAuUfCPBEUAyteKQlDYON0bsSMxSSint9G3uRaHCrbfPTvWIa/tNBoSeaX/
+         Mgiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760681455; x=1761286255;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8JgmLAllM6GJ7LAy07OgoFPN7Fl/16NMS6tmzU8OBXw=;
+        b=me77tIYSVI1aB7S3de+JxvLQrtT8AEsZyKv8YchwlgyYKfQUgM5VUi2skwXYSJBH0M
+         dZmGNRg5iH/BwzVXy1XLihhZKz85VZqqFr8834yD4RK0+5E9P+uTr8Btf7l1zwDGOHX5
+         Z8M/aZUur0hRPqlM03frHW0sbRk0Ht21XyZIWwuLBPMx8gwv8IAmVvtcdOByjHbnMMYN
+         MxenYBSoSH4l7veP32GdFRfyz21Q1yV7tD4kObem6adPoa7eixG9P5Dx1HudijsOo9SW
+         cGcFCk1S7aI7kUU9D0c87v5UjcSZ9KTFDWQh7z2Rhcf/gy2oaPl8U0j4b9fvq0Lh8x2m
+         3vAA==
+X-Gm-Message-State: AOJu0YwtzmA2KiLzMqJrU5y32nOh5Mgx3dhkwLWrOUiKPPQQG4KVZ8rT
+	B9O+C9ZwzXPPDKDm4CYrWnXq3IjPz2ISw090CcY/nsY+HPNACcg0AizjoyJmYMlbjN+s7g==
+X-Gm-Gg: ASbGncv3wmagvOLVhVJ4TUt9NMwWxJUvm5BX1EL99BLZQz1fyBZAbEVgwRsjWBfH4xA
+	ygmNgEE59mQQnIJDwyHWT41UDP6WyvMj5ryv6qjkXK5gUY0PkBQ1e4TP8bRZfDZZWc8iIvtB7Oz
+	76XtBYabGNZnYnmDxCdMvJOhePRu0i5taQACP31ZkCBSPnC6Buvxu1WX6KoVEUmADXKHWUsg3Yb
+	LDfaattLG6MO4FP57Ajy28ybc88rTMxNKNPkw1XhQumSns18Kq1LFFiZDFmQFUTcbHihWXpfzKp
+	2CYPOSXczazuJyPzo1jkq0+0KjBlZg9hcyF/2xchmPov0H7908dQQBNqkay7SBcYVhqFeTU0zVJ
+	h+y8KsXi3iSDxZcgNNGlKd6qgEMF2Qc8rTSgdlOcvsCBhuBeLMqnaV1Vc7TsC8hwPWqa3ndVMrY
+	57J6yu52U=
+X-Google-Smtp-Source: AGHT+IFKNlUGd77HJp6lqwdMELTbCyo0X1PX8FzE5gdrFbZSybR3+v68V/bEtn1N86LrgF+55w58Jg==
+X-Received: by 2002:a17:902:e84b:b0:290:c0ed:de42 with SMTP id d9443c01a7336-290caf8582emr36540205ad.36.1760681455198;
+        Thu, 16 Oct 2025 23:10:55 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([45.32.227.231])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2909938759dsm51315475ad.49.2025.10.16.23.10.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Oct 2025 23:10:54 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v14 2/4] net: dsa: tag_yt921x: add support for Motorcomm YT921x tags
+Date: Fri, 17 Oct 2025 14:08:54 +0800
+Message-ID: <20251017060859.326450-3-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251017060859.326450-1-mmyangfl@gmail.com>
+References: <20251017060859.326450-1-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251016-jk-iwl-next-2025-10-15-v2-3-ff3a390d9fc6@intel.com>
-References: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
-In-Reply-To: <20251016-jk-iwl-next-2025-10-15-v2-0-ff3a390d9fc6@intel.com>
-To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jacob Keller <jacob.e.keller@intel.com>, 
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Dan Nowlin <dan.nowlin@intel.com>, Junfeng Guo <junfeng.guo@intel.com>, 
- Ting Xu <ting.xu@intel.com>, Rafal Romanowski <rafal.romanowski@intel.com>
-X-Mailer: b4 0.15-dev-f4b34
-X-Developer-Signature: v=1; a=openpgp-sha256; l=20274;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=UkIJgnR6UnKR2TcxZlqMdR+JEOL5pnaMGCExUjV1POU=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhoyPd5/Ltp9fcbLhoh/3/LiYnXz2Bz4ViN2f0cIbcfPp3
- O3NpZfvd5SyMIhxMciKKbIoOISsvG48IUzrjbMczBxWJpAhDFycAjCRiGCG/3VlWYtVePoift+a
- fHTX+nd6T2ddc9M4mVIhnz5RdaJEbSvDP9P7vtuvLFmx9YKM3GMtWfEe/yo37rPfTD6W7Vsv6sj
- 3jhEA
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Add support for Motorcomm YT921x tags, which includes a proper
+configurable ethertype field (default to 0x9988).
 
-Introduce new protocol header types and field sizes to support GTPU, GTPC
-tunneling protocols.
-
- - Add field size macros for GTP TEID, QFI, and other headers
- - Extend ice_flow_field_info and enum definitions
- - Update hash macros for new protocols
- - Add support for IPv6 prefix matching and fragment headers
-
-This patch lays the groundwork for enhanced RSS and flow classification
-capabilities.
-
-Co-developed-by: Dan Nowlin <dan.nowlin@intel.com>
-Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
-Co-developed-by: Junfeng Guo <junfeng.guo@intel.com>
-Signed-off-by: Junfeng Guo <junfeng.guo@intel.com>
-Co-developed-by: Ting Xu <ting.xu@intel.com>
-Signed-off-by: Ting Xu <ting.xu@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/ethernet/intel/ice/ice_flow.h          |  94 ++++++++-
- drivers/net/ethernet/intel/ice/ice_protocol_type.h |  20 ++
- drivers/net/ethernet/intel/ice/ice_flow.c          | 218 ++++++++++++++++++++-
- 3 files changed, 323 insertions(+), 9 deletions(-)
+ include/net/dsa.h             |   2 +
+ include/uapi/linux/if_ether.h |   1 +
+ net/dsa/Kconfig               |   6 ++
+ net/dsa/Makefile              |   1 +
+ net/dsa/tag_yt921x.c          | 141 ++++++++++++++++++++++++++++++++++
+ 5 files changed, 151 insertions(+)
+ create mode 100644 net/dsa/tag_yt921x.c
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_flow.h b/drivers/net/ethernet/intel/ice/ice_flow.h
-index 52f906d89eca..6c6cdc8addb1 100644
---- a/drivers/net/ethernet/intel/ice/ice_flow.h
-+++ b/drivers/net/ethernet/intel/ice/ice_flow.h
-@@ -22,6 +22,15 @@
- #define ICE_FLOW_HASH_IPV6	\
- 	(BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_SA) | \
- 	 BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_DA))
-+#define ICE_FLOW_HASH_IPV6_PRE32	\
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE32_SA) | \
-+	 BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE32_DA))
-+#define ICE_FLOW_HASH_IPV6_PRE48	\
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE48_SA) | \
-+	 BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE48_DA))
-+#define ICE_FLOW_HASH_IPV6_PRE64	\
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_SA) | \
-+	 BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_DA))
- #define ICE_FLOW_HASH_TCP_PORT	\
- 	(BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_SRC_PORT) | \
- 	 BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_DST_PORT))
-@@ -40,6 +49,33 @@
- #define ICE_HASH_SCTP_IPV4	(ICE_FLOW_HASH_IPV4 | ICE_FLOW_HASH_SCTP_PORT)
- #define ICE_HASH_SCTP_IPV6	(ICE_FLOW_HASH_IPV6 | ICE_FLOW_HASH_SCTP_PORT)
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index d73ea0880066..67762fdaf3c7 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -55,6 +55,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_LAN937X_VALUE		27
+ #define DSA_TAG_PROTO_VSC73XX_8021Q_VALUE	28
+ #define DSA_TAG_PROTO_BRCM_LEGACY_FCS_VALUE	29
++#define DSA_TAG_PROTO_YT921X_VALUE		30
  
-+#define ICE_HASH_TCP_IPV6_PRE32	 \
-+	(ICE_FLOW_HASH_IPV6_PRE32 | ICE_FLOW_HASH_TCP_PORT)
-+#define ICE_HASH_UDP_IPV6_PRE32	 \
-+	(ICE_FLOW_HASH_IPV6_PRE32 | ICE_FLOW_HASH_UDP_PORT)
-+#define ICE_HASH_SCTP_IPV6_PRE32 \
-+	(ICE_FLOW_HASH_IPV6_PRE32 | ICE_FLOW_HASH_SCTP_PORT)
-+#define ICE_HASH_TCP_IPV6_PRE48	 \
-+	(ICE_FLOW_HASH_IPV6_PRE48 | ICE_FLOW_HASH_TCP_PORT)
-+#define ICE_HASH_UDP_IPV6_PRE48	 \
-+	(ICE_FLOW_HASH_IPV6_PRE48 | ICE_FLOW_HASH_UDP_PORT)
-+#define ICE_HASH_SCTP_IPV6_PRE48 \
-+	(ICE_FLOW_HASH_IPV6_PRE48 | ICE_FLOW_HASH_SCTP_PORT)
-+#define ICE_HASH_TCP_IPV6_PRE64	 \
-+	(ICE_FLOW_HASH_IPV6_PRE64 | ICE_FLOW_HASH_TCP_PORT)
-+#define ICE_HASH_UDP_IPV6_PRE64	 \
-+	(ICE_FLOW_HASH_IPV6_PRE64 | ICE_FLOW_HASH_UDP_PORT)
-+#define ICE_HASH_SCTP_IPV6_PRE64 \
-+	(ICE_FLOW_HASH_IPV6_PRE64 | ICE_FLOW_HASH_SCTP_PORT)
-+
-+#define ICE_FLOW_HASH_GTP_TEID \
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_GTPC_TEID))
-+
-+#define ICE_FLOW_HASH_GTP_IPV4_TEID \
-+	(ICE_FLOW_HASH_IPV4 | ICE_FLOW_HASH_GTP_TEID)
-+#define ICE_FLOW_HASH_GTP_IPV6_TEID \
-+	(ICE_FLOW_HASH_IPV6 | ICE_FLOW_HASH_GTP_TEID)
-+
- #define ICE_FLOW_HASH_GTP_C_TEID \
- 	(BIT_ULL(ICE_FLOW_FIELD_IDX_GTPC_TEID))
- 
-@@ -128,6 +164,23 @@
- #define ICE_FLOW_HASH_NAT_T_ESP_IPV6_SPI \
- 	(ICE_FLOW_HASH_IPV6 | ICE_FLOW_HASH_NAT_T_ESP_SPI)
- 
-+#define ICE_FLOW_HASH_L2TPV2_SESS_ID \
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_L2TPV2_SESS_ID))
-+#define ICE_FLOW_HASH_L2TPV2_SESS_ID_ETH \
-+	(ICE_FLOW_HASH_ETH | ICE_FLOW_HASH_L2TPV2_SESS_ID)
-+
-+#define ICE_FLOW_HASH_L2TPV2_LEN_SESS_ID \
-+	(BIT_ULL(ICE_FLOW_FIELD_IDX_L2TPV2_LEN_SESS_ID))
-+#define ICE_FLOW_HASH_L2TPV2_LEN_SESS_ID_ETH \
-+	(ICE_FLOW_HASH_ETH | ICE_FLOW_HASH_L2TPV2_LEN_SESS_ID)
-+
-+#define ICE_FLOW_FIELD_IPV4_SRC_OFFSET 12
-+#define ICE_FLOW_FIELD_IPV4_DST_OFFSET 16
-+#define ICE_FLOW_FIELD_IPV6_SRC_OFFSET 8
-+#define ICE_FLOW_FIELD_IPV6_DST_OFFSET 24
-+#define ICE_FLOW_FIELD_SRC_PORT_OFFSET 0
-+#define ICE_FLOW_FIELD_DST_PORT_OFFSET 2
-+
- /* Protocol header fields within a packet segment. A segment consists of one or
-  * more protocol headers that make up a logical group of protocol headers. Each
-  * logical group of protocol headers encapsulates or is encapsulated using/by
-@@ -160,10 +213,13 @@ enum ice_flow_seg_hdr {
- 	ICE_FLOW_SEG_HDR_AH		= 0x00200000,
- 	ICE_FLOW_SEG_HDR_NAT_T_ESP	= 0x00400000,
- 	ICE_FLOW_SEG_HDR_ETH_NON_IP	= 0x00800000,
-+	ICE_FLOW_SEG_HDR_GTPU_NON_IP	= 0x01000000,
-+	ICE_FLOW_SEG_HDR_L2TPV2		= 0x10000000,
- 	/* The following is an additive bit for ICE_FLOW_SEG_HDR_IPV4 and
--	 * ICE_FLOW_SEG_HDR_IPV6 which include the IPV4 other PTYPEs
-+	 * ICE_FLOW_SEG_HDR_IPV6.
- 	 */
--	ICE_FLOW_SEG_HDR_IPV_OTHER      = 0x20000000,
-+	ICE_FLOW_SEG_HDR_IPV_FRAG	= 0x40000000,
-+	ICE_FLOW_SEG_HDR_IPV_OTHER	= 0x80000000,
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -87,6 +88,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_RZN1_A5PSW	= DSA_TAG_PROTO_RZN1_A5PSW_VALUE,
+ 	DSA_TAG_PROTO_LAN937X		= DSA_TAG_PROTO_LAN937X_VALUE,
+ 	DSA_TAG_PROTO_VSC73XX_8021Q	= DSA_TAG_PROTO_VSC73XX_8021Q_VALUE,
++	DSA_TAG_PROTO_YT921X		= DSA_TAG_PROTO_YT921X_VALUE,
  };
  
- /* These segments all have the same PTYPES, but are otherwise distinguished by
-@@ -200,6 +256,15 @@ enum ice_flow_field {
- 	ICE_FLOW_FIELD_IDX_IPV4_DA,
- 	ICE_FLOW_FIELD_IDX_IPV6_SA,
- 	ICE_FLOW_FIELD_IDX_IPV6_DA,
-+	ICE_FLOW_FIELD_IDX_IPV4_CHKSUM,
-+	ICE_FLOW_FIELD_IDX_IPV4_ID,
-+	ICE_FLOW_FIELD_IDX_IPV6_ID,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE32_SA,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE32_DA,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE48_SA,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE48_DA,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE64_SA,
-+	ICE_FLOW_FIELD_IDX_IPV6_PRE64_DA,
- 	/* L4 */
- 	ICE_FLOW_FIELD_IDX_TCP_SRC_PORT,
- 	ICE_FLOW_FIELD_IDX_TCP_DST_PORT,
-@@ -208,6 +273,9 @@ enum ice_flow_field {
- 	ICE_FLOW_FIELD_IDX_SCTP_SRC_PORT,
- 	ICE_FLOW_FIELD_IDX_SCTP_DST_PORT,
- 	ICE_FLOW_FIELD_IDX_TCP_FLAGS,
-+	ICE_FLOW_FIELD_IDX_TCP_CHKSUM,
-+	ICE_FLOW_FIELD_IDX_UDP_CHKSUM,
-+	ICE_FLOW_FIELD_IDX_SCTP_CHKSUM,
- 	/* ARP */
- 	ICE_FLOW_FIELD_IDX_ARP_SIP,
- 	ICE_FLOW_FIELD_IDX_ARP_DIP,
-@@ -228,13 +296,13 @@ enum ice_flow_field {
- 	ICE_FLOW_FIELD_IDX_GTPU_EH_QFI,
- 	/* GTPU_UP */
- 	ICE_FLOW_FIELD_IDX_GTPU_UP_TEID,
-+	ICE_FLOW_FIELD_IDX_GTPU_UP_QFI,
- 	/* GTPU_DWN */
- 	ICE_FLOW_FIELD_IDX_GTPU_DWN_TEID,
--	/* PPPoE */
-+	ICE_FLOW_FIELD_IDX_GTPU_DWN_QFI,
- 	ICE_FLOW_FIELD_IDX_PPPOE_SESS_ID,
- 	/* PFCP */
- 	ICE_FLOW_FIELD_IDX_PFCP_SEID,
--	/* L2TPv3 */
- 	ICE_FLOW_FIELD_IDX_L2TPV3_SESS_ID,
- 	/* ESP */
- 	ICE_FLOW_FIELD_IDX_ESP_SPI,
-@@ -242,10 +310,16 @@ enum ice_flow_field {
- 	ICE_FLOW_FIELD_IDX_AH_SPI,
- 	/* NAT_T ESP */
- 	ICE_FLOW_FIELD_IDX_NAT_T_ESP_SPI,
-+	/* L2TPV2 SESSION ID*/
-+	ICE_FLOW_FIELD_IDX_L2TPV2_SESS_ID,
-+	/* L2TPV2_LEN SESSION ID */
-+	ICE_FLOW_FIELD_IDX_L2TPV2_LEN_SESS_ID,
- 	 /* The total number of enums must not exceed 64 */
- 	ICE_FLOW_FIELD_IDX_MAX
- };
+ struct dsa_switch;
+diff --git a/include/uapi/linux/if_ether.h b/include/uapi/linux/if_ether.h
+index 69e0457eb200..cfd200c87e5e 100644
+--- a/include/uapi/linux/if_ether.h
++++ b/include/uapi/linux/if_ether.h
+@@ -114,6 +114,7 @@
+ #define ETH_P_QINQ1	0x9100		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
+ #define ETH_P_QINQ2	0x9200		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
+ #define ETH_P_QINQ3	0x9300		/* deprecated QinQ VLAN [ NOT AN OFFICIALLY REGISTERED ID ] */
++#define ETH_P_YT921X	0x9988		/* Motorcomm YT921x DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+ #define ETH_P_EDSA	0xDADA		/* Ethertype DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+ #define ETH_P_DSA_8021Q	0xDADB		/* Fake VLAN Header for DSA [ NOT AN OFFICIALLY REGISTERED ID ] */
+ #define ETH_P_DSA_A5PSW	0xE001		/* A5PSW Tag Value [ NOT AN OFFICIALLY REGISTERED ID ] */
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index 869cbe57162f..6b94028b1fcc 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -190,4 +190,10 @@ config NET_DSA_TAG_XRS700X
+ 	  Say Y or M if you want to enable support for tagging frames for
+ 	  Arrow SpeedChips XRS700x switches that use a single byte tag trailer.
  
-+static_assert(ICE_FLOW_FIELD_IDX_MAX <= 64, "The total number of enums must not exceed 64");
++config NET_DSA_TAG_YT921X
++	tristate "Tag driver for Motorcomm YT921x switches"
++	help
++	  Say Y or M if you want to enable support for tagging frames for
++	  Motorcomm YT921x switches.
 +
- #define ICE_FLOW_HASH_FLD_IPV4_SA	BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA)
- #define ICE_FLOW_HASH_FLD_IPV6_SA	BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_SA)
- #define ICE_FLOW_HASH_FLD_IPV4_DA	BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA)
-@@ -296,6 +370,10 @@ enum ice_rss_cfg_hdr_type {
- 	/* take inner headers as inputset for packet with outer ipv6. */
- 	ICE_RSS_INNER_HEADERS_W_OUTER_IPV6,
- 	/* take outer headers first then inner headers as inputset */
-+	/* take inner as inputset for GTPoGRE with outer IPv4 + GRE. */
-+	ICE_RSS_INNER_HEADERS_W_OUTER_IPV4_GRE,
-+	/* take inner as inputset for GTPoGRE with outer IPv6 + GRE. */
-+	ICE_RSS_INNER_HEADERS_W_OUTER_IPV6_GRE,
- 	ICE_RSS_ANY_HEADERS
- };
+ endif
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index 555c07cfeb71..4b011a1d5c87 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -39,6 +39,7 @@ obj-$(CONFIG_NET_DSA_TAG_SJA1105) += tag_sja1105.o
+ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
+ obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
+ obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
++obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
  
-@@ -406,6 +484,12 @@ struct ice_flow_prof {
- 	bool symm; /* Symmetric Hash for RSS */
- };
- 
-+struct ice_rss_raw_cfg {
-+	struct ice_parser_profile prof;
-+	bool raw_ena;
-+	bool symm;
+ # for tracing framework to find trace.h
+ CFLAGS_trace.o := -I$(src)
+diff --git a/net/dsa/tag_yt921x.c b/net/dsa/tag_yt921x.c
+new file mode 100644
+index 000000000000..995da44f0a2a
+--- /dev/null
++++ b/net/dsa/tag_yt921x.c
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Motorcomm YT921x Switch Extended CPU Port Tagging
++ *
++ * Copyright (c) 2025 David Yang <mmyangfl@gmail.com>
++ *
++ * +----+----+-------+-----+----+---------
++ * | DA | SA | TagET | Tag | ET | Payload ...
++ * +----+----+-------+-----+----+---------
++ *   6    6      2      6    2       N
++ *
++ * Tag Ethertype: CPU_TAG_TPID_TPID (default: ETH_P_YT921X = 0x9988)
++ *   * Hardcoded for the moment, but still configurable. Discuss it if there
++ *     are conflicts somewhere and/or you want to change it for some reason.
++ * Tag:
++ *   2: VLAN Tag
++ *   2: Rx Port
++ *     15b: Rx Port Valid
++ *     14b-11b: Rx Port
++ *     10b-0b: Cmd?
++ *   2: Tx Port(s)
++ *     15b: Tx Port(s) Valid
++ *     10b-0b: Tx Port(s) Mask
++ */
++
++#include <linux/etherdevice.h>
++
++#include "tag.h"
++
++#define YT921X_TAG_NAME	"yt921x"
++
++#define YT921X_TAG_LEN	8
++
++#define YT921X_TAG_PORT_EN		BIT(15)
++#define YT921X_TAG_RX_PORT_M		GENMASK(14, 11)
++#define YT921X_TAG_RX_CMD_M		GENMASK(10, 0)
++#define  YT921X_TAG_RX_CMD(x)			FIELD_PREP(YT921X_TAG_RX_CMD_M, (x))
++#define  YT921X_TAG_RX_CMD_FORWARDED		0x80
++#define  YT921X_TAG_RX_CMD_UNK_UCAST		0xb2
++#define  YT921X_TAG_RX_CMD_UNK_MCAST		0xb4
++#define YT921X_TAG_TX_PORTS_M		GENMASK(10, 0)
++#define YT921X_TAG_TX_PORTn(port)	BIT(port)
++
++static struct sk_buff *
++yt921x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
++{
++	struct dsa_port *dp = dsa_user_to_port(netdev);
++	unsigned int port = dp->index;
++	__be16 *tag;
++	u16 tx;
++
++	skb_push(skb, YT921X_TAG_LEN);
++	dsa_alloc_etype_header(skb, YT921X_TAG_LEN);
++
++	tag = dsa_etype_header_pos_tx(skb);
++
++	tag[0] = htons(ETH_P_YT921X);
++	/* VLAN tag unrelated when TX */
++	tag[1] = 0;
++	tag[2] = 0;
++	tx = YT921X_TAG_PORT_EN | YT921X_TAG_TX_PORTn(port);
++	tag[3] = htons(tx);
++
++	return skb;
++}
++
++static struct sk_buff *
++yt921x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
++{
++	unsigned int port;
++	__be16 *tag;
++	u16 cmd;
++	u16 rx;
++
++	if (unlikely(!pskb_may_pull(skb, YT921X_TAG_LEN)))
++		return NULL;
++
++	tag = dsa_etype_header_pos_rx(skb);
++
++	if (unlikely(tag[0] != htons(ETH_P_YT921X))) {
++		dev_warn_ratelimited(&netdev->dev,
++				     "Unexpected EtherType 0x%04x\n",
++				     ntohs(tag[0]));
++		return NULL;
++	}
++
++	/* Locate which port this is coming from */
++	rx = ntohs(tag[2]);
++	if (unlikely((rx & YT921X_TAG_PORT_EN) == 0)) {
++		dev_warn_ratelimited(&netdev->dev,
++				     "Unexpected rx tag 0x%04x\n", rx);
++		return NULL;
++	}
++
++	port = FIELD_GET(YT921X_TAG_RX_PORT_M, rx);
++	skb->dev = dsa_conduit_find_user(netdev, 0, port);
++	if (unlikely(!skb->dev)) {
++		dev_warn_ratelimited(&netdev->dev,
++				     "Couldn't decode source port %u\n", port);
++		return NULL;
++	}
++
++	cmd = FIELD_GET(YT921X_TAG_RX_CMD_M, rx);
++	switch (cmd) {
++	case YT921X_TAG_RX_CMD_FORWARDED:
++		/* Already forwarded by hardware */
++		dsa_default_offload_fwd_mark(skb);
++		break;
++	case YT921X_TAG_RX_CMD_UNK_UCAST:
++	case YT921X_TAG_RX_CMD_UNK_MCAST:
++		/* NOTE: hardware doesn't distinguish between TRAP (copy to CPU
++		 * only) and COPY (forward and copy to CPU). In order to perform
++		 * a soft switch, NEVER use COPY action in the switch driver.
++		 */
++		break;
++	default:
++		dev_warn_ratelimited(&netdev->dev,
++				     "Unexpected rx cmd 0x%02x\n", cmd);
++		break;
++	}
++
++	/* Remove YT921x tag and update checksum */
++	skb_pull_rcsum(skb, YT921X_TAG_LEN);
++	dsa_strip_etype_header(skb, YT921X_TAG_LEN);
++
++	return skb;
++}
++
++static const struct dsa_device_ops yt921x_netdev_ops = {
++	.name	= YT921X_TAG_NAME,
++	.proto	= DSA_TAG_PROTO_YT921X,
++	.xmit	= yt921x_tag_xmit,
++	.rcv	= yt921x_tag_rcv,
++	.needed_headroom = YT921X_TAG_LEN,
 +};
 +
- struct ice_rss_cfg {
- 	struct list_head l_entry;
- 	/* bitmap of VSIs added to the RSS entry */
-@@ -444,4 +528,6 @@ int ice_add_rss_cfg(struct ice_hw *hw, struct ice_vsi *vsi,
- int ice_rem_rss_cfg(struct ice_hw *hw, u16 vsi_handle,
- 		    const struct ice_rss_hash_cfg *cfg);
- u64 ice_get_rss_cfg(struct ice_hw *hw, u16 vsi_handle, u32 hdrs, bool *symm);
-+void ice_rss_update_raw_symm(struct ice_hw *hw,
-+			     struct ice_rss_raw_cfg *cfg, u64 id);
- #endif /* _ICE_FLOW_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_protocol_type.h b/drivers/net/ethernet/intel/ice/ice_protocol_type.h
-index 7c09ea0f03ba..725167d557a8 100644
---- a/drivers/net/ethernet/intel/ice/ice_protocol_type.h
-+++ b/drivers/net/ethernet/intel/ice/ice_protocol_type.h
-@@ -82,26 +82,46 @@ enum ice_sw_tunnel_type {
- enum ice_prot_id {
- 	ICE_PROT_ID_INVAL	= 0,
- 	ICE_PROT_MAC_OF_OR_S	= 1,
-+	ICE_PROT_MAC_O2		= 2,
- 	ICE_PROT_MAC_IL		= 4,
-+	ICE_PROT_MAC_IN_MAC	= 7,
- 	ICE_PROT_ETYPE_OL	= 9,
- 	ICE_PROT_ETYPE_IL	= 10,
-+	ICE_PROT_PAY		= 15,
-+	ICE_PROT_EVLAN_O	= 16,
-+	ICE_PROT_VLAN_O		= 17,
-+	ICE_PROT_VLAN_IF	= 18,
-+	ICE_PROT_MPLS_OL_MINUS_1 = 27,
-+	ICE_PROT_MPLS_OL_OR_OS	= 28,
-+	ICE_PROT_MPLS_IL	= 29,
- 	ICE_PROT_IPV4_OF_OR_S	= 32,
- 	ICE_PROT_IPV4_IL	= 33,
-+	ICE_PROT_IPV4_IL_IL	= 34,
- 	ICE_PROT_IPV6_OF_OR_S	= 40,
- 	ICE_PROT_IPV6_IL	= 41,
-+	ICE_PROT_IPV6_IL_IL	= 42,
-+	ICE_PROT_IPV6_NEXT_PROTO = 43,
-+	ICE_PROT_IPV6_FRAG	= 47,
- 	ICE_PROT_TCP_IL		= 49,
- 	ICE_PROT_UDP_OF		= 52,
- 	ICE_PROT_UDP_IL_OR_S	= 53,
- 	ICE_PROT_GRE_OF		= 64,
-+	ICE_PROT_NSH_F		= 84,
- 	ICE_PROT_ESP_F		= 88,
- 	ICE_PROT_ESP_2		= 89,
- 	ICE_PROT_SCTP_IL	= 96,
- 	ICE_PROT_ICMP_IL	= 98,
- 	ICE_PROT_ICMPV6_IL	= 100,
-+	ICE_PROT_VRRP_F		= 101,
-+	ICE_PROT_OSPF		= 102,
- 	ICE_PROT_PPPOE		= 103,
- 	ICE_PROT_L2TPV3		= 104,
-+	ICE_PROT_ATAOE_OF	= 114,
-+	ICE_PROT_CTRL_OF	= 116,
-+	ICE_PROT_LLDP_OF	= 117,
- 	ICE_PROT_ARP_OF		= 118,
- 	ICE_PROT_META_ID	= 255, /* when offset == metadata */
-+	ICE_PROT_EAPOL_OF	= 120,
- 	ICE_PROT_INVALID	= 255  /* when offset == ICE_FV_OFFSET_INVAL */
- };
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
-index 6d5c939dc8a5..4513f1d6cec2 100644
---- a/drivers/net/ethernet/intel/ice/ice_flow.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flow.c
-@@ -5,6 +5,38 @@
- #include "ice_flow.h"
- #include <net/gre.h>
- 
-+/* Size of known protocol header fields */
-+#define ICE_FLOW_FLD_SZ_ETH_TYPE	2
-+#define ICE_FLOW_FLD_SZ_VLAN		2
-+#define ICE_FLOW_FLD_SZ_IPV4_ADDR	4
-+#define ICE_FLOW_FLD_SZ_IPV6_ADDR	16
-+#define ICE_FLOW_FLD_SZ_IPV6_PRE32_ADDR	4
-+#define ICE_FLOW_FLD_SZ_IPV6_PRE48_ADDR	6
-+#define ICE_FLOW_FLD_SZ_IPV6_PRE64_ADDR	8
-+#define ICE_FLOW_FLD_SZ_IPV4_ID		2
-+#define ICE_FLOW_FLD_SZ_IPV6_ID		4
-+#define ICE_FLOW_FLD_SZ_IP_CHKSUM	2
-+#define ICE_FLOW_FLD_SZ_TCP_CHKSUM	2
-+#define ICE_FLOW_FLD_SZ_UDP_CHKSUM	2
-+#define ICE_FLOW_FLD_SZ_SCTP_CHKSUM	4
-+#define ICE_FLOW_FLD_SZ_IP_DSCP		1
-+#define ICE_FLOW_FLD_SZ_IP_TTL		1
-+#define ICE_FLOW_FLD_SZ_IP_PROT		1
-+#define ICE_FLOW_FLD_SZ_PORT		2
-+#define ICE_FLOW_FLD_SZ_TCP_FLAGS	1
-+#define ICE_FLOW_FLD_SZ_ICMP_TYPE	1
-+#define ICE_FLOW_FLD_SZ_ICMP_CODE	1
-+#define ICE_FLOW_FLD_SZ_ARP_OPER	2
-+#define ICE_FLOW_FLD_SZ_GRE_KEYID	4
-+#define ICE_FLOW_FLD_SZ_GTP_TEID	4
-+#define ICE_FLOW_FLD_SZ_GTP_QFI		2
-+#define ICE_FLOW_FLD_SZ_PFCP_SEID 8
-+#define ICE_FLOW_FLD_SZ_ESP_SPI	4
-+#define ICE_FLOW_FLD_SZ_AH_SPI	4
-+#define ICE_FLOW_FLD_SZ_NAT_T_ESP_SPI	4
-+#define ICE_FLOW_FLD_SZ_L2TPV2_SESS_ID	2
-+#define ICE_FLOW_FLD_SZ_L2TPV2_LEN_SESS_ID	2
++MODULE_DESCRIPTION("DSA tag driver for Motorcomm YT921x switches");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_YT921X, YT921X_TAG_NAME);
 +
- /* Describe properties of a protocol header field */
- struct ice_flow_field_info {
- 	enum ice_flow_seg_hdr hdr;
-@@ -20,6 +52,7 @@ struct ice_flow_field_info {
- 	.mask = 0, \
- }
- 
-+/* QFI: 6-bit field in GTP-U PDU Session Container (3GPP TS 38.415) */
- #define ICE_FLOW_FLD_INFO_MSK(_hdr, _offset_bytes, _size_bytes, _mask) { \
- 	.hdr = _hdr, \
- 	.off = (_offset_bytes) * BITS_PER_BYTE, \
-@@ -61,7 +94,33 @@ struct ice_flow_field_info ice_flds_info[ICE_FLOW_FIELD_IDX_MAX] = {
- 	/* ICE_FLOW_FIELD_IDX_IPV6_SA */
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 8, sizeof(struct in6_addr)),
- 	/* ICE_FLOW_FIELD_IDX_IPV6_DA */
--	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 24, sizeof(struct in6_addr)),
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 24, ICE_FLOW_FLD_SZ_IPV6_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV4_CHKSUM */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV4, 10, ICE_FLOW_FLD_SZ_IP_CHKSUM),
-+	/* ICE_FLOW_FIELD_IDX_IPV4_FRAG */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV_FRAG, 4,
-+			  ICE_FLOW_FLD_SZ_IPV4_ID),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_FRAG */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV_FRAG, 4,
-+			  ICE_FLOW_FLD_SZ_IPV6_ID),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE32_SA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 8,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE32_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE32_DA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 24,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE32_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE48_SA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 8,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE48_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE48_DA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 24,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE48_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE64_SA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 8,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE64_ADDR),
-+	/* ICE_FLOW_FIELD_IDX_IPV6_PRE64_DA */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_IPV6, 24,
-+			  ICE_FLOW_FLD_SZ_IPV6_PRE64_ADDR),
- 	/* Transport */
- 	/* ICE_FLOW_FIELD_IDX_TCP_SRC_PORT */
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_TCP, 0, sizeof(__be16)),
-@@ -76,7 +135,14 @@ struct ice_flow_field_info ice_flds_info[ICE_FLOW_FIELD_IDX_MAX] = {
- 	/* ICE_FLOW_FIELD_IDX_SCTP_DST_PORT */
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_SCTP, 2, sizeof(__be16)),
- 	/* ICE_FLOW_FIELD_IDX_TCP_FLAGS */
--	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_TCP, 13, 1),
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_TCP, 13, ICE_FLOW_FLD_SZ_TCP_FLAGS),
-+	/* ICE_FLOW_FIELD_IDX_TCP_CHKSUM */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_TCP, 16, ICE_FLOW_FLD_SZ_TCP_CHKSUM),
-+	/* ICE_FLOW_FIELD_IDX_UDP_CHKSUM */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_UDP, 6, ICE_FLOW_FLD_SZ_UDP_CHKSUM),
-+	/* ICE_FLOW_FIELD_IDX_SCTP_CHKSUM */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_SCTP, 8,
-+			  ICE_FLOW_FLD_SZ_SCTP_CHKSUM),
- 	/* ARP */
- 	/* ICE_FLOW_FIELD_IDX_ARP_SIP */
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_ARP, 14, sizeof(struct in_addr)),
-@@ -108,9 +174,17 @@ struct ice_flow_field_info ice_flds_info[ICE_FLOW_FIELD_IDX_MAX] = {
- 	ICE_FLOW_FLD_INFO_MSK(ICE_FLOW_SEG_HDR_GTPU_EH, 22, sizeof(__be16),
- 			      0x3f00),
- 	/* ICE_FLOW_FIELD_IDX_GTPU_UP_TEID */
--	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_GTPU_UP, 12, sizeof(__be32)),
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_GTPU_UP, 12,
-+			  ICE_FLOW_FLD_SZ_GTP_TEID),
-+	/* ICE_FLOW_FIELD_IDX_GTPU_UP_QFI */
-+	ICE_FLOW_FLD_INFO_MSK(ICE_FLOW_SEG_HDR_GTPU_UP, 22,
-+			      ICE_FLOW_FLD_SZ_GTP_QFI, 0x3f00),
- 	/* ICE_FLOW_FIELD_IDX_GTPU_DWN_TEID */
--	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_GTPU_DWN, 12, sizeof(__be32)),
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_GTPU_DWN, 12,
-+			  ICE_FLOW_FLD_SZ_GTP_TEID),
-+	/* ICE_FLOW_FIELD_IDX_GTPU_DWN_QFI */
-+	ICE_FLOW_FLD_INFO_MSK(ICE_FLOW_SEG_HDR_GTPU_DWN, 22,
-+			      ICE_FLOW_FLD_SZ_GTP_QFI, 0x3f00),
- 	/* PPPoE */
- 	/* ICE_FLOW_FIELD_IDX_PPPOE_SESS_ID */
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_PPPOE, 2, sizeof(__be16)),
-@@ -128,7 +202,16 @@ struct ice_flow_field_info ice_flds_info[ICE_FLOW_FIELD_IDX_MAX] = {
- 	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_AH, 4, sizeof(__be32)),
- 	/* NAT_T_ESP */
- 	/* ICE_FLOW_FIELD_IDX_NAT_T_ESP_SPI */
--	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_NAT_T_ESP, 8, sizeof(__be32)),
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_NAT_T_ESP, 8,
-+			  ICE_FLOW_FLD_SZ_NAT_T_ESP_SPI),
-+	/* L2TPV2 */
-+	/* ICE_FLOW_FIELD_IDX_L2TPV2_SESS_ID */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_L2TPV2, 12,
-+			  ICE_FLOW_FLD_SZ_L2TPV2_SESS_ID),
-+	/* L2TPV2_LEN */
-+	/* ICE_FLOW_FIELD_IDX_L2TPV2_LEN_SESS_ID */
-+	ICE_FLOW_FLD_INFO(ICE_FLOW_SEG_HDR_L2TPV2, 14,
-+			  ICE_FLOW_FLD_SZ_L2TPV2_LEN_SESS_ID),
- };
- 
- /* Bitmaps indicating relevant packet types for a particular protocol header
-@@ -2324,6 +2407,131 @@ static void ice_rss_set_symm(struct ice_hw *hw, struct ice_flow_prof *prof)
- 	}
- }
- 
-+/**
-+ * ice_rss_cfg_raw_symm - Configure symmetric RSS for a raw parser profile
-+ * @hw:      device HW
-+ * @prof:    parser profile describing extracted FV (field vector) entries
-+ * @prof_id: RSS profile identifier used to program symmetry registers
-+ *
-+ * The routine scans the parser profile's FV entries and looks for
-+ * direction-sensitive pairs (L3 src/dst, L4 src/dst). When a pair is found,
-+ * it programs XOR-based symmetry so that flows hash identically regardless
-+ * of packet direction. This preserves CPU affinity for the same 5-tuple.
-+ *
-+ * Notes:
-+ * - The size of each logical field (IPv4/IPv6 address, L4 port) is expressed
-+ *   in units of ICE_FLOW_FV_EXTRACT_SZ so we can step across fv[] correctly.
-+ * - We guard against out-of-bounds access before looking at fv[i + len].
-+ */
-+static void ice_rss_cfg_raw_symm(struct ice_hw *hw,
-+				 const struct ice_parser_profile *prof,
-+				 u64 prof_id)
-+{
-+	for (size_t i = 0; i < prof->fv_num; i++) {
-+		u8 proto_id = prof->fv[i].proto_id;
-+		u16 src_off = 0, dst_off = 0;
-+		size_t src_idx, dst_idx;
-+		unsigned int len = 0;
-+		bool is_matched = false;
-+
-+		switch (proto_id) {
-+		/* IPv4 address pairs (outer/inner variants) */
-+		case ICE_PROT_IPV4_OF_OR_S:
-+		case ICE_PROT_IPV4_IL:
-+		case ICE_PROT_IPV4_IL_IL:
-+			len = ICE_FLOW_FLD_SZ_IPV4_ADDR /
-+			      ICE_FLOW_FV_EXTRACT_SZ;
-+			src_off = ICE_FLOW_FIELD_IPV4_SRC_OFFSET;
-+			dst_off = ICE_FLOW_FIELD_IPV4_DST_OFFSET;
-+			break;
-+
-+		/* IPv6 address pairs (outer/inner variants) */
-+		case ICE_PROT_IPV6_OF_OR_S:
-+		case ICE_PROT_IPV6_IL:
-+		case ICE_PROT_IPV6_IL_IL:
-+			len = ICE_FLOW_FLD_SZ_IPV6_ADDR /
-+			      ICE_FLOW_FV_EXTRACT_SZ;
-+			src_off = ICE_FLOW_FIELD_IPV6_SRC_OFFSET;
-+			dst_off = ICE_FLOW_FIELD_IPV6_DST_OFFSET;
-+			break;
-+
-+		/* L4 port pairs (TCP/UDP/SCTP) */
-+		case ICE_PROT_TCP_IL:
-+		case ICE_PROT_UDP_IL_OR_S:
-+		case ICE_PROT_SCTP_IL:
-+			len = ICE_FLOW_FLD_SZ_PORT / ICE_FLOW_FV_EXTRACT_SZ;
-+			src_off = ICE_FLOW_FIELD_SRC_PORT_OFFSET;
-+			dst_off = ICE_FLOW_FIELD_DST_PORT_OFFSET;
-+			break;
-+
-+		default:
-+			continue;
-+		}
-+
-+		/* Bounds check before accessing fv[i + len]. */
-+		if (i + len >= prof->fv_num)
-+			continue;
-+
-+		/* Verify src/dst pairing for this protocol id. */
-+		is_matched = prof->fv[i].offset == src_off &&
-+			     prof->fv[i + len].proto_id == proto_id &&
-+			     prof->fv[i + len].offset == dst_off;
-+
-+		if (!is_matched)
-+			continue;
-+
-+		/* Program XOR symmetry for this field pair. */
-+		src_idx = i;
-+		dst_idx = i + len;
-+
-+		ice_rss_config_xor(hw, prof_id, src_idx, dst_idx, len);
-+
-+		/* Skip over the pair we just handled; the loop's ++i advances one
-+		 * more element, hence the --i after the jump.
-+		 */
-+		i += (2 * len);
-+		/* not strictly needed; keeps static analyzers happy */
-+		if (i == 0)
-+			break;
-+		--i;
-+	}
-+}
-+
-+/* Max registers index per packet profile */
-+#define ICE_SYMM_REG_INDEX_MAX 6
-+
-+/**
-+ * ice_rss_update_raw_symm - update symmetric hash configuration
-+ * for raw pattern
-+ * @hw: pointer to the hardware structure
-+ * @cfg: configure parameters for raw pattern
-+ * @id: profile tracking ID
-+ *
-+ * Update symmetric hash configuration for raw pattern if required.
-+ * Otherwise only clear to default.
-+ */
-+void
-+ice_rss_update_raw_symm(struct ice_hw *hw,
-+			struct ice_rss_raw_cfg *cfg, u64 id)
-+{
-+	struct ice_prof_map *map;
-+	u8 prof_id, m;
-+
-+	mutex_lock(&hw->blk[ICE_BLK_RSS].es.prof_map_lock);
-+	map = ice_search_prof_id(hw, ICE_BLK_RSS, id);
-+	if (map)
-+		prof_id = map->prof_id;
-+	mutex_unlock(&hw->blk[ICE_BLK_RSS].es.prof_map_lock);
-+	if (!map)
-+		return;
-+	/* clear to default */
-+	for (m = 0; m < ICE_SYMM_REG_INDEX_MAX; m++)
-+		wr32(hw, GLQF_HSYMM(prof_id, m), 0);
-+
-+	if (cfg->symm)
-+		ice_rss_cfg_raw_symm(hw, &cfg->prof, prof_id);
-+}
-+
- /**
-  * ice_add_rss_cfg_sync - add an RSS configuration
-  * @hw: pointer to the hardware structure
-
++module_dsa_tag_driver(yt921x_netdev_ops);
 -- 
-2.51.0.rc1.197.g6d975e95c9d7
+2.51.0
 
