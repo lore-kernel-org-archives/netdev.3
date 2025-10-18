@@ -1,76 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797163C38;
-	Sat, 18 Oct 2025 01:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883E041AAC
+	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 01:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760749230; cv=none; b=gonIjeCJ9W6bH/xe+4pSsAPWUYFCJggAmU+r/PMJnlOnZ7RrrKBiedW4k/iXBs+n4WTtvVQpKaovXv/OAenSuA4UaJSUR7MZNNn5CnoBv7H/XNVBDoDEyDA9XkvMCMiKarR9dlB0PWPpndOJVOuQaIyBT8Mwc0G9NQMpSkVTFcE=
+	t=1760750292; cv=none; b=od0JthcZVsEJP/SqvtJ9DNdSMGj/Rojag9HKm2sqR7yhBS8LzsjzCEygm+0tuN9aajPSgr6C7oz82olpSHIqDAPHTLGzjU3j+0m313ChExdSJ2035Ug/5Nt+ddSYxYCNf8BgjLyOlFWYp6XKiCj9kBDHGXCFez33eRrGsKqYhkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760749230; c=relaxed/simple;
-	bh=Nxli6EbCMmDF/eXQaRvw6FrQifLvhVBDhZmL7Fm0QL0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=e6DHdIdC398QaNFQTL5cm9h7EZby+YOHdqejevHyLji86VspsA7Yfv9B4BDSQx75SZOH0ZjzLlfngQ7gw3CMJJFofgIr0w1DVAmy4e60bGlzNmzRCINY8bZcBP9fmEG/72pM7jbZ2pkPrzkYF/zdRV/rWWMO9lf0M0YQ+1S7REs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le4CN7tm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1760750292; c=relaxed/simple;
+	bh=DHdGUzF8HJaPv18p21SsIM1JCykWw1BNQ9xVxBJ/ey8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CqSM4WWnlDTiuIccLV7k5Dipjfaj+rWQOg+z/GkxyjGpwPCPu28ylohs0IWfjq+sv0//a9wqh/3J9VME8/HOyQ63kPV2wDu2wfKo2T+Y7p25RIpM74+diRidJXSmZB3GwNki+BSx86V9VaXP3Jk6w/6x2hmPYTSuzXn3+ojlqyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=ks4TLhHz; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le4CN7tm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39C3C4CEE7;
-	Sat, 18 Oct 2025 01:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760749229;
-	bh=Nxli6EbCMmDF/eXQaRvw6FrQifLvhVBDhZmL7Fm0QL0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=le4CN7tmd+NWgHbejaYm2XSTPsONXUtdpYES1kyC/DYxYczs0aoaSNDM/R26gDvj2
-	 xRCeaV9cbPKUeKtduwFiGHYq5pdBNTNnfz/xwto6dCVg/iR9s4MZcnfTQXn/mAQb3s
-	 QEfzCwOn3MU1cRI/idelx3BF3+OM/D3XRj/47GRO8GdPlg1CQS8i456BNrLhmiAY4o
-	 idH/j7VAKo+oFLXbSmIzpTEXP07w4ZERLCWh27zw8qieaxoHYGONXT1iZ0hpVO0P15
-	 OIlqYRe5yHVJGTmATQgvDtMzUm9JdOlBizM54AgQWWruwFgOxLx5kv+UCwHYa57cVA
-	 ANtxzegXiPZ2A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70DAD39EFA60;
-	Sat, 18 Oct 2025 01:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="ks4TLhHz"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7800ff158d5so2383591b3a.1
+        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 18:18:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1760750290; x=1761355090; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oNutzwJGGtfhc2UYuDqaLjoiYjQ+nZ6lcP1TgamaqJo=;
+        b=ks4TLhHzMRGq5iK+19/UBva82f9kt72PVDnoEQdcYvPozcrn8A/O1q6e+8cci/mz9M
+         lo/I7bRAOeS//Ycjd1Dvyyyz57WzCyX8HDPzUhT5DZZX0kP67tOSkkWUtbXP/phq2RV1
+         BqtPHAT3Fr6IHoDUUupjumYLkqXimvaM7W53A0xFdzPnIaEqepc4+JwQVW+ByLcBqGYi
+         uSz7dmUlzaZMk6amEsFMOCcgoUyRhmZUaXsvp6STm3ZT9RuI39YarVoEJiTyoXE3F+cT
+         nbU06X7LRxxNrA9kauon7xYFVkaQMBbaXtujcdE7R38atvKualKVWhl6eOfbIZgXDaii
+         IX7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760750290; x=1761355090;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oNutzwJGGtfhc2UYuDqaLjoiYjQ+nZ6lcP1TgamaqJo=;
+        b=WKd4Gpha9Mvhp4zjjOwFyBvCg4vIBO83wa6OqbZBROpD4y15z/JGuBNWfy3ZqydGs3
+         5z/PX7cvWmNa2i7PuQaOlh7n45nFUyuUXNLMdk6eXcPCt6prw/0Hbi8fhM+2p8s/46Cd
+         j3a5h/es4uyKUVckZ1OIbCJG+YiLUNfsaua7m6EQm0f1sTUGZhI28hdhcBI7+CYtTdPW
+         c2TYefwcrPirQGcb9+5HlcRdibYthbSyH3/w7fybwW1X/1MjsMvXeRKgfrt3YRcHFjNC
+         QcKeIi46PVDAFK42kfdeQVGvBM9a4diKZqh+JD1H0ST3+Ch0z4FBQi7WRf+t0c2Gxaag
+         2Ibg==
+X-Gm-Message-State: AOJu0Yy9ljSgcIEhcG/IGqnf7fUrHfxUliQfENkpRlgvdSmXOfz3gc9E
+	eNAjGAYwDwgHm3GU9B79fAqHzBWAM54/kZ6o1Qr0jDnetjD51FZu4U61BF8LohdhPu4=
+X-Gm-Gg: ASbGncsz+jI/IbR3MGkKLfN4nfy6uMAsIsQeHRsBWLUd9uOMaqKdcjnuZicRCoyJOZ1
+	9N4zkfXf0hWcVxrPiKuUOw/5gkh9+ei6Ax07FEwXoGhPNlza40F3tBSm1a2wFBO2yQvwtE6dTvl
+	TnpC1oYdehTjW3E0Jnd2BPZkTtqd4eJxlok8HAgYejlkGnAnO3iyxZ7AO4KXzG+6M9Gn99F/5+G
+	RuRjqv05RTcCfqRMC/QmFfj1etVoyPD0vgiDctfnmt+UgexuTeoxwR4gksCOY45A270XxrILlHg
+	aEKsRXvyoSpglyr35UXE+a+qxATyqqnNt3fncXuy86sb9wpnpvg4fVUnsTCPeKlNhFNSzVcjhD7
+	Ng6BVVXL7seT4BK1r5Cg78OQ9ejjqlgkUHDf9gPrkqnt8rhZR4Rnr5khrLb2QniDJp31cB41tbg
+	yZvG5Yf3UW5e5MmDLqRIdJpuWkLU4UfFfN2g6EN+M=
+X-Google-Smtp-Source: AGHT+IEBHV34cIapWYpa+I+Wb10CFFQfqZKuWXTnhL9/HOSdDCwgovS/YaG2tbmsQYyCsMNOIzfxAA==
+X-Received: by 2002:a05:6a20:394c:b0:32b:6f9e:d62e with SMTP id adf61e73a8af0-334a85baeeemr7079575637.47.1760750289698;
+        Fri, 17 Oct 2025 18:18:09 -0700 (PDT)
+Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a7664a462sm1122826a12.8.2025.10.17.18.18.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 18:18:09 -0700 (PDT)
+Date: Sat, 18 Oct 2025 01:57:22 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern
+ <dsahern@gmail.com>, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH iproute2-next] bond: slave: print master name
+Message-ID: <20251018015722.1df7f4a6@phoenix.lan>
+In-Reply-To: <20251017030509.61794-1-liuhangbin@gmail.com>
+References: <20251017030310.61755-1-liuhangbin@gmail.com>
+	<20251017030509.61794-1-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: pull-request: bpf-next 2025-10-16
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176074921325.2843953.9798029355647006124.git-patchwork-notify@kernel.org>
-Date: Sat, 18 Oct 2025 01:00:13 +0000
-References: <20251016204539.773707-1-martin.lau@linux.dev>
-In-Reply-To: <20251016204539.773707-1-martin.lau@linux.dev>
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- pabeni@redhat.com, ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
- martin.lau@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 17 Oct 2025 03:05:09 +0000
+Hangbin Liu <liuhangbin@gmail.com> wrote:
 
-This pull request was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> diff --git a/ip/iplink_bond_slave.c b/ip/iplink_bond_slave.c
+> index c88100e248dd..55deaadf5fe2 100644
+> --- a/ip/iplink_bond_slave.c
+> +++ b/ip/iplink_bond_slave.c
+> @@ -92,6 +92,17 @@ static void bond_slave_print_opt(struct link_util *lu, FILE *f, struct rtattr *t
+>  	if (!tb)
+>  		return;
+>  
+> +	if (tb[IFLA_BOND_SLAVE_MASTER]) {
+> +		unsigned int ifindex = rta_getattr_u32(tb[IFLA_BOND_SLAVE_MASTER]);
+> +
+> +		if (ifindex) {
+> +			print_string(PRINT_ANY,
+> +				     "master",
+> +				     "master %s ",
+> +				     ll_index_to_name(ifindex));
+> +		}
+> +	}
 
-On Thu, 16 Oct 2025 13:45:39 -0700 you wrote:
-> Hi David, hi Jakub, hi Paolo, hi Eric,
-> 
-> The following pull-request contains BPF updates for your *net-next* tree.
-> 
-> We've added 6 non-merge commits during the last 1 day(s) which contain
-> a total of 18 files changed, 577 insertions(+), 38 deletions(-).
-> 
-> [...]
-
-Here is the summary with links:
-  - pull-request: bpf-next 2025-10-16
-    https://git.kernel.org/netdev/net-next/c/e90576829ce4
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+You should use print_color_string(PRINT_ANY, COLOR_IFNAME, ...) here
