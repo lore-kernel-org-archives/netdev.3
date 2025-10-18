@@ -1,176 +1,110 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A77F178372
-	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 00:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7322C72602
+	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 00:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760748281; cv=none; b=czmcH31+A17R5sjvDAVo9cKs3yG60uICz3410Ac5tWPVsYeAqKTFypnSNSJriDPUlpa9kLSfZi2ukQO/TxkHpUHXDpjMzqbYrge8J7Z396hJAF/EYWu4CAApZBvAOfpuuWu0l9HlcEm0Ef3mkH63Qpo7trYHJpDK3a809qIXso0=
+	t=1760749193; cv=none; b=Quwxz9oWGHpJjT9ZlliqA4tMjvF3/6eAthi40wZiANyW/u8heZapg/uhVALAITk9ZLMmLiRa/rBFw+blnU3F/dZJFOlCsZ+XEZdch1/WQj02Z5xL9bAjg7ucvQ4UtTlQye5IaYUkNFdui/Omte/a2ifMCJLUhly6olp2iolLWgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760748281; c=relaxed/simple;
-	bh=sHF2/XPZw6H0+JGNQbRl7shSpw7MIUsqz9Xi23Hix74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bmulLrYOoSe5h10+1P9gFdg9y9jEaxLOFmwlPy065pIRG9gsQYK5e+sAeu0amls3I1p10HsJGXgMhDXLewmw+7VYnbEZdbXnwHAFjgg6DtB9x63nAFzhMXj8nn/LSDM6up6EBPEBd1xV9rLQgmHMLFu81muXWnlw73G12MbcKA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUdt9f5i; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760749193; c=relaxed/simple;
+	bh=s7nIw6m/HbsdzqZZwGNZbDYPJ8mHQOR6HT8rgAnGSL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u0JxIXOCyLP1lKVjlvTN1aQrvcrPsrekD2uoUL1Y4agN2CkQBEXhV3GuxmHU36tKEjpag8gULddvck2g3Fbxr46Tagt4cAwvLBYDhuKCL6A22NtaNltG3InVa6spgcSM1IlOXKsyLpIYnzEUrUiWNwYlKtoUIaGvq2sCHj0rSC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=y51+tBdF; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUdt9f5i"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-290b48e09a7so27318615ad.0
-        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 17:44:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="y51+tBdF"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-33067909400so1964233a91.2
+        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 17:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760748279; x=1761353079; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3QafKpBA9ev9tZ8RtBiTe7ilN8YrDWJs4uzq+MACIIs=;
-        b=fUdt9f5iwA4BDe8irbzVPi1woSuKvNnIqgt3/bItl4hrmKX8YKqg8iqpef24Zd24t4
-         3++L/qYWHutF9xvXPYB5kxgAVa+acix6h1n9CgVzDisN0qa6WWZxwdTddtIqCk/7BZEU
-         L+oxzQqH/E0d79Mmu+6VJSbPUeqUiSPreDs/sUY6XnVkkX3JkAEVl83F2PsNmp0cPlh6
-         ssECQgv4Jj8m5EXR6PLsUGGlCDD+aAQwOJHtufreJjie6RCtuemqhpeiiu1yjk4ICp+h
-         cUTZgfjypzzF8DOxJwrnzmTLBz2sOXYC5ausIHMo7rvfAr/CKAftaoSKhhAu3KZcvV+t
-         /ROA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760748279; x=1761353079;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1760749189; x=1761353989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3QafKpBA9ev9tZ8RtBiTe7ilN8YrDWJs4uzq+MACIIs=;
-        b=J6wOcsk7rC6bT0KSfYg6phRNVrNbqRgXFMt+TAbSr9+YSMF8szTAIP6btwCQ9qyDSZ
-         bUyDCqYCLEW5OCHnuqWojgBnFzikspm2vMXBHGvUZEAWRkacGWfuRNf4HFugS9EjxBrv
-         5rBRuPzN/hqZGpkNvg3+A4OMMlx5GQkrXwtj5zujiqMGq/F2BnvZZYS/0q3ZUhDGtknf
-         /iu7HlPHSi2eEBsbm1PrOAmFrJr8QcMVJpfbBXQJ93oxvFplUH4vCLJ8DKLQOu9oTIyj
-         VmQwbqWvODNFZcn2LNF3WZnHYji6OSyqhnLzkxMgpgtMKzixqwnU2NcgyhL064FDeAgz
-         l+cA==
-X-Forwarded-Encrypted: i=1; AJvYcCULF4FdlwBwJGf75eWqABALZ5sJVHAtVa94IZgaHkWXgfR2u6mjSJSDav7HOpTtBIMs3pOaUWs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR8n9kDhpzBnNeCehRlTv9tZpK9c69+ZmLJRzZKz3BgeXOwJPv
-	G+8MulzuiR0c/dMSB2eWYvK8Y4SLd3xfFO451nacUam3CMHQyGpwkQym
-X-Gm-Gg: ASbGncu4o3fl7EQ4EydmPl1cGLiqzKbmElyCLIkqRcA0YqKXfMbuaA+fnOFWecQl4fQ
-	vYGcx9Jv3BsA3tQaBOnJRD1gbVjcMOhhOywu9CKjoHW7BDfdl8YLvjA+BM14c0R1yMoTHXF2Udh
-	Zr096b7BIu5pAqsKV/RegU4PKXMg2qv5bN96BjU30NT6iejTkyeU3R9RZzc9YccgFyQpOJsrM/A
-	Wwm3aqIha4AKF9izypG0bZGmMTi71OUj2k8JCpqR0Git5HsCFhZwxP+sTm9KuOZSkM+VfyarQfS
-	uzuInVmrFNwEELbqHzAqT9kMivaJbHvzL8OGDEYpwRSXBShyjrwN+cHvPpGRkoGyeq1SyhVnS09
-	cgBDuv9wCAhmAsh6LkPZzFkrUkYc7iPuJp06cK9le8IOaN04NS/1b52cGX9X0J1NQKn90na3bim
-	0=
-X-Google-Smtp-Source: AGHT+IEJHzKpBZuNZNa18WS/ADFtdVavA7SE/dNX1ygVUM8SyYneHAxGCurSyYxg3cW6a8KtgONCXg==
-X-Received: by 2002:a17:902:ea01:b0:267:d2f9:2327 with SMTP id d9443c01a7336-290c9cf2d88mr81827755ad.27.1760748278692;
-        Fri, 17 Oct 2025 17:44:38 -0700 (PDT)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2924721b6fdsm7874395ad.118.2025.10.17.17.44.37
+        bh=hi9KLa2eoq8E3lab3hI9grIf4XP4pALHwkfRR4JlsOk=;
+        b=y51+tBdFwIX7kFlU9i87TZV/OFe0TLElBBS7CjV0ZoSP4icOIxCULAj1+TDAxx9Yaf
+         J0TvwpbVFu2csW27srRcAvT9um+usdws5C5GmxR/nNqBYh2XLkrGHjJ7ykwfB0166jiu
+         91xO4+767jSi18mUyo5ouJ7xiMemLkJLZuyRHlB1bhRjKFb5NsOC6NzYFBFG1DiXGg7y
+         9Lc2yWU39cM8HkCFjTjoJZRhMyGG1BeqSRQVo8CRBM57ZA6hWiFOW9w3Pm9Q7VE24gm5
+         lomkkNIjS8ZZ0cbbe7FcaLONv6JHdyyUxNLEmEvssADeInAVlTZOBikYgvNvrR3OJaaE
+         Q1ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760749189; x=1761353989;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hi9KLa2eoq8E3lab3hI9grIf4XP4pALHwkfRR4JlsOk=;
+        b=rZwcUvqGXjKIfQ0bMEJrMjGibHlbQrYeRGrFQtQSqWuA1syB0z5UgBbHiIqQjeryOj
+         CnXpEhOKvmYsLm5HH4l85hRnduM1vv/5JnKuCuXPMI1h7anqwfdHN/nDm37cnjWS4OF5
+         gaOFPoXkVjvqVxnx0GmtSsdjiM2EHC96Mcf48+eIWDfxiDZT05SnSWzN7cWjb2X5R4Di
+         577FgxavcgHQCd9uI1VEIjaDYA9E06m3BfGvVIRdggE8d/iaeWZWnOhvDXj67xjeTnwb
+         qspWWw6HAwYkOulNBRAw/UUQc0+2PZoNQ4wS8Vz7HYVUvgfDIwjqKSWgAKUgat06tEL1
+         jL3A==
+X-Gm-Message-State: AOJu0YyDbIr0G4KaRgdo4JOfBger2DkX/9XbTgAGfNi2hQAMM6AiG6A9
+	00kIo+7QZgWf+97TcjKFDBLjp1248lq2cnE/1wZc7nMu8pecTHU3W6N7ZZKW6iKhOd8=
+X-Gm-Gg: ASbGncux9P4du9Vp6PE9IpTXwXfI69puiM65K3CyiM8BNqhADlA7JZniTuTHdK9iMkg
+	KlfIIux+b5NLsHjURB5E7fuoXWgITpzhYgSLCfKktObhj0UYU3qMGUArjy/uz6gqdiDVRZj71sx
+	swAiUfQFnxS7cviVKLIcTYzaekDqY6fsknWEFDFse/s4/5sOGdT35iapcntpcPy9jJmBwynrHmj
+	KOl2wK14q68bZ/IgUuCYUCmQXXlJ/yDxoW1fR1HEJ1Vquu0qckEWWg4Lkx8dHq5bFwk0NaCgw5F
+	7SooBMTIltL9vsgm59uhCZNtirtfUNxqW1EaiS10bm1Z1J9rHKlQy02RBTSWSUjbnfaNTY6pkFN
+	Sj1Q8FE9GAUhlrJL84/v5GJlS4cTmlnfS7CQGpkhNpha31l+i4ggkOIYMo++qX1rOyxbdDar2mP
+	0ZXR2i9UJqaiZBhdZFqM8c+bOq4xNMb232ONj/tLAEMNA/dD/hGw==
+X-Google-Smtp-Source: AGHT+IE8F7ExdklSa3ruJ5k8eRmpKIFS/XxjE3DOJhpY1qF6umrxCfc1xaeZyX8Dtdwt5OZutofUbQ==
+X-Received: by 2002:a17:90b:35c1:b0:32e:389b:8762 with SMTP id 98e67ed59e1d1-33bcec2c587mr6060603a91.0.1760749189539;
+        Fri, 17 Oct 2025 17:59:49 -0700 (PDT)
+Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33bae284ebdsm3496550a91.3.2025.10.17.17.59.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 17:44:38 -0700 (PDT)
-Date: Sat, 18 Oct 2025 08:43:47 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Yixun Lan <dlan@gentoo.org>, Inochi Amaoto <inochiama@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Chen Wang <unicorn_wang@outlook.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	Han Gao <rabenda.cn@gmail.com>, Icenowy Zheng <uwu@icenowy.me>, 
-	Vivian Wang <wangruikang@iscas.ac.cn>, Yao Zi <ziyao@disroot.org>, netdev@vger.kernel.org, 
-	sophgo@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH] net: stmmac: dwmac-sophgo: Add phy interface filter
-Message-ID: <hmch7csqotxt42snddksce2mpnjeglbgvoxs6r5qlu7v2ayxyk@zctj7xhugeln>
-References: <20251017011802.523140-1-inochiama@gmail.com>
- <20251018000548-GYA1481334@gentoo.org>
+        Fri, 17 Oct 2025 17:59:49 -0700 (PDT)
+Date: Sat, 18 Oct 2025 01:39:02 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Garri Djavadyan <g.djavadyan@gmail.com>
+Cc: netdev@vger.kernel.org, 1117959@bugs.debian.org
+Subject: Re: ipv6_route flags RTF_ADDRCONF and RTF_PREFIX_RT are not cleared
+ when static on-link routes are added during IPv6 address configuration
+Message-ID: <20251018013902.67802981@phoenix.lan>
+In-Reply-To: <ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com>
+References: <ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251018000548-GYA1481334@gentoo.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Oct 18, 2025 at 08:05:48AM +0800, Yixun Lan wrote:
-> Hi Inochi,
-> 
-> On 09:18 Fri 17 Oct     , Inochi Amaoto wrote:
-> > As the SG2042 has an internal rx delay, the delay should be remove
->                                                      s/remove/removed/
-> > when init the mac, otherwise the phy will be misconfigurated.
-> s/init/initialize/
-> > 
-> > Fixes: 543009e2d4cd ("net: stmmac: dwmac-sophgo: Add support for Sophgo SG2042 SoC")
-> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> > Tested-by: Han Gao <rabenda.cn@gmail.com>
-> > ---
-> >  .../ethernet/stmicro/stmmac/dwmac-sophgo.c    | 25 ++++++++++++++++++-
-> >  1 file changed, 24 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-> > index 3b7947a7a7ba..b2dee1399eb0 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-> > @@ -7,6 +7,7 @@
-> > 
-> >  #include <linux/clk.h>
-> >  #include <linux/module.h>
-> > +#include <linux/property.h>
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/platform_device.h>
-> > 
-> > @@ -29,8 +30,23 @@ static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
-> >  	return 0;
-> >  }
-> > 
-> > +static int sophgo_sg2042_set_mode(struct plat_stmmacenet_data *plat_dat)
-> > +{
-> > +	switch (plat_dat->phy_interface) {
-> > +	case PHY_INTERFACE_MODE_RGMII_ID:
-> > +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII_TXID;
-> > +		return 0;
-> > +	case PHY_INTERFACE_MODE_RGMII_RXID:
-> > +		plat_dat->phy_interface = PHY_INTERFACE_MODE_RGMII;
-> > +		return 0;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> >  static int sophgo_dwmac_probe(struct platform_device *pdev)
-> >  {
-> > +	int (*plat_set_mode)(struct plat_stmmacenet_data *plat_dat);
-> >  	struct plat_stmmacenet_data *plat_dat;
-> >  	struct stmmac_resources stmmac_res;
-> >  	struct device *dev = &pdev->dev;
-> > @@ -50,11 +66,18 @@ static int sophgo_dwmac_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return ret;
-> > 
-> > +	plat_set_mode = device_get_match_data(&pdev->dev);
-> > +	if (plat_set_mode) {
-> > +		ret = plat_set_mode(plat_dat);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> >  	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
-> >  }
-> > 
+On Thu, 16 Oct 2025 00:12:40 +0200
+Garri Djavadyan <g.djavadyan@gmail.com> wrote:
 
-> >  static const struct of_device_id sophgo_dwmac_match[] = {
-> > -	{ .compatible = "sophgo,sg2042-dwmac" },
-> > +	{ .compatible = "sophgo,sg2042-dwmac", .data = sophgo_sg2042_set_mode },
-> I'd personally prefer to introduce a flag for this, it would be more readable and
-> maintainable, something like
-> struct sophgo_dwmac_compitable_data {
-> 	bool has_internal_rx_delay;
-> }
+> Hi Everyone,
 > 
-> then.
-> 	if (data->has_internal_rx_delay)
-> 		sophgo_sg2042_set_mode(..)
+> A year ago I noticed a problem with handling ipv6_route flags that in
+> some scenarios can lead to reachability issues. It was reported here:
+> 
+> https://bugzilla.kernel.org/show_bug.cgi?id=219205
 > 
 > 
-> >  	{ .compatible = "sophgo,sg2044-dwmac" },
-> >  	{ /* sentinel */ }
-> >  };
+> Also it was recently reported in the Debian tracker after checking if
+> the latest Debian stable is still affected:
+> 
+> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1117959
+> 
+> 
+> Unfortunately, the Debian team cannot act on the report because no one
+> from the upstream kernel team has confirmed if the report in the
+> upstream tracker is valid or not. Therefore, I am checking if anyone
+> can help confirm if the observed behavior is indeed a bug.
+> 
+> Many thanks in advance!
+> 
+> Regards,
+> Garri
+> 
 
-Yeah, I think this is a good idea, thanks.
-
-Regards,
-Inochi
-
+Linux networking does not actively use kernel bugzilla.
+I forward the reports to the mailing list, that is all.
+After than sometimes developers go back and update bugzilla
+but it is not required or expected.
