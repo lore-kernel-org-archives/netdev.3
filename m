@@ -1,76 +1,50 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883E041AAC
-	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 01:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A02C14B08A;
+	Sat, 18 Oct 2025 01:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760750292; cv=none; b=od0JthcZVsEJP/SqvtJ9DNdSMGj/Rojag9HKm2sqR7yhBS8LzsjzCEygm+0tuN9aajPSgr6C7oz82olpSHIqDAPHTLGzjU3j+0m313ChExdSJ2035Ug/5Nt+ddSYxYCNf8BgjLyOlFWYp6XKiCj9kBDHGXCFez33eRrGsKqYhkI=
+	t=1760750644; cv=none; b=b9u7nb6LEKgEIbJIP3JUeY07rhe/XcVBFvEGswMjQONLUD/I0jnLddbydEY/p+e7E/gUEFEK7BA/ODHs2t1it5kYr2tnvf4XegHnYl0viNj49/Gwwxw27z9oPxo2xTgVbb7pEKNw2Ux4sEkUEqp8rGFGd2e2SDqR5DgJnZ6Smbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760750292; c=relaxed/simple;
-	bh=DHdGUzF8HJaPv18p21SsIM1JCykWw1BNQ9xVxBJ/ey8=;
+	s=arc-20240116; t=1760750644; c=relaxed/simple;
+	bh=VZ+0PK7Xowje368lQGozH1qMIaGZqErCNscmB4ue3mY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CqSM4WWnlDTiuIccLV7k5Dipjfaj+rWQOg+z/GkxyjGpwPCPu28ylohs0IWfjq+sv0//a9wqh/3J9VME8/HOyQ63kPV2wDu2wfKo2T+Y7p25RIpM74+diRidJXSmZB3GwNki+BSx86V9VaXP3Jk6w/6x2hmPYTSuzXn3+ojlqyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=ks4TLhHz; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	 MIME-Version:Content-Type; b=R9goqx6sm2wsTFvJXkfjqe9qfFlSk/Y3KZT0coM1/pcTUREbbRC8o0VSR2SgeH2BJ89dDOBjIsBAHw+jmZ7x9Ij0LGFSBQqAgmClsrOxl24G5ZgMxIQNpnRhI9QXWNHbxi8aJqka88+CBob86hs3rdcmAGyXo5XHysK0e3GMFgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuH8G0SF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="ks4TLhHz"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7800ff158d5so2383591b3a.1
-        for <netdev@vger.kernel.org>; Fri, 17 Oct 2025 18:18:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1760750290; x=1761355090; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oNutzwJGGtfhc2UYuDqaLjoiYjQ+nZ6lcP1TgamaqJo=;
-        b=ks4TLhHzMRGq5iK+19/UBva82f9kt72PVDnoEQdcYvPozcrn8A/O1q6e+8cci/mz9M
-         lo/I7bRAOeS//Ycjd1Dvyyyz57WzCyX8HDPzUhT5DZZX0kP67tOSkkWUtbXP/phq2RV1
-         BqtPHAT3Fr6IHoDUUupjumYLkqXimvaM7W53A0xFdzPnIaEqepc4+JwQVW+ByLcBqGYi
-         uSz7dmUlzaZMk6amEsFMOCcgoUyRhmZUaXsvp6STm3ZT9RuI39YarVoEJiTyoXE3F+cT
-         nbU06X7LRxxNrA9kauon7xYFVkaQMBbaXtujcdE7R38atvKualKVWhl6eOfbIZgXDaii
-         IX7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760750290; x=1761355090;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oNutzwJGGtfhc2UYuDqaLjoiYjQ+nZ6lcP1TgamaqJo=;
-        b=WKd4Gpha9Mvhp4zjjOwFyBvCg4vIBO83wa6OqbZBROpD4y15z/JGuBNWfy3ZqydGs3
-         5z/PX7cvWmNa2i7PuQaOlh7n45nFUyuUXNLMdk6eXcPCt6prw/0Hbi8fhM+2p8s/46Cd
-         j3a5h/es4uyKUVckZ1OIbCJG+YiLUNfsaua7m6EQm0f1sTUGZhI28hdhcBI7+CYtTdPW
-         c2TYefwcrPirQGcb9+5HlcRdibYthbSyH3/w7fybwW1X/1MjsMvXeRKgfrt3YRcHFjNC
-         QcKeIi46PVDAFK42kfdeQVGvBM9a4diKZqh+JD1H0ST3+Ch0z4FBQi7WRf+t0c2Gxaag
-         2Ibg==
-X-Gm-Message-State: AOJu0Yy9ljSgcIEhcG/IGqnf7fUrHfxUliQfENkpRlgvdSmXOfz3gc9E
-	eNAjGAYwDwgHm3GU9B79fAqHzBWAM54/kZ6o1Qr0jDnetjD51FZu4U61BF8LohdhPu4=
-X-Gm-Gg: ASbGncsz+jI/IbR3MGkKLfN4nfy6uMAsIsQeHRsBWLUd9uOMaqKdcjnuZicRCoyJOZ1
-	9N4zkfXf0hWcVxrPiKuUOw/5gkh9+ei6Ax07FEwXoGhPNlza40F3tBSm1a2wFBO2yQvwtE6dTvl
-	TnpC1oYdehTjW3E0Jnd2BPZkTtqd4eJxlok8HAgYejlkGnAnO3iyxZ7AO4KXzG+6M9Gn99F/5+G
-	RuRjqv05RTcCfqRMC/QmFfj1etVoyPD0vgiDctfnmt+UgexuTeoxwR4gksCOY45A270XxrILlHg
-	aEKsRXvyoSpglyr35UXE+a+qxATyqqnNt3fncXuy86sb9wpnpvg4fVUnsTCPeKlNhFNSzVcjhD7
-	Ng6BVVXL7seT4BK1r5Cg78OQ9ejjqlgkUHDf9gPrkqnt8rhZR4Rnr5khrLb2QniDJp31cB41tbg
-	yZvG5Yf3UW5e5MmDLqRIdJpuWkLU4UfFfN2g6EN+M=
-X-Google-Smtp-Source: AGHT+IEBHV34cIapWYpa+I+Wb10CFFQfqZKuWXTnhL9/HOSdDCwgovS/YaG2tbmsQYyCsMNOIzfxAA==
-X-Received: by 2002:a05:6a20:394c:b0:32b:6f9e:d62e with SMTP id adf61e73a8af0-334a85baeeemr7079575637.47.1760750289698;
-        Fri, 17 Oct 2025 18:18:09 -0700 (PDT)
-Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a7664a462sm1122826a12.8.2025.10.17.18.18.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Oct 2025 18:18:09 -0700 (PDT)
-Date: Sat, 18 Oct 2025 01:57:22 -0700
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Hangbin Liu <liuhangbin@gmail.com>
-Cc: netdev@vger.kernel.org, Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern
- <dsahern@gmail.com>, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH iproute2-next] bond: slave: print master name
-Message-ID: <20251018015722.1df7f4a6@phoenix.lan>
-In-Reply-To: <20251017030509.61794-1-liuhangbin@gmail.com>
-References: <20251017030310.61755-1-liuhangbin@gmail.com>
-	<20251017030509.61794-1-liuhangbin@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuH8G0SF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EB2C4CEFE;
+	Sat, 18 Oct 2025 01:23:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760750640;
+	bh=VZ+0PK7Xowje368lQGozH1qMIaGZqErCNscmB4ue3mY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SuH8G0SFf8tnTa5DujFZD38xFGUFaxQuFoKV51uK4JH1z7LFyPmflJHVuSnJ8FrWC
+	 AO3b/oG0nZu8YZG2uxVcRtARPIAN0jBNn7tZOoeymv06i36LKIxB3Lfpcfoss8KqxN
+	 erm/41d9xXprtVZePAzU9m8ygIk8Xi/qlI3JJqYBa4Xg0JTip9jUrADT/srN4SlXZ9
+	 qMv4A+Py4QrSFDUBy436rj9bXzEpBOfm87/3JqL9mg0vhOhXePQuc0QXAADLQMSZQH
+	 HHg5++uP8wvG24Ume/bZ3TaZyHvVVc0lIGSNyVLq656h5A28f+S46Y9g1Mdy/SYcrH
+	 Kbztuc1thO0qg==
+Date: Fri, 17 Oct 2025 18:23:58 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
+ <joabreu@synopsys.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Richard
+ Cochran <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>, Alexis
+ =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: stmmac: Allow supporting coarse
+ adjustment mode
+Message-ID: <20251017182358.42f76387@kernel.org>
+In-Reply-To: <20251015102725.1297985-3-maxime.chevallier@bootlin.com>
+References: <20251015102725.1297985-1-maxime.chevallier@bootlin.com>
+	<20251015102725.1297985-3-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,26 +54,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 17 Oct 2025 03:05:09 +0000
-Hangbin Liu <liuhangbin@gmail.com> wrote:
+On Wed, 15 Oct 2025 12:27:22 +0200 Maxime Chevallier wrote:
+> The DWMAC1000 supports 2 timestamping configurations to configure how
+> frequency adjustments are made to the ptp_clock, as well as the reported
+> timestamp values.
+> 
+> There was a previous attempt at upstreaming support for configuring this
+> mode by Olivier Dautricourt and Julien Beraud a few years back [1]
+> 
+> In a nutshell, the timestamping can be either set in fine mode or in
+> coarse mode.
+> 
+> In fine mode, which is the default, we use the overflow of an accumulator to
+> trigger frequency adjustments, but by doing so we lose precision on the
+> timetamps that are produced by the timestamping unit. The main drawback
+> is that the sub-second increment value, used to generate timestamps, can't be
+> set to lower than (2 / ptp_clock_freq).
+> 
+> The "fine" qualification comes from the frequent frequency adjustments we are
+> able to do, which is perfect for a PTP follower usecase.
+> 
+> In Coarse mode, we don't do frequency adjustments based on an
+> accumulator overflow. We can therefore have very fine subsecond
+> increment values, allowing for better timestamping precision. However
+> this mode works best when the ptp clock frequency is adjusted based on
+> an external signal, such as a PPS input produced by a GPS clock. This
+> mode is therefore perfect for a Grand-master usecase.
+> 
+> We therefore attempt to map these 2 modes with the newly introduced
+> hwtimestamp qualifiers (precise and approx).
+> 
+> Precise mode is mapped to stmmac fine mode, and is the expected default,
+> suitable for all cases and perfect for follower mode
+> 
+> Approx mode is mapped to coarse mode, suitable for Grand-master.
 
-> diff --git a/ip/iplink_bond_slave.c b/ip/iplink_bond_slave.c
-> index c88100e248dd..55deaadf5fe2 100644
-> --- a/ip/iplink_bond_slave.c
-> +++ b/ip/iplink_bond_slave.c
-> @@ -92,6 +92,17 @@ static void bond_slave_print_opt(struct link_util *lu, FILE *f, struct rtattr *t
->  	if (!tb)
->  		return;
->  
-> +	if (tb[IFLA_BOND_SLAVE_MASTER]) {
-> +		unsigned int ifindex = rta_getattr_u32(tb[IFLA_BOND_SLAVE_MASTER]);
-> +
-> +		if (ifindex) {
-> +			print_string(PRINT_ANY,
-> +				     "master",
-> +				     "master %s ",
-> +				     ll_index_to_name(ifindex));
-> +		}
-> +	}
+I failed to understand what this device does and what the problem is :(
 
-You should use print_color_string(PRINT_ANY, COLOR_IFNAME, ...) here
+What is your ptp_clock_freq? Isn't it around 50MHz typically? 
+So 2 / ptp_freq is 40nsec (?), not too bad?
+
+My recollection of the idea behind that timestamping providers
+was that you can configure different filters for different providers.
+IOW that you'd be able to say:
+ - [precise] Rx stamp PTP packets 
+ -  [approx] Rx stamp all packets
+not that you'd configure precision of one piece of HW..
+
+If the HW really needs it, just lob a devlink param at it?
