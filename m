@@ -1,134 +1,134 @@
-Received: from smtp.wizmail.org (smtp.wizmail.org [85.158.153.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C14244693
-	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 19:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.158.153.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C266426F478
+	for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 19:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760814117; cv=none; b=ur7ivF1zSJToe03TS9bm8Tc1gTjEe3tcET7jNnH7TI3FG65R/fV6CAf5oUougZ7U1bohpDCVwP5kM6NUqcNQwFLW6z4GrsYdbSIzhG+1fXioyRVeH3CxcZ91X8QzVYj8FaIq9fJ5JLmbLr8EOzu4zJbLOOuZ9sIZ41d8Y3HP82I=
+	t=1760814323; cv=none; b=HbWpYW83osTm4nh0Q3YCKgRMd6DgRh2mxl/r8168/w6/yu4MHTYLgnhNfJmo++C+iu1jorAG66ScHuyVta4cIhkAdWT72cIEs/wFsmpge9qLg+ZRaR5hgJfrDHXjbUYgw1rEapMFscwbLRmorU1Yj8otdxSW/Do46v7ljeN5tjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760814117; c=relaxed/simple;
-	bh=DXPGtBYOP85JnzCcHPms0Ngg0wVQ3bIQoqv7CeVL+iI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V1r1+qtl2+521H+cF01mRXB0Sv8Z0GeGOdICSepmQFbOJE+foMDoIhH1h0s5WYTsYwzKRHmI4I8t5E7WBdceEjbGn2OAcIzS7g2w5lk02pWbqBkvkAtIiLxfIRdcIaPTX9jb9A4xseVnS2hHCnrJHBpEH4Naw0XY2G9yUIS/Cxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizmail.org; spf=none smtp.mailfrom=wizmail.org; dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=do1Jhd5j; dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b=Ypb97y0m; arc=none smtp.client-ip=85.158.153.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wizmail.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=wizmail.org
+	s=arc-20240116; t=1760814323; c=relaxed/simple;
+	bh=GlkRPCPhPzOU9mLCQrN+RQspS//dfiZHnMCrJx2XjUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fL8isprnySwSMg5UllIr4B9ly85eUwD4SW6cZw3qiKYi5+09r2MIoW/oC8LUblgWhurAJc+6sI4YmukivdRcspu/B1OXdf0GKqXrVjkFqDUF6VjcAHEcGgPBLLD85sPkcV8ciNgFRhK88gseYt2eVzPKU0bLTax7CDEwBkWhKKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AutLg8/Y; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="do1Jhd5j";
-	dkim=pass (2048-bit key) header.d=wizmail.org header.i=@wizmail.org header.b="Ypb97y0m"
-DKIM-Signature: v=1; a=ed25519-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=wizmail.org; s=e250621; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Autocrypt:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:Autocrypt;
-	bh=XARMZO+O0tITHFCH4jUR5pjp90oMywID5Zp2nK6FlkY=; b=do1Jhd5jAAAuLhM1wYS8EFBs9L
-	U2Rj7csKlM00OmsLKA7gfKt5QDgpxbIGnop/RNPL3vFVQMmI8K8ygrAyrFAg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wizmail.org
-	; s=r250621; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:Autocrypt:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:Sender:
-	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive:Autocrypt;
-	bh=XARMZO+O0tITHFCH4jUR5pjp90oMywID5Zp2nK6FlkY=; b=Ypb97y0mFfiM5Ygy1zzBtPWOzq
-	LCasAuVtfj4C2IHIUbhXul7o4wh5J+wHkYJDgfp7y+5r/X+PXc1whBiN1Rl6uojxogobhXXlLyFOE
-	Qf3Eq5S1HA3+JokoID6m/qvMFsLueFjGOyQrn4NhAonGtPkyvyTOfqIGtw9FmMga7whDUc+Zo6N5L
-	QwcMwppsMNVc4pHjmUfK9VOiNacMPENwQwB09dMC3NEGeI9b/+po7PHU952G/QSGVu9nwTMTXM8CR
-	FVo8JJ7YFa65gYzQLn47zTQlGE8WhtbD9WzbjuxALCQ4vSoaO4p1Z5nKJ0Y4o7/uFU3AWJyx/MNnA
-	DoNbmIzA==;
-Authentication-Results: wizmail.org;
-	iprev=pass (hellmouth.gulag.org.uk) smtp.remote-ip=85.158.153.62;
-	auth=pass (PLAIN) smtp.auth=jgh@wizmail.org
-Received: from hellmouth.gulag.org.uk ([85.158.153.62] helo=[192.168.0.17])
-	by wizmail.org (Exim 4.98.120)
-	(TLS1.3) tls TLS_AES_128_GCM_SHA256
-	with esmtpsa
-	id 1vABsA-00000004c6F-3Qzs
-	(return-path <jgh@wizmail.org>);
-	Sat, 18 Oct 2025 18:41:46 +0000
-Message-ID: <f93076da-4df7-4e02-9d57-30e9b19b3608@wizmail.org>
-Date: Sat, 18 Oct 2025 19:41:45 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AutLg8/Y"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-651c8557bf4so609863eaf.1
+        for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 12:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760814320; x=1761419120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=npvxteVAfIEKzMeytJ2WmNF7D4AAPzWxw0qzjoJdKTI=;
+        b=AutLg8/YD91s2Pa5W48hZ3OrDxy/xKimxKdqmnQ9L9+1JudCP6yV0yTaPsTHLj9Ng6
+         ayu5A1t4VTvR2u4O4BNdk4UZQdTgAQm38dyU9qLzekSonv6ChcNGevrmv735Owp1ibgJ
+         b3qopqYRQMmPrWfBrDz9c6VcFRTp7gg0RafKw5fx+C6GTJ98hkRuPXE6qL0Nj9ThxvBx
+         M55Dr/GnPxZ6AJ/IGHa49FGKcK5TM3g7w7fRQG7jygaIWPB06Omtdh+ZoQfK6TqmfGpc
+         X1KelEdVtXe0T6BYZEMayKWX7AYx/89PpMW5VWQhEv2I2GVGBehpXaE2rr4/KaeTKGjB
+         ZbVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760814320; x=1761419120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=npvxteVAfIEKzMeytJ2WmNF7D4AAPzWxw0qzjoJdKTI=;
+        b=dY3aVn8dLLIC/P8jOGdawWDlSJZ4XiAgHcl2vE9KbtFrHAk9vMsRFWo77Zez1aoLgw
+         ffQjpNqw069zKHXEzcleX1HaYAcZr4Fc54WtZ0xNoP+6+Lj/ZAvaxYntX7XXF/IuuN6H
+         XrxuWEBCp9FV/ygOQ3GcDwDNUgJYAmIoxMCJlcZ+9gpnviYF2WG6iS5OoIqwQr1f/aku
+         bAfdVu1Vm/0dXN43Ya5DJLstpPEexBzHetlsNiCVU5Qh3RBIuB85EhWNrEdP4UJjjsvG
+         5F1fl8TJlE2eJiwXyyDtshtdevxcPxhMCp0a8HzP+NHUZPEtdLyDJhyrFCVxthWRGow5
+         n7lA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1zf8ZkeyICEaZh2oB1qXC/nJt2PkAeajd/B18zUfIJKhC7Qh3O2b8VUMFgYiYmkYVZuTIPPs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybL8Jq+ptcatw6RUOERq0tw1Pj+eKDkcB+WYyUs0domq3IEgeQ
+	i8rTql055Ad/tXR4l3ZCLxbXHdvCqUk811a7+4ydLVz8BFxYOo4fNI/+MoeMNlxo8rur+eICK40
+	BSNRoZ0JF41fBsA/4twQWKYL4zXzCW6c=
+X-Gm-Gg: ASbGncs/Qh/sSmHP9YNRkP9ZUtUPhHDVE2iDzoyyBSBtZUpQw7xdDBNT90eQFHsE9pL
+	ZO7vWoVC4H36pMKALcsVy1u6Zc2RqVooEbFLcrsMLLeLUG2JHAzqYnpvueTLCxS6CXLShzBqsN0
+	hAyjQVgqvZ3l2byrQS1I4//Uuz3uDVc4395gUJfu9ivPgr1iqOY/fmaLdd+kiA192snS9OcglOU
+	ZKlN9wWCvnzP/P1M74fpKeaLWILu+z+WEwnWGZR7CjFx9SM2i8MYQjVtluwohCFg/6uR96A
+X-Google-Smtp-Source: AGHT+IHn6bYHsxvnnBm5dSpuXWjNC+PBXDBTRxFzgYuC3xttEpimkJMntVWJZ0cZXwANZryVuMF0nNeTd369Q5XITzY=
+X-Received: by 2002:a05:6871:6907:b0:349:de3c:bfc8 with SMTP id
+ 586e51a60fabf-3c98d0c7686mr2520732fac.31.1760814319754; Sat, 18 Oct 2025
+ 12:05:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 net-next 1/4] tcp: Make TFO client fallback behaviour
- consistent.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Yuchung Cheng <ycheng@google.com>, Willem de Bruijn <willemb@google.com>,
- Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>
-References: <20251016040159.3534435-1-kuniyu@google.com>
- <20251016040159.3534435-2-kuniyu@google.com>
- <CANn89iJnQErC8OLoTgnNxU8MURKANbiqXBYaUHsNaTO3m+P54Q@mail.gmail.com>
-From: Jeremy Harris <jgh@wizmail.org>
-Content-Language: en-GB
-Autocrypt: addr=jgh@wizmail.org; keydata=
- xsBNBFWABsQBCADTFfb9EHGGiDel/iFzU0ag1RuoHfL/09z1y7iQlLynOAQTRRNwCWezmqpD
- p6zDFOf1Ldp0EdEQtUXva5g2lm3o56o+mnXrEQr11uZIcsfGIck7yV/y/17I7ApgXMPg/mcj
- ifOTM9C7+Ptghf3jUhj4ErYMFQLelBGEZZifnnAoHLOEAH70DENCI08PfYRRG6lZDB09nPW7
- vVG8RbRUWjQyxQUWwXuq4gQohSFDqF4NE8zDHE/DgPJ/yFy+wFr2ab90DsE7vOYb42y95keK
- tTBp98/Y7/2xbzi8EYrXC+291dwZELMHnYLF5sO/fDcrDdwrde2cbZ+wtpJwtSYPNvVxABEB
- AAHNJkplcmVteSBIYXJyaXMgKG5vbmUpIDxqZ2hAd2l6bWFpbC5vcmc+wsCOBBMBCAA4FiEE
- qYbzpr1jd9hzCVjevOWMjOQfMt8FAl4WMuMCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AA
- CgkQvOWMjOQfMt946ggAvqDr2jvVnGIN2Njnjl2iiKyw4dYdFzNhZgjTaryiV90BftUDxRsB
- uTVFUC6XU+B13MEgSK0zRDyI5NpEH+JTW539gWlmz2k2WTTmoBsm/js1ELoAjGr/i32SByqm
- 0fo3JPctn/lc7oTo0muGYvB5xWhTHRlcT9zGTRUb/6ucabVLiJUrcGhS1OqDGq7nvYQpFZdf
- Dj7hyyrCKrq6YUPRvoq3aWw/o6aPUN8gmJj+h4pB5dMbbNKm7umz4O3RHWceO9JCGYxfC4uh
- 0k85bgIVb4wtaljBW90YZRU/5zIjD6r2b6rluY55rLulsyT7xAqe14eE1AlRB1og/s4rUtRf
- 8M7ATQRVgAbEAQgA6YSx2ik6EbkfxO0x3qwYgow2rcAmhEzijk2Ns0QUKWkN9qfxdlyBi0vA
- nNu/oK2UikOmV9GTeOzvgBchRxfAx/dCF2RaSUd0W/M4F0/I5y19PAzN9XhAmR50cxYRpTpq
- ulgFJagdxigj1AmNnOHk0V8qFy7Xk8a1wmKI+Ocv2Jr5Wa5aJwTYzwQMh4jvyzc/le32bTbD
- ezf1xq5y23HTXzXfkg9RDZmyyfEb8spsYLk8gf5GvSXYxxyKEBCei9eugd4YXwh6bfIgtBj2
- ZLYvSDJdDaCdNvYyZtyatahHHhAZ+R+UDBp+hauuIl8E7DtUzDVMKVsfKY71e8FSMYyPGQAR
- AQABwsB8BBgBCAAmAhsMFiEEqYbzpr1jd9hzCVjevOWMjOQfMt8FAmgeKicFCRZfl6wACgkQ
- vOWMjOQfMt8Bewf9F3xhidAAzCrlwceeSx16n82sSmtCopkoSp85++P6P3Nzt/erkqnhZY0Y
- OZM5xIBJU5ejKalb6aYB4OU7q20MfTerPo+XhuWDjKYb0RrMmekVsE4/V5sFCgdwkqjax1ZX
- Jk3/vkTRnpHtuKas9FxGxeyaJrsYBhJIgzcXAfN3zYRD+x6L/zNYzvvoEEH8dKIeKh0dEXg0
- 3p0VWJU8zfWo2NT+xeqYnG8OO2HAr9/D9Sw9W4HZ4csdWXOJ/GmnHYri9Q4RyrF8uH4fAxKr
- c1cFYEY84iaBog5uv3dti9vUit8XWyae8rTPC/QyAekgREvAJnISWxLQWWbOqd6TkoTqJw==
-In-Reply-To: <CANn89iJnQErC8OLoTgnNxU8MURKANbiqXBYaUHsNaTO3m+P54Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Pcms-Received-Sender: hellmouth.gulag.org.uk ([85.158.153.62] helo=[192.168.0.17]) with esmtpsa
+References: <20251015232015.846282-1-robh@kernel.org>
+In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Sat, 18 Oct 2025 14:05:08 -0500
+X-Gm-Features: AS18NWBGMwSlAmXgBiXSGQWXCd5xrZTGccuKfzZwiw4wGpClNDZImruw46Wm-dA
+Message-ID: <CABb+yY2u=XZFdoDrjjYFhARLoaxH4uTnT=GyFmsnV_U1aWn=UQ@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Stephen Boyd <sboyd@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-phy@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2025/10/16 5:10 PM, Eric Dumazet wrote:
-> On Wed, Oct 15, 2025 at 9:02 PM Kuniyuki Iwashima <kuniyu@google.com> wrote:
->>
->> In tcp_send_syn_data(), the TCP Fast Open client could give up
->> embedding payload into SYN, but the behaviour is inconsistent.
->>
->>    1. Send a bare SYN with TFO request (option w/o cookie)
->>    2. Send a bare SYN with TFO cookie
->>
->> When the client does not have a valid cookie, a bare SYN is
->> sent with the TFO option without a cookie.
->>
->> When sendmsg(MSG_FASTOPEN) is called with zero payload and the
->> client has a valid cookie, a bare SYN is sent with the TFO
->> cookie, which is confusing.
-
-> I am unsure. Some applications could break ?
-> 
-> They might prime the cookie cache initiating a TCP flow with no payload,
-> so that later at critical times then can save one RTT at their
-> connection establishment.
-
-In addition, a client doing this (SYN with cookie but no data) is granting
-permission for the server to respond with data on the SYN,ACK (before
-3rd-ACK).
-
--- 
-Cheers,
-   Jeremy
+On Wed, Oct 15, 2025 at 6:20=E2=80=AFPM Rob Herring (Arm) <robh@kernel.org>=
+ wrote:
+>
+> yamllint has gained a new check which checks for inconsistent quoting
+> (mixed " and ' quotes within a file). Fix all the cases yamllint found
+> so we can enable the check (once the check is in a release). Use
+> whichever quoting is dominate in the file.
+>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
+>  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
+>  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
+>  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
+>  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
+>  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
+>  .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
+>  .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
+>  .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
+>  .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
+>  .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
+>  .../bindings/net/ethernet-switch.yaml         |  2 +-
+>  .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
+>  .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
+>  .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
+>  .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
+>  .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
+>  .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
+>  .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
+>  .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
+>  .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
+>  .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
+>  .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
+>  .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
+>  24 files changed, 75 insertions(+), 74 deletions(-)
+>
+For the mailbox changes
+  Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
