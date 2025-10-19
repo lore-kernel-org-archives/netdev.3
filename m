@@ -1,75 +1,93 @@
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3062E427C
-	for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 18:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60641632DD
+	for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 19:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760898724; cv=none; b=XOlskh+cXRWmKgRFVJ31QoXlRqdHDv3wsEE0UKWrYL2tWGkdMJFzcs1V8DNIOOXMRcEQb+DVCo8wZXm7RVriRRknIzMm8/eYkkjjtPq/Db/hpDFeIeruphixbehxFwGRBq5Dx1OFj4+r0CUV1gQ14knGmStRP3r4CjNiElHXpGU=
+	t=1760901975; cv=none; b=L7kZB7YSjqvnhQ+6dGInrAz6QJNOteO7o+uNFSaCTOJoHIEf7FUG0eMhhQ7GHfvR1yjYOGPREHjzcXYSOFX49odo+7HS49y3UWkkwEpZR8LtwS9rJvUtvQD4iA/7RZMeJvIj/0UiFB8q6MuvYxyNnnNsE5ueiCqbtNe5A38bNz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760898724; c=relaxed/simple;
-	bh=72m0zZSSb82JYua1OxFLU4EyxYLTN/D0ATUw0+kN+N0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=s4rr7Sz5WFiIaBFZxuwYWs4/eD3qcumemO7K13bJxq0MKLo6G8DQL2JexwD34xGgl3hMm86pfFDWFvl4YHqkLqujhu0tlCvXT1AsQpZEcr2LhoW0YHDQACWS00ItlpPbxB2ZB3RQhwiLPEIgdu3sNBp6kNVSqblmAFj281tdSYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-93e4da7a183so326913639f.1
-        for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 11:32:02 -0700 (PDT)
+	s=arc-20240116; t=1760901975; c=relaxed/simple;
+	bh=nCIMZWpRoTrIZBfCj1SAgW17vOUJl20ocKBjh/okZDc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QsJCsNuZAlDg73lLv6+xgxZmV8xleqsEg8bvlW6IXFm77TmW0B7y4wBXk63epel13UYjcqW5n8l6Q8Nip6Am6T0Ze5MOmbwa/CBZiXcLqi53Q6JTyTyVzY743rkVlw33VFRd7fCwoq3a8RhlQVRZYquAeWnyMn+FVvGnOA17VXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zwsFiE88; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zwsFiE88"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-27ee41e0798so58541745ad.1
+        for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 12:26:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760901973; x=1761506773; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nCIMZWpRoTrIZBfCj1SAgW17vOUJl20ocKBjh/okZDc=;
+        b=zwsFiE88QLug4hr7q055kGElTPO+NtGb+lpQDlo9tn2TtL3yUwUZPwif/KuVHjvgig
+         OOeTjk2QoOX91a1A+kEGyZiQMNKMzKA71zWeHCuGJK/21ny+GyQV9AnYJwXoIspkVQd0
+         P7Vv1DZjQhBrQq9fz43kVUdSHkWDAzkaeFKbC5XMksouLJNk4cPmHJTTM0HDLpvRMBY5
+         TmeTNXf8i+jsiBWY7ARXJc8o8vdmjFtMEccIamqzBUTaPHMmb5jFNRUk+YWckji8NaiF
+         B9ibOuTx0PAYNaAjSdBV1SjqGk6jdJ0urDRVTmRqfDkrzT8rF4tzc+ne+486rvBU/GKn
+         rS+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760898722; x=1761503522;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p1JpKrUXGRSucqL3zjpLuIe+FmrzaoQu2qNfoA2qUqA=;
-        b=cP8aw2SBLAIPKEYC1KbFhePc83HpVigjhBsyDOZXLKpIF8sewA8OzPbuVt5SlIgHVQ
-         r/kexRfo82efppdf1MiE0OIJpSk0gweixeaNhNmlMiUkOzIk6LWuItv5Ktq5XLaJsVXN
-         WWDljHaNq2bVjQE7eFQliFER49uVlw5f5ncpvt9dvMDU1eQ0QFa4fPAwvA1coFlkssLk
-         L/e86ItBZNDmqnDE7dqqbBdUU+iXzs3nxoehWRUxzIZqbtphU6CCQXpQe4W7o9zIt70Y
-         fiLptROYGsz6rWn0qbJWswiFmT8SNUX+7mD5ma8lvXPA3n4Upi1onzwnEL+8Dbasl8iS
-         1PiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW32WC73P7j8H4/jkaYbS3lw9+KyQT98QZ0hBHPMz/8p0r6gC4EyLrkQozKzYLzAHB2YucPFWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl+Mu5RUHuBgSrO65Ayq/0vnnm1D5tbGXkDFk802UgjGVZg/WC
-	PovJkeOxvLOBMFWxFbcDPAM8NJFyoJ7ymGaIxBkLt76slUC6vnzJ3QbL5RmR2EuChiOIoa6UH5F
-	cD7xS5QDRo8apDoOdcvfFYxGdH9H4l8gOkxoUbwfHMTVwvU1PZEEIthNqqzg=
-X-Google-Smtp-Source: AGHT+IGiF4GonclwjakcLs6vy+iuC//30bzSsBpQ1jUx4qmr4yl9A22ZJGGAblN4S+WQJyNnw9n/EytFBXMJGY8tG/nh5ttlZE02
+        d=1e100.net; s=20230601; t=1760901973; x=1761506773;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nCIMZWpRoTrIZBfCj1SAgW17vOUJl20ocKBjh/okZDc=;
+        b=LG+R3XCEEuy3sPpM2vFzX5+qdZM5pXwYrg5AQ3sJP5IYeFWURjYckKNJE4jagYR0Cw
+         7WGtPsCj3siHQP2bTwGsoaQgEiZF78Y6zBKt8pjl+QgUJqidw/58ZTIW340UIP2/w1xu
+         FBL+l07WlmgoHzqa/Nd0dzpN2lg3QCzWKjks0KeARiDHBLH/hK5NR28CMDHn44ow6KLj
+         T4iHafJafMAwuoFkqhVj3tCRVDUNIaf9YpDNEeQQpppSuHIiS/Ma1LGogj+pM5qI7ODs
+         RxFpVZF2mlee8XRrrH40rzcx4Ok4B4QItK5Q9uPnL48M1nY0/P/gsBSbxH15nCcqS4eq
+         p8vw==
+X-Forwarded-Encrypted: i=1; AJvYcCW1OthZ0tNVQCU0AlmfC3svfi+aO3dASWfJzmbixK3qjvQ16jhkwXf/blCyVAI98bFBQJqzSNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmdaPUz0aUeqDf+iyYPi+Oc5gw0TZn8vhijZ1kpHeJL5h+KTof
+	ZaZbQi2YvA3yXJUVSIbO2euanhus//+fXEjiNyImrvMW+aOnNfIBAeSi269QDCGF1qQ2UWvDtj5
+	cRozT5LmVMK+PBiTj/+gHnW2ptNiciBCav6+3Lbd1
+X-Gm-Gg: ASbGncufT4755QlMRZZhAvzNvaOQAb5rpzPMWHtw+MyfxHKZecS3P7umo7JtMDh2BOy
+	Gg72iukXw6oBOudunp7NHukKiBWGV/T4HlRIrPvFaFYBYEa3ZfDRpwf9BTU6JXczZ5LI4RGMVBX
+	oU67GugngJh16iELiabcp6p+EnkqDfG6ObCmVi/BK5cNllRgqYWF9KrjIxS5BXHQunhfNMFyuNS
+	d8n9PVqut2mTqN1aKs2FBz5+nGlCWg2Ars1gjeXXXQOPr7k1yp11LRbTQMdly6dhkRsAKQbCBCG
+	1n4Iy6BH+5ZrjDyCuQ==
+X-Google-Smtp-Source: AGHT+IGqqeB7t9xhXDKptGsxon2wnEAxAo7r4tVSmuzTScDvBvQkpwY/J3PGgv7VfeScIiGvTgipUCxNy7cNDucnZPQ=
+X-Received: by 2002:a17:903:3586:b0:262:cd8c:bfa8 with SMTP id
+ d9443c01a7336-290cb9473f9mr125446605ad.34.1760901972897; Sun, 19 Oct 2025
+ 12:26:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:3417:b0:940:53f7:a1c7 with SMTP id
- ca18e2360f4ac-9405406e5e5mr704754939f.5.1760898722327; Sun, 19 Oct 2025
- 11:32:02 -0700 (PDT)
-Date: Sun, 19 Oct 2025 11:32:02 -0700
-In-Reply-To: <1b4aeb68-bf9a-40a1-ab86-a52ef91eb3a4@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68f52ea2.050a0220.1be48.0005.GAE@google.com>
-Subject: Re: [syzbot] [net?] kernel BUG in set_ipsecrequest
-From: syzbot <syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, herbert@gondor.apana.org.au, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, ssranevjti@gmail.com, 
-	steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com
+References: <20251017133712.2842665-1-edumazet@google.com>
+In-Reply-To: <20251017133712.2842665-1-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Sun, 19 Oct 2025 12:26:01 -0700
+X-Gm-Features: AS18NWDl_dZMqCFeAC0XFLMEqk_JtDjIR38IU3ArUTnCrhpEs0Iahk4-pxXlTvE
+Message-ID: <CAAVpQUBCENDVZV1KYujdEnQicaRRa8b_FrusD4N7k=tO4CQJug@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: avoid extra acces to sk->sk_wmem_alloc in sock_wfree()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Fri, Oct 17, 2025 at 6:37=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> UDP TX packets destructor is sock_wfree().
+>
+> It suffers from a cache line bouncing in sock_def_write_space_wfree().
+>
+> Instead of reading sk->sk_wmem_alloc after we just did an atomic RMW
+> on it, use __refcount_sub_and_test() to get the old value for free,
+> and pass the new value to sock_def_write_space_wfree().
+>
+> Add __sock_writeable() helper.
 
-syzbot tried to test the proposed patch but the build/boot failed:
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-failed to apply patch:
-checking file net/key/af_key.c
-patch: **** unexpected end of file in patch
-
-
-
-Tested on:
-
-commit:         d9043c79 Merge tag 'sched_urgent_for_v6.18_rc2' of git..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=9ad7b090a18654a7
-dashboard link: https://syzkaller.appspot.com/bug?extid=be97dd4da14ae88b6ba4
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=10e21492580000
-
+Thanks!
