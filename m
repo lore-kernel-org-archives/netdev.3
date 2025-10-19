@@ -1,104 +1,203 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058813DDAE;
-	Sun, 19 Oct 2025 05:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F2921A444
+	for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 05:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760850622; cv=none; b=LWVW6oiA08aWOu/fsyyY2SRqcgvNtqFV3cKieTVdgOykH8pRlEeXoAiPkyJVlFhiT4ZlPg0UbmZAWQHo5aS8NiJKfr1vV2XFqZ/RxTN3NSlOPzLD6f+kiblHyXrfrIkEi1GYS3tdCrHA0XY6Bw2Bee2HgOsVuv69kN69Or9KelQ=
+	t=1760851265; cv=none; b=YnG+Rz/1IECeUQ4hyk69Z0s31w9WoaBhNF5Xj1YQ+UNDOOO05iMeSND/7LfEKm25hMIXjQJ8grtv2tCvqHZInhbJLdUYJR8mSgTJH/vbW7p0sky8pntbTEiDfGt7KpaT37Jb8+Qytc2+es/5E20dNgIaAFHY1qEH4lBbFFaUNPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760850622; c=relaxed/simple;
-	bh=G2CTs3vnPjMMrWN2EU6z72rKoP+4d1zTIybdU9qs5oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uHRdHo3q29VQ6YxxLyM3PPUFdBirhmZAJYAVgCt1THgLbZui9zfxfC41pGplsjaS6vUk0ipZLpW7kWQBly3L6f3xl8pKSKlG9/8wqzkqj37AEkb0uO1wuPAFsq0ihZ83lauDBQ9KZwbpVVbxixSoFHQj9fTb9Ped7cD90slGKvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz; spf=pass smtp.mailfrom=listout.xyz; dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b=aSnfnSwi; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=listout.xyz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=listout.xyz header.i=@listout.xyz header.b="aSnfnSwi"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4cq67j6YxZz9t8P;
-	Sun, 19 Oct 2025 07:10:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=listout.xyz; s=MBO0001;
-	t=1760850610;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d6L/GjYHsdmqPyxMtu5TIFeq3jQLCMFJdsIm1DALtdo=;
-	b=aSnfnSwiYRxngwU9yuRRBX/mIg6yETDyjmRFGz0igpN0v/ZsybfD0k84RzI854euWL3EG6
-	JnqD/hPgntNHm9Q/f2JIjGVRhomg9/zeOvtCsvYhX3YbarMsbjOtxuUinotZg9BEsXzGl4
-	0KArWRvr8m669/JDyak/0jZ/fHkasLbX73VUYSEhy8rMkwNl7mbo6G5iCZYTgzJVsojG+z
-	mNyN1KVBBCc+NZCNHK3mTPCxhV0thaTg3Q0qq08HAGVik8bGtosrx1bZekNZxEU3asLu0Y
-	SbadlpVejhaA/WI0w5CcnVVKFZtQhCuL+fjYyc/L9ckZZHMMMBCURRjzExIYLA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of listout@listout.xyz designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=listout@listout.xyz
-Date: Sun, 19 Oct 2025 10:40:03 +0530
-From: Brahmajit Das <listout@listout.xyz>
-To: syzbot <syzbot+2860e75836a08b172755@syzkaller.appspotmail.com>
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [hams?] KASAN: slab-use-after-free Read in nr_add_node
-Message-ID: <b5ontczz4n4gthaaeg6kfav3yaf25u4eax3uo46r44rcwap5hd@fpxvlsznasjp>
-References: <68d56f4d.050a0220.25d7ab.0047.GAE@google.com>
- <68f3fa8a.050a0220.91a22.0433.GAE@google.com>
+	s=arc-20240116; t=1760851265; c=relaxed/simple;
+	bh=hQaHikWcVr2i7ZAH1RrJiLpW9x6EFM0CftXG8wfoV3w=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=ERVe+A0HhVA5toztqdvYbGIQogB+rNKNQyNSoqELEyZuFx02RKv0mUYYiJwwxBtyLU7OQ9MJon9+jFzRFOeBwNqVVqYoPfxUS65bd3W+7KRyfs7m97XVp7ajh5fCOzzVDWECjPD1a72XYPGA2HRWlfJBufXNiqmpLN0FAC4JyXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-93e809242d0so441621739f.0
+        for <netdev@vger.kernel.org>; Sat, 18 Oct 2025 22:21:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760851263; x=1761456063;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uhzhcHUwo4ZyompuCoZqx2j3/YltPabeKiRa2l7zjes=;
+        b=KaLjKojiY9MnLZydvshmYvh3XENK5YMnHIjS+GxQNqnLVsf5oTeUXz+5GNWPI/WETs
+         m3RsHG/2Xeq5mzE6tRVclGV+IkWs58za5FIF9ZF/Krn8qMBoKjvExR6qN5+akMKUT8UL
+         Dr/yYMDFmozj7nAdg8xj/htOa9UKbmdIZ85SGij76vK2UUjL8raFAmQP+cZv/tJtNJX8
+         sZ28G4utSAsHuoWyUwuRwDv7wFY96sKcIfomkchuik2t+eXPwZwaGXO1HEENxCU4BZ3J
+         Bfb/dqh4cq1QOiW5yT9/zeCjYdJMFnEhAarMtkYJPXoWDWRAUL7AuMuwrMaCvAqE/KVa
+         80BA==
+X-Forwarded-Encrypted: i=1; AJvYcCWIugn+ORcADRKKCAOrntt9/7H+yE0f8nFjdkXclpQk8XZQJYIs9qgndK8A7XjcZTImc3srO3Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt7yZbqXFQ8S5DaL08JDL6R8IUbjUoFnPa1AFcld2iwTCo0nP1
+	7ZSGHYBTB9HsMcj3sbTh/coRVGMGH1Mj5PEk5Sx+Rd7JvZExvgBQx2gNOCYYfHGir7SEZxShXdh
+	4yb1CSR1IV1foiDGbnGsuCNBE7Gz/U8VfGZ7cUlKff1Ax2kBnKqIjxs6CYL8=
+X-Google-Smtp-Source: AGHT+IFuKYukxdLm/ppJg+C4mWBSwZpcLCiKXhLDI9Rn/aF9zGghOTi/S4VNihhWa9fjAeCDcj97w7AsKQUnxIbU5WruXjlyHZ07
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <68f3fa8a.050a0220.91a22.0433.GAE@google.com>
-X-Rspamd-Queue-Id: 4cq67j6YxZz9t8P
+X-Received: by 2002:a05:6602:489:b0:93e:2f4c:97be with SMTP id
+ ca18e2360f4ac-93e7642f8e7mr1520982939f.15.1760851263078; Sat, 18 Oct 2025
+ 22:21:03 -0700 (PDT)
+Date: Sat, 18 Oct 2025 22:21:03 -0700
+In-Reply-To: <u5ck7lywwa3aa54w2wnfftzqfch3pr6eguayue5ljvsneefd5x@swt7jxbxaeur>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68f4753f.a70a0220.205af.0011.GAE@google.com>
+Subject: Re: [syzbot] [hams?] KASAN: slab-use-after-free Read in nr_add_node
+From: syzbot <syzbot+2860e75836a08b172755@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	listout@listout.xyz, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 18.10.2025 13:37, syzbot wrote:
-> syzbot has found a reproducer for the following issue on:
-> 
-> HEAD commit:    f406055cb18c Merge tag 'arm64-fixes' of git://git.kernel.o..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=11cf767c580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=f3e7b5a3627a90dd
-> dashboard link: https://syzkaller.appspot.com/bug?extid=2860e75836a08b172755
-> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=155f1de2580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12b6b52f980000
-> 
-> Downloadable assets:
-> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-f406055c.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/a4db2a99bfb1/vmlinux-f406055c.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/91d1ca420bac/bzImage-f406055c.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+2860e75836a08b172755@syzkaller.appspotmail.com
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in nr_add_node+0x25db/0x2c00 net/netrom/nr_route.c:248
-> Read of size 4 at addr ffff888054b8cc30 by task syz.3.7839/22393
+Hello,
 
-#syz test linux-next
+syzbot has tested the proposed patch but the reproducer is still triggering an issue:
+KASAN: slab-use-after-free Read in nr_add_node
 
-diff --git a/net/netrom/nr_route.c b/net/netrom/nr_route.c
-index b94cb2ffbaf8..5fa7d9febbbb 100644
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -245,7 +245,9 @@ static int __must_check nr_add_node(ax25_address *nr, const char *mnemonic,
- 				nr_node->routes[2].neighbour->count--;
- 				nr_neigh_put(nr_node->routes[2].neighbour);
- 
--				if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
-+				if (nr_node->routes[2].neighbour &&
-+				    nr_node->routes[2].neighbour->count == 0 &&
-+				    !nr_node->routes[2].neighbour->locked)
- 					nr_remove_neigh(nr_node->routes[2].neighbour);
- 
- 				nr_node->routes[2].quality   = quality;
+==================================================================
+BUG: KASAN: slab-use-after-free in nr_add_node+0x25e5/0x2c10 net/netrom/nr_route.c:249
+Read of size 4 at addr ffff88805466ddb0 by task syz.1.4225/15237
 
--- 
-Regards,
-listout
+CPU: 2 UID: 0 PID: 15237 Comm: syz.1.4225 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xcd/0x630 mm/kasan/report.c:482
+ kasan_report+0xe0/0x110 mm/kasan/report.c:595
+ nr_add_node+0x25e5/0x2c10 net/netrom/nr_route.c:249
+ nr_rt_ioctl+0x11b7/0x29b0 net/netrom/nr_route.c:653
+ nr_ioctl+0x19a/0x2d0 net/netrom/af_netrom.c:1254
+ sock_do_ioctl+0x118/0x280 net/socket.c:1254
+ sock_ioctl+0x227/0x6b0 net/socket.c:1375
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4229d8efc9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f422ac41038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f4229fe5fa0 RCX: 00007f4229d8efc9
+RDX: 0000200000000280 RSI: 000000000000890b RDI: 0000000000000004
+RBP: 00007f4229e11f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4229fe6038 R14: 00007f4229fe5fa0 R15: 00007ffe9d4efb98
+ </TASK>
+
+Allocated by task 15224:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:400 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:417
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ nr_add_node+0xe4e/0x2c10 net/netrom/nr_route.c:146
+ nr_rt_ioctl+0x11b7/0x29b0 net/netrom/nr_route.c:653
+ nr_ioctl+0x19a/0x2d0 net/netrom/af_netrom.c:1254
+ sock_do_ioctl+0x118/0x280 net/socket.c:1254
+ sock_ioctl+0x227/0x6b0 net/socket.c:1375
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 15237:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ __kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:587
+ kasan_save_free_info mm/kasan/kasan.h:406 [inline]
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2530 [inline]
+ slab_free mm/slub.c:6619 [inline]
+ kfree+0x2b8/0x6d0 mm/slub.c:6826
+ nr_neigh_put include/net/netrom.h:143 [inline]
+ nr_neigh_put include/net/netrom.h:137 [inline]
+ nr_add_node+0x23c3/0x2c10 net/netrom/nr_route.c:246
+ nr_rt_ioctl+0x11b7/0x29b0 net/netrom/nr_route.c:653
+ nr_ioctl+0x19a/0x2d0 net/netrom/af_netrom.c:1254
+ sock_do_ioctl+0x118/0x280 net/socket.c:1254
+ sock_ioctl+0x227/0x6b0 net/socket.c:1375
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+The buggy address belongs to the object at ffff88805466dd80
+ which belongs to the cache kmalloc-64 of size 64
+The buggy address is located 48 bytes inside of
+ freed 64-byte region [ffff88805466dd80, ffff88805466ddc0)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5466d
+flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000000 ffff88801b4428c0 ffffea0000867b00 dead000000000004
+raw: 0000000000000000 0000000000200020 00000000f5000000 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 5345, tgid 5345 (udevd), ts 58557594470, free_ts 0
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x1c0/0x230 mm/page_alloc.c:1850
+ prep_new_page mm/page_alloc.c:1858 [inline]
+ get_page_from_freelist+0x10a3/0x3a30 mm/page_alloc.c:3884
+ __alloc_frozen_pages_noprof+0x25f/0x2470 mm/page_alloc.c:5183
+ alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3046 [inline]
+ allocate_slab mm/slub.c:3219 [inline]
+ new_slab+0x24a/0x360 mm/slub.c:3273
+ ___slab_alloc+0xdc4/0x1ae0 mm/slub.c:4643
+ __slab_alloc.constprop.0+0x63/0x110 mm/slub.c:4762
+ __slab_alloc_node mm/slub.c:4838 [inline]
+ slab_alloc_node mm/slub.c:5260 [inline]
+ __do_kmalloc_node mm/slub.c:5633 [inline]
+ __kmalloc_noprof+0x501/0x880 mm/slub.c:5646
+ kmalloc_noprof include/linux/slab.h:961 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ tomoyo_encode2+0x100/0x3e0 security/tomoyo/realpath.c:45
+ tomoyo_encode+0x29/0x50 security/tomoyo/realpath.c:80
+ tomoyo_realpath_from_path+0x18f/0x6e0 security/tomoyo/realpath.c:283
+ tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
+ tomoyo_check_open_permission+0x2ab/0x3c0 security/tomoyo/file.c:771
+ tomoyo_file_open+0x6b/0x90 security/tomoyo/tomoyo.c:334
+ security_file_open+0x84/0x1e0 security/security.c:3183
+ do_dentry_open+0x596/0x1530 fs/open.c:942
+ vfs_open+0x82/0x3f0 fs/open.c:1097
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88805466dc80: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+ ffff88805466dd00: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+>ffff88805466dd80: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+                                     ^
+ ffff88805466de00: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+ ffff88805466de80: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+Tested on:
+
+commit:         1c64efcb Merge tag 'rust-rustfmt' of git://git.kernel...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12a8bde2580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f3e7b5a3627a90dd
+dashboard link: https://syzkaller.appspot.com/bug?extid=2860e75836a08b172755
+compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=13e20de2580000
+
