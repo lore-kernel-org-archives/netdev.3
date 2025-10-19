@@ -1,152 +1,174 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012046.outbound.protection.outlook.com [40.107.200.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFA916A956
-	for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 13:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760881651; cv=fail; b=NigyxnpVOi9eyQ/JWNapXX9lRxF/Uh3GD44Uf0yDiHRMRi6tnlr0X9y3oiHBZZmBLR9FM+KfCVPlrhqG6R9KQ+KowFB6Hb/bWEHceEqKBCTKOIhaB2MpoeKGF7mwPRQnzI9LcOE+FOR1SUslxkSn8qcVA7/mCMRGhnoUbJAtg6k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760881651; c=relaxed/simple;
-	bh=bIGCXE9BAAYfQaNiV1YgcqL5Oa2n+hvXk/QvUjkJCig=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GMHm9uNEOy/TyScZok5fCU0aS7NCiEo81Rj7jWzaI5W8GvUl+V4Gnk+eCjvOtDXeBrS0F1PuYtzT5k0m0TcCkgGBQOQQ+nkCGsfWqv3JFLtfb4MfKgKV3SZyghQ9pV1QBGUWfDdjTUMr/bDriX/3o8H+nwJxUgFmQKUJZUPeBCU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CUvEIyN+; arc=fail smtp.client-ip=40.107.200.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C761CEAD6
+	for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 14:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1760883067; cv=none; b=BN9uyvPPatuBeUWj0iiK+HbGdViw/2wXGaosWUg7CIfbXhZz7eYR5wsz8m+1wQ4QoE/z4RK7RCGOwitYptEqyhaarqYNbsn2nmVmneSsCTAfe5tpk7OX7UDqLO+uZUBcFrfU/B6bUFAF40JwATnpToplMwyeOFHBLEIwSsf9d4Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1760883067; c=relaxed/simple;
+	bh=it+q/FObsEAhAZZ2vNLVO3G/aVzDgKMtLAKtWKs2Zv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i0utI/c4sBLmjgptCGge+CnTTttYk3E4YioBRElnQAcQV1j6ZHTDvfq+EFiW473hHS8OiF0bhLwsEHqrzVDfhW5NxYeq9CqPbC5FOIf8btbdxJJJG1ShhxrTxinMlCHNB8Igw3M0Se88OHd8LFCfdqNFoj32WOwDMZFXXedVI1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MxDe+MS1; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CUvEIyN+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xjrfZTVjA8sz+PMNoF++j5eRG/0yakU/lT6xAiMVukwCcO5pa3EhnQMCmfI9CvFHJGcZy+blUhMzKGAoDO0eRvVWBp8sBg3W938eutfMFLNXbVjAzi02Fj02fFU5geMI7/4/mWOgHO5buf+mkh0wLPLa8LFV/VTxd3bD6x2SYu76OtLzKEwIqqZHwmiXwpQtqNhVzaiYTuLFc+gpZ6zqndHcTSV9U24cu+HxxSWYgMLXIqqN4a/PFZ+m64vxPD9seCwpjIJf9AZuS1F8F6otDPZdWZjZXvuziOQ1ZsjuCO7RcD57fmI8Wgkmm0y+bgpdlMmmjtEGd8pBrnJU+fHiKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9rwRgbXqIW9K75pePEDEcUIJNlwMyDxBUpgdaZH58Dw=;
- b=ZrLLqEyWzaOHWpr1Dzc+hYihCl8S1VGgjoc4J7JRnCIJwcFrd5TL6psvpzUhf9oOmmoH8bX/jLbVT2ODlF+sVFr3jSby+rwwssrcBf4mx+vWbeRbwEIvRi9VLp0lpJX1I5++nJ8GEupcfmQ+T/09hykg4pXkpElPI3V4KD+Duu652S28Td0NontGCPQ6EbvAgovmAJxv/CtmpnXRjcpdxFU2EDQGs2dhq14oiX33BdsfspFnXc3yhi7FKGMKda1S74APf59LgsB3+eIJ1Gni/d7u0YxIXv3O/vRToP02psdcsFJ0vJgnWeZN3pJXQ4AExQPLZwkAZvAPKRprcsG0fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=queasysnail.net smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9rwRgbXqIW9K75pePEDEcUIJNlwMyDxBUpgdaZH58Dw=;
- b=CUvEIyN+UUDVDBpZnxWGgRsEIKnOhWPTrgs9Z382Ncx95R5lO8QHynVZFsUCwKexEfELGIbpIq9sJpIDUXbMoHaPXr5eZv9kCNOrIsAl7mECuwCqfCc5D9d9mZte78N3g6lMQlAKtdmGGJZz+IC5bcjwUPU4kGTqaNAPlF9OWv9h/oTudlfk9XQjdupWKZC4q3pFfHxKtwdPl5Ibmcdgk9BOG1O7P4IlpqK8fiiquVrjm8fClC+Da1NhNH7J1VXJEXNLCgyfl7QuAVMt9/ImH7U2CPjHzB1753i1fRikGWzBHakiBroRjCMD7rknsllssX88nSob5C7lTiMC5uPUZQ==
-Received: from BN0PR03CA0004.namprd03.prod.outlook.com (2603:10b6:408:e6::9)
- by LV3PR12MB9166.namprd12.prod.outlook.com (2603:10b6:408:19c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9228.15; Sun, 19 Oct
- 2025 13:47:26 +0000
-Received: from BN3PEPF0000B075.namprd04.prod.outlook.com
- (2603:10b6:408:e6:cafe::90) by BN0PR03CA0004.outlook.office365.com
- (2603:10b6:408:e6::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9228.13 via Frontend Transport; Sun,
- 19 Oct 2025 13:47:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN3PEPF0000B075.mail.protection.outlook.com (10.167.243.120) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.7 via Frontend Transport; Sun, 19 Oct 2025 13:47:25 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sun, 19 Oct
- 2025 06:47:17 -0700
-Received: from localhost (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 19 Oct
- 2025 06:47:16 -0700
-Date: Sun, 19 Oct 2025 16:46:12 +0300
-From: Leon Romanovsky <leonro@nvidia.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, <steffen.klassert@secunet.com>, Chiachang Wang
-	<chiachangwang@google.com>
-Subject: Re: [PATCH ipsec 4/6] xfrm: call xfrm_dev_state_delete when
- xfrm_state_migrate fails to add the state
-Message-ID: <20251019134612.GJ6199@unreal>
-References: <cover.1760610268.git.sd@queasysnail.net>
- <6e1c4b4505fa3d822e2e33b681ac4a44bae959ed.1760610268.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MxDe+MS1"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-421851bca51so2874874f8f.1
+        for <netdev@vger.kernel.org>; Sun, 19 Oct 2025 07:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760883063; x=1761487863; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RAuT2pXiG6Soqv7ocY7dz20OVZgzWenocYDje/sN0xQ=;
+        b=MxDe+MS1GBL7couXI5zK/JOaaY+Z23z+yjl5wxBHV2bG0p0irEdw70yuD8dmzlUpXX
+         MVuYOYKsVxdMo97HRgkzVST/FrWRqUzAiJq2qJLd61vgWOWezMCUvxZ8/71HnNmYpB8u
+         TwostWJ4591Q3fHWg7MjBWxX/dBsvj8D1bZHr3vDmaQFM3K400lfOXnxDm32ijk//gNe
+         tIFeGNi16n6g6x0tk95Tn6v1MLFZwtvuzZnNnE0DSUUqoUEyEv68AZHufwurXqKvswFv
+         pSCzoohoXbmJp2IMOJUI795c9Z/3hhPc2yt8N92mRiyVjcRAjUb9n66ohpGMpUJGh6kg
+         j0Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760883063; x=1761487863;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RAuT2pXiG6Soqv7ocY7dz20OVZgzWenocYDje/sN0xQ=;
+        b=AH043SgJuaaGWmIl+Zi/KEseoPDIVWGl64FFEEXJkdTvyntRRTLybepxqItWFqscny
+         VeEgKcd5QYqq6kxbsJ6MNFtntRMC93Y2Rv3OMC6RPdWZDbzUCx6oQBHWN74z07wjzFps
+         nKT21IUW0wEFhAKIfOEfz2vnwvXYgRKsD/CDdW1fsz7eBBbvmXXrKCO6Eclkrucu1lmo
+         ORdocYaRPx+qL0DT/9h+o98hwlNRM9RcEI6QwkJtrIgbsXA8rU6ZNJfzn3AGd9/q+wJl
+         smN8hxfLnbSrNtpJ8xvWbZp59BJPq9hcJCUUn2N0fSOPYKM2rpRPv79G+bzJ6gcce25A
+         F8gg==
+X-Forwarded-Encrypted: i=1; AJvYcCV83I4iH8eulenblD2tf78haxpbsclKtC6mI9FkYVvMDekvIh4c/jo3PlvGLrG1rw60ehu2ydg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4xFcAANUQFa45q7J6Crh7soPBSOaETQvUdiuXdfOQw03G8RcI
+	Al3Yo/9zq0pOgDwDM/AdwXHQJzlng7kEIaHirfkUGBMV+upaJP7ISevW
+X-Gm-Gg: ASbGncuBcR6qqxfNs/8hS2Nb86jjnsdQo8TBJY8E1D2xkFlll1n210L7eZICQeV8ISB
+	dE64KFCLJP9lH6Kvk71RHuQ/tfE43BmeaTqRAR01bMjqT3c4w9DIdLl+ShpVxzOd63zPO5MWAoc
+	cXi6As/oeIrD/gmYfEbgrzoJ75auUQ0T92GReQRHaBtOYOD3F/5U+3F3y/9wdx67ve3GwLJXdX0
+	Lwwsvq2WcCCai4t1GbBxvnjvgyLPOAcSt9poAzjaNZYd8S1+Xq40t/cHI5buB2hEsTPFi61EbWi
+	PQ9XLuy3ze+tzpq1DDZjyXIbDYnudknHcnjQfiQ56hkrdqujQ36V3TrZhykzehWkyQ19c7WG07s
+	+eU3NBc1oSJIYnIQ/rrnQwStR+g7sL10P1t3a655A/59bZhYByG8Q8xJadjiJTLlFbK6VOyWfN6
+	082C2E+FVlU/zBYanUKkFJ/FsyjusCwPR5jP7cwjQnj51qMtFXibKZ
+X-Google-Smtp-Source: AGHT+IFUF5/TTFssGAjekhetDDv4LHWcFbL+ak9eq8410dO2fCieGGRn/c440tmYDt+ZI13D1UdhSg==
+X-Received: by 2002:a5d:64e4:0:b0:3ec:dd26:6405 with SMTP id ffacd0b85a97d-42704d900edmr7404769f8f.26.1760883062419;
+        Sun, 19 Oct 2025 07:11:02 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00ba01bsm10225334f8f.41.2025.10.19.07.11.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Oct 2025 07:11:02 -0700 (PDT)
+Date: Sun, 19 Oct 2025 15:10:59 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: =?UTF-8?B?VGjDqW8=?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Claudiu
+ Beznea <claudiu.beznea@tuxon.dev>, Richard Cochran
+ <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Vladimir Kondratiev
+ <vladimir.kondratiev@mobileye.com>, Tawfik Bayouk
+ <tawfik.bayouk@mobileye.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, =?UTF-8?B?R3LDqWdvcnk=?= Clement
+ <gregory.clement@bootlin.com>, =?UTF-8?B?QmVub8OudA==?= Monin
+ <benoit.monin@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next 11/15] net: macb: replace min() with umin()
+ calls
+Message-ID: <20251019151059.10bb5e18@pumpkin>
+In-Reply-To: <20251014-macb-cleanup-v1-11-31cd266e22cd@bootlin.com>
+References: <20251014-macb-cleanup-v1-0-31cd266e22cd@bootlin.com>
+	<20251014-macb-cleanup-v1-11-31cd266e22cd@bootlin.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <6e1c4b4505fa3d822e2e33b681ac4a44bae959ed.1760610268.git.sd@queasysnail.net>
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B075:EE_|LV3PR12MB9166:EE_
-X-MS-Office365-Filtering-Correlation-Id: 56a9526c-b2be-4fdc-feb5-08de0f1609a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?B3WS3+NSToYJKkvjvPQN+JggkZCUjyRl/gY5b14TgAmoSi/49rujadMc0w7t?=
- =?us-ascii?Q?Y44qwJYt+GVES3HN1ppLSUCq7ctWSAFvq1tGeiUAyan8IuPC8UkdVTspy+fP?=
- =?us-ascii?Q?pq84hnp1pzy88ejhYpBkem6mmdvB0F1f6C4WSfUvIl75wjSlPCNhAihpIn4n?=
- =?us-ascii?Q?cdscOjLFo6Gv9y4ViG+KYnorU1HUIhfeBcxG9xFU/Nh+XQo7D4Qi1hek+XWd?=
- =?us-ascii?Q?pkNUHFl5lTeXzijZn645/nGeF+U1lXgPL/zo6BDOFt2f5rxiJsE9tnZH/HBC?=
- =?us-ascii?Q?q8/CHi1+K41AaAUw2Q//D7/dum8nzoQwckuWhutYRkMpA+TCw1W1XZJDABbv?=
- =?us-ascii?Q?DJW67Dy4rDv/mqD6Ih/4dfyatXMdezPXpNm6PvS46MSGPnAFPEFewgsYoX8O?=
- =?us-ascii?Q?ulpWpj68ZON3137s/dB0BQO0LdCJGCXjaf4dC+/IhPsmp2gP57xtpVNdgwxE?=
- =?us-ascii?Q?G5St65/izs9bvfXIfJiDFrZy5B+1PKaxBMUraT0c9GttdkoYA+Dap3GwkHyo?=
- =?us-ascii?Q?JZZ9NMTt7rOP9Zl5DkbJUdC7NbO1gRbtqeElkF6+XBxzHQ8gAKa6YsujpPIm?=
- =?us-ascii?Q?4IMRe1aO3J3z23sWTFgSnRrtGZwV/2BD2i0bBKr2P/VDDhrIl3AQeq3cZajX?=
- =?us-ascii?Q?a8XNad+O2BvQSkH2Z3SxLepg8oVcnJ89LAhowKTFJRr3c2EP2UsbUfX78u+s?=
- =?us-ascii?Q?IoMrxW3qx7qfarIG3qSxi7oasCBXwzOYyOu1+6ZUYf4d1Qlk87DZWPK8CDsD?=
- =?us-ascii?Q?BJ5VbyWDn0onyz1Fw8Uvhw4VrPjl+sv03sy6HoljUJouwlWK3sDnMF5lIRVc?=
- =?us-ascii?Q?PUMgec/gh2M1VaBFmzyiDOZYDR9uzLMy+iRAsTRsB0ekAYcJReC50GvzIbhA?=
- =?us-ascii?Q?+Gd1BR/jUBB6RHT8HbcI0J7RlRsP+lk1OAK9BI14pud/cGcr6Lwm5Qls9gSU?=
- =?us-ascii?Q?97C4P8FlBEkDonUc1iPfDCqY3055t8rZExFHTGNcVyOZ2//SDQxxdBCt2Q59?=
- =?us-ascii?Q?AYO5NOICsVc3SQFGpdEJMC+umu2JWQYCGZVG6NdBIxIedaZtGexlrM0irJTB?=
- =?us-ascii?Q?tXP9jvaluc73cSNX6g9wygI/PtpkTLcw8B/6qp6fQr1KaqsZPianSBFmkXbs?=
- =?us-ascii?Q?TLk8v59kvyYOFbOCRXkKKTdH3/79mktFbEJa5BmRAQML9CCjnXOzljQnzgWu?=
- =?us-ascii?Q?6l91dbPwV5TcGQuOXNY5O7AskrNZMKs1hIMzM025By1ntfxkJWv5g60+gsU3?=
- =?us-ascii?Q?QmVg0zZAHpcbxYNKhIuVmSg0lG8d/JNyAhx8k9XTjZBCkpv65XwzI45HfpZ3?=
- =?us-ascii?Q?/ZeBT49XgU7meGjxveLCDtglCR5cNCvQ7Tz3+Ygh6GPLpprytZK/5kuyqgkp?=
- =?us-ascii?Q?ilfMO/9OKG1MblfPsCyeE29BUiY/j+LFDytBAbv/d+smW03pbTXeuCpxAjao?=
- =?us-ascii?Q?+rZvEsH6lbLAr/TGBL+g9+9n/zn4Ou5UMKygP9IpEKnZBJcFdOLRwjpBca2V?=
- =?us-ascii?Q?OFtqJkoKh6IkxOS1AJN5Foa/zn96uQDqj1ET1C9tF3vZSXbXmmmOOQ8sFIRZ?=
- =?us-ascii?Q?2pz0Ob6LxeSem/wJ8j4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2025 13:47:25.6532
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 56a9526c-b2be-4fdc-feb5-08de0f1609a0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B075.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9166
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 16, 2025 at 12:39:15PM +0200, Sabrina Dubroca wrote:
-> In case xfrm_state_migrate fails after calling xfrm_dev_state_add, we
-> directly release the last reference and destroy the new state, without
-> calling xfrm_dev_state_delete (this only happens in
-> __xfrm_state_delete, which we're not calling on this path, since the
-> state was never added).
-> 
-> Call xfrm_dev_state_delete on error when an offload configuration was
-> provided.
-> 
-> Fixes: ab244a394c7f ("xfrm: Migrate offload configuration")
-> Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+On Tue, 14 Oct 2025 17:25:12 +0200
+Th=C3=A9o Lebrun <theo.lebrun@bootlin.com> wrote:
+
+> Whenever min(a, b) is used with a and b unsigned variables or literals,
+> `make W=3D2` complains. Change four min() calls into umin().
+
+It will, and you'll get the same 'error' all over the place.
+Basically -Wtype-limits is broken.
+
+Don't remove valid checks because it bleats.
+
+	David
+
+
+>=20
+> stderr extract (GCC 11.2.0, MIPS Codescape):
+>=20
+> ./include/linux/minmax.h:68:57: warning: comparison is always true due
+>                           to limited range of data type [-Wtype-limits]
+>    68 | #define __is_nonneg(ux) statically_true((long long)(ux) >=3D 0)
+>       |                                                         ^~
+> drivers/net/ethernet/cadence/macb_main.c:2299:26: note: in expansion of
+>                                                             macro =E2=80=
+=98min=E2=80=99
+>  2299 |              hdrlen =3D min(skb_headlen(skb), bp->max_tx_length);
+>       |                       ^~~
+>=20
+> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
 > ---
->  net/xfrm/xfrm_state.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
+>  drivers/net/ethernet/cadence/macb_main.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index 98e28d51a6e12c24ef27c939363eb43c0aec1951..6c6bc6aa23c718772b95b398e=
+807f193a38e141a 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -2035,7 +2035,7 @@ static unsigned int macb_tx_map(struct macb *bp,
+>  		count++;
+>  		tx_head++;
+> =20
+> -		size =3D min(len, bp->max_tx_length);
+> +		size =3D umin(len, bp->max_tx_length);
+>  	}
+> =20
+>  	/* Then, map paged data from fragments */
+> @@ -2045,7 +2045,7 @@ static unsigned int macb_tx_map(struct macb *bp,
+>  		len =3D skb_frag_size(frag);
+>  		offset =3D 0;
+>  		while (len) {
+> -			size =3D min(len, bp->max_tx_length);
+> +			size =3D umin(len, bp->max_tx_length);
+>  			entry =3D macb_tx_ring_wrap(bp, tx_head);
+>  			tx_skb =3D &queue->tx_skb[entry];
+> =20
+> @@ -2301,7 +2301,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *=
+skb, struct net_device *dev)
+>  			return NETDEV_TX_BUSY;
+>  		}
+>  	} else
+> -		hdrlen =3D min(skb_headlen(skb), bp->max_tx_length);
+> +		hdrlen =3D umin(skb_headlen(skb), bp->max_tx_length);
+> =20
+>  #if defined(DEBUG) && defined(VERBOSE_DEBUG)
+>  	netdev_vdbg(bp->dev,
+> @@ -4573,8 +4573,8 @@ static int macb_init(struct platform_device *pdev)
+>  	 * each 4-tuple define requires 1 T2 screener reg + 3 compare regs
+>  	 */
+>  	reg =3D gem_readl(bp, DCFG8);
+> -	bp->max_tuples =3D min((GEM_BFEXT(SCR2CMP, reg) / 3),
+> -			GEM_BFEXT(T2SCR, reg));
+> +	bp->max_tuples =3D umin((GEM_BFEXT(SCR2CMP, reg) / 3),
+> +			      GEM_BFEXT(T2SCR, reg));
+>  	INIT_LIST_HEAD(&bp->rx_fs_list.list);
+>  	if (bp->max_tuples > 0) {
+>  		/* also needs one ethtype match to check IPv4 */
+>=20
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
