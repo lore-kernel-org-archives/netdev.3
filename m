@@ -1,166 +1,128 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBE52F6574
-	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A0F2F60DF
+	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760954179; cv=none; b=KwC2QsOcA/MNboqRO/ixDDsHKhofJyGML3P5FNjBKiLIYcZ81ETOZId9J4AiFxTyHNx4k4cHQ7mGrnDadygwUoWT300birabJkPVzv1AJlS7ALTUgnLuUqzaS4S0NLVEXhmAQN+0P1/geoNcRUA25NX6Ia2N0MU69c4lvAA8o6k=
+	t=1760954297; cv=none; b=oeM6Ae+0VwElGetluXNWujVHmkELb53Qp4zQ4MZs4EVqLcRZNWnM+WdcPTY+hhRu0a4VDuWiePU0mdH9RTvNPNnPI4JqlzsvnEfM7APkmml0gF/oZTs3vvJD2h+GeWzYdmDioPDEPP/BlEGcECSetJxS2LAiF/WM6lk+I6gRiD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760954179; c=relaxed/simple;
-	bh=+B7PvhGg1S0PvwspMXETMgLYp/UFFAeeaKBgvPZ6eIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFlNUEyjkxzptviaZKy4/QOOQuzC5fwbq0fUaRqTg4/uz+v0XFolfQ/nEwgepy8BvmuBSBhYLWfw+KMI9ARKjoYgp4e7R7ZZF7LlGd1rK2nGgDMrU6Fd4Bqk/r64+vNFSoh7WCdILPJIAi3qTQxS4hJWdiMvI/Gtc5VnnXHU73A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhBYNuRv; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760954297; c=relaxed/simple;
+	bh=Q5z9jBs2d1yqyo4IMVnwiAJJFG2lNWoveJnJYYYb72Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YmOSiUgM28zfmCey596qP4hjC59v75NeI0Ye8geFOnroIKfOMohInEsyCpyg19qae5XhvDqGIJgh7qVu2X+W0T9AYOc6JyJ0RkfCHpUgNzduxM0iEc9ZPaLl17FwLxmlI0X2cjjmpLHgNGCqiub2/PxiNPhS1PUajkNnTCgBSXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=LeuAtfk6; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhBYNuRv"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso3490147a12.3
-        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 02:56:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="LeuAtfk6"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-471810a77c1so2982965e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 02:58:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760954176; x=1761558976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZEu6atp1wquusXB2V3FIm0pgDgjjEvvFZHTGTlW15k=;
-        b=NhBYNuRvjS2ScG4xVzpvUN7roYkGgOJyYjn9l2+JK+bSiYA8jBntGhLkbY8RyAVHMJ
-         /JdOQt7VPya+9s11SXSKrTTgciV8fw7D4rD55Ls4xJjLAkOED82JTbxO7W3nHmxOTcPS
-         mzHyouOZ8yry5MfWANo4VFJr7mPbDwaSlkgL95vMKwgYMiYUdhCFrLiHB3+nslapxwr2
-         btSHwsocopNwObOH4r4/sU1Rglwovq+jlYiEVd7SgPPMODYAPr9l2OrzcvIxeo3a7Avt
-         JyTxTjiyigW/4djIfiHMLpyP3Oi6WMhQ5F7MX+SN7dfuTkFiGTcbvlCyn86Xsr5mL4JM
-         nryA==
+        d=6wind.com; s=google; t=1760954294; x=1761559094; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZG2fowO+mJb7smhgnOrt1ejBOQrLnjkFlGvhGFZSD7M=;
+        b=LeuAtfk6mVYEAS+ZpNbMSgLIRfzpwZapCvN6bsZljbAGgsEeY6wR0KxKDFGOdGdCDe
+         walDQ02TCrvDuFs57gXVQU6Rhqh1BJYVfJdBPF1jVcz5DxbJAAlkVS0jCOAAMvQNAmbF
+         DFPZ5/I1uzBy2+fCaqJ4JQvsNIFlDLJD6uaDRE6njkQ3QvYM1KW009BFz1zprDAdn1FX
+         7wHnvS+HHWvd8HBMi2xfoVQIZZjRe0lyrnG98cfZzq9Ia4b8NTJ0F+D49KF/lP6rXw8o
+         HINJqZIiKvEK+ceHpt/kIkjlJgyIX3boy9B7HKlxSS2u6PT79lkEN6sKcskQ/M8cuiv5
+         tosA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760954176; x=1761558976;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dZEu6atp1wquusXB2V3FIm0pgDgjjEvvFZHTGTlW15k=;
-        b=OsuM+kpJ2GNKWTgBjPw4ZGzvniVdkBz43N9JFm6xvcadKgRnWDqA2CfMohv3xT5URG
-         S1Pqjz3rB2cHynXYWZOXasl2rbCnvls0xKulxRCgNYorgO3fFX8rtyeJIAvf4exb4H9R
-         IEgt97wNOFMUBHKJ6O+AUTsGZy2vbdViiHgIjjRRWIwlVihlexNdWtg/t4LTva4Nj1F2
-         oGMMHpuYyQ/wk1vhiJLsfEkdIzGbyCsHrUlOXi6NfXSBEWkFQarypPzA61dJqe2IqkG7
-         x7yD5an6fk0JMkzmdTQRP3KroiHT8VYsQl4Fna18GROS0xUjmF0FYoJ+Vf/m4wbfDk0b
-         XF0g==
-X-Gm-Message-State: AOJu0YxEZlC7VeuIrWe91+FFVbgGeurVBcFPpX7OTj7UnmmbewZNYUHf
-	AOibHfdYyas5Izw7wjE09Fv1qF+ApuVRbEv7ncKsPlleXuh0fcWsgNiS
-X-Gm-Gg: ASbGnctGAZ1CY0v60MGBk6/19D9kiqpYqgAz8YLMXY4twRY61/wKnmfttBP7C9NYNca
-	ARx+bZEs7+s6TbCZYTiZf9eeZxUCwgtzzeA817eVOEyqXLaasLM0iDbpxPZg2Ktq9zJ8GoBT5t9
-	iTxXTwlAHFQPyv2Qrhf1sRrhCgFuzLube9uTpmXQvWOFfBtP+amNwgN8u1j3tAIw6fC04ItTVDT
-	vRbR5u4+/z16+8LY042+LOjXs4MxqpvH/y2UN7R6QoLw9ib0w/30ZXPyx7v4WdEbrZ9k/vi0WRw
-	qIMcjMAmVXkMQvRMfLPRiSz8jJ3IWjCypyXlYQ4V3HHJJnN2JiJT2yd63GewNFTFYdIFgcFQTyl
-	LFqoxO5ZQyuZcRn5Mm9vz/vrhdf4uRGifejTz6dqkDE6G2qRqXK6UWHz4GLBC8vZoRGIV3JZMAV
-	c=
-X-Google-Smtp-Source: AGHT+IGGbVMAvLRNPJzY/dwiHRiAXKBM0roNWAjS8uuWlxmmRK+1VU9M3wcXUApOTf5kLg4NLvhkzA==
-X-Received: by 2002:a17:902:eccb:b0:28e:80d7:662d with SMTP id d9443c01a7336-290cbb483demr161050105ad.58.1760954175971;
-        Mon, 20 Oct 2025 02:56:15 -0700 (PDT)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d5794sm74880555ad.53.2025.10.20.02.56.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 02:56:15 -0700 (PDT)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Inochi Amaoto <inochiama@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Han Gao <rabenda.cn@gmail.com>,
-	Icenowy Zheng <uwu@icenowy.me>,
-	Vivian Wang <wangruikang@iscas.ac.cn>,
-	Yao Zi <ziyao@disroot.org>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	sophgo@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Yixun Lan <dlan@gentoo.org>,
-	Longbin Li <looong.bin@gmail.com>
-Subject: [PATCH v2 3/3] net: stmmac: dwmac-sophgo: Add phy interface filter
-Date: Mon, 20 Oct 2025 17:54:59 +0800
-Message-ID: <20251020095500.1330057-4-inochiama@gmail.com>
-X-Mailer: git-send-email 2.51.1.dirty
-In-Reply-To: <20251020095500.1330057-1-inochiama@gmail.com>
-References: <20251020095500.1330057-1-inochiama@gmail.com>
+        d=1e100.net; s=20230601; t=1760954294; x=1761559094;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZG2fowO+mJb7smhgnOrt1ejBOQrLnjkFlGvhGFZSD7M=;
+        b=XjOq5j2gxoHiTlMT8/3aANu8HzBTUmzjTgltR0sz19yoyiRI8tW0PShz9KuNq5lJ4K
+         534Y8q06xbSYeZAJ0Y8NgiBm+ht5r93BGPXOWwPWVfRLq9WPUXVr87283FK//IjDpJ2F
+         EH0ij7j4U8s3+PrA6/+0YTXrY6MhvCem78ARHZRm//hbw2X8sdc1aqgr6PmHouOIfYqa
+         ttniTPEk5olLA7p1hUVnN7WdXDmMbEbh/Fvg4Fi3GhNOZGf6N9slnDFDAdzWMwbHAdeL
+         ICYFOAjuLOwc0YZ1Gnx1pm4d4yJtjJ/xBy4IXACwSVouKKNZx+ToEJM3rwlzH8zqXyE7
+         Oavg==
+X-Forwarded-Encrypted: i=1; AJvYcCV3/xR4n1/ILs+SxfXA3rnc7mTucOSGfZ61nRWrqjcZASHX41rtgKRyw1kSqHa0YX62FkC3B5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzNeVm0Orw4Vq1ZGAunCzb2VmzfGZ9ePAJMdSLFgE96Dng0CEO
+	zqs82/eizEA73BlwddoS4lF+T5z19EO2BXIIpaz5siwpaamFUCc6xw8/zheC206okuk=
+X-Gm-Gg: ASbGncvIejPNoZw+5oqxRm+U5TIqfMPHAnkUmKSIPd19hx26NQmKJg9fLaWKudvYo/s
+	cUaAkg6AJdMlLfhB6RSnOYmJrke6THwCrNlO6CDkzMACwMHlUT9YhnERwjppyXgPWWX48wUoy4C
+	PiCktC8FN7KuSkkHYXHnDGGQakqpDeoZR6bmqGNgZAfq7/H/9G36TL7oWAGTtVpXhYor61sTh+7
+	yrCWUF9g86AgrFakKWVO+YtcXxRhEUL9ZT23LRXGPizU7lTH4D0PlkPNKtriW/EtlKxCvfxfz2Y
+	lNSrn+oMawGxmAx++BizmNzMtUCGqFMFoM1EWjPj5Q7z5vd9BbgLzt/+zAbrOniuKlEm8rhOJUm
+	bdumpbOkDDk8k/jSL/w1AZ2HrgQxwgChiHQSlqNh2+FlkW2qKPpPYqPLPZcI1Q6u2i/uUKaNiT+
+	uDQYx3g8CtNX0Tis91u9979wx83WQ2paiHEQscuK5BUt667hiBSG5th0OKQTeZhSE=
+X-Google-Smtp-Source: AGHT+IFYnlyoPCeG/0yM+cJoBbquSFLsYOZxHvb3GvwfNtBapFKQvnIdLtEnmirPV8bFIW5IIdb/nQ==
+X-Received: by 2002:a05:600c:3b04:b0:471:12be:744 with SMTP id 5b1f17b1804b1-47117932dd5mr49072285e9.8.1760954294079;
+        Mon, 20 Oct 2025 02:58:14 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:b41:c160:6a1d:efff:fe52:1959? ([2a01:e0a:b41:c160:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47152959b55sm141457455e9.6.2025.10.20.02.58.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Oct 2025 02:58:13 -0700 (PDT)
+Message-ID: <61394377-195d-455c-b782-93f7f9c3072e@6wind.com>
+Date: Mon, 20 Oct 2025 11:58:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: Proxy ARP NetNS Awareness
+To: Household Cang <canghousehold@aol.com>,
+ Vladimir Oltean <olteanv@gmail.com>, Lucas Pereira <lucasvp@gmail.com>,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ "David S. Miller" <davem@davemloft.net>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Sylvain Girard <sylvain.girard@se.com>,
+ Pascal EBERHARD <pascal.eberhard@se.com>,
+ Richard Tresidder <rtresidd@electromag.com.au>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+ <0351C5C2-FEE2-4AED-84C8-9DCACCE4ED0A@aol.com>
+ <20231222123023.voxoxfcckxsz2vce@skbuf>
+ <SJ2PR22MB45547404DA1CA10A201B2BE0A294A@SJ2PR22MB4554.namprd22.prod.outlook.com>
+ <21658780.3286902.1760684176107@mail.yahoo.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <21658780.3286902.1760684176107@mail.yahoo.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-As the SG2042 has an internal rx delay, the delay should be remove
-when init the mac, otherwise the phy will be misconfigurated.
+Le 17/10/2025 à 08:56, Household Cang a écrit :
+> Last light the Linux Librechat was focused on digging the kernel code surrounding /net/ipv4/arp.c and /net/core/net_namespace.c to answer whether the proxy_arp feature enabled by sysctl is namespace aware.
+> 
+> After many hours of tracing from namespace-generating unshare --net command all the way to the kernel net_namespace.c gave us some clues that the main ns and new ns converged at arp_net_init() in arp.c. And I am currently stuck on this line 1497
+> 
+> proc_create_net("arp", 0444, net->proc_net, &arp_seq_ops,
+>             sizeof(struct neigh_seq_state))
+> 
+> It is unknown whether this function creates a "view" to the ARP neighbor table such that each netns has a different view to the neighbor table, OR each netns maintains its own neighbor table. Either way, the implication is whether proxy_arp enabled by sysctl is restricted to the current netns.
+Each netns maintains its own neighbor tables.
+The sysctl proxy_arp is per netns.
 
-Fixes: 543009e2d4cd ("net: stmmac: dwmac-sophgo: Add support for Sophgo SG2042 SoC")
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Tested-by: Han Gao <rabenda.cn@gmail.com>
----
- .../net/ethernet/stmicro/stmmac/dwmac-sophgo.c  | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Nicolas
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-index 3b7947a7a7ba..960357d6e282 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
-@@ -7,11 +7,16 @@
-
- #include <linux/clk.h>
- #include <linux/module.h>
-+#include <linux/property.h>
- #include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
-
- #include "stmmac_platform.h"
-
-+struct sophgo_dwmac_data {
-+	bool has_internal_rx_delay;
-+};
-+
- static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
- 				    struct plat_stmmacenet_data *plat_dat,
- 				    struct stmmac_resources *stmmac_res)
-@@ -32,6 +37,7 @@ static int sophgo_sg2044_dwmac_init(struct platform_device *pdev,
- static int sophgo_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat_dat;
-+	const struct sophgo_dwmac_data *data;
- 	struct stmmac_resources stmmac_res;
- 	struct device *dev = &pdev->dev;
- 	int ret;
-@@ -50,11 +56,20 @@ static int sophgo_dwmac_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
-
-+	data = device_get_match_data(&pdev->dev);
-+	if (data && data->has_internal_rx_delay)
-+		plat_dat->phy_interface = phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface,
-+									  false, true);
-+
- 	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
- }
-
-+static struct sophgo_dwmac_data sg2042_dwmac_data = {
-+	.has_internal_rx_delay = true,
-+};
-+
- static const struct of_device_id sophgo_dwmac_match[] = {
--	{ .compatible = "sophgo,sg2042-dwmac" },
-+	{ .compatible = "sophgo,sg2042-dwmac", .data = &sg2042_dwmac_data },
- 	{ .compatible = "sophgo,sg2044-dwmac" },
- 	{ /* sentinel */ }
- };
---
-2.51.1.dirty
+> 
+> If proxy_arp is retricted to the current netns, then the Debian documentation on wireless bridge-less pseudo-bridge https://wiki.debian.org/BridgeNetworkConnections may be wrong in insinuating that the proxy_arp feature in the modern kernel can replace parprouted userspace program.
+> 
+> The current documentation with sysctl net-related options are really vague in terms of netns interaction. arp_ignore, arp_announce, arp_filter did not do a good job of disambiguating whether any of these arp features can or cannot work across namespaces, or the reasons for the behavior.
+> 
+> From the arp_filter option description, this line "IP addresses are owned by the complete host on Linux, not by particular interfaces." is a single-netns statement, but highly suggests that arp operations are per namespace.
+> 
+> When a virtual ethernet pair is created between two netns, parprouted userspace program can relay arps across namespaces, but the kernel proxy_arp cannot.
+> 
+> Thank you for any insights and feel free to forward to subject matter experts.
+> I really want to get to the bottom of this.
+> 
+> Lucas
+> 
 
