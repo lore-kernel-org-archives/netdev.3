@@ -1,60 +1,43 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3CB1917ED;
-	Mon, 20 Oct 2025 12:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07307EAF9;
+	Mon, 20 Oct 2025 12:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760963321; cv=none; b=bjkKbNTIPuofl3hx/HKwWJavig7EzRbhB9Inye7ErrcbKDNlqmdhgIxfcQPde5loLPUASu4oUxUC3WrKfAdQqdbAlDQvzuNu55uBwuZdfN77Hii0Ap3Gv/BoKsJ5ktT2R/1Z7od/Fe8KKJHC20oDvuumsKUJzaX7cEUK17Lq7ww=
+	t=1760964750; cv=none; b=IegvyONC7CnR0NHuLRPtELHXTy8rTc3rpX9LcfSrRcmyjJckvC2bECFAgHlBvLSBZrouxRazooBZQV9NJGvJpa/z+OEZMRW71JUE/urYcrT2MYYVtb9a0iUwuiID8e9a8vhOhqUjkFzCTg1PtZlBXO4LNA8a17t9OZ0vSqddFyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760963321; c=relaxed/simple;
-	bh=DofzcR0NQwkRhmZTsBxnrzKL84BAOs+RTSxhxO2pjsk=;
+	s=arc-20240116; t=1760964750; c=relaxed/simple;
+	bh=lAqAFT4GVUeCpwBeJIgV5QqxXzg23w/OzLcrc2FHEKg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=okzCtyWAnQgABsJ+DB0eiBxOGPcGmTq7MzvyR+CjHIxYqkb7bEaZdEptGoASMCk8RHtj8biyIKEi5RGgoMQzzvB9PaCTFDzInD1F5ZE64Zu727Sotd9Z998zXQZs1+6KfFXNzjbySUFc6Nmvo0m+X5wHJZDDRaqtCWfy8TL/3ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vAozt-000000003am-1Wtt;
-	Mon, 20 Oct 2025 12:28:21 +0000
-Date: Mon, 20 Oct 2025 13:28:17 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Sjoerd Simons <sjoerd@collabora.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Jianjun Wang <jianjun.wang@mediatek.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Chunfeng Yun <chunfeng.yun@mediatek.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Lee Jones <lee@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwoVvcAJuZvAl8FQHDmIF6sxAueIM8v08Wx6jYTwOk8JhrkA4/qyWDQ6oWogU/wXdvoDdokSCpbIDedU6eCoNgogNeD1ZycP2Pzv3Fk8L8+YJ16ryZl9yacDhLDdpQGmbH7Z/RtZyUHKDxjQ1Dk1/JmjKHeyvDCxe4pEvtrR6w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C8C41007;
+	Mon, 20 Oct 2025 05:52:17 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D9E4B3F66E;
+	Mon, 20 Oct 2025 05:52:22 -0700 (PDT)
+Date: Mon, 20 Oct 2025 13:52:20 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Adam Young <admiyo@os.amperecomputing.com>
+Cc: Jassi Brar <jassisinghbrar@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	kernel@collabora.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-phy@lists.infradead.org, netdev@vger.kernel.org,
-	Bryan Hinton <bryan@bryanhinton.com>
-Subject: Re: [PATCH 02/15] arm64: dts: mediatek: mt7981b-openwrt-one:
- Configure UART0 pinmux
-Message-ID: <aPYq4cnaAHu5ags5@makrotopia.org>
-References: <20251016-openwrt-one-network-v1-0-de259719b6f2@collabora.com>
- <20251016-openwrt-one-network-v1-2-de259719b6f2@collabora.com>
- <aPDnT4tuSzNDzyAE@makrotopia.org>
- <5f430ff9-d701-426a-bf93-5290e6912eb4@collabora.com>
- <aPEfUBl6fMe6QYdY@makrotopia.org>
- <82594ce7-f093-4753-b808-cd234845aed8@collabora.com>
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>
+Subject: Re: [PATCH  v30 2/3] mailbox: pcc: functions for reading and writing
+ PCC extended data
+Message-ID: <20251020-honored-cat-of-elevation-59b6c4@sudeepholla>
+References: <20251016210225.612639-1-admiyo@os.amperecomputing.com>
+ <20251016210225.612639-3-admiyo@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,104 +46,214 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <82594ce7-f093-4753-b808-cd234845aed8@collabora.com>
+In-Reply-To: <20251016210225.612639-3-admiyo@os.amperecomputing.com>
 
-On Mon, Oct 20, 2025 at 12:23:14PM +0200, AngeloGioacchino Del Regno wrote:
-> Il 16/10/25 18:37, Daniel Golle ha scritto:
-> > On Thu, Oct 16, 2025 at 04:29:14PM +0200, AngeloGioacchino Del Regno wrote:
-> > > Il 16/10/25 14:38, Daniel Golle ha scritto:
-> > > > On Thu, Oct 16, 2025 at 12:08:38PM +0200, Sjoerd Simons wrote:
-> > > > > Add explicit pinctrl configuration for UART0 on the OpenWrt One board,
-> > > > > 
-> > > > > Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
-> > > > > ---
-> > > > >    arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts | 11 +++++++++++
-> > > > >    1 file changed, 11 insertions(+)
-> > > > > 
-> > > > > diff --git a/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts b/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-> > > > > index 968b91f55bb27..f836059d7f475 100644
-> > > > > --- a/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-> > > > > +++ b/arch/arm64/boot/dts/mediatek/mt7981b-openwrt-one.dts
-> > > > > @@ -22,6 +22,17 @@ memory@40000000 {
-> > > > >    	};
-> > > > >    };
-> > > > > +&pio {
-> > > > > +	uart0_pins: uart0-pins {
-> > > > > +		mux {
-> > > > > +			function = "uart";
-> > > > > +			groups = "uart0";
-> > > > > +		};
-> > > > > +	};
-> > > > > +};
-> > > > > +
-> > > > >    &uart0 {
-> > > > > +	pinctrl-names = "default";
-> > > > > +	pinctrl-0 = <&uart0_pins>;
-> > > > >    	status = "okay";
-> > > > >    };
-> > > > 
-> > > > As there is only a single possible pinctrl configuration for uart0,
-> > > > both the pinmux definition as well as the pinctrl properties should go
-> > > > into mt7981b.dtsi rather than in the board's dts.
-> > > 
-> > > If there's really one single possible pin configuration for the UART0 pins,
-> > > as in, those pins *do not* have a GPIO mode, then yes I agree.
-> > > 
-> > > If those pins can be as well configured as GPIOs, this goes to board DTS.
-> > 
-> > I respectfully disagree and will explain below.
-> > 
+On Thu, Oct 16, 2025 at 05:02:20PM -0400, Adam Young wrote:
+> Adds functions that aid in compliance with the PCC protocol by
+> checking the command complete flag status.
 > 
-> Thanks a lot for taking the time to write all this - explains everything,
-> and even too much :) :)
+> Adds a function that exposes the size of the shared buffer without
+> activating the channel.
 > 
-> Though, there's something funny here! The following snippet of "main" text
-> does explain stuff that is interesting, but that I (not other people, so
-> thanks again for saying all this) know already, but.....
+> Adds a function that allows a client to query the number of bytes
+> avaialbel to read in order to preallocate buffers for reading.
 > 
-> > All pinmux pins on the MediaTek platform also allow being configured as
-> > GPIOs. However, if you configure those as GPIOs the consequence is that
-> > you cannot use UART0 any more at all. So using UART0 at all always
-> > implies using exactly those pins, there is no alternative to that.
-> > 
-> > Hence every board with every possible uses of pins 32 and 33 (there is
-> > only RX and TX for UART0, RTS/CTS flow-control is not possible) can be
-> > represented without needing to configure the pinctrl for uart0 on the
-> > board level. There isn't going to be any variation on the board-level
-> > when it comes to uart0. Either it is enabled (status = "okay";), and
-> > that will always imply using the 'uart0' group in mode 'uart', or, in
-> > case any of the two pins of uart0 is used for something else that means
-> > uart0 cannot be enabled. Simple as that.
-> > 
-> > Hence there is no need to duplicate that pinctrl settings on each and
-> > every board, as controlling the 'status' property on the board-level
-> > already gives 100% freedom.
-> > 
+> Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
+> ---
+>  drivers/mailbox/pcc.c | 129 ++++++++++++++++++++++++++++++++++++++++++
+>  include/acpi/pcc.h    |  38 +++++++++++++
+>  2 files changed, 167 insertions(+)
 > 
-> ...all of this is not justifying your point.
+> diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+> index 978a7b674946..653897d61db5 100644
+> --- a/drivers/mailbox/pcc.c
+> +++ b/drivers/mailbox/pcc.c
+> @@ -367,6 +367,46 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static
+> +struct pcc_chan_info *lookup_channel_info(int subspace_id)
+> +{
+> +	struct pcc_chan_info *pchan;
+> +	struct mbox_chan *chan;
+> +
+> +	if (subspace_id < 0 || subspace_id >= pcc_chan_count)
+> +		return ERR_PTR(-ENOENT);
+> +
+> +	pchan = chan_info + subspace_id;
+> +	chan = pchan->chan.mchan;
+> +	if (IS_ERR(chan) || chan->cl) {
+> +		pr_err("Channel not found for idx: %d\n", subspace_id);
+> +		return ERR_PTR(-EBUSY);
+> +	}
+> +	return pchan;
+> +}
+> +
+> +/**
+> + * pcc_mbox_buffer_size - PCC clients call this function to
+> + *		request the size of the shared buffer in cases
+> + *              where requesting the channel would prematurely
+> + *              trigger channel activation and message delivery.
+> + * @subspace_id: The PCC Subspace index as parsed in the PCC client
+> + *		ACPI package. This is used to lookup the array of PCC
+> + *		subspaces as parsed by the PCC Mailbox controller.
+> + *
+> + * Return: The size of the shared buffer.
+> + */
+> +int pcc_mbox_buffer_size(int index)
+> +{
+> +	struct pcc_chan_info *pchan = lookup_channel_info(index);
+> +
+> +	if (IS_ERR(pchan))
+> +		return -1;
+> +	return pchan->chan.shmem_size;
+> +}
+> +EXPORT_SYMBOL_GPL(pcc_mbox_buffer_size);
+> +
 
-So what is the rule then? I understand the logic of describing the
-pins eg. for uart1 only on board-level as there are actual alternatives
-regarding the pins to be used, and if also including RTS/CTS pins.
-Hence, for uart1, there are several possible pingroups which can be
-used. What would be the argument to keep a pinctrl description for
-which the SoC doesn't offer any alternatives to be on the board-level?
-There is nothing to be decided by the board, literally 0 freedom.
+Why do you need to export this when you can grab this from
+struct pcc_mbox_chan which is returned from pcc_mbox_request_channel().
 
-> 
-> > (Sidenote: As even the BootROM already uses those two pins as UART for
-> > debug output,
-> 
-> Funny thing is, your side note is what *fully* justifies your disagreement
-> and it's also what triggers me to say that you're right, lol :)
-> 
-> Okay then, I am fine with this commit now and I can renew my
-> 
-> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Please drop the above 2 functions completely.
 
-Note that the patch you have just added your Reviewed-by:-tag to does
-*not* add the uart0 pinctrl on SoC-level but board-level, so different
-from what I argued for above. Did you mean to add Reviewed-by: for that
-(which contraticts what you just wrote) or rather to the to-be-submitted
-v2 of this series which includes the change to move the uart0 pinctrl
-to mt7981b.dtsi?
+> +
+>  /**
+>   * pcc_mbox_request_channel - PCC clients call this function to
+>   *		request a pointer to their PCC subspace, from which they
+> @@ -437,6 +477,95 @@ void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
+>  }
+>  EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
+>  
+> +/**
+> + * pcc_mbox_query_bytes_available
+> + *
+> + * @pchan pointer to channel associated with buffer
+> + * Return: the number of bytes available to read from the shared buffer
+> + */
+> +int pcc_mbox_query_bytes_available(struct pcc_mbox_chan *pchan)
+> +{
+> +	struct pcc_extended_header pcc_header;
+> +	struct pcc_chan_info *pinfo = pchan->mchan->con_priv;
+> +	int data_len;
+> +	u64 val;
+> +
+> +	pcc_chan_reg_read(&pinfo->cmd_complete, &val);
+> +	if (val) {
+> +		pr_info("%s Buffer not enabled for reading", __func__);
+> +		return -1;
+> +	}
+
+Why would you call pcc_mbox_query_bytes_available() if the transfer is
+not complete ?
+
+> +	memcpy_fromio(&pcc_header, pchan->shmem,
+> +		      sizeof(pcc_header));
+> +	data_len = pcc_header.length - sizeof(u32) + sizeof(pcc_header);
+
+Why are you adding the header size to the length above ?
+
+> +	return data_len;
+> +}
+> +EXPORT_SYMBOL_GPL(pcc_mbox_query_bytes_available);
+> +
+> +/**
+> + * pcc_mbox_read_from_buffer - Copy bytes from shared buffer into data
+> + *
+> + * @pchan - channel associated with the shared buffer
+> + * @len - number of bytes to read
+> + * @data - pointer to memory in which to write the data from the
+> + *         shared buffer
+> + *
+> + * Return: number of bytes read and written into daa
+> + */
+> +int pcc_mbox_read_from_buffer(struct pcc_mbox_chan *pchan, int len, void *data)
+> +{
+> +	struct pcc_chan_info *pinfo = pchan->mchan->con_priv;
+> +	int data_len;
+> +	u64 val;
+> +
+> +	pcc_chan_reg_read(&pinfo->cmd_complete, &val);
+> +	if (val) {
+> +		pr_info("%s buffer not enabled for reading", __func__);
+> +		return -1;
+> +	}
+
+Ditto as above, why is this check necessary ?
+
+> +	data_len  = pcc_mbox_query_bytes_available(pchan);
+> +	if (len < data_len)
+> +		data_len = len;
+> +	memcpy_fromio(data, pchan->shmem, len);
+> +	return len;
+> +}
+> +EXPORT_SYMBOL_GPL(pcc_mbox_read_from_buffer);
+> +
+> +/**
+> + * pcc_mbox_write_to_buffer, copy the contents of the data
+> + * pointer to the shared buffer.  Confirms that the command
+> + * flag has been set prior to writing.  Data should be a
+> + * properly formatted extended data buffer.
+> + * pcc_mbox_write_to_buffer
+> + * @pchan: channel
+> + * @len: Length of the overall buffer passed in, including the
+> + *       Entire header. The length value in the shared buffer header
+> + *       Will be calculated from len.
+> + * @data: Client specific data to be written to the shared buffer.
+> + * Return: number of bytes written to the buffer.
+> + */
+> +int pcc_mbox_write_to_buffer(struct pcc_mbox_chan *pchan, int len, void *data)
+> +{
+> +	struct pcc_extended_header *pcc_header = data;
+> +	struct mbox_chan *mbox_chan = pchan->mchan;
+> +
+> +	/*
+> +	 * The PCC header length includes the command field
+> +	 * but not the other values from the header.
+> +	 */
+> +	pcc_header->length = len - sizeof(struct pcc_extended_header) + sizeof(u32);
+> +
+> +	if (!pcc_last_tx_done(mbox_chan)) {
+> +		pr_info("%s pchan->cmd_complete not set.", __func__);
+> +		return 0;
+> +	}
+
+The mailbox moves to next message only if the last tx is done. Why is
+this check necessary ?
+
+> +	memcpy_toio(pchan->shmem,  data, len);
+> +
+> +	return len;
+> +}
+> +EXPORT_SYMBOL_GPL(pcc_mbox_write_to_buffer);
+> +
+> 
+
+I am thinking if reading and writing to shmem can be made inline helper.
+Let me try to hack up something add see how that would look like.
+
+>  /**
+>   * pcc_send_data - Called from Mailbox Controller code. Used
+>   *		here only to ring the channel doorbell. The PCC client
+> diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
+> index 840bfc95bae3..96a6f85fc1ba 100644
+> --- a/include/acpi/pcc.h
+> +++ b/include/acpi/pcc.h
+> @@ -19,6 +19,13 @@ struct pcc_mbox_chan {
+>  	u16 min_turnaround_time;
+>  };
+>  
+> +struct pcc_extended_header {
+> +	u32 signature;
+> +	u32 flags;
+> +	u32 length;
+> +	u32 command;
+> +};
+> +
+
+This again is a duplicate of struct acpi_pcct_ext_pcc_shared_memory.
+It can be dropped.
+
+-- 
+Regards,
+Sudeep
