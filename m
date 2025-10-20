@@ -1,76 +1,93 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B719223C8A1
-	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464162ED167
+	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760954117; cv=none; b=HnzMuTofo7tBYnju0aJLmvTiP03vVo6n9yqarQH0owsI2XwxNTfHxxt+9VqEajW03kGtazpRBQk6684aWKt5f+xjgVeTzmAJZAlom9ugGLWTiM5EXdFvIRWNPe5EY5uJZ4PoF1KiCWSQz0Ezxlqy19CwJALagOQ0UnDnIbOs0eY=
+	t=1760954157; cv=none; b=heC4ToTCt4YbDX/3cfwll/VlY9JTpiX0K2eh6/hXyUo6oKeIu6dwc3eVUXX1MBYcRzcItHiwzY5ZeHxG3V1Qt4sEDY+wkbGFkoKnEpFEHgVI01WAdh6vYEv+o+s08/arzfbNa2QaJGT5yjwYKewUxesFBCzCLJa2veV8XMywa7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760954117; c=relaxed/simple;
-	bh=/qnsErc5VX3wSm2PY+usCao8ksKbiyyMWqGMwdn3Yus=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bu74+nCkRwH3UQ3MPEOAWpISh+ThVr9n1xKTBS1WJS8KPtVkTDqxRwMs1ndZlu+lsCfv0KINIrvEmx/7sNTIgEfo2jl9eEplXwO3SLRavpA927l15MAVTkx687OlZr805Vi42/Fdj78qspLag0icdqJE/XZ0LdHbdrRp8CAbOn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QyPbAZ/+; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1760954157; c=relaxed/simple;
+	bh=rIsPkq1dARb1QczmgvcZPGvLvmgyJgmOrN52SnXRNk4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Msi0S3Yj/Foc41oj3/xYyLDRbgkqMOOxL/fGs6aSL1C3ShHm/gb8ch6MS4dRiRSorPqAmcHttOo1RrHKNLuEKVqhy5stsVnIOpjbFhpj5Yh6JfAlrK07OQO1bkHp2IcBObHFUgk0fWLFop3zTXnQ7dNjd8kqwYPFUCQK/VmObNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jOpCblow; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QyPbAZ/+"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-793021f348fso3709461b3a.1
-        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 02:55:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jOpCblow"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7930132f59aso5638007b3a.0
+        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 02:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760954115; x=1761558915; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760954154; x=1761558954; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nMy7cvAKkSRQMgDlES0oX2LPH67n4kgF18iyVVK4oHw=;
-        b=QyPbAZ/+tR4x3f05UYg1eznF0j5khwbFZHcYHUY3lkgWzXTnWumh19QBnQPwZHHAJP
-         CZOlFnTyvJ/IdPZ8zjLxnri48JISxHtz2ymTlGbvo1q8EMqxIERA6qq59MdGYZREpILR
-         JdQiHmKtbf7wEpBtijBbL2JwzSjiKX2NWezuQgEFfwzGMF1jSQ09sHklxb07iOjcnumR
-         0VblDv9YteDrGWqEmF3/7ucwsGXxe3SI5r1K9faMW9QSN7YkTuXzKeh6EJXKOJWk5ksL
-         IIOdk9NfYRjkgLH2daYWMdfHANPLs3DYdsar4Cs4wvAtWE+0uHCjDyXuPQ7V9baEFYNk
-         XL+A==
+        bh=HnjCj7JbAdjNvBUGLpD1SpiGs6GWZ/iOIsdOQuRNQDA=;
+        b=jOpCblowY/KCSAxOwVAMm0hPe1+P5MBrZ8O/Cx74d5DTs5At3SXOZeGJ5NaaOcO8Gj
+         dT+BTbdUJ7AkzHZXBHBw8/tI9IBzTgr7765qOvjPBaER2wJmB0fEHn9lAB9C95GUDWwW
+         aVQ7QrZM0sfss0KCitdlkmJdE6U8dktIFZgt9/iDWqqc8+zcZHmzKW7Vopnp39I1wGTI
+         RqpaWZw20mjMqFWtHwQQyLFd1SSPaha9Y/mZrRZqCzCOwdysy95YdldZr4vQjBB8Xetb
+         Z/ft8gKi8rOy2epOhZ2+E0X1WdzgBSPMCS14ntL6sp8uST7sncEc5CxsKaflgk8FJD5I
+         LUsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760954115; x=1761558915;
+        d=1e100.net; s=20230601; t=1760954154; x=1761558954;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nMy7cvAKkSRQMgDlES0oX2LPH67n4kgF18iyVVK4oHw=;
-        b=OSKHIHGlzYvD4BPD58grvevdTjpRowriwef36GRPfAUBUwP9s7DbKwYyo5EQs2sw8s
-         F2o7rlKUAOXYyL6u4HA8vFFnB2iDYOLRUyA+oD40pxQJDbvwgudQ1rc8s0s36npApyjd
-         5qh/m5VlJ2R9ReJhuYWdd/LESY50PzlUQE3hiRfm0eaHYvgEau1aTgZngPpfMY+3THiu
-         SGT+WW6/wOgmR652dTXqekgbYwP3Ys3AArxshE/Wrkzrm85pas0TyNqCpJ2f22NKZZkP
-         /KmSvbnwF3lt3+fMhfFxiOaEWdV/b7pdnX9dhbtOkjzRbHXHoSg790EMSTycR8U60MJA
-         1Icg==
-X-Gm-Message-State: AOJu0YwtPg1JpkDD3s3v12eu8gAzl/PMyHU3QIRyRhb71DlROZ9zcgDr
-	WgQpsBvoJ0vQ38r/+K5qdOFQHk+49OjVrYjxuMfiZFG3pEPRlMwbWVQC
-X-Gm-Gg: ASbGncv6ZABH7UPWYJKnrsyTpoETh61Ocqo0YEqZu7BfN30u8L0czZJOvYa5fw4EWMJ
-	t99VfOsqzcgpp2flSl6Z+NwqHLG90y/z8gupdhuFkipgLAqRaLlT0UUwQA4Cpourun9J5nrfMnU
-	TjXxdUYETDELX16CO7cS6nI2U0ALOhVIYIP3wdvhtAlY6QMZwbm0ItbOjfOjKw1+4mHZItwsT5F
-	v9GHSaPDRtpfxph28aH6YUl0Xce8qNxOPB6FHEe+gdHWi+HtBgXwF3Bp5WOKu3hVPYtRls1dYIy
-	OqA1DwjIyV31+wIvrnmR0EmCZetSb8nIqf6cK8KIDYJIGzVwJ7fDjkze0lXe0N0+TjuTWKtr+2y
-	2mexAtOjNbC4BdYIQKqhw14YlBEQWrn7zVzCDudvWOeyvrah1oe8GrQb5zvhiTtEdDNfqlpmMBC
-	wd
-X-Google-Smtp-Source: AGHT+IEgNjCLwH9jnOtF50+wmm//PGeZnCT/rP60wZrNs3v7YACWnHnFouvSbowCzzk7FowyoXdKEw==
-X-Received: by 2002:a17:90b:2fd0:b0:32e:3552:8c79 with SMTP id 98e67ed59e1d1-33bcf8face6mr14790843a91.29.1760954115057;
-        Mon, 20 Oct 2025 02:55:15 -0700 (PDT)
-Received: from localhost ([218.76.62.144])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33d5dfc89d2sm7654264a91.23.2025.10.20.02.55.13
+        bh=HnjCj7JbAdjNvBUGLpD1SpiGs6GWZ/iOIsdOQuRNQDA=;
+        b=p4UoDM9iGCdH4on+v39NXCnQsvIuC6wORJaUWY8llb4yMNX3D7Mvw8QAwj1jE79Db1
+         a1eei5XS1suwE5WtZFKuxxuwZmB+TKXVM9PomXgl3kK+SRwpw5q0XVUCuK+zveu2sAy9
+         Tm5/ByNn2ZDNyBM9codh1G2f6Q/H9R7GqumzLAm6wrATf7T0r/e3/Dk+rmQU4EeyKUe3
+         GrMVLaGyHIszrjZtxHOH2vkbYkUwjud7xE8A0rKA6WPBGtst8eXAMKAARGFjEx+klMHC
+         533KO4qwChVi5S4fh8eoQ7vyDrPSk9EJmGTNYo2mlw/bWfxmhJVfZQChxypnxZtFPIPm
+         U4rg==
+X-Gm-Message-State: AOJu0YyUOlrvoDu/+e0noDJFRVHDaUHLMJPkpW1dJF/bluX+vDt98ws+
+	17+uLj0tb2y3Qdp8mfLMGCr1kXOltF39eEkvdpUY98nSp5glG+npdSXb
+X-Gm-Gg: ASbGncsjsQvzt3eTQ5S/9/wDULsR46pFG2p13qWYeRWQDbJB2GWgIjbM/Kd1rKE1kwG
+	o6WkaTmHnbjM0bN1TJKayT7Aq7UmejRuROvMPOhfZ1y0VhhZNTfDj3Fx9tNRWCy2TchO438FQbk
+	hg5BB5EGyQs+fwr5+uMhdsDYngl8mb0CKOq+6ytEDsSEt99s/oVMLGW+3Dpijg7LXLqDKYjoFYO
+	cocAZe366x1wYrVg3J+pVrYS0vxaqf1dbkVFREu5hO65aRWdOodVHkP68CICHbVsM2IQQuQ9u/W
+	mqB9ZZt4JUhXGaKzuJkuOGKxmwHEnZf0jEBjE4kfOHCH5SsJDzgPe23ylPe9PXnHBdZDnXU8LrU
+	lvLdYCBqf8O72p1KODKvfcQgJJDmFQ4rCiF4EvR+lhluDgMvueENeH3jbprXWDboZDuBMUAN/2j
+	c=
+X-Google-Smtp-Source: AGHT+IGgDyGZ3OQ57iwdb2555NKJghSCCZpCKxoCPXr9rM53NE7X3m8ehUVd2NOzuBByD+q6WjfyCA==
+X-Received: by 2002:a05:6300:8088:b0:334:b8bc:1031 with SMTP id adf61e73a8af0-334b8bc1040mr10403992637.58.1760954154496;
+        Mon, 20 Oct 2025 02:55:54 -0700 (PDT)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b6f302sm7256845a12.38.2025.10.20.02.55.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 02:55:14 -0700 (PDT)
-From: zuoqian <zuoqian113@gmail.com>
-To: nicolas.ferre@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
+        Mon, 20 Oct 2025 02:55:54 -0700 (PDT)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Han Gao <rabenda.cn@gmail.com>,
+	Icenowy Zheng <uwu@icenowy.me>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Yao Zi <ziyao@disroot.org>
 Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	sophgo@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	zuoqian <zuoqian113@gmail.com>
-Subject: [RFC] net: macb: enable IPv6 support for TSO
-Date: Mon, 20 Oct 2025 09:55:08 +0000
-Message-ID: <20251020095509.2204-1-zuoqian113@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Yixun Lan <dlan@gentoo.org>,
+	Longbin Li <looong.bin@gmail.com>
+Subject: [PATCH v2 0/3] net: stmmac: dwmac-sophgo: Add phy interface filter
+Date: Mon, 20 Oct 2025 17:54:56 +0800
+Message-ID: <20251020095500.1330057-1-inochiama@gmail.com>
+X-Mailer: git-send-email 2.51.1.dirty
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,27 +96,30 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-New Cadence GEM hardware support TSO for both ipv4 and IPv6 protocols,
-but the driver currently lacks the NETIF_F_TSO6 feature flag for IPv6 TSO.
+As the SG2042 has an internal rx delay, the delay should be remove
+when init the mac, otherwise the phy will be misconfigurated.
 
-Signed-off-by: zuoqian <zuoqian113@gmail.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Since this delay fix is common for other MACs, add a common helper
+for it. And use it to fix SG2042.
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 214f543af3b8..a154c9f3c325 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -78,7 +78,7 @@ struct sifive_fu540_macb_mgmt {
- #define GEM_MAX_TX_LEN		(unsigned int)(0x3FC0)
- 
- #define GEM_MTU_MIN_SIZE	ETH_MIN_MTU
--#define MACB_NETIF_LSO		NETIF_F_TSO
-+#define MACB_NETIF_LSO		(NETIF_F_TSO | NETIF_F_TSO6)
- 
- #define MACB_WOL_ENABLED		BIT(0)
- 
--- 
-2.49.0
+Change from v1:
+- https://lore.kernel.org/all/20251017011802.523140-1-inochiama@gmail.com
+1. Add phy-mode property to dt-bindings of sophgo,sg2044-dwmac
+2. Add common helper for fixing RGMII phy mode
+3. Use struct to hold the compatiable data.
+
+Inochi Amaoto (3):
+  dt-bindings: net: sophgo,sg2044-dwmac: add phy mode restriction
+  net: phy: Add helper for fixing RGMII PHY mode based on internal mac
+    delay
+  net: stmmac: dwmac-sophgo: Add phy interface filter
+
+ .../bindings/net/sophgo,sg2044-dwmac.yaml     | 17 ++++++++
+ .../ethernet/stmicro/stmmac/dwmac-sophgo.c    | 17 +++++++-
+ drivers/net/phy/phy-core.c                    | 43 +++++++++++++++++++
+ include/linux/phy.h                           |  3 ++
+ 4 files changed, 79 insertions(+), 1 deletion(-)
+
+--
+2.51.1.dirty
 
