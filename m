@@ -1,134 +1,397 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D769526B77B
-	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 16:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D298F26981E;
+	Mon, 20 Oct 2025 16:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977417; cv=none; b=doSE7U9djxGHr94GoVP4c1d4LzG8ZbZWqddJhdFy8xBne5amAUeglHnDVByiR7pSr+Yq70+dlfy5hgPc2wmWYR/RCl6pXdQyj82u9V5k+xRkMNyb6GfliI8AAq9szpsFWpoqayMa2xJS1zHqysDrbpuIxE5YOJs3rnHIi8wk6Po=
+	t=1760977458; cv=none; b=IDXzeEpcqxMnzWSzaBrtiRQAE7+70YM+QodhRlHuQJvgEt0zhN2+Bd/e4mlBzUtwNxsA+NSX1KMGiOg0zR5P27fIWM2bR2dySLr8vZvJdMhvLcBdoPrnyGBrGMLlgcwH5hRpGOco2zia3pvwjaff6zVaMgHzaizpz8nsuVvWoRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977417; c=relaxed/simple;
-	bh=JhybXE7R11FfldinfG02n4nm7gpPTPzG49BibXV0xGE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qo96NsxDPVEySLSKqJwcOj8Jbwyu2rv6AL5ehFp9Ei53dPV7/FdPosXv603lRXoOK3haX0xtpIyrqBMG8Y67h2ahBMM6b3SwPMFG+Gpt6rg6JCjS4wnuEPKREzguvjEwaXHSDcgJp868z88nhcC0uGuZ8czPU5K6X2qOW7NpUfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADQoFust; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1760977458; c=relaxed/simple;
+	bh=+aSnQ+qL/21A3UFmluMZtNKHZdjquBZS8mD7CaO6R+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EeE6VOYLn6BuY+5x4Rv85eBsYxN+ik877gpLBMFZrMS4XeYTNew43sEK6QJywAJOAu55KzQBH74jM9IAbXdOMUANNQtD2OLV6aFO4QR0YJwmQFrXrsO3oSB+FBmpEW1EfyFa5ssHNLeFmZ28AgVEYbCWrNeZk4/gsvARbjsMsDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=FjzqBvr/; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADQoFust"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-36639c30bb7so40353471fa.3
-        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:23:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760977414; x=1761582214; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3LPzc0R6LMpiWe8eMNmrj2awjMOaGK9U57/pCxBYSG0=;
-        b=ADQoFustomFtocHdVdTfI1p/t5hXbXj2GFrinPqsE2fvvJqRh7CjotmmMPc1Oeif36
-         kR6xXsgudObNn71Xfz4Gzoat6LDoQHGdjkVAo9oAseUQlGHCxaFu7HCaJP1GG89y7n4b
-         HiMZdGolsNRUrnumnx1HVYo01/tWnYH5Ul+ZzJ9+z+KalYxy6Dz4IolPSto2fx6XLdsR
-         +P0RVIDUwl3fxIz5HjfFTuIAz6Ri2DOQqrKrwV7kwk3pL2yBwKtjRAhMtlT9T6BSn09G
-         u4M7TVPJpkKma/uU2I9nhGb9yABsU5XELxLEFJPG+QpDvkv9cc/RvORFyv5TpfimqwlZ
-         nU7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760977414; x=1761582214;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3LPzc0R6LMpiWe8eMNmrj2awjMOaGK9U57/pCxBYSG0=;
-        b=w20gxLoG7gilYaU47r9rIOdXa6g8R8v84bSRtAOUwlDaYYZreWSQXRIBplFKFZyzHF
-         K9g7OfwHdaSxkj68GjafTPAd14cYOPLFglfAu//YyIu3+TEUtWOBml8Z+KN73P6+HdoC
-         p+nhTfEMWZZq7myW8U25rG7IhDUHup8y4MvsWMhk0R+IYg9JAyWllJkcMmYLjQ2pA3SF
-         yf+5+HINeubgUxPQqWQPXzG9J5LyIm+9EtlRkre9qK474CDo/na0tpxTxc4V2ERGQSfu
-         yqnW0GAVHrN1KWYR6grZMTYOAV3H1IppErFeboODV5lB5lAiItBJHIwIS/04VZ20UTcu
-         n4UA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6FCA0wpc+fatCTjs9Orrs+ysOrBOUxWSgN1ViloBkHcw1TuuA27b/igP8oHdd6YGuHMuO5O4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhW2gMX3LP+qqHQ6/Kb9KK+OV49mSRr52Y0ie3wVMyit4PoPil
-	bUT2kNzO0r3wKYbJKc1a4O3U4AFa6yMt8XDs+M+nQn38gvitpX5DwZKUWOEvWw==
-X-Gm-Gg: ASbGncsAx5TO+eQFRNIEJAVMhzeJsmIpxB8iGXzDL58o1fwgxSVQe/89BsYRsnGK8pU
-	fMiBMkXDVkD1aowDofzqjE6jabrdghDvjDcOa8V29mqFzFS7Qfd5ZqT8SqnpHpWyK1iPfjNlJEc
-	+rVOfJ4dKwH/8KggbGvjJ45M6wVJNxmk3/uHJCf/5RYniRNWAZJ8nVKRxpb/j8lA9jKLaz34BE7
-	GEFQ+EprS1gZwKZYMY0JmReDLobrC5yLfOcDC8p7Z3IutCQ/6V140NQkV6fdv3hhoNjyQ7Jbg9J
-	dndBLqWkGD69iCgKTn23Dx47sTFWc3iXGnG1vm+3ikGvFMdAHbzcPHMf9OCivIwpNWNN3iFBZzM
-	nYVnXL0H5eJ2HVez1Xv6CUsw/UShHYvYmY8lqI7YgFz1EjbHGowR/pR1chheNH7noAl0P//Me9m
-	FKUOyQxtv/JsHDWl0tznEFW7X6DuE=
-X-Google-Smtp-Source: AGHT+IFl1QPDX6Ojn5Td2m0DZOehjJbEt94UzdPkTL0dqFsYL/3PF17ph4lGeiIlQ5KrtBb3EJb94A==
-X-Received: by 2002:a2e:9a0c:0:b0:351:786c:e533 with SMTP id 38308e7fff4ca-377978ab86cmr42134981fa.15.1760977413859;
-        Mon, 20 Oct 2025 09:23:33 -0700 (PDT)
-Received: from foxbook (bey128.neoplus.adsl.tpnet.pl. [83.28.36.128])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-377a91f5a3dsm23228331fa.19.2025.10.20.09.23.31
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 20 Oct 2025 09:23:33 -0700 (PDT)
-Date: Mon, 20 Oct 2025 18:23:27 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: yicongsrfy@163.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, oliver@neukum.org, pabeni@redhat.com
-Subject: Re: [PATCH net v5 2/3] net: usb: ax88179_178a: add USB device
- driver for config selection
-Message-ID: <20251020182327.0dd8958a.michal.pecio@gmail.com>
-In-Reply-To: <e4ce396c-0047-4bd1-a5d2-aee3b86315b1@rowland.harvard.edu>
-References: <20251013110753.0f640774.michal.pecio@gmail.com>
-	<20251017024229.1959295-1-yicongsrfy@163.com>
-	<db3db4c6-d019-49d0-92ad-96427341589c@rowland.harvard.edu>
-	<20251017191511.6dd841e9.michal.pecio@gmail.com>
-	<bda50568-a05d-4241-adbe-18efb2251d6e@rowland.harvard.edu>
-	<20251018172156.69e93897.michal.pecio@gmail.com>
-	<6640b191-d25b-4c4e-ac67-144357eb5cc3@rowland.harvard.edu>
-	<20251018175618.148d4e59.michal.pecio@gmail.com>
-	<e4ce396c-0047-4bd1-a5d2-aee3b86315b1@rowland.harvard.edu>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="FjzqBvr/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=t4mVQNUxX3XF7kj1e+NjG3QMpj4bsQ8Tq3WyY6vMIak=; b=FjzqBvr/4SHX1KpL4lfvoZFh/g
+	JkF2xUzEJPaP+aAX1mhh2NfiJhkzSayjRqNdyypLZbXpWmplIY+CfIWv/4dmws0P1Eor8gjQ5hBsm
+	IreBbJMpVgRbVOOx9LdkRveSi6w3UP+g1mffG5jW9WfRaohDlIOWqmYIsVziKA6LS0jRqFf7dsFm5
+	KPz+dU6Sw5WiJkPfubIF8K8RaMVjnvbOYq8MGw1OYaMK1Kct5anW3RD8WFJUpofdrHwgodiVltSSX
+	15K+/xbxv+OqunwIH6JYv6FuKz9crx2JHsXUacFL9bryq0ePiuqdSXrSFNX8yO6XHZzz/ND+vmWa1
+	VVKIEhOA==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vAsfv-000Jic-0O;
+	Mon, 20 Oct 2025 18:23:59 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v3 02/15] net: Implement netdev_nl_bind_queue_doit
+Date: Mon, 20 Oct 2025 18:23:42 +0200
+Message-ID: <20251020162355.136118-3-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251020162355.136118-1-daniel@iogearbox.net>
+References: <20251020162355.136118-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.0.9/27798/Mon Oct 20 11:37:28 2025)
 
-On Mon, 20 Oct 2025 11:56:50 -0400, Alan Stern wrote:
-> On Sat, Oct 18, 2025 at 05:56:18PM +0200, Michal Pecio wrote:
-> > On Sat, 18 Oct 2025 11:36:11 -0400, Alan Stern wrote:  
-> > > How are prefer_vendor() and usb_driver_preferred() supposed to know 
-> > > which configuration is being considered?  
-> > 
-> > Currently they don't need to know, but this could be added by passing
-> > a temporary struct with more stuff in place of udev.
-> > 
-> > Really, this whole usb_drv->preferred business could be a simple
-> > boolean flag, if not for r8152 needing to issue control transfers to
-> > the chip to find whether it supports at all.
-> > 
-> > It seems that ax88179_preferred() could simply always return true.  
-> 
-> Instead of all this preferred() stuff, why not have the ax88179 driver's 
-> probe routine check for a different configuration with a vendor-specific 
-> interface?  If that other config is present and the chip is the right 
-> type then you can call usb_driver_set_configuration() -- this is exactly 
-> what it's meant for.
+From: David Wei <dw@davidwei.uk>
 
-That could be doable and some code could be shared I guess, but how to
-get the probe() routine to run in the first place?
+Implement netdev_nl_bind_queue_doit() that creates an rx queue in a
+virtual netdev and then binds it to an rxq in a real netdev to create
+a queue pair.
 
-The chip may be in other configuration, without this vendor interface.
-If we remove _AND_INTERFACE_INFO, it's still a problem that cdc_ether
-may already be bound to the CDC interface in CDC config.
+Example with ynl client:
 
-Registering a *device* driver plows through such obstacles, because
-core allows device drivers to immediately displace existing drivers.
+  # ./pyynl/cli.py \
+      --spec ~/netlink/specs/netdev.yaml \
+      --do bind-queue \
+      --json '{"src-ifindex": 4, "src-queue-id": 15, "dst-ifindex": 8, "queue-type": "rx"}'
+  {'dst-queue-id': 1}
 
+Note that the netdevice locking order is always from the virtual to
+the physical device.
 
-It seems that this could work, if cdc_ether blacklisting and revert
-of _AND_INTERFACE_INFO are applied as suggested in this series.
-(But as part of the main commit, to avoid transient regressions).
+Signed-off-by: David Wei <dw@davidwei.uk>
+Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+---
+ include/net/netdev_queues.h   |   5 ++
+ include/net/netdev_rx_queue.h |  36 ++++++++-
+ net/core/netdev-genl.c        | 141 +++++++++++++++++++++++++++++++++-
+ net/core/netdev_rx_queue.c    |  61 +++++++++++++++
+ 4 files changed, 240 insertions(+), 3 deletions(-)
 
-I wonder if blacklisting is considered necessary evil? Without it, it's
-possible that cdc_ether binds for a moment before it's kicked out by
-the vendor driver. Looks weird in dmesg, at the very least.
+diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
+index cd00e0406cf4..286d5edce07d 100644
+--- a/include/net/netdev_queues.h
++++ b/include/net/netdev_queues.h
+@@ -130,6 +130,10 @@ void netdev_stat_queue_sum(struct net_device *netdev,
+  * @ndo_queue_get_dma_dev: Get dma device for zero-copy operations to be used
+  *			   for this queue. Return NULL on error.
+  *
++ * @ndo_queue_create: Create a new RX queue which can be bound to another queue.
++ *		      Ops on this queue are redirected to the peer queue e.g.
++ *		      when opening a memory provider.
++ *
+  * Note that @ndo_queue_mem_alloc and @ndo_queue_mem_free may be called while
+  * the interface is closed. @ndo_queue_start and @ndo_queue_stop will only
+  * be called for an interface which is open.
+@@ -149,6 +153,7 @@ struct netdev_queue_mgmt_ops {
+ 						  int idx);
+ 	struct device *		(*ndo_queue_get_dma_dev)(struct net_device *dev,
+ 							 int idx);
++	int			(*ndo_queue_create)(struct net_device *dev);
+ };
+ 
+ bool netif_rxq_has_unreadable_mp(struct net_device *dev, int idx);
+diff --git a/include/net/netdev_rx_queue.h b/include/net/netdev_rx_queue.h
+index 8cdcd138b33f..db3ef94c0744 100644
+--- a/include/net/netdev_rx_queue.h
++++ b/include/net/netdev_rx_queue.h
+@@ -28,6 +28,7 @@ struct netdev_rx_queue {
+ #endif
+ 	struct napi_struct		*napi;
+ 	struct pp_memory_provider_params mp_params;
++	struct netdev_rx_queue		*peer;
+ } ____cacheline_aligned_in_smp;
+ 
+ /*
+@@ -56,6 +57,37 @@ get_netdev_rx_queue_index(struct netdev_rx_queue *queue)
+ 	return index;
+ }
+ 
+-int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq);
++static inline void __netdev_rx_queue_peer(struct netdev_rx_queue *src_rxq,
++					  struct netdev_rx_queue *dst_rxq)
++{
++	src_rxq->peer = dst_rxq;
++	dst_rxq->peer = src_rxq;
++}
+ 
+-#endif
++static inline void __netdev_rx_queue_unpeer(struct netdev_rx_queue *src_rxq,
++					    struct netdev_rx_queue *dst_rxq)
++{
++	src_rxq->peer = NULL;
++	dst_rxq->peer = NULL;
++}
++
++static inline bool netdev_rx_queue_peered(struct net_device *dev,
++					  u16 queue_id)
++{
++	if (queue_id < dev->real_num_rx_queues)
++		return dev->_rx[queue_id].peer;
++	return false;
++}
++
++void netdev_rx_queue_peer(struct net_device *src_dev,
++			  struct netdev_rx_queue *src_rxq,
++			  struct netdev_rx_queue *dst_rxq);
++void netdev_rx_queue_unpeer(struct net_device *src_dev,
++			    struct netdev_rx_queue *src_rxq,
++			    struct netdev_rx_queue *dst_rxq);
++int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq);
++struct netdev_rx_queue *
++netif_get_rx_queue_peer_locked(struct net_device **dev,
++			       unsigned int *rxq_idx,
++			       bool *needs_unlock);
++#endif /* _LINUX_NETDEV_RX_QUEUE_H */
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index ce1018ea390f..579469abac8c 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1122,7 +1122,146 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ int netdev_nl_bind_queue_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+-	return -EOPNOTSUPP;
++	u32 src_ifidx, src_qid, dst_ifidx, dst_qid, q_type;
++	struct netdev_rx_queue *src_rxq, *dst_rxq, *tmp_rxq;
++	struct net_device *src_dev, *dst_dev;
++	struct sk_buff *rsp;
++	int err = 0;
++	void *hdr;
++
++	if (GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_PAIR_QUEUE_TYPE) ||
++	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_PAIR_SRC_IFINDEX) ||
++	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_PAIR_SRC_QUEUE_ID) ||
++	    GENL_REQ_ATTR_CHECK(info, NETDEV_A_QUEUE_PAIR_DST_IFINDEX))
++		return -EINVAL;
++
++	src_ifidx = nla_get_u32(info->attrs[NETDEV_A_QUEUE_PAIR_SRC_IFINDEX]);
++	src_qid = nla_get_u32(info->attrs[NETDEV_A_QUEUE_PAIR_SRC_QUEUE_ID]);
++	dst_ifidx = nla_get_u32(info->attrs[NETDEV_A_QUEUE_PAIR_DST_IFINDEX]);
++	q_type = nla_get_u32(info->attrs[NETDEV_A_QUEUE_PAIR_QUEUE_TYPE]);
++
++	if (q_type != NETDEV_QUEUE_TYPE_RX) {
++		NL_SET_ERR_MSG(info->extack, "Only binding of RX queue supported");
++		return -EOPNOTSUPP;
++	}
++	if (dst_ifidx == src_ifidx) {
++		NL_SET_ERR_MSG(info->extack,
++			       "Destination driver cannot be same as source driver");
++		return -EOPNOTSUPP;
++	}
++
++	rsp = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!rsp)
++		return -ENOMEM;
++
++	hdr = genlmsg_iput(rsp, info);
++	if (!hdr) {
++		err = -EMSGSIZE;
++		goto err_genlmsg_free;
++	}
++
++	/* Locking order is always from the virtual to the physical device
++	 * since this is also the same order when applications open the
++	 * memory provider later on.
++	 */
++	dst_dev = netdev_get_by_index_lock(genl_info_net(info), dst_ifidx);
++	if (!dst_dev) {
++		err = -ENODEV;
++		goto err_genlmsg_free;
++	}
++	if (dst_dev->dev.parent) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Destination device is not a virtual device");
++		goto err_unlock_dst_dev;
++	}
++	if (!dst_dev->queue_mgmt_ops ||
++	    !dst_dev->queue_mgmt_ops->ndo_queue_create) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Destination driver does not support queue management operations");
++		goto err_unlock_dst_dev;
++	}
++	if (dst_dev->real_num_rx_queues < 1) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Destination device must have at least one real RX queue");
++		goto err_unlock_dst_dev;
++	}
++
++	src_dev = netdev_get_by_index_lock(genl_info_net(info), src_ifidx);
++	if (!src_dev) {
++		err = -ENODEV;
++		goto err_unlock_dst_dev;
++	}
++	if (!src_dev->dev.parent) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Source device is a virtual device");
++		goto err_unlock_src_dev;
++	}
++	if (!netif_device_present(src_dev)) {
++		err = -ENODEV;
++		NL_SET_ERR_MSG(info->extack,
++			       "Source device has been removed from the system");
++		goto err_unlock_src_dev;
++	}
++	if (!src_dev->queue_mgmt_ops) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Source driver does not support queue management operations");
++		goto err_unlock_src_dev;
++	}
++	if (src_qid >= src_dev->num_rx_queues) {
++		err = -ERANGE;
++		NL_SET_ERR_MSG(info->extack,
++			       "Source device queue is out of range");
++		goto err_unlock_src_dev;
++	}
++
++	src_rxq = __netif_get_rx_queue(src_dev, src_qid);
++	if (src_rxq->peer) {
++		err = -EBUSY;
++		NL_SET_ERR_MSG(info->extack,
++			       "Source device queue is already bound");
++		goto err_unlock_src_dev;
++	}
++
++	tmp_rxq = __netif_get_rx_queue(dst_dev, dst_dev->real_num_rx_queues - 1);
++	if (tmp_rxq->peer && tmp_rxq->peer->dev != src_dev) {
++		err = -EOPNOTSUPP;
++		NL_SET_ERR_MSG(info->extack,
++			       "Binding multiple queues from difference source devices not supported");
++		goto err_unlock_src_dev;
++	}
++
++	err = dst_dev->queue_mgmt_ops->ndo_queue_create(dst_dev);
++	if (err <= 0) {
++		NL_SET_ERR_MSG(info->extack,
++			       "Destination device is unable to create a new queue");
++		goto err_unlock_src_dev;
++	}
++
++	dst_qid = err - 1;
++	dst_rxq = __netif_get_rx_queue(dst_dev, dst_qid);
++
++	netdev_rx_queue_peer(src_dev, src_rxq, dst_rxq);
++
++	nla_put_u32(rsp, NETDEV_A_QUEUE_PAIR_DST_QUEUE_ID, dst_qid);
++	genlmsg_end(rsp, hdr);
++
++	netdev_unlock(src_dev);
++	netdev_unlock(dst_dev);
++
++	return genlmsg_reply(rsp, info);
++
++err_unlock_src_dev:
++	netdev_unlock(src_dev);
++err_unlock_dst_dev:
++	netdev_unlock(dst_dev);
++err_genlmsg_free:
++	nlmsg_free(rsp);
++	return err;
+ }
+ 
+ void netdev_nl_sock_priv_init(struct netdev_nl_sock *priv)
+diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
+index c7d9341b7630..916ca8d7ae7c 100644
+--- a/net/core/netdev_rx_queue.c
++++ b/net/core/netdev_rx_queue.c
+@@ -18,6 +18,67 @@ bool netif_rxq_has_unreadable_mp(struct net_device *dev, int idx)
+ }
+ EXPORT_SYMBOL(netif_rxq_has_unreadable_mp);
+ 
++void netdev_rx_queue_peer(struct net_device *src_dev,
++			  struct netdev_rx_queue *src_rxq,
++			  struct netdev_rx_queue *dst_rxq)
++{
++	netdev_assert_locked(src_dev);
++	netdev_assert_locked(dst_rxq->dev);
++
++	netdev_hold(src_dev, &src_rxq->dev_tracker, GFP_KERNEL);
++	__netdev_rx_queue_peer(src_rxq, dst_rxq);
++}
++
++void netdev_rx_queue_unpeer(struct net_device *src_dev,
++			    struct netdev_rx_queue *src_rxq,
++			    struct netdev_rx_queue *dst_rxq)
++{
++	WARN_ON_ONCE(READ_ONCE(dst_rxq->dev->reg_state) != NETREG_UNREGISTERING);
++
++	netdev_assert_locked(dst_rxq->dev);
++	netdev_assert_locked(src_dev);
++
++	__netdev_rx_queue_unpeer(src_rxq, dst_rxq);
++	netdev_put(src_dev, &src_rxq->dev_tracker);
++}
++
++static struct netdev_rx_queue *
++__netif_get_rx_queue_peer(struct net_device **dev, unsigned int *rxq_idx,
++			  bool virt_to_phys_only)
++{
++	struct net_device *req_dev = *dev;
++	struct netdev_rx_queue *rxq = __netif_get_rx_queue(req_dev, *rxq_idx);
++
++	if (rxq->peer) {
++		if (virt_to_phys_only &&
++		    req_dev->dev.parent)
++			return NULL;
++		rxq = rxq->peer;
++		*rxq_idx = get_netdev_rx_queue_index(rxq);
++		*dev = rxq->dev;
++	}
++	return rxq;
++}
++
++struct netdev_rx_queue *
++netif_get_rx_queue_peer_locked(struct net_device **dev, unsigned int *rxq_idx,
++			       bool *needs_unlock)
++{
++	struct net_device *req_dev = *dev;
++	struct netdev_rx_queue *rxq;
++
++	/* Locking order is always from the virtual to the physical device
++	 * see netdev_nl_bind_queue_doit().
++	 */
++	netdev_ops_assert_locked(req_dev);
++	rxq = __netif_get_rx_queue_peer(dev, rxq_idx, true);
++	if (rxq && req_dev != *dev) {
++		*needs_unlock = true;
++		netdev_lock(*dev);
++	}
++	return rxq;
++}
++
+ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
+ {
+ 	struct netdev_rx_queue *rxq = __netif_get_rx_queue(dev, rxq_idx);
+-- 
+2.43.0
 
-FWIW, my RTL8153 is blacklisted in cdc_ether too. So much for the
-promise that cfgselectors will allow users to choose drivers ;)
-
-Regards,
-Michal
