@@ -1,89 +1,127 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.43])
+Received: from localhost.localdomain (unknown [147.136.157.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194301A7264;
-	Mon, 20 Oct 2025 06:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF4833F6;
+	Mon, 20 Oct 2025 06:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760940212; cv=none; b=WtxVwYyR//p0GtVyK8ZN5uTJtIFKrjzOG+1VcmRo0QpRgLfzPeSyLCoS2zmKjHFzazc9b3TOUPg9EVGBllK9IMw4BHjZ/OidExABlooksayq1NTuFojZdx6vha9AvDPeOpFQV5oiSXyFN+E99pSZDJpPMx1JPHfZjUIycxNs1aI=
+	t=1760940336; cv=none; b=SwVDbzw1C4jw4tqv+zKLZBZXoz8RZ3Yi4kyAkwQHXupBnIpyUARu660gpN8xLII7lZcnz9jCsIdoosyuziOePYZ6VLFNrDSNRFjnyqJMTBNLBTaVe+kXtbG660r9+QbVEDNAUqoLhuIdVo8rTbQIsFLTdJ8pw61NkdMpec1Wg1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760940212; c=relaxed/simple;
-	bh=Abf/juTFHekFeCdZgzz+/03QcOuFUx77qS6NIgXzclk=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=n0PuaBlnAwQ04qYsFZFcwZWXqcgoSECYEdgQytUxp+yGwRQOoRtI0qdVuUj3QogXmJJc28fSB8crg2bQdSQQ3lDjZzT/bgzT9CjOrFjsRWhaHguGRlnXuz0ZQUyh/68g6d2dnMrEZkz8dCpMt7viLt50mNRhmufrQljsEDyvYeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=u0FRH+Lu; arc=none smtp.client-ip=43.163.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="u0FRH+Lu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1760940204; bh=Abf/juTFHekFeCdZgzz+/03QcOuFUx77qS6NIgXzclk=;
-	h=From:To:Cc:Subject:Date;
-	b=u0FRH+Lu9Yq4OU7LEF03Wei96EhA61mVThzgW+DZmWmeiHP2BxkEzdvpFsuiElKEB
-	 0oMpit5MeeRbYiJ24TcwLOFUuE/qaoyAQcPkVXZ6kwLJGYeqPwVk+qq1lNHH8SXltv
-	 nHNzlaGPXYCMzvUo5T1Txdrkw20snqbawH572YpM=
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-XMAILINFO: MHyJd5qrf7Bo9Fu1oZ6VJcYHvKX3J0IffFPrtHBqdnufzIpFJ9f07dOgqE/4XS
-	 1ZdZKdUwe13cQ/C25Xc+1isucXp1h/kibjkp7MwjpOmFOvOOL9PJsV9IiyR8nlpj01HJNf9d/Wc73
-	 zU1ilDZDQFWMvH2yNC3efBJ7fvYfZyAkfqiIoNq3cKqfutQSen7aA39YsDQ2bxJs5DxLfJYn9Pysy
-	 CeW2Y3sq5Ma3/LYSeVhKQPglM7sIUFnB80BA2PG/L6hdTZU7wf7HmU82gTRirpHkw++jgkis8V/ll
-	 IN0H70TbLXaT833oGjQ8e2KI7arXjSAkpNTB97Oij7hR4l0Il649FnJ9tIxATGBqWfkypZJdVB8v7
-	 bEWprzfW4jmE5EKqaDgU6vPVZFN661NQpcm/hGW7d9yg+alcGyHQbcbaB6nef/JDrUatr17nLvFWY
-	 qhtlC5GUCb+0VuV0tyB/aVwNS2fnt/gG93YSuIEEAOqgdvQICani4aZMnbfb1avtSxS0DeyAmkWro
-	 UGhM4e2otqnkdG/HR6xgflB/p5ccc6fLB+05xMG9UvvagELDYczDmuQkp9rld2qdXRL612wYSV9/F
-	 sNBz8APRrcTbUwk8xQMcZVGnGGDkiYVxIqB+iAxl7Xpe18xh1D2sM1pg2o4h/dyaxcmxPgggJdxqG
-	 k4BGqImiFU2Xk/35BLZKY7XtAW5v8PGpG6EVNv8LmzHrKIQwavP5Barbc15/FdkxUd1CiM0ze809u
-	 HRwH1QJ6vqod+nxF0qSl7g8HlvhQVOo9RQUcGM+/FndRe5OHuFXpD9kwXiGgn659s+0CopJXzFLq9
-	 Ba+8t55lCys8pmqt6yXe5MlKHGxmHJt4Xt3zOTapYU668lZdFdMlESfGK+ZlF+K2Iz2C+ztciQJAM
-	 UI2GF6qihFqec+NKhd/rd3S7IR288GaUL6PnfVLgBlWWvZqpIUCeAiyYupVviyfZ74JTpL43N+nSX
-	 PvxgAtMjFdmwfzpfeH1ZiCUGx7PuxlMS7zdd9qVLl6n1Ts4SqBKV9HnRqOtxiYaNh4sTMwAaNTIcb
-	 buzhd0uMEx8RZCG4=
-From: "=?utf-8?B?MTU5OTEwMTM4NQ==?=" <1599101385@qq.com>
-To: "=?utf-8?B?c3l6Ym90K2JlOTdkZDRkYTE0YWU4OGI2YmE0QHN5emthbGxlci5hcHBzcG90bWFpbC5jb20=?=" <syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com>
-Cc: "=?utf-8?B?ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldA==?=" <davem@davemloft.net>, "=?utf-8?B?ZWR1bWF6ZXRAZ29vZ2xlLmNvbQ==?=" <edumazet@google.com>, "=?utf-8?B?aGVyYmVydEBnb25kb3IuYXBhbmEub3JnLmF1?=" <herbert@gondor.apana.org.au>, "=?utf-8?B?aG9ybXNAa2VybmVsLm9yZw==?=" <horms@kernel.org>, "=?utf-8?B?a3ViYUBrZXJuZWwub3Jn?=" <kuba@kernel.org>, "=?utf-8?B?bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw==?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2QHZnZXIua2VybmVsLm9yZw==?=" <netdev@vger.kernel.org>, "=?utf-8?B?cGFiZW5pQHJlZGhhdC5jb20=?=" <pabeni@redhat.com>, "=?utf-8?B?c3RlZmZlbi5rbGFzc2VydEBzZWN1bmV0LmNvbQ==?=" <steffen.klassert@secunet.com>, "=?utf-8?B?c3l6a2FsbGVyLWJ1Z3NAZ29vZ2xlZ3JvdXBzLmNvbQ==?=" <syzkaller-bugs@googlegroups.com>
-Subject: Re: [syzbot] [net?] kernel BUG in set_ipsecrequest
+	s=arc-20240116; t=1760940336; c=relaxed/simple;
+	bh=JN0kAYHKGuMXtTDQCxXntwNjscgj3btMyUd4B5mll5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NGOu+q2+7acB5REJYqg25x5GKsUyOZat2PcO81m9ZMjMHa+6v4a9ndYy64sVVNHxxz0eSgZX0I8ZraScbmNTLt0JpQJYpqLICMtKKAZkIu9gWJAMY3OOOE75BIT8kwENijV5+9j5nvpvy7wNxtE+GoSv3rWkNBpImnbwSGfFLPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
+Received: by localhost.localdomain (Postfix, from userid 1007)
+	id 132888B2A56; Mon, 20 Oct 2025 14:05:26 +0800 (+08)
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: mptcp@lists.linux.dev,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v2 0/3] mptcp: Fix conflicts between MPTCP and sockmap
+Date: Mon, 20 Oct 2025 14:04:45 +0800
+Message-ID: <20251020060503.325369-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Mon, 20 Oct 2025 14:03:23 +0800
-X-Priority: 3
-Message-ID: <tencent_72742A444FB03378AEE31E7F4C216DC00409@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-X-QQ-mid: xmsezc37-0t1760940203tkp45n9ve
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-I3N5esKgdGVzdAoKRnJvbcKgMmVkZmM4ODMzZTQzY2RmNWNjZGE4YmQ1YmUzZGE1ZDFiYmRj
-NjljNsKgTW9uwqBTZXDCoDE3wqAwMDowMDowMMKgMjAwMQpGcm9tOsKgY2xpbmdmZWnCoDwx
-NTk5MTAxMzg1QHFxLmNvbT4KRGF0ZTrCoE1vbizCoDIwwqBPY3TCoDIwMjXCoDEzOjQwOjM1
-wqArMDgwMApTdWJqZWN0OsKgW1BBVENIXcKgZml4wqBpbnRlZ2VywqBvdmVyZmxvd8KgaW7C
-oHNldF9pcHNlY3JlcXVlc3QKVGhlwqBtcC0+bmV3X2ZhbWlsecKgYW5kwqBtcC0+b2xkX2Zh
-bWlsecKgaXPCoHUxNizCoHdoaWxlwqBzZXRfaXBzZWNyZXF1ZXN0wqByZWNlaXZlc8KgZmFt
-aWx5wqBhc8KgdWludDhfdCzCoApjYXVzaW5nwqBhwqBpbnRlZ2VywqBvdmVyZmxvd8KgYW5k
-wqB0aGXCoGxhdGVywqBzaXplX3JlccKgY2FsY3VsYXRpb27CoGVycm9yLMKgd2hpY2jCoHVs
-dGltYXRlbHnCoHRyaWdnZXJlZMKgYcKgCmtlcm5lbMKgYnVnwqBpbsKgc2tiX3B1dC4KClJl
-cG9ydGVkLWJ5OsKgc3l6Ym90K2JlOTdkZDRkYTE0YWU4OGI2YmE0QHN5emthbGxlci5hcHBz
-cG90bWFpbC5jb20KQ2xvc2VzOsKgaHR0cHM6Ly9zeXprYWxsZXIuYXBwc3BvdC5jb20vYnVn
-P2V4dGlkPWJlOTdkZDRkYTE0YWU4OGI2YmE0CgotLS0KwqBuZXQva2V5L2FmX2tleS5jwqB8
-wqAywqArLQrCoDHCoGZpbGXCoGNoYW5nZWQswqAxwqBpbnNlcnRpb24oKykswqAxwqBkZWxl
-dGlvbigtKQoKZGlmZsKgLS1naXTCoGEvbmV0L2tleS9hZl9rZXkuY8KgYi9uZXQva2V5L2Fm
-X2tleS5jCmluZGV4wqAyZWJkZTAzNTIyNDUuLjA4ZjRjZGUwMTk5NMKgMTAwNjQ0Ci0tLcKg
-YS9uZXQva2V5L2FmX2tleS5jCisrK8KgYi9uZXQva2V5L2FmX2tleS5jCkBAwqAtMzUxOCw3
-wqArMzUxOCw3wqBAQMKgc3RhdGljwqBpbnTCoHNldF9zYWRiX2ttYWRkcmVzcyhzdHJ1Y3TC
-oHNrX2J1ZmbCoCpza2IswqBjb25zdMKgc3RydWN0wqB4ZnJtX2ttYWRkcmVzc8KgKgoKwqBz
-dGF0aWPCoGludMKgc2V0X2lwc2VjcmVxdWVzdChzdHJ1Y3TCoHNrX2J1ZmbCoCpza2IsCsKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-dWludDhfdMKgcHJvdG8swqB1aW50OF90wqBtb2RlLMKgaW50wqBsZXZlbCwKLcKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90
-wqByZXFpZCzCoHVpbnQ4X3TCoGZhbWlseSwKK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVpbnQzMl90wqByZXFpZCzCoHVpbnQxNl90
-wqBmYW1pbHksCsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgY29uc3TCoHhmcm1fYWRkcmVzc190wqAqc3JjLMKgY29uc3TCoHhmcm1f
-YWRkcmVzc190wqAqZHN0KQrCoHsKwqDCoMKgwqDCoMKgwqDCoHN0cnVjdMKgc2FkYl94X2lw
-c2VjcmVxdWVzdMKgKnJxOwotLQoyLjM0LjEKCg==
+Overall, we encountered a warning [1] that can be triggered by running the
+selftest I provided.
+
+MPTCP creates subflows for data transmission between two endpoints.
+However, BPF can use sockops to perform additional operations when TCP
+completes the three-way handshake. The issue arose because we used sockmap
+in sockops, which replaces sk->sk_prot and some handlers. Since subflows
+also have their own specialized handlers, this creates a conflict and leads
+to traffic failure. Therefore, we need to reject operations targeting
+subflows.
+
+This patchset simply prevents the combination of subflows and sockmap
+without changing any functionality.
+
+A complete integration of MPTCP and sockmap would require more effort, for
+example, we would need to retrieve the parent socket from subflows in
+sockmap and implement handlers like read_skb.
+
+If maintainers don't object, we can further improve this in subsequent
+work.
+
+v1: https://lore.kernel.org/mptcp/a0a2b87119a06c5ffaa51427a0964a05534fe6f1@linux.dev/T/#t
+
+[1] truncated warning:
+[   18.234652] ------------[ cut here ]------------
+[   18.234664] WARNING: CPU: 1 PID: 388 at net/mptcp/protocol.c:68 mptcp_stream_accept+0x34c/0x380
+[   18.234726] Modules linked in:
+[   18.234755] RIP: 0010:mptcp_stream_accept+0x34c/0x380
+[   18.234762] RSP: 0018:ffffc90000cf3cf8 EFLAGS: 00010202
+[   18.234800] PKRU: 55555554
+[   18.234806] Call Trace:
+[   18.234810]  <TASK>
+[   18.234837]  do_accept+0xeb/0x190
+[   18.234861]  ? __x64_sys_pselect6+0x61/0x80
+[   18.234898]  ? _raw_spin_unlock+0x12/0x30
+[   18.234915]  ? alloc_fd+0x11e/0x190
+[   18.234925]  __sys_accept4+0x8c/0x100
+[   18.234930]  __x64_sys_accept+0x1f/0x30
+[   18.234933]  x64_sys_call+0x202f/0x20f0
+[   18.234966]  do_syscall_64+0x72/0x9a0
+[   18.234979]  ? switch_fpu_return+0x60/0xf0
+[   18.234993]  ? irqentry_exit_to_user_mode+0xdb/0x1e0
+[   18.235002]  ? irqentry_exit+0x3f/0x50
+[   18.235005]  ? clear_bhb_loop+0x50/0xa0
+[   18.235022]  ? clear_bhb_loop+0x50/0xa0
+[   18.235025]  ? clear_bhb_loop+0x50/0xa0
+[   18.235028]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   18.235066]  </TASK>
+[   18.235109] ---[ end trace 0000000000000000 ]---
+[   18.235677] sockmap: MPTCP sockets are not supported
+
+Jiayuan Chen (3):
+  net,mptcp: fix incorrect IPv4/IPv6 fallback detection with BPF Sockmap
+  bpf,sockmap: disallow MPTCP sockets from sockmap updates
+  selftests/bpf: Add mptcp test with sockmap
+
+ net/core/sock_map.c                           |   9 ++
+ net/mptcp/protocol.c                          |   7 +-
+ .../testing/selftests/bpf/prog_tests/mptcp.c  | 136 ++++++++++++++++++
+ .../selftests/bpf/progs/mptcp_sockmap.c       |  43 ++++++
+ 4 files changed, 193 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/bpf/progs/mptcp_sockmap.c
+
+-- 
+2.43.0
 
