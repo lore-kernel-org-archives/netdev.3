@@ -1,80 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F943EA8D;
-	Mon, 20 Oct 2025 23:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B1238C1F
+	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 23:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761004224; cv=none; b=OJXOgUNs/niIUOM6vjQR43Qd/j7TbKZ5mF+9bzMig4OLsWyG0oi96EJLoay4wBsd9d0RENV+FovwVMH9Giw/icjxUd1Fu52FA7TrWiP8VrkuAwpcMZnNEVnvcaaxMmQG8vznRKjUftNVXpbxhL4IQwvy4V+zgYskUjoFFTdjieo=
+	t=1761004421; cv=none; b=hgzJCCe0QZlaNkcTBTHfhMwAdGV5BSATd8qrc2EMuVdDR5kgLKx3MnbdO6MSlToV0uqwn85AzDpS4gsMqIR/BMm9SBCZO+RVGbSR24QGe0QFjpD/wC79x0fMcMd0Az0bLW2+a1onXNKPTRCQsJxEbDPFJR0RpOhk7jdtty29qFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761004224; c=relaxed/simple;
-	bh=I6sY7AN7V8Z8BYUg64U7j7nvW1Z8z4b+gQaRtfoslnA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qoa4udZU1QdgDj05alT5uRRz4MAYX5apiMEVNdcL2UzA/9kOiJ66yw0pRVgZLJBw8ZTn2gZ9D9PENBw9SSCOFdmHIQqS7QDuEQLjiyhT9FeI9eZ9bS4A9pHikUTzk9vsNHCA9msxZoQAdmvF8yUEgHuABEPyX1cEhMpus2HDmk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2J3U4zK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761004421; c=relaxed/simple;
+	bh=f4KHYXNeliT82bWg7tQd1dOcYLuGXx3ar2NGZNdgM0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jA9nfHmKF7oRyowXdoA5PEA3L/DmhbFDcUo8JRiJQ7o+irhsiSzu427G3HY+YfwU7INmaNO57PNWKxv2pZhf4KjAcxHD0zVNufi42En30ph+fNA45snSwjhixuWXafv35RuWtBY3HzZme2lTXtEYnxDWLktuVIaoO31oQ6cP4bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IZ3dYoUc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2J3U4zK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE5FC4CEFB;
-	Mon, 20 Oct 2025 23:50:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IZ3dYoUc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D059C4CEFB;
+	Mon, 20 Oct 2025 23:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761004223;
-	bh=I6sY7AN7V8Z8BYUg64U7j7nvW1Z8z4b+gQaRtfoslnA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=W2J3U4zKX09Ztpk1aav755qhxGug2Jd+fvzzc3JlABCC74fAjAQmIu8ByN9ReGZlj
-	 pDv4O/hHH5uFPlPcx1JeWT8RXz+hBQfINUuXfBdGuwdXIQk26H3fwKDnJzNK8NaAvh
-	 VF9nTPrmO9ceBR+SNivz6DtuqWXOk4LAeBKjdhqec/97w1Sts9o8USd0TYpsVKMG4q
-	 lKo8Awr8VjZsc4f9blI74zWcYxHCfvmqxuqEUOO/1qLZz2EGy6YeMYoipg7/A5p1Cl
-	 33uOU3bQjFw+rHDk02ROh6mhrCs+5ZchqftB7hCvw/uB9vL1K1udNvmFO+x2DxZfYW
-	 EWS8E+C10i93Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFCA3A4102D;
-	Mon, 20 Oct 2025 23:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1761004420;
+	bh=f4KHYXNeliT82bWg7tQd1dOcYLuGXx3ar2NGZNdgM0M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IZ3dYoUcF7jHLXpNUgT0L8dszcv6chDG44kPJROBmWbfcuzinKJXo8PcQ4PCAaJ78
+	 kR0TWAnTbWFUW3SRUCVpquUk72Y9k7IWa5gmqqwjFU8J4jFxjDQszLEkHuq0qOYtZU
+	 /rddLFhjfs2ocrhvzrY2Shy6y4DJfiVLBRqOAicLWbT19D7bu19+wkHiLlnhvT2LrL
+	 Tibb2CK7yZcJZvE4Hce/kIK6FUVAMvdibcmVUOUgraP/7KzCEwdf7sXN/asgiCvAkY
+	 pu0gSu5h40njRC4lqXoGxFqfsijiem1Gy82DS7U2czwtsh3if/Wxcpf3C88eXifyu5
+	 BfATPbwSWCviA==
+Message-ID: <547630af-642c-49f9-b511-bd45dd65e20f@kernel.org>
+Date: Mon, 20 Oct 2025 17:53:39 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] selftests: net: fix server bind failure in
- sctp_vrf.sh
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176100420551.458842.8594143558422977698.git-patchwork-notify@kernel.org>
-Date: Mon, 20 Oct 2025 23:50:05 +0000
-References: 
- <be2dacf52d0917c4ba5e2e8c5a9cb640740ad2b6.1760731574.git.lucien.xin@gmail.com>
-In-Reply-To: 
- <be2dacf52d0917c4ba5e2e8c5a9cb640740ad2b6.1760731574.git.lucien.xin@gmail.com>
-To: Xin Long <lucien.xin@gmail.com>
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- marcelo.leitner@gmail.com, liuhangbin@gmail.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: gro_cells: fix lock imbalance in
+ gro_cells_receive()
+Content-Language: en-US
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+f9651b9a8212e1c8906f@syzkaller.appspotmail.com,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20251020161114.1891141-1-edumazet@google.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20251020161114.1891141-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 17 Oct 2025 16:06:14 -0400 you wrote:
-> sctp_vrf.sh could fail:
+On 10/20/25 10:11 AM, Eric Dumazet wrote:
+> syzbot found that the local_unlock_nested_bh() call was
+> missing in some cases.
 > 
->   TEST 12: bind vrf-2 & 1 in server, connect from client 1 & 2, N [FAIL]
->   not ok 1 selftests: net: sctp_vrf.sh # exit=3
+> WARNING: possible recursive locking detected
+> syzkaller #0 Not tainted
+> --------------------------------------------
+> syz.2.329/7421 is trying to acquire lock:
+>  ffffe8ffffd48888 ((&cell->bh_lock)){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:44 [inline]
+>  ffffe8ffffd48888 ((&cell->bh_lock)){+...}-{3:3}, at: gro_cells_receive+0x404/0x790 net/core/gro_cells.c:30
 > 
-> The failure happens when the server bind in a new run conflicts with an
-> existing association from the previous run:
+> but task is already holding lock:
+>  ffffe8ffffd48888 ((&cell->bh_lock)){+...}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:44 [inline]
+>  ffffe8ffffd48888 ((&cell->bh_lock)){+...}-{3:3}, at: gro_cells_receive+0x404/0x790 net/core/gro_cells.c:30
 > 
-> [...]
+> other info that might help us debug this:
+>  Possible unsafe locking scenario:
+> 
+>        CPU0
+>        ----
+>   lock((&cell->bh_lock));
+>   lock((&cell->bh_lock));
+> 
+>  *** DEADLOCK ***
+> 
+> Given the introduction of @have_bh_lock variable, it seems the author
+> intent was to have the local_unlock_nested_bh() after the @unlock label.
+> 
+> Fixes: 25718fdcbdd2 ("net: gro_cells: Use nested-BH locking for gro_cell")
+> Reported-by: syzbot+f9651b9a8212e1c8906f@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/68f65eb9.a70a0220.205af.0034.GAE@google.com/T/#u
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> ---
+>  net/core/gro_cells.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
 
-Here is the summary with links:
-  - [net] selftests: net: fix server bind failure in sctp_vrf.sh
-    https://git.kernel.org/netdev/net/c/a73ca0449bcb
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
 
