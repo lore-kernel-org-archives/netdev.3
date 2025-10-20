@@ -1,37 +1,38 @@
 Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0A5286422;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382C727B4F9;
 	Mon, 20 Oct 2025 16:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977459; cv=none; b=YeBrDsR2krVA6YFbWwZu4MPcw6lontHysB7sXDJrdy3Ri2eBzVXTiE8hT763EcChmJt6lZ89VqaDabjNHgRWPL/axvZDt5lR45/6e87wSgMhMsi7tMb1lZGY/mir61yXnnUJWq6twvypyj2aqWuX9Cb8JjcWGN7M3nhgttVwO7w=
+	t=1760977459; cv=none; b=tI1wSfERjpbfDIeqJrn6bT9upb89aMEfDL20Fy6xKE/T96zmQxnKUziQuAQt/2UxuPa+LQrJuL2s9FCdK84F9Gnt5rvCMNT6+Nw3z4pondJhAQ3XliBFcbxuAnPat/pmMLLpgAOEt/kdLcEwFNCw05Rhs+2/eV+godfv0/XiXVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1760977459; c=relaxed/simple;
-	bh=Z4UT22EGyvlEG1tl2tPWz5AKAW8ctXe9I+yn5eN28bU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZNzwhx6QTpv1pX2sfi+IhOp92opjpa/Ck5oWcH2miChdB5Wts7BaXgTOatFVe9aT4nTuPRs020rym7qj5yfbQ6zd3Ed5Qav6e9vwHTXqtaedBNUtrbYD08IxY0T9ua6b30rY71QicmbkDAfvLUYeT6VXZCHD6uZ43ZPak1AS/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=axmQzGe+; arc=none smtp.client-ip=213.133.104.62
+	bh=22Sp1Ubk/1T7W6H2wKlF+PClET5LMtTme1lJVFic2HE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lX/1OSR9wSPe+WPi5A9RD+zCU9B9EMmnRCb6HpZgxADkoiZyUj7gmcjaVagRASIV1AZoDCO80oajxkE+bfJNILTrDsv3/qTO4LAr72sN45jt/zoSXVOaE9xMXegJaXHSpPllkEmWUCgGRHcBNI4JAekMZDAoVymFIWt66Cv0VRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=DGrYl4is; arc=none smtp.client-ip=213.133.104.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="axmQzGe+"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="DGrYl4is"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=zMQLgJjxGNREMvSiUsrqy2mt5zVHgiDcqKcyCwADK3Y=; b=axmQzGe+tJZnIL9mTVbOUmk/1U
-	qyHt7UVn1a3cHQSRedVCD8JOqPdN6S7mllnigoo1acACnGFSJF9BovaYRgpIIrVyvuEst8ddUje3F
-	pHvWyYlWPO0xIqIQDrP/XoSlfWwbA64lDdMtHw6n15U860BLzIO8EQcoezzzqP9FuezSSxzfNRpp8
-	kl+QMc/1K2K/3oY6g70VeGldQ1O9Mu+L7/fjg6wvzXwfSBvsg2mkQ/aAKhvLuofMMGCyap+dEpt60
-	oEORRXLZm3o64bZwTLJ/O2GA6RHpiTdP2TGqjPf+Db/bYq7X3uX3K2iVhhtqW7aY+gkSeRsv+N78i
-	iKvnFfSw==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=2xFmGOq6inuHI0lVhJVsaPt71VXBvnhK+/0uEA8R474=; b=DGrYl4isU0j2AbXL/TLx+UMJn2
+	LjyLRj9uUsDMuDVW7eSO4I3BJkXyU6nUljyIPbJJjydDhP9SUufqb5TK29Tq50mloS9HtUrrn6nrp
+	xDJV7Nw+8jae6U10ulf3c/eBu5x1tFnXKD8H+vzE/b04+fBehHM0T8ELUCONOBTO63fMqKh4IYp8Q
+	qpPLUWKudT+Dt6dHzlM0koBmT4MWsTTNmrktl5jASwpPfh2TeptcK/EABrLJyIBXmQTe46qXK9X67
+	TQA4uSkxhjQ4/wMFi5SJRWPn4g/a0zPT5K7XYAK8OOPNjAUxU8JJBxooaYDbhZwILbyrhSEXcOSfB
+	Sjst9LrQ==;
 Received: from localhost ([127.0.0.1])
 	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <daniel@iogearbox.net>)
-	id 1vAsfs-000JiL-1n;
-	Mon, 20 Oct 2025 18:23:56 +0200
+	id 1vAsfw-000Jih-0d;
+	Mon, 20 Oct 2025 18:24:00 +0200
 From: Daniel Borkmann <daniel@iogearbox.net>
 To: netdev@vger.kernel.org
 Cc: bpf@vger.kernel.org,
@@ -50,10 +51,12 @@ Cc: bpf@vger.kernel.org,
 	toke@redhat.com,
 	yangzhenze@bytedance.com,
 	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v3 00/15] netkit: Support for io_uring zero-copy and AF_XDP
-Date: Mon, 20 Oct 2025 18:23:40 +0200
-Message-ID: <20251020162355.136118-1-daniel@iogearbox.net>
+Subject: [PATCH net-next v3 03/15] net: Add peer info to queue-get response
+Date: Mon, 20 Oct 2025 18:23:43 +0200
+Message-ID: <20251020162355.136118-4-daniel@iogearbox.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251020162355.136118-1-daniel@iogearbox.net>
+References: <20251020162355.136118-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,92 +66,240 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.0.9/27798/Mon Oct 20 11:37:28 2025)
 
-Containers use virtual netdevs to route traffic from a physical netdev
-in the host namespace. They do not have access to the physical netdev
-in the host and thus can't use memory providers or AF_XDP that require
-reconfiguring/restarting queues in the physical netdev.
+From: David Wei <dw@davidwei.uk>
 
-This patchset adds the concept of queue peering to virtual netdevs that
-allow containers to use memory providers and AF_XDP at native speed.
-These mapped queues are bound to a real queue in a physical netdev and
-act as a proxy.
+Add a nested peer field to the queue-get response that returns the peered
+ifindex and queue id.
 
-Memory providers and AF_XDP operations takes an ifindex and queue id,
-so containers would pass in an ifindex for a virtual netdev and a queue
-id of a mapped queue, which then gets proxied to the underlying real
-queue. Peered queues are created and bound to a real queue atomically
-through a generic ynl netdev operation.
+Example with ynl client:
 
-We have implemented support for this concept in netkit and tested the
-latter against Nvidia ConnectX-6 (mlx5) as well as Broadcom BCM957504
-(bnxt_en) 100G NICs. For more details see the individual patches.
+  # ip netns exec foo ./pyynl/cli.py \
+      --spec ~/netlink/specs/netdev.yaml \
+      --do queue-get \
+      --json '{"ifindex": 3, "id": 1, "type": "rx"}'
+  {'id': 1, 'ifindex': 3, 'peer': {'id': 15, 'ifindex': 4, 'netns-id': 21}, 'type': 'rx'}
 
-v2->v3:
- - Use netdev_ops_assert_locked instead of netdev_assert_locked (syzbot)
- - Add missing netdev_lockdep_set_classes in netkit
-v1->v2:
- - Removed bind sample ynl code (Stan)
- - Reworked netdev locking to have consistent order (Stan, Kuba)
- - Return 'not supported' in API patch (Stan)
- - Improved ynl documentation (Kuba)
- - Added 'max: s32-max' in ynl spec for ifindex (Kuba)
- - Added also queue type in ynl to have user specify rx to make
-   it obvious (Kuba)
- - Use of netdev_hold (Kuba)
- - Avoid static inlines from another header (Kuba)
- - Squashed some commits (Kuba, Stan)
- - Removed ndo_{peer,unpeer}_queues callback and simplified
-   code (Kuba)
- - Improved commit messages (Toke, Kuba, Stan, zf)
- - Got rid of locking genl_sk_priv_get (Stan)
- - Removed af_xdp cleanup churn (Maciej)
- - Added netdev locking asserts (Stan)
- - Reject ethtool ioctl path queue resizing (Kuba)
- - Added kdoc for ndo_queue_create (Stan)
- - Uninvert logic in netkit single dev mode (Jordan)
- - Added binding support for multiple queues
+Note that the caller of netdev_nl_queue_fill_one() holds the netdevice
+lock. For the queue-get we do not lock both devices. When queues get
+{un,}peered, both devices are locked, thus if netdev_rx_queue_peered()
+returns true, the peer pointer points to a valid device. The netns-id
+is fetched via peernet2id_alloc() similarly as done in OVS.
 
-Daniel Borkmann (9):
-  net, ethtool: Disallow peered real rxqs to be resized
-  xsk: Move NETDEV_XDP_ACT_ZC into generic header
-  xsk: Move pool registration into single function
-  xsk: Add small helper xp_pool_bindable
-  xsk: Change xsk_rcv_check to check netdev/queue_id from pool
-  xsk: Proxy pool management for mapped queues
-  netkit: Add single device mode for netkit
-  netkit: Document fast vs slowpath members via macros
-  netkit: Add xsk support for af_xdp applications
+Signed-off-by: David Wei <dw@davidwei.uk>
+Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+---
+ Documentation/netlink/specs/netdev.yaml | 24 ++++++++++++++++++
+ include/net/netdev_rx_queue.h           |  3 +++
+ include/uapi/linux/netdev.h             | 10 ++++++++
+ net/core/netdev-genl.c                  | 33 +++++++++++++++++++++++--
+ net/core/netdev_rx_queue.c              |  8 ++++++
+ tools/include/uapi/linux/netdev.h       | 10 ++++++++
+ 6 files changed, 86 insertions(+), 2 deletions(-)
 
-David Wei (6):
-  net: Add bind-queue operation
-  net: Implement netdev_nl_bind_queue_doit
-  net: Add peer info to queue-get response
-  net: Proxy net_mp_{open,close}_rxq for mapped queues
-  netkit: Implement rtnl_link_ops->alloc and ndo_queue_create
-  netkit: Add io_uring zero-copy support for TCP
-
- Documentation/netlink/specs/netdev.yaml |  84 ++++++
- drivers/net/netkit.c                    | 330 ++++++++++++++++++++----
- include/linux/ethtool.h                 |   1 +
- include/net/netdev_queues.h             |   5 +
- include/net/netdev_rx_queue.h           |  39 ++-
- include/net/page_pool/memory_provider.h |   4 +-
- include/net/xdp_sock_drv.h              |   8 +-
- include/uapi/linux/if_link.h            |   6 +
- include/uapi/linux/netdev.h             |  22 ++
- net/core/netdev-genl-gen.c              |  25 ++
- net/core/netdev-genl-gen.h              |   1 +
- net/core/netdev-genl.c                  | 177 ++++++++++++-
- net/core/netdev_rx_queue.c              | 126 +++++++--
- net/ethtool/channels.c                  |  12 +-
- net/ethtool/common.c                    |  10 +-
- net/ethtool/ioctl.c                     |   4 +-
- net/xdp/xsk.c                           |  44 +++-
- net/xdp/xsk.h                           |   5 +-
- net/xdp/xsk_buff_pool.c                 |  18 +-
- tools/include/uapi/linux/netdev.h       |  22 ++
- 20 files changed, 830 insertions(+), 113 deletions(-)
-
+diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+index 20bb00b7e9ac..a3c562dfd205 100644
+--- a/Documentation/netlink/specs/netdev.yaml
++++ b/Documentation/netlink/specs/netdev.yaml
+@@ -297,6 +297,24 @@ attribute-sets:
+   -
+     name: xsk-info
+     attributes: []
++  -
++    name: peer-info
++    attributes:
++      -
++        name: id
++        doc: Queue index of the netdevice to which the peer queue belongs.
++        type: u32
++      -
++        name: ifindex
++        doc: ifindex of the netdevice to which the peer queue belongs.
++        type: u32
++      -
++        name: netns-id
++        doc: |
++          Network namespace of the netdevice to which the peer queue belongs.
++          This is populated if the netdevices are not in the same network
++          namespace.
++        type: s32
+   -
+     name: queue
+     attributes:
+@@ -338,6 +356,11 @@ attribute-sets:
+         doc: XSK information for this queue, if any.
+         type: nest
+         nested-attributes: xsk-info
++      -
++        name: peer
++        doc: Whether this queue was bound to another peer queue.
++        type: nest
++        nested-attributes: peer-info
+   -
+     name: qstats
+     doc: |
+@@ -723,6 +746,7 @@ operations:
+             - dmabuf
+             - io-uring
+             - xsk
++            - peer
+       dump:
+         request:
+           attributes:
+diff --git a/include/net/netdev_rx_queue.h b/include/net/netdev_rx_queue.h
+index db3ef94c0744..ea23cca947bb 100644
+--- a/include/net/netdev_rx_queue.h
++++ b/include/net/netdev_rx_queue.h
+@@ -90,4 +90,7 @@ struct netdev_rx_queue *
+ netif_get_rx_queue_peer_locked(struct net_device **dev,
+ 			       unsigned int *rxq_idx,
+ 			       bool *needs_unlock);
++struct netdev_rx_queue *
++netif_get_rx_queue_peer_any(struct net_device **dev,
++			    unsigned int *rxq_idx);
+ #endif /* _LINUX_NETDEV_RX_QUEUE_H */
+diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
+index 4ef04d0bc412..d4d5d9f86eee 100644
+--- a/include/uapi/linux/netdev.h
++++ b/include/uapi/linux/netdev.h
+@@ -150,6 +150,15 @@ enum {
+ 	NETDEV_A_XSK_INFO_MAX = (__NETDEV_A_XSK_INFO_MAX - 1)
+ };
+ 
++enum {
++	NETDEV_A_PEER_INFO_ID = 1,
++	NETDEV_A_PEER_INFO_IFINDEX,
++	NETDEV_A_PEER_INFO_NETNS_ID,
++
++	__NETDEV_A_PEER_INFO_MAX,
++	NETDEV_A_PEER_INFO_MAX = (__NETDEV_A_PEER_INFO_MAX - 1)
++};
++
+ enum {
+ 	NETDEV_A_QUEUE_ID = 1,
+ 	NETDEV_A_QUEUE_IFINDEX,
+@@ -158,6 +167,7 @@ enum {
+ 	NETDEV_A_QUEUE_DMABUF,
+ 	NETDEV_A_QUEUE_IO_URING,
+ 	NETDEV_A_QUEUE_XSK,
++	NETDEV_A_QUEUE_PEER,
+ 
+ 	__NETDEV_A_QUEUE_MAX,
+ 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 579469abac8c..28658b5cd7a4 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -393,6 +393,7 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
+ 	struct pp_memory_provider_params *params;
+ 	struct netdev_rx_queue *rxq;
+ 	struct netdev_queue *txq;
++	struct nlattr *nest;
+ 	void *hdr;
+ 
+ 	hdr = genlmsg_iput(rsp, info);
+@@ -410,6 +411,34 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
+ 		if (nla_put_napi_id(rsp, rxq->napi))
+ 			goto nla_put_failure;
+ 
++		if (netdev_rx_queue_peered(netdev, q_idx)) {
++			struct net_device *p_netdev = netdev;
++			struct net *net, *p_net;
++			u32 p_q_idx = q_idx;
++
++			nest = nla_nest_start(rsp, NETDEV_A_QUEUE_PEER);
++			if (!nest)
++				goto nla_put_failure;
++
++			netif_get_rx_queue_peer_any(&p_netdev, &p_q_idx);
++			if (nla_put_u32(rsp, NETDEV_A_PEER_INFO_ID, p_q_idx) ||
++			    nla_put_u32(rsp, NETDEV_A_PEER_INFO_IFINDEX,
++					READ_ONCE(p_netdev->ifindex)))
++				goto nla_put_failure;
++
++			rcu_read_lock();
++			p_net = dev_net_rcu(p_netdev);
++			net = dev_net_rcu(netdev);
++			if (!net_eq(net, p_net)) {
++				s32 id = peernet2id_alloc(net, p_net, GFP_ATOMIC);
++
++				if (nla_put_s32(rsp, NETDEV_A_PEER_INFO_NETNS_ID, id))
++					goto nla_put_failure_unlock;
++			}
++			rcu_read_unlock();
++			nla_nest_end(rsp, nest);
++		}
++
+ 		params = &rxq->mp_params;
+ 		if (params->mp_ops &&
+ 		    params->mp_ops->nl_fill(params->mp_priv, rsp, rxq))
+@@ -419,7 +448,6 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
+ 			if (nla_put_empty_nest(rsp, NETDEV_A_QUEUE_XSK))
+ 				goto nla_put_failure;
+ #endif
+-
+ 		break;
+ 	case NETDEV_QUEUE_TYPE_TX:
+ 		txq = netdev_get_tx_queue(netdev, q_idx);
+@@ -434,9 +462,10 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
+ 	}
+ 
+ 	genlmsg_end(rsp, hdr);
+-
+ 	return 0;
+ 
++nla_put_failure_unlock:
++	rcu_read_unlock();
+ nla_put_failure:
+ 	genlmsg_cancel(rsp, hdr);
+ 	return -EMSGSIZE;
+diff --git a/net/core/netdev_rx_queue.c b/net/core/netdev_rx_queue.c
+index 916ca8d7ae7c..8ee289316c06 100644
+--- a/net/core/netdev_rx_queue.c
++++ b/net/core/netdev_rx_queue.c
+@@ -79,6 +79,14 @@ netif_get_rx_queue_peer_locked(struct net_device **dev, unsigned int *rxq_idx,
+ 	return rxq;
+ }
+ 
++struct netdev_rx_queue *
++netif_get_rx_queue_peer_any(struct net_device **dev, unsigned int *rxq_idx)
++{
++	netdev_ops_assert_locked(*dev);
++	/* Retrieves both virt-to-phys and phys-to-virt peering. */
++	return __netif_get_rx_queue_peer(dev, rxq_idx, false);
++}
++
+ int netdev_rx_queue_restart(struct net_device *dev, unsigned int rxq_idx)
+ {
+ 	struct netdev_rx_queue *rxq = __netif_get_rx_queue(dev, rxq_idx);
+diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
+index 4ef04d0bc412..d4d5d9f86eee 100644
+--- a/tools/include/uapi/linux/netdev.h
++++ b/tools/include/uapi/linux/netdev.h
+@@ -150,6 +150,15 @@ enum {
+ 	NETDEV_A_XSK_INFO_MAX = (__NETDEV_A_XSK_INFO_MAX - 1)
+ };
+ 
++enum {
++	NETDEV_A_PEER_INFO_ID = 1,
++	NETDEV_A_PEER_INFO_IFINDEX,
++	NETDEV_A_PEER_INFO_NETNS_ID,
++
++	__NETDEV_A_PEER_INFO_MAX,
++	NETDEV_A_PEER_INFO_MAX = (__NETDEV_A_PEER_INFO_MAX - 1)
++};
++
+ enum {
+ 	NETDEV_A_QUEUE_ID = 1,
+ 	NETDEV_A_QUEUE_IFINDEX,
+@@ -158,6 +167,7 @@ enum {
+ 	NETDEV_A_QUEUE_DMABUF,
+ 	NETDEV_A_QUEUE_IO_URING,
+ 	NETDEV_A_QUEUE_XSK,
++	NETDEV_A_QUEUE_PEER,
+ 
+ 	__NETDEV_A_QUEUE_MAX,
+ 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
 -- 
 2.43.0
 
