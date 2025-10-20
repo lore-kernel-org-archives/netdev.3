@@ -1,211 +1,142 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E145C296159;
-	Mon, 20 Oct 2025 16:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B03828CF49
+	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 16:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760977464; cv=none; b=O8H4G4NHEOhVE3jmCELS4L6YUfHEPEG/fZaOuDL5xLU2j8foA7JYQKnuIGfFJr+1tVNyoP8w+ng84/kV7traKYhLnE7zSFbAC3wLca1fe5OlAC01KX8l0eQ8jxSUbpI8/TFctH3vifT/jk9OE2i/eiTDlL6k6Q3LMOsmgePtxDs=
+	t=1760977872; cv=none; b=c3BREsxsKTJNOUEaZBhM7SvDVq8m+UBApizWuj+jU9447Tn6QPn/8qQ1JUR824FD6n0hRXqZUI2fuTs8FzhPWCfpplt+KMsXzIxuFcNuNinQjNTN/YYlHMEBxBqqvljPkoDSYUSdillaFNeFO25WBIeExI9yVd3cJCfW/dZe6i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760977464; c=relaxed/simple;
-	bh=4KlQgj+DLiOQIwLN5XTRdpWwMGdGKfB0pUZWbzQeYUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyLkHstm5s+AKcopAZHhSW3FopxUBFqERvs0fuJ857s1R349rw89W44fjT0BAcjJx7xlKMJkQuLio/eFkyyGjp4hMnUqrUkvvK2FuuRD3TiPXbo4+JpmGUscKCxnKUZiDVXoRnTGeco/gg4HzJW3r35TqzDkSNKN5Ow7O6wIouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=ctZ6xT7J; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1760977872; c=relaxed/simple;
+	bh=dPFovmpKdroGd8354LpU5WRnCZYAnDz9cnOhTf5IUnw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FxmVGHH626aQmUMD92jJrgHa+AgWlfsdXk6vsAmCa9SKPeq2GyHLrb4pS+ixiwgAq4h+ynCOx0Loben3WkJ2ykLkVtPaB2qCj/FKC7AiAMbvRy1U/PTRuWy1IuzoZErz8mua9YfqNxZoMKb71OFA4BHyajCD6bVj6C0rHyk6YPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yOKa8aiK; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="ctZ6xT7J"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=XiGP8f3g9vVj9cBrvrA+o8ajrH9d7uAxQXSyy9tGfYg=; b=ctZ6xT7J+xa61iG0SnogqA47AG
-	ZpVOIJOdLchFxb/6x3kpM/RWYIN/zpPwxMBCZEFbTksQdcLgYtnABNAJz0HPwpPXJmMjhPXI7kNmI
-	gB00pT5Ke3iOc339Z9fipu6rY6wUpl028UPpL2isI0Fyb0dlFjWnNE3XdLyc/lJ2Cl3phdxrgh14h
-	t494PposEx0oftadC7LHpf57oBhEQPmWoZOSY0OqoVkgJn5I4UWTKLg02rdjTqNEGp0EVOmgZfgpq
-	EPbqjuzGhaxoxZX+7qqMQr7h6PviN4JXezcezJ+MEBvuZjcsHaNQCTIaDwF+x+Slo9+RId0vrAthr
-	o5SfKjzQ==;
-Received: from localhost ([127.0.0.1])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1vAsg3-000Jl4-2s;
-	Mon, 20 Oct 2025 18:24:07 +0200
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	willemb@google.com,
-	sdf@fomichev.me,
-	john.fastabend@gmail.com,
-	martin.lau@kernel.org,
-	jordan@jrife.io,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	dw@davidwei.uk,
-	toke@redhat.com,
-	yangzhenze@bytedance.com,
-	wangdongdong.6@bytedance.com
-Subject: [PATCH net-next v3 10/15] xsk: Proxy pool management for mapped queues
-Date: Mon, 20 Oct 2025 18:23:50 +0200
-Message-ID: <20251020162355.136118-11-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251020162355.136118-1-daniel@iogearbox.net>
-References: <20251020162355.136118-1-daniel@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yOKa8aiK"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4712c6d9495so1238825e9.2
+        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 09:31:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1760977862; x=1761582662; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AgGhFAo2eru4JFVMxvySKBBUict2gGij38PNLAiiQLQ=;
+        b=yOKa8aiKBvjk/2NndJ4JVxY7S0In/TeNa/BY8SF1ZovlM17amkmLkGwvItkCBh7ESt
+         z4eR19hk56D8Jw68w+xrEThCjlNsdAvR4nZyf1tKV3dfftJ9fBh59Em6GPBRJayoXa/L
+         7h503RIGbTTDu/XQXdXOe57brxbSLwnKphBBbhmryL7eO6IN9vMc1aLNPIF4DmkPBDZ7
+         00tjrmIvpKihFk/Wcg1KcV7CLlYnicMGajWxHUu1bMX02iIRQ5rHpzxkDMzbuNVhyW2j
+         TGWxoWMBDHk16LfkPRELxTriAJStttc3dY1R4ZAlmQ6BQf/d5kqCo4EO+bypvYn62VaM
+         kfsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760977862; x=1761582662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AgGhFAo2eru4JFVMxvySKBBUict2gGij38PNLAiiQLQ=;
+        b=ZQOPHNDOnzRY+cRfjt+1JDb7YaD6T7q7hnNO6aAaEqj8YwBKYpnABI4gchVilUGwmw
+         dJGd9qLoWJwhphn64V+F3yytXAfx9Jf8gvgMAfc9VTf+DDYs6bi8Gfl9/o+Y/VpB4Tdp
+         caECFtT/nUd+UdWkzDQHkjA4KSKAv5bCKQ+IAY6Z3yn4HDRg0yNXzNbpxA0qeub3pXCt
+         GWvKgSAyMHWqVNr664r3helOSJ7t2RCAoZYwVaNytehiyBM5f9HNQUcF64YT+yMJ3taR
+         gCnYeoA1G3Oi2iogwd9Kzymc9AaGraPyjNu3Lo2go+zBShoynwChCtu/xS3T/SUHwYjp
+         vFDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUrAZHsL6aCRUi/rA6J1Vrm2NQNWIEkdGbANpBsnldMZWWePbjx1kYz/Wtc7gX024PYWX2q1AI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz06AFLZU+cwfnM8+25hI4FzJyPsZ2gyMPCRzztrB3ywGa6MyaG
+	9s6kSC2E+0Vn2gDxVg88I6kJX6q36QDRDCbcA4+1Ceggp7H6nUUaidQB028pQvOelL8X/rJDp7D
+	NGjVa9jYSZu708DLaLuuIyJSaIJjn8EOdC5hjuaxP
+X-Gm-Gg: ASbGnct6R+cg6s9PQeo38BFG9t/q53jCEolQyTNJAUAvFLK8W4iBYBH4NShJshk4J64
+	qOy7CRTYercduH5VbThyqjuvtBnCH93RMlMFEishDMELECF/uah2u+art/beiZ0AFSaHkxYNK69
+	Q78jKjdIs0Ef9BnmeCaz+pYGF/p/PY/AhtnwrAn45s2z491W7EGeb3lTpswMror6b6JBgQKI/8a
+	IMbYfHI17FRM1WnsUF4hL2Q+6xqZlgNWwbTsdxQAhqDonn4DRhfaah/SIGYMqjd1BxD6YaU336y
+	VLaoDz1j9XoMPP+QM51ei571Ig==
+X-Google-Smtp-Source: AGHT+IEM/TOueMIS9qydvuvtchlFF0wK8cgOc/KXjEJfj7OOC9BHA3+7SvHKRHzkiADi+n6n5wTpWmB5bEJD1IPvStA=
+X-Received: by 2002:a05:600c:8b62:b0:45d:d97c:235e with SMTP id
+ 5b1f17b1804b1-47117876bcdmr95871475e9.12.1760977862456; Mon, 20 Oct 2025
+ 09:31:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.0.9/27798/Mon Oct 20 11:37:28 2025)
+References: <20251016040159.3534435-1-kuniyu@google.com> <20251016040159.3534435-2-kuniyu@google.com>
+ <CANn89iJnQErC8OLoTgnNxU8MURKANbiqXBYaUHsNaTO3m+P54Q@mail.gmail.com>
+ <f93076da-4df7-4e02-9d57-30e9b19b3608@wizmail.org> <CAAVpQUBD5nozg1azwi9tBHXVWgcXBSV+BXSgpt455Y+CweevYw@mail.gmail.com>
+ <80bb29a8-290c-449e-a38d-7d4e47ce882e@wizmail.org>
+In-Reply-To: <80bb29a8-290c-449e-a38d-7d4e47ce882e@wizmail.org>
+From: Yuchung Cheng <ycheng@google.com>
+Date: Mon, 20 Oct 2025 09:30:26 -0700
+X-Gm-Features: AS18NWDudlq-087ieqYbDOL44pGINaeRCWOwXxD-qtT1E7Qh6rGQr_9FQLQyXls
+Message-ID: <CAK6E8=d1GjRLVuB0zmydAepvnZs3M1w+2tCVwdhAzL6rtseJ1g@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 1/4] tcp: Make TFO client fallback behaviour consistent.
+To: Jeremy Harris <jgh@wizmail.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>, Neal Cardwell <ncardwell@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Similarly what we do for net_mp_{open,close}_rxq for mapped queues,
-proxy also the xsk_{reg,clear}_pool_at_qid via __netif_get_rx_queue_peer
-such that when a virtual netdev picked a mapped rxq, the request gets
-through to the real rxq in the physical netdev.
+On Sat, Oct 18, 2025 at 2:17=E2=80=AFPM Jeremy Harris <jgh@wizmail.org> wro=
+te:
+>
+> On 2025/10/18 9:56 PM, Kuniyuki Iwashima wrote:
+> >> In addition, a client doing this (SYN with cookie but no data) is gran=
+ting
+> >> permission for the server to respond with data on the SYN,ACK (before
+> >> 3rd-ACK).
+> >
+> > As I quoted in patch 2, the server should not respond as such
+> > for SYN without payload.
+> >
+> > https://datatracker.ietf.org/doc/html/rfc7413#section-3
+> > ---8<---
+> >     Performing TCP Fast Open:
+> >
+> >     1. The client sends a SYN with data and the cookie in the Fast Open
+> >        option.
+> >
+> >     2. The server validates the cookie:
+> > ...
+> >     3. If the server accepts the data in the SYN packet, it may send th=
+e
+> >        response data before the handshake finishes.
+> > ---8<---
+>
+> In language lawyer terms, that (item 3 above) is a permission.  It does
+> not restrict from doing other things.  In particular, there are no RFC 21=
+19
+> key words (MUST NOT, SHOULD etc).
+>
+>
+> I argue that once the server has validated a TFO cookie from the client,
+> it is safe to send data to the client; the connection is effectively open=
+.
 
-Change the function signatures for queue_id to unsigned int in order
-to pass the queue_id parameter into __netif_get_rx_queue_peer. The
-proxying is only relevant for queue_id < dev->real_num_rx_queues since
-right now its only supported for rxqs.
+Thanks for the patch. But indeed this was the intentional design (i.e.
+empty MSG_FASTOPEN call triggers server immediate accept and send
+before final ACK in 3WHS). It's allowing more application scenarios
+for TFO. Now some applications may have taken advantage of this design
+so this patch set may break them.
 
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Co-developed-by: David Wei <dw@davidwei.uk>
-Signed-off-by: David Wei <dw@davidwei.uk>
----
- include/net/xdp_sock_drv.h |  4 ++--
- net/xdp/xsk.c              | 33 ++++++++++++++++++++++++++++-----
- net/xdp/xsk.h              |  5 ++---
- 3 files changed, 32 insertions(+), 10 deletions(-)
+But the RFC could be more specific about this edge case so revising
+the RFC as an errata?
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 242e34f771cc..25c37fab00bc 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -29,7 +29,7 @@ bool xsk_tx_peek_desc(struct xsk_buff_pool *pool, struct xdp_desc *desc);
- u32 xsk_tx_peek_release_desc_batch(struct xsk_buff_pool *pool, u32 max);
- void xsk_tx_release(struct xsk_buff_pool *pool);
- struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
--					    u16 queue_id);
-+					    unsigned int queue_id);
- void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool);
- void xsk_set_tx_need_wakeup(struct xsk_buff_pool *pool);
- void xsk_clear_rx_need_wakeup(struct xsk_buff_pool *pool);
-@@ -296,7 +296,7 @@ static inline void xsk_tx_release(struct xsk_buff_pool *pool)
- }
- 
- static inline struct xsk_buff_pool *
--xsk_get_pool_from_qid(struct net_device *dev, u16 queue_id)
-+xsk_get_pool_from_qid(struct net_device *dev, unsigned int queue_id)
- {
- 	return NULL;
- }
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 985e0cac965d..9e55ea0f5fde 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -23,6 +23,8 @@
- #include <linux/netdevice.h>
- #include <linux/rculist.h>
- #include <linux/vmalloc.h>
-+
-+#include <net/netdev_queues.h>
- #include <net/xdp_sock_drv.h>
- #include <net/busy_poll.h>
- #include <net/netdev_lock.h>
-@@ -111,7 +113,7 @@ bool xsk_uses_need_wakeup(struct xsk_buff_pool *pool)
- EXPORT_SYMBOL(xsk_uses_need_wakeup);
- 
- struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
--					    u16 queue_id)
-+					    unsigned int queue_id)
- {
- 	if (queue_id < dev->real_num_rx_queues)
- 		return dev->_rx[queue_id].pool;
-@@ -122,12 +124,19 @@ struct xsk_buff_pool *xsk_get_pool_from_qid(struct net_device *dev,
- }
- EXPORT_SYMBOL(xsk_get_pool_from_qid);
- 
--void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
-+void xsk_clear_pool_at_qid(struct net_device *dev, unsigned int queue_id)
- {
-+	bool needs_unlock = false;
-+
-+	if (queue_id < dev->real_num_rx_queues)
-+		WARN_ON_ONCE(!netif_get_rx_queue_peer_locked(&dev, &queue_id,
-+							     &needs_unlock));
- 	if (queue_id < dev->num_rx_queues)
- 		dev->_rx[queue_id].pool = NULL;
- 	if (queue_id < dev->num_tx_queues)
- 		dev->_tx[queue_id].pool = NULL;
-+	if (needs_unlock)
-+		netdev_unlock(dev);
- }
- 
- /* The buffer pool is stored both in the _rx struct and the _tx struct as we do
-@@ -135,14 +144,26 @@ void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id)
-  * This might also change during run time.
-  */
- int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
--			u16 queue_id)
-+			unsigned int queue_id)
- {
-+	bool needs_unlock = false;
-+	int ret = 0;
-+
- 	if (queue_id >= max_t(unsigned int,
- 			      dev->real_num_rx_queues,
- 			      dev->real_num_tx_queues))
- 		return -EINVAL;
- 	if (xsk_get_pool_from_qid(dev, queue_id))
- 		return -EBUSY;
-+	if (queue_id < dev->real_num_rx_queues) {
-+		if (!netif_get_rx_queue_peer_locked(&dev, &queue_id,
-+						    &needs_unlock))
-+			return -EBUSY;
-+	}
-+	if (xsk_get_pool_from_qid(dev, queue_id)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
- 
- 	pool->netdev = dev;
- 	pool->queue_id = queue_id;
-@@ -151,8 +172,10 @@ int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
- 		dev->_rx[queue_id].pool = pool;
- 	if (queue_id < dev->real_num_tx_queues)
- 		dev->_tx[queue_id].pool = pool;
--
--	return 0;
-+out:
-+	if (needs_unlock)
-+		netdev_unlock(dev);
-+	return ret;
- }
- 
- static int __xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff_xsk *xskb, u32 len,
-diff --git a/net/xdp/xsk.h b/net/xdp/xsk.h
-index a4bc4749faac..54d9a7736fd2 100644
---- a/net/xdp/xsk.h
-+++ b/net/xdp/xsk.h
-@@ -41,8 +41,7 @@ static inline struct xdp_sock *xdp_sk(struct sock *sk)
- 
- void xsk_map_try_sock_delete(struct xsk_map *map, struct xdp_sock *xs,
- 			     struct xdp_sock __rcu **map_entry);
--void xsk_clear_pool_at_qid(struct net_device *dev, u16 queue_id);
-+void xsk_clear_pool_at_qid(struct net_device *dev, unsigned int queue_id);
- int xsk_reg_pool_at_qid(struct net_device *dev, struct xsk_buff_pool *pool,
--			u16 queue_id);
--
-+			unsigned int queue_id);
- #endif /* XSK_H_ */
--- 
-2.43.0
-
+>
+> For traditional, non-TFO, connections the wait for the 3rd-ACK is require=
+d
+> to be certain that the IP of the alleged client, given in the SYN packet,
+> was not spoofed by a 3rd-party.  For TFO that certainty is given by the
+> cookie; the server can conclude that it has previously conversed with
+> the source IP of the SYN.
+>
+>
+> Alternately, one could read "the data" in that item 3 as including "zero =
+length data";
+> the important part being accepting it.
+> --
+> Cheers,
+>    Jeremy
