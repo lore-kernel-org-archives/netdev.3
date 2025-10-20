@@ -1,64 +1,64 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BCB2F83DE
-	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 12:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B00314A74
+	for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 12:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760965061; cv=none; b=El5zbC9TS8rps0+Hvk8jWY8we43gzQtf/nOT693g0ltYsgnk4FWfaeoYqtFJtIzdYE8mteSuk3R2a8iBzOPVrVxkcZPo7R+Ak6LJ5dFyAni9HIngdE9w+dbGFKG+ggmRET9mIc66Kl3F0MQJ7oBH7Nu2/Ybaavhkz/uB6ZTr4k0=
+	t=1760965067; cv=none; b=jBpHtzl3fYh4zBWWKeFEZ+NbHWXu1yMUMYS4oWC09mRU0flVN8XbnMYu6isdPSmNPhDFGwB4FRiZflbU5jbMc++8tm/p37u1SqMnNZ2zn4Kk6E/VasiRetMDojuQlp21DzXfMmpk4B0u6A4pFRwcWffRtp0nsZPKt/NeTiUYWrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760965061; c=relaxed/simple;
-	bh=7sUddBToXRDuVpOAdbh5+EOipFsXxszIriq7XYYoywE=;
+	s=arc-20240116; t=1760965067; c=relaxed/simple;
+	bh=G6FcO278eXFT1tgC313pIvONzjhfMvpa/sUOSVlAXKo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p3OB6ojDUPLajREjE5DbrLT4+ho9zT2PMgIBQIFu4BSxOgQyz5k8qVbK/ewbghGhTbpYYe5VesFoE/j1D/IBF3UR5QrEON2m8yAOZ+c/OlG/YWB8dlGlGNHfb4MNqT9t8ciS1Oz0pZ8+e9KGN/qD9jHPWpqoLmmhifYCYYX0FRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fnrN3EMb; arc=none smtp.client-ip=209.85.128.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=V40wNEAUPRHNTwiJOYb1Gl31yz7LJlH5r3vPln36G32RGGwteOr9J0INqABPqu/NRMrY8NqC4oMqSRGAbTMSG9IiShYIVl26Pb91ZlDpU1ip21HaAA7KRj6PVt7+qF8cQunlXOyVwCb9l5C5y8KH/jWcvnc6kUphbwjCFD2d00c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KdfbC0C2; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fnrN3EMb"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-46e6ba26c50so28203565e9.2
-        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 05:57:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KdfbC0C2"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47100eae3e5so40199665e9.1
+        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 05:57:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1760965058; x=1761569858; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1760965064; x=1761569864; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eXAZo9QKBPHm6dHDU8Xx+AOp+3XH61eqHfx+Vq3xM9I=;
-        b=fnrN3EMb2lDaS/rRAMvI/yge+4d8oOuzal1q+ZhATLzbDHuKSQdimSiTIMhuchctkW
-         HHtj/eMESZtru312iCNA/aAGmHIR+4fAOkmOkjNzw5BB0Q3plAEnkueGBigUGAynE/Iu
-         yisJ40wKDDsKf6jSnxdacvamnCKKf8W656mx+JAgOFWI2S9+O6A2moRd9T0z3KqvEDEl
-         BizIyViy42SqZ3EAnWZR7LAp7vaW6g5bX2sJ+B2uUScAgBlbOSq5NRAJMzyOmyat2oad
-         bzJ/KWYNaKCy7/3ijNQ/UosAEmQoIC5OIoYta/URzPW7c0SwVTd8AXxfLlZaSZhc43qt
-         P40w==
+        bh=9ao5LTkpyunEEEJuwR6nh8mnIP8EeLv+acAjQyBGn0U=;
+        b=KdfbC0C2Sce4zHSEmbnnbyWcAGIkJoui8k91GIIXvf9QEwmDeqkzykh3ylXyuwxxlq
+         DP7IKSnC2RpA88JxKrbqc4uA8FF8cFtW9mWngA+dPoriONy1wDUASCsvbzDwxN9TrYZk
+         cbW+dm+U0zWVY7zu5W32u+oVuisiiwvIx304AfzRHVMKHmxP9G12yGdUHCAUMRFsyXHQ
+         5rhidWP7CTHW844P8sgRiljMMBMKLS7MaN/K//oocxYInqH0oWzndPdCQMpk+pdmJ0/N
+         vyx+Xpn8isd6yRxsTOiZVU5s+d8msOYEEWtAf8KAM2GGXi7eff6mhjJJd7UAfWpbjU3E
+         qDeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760965058; x=1761569858;
+        d=1e100.net; s=20230601; t=1760965064; x=1761569864;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eXAZo9QKBPHm6dHDU8Xx+AOp+3XH61eqHfx+Vq3xM9I=;
-        b=LgOey1C2qREfZHl38Ft+y1095KgfCeYqMwEgIGm4tGJqfKYzrw5bGGYlOSWf2zNmne
-         PaOJFiNe4LhdHiP0PsocYci/UISTr33V6Jr7lFUNkSNZxt2hTYuRv5fG84qrEzPC3N7F
-         pug+3QCAybszGuav5Z2+ijrL4w1aEY6aPWD5vBuZ7bLPEPGJJ4Gu2y8/xTDSgDTpUxEf
-         pjYz3i6nNsOC4/LAaFIfbXdVA6w1OAPJQE5RtVIgmVYdRFYYbWsWoL7FPjX2jIfpZoX1
-         areS1mjr2dBo7m/jgNkUi+YH5iIgEBcZJOKYYUbPkQHzz1rzPbcvFj8EnEssT0SIJRiQ
-         xTFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXlbLOgc+ufdIPOXcut5nocIS1rFPC944d0lfd25tpSM1dRPSm57nW+eF78Z2MCwUHn9XXr49w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWLrBsS9Bybw1AUhNXCNgZqroFelFtpJTm/+tYh/Uy1nmbN7yx
-	DZS+40plHHUMVYikUwrKRxMMHg8NK7Qpk1Lxgbo4KIc5fvuBnNkO1YEQQr2/6R8FZb4=
-X-Gm-Gg: ASbGncv+HxMnj1uFXkSYye3TLBtxoThy0yUARYN2Wo1MvTbuVnDZ5NRxSw6fxtRJuWH
-	0vGWTeGWvNJDEp1omtI+50TDcUNWoSYiSElGjGnVivMLG3V6YRHqzkMhHFVpP/6c7l5a2tzcNDO
-	jZUBix97xNWEyeDxAuLh5RDz4OvAmAq1e6K+eMhk/Hl/O6HHwZUcUpsfz4Sk24l8z50gYGVgCKm
-	JJ/K2HHe8/OJefPgPrvMOtIs02Ish8aXufBLQ1/zu1C52m4KuGK2gbW76M/0l0s8aa2t7S+paWY
-	vNI2I/CKcq7XUlHkR36yFlQzwbBsDoeHnTxm81SYnrONOIn2cKJ5Ca8htNyJVLxZx+P4OZJGLqx
-	uIAdeRyPnQgbw0Ni57EUe41BEba5mYLl5ZkuqcWdSo3v6cxsyDfoXelT7JqoAQk3ZFOQVOEHDlJ
-	coVHNtrYfMHk7JstD1xKVa8FHpuw==
-X-Google-Smtp-Source: AGHT+IHM395rDiD5CS+0467HtGNOVSysUdUFMEFD/wDZ4ikUr6eXNC1u5lSYEQ5rloxVyaeKMi9hbA==
-X-Received: by 2002:a05:600c:5287:b0:471:7a:7922 with SMTP id 5b1f17b1804b1-47117874a26mr111763615e9.6.1760965058269;
-        Mon, 20 Oct 2025 05:57:38 -0700 (PDT)
+        bh=9ao5LTkpyunEEEJuwR6nh8mnIP8EeLv+acAjQyBGn0U=;
+        b=SBA7gce5NwF9r8f4ZvSrcfg9Lv4uwKL1P4e++JOdYHctbRJy5acwanceUt4a6ySPtx
+         udYggnQw+q6YZKKUsyPvTh862SR56IbdsezL0lQnP+9XIZx5BGK1o+ElwEXkTFwRR2qx
+         Wc9raXK6d/kScWCal193Z38sNeMQRRqoTA7ofMWeJUg1OrlPv0M/U0d6e0hHg34XzHl1
+         tj5FofA7uRgBep/ptcHEAkGhYEOb+XVFqxN5DE3FGs7jVpiC6ifkt7utYSzey0s2fMu1
+         /5ZXF/laxR1Udf5tVWQrkiY32NyHR1RPOle65/GNw5JZIiZalM40JGnrebLAEAh1fwY9
+         Z0Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlEpjI1V/smqc8XfdL7CTmXl8xfSORzuXQqL0ZcZdq4kqH+suG8f0YVQ3vlTeFQf2me8guZPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgtKOQk3Rw21jqlpBv5azMxj/pwxQpkvt3F6yjAofx5h4x6tYp
+	rQsxzb71MoYRw2C6CejcIQqg7j9VGGqgoeb0CCnyPnMz+yxR6vGHXYw6+8O8UKbPxOs=
+X-Gm-Gg: ASbGnctt36abUis5+/6WICaDPRAbG7ybfODB+ARv3JOpcygDPm06XUMBKx4YGeLKiPq
+	BC5IRTCMCE9F+bv4RGMNGvWYw0mbOpUrQ9ab6VuiCrB6xJs9/wJJNsUCrrN1GndXvr3iKzvZaqn
+	Cb+F+WrxK1D9a+bAur3gbFnAs0dLg7Dw7Hj9024RJe08w9WaJR245miPBlRYxQDttBQS21nyV1t
+	LitA9ClWKtjstxQGrM3rBKDYvyZH7ZsQthwP6pInyny6siZeh+xUyBMuf/1I6Qs1MY/Dtm7UrUE
+	DxpblGQJJxWWA1e4f3qEZHEeErihkaBDgAwhnOVsqmc2grPg+BkctP7xh6tb2Da/3knSS5nP6A/
+	qu1LCg5Jj8S0vuzT+U/WruyVtKQtxJLxDPpc6WzmVCSc49bz9UC+9CyLP0N+493oz+f0yh1K3HM
+	xCDNey5c82G/GMO5Q=
+X-Google-Smtp-Source: AGHT+IHAzHSoaXW9FTqisoxwWWJ86QeGPH0Qn2VpgfeKv1K2ScSIldv6hbmEjlnUGO1KIv2vK/3+YA==
+X-Received: by 2002:a05:600c:3e07:b0:46e:450d:e037 with SMTP id 5b1f17b1804b1-4711786c560mr102540425e9.5.1760965063585;
+        Mon, 20 Oct 2025 05:57:43 -0700 (PDT)
 Received: from localhost ([41.210.143.179])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427ea5a0e9csm15431843f8f.5.2025.10.20.05.57.37
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-471556e17afsm140881935e9.17.2025.10.20.05.57.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 05:57:37 -0700 (PDT)
-Date: Mon, 20 Oct 2025 15:57:33 +0300
+        Mon, 20 Oct 2025 05:57:43 -0700 (PDT)
+Date: Mon, 20 Oct 2025 15:33:17 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
 To: Lizhi Xu <lizhi.xu@windriver.com>
 Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
@@ -69,7 +69,7 @@ Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
 	syzkaller-bugs@googlegroups.com
 Subject: Re: [PATCH V2] netrom: Prevent race conditions between multiple add
  route
-Message-ID: <aPYxvdLFjjduK28o@stanley.mountain>
+Message-ID: <aPYsDVBMUQ0X_ulN@stanley.mountain>
 References: <aPYKgFTIroUhJAJA@stanley.mountain>
  <20251020110244.3200311-1-lizhi.xu@windriver.com>
  <aPYqRJXGhCNws4d3@stanley.mountain>
@@ -84,11 +84,38 @@ Content-Disposition: inline
 In-Reply-To: <aPYqRJXGhCNws4d3@stanley.mountain>
 
 On Mon, Oct 20, 2025 at 03:25:40PM +0300, Dan Carpenter wrote:
+> On Mon, Oct 20, 2025 at 07:02:44PM +0800, Lizhi Xu wrote:
+> > The root cause of the problem is that multiple different tasks initiate
+> > NETROM_NODE commands to add new routes, there is no lock between them to
+> > protect the same nr_neigh.
+> > Task0 may add the nr_neigh.refcount value of 1 on Task1 to routes[2].
+> > 
+> > When Task2 executes nr_neigh_put(nr_node->routes[2].neighbour), it will
+> > release the neighbour because its refcount value is 1.
+> > 
+> > In this case, the following situation causes a UAF:
+> > 
+> > Task0					Task1						Task2
+> > =====					=====						=====
+> > nr_add_node()
+> > nr_neigh_get_dev()			nr_add_node()
+> > 					nr_node_lock()
+> > 					nr_node->routes[2].neighbour->count--
+> > 					nr_neigh_put(nr_node->routes[2].neighbour);
+> > 					nr_remove_neigh(nr_node->routes[2].neighbour)
+> > 					nr_node_unlock()
+> > nr_node_lock()
+> > nr_node->routes[2].neighbour = nr_neigh
+> > nr_neigh_hold(nr_neigh);								nr_add_node()
+> > 											nr_neigh_put()
+> > 
+> > The solution to the problem is to use a lock to synchronize each add a route
+> > to node.
+> 
+> This chart is still not right.  Let me add line numbers to your chart:
+> 
 > netrom/nr_route.c
 >    214          nr_node_lock(nr_node);
-
-I guess nr_node is different for each thread?
-
 >    215  
 >    216          if (quality != 0)
 >    217                  strscpy(nr_node->mnemonic, mnemonic);
@@ -97,61 +124,17 @@ I guess nr_node is different for each thread?
 >    220                  if (nr_node->routes[i].neighbour == nr_neigh) {
 >    221                          nr_node->routes[i].quality   = quality;
 >    222                          nr_node->routes[i].obs_count = obs_count;
+
+Should we call nr_neigh->count++ if we found it?  I guess I don't
+really understand what nr_neigh->count is counting...  It would be
+really nice if someone added some comments explaining how the ref
+counting worked.
+
 >    223                          found = 1;
 >    224                          break;
 >    225                  }
 >    226          }
->    227  
->    228          if (!found) {
->    229                  /* We have space at the bottom, slot it in */
->    230                  if (nr_node->count < 3) {
->    231                          nr_node->routes[2] = nr_node->routes[1];
->    232                          nr_node->routes[1] = nr_node->routes[0];
->    233  
->    234                          nr_node->routes[0].quality   = quality;
->    235                          nr_node->routes[0].obs_count = obs_count;
->    236                          nr_node->routes[0].neighbour = nr_neigh;
->    237  
->    238                          nr_node->which++;
->    239                          nr_node->count++;
->    240                          nr_neigh_hold(nr_neigh);
->    241                          nr_neigh->count++;
->    242                  } else {
->    243                          /* It must be better than the worst */
->    244                          if (quality > nr_node->routes[2].quality) {
->    245                                  nr_node->routes[2].neighbour->count--;
->    246                                  nr_neigh_put(nr_node->routes[2].neighbour);
->    247  
->    248                                  if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
->    249                                          nr_remove_neigh(nr_node->routes[2].neighbour);
-
-Does neighbour->count means how many nr_node pointers have it in ->routes[]?
-I wish this code had comments.
-KTDOO: add comments explaining all the counters in netrom/nr_route.c
-
->    250  
->    251                                  nr_node->routes[2].quality   = quality;
->    252                                  nr_node->routes[2].obs_count = obs_count;
->    253                                  nr_node->routes[2].neighbour = nr_neigh;
->    254  
->    255                                  nr_neigh_hold(nr_neigh);
->    256                                  nr_neigh->count++;
-
-Could we just add some locking to this if statement only?  I had thought
-that nr_node_lock() serialized it but now I think maybe not?  Or maybe we
-could increment the counters before assigning it?
-
-			nr_neigh->count++;
-			nr_neigh_hold(nr_neigh);
-			nr_node->routes[2].neighbour = nr_neigh;
-
-I'm not an expert in concerency.  Does calling nr_neigh_hold() mean th
-that the nr_neigh->count++ will happen before the assignment?
-
-
->    257                          }
->    258                  }
->    259          }
 
 regards,
 dan carpenter
+
