@@ -1,312 +1,109 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C912B18DB1F;
-	Tue, 21 Oct 2025 11:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEDC244660;
+	Tue, 21 Oct 2025 11:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761045047; cv=none; b=Aatz2uK0QnB4530BRgCgEMCnE64uZ6rzDrkHTJsBPGojDou4pe90SxGJpK07nXoHUYFXQfnmXhy5g6BnUEDZUGi4kfHR7gJsCrKU48QSjW3Txffj+85sKKpHw3jyTHs7T5IPY3eUQQsVDDvcNXbOucNJHePSdk2ZZCrclVwESWc=
+	t=1761045399; cv=none; b=oVYps80mFeEWIRSF/hRCbPhx9RZaa0kSI2veRqo3cvAYAiXfk8/ZYCw7zeYYf2RQIEbviUZMyiNYdlne9i3g8X6b9J9GToowTjO0PHypGnN6wrPMCBFF1jNMtLXb4psZwalHIStYTCd20PM6cwmUFsZUoyQNbR8JpeF8GN0cdoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761045047; c=relaxed/simple;
-	bh=UfJq61DKagR7Y4eoi5Qz7VbUBewMbUFUmWr3g/wQGJk=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=o+pUHHisRZY4Qf9i4q4KeRT/ukf90TXmkggt1BejR3Zb4CoIlxLY+1j4mQs6HvPkP/eTHrZ9yYePSgLyx+8obvfYu7jLwVowBuKuODPbwJxhw+Ipm6qh9/2tVjrxDedvMx7dJ0zFC+xnVkg7Fh2hBNivUj1hZ3SgXvfvLr7hA+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=VgP8tDro; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="VgP8tDro"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WJcn+jtv3zfpLZOllZgoSrDx/sfvBonvFh9zG6PUGO4=;
-	b=VgP8tDro55lLQXyLMoUE3J6g+yL2mTit4BOaPuph9f1ASIuBnobiuEP6AwDJ13kU+rvDljtPI
-	gDqDNhk1f55yhLqCHQ2NAVfYLD6QzahpHw6bcBiBsQ9HNANGwgwRwyqiTKnm9v9qC1d+bYP50RJ
-	pLxUtilADuRbZLQcoabPXdY=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4crV1R5KJBzcb23;
-	Tue, 21 Oct 2025 19:09:31 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 27D82140156;
-	Tue, 21 Oct 2025 19:10:41 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 21 Oct 2025 19:10:40 +0800
-Message-ID: <c5c44697-b6d4-4e6d-9e4f-8e5a57504232@huawei.com>
-Date: Tue, 21 Oct 2025 19:10:39 +0800
+	s=arc-20240116; t=1761045399; c=relaxed/simple;
+	bh=f/y09RX8ktNxWDd867pIvScPZ1CCnj05ryDgms9+Zio=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Iy0Z4YRTryBWvjaeyLHRlkpw++2CC2yuKgMNDpAkUdOZHRHWKK102MiZxlkpxkrrpP458vghaP/ZGsw04Kiehk/5ebdvtQvAOH0rmwHbcJFTMUv89O1zXOewrtgip5EySajSijxNzHcaaS8CkUfvZQW/Zd07ZJ7qnqVMxS4yeow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98.2)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1vBALq-0000000017R-06Kc;
+	Tue, 21 Oct 2025 11:16:26 +0000
+Date: Tue, 21 Oct 2025 12:16:19 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Andreas Schirm <andreas.schirm@siemens.com>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Peter Christen <peter.christen@siemens.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next v5 0/7] net: dsa: lantiq_gswip: use regmap for
+ register access
+Message-ID: <cover.1761045000.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <linux-renesas-soc@vger.kernel.org>, Richard
- Cochran <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>, <netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next v3 6/6] net: hns3: add hwtstamp_get/hwtstamp_set
- ops
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Jian Shen
-	<shenjian15@huawei.com>, Salil Mehta <salil.mehta@huawei.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya
-	<gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, Bharat Bhushan
-	<bbhushan2@marvell.com>, Tariq Toukan <tariqt@nvidia.com>, Brett Creeley
-	<brett.creeley@amd.com>, =?UTF-8?Q?Niklas_S=C3=B6derlund?=
-	<niklas.soderlund@ragnatech.se>, Paul Barker <paul@pbarker.dev>, Yoshihiro
- Shimoda <yoshihiro.shimoda.uh@renesas.com>
-References: <20251021094751.900558-1-vadim.fedorenko@linux.dev>
- <20251021094751.900558-7-vadim.fedorenko@linux.dev>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20251021094751.900558-7-vadim.fedorenko@linux.dev>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+This series refactors the lantiq_gswip driver to utilize the regmap API
+for register access, replacing the previous approach of open-coding
+register operations.
 
-on 2025/10/21 17:47, Vadim Fedorenko wrote:
-> And .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks to HNS3 framework
-> to support HW timestamp configuration via netlink and adopt hns3pf to
-> use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
->
-> Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
->
-> v1 -> v2:
-> - actually assign ndo_tstamp callbacks
->
-> Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-> ---
+Using regmap paves the way for supporting different busses to access the
+switch registers, for example it makes it easier to use an MDIO-based
+method required to access the registers of the MaxLinear GSW1xx series
+of dedicated switch ICs.
 
-This shuould like this:
+Apart from that, the use of regmap improves readability and
+maintainability of the driver by standardizing register access.
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
+When ever possible changes were made using Coccinelle semantic patches,
+sometimes adjusting white space and adding line breaks when needed.
+The remaining changes which were not done using semantic patches are
+small and should be easy to review and verify.
 
+The whole series has been
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 ---
-v1 -> v2:
-- actually assign ndo_tstamp callbacks
----
+Changes since v4:
+ * use REGMAP_UPSHIFT(2) macro instead of -2 value for reg_shift
 
->   drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  5 +++
->   .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 31 ++++++++++++++++++
->   .../hisilicon/hns3/hns3pf/hclge_main.c        | 13 +++-----
->   .../hisilicon/hns3/hns3pf/hclge_ptp.c         | 32 +++++++++++--------
->   .../hisilicon/hns3/hns3pf/hclge_ptp.h         |  9 ++++--
->   5 files changed, 64 insertions(+), 26 deletions(-)
->
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> index 3b548f71fa8a..d7c3df1958f3 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-> @@ -804,6 +804,11 @@ struct hnae3_ae_ops {
->   	int (*dbg_get_read_func)(struct hnae3_handle *handle,
->   				 enum hnae3_dbg_cmd cmd,
->   				 read_func *func);
-> +	int (*hwtstamp_get)(struct hnae3_handle *handle,
-> +			    struct kernel_hwtstamp_config *config);
-> +	int (*hwtstamp_set)(struct hnae3_handle *handle,
-> +			    struct kernel_hwtstamp_config *config,
-> +			    struct netlink_ext_ack *extack);
->   };
->   
->   struct hnae3_dcb_ops {
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> index bfa5568baa92..7a0654e2d3dd 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-> @@ -2419,6 +2419,35 @@ static int hns3_nic_do_ioctl(struct net_device *netdev,
->   	return h->ae_algo->ops->do_ioctl(h, ifr, cmd);
->   }
->   
-> +static int hns3_nic_hwtstamp_get(struct net_device *netdev,
-> +				 struct kernel_hwtstamp_config *config)
-> +{
-> +	struct hnae3_handle *h = hns3_get_handle(netdev);
-> +
-> +	if (!netif_running(netdev))
-> +		return -EINVAL;
-> +
-> +	if (!h->ae_algo->ops->hwtstamp_get)
-> +		return -EOPNOTSUPP;
-> +
-> +	return h->ae_algo->ops->hwtstamp_get(h, config);
-> +}
-> +
-> +static int hns3_nic_hwtstamp_set(struct net_device *netdev,
-> +				 struct kernel_hwtstamp_config *config,
-> +				 struct netlink_ext_ack *extack)
-> +{
-> +	struct hnae3_handle *h = hns3_get_handle(netdev);
-> +
-> +	if (!netif_running(netdev))
-> +		return -EINVAL;
-> +
-> +	if (!h->ae_algo->ops->hwtstamp_set)
-> +		return -EOPNOTSUPP;
-> +
-> +	return h->ae_algo->ops->hwtstamp_set(h, config, extack);
-> +}
-> +
->   static int hns3_nic_set_features(struct net_device *netdev,
->   				 netdev_features_t features)
->   {
-> @@ -3048,6 +3077,8 @@ static const struct net_device_ops hns3_nic_netdev_ops = {
->   	.ndo_set_vf_rate	= hns3_nic_set_vf_rate,
->   	.ndo_set_vf_mac		= hns3_nic_set_vf_mac,
->   	.ndo_select_queue	= hns3_nic_select_queue,
-> +	.ndo_hwtstamp_get	= hns3_nic_hwtstamp_get,
-> +	.ndo_hwtstamp_set	= hns3_nic_hwtstamp_set,
->   };
->   
->   bool hns3_is_phys_func(struct pci_dev *pdev)
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-> index 9d34d28ff168..81d3bdc098e6 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-> @@ -9445,15 +9445,8 @@ static int hclge_do_ioctl(struct hnae3_handle *handle, struct ifreq *ifr,
->   	struct hclge_vport *vport = hclge_get_vport(handle);
->   	struct hclge_dev *hdev = vport->back;
->   
-> -	switch (cmd) {
-> -	case SIOCGHWTSTAMP:
-> -		return hclge_ptp_get_cfg(hdev, ifr);
-> -	case SIOCSHWTSTAMP:
-> -		return hclge_ptp_set_cfg(hdev, ifr);
-> -	default:
-> -		if (!hdev->hw.mac.phydev)
-> -			return hclge_mii_ioctl(hdev, ifr, cmd);
-> -	}
-> +	if (!hdev->hw.mac.phydev)
-> +		return hclge_mii_ioctl(hdev, ifr, cmd);
->   
->   	return phy_mii_ioctl(hdev->hw.mac.phydev, ifr, cmd);
->   }
-> @@ -12901,6 +12894,8 @@ static const struct hnae3_ae_ops hclge_ops = {
->   	.get_dscp_prio = hclge_get_dscp_prio,
->   	.get_wol = hclge_get_wol,
->   	.set_wol = hclge_set_wol,
-> +	.hwtstamp_get = hclge_ptp_get_cfg,
-> +	.hwtstamp_set = hclge_ptp_set_cfg,
->   };
->   
->   static struct hnae3_ae_algo ae_algo = {
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-> index 4bd52eab3914..0081c5281455 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-> @@ -204,13 +204,17 @@ static int hclge_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
->   	return 0;
->   }
->   
-> -int hclge_ptp_get_cfg(struct hclge_dev *hdev, struct ifreq *ifr)
-> +int hclge_ptp_get_cfg(struct hnae3_handle *handle,
-> +		      struct kernel_hwtstamp_config *config)
->   {
-> +	struct hclge_vport *vport = hclge_get_vport(handle);
-> +	struct hclge_dev *hdev = vport->back;
-> +
->   	if (!test_bit(HCLGE_STATE_PTP_EN, &hdev->state))
->   		return -EOPNOTSUPP;
->   
-> -	return copy_to_user(ifr->ifr_data, &hdev->ptp->ts_cfg,
-> -		sizeof(struct hwtstamp_config)) ? -EFAULT : 0;
-> +	*config = hdev->ptp->ts_cfg;
-> +	return 0;
->   }
->   
->   static int hclge_ptp_int_en(struct hclge_dev *hdev, bool en)
-> @@ -269,7 +273,7 @@ static int hclge_ptp_cfg(struct hclge_dev *hdev, u32 cfg)
->   	return ret;
->   }
->   
-> -static int hclge_ptp_set_tx_mode(struct hwtstamp_config *cfg,
-> +static int hclge_ptp_set_tx_mode(struct kernel_hwtstamp_config *cfg,
->   				 unsigned long *flags, u32 *ptp_cfg)
->   {
->   	switch (cfg->tx_type) {
-> @@ -287,7 +291,7 @@ static int hclge_ptp_set_tx_mode(struct hwtstamp_config *cfg,
->   	return 0;
->   }
->   
-> -static int hclge_ptp_set_rx_mode(struct hwtstamp_config *cfg,
-> +static int hclge_ptp_set_rx_mode(struct kernel_hwtstamp_config *cfg,
->   				 unsigned long *flags, u32 *ptp_cfg)
->   {
->   	int rx_filter = cfg->rx_filter;
-> @@ -332,7 +336,7 @@ static int hclge_ptp_set_rx_mode(struct hwtstamp_config *cfg,
->   }
->   
->   static int hclge_ptp_set_ts_mode(struct hclge_dev *hdev,
-> -				 struct hwtstamp_config *cfg)
-> +				 struct kernel_hwtstamp_config *cfg)
->   {
->   	unsigned long flags = hdev->ptp->flags;
->   	u32 ptp_cfg = 0;
-> @@ -359,9 +363,12 @@ static int hclge_ptp_set_ts_mode(struct hclge_dev *hdev,
->   	return 0;
->   }
->   
-> -int hclge_ptp_set_cfg(struct hclge_dev *hdev, struct ifreq *ifr)
-> +int hclge_ptp_set_cfg(struct hnae3_handle *handle,
-> +		      struct kernel_hwtstamp_config *config,
-> +		      struct netlink_ext_ack *extack)
->   {
-> -	struct hwtstamp_config cfg;
-> +	struct hclge_vport *vport = hclge_get_vport(handle);
-> +	struct hclge_dev *hdev = vport->back;
->   	int ret;
->   
->   	if (!test_bit(HCLGE_STATE_PTP_EN, &hdev->state)) {
-> @@ -369,16 +376,13 @@ int hclge_ptp_set_cfg(struct hclge_dev *hdev, struct ifreq *ifr)
->   		return -EOPNOTSUPP;
->   	}
->   
-> -	if (copy_from_user(&cfg, ifr->ifr_data, sizeof(cfg)))
-> -		return -EFAULT;
-> -
-> -	ret = hclge_ptp_set_ts_mode(hdev, &cfg);
-> +	ret = hclge_ptp_set_ts_mode(hdev, config);
->   	if (ret)
->   		return ret;
->   
-> -	hdev->ptp->ts_cfg = cfg;
-> +	hdev->ptp->ts_cfg = *config;
->   
-> -	return copy_to_user(ifr->ifr_data, &cfg, sizeof(cfg)) ? -EFAULT : 0;
-> +	return 0;
->   }
->   
->   int hclge_ptp_get_ts_info(struct hnae3_handle *handle,
-> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.h
-> index 61faddcc3dd0..0162fa5ac146 100644
-> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.h
-> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.h
-> @@ -62,7 +62,7 @@ struct hclge_ptp {
->   	unsigned long flags;
->   	void __iomem *io_base;
->   	struct ptp_clock_info info;
-> -	struct hwtstamp_config ts_cfg;
-> +	struct kernel_hwtstamp_config ts_cfg;
->   	spinlock_t lock;	/* protects ptp registers */
->   	u32 ptp_cfg;
->   	u32 last_tx_seqid;
-> @@ -133,8 +133,11 @@ bool hclge_ptp_set_tx_info(struct hnae3_handle *handle, struct sk_buff *skb);
->   void hclge_ptp_clean_tx_hwts(struct hclge_dev *hdev);
->   void hclge_ptp_get_rx_hwts(struct hnae3_handle *handle, struct sk_buff *skb,
->   			   u32 nsec, u32 sec);
-> -int hclge_ptp_get_cfg(struct hclge_dev *hdev, struct ifreq *ifr);
-> -int hclge_ptp_set_cfg(struct hclge_dev *hdev, struct ifreq *ifr);
-> +int hclge_ptp_get_cfg(struct hnae3_handle *handle,
-> +		      struct kernel_hwtstamp_config *config);
-> +int hclge_ptp_set_cfg(struct hnae3_handle *handle,
-> +		      struct kernel_hwtstamp_config *config,
-> +		      struct netlink_ext_ack *extack);
->   int hclge_ptp_init(struct hclge_dev *hdev);
->   void hclge_ptp_uninit(struct hclge_dev *hdev);
->   int hclge_ptp_get_ts_info(struct hnae3_handle *handle,
+Changes since v3:
+ * unlock mutex in error path
+ * simplify some of the manually converted register reads by changing
+   the type to u32 instead of using a u32 tmp variable and then assigning
+   the value to the previously used u16 variable.
+
+Changes since v2:
+ * correctly target net-next tree (fix typo in subject)
+
+Changes since RFC:
+ * drop error handling, it wasn't there before and it would anyway be
+   removed again by a follow-up change
+ * optimize more of the regmap_write_bits() calls
+
+
+Daniel Golle (7):
+  net: dsa: lantiq_gswip: clarify GSWIP 2.2 VLAN mode in comment
+  net: dsa: lantiq_gswip: convert accessors to use regmap
+  net: dsa: lantiq_gswip: convert trivial accessor uses to regmap
+  net: dsa: lantiq_gswip: manually convert remaining uses of read
+    accessors
+  net: dsa: lantiq_gswip: replace *_mask() functions with regmap API
+  net: dsa: lantiq_gswip: optimize regmap_write_bits() statements
+  net: dsa: lantiq_gswip: harmonize gswip_mii_mask_*() parameters
+
+ drivers/net/dsa/lantiq/Kconfig        |   1 +
+ drivers/net/dsa/lantiq/lantiq_gswip.c | 471 +++++++++++++-------------
+ drivers/net/dsa/lantiq/lantiq_gswip.h |   6 +-
+ 3 files changed, 243 insertions(+), 235 deletions(-)
+
+-- 
+2.51.1
