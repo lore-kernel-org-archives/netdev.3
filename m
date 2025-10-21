@@ -1,116 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A45F27F01B
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 20:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B708528E;
+	Tue, 21 Oct 2025 20:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761079236; cv=none; b=fWdD2aCzX8BZcR9VBbZ4k3LXM+Psg56kecy+wKqNZpFRz9CabOHlQToU8Q1frbbBGwl9+FTjPiXwuHJs4FhyzdsRabYjsCa78xjbJ1bSCVB8X/+FyD40TYKipZ4z8I6u8NVOObK1zJ8gMegrwQs6/594SrL2RTBg4Q6wiRRYQmI=
+	t=1761079269; cv=none; b=MdbM4riCGQXvoXyLU0Dd8I5Nxu7Pn32dCAg79bf6deb/80J4DIWfFnVgKDFukqKe2vh0GIsv4/4/CEg2w3/EyFDJF7Ld8J3JBHf2IPndm1zFz3cDLQY+ypBiHBd1EHgBSNp2a4MP7xrHYD1aSlx6C6pqbiAsylDo4niU02Vtgco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761079236; c=relaxed/simple;
-	bh=0Xq7H5Zqc7bJ8LoT75Cn4Cxisbj/4vXaazjZo4pkcyE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDpYFMwbHyDdEPBbcqA0adEGzLXsv6bm0x9fKfR+aXv9mscGhkkSZU/WPIv/K5BHYgtXR1T+I3fIgU8u71dIDzoGA+Eot37fb3fTJhG5lyWzvAuO0DU/rpk8MIX6b+o1Q1kB5pCwBxZFUspEC3IhQdaRyZ/zlHqejCXwCudxvuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XM8OTQQz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761079269; c=relaxed/simple;
+	bh=xfXmPEZSxRwl1VnxDwwTxD75BNdhg5e7/zsMdbE1Q8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aAvy2Y0ltQZ+oL92Ee9+1Dw+CLrHsocS8IgN0T2SFDHolWS4kZw73zdxLakqdOkD24NKCN8RackfEuj5SbA7tOlJnrGxw5M3avzdKtYfKzY3BMweF9nxJ0U3ZxirWSsvAr3HmPLFLi/74BKHpdbcUnp2OiFZpTAZsAlgk+ga14I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uTG6nb3z; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XM8OTQQz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761079234;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IxVxgv6a54qoliJI6msppv7bT0rDjGK1QsEHLA3w6qc=;
-	b=XM8OTQQzYTWXNXH2G029hEBTaBikaaKo0JMda6w0nR8uQqFnIlO4i8NGbwBhKjHycJ7opq
-	lpU/IlO6ZB4pUXuPJuYk4iqZaVUWwrmc3i9V619xNEpsH9+TUZd0l658iXOAHyWVbaE6iB
-	3+gW9w7uVJTrmmhlahx6TdZPRVvsgf8=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-e61OZXhxPhiPCGDwa0gP-A-1; Tue,
- 21 Oct 2025 16:40:32 -0400
-X-MC-Unique: e61OZXhxPhiPCGDwa0gP-A-1
-X-Mimecast-MFC-AGG-ID: e61OZXhxPhiPCGDwa0gP-A_1761079231
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9A20180060D;
-	Tue, 21 Oct 2025 20:40:31 +0000 (UTC)
-Received: from tc2.redhat.com (unknown [10.44.32.244])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id F122E18003FC;
-	Tue, 21 Oct 2025 20:40:29 +0000 (UTC)
-From: Andrea Claudi <aclaudi@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>,
-	David Ahern <dsahern@kernel.org>
-Subject: [PATCH iproute2-next 3/3] lnstat: convert to high-level json_print API
-Date: Tue, 21 Oct 2025 22:39:18 +0200
-Message-ID: <5adcb143681690619b109d79ff601309586588a4.1761078778.git.aclaudi@redhat.com>
-In-Reply-To: <cover.1761078778.git.aclaudi@redhat.com>
-References: <cover.1761078778.git.aclaudi@redhat.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uTG6nb3z"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=PvNexhYHF8t9kM9PS58J6ZTCIJkGmPVdlS96wnNm7q4=; b=uTG6nb3zXuEOsXo6ZmuLPLDUKk
+	dhgep2PIJuJua+ZTxby9RvVTWscr+0EvAL9sJs7iPIiL5ibw08Yx0Sp9LE6LmUpAzJAaQIe4dZ5sX
+	wnWKrBIIPSicO2EoGVt0S0X5M6A8bV3cNLu/kr6Utx1WLoeS7Rt1zxEdQDyl5wb4XA3w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vBJ9a-00BfqE-Lg; Tue, 21 Oct 2025 22:40:22 +0200
+Date: Tue, 21 Oct 2025 22:40:22 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Sjoerd Simons <sjoerd@collabora.com>
+Cc: Eric Woudstra <ericwouds@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Chunfeng Yun <chunfeng.yun@mediatek.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Lee Jones <lee@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+	kernel@collabora.com, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-phy@lists.infradead.org, netdev@vger.kernel.org,
+	Daniel Golle <daniel@makrotopia.org>,
+	Bryan Hinton <bryan@bryanhinton.com>
+Subject: Re: [PATCH 12/15] arm64: dts: mediatek: mt7981b-openwrt-one: Enable
+ Ethernet
+Message-ID: <fd52be11-ccff-4f34-b86b-9c2f9f485756@lunn.ch>
+References: <20251016-openwrt-one-network-v1-0-de259719b6f2@collabora.com>
+ <20251016-openwrt-one-network-v1-12-de259719b6f2@collabora.com>
+ <4f82aa17-1bf8-4d72-bc1f-b32f364e1cf6@lunn.ch>
+ <8f5335a703905dea9d8d0c1840862a3478da1ca7.camel@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8f5335a703905dea9d8d0c1840862a3478da1ca7.camel@collabora.com>
 
-Replace the low-level json_writer API calls with the high-level
-json_print API to maintain consistency with the rest of the iproute2
-codebase.
+On Tue, Oct 21, 2025 at 10:21:31PM +0200, Sjoerd Simons wrote:
+> On Fri, 2025-10-17 at 19:31 +0200, Andrew Lunn wrote:
+> > > +&mdio_bus {
+> > > +	phy15: ethernet-phy@f {
+> > > +		compatible = "ethernet-phy-id03a2.a411";
+> > > +		reg = <0xf>;
+> > > +		interrupt-parent = <&pio>;
+> > > +		interrupts = <38 IRQ_TYPE_EDGE_FALLING>;
+> > 
+> > This is probably wrong. PHY interrupts are generally level, not edge.
+> 
+> Sadly i can't find a datasheet for the PHY, so can't really validate that easily.
 
-Signed-off-by: Andrea Claudi <aclaudi@redhat.com>
----
- misc/lnstat.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+What PHY is it? Look at the .handle_interrupt function in the
+driver. If the hardware supports a single interrupt bit, it could in
+theory support edge. However, as soon as you have multiple bits, you
+need level, to avoid races where an interrupt happens while you are
+clearing other interrupts.
 
-diff --git a/misc/lnstat.c b/misc/lnstat.c
-index f802a0f3..8f359578 100644
---- a/misc/lnstat.c
-+++ b/misc/lnstat.c
-@@ -30,8 +30,9 @@
- #include <stdlib.h>
- #include <string.h>
- #include <getopt.h>
-+#include <linux/types.h>
- 
--#include <json_writer.h>
-+#include "json_print.h"
- #include "lnstat.h"
- #include "version.h"
- 
-@@ -109,21 +110,17 @@ static void print_line(FILE *of, const struct lnstat_file *lnstat_files,
- static void print_json(FILE *of, const struct lnstat_file *lnstat_files,
- 		       const struct field_params *fp)
- {
--	json_writer_t *jw = jsonw_new(of);
- 	int i;
- 
--	if (jw == NULL) {
--		fprintf(stderr, "Failed to create JSON writer\n");
--		exit(1);
--	}
--	jsonw_start_object(jw);
-+	new_json_obj_plain(1);
-+	open_json_object(NULL);
- 	for (i = 0; i < fp->num; i++) {
- 		const struct lnstat_field *lf = fp->params[i].lf;
- 
--		jsonw_uint_field(jw, lf->name, lf->result);
-+		print_luint(PRINT_JSON, lf->name, NULL, lf->result);
- 	}
--	jsonw_end_object(jw);
--	jsonw_destroy(&jw);
-+	close_json_object();
-+	delete_json_obj_plain();
- }
- 
- /* find lnstat_field according to user specification */
--- 
-2.51.0
-
+	 Andrew
