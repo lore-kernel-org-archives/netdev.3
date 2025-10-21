@@ -1,82 +1,101 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDE925B30E;
-	Tue, 21 Oct 2025 11:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AFB269D17;
+	Tue, 21 Oct 2025 11:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761045831; cv=none; b=CfgjggsG8KjtVHwRTuj8/YLuGJ3KPWYtvKpxS4dIwddQYfWtfmDUQxBaGLpB3YTNF6Vw9Hpvl0NFLJYN8Ke/tgCoVWyGjWkTqV9eYZ7ptj2+96PNVDOYvhc1rTx0cZhkaaaBpOk3ZMiKPy7/yaMEk0wK8uD05FTUP46LPK+8xW0=
+	t=1761046557; cv=none; b=KQe+gSZ8VwojfsA5pqLBPB/bqpu/DtE6EFe7QLioD5NLkd4QoHQuOgPazjAumDV6G1+ra0bi8X7iRvlf10hewn/Hqfvio4KM9jMj/WAS4L3tuZDjTAZBmXmfUkZEN9KVY8E+OzfFYd0HSx5OYIf4Z5UePg90QVxPgFs75xM7EGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761045831; c=relaxed/simple;
-	bh=LZOx7abQiuTJ2qmXAglTLWqFv6inrVG8VRcijwz0x6o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gAtPsm0GyhScrUT4ggkK9dsGBm74M3Xg3Ls5BGnr5h24VlC+D/FuepDWXrti+E+yp4uKk2D26+lUEJ3kjO7rM0IGCyB54DQo69LUn0U02/c+eEoyvxEfApRuPmisMGXkDitYJUzPnDZ+zsnfSfbdyvaSDftpsXqFn5/tsMJPoeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=v6iYrH0B; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1761046557; c=relaxed/simple;
+	bh=dGF3MJ1EmOtzDX5b+6Z26q2tCtCiz2znprvPe5dXjBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q7cRFESM1vOnIDcsbAmBjrQcDS8ZC2Wb42w5tKMLL6hXa2bU9X1oqLBbu3KpxYcR4AsbRGCblHBNmHsU0nKUvwnjvK5EZ4aU++IXjKA15cmH0Gg25Zz4z9KF/zW9VibdsrDcMGo/4eJNkQ6OHmR9SDRLzKBjFXKVZnHRZBmUeX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB8Ry7nU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="v6iYrH0B"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=eCMwmjCDLEiontfRIrDuCY5MuaVbN1CY3lXLHJf+Vdc=;
-	b=v6iYrH0BIAjS0yW5LRbNldf2jT+/PkIf5GRMINo+op0TakcK3dE5XA+pyMUgvV1wQnPP5YIk1
-	n1JW16R9LoZe1qrDFoB7IaRvrkoEAhLTdHsAjPMj9PuYwd4xmOoKGUTi4LmZt3jDnzb7OSUEwV+
-	jNiDygU7C0xfifFP8Bj1wXw=
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4crVJW3SxdzpTKV;
-	Tue, 21 Oct 2025 19:22:35 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 819C6140156;
-	Tue, 21 Oct 2025 19:23:40 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 21 Oct
- 2025 19:23:39 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <jhs@mojatatu.com>, <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <xmei5@asu.edu>,
-	<yuehaibing@huawei.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] net/sched: Remove unused inline helper qdisc_from_priv()
-Date: Tue, 21 Oct 2025 19:46:26 +0800
-Message-ID: <20251021114626.3148894-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB8Ry7nU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5C6C4CEF1;
+	Tue, 21 Oct 2025 11:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761046556;
+	bh=dGF3MJ1EmOtzDX5b+6Z26q2tCtCiz2znprvPe5dXjBY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oB8Ry7nUCv1GxdY+7Sc3T4YKMCvzbe9L/Q3iQgvK+dPKTj5W5h6lO1jeHn5idyXVU
+	 v+11tM6BpgZe5iDpkVt4DIaVKz4tcjlNsaDMj3z0j/MMXi6wdCWTWKItYxPeZV6o2C
+	 IjMxFc1QEVrwBerLRmtMMcdh2ZpCb+o0sxM1oczNrciFNf6hP6dSqRaSp2EDlWlhVH
+	 rU67P4Gmb6uaufgkwJJjJ8ROb/mi7zYDK769JdherTqucDl5OSzMApYxfJZZxQkv9h
+	 M/bivuqeDVj3oSwyRyC6MHLVpLXLxBJVY2kXUbhn+S3AbhQ9kE37aCTEXUuDehqXHf
+	 8Vbc7TZCrwGTw==
+Date: Tue, 21 Oct 2025 12:35:52 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wilfred Mallawa <wilfred.opensource@gmail.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Subject: Re: [PATCH net-next v7 1/2] net/tls: support setting the maximum
+ payload size
+Message-ID: <aPdwGJGUxhqiocBX@horms.kernel.org>
+References: <20251021092917.386645-2-wilfred.opensource@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251021092917.386645-2-wilfred.opensource@gmail.com>
 
-Since commit fb38306ceb9e ("net/sched: Retire ATM qdisc"), this is
-not used and can be removed.
+On Tue, Oct 21, 2025 at 07:29:17PM +1000, Wilfred Mallawa wrote:
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- include/net/pkt_sched.h | 5 -----
- 1 file changed, 5 deletions(-)
+...
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 8a75c73fc555..c660ac871083 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -25,11 +25,6 @@ struct qdisc_walker {
- 		 const struct Qdisc * : (const void *)&q->privdata,	\
- 		 struct Qdisc * : (void *)&q->privdata)
- 
--static inline struct Qdisc *qdisc_from_priv(void *priv)
--{
--	return container_of(priv, struct Qdisc, privdata);
--}
--
- /* 
-    Timer resolution MUST BE < 10% of min_schedulable_packet_size/bandwidth
-    
--- 
-2.34.1
+> diff --git a/Documentation/networking/tls.rst b/Documentation/networking/tls.rst
+> index 36cc7afc2527..ecaa7631ec46 100644
+> --- a/Documentation/networking/tls.rst
+> +++ b/Documentation/networking/tls.rst
+> @@ -280,6 +280,28 @@ If the record decrypted turns out to had been padded or is not a data
+>  record it will be decrypted again into a kernel buffer without zero copy.
+>  Such events are counted in the ``TlsDecryptRetry`` statistic.
+>  
+> +TLS_TX_MAX_PAYLOAD_LEN
+> +~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +Specifies the maximum size of the plaintext payload for transmitted TLS records.
+> +
+> +When this option is set, the kernel enforces the specified limit on all outgoing
+> +TLS records. No plaintext fragment will exceed this size. This option can be used
+> +to implement the TLS Record Size Limit extension [1].
+> +	- For TLS 1.2, the value corresponds directly to the record size limit.
 
+Hi Wilfred,
+
+Unfortunately make htmldocs seems unhappy with the line above.
+
+.../tls.rst:291: ERROR: Unexpected indentation. [docutils]
+
+This was with Sphinx 8.1.3.
+
+> +	- For TLS 1.3, the value should be set to record_size_limit - 1, since
+> +	  the record size limit includes one additional byte for the ContentType
+> +	  field.
+> +
+> +The valid range for this option is 64 to 16384 bytes for TLS 1.2, and 63 to
+> +16384 bytes for TLS 1.3. The lower minimum for TLS 1.3 accounts for the
+> +extra byte used by the ContentType field.
+> +
+> +For TLS 1.3, getsockopt() will return the total plaintext fragment length,
+> +inclusive of the ContentType field.
+> +
+> +[1] https://datatracker.ietf.org/doc/html/rfc8449
+> +
+>  Statistics
+>  ==========
+
+...
