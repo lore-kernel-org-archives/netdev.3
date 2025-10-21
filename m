@@ -1,164 +1,105 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB91FC8
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 06:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BCE2690D9;
+	Tue, 21 Oct 2025 06:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761029190; cv=none; b=jlMqMa7ryJGpws4bXEQGNdd1/lNasBHkgv6GBPvkfyr7HHjdGaWeEvzh2YkNmZGNazrTVjQHWtF/VuMon48+pTYQ99ad1rYEKWxjf0KURnGbGXyi5MnWzx4Y91y0eo1HLG8iX8qk3M8JyY23wGLzFZLOvyQaShzZ8EocrNIpS0M=
+	t=1761029589; cv=none; b=qFiu7Aeo9t7W2OV8FJSWMT9SDW1PB3isfNU6YsXmqNH935qTnUihxOZiFJ94vBZtx2H46em6UKVK52vzHPLfNtsEZJgx1lHCgzAaFZ3JaRIbYLbEXMevM3k+JdAF+taWR4hkGBo+ZLQmQ5q/oKWx9kXC5Ii2lBKDBVQWNqtKCss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761029190; c=relaxed/simple;
-	bh=LeOry7RPUWo3FUh1P5mR0q55I8f/+97qq/p16TvVoOw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RcOTmAJGkWJpK7+rzSzGks43EI8bpNjmJHRZ1Ix4bbPAhotgt35yrXzX+M7Ti11EdF6/5zYFG1hJSyS5wL29EUKjqt0brehhbkb3kZRHHt5uUC3WpCIRxIpBA88gSW9XQOy1wMwqiQ15no6k6y4Wp+7xFD6rc/y6JuaHPc+On9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [134.104.51.229] (unknown [134.104.51.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 42B6D6020D519;
-	Tue, 21 Oct 2025 08:40:06 +0200 (CEST)
-Message-ID: <92097ccf-e54d-404f-866c-8d6dc808e498@molgen.mpg.de>
-Date: Tue, 21 Oct 2025 08:39:55 +0200
+	s=arc-20240116; t=1761029589; c=relaxed/simple;
+	bh=dT8D/fqK+qeM68iYwPgxwXnSgIs00YnR13VuAf2aYRE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qf6461J4RXzBm4OaOm0NK29+0yboNtQzeBzMM83UqC9BtLNpzcmv0LKRw/f6XSERCQ/dCBKvJqxuLEQApKENbnl+Isqv97oV0E2piznSz9IrpUTx+7rjIhNQZkWQM44TglNzNoBKPBa2ckglsT9i6axbx6gy409JE2RZzK62ZzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=I2fTwOx7; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="I2fTwOx7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1761029587; x=1792565587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dT8D/fqK+qeM68iYwPgxwXnSgIs00YnR13VuAf2aYRE=;
+  b=I2fTwOx7famewtsKIVmrHCSKzeQscUbwE9YH/XXjJSmDKEUfVe9jCVJr
+   0AISxbOIOKN00rrJJCVAtbRiacJ1soX+oUnmeg0nvnTdMP39uc3fHTi1O
+   DLJTKTt1ALdgnl+EV/ebTmMth1BBddFt54qPKjXB1B3SHBN44sfZDFFeA
+   949BeTs58VUFNVLu16fJFVRligenoCgY42XTEiNnEyEsOgrlunMCPmFlG
+   6kdrN/s2bEkHKutY2HRhglXbtN4DRT4cLHRCS+mOiz2UgihYZmT/VzW50
+   3wvAiudYsQv7C/1HHnjUcPB5qtuEGLhUp7XqlDLWED0c9LRPtiDkL46/j
+   w==;
+X-CSE-ConnectionGUID: Ss1WuPpDSteYpQ34q4x20g==
+X-CSE-MsgGUID: r+VN4XBDRoWsZ/dRb4olEw==
+X-IronPort-AV: E=Sophos;i="6.19,244,1754982000"; 
+   d="scan'208";a="215391938"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2025 23:53:00 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 20 Oct 2025 23:52:57 -0700
+Received: from localhost (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 20 Oct 2025 23:52:57 -0700
+Date: Tue, 21 Oct 2025 08:51:51 +0200
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: Gerhard Engleder <gerhard@engleder-embedded.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <richardcochran@gmail.com>
+Subject: Re: [PATCH net-next] net: phy: micrel: Add support for non PTP SKUs
+ for lan8814
+Message-ID: <20251021065151.a3q45iihtmm52rgg@DEN-DL-M31836.microchip.com>
+References: <20251017074730.3057012-1-horatiu.vultur@microchip.com>
+ <79f403f0-84ed-43fe-b093-d7ce122d41fd@engleder-embedded.com>
+ <20251020063945.dwqgn5yphdwnt4vk@DEN-DL-M31836.microchip.com>
+ <e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2 iwl-net] ice: fix PTP cleanup on
- driver removal in error path
-To: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, netdev@vger.kernel.org,
- vadim.fedorenko@linux.dev
-References: <20251020100216.4144401-1-grzegorz.nitka@intel.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20251020100216.4144401-1-grzegorz.nitka@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
 
-Dear Grzegorz,
-
-
-Am 20.10.25 um 12:02 schrieb Grzegorz Nitka:
-> Improve the cleanup on releasing PTP resources in error path.
-> The error case might happen either at the driver probe and PTP
-> feature initialization or on PTP restart (errors in reset handling, NVM
-> update etc). In both cases, calls to PF PTP cleanup (ice_ptp_cleanup_pf
-> function) and 'ps_lock' mutex deinitialization were missed.
-> Additionally, ptp clock was not unregistered in the latter case.
+The 10/20/2025 20:11, Gerhard Engleder wrote:
 > 
-> Keep PTP state as 'uninitialized' on init to distinguish between error
-> scenarios and to avoid resource release duplication at driver removal.
+> On 20.10.25 08:39, Horatiu Vultur wrote:
+> > The 10/17/2025 23:15, Gerhard Engleder wrote:
 > 
-> The consequence of missing ice_ptp_cleanup_pf call is the following call
-> trace dumped when ice_adapter object is freed (port list is not empty,
-> as it is required at this stage):
-> 
-> [  T93022] ------------[ cut here ]------------
-> [  T93022] WARNING: CPU: 10 PID: 93022 at ice/ice_adapter.c:67 ice_adapter_put+0xef/0x100 [ice]
 > ...
-> [  T93022] RIP: 0010:ice_adapter_put+0xef/0x100 [ice]
-> ...
-> [  T93022] Call Trace:
-> [  T93022]  <TASK>
-> [  T93022]  ? ice_adapter_put+0xef/0x100 [ice 33d2647ad4f6d866d41eefff1806df37c68aef0c]
-> [  T93022]  ? __warn.cold+0xb0/0x10e
-> [  T93022]  ? ice_adapter_put+0xef/0x100 [ice 33d2647ad4f6d866d41eefff1806df37c68aef0c]
-> [  T93022]  ? report_bug+0xd8/0x150
-> [  T93022]  ? handle_bug+0xe9/0x110
-> [  T93022]  ? exc_invalid_op+0x17/0x70
-> [  T93022]  ? asm_exc_invalid_op+0x1a/0x20
-> [  T93022]  ? ice_adapter_put+0xef/0x100 [ice 33d2647ad4f6d866d41eefff1806df37c68aef0c]
-> [  T93022]  pci_device_remove+0x42/0xb0
-> [  T93022]  device_release_driver_internal+0x19f/0x200
-> [  T93022]  driver_detach+0x48/0x90
-> [  T93022]  bus_remove_driver+0x70/0xf0
-> [  T93022]  pci_unregister_driver+0x42/0xb0
-> [  T93022]  ice_module_exit+0x10/0xdb0 [ice 33d2647ad4f6d866d41eefff1806df37c68aef0c]
-> ...
-> [  T93022] ---[ end trace 0000000000000000 ]---
-> [  T93022] ice: module unloaded
 > 
-> Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
-> Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> v1->v2:
->   - rebased
->   - complete full cleanup if failure in PTP intialization path (no need
->     to do a cleanup on PTP release then) and added a comment with clarification
->     why keeping PTP_UNINIT state on failure at init
->   - setting ptp->clock to NULL explicitly in error path
-> ---
->   drivers/net/ethernet/intel/ice/ice_ptp.c | 22 +++++++++++++++++++---
->   1 file changed, 19 insertions(+), 3 deletions(-)
+> > > > 
+> > > > +/* Check if the PHY has 1588 support. There are multiple skus of the PHY and
+> > > > + * some of them support PTP while others don't support it. This function will
+> > > > + * return true is the sku supports it, otherwise will return false.
+> > > > + */
+> > > 
+> > > Hasn't net also switched to the common kernel multiline comment style
+> > > starting with an empty line?
+> > 
+> > I am not sure because I can see some previous commits where people used
+> > the same comment style:
+> > e82c64be9b45 ("net: stmmac: avoid PHY speed change when configuring MTU")
+> > 100dfa74cad9 ("net: dev_queue_xmit() llist adoption")
 > 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index fb0f6365a6d6..13b73f835f06 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -3246,7 +3246,7 @@ void ice_ptp_init(struct ice_pf *pf)
->   
->   	err = ice_ptp_init_port(pf, &ptp->port);
->   	if (err)
-> -		goto err_exit;
-> +		goto err_clean_pf;
->   
->   	/* Start the PHY timestamping block */
->   	ice_ptp_reset_phy_timestamping(pf);
-> @@ -3263,13 +3263,19 @@ void ice_ptp_init(struct ice_pf *pf)
->   	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
->   	return;
->   
-> +err_clean_pf:
-> +	mutex_destroy(&ptp->port.ps_lock);
-> +	ice_ptp_cleanup_pf(pf);
->   err_exit:
->   	/* If we registered a PTP clock, release it */
->   	if (pf->ptp.clock) {
->   		ptp_clock_unregister(ptp->clock);
->   		pf->ptp.clock = NULL;
->   	}
-> -	ptp->state = ICE_PTP_ERROR;
-> +	/* Keep ICE_PTP_UNINIT state to avoid ambiguity at driver unload
-> +	 * and to avoid duplicated resources release.
-> +	 */
-> +	ptp->state = ICE_PTP_UNINIT;
->   	dev_err(ice_pf_to_dev(pf), "PTP failed %d\n", err);
->   }
->   
-> @@ -3282,9 +3288,19 @@ void ice_ptp_init(struct ice_pf *pf)
->    */
->   void ice_ptp_release(struct ice_pf *pf)
->   {
-> -	if (pf->ptp.state != ICE_PTP_READY)
-> +	if (pf->ptp.state == ICE_PTP_UNINIT)
->   		return;
->   
-> +	if (pf->ptp.state != ICE_PTP_READY) {
-> +		ice_ptp_cleanup_pf(pf);
-> +		mutex_destroy(&pf->ptp.port.ps_lock);
-> +		if (pf->ptp.clock) {
-> +			ptp_clock_unregister(pf->ptp.clock);
-> +			pf->ptp.clock = NULL;
-> +		}
-> +		return;
-> +	}
-> +
->   	pf->ptp.state = ICE_PTP_UNINIT;
->   
->   	/* Disable timestamping for both Tx and Rx */
+> The special coding style for multi line comments for net and drivers/net
+> has been removed with
+> 82b8000c28 ("net: drop special comment style")
+> 
+> But I checked a few mails on the list and also found the old style in
+> new patches.
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Ah...OK. I prefer to keep the current style here.
 
+> 
+> Gerhard
+> 
 
-Kind regards,
-
-Paul
+-- 
+/Horatiu
