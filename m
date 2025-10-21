@@ -1,142 +1,205 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5902777FC
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF602ED84C
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761041648; cv=none; b=stbQbBigefdfQCIjDZ9hZUHvx3yn35W/ARs2JBKg9MrwOdnpOTljXwDcwzlKeD2wRHzbUtTGYE/11YfJ+1GpOT5e/IggqEk9dcNMyBy9ybn7lcOyXofxAJGYePhet4a2IpthqezvzVkJtRTOjN8/tdCECVSw5461QnjTOZexOxU=
+	t=1761041789; cv=none; b=Cm5rORsu2GKmCjqOa4cA5HlpVI6ouxdQxJWRWa9OFkYX7BSo6qvm93UaFzqR1xRYkj49bnyZDgIgwHKA5uYIu1gRAevrAMF8853Eaoe6dPhldG5bmLzFB1wmrbIdd2/gXFgtHYkGqTbA/7aGGLjVpNaRyRgM1OKsb0Ngr0OA/Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761041648; c=relaxed/simple;
-	bh=hZFYqccy3hrzjkUJnAWqrJtsjPd4X/Rq5BGUoMThiBQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kywawzlqtGObYLeFG0I5JdMp55s63QW2Grcr3JMqplZMrbD/HSzcjeURFvWPVUQEMyCrm3Z56DVgPD+rRNJqJknO2Ybd+yEI8UcCRNgQStbX3GqticxSI38od5XC73bgkERGwDVFwnEsG3bSF3omd9d0pYTFfQP6fFFbyS7pZ0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtividXJ; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761041789; c=relaxed/simple;
+	bh=K8Bt1F4duKaYZD6FM5I3/3n7I5nh0OjMrdkO6KPZNLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=St1xhu4tC7tCcMsD287qyMnih4KrkDUuW4B+H6V3TJub+5r25+/uhHm6HaXaNR7AcCSu0rccJdKjLvhB/tLcMWmr6UMO78ua8D5m7U23jKidrPICl5hGpY7r5aJ48pLI5uP7Rl1rIBe300b4dzTnYimlPZauBqg4/Avb32/9U9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VBoS2JS5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtividXJ"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-63bbcab353dso908116a12.0
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:14:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761041643; x=1761646443; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aY4sUqJT8CNQPf5hwojWc40WBK5K/UWeQgITdbU7s54=;
-        b=UtividXJcfovqe8wKQVSC1Iwlws+W3vm9+YGgu9nqkRy3ZOFluhjxN9jHfUPQwf8LG
-         pPrDc4wh5WlXIWv+a4wea/lw3U0FpnvBljkCmvMD0RozwB67Q9aP5zeN7tCA485hujDU
-         5YZiZcOlLL8OZPmNgmwI16zXW3+vpD6pCaaKyNSgCa8ypWpFwDZCCLji3knfQtlTnbx4
-         0chBktbiOp+kM7Kkbsrp6hfQJnimQgGLa3l7jT5ztxZGnkyKo5XlQ5JXq3H04Q324olL
-         Swb5G+4gqTnvnjE1k6TLXHTgz4704Lu13NplwlW2DPk5yvHit/KLgnPMw+lXVozWxlMB
-         /1ug==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VBoS2JS5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761041786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JJYhMYYkH+gP1AV8KxmcpA9zINZajsuC9HdWMXBqSjE=;
+	b=VBoS2JS5SuqhMXXfOpkEdciHIfiQDmXXYEHikyq4vT6T1dBgyUm8tnASku7egtuCMRGD5T
+	KPJSwckLvtOguHA7idMKNPYw1qbjVxPcFkBI6z8KORnABeoe93rqH4jBLYSfEbcNE5DZYZ
+	RzulxnnuQGepq23NiVoajb3ZPMFEplQ=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-yPB-aFkMMqKaBPNNjx_gkQ-1; Tue, 21 Oct 2025 06:16:25 -0400
+X-MC-Unique: yPB-aFkMMqKaBPNNjx_gkQ-1
+X-Mimecast-MFC-AGG-ID: yPB-aFkMMqKaBPNNjx_gkQ_1761041784
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-471168953bdso38965095e9.1
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:16:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761041643; x=1761646443;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aY4sUqJT8CNQPf5hwojWc40WBK5K/UWeQgITdbU7s54=;
-        b=Eeb1W5yV2zdP5g0pZoCghffTEfPBkao0DlZcDR/Ibh36srW9xjGctiD15UC4CynY0A
-         97wGQXRr/gjSS4ntHFKC+uYfhvBWWU04hSh1b5xx8+eYoIPrFF+DmevNC7+3mb2qnVUF
-         P4WJVA3tTfF9btfZpi5ZU69PMeTdjz/rDAOgcDU8/CPilopqZg+sVTp4tidjyDy58gpG
-         qNy7+rtWFILmoglpz02mklpdvH1JMpfSlLoHfn+svoD7ZTacWC6B9tjw4fpLjnsAYwJq
-         b17xigAynZBJFSt1D2Gbj+WZHDtt4ENA+hAPy7cp79aZwhW5kVodUu2tOSPuOVSopJst
-         Kfiw==
-X-Gm-Message-State: AOJu0Ywukj4hmq7mDi7NbzsW5lIQTW67VkGB0s/C0Z64OzXrssmSWVBf
-	LxvnusQXSc7mGaxcB+C2lUqY8S9MffgPXjeSXvxn1+/A0FOijz1YIBbk
-X-Gm-Gg: ASbGncuLUinjHNSa1uQtFjIpGN7thyqnDWiN5ac0vo0lLHfXRATho3ka3W4//Ki2xpr
-	lqppEy43Mtbez9oBevH5MFRM+Ci6xFD0FTBS1XpktfeaoQWfwt7guLoIQJLtZscV52wBxk2y6gC
-	SAnze8yoxVHeIrXark7mLQ8XdffazjjCZaFGUlXroAq34PvdPb6/HUPYEZsXJa/cEmtstLn5b7i
-	m/CMaUpET6trRMm0Jg+MjbWdq4XYUVowJd935eG4wcALCn5gRWHCKXTPwcoulbHcU7qvc9H9H+L
-	TdO/GAXMDlZ3ma9s2gY4MTtVG7cPwlw+koVJQ01P6KP2DR09qJ2Pn+hCMGDjE+PHnDEh+eHJ3xt
-	V3ggy1p+lnbPfTGieW8yiithOJ07cz1CGSzPh7Ag5QXJGC41dxqzy6lkiZrUOPp1Neh5N13ETS1
-	PBmYwm2/YvsUCC4ovhB77uL2qdutKi
-X-Google-Smtp-Source: AGHT+IGp3+5iFHi5zRWLe8YxHSX3njxzZcoBp1BcVGuZR2w2gCAwViee0Dzqam5RCqIQMql4fNoXCQ==
-X-Received: by 2002:a05:6402:4307:b0:63c:1d4a:afcb with SMTP id 4fb4d7f45d1cf-63d09d3bd06mr1476817a12.0.1761041642678;
-        Tue, 21 Oct 2025 03:14:02 -0700 (PDT)
-Received: from [192.168.1.105] ([165.50.73.64])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c4869746asm9018625a12.0.2025.10.21.03.14.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 03:14:02 -0700 (PDT)
-Message-ID: <4c849c04-6647-432c-807c-5fa7afa7fb47@gmail.com>
-Date: Tue, 21 Oct 2025 12:13:52 +0100
+        d=1e100.net; s=20230601; t=1761041781; x=1761646581;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JJYhMYYkH+gP1AV8KxmcpA9zINZajsuC9HdWMXBqSjE=;
+        b=tAOne1HlzaF2PMgOeIq/tpAzexRVdj5XPBB8XbJ5CahNW3V15aLcUS9u8qXTxn9vVr
+         BX7ySR3dZVkVZkH9qVhf8xanCbpZC50wgGIUS0TcZioqkLNFyMgO5Rhhxqhb1Aaf6SUf
+         cxPI1rVidopgcrNXyw/6nYfH+rlWHDrQWhv2XlcuM4+kmehKw8622Q8ANrS2yc5RrYWj
+         qYvqQ4si0BWP1NV03tcroi5QxuaeUxicXs9GCOAjPy4cGySKOnFcdAhii5RLP92Q/zoC
+         snUa6rkgaAj+Gi60isRvc9tsmeCnFfW4RNLzuEBbl6+JcmHPGYBeYcZ3bVzPsKtCxaaD
+         l4kA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUMPuqyK691su+NQFzlgkzfovg6mqMh5Mrs35rcMdatQ+fWckoLIqXFS9p1R99lvZxmNl+enY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWI7CRsQqNF3H2bdoqMX6pcg0OFIZpIcFgRRh4tDivl0NDwTeN
+	q1V24moxesuJ1+Yz/QRYve6/7QKcwxMecg4YIJa8RlX4rsKroFI3MW/TVk+4ycB7R+TkZ/j6U5m
+	tkP/JegONF+XDiNNnjxqQPa4hhddBMQK2//mExM2ehHJWR+7dCktn7I+NgA==
+X-Gm-Gg: ASbGncvdbWtvj0SSx6kL+ErDGDoU9lxxrrQpr2jb7dYbJGtTQsqhrlluYXb3zkx/B9e
+	sf1rDDcI6LJAQSrvh7In6uXHSWHmI8puQu2EN5nzCIq9H1KPUaLIsxreOzS/BakgBta/n2+gr8W
+	WyjpIQNvnk7cy5intO4iMOH3QCFi1MvIbtI2+1/iQfTYbmAl2gaIYwyHvsxrcBkNHF03iUTxBz7
+	vk8hczYeV7nD3fZv6TEQLxoXP4tRL6PCos2E1I6J/D89cl75OL4izh1Iq0hLfdzIBqrQuqJNBGO
+	oQfptLoIPVMctcIrSwXxZzvHk2Ho4zY7U25AMTYTEZ6/2LqOChp/Cbq2QK0SzOvTs30eWXn6MnW
+	FiLx7IySZ5WzpDRxDX3wQZcdFrM64bBBvzVgDBzZXMmnShbm1ag8=
+X-Received: by 2002:a05:600c:a088:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-47117315d8emr128167585e9.16.1761041780844;
+        Tue, 21 Oct 2025 03:16:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFi58yEM3Ci3GlIQ7LRsfZT8Jz32v9v6BKO98V35kuEXc5OOA/pGgs/FK9jj1Yuy4hgaCi++g==
+X-Received: by 2002:a05:600c:a088:b0:46f:a2ba:581f with SMTP id 5b1f17b1804b1-47117315d8emr128167295e9.16.1761041780382;
+        Tue, 21 Oct 2025 03:16:20 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-153.retail.telecomitalia.it. [79.46.200.153])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-471144c82c9sm272580385e9.14.2025.10.21.03.16.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 03:16:19 -0700 (PDT)
+Date: Tue, 21 Oct 2025 12:16:14 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: syzbot <syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev
+Subject: Re: [syzbot] [virt?] [net?] possible deadlock in vsock_linger
+Message-ID: <u6mwe4gtor7cgqece6ctyabmlxcaxn7t2yk7k3xivifwxreu65@z5tjmfkoami7>
+References: <68f6cdb0.a70a0220.205af.0039.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v2] bpf/cpumap.c: Remove unnecessary TODO comment
-To: Jesper Dangaard Brouer <hawk@kernel.org>, ast@kernel.org,
- daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, kpsingh@kernel.org, haoluo@google.com,
- jolsa@kernel.org
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com, khalid@kernel.org,
- linux-kernel-mentees@lists.linuxfoundation.org
-References: <20251020170254.14622-1-mehdi.benhadjkhelifa@gmail.com>
- <e0901356-ef48-4652-9ad4-ff85ae07d83a@kernel.org>
-Content-Language: en-US
-From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
-In-Reply-To: <e0901356-ef48-4652-9ad4-ff85ae07d83a@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="ixrysslziegqmao6"
+Content-Disposition: inline
+In-Reply-To: <68f6cdb0.a70a0220.205af.0039.GAE@google.com>
 
-On 10/21/25 10:37 AM, Jesper Dangaard Brouer wrote:
-> 
-> 
-> On 20/10/2025 19.02, Mehdi Ben Hadj Khelifa wrote:
->> After discussion with bpf maintainers[1], queue_index could
->> be propagated to the remote XDP program by the xdp_md struct[2]
->> which makes this todo a misguide for future effort.
->>
->> [1]:https://lore.kernel.org/all/87y0q23j2w.fsf@cloudflare.com/
->> [2]:https://docs.ebpf.io/linux/helper-function/bpf_xdp_adjust_meta/
->>
->> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
->> ---
->> Changelog:
->>
->> Changes from v1:
->>
->> -Added a comment to clarify that RX queue_index is lost after the frame
->> redirection.
->>
->> Link:https://lore.kernel.org/bpf/d9819687-5b0d-4bfa-9aec- 
->> aef71b847383@gmail.com/T/#mcb6a0315f174d02db3c9bc4fa556cc939c87a706
->>   kernel/bpf/cpumap.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
->> index 703e5df1f4ef..6856a4a67840 100644
->> --- a/kernel/bpf/cpumap.c
->> +++ b/kernel/bpf/cpumap.c
->> @@ -195,7 +195,10 @@ static int cpu_map_bpf_prog_run_xdp(struct 
->> bpf_cpu_map_entry *rcpu,
->>           rxq.dev = xdpf->dev_rx;
->>           rxq.mem.type = xdpf->mem_type;
->> -        /* TODO: report queue_index to xdp_rxq_info */
->> +        /* The NIC RX queue_index is lost after the frame redirection
->> +         * but in case of need, it can be passed as a custom XDP
->> +         * metadata via xdp_md struct to the remote XDP program
-> 
-> Argh, saying XDP metadata is accessed via the xdp_md struct is just wrong.
-> 
-Ack, I didn't clarify that XDP metadata should be propagated via the 
-bpf_xdp_adjust_meta like mentionned in the link[2]... Maybe I was 
-thinking more in the technical side that xdp_md->data_meta would hold 
-the value internally... I will send a v3 with appropriate changes.
-Thanks for the review.
 
-Best Regards,
-Mehdi Ben Hadj Khelifa
-> Nacked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> 
->> +         */
->>           xdp_convert_frame_to_buff(xdpf, &xdp);
-> 
+--ixrysslziegqmao6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+
+On Mon, Oct 20, 2025 at 05:02:56PM -0700, syzbot wrote:
+>Hello,
+>
+>syzbot found the following issue on:
+>
+>HEAD commit:    d9043c79ba68 Merge tag 'sched_urgent_for_v6.18_rc2' of git..
+>git tree:       upstream
+>console output: https://syzkaller.appspot.com/x/log.txt?x=130983cd980000
+>kernel config:  https://syzkaller.appspot.com/x/.config?x=f3e7b5a3627a90dd
+>dashboard link: https://syzkaller.appspot.com/bug?extid=10e35716f8e4929681fa
+>compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+>syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17f0f52f980000
+>C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11ea9734580000
+
+#syz test
+
+
+--ixrysslziegqmao6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="0001-TODO.patch"
+
+From c32c21ea301aadc56160a57ddcd99f836a49f028 Mon Sep 17 00:00:00 2001
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 21 Oct 2025 12:12:24 +0200
+Subject: [PATCH] TODO
+
+From: Stefano Garzarella <sgarzare@redhat.com>
+
+---
+ net/vmw_vsock/af_vsock.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
+
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 4c2db6cca557..5434fe6a1d6b 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -565,6 +565,11 @@ static u32 vsock_registered_transport_cid(const struct vsock_transport **transpo
+ 	return cid;
+ }
+ 
++/* vsock_find_cid() must be called outside lock_sock/release_sock
++ * section to avoid a potential lock inversion deadlock with
++ * vsock_assign_transport() where `vsock_register_mutex` is taken when
++ * `sk_lock-AF_VSOCK` is already held.
++ */
+ bool vsock_find_cid(unsigned int cid)
+ {
+ 	if (cid == vsock_registered_transport_cid(&transport_g2h))
+@@ -735,23 +740,14 @@ static int __vsock_bind_dgram(struct vsock_sock *vsk,
+ 	return vsk->transport->dgram_bind(vsk, addr);
+ }
+ 
++/* The caller must ensure the socket is not already bound and provide a valid
++ * `addr` to bind (VMADDR_CID_ANY, or a CID assgined to a transport).
++ */
+ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr)
+ {
+ 	struct vsock_sock *vsk = vsock_sk(sk);
+ 	int retval;
+ 
+-	/* First ensure this socket isn't already bound. */
+-	if (vsock_addr_bound(&vsk->local_addr))
+-		return -EINVAL;
+-
+-	/* Now bind to the provided address or select appropriate values if
+-	 * none are provided (VMADDR_CID_ANY and VMADDR_PORT_ANY).  Note that
+-	 * like AF_INET prevents binding to a non-local IP address (in most
+-	 * cases), we only allow binding to a local CID.
+-	 */
+-	if (addr->svm_cid != VMADDR_CID_ANY && !vsock_find_cid(addr->svm_cid))
+-		return -EADDRNOTAVAIL;
+-
+ 	switch (sk->sk_socket->type) {
+ 	case SOCK_STREAM:
+ 	case SOCK_SEQPACKET:
+@@ -991,15 +987,33 @@ vsock_bind(struct socket *sock, struct sockaddr *addr, int addr_len)
+ {
+ 	int err;
+ 	struct sock *sk;
++	struct vsock_sock *vsk;
+ 	struct sockaddr_vm *vm_addr;
+ 
+ 	sk = sock->sk;
++	vsk = vsock_sk(sk);
+ 
+ 	if (vsock_addr_cast(addr, addr_len, &vm_addr) != 0)
+ 		return -EINVAL;
+ 
++	/* Like AF_INET prevents binding to a non-local IP address (in most
++	 * cases), we only allow binding to a local CID.
++	 */
++	if (vm_addr->svm_cid != VMADDR_CID_ANY &&
++	    !vsock_find_cid(vm_addr->svm_cid))
++		return -EADDRNOTAVAIL;
++
+ 	lock_sock(sk);
++
++	/* Ensure this socket isn't already bound. */
++	if (vsock_addr_bound(&vsk->local_addr)) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	err = __vsock_bind(sk, vm_addr);
++
++out:
+ 	release_sock(sk);
+ 
+ 	return err;
+-- 
+2.51.0
+
+
+--ixrysslziegqmao6--
 
