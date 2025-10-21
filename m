@@ -1,147 +1,75 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5134F32BF59
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063612E9EB9
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761041425; cv=none; b=VIDqAkrI7NuzOaHtQzvaO4WHtanUx0yQTDl/rMsldx8UB33uFSNZGkT+r6rkFGIpUpbAsvgwkLGjRwWsh0n8QgWXY42fjnSDiSdzhO1bPOD6oOKc8y8E9Fx1dmtKQ6e1WkVJ63IuyAugzXSbnE/fbdHewH3Qxyv4nYoBfD1sOmk=
+	t=1761041464; cv=none; b=mBlj65tWq0xvHpHA7n6KQouNbTB9VZNlF9qnqIlg/CrwGTENUKg3DrQxMZYAuIqxojSw5aMPrpOHsMIe5UkIl4Kzd8SPlBoFYrjMbxBsZ+bbYg20wC2pYd+JJBSuufKIq+4hSrd7xIn3EBEruOvAqwW9IXCus688CVD0/aTHJgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761041425; c=relaxed/simple;
-	bh=05vuYDpgaI97/4TmuyIi5UtKcOAT+L9DMzrePpRlL38=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsd07i6PY0tAYZHomro6/VX856fOXcNcdAiN+vpAY12u2H9lI/pSjVxgPtLlzjy0h2x7JAI1NFTy3ZKmm3+OYtN54XT46V9tsZKMH1iS44Cm8c9xebpl1pWMO3El9KXGsgXRmD4LIxKisrXPvRXSPhh+0IDnlrizBSifACKipvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=SWyDFj8w; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="SWyDFj8w"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3f0ae439b56so4019609f8f.3
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:10:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mandelbit.com; s=google; t=1761041420; x=1761646220; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q6AgNPmCiF7hj9leMA+80I5twNHeeiQTO5Me3TTGHA4=;
-        b=SWyDFj8w+aew35vYGZRyD2ZQJItmwdK+494CS1LCm2iQqWroQZiANsrBx2IWYdUeMR
-         7nK4/n2x3S+Mv4HlTPZZFX4Wx9DC1vboVL7Ly523eI57vlaBbpi1MbqqMrYB9DXra7IR
-         MGEnRlK9AvL8iLhV8uFUOTF3dsDFImU4bcpEhRGo0fJgjsbTIK4FlRJ4uROxQV+Mm8M8
-         lRlHbzmh/OKaZ30QXp9SUKaaSG5OrSsz1HFK0qFqImpToUDFsU/kuX5FHPbovCluYtnu
-         fC619ZVTmmVn6tqSfovFnO/kUj5QOeDBdSK9Y5ef4upJQez3d8QGJRuBiKWktSF66DgS
-         fshw==
+	s=arc-20240116; t=1761041464; c=relaxed/simple;
+	bh=vpXQiflVU7E/srPq9JfjysqPUwZeetf3iBJFxoNFNfA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=Hv08sx6+II871cLYjznmQ8+62+3x7WoVoOEhtq0rtO63t8tAmacPaGjq+BkP8E5SrGPk/i0O0VxI9rUFKYZ8KYkrFueUUGUqCVMH+2fyhzpBA/pc2Maa6D/lgb7zas/YS4/rKBF+sbIXAK4BfPqiTyJRHF4Q87VN+Jx+JSzrJd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-940e4cf730aso361003739f.1
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:11:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761041420; x=1761646220;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q6AgNPmCiF7hj9leMA+80I5twNHeeiQTO5Me3TTGHA4=;
-        b=Ky5enaAFw1QDElIGp+BEVZPRF5w9E4pktarMJNrBh6c51M8T7dGqFTZWbM2JPSTkgQ
-         HTik5PS+ffkyjWQXcsVVtcpmzoSqCJ/UdRp1PnnZ5Fvy+gEpqYQ24EMy/5/c8FlMFlb3
-         OybNcmAGZYOJQdhELinApo2gnysEzKTlxKUnct2ky40KKa4qUiXyYcqM82Xvp15s+T6v
-         IwVBK3TcbggJHOXAAZVwYI5c6lqDRpOXkzDFp2p5Z3p5dsTdp7L9/A1SJTyD/uk8ab8I
-         zU+lw22OXL0wQGzLagZV9YlV7THvVVDofoo/Uovz5Ea9TRBkjk/BxzJJAkuqcZB6SDWU
-         gfHw==
-X-Gm-Message-State: AOJu0YwLrW48ju97SE61OhVikjRMeHRyPMPiD00eayTFBtjIAFM31VMy
-	muofQ1CWn7gmG+jTExVZySaSwu/2O0MdVLN1YgWrsP9c7tRSQ6smOwvUhl8rqe1RSHNhili4oxC
-	+bI5rCZg=
-X-Gm-Gg: ASbGncvn4PJW3KQPzYuSC67X+Q5mn8c2223YDJmOtjMUmtbGjwR6iyZD0ODLcS/1AVK
-	5TMP1YxDiaL0/l3mCGG4RBBgSqbBvl1nWzJcEQ5VlSY4S1lqZMEc5xDW7CccLERP5l7W07YczPt
-	tDUITGMOjA2/fyHJ+a7CJsLfM1qQQWIheiUJ4CmSFi2/6xWDazSMtL8YsbJ50ETGhwjDtjRzslt
-	zQwZs/DfZV490j/lt9aOGbjOA1NGAao69aLtZI0DV6RChNVk0Ug/pqv0DL+6dM8fu/G4tXCMVKr
-	hAf0qKklWiF7u9ERMfG9XSoaYrJril9NnudV5+JwisthWVOPSKlMWhZBRvH+G3ytkIvk7INkIWo
-	1t4hIYR6UP6QdGiaNaFU5sWu8a04ccmj16GTPrnQ17tLuP7gz/ryOJNHWwM4uBboIZM1oRPM=
-X-Google-Smtp-Source: AGHT+IF2u6twQ5OYCxytxHSjwtag5EeVqUZDl0379Q0cTRDX/RdXaJAf5MqULZSbsTdTI4jf+bKxzQ==
-X-Received: by 2002:a05:6000:2512:b0:3ee:15b4:174c with SMTP id ffacd0b85a97d-42704d497famr11869252f8f.3.1761041419824;
-        Tue, 21 Oct 2025 03:10:19 -0700 (PDT)
-Received: from fedora ([2a01:e11:600c:d1a0:3dc8:57d2:efb7:51a8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f009a6c5sm20172032f8f.28.2025.10.21.03.10.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 03:10:19 -0700 (PDT)
-From: Ralf Lici <ralf@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: Ralf Lici <ralf@mandelbit.com>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net v3 3/3] ovpn: use datagram_poll_queue for socket readiness in TCP
-Date: Tue, 21 Oct 2025 12:09:42 +0200
-Message-ID: <20251021100942.195010-4-ralf@mandelbit.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251021100942.195010-1-ralf@mandelbit.com>
-References: <20251021100942.195010-1-ralf@mandelbit.com>
+        d=1e100.net; s=20230601; t=1761041462; x=1761646262;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ijl+KuktG6GVPgjZkCiCYwgydFvbdcvzoiJcnFOxm7I=;
+        b=ho5BloWiy9kKIPOqLKXox159cMdR3B29ygfd28RAK4xZdnA/vz/mM2s0BwsETv6UTK
+         S9YEUHC9XRxdDF7C3Q/XrkDzQCsHamGN18e45xPJcUcusxA2UiJf+9GOZgZf2Z6NA6oX
+         WVeb7qe5WzjQa8IJt3DZam1cTOcWEdQXnk7UGZpGD3Up0WqCSJlGu+VRD6/SXUuONm71
+         7Ch6fgqbpLx+gp4MJpmZtyYzcaqQw/8iiqNpebigb2JXTNr5YLTkFRKI+saAuXcwz5fp
+         6KxNpFuxz/EhVKvr+Vb5IT8cIoZ2d28VpOEeJ5nWtlHLg3wV3U/uJ0hMwg+LJI3gEJwE
+         AeKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVstGMHvd+WCcTN2eD2pbtJlvw+7rUqfmjdxxVn4SGdAzU4rGk2H8yDY0pBh1mKmVXCarZTojo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYIryRu9LkvlBqLza0joJTa6rpaiMCTkfXP/JzWgBZW6bQ2y0W
+	tcvWhw/JLAf/T6DD4/GKyAly8Bz+4/7TXrdxwinWccX2WiHvaYW7PA2Qf+oN8AtmxE5aFHINbwG
+	Pw21qMlhy7MMcgzvr623qri51Q7jG2pTh4eorw/gLW5Jn93xTfVYuuNtefTw=
+X-Google-Smtp-Source: AGHT+IFO/PptUIaZovR6keuCooSX+DOI1vkk7sEagxXGmiTLgzZnl5FSVhzaAIb+vmqRsREXvQCYmlgS7kfKa9KhO/ZMeJlBHq+0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6602:718a:b0:893:65c1:a018 with SMTP id
+ ca18e2360f4ac-93e7627ad1fmr2655618139f.3.1761041462284; Tue, 21 Oct 2025
+ 03:11:02 -0700 (PDT)
+Date: Tue, 21 Oct 2025 03:11:02 -0700
+In-Reply-To: <mpv4ljrxyucr23x4hj7k7s4vmtvv3bgeq7uct3t44ghaw35l4r@wanp7mklhw7x>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68f75c36.a70a0220.3bf6c6.0003.GAE@google.com>
+Subject: Re: [syzbot] [virt?] [net?] possible deadlock in vsock_linger
+From: syzbot <syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, mhal@rbox.co, 
+	netdev@vger.kernel.org, pabeni@redhat.com, sgarzare@redhat.com, 
+	syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-openvpn TCP encapsulation uses a custom queue to deliver packets to
-userspace. Currently it relies on datagram_poll, which checks
-sk_receive_queue, leading to false readiness signals when that queue
-contains non-userspace packets.
+Hello,
 
-Switch ovpn_tcp_poll to use datagram_poll_queue with the peer's
-user_queue, ensuring poll only signals readiness when userspace data is
-actually available. Also refactor ovpn_tcp_poll in order to enforce the
-assumption we can make on the lifetime of ovpn_sock and peer.
+syzbot tried to test the proposed patch but the build/boot failed:
 
-Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
----
- drivers/net/ovpn/tcp.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+failed to apply patch:
+checking file net/vmw_vsock/af_vsock.c
+patch: **** unexpected end of file in patch
 
-diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
-index 289f62c5d2c7..0d7f30360d87 100644
---- a/drivers/net/ovpn/tcp.c
-+++ b/drivers/net/ovpn/tcp.c
-@@ -560,16 +560,34 @@ static void ovpn_tcp_close(struct sock *sk, long timeout)
- static __poll_t ovpn_tcp_poll(struct file *file, struct socket *sock,
- 			      poll_table *wait)
- {
--	__poll_t mask = datagram_poll(file, sock, wait);
-+	struct sk_buff_head *queue = &sock->sk->sk_receive_queue;
- 	struct ovpn_socket *ovpn_sock;
-+	struct ovpn_peer *peer = NULL;
-+	__poll_t mask;
- 
- 	rcu_read_lock();
- 	ovpn_sock = rcu_dereference_sk_user_data(sock->sk);
--	if (ovpn_sock && ovpn_sock->peer &&
--	    !skb_queue_empty(&ovpn_sock->peer->tcp.user_queue))
--		mask |= EPOLLIN | EPOLLRDNORM;
-+	/* if we landed in this callback, we expect to have a
-+	 * meaningful state. The ovpn_socket lifecycle would
-+	 * prevent it otherwise.
-+	 */
-+	if (WARN(!ovpn_sock || !ovpn_sock->peer,
-+		 "ovpn: null state in ovpn_tcp_poll!")) {
-+		rcu_read_unlock();
-+		return 0;
-+	}
-+
-+	if (ovpn_peer_hold(ovpn_sock->peer)) {
-+		peer = ovpn_sock->peer;
-+		queue = &peer->tcp.user_queue;
-+	}
- 	rcu_read_unlock();
- 
-+	mask = datagram_poll_queue(file, sock, wait, queue);
-+
-+	if (peer)
-+		ovpn_peer_put(peer);
-+
- 	return mask;
- }
- 
--- 
-2.51.0
+
+
+Tested on:
+
+commit:         6548d364 Merge tag 'cgroup-for-6.18-rc2-fixes' of git:..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f3e7b5a3627a90dd
+dashboard link: https://syzkaller.appspot.com/bug?extid=10e35716f8e4929681fa
+compiler:       
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=17204e7c580000
 
