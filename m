@@ -1,250 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9BC2D4817
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE171607A4;
+	Tue, 21 Oct 2025 23:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761088822; cv=none; b=J32589OqWBv7EyiTceXgHcBcLGblzfp6BxnRx/g/C/a216zLhUTFe/Ik0yO8MGZueKxHvG4Xj6C8l4DjCTvGph8MxkYCgyNe/Gl//bTt+JOdX2GaBW+C3MU4CFUiM+Y6tld60IZwcNBKAXFDexa+ygR4ngciIdLhGD61D+bV3So=
+	t=1761088931; cv=none; b=mqg56g+b5kcrMDv/SZyT8vyWgbErKil3B1nSDHjhQvHnbqOxwfqo5a2wRLJn5MzClf6NboYEzJ/OceKkV2/OHniqKH52+yYmA6Y5O3DPPsLdhax5x0zsCbASNX3M+MwxrhL+GjJOkV83hpVmDoP1Sz2+Jb+J1apVi5+wLY32TqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761088822; c=relaxed/simple;
-	bh=i5CaFxESVUajSzzaSX/NULdBNRjUpzIip4EUkT4cfSE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rJ9RYVC8FGrY2yTfxaISgwGmRbZRmQ/aqneAKLpRxxV0bfY8aw9jBPFt0rr3QYaoHnFYB9TZQwtsxOfEStaiLIL942JXHZDCfxo09oPYCfkNynsbauX45J1tj5y7+xLY9mxONvitTxbg6aLf6zwyEkpL2kaMLUGA3g+7VWFPkK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ddl7Bqnz; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761088931; c=relaxed/simple;
+	bh=KS1gUKbzv6wVHDN+QdAU9oVbX/OCFpep//VN36feu5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U535R5s4v4jTzSdFU9mnwYUncMEMdMtTQ6aO61suhtEl9cB0SDTdBiLWrq3RajOhRwr8WAQ0sfup5Ko670ytDnNW9nq/YW0s9fn12/KMdA1VgYNlxjy7Bjm9FFzlgFNcKH8R3yJ+1b1LdVE+4EEgvmePVzyDgZIC5onywk+HfLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKyX+FMh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ddl7Bqnz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761088821; x=1792624821;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=i5CaFxESVUajSzzaSX/NULdBNRjUpzIip4EUkT4cfSE=;
-  b=Ddl7BqnzjC4thOx39y/f9luASfFuDVJNH9pOR89hKvHGXwgOV3Hvw8eK
-   W9TyN/XwlrQb/5HMcX3mU6yVeZUo3A7YNjw99E3xwGz5yiIJFyV0HeGNy
-   zn55CTfkwp5VxdIJ6kYfONSNpXH5o8IQgzpCRs4/PsbPUoEzpmzO1yZU7
-   SLkKto673IGJ4M9aZA3hfQXK6K5oj2b1hcYMNQBDMf2O3S4uCffzbufW8
-   Rpx2ulFF9DtUY30YMFHC5N2IHzXl44WUErIWo45CQXspfDMC82QW+4kyP
-   hS+iTRZkuKzQDLRpwr4AZy31Dweeme0qmOqvJ4uN8NiXOEtt51/51VHlA
-   Q==;
-X-CSE-ConnectionGUID: 6dyvq/IUTg2lNgE8SexvJQ==
-X-CSE-MsgGUID: TXcYlDrMSkivZwsNWpup0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66868456"
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="66868456"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 16:20:12 -0700
-X-CSE-ConnectionGUID: CC+akCXzRB+ywIsWI4BfaA==
-X-CSE-MsgGUID: eRhWywkuTZa2ZiA+l2YN1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="214352312"
-Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
-  by orviesa002.jf.intel.com with ESMTP; 21 Oct 2025 16:20:12 -0700
-From: Joshua Hay <joshua.a.hay@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Subject: [Intel-wired-lan][PATCH iwl-next v9 10/10] idpf: generalize mailbox API
-Date: Tue, 21 Oct 2025 16:30:56 -0700
-Message-Id: <20251021233056.1320108-11-joshua.a.hay@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20251021233056.1320108-1-joshua.a.hay@intel.com>
-References: <20251021233056.1320108-1-joshua.a.hay@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKyX+FMh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EFAC4CEFD;
+	Tue, 21 Oct 2025 23:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761088931;
+	bh=KS1gUKbzv6wVHDN+QdAU9oVbX/OCFpep//VN36feu5U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mKyX+FMhXAZuBb9Y3AF/s++6XipsxNuhaxXq/craMh88lm7a7+GETrsCLMSmiIbjk
+	 Dlh2UzbxjJDS4eKU2ECueYp771b4MN5IOuNay0TdtyDDh+FSjKFd3cUXHP3f01yudO
+	 QsYWaycXwPkxiQJG2OO6iY98It7FZnZmeM5SaD7Zi/w+qMuDXd8BYmZCJ+DJXltK5h
+	 F0sOV4e/y743iH0ibQfwQa/byAfbMIY0V7B8djPVg4Fh+G0cwU91r3V34s5+17RILX
+	 JzAdIcdYZatVWzpOeacSPK0noV7icrYmtzCgJAbLPiUIQUbdtd46LvKOcKTUuSWbvY
+	 4aoMl527JCXNw==
+Date: Tue, 21 Oct 2025 16:22:09 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Zahari Doychev <zahari.doychev@linux.com>
+Cc: donald.hunter@gmail.com, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, jacob.e.keller@intel.com,
+ ast@fiberby.net, matttbe@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com,
+ jiri@resnulli.us, johannes@sipsolutions.net
+Subject: Re: [PATCH 2/4] tools: ynl: zero-initialize struct ynl_sock memory
+Message-ID: <20251021162209.73215f57@kernel.org>
+In-Reply-To: <7mgcwqzafkqheqmbvkdx6bfeugfkuqrgik6ipdoxy3rtvinkqq@uxwnz7243zec>
+References: <20251018151737.365485-1-zahari.doychev@linux.com>
+	<20251018151737.365485-3-zahari.doychev@linux.com>
+	<20251020161639.7b1734c6@kernel.org>
+	<7mgcwqzafkqheqmbvkdx6bfeugfkuqrgik6ipdoxy3rtvinkqq@uxwnz7243zec>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+On Tue, 21 Oct 2025 20:36:38 +0300 Zahari Doychev wrote:
+> On Mon, Oct 20, 2025 at 04:16:39PM -0700, Jakub Kicinski wrote:
+> > On Sat, 18 Oct 2025 17:17:35 +0200 Zahari Doychev wrote:  
+> > > The memory belonging to tx_buf and rx_buf in ynl_sock is not
+> > > initialized after allocation. This commit ensures the entire
+> > > allocated memory is set to zero.
+> > > 
+> > > When asan is enabled, uninitialized bytes may contain poison values.
+> > > This can cause failures e.g. when doing ynl_attr_put_str then poisoned
+> > > bytes appear after the null terminator. As a result, tc filter addition
+> > > may fail.  
+> > 
+> > We add strings with the null-terminating char, AFAICT.
+> > Do you mean that the poison value appears in the padding?
+> >   
+> 
+> Yes, correct. The function nla_strcmp(...) does not match in this case as
+> the poison value appears in the padding after the null byte.
+> 
+> > > Signed-off-by: Zahari Doychev <zahari.doychev@linux.com>
+> > > ---
+> > >  tools/net/ynl/lib/ynl.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+> > > index 2bcd781111d7..16a4815d6a49 100644
+> > > --- a/tools/net/ynl/lib/ynl.c
+> > > +++ b/tools/net/ynl/lib/ynl.c
+> > > @@ -744,7 +744,7 @@ ynl_sock_create(const struct ynl_family *yf, struct ynl_error *yse)
+> > >  	ys = malloc(sizeof(*ys) + 2 * YNL_SOCKET_BUFFER_SIZE);
+> > >  	if (!ys)
+> > >  		return NULL;
+> > > -	memset(ys, 0, sizeof(*ys));
+> > > +	memset(ys, 0, sizeof(*ys) + 2 * YNL_SOCKET_BUFFER_SIZE);  
+> > 
+> > This is just clearing the buffer initially, it can be used for multiple
+> > requests. This change is no good as is.  
+> 
+> I see. Should then the ynl_attr_put_str be changed to zero the padding
+> bytes or it is better to make sure the buffers are cleared for each
+> request?
 
-Add a control queue parameter to all mailbox APIs in order to make use
-of those APIs for non-default mailbox as well.
+Eek, I think the bug is in how ynl_attr_put_str() computes len.
+len is attr len, it should not include padding.
+At the same time we should probably zero-terminate the strings
+in case kernel wants NLA_NUL_STRING.
 
-Signed-off-by: Anton Nadezhdin <anton.nadezhdin@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
----
-v8: rebase on AF_XDP series
----
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |  3 +-
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 33 ++++++++++---------
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  6 ++--
- 4 files changed, 24 insertions(+), 20 deletions(-)
+Just for illustration -- I think we should do something like 
+the following, please turn this into a real patch if it makes sense:
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index d9086be69af0..7c86e4084006 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1315,7 +1315,7 @@ void idpf_mbx_task(struct work_struct *work)
- 		queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task,
- 				   msecs_to_jiffies(300));
+diff --git a/tools/net/ynl/lib/ynl-priv.h b/tools/net/ynl/lib/ynl-priv.h
+index 29481989ea76..515c6d12f68a 100644
+--- a/tools/net/ynl/lib/ynl-priv.h
++++ b/tools/net/ynl/lib/ynl-priv.h
+@@ -314,14 +314,14 @@ ynl_attr_put_str(struct nlmsghdr *nlh, unsigned int attr_type, const char *str)
+        size_t len;
  
--	idpf_recv_mb_msg(adapter);
-+	idpf_recv_mb_msg(adapter, adapter->hw.arq);
- }
+        len = strlen(str);
+-       if (__ynl_attr_put_overflow(nlh, len))
++       if (__ynl_attr_put_overflow(nlh, len + 1))
+                return;
  
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-index 8c2008477621..7527b967e2e7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_vf_dev.c
-@@ -158,7 +158,8 @@ static void idpf_vf_trigger_reset(struct idpf_adapter *adapter,
- 	/* Do not send VIRTCHNL2_OP_RESET_VF message on driver unload */
- 	if (trig_cause == IDPF_HR_FUNC_RESET &&
- 	    !test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
--		idpf_send_mb_msg(adapter, VIRTCHNL2_OP_RESET_VF, 0, NULL, 0);
-+		idpf_send_mb_msg(adapter, adapter->hw.asq,
-+				 VIRTCHNL2_OP_RESET_VF, 0, NULL, 0);
- }
+        attr = (struct nlattr *)ynl_nlmsg_end_addr(nlh);
+        attr->nla_type = attr_type;
  
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 4f9e9a0ebe53..f5fa7874a9f0 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -117,13 +117,15 @@ static void idpf_recv_event_msg(struct idpf_adapter *adapter,
+        strcpy((char *)ynl_attr_data(attr), str);
+-       attr->nla_len = NLA_HDRLEN + NLA_ALIGN(len);
++       attr->nla_len = NLA_HDRLEN + len + 1;
  
- /**
-  * idpf_mb_clean - Reclaim the send mailbox queue entries
-- * @adapter: Driver specific private structure
-+ * @adapter: driver specific private structure
-+ * @asq: send control queue info
-  *
-  * Reclaim the send mailbox queue entries to be used to send further messages
-  *
-  * Returns 0 on success, negative on failure
-  */
--static int idpf_mb_clean(struct idpf_adapter *adapter)
-+static int idpf_mb_clean(struct idpf_adapter *adapter,
-+			 struct idpf_ctlq_info *asq)
- {
- 	u16 i, num_q_msg = IDPF_DFLT_MBX_Q_LEN;
- 	struct idpf_ctlq_msg **q_msg;
-@@ -134,7 +136,7 @@ static int idpf_mb_clean(struct idpf_adapter *adapter)
- 	if (!q_msg)
- 		return -ENOMEM;
- 
--	err = idpf_ctlq_clean_sq(adapter->hw.asq, &num_q_msg, q_msg);
-+	err = idpf_ctlq_clean_sq(asq, &num_q_msg, q_msg);
- 	if (err)
- 		goto err_kfree;
- 
-@@ -206,7 +208,8 @@ static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
- 
- /**
-  * idpf_send_mb_msg - Send message over mailbox
-- * @adapter: Driver specific private structure
-+ * @adapter: driver specific private structure
-+ * @asq: control queue to send message to
-  * @op: virtchnl opcode
-  * @msg_size: size of the payload
-  * @msg: pointer to buffer holding the payload
-@@ -216,8 +219,8 @@ static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
-  *
-  * Returns 0 on success, negative on failure
-  */
--int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
--		     u16 msg_size, u8 *msg, u16 cookie)
-+int idpf_send_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *asq,
-+		     u32 op, u16 msg_size, u8 *msg, u16 cookie)
- {
- 	struct idpf_ctlq_msg *ctlq_msg;
- 	struct idpf_dma_mem *dma_mem;
-@@ -231,7 +234,7 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 	if (idpf_is_reset_detected(adapter))
- 		return 0;
- 
--	err = idpf_mb_clean(adapter);
-+	err = idpf_mb_clean(adapter, asq);
- 	if (err)
- 		return err;
- 
-@@ -267,7 +270,7 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 	ctlq_msg->ctx.indirect.payload = dma_mem;
- 	ctlq_msg->ctx.sw_cookie.data = cookie;
- 
--	err = idpf_ctlq_send(&adapter->hw, adapter->hw.asq, 1, ctlq_msg);
-+	err = idpf_ctlq_send(&adapter->hw, asq, 1, ctlq_msg);
- 	if (err)
- 		goto send_error;
- 
-@@ -463,7 +466,7 @@ ssize_t idpf_vc_xn_exec(struct idpf_adapter *adapter,
- 	cookie = FIELD_PREP(IDPF_VC_XN_SALT_M, xn->salt) |
- 		 FIELD_PREP(IDPF_VC_XN_IDX_M, xn->idx);
- 
--	retval = idpf_send_mb_msg(adapter, params->vc_op,
-+	retval = idpf_send_mb_msg(adapter, adapter->hw.asq, params->vc_op,
- 				  send_buf->iov_len, send_buf->iov_base,
- 				  cookie);
- 	if (retval) {
-@@ -662,12 +665,13 @@ idpf_vc_xn_forward_reply(struct idpf_adapter *adapter,
- 
- /**
-  * idpf_recv_mb_msg - Receive message over mailbox
-- * @adapter: Driver specific private structure
-+ * @adapter: driver specific private structure
-+ * @arq: control queue to receive message from
-  *
-  * Will receive control queue message and posts the receive buffer. Returns 0
-  * on success and negative on failure.
-  */
--int idpf_recv_mb_msg(struct idpf_adapter *adapter)
-+int idpf_recv_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *arq)
- {
- 	struct idpf_ctlq_msg ctlq_msg;
- 	struct idpf_dma_mem *dma_mem;
-@@ -679,7 +683,7 @@ int idpf_recv_mb_msg(struct idpf_adapter *adapter)
- 		 * actually received on num_recv.
- 		 */
- 		num_recv = 1;
--		err = idpf_ctlq_recv(adapter->hw.arq, &num_recv, &ctlq_msg);
-+		err = idpf_ctlq_recv(arq, &num_recv, &ctlq_msg);
- 		if (err || !num_recv)
- 			break;
- 
-@@ -695,8 +699,7 @@ int idpf_recv_mb_msg(struct idpf_adapter *adapter)
- 		else
- 			err = idpf_vc_xn_forward_reply(adapter, &ctlq_msg);
- 
--		post_err = idpf_ctlq_post_rx_buffs(&adapter->hw,
--						   adapter->hw.arq,
-+		post_err = idpf_ctlq_post_rx_buffs(&adapter->hw, arq,
- 						   &num_recv, &dma_mem);
- 
- 		/* If post failed clear the only buffer we supplied */
-@@ -3381,7 +3384,7 @@ int idpf_init_dflt_mbx(struct idpf_adapter *adapter)
- void idpf_deinit_dflt_mbx(struct idpf_adapter *adapter)
- {
- 	if (adapter->hw.arq && adapter->hw.asq) {
--		idpf_mb_clean(adapter);
-+		idpf_mb_clean(adapter, adapter->hw.asq);
- 		idpf_ctlq_deinit(&adapter->hw);
- 	}
- 	adapter->hw.arq = NULL;
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index b269986bcc64..dff34ded1c40 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -116,9 +116,9 @@ bool idpf_sideband_action_ena(struct idpf_vport *vport,
- 			      struct ethtool_rx_flow_spec *fsp);
- unsigned int idpf_fsteer_max_rules(struct idpf_vport *vport);
- 
--int idpf_recv_mb_msg(struct idpf_adapter *adapter);
--int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
--		     u16 msg_size, u8 *msg, u16 cookie);
-+int idpf_recv_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *arq);
-+int idpf_send_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *asq,
-+		     u32 op, u16 msg_size, u8 *msg, u16 cookie);
- 
- struct idpf_queue_ptr {
- 	enum virtchnl2_queue_type	type;
--- 
-2.39.2
-
+        nlh->nlmsg_len += NLMSG_ALIGN(attr->nla_len);
