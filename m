@@ -1,74 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15329BDAA;
-	Tue, 21 Oct 2025 23:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088AB143C61
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761088489; cv=none; b=HrEZutQ6sgF3Wg0mTGNqnGdlH7z/BlXh7F5OiMVOXPNutV/QiSHN5dPyS+rQGpFR6LqY73BZGga3secWHG1pMqfPBwLYv0l916+zOja1+dDM7QJynUNCYShmd6rkToMrT3ldanzPgGqkQsM8vFVxGGMCMRg4R+4bcnpy6Ep2mxA=
+	t=1761088812; cv=none; b=BmZqH89CXHHyOiqHxeBUdjvhsfCHpAAnfo4NX0XbWilME710CFWkku58qbFZnyWHOBMNGmH1PWSUPLrJJhfhIIqhGoCuEr8P46b1+QAwlfrDlC2GYR341Cxn2eBJZnqXbCHCYjt01mg2tjyZodnHGKFaE+Mw0h1+V95QuB67N1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761088489; c=relaxed/simple;
-	bh=7QQb4GTgchMrwGuaKApml7J8jP85IbcXmIf/phxMWxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q5o1lCwn5tD7Oj7DNhXCuN+2aw2jKV/BkIM59PPOxQJ7OxAOChxMrYkLaHBwc7P2lDL5S8ZLiZG53Up6I7LkPip5W+ZSXGIA3t6VacGUhQ5CKWSHtzR+lue2TMHvNDzX5HKwso1y3hlIkUVrsNDtBhxZh8V1ngYQ1PLj7MZPbKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OnuUWCvJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761088812; c=relaxed/simple;
+	bh=qVMCjY2QkM8JoERwPFi7tBz4Ibd7sbmtbKBrJpNEjAk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tNtFJcnuEPQZHhhRduTJCiRnrSwrgMwmhtQg29Iubs1PEaEJt9epSOztGZG2KKIUWkRsfi6XbjEUd5BkkV6Ko6tBZehyWIMjg8qM/+S3c6lcELlYLnGqQwxfM1QkN41FhWaROH5jZ6gSLtZDUHCTzWLK6JGNtHvEfZ576Brr3vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWswjstq; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OnuUWCvJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6070C4CEF1;
-	Tue, 21 Oct 2025 23:14:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761088489;
-	bh=7QQb4GTgchMrwGuaKApml7J8jP85IbcXmIf/phxMWxY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OnuUWCvJVLQsSu4pWgkWaxOa83IRzjCfhvxs5XaRWnA2ixzq06zRH6n6uGPKM10gw
-	 EV6uWJet0KcTtLQDUefCMwEiLnQgNVk6asZ6jUlrxdYnHaIYwUAmZ9EdMFD+bQKXW+
-	 8GpiuYEj4oBU+pIw6PvDGDAdlHlwTSGZ7lVOJQeeLKVp3Bbks/90pkarDWfDmKs3I1
-	 Fe4dr2QXyEB1YZVWsIgDiehqROnVHNCKL2DzWWJPoTD1GA2C0PBFrV+TT6uU3B+lvA
-	 /2ZImK/7Kj0Et3cuVJbU2qMtPIcf+UyYwfAkfknZqzLD+c3IOhlm08NWkkr8gh7AY8
-	 MVOXKudu7GfGw==
-Date: Tue, 21 Oct 2025 16:14:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Gerhard Engleder <gerhard@engleder-embedded.com>
-Cc: Horatiu Vultur <horatiu.vultur@microchip.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, richardcochran@gmail.com
-Subject: Re: [PATCH net-next] net: phy: micrel: Add support for non PTP SKUs
- for lan8814
-Message-ID: <20251021161447.311a3e0f@kernel.org>
-In-Reply-To: <e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
-References: <20251017074730.3057012-1-horatiu.vultur@microchip.com>
-	<79f403f0-84ed-43fe-b093-d7ce122d41fd@engleder-embedded.com>
-	<20251020063945.dwqgn5yphdwnt4vk@DEN-DL-M31836.microchip.com>
-	<e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWswjstq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761088811; x=1792624811;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qVMCjY2QkM8JoERwPFi7tBz4Ibd7sbmtbKBrJpNEjAk=;
+  b=AWswjstq879I2rDIKcVZKw+6/y5mIhFkHkj9yBq9LudY1w5U8bBLSmTG
+   cwhe9InY8N2YQWW0dcC9IOBVBrG8/l5EP340yZzRiOjisANuMR6LLFO99
+   EAyEYCy2k7aEm49mvuKog1aQNuN0awxp5MjZ2rWDBAKTbKzwycSX+Lu6d
+   8xC7D9qkIaUKrGYOTv+ulocxQ7lhPSiGZA2Mo0xyQZlilVUgpoQ/7f7Aa
+   I4xZntBSCe2TUla7yutRQM9+AkrZ+Yv81xROGqSMLuYvuGz7t8eNsIbQO
+   hjmzyB1nOmUKPOq5UsrGqSfvujuWqN6Dh5zBSqjqsupDJ90D8n7kzz+ji
+   g==;
+X-CSE-ConnectionGUID: Q0OFSd3jT4O4Jcm6z7D6Lw==
+X-CSE-MsgGUID: tJDeYeDNT4mw41BI3opwIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="66868444"
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="66868444"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Oct 2025 16:20:11 -0700
+X-CSE-ConnectionGUID: 6TdtskARQSiNezQLV8XLmA==
+X-CSE-MsgGUID: EtelkaLQT76r+j+wATuKlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
+   d="scan'208";a="214352297"
+Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
+  by orviesa002.jf.intel.com with ESMTP; 21 Oct 2025 16:20:11 -0700
+From: Joshua Hay <joshua.a.hay@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Subject: [Intel-wired-lan][PATCH iwl-next v9 00/10] refactor IDPF resource
+Date: Tue, 21 Oct 2025 16:30:46 -0700
+Message-Id: <20251021233056.1320108-1-joshua.a.hay@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 20 Oct 2025 20:11:13 +0200 Gerhard Engleder wrote:
-> >> Hasn't net also switched to the common kernel multiline comment style
-> >> starting with an empty line?  
-> > 
-> > I am not sure because I can see some previous commits where people used
-> > the same comment style:
-> > e82c64be9b45 ("net: stmmac: avoid PHY speed change when configuring MTU")
-> > 100dfa74cad9 ("net: dev_queue_xmit() llist adoption")  
-> 
-> The special coding style for multi line comments for net and drivers/net 
-> has been removed with
-> 82b8000c28 ("net: drop special comment style")
-> 
-> But I checked a few mails on the list and also found the old style in
-> new patches.
+Queue and vector resources for a given vport, are stored in the
+idpf_vport structure. At the time of configuration, these
+resources are accessed using vport pointer. Meaning, all the
+config path functions are tied to the default queue and vector
+resources of the vport.
 
-We removed the check that _suggests_ the use of the superior style.
-Aesthetic taste is not evenly distributed within the population.
-But we still prefer the old style in netdev.
+There are use cases which can make use of config path functions
+to configure queue and vector resources that are not tied to any
+vport. One such use case is PTP secondary mailbox creation
+(it would be in a followup series). To configure queue and interrupt
+resources for such cases, we can make use of the existing config
+infrastructure by passing the necessary queue and vector resources info.
 
-That said I don't think nit picking on comment style is productive,
-in either direction.
+To achieve this, group the existing queue and vector resources into
+default resource group and refactor the code to pass the resource
+pointer to the config path functions.
+
+This series also includes patches which generalizes the send virtchnl
+message APIs and mailbox API that are necessary for the implementation
+of PTP secondary mailbox.
+
+---
+v9:
+* move iterator declaration changes to separate commit
+
+v8:
+* rebase on AF_XDP series [1]
+* drop one commit as it was no longer necessary
+* add new commit ("idpf: remove vport pointer from queue sets")
+to make recently introduced queue_sets compatible with resoure
+refactor and corresponding API changes
+
+v7:
+* modify idpf_q_vec_rsrc declaration in idpf_vport struct to not
+mess with memcpy in idpf_initiate_soft_reset
+* reshuffle vport struct fields to avoid holes
+
+v6:
+* packed idpf_queue_id_reg_chunk struct
+* fixed inconsistent use of caps/small case for kdoc
+* initialized loop iterator inloop and used the right type
+* moved adapter out of the loop in idpf_rxq_group_alloc
+
+v5:
+* update function parameters to pass chunks as needed
+* revert back the 'idpf_is_feature_ena' changes
+* remove redundant vport parameter in idpf_[add/del]_mac_filter
+* refactor all send_virtchnl APIs to avoid accessing vport pointer
+* refactor get_ptypes to avoid calling it for each vport
+
+v4:
+* introduce local idpf structure to store virtchnl queue chunks
+* remove 'req_qs_chunks' field
+* fix function doc comments to use caps or lower case letters
+
+v3:
+* update commit message of 6th patch
+
+v2:
+* fix kdoc issues (s/rss/RSS, add return statement)
+* rename structure idpf_rsrc to idpf_q_vec_rsrc
+* reshuffle struct members to avoid holes created in idpf_q_vec_rsrc and
+idpf_vport structures
+* introduce additional 2 patches to the series which generalizes the
+send virtchnl message APIs and mailbox APIs
+* fix unintialized usage of a variable in idpf_initiate_soft_reset
+(reported by kernel bot)
+
+[1]
+https://lists.osuosl.org/pipermail/intel-wired-lan/Week-of-Mon-20250908/050286.html
+
+Joshua Hay (2):
+  idpf: move some iterator declarations inside for loops
+  idpf: remove vport pointer from queue sets
+
+Pavan Kumar Linga (8):
+  idpf: introduce local idpf structure to store virtchnl queue chunks
+  idpf: introduce idpf_q_vec_rsrc struct and move vector resources to it
+  idpf: move queue resources to idpf_q_vec_rsrc structure
+  idpf: reshuffle idpf_vport struct members to avoid holes
+  idpf: add rss_data field to RSS function parameters
+  idpf: generalize send virtchnl message API
+  idpf: avoid calling get_rx_ptypes for each vport
+  idpf: generalize mailbox API
+
+ drivers/net/ethernet/intel/idpf/idpf.h        |  177 +--
+ drivers/net/ethernet/intel/idpf/idpf_dev.c    |   18 +-
+ .../net/ethernet/intel/idpf/idpf_ethtool.c    |   93 +-
+ drivers/net/ethernet/intel/idpf/idpf_lib.c    |  212 ++--
+ drivers/net/ethernet/intel/idpf/idpf_ptp.c    |   17 +-
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c   |  735 ++++++------
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h   |   41 +-
+ drivers/net/ethernet/intel/idpf/idpf_vf_dev.c |   21 +-
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 1038 +++++++++--------
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |   81 +-
+ drivers/net/ethernet/intel/idpf/xdp.c         |   48 +-
+ drivers/net/ethernet/intel/idpf/xdp.h         |    6 +-
+ drivers/net/ethernet/intel/idpf/xsk.c         |   12 +-
+ 13 files changed, 1372 insertions(+), 1127 deletions(-)
+
+-- 
+2.39.2
+
