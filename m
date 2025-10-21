@@ -1,68 +1,68 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2672F25FE
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBDB27A107
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761090448; cv=none; b=st6SpRDzP9Irw+NVLUZNXKrtCbZGKIRLPJNFJdckGVgXm4J5SzM4G3LrZ8rp+MbaFIVS1KKS6YWOlWQImOfwKqQt49dS2u8HoI4JTzDk4Sg3MHtOYqCfF85O5d5fo3ed6pkBJ1Omireun7Ui49Cq0AdIK50q0/LB15KNDjJuH5M=
+	t=1761090450; cv=none; b=SXXiJBt0td18X4kFTORpMagGKw2bRJ5qTUB2Hh/PTKJeSIJB/WD88BlXP1/SfTKMPHoEIqnZI7fxZ9yuvPNmie7mI/3HilNcUK9fdmfOLs5ckwpaolQPxGvqkEg7kZ8kQURiKA1tNlUba0IINVyiTqSS3+/7r3KhTCOVeSRtj2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761090448; c=relaxed/simple;
-	bh=5WTKWKiUk8Dj2RvkxdNnCT58i8QpYZiL92GnKNlZW6Y=;
+	s=arc-20240116; t=1761090450; c=relaxed/simple;
+	bh=BMoDKOrhS66bBpIGFuMcrxO7gUW03URrQ8nNkpSPZhs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s+AWMJ8JdJXVC4LUr0M8kPY+z2CCgKwNOlkI4XUQ3U9iNq2PxcJCrKfEz/EoN4U0ceqMjcHYt+sLPDdK0GW4lt+okQAkr2uI35C4u+Y6POJX8Qkr8aTdeTkRsp1casR3bO38uVh2CydcbWY3wwsEEqowHL4YjQ1OrXF2s2sJu3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBqioFts; arc=none smtp.client-ip=209.85.214.180
+	 In-Reply-To:To:Cc; b=T7I4k51wOLouCf4PQFaJRDauDzeOK27/Q6nQkWnD4b/UBoUSJMVrhiyeMsBbV9E2apQIFyEtWVHheC/2OKW0eUJ0YVAmyY80I1vkVLGGU6dNbIrAU4c/vuAuPfBHOP31lnNnNHgU4eDFWMMTUDPb8ytym3Pj/BjWSABwT/HquIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBdMP7dN; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBqioFts"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-290deb0e643so47930245ad.2
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBdMP7dN"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b556284db11so5178448a12.0
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761090440; x=1761695240; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761090443; x=1761695243; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=TV8626iy6qZJteqWMHB3Fb4Ctz0bR6NM9tHbIBJXOjs=;
-        b=OBqioFtsCFj4zYM7FWkkTYwuPC1RqG8UQ1/NTlDPRV9FY3WVb7xphwfFlH1BdR+AnV
-         GeqoMirbsYDWTmFdtKOXW2nH/pELsHLmD06vKQDdBvvCt/ShuGKcg5IECGJtKQleOv33
-         UTRYGFt9iiDQXdazj17uuEN239KbjKe2iyWXOcruZuANVD/p6t8w1wdQimCUuSRv6yUx
-         U59AtdQMEyTsb2XxFD8EuNL9oopimrrgmB3wHUi0mZrgZAOF1rjsm6Ojd12tsCH+Tpqh
-         QlyWWpNO2ZK6vhA1/mOGO+GxpRLSycvl0Th0Pq3nXUYG9psmpkrLi3VfhU3jbFVJSMyd
-         1qWA==
+        bh=KCa9hiumthv+bRPHMdag7ntkQWTFgKpIIbTw+AdtIpU=;
+        b=NBdMP7dNyeOytmB2rvy/Yxg5bJ+F7cyedwstBr5tbIxXbfnQAnrRwwyYzF+xECSSyN
+         9RfXd4KOI/CJWLn2lW3wYqAvCS1Mz5u6AX2JgigUZRTQOzdWxZWjkYc/eRd0PZNtdtSN
+         dwsz4jMxNfDGPN+XQZSLjWxwXqsflbyVG+DmDKMNfTWFZ5AIhLVwMuIJeF7gTJ3ClkWK
+         q/vi7/iRl6+sfSx/nSpcF3YbQCkT1N5LShAjn+aKIL5bjUl2H2zgCOQ/n8d80JoKlFEk
+         nwzYeyo95tosg82ihqt7uyhz3cqdmntdVD4xHvcENRoF/FRYVeWC8K2G0hKe4fErfWAN
+         DT5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761090440; x=1761695240;
+        d=1e100.net; s=20230601; t=1761090443; x=1761695243;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TV8626iy6qZJteqWMHB3Fb4Ctz0bR6NM9tHbIBJXOjs=;
-        b=Jm1zBxt+dfr5yvsVSNoyROe4lgWwCxAgvq3GeTgb+GccVGo5Y2EXFiSJuZ8Aa2v+Un
-         VYLPPMrLRRKPLSNCR1vicmYhiRkHQ4hKhQomGWiW2Ucce+G/0B+XYYE7Q2Lteu/GSOgo
-         70MlFmWF7+ISJKzr8YeMvWnf0hJ/owEjQ7iB/CjNoD2paKEKfKJ3lBj/6tHz8gszio/u
-         d1CFup0TVqCr7H7IrELv8drrDtgq+wPe4faaSLarYrf4YbzL/0GUMhmZjreNISssdcag
-         BeApDX2aYnJ1Xb3ggXG7QMs3gGDeI7+oMTF9KUvwHVjr8Shu9bhXFhZ1lEP2OhvY0WAi
-         r8tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVrcUarAIoXerllaONeKta0orQwRDCBENKfs3JO0dQxrdXCqgrcPCzPVVkOhpNLFys2ykeYNXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBYaFVVANZ167/hNP82kTqzqd1jMgNklQz27mLNwurpvCZd7mW
-	De/hAQch5t0b+2iLXLB9p6HllZ5yJoGn3HBBeT0n9O9Ekj5ejFq4O/CS
-X-Gm-Gg: ASbGnctyNfN+f9iRypoIrE4AZ9Y22Ia9p4pcVVHIE3fE50F0J0pjThWktLt831CeHqy
-	jet9a0I3qFeH63aqwKpQHjDrPo450TaXYaKZ6iajnp6uUpja0ETWPXH0TPFTuTEDFFSTltCfp4u
-	idedaxIJWKd3+a8XCdXx2G1K9u3gWKjRV4uuivK/B/jVxYJARFGLmv+7iSdnFG1gqtQ9JYfQEMJ
-	BcELocoHC87gET6QIVgHHKzL1CBhzkEeYNwMmIsEbBSpVhrxPCLemWzsnVBTOVn4yOvynDJ40sF
-	BzkQgapjL3CBhwTN6Ydke+EnTDzFELXV1oSnoxMLE7OWiWnMf/flRpYmlpCGmQOmQL1r621Tmyn
-	evxdmu1rSQfeq8+Vp80BS7iuynpdB6i59hWzT84x+8iORLUbcx7bHx89QbZUlC50Bm9nsURiNjK
-	1pYj/H
-X-Google-Smtp-Source: AGHT+IF3YtiPWvZebVNqksLPddW34hdGMs6SWVpzynIffF/Cg3VXxCHnVj5pafWbxKnLw/A6JvakJA==
-X-Received: by 2002:a17:903:11cd:b0:290:9a31:26d6 with SMTP id d9443c01a7336-290cba4ec04mr234640025ad.57.1761090439594;
-        Tue, 21 Oct 2025 16:47:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29247223a3csm120532795ad.112.2025.10.21.16.47.19
+        bh=KCa9hiumthv+bRPHMdag7ntkQWTFgKpIIbTw+AdtIpU=;
+        b=q/5lQeIdtPGSNI9pMeXiGocud9OlCFRlmYRrYl5DO90pLzn9A9mUbyZ2On+YGl1cZI
+         ho6oXu3Cjrz2cvgki47rR9vPYawiaB+KBppiZj67V5uy79Idj2Tj5Jt4wwLbQGav5y9e
+         aiWGN6ZzltUucs91sV0dVsrJQBPwxr0kcWY3xqOl0pVcsezV72Pj7yo7ufaLWTYF7HuO
+         29OGTddHGwW8FPwMe8Ch+1fPrSTU7pAyKAENJ9RkWWc99u8Wj7TjXHJ07KXyWrH8J1yq
+         YnMNU7aR6WMsDvpAiESUWjI2KdXdsU7fCpny+gUflrkWL3oEFZYRpyVftKVceIRoksZZ
+         3hBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWyuR+pLLWtjL7O7E432WIu5RYFz0Der2zipyN/kgK8B7PfeORWREz1nZU5/AFlTmPR+TiySWk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3PtOJcHIx4rk3cMj7ftg4gXtsTsfqviMLrLFPd0NO73pD7bLz
+	SB5ty5JhhUJVo9adVaqhS0EqUtLhdGPEOxTU1CSoKn5sEGzWXeYwiRoj
+X-Gm-Gg: ASbGncvuIFCalh4g8c/cp2rcYiHWHZojPA+tusu/z7s0EReJiQegMX3noMTpUWf9oUW
+	urtnUnmOj0roWOiRwg8F3FXXOL30BLWKoyYIYjGKtC3/ZlkrwnoxSW+TctiHIcg4GRd45RjFpnG
+	KUjEIbkKzT8fmYAFT6LVEyVldLoQ8S1rZ8eXntTp7hxzf+Ov/1WQrO1yvzDFobc1OMfGDCqiAHK
+	kQ7iwt53KfHvzx3HrYRomSQn7/4a36UiQJyQ+hFjLPMW4hWgBrjScXaIHfHPncGwUWS0DEsuIcC
+	8PW2L0QXfhh+yySqk6e0zRgxAgUPxwVYI+dQgPLMEvq+OX1l6lCAxuw9jz2QvnMNvCJIbzBOBB4
+	aHrSIEYrGYzUbJUsXbI0F/xoYquuCfq15UheaDTwq3P9d5oLMttdB+hTsL2GGgB9hq1sMacfetw
+	dqCPz9az2A
+X-Google-Smtp-Source: AGHT+IGaqRNpMxUjoe2TEEOGYZ81AJdjcRS3PZQjYosVwq9rn7Rp/cmS0OGVE01pd5g/Wml0FTdNXQ==
+X-Received: by 2002:a17:903:22c3:b0:293:57e:c8a7 with SMTP id d9443c01a7336-293057eca74mr3060095ad.23.1761090443407;
+        Tue, 21 Oct 2025 16:47:23 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:70::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471d598asm120489125ad.63.2025.10.21.16.47.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 16:47:19 -0700 (PDT)
+        Tue, 21 Oct 2025 16:47:23 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 21 Oct 2025 16:47:05 -0700
-Subject: [PATCH net-next v7 22/26] selftests/vsock: add namespace tests for
- CID collisions
+Date: Tue, 21 Oct 2025 16:47:09 -0700
+Subject: [PATCH net-next v7 26/26] selftests/vsock: add 1.37 to tested
+ virtme-ng versions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251021-vsock-vmtest-v7-22-0661b7b6f081@meta.com>
+Message-Id: <20251021-vsock-vmtest-v7-26-0661b7b6f081@meta.com>
 References: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 In-Reply-To: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
@@ -95,115 +95,63 @@ X-Mailer: b4 0.13.0
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Add new namespace tests that validate the CID collision namespace rules.
-There are tests to ensure that global namespaces collide on the same
-CID, while local+local and local+global namespace combinations do not
-collide.
+Testing with 1.37 shows all tests passing:
+
+warning: vng version 'virtme-ng 1.37' has not been tested and may not function properly.
+	The following versions have been tested: 1.33 1.36
+1..30
+ok 1 vm_server_host_client
+ok 2 vm_client_host_server
+ok 3 vm_loopback
+ok 4 ns_host_vsock_ns_mode_ok
+ok 5 ns_host_vsock_ns_mode_write_once_ok
+ok 6 ns_global_same_cid_fails
+ok 7 ns_local_same_cid_ok
+ok 8 ns_global_local_same_cid_ok
+ok 9 ns_local_global_same_cid_ok
+ok 10 ns_diff_global_host_connect_to_global_vm_ok
+ok 11 ns_diff_global_host_connect_to_local_vm_fails
+ok 12 ns_diff_global_vm_connect_to_global_host_ok
+ok 13 ns_diff_global_vm_connect_to_local_host_fails
+ok 14 ns_diff_local_host_connect_to_local_vm_fails
+ok 15 ns_diff_local_vm_connect_to_local_host_fails
+ok 16 ns_diff_global_to_local_loopback_local_fails
+ok 17 ns_diff_local_to_global_loopback_fails
+ok 18 ns_diff_local_to_local_loopback_fails
+ok 19 ns_diff_global_to_global_loopback_ok
+ok 20 ns_same_local_loopback_ok
+ok 21 ns_same_local_host_connect_to_local_vm_ok
+ok 22 ns_same_local_vm_connect_to_local_host_ok
+ok 23 ns_mode_change_connection_continue_vm_ok
+ok 24 ns_mode_change_connection_continue_host_ok
+ok 25 ns_mode_change_connection_continue_both_ok
+ok 26 ns_delete_vm_ok
+ok 27 ns_delete_host_ok
+ok 28 ns_delete_both_ok
+ok 29 ns_loopback_global_global_late_module_load_ok
+ok 30 ns_loopback_local_local_late_module_load_fails
+
+This patch adds 1.37 to the virtme-ng versions to get rid of the above
+warning.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- tools/testing/selftests/vsock/vmtest.sh | 74 +++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ tools/testing/selftests/vsock/vmtest.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 4defadad5701..69ec6ec82b0c 100755
+index 648ae71bf45a..d73fdea886fb 100755
 --- a/tools/testing/selftests/vsock/vmtest.sh
 +++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -44,6 +44,10 @@ readonly TEST_NAMES=(
- 	vm_loopback
- 	ns_host_vsock_ns_mode_ok
- 	ns_host_vsock_ns_mode_write_once_ok
-+	ns_global_same_cid_fails
-+	ns_local_same_cid_ok
-+	ns_global_local_same_cid_ok
-+	ns_local_global_same_cid_ok
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -60,6 +64,18 @@ readonly TEST_DESCS=(
+@@ -338,7 +338,7 @@ check_vng() {
+ 	local version
+ 	local ok
  
- 	# ns_host_vsock_ns_mode_write_once_ok
- 	"Check /proc/sys/net/vsock/ns_mode is write-once on the host."
-+
-+	# ns_global_same_cid_fails
-+	"Check QEMU fails to start two VMs with same CID in two different global namespaces."
-+
-+	# ns_local_same_cid_ok
-+	"Check QEMU successfully starts two VMs with same CID in two different local namespaces."
-+
-+	# ns_global_local_same_cid_ok
-+	"Check QEMU successfully starts one VM in a global ns and then another VM in a local ns with the same CID."
-+
-+	# ns_local_global_same_cid_ok
-+	"Check QEMU successfully starts one VM in a local ns and then another VM in a global ns with the same CID."
- )
+-	tested_versions=("1.33" "1.36")
++	tested_versions=("1.33" "1.36" "1.37")
+ 	version="$(vng --version)"
  
- readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
-@@ -546,6 +562,64 @@ test_ns_host_vsock_ns_mode_ok() {
- 	return "${KSFT_PASS}"
- }
- 
-+namespaces_can_boot_same_cid() {
-+	local ns0=$1
-+	local ns1=$2
-+	local pidfile1 pidfile2
-+	local rc
-+
-+	pidfile1=$(mktemp $PIDFILE_TEMPLATE)
-+	vm_start "${pidfile1}" "${ns0}"
-+
-+	pidfile2=$(mktemp $PIDFILE_TEMPLATE)
-+	vm_start "${pidfile2}" "${ns1}"
-+
-+	rc=$?
-+	terminate_pidfiles "${pidfile1}" "${pidfile2}"
-+
-+	return $rc
-+}
-+
-+test_ns_global_same_cid_fails() {
-+	init_namespaces
-+
-+	if namespaces_can_boot_same_cid "global0" "global1"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_local_global_same_cid_ok() {
-+	init_namespaces
-+
-+	if namespaces_can_boot_same_cid "local0" "global0"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_global_local_same_cid_ok() {
-+	init_namespaces
-+
-+	if namespaces_can_boot_same_cid "global0" "local0"; then
-+		return "${KSFT_PASS}"
-+	fi
-+
-+	return "${KSFT_FAIL}"
-+}
-+
-+test_ns_local_same_cid_ok() {
-+	init_namespaces
-+
-+	if namespaces_can_boot_same_cid "local0" "local0"; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
- test_ns_host_vsock_ns_mode_write_once_ok() {
- 	add_namespaces
- 
+ 	ok=0
 
 -- 
 2.47.3
