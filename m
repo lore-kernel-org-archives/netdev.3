@@ -1,184 +1,115 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFE92765DF;
-	Tue, 21 Oct 2025 07:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2AC27466D
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 07:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761030638; cv=none; b=j+eD7yfYUKrUAJtvw06JQuKFydZLwUKUJS+d/v44XIeAgVu3409sMrCoubvezIpBq7d6mwYYFSI2dCo7Eb4cFpnC2KWEP4+eoYcD/qbzBOXOV8dCGHhuVzRhUMS4hCi2X+FeOBxv1eyze8aJaVZxN5PE1ZjZC8H53g4E4fMxWDM=
+	t=1761030889; cv=none; b=lVcu0LiuQ+Dfe4kyscqpg2lL7Ol9A4O2vuDNmTYeDQc97m05ApXKPzY/ZHPuEjebHOaDgDB5C6ZHqduKBc5P+ACdxSjogsRjnwlXbFB1BVp3SoYUF8qt9TyI3vemIirKxqoufGhaHHOM1e3W5qb8fPjEQ5HpvAEXoXaOBlmpTdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761030638; c=relaxed/simple;
-	bh=QJVAHHAkn8DjN7mbBznFDlr0cmLp94neJvA+bm6qe18=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=idXp9iw2CiR0vj3HumT2CyPqLJ9nKLQYt2OqC7p5F9zHmQ4Q5R1RSLIw5Pg/Qs9UeOeEbdO8GAIY9H5+uDrpskbFRYSysnneqmY9GGlTsS3idz2R1CJ5u7bIEkwOfXwOEvJYgUa/S8vGwI2s3rH8pLzu7t7amKdrajRQVfHnQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wBGzEkyZ; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761030889; c=relaxed/simple;
+	bh=+B2pxE/i3SpbGCZgmKAbV6E4BQeWooWjeCR64E75cc0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PPvx7VmK9bJn6HSrvCNGdVdnXxD6konyCbBPtr4Ks1eEcO7TEiem4LaH9Avo7gdPvySlIWqtY4+4/EHcvM+1A6X9/+gpWCU+1MEuXtH5fq9Rxg6R+6wGXcPSj7A2lMGG1TmV5SnzZHJdsNXxuqo1oF8ww1Kkv15u1bjXui5W6h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aN8EIQ72; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wBGzEkyZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761030636; x=1792566636;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QJVAHHAkn8DjN7mbBznFDlr0cmLp94neJvA+bm6qe18=;
-  b=wBGzEkyZGAut+Z8lStVSRJV9/GFh2nySVAj/QycoN8E2Wkuy/hoNNHXN
-   ZfKH61xv/XBbBMA/Ae/j/54aEe/JtW7U6zBy7ATuh26bumuzKMtpk9zAH
-   yXS0YKI6zMK+ISmAQNglbSZYkCDrQt1gbXcnzup2tPFjw+8N8QfrFYhRJ
-   1ww1tMgcu686eX41OegU6YcNL0fX0YkL0zO280Fkmu+1pZrpQ4THzIbQN
-   IOc3usloAcmnAzQj+5ELt1oVKDdk6k7dE0CkAzlqYRSD3ALEU7qARaRma
-   m4hrI/FVinXQksaBlV3Dg7gHiOyy7mt8L5iAxOaPg3CkKGywivkZ+sl89
-   Q==;
-X-CSE-ConnectionGUID: L27ecwcOQ5S4FUTyPcNyjw==
-X-CSE-MsgGUID: kDU4YAQaQnqZqxkTvZ0Sfw==
-X-IronPort-AV: E=Sophos;i="6.19,244,1754982000"; 
-   d="scan'208";a="279421702"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Oct 2025 00:09:27 -0700
-Received: from chn-vm-ex4.mchp-main.com (10.10.87.33) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 21 Oct 2025 00:08:56 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.27; Tue, 21 Oct 2025 00:08:56 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 21 Oct 2025 00:08:54 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>,
-	<gerhard@engleder-embedded.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net-next v2] net: phy: micrel: Add support for non PTP SKUs for lan8814
-Date: Tue, 21 Oct 2025 09:07:26 +0200
-Message-ID: <20251021070726.3690685-1-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aN8EIQ72"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761030886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P3VpVCv3g+Sg2rw7HqhbXAeRhRk3VZinAbv22WqGX9s=;
+	b=aN8EIQ72jM1JBH7LuRGkCk6AE/rt0NjnBZI1UJy/4Dxy62/D29Du0cJY2macei2NJOU7J4
+	NEdxO6xHG7rq1zg9ForjtcIZknjdO0bW9wr9tzaszybIvwgt2f3qfqeVO8Dqtti2tVOlTr
+	D8KITpl3XIe8lWWukpj5xFWnLp1KqT4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-AXDhg5npM5-1YWCCEa7T-w-1; Tue, 21 Oct 2025 03:14:44 -0400
+X-MC-Unique: AXDhg5npM5-1YWCCEa7T-w-1
+X-Mimecast-MFC-AGG-ID: AXDhg5npM5-1YWCCEa7T-w_1761030881
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47105bfcf15so28293095e9.2
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 00:14:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761030880; x=1761635680;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P3VpVCv3g+Sg2rw7HqhbXAeRhRk3VZinAbv22WqGX9s=;
+        b=fW93rf5yCm8sJlzMbjn28qpZkRPdyMii8zjAvfxa6Qz/2tZZS1Pt/LtqOKflKmx6vr
+         A4xcK3ooRVUzfLMeh2FMmESsISBSXiuAR8/KcoZX7AITFgX9fsf+2oSzhMarzmg3yUMa
+         KrxtbPct+2Hw8hNNDUyp58fe3ifRvQS4ZaH4pfl8YD98E95jgeqefHhxihkmqPf3wxX6
+         91ALoMk/iJSgMEnNXUdoR27/1hSH4QLa19Ekvg0P6xcP/rLGJrBSv70173sa3lgc7L1A
+         GoGQ6+Ectrg4HCuoyVyHSbHmqa6FgUjW+QORE72eNjOywg+9H/9+6Apesv5L0q8edMwL
+         bxVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXk58SYenGPaxVN2KXnfEbnmmCOVNGeRyUYPQzoPs0cWqYmwdKXRJqJxz3XWevXKud+EzmOkDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2MwXGtvIsEgnNQ5X8KH4jQVrG8yrtvENOcgJ7Exai5uWS9Xe/
+	6CVHchltrHn4iuOiVSSazVmWJYRCl/bCp464lNS+lnqbC43AhsLb8DUBqPxwqt5Yg147NiRzsy1
+	1nXlxRfeqrJtKdnSXtq+/T0eTNTUWgi1GEIa8DTb3g2b57ImPiSRsfPrODw==
+X-Gm-Gg: ASbGncuvLpBVmx/Vw9AzyWsf7xy/lco13dxHjcHVBp2Dd9oHssnL42/ds9j2nTZY4q1
+	58m/xggs4uWvz6vDg7IgZlgrD5ZNUlswwbiXvsdBjGSeH+azgbyER8B4YwRnO6v0BGryAkIayJ8
+	p2nR6+zmTndrlk0kpQfN319yvZjmfAYikvPitvcXdgWBe2JYBm8Vmspv6xPzVXMCyq4taGNvqwB
+	OPOlWs4n0N1eIDH3zyrWbWIVM8J2JenLrt7cWhE2Mj2BHIEyAsXA+Jy/9VxAOo8YKDF7nQ2Ymbz
+	Kb8ef6IpzOuj5f6X1L0ISPLk857LHfxJLPFEmL+Av0rAHNqcXuuq8YIRgDAavp/uluzCpb/2ogo
+	5qzvIDMq19E8jbhbvhhr5MMebpnKb8sBlXF6xbQOEM7UKSdE=
+X-Received: by 2002:a05:600c:621b:b0:46e:48fd:a1a9 with SMTP id 5b1f17b1804b1-4711791fbbbmr122888375e9.33.1761030880619;
+        Tue, 21 Oct 2025 00:14:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAbONMD+QOMnDrNKO8RV6QYb7ZpSXAEjBfkQuhDaa4d7qoOlbgykLKNXPsi+4U3b+ujGw+cQ==
+X-Received: by 2002:a05:600c:621b:b0:46e:48fd:a1a9 with SMTP id 5b1f17b1804b1-4711791fbbbmr122888225e9.33.1761030880241;
+        Tue, 21 Oct 2025 00:14:40 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00b9f9dsm18907741f8f.39.2025.10.21.00.14.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 00:14:39 -0700 (PDT)
+Message-ID: <be03d7a5-8839-4c84-9e16-b96e52f6983a@redhat.com>
+Date: Tue, 21 Oct 2025 09:14:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/8] net: enetc: Add i.MX94 ENETC support
+To: Wei Fang <wei.fang@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+ xiaoning.wang@nxp.com, Frank.Li@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ richardcochran@gmail.com
+Cc: imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20251016102020.3218579-1-wei.fang@nxp.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251016102020.3218579-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The lan8814 has 4 different SKUs and for 2 of these SKUs the PTP is
-disabled. All these SKUs have the same value in the register 2 and 3.
-Meaning that we can't differentiate them based on device id, therefore
-check the SKU register and based on this allow or not to create a PTP
-device.
+On 10/16/25 12:20 PM, Wei Fang wrote:
+> i.MX94 NETC has two kinds of ENETCs, one is the same as i.MX95, which
+> can be used as a standalone network port. The other one is an internal
+> ENETC, it connects to the CPU port of NETC switch through the pseudo
+> MAC. Also, i.MX94 have multiple PTP Timers, which is different from
+> i.MX95. Any PTP Timer can be bound to a specified standalone ENETC by
+> the IERB ETBCR registers. Currently, this patch only add ENETC support
+> and Timer support for i.MX94. The switch will be added by a separate
+> patch set.
+> 
+> ---
+> Note that the DTS patch (patch 8/8) is just for referenece, it will be
+> removed from this patch set when the dt-bindings patches have been
+> reviewed. It will be sent for review by another thread in the future.
 
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Note that such patch is (AFAICS) breaking Robert's tests. Including it
+in this series will possibly/likely prevent (or at least slow down) acks
+on the initial dst patches. I suggest omitting such patch in the next
+iteration.
 
----
-v1->v2:
-- fix commmit message by rephrasing it.
----
- drivers/net/phy/micrel.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Thanks,
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 5f2c7e5c314f5..a47e55c228155 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -101,6 +101,8 @@
- #define LAN8814_CABLE_DIAG_VCT_DATA_MASK	GENMASK(7, 0)
- #define LAN8814_PAIR_BIT_SHIFT			12
- 
-+#define LAN8814_SKUS				0xB
-+
- #define LAN8814_WIRE_PAIR_MASK			0xF
- 
- /* Lan8814 general Interrupt control/status reg in GPHY specific block. */
-@@ -367,6 +369,9 @@
- 
- #define LAN8842_REV_8832			0x8832
- 
-+#define LAN8814_REV_LAN8814			0x8814
-+#define LAN8814_REV_LAN8818			0x8818
-+
- struct kszphy_hw_stat {
- 	const char *string;
- 	u8 reg;
-@@ -449,6 +454,7 @@ struct kszphy_priv {
- 	bool rmii_ref_clk_sel;
- 	bool rmii_ref_clk_sel_val;
- 	bool clk_enable;
-+	bool is_ptp_available;
- 	u64 stats[ARRAY_SIZE(kszphy_hw_stats)];
- 	struct kszphy_phy_stats phy_stats;
- };
-@@ -4126,6 +4132,17 @@ static int lan8804_config_intr(struct phy_device *phydev)
- 	return 0;
- }
- 
-+/* Check if the PHY has 1588 support. There are multiple skus of the PHY and
-+ * some of them support PTP while others don't support it. This function will
-+ * return true is the sku supports it, otherwise will return false.
-+ */
-+static bool lan8814_has_ptp(struct phy_device *phydev)
-+{
-+	struct kszphy_priv *priv = phydev->priv;
-+
-+	return priv->is_ptp_available;
-+}
-+
- static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
- {
- 	int ret = IRQ_NONE;
-@@ -4142,6 +4159,9 @@ static irqreturn_t lan8814_handle_interrupt(struct phy_device *phydev)
- 		ret = IRQ_HANDLED;
- 	}
- 
-+	if (!lan8814_has_ptp(phydev))
-+		return ret;
-+
- 	while (true) {
- 		irq_status = lanphy_read_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 						  PTP_TSU_INT_STS);
-@@ -4203,6 +4223,9 @@ static void lan8814_ptp_init(struct phy_device *phydev)
- 	    !IS_ENABLED(CONFIG_NETWORK_PHY_TIMESTAMPING))
- 		return;
- 
-+	if (!lan8814_has_ptp(phydev))
-+		return;
-+
- 	lanphy_write_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 			      TSU_HARD_RESET, TSU_HARD_RESET_);
- 
-@@ -4332,6 +4355,9 @@ static int __lan8814_ptp_probe_once(struct phy_device *phydev, char *pin_name,
- 
- static int lan8814_ptp_probe_once(struct phy_device *phydev)
- {
-+	if (!lan8814_has_ptp(phydev))
-+		return 0;
-+
- 	return __lan8814_ptp_probe_once(phydev, "lan8814_ptp_pin",
- 					LAN8814_PTP_GPIO_NUM);
- }
-@@ -4446,6 +4472,18 @@ static int lan8814_probe(struct phy_device *phydev)
- 	devm_phy_package_join(&phydev->mdio.dev, phydev,
- 			      addr, sizeof(struct lan8814_shared_priv));
- 
-+	/* There are lan8814 SKUs that don't support PTP. Make sure that for
-+	 * those skus no PTP device is created. Here we check if the SKU
-+	 * supports PTP.
-+	 */
-+	err = lanphy_read_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+				   LAN8814_SKUS);
-+	if (err < 0)
-+		return err;
-+
-+	priv->is_ptp_available = err == LAN8814_REV_LAN8814 ||
-+				 err == LAN8814_REV_LAN8818;
-+
- 	if (phy_package_init_once(phydev)) {
- 		err = lan8814_release_coma_mode(phydev);
- 		if (err)
--- 
-2.34.1
+Paolo
 
