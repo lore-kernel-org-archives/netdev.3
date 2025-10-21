@@ -1,199 +1,185 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B325E25B1D2
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 06:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D30223DEC
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 06:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761028614; cv=none; b=l+cZQkOPIKIMP2uTv/JHk8dyWwX/0fLnuOBPOAw6Am7mo6gLob+t8qEnUo2PzPdPuXPIqJB5aSTMue4hGlZySXYcSqxNhkX291zyvM0ZTEFi2esF5kqWby5Ncd3VgeTqD7U1ECjNaCD0yQIVJIcJ/K21FTxHc7huzR0i+OxntnA=
+	t=1761028825; cv=none; b=o7IBptbOlXUjZB4lJQ+TBJr6oOR8T3ceuhldrgJyX8zQLwC+d8qFRucM7s+CkAnekRQOd8xKgBRt/DGi4SsYtrsWswhZWlFbDC50R1ShlUaJ2GvzDHywmck0Me7CWtb65MCsCiYLQBT5MPV8BQ5kAXlB78oaozTxLTIZQPKRHdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761028614; c=relaxed/simple;
-	bh=pPHShIOw0fKqNBE6FP/aihpLejo2j/yJSiQbkCPkF1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o9WxxGqdWzAXthIWk3UmoVPrD/5JNknwROFwC37ZJODmUNrLaTE34GOowo3bqy4eK/2uVLb3oDKSz+CDnx3IbUXlvkYFBVJ6fBQWq4KpDbCkzDyIUVW1YXst3GD/DNV7g3j/bTiB5dmMaKnKSI6dIRJ38CPvY5NVAIiCssWpMzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yp+gDZXg; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761028825; c=relaxed/simple;
+	bh=7beMPKfZFqquIXc+53bXjKbRlxvOL+ty+2k+4CwKHwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Suc21eV7fDS6axq+Q65vOqX/JDds5HSV8jEJEP/YW1w38WxgT4nxtVLcisYyiETcdiUkCh1XpGZOj6OL0J0APQUWGY0fV+XjZ0tYPz69BJkA0nPmVNq8//AFjQArClrJPTmrj/RdhR75f0zuUdWsWPJuh0siWjIHnR0fnRsnqrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CMTIph/G; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=CIv2sfn8; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XbgvKi4L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EVODCKCP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yp+gDZXg"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47495477241so3976095e9.3
-        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 23:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761028611; x=1761633411; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yWWblYrlCLEpcH5LTQcbLzZ3/EiI9nz+a1hzMsf4pNQ=;
-        b=Yp+gDZXg8xLE7MShXtTr3l9G7P5t8spbIFozLyQ9bWRRAPW3uxHW92Vt26khlqrH6i
-         taQWHH9LaEHqMoS1RhgK8XsedBuIGMJVPqN/kL4BT0r9inczmuXKmOQ2siss6dpqtidX
-         6mBC0SfEni/uRrcBIQQk/R8ImrAK2dyFUgEjnrETW7+g028b0QVygZTG61MHtSGwyQuP
-         JkipUU9iSwPt40z4EFwpTjvFSzjT+KaQYIa3HQ51d+KSYJ+1OJ8Bhg3huSlMLhToaWfB
-         3ZizoAFI4HJt+2usx8dXH9+NP6Zy5jxkFm33PYKTURjOLFrOk3oM4dfRSOXGPpRs+xiF
-         8KwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761028611; x=1761633411;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yWWblYrlCLEpcH5LTQcbLzZ3/EiI9nz+a1hzMsf4pNQ=;
-        b=ULlUJoU2TrLlDeJu/3a3fFek+ptnLHJ8pEBG1+o1NA015VUWkB4CvFulIdja8490ZG
-         nifrCmfomMdiL1Bj18jWhJwsiRhgOo5bqXvQS8tYjnO5ZNcRbC27Lj1GfiUUoV9y6iWa
-         m8RGoRHcd4iXx6InBXnUvaZ8xVFh/7RotreU9J0QKi3fNXZ4bISEJj+v/A/gkVTb1dXu
-         Q6FwdJQG8v9+qXIO37wwc/2nVylygmIUxmonSgmQrlU1pB7mf9ygauDddj6HrjlmE7LE
-         GaV3c9xHzvdU9NScT8gIpLQlDznkj8dPN/CcSELTSAl7p46rH1MKjiwVm2oxWehXaOhc
-         jG1w==
-X-Forwarded-Encrypted: i=1; AJvYcCU2lvE8aqjAeD7OX+6ZhmG7G2z61M/U1vRbFNjkAvNyeHU1Vknhf4py9MJ/eOGtE4G+cFMhMZU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv2uW0cFe4Cycb7X+FsoNCrlf/WoVorceTfEMJWheduDjo/xrr
-	z+EufqOC+8vrMk3B5b1WVGvR/xiNyogfSb9XMGDfn0HpmfB/nSQ6yVtkmL4NmdWzCsFOUCv4P7z
-	WaTFR
-X-Gm-Gg: ASbGncvXKcMpvVXVS12Oq7HFabigMHm7YPyCUWFmCdyw5IO0jotzM+/PH2vfNcWUgHp
-	+CqI4XrpOrHDiJiI9zoQgr9h2Yike+VxbyKIRMKUgr6QWskxvuB7QazuyifBpP9j4+SY/tBOWZt
-	GCBq/K/NnSqzFCexXz3kBz1wy4mykfJM77QuCIAmyagRImfn6/3M0ZEfwSsXAMBcU8Ci6Wyy0l6
-	VEV4c5C2nQP86ElxCEWCV4kA061ZH3qHaINsk5VG8Toylz+bFBz1ZWB/1yZU3C7VlmRK/LtfhXz
-	roXOnCH5C8LRH4QRSf7FvHuypZ+3tUaKFIkimHBN0e6RSEIuFuz8vwY3uDr25zcqpa1PN38qHoR
-	bTsjifQvswCh05h65yS1hSSGRak7A0uMx1lMWzky39UzTuX7mpqE7W5lNhRzu+Z8qV6NMkEQN6e
-	3tF5C2+Q==
-X-Google-Smtp-Source: AGHT+IEkQcqp1ksk1Cj9+LjNgTTmawr/C6jo8SGgwsLly2e1GhUHXpoCb0o0/Ssyg6De4Q0iYDMU6Q==
-X-Received: by 2002:a05:600c:8b66:b0:46e:1d8d:cfa2 with SMTP id 5b1f17b1804b1-471179117b3mr102871395e9.20.1761028610907;
-        Mon, 20 Oct 2025 23:36:50 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427ea5b3c56sm18971798f8f.18.2025.10.20.23.36.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Oct 2025 23:36:50 -0700 (PDT)
-Date: Tue, 21 Oct 2025 09:36:47 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Lizhi Xu <lizhi.xu@windriver.com>
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
-	kuba@kernel.org, linux-hams@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	syzbot+2860e75836a08b172755@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH V2] netrom: Prevent race conditions between multiple add
- route
-Message-ID: <aPcp_xemzpDuw-MW@stanley.mountain>
-References: <aPZ4fLKBiCCIGr9e@stanley.mountain>
- <20251021020533.1234755-1-lizhi.xu@windriver.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CMTIph/G";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="CIv2sfn8";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XbgvKi4L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EVODCKCP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E0E6A1F38E;
+	Tue, 21 Oct 2025 06:40:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761028818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AP37Hl7dZsrUQCdo+Wy/Ujr92FdnjRQ8OmnuPgn1zdc=;
+	b=CMTIph/GAzMOCdEHm0P4Cw7YR/1co+dCMqkANZjNCKckEHYg3PQE0JeYB4MOusIm9DEpcB
+	6uBk9aNiN05EMHxDXS6yFAqNloWDbXetkatKy6oTwhkYTUvM28sgJDZ7WqHVNQvM30aX4p
+	tAqbQhdiviRnQ9NYhcwTqxv2YS2hTEk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761028818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AP37Hl7dZsrUQCdo+Wy/Ujr92FdnjRQ8OmnuPgn1zdc=;
+	b=CIv2sfn8/Dm79W/Pz6mAjMTJ0dFtqsDhPRuSHc8MG7C0xzlB4MMcJojOhV89H0ETkn9lC+
+	PP40BgQodw7XEpBA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761028813; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AP37Hl7dZsrUQCdo+Wy/Ujr92FdnjRQ8OmnuPgn1zdc=;
+	b=XbgvKi4LGXTo/hXoDJ0p7shBMgXtuKo3oTBqOWzxHZM4yS8DWHhs/cW8BPx9vuxIeBEHec
+	uXRJ+Uzc/dzkc8qJTO4ShOM/uGCEgW+872gMvnifsmE8iubh8NOutkY5qi0hDnkE2T9AlB
+	C5Hq8pfaWdp4XYFtWcespOxSERbJN0w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761028813;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AP37Hl7dZsrUQCdo+Wy/Ujr92FdnjRQ8OmnuPgn1zdc=;
+	b=EVODCKCPUVXPU5aL7wKcV3mOyNR3SjmFmGUYhXJZk7NG5/XAAb96buUNZ8A0/0ED/gklZn
+	bJhMf2e37m9qq3BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 100D4139D2;
+	Tue, 21 Oct 2025 06:40:13 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SdgBAc0q92gOJQAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 21 Oct 2025 06:40:13 +0000
+Message-ID: <ddadb1f6-d7e9-427d-baf7-814d2288a407@suse.de>
+Date: Tue, 21 Oct 2025 08:40:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021020533.1234755-1-lizhi.xu@windriver.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/7] nvme-tcp: Support receiving KeyUpdate requests
+To: Alistair Francis <alistair23@gmail.com>
+Cc: chuck.lever@oracle.com, hare@kernel.org,
+ kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
+ kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me,
+ kch@nvidia.com, Alistair Francis <alistair.francis@wdc.com>
+References: <20251017042312.1271322-1-alistair.francis@wdc.com>
+ <fe16288e-e3f2-4de3-838e-181bbb0ce3ee@suse.de>
+ <CAKmqyKP0eB_WTZtMqtaNELPE4Bs9Ln-0U+_Oqk8fuJXTay_DPg@mail.gmail.com>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <CAKmqyKP0eB_WTZtMqtaNELPE4Bs9Ln-0U+_Oqk8fuJXTay_DPg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-On Tue, Oct 21, 2025 at 10:05:33AM +0800, Lizhi Xu wrote:
-> On Mon, 20 Oct 2025 20:59:24 +0300, Dan Carpenter wrote:
-> > On Mon, Oct 20, 2025 at 09:49:12PM +0800, Lizhi Xu wrote:
-> > > On Mon, 20 Oct 2025 21:34:56 +0800, Lizhi Xu wrote:
-> > > > > Task0					Task1						Task2
-> > > > > =====					=====						=====
-> > > > > [97] nr_add_node()
-> > > > > [113] nr_neigh_get_dev()		[97] nr_add_node()
-> > > > > 					[214] nr_node_lock()
-> > > > > 					[245] nr_node->routes[2].neighbour->count--
-> > > > > 					[246] nr_neigh_put(nr_node->routes[2].neighbour);
-> > > > > 					[248] nr_remove_neigh(nr_node->routes[2].neighbour)
-> > > > > 					[283] nr_node_unlock()
-> > > > > [214] nr_node_lock()
-> > > > > [253] nr_node->routes[2].neighbour = nr_neigh
-> > > > > [254] nr_neigh_hold(nr_neigh);							[97] nr_add_node()
-> > > > > 											[XXX] nr_neigh_put()
-> > > > >                                                                                         ^^^^^^^^^^^^^^^^^^^^
-> > > > >
-> > > > > These charts are supposed to be chronological so [XXX] is wrong because the
-> > > > > use after free happens on line [248].  Do we really need three threads to
-> > > > > make this race work?
-> > > > The UAF problem occurs in Task2. Task1 sets the refcount of nr_neigh to 1,
-> > > > then Task0 adds it to routes[2]. Task2 releases routes[2].neighbour after
-> > > > executing [XXX]nr_neigh_put().
-> > > Execution Order:
-> > > 1 -> Task0
-> > > [113] nr_neigh_get_dev() // After execution, the refcount value is 3
-> > >
-> > > 2 -> Task1
-> > > [246] nr_neigh_put(nr_node->routes[2].neighbour);   // After execution, the refcount value is 2
-> > > [248] nr_remove_neigh(nr_node->routes[2].neighbour) // After execution, the refcount value is 1
-> > >
-> > > 3 -> Task0
-> > > [253] nr_node->routes[2].neighbour = nr_neigh       // nr_neigh's refcount value is 1 and add it to routes[2]
-> > >
-> > > 4 -> Task2
-> > > [XXX] nr_neigh_put(nr_node->routes[2].neighbour)    // After execution, neighhour is freed
-> > > if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)  // Uaf occurs this line when accessing neighbour->count
-> > 
-> > Let's step back a bit and look at the bigger picture design.  (Which is
-> > completely undocumented so we're just guessing).
-> > 
-> > When we put nr_neigh into nr_node->routes[] we bump the nr_neigh_hold()
-> > reference count and nr_neigh->count++, then when we remove it from
-> > ->routes[] we drop the reference and do nr_neigh->count--.
-> > 
-> > If it's the last reference (and we are not holding ->locked) then we
-> > remove it from the &nr_neigh_list and drop the reference count again and
-> > free it.  So we drop the reference count twice.  This is a complicated
-> > design with three variables: nr_neigh_hold(), nr_neigh->count and
-> > ->locked.  Why can it not just be one counter nr_neigh_hold().  So
-> > instead of setting locked = true we would just take an extra reference?
-> > The nr_neigh->count++ would be replaced with nr_neigh_hold() as well.
-> locked controls whether the neighbor quality can be automatically updated;
+On 10/21/25 03:01, Alistair Francis wrote:
+> On Tue, Oct 21, 2025 at 3:46 AM Hannes Reinecke <hare@suse.de> wrote:
+>>
+>> On 10/17/25 06:23, alistair23@gmail.com wrote:
+>>> From: Alistair Francis <alistair.francis@wdc.com>
+>>>
+>>> The TLS 1.3 specification allows the TLS client or server to send a
+>>> KeyUpdate. This is generally used when the sequence is about to
+>>> overflow or after a certain amount of bytes have been encrypted.
+>>>
+>>> The TLS spec doesn't mandate the conditions though, so a KeyUpdate
+>>> can be sent by the TLS client or server at any time. This includes
+>>> when running NVMe-OF over a TLS 1.3 connection.
+>>>
+>>> As such Linux should be able to handle a KeyUpdate event, as the
+>>> other NVMe side could initiate a KeyUpdate.
+>>>
+>>> Upcoming WD NVMe-TCP hardware controllers implement TLS support
+>>> and send KeyUpdate requests.
+>>>
+>>> This series builds on top of the existing TLS EKEYEXPIRED work,
+>>> which already detects a KeyUpdate request. We can now pass that
+>>> information up to the NVMe layer (target and host) and then pass
+>>> it up to userspace.
+>>>
+>>> Userspace (ktls-utils) will need to save the connection state
+>>> in the keyring during the initial handshake. The kernel then
+>>> provides the key serial back to userspace when handling a
+>>> KeyUpdate. Userspace can use this to restore the connection
+>>> information and then update the keys, this final process
+>>> is similar to the initial handshake.
+>>>
+>>
+>> I am rather sceptical at the current tlshd implementation.
+>> At which place do you update the sending keys?
+> 
+> The sending keys are updated as part of gnutls_session_key_update().
+> 
+> gnutls_session_key_update() calls update_sending_key() which updates
+> the sending keys.
+> 
+> The idea is that when the sequence number is about to overflow the
+> kernel will request userspace to update the sending keys via the
+> HANDSHAKE_KEY_UPDATE_TYPE_SEND key_update_type. Userspace updates the
+> keys and initiates a KeyUpdate.
+> 
+That's also what the spec says.
+But in order to do that we would need to get hold of the sequence
+number, which currently is internal to gnutls.
+Can we extract it from the session information?
+And can we display it in sysfs, to give users information
+whether a KeyUpdate had happened?
 
-I'm not sure your patch fixes the bug because we could still race against
-nr_del_node().
+Cheers,
 
-I'm not saying get rid of locked completely, I'm saying get rid of code like
-this:
-		if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
-			nr_remove_neigh(nr_node->routes[2].neighbour);
-
-Right now, locked serves as a special kind of reference count, because we
-don't drop the reference if it's true.
-
-> count controls the number of different routes a neighbor is linked to;
-
-Sure, that is interesting information for the user, so keep it around to
-print in the proc file, but don't use it as a reference count.
-
-> refcount is simply used to manage the neighbor lifecycle.
-
-The bug is caused because our reference counting is bad.
-
-So right now what happens is we allocate nr_neigh and we put it on the
-&nr_neigh_list.  Then we lock it or we add it to ->routes[] and each of
-those has a different reference count.  Then when we drop those references
-we do:
-
-		if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
-			nr_remove_neigh(nr_node->routes[2].neighbour);
-
-This removes it from the list, and hopefully this is the last reference
-and it frees it.
-
-It would be much simpler to say, we only use nr_neigh_hold()/put() for
-reference counting.  When we set locked we do:
-
-	nr_neigh_hold(nr_neigh);
-	nr_neigh->locked  = true;
-
-Incrementing the refcount means it can't be freed.
-
-Then when we remove nr_neigh from ->routes[] we wouldn't "remove it from
-the list", instead we would just drop a reference.  When we dropped the
-last reference, nr_neigh_put() would remove it from the list.
-
-My proposal would be a behavior change because right now what happens is:
-
-1: allocate nr_neigh
-2: add it to ->routes[]
-3: remove it from ->routes[]
-   (freed automatically because we drop two references)
-
-Now it would be:
-1: allocate nr_neigh
-2: add it to ->routes[]
-3: remove it from ->routes[]
-4: needs to be freed manually with nr_del_neigh().
-
-regards,
-dan carpenter
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
