@@ -1,74 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic315-55.consmr.mail.gq1.yahoo.com (sonic315-55.consmr.mail.gq1.yahoo.com [98.137.65.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093D434A3B7
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 19:16:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970CA344026
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 19:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.65.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761074217; cv=none; b=bm4Ar+elA6LQqfgGoxMGzlpu7QmV1NmLKP8ki78oNfW9jOq+MR0sGRHeh9oo/jSoBELCz0uRKkVbNMNd0XRs33yaY5Ue61RD6RuYGGi6R3MAl0VA1NjMjCydUAGXkIYyP2nschmNeRpl2844Dq7fCelgVVihVR6vZXU9dck3znU=
+	t=1761074841; cv=none; b=QWpxr8lE+ip477QnedJk5RyjChiKmHRSyFE7DysisthasGvM3SACDfzQ21sP0s46HlR0Q4IcIbu9LeTZ5COi9nZmesY76I4Ep62gWmw7IEmGUIfjpEyYJAnUmDWKAc3Ap+ozKgalNUUD8WfALP2IIl9Vm8l2II9tvR0yBYk9SdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761074217; c=relaxed/simple;
-	bh=WfFPtDMJOslnO8xd96RYBPFjxdDxPv7APLMtkSd5nII=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rwGWQM270p6MMNDBbhWZoIV83O2HGEb5aMUBCASEO0zTHLRxqrcTVNuxitHZWP4AJJM6PltjHdpxazLDOScp0hlSMLiMJ4KiCL8LiqbmhFaOKFR4aQ1FWT3K51pT2CrHK3dnx/N7nLmdeHnFPocjd82jPhlMCHXRqtiX0HYmApk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HZRa1ReN; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761074841; c=relaxed/simple;
+	bh=9WHKMapeY4ONm5uJai3Huy8KdbO9rMDtQjjWlq54YHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=idCoYQfDfQNDCdCfPI1R7LCNJgdvCLIa4uRgZYTmWqZfNb+dpvXZJm3ZvIjk/32mc/WLwbKHlUrkZi5TGJcnlrPRI0uP4gesxbvgk3awcAW4ZFfken3wjFoahQNbZHAM1H+1pKqThRtMkR/tpY/AsyjLCXhC89mXxTTEFzc7L2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=IP2DJpFs; arc=none smtp.client-ip=98.137.65.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HZRa1ReN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761074213;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Av2zs3MEbcbLC7aMwacLFVSODjPRb5hpuHHxAZIybWo=;
-	b=HZRa1ReNbhDfZrPah/o+D4GJ0PRHjwngJYdUAGraqVRa/bHqxVPk5peX5pNffKDp6x8h4U
-	aVqA8WLGpxKoHiTKR7xW2w7EQdN0uEnU+v8nR8Xm0rwA2gBQl7BGRerJ2bT4kfFGH3eDf/
-	DqO/p49nwJMRHR5RbIR2hoXNvJPdXbU=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-t8HXpzDnMdOjIrHnPAR5mA-1; Tue, 21 Oct 2025 15:16:51 -0400
-X-MC-Unique: t8HXpzDnMdOjIrHnPAR5mA-1
-X-Mimecast-MFC-AGG-ID: t8HXpzDnMdOjIrHnPAR5mA_1761074211
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-79e48b76f68so297309456d6.3
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 12:16:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761074211; x=1761679011;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Av2zs3MEbcbLC7aMwacLFVSODjPRb5hpuHHxAZIybWo=;
-        b=S6FUhsrZhPP/d/Hu8DxWffWr4J6j8xBp22g7Mhkp2OgpY7O0VMl5SdAEjlfW3gsKGg
-         GFJ8p74aKFnUy72s85kDvCZxVqmcwH6DxKeA81SS+6G3PAkhwFKFw/81/JOR9rxmVTIl
-         a0qS2UpIKSzbrHHDu21kAuk7x7UP4Jx93h/K7nZRYpUaeKwOdkHGjIge2TTHywQ/smNS
-         jhqMqWnT2fvlpnR0T9H1RuLthP8BkSr23xw0v34BUeKNZ1oGBlKDNz8syWGke8o0nXr/
-         nG0BOIHLbtW7oxsZ6b6P8emJ3UfS86AvNSfzUFpldLe/ojOnCuGyXT7aobEown6kXeYu
-         U4lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUjGBIis1eVYrD1/aCVu5vuK/YEy+lNNNNGjdGzlw951hynNcfLnS8yyKMvk8V2nF/c+Ym/LYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOmZDBZYhrzLmhOLdYnFfx8WpCwDnfzGn4swGSOzx/4sx/fpOp
-	dIetgafOEHj6IOAFx2XrNI9Beu1MizylPRhWzmXAVPLeMEih/g2dFuf/1Oxxgqgk8WbaQVgTgRx
-	HOY+RcGreG2hEEp9g9qzz4sgIqQ08JONmcpYOb5ekL1M/Yo0CwqcgggqHVg==
-X-Gm-Gg: ASbGncvcUQznNWojTsEU9QZBPsWiyioDZdslYUuPhOh4GiOpKVibHDd+lGwjzcbiznW
-	e9VTKBJ7ptiWWzhVLOWY5cHQQletOtwFDlMqerO0BMpWSSHUqVrq9TPAKbKN9TYZhIjSe0bTmYT
-	GgsAhvGoZ/puXwfxwUGOQ9l2Sv4Ka+qqDT67D3SC2sBQDPLQdBfDl7XCvlZFe3e9aXGrzrEtpJH
-	ddEexyrAzSwbdXTijMkYThrIVTWDZFwpl5vfdBEQIi2FjSjtfHTkotDCLEvMnBSyr+K4xGzqGiv
-	nAdRgDBdQYVjIf0j23ozvOxDFNDP+LPdETTUuLxKDWNpBZORCmG4P4MU6CtGESeQRTMoqouCwz+
-	awXwcgOza3ZIH2veQGgrhrYjwuoMR27K4Ns/jxiJ+Y5RC8Q==
-X-Received: by 2002:a05:6214:4012:b0:87d:8fa7:d29e with SMTP id 6a1803df08f44-87d8fa7d3a7mr172807836d6.35.1761074211072;
-        Tue, 21 Oct 2025 12:16:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMN3DCL5z77zrF4an/kPQngsHh4Dl7HI0jLtCtPSfq0EP/4XoCKRGCEKlYnjWxZgcz1y0y9w==
-X-Received: by 2002:a05:6214:4012:b0:87d:8fa7:d29e with SMTP id 6a1803df08f44-87d8fa7d3a7mr172807136d6.35.1761074210482;
-        Tue, 21 Oct 2025 12:16:50 -0700 (PDT)
-Received: from ?IPV6:2601:600:947f:f020:85dc:d2b2:c5ee:e3c4? ([2601:600:947f:f020:85dc:d2b2:c5ee:e3c4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87cf521c2c7sm74369666d6.19.2025.10.21.12.16.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Oct 2025 12:16:49 -0700 (PDT)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <364e084a-ef37-42ab-a2ae-5f103f1eb212@redhat.com>
-Date: Tue, 21 Oct 2025 15:16:45 -0400
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="IP2DJpFs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761074835; bh=AB/4EEDvXyNJoCWYApA429rALBJ2NrVI7Ehp+NY4wxo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=IP2DJpFsc+0qKtV36X2EBb2L4FCYlPaRdOsrYU0mtvHbGWi2QphQ5VnQXPGP7n+D8WB5kUCfGf2FAUcpRBKyWwa6LDY70vM/1rk1T7R2/qryAoAZ7qBEkQiM1GKvyfBtK81dVcst8YdDOC+uSrDDGlSRsOdFO5I0WSAtwitAww/pvbGrMFjmKM74oyi1KkjMlKpu2hAEFOB8/8B93akeUZr6ipKf8dUZpm0uk1cXuv5w5+JxEKmi6nIgSiQRxralPCymqwW+HzQ9HmfaDluw4JEEK5s4BU/t6Al7uEMaYshLQGFLy7+y9TAgLD2wNsdg3qwrZAvN9Q5vBWvzka2CZg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761074835; bh=N8eD6A4LQEQ3vxd3q1ipQXE47zEo3QjyYIQZocBYT+f=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=Odjz6jKfh7jFnI+WNFtTogzKsSLcpCPAeJOSOh8vHK0HnvKbJjBNqnpp325675/ggAmoF4R3C3w98dO/yDcr1q6eeSemHmG8c/jJNVfZCqpYF188bTQmwcM/Wxa8CrZh+rYRuxBnrFeua+mgDoiHxfE6sni3SlKZwju00ziYGfurx3wEmbcVmUD8O0Pm67oSjWNerqH7xZf8a/j69UVmvkKvymXx0363gMgSfGZVlRyD+7YT7M/gg9Rf6cfn8/3u/53vwEmw/FQtmKFdiLQT44CalLJoM7/0b272NDTHZV9VwM32FQ06rGxOJCrG6dmbaJnu9XJzwK8j06gPD/8yCw==
+X-YMail-OSG: p.FfptsVM1n2PbLV8fIwaijWx.EBezcag2pX_bboOfXHADYGNEbfukKTwG1lgLZ
+ gT4hYWhiplaTaFW8tQzm.cGhW1HJSXDMcvyi5ezOdrN1WCugmemYoJr3BfHx77uywWOU_Q.CX3VJ
+ 4sjggaJd_iOBnVRg65UjIFxDkV0oEYda7sDZ8zRQ3lkurBD1vnnh3tQc0ipHrawAkpIv8ygYpQ4m
+ h7LEMkWhUMILvbJK01KfttEqdXzXye2NmI9FycMaA44BcQgHTCkUomR9xI1Qlz0qNOkMCiNGD24R
+ DJhs.epSrTffIT92ENo9Jt2lm9zJyk5Kv5veU1k4Q9SJjGXc_Jl04ZJbciqhHC4VAy0mDYI4Ocyc
+ kDdK4zRMOB4_xXEEB39VI29VYqITmpEZvZqJhzSp.rrNf9ARSZmlo6_jxP1zIfqmuP0TMFp3f8Ak
+ kbbbD_ItX.d.Y4pyjGQ_aTSaByVPrNaswIkkSgNd1zwtjFyc3Po5sX4rKmstQKQ97we74KM39jKD
+ fpvoOZx.dH73R5o_kfWwgUnoKXeKP4P5Rd1DYS1FMcT_xSq1jCMxNECUngqCoYmFIdrrltqXoe0M
+ aBxZDM2V.ASjwuGLvQt0oxBP21H5UhqNUHiFzRYxDCazpQUo399qxgfBSLE4rkEUmeJ7IzATsfgY
+ EEoiOnCLRCwZDOMEKF.85t1VAxJ8OuYuPd5OaEOCiUzbN9VVeo2w8_kYCUgWkRQwhTd3UIbFRLT_
+ v54Qsw79USoVCeX7cVWjcBhW4XQhmnFdI7lusVCIERy6ormMS8uwDbDC1pb4OhDKi8P1iN7m40YT
+ 3mFvkLhtIb0K081maxpuOWMFJRsy3Ko_4Mc2qCttLOBPTeMJ.1UlEVjAOMYtN2ZvlyE4sq_cZL5i
+ tDM7r5IiTr9BaFEx9KtpdfFw6dgrvXt_G06IUZdAdYA4aTfo595C08maYo3nmpkXgpU2UV_jj2j0
+ HyZv4e14KB23H7yf7Z1B733qDKQjqeyUqqvAVZhwN_mHqblOkg.4AhLjw619jLm6E1gqkTQy9yPm
+ dCIelTCiVHeUEhrQTYq1G6WSbASHbq__m1XcnxrmWgvc51_DfxlSiDOrniQak_TCcSgEIQXIBWNs
+ 8apcYtnPmR7p9K0VCY3UcssQNnZzRwax_zgucmxp7C2Pk0ghEWQbw0rfL4xJzU5MRsVv_go6X_1U
+ qFRoaZ_Huagl6wJsvoNPGuov.N1nvFDWCg3_3dfjnp0oJAVzqfwvd3fat4P34q3jWj6Zn0csRFVz
+ foF67QAXh98I5N6AFvG_7iUTHdts6_Pr_lUb1hYED5xvA9ihPYboew3wqeHygk4dCoGZLlHzRxvf
+ cKxTGk00zAXowTC.0PD_Q7sFbxXyONiSi0m._dPX7Tywq2fYsR3sv8wen5DIg4QxQ_2TmF.ovB2k
+ tkq4UHWqWLUdNMSLVXGBwpQ1AXhTAdZ7hyMrheMKkWaXQttpBH.JHXA9jVT1c5FnF5kLhtFrPh05
+ 21aILFZbkVXpSM8KniHABZw6yQJixj8FyWCcHt5.nsPGdv5sMCcBTuX14OfJhgZLS3cKAu.qp7cq
+ XMTNOEHHFXIAvrnC_ThT5TyTJuvNONmDug2KrMcMcc4vIN2xFcIFVYdeUCRoPgTQPKD8SBm8R38e
+ tunP9ba9CIqQta7OZPhBZQrNOHfVcw8q_0eeDImet8oYaANc70HBCoiqwx5S2O4oGMDk6SgwhV5K
+ ytQL3dte8iOyUpAvNGR.aY6dnaLj2U8_YZn783a.p6HBw5dDvuNV9SUFYFSvXYnklXr9unPru7az
+ CfwsTPfGvr.pSS9JD1_8OfjoRxWQfnTz4wZST.aurNKXpCKvdYen1qIO1QqvVESy_nIxBM3rnGkP
+ 0hERZz3tyLMMErSRnWuXdoALFBFDj2lCRqR1VK2CRjzgKFybOaxLRVO7SI_O3YRmvrKy0z4mP_Hf
+ 5OBL8VDFx0KBDz4VIrr70aihLPkOX9R3rD6qTCo55dRkkMQip0igHhpUhQsoBNaYrY_1.aZbJJYp
+ nNdqB6bjx6OrwMulgOhI_ApZemQ4Rr12jZqdx2qgbwuHvt7JoECB_olQowI_oFb55cUpGuteCAT0
+ pIKCiYFsTWbbVQI547Etj1X_6XVVWvr9eKiH08E1EQ7oJgyITSn5QpZJYe6Fub4GO2vzRVYLS1Df
+ mI7ealkUyIVKv4u.uet5jjrv_sEkGSA6XGgRbsHmwkkKecekk1CiwhqMC2Kzg_9Z7ZYb1IHAfgLR
+ AaWETiiCitrXiQOJop6S5ksCa2FCXYReM6J0MYXQjFNhI60fOce9SbXdMw_Q2B0vzt8T1IaWybjD
+ VH89Soazd1dMInnvaoGJy.ymVqQ--
+X-Sonic-MF: <adelodunolaoluwa@yahoo.com>
+X-Sonic-ID: f0829979-72d7-4e1e-87cb-c575ef19ad4f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.gq1.yahoo.com with HTTP; Tue, 21 Oct 2025 19:27:15 +0000
+Received: by hermes--production-bf1-554b85575-mnhc8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 478ef6da9b5dcce52916c771fda6e14c;
+          Tue, 21 Oct 2025 19:07:00 +0000 (UTC)
+Message-ID: <ba9f09a9-89d4-4198-b338-6fc7eb926d13@yahoo.com>
+Date: Tue, 21 Oct 2025 20:06:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,157 +64,195 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/33] sched/isolation: Flush memcg workqueues on cpuset
- isolated partition change
-To: Frederic Weisbecker <frederic@kernel.org>,
- LKML <linux-kernel@vger.kernel.org>
-Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
- <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-15-frederic@kernel.org>
+Subject: Re: [PATCH] net: unix: clarify BSD behavior comment in
+ unix_release_sock()
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, skhan@linuxfoundation.org, david.hunter.linux@gmail.com
+References: <20251017-fix-fix-me-v1-1-8c509d7122ed@yahoo.com>
+ <20251018235325.897059-1-kuniyu@google.com>
 Content-Language: en-US
-In-Reply-To: <20251013203146.10162-15-frederic@kernel.org>
+From: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+In-Reply-To: <20251018235325.897059-1-kuniyu@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.24562 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
-> The HK_TYPE_DOMAIN housekeeping cpumask is now modifyable at runtime. In
-> order to synchronize against memcg workqueue to make sure that no
-> asynchronous draining is still pending or executing on a newly made
-> isolated CPU, the housekeeping susbsystem must flush the memcg
-> workqueues.
+On 10/19/25 00:52, Kuniyuki Iwashima wrote:
+> From: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+> Date: Fri, 17 Oct 2025 14:30:45 +0100
+>> The long-standing comment in unix_release_sock() mentioned a "FIXME" about
+>> BSD sending ECONNRESET to connected sockets upon closure, while Linux waits
+>> for the last reference. This behavior has existed since early UNIX socket
+>> implementations and is intentional.
+>>
+>> Update the comment to clarify that this is a deliberate design difference,
+>> not a pending fix, and remove the outdated FIXME marker.
+>>
+>> Signed-off-by: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+>> ---
+>>   net/unix/af_unix.c | 13 ++++++-------
+>>   1 file changed, 6 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+>> index 768098dec231..c21230a69f42 100644
+>> --- a/net/unix/af_unix.c
+>> +++ b/net/unix/af_unix.c
+>> @@ -734,14 +734,13 @@ static void unix_release_sock(struct sock *sk, int embrion)
+>>   	/* ---- Socket is dead now and most probably destroyed ---- */
+>>   
+>>   	/*
+>> -	 * Fixme: BSD difference: In BSD all sockets connected to us get
+>> -	 *	  ECONNRESET and we die on the spot. In Linux we behave
+>> -	 *	  like files and pipes do and wait for the last
+>> -	 *	  dereference.
+>> +	 * Note: BSD sends ECONNREST to all sockets connected to a closing peer
+>> +	 * and terminates immediately.
+> I ran a script below on Mac (I hope the behvaviour does
+> not differ from FreeBSD), and I only see ECONNRESET on
+> SOCK_DGRAM test case.
 >
-> However the memcg workqueues can't be flushed easily since they are
-> queued to the main per-CPU workqueue pool.
+> Even after close()ing a SOCK_STREAM socket, its peer can
+> read 0, not ECONNRESET.
 >
-> Solve this with creating a memcg specific pool and provide and use the
-> appropriate flushing API.
+> So, the comment looks outdated.
 >
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> ---
->   include/linux/memcontrol.h |  4 ++++
->   kernel/sched/isolation.c   |  2 ++
->   kernel/sched/sched.h       |  1 +
->   mm/memcontrol.c            | 12 +++++++++++-
->   4 files changed, 18 insertions(+), 1 deletion(-)
+> ---8<---
+> $ python3 a.py
+> test 1
+> b'hello'
+> b''
+> test 2
+> b''
+> b''
+> test 3
+> [Errno 54] Connection reset by peer
+> ---8<---
 >
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 873e510d6f8d..001200df63cf 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -1074,6 +1074,8 @@ static inline u64 cgroup_id_from_mm(struct mm_struct *mm)
->   	return id;
->   }
->   
-> +void mem_cgroup_flush_workqueue(void);
-> +
->   extern int mem_cgroup_init(void);
->   #else /* CONFIG_MEMCG */
->   
-> @@ -1481,6 +1483,8 @@ static inline u64 cgroup_id_from_mm(struct mm_struct *mm)
->   	return 0;
->   }
->   
-> +static inline void mem_cgroup_flush_workqueue(void) { }
-> +
->   static inline int mem_cgroup_init(void) { return 0; }
->   #endif /* CONFIG_MEMCG */
->   
-> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> index 95d69c2102f6..9ec365dea921 100644
-> --- a/kernel/sched/isolation.c
-> +++ b/kernel/sched/isolation.c
-> @@ -144,6 +144,8 @@ int housekeeping_update(struct cpumask *mask, enum hk_type type)
->   
->   	synchronize_rcu();
->   
-> +	mem_cgroup_flush_workqueue();
-> +
->   	kfree(old);
->   
->   	return 0;
-> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> index 8fac8aa451c6..8bfc0b4b133f 100644
-> --- a/kernel/sched/sched.h
-> +++ b/kernel/sched/sched.h
-> @@ -44,6 +44,7 @@
->   #include <linux/lockdep_api.h>
->   #include <linux/lockdep.h>
->   #include <linux/memblock.h>
-> +#include <linux/memcontrol.h>
->   #include <linux/minmax.h>
->   #include <linux/mm.h>
->   #include <linux/module.h>
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1033e52ab6cf..1aa14e543f35 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -95,6 +95,8 @@ static bool cgroup_memory_nokmem __ro_after_init;
->   /* BPF memory accounting disabled? */
->   static bool cgroup_memory_nobpf __ro_after_init;
->   
-> +static struct workqueue_struct *memcg_wq __ro_after_init;
-> +
->   static struct kmem_cache *memcg_cachep;
->   static struct kmem_cache *memcg_pn_cachep;
->   
-> @@ -1975,7 +1977,7 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
->   {
->   	guard(rcu)();
->   	if (!cpu_is_isolated(cpu))
-> -		schedule_work_on(cpu, work);
-> +		queue_work_on(cpu, memcg_wq, work);
->   }
->   
->   /*
-> @@ -5092,6 +5094,11 @@ void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages)
->   	refill_stock(memcg, nr_pages);
->   }
->   
-> +void mem_cgroup_flush_workqueue(void)
-> +{
-> +	flush_workqueue(memcg_wq);
-> +}
-> +
->   static int __init cgroup_memory(char *s)
->   {
->   	char *token;
-> @@ -5134,6 +5141,9 @@ int __init mem_cgroup_init(void)
->   	cpuhp_setup_state_nocalls(CPUHP_MM_MEMCQ_DEAD, "mm/memctrl:dead", NULL,
->   				  memcg_hotplug_cpu_dead);
->   
-> +	memcg_wq = alloc_workqueue("memcg", 0, 0);
+>
+>> Linux, however, intentionally behaves more
+>> +	 * like pipes - waiting for the final dereference before destruction.
+> Note that Linux also sets ECONNRESET if the close()d socket
+> has unread data or is not yet accept()ed.  You can find this
+> a few lines above of the diff.
+>
+> ---8<---
+> $ python3 a.py
+> test 1
+> b'hello'
+> b''
+> test 2
+> [Errno 104] Connection reset by peer
+> test 3
+> [Errno 11] Resource temporarily unavailable
+> ---8<---
+>
+>
+>>   	 *
+>> -	 * Can't we simply set sock->err?
+>> -	 *
+>> -	 *	  What the above comment does talk about? --ANK(980817)
+>> +	 * This behaviour is by design and aligns with Linux's file semantics.
+>> +	 * Historical note: this difference from BSD has been present since the
+>> +	 * early UNIX socket implementation and is not considered a bug.
+>>   	 */
+> So, I'd remove the entire comment, and if needed, add a
+> selftest and update man page.
+>
+> Thanks!
+>
+>
+> ---8<---
+> import os
+> from socket import *
+>
+>
+> def test1():
+>      print("test 1")
+>      server = socket(AF_UNIX, SOCK_STREAM)
+>      server.bind(b'test')
+>      server.listen()
+>
+>      client = socket(AF_UNIX, SOCK_STREAM)
+>      client.connect(server.getsockname())
+>
+>      child, _ = server.accept()
+>
+>      child.send(b'hello')
+>      child.close()
+>
+>      try:
+>          client.setblocking(False)
+>          print(client.recv(20))
+>          print(client.recv(20))
+>      except Exception as e:
+>          print(e)
+>
+>      client.close()
+>      server.close()
+>      os.remove('test')
+>
+>
+> def test2():
+>      print("test 2")
+>      server = socket(AF_UNIX, SOCK_STREAM)
+>      server.bind(b'test')
+>      server.listen()
+>
+>      client = socket(AF_UNIX, SOCK_STREAM)
+>      client.connect(server.getsockname())
+>
+>      child, _ = server.accept()
+>
+>      client.send(b'hello')
+>      child.close()
+>
+>      try:
+>          client.setblocking(False)
+>          print(client.recv(20))
+>          print(client.recv(20))
+>      except Exception as e:
+>          print(e)
+>
+>      client.close()
+>      server.close()
+>      os.remove('test')
+>
+>
+> def test3():
+>      print("test 3")
+>      server = socket(AF_UNIX, SOCK_DGRAM)
+>      server.bind(b'test')
+>
+>      client = socket(AF_UNIX, SOCK_DGRAM)
+>      client.connect(server.getsockname())
+>
+>      client.send(b'hello')
+>      server.close()
+>
+>      try:
+>          client.setblocking(False)
+>          print(client.recv(20))
+>          print(client.recv(20))
+>      except Exception as e:
+>          print(e)
+>
+>      client.close()
+>      os.remove('test')
+>
+>
+> test1()
+> test2()
+> test3()
+> ---8<---
 
-Should we explicitly mark the memcg_wq as WQ_PERCPU even though I think 
-percpu is the default. The schedule_work_on() schedules work on the 
-system_percpu_wq.
+Thanks Kuniyuki for the detailed explanation and example script.
+I'll go ahead and send a v2 that removes the entire comment as you 
+suggested.
+After that, I’ll work on a follow-up patch to add a selftest for this 
+behavior.
 
-Cheers,
-Longman
-
-> +	WARN_ON(!memcg_wq);
-> +
->   	for_each_possible_cpu(cpu) {
->   		INIT_WORK(&per_cpu_ptr(&memcg_stock, cpu)->work,
->   			  drain_local_memcg_stock);
+Thanks again!
+Sunday
 
