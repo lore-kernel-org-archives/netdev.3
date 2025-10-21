@@ -1,105 +1,188 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mx07-006a4e02.pphosted.com (mx07-006a4e02.pphosted.com [143.55.146.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BCE2690D9;
-	Tue, 21 Oct 2025 06:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB942224245;
+	Tue, 21 Oct 2025 06:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.55.146.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761029589; cv=none; b=qFiu7Aeo9t7W2OV8FJSWMT9SDW1PB3isfNU6YsXmqNH935qTnUihxOZiFJ94vBZtx2H46em6UKVK52vzHPLfNtsEZJgx1lHCgzAaFZ3JaRIbYLbEXMevM3k+JdAF+taWR4hkGBo+ZLQmQ5q/oKWx9kXC5Ii2lBKDBVQWNqtKCss=
+	t=1761029728; cv=none; b=LoaORVwXEiIWmDRcwdCLQvBTfkV5M5Z9g24NmgjPEK2Zty+gjH8uhpDDwxDdmJu30rsB02cLwuqV9Yv8wyf8zNSTRQJIB3WlIJKLHpJB8DxrZDEJVIKulnL1Dl8rTGh0M84VLTQhEI2WajVPra76MvzrB2rYRrhmDvpgb5EmcZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761029589; c=relaxed/simple;
-	bh=dT8D/fqK+qeM68iYwPgxwXnSgIs00YnR13VuAf2aYRE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qf6461J4RXzBm4OaOm0NK29+0yboNtQzeBzMM83UqC9BtLNpzcmv0LKRw/f6XSERCQ/dCBKvJqxuLEQApKENbnl+Isqv97oV0E2piznSz9IrpUTx+7rjIhNQZkWQM44TglNzNoBKPBa2ckglsT9i6axbx6gy409JE2RZzK62ZzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=I2fTwOx7; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761029728; c=relaxed/simple;
+	bh=HMGdk3I075bK5E/gp9SATIQq1qBXSq91Oir+DGivIiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4fJ1vz/dMDfZ6fSERaYY86VUJyd1zbs/JlufaBjMqwZtOCBcMuvtWZXNH/wU8npIikjJYARc+G0CaXmV8B4BtBYYWPV0+SpcepLT4PU/9Tosrw2JyTPv4fTAJAcr7PVwylij9e1uUFKDwQT7wKou/qhGJCkHtTv96Olwi13Jkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iram.es; spf=pass smtp.mailfrom=iram.es; dkim=pass (2048-bit key) header.d=iram.es header.i=@iram.es header.b=YpYVuGBx; arc=none smtp.client-ip=143.55.146.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iram.es
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iram.es
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="I2fTwOx7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761029587; x=1792565587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dT8D/fqK+qeM68iYwPgxwXnSgIs00YnR13VuAf2aYRE=;
-  b=I2fTwOx7famewtsKIVmrHCSKzeQscUbwE9YH/XXjJSmDKEUfVe9jCVJr
-   0AISxbOIOKN00rrJJCVAtbRiacJ1soX+oUnmeg0nvnTdMP39uc3fHTi1O
-   DLJTKTt1ALdgnl+EV/ebTmMth1BBddFt54qPKjXB1B3SHBN44sfZDFFeA
-   949BeTs58VUFNVLu16fJFVRligenoCgY42XTEiNnEyEsOgrlunMCPmFlG
-   6kdrN/s2bEkHKutY2HRhglXbtN4DRT4cLHRCS+mOiz2UgihYZmT/VzW50
-   3wvAiudYsQv7C/1HHnjUcPB5qtuEGLhUp7XqlDLWED0c9LRPtiDkL46/j
-   w==;
-X-CSE-ConnectionGUID: Ss1WuPpDSteYpQ34q4x20g==
-X-CSE-MsgGUID: r+VN4XBDRoWsZ/dRb4olEw==
-X-IronPort-AV: E=Sophos;i="6.19,244,1754982000"; 
-   d="scan'208";a="215391938"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2025 23:53:00 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 20 Oct 2025 23:52:57 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 20 Oct 2025 23:52:57 -0700
-Date: Tue, 21 Oct 2025 08:51:51 +0200
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Gerhard Engleder <gerhard@engleder-embedded.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <richardcochran@gmail.com>
-Subject: Re: [PATCH net-next] net: phy: micrel: Add support for non PTP SKUs
- for lan8814
-Message-ID: <20251021065151.a3q45iihtmm52rgg@DEN-DL-M31836.microchip.com>
-References: <20251017074730.3057012-1-horatiu.vultur@microchip.com>
- <79f403f0-84ed-43fe-b093-d7ce122d41fd@engleder-embedded.com>
- <20251020063945.dwqgn5yphdwnt4vk@DEN-DL-M31836.microchip.com>
- <e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
+	dkim=pass (2048-bit key) header.d=iram.es header.i=@iram.es header.b="YpYVuGBx"
+Received: from pps.filterd (m0316690.ppops.net [127.0.0.1])
+	by mx07-006a4e02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59L63AQs1248592;
+	Tue, 21 Oct 2025 08:34:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=dkim3; bh=F164kmUr5EMZ6e+BTntGiD39zV8R
+	xXZwoRaGnCHEUKE=; b=YpYVuGBxuCwNJOQ3pBoy4A9ND5k7mRQOc+KGKrd42ih8
+	OAXsKtgh51RKxIBPRqYFZZhxoqsJDsHSjdT+uBjxoUEETInGL/mkVbpDNQSh0jTi
+	AINogUjyNJYUKHNOvirHoJmCRTw0E0AGyG1mEh2hfTH9ypTfEajsFBmTzWEW6AcI
+	3cDOIJXKeNn4+YDr1ZUiqzADvthene2bFu72cXBErZFkYhcAwTd24ZD9nwGwRTu/
+	6/0YkK7nru8rVpz30c/b25h17gRRIVulAV1foZlV1gIXNsVELI9YAVooBm+XaTJL
+	kaMRQ+ZSe2o1We13qnamNjH/qaU+Hcfl/guzkqy5Wg==
+Received: from mta-out02.sim.rediris.es (mta-out02.sim.rediris.es [130.206.24.44])
+	by mx07-006a4e02.pphosted.com (PPS) with ESMTPS id 49wrkpfknq-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 21 Oct 2025 08:34:47 +0200 (MEST)
+Received: from mta-out02.sim.rediris.es (localhost.localdomain [127.0.0.1])
+	by mta-out02.sim.rediris.es (Postfix) with ESMTPS id 15B3914009E;
+	Tue, 21 Oct 2025 08:34:47 +0200 (CEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mta-out02.sim.rediris.es (Postfix) with ESMTP id DF9E7140FAD;
+	Tue, 21 Oct 2025 08:34:46 +0200 (CEST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+ mta-out02.sim.rediris.es
+Received: from mta-out02.sim.rediris.es ([127.0.0.1])
+ by localhost (mta-out02.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id 9cGW7RgyfRah; Tue, 21 Oct 2025 08:34:46 +0200 (CEST)
+Received: from lt-gp.iram.es (haproxy01.sim.rediris.es [130.206.24.69])
+	by mta-out02.sim.rediris.es (Postfix) with ESMTPA id 2DFB114009E;
+	Tue, 21 Oct 2025 08:34:45 +0200 (CEST)
+Date: Tue, 21 Oct 2025 08:34:43 +0200
+From: Gabriel Paubert <paubert@iram.es>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andre Almeida <andrealmeid@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        Willem de Bruijn <willemb@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, linux-block@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 10/10] powerpc/uaccess: Implement masked user access
+Message-ID: <aPcpg0lQUk0IhHvL@lt-gp.iram.es>
+References: <cover.1760529207.git.christophe.leroy@csgroup.eu>
+ <179dbcda9eb3bdc5d314c949047db6ef8fd8a2ee.1760529207.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e0a8830e-6267-4b2a-b1fa-f3cbe34bd3ba@engleder-embedded.com>
+In-Reply-To: <179dbcda9eb3bdc5d314c949047db6ef8fd8a2ee.1760529207.git.christophe.leroy@csgroup.eu>
+X-Authority-Analysis: v=2.4 cv=QvxTHFyd c=1 sm=1 tr=0 ts=68f72988 cx=c_pps
+ a=N+btqqeLiyZkBSWNmht35Q==:117 a=N+btqqeLiyZkBSWNmht35Q==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pbnP-CYKNpT2arfVchsA:9 a=CjuIK1q_8ugA:10 a=nl4s5V0KI7Kw-pW0DWrs:22
+ a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-ORIG-GUID: fPY5OWlvYhbiva90HCVVCXenrvtnOCXX
+X-Proofpoint-GUID: fPY5OWlvYhbiva90HCVVCXenrvtnOCXX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIxMDA1MCBTYWx0ZWRfX2lPxlPelhpYO
+ fKzNMXsOb4ELb/Gi1Q5qBO8bWlp8UOoMX00pFGk6ILvZghWaahLfwNY1BC8iutNisGPxbYKcfK5
+ 4MhDp3/ncePuRlR/rquIly1v6w2VvpjCqmMBBRwbC86Ke4g/JPasy6W84eYdQkoWsP1JdD0GNE4
+ 4w8bDukcBTT9KRN2Hwq+ouDLYqLo+b4eLMTzAvpwKaoTlBLi8+9N4ZR0+oAC0aiImf/KfuErwi2
+ llnHe09xbNiWeHl8ok/ZcciYVmj2p82Vu/bg1rMmjKvAs9nmCQ94pQWKiv/nqhnpm5gTjuu9ch9
+ 08WPk+WA9Fx7B6JEMFzL2tsZJrphM8OT8ykb1U3ruJrsbXfnXvrJZqyBKRtX/wBu7SkUYv7uUd1
+ T8qu9FfLEfoIX5vM8kLOIPLSRBhb7Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-20_07,2025-10-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ bulkscore=0 clxscore=1011 priorityscore=1501 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510210050
 
-The 10/20/2025 20:11, Gerhard Engleder wrote:
-> 
-> On 20.10.25 08:39, Horatiu Vultur wrote:
-> > The 10/17/2025 23:15, Gerhard Engleder wrote:
-> 
-> ...
-> 
-> > > > 
-> > > > +/* Check if the PHY has 1588 support. There are multiple skus of the PHY and
-> > > > + * some of them support PTP while others don't support it. This function will
-> > > > + * return true is the sku supports it, otherwise will return false.
-> > > > + */
-> > > 
-> > > Hasn't net also switched to the common kernel multiline comment style
-> > > starting with an empty line?
-> > 
-> > I am not sure because I can see some previous commits where people used
-> > the same comment style:
-> > e82c64be9b45 ("net: stmmac: avoid PHY speed change when configuring MTU")
-> > 100dfa74cad9 ("net: dev_queue_xmit() llist adoption")
-> 
-> The special coding style for multi line comments for net and drivers/net
-> has been removed with
-> 82b8000c28 ("net: drop special comment style")
-> 
-> But I checked a few mails on the list and also found the old style in
-> new patches.
 
-Ah...OK. I prefer to keep the current style here.
+Hi Christophe,
 
+On Fri, Oct 17, 2025 at 12:21:06PM +0200, Christophe Leroy wrote:
+> Masked user access avoids the address/size verification by access_ok().
+> Allthough its main purpose is to skip the speculation in the
+> verification of user address and size hence avoid the need of spec
+> mitigation, it also has the advantage of reducing the amount of
+> instructions required so it even benefits to platforms that don't
+> need speculation mitigation, especially when the size of the copy is
+> not know at build time.
 > 
-> Gerhard
+> So implement masked user access on powerpc. The only requirement is
+> to have memory gap that faults between the top user space and the
+> real start of kernel area.
+> 
+> On 64 bits platforms the address space is divided that way:
+> 
+> 	0xffffffffffffffff	+------------------+
+> 				|                  |
+> 				|   kernel space   |
+>  		 		|                  |
+> 	0xc000000000000000	+------------------+  <== PAGE_OFFSET
+> 				|//////////////////|
+> 				|//////////////////|
+> 	0x8000000000000000	|//////////////////|
+> 				|//////////////////|
+> 				|//////////////////|
+> 	0x0010000000000000	+------------------+  <== TASK_SIZE_MAX
+> 				|                  |
+> 				|    user space    |
+> 				|                  |
+> 	0x0000000000000000	+------------------+
+> 
+> Kernel is always above 0x8000000000000000 and user always
+> below, with a gap in-between. It leads to a 3 instructions sequence:
+> 
+>   20:	7c 69 fe 76 	sradi   r9,r3,63
+>   24:	7c 69 48 78 	andc    r9,r3,r9
+>   28:	79 23 00 4c 	rldimi  r3,r9,0,1
 > 
 
--- 
-/Horatiu
+Actually there is an even simpler (more obvious) sequence:
+
+sradi r9,r3,63
+srdi r9,r9,1  
+andc r3,r3,r9
+
+(the second instruction could also be clrldi r9,r9,1)
+
+which translates back to C as:
+
+[snipped]
+> +static inline void __user *mask_user_address_simple(const void __user *ptr)
+> +{
+> +	unsigned long addr = (unsigned long)ptr;
+> +	unsigned long sh = BITS_PER_LONG - 1;
+> +	unsigned long mask = (unsigned long)((long)addr >> sh);
+> +
+> +	addr = ((addr & ~mask) & ((1UL << sh) - 1)) | ((mask & 1UL) << sh);
+> +
+> +	return (void __user *)addr;
+> +}
+> +
+
+either (srdi):
+	unsigned long mask = ((unsigned long)((long)addr >> sh)) >> 1;
+or (clrldi):
+	unsigned long mask = (unsigned long)(((long)addr >> sh) & LONG_MAX);
+
+followed by:
+	return (void __user *)(addr & ~ mask);
+
+the result is the same but I find it easier to read, and it may be
+easier for the compiler than to recognize an rl?imi insruction.
+
+Cheers,
+Gabriel
+
+ 
+
