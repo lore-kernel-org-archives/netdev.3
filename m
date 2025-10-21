@@ -1,37 +1,38 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5369430F7F7;
-	Tue, 21 Oct 2025 14:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B922533CEBF;
+	Tue, 21 Oct 2025 14:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055252; cv=none; b=R3hPuoyZnxsPIHHUrXCSHXJgeY4tD+iGNrewxQ+o6EJbO84Po96i6PoUTIK0SzFzRcLe2tgylXlHKWR/GKK4uBxLp4mxS0xmkjv6xawMuUjUhldlCCF1DPX0j5qb/kBdrMxiXOiO9CZ/VApwT3yNxiDpDOr0n8dUrVnXxR2eHUg=
+	t=1761055255; cv=none; b=aC3mfaGqZ9mlX3jyCQ+WtrN1w3Exm6fwQ82l3ALFU7eDkjGZV6dlmFdTBfLdVpheb5Y5XTrtI8YscNNYvjSk06UfLjhEWxiSj6mBK8HbaKpI3tMwAKfKtbs/ez1LaL6AtSVgefOG01/ZRcFXdEX0x926gXGxQ+6U3RQzcU7AYZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055252; c=relaxed/simple;
-	bh=BDMsfozhcqQEaX/Dezr8cmV3QOUI0/xewnpgp5i+gDE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LxxMar2YJbIqXyOzewlou/ghQIbstEYAoAV5D35c+SHNyHmaNlCDl/5Z/xbrtPrpSI/jrHwugqIZNFBYgbPycQ1LB3s9hd9nKpXAsVWrNxx7qirgn3IGbyKY8G6Ao0YsCDoLcwWunXq5N2uq4vIfvvQv2280BQPAzIf1D8c7osw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=NnSgJHuo; arc=none smtp.client-ip=113.46.200.226
+	s=arc-20240116; t=1761055255; c=relaxed/simple;
+	bh=gMIsksCQwqW2WOBKE1WoapjqbMI/EM72ZloxIN93b7I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cwd9hb9r+a2SED7ZvdSLG/SvMuLUHxyvNxDNYTisWceZ4oDD0NcCK+kmHLTp+5yxXZ7le993lkCsc+RXR5Q5MA3rEWIQQatmgqQ+xDSHp/Jc/9CHeE4zgNBLnMbtGPUIRfNszYERaeov2tWfiODV7DErxWbw/q2rRjWgH1i97f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ECwFJ8/z; arc=none smtp.client-ip=113.46.200.221
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="NnSgJHuo"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ECwFJ8/z"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=szKYzJwaE/2jp6EVgDqTBBfYkraAiXzMw9T6oQMBQac=;
-	b=NnSgJHuo8oxqejnae/p3RSP7sxPsbkM7boJLx9LXdOzyq/VM3D6pjVXja5PYAkIAQdCk1SDQO
-	FVFOwZoSovLNANNLElRgvpfOosyJtuNqPYIsni0ospuPBYAqY5nUROcksZIoIUnRyIpaX7K0n3c
-	x/Yzz6aj5qxwKIeXNlsqH9A=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4crYpX1PkKzKm5G;
+	bh=aaFhJKGeApZV5kHQ1f9y5s5XqI9oMdC5Ee/Le7sF7BY=;
+	b=ECwFJ8/zyMcNEApe4Dd6/mHOX4vTrIAMlxcshIoxD5e5O/v8lHq7/H2bON+ZMExJD3gq4axpH
+	LyEzYB79L8jV+e/i9yE7eahQ2lv+iNvxl3HX5fZYIyax8CQgwyil3xHDn6ei9gSyxvT2xXMZPnf
+	gRblb0uXpRLsA+m12NdytkU=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4crYpX5t6GzRhR0;
 	Tue, 21 Oct 2025 22:00:20 +0800 (CST)
 Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 28ECA1A0188;
-	Tue, 21 Oct 2025 22:00:44 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 24714180B5A;
+	Tue, 21 Oct 2025 22:00:45 +0800 (CST)
 Received: from localhost.localdomain (10.90.31.46) by
  kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 21 Oct 2025 22:00:43 +0800
+ 15.2.1544.11; Tue, 21 Oct 2025 22:00:44 +0800
 From: Jijie Shao <shaojijie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
@@ -41,10 +42,12 @@ CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
 	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
 	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<shaojijie@huawei.com>
-Subject: [PATCH net 0/3] There are some bugfix for hibmcge ethernet driver
-Date: Tue, 21 Oct 2025 22:00:13 +0800
-Message-ID: <20251021140016.3020739-1-shaojijie@huawei.com>
+Subject: [PATCH net 2/3] net: hibmcge: remove unnecessary check for np_link_fail in scenarios without phy.
+Date: Tue, 21 Oct 2025 22:00:15 +0800
+Message-ID: <20251021140016.3020739-3-shaojijie@huawei.com>
 X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20251021140016.3020739-1-shaojijie@huawei.com>
+References: <20251021140016.3020739-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,26 +59,60 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemk100013.china.huawei.com (7.202.194.61)
 
-This patch set is intended to fix several issues for hibmcge driver:
-1. Patch1 fixes the issue where buf avl irq is disabled after irq_handle.
-2. Patch2 eliminates the error logs in scenarios without phy.
-3. Patch3 fixes the issue where the network port becomes unusable
-   after a PCIe RAS event.
+hibmcge driver uses fixed_phy to configure scenarios without PHY,
+where the driver is always in a linked state. However,
+there might be no link in hardware, so the np_link error
+is detected in hbg_hw_adjust_link(), which can cause abnormal logs.
 
+Therefore, in scenarios without a PHY, the driver no longer
+checks the np_link status.
 
-Jijie Shao (3):
-  net: hibmcge: fix rx buf avl irq is not re-enabled in irq_handle issue
-  net: hibmcge: remove unnecessary check for np_link_fail in scenarios
-    without phy.
-  net: hibmcge: fix the inappropriate netif_device_detach()
+Fixes: 1d7cd7a9c69c ("net: hibmcge: support scenario without PHY")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h | 1 +
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c     | 3 +++
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c   | 1 -
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
- drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h |  1 +
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c    | 10 ++++++----
- drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c     |  3 +++
- drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c    |  1 +
- drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c   |  1 -
- 5 files changed, 11 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+index ea09a09c451b..2097e4c2b3d7 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+@@ -17,6 +17,7 @@
+ #define HBG_PCU_CACHE_LINE_SIZE		32
+ #define HBG_TX_TIMEOUT_BUF_LEN		1024
+ #define HBG_RX_DESCR			0x01
++#define HBG_NO_PHY			0xFF
+ 
+ #define HBG_PACKET_HEAD_SIZE	((HBG_RX_SKIP1 + HBG_RX_SKIP2 + \
+ 				  HBG_RX_DESCR) * HBG_PCU_CACHE_LINE_SIZE)
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+index d0aa0661ecd4..d6e8ce8e351a 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+@@ -244,6 +244,9 @@ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+ 
+ 	hbg_hw_mac_enable(priv, HBG_STATUS_ENABLE);
+ 
++	if (priv->mac.phy_addr == HBG_NO_PHY)
++		return;
++
+ 	/* wait MAC link up */
+ 	ret = readl_poll_timeout(priv->io_base + HBG_REG_AN_NEG_STATE_ADDR,
+ 				 link_status,
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
+index 37791de47f6f..b6f0a2780ea8 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
+@@ -20,7 +20,6 @@
+ #define HBG_MDIO_OP_INTERVAL_US		(5 * 1000)
+ 
+ #define HBG_NP_LINK_FAIL_RETRY_TIMES	5
+-#define HBG_NO_PHY			0xFF
+ 
+ static void hbg_mdio_set_command(struct hbg_mac *mac, u32 cmd)
+ {
 -- 
 2.33.0
 
