@@ -1,125 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1898B32E738;
-	Tue, 21 Oct 2025 10:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD12A926
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761043047; cv=none; b=QzcFhGsASQc9nzvRx9cXcam9kfQjkOGYcy8mGMjNjZsiFvRgWzprgS6R+awvVgtTQWu1kCJjk57L0WBJq9t9QYSraG2O0ee9eDh+BUTE71r0KLl+Fi5+uwZF7TtiZCZV5qRRH8+uEMLFHuKBIBJ8w8qmWwT18gKPWl6O/b3fEP8=
+	t=1761043654; cv=none; b=pEUKFlbBt3sckja0B4qZgUO7Q+IbmKJ3JO3bZmePhfMrdzrVFVK2mPXdG80TalYUIDQ4JV9tzoeshzG+mN+wlCNIq71nFs+nEqOYe5lTXJy5ATNOjLXsJXVd3O1NDXwAkWXRsrCB4TaN4wgKG8C+Mw6UE530TMkOUVOriRW8mBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761043047; c=relaxed/simple;
-	bh=Wv4YlboMbpQNw6u3IhV6GaaoBps8Bfhjrkcb7CsF0xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwN9+4WRr8nEq4io0ByWR4qsfw6CKco9Xn8xcdaKBkrrtCQDfDQQNObfHHhTr28snuPXuVmEPms/TOOxJ4ThF8pebBvF5gu/8zeEfkcelWbBjku/oDf5fZtCSJ/S3kEtA7XZAnz2/uFJqUo6T5Ehf2raz8qoAHJG9Xd4JEY9CTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fI4IDXhU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761043654; c=relaxed/simple;
+	bh=u3x+mZ9WYaMzDykMD4wrOaaWSHSxUpyWrVYfEbgeV3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eRDOgwnskmBdrod7Ak1tssns46VCGyL8j3X2xc+ewFf/vA98fr7RDtwGlK2+Q/qwfvyO2F4gzhcwb2miOpGioboWjyUVxDXg1AIvbXKiS+vLdC1oAHM8zouAexjVz/y3XEDGRqKTBOl8hBuBuRFiqRBQMrU3enQhBRvMuD/huio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LV0b1/D9; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fI4IDXhU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27116C19421;
-	Tue, 21 Oct 2025 10:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761043046;
-	bh=Wv4YlboMbpQNw6u3IhV6GaaoBps8Bfhjrkcb7CsF0xc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fI4IDXhUCP7sgAbKQnnlEnGS+mH6+q/DVxfBVgsj499VkGJQLro2SipZv+UsgT+zu
-	 8B9BQ/N8PLADF+mv0npm2WR18SHOSCTkY6IIWB+/4KWxdz0HaqNaCd+VpwNF+jRHei
-	 3ov8wsowSbIjE7ehwZJQCM5XDSZ8yb88yR9ym4/iD1GrsxZuohsf4L75d3zn6Oo8ZL
-	 n/EM6KAHijRdlgGUc7o7fjyhsti167l3ftZbDgbosTZ+9qyXpVrt8OKaPBS6REela5
-	 1PzcamUK2QhpQhPmKuhJ64ytVkT/HOGaF6eImS7MwUdj0xA7m9KQpsd53N7fkQp+0Z
-	 1s/kfAndNZ8Fg==
-Date: Tue, 21 Oct 2025 11:37:15 +0100
-From: Lee Jones <lee@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Shawn Guo <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Tony Lindgren <tony@atomide.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-phy@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: Fix inconsistent quoting
-Message-ID: <20251021103715.GA475031@google.com>
-References: <20251015232015.846282-1-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LV0b1/D9"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b3f5a6e114dso98026766b.0
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761043651; x=1761648451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hYQSYXxT3vBEQ3060Gmkoau5FySMDvalsTXJ7MNV5UM=;
+        b=LV0b1/D95OJkJLKTxOL0hM48Qp9nyNgkGGl0y2QALvRjfJOVW65LHLubfJjLT7XdKV
+         yt7yWfZfGL30LuOe/jTElJFWM55nwk5w/Z1FP4li/UyJu4nB7tD+ZYByotrXkDcoJQuT
+         AMf9OkW1rWNJ5Ot2/F8hMOHKzhkwc2NjyWIUeakRq7U0cclGwUv99S9QS5CsyuOnmfN9
+         rh+GvZHS0597r8iYDzBP6lZCYM/KcHPdBacK14QoIJ/MAKsQBn3NekmwuuGADvdyEYPL
+         T++csfR2qqXSh50+Vyy671WVM+byd8Z7ZZ8x/e+g8lsMl0eSAPNMlnXMGMlyYJggZAvw
+         j2xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761043651; x=1761648451;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hYQSYXxT3vBEQ3060Gmkoau5FySMDvalsTXJ7MNV5UM=;
+        b=b4BBATHCa01TgCj9xrVn3oTM2gPrK3njGKr2dGtaDoABOdoc1FfDycJAGcCEY3Dih3
+         QO3vIRJ+NLi4XvbuWl++8A+UtBEN+kCfKoHwRxu+Pgd/82cFMO6rqut3oIe1v5v6IebU
+         k0XHhjRG05tgRFiDynrT4zeWhP0+JFZMxtTspAxrqnNzzVwi3IybASoTxaRaFUGHCUnA
+         vyhDBWCA5Fw/DdkJz/MyHs2oEJSPwEGHuma45h+E5WEtiZGxWSov9J0n6cqyCDhFUMki
+         s8wCxVhAEECXBPegJ4NiywAMaUqRLp71m1orGwOEUMuG75bg7CN1YTSSP7rRQLSjTudG
+         pfKg==
+X-Gm-Message-State: AOJu0Yyvr9cfqjjrpyq8Yuokszip7Y9Xz/4L/nAhidVsgmKLXWSr5o83
+	tNUmmtzidJeNbQTpsaWISCLqGGQqc1r4ikXZwzNU98tMyi6G2JFFUwCc
+X-Gm-Gg: ASbGncso9PBSwEvMCucksB11dIEzNa0DbvLKqWYs+Eil3f7EMMoJYA8PuW/Ymu2+Woh
+	CldMea+L4zTbhxZjJn+Zyr39HQct5bCeNDIyIa4SX3Sqh8r36PV5nKNrlmGm4tIE59qgomafPOk
+	0Gj789rMaurUMqCcLHyn3XXSIJORedRx/vHWUFFnxA4noZkR64hUNXhAidBZL49HuX62l9szEEa
+	gvQTebLavVhrd7/71GiWGv9QXWYC+NILScTEP4aNAfG2sxTuOb4kK7s6Ptk+tyu+Ov9HuM8VRhT
+	1ev1cnSj507xxFzfnFWwfQjx9/AV2/7VdJmcHMj0/hVrb55NMqZ+iaFiKuGGhHV7a6ublAG6y/S
+	yBRRtUVL54X//c3osKYz1Z0EUmCfzFZdZr1/a6X5OFDaxwgTQ5ivWQa3lRY9OCcknX/zcQ4WZIw
+	roAfu3/F9qL4dQ
+X-Google-Smtp-Source: AGHT+IEVgz7zYtsnpcehMAmhlB3OUMARV4++YtUV332nKXGeBC2HoEB9fppwF5GU/sp0jIUet5ebFg==
+X-Received: by 2002:a17:906:4fd5:b0:afe:a7e3:522e with SMTP id a640c23a62f3a-b6c798e7a68mr191581266b.8.1761043650805;
+        Tue, 21 Oct 2025 03:47:30 -0700 (PDT)
+Received: from bhk ([165.50.73.64])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b65e7da2c5dsm1029123566b.15.2025.10.21.03.47.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Oct 2025 03:47:30 -0700 (PDT)
+From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	kpsingh@kernel.org,
+	haoluo@google.com,
+	jolsa@kernel.org
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	khalid@kernel.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+Subject: [PATCH bpf-next v3] bpf/cpumap.c: Remove unnecessary TODO comment
+Date: Tue, 21 Oct 2025 12:41:24 +0100
+Message-ID: <20251021114714.1757372-1-mehdi.benhadjkhelifa@gmail.com>
+X-Mailer: git-send-email 2.51.1.dirty
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251015232015.846282-1-robh@kernel.org>
 
-On Wed, 15 Oct 2025, Rob Herring (Arm) wrote:
+After discussion with bpf maintainers[1], queue_index could
+be propagated to the remote XDP program by the xdp_md struct[2]
+which makes this todo a misguide for future effort.
 
-> yamllint has gained a new check which checks for inconsistent quoting
-> (mixed " and ' quotes within a file). Fix all the cases yamllint found
-> so we can enable the check (once the check is in a release). Use
-> whichever quoting is dominate in the file.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../arm/altera/socfpga-clk-manager.yaml       |  4 ++--
->  .../bindings/clock/nvidia,tegra124-car.yaml   |  8 ++++----
->  .../bindings/clock/nvidia,tegra20-car.yaml    |  6 +++---
->  .../devicetree/bindings/gpio/gpio-mxs.yaml    |  9 +++++----
->  .../bindings/gpio/snps,dw-apb-gpio.yaml       |  4 ++--
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 20 +++++++++----------
->  .../mailbox/qcom,apcs-kpss-global.yaml        | 16 +++++++--------
->  .../mailbox/xlnx,zynqmp-ipi-mailbox.yaml      |  2 +-
->  .../bindings/media/fsl,imx6q-vdoa.yaml        |  2 +-
+[1]:https://lore.kernel.org/all/87y0q23j2w.fsf@cloudflare.com/
+[2]:https://docs.ebpf.io/linux/helper-function/bpf_xdp_adjust_meta/
 
->  .../devicetree/bindings/mfd/aspeed-lpc.yaml   |  4 ++--
->  .../devicetree/bindings/mfd/ti,twl.yaml       |  4 ++--
+Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+---
+Changelog:
 
-Acked-by: Lee Jones <lee@kernel.org>
+Changes from v2:
 
->  .../bindings/net/ethernet-switch.yaml         |  2 +-
->  .../pci/plda,xpressrich3-axi-common.yaml      |  2 +-
->  .../bindings/phy/motorola,cpcap-usb-phy.yaml  |  4 ++--
->  .../pinctrl/microchip,sparx5-sgpio.yaml       | 12 +++++------
->  .../bindings/pinctrl/qcom,pmic-gpio.yaml      | 10 +++++-----
->  .../bindings/pinctrl/qcom,pmic-mpp.yaml       |  6 +++---
->  .../bindings/pinctrl/renesas,pfc.yaml         |  4 ++--
->  .../bindings/pinctrl/renesas,rza1-ports.yaml  |  2 +-
->  .../pinctrl/renesas,rzg2l-pinctrl.yaml        |  2 +-
->  .../pinctrl/renesas,rzv2m-pinctrl.yaml        |  2 +-
->  .../bindings/power/renesas,sysc-rmobile.yaml  |  4 ++--
->  .../soc/microchip/atmel,at91rm9200-tcb.yaml   |  8 ++++----
->  .../soc/tegra/nvidia,tegra20-pmc.yaml         | 12 +++++------
->  24 files changed, 75 insertions(+), 74 deletions(-)
+-Corrected the new comment
 
-[...]
+Link:https://lore.kernel.org/all/20251020170254.14622-1-mehdi.benhadjkhelifa@gmail.com/
 
+Changes from v1:
+
+-Added a comment to clarify that RX queue_index is lost after the frame
+redirection.
+
+Link:https://lore.kernel.org/bpf/d9819687-5b0d-4bfa-9aec-aef71b847383@gmail.com/T/#mcb6a0315f174d02db3c9bc4fa556cc939c87a706
+
+ kernel/bpf/cpumap.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index 703e5df1f4ef..ee37186fea35 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -195,8 +195,10 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
+ 
+ 		rxq.dev = xdpf->dev_rx;
+ 		rxq.mem.type = xdpf->mem_type;
+-		/* TODO: report queue_index to xdp_rxq_info */
+-
++		/* RX queue_index is not preserved after redirection.
++		 * If needed, the sender can embed it in XDP metadata
++		 * (via bpf_xdp_adjust_meta) for the remote program.
++		 */
+ 		xdp_convert_frame_to_buff(xdpf, &xdp);
+ 
+ 		act = bpf_prog_run_xdp(rcpu->prog, &xdp);
 -- 
-Lee Jones [李琼斯]
+2.51.1.dirty
+
