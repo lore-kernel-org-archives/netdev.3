@@ -1,68 +1,68 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B380F2D0C7D
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8F22D77E9
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761090430; cv=none; b=IzZ099WR0EII9VsycgHeJ9v/uCqc1dOkgy7tBeGtyvrA4mD6gc6j7RSUtscG8KDl/IAFXgI5k1A9PX0WJEhIgk/yovw/xLYWOWV2p9rmQdqqwx5U5MQDQ6JI/rgObEL7rNIbqup1LLM+xDIMULZyNVWGDATQd5KOmv6t7bt7ifQ=
+	t=1761090432; cv=none; b=T7VepxbC2J5/KsnFJ9iTKqtI3J5r1paVkcNdUmpaI+YRA+9C8HSGXJPifByx+6re6HwZ+zfDrn2f27wKQRU2qHUhJ8MZu3NY7EnUl1pnw0qcT3ceki9pY/GPc/syFQjojRu5xA7IBMXIlMcCuDDkx5efUpdJairjkyzP0q3utqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761090430; c=relaxed/simple;
-	bh=vT+Tq/xDspn4kgfcPG0WM13a7POPaOaQ9NQCIKNs450=;
+	s=arc-20240116; t=1761090432; c=relaxed/simple;
+	bh=h2iUgP5lADnjNH3SbBUo+celMr6DnQLxrTcJCu026ao=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FYksXscvojjkWM4DQNNOl1vjtVrtgwHcOXvoXS7H+Y6+/Iagvr/Q5p5+whrQ4AmcveAIvfvxo4ZdqE4L9GxLfkuU4cHLgQL7YlfU+YGMUaxqU1IZkKG7LJp9N1m/a2ISMq0wLRiMRo5fWTuGb5XYz5vM7dYwX43YlUtcZkd3nF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ksSNl8rS; arc=none smtp.client-ip=209.85.215.175
+	 In-Reply-To:To:Cc; b=rEyj1ATa9N4kwkH0yHP/VpSmVVwoc7UGTiX4UGpJCJcRYOyBc6G9bhmbhgIY+tkJFzJ4tLyi2Sg6Qf9ikImjSy0Ru2TH9y0v+TdpcJOYPYXbwuWXbLlifJ+XI3RUmaJ6mR1IjpR1SlNJVdku+wSiab4bE7P/2nz1f3X6dVlAEk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GX3EBNQ9; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ksSNl8rS"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b550a522a49so5062890a12.2
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GX3EBNQ9"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7a265a02477so229416b3a.2
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761090425; x=1761695225; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761090427; x=1761695227; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bXXMjozyE7G9hxBpLov8fPEzcD6yFRLl/EC2MbvXbp0=;
-        b=ksSNl8rSs/x7+c5KO2kvCG4tGr4iz0ROYTQHCJYtDGQoA67UShXZfx/CjhCjSqcYsi
-         JjlnmeqlvsTXGB2B0ww71VvrjQxBUlmjYtGa3jcJHSths5a/G5nmQWy1BwN2KNdivGR9
-         oluKd6K5sbwclGGjE3g+o9ND92rKghvD22owOdpIZ5DC8JAqrx+W6eggE2I845+EQZNY
-         s9Krzjo294mBKNv1ZbxmTthON7OIEvIPYJUgup2EvozvDRLrx4y+pjX7ytxKoguWqudo
-         5rJkaP5wdyr96ykf6OpeRhLkGqbJDmNJg/ZRKDMnzNH+QcBOnNqUHlp8a6A5RHBDjmHQ
-         8sSA==
+        bh=7P1Xj55GhlsWB1ZKcQ5fn70bvfX9BN/deFezi9SaNlY=;
+        b=GX3EBNQ9fFHKjdzzehzVDBWG4/r/fWseUy8qkDPvFyl5r3gOJ6RLN4Vx0ah8z1r7ZR
+         +X5Jk8v98L/4F3wTTBcmfTC1JtYQEXEFIX4HzDd+CUplPp00gu64Sc4c9muLW6i4TgSQ
+         jyV5iYhMS5FGMPbfkpN9XCpU73zMcOBlzoQwMQl5ypsFo51OaptiWAVkLhhnr3mCTmhQ
+         OPrffl3bCr1fOR3RB/EAJ8Sr+9r+xzPZCJ4QU8sS3ZegLMJ1Ln13EPl4FWslkoljEIZ3
+         OVgCrYwpczxTYqCDH7XWVs7GulgYIqSZ+wmyTDBWlozK36oC5oWiyI8Bppc2wbB83fnS
+         1QGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761090425; x=1761695225;
+        d=1e100.net; s=20230601; t=1761090427; x=1761695227;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bXXMjozyE7G9hxBpLov8fPEzcD6yFRLl/EC2MbvXbp0=;
-        b=IfqTZOz+LuWp7jAZONptjL0LMveQ0SOh6dvRuBEidds4/QhIEn+gJe0dkLukicBCOR
-         AfaUOqnkf/3ROlw/0asi4mZt2o+0Gg2HSPHu0pXXbcVyDyPUWeoTGtXZIrTXaEizau+T
-         WS8aFtfz29y9oAa3piDc3oZr4o8tfXYNbMs1gMPxPPYx8PUFN0YqTw86TxkYDHEk53x2
-         YF4rjlRB16gI/DUuW5iWD78Si/70kj6TfXbCW0TdLVnE27g09jxQGborGF446ar87jbO
-         o8zDWk7axQaVpIRxC/a2XVCooJ7ImPoTJOHL+6ptJflDndOdE/X0bvH6ODYmnHgwVMBX
-         OBDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWonrgh35NpynKHcbyqh5lPlQ3/uLdOS99SkihBJSEW2M6b0PtuMTLybknUVsd5YFQK+fhzP68=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfIXYpbdBJ2CvqOUJ9TsF890NWmdjuXWIpv0am1pTrFHFFIQg9
-	3llghng6BkYEbmALZYkq+8SutljMAAdQvtVbU7lqlGNWBuvuu1/p0jk/
-X-Gm-Gg: ASbGnctR5YCmXbdUhz+sJFUr42Ss0B9Lm7p6lXwaUH5gKZlVJjjcUH57jEYbl05fXl2
-	bB4tl1axcBY8VrEXTFzYFM5AXWnjuTuBTVD3lQi/TonLDyjpw/G9xvwtqw6xQC8l8WxvvhnO/bq
-	jbxl2znSkSyMKf0Qixx35Ix6Ca3WsgthbYeXeyJT2M4ofkm5BOyn5a1bTC9ctjxWMftXYB5MtNv
-	oib2d1jTKS9o2uP36m68fgGqwsut3I01Eh7eMvSe9l4TgLH1ZnKL62wJ6M2Vf47SxRuphHtJLEu
-	/19EWVRtzwesObSxRtqNjQ/hVtpY9Yt/p8KbtlKI+qgU0zBcuiDNlQnX7L+SVBLihnN2utrNaID
-	j2d6Gk+q7WDhZoHVxB/Za9G+6j69eZidfUSXj1uT7GjtnzN3+HPDslhs+czccQg1um2q9CY7R8y
-	ZsHuOpA9oL
-X-Google-Smtp-Source: AGHT+IGisn1W6av3z2asOwJINc4Pm13WD84loloJNSHettssMRmm84ISrxessn3f1FRQqEXghoDjxg==
-X-Received: by 2002:a17:902:d584:b0:290:bd1b:cb3d with SMTP id d9443c01a7336-290c9ce67c0mr235162115ad.27.1761090424797;
-        Tue, 21 Oct 2025 16:47:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:71::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292472197desm120682725ad.115.2025.10.21.16.47.04
+        bh=7P1Xj55GhlsWB1ZKcQ5fn70bvfX9BN/deFezi9SaNlY=;
+        b=L5M7SZ2MDgvzGW/c86zlq7KgNxhFdTFI9GwBd9EGW0WXlXH0R4tXdZbq2pAvr9fs86
+         uTn89439YakEuxZS07blVpq4877a4SvfbmfGyZVFitLmilOH+Q0IgAIh3bODeYGMl8xZ
+         saDsc1hxRXqRrXg0sW0mYvkClTpLV281Zjn4H+Isw3wVTvql5DLpdNlWpN6RNRkvpFLP
+         P/Oy0QTT4fkWURFn7UcJBMh/9dsjaQ2E9N/XaqIKLAMIPZEsSD0gXOALKtzAETynzvIx
+         Vf2e8Zu2SmsL4k8flSUne4BCOq/sQwaF18r9CSgg1gmb1u6PZpBUCppc9GxNSMpKaGvW
+         EuOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXbVAi/JfVU/c2sfAjIjyHxR/TtgquvijfhzcDNVXQ37lHrMXUpqwXiL31AUP2qqiUJxA1vFAs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxigj3R43oeuV2RdVyHXl6nki37rGQ/paUo5HcgKASOC0vZlVqQ
+	xKcpMeQEU8uCh29DVgOEQlgfWOCDu5wgghSwdpkd5G1aRWkvcI71TVpb
+X-Gm-Gg: ASbGncuLsiAdIsArokxB+FTW+sUVLBjDi36xMg1h5LmMYD9dZFep0igmayauWlJuyE8
+	jzTJTuzMJ5+1NxnPHF7FHHoXbT2wO0+McR9mXIV33p6t/zNzQiscBEnJgPJnHf8SkZI//T9/P1A
+	ZFWKZe8Wn7Q2kj2g1bmqiJLvtQHTooq5JdLPv0a3cjufk3PiCBsObNi1QAuZlgj8yQ2lvvBoZ0V
+	Xpl93m9/LG35NQqlK6IuP4CTmx2oi+6G9xIPdwzSc7nYPcfusgqkdv4Z5ZPrAiLjY1+AObP8qwr
+	QlLzKQVoJYjyC9MfJDe4GuVS2J0Bd5V5B83gYJk8O87ZjN8HDWOGXdfZwbQoyHJ9m0odxc7g7mO
+	w6f9h9J34sXTsv2JxQvG2gRfXjAyTXsWdcSDer1nCIHb0jLyQbhFc66PI42xpigA04wqfp6zC2v
+	4wGeSbed2xbGCTH/Y=
+X-Google-Smtp-Source: AGHT+IHod+mi+RsSqS6cSISV/jLxrJBCc/kNex1TUjfpCP6Rs0yGTTP+zCj8Gdc/6sD+N1K7ZCxkfg==
+X-Received: by 2002:a05:6a00:a89:b0:781:1cc0:d0ce with SMTP id d2e1a72fcca58-7a220ab6c70mr23060744b3a.16.1761090426779;
+        Tue, 21 Oct 2025 16:47:06 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a2326ac189sm11874522b3a.29.2025.10.21.16.47.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 16:47:04 -0700 (PDT)
+        Tue, 21 Oct 2025 16:47:06 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 21 Oct 2025 16:46:49 -0700
-Subject: [PATCH net-next v7 06/26] vsock/virtio: add netns to virtio
- transport common
+Date: Tue, 21 Oct 2025 16:46:51 -0700
+Subject: [PATCH net-next v7 08/26] selftests/vsock: improve logging in
+ vmtest.sh
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251021-vsock-vmtest-v7-6-0661b7b6f081@meta.com>
+Message-Id: <20251021-vsock-vmtest-v7-8-0661b7b6f081@meta.com>
 References: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 In-Reply-To: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
@@ -95,121 +95,205 @@ X-Mailer: b4 0.13.0
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Add support to the virtio-vsock common code for passing around net
-namespace pointers (tx and rx). The series still requires vhost/virtio
-transport support to be added by future patches.
+Improve usability of logging functions. Remove the test name prefix from
+logging functions so that logging calls can be made deeper into the call
+stack without passing down the test name or setting some global. Teach
+log function to accept a LOG_PREFIX variable to avoid unnecessary
+argument shifting.
+
+Remove log_setup() and instead use log_host(). The host/guest prefixes
+are useful to show whether a failure happened on the guest or host side,
+but "setup" doesn't really give additional useful information. Since all
+log_setup() calls happen on the host, lets just use log_host() instead.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
 Changes in v7:
-- add comment explaining the !vsk case in virtio_transport_alloc_skb()
+- do not use log levels, keep as on/off switch, after revising
+  this patch series the levels became unnecessary. Could be added
+  latter if it becomes useful.
 ---
- include/linux/virtio_vsock.h            |  1 +
- net/vmw_vsock/virtio_transport_common.c | 21 +++++++++++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vsock/vmtest.sh | 69 ++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 40 deletions(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 29290395054c..f90646f82993 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -217,6 +217,7 @@ struct virtio_vsock_pkt_info {
- 	u32 remote_cid, remote_port;
- 	struct vsock_sock *vsk;
- 	struct msghdr *msg;
-+	struct net *net;
- 	u32 pkt_len;
- 	u16 type;
- 	u16 op;
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index dcc8a1d5851e..b8e52c71920a 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -316,6 +316,15 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
- 					 info->flags,
- 					 zcopy);
+diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+index edacebfc1632..561600814bef 100755
+--- a/tools/testing/selftests/vsock/vmtest.sh
++++ b/tools/testing/selftests/vsock/vmtest.sh
+@@ -271,60 +271,51 @@ EOF
  
-+	/*
-+	 * If there is no corresponding socket, then we don't have a
-+	 * corresponding namespace. This only happens For VIRTIO_VSOCK_OP_RST.
-+	 */
-+	if (vsk) {
-+		virtio_vsock_skb_set_net(skb, info->net);
-+		virtio_vsock_skb_set_net_mode(skb, vsk->net_mode);
-+	}
+ host_wait_for_listener() {
+ 	wait_for_listener "${TEST_HOST_PORT_LISTENER}" "${WAIT_PERIOD}" "${WAIT_PERIOD_MAX}"
+-}
+-
+-__log_stdin() {
+-	cat | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }'
+-}
+ 
+-__log_args() {
+-	echo "$*" | awk '{ printf "%s:\t%s\n","'"${prefix}"'", $0 }'
+ }
+ 
+ log() {
+-	local prefix="$1"
++	local redirect
++	local prefix
+ 
+-	shift
+-	local redirect=
+ 	if [[ ${VERBOSE} -eq 0 ]]; then
+ 		redirect=/dev/null
+ 	else
+ 		redirect=/dev/stdout
+ 	fi
+ 
++	prefix="${LOG_PREFIX:-}"
 +
- 	return skb;
- out:
- 	kfree_skb(skb);
-@@ -527,6 +536,7 @@ static int virtio_transport_send_credit_update(struct vsock_sock *vsk)
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_CREDIT_UPDATE,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ 	if [[ "$#" -eq 0 ]]; then
+-		__log_stdin | tee -a "${LOG}" > ${redirect}
++		if [[ -n "${prefix}" ]]; then
++			cat | awk -v prefix="${prefix}" '{printf "%s: %s\n", prefix, $0}'
++		else
++			cat
++		fi
+ 	else
+-		__log_args "$@" | tee -a "${LOG}" > ${redirect}
+-	fi
+-}
+-
+-log_setup() {
+-	log "setup" "$@"
++		if [[ -n "${prefix}" ]]; then
++			echo "${prefix}: " "$@"
++		else
++			echo "$@"
++		fi
++	fi | tee -a "${LOG}" > ${redirect}
+ }
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1067,6 +1077,7 @@ int virtio_transport_connect(struct vsock_sock *vsk)
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_REQUEST,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ log_host() {
+-	local testname=$1
+-
+-	shift
+-	log "test:${testname}:host" "$@"
++	LOG_PREFIX=host log $@
+ }
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1082,6 +1093,7 @@ int virtio_transport_shutdown(struct vsock_sock *vsk, int mode)
- 			 (mode & SEND_SHUTDOWN ?
- 			  VIRTIO_VSOCK_SHUTDOWN_SEND : 0),
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ log_guest() {
+-	local testname=$1
+-
+-	shift
+-	log "test:${testname}:guest" "$@"
++	LOG_PREFIX=guest log $@
+ }
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1108,6 +1120,7 @@ virtio_transport_stream_enqueue(struct vsock_sock *vsk,
- 		.msg = msg,
- 		.pkt_len = len,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ test_vm_server_host_client() {
+-	local testname="${FUNCNAME[0]#test_}"
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1145,6 +1158,7 @@ static int virtio_transport_reset(struct vsock_sock *vsk,
- 		.op = VIRTIO_VSOCK_OP_RST,
- 		.reply = !!skb,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ 	vm_ssh -- "${VSOCK_TEST}" \
+ 		--mode=server \
+ 		--control-port="${TEST_GUEST_PORT}" \
+ 		--peer-cid=2 \
+-		2>&1 | log_guest "${testname}" &
++		2>&1 | log_guest &
  
- 	/* Send RST only if the original pkt is not a RST pkt */
-@@ -1465,6 +1479,7 @@ virtio_transport_send_response(struct vsock_sock *vsk,
- 		.remote_port = le32_to_cpu(hdr->src_port),
- 		.reply = true,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
+ 	vm_wait_for_listener "${TEST_GUEST_PORT}"
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1578,7 +1593,9 @@ static bool virtio_transport_valid_type(u16 type)
- void virtio_transport_recv_pkt(struct virtio_transport *t,
- 			       struct sk_buff *skb)
- {
-+	enum vsock_net_mode net_mode = virtio_vsock_skb_net_mode(skb);
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	struct net *net = virtio_vsock_skb_net(skb);
- 	struct sockaddr_vm src, dst;
- 	struct vsock_sock *vsk;
- 	struct sock *sk;
-@@ -1606,9 +1623,9 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 	/* The socket must be in connected or bound table
- 	 * otherwise send reset back
- 	 */
--	sk = vsock_find_connected_socket(&src, &dst);
-+	sk = vsock_find_connected_socket_net(&src, &dst, net, net_mode);
- 	if (!sk) {
--		sk = vsock_find_bound_socket(&dst);
-+		sk = vsock_find_bound_socket_net(&dst, net, net_mode);
- 		if (!sk) {
- 			(void)virtio_transport_reset_no_sock(t, skb);
- 			goto free_pkt;
+@@ -332,18 +323,17 @@ test_vm_server_host_client() {
+ 		--mode=client \
+ 		--control-host=127.0.0.1 \
+ 		--peer-cid="${VSOCK_CID}" \
+-		--control-port="${TEST_HOST_PORT}" 2>&1 | log_host "${testname}"
++		--control-port="${TEST_HOST_PORT}" 2>&1 | log_host
+ 
+ 	return $?
+ }
+ 
+ test_vm_client_host_server() {
+-	local testname="${FUNCNAME[0]#test_}"
+ 
+ 	${VSOCK_TEST} \
+ 		--mode "server" \
+ 		--control-port "${TEST_HOST_PORT_LISTENER}" \
+-		--peer-cid "${VSOCK_CID}" 2>&1 | log_host "${testname}" &
++		--peer-cid "${VSOCK_CID}" 2>&1 | log_host &
+ 
+ 	host_wait_for_listener
+ 
+@@ -351,19 +341,18 @@ test_vm_client_host_server() {
+ 		--mode=client \
+ 		--control-host=10.0.2.2 \
+ 		--peer-cid=2 \
+-		--control-port="${TEST_HOST_PORT_LISTENER}" 2>&1 | log_guest "${testname}"
++		--control-port="${TEST_HOST_PORT_LISTENER}" 2>&1 | log_guest
+ 
+ 	return $?
+ }
+ 
+ test_vm_loopback() {
+-	local testname="${FUNCNAME[0]#test_}"
+ 	local port=60000 # non-forwarded local port
+ 
+ 	vm_ssh -- "${VSOCK_TEST}" \
+ 		--mode=server \
+ 		--control-port="${port}" \
+-		--peer-cid=1 2>&1 | log_guest "${testname}" &
++		--peer-cid=1 2>&1 | log_guest &
+ 
+ 	vm_wait_for_listener "${port}"
+ 
+@@ -371,7 +360,7 @@ test_vm_loopback() {
+ 		--mode=client \
+ 		--control-host="127.0.0.1" \
+ 		--control-port="${port}" \
+-		--peer-cid=1 2>&1 | log_guest "${testname}"
++		--peer-cid=1 2>&1 | log_guest
+ 
+ 	return $?
+ }
+@@ -399,25 +388,25 @@ run_test() {
+ 
+ 	host_oops_cnt_after=$(dmesg | grep -i 'Oops' | wc -l)
+ 	if [[ ${host_oops_cnt_after} -gt ${host_oops_cnt_before} ]]; then
+-		echo "FAIL: kernel oops detected on host" | log_host "${name}"
++		echo "FAIL: kernel oops detected on host" | log_host
+ 		rc=$KSFT_FAIL
+ 	fi
+ 
+ 	host_warn_cnt_after=$(dmesg --level=warn | wc -l)
+ 	if [[ ${host_warn_cnt_after} -gt ${host_warn_cnt_before} ]]; then
+-		echo "FAIL: kernel warning detected on host" | log_host "${name}"
++		echo "FAIL: kernel warning detected on host" | log_host
+ 		rc=$KSFT_FAIL
+ 	fi
+ 
+ 	vm_oops_cnt_after=$(vm_ssh -- dmesg | grep -i 'Oops' | wc -l)
+ 	if [[ ${vm_oops_cnt_after} -gt ${vm_oops_cnt_before} ]]; then
+-		echo "FAIL: kernel oops detected on vm" | log_host "${name}"
++		echo "FAIL: kernel oops detected on vm" | log_host
+ 		rc=$KSFT_FAIL
+ 	fi
+ 
+ 	vm_warn_cnt_after=$(vm_ssh -- dmesg --level=warn | wc -l)
+ 	if [[ ${vm_warn_cnt_after} -gt ${vm_warn_cnt_before} ]]; then
+-		echo "FAIL: kernel warning detected on vm" | log_host "${name}"
++		echo "FAIL: kernel warning detected on vm" | log_host
+ 		rc=$KSFT_FAIL
+ 	fi
+ 
+@@ -452,10 +441,10 @@ handle_build
+ 
+ echo "1..${#ARGS[@]}"
+ 
+-log_setup "Booting up VM"
++log_host "Booting up VM"
+ vm_start
+ vm_wait_for_ssh
+-log_setup "VM booted up"
++log_host "VM booted up"
+ 
+ cnt_pass=0
+ cnt_fail=0
 
 -- 
 2.47.3
