@@ -1,110 +1,199 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64201C28E;
-	Tue, 21 Oct 2025 06:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B325E25B1D2
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 06:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761028058; cv=none; b=ZMdF6nidtPGa19WFOEYYVE0+W/EhtTs8alMZmZ7God2vJVvxNdBVpnmN9sEAnG5unH4Ss4ZNj2DVhg3pldwTpkVZvlcfij2/JNBddPbEwmhNzbz1qpSfvuyLKx69pLYWWUrH/h9EKQYniNqsFGJjeFmlIIuDkEmN1/4XhNiPVT0=
+	t=1761028614; cv=none; b=l+cZQkOPIKIMP2uTv/JHk8dyWwX/0fLnuOBPOAw6Am7mo6gLob+t8qEnUo2PzPdPuXPIqJB5aSTMue4hGlZySXYcSqxNhkX291zyvM0ZTEFi2esF5kqWby5Ncd3VgeTqD7U1ECjNaCD0yQIVJIcJ/K21FTxHc7huzR0i+OxntnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761028058; c=relaxed/simple;
-	bh=EHgoOyy69Ch6k/sk+su9R1F95d1WPbPxXqvHwkEvQvg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a/Xo3RRnf920iVTsu6c+g/teMEf7PX4r951pd/9Z+tdGgH0zclV4B86GX0ytPZWDJYESaRCC8Tc4nVk3qHJ8IKsIlTnsWVdTBribmmzZJYaBbYP4pd6y/iebG4sBTRbZajGIjrGbFEQfPBLKCbVliFMD7K9aB7H0JPBafwf3q2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=GSzt2OCa; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1761028614; c=relaxed/simple;
+	bh=pPHShIOw0fKqNBE6FP/aihpLejo2j/yJSiQbkCPkF1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o9WxxGqdWzAXthIWk3UmoVPrD/5JNknwROFwC37ZJODmUNrLaTE34GOowo3bqy4eK/2uVLb3oDKSz+CDnx3IbUXlvkYFBVJ6fBQWq4KpDbCkzDyIUVW1YXst3GD/DNV7g3j/bTiB5dmMaKnKSI6dIRJ38CPvY5NVAIiCssWpMzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Yp+gDZXg; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="GSzt2OCa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=5+UuUE4YMf8tywi8j5sifo/4lXDdrqzj48jMSpJLcuA=;
-	b=GSzt2OCay66Kk+N/PW+Jw7kJiKLPIE1H8xYuS9b+pZFDIMQN3KC0Qu6HV11CxP
-	fxKxFPuMuwW9TknU4/Jzh8a0DkzxC7McXZL4NYSJhx+uH+u3E6zIcwjxav3l24UF
-	VwYrrvuf4lyQGMsgwWN9RxBgPp7iDPAhJPzbJZrGgRLNI=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgCHOlWWJ_dogE_KAw--.13706S2;
-	Tue, 21 Oct 2025 14:26:31 +0800 (CST)
-From: Yi Cong <yicongsrfy@163.com>
-To: stern@rowland.harvard.edu
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-usb@vger.kernel.org,
-	michal.pecio@gmail.com,
-	netdev@vger.kernel.org,
-	oliver@neukum.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH net v5 2/3] net: usb: ax88179_178a: add USB device driver for config selection
-Date: Tue, 21 Oct 2025 14:26:29 +0800
-Message-Id: <20251021062629.2919772-1-yicongsrfy@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <7353775a-bc2c-4c2d-93bc-b8d3e03c3496@rowland.harvard.edu>
-References: <7353775a-bc2c-4c2d-93bc-b8d3e03c3496@rowland.harvard.edu>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Yp+gDZXg"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47495477241so3976095e9.3
+        for <netdev@vger.kernel.org>; Mon, 20 Oct 2025 23:36:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1761028611; x=1761633411; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yWWblYrlCLEpcH5LTQcbLzZ3/EiI9nz+a1hzMsf4pNQ=;
+        b=Yp+gDZXg8xLE7MShXtTr3l9G7P5t8spbIFozLyQ9bWRRAPW3uxHW92Vt26khlqrH6i
+         taQWHH9LaEHqMoS1RhgK8XsedBuIGMJVPqN/kL4BT0r9inczmuXKmOQ2siss6dpqtidX
+         6mBC0SfEni/uRrcBIQQk/R8ImrAK2dyFUgEjnrETW7+g028b0QVygZTG61MHtSGwyQuP
+         JkipUU9iSwPt40z4EFwpTjvFSzjT+KaQYIa3HQ51d+KSYJ+1OJ8Bhg3huSlMLhToaWfB
+         3ZizoAFI4HJt+2usx8dXH9+NP6Zy5jxkFm33PYKTURjOLFrOk3oM4dfRSOXGPpRs+xiF
+         8KwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761028611; x=1761633411;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yWWblYrlCLEpcH5LTQcbLzZ3/EiI9nz+a1hzMsf4pNQ=;
+        b=ULlUJoU2TrLlDeJu/3a3fFek+ptnLHJ8pEBG1+o1NA015VUWkB4CvFulIdja8490ZG
+         nifrCmfomMdiL1Bj18jWhJwsiRhgOo5bqXvQS8tYjnO5ZNcRbC27Lj1GfiUUoV9y6iWa
+         m8RGoRHcd4iXx6InBXnUvaZ8xVFh/7RotreU9J0QKi3fNXZ4bISEJj+v/A/gkVTb1dXu
+         Q6FwdJQG8v9+qXIO37wwc/2nVylygmIUxmonSgmQrlU1pB7mf9ygauDddj6HrjlmE7LE
+         GaV3c9xHzvdU9NScT8gIpLQlDznkj8dPN/CcSELTSAl7p46rH1MKjiwVm2oxWehXaOhc
+         jG1w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2lvE8aqjAeD7OX+6ZhmG7G2z61M/U1vRbFNjkAvNyeHU1Vknhf4py9MJ/eOGtE4G+cFMhMZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv2uW0cFe4Cycb7X+FsoNCrlf/WoVorceTfEMJWheduDjo/xrr
+	z+EufqOC+8vrMk3B5b1WVGvR/xiNyogfSb9XMGDfn0HpmfB/nSQ6yVtkmL4NmdWzCsFOUCv4P7z
+	WaTFR
+X-Gm-Gg: ASbGncvXKcMpvVXVS12Oq7HFabigMHm7YPyCUWFmCdyw5IO0jotzM+/PH2vfNcWUgHp
+	+CqI4XrpOrHDiJiI9zoQgr9h2Yike+VxbyKIRMKUgr6QWskxvuB7QazuyifBpP9j4+SY/tBOWZt
+	GCBq/K/NnSqzFCexXz3kBz1wy4mykfJM77QuCIAmyagRImfn6/3M0ZEfwSsXAMBcU8Ci6Wyy0l6
+	VEV4c5C2nQP86ElxCEWCV4kA061ZH3qHaINsk5VG8Toylz+bFBz1ZWB/1yZU3C7VlmRK/LtfhXz
+	roXOnCH5C8LRH4QRSf7FvHuypZ+3tUaKFIkimHBN0e6RSEIuFuz8vwY3uDr25zcqpa1PN38qHoR
+	bTsjifQvswCh05h65yS1hSSGRak7A0uMx1lMWzky39UzTuX7mpqE7W5lNhRzu+Z8qV6NMkEQN6e
+	3tF5C2+Q==
+X-Google-Smtp-Source: AGHT+IEkQcqp1ksk1Cj9+LjNgTTmawr/C6jo8SGgwsLly2e1GhUHXpoCb0o0/Ssyg6De4Q0iYDMU6Q==
+X-Received: by 2002:a05:600c:8b66:b0:46e:1d8d:cfa2 with SMTP id 5b1f17b1804b1-471179117b3mr102871395e9.20.1761028610907;
+        Mon, 20 Oct 2025 23:36:50 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-427ea5b3c56sm18971798f8f.18.2025.10.20.23.36.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Oct 2025 23:36:50 -0700 (PDT)
+Date: Tue, 21 Oct 2025 09:36:47 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org,
+	kuba@kernel.org, linux-hams@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	syzbot+2860e75836a08b172755@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH V2] netrom: Prevent race conditions between multiple add
+ route
+Message-ID: <aPcp_xemzpDuw-MW@stanley.mountain>
+References: <aPZ4fLKBiCCIGr9e@stanley.mountain>
+ <20251021020533.1234755-1-lizhi.xu@windriver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgCHOlWWJ_dogE_KAw--.13706S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur4UKr1kJFW8Cr4xAw48tFb_yoW8ZrW7pF
-	WaqF1rtF4DJF4rtFsrKrZ5GrWUuws7Kry3Wr4fKw1Y9rn8CryYywsF9r43Ar4kGr97Gr1j
-	v3yS9a4I9F1DArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5kuxUUUUU=
-X-CM-SenderInfo: p1lf00xjvuw5i6rwjhhfrp/xtbBzQTt22j3HhPTPQAAsD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251021020533.1234755-1-lizhi.xu@windriver.com>
 
-On Mon, 20 Oct 2025 22:59:36 -0400, Alan Stern <stern@rowland.harvard.edu> wrote:
->
-> On Tue, Oct 21, 2025 at 10:29:25AM +0800, Yi Cong wrote:
-> > On Mon, 20 Oct 2025 11:56:50 -0400, Alan Stern <stern@rowland.harvard.edu> wrote:
+On Tue, Oct 21, 2025 at 10:05:33AM +0800, Lizhi Xu wrote:
+> On Mon, 20 Oct 2025 20:59:24 +0300, Dan Carpenter wrote:
+> > On Mon, Oct 20, 2025 at 09:49:12PM +0800, Lizhi Xu wrote:
+> > > On Mon, 20 Oct 2025 21:34:56 +0800, Lizhi Xu wrote:
+> > > > > Task0					Task1						Task2
+> > > > > =====					=====						=====
+> > > > > [97] nr_add_node()
+> > > > > [113] nr_neigh_get_dev()		[97] nr_add_node()
+> > > > > 					[214] nr_node_lock()
+> > > > > 					[245] nr_node->routes[2].neighbour->count--
+> > > > > 					[246] nr_neigh_put(nr_node->routes[2].neighbour);
+> > > > > 					[248] nr_remove_neigh(nr_node->routes[2].neighbour)
+> > > > > 					[283] nr_node_unlock()
+> > > > > [214] nr_node_lock()
+> > > > > [253] nr_node->routes[2].neighbour = nr_neigh
+> > > > > [254] nr_neigh_hold(nr_neigh);							[97] nr_add_node()
+> > > > > 											[XXX] nr_neigh_put()
+> > > > >                                                                                         ^^^^^^^^^^^^^^^^^^^^
+> > > > >
+> > > > > These charts are supposed to be chronological so [XXX] is wrong because the
+> > > > > use after free happens on line [248].  Do we really need three threads to
+> > > > > make this race work?
+> > > > The UAF problem occurs in Task2. Task1 sets the refcount of nr_neigh to 1,
+> > > > then Task0 adds it to routes[2]. Task2 releases routes[2].neighbour after
+> > > > executing [XXX]nr_neigh_put().
+> > > Execution Order:
+> > > 1 -> Task0
+> > > [113] nr_neigh_get_dev() // After execution, the refcount value is 3
 > > >
-> > > Instead of all this preferred() stuff, why not have the ax88179 driver's
-> > > probe routine check for a different configuration with a vendor-specific
-> > > interface?  If that other config is present and the chip is the right
-> > > type then you can call usb_driver_set_configuration() -- this is exactly
-> > > what it's meant for.
-> >
-> > I tried calling usb_driver_set_configuration inside driver's probe()
-> > to select the configuration, but my USB network card has three
-> > configurations (bNumConfigurations=3), which causes usb_driver_set_configuration
-> > to be called twice within probe():
-> > ```
-> > static int ax88179_probe()
-> > {
-> >         if (bConfigurationValue != I_WANT) {
-> >                 usb_driver_set_configuration(udev, I_WANT)
-> >                 return -ENODEV;
-> >         }
-> >         //else really probe
-> > }
-> > ```
->
-> Why is it called twice?  The first time probe() runs, it calls
-> usb_driver_set_configuration() with the config that you want.  Then the
-> second time probe() runs, the config you want has been installed, so
-> there's no reason to call usb_driver_set_configuration() again.
->
-> Unless something is going wrong, that's how it should work.  And the
-> total number of configurations should not matter.
+> > > 2 -> Task1
+> > > [246] nr_neigh_put(nr_node->routes[2].neighbour);   // After execution, the refcount value is 2
+> > > [248] nr_remove_neigh(nr_node->routes[2].neighbour) // After execution, the refcount value is 1
+> > >
+> > > 3 -> Task0
+> > > [253] nr_node->routes[2].neighbour = nr_neigh       // nr_neigh's refcount value is 1 and add it to routes[2]
+> > >
+> > > 4 -> Task2
+> > > [XXX] nr_neigh_put(nr_node->routes[2].neighbour)    // After execution, neighhour is freed
+> > > if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)  // Uaf occurs this line when accessing neighbour->count
+> > 
+> > Let's step back a bit and look at the bigger picture design.  (Which is
+> > completely undocumented so we're just guessing).
+> > 
+> > When we put nr_neigh into nr_node->routes[] we bump the nr_neigh_hold()
+> > reference count and nr_neigh->count++, then when we remove it from
+> > ->routes[] we drop the reference and do nr_neigh->count--.
+> > 
+> > If it's the last reference (and we are not holding ->locked) then we
+> > remove it from the &nr_neigh_list and drop the reference count again and
+> > free it.  So we drop the reference count twice.  This is a complicated
+> > design with three variables: nr_neigh_hold(), nr_neigh->count and
+> > ->locked.  Why can it not just be one counter nr_neigh_hold().  So
+> > instead of setting locked = true we would just take an extra reference?
+> > The nr_neigh->count++ would be replaced with nr_neigh_hold() as well.
+> locked controls whether the neighbor quality can be automatically updated;
 
-It might not be caused by the number of configurations, but rather by
-the fact that usb_driver_set_configuration handles configuration changes
-through a work queue.
+I'm not sure your patch fixes the bug because we could still race against
+nr_del_node().
 
-I suspect this is the reason (although I haven't verified it further
-—I just observed this behavior and switched to a different implementation
-by using choose_configuration):
-```
-int usb_driver_set_configuration(struct usb_device *udev, int config)
-{
-...
-	INIT_WORK(&req->work, driver_set_config_work);
-	schedule_work(&req->work);
-	return 0;
-}
-```
+I'm not saying get rid of locked completely, I'm saying get rid of code like
+this:
+		if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
+			nr_remove_neigh(nr_node->routes[2].neighbour);
 
+Right now, locked serves as a special kind of reference count, because we
+don't drop the reference if it's true.
+
+> count controls the number of different routes a neighbor is linked to;
+
+Sure, that is interesting information for the user, so keep it around to
+print in the proc file, but don't use it as a reference count.
+
+> refcount is simply used to manage the neighbor lifecycle.
+
+The bug is caused because our reference counting is bad.
+
+So right now what happens is we allocate nr_neigh and we put it on the
+&nr_neigh_list.  Then we lock it or we add it to ->routes[] and each of
+those has a different reference count.  Then when we drop those references
+we do:
+
+		if (nr_node->routes[2].neighbour->count == 0 && !nr_node->routes[2].neighbour->locked)
+			nr_remove_neigh(nr_node->routes[2].neighbour);
+
+This removes it from the list, and hopefully this is the last reference
+and it frees it.
+
+It would be much simpler to say, we only use nr_neigh_hold()/put() for
+reference counting.  When we set locked we do:
+
+	nr_neigh_hold(nr_neigh);
+	nr_neigh->locked  = true;
+
+Incrementing the refcount means it can't be freed.
+
+Then when we remove nr_neigh from ->routes[] we wouldn't "remove it from
+the list", instead we would just drop a reference.  When we dropped the
+last reference, nr_neigh_put() would remove it from the list.
+
+My proposal would be a behavior change because right now what happens is:
+
+1: allocate nr_neigh
+2: add it to ->routes[]
+3: remove it from ->routes[]
+   (freed automatically because we drop two references)
+
+Now it would be:
+1: allocate nr_neigh
+2: add it to ->routes[]
+3: remove it from ->routes[]
+4: needs to be freed manually with nr_del_neigh().
+
+regards,
+dan carpenter
