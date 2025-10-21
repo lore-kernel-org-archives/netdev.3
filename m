@@ -1,68 +1,67 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839B62ECD19
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EB42D0C62
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 23:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761090439; cv=none; b=SXyT4YEeEaF5LLrqBhQ+xquODoUeE/evI48zYeeWeLb1LD05+7bPenXFLXITgDIuCgOzGegtGm/mgToXtEdbL9A3dEX93sliV47FYVKa0KZnpk7iAUXRo1QIP8NWqIEBD3JBunZZU/d09v/+nYz+PUOejyCCUh94iqdMJJ9nJK0=
+	t=1761090440; cv=none; b=lBWzdgSJNf6oOqhLYoomkvBf7DanBSdvjaSBGTUfTvbwSeU660o3rnqOoI0Am28+JWF50Ql8DbvPV1JVYRCdu8p7AMOrDUILVTIMxqz4ApCncy6L78/tJCZVFdoNQ+VuCJbKcysjb1WWspeNW6NhuEpiC/4bHrb8Ss7MQ1YCqTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761090439; c=relaxed/simple;
-	bh=cSAsRDqBVRjV5+J5lLGOrcD4Yn/sBflKtNCYHEuiaRw=;
+	s=arc-20240116; t=1761090440; c=relaxed/simple;
+	bh=X9WzUQups8TkdsWmkHEfnPyp3k1TVWabO4OwH0YlSZ4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GtXQodowrlotJAlf0qsorhgYp+EdAYxF/RPyLgQgfsxZBFSnFxAvfbn5oKMK2geL2RR1Md28VU89tJtWEU6LC1cwQ2sPPlF6P9WmcNbx6IKeO7asvtB0Vgz0HcNApc3sTPJcxSwv3wjTODmlg7zvyai5Y+JofZwrXQomBiInCC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FaeNva2E; arc=none smtp.client-ip=209.85.214.178
+	 In-Reply-To:To:Cc; b=nmB84i7EmUKHsrcilte9tXZc4PJUOyUsM+7+nwlS1CHrvCE4wXV81gDy9Dgt+8tg949+OSoO0fpUECVUHiQpzeNzMW74u0vj6J3nmmDtFGXWQ+zwcxTp1kTKuI0nn8edqzashcFroKb0PPnmY1IEydqNRdvCAG4t9LQLTJJ1WDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H92IHcDq; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FaeNva2E"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-27c369f898fso88075145ad.3
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H92IHcDq"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b6cdd7e5802so105757a12.1
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 16:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761090432; x=1761695232; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761090434; x=1761695234; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ERN+jbjLqe2GDwDaLELjNRkAEJw/pLWXwhebqrcXkEc=;
-        b=FaeNva2EiD/NGgDwWGw28Af1TvmhCwwSrssU24IT9UtinFqoiRii3VR64u6+V/Rv5D
-         NTk1K1Ju3nWPjPVkR5DXWNM8Zuf6cjMWjfI6JQf8u0z+P4pnKVasSVJV0vJvlM9xmTl4
-         MpmYgR+PXE5M8B92PdVIhvSNYgVI0oX10aC0qq5iVvpsbaomVVS6SsXQ4nt918Kv55VQ
-         DkDyQx+FrZqJ55dpT1i71vEJ6gYtvDK+FDFuqfEExcNimUiMRcMtHVMOOYQhLk/+oViV
-         Q0hx0qxLdDO16BFZ7ICU3thERrmCamimPO2osMnPtC+U1NLhk/Ir16wcU4eydcsn6QCa
-         ll5w==
+        bh=ExL6guYlGMpC9HoFsJPCjZr8NPSDth7dE4rzR6CctFc=;
+        b=H92IHcDqAOBl+0N4MTZ+rK0vKqOC/cVUE2BVySlhzWIYtSKBRbnZLDQZztI0Nw2Ycp
+         i7Md4C8ArGNcoGruR8l5xxve9Ak7vuSKxxVuOHriYtweHZgLp5spVyDheuCxj/e0UbLS
+         FLLg96sJIAne/k0FFHiP3y+ExhV1V0Fr2P2cvoWH0fEkkcnNsTReFskJYCmgcUGuMuOx
+         LZzAW1Xxwkzg2o4jhAxpUOaWK59ghe/JDPr/SiCmRF6esklRVVs0jXc6Bdj3XJN6yXti
+         2lmNVsc8eTF2zHXqG9BPIYBnaZtVcKyWKVZdT8bUvVSLCh+Bi35gsnEnHuLLbi+AeK8k
+         0QRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761090432; x=1761695232;
+        d=1e100.net; s=20230601; t=1761090434; x=1761695234;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ERN+jbjLqe2GDwDaLELjNRkAEJw/pLWXwhebqrcXkEc=;
-        b=HWVB8xqLPy7w6TjC3/LfOpm+EDJXbBWd+6iZfIftxN90sycsdPXEycvRKgVOmSzBs8
-         xLWdRGiRawQQpbobkJ8H32c745AuvuHfPBtJqqDgRzi+mZzCgmGJTjzUTAdFiOYFmLsF
-         DWi2BWTIIhUrpvILmppAMzaV5ExfauL1MET37yKt5QTBmGF1xytK0/DvGdmkVCXBFwOo
-         5LaOa//zmZ6e0PnYuhDt8LGpZf0HWT/Nox0fRd/xhnRDluJBErN53QjB3ubkdtV1nm4w
-         TDIRVKEDxN3C9pnh3k1EvXix0SBGQGuXGToNKZa7CjNXsrG/2tZtIrgpB7j/yoiMwW62
-         /ZRg==
-X-Forwarded-Encrypted: i=1; AJvYcCWEThy0wMzNG28eBuX/U3RinhW0cDm0gwFV8+RcsRF0NvjxcUHtbmigDldkfD+sTGm7ZHSZgZw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOhs/Qf7MjsgzWwQYgi1eUDdzMfEG8vUfZ50JjqnxVDG5z2IIs
-	lyfrQktSJE6Ht+UPtuzIQiLlTfHVemJuaXYEmAzXIEk51D9QzMvIe55W
-X-Gm-Gg: ASbGncuILORALAv0rqZbvsjBjaflqHWkVu1HDARQzt+fBCSvWjV+FsEqfIPBcxsCVCK
-	pHa3jFyI4Y8nS8KEAXfjufjdR0GcwOQt8tzU1xpAbSv3a3k1/Chf6LyVLsheu8HOsiWwEbBoOZV
-	sZGk9nD+rEy3GKHdsqbewbGt7mWDe7n7Ro3R8VRQFFizExCPGmjz9sahEbq67oP3I0lmkrhc6Ty
-	t6OXI/JocZ5beLFtY58jf2xvpq/7qihvG2ay/CtRVj3Fx8WNp6UvaDKuL2h8/RG7dXfExE0CU3j
-	skGDlsMUxKTY65mSzpwGWOKYNcEep+zBnP4b3koqeBfP99OCOSVyjMCny8aFAaPAwGphZQwLodt
-	uYw7HBBZ5lzMq+FvfmQBzYy68+KWeZsDaT+nNwG6+6khAxUOyBrSuShO7UXJuAOPU1fgzDap8eb
-	aT8IEHVPBw255XIEjzhQ==
-X-Google-Smtp-Source: AGHT+IFGmvrlTRJrVB5IZHQoRBZsqDSzVsYhhC0KT8URosDDz4O0ZlQ6n+lydCzN5y/3yUEEnGsBVg==
-X-Received: by 2002:a17:902:cf0b:b0:24c:cb60:f6f0 with SMTP id d9443c01a7336-290cb66025amr253714265ad.58.1761090432218;
-        Tue, 21 Oct 2025 16:47:12 -0700 (PDT)
+        bh=ExL6guYlGMpC9HoFsJPCjZr8NPSDth7dE4rzR6CctFc=;
+        b=h0U0bFS6p3RlAe7DpqKFuqsrkpnh8bBwn65qt0ADJ54z6xp+v6qCYDaXMwrx9Wybt2
+         muDW1ZKXTD0EKIt6uZfhaSl0sQc7BYzy/4BebZSy4Ad3Skx42dCa01BzM02vWb82uaVq
+         9vvsI5fi1H+KSTqS8PN1ZtUZ4RJGvhY6WstZy4ctgTp/H7CvP1g5a3VUxIsUv3n3gXkL
+         6jrSjKLUZ49AYnKEBTQype2s1PCJy5UQXSWA2EYpIsOkflXYWy0nPi10eME0VE24CQJu
+         9b+tfeii32Vr506VodIWCmrxYQEARWD//+hdofnEJimCPtgZXMQe72ICDm+GaaKDfCY8
+         uJww==
+X-Forwarded-Encrypted: i=1; AJvYcCVbr9j1XEbJm3A/8hFdjK6K8KcbgzhxmSyY2fUe9h+n1lU4OdI/xYNBO1wN7ygE9R0M+amzK+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywYXj53TbFGyauJSL5ogbhd7XDK4tMjSbJIrlHzc22g78wlDiy
+	VwCR18pzOGQTEd95bvvcdwtSba9oURVCQI/04ymYp/i76vpXrQDGowiW
+X-Gm-Gg: ASbGncv7aicDpl51tRzsAxYBqy1OUeV6I4Bo50ZQ4oul5V9dM2+vnVF6HJiIC6jhjpd
+	IvJMvxsglf7H5BiToGq2L/Esp5kY8K+fV+KBIRKbRGmbhU2XBA62gs8nSVs2HaO9v5Cw3Gc+Ka6
+	3w+ysRtBxCyWt97z7NE4w5L8hI0KuhUlegTGlPzhfIiUTvKlBpIWBHWSxZ451p6qNfzwvb7rayY
+	XD+WTV0HZRvgspUDYbOb+KpLnRaFo/7ETSqRAfuC1/qEJORQvZ++veGE7lR8cULe++3xS6+75R3
+	ZrN0nkf7RvZmj/GHV21jhldoMT14QPj011hyIR/6ndJtkuoGhsPUjymzUFpjSGGTh6nUEX059+j
+	TWPk5DoFKdGJ+qn72g8M4l/Kz4bJYB5PeFGHmRaEsyyYljg7XfNta78Dgs+90Q0r64xHHEHTh
+X-Google-Smtp-Source: AGHT+IGFjlVJaAVI5l1l9XcDArSqr800gCJXUHbkf8qJCt41RTFarYvpfL88FKlbpibTKt7cQQNqLw==
+X-Received: by 2002:a17:902:f548:b0:276:76e1:2e84 with SMTP id d9443c01a7336-290c9c8941dmr231390815ad.3.1761090434188;
+        Tue, 21 Oct 2025 16:47:14 -0700 (PDT)
 Received: from localhost ([2a03:2880:2ff:4::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246fcc2e0sm120841465ad.34.2025.10.21.16.47.11
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-292471fdcc1sm120666255ad.82.2025.10.21.16.47.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Oct 2025 16:47:11 -0700 (PDT)
+        Tue, 21 Oct 2025 16:47:13 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 21 Oct 2025 16:46:57 -0700
-Subject: [PATCH net-next v7 14/26] selftests/vsock: add check_result() for
- pass/fail counting
+Date: Tue, 21 Oct 2025 16:46:59 -0700
+Subject: [PATCH net-next v7 16/26] selftests/vsock: add namespace
+ initialization function
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251021-vsock-vmtest-v7-14-0661b7b6f081@meta.com>
+Message-Id: <20251021-vsock-vmtest-v7-16-0661b7b6f081@meta.com>
 References: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 In-Reply-To: <20251021-vsock-vmtest-v7-0-0661b7b6f081@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
@@ -95,67 +94,81 @@ X-Mailer: b4 0.13.0
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Add check_result() function to reuse logic for incrementing the
-pass/fail counters. This function will get used by different callers as
-we add different types of tests in future patches (namely, namespace and
-non-namespace tests will be called at different places, and re-use this
-function).
+Add functions for initializing namespaces with the different vsock NS
+modes. Callers can use add_namespaces() and del_namespaces() to create
+namespaces global0, global1, local0, and local1.
+
+The init_namespaces() function initializes global0, local0, etc...  with
+their respective vsock NS mode. This function is separate so that tests
+that depend on this initialization can use it, while other tests that
+want to test the initialization interface itself can start with a clean
+slate by omitting this call.
+
+This patch is in preparation for later namespace tests.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- tools/testing/selftests/vsock/vmtest.sh | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ tools/testing/selftests/vsock/vmtest.sh | 40 +++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
 diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 020796e1c31a..5368ec7b1895 100755
+index 4ee77e6570e8..914d7c873ad9 100755
 --- a/tools/testing/selftests/vsock/vmtest.sh
 +++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -78,6 +78,26 @@ die() {
- 	exit "${KSFT_FAIL}"
+@@ -46,6 +46,7 @@ readonly TEST_DESCS=(
+ )
+ 
+ readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
++readonly NS_MODES=("local" "global")
+ 
+ VERBOSE=0
+ 
+@@ -100,6 +101,45 @@ check_result() {
+ 	cnt_total=$(( cnt_total + 1 ))
  }
  
-+check_result() {
-+	local rc num
++add_namespaces() {
++	# add namespaces local0, local1, global0, and global1
++	for mode in "${NS_MODES[@]}"; do
++		ip netns add "${mode}0" 2>/dev/null
++		ip netns add "${mode}1" 2>/dev/null
++	done
++}
 +
-+	rc=$1
-+	num=$(( cnt_total + 1 ))
++init_namespaces() {
++	for mode in "${NS_MODES[@]}"; do
++		ns_set_mode "${mode}0" "${mode}"
++		ns_set_mode "${mode}1" "${mode}"
 +
-+	if [[ ${rc} -eq $KSFT_PASS ]]; then
-+		cnt_pass=$(( cnt_pass + 1 ))
-+		echo "ok ${num} ${arg}"
-+	elif [[ ${rc} -eq $KSFT_SKIP ]]; then
-+		cnt_skip=$(( cnt_skip + 1 ))
-+		echo "ok ${num} ${arg} # SKIP"
-+	elif [[ ${rc} -eq $KSFT_FAIL ]]; then
-+		cnt_fail=$(( cnt_fail + 1 ))
-+		echo "not ok ${num} ${arg} # exit=$rc"
-+	fi
++		log_host "set ns ${mode}0 to mode ${mode}"
++		log_host "set ns ${mode}1 to mode ${mode}"
 +
-+	cnt_total=$(( cnt_total + 1 ))
++		# we need lo for qemu port forwarding
++		ip netns exec "${mode}0" ip link set dev lo up
++		ip netns exec "${mode}1" ip link set dev lo up
++	done
++}
++
++del_namespaces() {
++	for mode in "${NS_MODES[@]}"; do
++		ip netns del "${mode}0" &>/dev/null
++		ip netns del "${mode}1" &>/dev/null
++		log_host "removed ns ${mode}0"
++		log_host "removed ns ${mode}1"
++	done
++}
++
++ns_set_mode() {
++	local ns=$1
++	local mode=$2
++
++	echo "${mode}" | ip netns exec "${ns}" \
++		tee /proc/sys/net/vsock/ns_mode &>/dev/null
 +}
 +
  vm_ssh() {
  	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
  	return $?
-@@ -523,17 +543,7 @@ cnt_total=0
- for arg in "${ARGS[@]}"; do
- 	run_test "${arg}"
- 	rc=$?
--	if [[ ${rc} -eq $KSFT_PASS ]]; then
--		cnt_pass=$(( cnt_pass + 1 ))
--		echo "ok ${cnt_total} ${arg}"
--	elif [[ ${rc} -eq $KSFT_SKIP ]]; then
--		cnt_skip=$(( cnt_skip + 1 ))
--		echo "ok ${cnt_total} ${arg} # SKIP"
--	elif [[ ${rc} -eq $KSFT_FAIL ]]; then
--		cnt_fail=$(( cnt_fail + 1 ))
--		echo "not ok ${cnt_total} ${arg} # exit=$rc"
--	fi
--	cnt_total=$(( cnt_total + 1 ))
-+	check_result ${rc}
- done
- 
- terminate_pidfiles "${pidfile}"
 
 -- 
 2.47.3
