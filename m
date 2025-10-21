@@ -1,35 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4823E334
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 14:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F58633B958;
+	Tue, 21 Oct 2025 14:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761055225; cv=none; b=F82H/S7KcfmwdQxph1E+9Zx2+vtRhLc+aevlW7aw9nDzGD3ejNzCiaL5DglORgryhB/U08XrZdirR3vRGzpedy+wG6b+A7DwkvlJHFh/EiOHSLgXWNXEH4EXE/6EQuKIPEZwePjTpuj7QF6SdIZl34zBS+80HzlIamqQlBS+qP8=
+	t=1761055251; cv=none; b=fASuYrDMcUbdT3d0T7OQoTE/DUZQWAcjdFcI940tlU4uORiRdOvbAe0za0735pAFlACmnJ9Qdwry2p9P3WzGIXTukxtgs0X1N6DfEI6gEOfjU1BEneoXg6Kl8VJNYUWLjdbEvGVl0gnFvCtMXmWuAB+yLWNe3BK+2/1xNHl8olw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761055225; c=relaxed/simple;
-	bh=oMEQUp/7UGlxhJdj8FlUlqkOxmA0Jqu8fL1JETsy/LQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MOf7oJblZ0LNhyIrsZG9/qC6+7CqewGu3kRonXkxdk0f6nny1oOWn5fx3KKqVVZxWZ4Qn69L0v/rNGGZeau2eoWMbD8Vav5oanbo6qkWy3aA4D8L3MdynsM6qRemCHkm2/z/qCd2cixhhNMW/hhZBjHzrNADgTpdkzb0brTWwJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u37/Xexc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761055251; c=relaxed/simple;
+	bh=Z4e+Rda2bYfjLOZMWdTklKDon1bvj8FeVYa8pl1efVc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y+PqoIYbv5BXgoFRtkRY6f3pt6pZ2IXbVPzD4FdV8X/AIwMiCOId96xLp+nTMTfYswzj2HnaevWb1eMT4gelhIUh5e3+EAOvLyAYeIkhGeQrV+kdRfrMdKSW6pUIrtVByeZ1em/iTbh/soSfFWe3Enb3X86C82QCNmXD3mQkYvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=I+ERaNQe; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u37/Xexc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3918BC4CEF1;
-	Tue, 21 Oct 2025 14:00:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761055225;
-	bh=oMEQUp/7UGlxhJdj8FlUlqkOxmA0Jqu8fL1JETsy/LQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=u37/Xexc7G+s+Ww4eI1KpABvVYTAgwV+891D179wOgxL4hOwKr0261fzsVHaVr7LG
-	 zRZ3ju+7BGhQXBFc39YC1+XJAz+y3nVpD5kIuqvScMrJt5vcinWlCHRpe40FIGTxxd
-	 gp/7l83t/MHKCNQ9ilw8Yhl/DosOReqAS6toTNmWJjx0a5x8jv6EWTFNkQUMUJ1M9Q
-	 n+m2MQS1Rg9vlFqyb0skv2Ni1VczdWvzUwJn7sCimPDGgmLkb5lNGvzWTbq0XWx0wB
-	 zDK3QZBF30SBPvCMpJ7JIeBPzxAMpurYyQaVzOOx/vHwtPIuXMKeCGcqjGJljrKAmc
-	 yyr7V5vnb2KUw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB1CE3A55F85;
-	Tue, 21 Oct 2025 14:00:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="I+ERaNQe"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=opBLMIIAqFH/C9JqHJAmW6L6I2eQ3SJbotO5tszdkkw=;
+	b=I+ERaNQevgxnbk0VcY7vk1EyDWj5hZ8e1WqC3F+EYXUFBWEfYX+f4RpWr4qcmryBYiGgO82gy
+	p8ZZqwYykXuR7NKWF9a6YSdwqNSI8PN59ADJFyWyOquVbn0MLbJMo28Y0QIdZL5EZ+pmFc53jFp
+	ufGyDdtKdkbcSgMb0K02Yf8=
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4crYp047dgz1T4Kh;
+	Tue, 21 Oct 2025 21:59:52 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9B950140155;
+	Tue, 21 Oct 2025 22:00:45 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 21 Oct 2025 22:00:44 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net 3/3] net: hibmcge: fix the inappropriate netif_device_detach()
+Date: Tue, 21 Oct 2025 22:00:16 +0800
+Message-ID: <20251021140016.3020739-4-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20251021140016.3020739-1-shaojijie@huawei.com>
+References: <20251021140016.3020739-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +55,66 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: avoid extra acces to sk->sk_wmem_alloc in
- sock_wfree()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176105520683.1093757.15942345339550067934.git-patchwork-notify@kernel.org>
-Date: Tue, 21 Oct 2025 14:00:06 +0000
-References: <20251017133712.2842665-1-edumazet@google.com>
-In-Reply-To: <20251017133712.2842665-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, willemb@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hello:
+current, driver will call netif_device_detach() in
+pci_error_handlers.error_detected() and do reset in
+pci_error_handlers.slot_reset().
+However, if pci_error_handlers.slot_reset() is not called
+after pci_error_handlers.error_detected(),
+driver will be detached and unable to recover.
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+drivers/pci/pcie/err.c/report_error_detected() says:
+  If any device in the subtree does not have an error_detected
+  callback, PCI_ERS_RESULT_NO_AER_DRIVER prevents subsequent
+  error callbacks of any device in the subtree, and will
+  exit in the disconnected error state.
 
-On Fri, 17 Oct 2025 13:37:12 +0000 you wrote:
-> UDP TX packets destructor is sock_wfree().
-> 
-> It suffers from a cache line bouncing in sock_def_write_space_wfree().
-> 
-> Instead of reading sk->sk_wmem_alloc after we just did an atomic RMW
-> on it, use __refcount_sub_and_test() to get the old value for free,
-> and pass the new value to sock_def_write_space_wfree().
-> 
-> [...]
+Therefore, when the hibmcge device and other devices that do not
+support the error_detected callback are under the same subtree,
+hibmcge will be unable to do slot_reset.
 
-Here is the summary with links:
-  - [net-next] net: avoid extra acces to sk->sk_wmem_alloc in sock_wfree()
-    https://git.kernel.org/netdev/net-next/c/3ff9bcecce83
+This path move netif_device_detach from error_detected to slot_reset,
+ensuring that detach and reset are always executed together.
 
-You are awesome, thank you!
+Fixes: fd394a334b1c ("net: hibmcge: Add support for abnormal irq handling feature")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+index 83cf75bf7a17..e11495b7ee98 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
+@@ -136,12 +136,11 @@ static pci_ers_result_t hbg_pci_err_detected(struct pci_dev *pdev,
+ {
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 
+-	netif_device_detach(netdev);
+-
+-	if (state == pci_channel_io_perm_failure)
++	if (state == pci_channel_io_perm_failure) {
++		netif_device_detach(netdev);
+ 		return PCI_ERS_RESULT_DISCONNECT;
++	}
+ 
+-	pci_disable_device(pdev);
+ 	return PCI_ERS_RESULT_NEED_RESET;
+ }
+ 
+@@ -150,6 +149,9 @@ static pci_ers_result_t hbg_pci_err_slot_reset(struct pci_dev *pdev)
+ 	struct net_device *netdev = pci_get_drvdata(pdev);
+ 	struct hbg_priv *priv = netdev_priv(netdev);
+ 
++	netif_device_detach(netdev);
++	pci_disable_device(pdev);
++
+ 	if (pci_enable_device(pdev)) {
+ 		dev_err(&pdev->dev,
+ 			"failed to re-enable PCI device after reset\n");
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.33.0
 
