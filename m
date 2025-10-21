@@ -1,75 +1,142 @@
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063612E9EB9
-	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5902777FC
+	for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 10:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761041464; cv=none; b=mBlj65tWq0xvHpHA7n6KQouNbTB9VZNlF9qnqIlg/CrwGTENUKg3DrQxMZYAuIqxojSw5aMPrpOHsMIe5UkIl4Kzd8SPlBoFYrjMbxBsZ+bbYg20wC2pYd+JJBSuufKIq+4hSrd7xIn3EBEruOvAqwW9IXCus688CVD0/aTHJgE=
+	t=1761041648; cv=none; b=stbQbBigefdfQCIjDZ9hZUHvx3yn35W/ARs2JBKg9MrwOdnpOTljXwDcwzlKeD2wRHzbUtTGYE/11YfJ+1GpOT5e/IggqEk9dcNMyBy9ybn7lcOyXofxAJGYePhet4a2IpthqezvzVkJtRTOjN8/tdCECVSw5461QnjTOZexOxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761041464; c=relaxed/simple;
-	bh=vpXQiflVU7E/srPq9JfjysqPUwZeetf3iBJFxoNFNfA=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=Hv08sx6+II871cLYjznmQ8+62+3x7WoVoOEhtq0rtO63t8tAmacPaGjq+BkP8E5SrGPk/i0O0VxI9rUFKYZ8KYkrFueUUGUqCVMH+2fyhzpBA/pc2Maa6D/lgb7zas/YS4/rKBF+sbIXAK4BfPqiTyJRHF4Q87VN+Jx+JSzrJd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-940e4cf730aso361003739f.1
-        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:11:02 -0700 (PDT)
+	s=arc-20240116; t=1761041648; c=relaxed/simple;
+	bh=hZFYqccy3hrzjkUJnAWqrJtsjPd4X/Rq5BGUoMThiBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kywawzlqtGObYLeFG0I5JdMp55s63QW2Grcr3JMqplZMrbD/HSzcjeURFvWPVUQEMyCrm3Z56DVgPD+rRNJqJknO2Ybd+yEI8UcCRNgQStbX3GqticxSI38od5XC73bgkERGwDVFwnEsG3bSF3omd9d0pYTFfQP6fFFbyS7pZ0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtividXJ; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtividXJ"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-63bbcab353dso908116a12.0
+        for <netdev@vger.kernel.org>; Tue, 21 Oct 2025 03:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761041643; x=1761646443; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aY4sUqJT8CNQPf5hwojWc40WBK5K/UWeQgITdbU7s54=;
+        b=UtividXJcfovqe8wKQVSC1Iwlws+W3vm9+YGgu9nqkRy3ZOFluhjxN9jHfUPQwf8LG
+         pPrDc4wh5WlXIWv+a4wea/lw3U0FpnvBljkCmvMD0RozwB67Q9aP5zeN7tCA485hujDU
+         5YZiZcOlLL8OZPmNgmwI16zXW3+vpD6pCaaKyNSgCa8ypWpFwDZCCLji3knfQtlTnbx4
+         0chBktbiOp+kM7Kkbsrp6hfQJnimQgGLa3l7jT5ztxZGnkyKo5XlQ5JXq3H04Q324olL
+         Swb5G+4gqTnvnjE1k6TLXHTgz4704Lu13NplwlW2DPk5yvHit/KLgnPMw+lXVozWxlMB
+         /1ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761041462; x=1761646262;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
+        d=1e100.net; s=20230601; t=1761041643; x=1761646443;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ijl+KuktG6GVPgjZkCiCYwgydFvbdcvzoiJcnFOxm7I=;
-        b=ho5BloWiy9kKIPOqLKXox159cMdR3B29ygfd28RAK4xZdnA/vz/mM2s0BwsETv6UTK
-         S9YEUHC9XRxdDF7C3Q/XrkDzQCsHamGN18e45xPJcUcusxA2UiJf+9GOZgZf2Z6NA6oX
-         WVeb7qe5WzjQa8IJt3DZam1cTOcWEdQXnk7UGZpGD3Up0WqCSJlGu+VRD6/SXUuONm71
-         7Ch6fgqbpLx+gp4MJpmZtyYzcaqQw/8iiqNpebigb2JXTNr5YLTkFRKI+saAuXcwz5fp
-         6KxNpFuxz/EhVKvr+Vb5IT8cIoZ2d28VpOEeJ5nWtlHLg3wV3U/uJ0hMwg+LJI3gEJwE
-         AeKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVstGMHvd+WCcTN2eD2pbtJlvw+7rUqfmjdxxVn4SGdAzU4rGk2H8yDY0pBh1mKmVXCarZTojo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYIryRu9LkvlBqLza0joJTa6rpaiMCTkfXP/JzWgBZW6bQ2y0W
-	tcvWhw/JLAf/T6DD4/GKyAly8Bz+4/7TXrdxwinWccX2WiHvaYW7PA2Qf+oN8AtmxE5aFHINbwG
-	Pw21qMlhy7MMcgzvr623qri51Q7jG2pTh4eorw/gLW5Jn93xTfVYuuNtefTw=
-X-Google-Smtp-Source: AGHT+IFO/PptUIaZovR6keuCooSX+DOI1vkk7sEagxXGmiTLgzZnl5FSVhzaAIb+vmqRsREXvQCYmlgS7kfKa9KhO/ZMeJlBHq+0
+        bh=aY4sUqJT8CNQPf5hwojWc40WBK5K/UWeQgITdbU7s54=;
+        b=Eeb1W5yV2zdP5g0pZoCghffTEfPBkao0DlZcDR/Ibh36srW9xjGctiD15UC4CynY0A
+         97wGQXRr/gjSS4ntHFKC+uYfhvBWWU04hSh1b5xx8+eYoIPrFF+DmevNC7+3mb2qnVUF
+         P4WJVA3tTfF9btfZpi5ZU69PMeTdjz/rDAOgcDU8/CPilopqZg+sVTp4tidjyDy58gpG
+         qNy7+rtWFILmoglpz02mklpdvH1JMpfSlLoHfn+svoD7ZTacWC6B9tjw4fpLjnsAYwJq
+         b17xigAynZBJFSt1D2Gbj+WZHDtt4ENA+hAPy7cp79aZwhW5kVodUu2tOSPuOVSopJst
+         Kfiw==
+X-Gm-Message-State: AOJu0Ywukj4hmq7mDi7NbzsW5lIQTW67VkGB0s/C0Z64OzXrssmSWVBf
+	LxvnusQXSc7mGaxcB+C2lUqY8S9MffgPXjeSXvxn1+/A0FOijz1YIBbk
+X-Gm-Gg: ASbGncuLUinjHNSa1uQtFjIpGN7thyqnDWiN5ac0vo0lLHfXRATho3ka3W4//Ki2xpr
+	lqppEy43Mtbez9oBevH5MFRM+Ci6xFD0FTBS1XpktfeaoQWfwt7guLoIQJLtZscV52wBxk2y6gC
+	SAnze8yoxVHeIrXark7mLQ8XdffazjjCZaFGUlXroAq34PvdPb6/HUPYEZsXJa/cEmtstLn5b7i
+	m/CMaUpET6trRMm0Jg+MjbWdq4XYUVowJd935eG4wcALCn5gRWHCKXTPwcoulbHcU7qvc9H9H+L
+	TdO/GAXMDlZ3ma9s2gY4MTtVG7cPwlw+koVJQ01P6KP2DR09qJ2Pn+hCMGDjE+PHnDEh+eHJ3xt
+	V3ggy1p+lnbPfTGieW8yiithOJ07cz1CGSzPh7Ag5QXJGC41dxqzy6lkiZrUOPp1Neh5N13ETS1
+	PBmYwm2/YvsUCC4ovhB77uL2qdutKi
+X-Google-Smtp-Source: AGHT+IGp3+5iFHi5zRWLe8YxHSX3njxzZcoBp1BcVGuZR2w2gCAwViee0Dzqam5RCqIQMql4fNoXCQ==
+X-Received: by 2002:a05:6402:4307:b0:63c:1d4a:afcb with SMTP id 4fb4d7f45d1cf-63d09d3bd06mr1476817a12.0.1761041642678;
+        Tue, 21 Oct 2025 03:14:02 -0700 (PDT)
+Received: from [192.168.1.105] ([165.50.73.64])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c4869746asm9018625a12.0.2025.10.21.03.14.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Oct 2025 03:14:02 -0700 (PDT)
+Message-ID: <4c849c04-6647-432c-807c-5fa7afa7fb47@gmail.com>
+Date: Tue, 21 Oct 2025 12:13:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:718a:b0:893:65c1:a018 with SMTP id
- ca18e2360f4ac-93e7627ad1fmr2655618139f.3.1761041462284; Tue, 21 Oct 2025
- 03:11:02 -0700 (PDT)
-Date: Tue, 21 Oct 2025 03:11:02 -0700
-In-Reply-To: <mpv4ljrxyucr23x4hj7k7s4vmtvv3bgeq7uct3t44ghaw35l4r@wanp7mklhw7x>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68f75c36.a70a0220.3bf6c6.0003.GAE@google.com>
-Subject: Re: [syzbot] [virt?] [net?] possible deadlock in vsock_linger
-From: syzbot <syzbot+10e35716f8e4929681fa@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, mhal@rbox.co, 
-	netdev@vger.kernel.org, pabeni@redhat.com, sgarzare@redhat.com, 
-	syzkaller-bugs@googlegroups.com, virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf-next v2] bpf/cpumap.c: Remove unnecessary TODO comment
+To: Jesper Dangaard Brouer <hawk@kernel.org>, ast@kernel.org,
+ daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, andrii@kernel.org,
+ martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, kpsingh@kernel.org, haoluo@google.com,
+ jolsa@kernel.org
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, khalid@kernel.org,
+ linux-kernel-mentees@lists.linuxfoundation.org
+References: <20251020170254.14622-1-mehdi.benhadjkhelifa@gmail.com>
+ <e0901356-ef48-4652-9ad4-ff85ae07d83a@kernel.org>
+Content-Language: en-US
+From: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+In-Reply-To: <e0901356-ef48-4652-9ad4-ff85ae07d83a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On 10/21/25 10:37 AM, Jesper Dangaard Brouer wrote:
+> 
+> 
+> On 20/10/2025 19.02, Mehdi Ben Hadj Khelifa wrote:
+>> After discussion with bpf maintainers[1], queue_index could
+>> be propagated to the remote XDP program by the xdp_md struct[2]
+>> which makes this todo a misguide for future effort.
+>>
+>> [1]:https://lore.kernel.org/all/87y0q23j2w.fsf@cloudflare.com/
+>> [2]:https://docs.ebpf.io/linux/helper-function/bpf_xdp_adjust_meta/
+>>
+>> Signed-off-by: Mehdi Ben Hadj Khelifa <mehdi.benhadjkhelifa@gmail.com>
+>> ---
+>> Changelog:
+>>
+>> Changes from v1:
+>>
+>> -Added a comment to clarify that RX queue_index is lost after the frame
+>> redirection.
+>>
+>> Link:https://lore.kernel.org/bpf/d9819687-5b0d-4bfa-9aec- 
+>> aef71b847383@gmail.com/T/#mcb6a0315f174d02db3c9bc4fa556cc939c87a706
+>>   kernel/bpf/cpumap.c | 5 ++++-
+>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+>> index 703e5df1f4ef..6856a4a67840 100644
+>> --- a/kernel/bpf/cpumap.c
+>> +++ b/kernel/bpf/cpumap.c
+>> @@ -195,7 +195,10 @@ static int cpu_map_bpf_prog_run_xdp(struct 
+>> bpf_cpu_map_entry *rcpu,
+>>           rxq.dev = xdpf->dev_rx;
+>>           rxq.mem.type = xdpf->mem_type;
+>> -        /* TODO: report queue_index to xdp_rxq_info */
+>> +        /* The NIC RX queue_index is lost after the frame redirection
+>> +         * but in case of need, it can be passed as a custom XDP
+>> +         * metadata via xdp_md struct to the remote XDP program
+> 
+> Argh, saying XDP metadata is accessed via the xdp_md struct is just wrong.
+> 
+Ack, I didn't clarify that XDP metadata should be propagated via the 
+bpf_xdp_adjust_meta like mentionned in the link[2]... Maybe I was 
+thinking more in the technical side that xdp_md->data_meta would hold 
+the value internally... I will send a v3 with appropriate changes.
+Thanks for the review.
 
-syzbot tried to test the proposed patch but the build/boot failed:
-
-failed to apply patch:
-checking file net/vmw_vsock/af_vsock.c
-patch: **** unexpected end of file in patch
-
-
-
-Tested on:
-
-commit:         6548d364 Merge tag 'cgroup-for-6.18-rc2-fixes' of git:..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=f3e7b5a3627a90dd
-dashboard link: https://syzkaller.appspot.com/bug?extid=10e35716f8e4929681fa
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=17204e7c580000
+Best Regards,
+Mehdi Ben Hadj Khelifa
+> Nacked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> 
+>> +         */
+>>           xdp_convert_frame_to_buff(xdpf, &xdp);
+> 
 
