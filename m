@@ -1,66 +1,66 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FCA3446B2
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 13:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893B726ED28
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 13:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761138799; cv=none; b=Y/ziVniE0+QO/D8v1soWoOwIBTRpmlTXu7I49aVlr20IqmJ1OYfyhoOF6o+oMv+hD1NbiHuzt2NSW0eoI6BZZbgBG5vJoWBaR6fYOa38qMFAJov/wN7e8+pu8FeUx9yYeZ3uRQY8zT6/tvksq1OLK3M+dya3mSMaNW026SxQ1HA=
+	t=1761139072; cv=none; b=ssunqyOENclJMb0+izHVjv8xM77g8n1IPueyYNl3a7wNWDBHniobprfaPCBUpuA4DBzd/VuDWZJiQaa1a4tLcwmTALrRXbnEZAXlqjzQd56Hgun2m5Tn8hqbQ8OFXIF8y48KX7vEYMwjIpB94yBVkSuhh6UbAqQagINVRJsgp2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761138799; c=relaxed/simple;
-	bh=dV2v2nvJt4bSpXkLdGKI5N/kiZYlj5EWvCVnEaOV3U0=;
+	s=arc-20240116; t=1761139072; c=relaxed/simple;
+	bh=bcHlOIBD3oxp4mVOg26FIl6pVq4j9LipEQCMx5XySDQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BuZYI+HyshpAdxmgYSJoZz+C+lmd7LW7JFbHdWkhpSXRzc+Wh4EBU6UMUCjPOaiVdWGh2haiVA0wTBfKWgYwB7RE+XDIWDnFPbYECKFBAWHpmr+pR9AXnh/xGOcI23caBMsWFyRKuqI6v3b7exQG6KUbUBRaXdW0wSIUWIx/q2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=KuoOIIWv; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 In-Reply-To:Content-Type; b=pUZRQKbbNlHBZYSAA7TT8rZqB7qmmDoWOEOaKUHlX8lTtadBEVD30oCZoOUJ1nNVBn2TMVEhdCGPEWhGLPKh9SG48C3Eb6v+ZYRsqZOiglBStWfKXjnzlUZG/jLwYXmC+czbFhCCAWe4QJbtR+PX0YgcwLDB4Gq2D5Yalo8tDDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=g8bJ4ve4; arc=none smtp.client-ip=209.85.166.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="KuoOIIWv"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-637e9f9f9fbso12116852a12.0
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 06:13:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="g8bJ4ve4"
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-938bf212b72so287895839f.1
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 06:17:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1761138796; x=1761743596; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1761139067; x=1761743867; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=A3FWtSfsXNEHVOfUrJKgEy3Vxzr+aNYEbiBsxgJNPt0=;
-        b=KuoOIIWvBVloosX61y/tT4HFAJeV/QNXKfBvmszEV2EOUWY3ZI/8JLPTIN5h9RkefM
-         obEMFGiQ2dMm898NtWS68zunhl3l69uW5GZDjvPlEveNzDHVF1kp6q0ymXx1lMDHwxMJ
-         3qbKcjB2qZBVNnYGLKwGtVKa6+hDnFE1OPxPNJcgHX0no74fo3sljqFJyACyRsSnSHTQ
-         Zmn99/3rZliZhIdAG0bd9xWjIQEj5QTeh3lfBS+ZgfNxHcSjXXIjMvOby/FLw+SwslPr
-         eUgQv+0BMcSYmAIatSHiyez46yoY6sRnsPYEiKBD3A9W/AlsJACbjyYUQpyi50Tzu2IN
-         AWpg==
+        bh=io5+b/Dl+rJ0SS6Ga9nnU2IbdWExfhLs1otAYNw8S+Q=;
+        b=g8bJ4ve4V9ohSIXFB0RJhey2g4lW7qipKQQudvfzB8VySoMFuoMtTvSFcIs5MzT/RV
+         duRcWpLROGiT8rLspXqwzfsKYTakWrTzndGj7rrlLeZcb2KtPYnRk89oVR2sxCQHRy5Q
+         l+AuvYTvD06Wov7/EWGviz1U92UTwV/JZC55x8ZaAex8HVh8br7rfiJ3vofmA6OU/ryQ
+         K3uDNxUMbaU1aX61GP0lrAVO8Blv0IQl/1sY6cEzcG6M7Rvt1R2iloodpd8oHlWpWYF1
+         09AI3Ahb11cwQyEk3w5c+u5T/iiATEc1k27egIyaIqYqth5pOFCrq+x0LIEGC04WJL0F
+         tBCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761138796; x=1761743596;
+        d=1e100.net; s=20230601; t=1761139067; x=1761743867;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A3FWtSfsXNEHVOfUrJKgEy3Vxzr+aNYEbiBsxgJNPt0=;
-        b=sPRgXRR3avHS3BHCR7h/dCPMdb/4tlU+vQsR9gapybcgoQqoZRDqdIUij/hZoTDlTb
-         RlJAwLd6rtM0cxa6Q+9oLooMAs63GPt+fRAXohPzOBlIXjRytF40dyxhO+m9XTJge1/W
-         DNEqgfassXqmQpmnfoN+LJ8FflnKcJiYp64Msndys/SE/yszNetBev9LKkHazy9Mr0R/
-         IGsdFldS3SscsaX+q0NSoAIJxKZlkMCFE19xIyJsbofAVf23tKYZktvpo6MJSaJj6I7O
-         bePTMNEvp9QCHacncWRWBjjnh4Ia56tl2FdqZrD8lqlA2pIZqt7kg7H3EB5M50U90+l9
-         jkaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWL1f3Nv9o6fS4AZEl1RKtp6wPUn14QV2qkx67s+jmo2fKs0RQnFu/piwPS1UJgZ78teetRwUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRvc6L51M07Uh9UGjUsFvVzUZXevykF4Vm+fb2SAULgLRaD1aw
-	xC28OCn/nc1pw6nngPfGc2a6fLZKa7v7CnsogmiHyGrnj7MzRePRegkOLeQ0UriUrzY=
-X-Gm-Gg: ASbGncsihxCoIvB6uHQ1BAQj0+vEKsCqV7EEvUKZQEX2VuOKh9djyixgrdK8Kj8og6U
-	+ls6B/zS4z8NvCS1lyzLek9G0y03Rq5/lnk5ygJrpf5J0hIRCUZzj2svpEAaxu5gKzsGIePRB4k
-	2Ky4hCNh4Ts7EMDlXn+AgJKu43aX+95ME+XHHoNxpis3UWCCiUQ6fsptWum7qo0l7Bw6oenNfwy
-	Es9dCkrNbUUbRW8sPpxeVtJ+BkIT1CGSEUV9jGa1IuDKS69SlKJXrjwuBy3zYq7ll2wFOvKbq9h
-	/kPYArL4fzpNJymQrW45liHuT32Ym35fnukqVupW3MQ7DiO0N82saQ6lajrd9SpsINocSjKP1gb
-	nNuKGhPZL/yxjpGWc8DBs+d4r5uoXjIlL1rTdoHOK5CBHvmZEt3PTo4Ik8ZGiS02SSWJ5eLWjaQ
-	ObauNuFrmVWdyLCMx5eLfJ9Be4i8mWpkU+jUZNtXQkSfU=
-X-Google-Smtp-Source: AGHT+IG7FlwpPgSQtYI7TuWDw1QmT9WYfpFdEVXKrwbg6V8/HarkHMVbTdIi7OP1z1qmm0bMiWOHhw==
-X-Received: by 2002:a05:6402:5204:b0:626:4774:2420 with SMTP id 4fb4d7f45d1cf-63c1f6b53bcmr21739139a12.20.1761138795365;
-        Wed, 22 Oct 2025 06:13:15 -0700 (PDT)
-Received: from [192.168.0.205] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63c4949bf40sm12310240a12.39.2025.10.22.06.13.14
+        bh=io5+b/Dl+rJ0SS6Ga9nnU2IbdWExfhLs1otAYNw8S+Q=;
+        b=luaN+MAnOOOHMe3YNO/UweXed/3ox0WU3c8Zuh87wYchSDiNgY0i2S14nSLl0Pfaj6
+         m1WAlDLF+1WDc2c93e8kLFDRE1CB1ZK+w+CPii6z7I3Dr0FcQPulVK3+1qECH+Rj3GuJ
+         BA04TUfNiUo9B73/+QIvf8DtI7UbQ6oulgY4+HisPEBYyczRfAmxCG08Wo1hhpE+PXwG
+         57Y1fuapmv7fDkcSlOhSRygIIyJyOc0KkpzxcuzCSka0jbIzoD7BvKivelI27ofjbruo
+         ke8sAdWHaaifV110+sUOuJ7KT2lE7xvqZrBQ/M+/oHpahI6NM6ep2xhbzLaIROyRGNhE
+         V+nA==
+X-Forwarded-Encrypted: i=1; AJvYcCXF92meuPCsdmIl6ZnbKhrk0ViMq7tZvE3t0SJqqlzxKlSq+pCn9/oDnx61tLkIjHCZo9eeQG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0dPUCHSocEixRhGH8XADIokpx1mwL1FpWH/0/0K4ve9lYx5tX
+	TeW9hK9E3gC/lTjqL5xKWn6ht5IgXDYApntYd3Ig9BkYIjWNzSyO6GCySj7dIouHM5M=
+X-Gm-Gg: ASbGncv0uG5XBhr43LOXVN9FguudmZ8mN9DdICw4SO/wKREs6eC7V+wfkre6/xOsxNu
+	HWDutnW8F8LAm3FogL1AuHB+zBNERGKCOYuwZnKNyILyGvEFDhu7A6WdEtlDy+/bc1focc2nL0P
+	mmgznaS4BH4a4kZY2HTLKcmf83NxZJtQl2gLfu3uNFioM8HEEeENaZKa+vFxW/4RI81UKIqH8rv
+	EvWcEGPu9cMq2xJRT7F2s6C3Qwoeu1Nx2AoXk/2e2klpEthgcq77rMpZtyNDfECnYgN4OnIQqkc
+	VwxTvGhBvAXj/E5dj5gPHh+EMqFiPFEEvJiqF6G1PPPorD5g6dEJ0iPlA769smHiTdlJfZgW50p
+	AGgN3cECZLa16EC6CX0IqxUrCLEIIKjhY0frE1v4yLg9xbJouwrLPeYtEmUtfnchozKiar7dMIJ
+	rqlzQTKsc=
+X-Google-Smtp-Source: AGHT+IFxN/gtR5CCRmZKybvHgMrdakXUkYxhb+HjCqrJbjodILVkGXRUicgJOreSS8VpLkI4cMUplg==
+X-Received: by 2002:a05:6e02:1d98:b0:425:7526:7f56 with SMTP id e9e14a558f8ab-430c5204a9fmr243210645ab.5.1761139067095;
+        Wed, 22 Oct 2025 06:17:47 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-5a8a973ec13sm5035688173.38.2025.10.22.06.17.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Oct 2025 06:13:14 -0700 (PDT)
-Message-ID: <6571a7f3-3900-44c9-8dcc-a7f3f34a888d@blackwall.org>
-Date: Wed, 22 Oct 2025 16:13:13 +0300
+        Wed, 22 Oct 2025 06:17:46 -0700 (PDT)
+Message-ID: <832b03de-6b59-4a07-b7ea-51492c4cca7e@kernel.dk>
+Date: Wed, 22 Oct 2025 07:17:45 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,66 +68,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 11/15] netkit: Add single device mode for
- netkit
-To: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, kuba@kernel.org, davem@davemloft.net,
- pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
- john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
- maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, dw@davidwei.uk,
- toke@redhat.com, yangzhenze@bytedance.com, wangdongdong.6@bytedance.com
-References: <20251020162355.136118-1-daniel@iogearbox.net>
- <20251020162355.136118-12-daniel@iogearbox.net>
+Subject: Re: [PATCH 1/1] io_uring zcrx: add MAINTAINERS entry
+To: Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
+ io-uring@vger.kernel.org, netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>
+References: <20251021202944.3877502-1-dw@davidwei.uk>
+ <60d18b98-6a25-4db7-a4c6-0c86d6c4f787@gmail.com>
 Content-Language: en-US
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20251020162355.136118-12-daniel@iogearbox.net>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <60d18b98-6a25-4db7-a4c6-0c86d6c4f787@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/20/25 19:23, Daniel Borkmann wrote:
-> Add a single device mode for netkit instead of netkit pairs. The primary
-> target for the paired devices is to connect network namespaces, of course,
-> and support has been implemented in projects like Cilium [0]. For the rxq
-> binding the plan is to support two main scenarios related to single device
-> mode:
+On 10/22/25 5:38 AM, Pavel Begunkov wrote:
+> On 10/21/25 21:29, David Wei wrote:
+>> Same as [1] but also with netdev@ as an additional mailing list.
+>> io_uring zero copy receive is of particular interest to netdev
+>> participants too, given its tight integration to netdev core.
 > 
-> * For the use-case of io_uring zero-copy, the control plane can either
->   set up a netkit pair where the peer device can perform rxq binding which
->   is then tied to the lifetime of the peer device, or the control plane
->   can use a regular netkit pair to connect the hostns to a Pod/container
->   and dynamically add/remove rxq bindings through a single device without
->   having to interrupt the device pair. In the case of io_uring, the memory
->   pool is used as skb non-linear pages, and thus the skb will go its way
->   through the regular stack into netkit. Things like the netkit policy when
->   no BPF is attached or skb scrubbing etc apply as-is in case the paired
->   devices are used, or if the backend memory is tied to the single device
->   and traffic goes through a paired device.
+> David, I can guess why you sent it, but it doesn't address the bigger
+> problem on the networking side. Specifically, why patches were blocked
+> due to a rule that had not been voiced before and remained blocked even
+> after pointing this out? And why accusations against me with the same
+> circumstances, which I equate to defamation, were left as is without
+> any retraction? To avoid miscommunication, those are questions to Jakub
+> and specifically about the v3 of the large buffer patchset without
+> starting a discussion here on later revisions.
 > 
-> * For the use-case of AF_XDP, the control plane needs to use netkit in the
->   single device mode. The single device mode currently enforces only a
->   pass policy when no BPF is attached, and does not yet support BPF link
->   attachments for AF_XDP. skbs sent to that device get dropped at the
->   moment. Given AF_XDP operates at a lower layer of the stack tying this
->   to the netkit pair did not make sense. In future, the plan is to allow
->   BPF at the XDP layer which can: i) process traffic coming from the AF_XDP
->   application (e.g. QEMU with AF_XDP backend) to filter egress traffic or
->   to push selected egress traffic up to the single netkit device to the
->   local stack (e.g. DHCP requests), and ii) vice-versa skbs sent to the
->   single netkit into the AF_XDP application (e.g. DHCP replies). Also,
->   the control-plane can dynamically add/remove rxq bindings for the single
->   netkit device without having to interrupt (e.g. down/up cycle) the main
->   netkit pair for the Pod which has traffic going in and out.
-> 
-> Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-> Co-developed-by: David Wei <dw@davidwei.uk>
-> Signed-off-by: David Wei <dw@davidwei.uk>
-> Reviewed-by: Jordan Rife <jordan@jrife.io>
-> Link: https://docs.cilium.io/en/stable/operations/performance/tuning/#netkit-device-mode [0]
-> ---
->  drivers/net/netkit.c         | 108 ++++++++++++++++++++++-------------
->  include/uapi/linux/if_link.h |   6 ++
->  2 files changed, 74 insertions(+), 40 deletions(-)
-> 
+> Without that cleared, considering that compliance with the new rule
+> was tried and lead to no results, this behaviour can only be accounted
+> to malice, and it's hard to see what cooperation is there to be had as
+> there is no indication Jakub is going to stop maliciously blocking
+> my work.
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+The netdev side has been pretty explicit on wanting a MAINTAINERS entry
+so that they see changes. I don't think it's unreasonable to have that,
+and it doesn't mean that they need to ack things that are specific to
+zcrx. Nobody looks at all the various random lists, giving them easier
+insight is a good thing imho. I think we all agree on that.
 
+Absent that change, it's also not unreasonable for that side to drag
+their feet a bit on further changes. Could the communication have been
+better on that side? Certainly yes. But it's hard to blame them too much
+on that front, as any response would have predictably yielded an
+accusatory reply back. And honestly, nobody wants to deal with that, if
+they can avoid it. Since there's plenty of other work to do and patches
+to review which is probably going to be more pleasurable, then people go
+and do that.
+
+The patch David sent is a way to at least solve one part of the issue,
+and imho something like that is a requirement for anything further to be
+considered. Let's perhaps roll with that and attempt to help ourselves
+here, by unblocking that part.
+
+Are you fine with the patch? If so, I will queue it up and let's please
+move on from beating this dead horse.
+
+-- 
+Jens Axboe
