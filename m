@@ -1,207 +1,406 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E845221DB0
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E75EAC7
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761116603; cv=none; b=g5CiXmo9pegSTtzDIGETovQ2BChDigpIGSUYcBnXkqq4aDYfjREW9Ko5nTK5jEcqOAfKJqDr/+4PsXi5D0INlDLLkzc8kD6EhKi+VRnMDnCxtKc256HxXe4b7PG/1qYtGQnyben1NwLKqSgIlPFAmEv6pDvG19pLXWLbQj517Rg=
+	t=1761117089; cv=none; b=humqm+0gr838lZVS6F/sqcvau+AuZcCisO16RvX/BAZViIQWDG66fdojDOYOBEZTm3B4EagOeErBzySxolgqddstJ40GJnfQN6+NYKXF0Z0gEe03CNAfwHgZ6qfYe8OyoU/qu4UuFYZFXYOxGrGG+3cn3XC9xjI3DEI9NEP7xZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761116603; c=relaxed/simple;
-	bh=0rbDaM68YWnlopO11SkcD7rAYHxOpMyGy/WOhOBQAD0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pS0dsHZJC4KpluTMjGNiSgCw4iEI2UwF5HhKpAauhQJP2LFwFofvCnNpmq+G8EKEEgaCwK9CwWYYGGtk79BslRipzfA20MFgRL9kyS6U8Q4S4uMU9fRT00+bm94kUViaPgkk0grOM8x1Z8QAtEsMxhvSt8U0tgzgRr0jM68cccI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Yqt7Im04; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=EpOyLeAN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Vc6/2KJn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nKEBI8Zr; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1761117089; c=relaxed/simple;
+	bh=mc5SQIsHF/uFlw06qs6U1L61abcRnCd60gcvO4hgct8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E0uyRnOL/oVJuAJ3kX+sTY65YtvXoFZkmIkn1yXEOZ7c+dzlJyAbMvbYvsL8mqv7vt9TB5zJMpEWW5Kney5CpIdFBfDVefbVKF0ytyswwtEPUdTPr/e253lurKXw9J5SRTwiSbk2Cv4JwHnWNkNalUbH0LGRjQRTlfyMymVr79E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc+H9QkR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Yqt7Im04";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="EpOyLeAN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Vc6/2KJn";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nKEBI8Zr"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 805E31F391;
-	Wed, 22 Oct 2025 07:03:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761116595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tlxJGX9jmOI/wD5Rfy1iJYXebHEOfbhjGU0gFhwqz/4=;
-	b=Yqt7Im04iuAbx4JPcGFjXhCh26p8TrP2xHtxdlJVXzLFiu/lnu2T6bzQSwPl3lB7DivkMR
-	s0i1WOmkB+AJFcBuINdBFxFjNvvsEfQXhPwQ7MUF/keyxeqL5uObBq3q9n0/eg11AATvDt
-	QnGoOAUEbL/OSLQAvy1/SzleVWitnvA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761116595;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tlxJGX9jmOI/wD5Rfy1iJYXebHEOfbhjGU0gFhwqz/4=;
-	b=EpOyLeANziBPyk4Wmxj/9bm1z/YYBdb0CrHUaofCK4ZS7toeY/r52azhxrIQ3Yo1Yc60Bk
-	6MhTDHZhRxRpC2CQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Vc6/2KJn";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nKEBI8Zr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761116591; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tlxJGX9jmOI/wD5Rfy1iJYXebHEOfbhjGU0gFhwqz/4=;
-	b=Vc6/2KJnrJVn5tUpUCliUNHUfjO6I+Kb0WJa/PFhCVYTD3UDqHf6Qb76uSUg+i77R6n9ef
-	Do1/XR325WhiFd5f+sYEeIJ/ae1NtgWvGV8lA7zGQj8zRYxtE9xlx6qxee8tRzLRHd0t5m
-	IafmiwSH2rAcY6CopUE2AEXl93VXuQY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761116591;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tlxJGX9jmOI/wD5Rfy1iJYXebHEOfbhjGU0gFhwqz/4=;
-	b=nKEBI8ZrYU5sgkq5y6xHHHJWxfvkIKD0LvDbUqA1VeFHbeGeF3yHPRQJC9WRfeyZO3D/k3
-	NUOgHMIniLvnpgAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E1D113A29;
-	Wed, 22 Oct 2025 07:03:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pFegI66B+GjcegAAD6G6ig
-	(envelope-from <hare@suse.de>); Wed, 22 Oct 2025 07:03:10 +0000
-Message-ID: <7afb2fc0-0da5-4539-a1a4-87360186cf65@suse.de>
-Date: Wed, 22 Oct 2025 09:03:06 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc+H9QkR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50393C4CEE7;
+	Wed, 22 Oct 2025 07:11:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761117088;
+	bh=mc5SQIsHF/uFlw06qs6U1L61abcRnCd60gcvO4hgct8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=pc+H9QkRrnLUM9/PqqDsJl95AMAGY+6svyWSFbmpYMW1R91S1SVlpy1X9lJ6uLJSi
+	 5mfRT6shQqqAy+C4BCsI3xaIfsKCWvAqh1Mi4/dekCDetwREwHIuiDTIuqhm79IRJZ
+	 +fOjgDFeR/eqdWcfGUAWmg9/qG0CoW7DqMrkd0GmnJilX0ruiKhHInFjhZ1eunylPM
+	 sH87CgyqAIKgID2E/ECk20yZeov4MDI8tdqSg5KTwrfaxu5+Z/WPoPIYiGsgzsOBlJ
+	 vlya0PTlF3foYozOWRL5RaWyQeeO8KPuw4Olm+iSW3QH+5lA1/YpFRPbjlJGJPj4SA
+	 EaulQ0E6yI6kA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Wed, 22 Oct 2025 09:11:12 +0200
+Subject: [PATCH net-next v2] net: airoha: Remove code duplication in
+ airoha_regs.h
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] net/handshake: Support KeyUpdate message types
-To: Alistair Francis <alistair23@gmail.com>
-Cc: chuck.lever@oracle.com, hare@kernel.org,
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
- kbusch@kernel.org, axboe@kernel.dk, hch@lst.de, sagi@grimberg.me,
- kch@nvidia.com, Alistair Francis <alistair.francis@wdc.com>
-References: <20251017042312.1271322-1-alistair.francis@wdc.com>
- <20251017042312.1271322-5-alistair.francis@wdc.com>
- <e7d46c17-5ffd-4816-acd2-2125ca259d20@suse.de>
- <CAKmqyKMsYUPLz9hVmM_rjXKSo52cMEtn8qVwbSs=UknxRWaQUw@mail.gmail.com>
- <CAKmqyKNSV1GdipOrOs3csyoTMKX1+mxTgxnOq9xnb3vmRN0RgA@mail.gmail.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <CAKmqyKNSV1GdipOrOs3csyoTMKX1+mxTgxnOq9xnb3vmRN0RgA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 805E31F391
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251022-airoha-regs-cosmetics-v2-1-e0425b3f2c2c@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAI+D+GgC/3WNyw6CMBBFf4XM2jFtQ3m48j8MCygDTFRqZgjRG
+ P7dSuLS5TnJPfcNSsKkcMreILSycpwTuEMGYWrnkZD7xOCM89bYEluWOLUoNCqGqHdaOCj6nGp
+ jPJW+KiBtH0IDP/fupUk8sS5RXvvNar/2V6z+FFeLFrtuKFztQ+6H/nwlmel2jDJCs23bB9Qoa
+ 6K7AAAA
+X-Change-ID: 20251017-airoha-regs-cosmetics-54e9005e7586
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, 
+ Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.14.2
 
-On 10/22/25 06:40, Alistair Francis wrote:
-> On Tue, Oct 21, 2025 at 1:19 PM Alistair Francis <alistair23@gmail.com> wrote:
->>
->> On Mon, Oct 20, 2025 at 4:09 PM Hannes Reinecke <hare@suse.de> wrote:
->>>
->>> On 10/17/25 06:23, alistair23@gmail.com wrote:
->>>> From: Alistair Francis <alistair.francis@wdc.com>
->>>>
-[ .. ]>>>> @@ -372,6 +384,44 @@ int tls_client_hello_psk(const struct 
-tls_handshake_args *args, gfp_t flags)
->>>>    }
->>>>    EXPORT_SYMBOL(tls_client_hello_psk);
->>>>
->>>> +/**
->>>> + * tls_client_keyupdate_psk - request a PSK-based TLS handshake on a socket
->>>> + * @args: socket and handshake parameters for this request
->>>> + * @flags: memory allocation control flags
->>>> + * @keyupdate: specifies the type of KeyUpdate operation
->>>> + *
->>>> + * Return values:
->>>> + *   %0: Handshake request enqueue; ->done will be called when complete
->>>> + *   %-EINVAL: Wrong number of local peer IDs
->>>> + *   %-ESRCH: No user agent is available
->>>> + *   %-ENOMEM: Memory allocation failed
->>>> + */
->>>> +int tls_client_keyupdate_psk(const struct tls_handshake_args *args, gfp_t flags,
->>>> +                          handshake_key_update_type keyupdate)
->>>> +{
->>>> +     struct tls_handshake_req *treq;
->>>> +     struct handshake_req *req;
->>>> +     unsigned int i;
->>>> +
->>>> +     if (!args->ta_num_peerids ||
->>>> +         args->ta_num_peerids > ARRAY_SIZE(treq->th_peerid))
->>>> +             return -EINVAL;
->>>> +
->>>> +     req = handshake_req_alloc(&tls_handshake_proto, flags);
->>>> +     if (!req)
->>>> +             return -ENOMEM;
->>>> +     treq = tls_handshake_req_init(req, args);
->>>> +     treq->th_type = HANDSHAKE_MSG_TYPE_CLIENTKEYUPDATE;
->>>> +     treq->th_key_update_request = keyupdate;
->>>> +     treq->th_auth_mode = HANDSHAKE_AUTH_PSK;
->>>> +     treq->th_num_peerids = args->ta_num_peerids;
->>>> +     for (i = 0; i < args->ta_num_peerids; i++)
->>>> +             treq->th_peerid[i] = args->ta_my_peerids[i];
->>> Hmm?
->>> Do we use the 'peerids'?
->>
->> We don't, this is just copied from the
->> tls_client_hello_psk()/tls_server_hello_psk() to provide the same
->> information to keep things more consistent.
->>
->> I can remove setting these
-> 
-> Actually, ktls-utils (tlshd) expects these to be set, so I think we
-> should leave them as is
-> 
+This patch does not introduce any logical change, it just removes
+duplicated code in airoha_regs.h.
+Fix naming conventions in airoha_regs.h.
 
-Can't we rather fix up tlshd?
-It feels really pointless, erroring out on values which are completely
-irrelevant for the operation...
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+---
+Changes in v2:
+- Rebase on top of net-next main branch
+- Link to v1: https://lore.kernel.org/r/20251018-airoha-regs-cosmetics-v1-1-bbf6295c45fd@kernel.org
+---
+ drivers/net/ethernet/airoha/airoha_eth.c  | 102 ++++++++++++++--------------
+ drivers/net/ethernet/airoha/airoha_regs.h | 109 ++++++++++++++----------------
+ 2 files changed, 100 insertions(+), 111 deletions(-)
 
-Cheers,
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 8483ea02603e24de5eb37654452f8c2b21b9bff4..e17a285a9e8fa7b4b4c1433240f2bb82401bcb9b 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -137,11 +137,11 @@ static void airoha_fe_maccr_init(struct airoha_eth *eth)
+ 
+ 	for (p = 1; p <= ARRAY_SIZE(eth->ports); p++)
+ 		airoha_fe_set(eth, REG_GDM_FWD_CFG(p),
+-			      GDM_TCP_CKSUM | GDM_UDP_CKSUM | GDM_IP4_CKSUM |
+-			      GDM_DROP_CRC_ERR);
++			      GDM_TCP_CKSUM_MASK | GDM_UDP_CKSUM_MASK |
++			      GDM_IP4_CKSUM_MASK | GDM_DROP_CRC_ERR_MASK);
+ 
+-	airoha_fe_rmw(eth, REG_CDM1_VLAN_CTRL, CDM1_VLAN_MASK,
+-		      FIELD_PREP(CDM1_VLAN_MASK, 0x8100));
++	airoha_fe_rmw(eth, REG_CDM_VLAN_CTRL(1), CDM_VLAN_MASK,
++		      FIELD_PREP(CDM_VLAN_MASK, 0x8100));
+ 
+ 	airoha_fe_set(eth, REG_FE_CPORT_CFG, FE_CPORT_PAD);
+ }
+@@ -403,46 +403,46 @@ static int airoha_fe_mc_vlan_clear(struct airoha_eth *eth)
+ static void airoha_fe_crsn_qsel_init(struct airoha_eth *eth)
+ {
+ 	/* CDM1_CRSN_QSEL */
+-	airoha_fe_rmw(eth, REG_CDM1_CRSN_QSEL(CRSN_22 >> 2),
+-		      CDM1_CRSN_QSEL_REASON_MASK(CRSN_22),
+-		      FIELD_PREP(CDM1_CRSN_QSEL_REASON_MASK(CRSN_22),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(1, CRSN_22 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_22),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_22),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM1_CRSN_QSEL(CRSN_08 >> 2),
+-		      CDM1_CRSN_QSEL_REASON_MASK(CRSN_08),
+-		      FIELD_PREP(CDM1_CRSN_QSEL_REASON_MASK(CRSN_08),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(1, CRSN_08 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_08),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_08),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM1_CRSN_QSEL(CRSN_21 >> 2),
+-		      CDM1_CRSN_QSEL_REASON_MASK(CRSN_21),
+-		      FIELD_PREP(CDM1_CRSN_QSEL_REASON_MASK(CRSN_21),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(1, CRSN_21 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_21),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_21),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM1_CRSN_QSEL(CRSN_24 >> 2),
+-		      CDM1_CRSN_QSEL_REASON_MASK(CRSN_24),
+-		      FIELD_PREP(CDM1_CRSN_QSEL_REASON_MASK(CRSN_24),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(1, CRSN_24 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_24),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_24),
+ 				 CDM_CRSN_QSEL_Q6));
+-	airoha_fe_rmw(eth, REG_CDM1_CRSN_QSEL(CRSN_25 >> 2),
+-		      CDM1_CRSN_QSEL_REASON_MASK(CRSN_25),
+-		      FIELD_PREP(CDM1_CRSN_QSEL_REASON_MASK(CRSN_25),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(1, CRSN_25 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_25),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_25),
+ 				 CDM_CRSN_QSEL_Q1));
+ 	/* CDM2_CRSN_QSEL */
+-	airoha_fe_rmw(eth, REG_CDM2_CRSN_QSEL(CRSN_08 >> 2),
+-		      CDM2_CRSN_QSEL_REASON_MASK(CRSN_08),
+-		      FIELD_PREP(CDM2_CRSN_QSEL_REASON_MASK(CRSN_08),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(2, CRSN_08 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_08),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_08),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM2_CRSN_QSEL(CRSN_21 >> 2),
+-		      CDM2_CRSN_QSEL_REASON_MASK(CRSN_21),
+-		      FIELD_PREP(CDM2_CRSN_QSEL_REASON_MASK(CRSN_21),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(2, CRSN_21 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_21),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_21),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM2_CRSN_QSEL(CRSN_22 >> 2),
+-		      CDM2_CRSN_QSEL_REASON_MASK(CRSN_22),
+-		      FIELD_PREP(CDM2_CRSN_QSEL_REASON_MASK(CRSN_22),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(2, CRSN_22 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_22),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_22),
+ 				 CDM_CRSN_QSEL_Q1));
+-	airoha_fe_rmw(eth, REG_CDM2_CRSN_QSEL(CRSN_24 >> 2),
+-		      CDM2_CRSN_QSEL_REASON_MASK(CRSN_24),
+-		      FIELD_PREP(CDM2_CRSN_QSEL_REASON_MASK(CRSN_24),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(2, CRSN_24 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_24),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_24),
+ 				 CDM_CRSN_QSEL_Q6));
+-	airoha_fe_rmw(eth, REG_CDM2_CRSN_QSEL(CRSN_25 >> 2),
+-		      CDM2_CRSN_QSEL_REASON_MASK(CRSN_25),
+-		      FIELD_PREP(CDM2_CRSN_QSEL_REASON_MASK(CRSN_25),
++	airoha_fe_rmw(eth, REG_CDM_CRSN_QSEL(2, CRSN_25 >> 2),
++		      CDM_CRSN_QSEL_REASON_MASK(CRSN_25),
++		      FIELD_PREP(CDM_CRSN_QSEL_REASON_MASK(CRSN_25),
+ 				 CDM_CRSN_QSEL_Q1));
+ }
+ 
+@@ -462,18 +462,18 @@ static int airoha_fe_init(struct airoha_eth *eth)
+ 	airoha_fe_wr(eth, REG_FE_PCE_CFG,
+ 		     PCE_DPI_EN_MASK | PCE_KA_EN_MASK | PCE_MC_EN_MASK);
+ 	/* set vip queue selection to ring 1 */
+-	airoha_fe_rmw(eth, REG_CDM1_FWD_CFG, CDM1_VIP_QSEL_MASK,
+-		      FIELD_PREP(CDM1_VIP_QSEL_MASK, 0x4));
+-	airoha_fe_rmw(eth, REG_CDM2_FWD_CFG, CDM2_VIP_QSEL_MASK,
+-		      FIELD_PREP(CDM2_VIP_QSEL_MASK, 0x4));
++	airoha_fe_rmw(eth, REG_CDM_FWD_CFG(1), CDM_VIP_QSEL_MASK,
++		      FIELD_PREP(CDM_VIP_QSEL_MASK, 0x4));
++	airoha_fe_rmw(eth, REG_CDM_FWD_CFG(2), CDM_VIP_QSEL_MASK,
++		      FIELD_PREP(CDM_VIP_QSEL_MASK, 0x4));
+ 	/* set GDM4 source interface offset to 8 */
+-	airoha_fe_rmw(eth, REG_GDM4_SRC_PORT_SET,
+-		      GDM4_SPORT_OFF2_MASK |
+-		      GDM4_SPORT_OFF1_MASK |
+-		      GDM4_SPORT_OFF0_MASK,
+-		      FIELD_PREP(GDM4_SPORT_OFF2_MASK, 8) |
+-		      FIELD_PREP(GDM4_SPORT_OFF1_MASK, 8) |
+-		      FIELD_PREP(GDM4_SPORT_OFF0_MASK, 8));
++	airoha_fe_rmw(eth, REG_GDM_SRC_PORT_SET(4),
++		      GDM_SPORT_OFF2_MASK |
++		      GDM_SPORT_OFF1_MASK |
++		      GDM_SPORT_OFF0_MASK,
++		      FIELD_PREP(GDM_SPORT_OFF2_MASK, 8) |
++		      FIELD_PREP(GDM_SPORT_OFF1_MASK, 8) |
++		      FIELD_PREP(GDM_SPORT_OFF0_MASK, 8));
+ 
+ 	/* set PSE Page as 128B */
+ 	airoha_fe_rmw(eth, REG_FE_DMA_GLO_CFG,
+@@ -499,8 +499,8 @@ static int airoha_fe_init(struct airoha_eth *eth)
+ 	airoha_fe_set(eth, REG_GDM_MISC_CFG,
+ 		      GDM2_RDM_ACK_WAIT_PREF_MASK |
+ 		      GDM2_CHN_VLD_MODE_MASK);
+-	airoha_fe_rmw(eth, REG_CDM2_FWD_CFG, CDM2_OAM_QSEL_MASK,
+-		      FIELD_PREP(CDM2_OAM_QSEL_MASK, 15));
++	airoha_fe_rmw(eth, REG_CDM_FWD_CFG(2), CDM_OAM_QSEL_MASK,
++		      FIELD_PREP(CDM_OAM_QSEL_MASK, 15));
+ 
+ 	/* init fragment and assemble Force Port */
+ 	/* NPU Core-3, NPU Bridge Channel-3 */
+@@ -514,8 +514,8 @@ static int airoha_fe_init(struct airoha_eth *eth)
+ 		      FIELD_PREP(IP_ASSEMBLE_PORT_MASK, 0) |
+ 		      FIELD_PREP(IP_ASSEMBLE_NBQ_MASK, 22));
+ 
+-	airoha_fe_set(eth, REG_GDM3_FWD_CFG, GDM3_PAD_EN_MASK);
+-	airoha_fe_set(eth, REG_GDM4_FWD_CFG, GDM4_PAD_EN_MASK);
++	airoha_fe_set(eth, REG_GDM_FWD_CFG(3), GDM_PAD_EN_MASK);
++	airoha_fe_set(eth, REG_GDM_FWD_CFG(4), GDM_PAD_EN_MASK);
+ 
+ 	airoha_fe_crsn_qsel_init(eth);
+ 
+@@ -523,7 +523,7 @@ static int airoha_fe_init(struct airoha_eth *eth)
+ 	airoha_fe_set(eth, REG_FE_CPORT_CFG, FE_CPORT_PORT_XFC_MASK);
+ 
+ 	/* default aging mode for mbi unlock issue */
+-	airoha_fe_rmw(eth, REG_GDM2_CHN_RLS,
++	airoha_fe_rmw(eth, REG_GDM_CHN_RLS(2),
+ 		      MBI_RX_AGE_SEL_MASK | MBI_TX_AGE_SEL_MASK,
+ 		      FIELD_PREP(MBI_RX_AGE_SEL_MASK, 3) |
+ 		      FIELD_PREP(MBI_TX_AGE_SEL_MASK, 3));
+@@ -1692,7 +1692,7 @@ static int airhoha_set_gdm2_loopback(struct airoha_gdm_port *port)
+ 	pse_port = port->id == AIROHA_GDM3_IDX ? FE_PSE_PORT_GDM3
+ 					       : FE_PSE_PORT_GDM4;
+ 	airoha_set_gdm_port_fwd_cfg(eth, REG_GDM_FWD_CFG(2), pse_port);
+-	airoha_fe_clear(eth, REG_GDM_FWD_CFG(2), GDM_STRIP_CRC);
++	airoha_fe_clear(eth, REG_GDM_FWD_CFG(2), GDM_STRIP_CRC_MASK);
+ 
+ 	/* Enable GDM2 loopback */
+ 	airoha_fe_wr(eth, REG_GDM_TXCHN_EN(2), 0xffffffff);
+diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+index ebcce00d9bc6f0b0dfe3cabeddaa59b26c7b289d..ed4e3407f4a0e8b6a630ea1213ef155604479b66 100644
+--- a/drivers/net/ethernet/airoha/airoha_regs.h
++++ b/drivers/net/ethernet/airoha/airoha_regs.h
+@@ -23,6 +23,8 @@
+ #define GDM3_BASE			0x1100
+ #define GDM4_BASE			0x2500
+ 
++#define CDM_BASE(_n)			\
++	((_n) == 2 ? CDM2_BASE : CDM1_BASE)
+ #define GDM_BASE(_n)			\
+ 	((_n) == 4 ? GDM4_BASE :	\
+ 	 (_n) == 3 ? GDM3_BASE :	\
+@@ -109,30 +111,24 @@
+ #define PATN_DP_MASK			GENMASK(31, 16)
+ #define PATN_SP_MASK			GENMASK(15, 0)
+ 
+-#define REG_CDM1_VLAN_CTRL		CDM1_BASE
+-#define CDM1_VLAN_MASK			GENMASK(31, 16)
++#define REG_CDM_VLAN_CTRL(_n)		CDM_BASE(_n)
++#define CDM_VLAN_MASK			GENMASK(31, 16)
+ 
+-#define REG_CDM1_FWD_CFG		(CDM1_BASE + 0x08)
+-#define CDM1_VIP_QSEL_MASK		GENMASK(24, 20)
++#define REG_CDM_FWD_CFG(_n)		(CDM_BASE(_n) + 0x08)
++#define CDM_OAM_QSEL_MASK		GENMASK(31, 27)
++#define CDM_VIP_QSEL_MASK		GENMASK(24, 20)
+ 
+-#define REG_CDM1_CRSN_QSEL(_n)		(CDM1_BASE + 0x10 + ((_n) << 2))
+-#define CDM1_CRSN_QSEL_REASON_MASK(_n)	\
+-	GENMASK(4 + (((_n) % 4) << 3),	(((_n) % 4) << 3))
+-
+-#define REG_CDM2_FWD_CFG		(CDM2_BASE + 0x08)
+-#define CDM2_OAM_QSEL_MASK		GENMASK(31, 27)
+-#define CDM2_VIP_QSEL_MASK		GENMASK(24, 20)
+-
+-#define REG_CDM2_CRSN_QSEL(_n)		(CDM2_BASE + 0x10 + ((_n) << 2))
+-#define CDM2_CRSN_QSEL_REASON_MASK(_n)	\
++#define REG_CDM_CRSN_QSEL(_n, _m)	(CDM_BASE(_n) + 0x10 + ((_m) << 2))
++#define CDM_CRSN_QSEL_REASON_MASK(_n)	\
+ 	GENMASK(4 + (((_n) % 4) << 3),	(((_n) % 4) << 3))
+ 
+ #define REG_GDM_FWD_CFG(_n)		GDM_BASE(_n)
+-#define GDM_DROP_CRC_ERR		BIT(23)
+-#define GDM_IP4_CKSUM			BIT(22)
+-#define GDM_TCP_CKSUM			BIT(21)
+-#define GDM_UDP_CKSUM			BIT(20)
+-#define GDM_STRIP_CRC			BIT(16)
++#define GDM_PAD_EN_MASK			BIT(28)
++#define GDM_DROP_CRC_ERR_MASK		BIT(23)
++#define GDM_IP4_CKSUM_MASK		BIT(22)
++#define GDM_TCP_CKSUM_MASK		BIT(21)
++#define GDM_UDP_CKSUM_MASK		BIT(20)
++#define GDM_STRIP_CRC_MASK		BIT(16)
+ #define GDM_UCFQ_MASK			GENMASK(15, 12)
+ #define GDM_BCFQ_MASK			GENMASK(11, 8)
+ #define GDM_MCFQ_MASK			GENMASK(7, 4)
+@@ -156,6 +152,10 @@
+ #define LBK_CHAN_MODE_MASK		BIT(1)
+ #define LPBK_EN_MASK			BIT(0)
+ 
++#define REG_GDM_CHN_RLS(_n)		(GDM_BASE(_n) + 0x20)
++#define MBI_RX_AGE_SEL_MASK		GENMASK(26, 25)
++#define MBI_TX_AGE_SEL_MASK		GENMASK(18, 17)
++
+ #define REG_GDM_TXCHN_EN(_n)		(GDM_BASE(_n) + 0x24)
+ #define REG_GDM_RXCHN_EN(_n)		(GDM_BASE(_n) + 0x28)
+ 
+@@ -168,10 +168,10 @@
+ #define FE_GDM_MIB_RX_CLEAR_MASK	BIT(1)
+ #define FE_GDM_MIB_TX_CLEAR_MASK	BIT(0)
+ 
+-#define REG_FE_GDM1_MIB_CFG		(GDM1_BASE + 0xf4)
++#define REG_FE_GDM_MIB_CFG(_n)		(GDM_BASE(_n) + 0xf4)
+ #define FE_STRICT_RFC2819_MODE_MASK	BIT(31)
+-#define FE_GDM1_TX_MIB_SPLIT_EN_MASK	BIT(17)
+-#define FE_GDM1_RX_MIB_SPLIT_EN_MASK	BIT(16)
++#define FE_GDM_TX_MIB_SPLIT_EN_MASK	BIT(17)
++#define FE_GDM_RX_MIB_SPLIT_EN_MASK	BIT(16)
+ #define FE_TX_MIB_ID_MASK		GENMASK(15, 8)
+ #define FE_RX_MIB_ID_MASK		GENMASK(7, 0)
+ 
+@@ -214,6 +214,33 @@
+ #define REG_FE_GDM_RX_ETH_L511_CNT_L(_n)	(GDM_BASE(_n) + 0x198)
+ #define REG_FE_GDM_RX_ETH_L1023_CNT_L(_n)	(GDM_BASE(_n) + 0x19c)
+ 
++#define REG_GDM_SRC_PORT_SET(_n)		(GDM_BASE(_n) + 0x23c)
++#define GDM_SPORT_OFF2_MASK			GENMASK(19, 16)
++#define GDM_SPORT_OFF1_MASK			GENMASK(15, 12)
++#define GDM_SPORT_OFF0_MASK			GENMASK(11, 8)
++
++#define REG_FE_GDM_TX_OK_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x280)
++#define REG_FE_GDM_TX_OK_BYTE_CNT_H(_n)		(GDM_BASE(_n) + 0x284)
++#define REG_FE_GDM_TX_ETH_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x288)
++#define REG_FE_GDM_TX_ETH_BYTE_CNT_H(_n)	(GDM_BASE(_n) + 0x28c)
++
++#define REG_FE_GDM_RX_OK_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x290)
++#define REG_FE_GDM_RX_OK_BYTE_CNT_H(_n)		(GDM_BASE(_n) + 0x294)
++#define REG_FE_GDM_RX_ETH_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x298)
++#define REG_FE_GDM_RX_ETH_BYTE_CNT_H(_n)	(GDM_BASE(_n) + 0x29c)
++#define REG_FE_GDM_TX_ETH_E64_CNT_H(_n)		(GDM_BASE(_n) + 0x2b8)
++#define REG_FE_GDM_TX_ETH_L64_CNT_H(_n)		(GDM_BASE(_n) + 0x2bc)
++#define REG_FE_GDM_TX_ETH_L127_CNT_H(_n)	(GDM_BASE(_n) + 0x2c0)
++#define REG_FE_GDM_TX_ETH_L255_CNT_H(_n)	(GDM_BASE(_n) + 0x2c4)
++#define REG_FE_GDM_TX_ETH_L511_CNT_H(_n)	(GDM_BASE(_n) + 0x2c8)
++#define REG_FE_GDM_TX_ETH_L1023_CNT_H(_n)	(GDM_BASE(_n) + 0x2cc)
++#define REG_FE_GDM_RX_ETH_E64_CNT_H(_n)		(GDM_BASE(_n) + 0x2e8)
++#define REG_FE_GDM_RX_ETH_L64_CNT_H(_n)		(GDM_BASE(_n) + 0x2ec)
++#define REG_FE_GDM_RX_ETH_L127_CNT_H(_n)	(GDM_BASE(_n) + 0x2f0)
++#define REG_FE_GDM_RX_ETH_L255_CNT_H(_n)	(GDM_BASE(_n) + 0x2f4)
++#define REG_FE_GDM_RX_ETH_L511_CNT_H(_n)	(GDM_BASE(_n) + 0x2f8)
++#define REG_FE_GDM_RX_ETH_L1023_CNT_H(_n)	(GDM_BASE(_n) + 0x2fc)
++
+ #define REG_PPE_GLO_CFG(_n)			(((_n) ? PPE2_BASE : PPE1_BASE) + 0x200)
+ #define PPE_GLO_CFG_BUSY_MASK			BIT(31)
+ #define PPE_GLO_CFG_FLOW_DROP_UPDATE_MASK	BIT(9)
+@@ -326,44 +353,6 @@
+ 
+ #define REG_UPDMEM_DATA(_n)			(((_n) ? PPE2_BASE : PPE1_BASE) + 0x374)
+ 
+-#define REG_FE_GDM_TX_OK_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x280)
+-#define REG_FE_GDM_TX_OK_BYTE_CNT_H(_n)		(GDM_BASE(_n) + 0x284)
+-#define REG_FE_GDM_TX_ETH_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x288)
+-#define REG_FE_GDM_TX_ETH_BYTE_CNT_H(_n)	(GDM_BASE(_n) + 0x28c)
+-
+-#define REG_FE_GDM_RX_OK_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x290)
+-#define REG_FE_GDM_RX_OK_BYTE_CNT_H(_n)		(GDM_BASE(_n) + 0x294)
+-#define REG_FE_GDM_RX_ETH_PKT_CNT_H(_n)		(GDM_BASE(_n) + 0x298)
+-#define REG_FE_GDM_RX_ETH_BYTE_CNT_H(_n)	(GDM_BASE(_n) + 0x29c)
+-#define REG_FE_GDM_TX_ETH_E64_CNT_H(_n)		(GDM_BASE(_n) + 0x2b8)
+-#define REG_FE_GDM_TX_ETH_L64_CNT_H(_n)		(GDM_BASE(_n) + 0x2bc)
+-#define REG_FE_GDM_TX_ETH_L127_CNT_H(_n)	(GDM_BASE(_n) + 0x2c0)
+-#define REG_FE_GDM_TX_ETH_L255_CNT_H(_n)	(GDM_BASE(_n) + 0x2c4)
+-#define REG_FE_GDM_TX_ETH_L511_CNT_H(_n)	(GDM_BASE(_n) + 0x2c8)
+-#define REG_FE_GDM_TX_ETH_L1023_CNT_H(_n)	(GDM_BASE(_n) + 0x2cc)
+-#define REG_FE_GDM_RX_ETH_E64_CNT_H(_n)		(GDM_BASE(_n) + 0x2e8)
+-#define REG_FE_GDM_RX_ETH_L64_CNT_H(_n)		(GDM_BASE(_n) + 0x2ec)
+-#define REG_FE_GDM_RX_ETH_L127_CNT_H(_n)	(GDM_BASE(_n) + 0x2f0)
+-#define REG_FE_GDM_RX_ETH_L255_CNT_H(_n)	(GDM_BASE(_n) + 0x2f4)
+-#define REG_FE_GDM_RX_ETH_L511_CNT_H(_n)	(GDM_BASE(_n) + 0x2f8)
+-#define REG_FE_GDM_RX_ETH_L1023_CNT_H(_n)	(GDM_BASE(_n) + 0x2fc)
+-
+-#define REG_GDM2_CHN_RLS		(GDM2_BASE + 0x20)
+-#define MBI_RX_AGE_SEL_MASK		GENMASK(26, 25)
+-#define MBI_TX_AGE_SEL_MASK		GENMASK(18, 17)
+-
+-#define REG_GDM3_FWD_CFG		GDM3_BASE
+-#define GDM3_PAD_EN_MASK		BIT(28)
+-
+-#define REG_GDM4_FWD_CFG		GDM4_BASE
+-#define GDM4_PAD_EN_MASK		BIT(28)
+-#define GDM4_SPORT_OFFSET0_MASK		GENMASK(11, 8)
+-
+-#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x23c)
+-#define GDM4_SPORT_OFF2_MASK		GENMASK(19, 16)
+-#define GDM4_SPORT_OFF1_MASK		GENMASK(15, 12)
+-#define GDM4_SPORT_OFF0_MASK		GENMASK(11, 8)
+-
+ #define REG_IP_FRAG_FP			0x2010
+ #define IP_ASSEMBLE_PORT_MASK		GENMASK(24, 21)
+ #define IP_ASSEMBLE_NBQ_MASK		GENMASK(20, 16)
 
-Hannes
+---
+base-commit: 962ac5ca99a5c3e7469215bf47572440402dfd59
+change-id: 20251017-airoha-regs-cosmetics-54e9005e7586
+
+Best regards,
 -- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Lorenzo Bianconi <lorenzo@kernel.org>
+
