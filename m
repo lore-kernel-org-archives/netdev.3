@@ -1,105 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA9630595B
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 22:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC23B286D53
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 22:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761171160; cv=none; b=gUlIu7RrAwekxnlMS49RrUvSzSp6NK6lx5xY/1pLQHTh20uyZ25w3qJiQEyFfTbRkRSq7sPjGZahGjDYODVQrAt6gggUeVMmS9ZJu3Kc0Mlta6DZ8h0f4w6LnbNIlxXaHXC/dwydzcb8WdrQ/bmPY026pDj6776d12iXymOW+bk=
+	t=1761171472; cv=none; b=MVwqWBw9pRD2Us80IhEeLABG/MTcUGRnLkrCbidDl4Yn7T3GzD/UdyeEnCIlPeVGo+im22PajMnMCvZmsOhOuqyI9nqElAjTMMTkiG3iVmWBowSOyjMrtPBHbzPyI0PzLy7KiOgxOgnkXh/7on7ZN1ZBhuLlbPV6q0OVIS5WZFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761171160; c=relaxed/simple;
-	bh=AIJALJq9EkMeNg6XdK1W0cNkmQC8F+8+odhi/bRT+oQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VTWJsRgBKoCbCBLslOoQGo8srfznLCDfKBmuknrUxXSyvGNJwWpK9ZvVxlu97CZTo8r+KWxIsJDZ933afeSMVC+Acjg+FvL7eo4E5yFXZNtnKA9JEsdL7HrIfGFySi2wo7huJaxwUUkhDNtYnkoUNLVaBWQkkMC8GQuW+oIxAK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boW6afkY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761171472; c=relaxed/simple;
+	bh=ecJKK4xqEWMQdohLNwrG1a262eWCzSJl9W3ejMnH2Kg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QedXyyVAbKaeCrpVIZk3TwS4m8qxHfpx3N9rZgtj5M4Zfwfk76lClTJa2NqLxiaJHf4saCIzkPURULxLO4XrmnnjxNpcNa8X3iqao+WlzoiSFD1uwANw3pnil3eGroXlmythOwGPKcH7o1t94MKyeRCTVFn5IU1JvZwOjmrXWnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nvy59lCx; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boW6afkY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95159C4CEE7;
-	Wed, 22 Oct 2025 22:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761171159;
-	bh=AIJALJq9EkMeNg6XdK1W0cNkmQC8F+8+odhi/bRT+oQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=boW6afkYYcyeh0NRSzHCg7B53VPk4L0FPk4+kRarQDEe4hhs8Kz8bkP4EKi/6RSAq
-	 mtrkqnAEfBNIXdYeMtNWHuM9HM0tuzzsXquF/CEchGbk+pH+QvjfcKDfdQ9r3av0Gq
-	 3dOM1EA0weJbHOxZUT17O5Z0ybTcyI9axkVHZ/J3jW0X2ep4VXxpjeTtfXtP5Ax/JM
-	 NZQPpaZQs/LwJ/Du/M1Qjoo1QiR7g0ZggOKjpFK5WRCWF4kmjPxtFLGyYQJMDLj3Lr
-	 EYJ/cLYGyP7XbOnGm5QYHqlef8FBl5Zdr7+21eNUkNUhl+IF2qHTdISf3mmQCytxHj
-	 bGmbAuPb3dNoQ==
-From: Eric Biggers <ebiggers@kernel.org>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH net-next] tcp: Remove unnecessary null check in tcp_inbound_md5_hash()
-Date: Wed, 22 Oct 2025 15:12:09 -0700
-Message-ID: <20251022221209.19716-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nvy59lCx"
+Message-ID: <679df304-ebbf-4268-9834-b851d96e8366@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761171467;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4+HK4rb9E/9aB/kAkTrE6m4QwZlKN/ZDhogoDFCK3Hg=;
+	b=nvy59lCx5LbxlcajzRYulKeIOTEqWHIdetP2IQHD9HathSvbB3FdED7zObquBNiM/aIuXS
+	CII0zNMSqPnYGhds88EYepMuGZ8iOFIYkHgUYiVZAkG/FQs9z/zX6zPCf5LdrBLtZzak1P
+	auNJ6Mzt26ofLSU/VrBjMcqeSPV1egk=
+Date: Wed, 22 Oct 2025 23:17:42 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v2 1/2] ptp/ptp_vmw: Implement PTP clock adjustments ops
+To: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: kuba@kernel.org, davem@davemloft.net, richardcochran@gmail.com,
+ nick.shi@broadcom.com, alexey.makhalov@broadcom.com, andrew+netdev@lunn.ch,
+ edumazet@google.com, pabeni@redhat.com, jiashengjiangcool@gmail.com,
+ andrew@lunn.ch, viswanathiyyappan@gmail.com, wei.fang@nxp.com,
+ rmk+kernel@armlinux.org.uk, vladimir.oltean@nxp.com, cjubran@nvidia.com,
+ dtatulea@nvidia.com, tariqt@nvidia.com, netdev@vger.kernel.org,
+ bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+ florian.fainelli@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com,
+ tapas.kundu@broadcom.com, shubham-sg.gupta@broadcom.com,
+ karen.wang@broadcom.com, hari-krishna.ginka@broadcom.com
+References: <20251022105128.3679902-1-ajay.kaher@broadcom.com>
+ <20251022105128.3679902-2-ajay.kaher@broadcom.com>
+ <fcabc415-17ef-4a68-8651-c55d4388db2b@linux.dev>
+ <CAD2QZ9b9+TP1YnpL0DkNqn5kdgxseMooBr8xJ9fMu+0tgtX=vA@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <CAD2QZ9b9+TP1YnpL0DkNqn5kdgxseMooBr8xJ9fMu+0tgtX=vA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The 'if (!key && hash_location)' check in tcp_inbound_md5_hash() implies
-that hash_location might be null.  However, later code in the function
-dereferences hash_location anyway, without checking for null first.
-Fortunately, there is no real bug, since tcp_inbound_md5_hash() is
-called only with non-null values of hash_location.
+On 22/10/2025 18:27, Ajay Kaher wrote:
+> On Wed, Oct 22, 2025 at 4:43 PM Vadim Fedorenko
+> <vadim.fedorenko@linux.dev> wrote:
+>>
+>> On 22/10/2025 11:51, Ajay Kaher wrote:
+>>> Implement PTP clock ops that set time and frequency of the underlying
+>>> clock. On supported versions of VMware precision clock virtual device,
+>>> new commands can adjust its time and frequency, allowing time transfer
+>>> from a virtual machine to the underlying hypervisor.
+>>>
+>>> In case of error, vmware_hypercall doesn't return Linux defined errno,
+>>> converting it to -EIO.
+>>>
+>>> Cc: Shubham Gupta <shubham-sg.gupta@broadcom.com>
+>>> Cc: Nick Shi <nick.shi@broadcom.com>
+>>> Tested-by: Karen Wang <karen.wang@broadcom.com>
+>>> Tested-by: Hari Krishna Ginka <hari-krishna.ginka@broadcom.com>
+>>> Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+>>> ---
+>>>    drivers/ptp/ptp_vmw.c | 39 +++++++++++++++++++++++++++++----------
+>>>    1 file changed, 29 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/drivers/ptp/ptp_vmw.c b/drivers/ptp/ptp_vmw.c
+>>> index 20ab05c4d..7d117eee4 100644
+>>> --- a/drivers/ptp/ptp_vmw.c
+>>> +++ b/drivers/ptp/ptp_vmw.c
+>>> @@ -1,6 +1,7 @@
+>>>    // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+>>>    /*
+>>> - * Copyright (C) 2020 VMware, Inc., Palo Alto, CA., USA
+>>> + * Copyright (C) 2020-2023 VMware, Inc., Palo Alto, CA., USA
+>>> + * Copyright (C) 2024-2025 Broadcom Ltd.
+>>>     *
+>>>     * PTP clock driver for VMware precision clock virtual device.
+>>>     */
+>>> @@ -16,20 +17,36 @@
+>>>
+>>>    #define VMWARE_CMD_PCLK(nr) ((nr << 16) | 97)
+>>>    #define VMWARE_CMD_PCLK_GETTIME VMWARE_CMD_PCLK(0)
+>>> +#define VMWARE_CMD_PCLK_SETTIME VMWARE_CMD_PCLK(1)
+>>> +#define VMWARE_CMD_PCLK_ADJTIME VMWARE_CMD_PCLK(2)
+>>> +#define VMWARE_CMD_PCLK_ADJFREQ VMWARE_CMD_PCLK(3)
+>>>
+>>>    static struct acpi_device *ptp_vmw_acpi_device;
+>>>    static struct ptp_clock *ptp_vmw_clock;
+>>>
+>>> +/*
+>>> + * Helpers for reading and writing to precision clock device.
+>>> + */
+>>>
+>>> -static int ptp_vmw_pclk_read(u64 *ns)
+>>> +static int ptp_vmw_pclk_read(int cmd, u64 *ns)
+>>>    {
+>>>        u32 ret, nsec_hi, nsec_lo;
+>>>
+>>> -     ret = vmware_hypercall3(VMWARE_CMD_PCLK_GETTIME, 0,
+>>> -                             &nsec_hi, &nsec_lo);
+>>> +     ret = vmware_hypercall3(cmd, 0, &nsec_hi, &nsec_lo);
+>>>        if (ret == 0)
+>>>                *ns = ((u64)nsec_hi << 32) | nsec_lo;
+>>> -     return ret;
+>>> +
+>>> +     return ret != 0 ? -EIO : 0;
+>>> +}
+>>
+>> Why do you need to introduce this change? VMWARE_CMD_PCLK_GETTIME is
+>> the only command used in read() in both patches of this patchset.
+>>
+> 
+> Vadim, thanks for looking into patches.
+> 
+> I have added ptp_vmw_pclk_write() where cmd has been passed as argument.
+> Keeping the same format for ptp_vmw_pclk_read() as well, also may be useful
+> in future.
+> 
+> Let me know if you think it's better to keep ptp_vmw_pclk_read() as it
+> is. I will
+> revert in v3.
 
-Therefore, remove the unnecessary and misleading null check of
-hash_location.  This silences a Smatch static checker warning
-(https://lore.kernel.org/netdev/aPi4b6aWBbBR52P1@stanley.mountain/)
-
-Also fix the related comment at the beginning of the function.
-
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- net/ipv4/tcp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e15b38f6bd2d5..b79da6d393927 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4884,22 +4884,20 @@ static enum skb_drop_reason
- tcp_inbound_md5_hash(const struct sock *sk, const struct sk_buff *skb,
- 		     const void *saddr, const void *daddr,
- 		     int family, int l3index, const __u8 *hash_location)
- {
- 	/* This gets called for each TCP segment that has TCP-MD5 option.
--	 * We have 3 drop cases:
--	 * o No MD5 hash and one expected.
--	 * o MD5 hash and we're not expecting one.
--	 * o MD5 hash and its wrong.
-+	 * We have 2 drop cases:
-+	 * o An MD5 signature is present, but we're not expecting one.
-+	 * o The MD5 signature is wrong.
- 	 */
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	struct tcp_md5sig_key *key;
- 	u8 newhash[16];
- 
- 	key = tcp_md5_do_lookup(sk, l3index, saddr, family);
--
--	if (!key && hash_location) {
-+	if (!key) {
- 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5UNEXPECTED);
- 		trace_tcp_hash_md5_unexpected(sk, skb);
- 		return SKB_DROP_REASON_TCP_MD5UNEXPECTED;
- 	}
- 
-
-base-commit: 962ac5ca99a5c3e7469215bf47572440402dfd59
--- 
-2.51.0
-
+I do believe it's better to keep code as is until you have real use of
+new feature. And I'm not quite sure which command you can use to do
+another read?
