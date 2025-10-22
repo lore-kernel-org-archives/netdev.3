@@ -1,104 +1,239 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEF61EB193
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26C3344028
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157413; cv=none; b=Lyd13AXa3+oA3zVhGMiBoAmqsogZQ/qKrFnY0DIAMVUVQCxffFecgOZ0+jMecEKow3FbI3f8mLixHf+lWnLinqRpeLNG5q46rUM8tp2yKAquZxI6YFzfNxXkVYjBnd3wiJSPYg2cMg51BBwL229HzDGu9NNeRDFlDO5ucYbtMe4=
+	t=1761157422; cv=none; b=UsmDYeEYRvPh2XwhPvFdiBd9BrAGMeeD/k96Bcq/uy3zom3lffH0LlOvR/eHG3QmqzMOY2FX8+EhFvOmgpDI8+FmPSfXD2+OyODvVruJI9dvtQFPKrOdIM8Jn6uCmm3uzy6qsC/i0SE5d5rn099HIhzoq05KKcKgxTVbbghRSuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157413; c=relaxed/simple;
-	bh=atBMO1Se5Y2n/HQNiT0O0qKX37XjiOlC8/ZPayU26jE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c5mtCbi6N/qp4JwvNxBcjdU8m/2BiOGRr7M1eJf0L7dx8bNYQY0vToi+CZHwUb0ntpaHaZUMHVXV4FwE8ADHwoXwRoRL81dIVt0KtAq34lpyQ5W1BTJyFKf2m4uCiwIl6K+ZYJ5gAhYVuCrYxf1Q+ZtWuyg4l6BpFjQEzBZJhPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KRV2gabI; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761157422; c=relaxed/simple;
+	bh=UVZI17h7HLb/ZMhJZ55NqWT18DZ8rBDoglUJXsA63X0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=e8TihP/ECKGJSCdFin15jweEVhWpoJvKyDsSFGGJOkg3nT1/W1qUmC57U3lYlSt4TIZLLKwn341cveEvnlTg0TyyMrLWhAmEZj/elzoCb/IFi/Uax1s/xEhVX39TVJx5mTxfLBMDwMLRNsXxasH4AkZDlb2DczK7cLTbcj2qhSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hoEjOc9y; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KRV2gabI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kt5HidSb6xkRGWxoBaNt52wPsH3u1Zf7gYVwAQOjbyE=; b=KRV2gabIuAHKCA2bR3TFyg37Ot
-	8grILVv1y2mAuzQh8SM6YPUPC6DVTocs8MCRSgLTJTs+luotqmjScfW0CB6UwsnCpZL72KRjpgoFJ
-	28sAaCiJ+UjCEel7jcqgd2okiqhaIw36zpO+CtaP4ajUm72ADnAV58C4lbUM4i4kmmDN9okFLtvoH
-	IXHu6WJBu70qAWnRCa8AvANYNesWBbgtSyOxAgpPc36uCl6z6iw0b9NTt8zdba21Q0scwDPDDkBVR
-	5VviXoafsaPQ2ifn2UwD0JyCO8oHRWh+fRHKvLO0PPIA4EMbOH/5ZBmsGoZBjoPOVzT8tEMfTGtVA
-	AcDDVXEQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55460)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vBdUc-000000005JH-1XpL;
-	Wed, 22 Oct 2025 19:23:26 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vBdUa-000000000vO-2zLy;
-	Wed, 22 Oct 2025 19:23:24 +0100
-Date: Wed, 22 Oct 2025 19:23:24 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next 3/6] net: phylink: add phylink managed MAC
- Wake-on-Lan support
-Message-ID: <aPkhHIMJAYNEj_6Z@shell.armlinux.org.uk>
-References: <aPIwqo9mCEOb7ZQu@shell.armlinux.org.uk>
- <E1v9jCT-0000000B2Ob-1yo3@rmk-PC.armlinux.org.uk>
- <6bff48d0-dd19-48d4-91e6-0d991365b8f9@bootlin.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hoEjOc9y"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-78427dae77eso6118022b3a.3
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761157420; x=1761762220; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iktq7Wn5pIoCwGAvXL7/BQYzOTmxLjXbBR6x1OGDLzQ=;
+        b=hoEjOc9y1T0RnT+QPSBUuvJvkqhLAbQioNZRERr0kj+egfj4DmBR4jdZmTDToq0nFk
+         +JlsCmgmYD94dlDnVBk2D/RjS+hY+UdYW2TARh+uUH4ASyXOkedNCOcPfNiN/tqbP8jH
+         IgvvtJjnFn09D5BO+5/bz9AKGJa+E3FYDv47kOv6wRB807LQXSyni8ApHMYUoIoZrXtS
+         oZKoEsDP2VTIhSdVaDAt2RBiAH6vp9hKjyLRwSbzPQdbUJe4+xvEcRL4Gj5T+s4I/P2S
+         oF8rDycLKcKvw/MqAz+THE1TUdmU997XhhBgs5SDkSfwUUpE0xVRIKOJlqvs0pvpVVQ2
+         hIqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761157420; x=1761762220;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iktq7Wn5pIoCwGAvXL7/BQYzOTmxLjXbBR6x1OGDLzQ=;
+        b=KsA03ih3nbjRE4p3HCokGrN+Eu/z7JaRt6vRm0s4nOJXbAZsPOAs69ORKdFFySvROg
+         r+v2Jzpglf2P25mFuVm/+OoZ24GbnzTTfp/MPPxMTjfdSOvTbSsuYlR/Kzc7aqTBmx2q
+         WLCCHxDHi7kvmHTqM0trmHR1XqXd5MrSNWa+hDLUVAKNOaveGBUNdm/OIQ+WtSJXJDwG
+         w/3Px6eFXCpWXFMMux2E5tDhy2T/vgEySTdI2Ixc5tLDM+n6A+Ya1uP3TwmUHSOCUxJt
+         WvDilsTG882552PdizuXrkI5PYzCDAqtm4b4/wg8ooFAQorDjM3UnClnllaAhNzUJVtH
+         ZEtQ==
+X-Gm-Message-State: AOJu0YweKM3Spz6tK/lGIMJ/JNmJ8DtP/Gui0Mu3qzsUkEoRNpoCrhmJ
+	Gj74+HlzpYyjciKQbYDM3pyRAe4qI4DYeznTYFWkip5dAxcjjL6NvyI7hLbJHXfV0aWrvmAtkOA
+	L2kWN2W3cgd6DLgCUNS2kVxQnUxPWcOwfJCww2thqdMYeTLAItfRHEpUXd+kxDBbNfDR0x7eSU+
+	a0nJ7TLgV/D+7r/9Sa4Box5zwrzg/VYzkrgawlI8encDkGWaY=
+X-Google-Smtp-Source: AGHT+IGY8k93vtQ43TFG6C5KrT1OedrQTPkyFUfuTJOTRGOzReM/XDp/D9+KnHM0koEIxyjI0OoJHbVRRiPa7g==
+X-Received: from pfbfw12.prod.google.com ([2002:a05:6a00:61cc:b0:7a2:6aaa:30c5])
+ (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:4311:b0:246:d43a:3856 with SMTP id adf61e73a8af0-334a857d6f3mr26831189637.22.1761157420128;
+ Wed, 22 Oct 2025 11:23:40 -0700 (PDT)
+Date: Wed, 22 Oct 2025 11:22:24 -0700
+In-Reply-To: <20251022182301.1005777-1-joshwash@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6bff48d0-dd19-48d4-91e6-0d991365b8f9@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+References: <20251022182301.1005777-1-joshwash@google.com>
+X-Mailer: git-send-email 2.51.1.814.gb8fa24458f-goog
+Message-ID: <20251022182301.1005777-3-joshwash@google.com>
+Subject: [PATCH net-next 2/3] gve: Allow ethtool to configure rx_buf_len
+From: Joshua Washington <joshwash@google.com>
+To: netdev@vger.kernel.org
+Cc: Ankit Garg <nktgrg@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Joshua Washington <joshwash@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Praveen Kaligineedi <pkaligineedi@google.com>, Ziwei Xiao <ziweixiao@google.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)" <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Oct 22, 2025 at 04:06:00PM +0200, Maxime Chevallier wrote:
-> >  int phylink_ethtool_set_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
-> >  {
-> > +	struct ethtool_wolinfo w;
+From: Ankit Garg <nktgrg@google.com>
 
-...
+Add support for getting and setting the RX buffer length via the
+ethtool ring parameters (`ethtool -g`/`-G`). The driver restricts the
+allowed buffer length to 2048 (SZ_2K) or 4096 (SZ_4K).
 
-> > +			phy_ethtool_get_wol(pl->phydev, &w);
-> > +
-> > +			/* Any Wake-on-Lan modes which the PHY is handling
-> > +			 * should not be passed on to the MAC.
-> > +			 */
-> > +			wolopts &= ~w.wolopts;
-> 
-> When PHY drivers gets converted to the new model, we'll have to look at
-> how the .get_wol() behave WRT how they fill-in their wolopts.
-> 
-> The Broadcom driver for example may not set w.wolopts to 0 :
-> 
->   https://elixir.bootlin.com/linux/v6.17.4/source/drivers/net/phy/broadcom.c#L1121
-> 
-> You'd probably end-up with garbage here then. But not blocking for your series.
+As XDP is only supported when the `rx_buf_len` is 2048, the driver now
+enforces this in two places:
+1.  In `gve_xdp_set`, rejecting XDP programs if the current buffer
+    length is not 2048.
+2.  In `gve_set_rx_buf_len_config`, rejecting buffer length changes if
+    XDP is loaded and the new length is not 2048.
 
-Good point. We should initialise 'w' in the same way other users do, so:
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+---
+ drivers/net/ethernet/google/gve/gve.h         |  9 ++++
+ drivers/net/ethernet/google/gve/gve_ethtool.c | 13 +++++-
+ drivers/net/ethernet/google/gve/gve_main.c    | 45 +++++++++++++++++++
+ 3 files changed, 66 insertions(+), 1 deletion(-)
 
-+       struct ethtool_wolinfo w = { .cmd = ETHTOOL_GWOL };
-
-Does your r-b still stand with this change?
-
-Thanks.
-
+diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
+index c237d00c5ab3..a33b44c1eb86 100644
+--- a/drivers/net/ethernet/google/gve/gve.h
++++ b/drivers/net/ethernet/google/gve/gve.h
+@@ -1167,6 +1167,12 @@ static inline bool gve_is_gqi(struct gve_priv *priv)
+ 		priv->queue_format == GVE_GQI_QPL_FORMAT;
+ }
+ 
++static inline bool gve_is_dqo(struct gve_priv *priv)
++{
++	return priv->queue_format == GVE_DQO_RDA_FORMAT ||
++	       priv->queue_format == GVE_DQO_QPL_FORMAT;
++}
++
+ static inline u32 gve_num_tx_queues(struct gve_priv *priv)
+ {
+ 	return priv->tx_cfg.num_queues + priv->tx_cfg.num_xdp_queues;
+@@ -1248,6 +1254,9 @@ void gve_rx_free_rings_gqi(struct gve_priv *priv,
+ void gve_rx_start_ring_gqi(struct gve_priv *priv, int idx);
+ void gve_rx_stop_ring_gqi(struct gve_priv *priv, int idx);
+ bool gve_header_split_supported(const struct gve_priv *priv);
++int gve_set_rx_buf_len_config(struct gve_priv *priv, u32 rx_buf_len,
++			      struct netlink_ext_ack *extack,
++			      struct gve_rx_alloc_rings_cfg *rx_alloc_cfg);
+ int gve_set_hsplit_config(struct gve_priv *priv, u8 tcp_data_split,
+ 			  struct gve_rx_alloc_rings_cfg *rx_alloc_cfg);
+ /* rx buffer handling */
+diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
+index db6fc855a511..52500ae8348e 100644
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -529,6 +529,8 @@ static void gve_get_ringparam(struct net_device *netdev,
+ 	cmd->rx_pending = priv->rx_desc_cnt;
+ 	cmd->tx_pending = priv->tx_desc_cnt;
+ 
++	kernel_cmd->rx_buf_len = priv->rx_cfg.packet_buffer_size;
++
+ 	if (!gve_header_split_supported(priv))
+ 		kernel_cmd->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_UNKNOWN;
+ 	else if (priv->header_split_enabled)
+@@ -589,6 +591,12 @@ static int gve_set_ringparam(struct net_device *netdev,
+ 	int err;
+ 
+ 	gve_get_curr_alloc_cfgs(priv, &tx_alloc_cfg, &rx_alloc_cfg);
++
++	err = gve_set_rx_buf_len_config(priv, kernel_cmd->rx_buf_len, extack,
++					&rx_alloc_cfg);
++	if (err)
++		return err;
++
+ 	err = gve_set_hsplit_config(priv, kernel_cmd->tcp_data_split,
+ 				    &rx_alloc_cfg);
+ 	if (err)
+@@ -605,6 +613,8 @@ static int gve_set_ringparam(struct net_device *netdev,
+ 			return err;
+ 	} else {
+ 		/* Set ring params for the next up */
++		priv->rx_cfg.packet_buffer_size =
++			rx_alloc_cfg.packet_buffer_size;
+ 		priv->header_split_enabled = rx_alloc_cfg.enable_header_split;
+ 		priv->tx_desc_cnt = tx_alloc_cfg.ring_size;
+ 		priv->rx_desc_cnt = rx_alloc_cfg.ring_size;
+@@ -944,7 +954,8 @@ static int gve_get_ts_info(struct net_device *netdev,
+ 
+ const struct ethtool_ops gve_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS,
+-	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT,
++	.supported_ring_params = ETHTOOL_RING_USE_TCP_DATA_SPLIT |
++				 ETHTOOL_RING_USE_RX_BUF_LEN,
+ 	.get_drvinfo = gve_get_drvinfo,
+ 	.get_strings = gve_get_strings,
+ 	.get_sset_count = gve_get_sset_count,
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 8d825218965a..8009819c73f2 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1722,6 +1722,13 @@ static int verify_xdp_configuration(struct net_device *dev)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (priv->rx_cfg.packet_buffer_size != SZ_2K) {
++		netdev_warn(dev,
++			    "XDP is not supported for Rx buf len %d. Set Rx buf len to %d before using XDP.\n",
++			    priv->rx_cfg.packet_buffer_size, SZ_2K);
++		return -EOPNOTSUPP;
++	}
++
+ 	max_xdp_mtu = priv->rx_cfg.packet_buffer_size - sizeof(struct ethhdr);
+ 	if (priv->queue_format == GVE_GQI_QPL_FORMAT)
+ 		max_xdp_mtu -= GVE_RX_PAD;
+@@ -2050,6 +2057,44 @@ bool gve_header_split_supported(const struct gve_priv *priv)
+ 		priv->queue_format == GVE_DQO_RDA_FORMAT && !priv->xdp_prog;
+ }
+ 
++int gve_set_rx_buf_len_config(struct gve_priv *priv, u32 rx_buf_len,
++			      struct netlink_ext_ack *extack,
++			      struct gve_rx_alloc_rings_cfg *rx_alloc_cfg)
++{
++	u32 old_rx_buf_len = rx_alloc_cfg->packet_buffer_size;
++
++	if (rx_buf_len == old_rx_buf_len)
++		return 0;
++
++	if (!gve_is_dqo(priv)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Modifying Rx buf len is only supported with DQO format");
++		return -EOPNOTSUPP;
++	}
++
++	if (priv->xdp_prog && rx_buf_len != SZ_2K) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Rx buf len can only be 2048 when XDP is on");
++		return -EINVAL;
++	}
++
++	if (rx_buf_len > priv->max_rx_buffer_size) {
++		NL_SET_ERR_MSG_FMT_MOD(extack,
++				       "Rx buf len exceeds the max supported value of %u",
++				       priv->max_rx_buffer_size);
++		return -EINVAL;
++	}
++
++	if (rx_buf_len != SZ_2K && rx_buf_len != SZ_4K) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Rx buf len can only be 2048 or 4096");
++		return -EINVAL;
++	}
++	rx_alloc_cfg->packet_buffer_size = rx_buf_len;
++
++	return 0;
++}
++
+ int gve_set_hsplit_config(struct gve_priv *priv, u8 tcp_data_split,
+ 			  struct gve_rx_alloc_rings_cfg *rx_alloc_cfg)
+ {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.51.1.814.gb8fa24458f-goog
+
