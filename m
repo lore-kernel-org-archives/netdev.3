@@ -1,157 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2602C1C8606
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CBA2F49F4
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761117113; cv=none; b=ehWVm3sYtz75EFcjS20gLN4fzZ0WeuoVEWrGJhFFd4EjSgubn3+T5ArUDxYpQJVXaAuRG3NDYeELBB4mqpQrIorK75wpgpW49szZOYIWv+5D/kbnNE6VxfvPq4sG5cTHT/ASD2i/BEb7dZ0sUGJ98940z7GXQAtaH0g2dr/FyO8=
+	t=1761117168; cv=none; b=NpbCa3DdU9AB2+oGrMqKbZRkDe+Q8GDCucsN8D1GRIuvUikIF+7px6ZLilR7xas2qWNKGBI9a8ZkZdhgGgnpVeNHPw1Cx+9hpGp3BV4CYoiJcrjbIYsXDYm3gYtN3VusCAOtApeJUx8n/Zeu65wFBUtthTRja8F3rXFjB/ZUEZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761117113; c=relaxed/simple;
-	bh=KS5mjdbhibr4HOupBrT/VG3rdVqHnXLAHbIdQ5ZRfFQ=;
+	s=arc-20240116; t=1761117168; c=relaxed/simple;
+	bh=aCOhMXeNcRlLEJFFTCWsYH3yznwlPc3/uJAlYhMI6lo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MOaAcexMqzh6g+TzLlWvTe84lsQixnqHirkV4xcy+SeDsoBhls0QW/kztODlf1jy1r311gswtfPT5IbLq8ygoq2pbVTTHjK1kdu4cdt+wuLYr2WydDIpY7CBuQb+Nuy1Idl39RxV35wYR+VQU/3RHp+xn0NEabndAcDM0T1C32I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DZSl421E; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=WpBN+2ylDjs0+yj/Ns9gySKGP8fvh3nYkIfabIarqUfM+NuBXwiWPzdhdFw/e0aF3suKaI0il7DtDyJEIEjO8GmMyX6kb8OQBd72ssCRMFo2gDw5Wi7u/caXY8DYzsKGtP/PbnZHGa3sO6SXz0D9FO3FLkme+nGn15J7hdLH0a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P20bzHE8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DZSl421E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761117111; x=1792653111;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KS5mjdbhibr4HOupBrT/VG3rdVqHnXLAHbIdQ5ZRfFQ=;
-  b=DZSl421EDToCD5vxs+JcddNAfHD0ZgJqFZnWSyl34/nrNJPCqeZe2Rpr
-   5UH5ByT9kT6sGvWa4xcW0BADoET0m2KrIpvifhh1Y2x/B9RkLbZ6x/K2n
-   Bn9+uejoNsvAV5c+3pikk0qJPAOe9dpsttP+BmFgbHA2VBt2Vy4pLuaxq
-   +vzkb4ogmEp8j20F5ZzgpX4ARks3aOTXLq5CsM+/sHeFHyxDmQt2fgNs1
-   6jxYG0hteCzT/rbB3jW+N9jRzoARSNlQPammJlDoArwdcBX5G9ht1R/t9
-   c2pEEINcFHMc7EMBIHrhVOH1NtIqoYFfdChqjsZXmd7KU9dNK1TDx7myQ
-   A==;
-X-CSE-ConnectionGUID: dcA9lJ2iRLWoFDUPAz3IWw==
-X-CSE-MsgGUID: 6DCs7vQdTGq84JtxouaZtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="50829698"
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="50829698"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 00:11:50 -0700
-X-CSE-ConnectionGUID: tHqeaaMNQ5y4jCd4+9wtmQ==
-X-CSE-MsgGUID: fMEck10fSfGswxyfgQEXIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,246,1754982000"; 
-   d="scan'208";a="183381090"
-Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2025 00:11:49 -0700
-Date: Wed, 22 Oct 2025 09:09:42 +0200
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v1] ice: lower default
- irq/queue counts on high-core systems
-Message-ID: <aPiDNooOaHEtmQPI@mev-dev.igk.intel.com>
-References: <20251016062250.1461903-1-michal.swiatkowski@linux.intel.com>
- <5d739d1f-faa7-4734-b5e7-8e35b5556ce7@intel.com>
- <34268765-6cc5-4816-9ba7-4f00e8f353a0@intel.com>
- <aPHwpE+YuxfWZjft@mev-dev.igk.intel.com>
- <b1faad7b-531b-429f-97a4-aa93a160569c@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P20bzHE8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099D4C4CEE7;
+	Wed, 22 Oct 2025 07:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761117168;
+	bh=aCOhMXeNcRlLEJFFTCWsYH3yznwlPc3/uJAlYhMI6lo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P20bzHE882yA6YpVwda4fjhuxkc1B1YP8vfan0Thd1UpfWY5E5Ai1Fa3iBvGDLdHo
+	 uHXRDqdfzWzSpBVY6fobdgGoVR57prFL3IAz/xKKrnyRdCB5oDF5znTcGusdVjqKNw
+	 /A2UlLm3syA+BDqsDTX8NW1Qdg18kcHNpq4o+G4HOCBsS8W92gxbsyEaT5lch7WEnC
+	 NIcdRgjZANy5OVG8M2BGmsa09g8zZi6mxBRjtBxUAsBP6+utl+22nBVSdM/EuknISt
+	 1p94l6tXZ1b3w9h1/xrpN2H3V81HhknAgRoxeMIX0np4FlDu718+UfWK3C2EnAxbIG
+	 Kj7KUzfAzpOng==
+Date: Wed, 22 Oct 2025 09:12:45 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next] net: airoha: Remove code duplication in
+ airoha_regs.h
+Message-ID: <aPiD7WTSGbJq_xKO@lore-desk>
+References: <20251018-airoha-regs-cosmetics-v1-1-bbf6295c45fd@kernel.org>
+ <20251021182800.2c736d21@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z+kCoUsYQ/MpQx5l"
+Content-Disposition: inline
+In-Reply-To: <20251021182800.2c736d21@kernel.org>
+
+
+--z+kCoUsYQ/MpQx5l
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b1faad7b-531b-429f-97a4-aa93a160569c@intel.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 17, 2025 at 04:35:18PM +0200, Alexander Lobakin wrote:
-> From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> Date: Fri, 17 Oct 2025 09:30:44 +0200
-> 
-> > On Fri, Oct 17, 2025 at 07:03:31AM +0200, Przemek Kitszel wrote:
-> >> On 10/16/25 17:36, Alexander Lobakin wrote:
-> >>> From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> >>> Date: Thu, 16 Oct 2025 08:22:50 +0200
-> >>>
-> >>>> On some high-core systems loading ice driver with default values can
-> >>>> lead to queue/irq exhaustion. It will result in no additional resources
-> >>>> for SR-IOV.
-> >>>>
-> >>>> In most cases there is no performance reason for more than 64 queues.
-> >>>> Limit the default value to 64. Still, using ethtool the number of
-> >>>> queues can be changed up to num_online_cpus().
-> >>>>
-> >>>> This change affects only the default queue amount on systems with more
-> >>>> than 64 cores.
-> >>>>
-> >>>> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-> >>>> Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-> >>>> ---
-> >>>>   drivers/net/ethernet/intel/ice/ice.h     | 20 ++++++++++++++++++++
-> >>>>   drivers/net/ethernet/intel/ice/ice_irq.c |  6 ++++--
-> >>>>   drivers/net/ethernet/intel/ice/ice_lib.c |  8 ++++----
-> >>>>   3 files changed, 28 insertions(+), 6 deletions(-)
-> >>>>
-> >>>> diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-> >>>> index 3d4d8b88631b..354ec2950ff3 100644
-> >>>> --- a/drivers/net/ethernet/intel/ice/ice.h
-> >>>> +++ b/drivers/net/ethernet/intel/ice/ice.h
-> >>>> @@ -1133,4 +1133,24 @@ static inline struct ice_hw *ice_get_primary_hw(struct ice_pf *pf)
-> >>>>   	else
-> >>>>   		return &pf->adapter->ctrl_pf->hw;
-> >>>>   }
-> >>>> +
-> >>>> +/**
-> >>>> + * ice_capped_num_cpus - normalize the number of CPUs to a reasonable limit
-> >>>> + *
-> >>>> + * This function returns the number of online CPUs, but caps it at suitable
-> >>>> + * default to prevent excessive resource allocation on systems with very high
-> >>>> + * CPU counts.
-> >>>> + *
-> >>>> + * Note: suitable default is currently at 64, which is reflected in default_cpus
-> >>>> + * constant. In most cases there is no much benefit for more than 64 and it is a
-> >>>> + * power of 2 number.
-> >>>> + *
-> >>>> + * Return: number of online CPUs, capped at suitable default.
-> >>>> + */
-> >>>> +static inline u16 ice_capped_num_cpus(void)
-> >>>> +{
-> >>>> +	const int default_cpus = 64;
-> >>>
-> >>> Maybe we should just use netif_get_num_default_rss_queues() like I did
-> >>> in idpf?
-> >>>
-> >>> Or it still can be too high e.g. on clusters with > 256 CPUs?
-> >>
-> >> good point,
-> >> perhaps we should both use it and change the (kernel) func to cap at 64
-> >>
-> > 
-> > Sounds good, thanks for pointing the function.
-> > 
-> > Do you think it is ok to cap the generic function? Maybe other vendors
-> > want more default queues.
-> 
-> Nah I don't think it's a good idea to hardcode any numbers in the
-> generic function.
-> 
-> > 
-> > What about capping netif_get_num_default_rss_queues() at 64 just for
-> > ice?
-> 
-> netif_get_num_default_rss_queues() returns *half* of the number of
-> *physical* cores. I.e. it will return something bigger than 64 only in
-> case of > 256 threads in the system (considering SMT).
-> 
-> Do we need to still cap this to 64 in ice at all?
+On Oct 21, Jakub Kicinski wrote:
+> On Sat, 18 Oct 2025 11:21:47 +0200 Lorenzo Bianconi wrote:
+> > This patch does not introduce any logical change, it just removes
+> > duplicated code in airoha_regs.h.
+> > Fix naming conventions in airoha_regs.h.
+>=20
+> Appears not to apply
 
-That can be good enough. I will send next version with just call to this
-function.
+ack, I will rebase and post v2.
 
-> 
-> Thanks,
-> Olek
+Regards,
+Lorenzo
+
+> --=20
+> pw-bot: cr
+
+--z+kCoUsYQ/MpQx5l
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaPiD7QAKCRA6cBh0uS2t
+rIUJAP9sOdpMJGpik1zGfDRuiTGJVOSOzifTwnhJUXdgIC5RJgD+PW8POUZxObMS
+MPTuJ+Zw2b8Oy+Ww44Da7DmnCcrRDg4=
+=Cu9m
+-----END PGP SIGNATURE-----
+
+--z+kCoUsYQ/MpQx5l--
