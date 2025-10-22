@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2188B347BBB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217AE346E4B;
 	Wed, 22 Oct 2025 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157641; cv=none; b=BpJYcM2c6fGIbHDHrQC3ufcGotHkDT2i0EA9teK/j3vmBj07jPRfIQCdtMYExsdGyt5CHuacoBSdTTAHiByv431lizdw4efW2rqLhPjGCptHLdTDzSg9L2nBA8duvsDekNnc/u1vp4yrqX6qUYk3IEtrCl5gLknQTR5jGTsG3I4=
+	t=1761157641; cv=none; b=O1oCO58CJt31PmoHSJ+4DBowGmvBw7kUgOX2dV5M+oKBmqB/AozbI0s1mW9ck5onmt17hyqzpWvnOgJ8EUC2hX4F4+lOexp7YkycRxrkJqNz5hfh1H5ZQyg1Myv3ogl1eJYuGLBEiD8rQpDOhXpg7wKo7Zmn0RHMpYvHdM4XYvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761157641; c=relaxed/simple;
-	bh=bZEztPyk7BTGQIjoohhhOl7ODQE8PExaiHuzd1d/bXQ=;
+	bh=to+++l+OT4ObaazQyXHHfgCEH6AA58+yXljgAbpH5pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mqHq1dJyKb9K3AsGPLIPr4iNQ+keHtzggMp8tENZLrSULM/n5dGID/Dza2IigvaxSJ/gXTMKGpY3ynfyK4F5sEuPR9I3q7s0DGmjzrHhKq57ZuLPkXGE5cDFJjat3XwTKE2VyFO0EwJlnXIo/vjUlBj01h5MD42up/ri8jao2oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=fVT/R152; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=NJ93Xx0u/MCu+hvfRMRud1p9uSpcQLEiZO3jhhmnGNiDjgSD2+JgDfwNvvlnpHDz9gGwcZJ59Fv7vrFpov08T8EbCSPT2Nfkekc+NOfRQss7ew3OjbOfuqXMk1xaz2+OwwIJOTmWjS1M5bu1R6O0uQfr0hBA9gX06V4Njcldlfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=OK0Z9v//; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="fVT/R152"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="OK0Z9v//"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761157634;
-	bh=bZEztPyk7BTGQIjoohhhOl7ODQE8PExaiHuzd1d/bXQ=;
+	bh=to+++l+OT4ObaazQyXHHfgCEH6AA58+yXljgAbpH5pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVT/R152bGhLwMPLdp5Mp3v7fPx0SjpBM7gpmIGiKKIIOnRog7K7VNxXE/alT/bHl
-	 BVIog5Jy74X1QxzvmNqWiBV8stqOeC/zn4036cZwixWythFSUavJAlkYdO2W7z7EVH
-	 xLn26jXNgxT2PT0L2EpoMHMAAphdEri4ZSQMTw/MFXKnC3mfan9qSgV6MLO6DEKLzn
-	 ca/jAsuVBDmm/maNYTlEfkhD0EKsZCVdEXXnQyKWsF++rGiVdfAXV+z9JuI4/pcaTj
-	 HpJsm5ea/8KhJyt4wLGPnwwNxeobez3WTw9F5BiE5Ge6PdQwbBJv4Z11+n0sInH+E1
-	 uE54xNcxyuWyA==
+	b=OK0Z9v//T6eG/JR8d+3iN9H7k3b0DenTWsup9DvVcFPDWgIHnmjwZuhobaqvLdnuo
+	 bCL1hAymbbUfKXfNQYSKVHHtl+8NpV9z+lihES65djoAnV9zSy/toXydfNcViKkBD4
+	 Sy2VOQA4riTggAF5xyOEJcgJU4826bHTWEQsRJUUNE0W3LfosB3tWgqa5RL82Mh/ZD
+	 mGdDELSiFplFY2YRECRmHJ3IeJ7+7n4zfLMOS8p0ypsM363zRJMwjx7uKRO1gXGh0M
+	 7ZRz+/28brO4SST68OdHthVcvC9C956jujdKm1Rth9UfGMRcCBwpVkALymqrnjPTTt
+	 uc6+ZhWTsmxHw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id D66E460109;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 7CB84600FC;
 	Wed, 22 Oct 2025 18:27:14 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id C73B7202805; Wed, 22 Oct 2025 18:27:09 +0000 (UTC)
+	id 8E409202268; Wed, 22 Oct 2025 18:27:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -46,9 +46,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next 7/7] netlink: specs: tc: set ignore-index on indexed-arrays
-Date: Wed, 22 Oct 2025 18:27:00 +0000
-Message-ID: <20251022182701.250897-8-ast@fiberby.net>
+Subject: [PATCH net-next 2/7] tools: ynl: support ignore-index in indexed-array decoding
+Date: Wed, 22 Oct 2025 18:26:55 +0000
+Message-ID: <20251022182701.250897-3-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251022182701.250897-1-ast@fiberby.net>
 References: <20251022182701.250897-1-ast@fiberby.net>
@@ -61,52 +61,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The indexes in tc indexed-arrays are mostly used for defining
-the priority winin an array of actions, and when parsed by the
-kernel they must be unique, and not exceed TCA_ACT_MAX_PRIO (32).
+When decoding indexed-arrays with `ignore-index` set, then
+elide the index, aka. the nested attribute-type.
 
-Therefore this patch only sets ignore-index on a single
-attribute TCA_CAKE_STATS_TIN_STATS, which is only used for
-dumping statistics, and never ingested by the kernel.
+Previously the index was always preserved for sub-type nest,
+but was elided for all other sub-types.
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┓
-┃                                  ┃ out/    ┃ input/ ┃ ignore ┃
-┃ Attribute                        ┃ dump    ┃ parsed ┃ -index ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━┩
-│ TCA_BASIC_ACT                    │ 1++ (2) │ yes(3) │ no     │
-│ TCA_BPF_ACT                      │ 1++ (2) │ yes(3) │ no     │
-│ TCA_CAKE_STATS_TIN_STATS         │ 1++ (4) │ -      │ yes    │
-│ TCA_CGROUP_ACT                   │ 1++ (2) │ yes(3) │ no     │
-│ TCA_FLOWER_ACT                   │ 1++ (2) │ yes(3) │ no     │
-│ TCA_FW_ACT                       │ 1++ (2) │ yes(3) │ no     │
-│ TCA_MATCHALL_ACT                 │ 1++ (2) │ yes(3) │ no     │
-│ TCA_ROUTE4_ACT                   │ 1++ (2) │ yes(3) │ no     │
-│ TCA_U32_ACT                      │ 1++ (2) │ yes(3) │ no     │
-└──────────────────────────────────┴─────────┴────────┴────────┘
+I have opted to reuse the existing `subattr` variable, as renaming
+it will render the diff unreadable at least for this version.
 
-Where:
-  1++) incrementing index starting from 1
-  2)   All _ACT are dumped with tcf_exts_dump() calling tcf_action_dump().
-  3)   Parsed in tcf_action_init().
-  4)   Dumped in cake_dump_stats().
+Output if `rates` does NOT have `ignore-index` set:
+  $ ./tools/net/ynl/pyynl/cli.py --family nl80211 --dump get-wiphy
+  [...]
+  'rates': [{0: {'rate': 60}},
+            {1: {'rate': 90}},
+            {2: {'rate': 120}},
+            {3: {'rate': 180}},
+            {4: {'rate': 240}},
+            [...]
+
+Output if `rates` has `ignore-index` set to true:
+  $ ./tools/net/ynl/pyynl/cli.py --family nl80211 --dump get-wiphy
+  [...]
+  'rates': [{'rate': 60},
+            {'rate': 90},
+            {'rate': 120},
+            {'rate': 180},
+            {'rate': 240},
+            [...]
+
+If the above example had to be passed back though --json, then it
+now aligns with the new output format, and would look like this:
+  --json '{"rates":[ {"rate":60}, {"rate":90}, ... ]}'
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- Documentation/netlink/specs/tc.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ tools/net/ynl/pyynl/lib/ynl.py | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/netlink/specs/tc.yaml b/Documentation/netlink/specs/tc.yaml
-index b398f7a46dae1..24866fccb7d15 100644
---- a/Documentation/netlink/specs/tc.yaml
-+++ b/Documentation/netlink/specs/tc.yaml
-@@ -2188,6 +2188,7 @@ attribute-sets:
-         name: tin-stats
-         type: indexed-array
-         sub-type: nest
-+        ignore-index: true
-         nested-attributes: cake-tin-stats-attrs
-       -
-         name: deficit
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 62383c70ebb95..14c7e51db6f5c 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -690,23 +690,26 @@ class YnlFamily(SpecFamily):
+             item = NlAttr(attr.raw, offset)
+             offset += item.full_len
+ 
++            subattr = None
+             if attr_spec["sub-type"] == 'nest':
+-                subattrs = self._decode(NlAttrs(item.raw), attr_spec['nested-attributes'])
+-                decoded.append({ item.type: subattrs })
++                subattr = self._decode(NlAttrs(item.raw), attr_spec['nested-attributes'])
+             elif attr_spec["sub-type"] == 'binary':
+                 subattr = item.as_bin()
+                 if attr_spec.display_hint:
+                     subattr = self._formatted_string(subattr, attr_spec.display_hint)
+-                decoded.append(subattr)
+             elif attr_spec["sub-type"] in NlAttr.type_formats:
+                 subattr = item.as_scalar(attr_spec['sub-type'], attr_spec.byte_order)
+                 if 'enum' in attr_spec:
+                     subattr = self._decode_enum(subattr, attr_spec)
+                 elif attr_spec.display_hint:
+                     subattr = self._formatted_string(subattr, attr_spec.display_hint)
+-                decoded.append(subattr)
+             else:
+                 raise Exception(f'Unknown {attr_spec["sub-type"]} with name {attr_spec["name"]}')
++
++            if attr_spec.get('ignore-index', False):
++                decoded.append(subattr)
++            else:
++                decoded.append({ item.type: subattr })
+         return decoded
+ 
+     def _decode_nest_type_value(self, attr, attr_spec):
 -- 
 2.51.0
 
