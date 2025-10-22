@@ -1,119 +1,221 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3066347FFF
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3685A33FE22
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157429; cv=none; b=Cb5KCwebXVP3l6z82TpGhtD2x2fLPseJt+UBQNtqcHK6eJRbMZe6UG/n/xm8jCwd0O+YmhQ8g192l+qk9drBCWy9GbMe869zfBYpTCJ43PxyI3xJOeK1YqzjQ7bdMRhGD93AJjXYHbxMb22Ai6OKDjnXbSGa/CIB8QbBlR+tnMM=
+	t=1761157534; cv=none; b=BOxAZi9e3jpkj2+LzNXwUi7IGEcfZb+w3uPcDlL510aAyWyp6NhWdSh7VwSzGRTsDnZTgam3j2BXvho9KCoO+8hk8EbfmAgPnyjKSTM5zDTRHrllMC/ulpMnOjlLvhIoV0EHp0+tT7GOUwT1CO5kK9cUIJyc0C0zxNsd5q0QraM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157429; c=relaxed/simple;
-	bh=ngGs7qC7XiTRdW1WxKVCgH0EVqNbevtWNDS0KzGl0eU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RrTNw3fPxDF/t+6DSbODGJBgkY+zLZKurI2YFfohNmeIoupJgPn7q5MBHHpdfsf2jnNycQaXSkkxKaoXn+Pv9NbHVuRNk59CFbpTw3uiz+ogirBKka3B8etG+OsMB90ykaXxWTTD2UQHBVtmlVMjvWoyVGUlprPwK3gy40PEK6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b+4aXj7p; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+	s=arc-20240116; t=1761157534; c=relaxed/simple;
+	bh=XbD7dw98fNoWEVrr2LFnAlDmr2SnP1gkippzM6piiEk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pacPE/yR7GHX4aqIpd4sXb158yVM1vcMG0uvL72bwCGTapFZMmODJBAilemsgiNkyT8wbt+49MtEGnwc18Vfnz0BVovAcVwDqASy6mXeTJE94jzacjA8QoPDJXvgGk6KBD/qdOH4m/ED14bte4E2dJZRgnDCsK3ZWb6x9lOekow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IEQcAg6u; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oaikgD6H; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=iSRKPkya; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ctXcTiKz; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b+4aXj7p"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-783c3400b5dso4687929b3a.1
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:23:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761157427; x=1761762227; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJqa9G7A4Q2Gw0yM+02iQJ2e6q59hAMYcfkAChUeSCI=;
-        b=b+4aXj7pnNfCoBT/bZbdmLqYrx2SZ4Nx2Vcl0OUyw/1xzLzjDa1fdbprsRvoUTjcq/
-         L3yNMPKu6RCHHgArYDiU/+i/C/xiC+Z/FWvte2ARG1S8gBojGBMy5pXubxxd8UMtKjro
-         Au2Xqt3niDoCKVM7pzUeSYC9MxDrmRVKNM16E3wVAx63okKLR21MltQwxymnCRjDSSKJ
-         047nsybotxgCM1WIVJHoRxcP4y+5u7ug1eTaEKME4OFA/ZjdujFLlXH/36awF3xzDpwE
-         TclL4Du99oUSNXavl+xe0XBdESS3nUO6C7RT30BzJ7Kj0RbBfEouX6QT0L5NZ8u7M3a8
-         oMdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761157427; x=1761762227;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJqa9G7A4Q2Gw0yM+02iQJ2e6q59hAMYcfkAChUeSCI=;
-        b=kmCmmdab6wVyk2qCsk+LegTwS9rLMpXHvpqUy73/sAMCI/DvNZpxxCdxO9MiqAiia9
-         FV2b9fxqBZBHNQdnFDgXttXs6quTQ79/8b+SwJsA3YzarPZ2fPWiecY6Lv0b7F0v9PdP
-         D9iy3iEDc2YbKxhiCcVz04lZX0Jd+BYWIzZc4yVyjwzdq60BPZqDoSfz7u1P+PoIFWMa
-         sJ9NoCMlhonksxf3IXdKehNCWACB7HScCgklkYv/yrXeQuRvrTk8MUSmyDz9Woh4EXOu
-         vlJBnythzNZiMufjyLXzF6AY1C6f206I0OEHlgc0hVFP3W4S9AA6AnfkhX3slZBw9+/z
-         SfXA==
-X-Gm-Message-State: AOJu0YzRfNuDDhmkIhIftS9YhbJD0SZUVOkfu3Wj8t6pG18I84igMlJD
-	+rVJUljruSV13aJSKi1C3vEIzKEopX3++h6G1/tcjpL/yx2kqfavjg4Owvqf3I+na4L9rbh1CSG
-	vGnIBBIcmqfSo8rU/QQa7o5aTao4VkMikGn6d3qhDxHpRari/2vxxrUgsSUxZtqys1VNg5GBQhV
-	izAj0wEdKd7BpM04dSceaxj9FS9H35EIvCLChj6wbtSADk4GU=
-X-Google-Smtp-Source: AGHT+IH4li9Ga33HZ+gGWLZT5UKQJRJQZGVfWGKFmZ90B+Jjpg/o9JndMkJPrBL5cRHUgn6p0beT3rXehkBDvA==
-X-Received: from pfx7.prod.google.com ([2002:a05:6a00:a447:b0:77f:1f29:5399])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:aa7:9283:0:b0:781:275a:29e9 with SMTP id d2e1a72fcca58-7a220b107afmr19180407b3a.16.1761157426936;
- Wed, 22 Oct 2025 11:23:46 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:22:25 -0700
-In-Reply-To: <20251022182301.1005777-1-joshwash@google.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IEQcAg6u";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oaikgD6H";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iSRKPkya";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ctXcTiKz"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1EC241F395;
+	Wed, 22 Oct 2025 18:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761157525; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x2wjTx12vkWJdcIYkIG0o1d7T1MHz7dILrXhb+x09qw=;
+	b=IEQcAg6u2cksyvRJOy1ZPR2pbf4nb7eacwqcAxgBxHOxoIT4ShIco8Vq4bBGJA2EWwHDj6
+	TVsrUCjJxnWcqi/WVdIJtu8GcJkeXmXk3jfcyVN6+s5FhxES33Ec8m+Yanfs11DQokdOTb
+	8MCnO6n6ELKX4gS8DAgwRzDdgSUakl0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761157525;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x2wjTx12vkWJdcIYkIG0o1d7T1MHz7dILrXhb+x09qw=;
+	b=oaikgD6HKdRheoaJZfBGpLezgEWNISXZJ3Vg1aN+rd3hsj4QHwKDNCut/eiTK9PJLtAx3u
+	r+dRWtE8GoALqbCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761157521; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x2wjTx12vkWJdcIYkIG0o1d7T1MHz7dILrXhb+x09qw=;
+	b=iSRKPkyayPAiB4UeKYmArJD5+QEg9i2G2S8WyQTLK3lSbnX8GbP/QiHm7DRwnkEFyBao/N
+	/IxV1NzKnJvPsq+3/R+WWQ72XkzXXFmImbB4L3pFLs2TpDJ1iXhpH4jFNvt/nYHxUXCpQk
+	4uHr4hR9ei7VMLRCeLbf6I2rTaTah1U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761157521;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x2wjTx12vkWJdcIYkIG0o1d7T1MHz7dILrXhb+x09qw=;
+	b=ctXcTiKzKOYDVAsEzTBW1Gg1856fT2ZsWM/G3dM+loePtNTiCzzO6wBRuOummSPwVMsS16
+	Cg1DJh7hsaqJ+dBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 92EA11339F;
+	Wed, 22 Oct 2025 18:25:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id h6CKIJAh+Wj/BAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 22 Oct 2025 18:25:20 +0000
+Message-ID: <a0b39fda-4aca-44e3-a178-4bad431243c5@suse.de>
+Date: Wed, 22 Oct 2025 20:24:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251022182301.1005777-1-joshwash@google.com>
-X-Mailer: git-send-email 2.51.1.814.gb8fa24458f-goog
-Message-ID: <20251022182301.1005777-4-joshwash@google.com>
-Subject: [PATCH net-next 3/3] gve: Default to max_rx_buffer_size for DQO if
- device supported
-From: Joshua Washington <joshwash@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] xsk: avoid data corruption on cq descriptor number
 To: netdev@vger.kernel.org
-Cc: Ankit Garg <nktgrg@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Joshua Washington <joshwash@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Ziwei Xiao <ziweixiao@google.com>, 
-	John Fraker <jfraker@google.com>, "Dr. David Alan Gilbert" <linux@treblig.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc: csmate@nop.hu, kerneljasonxing@gmail.com, maciej.fijalkowski@intel.com,
+ bjorn@kernel.org, sdf@fomichev.me, jonathan.lemon@gmail.com,
+ bpf@vger.kernel.org
+References: <20251021150656.6704-1-fmancera@suse.de>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20251021150656.6704-1-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[nop.hu,gmail.com,intel.com,kernel.org,fomichev.me,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
 
-From: Ankit Garg <nktgrg@google.com>
 
-Change the driver's default behavior to prefer the largest available RX
-buffer length supported by the device for DQO format, rather than always
-using the hardcoded 2K default.
 
-Previously, the driver would initialize with
-`GVE_DEFAULT_RX_BUFFER_SIZE` (2K), even if the device advertised support
-for a larger length (e.g., 4K).
+On 10/21/25 5:06 PM, Fernando Fernandez Mancera wrote:
+> Since commit 30f241fcf52a ("xsk: Fix immature cq descriptor
+> production"), the descriptor number is store in skb control block and
+> xsk_cq_submit_addr_locked() relies on it to put the umem addrs onto
+> pool's completion queue.
+> 
+> skb control block shouldn't be used for this purpose as after transmit
+> xsk doesn't have control over it and other subsystems could use it. This
+> leads to the following kernel panic due to a NULL pointer dereference.
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000000
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>   PGD 0 P4D 0
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   CPU: 2 UID: 1 PID: 927 Comm: p4xsk.bin Not tainted 6.16.12+deb14-cloud-amd64 #1 PREEMPT(lazy)  Debian 6.16.12-1
+>   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+>   RIP: 0010:xsk_destruct_skb+0xd0/0x180
+>   [...]
+>   Call Trace:
+>    <IRQ>
+>    ? napi_complete_done+0x7a/0x1a0
+>    ip_rcv_core+0x1bb/0x340
+>    ip_rcv+0x30/0x1f0
+>    __netif_receive_skb_one_core+0x85/0xa0
+>    process_backlog+0x87/0x130
+>    __napi_poll+0x28/0x180
+>    net_rx_action+0x339/0x420
+>    handle_softirqs+0xdc/0x320
+>    ? handle_edge_irq+0x90/0x1e0
+>    do_softirq.part.0+0x3b/0x60
+>    </IRQ>
+>    <TASK>
+>    __local_bh_enable_ip+0x60/0x70
+>    __dev_direct_xmit+0x14e/0x1f0
+>    __xsk_generic_xmit+0x482/0xb70
+>    ? __remove_hrtimer+0x41/0xa0
+>    ? __xsk_generic_xmit+0x51/0xb70
+>    ? _raw_spin_unlock_irqrestore+0xe/0x40
+>    xsk_sendmsg+0xda/0x1c0
+>    __sys_sendto+0x1ee/0x200
+>    __x64_sys_sendto+0x24/0x30
+>    do_syscall_64+0x84/0x2f0
+>    ? __pfx_pollwake+0x10/0x10
+>    ? __rseq_handle_notify_resume+0xad/0x4c0
+>    ? restore_fpregs_from_fpstate+0x3c/0x90
+>    ? switch_fpu_return+0x5b/0xe0
+>    ? do_syscall_64+0x204/0x2f0
+>    ? do_syscall_64+0x204/0x2f0
+>    ? do_syscall_64+0x204/0x2f0
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
+>   [...]
+>   Kernel panic - not syncing: Fatal exception in interrupt
+>   Kernel Offset: 0x1c000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+> 
+> The approach proposed store the first address also in the xsk_addr_node
+> along with the number of descriptors. The head xsk_addr_node is
+> referenced by skb_shinfo(skb)->destructor_arg. The rest of the fragments
+> store the address on the list.
+> 
+> This is less efficient as the kmem_cache must be initialized even if a
+> single fragment is received and also 4 bytes are wasted when storing
+> each address.
+> 
+> Fixes: 30f241fcf52a ("xsk: Fix immature cq descriptor production")
+> Closes: https://lore.kernel.org/netdev/0435b904-f44f-48f8-afb0-68868474bf1c@nop.hu/
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> ---
+> Note: Please notice I am not an XDP expert so I cannot tell if this
+> would cause a performance regression, advice is welcomed.
+> ---
+>   net/xdp/xsk.c | 57 ++++++++++++++++++++++++++++++---------------------
+>   1 file changed, 34 insertions(+), 23 deletions(-)
+> 
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 7b0c68a70888..203934aeade6 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -37,18 +37,14 @@
+>   #define MAX_PER_SOCKET_BUDGET 32
+>   
+>   struct xsk_addr_node {
+> +	u32 num_descs;
+>   	u64 addr;
+>   	struct list_head addr_node;
+>   };
+>   
+> -struct xsk_addr_head {
+> -	u32 num_descs;
+> -	struct list_head addrs_list;
+> -};
+> -
+>   static struct kmem_cache *xsk_tx_generic_cache;
+>   
 
-Performance observations:
-- With LRO disabled, we observed >10% improvement in RX single stream
-throughput when MTU >=2048.
-- With LRO enabled, we observed >10% improvement in RX single stream
-throughput when MTU >=1460.
-- No regressions were observed.
-
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
----
- drivers/net/ethernet/google/gve/gve_adminq.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 4f33d094a2ef..b72cc0fa2ba2 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -987,6 +987,10 @@ static void gve_enable_supported_features(struct gve_priv *priv,
- 		dev_info(&priv->pdev->dev,
- 			 "BUFFER SIZES device option enabled with max_rx_buffer_size of %u, header_buf_size of %u.\n",
- 			 priv->max_rx_buffer_size, priv->header_buf_size);
-+		if (gve_is_dqo(priv) &&
-+		    priv->max_rx_buffer_size > GVE_DEFAULT_RX_BUFFER_SIZE)
-+			priv->rx_cfg.packet_buffer_size =
-+				priv->max_rx_buffer_size;
- 	}
- 
- 	/* Read and store ring size ranges given by device */
--- 
-2.51.1.814.gb8fa24458f-goog
-
+FWIW, if the 4 bytes wasted for each umem address other than the initial 
+one is too much, we can add another kmem_cache for just the xsk_addr_head..
