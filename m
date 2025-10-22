@@ -1,161 +1,104 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E7B337B99
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEF61EB193
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157405; cv=none; b=lpsMF33/BKxD024RfyXoGLn3vnndzBDy5Iwm5ut+jDBS/HkoSv8bVZ0p9t+Onv64uMrrqtGKoc/j0ZfyA41TsP7yN7QhhJ8KX5AvtGYAsCBeRzzPX5iJLjf3KzBf85PC//wWvnn8v+KG11BossdNaxBp0Z1IiIyDF7NUVKq2bSI=
+	t=1761157413; cv=none; b=Lyd13AXa3+oA3zVhGMiBoAmqsogZQ/qKrFnY0DIAMVUVQCxffFecgOZ0+jMecEKow3FbI3f8mLixHf+lWnLinqRpeLNG5q46rUM8tp2yKAquZxI6YFzfNxXkVYjBnd3wiJSPYg2cMg51BBwL229HzDGu9NNeRDFlDO5ucYbtMe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157405; c=relaxed/simple;
-	bh=Mtn2S0bnI8t9f5MzmCAQjaNwa/k1YvIYY2gLwi4xrFM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZO7bBSzSFvNmR8KEc2szWU1tL/0K8FsCxQPdY8VjazrCgCA+cNLllZ0viY12VUCcT5xrpUFDlFy8GwyCyvcpf3ztJsYr1t5ykPxNCp+9Yo/ox1cy0P+32NdXeCd8sSTnWnvCBjnTvpIPd7wj4u2N3piec9YYgi1B4E9XuD8sTlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZR8HU3s5; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
+	s=arc-20240116; t=1761157413; c=relaxed/simple;
+	bh=atBMO1Se5Y2n/HQNiT0O0qKX37XjiOlC8/ZPayU26jE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c5mtCbi6N/qp4JwvNxBcjdU8m/2BiOGRr7M1eJf0L7dx8bNYQY0vToi+CZHwUb0ntpaHaZUMHVXV4FwE8ADHwoXwRoRL81dIVt0KtAq34lpyQ5W1BTJyFKf2m4uCiwIl6K+ZYJ5gAhYVuCrYxf1Q+ZtWuyg4l6BpFjQEzBZJhPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KRV2gabI; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZR8HU3s5"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-33da1f30fdfso8553366a91.3
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761157403; x=1761762203; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BSjvwoj3QY8YDFwz6g2xMO+Jxrb6UQbJ+DExnyviC1c=;
-        b=ZR8HU3s5HSykCA8r1kKXxukBUG5NEIuQWaHSUbOqhBRO8GtrSppkAKAK6fIVJKj24v
-         SguBa+QP4fus1J4yAzBjk7ggJBCbDPqMNIUK8i4QwP2+hJautN0gaBXIRuqed7I1CqW8
-         EdyAthZkOiQidk92mVGlUusT+l5D1iBZf6IoI3I+GBEFlOE2FLyzr5Fy3vLvserZqQbl
-         xuGPdPasoF3kHd14XYNVRT+dwgHUzc6EswyOQ7jONZs3c7dynthRlnsEuZ1JZJfSQcT1
-         Dpe5Zkyd9Z6/WvcIRf/l7cb0TuPpwM6oqI9H8bgPACsdFFU4hrnOpQoChOZyPIabg5XW
-         g+QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761157403; x=1761762203;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BSjvwoj3QY8YDFwz6g2xMO+Jxrb6UQbJ+DExnyviC1c=;
-        b=Xry/DjxM0Q5voEFpWmCu4ulYgQDni699MRyjdYJpy/P4nxKs3xF7JAjFJ4vkdirY+j
-         eNyhqlT3PrtqZDJPJbD4SI/hbHBZo3jDUwvLaQjMrSJdYZnTR+95ALpvt02U/0g36VGQ
-         owXV4kJ+nPL9FfcOFwcl6YptoqfhxTWiEt1SofKas8Ji8pSfhCrC5A294aedGkoz27QQ
-         CfQS5Aw6cMsBEvCQ1t4arHUeYbT3PIghh3nLn+AtluyObP3+WtCmpiaL3ctVCuTL931g
-         xEuRhTyT9MkrmLZ+k+IoL+xEFIftTO9cRqKnyq9a16Yeogd3TVmNRpFNQ9iUMe7CoLqV
-         FeOw==
-X-Gm-Message-State: AOJu0YzvVSP3c7JLi8GrWeXpApIy3ibGNy/cyDCLLC1NlhowUKjfKANK
-	CPRNalfXGr0vNxOKZsT+23RhrDm99HGUIzN+DNNH3PuJJwAPzF6mjp/Z8kxLXn/jzwyB6WrYBf1
-	4PUL+EYJNsh5wJwGs48sgfC7QDyuVKYCo8defi3ED2etKdSlwUfFvZPjUChONHf0Vp9QPOVq/Sj
-	Uycdo5WbLofHTDVKiGdiHnQ4PlRDlqvkxZzu0ebYjyV4+L2u4=
-X-Google-Smtp-Source: AGHT+IFSGiEBHzmUJ9Zm6BjG0EdjwrD2yFch0TYJtxCLqhBdri6M5unSRtixX3MkKfUYqoMBDsSlJFJSIffG9g==
-X-Received: from pjbkr5.prod.google.com ([2002:a17:90b:4905:b0:33e:384c:7327])
- (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:ec8b:b0:32e:9a24:2df9 with SMTP id 98e67ed59e1d1-33bcf86c09emr25106830a91.14.1761157403088;
- Wed, 22 Oct 2025 11:23:23 -0700 (PDT)
-Date: Wed, 22 Oct 2025 11:22:23 -0700
-In-Reply-To: <20251022182301.1005777-1-joshwash@google.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KRV2gabI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kt5HidSb6xkRGWxoBaNt52wPsH3u1Zf7gYVwAQOjbyE=; b=KRV2gabIuAHKCA2bR3TFyg37Ot
+	8grILVv1y2mAuzQh8SM6YPUPC6DVTocs8MCRSgLTJTs+luotqmjScfW0CB6UwsnCpZL72KRjpgoFJ
+	28sAaCiJ+UjCEel7jcqgd2okiqhaIw36zpO+CtaP4ajUm72ADnAV58C4lbUM4i4kmmDN9okFLtvoH
+	IXHu6WJBu70qAWnRCa8AvANYNesWBbgtSyOxAgpPc36uCl6z6iw0b9NTt8zdba21Q0scwDPDDkBVR
+	5VviXoafsaPQ2ifn2UwD0JyCO8oHRWh+fRHKvLO0PPIA4EMbOH/5ZBmsGoZBjoPOVzT8tEMfTGtVA
+	AcDDVXEQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55460)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vBdUc-000000005JH-1XpL;
+	Wed, 22 Oct 2025 19:23:26 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vBdUa-000000000vO-2zLy;
+	Wed, 22 Oct 2025 19:23:24 +0100
+Date: Wed, 22 Oct 2025 19:23:24 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 3/6] net: phylink: add phylink managed MAC
+ Wake-on-Lan support
+Message-ID: <aPkhHIMJAYNEj_6Z@shell.armlinux.org.uk>
+References: <aPIwqo9mCEOb7ZQu@shell.armlinux.org.uk>
+ <E1v9jCT-0000000B2Ob-1yo3@rmk-PC.armlinux.org.uk>
+ <6bff48d0-dd19-48d4-91e6-0d991365b8f9@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251022182301.1005777-1-joshwash@google.com>
-X-Mailer: git-send-email 2.51.1.814.gb8fa24458f-goog
-Message-ID: <20251022182301.1005777-2-joshwash@google.com>
-Subject: [PATCH net-next 1/3] gve: Decouple header split from RX buffer length
-From: Joshua Washington <joshwash@google.com>
-To: netdev@vger.kernel.org
-Cc: Ankit Garg <nktgrg@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Jordan Rhee <jordanrhee@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Joshua Washington <joshwash@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Ziwei Xiao <ziweixiao@google.com>, 
-	open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6bff48d0-dd19-48d4-91e6-0d991365b8f9@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Ankit Garg <nktgrg@google.com>
+On Wed, Oct 22, 2025 at 04:06:00PM +0200, Maxime Chevallier wrote:
+> >  int phylink_ethtool_set_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
+> >  {
+> > +	struct ethtool_wolinfo w;
 
-Previously, enabling header split via `gve_set_hsplit_config` also
-implicitly changed the RX buffer length to 4K (if supported by the
-device). This coupled two settings that should be orthogonal; this patch
-removes that side effect.
+...
 
-After this change, `gve_set_hsplit_config` only toggles the header
-split configuration. The RX buffer length is no longer affected and
-must be configured independently.
+> > +			phy_ethtool_get_wol(pl->phydev, &w);
+> > +
+> > +			/* Any Wake-on-Lan modes which the PHY is handling
+> > +			 * should not be passed on to the MAC.
+> > +			 */
+> > +			wolopts &= ~w.wolopts;
+> 
+> When PHY drivers gets converted to the new model, we'll have to look at
+> how the .get_wol() behave WRT how they fill-in their wolopts.
+> 
+> The Broadcom driver for example may not set w.wolopts to 0 :
+> 
+>   https://elixir.bootlin.com/linux/v6.17.4/source/drivers/net/phy/broadcom.c#L1121
+> 
+> You'd probably end-up with garbage here then. But not blocking for your series.
 
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
----
- drivers/net/ethernet/google/gve/gve.h         |  3 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |  2 --
- drivers/net/ethernet/google/gve/gve_main.c    | 10 ----------
- 3 files changed, 15 deletions(-)
+Good point. We should initialise 'w' in the same way other users do, so:
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index cf95ec25b11a..c237d00c5ab3 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -59,8 +59,6 @@
- 
- #define GVE_DEFAULT_RX_BUFFER_SIZE 2048
- 
--#define GVE_MAX_RX_BUFFER_SIZE 4096
--
- #define GVE_XDP_RX_BUFFER_SIZE_DQO 4096
- 
- #define GVE_DEFAULT_RX_BUFFER_OFFSET 2048
-@@ -1249,7 +1247,6 @@ void gve_rx_free_rings_gqi(struct gve_priv *priv,
- 			   struct gve_rx_alloc_rings_cfg *cfg);
- void gve_rx_start_ring_gqi(struct gve_priv *priv, int idx);
- void gve_rx_stop_ring_gqi(struct gve_priv *priv, int idx);
--u16 gve_get_pkt_buf_size(const struct gve_priv *priv, bool enable_hplit);
- bool gve_header_split_supported(const struct gve_priv *priv);
- int gve_set_hsplit_config(struct gve_priv *priv, u8 tcp_data_split,
- 			  struct gve_rx_alloc_rings_cfg *rx_alloc_cfg);
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index b030a84b678c..db6fc855a511 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -606,8 +606,6 @@ static int gve_set_ringparam(struct net_device *netdev,
- 	} else {
- 		/* Set ring params for the next up */
- 		priv->header_split_enabled = rx_alloc_cfg.enable_header_split;
--		priv->rx_cfg.packet_buffer_size =
--			rx_alloc_cfg.packet_buffer_size;
- 		priv->tx_desc_cnt = tx_alloc_cfg.ring_size;
- 		priv->rx_desc_cnt = rx_alloc_cfg.ring_size;
- 	}
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 29845e8f3c0d..8d825218965a 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -2041,14 +2041,6 @@ static void gve_tx_timeout(struct net_device *dev, unsigned int txqueue)
- 	priv->tx_timeo_cnt++;
- }
- 
--u16 gve_get_pkt_buf_size(const struct gve_priv *priv, bool enable_hsplit)
--{
--	if (enable_hsplit && priv->max_rx_buffer_size >= GVE_MAX_RX_BUFFER_SIZE)
--		return GVE_MAX_RX_BUFFER_SIZE;
--	else
--		return GVE_DEFAULT_RX_BUFFER_SIZE;
--}
--
- /* Header split is only supported on DQ RDA queue format. If XDP is enabled,
-  * header split is not allowed.
-  */
-@@ -2080,8 +2072,6 @@ int gve_set_hsplit_config(struct gve_priv *priv, u8 tcp_data_split,
- 		return 0;
- 
- 	rx_alloc_cfg->enable_header_split = enable_hdr_split;
--	rx_alloc_cfg->packet_buffer_size =
--		gve_get_pkt_buf_size(priv, enable_hdr_split);
- 
- 	return 0;
- }
++       struct ethtool_wolinfo w = { .cmd = ETHTOOL_GWOL };
+
+Does your r-b still stand with this change?
+
+Thanks.
+
 -- 
-2.51.1.814.gb8fa24458f-goog
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
