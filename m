@@ -1,191 +1,170 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f100.google.com (mail-io1-f100.google.com [209.85.166.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113BF1E832A
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3258F34A3BC
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 18:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157778; cv=none; b=WKZz1sHButqUvE34ysLumKIhf7TdU8mMlN2+SurbXp38+PWFL2nlKXBDtGkqQCFd4pDtSKznsAStPL2WtiYCFcciIQI8s3cz80tZi7HE8/C8r9+aB/IOlcVSzyhdChP5+bZQi9myK5S82KB9r17LDs8eSLJ8U2005nR4mzLE2LE=
+	t=1761157891; cv=none; b=mPrSLxFDV0l2pyAHAM2w7xD4i7hQZlhw/77rVQHOcyX3XLPW6tJo9DXHTDq4aiujTaUsQzSUioFHgGWO70tnZVJOCHphHEPBFU1EhyY6/gozojPEOBoIX0o4HTE3dD7f5ZGVWk7g8g5p1KArlT//agYq4SslT1pGMCqoBKieEg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157778; c=relaxed/simple;
-	bh=nhGsrDx0wzJs0qO5eiN7ONxuisI3kUnBGKaJn2hVszc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RFXspXjLodJTe+3gd3P1B9Q6HfHYczUy5SqzFYnSfo0pmLf8/GAfHuqIIiJ8VdQf1yFEsiVvmMrOn3pH4A+iAHWK7AaDkb5tO7tadEM9MyLi+8N08GoLMoxRgzN/m4PBCStcuTSmp11vwtf7OQ8TuzwUk9LS2MvURI7rSwra4TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=khG4IcmL; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=us.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
+	s=arc-20240116; t=1761157891; c=relaxed/simple;
+	bh=JV0mQ1Xwedn+vBOXvjzKdjKxyDTofVcjrfvkRIq7k0c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sYsKBdazV3zqBuYkRnvbeJsuhdkoO6FkdJ8WnoLQbRzL6zJlvouw1wpyxTIMGy0P9FaZdMxDOFdV3IPP3ih9upujxgnExY/oP7ljpfAubJQpCnG83/3elOfYkOUJex+uamk9663cxIvI6lGfeBJHlWJdofZuXv79ts5ZHn1K0no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Ca6FhRXn; arc=none smtp.client-ip=209.85.166.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="khG4IcmL"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59MHatgZ010978;
-	Wed, 22 Oct 2025 18:29:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=OmSAPFQ/nRHT9H/LAnW1/BLKJnA7L0n3qt2RTmQgd
-	DE=; b=khG4IcmLnV1rZmGUw/Tw9AVyKZn/sBimZ9qUZymM8wKerx7Tl1Ih+uLBK
-	MvTvUOeO2qsBBghRgbmIS7W5pNjIU0rU8nsyopmMiyniAH++kPG3k5Dp5ZQzCVJ6
-	WOW+agsnRmB5IkWCqF7Q19w23OOl6dU3RE6JppVVui1PSvo8JyrVDrF/C/M8HbxP
-	LUUA2eGxtRKqU7I21N0s2/gzdqXb1uH74pnwEPjmZD3cgqU5o03FSW6d6dMiZQY3
-	7liJ3pWMDYRqzdW9Yqx1oR30isCAO4wDPe2Cd3bW8r3S5D6DW5FyRd5JvW5IE7WZ
-	k8bEkG5/clEHkCUcok+xOvFiaCKew==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33feeg3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 18:29:29 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59MIQlWY008085;
-	Wed, 22 Oct 2025 18:29:29 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v33feeg1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 18:29:29 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59MH0HXl017117;
-	Wed, 22 Oct 2025 18:29:27 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49vnky211c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Oct 2025 18:29:27 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59MITP0M31588950
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Oct 2025 18:29:25 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 21E4958054;
-	Wed, 22 Oct 2025 18:29:25 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8EFB5805F;
-	Wed, 22 Oct 2025 18:29:24 +0000 (GMT)
-Received: from localhost (unknown [9.61.190.208])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Oct 2025 18:29:24 +0000 (GMT)
-From: David Wilder <wilder@us.ibm.com>
-To: netdev@vger.kernel.org
-Cc: jv@jvosburgh.net, wilder@us.ibm.com, pradeep@us.ibm.com,
-        i.maximets@ovn.org, amorenoz@redhat.com, haliu@redhat.com,
-        stephen@networkplumber.org, dsahern@gmail.com
-Subject: [PATCH iproute2-next v8 0/1] iproute2-next: Extending bonding's arp_ip_target to include a list of vlan tags.
-Date: Wed, 22 Oct 2025 11:28:44 -0700
-Message-ID: <20251022182915.2568814-1-wilder@us.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Ca6FhRXn"
+Received: by mail-io1-f100.google.com with SMTP id ca18e2360f4ac-93bccd4901aso596141039f.2
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:31:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761157889; x=1761762689;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xI+rhvxEBxqKNkYgkKodZ5I5aGcum/RfIbS5GB+RU9o=;
+        b=JmHn2MTEV/UBbZIaqDl9crSWC7aMiMYnJ5S4sikIVbyfh9rpHuiZDYd7QlKgJkX+Od
+         oDjfgewejTWFCuhPRG7L5bCmDdytc41DJ8sa28JAh5pxS4t3yE42Qb35Xk1JcaorL3wG
+         mMzPF+AeqNe7yaeY9/OqVjcGGlTlTEmizwo6wpv4aX9TxeQ7OPt79OgnUMLjrBXECIvT
+         JuYARr2G71eO0r/+9U8yGCs6D1M1jVcBD3Mk/r89QHmhN6sdCbhx9RArT1O6Xuu0tSPH
+         rcr5T4KObUUq/WA3Zvbq+HpTkJUtSenYi7goiETOAZC6hU5U5NIyDV/TKfdD/OTApfHp
+         unNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNjHclfXN+WkkNDdHxwHHUgK7t3uVPVqkcSCe3yJCGMjgHlki8yv/6ArLwXwqPt7QA8XAe8X4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgIqnek0N8zMugAoRw0uxsa1CoqPpoH/VT3Ym8xkwcf81TUrh7
+	VX2H1oJn4E3zDnFBvv+eW0RDAslKJhDIhUc3qIOVm6ojOFeCfbx8P/Ehr9vU4RyUrQaOwjLadK5
+	bncOdabHXBXnxp5+lnODbRW0kcxJIaeOB0CQj0rtSEmiHnI02cJCgEfEvjy0zIqYuAzX0C/Pq0J
+	KX+xBmx1S7Hc9D3Cjvy+KMwJhi9P4ny83z1Cms4rRbYgNTGKDfF4kDdcP/4BgC+Eyy+7cyZSrcT
+	ZHKQuyoIAFHNCsN
+X-Gm-Gg: ASbGncuBMSVHaQy80Kv2mYduThjee1OV0jexsxKpqTC43LN00XghPzZBvTcu8eD2xuv
+	bnZgDHT5nSpvlRAH6dYd253Uo9mdcIcBYsPivw2sLuTV6jK2TQ7sg6iCMyXpTII/Bv2H5hQN0Xk
+	kke+v5WFEABrJZQk9xpMyid2+hSPgnVfMxSckanvfQJnM+OqsrN9Pv85am2nfsfK1wxUwlRlJ/G
+	H1xBeaTFssKetFNibkdT7IVto73i+7mILUylYHC67ENRiOF+1tA4l2v+YMFr/d0G/djRdCIrJy0
+	g+nv5coo6BrOnPux0m4CPTGw14NdHjqmaZ3d7zdW6QIozqEc34uM3744Jo0vouSA2W9sj+2u6qv
+	ywu7V0mB4BO/237qL39zT4v5Zy/R7sPBgjqd1rNkuCRkv4TmhWYfxD14ku9vStkSVp9tu5tPRMQ
+	8Z9lMno+/Ssxs39a+jejLSKCekIoBYZSiawhMLdag=
+X-Google-Smtp-Source: AGHT+IHI+gQ8uFSwAdYz5loJxHC+ZoBVvr9MUhShNHs8ZOKvIuZYj/nRgrM0wr9M+fzOpaa7dOjJX77WUwA7
+X-Received: by 2002:a05:6e02:160e:b0:42f:8d40:6c4b with SMTP id e9e14a558f8ab-430c5246f89mr339983695ab.11.1761157889154;
+        Wed, 22 Oct 2025 11:31:29 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
+        by smtp-relay.gmail.com with ESMTPS id 8926c6da1cb9f-5a8a9629c88sm1565102173.18.2025.10.22.11.31.28
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Oct 2025 11:31:29 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-290bcced220so63566345ad.1
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:31:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1761157888; x=1761762688; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xI+rhvxEBxqKNkYgkKodZ5I5aGcum/RfIbS5GB+RU9o=;
+        b=Ca6FhRXn65Adp0hUasd/fvZsrYLw9JlYmY2qafTfLOBwhkDDyR+aqD1TTLgZaJujoY
+         07hsYEA9ichef9p2tq2dCZsEV70z2RVGmmyW8o19SGxr7XNiYJ/yT317O9txwvOhTCR7
+         jH4TWd4/cCW0rgvuXblGxDsiC5ngT3jtttIvU=
+X-Forwarded-Encrypted: i=1; AJvYcCUG3qmsN80Dij7H6XKWJx3hp2QIruZ+opx6qrdUfnVNiEGt35C2yTZldHZYrzbagysjW+FsbbY=@vger.kernel.org
+X-Received: by 2002:a17:902:dac6:b0:25c:ae94:f49e with SMTP id d9443c01a7336-290ca30e40cmr257832565ad.37.1761157887755;
+        Wed, 22 Oct 2025 11:31:27 -0700 (PDT)
+X-Received: by 2002:a17:902:dac6:b0:25c:ae94:f49e with SMTP id d9443c01a7336-290ca30e40cmr257832015ad.37.1761157887301;
+        Wed, 22 Oct 2025 11:31:27 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ebccf3sm145602945ad.1.2025.10.22.11.31.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 11:31:25 -0700 (PDT)
+Message-ID: <a6882bfa-866e-4079-b38a-ca2ed30609b9@broadcom.com>
+Date: Wed, 22 Oct 2025 11:31:24 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=FMYWBuos c=1 sm=1 tr=0 ts=68f92289 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=gu6fZOg2AAAA:8 a=VnNF1IyMAAAA:8
- a=zQ4LAhLgmqmo3uJZ4jEA:9 a=zY0JdQc1-4EAyPf5TuXT:22 a=2RSlZUUhi9gRBrsHwhhZ:22
- a=poXaRoVlC6wW9_mwW8W4:22 a=cPQSjfK2_nFv0Q5t_7PE:22 a=pHzHmUro8NiASowvMSCR:22
- a=n87TN5wuljxrRezIQYnT:22
-X-Proofpoint-GUID: czqmlh9v39lJ4Snmtm1mbR3a9v-kodUk
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX4NvJhuZk2w1X
- bUnLYGqANbtYF8535jCbAm+9O41DTQCyl/cT9Ppz+vC45vALmoYo8qQGLAZlU11/jtX9IRvbroh
- dTmBhMLIv5PJh8InvKIqMSkz8qm9+fD5YVIkvGD4jFKK615EmwmD8171zfdcyaydhg/n2D3JxH/
- sonZEZYkPt22Veqtgkw80jLzS4/d8Rry/x7nrpy6aYU6l5ib35ui6J9hlp76PIgBKa4qHaXP2GV
- wjtlSq0unfZ1QLyn5FifkdW/p3ZR+kWrNR3D7Hl5xaAgA7DPd5FasBBU8t+8m9lGdl9DhNxHyjn
- dCfx/7ejDH8IWcpKDka1146pUGQu3J7iPZCPfJCSEmk0IZLffV7e9E/CESOH17+fdGEbPohhDYk
- LYS0+iZ9s+9KrVtWeDQ7rUwS4NrHAQ==
-X-Proofpoint-ORIG-GUID: 7CS-085o02YXqggwHuidtJ_yQQzW8R75
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-22_07,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1031 impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/6] net: phy: add phy_may_wakeup()
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>
+References: <aPIwqo9mCEOb7ZQu@shell.armlinux.org.uk>
+ <E1v9jCO-0000000B2O4-1L3V@rmk-PC.armlinux.org.uk>
+ <ad16837d-6a30-4b3d-ab9a-99e31523867f@bootlin.com>
+ <aPkgeuOAX98aT-T7@shell.armlinux.org.uk>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <aPkgeuOAX98aT-T7@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-This change extends the "arp_ip_target" option format to allow for a list of
-vlan tags to be included for each arp target. This new list of tags is optional
-and may be omitted to preserve the current format and process of discovering
-vlans.  The new logic preserves both forward and backward compatibility with
-the kernel and iproute2 versions.
+On 10/22/25 11:20, Russell King (Oracle) wrote:
+> On Wed, Oct 22, 2025 at 03:43:20PM +0200, Maxime Chevallier wrote:
+>> Hi Russell,
+>>
+>> That's not exactly what's happening, this suggest this is merely a
+>> wrapper around device_may_wakeup().
+>>
+>> I don't think it's worth blocking the series though, but if you need to
+>> respin maybe this could be reworded.
+>>
+>> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> 
+> I've updated the description as I think patch 4 needs a repost:
+> 
+> +/**
+> + * phy_may_wakeup() - indicate whether PHY has wakeup enabled
+> + * @phydev: The phy_device struct
+> + *
+> + * Returns: true/false depending on the PHY driver's device_set_wakeup_enabled()
+> + * setting if using the driver model, otherwise the legacy determination.
+> + */
+> +bool phy_may_wakeup(struct phy_device *phydev);
+> +
+> 
+> Do you want me to still add your r-b?
 
-Changes since V7
-Fixed some long lines.
-
-Changes since V6
-As each member of the arp_ip_target array consists of
-one "addr" key-value pair and one optional "vlan" array it was necessary to
-make each arp_ip_target array entry a JSON object.  Here is the new output
-(using jq to format).
-
-       "arp_ip_target": [
-          {
-            "addr": "10.0.0.1",
-            "vlan": [
-              10,
-              20
-            ]
-          },
-          {
-            "addr": "10.0.0.2",
-            "vlan": [
-              5
-            ]
-          }
-        ],
-
-Changes since V5
-Thanks to Stephen Hemminger for help on these changes:
-- Use array for vlans
-- Removed use of packed and Capitalization
-- fix incorrect use of color
-- Removed temporary string buffer.
-- make vlan print a function for likely future IPv6 usage.
-
-Output for ip -d --json <bond-name> has been updated. Example:
-"arp_ip_target":["addr":"10.0.0.1","vlan":[4080,4081,4082,4083,4084]],
-
-- changes to error reporting in bond_vlan_tags_parse() for invalid vlan_ids.
-
-Changes since V4
-Changed unneeded print_color_string() to print_string(). Thanks Steve.
-
-Change since V3:
-1) Add __attribute__((packed)) to struct definition
-   to ensure size calculation is correct for memcpy() and
-   addattr_l().
-
-Input: arp_ip_target 10.0.0.1[10/20],10.0.0.2[10/20])
-Sample JSON output:
-...
-"arp_ip_target": [
- "10.0.0.1[10/20]",
- "10.0.0.2[10/20]"
-],
-...
-
-Changes since V2: (bond_print_opt() only)
-Based on suggestions from Stephen Hemminger.
-1) Removed inline from bond_vlan_tags_parse().
-2) Switched to print_color_string() from print_string()
-3) Follow kernel style.
-4) Fixed JSON output.
-
-
-Changes since V1:
-Updates to support ip link show <bonding-device>.
-
-This change is dependent on this bonding driver patch set:
-https://marc.info/?l=linux-netdev&m=175684731919992&w=2
-
-Merge only after the above patch set has been merged.
-
-Thank you for your time and reviews.
-
-Signed-off-by: David Wilder <wilder@us.ibm.com>
-
-David Wilder (1):
-  iproute: Extend bonding's "arp_ip_target" parameter to add vlan tags.
-
- ip/iplink_bond.c | 152 +++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 126 insertions(+), 26 deletions(-)
-
+Yes, I saw that comment, should have mentioned this applied to your 
+revision. Thanks!
 -- 
-2.50.1
+Florian
 
