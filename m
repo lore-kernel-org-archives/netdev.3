@@ -1,175 +1,134 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out12.tophost.ch (out12.tophost.ch [46.232.182.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B914329AB05
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 22:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B6120B7E1;
+	Wed, 22 Oct 2025 22:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761173822; cv=none; b=XajXBDki5HsY+gjxJx/1XdhSHsH7dTqPXGCXXzzMh4jX7FXoOAjQsa3s1P1Xf9Ztzxb1/RRtYelGJQFy2zSNTMUjCeYFl2j9vUwLyZ+wDBZvH4BKOf7H2YqaXs9FjLF0FAKANLCS58bZ/03yduwR1xfy/NIqZL6uD1R9Zn74uAg=
+	t=1761173922; cv=none; b=IMUbq+ABngNvLBVc5cqSce48ap24WxVbLexl4HcG8N4kLKigtQdp6UKf1axiB6By8um6jB9VHldId6v6V6kIcF1OFL6jJzx9ZtQyVW+3/NOFykHNxF0b9bPgu2BM7PSHas73sFOYMw+bNqw0e+EJFAnan96wWWnCu8aZEiByxQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761173822; c=relaxed/simple;
-	bh=trZcEH5fbIfpy/dy4uIh80UnlmTcj8EtKaSfbZVY90c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YYJyVB3aIoMVI/JHHNQtOoCzC0SUSF06F1JaIhkT2FK4N1Y44wfemWQYdxrM+w/FjWQ61N3jXpA2Hb0RxRNjQwpjxTYtZu6aUb3po1LWUtplGikcfqJBljyIz2eMfDs31mOPMOginy+ILiACdks92pbHQW7y5X1YmNS7yoa5a14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yjRyB3Sr; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761173922; c=relaxed/simple;
+	bh=KsLICYSdai358ng0LbivT+XEiH/kal9SLt5IS1MUsRQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=m65Nih4OgJ+LCmpapbt4jMUZpBsWFGfI2df2Z1Q+MLqjFaNhuNIadDt7VALennwSSOFPuQTW4X7zMTGHzxDWQgzvm0ZjZOUe1CvKIyciOFqpFRyeI6YZ/Mis+JNZo9BH9D7N9yIZVd/nhnT51GOjgSPWfQCmYLQ+U/S8CwDTqhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=ryg89jSg; arc=none smtp.client-ip=46.232.182.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yjRyB3Sr"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2907948c1d2so1276035ad.3
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 15:57:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761173820; x=1761778620; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s0E4BJaLARHiiBGcGtJuIEWLcE6spNNO+nXwVK4hnAA=;
-        b=yjRyB3SrHAzUgxF19tdzC8rd47tPMrErsaKsfPRfu8dNjMebsFgTP4ABSbwSQoHp3c
-         liOfqSaK5VfGWpPGGvM/RC7MXQUpnWQJiY3Kxpyu2+kE8njXI7GSSdHaYtfjQCTG6BlX
-         mijMWu4HmGhWndZcJpCQID2KxmwIsOEiA3RMmgKJ7HfK4ylCfskn6BoCPSVcYEqqPiFr
-         IvQuCEeLalDwLJvo7Mr0HJji7INpJIwmp2C64Z8MLEhiopEw8dmz8UgHVWtNPGD2c2rI
-         VC+mTcdR/qrZNHBa9qbqJvkahdnLhlWDGwnKyR9UDBQZstpDgCa783VdKNJ1R5awzCjk
-         PDBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761173820; x=1761778620;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s0E4BJaLARHiiBGcGtJuIEWLcE6spNNO+nXwVK4hnAA=;
-        b=UGS46qv0bjuXOUL8zHFl5DCDC24wsYfWSmmBSpOGTIt6hCi8kvEQxQpcZ/fRnD7eEK
-         UTKuC0q97XLrUWOxsTh3SlNGUXhoTulo40UmMkoQ0OohY3+u2z4ASbJ86Dfb+Moig4X7
-         lHkGbzJcatCUYkAhLlHLcB5/A9Tfe11/NWZh3ryTkJRd4zGxPEevmOP8MKZLtm0YIvFg
-         XuV5me3PxcUrwH7M5hMw8Tu6WJewGDUASKKpq5x3VR52wBEGb2x9UdBGwcguNrz1XZs9
-         CFKLfYgvz/LOfCvDuA+qk23Wh0d3Pftzuzes7XQmLM3fcLPykYSeVnsxMqw5Q+oEyj16
-         KSTw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjyPzb95pU9FcCr8JGQq0wpzMZLjB3QEjxs7vhhyBoSMx1jfldjZcLWlblOtRtQb8fInzyRRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYfcjp9IXVyq7/LConG9m/ob2u6DYVYE4kuPhZX9lK1JjWLD2x
-	T6o07P0+lwfbkYVccNosOLw9Oh6+Dx1EIuOazvZWSy3tRh65os+Kk6jbaVjUVlVVYUE1kT+aP14
-	Vf2qdOZbaQsLGYaUAh8kk2kJme6KURu4YOXxpqDy/Sa6oFfrJI7IvW+EJ
-X-Gm-Gg: ASbGncvlFkles6bo2pAqIkB7UZy+iSTLpsJH6rc/5kzrWQkZ/OYdXpIJ5ISCgifDkTG
-	BLFB/WPjsiwuyD3Rh/msSVeTtamXL77YEfn2nM4dewa5948qLu6tz4F88BEBwP05Y2PFlroeTCx
-	3Kb1XENnSdmh7E8hCRz8nGQOdP1RjQaisB9QxqBhFooziWkL7PXEKHil6H9VuNgFSaisu6fIr2D
-	h0BDTioCMjLXtoRy767eWNxeD0IrTrGAMuDV9YJo8GvqJbZowKrW1QgPytLk1ZiICvnC0oq8+dD
-	Z4mWcpQoI/2FEKY=
-X-Google-Smtp-Source: AGHT+IGxpDwt4YvjZ56YxobTy3ltNAHy7C7Pud3TA9U1beR9QmaCB+kX/1DAeKFCc4faFAeG8XREdykN8LEjQHPkT0c=
-X-Received: by 2002:a17:902:f551:b0:290:9576:d6ef with SMTP id
- d9443c01a7336-2946e27fb28mr4220875ad.54.1761173819769; Wed, 22 Oct 2025
- 15:56:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="ryg89jSg"
+Received: from srv125.tophost.ch ([194.150.248.5])
+	by filter2.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vBgyW-00CosU-PH; Thu, 23 Oct 2025 00:06:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=MCaTi5+1GdvtDvu93JLcxGyOsiwEWFfOOZdGKf+f5WM=; b=ryg89jSgYjRXtbMp71nffVLvF7
+	bK+XtBg6dOPThYY1dvOoCV5873sAhbYD7peZNxyHNf0YlplJDSvre1jZAe7jVaCWTIvzxh4HDEFch
+	3pSXhbY8LQlE5ZKG5N2O75oVzAZbdla3yd0qDnz7X66LqVXIuHOeyUX8q0YZUiqeVV48na4bnLamk
+	eHGqi9Dv29wHmYC9ibVz7Je9eHBPi7qgqGfoWe8QTcc/aCAgv8UxSYyLiV7FL54ytVBAb4P6WFrJP
+	rqMcde6y3hGnM+3bqqfbeJyyRnDePWvdl1SCk1aBd9KKjHuIjwVKXgJ4lmQMw6V1ZB6rRZ4fNHqJ9
+	1Di9zXLA==;
+Received: from 82-220-106-230.ftth.solnet.ch ([82.220.106.230]:62831 helo=pavilion.lan)
+	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vBgyY-0000000APCP-1Fe3;
+	Thu, 23 Oct 2025 00:06:32 +0200
+From: Thomas Wismer <thomas@wismer.xyz>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Thomas Wismer <thomas@wismer.xyz>,
+	Thomas Wismer <thomas.wismer@scs.ch>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH net-next v2 2/2] dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
+Date: Thu, 23 Oct 2025 00:05:20 +0200
+Message-ID: <20251022220519.11252-6-thomas@wismer.xyz>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251022220519.11252-2-thomas@wismer.xyz>
+References: <20251022220519.11252-2-thomas@wismer.xyz>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022211722.2819414-1-kuniyu@google.com> <20251022211722.2819414-5-kuniyu@google.com>
- <CADvbK_eYHxO4sU3sOvRvpOoKwdbvZBLq86bPtQ7kK1Zf5z0Juw@mail.gmail.com>
-In-Reply-To: <CADvbK_eYHxO4sU3sOvRvpOoKwdbvZBLq86bPtQ7kK1Zf5z0Juw@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 22 Oct 2025 15:56:48 -0700
-X-Gm-Features: AS18NWD_AvQFuKAQMs4vtLDRJ1JQ043_7Ul1gYcUTwYE2sK9UaiNk_RN_p3beqA
-Message-ID: <CAAVpQUCCT-3tV+i19gNjvcQUZkHVUEOuPohiLgqD56MvUmQO4A@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 4/8] net: Add sk_clone().
-To: Xin Long <lucien.xin@gmail.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	linux-sctp@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
+X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
+X-Spampanel-Domain: smtpout.tophost.ch
+X-Spampanel-Username: 194.150.248.5
+Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
+X-Spampanel-Outgoing-Class: unsure
+X-Spampanel-Outgoing-Evidence: Combined (0.50)
+X-Recommended-Action: accept
+X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
+ 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zC9N
+ dw2t5iMEflZxRNqEOiZKZR2tNRPIxp/vINc/oXVUCtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
+ daZjkYvkfoqFqk9QphLZk+yqk+tIzthz0vNkOX8Em4cj6D/wdR983ISMXlZYfkTQnVvsLb89W7vD
+ 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
+ L25JS816nuiE0t5pG6MLXGczoanVmeCF7bI0BP7dENKtPTBPq+vGO3Vx+SwwWschmkdvs376y2A4
+ OBi1/UyqO7jQnnICeA+KlS7G8xqewTcs6w6HLg3eq1lKkYVFbZT99AeINpdbOTIWFiLv1jhppNXa
+ xS6MN8xFxlxHZge6OlcoYA//qN5p5dmu6xjQN9nmCfj7VmpmZJyx9iy0UVkVD75IgLollI+8fg4q
+ Ktu8I/h2Z0dHZM6qE0STp2v0JiRE8jha5ZR/nf5efcITxrfNKzy0W9Bd37g8M9SCqD8uOq9nJ+Mm
+ AyVp7BgHET6y8CCeFlQ7QPOIjlkSAfAYMUguLL/iJ9vYqKPILmSoZcvfXhdPMA/OB6L3DS5gd1SE
+ E3USj80Z55NePwA7jxwlhcjVdk/mr85ytrd63MVeviF0i7IZfcqGEigUra+zu74YMVqBb/nqBf/o
+ O9ENx2nriip8WhgYbnEnhEbOEzk5yB9ZHNSFnOX3WOuu10rVtxDPgG7Vtev3VUWM7vJdUMhhfiBi
+ T4p0qQinxQdAM7oWNvokRStU21kywDQw+mt8yiYotxY5kTqW31/E3ahF5MMcDI7KdpjQKSCN+J6l
+ bGev7o3ca3HK7nAdJ4O6PN0m2d+J9ACj3NF3yf2emCiQ6AuTowflAWn4v/afTNuGqIKbeT3Q0BtD
+ AboBIkUL/j1Y48GvmeURQjjEeKVXbbsuQxCT7KwYHrWmLbItcTNXm2BdnEVFmeo/ena0Plo1EUkF
+ Ir9EYAa2pWQkJz4RQfBVfxkAwoVpA4J/KzRZEq6vMKhJ9oG2v1yvThzPEGEatp9rvw0eoI0HqUDY
+ Z5lBVqqSQepN0b2sqifLOj/1zwA5Elj0L2+pr2KRBXGwDoDEJrayfp9Tsh2+VPTlRNFzmCOqbe4N
+ XpcflqR9TOt4m7skVkCUrb1O+GFi8/GtOCoPdeOKuroIXJBF3iBhveOWAg2/DdpIH6kX9BAh5T56
+ bZ65fgYTpVbNpCTXfzY/9c8AORJY9C9vqa9ikQVx1Rhgh1oSgTV2HRO5RU/ccaLd8PL+e7kGwNtP
+ GEbZHUTlo9rdeDz1q6e5q9bAUPzG/Nre5J0/CRkN14v1yHfTQHe0DazGWAam0o2Vp5zQ/L8xL7hr
+ JSk60SF3F6RYOYr2
+X-Report-Abuse-To: spam@filter1.tophost.ch
+X-Complaints-To: abuse@filter1.tophost.ch
 
-On Wed, Oct 22, 2025 at 3:04=E2=80=AFPM Xin Long <lucien.xin@gmail.com> wro=
-te:
->
-> On Wed, Oct 22, 2025 at 5:17=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
-com> wrote:
-> >
-> > sctp_accept() will use sk_clone_lock(), but it will be called
-> > with the parent socket locked, and sctp_migrate() acquires the
-> > child lock later.
-> >
-> > Let's add no lock version of sk_clone_lock().
-> >
-> > Note that lockdep complains if we simply use bh_lock_sock_nested().
-> >
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > ---
-> >  include/net/sock.h |  7 ++++++-
-> >  net/core/sock.c    | 21 ++++++++++++++-------
-> >  2 files changed, 20 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/include/net/sock.h b/include/net/sock.h
-> > index 01ce231603db..c7e58b8e8a90 100644
-> > --- a/include/net/sock.h
-> > +++ b/include/net/sock.h
-> > @@ -1822,7 +1822,12 @@ struct sock *sk_alloc(struct net *net, int famil=
-y, gfp_t priority,
-> >  void sk_free(struct sock *sk);
-> >  void sk_net_refcnt_upgrade(struct sock *sk);
-> >  void sk_destruct(struct sock *sk);
-> > -struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority=
-);
-> > +struct sock *sk_clone(const struct sock *sk, const gfp_t priority, boo=
-l lock);
-> > +
-> > +static inline struct sock *sk_clone_lock(const struct sock *sk, const =
-gfp_t priority)
-> > +{
-> > +       return sk_clone(sk, priority, true);
-> > +}
-> >
-> >  struct sk_buff *sock_wmalloc(struct sock *sk, unsigned long size, int =
-force,
-> >                              gfp_t priority);
-> > diff --git a/net/core/sock.c b/net/core/sock.c
-> > index a99132cc0965..0a3021f8f8c1 100644
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -2462,13 +2462,16 @@ static void sk_init_common(struct sock *sk)
-> >  }
-> >
-> >  /**
-> > - *     sk_clone_lock - clone a socket, and lock its clone
-> > - *     @sk: the socket to clone
-> > - *     @priority: for allocation (%GFP_KERNEL, %GFP_ATOMIC, etc)
-> > + * sk_clone - clone a socket
-> > + * @sk: the socket to clone
-> > + * @priority: for allocation (%GFP_KERNEL, %GFP_ATOMIC, etc)
-> > + * @lock: if true, lock the cloned sk
-> >   *
-> > - *     Caller must unlock socket even in error path (bh_unlock_sock(ne=
-wsk))
-> > + * If @lock is true, the clone is locked by bh_lock_sock(), and
-> > + * caller must unlock socket even in error path by bh_unlock_sock().
-> >   */
-> > -struct sock *sk_clone_lock(const struct sock *sk, const gfp_t priority=
-)
-> > +struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
-> > +                     bool lock)
-> >  {
-> >         struct proto *prot =3D READ_ONCE(sk->sk_prot);
-> >         struct sk_filter *filter;
-> > @@ -2497,9 +2500,13 @@ struct sock *sk_clone_lock(const struct sock *sk=
-, const gfp_t priority)
-> >                 __netns_tracker_alloc(sock_net(newsk), &newsk->ns_track=
-er,
-> >                                       false, priority);
-> >         }
-> > +
-> >         sk_node_init(&newsk->sk_node);
-> >         sock_lock_init(newsk);
-> > -       bh_lock_sock(newsk);
-> > +
-> > +       if (lock)
-> > +               bh_lock_sock(newsk);
-> > +
-> does it really need bh_lock_sock() that early, if not, maybe we can move
-> it out of sk_clone_lock(), and names sk_clone_lock() back to sk_clone()?
+From: Thomas Wismer <thomas.wismer@scs.ch>
 
-I think sk_clone_lock() and leaf functions do not have
-lockdep_sock_is_held(), and probably the closest one is
-security_inet_csk_clone() which requires lock_sock() for
-bpf_setsockopt(), this can be easily adjusted though.
-(see bpf_lsm_locked_sockopt_hooks)
+Add the TPS23881B I2C power sourcing equipment controller to the list of
+supported devices.
 
-Only concern would be moving bh_lock_sock() there will
-introduce one cache line miss.
+Falling back to the TPS23881 predecessor device is not suitable as firmware
+loading needs to handled differently by the driver. The TPS23881 and
+TPS23881B devices require different firmware. Trying to load the TPS23881
+firmware on a TPS23881B device fails and must therefore be omitted.
+
+Signed-off-by: Thomas Wismer <thomas.wismer@scs.ch>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
+index bb1ee3398655..0b3803f647b7 100644
+--- a/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
++++ b/Documentation/devicetree/bindings/net/pse-pd/ti,tps23881.yaml
+@@ -16,6 +16,7 @@ properties:
+   compatible:
+     enum:
+       - ti,tps23881
++      - ti,tps23881b
+ 
+   reg:
+     maxItems: 1
+-- 
+2.43.0
+
