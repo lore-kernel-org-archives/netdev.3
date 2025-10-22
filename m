@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77AF345749;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B208E2C11D6;
 	Wed, 22 Oct 2025 18:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761157640; cv=none; b=OJYwIuR1wMcp2xtBQ8OEbzFTGm4gK5nunEcsiBtbHjj96mhiN9dsQAO/j1JbYyrUBoc1nXREQGo0DNTLiw4jqM3dwnH2bdLJw0VbUzMg49jWkQe5+PmH0wDfBAXyB6fXloUUhVwp3XsNZmJhR5hfTMnUDH5sQ71Be6RBghQrPZs=
+	t=1761157641; cv=none; b=bPwpw+NPGHH5XPs0lqH6RwVP4kCrqnxAnW0TibWvzyaJvW7ZLvpbFthrI+Rg49lHG45x1v7Bas6O8KdUWb04GRQAaOa90zMGCYq9O4+aT5ziiWCS9wCbdEAebAgxpUpGG+pD91KiDXC8c6SYDOes/6QznJn4xhiszI9elng5AR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761157640; c=relaxed/simple;
-	bh=6HQ7FnLmTaEfzf3bCO0gsOgjyTTSNfAG8WwaCExdgsc=;
+	s=arc-20240116; t=1761157641; c=relaxed/simple;
+	bh=+ChjTVmw9jhdGA2e1SF3ZyvNwYO2Qd7xy8sXIk2YQnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dY/MI9eryHhA86r6ShvnMcnr5/GWB93NwuBCcBC3w7M9UIIWhf01dEQO93WCwOyrPjEQFMET46Fl0By2kInhCHCXgBTwUqrpzCE+bjC3XLwHrUuYwunCn8vRfp2IC003uqnDsDu44/k5/qmNC8+wHkfENEXPoSCywo9uGf7rxuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=U5a+i6a5; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=Kpbi6NnyT/JTrEpjBOWkseE9kFgVotAMwAVncMgV3lijXlDnfI7kKiq4v7EvC8n3ij/nQKM9HyabewXxXwFV7FUtGMXxtccESv7MUEW5Yo0HIRXqHltVb/cRHzr+YxebdXQU2P8MNM0FXTlXNr7f1wNoHTp8VtVBELBYL7wGcsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=OwWiHU69; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="U5a+i6a5"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="OwWiHU69"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761157634;
-	bh=6HQ7FnLmTaEfzf3bCO0gsOgjyTTSNfAG8WwaCExdgsc=;
+	bh=+ChjTVmw9jhdGA2e1SF3ZyvNwYO2Qd7xy8sXIk2YQnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U5a+i6a5/nx2IGH9IG/UcKdHB5lyKpYajqGZmUDxiDAgGUZi3LaAqM8ksHhkTW3To
-	 1uP8EL5yX0aQ6C2m+5Ifqper9HuWryJ93bedNMLyno28DKnp/KbyNA3kGkGalyIFUG
-	 9pqotb9Ni59gM4TdvIONuwTTb9UhDm6wobX0KJERmk1R0+sK40s4FOrnqsGk+zwi/y
-	 kIafMwWy3Kb6NhYdEjBAWB9cDO9pjSj/3n/Ql2iwqmh3QXlzvhnzi23bWtWTx0bnjb
-	 DQTsup0hoPBalQSfEUYUHTuR3WsVEXDlzSyhu6qyIGftWGhDfmiwWoVaUuV/qvh6Rl
-	 SfUUrtEGwqcWw==
+	b=OwWiHU69h++3qUkwBsBv2HKnAO+dtyx279JrpCgBsmjS3edhF8w+ZSYiteWLx5/x6
+	 4vDseB2NMVnvEq91gLa+NGr1o0mO/2gOMk3lwABbcYHeM81/9sm1b0c/O23S6LZdV2
+	 T+KS6rdT5lTosE8eNUVEqsMtj+SIB4Os1tJ2N7BXKJLMS8KoqrVUVOmpi563C7n8gk
+	 PumAIa114AIfDKG3ZXJzzWcb5iapAX6Z8e9YYYRP5oeW5ym7aIXB5ax9TNvdrIRCoJ
+	 Y0e2ks8JekBPSZX7qEMDfLpxUTmRAog69MLmF2tiFcgyQwekEMlsMYabExxaP2EEUl
+	 1767/vZd0vkhw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 77C09600BF;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 7F08E600FF;
 	Wed, 22 Oct 2025 18:27:14 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id B23EB2025C5; Wed, 22 Oct 2025 18:27:09 +0000 (UTC)
+	id 99D4F20228C; Wed, 22 Oct 2025 18:27:09 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -46,9 +46,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next 5/7] netlink: specs: nlctrl: set ignore-index on indexed-arrays
-Date: Wed, 22 Oct 2025 18:26:58 +0000
-Message-ID: <20251022182701.250897-6-ast@fiberby.net>
+Subject: [PATCH net-next 3/7] tools: ynl: support ignore-index in indexed-array encoding
+Date: Wed, 22 Oct 2025 18:26:56 +0000
+Message-ID: <20251022182701.250897-4-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251022182701.250897-1-ast@fiberby.net>
 References: <20251022182701.250897-1-ast@fiberby.net>
@@ -61,46 +61,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The indexes in nlctrl indexed-arrays have no special meaning,
-they are just written with an iterator index, which refers to
-the order in which they have been packed into the netlink message.
+When parsing indexed-array attributes to cli.py's --json, then
+previously the index would always be set incrementally.
 
-Thus this patch sets ignore-index on these attributes.
+This patch adds support for setting arbitrary indexes, when
+`ignore-index` is set to false or is unspecified.
 
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━┓
-┃                                     ┃ out/ ┃ input/ ┃ ignore ┃
-┃ Attribute                           ┃ dump ┃ parsed ┃ -index ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━┩
-│ CTRL_ATTR_OPS                       │ 1++  │ -      │ yes    │
-│ CTRL_ATTR_MCAST_GROUPS              │ 1++  │ -      │ yes    │
-└─────────────────────────────────────┴──────┴────────┴────────┘
+When `ignore-index` is set to true, then it retains the current
+input format, and it's alignment with the output from cli.py.
 
-Where:
-  1++) incrementing index starting from 1
+The below examples are fictive as `rates` is not used in requests.
+The implementation have been tested with a newer version of the
+previously posted wireguard spec[1].
+
+When `rates` have `ignore-index` set to false (or unspecified):
+  --json '{"rates":[ [0,{"rate":60}], [42,{"rate":90}] ]}'
+
+When `rates` have `ignore-index` set to true:
+  --json '{"rates":[ {"rate":60}, {"rate":90} ]}'
+
+[1] https://lore.kernel.org/netdev/20250904-wg-ynl-rfc@fiberby.net/
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- Documentation/netlink/specs/nlctrl.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/net/ynl/pyynl/lib/ynl.py | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/nlctrl.yaml b/Documentation/netlink/specs/nlctrl.yaml
-index 8b4472a6aa36a..753cf1b48c252 100644
---- a/Documentation/netlink/specs/nlctrl.yaml
-+++ b/Documentation/netlink/specs/nlctrl.yaml
-@@ -67,11 +67,13 @@ attribute-sets:
-         name: ops
-         type: indexed-array
-         sub-type: nest
-+        ignore-index: true
-         nested-attributes: op-attrs
-       -
-         name: mcast-groups
-         type: indexed-array
-         sub-type: nest
-+        ignore-index: true
-         nested-attributes: mcast-group-attrs
-       -
-         name: policy
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index 14c7e51db6f5c..a284bc2ad3440 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -566,8 +566,9 @@ class YnlFamily(SpecFamily):
+         elif attr['type'] == 'indexed-array' and attr['sub-type'] == 'nest':
+             nl_type |= Netlink.NLA_F_NESTED
+             sub_space = attr['nested-attributes']
++            ignore_idx = attr.get('ignore-index', False)
+             attr_payload = self._encode_indexed_array(value, sub_space,
+-                                                      search_attrs)
++                                                      search_attrs, ignore_idx)
+         elif attr["type"] == 'flag':
+             if not value:
+                 # If value is absent or false then skip attribute creation.
+@@ -635,9 +636,11 @@ class YnlFamily(SpecFamily):
+                                            sub_attrs)
+         return attr_payload
+ 
+-    def _encode_indexed_array(self, vals, sub_space, search_attrs):
++    def _encode_indexed_array(self, vals, sub_space, search_attrs, ignore_idx):
+         attr_payload = b''
+         for i, val in enumerate(vals):
++            if not ignore_idx:
++                i, val = val[0], val[1]
+             idx = i | Netlink.NLA_F_NESTED
+             val_payload = self._add_nest_attrs(val, sub_space, search_attrs)
+             attr_payload += self._add_attr_raw(idx, val_payload)
 -- 
 2.51.0
 
