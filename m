@@ -1,152 +1,66 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FA83469FB
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 13:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01553469EE;
+	Wed, 22 Oct 2025 13:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761140613; cv=none; b=u6ZPaelOA8ZDU5H+wSFzimgfNr10b5ddcsc2IqGn8nRb6nVplzoKAHKuhNwKsEMqRSY0fcHWh+y77QrUEDfbRftvOcvwrjeOJz0z0gr1F7RrLBQnCR223m5zbkJsAuVfFo0l/bFWjUN6fYUqdCt69t49hLmMOKpcMF9o5wA5MHU=
+	t=1761140693; cv=none; b=mGGvARDHdd27YyAMZ3FmTTGvPMKba8Fwl6iMmHdKpcStPYSKDFcZYBS4FQGLwrLv9Z9sBDyoYgqmqx8Jg5i29p9gEEytOQmQtsKQhOp/lIwVA1/DIHB3fh9n5Xx1PIfvIg4w/GSdCDmPU6H2HZdcL6U4L6U23YxHKCP8+SHVVe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761140613; c=relaxed/simple;
-	bh=32tf5k7nVMi2oOymn3ZonS9XDF5FSJs6bMkE0AIguYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Td43tgY+N4Mha/Z2jnbFwQOJNFHI1jqcOCsyc0IyDkmReU1ZOdHfBtnwAcvEhsyHK/nxnmCaMQRYEazSq06Le8w6IxUhfmB4xh3GLj2Skv6gV3ljzkrQX++OQlowwrHKTNjxDd57BF7NzLX4aPuWYJCPUAM61DHcv4eezlkHCsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E34GmBMa; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1761140693; c=relaxed/simple;
+	bh=1Mc5RD1mlXF+Xg8uXinp0KILGU2YO3O/T/z9svhRkp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kMbOhX84QpPFhsu4TkzySq2yNMPE3IWZMg3siEDnssGYe92ebTx2n5/hPvue56rIyrKm/tGmNX7vJ8NZ6OOerMQoM90p0nucfWG+EvtexPUm6K6YdE1Asw9Bq2i4/nrfFidAIqovv4iwUC5Ow2/BIr0Kn5f+bA71BX7X11Fdp5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kBcU2Mvi; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E34GmBMa"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 88414C0AFF6;
-	Wed, 22 Oct 2025 13:43:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4E3B6606DC;
-	Wed, 22 Oct 2025 13:43:28 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 860B5102F242F;
-	Wed, 22 Oct 2025 15:43:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761140607; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=GBJUNGHNoCsZ2OCx56e6rdnetXjqjXfaSWdUSlMOnE4=;
-	b=E34GmBMaVokVRFK9/DcbPWDvEDixYvzU/DHT/1OEDLbtWJFAnPGC1EHS/MxGfWSnM9PgkL
-	SXUV+mfvrCrAG9D8UIVahsR0HZuwrhkfxR2amBTyvS+XLjusMJ19Fq41f8eSa3d14QVMmQ
-	LVl+gTbgKkIjhkbuclL0SYlTqQAA0y4znWe0Ot047ghc71tmrY+AcE+nckzSTy/BtJFFIL
-	ZFCwFuGTDhGKHEFKFTrxCCSxqJUAXCh14aIg52tKcon3o3lLQiz4MK3IRYeg9PG7IQKpp3
-	zj/58g+NPeZGFWHsc5MioHlSQI69YMiLiaUXGrwUJXDhMPc0RYzpCIaF3r1lzA==
-Message-ID: <ad16837d-6a30-4b3d-ab9a-99e31523867f@bootlin.com>
-Date: Wed, 22 Oct 2025 15:43:20 +0200
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kBcU2Mvi"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=tSRufK6a9oDVc+0ldM5aHf45/pLD+eZuh0vwzFzwbfg=; b=kBcU2MviAWFb1wLxknZjZKDlIK
+	RclL5i1SHlCX0bO+xwWIiwe5Q09bReDzWJ3GJDlmP/FTVsOcr9Qm6/WNvFItiH1HM84SxUa+GGVEj
+	9Fv8bethfL2nxafVxcrWj51kkk4sD3qBayABnQMiY4XPmHNqXg4DWcnQPVHUG7aDJWQk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vBZ8r-00BlXZ-Qa; Wed, 22 Oct 2025 15:44:41 +0200
+Date: Wed, 22 Oct 2025 15:44:41 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+	David Wu <david.wu@rock-chips.com>
+Subject: Re: [PATCH 4/4] ethernet: stmmac: dwmac-rk: Add RK3506 GMAC support
+Message-ID: <c03fc648-a096-43b5-8f4f-0fd34dfcc8fa@lunn.ch>
+References: <20251021224357.195015-1-heiko@sntech.de>
+ <20251021224357.195015-5-heiko@sntech.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 2/6] net: phy: add phy_may_wakeup()
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-References: <aPIwqo9mCEOb7ZQu@shell.armlinux.org.uk>
- <E1v9jCO-0000000B2O4-1L3V@rmk-PC.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <E1v9jCO-0000000B2O4-1L3V@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251021224357.195015-5-heiko@sntech.de>
 
-Hi Russell,
-
-On 17/10/2025 14:04, Russell King (Oracle) wrote:
-> Add phy_may_wakeup() which uses the driver model's device_may_wakeup()
-> when the PHY driver has marked the device as wakeup capable in the
-> driver model, otherwise use phy_drv_wol_enabled().
+On Wed, Oct 22, 2025 at 12:43:57AM +0200, Heiko Stuebner wrote:
+> From: David Wu <david.wu@rock-chips.com>
 > 
-> Replace the sites that used to call phy_drv_wol_enabled() with this
-> as checking the driver model will be more efficient than checking the
-> WoL state.
+> Add the needed glue blocks for the RK3506-specific setup.
 > 
-> Export phy_may_wakeup() so that phylink can use it.
+> The RK3506 dwmac only supports up to 100MBit with a RMII PHY,
+> but no RGMII.
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  drivers/net/phy/phy_device.c | 14 ++++++++++++--
->  include/linux/phy.h          |  9 +++++++++
->  2 files changed, 21 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 7a67c900e79a..b7feaf0cb1df 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -251,6 +251,16 @@ static bool phy_drv_wol_enabled(struct phy_device *phydev)
->  	return wol.wolopts != 0;
->  }
->  
-> +bool phy_may_wakeup(struct phy_device *phydev)
-> +{
-> +	/* If the PHY is using driver-model based wakeup, use that state. */
-> +	if (phy_can_wakeup(phydev))
-> +		return device_may_wakeup(&phydev->mdio.dev);
-> +
-> +	return phy_drv_wol_enabled(phydev);
-> +}
-> +EXPORT_SYMBOL_GPL(phy_may_wakeup);
-> +
->  static void phy_link_change(struct phy_device *phydev, bool up)
->  {
->  	struct net_device *netdev = phydev->attached_dev;
-> @@ -302,7 +312,7 @@ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
->  	/* If the PHY on the mido bus is not attached but has WOL enabled
->  	 * we cannot suspend the PHY.
->  	 */
-> -	if (!netdev && phy_drv_wol_enabled(phydev))
-> +	if (!netdev && phy_may_wakeup(phydev))
->  		return false;
->  
->  	/* PHY not attached? May suspend if the PHY has not already been
-> @@ -1909,7 +1919,7 @@ int phy_suspend(struct phy_device *phydev)
->  	if (phydev->suspended || !phydrv)
->  		return 0;
->  
-> -	phydev->wol_enabled = phy_drv_wol_enabled(phydev) ||
-> +	phydev->wol_enabled = phy_may_wakeup(phydev) ||
->  			      (netdev && netdev->ethtool->wol_enabled);
->  	/* If the device has WOL enabled, we cannot suspend the PHY */
->  	if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 3eeeaec52832..801356da1fb2 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -1391,6 +1391,15 @@ static inline bool phy_can_wakeup(struct phy_device *phydev)
->  	return device_can_wakeup(&phydev->mdio.dev);
->  }
->  
-> +/**
-> + * phy_may_wakeup() - indicate whether PHY has driver model wakeup is enabled
-> + * @phydev: The phy_device struct
-> + *
-> + * Returns: true/false depending on the PHY driver's device_set_wakeup_enabled()
-> + * setting.
+> Signed-off-by: David Wu <david.wu@rock-chips.com>
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 
-That's not exactly what's happening, this suggest this is merely a
-wrapper around device_may_wakeup().
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-I don't think it's worth blocking the series though, but if you need to
-respin maybe this could be reworded.
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-> + */
-> +bool phy_may_wakeup(struct phy_device *phydev);
-> +
->  void phy_resolve_aneg_pause(struct phy_device *phydev);
->  void phy_resolve_aneg_linkmode(struct phy_device *phydev);
->  
-
-Maxime
+    Andrew
