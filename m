@@ -1,160 +1,174 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908DB355814
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 16:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D01629992A;
+	Wed, 22 Oct 2025 16:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761149289; cv=none; b=WDBQnSALH1v1jJPz9qoSer+O6zAiJUrcuT5PtssBlgyjWc7bTlsSEfTUNq5/9VhzAis3JYAyte01/M1IfiH5wTKtR9KVfKh7KB/3iyY3XhkELP9snqfAfjhi8KiudEOJ2eaE9GQxlzI8hbYIUZbaBMAsQP4Idk1dkGeRQbYjRjY=
+	t=1761149294; cv=none; b=UVJ/1GyMtc8lKBih2Ae9MDNGxB3emr1yr+GlWXzDbiYhALH8x5CPuEJVUXW/u+3DO8K215Ggp40cGt8Aru0yy86M/Ekzu4+U0VWAvIwMFy3c1czo7LjMcoTPz1KVGjtw3kyfXUTGIG4K2aWpd5oQpAcy8yeBh4caJWD5VoyVZsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761149289; c=relaxed/simple;
-	bh=auzHCSUbL/L9ko4QwDjdjbZQ98SIJfRrjs+q/xktilk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cw28vmVtySGWh8RMOE8tfbeTh9EOHgr91r6tIMVCXQD8PQaaStMlCYbpRqJ5S02Uh2qTYbIC8Mr4fdEEIhrduDQD6o3MQjjwhiQC/7PC9vgdD/jwRgiTC/SNf4aahxtYnj/ybhRCQI+r3K+hdYpU8X5dKG8WRMn+1Pnx+DFc4BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNGbQ043; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761149294; c=relaxed/simple;
+	bh=Hpp75xec5mwn0pm6bwe74NHV8CGVz16jvWJi/wNRADw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kSVmfkJ4i4hRjY9Sd7cAhOPycNZTktTlOCJ7p2S2h7+rZ71OXtjgioGf3ixMPuxtDSIQDVYA+eZzi3Ky2HOH0jZIbIOENKKFUxszcg/KEBF3jYDaDMGBntGIUNjMYmyUXiD3FyFfhB1gcR4PNVT0o+v5t2PFW0tCqApSpelaWWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rO33dQDZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNGbQ043"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-33e27cda4d7so988676a91.0
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 09:08:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761149285; x=1761754085; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=n9ABbt3qgyLh4i74MVszWBEA6Z+Ea2lJZRM4Xy5gRb4=;
-        b=GNGbQ043z3QPjKquCcurU5NH9CGwYuQKLTv5JKeu3s7xvdARXpIwxOkg7ZxLPd/cxy
-         K+8c+T9s5eDYPQbMyiAaQlBUKO8hkJETqZ3u6n2ef+pL5KKpY5xL/xm+v2+Rdto2M9SS
-         FnAnTZunby6Z81hOAf2tHWBzpXisMrybhYFYVtNW1ysiRl3UUNSiamhrlLlp4jZwDaeS
-         I+dq/2cvrc06OLu/hDkmcO2oCmBKN46Tnn/Qu3iwDMfuZRGWMPrESVA4EcuiGbxhkc7o
-         cwXOZ9/T7d+odgrTbYx3+lnnumTpOr3Q7HQyfYFF0yI5gYZX/TMNs2TwP88JbLC6zqRO
-         b7pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761149285; x=1761754085;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n9ABbt3qgyLh4i74MVszWBEA6Z+Ea2lJZRM4Xy5gRb4=;
-        b=uXqMC1IbN5maq+sRWHAWj/AwuZbU29mV1Dlrn+/gSbtiNaaH9LpgzVAyBm93bdB+wb
-         QtcIci0l4M840A0h64xLwK+bZWc1BvjF++ClHnchrx4pEBV3guaxJQZg9azYeUmIitgK
-         0UPi1SNJHw5ZV0xt1ijr0zfsTOwcGQRV1A+q4LZvBUelorvETA3xgO8MOvbvaUlLShfD
-         DnWhG0XT92sz0k76k80Q+lnIcfwebsoKmuc9oGvJ98EmHWpgLAzeZ9P6OA4k13NQJGRo
-         M54zD3pRP/eL2CN05MhJncoRaKRlzA9kg8ou7yYXAoWlNyZIGTygF6173MQR/BMWni6/
-         OBDQ==
-X-Gm-Message-State: AOJu0YzTffMvCclg/LknjpHqPaquaocCRMHGLIFX0mUWowUFy6LDwCt+
-	v7lr2zyvLmD1e75P/Y73veNvnQFzZknBK8KgTORtduViD/xR8Ux0CORz7389Aw==
-X-Gm-Gg: ASbGncuMkl4eWWCL8hKGk+3+PwPzE3hLrxP9CF0yJgLWIderSdgBTJGxGtBZVs6KYK1
-	dtKWreLkB+Zgm7d1w9Ny9pb2604qOynZyene1CFp47DwQyp06FLZQUpmK25pvCBCrWrj5WFDtKb
-	qKTcXSTqUpNy46fTg3nhhjn3vZ6iwZpbPU1Rc89pU7/fv95Iu88GGGnKv6k/pTX9caQbSJQd1a1
-	OU+vLJdyPbp8uEeGlYiiiWGYFbYc03mKZ60OEJp2VfXOz2JFVqtIn7yL9MgAbcYaZR3xFFMpa/L
-	DQQAbORltL5MC0VgLDRnaxnAjbD16bJ2c/5oRLz5wC8syW9jGH6Izw561aVYgN9pF9XquGQ+7yj
-	pGRP7iVdNA3QAOKZ81Axk3bLdwiH5VQWtnWOZQxfrNnRfWVvU7Pl01aaHkdjW6jsdZ/qYWqbvEy
-	/N08WwOeXP1Xh4ps1aaGT/
-X-Google-Smtp-Source: AGHT+IFKQtMp6Ai1uuAm7SgpDta9tGj5AFau6iGF+3bo3T12AjcV7wXz2cyGdxVGwafExfKv/O8axA==
-X-Received: by 2002:a17:90b:3c09:b0:32b:d8a9:8725 with SMTP id 98e67ed59e1d1-33e91ba3198mr2672703a91.18.1761149284702;
-        Wed, 22 Oct 2025 09:08:04 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:1e3:b1:dcbf:ab83])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33e2090eff6sm1771750a91.2.2025.10.22.09.07.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 09:08:04 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gavin Li <gavinl@nvidia.com>,
-	Gavi Teitz <gavi@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] virtio-net: fix received length check in big packets
-Date: Wed, 22 Oct 2025 23:06:23 +0700
-Message-ID: <20251022160623.51191-1-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rO33dQDZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F22C4CEF7;
+	Wed, 22 Oct 2025 16:08:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761149293;
+	bh=Hpp75xec5mwn0pm6bwe74NHV8CGVz16jvWJi/wNRADw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=rO33dQDZU+D7JZrRA3L8gPCPs07wyQ1JnOM19SbP/zvOomkZgOWGBFf8q0LbtBh2w
+	 ZqVwQjsM2jeOcY0xJ57Sn1MHsr/nFAVq/WAZjorR4hsRWXqIz4fUOLwY4GqsKN6URp
+	 ZGxVDt9DWHL3zMaI3PnQjAJRAYXMQWpcsKi4Oah4rgaWcfKsIxDkR5pNTgojx2rOQz
+	 ZfMeqAcXdh0fLoG6SVwuxOcz7pxW8EMxjuGtZqED7u7zdH6AkBGlkCLLEce7mjCHko
+	 /rBQ8BpCmI/P6SVUNv+X4cxkaWDXm5ZJ1TT3bffjsR8vv5QerLWjYPQaC/8IAWQ7c2
+	 FLTyZgmXDi1Ig==
+From: Christian Brauner <brauner@kernel.org>
+Date: Wed, 22 Oct 2025 18:06:02 +0200
+Subject: [PATCH v2 24/63] selftests/namespaces: fifth active reference
+ count tests
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251022-work-namespace-nstree-listns-v2-24-71a588572371@kernel.org>
+References: <20251022-work-namespace-nstree-listns-v2-0-71a588572371@kernel.org>
+In-Reply-To: <20251022-work-namespace-nstree-listns-v2-0-71a588572371@kernel.org>
+To: linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ Jeff Layton <jlayton@kernel.org>
+Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, 
+ =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
+ Lennart Poettering <mzxreary@0pointer.de>, 
+ Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+ Amir Goldstein <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Thomas Gleixner <tglx@linutronix.de>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.15-dev-96507
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2525; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Hpp75xec5mwn0pm6bwe74NHV8CGVz16jvWJi/wNRADw=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT8ZHjaEHE8eK7Khu/rE8IPHJu8/1lCT6rLtEmdpg/6N
+ M+qvlks2VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARTyGGv8I6vJy+l06dXBs7
+ Sbe4O2DO3IKwk+mM3m7z0r9EHjUVX83wV9x66yrtX1Xv2DcJXd1iwbH5zc/SRoV4ddbbuw9cMuX
+ cxwsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-for big packets"), when guest gso is off, the allocated size for big
-packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-negotiated MTU. The number of allocated frags for big packets is stored
-in vi->big_packets_num_skbfrags.
+Test PID namespace active ref tracking
 
-Because the host announced buffer length can be malicious (e.g. the host
-vhost_net driver's get_rx_bufs is modified to announce incorrect
-length), we need a check in virtio_net receive path. Currently, the
-check is not adapted to the new change which can lead to NULL page
-pointer dereference in the below while loop when receiving length that
-is larger than the allocated one.
-
-This commit fixes the received length check corresponding to the new
-change.
-
-Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
-Changes in v4:
-- Remove unrelated changes, add more comments
-Changes in v3:
-- Convert BUG_ON to WARN_ON_ONCE
-Changes in v2:
-- Remove incorrect give_pages call
----
- drivers/net/virtio_net.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../selftests/namespaces/ns_active_ref_test.c      | 88 ++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index a757cbcab87f..0ffe78b3fd8d 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -852,7 +852,7 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- {
- 	struct sk_buff *skb;
- 	struct virtio_net_common_hdr *hdr;
--	unsigned int copy, hdr_len, hdr_padded_len;
-+	unsigned int copy, hdr_len, hdr_padded_len, max_remaining_len;
- 	struct page *page_to_free = NULL;
- 	int tailroom, shinfo_size;
- 	char *p, *hdr_p, *buf;
-@@ -915,13 +915,23 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- 	 * This is here to handle cases when the device erroneously
- 	 * tries to receive more than is possible. This is usually
- 	 * the case of a broken device.
-+	 *
-+	 * The number of allocated pages for big packet is
-+	 * vi->big_packets_num_skbfrags + 1, the start of first page is
-+	 * for virtio header, the remaining is for data. We need to ensure
-+	 * the remaining len does not go out of the allocated pages.
-+	 * Please refer to add_recvbuf_big for more details on big packet
-+	 * buffer allocation.
- 	 */
--	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
-+	BUG_ON(offset >= PAGE_SIZE);
-+	max_remaining_len = (unsigned int)PAGE_SIZE - offset;
-+	max_remaining_len += vi->big_packets_num_skbfrags * PAGE_SIZE;
-+	if (unlikely(len > max_remaining_len)) {
- 		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
- 		dev_kfree_skb(skb);
- 		return NULL;
+diff --git a/tools/testing/selftests/namespaces/ns_active_ref_test.c b/tools/testing/selftests/namespaces/ns_active_ref_test.c
+index b9836693f5ec..66665bd39e9b 100644
+--- a/tools/testing/selftests/namespaces/ns_active_ref_test.c
++++ b/tools/testing/selftests/namespaces/ns_active_ref_test.c
+@@ -385,4 +385,92 @@ TEST(userns_active_ref_lifecycle)
  	}
--	BUG_ON(offset >= PAGE_SIZE);
+ }
+ 
++/*
++ * Test PID namespace active ref tracking
++ */
++TEST(pidns_active_ref_lifecycle)
++{
++	struct file_handle *handle;
++	int mount_id;
++	int ret;
++	int fd;
++	int pipefd[2];
++	pid_t pid;
++	int status;
++	char buf[sizeof(*handle) + MAX_HANDLE_SZ];
 +
- 	while (len) {
- 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
- 		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page, offset,
++	ASSERT_EQ(pipe(pipefd), 0);
++
++	pid = fork();
++	ASSERT_GE(pid, 0);
++
++	if (pid == 0) {
++		/* Child process */
++		close(pipefd[0]);
++
++		/* Create new PID namespace */
++		ret = unshare(CLONE_NEWPID);
++		if (ret < 0) {
++			close(pipefd[1]);
++			exit(1);
++		}
++
++		/* Fork to actually enter the PID namespace */
++		pid_t child = fork();
++		if (child < 0) {
++			close(pipefd[1]);
++			exit(1);
++		}
++
++		if (child == 0) {
++			/* Grandchild - in new PID namespace */
++			fd = open("/proc/self/ns/pid", O_RDONLY);
++			if (fd < 0) {
++				exit(1);
++			}
++
++			handle = (struct file_handle *)buf;
++			handle->handle_bytes = MAX_HANDLE_SZ;
++			ret = name_to_handle_at(fd, "", handle, &mount_id, AT_EMPTY_PATH);
++			close(fd);
++
++			if (ret < 0) {
++				exit(1);
++			}
++
++			/* Send handle to grandparent */
++			write(pipefd[1], buf, sizeof(*handle) + handle->handle_bytes);
++			close(pipefd[1]);
++			exit(0);
++		}
++
++		/* Wait for grandchild */
++		waitpid(child, NULL, 0);
++		exit(0);
++	}
++
++	/* Parent */
++	close(pipefd[1]);
++	ret = read(pipefd[0], buf, sizeof(buf));
++	close(pipefd[0]);
++
++	waitpid(pid, &status, 0);
++	ASSERT_TRUE(WIFEXITED(status));
++
++	if (ret <= 0) {
++		SKIP(return, "Child failed to create PID namespace or get handle");
++	}
++
++	handle = (struct file_handle *)buf;
++
++	/* Namespace should be inactive after all processes exit */
++	fd = open_by_handle_at(FD_NSFS_ROOT, handle, O_RDONLY);
++	if (fd >= 0) {
++		TH_LOG("Warning: PID namespace still active after process exit");
++		close(fd);
++	} else {
++		ASSERT_TRUE(errno == ENOENT || errno == ESTALE);
++	}
++}
++
+ TEST_HARNESS_MAIN
+
 -- 
-2.43.0
+2.47.3
 
