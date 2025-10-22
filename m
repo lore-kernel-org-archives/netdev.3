@@ -1,282 +1,139 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-oa1-f97.google.com (mail-oa1-f97.google.com [209.85.160.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23384328625
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A446D320CBC
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 11:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761130807; cv=none; b=dwVzJwowAobtUVe8tlWnUOLODOoonvtJGtPIWgVrRVbgan8HlV3rAhCdQ0Geu3LfRlSDKQ6qWzZ61svlyejBXR7NC0g6VSgTYMig/4BUkZsJ+w0dqCcsfCxjLIe10GVGeuLNf8v1woKhXu2qnx+0K7qNasaK08PPi1436mauNOY=
+	t=1761131236; cv=none; b=ldrMhbvxSjjCxJF6TIgnyyiFCpEnTk2Tcsl5SiXuq7yHhxGlv/fqcH/33BEngrFchrNop4IGCr5QDp6airxxGoYIieNeoVfz3/XMXvPP1gW+VRU9lUZLjQOO1K0v7UpW1cUlLMvJVQxcNg9TzrMB9qJzjvzMJDXQtN6xWKeWB5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761130807; c=relaxed/simple;
-	bh=OKz+xmkKiE9OVC+4fDjQc95t5WKflma0N2qOQ8z5SZg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WjCphxhL1FEF/ECmVA9+bI+9LL9nDH2E4gfWdOqIfv0YRVLfuWD3Y2ej1uitbhB2YDhA4TMwJ/tdLaS1qOfBF8ky26bPbEX95v24Lya3+C6rEXaPGA5oo7W7a4BakGdNBAVeqd+SWOshgubXFMBl3Q4LwIG7crwwv59ooZiCezE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fejes.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3ee64bc6b85so8675585f8f.3
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 04:00:04 -0700 (PDT)
+	s=arc-20240116; t=1761131236; c=relaxed/simple;
+	bh=ZY4ksHec6wJzWCalGrMOvAU5kA0Tf1c5wcS05kGhWVw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xsz9SqIL6nhUoGPHYuWHn6pZ6vECIsamCktOPBak9e29OEujmgK3UT22jtiClN4xAwGnmKJyge+rx2M6z8/Tq6b3pZ2s28/1BpouZ0A1ikglesaWpjb82lR5BW9ZyO6WGD5ZRksKBMKEO3k1cHQjNZCS7pkgRKARIbEaYEDHiC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=b8H4kUzn; arc=none smtp.client-ip=209.85.160.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="b8H4kUzn"
+Received: by mail-oa1-f97.google.com with SMTP id 586e51a60fabf-3c8fb195c23so4067808fac.1
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 04:07:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761130803; x=1761735603;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WMhlNDo8ASWwcI8u3mjsBd+rOMePpOl7Ef330eW/SSU=;
-        b=O69WFoUipmEawp1hRHoqDCz2+hpMxON/P4S3H7Bq5EI79dKfgPIqIDzom73svLK+Il
-         fdwLqhyZq+W6n8CkQVcKdtQ4myZEacrHryjLc5o1kZVugiro2U0vmFoNaQaTdbA9ZcbX
-         Cc45fwAFTZPcE+ZBD/T32PUEZCK1zQaljRP5UiCZjLLrM8Vow5ZZCejmRfw0EQQT+RuO
-         PRRVFbqJR0QqdZjeWHhT/gC6aBMHVqByG5spl0LiMlPdrJAkOYxYRxyyiRN4UyY2bOuB
-         FBakpbf+IxjkREGppDroIE1ePtP0YhGndEepmOyg5sG0pgYDb4/rgF7242z3ASyTGtg2
-         R7Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2SW+vsaYFW0QTHehuUJRV45Dm4i1I4jcqDy3iWvXsVyvXp2rVA5q8jKrN6joFKcrjGG/nn6Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUL0p73/NJa1iRas9AOZDQH6iyKL3MKOnHewJtOYRIG5GyefXU
-	sSAKm1yaJLoXpGrQkP6P5vxMzIbj8cvzUMw5Ng/fZlJRNpC8iWDLMGZu
-X-Gm-Gg: ASbGnctBjYA+9J8iZ/x0Xh2mVmpn+rvWMNlxQBCMCR3wLj/wl9Fe4T7qNfMXwavEnC7
-	jfA5kTLXBcG/0ldvrT3VL+FChslWK0bO9MRAS/Z/pyn9D2vpoROboWACDVCQdA7VpMmI/uHne85
-	FQT8rAO+Qnel73x6KGaN/bjNX4UXyhEh6crDJUVtSKeawG4fcfSN3QP8OVoO2t7Qc3kPYaqMv7i
-	fFLA4MY7kJH+7mIhbbTLmQNZ38m7DMdWO54KzQ6C4cPu8bTTqi6svPDp4ujnXK0ScMEqIWb3VVa
-	8qJVI/7gt3irDrV8bfGDkWnWp1f+uX0uzZpxdLDSB9A4JYerOg965svKQj/saqzC+yJmeT2m66w
-	RPePyiC6Zd6ixn8oA4XdUSl+vIX+cjneCZOZeZH/I4ZENyCXIQN75lyA6+8blM4Z7ZXjh34rMxx
-	jdAXZu8yAWSxZKOYO7JAP+KK/gGRtncB6YQhcAca9msnSOYaxcceSSbo20oiSp6RSQ
-X-Google-Smtp-Source: AGHT+IH5uo+eTYMpftiVH0dhTJ/g13dymxown9/4klXMfyReEafbuUyOsJCDQx0E42CrJS41YtQEjg==
-X-Received: by 2002:a05:6000:250a:b0:428:3bb5:5813 with SMTP id ffacd0b85a97d-4283bb55a33mr11110213f8f.59.1761130803127;
-        Wed, 22 Oct 2025 04:00:03 -0700 (PDT)
-Received: from [10.148.83.128] (business-89-135-192-225.business.broadband.hu. [89.135.192.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-427f00b9f71sm24812193f8f.37.2025.10.22.04.00.01
+        d=1e100.net; s=20230601; t=1761131233; x=1761736033;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f2jSL7X+YIPN8ymI0EGsh1TEga+mDeE0bn24UOno88E=;
+        b=En7xNMkxJ3+7pMSB4tOpsx86sKBo6OxaGFkKyUXXaRJzGAf7oMylFb62pZrJGeb/LQ
+         s28pyF3uX9DnkWATgMhYrYL73LpgUIPL+XEPalJxMSfCkJ+DDUPJWrDilRoPpl/HHp5h
+         MIbRpS2EGIqm7jFPPcTdJDx8/6Ay/BbjVO0fnNtspTTEEbszrLI7uvNaBZPqBCdOxNPc
+         9X614tsGjnwxz0YFESf2nIsrQI4NHxP7fNMc/0o9y5HXtvARIB1t4zQNtvy/O/RAGRGo
+         /0A9gH9AQNURDhNR+5JfdpNYBiAX7DyMCDeqmQGxwX1RtQ8aEHegybKfBIWS1hxxjQRS
+         R3/Q==
+X-Gm-Message-State: AOJu0Yy9E7hkEo5g3ykCEJanBBD8f/tAlH8doH5iEe8GrHL/81Ycpaxj
+	u617ICzYlI1x65odtux22DWLPc8/N3X3GVIXATt6BgfvlCc9UduQv/5Id3R0gLPGVoi9cYXCx+7
+	7YTpHQyyhX3/6bImGpYrXJhwd0Ej/KyvZmcR+rkkJMJtwEswtgkqGhriAg+OUZed4/R0nONXFdg
+	DMo8VrPe/yh0rA144TBU+DM8B0EThex0zvpVPgJEMcV3y5mIAw/EXz2BIHoH4iJBDQg7CYIhBnt
+	9Ak3PuBMC0=
+X-Gm-Gg: ASbGncsBfZST7UwRcAYa5HWWsBnn0NwWdXo7yCv1dTDOX6Wv782J0bXmOU6x1mKzTAU
+	TycIH9VraMCtI9v+YSS34bIVZesRLtvwJjSaPWutafw2b0wyT0zZwSacw5GlLGbOQGBBT5mEltx
+	ig/r4iK+hJXbI0oDr/YGf8s3DwPlJBgFq/ARqgTJ4wb1dUergINQUfYazpd8HyxByt29FywO+4W
+	+J5CIzxO9I2YjAg5pFKmcTO/dIT3adjAOlsmue1ZPuAC5grYvNip9RyjnbpLgFaBc71MwMwLTGX
+	kxaD1PLyqLbnwb4fMPM8h6I12BOQLteQHfpxBt5ws9e0BNPuCNEYDQOqHmqEdddtqr32ngB//2u
+	d9cSRCykdbqbY1555dBX9MHxbUqP6UKpcyerZBvMxsM998pjoX7E6yohEP3XBoarPZ+B8OvLeCE
+	QkR7rHrjh9LNASASBMnmLyT2/AxpJ7P6Y=
+X-Google-Smtp-Source: AGHT+IHYjwyH7GxjxJ1yS6XeNNBhDjFyze9l1e1SQx4XsRLzqat0sdVWWL4Qw1d4kwfda8lO8pmwqZR0TqZU
+X-Received: by 2002:a05:6870:548a:b0:3c9:74fb:a719 with SMTP id 586e51a60fabf-3c98d11ed8amr7546003fac.39.1761131232587;
+        Wed, 22 Oct 2025 04:07:12 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-14.dlp.protect.broadcom.com. [144.49.247.14])
+        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-3c9aef0a5ddsm1453291fac.5.2025.10.22.04.07.12
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 22 Oct 2025 04:07:12 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-28eb14e3cafso133944235ad.1
+        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 04:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1761131231; x=1761736031; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f2jSL7X+YIPN8ymI0EGsh1TEga+mDeE0bn24UOno88E=;
+        b=b8H4kUzn3LR4nBn5WgN0jxYsNNWyc/rAO6CMXtrdr4pme/cKfK5Dgna3BycP51lBNd
+         5rBTXA71hiujrDqKNzBhQpJKL24O3BelmMPTPHLdAv0C1lhg1atiU77dfu8MVmdQfJzQ
+         57m48BNn2jXULvdZDDXz+eP0VzUaZq7iZcdXc=
+X-Received: by 2002:a17:902:d58d:b0:269:9719:fffd with SMTP id d9443c01a7336-290c9cf9775mr254082085ad.1.1761131230998;
+        Wed, 22 Oct 2025 04:07:10 -0700 (PDT)
+X-Received: by 2002:a17:902:d58d:b0:269:9719:fffd with SMTP id d9443c01a7336-290c9cf9775mr254081735ad.1.1761131230496;
+        Wed, 22 Oct 2025 04:07:10 -0700 (PDT)
+Received: from photon-dev-haas.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29246ffeec3sm135964955ad.52.2025.10.22.04.07.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Oct 2025 04:00:02 -0700 (PDT)
-Message-ID: <f708a1119b2ad8cf2514b1df128a4ef7cf21c636.camel@fejes.dev>
-Subject: Re: [PATCH RFC DRAFT 00/50] nstree: listns()
-From: Ferenc Fejes <ferenc@fejes.dev>
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, Zbigniew
- =?UTF-8?Q?J=C4=99drzejewski-Szmek?=	 <zbyszek@in.waw.pl>, Lennart
- Poettering <mzxreary@0pointer.de>, Daan De Meyer	
- <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, Amir
- Goldstein	 <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner
-	 <hannes@cmpxchg.org>, Thomas Gleixner <tglx@linutronix.de>, Alexander Viro
-	 <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
-  Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, Arnd Bergmann	 <arnd@arndb.de>
-Date: Wed, 22 Oct 2025 13:00:01 +0200
-In-Reply-To: <20251021-work-namespace-nstree-listns-v1-0-ad44261a8a5b@kernel.org>
-References: 
-	<20251021-work-namespace-nstree-listns-v1-0-ad44261a8a5b@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-5 
+        Wed, 22 Oct 2025 04:07:10 -0700 (PDT)
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+To: kuba@kernel.org,
+	davem@davemloft.net,
+	richardcochran@gmail.com,
+	nick.shi@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jiashengjiangcool@gmail.com,
+	andrew@lunn.ch,
+	viswanathiyyappan@gmail.com,
+	vadim.fedorenko@linux.dev,
+	wei.fang@nxp.com,
+	rmk+kernel@armlinux.org.uk,
+	vladimir.oltean@nxp.com,
+	cjubran@nvidia.com,
+	dtatulea@nvidia.com,
+	tariqt@nvidia.com
+Cc: netdev@vger.kernel.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	florian.fainelli@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	tapas.kundu@broadcom.com,
+	shubham-sg.gupta@broadcom.com,
+	karen.wang@broadcom.com,
+	hari-krishna.ginka@broadcom.com,
+	ajay.kaher@broadcom.com
+Subject: [PATCH v2 0/2] ptp/ptp_vmw: enhancements to ptp_vmw
+Date: Wed, 22 Oct 2025 10:51:26 +0000
+Message-Id: <20251022105128.3679902-1-ajay.kaher@broadcom.com>
+X-Mailer: git-send-email 2.40.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Tue, 2025-10-21 at 13:43 +0200, Christian Brauner wrote:
-> Hey,
->=20
-> As announced a while ago this is the next step building on the nstree
-> work from prior cycles. There's a bunch of fixes and semantic cleanups
-> in here and a ton of tests.
->=20
-> I need helper here!: Consider the following current design:
->=20
-> Currently listns() is relying on active namespace reference counts which
-> are introduced alongside this series.
->=20
-> The active reference count of a namespace consists of the live tasks
-> that make use of this namespace and any namespace file descriptors that
-> explicitly pin the namespace.
->=20
-> Once all tasks making use of this namespace have exited or reaped, all
-> namespace file descriptors for that namespace have been closed and all
-> bind-mounts for that namespace unmounted it ceases to appear in the
-> listns() output.
->=20
-> My reason for introducing the active reference count was that namespaces
-> might obviously still be pinned internally for various reasons. For
-> example the user namespace might still be pinned because there are still
-> open files that have stashed the openers credentials in file->f_cred, or
-> the last reference might be put with an rcu delay keeping that namespace
-> active on the namespace lists.
->=20
-> But one particularly strange example is CONFIG_MMU_LAZY_TLB_REFCOUNT=3Dy.
-> Various architectures support the CONFIG_MMU_LAZY_TLB_REFCOUNT option
-> which uses lazy TLB destruction.
->=20
-> When this option is set a userspace task's struct mm_struct may be used
-> for kernel threads such as the idle task and will only be destroyed once
-> the cpu's runqueue switches back to another task. So the kernel thread
-> will take a reference on the struct mm_struct pinning it.
->=20
-> And for ptrace() based access checks struct mm_struct stashes the user
-> namespace of the task that struct mm_struct belonged to originally and
-> thus takes a reference to the users namespace and pins it.
->=20
-> So on an idle system such user namespaces can be persisted for pretty
-> arbitrary amounts of time via struct mm_struct.
->=20
-> Now, without the active reference count regulating visibility all
-> namespace that still are pinned in some way on the system will appear in
-> the listns() output and can be reopened using namespace file handles.
->=20
-> Of course that requires suitable privileges and it's not really a
-> concern per se because a task could've also persist the namespace
-> recorded in struct mm_struct explicitly and then the idle task would
-> still reuse that struct mm_struct and another task could still happily
-> setns() to it afaict and reuse it for something else.
->=20
-> The active reference count though has drawbacks itself. Namely that
-> socket files break the assumption that namespaces can only be opened if
-> there's either live processes pinning the namespace or there are file
-> descriptors open that pin the namespace itself as the socket SIOCGSKNS
-> ioctl() can be used to open a network namespace based on a socket which
-> only indirectly pins a network namespace.
->=20
-> So that punches a whole in the active reference count tracking. So this
-> will have to be handled as right now socket file descriptors that pin a
-> network namespace that don't have an active reference anymore (no live
-> processes, not explicit persistence via namespace fds) can't be used to
-> issue a SIOCGSKNS ioctl() to open the associated network namespace.
->=20
-> So two options I see if the api is based on ids:
->=20
-> (1) We use the active reference count and somehow also make it work with
-> =C2=A0=C2=A0=C2=A0 sockets.
-> (2) The active reference count is not needed and we say that listns() is
-> =C2=A0=C2=A0=C2=A0 an introspection system call anyway so we just always =
-list
-> =C2=A0=C2=A0=C2=A0 namespaces regardless of why they are still pinned: fi=
-les,
-> =C2=A0=C2=A0=C2=A0 mm_struct, network devices, everything is fair game.
-> (3) Throw hands up in the air and just not do it.
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Add a new listns() system call that allows userspace to iterate through
-> namespaces in the system. This provides a programmatic interface to
-> discover and inspect namespaces, enhancing existing namespace apis.
->=20
-> Currently, there is no direct way for userspace to enumerate namespaces
-> in the system. Applications must resort to scanning /proc/<pid>/ns/
-> across all processes, which is:
->=20
-> 1. Inefficient - requires iterating over all processes
-> 2. Incomplete - misses inactive namespaces that aren't attached to any
-> =C2=A0=C2=A0 running process but are kept alive by file descriptors, bind=
- mounts,
-> =C2=A0=C2=A0 or parent namespace references
-> 3. Permission-heavy - requires access to /proc for many processes
-> 4. No ordering or ownership.
-> 5. No filtering per namespace type: Must always iterate and check all
-> =C2=A0=C2=A0 namespaces.
->=20
-> The list goes on. The listns() system call solves these problems by
-> providing direct kernel-level enumeration of namespaces. It is similar
-> to listmount() but obviously tailored to namespaces.
+This series provides:
 
-I've been waiting for such an API for years; thanks for working on it. I mo=
-stly
-deal with network namespaces, where points 2 and 3 are especially painful.
+- implementation of PTP clock adjustments ops for ptp_vmw driver to
+adjust its time and frequency, allowing time transfer from a virtual
+machine to the underlying hypervisor.
 
-Recently, I've used this eBPF snippet to discover (at most 1024, because of=
- the
-verifier's halt checking) network namespaces, even if no process is attache=
-d.
-But I can't do anything with it in userspace since it's not possible to pas=
-s the
-inode number or netns cookie value to setns()...
+- add a module parameter probe_hv_port that allows ptp_vmw driver to
+be loaded even when ACPI is disabled, by directly probing for the
+device using VMware hypervisor port commands.
 
-extern const void net_namespace_list __ksym;
-static void list_all_netns()
-{
-    struct list_head *nslist =3D=C2=A0
-	bpf_core_cast(&net_namespace_list, struct list_head);
+v2:
+- [PATCH 2/2]: remove blank line in ptp_vmw_init()
 
-    struct list_head *iter =3D nslist->next;
+v1 link:
+https://lore.kernel.org/lkml/20250821110323.974367-1-ajay.kaher@broadcom.com/
 
-    bpf_repeat(1024) {
-        const struct net *net =3D=C2=A0
-		bpf_core_cast(container_of(iter, struct net, list), struct
-net);
+Ajay Kaher (2):
+  ptp/ptp_vmw: Implement PTP clock adjustments ops
+  ptp/ptp_vmw: load ptp_vmw driver by directly probing the device
 
-        // bpf_printk("net: %p inode: %u cookie: %lu",=C2=A0
-	//	net, net->ns.inum, net->net_cookie);
+ drivers/ptp/ptp_vmw.c | 109 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 87 insertions(+), 22 deletions(-)
 
-        if (iter->next =3D=3D nslist)
-            break;
-        iter =3D iter->next;
-    }
-}
+-- 
+2.40.4
 
->=20
-> /*
-> =C2=A0* @req: Pointer to struct ns_id_req specifying search parameters
-> =C2=A0* @ns_ids: User buffer to receive namespace IDs
-> =C2=A0* @nr_ns_ids: Size of ns_ids buffer (maximum number of IDs to retur=
-n)
-> =C2=A0* @flags: Reserved for future use (must be 0)
-> =C2=A0*/
-> ssize_t listns(const struct ns_id_req *req, u64 *ns_ids,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 size_t nr_ns_ids, unsigned int flags);
->=20
-> Returns:
-> - On success: Number of namespace IDs written to ns_ids
-> - On error: Negative error code
->=20
-> /*
-> =C2=A0* @size: Structure size
-> =C2=A0* @ns_id: Starting point for iteration; use 0 for first call, then
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 use the last retu=
-rned ID for subsequent calls to paginate
-> =C2=A0* @ns_type: Bitmask of namespace types to include (from enum ns_typ=
-e):
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0: Re=
-turn all namespace types
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 MNT_N=
-S: Mount namespaces
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NET_N=
-S: Network namespaces
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 USER_=
-NS: User namespaces
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 etc. =
-Can be OR'd together
-> =C2=A0* @user_ns_id: Filter results to namespaces owned by this user name=
-space:
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 0: Return all namespaces (subject to permission checks)
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 LISTNS_CURRENT_USER: Namespaces owned by caller's user
-> namespace
-> =C2=A0*=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 Other value: Namespaces owned by the specified user namespace
-> ID
-> =C2=A0*/
-> struct ns_id_req {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u32 size;=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* sizeof(struct ns_id_req) */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u32 spare;=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 /* Reserved, must be 0 */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u64 ns_id;=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 /* Last seen namespace ID (for pagination) */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u32 ns_type;=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 /* Filter by namespace type(s) */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u32 spare2;=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 /* Reserved, must be 0 */
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __u64 user_ns_id;=C2=A0=C2=A0 =
-/* Filter by owning user namespace */
-> };
->=20
-
-After this merged, do you see any chance for backports? Does it rely on rec=
-ent
-bits which is hard/impossible to backport? I'm not aware of backported sysc=
-alls
-but this would be really nice to see in older kernels.
-
-Ferenc
