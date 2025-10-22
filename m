@@ -1,175 +1,112 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A52A2F617D
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA57C2F363E
+	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 07:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761118579; cv=none; b=HN8jpyhhJ4j0BOAczAPKB7w9BkH4pD+gXIuDTzKbBYaqKiDqossXXGAgLny/MeU++ZHwLPLYvCrAvYX8Fa7l/6M1NKnKACwzeOE6HSHyxQHOSrJinCnoRSsG8Yb6Myo83lfJJ6NsfASU7elfHyED4OyDMM8o8Ixef0z+Du7gIr4=
+	t=1761118720; cv=none; b=VcyBRl1QioE7KZY+YKL3RIoUf2FyyRxpfTOHR8RalI/aofGY2MQDfDthXj5ly/t8cWEgIVz2ZbmXie1DDjZJMbGZulV7eYlo+uhfAWwjoUvy704e+EnY1tjW5ZSdmi+wI2MkxOSdjQ3FG8+DyQJoB0PPGpbXWYVIQeAdJ+maufw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761118579; c=relaxed/simple;
-	bh=HtL0aGay5CU8yJyT2Iu8i0PDBnx2pTOwklzMoFah6lY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K2vhVGCKJEgSN+7du8LyHc6UDCJahQuZETxVOM5swXsTtsXlISheCVUEr/n0VDi6+kUR3ChEAtooCg2RrCArixJz0/Qmgij5/f2FBbHA3OtR4ybn0zyVedGbfxzM1ihFHjlxojOtGTQ1M64kUOtFQh4DOuWrlL1EVvXbIc3jHHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uUY/wzPi; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761118720; c=relaxed/simple;
+	bh=k4MMwotRueKQ73IFVBunfx4WBg3XwCGO4UhdsRh7hww=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=XJZg+X92lxHRzVkXv4b6wIwHqMJii1E9JtCA92Bu2mzqzzs8o4QgmYLoaELg4wzDdRSfbLg5aT47cIiPe+nfq3i/9Otk9KFombrFDHV3RjpP8NnPKWdD1Mu5SWKV41A75YU7TZvkJpkFc11VDyuw/nZ0O5WyRNxQRVZetVJ6BdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lHMUCVTE; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uUY/wzPi"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-290d4d421f6so51299025ad.2
-        for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 00:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761118578; x=1761723378; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ne8X6oQ4TY+MTpe6fx1BsCXP/E1vxBBg8ZkVw63H44g=;
-        b=uUY/wzPifgUsJFUghCJryyQaEuc6ihbjoqkj6Wkcqzd1/nrYhrL4eIr+4Un9uJs5z3
-         fEMwkIBT/rGMMXaLONqULUCRot4M+tiRTBn4mZVSNpfl8g/w4wVMPovgvilM3ZubqYz9
-         m1wieEl+be7LC2nrn8jXhXlhNnNwejhHSNotWEJDgtvVRgt9rjWIFygOzi0J1MeSTs0F
-         p/Dc4mi9PMI0d+4mdVIpplQD1Gg0WQ5r9LkzcqWNlbDjPCK0vZ96w4pkUY+pOp7gF3KG
-         uc5xlVZYdDbMbW5hpmysJ8aqgebAxyTuUzw6N0wZFU9q03ItESYdChqjolr933FVMKf7
-         lxzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761118578; x=1761723378;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ne8X6oQ4TY+MTpe6fx1BsCXP/E1vxBBg8ZkVw63H44g=;
-        b=YqM5M25wMYVPC0ai5wA1PXNT4X2DchpeAKYnCmJxqNLAosd5s2U7t188XaBvjPr9yr
-         WDX6ceW8zod2sYPP71xZgpu39WUPzkSC2LTmWFIaDv0EjEe4eRT8G0gQlkJVZYyc5Y+B
-         KfUIDsyISmjMZ/DrH1sW2wjPKefUv+1zBviAZRpQz/YpGH/sm5J0AoGdMRg5t2G9JZ0O
-         tgrp2v67tj5SqBmjxUToPLS752oPztysl5rWm70QeuMENFR8DF5kNSpEO+dMroaHmWSm
-         W51rUpCWVBLuHumiQ5/15LYKzjcLJyONDPwBcKfqXGHIcHP5Ue3EeXTLDgK7pJufKZJH
-         K32Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXpnA+5ZyrS1TX9fT5NuHgW8gQL8xdT1GhmCgWwjM3P2j7rQaRBl4gNHVcoD8Tg5mrYK4VROzs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFXbv01jJNmCZ6gAb52Zc7GC8kJciup2oevPigqSvfPtAEDmeM
-	SEGoUyJV9RBtgAW4Z6BwFu98cJ+6uffksrC3xmWzNi4b5rFK4tD8bdEejkGkC5JFD9WqJlBXg+Z
-	W1Uk4ZFJ/t3jAXG7rPMePk2DC4yzmvjlGae1c/wX4
-X-Gm-Gg: ASbGncu9jcF2i4fLh2r6VQdbjP2ULC5sWdjOl2sJ+M1vA+otKKGNAOKNrabCiSOomJh
-	rsKUv2xsNlc6xWIOP4XU+XNm2VOWXzRGyeFN7OXBNOh8S90T+VkQ1rVckb9kX2jP3tCpk4pJuX9
-	OHPGCtZzu4Fj3NgjSSeIjXut9dCC68oPxwT8ZRQL2LZ83kI5jYdyHbG1+HaZka11r9gVPx14kFl
-	eq1whUkSPrp06jGwPyXEOqDPS1NFs8QE1DgDV0hTYqyBDdRBfYPY4Ls0Jx9c5NKQ01iny/I8Zoz
-	tMp8HbWlbDLKOBS5Gw==
-X-Google-Smtp-Source: AGHT+IF46vH0gAmljTCW6BchroEOcDOXkUgTIvPI2YZtYG9N39bSh/pHYkEmo3qgB6WjMhviNr012jnggIGiG1snhbI=
-X-Received: by 2002:a17:902:e74a:b0:267:776b:a315 with SMTP id
- d9443c01a7336-290caf844ddmr249836795ad.32.1761118577438; Wed, 22 Oct 2025
- 00:36:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lHMUCVTE"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 96E06C0B8B9;
+	Wed, 22 Oct 2025 07:38:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4B6AC606DC;
+	Wed, 22 Oct 2025 07:38:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2502102F2429;
+	Wed, 22 Oct 2025 09:38:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761118715; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=L/XpHoQ2KPQc9riZ+r/LMfIVvh/XodPx0VGR9VmHzQ0=;
+	b=lHMUCVTESZ6XAwXDRj3ZuKEmu+tEJG5Ab94czNKnvFzLiSGHTQTigA4J06IjxO7y0NIRHn
+	f+WPfN/mfOUwJNPKdx+bLvR7Oz4VarTAByGBwJ4amNTsrpS/OGupXpmOGIoifjzTUHs9oF
+	e8Wk1p33qqCerz8CFGCpGRvFQ1DW7bDjoHvpoNWLnqMGcukINRRMi/oH8SL5CL+3qakZQ+
+	vwy4trbmnkOGLL31Yn4SyxeIgXuixl9aZu+hlAUPPR5cf9MLBwh+yil40vW2FIP4Iy/JNJ
+	K4kguJ7rXPzqy67LZA3JV4E+hoGjZT4DDQQN4U+QmSM/dKxu4ZgW4p5LjRTbWw==
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Date: Wed, 22 Oct 2025 09:38:10 +0200
+Subject: [PATCH net-next v2 1/5] dt-bindings: net: cdns,macb: add Mobileye
+ EyeQ5 ethernet interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251021214422.1941691-1-kuniyu@google.com> <20251021214422.1941691-8-kuniyu@google.com>
-In-Reply-To: <20251021214422.1941691-8-kuniyu@google.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 22 Oct 2025 00:36:05 -0700
-X-Gm-Features: AS18NWBKLOhVXyIMHsuYPqRGPiGNf1_PCd92__b5F-phGX71rLqYea5U9RwDCTA
-Message-ID: <CAAVpQUAxenM9_MRAo3z5ChFnr3-DN8yq+mR2xC4+ceuOaSL3=A@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 7/8] sctp: Use sctp_clone_sock() in sctp_do_peeloff().
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	linux-sctp@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20251022-macb-eyeq5-v2-1-7c140abb0581@bootlin.com>
+References: <20251022-macb-eyeq5-v2-0-7c140abb0581@bootlin.com>
+In-Reply-To: <20251022-macb-eyeq5-v2-0-7c140abb0581@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+ =?utf-8?q?Gr=C3=A9gory_Clement?= <gregory.clement@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
+ =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Oct 21, 2025 at 2:44=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> sctp_do_peeloff() calls sock_create() to allocate and initialise
-> struct sock, inet_sock, and sctp_sock, but later sctp_copy_sock()
-> and sctp_sock_migrate() overwrite most fields.
->
-> What sctp_do_peeloff() does is more like accept().
->
-> Let's use sock_create_lite() and sctp_clone_sock().
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> ---
->  net/sctp/socket.c | 36 +++++++++++++++---------------------
->  1 file changed, 15 insertions(+), 21 deletions(-)
->
-> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> index 826f17747f176..60d3e340dfeda 100644
-> --- a/net/sctp/socket.c
-> +++ b/net/sctp/socket.c
-> @@ -5671,11 +5671,11 @@ static int sctp_getsockopt_autoclose(struct sock =
-*sk, int len, char __user *optv
->
->  /* Helper routine to branch off an association to a new socket.  */
->  static int sctp_do_peeloff(struct sock *sk, sctp_assoc_t id,
-> -               struct socket **sockp)
-> +                          struct socket **sockp)
->  {
->         struct sctp_association *asoc =3D sctp_id2assoc(sk, id);
-> -       struct sctp_sock *sp =3D sctp_sk(sk);
->         struct socket *sock;
-> +       struct sock *newsk;
->         int err =3D 0;
->
->         /* Do not peel off from one netns to another one. */
-> @@ -5691,30 +5691,24 @@ static int sctp_do_peeloff(struct sock *sk, sctp_=
-assoc_t id,
->         if (!sctp_style(sk, UDP))
->                 return -EINVAL;
->
-> -       /* Create a new socket.  */
-> -       err =3D sock_create(sk->sk_family, SOCK_SEQPACKET, IPPROTO_SCTP, =
-&sock);
-> -       if (err < 0)
-> +       err =3D sock_create_lite(sk->sk_family, SOCK_SEQPACKET, IPPROTO_S=
-CTP, &sock);
-> +       if (err)
->                 return err;
->
-> -       sctp_copy_sock(sock->sk, sk, asoc);
-> -
-> -       /* Make peeled-off sockets more like 1-1 accepted sockets.
-> -        * Set the daddr and initialize id to something more random and a=
-lso
-> -        * copy over any ip options.
-> -        */
-> -       sp->pf->to_sk_daddr(&asoc->peer.primary_addr, sock->sk);
-> -       sp->pf->copy_ip_options(sk, sock->sk);
-> -
-> -       /* Populate the fields of the newsk from the oldsk and migrate th=
-e
-> -        * asoc to the newsk.
-> -        */
-> -       err =3D sctp_sock_migrate(sk, sock->sk, asoc,
-> -                               SCTP_SOCKET_UDP_HIGH_BANDWIDTH);
-> -       if (err) {
-> +       newsk =3D sctp_clone_sock(sk, asoc, SCTP_SOCKET_UDP_HIGH_BANDWIDT=
-H);
-> +       if (IS_ERR(newsk)) {
->                 sock_release(sock);
-> -               sock =3D NULL;
-> +               *sockp =3D NULL;
-> +               return PTR_ERR(newsk);
->         }
->
-> +       lock_sock_nested(newsk, SINGLE_DEPTH_NESTING);
-> +       __inet_accept(sk->sk_socket, sock, newsk);
+Add "cdns,eyeq5-gem" as compatible for the integrated GEM block inside
+Mobileye EyeQ5 SoCs. It is different from other compatibles in two main
+ways: (1) it requires a generic PHY and (2) it is better to keep TCP
+Segmentation Offload (TSO) disabled.
 
-Oh I assumed __inet_accept() was exported to MPTCP,
-but it's built-in, and SCTP=3Dm needs this.
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+---
+ Documentation/devicetree/bindings/net/cdns,macb.yaml | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 77f6ae0fc231..ffd4d75d0a7a 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -788,6 +788,7 @@ void __inet_accept(struct socket *sock, struct
-socket *newsock, struct sock *new
+diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+index 02f14a0b72f9..ea8337846ab2 100644
+--- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
++++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+@@ -57,6 +57,7 @@ properties:
+           - cdns,np4-macb             # NP4 SoC devices
+           - microchip,sama7g5-emac    # Microchip SAMA7G5 ethernet interface
+           - microchip,sama7g5-gem     # Microchip SAMA7G5 gigabit ethernet interface
++          - mobileye,eyeq5-gem        # Mobileye EyeQ5 SoCs
+           - raspberrypi,rp1-gem       # Raspberry Pi RP1 gigabit ethernet interface
+           - sifive,fu540-c000-gem     # SiFive FU540-C000 SoC
+ 
+@@ -183,6 +184,15 @@ allOf:
+         reg:
+           maxItems: 1
+ 
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: mobileye,eyeq5-gem
++    then:
++      required:
++        - phys
++
+ unevaluatedProperties: false
+ 
+ examples:
 
-  newsock->state =3D SS_CONNECTED;
- }
-+EXPORT_SYMBOL(__inet_accept);
+-- 
+2.51.1
 
- /*
-  * Accept a pending connection. The TCP layer now gives BSD semantics.
-
---
-pw-bot: cr
