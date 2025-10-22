@@ -1,142 +1,118 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from out18.tophost.ch (out18.tophost.ch [46.232.182.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC23B286D53
-	for <netdev@vger.kernel.org>; Wed, 22 Oct 2025 22:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20762F363E;
+	Wed, 22 Oct 2025 22:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761171472; cv=none; b=MVwqWBw9pRD2Us80IhEeLABG/MTcUGRnLkrCbidDl4Yn7T3GzD/UdyeEnCIlPeVGo+im22PajMnMCvZmsOhOuqyI9nqElAjTMMTkiG3iVmWBowSOyjMrtPBHbzPyI0PzLy7KiOgxOgnkXh/7on7ZN1ZBhuLlbPV6q0OVIS5WZFA=
+	t=1761171737; cv=none; b=VudXWiZBzHG0sbzi4HE3Oq3Z4v7PvARIyuJXjiz74DGoQHPOLxj5f3JA2NxOktsk7z9lQlSgFWyvnM5q/a1qIiJuJB7WA2pO0PGFsM/4VzAPtYG0kUE2WLrNKAEmK63boznZzFvbLzwbn5IPC1e2ZCRsi1eZbTvs73oh5L4QC8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761171472; c=relaxed/simple;
-	bh=ecJKK4xqEWMQdohLNwrG1a262eWCzSJl9W3ejMnH2Kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QedXyyVAbKaeCrpVIZk3TwS4m8qxHfpx3N9rZgtj5M4Zfwfk76lClTJa2NqLxiaJHf4saCIzkPURULxLO4XrmnnjxNpcNa8X3iqao+WlzoiSFD1uwANw3pnil3eGroXlmythOwGPKcH7o1t94MKyeRCTVFn5IU1JvZwOjmrXWnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nvy59lCx; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1761171737; c=relaxed/simple;
+	bh=WKx5VvpZNIXxWSYiYC+4avNcCV6AWjTCyle+CNU/ffo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ti6yIGknzhezr1XtcS0geZjr0QTUVTC88XcjKDFj1d9wPUQdqS1nz4NIZcozUD0PfVy5xHbocmETuu6g7XIXfqb10FzU/EgTlNzyp7ZNhEuHc9IvRjveGZ5QjbJ1lTOt3ceMvPlN8MI3hmd/fL5yKgCfM9KY9HN9Nv94AuEoA18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=JnLzqJqq; arc=none smtp.client-ip=46.232.182.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nvy59lCx"
-Message-ID: <679df304-ebbf-4268-9834-b851d96e8366@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761171467;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4+HK4rb9E/9aB/kAkTrE6m4QwZlKN/ZDhogoDFCK3Hg=;
-	b=nvy59lCx5LbxlcajzRYulKeIOTEqWHIdetP2IQHD9HathSvbB3FdED7zObquBNiM/aIuXS
-	CII0zNMSqPnYGhds88EYepMuGZ8iOFIYkHgUYiVZAkG/FQs9z/zX6zPCf5LdrBLtZzak1P
-	auNJ6Mzt26ofLSU/VrBjMcqeSPV1egk=
-Date: Wed, 22 Oct 2025 23:17:42 +0100
+	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="JnLzqJqq"
+Received: from srv125.tophost.ch ([194.150.248.5])
+	by filter1.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vBgxs-00ClhJ-0o; Thu, 23 Oct 2025 00:05:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Dy0GeLCtSDklZ5vNeH6AXOOm7u8pUx5rde9zVsUzSpI=; b=JnLzqJqqcR46wU6fZi+lXWYlIf
+	O08yRgRIb9TOYVoNUZyhJFMOJjAtta2s8QJSQ7hHBRtl+icXcHrkXR6f9QeJSuq6kh8ShUbGSgXp2
+	sARcytkO6STf8UKcSSxP6jdCHtrqmCajo5xo57IXLdOJCxIctOm5kneINiu7f1On5PCJaXkAdUT9T
+	7YoFu/aaIUIs7u3vj0CM+8AtvKlye7qnMmnhQtRtSJx3u5oJ5k6sif03oredLv9L8ju4Fh9KVatUc
+	oBu8wOkcc+FR6RzHs9cAtOCUlZh6GWuXtXJ+CcX97vd39KDqh9/CrkthI4HiKvqaNOo8cF1Ys7l3N
+	josL15/w==;
+Received: from 82-220-106-230.ftth.solnet.ch ([82.220.106.230]:62831 helo=pavilion.lan)
+	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vBgxr-0000000APCP-2JwG;
+	Thu, 23 Oct 2025 00:05:49 +0200
+From: Thomas Wismer <thomas@wismer.xyz>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Thomas Wismer <thomas@wismer.xyz>,
+	Thomas Wismer <thomas.wismer@scs.ch>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: pse-pd: Add TPS23881B support
+Date: Thu, 23 Oct 2025 00:05:16 +0200
+Message-ID: <20251022220519.11252-2-thomas@wismer.xyz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/2] ptp/ptp_vmw: Implement PTP clock adjustments ops
-To: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: kuba@kernel.org, davem@davemloft.net, richardcochran@gmail.com,
- nick.shi@broadcom.com, alexey.makhalov@broadcom.com, andrew+netdev@lunn.ch,
- edumazet@google.com, pabeni@redhat.com, jiashengjiangcool@gmail.com,
- andrew@lunn.ch, viswanathiyyappan@gmail.com, wei.fang@nxp.com,
- rmk+kernel@armlinux.org.uk, vladimir.oltean@nxp.com, cjubran@nvidia.com,
- dtatulea@nvidia.com, tariqt@nvidia.com, netdev@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
- florian.fainelli@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com,
- tapas.kundu@broadcom.com, shubham-sg.gupta@broadcom.com,
- karen.wang@broadcom.com, hari-krishna.ginka@broadcom.com
-References: <20251022105128.3679902-1-ajay.kaher@broadcom.com>
- <20251022105128.3679902-2-ajay.kaher@broadcom.com>
- <fcabc415-17ef-4a68-8651-c55d4388db2b@linux.dev>
- <CAD2QZ9b9+TP1YnpL0DkNqn5kdgxseMooBr8xJ9fMu+0tgtX=vA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CAD2QZ9b9+TP1YnpL0DkNqn5kdgxseMooBr8xJ9fMu+0tgtX=vA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
+X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
+X-Spampanel-Domain: smtpout.tophost.ch
+X-Spampanel-Username: 194.150.248.5
+Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
+X-Spampanel-Outgoing-Class: unsure
+X-Spampanel-Outgoing-Evidence: Combined (0.50)
+X-Recommended-Action: accept
+X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
+ 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zE2i
+ BUVsDEZgnbMbPvvOYsOCn3oZFShGuGVczvnnMQuyCtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
+ daZjkYvkfoqFqk9QphLZk+yqk+tIzthz0vNkOX8Em4cj6D/wdUjFxsH/4KTYIVqFSP1MaBk9W7vD
+ 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
+ L25JS816nuiE0t5pG6MLXGczoanVmeCF7bI0BP7dENKtPTBPq+vGO3Vx+SwwWschmkdvs376y2A4
+ OBi1/UyqO7jQnnICeA+KlS7G8xqewTcs6w6HLg3eq1lKkYVFbZT99AeINpdbOTIWFiLv1jhppNXa
+ xS6MN8xFxlxHZge6OlcoYA//qN5p5dmu6xjQN9nmCfj7VmpmZJyx9iy0UVkVD75IgLollI+8fg4q
+ Ktu8I/h2Z0dHZM6qE0STp2v0JiRE8jha5ZR/nf5efcITxrfNKzy0W9Bd37g8M9SCqD8uOq9nJ+Mm
+ AyVp7BgHET6y8CCeFlQ7QPOIjlkSAfAYMUguLL/iJ9vYqKPILmSoZcvfXhdPMA/OB6L3DS5gd1SE
+ E3USj80Z55NePwA7jxwlhcjVdk/mr85ytrd63MVeviF0i7IZfcqGEigUra+zu74YMVqBb/nqBf/o
+ O9ENx2nriip8WhgYbnEnhEbOEzk5yB9ZHNSFnOUf5Q/AoIx5sTYq7iOI4vCrDScUfr46OzpJNOSz
+ cdwyiT3dKxLhoxcmaInYbR5vlqGvSe+dDtUIqP45C5A7LqP3b1xqO73zx9HsLZFTQ55zlz9aPc+7
+ R744868L+j9WjFdaiDCoaRMMLJurWmXEnoYHaIfVaCHpEB6cFH6WJxE4ZpdasxsGznVQ8gQCuamI
+ BuT6nbBE5ChZV4BXMzDRZJe4rWywFD40ZHFHauI8E1FjrVQSo1zEvYJi0O+7gv2MANPskD2hG/WB
+ q49TQI4s7Zk25QzEh4fdO1UVosIGSxnPvA8wgBLtVZogJpSXh3l1gykJmv2lNIo4lDSAwCBIOnEB
+ yG0AYw9A3oZxIE5agCoT+FgCzw1EjraHBUo7Xjr97ZY6lVqPCo/SwFbRV8YvNj9QUec8VPZi63hI
+ VDdSxAySkA2y1dwxX/fOLxBYDd5BmItKTzNBSIyW/mb8GD9YbxmVCZr9pTSKOJQ0gMAgSDpxAXyp
+ F5LUwHZNY/+yVAGZIWgbevr4I2GfjWs7NecHzbPrZnM57PQ4Zhz+lPAiIO8rB9tRBN1MQm1SbNQ8
+ mfig9wuAva9NlDz7O8ptuOziYJtS9jihx+Za/cV70jOJzN2r4A==
+X-Report-Abuse-To: spam@filter1.tophost.ch
+X-Complaints-To: abuse@filter1.tophost.ch
 
-On 22/10/2025 18:27, Ajay Kaher wrote:
-> On Wed, Oct 22, 2025 at 4:43 PM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
->>
->> On 22/10/2025 11:51, Ajay Kaher wrote:
->>> Implement PTP clock ops that set time and frequency of the underlying
->>> clock. On supported versions of VMware precision clock virtual device,
->>> new commands can adjust its time and frequency, allowing time transfer
->>> from a virtual machine to the underlying hypervisor.
->>>
->>> In case of error, vmware_hypercall doesn't return Linux defined errno,
->>> converting it to -EIO.
->>>
->>> Cc: Shubham Gupta <shubham-sg.gupta@broadcom.com>
->>> Cc: Nick Shi <nick.shi@broadcom.com>
->>> Tested-by: Karen Wang <karen.wang@broadcom.com>
->>> Tested-by: Hari Krishna Ginka <hari-krishna.ginka@broadcom.com>
->>> Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
->>> ---
->>>    drivers/ptp/ptp_vmw.c | 39 +++++++++++++++++++++++++++++----------
->>>    1 file changed, 29 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/drivers/ptp/ptp_vmw.c b/drivers/ptp/ptp_vmw.c
->>> index 20ab05c4d..7d117eee4 100644
->>> --- a/drivers/ptp/ptp_vmw.c
->>> +++ b/drivers/ptp/ptp_vmw.c
->>> @@ -1,6 +1,7 @@
->>>    // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
->>>    /*
->>> - * Copyright (C) 2020 VMware, Inc., Palo Alto, CA., USA
->>> + * Copyright (C) 2020-2023 VMware, Inc., Palo Alto, CA., USA
->>> + * Copyright (C) 2024-2025 Broadcom Ltd.
->>>     *
->>>     * PTP clock driver for VMware precision clock virtual device.
->>>     */
->>> @@ -16,20 +17,36 @@
->>>
->>>    #define VMWARE_CMD_PCLK(nr) ((nr << 16) | 97)
->>>    #define VMWARE_CMD_PCLK_GETTIME VMWARE_CMD_PCLK(0)
->>> +#define VMWARE_CMD_PCLK_SETTIME VMWARE_CMD_PCLK(1)
->>> +#define VMWARE_CMD_PCLK_ADJTIME VMWARE_CMD_PCLK(2)
->>> +#define VMWARE_CMD_PCLK_ADJFREQ VMWARE_CMD_PCLK(3)
->>>
->>>    static struct acpi_device *ptp_vmw_acpi_device;
->>>    static struct ptp_clock *ptp_vmw_clock;
->>>
->>> +/*
->>> + * Helpers for reading and writing to precision clock device.
->>> + */
->>>
->>> -static int ptp_vmw_pclk_read(u64 *ns)
->>> +static int ptp_vmw_pclk_read(int cmd, u64 *ns)
->>>    {
->>>        u32 ret, nsec_hi, nsec_lo;
->>>
->>> -     ret = vmware_hypercall3(VMWARE_CMD_PCLK_GETTIME, 0,
->>> -                             &nsec_hi, &nsec_lo);
->>> +     ret = vmware_hypercall3(cmd, 0, &nsec_hi, &nsec_lo);
->>>        if (ret == 0)
->>>                *ns = ((u64)nsec_hi << 32) | nsec_lo;
->>> -     return ret;
->>> +
->>> +     return ret != 0 ? -EIO : 0;
->>> +}
->>
->> Why do you need to introduce this change? VMWARE_CMD_PCLK_GETTIME is
->> the only command used in read() in both patches of this patchset.
->>
-> 
-> Vadim, thanks for looking into patches.
-> 
-> I have added ptp_vmw_pclk_write() where cmd has been passed as argument.
-> Keeping the same format for ptp_vmw_pclk_read() as well, also may be useful
-> in future.
-> 
-> Let me know if you think it's better to keep ptp_vmw_pclk_read() as it
-> is. I will
-> revert in v3.
+This patch series aims at adding support for the TI TPS23881B PoE
+PSE controller.
 
-I do believe it's better to keep code as is until you have real use of
-new feature. And I'm not quite sure which command you can use to do
-another read?
+Changes in v2:
+- Repost after net-next reopened
+- Split off bugfix commit
+- Improve commit messages
+- Link to v1: https://lore.kernel.org/netdev/20251004180351.118779-2-thomas@wismer.xyz/
+
+Thomas Wismer (2):
+  net: pse-pd: tps23881: Add support for TPS23881B
+  dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
+
+ .../bindings/net/pse-pd/ti,tps23881.yaml      |  1 +
+ drivers/net/pse-pd/tps23881.c                 | 65 +++++++++++++++----
+ 2 files changed, 52 insertions(+), 14 deletions(-)
+
+-- 
+2.43.0
+
