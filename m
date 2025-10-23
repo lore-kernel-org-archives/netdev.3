@@ -1,269 +1,241 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCE01F5827
-	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 21:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CB823D7EC
+	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 22:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761256674; cv=none; b=g960PvAaJ1h4S7nbhh/RsG1KCpH4tyLTKGD9uHqF+zy6ER9Q2dnx0EpyVTIRaMZJaj9yNjRNUeMX8hrCogPa6GJSW2jgNK+zqvXQUME93psm9BnD7YvfrYAbmcbIjEP7qRHQPzLlAQtLco9vZlcl7I7cBrBeAwoNfge/f24YCkQ=
+	t=1761257114; cv=none; b=pPkPpZ1XEOpEjVviFFVBhVTQoJjipqUzrrshDL2n4l6iOj8S7wGMZmwR3i3NIhDqCU6fOPTIG0PQiQ1vJZZVz9pD518cLRYeL2GZAplccMwb/1Ei6dHiGeBJtyV/WNrHlBup3V7LO6rO4cawcvHjg2/K15NLzo+3az3xlxoDSKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761256674; c=relaxed/simple;
-	bh=gDkOmzoP14z1GCVebJrdLtoXgwM0uE5dVdX8pgmVjII=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LdHYBh6cHTtONUwwxGgTnBG43uUw4A10cf2v3sXOpH/HPtmV/tMKqwMsPZR2u1hOqnjixKtUsrD2YwX06oDTM73MqWjeFD/KG/ERGUKoPx90Rs3bmHS39fPWfTgaOkTZVcII+0nnYAV2hfxqMDm/N5i58Vtg4KT9j22gFOar27s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jq+/+ze9; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761257114; c=relaxed/simple;
+	bh=CAFqdWfSLjS8BZ1+ZHhVFkTS4+LFjYeamlw/9adsvk0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WhCOO1QjyRKAr+RhuGgvMEhIGI50wc2pN4ZgXUAffMSj3DTOZ7W5g4mbK7UIbT5RNCAutzFqnkmuuiLglfBQ0hBGDdAOFCVGIMcm5jHlkbxf7jNuRa8W+e0C7HSJ1n7zctQhleTdA6DRzfn8lqpJ5rCgVV61nLCmwD+JQZyXWUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VwfsI74l; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jq+/+ze9"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-269639879c3so12055225ad.2
-        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 14:57:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761256672; x=1761861472; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q9WG+KOo9BCHH3lanx8NKocqYMchJGDyHo5r4QpwNmk=;
-        b=jq+/+ze9q9lnk6F0AUcW9fTDPFGk2+5tkDNwkYDv0a7p3BG8i+2xKgMR2dtE291Psw
-         gHeHZ5QGDRPmRrq6J3G7L0/Jt3zPgjdoJx9WwvXEAoXOO49s/XNsJnHjeIR+KfEDk6nz
-         qDoqQy1r0GJcfYlsVdKyiukow4DVP5shOrD6ivJ1GDiI0NCqoV+1CjK3nlQLTnbJTWOs
-         NLOPMWA5XsRrfV3acQj66zpmtMM9dniSyJjsmGWD0AZYril80GuwZyMcUOXC/T1g1oh0
-         VUMQtij6w62KgT7FXvSrFBvpn0AOt4YjkCFqHpfT2jRk8pbe7OplP5vC3EETWTLsHUd3
-         wcYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761256672; x=1761861472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q9WG+KOo9BCHH3lanx8NKocqYMchJGDyHo5r4QpwNmk=;
-        b=IrJAqGOlr9PyneLCuWaNjsMTZjW0fqJLTaKa+Rpb4Eyi93WL894IzZuBL2vdxit9E1
-         Ej/sC3fy8VdP3uuF9YYmYg8IMmjBshUyZ4m8H7kQeI1WTcKa2xVJI7AljUq6/lcDZoyW
-         /QmM2AsptbvZGm/I+ZG4re2dXzihccZvqbk0YGvS/FYzPfgVLaOXhCnlGUp+sM6Sx0Na
-         Zhsav0XQQsCqR3V36o8s0DISxal6GIOGmp1IUNqbnmipaxj+GoxqTAld0z/Ifr3fnEvr
-         kgih0SVKBGzCsd0pO5XKseNIwrHcCp27GOw1M9K3xzj6C4iVlKSu8uHWr3C9Mac7Q0kh
-         SRhA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9WE1mD4T0cfW9xLMDJ8ue7VgztmndbIrGns80KDHvUIi9xN+c7XItF+9P7lX42i/2YR9voPo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqPGn27eYR+gtDBm4wkYyVzES+IWU4cWNOMSiCeAuMph8VFDr/
-	ykVXuKHBTiLn6I0pHyQHS2dKRQtvRtxaesBqACZTo7coRO0GkQt7yqxTD+rfoVT7lIVhihRAUG+
-	MpjIyoctbLTl3PUKWCua0o7qNoZ/ID7g=
-X-Gm-Gg: ASbGncuwKKQDW2A7MZOqw43suIfMSoG6y4Yn7Z5fMkzTIdMNcp8EyOGSO1gZ7kO52fh
-	y+UxhVmIEZ24wS43KM2gVMvH0PXVdRZu5mQvw8JVZPSCpQ4QwTnD9VXbDZBRi7ASO4ALSAxf2xQ
-	nR/zNELdqToYwpWDl5QZLr0HjVH1DD/ZLmo3eu3nZh1F2EnU9+rtLiMSSfJPjUGFSxYHRs/Y1jF
-	vRFZvm+tQBL048RAPACxkdz+sUHVza8kX+VlBXA7Pvd0n1wcPRU7wxIzQCehPCLzYM2KBRm6wFC
-	CVNxT5jpfVmJySH4HnNicFXNi1FhJA==
-X-Google-Smtp-Source: AGHT+IHT71u2lGyclYwLkstTK2gIVOr5R+zvwzIUtz5iOzpZIwYnd2M+Eglq5zNM3G0PQ0V1gAnlJXHXBnY0BFqhWsQ=
-X-Received: by 2002:a17:903:19e5:b0:24e:593b:d107 with SMTP id
- d9443c01a7336-290caf85236mr311281715ad.32.1761256672434; Thu, 23 Oct 2025
- 14:57:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VwfsI74l"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761257110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VNu7LifUxSEnJav5ZiNmulMkCNYdAESN1aWG7TtYj48=;
+	b=VwfsI74lnggT0cP0Bz8WlvelvjMBdod93Ykj6LXqxWBvftCgmAb7caTFWM0wfgrdH0q5EL
+	KAait7UBY2yvJQ5ExcpJmvAkeRzIqMBcpa6e/n3PrEGGjrbNNPiDvVuXaCRAILMCGqTgJk
+	mlY2GElhFV7kDwuwPMp2a7n9oitztUs=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Jian Shen <shenjian15@huawei.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Paul Barker <paul@pbarker.dev>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Cc: linux-renesas-soc@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	netdev@vger.kernel.org,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: [PATCH net-next v5 1/6] octeontx2: convert to ndo_hwtstamp API
+Date: Thu, 23 Oct 2025 22:04:52 +0000
+Message-ID: <20251023220457.3201122-2-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251023220457.3201122-1-vadim.fedorenko@linux.dev>
+References: <20251023220457.3201122-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADvbK_eGSkXO1F168tCKd37hNqTVhPLprWpXOM-Z3KN29dB=Zg@mail.gmail.com>
- <20251023204833.3749214-1-kuniyu@google.com>
-In-Reply-To: <20251023204833.3749214-1-kuniyu@google.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 23 Oct 2025 17:57:40 -0400
-X-Gm-Features: AS18NWDsx_UZlCPi1WP_2w7PSPPLODZDwSODMiCEI-KmDydayqlE_1iKzCLPUuI
-Message-ID: <CADvbK_eObVPH9GJfkpCsHt1obg6sDY0jQ0cpA=c6yyjRiQEaYw@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 4/8] net: Add sk_clone().
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, kuni1840@gmail.com, linux-sctp@vger.kernel.org, 
-	marcelo.leitner@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Oct 23, 2025 at 4:48=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> From: Xin Long <lucien.xin@gmail.com>
-> Date: Thu, 23 Oct 2025 15:55:57 -0400
-> > On Thu, Oct 23, 2025 at 3:22=E2=80=AFPM Kuniyuki Iwashima <kuniyu@googl=
-e.com> wrote:
-> > >
-> > > On Thu, Oct 23, 2025 at 12:08=E2=80=AFPM Xin Long <lucien.xin@gmail.c=
-om> wrote:
-> > > >
-> > > > On Wed, Oct 22, 2025 at 6:57=E2=80=AFPM Kuniyuki Iwashima <kuniyu@g=
-oogle.com> wrote:
-> > > > >
-> > > > > On Wed, Oct 22, 2025 at 3:04=E2=80=AFPM Xin Long <lucien.xin@gmai=
-l.com> wrote:
-> > > > > >
-> > > > > > On Wed, Oct 22, 2025 at 5:17=E2=80=AFPM Kuniyuki Iwashima <kuni=
-yu@google.com> wrote:
-> > > > > > >
-> > > > > > > sctp_accept() will use sk_clone_lock(), but it will be called
-> > > > > > > with the parent socket locked, and sctp_migrate() acquires th=
-e
-> > > > > > > child lock later.
-> > > > > > >
-> > > > > > > Let's add no lock version of sk_clone_lock().
-> > > > > > >
-> > > > > > > Note that lockdep complains if we simply use bh_lock_sock_nes=
-ted().
-> > > > > > >
-> > > > > > > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > > > > > > ---
-> > > > > > >  include/net/sock.h |  7 ++++++-
-> > > > > > >  net/core/sock.c    | 21 ++++++++++++++-------
-> > > > > > >  2 files changed, 20 insertions(+), 8 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/include/net/sock.h b/include/net/sock.h
-> > > > > > > index 01ce231603db..c7e58b8e8a90 100644
-> > > > > > > --- a/include/net/sock.h
-> > > > > > > +++ b/include/net/sock.h
-> > > > > > > @@ -1822,7 +1822,12 @@ struct sock *sk_alloc(struct net *net,=
- int family, gfp_t priority,
-> > > > > > >  void sk_free(struct sock *sk);
-> > > > > > >  void sk_net_refcnt_upgrade(struct sock *sk);
-> > > > > > >  void sk_destruct(struct sock *sk);
-> > > > > > > -struct sock *sk_clone_lock(const struct sock *sk, const gfp_=
-t priority);
-> > > > > > > +struct sock *sk_clone(const struct sock *sk, const gfp_t pri=
-ority, bool lock);
-> > > > > > > +
-> > > > > > > +static inline struct sock *sk_clone_lock(const struct sock *=
-sk, const gfp_t priority)
-> > > > > > > +{
-> > > > > > > +       return sk_clone(sk, priority, true);
-> > > > > > > +}
-> > > > > > >
-> > > > > > >  struct sk_buff *sock_wmalloc(struct sock *sk, unsigned long =
-size, int force,
-> > > > > > >                              gfp_t priority);
-> > > > > > > diff --git a/net/core/sock.c b/net/core/sock.c
-> > > > > > > index a99132cc0965..0a3021f8f8c1 100644
-> > > > > > > --- a/net/core/sock.c
-> > > > > > > +++ b/net/core/sock.c
-> > > > > > > @@ -2462,13 +2462,16 @@ static void sk_init_common(struct soc=
-k *sk)
-> > > > > > >  }
-> > > > > > >
-> > > > > > >  /**
-> > > > > > > - *     sk_clone_lock - clone a socket, and lock its clone
-> > > > > > > - *     @sk: the socket to clone
-> > > > > > > - *     @priority: for allocation (%GFP_KERNEL, %GFP_ATOMIC, =
-etc)
-> > > > > > > + * sk_clone - clone a socket
-> > > > > > > + * @sk: the socket to clone
-> > > > > > > + * @priority: for allocation (%GFP_KERNEL, %GFP_ATOMIC, etc)
-> > > > > > > + * @lock: if true, lock the cloned sk
-> > > > > > >   *
-> > > > > > > - *     Caller must unlock socket even in error path (bh_unlo=
-ck_sock(newsk))
-> > > > > > > + * If @lock is true, the clone is locked by bh_lock_sock(), =
-and
-> > > > > > > + * caller must unlock socket even in error path by bh_unlock=
-_sock().
-> > > > > > >   */
-> > > > > > > -struct sock *sk_clone_lock(const struct sock *sk, const gfp_=
-t priority)
-> > > > > > > +struct sock *sk_clone(const struct sock *sk, const gfp_t pri=
-ority,
-> > > > > > > +                     bool lock)
-> > > > > > >  {
-> > > > > > >         struct proto *prot =3D READ_ONCE(sk->sk_prot);
-> > > > > > >         struct sk_filter *filter;
-> > > > > > > @@ -2497,9 +2500,13 @@ struct sock *sk_clone_lock(const struc=
-t sock *sk, const gfp_t priority)
-> > > > > > >                 __netns_tracker_alloc(sock_net(newsk), &newsk=
-->ns_tracker,
-> > > > > > >                                       false, priority);
-> > > > > > >         }
-> > > > > > > +
-> > > > > > >         sk_node_init(&newsk->sk_node);
-> > > > > > >         sock_lock_init(newsk);
-> > > > > > > -       bh_lock_sock(newsk);
-> > > > > > > +
-> > > > > > > +       if (lock)
-> > > > > > > +               bh_lock_sock(newsk);
-> > > > > > > +
-> > > > > > does it really need bh_lock_sock() that early, if not, maybe we=
- can move
-> > > > > > it out of sk_clone_lock(), and names sk_clone_lock() back to sk=
-_clone()?
-> > > > >
-> > > > > I think sk_clone_lock() and leaf functions do not have
-> > > > > lockdep_sock_is_held(), and probably the closest one is
-> > > > > security_inet_csk_clone() which requires lock_sock() for
-> > > > > bpf_setsockopt(), this can be easily adjusted though.
-> > > > > (see bpf_lsm_locked_sockopt_hooks)
-> > > > >
-> > > > Right.
-> > > >
-> > > > > Only concern would be moving bh_lock_sock() there will
-> > > > > introduce one cache line miss.
-> > > > I think it=E2=80=99s negligible, and it=E2=80=99s not even on the d=
-ata path, though others
-> > > > may have different opinions.
-> > >
-> > > For SCTP, yes, but I'd avoid it for TCP.
-> > Okay, not a problem, just doesn't look common to pass such a parameter.
->
-> Another option would be add a check like this ?
->
-> ---8<---
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index c7e58b8e8a90..e708b70b04da 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -2904,6 +2904,12 @@ static inline bool sk_is_inet(const struct sock *s=
-k)
->         return family =3D=3D AF_INET || family =3D=3D AF_INET6;
->  }
->
-> +static inline bool sk_is_sctp(const struct sock *sk)
-> +{
-> +       return IS_ENABLED(CONFIG_SCTP) &&
-> +               sk->sk_protocol =3D=3D IPPROTO_SCTP;
-> +}
-> +
-Oh, better not, I'm actually planning to use sk_clone() in quic_accept() :D
+Convert driver to use .ndo_hwtstamp_get()/.ndo_hwtstamp_set() callbacks.
+otx2_ioctl() becomes empty, remove it.
 
-https://github.com/lxin/quic/blob/main/modules/net/quic/socket.c#L1421
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+---
+ .../marvell/octeontx2/nic/otx2_common.h       |  9 ++-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 56 +++++++++----------
+ .../ethernet/marvell/octeontx2/nic/otx2_vf.c  |  3 +-
+ 3 files changed, 33 insertions(+), 35 deletions(-)
 
->  static inline bool sk_is_tcp(const struct sock *sk)
->  {
->         return sk_is_inet(sk) &&
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 0a3021f8f8c1..ed5f36c6f33e 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -2470,10 +2470,10 @@ static void sk_init_common(struct sock *sk)
->   * If @lock is true, the clone is locked by bh_lock_sock(), and
->   * caller must unlock socket even in error path by bh_unlock_sock().
->   */
-> -struct sock *sk_clone(const struct sock *sk, const gfp_t priority,
-> -                     bool lock)
-> +struct sock *sk_clone(const struct sock *sk, const gfp_t priority)
->  {
->         struct proto *prot =3D READ_ONCE(sk->sk_prot);
-> +       bool lock =3D !sk_is_sctp(sk);
->         struct sk_filter *filter;
->         bool is_charged =3D true;
->         struct sock *newsk;
-> @@ -2597,7 +2597,8 @@ struct sock *sk_clone(const struct sock *sk, const =
-gfp_t priority,
->          * destructor and make plain sk_free()
->          */
->         newsk->sk_destruct =3D NULL;
-> -       bh_unlock_sock(newsk);
-> +       if (lock)
-> +               bh_unlock_sock(newsk);
->         sk_free(newsk);
->         newsk =3D NULL;
->         goto out;
-> ---8<---
->
->
-> >
-> > There is also bh_unlock_sock(newsk) in the free path in sk_clone(),
-> > does it also need a 'if (lock)' check?
->
-> Good catch.  Will fix it in v3.
->
-> Thanks!
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index 1c8a3c078a64..ec26d1b6c789 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -527,7 +527,7 @@ struct otx2_nic {
+ 	u32			nix_lmt_size;
+ 
+ 	struct otx2_ptp		*ptp;
+-	struct hwtstamp_config	tstamp;
++	struct kernel_hwtstamp_config tstamp;
+ 
+ 	unsigned long		rq_bmap;
+ 
+@@ -1098,8 +1098,11 @@ int otx2_open(struct net_device *netdev);
+ int otx2_stop(struct net_device *netdev);
+ int otx2_set_real_num_queues(struct net_device *netdev,
+ 			     int tx_queues, int rx_queues);
+-int otx2_ioctl(struct net_device *netdev, struct ifreq *req, int cmd);
+-int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr);
++int otx2_config_hwtstamp_get(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config);
++int otx2_config_hwtstamp_set(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack);
+ 
+ /* MCAM filter related APIs */
+ int otx2_mcam_flow_init(struct otx2_nic *pf);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index e808995703cf..a7feb4c392b3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -2445,18 +2445,26 @@ static int otx2_config_hw_tx_tstamp(struct otx2_nic *pfvf, bool enable)
+ 	return 0;
+ }
+ 
+-int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
++int otx2_config_hwtstamp_get(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config)
++{
++	struct otx2_nic *pfvf = netdev_priv(netdev);
++
++	*config = pfvf->tstamp;
++	return 0;
++}
++EXPORT_SYMBOL(otx2_config_hwtstamp_get);
++
++int otx2_config_hwtstamp_set(struct net_device *netdev,
++			     struct kernel_hwtstamp_config *config,
++			     struct netlink_ext_ack *extack)
+ {
+ 	struct otx2_nic *pfvf = netdev_priv(netdev);
+-	struct hwtstamp_config config;
+ 
+ 	if (!pfvf->ptp)
+ 		return -ENODEV;
+ 
+-	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
+-		return -EFAULT;
+-
+-	switch (config.tx_type) {
++	switch (config->tx_type) {
+ 	case HWTSTAMP_TX_OFF:
+ 		if (pfvf->flags & OTX2_FLAG_PTP_ONESTEP_SYNC)
+ 			pfvf->flags &= ~OTX2_FLAG_PTP_ONESTEP_SYNC;
+@@ -2465,8 +2473,11 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 		otx2_config_hw_tx_tstamp(pfvf, false);
+ 		break;
+ 	case HWTSTAMP_TX_ONESTEP_SYNC:
+-		if (!test_bit(CN10K_PTP_ONESTEP, &pfvf->hw.cap_flag))
++		if (!test_bit(CN10K_PTP_ONESTEP, &pfvf->hw.cap_flag)) {
++			NL_SET_ERR_MSG_MOD(extack,
++					   "One-step time stamping is not supported");
+ 			return -ERANGE;
++		}
+ 		pfvf->flags |= OTX2_FLAG_PTP_ONESTEP_SYNC;
+ 		schedule_delayed_work(&pfvf->ptp->synctstamp_work,
+ 				      msecs_to_jiffies(500));
+@@ -2478,7 +2489,7 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 		return -ERANGE;
+ 	}
+ 
+-	switch (config.rx_filter) {
++	switch (config->rx_filter) {
+ 	case HWTSTAMP_FILTER_NONE:
+ 		otx2_config_hw_rx_tstamp(pfvf, false);
+ 		break;
+@@ -2497,35 +2508,17 @@ int otx2_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
+ 	case HWTSTAMP_FILTER_PTP_V2_SYNC:
+ 	case HWTSTAMP_FILTER_PTP_V2_DELAY_REQ:
+ 		otx2_config_hw_rx_tstamp(pfvf, true);
+-		config.rx_filter = HWTSTAMP_FILTER_ALL;
++		config->rx_filter = HWTSTAMP_FILTER_ALL;
+ 		break;
+ 	default:
+ 		return -ERANGE;
+ 	}
+ 
+-	memcpy(&pfvf->tstamp, &config, sizeof(config));
++	pfvf->tstamp = *config;
+ 
+-	return copy_to_user(ifr->ifr_data, &config,
+-			    sizeof(config)) ? -EFAULT : 0;
+-}
+-EXPORT_SYMBOL(otx2_config_hwtstamp);
+-
+-int otx2_ioctl(struct net_device *netdev, struct ifreq *req, int cmd)
+-{
+-	struct otx2_nic *pfvf = netdev_priv(netdev);
+-	struct hwtstamp_config *cfg = &pfvf->tstamp;
+-
+-	switch (cmd) {
+-	case SIOCSHWTSTAMP:
+-		return otx2_config_hwtstamp(netdev, req);
+-	case SIOCGHWTSTAMP:
+-		return copy_to_user(req->ifr_data, cfg,
+-				    sizeof(*cfg)) ? -EFAULT : 0;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
++	return 0;
+ }
+-EXPORT_SYMBOL(otx2_ioctl);
++EXPORT_SYMBOL(otx2_config_hwtstamp_set);
+ 
+ static int otx2_do_set_vf_mac(struct otx2_nic *pf, int vf, const u8 *mac)
+ {
+@@ -2942,7 +2935,6 @@ static const struct net_device_ops otx2_netdev_ops = {
+ 	.ndo_set_features	= otx2_set_features,
+ 	.ndo_tx_timeout		= otx2_tx_timeout,
+ 	.ndo_get_stats64	= otx2_get_stats64,
+-	.ndo_eth_ioctl		= otx2_ioctl,
+ 	.ndo_set_vf_mac		= otx2_set_vf_mac,
+ 	.ndo_set_vf_vlan	= otx2_set_vf_vlan,
+ 	.ndo_get_vf_config	= otx2_get_vf_config,
+@@ -2951,6 +2943,8 @@ static const struct net_device_ops otx2_netdev_ops = {
+ 	.ndo_xdp_xmit           = otx2_xdp_xmit,
+ 	.ndo_setup_tc		= otx2_setup_tc,
+ 	.ndo_set_vf_trust	= otx2_ndo_set_vf_trust,
++	.ndo_hwtstamp_get	= otx2_config_hwtstamp_get,
++	.ndo_hwtstamp_set	= otx2_config_hwtstamp_set,
+ };
+ 
+ int otx2_wq_init(struct otx2_nic *pf)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index 25381f079b97..f4fdbfba8667 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -534,8 +534,9 @@ static const struct net_device_ops otx2vf_netdev_ops = {
+ 	.ndo_set_features = otx2vf_set_features,
+ 	.ndo_get_stats64 = otx2_get_stats64,
+ 	.ndo_tx_timeout = otx2_tx_timeout,
+-	.ndo_eth_ioctl	= otx2_ioctl,
+ 	.ndo_setup_tc = otx2_setup_tc,
++	.ndo_hwtstamp_get = otx2_config_hwtstamp_get,
++	.ndo_hwtstamp_set = otx2_config_hwtstamp_set,
+ };
+ 
+ static int otx2_vf_wq_init(struct otx2_nic *vf)
+-- 
+2.47.3
+
