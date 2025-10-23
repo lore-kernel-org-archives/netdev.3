@@ -1,63 +1,107 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11948314A8B
-	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 13:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534C531BCAB
+	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 13:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761225926; cv=none; b=eWXNCnNdcsUZe5l+/nrTvLfRmR/jzkj5qIBiYCD76dqVKa8sNfOrbyVBf0nmun1ijheh25IoeQts7fQoAv1ijh+vKcj9SHqfUtG2vQcij34OrJSN0JzlYJ6WYKkV2isTEiA6H+Oqz4fNNghMW3nqk/Is3tREXjl2QYlgSY4q/+8=
+	t=1761226033; cv=none; b=d2ZymTn628g3NF+Q68b+G4kMy7HgyE0dvt/wCyNpQzz5IyVkiuexoytmOOXhANgESzF6zZZCDStNYAzpp8/1dsFZKXxNne329Zq+0tJJ6fK+ayVaMmfifeC+4Y80Lm+tybYaKZ19qtDP3FlZL72Eik196fr/fIn45Is4blZ67qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761225926; c=relaxed/simple;
-	bh=y1KBOkGWo+cxp0tw+MUOUkNhsEp131n/hQPCYy/su8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7fgiNXm3eAe9L/TexdXtTWEFf3EUpGTtgJrUgGaA30IeS2aCsZsTIzXCupI3+jZl5J3DWNjkS/f/MdN4NHHpkYdPOTEB+KJg3oskDYJpylgi7tWarsFrMawafbrppK5b2dZ2mMhTmJ+NIW152eQb4YcNmG/yA/ZEVHzu+nJKFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=AhuTSbGY; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1761226033; c=relaxed/simple;
+	bh=ep8fhLyuGrAcfV5jfSM/Wn0CDxtlRo3rdJq3h65NU4M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oGuLJs6xoQ36OYBGNQVFm1gUe3G1+KcgI5CXeeqW0uHGI2ReuwOk2cAey/aVvKIlfHFUgIVsGX/xm04npzPaWnfLRaiRvXbbwuSl+OvgYKDO4y/IKO8IpchDizwc3Y9aQSzi/8SZaLLirIl9PTve8R5eAI+14MT+zytEMUYlc54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O9105PBM; arc=none smtp.client-ip=209.85.214.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="AhuTSbGY"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59NAhPWC029748;
-	Thu, 23 Oct 2025 13:25:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=oErhq
-	fUltZJjpz0K0emhvcrC3uZvk6hI0+0/6ttMvGY=; b=AhuTSbGYwfLHdwb/DGd5x
-	DZzqYK//V6KkPM6W7ov1w4e+7irzsJG05ArCAEOhShk4LWsAGI5lDPUOiz1XtXRG
-	wLj2vl4mS/1RhMqpe6PnbFNHOrn4kCy7m/DRFo3HSz59xf5EjO6y2B85P9kFuyQh
-	125X4GCQOlvXhpE/UGZV7Xd7LG5u5zLwkaLe4qpLwxWVThJVNzwK+qavMEkdTxjP
-	JL7VpRvfzK1Ltkn8FrcNKu0kn2FiYNBWclaMKLAvn4F/tfjzeno3SXp5MEzklZ7s
-	GxPaGt+oRm0SzPqdFT27TIq/v/tsZ/V3fENfSNBxa//gFz/7//kbkyEPQFi/Iknn
-	Q==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49xvcyagmy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 13:25:12 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59NCZvcW012006;
-	Thu, 23 Oct 2025 13:25:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 49v1bet7vj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 13:25:11 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 59NDOxMv039830;
-	Thu, 23 Oct 2025 13:25:11 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 49v1bet7v1-2;
-	Thu, 23 Oct 2025 13:25:10 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-        andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
-        edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc: alok.a.tiwarilinux@gmail.com, alok.a.tiwari@oracle.com
-Subject: [PATCH net-next v2 2/2] idpf: fix typos and correct doc comments in idpf driver
-Date: Thu, 23 Oct 2025 06:25:03 -0700
-Message-ID: <20251023132507.1102549-2-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251023132507.1102549-1-alok.a.tiwari@oracle.com>
-References: <20251023132507.1102549-1-alok.a.tiwari@oracle.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O9105PBM"
+Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-27c369f8986so6694605ad.3
+        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 06:27:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761226030; x=1761830830;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DdEwlf4lZgfKN/2rvuQzkYwSMC8ltz7SUViQK3FN+oQ=;
+        b=oNPURf2dD+Wni6i7rqKy9oaEQObh30jlRElXZo6TF1x8MGyZvGHixKfK356+/mpo5A
+         e2jUcKoAPTL/REcDv45UslnZXnQ4s/R6yG8SqKh8slhiG/o1cNYJ4c4y8SZEcAlQqvvA
+         RAtq5tV2kT6UqHKD1Y9HICqfrx3ds1tuH9oRfujFPV+uB19N5W4HYRXFrb2G5dTlGBWs
+         fICh70rak/1Vb1Du8Y1Cuoo4O2+mp2egwliMyQ6cOH1BTFy5SDkCmazoLF4Do5bVivlU
+         h5jK8t+2cjZE/0lWTLvirKau6IR6+TP6T4a5cnAbBCuP9d+S/1F4/4zyxrAoc8YrOJyM
+         Cc6g==
+X-Gm-Message-State: AOJu0YyfhgMA6qjmVlnhZF7zuHhpPZGtKj3UyH6TyGrn7GTeeHDVF9PP
+	uh+uIvrgQtHk+By76Aid2dO6Sr8K90huS4drfrQQ6AdnJNep6sXbxIME0cEVZ5hsiSLRGgSiW9d
+	7blcOmeUcIbYY1sNs4oYosRK6wfnRenlGFTYjcfDRX5j2LpdA5hToUeC1PhsK38BdmJlecGmfIS
+	77K9slvpSi7t7R394D9xKB7ZxsmHqYN7D/wGr3Iwf6wTAQlx3WbZL2DM0tuvXMdhMMdsiZ2yXKM
+	/jtpnwg
+X-Gm-Gg: ASbGncuZee+ZrMyltByJSFdBOMqZqcWZ4vIENvCVvqJeaSMqm26CIIWVbY5HQyqnzDf
+	aJfoHCrlgDTudsg11ifqXCQUQmmfz57oh5Sxr+W73YHWa7WVxV+R4ifCg62z8LnlfTJ4c9w+Hs5
+	BNAQNybaSlo00pFygU7lMaGSpQJ8TqnDuwu/3mtyAcaRg5i7xngOI4YLYjzntntNaVTpouUZs4U
+	jgt+mlYmtZoRdR2vsU+yl3iI3dJEtACakoOl1vq5IkLUgV56q46rP+P+JLPZdbJN2LeZAYhspFk
+	FTsP0OKPk+pIpWcpZeO+AHivgjXM6rZ+6APxSsOShDjHKaXESm7wAylxESn9Ybu7h57o47GyCzn
+	OO2vPfujctim09O6pDor3r7IeTeZCi3I4pGDNimYEbB0sPoiy7m+A4Y4fbYJvpNfo8WIQ0XGsJZ
+	LJzOADGjAXPUDEO5QmW4OJkw+Y4F1OgnYh4w==
+X-Google-Smtp-Source: AGHT+IFsEg3iSLbebt0Ha0yUnmsiCrako1wf21djjoZNjBidT8Hw7gkmi843dPNqhz6XRnSY3nGSxZXvh3RM
+X-Received: by 2002:a17:903:2990:b0:264:8a8d:92e8 with SMTP id d9443c01a7336-290ccab59b1mr313516315ad.59.1761226030359;
+        Thu, 23 Oct 2025 06:27:10 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-102.dlp.protect.broadcom.com. [144.49.247.102])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2946df82ba5sm2246945ad.52.2025.10.23.06.27.09
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 23 Oct 2025 06:27:10 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-28c58e009d1so20801715ad.3
+        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 06:27:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1761226028; x=1761830828; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DdEwlf4lZgfKN/2rvuQzkYwSMC8ltz7SUViQK3FN+oQ=;
+        b=O9105PBMaao7gkWMnFJmCn+6FdDnCerCtBP7/+rSyFiIQhvDuB1dJ+faSZ11serRxH
+         8A9W09p2ayJYBfNzqmxQNUSqoLrXh7susxcdSANv1PkRv+f6jpZvlrJw+YmbBGjHLAUi
+         EB7iHsoz3ZQfsPVEUgArcxe1vWXbDspe5BJbo=
+X-Received: by 2002:a17:903:1a0b:b0:290:b14c:4f37 with SMTP id d9443c01a7336-290cb9475cfmr317695775ad.30.1761226028133;
+        Thu, 23 Oct 2025 06:27:08 -0700 (PDT)
+X-Received: by 2002:a17:903:1a0b:b0:290:b14c:4f37 with SMTP id d9443c01a7336-290cb9475cfmr317695185ad.30.1761226027582;
+        Thu, 23 Oct 2025 06:27:07 -0700 (PDT)
+Received: from photon-dev-haas.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946dfc204fsm23739785ad.60.2025.10.23.06.27.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 06:27:07 -0700 (PDT)
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+To: vadim.fedorenko@linux.dev,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	richardcochran@gmail.com,
+	nick.shi@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jiashengjiangcool@gmail.com,
+	andrew@lunn.ch,
+	viswanathiyyappan@gmail.com,
+	wei.fang@nxp.com,
+	rmk+kernel@armlinux.org.uk,
+	vladimir.oltean@nxp.com,
+	cjubran@nvidia.com,
+	dtatulea@nvidia.com,
+	tariqt@nvidia.com
+Cc: netdev@vger.kernel.org,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	florian.fainelli@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	tapas.kundu@broadcom.com,
+	shubham-sg.gupta@broadcom.com,
+	karen.wang@broadcom.com,
+	hari-krishna.ginka@broadcom.com,
+	ajay.kaher@broadcom.com
+Subject: [PATCH v3 0/2] ptp/ptp_vmw: enhancements to ptp_vmw
+Date: Thu, 23 Oct 2025 13:10:46 +0000
+Message-Id: <20251023131048.3718441-1-ajay.kaher@broadcom.com>
+X-Mailer: git-send-email 2.40.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,114 +109,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-23_01,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- malwarescore=0 bulkscore=0 phishscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510230122
-X-Authority-Analysis: v=2.4 cv=GqlPO01C c=1 sm=1 tr=0 ts=68fa2cb8 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=CDr7rAr7om32PigXHikA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDIyMDA3MyBTYWx0ZWRfX9eU3RtQIaJ9Q
- tjH7L4E5UpFa7/yp8Cg5LlnP/LyvyHeI2w/A1IGA30kSwfB8jlIt/086xy9P5RhNm4Czeeg7eMt
- pRQrl75Mh+DhZtnk3PQpIx99HoRymSJAhkJDK5ElXCg/qss8+VH41ndEAs5KCzW5q/9duyZykGA
- NLEnLxgmKMYjDXIhxCuiKhzQphrbQJFqCfK85WRa1ZZijBjWHgQOOijp6Z8o/N36ePCCTDPVKjM
- JyD5h/A3Y5fAGzxdDlLcM8vwmMV+abVoh5S601ikvvbkMZEo4hrWjc5yuE+MXd9XvXxVtY8kd3O
- QlQB+uh5U3Mq3kSC8l7V/PIug7Kyf0KhIweXTMFRwk+Aru6brseqAVLjyuHcWf5xm7NT4E2ew5y
- N5/+LDU3g/+W+A+CPkGqOYezbVcFHg==
-X-Proofpoint-GUID: C305eqO858MWffxZG8XelQfHhaOFBno4
-X-Proofpoint-ORIG-GUID: C305eqO858MWffxZG8XelQfHhaOFBno4
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-- Corrected a typo: "controq" -> "control"
-- Updated return value description to accurately reflect behaviour:
-  changed "Returns true if there's any budget left" ->
-  "Returns number of packets cleaned from this queue"
-- use "Returns:" instead of "Returns" aligning with kernel-doc
+This series provides:
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
-v1 -> v2
-(idpf_singleq_txrx.c)
-"Returns" -> "Returns:" aligning with kernel-doc
----
- drivers/net/ethernet/intel/idpf/idpf_controlq.c     |  2 +-
- drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+- implementation of PTP clock adjustments ops for ptp_vmw driver to
+adjust its time and frequency, allowing time transfer from a virtual
+machine to the underlying hypervisor.
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-index 67894eda2d29..59558e2f45cf 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-@@ -92,7 +92,7 @@ static void idpf_ctlq_init_rxq_bufs(struct idpf_ctlq_info *cq)
-  * @hw: pointer to hw struct
-  * @cq: pointer to the specific Control queue
-  *
-- * The main shutdown routine for any controq queue
-+ * The main shutdown routine for any control queue
-  */
- static void idpf_ctlq_shutdown(struct idpf_hw *hw, struct idpf_ctlq_info *cq)
- {
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index 61e613066140..3f0745d04b86 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -10,7 +10,7 @@
-  * @skb: pointer to skb
-  * @off: pointer to struct that holds offload parameters
-  *
-- * Returns 0 or error (negative) if checksum offload cannot be executed, 1
-+ * Returns: 0 or error (negative) if checksum offload cannot be executed, 1
-  * otherwise.
-  */
- static int idpf_tx_singleq_csum(struct sk_buff *skb,
-@@ -407,7 +407,7 @@ static void idpf_tx_singleq_build_ctx_desc(struct idpf_tx_queue *txq,
-  * @skb: send buffer
-  * @tx_q: queue to send buffer on
-  *
-- * Returns NETDEV_TX_OK if sent, else an error code
-+ * Returns: NETDEV_TX_OK if sent, else an error code
-  */
- netdev_tx_t idpf_tx_singleq_frame(struct sk_buff *skb,
- 				  struct idpf_tx_queue *tx_q)
-@@ -585,7 +585,7 @@ static bool idpf_tx_singleq_clean(struct idpf_tx_queue *tx_q, int napi_budget,
-  * @budget: Used to determine if we are in netpoll
-  * @cleaned: returns number of packets cleaned
-  *
-- * Returns false if clean is not complete else returns true
-+ * Returns: false if clean is not complete else returns true
-  */
- static bool idpf_tx_singleq_clean_all(struct idpf_q_vector *q_vec, int budget,
- 				      int *cleaned)
-@@ -886,7 +886,7 @@ static void idpf_rx_buf_hw_update(struct idpf_rx_queue *rxq, u32 val)
-  * @rx_q: queue for which the hw buffers are allocated
-  * @cleaned_count: number of buffers to replace
-  *
-- * Returns false if all allocations were successful, true if any fail
-+ * Returns: false if all allocations were successful, true if any fail
-  */
- bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_rx_queue *rx_q,
- 				      u16 cleaned_count)
-@@ -1029,7 +1029,7 @@ static void idpf_xdp_run_pass(struct libeth_xdp_buff *xdp,
-  * @rx_q: rx queue to clean
-  * @budget: Total limit on number of packets to process
-  *
-- * Returns true if there's any budget left (e.g. the clean is finished)
-+ * Returns: number of packets cleaned from this queue
-  */
- static int idpf_rx_singleq_clean(struct idpf_rx_queue *rx_q, int budget)
- {
-@@ -1111,7 +1111,7 @@ static int idpf_rx_singleq_clean(struct idpf_rx_queue *rx_q, int budget)
-  * @budget: Used to determine if we are in netpoll
-  * @cleaned: returns number of packets cleaned
-  *
-- * Returns false if clean is not complete else returns true
-+ * Returns: false if clean is not complete else returns true
-  */
- static bool idpf_rx_singleq_clean_all(struct idpf_q_vector *q_vec, int budget,
- 				      int *cleaned)
+- add a module parameter probe_hv_port that allows ptp_vmw driver to
+be loaded even when ACPI is disabled, by directly probing for the
+device using VMware hypervisor port commands.
+
+v3:
+- [PATCH 1/2]: reverting back the changes of ptp_vmw_pclk_read()
+- [PATCH 2/2]: calling ptp_vmw_pclk_read() without cmd
+
+v2:
+- [PATCH 2/2]: remove blank line in ptp_vmw_init()
+
+v2 link:
+https://lore.kernel.org/lkml/20251022105128.3679902-1-ajay.kaher@broadcom.com/
+
+v1 link:
+https://lore.kernel.org/lkml/20250821110323.974367-1-ajay.kaher@broadcom.com/
+
+Ajay Kaher (2):
+  ptp/ptp_vmw: Implement PTP clock adjustments ops
+  ptp/ptp_vmw: load ptp_vmw driver by directly probing the device
+
+ drivers/ptp/ptp_vmw.c | 99 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 82 insertions(+), 17 deletions(-)
+
 -- 
-2.50.1
+2.40.4
 
