@@ -1,126 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830D723BCE7;
-	Thu, 23 Oct 2025 13:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7468F314B9D;
+	Thu, 23 Oct 2025 13:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761224549; cv=none; b=mbBw3v7DK4g9JRmh9vp4EXpl+m42hRAhFuW7boO/B+8LxLgyO/aFCstT+TlWdCXoa67FJ/Y4xPDp1KBRU4dkxeoB5swgOAWFkm6CBJ8Sp3BakIJez3eX594amM8+V+sA7bDhRw+xIlCl0H73IqEK3R8BXqB4iVOgFUTzUcw5bOg=
+	t=1761225239; cv=none; b=OKLsRY9Xjs1ZWiAvXJwB0APdlCa76S/mzY967OLWmMi9zg6SK9WYToJFwTA5FhN8rj0POMy14etaHsHSNDJWzYXCiE10+ObVe+2OfD9gV8KF2VQDql38xfy3972LwIkFn6E6IcHnYcw4K/5/8KYH8vKvEhvVEcg5P/A3TtTI/2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761224549; c=relaxed/simple;
-	bh=tlVYSp4/Djow8v67w0FTIRaAwQH7I1na0HdiYU3lqnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ltznqdmakX+pivCRhddBFiN51sz4sQTASqNqpktoFc4EfS5cA08fMamPF7TP/b6XB8DDWBe/KwZLQakcT4qm9Hv5PNNs5PFm3AXv6h1fcHm8on2oNgvT9rfWO64/r9QYW8Da3RO2JZIsrWR8PfPyZhNsW7nJTgg/ECE50vhlHSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcGOfBNW; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcGOfBNW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B68C4CEE7;
-	Thu, 23 Oct 2025 13:02:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761224549;
-	bh=tlVYSp4/Djow8v67w0FTIRaAwQH7I1na0HdiYU3lqnE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VcGOfBNWX8RhzbS+aZPb0kJhScNc0qxvmkmNZ21JXOuVOKuagU2l9YJAFVNKgjRuM
-	 DtL/h67JRs7wMbk+hdTtM3sXAUHEc4GirCc46ACMEqFXkk76ctiMTY1hZRzAW3WhAX
-	 nG89A280F/APguWk9a1EFesQ0ttQqiM+qVl4odqL7RZ+ls+440J51J6ZtXqkZzA0EK
-	 6ltLF58PJmr7bcPHWh/2EEoAIm/9cVS4TTddqZroyvPGHVWdmSQGeJYgmy3nOrUBI6
-	 AAtzXM0iedqZeXNr7vETswmKzoXB95IQGKA8JedkrEpi05ioL7A8+9nv/tVrCw1eMI
-	 anlld4sOedYhQ==
-Date: Thu, 23 Oct 2025 14:02:24 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: Re: [PATCH net-next 2/7] net/mlx5e: Use TIR API in
- mlx5e_modify_tirs_lb()
-Message-ID: <aPonYFV1S4N5COKZ@horms.kernel.org>
-References: <1761201820-923638-1-git-send-email-tariqt@nvidia.com>
- <1761201820-923638-3-git-send-email-tariqt@nvidia.com>
+	s=arc-20240116; t=1761225239; c=relaxed/simple;
+	bh=se7ayilkX3IGI98SOo61cqNyGG+A+8VOPFQAqibP+ls=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I/JEcE08z/9r89Ld5oGOOq9RfW8qdllYEdhKDmm6zgf2AF4kI1giDIw5Z4+ATiSDQ/H16ZIw2ARH1QuT1sBgN5D53A1H+yUx2ofz2240hLrZQhyBIq+qnnhnvgjVqaQqyCpq7Bk08/jcajitDVgZ18amtuc2vH8k6tCJ3Hc9PI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4csmZK3fqkzxX9B;
+	Thu, 23 Oct 2025 21:08:57 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id DAF231402EB;
+	Thu, 23 Oct 2025 21:13:54 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 23 Oct 2025 21:13:54 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net 1/2] net: hns3: return error code when function fails
+Date: Thu, 23 Oct 2025 21:13:37 +0800
+Message-ID: <20251023131338.2642520-2-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
+In-Reply-To: <20251023131338.2642520-1-shaojijie@huawei.com>
+References: <20251023131338.2642520-1-shaojijie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1761201820-923638-3-git-send-email-tariqt@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On Thu, Oct 23, 2025 at 09:43:35AM +0300, Tariq Toukan wrote:
+Currently, in hclge_mii_ioctl(), the operation to
+read the PHY register (SIOCGMIIREG) always returns 0.
 
-...
+This patch changes the return type of hclge_read_phy_reg(),
+returning an error code when the function fails.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-> index 19499072f67f..0b55e77f19c8 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
-> @@ -146,6 +146,31 @@ void mlx5e_tir_builder_build_direct(struct mlx5e_tir_builder *builder)
->  	MLX5_SET(tirc, tirc, rx_hash_fn, MLX5_RX_HASH_FN_INVERTED_XOR8);
->  }
->  
-> +static void mlx5e_tir_context_self_lb_block(void *tirc, bool enable_uc_lb,
-> +					    bool enable_mc_lb)
-> +{
-> +	u8 lb_flags = 0;
-> +
-> +	if (enable_uc_lb)
-> +		lb_flags = MLX5_TIRC_SELF_LB_BLOCK_BLOCK_UNICAST;
-> +	if (enable_mc_lb)
-> +		lb_flags |= MLX5_TIRC_SELF_LB_BLOCK_BLOCK_MULTICAST;
-> +
-> +	MLX5_SET(tirc, tirc, self_lb_block, lb_flags);
-> +}
-> +
-> +void mlx5e_tir_builder_build_self_lb_block(struct mlx5e_tir_builder *builder,
-> +					   bool enable_uc_lb,
-> +					   bool enable_mc_lb)
-> +{
-> +	void *tirc = mlx5e_tir_builder_get_tirc(builder);
-> +
-> +	if (builder->modify)
-> +		MLX5_SET(modify_tir_in, builder->in, bitmask.self_lb_en, 1);
-> +
-> +	mlx5e_tir_context_self_lb_block(tirc, enable_uc_lb, enable_mc_lb);
-> +}
-> +
+Fixes: 024712f51e57 ("net: hns3: add ioctl support for imp-controlled PHYs")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +--
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c | 9 ++++++---
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h | 2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-...
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 9d34d28ff168..782bb48c9f3d 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -9429,8 +9429,7 @@ static int hclge_mii_ioctl(struct hclge_dev *hdev, struct ifreq *ifr, int cmd)
+ 		/* this command reads phy id and register at the same time */
+ 		fallthrough;
+ 	case SIOCGMIIREG:
+-		data->val_out = hclge_read_phy_reg(hdev, data->reg_num);
+-		return 0;
++		return hclge_read_phy_reg(hdev, data->reg_num, &data->val_out);
+ 
+ 	case SIOCSMIIREG:
+ 		return hclge_write_phy_reg(hdev, data->reg_num, data->val_in);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+index 96553109f44c..cf881108fa57 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+@@ -274,7 +274,7 @@ void hclge_mac_stop_phy(struct hclge_dev *hdev)
+ 	phy_stop(phydev);
+ }
+ 
+-u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr)
++int hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 *val)
+ {
+ 	struct hclge_phy_reg_cmd *req;
+ 	struct hclge_desc desc;
+@@ -286,11 +286,14 @@ u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr)
+ 	req->reg_addr = cpu_to_le16(reg_addr);
+ 
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to read phy reg, ret = %d.\n", ret);
++		return ret;
++	}
+ 
+-	return le16_to_cpu(req->reg_val);
++	*val = le16_to_cpu(req->reg_val);
++	return 0;
+ }
+ 
+ int hclge_write_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 val)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
+index 4200d0b6d931..21d434c82475 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.h
+@@ -13,7 +13,7 @@ int hclge_mac_connect_phy(struct hnae3_handle *handle);
+ void hclge_mac_disconnect_phy(struct hnae3_handle *handle);
+ void hclge_mac_start_phy(struct hclge_dev *hdev);
+ void hclge_mac_stop_phy(struct hclge_dev *hdev);
+-u16 hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr);
++int hclge_read_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 *val);
+ int hclge_write_phy_reg(struct hclge_dev *hdev, u16 reg_addr, u16 val);
+ 
+ #endif
+-- 
+2.33.0
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
-> index 376a018b2db1..fad6b761f622 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
-> @@ -250,43 +250,30 @@ void mlx5e_destroy_mdev_resources(struct mlx5_core_dev *mdev)
->  int mlx5e_modify_tirs_lb(struct mlx5_core_dev *mdev, bool enable_uc_lb,
->  			 bool enable_mc_lb)
-
-...
-
-> -	if (enable_uc_lb)
-> -		lb_flags = MLX5_TIRC_SELF_LB_BLOCK_BLOCK_UNICAST;
-> -
-> -	if (enable_mc_lb)
-> -		lb_flags |= MLX5_TIRC_SELF_LB_BLOCK_BLOCK_MULTICAST;
-> -
-> -	if (lb_flags)
-> -		MLX5_SET(modify_tir_in, in, ctx.self_lb_block, lb_flags);
-> -
-> -	MLX5_SET(modify_tir_in, in, bitmask.self_lb_en, 1);
-> +	mlx5e_tir_builder_build_self_lb_block(builder, enable_uc_lb,
-> +					      enable_mc_lb);
-
-Hi,
-
-Maybe I'm reading this wrong, and possibly it is not important,
-but it seems to me that the update above reverses the
-
-...
-order of the MLX5_SET() invocations.
