@@ -1,150 +1,148 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC022EAB78
-	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 08:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366FB2EB849;
+	Thu, 23 Oct 2025 08:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761206637; cv=none; b=aHMTxtTK2h77jm4P3aCpS6Uiv/9NA0lBbrvUWgQLZMYhglfFrb8oH/l8B9R5oAao406bMbEWMna39SE4BxkSM4BsXfkaSze10FXAjq/GH1Q7pmzWq9Lai3XhF3k+3lcpq5MWRN3qESGCJ08LQWehHjwAyrhkwRHBnknAVW4E0Lg=
+	t=1761207000; cv=none; b=jvFxrlmFLofFtAhALr3fnvzWAXkIhHiK9jg1VRdb9mt8Tiw6eUlb7U2beAwDVWZapmYmTABx1fcBywqDnN+tu4RBZBo2niTa8quQN66MCKO/Xqp8oOmEjQ0ubW1hxnvzSZ3ZapraZlJUyYOU7AP4NfxsAhWCjWFA52TBCterEM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761206637; c=relaxed/simple;
-	bh=KhzVAaHU5fh6pRjS720ROJx9dOrWgBGCkQCH1Fd3c4A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bSY4enrQcg/4bQ0TmiP8msSwxzfRWENclZkpOGFzbXVk7C4wByH9yoey2fS+Z0oBdBliyBpCPVMW0ctA1zjdgHVw6YSjK0JmyhjGpYaq4013u57avZvhiNz7goxmCRLZUVE2/9A9dY9EvgQESd6ubrADHeob9HcfVnOzCQ2tJCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Ov+Oe4lY; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1761207000; c=relaxed/simple;
+	bh=UMHvqXKAXLDewNQALGomwABCwZxZfH+IN/9gnJya+fI=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
+	 Content-Type; b=ij/48k6s2I9fFVxIHUzbUKjvzhesU85f87w7CxguelYGICqkYGuJxFbmgrIjy8aWaUFWVNyX9sk32/S9/IrxS9jutRDvAjbEpwqgokMzjaIBNzk5fgNbCnTt/qoKG684LZzsJ1OkgfJSWRis0vozPRnbND0k1CPK1x4bnP3EJJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MYgfIPNv; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Ov+Oe4lY"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c2d72581fso855026a12.0
-        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 01:03:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1761206634; x=1761811434; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xKDRSgjVAiSn1RNbdHenowN5ttDIvg3FBYKJR23BpNk=;
-        b=Ov+Oe4lYs6zO6oIB5g+fVx6ZNSNGdZIzr6FZLUCB8QilYFOSMc+pz8X6toelRQ8zCY
-         xXv9BLF9dMZAD4KJ1ZFjqyrHpf+nnnuICqsF/Ca6cV6PFEcwqQvJRD2B3IPqz4WDsrJc
-         ef3iUAxUs00juedWdPQUc+22ztGkkLmsyL2QNiatuZX7kl8x31D61v80fzJJSfIcl96V
-         xrbOHHfAy4TlQ1nu5qBNM1OnsQrMzQjepE5Wt6zal/N9HZX6Zr4FzVsS4CtLctSNhxqe
-         kYc0j7lLcEqD4GzKHr2T6C5XcLzEU8wtKQViVHoiyAXl9etMD8SluANVKhyQfi3dH795
-         MfFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761206634; x=1761811434;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xKDRSgjVAiSn1RNbdHenowN5ttDIvg3FBYKJR23BpNk=;
-        b=MlhO7q/48CDP4WRsNZeYdKUZHuLKY3f56KhAZOI6oAQpwL6TR5SBxVC1caJQe0N3kp
-         2Lz5NXR1yX5oujgcLIP9cz+Jc1+Cc8+EIR1JHFwQFDE7iAeDvcbmBpOV+dyf/Gyy95zJ
-         TAl5ooalk1LB009sMOzsYwNjf16f2InnU4bxixzrme5bw8HWWDJdZsSc4EMYAQCp6kFP
-         x9N4ZXjQdUjiEJG/7g+hOXiLkXt/Bb9YbR8jv4EiUGEyOkjOa3O+gRBaQHajurhqONve
-         ZbJeuLYmB8g80oWOqiZ4xuUYwGE8taxH9/ciAQIDxuoAwiJocNx0QeoLxudGoQOX95rm
-         t1og==
-X-Forwarded-Encrypted: i=1; AJvYcCWivcqvqNOTidwS8YlO2KWC976VIYJTpNeleKfrEuozeOgMa0VMzgWygDJl8x/xOd/SweN3KB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxljtMdyPe/tTob+LHsNYI1CQI5TBkTq2n5ukzOnu0PP5s47f1u
-	BGsGMcu9pS3+BYB3XhvFqNT6IGgzRpPqM1QKV1Vz5rPnrLQSZoTXndDpDeAXe80IZ9E3K0q8jqe
-	u70i/maoWXqkergVL8OjYZPMKx63AS0Bx3wi272sauCH2pBSYAis=
-X-Gm-Gg: ASbGncuuOLEU8sjebZ7CoKk/6S3slea7xqKzXWeZOB/q96ydyPJ/+EwRfP0IeLBELLG
-	rv9xvueUbB/KZxzTjS8LVCMp6wOyZfTimA70qpWxzaWnHWAthosc0Y/25LMmV152zSCkyoiwH41
-	Q2CgErI5GldCoBB1aWLZs4Zt75dNZTLkT0iflBl28HX9XkoBU7kNz9jK3t4Cm2DZtJWNkm6ZooF
-	vNbsvSzgzj74qzxqP1sLiz9tuEkuOblUZsrmjXS3CI7o3JG/bwn+xJRDC1N+A1L7suhDIOdJWDv
-	jFhgbNcgucCfQHjrPfbUxmDUFHgMGz3pa9O1DB40yluDqA6Q5kxOWJjhoAJsIildqRLGcg/yW4d
-	8ndTxlIVCaMCh5S0virMVfg97Lq4I65ja1pTA6H47B0sLvcHRLnxsb8AaoJskdQfocCivsO+jMu
-	P+1QXoBWoz+rjJOEajTRuxH0fXvJNGw8W3zlWaTI2VDiQn4V84Kw==
-X-Google-Smtp-Source: AGHT+IEUoMFyIcSzf/zrkQ8D3mNyh0FxlQfqGIjWZsP6gj5hs+WTut6BFpxR8MCgZiPwh4euSVev+Q==
-X-Received: by 2002:a05:6402:40c5:b0:637:e4d1:af00 with SMTP id 4fb4d7f45d1cf-63c1f677665mr22946465a12.10.1761206633722;
-        Thu, 23 Oct 2025 01:03:53 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:b0b1:8b9a:6340:3213? ([2001:67c:2fbc:1:b0b1:8b9a:6340:3213])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e3eddc237sm1060834a12.18.2025.10.23.01.03.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 01:03:53 -0700 (PDT)
-Message-ID: <bd5478c6-8d48-469e-a6ac-02714d19d2b5@openvpn.net>
-Date: Thu, 23 Oct 2025 10:03:51 +0200
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MYgfIPNv"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761206988; h=Message-ID:Subject:Date:From:To:Content-Type;
+	bh=0pwkfXQbGk5Oqq1wZCavhvUj7jR9C8by8Jut+zAJHnU=;
+	b=MYgfIPNvY1PihNggVFqC/poHpU3u8DaNEYW/1EoPFj1syMck3FRPHhlvTEdRWbOcVIqgNzauHSJzAQRf8KZ/dnZELxyWXoCNGN+KSQrW6clNxTu0VNy+zjTMS0+a4hGFDSjdxIKngnBlbnOUAyw3Eov8NC3XGvszBVqKyoVdAhk=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WqqL4XV_1761206987 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Oct 2025 16:09:47 +0800
+Message-ID: <1761206734.6182284-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net v4] virtio-net: fix received length check in big packets
+Date: Thu, 23 Oct 2025 16:05:34 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Bui Quang Minh <minhquangbui99@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Gavin Li <gavinl@nvidia.com>,
+ Gavi Teitz <gavi@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>,
+ virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ Bui Quang Minh <minhquangbui99@gmail.com>,
+ stable@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251022160623.51191-1-minhquangbui99@gmail.com>
+In-Reply-To: <20251022160623.51191-1-minhquangbui99@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 3/3] ovpn: use datagram_poll_queue for socket
- readiness in TCP
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Ralf Lici <ralf@mandelbit.com>
-References: <20251021100942.195010-1-ralf@mandelbit.com>
- <20251021100942.195010-4-ralf@mandelbit.com>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
-Organization: OpenVPN Inc.
-In-Reply-To: <20251021100942.195010-4-ralf@mandelbit.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 21/10/2025 12:09, Ralf Lici wrote:
-> openvpn TCP encapsulation uses a custom queue to deliver packets to
-> userspace. Currently it relies on datagram_poll, which checks
-> sk_receive_queue, leading to false readiness signals when that queue
-> contains non-userspace packets.
-> 
-> Switch ovpn_tcp_poll to use datagram_poll_queue with the peer's
-> user_queue, ensuring poll only signals readiness when userspace data is
-> actually available. Also refactor ovpn_tcp_poll in order to enforce the
-> assumption we can make on the lifetime of ovpn_sock and peer.
-> 
-> Fixes: 11851cbd60ea ("ovpn: implement TCP transport")
-> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-> Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-
-Jakub,
-
-fell free to merge this commit directly to net, as it's not useful to 
-have it go through my tree without the other patches.
+On Wed, 22 Oct 2025 23:06:23 +0700, Bui Quang Minh <minhquangbui99@gmail.co=
+m> wrote:
+> Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
+> for big packets"), when guest gso is off, the allocated size for big
+> packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
+> negotiated MTU. The number of allocated frags for big packets is stored
+> in vi->big_packets_num_skbfrags.
+>
+> Because the host announced buffer length can be malicious (e.g. the host
+> vhost_net driver's get_rx_bufs is modified to announce incorrect
+> length), we need a check in virtio_net receive path. Currently, the
+> check is not adapted to the new change which can lead to NULL page
+> pointer dereference in the below while loop when receiving length that
+> is larger than the allocated one.
+>
+> This commit fixes the received length check corresponding to the new
+> change.
+>
+> Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big p=
+ackets")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+> ---
+> Changes in v4:
+> - Remove unrelated changes, add more comments
+> Changes in v3:
+> - Convert BUG_ON to WARN_ON_ONCE
+> Changes in v2:
+> - Remove incorrect give_pages call
+> ---
+>  drivers/net/virtio_net.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index a757cbcab87f..0ffe78b3fd8d 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -852,7 +852,7 @@ static struct sk_buff *page_to_skb(struct virtnet_inf=
+o *vi,
+>  {
+>  	struct sk_buff *skb;
+>  	struct virtio_net_common_hdr *hdr;
+> -	unsigned int copy, hdr_len, hdr_padded_len;
+> +	unsigned int copy, hdr_len, hdr_padded_len, max_remaining_len;
+>  	struct page *page_to_free =3D NULL;
+>  	int tailroom, shinfo_size;
+>  	char *p, *hdr_p, *buf;
+> @@ -915,13 +915,23 @@ static struct sk_buff *page_to_skb(struct virtnet_i=
+nfo *vi,
+>  	 * This is here to handle cases when the device erroneously
+>  	 * tries to receive more than is possible. This is usually
+>  	 * the case of a broken device.
+> +	 *
+> +	 * The number of allocated pages for big packet is
+> +	 * vi->big_packets_num_skbfrags + 1, the start of first page is
+> +	 * for virtio header, the remaining is for data. We need to ensure
+> +	 * the remaining len does not go out of the allocated pages.
+> +	 * Please refer to add_recvbuf_big for more details on big packet
+> +	 * buffer allocation.
+>  	 */
+> -	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
+> +	BUG_ON(offset >=3D PAGE_SIZE);
+> +	max_remaining_len =3D (unsigned int)PAGE_SIZE - offset;
+> +	max_remaining_len +=3D vi->big_packets_num_skbfrags * PAGE_SIZE;
 
 
-Regards,
+Could we perform this check inside `receive_big` to avoid computing
+`max_remaining_len` altogether? Instead, we could directly compare `len` ag=
+ainst
+`(vi->big_packets_num_skbfrags + 1) * PAGE_SIZE`.
 
--- 
-Antonio Quartulli
-OpenVPN Inc.
+And I=E2=80=99d like to know if this check is necessary for other modes as =
+well.
 
+Thanks.
+
+
+
+> +	if (unlikely(len > max_remaining_len)) {
+>  		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
+>  		dev_kfree_skb(skb);
+>  		return NULL;
+>  	}
+> -	BUG_ON(offset >=3D PAGE_SIZE);
+> +
+>  	while (len) {
+>  		unsigned int frag_size =3D min((unsigned)PAGE_SIZE - offset, len);
+>  		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, page, offset,
+> --
+> 2.43.0
+>
