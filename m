@@ -1,307 +1,126 @@
-Received: from localhost.localdomain (unknown [147.136.157.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035753148D2;
-	Thu, 23 Oct 2025 12:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830D723BCE7;
+	Thu, 23 Oct 2025 13:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761224314; cv=none; b=J4SvsXycigMKVpjX22/ndEBS6oka/m9XJA9YGnV4/i19WUMLB4XZSGHlHS6+3cTgiIJiqidArh7LCx1F7p+Ph8iXm63WV8RpixRw+06QFGqAjiPPmbuA8M4IRfGkr0PA6uxHhIWJbwYQlQcJSQhDn+zhDyecXDl5jtSZf6YZnNo=
+	t=1761224549; cv=none; b=mbBw3v7DK4g9JRmh9vp4EXpl+m42hRAhFuW7boO/B+8LxLgyO/aFCstT+TlWdCXoa67FJ/Y4xPDp1KBRU4dkxeoB5swgOAWFkm6CBJ8Sp3BakIJez3eX594amM8+V+sA7bDhRw+xIlCl0H73IqEK3R8BXqB4iVOgFUTzUcw5bOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761224314; c=relaxed/simple;
-	bh=2f/nuuNSmH4tlgfIceiCvK2bsGIoefAMU9plXRiCE3Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDgdEfstbb1SlfN0rnziai29NeRIep1tkAUD6btJLLMTIefiVeDb8djDwyNSb1cyEQBzaipAD7m5xQTDAfyg3WHEwtr9UYfs7YFBOhl71VfDyYXyBkNREPQFqr8bJjqHfEtLvRL4liKudQcteSQs+gyow5g70Dtqn4jjT3Y59Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
-Received: by localhost.localdomain (Postfix, from userid 1007)
-	id 0BD6882FDDB; Thu, 23 Oct 2025 20:58:30 +0800 (+08)
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: mptcp@lists.linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	s=arc-20240116; t=1761224549; c=relaxed/simple;
+	bh=tlVYSp4/Djow8v67w0FTIRaAwQH7I1na0HdiYU3lqnE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltznqdmakX+pivCRhddBFiN51sz4sQTASqNqpktoFc4EfS5cA08fMamPF7TP/b6XB8DDWBe/KwZLQakcT4qm9Hv5PNNs5PFm3AXv6h1fcHm8on2oNgvT9rfWO64/r9QYW8Da3RO2JZIsrWR8PfPyZhNsW7nJTgg/ECE50vhlHSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcGOfBNW; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcGOfBNW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B68C4CEE7;
+	Thu, 23 Oct 2025 13:02:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761224549;
+	bh=tlVYSp4/Djow8v67w0FTIRaAwQH7I1na0HdiYU3lqnE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VcGOfBNWX8RhzbS+aZPb0kJhScNc0qxvmkmNZ21JXOuVOKuagU2l9YJAFVNKgjRuM
+	 DtL/h67JRs7wMbk+hdTtM3sXAUHEc4GirCc46ACMEqFXkk76ctiMTY1hZRzAW3WhAX
+	 nG89A280F/APguWk9a1EFesQ0ttQqiM+qVl4odqL7RZ+ls+440J51J6ZtXqkZzA0EK
+	 6ltLF58PJmr7bcPHWh/2EEoAIm/9cVS4TTddqZroyvPGHVWdmSQGeJYgmy3nOrUBI6
+	 AAtzXM0iedqZeXNr7vETswmKzoXB95IQGKA8JedkrEpi05ioL7A8+9nv/tVrCw1eMI
+	 anlld4sOedYhQ==
+Date: Thu, 23 Oct 2025 14:02:24 +0100
+From: Simon Horman <horms@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v3 3/3] selftests/bpf: Add mptcp test with sockmap
-Date: Thu, 23 Oct 2025 20:54:34 +0800
-Message-ID: <20251023125450.105859-4-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251023125450.105859-1-jiayuan.chen@linux.dev>
-References: <20251023125450.105859-1-jiayuan.chen@linux.dev>
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Gal Pressman <gal@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>
+Subject: Re: [PATCH net-next 2/7] net/mlx5e: Use TIR API in
+ mlx5e_modify_tirs_lb()
+Message-ID: <aPonYFV1S4N5COKZ@horms.kernel.org>
+References: <1761201820-923638-1-git-send-email-tariqt@nvidia.com>
+ <1761201820-923638-3-git-send-email-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1761201820-923638-3-git-send-email-tariqt@nvidia.com>
 
-Add test cases to verify that when MPTCP falls back to plain TCP sockets,
-they can properly work with sockmap.
+On Thu, Oct 23, 2025 at 09:43:35AM +0300, Tariq Toukan wrote:
 
-Additionally, add test cases to ensure that sockmap correctly rejects
-MPTCP sockets as expected.
+...
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- .../testing/selftests/bpf/prog_tests/mptcp.c  | 150 ++++++++++++++++++
- .../selftests/bpf/progs/mptcp_sockmap.c       |  43 +++++
- 2 files changed, 193 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/progs/mptcp_sockmap.c
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
+> index 19499072f67f..0b55e77f19c8 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tir.c
+> @@ -146,6 +146,31 @@ void mlx5e_tir_builder_build_direct(struct mlx5e_tir_builder *builder)
+>  	MLX5_SET(tirc, tirc, rx_hash_fn, MLX5_RX_HASH_FN_INVERTED_XOR8);
+>  }
+>  
+> +static void mlx5e_tir_context_self_lb_block(void *tirc, bool enable_uc_lb,
+> +					    bool enable_mc_lb)
+> +{
+> +	u8 lb_flags = 0;
+> +
+> +	if (enable_uc_lb)
+> +		lb_flags = MLX5_TIRC_SELF_LB_BLOCK_BLOCK_UNICAST;
+> +	if (enable_mc_lb)
+> +		lb_flags |= MLX5_TIRC_SELF_LB_BLOCK_BLOCK_MULTICAST;
+> +
+> +	MLX5_SET(tirc, tirc, self_lb_block, lb_flags);
+> +}
+> +
+> +void mlx5e_tir_builder_build_self_lb_block(struct mlx5e_tir_builder *builder,
+> +					   bool enable_uc_lb,
+> +					   bool enable_mc_lb)
+> +{
+> +	void *tirc = mlx5e_tir_builder_get_tirc(builder);
+> +
+> +	if (builder->modify)
+> +		MLX5_SET(modify_tir_in, builder->in, bitmask.self_lb_en, 1);
+> +
+> +	mlx5e_tir_context_self_lb_block(tirc, enable_uc_lb, enable_mc_lb);
+> +}
+> +
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/mptcp.c b/tools/testing/selftests/bpf/prog_tests/mptcp.c
-index f8eb7f9d4fd2..56c556f603cc 100644
---- a/tools/testing/selftests/bpf/prog_tests/mptcp.c
-+++ b/tools/testing/selftests/bpf/prog_tests/mptcp.c
-@@ -6,11 +6,14 @@
- #include <netinet/in.h>
- #include <test_progs.h>
- #include <unistd.h>
-+#include <error.h>
- #include "cgroup_helpers.h"
- #include "network_helpers.h"
-+#include "socket_helpers.h"
- #include "mptcp_sock.skel.h"
- #include "mptcpify.skel.h"
- #include "mptcp_subflow.skel.h"
-+#include "mptcp_sockmap.skel.h"
- 
- #define NS_TEST "mptcp_ns"
- #define ADDR_1	"10.0.1.1"
-@@ -436,6 +439,151 @@ static void test_subflow(void)
- 	close(cgroup_fd);
- }
- 
-+/* Test sockmap on MPTCP server handling non-mp-capable clients. */
-+static void test_sockmap_with_mptcp_fallback(struct mptcp_sockmap *skel)
-+{
-+	int listen_fd = -1, client_fd1 = -1, client_fd2 = -1;
-+	int server_fd1 = -1, server_fd2 = -1, sent, recvd;
-+	char snd[9] = "123456789";
-+	char rcv[10];
-+
-+	/* start server with MPTCP enabled */
-+	listen_fd = start_mptcp_server(AF_INET, NULL, 0, 0);
-+	if (!ASSERT_OK_FD(listen_fd, "redirect:start_mptcp_server"))
-+		return;
-+
-+	skel->bss->trace_port = ntohs(get_socket_local_port(listen_fd));
-+	skel->bss->sk_index = 0;
-+	/* create client without MPTCP enabled */
-+	client_fd1 = connect_to_fd_opts(listen_fd, NULL);
-+	if (!ASSERT_OK_FD(client_fd1, "redirect:connect_to_fd"))
-+		goto end;
-+
-+	server_fd1 = xaccept_nonblock(listen_fd, NULL, NULL);
-+	skel->bss->sk_index = 1;
-+	client_fd2 = connect_to_fd_opts(listen_fd, NULL);
-+	if (!ASSERT_OK_FD(client_fd2, "redirect:connect_to_fd"))
-+		goto end;
-+
-+	server_fd2 = xaccept_nonblock(listen_fd, NULL, NULL);
-+	/* test normal redirect behavior: data sent by client_fd1 can be
-+	 * received by client_fd2
-+	 */
-+	skel->bss->redirect_idx = 1;
-+	sent = xsend(client_fd1, snd, sizeof(snd), 0);
-+	if (!ASSERT_EQ(sent, sizeof(snd), "redirect:xsend(client_fd1)"))
-+		goto end;
-+
-+	/* try to recv more bytes to avoid truncation check */
-+	recvd = recv_timeout(client_fd2, rcv, sizeof(rcv), MSG_DONTWAIT, 2);
-+	if (!ASSERT_EQ(recvd, sizeof(snd), "redirect:recv(client_fd2)"))
-+		goto end;
-+
-+end:
-+	if (client_fd1 > 1)
-+		close(client_fd1);
-+	if (client_fd2 > 1)
-+		close(client_fd2);
-+	if (server_fd1 > 0)
-+		close(server_fd1);
-+	if (server_fd2 > 0)
-+		close(server_fd2);
-+	close(listen_fd);
-+}
-+
-+/* Test sockmap rejection of MPTCP sockets - both server and client sides. */
-+static void test_sockmap_reject_mptcp(struct mptcp_sockmap *skel)
-+{
-+	int client_fd1 = -1, client_fd2 = -1;
-+	int listen_fd = -1, server_fd = -1;
-+	int err, zero = 0;
-+
-+	/* start server with MPTCP enabled */
-+	listen_fd = start_mptcp_server(AF_INET, NULL, 0, 0);
-+	if (!ASSERT_OK_FD(listen_fd, "start_mptcp_server"))
-+		return;
-+
-+	skel->bss->trace_port = ntohs(get_socket_local_port(listen_fd));
-+	skel->bss->sk_index = 0;
-+	/* create client with MPTCP enabled */
-+	client_fd1 = connect_to_fd(listen_fd, 0);
-+	if (!ASSERT_OK_FD(client_fd1, "connect_to_fd client_fd1"))
-+		goto end;
-+
-+	/* bpf_sock_map_update() called from sockops should reject MPTCP sk */
-+	if (!ASSERT_EQ(skel->bss->helper_ret, -EOPNOTSUPP, "should reject"))
-+		goto end;
-+
-+	/* set trace_port = -1 to stop sockops */
-+	skel->bss->trace_port = -1;
-+	client_fd2 = connect_to_fd(listen_fd, 0);
-+	if (!ASSERT_OK_FD(client_fd2, "connect_to_fd client_fd2"))
-+		goto end;
-+
-+	server_fd = xaccept_nonblock(listen_fd, NULL, NULL);
-+	err = bpf_map_update_elem(bpf_map__fd(skel->maps.sock_map),
-+				  &zero, &server_fd, BPF_NOEXIST);
-+	if (!ASSERT_EQ(err, -EOPNOTSUPP, "server should be disallowed"))
-+		goto end;
-+
-+	/* MPTCP client should also be disallowed */
-+	err = bpf_map_update_elem(bpf_map__fd(skel->maps.sock_map),
-+				  &zero, &client_fd1, BPF_NOEXIST);
-+	if (!ASSERT_EQ(err, -EOPNOTSUPP, "client should be disallowed"))
-+		goto end;
-+end:
-+	if (client_fd1 > 0)
-+		close(client_fd1);
-+	if (client_fd2 > 0)
-+		close(client_fd2);
-+	if (server_fd > 0)
-+		close(server_fd);
-+	close(listen_fd);
-+}
-+
-+static void test_mptcp_sockmap(void)
-+{
-+	struct mptcp_sockmap *skel;
-+	struct netns_obj *netns;
-+	int cgroup_fd, err;
-+
-+	cgroup_fd = test__join_cgroup("/mptcp_sockmap");
-+	if (!ASSERT_OK_FD(cgroup_fd, "join_cgroup: mptcp_sockmap"))
-+		return;
-+
-+	skel = mptcp_sockmap__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_load: mptcp_sockmap"))
-+		goto close_cgroup;
-+
-+	skel->links.mptcp_sockmap_inject =
-+		bpf_program__attach_cgroup(skel->progs.mptcp_sockmap_inject, cgroup_fd);
-+	if (!ASSERT_OK_PTR(skel->links.mptcp_sockmap_inject, "attach sockmap"))
-+		goto skel_destroy;
-+
-+	err = bpf_prog_attach(bpf_program__fd(skel->progs.mptcp_sockmap_redirect),
-+			      bpf_map__fd(skel->maps.sock_map),
-+			      BPF_SK_SKB_STREAM_VERDICT, 0);
-+	if (!ASSERT_OK(err, "bpf_prog_attach stream verdict"))
-+		goto skel_destroy;
-+
-+	netns = netns_new(NS_TEST, true);
-+	if (!ASSERT_OK_PTR(netns, "netns_new: mptcp_sockmap"))
-+		goto skel_destroy;
-+
-+	if (endpoint_init("subflow") < 0)
-+		goto close_netns;
-+
-+	test_sockmap_with_mptcp_fallback(skel);
-+	test_sockmap_reject_mptcp(skel);
-+
-+close_netns:
-+	netns_free(netns);
-+skel_destroy:
-+	mptcp_sockmap__destroy(skel);
-+close_cgroup:
-+	close(cgroup_fd);
-+}
-+
- void test_mptcp(void)
- {
- 	if (test__start_subtest("base"))
-@@ -444,4 +592,6 @@ void test_mptcp(void)
- 		test_mptcpify();
- 	if (test__start_subtest("subflow"))
- 		test_subflow();
-+	if (test__start_subtest("sockmap"))
-+		test_mptcp_sockmap();
- }
-diff --git a/tools/testing/selftests/bpf/progs/mptcp_sockmap.c b/tools/testing/selftests/bpf/progs/mptcp_sockmap.c
-new file mode 100644
-index 000000000000..d4eef0cbadb9
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/mptcp_sockmap.c
-@@ -0,0 +1,43 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "bpf_tracing_net.h"
-+
-+char _license[] SEC("license") = "GPL";
-+
-+int sk_index;
-+int redirect_idx;
-+int trace_port;
-+int helper_ret;
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SOCKMAP);
-+	__uint(key_size, sizeof(__u32));
-+	__uint(value_size, sizeof(__u32));
-+	__uint(max_entries, 100);
-+} sock_map SEC(".maps");
-+
-+SEC("sockops")
-+int mptcp_sockmap_inject(struct bpf_sock_ops *skops)
-+{
-+	struct bpf_sock *sk;
-+
-+	/* only accept specified connection */
-+	if (skops->local_port != trace_port ||
-+	    skops->op != BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB)
-+		return 1;
-+
-+	sk = skops->sk;
-+	if (!sk)
-+		return 1;
-+
-+	/* update sk handler */
-+	helper_ret = bpf_sock_map_update(skops, &sock_map, &sk_index, BPF_NOEXIST);
-+
-+	return 1;
-+}
-+
-+SEC("sk_skb/stream_verdict")
-+int mptcp_sockmap_redirect(struct __sk_buff *skb)
-+{
-+	/* redirect skb to the sk under sock_map[redirect_idx] */
-+	return bpf_sk_redirect_map(skb, &sock_map, redirect_idx, 0);
-+}
--- 
-2.43.0
+...
 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
+> index 376a018b2db1..fad6b761f622 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_common.c
+> @@ -250,43 +250,30 @@ void mlx5e_destroy_mdev_resources(struct mlx5_core_dev *mdev)
+>  int mlx5e_modify_tirs_lb(struct mlx5_core_dev *mdev, bool enable_uc_lb,
+>  			 bool enable_mc_lb)
+
+...
+
+> -	if (enable_uc_lb)
+> -		lb_flags = MLX5_TIRC_SELF_LB_BLOCK_BLOCK_UNICAST;
+> -
+> -	if (enable_mc_lb)
+> -		lb_flags |= MLX5_TIRC_SELF_LB_BLOCK_BLOCK_MULTICAST;
+> -
+> -	if (lb_flags)
+> -		MLX5_SET(modify_tir_in, in, ctx.self_lb_block, lb_flags);
+> -
+> -	MLX5_SET(modify_tir_in, in, bitmask.self_lb_en, 1);
+> +	mlx5e_tir_builder_build_self_lb_block(builder, enable_uc_lb,
+> +					      enable_mc_lb);
+
+Hi,
+
+Maybe I'm reading this wrong, and possibly it is not important,
+but it seems to me that the update above reverses the
+
+...
+order of the MLX5_SET() invocations.
