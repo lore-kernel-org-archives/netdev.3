@@ -1,175 +1,193 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98533254876;
-	Thu, 23 Oct 2025 07:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D7628489B;
+	Thu, 23 Oct 2025 07:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761205431; cv=none; b=d9icEbZDigptRxe0XPUQkoeR/UiDP4drwyO37ueYdPH6X9JA30e2TcsQ4vkObHNrZ7MIdSBdJA59KJDQ3XF2vYjQfmcMZSax1eOc4sy61OcPGnQX5rrdEvYGPtEhIqpfl9l8TkpMs5C0j1tj71FbH878XS9c1MMJiKn77imMhTs=
+	t=1761205473; cv=none; b=EJcUoj9aJsLZKFx6kpA+QX/Wue90n87vphN6rfaNRlF8Ig0KtZMnSYYiOg30FFDkJp7w+tkXiB7I0eMG+XIna1TTZf7tO9JxG82ajQca+KzCZf0jbI51HAES/vQeDMXOOlm8BS2fGhfvL2Xu6dHs2VeiZsp5fo4c5j0KlKfKqFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761205431; c=relaxed/simple;
-	bh=2G9Gb/m5O+QY7Ni/xV5TyiwdzRpRI/FddBgYeAgIC6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tv9Ec5zmcNWZIb1txD1E+nBDAZBs/dkThQAN4VcjXhq6ZQyet2AzNmDqB52WC63U/8TXTuggW7FvO1GPYBJr8eDs6KrYkjr9Ey0TopMp+iqJx2BRrxklH3bQI5U98O4nPzARLAVXMWIcf32s9XnGnCQHdp5jGKPFMUDTvdgqwmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KWG10gkj; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KWG10gkj"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C9C3FC0C407;
-	Thu, 23 Oct 2025 07:43:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8C6406062C;
-	Thu, 23 Oct 2025 07:43:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC5BD102F2429;
-	Thu, 23 Oct 2025 09:43:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761205424; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=FuwZwT+5jyvhDDTG/W4OLKYq+tnCcDl94SXGHBKrC1o=;
-	b=KWG10gkjd1CX/r8TdNuB+zDc1mBWazqjexcpaPfoy9c1Itkz/VUMaMVGIg72x4Z10Mnovj
-	Bsnrww7ShvAkm8U+6G1RSwVxRSeKSeVlXh+v95ZWtr9rV1XIYq7/nfnSF8zvMdPnlc3mrZ
-	mqhbvqZIj/h3KZwoVZePWzhm/h2sPh2iVAH8FZ+RN58qg51UiQuo3N/CjLITx+oYuzXSQz
-	uLcAREp/mbZz+YjwXbqqwl8okzC0jjXcyt3e5WjWGQezQl1LMBbKluUBgCM9euKYPfYLwf
-	mgQz5raHiaT1D1UmIPtd406mEXQX4xjKfh83tFSlIE2txwKMJf0alP9ETs03mw==
-Message-ID: <d798cbb4-74f8-47fd-98e8-0d6d6e9f8621@bootlin.com>
-Date: Thu, 23 Oct 2025 09:43:23 +0200
+	s=arc-20240116; t=1761205473; c=relaxed/simple;
+	bh=JUNLi/65dgjkw16k+x/1hTCjDaNNWT63HXZ+kModT6Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=s1L1vpHR4Gw6wRGZkWfK2JCjdIX5l4HfDcIX2G6+LucwN3+7Rxj1nJS2GKJQtMlJyAFLpbB2PJ9w7NJjfJAnY9cBRF2c4BS3TlI7tROidcAk6ppi9NTkf64rd4xdUixX8Bq6thCKYuzjHqwIPTctA9V1eJ0EreYsf+inDjVcMpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-5a-68f9dcd4f823
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	akpm@linux-foundation.org,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to confirm its usage as pp for net_iov
+Date: Thu, 23 Oct 2025 16:44:09 +0900
+Message-Id: <20251023074410.78650-2-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20251023074410.78650-1-byungchul@sk.com>
+References: <20251023074410.78650-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG+59zds5xODgts5NFxaICKbMweYNIoYITYQQSdPlQSw9utqlt
+	uTQIpo0uM2/VaM2Jq0iXWtZM3SRXzmWaUWJoC0vNKFsXi2nLqWTbpG8/nvd5fp9eGhcXCmJo
+	edZJXpUlVUhIISH8EXljQ/+7gCy+qZ0Cc0M9CXVTeVAzYhdAoH4MA3NtM4LJwCAFc22dCCbc
+	z0j41uFDcOuGHwfzKx0BvxumcXC0jiH4arxLwqfOUQrqbCkwXP2ZgEfnW3AYLe0ioVg3g0Nb
+	YJyCQrs1KG7UUtDbXCKAq9O3cWjRjlDwutVMwlD9nAA+u4oJ6DbdIeCXwY3DcEkydFqiwd/z
+	HYG7oQUD/6VKEvqvt2LQ1NZPwZU+CwkfdcMI+jpGCTDMXiChoqAEwcxUUDleNimAiqdDVHIc
+	V+DxkFzH95849/DOW4wbMJYTnMf5HOMcpvcUZ7Hlco3WWE7v6cM5W+1FkrP5LlPcu4FHJNdl
+	nCE4x4etnMM+gXHFZ8fJfYsPCbel8wq5hldt3H5UKJvx1lA51pg8r+umQIvci/UogmaZBPaL
+	uRjTIzrMBaV7QjHJrGM9ngAe4igmnrUaJoMspHGmiGYHnQ/Ch0VMBjv36RoV2hLMGvaNJYwi
+	Zgt79aVi3r6Srbv/JNyOYBLZ7r9PqRCLg5Xe8mkqpGQZN8369Oeo+cFStt3qIcqQyIIW1CKx
+	PEujlMoVCXGy/Cx5XlxattKGgp9RfWb2sB35elNdiKGRJFKU/GxKJhZINep8pQuxNC6JEmkO
+	BiNRujT/NK/KPqLKVfBqF1pGE5Ilos3+U+liJkN6kj/O8zm86v8VoyNitGiVlV+/d5RfuEg8
+	UJq04JTR27Ti+OHlurH7E97EQHsV7wxUpuQOKoW743K7iMdVKzOEmWlNS9+mRL/WFja8+qHP
+	7Ks5scOZeuB9oC7ekJjg9aQ0V6qidBWZop6iZhX2h1h7zLT19+rt92L3SU/vX+2Yit5joo1D
+	OyVJIy92bUwSSAi1TLopFleppf8AUtMB3BUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRbUhTYRiGe3fOzjkOF4eldjCiWGRWpPb99EEZBL0VWlQo9SeHnrbhnLWp
+	qKHMFCzLr1JaqbSSbKmhzspN1GSb5goqrNXKcsvSssQiTZ1GNoX+XTz3dd9/HoaQfCaDGaU6
+	hdeoZSopJSJF0Tty171671VEOG6shcqGegrqptLhjscsBG/9FwFU1j5EMO7to2G2vRvBmP0x
+	Bd9tvxBU35wgoPJ5Hgm/G6YJsLR+QfBNf4+Cwe4BGupMUeCuGSKhLb+FgIHiHgoK82YIaPeO
+	0nDObPQNN+tosFU5hPDiYZEQyqZvE9Ci89DwsrWSgv76WSEMWQtJcFy/S8LPcjsB7qJI6DYE
+	wcTTEQT2hhYBTFyqosB5rVUAD9qdNFzpNVDwKc+NoNc2QEL5n/MUVOQUIZiZ8k2OlowLoaKr
+	n44MxzkuF4VtIz8IfP/uWwF+rS8lsavjiQBbrn+gscGUipuNa3CBq5fAptoLFDb9ukzj96/b
+	KNyjnyGx5eM2bDGPCXBh7ih1OOiEaGcCr1Km8ZrwXXEixczwHfq0MTh92HpLqEP2wALEMBy7
+	icspPliA/BiKXcW5XF5ijgPYCM5YPu5jEUOwFxmur6NpPljEyrnZwav0XJdkV3JvDPMoZjdz
+	Zc9UcwbHLuPqGjvnbT92C+f420XPscSnvCidpkuQyIAW1KIApTotSaZUbQ7TJioy1Mr0sPjk
+	JBPy/b4m60+pGY2/3GdFLIOk/uLIx1MKiVCWps1IsiKOIaQB4rTjvpM4QZaRyWuST2pSVbzW
+	ipYwpHSx+EAsHydh5bIUPpHnT/Oa/6mA8QvWIb4/2vnqTMjW0OYFuz8sXBG7NzA/tKEuwe5M
+	9pzqvFZyIjEl+6xn+5Ri2eTepT9Ln8jHxD3Zi1KP1Jg9bnX0HpzZv0MQIg9ambVcrs92NDYP
+	DW70L9PF921wboiKvfB8tTnma1FMNf9On1U8GWXLb696BL8PHU3dH3DM/bTJIonxSkmtQrZ+
+	DaHRyv4B18DwC/cCAAA=
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v14 03/16] net: ethtool: Introduce
- ETHTOOL_LINK_MEDIUM_* values
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Jakub Kicinski <kuba@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Antoine Tenart <atenart@kernel.org>, devicetree@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Romain Gantois <romain.gantois@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>
-References: <20251013143146.364919-1-maxime.chevallier@bootlin.com>
- <20251013143146.364919-4-maxime.chevallier@bootlin.com>
- <cb217bf8-763e-4c48-9233-e577b32b14a8@lunn.ch>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <cb217bf8-763e-4c48-9233-e577b32b14a8@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Andrew,
+->pp_magic field in struct page is current used to identify if a page
+belongs to a page pool.  However, ->pp_magic will be removed and page
+type bit in struct page e.g. PGTY_netpp should be used for that purpose.
 
-On 22/10/2025 23:42, Andrew Lunn wrote:
-> On Mon, Oct 13, 2025 at 04:31:29PM +0200, Maxime Chevallier wrote:
->> In an effort to have a better representation of Ethernet ports,
->> introduce enumeration values representing the various ethernet Mediums.
->>
->> This is part of the 802.3 naming convention, for example :
->>
->> 1000 Base T 4
->>  |    |   | |
->>  |    |   | \_ lanes (4)
->>  |    |   \___ Medium (T == Twisted Copper Pairs)
->>  |    \_______ Baseband transmission
->>  \____________ Speed
-> 
-> Dumb question. Does 802.3 actually use the word lanes here?
+As a preparation, the check for net_iov, that is not page-backed, should
+avoid using ->pp_magic since net_iov doens't have to do with page type.
+Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
+page pool, by making sure nmdesc->pp is NULL otherwise.
 
-Depending on the mode, 802.3 uses either "pair" or "lane" :
+For page-backed netmem, just leave unchanged as is, while for net_iov,
+make sure nmdesc->pp is initialized to NULL and use nmdesc->pp for the
+check.
 
-1.4.13 1000BASE-T: IEEE 802.3 Physical Layer specification for a
-1000 Mb/s CSMA/CD LAN using four pairs of Category 5 balanced
-copper cabling.
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ net/core/devmem.c      |  1 +
+ net/core/netmem_priv.h |  8 ++++++++
+ net/core/page_pool.c   | 16 ++++++++++++++--
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-1.4.26 100GBASE-CR2: IEEE 802.3 Physical Layer specification for
-100 Gb/s using 100GBASE-R encoding over two lanes of shielded
-balanced copper cabling.
-
-> I'm looking at the commit which added lanes:
-> 
-> commit 012ce4dd3102a0f4d80167de343e9d44b257c1b8
-> 
->     Add 'ETHTOOL_A_LINKMODES_LANES' attribute and expand 'struct
->     ethtool_link_settings' with lanes field in order to implement a new
->     lanes-selector that will enable the user to advertise a specific number
->     of lanes as well.
-> 
->     $ ethtool -s swp1 lanes 4
->     $ ethtool swp1
->       Settings for swp1:
->             Supported ports: [ FIBRE ]
->             Supported link modes:   1000baseKX/Full
->                                     10000baseKR/Full
->                                     40000baseCR4/Full
->                                     40000baseSR4/Full
->                                     40000baseLR4/Full
->                                     25000baseCR/Full
->                                     25000baseSR/Full
->                                     50000baseCR2/Full
->                                     100000baseSR4/Full
->                                     100000baseCR4/Full
->             Supported pause frame use: Symmetric Receive-only
->             Supports auto-negotiation: Yes
->             Supported FEC modes: Not reported
->             Advertised link modes:  40000baseCR4/Full
->                                     40000baseSR4/Full
->                                     40000baseLR4/Full
->                                     100000baseSR4/Full
->                                     100000baseCR4/Full
-> 
-> 
-> For these link modes we are talking about 4 PCS outputs feeding an
-> SFP module. The module when has one fibre pair, the media.
-> 
-> For baseT4 what you call a lane is a twisted pair, the media.
-> 
-> These two definitions seem to contradict each other.
-> 
-> For SGMII, 1000BaseX, we have 1 PCS lane, feeding a PHY with 4 pairs.
-> 
-> It gets more confusing at 10G, where the MAC might have 4 lanes
-> feeding 4 pairs, or 1 lane feeding 4 pairs.
-> 
-> Also, looking at the example above, if i have a MAC/PHY combination
-> which can do 10/100/1G and i did:
-> 
->     $ ethtool -s swp1 lanes 2
-> 
-> would it then only advertise 10 and 100, since 1G need four 'lanes'?
-
-Ah right ! Yeah so lanes isn't about the MDI directly then, so
-clearly this won't work :(
-> 
-> Is reusing lanes going to cause us problems in the future, and maybe
-> we should add a pairs member, to represent the media? And we can
-> ignore bidi fibre modules for the moment :-)
-
-That's a very good point, I think this makes more sense. I've also
-seen the word "channel" around, but Pair would be more explicit.
-
-thanks for the feedback !
-
-Maxime
-> 
->        Andrew
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index d9de31a6cc7f..f81b700f1fd1 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -291,6 +291,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+ 			niov = &owner->area.niovs[i];
+ 			niov->type = NET_IOV_DMABUF;
+ 			niov->owner = &owner->area;
++			niov->desc.pp = NULL;
+ 			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
+ 						      net_devmem_get_dma_addr(niov));
+ 			if (direction == DMA_TO_DEVICE)
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd86..5561fd556bc5 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -22,6 +22,14 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
+ 
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
++	/* net_iov may be part of a page pool.  For net_iov, ->pp in
++	 * net_iov.desc can be used to determine if the pages belong to
++	 * a page pool.  Ensure that the ->pp either points to its page
++	 * pool or is set to NULL if it does not.
++	 */
++	if (netmem_is_net_iov(netmem))
++		return !!netmem_to_nmdesc(netmem)->pp;
++
+ 	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
+ }
+ 
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..2756b78754b0 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -699,7 +699,13 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* For page-backed, pp_magic is used to identify if it's pp.
++	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
++	 * and nmdesc->pp is NULL if it's not.
++	 */
++	if (!netmem_is_net_iov(netmem))
++		netmem_or_pp_magic(netmem, PP_SIGNATURE);
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -714,7 +720,13 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	/* For page-backed, pp_magic is used to identify if it's pp.
++	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
++	 * and nmdesc->pp is NULL if it's not.
++	 */
++	if (!netmem_is_net_iov(netmem))
++		netmem_clear_pp_magic(netmem);
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
+-- 
+2.17.1
 
