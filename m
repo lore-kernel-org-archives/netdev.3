@@ -1,67 +1,67 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A89634C9AE
-	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 18:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7E534CFD5
+	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 18:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761244098; cv=none; b=c3b10GU3DGwN/WVVxVGrx94s8wVmOmttgfHbTiFL0axKEwcFmDQcZixpWw+t5/4nM/eqSGeDEyloEwjOYAv5r5PwJSlr1nnE9Nr7xCq4fM54b8O6kJJE1zsCLxplwiMI9Dg5sWnqD4jeD3mz4LoJ8kLefcoSDBS1xkIfqdq2STg=
+	t=1761244098; cv=none; b=fd+npeGrqIQ1ya0rXI0DalnGz26rVsGN83wcCOYyH7cd6qUTpG+rRWauc9yOc1UhdsrcBvpaVnYDqjO76G9NlJbId9hs+b3++XoqEMXHR/oej85uxMYGoguTpn876ZTNzB5bt7uLqnXn1Ryj4SGAgXNBNELqp6OuD/wVZrFtexY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761244098; c=relaxed/simple;
-	bh=kUefiKfkicMX8tmziLXEi//+t8csN8furvqT9U5IgCE=;
+	bh=qsdEM4mUEx6lc62dcdEXc4nlTIYZClzkDbVeOSxLeZc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u2MXGu1LMvEi0YDUN2JdYJxtFe7gwNJHxPMEmk4ggDQJiqhRaSUfSpBPn7JOFX2dmNPuPULxaKnFtPwPBA8saddne/2f3RCXzNxrcpDvkZnB4di9arKzbjIM4X57fpoaUTkJH1qQSDDMZV0EA4stD4IYGpr0yhVujQCH/sQgv9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAe+IZ07; arc=none smtp.client-ip=209.85.214.182
+	 In-Reply-To:To:Cc; b=XzooqIIhW8KH87GBXpjArCuxwJRd0DxhVqRwjcnZnQsgSNl4R4u5SlBYrbZX5bY5fP4jLpirhnKATb9U7XRiMMtbPAxcZLfRna8ZNwukuwPEGYpnlD7f8fa310gEEaPyfvoMG2hVnM6I5bsinUvNvQYByvuDXLQCH/3BA+QuoUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CgTxk4Pt; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAe+IZ07"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-290d4d421f6so11126815ad.2
-        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 11:28:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CgTxk4Pt"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b6ce6d1d3dcso796716a12.3
+        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 11:28:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761244090; x=1761848890; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761244092; x=1761848892; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ENceTHQQLbApf5YaDY/ZTac12ozK8h8RipNYM83YVxY=;
-        b=cAe+IZ07igbq+BkPU5qd+wVGpHzBGx1pBdllSZR/VonoXlggQ3aJeJsqd+mEjZpvhI
-         4m0eyW70hHmZ2aNrQaaTqk+UgOVDRc8K9cVvAevIR3tAKDXIx+H6qMCvIr0isQlDXREN
-         wHGA4UC+WvDqiuC2+sdMGBBySqkANDJ2TuuyHupRn5XWQ3IC+/p5+eJqgRRW9It3bpWW
-         CenuUolDtzE3y2wYcOggBUzYSKWZv2BKqNbzPQoV2Zswg464V8DPzGlKBmCKhsKp3Slj
-         Oc2P/qvcV6vbmGGbFHSjf0Nh2sjCFjEEAhIvHXPQ/sJbl5JCf26oocvNPLqRn6rVXo4z
-         LwEg==
+        bh=v1bBkEHiFKeL/UsD+j471vNGh5kKPPSFbcwNUOh3PyM=;
+        b=CgTxk4PtZgzYqEwUrxug9GUWlwAOlSb/4GiXga3xzuC8xsVvOkqAma2VKwORIOW7I2
+         QMtsirQZM2E1Ydb3QkqIDrIat2ivOrUPcH43MbFS3SzsqWOvw9mubCVxWOVb3OIi/10r
+         bQ1TOQpfyqn6DH8rO77mXUM/KV1CQliLqiWXhtntOTPaX6qXkLKW78hU6LgRcrx44Vkc
+         PXKSbbmfxzqf0VlcNs2JqBsFzvvnpKzJVvgaETgKKK678wAseoGKpKLxF7VwbnerjfEK
+         y2jJcLl3c6P0e+QoGkFum2l3IMdhkLDyJToz841o9imnGUzY6QwFJHMIBVzeo3urdrtN
+         gcsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761244090; x=1761848890;
+        d=1e100.net; s=20230601; t=1761244092; x=1761848892;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ENceTHQQLbApf5YaDY/ZTac12ozK8h8RipNYM83YVxY=;
-        b=bgH1ASVosuKDQFszh1cJ2TgwlnajF15aXybVMhe96jaRAGit+ZXxYIsCIjK/2SHjOG
-         7nYvP1FwtVNIuaCszXLEHPHdjGqjc6r/DPREAIo9bQfhi02J+/3RYjk8/krITmhIapHH
-         /ERlQTJXsv10qh4W1if9cqNvEylnV4wQvre5qgO0BI121wOqrV9HZXgiiR4XUtlv4Zms
-         TB+aIo/z5slNlLFdy+vezVRo9s8RkGOSG/3XqEO3oezTFC4dgXz/mRKrWlRXQQMXQw9Q
-         M2KY/qQkxnpX0HjWqmkCxn2fb1LEnLAHJ7aADljbne0lx7hDNbzB4E/muFghFXlm5L3/
-         FOJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWqTy4Wgb6NxmgF9t2vdSdRPh2Q6Lt9yWDopm4YnySVoNalTxJ5x7LEfisgu3JtlxAPvT9ks4Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxozvY8EUimqqpOpM5+XmtsYsen6oWoufaJT61b4X+XPJ6c+rV+
-	+3GXijhi94FLbkp8+FbeFq9mI7Xtyubmuoawi7reS9dOwVadQbEqQYWI
-X-Gm-Gg: ASbGncufyUbVfNOSB2uENr/Icfnx11llVrdoF2ph8MjWs9mKx0UYHnG4g4No75YW3OJ
-	liDnduUNamlrnZngX6vFftRJr/wFtajurbtrgBJqAtBuBtu+L6OOrn1JVITBgqMPyJ5SeMBJU3N
-	D7wDby1vNuE8hVKRSX4LnPwFB1S9VVOWfYpQ5y3riavOnIip1+SVVdS02ArtXhMcw9j89EzC07d
-	5+L6O1wsasQZQNzJUp1GbGy6iiAcdMs9K7kQsL0D/QPImX0yQnvZEvTV0Uh5eol2bUBoa61JUVM
-	1UxOzlixqiye5yr3aRXUXYASomrlGOMnmZCb8APpSOXKLO3QQRChXloFIUd29cgiJUNYXc1iUmt
-	6uwLmUEbTXdlgEpJMgeyHGOeRlYVA3BfBlS3gkTplv6K37sTCwUojFFv1cpXQgmk3KCr79f7P
-X-Google-Smtp-Source: AGHT+IGL+PtKUr5eZ+mANzrBQrF6tJP4JHS8yZ0mhNm5Rv4OrWq7HGiA79wb53NBZDSFfGYBMJn/Vw==
-X-Received: by 2002:a17:903:2443:b0:290:bd15:24ad with SMTP id d9443c01a7336-290cb65b68fmr269267885ad.45.1761244089851;
-        Thu, 23 Oct 2025 11:28:09 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:8::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fb01915f6sm3089451a91.16.2025.10.23.11.28.09
+        bh=v1bBkEHiFKeL/UsD+j471vNGh5kKPPSFbcwNUOh3PyM=;
+        b=flskDEJImVDO7+RQDJEFvACCg88Ow+AFV3njUzAnad6OHM0u1A0UwlfJucrVEw6g+2
+         GHHBdBPRKiQiCr8HvN/GRbFafP6qPTGczyFXOd5xXmD72cSz6yt3CIJYoN/9pXJ3LBDW
+         XJEeB45PYr9VXJyr6z8vs47fYnqeeNO05NRjsZydEG6fWy8Mo0+iO30pCfUflFy9SizZ
+         RAUCRIHtbulLBLYqH4666hXyKuBSk+ZmYt0RHqEmcrooiIbQOOkB3PtTQWVz4fe+6ekc
+         +uMaBxcAB7oqqGZVJJtZKOAXVvnYA321UUXvERWc2kFZvprHJusYNYJi3jCP6zf5bhzP
+         /Yvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvD04kd9kHVT9rTHl+NlAQV6VQ4x08Ad2KxO6Qr0ncNfPYpcUrTgohA4Zpc75AiFEuID6rrNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFNPpzozG+Wqlhe0labqqlcVaWNQCwoJChyKiaIH4iY4t6P4LZ
+	R6izhS/S8rtuz71jdKaaUTJgKHKRSwcXSAXb+GThkzjho7yZ87noFJ1D
+X-Gm-Gg: ASbGnctJ4JIJQHDkh98381teSGTe1GBJACRZQzHR003rmbLNCHT4gpf9Ctg1+fjeKdZ
+	3IS18d37BGRHXDIdaF42dA93xqjXiytdcGC0gJUbBuQQC9BuRCRWGoFygAff+sV/zfYFQfAD/D6
+	rEXLnGKjZq1ySClzHQmxdxqkD3He+GHCzj++lQ0qMpP/iCRMrs/V3P0a3watiwSnPD6jl41Ezls
+	oLYBAP4GBA98Bnj7W+U5F69YVgJlUrvVad4GCugBAdBcv9EdBBHDvSaEwTfOaV3vEG4bDOKNizK
+	oScf0JzFVq2I93D3Rvpn2RaKAnYDzZGz+kWrek+T7XYg0BlNBj/uHAOq03Q+h7Ez4ZRTo6wb4r7
+	l1V2h2c8iKvVHTsKOSgM5dDyZZM08PSKrwuef3//NO8YB8HJELAKIXBVeMQSPfNh7dLjJUwyv
+X-Google-Smtp-Source: AGHT+IE/dwExmoLUemuWd0Z4IzWtCnVPvukg5v4cVC/ETItw8BzfPltzLRhLMffJHMVaO6fvdpyktg==
+X-Received: by 2002:a17:903:24f:b0:267:a95d:7164 with SMTP id d9443c01a7336-290cba42a8bmr268233595ad.60.1761244091859;
+        Thu, 23 Oct 2025 11:28:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:3::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946ddec8d8sm30411195ad.36.2025.10.23.11.28.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 11:28:09 -0700 (PDT)
+        Thu, 23 Oct 2025 11:28:11 -0700 (PDT)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Thu, 23 Oct 2025 11:27:45 -0700
-Subject: [PATCH net-next v8 06/14] vsock/virtio: add netns to virtio
- transport common
+Date: Thu, 23 Oct 2025 11:27:47 -0700
+Subject: [PATCH net-next v8 08/14] selftests/vsock: add namespace helpers
+ to vmtest.sh
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-vsock-vmtest-v8-6-dea984d02bb0@meta.com>
+Message-Id: <20251023-vsock-vmtest-v8-8-dea984d02bb0@meta.com>
 References: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
 In-Reply-To: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
 To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>, 
@@ -94,134 +94,97 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Enable network namespace support in the virtio-vsock common transport
-layer by declaring namespace pointers in the transmit and receive
-paths.
+Add functions for initializing namespaces with the different vsock NS
+modes. Callers can use add_namespaces() and del_namespaces() to create
+namespaces global0, global1, local0, and local1.
 
-The changes include:
-1. Add a 'net' field to virtio_vsock_pkt_info to carry the namespace
-   pointer for outgoing packets.
-2. Store the namespace and namespace mode in the skb control buffer when
-   allocating packets (except for VIRTIO_VSOCK_OP_RST packets which do
-   not have an associated socket).
-3. Retrieve namespace information from skbs on the receive path for
-   lookups using vsock_find_connected_socket_net() and
-   vsock_find_bound_socket_net().
+The init_namespaces() function initializes global0, local0, etc...  with
+their respective vsock NS mode. This function is separate so that tests
+that depend on this initialization can use it, while other tests that
+want to test the initialization interface itself can start with a clean
+slate by omitting this call.
 
-This allows users of virtio transport common code
-(vhost-vsock/virtio-vsock) to later enable namespace support.
+Remove namespaces upon exiting the program in cleanup().  This is
+unlikely to be needed for a healthy run, but it is useful for tests that
+are manually killed mid-test. In that case, this patch prevents the
+subsequent test run from finding stale namespaces with
+already-write-once-locked vsock ns modes.
+
+This patch is in preparation for later namespace tests.
 
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
-Changes in v7:
-- add comment explaining the !vsk case in virtio_transport_alloc_skb()
----
- include/linux/virtio_vsock.h            |  1 +
- net/vmw_vsock/virtio_transport_common.c | 21 +++++++++++++++++++--
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vsock/vmtest.sh | 45 +++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 29290395054c..f90646f82993 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -217,6 +217,7 @@ struct virtio_vsock_pkt_info {
- 	u32 remote_cid, remote_port;
- 	struct vsock_sock *vsk;
- 	struct msghdr *msg;
-+	struct net *net;
- 	u32 pkt_len;
- 	u16 type;
- 	u16 op;
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index dcc8a1d5851e..b8e52c71920a 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -316,6 +316,15 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
- 					 info->flags,
- 					 zcopy);
+diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
+index 62b4f5ede9f6..5f4bae952e13 100755
+--- a/tools/testing/selftests/vsock/vmtest.sh
++++ b/tools/testing/selftests/vsock/vmtest.sh
+@@ -46,6 +46,7 @@ readonly TEST_DESCS=(
+ )
  
-+	/*
-+	 * If there is no corresponding socket, then we don't have a
-+	 * corresponding namespace. This only happens For VIRTIO_VSOCK_OP_RST.
-+	 */
-+	if (vsk) {
-+		virtio_vsock_skb_set_net(skb, info->net);
-+		virtio_vsock_skb_set_net_mode(skb, vsk->net_mode);
-+	}
+ readonly USE_SHARED_VM=(vm_server_host_client vm_client_host_server vm_loopback)
++readonly NS_MODES=("local" "global")
+ 
+ VERBOSE=0
+ 
+@@ -100,11 +101,55 @@ check_result() {
+ 	cnt_total=$(( cnt_total + 1 ))
+ }
+ 
++add_namespaces() {
++	# add namespaces local0, local1, global0, and global1
++	for mode in "${NS_MODES[@]}"; do
++		ip netns add "${mode}0" 2>/dev/null
++		ip netns add "${mode}1" 2>/dev/null
++	done
++}
 +
- 	return skb;
- out:
- 	kfree_skb(skb);
-@@ -527,6 +536,7 @@ static int virtio_transport_send_credit_update(struct vsock_sock *vsk)
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_CREDIT_UPDATE,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
++init_namespaces() {
++	for mode in "${NS_MODES[@]}"; do
++		ns_set_mode "${mode}0" "${mode}"
++		ns_set_mode "${mode}1" "${mode}"
++
++		log_host "set ns ${mode}0 to mode ${mode}"
++		log_host "set ns ${mode}1 to mode ${mode}"
++
++		# we need lo for qemu port forwarding
++		ip netns exec "${mode}0" ip link set dev lo up
++		ip netns exec "${mode}1" ip link set dev lo up
++	done
++}
++
++del_namespaces() {
++	for mode in "${NS_MODES[@]}"; do
++		ip netns del "${mode}0" &>/dev/null
++		ip netns del "${mode}1" &>/dev/null
++		log_host "removed ns ${mode}0"
++		log_host "removed ns ${mode}1"
++	done
++}
++
++ns_set_mode() {
++	local ns=$1
++	local mode=$2
++
++	echo "${mode}" | ip netns exec "${ns}" \
++		tee /proc/sys/net/vsock/ns_mode &>/dev/null
++}
++
+ vm_ssh() {
+ 	ssh -q -o UserKnownHostsFile=/dev/null -p ${SSH_HOST_PORT} localhost "$@"
+ 	return $?
+ }
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1067,6 +1077,7 @@ int virtio_transport_connect(struct vsock_sock *vsk)
- 	struct virtio_vsock_pkt_info info = {
- 		.op = VIRTIO_VSOCK_OP_REQUEST,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
++cleanup() {
++	del_namespaces
++}
++
++trap cleanup EXIT
  
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1082,6 +1093,7 @@ int virtio_transport_shutdown(struct vsock_sock *vsk, int mode)
- 			 (mode & SEND_SHUTDOWN ?
- 			  VIRTIO_VSOCK_SHUTDOWN_SEND : 0),
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
- 
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1108,6 +1120,7 @@ virtio_transport_stream_enqueue(struct vsock_sock *vsk,
- 		.msg = msg,
- 		.pkt_len = len,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
- 
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1145,6 +1158,7 @@ static int virtio_transport_reset(struct vsock_sock *vsk,
- 		.op = VIRTIO_VSOCK_OP_RST,
- 		.reply = !!skb,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
- 
- 	/* Send RST only if the original pkt is not a RST pkt */
-@@ -1465,6 +1479,7 @@ virtio_transport_send_response(struct vsock_sock *vsk,
- 		.remote_port = le32_to_cpu(hdr->src_port),
- 		.reply = true,
- 		.vsk = vsk,
-+		.net = sock_net(sk_vsock(vsk)),
- 	};
- 
- 	return virtio_transport_send_pkt_info(vsk, &info);
-@@ -1578,7 +1593,9 @@ static bool virtio_transport_valid_type(u16 type)
- void virtio_transport_recv_pkt(struct virtio_transport *t,
- 			       struct sk_buff *skb)
- {
-+	enum vsock_net_mode net_mode = virtio_vsock_skb_net_mode(skb);
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	struct net *net = virtio_vsock_skb_net(skb);
- 	struct sockaddr_vm src, dst;
- 	struct vsock_sock *vsk;
- 	struct sock *sk;
-@@ -1606,9 +1623,9 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
- 	/* The socket must be in connected or bound table
- 	 * otherwise send reset back
- 	 */
--	sk = vsock_find_connected_socket(&src, &dst);
-+	sk = vsock_find_connected_socket_net(&src, &dst, net, net_mode);
- 	if (!sk) {
--		sk = vsock_find_bound_socket(&dst);
-+		sk = vsock_find_bound_socket_net(&dst, net, net_mode);
- 		if (!sk) {
- 			(void)virtio_transport_reset_no_sock(t, skb);
- 			goto free_pkt;
+ check_args() {
+ 	local found
 
 -- 
 2.47.3
