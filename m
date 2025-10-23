@@ -1,166 +1,84 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E086309DB5
-	for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 09:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C32D2D2498;
+	Thu, 23 Oct 2025 09:40:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761212291; cv=none; b=IAeUkFA0q5XrskL634EEoEBmudgvQcRQ9zZW6eGgXpHdb9ORIzKCEWLjEstBh1NBflc6PtLVyTZv3t6lW0R8TAI166Fx+BHht6vqQDizIMu2YCAlT7NVtCZlaspFrn+HxE4Ei+YbYkQvlKciUCTFSF3jy0GzRfb4jfF4IHpslXU=
+	t=1761212426; cv=none; b=IATSCZGbl1bi0ABHbWmx8UDmJCoGVMHKTN1GyULBXbm5qJHt2/jZhOiVfI3Chtyx6DM2teFnIJa5EmxcQ2utdEzDzotBExBWIfv6N3D3WGm7k+Wwufg/Xv6/Az2KSCTrT6FxfrTQtXZ6YE0ZLCZslhYAHqwGm0uoYPEsYKc56kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761212291; c=relaxed/simple;
-	bh=BcnOiWBL4Go5sWSNiJNzkifS7cVfrUWj1dyA5O/ATjo=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=j0unVSEUGwntNPj0iVhLf8PQ/bYvln7vyh3fWN7e4P1Kp/1bEycXRm6sz03d7x8kxl8RGkEHIhZfvwtDxRQudogB4Zz60QQcebgH4uXyvZ2M/QO5ICe0oRQ7fX/4hHWZ5Iss364OhX3akYudfAGwuTct3VYzEyad+kYlcAI9yyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Bt7dords; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761212426; c=relaxed/simple;
+	bh=nJOnAXX5sRVFOgviHjMHBI/zr4WV3fKNmsk5kSsFjtQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=V7AjiZCmAj5Lz+cEejFB5gPiZzOJ8Qip/E5HjBn/S1H8ILVJGwlmAnogr196dGtI3WD6dKEdbBeqhjqjMQdfmHD8ZA/A0ttVsTiYElqFfGvancGsoR1xEQSg5Va5uApp/FW6ACa63vyUuuKHCqQxLxeNYeQl256ssFMkNDuOMFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4D2XouK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Bt7dords"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MniIYTSwJIk75GMpBUMARg+pYB/eOzkAbdFT6RC+gSQ=; b=Bt7dordsneJhhdeW7PufVPwLMX
-	ELdr/gvQ7hQOgQ2Qn1JNTbwka0lMYVO516kjO1aXsNryNkYsATgMJFF9zs5LBkUjH0GMDsNdEiIhq
-	f/Y/aTdxIzoWLY3bCB/WuO4gvphD5OchqU+HCvCxuuxX2xrNSZVs0XO1TduW6ZEsD2C8wLTLEkitz
-	2/TUbGg8lTAMQz3b9UjlV/lH5SbPVEYok2od0ouQ7H8u+PkX9YgKAPc1OTnJ6PdaVYNo2PSmsDAkg
-	VT5kFVvLAFg8nv4H/Pw2MVNS9lFe5cjgzMQX+16r7hbTqLTjGLyo8MsH4mV/cp6uMX0SctB7CgYqG
-	0QeWp7Qw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:49854 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vBrlg-0000000066r-3zGv;
-	Thu, 23 Oct 2025 10:38:01 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vBrlg-0000000BMQS-0QYt;
-	Thu, 23 Oct 2025 10:38:00 +0100
-In-Reply-To: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
-References: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>
-Subject: [PATCH net-next 8/8] net: stmmac: reorganise stmmac_hwif_init()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4D2XouK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF390C4AF09;
+	Thu, 23 Oct 2025 09:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761212425;
+	bh=nJOnAXX5sRVFOgviHjMHBI/zr4WV3fKNmsk5kSsFjtQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T4D2XouKlTdAaJXNLAB2DTxUcIAy1Cxw740vuAlenlseHGSG1GHpyuA+vpYtNq05o
+	 QOIhWRRvk49Gizl2n1iwQYmVDql5KMYNRpwDkiOAk0XB+5PaMZCh6gixKFX41f1b3x
+	 eODq72LXUIWDoN7rWi4S2N4WY9yhhfISiOR2iFbkUOjbJxzHX/iLBOBRJlp4AFjhLN
+	 eZ3JLdLA8Nblb5Gsu7RPUWIrbatsgEzzq29Ye55KOTu90oJ4zjnpgtyDvUZ0t92T0c
+	 o3Zh0M1mEbbPoW3PcdwzEKINGFwUzeq2gR/vbowKuEcS3VmNbT8y+Kg2IfsNCbIMK4
+	 xPAtuVQwubTwA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D063809A2D;
+	Thu, 23 Oct 2025 09:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vBrlg-0000000BMQS-0QYt@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 23 Oct 2025 10:38:00 +0100
+Subject: Re: [PATCH net-next] net: ti: icssg-prueth: Omit a variable
+ reassignment
+ in prueth_netdev_init()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176121240626.2969431.4409960503973897261.git-patchwork-notify@kernel.org>
+Date: Thu, 23 Oct 2025 09:40:06 +0000
+References: <71f7daa3-d4f4-4753-aae8-67040fc8297d@web.de>
+In-Reply-To: <71f7daa3-d4f4-4753-aae8-67040fc8297d@web.de>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ andrew+netdev@lunn.ch, byungchul@sk.com, davem@davemloft.net,
+ diogo.ivo@siemens.com, edumazet@google.com, grygorii.strashko@ti.com,
+ h-mittal1@ti.com, kuba@kernel.org, jan.kiszka@siemens.com,
+ krzysztof.kozlowski@linaro.org, danishanwar@ti.com, m-malladi@ti.com,
+ pabeni@redhat.com, r-gunasekaran@ti.com, rogerq@kernel.org, horms@kernel.org,
+ vigneshr@ti.com, linux-kernel@vger.kernel.org, linux.amoon@gmail.com,
+ christophe.jaillet@wanadoo.fr
 
-Reorganise stmmac_hwif_init() to handle the error case of
-stmmac_hwif_find() in the indented block, which follows normal
-programming pattern.
+Hello:
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/hwif.c | 72 ++++++++++++----------
- 1 file changed, 38 insertions(+), 34 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 187ae582a933..0c187f8175b6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -364,41 +364,45 @@ int stmmac_hwif_init(struct stmmac_priv *priv)
- 
- 	/* Use synopsys_id var because some setups can override this */
- 	entry = stmmac_hwif_find(core_type, priv->synopsys_id, version.dev_id);
--	if (entry) {
--		/* Only use generic HW helpers if needed */
--		mac->desc = mac->desc ? : entry->desc;
--		mac->dma = mac->dma ? : entry->dma;
--		mac->mac = mac->mac ? : entry->mac;
--		mac->ptp = mac->ptp ? : entry->hwtimestamp;
--		mac->mode = mac->mode ? : entry->mode;
--		mac->tc = mac->tc ? : entry->tc;
--		mac->mmc = mac->mmc ? : entry->mmc;
--		mac->est = mac->est ? : entry->est;
--		mac->vlan = mac->vlan ? : entry->vlan;
--
--		priv->hw = mac;
--		priv->fpe_cfg.reg = entry->regs.fpe_reg;
--		priv->ptpaddr = priv->ioaddr + entry->regs.ptp_off;
--		priv->mmcaddr = priv->ioaddr + entry->regs.mmc_off;
--		memcpy(&priv->ptp_clock_ops, entry->ptp,
--		       sizeof(struct ptp_clock_info));
--		if (entry->est)
--			priv->estaddr = priv->ioaddr + entry->regs.est_off;
--
--		/* Entry found */
--		if (needs_setup) {
--			ret = entry->setup(priv);
--			if (ret)
--				return ret;
--		}
-+	if (!entry) {
-+		dev_err(priv->device,
-+			"Failed to find HW IF (id=0x%x, gmac=%d/%d)\n",
-+			version.snpsver, core_type == DWMAC_CORE_GMAC,
-+			core_type == DWMAC_CORE_GMAC4);
-+
-+		return -EINVAL;
-+	}
- 
--		/* Save quirks, if needed for posterior use */
--		priv->hwif_quirks = entry->quirks;
--		return 0;
-+	/* Only use generic HW helpers if needed */
-+	mac->desc = mac->desc ? : entry->desc;
-+	mac->dma = mac->dma ? : entry->dma;
-+	mac->mac = mac->mac ? : entry->mac;
-+	mac->ptp = mac->ptp ? : entry->hwtimestamp;
-+	mac->mode = mac->mode ? : entry->mode;
-+	mac->tc = mac->tc ? : entry->tc;
-+	mac->mmc = mac->mmc ? : entry->mmc;
-+	mac->est = mac->est ? : entry->est;
-+	mac->vlan = mac->vlan ? : entry->vlan;
-+
-+	priv->hw = mac;
-+	priv->fpe_cfg.reg = entry->regs.fpe_reg;
-+	priv->ptpaddr = priv->ioaddr + entry->regs.ptp_off;
-+	priv->mmcaddr = priv->ioaddr + entry->regs.mmc_off;
-+	memcpy(&priv->ptp_clock_ops, entry->ptp,
-+	       sizeof(struct ptp_clock_info));
-+
-+	if (entry->est)
-+		priv->estaddr = priv->ioaddr + entry->regs.est_off;
-+
-+	/* Entry found */
-+	if (needs_setup) {
-+		ret = entry->setup(priv);
-+		if (ret)
-+			return ret;
- 	}
- 
--	dev_err(priv->device, "Failed to find HW IF (id=0x%x, gmac=%d/%d)\n",
--		version.snpsver, core_type == DWMAC_CORE_GMAC,
--		core_type == DWMAC_CORE_GMAC4);
--	return -EINVAL;
-+	/* Save quirks, if needed for posterior use */
-+	priv->hwif_quirks = entry->quirks;
-+
-+	return 0;
- }
+On Mon, 20 Oct 2025 16:02:56 +0200 you wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Mon, 20 Oct 2025 15:46:11 +0200
+> 
+> An error code was assigned to a variable and checked accordingly.
+> This value was passed to a dev_err_probe() call in an if branch.
+> This function is documented in the way that the same value is returned.
+> Thus delete two redundant variable reassignments.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: ti: icssg-prueth: Omit a variable reassignment in prueth_netdev_init()
+    https://git.kernel.org/netdev/net-next/c/e0665df8c501
+
+You are awesome, thank you!
 -- 
-2.47.3
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
