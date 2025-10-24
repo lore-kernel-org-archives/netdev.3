@@ -1,161 +1,88 @@
-Received: from chinatelecom.cn (smtpnm6-12.21cn.com [182.42.119.59])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4679830F92A
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 10:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.119.59
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65A72C08C5;
+	Fri, 24 Oct 2025 10:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761301624; cv=none; b=YBi11HMrtFm9HUuoN9nSdcqVkujoQ29rzxFrOd8LT0u/FinigYp7D5AocPwSTRD2kFNHkFhK1VVvswCnA7rpMrWgmymbCoGTtyBQuJKohL/fe2aVUjYP6aK3njEs9ZNsJsAsufZzujL53bWSnCMrnS9S6gAEMpLsxPFxi6YkzSg=
+	t=1761301843; cv=none; b=WqszXQ8Y1GDhUpTUg/4Blg8h60kIOww2lHd7bdc1E5ECjLi8LEM9hShjyATOBDbKwo7ObuBo6lNVlH1Pn3aHzwn3zx3999FjBRwTzxlOKoFCew6LNvvc7Y5CQrPHfPO6S83gYCcNTy9zDD3g3bN1XJDkiBR0yyOz3t4GtdNYIOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761301624; c=relaxed/simple;
-	bh=va+VNDhAVJG0TwfAoFhp0DaU6ss6OcDsfR5SGnA6K4E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bia6aj4jlz09yF5zMxT46DicsjLz7j7955U3ZRtczFljLzC5C9W7LgUJaMNQ5AC1pi2jb5iZ83L6BPP2Ncorw8u46hBXpKMOMuQrEEb4YqeIfo0iYAfx+PiYq93NRTL8KyQ52FghAG0ouKELIy3FcTZhISAwxOB4gkT/Wz3Zwpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.119.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
-HMM_SOURCE_IP:192.168.137.232:0.1620297662
-HMM_ATTACHE_NUM:0000
-HMM_SOURCE_TYPE:SMTP
-Received: from clientip-36.111.140.5 (unknown [192.168.137.232])
-	by chinatelecom.cn (HERMES) with SMTP id EEFD011024D21;
-	Fri, 24 Oct 2025 18:20:21 +0800 (CST)
-X-189-SAVE-TO-SEND: +liyonglong@chinatelecom.cn
-Received: from  ([36.111.140.5])
-	by gateway-ssl-dep-79cdd9d55b-2nzwx with ESMTP id 19ccec2fb69042adb59bf7ed052f4203 for netdev@vger.kernel.org;
-	Fri, 24 Oct 2025 18:20:22 CST
-X-Transaction-ID: 19ccec2fb69042adb59bf7ed052f4203
-X-Real-From: liyonglong@chinatelecom.cn
-X-Receive-IP: 36.111.140.5
-X-MEDUSA-Status: 0
-Sender: liyonglong@chinatelecom.cn
-From: Yonglong Li <liyonglong@chinatelecom.cn>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	liyonglong@chinatelecom.cn
-Subject: [PATCH net v2 1/2] net: ip: add drop reasons when handling ip fragments
-Date: Fri, 24 Oct 2025 18:20:11 +0800
-Message-Id: <1761301212-34487-2-git-send-email-liyonglong@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1761301212-34487-1-git-send-email-liyonglong@chinatelecom.cn>
-References: <1761301212-34487-1-git-send-email-liyonglong@chinatelecom.cn>
+	s=arc-20240116; t=1761301843; c=relaxed/simple;
+	bh=xjBMkmI+qsDoGp9ZiRzBUp/jILZSgk47twlvE8podR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3tLwzIjbKeEYPSi2uB1jC8xElcJElsFUQBW+bL3lag82L5dWdGogO0j2ND7PJNmpxax1BRahWTKnVW+FwatlmBO0j0TZaCR8rUzoFUPWoMS+UDuM5Akun5De4LI/orJEy7f4PX/+EC41MlB1w3ZYxwADrK6fwIjDdmBSK+BABM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/d2Y+U8; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/d2Y+U8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E75CC4CEF1;
+	Fri, 24 Oct 2025 10:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761301842;
+	bh=xjBMkmI+qsDoGp9ZiRzBUp/jILZSgk47twlvE8podR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=l/d2Y+U8bQs8VF+XsPwC/lo+bxBE0j4eWS6VDHNCD/dOyGEFM7pOVi7s1xB8wyT1F
+	 jv0kcNfIyneAU7DFc2XMuu8oHJ2C93dqlydWRrXYT3RCBqDbolkiQ18EsFfqCwzdIT
+	 F0FJ+u2jbBRNARJVywQ0ZMr1PM6LZQ50TTD9W4llmkHp0cxkQM8R7YTAZNZuhKj472
+	 K02nhKLn9f/Q1d19EUPlbhQT59235yFCKn8XDWmWaJOjbnUv34C0E0GbdT7yY2B8c1
+	 q4jVSAnw+7Qfl9JCs14YGXOOwUUitTY/lsolUgoznKOAtNMsr23PjYx6i1nIOnN4f/
+	 YsZZGbsmS20jw==
+Date: Fri, 24 Oct 2025 12:30:37 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Guenter Roeck <linux@roeck-us.net>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Georgi Djakov <djakov@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Joerg Roedel <joro@8bytes.org>, Jassi Brar <jassisinghbrar@gmail.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org, linux-input@vger.kernel.org, 
+	linux-pm@vger.kernel.org, iommu@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-crypto@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove extra blank lines
+Message-ID: <fncqrwr6pi3ttxkf44hncy35ogxqdvql52hdcycq4yakbkeose@gv6lxr6a4uri>
+References: <20251023143957.2899600-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023143957.2899600-1-robh@kernel.org>
 
-1, add new drop reason FRAG_FAILED/FRAG_OUTPUT_FAILED
-2, use drop reasons in ip_fragment
+Hi Rob,
 
-Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
----
- include/net/dropreason-core.h |  6 ++++++
- net/ipv4/ip_output.c          | 17 ++++++++++++-----
- 2 files changed, 18 insertions(+), 5 deletions(-)
+On Thu, Oct 23, 2025 at 09:37:56AM -0500, Rob Herring (Arm) wrote:
+> Generally at most 1 blank line is the standard style for DT schema
+> files. Remove the few cases with more than 1 so that the yamllint check
+> for this can be enabled.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 58d91cc..4ae042e 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -99,6 +99,8 @@
- 	FN(DUP_FRAG)			\
- 	FN(FRAG_REASM_TIMEOUT)		\
- 	FN(FRAG_TOO_FAR)		\
-+	FN(FRAG_FAILED)			\
-+	FN(FRAG_OUTPUT_FAILED)		\
- 	FN(TCP_MINTTL)			\
- 	FN(IPV6_BAD_EXTHDR)		\
- 	FN(IPV6_NDISC_FRAG)		\
-@@ -500,6 +502,10 @@ enum skb_drop_reason {
- 	 * (/proc/sys/net/ipv4/ipfrag_max_dist)
- 	 */
- 	SKB_DROP_REASON_FRAG_TOO_FAR,
-+	/* do ip/ip6 fragment failed */
-+	SKB_DROP_REASON_FRAG_FAILED,
-+	/* ip/ip6 fragment output failed */
-+	SKB_DROP_REASON_FRAG_OUTPUT_FAILED,
- 	/**
- 	 * @SKB_DROP_REASON_TCP_MINTTL: ipv4 ttl or ipv6 hoplimit below
- 	 * the threshold (IP_MINTTL or IPV6_MINHOPCOUNT).
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index ff11d3a..3e0d21c 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -588,7 +588,7 @@ static int ip_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 		icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
- 			  htonl(mtu));
--		kfree_skb(skb);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_PKT_TOO_BIG);
- 		return -EMSGSIZE;
- 	}
- 
-@@ -765,6 +765,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	struct sk_buff *skb2;
- 	u8 tstamp_type = skb->tstamp_type;
- 	struct rtable *rt = skb_rtable(skb);
-+	SKB_DR_INIT(reason, FRAG_FAILED);
- 	unsigned int mtu, hlen, ll_rs;
- 	struct ip_fraglist_iter iter;
- 	ktime_t tstamp = skb->tstamp;
-@@ -773,8 +774,10 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 
- 	/* for offloaded checksums cleanup checksum before fragmentation */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
-+	    (err = skb_checksum_help(skb))) {
-+		SKB_DR_SET(reason, IP_CSUM);
- 		goto fail;
-+	}
- 
- 	/*
- 	 *	Point into the IP datagram header.
-@@ -860,6 +863,8 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 
- 			if (!err)
- 				IP_INC_STATS(net, IPSTATS_MIB_FRAGCREATES);
-+			else
-+				SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
- 			if (err || !iter.frag)
- 				break;
- 
-@@ -871,7 +876,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 			return 0;
- 		}
- 
--		kfree_skb_list(iter.frag);
-+		kfree_skb_list_reason(iter.frag, reason);
- 
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 		return err;
-@@ -913,8 +918,10 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		 */
- 		skb_set_delivery_time(skb2, tstamp, tstamp_type);
- 		err = output(net, sk, skb2);
--		if (err)
-+		if (err) {
-+			SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
- 			goto fail;
-+		}
- 
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGCREATES);
- 	}
-@@ -923,7 +930,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	return err;
- 
- fail:
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 	return err;
- }
--- 
-1.8.3.1
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
 
+Thanks,
+Andi
