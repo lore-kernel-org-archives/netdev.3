@@ -1,128 +1,157 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28FA2F99A5
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5320A308F0B
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761297149; cv=none; b=IzBBrONzZ8YQTO6iwwE0m6x+oiETrNnFBWRtvHdkYSnDayaAeh0dt2JtAzf+fWkkzrVzkC2r+Cf6KaHyM3z7xrFeZrr46UUeS7RoKWbv1nSyNKkIFrmI4EoNd3xNHLcrY63y04E/EmB8nZX3cm/HqAXLOK8VWxeOApXDXdeRKeE=
+	t=1761297164; cv=none; b=hkwOUSr2xTZ9O9+mN193/XbVQYErDYFbrilcnXCB9rmfnDiBMqoX0TtfIrc8Z4V22O5m2xj4FZ3QZdiJjrPtId3zOPJOmjMLJ7UXs2LzPeBoK1leZWKhZdvK2hbRjlOP0SOe1mNfpwxGc37KowkbZc4Y6yAtNc+tF9dUNqdyb6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761297149; c=relaxed/simple;
-	bh=wc+ndK7ZVigCF1aKHyTwRArlX30Ea+mugDfGLgg95eM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WT6yZGsTYdgyVbGY4Jr7e7eF8mWzt52gHti16g4Qxuo/jEv5WMpE8w/PUcHpyT9jUI5wjxbcCOg8spIm6hYH4l7a5+i1+l3odiFZpLxcg15CCwwDdSai6b6e2keV7bd1m2l6lqfDPm912WDrSnSByU9zq6PBZQE7Saz7QVQkoBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GVV3oa1E; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1761297164; c=relaxed/simple;
+	bh=b4fcPDPdHyFgtbJsEfUVIDLQmExHtGaThhTr1RZJbdo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UsHU70jfmOclmdaUzI12fXgFek15qtj8Z3fxFD1D2OF6o1GDtufw81e+iSHG8IRjX2nREnP6w/Wth88f4Kvq4zJvdEwMT1CDh4U9MfvTjSNDcQ63gZqLzuYh0tKrFUZ9dPMXYXKIyH2iTX8nnGYYgXVh6NGzHQ+4EpsoA36LWxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lnwu7mDV; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GVV3oa1E"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7832691f86cso23284297b3.1
-        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 02:12:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lnwu7mDV"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-85dd8633b1bso881400385a.1
+        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 02:12:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1761297146; x=1761901946; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3jA06nHXo6DksjSpZmORK00GGM7rTS20lPorjM6G8PE=;
-        b=GVV3oa1EugINDGsBVuNY3m2Isb5EGTeAFqHaKKB/oPCxzB7lzE4irSxH2DBVKniTxW
-         ZcB47GYRsr2sziJg6RWuD2GGHn+VLR16YCEv/pWXB7JO8RkDSGxCnGNgwWIJpmtT0SdQ
-         Sw2WGiyN1NKXbqP/rFRs2Mv2QFDC2i7h4EIQxkjTJfKbBP/CyhV9nOfPOfCOt3MQvhYt
-         OHxOvMKfpERr1NtdcCUPH+3Yd00SPdeR2zzwIoUbJEig/Ld0Jdu4MHU4hpjTvIZSYF3G
-         8KJbhY1Ink7Dh12YGd3oXwh0agXmaKKVMURlT5Lwi+Qx27dcuiA00ryDvKurNGSnKjkm
-         TNkw==
+        d=google.com; s=20230601; t=1761297162; x=1761901962; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4ZOQqWJV8KC55lEsQteEDo8o1WFvi0KLeTnOsQ2765s=;
+        b=lnwu7mDVb5LLmjzTM63srgErS1IQ8j4O8wOYdc8jBK76AC9CDmyvdb73gevC2+m+Ry
+         tIrvfrhXMiRZGZmJJVg61WhvCq5wviUIAeVK51nqti5yyO5V0JKmqqOv7czUiTTwARlN
+         Gad3uiWdjA2Mx98XZMcehP5QVgT/O/tOH7oqvhflkXVn2+zRcdLlxACJaAwvfBvgtVkd
+         UcClhah56UqwqDiW9BMntQF7TsN5c5TMdvPDhgLxwPwiWcMfHmPg/g1ER2f0rwQH85xr
+         mc6arkF7ds4U90aUvZ8JbhMVYXzZa7fSe09aUJ6oImZEOvScxseYktLpw/agQ+SW3SfK
+         pADg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761297146; x=1761901946;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3jA06nHXo6DksjSpZmORK00GGM7rTS20lPorjM6G8PE=;
-        b=U76yXGtv523UqMihp1px3rOtK85s+T7Zemxqi724P0vKqU33CsDv8H9gRvWqckjJaF
-         IXJgGSUR5nz+LNCZUFpnIdZYu9bye0bekhoI1YtdHx2kDMHz7Euhz8uLRVbjS8p/tArI
-         p5yRmyLoICfXhga0JgOVhkcTKanFzTnan6THpNzCfWNUy1hp1Y5EAjNmaQKY8iwGvMRZ
-         3/umRh+rzC1s4XtidI483FrI2ho4WoOxgUnvb4xD+aKIuae/QrmjlNaBusSBCwQ9IP5w
-         JIy3/pxlDoxtDF3K5ANyeb/NWapY/tJEvp/5gU+OBhJhXrgdmWIuYQSEvLE+muQ5cqj4
-         OiqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUN56TgY6vHL71CSdhqvIFT/ksjUsYxoONZT6zR/sYTPUp7DLh90Pb0NaTrTrUPSDQcoLzb4OA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB67OQs8/ggmKw8n7L3ltSy1zn3B7PdUFngcpHY+VJW8X1rcKR
-	zJTTC1TmyifEfX9WIJaVBy9RC7YVWmHpGT846r23Cd/5ki8f1NUiUfboYXiyUWbWeggev/7OaDL
-	vhkhIVKCqoIEXeLi/ewe4FsxRZ3DKbc79GlRymXyCQw==
-X-Gm-Gg: ASbGnctmDoS4cIACLOt6GHuy+Cn8VLz5ySz8ewBEEUr+bWfidqqz2h7ehFgWHnn8l2w
-	S8J/Dr4XriYz97kfjpE+q+QFETyW+R30nYBo4BZArBuGVLKfAOuqW8w/PnFY/WXvAMBaD1/5e/Y
-	8RpPJm/s03tUcqHyMG+0y6Ul8cH8gOHhIEdXFpxdAMnrwtWB8gSiMiiyJ6CVlUt2/qB4YoQUlyR
-	xwhCXJGjRpaeFQvckPqSHznm47cr2wtunV/qLV3A/N+rjefPqe2VMF4IWRNOM6n9ibPmqvJLzKT
-	O2TbF2bfJTEWBiuLb8bPHzzDKgTUIX03wnANskwz+blyDsM47Gk=
-X-Google-Smtp-Source: AGHT+IGdc+BRmw6hWK1X2qJ1pVpkvZiid5Wdxp4xbNssFczs6yf46ChHI/J1GHXrGP+2f5H8Uhh6CTcUaGSrm6b9FDw=
-X-Received: by 2002:a05:690c:620e:b0:782:d992:c2de with SMTP id
- 00721157ae682-785e009dec5mr11688457b3.23.1761297145630; Fri, 24 Oct 2025
- 02:12:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761297162; x=1761901962;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZOQqWJV8KC55lEsQteEDo8o1WFvi0KLeTnOsQ2765s=;
+        b=fIaU+is+R27YGuZIbCx7DDXmAWiSzPYir+EXhYttz/8iTDborqFhjntW+iaehBiyjE
+         dZPjSuNNvI4fhnvwRdYp3JjSN43PW2iiPLMk/S7FWQElMNAmr6PnYGxRCj1zIgnoerjQ
+         Lq7yb8fbKZz7Nr91wurUyz3ZgACfNhPFVwDiqYaZ3nc5laSHW75liuqXWWJuaIbuaWM/
+         mBlu8s/LbbJdd8Y1Br9+L5Nadf7hYO7XIIAVypypqzN3M2F+dzCt7WSlg/ETapoDTe2M
+         WuEkuRsP+N1fNnrbXeLiPa/K3Nj+gdZ8PVcQ6clkviD9ecl3ZYlCfPUyXTps49C0nF4N
+         9GJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWA1gzyUOImQT9UWTihyfoFxuLSJc9bH2hGJcjvYQKD0AvzKOC4hdKgYz/6Fg31wLKTk4C848g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDjV8ejsgPdaNWQ/qxJl+HgMW4DlUmzOJwvFf8BNoeuJAWBwEg
+	AhLunvuDAoX+ipIC9Wttk7HdB5aqjXt81l9XTxn2/adsS7lxP0J7FHykh146eBshQ1W6gjXfhl6
+	4LtszX3it2jNuiw==
+X-Google-Smtp-Source: AGHT+IF12OXAhX8Ruei2oMEuMew7i851JdLaQfovBEMxdEDp1tlsFhuPCf6OpgdWpvgo4He3dYnPE3FDoiMGfw==
+X-Received: from qkf22.prod.google.com ([2002:a05:620a:a216:b0:891:db86:b5b8])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:1b87:b0:883:647b:6dec with SMTP id af79cd13be357-89da0282d3fmr201798485a.3.1761297161857;
+ Fri, 24 Oct 2025 02:12:41 -0700 (PDT)
+Date: Fri, 24 Oct 2025 09:12:40 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <1758532715-820422-1-git-send-email-tariqt@nvidia.com> <1758532715-820422-2-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1758532715-820422-2-git-send-email-tariqt@nvidia.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Fri, 24 Oct 2025 12:11:49 +0300
-X-Gm-Features: AS18NWDleNxSyCBKorudX13AjbaF-JB3xUjh3nVML1Q1EGfm0OWdJk1Wbh5vT6I
-Message-ID: <CAC_iWjLGw7eEYTUwwNjFKy2yYFdZRtwafHxjrDyBo-ugvhbkhQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] net: page_pool: Expose internal limit
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Gal Pressman <gal@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.821.gb6fe4d2222-goog
+Message-ID: <20251024091240.3292546-1-edumazet@google.com>
+Subject: [PATCH net-next] net: rps: softnet_data reorg to make
+ enqueue_to_backlog() fast
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 22 Sept 2025 at 12:19, Tariq Toukan <tariqt@nvidia.com> wrote:
->
-> From: Dragos Tatulea <dtatulea@nvidia.com>
->
-> page_pool_init() has a check for pool_size < 32K. But page_pool users
-> have no access to this limit so there is no way to trim the pool_size in
-> advance. The E2BIG error doesn't help much for retry as the driver has
-> to guess the next size and retry.
->
-> This patch exposes this limit to in the page_pool header.
->
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+enqueue_to_backlog() is showing up in kernel profiles on hosts
+with many cores, when RFS/RPS is used.
 
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+The following softnet_data fields need to be updated:
 
-> ---
->  include/net/page_pool/types.h | 2 ++
->  net/core/page_pool.c          | 2 +-
->  2 files changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-> index 1509a536cb85..22aee9a65a26 100644
-> --- a/include/net/page_pool/types.h
-> +++ b/include/net/page_pool/types.h
-> @@ -163,6 +163,8 @@ struct pp_memory_provider_params {
->         const struct memory_provider_ops *mp_ops;
->  };
->
-> +#define PAGE_POOL_SIZE_LIMIT 32768
-> +
->  struct page_pool {
->         struct page_pool_params_fast p;
->
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 36a98f2bcac3..1f0fdfb02f08 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -214,7 +214,7 @@ static int page_pool_init(struct page_pool *pool,
->                 ring_qsize = pool->p.pool_size;
->
->         /* Sanity limit mem that can be pinned down */
-> -       if (ring_qsize > 32768)
-> +       if (ring_qsize > PAGE_POOL_SIZE_LIMIT)
->                 return -E2BIG;
->
->         /* DMA direction is either DMA_FROM_DEVICE or DMA_BIDIRECTIONAL.
-> --
-> 2.31.1
->
+- input_queue_tail
+- input_pkt_queue (next, prev, qlen, lock)
+- backlog.state (if input_pkt_queue was empty)
+
+Unfortunately they are currenly using two cache lines:
+
+	/* --- cacheline 3 boundary (192 bytes) --- */
+	call_single_data_t         csd __attribute__((__aligned__(64))); /*  0xc0  0x20 */
+	struct softnet_data *      rps_ipi_next;         /*  0xe0   0x8 */
+	unsigned int               cpu;                  /*  0xe8   0x4 */
+	unsigned int               input_queue_tail;     /*  0xec   0x4 */
+	struct sk_buff_head        input_pkt_queue;      /*  0xf0  0x18 */
+
+	/* --- cacheline 4 boundary (256 bytes) was 8 bytes ago --- */
+
+	struct napi_struct         backlog __attribute__((__aligned__(8))); /* 0x108 0x1f0 */
+
+Add one ____cacheline_aligned_in_smp to make sure they now are using
+a single cache line.
+
+Also, because napi_struct has written fields, make @state its first field.
+
+We want to make sure that cpus adding packets to sd->input_pkt_queue
+are not slowing down cpus processing their backlog because of
+false sharing.
+
+After this patch new layout is:
+
+	/* --- cacheline 5 boundary (320 bytes) --- */
+	long int                   pad[3] __attribute__((__aligned__(64))); /* 0x140  0x18 */
+	unsigned int               input_queue_tail;     /* 0x158   0x4 */
+
+	/* XXX 4 bytes hole, try to pack */
+
+	struct sk_buff_head        input_pkt_queue;      /* 0x160  0x18 */
+	struct napi_struct         backlog __attribute__((__aligned__(8))); /* 0x178 0x1f0 */
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ include/linux/netdevice.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 7f5aad5cc9a1994f95ba9037d3a4af27eef9d5e3..9c1e5042c5e7646c0aa9e8f4e160c78ea27a639a 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -377,6 +377,8 @@ struct napi_config {
+  * Structure for NAPI scheduling similar to tasklet but with weighting
+  */
+ struct napi_struct {
++	/* This field should be first or softnet_data.backlog needs tweaks. */
++	unsigned long		state;
+ 	/* The poll_list must only be managed by the entity which
+ 	 * changes the state of the NAPI_STATE_SCHED bit.  This means
+ 	 * whoever atomically sets that bit can add this napi_struct
+@@ -385,7 +387,6 @@ struct napi_struct {
+ 	 */
+ 	struct list_head	poll_list;
+ 
+-	unsigned long		state;
+ 	int			weight;
+ 	u32			defer_hard_irqs_count;
+ 	int			(*poll)(struct napi_struct *, int);
+@@ -3529,9 +3530,17 @@ struct softnet_data {
+ 	call_single_data_t	csd ____cacheline_aligned_in_smp;
+ 	struct softnet_data	*rps_ipi_next;
+ 	unsigned int		cpu;
++
++	/* We force a cacheline alignment from here, to hold together
++	 * input_queue_tail, input_pkt_queue and backlog.state.
++	 * We add holes so that backlog.state is the last field
++	 * of this cache line.
++	 */
++	long			pad[3] ____cacheline_aligned_in_smp;
+ 	unsigned int		input_queue_tail;
+ #endif
+ 	struct sk_buff_head	input_pkt_queue;
++
+ 	struct napi_struct	backlog;
+ 
+ 	struct numa_drop_counters drop_counters;
+-- 
+2.51.1.821.gb6fe4d2222-goog
+
