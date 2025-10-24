@@ -1,142 +1,167 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C4F309F13
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 11:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801EC23C8C5
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 11:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761306270; cv=none; b=k2jg6OtTj7eISiNXEeQIeQGQ3JA7iDhk/1vybb2P8kKFMo7JFd9i3xTymnAAOBelVuzIVtQI/QSCxEEpRXPXlj10heWKLpf6ucF3FA7F3PQWXmzUHd+yGGtxL25kCUonKshWlR4ccdt6wzCUNaF6SZ+RJaGdPn8g9IwzQx29GkY=
+	t=1761306610; cv=none; b=SWbY4f5F7uaN9TIho9IneFo+/lVKI+ZhvBK6+U30B2mpZUGGle9ZxqK9szgUNhA3t9lYMK59xrY+N4x4UQyePc5zkCa1sxZdLyO06ilYmLtIwjl0mVvIZJuedU4QNaNXh5MZKtFwO24kex6lgZZ/xJ7b0ueTmhJ5Nkq4UCKcrBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761306270; c=relaxed/simple;
-	bh=Ej80jl2uiwzW7Q0agNgjGQwqhc8eFg6CYRfWKq5oG7k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gHMmk0Wl+FwKGYG66tHcTKzeSAbzeZOAgPWd+DGihmGxosyqAal5M3aYoAdU4AaI07/qJ1C8uLWQUGPqXMHqJJ8oYh8Hkf6QA3VseCj6tQHJ6dCVAYM5v/OMXB7wJDRcreHqABhzCqa7YWZA95L7hQxJ8BgVUTVz6LWkDY+Z8Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bb6Y9IxP; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761306610; c=relaxed/simple;
+	bh=JyNPoOflrd09KImJzGn+Oa6R2et+UXAyI1HgrMWnlrg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=emzo+q+2UdlBOmtMr310vy9FNFDm6eInAyZ6zp2TYPm5MfCpCOffU1WmGGcUPVmGLKq+05zAbxmj5KZdWth4QYbSS2uTv/V5ZE4z2M/HJuiIwKMFzLXSzs7IJ3htpc4ywHxHm6cmK93RFNbhP7WXme6jbnYgvVnUBEFDDXw8cZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=THBKORSJ; arc=none smtp.client-ip=74.125.224.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bb6Y9IxP"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-33fc9550f68so207917a91.2
-        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 04:44:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="THBKORSJ"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63bbf5f77daso2228920d50.3
+        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 04:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761306268; x=1761911068; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zacr6gvmQ9vDqaS1O97ygNGkrRkfIl6K5RuWNpVBtP0=;
-        b=bb6Y9IxPGuigaIbtVaYVwewQT4+j6B/dHufdTT/LSGtyCwkK4n5Rp7JV4Y8wkaVeeF
-         B45fW4JHWOUPwSZk7uTq6GBk8mjM/FwYHes7+5JfrIAF9F+fNFzXIxoReLNykeeE95WN
-         3bxPfcDT87n66jQEr5ZWavXn4if2RlQsW8rNs7di2SWv2tyydeizu9wKLo0y9hQ+Ov7N
-         wm42Ll0k8d4SdrFpLJJeDQMypiWzCCtVKMrwOcQrM/rnp4iy/7IVI0rNINbAW3ZLrWLO
-         Jnm+hgjdTqMjBkFAAJCg7HVObFzpJoYCOb2JL0bOhYOD4tRznX8NxDJ7lVvWppqfXgnM
-         8faA==
+        d=google.com; s=20230601; t=1761306607; x=1761911407; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LPu7vN1calUWS9Gz7jrsKnKSCyFmaW2kq8XMxDii/Ww=;
+        b=THBKORSJHmb2r0wEkEg4vLDxBhzZNXJ06lh/v4ndf7RrKUw6f7FFFU5n+wbq7o+ONa
+         lyR3opdpVcoz34/rnDcpAHwd+ovhsoxjbIXgyfp0zWu0chNnDxPnKmt8Pa2rGPoxGFM3
+         S9tKWGvPHRex65AJ7zDwUQR18+Or/TDmtLbvcXrqUrxXMZTdcVASJ8MNZm+cPisyrGt8
+         ymsZwaVkrdBtVWn6Z+nTb+L2p2qxsoBgxUQpR2FHhBLR5+1llqVV3Q/d+8n5bJAThEWZ
+         wDqY/TigG7de52PcbeFDWcri0KF2ngxwd5+Sm3sCDVfGCbbNs34MKsvxQDaRmy2GnOY5
+         psOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761306268; x=1761911068;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zacr6gvmQ9vDqaS1O97ygNGkrRkfIl6K5RuWNpVBtP0=;
-        b=OR5k9UfUSVw2tTqvgvajvtpIv3YKe4Q62AmTN6nChbp4Fu2RDCfkugIlX1m7Py2yM1
-         /i5tpyf1m/3/HTmvNvzMYnHCgboGaAbWwbdaMpXJqdknwByTMNpNM4V7O7GEk1LvG6F/
-         j2dOLyUO4NSA/fLDAY/GY8417riaptTK1HUENXJBqPy1RPd4mQy90cQgk1it09nYmyat
-         IucMol7I0WZsR4HXnTdr3rTGW3P/7UJFEOEH7KwHxVQZaGDOzGmN8M8gBffWk4hUmA89
-         SwsQQqWqoMDu6U3KGYIXRqj6MlswVvfVEtT5WHMU1vr/2Gwj6VSJ+NJWC+7YnlJiHzXU
-         AAWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW9bpjiBpLVvoGt12+Y7HsBdzoiik7HUMKCS0lj6qsjlE3growXRl8KXhTtpd+oqGyMjvMoAck=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxrt+fQcht+L99wP2Jgq6lXL1cTe6+vhIu90qMR+KBciQSh/jhn
-	SoyXMBF+txSr5eYiU0ASNpp3bEGyuJ1Yrn35xNOHPLWKy10+dZX4+Zm7
-X-Gm-Gg: ASbGncuDyWOPZOjfE2qFQV/RvzBe50zZVJbjrC9Kf8XxcthtiaPrZAMGIRS+gP+2G3q
-	VKByc7E7/3gJKbBWL4SyEfpknvipifq6/H4+sRyK1Kf40j//OEcQW8Q4MNq7E/bbcR4lNAAPn3/
-	NSOk8DTA70YEw4bBCFp+3gG8wmV/gQ1/KVTNnceCuhFjGXRoJp+1dEpSV2IDyaX+k1/5Rzb/y9h
-	d2FFiuxQSEwU1M5RdF2dDL5rz5aazKpr/PgqHjGVBAa/3FtPdOn2t/1LJn09X2iE0f30jF0oY+0
-	z+8vmenzAgNt6CZJOt+FCYfVU40XEQMB6ykBVMyIdQrf1KvtsTGjNTQXpE9qFGbSgEWMOdxFSf6
-	82Bs3p8xwAzYz2MfpRIdAe9RfHNGaUJxfKGea5PXCGDtp7eUchnji+s62nf9+AXq0bORjh4PTaK
-	u6nChaJiDGiYu+Nf1cNalTjW23028oZGpgHb0l+43jeA==
-X-Google-Smtp-Source: AGHT+IFOG4zJwYCvCSoVrrWzwKKmIiySYPYWgc4iF6gWM6N9sou9RGKgAl7ua7MJsfPaFXhK4sGlmw==
-X-Received: by 2002:a17:90b:1c8f:b0:335:2eee:19d7 with SMTP id 98e67ed59e1d1-33dfabaa9bfmr10185450a91.5.1761306268465;
-        Fri, 24 Oct 2025 04:44:28 -0700 (PDT)
-Received: from [127.0.1.1] ([2401:4900:c912:9303:ec55:988d:afdd:e21a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33e2247a7cfsm8817027a91.11.2025.10.24.04.44.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 04:44:27 -0700 (PDT)
-From: Ranganath V N <vnranganath.20@gmail.com>
-Date: Fri, 24 Oct 2025 17:14:17 +0530
-Subject: [PATCH v2] net: sctp: fix KMSAN uninit-value in sctp_inq_pop
+        d=1e100.net; s=20230601; t=1761306607; x=1761911407;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LPu7vN1calUWS9Gz7jrsKnKSCyFmaW2kq8XMxDii/Ww=;
+        b=VanAS0rdzWH5CnVkLjicrapcIrzqlmUKhnILbtaHF3YFyjybnuSocd9cvhnFI+n8RT
+         kBYRvpkXb/cWbDpnOh+L99GG0M2NuaLVUAc5zVZY8G2weZFWFHsasogShhfWUQ6fDIHF
+         JLnIFUwhQyoqnCJtJdaFcIOOxUFCAhN7nWt5SA1TejIVzsQ/MKdPwL0HRFKEaZaXOyCd
+         15Md8g4gE5WD07wZR7ak3RHqW6Z9qNSAa1V1mbCOt89n5EdSd28rp8ZJ6w/lXLu6tMWm
+         aWvWCAzRV7HrKiDQ/YZzTXjoaxrL2FuxbtQt9axahDcZo6UGiSg8g6xqJ1f5dChDuKCT
+         sv+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUPsyyO6wtxPkySNppFpX8Lbe406hDsqdaVmBaCNQXWHmqut3FjweMF1BMy8K+R2XqB8FVaS6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8yOswy9EWiQMq+1mweDfJVxyDXxSizb+StL7o3cc/YUekCw96
+	iXWo2p1CAKWSBrQaFheFofFHc+P3srsxM65wI/MWWNerQgWQn7mHdszXovtCdiesYCJobNFJyMN
+	aotcFkWrFrdTjfQUzl96M6LzswyvKozgLIDVrRauN
+X-Gm-Gg: ASbGncsJsb6bndTMlbNQY7kXTbqCLNqzSRWIAH0MtSWSfkbw73S15QBn8DHpZVw0/xv
+	QOElaG69YaOsmnhw6oKjgT33CEbee3GXakD59VUU/YPCCUCNj00SbbOCdRKirKZIFCU7HjZbOPo
+	xF6K3qt5NWytqRIXQC0nfFJx2s4ODL8sJf8cWAjFCUXQGIAKvnZR7rO15USOXj4BU87IdMem2Q+
+	y5oikpk+opID1whJYXgmENt1VZRWVELvl+GcywskcVDVh6TaA+fwgBkVbty1l1QAAYPCw==
+X-Google-Smtp-Source: AGHT+IFiXZPFoW3XumCylfcB7j13+foGPrt/PBXHdC1d5im6TR7Pl10kLZ/EEoKE1RNBjalMg75qFAT+YfmAMkkUFZ0=
+X-Received: by 2002:a05:690e:1c08:b0:63e:4150:4a0b with SMTP id
+ 956f58d0204a3-63e41504b4cmr12608126d50.64.1761306607028; Fri, 24 Oct 2025
+ 04:50:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-kmsan_fix-v2-1-dc393cfb9071@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJBm+2gC/22MSw7CIBQAr9K8tRjAVKgr72Gahp/tiwIGDKlpu
- LvYtcuZTGaD7BK6DJdug+QKZoyhAT90YBYVZkfQNgZOec8oP5GHzypMd1yJkLbnQg/DmWpo/Su
- 5pvfXbWy8YH7H9NnXhf3sv0thhBFLpWHSaimFuM5e4fNoooex1voFaMxkOqIAAAA=
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
- Xin Long <lucien.xin@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
- syzbot+d101e12bccd4095460e7@syzkaller.appspotmail.com, 
- Ranganath V N <vnranganath.20@gmail.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761306262; l=1755;
- i=vnranganath.20@gmail.com; s=20250816; h=from:subject:message-id;
- bh=Ej80jl2uiwzW7Q0agNgjGQwqhc8eFg6CYRfWKq5oG7k=;
- b=uxw4Ot7rDxrniMfFmTEyfL8btyNNpnas0ivgGVzCMdJ/z0NJGeUtYduGENI6w4tyVhUmZK3HX
- bOta6h5thJGC3Q6Xrkl4/8kYe8Qaf0YEQJy+isSl/NAlMgk+RgOd5dI
-X-Developer-Key: i=vnranganath.20@gmail.com; a=ed25519;
- pk=7mxHFYWOcIJ5Ls8etzgLkcB0M8/hxmOh8pH6Mce5Z1A=
+References: <20251024093901.1202924-1-lizhi.xu@windriver.com>
+In-Reply-To: <20251024093901.1202924-1-lizhi.xu@windriver.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 24 Oct 2025 04:49:55 -0700
+X-Gm-Features: AS18NWCyXWglYAph4MhDJQMx_rCfCfaeUc5A_R94Ms8hmdKV9GKUS6s1Tfgfq_I
+Message-ID: <CANn89iKxjOPyP7h-8bCtx1SwCM1FaXDAXfcdCW7uXxKsy49L3w@mail.gmail.com>
+Subject: Re: [PATCH V3] net: rose: Prevent the use of freed digipeat
+To: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: davem@davemloft.net, horms@kernel.org, jreuter@yaina.de, kuba@kernel.org, 
+	kuniyu@google.com, linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzbot+caa052a0958a9146870d@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix an issue detected by syzbot:
+On Fri, Oct 24, 2025 at 2:39=E2=80=AFAM Lizhi Xu <lizhi.xu@windriver.com> w=
+rote:
+>
+> There is no synchronization between the two timers, rose_t0timer_expiry
+> and rose_timer_expiry.
+> rose_timer_expiry() puts the neighbor when the rose state is ROSE_STATE_2=
+.
+> However, rose_t0timer_expiry() does initiate a restart request on the
+> neighbor.
+> When rose_t0timer_expiry() accesses the released neighbor member digipeat=
+,
+> a UAF is triggered.
+>
+> To avoid this UAF, defer the put operation to rose_t0timer_expiry() and
+> stop restarting t0timer after putting the neighbor.
+>
+> When putting the neighbor, set the neighbor to NULL. Setting neighbor to
+> NULL prevents rose_t0timer_expiry() from restarting t0timer.
+>
+> syzbot reported a slab-use-after-free Read in ax25_find_cb.
+> BUG: KASAN: slab-use-after-free in ax25_find_cb+0x3b8/0x3f0 net/ax25/af_a=
+x25.c:237
+> Read of size 1 at addr ffff888059c704c0 by task syz.6.2733/17200
+> Call Trace:
+>  ax25_find_cb+0x3b8/0x3f0 net/ax25/af_ax25.c:237
+>  ax25_send_frame+0x157/0xb60 net/ax25/ax25_out.c:55
+>  rose_send_frame+0xcc/0x2c0 net/rose/rose_link.c:106
+>  rose_transmit_restart_request+0x1b8/0x240 net/rose/rose_link.c:198
+>  rose_t0timer_expiry+0x1d/0x150 net/rose/rose_link.c:83
+>
+> Freed by task 17183:
+>  kfree+0x2b8/0x6d0 mm/slub.c:6826
+>  rose_neigh_put include/net/rose.h:165 [inline]
+>  rose_timer_expiry+0x537/0x630 net/rose/rose_timer.c:183
+>
+> Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+> Reported-by: syzbot+caa052a0958a9146870d@syzkaller.appspotmail.com
+> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> ---
+> V1 -> V2: Putting the neighbor stops t0timer from automatically starting
+> V2 -> V3: add rose_neigh_putex for set rose neigh to NULL
+>
+>  include/net/rose.h   | 12 ++++++++++++
+>  net/rose/rose_link.c |  5 +++++
+>  2 files changed, 17 insertions(+)
+>
+> diff --git a/include/net/rose.h b/include/net/rose.h
+> index 2b5491bbf39a..33de310ba778 100644
+> --- a/include/net/rose.h
+> +++ b/include/net/rose.h
+> @@ -167,6 +167,18 @@ static inline void rose_neigh_put(struct rose_neigh =
+*rose_neigh)
+>         }
+>  }
+>
+> +static inline void rose_neigh_putex(struct rose_neigh **roseneigh)
+> +{
+> +       struct rose_neigh *rose_neigh =3D *roseneigh;
+> +       if (refcount_dec_and_test(&rose_neigh->use)) {
+> +               if (rose_neigh->ax25)
+> +                       ax25_cb_put(rose_neigh->ax25);
+> +               kfree(rose_neigh->digipeat);
+> +               kfree(rose_neigh);
+> +               *roseneigh =3D NULL;
+> +       }
+> +}
 
-KMSAN reported an uninitialized-value access in sctp_inq_pop
-BUG: KMSAN: uninit-value in sctp_inq_pop
+You have not even compiled this patch.
 
-The issue is actually caused by skb trimming via sk_filter() in sctp_rcv().
-In the reproducer, skb->len becomes 1 after sk_filter(), which bypassed the
-original check:
+Also please carefully read Documentation/process/maintainer-netdev.rst
 
-        if (skb->len < sizeof(struct sctphdr) + sizeof(struct sctp_chunkhdr) +
-                       skb_transport_offset(skb))
-To handle this safely, a new check should be performed after sk_filter().
+Resending after review
+~~~~~~~~~~~~~~~~~~~~~~
 
-Reported-by: syzbot+d101e12bccd4095460e7@syzkaller.appspotmail.com
-Tested-by: syzbot+d101e12bccd4095460e7@syzkaller.appspotmail.com
-Fixes: https://syzkaller.appspot.com/bug?extid=d101e12bccd4095460e7
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
----
-KMSAN reported an uninitialized-value access in sctp_inq_pop
----
-Changes in v2:
-- changes in commit message as per the code changes.
-- fixed as per the suggestion.
-- Link to v1: https://lore.kernel.org/r/20251023-kmsan_fix-v1-1-d08c18db8877@gmail.com
----
- net/sctp/input.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Allow at least 24 hours to pass between postings. This will ensure reviewer=
+s
+from all geographical locations have a chance to chime in. Do not wait
+too long (weeks) between postings either as it will make it harder for revi=
+ewers
+to recall all the context.
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 7e99894778d4..e119e460ccde 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -190,7 +190,7 @@ int sctp_rcv(struct sk_buff *skb)
- 		goto discard_release;
- 	nf_reset_ct(skb);
- 
--	if (sk_filter(sk, skb))
-+	if (sk_filter(sk, skb) || skb->len < sizeof(struct sctp_chunkhdr))
- 		goto discard_release;
- 
- 	/* Create an SCTP packet structure. */
+Make sure you address all the feedback in your new posting. Do not post a n=
+ew
+version of the code if the discussion about the previous version is still
+ongoing, unless directly instructed by a reviewer.
 
----
-base-commit: 43e9ad0c55a369ecc84a4788d06a8a6bfa634f1c
-change-id: 20251023-kmsan_fix-78d527b9960b
-
-Best regards,
--- 
-Ranganath V N <vnranganath.20@gmail.com>
-
+The new version of patches should be posted as a separate thread,
+not as a reply to the previous posting. Change log should include a link
+to the previous posting (see :ref:`Changes requested`).
