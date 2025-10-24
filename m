@@ -1,126 +1,71 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C93090D2
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6BB2853F2
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761297075; cv=none; b=t8aB0kUFoefP7SENqDSgtO/hxoPD0bTsPJpTWmy8+NtQBTBHpK/dbtF+FWa86NLO+JkrHnkucBWRTczxZtwHNiLqVf1JOjq9VUdA0hxQzqzqQunFZ6O32miCG825fVeQUT7YrJRrGMceqXaun1NvY5g8phZDA3Mu+cEH/DfpTt4=
+	t=1761297141; cv=none; b=W4asU+NXsaJstPu94wC4u3JsFQmDH6YSo2/Xe8IMxpXGh2eXtlv3ZG5On3Hg2yZ3UVOmZtoOJtUv1uNea94NP1GulXL2+pnymjdpzWfYZjvhqm9RBJ8LM7jrwngGtQhF2aqC8oht1ymSkhEZLjDEAekRkfXJvjSA69x+Y57kE+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761297075; c=relaxed/simple;
-	bh=PUrfg4uGr+Oo/Ca7SJXLcnhod6KTFMtdEP9m1BKO36A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r+oM8w+bhUMhfAITTQcAnwTkjiyjxjFvutV4bjgA7hACO0oqrFoG7ajEiyQ3syADVol46o3PLuAAu5fOzFTKBoJWf3XjyV1UE2Eup8KWzwPHDQl/IOotLvTzRcBd6Qm0x5UNSxWQDkt739GPQmENZiytgudt5P6nr7Gyl01qyeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vCDpI-0000nP-3w; Fri, 24 Oct 2025 11:11:12 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vCDpF-005Ca4-31;
-	Fri, 24 Oct 2025 11:11:09 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vCDpF-00F7An-2b;
-	Fri, 24 Oct 2025 11:11:09 +0200
-Date: Fri, 24 Oct 2025 11:11:09 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Hariprasad Kelam <hkelam@marvell.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Gal Pressman <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Breno Leitao <leitao@debian.org>,
-	Russell King <linux@armlinux.org.uk>
-Subject: Re: [RFC net-next] net: loopback: Extend netdev features with new
- loopback modes
-Message-ID: <aPtCrc6EPpn_hcYp@pengutronix.de>
-References: <20251024044849.1098222-1-hkelam@marvell.com>
- <e9aa0470-2bd2-4825-8333-ad9dbc7f40a0@bootlin.com>
+	s=arc-20240116; t=1761297141; c=relaxed/simple;
+	bh=YBpFLegduXHDtjVMiRyVV4iUq0IemCd+1JYKeiK6uOc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lj2pL+JZQAynz39iP6qKY1rkfOIChDC9b63FqRZvibatsceTmSoX6mLTGkxeUXBblcrcPfqZGJmNavHlUtziaGxIE7ORrGr+86ep/jHu4sT/L/gDOtlEYt9nTV8QGwZPRy1JZ7CvHfyBVDGfVIsBV7LFNgFCknfAwaHztAYcbpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from kero.packetmixer.de (p200300c5970781D8b076411bb4C554a3.dip0.t-ipconnect.de [IPv6:2003:c5:9707:81d8:b076:411b:b4c5:54a3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 6BB12FA130;
+	Fri, 24 Oct 2025 11:12:10 +0200 (CEST)
+From: Simon Wunderlich <sw@simonwunderlich.de>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: netdev@vger.kernel.org,
+	b.a.t.m.a.n@lists.open-mesh.org,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH net 0/1] pull request: batman-adv 2025-10-24
+Date: Fri, 24 Oct 2025 11:11:49 +0200
+Message-ID: <20251024091150.231141-1-sw@simonwunderlich.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e9aa0470-2bd2-4825-8333-ad9dbc7f40a0@bootlin.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 24, 2025 at 10:46:14AM +0200, Maxime Chevallier wrote:
-> Hi,
-> 
-> +Russell +Oleksij
-> 
-> On 24/10/2025 06:48, Hariprasad Kelam wrote:
-> > This patch enhances loopback support by exposing new loopback modes
-> > (e.g., MAC, SERDES) to userspace. These new modes are added extension
-> > to the existing netdev features.
-> > 
-> > This allows users to select the loopback at specific layer.
-> > 
-> > Below are new modes added:
-> > 
-> > MAC near end loopback
-> > 
-> > MAC far end loopback
-> > 
-> > SERDES loopback
-> > 
-> > Depending on the feedback will submit ethtool changes.
-> 
-> Good to see you're willing to tackle this work. However as Eric says,
-> I don't think the netdev_features is the right place for this :
->  - These 3 loopback modes here may not be enough for some plaforms
->  - This eludes all PHY-side and PCS-side loopback modes that we could
->    also use.
-> 
-> If we want to expose these loopback modes to userspace, we may actually
-> need a dedicated ethtool netlink command for loopback configuration and
-> control. This could then hit netdev ethtool ops or phy_device ethtool
-> ops depending on the selected loopback point.
-> 
-> If you don't want to deal with the whole complexity of PHY loopback, you
-> can for now only hook into a newly introduced netdev ethtool ops dedicated
-> to loopback on the ethnl side, but keep the door open for PHY-side
-> loopback later on.
+Hi David, hi Jakub,
 
-Ack, I agree. I would be better to have information and configuration
-for all loopbacks in one place.
-Will it be possible to reflect the chain of components and level of
-related loopbacks? I guess, at least each driver would be able to know
-own loopback levels/order.
+here is a bugfix for batman-adv which we would like to have integrated into net.
 
-Please add me in CC if you decide to jump in to this rabbit hole :D
+Please pull or let me know of any problem!
 
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thank you,
+      Simon
+
+The following changes since commit d69eb204c255c35abd9e8cb621484e8074c75eaa:
+
+  Merge tag 'net-6.17-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2025-09-04 09:59:15 -0700)
+
+are available in the Git repository at:
+
+  https://git.open-mesh.org/linux-merge.git tags/batadv-net-pullrequest-20251024
+
+for you to fetch changes up to f12b69d8f22824a07f17c1399c99757072de73e0:
+
+  batman-adv: Release references to inactive interfaces (2025-09-27 19:59:49 +0200)
+
+----------------------------------------------------------------
+Here is a batman-adv bugfix:
+
+ - release references to inactive interfaces, by Sven Eckelmann
+
+----------------------------------------------------------------
+Sven Eckelmann (1):
+      batman-adv: Release references to inactive interfaces
+
+ net/batman-adv/originator.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
