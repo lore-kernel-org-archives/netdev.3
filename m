@@ -1,118 +1,143 @@
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57534319600
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 11:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B553128DA
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 11:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761305170; cv=none; b=gA0AEnpKTUrWXpQjMIVp4rfXMrfpGAUimslhDbA3jIsJwtvFtf+GjfHbYsMzfdYP3pH1ErRucIH9iR7o8DGgb4iG8j8fQg/0HA7akhLGkM26+qaWE+igAyqIpofoHd8xjGojdrEnMIdWOXTqPxYuBynPwzl2ek18mv2FRtI7kTw=
+	t=1761305208; cv=none; b=EPfZS8VqachuET0L//dm4mnqYNa5FKH0I4wa7JkQ0r/KUDkWGm8SfXIZLHL+Ad10R3dcXT2xHk/7YwI13b2O1lRg2OH0xUUxvVGBXeDm8KEWR8//MyBqPzZ/Ip89vqjpCNE9jG+2Y3jnGP+me9ybCKHsyVpjGR/JZIGSkTRZLCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761305170; c=relaxed/simple;
-	bh=AgYdT7YB2xxwLbJHg3/succLrKYoP/PPcqdqImF3crU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lir1B+Ne2lnQa1SU1QwXmdLb25yO+fAl9ZC42ENqHrQ82yEhTf7F5HHAciIwXqm098oIUTkfdCz/jQX5AWPUyMQ+mbwzzjQL/iPSicVHVlKjxfT7eAIYevk2Dv+1ssiYHyJdU1DuWveTaNI4llib+kwl+B+uA55P+0MWWY7+eNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=s5KqXpOe; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+	s=arc-20240116; t=1761305208; c=relaxed/simple;
+	bh=MRpGFE/nF5iTX6ftFSQeha0skf1GZ2BAH/qN06gnGK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WzLUG1VGzGxxdTS+zbxwpG3lsTPjFYMgtoeDpMYPrOUH7zwG62AAE/P0IUv5RMVl2nu4xxUiBPYaQ0qxFIQZQV/xotv0MyY0lD/2tnDQIPupbbuw88NkeH/O8VUrqcD5WCgsT1ONzmsAu53XUbnTCaZYia9xWdTGi4BWqPdOKTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=q64VYH5O; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=otfw8ptK; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="s5KqXpOe"
-Received: from eig-obgw-6004b.ext.cloudfilter.net ([10.0.30.210])
-	by cmsmtp with ESMTPS
-	id CEpyvaSACeNqiCFuIv42uv; Fri, 24 Oct 2025 11:24:30 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id CFu9vPG1MEQP9CFu9vIQjr; Fri, 24 Oct 2025 11:24:21 +0000
-X-Authority-Analysis: v=2.4 cv=MpNS63ae c=1 sm=1 tr=0 ts=68fb61ed
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=4oHATN8Nx7vVUZJYxp75bA==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=7T7KSl7uo7wA:10
- a=ejCFXqOAJi88KBG5-skA:9 a=QEXdDO2ut3YA:10 a=xYX6OU9JNrHFPr8prv8u:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PYq2fPB27ReF2cDwOstKi/I5IpH5649wXvX+ugiEd8M=; b=s5KqXpOeJHb5Dr0aEkqViGiPzg
-	FQ+rJy88GCviZlxTWIyxFn0xaTPsHJ6pauvVftWGuc1a6ygfq8aOAguhbOD6Ltw2FM+fEtrvpQiR4
-	CHBPCrWD7LQK45LyEVpSCEKbgTzlrqBsIKYCxOWI6POPRqb9jicribi6irlSoe9ns8mEdQnxYaLlR
-	3g91QUKBEdmlXiFiXImqFFyTwFUw6AvkzO8Vbg9sEfBuG6Y//zKUxbZtub8XqH+auukrkX2kc4Yuu
-	fvQdw51LqtwcL20gogfx/ehMRFZ7yttL7mF097A1DI3J9Gn9ayRhKz7b3hrW2Y0lGhyDUK7B6Blip
-	jvia2CzQ==;
-Received: from [185.134.146.81] (port=60908 helo=[10.35.193.44])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1vCFu8-00000000imq-29tU;
-	Fri, 24 Oct 2025 06:24:20 -0500
-Message-ID: <949f472c-baca-4c2f-af23-7ba76fff1ddc@embeddedor.com>
-Date: Fri, 24 Oct 2025 12:24:09 +0100
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="q64VYH5O";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="otfw8ptK"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id E3B6AEC027D;
+	Fri, 24 Oct 2025 07:26:43 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 24 Oct 2025 07:26:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1761305203; x=
+	1761391603; bh=7/8KOV/xaG8pdgGbXFKGL25SDXCG7VcV2qIuUmFjreM=; b=q
+	64VYH5OS4mlK+0V3QZIu1M8fEfMoReHkW4R6HpQ6VgVyt8rhceTjeP7e9NjoX+PR
+	ZRhtPGoYP9uWX1HoffUKq36n/vvkyWhZ3Lop5Lx1Mh490J7yJzQkeZ/NARX7qgac
+	Yocl9Ur/nOqKwSxhsZU9uVYqp2BgTVL2jycnpXZF+Rk2mmXhBoiGAdCyLgrjvkb2
+	RMwOQ9UqwiEk3vHsnQ7D1r2OKV/JVbBV/8d3Lxzp19X1uVZ5wMdv6T+ui9DR3lue
+	Ac5cSljRh4EIC4WcGnmP0vTMBdbbMcve9s3wCrvs9KFjm/sR+aGUqpl0qovpurwI
+	dCCfl0JvW2lmvGexQ4FfA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1761305203; x=1761391603; bh=7/8KOV/xaG8pdgGbXFKGL25SDXCG7VcV2qI
+	uUmFjreM=; b=otfw8ptKG6RweiIxDcLXEhF6H/lwkkXqJOP8Oeje3ZVOTQl+TMs
+	OBZRcX53gGUx6BT2GBn6QNA4F3XoJWQs0/H44roOIMYP3FcGX6PfxDtliFrm0ZFU
+	Q8FFeUx+hJEK8WYrflKJf9LhtHrNKwwhk2uSiujCQNxjfbXimdJE8+lBbl4oZkKt
+	T1dCwAg+uePQ63Mp7MIvyAptni/B3W57Bty0/PAG22xEboJp/sI70olgywbiqmuN
+	22izhMK0EY7iMmqwVC47XDEBGlfskmM9zTHUJV5VMemx1QX+256A2o7q+5mkyk6V
+	0u0G0kDAkMfbnQ/rjNK5+VYS0M3OUoT8yLg==
+X-ME-Sender: <xms:cmL7aKxaVAfVODiARhH0gV4rWDvXbII6wGqRC5AzoAJHc4X-s_ZPIQ>
+    <xme:cmL7aMSa83-fhyPixEZDVPjyQ-xopd6LWEMVxT-BjwSUTDgw9XhJzGSOszgbe_GZU
+    eho8u8s5Zhxx-B2QQCVYZJFWFMaHVYbCn5Xa_asgoTR_rbLYQ8HWA>
+X-ME-Received: <xmr:cmL7aHJmNZCzD3RjkmFGFJv8s-7fghtVRI_hVhzLyyl2grEgN6KY-jEXxZyP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeelvddvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepuefhhfffgfffhfefueeiudegtdefhfekgeetheegheeifffguedvueff
+    fefgudffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epshgusehquhgvrghshihsnhgrihhlrdhnvghtpdhnsggprhgtphhtthhopedutddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhirghnsgholhesnhhvihguihgrrdgtoh
+    hmpdhrtghpthhtohepnhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopehkuhgsrg
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtvghffhgvnhdrkhhlrghsshgvrhht
+    sehsvggtuhhnvghtrdgtohhmpdhrtghpthhtoheptghrrghtihhusehnvhhiughirgdrtg
+    homhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdr
+    rghupdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtth
+    hopehprggsvghnihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:cmL7aDUbUXBlueaxN62MvIYjK7ISGBUbBFq_UDNa530ReVvGKQtugQ>
+    <xmx:cmL7aLT1UEUy0e0p_61n0tmwZA6MhgIUcxVdpcgj52idbcnkXcxb6A>
+    <xmx:cmL7aLDboDy-m-xhg02MlXyHtZLVj7r2gbSlgST3ZWkoXWozH7sjyA>
+    <xmx:cmL7aKLta3PS8WHdqC8hf2PhHsiFCoBYH9wmAThSkJjFT0a20Gq-aA>
+    <xmx:c2L7aK4QXSdEjmi1H1YKMQh2U_Dub30GYzGwZKuBeejIsHILJItX6RWj>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Oct 2025 07:26:41 -0400 (EDT)
+Date: Fri, 24 Oct 2025 13:26:40 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Jianbo Liu <jianbol@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+	steffen.klassert@secunet.com, Cosmin Ratiu <cratiu@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next 2/3] xfrm: Check inner packet family directly
+ from skb_dst
+Message-ID: <aPticHQQSugMGgs1@krikkit>
+References: <20251024023931.65002-1-jianbol@nvidia.com>
+ <20251024023931.65002-3-jianbol@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] net: inet_sock.h: Avoid thousands of
- -Wflex-array-member-not-at-end warnings
-To: Jakub Kicinski <kuba@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <aPdx4iPK4-KIhjFq@kspp> <20251023172518.3f370477@kernel.org>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20251023172518.3f370477@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 185.134.146.81
-X-Source-L: No
-X-Exim-ID: 1vCFu8-00000000imq-29tU
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([10.35.193.44]) [185.134.146.81]:60908
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfE3a1a1yMYLbphz7FVG2V/o/w089nBnyiFYJ54JU6LQ3Z5fSdr+odyU1ZgZjW4wD7A/mCfjVHdFbmqU6kbFkfPEjkxdW7Fm0y3w/dEOnnnekj5/w+M2A
- dlL4DJrKGWdeuPo9+Nns/SXTseoiGQQqUw4OTr2lIN4tKGlrdHKlLxR/ej618TVmtA16ajaZe39tg4QYLGPw2QXb0tafaD1GN54=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251024023931.65002-3-jianbol@nvidia.com>
+
+Some general notes:
+
+ - ipsec patches should go through the ipsec/ipsec-next trees
+   maintained by Steffen, not net/net-next directly, and use
+   ipsec/ipsec-next in the subject prefix
+
+ - this patch looks more like a bugfix, so it should target the ipsec
+   tree and have a Fixes tag, instead of -next
 
 
-
-On 10/24/25 01:25, Jakub Kicinski wrote:
-> On Tue, 21 Oct 2025 12:43:30 +0100 Gustavo A. R. Silva wrote:
->>   struct ip_options_data {
->> -	struct ip_options_rcu	opt;
->> -	char			data[40];
->> +	TRAILING_OVERLAP(struct ip_options_rcu, opt, opt.__data,
->> +			 char			data[40];
->> +	);
->>   };
+2025-10-24, 05:31:36 +0300, Jianbo Liu wrote:
+> In the output path, xfrm_dev_offload_ok and xfrm_get_inner_ipproto
+> need to determine the protocol family of the inner packet (skb) before
+> it gets encapsulated.
 > 
-> Is there a way to reserve space for flexible length array on the stack
-> without resorting to any magic macros? This struct has total of 5 users.
+> In xfrm_dev_offload_ok, the code checked x->inner_mode.family. This is
+> incorrect because the state's true inner family might be specified in
+> x->inner_mode_iaf.family (e.g., for tunnel mode).
 
-Not that I know of. That's the reason why we had to implement macros like
-TRAILING_OVERLAP(), DEFINE_FLEX(), DEFINE_RAW_FLEX().
+I wouldn't say inner_mode_iaf.family is the "true" inner family. AFAIU
+it's the other possible inner family for states that accept both
+(I got that wrong in 91d8a53db219 ("xfrm: fix offloading of
+cross-family tunnels")).
 
-Regarding these three macros, the simplest and least intrusive one to use is
-actually TRAILING_OVERLAP(), when the flex-array member is not annotated with
-the counted_by attribute (otherwise, DEFINE_FLEX() would be preferred).
+> In xfrm_get_inner_ipproto, the code checked x->outer_mode.family. This
+> is also incorrect for tunnel mode, as the inner packet's family can be
+> different from the outer header's family.
+> 
+> At both of these call sites, the skb variable holds the original inner
+> packet. The most direct and reliable source of truth for its protocol
+> family is its destination entry.
 
-Of course, the most straightforward alternative is to use fixed-size arrays
-if flex arrays are not actually needed.
+(the IP version would also work since it's in the same place for both
+v4 and v6, but we have other uses of dst family in xfrm_output so it
+should be fine)
 
-Thanks
--Gustavo
+> This patch fixes the issue by using
+> skb_dst(skb)->ops->family to ensure protocol-specific headers are only
+> accessed for the correct packet type.
 
+Do you have an example of problematic setup? I didn't run into that
+when I wrote 91d8a53db219.
+
+-- 
+Sabrina
