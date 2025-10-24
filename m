@@ -1,251 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9931A053;
-	Fri, 24 Oct 2025 10:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5513A3126BC
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 11:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761303565; cv=none; b=sPh+42rNnvXvX63m1qQkHCMgl517SpdG8W2TgT+6i8upuaThxTR2V/hbzC2gxSL6vmsMRehpsUaYvOurOXM6z9q/1IJ3zQjGQFwwkhTmfO6S6000MR0/oUvcgM3XStEDoOav7UG8e8HTdrD1JuCrWsku/EteCoTsvAKR2BARXrc=
+	t=1761304244; cv=none; b=Rb8I8njyYhGwW2WVzQFNjzLwjs+e5ThlLoRM8jEkS1jCD+/SyYEdQ3AW3TBNS6cVTqsaRxNMgjtsi82iyt+YCw/Q4cQzgEidrTAi6JDYv343pCUFzYo0t3mo6Hj4Yvy8f21u6EJhszTny3v4FBZJHiB4lZxseOuJvtFpebHKRO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761303565; c=relaxed/simple;
-	bh=QwDkSH3kLhu9Ya7BrIayv5fawfziMOL3Z/w1iCrFClA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=scrvy6DTZvMuHGWqDqsrhJeUwj3xve6ij20nk6eAVriiUpqAhB98iobvoXHXYIis3lAqbRBGzsk7eCyR3HaDE3He72G9nsWOF5TARkDNK8b5L3lQ+of3uLIAGCCai4/v2uOCFicM5D/lPIrFaylr761nD31biCKE+0eS2c64qPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5fkK2O6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761304244; c=relaxed/simple;
+	bh=H4vk7sU2Qnl0eVRIIetDW9raRcKnUHAUMXH/1YBkp9g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3q6cCdis/2vVLcvTU+yN4i/0ReIUUmjbfsmcUe3j1AKd/G3XJzIKPacv0i1wUY+aCRx8JoqenvNdjl3/B5bv7+Y4ncuRdrjuqEVaDwXTsB0pIVrhfBnldTOU6yVO1kfNWye8cxQs4bFt39CUpZhibR1jIsiCK8zbiNVNZYQN9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Th81nqUL; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5fkK2O6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4C7C4CEF5;
-	Fri, 24 Oct 2025 10:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761303565;
-	bh=QwDkSH3kLhu9Ya7BrIayv5fawfziMOL3Z/w1iCrFClA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=W5fkK2O6ood/eZ2MioGr5FOn8MmFQgD5BK6WGd1JeyrwnpVvGLZEYHcG6bPgBzYIs
-	 Y+336uTvHOglol8wNJCZvPtXdrEDGJr4/0OcjlAuY+mxGIcIEuObbol67F3Ii3jfVV
-	 Iy1UQBgGyesZQTK5pQbEefGHsZvUC+QOVj2H+/F/Iu9S7Yv4KF2asv4dJdfdkLCY28
-	 qa1eswPqtIUJdHU6A7XqqiCl3+FUGq9ClRaPm+U/Q4t5jLyv48rZCJpWIsJt85elvp
-	 tdW4PRDx09+DGk8pMigmVYFmFDaO60Tn5v9TOqWXs6ioFnNYyYhBw57oOFoDrh54l2
-	 qyZcM9wQG2ZKw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 24 Oct 2025 12:53:39 +0200
-Subject: [PATCH v3 70/70] selftests/namespace: test listns() pagination
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Th81nqUL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=GDpctzUzikXL5mr7jsd57bMJaOx9W5e5E6CpNx8Gahs=; b=Th81nqULbGbjjKR79CdwmOIGcr
+	y8WpnOEojfstJp+/4umsKlu5NcCELKDaYKbYzNk4ur+8ttLlqOQqXlwwP1E93EyieKwk20UgdI5/B
+	UjJXbqUrVKZBjQCM+cyrUrNOk1APRGuUUHPo+fQENFGS7VGEcHeBefQuQpks7paGWWrsXGqCUpnPC
+	ffUFQroNmlxwD97xCyLh9LvXNxn1ZoqAb0AeWRDyLm4WJoLOEStLdzlyE+Hx3Sqk+GcytzkR1e9x+
+	1kax5UAp049Jhkl9cfjWrC5fAbzMBNvQ1kyqBdsWPQoq/03JCVMua3CSCPMihnLxg1RsyJZIMqKL7
+	HDE89+1g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39360)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vCFgp-000000007Sj-1qqU;
+	Fri, 24 Oct 2025 12:10:35 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vCFgn-000000002eS-0hGl;
+	Fri, 24 Oct 2025 12:10:33 +0100
+Date: Fri, 24 Oct 2025 12:10:33 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>
+Subject: Re: [PATCH net-next 2/8] net: stmmac: simplify stmmac_get_version()
+Message-ID: <aPteqZ57fWULRfNy@shell.armlinux.org.uk>
+References: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
+ <E1vBrlB-0000000BMPs-1eS9@rmk-PC.armlinux.org.uk>
+ <81d5c1f2-e912-40de-a870-290b0cf054b3@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-work-namespace-nstree-listns-v3-70-b6241981b72b@kernel.org>
-References: <20251024-work-namespace-nstree-listns-v3-0-b6241981b72b@kernel.org>
-In-Reply-To: <20251024-work-namespace-nstree-listns-v3-0-b6241981b72b@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- Jeff Layton <jlayton@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, 
- =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
- Lennart Poettering <mzxreary@0pointer.de>, 
- Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
- Amir Goldstein <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Thomas Gleixner <tglx@linutronix.de>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.15-dev-96507
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5137; i=brauner@kernel.org;
- h=from:subject:message-id; bh=QwDkSH3kLhu9Ya7BrIayv5fawfziMOL3Z/w1iCrFClA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT8juow+zIx/fDv6H+C/RdiSyec6pjWoPXUwj55555dR
- 3/7KAqHdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzkohnDf++O1yWdBXr3tb58
- LF/AfGue19KoIBGbV0IrKy3uGN2UzGH47/LuQgrz69u3Zqt6P6tNbtzx4MXKx5ei2U5WWRV9z5C
- 6wwgA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81d5c1f2-e912-40de-a870-290b0cf054b3@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Minimal test case to reproduce KASAN out-of-bounds in listns pagination.
+On Thu, Oct 23, 2025 at 08:46:00PM +0200, Andrew Lunn wrote:
+> On Thu, Oct 23, 2025 at 10:37:29AM +0100, Russell King (Oracle) wrote:
+> > We can simplify stmmac_get_version() by pre-initialising the version
+> > members to zero, detecting the MAC100 core and returning, otherwise
+> > determining the version register offset separately from calling
+> > stmmac_get_id() and stmmac_get_dev_id(). Do this.
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- tools/testing/selftests/namespaces/.gitignore      |   1 +
- tools/testing/selftests/namespaces/Makefile        |   4 +-
- .../selftests/namespaces/listns_pagination_bug.c   | 138 +++++++++++++++++++++
- 3 files changed, 142 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/namespaces/.gitignore b/tools/testing/selftests/namespaces/.gitignore
-index f6dcf769f150..f4d2209ca4e4 100644
---- a/tools/testing/selftests/namespaces/.gitignore
-+++ b/tools/testing/selftests/namespaces/.gitignore
-@@ -7,3 +7,4 @@ listns_permissions_test
- siocgskns_test
- cred_change_test
- stress_test
-+listns_pagination_bug
-diff --git a/tools/testing/selftests/namespaces/Makefile b/tools/testing/selftests/namespaces/Makefile
-index 3c776740f3ac..01569e0abbdb 100644
---- a/tools/testing/selftests/namespaces/Makefile
-+++ b/tools/testing/selftests/namespaces/Makefile
-@@ -10,7 +10,8 @@ TEST_GEN_PROGS := nsid_test \
- 		  listns_permissions_test \
- 		  siocgskns_test \
- 		  cred_change_test \
--		  stress_test
-+		  stress_test \
-+		  listns_pagination_bug
- 
- include ../lib.mk
- 
-@@ -20,4 +21,5 @@ $(OUTPUT)/listns_permissions_test: ../filesystems/utils.c
- $(OUTPUT)/siocgskns_test: ../filesystems/utils.c
- $(OUTPUT)/cred_change_test: ../filesystems/utils.c
- $(OUTPUT)/stress_test: ../filesystems/utils.c
-+$(OUTPUT)/listns_pagination_bug: ../filesystems/utils.c
- 
-diff --git a/tools/testing/selftests/namespaces/listns_pagination_bug.c b/tools/testing/selftests/namespaces/listns_pagination_bug.c
-new file mode 100644
-index 000000000000..da7d33f96397
---- /dev/null
-+++ b/tools/testing/selftests/namespaces/listns_pagination_bug.c
-@@ -0,0 +1,138 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/socket.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+#include "../kselftest_harness.h"
-+#include "../filesystems/utils.h"
-+#include "wrappers.h"
-+
-+/*
-+ * Minimal test case to reproduce KASAN out-of-bounds in listns pagination.
-+ *
-+ * The bug occurs when:
-+ * 1. Filtering by a specific namespace type (e.g., CLONE_NEWUSER)
-+ * 2. Using pagination (req.ns_id != 0)
-+ * 3. The lookup_ns_id_at() call in do_listns() passes ns_type=0 instead of
-+ *    the filtered type, causing it to search the unified tree and potentially
-+ *    return a namespace of the wrong type.
-+ */
-+TEST(pagination_with_type_filter)
-+{
-+	struct ns_id_req req = {
-+		.size = sizeof(req),
-+		.spare = 0,
-+		.ns_id = 0,
-+		.ns_type = CLONE_NEWUSER,  /* Filter by user namespace */
-+		.spare2 = 0,
-+		.user_ns_id = 0,
-+	};
-+	pid_t pids[10];
-+	int num_children = 10;
-+	int i;
-+	int sv[2];
-+	__u64 first_batch[3];
-+	ssize_t ret;
-+
-+	ASSERT_EQ(socketpair(AF_UNIX, SOCK_STREAM, 0, sv), 0);
-+
-+	/* Create children with user namespaces */
-+	for (i = 0; i < num_children; i++) {
-+		pids[i] = fork();
-+		ASSERT_GE(pids[i], 0);
-+
-+		if (pids[i] == 0) {
-+			char c;
-+			close(sv[0]);
-+
-+			if (setup_userns() < 0) {
-+				close(sv[1]);
-+				exit(1);
-+			}
-+
-+			/* Signal parent we're ready */
-+			if (write(sv[1], &c, 1) != 1) {
-+				close(sv[1]);
-+				exit(1);
-+			}
-+
-+			/* Wait for parent signal to exit */
-+			if (read(sv[1], &c, 1) != 1) {
-+				close(sv[1]);
-+				exit(1);
-+			}
-+
-+			close(sv[1]);
-+			exit(0);
-+		}
-+	}
-+
-+	close(sv[1]);
-+
-+	/* Wait for all children to signal ready */
-+	for (i = 0; i < num_children; i++) {
-+		char c;
-+		if (read(sv[0], &c, 1) != 1) {
-+			close(sv[0]);
-+			for (int j = 0; j < num_children; j++)
-+				kill(pids[j], SIGKILL);
-+			for (int j = 0; j < num_children; j++)
-+				waitpid(pids[j], NULL, 0);
-+			ASSERT_TRUE(false);
-+		}
-+	}
-+
-+	/* First batch - this should work */
-+	ret = sys_listns(&req, first_batch, 3, 0);
-+	if (ret < 0) {
-+		if (errno == ENOSYS) {
-+			close(sv[0]);
-+			for (i = 0; i < num_children; i++)
-+				kill(pids[i], SIGKILL);
-+			for (i = 0; i < num_children; i++)
-+				waitpid(pids[i], NULL, 0);
-+			SKIP(return, "listns() not supported");
-+		}
-+		ASSERT_GE(ret, 0);
-+	}
-+
-+	TH_LOG("First batch returned %zd entries", ret);
-+
-+	if (ret == 3) {
-+		__u64 second_batch[3];
-+
-+		/* Second batch - pagination triggers the bug */
-+		req.ns_id = first_batch[2];  /* Continue from last ID */
-+		ret = sys_listns(&req, second_batch, 3, 0);
-+
-+		TH_LOG("Second batch returned %zd entries", ret);
-+		ASSERT_GE(ret, 0);
-+	}
-+
-+	/* Signal all children to exit */
-+	for (i = 0; i < num_children; i++) {
-+		char c = 'X';
-+		if (write(sv[0], &c, 1) != 1) {
-+			close(sv[0]);
-+			for (int j = i; j < num_children; j++)
-+				kill(pids[j], SIGKILL);
-+			for (int j = 0; j < num_children; j++)
-+				waitpid(pids[j], NULL, 0);
-+			ASSERT_TRUE(false);
-+		}
-+	}
-+
-+	close(sv[0]);
-+
-+	/* Cleanup */
-+	for (i = 0; i < num_children; i++) {
-+		int status;
-+		waitpid(pids[i], &status, 0);
-+	}
-+}
-+
-+TEST_HARNESS_MAIN
+Hi Andrew,
+
+It seems I had a typo "verison" which should've been "version" in this
+patch, which carried through patches 3 and 4. Are you happy for me to
+retain your r-b with this typo fixed please?
+
+Thanks.
 
 -- 
-2.47.3
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
