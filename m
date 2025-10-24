@@ -1,151 +1,127 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD52C277CA4
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 06:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C581EE7DC;
+	Fri, 24 Oct 2025 06:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761288221; cv=none; b=bXVZNQGM1GNM5sksqD5iokbDUVc7LVBQiC4d4WUCIsy3sZNAVS+jurKintYnXQYI1aB7XPOLycqGiTUy9HxV7JpLXXU+Z37+BvJMwp18ELU82dNAE7v6Rnd6nQeWV3sqBbRSAlxLGqPoSzU3uAUb3d01Kr9P31gm5oY1zOERYxo=
+	t=1761288257; cv=none; b=kp7FZIcwrj4W+pMjOrfh0WTon48GYaMT23KrL4xoVacy6cqdjO8Woz7IDlWARAtUi4H5HvnVQaJsJuW+ysL/kz25DLrn18sYFcw/8QaH5gAnv39t4BmW+1M55Pa/r+fx7ubxfS50O8fpHb7/9YY+A6KbVKbpjz9V5e955o76rpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761288221; c=relaxed/simple;
-	bh=h2do/o72s1S1CroaAeWrkIDYcS+e5vX7dYGFhfPZhPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=khQ3tj1u7HNT4VBNOxswW7O0oLmyYKR68JDgzdAYR50pfgPyWHso9MTdVVmoow3ze89717Kjjbg69feheEEiAxLxM4CNfnY/s7MG0nxiOMm8CvEUIA8pCO42njj/ra1LXlf4Cc7RKgrBe0pltrqkjEG2k0qMRF3po1BM0rUWrjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nHA3U3Ws; arc=none smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nHA3U3Ws"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-63e336b1ac4so2869599d50.1
-        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 23:43:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761288218; x=1761893018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e2UFjwfCheMSDPhpGuyj3HSoQ9LJMT/wq2yi5Xk/+fI=;
-        b=nHA3U3WsN7mOTeoNeolfMS8TaMNQHYvssmz4Bz1fZaSuZgBr0Dpr2nPpNb06gfzyw2
-         m2XglHuFzsyM6eMA33z1GFsrw/LgmiV8+TDJNTl2BJ87DVGjyixDsbvguNWxZHxIJz2Z
-         VBT5UwqvqfoKBbdQXHfGT/cqMVCsmtQBTSRfpJhl4OGgFlJl01sqY6P3Oco6Sks4lsDF
-         u4q71fA9wwa6Y3zkbLIcvWgUmVUVnaLVnf9WGxmwVOKrJMeQ6iY33gLVVqkX//lOOBt1
-         BnLQHgnRWJMGFWB2v/zktoMWsoWBnZXevyitSGwFYS6wa7E5efHudzeyJ7+2wYN8QOLc
-         Wz4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761288218; x=1761893018;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e2UFjwfCheMSDPhpGuyj3HSoQ9LJMT/wq2yi5Xk/+fI=;
-        b=EdWAfQ3TZHio2d3RHtMtpkoLKq4dFiA1Lm+Z11MpvMLiALt9IWnjXesXlZ+u92Ipkk
-         lvWFFk026Kjh5h/Ru4WEapQwhOEDCDMYrR9ds3pHd1eRggrf/6rbqATax/dKGg5jcoym
-         YoGZYiNFfVU+BJ5h2FQDrOG70GYM7Nuife+BvL408YaxanKbx/peI5iRiDVWkNtdX/hw
-         Nm/Ix3oszr/z4ia2xOx+Oflq+uQDVjMveJpc+Lfp/wTk1fSeY63QdClmnmRf9jOHhTh5
-         iVATE8WlajpXNT+hLroYT1FZAeurq/LdSj2YCH9S023LIDcionUjcQlHJe4BpYDFRJrn
-         hNOw==
-X-Gm-Message-State: AOJu0Yzb446UM8fsHSTJEGxzR8qeNerIZMRJquBTV50P3OI+Nwf4ia/2
-	m5LdUH/fLjuYDUBcJwKjHbL1WQfRWeyOJNKh9SANOV25OE4w0MCvDiG827UGZKAdyj15iJfk0Kk
-	T75gOCKLHhZV/FHIJlo3egIoauTVAlqzUaFMsZAA9
-X-Gm-Gg: ASbGnctPQF/YiEcAYtKyc537S2Eb1FNKfFIBbpfr7EC12L2Rj4f8GXMfLTxwvMXmKr5
-	R86eDOmNucWXDH5PCFbTnvZwmyaNQkS83jD264AQfo15jMMcP12XbL0QRYd/LgQ8qraMpscoSc+
-	+ZT5U80E13G7Dv+youNX4adH1GT5t7cvg4y9ilFhVk+y/a30K/oAP6KmjgMcPl5t88y8bGUTdIO
-	2bRxd5YoOSDUZZzYquH3mqy0qPXbzR040hbcdmQCOLYNfkrZE/UfNFhML3n
-X-Google-Smtp-Source: AGHT+IF1HVSnu6HsUGLipnhFezBFZO84eR0OgQFQffQJBEg1eFTIaGcwBZzC2UliCBsgQ5v+CoTvGXzZDqC/JNbTkjE=
-X-Received: by 2002:a05:690e:1409:b0:63e:2366:7ce1 with SMTP id
- 956f58d0204a3-63f42a200d8mr1145430d50.0.1761288218376; Thu, 23 Oct 2025
- 23:43:38 -0700 (PDT)
+	s=arc-20240116; t=1761288257; c=relaxed/simple;
+	bh=KJpXpAKN9nyKg+2cpmeiSgbQlrzUvUr7V7KWuCjx5Wc=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Elph4DtkpOPcCC0pCuBVxZv7uDL2G46xbHb8ibGPJHwHEqQk+cn6tXYvcZXrpYNY5kTItuGtPoWUz+vYckUW7juNEaI6WdM1ZzOkLAIUSYT1oHmFifU2jDD0jHZcsnyqrs2sa4IK5aTLEBE799p7x/6k01XF88O4rGHyNnQfXjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ctCtJ3JgJz2Cg9b;
+	Fri, 24 Oct 2025 14:39:20 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 842A21A016C;
+	Fri, 24 Oct 2025 14:44:12 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 14:44:11 +0800
+Message-ID: <b89389e7-7939-4c10-8522-6c8b6ce71b77@huawei.com>
+Date: Fri, 24 Oct 2025 14:44:11 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1761286996-39440-1-git-send-email-liyonglong@chinatelecom.cn> <1761286996-39440-2-git-send-email-liyonglong@chinatelecom.cn>
-In-Reply-To: <1761286996-39440-2-git-send-email-liyonglong@chinatelecom.cn>
-From: Eric Dumazet <edumazet@google.com>
-Date: Thu, 23 Oct 2025 23:43:25 -0700
-X-Gm-Features: AWmQ_blbjdPZKhGT9XBif5vxZmEROBogKMIVtgj_e_I3KnoOsKnizLtuSDPMwUI
-Message-ID: <CANn89i+TsY67y-pCkOkJHsh11Leg77Ek7n2-j6X6ed-U20eR=g@mail.gmail.com>
-Subject: Re: [PATH net 1/2] net: ip: add drop reasons when handling ip fragments
-To: Yonglong Li <liyonglong@chinatelecom.cn>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
-	pabeni@redhat.com, kuba@kernel.org, horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 2/3] net: hibmcge: remove unnecessary check for
+ np_link_fail in scenarios without phy.
+To: Jacob Keller <jacob.e.keller@intel.com>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<andrew+netdev@lunn.ch>, <horms@kernel.org>
+References: <20251021140016.3020739-1-shaojijie@huawei.com>
+ <20251021140016.3020739-3-shaojijie@huawei.com>
+ <ebc90ce4-382b-4a0f-891a-5305599f9ae2@intel.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <ebc90ce4-382b-4a0f-891a-5305599f9ae2@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-On Thu, Oct 23, 2025 at 11:23=E2=80=AFPM Yonglong Li <liyonglong@chinatelec=
-om.cn> wrote:
->
-> 1, add new drop reason FRAG_FAILED, and use it in ip_do_fragment
-> 2, use drop reasons PKT_TOO_BIG in ip_fragment
->
-> Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
-> ---
->  include/net/dropreason-core.h | 3 +++
->  net/ipv4/ip_output.c          | 6 +++---
->  2 files changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.=
-h
-> index 58d91cc..7da80f4 100644
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-> @@ -99,6 +99,7 @@
->         FN(DUP_FRAG)                    \
->         FN(FRAG_REASM_TIMEOUT)          \
->         FN(FRAG_TOO_FAR)                \
-> +       FN(FRAG_FAILED)                 \
->         FN(TCP_MINTTL)                  \
->         FN(IPV6_BAD_EXTHDR)             \
->         FN(IPV6_NDISC_FRAG)             \
-> @@ -500,6 +501,8 @@ enum skb_drop_reason {
->          * (/proc/sys/net/ipv4/ipfrag_max_dist)
->          */
->         SKB_DROP_REASON_FRAG_TOO_FAR,
-> +       /* do ip/ip6 fragment failed */
-> +       SKB_DROP_REASON_FRAG_FAILED,
->         /**
->          * @SKB_DROP_REASON_TCP_MINTTL: ipv4 ttl or ipv6 hoplimit below
->          * the threshold (IP_MINTTL or IPV6_MINHOPCOUNT).
-> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-> index ff11d3a..879fe49 100644
-> --- a/net/ipv4/ip_output.c
-> +++ b/net/ipv4/ip_output.c
-> @@ -588,7 +588,7 @@ static int ip_fragment(struct net *net, struct sock *=
-sk, struct sk_buff *skb,
->                 IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
->                 icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
->                           htonl(mtu));
-> -               kfree_skb(skb);
-> +               kfree_skb_reason(skb, SKB_DROP_REASON_PKT_TOO_BIG);
 
-This part looks fine.
+on 2025/10/24 9:10, Jacob Keller wrote:
+>
+> On 10/21/2025 7:00 AM, Jijie Shao wrote:
+>> hibmcge driver uses fixed_phy to configure scenarios without PHY,
+>> where the driver is always in a linked state. However,
+>> there might be no link in hardware, so the np_link error
+>> is detected in hbg_hw_adjust_link(), which can cause abnormal logs.
+>>
+> Perhaps I am missing something here. You mention the driver is always in
+> a linked state, but that there could be no link in hardware?
+>
+> I'm not sure I properly understand whats going wrong here..
 
->                 return -EMSGSIZE;
->         }
->
-> @@ -871,7 +871,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, =
-struct sk_buff *skb,
->                         return 0;
->                 }
->
-> -               kfree_skb_list(iter.frag);
-> +               kfree_skb_list_reason(iter.frag, SKB_DROP_REASON_FRAG_FAI=
-LED);
->
->                 IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
->                 return err;
-> @@ -923,7 +923,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, =
-struct sk_buff *skb,
->         return err;
->
->  fail:
-> -       kfree_skb(skb);
-> +       kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_FAILED);
+No, fixed_phy is a fake PHY that is always in link state and will call adjust_link().
 
-There are many different reasons for the possible failures ?
-skb_checksum_help() error,
-ip_frag_next() error
-output() error.
+If you are interested, you can take a look at the code for initializing the fixed PHY
+in the hibmcge driver: hbg_fixed_phy_init()
 
-I think that having the distinction could really help, especially the
-output() one...
+Thanks,
+Jijie Shao
+
+>
+>> Therefore, in scenarios without a PHY, the driver no longer
+>> checks the np_link status.
+>>
+>> Fixes: 1d7cd7a9c69c ("net: hibmcge: support scenario without PHY")
+>> Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+>> ---
+>>   drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h | 1 +
+>>   drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c     | 3 +++
+>>   drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c   | 1 -
+>>   3 files changed, 4 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+>> index ea09a09c451b..2097e4c2b3d7 100644
+>> --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+>> +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_common.h
+>> @@ -17,6 +17,7 @@
+>>   #define HBG_PCU_CACHE_LINE_SIZE		32
+>>   #define HBG_TX_TIMEOUT_BUF_LEN		1024
+>>   #define HBG_RX_DESCR			0x01
+>> +#define HBG_NO_PHY			0xFF
+>>   
+>>   #define HBG_PACKET_HEAD_SIZE	((HBG_RX_SKIP1 + HBG_RX_SKIP2 + \
+>>   				  HBG_RX_DESCR) * HBG_PCU_CACHE_LINE_SIZE)
+>> diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+>> index d0aa0661ecd4..d6e8ce8e351a 100644
+>> --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+>> +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
+>> @@ -244,6 +244,9 @@ void hbg_hw_adjust_link(struct hbg_priv *priv, u32 speed, u32 duplex)
+>>   
+>>   	hbg_hw_mac_enable(priv, HBG_STATUS_ENABLE);
+>>   
+>> +	if (priv->mac.phy_addr == HBG_NO_PHY)
+>> +		return;
+>> +
+>>   	/* wait MAC link up */
+>>   	ret = readl_poll_timeout(priv->io_base + HBG_REG_AN_NEG_STATE_ADDR,
+>>   				 link_status,
+>> diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
+>> index 37791de47f6f..b6f0a2780ea8 100644
+>> --- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
+>> +++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c
+>> @@ -20,7 +20,6 @@
+>>   #define HBG_MDIO_OP_INTERVAL_US		(5 * 1000)
+>>   
+>>   #define HBG_NP_LINK_FAIL_RETRY_TIMES	5
+>> -#define HBG_NO_PHY			0xFF
+>>   
+>>   static void hbg_mdio_set_command(struct hbg_mac *mac, u32 cmd)
+>>   {
