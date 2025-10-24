@@ -1,13 +1,14 @@
 Received: from chinatelecom.cn (smtpnm6-12.21cn.com [182.42.119.59])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4681530F93B
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468DE30F93E
 	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 10:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.119.59
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761301624; cv=none; b=YXAAY8oAUedd6pEwoM0LDuqDLD4upGOsjx4bg/t+DUqlm44c6/gxz2W0A4dc9R4cu5x1GWEw5DnfnQqPb/pC6998IYUbpy1s+KYA/pAIsrYnypCx38xynx3Szhx5Qsrx451HQ+dhnWeTWp9rgUuERzb44H0DlubjhZWaxP+bn4M=
+	t=1761301624; cv=none; b=uhDyxoFNkFWGzHsHvFzfh2FXIZZP7XuCWdva0nzA4Wo+t/zESt/3past3zbeo0aBstATAmRa4uxDcznA1ilI6hQNZJmcrrisztjQpD05ykAA6q59dX0G/+Cu92y+8D1BAgsBMzfDj1Y9Ws6kP36LPS24QV2c5cFwaUovI0PMYCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761301624; c=relaxed/simple;
-	bh=TC38y5vObp8g8JY5GPAgKxhrL5+BEmal02IEG1DOsTo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=HE8KgxCdnedxf5ugm1xEMISIhqN5GEz1Gee6OPf4m3wcuzDV8IVLNu9CW9njFKDII8XCy8i8MjiYUeSpENBxX2z/R7VfxiTmVo9B3w/5E20BQIVz09/7bLyLLkElmZ8d/Yi9gRXn3UgFmy1Wbcb2NpOunpeosx9vidhnuHGa2Fk=
+	bh=DqHOxjUgzToaGX3gcvk3tXzB6imW9WrGz2Y6US+lwgs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kFzcJ446xWKes78E2e+HOY9iieWgi9tOV00bsd2hXccQJ63ZfX+JGQSzTMs3KkAceN3AJnGgevJLETuyOjCmpNQx/bxVszGLsvnLfS3/VdX0+vII6OiG93usJhb/ULu+6KRXj8y13z1gZ7UOKjbcZTDBg+HZavnQAQehq31Y/aQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.119.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
@@ -15,13 +16,13 @@ HMM_SOURCE_IP:192.168.137.232:0.1620297662
 HMM_ATTACHE_NUM:0000
 HMM_SOURCE_TYPE:SMTP
 Received: from clientip-36.111.140.5 (unknown [192.168.137.232])
-	by chinatelecom.cn (HERMES) with SMTP id D8DA611024D22;
-	Fri, 24 Oct 2025 18:20:15 +0800 (CST)
+	by chinatelecom.cn (HERMES) with SMTP id B960311024D25;
+	Fri, 24 Oct 2025 18:20:23 +0800 (CST)
 X-189-SAVE-TO-SEND: +liyonglong@chinatelecom.cn
 Received: from  ([36.111.140.5])
-	by gateway-ssl-dep-79cdd9d55b-2nzwx with ESMTP id 7b8913783180481faf2fd53d2cbf1048 for netdev@vger.kernel.org;
-	Fri, 24 Oct 2025 18:20:20 CST
-X-Transaction-ID: 7b8913783180481faf2fd53d2cbf1048
+	by gateway-ssl-dep-79cdd9d55b-2nzwx with ESMTP id 14c2775439184244b63aa8888c34a9fe for netdev@vger.kernel.org;
+	Fri, 24 Oct 2025 18:20:25 CST
+X-Transaction-ID: 14c2775439184244b63aa8888c34a9fe
 X-Real-From: liyonglong@chinatelecom.cn
 X-Receive-IP: 36.111.140.5
 X-MEDUSA-Status: 0
@@ -35,10 +36,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	horms@kernel.org,
 	liyonglong@chinatelecom.cn
-Subject: [PATCH net v2 0/2] add drop reason when do fragment
-Date: Fri, 24 Oct 2025 18:20:10 +0800
-Message-Id: <1761301212-34487-1-git-send-email-liyonglong@chinatelecom.cn>
+Subject: [PATCH net v2 2/2] net: ipv6: use drop reasons in ip6_fragment
+Date: Fri, 24 Oct 2025 18:20:12 +0800
+Message-Id: <1761301212-34487-3-git-send-email-liyonglong@chinatelecom.cn>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1761301212-34487-1-git-send-email-liyonglong@chinatelecom.cn>
+References: <1761301212-34487-1-git-send-email-liyonglong@chinatelecom.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,27 +51,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Add two new drop reasons FRAG_FAILED, FRAG_OUTPUT_FAILED.
-And use drop reasons to trace do fragment.
+use drop reasons in ip6_output like ip_fragment/ip_do_fragment
 
+Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
+---
+ net/ipv6/ip6_output.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-Reasons show up as:
-
-perf record -e skb:kfree_skb -a; perf script
-
-  swapper 0 [005] 154.086537: skb:kfree_skb: ... location=ip6_fragment reason: PKT_TOO_BIG
-  swapper 0 [005] 154.086540: skb:kfree_skb: ... location=ip6_fragment reason: PKT_TOO_BIG
-  swapper 0 [005] 154.086544: skb:kfree_skb: ... location=ip6_fragment reason: PKT_TOO_BIG
-
-Yonglong Li (2):
-  net: ip: add drop reasons when handling ip fragments
-  net: ipv6: use drop reasons in ip6_fragment
-
- include/net/dropreason-core.h |  6 ++++++
- net/ipv4/ip_output.c          | 17 ++++++++++++-----
- net/ipv6/ip6_output.c         | 16 ++++++++++++----
- 3 files changed, 30 insertions(+), 9 deletions(-)
-
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index f904739e..69a39f6 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -879,6 +879,7 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 	struct ipv6_pinfo *np = skb->sk && !dev_recursion_level() ?
+ 				inet6_sk(skb->sk) : NULL;
+ 	u8 tstamp_type = skb->tstamp_type;
++	SKB_DR_INIT(reason, FRAG_FAILED);
+ 	struct ip6_frag_state state;
+ 	unsigned int mtu, hlen, nexthdr_offset;
+ 	ktime_t tstamp = skb->tstamp;
+@@ -925,8 +926,10 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 				    &ipv6_hdr(skb)->saddr);
+ 
+ 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+-	    (err = skb_checksum_help(skb)))
++	    (err = skb_checksum_help(skb))) {
++		SKB_DR_SET(reason, IP_CSUM);
+ 		goto fail;
++	}
+ 
+ 	prevhdr = skb_network_header(skb) + nexthdr_offset;
+ 	hroom = LL_RESERVED_SPACE(rt->dst.dev);
+@@ -979,6 +982,8 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 			if (!err)
+ 				IP6_INC_STATS(net, ip6_dst_idev(&rt->dst),
+ 					      IPSTATS_MIB_FRAGCREATES);
++			else
++				SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
+ 
+ 			if (err || !iter.frag)
+ 				break;
+@@ -995,7 +1000,7 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 			return 0;
+ 		}
+ 
+-		kfree_skb_list(iter.frag);
++		kfree_skb_list_reason(iter.frag, reason);
+ 
+ 		IP6_INC_STATS(net, ip6_dst_idev(&rt->dst),
+ 			      IPSTATS_MIB_FRAGFAILS);
+@@ -1037,8 +1042,10 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 		 */
+ 		skb_set_delivery_time(frag, tstamp, tstamp_type);
+ 		err = output(net, sk, frag);
+-		if (err)
++		if (err) {
++			SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
+ 			goto fail;
++		}
+ 
+ 		IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
+ 			      IPSTATS_MIB_FRAGCREATES);
+@@ -1050,12 +1057,13 @@ int ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 
+ fail_toobig:
+ 	icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
++	SKB_DR_SET(reason, PKT_TOO_BIG);
+ 	err = -EMSGSIZE;
+ 
+ fail:
+ 	IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
+ 		      IPSTATS_MIB_FRAGFAILS);
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, reason);
+ 	return err;
+ }
+ 
 -- 
 1.8.3.1
 
