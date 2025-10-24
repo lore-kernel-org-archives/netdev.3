@@ -1,78 +1,35 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461E42F7442
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 20:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE5E13A258;
+	Fri, 24 Oct 2025 20:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761338492; cv=none; b=DaXg4ELjMTMH+sEZbHHMdrU0IcxyThpV7dKU7qSn6hwYhadD0VQ88LaXPzSSz1DV+BsmT3T6KL0SbjTerPCW1JzxjD/F4HGBfrKyac/ijmMcRZoyhffQhPuqAdPaiTFjVctCYAi2tRq7PdqTFCSMi0GiPX/Q2Iwxa2TZY6K/NFo=
+	t=1761338773; cv=none; b=orpVwh4oA62PPM6POd8TqT3c2GhIoU8skApyrCVuWu56r6FZA7ffDxtS6zXchs9oiorLiykF9Cl2XyqGpa0FoI4uU5sZijWFo69VVj8u9DLwx2BwbXQYObWnfdKm7LWzzE+EJXz0q1A/gXLHRyReNP7A77fWksXsPJq0QEc6WIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761338492; c=relaxed/simple;
-	bh=6Ig5JvJqdUnu5NrtnRLqoxp1NSWP5pVlnBBNn1lIA8Y=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K2L0eBoubhF9QU1tOyW865GEmLn7R3zTbv8B26RJnJEE3ly1/x2LZIFnBE8e3PTiZH4q9Hx9ID0oA8B4KpmTUcd9XN/GfxLwsgRkNo6QwMosFF7lsvJ7z0HNCUta/mkwz7sx3O4Udtlr31CsRgsE3GvFYajzytpw8HboWVDzkH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EqZQCuRL; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761338773; c=relaxed/simple;
+	bh=/IC480uC6uDL2r9MYvnZlp9d29TYaLU7QOMq0cRry6s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=K9Xo9yaZq3/xxu4HuAYvVErev6hhlvTOpSuvH0Ovq9x4e9krIQLNFUA4xHC3PI1U1KXJdMpP0U5H0EvoPdD666b5JFoBwoVZvevYz0brxzAGi0r2g4pivcOvhbRnAUzDNzt2M4x/QcIHDDmaqjj29KtRt4QT8NehOLr+YjbR/sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTUvz56d; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EqZQCuRL"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7a28226dd13so1556622b3a.3
-        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 13:41:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761338490; x=1761943290; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:message-id:date:cc:to:from:subject:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9XZzo5/abI/P2a526BPNM1QX2CIMe2iREhHaWzwR9dI=;
-        b=EqZQCuRLyYsX1RvtzmYQafSllZB85pCs6dSFkDS6G7j26Vne92YEweQ/JoMJ1sQx4V
-         7vk0DIZz7rK95zr9pfe9WoitrS1mJyCXv1TXD7S5cvqiMwLxr1haDiivTalwl5BHkiPA
-         p/YI6XSnKu7yNvOEp6CtNk55ipWxT9jHhfrQipFwfonToG6oN1piuX5e0fIxb67tlOUE
-         a04qeWTVBGNB6e+CF0FEAgNSnXFZDvjGSIoS96BewxD4TJs3MWDhgpvW4jxesxZy6xUV
-         wdvHXUGMNQN01d1s5daaeOOZVKACohRHCLTtdogzojFGthTJzng88Gebp6paf1qfWfbB
-         7FLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761338490; x=1761943290;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:message-id:date:cc:to:from:subject:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9XZzo5/abI/P2a526BPNM1QX2CIMe2iREhHaWzwR9dI=;
-        b=lqxf4nAJEmWjKaliNXP+PBGaCyUE9VPeefQfdwvzejMzmq7oS/rppSdzGLlHgvTU12
-         +qlXliiqQmbXGit/HwesYqWDEOCxD0SizIhSXP78HX6LXZeztSe4q2665TXr4/cK4GE/
-         X3zPZGSPSPhaDdd55U9To4FpKo1yIuiQwOEoBhlJNWF0m48SwJNOYjo8s8AsvE39GPgd
-         0/6o8KZ2t8Ur2wOu3slTZfp3GOf9ddMFWPibnoq8Hm69vu6+Yu+DHFtmONQVOhJqhVSp
-         EbQ5BScDqH3QHARSRptWRiGTOsHyJbUHw7lCCIUdLycDD9Up83ZOQOmiUdsjxkAzUWoM
-         eswQ==
-X-Gm-Message-State: AOJu0Yz174+HXvcY3DFfHGo3wAORM3IkC4uvUsmQouwEbK7nOzXX1ul4
-	id3f94SbrBqER0Sb7jPJ3OTwuZnshqj9gRtkYB/P55A8XHUVG0DsIh6u
-X-Gm-Gg: ASbGncsB8Sz/ESkEVJCHr3jahfeoN9b6eCdfsyYfZsk1tznohtew7wF4NppFt4v9UMU
-	hCJXYt1ObcFJiPpJYZUVwADQKc+qphNeQz++JaXF1qQMkVVbVQiddNngntV5Ltmmow++M6tKCRo
-	whtyoFO++e+5T4Pjqzu252mSKamciqKNEJ9za1e/yeKGHIMYILL4mMN19txiHlqqSaNeV7UbWxQ
-	x8fnqnqCPVpsK8IH7EQj03Nv3g5lGLC5iDK5sexiybMdu5+sRbx53skdNIpW5i+iYJDuxIffTH4
-	XNjZZqQevtrG89sG481M1w+snYg/qz8b7tlKPaX4rQtyrwdwUUqZv3rpnACYuimUn6UGTwD0wqW
-	lMee6JoDz43r+CVzEf/cS7x9FE5awPN94KHp7d1SiG5Z4rNS5hp97AX+5tKX6t5XuwSFJfcBq8a
-	8MG2V48dXYOiEbff5SBf1eLJiJFXeTLu9opQ==
-X-Google-Smtp-Source: AGHT+IHUfBgwoqza/GrXnhsrybG9gjHhVeM2FPBW1p5LniC07VlvVV0lkUx1twTFi8vTGFD0wTlAxg==
-X-Received: by 2002:a05:6a00:1803:b0:7a2:7abf:75cf with SMTP id d2e1a72fcca58-7a27abf782bmr6545121b3a.22.1761338490551;
-        Fri, 24 Oct 2025 13:41:30 -0700 (PDT)
-Received: from ahduyck-xeon-server.home.arpa ([2605:59c8:829:4c00:9e5c:8eff:fe4f:f2d0])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a4140301f7sm122802b3a.19.2025.10.24.13.41.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 13:41:29 -0700 (PDT)
-Subject: [net-next PATCH 8/8] fbnic: Add phydev representing PMD to phylink
- setup
-From: Alexander Duyck <alexander.duyck@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org, kernel-team@meta.com, andrew+netdev@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, pabeni@redhat.com,
- davem@davemloft.net
-Date: Fri, 24 Oct 2025 13:41:28 -0700
-Message-ID: 
- <176133848870.2245037.4413688703874426341.stgit@ahduyck-xeon-server.home.arpa>
-In-Reply-To: 
- <176133835222.2245037.11430728108477849570.stgit@ahduyck-xeon-server.home.arpa>
-References: 
- <176133835222.2245037.11430728108477849570.stgit@ahduyck-xeon-server.home.arpa>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTUvz56d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AD5C4CEFF;
+	Fri, 24 Oct 2025 20:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761338773;
+	bh=/IC480uC6uDL2r9MYvnZlp9d29TYaLU7QOMq0cRry6s=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=WTUvz56dtSYKWH42ek+gz6bm3zxmKOdlXEb2hzz0W4NoI1+8cbzOSrejda0c2ydpV
+	 AJgQGY5r6L1BsXuJXRETbZ94e41xqPe90Ab1lg79toAgxsNPFHEqiFRM29lI6q65FC
+	 WE9xmHNpwq0V6ML5rTQiwa6Vx1ys+8gPVRDllLyFpbZ4oaTP/46qFTyYjzJvnBMtV9
+	 mKugCvfpbmv0eH9EVgvHzCR/SahAZZppQqJZ3Zcu5pYaeUUFpnZT6KZ4VX9JiwFMP2
+	 CSH4+xM8LrARH2/SM9ZRrim/6GLNGzk2L2MLih+fZNzSKIF20JDr54dUYhTG2xyvSc
+	 8rSa2zlW3B4fA==
+From: Roger Quadros <rogerq@kernel.org>
+Date: Fri, 24 Oct 2025 23:46:00 +0300
+Subject: [PATCH net-next v5 1/9] net: ethernet: ti: cpsw_ale: Update
+ Policer fields for more ALE size/ports
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,154 +38,90 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20251024-am65-cpsw-rx-class-v5-1-c7c2950a2d25@kernel.org>
+References: <20251024-am65-cpsw-rx-class-v5-0-c7c2950a2d25@kernel.org>
+In-Reply-To: <20251024-am65-cpsw-rx-class-v5-0-c7c2950a2d25@kernel.org>
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, danishanwar@ti.com
+Cc: srk@ti.com, linux-omap@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2767; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=/IC480uC6uDL2r9MYvnZlp9d29TYaLU7QOMq0cRry6s=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBo++WOJAC2fE2AWAyMjhX9qeweLimVhebf1sS2K
+ 1OM3NJQV6WJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCaPvljgAKCRDSWmvTvnYw
+ k8k+EAC24iQOn0euf4pZbWOdKgIifMSpYA7NobOIibave903H6h2Kx7KBXxHSMx5eppBcKx5Rus
+ vluz5v7UCwQXoipcOpRn+Lfruti2Hlfo9sWgEQ1Kko/Xu4BVVfrp6Ow8T64xLjRu1jR/4sPcGpF
+ hJkI7oWZQLw42p7aoQakTBKk6CTUBvWteFwK+svCdvjqB517Wb+JxdpKuhE7gf71myDf8eXfI3c
+ Q73smKAmQKikywtz48rB9cIfLZGEZEoj7Knonz24CEdKTPzWPGUSV3XUCIaCp4GeVEle9pJMszG
+ XFueYcNxBrbILx0OXoxjKWgMYl3koIJt9JEsf59B+BB7XVK41+nTWQH/3XP5egL/Pr7AS9epVB0
+ ljSDtSUbFC8MF9Q6KeP4rWH67cZG9LcRhFnrAL1Q5P0dFVPTx6iQNQ9oWyNjSx31fkda0+6Yjs4
+ H60q5toQOFm0xSpbI4BYPRx4PiUBKGC4RveRvi6j22vhexKbn5cFpWbJdQDWNjFttcBXD5tJ50r
+ U0CiVp1eEJMepA1qneMYivyFK1OiqG0m8oCwJF1ElTd+NPpP+yEUCvfsHdrrFwoSSXHqD02dBy1
+ GOEUGxevptGlPrSjXe+YEtIfstfiQaFnSS2J5ppvKSrd0r5A74B46zUXk0DAxDkT7/1l/AVQAlb
+ /sjGpg37DHiCKaA==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-From: Alexander Duyck <alexanderduyck@fb.com>
+Different SoCs have different sized ALE table and number of ports.
+Expand the Policer fields to support 16 ports and 1024 ALE entries.
 
-With this patch we add support for a phydev which represents the PMD state
-to the phylink interface. As we now have this path we can separate the link
-state from the PCS and instead report it through the phydev which allows us
-to more easily transition to using the XPCS when the time comes.
-
-Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c     |    2 -
- drivers/net/ethernet/meta/fbnic/fbnic_netdev.c  |    7 +--
- drivers/net/ethernet/meta/fbnic/fbnic_netdev.h  |    1 
- drivers/net/ethernet/meta/fbnic/fbnic_phylink.c |   50 +++++++++++++++++++++--
- 4 files changed, 51 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_irq.c b/drivers/net/ethernet/meta/fbnic/fbnic_irq.c
-index 45af6c1331fb..432b053b5ed6 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_irq.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_irq.c
-@@ -140,7 +140,7 @@ static irqreturn_t fbnic_mac_msix_intr(int __always_unused irq, void *data)
- 	/* Record link down events */
- 	if (!fbd->mac->get_link(fbd, fbn->aui, fbn->fec)) {
- 		fbn->link_down_events = link_down_events;
--		phylink_mac_change(fbn->phylink, false);
-+		phy_mac_interrupt(fbd->netdev->phydev);
- 	}
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index fbe35af615a6f05861683032873fb6c30b2e057c..2e294fea999f3ba9545a68f6884c313feb35c587 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -1341,33 +1341,33 @@ static const struct reg_field ale_fields_cpsw_nu[] = {
+ 	/* CPSW_ALE_POLICER_PORT_OUI_REG */
+ 	[POL_PORT_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 31, 31),
+ 	[POL_TRUNK_ID]	= REG_FIELD(ALE_POLICER_PORT_OUI, 30, 30),
+-	[POL_PORT_NUM]	= REG_FIELD(ALE_POLICER_PORT_OUI, 25, 25),
++	[POL_PORT_NUM]	= REG_FIELD(ALE_POLICER_PORT_OUI, 25, 28),
+ 	[POL_PRI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 19, 19),
+ 	[POL_PRI_VAL]	= REG_FIELD(ALE_POLICER_PORT_OUI, 16, 18),
+ 	[POL_OUI_MEN]	= REG_FIELD(ALE_POLICER_PORT_OUI, 15, 15),
+-	[POL_OUI_INDEX]	= REG_FIELD(ALE_POLICER_PORT_OUI, 0, 5),
++	[POL_OUI_INDEX]	= REG_FIELD(ALE_POLICER_PORT_OUI, 0, 9),
  
- 	return IRQ_HANDLED;
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-index 2d5ae89b4a15..1d732cf22ec5 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
-@@ -44,7 +44,7 @@ int __fbnic_open(struct fbnic_net *fbn)
- 	if (err)
- 		goto time_stop;
+ 	/* CPSW_ALE_POLICER_DA_SA_REG */
+ 	[POL_DST_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 31, 31),
+-	[POL_DST_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 16, 21),
++	[POL_DST_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 16, 25),
+ 	[POL_SRC_MEN]	= REG_FIELD(ALE_POLICER_DA_SA, 15, 15),
+-	[POL_SRC_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 0, 5),
++	[POL_SRC_INDEX]	= REG_FIELD(ALE_POLICER_DA_SA, 0, 9),
  
--	err = fbnic_mac_request_irq(fbd);
-+	err = fbnic_phylink_connect(fbn);
- 	if (err)
- 		goto time_stop;
+ 	/* CPSW_ALE_POLICER_VLAN_REG */
+ 	[POL_OVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 31, 31),
+-	[POL_OVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 16, 21),
++	[POL_OVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 16, 25),
+ 	[POL_IVLAN_MEN]		= REG_FIELD(ALE_POLICER_VLAN, 15, 15),
+-	[POL_IVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 0, 5),
++	[POL_IVLAN_INDEX]	= REG_FIELD(ALE_POLICER_VLAN, 0, 9),
  
-@@ -52,8 +52,6 @@ int __fbnic_open(struct fbnic_net *fbn)
- 	fbnic_bmc_rpc_init(fbd);
- 	fbnic_rss_reinit(fbd, fbn);
+ 	/* CPSW_ALE_POLICER_ETHERTYPE_IPSA_REG */
+ 	[POL_ETHERTYPE_MEN]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 31, 31),
+-	[POL_ETHERTYPE_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 16, 21),
++	[POL_ETHERTYPE_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 16, 25),
+ 	[POL_IPSRC_MEN]		= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 15, 15),
+-	[POL_IPSRC_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 0, 5),
++	[POL_IPSRC_INDEX]	= REG_FIELD(ALE_POLICER_ETHERTYPE_IPSA, 0, 9),
  
--	phylink_resume(fbn->phylink);
--
- 	return 0;
- time_stop:
- 	fbnic_time_stop(fbn);
-@@ -86,10 +84,11 @@ static int fbnic_stop(struct net_device *netdev)
- {
- 	struct fbnic_net *fbn = netdev_priv(netdev);
+ 	/* CPSW_ALE_POLICER_IPDA_REG */
+ 	[POL_IPDST_MEN]		= REG_FIELD(ALE_POLICER_IPDA, 31, 31),
+-	[POL_IPDST_INDEX]	= REG_FIELD(ALE_POLICER_IPDA, 16, 21),
++	[POL_IPDST_INDEX]	= REG_FIELD(ALE_POLICER_IPDA, 16, 25),
  
-+	fbnic_mac_free_irq(fbn->fbd);
-+	phylink_disconnect_phy(fbn->phylink);
- 	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
- 
- 	fbnic_down(fbn);
--	fbnic_mac_free_irq(fbn->fbd);
- 
- 	fbnic_time_stop(fbn);
- 	fbnic_fw_xmit_ownership_msg(fbn->fbd, false);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-index 7b773c06e245..f8807f6e443d 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
-@@ -107,6 +107,7 @@ int fbnic_phylink_ethtool_ksettings_get(struct net_device *netdev,
- int fbnic_phylink_get_fecparam(struct net_device *netdev,
- 			       struct ethtool_fecparam *fecparam);
- int fbnic_phylink_init(struct net_device *netdev);
-+int fbnic_phylink_connect(struct fbnic_net *fbn);
- void fbnic_phylink_pmd_training_complete_notify(struct fbnic_net *fbn);
- bool fbnic_check_split_frames(struct bpf_prog *prog,
- 			      unsigned int mtu, u32 hds_threshold);
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-index a9b2fc8108b7..b42cc5ad3055 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_phylink.c
-@@ -132,9 +132,8 @@ fbnic_phylink_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- 
- 	state->duplex = DUPLEX_FULL;
- 
--	state->link = (fbd->pmd_state == FBNIC_PMD_SEND_DATA) &&
--		      (rd32(fbd, FBNIC_PCS(MDIO_STAT1, 0)) &
--		       MDIO_STAT1_LSTATUS);
-+	state->link = !!(rd32(fbd, FBNIC_PCS(MDIO_STAT1, 0)) &
-+			 MDIO_STAT1_LSTATUS);
- }
- 
- static int
-@@ -264,6 +263,49 @@ int fbnic_phylink_init(struct net_device *netdev)
- 	return 0;
- }
- 
-+/**
-+ * fbnic_phylink_connect - Connect phylink structure to IRQ, PHY, and enable it
-+ * @fbn: FBNIC Netdev private data struct phylink device attached to
-+ *
-+ * This function connects the phylink structure to the PHY and IRQ and then
-+ * enables it to resuem operations. With this function completed the PHY will
-+ * be able to obtain link and notify the netdev of its current state.
-+ **/
-+int fbnic_phylink_connect(struct fbnic_net *fbn)
-+{
-+	struct fbnic_dev *fbd = fbn->fbd;
-+	struct phy_device *phydev;
-+	int err;
-+
-+	phydev = phy_find_first(fbd->mii_bus);
-+	if (!phydev) {
-+		dev_err(fbd->dev, "No PHY found\n");
-+		return -ENODEV;
-+	}
-+
-+	/* We don't need to poll, the MAC will notify us of events */
-+	phydev->irq = PHY_MAC_INTERRUPT;
-+
-+	phy_attached_info(phydev);
-+
-+	err = phylink_connect_phy(fbn->phylink, phydev);
-+	if (err) {
-+		dev_err(fbd->dev, "Error connecting phy, err: %d\n", err);
-+		return err;
-+	}
-+
-+	err = fbnic_mac_request_irq(fbd);
-+	if (err) {
-+		phylink_disconnect_phy(fbn->phylink);
-+		dev_err(fbd->dev, "Error requesting MAC IRQ, err: %d", err);
-+		return err;
-+	}
-+
-+	phylink_resume(fbn->phylink);
-+
-+	return 0;
-+}
-+
- /**
-  * fbnic_phylink_pmd_training_complete_notify - PMD training complete notifier
-  * @fbn: FBNIC Netdev private data struct phylink device attached to
-@@ -285,5 +327,5 @@ void fbnic_phylink_pmd_training_complete_notify(struct fbnic_net *fbn)
- 		return;
- 
- 	fbd->pmd_state = FBNIC_PMD_SEND_DATA;
--	phylink_mac_change(fbn->phylink, true);
-+	phy_mac_interrupt(fbd->netdev->phydev);
- }
+ 	/* CPSW_ALE_POLICER_TBL_CTL_REG */
+ 	/**
 
+-- 
+2.34.1
 
