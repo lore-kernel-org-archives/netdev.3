@@ -1,106 +1,134 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827A51EE7DC
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 06:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F9E2AEF5
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 06:45:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761288267; cv=none; b=Q5ea39D3set9YtI5AaPs/XP6w04FxUvm7BbGHLPE/Q5LRsSaxblI5i5OgFw+HsAgmeQVaVZbois0jKw2EPCeM1z5dg+dTr3VlLEQ2PdAlUd/RVjuE3Ow/zGMoMI4ZRfrZRhfNcUcs+ExNVARk9sBneu/YUPvTkF2XUA2ElFbp8k=
+	t=1761288323; cv=none; b=OiQ4dVDs6nMMGFVQWb+15EHNHlRzxrOb3juTWtMcv5ZK1HUW1gnASXN/+weCVpRB0SkQ8sGr924KTb/AGmcP/Pr8JzsYoMz02biKj2Kf4ex6sUbtReakIT9xV9vOmCKcKPVDUB5WDHIGOpj5Kb8JRL3f82hLuhjUoaezdCei8pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761288267; c=relaxed/simple;
-	bh=OMrkExLxeo5n6zdxsI3+y2dFchD/7zAtf9EgEGt265Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K8QIRKLpSh33VvjwYaSf1yU7OM4D0XBqQGPN4DmKdRdc4z2OjXb34ZCUDU1pIjoTtAier/lzUmfnflpPT3VJUfLkEFNzxo5kd4emz0BG7YsVSK+6hN84PNv+CkV/Mna6uA99urPLlITwgiDRwg+onkNUh8m4tSy/UwtQ0TFfAJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KYtGg25+; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1761288323; c=relaxed/simple;
+	bh=0iw9CwNPkhBvnTCr2cpA3UzfVbB5f9B73Acum9l+L1U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y6lldS8XcIkGkpa9bWaC4HjUuaEwE6zqctPLbnjzjyvbv4noSXJ3Hxv31zEkI8tnJVRvwzsypB1YR+TJWUBP3O9tvOzs0UJhI2wtJEZyxAlVfYXjpXddbBMguEjyk1xDYic74/s2o443f+OjzLKGuiVVoBxHC7jGDzLPUrlZpbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gAM6AEce; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KYtGg25+"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3A3BD1A1636;
-	Fri, 24 Oct 2025 06:44:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0E44660703;
-	Fri, 24 Oct 2025 06:44:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 689A9102F244A;
-	Fri, 24 Oct 2025 08:44:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761288259; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=23XHfjip0xavJrBGmNRM/VDGO8Z67OrHnHQ9YooOSIE=;
-	b=KYtGg25+hcycycAL+yfAnApj7zKCwrcjHD0C1XmCTEWz6G7WnS9cc30XTSyOgJ7icxC/Rk
-	BqgI0luB56xoC4ypAxklxqw+6dS0yUfe7IIHk658RN8QGGhIaoGUoyCH36Ds/llVKwuL2G
-	cyXkCiSkeGeITCYPhWpveysp++p/PCtKkPKbcYWiK1O9O1S2hTqj3/KiknDuIrbPbEwx8N
-	9f89N0J4qw/LPTkrbdvkIapLZMRr96Mp0gc71NlRrw8JLnVAG48SlzxBF5BCoE0yj4PYzr
-	Lm2PpayjuUmiKTH+iCuMujhGHnik45A6axwDm0WHsU+hp71f45Jyrhhu62cuqA==
-Message-ID: <28d91eca-28dd-4e5b-ae60-021e777ee064@bootlin.com>
-Date: Fri, 24 Oct 2025 08:44:07 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gAM6AEce"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-63e11347fd9so1948911d50.1
+        for <netdev@vger.kernel.org>; Thu, 23 Oct 2025 23:45:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761288321; x=1761893121; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ENJpw6lxJ/Kp0MjLnDpjJp+nMlZLuOMZ4v+w7E3FRSI=;
+        b=gAM6AEce83MjE9jPKREHVMBBoZn0w6ncL/XrZHGUamAq3VqKLWX40WicbZc7x5Yn44
+         SG3Md+43ZJoP967os+J31sdKErF0A5HfhA6Fgds+a3lPQyY+0l5svSGF2qvKJaPvuxsg
+         VajzLR0CQh91TIpcIuShmRPk5e/d92sjbbW7I6LRsziJsh1QQ4yVnuuq+5a4pFe085AF
+         0K6amnke0FA76uwpZIeln39Uua5p06CxOWHMXz/nN8BEr8gqF/IgFCHjqI7sYGPcph8/
+         qUL5hgTisw/yddc+N87pC6qrALWJDbCsMce+6DLafJF6HyDQjTa8z2hCCv4qOXFeqHTL
+         tG8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761288321; x=1761893121;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ENJpw6lxJ/Kp0MjLnDpjJp+nMlZLuOMZ4v+w7E3FRSI=;
+        b=cjbUloSztl8avbLvOaw6EcNmZFLF3189m6R4Zk7W1arSwsUmb8Zkd5aoBIjwWJgnHD
+         yNME1DEClNee7B3Nj2AHLWtXNqT6KgGQcrsiF8xg2GFGiui3ZhfqOohW/8+vKFUsHrgX
+         7ZLSDrypeHkbQJBV73ruXV/WFC5a3aQyseZZX0Nzw7Cu/7qxORQQ54zfRCJ8riyEwN1g
+         EDymisrgYAZzo9T3B/yN3kQe4GHDwjlpWNgmABBo2B9jDIiKLjQcHQWXoQyzvDe8Hm7z
+         m8kyuZ1LqocCF98dQa/HK0J8gYt5izfx0dO7NIGlCdL+HSH5s3NoPZtg2X7Y6UvHBOmO
+         kq8w==
+X-Gm-Message-State: AOJu0Yy3LqjFyPf1TqLQY5OisBbB3ZFBepjGo2L+1tHVcQpyDBEw6+bP
+	SimztRCaC2DV25wSC5kH/C8JhZSWgs/3WK+NYX5PJ2GbNKk7+dt6cX7znUlfae53o+//kxZANdR
+	ppdG6swZnEOZWJdN0l6rIbxt8tX2fp0ldNu+kemM6
+X-Gm-Gg: ASbGncsbgy7iJshr5ZE08GOBIKWZ8rnw0nA6F7qSJiA5GEPvxxnPHcLYhbCLHFby3j6
+	hmuPNkm6F65vqoV3i2j/dAbQyo2E/CqF7ehHUL9am5Ex5SC9+EFkwsVAQD37TM5PiHMlA/cN91J
+	VuYTAc9cribyjFCPz9C51NTSllll3i9KV5IKtGE9AQdgB2zfxBkH8Qc2zZ8ddkxCRnkxcbet9C6
+	czVWn4UigYtEcsU5oddhCuA9UzVnHptqZMzT6fwqjuXgZbKxMhJvmZ9IFf/oEUs3A3B1EU=
+X-Google-Smtp-Source: AGHT+IEE6xkStLPZ4tYqHmT+BNPndD8hmzRfnS9yu2RGFJrROYJnGSjt1r75f1bjSne8MfK5a07T6HokbAZWOY7xaBY=
+X-Received: by 2002:a05:690e:1406:b0:63e:36c4:abb1 with SMTP id
+ 956f58d0204a3-63e36c4ac62mr13167261d50.39.1761288321009; Thu, 23 Oct 2025
+ 23:45:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/8] net: stmmac: hwif.c cleanups
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
-References: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <1761286996-39440-1-git-send-email-liyonglong@chinatelecom.cn> <1761286996-39440-3-git-send-email-liyonglong@chinatelecom.cn>
+In-Reply-To: <1761286996-39440-3-git-send-email-liyonglong@chinatelecom.cn>
+From: Eric Dumazet <edumazet@google.com>
+Date: Thu, 23 Oct 2025 23:45:09 -0700
+X-Gm-Features: AWmQ_bkllJW6kG-o32vPFlZSUbRQW-QsRSauzdvwKUA9R7luR4rKlhRJ9IdEZAY
+Message-ID: <CANn89i+yC1b_KRx0smi20FuQjcbUMnqMhwLmnW=feFNM0hcMfw@mail.gmail.com>
+Subject: Re: [PATH net 2/2] net: ipv6: use drop reasons in ip6_fragment
+To: Yonglong Li <liyonglong@chinatelecom.cn>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
+	pabeni@redhat.com, kuba@kernel.org, horms@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Russell,
+On Thu, Oct 23, 2025 at 11:23=E2=80=AFPM Yonglong Li <liyonglong@chinatelec=
+om.cn> wrote:
+>
+> use drop reasons in ip6_output like ip_fragment/ip_do_fragment
+>
+> Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
+> ---
+>  net/ipv6/ip6_output.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index f904739e..575c7d1 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -875,6 +875,7 @@ int ip6_fragment(struct net *net, struct sock *sk, st=
+ruct sk_buff *skb,
+>                  int (*output)(struct net *, struct sock *, struct sk_buf=
+f *))
+>  {
+>         struct sk_buff *frag;
+> +       enum skb_drop_reason reason =3D SKB_DROP_REASON_FRAG_FAILED;
 
-On 23/10/2025 11:36, Russell King (Oracle) wrote:
-> Hi,
-> 
-> This series cleans up hwif.c:
-> 
-> - move the reading of the version information out of stmmac_hwif_init()
->   into its own function, stmmac_get_version(), storing the result in a
->   new struct.
-> 
-> - simplify stmmac_get_version().
-> 
-> - read the version register once, passing it to stmmac_get_id() and
->   stmmac_get_dev_id().
-> 
-> - move stmmac_get_id() and stmmac_get_dev_id() into
->   stmmac_get_version()
-> 
-> - define version register fields and use FIELD_GET() to decode
-> 
-> - start tackling the big loop in stmmac_hwif_init() - provide a
->   function, stmmac_hwif_find(), which looks up the hwif entry, thus
->   making a much smaller loop, which improves readability of this code.
-> 
-> - change the use of '^' to '!=' when comparing the dev_id, which is
->   what is really meant here.
-> 
-> - reorganise the test after calling stmmac_hwif_init() so that we
->   handle the error case in the indented code, and the success case
->   with no indent, which is the classical arrangement.
-> 
->  drivers/net/ethernet/stmicro/stmmac/common.h |   3 +
->  drivers/net/ethernet/stmicro/stmmac/hwif.c   | 166 +++++++++++++++------------
->  2 files changed, 98 insertions(+), 71 deletions(-)
+Reverse Christmas .... move this one line up, or move "struct sk_buff *frag=
+;"
 
-I didn't have the bandwidth to do a full review, however I ran tests
-with this series on dwmac-socfpga and dwmac-stm32, no regressions found.
+>         struct rt6_info *rt =3D dst_rt6_info(skb_dst(skb));
+>         struct ipv6_pinfo *np =3D skb->sk && !dev_recursion_level() ?
+>                                 inet6_sk(skb->sk) : NULL;
+> @@ -995,7 +996,7 @@ int ip6_fragment(struct net *net, struct sock *sk, st=
+ruct sk_buff *skb,
+>                         return 0;
+>                 }
+>
+> -               kfree_skb_list(iter.frag);
+> +               kfree_skb_list_reason(iter.frag, reason);
+>
+>                 IP6_INC_STATS(net, ip6_dst_idev(&rt->dst),
+>                               IPSTATS_MIB_FRAGFAILS);
+> @@ -1050,12 +1051,13 @@ int ip6_fragment(struct net *net, struct sock *sk=
+, struct sk_buff *skb,
+>
+>  fail_toobig:
+>         icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
+> +       reason =3D SKB_DROP_REASON_PKT_TOO_BIG;
+>         err =3D -EMSGSIZE;
+>
+>  fail:
+>         IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
+>                       IPSTATS_MIB_FRAGFAILS);
+> -       kfree_skb(skb);
+> +       kfree_skb_reason(skb, reason);
 
-For the series,
+Same remark as the IPv4 part.
 
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
+>         return err;
+>  }
+>
+> --
+> 1.8.3.1
+>
