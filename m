@@ -1,261 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF79313525;
-	Fri, 24 Oct 2025 10:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD9B313527
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 10:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761303262; cv=none; b=EY9eWIusm9zEEkCoGf7D9Crdn6/tDgiDOc0hwdHuzFeUzyZJArOe2m5vnPp0GaYFxWflDCPrkR8kV/CehthpvZzs/y5wumW0Nzpjm+fIr8M37GevBMs/xlq0wAMbB9tQ47QI8P6pjXejJgjfeDRT62AWiEa2ke8vj/vLHDYHFMI=
+	t=1761303262; cv=none; b=tjP2xEQk+7GQjVKa6fRefP65SAIkxcZzwtR7GXgFE2GTgpNZCh6FpxNU6ox4pSbjn4Pu0blQhW4Yw/+PLU/OLLUSojWYwSKfOKU8zCAk0GGpdtnscsu7Te8LHbjUX+9Wj5CEuPCo4KhNBeaij82+P1nxYd6H4hayf1g3YWMgGhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761303262; c=relaxed/simple;
-	bh=Co5S70aHxdL+O+qEH6Oe29bl2YvObKQAs7B24LZSp/E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aF6TzlMgAPAMABWZVpABMztn2Qk6wfTZI0jr7txoQPINGONj9jDWnfmLB4dkP8nmpJBy+BZSuXVDSkhrcPSGYJdp3J0zhBkcLk/B+6XkXVS0h+eNj4VtRjNBAFLilbubiK5LyxNbbQ5UR1QJqqzqCXtfGj943IKkvINca+Qi0r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CF7ChK+5; arc=none smtp.client-ip=10.30.226.201
+	bh=YRuUk72X48LKbl0NGFTto3u3r+cewoHN+3hW6sCm2Bg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lu7fY3qJvQUFQ7od4V2iXKRdXj1BaXKb/koQ+WzS8BmDrEC5MgBKeFks0mYODU3tuEpuf0KR3+TAOnOUUlIBtNvps8TaOjDLiRcEG+XMXlLwmc6RCcYNVNhbUwvEFML7zI8eqUy2kRlWmVCNKAdKHRSXN2UxbKt3au6Cx6vshqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wFOTnljM; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CF7ChK+5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4508C4CEF1;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wFOTnljM"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 340764E412D8;
 	Fri, 24 Oct 2025 10:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761303262;
-	bh=Co5S70aHxdL+O+qEH6Oe29bl2YvObKQAs7B24LZSp/E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=CF7ChK+5EeZw2xl26uy3v25pfjPfJLl/tYGdcU9mb1zGPBpfqD3lz5G0pN1uKjQaZ
-	 Occg3rPU3aaljeO2k9u61Nz9ox0tmTWwgFsi0KYElP7UDt20DOuC4VjWDQ34wPcb6f
-	 5RwQ11IsR/narT3Iwu96ar5BZgRhDCd0sAU0yqdNgL/I1dSIPfVoal9ThNd1O1tAg1
-	 LBbesYe5wtSz37WPgQVoR7EbwA5XQx/indPsmQfu1F9pasNhEyTBI4N3EPocZcsU8R
-	 TXbOTx5dZ1Dx5OC9fMPQrqAUnjXY/GTAcpk46azXhBcYOG2MDkdInKwsOfcGtHAMmo
-	 P2Amc8VDrY8tw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 24 Oct 2025 12:52:45 +0200
-Subject: [PATCH v3 16/70] ns: maintain list of owned namespaces
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ECEF160703;
+	Fri, 24 Oct 2025 10:54:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96ECB102F2355;
+	Fri, 24 Oct 2025 12:53:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1761303255; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=y1Ao409MtaPgUYRpBahYZXHRywkGhOPNNwYQ3CbOmSk=;
+	b=wFOTnljMgZcJ9fFHGVUItDYZLELl/nQ9UUjZkKVBZJ440S5fcemvTZjmbaMAdRgSKyuPz/
+	8lsfoDzhq2GxO9LzzfOwG4pEW1uh+ApYVf0cjxtPFBmz3Z3b41IxtAqXOjgpkrg4ZMVwRf
+	LsrdvvwKXqgxFfBn+dwd1CAiRrutSKALKw/kGdv9Xuxfu8LVqJ4+jn821L91R9OTL6Mdu6
+	NcFpnAtXY3nHeQn1imhGR8o123Lrkivf8wYdoLljGN/f/V2m/fW7MHsCuz0u2op1dJNw5L
+	6yL9i5xDEF+X/qPX1MthiIvhw+8BJruccXktW9g7OJwJ8DS4bhbeNq4ZuA74Sw==
+Message-ID: <1a1cacb5-0005-4b32-8e68-624644a38f92@bootlin.com>
+Date: Fri, 24 Oct 2025 12:53:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 0/8] net: stmmac: hwif.c cleanups
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>
+References: <aPn3MSQvjUWBb92P@shell.armlinux.org.uk>
+ <28d91eca-28dd-4e5b-ae60-021e777ee064@bootlin.com>
+ <aPtZg_v3H53hiQXo@shell.armlinux.org.uk>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <aPtZg_v3H53hiQXo@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-work-namespace-nstree-listns-v3-16-b6241981b72b@kernel.org>
-References: <20251024-work-namespace-nstree-listns-v3-0-b6241981b72b@kernel.org>
-In-Reply-To: <20251024-work-namespace-nstree-listns-v3-0-b6241981b72b@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- Jeff Layton <jlayton@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, 
- =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
- Lennart Poettering <mzxreary@0pointer.de>, 
- Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
- Amir Goldstein <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Thomas Gleixner <tglx@linutronix.de>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.15-dev-96507
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7611; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Co5S70aHxdL+O+qEH6Oe29bl2YvObKQAs7B24LZSp/E=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT8jmply5yl5eh+sfvOSa+Zgu2t8atNbv0Xs9K+5JHkU
- nWos86yo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCKnyxh+s3c+yF2YlnCj803b
- crmdKV1GzP4dezQUld3nTjq571t6JCPDMlUJt1OxM3fkpMwWyztSH/x3o2PQdcmHPg9/JCqY/lf
- lBQA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Last-TLS-Session-Version: TLSv1.3
 
-The namespace tree doesn't express the ownership concept of namespace
-appropriately. Maintain a list of directly owned namespaces per user
-namespace. This will allow userspace and the kernel to use the listns()
-system call to walk the namespace tree by owning user namespace.
-Read-only list operations are completely lockless.
+Hi Russell,
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- fs/namespace.c            |  2 ++
- include/linux/ns_common.h |  4 ++++
- init/version-timestamp.c  |  2 ++
- ipc/msgutil.c             |  2 ++
- kernel/cgroup/cgroup.c    |  2 ++
- kernel/nscommon.c         |  2 ++
- kernel/nstree.c           | 19 +++++++++++++++++++
- kernel/pid.c              |  2 ++
- kernel/time/namespace.c   |  2 ++
- kernel/user.c             |  2 ++
- 10 files changed, 39 insertions(+)
+On 24/10/2025 12:48, Russell King (Oracle) wrote:
+> On Fri, Oct 24, 2025 at 08:44:07AM +0200, Maxime Chevallier wrote:
+>> Hello Russell,
+>>
+>> On 23/10/2025 11:36, Russell King (Oracle) wrote:
+>>> Hi,
+>>>
+>>> This series cleans up hwif.c:
+>>>
+>>> - move the reading of the version information out of stmmac_hwif_init()
+>>>   into its own function, stmmac_get_version(), storing the result in a
+>>>   new struct.
+>>>
+>>> - simplify stmmac_get_version().
+>>>
+>>> - read the version register once, passing it to stmmac_get_id() and
+>>>   stmmac_get_dev_id().
+>>>
+>>> - move stmmac_get_id() and stmmac_get_dev_id() into
+>>>   stmmac_get_version()
+>>>
+>>> - define version register fields and use FIELD_GET() to decode
+>>>
+>>> - start tackling the big loop in stmmac_hwif_init() - provide a
+>>>   function, stmmac_hwif_find(), which looks up the hwif entry, thus
+>>>   making a much smaller loop, which improves readability of this code.
+>>>
+>>> - change the use of '^' to '!=' when comparing the dev_id, which is
+>>>   what is really meant here.
+>>>
+>>> - reorganise the test after calling stmmac_hwif_init() so that we
+>>>   handle the error case in the indented code, and the success case
+>>>   with no indent, which is the classical arrangement.
+>>>
+>>>  drivers/net/ethernet/stmicro/stmmac/common.h |   3 +
+>>>  drivers/net/ethernet/stmicro/stmmac/hwif.c   | 166 +++++++++++++++------------
+>>>  2 files changed, 98 insertions(+), 71 deletions(-)
+>>
+>> I didn't have the bandwidth to do a full review, however I ran tests
+>> with this series on dwmac-socfpga and dwmac-stm32, no regressions found.
+>>
+>> For the series,
+>>
+>> Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> 
+> Thanks, it's good to have someone else testing. I do need to post v2
+> with some tweaks to patches 2, 3 and 4 due to a typo that gets
+> eliminated in later patches. "verison*" -> "version*" in one instance.
+> 
+If it's only typos, feel free to keep the t-b tag :)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 5d8a80e1e944..d460ca79f0e7 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5996,6 +5996,8 @@ struct mnt_namespace init_mnt_ns = {
- 	.mounts		= RB_ROOT,
- 	.poll		= __WAIT_QUEUE_HEAD_INITIALIZER(init_mnt_ns.poll),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_mnt_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_mnt_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_mnt_ns.ns.ns_owner),
- };
- 
- static void __init init_mount_tree(void)
-diff --git a/include/linux/ns_common.h b/include/linux/ns_common.h
-index b7d2123a9d19..88dce67e06e4 100644
---- a/include/linux/ns_common.h
-+++ b/include/linux/ns_common.h
-@@ -123,6 +123,10 @@ struct ns_common {
- 				struct rb_node ns_tree_node;
- 				struct list_head ns_list_node;
- 			};
-+			struct /* namespace ownership list */ {
-+				struct list_head ns_owner; /* list of namespaces owned by this namespace */
-+				struct list_head ns_owner_entry; /* node in the owner namespace's ns_owned list */
-+			};
- 			atomic_t __ns_ref_active; /* do not use directly */
- 		};
- 		struct rcu_head ns_rcu;
-diff --git a/init/version-timestamp.c b/init/version-timestamp.c
-index c38498f94646..e5c278dabecf 100644
---- a/init/version-timestamp.c
-+++ b/init/version-timestamp.c
-@@ -22,6 +22,8 @@ struct uts_namespace init_uts_ns = {
- 	.user_ns = &init_user_ns,
- 	.ns.inum = ns_init_inum(&init_uts_ns),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_uts_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_uts_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_uts_ns.ns.ns_owner),
- #ifdef CONFIG_UTS_NS
- 	.ns.ops = &utsns_operations,
- #endif
-diff --git a/ipc/msgutil.c b/ipc/msgutil.c
-index d7c66b430470..ce1de73725c0 100644
---- a/ipc/msgutil.c
-+++ b/ipc/msgutil.c
-@@ -32,6 +32,8 @@ struct ipc_namespace init_ipc_ns = {
- 	.user_ns = &init_user_ns,
- 	.ns.inum = ns_init_inum(&init_ipc_ns),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_ipc_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_ipc_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_ipc_ns.ns.ns_owner),
- #ifdef CONFIG_IPC_NS
- 	.ns.ops = &ipcns_operations,
- #endif
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 45e470011c77..9fa082e2eb1a 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -258,6 +258,8 @@ struct cgroup_namespace init_cgroup_ns = {
- 	.root_cset	= &init_css_set,
- 	.ns.ns_type	= ns_common_type(&init_cgroup_ns),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_cgroup_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_cgroup_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_cgroup_ns.ns.ns_owner),
- };
- 
- static struct file_system_type cgroup2_fs_type;
-diff --git a/kernel/nscommon.c b/kernel/nscommon.c
-index bdd32e14a587..ba46de0637c3 100644
---- a/kernel/nscommon.c
-+++ b/kernel/nscommon.c
-@@ -63,6 +63,8 @@ int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_ope
- 	RB_CLEAR_NODE(&ns->ns_tree_node);
- 	RB_CLEAR_NODE(&ns->ns_unified_tree_node);
- 	INIT_LIST_HEAD(&ns->ns_list_node);
-+	INIT_LIST_HEAD(&ns->ns_owner);
-+	INIT_LIST_HEAD(&ns->ns_owner_entry);
- 
- #ifdef CONFIG_DEBUG_VFS
- 	ns_debug(ns, ops);
-diff --git a/kernel/nstree.c b/kernel/nstree.c
-index de5ceda44637..829682bb04a1 100644
---- a/kernel/nstree.c
-+++ b/kernel/nstree.c
-@@ -3,6 +3,7 @@
- #include <linux/nstree.h>
- #include <linux/proc_ns.h>
- #include <linux/vfsdebug.h>
-+#include <linux/user_namespace.h>
- 
- __cacheline_aligned_in_smp DEFINE_SEQLOCK(ns_tree_lock);
- static struct rb_root ns_unified_tree = RB_ROOT; /* protected by ns_tree_lock */
-@@ -113,8 +114,10 @@ static inline int ns_cmp_unified(struct rb_node *a, const struct rb_node *b)
- void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree *ns_tree)
- {
- 	struct rb_node *node, *prev;
-+	const struct proc_ns_operations *ops = ns->ops;
- 
- 	VFS_WARN_ON_ONCE(!ns->ns_id);
-+	VFS_WARN_ON_ONCE(ns->ns_type != ns_tree->type);
- 
- 	write_seqlock(&ns_tree_lock);
- 
-@@ -132,6 +135,21 @@ void __ns_tree_add_raw(struct ns_common *ns, struct ns_tree *ns_tree)
- 		list_add_rcu(&ns->ns_list_node, &node_to_ns(prev)->ns_list_node);
- 
- 	rb_find_add_rcu(&ns->ns_unified_tree_node, &ns_unified_tree, ns_cmp_unified);
-+
-+	if (ops) {
-+		struct user_namespace *user_ns;
-+
-+		VFS_WARN_ON_ONCE(!ops->owner);
-+		user_ns = ops->owner(ns);
-+		if (user_ns) {
-+			struct ns_common *owner = &user_ns->ns;
-+			VFS_WARN_ON_ONCE(owner->ns_type != CLONE_NEWUSER);
-+			list_add_tail_rcu(&ns->ns_owner_entry, &owner->ns_owner);
-+		} else {
-+			/* Only the initial user namespace doesn't have an owner. */
-+			VFS_WARN_ON_ONCE(ns != to_ns_common(&init_user_ns));
-+		}
-+	}
- 	write_sequnlock(&ns_tree_lock);
- 
- 	VFS_WARN_ON_ONCE(node);
-@@ -148,6 +166,7 @@ void __ns_tree_remove(struct ns_common *ns, struct ns_tree *ns_tree)
- 	rb_erase(&ns->ns_unified_tree_node, &ns_unified_tree);
- 	list_bidir_del_rcu(&ns->ns_list_node);
- 	RB_CLEAR_NODE(&ns->ns_tree_node);
-+	list_bidir_del_rcu(&ns->ns_owner_entry);
- 	write_sequnlock(&ns_tree_lock);
- }
- EXPORT_SYMBOL_GPL(__ns_tree_remove);
-diff --git a/kernel/pid.c b/kernel/pid.c
-index ec9051d387ee..8134c40b2584 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -80,6 +80,8 @@ struct pid_namespace init_pid_ns = {
- 	.user_ns = &init_user_ns,
- 	.ns.inum = ns_init_inum(&init_pid_ns),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_pid_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_pid_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_pid_ns.ns.ns_owner),
- #ifdef CONFIG_PID_NS
- 	.ns.ops = &pidns_operations,
- #endif
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index 2e7c110bd13f..15cb74267c75 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -485,6 +485,8 @@ struct time_namespace init_time_ns = {
- 	.user_ns	= &init_user_ns,
- 	.ns.inum	= ns_init_inum(&init_time_ns),
- 	.ns.ops		= &timens_operations,
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_time_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_time_ns.ns.ns_owner),
- 	.frozen_offsets	= true,
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_time_ns.ns.ns_list_node),
- };
-diff --git a/kernel/user.c b/kernel/user.c
-index bf60532856db..e392768ccd44 100644
---- a/kernel/user.c
-+++ b/kernel/user.c
-@@ -72,6 +72,8 @@ struct user_namespace init_user_ns = {
- 	.group = GLOBAL_ROOT_GID,
- 	.ns.inum = ns_init_inum(&init_user_ns),
- 	.ns.ns_list_node = LIST_HEAD_INIT(init_user_ns.ns.ns_list_node),
-+	.ns.ns_owner_entry = LIST_HEAD_INIT(init_user_ns.ns.ns_owner_entry),
-+	.ns.ns_owner = LIST_HEAD_INIT(init_user_ns.ns.ns_owner),
- #ifdef CONFIG_USER_NS
- 	.ns.ops = &userns_operations,
- #endif
+Thanks,
 
--- 
-2.47.3
+Maxime
 
