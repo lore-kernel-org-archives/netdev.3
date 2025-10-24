@@ -1,375 +1,364 @@
-Received: from mx-relay12-hz2-if1.hornetsecurity.com (mx-relay12-hz2-if1.hornetsecurity.com [94.100.137.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32A030F939
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 10:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=94.100.137.22
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761302106; cv=fail; b=BlQKu8h4G0aMP6QNso8HvTB5V6W0L03Nsu1A8Ot81OVDyiHDw4ixjOwEmJT+ItK33jzNtPa3cU17OkqAlV/434VMcwfazlnkGi8jlVL3/p3pNsEFgzg2Ks73fJszERUoI2sxnQTe8pYItdzZ2IvCBrgWpwoTK4jizpabHLWDYkU=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761302106; c=relaxed/simple;
-	bh=1mxoY06HSAr560ID8TPxF/NTwzZnojq4V6B/SB6uIEA=;
-	h=From:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type; b=qOrUIZEVEjRTU7WRcsGF3naUHSynThdl1TXMmfEy/NNwHuQWgGEQNIA8tyo7gk7XY9TpmPPKDOESnesHr2qvXUkkgcR1ZF9vQmE/cWecvFkSWt8thQRCRp1XsPhQz7Jhz2EG6MVjkWOBsDljKbZxLUis2HtGfUP6WGjerOlBRuw=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=a-eberle.de; spf=pass smtp.mailfrom=a-eberle.de; dkim=fail (0-bit key) header.d=aeberlede.onmicrosoft.com header.i=@aeberlede.onmicrosoft.com header.b=KXFAd/m6 reason="key not found in DNS"; dkim=pass (2048-bit key) header.d=a-eberle.de header.i=@a-eberle.de header.b=Txpvzlxn; arc=fail smtp.client-ip=94.100.137.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=a-eberle.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a-eberle.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A98307AE0
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 10:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761302484; cv=none; b=lbBAUsdvOmtZa9xW5FYV9JXeCnpvfl7gSk4nGH9Fjo4QnS4sxTHzCqcQVKv0p2Z+iy14T5zEEPDVM/KMdP17bsILm9mFhugdzRVc/np1RAKIV4H45DvZHYy5o6zab12GetRx+fMlZ6D2EqLT2U2JmUi3fg3WZ1748GZkJq9bzR4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761302484; c=relaxed/simple;
+	bh=li6KSp9cre7+afqkFOJCiB/+pjP3e1iaKEH4VasOQ80=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c0Z5xGnPHdyYlZcdyoCO5+R2UNOxWxPfTcID3Xtu+bf4y1qMPi+mE8wK/uJNjzlQptDEVdkzw7qSwACkpJGFo1P0VYaqfTf0S4rlp9+hClMGK28DJY3W/y6T7qysrYwfDlZwNDLwkYOjt6GiDy7b5z0nO8igo63U327YIZIe9p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0n6AA1Nm; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NFUddAfD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=emsfwdQL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=S9OoCNoI; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=aeberlede.onmicrosoft.com header.i=@aeberlede.onmicrosoft.com header.b="KXFAd/m6";
-	dkim=pass (2048-bit key) header.d=a-eberle.de header.i=@a-eberle.de header.b="Txpvzlxn"
-ARC-Authentication-Results: i=2; mx-gate12-hz2.hornetsecurity.com 1;
- spf=softfail reason=mailfrom (ip=52.101.72.102, headerfrom=a-eberle.de)
- smtp.mailfrom=a-eberle.de
- smtp.helo=am0pr02cu008.outbound.protection.outlook.com; dkim=permfail
- header.d=aeberlede.onmicrosoft.com; dmarc=fail header.from=a-eberle.de
- orig.disposition=quarantine
-ARC-Message-Signature: a=rsa-sha256;
- bh=Ce2L3zJG4Q3NzMzohKiwhOWxenthoToB/zNgKRw+zg0=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=2; s=hse1;
- t=1761302054;
- b=KT1lflLfi+jcQdmNOfIZHnCoWv/p1LfXmPwZY4X83vO7MydnB+6flZaqzOqxXgyYV1ueIGY9
- USGVGBbUDUfjgubF8GkXm9cgHj9Es+earHQTsbEQFVug1mHSpR9yf7rD+QdM1k1etHTkoYTfF0C
- zoLTqmjO3LcgwGHekXl/1xuL49XTWY3fqyVvLIDGTYMWoWyGzgRNTbei1kn0S3KYhGyxeNgvT8R
- cqLEQcIlyDBz112xkdkzpK015h6FlcS/yQRYjayajhDYpi7SMVtbQO/lE8wikIMkhgSK6YARMKg
- Xc4IeuTiq//wmG1GTL/B+Omd+4qgAZ4aGsWeBF85Nyk4Q==
-ARC-Seal: a=rsa-sha256; cv=pass; d=hornetsecurity.com; i=2; s=hse1;
- t=1761302054;
- b=H/uloJJRDCLVnolBBvR70+4aY4nIiIvglY9lixYfokLM4z4SLT0P64EZHGEpBcWMHCJVXYpl
- x1o+oTfOKDBKzkuC3wTiWXTTomQbkcMnqRth449tFMJdCQrTU8rvwWsy2WT4FM/8StNyWowq3tT
- JA2mkCesHV/FovKKbvLXjNMtfXJPFCFGCTYj1vmtO5+c6UiqCc4zJgGBhcMJe3J0UsXttn6igZu
- JUWt8Pra4UqaXBXvk+KYIEEVFRrFA07wyQAemEURMZV2L7xWRfTCi4GJHhGWzwU7+KkTWVTP7BH
- UAhFhTqKWj+ebo9O/GXmz1herARjXj5L7VJmE0V1SDI2A==
-Received: from mail-westeuropeazon11023102.outbound.protection.outlook.com ([52.101.72.102]) by mx-relay12-hz2.antispameurope.com;
- Fri, 24 Oct 2025 12:34:14 +0200
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JOnrljljcOiBNSFcwo0mHM/NLnK/UY4ZsJy0Zpr3IOqA82hq5hYdB8XqByt1KCwUGdyQbZ/ukKSLgpnQWF+Kz4k14VGeetmKWWwtlc2BI5BS9XlSSI0UM3mjLpK2mGyHygPA44mlkpcTHKztjB82wh/dG1H/P2s00CAazlZL7OzDKOUR3A2w5be6Q6JUhXeEtHfXDBqzP6M1QLNmv1EGR1qqtzYURbwmaXf2X3UfsSpfrX7iuJPLKOVLRqr5Y8WydYMO885UaTMpKWIDzqympCcj6WjwHJEEFt85b+BUDAGE4r1TtZyL/SmcW5JCR81zziTNAXZ9zmpE09yP0DJX8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZJ5j/PPjs6XgAEUPjLn29vZtjJ2doEae3GJ0I2U62Uk=;
- b=fDBBcQOB3DMyzRuFagy/M8xMnQQrryLadTEEpBKu5MOL5V8y2akAdXoRf3jcng3WX+X/RogpEeRDAPqu/M4r77hYed1S7httIICAt8kOZdsE/+dmaF/UdZ1z8oa8wf+f7kaXlFhqPMdVF2Z62r10kSXtCqLbEXYLpXBFNXSghAjRQAQv1dXeOyFsG8E9fwo7M2se6xdxfERZj09FFfc81lOh2IZO4pK7o5i0mha7DTPE1LTR8o9Pl5qmfw3dM9e19MasTmaQN3bo9J/aJQvMaluAOfSRanO97bn2o9gNFkHKVkHkSo9rmxN4CKiqR8LZ5cwwyAihhoWIGB/cLA4huA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=a-eberle.de; dmarc=pass action=none header.from=a-eberle.de;
- dkim=pass header.d=a-eberle.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=aeberlede.onmicrosoft.com; s=selector1-aeberlede-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZJ5j/PPjs6XgAEUPjLn29vZtjJ2doEae3GJ0I2U62Uk=;
- b=KXFAd/m67XplzGivvbmyLJ+gk8d9yeT72V/O1lpq5NJLblUyncsGFT0Py2uudyuu2AFTumn1aGGaIYM6Pqir3uxYG1VWg60DQ/hmWNZZb5QAHEA/B4FL+8j7g8qRyHoKB3oqrRF6LdT8JaA9ETCg8QxmI9PaxaqAgHn+oZk2Z1Y=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=a-eberle.de;
-Received: from AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:17a::7)
- by PAWPR10MB7789.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:365::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Fri, 24 Oct
- 2025 10:34:02 +0000
-Received: from AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::14af:ad35:bd6b:f856]) by AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::14af:ad35:bd6b:f856%2]) with mapi id 15.20.9253.011; Fri, 24 Oct 2025
- 10:34:02 +0000
-From: Johannes Eigner <johannes.eigner@a-eberle.de>
-Subject: [PATCH ethtool v3 0/2] fix module info JSON output
-Date: Fri, 24 Oct 2025 12:32:50 +0200
-Message-Id: <20251024-fix-module-info-json-v3-0-36862ce701ae@a-eberle.de>
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANJV+2gC/4XNPQ7CMAwF4KtUmTGK3Z+oTNwDMbTEoUElQQlEo
- Kp3J+0EA2J89vPnSUQOlqPYFZMInGy03uVQbgpxGjp3ZrA6Z0GSapSEYOwTrl4/xrxxxsMlege
- yogqlUgoNi3x6C5x7K3s45jzYePfhtX5JuEz/gAlBgkTdYI+tKk2z74B7DiNvNYuFTPTJ0A+GM
- qPRqL7UxKpuv5l5nt9t+SFiAQEAAA==
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0n6AA1Nm";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NFUddAfD";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="emsfwdQL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="S9OoCNoI"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 611B01F443;
+	Fri, 24 Oct 2025 10:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761302476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GxewOv61lIhFO1u6lbyVbaaV2olLn0w+aW8dk+FDhK4=;
+	b=0n6AA1NmCbljap9Usg39T+Rapi5TCjuM1ePqMo9zSFmjjtbuk3gClwSgLJ+XJgHp48+3QP
+	SM66v8I5wdqJHKBz6dl9/lsxUOFUrTSrSefu6N33KwHarj3ARrrC4OsDph9OlTjCYilEpU
+	q0EaxYLSiFcGFGPA8Jejjj17PZAES58=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761302476;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GxewOv61lIhFO1u6lbyVbaaV2olLn0w+aW8dk+FDhK4=;
+	b=NFUddAfDfsmOtytPfiVPU9SbztRFATsjqxSu08noi9BvpFk8UocV8OHioCTXuCvlAoKiFx
+	eEqDb3DNZS36RCCg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=emsfwdQL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=S9OoCNoI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761302472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GxewOv61lIhFO1u6lbyVbaaV2olLn0w+aW8dk+FDhK4=;
+	b=emsfwdQLrEF7xYSPcrfvDo4kPargHb+NyqKGSizc07rCZ6PZlVC1BAqXNCTYn1BgBRJLNW
+	79DApMQaaWMl2VTcgo+M33XtIus8govaHTR/W21DyAPgAB8tpaayuxz5SEPivHrthaJBqX
+	LUGlvQ6GoX1Jxpv7p3FYvxt0i4xj/Lo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761302472;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=GxewOv61lIhFO1u6lbyVbaaV2olLn0w+aW8dk+FDhK4=;
+	b=S9OoCNoILsfW1kG8yWfNalG077r+vG8LJl/eYNUPpcYRc/YxfDQS7Ld7et0ug1xikRnTKk
+	HSQWVDyFk+tm7uDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 98CE813AEF;
+	Fri, 24 Oct 2025 10:41:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dS6QIsdX+2jPXAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 24 Oct 2025 10:41:11 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 To: netdev@vger.kernel.org
-Cc: Michal Kubecek <mkubecek@suse.cz>, 
- Danielle Ratson <danieller@nvidia.com>, 
- Stephan Wurm <stephan.wurm@a-eberle.de>, Andrew Lunn <andrew@lunn.ch>, 
- Johannes Eigner <johannes.eigner@a-eberle.de>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761302040; l=2020;
- i=johannes.eigner@a-eberle.de; s=20251021; h=from:subject:message-id;
- bh=ebr8BH/fN3AmB2Bzyex1QxDxlMn9HJ/GeYb91ou5wFQ=;
- b=GGgdVbx1095/Oz+TI5XuTM/ppCD8cC1vXxG5n5W643vy7w45Z1gRY4TVet1RTdiXMZqP0+m5M
- O8OFujbWDo7CzpNwGDsQJRR/4+1x6kqIATJsa8Ao7JpfLhTjlTuX7uN
-X-Developer-Key: i=johannes.eigner@a-eberle.de; a=ed25519;
- pk=tjZLx5Tp2iwCN/XmbFBW4CrbjZnFMF6fyMoIgx/dEws=
-X-ClientProxiedBy: FR0P281CA0214.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ac::8) To AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:17a::7)
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR10MB3873:EE_|PAWPR10MB7789:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad284277-dbe1-4d50-e24d-08de12e8d961
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?OUZpRVBDSTNaV0pzUVN4d1dCeHc1dlZoTXA5czdOMEJvemM4SzRuclptK1Ew?=
- =?utf-8?B?YnNHc0MvRUpiZnorZ0tObnJBWGpTUnZXc0J5R1ZYVDdGMHFidTJ2VGprZGQ4?=
- =?utf-8?B?STNkbVgraWp6VFBEUVhuL3dTUzEzZk51ZmVIN3dMNzl5WWRuVTlxZjZ1TnZT?=
- =?utf-8?B?cGVDdkFURFJoTmZ1MDV1b2FyRE1vVGFNTDBsQXFzUzI5UVhmdUdNZ1JkK1RY?=
- =?utf-8?B?QmJMWS80ckN2T2NETHpucklJaDdEalA5dmdhQjdMcGlucURBU2J0dS9LSGtp?=
- =?utf-8?B?NGh3RGJLcHRDZ2FMdndzalBnUlBjSUlZc1JMZ2JPSUkzNElOSzJXSGVjZE9Q?=
- =?utf-8?B?Rk4rUlYrQU13RlhLK0pkdnBzU0QvZ1dpdmwxUlFnNk9KMlFka3RsOVZRUGVJ?=
- =?utf-8?B?ZXRXOVpNclpnTVlWa0JJRWFtZ25YSFpYMjNiQUxDd1Q2WmVjMzlVbWIxbUdk?=
- =?utf-8?B?Z1B4K3QxRjFOUGgwRTZNZEN6R0tRemVzTmljbTRUeXNJVDNEalV2U1NtRkhQ?=
- =?utf-8?B?aU90bm9xb0NUV0FEcWVocUpCTi84WGZZVkIrR3EvNlR4YTBZNzc0YmtTcldY?=
- =?utf-8?B?VHZYNjVlTnFpMkptMURidjJEb3c4RWtPWC9JSlY2T2lWRjc3eWFBZSt6Y1E2?=
- =?utf-8?B?MFpaWi94OTlFWnNpalVvQkw5a3pVTlhhdm1LcVBYVDBIQ1UyeTNwdDJqUGNS?=
- =?utf-8?B?ZmdpdzFOamRQcHYyeU82VVpWN2xaclUwQVYwTVpqWlExVEc3aHZnbWV2U3Vh?=
- =?utf-8?B?QXd5ZDZ3UzhwMFpNV2xVcVZkSEJLYkFuUngwNjdUb1ZqRzhJRkYwZ0hiOVVq?=
- =?utf-8?B?Wnd0NVdvcHFMOFF3Qm8vMG1rUkgrY1pRMWtTQXJMbUlWUEVGVnA2RUlLVVht?=
- =?utf-8?B?RkxTcUVJcGRrNnBHbkxXWktUdTlQeVFxT0F1MzkyQWJzVE13U0pqNmVLaHBS?=
- =?utf-8?B?RFpwa29BQm5PVU91eFdSWmZjVG9zVVkxaTJUQ2JxYVR3YWtsck0zWlN0YW1n?=
- =?utf-8?B?NHgwcjhFWW5pVktkd0V4NmFZWWNnYmhUR1RQUWJzOGZEYWZFZHFzcTQzdXpU?=
- =?utf-8?B?MGV6c1JQTmczOWFJMjArRFZma29rWHV5emFjU2RmR3NwajhiR01ibGY5M0ty?=
- =?utf-8?B?eWtBUkdhclQzb01YTjZoT1pJVjZBRmdKV1ZFSlJRQjV5aXJjcnhINHRUVjFP?=
- =?utf-8?B?QmY0WWZxZXhjMFhFcE5RSkZGa2tTWWI5dmFubGE3eG5IaXFPa3F0R1A1L1Zp?=
- =?utf-8?B?K3BFWjExL1EvWndyOVgxcGJod2hqZldlTC96RE1rVENFRUI5bEsweVZYQkxU?=
- =?utf-8?B?VWgzaXBxTG9XNnlhTEFFbDdDeHRnamliNFNhNEhUdXI0OXp2YkZCTXJzL3oz?=
- =?utf-8?B?UTJsYTM4V0RvY2RYeGoxMERHNC9TOW92OFpHQlFOU1I3MFNyNE1TaVBJYlRw?=
- =?utf-8?B?aTdLRlJkSVQvL3NkZVE0MTBMZmFYTkpBNHNwd1llb2pwNzBFR1NCSnZkTXJQ?=
- =?utf-8?B?VzZQeFFvMlNudnFxdklOUEV5em5qemJNZGVzZ0NTa0hPYmJoekp1K3FwUGsx?=
- =?utf-8?B?TTBOUnphL3N3UjEzbDd4WXFoWHhqNEp6bzlMV3Jsc2REaURlODFHMTN1ZWps?=
- =?utf-8?B?WGNuVWZpa3hpSG1LTmc1TkdhVU1ab3JpR250NWFZQ0gycUZ6TWp3bHZva2t0?=
- =?utf-8?B?aEM2T0xlTHRwMm9TaW5uSWladU9WUmo3OWtyTzYyalJNc01qbnhYVCtlZmxV?=
- =?utf-8?B?RHBLL2J2ZThrMmNTN0g1cjc4NnEwTStkN0Q4cHcvZDlhVGhjVDl0YWZGL2pi?=
- =?utf-8?B?VFNhOUpYV1d1VGo1bTRWL3NYNk43dHkvNFUzd3h6cnhKSEl2NXNoMzlLMWZP?=
- =?utf-8?B?Ti8vS05rZ1hnVzRMZmpVbVA2NFBkRC92NUVMSThQaUhsK0t1MThEYVlVYTQv?=
- =?utf-8?B?UmZOaWZDQUNCam12YWcya0Vmd1BKc01ObnFrcjRFSy9UeHdub0FsbWt1ZFY3?=
- =?utf-8?B?T3d0SEpUaGFnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjM4c2x5dks5MWJFcnhqVHk0SUozWTJLak1WdHl5bWVKM1Boaml3aE5aS2Vj?=
- =?utf-8?B?d0VnWnpRV2FIdUt1SmJhVUJrVzdyMTh4L3NYdnlzRTNPODNwVVhLcC9NY21n?=
- =?utf-8?B?cTVDbnhFZDVDWFIrSXU2ZVFTTDlkL0FETElrc2YzVmJlbUlveWJoQkphSVpE?=
- =?utf-8?B?RmpqZFcvaHN1M0Q5dEg5ZEkxN2xmeWZyay9ObGRNeEZ6TUZnM1ZhUHlPREZp?=
- =?utf-8?B?WmdUWGYrSXliNzVDRUdBVm1mdUtyZklWeE1rdTVVUStZSmRTKzBLTmUwYXlL?=
- =?utf-8?B?N1hSOXZGbDFjODNoS0ZBeDdnVC8xUEtEWFBvWlQvaXVOOWpJU0RPWWQ5Q21L?=
- =?utf-8?B?YjFaNzFCdXZTVFVVS3lLTkl6Y2NMWHR3R05hcjZ4VDhnK2FOZ3VYRWowR2gy?=
- =?utf-8?B?RUJ6d3Rrc0pGZlE1c2FtZmt1d2dZdnJ5dVpoZHM1VHlIbDdERytzZnROa2tI?=
- =?utf-8?B?aEtHbXpyanUwNDRyaUtGMmE4d0ZSS2gzMXo2UXc1amhCdHFuZC9keUZud2hi?=
- =?utf-8?B?QnlrZUdFUE5ucnZoZmlsZW1Vek9qRGxxOXc4WERxOUdtK3FzOCtzdjZ3RHhq?=
- =?utf-8?B?OUJZbjRBQjRUL2NRL1dHUnUrU3VUYXgrRXlzWUM4Ly9yRElweWZGYnQ1WXp5?=
- =?utf-8?B?SDduZmRsNFdNaXRNRE9JSFEyV29PMWIvRXNIMWhIeTBaUXBPdjJyL2ZNVWVl?=
- =?utf-8?B?WUpyUGxsOHpGdkVqNjc5cGQrQ2FzN1N0bHJ5Yy9zQUlYczhXclVRZWt4T3BJ?=
- =?utf-8?B?aVNDQW94eVdyeER4TkZUZ0NZUm51Ulpha01EZjZBOThvVXZ1cktFTHdtRXUv?=
- =?utf-8?B?UG5xbjhsblhCWWxyK0xNQ2JXVVZTTnY1Y1BmVHFvdnQ5Q0Fsc0QxeU94U1lz?=
- =?utf-8?B?OC91V1I2NHg0ZWphb0VQZE5LUnMrOVlTaktNWnRHWENHSTZnQmJmVnRSRG1s?=
- =?utf-8?B?SlpPcG10MThkbG9HTGpnaGxqZTFIN0l4RHRwbjRDcGx6WDh6L3Z1aGx3U3g1?=
- =?utf-8?B?ZVlyVUZXaE0xNmtzUnFtdnU1TFVLUzVmU0x3bnpvSlA0cms0TGlNYUdkdFhC?=
- =?utf-8?B?WWtyaG1XbVFnMVh6ZmJMMExENEV4dVV1eWliM3FGeXlWQ0lGNE44VXpLSXla?=
- =?utf-8?B?UFJPZ2w3eGhnbVJqSitGUEZBQXpTeE54d2RvNXdJcUtEUUpGaUlnazk5dXR3?=
- =?utf-8?B?RUFkSEh2b3NCcndRNVBsZk9DKysyZElBYUNrZWxSNDJuQ0tqMkpmSjczaU4z?=
- =?utf-8?B?bmpLcTIyZlJGWFc0dkVLU3h4WEt3eXJjaEh2WkFsS3IrbzlzNzFEalEvVE5U?=
- =?utf-8?B?YTJmUk1yam9nU0xxWTZjdlRheU9NWGVIald3UkhYUS9xTVFwT0RjcklWbGlv?=
- =?utf-8?B?elRYczBPMGs5YU05TFltL0J6cEJ2SUUyLzFTU2Jzc3RzbTR0UCtIak5zdzZz?=
- =?utf-8?B?b1N5bnBhb3lxNTk0d0dNYWxjU2FiamVtZGJZSm1MOGJYWkNGbVRVL3h0QjVU?=
- =?utf-8?B?cm4wOUNZVGpvclpSeXF3UFQ1M1JTNzlUbzJFSndiVnpDdTNQVUY3K1B2VjNL?=
- =?utf-8?B?dnZROUM4ZjNkUU13SnpKMEE5bWxwaEpqTVVPZk5sbDFGZkt1a1dKMmpKWU5m?=
- =?utf-8?B?eVpTM29lakJybkZXYk10ekg3ajNLMlN2VSswbllJL052QWFnbGp1Z0hPdUNQ?=
- =?utf-8?B?OThhZkZOK3djYW9pa3ZLWlBFaDRnVXorU3lTcitNN1JBSmhDSmVTOTRLcHNn?=
- =?utf-8?B?cld3RTZEVjlaMnZKTnVDV0VHM0U2ekxUM1FXemp2aDhmalNTT3ZXT1BqaWZv?=
- =?utf-8?B?N0d6aDkySktDRC9RTzQrTEZxQU9nSC93eWZHZU9qSm9lVnJXTmE3UUQ0RDA0?=
- =?utf-8?B?bFh1SEgwVlRXUTdsNW5vRndzWkxYbUFBSS9DNHFjUWZ2RlI2c1g4OFBPNmFP?=
- =?utf-8?B?RU9Xb2tJMEhZUWhITDQ0VlRSYnUxOEtPOW1JWVhOUUtnbHN0cnc3ZldLUUtD?=
- =?utf-8?B?RzVicjRoNnBmSTBUMnJTdDRSRXNVNDVRdUxsVEJONThGN1I1RVJOaHRtSXpT?=
- =?utf-8?B?RGZqaTNrSUJvUDVDTkVGSlRRWTAvcWc4bGdHRkIrejc0TXlQcFVScHJqQm1E?=
- =?utf-8?B?ano1ZFM1ZkNBTkVkMm4yYmU0MTZXNnpENTZHMVhXRUhoSm12c2V5N2liSUxM?=
- =?utf-8?B?SHF1cW96d3pCVFJaZG15dlkxYitlbXhxd1NXbzhWcWVSeStFaG5OcTJMSnV3?=
- =?utf-8?B?Qk5sQkNla0g4eFFLYm0wa1BQSkd3PT0=?=
-X-OriginatorOrg: a-eberle.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad284277-dbe1-4d50-e24d-08de12e8d961
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR10MB3873.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 10:34:02.3938
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: c2996bb3-18ea-41df-986b-e80d19297774
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SLlaDZ6Qtagw6ZRcjIjau/4564AR1XcF+9A1uXg4sFhsw462t4x/tDgvQ6D5UPgRkRXhMCpmKpjGvhI8QHsJ6bjWK4mPoqPuwgYFwhHmLJg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB7789
+Cc: csmate@nop.hu,
+	kerneljasonxing@gmail.com,
+	maciej.fijalkowski@intel.com,
+	bjorn@kernel.org,
+	sdf@fomichev.me,
+	jonathan.lemon@gmail.com,
+	bpf@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH net v2] xsk: avoid data corruption on cq descriptor number
+Date: Fri, 24 Oct 2025 12:40:49 +0200
+Message-ID: <20251024104049.20902-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----10EA76CE49A48059EFFDA87C776FB554"
-X-cloud-security-sender:johannes.eigner@a-eberle.de
-X-cloud-security-recipient:netdev@vger.kernel.org
-X-cloud-security-crypt: load encryption module
-X-cloud-security-crypt-policy: TRYSMIME
-X-cloud-security-Mailarchiv: E-Mail archived for: johannes.eigner@a-eberle.de
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay12-hz2.antispameurope.com with 4ctK581sbQz3B3kT
-X-cloud-security-connect: mail-westeuropeazon11023102.outbound.protection.outlook.com[52.101.72.102], TLS=1, IP=52.101.72.102
-X-cloud-security-Digest:2b34d2ac51f169f3d7e4be3d4281da1d
-X-cloud-security-crypt: smime sign status=06 sign_complete
-X-cloud-security:scantime:1.740
-DKIM-Signature: a=rsa-sha256;
- bh=Ce2L3zJG4Q3NzMzohKiwhOWxenthoToB/zNgKRw+zg0=; c=relaxed/relaxed;
- d=a-eberle.de; h=content-type:mime-version:subject:from:to:message-id:date;
- s=hse1; t=1761302054; v=1;
- b=TxpvzlxnDLqfizmJS1hoMthbfHu8YK9Rm2FDE67v4qp/BvbeA3XBhA+WTF71e7QYiskWRpV2
- ZPlMfG66GUZKDL6k5QbypyILL6uWwVb7xaVQvRct7GmBIaoPac25roQaIaKkC3aar2sxeu+WN4I
- Gr7u4MkjA7rFfVSjsa72gh27BOM+VId7nbv2xA8DcqdB9Kh4c+uC6Snh4NNMj/X1MH/WMYZtV1D
- A4IBrNx3JE94LkXN0qCRoLzUlzsskx6RKgfdqaCJfMH4XizouNiPAMbGp49PBdbpKC0ttwV1JjU
- WiEnyDZWgnmjqA+V+S72Nng7xAVGHAKqN+zOrbx9KEqCw==
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 611B01F443
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[nop.hu,gmail.com,intel.com,kernel.org,fomichev.me,vger.kernel.org,davemloft.net,google.com,redhat.com,suse.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:mid,suse.de:dkim];
+	TAGGED_RCPT(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -1.51
+X-Spam-Level: 
 
-This is an S/MIME signed message
+Since commit 30f241fcf52a ("xsk: Fix immature cq descriptor
+production"), the descriptor number is stored in skb control block and
+xsk_cq_submit_addr_locked() relies on it to put the umem addrs onto
+pool's completion queue.
 
-------10EA76CE49A48059EFFDA87C776FB554
-To: netdev@vger.kernel.org
-Subject: [PATCH ethtool v3 0/2] fix module info JSON output
-Cc: Michal Kubecek <mkubecek@suse.cz>, 
- Danielle Ratson <danieller@nvidia.com>, 
- Stephan Wurm <stephan.wurm@a-eberle.de>, Andrew Lunn <andrew@lunn.ch>, 
- Johannes Eigner <johannes.eigner@a-eberle.de>
-Date: Fri, 24 Oct 2025 12:32:50 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+skb control block shouldn't be used for this purpose as after transmit
+xsk doesn't have control over it and other subsystems could use it. This
+leads to the following kernel panic due to a NULL pointer dereference.
 
-In one of our products we need to show the SFP diagnostics in a web
-interface. Therefore we want to use the JSON output of the ethtool
-module information. During integration I found two problems.
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 2 UID: 1 PID: 927 Comm: p4xsk.bin Not tainted 6.16.12+deb14-cloud-amd64 #1 PREEMPT(lazy)  Debian 6.16.12-1
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:xsk_destruct_skb+0xd0/0x180
+ [...]
+ Call Trace:
+  <IRQ>
+  ? napi_complete_done+0x7a/0x1a0
+  ip_rcv_core+0x1bb/0x340
+  ip_rcv+0x30/0x1f0
+  __netif_receive_skb_one_core+0x85/0xa0
+  process_backlog+0x87/0x130
+  __napi_poll+0x28/0x180
+  net_rx_action+0x339/0x420
+  handle_softirqs+0xdc/0x320
+  ? handle_edge_irq+0x90/0x1e0
+  do_softirq.part.0+0x3b/0x60
+  </IRQ>
+  <TASK>
+  __local_bh_enable_ip+0x60/0x70
+  __dev_direct_xmit+0x14e/0x1f0
+  __xsk_generic_xmit+0x482/0xb70
+  ? __remove_hrtimer+0x41/0xa0
+  ? __xsk_generic_xmit+0x51/0xb70
+  ? _raw_spin_unlock_irqrestore+0xe/0x40
+  xsk_sendmsg+0xda/0x1c0
+  __sys_sendto+0x1ee/0x200
+  __x64_sys_sendto+0x24/0x30
+  do_syscall_64+0x84/0x2f0
+  ? __pfx_pollwake+0x10/0x10
+  ? __rseq_handle_notify_resume+0xad/0x4c0
+  ? restore_fpregs_from_fpstate+0x3c/0x90
+  ? switch_fpu_return+0x5b/0xe0
+  ? do_syscall_64+0x204/0x2f0
+  ? do_syscall_64+0x204/0x2f0
+  ? do_syscall_64+0x204/0x2f0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  </TASK>
+ [...]
+ Kernel panic - not syncing: Fatal exception in interrupt
+ Kernel Offset: 0x1c000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
 
-When using `ethtool -j -m sfpX` only the basic module information was
-JSON formatted, the diagnostics part was not. First patch ensures whole
-module information output is JSON formatted for SFP modules.
+The approach proposed stores the first address also in the xsk_addr_node
+along with the number of descriptors. The head xsk_addr_node is
+referenced in skb_shinfo(skb)->destructor_arg. The rest of the fragments
+store the address on the list.
 
-The same keys were used for both the measured and threshold values in
-the diagnostics JSON output, which is not valid JSON. Second patch
-avoids this by renaming the keys for the measured values.
-This solution is not backward compatible. But keeping the broken JSON
-output is not an option either. The API change is kept as small as
-possible. Further details are in the commit message of the second patch.
-Second bug is definitely affecting SFP modules and maybe also affecting
-QSFP and CMIS modules. Possible bug for QSFP and CMIS modules are based
-on my understanding of the code only. I have only access to hardware
-supporting SFP modules.
+This is less efficient as 4 bytes are wasted when storing each address.
 
-Signed-off-by: Johannes Eigner <johannes.eigner@a-eberle.de>
+Fixes: 30f241fcf52a ("xsk: Fix immature cq descriptor production")
+Closes: https://lore.kernel.org/netdev/0435b904-f44f-48f8-afb0-68868474bf1c@nop.hu/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
-Changes in v3:
-- Reworked second patch to minimize API change
-- Update description of second patch in cover letter
-- Link to v2: https://lore.kernel.org/r/20251022-fix-module-info-json-v2-0-d1f7b3d2e759@a-eberle.de
-
-Changes in v2:
-- Add fixes tags
-- Do not close and delete a never created json object
-- Link to v1: https://lore.kernel.org/r/20251021-fix-module-info-json-v1-0-01d61b1973f6@a-eberle.de
-
+v2: fix erroneous page handling and fix typos on commit message.
 ---
-Johannes Eigner (2):
-      sfpid: Fix JSON output of SFP diagnostics
-      module info: Fix duplicated JSON keys
+ net/xdp/xsk.c | 52 ++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 29 insertions(+), 23 deletions(-)
 
- module-common.c  | 4 ++--
- module_info.json | 4 ++--
- sfpdiag.c        | 4 ++--
- sfpid.c          | 9 +++++----
- 4 files changed, 11 insertions(+), 10 deletions(-)
----
-base-commit: 422504811c13c245cd627be2718fbaa109bdd6ec
-change-id: 20251021-fix-module-info-json-0424107771fe
-
-Best regards,
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 7b0c68a70888..965cf071b036 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -37,18 +37,14 @@
+ #define MAX_PER_SOCKET_BUDGET 32
+ 
+ struct xsk_addr_node {
++	u32 num_descs;
+ 	u64 addr;
+ 	struct list_head addr_node;
+ };
+ 
+-struct xsk_addr_head {
+-	u32 num_descs;
+-	struct list_head addrs_list;
+-};
+-
+ static struct kmem_cache *xsk_tx_generic_cache;
+ 
+-#define XSKCB(skb) ((struct xsk_addr_head *)((skb)->cb))
++#define XSK_TX_HEAD(skb) ((struct xsk_addr_node *)((skb_shinfo(skb)->destructor_arg)))
+ 
+ void xsk_set_rx_need_wakeup(struct xsk_buff_pool *pool)
+ {
+@@ -569,12 +565,11 @@ static void xsk_cq_submit_addr_locked(struct xsk_buff_pool *pool,
+ 	spin_lock_irqsave(&pool->cq_lock, flags);
+ 	idx = xskq_get_prod(pool->cq);
+ 
+-	xskq_prod_write_addr(pool->cq, idx,
+-			     (u64)(uintptr_t)skb_shinfo(skb)->destructor_arg);
++	xskq_prod_write_addr(pool->cq, idx, XSK_TX_HEAD(skb)->addr);
+ 	descs_processed++;
+ 
+-	if (unlikely(XSKCB(skb)->num_descs > 1)) {
+-		list_for_each_entry_safe(pos, tmp, &XSKCB(skb)->addrs_list, addr_node) {
++	if (unlikely(XSK_TX_HEAD(skb)->num_descs > 1)) {
++		list_for_each_entry_safe(pos, tmp, &XSK_TX_HEAD(skb)->addr_node, addr_node) {
+ 			xskq_prod_write_addr(pool->cq, idx + descs_processed,
+ 					     pos->addr);
+ 			descs_processed++;
+@@ -582,6 +577,7 @@ static void xsk_cq_submit_addr_locked(struct xsk_buff_pool *pool,
+ 			kmem_cache_free(xsk_tx_generic_cache, pos);
+ 		}
+ 	}
++	kmem_cache_free(xsk_tx_generic_cache, XSK_TX_HEAD(skb));
+ 	xskq_prod_submit_n(pool->cq, descs_processed);
+ 	spin_unlock_irqrestore(&pool->cq_lock, flags);
+ }
+@@ -597,12 +593,12 @@ static void xsk_cq_cancel_locked(struct xsk_buff_pool *pool, u32 n)
+ 
+ static void xsk_inc_num_desc(struct sk_buff *skb)
+ {
+-	XSKCB(skb)->num_descs++;
++	XSK_TX_HEAD(skb)->num_descs++;
+ }
+ 
+ static u32 xsk_get_num_desc(struct sk_buff *skb)
+ {
+-	return XSKCB(skb)->num_descs;
++	return XSK_TX_HEAD(skb)->num_descs;
+ }
+ 
+ static void xsk_destruct_skb(struct sk_buff *skb)
+@@ -619,16 +615,16 @@ static void xsk_destruct_skb(struct sk_buff *skb)
+ }
+ 
+ static void xsk_skb_init_misc(struct sk_buff *skb, struct xdp_sock *xs,
+-			      u64 addr)
++			      struct xsk_addr_node *head, u64 addr)
+ {
+-	BUILD_BUG_ON(sizeof(struct xsk_addr_head) > sizeof(skb->cb));
+-	INIT_LIST_HEAD(&XSKCB(skb)->addrs_list);
++	INIT_LIST_HEAD(&head->addr_node);
++	head->addr = addr;
++	head->num_descs = 0;
+ 	skb->dev = xs->dev;
+ 	skb->priority = READ_ONCE(xs->sk.sk_priority);
+ 	skb->mark = READ_ONCE(xs->sk.sk_mark);
+-	XSKCB(skb)->num_descs = 0;
+ 	skb->destructor = xsk_destruct_skb;
+-	skb_shinfo(skb)->destructor_arg = (void *)(uintptr_t)addr;
++	skb_shinfo(skb)->destructor_arg = (void *)head;
+ }
+ 
+ static void xsk_consume_skb(struct sk_buff *skb)
+@@ -638,11 +634,12 @@ static void xsk_consume_skb(struct sk_buff *skb)
+ 	struct xsk_addr_node *pos, *tmp;
+ 
+ 	if (unlikely(num_descs > 1)) {
+-		list_for_each_entry_safe(pos, tmp, &XSKCB(skb)->addrs_list, addr_node) {
++		list_for_each_entry_safe(pos, tmp, &XSK_TX_HEAD(skb)->addr_node, addr_node) {
+ 			list_del(&pos->addr_node);
+ 			kmem_cache_free(xsk_tx_generic_cache, pos);
+ 		}
+ 	}
++	kmem_cache_free(xsk_tx_generic_cache, XSK_TX_HEAD(skb));
+ 
+ 	skb->destructor = sock_wfree;
+ 	xsk_cq_cancel_locked(xs->pool, num_descs);
+@@ -720,7 +717,11 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
+ 
+ 		skb_reserve(skb, hr);
+ 
+-		xsk_skb_init_misc(skb, xs, desc->addr);
++		xsk_addr = kmem_cache_zalloc(xsk_tx_generic_cache, GFP_KERNEL);
++		if (!xsk_addr)
++			return ERR_PTR(-ENOMEM);
++
++		xsk_skb_init_misc(skb, xs, xsk_addr, desc->addr);
+ 		if (desc->options & XDP_TX_METADATA) {
+ 			err = xsk_skb_metadata(skb, buffer, desc, pool, hr);
+ 			if (unlikely(err))
+@@ -736,7 +737,7 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
+ 		 * would be dropped, which implies freeing all list elements
+ 		 */
+ 		xsk_addr->addr = desc->addr;
+-		list_add_tail(&xsk_addr->addr_node, &XSKCB(skb)->addrs_list);
++		list_add_tail(&xsk_addr->addr_node, &XSK_TX_HEAD(skb)->addr_node);
+ 	}
+ 
+ 	len = desc->len;
+@@ -773,6 +774,7 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 				     struct xdp_desc *desc)
+ {
+ 	struct net_device *dev = xs->dev;
++	struct xsk_addr_node *xsk_addr;
+ 	struct sk_buff *skb = xs->skb;
+ 	int err;
+ 
+@@ -804,7 +806,12 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 			if (unlikely(err))
+ 				goto free_err;
+ 
+-			xsk_skb_init_misc(skb, xs, desc->addr);
++			xsk_addr = kmem_cache_zalloc(xsk_tx_generic_cache, GFP_KERNEL);
++			if (!xsk_addr) {
++				err = -ENOMEM;
++				goto free_err;
++			}
++			xsk_skb_init_misc(skb, xs, xsk_addr, desc->addr);
+ 			if (desc->options & XDP_TX_METADATA) {
+ 				err = xsk_skb_metadata(skb, buffer, desc,
+ 						       xs->pool, hr);
+@@ -813,7 +820,6 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 			}
+ 		} else {
+ 			int nr_frags = skb_shinfo(skb)->nr_frags;
+-			struct xsk_addr_node *xsk_addr;
+ 			struct page *page;
+ 			u8 *vaddr;
+ 
+@@ -843,7 +849,7 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 			refcount_add(PAGE_SIZE, &xs->sk.sk_wmem_alloc);
+ 
+ 			xsk_addr->addr = desc->addr;
+-			list_add_tail(&xsk_addr->addr_node, &XSKCB(skb)->addrs_list);
++			list_add_tail(&xsk_addr->addr_node, &XSK_TX_HEAD(skb)->addr_node);
+ 		}
+ 	}
+ 
 -- 
-Johannes Eigner <johannes.eigner@a-eberle.de>
-
-
-------10EA76CE49A48059EFFDA87C776FB554
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-
-MIIQNQYJKoZIhvcNAQcCoIIQJjCCECICAQExDzANBglghkgBZQMEAgEFADALBgkq
-hkiG9w0BBwGgggw7MIIGEDCCA/igAwIBAgIQTZQsENQ74JQJxYEtOisGTzANBgkq
-hkiG9w0BAQwFADCBiDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCk5ldyBKZXJzZXkx
-FDASBgNVBAcTC0plcnNleSBDaXR5MR4wHAYDVQQKExVUaGUgVVNFUlRSVVNUIE5l
-dHdvcmsxLjAsBgNVBAMTJVVTRVJUcnVzdCBSU0EgQ2VydGlmaWNhdGlvbiBBdXRo
-b3JpdHkwHhcNMTgxMTAyMDAwMDAwWhcNMzAxMjMxMjM1OTU5WjCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2Fs
-Zm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdv
-IFJTQSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQTCC
-ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMo87ZQKQf/e+Ua56NY75tqS
-vysQTqoavIK9viYcKSoq0s2cUIE/bZQu85eoZ9X140qOTKl1HyLTJbazGl6nBEib
-ivHbSuejQkq6uIgymiqvTcTlxZql19szfBxxo0Nm9l79L9S+TZNTEDygNfcXlkHK
-RhBhVFHdJDfqB6Mfi/Wlda43zYgo92yZOpCWjj2mz4tudN55/yE1+XvFnz5xsOFb
-me/SoY9WAa39uJORHtbC0x7C7aYivToxuIkEQXaumf05Vcf4RgHs+Yd+mwSTManR
-y6XcCFJE6k/LHt3ndD3sA3If/JBz6OX2ZebtQdHnKav7Azf+bAhudg7PkFOTuRMC
-AwEAAaOCAWQwggFgMB8GA1UdIwQYMBaAFFN5v1qqK0rPVIDh2JvAnfKyA2bLMB0G
-A1UdDgQWBBQJwPL8C9qU21/+K9+omULPyeCtADAOBgNVHQ8BAf8EBAMCAYYwEgYD
-VR0TAQH/BAgwBgEB/wIBADAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQw
-EQYDVR0gBAowCDAGBgRVHSAAMFAGA1UdHwRJMEcwRaBDoEGGP2h0dHA6Ly9jcmwu
-dXNlcnRydXN0LmNvbS9VU0VSVHJ1c3RSU0FDZXJ0aWZpY2F0aW9uQXV0aG9yaXR5
-LmNybDB2BggrBgEFBQcBAQRqMGgwPwYIKwYBBQUHMAKGM2h0dHA6Ly9jcnQudXNl
-cnRydXN0LmNvbS9VU0VSVHJ1c3RSU0FBZGRUcnVzdENBLmNydDAlBggrBgEFBQcw
-AYYZaHR0cDovL29jc3AudXNlcnRydXN0LmNvbTANBgkqhkiG9w0BAQwFAAOCAgEA
-QUR1AKs5whX13o6VbTJxaIwA3RfXehwQOJDI47G9FzGR87bjgrShfsbMIYdhqpFu
-SUKzPM1ZVPgNlT+9istp5UQNRsJiD4KLu+E2f102qxxvM3TEoGg65FWM89YN5yFT
-vSB5PelcLGnCLwRfCX6iLPvGlh9j30lKzcT+mLO1NLGWMeK1w+vnKhav2VuQVHwp
-Tf64ZNnXUF8p+5JJpGtkUG/XfdJ5jR3YCq8H0OPZkNoVkDQ5CSSF8Co2AOlVEf32
-VBXglIrHQ3v9AAS0yPo4Xl1FdXqGFe5TcDQSqXh3TbjugGnG+d9yZX3lB8bwc/Tn
-2FlIl7tPbDAL4jNdUNA7jGee+tAnTtlZ6bFz+CsWmCIb6j6lDFqkXVsp+3KyLTZG
-Xq6F2nnBtN4t5jO3ZIj2gpIKHAYNBAWLG2Q2fG7Bt2tPC8BLC9WIM90gbMhAmtMG
-quITn/2fORdsNmaV3z/sPKuIn8DvdEhmWVfh0fyYeqxGlTw0RfwhBlakdYYrkDmd
-WC+XszE19GUi8K8plBNKcIvyg2omAdebrMIHiAHAOiczxX/aS5ABRVrNUDcjfvp4
-hYbDOO6qHcfzy/uY0fO5ssebmHQREJJA3PpSgdVnLernF6pthJrGkNDPeUI05svq
-w1o5A2HcNzLOpklhNwZ+4uWYLcAi14ACHuVvJsmzNicwggYjMIIFC6ADAgECAhAl
-5qzXGH8Da+FSta/hHFZ+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEb
-MBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgw
-FgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENs
-aWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIzMDcx
-OTAwMDAwMFoXDTI2MDcxODIzNTk1OVowLDEqMCgGCSqGSIb3DQEJARYbam9oYW5u
-ZXMuZWlnbmVyQGEtZWJlcmxlLmRlMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC
-CgKCAgEAwEFNcbuq7Ae+YCfg2alacqHWh08bvE6bFOZZ1Rxl1w/sFuXUwJ8o+gbB
-TA/mmITzst+fnsjwMmrjtCecn8wILPitSD2wXy+yiaWmn8ywuBBw8toRX0xSMgif
-KM494f9SSFjJDOgZGmAG+umMO6v5KNA1K0wSWrlZmG0yC0pzp6FFVVyMnp4/vJh3
-6BuYgOf0s7KK5ShCQ4mKOD0dOOcMTBFHcQuD8d2Ha9lH5KzF4CVR6W3p+DUs2r6o
-WwSPc0MrTqq0Ci9KPaKmvxzMQRZqSqa5ySqyw4guw0vnPYwtS0BEYZM+mL/5BwAP
-Uga7nUg/9tjzyEgUY3tmimfWD0UIi9oDHT59n4s5iriWcnZNS5dAWnu7NqEBs+w6
-lpWo2g60mmxPULNnwSUYxqdfXn5udIde0boYLKfEy11JC9xkshXBgLPhq4xTkbWs
-fkoH+EQyEdep5AhaLeTsJHpw0tp2whpeH9Fwck8tx/nWtudo7bfYZUF4lDtyEHmi
-p7UJa6x4LKEO2XFlY5v6ZOfVAm+zqNWEdDGO3bfv3HO5ciIHjXHLVFx/XI73OVsC
-aObazBuEcqXafTK9ThLS5Sh4uZ3nLv3n5m8m/UUUKbOmOI7MTId7WlP9hOeNAzEu
-SiA/n8VFk4RO7iwajXximGU/0rxuUJtN7RJFumksH7sbO5ypjCcCAwEAAaOCAdQw
-ggHQMB8GA1UdIwQYMBaAFAnA8vwL2pTbX/4r36iZQs/J4K0AMB0GA1UdDgQWBBSz
-BXMVnJ+omSJdNUgpzP64lg+gRDAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIw
-ADAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwQAYDVR0gBDkwNzA1Bgwr
-BgEEAbIxAQIBAQEwJTAjBggrBgEFBQcCARYXaHR0cHM6Ly9zZWN0aWdvLmNvbS9D
-UFMwWgYDVR0fBFMwUTBPoE2gS4ZJaHR0cDovL2NybC5zZWN0aWdvLmNvbS9TZWN0
-aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNybDCB
-igYIKwYBBQUHAQEEfjB8MFUGCCsGAQUFBzAChklodHRwOi8vY3J0LnNlY3RpZ28u
-Y29tL1NlY3RpZ29SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3VyZUVtYWls
-Q0EuY3J0MCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5zZWN0aWdvLmNvbTAmBgNV
-HREEHzAdgRtqb2hhbm5lcy5laWduZXJAYS1lYmVybGUuZGUwDQYJKoZIhvcNAQEL
-BQADggEBAMJhsGQW6C4UBZr7OpMg/n65GOd5Iy7i3vXW7gO7sgPe1pHYi1LJZ68J
-lB9sP93yDViPMJ4Cir+/QqU7AtLyKkf+oo8nQTlx5gQeJnftZ/O6RkCS20I18GxC
-aRDRRwD2JViL5Dk9uB87sV5DlOZV8w2VNWh+mm8wZGonaQ3NoNX+7jHcF5QX23Hx
-x8ikwfv4jj3qajpv1l362Wl5FySKhdEXB/hhyxLjMfHEYs8PKHnjeWGbMPnqyTtt
-xgnK+Gtmc4fjSlRf8Nzpr/q3iPppdSOmVk1lGmaGTJ+7ItiA1OTcFf7Atm8GomFp
-QXdyoI/DW3zj355K+YADYhwhosfaQY4xggO+MIIDugIBATCBqzCBljELMAkGA1UE
-BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2Fs
-Zm9yZDEYMBYGA1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdv
-IFJTQSBDbGllbnQgQXV0aGVudGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIQ
-Jeas1xh/A2vhUrWv4RxWfjANBglghkgBZQMEAgEFAKCB5DAYBgkqhkiG9w0BCQMx
-CwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNTEwMjQxMDM0MDdaMC8GCSqG
-SIb3DQEJBDEiBCDkYLdMhDQQBDodP7m+w5NoroZMlJZ7KCj66gIrykdE+zB5Bgkq
-hkiG9w0BCQ8xbDBqMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJYIZIAWUD
-BAECMAoGCCqGSIb3DQMHMA4GCCqGSIb3DQMCAgIAgDANBggqhkiG9w0DAgIBQDAH
-BgUrDgMCBzANBggqhkiG9w0DAgIBKDANBgkqhkiG9w0BAQEFAASCAgAKNUk9NBet
-jtWrjCGGrv6cfrn8HQV4FBQiQugaLSnP3gmfj2v3qmZnYfm98EPe1dicvH1/7KGl
-vv/Q5/6TR2oO35gUV36ksRqucryWNl2NEYVtZa8+iTL6gSV+0sSQMfqAPlSYGM3D
-xn7SxHNkMCwMFTTUfHkmJ8fOinfaPP+eh9cHy+DO8HK8AsyTfm4t7yGVrX3+0QZV
-++oSkNvOAnCE4ErFxu0uJawmCNir+qY0bIR3C6fGa3Oola1yCIlL87R/+/rNMpag
-yHsATiq6neYRxBX2lX6jkOEqMGPbQih+ujiSsdbEW7yG4jPxJatvYhhcbQ9TMhsO
-XGx8JpAcRdwJf0n5Z7J8uFxoP9c0lsGK3rMF+oSBf8LNSYp+X60aCq5gxLxK3Rbk
-vj/w0QRm9HHB3FfHolmtXj8wkvCvtqwzifA5YwAkgjuDzcaY25tJDPqmcD1oNji5
-I7FqdmKc+sPwDt0TbcHWvQ27xpsMn9D/t2wccQI7FNpKHuTi/R/A3ouL7J09uHv1
-OK/QZprwm1b0wN75lp+FAHIcJZ/uAheDCSaKImIFFBKKxEX1oMUV8800YOfoRGvm
-4QxxS30R8GsGSi4nObz1woWVF5GDddILI+OAByUiFVE7xWbe2av7c8oQbGY8wfU9
-k2nGLgy/nLR0gMIzeCwCVJ8gh4A8mn2Q0g==
-
-------10EA76CE49A48059EFFDA87C776FB554--
+2.51.0
 
