@@ -1,68 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2C72288CB;
-	Fri, 24 Oct 2025 02:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21392288CB;
+	Fri, 24 Oct 2025 02:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761272925; cv=none; b=A0PJrlvZmVvp2awye5Gl9Rbqq9zYkhmANrxt+RoKRXLTsXgPImA23qajQZ8ZkpzgaSD1VRC2N69b66g/j9Akx0inYIaVBKsxtO2Ktu6dpD88jLRx5rqRREfYVkizTWhkv0/SahmYocFxtmxVb6SxDF8sw54VJXcneOO3Rphnzzs=
+	t=1761272955; cv=none; b=ED2E/l/nsDj4EwePjES/HEFyGbqzq/46dxP/OjHFTis5A9fxzpifSi5QWGf5rP8TsAGZ0asvKo6PuM2mOtiaWz2yOIKO19VMuNhBAFYU1MAOgUi/i9IFM4pSVqnp3XmZIYYXsk40V6qhbCq16/ol7BjNCPVq2Y/YDVJHxfpbDjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761272925; c=relaxed/simple;
-	bh=qcWpSJpnvwW5Bdea8Eat881m5aAkhS4so/TAMpDJhHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Na542qE6ICfNbWAPpYezVxmWrnHJAExmzFvKKt+6v1peMyw1KFoTz0XZsT5T+AktjRHeJgI/BKN/Www+EqVyQJBZwPuDzMFS/j5ZVwZGj3mjxH0BL1pV6o8lgiLIhBF0195yNcfUFAKS/2KF+zeic5y+FGk8nniKv/+EFaXB9tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biLt8+iI; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biLt8+iI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC9CC4CEE7;
-	Fri, 24 Oct 2025 02:28:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761272924;
-	bh=qcWpSJpnvwW5Bdea8Eat881m5aAkhS4so/TAMpDJhHE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=biLt8+iIS7V5COE0EEtRUqEDXv4weiSb+S6tcekJlSzU2x2KFPNwLVBaHBMZpPHUl
-	 KcCv6gjMF0QXYscQp+FpX5QAUzcK7v5dPTcIczlTNIhEvH4/EIK12fdwmTRiqDskAE
-	 R+a8Kro+QE3+6L39w6PxCQ9AIf6jLZUUjdRDF9sQJDHI+8X4aQEBcuWIkT2o0YcCTS
-	 NWCaRKdcTR6bFfJtvBbJqbQ9s8OHfApmgxB2dZynbFJwMxa5AU057eK/2FMRugha4r
-	 ZYT/aQwFtmMEmsgEKU7b+BatJ2VkERaaVwWxPjy08NeFUEOLLe8kcPjNZJGJX0qMul
-	 G6u5DoM7+je4g==
-Date: Thu, 23 Oct 2025 19:28:42 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
- razor@blackwall.org, pabeni@redhat.com, willemb@google.com,
- sdf@fomichev.me, john.fastabend@gmail.com, martin.lau@kernel.org,
- jordan@jrife.io, maciej.fijalkowski@intel.com, magnus.karlsson@intel.com,
- dw@davidwei.uk, toke@redhat.com, yangzhenze@bytedance.com,
- wangdongdong.6@bytedance.com
-Subject: Re: [PATCH net-next v3 02/15] net: Implement
- netdev_nl_bind_queue_doit
-Message-ID: <20251023192842.31a2efc0@kernel.org>
-In-Reply-To: <20251020162355.136118-3-daniel@iogearbox.net>
-References: <20251020162355.136118-1-daniel@iogearbox.net>
-	<20251020162355.136118-3-daniel@iogearbox.net>
+	s=arc-20240116; t=1761272955; c=relaxed/simple;
+	bh=oB/wXapqWLj7Bp5kmlG6+rgKm1/NpjYznJeuvkRv/Rk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nQuKb4tcm9z4mnTUayuWYFlxRHnS90OPCqX8Z4RJGDToK/pdFyoQI13MaY99gCn4bLzYpH3p5GUhXrDXQix+CP2EpMybT9wjsaKJ/TybF0/EaPqeo5JHzUf2lly+id8dNfIASTG4Tv3ul0KAXVVzGIQchFXKoykG4bNsTD+EYOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ct6Fj63V3z1R9G1;
+	Fri, 24 Oct 2025 10:25:45 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 446ED14022E;
+	Fri, 24 Oct 2025 10:29:08 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by dggpemf500002.china.huawei.com
+ (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 24 Oct
+ 2025 10:29:07 +0800
+From: Yue Haibing <yuehaibing@huawei.com>
+To: <jhs@mojatatu.com>, <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <xmei5@asu.edu>,
+	<yuehaibing@huawei.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] net/sched: Remove unused typedef psched_tdiff_t
+Date: Fri, 24 Oct 2025 10:51:45 +0800
+Message-ID: <20251024025145.4069583-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Mon, 20 Oct 2025 18:23:42 +0200 Daniel Borkmann wrote:
-> +void netdev_rx_queue_peer(struct net_device *src_dev,
-> +			  struct netdev_rx_queue *src_rxq,
-> +			  struct netdev_rx_queue *dst_rxq)
-> +{
-> +	netdev_assert_locked(src_dev);
-> +	netdev_assert_locked(dst_rxq->dev);
-> +
-> +	netdev_hold(src_dev, &src_rxq->dev_tracker, GFP_KERNEL);
+Since commit 051d44209842 ("net/sched: Retire CBQ qdisc")
+this is not used anymore.
 
-Isn't ->dev_tracker already used by sysfs?
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+---
+ include/net/pkt_sched.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-Are you handling the underlying device going away?
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index c660ac871083..4678db45832a 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -43,7 +43,6 @@ struct qdisc_walker {
+  */
+ 
+ typedef u64	psched_time_t;
+-typedef long	psched_tdiff_t;
+ 
+ /* Avoid doing 64 bit divide */
+ #define PSCHED_SHIFT			6
+-- 
+2.34.1
 
-> +	__netdev_rx_queue_peer(src_rxq, dst_rxq);
-> +}
