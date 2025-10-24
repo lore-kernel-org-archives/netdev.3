@@ -1,331 +1,176 @@
-Received: from sonic314-21.consmr.mail.gq1.yahoo.com (sonic314-21.consmr.mail.gq1.yahoo.com [98.137.69.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F6A30AAC2
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:28:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.69.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30092308F24;
+	Fri, 24 Oct 2025 09:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761298121; cv=none; b=jtlKjW8eQi7ZR9ctZ/LMzofR2JvWJ+Xk8Sd7t2TDYBMqacI2odILsnGbhSbvxm6sapitHi6a71ob8Sj0OX+C7twwB5/QzF/NrjFXkToGjtIsMWZ5YQG+ajROjMMYJuAX2kJH9OxWf1KKsObv7IUMNfgTlyOMrwVnNQITMMGpQlc=
+	t=1761298764; cv=none; b=c67qiSl7hXmdIdG63NLBKZgMA+UeMXgVno/mrvAJen/hJcOtZpKlsnMhdqJnFZcVIHkXueNXe18QIWdhuzSvBkt86ThSPTYZtJt2djMKRiFSGc4k8Z6nRmVcTlBdkbvr79Cd1/OD4ygAhQl3uc9GX+7xb8Yt3eMxzbbbleYFQyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761298121; c=relaxed/simple;
-	bh=Rlofpw0zV1YlVnOwvVHonOOAx/aZ0PQrSDVUelnGe1A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ji139JUmFtL7EBflLUbCWWUrrJbL+qi7OgW466xFG7VoNGFmIiW6dVd3ddqtmpp0Yw65FJK0YHDzv1kCDTRYB8/vOsXAMDw05/FB1C7+y/oCnWN+JX5S/2jDK/DdkIRw45fz07QzuPov4b2KyzMzAKNycc9NiicoBuGXLijMopw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=q+ZRviM9; arc=none smtp.client-ip=98.137.69.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	s=arc-20240116; t=1761298764; c=relaxed/simple;
+	bh=0RYoFADo1EPuktB0O9d6dPLkdJjpepS5ikmz2890HCw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ly2IirJsps01rJ1EKQbKajUD4szdkBOwOyZoS7qIq2BBOp740QCZ0uxvRAUMH0OwwvAOwQerJdDPy2Ra2a9j2cjL6wlgIkYGqoLac8eIX7W0CXuWNJxtTsjYEMGSDuH8tpgZ9bl1GddmpwPoO7ozdRv4pkQEMOJ+kIPl9J/MLEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=TNDLV88d; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="q+ZRviM9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761298112; bh=OHbParr5JEMdj7/NtgXk6RTxg3ZbMwcB2YmkwopRKN8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=q+ZRviM9SlnL4gfUL66GKWJXCfijLSdh9s8FmLvek6Cu8vjRE1desaUhfK4EukWHEQKxvIpaVRs4pKtkKfr49Wg4YLlchkBQuqAAe+VTXb4j+kQUW4Zv0hi01KH2iYQCcgZLg/mAk+8OF5MBT159+2PBN5f0dWc4yIf7GqHGhW/cFuxrqSowNMPysIzmAyNV7brDC2GkC6Zc7hKh1LbQhiwyRlpYXVwgpPyrl8GGMWKVX43D4ZJBmGG9jp/7/xWqVvVAz+f8kOpnzja9zNRUXFvtulFUeW3M3P24MEGehbYzuMwaZL8H95umAfMm9q7XZ0elogsCV13KSaTL3Qrcag==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761298112; bh=WAjIGkehIGcO4xn0ZMpLgwKnJMK5Fnww7oHW6fkWTyO=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=I/EuO/oi22o5MJdQHr4xpAMEhS6vRastkpbJwmQmbOVZcmeQj5Li3HoxC4Z4fDQw2KXiNsuKwNVJyDcV/CpD7jikNPpxfYHbL/T8ft3LTjNN+NiLVxVD1bspJGTDqymW9PI7h3vzoz0HUGnCAyD8cD0v8ceOEQimLVV+Q8gO2IoyfCxgNVvUUqI+0xifjYPaa1UIYTHcZqpoZ6cvDQYzyowhSSTuez085fteBE0dKkGFtOP0yAZDB4YxY0La0JkrhuYJA3lMAPUdHC9v5I22j5IjGJ95539lU4wgZLeYr/fN+HYb5M+5Jxn8BzYXZ/+QgkXzBugHh5I5VVdJsnAXww==
-X-YMail-OSG: UV66zLoVM1nCSaBmJ94PX85NWMJGpjvFqWJV4YdfwfzZlqYDuzct_a51FCEKIF1
- fAja7l2ayZ0P6h5gCoR.wbloSWXr4qem_BXDbMtYj1i8qWDlTmLQXDl37QVRu1Ih.VV48S9Zz7sI
- vIb0gfxfvxyCR76HaOcEv6ee8p_Qa5zX3N1p1dGkYB7.vzxWMwS_WeFUdK.vJQ2JHMq27V5ueH0c
- 6EycFRXE3BbDzZf2JFV_MWxFln5sUnV4YGj52pPO.I0O7kNpr2nfRYmcvcx4a1EH814zlu4qH9pY
- x_7q56UYGjGTQeS3Q_xtMqEBPkCGnHl1sjqTBJBp40pciT3kK7HTieB0zKTV8iYthRmMNTEOCF2j
- pvvztFpLtFEZm.BoFE0feB9bgvwEixor_hkP_vtfzkWQ_ZNkD9NyIe764J8DNcPZiWk97xtofIdd
- WGyymAgRjyhyxzVf0RWgbypmTVOj4j1uOPpQB74PRiPAIqCvB5FWLbWo9zIA0V_Dv4RL1E98LEv3
- h5CEFQTvHT62.kI_OWGUXr29El5RFQKt44YF2zcduWw45X4OzLFnZe1kk_i5mfEIPpC5OBLZHp28
- 73JRefR3kkZMhFkB4Px9Njt2YhnWRDVGpgYvRKrgjInsERAjjl3bV8qsD5Cnpb8CWZXAprGvcbza
- 48PBwWLqtoY6rKHbUYfM5Mcfj.abjYe1AdbbF0LmbrzpttIq9fcTYexYp_GHHoXb6oDXxoGnepmX
- HIYfRPI9q5txREAIlVNkz3F6NiCGWyqfEpI9CKFu5PDDj5D4VleSPNZRMpEf1MWvYMoucrJRQ4SQ
- 7yvp46y0ugFzSj98TzlRphFMAJlggcI1pe9D3nfGGfMLG2W5JZzZJR24Pgaw8EmTMORsxGHFjuV0
- iaXswd_k.NBStNSQxVzAGPFyPaiIFqlzRf6fR9ff0uuKxrlI3Gl3ZS6RYi0Zn_olh2H6fK0yNWbC
- RxZBBw2p8EBlKAPyYzv4Luuej3XHlQyhpOWXmwhZaEsYLQ841AZPMitRC8Pe31zrCP016.oX17ta
- M.Q9bYciVyoeDxelixJ0uoKOZwtEO9VJsPuI1FielJCQkNXHtpPBvnL_vEp.e9BG12ie2Mq3Dp2T
- vSZEGgn5sUY90xT3uZid8GA1Iaj9mWH.f3F2jUkDux7j.RWFYKCGMYwOTFA5wlMMTutRjRV.WwVs
- nRQPYTsUbD2MkXCKMEvm57i5VP966.p.e66W6kMFbe2r.TMGJx3yEZNy1B9p3.WtpAzChi38o30y
- jUHHjNg.Quv7dI0cU8SFD6ctLqnoEKi4EEZYqphiP_B3UZp_G_PgFNCr6KAwBgXpHKWluoGBpoB_
- SqURW.1KGt7FPRHvB4CghnKiNoXyU4yOV.Yogqjp2ZSaDDW.yus_BwCJXPzHIcCvWrjQlTov_pnB
- KydrRhaOWqn7kFrq7g_pAv3Wqcj6B4drOOlynrf4N3uY6IGqiPK4HQEvUlWVAnbQ9ohvFFcpW9V6
- Y.JtcKzMSzlDatyWnabl.HtLTcu_sg3klviJlBv_tQuzo4M0gRjRlWZGWuTwJHQCteEyfuyiluDT
- KmMc2uzk_CkC6xRVp6UC.t5_UQAr9K3eYLISQJPNeg2poFXA8MtPSCrZfixRRGfM.xWXSCYuUOrJ
- l0s5nam9mr6JbvW4UOtqmLdf1km0h95qaPkxzckQPwmgjK1qWQQk3.gqm4PNC6PaFyvH_DRnGOtK
- F0e.dV4rW6udpGxpLrL4STdbS2PfJme.r_Xj4NrdEsakE1.ZQ1I58aNYIE03Yf_blMiwUr1EBBBk
- 20Ig6f2z4sJoiobBg7m9T1qLiXNggQRQd.9WKnFCVE9zSa2rl2wCB4.qbxmM1XHT85shzwVakKEX
- o1xnFY9hSQVH00UqKk6UG0d.FRToa1tdc3kIQ5.600H4RYWH5NKENxUkQNf5XQjvwVIMz64A5La_
- tB0cgbpNL286gwWrxn_bMhjIcpqTwSDPhi97YIuarIH1hf2fqKlu391_2OYFvbl_FZSOaU4muZjY
- cOXrchYtrz7dI164DN4VbIkCx53HZComrkN0trthVra35wGSQh87q3I7W2TppzA_B7OE8.nw3w.N
- 0og0skGoi..2XQ1G5ECaJpPJtR1V8mhmS58Asw_QwEVh4ROqRVJyiC8zLGMCf07GhDADE0Vw8ZIy
- 1P3.L26NuTDwFgBWX6HOxaeMoaRumjw.zjSF0iQqO5TkRwjasIDqr531gg7bj8ZOdndOI6kfSU0y
- j.UvEdHq9MmSH.3.PzYqdGVhw9BDcC1Ef5jAS9JgfZiyHuTIFdQGXU7u2KRZDFQ2WCshHFVPFxtk
- x.DPdo_jYhJH9bGsIFW9QVbFTYk899tjN1P7Cqw--
-X-Sonic-MF: <adelodunolaoluwa@yahoo.com>
-X-Sonic-ID: d6187e88-e384-4912-a3b0-ad22b20415ea
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.gq1.yahoo.com with HTTP; Fri, 24 Oct 2025 09:28:32 +0000
-Received: by hermes--production-bf1-554b85575-4l28s (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 610de680fd708467af4a7d8c71a7708c;
-          Fri, 24 Oct 2025 09:18:22 +0000 (UTC)
-Message-ID: <565914cb-1188-424c-b8ee-16739f350ddb@yahoo.com>
-Date: Fri, 24 Oct 2025 10:18:13 +0100
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="TNDLV88d"
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59O6FvCf3793347;
+	Fri, 24 Oct 2025 09:39:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=JwGjQsJ2w
+	kdo6/actkEfv+tcXoAKIynQ/bX0pzAr1dc=; b=TNDLV88dO4J+4qoqrRxk4gKky
+	etdUE5VQXi4we/w5c+EDD+eUJdDPNPwm4YAiIdAUNEbJFeBwmMEPCdwilXkUU2MN
+	vhxgTxAPVm716aaHPVqMjefLkMzCVHAg4XiifPohSwOu087B+FtvoJV0sUyfo1GF
+	YRN2YgnwA/NEbJuiWdvhKxrCMTKfJRq1fFG1tzjfinNWIe1K2LklRXppLRavuFYg
+	YS2mttoVVDC2VihYCG8XSw7wnVtLigRgnWQ1P29IPhalPYvfKZ5SAQrNPpM/9M7H
+	TfQSJ4BuD4K4CFbPplvrXK0/ayPZ9xMcS3cMF6HlVTclF01xc1nst/8X5STTw==
+Received: from ala-exchng02.corp.ad.wrs.com ([128.224.246.37])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 49wrpxd234-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 24 Oct 2025 09:39:07 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (10.11.224.121) by
+ ALA-EXCHNG02.corp.ad.wrs.com (10.11.224.122) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.59; Fri, 24 Oct 2025 02:39:04 -0700
+Received: from pek-lpd-ccm6.wrs.com (10.11.232.110) by
+ ala-exchng01.corp.ad.wrs.com (10.11.224.121) with Microsoft SMTP Server id
+ 15.1.2507.59 via Frontend Transport; Fri, 24 Oct 2025 02:39:01 -0700
+From: Lizhi Xu <lizhi.xu@windriver.com>
+To: <edumazet@google.com>
+CC: <davem@davemloft.net>, <horms@kernel.org>, <jreuter@yaina.de>,
+        <kuba@kernel.org>, <kuniyu@google.com>, <linux-hams@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lizhi.xu@windriver.com>,
+        <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+        <syzbot+caa052a0958a9146870d@syzkaller.appspotmail.com>,
+        <syzkaller-bugs@googlegroups.com>
+Subject: [PATCH V3] net: rose: Prevent the use of freed digipeat
+Date: Fri, 24 Oct 2025 17:39:01 +0800
+Message-ID: <20251024093901.1202924-1-lizhi.xu@windriver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/unix: Add test for ECONNRESET and EOF behaviour
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, shuah@kernel.org, horms@kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- david.hunter.linux@gmail.com
-References: <20251023165841.8164-1-adelodunolaoluwa.ref@yahoo.com>
- <20251023165841.8164-1-adelodunolaoluwa@yahoo.com>
- <CAAVpQUAX-+5cOCaZrA1DbMTLrUEhCsK=6JSHAQgSNhbOyQ06MA@mail.gmail.com>
-Content-Language: en-US
-From: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
-In-Reply-To: <CAAVpQUAX-+5cOCaZrA1DbMTLrUEhCsK=6JSHAQgSNhbOyQ06MA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.24652 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=b9O/I9Gx c=1 sm=1 tr=0 ts=68fb493b cx=c_pps
+ a=Lg6ja3A245NiLSnFpY5YKQ==:117 a=Lg6ja3A245NiLSnFpY5YKQ==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8
+ a=gSEv5m7Pi2YCfdlV860A:9 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: EitY1rHNFda6al5u31pAczI-Va6z52-1
+X-Proofpoint-ORIG-GUID: EitY1rHNFda6al5u31pAczI-Va6z52-1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDA4NSBTYWx0ZWRfX/NPJeP1CEAzk
+ oxSYTL5kESDtVFvYyFPDndPtFeugj11OBkg20Kg2EMiOWio5Pm1pFr07KNq3DhLIESejjdQFun7
+ f2IdACeFiNEavcKjHle8w4yffmlRGLvnes8XJ4SICcH0xB2JxVS8RygWfb+H6ZncSwXzyVb5B+g
+ 5zdjKnL0B7nSnmyFSb8eeVlXdEXqaUcgQ6xQA5izmEt+lZ1Y7sZDN1POfl3nM3TNzOkioBi951m
+ pQhU4yNzXTJ1kQWWUhOnorD4mnxGdZGb25QNKApFGID3JZbfqN59PMpZdcik7PskEo/TJdm6YpK
+ AezSBL7GOZy0Vl1nSTr3/vrbhTIZmtuj77sjbHPRzRJowYU4C6xtmWG/ggbNM0Fhbk/G+tDo031
+ xJIQsCo/o/nIG3gBz0tDUrkeCAwWFQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-24_01,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 phishscore=0 priorityscore=1501 malwarescore=0
+ spamscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2510020000 definitions=main-2510240085
 
-On 10/24/25 04:00, Kuniyuki Iwashima wrote:
-> Thanks for adding tests.
->
->> [PATCH] selftests/unix: Add test for ECONNRESET and EOF behaviour
-> nit: The common prefix is "selftest: af_unix:".
->
->
-> On Thu, Oct 23, 2025 at 9:59 AM Sunday Adelodun
-> <adelodunolaoluwa@yahoo.com> wrote:
->> Add selftests verifying the EOF and ECONNRESET behaviour of
->> UNIX domain sockets (SOCK_STREAM and SOCK_DGRAM). The tests document
->> Linux's semantics and clarify the long-standing differences with BSD.
->>
->> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
->> Signed-off-by: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
->> ---
->>   tools/testing/selftests/net/unix/Makefile     |   5 +
->>   .../selftests/net/unix/test_unix_connreset.c  | 147 ++++++++++++++++++
->>   2 files changed, 152 insertions(+)
->>   create mode 100644 tools/testing/selftests/net/unix/Makefile
->>   create mode 100644 tools/testing/selftests/net/unix/test_unix_connreset.c
-> The test for af_unix is placed under tools/testing/selftests/net/af_unix.
->
->
->> diff --git a/tools/testing/selftests/net/unix/Makefile b/tools/testing/selftests/net/unix/Makefile
->> new file mode 100644
->> index 000000000000..a52992ba23d9
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/unix/Makefile
->> @@ -0,0 +1,5 @@
->> +# SPDX-License-Identifier: GPL-2.0
->> +TEST_GEN_PROGS := test_unix_connreset
->> +
->> +include ../../lib.mk
->> +
->> diff --git a/tools/testing/selftests/net/unix/test_unix_connreset.c b/tools/testing/selftests/net/unix/test_unix_connreset.c
->> new file mode 100644
->> index 000000000000..a8720c7565cb
->> --- /dev/null
->> +++ b/tools/testing/selftests/net/unix/test_unix_connreset.c
->> @@ -0,0 +1,147 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Selftest for UNIX socket close and ECONNRESET behaviour.
-> nit: s/UNIX/AF_UNIX/
->
->> + *
->> + * This test verifies that:
->> + *  1. SOCK_STREAM sockets return EOF when peer closes normally.
->> + *  2. SOCK_STREAM sockets return ECONNRESET if peer closes with unread data.
->> + *  3. SOCK_DGRAM sockets do not return ECONNRESET when peer closes,
->> + *     unlike BSD where this error is observed.
->> + *
->> + * These tests document the intended Linux behaviour, distinguishing it from BSD.
-> I'd not mention BSD as it could be outdated again.
->
->
->> + *
->> + */
->> +
->> +#define _GNU_SOURCE
->> +#include <stdlib.h>
->> +#include <string.h>
->> +#include <fcntl.h>
->> +#include <unistd.h>
->> +#include <errno.h>
->> +#include <sys/socket.h>
->> +#include <sys/un.h>
->> +#include "../../kselftest_harness.h"
->> +
->> +#define SOCK_PATH "/tmp/test_unix_connreset.sock"
->> +
->> +static void remove_socket_file(void)
->> +{
->> +       unlink(SOCK_PATH);
->> +}
->> +
->> +/* Test 1: peer closes normally */
->> +TEST(stream_eof)
-> I think most of the code can be shared by defining
-> FIXTURE_VARIANT().
->
-> e.g. variant->unread_data can consolidate Test 1&2.
->
->
->> +{
->> +       int server, client, child;
->> +       struct sockaddr_un addr = {0};
->> +       char buf[16] = {0};
-> IIRC, {0} only initialises the first entry and we had a problem
-> in kernel code, so simply use "= {};" everywhere.
->
->
->> +       ssize_t n;
->> +
->> +       server = socket(AF_UNIX, SOCK_STREAM, 0);
-> Try using variant->type for SOCK_STREAM,
-> SOCK_DGRAM, and SOCK_SEQPACKET.
->
-> See unix_connect.c, or you could reuse the fixtures
-> of err == 0 there.
->
->> +       ASSERT_GE(server, 0);
-> nit: The 1st arg is "expected", and the 2nd is "seen",
-> so ASSERT_NE(-1, server) (or ASSERT_LT(-1, server)).
->
-> Same for other places.
->
->
->> +
->> +       addr.sun_family = AF_UNIX;
->> +       strcpy(addr.sun_path, SOCK_PATH);
->> +       remove_socket_file();
->> +
->> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
-> I personally feel easy to read this style:
->
-> err = bind();
-> ASSERT_EQ(0, err);
->
->> +       ASSERT_EQ(listen(server, 1), 0);
->> +
->> +       client = socket(AF_UNIX, SOCK_STREAM, 0);
->> +       ASSERT_GE(client, 0);
->> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
->> +
->> +       child = accept(server, NULL, NULL);
->> +       ASSERT_GE(child, 0);
->> +
->> +       /* Peer closes normally */
->> +       close(child);
->> +
->> +       n = recv(client, buf, sizeof(buf), 0);
->> +       EXPECT_EQ(n, 0);
->> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
-> I printed errno just for visibility, and you can simply use
-> ASSERT here too like
->
-> if (n == -1)
->      ASSERT_EQ(ECONNRESET, errno)
->
-> (I'm assuming Test 1 & 2 will share most code)
->
->> +
->> +       close(client);
->> +       close(server);
->> +       remove_socket_file();
-> This will not be executed if the program fails at ASSERT_XX(),
-> so move it to FIXTURE_TEARDOWN().
->
->
->
->> +}
->> +
->> +/* Test 2: peer closes with unread data */
->> +TEST(stream_reset_unread)
->> +{
->> +       int server, client, child;
->> +       struct sockaddr_un addr = {0};
->> +       char buf[16] = {0};
->> +       ssize_t n;
->> +
->> +       server = socket(AF_UNIX, SOCK_STREAM, 0);
->> +       ASSERT_GE(server, 0);
->> +
->> +       addr.sun_family = AF_UNIX;
->> +       strcpy(addr.sun_path, SOCK_PATH);
->> +       remove_socket_file();
->> +
->> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
->> +       ASSERT_EQ(listen(server, 1), 0);
->> +
->> +       client = socket(AF_UNIX, SOCK_STREAM, 0);
->> +       ASSERT_GE(client, 0);
->> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
->> +
->> +       child = accept(server, NULL, NULL);
->> +       ASSERT_GE(child, 0);
->> +
->> +       /* Send data that will remain unread by client */
->> +       send(client, "hello", 5, 0);
->> +       close(child);
->> +
->> +       n = recv(client, buf, sizeof(buf), 0);
->> +       EXPECT_LT(n, 0);
->> +       EXPECT_EQ(errno, ECONNRESET);
->> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
->> +
->> +       close(client);
->> +       close(server);
->> +       remove_socket_file();
->> +}
->> +
->> +/* Test 3: SOCK_DGRAM peer close */
->> +TEST(dgram_reset)
->> +{
->> +       int server, client;
->> +       int flags;
->> +       struct sockaddr_un addr = {0};
->> +       char buf[16] = {0};
->> +       ssize_t n;
->> +
->> +       server = socket(AF_UNIX, SOCK_DGRAM, 0);
->> +       ASSERT_GE(server, 0);
->> +
->> +       addr.sun_family = AF_UNIX;
->> +       strcpy(addr.sun_path, SOCK_PATH);
->> +       remove_socket_file();
->> +
->> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
->> +
->> +       client = socket(AF_UNIX, SOCK_DGRAM, 0);
->> +       ASSERT_GE(client, 0);
->> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
->> +
->> +       send(client, "hello", 5, 0);
->> +       close(server);
->> +
->> +       flags = fcntl(client, F_GETFL, 0);
->> +       fcntl(client, F_SETFL, flags | O_NONBLOCK);
-> You can save fcntl() with socket(..., ... | SOCK_NONBLOCK, ...).
->
->
->> +
->> +       n = recv(client, buf, sizeof(buf), 0);
->> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
->> +       /* Expect EAGAIN or EWOULDBLOCK because there is no datagram and peer is closed. */
->> +       EXPECT_LT(n, 0);
->> +       EXPECT_TRUE(errno == EAGAIN);
->> +
->> +       close(client);
->> +       remove_socket_file();
->> +}
->> +
->> +TEST_HARNESS_MAIN
->> +
->> --
->> 2.43.0
->>
-Hi Kuniyuki,
-Thank you very much for the detailed review and helpful suggestions.
-I will send a v2 patch incorporating these changes.
-Thanks again for taking the time to review and explain the details, I 
-really appreciate it.
+There is no synchronization between the two timers, rose_t0timer_expiry
+and rose_timer_expiry.
+rose_timer_expiry() puts the neighbor when the rose state is ROSE_STATE_2.
+However, rose_t0timer_expiry() does initiate a restart request on the
+neighbor.
+When rose_t0timer_expiry() accesses the released neighbor member digipeat,
+a UAF is triggered.
 
-Best regards,
-Sunday Adelodun
+To avoid this UAF, defer the put operation to rose_t0timer_expiry() and
+stop restarting t0timer after putting the neighbor.
+
+When putting the neighbor, set the neighbor to NULL. Setting neighbor to
+NULL prevents rose_t0timer_expiry() from restarting t0timer.
+
+syzbot reported a slab-use-after-free Read in ax25_find_cb.
+BUG: KASAN: slab-use-after-free in ax25_find_cb+0x3b8/0x3f0 net/ax25/af_ax25.c:237
+Read of size 1 at addr ffff888059c704c0 by task syz.6.2733/17200
+Call Trace:
+ ax25_find_cb+0x3b8/0x3f0 net/ax25/af_ax25.c:237
+ ax25_send_frame+0x157/0xb60 net/ax25/ax25_out.c:55
+ rose_send_frame+0xcc/0x2c0 net/rose/rose_link.c:106
+ rose_transmit_restart_request+0x1b8/0x240 net/rose/rose_link.c:198
+ rose_t0timer_expiry+0x1d/0x150 net/rose/rose_link.c:83
+
+Freed by task 17183:
+ kfree+0x2b8/0x6d0 mm/slub.c:6826
+ rose_neigh_put include/net/rose.h:165 [inline]
+ rose_timer_expiry+0x537/0x630 net/rose/rose_timer.c:183
+
+Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refcount_t")
+Reported-by: syzbot+caa052a0958a9146870d@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+---
+V1 -> V2: Putting the neighbor stops t0timer from automatically starting
+V2 -> V3: add rose_neigh_putex for set rose neigh to NULL
+
+ include/net/rose.h   | 12 ++++++++++++
+ net/rose/rose_link.c |  5 +++++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/include/net/rose.h b/include/net/rose.h
+index 2b5491bbf39a..33de310ba778 100644
+--- a/include/net/rose.h
++++ b/include/net/rose.h
+@@ -167,6 +167,18 @@ static inline void rose_neigh_put(struct rose_neigh *rose_neigh)
+ 	}
+ }
+ 
++static inline void rose_neigh_putex(struct rose_neigh **roseneigh)
++{
++	struct rose_neigh *rose_neigh = *roseneigh;
++	if (refcount_dec_and_test(&rose_neigh->use)) {
++		if (rose_neigh->ax25)
++			ax25_cb_put(rose_neigh->ax25);
++		kfree(rose_neigh->digipeat);
++		kfree(rose_neigh);
++		*roseneigh = NULL;
++	}
++}
++
+ /* af_rose.c */
+ extern ax25_address rose_callsign;
+ extern int  sysctl_rose_restart_request_timeout;
+diff --git a/net/rose/rose_link.c b/net/rose/rose_link.c
+index 7746229fdc8c..334c8cc0876d 100644
+--- a/net/rose/rose_link.c
++++ b/net/rose/rose_link.c
+@@ -43,6 +43,9 @@ void rose_start_ftimer(struct rose_neigh *neigh)
+ 
+ static void rose_start_t0timer(struct rose_neigh *neigh)
+ {
++	if (!neigh)
++		return;
++
+ 	timer_delete(&neigh->t0timer);
+ 
+ 	neigh->t0timer.function = rose_t0timer_expiry;
+@@ -80,10 +83,12 @@ static void rose_t0timer_expiry(struct timer_list *t)
+ {
+ 	struct rose_neigh *neigh = timer_container_of(neigh, t, t0timer);
+ 
++	rose_neigh_hold(neigh);
+ 	rose_transmit_restart_request(neigh);
+ 
+ 	neigh->dce_mode = 0;
+ 
++	rose_neigh_putex(&neigh);
+ 	rose_start_t0timer(neigh);
+ }
+ 
+-- 
+2.43.0
 
