@@ -1,166 +1,331 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-21.consmr.mail.gq1.yahoo.com (sonic314-21.consmr.mail.gq1.yahoo.com [98.137.69.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C178306D26
-	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F6A30AAC2
+	for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 09:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.69.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761297937; cv=none; b=JxmM5+4aU8Z9DLTkiDUSDIUjaKY3bdk2RML7OnXBfLRYgJsI0LxfspXaWAHGDhR3bk3LimCJHELoeZFZ5V0qDF0vQihg3c7FPBSGNPYJhXW1FDSmdtglGA6YGfL9888BSGglX7aq9W4X9MT5c4JkI9rw2cfXlYOtKg1UcW7Kpkg=
+	t=1761298121; cv=none; b=jtlKjW8eQi7ZR9ctZ/LMzofR2JvWJ+Xk8Sd7t2TDYBMqacI2odILsnGbhSbvxm6sapitHi6a71ob8Sj0OX+C7twwB5/QzF/NrjFXkToGjtIsMWZ5YQG+ajROjMMYJuAX2kJH9OxWf1KKsObv7IUMNfgTlyOMrwVnNQITMMGpQlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761297937; c=relaxed/simple;
-	bh=ycwJPNaKXdP7ykIZso5OObT1oMAhKCHRAqkXq/epey0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kl+/ckmCok7J3boFLcgXRn87f6H/RTlrKbi8jldb7D0uz6+hNLuiWk08k8dqOugGXQL1N6CAhmRpLxEgmQv6vvklc/74RoEuYJf4qfN7e8itZlwhqGJeOUn50/NfzS3/qrDXhdQJgvcdXficH3NtDemSEomXmIZINWyACOKCQMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqskLpHa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761298121; c=relaxed/simple;
+	bh=Rlofpw0zV1YlVnOwvVHonOOAx/aZ0PQrSDVUelnGe1A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ji139JUmFtL7EBflLUbCWWUrrJbL+qi7OgW466xFG7VoNGFmIiW6dVd3ddqtmpp0Yw65FJK0YHDzv1kCDTRYB8/vOsXAMDw05/FB1C7+y/oCnWN+JX5S/2jDK/DdkIRw45fz07QzuPov4b2KyzMzAKNycc9NiicoBuGXLijMopw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=q+ZRviM9; arc=none smtp.client-ip=98.137.69.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqskLpHa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761297934;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8bxSCY3ryT9EvARIVKSqFw+MJM7CiAqPgxi/1YTNuRA=;
-	b=fqskLpHa00xCUZvuLn87H0iUNlgN54JzUhjUIP2vJydCzuh1cAIYwb76UYUBi3u1SvFNgO
-	qD6ynboh+3ob6wUhqiQxH7PL07BtdqMtL7SwaAs/aEaFHxN7HzsTZQ3MEP7IzsHdAjhHuE
-	oBJ0hz7w6jxkhoEEUyO0mfuuRKkyqyw=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-o5i0dMZ9NQGxhzw9bEL6XQ-1; Fri, 24 Oct 2025 05:25:32 -0400
-X-MC-Unique: o5i0dMZ9NQGxhzw9bEL6XQ-1
-X-Mimecast-MFC-AGG-ID: o5i0dMZ9NQGxhzw9bEL6XQ_1761297932
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-63c41bc2dfcso1241911a12.3
-        for <netdev@vger.kernel.org>; Fri, 24 Oct 2025 02:25:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761297932; x=1761902732;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8bxSCY3ryT9EvARIVKSqFw+MJM7CiAqPgxi/1YTNuRA=;
-        b=PlZUEaUco4tiLuucjbwi/Gp4yJfk+l9Zj4Vy5NURVV84WthSTag2yYqoDJ97blRWiQ
-         SWPW0M5csqOY3VbzJxQpvqDBJmmhMVvMFvPsBbfaGSY6J7fm5wgTprJ9nzop87AL/fTC
-         FqQKzyoJhQhmtBWGwD8WJ5i0xSkRwSVMGC7IX+xGH1HbOfqafC9rpqxxXQJch1oFmXuN
-         nQLGka9G7JiD+idkS8+7Yw3NHYhsPqvc7/RmecHLkJ+2LJBgyIrDFxumF2nBF7qJgDIc
-         kr5vaql/yfq2S2UAzJAL9n8yL2l2origAWRKSXCigyn3pOMCO5NVkaUA9iPBnLScEtGm
-         wrBA==
-X-Gm-Message-State: AOJu0YwmOu0TbufVxUY7yWBMHE4uf57oh4qsFB+7e0ehuSyn2sJWrNu8
-	13CvVhbiYLrxTJlY5kqEpc3NOS64cDWqnYnd7Eykday+bMwg1wEm6xhaYqa2FZCOnmB+RM7K/Xt
-	pa/hzw6hP0HOd/80JV524zqtlVUEO0J8gqp+ZHq8MJZrR6WQcUaMq8XnB4g==
-X-Gm-Gg: ASbGncuvOeDt7aExCFb831rvvPPD6iBc5II15/paw2cPa7lkoR9JfxOYVPCmcgeBAGt
-	T3CQ2XSlZcBOg0XOtaMbvPF3vWELR8eMhWohqIIJ0u/3Z4T1AQCXAMtrk8XY5G5AX2580NiRZPd
-	MFgSKcW3Nj+9mo4KX3F5HW6TwR9F+/3fuMJ/mLc5OecerxCww3EoWZkc1Wwv5mlk8XhZb8ysCDY
-	84N2v8b7MThCckUwi+GmbnENSDE54KH9Taznk/uM0Unjaym1R6m4Zl0j25D16wH/MwMvc8dW5OM
-	tv5x21JQw6EXNC65OnB7Rr08DFY+qoCjkRySkM/PUfD6Q91T1tqfaaTzKwAnA7WV0DsLjgsPaPB
-	bEmR7koM0ZQdiYaBGiJv+kpM=
-X-Received: by 2002:a05:6402:13cc:b0:63b:dc7d:7308 with SMTP id 4fb4d7f45d1cf-63c1f6364d3mr25741580a12.5.1761297931580;
-        Fri, 24 Oct 2025 02:25:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlOwaUMR8VZbVJ4djy08L7hrr6l8ANdpbOoJ+KZ4mKPMSj4WRf9s7vqK0lEtnMuhu39rcxDw==
-X-Received: by 2002:a05:6402:13cc:b0:63b:dc7d:7308 with SMTP id 4fb4d7f45d1cf-63c1f6364d3mr25741560a12.5.1761297931165;
-        Fri, 24 Oct 2025 02:25:31 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e3ebb2736sm3659474a12.6.2025.10.24.02.25.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 02:25:30 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 6C4782EA50E; Fri, 24 Oct 2025 11:25:26 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, bpf@vger.kernel.org,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org
-Cc: netdev@vger.kernel.org, magnus.karlsson@intel.com,
- aleksander.lobakin@intel.com, ilias.apalodimas@linaro.org,
- lorenzo@kernel.org, kuba@kernel.org, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>,
- syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com, Ihor Solodrai
- <ihor.solodrai@linux.dev>, Octavian Purdila <tavip@google.com>
-Subject: Re: [PATCH v3 bpf 1/2] xdp: introduce xdp_convert_skb_to_buff()
-In-Reply-To: <20251022125209.2649287-2-maciej.fijalkowski@intel.com>
-References: <20251022125209.2649287-1-maciej.fijalkowski@intel.com>
- <20251022125209.2649287-2-maciej.fijalkowski@intel.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Fri, 24 Oct 2025 11:25:26 +0200
-Message-ID: <87cy6cfy7t.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="q+ZRviM9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761298112; bh=OHbParr5JEMdj7/NtgXk6RTxg3ZbMwcB2YmkwopRKN8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=q+ZRviM9SlnL4gfUL66GKWJXCfijLSdh9s8FmLvek6Cu8vjRE1desaUhfK4EukWHEQKxvIpaVRs4pKtkKfr49Wg4YLlchkBQuqAAe+VTXb4j+kQUW4Zv0hi01KH2iYQCcgZLg/mAk+8OF5MBT159+2PBN5f0dWc4yIf7GqHGhW/cFuxrqSowNMPysIzmAyNV7brDC2GkC6Zc7hKh1LbQhiwyRlpYXVwgpPyrl8GGMWKVX43D4ZJBmGG9jp/7/xWqVvVAz+f8kOpnzja9zNRUXFvtulFUeW3M3P24MEGehbYzuMwaZL8H95umAfMm9q7XZ0elogsCV13KSaTL3Qrcag==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1761298112; bh=WAjIGkehIGcO4xn0ZMpLgwKnJMK5Fnww7oHW6fkWTyO=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=I/EuO/oi22o5MJdQHr4xpAMEhS6vRastkpbJwmQmbOVZcmeQj5Li3HoxC4Z4fDQw2KXiNsuKwNVJyDcV/CpD7jikNPpxfYHbL/T8ft3LTjNN+NiLVxVD1bspJGTDqymW9PI7h3vzoz0HUGnCAyD8cD0v8ceOEQimLVV+Q8gO2IoyfCxgNVvUUqI+0xifjYPaa1UIYTHcZqpoZ6cvDQYzyowhSSTuez085fteBE0dKkGFtOP0yAZDB4YxY0La0JkrhuYJA3lMAPUdHC9v5I22j5IjGJ95539lU4wgZLeYr/fN+HYb5M+5Jxn8BzYXZ/+QgkXzBugHh5I5VVdJsnAXww==
+X-YMail-OSG: UV66zLoVM1nCSaBmJ94PX85NWMJGpjvFqWJV4YdfwfzZlqYDuzct_a51FCEKIF1
+ fAja7l2ayZ0P6h5gCoR.wbloSWXr4qem_BXDbMtYj1i8qWDlTmLQXDl37QVRu1Ih.VV48S9Zz7sI
+ vIb0gfxfvxyCR76HaOcEv6ee8p_Qa5zX3N1p1dGkYB7.vzxWMwS_WeFUdK.vJQ2JHMq27V5ueH0c
+ 6EycFRXE3BbDzZf2JFV_MWxFln5sUnV4YGj52pPO.I0O7kNpr2nfRYmcvcx4a1EH814zlu4qH9pY
+ x_7q56UYGjGTQeS3Q_xtMqEBPkCGnHl1sjqTBJBp40pciT3kK7HTieB0zKTV8iYthRmMNTEOCF2j
+ pvvztFpLtFEZm.BoFE0feB9bgvwEixor_hkP_vtfzkWQ_ZNkD9NyIe764J8DNcPZiWk97xtofIdd
+ WGyymAgRjyhyxzVf0RWgbypmTVOj4j1uOPpQB74PRiPAIqCvB5FWLbWo9zIA0V_Dv4RL1E98LEv3
+ h5CEFQTvHT62.kI_OWGUXr29El5RFQKt44YF2zcduWw45X4OzLFnZe1kk_i5mfEIPpC5OBLZHp28
+ 73JRefR3kkZMhFkB4Px9Njt2YhnWRDVGpgYvRKrgjInsERAjjl3bV8qsD5Cnpb8CWZXAprGvcbza
+ 48PBwWLqtoY6rKHbUYfM5Mcfj.abjYe1AdbbF0LmbrzpttIq9fcTYexYp_GHHoXb6oDXxoGnepmX
+ HIYfRPI9q5txREAIlVNkz3F6NiCGWyqfEpI9CKFu5PDDj5D4VleSPNZRMpEf1MWvYMoucrJRQ4SQ
+ 7yvp46y0ugFzSj98TzlRphFMAJlggcI1pe9D3nfGGfMLG2W5JZzZJR24Pgaw8EmTMORsxGHFjuV0
+ iaXswd_k.NBStNSQxVzAGPFyPaiIFqlzRf6fR9ff0uuKxrlI3Gl3ZS6RYi0Zn_olh2H6fK0yNWbC
+ RxZBBw2p8EBlKAPyYzv4Luuej3XHlQyhpOWXmwhZaEsYLQ841AZPMitRC8Pe31zrCP016.oX17ta
+ M.Q9bYciVyoeDxelixJ0uoKOZwtEO9VJsPuI1FielJCQkNXHtpPBvnL_vEp.e9BG12ie2Mq3Dp2T
+ vSZEGgn5sUY90xT3uZid8GA1Iaj9mWH.f3F2jUkDux7j.RWFYKCGMYwOTFA5wlMMTutRjRV.WwVs
+ nRQPYTsUbD2MkXCKMEvm57i5VP966.p.e66W6kMFbe2r.TMGJx3yEZNy1B9p3.WtpAzChi38o30y
+ jUHHjNg.Quv7dI0cU8SFD6ctLqnoEKi4EEZYqphiP_B3UZp_G_PgFNCr6KAwBgXpHKWluoGBpoB_
+ SqURW.1KGt7FPRHvB4CghnKiNoXyU4yOV.Yogqjp2ZSaDDW.yus_BwCJXPzHIcCvWrjQlTov_pnB
+ KydrRhaOWqn7kFrq7g_pAv3Wqcj6B4drOOlynrf4N3uY6IGqiPK4HQEvUlWVAnbQ9ohvFFcpW9V6
+ Y.JtcKzMSzlDatyWnabl.HtLTcu_sg3klviJlBv_tQuzo4M0gRjRlWZGWuTwJHQCteEyfuyiluDT
+ KmMc2uzk_CkC6xRVp6UC.t5_UQAr9K3eYLISQJPNeg2poFXA8MtPSCrZfixRRGfM.xWXSCYuUOrJ
+ l0s5nam9mr6JbvW4UOtqmLdf1km0h95qaPkxzckQPwmgjK1qWQQk3.gqm4PNC6PaFyvH_DRnGOtK
+ F0e.dV4rW6udpGxpLrL4STdbS2PfJme.r_Xj4NrdEsakE1.ZQ1I58aNYIE03Yf_blMiwUr1EBBBk
+ 20Ig6f2z4sJoiobBg7m9T1qLiXNggQRQd.9WKnFCVE9zSa2rl2wCB4.qbxmM1XHT85shzwVakKEX
+ o1xnFY9hSQVH00UqKk6UG0d.FRToa1tdc3kIQ5.600H4RYWH5NKENxUkQNf5XQjvwVIMz64A5La_
+ tB0cgbpNL286gwWrxn_bMhjIcpqTwSDPhi97YIuarIH1hf2fqKlu391_2OYFvbl_FZSOaU4muZjY
+ cOXrchYtrz7dI164DN4VbIkCx53HZComrkN0trthVra35wGSQh87q3I7W2TppzA_B7OE8.nw3w.N
+ 0og0skGoi..2XQ1G5ECaJpPJtR1V8mhmS58Asw_QwEVh4ROqRVJyiC8zLGMCf07GhDADE0Vw8ZIy
+ 1P3.L26NuTDwFgBWX6HOxaeMoaRumjw.zjSF0iQqO5TkRwjasIDqr531gg7bj8ZOdndOI6kfSU0y
+ j.UvEdHq9MmSH.3.PzYqdGVhw9BDcC1Ef5jAS9JgfZiyHuTIFdQGXU7u2KRZDFQ2WCshHFVPFxtk
+ x.DPdo_jYhJH9bGsIFW9QVbFTYk899tjN1P7Cqw--
+X-Sonic-MF: <adelodunolaoluwa@yahoo.com>
+X-Sonic-ID: d6187e88-e384-4912-a3b0-ad22b20415ea
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.gq1.yahoo.com with HTTP; Fri, 24 Oct 2025 09:28:32 +0000
+Received: by hermes--production-bf1-554b85575-4l28s (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 610de680fd708467af4a7d8c71a7708c;
+          Fri, 24 Oct 2025 09:18:22 +0000 (UTC)
+Message-ID: <565914cb-1188-424c-b8ee-16739f350ddb@yahoo.com>
+Date: Fri, 24 Oct 2025 10:18:13 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests/unix: Add test for ECONNRESET and EOF behaviour
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, shuah@kernel.org, horms@kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com
+References: <20251023165841.8164-1-adelodunolaoluwa.ref@yahoo.com>
+ <20251023165841.8164-1-adelodunolaoluwa@yahoo.com>
+ <CAAVpQUAX-+5cOCaZrA1DbMTLrUEhCsK=6JSHAQgSNhbOyQ06MA@mail.gmail.com>
+Content-Language: en-US
+From: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+In-Reply-To: <CAAVpQUAX-+5cOCaZrA1DbMTLrUEhCsK=6JSHAQgSNhbOyQ06MA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.24652 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
-
-> Currently, generic XDP hook uses xdp_rxq_info from netstack Rx queues
-> which do not have its XDP memory model registered. There is a case when
-> XDP program calls bpf_xdp_adjust_tail() BPF helper, which in turn
-> releases underlying memory. This happens when it consumes enough amount
-> of bytes and when XDP buffer has fragments. For this action the memory
-> model knowledge passed to XDP program is crucial so that core can call
-> suitable function for freeing/recycling the page.
+On 10/24/25 04:00, Kuniyuki Iwashima wrote:
+> Thanks for adding tests.
 >
-> For netstack queues it defaults to MEM_TYPE_PAGE_SHARED (0) due to lack
-> of mem model registration. The problem we're fixing here is when kernel
-> copied the skb to new buffer backed by system's page_pool and XDP buffer
-> is built around it. Then when bpf_xdp_adjust_tail() calls
-> __xdp_return(), it acts incorrectly due to mem type not being set to
-> MEM_TYPE_PAGE_POOL and causes a page leak.
+>> [PATCH] selftests/unix: Add test for ECONNRESET and EOF behaviour
+> nit: The common prefix is "selftest: af_unix:".
 >
-> Pull out the existing code from bpf_prog_run_generic_xdp() that
-> init/prepares xdp_buff onto new helper xdp_convert_skb_to_buff() and
-> embed there rxq's mem_type initialization that is assigned to xdp_buff.
-> Make it agnostic to current skb->data position.
 >
-> This problem was triggered by syzbot as well as AF_XDP test suite which
-> is about to be integrated to BPF CI.
+> On Thu, Oct 23, 2025 at 9:59 AM Sunday Adelodun
+> <adelodunolaoluwa@yahoo.com> wrote:
+>> Add selftests verifying the EOF and ECONNRESET behaviour of
+>> UNIX domain sockets (SOCK_STREAM and SOCK_DGRAM). The tests document
+>> Linux's semantics and clarify the long-standing differences with BSD.
+>>
+>> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+>> Signed-off-by: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+>> ---
+>>   tools/testing/selftests/net/unix/Makefile     |   5 +
+>>   .../selftests/net/unix/test_unix_connreset.c  | 147 ++++++++++++++++++
+>>   2 files changed, 152 insertions(+)
+>>   create mode 100644 tools/testing/selftests/net/unix/Makefile
+>>   create mode 100644 tools/testing/selftests/net/unix/test_unix_connreset.c
+> The test for af_unix is placed under tools/testing/selftests/net/af_unix.
 >
-> Reported-by: syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/netdev/6756c37b.050a0220.a30f1.019a.GAE@g=
-oogle.com/
-> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in gene=
-ric mode")
-> Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> Co-developed-by: Octavian Purdila <tavip@google.com>
-> Signed-off-by: Octavian Purdila <tavip@google.com> # whole analysis, test=
-ing, initiating a fix
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com> # commit=
- msg and proposed more robust fix
-> ---
->  include/net/xdp.h | 27 +++++++++++++++++++++++++++
->  net/core/dev.c    | 25 ++++---------------------
->  2 files changed, 31 insertions(+), 21 deletions(-)
 >
-> diff --git a/include/net/xdp.h b/include/net/xdp.h
-> index aa742f413c35..cec43f56ae9a 100644
-> --- a/include/net/xdp.h
-> +++ b/include/net/xdp.h
-> @@ -384,6 +384,33 @@ struct sk_buff *xdp_build_skb_from_frame(struct xdp_=
-frame *xdpf,
->  					 struct net_device *dev);
->  struct xdp_frame *xdpf_clone(struct xdp_frame *xdpf);
->=20=20
-> +static inline
-> +void xdp_convert_skb_to_buff(struct sk_buff *skb, struct xdp_buff *xdp,
-> +			     struct xdp_rxq_info *xdp_rxq)
-> +{
-> +	u32 frame_sz, pkt_len;
-> +
-> +	/* SKB "head" area always have tailroom for skb_shared_info */
-> +	frame_sz =3D skb_end_pointer(skb) - skb->head;
-> +	frame_sz +=3D SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-> +
-> +	DEBUG_NET_WARN_ON_ONCE(!skb_mac_header_was_set(skb));
-> +	pkt_len =3D  skb->tail - skb->mac_header;
+>> diff --git a/tools/testing/selftests/net/unix/Makefile b/tools/testing/selftests/net/unix/Makefile
+>> new file mode 100644
+>> index 000000000000..a52992ba23d9
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/net/unix/Makefile
+>> @@ -0,0 +1,5 @@
+>> +# SPDX-License-Identifier: GPL-2.0
+>> +TEST_GEN_PROGS := test_unix_connreset
+>> +
+>> +include ../../lib.mk
+>> +
+>> diff --git a/tools/testing/selftests/net/unix/test_unix_connreset.c b/tools/testing/selftests/net/unix/test_unix_connreset.c
+>> new file mode 100644
+>> index 000000000000..a8720c7565cb
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/net/unix/test_unix_connreset.c
+>> @@ -0,0 +1,147 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Selftest for UNIX socket close and ECONNRESET behaviour.
+> nit: s/UNIX/AF_UNIX/
+>
+>> + *
+>> + * This test verifies that:
+>> + *  1. SOCK_STREAM sockets return EOF when peer closes normally.
+>> + *  2. SOCK_STREAM sockets return ECONNRESET if peer closes with unread data.
+>> + *  3. SOCK_DGRAM sockets do not return ECONNRESET when peer closes,
+>> + *     unlike BSD where this error is observed.
+>> + *
+>> + * These tests document the intended Linux behaviour, distinguishing it from BSD.
+> I'd not mention BSD as it could be outdated again.
+>
+>
+>> + *
+>> + */
+>> +
+>> +#define _GNU_SOURCE
+>> +#include <stdlib.h>
+>> +#include <string.h>
+>> +#include <fcntl.h>
+>> +#include <unistd.h>
+>> +#include <errno.h>
+>> +#include <sys/socket.h>
+>> +#include <sys/un.h>
+>> +#include "../../kselftest_harness.h"
+>> +
+>> +#define SOCK_PATH "/tmp/test_unix_connreset.sock"
+>> +
+>> +static void remove_socket_file(void)
+>> +{
+>> +       unlink(SOCK_PATH);
+>> +}
+>> +
+>> +/* Test 1: peer closes normally */
+>> +TEST(stream_eof)
+> I think most of the code can be shared by defining
+> FIXTURE_VARIANT().
+>
+> e.g. variant->unread_data can consolidate Test 1&2.
+>
+>
+>> +{
+>> +       int server, client, child;
+>> +       struct sockaddr_un addr = {0};
+>> +       char buf[16] = {0};
+> IIRC, {0} only initialises the first entry and we had a problem
+> in kernel code, so simply use "= {};" everywhere.
+>
+>
+>> +       ssize_t n;
+>> +
+>> +       server = socket(AF_UNIX, SOCK_STREAM, 0);
+> Try using variant->type for SOCK_STREAM,
+> SOCK_DGRAM, and SOCK_SEQPACKET.
+>
+> See unix_connect.c, or you could reuse the fixtures
+> of err == 0 there.
+>
+>> +       ASSERT_GE(server, 0);
+> nit: The 1st arg is "expected", and the 2nd is "seen",
+> so ASSERT_NE(-1, server) (or ASSERT_LT(-1, server)).
+>
+> Same for other places.
+>
+>
+>> +
+>> +       addr.sun_family = AF_UNIX;
+>> +       strcpy(addr.sun_path, SOCK_PATH);
+>> +       remove_socket_file();
+>> +
+>> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
+> I personally feel easy to read this style:
+>
+> err = bind();
+> ASSERT_EQ(0, err);
+>
+>> +       ASSERT_EQ(listen(server, 1), 0);
+>> +
+>> +       client = socket(AF_UNIX, SOCK_STREAM, 0);
+>> +       ASSERT_GE(client, 0);
+>> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
+>> +
+>> +       child = accept(server, NULL, NULL);
+>> +       ASSERT_GE(child, 0);
+>> +
+>> +       /* Peer closes normally */
+>> +       close(child);
+>> +
+>> +       n = recv(client, buf, sizeof(buf), 0);
+>> +       EXPECT_EQ(n, 0);
+>> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
+> I printed errno just for visibility, and you can simply use
+> ASSERT here too like
+>
+> if (n == -1)
+>      ASSERT_EQ(ECONNRESET, errno)
+>
+> (I'm assuming Test 1 & 2 will share most code)
+>
+>> +
+>> +       close(client);
+>> +       close(server);
+>> +       remove_socket_file();
+> This will not be executed if the program fails at ASSERT_XX(),
+> so move it to FIXTURE_TEARDOWN().
+>
+>
+>
+>> +}
+>> +
+>> +/* Test 2: peer closes with unread data */
+>> +TEST(stream_reset_unread)
+>> +{
+>> +       int server, client, child;
+>> +       struct sockaddr_un addr = {0};
+>> +       char buf[16] = {0};
+>> +       ssize_t n;
+>> +
+>> +       server = socket(AF_UNIX, SOCK_STREAM, 0);
+>> +       ASSERT_GE(server, 0);
+>> +
+>> +       addr.sun_family = AF_UNIX;
+>> +       strcpy(addr.sun_path, SOCK_PATH);
+>> +       remove_socket_file();
+>> +
+>> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
+>> +       ASSERT_EQ(listen(server, 1), 0);
+>> +
+>> +       client = socket(AF_UNIX, SOCK_STREAM, 0);
+>> +       ASSERT_GE(client, 0);
+>> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
+>> +
+>> +       child = accept(server, NULL, NULL);
+>> +       ASSERT_GE(child, 0);
+>> +
+>> +       /* Send data that will remain unread by client */
+>> +       send(client, "hello", 5, 0);
+>> +       close(child);
+>> +
+>> +       n = recv(client, buf, sizeof(buf), 0);
+>> +       EXPECT_LT(n, 0);
+>> +       EXPECT_EQ(errno, ECONNRESET);
+>> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
+>> +
+>> +       close(client);
+>> +       close(server);
+>> +       remove_socket_file();
+>> +}
+>> +
+>> +/* Test 3: SOCK_DGRAM peer close */
+>> +TEST(dgram_reset)
+>> +{
+>> +       int server, client;
+>> +       int flags;
+>> +       struct sockaddr_un addr = {0};
+>> +       char buf[16] = {0};
+>> +       ssize_t n;
+>> +
+>> +       server = socket(AF_UNIX, SOCK_DGRAM, 0);
+>> +       ASSERT_GE(server, 0);
+>> +
+>> +       addr.sun_family = AF_UNIX;
+>> +       strcpy(addr.sun_path, SOCK_PATH);
+>> +       remove_socket_file();
+>> +
+>> +       ASSERT_EQ(bind(server, (struct sockaddr *)&addr, sizeof(addr)), 0);
+>> +
+>> +       client = socket(AF_UNIX, SOCK_DGRAM, 0);
+>> +       ASSERT_GE(client, 0);
+>> +       ASSERT_EQ(connect(client, (struct sockaddr *)&addr, sizeof(addr)), 0);
+>> +
+>> +       send(client, "hello", 5, 0);
+>> +       close(server);
+>> +
+>> +       flags = fcntl(client, F_GETFL, 0);
+>> +       fcntl(client, F_SETFL, flags | O_NONBLOCK);
+> You can save fcntl() with socket(..., ... | SOCK_NONBLOCK, ...).
+>
+>
+>> +
+>> +       n = recv(client, buf, sizeof(buf), 0);
+>> +       TH_LOG("recv=%zd errno=%d (%s)", n, errno, strerror(errno));
+>> +       /* Expect EAGAIN or EWOULDBLOCK because there is no datagram and peer is closed. */
+>> +       EXPECT_LT(n, 0);
+>> +       EXPECT_TRUE(errno == EAGAIN);
+>> +
+>> +       close(client);
+>> +       remove_socket_file();
+>> +}
+>> +
+>> +TEST_HARNESS_MAIN
+>> +
+>> --
+>> 2.43.0
+>>
+Hi Kuniyuki,
+Thank you very much for the detailed review and helpful suggestions.
+I will send a v2 patch incorporating these changes.
+Thanks again for taking the time to review and explain the details, I 
+really appreciate it.
 
-Should probably just use the helpers here:
-
-pkt_len =3D skb_tail_pointer(skb) - skb_mac_header(skb);
-
-that way you don't have to open-code the WARN_ON_ONCE, and you get the
-right behaviour even when NET_SKBUFF_DATA_USES_OFFSET is set
-
--Toke
+Best regards,
+Sunday Adelodun
 
