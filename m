@@ -1,129 +1,148 @@
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319582147F9;
-	Sat, 25 Oct 2025 03:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7A4248880;
+	Sat, 25 Oct 2025 03:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761363897; cv=none; b=W8aJfseyg7zox3gfCPa7ZM8X6Nz4AreKXzJzKMGkGt+sqaqpcWXgzr9OT6bRH+37Nm/ytE2jbMweEtWApTdk43oI6QFSgG3ulRTBPC9yH9nkSRBbKXb1H+XJIKqr6wYCpTDPzjD3fSWyBoVRGCNew/j30RcY3H0oyMtHzpD6Els=
+	t=1761363897; cv=none; b=Ybo5kHCTxglVRfNZo2bun/ztPNRphub+vqDbjvL35hK+tjuKi/+/AxRNXbXijo6CIzQ1Lr/F1dJ6xPGwkGthlarN1Sju+3C2QRW96pOhLDFT2s1V2DjHBTm5gvDt6v/Uc9fgMRAHgGGHmlRm1zBdBlBgdLSBia4/jTSxajkgvu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761363897; c=relaxed/simple;
-	bh=2bouS7hna0gClWKGkPD0t7YRPlEeO+s2XXR4RVd0lJU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Hk+TvrWqxh7AmlY6eQ6jEEoHe2fRCFVbm3+qsicGaIrBTIDo8cAt93b3UAcFE9i3sRvaTbEe6qL4H7k0uHkhz7AsC3YoOgn6oeHYzbEM1D/DdLRR58xksvdNQUW5CT4n2Zy72rGk5/BBnc6iFZUEorQ+tYF1jjBBHQOy/hoej8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=T8pDU1Fw; arc=none smtp.client-ip=113.46.200.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	bh=LfMe8TQ/LeXa4E/cqZqOUQ8SMoLWWfDeYiX3TlRpwT4=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=mgtUj96NsRPkzcQbsK2m2HA4RwHRPHH+RrSjmzrw/XBsiQuu5OBDQlu38m6HpoUHG45NTnkscM2HXyWaQ9V04kAkVX/n/ZoNDhlbNAhxobTFzrQvFe6THuKwAkFSHYcY5XMnXUHStY2rE5twV3nRHa//7wSigBNBVm5UfjbHi4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=ZvN1t6kM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Nk5C3pvo; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="T8pDU1Fw"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Y7Rj9E2CdLAIkXLhpNINjdklw1IJhaMfMqQhc80+fB4=;
-	b=T8pDU1FwYdR5RRmiX67izPdS9NVMhoZJZ6aWK1LfM5MzIj8S5CuiPMBmc2i9ZR/DOMT3Nbxhk
-	5YJgBhgh9yAjjW2M5AopCT3bmqTSEMwnfr+9yydDdmRjjBbFR2d+m7djIcC/oqkV9dmjAkCaUu6
-	d+HD5qU+HLdSL9J2eL7KHPM=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctlxk6vMWznTVF;
-	Sat, 25 Oct 2025 11:44:10 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8DF1C140278;
-	Sat, 25 Oct 2025 11:44:50 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 25 Oct
- 2025 11:44:49 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
-	<zhangchangzhong@huawei.com>, <wangliang74@huawei.com>
-Subject: [PATCH -next] i40e: Replace sscanf() with kstrtoint() in i40e_dbg_netdev_ops_write()
-Date: Sat, 25 Oct 2025 12:07:35 +0800
-Message-ID: <20251025040735.558953-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="ZvN1t6kM";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Nk5C3pvo"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.stl.internal (Postfix) with ESMTP id 38EB31D00180;
+	Fri, 24 Oct 2025 23:44:53 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 24 Oct 2025 23:44:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm1; t=1761363893; x=1761450293; bh=UozRQF1oVu6aEb4GRj/7A
+	iA4H/nVIgK0+x1skH8F1Fo=; b=ZvN1t6kMNmmdamis9GkZ8gfwmbP3pNQnTuJKW
+	mBoPs0YxzsI7wbZ4YiWerCuf4M8amUEqtptM9OL3ysDA64ehP3GRe3+UIqLtim/S
+	zFIobVRN7qcBvoLDg3x/iiiBw1gGo0ktdSA7vDKkvAzDs4HzyykuTSALEuQkIAwX
+	EUue3CKvN/mqt0Hi8YpbQhPjUbc8x+cRGr559svrxZHNqgrVRVjSsU174OuvvOrS
+	nSiTT5utKiVG6xiR3RwEppWD9lz13LIuDRO6Qa1jCvojTKV9MXXLdWdAVUoXtjRX
+	/TNIjFiv/g4Dk0hDngQ6WfuhEhATGEZuN1nic6bUDBUZdP1XQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1761363893; x=1761450293; bh=UozRQF1oVu6aEb4GRj/7AiA4H/nVIgK0+x1
+	skH8F1Fo=; b=Nk5C3pvomfm2+DfP9TS1tsb3ASyue+k517wI4iVxhWeFLEeDjU9
+	PyeFZNXaCGynrBuaayGvuzIVjkaDC68nWjNkegP7W29pIvtvqDmtjJDGSj6GRPbK
+	JFMYuGQ8CZZ+qCojP6H49hlnnKhq+M1HLnIsQka8PcsSSfRzzlN3k6wKPBUkJ4X8
+	f9Ee3zbwCAoXbJjrLsc+nyF35YieA4cONlHaoSN7fZc62ZkwBYH2fsX4u7kynS7f
+	GHDHtBT9lAGLhkzOOGjB4XHo0EUljAiOyLUO0bY9EBdQ/nNhuBbCAIcBCoknFUId
+	ppKsLeQOCVlXLhL0XAnnoBCSw4zyQgR5mbg==
+X-ME-Sender: <xms:s0f8aDJQoREBn_84tRC8pwShaxhVNkW2nwhOYOMCM7llufAY8Ee8kA>
+    <xme:s0f8aDHQGAO5gB7ocV_NIsTW3kx7x1PFYW5Ii4g_9O36W2KG2ynSZYtOsUH_RfwHb
+    r1H_h7COUHzJuvju83UhEvPlG_KuwqNG57Vpse1d1jaZMnAf16B8E8>
+X-ME-Received: <xmr:s0f8aB1HqsrH_VQATHDxzG2YzXrvBldmF3Wu65cmqKYGdmTgvcqoPVC35AIQu5jsz5nigw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheduudejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefujghfofggtgfgfffksehtqhertdertddvnecuhfhrohhmpeflrgihucgg
+    ohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnhepieefvdelfeeljeevtefhfeeiudeuiedvfeeiveelffduvdevfedtheffffetfeff
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhvse
+    hjvhhoshgsuhhrghhhrdhnvghtpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprhgriihorhessghlrggtkhifrghllhdrohhrghdprhgtph
+    htthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohephhhorhhm
+    sheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgu
+    rhgvfidonhgvthguvghvsehluhhnnhdrtghhpdhrtghpthhtoheptghorhgsvghtsehlfi
+    hnrdhnvghtpdhrtghpthhtohepshhtvghphhgvnhesnhgvthifohhrkhhplhhumhgsvghr
+    rdhorhhgpdhrtghpthhtohepihdrmhgrgihimhgvthhssehovhhnrdhorhhg
+X-ME-Proxy: <xmx:s0f8aCwuxh0aTEzKjSVNDqQ14CdD1CWz7IvMVAx_7h3_Vww_8WBeKQ>
+    <xmx:s0f8aIjjLIBgPK1zfPHw9CleM1etZkeK9XyYKERc8hWV6I27rbYoCg>
+    <xmx:s0f8aJysETbmIAxATEOklts42DwTwTmzDz3a7hqLhj9oqYlzHkCe4Q>
+    <xmx:s0f8aOzFCZkQIlSk6Mlk08Y1N38AVVsAwvPCJmgAIY4o4zTIvX92Sg>
+    <xmx:tUf8aBpqQwS8IDhar2f1lxoSlwrApU50P0y2h6a3DC0xqs3rXDOzB0mi>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Oct 2025 23:44:51 -0400 (EDT)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 58C029FC5A; Fri, 24 Oct 2025 20:44:50 -0700 (PDT)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 559839FC57;
+	Fri, 24 Oct 2025 20:44:50 -0700 (PDT)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Jakub Kicinski <kuba@kernel.org>
+cc: David Wilder <wilder@us.ibm.com>, netdev@vger.kernel.org,
+    pradeep@us.ibm.com, i.maximets@ovn.org, amorenoz@redhat.com,
+    haliu@redhat.com, stephen@networkplumber.org, horms@kernel.org,
+    pabeni@redhat.com, andrew+netdev@lunn.ch, edumazet@google.com,
+    razor@blackwall.org, shuah@kernel.org, corbet@lwn.net,
+    linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next v14 0/7] bonding: Extend arp_ip_target format to
+ allow for a list of vlan tags.
+In-reply-to: <20251022175033.7daec7f6@kernel.org>
+References: <20251022182721.2567561-1-wilder@us.ibm.com>
+ <20251022175033.7daec7f6@kernel.org>
+Comments: In-reply-to Jakub Kicinski <kuba@kernel.org>
+   message dated "Wed, 22 Oct 2025 17:50:33 -0700."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1102579.1761363890.1@famine>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Oct 2025 20:44:50 -0700
+Message-ID: <1102580.1761363890@famine>
 
-Commit 9fcdb1c3c4ba ("i40e: remove read access to debugfs files")
-introduced some checkpatch warnings like this:
+Jakub Kicinski <kuba@kernel.org> wrote:
 
-  WARNING: Prefer kstrto<type> to single variable sscanf
-  #240: FILE: drivers/net/ethernet/intel/i40e/i40e_debugfs.c:1655:
-  +               cnt = sscanf(&cmd_buf[11], "%i", &vsi_seid);
+>On Wed, 22 Oct 2025 11:25:27 -0700 David Wilder wrote:
+>> The current implementation of the arp monitor builds a list of vlan-tag=
+s by
+>> following the chain of net_devices above the bond. See bond_verify_devi=
+ce_path().
+>> Unfortunately, with some configurations, this is not possible. One exam=
+ple is
+>> when an ovs switch is configured above the bond.
+>
+>Once again if anyone thinks this belongs in the kernel please speak up.
+>Otherwise let this be the last posting.
+>
+>*If* someone does speak up in support you will need to find a less ugly
+>way to represent the attribute within Netlink. What you invent must work
+>in YNL and be added to the spec (Documentation/netlink/specs/rt-link.yaml=
+)
+>-- =
 
-  WARNING: Prefer kstrto<type> to single variable sscanf
-  #251: FILE: drivers/net/ethernet/intel/i40e/i40e_debugfs.c:1676:
-  +               cnt = sscanf(&cmd_buf[4], "%i", &vsi_seid);
+>pw-bot: cr
 
-  total: 0 errors, 2 warnings, 0 checks, 194 lines checked
+	Sorry, didn't have a chance to catch up until now.  I gave this
+a read through again, and I have mixed feelings about it.
 
-Function kstrtoint() provides better error detection, overflow protection,
-and consistent error handling than sscanf(). Replace sscanf() with
-kstrtoint() in i40e_dbg_netdev_ops_write() to silence the checkpatch
-warnings.
+	I understand the problem they're trying to solve, which is
+largely an artifact of the way OVS kind of lives off to the side and
+does its own thing.  And, yes, there are a bunch of other things (tc,
+ebpf, et al) that can arbitrarily tweak VLAN tags in a packet.
 
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
+	That said, it's kind of a niche use case, and it's adding what
+feels to me like an awkward API and its related infrastructure that will
+have to be maintained forever.  Bonding already has baggage from things
+that seemed like a good idea at the time, but ultimately weren't, so I'm
+reluctant to add something like this for a niche case.
+
+	-J
+
 ---
- drivers/net/ethernet/intel/i40e/i40e_debugfs.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-index c17b5d290f0a..2abd12b62509 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_debugfs.c
-@@ -1604,7 +1604,7 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
- 	int bytes_not_copied;
- 	struct i40e_vsi *vsi;
- 	int vsi_seid;
--	int i, cnt;
-+	int i, ret;
- 
- 	/* don't allow partial writes */
- 	if (*ppos != 0)
-@@ -1629,9 +1629,9 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
- 	if (strncmp(cmd_buf, "change_mtu", 10) == 0) {
- 		int mtu;
- 
--		cnt = sscanf(&cmd_buf[11], "%i %i",
-+		ret = sscanf(&cmd_buf[11], "%i %i",
- 			     &vsi_seid, &mtu);
--		if (cnt != 2) {
-+		if (ret != 2) {
- 			dev_info(&pf->pdev->dev, "change_mtu <vsi_seid> <mtu>\n");
- 			goto netdev_ops_write_done;
- 		}
-@@ -1652,8 +1652,8 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
- 		}
- 
- 	} else if (strncmp(cmd_buf, "set_rx_mode", 11) == 0) {
--		cnt = sscanf(&cmd_buf[11], "%i", &vsi_seid);
--		if (cnt != 1) {
-+		ret = kstrtoint(&cmd_buf[11], 0, &vsi_seid);
-+		if (ret) {
- 			dev_info(&pf->pdev->dev, "set_rx_mode <vsi_seid>\n");
- 			goto netdev_ops_write_done;
- 		}
-@@ -1673,8 +1673,8 @@ static ssize_t i40e_dbg_netdev_ops_write(struct file *filp,
- 		}
- 
- 	} else if (strncmp(cmd_buf, "napi", 4) == 0) {
--		cnt = sscanf(&cmd_buf[4], "%i", &vsi_seid);
--		if (cnt != 1) {
-+		ret = kstrtoint(&cmd_buf[4], 0, &vsi_seid);
-+		if (ret) {
- 			dev_info(&pf->pdev->dev, "napi <vsi_seid>\n");
- 			goto netdev_ops_write_done;
- 		}
--- 
-2.34.1
-
+	-Jay Vosburgh, jv@jvosburgh.net
