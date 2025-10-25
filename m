@@ -1,59 +1,59 @@
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474DA2DF144
-	for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 09:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F92DCBF1
+	for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 09:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761384430; cv=none; b=EHrWja9RFDgORpX9TIZISrB83Ylg/gbPXWq6nxxqsmCe7tkqHq+tvH7MuvrgePfZCgHtUxfFK4H1JrjTUsFmigb9ERIBx8bXJKDM6sEnsNZirgkVlpF59tguSQogi0WZ3Ak30422ZJl/F/1GS05v5bmZpBYTORN6eYK5VsUZSuI=
+	t=1761384520; cv=none; b=jJ5wu+LGxCDwuEffse5AZOugHjOpfpIyOlFVMmA42v0fosY2CVcWzlfxzAlItFLrPuS6u3i6W0EGVgdRXm/1trMks5bVXvrbbpzXABj7CwiLvSL9NKZCc6WmnA68jp3ha882wyw++vpZ4NAzdEP33yxw9zzDzR74R5uRu3ZRXsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761384430; c=relaxed/simple;
-	bh=+yhvxANQQYMZd+THRWHrQvK32ymSHEL7AFquatZ8/s8=;
+	s=arc-20240116; t=1761384520; c=relaxed/simple;
+	bh=vkmTLMpvpm/Qa6GR83vugp7lS0yOQgGxQYJ58GDReT4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TDKQSwTsiyjhuaROV57gETLfPiWtfhfb59aF0EJGM8MHi5NfqzC7NA7smOawhSMaAK31KjbLYM46hu5fy0t1lAyKKX+CwRlKhYgfgZbZyswdeWVivCOWnXRwTzFY/PI1si/a2ZMZ8OM7FB0bzJJh5AViyOLYe7J871aJDicS+ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j/SX9Tzg; arc=none smtp.client-ip=209.85.166.173
+	 To:Cc:Content-Type; b=o9UYiilSHJJQpO68nfNED6PzJrqEvN+ua36y3rPydmiMfxparhZm4ThoPZmzz4yWcoawbrPcWYLy+13AgkUbxfKj7ZIlgrZq09deJTsaT6fsIeBgQVAIiQVF68pyv30fgdrLJugyJGlC4Dv+fAMbLn2eMa/aT++zbsdvmvLG+gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BjkoloqU; arc=none smtp.client-ip=209.85.166.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j/SX9Tzg"
-Received: by mail-il1-f173.google.com with SMTP id e9e14a558f8ab-430da09aa87so14323905ab.2
-        for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 02:27:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BjkoloqU"
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-93e847a443fso280803839f.0
+        for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 02:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761384428; x=1761989228; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761384518; x=1761989318; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kG1gV01eQTrH5+0JToPnmHZQ7nQS9WMCwhx85si3Z0Y=;
-        b=j/SX9Tzg2rg/LWrwfSV9DaQ0wrcQaPzByk1Z5LAJ2JBYT8Y4Q5Vbf/sFvi8jKv6WLI
-         2MPug4zI2nY0eTwvreaiROfc4kD1fOFctt5gV+M4arzc47CZyDQB86rRExhFovwPeJqA
-         6gy3LjcDluCuiTv4h7JPlxJljqmHj7VhxFXAO7zs6iPpIne5taw4vnERdt/GEI44UTLq
-         3Ws2U5XkYPZpu51nQer2nu/j7tjxuxpPaZgchXyrMvAy6AZAk9+9ng4uEu3QMeT0RN1Y
-         J9L+EJPgAo744czdpFz6aMxg3P4JMaL7f8dbg14nnOcpglwSYE/z/CxOQed2X0Hb4fFJ
-         AYZg==
+        bh=HHS+rYA72OACrxZRCGvYNKYLOg/36EJkZI8te9neMR0=;
+        b=BjkoloqUoTgzTbOxZJFzL1o6OrrIVXzhxRwCEdyPPwlL1OSx1cjxH5hCS5+KHfe6j7
+         t6AF/yIXQHSEMk2IFVVEhfKq7VjkYrlyfYuuktbdWeG3Ps5/o+85XmyJlthnCw38DBYO
+         jV1Ag3upZxSkOnTLlQf3NL2kzlqkuizmJxkfeI4iMDCW+bpgmW3AtvJl/cMBeK0YmNWc
+         iKjIcWUyPsBR6BdvyEHel2Y9XyqI3BKxVMzsa8ZFqTDFqQj15PAfbJZlpJsr7nlu/oxD
+         ax8PekEYV0WgTl8BaN46o4Qol0TlLgJszvvKgrRy9gUGgolvLlbUBz0DjIUuUyeU9eQX
+         YzoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761384428; x=1761989228;
+        d=1e100.net; s=20230601; t=1761384518; x=1761989318;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kG1gV01eQTrH5+0JToPnmHZQ7nQS9WMCwhx85si3Z0Y=;
-        b=OLbrZtyNJloA/S7J7rSd2DAI+c807hgk0KYc366WwY6thEqoA+RJQMsPkY5A5HMUUp
-         LQ40VadqDR55fUGDKtKatNXTCYkToT0rrG4oHjcqz/f2fsijEtUxTfCWxrsxwTTUX0T4
-         0Og5jnnquyn/OZKzFU7S3gI4ZGZFLPTvPXeatTvXIW94lbsslTJRguW+e0kNlWhIgmRP
-         Y4C4EfxOasGnW24cO1sjh3jWcFopsgTAyzzf7AYq2FjNRWilj2aL9oM+oLMoMvz4aa9U
-         TY6HJS0uk/CR6rwY4W98BhqXUkc8NbbSu1CzYp3PgjaUUbRAerqOEAlrGmMIDvXawDAW
-         MMJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUW8YrEGufLQhuqFktD0L7hh8e8DAQBdq7/Nasy3HOlxnntNudGYBct/BbrQnJB4AA+xQRW+hA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/0aWAmtPIOuSe6Pg1MzgC7ZTg/M4+5ixbs9GrekG5c9ehVB7+
-	5coXI4TmU3bFjbdhmTOBH2cp3T52OU9xDKQhkwAI+HXTfgaEUbVNjU/jaQCRokXY40/48ipLNpW
-	87k3N7rSQBkA4oyaLZHlPDCwAKlduerg=
-X-Gm-Gg: ASbGncsLeaFoRuPjiosr9teCSmBtgnpR2TqP046QfXBYvIpEX/CgoOELTK27D4H8EYT
-	tWEwl9tPtvLDrF1DZTWrpilIMEayaVn4BtlsR7uwVdtrYJfGBmM0NKczH1aBEuAs1PlykxT9bYK
-	2Sg+UwIJ5gCwVO5yWU6nn6QwN9TBUN/HMgDtx5LT1sf7fSC3pKFc7kIXgl2PkjRv2BJLn2DdvnF
-	Md4eOG6bGTN4noVmQrC8AT1wjHy3sHSX+Y2v8gS8ME39H0OiCPYdux30jw=
-X-Google-Smtp-Source: AGHT+IEetEMwamsAlW0y061WquijFhU4ai/j0rDYzriqZ5aMsmOlxzol7OSUEDJ2dBjghU1CIUuB9xbIuq0/M2whFUQ=
-X-Received: by 2002:a05:6e02:1aae:b0:430:9fde:33d5 with SMTP id
- e9e14a558f8ab-430c525f0c7mr473570665ab.11.1761384428322; Sat, 25 Oct 2025
- 02:27:08 -0700 (PDT)
+        bh=HHS+rYA72OACrxZRCGvYNKYLOg/36EJkZI8te9neMR0=;
+        b=G52qA/4hFI48zMDagy+zHqEZ4VibeDfhMqheVnC41SA1az/d39JIdHv/ONd1QSmPp8
+         wYlzt4fOsa0haIt/OAVVslHWjZMgMtDAVhol81920PeZYUarF4DavZXDqAN63+nz+656
+         VAZvumw0YJdvErirn8nF8J7rlm+0SOoJhcUVo7Yz701YUTpAwm0nGyEbCQ7Jl0Kj06fJ
+         JiRuqnycb8YbD1kL9RteHef3Z1y5+LBBKTEt7NxhOfxnz4moWlR/q/R9UPOy6F6Bbu9D
+         KuBVPdRp4vP4sUvotdxILEV+eWQExQZv860zzEKm8mRLbGBSzktFRuF4wna/CxURMvzO
+         EWfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXuUDU2dpkJ1uhhQab4CCwHPp5+pfo/m7n1VdOZ4C+MroxhoHLURNhVUNeVLe241VRED2jaCp4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqOX/h9Ojmx2Vt/wh/R5WGhlNrga2XnFM524i+foecSE+SgRsT
+	n+TDovXr+OV8WSMRsRKNddypAvVuJwF6FWAZ72YVtw2VE8C4ERSeNHEp+Dp1it/8ZyN37wKoN1B
+	4glLIZdeBj5yI7BkTha8u/97zEGUckRA=
+X-Gm-Gg: ASbGnctxZFp9aD+Gi6syd8h5kTBrce2LCuFJRTBKO4MheUTNiiAPDCzctEadSX1NKzz
+	ols6tvK2qA7JVTHhUNd3H770PQ77Dh+usgZKmzgG3F45SDLc4J0CNxMGVWFlLSPJ8yYjgRhv/Yq
+	3+nFuej0d2ojISOiqWNQFVKHpAzF93ybhlC7vszhxs6rP0JSlNXnhcd9xsJLJVR4wlrE8/aCLR2
+	xOH6IlBdk1u94IzrkSno1Pp/F/C8Xe6df2LLYAOzhpg+7QcoNSf/u8gYujd3j15zrsJWA==
+X-Google-Smtp-Source: AGHT+IFrWh7z4CTVFu9vQ+xrjaz9LS2N1hcONurg46hZNqNrD28GNm/jDCqkOjutDT1/E7m6lZeIKMuGVQSjjz/6S/I=
+X-Received: by 2002:a05:6e02:164b:b0:430:a8c5:fdad with SMTP id
+ e9e14a558f8ab-431dc139f37mr127440375ab.6.1761384517763; Sat, 25 Oct 2025
+ 02:28:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,15 +61,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251021131209.41491-1-kerneljasonxing@gmail.com>
- <20251021131209.41491-4-kerneljasonxing@gmail.com> <aPuANsZ6_xj8YY3D@horms.kernel.org>
-In-Reply-To: <aPuANsZ6_xj8YY3D@horms.kernel.org>
+ <20251021131209.41491-9-kerneljasonxing@gmail.com> <aPvK0pFuBpplxbXX@mini-arch>
+In-Reply-To: <aPvK0pFuBpplxbXX@mini-arch>
 From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Sat, 25 Oct 2025 17:26:32 +0800
-X-Gm-Features: AWmQ_bmoZIWxxMzBpS54VdnI5d80uf7cF5jM16h0qCwFZyNtTl4EHvFk3JzIgj8
-Message-ID: <CAL+tcoBQfRJ=O5F3ii4LxhxZVZm3YT1pafM63DUdzOdwXdimjQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 3/9] xsk: add xsk_alloc_batch_skb() to build
- skbs in batch
-To: Simon Horman <horms@kernel.org>
+Date: Sat, 25 Oct 2025 17:28:00 +0800
+X-Gm-Features: AWmQ_bmu26OzQyT-TKJbwhXorr2a6Rp88JdSnJEBmxfy2w_9MDKpR8qmaP4z0GA
+Message-ID: <CAL+tcoDssz0zPY3iKS5Zv6C0zq1ChbTZhRbwTPRq_6F0U6Jc8A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 8/9] xsk: support generic batch xmit in copy mode
+To: Stanislav Fomichev <stfomichev@gmail.com>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
 	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com, 
 	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
@@ -80,136 +79,89 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 24, 2025 at 9:33=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
+On Sat, Oct 25, 2025 at 2:52=E2=80=AFAM Stanislav Fomichev <stfomichev@gmai=
+l.com> wrote:
 >
-> On Tue, Oct 21, 2025 at 09:12:03PM +0800, Jason Xing wrote:
->
-> ...
->
-> > diff --git a/net/core/skbuff.c b/net/core/skbuff.c
->
-> ...
->
-> > @@ -615,6 +617,105 @@ static void *kmalloc_reserve(unsigned int *size, =
-gfp_t flags, int node,
-> >       return obj;
+> On 10/21, Jason Xing wrote:
+> > From: Jason Xing <kernelxing@tencent.com>
+> >
+> > - Move xs->mutex into xsk_generic_xmit to prevent race condition when
+> >   application manipulates generic_xmit_batch simultaneously.
+> > - Enable batch xmit eventually.
+> >
+> > Make the whole feature work eventually.
+> >
+> > Signed-off-by: Jason Xing <kernelxing@tencent.com>
+> > ---
+> >  net/xdp/xsk.c | 17 ++++++++---------
+> >  1 file changed, 8 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> > index 1fa099653b7d..3741071c68fd 100644
+> > --- a/net/xdp/xsk.c
+> > +++ b/net/xdp/xsk.c
+> > @@ -891,8 +891,6 @@ static int __xsk_generic_xmit_batch(struct xdp_sock=
+ *xs)
+> >       struct sk_buff *skb;
+> >       int err =3D 0;
+> >
+> > -     mutex_lock(&xs->mutex);
+> > -
+> >       /* Since we dropped the RCU read lock, the socket state might hav=
+e changed. */
+> >       if (unlikely(!xsk_is_bound(xs))) {
+> >               err =3D -ENXIO;
+> > @@ -982,21 +980,17 @@ static int __xsk_generic_xmit_batch(struct xdp_so=
+ck *xs)
+> >       if (sent_frame)
+> >               __xsk_tx_release(xs);
+> >
+> > -     mutex_unlock(&xs->mutex);
+> >       return err;
 > >  }
 > >
-> > +int xsk_alloc_batch_skb(struct xdp_sock *xs, u32 nb_pkts, u32 nb_descs=
-, int *err)
-> > +{
-> > +     struct xsk_batch *batch =3D &xs->batch;
-> > +     struct xdp_desc *descs =3D batch->desc_cache;
-> > +     struct sk_buff **skbs =3D batch->skb_cache;
-> > +     gfp_t gfp_mask =3D xs->sk.sk_allocation;
-> > +     struct net_device *dev =3D xs->dev;
-> > +     int node =3D NUMA_NO_NODE;
-> > +     struct sk_buff *skb;
-> > +     u32 i =3D 0, j =3D 0;
-> > +     bool pfmemalloc;
-> > +     u32 base_len;
-> > +     u8 *data;
-> > +
-> > +     base_len =3D max(NET_SKB_PAD, L1_CACHE_ALIGN(dev->needed_headroom=
-));
-> > +     if (!(dev->priv_flags & IFF_TX_SKB_NO_LINEAR))
-> > +             base_len +=3D dev->needed_tailroom;
-> > +
-> > +     if (batch->skb_count >=3D nb_pkts)
-> > +             goto build;
-> > +
-> > +     if (xs->skb) {
-> > +             i =3D 1;
-> > +             batch->skb_count++;
-> > +     }
-> > +
-> > +     batch->skb_count +=3D kmem_cache_alloc_bulk(net_hotdata.skbuff_ca=
-che,
-> > +                                               gfp_mask, nb_pkts - bat=
-ch->skb_count,
-> > +                                               (void **)&skbs[batch->s=
-kb_count]);
-> > +     if (batch->skb_count < nb_pkts)
-> > +             nb_pkts =3D batch->skb_count;
-> > +
-> > +build:
-> > +     for (i =3D 0, j =3D 0; j < nb_descs; j++) {
-> > +             if (!xs->skb) {
-> > +                     u32 size =3D base_len + descs[j].len;
-> > +
-> > +                     /* In case we don't have enough allocated skbs */
-> > +                     if (i >=3D nb_pkts) {
-> > +                             *err =3D -EAGAIN;
-> > +                             break;
-> > +                     }
-> > +
-> > +                     if (sk_wmem_alloc_get(&xs->sk) > READ_ONCE(xs->sk=
-.sk_sndbuf)) {
-> > +                             *err =3D -EAGAIN;
-> > +                             break;
-> > +                     }
-> > +
-> > +                     skb =3D skbs[batch->skb_count - 1 - i];
-> > +
-> > +                     prefetchw(skb);
-> > +                     /* We do our best to align skb_shared_info on a s=
-eparate cache
-> > +                      * line. It usually works because kmalloc(X > SMP=
-_CACHE_BYTES) gives
-> > +                      * aligned memory blocks, unless SLUB/SLAB debug =
-is enabled.
-> > +                      * Both skb->head and skb_shared_info are cache l=
-ine aligned.
-> > +                      */
-> > +                     data =3D kmalloc_reserve(&size, gfp_mask, node, &=
-pfmemalloc);
-> > +                     if (unlikely(!data)) {
-> > +                             *err =3D -ENOBUFS;
-> > +                             break;
-> > +                     }
-> > +                     /* kmalloc_size_roundup() might give us more room=
- than requested.
-> > +                      * Put skb_shared_info exactly at the end of allo=
-cated zone,
-> > +                      * to allow max possible filling before reallocat=
-ion.
-> > +                      */
-> > +                     prefetchw(data + SKB_WITH_OVERHEAD(size));
-> > +
-> > +                     memset(skb, 0, offsetof(struct sk_buff, tail));
-> > +                     __build_skb_around(skb, data, size);
-> > +                     skb->pfmemalloc =3D pfmemalloc;
-> > +                     skb_set_owner_w(skb, &xs->sk);
-> > +             } else if (unlikely(i =3D=3D 0)) {
-> > +                     /* We have a skb in cache that is left last time =
-*/
-> > +                     kmem_cache_free(net_hotdata.skbuff_cache,
-> > +                                     skbs[batch->skb_count - 1]);
-> > +                     skbs[batch->skb_count - 1] =3D xs->skb;
-> > +             }
-> > +
-> > +             skb =3D xsk_build_skb(xs, skb, &descs[j]);
+> > -static int __xsk_generic_xmit(struct sock *sk)
+> > +static int __xsk_generic_xmit(struct xdp_sock *xs)
+> >  {
+> > -     struct xdp_sock *xs =3D xdp_sk(sk);
+> >       bool sent_frame =3D false;
+> >       struct xdp_desc desc;
+> >       struct sk_buff *skb;
+> >       u32 max_batch;
+> >       int err =3D 0;
+> >
+> > -     mutex_lock(&xs->mutex);
+> > -
+> >       /* Since we dropped the RCU read lock, the socket state might hav=
+e changed. */
+> >       if (unlikely(!xsk_is_bound(xs))) {
+> >               err =3D -ENXIO;
+> > @@ -1071,17 +1065,22 @@ static int __xsk_generic_xmit(struct sock *sk)
+> >       if (sent_frame)
+> >               __xsk_tx_release(xs);
+> >
+> > -     mutex_unlock(&xs->mutex);
+> >       return err;
+> >  }
+> >
+> >  static int xsk_generic_xmit(struct sock *sk)
+> >  {
+> > +     struct xdp_sock *xs =3D xdp_sk(sk);
+> >       int ret;
+> >
+> >       /* Drop the RCU lock since the SKB path might sleep. */
+> >       rcu_read_unlock();
+> > -     ret =3D __xsk_generic_xmit(sk);
+> > +     mutex_lock(&xs->mutex);
+> > +     if (xs->batch.generic_xmit_batch)
+> > +             ret =3D __xsk_generic_xmit_batch(xs);
+> > +     else
+> > +             ret =3D __xsk_generic_xmit(xs);
 >
-> Hi Jason,
->
-> Perhaps it cannot occur, but if we reach this line
-> without the if (!xs->skb) condition having been met for
-> any iteration of there loop this code sits inside,
-> then skb will be uninitialised here.
->
-> Also, assuming the above doesn't occur, and perhaps this
-> next case is intentional, but if the same condition is
-> not met for any iteration of the loop, then skb will have
-> its value from a prior iteration.
+> What's the point of keeping __xsk_generic_xmit? Can we have batch=3D1 by
+> default and always use __xsk_generic_xmit_batch?
 
-Thank you. You spotted one big mistake I've made. I will handle this in V4.
-
->
-> Flagged by Smatch.
-
-Cool, I noticed that this tool you have used for a long time has found
-various issues!
+Spot on. Thanks. Then I can fully replace it with the new function.
 
 Thanks,
 Jason
