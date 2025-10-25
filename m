@@ -1,109 +1,95 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB1A23AE9B;
-	Sat, 25 Oct 2025 08:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F918EB0;
+	Sat, 25 Oct 2025 09:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761381881; cv=none; b=lvJBzGUjvmj2YZtuNjddd2vw6C0Pd+4PcUTFw86TUl3WD8aE/lvGC2ILFZoz3k3sfIJE7LurLIlCBAilD5UVig8sliX8P4sZp8Sj1gSB9X0jJ2a9l3/3g0Be5S4SlXJyViq++QWzaivHllO7PJ5NQm7ysabbXqctmYx6UfqFWZM=
+	t=1761383045; cv=none; b=AV/cV4Y0kTGWqflpVt63IjHk9n9B7TiKeIYSsnmRMcbAR6rR0rpN5X8RQk6mxluJPl5JCkopTyV31ho/fMU12orktIfyFKD0muEwWGwoDnA0aLC8bTsi7IrQz86uZ9TjuswPQK+a3fHcyOikSyZE5feBuKKwl6mvIhWySIxYkpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761381881; c=relaxed/simple;
-	bh=hg8W4EJP+POIDRg8RMaQL/+Ab8rHz5hHJNZwuQ/qqeQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XMb4F1JyJEmr/hNF3DekXxU2pUJImRi0swF56dzudNX7RYyI20y3yzxY4HzeEFo/R8tyGX4HsuMmKpqHALTzIb7rvvTgH6vEukABBaE4prsEs5zX6bBK2KrIoan2z0R1WOE6knZf7fIuwYnRAvsXAwbJbzZF+hLZ2N1b0THSKQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=O//m52DE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761383045; c=relaxed/simple;
+	bh=JX54dqkVcettB79jeo61PXjr1tMDPM5+8OlJj2sQzYw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ssay4wz0k0KQ33U2Puao/GzlNAwb9jY+Vb+mPc4Vj2fW+px7TILxf/oOZWxnLE4G2kTuohO+d4RezWvOo27gwhXvg7FLBtVgwANYjQXbrLJ/rOMwquHsdo723lWfvjAv7L93Yqzhj6UwbI/XzdEFHTM97J9bYYiyotVORQ1oHmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=msKRhHp7; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="O//m52DE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sv53rsHLrJUFbnFVUbU9tXd6yZ3Hn0xkNMD9PLF8YI8=; b=O//m52DEWsSMKWfceMJzTo7StD
-	7Z0No+Acy4QNRAvjD2uGwvC9eXafo97kYmVn9sQKPL5acBfwBHyvrYR0yID379bk6MkxKXnufnClZ
-	vxQRpGAV25Z+lxnJ7X/3QrGGqJEMV620m5y06lZQzcVepXBiMtNYPyNLR9VqpdOyXUdoSl4fXsbUK
-	+6cKs9MNbgRi6whlJq+r8ziB8ytKCDUpERVzDcdVsZeNhsIJk2iPZEsuzfKcKRatfwd5Uw7Q7hw3w
-	x/h4hrIRsq6Lo5EmiLI93/FNqEmHo3OcSZQRelfJtYv7yPkCH6mnFqx4WRnzUI1vpJijap+cz+y3z
-	2uOcKpQw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44358)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vCZt3-000000008Q7-29RK;
-	Sat, 25 Oct 2025 09:44:33 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vCZt1-000000003Xn-28FH;
-	Sat, 25 Oct 2025 09:44:31 +0100
-Date: Sat, 25 Oct 2025 09:44:31 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] net: phy: dp83867: Disable EEE support as not
- implemented
-Message-ID: <aPyN7z8Vk4EiS20b@shell.armlinux.org.uk>
-References: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="msKRhHp7"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=1Vku7UM5vEHO2L1MY81GnHcBlnb5iKV3pBcw9CkFwpA=;
+	b=msKRhHp7q8CZ2UjkJ1TKFbxNbX1W8SEWwxXQ0EMvwrUSI554r9jVSej0rGOqKHrBECihdK/HZ
+	dZdI9bP3W3ADSkY1L9QJGo0CCA4Q3RR7oGLUz5Jhic3YB6BWi2E9RcaWBsJkYlp8ub/Y7T8ncyU
+	hfe14Mkwqg+0632HPSVVr7Q=
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctv272ZF3zKm4k;
+	Sat, 25 Oct 2025 17:03:27 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id A74AE1A016C;
+	Sat, 25 Oct 2025 17:03:53 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 25 Oct
+ 2025 17:03:52 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
+	<wangliang74@huawei.com>
+Subject: [PATCH net-next] net: ipv4: Remove extern udp_v4_early_demux()/tcp_v4_early_demux() in .c files
+Date: Sat, 25 Oct 2025 17:26:37 +0800
+Message-ID: <20251025092637.1020960-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251023144857.529566-1-ghidoliemanuele@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
-On Thu, Oct 23, 2025 at 04:48:53PM +0200, Emanuele Ghidoli wrote:
-> While the DP83867 PHYs report EEE capability through their feature
-> registers, the actual hardware does not support EEE (see Links).
-> When the connected MAC enables EEE, it causes link instability and
-> communication failures.
-> 
-> The issue is reproducible with a iMX8MP and relevant stmmac ethernet port.
-> Since the introduction of phylink-managed EEE support in the stmmac driver,
-> EEE is now enabled by default, leading to issues on systems using the
-> DP83867 PHY.
+Function udp_v4_early_demux() was already declared in 'include/net/udp.h',
+no need to keep the extern in 'ip_input.c', which may produce the
+following checkpatch warning:
 
-Wasn't it enabled before? See commit 4218647d4556 ("net: stmmac:
-convert to phylink managed EEE support").
+  WARNING: externs should be avoided in .c files
+  #45: FILE: net/ipv4/ip_input.c:322:
+  +enum skb_drop_reason udp_v4_early_demux(struct sk_buff *skb);
 
-stmmac's mac_link_up() was:
+Replace it by including 'net/udp.h'. Do the same for tcp_v4_early_demux().
 
--       if (phy && priv->dma_cap.eee) {
--               phy_eee_rx_clock_stop(phy, !(priv->plat->flags &
--                                            STMMAC_FLAG_RX_CLK_RUNS_IN_LPI));
--               priv->tx_lpi_timer = phy->eee_cfg.tx_lpi_timer;
--               stmmac_eee_init(priv, phy->enable_tx_lpi);
-                stmmac_set_eee_pls(priv, priv->hw, true);
--       }
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+---
+ net/ipv4/ip_input.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-So, if EEE is enabled in the core synthesis, then EEE will be
-configured depending on what phylib says.
-
-In stmmac_init_phy(), there was this:
-
--               if (priv->dma_cap.eee)
--                       phy_support_eee(phydev);
--
-                ret = phylink_connect_phy(priv->phylink, phydev);
-
-So phylib was told to enable EEE support on the PHY if the dwmac
-core supports EEE.
-
-So, from what I can see, converting to phylink managed EEE didn't
-change this. So what really did change?
-
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index 273578579a6b..19d3141dad1f 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -141,6 +141,8 @@
+ #include <linux/mroute.h>
+ #include <linux/netlink.h>
+ #include <net/dst_metadata.h>
++#include <net/udp.h>
++#include <net/tcp.h>
+ 
+ /*
+  *	Process Router Attention IP option (RFC 2113)
+@@ -317,8 +319,6 @@ static bool ip_can_use_hint(const struct sk_buff *skb, const struct iphdr *iph,
+ 	       ip_hdr(hint)->tos == iph->tos;
+ }
+ 
+-int tcp_v4_early_demux(struct sk_buff *skb);
+-enum skb_drop_reason udp_v4_early_demux(struct sk_buff *skb);
+ static int ip_rcv_finish_core(struct net *net,
+ 			      struct sk_buff *skb, struct net_device *dev,
+ 			      const struct sk_buff *hint)
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
