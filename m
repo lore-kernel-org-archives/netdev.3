@@ -1,96 +1,129 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E03918E1F;
-	Sat, 25 Oct 2025 18:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB423019D2
+	for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 18:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761418344; cv=none; b=bpvyLZgUyrBitLfZmRQzdAyKhhx1VIxHsBZioMF/nXE1qXEA69af5DvfJeOKKeTJlykoMJLW5lCbR4+EoFGFrw8b0dMgyJQAoglntd8vLzDOHqIHmkSZUKLll3cEksANlzsT7sZiq6kmMp9wig2s93mjwf8nMm6wLU+iYSrpOvg=
+	t=1761418380; cv=none; b=uBrAm1nWLd7Z59n+9b9ZID+Tc+P72rBSxZwkCaSb5Jol81spV4oT0sTSbRROWNuyiRQsJ5Wd9rCObT/Tk5SGSdvmio2G4Wt+vuqhrQmh+zTetuFRq6nbW/qH518tgl8hDlxvFCl8ajk89AbOHjADOozHua+UGnpY4taQm+pBKKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761418344; c=relaxed/simple;
-	bh=pS1PNweBj0lv67nzhtW2vhqWYh0EvLJlraa9+vAPCfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pvu3z109W+vvSvZmnxVkOctO7F+xUenB1nwf19F2fUlkqAFhqPSIhyiehu8urIPmecFXTm5WwUV1Y6S2Q63JUS5XyE7WlG+6sSKymkYfqQ5/43+d54KCTE2gpq/9RJnGFgvo/pWfscquvzCEE/4Qsb2K3R97kd2lRJTcKxzoxUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FlOF+A82; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1761418380; c=relaxed/simple;
+	bh=++qhl4KSNWgMDQx7EKaOxJp4oYwDNeFiiI+BE3om2D0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ItxZJE2XW2undAepGonfqmJ+XFHzDApcfaKjGwfLg1hSQKMvqs/mi5WPQc6V3pBWC8kj88zDR0vRnsBYFqkEJdSr8xOMkaKG8ObJpCf2Do28Fkx/B7kCkBGoJA/h4Q5LaNexKcAaNNXR4C8sP02SVL5UT3C6/fV70VTHDvje7rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZO4qKC5; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FlOF+A82"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vzMDiq5tlTgX1W/21WhiBB6gzelJCaOUjEZfpZPw2jo=; b=FlOF+A82rwYsAN7j4qoNpJgXtF
-	iWSNKWO8eYN/x0dET5c9+Js9JoENDh1Q5nuo4uZl6XJtc+wddCkclErWajJuho0AAVCCNlW9BtOny
-	7kFFe0pahZ/Ypmi5vZswSMO2q8XAXspt+qxQ7cPRb2z6ojln7nkxHRXc1u6ZFnl7yeKiL+6NFL5KP
-	pdqzgLGgxtbt9xuNsWLKzj68BKWXm9M2Cwot1WLin+o+jWtRoseNWYEIh9Z+Qfx4s030zrPhlwmDn
-	nxnEDjLNwimpjuvy8+OxtEbfKUHMGOnwNuCUb7Cynqu2POed4jzv6q6MW3wdAQA9a/3/O3mnxFilD
-	tnpPQnCg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56072)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vCjN1-000000000IZ-2XQq;
-	Sat, 25 Oct 2025 19:52:07 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vCjMy-000000003tv-0P2Z;
-	Sat, 25 Oct 2025 19:52:04 +0100
-Date: Sat, 25 Oct 2025 19:52:03 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>, kernel@pengutronix.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Teoh Ji Sheng <ji.sheng.teoh@intel.com>,
-	Adrian Ng Ho Yin <adrian.ho.yin.ng@intel.com>,
-	Austin Zhang <austin.zhang@intel.com>,
-	"Tham, Mun Yew" <mun.yew.tham@intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v5 00/10] arm64: dts: socfpga: agilex5: enable network
- and add new board
-Message-ID: <aP0cU1mygKbt9DBQ@shell.armlinux.org.uk>
-References: <20251024-v6-12-topic-socfpga-agilex5-v5-0-4c4a51159eeb@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZO4qKC5"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3ee15b5435bso2255037f8f.0
+        for <netdev@vger.kernel.org>; Sat, 25 Oct 2025 11:52:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761418378; x=1762023178; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
+        b=GZO4qKC5D2lL11tAL4EnhVD4WSzMIC0bkomTeb7tAIPui4CRsQ8fEkJWo17jgFtjy8
+         he9O7U4Prz0NSOqqPwIjiRbieWPWKwty3Js7j+5siXSGBs7euA97A//cU9s7TDDi5sgs
+         zrMUpJ7xy8YJY1ww8mifC03yyrlU+bUg8rhXbMJpkjhnerpiOhEVgmfgsJbQUvLe6PNu
+         YX5ouMw/MelavN8XFstKowe3vkaHS/FAn2P79WWA3SO3+1Um5BUzGQethhIV9XfMj93U
+         l3eA97iEfAtRMOBNBkge0B8FFSq/JjJlWU2nJliZ+0qB2R1rG9oHru1NQWVuB8UKdmu1
+         3+VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761418378; x=1762023178;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rioMXLIytYS2vDdWj/lGi+EnzevNN/0HrVqMOMW5YCw=;
+        b=FiO+Vim4RcmBqIGIMQqz6d8PWvHa4lPlKa+sI+l6m9dTEMTitchYpD8XSbx7tGp9F+
+         2T5463FQVTA+1FypxOj2Xw0b9ZeEf3lM7+A52LY1xWuP3ml6O+za7FbOX5SNtm/CdPs5
+         jcMe4Obd5HIFSjNzyas8djbOvEt/KfAi2IUP5OiNJUUjvB88+Afjnx933mw0F5RuUtPw
+         KnfZXapCdEi5Th+EP77y+6sSre/qy3Bzgo0eGkoLZejUopQI+mPWWKSBwOjAGrJMHkDF
+         qFFEpOmTPG5Mkog+OcyBKfX3thDcKgVsLQKxxhLpLIhuZWLw4cmHPrHvchTD/aaAfuln
+         frJg==
+X-Gm-Message-State: AOJu0YxaFh4kKbUJUWE6ToKAOQNAj+k14KzitVeLXOGiDb8QZ5K2GUGh
+	Ll4/4ZJI1QYevKX6N+OnQpx78vODMmmEaugKA31kiestRuIRuHymGyhE
+X-Gm-Gg: ASbGnctBnwDC5bTnO6vC8cyCDjPKFPJFG8Yw/EeIm+vI29LHy8MP6NODWVyh5o+BzzW
+	ZvPIbXKFCdXhoAovtp6uX8X0koTmDDrcyeN/n+r0d02GTv8eC95dYsVa3cZKaGab3b2j3ZgWtWG
+	+1kj5f2FngTcTaPw9Y3/GicwBu/0Ulmvca7u+a0Ga8OPu2lFwdCwA6BLeUsWNvvoCVDneZZvv5Z
+	dQDyG8dNYxxyHmEUInl0RR6LV1K29oR1QaZrgvQv53CDsilpQgisMtKxoK9yK2X7FYlz/bNQbs5
+	SvQ+o2pGBcTmYZNtI2yAIuRtgCQKPG/t+m79rElXJvrwQmTp0mza26bP2I9RWU80TBPvMGWbj8N
+	MXdaByS6zhg3d/1z/ck+xLjjaC1SAfxgMh6S54BEd7atK4XAQ5IygyJ7nxisEb2LyP+9F8kMHTM
+	Sj6UMx3h+lrW5z2uZEKbRDv212aeXa3IgjTdIvIqSbUMx8TeUc+xHX3gU428juC/RTBGSf8NHgl
+	DWOtSF05m/8Mzd6uaEcOw18QUu7HIIblF+3hvXght8=
+X-Google-Smtp-Source: AGHT+IFje2vw71LCSYtKx715VjGao8U1JqPzcYNORegl3cXgFepLRp8cL8qgkSfxNKDPItoF8ydqmw==
+X-Received: by 2002:a05:6000:24ca:b0:428:3fa7:77ff with SMTP id ffacd0b85a97d-4298a04e599mr7818417f8f.14.1761418377510;
+        Sat, 25 Oct 2025 11:52:57 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f39:8b00:d401:6211:9005:e76e? (p200300ea8f398b00d40162119005e76e.dip0.t-ipconnect.de. [2003:ea:8f39:8b00:d401:6211:9005:e76e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952cb55asm4956750f8f.17.2025.10.25.11.52.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Oct 2025 11:52:57 -0700 (PDT)
+Message-ID: <6d792b1e-d23d-4b7e-a94f-89c6617b620f@gmail.com>
+Date: Sat, 25 Oct 2025 20:52:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251024-v6-12-topic-socfpga-agilex5-v5-0-4c4a51159eeb@pengutronix.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v3 net-next 4/4] net: phy: use new iterator
+ mdiobus_for_each_phy in mdiobus_prevent_c45_scan
+From: Heiner Kallweit <hkallweit1@gmail.com>
+To: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ linux-omap@vger.kernel.org, imx@lists.linux.dev
+References: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
+Content-Language: en-US
+In-Reply-To: <07fc63e8-53fd-46aa-853e-96187bba9d44@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 24, 2025 at 01:49:52PM +0200, Steffen Trumtrar wrote:
-> Add an initial devicetree for a new board (Arrow AXE5-Eagle) and all
-> needed patches to support the network on current mainline.
-> 
-> Currently only QSPI and network are functional as all other hardware
-> currently lacks mainline support.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Use new iterator mdiobus_for_each_phy() to simplify the code.
 
-You haven't included which tree you are targetting with this series. I'm
-assuming net-next for the following review. Please be explicit via
-[PATCH net ...] or [PATCH net-next ...] in the subject line of the cover
-message and each patch.
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/phy/mdio_bus_provider.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/phy/mdio_bus_provider.c b/drivers/net/phy/mdio_bus_provider.c
+index a2391d4b7..4b0637405 100644
+--- a/drivers/net/phy/mdio_bus_provider.c
++++ b/drivers/net/phy/mdio_bus_provider.c
+@@ -249,20 +249,15 @@ static int mdiobus_scan_bus_c45(struct mii_bus *bus)
+  */
+ static bool mdiobus_prevent_c45_scan(struct mii_bus *bus)
+ {
+-	int i;
++	struct phy_device *phydev;
+ 
+-	for (i = 0; i < PHY_MAX_ADDR; i++) {
+-		struct phy_device *phydev;
+-		u32 oui;
+-
+-		phydev = mdiobus_get_phy(bus, i);
+-		if (!phydev)
+-			continue;
+-		oui = phydev->phy_id >> 10;
++	mdiobus_for_each_phy(bus, phydev) {
++		u32 oui = phydev->phy_id >> 10;
+ 
+ 		if (oui == MICREL_OUI)
+ 			return true;
+ 	}
++
+ 	return false;
+ }
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.51.1
+
+
+
