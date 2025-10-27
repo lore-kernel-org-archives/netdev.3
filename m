@@ -1,254 +1,304 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013070.outbound.protection.outlook.com [40.93.196.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19BA3195E6
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 17:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761586846; cv=fail; b=qfAcu4XtIlRdu/29JS1/oof0RC3Ky7jyfMxFQqQIv83Tc/PDXGmJzWD/WVOMSAomjGUWTyOvgH7a1tyLDnK84U4tbLaaI2/xMhiWmwoFO3qA/IepOk7uaXLipcCV7uDvjar0Tui1iQs5D+gG/DxKkjRWyH2PE5hKNDsoLjgC1pc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761586846; c=relaxed/simple;
-	bh=8VxfiY4wKsrMSrBkB4vUaxYqSb+vz04Zr4dMPnX+D7g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oNmKr11u78mKCnmuY9CFIbCfy/vGqIFcee3pgjlI3PNf6jv9nNqAqIMr870AB0NVAQFp0eSwa4a/W+hWeiPSdtklLeVS7eMS5D/cymdHtU6rsngUl42R6iahgg4YIFPs9QCIqrZbHnaXHLYZSMg07PgvobTPhATci+Av7lXF8HI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ktyb5NVs; arc=fail smtp.client-ip=40.93.196.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAB31961A
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 17:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761586850; cv=none; b=nc80N6dMiwny5zoLr2Ve2yRw092iXEQ1C2rk4UQ89sCrT1qfsN33z4uoe0c8wEAXAUYfVMA6ZVdxuH4QEMmsdKHDxa9mPUdlgwuDAXZYszGfcJkNrqPtpDa3eKnSzL9sb1GwgoSM50OB7qOr0Y3jcKzaHQcnDezeZ20R1Y6Jjdk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761586850; c=relaxed/simple;
+	bh=yrssoTy4jgd8O3sgebe7ei17neZ6MLQm24uhci7teas=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m5Q5cLduWM2N0UW6HorauQJyy132pKQOxQYprT8/n0vq1KL+n6Cxlie7+L0QoloRJ3u15MN3LmIAfp9U+opwgU3AZbVkeQsbo9amQU86eTcH8sg6nlL+u1mtYd2M+vvzDpMoIdLOhSX2MlmCkgybGvX1iwuknsAUatvrQ/7Sjik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MrOUfsWW; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ktyb5NVs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L1iDWqrBHku/0h6cHoCD0lnVP4qHeJRzoo0IeM6fWvWYdJ+jzR4e38lO0xjBOJZYl4L4xpCgaoCk4x7Gjc2fh0a3+J+lM3kpJELw557yuHV3EYxuaLflGLY+mvnJH3xC1tdppIlpR9wHIcIWQUduN6mPGsNogZBdH+Bag+E4uKHyd54kygC1BeJB7DSpB3SKLjdP9lOt1Sm3WOYlCnNYNXXgx7pKLBj74yrpxfCTQaiPhJKnGTGQqVSQ+eHkUshnWyQpL3G+9m+qyeD1ljmGmSyU4ce2SzbWzY8Myi0b6eZapQGnZnR26tLxnvJG2AdfvsZbbJZI/e/AAZEJ8Nfb5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VJKNuPCFKRMX6GGVZRtjPil06yPltXg0sPCjURvFWAI=;
- b=jj9Clzl6Xzh9EXd58LktFwkJiMZdPTK523NJlB+h373igKfHc740MJqu//9iEflJ2K58eo8+V+ZU5acCRIAcFtjJqmeeeODNHLbBtVOmajsv/8qksrUmL6TEeqrQN16AaGBZekX7ebbUfh3jgZywV2QR2XSsQfhsqC8kX7ng6Ge4PE1XuRPCRllocpqoDPM3IZLFc1udpowS8rg+wzxil1m5zwN8TsdABYnLUwveky87Se4ZRs+BP66qlkkU5RRiTNNYY760cxPP8aSUsdqnzOOExDIkyCbeEbIKV+knNjLZ98ZteXrJmPM0JZuUDzOgTFKmHbmKJB+jjjr5y4lhvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VJKNuPCFKRMX6GGVZRtjPil06yPltXg0sPCjURvFWAI=;
- b=Ktyb5NVsfEFiJfGi63ew/1pnPc740r6C8G4jFVKPO5Zdqhu2g8rmt5B8kfscj6KpY63Gu9AYlo2s+nbXVKhgaJdH0NEqcnrgjN6UQpwW3amijTxWmZt3YzdZZTndK+Rj778n3onHRyt/wdCszip9V/ZpOiDlfbhIhza0N7kjIZyVCTjge4NacZe2g5Bviln42/y1+pwkyXiIDmI7m7AhEdO9Ku+IMqd7CplTxQC4U7Z+ozONw+5r461Gt3l81AEjM0TtqozWokIT9QQB9M2xooLJVQnPcAjoyDPvW5qYunHddQGqsp/axftTvEBiAH3C9COq8QtVXY1E+d0DqTrcmg==
-Received: from DM6PR03CA0086.namprd03.prod.outlook.com (2603:10b6:5:333::19)
- by SJ0PR12MB7008.namprd12.prod.outlook.com (2603:10b6:a03:486::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 17:40:40 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:333:cafe::1b) by DM6PR03CA0086.outlook.office365.com
- (2603:10b6:5:333::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.17 via Frontend Transport; Mon,
- 27 Oct 2025 17:40:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9275.10 via Frontend Transport; Mon, 27 Oct 2025 17:40:40 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Mon, 27 Oct
- 2025 10:40:19 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Oct
- 2025 10:40:19 -0700
-Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 27
- Oct 2025 10:40:17 -0700
-From: Daniel Jurgens <danielj@nvidia.com>
-To: <netdev@vger.kernel.org>, <mst@redhat.com>, <jasowang@redhat.com>,
-	<alex.williamson@redhat.com>, <pabeni@redhat.com>
-CC: <virtualization@lists.linux.dev>, <parav@nvidia.com>,
-	<shshitrit@nvidia.com>, <yohadt@nvidia.com>, <xuanzhuo@linux.alibaba.com>,
-	<eperezma@redhat.com>, <shameerali.kolothum.thodi@huawei.com>,
-	<jgg@ziepe.ca>, <kevin.tian@intel.com>, <kuba@kernel.org>,
-	<andrew+netdev@lunn.ch>, <edumazet@google.com>, Daniel Jurgens
-	<danielj@nvidia.com>
-Subject: [PATCH net-next v6 06/12] virtio_net: Create a FF group for ethtool steering
-Date: Mon, 27 Oct 2025 12:39:51 -0500
-Message-ID: <20251027173957.2334-7-danielj@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20251027173957.2334-1-danielj@nvidia.com>
-References: <20251027173957.2334-1-danielj@nvidia.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MrOUfsWW"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b55517e74e3so4551071a12.2
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 10:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761586847; x=1762191647; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tPCmzMn2A+XBQUun/a12vKmCiqo+GJ3W6P9jrYY7W5U=;
+        b=MrOUfsWWP/iTKArYbhaYldiXnaTfKohRUtmHBf8Tfm0EelKvr24IUvJ0qpvzVZUa7Z
+         O4AavCKEK5bZVb/gWTCw7TIpqbOEHPyzca00GQnWruuvBJpKEoyAg0TKxc5TXXfWHep6
+         yuC3nert32fn1nTetN6yHaNWWvJz9T917jQ+j13XpKg9t5L8dKvV3OBpfTjkzka5NvkK
+         FKljmn2NnLqr6W900Atxyn0upaeAI9yrql3z7AslPtsna5Q86jAd4OSbDpBXQmlkdwTr
+         uVJDKIbhjqRsdTgFDOuQ+yl13OJ/FMZctUW+gw9w67dLB7zcONL9yqGk/oRU5fa4bzJE
+         u/+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761586847; x=1762191647;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tPCmzMn2A+XBQUun/a12vKmCiqo+GJ3W6P9jrYY7W5U=;
+        b=J9fb96Ayf87/pz8T6eUbekKmutst6mXEU7AtvxFi5/QewTEYwCI26LQ+lsixFXkP+p
+         LOZ+X0jSTzUXiKUiPCkxKTBlp3eeU8ZfWH7blJWvaJ96ioKTrQwVFx1r2GCgvYVNRpqf
+         WzxPLh6WTSkYBPo8EJjfarsx1u236jY1wOt0HgwwVzRcOUf6SUnpuQeomfuveyAa74B5
+         1vnokzPnpsBfto1IzIvwyTxJcSw85JOD21O7Grq45LewL7ow3vT/HSD6QKS6BMA/T0nb
+         55mmnsniJl4b7fkqNSj1vobLf+2BB2upSpy+okYmFbn+Ggz3GMy7XoOlTIIEy+S0X8yX
+         D0nw==
+X-Forwarded-Encrypted: i=1; AJvYcCXFL32NkwOgvSdaArwDGo19+aNL7KJdaYmD7GuCfP3nimNS7Xpnu1PqqvDHENi00nfTHcXgY/0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMW7QcMrMYd+K2Azu+6XNJ8tur6ErhDH1LQ1LW4qsS/e87D1nk
+	hih998o1oKsiyQpilOYKTLoYPMc1mjr3EBTpHo1nugUJrC2lHEfnfXKi6v1G9pDOv+E8Wwg25DQ
+	7l5VvMBehm54voeq3pw5IzD1bA0JlIGSrnnAEA5ZT
+X-Gm-Gg: ASbGncvdbswV9DcAOwTk6Pog22Bqrv1ju4LBW/EqDq26C9Xtxa1pEDYNX2SlAiaRwQ8
+	bPKov1XDMbn6tgE0LSjWrqOvVvbeuPb+1ToJHCG66bhLBrPKIOUtB0GYdedSLb9n8ab8nSxvtG0
+	s7LOmtXlBNVJsOYfuzbYX9sMw++Rtbk60dfI0RgTN0xAs/4YFGgBWiMqB74aYmu+EliXnBMCzDR
+	BIiEc/5Xe6DKlqyQSpmWHrbZAYZdfE7F54nIc36IaBYKgykXCOer0aTc7s9bV/YdTKVCUa3hbwW
+	OoUyMedpdrelOegNcH+L4kiGxQ==
+X-Google-Smtp-Source: AGHT+IGvLrA+njYshjEDvqusYQk/lL0ezsX0X9xwbHI10HNYnNH7O8L8mtGr8v7dpjz1zoeXbp5G9y8cGj5M/gZEOiE=
+X-Received: by 2002:a17:902:e845:b0:290:c5c8:941d with SMTP id
+ d9443c01a7336-294cb51121fmr8719025ad.39.1761586846290; Mon, 27 Oct 2025
+ 10:40:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|SJ0PR12MB7008:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07b5d8b7-1dae-4796-efae-08de157ff248
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RDZIrUxI7aaWCW9RhMVJfn2AOe9g9EKPY4WnCsAqVR0lLAf97k1TnXzbjewp?=
- =?us-ascii?Q?EPfUkaqjwt1nI3HHaMo2R8nRyRXlMO407gEO/FG/oM3wOnyi5wZyh4kGLk9u?=
- =?us-ascii?Q?wXIzg6U9+sapG3f1Q/XHpHqqFkVOxP/RMCyWaSFJF5facF2/noIAb2zWMWqA?=
- =?us-ascii?Q?0vJ8XsBuZ6Bmh5x9zJXShZ0SrdU1GVweu5T5wyMdK/0IlnL7lj6KCE/CwQbA?=
- =?us-ascii?Q?MqqO0JkmbLYlCLpQWiRwA9rCH6gMgbmfjyUr3EJ1QMdVwOa+pmanx5tYh445?=
- =?us-ascii?Q?kEG8AaC1upkE9kp4Drc/OAJul3l8oCZ7wgvhuNvZiLrDeCR/YciQOxKV3uvP?=
- =?us-ascii?Q?QzCuK4M+hITTXKahcBM8YLiPuh3ciFhBGI6v07ar+2FT2+pRc6CC6l+ry6xo?=
- =?us-ascii?Q?5RlS4f0epWkJwjZP8oMhsqazYCeULy0B7bP4Nb1ubz+m7zRWu7FyHUQVb3qx?=
- =?us-ascii?Q?4Yv5GLZOzuD7OaJFSZKTZCykGjVO5j9cb6huOvIceK+wUo/w/E2GydU1BN5N?=
- =?us-ascii?Q?7nbJQMvsVEXOrbESC4kXdFByqH5XEAfVN500BuTX6fz8qG68yOhpDitB1IvO?=
- =?us-ascii?Q?2V93M0ZrfZ/iR00+hNXMKACj36ruW/W8DbCm00YOHcHiL6pF5erOCoSB843v?=
- =?us-ascii?Q?JwZ2mkQW3V29bPpNpLeHCisFLBrRlIZz3665SRTBqbMa1S/RaHFHmYWwvE55?=
- =?us-ascii?Q?u95dy3CPLoaGptCrpXy8LbFlTXRjZhHzXwVV6Bs1CEMR2q4IgSQOWCcCoGoT?=
- =?us-ascii?Q?w4fQB/mGtACAqX61Iss85rP0NHmulkR7qdbRQQvK5CRc8ocq6Vk0hKMOJ+tU?=
- =?us-ascii?Q?EPxPwTYeUr5NqDv2ti4LRBS2XQaEGJp73w9IEE+EmFE029J9T6juKvjxbvOQ?=
- =?us-ascii?Q?PeD0GLD5b19rgm089ahcwT65gonjDDO9Mj+dS4FSsd+j1sVHvJHykUL193k4?=
- =?us-ascii?Q?gRXv8Bw68FA4xKCs9xA7tfuiafzYnjM3JWjRC72/7SG6wUOooQMOeP8GWUVi?=
- =?us-ascii?Q?IIFmqcwUWfl/OMNwnNitiBTli/aUiqRhFv1VVlnLY7Efgvlz/u8tR0xsZ0I2?=
- =?us-ascii?Q?F6oxhfL+edwU+UDDksnnsR7jGZAFGzJOEJVz4KuVa3Z4nd8ECJjFci+7zkTo?=
- =?us-ascii?Q?Hx39hjJTN8CQlFpJdm/iu/qpXvEH/+aZmzEuzNZySJsy1SvW2mv8sOMHNlFc?=
- =?us-ascii?Q?aowABRpQR40v0fQNg1OuZBhE5qgEYHRzhuK5eg7a0YON1qxScdNEkQbsvwmI?=
- =?us-ascii?Q?rPOzu1ajCOB9Z6GYPKsF5XmBKUrL+POdqsNzLbKrBJDDjgza5ElNQLnjr6I/?=
- =?us-ascii?Q?VidptAtTqqg4WKejeQrgxky8RgaQrYZ3gWBklSmbMB/GSKXlPREuXTaCeaNg?=
- =?us-ascii?Q?BfhObZYhK3SsXyDmjXM44sPYEPXcV3yaG6IVoRVEtytvW6buNr5qyMPh9rB8?=
- =?us-ascii?Q?1P0gcG7OryBMeGh5V9KCx0JesADlu9QfH+vrOiMc3HdBG5PqW9AixT26PNOP?=
- =?us-ascii?Q?/TAIbWS5jkL+GMbrom7js4wU/7a3VMu3cytQkbUT655WXS2ZeCNZ/ql3KKV2?=
- =?us-ascii?Q?DyW3fqviYXa/S0xsG+w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 17:40:40.2043
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07b5d8b7-1dae-4796-efae-08de157ff248
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7008
+References: <CAAVpQUAEBgTZF5GMvRgZybC0pHUuaN-4JBaff79L6AABNKSNWw@mail.gmail.com>
+ <20251025075314.3275350-1-lizhi.xu@windriver.com>
+In-Reply-To: <20251025075314.3275350-1-lizhi.xu@windriver.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 27 Oct 2025 10:40:34 -0700
+X-Gm-Features: AWmQ_bnEM1KrRr71L9tmkILbF5hbRJqWIFE8_lnlj1yNvYaGqplbdRBECxLymzE
+Message-ID: <CAAVpQUA1v+LDYfpGGcTJ3sGGhmo6BCBrwWUwaj9cUbBVrw28GQ@mail.gmail.com>
+Subject: Re: [PATCH V3] net: rose: Prevent the use of freed digipeat
+To: Lizhi Xu <lizhi.xu@windriver.com>
+Cc: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	jreuter@yaina.de, kuba@kernel.org, linux-hams@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzbot+caa052a0958a9146870d@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-All ethtool steering rules will go in one group, create it during
-initialization.
+On Sat, Oct 25, 2025 at 12:53=E2=80=AFAM Lizhi Xu <lizhi.xu@windriver.com> =
+wrote:
+>
+> On Sat, 25 Oct 2025 00:15:51 -0700, Kuniyuki Iwashima <kuniyu@google.com>=
+ wrote:
+> > On Fri, Oct 24, 2025 at 11:46 PM Lizhi Xu <lizhi.xu@windriver.com> wrot=
+e:
+> > >
+> > > On Fri, 24 Oct 2025 21:25:20 -0700, Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+> > > > On Fri, Oct 24, 2025 at 8:51 PM Lizhi Xu <lizhi.xu@windriver.com> w=
+rote:
+> > > > >
+> > > > > On Fri, 24 Oct 2025 19:18:46 -0700, Kuniyuki Iwashima <kuniyu@goo=
+gle.com> wrote:
+> > > > > > On Fri, Oct 24, 2025 at 2:39 AM Lizhi Xu <lizhi.xu@windriver.co=
+m> wrote:
+> > > > > > >
+> > > > > > > There is no synchronization between the two timers, rose_t0ti=
+mer_expiry
+> > > > > > > and rose_timer_expiry.
+> > > > > > > rose_timer_expiry() puts the neighbor when the rose state is =
+ROSE_STATE_2.
+> > > > > > > However, rose_t0timer_expiry() does initiate a restart reques=
+t on the
+> > > > > > > neighbor.
+> > > > > > > When rose_t0timer_expiry() accesses the released neighbor mem=
+ber digipeat,
+> > > > > > > a UAF is triggered.
+> > > > > > >
+> > > > > > > To avoid this UAF, defer the put operation to rose_t0timer_ex=
+piry() and
+> > > > > > > stop restarting t0timer after putting the neighbor.
+> > > > > > >
+> > > > > > > When putting the neighbor, set the neighbor to NULL. Setting =
+neighbor to
+> > > > > > > NULL prevents rose_t0timer_expiry() from restarting t0timer.
+> > > > > > >
+> > > > > > > syzbot reported a slab-use-after-free Read in ax25_find_cb.
+> > > > > > > BUG: KASAN: slab-use-after-free in ax25_find_cb+0x3b8/0x3f0 n=
+et/ax25/af_ax25.c:237
+> > > > > > > Read of size 1 at addr ffff888059c704c0 by task syz.6.2733/17=
+200
+> > > > > > > Call Trace:
+> > > > > > >  ax25_find_cb+0x3b8/0x3f0 net/ax25/af_ax25.c:237
+> > > > > > >  ax25_send_frame+0x157/0xb60 net/ax25/ax25_out.c:55
+> > > > > > >  rose_send_frame+0xcc/0x2c0 net/rose/rose_link.c:106
+> > > > > > >  rose_transmit_restart_request+0x1b8/0x240 net/rose/rose_link=
+.c:198
+> > > > > > >  rose_t0timer_expiry+0x1d/0x150 net/rose/rose_link.c:83
+> > > > > > >
+> > > > > > > Freed by task 17183:
+> > > > > > >  kfree+0x2b8/0x6d0 mm/slub.c:6826
+> > > > > > >  rose_neigh_put include/net/rose.h:165 [inline]
+> > > > > > >  rose_timer_expiry+0x537/0x630 net/rose/rose_timer.c:183
+> > > > > > >
+> > > > > > > Fixes: d860d1faa6b2 ("net: rose: convert 'use' field to refco=
+unt_t")
+> > > > > > > Reported-by: syzbot+caa052a0958a9146870d@syzkaller.appspotmai=
+l.com
+> > > > > > > Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> > > > > > > ---
+> > > > > > > V1 -> V2: Putting the neighbor stops t0timer from automatical=
+ly starting
+> > > > > > > V2 -> V3: add rose_neigh_putex for set rose neigh to NULL
+> > > > > > >
+> > > > > > >  include/net/rose.h   | 12 ++++++++++++
+> > > > > > >  net/rose/rose_link.c |  5 +++++
+> > > > > > >  2 files changed, 17 insertions(+)
+> > > > > > >
+> > > > > > > diff --git a/include/net/rose.h b/include/net/rose.h
+> > > > > > > index 2b5491bbf39a..33de310ba778 100644
+> > > > > > > --- a/include/net/rose.h
+> > > > > > > +++ b/include/net/rose.h
+> > > > > > > @@ -167,6 +167,18 @@ static inline void rose_neigh_put(struct=
+ rose_neigh *rose_neigh)
+> > > > > > >         }
+> > > > > > >  }
+> > > > > > >
+> > > > > > > +static inline void rose_neigh_putex(struct rose_neigh **rose=
+neigh)
+> > > > > > > +{
+> > > > > > > +       struct rose_neigh *rose_neigh =3D *roseneigh;
+> > > > > > > +       if (refcount_dec_and_test(&rose_neigh->use)) {
+> > > > > > > +               if (rose_neigh->ax25)
+> > > > > > > +                       ax25_cb_put(rose_neigh->ax25);
+> > > > > > > +               kfree(rose_neigh->digipeat);
+> > > > > > > +               kfree(rose_neigh);
+> > > > > > > +               *roseneigh =3D NULL;
+> > > > > > > +       }
+> > > > > > > +}
+> > > > > > > +
+> > > > > > >  /* af_rose.c */
+> > > > > > >  extern ax25_address rose_callsign;
+> > > > > > >  extern int  sysctl_rose_restart_request_timeout;
+> > > > > > > diff --git a/net/rose/rose_link.c b/net/rose/rose_link.c
+> > > > > > > index 7746229fdc8c..334c8cc0876d 100644
+> > > > > > > --- a/net/rose/rose_link.c
+> > > > > > > +++ b/net/rose/rose_link.c
+> > > > > > > @@ -43,6 +43,9 @@ void rose_start_ftimer(struct rose_neigh *n=
+eigh)
+> > > > > > >
+> > > > > > >  static void rose_start_t0timer(struct rose_neigh *neigh)
+> > > > > > >  {
+> > > > > > > +       if (!neigh)
+> > > > > > > +               return;
+> > > > > > > +
+> > > > > > >         timer_delete(&neigh->t0timer);
+> > > > > > >
+> > > > > > >         neigh->t0timer.function =3D rose_t0timer_expiry;
+> > > > > > > @@ -80,10 +83,12 @@ static void rose_t0timer_expiry(struct ti=
+mer_list *t)
+> > > > > > >  {
+> > > > > > >         struct rose_neigh *neigh =3D timer_container_of(neigh=
+, t, t0timer);
+> > > > > > >
+> > > > > >
+> > > > > > What prevents rose_timer_expiry() from releasing the
+> > > > > > last refcnt here ?
+> > > > > The issue reported by syzbot is that rose_t0timer_expiry() is tri=
+ggered
+> > > > > first, followed by rose_timer_expiry().
+> > > >
+> > > > I don't see how you read that ordering from the report.
+> > > > https://syzkaller.appspot.com/bug?extid=3Dcaa052a0958a9146870d
+> > > Here's my understanding: See the two calltraces below.
+> >
+> > The same question still applies.
+> >
+> > What prevents rose_timer_expiry() from releasing the last
+> > refcnt before [1] ?
+> @@ -80,10 +83,12 @@ static void rose_t0timer_expiry(struct timer_list *t)
+>  {
+>         struct rose_neigh *neigh =3D timer_container_of(neigh, t, t0timer=
+);
+>
+> +       rose_neigh_hold(neigh); // [3] This prevents rose_timer_expiry() =
+from putting neigh.
 
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
----
-v4: Documented UAPI
----
- drivers/net/virtio_net.c           | 29 +++++++++++++++++++++++++++++
- include/uapi/linux/virtio_net_ff.h | 15 +++++++++++++++
- 2 files changed, 44 insertions(+)
+If you ask yourself the same question once more here,
+you will notice the fix is broken.
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index a9fde879fdbf..10700e447959 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -284,6 +284,9 @@ static const struct virtnet_stat_desc virtnet_stats_tx_speed_desc_qstat[] = {
- 	VIRTNET_STATS_DESC_TX_QSTAT(speed, ratelimit_packets, hw_drop_ratelimits),
- };
- 
-+#define VIRTNET_FF_ETHTOOL_GROUP_PRIORITY 1
-+#define VIRTNET_FF_MAX_GROUPS 1
-+
- struct virtnet_ff {
- 	struct virtio_device *vdev;
- 	bool ff_supported;
-@@ -6791,6 +6794,7 @@ static void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
- 	size_t ff_mask_size = sizeof(struct virtio_net_ff_cap_mask_data) +
- 			      sizeof(struct virtio_net_ff_selector) *
- 			      VIRTIO_NET_FF_MASK_TYPE_MAX;
-+	struct virtio_net_resource_obj_ff_group ethtool_group = {};
- 	struct virtio_admin_cmd_query_cap_id_result *cap_id_list;
- 	struct virtio_net_ff_selector *sel;
- 	size_t real_ff_mask_size;
-@@ -6855,6 +6859,12 @@ static void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
- 	if (err)
- 		goto err_ff_action;
- 
-+	if (le32_to_cpu(ff->ff_caps->groups_limit) < VIRTNET_FF_MAX_GROUPS) {
-+		err = -ENOSPC;
-+		goto err_ff_action;
-+	}
-+	ff->ff_caps->groups_limit = cpu_to_le32(VIRTNET_FF_MAX_GROUPS);
-+
- 	err = virtio_admin_cap_set(vdev,
- 				   VIRTIO_NET_FF_RESOURCE_CAP,
- 				   ff->ff_caps,
-@@ -6893,6 +6903,19 @@ static void virtnet_ff_init(struct virtnet_ff *ff, struct virtio_device *vdev)
- 	if (err)
- 		goto err_ff_action;
- 
-+	ethtool_group.group_priority = cpu_to_le16(VIRTNET_FF_ETHTOOL_GROUP_PRIORITY);
-+
-+	/* Use priority for the object ID. */
-+	err = virtio_admin_obj_create(vdev,
-+				      VIRTIO_NET_RESOURCE_OBJ_FF_GROUP,
-+				      VIRTNET_FF_ETHTOOL_GROUP_PRIORITY,
-+				      VIRTIO_ADMIN_GROUP_TYPE_SELF,
-+				      0,
-+				      &ethtool_group,
-+				      sizeof(ethtool_group));
-+	if (err)
-+		goto err_ff_action;
-+
- 	ff->vdev = vdev;
- 	ff->ff_supported = true;
- 
-@@ -6915,6 +6938,12 @@ static void virtnet_ff_cleanup(struct virtnet_ff *ff)
- 	if (!ff->ff_supported)
- 		return;
- 
-+	virtio_admin_obj_destroy(ff->vdev,
-+				 VIRTIO_NET_RESOURCE_OBJ_FF_GROUP,
-+				 VIRTNET_FF_ETHTOOL_GROUP_PRIORITY,
-+				 VIRTIO_ADMIN_GROUP_TYPE_SELF,
-+				 0);
-+
- 	kfree(ff->ff_actions);
- 	kfree(ff->ff_mask);
- 	kfree(ff->ff_caps);
-diff --git a/include/uapi/linux/virtio_net_ff.h b/include/uapi/linux/virtio_net_ff.h
-index bd7a194a9959..6d1f953c2b46 100644
---- a/include/uapi/linux/virtio_net_ff.h
-+++ b/include/uapi/linux/virtio_net_ff.h
-@@ -12,6 +12,8 @@
- #define VIRTIO_NET_FF_SELECTOR_CAP 0x801
- #define VIRTIO_NET_FF_ACTION_CAP 0x802
- 
-+#define VIRTIO_NET_RESOURCE_OBJ_FF_GROUP 0x0200
-+
- /**
-  * struct virtio_net_ff_cap_data - Flow filter resource capability limits
-  * @groups_limit: maximum number of flow filter groups supported by the device
-@@ -88,4 +90,17 @@ struct virtio_net_ff_actions {
- 	__u8 reserved[7];
- 	__u8 actions[];
- };
-+
-+/**
-+ * struct virtio_net_resource_obj_ff_group - Flow filter group object
-+ * @group_priority: priority of the group used to order evaluation
-+ *
-+ * This structure is the payload for the VIRTIO_NET_RESOURCE_OBJ_FF_GROUP
-+ * administrative object. Devices use @group_priority to order flow filter
-+ * groups. Multi-byte fields are little-endian.
-+ */
-+struct virtio_net_resource_obj_ff_group {
-+	__le16 group_priority;
-+};
-+
- #endif
--- 
-2.50.1
+What prevents rose_timer_expiry() from releasing the
+last refcnt before rose_neigh_hold() ?
 
+Do you add another rose_neigh_hold() before
+rose_neigh_hold() ?
+
+... and the same question applies as long as you are
+trying to fix the bug by adding changes in rose_t0timer_expiry().
+
+
+>         rose_transmit_restart_request(neigh);
+>
+>         neigh->dce_mode =3D 0;
+>
+> +       rose_neigh_putex(&neigh); // [4] This prevents t0timer from resta=
+rting by setting neigh to NULL.
+>         rose_start_t0timer(neigh);
+>  }
+> >
+> > For example, why is accessing neigh->dev in rose_send_frame()
+> > safe then ?
+> >
+> > The commit message mentions that two timers are not
+> > synchronised, but the diff adds no such synchronisation.
+> >
+> >
+> > > [1] Line 111 occurs after rose_neigh_put(). Otherwise, accessing
+> > > neigh->digipeat would result in a UAF. Therefore, rose_t0timer_expiry=
+()
+> > > must be triggered before rose_timer_expiry().
+> > >
+> > > [2] syzbot reports that line 237 generates a UAF when accessing digi-=
+>ndigi.
+> > >
+> > > UAF Task1:
+> > > rose_t0timer_expiry()->
+> > >   rose_transmit_restart_request()->
+> > >     rose_send_frame(.., neigh->digipeat, ..)-> // [1] line 111
+> > >       ax25_find_cb()->
+> > >         if (digi !=3D NULL && digi->ndigi !=3D 0)  // [2] line 237
+> > >
+> > > Freed neigh Task2:
+> > >  rose_timer_expiry()->
+> > >    rose_neigh_put(neigh)->
+> > >      kfree(neigh)
+> > > >
+> > > > The only ordering I can find is that kfree() in rose_timer_expiry()
+> > > > happened before ax25_find_cb () in rose_t0timer_expiry().
+> > > >
+> > > > > Therefore, in rose_t0timer_expiry(), the reference count of neigh=
+ is
+> > > > > increased before entering rose_transmit_restart_request() to prev=
+ent
+> > > > > neigh from being put in rose_timer_expiry(). Then, in rose_t0time=
+r_expiry(),
+> > > > > neigh is put before executing rose_start_t0timer() and the neigh =
+value is
+> > > > > set to NULL to prevent t0timer restarts.
+> > > > >
+> > > > > The case where rose_timer_expiry() is triggered before rose_t0tim=
+er_expiry()
+> > > > > is not considered at this time.
+> > > >
+> > > > So this change just papers over the root cause.
+> > > >
+> > > >
+> > > > > >
+> > > > > > The t0timer could be triggered even after that happens.
+> > > > > >
+> > > > > >
+> > > > > > > +       rose_neigh_hold(neigh);
+> > > > > > >         rose_transmit_restart_request(neigh);
+> > > > > > >
+> > > > > > >         neigh->dce_mode =3D 0;
+> > > > > > >
+> > > > > > > +       rose_neigh_putex(&neigh);
+> > > > > > >         rose_start_t0timer(neigh);
+> > > > > > >  }
+> > > > > > >
+> > > > > > > --
+> > > > > > > 2.43.0
+> > > > > > >
