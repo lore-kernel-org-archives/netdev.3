@@ -1,161 +1,155 @@
-Received: from chinatelecom.cn (smtpnm6-05.21cn.com [182.42.157.213])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06BE2D24BC
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 02:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.157.213
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761533043; cv=none; b=E2eNdUsbhlxtekwNXzi7/cGJiNvjJc86j7xz4/A5G+BRJ95JDy1MvPdJf7xkcUAyJ10enXwMiN3azQEPshVMs8cXIGZyJ5Y4hU/SdKH+UwCPHWx3paTGr+sluHOUa6tWI8TDyPM65DfruCIHJGB/itN28a3cPFcl6q8qs9C5XSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761533043; c=relaxed/simple;
-	bh=RsfNXtwq4Ako8GAoyAd7THB8q1URFVyoy6ocbUg1qZc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V9dikR5xkwJ2oXPKRJR+AotUjRkP1d8iUMhHv7IKM6LE/z1C+XGfEbaR0thHIQFaxnB+NZJnCPVZKBiUzUu3VX7uV/CiIVQGMpga0cHfYgtjnVSFAwARbx5QNTbUgWFuQ4tjsxcGNzRHX1Tk5FZ+Nr4llYy/CzIDYsaZQvUBX6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.157.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
-HMM_SOURCE_IP:192.168.139.44:0.1314971392
-HMM_ATTACHE_NUM:0000
-HMM_SOURCE_TYPE:SMTP
-Received: from clientip-36.111.140.5 (unknown [192.168.139.44])
-	by chinatelecom.cn (HERMES) with SMTP id E976E8F77F;
-	Mon, 27 Oct 2025 10:32:54 +0800 (CST)
-X-189-SAVE-TO-SEND: +liyonglong@chinatelecom.cn
-Received: from  ([36.111.140.5])
-	by gateway-ssl-dep-79cdd9d55b-z742x with ESMTP id 43f0e618aefa4815a004e303635e9a58 for netdev@vger.kernel.org;
-	Mon, 27 Oct 2025 10:32:56 CST
-X-Transaction-ID: 43f0e618aefa4815a004e303635e9a58
-X-Real-From: liyonglong@chinatelecom.cn
-X-Receive-IP: 36.111.140.5
-X-MEDUSA-Status: 0
-Sender: liyonglong@chinatelecom.cn
-From: Yonglong Li <liyonglong@chinatelecom.cn>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	liyonglong@chinatelecom.cn
-Subject: [PATCH net v2 1/2] net: ip: add drop reasons when handling ip fragments
-Date: Mon, 27 Oct 2025 10:32:44 +0800
-Message-Id: <1761532365-10202-2-git-send-email-liyonglong@chinatelecom.cn>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1761532365-10202-1-git-send-email-liyonglong@chinatelecom.cn>
-References: <1761532365-10202-1-git-send-email-liyonglong@chinatelecom.cn>
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011064.outbound.protection.outlook.com [52.101.62.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449571553AA
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 02:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761533439; cv=fail; b=lNFb0F3XfJWvEuHzIeoMBXGtABM55WLnrCymRoFUp303ygX+OfBm2yNyoyJLLkrB0qsYpserYuAKrEsAGFboUvSVhfunycf+czICApsmJ/PlI5XQiRkEUtKSeS0e1xCVxT6c0PLXjkvBb5Bhwc0X+vTG8Y8Kx2O8GxLOe9cGVmw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761533439; c=relaxed/simple;
+	bh=sNhdHUW0eDexGRCKCnURvSmaYNii5fo1nE7vnCQ1Reg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nc6DV7y/e/zhozVFBYbRYbYdQJCwEVtZ1gUQ6UYrPQo089FYMiLZDSP5ZOJHrkgXuyGlpWEBcm+wQIsWx7f0SUv8knvr4ZZ2CGai/xSOYJKZn1VYZtTYo626NctaX1QusbeFa55MLaM3ZL30le/vo0Q/CCsq2xoUV54Yr1357RA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=etvgMVAw; arc=fail smtp.client-ip=52.101.62.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="etvgMVAw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mJ73hP0O+lwiC3TfZ5XvI5Y+/lzSfap+Suljn0OuCRz6C7MJV4hAmWro5BeGpd56eB7GTgKDPF0XqjMB/xDscx53/JH+pbrN69YQNFyVmI+UOX2A3vhZpYEG5eP+TRttCTmU0jNfgFtyD1+SV9NldzzKfma3qr2vLtUZ9s2A5cK7ZSH22IeH7vlN7GAJYVXLXZoGx2VOQO1e8JXfEAOgJXLoqjDXVnEupwLb/3LKa5ojqLRJlkbjR5bK2R7otH+lNvy3zS6dfyymyocZo4xQF4FUUq6tWL9j6BQJK2JOPKgbHRKS9mvTfH7jbbcqxkK+bGktVRS9TIre1hRvJgCH7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0zVaI8WmWaP8lDI60dynudoPuTCO3uYlAAng4aJD6mM=;
+ b=bChc+6C4Ti5A/v2fneUFOO7/azPQfiGvppXQMr6zgA5OPwr/Rfr95b8HquK7euznyRBYbgJrBD8pd0BSwv1RHheZ/h4m8gPYKqyQBWVIjGT/71amq8cCikdTSlNJqmMFDVTHktTt5dODl45NagN6V+Sv6CAWFS+T9PPfMYTXchtTKmzw0JtsCwnaKNL06wjD4DeNhCmrVeAK4kBTQPVVNNPKR3f2Db6URx0OuntCdQprOfb4wqtVGq+dgGB7DiL4ptSmNLEqMnRJx36T7s5c/GLzMinpKWI8aiWriZb2ljio2ltRpV+kWc2Xho2hHgt6VLK5LXpXAHXP5Vj1J+pGxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0zVaI8WmWaP8lDI60dynudoPuTCO3uYlAAng4aJD6mM=;
+ b=etvgMVAwyZPj7C/tv8JXg59whIsQiXc4G9MdM1FgV3SfGrvAlpj3gJScBWf/PboMjsp+67Ps5ozb88961/NSuflT7oSvBeejs03CGQztt9Y8l+istpQmLApvNHO71uv7btLZEFxbUEx2K38oSpfZTK7xWkDPDar8scbR+6nahnw4BRt+72yTf6yC0mer4J6H6mfHVn3AivD6kZ8IPE3nLqRywES1M0AjVWA9U4x7VR/9oIX8eKDBbRJVsdcFVpJZh6cKhsUNSON4UQrXDMmkWbdG8mVHxvRX+W+G7nqan6qMiQ0hVVbSVNEDfQmLd7Iatud8rkqr/aKVFKPMf27B7g==
+Received: from BYAPR05CA0057.namprd05.prod.outlook.com (2603:10b6:a03:74::34)
+ by SJ1PR12MB6362.namprd12.prod.outlook.com (2603:10b6:a03:454::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.15; Mon, 27 Oct
+ 2025 02:50:34 +0000
+Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
+ (2603:10b6:a03:74:cafe::4d) by BYAPR05CA0057.outlook.office365.com
+ (2603:10b6:a03:74::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.9 via Frontend Transport; Mon,
+ 27 Oct 2025 02:50:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.10 via Frontend Transport; Mon, 27 Oct 2025 02:50:34 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Sun, 26 Oct
+ 2025 19:50:17 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 26 Oct
+ 2025 19:50:16 -0700
+Received: from mtl-vdi-603.wap.labs.mlnx (10.127.8.13) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Sun, 26 Oct 2025 19:50:13 -0700
+From: Jianbo Liu <jianbol@nvidia.com>
+To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<steffen.klassert@secunet.com>, <sd@queasysnail.net>
+CC: Jianbo Liu <jianbol@nvidia.com>
+Subject: [PATCH ipsec v2 0/2] xfrm: Correct inner packet family determination
+Date: Mon, 27 Oct 2025 04:40:57 +0200
+Message-ID: <20251027025006.46596-1-jianbol@nvidia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|SJ1PR12MB6362:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac2b0d7a-7307-431c-3053-08de15039a08
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gy0mnc4buDpx1zvqcZjijdKL93QPzN99vri5w/qT0DaThhgCT0mXrb7JrgP5?=
+ =?us-ascii?Q?TrSeNjbtbZe5H97QEh6FZBAU207bU0Rz3Zf/rPP5A2jaYuALav0or7UmRnor?=
+ =?us-ascii?Q?PcOxKJKQ3u+xbDYx+0Rv/xK6w1iFSL/koRqIGCrPQ+2r9YbODurz3RiATu8o?=
+ =?us-ascii?Q?i7PB7dWeMI5jkg2XM4SFiEcUpH8Nz/570it7vihh9jDsB/a3X+p7+YsIyEZg?=
+ =?us-ascii?Q?OjG6oPAdABEwCgKWycRJK+JoB3hKLxguN5ZgPvzHopEdhTJOHMawAalLD6W2?=
+ =?us-ascii?Q?Nhh9/Weqlb+lH63AkiczAHZ/hx+CHlTzjYA9jzbsQx4AYUa5SBy0GfEIGPLF?=
+ =?us-ascii?Q?pIz7PLyVa0H8zMvZxwz2JFTlXUV5Tqbeoxs1nRpLyap95MFOLeZF56Vev3gq?=
+ =?us-ascii?Q?zUdU0B8MAhhy2Add0lh5cD9n2GZPnYQZugU/JlvHyxAM87C8crg8jNR5vPYd?=
+ =?us-ascii?Q?BZmbGx0wtnDOMQ74zLBnUnuJMy/OrYaqKqsDlzcvqDLIKamb4I8R5yUA/ubo?=
+ =?us-ascii?Q?FsPWWLSF55rBq/apLQ7sEkEntvXyG7x9PxFL1+0U2KY7UElsge/ky7cbH/1r?=
+ =?us-ascii?Q?NFgT8fXpGD+pqGGS03F3iOG32f7urbdeC7h3J2UMxQmF+2bSgtw1h9EUhbcq?=
+ =?us-ascii?Q?xHcFcCp0vJDozPNCCKqhurwUbHTY4ReDlA/h83x+45tl4/8mzAFe1i4KpzbN?=
+ =?us-ascii?Q?/xu+RNgL8/91Vd2THrsanOKHjHFGbScVh62jbaD+8N4osEH93HF1SP5ZCZgj?=
+ =?us-ascii?Q?KS4GBM29MT5+5fSHowCwPDBr9JYOR7wPqYhdRN/ytidykB6TIq6QLDCZ4x31?=
+ =?us-ascii?Q?lM42SUFyvLk5AHyyUDUdfFIQahmTOnyLow17bmR2OkQDzBlkinPsw4gNOWF+?=
+ =?us-ascii?Q?wPaBBeBtxfaQQGbkKHmcOSGHt2DVKQ/26SRA08ES20IhLInvIXBigOq5hmGk?=
+ =?us-ascii?Q?Rfr8s0Ymp1M4vjSZquOFbEVDN6n0rTu7JdAvYmIi7SUUezSlVObI+Anie4fs?=
+ =?us-ascii?Q?ur4qnoxFR4hmIiY5lzI6u4APh5rSehOSAFbCwgkPkB8eRloRysoEqnSitL2F?=
+ =?us-ascii?Q?Tdr6vujrwrpHUAoaDtZkBGlw1+A5tKihAXninEczJdZoOlXn1dGjSuWDUZbJ?=
+ =?us-ascii?Q?dqbD7PHQrYdUCaoqjtWrtV523DA9g17mYRgallvt61KmRPA/abTbF3FAPXG8?=
+ =?us-ascii?Q?5XD68NOuFFeqtO0XejOU08m9mgUefjZDESjcf2lTLXahEZTB35cOqtocXpk/?=
+ =?us-ascii?Q?8DK3GSo1gWMooqFfrJCpPpMY/25J/goKG8oGa32wKFCE7943hfKQqbj/xKwG?=
+ =?us-ascii?Q?RzMKqgUYpVeRxoo6DHr+OnkyrW/+XFqECDU5XO/eMmLggPZNsTChegzz0dN4?=
+ =?us-ascii?Q?bx/eNmnM2jzHsQ5w3Znogpovet6xKz/TaoXxTXkkffDvLnLnrWLv7u8iRvL2?=
+ =?us-ascii?Q?fBSiAPj28qxJdjGOvXq5wM6ZdIP+jx7I80H6ecKAysDhlNAatHRvU+0mxo8A?=
+ =?us-ascii?Q?pGeT++nIAbP6dK93p1XKYNrDPYM2IOnZXLA9ufV6FbFRkVEOHIilJkSmO+/z?=
+ =?us-ascii?Q?KigVFuJ+Btm6mICwcBE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 02:50:34.5159
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac2b0d7a-7307-431c-3053-08de15039a08
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002312.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6362
 
-1, add new drop reason FRAG_FAILED/FRAG_OUTPUT_FAILED
-2, use drop reasons in ip_fragment
+This series contains two patches addressing issues in the XFRM
+subsystem where the code incorrectly relied on static family fields
+from the xfrm_state instead of determining the family from the actual
+packet being processed.
 
-Signed-off-by: Yonglong Li <liyonglong@chinatelecom.cn>
----
- include/net/dropreason-core.h |  6 ++++++
- net/ipv4/ip_output.c          | 17 ++++++++++++-----
- 2 files changed, 18 insertions(+), 5 deletions(-)
+This was particularly problematic in tunnel mode scenarios when using
+states that could handle different inner families.
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 58d91cc..4ae042e 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -99,6 +99,8 @@
- 	FN(DUP_FRAG)			\
- 	FN(FRAG_REASM_TIMEOUT)		\
- 	FN(FRAG_TOO_FAR)		\
-+	FN(FRAG_FAILED)			\
-+	FN(FRAG_OUTPUT_FAILED)		\
- 	FN(TCP_MINTTL)			\
- 	FN(IPV6_BAD_EXTHDR)		\
- 	FN(IPV6_NDISC_FRAG)		\
-@@ -500,6 +502,10 @@ enum skb_drop_reason {
- 	 * (/proc/sys/net/ipv4/ipfrag_max_dist)
- 	 */
- 	SKB_DROP_REASON_FRAG_TOO_FAR,
-+	/* do ip/ip6 fragment failed */
-+	SKB_DROP_REASON_FRAG_FAILED,
-+	/* ip/ip6 fragment output failed */
-+	SKB_DROP_REASON_FRAG_OUTPUT_FAILED,
- 	/**
- 	 * @SKB_DROP_REASON_TCP_MINTTL: ipv4 ttl or ipv6 hoplimit below
- 	 * the threshold (IP_MINTTL or IPV6_MINHOPCOUNT).
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index ff11d3a..2eab175 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -588,7 +588,7 @@ static int ip_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 		icmp_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
- 			  htonl(mtu));
--		kfree_skb(skb);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_PKT_TOO_BIG);
- 		return -EMSGSIZE;
- 	}
- 
-@@ -765,6 +765,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	struct sk_buff *skb2;
- 	u8 tstamp_type = skb->tstamp_type;
- 	struct rtable *rt = skb_rtable(skb);
-+	SKB_DR_INIT(reason, FRAG_FAILED);
- 	unsigned int mtu, hlen, ll_rs;
- 	struct ip_fraglist_iter iter;
- 	ktime_t tstamp = skb->tstamp;
-@@ -773,8 +774,10 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 
- 	/* for offloaded checksums cleanup checksum before fragmentation */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
-+	    (err = skb_checksum_help(skb))) {
-+		SKB_DR_SET(reason, SKB_CSUM);
- 		goto fail;
-+	}
- 
- 	/*
- 	 *	Point into the IP datagram header.
-@@ -860,6 +863,8 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 
- 			if (!err)
- 				IP_INC_STATS(net, IPSTATS_MIB_FRAGCREATES);
-+			else
-+				SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
- 			if (err || !iter.frag)
- 				break;
- 
-@@ -871,7 +876,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 			return 0;
- 		}
- 
--		kfree_skb_list(iter.frag);
-+		kfree_skb_list_reason(iter.frag, reason);
- 
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 		return err;
-@@ -913,8 +918,10 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		 */
- 		skb_set_delivery_time(skb2, tstamp, tstamp_type);
- 		err = output(net, sk, skb2);
--		if (err)
-+		if (err) {
-+			SKB_DR_SET(reason, FRAG_OUTPUT_FAILED);
- 			goto fail;
-+		}
- 
- 		IP_INC_STATS(net, IPSTATS_MIB_FRAGCREATES);
- 	}
-@@ -923,7 +930,7 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	return err;
- 
- fail:
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	IP_INC_STATS(net, IPSTATS_MIB_FRAGFAILS);
- 	return err;
- }
+V2:
+ - The original first patch was sent separately to "ipsec-next"
+
+Jianbo Liu (2):
+  xfrm: Check inner packet family directly from skb_dst
+  xfrm: Determine inner GSO type from packet inner protocol
+
+ net/ipv4/esp4_offload.c | 6 ++++--
+ net/ipv6/esp6_offload.c | 6 ++++--
+ net/xfrm/xfrm_device.c  | 2 +-
+ net/xfrm/xfrm_output.c  | 2 +-
+ 4 files changed, 10 insertions(+), 6 deletions(-)
+
 -- 
-1.8.3.1
+2.49.0
 
