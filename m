@@ -1,144 +1,231 @@
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF432FDC3F
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 12:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9238130E0E7
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 12:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761567894; cv=none; b=JkRl0zJHfTAbBrs9D2BgTSDm6liFcwtBurM0Xcw2YypgwRwiHInoDG9ok1mwFrn9lbjRHPT4jvt6PcW6RddSULcfHzd+14LA1o8Onvb7pI00Pg43xf7BVdd7U8IB+8Ss33dJN7yj0OJ7pEg7ymD9XUox5io3CK8aHBVqrtua8EM=
+	t=1761568116; cv=none; b=I+IceefsV73xqlCuH/QrdZxzKPxzM1d8g0/kqS1ByqqOth7nIdZw3cekMXWnkQG5/vHUO/EYZ45cPv+IS7ldhIYDMiy8K4NJFFpBe8vdR6y0h5fws4BQcfCmALfBjPS9xY296AxuSxPvTBAMYHxl2DGVcpCde9PLysvpPvEQFp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761567894; c=relaxed/simple;
-	bh=+RyZMr44ePS9IxhF1+DAq/fz9kbSF4Uu8qUbK8YCFR0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h8yPWmXGdjTN5d2g0xfOBngZTBocJOJk+WT49MnsTD9nUXhFDE8cIV3ov+A2NwnT23aCTAZ92rM3j/myZon8ANMdrjoPmUE+9MQqdZ4XADut+y/ujh/7UEuvpbuExoIN6pKcfBjKtoTy0V2WWynBhsVahAsE8VcKLV5UnnXBQas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=F0Ci4ne2; arc=none smtp.client-ip=34.218.115.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="F0Ci4ne2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1761567892; x=1793103892;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=WrJLIDy5DjO1Qi1gKZCpTvgxvq7dxgqrY3OppodPWIs=;
-  b=F0Ci4ne2JK0PNDUmQ1DG1Zc0krcxhh/lM2384XYmliX22m9iinOtC12j
-   G3jESGR246jo3lJXjnwAmxhJYHQQ0fEJIQQ54ZeBAm9Kz/Bdi/1HOZyjL
-   nQpWXnyeaRsBOTSZFHTb0ykbzWUYUDirbIsf2xkAhxajuZYJEstAiOg/p
-   V7DmMwjDe4LH4+JTnF57AYJMSmLBrf8r+Tsqg7Pojfv8E0DmQ7wPDQSrp
-   g6pJ5FoGUczStgDHTXHOqMMF3tAH9HzGO7SW/PCLRixP2a4plR+CI1usr
-   tppESiFO/7ukI2MaEmFqvdlW2H0HUg6qz9ysgFvJkCZM1dpDkZTJQzlbo
-   w==;
-X-CSE-ConnectionGUID: LzM7aC4yS8ayhj9JELmetQ==
-X-CSE-MsgGUID: sQM+1O4oQkuQLKQYyS0+QQ==
-X-IronPort-AV: E=Sophos;i="6.19,258,1754956800"; 
-   d="scan'208";a="5597335"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 12:24:50 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:18342]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.61:2525] with esmtp (Farcaster)
- id a5010076-be11-4429-adff-4f15b9de8100; Mon, 27 Oct 2025 12:24:49 +0000 (UTC)
-X-Farcaster-Flow-ID: a5010076-be11-4429-adff-4f15b9de8100
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.20;
- Mon, 27 Oct 2025 12:24:47 +0000
-Received: from b0be8375a521.amazon.com (10.37.245.8) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
- Mon, 27 Oct 2025 12:24:44 +0000
-From: Kohei Enju <enjuk@amazon.com>
-To: <przemyslaw.kitszel@intel.com>
-CC: <andrew+netdev@lunn.ch>, <anthony.l.nguyen@intel.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <enjuk@amazon.com>,
-	<intel-wired-lan@lists.osuosl.org>, <kohei.enju@gmail.com>,
-	<kuba@kernel.org>, <mitch.a.williams@intel.com>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net v1] iavf: fix off-by-one issues in iavf_config_rss_reg()
-Date: Mon, 27 Oct 2025 21:24:21 +0900
-Message-ID: <20251027122435.22442-1-enjuk@amazon.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <ada06185-257b-46de-9e5b-470f2724f014@intel.com>
-References: <ada06185-257b-46de-9e5b-470f2724f014@intel.com>
+	s=arc-20240116; t=1761568116; c=relaxed/simple;
+	bh=QTyqBzu05c2MIg/AyV8zLvSBLOmLGOVKLFRUDv3fq0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FANt0bcG0f7nUWB4+E01gij57h1SIArMdxWuOFvGkhWInyqa9c9tuknyOUla0R06EkXcvMgYzdyZR/zVe9LQE4QuUCt5250y2rb87IMC9ZdD9rxhhEAiHiGJPNWhajXty5wzzMQJgCDdjxlilnJXCVc+8cxFgCnFWTeeFuKQRU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDMKX-0004fq-TA; Mon, 27 Oct 2025 13:28:09 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDMKV-005hdy-1d;
+	Mon, 27 Oct 2025 13:28:07 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1vDMKV-000000047aB-1eL2;
+	Mon, 27 Oct 2025 13:28:07 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Nishanth Menon <nm@ti.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	linux-doc@vger.kernel.org,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Roan van Dijk <roan@protonic.nl>
+Subject: [PATCH net-next v8 3/4] net: phy: micrel: add MSE interface support for KSZ9477 family
+Date: Mon, 27 Oct 2025 13:28:00 +0100
+Message-ID: <20251027122801.982364-4-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251027122801.982364-1-o.rempel@pengutronix.de>
+References: <20251027122801.982364-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWB004.ant.amazon.com (10.13.139.143) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Mon, 27 Oct 2025 13:13:54 +0100, Przemek Kitszel wrote:
+Implement the get_mse_capability() and get_mse_snapshot() PHY driver ops
+for KSZ9477-series integrated PHYs to demonstrate the new PHY MSE
+UAPI.
 
->On 10/25/25 18:58, Kohei Enju wrote:
->> There are off-by-one bugs when configuring RSS hash key and lookup
->> table, causing out-of-bounds reads to memory [1] and out-of-bounds
->> writes to device registers.
->> 
->> Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
->> the loop upper bounds were:
->>      i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
->> which is safe since the value is the last valid index.
->> 
->> That commit changed the bounds to:
->>      i <= adapter->rss_{key,lut}_size / 4
->> where `rss_{key,lut}_size / 4` is the number of dwords, so the last
->> valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
->> accesses one element past the end.
->> 
->> Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
->> the bounds.
->> 
->> [1] KASAN splat about rss_key_size off-by-one
->>    BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
->>    Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
->> 
->
->[...]
->
->> 
->> Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
->> Signed-off-by: Kohei Enju <enjuk@amazon.com>
->> ---
->>   drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
->> index c2fbe443ef85..4b0fc8f354bc 100644
->> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
->> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
->> @@ -1726,11 +1726,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
->>   	u16 i;
->>   
->>   	dw = (u32 *)adapter->rss_key;
->> -	for (i = 0; i <= adapter->rss_key_size / 4; i++)
->> +	for (i = 0; i < adapter->rss_key_size / 4; i++)
->>   		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
->>   
->>   	dw = (u32 *)adapter->rss_lut;
->> -	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
->> +	for (i = 0; i < adapter->rss_lut_size / 4; i++)
->>   		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
->
->this is generally the last defined register mapping,
->so I get why KASAN is able to report a violation here
->(I assume that we map "just enough")
+These PHYs do not expose a documented direct MSE register, but the
+Signal Quality Indicator (SQI) registers are derived from the
+internal MSE computation. This hook maps SQI readings into the MSE
+interface so that tooling can retrieve the raw value together with
+metadata for correct interpretation in userspace.
 
-Just to clarify, I think KASAN is detecting OOB read access to the slab
-memory region (dw[i]), and not detecting register write access (wr32())
-directly. 
+Behaviour:
+  - For 1000BASE-T, report per-channel (A–D) values and support a
+    WORST channel selector.
+  - For 100BASE-TX, only LINK-wide measurements are available.
+  - Report average MSE only, with a max scale based on
+    KSZ9477_MMD_SQI_MASK and a fixed refresh rate of 2 µs.
 
-Anyway, thank you for reviewing, Przemek!
+This mapping differs from the OPEN Alliance SQI definition, which
+assigns thresholds such as pre-fail indices; the MSE interface
+instead provides the raw measurement, leaving interpretation to
+userspace.
 
->
->impressive, and thanks for the fix!
->
->Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
->
->>   
->>   	iavf_flush(hw);
->
->
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+changes v8:
+- use enum phy_mse_channel channel instead of u32
+changes v7:
+- add Reviewed-by
+changes v6:
+- update comments
+- s/get_mse_config/get_mse_capability/
+---
+ drivers/net/phy/micrel.c | 102 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 102 insertions(+)
+
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index edca0024b7c7..06080b1c753d 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2325,6 +2325,106 @@ static int kszphy_get_sqi_max(struct phy_device *phydev)
+ 	return KSZ9477_SQI_MAX;
+ }
+ 
++static int kszphy_get_mse_capability(struct phy_device *phydev,
++				     struct phy_mse_capability *cap)
++{
++	/* Capabilities depend on link mode:
++	 * - 1000BASE-T: per-pair SQI registers exist => expose A..D
++	 *   and a WORST selector.
++	 * - 100BASE-TX: HW provides a single MSE/SQI reading in the "channel A"
++	 *   register, but with auto MDI-X there is no MDI-X resolution bit,
++	 *   so we cannot map that register to a specific wire pair reliably.
++	 *   To avoid misleading per-channel data, advertise only LINK.
++	 * Other speeds: no MSE exposure via this driver.
++	 *
++	 * Note: WORST is *not* a hardware selector on this family.
++	 * We expose it because the driver computes it in software
++	 * by scanning per-channel readouts (A..D) and picking the
++	 * maximum average MSE.
++	 */
++	if (phydev->speed == SPEED_1000)
++		cap->supported_caps = PHY_MSE_CAP_CHANNEL_A |
++				      PHY_MSE_CAP_CHANNEL_B |
++				      PHY_MSE_CAP_CHANNEL_C |
++				      PHY_MSE_CAP_CHANNEL_D |
++				      PHY_MSE_CAP_WORST_CHANNEL;
++	else if (phydev->speed == SPEED_100)
++		cap->supported_caps = PHY_MSE_CAP_LINK;
++	else
++		return -EOPNOTSUPP;
++
++	cap->max_average_mse = FIELD_MAX(KSZ9477_MMD_SQI_MASK);
++	cap->refresh_rate_ps = 2000000; /* 2 us */
++	/* Estimated from link modulation (125 MBd per channel) and documented
++	 * refresh rate of 2 us
++	 */
++	cap->num_symbols = 250;
++
++	cap->supported_caps |= PHY_MSE_CAP_AVG;
++
++	return 0;
++}
++
++static int kszphy_get_mse_snapshot(struct phy_device *phydev,
++				   enum phy_mse_channel channel,
++				   struct phy_mse_snapshot *snapshot)
++{
++	u8 num_channels;
++	int ret;
++
++	if (phydev->speed == SPEED_1000)
++		num_channels = 4;
++	else if (phydev->speed == SPEED_100)
++		num_channels = 1;
++	else
++		return -EOPNOTSUPP;
++
++	if (channel == PHY_MSE_CHANNEL_WORST) {
++		u32 worst_val = 0;
++		int i;
++
++		/* WORST is implemented in software: select the maximum
++		 * average MSE across the available per-channel registers.
++		 * Only defined when multiple channels exist (1000BASE-T).
++		 */
++		if (num_channels < 2)
++			return -EOPNOTSUPP;
++
++		for (i = 0; i < num_channels; i++) {
++			ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++					KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + i);
++			if (ret < 0)
++				return ret;
++
++			ret = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++			if (ret > worst_val)
++				worst_val = ret;
++		}
++		snapshot->average_mse = worst_val;
++	} else if (channel == PHY_MSE_CHANNEL_LINK && num_channels == 1) {
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else if (channel >= PHY_MSE_CHANNEL_A &&
++		   channel <= PHY_MSE_CHANNEL_D) {
++		/* Per-channel readouts are valid only for 1000BASE-T. */
++		if (phydev->speed != SPEED_1000)
++			return -EOPNOTSUPP;
++
++		ret = phy_read_mmd(phydev, MDIO_MMD_PMAPMD,
++				   KSZ9477_MMD_SIGNAL_QUALITY_CHAN_A + channel);
++		if (ret < 0)
++			return ret;
++		snapshot->average_mse = FIELD_GET(KSZ9477_MMD_SQI_MASK, ret);
++	} else {
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
+ static void kszphy_enable_clk(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *priv = phydev->priv;
+@@ -6497,6 +6597,8 @@ static struct phy_driver ksphy_driver[] = {
+ 	.cable_test_get_status	= ksz9x31_cable_test_get_status,
+ 	.get_sqi	= kszphy_get_sqi,
+ 	.get_sqi_max	= kszphy_get_sqi_max,
++	.get_mse_capability = kszphy_get_mse_capability,
++	.get_mse_snapshot = kszphy_get_mse_snapshot,
+ } };
+ 
+ module_phy_driver(ksphy_driver);
+-- 
+2.47.3
+
