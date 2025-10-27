@@ -1,99 +1,246 @@
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEEB22424E;
-	Mon, 27 Oct 2025 10:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74FB2E8B7E
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 10:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761560406; cv=none; b=uVAJKjG2iat3vebtjuxuNsOcQd7AnUZInFZmmZs1XP1D2JieHKBoBzPkE+w6ZGebNIpi7hkLTYpu2y2f6F6TaHr+wzafrG/5ktTPVeIlh1ExTniAFhMATGDy5Gw5pnBjnCdhbKcUT18SJ26J08jqmoHAtkohYrwELtQ/BEAfqOc=
+	t=1761560460; cv=none; b=Ajd0TSl0ag62uELBMxuJuNFMHadqafsJtxqBKoLUgxiFEJitQ934PP3sHZ14aiIXePnem/I/2Ts8ZBNk+LTDLwiKWK/9F/4Ecnz2U8cc5aWtfq57TSIz3WE5UcsEi8tBhe0wnNWNOk5a59M18VfJocVczk3QoNqKOqdMKSCLsis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761560406; c=relaxed/simple;
-	bh=+RKvzDmt0Q1uLzUachi8BYSnc2ITFmHUfx22gc9qmZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouqNr+sceprsn/E8caFJGpS6IAjSqofc+8oUTGdF12OZj4LjjAIqSzY/8ncvc5ogg+kUoKL+8tCqdK3U8ZB8LDxbH+6FsxqnJXO0Mj8mw/A9zTH5ni7eyiPMumcihMyTZOoPRnup65DCeLQG0JWB4HqSKSKxUZixpc+rl28jflI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=ZzmW5z4H; arc=none smtp.client-ip=185.125.188.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1761560460; c=relaxed/simple;
+	bh=toQgS67ot2N3ttq9tOsTM0yxNbU2cTJE8tiKFXoCW4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=epiVaWT0ieFa24pniXazpJWtJNf5+oL6RB8F1jMKxpQSVyL0MxhEI7csJVYPuM4zWrnSM6SK781PHK3fMZdlEC0fQw9j11vtSdkbO/zGXqQ7yRSqq/1w/fY4lAn3yujV5FuGkm+IXf3RD3JyweJTJHl170eePAB08/fbD7E7B0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6I3Puzr; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="ZzmW5z4H"
-Received: from Nerpa.home (2.general.phlin.uk.vpn [10.172.194.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id B109042AFF;
-	Mon, 27 Oct 2025 09:57:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1761559048;
-	bh=lqt8/ZZGBb7asywG0Q0MskjIZofOfjZFSBYGrUMsxAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version;
-	b=ZzmW5z4HGSMBocWbErJGn++r6bcvBniGbCrvhgRZ2r+EJtRsv697lf6QUH+iegidx
-	 5QwhFnvcULyqhBiQh0KybLZhXRNqOcmmAYD84caiBiR4RnZbsC/2LPUGNXHa+8O6eI
-	 N2fmI8KNTfPZ+filSfrTGCh9AHSru9sgoB86AnMpRhYr4WL/4qvOUaBoPu2N88hg/s
-	 OGKKXUIlgpuIlC0HTmtXr0d9z7kqOkoDi2O7FqtQue3TP4j1TrMxK1AAbam2wNKDC8
-	 Pbg9XXX1wpWff8iYh9D4xUM2CQa+sS3luTMWi+sGgDTNRYZV8yUAbLuPSeHidQKvWT
-	 qNoQaMrkSG07D4qcRu2Lf9vkN8b52ntyB6exOR1YkZIxfx+2Uf6tEGNKWWlNRboP8L
-	 M2aPvnGoUyEEnoPRDRapE/wcJ2gXR9UkAOy1NU77XAwEZj4YasxBYYmpJHS5Tau4tF
-	 uthgLXQzfcHF/3nDS2VAJfvo/i3gPxZmbyN9qeyNEI6dCiBdaGG0CFe9ttWSunU+k8
-	 6ukCb8ch/QeM15YsPe1BufrXeGG87VpP6muwmWLR7JiZ5EWhiTBTATcFZ9oy7ZESL8
-	 wCJcG+P7SjgUoyozcheaPwA8OYeQb17W76w92HwRhziQioJefIJjTxqxN3f0WfUmPo
-	 ZkfAEVtFWmaz/nEURJzheyRQ=
-From: Po-Hsu Lin <po-hsu.lin@canonical.com>
-To: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: po-hsu.lin@canonical.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	edoardo.canepa@canonical.com
-Subject: [PATCH 1/1] selftests: net: use BASH for bareudp testing
-Date: Mon, 27 Oct 2025 17:57:10 +0800
-Message-ID: <20251027095710.2036108-2-po-hsu.lin@canonical.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251027095710.2036108-1-po-hsu.lin@canonical.com>
-References: <20251027095710.2036108-1-po-hsu.lin@canonical.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6I3Puzr"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-47103b6058fso32635155e9.1
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 03:20:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761560457; x=1762165257; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JroMOoM6Bg6YWyT/VlU2qQEQ1ZsC7Sk0UZbauoAsOzA=;
+        b=S6I3Puzr6O+/FgDsw6zpNGUJOUBuzHErG50AGavh3OrcLkhTKIV88lGc/qZjbrSZKs
+         GQ8VN98sY0XeUBnwSJHAGw6jIDyyyVc49NUBD+HTek+orlVfhrxhZrGx/Yg+oDraKQ6j
+         vezqrFgF9lHs4XS8G+RERkqa4qR0udR8bscYWg7j/Ie7P4TtcfeXIHiY9PWb3P/4YDEF
+         r63+keE79RkEM+jR1e8QfPT4sSOvXoG+IIz+baATdsUcXQy9y6a8ccgw1isG+4qTc6su
+         k525RfNFwh4k5ML4PGulfgPw57fB2xQXSLuiYwqRLmQh5dlA/u9C7+sCuQpHVyM9+5FR
+         EQJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761560457; x=1762165257;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JroMOoM6Bg6YWyT/VlU2qQEQ1ZsC7Sk0UZbauoAsOzA=;
+        b=wFMN0zFIaH8cVKFycp9rj5654Nh03IUAcQSkwJWk4+JAyNI72gOvTt8jDl5rV54ReZ
+         Una38HDmOMWSbTNDNv/j7s6PSGvFsJ9JOCyv2Fff+2En9eNdUneSzbReO63Ssr5RAVcw
+         vjP+3KKI5Xn0YV8QbjZrFtI3h12WDOoRiOwuEl3eerkDnp+Q37S7Ho4ZMmaLzitxqjpk
+         UQJg5mgSLEb3nbyFwdrrfqynj6IAjE5cprW9Kq3F0DwtWt0Tmn6CRLgvk8oaT7RxdgqZ
+         3U0XtAncHavXeNa3JB4VP84kAPMPhIuo7wyS9Vf9x8A/SaCQ3JrIp4X7U4z8YMEW0N5Z
+         i3xg==
+X-Forwarded-Encrypted: i=1; AJvYcCVst3ONVKH4IsltJ9LAzEuxaOb7HBbeopxvxidq+Sl+bp+72gUuZqgMPdY114NvDnE9ioZuSXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw96DgH+DkZLpxPB5R3fx7riV1O0CxEokBwL2j6h2Thmdr4wOkW
+	8I85YbA2YAa8YZ+bN4m29+kueoUDVFYNEckKH8hRYRjKvx36IblW+kqb
+X-Gm-Gg: ASbGncsixuWqz4dm+yDK+6bWeSE3nCJcH9ELdT/JO6SAcTKpPhR6k15iOFh2V1lpoL6
+	tPoYq3NTZeelZ+T7FJ2nP7XYqhovDxPh5mcHIOSLapQQdYAMM5voPWSrorPfBZldABVZFMPYsTV
+	Q2xoYRVoQGXkJyPVgOJ2qkEZ1lf2pIv9E+ch3b3NkHIm+r0uexQA2b+pTXhhrBpw0ggrsSNAzWC
+	LjQ2VqIzU/sLHw2Ksp8z4wdopdU02M5u01AuNgpVyplwPfEFLCjoIHqGZ/iP6aSFWnRX3wwKDdO
+	+MeKS8bM43qhkeI4vopFwyZ0M2C2zSkTB0k0hLqI8+wrjm/qcZmFVEGpG3d7C9ymetKkrzq2LVh
+	zBtUvK30SsXZau8yfWwCw+Nq5a1zeWSXom27dio53PQv4F++zk2MDGEa/eWyn0kYY7c08WFwk1A
+	uiJR5c297Sve4ZlSxP/y0Axw05TXHt202D6a8NmWPch4I=
+X-Google-Smtp-Source: AGHT+IHRe3YZsHwDWAV/oXn9xv2gNy0FhGVkettJ/O2VOfF8GFFc8cAZ+MBefybartISs6EDu7fJiA==
+X-Received: by 2002:a05:600c:8717:b0:45f:29eb:2148 with SMTP id 5b1f17b1804b1-475d241e319mr84979845e9.7.1761560456942;
+        Mon, 27 Oct 2025 03:20:56 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:8b1a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d5678sm13410422f8f.22.2025.10.27.03.20.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 03:20:56 -0700 (PDT)
+Message-ID: <309cb5ce-b19a-47b8-ba82-e75f69fe5bb3@gmail.com>
+Date: Mon, 27 Oct 2025 10:20:54 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] io_uring/zcrx: share an ifq between rings
+To: David Wei <dw@davidwei.uk>, io-uring@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>
+References: <20251026173434.3669748-1-dw@davidwei.uk>
+ <20251026173434.3669748-4-dw@davidwei.uk>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20251026173434.3669748-4-dw@davidwei.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-In bareudp.sh, this script uses /bin/sh and it will load another lib.sh
-BASH script at the very beginning.
+On 10/26/25 17:34, David Wei wrote:
+> Add a way to share an ifq from a src ring that is real i.e. bound to a
+> HW RX queue with other rings. This is done by passing a new flag
+> IORING_ZCRX_IFQ_REG_SHARE in the registration struct
+> io_uring_zcrx_ifq_reg, alongside the fd of the src ring and the ifq id
+> to be shared.
+> 
+> To prevent the src ring or ifq from being cleaned up or freed while
+> there are still shared ifqs, take the appropriate refs on the src ring
+> (ctx->refs) and src ifq (ifq->refs).
+> 
+> Signed-off-by: David Wei <dw@davidwei.uk>
+> ---
+>   include/uapi/linux/io_uring.h |  4 ++
+>   io_uring/zcrx.c               | 74 ++++++++++++++++++++++++++++++++++-
+>   2 files changed, 76 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
+> index 04797a9b76bc..4da4552a4215 100644
+> --- a/include/uapi/linux/io_uring.h
+> +++ b/include/uapi/linux/io_uring.h
+> @@ -1063,6 +1063,10 @@ struct io_uring_zcrx_area_reg {
+>   	__u64	__resv2[2];
+>   };
+>   
+> +enum io_uring_zcrx_ifq_reg_flags {
+> +	IORING_ZCRX_IFQ_REG_SHARE	= 1,
+> +};
+> +
+>   /*
+>    * Argument for IORING_REGISTER_ZCRX_IFQ
+>    */
+> diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+> index 569cc0338acb..7418c959390a 100644
+> --- a/io_uring/zcrx.c
+> +++ b/io_uring/zcrx.c
+> @@ -22,10 +22,10 @@
+>   #include <uapi/linux/io_uring.h>
+>   
+>   #include "io_uring.h"
+> -#include "kbuf.h"
+>   #include "memmap.h"
+>   #include "zcrx.h"
+>   #include "rsrc.h"
+> +#include "register.h"
+>   
+>   #define IO_ZCRX_AREA_SUPPORTED_FLAGS	(IORING_ZCRX_AREA_DMABUF)
+>   
+> @@ -541,6 +541,67 @@ struct io_mapped_region *io_zcrx_get_region(struct io_ring_ctx *ctx,
+>   	return ifq ? &ifq->region : NULL;
+>   }
+>   
+> +static int io_share_zcrx_ifq(struct io_ring_ctx *ctx,
+> +			     struct io_uring_zcrx_ifq_reg __user *arg,
+> +			     struct io_uring_zcrx_ifq_reg *reg)
+> +{
+> +	struct io_ring_ctx *src_ctx;
+> +	struct io_zcrx_ifq *src_ifq;
+> +	struct file *file;
+> +	int src_fd, ret;
+> +	u32 src_id, id;
+> +
+> +	src_fd = reg->if_idx;
+> +	src_id = reg->if_rxq;
+> +
+> +	file = io_uring_register_get_file(src_fd, false);
+> +	if (IS_ERR(file))
+> +		return PTR_ERR(file);
+> +
+> +	src_ctx = file->private_data;
+> +	if (src_ctx == ctx)
+> +		return -EBADFD;
+> +
+> +	mutex_unlock(&ctx->uring_lock);
+> +	io_lock_two_rings(ctx, src_ctx);
+> +
+> +	ret = -EINVAL;
+> +	src_ifq = xa_load(&src_ctx->zcrx_ctxs, src_id);
+> +	if (!src_ifq)
+> +		goto err_unlock;
+> +
+> +	percpu_ref_get(&src_ctx->refs);
+> +	refcount_inc(&src_ifq->refs);
+> +
+> +	scoped_guard(mutex, &ctx->mmap_lock) {
+> +		ret = xa_alloc(&ctx->zcrx_ctxs, &id, NULL, xa_limit_31b, GFP_KERNEL);
+> +		if (ret)
+> +			goto err_unlock;
+> +
+> +		ret = -ENOMEM;
+> +		if (xa_store(&ctx->zcrx_ctxs, id, src_ifq, GFP_KERNEL)) {
+> +			xa_erase(&ctx->zcrx_ctxs, id);
+> +			goto err_unlock;
+> +		}
 
-But on some operating systems like Ubuntu, /bin/sh is actually pointed to
-DASH, thus it will try to run BASH commands with DASH and consequently
-leads to syntax issues:
-  # ./bareudp.sh: 4: ./lib.sh: Bad substitution
-  # ./bareudp.sh: 5: ./lib.sh: source: not found
-  # ./bareudp.sh: 24: ./lib.sh: Syntax error: "(" unexpected
+It's just xa_alloc(..., src_ifq, ...);
 
-Fix this by explicitly using BASH for bareudp.sh. This fixes test
-execution failures on systems where /bin/sh is not BASH.
+> +	}
+> +
+> +	reg->zcrx_id = id;
+> +	if (copy_to_user(arg, reg, sizeof(*reg))) {
+> +		ret = -EFAULT;
+> +		goto err;
+> +	}
 
-Reported-by: Edoardo Canepa <edoardo.canepa@canonical.com>
-Link: https://bugs.launchpad.net/bugs/2129812
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
----
- tools/testing/selftests/net/bareudp.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Better to do that before publishing zcrx into ctx->zcrx_ctxs
 
-diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
-index 4046131e7888..d9e5b967f815 100755
---- a/tools/testing/selftests/net/bareudp.sh
-+++ b/tools/testing/selftests/net/bareudp.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
- # Test various bareudp tunnel configurations.
+> +	mutex_unlock(&src_ctx->uring_lock);
+> +	fput(file);
+> +	return 0;
+> +err:
+> +	scoped_guard(mutex, &ctx->mmap_lock)
+> +		xa_erase(&ctx->zcrx_ctxs, id);
+> +err_unlock:
+> +	mutex_unlock(&src_ctx->uring_lock);
+> +	fput(file);
+> +	return ret;
+> +}
+> +
+>   int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+>   			  struct io_uring_zcrx_ifq_reg __user *arg)
+>   {
+> @@ -566,6 +627,8 @@ int io_register_zcrx_ifq(struct io_ring_ctx *ctx,
+>   		return -EINVAL;
+>   	if (copy_from_user(&reg, arg, sizeof(reg)))
+>   		return -EFAULT;
+> +	if (reg.flags & IORING_ZCRX_IFQ_REG_SHARE)
+> +		return io_share_zcrx_ifq(ctx, arg, &reg);
+>   	if (copy_from_user(&rd, u64_to_user_ptr(reg.region_ptr), sizeof(rd)))
+>   		return -EFAULT;
+>   	if (!mem_is_zero(&reg.__resv, sizeof(reg.__resv)) ||
+> @@ -663,7 +726,7 @@ void io_unregister_zcrx_ifqs(struct io_ring_ctx *ctx)
+>   			if (ifq)
+>   				xa_erase(&ctx->zcrx_ctxs, id);
+>   		}
+> -		if (!ifq)
+> +		if (!ifq || ctx != ifq->ctx)
+>   			break;
+>   		io_zcrx_ifq_free(ifq);
+>   	}
+> @@ -734,6 +797,13 @@ void io_shutdown_zcrx_ifqs(struct io_ring_ctx *ctx)
+>   		if (xa_get_mark(&ctx->zcrx_ctxs, index, XA_MARK_0))
+>   			continue;
+>   
+> +		/*
+> +		 * Only shared ifqs want to put ctx->refs on the owning ifq
+> +		 * ring. This matches the get in io_share_zcrx_ifq().
+> +		 */
+> +		if (ctx != ifq->ctx)
+> +			percpu_ref_put(&ifq->ctx->refs);
+
+After you put this and ifq->refs below down, the zcrx object can get
+destroyed, but this ctx might still have requests using the object.
+Waiting on ctx refs would ensure requests are killed, but that'd
+create a cycle.
+
+> +
+>   		/* Safe to clean up from any ring. */
+>   		if (refcount_dec_and_test(&ifq->refs)) {
+>   			io_zcrx_scrub(ifq);
+
 -- 
-2.34.1
+Pavel Begunkov
 
