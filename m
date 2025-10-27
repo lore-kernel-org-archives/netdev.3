@@ -1,84 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3881230DEA2
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2986B3112B6
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:53:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761580109; cv=none; b=RHZQ3T/L0RT5R4aVlFe0wPhdQ+T2a3Pcsh1V1OqjEkLVnJLG1UjeCgH754IXwxBh0LZ/bVcYv7vPNid+GtMTegyGCI5o/KAYH5TTF9qhQVCGE12hrehCXKcX/PjMUap/w1n+j8KUEBUpkbpOUkZa8NGAFjMZ+GTeXKV7yfOY7CA=
+	t=1761580384; cv=none; b=uu2uzc+opiP259yrxfEZWcc0A5m+taTNeMrFJYzXS3X42svgEK6ZJ+m+r4YhadxQNSE+4OIQyUiUAfdSODAFzcw0AUMARpRg2jniVsv+sF17evkpD9kVjkR3Jd+wRTwr0kjiZKjmcVR4CdfsZn9KeWuY7/uS2lejcmXixAxL45A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761580109; c=relaxed/simple;
-	bh=Rbg/xIApRH61xx9kD8T7usjjJ2WobHBt0lmoRUT3BG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6IZzFPufQ57g3dmS7H/tPhsFqxZhcvvfFtpvZrctu2cRXgedMtt0gPac4Zg+kDWED/+i9r3bH0Lg+6jhutHcFzsFeneHOXlJS5TJe12SV8Ll/9i4wd5nxP5aBQZ7bYmTs8PvRmwWXaJU3R82Kb0MpPoieHS5UK6RLKgYf1JXaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VYr5iALW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761580384; c=relaxed/simple;
+	bh=qAwFGdXkn+fNYTCd3S513c7S/IJtQtkvnrltpd0ddeg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uB0B60JjP60t0kpAUGzF4o3xEOpuHEp3LzA76fTXfcY0JG0E9CmcPIieLHkQkL1P5C1hAnmVBSiIM+GqMfxISqva50vK22siVKA4hKTjEe5AEvFqt6BczzBl2YadNmDnq6TXQGfVf1bN8bbiIsgqigssbZBunySoYL5WBnkcJ4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=eKeihIJc; arc=none smtp.client-ip=171.64.64.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VYr5iALW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E449DC4CEF1;
-	Mon, 27 Oct 2025 15:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761580108;
-	bh=Rbg/xIApRH61xx9kD8T7usjjJ2WobHBt0lmoRUT3BG8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VYr5iALWp6cZRKsCM+cy+Lppy7nVWQSH8eJNlhEcGAwBBD/KV2ZTe0Is//6C5GrpD
-	 5ms7smEsQJMo1eeAqMhafdDzBU0E0osffXmgS3x/OFne7wR4yYvJBibL/au1XHrJgz
-	 Z1OF0kJwPo15yurUa5SD285iT0aoBEyAYjZgA3HfDNvsiYhKnwF9cgrG5CHoPbkbWX
-	 g1ywsukFz9K0qvV/Qg3CKPICHDVJP6A8g0ABrsobn1rIdqq0OndyeOZaGMn4pO6vg3
-	 5uHs8nyMza5q8xU39GYSOGnmD9d3JF5eMOIy09QZ0Q4TAwPQBOHvQeojlTnfDcCCgA
-	 6u3iWpI3FqDTg==
-Date: Mon, 27 Oct 2025 15:48:25 +0000
-From: Simon Horman <horms@kernel.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: netdev@vger.kernel.org, devel@linux-ipsec.org
-Subject: Re: [PATCH RFC ipsec-next] esp: Consolidate esp4 and esp6.
-Message-ID: <aP-USZf42BUtQcgV@horms.kernel.org>
-References: <aPhzm0lzMXGSpf22@secunet.com>
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="eKeihIJc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=159dh4QNniwM1GLNE1gY2qN1aiApwiY4K5u74KdGC7U=; t=1761580383; x=1762444383; 
+	b=eKeihIJcONBvaXMxfMFObLwJj5dUu8DlWOJz+pCNk+6OqAF1t5pfBcHknF5uKvu+iamEfLzV8Gc
+	LYLO6toQ4C0PesljHTue6ZmyxugoJL59JU7RMnd6SRKFqE/ogy+zqGBW+UORYk9xvPk3XTQ/eP4OP
+	0rT81K1YQA8wb6CUS6WUKX8fR89teG5lDHbw1d883+dzwdU9A3owTO7x6RP7n9nJaDjGjEDECZcO2
+	kmxOvYPT2n48uBBgwrCU+PXycix3P+0qnnv6rnSSfytP58eHb1KxSAAv5pYjjo2jh6d9Cbe+uIvbt
+	XfAf6AJ9vcngkKV7/xxt7AE2SZUF0Q8XSU4Q==;
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:56765)
+	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.94.2)
+	(envelope-from <ouster@cs.stanford.edu>)
+	id 1vDP6i-0006rV-2i
+	for netdev@vger.kernel.org; Mon, 27 Oct 2025 08:26:05 -0700
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7c532d70cfaso1622198a34.1
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 08:26:04 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yzz9bW0CxD07I1oKx7ZfZAHR7zVR4Wxk7/efW7Cmp/gOFZ/bRe/
+	vxDtX34WHJkmqCvj8cfbtnxhlrATNac5yo2KV93Rn0HcVRohxqTsbnLRzRyK1v/HsZKobF4ePLb
+	B7FgVhzeEnuLqsdom3zj3g6Gs83sbQXA=
+X-Google-Smtp-Source: AGHT+IE8OWg/j8c5gWX60vjj6RWOzRqsaA6KoRINIOWMfZ3lSK6gaNv8zglmf7P33KUlzpj3LEo95IE7GWmXcLfwLlg=
+X-Received: by 2002:a05:6808:6d8b:b0:44d:c03e:657a with SMTP id
+ 5614622812f47-44f6b980f3fmr89421b6e.7.1761578763498; Mon, 27 Oct 2025
+ 08:26:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPhzm0lzMXGSpf22@secunet.com>
+References: <20251015185102.2444-1-ouster@cs.stanford.edu> <20251015185102.2444-2-ouster@cs.stanford.edu>
+ <aP89WhbDEzt24sFG@horms.kernel.org>
+In-Reply-To: <aP89WhbDEzt24sFG@horms.kernel.org>
+From: John Ousterhout <ouster@cs.stanford.edu>
+Date: Mon, 27 Oct 2025 08:25:27 -0700
+X-Gmail-Original-Message-ID: <CAGXJAmyd6MuPG6mRA+h0RCnCpPyaSRwnwRRt2aA5+nsumek2-g@mail.gmail.com>
+X-Gm-Features: AWmQ_bnEkRcK3b-j0TnGMfmMyXSCYX0qMsZh5BaE8iFhqnSEeh7cg2YfPtdj4eI
+Message-ID: <CAGXJAmyd6MuPG6mRA+h0RCnCpPyaSRwnwRRt2aA5+nsumek2-g@mail.gmail.com>
+Subject: Re: [PATCH net-next v16 01/14] net: homa: define user-visible API for Homa
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com, 
+	kuba@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -1.0
+X-Scan-Signature: 3134a374f3853b94094f80bd9e2b84a0
 
-On Wed, Oct 22, 2025 at 08:03:07AM +0200, Steffen Klassert wrote:
-> This patch merges common code of esp4.c and esp6.c into
-> xfrm_esp.c. This almost halves the size of the ESP
-> implementation for the prize of three indirect calls
+On Mon, Oct 27, 2025 at 2:37=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
+te:
+>
+> On Wed, Oct 15, 2025 at 11:50:48AM -0700, John Ousterhout wrote:
+> > Note: for man pages, see the Homa Wiki at:
+> > https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
+> >
+> > Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
+>
+> ...
+>
+> > diff --git a/net/Kconfig b/net/Kconfig
+> > index d5865cf19799..92972ff2a78d 100644
+> > --- a/net/Kconfig
+> > +++ b/net/Kconfig
+> > @@ -250,6 +250,7 @@ source "net/bridge/netfilter/Kconfig"
+> >  endif # if NETFILTER
+> >
+> >  source "net/sctp/Kconfig"
+> > +source "net/homa/Kconfig"
+> >  source "net/rds/Kconfig"
+> >  source "net/tipc/Kconfig"
+> >  source "net/atm/Kconfig"
+>
+> Hi John,
+>
+> I think that the hunk above needs to wait until a patch
+> that adds net/homa/Kconfig. As is, this breaks builds.
+>
+> Possibly the same is also true of the hunk below,
+> but the build didn't get that far.
 
-nit: prize -> price
 
-> on UDP/TCP encapsulation. No functional changes.
-> 
-> Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-> Tested-by: Tobias Brunner <tobias@strongswan.org>
-> ---
->  include/net/esp.h       |    6 +
->  include/net/xfrm.h      |    4 +
->  net/ipv4/esp4.c         | 1067 ++------------------------------------
->  net/ipv6/esp6.c         | 1093 +++------------------------------------
->  net/ipv6/esp6_offload.c |    6 +-
->  net/xfrm/Makefile       |    1 +
->  net/xfrm/xfrm_esp.c     | 1025 ++++++++++++++++++++++++++++++++++++
->  7 files changed, 1156 insertions(+), 2046 deletions(-)
+Yep, there was a bug in the script that I used to generate the patch
+series; the changes to net/Kconfig and net/Makefile weren't supposed
+to appear until the last patch of the series. I have fixed this now.
 
-Less is more :)
-
-...
-
-> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-
-...
-
-> +static int esp6_input_encap(struct sk_buff *skb, struct xfrm_state *x)
->  {
-> +	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-> +	int offset = skb_network_offset(skb) + sizeof(*ip6h);
-> +	int hdr_len = skb_network_header_len(skb);
-
-nit: hrd_len is set here and incremented below,
-     but otherwise unused in this function.
-
-...
+> > diff --git a/net/Makefile b/net/Makefile
+> > index aac960c41db6..71f740e0dc34 100644
+> > --- a/net/Makefile
+> > +++ b/net/Makefile
+> > @@ -43,6 +43,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
+> >  obj-y                                +=3D 8021q/
+> >  endif
+> >  obj-$(CONFIG_IP_SCTP)                +=3D sctp/
+> > +obj-$(CONFIG_HOMA)           +=3D homa/
+> >  obj-$(CONFIG_RDS)            +=3D rds/
+> >  obj-$(CONFIG_WIRELESS)               +=3D wireless/
+> >  obj-$(CONFIG_MAC80211)               +=3D mac80211/
+> > --
+> > 2.43.0
+> >
