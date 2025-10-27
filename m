@@ -1,120 +1,117 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2986B3112B6
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7183128BE
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761580384; cv=none; b=uu2uzc+opiP259yrxfEZWcc0A5m+taTNeMrFJYzXS3X42svgEK6ZJ+m+r4YhadxQNSE+4OIQyUiUAfdSODAFzcw0AUMARpRg2jniVsv+sF17evkpD9kVjkR3Jd+wRTwr0kjiZKjmcVR4CdfsZn9KeWuY7/uS2lejcmXixAxL45A=
+	t=1761580469; cv=none; b=fgtKYwmPBYWgXUvNldt1G7UnhLMvsKFo2C97NgfTAhXYHG9KiwD3hS2jvC5n8i/8Gf4Mazb8htLUwlodVSQkpm6slzMgCcOmhB/lKpA9p9/MPPFmTEb5aw4bw5uhr7Z+IaRnKjT5ESXDdpw22kCkxDBC0dNs7kcahiUpdr2OGRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761580384; c=relaxed/simple;
-	bh=qAwFGdXkn+fNYTCd3S513c7S/IJtQtkvnrltpd0ddeg=;
+	s=arc-20240116; t=1761580469; c=relaxed/simple;
+	bh=VrcGekrA0V4MeKOK1C3SdiVffncJbm6tZX8UDVo5Re8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uB0B60JjP60t0kpAUGzF4o3xEOpuHEp3LzA76fTXfcY0JG0E9CmcPIieLHkQkL1P5C1hAnmVBSiIM+GqMfxISqva50vK22siVKA4hKTjEe5AEvFqt6BczzBl2YadNmDnq6TXQGfVf1bN8bbiIsgqigssbZBunySoYL5WBnkcJ4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=eKeihIJc; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	 To:Cc:Content-Type; b=NtKtds5P3hU4O56V+DPb6tMal99AtvbaIywED43QxQzuUJPcfg7EYtCN5MN3bZgiA2WTKMZGDNSfEh7q5uAUs1OY7+uIwp2OWlU6JkcOjYVM4uDEgrRRwLRVpCkWt82quvqfQoEm7RxG3S8NtDYc2gcGpCbvl26hLo+0GVn8/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KSjIdFqO; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="eKeihIJc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=159dh4QNniwM1GLNE1gY2qN1aiApwiY4K5u74KdGC7U=; t=1761580383; x=1762444383; 
-	b=eKeihIJcONBvaXMxfMFObLwJj5dUu8DlWOJz+pCNk+6OqAF1t5pfBcHknF5uKvu+iamEfLzV8Gc
-	LYLO6toQ4C0PesljHTue6ZmyxugoJL59JU7RMnd6SRKFqE/ogy+zqGBW+UORYk9xvPk3XTQ/eP4OP
-	0rT81K1YQA8wb6CUS6WUKX8fR89teG5lDHbw1d883+dzwdU9A3owTO7x6RP7n9nJaDjGjEDECZcO2
-	kmxOvYPT2n48uBBgwrCU+PXycix3P+0qnnv6rnSSfytP58eHb1KxSAAv5pYjjo2jh6d9Cbe+uIvbt
-	XfAf6AJ9vcngkKV7/xxt7AE2SZUF0Q8XSU4Q==;
-Received: from mail-ot1-f52.google.com ([209.85.210.52]:56765)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1vDP6i-0006rV-2i
-	for netdev@vger.kernel.org; Mon, 27 Oct 2025 08:26:05 -0700
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7c532d70cfaso1622198a34.1
-        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 08:26:04 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yzz9bW0CxD07I1oKx7ZfZAHR7zVR4Wxk7/efW7Cmp/gOFZ/bRe/
-	vxDtX34WHJkmqCvj8cfbtnxhlrATNac5yo2KV93Rn0HcVRohxqTsbnLRzRyK1v/HsZKobF4ePLb
-	B7FgVhzeEnuLqsdom3zj3g6Gs83sbQXA=
-X-Google-Smtp-Source: AGHT+IE8OWg/j8c5gWX60vjj6RWOzRqsaA6KoRINIOWMfZ3lSK6gaNv8zglmf7P33KUlzpj3LEo95IE7GWmXcLfwLlg=
-X-Received: by 2002:a05:6808:6d8b:b0:44d:c03e:657a with SMTP id
- 5614622812f47-44f6b980f3fmr89421b6e.7.1761578763498; Mon, 27 Oct 2025
- 08:26:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KSjIdFqO"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-290d48e9f1fso370865ad.1
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 08:54:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761580467; x=1762185267; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TOV2usxAVtrzpjNrsCDY6+oTbSzm7HQ0OagyrYKBhwU=;
+        b=KSjIdFqOe/MCbCS1S8E1ShV7EwZ6B9Xct+/1VqAOiFwfYRVGFGGJU5LpJqlNmeopxs
+         Xt2bDvTfovAyE1q2eZmGQCW2f50j1dHma/hTKMCo/NkoAjTDhvzZwmRXpyj/cdkh+bpI
+         arT4Ke9r85cPXF1Oyt0YE6iILlV4BlCdBkV4FYOc2HI7vuoUTx81r9Iv46JHW7GUoSTL
+         3m69QTJmyP8ft23JyVSDU13hY+Y8FjKVc1DCja7FKIiXSflegGMWb5KXEK0QfEbQfEEA
+         hd15ZOHqan/iWXsC6f3LzdDLLx1OvXhJU4+NFVyA5kNFzsnaNBSaRMkUpYh6YmG0xfHg
+         x3iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761580467; x=1762185267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TOV2usxAVtrzpjNrsCDY6+oTbSzm7HQ0OagyrYKBhwU=;
+        b=e6RtE7y7ckJfIshWBuiNvoSmD40glSwiliToiQdjObctlK2jW8MQvh4gpUnPSrx3Zs
+         I/gMkGrRYF/rxhqjjVCPredL0Yhk2TiiSTYrP/7IaLamFd8O9VrZJAa9K4N8HI2t0Lre
+         RF4/YLbPZ2/wlKw3MUkmfhJirflnqyartS1wqm4dBFT/ufJa13UbRqOZCbkTrVGKiyzU
+         FwI3Hv56UsnBJFjBoL2VVokmi7K4Vd17VjeRmmHT5s5bvUOclXi5TLjXGsI+sJQQf8iv
+         qDjMfX1QtNj6gd+kxx6CAVEuHahuEiKq1srGsd3MVZKNjSS6bn7yR37OpcQN8Xehwu2n
+         CiLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUc08Y0Vy/WRi4KARqNH7Ay/uRqabx4vrqjlSZYGA1X3NbW2+hVaUXEXlNS5N7n4swKVDIuDuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYMo+rpuHksxfUs+9YOsICwusOUC0Aj3aQ1GHt7qQtfkNzF6+w
+	0K48lIc/3Auo0dIEjRrjB6HyLecA07KjS3UC/Yn7WUE1qGyELOiRD0l+oOnRkG2knQmEwqpz5OE
+	T1y5o67TnmLaKrxeg0WG9VBBuWSmypoKEKfw8mtKd
+X-Gm-Gg: ASbGncvsuafBvNCT2F/RY0MgDCtwDGK+yV7TlsD/cCy8zkmfsl14JP7zCFeT0guwLTz
+	1ZYK0x7VtqdDKpIU64ZcfUfmR7syEGDuLoeqCqrGCaxqWdG/9qHgl/v5rV8/e7fQsDPRQ3AkGMa
+	rbZ2eITnKLUI8ksjvBHdXLFYK8kiGO7uzPP4H91yL5npb8spHoOkPe+hF/CrrGhasTXNAxI3Zgy
+	vqvDmF+Yrk2a2oCWk2XnAR6H7fQhkpB+KKj5j6J1lLxytJjd8NyBsE39MZR7SAQdfgg
+X-Google-Smtp-Source: AGHT+IGd2VC+1ri7Tm8Icu43HfhHP31Eha9krNlCyWKJpXSqm52Nv3U4r4IDiw+4iGHBWYRgukstDdR1FrBi6TFHiUE=
+X-Received: by 2002:a17:902:c40c:b0:25b:d970:fe45 with SMTP id
+ d9443c01a7336-294ca876b46mr835215ad.1.1761580466893; Mon, 27 Oct 2025
+ 08:54:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251015185102.2444-1-ouster@cs.stanford.edu> <20251015185102.2444-2-ouster@cs.stanford.edu>
- <aP89WhbDEzt24sFG@horms.kernel.org>
-In-Reply-To: <aP89WhbDEzt24sFG@horms.kernel.org>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Mon, 27 Oct 2025 08:25:27 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmyd6MuPG6mRA+h0RCnCpPyaSRwnwRRt2aA5+nsumek2-g@mail.gmail.com>
-X-Gm-Features: AWmQ_bnEkRcK3b-j0TnGMfmMyXSCYX0qMsZh5BaE8iFhqnSEeh7cg2YfPtdj4eI
-Message-ID: <CAGXJAmyd6MuPG6mRA+h0RCnCpPyaSRwnwRRt2aA5+nsumek2-g@mail.gmail.com>
-Subject: Re: [PATCH net-next v16 01/14] net: homa: define user-visible API for Homa
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com, 
-	kuba@kernel.org
+References: <20251025-idpf-fix-arm-kcfi-build-error-v1-0-ec57221153ae@kernel.org>
+ <20251025-idpf-fix-arm-kcfi-build-error-v1-2-ec57221153ae@kernel.org>
+In-Reply-To: <20251025-idpf-fix-arm-kcfi-build-error-v1-2-ec57221153ae@kernel.org>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 27 Oct 2025 08:53:49 -0700
+X-Gm-Features: AWmQ_bkZ-boZ1PO-DZE1ghKe_XcmKdU5EzkIpPpXzyaf8mX9qkr6Gzs7ALPdxQ0
+Message-ID: <CABCJKuesdSH2xhm_NZOjxHWpt5M866EL_RUBdQNZ54ov7ObH-Q@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ARM: Select ARCH_USES_CFI_GENERIC_LLVM_PASS
+To: Nathan Chancellor <nathan@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
+Cc: Kees Cook <kees@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Russell King <linux@armlinux.org.uk>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Michal Kubiak <michal.kubiak@intel.com>, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Scan-Signature: 3134a374f3853b94094f80bd9e2b84a0
 
-On Mon, Oct 27, 2025 at 2:37=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Wed, Oct 15, 2025 at 11:50:48AM -0700, John Ousterhout wrote:
-> > Note: for man pages, see the Homa Wiki at:
-> > https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
-> >
-> > Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
->
-> ...
->
-> > diff --git a/net/Kconfig b/net/Kconfig
-> > index d5865cf19799..92972ff2a78d 100644
-> > --- a/net/Kconfig
-> > +++ b/net/Kconfig
-> > @@ -250,6 +250,7 @@ source "net/bridge/netfilter/Kconfig"
-> >  endif # if NETFILTER
-> >
-> >  source "net/sctp/Kconfig"
-> > +source "net/homa/Kconfig"
-> >  source "net/rds/Kconfig"
-> >  source "net/tipc/Kconfig"
-> >  source "net/atm/Kconfig"
->
-> Hi John,
->
-> I think that the hunk above needs to wait until a patch
-> that adds net/homa/Kconfig. As is, this breaks builds.
->
-> Possibly the same is also true of the hunk below,
-> but the build didn't get that far.
+Hi Nathan,
 
+On Sat, Oct 25, 2025 at 1:53=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> Prior to clang 22.0.0 [1], ARM did not have an architecture specific
+> kCFI bundle lowering in the backend, which may cause issues. Select
+> CONFIG_ARCH_USES_CFI_GENERIC_LLVM_PASS to enable use of __nocfi_generic.
+>
+> Link: https://github.com/llvm/llvm-project/commit/d130f402642fba3d065aacb=
+506cb061c899558de [1]
+> Link: https://github.com/ClangBuiltLinux/linux/issues/2124
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  arch/arm/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 2e3f93b690f4..4fb985b76e97 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -44,6 +44,8 @@ config ARM
+>         select ARCH_USE_BUILTIN_BSWAP
+>         select ARCH_USE_CMPXCHG_LOCKREF
+>         select ARCH_USE_MEMTEST
+> +       # https://github.com/llvm/llvm-project/commit/d130f402642fba3d065=
+aacb506cb061c899558de
+> +       select ARCH_USES_CFI_GENERIC_LLVM_PASS if CLANG_VERSION < 220000
 
-Yep, there was a bug in the script that I used to generate the patch
-series; the changes to net/Kconfig and net/Makefile weren't supposed
-to appear until the last patch of the series. I have fixed this now.
+Instead of working around issues with the generic pass, would it make
+more sense to just disable arm32 CFI with older Clang versions
+entirely? Linus, any thoughts?
 
-> > diff --git a/net/Makefile b/net/Makefile
-> > index aac960c41db6..71f740e0dc34 100644
-> > --- a/net/Makefile
-> > +++ b/net/Makefile
-> > @@ -43,6 +43,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
-> >  obj-y                                +=3D 8021q/
-> >  endif
-> >  obj-$(CONFIG_IP_SCTP)                +=3D sctp/
-> > +obj-$(CONFIG_HOMA)           +=3D homa/
-> >  obj-$(CONFIG_RDS)            +=3D rds/
-> >  obj-$(CONFIG_WIRELESS)               +=3D wireless/
-> >  obj-$(CONFIG_MAC80211)               +=3D mac80211/
-> > --
-> > 2.43.0
-> >
+Sami
