@@ -1,193 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F63301716;
-	Mon, 27 Oct 2025 12:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549672FFFAD;
+	Mon, 27 Oct 2025 12:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761567275; cv=none; b=WP/xTaXJJGoVkC1sUdMJkkaYQJ5XWUKPFWfqh5PlglyRmpAFSv8MIP9gceop3gR+TYs8TCNDDljLcamzdNKePXhp6bHzEVUVfyhUchjVbDpqLiH75L7vWsYEic/n4SGlJqvaK8eK2wHlBHjfPraMQDhR278KhKO1MYCiuF0mvBg=
+	t=1761567291; cv=none; b=jZM1McmcoXzdSMk6pYJDWqjTDNxuF/ytQm74N+hE34F+yglVjqBadlgor38eVeqH9tZhGxUVlLJbaA4xZStsM3xQ9k9pv2BF/A5CeQlSuJgjGdnlKgcwF4oG5YIc/mh/so+tXYHwi+78iFTNd2vKZKAmsn75tCxZ65Z7QUvV9PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761567275; c=relaxed/simple;
-	bh=kZrtExYjHEUufmmxd9gUEfamXxEmFlwNPWcLp0VTimQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bYaMiLdwCsJFPGuRAouxil5OmrPQnCXxlYOqfPrkuXgzuGJzGuQJP9k7Wl3eU6MLVSsPbXVL+lM3N2HONP7FUtkRFh3lOmY0vd4MjYhTIhyRNwKZbJ7l0kIigZSatzsq/F9jI9vcqr8Zs5m2wBPl/I9nb89xLxETYYNbRmg7Ids=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EWJE4PI3; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761567291; c=relaxed/simple;
+	bh=3Zql0hnlyyNDcrY8A/YO77WNrcPh/bW0kmJSeTJzSr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VGgo7EcHU+0huPZ42l62oYSuDp/3wxKbbl3gFcqmvJGyJbxuFpgjr8F1wEq1NEwmrs35n7AbsrsD1vqrXw4C6DP0AbYzD1cYk6pfWjsjXWbNQavqHshGx7cIiHww+5/3KTx6tczJYTEpg4S2uz9N0MPpJxyN1zkg5ATg8vt67Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PHQzKwnE; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EWJE4PI3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761567274; x=1793103274;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kZrtExYjHEUufmmxd9gUEfamXxEmFlwNPWcLp0VTimQ=;
-  b=EWJE4PI3QPzUY1IT6EPIiOMOepuMYkghpukA1HQbvu1lGQUt/GjrBjmB
-   okibf4veh1aMrdBjcp6480WVEZq4i7u1tzueHXet5WtbkZgF4tH9zdoft
-   rnvsd/ARxDsNgH3HZPL+ZhMIwchdZ2e9RECFjvUqgjDYMV5crywFWuPkP
-   sEJmBXGwZS6jKlq2hadRfymxSOKW5zrDZOfBAKPQzpT66kfN+RueDahDM
-   Qiogb+EW0jUc5doBjvt49tm/UAaY5JFL0uq+j5doUoPsuZiKIyvTN4b+T
-   XFO2HaehfEdbU3+WJsenX57MVRcSAyfgrwH/kEIDwP9SLGhXE6LaRjmoY
-   A==;
-X-CSE-ConnectionGUID: 4sfcqwT4ST+n5qVfVtYspA==
-X-CSE-MsgGUID: JAXKZ0RmT3eNNQF5vjNB7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63532359"
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="63532359"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 05:13:27 -0700
-X-CSE-ConnectionGUID: OGkivFu6RDqRDrKb2tYpKw==
-X-CSE-MsgGUID: 0BttM1cKQaG033ollPg0Ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,258,1754982000"; 
-   d="scan'208";a="184923471"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by fmviesa006.fm.intel.com with ESMTP; 27 Oct 2025 05:13:23 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org
-Cc: netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	aleksander.lobakin@intel.com,
-	ilias.apalodimas@linaro.org,
-	toke@redhat.com,
-	lorenzo@kernel.org,
-	kuba@kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Octavian Purdila <tavip@google.com>
-Subject: [PATCH v4 bpf 1/2] xdp: introduce xdp_convert_skb_to_buff()
-Date: Mon, 27 Oct 2025 13:13:17 +0100
-Message-Id: <20251027121318.2679226-2-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20251027121318.2679226-1-maciej.fijalkowski@intel.com>
-References: <20251027121318.2679226-1-maciej.fijalkowski@intel.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PHQzKwnE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=PR3bVDmYCxp761b3MImnm37I6RBtXhqoJDwpm/RRsxY=; b=PHQzKwnExWRQY3s9Liy25I2h2v
+	7d22XPzeUsfwoke+49ImLMJ5WfyNyfN8D3SDmLRIg88mNg3OTMhS79bbVzJyOECf8CGH6ktaVEVWQ
+	6X58g+QzwblOWvA2D/5n53xi3yLVbh2tKhvgo82tzh7eUwmnTqgNr6+JcBSnP6EG29Rw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vDM7W-00CBgK-II; Mon, 27 Oct 2025 13:14:42 +0100
+Date: Mon, 27 Oct 2025 13:14:42 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yangfl <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Laight <david.laight.linux@gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] net: dsa: yt921x: Fix MIB overflow
+ wraparound routine
+Message-ID: <6d4f0ef0-3c6b-417e-82e1-d7f2635f6733@lunn.ch>
+References: <20251025171314.1939608-1-mmyangfl@gmail.com>
+ <20251025171314.1939608-2-mmyangfl@gmail.com>
+ <cc89ca15-cfb4-4a1a-97c9-5715f793bddd@lunn.ch>
+ <CAAXyoMOa1Ngze9VwwUJy0E7U52=w=fQE8cxwAviGm53MSQXVEA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAXyoMOa1Ngze9VwwUJy0E7U52=w=fQE8cxwAviGm53MSQXVEA@mail.gmail.com>
 
-Currently, generic XDP hook uses xdp_rxq_info from netstack Rx queues
-which do not have its XDP memory model registered. There is a case when
-XDP program calls bpf_xdp_adjust_tail() BPF helper, which in turn
-releases underlying memory. This happens when it consumes enough amount
-of bytes and when XDP buffer has fragments. For this action the memory
-model knowledge passed to XDP program is crucial so that core can call
-suitable function for freeing/recycling the page.
+> > > diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
+> > > index ab762ffc4661..97a7eeb4ea15 100644
+> > > --- a/drivers/net/dsa/yt921x.c
+> > > +++ b/drivers/net/dsa/yt921x.c
+> > > @@ -687,21 +687,22 @@ static int yt921x_read_mib(struct yt921x_priv *priv, int port)
+> > >               const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+> > >               u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
+> > >               u64 *valp = &((u64 *)mib)[i];
+> > > -             u64 val = *valp;
+> > > +             u64 val;
+> > >               u32 val0;
+> > > -             u32 val1;
+> > >
+> > >               res = yt921x_reg_read(priv, reg, &val0);
+> > >               if (res)
+> > >                       break;
+> > >
+> > >               if (desc->size <= 1) {
+> > > -                     if (val < (u32)val)
+> > > -                             /* overflow */
+> > > -                             val += (u64)U32_MAX + 1;
+> > > -                     val &= ~U32_MAX;
+> > > -                     val |= val0;
+> > > +                     u64 old_val = *valp;
+> > > +
+> > > +                     val = (old_val & ~(u64)U32_MAX) | val0;
+> > > +                     if (val < old_val)
+> > > +                             val += 1ull << 32;
+> > >               } else {
+> > > +                     u32 val1;
+> > > +
+> >
+> > What David suggested, https://lore.kernel.org/all/20251024132117.43f39504@pumpkin/ was
+> >
+> >                 if (desc->size <= 1) {
+> >                         u64 old_val = *valp;
+> >                         val = upper32_bits(old_val) | val0;
+> >                         if (val < old_val)
+> >                                 val += 1ull << 32;
+> >                 }
+> >
+> > I believe there is a minor typo here, it should be upper_32_bits(),
+> > but what you implemented is not really what David suggested.
+> >
+> >         Andrew
+> 
+> I didn't find the definition for upper32_bits, so...
 
-For netstack queues it defaults to MEM_TYPE_PAGE_SHARED (0) due to lack
-of mem model registration. The problem we're fixing here is when kernel
-copied the skb to new buffer backed by system's page_pool and XDP buffer
-is built around it. Then when bpf_xdp_adjust_tail() calls
-__xdp_return(), it acts incorrectly due to mem type not being set to
-MEM_TYPE_PAGE_POOL and causes a page leak.
+You should of asked, or searched a bit harder, because what you
+changed it to is different.
 
-Pull out the existing code from bpf_prog_run_generic_xdp() that
-init/prepares xdp_buff onto new helper xdp_convert_skb_to_buff() and
-embed there rxq's mem_type initialization that is assigned to xdp_buff.
-Make it agnostic to current skb->data position.
+/**
+ * upper_32_bits - return bits 32-63 of a number
+ * @n: the number we're accessing
+ *
+ * A basic shift-right of a 64- or 32-bit quantity.  Use this to suppress
+ * the "right shift count >= width of type" warning when that quantity is
+ * 32-bits.
+ */
+#define upper_32_bits(n) ((u32)(((n) >> 16) >> 16))
 
-This problem was triggered by syzbot as well as AF_XDP test suite which
-is about to be integrated to BPF CI.
+I don't see any shifting in your version.
 
-Reported-by: syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6756c37b.050a0220.a30f1.019a.GAE@google.com/
-Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in generic mode")
-Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-Co-developed-by: Octavian Purdila <tavip@google.com>
-Signed-off-by: Octavian Purdila <tavip@google.com> # whole analysis, testing, initiating a fix
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com> # commit msg and proposed more robust fix
----
- include/net/xdp.h | 25 +++++++++++++++++++++++++
- net/core/dev.c    | 25 ++++---------------------
- 2 files changed, 29 insertions(+), 21 deletions(-)
+And then i have to ask, which is correct?
 
-diff --git a/include/net/xdp.h b/include/net/xdp.h
-index aa742f413c35..eba1c0cd5800 100644
---- a/include/net/xdp.h
-+++ b/include/net/xdp.h
-@@ -384,6 +384,31 @@ struct sk_buff *xdp_build_skb_from_frame(struct xdp_frame *xdpf,
- 					 struct net_device *dev);
- struct xdp_frame *xdpf_clone(struct xdp_frame *xdpf);
- 
-+static inline
-+void xdp_convert_skb_to_buff(struct sk_buff *skb, struct xdp_buff *xdp,
-+			     struct xdp_rxq_info *xdp_rxq)
-+{
-+	u32 frame_sz, pkt_len;
-+
-+	/* SKB "head" area always have tailroom for skb_shared_info */
-+	frame_sz = skb_end_pointer(skb) - skb->head;
-+	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	pkt_len =  skb_tail_pointer(skb) - skb_mac_header(skb);
-+
-+	xdp_init_buff(xdp, frame_sz, xdp_rxq);
-+	xdp_prepare_buff(xdp, skb->head, skb->mac_header, pkt_len, true);
-+
-+	if (skb_is_nonlinear(skb)) {
-+		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
-+		xdp_buff_set_frags_flag(xdp);
-+	} else {
-+		xdp_buff_clear_frags_flag(xdp);
-+	}
-+
-+	xdp->rxq->mem.type = page_pool_page_is_pp(virt_to_head_page(xdp->data)) ?
-+				MEM_TYPE_PAGE_POOL : MEM_TYPE_PAGE_SHARED;
-+}
-+
- static inline
- void xdp_convert_frame_to_buff(const struct xdp_frame *frame,
- 			       struct xdp_buff *xdp)
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 2acfa44927da..a71da4edc493 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5320,35 +5320,18 @@ static struct netdev_rx_queue *netif_get_rxqueue(struct sk_buff *skb)
- u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, struct xdp_buff *xdp,
- 			     const struct bpf_prog *xdp_prog)
- {
--	void *orig_data, *orig_data_end, *hard_start;
-+	void *orig_data, *orig_data_end;
- 	struct netdev_rx_queue *rxqueue;
- 	bool orig_bcast, orig_host;
--	u32 mac_len, frame_sz;
-+	u32 metalen, act, mac_len;
- 	__be16 orig_eth_type;
- 	struct ethhdr *eth;
--	u32 metalen, act;
- 	int off;
- 
--	/* The XDP program wants to see the packet starting at the MAC
--	 * header.
--	 */
-+	rxqueue = netif_get_rxqueue(skb);
- 	mac_len = skb->data - skb_mac_header(skb);
--	hard_start = skb->data - skb_headroom(skb);
--
--	/* SKB "head" area always have tailroom for skb_shared_info */
--	frame_sz = (void *)skb_end_pointer(skb) - hard_start;
--	frame_sz += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
- 
--	rxqueue = netif_get_rxqueue(skb);
--	xdp_init_buff(xdp, frame_sz, &rxqueue->xdp_rxq);
--	xdp_prepare_buff(xdp, hard_start, skb_headroom(skb) - mac_len,
--			 skb_headlen(skb) + mac_len, true);
--	if (skb_is_nonlinear(skb)) {
--		skb_shinfo(skb)->xdp_frags_size = skb->data_len;
--		xdp_buff_set_frags_flag(xdp);
--	} else {
--		xdp_buff_clear_frags_flag(xdp);
--	}
-+	xdp_convert_skb_to_buff(skb, xdp, &rxqueue->xdp_rxq);
- 
- 	orig_data_end = xdp->data_end;
- 	orig_data = xdp->data;
--- 
-2.43.0
+How have you been testing this code? If this is TX bytes, for a 1G
+link, it will overflow 32 bits in about 34 seconds. So a simple iperf
+test could be used. If its TX packets, 64 byte packets could be done
+in 5 hours.
 
+	Andrew
