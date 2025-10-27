@@ -1,31 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669972DC769
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 19:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0056E322A04
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 19:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593405; cv=none; b=pC9tre57seJ2f8z4cjLBadsKhj3G4rmaOQmC5xe+ejFY5DWAXoAnUzqIJ6ct0frB7qpk6wipOpPMgU4yweOwa2SDMujtPS4VVEKV5fhdOG/6QHxEGzzBQe9Kj4UABZdLt0nYTkUfCCn6CrOSWWHsUgsHIoTcfFOe+QKdgIcKhWA=
+	t=1761593407; cv=none; b=qFNE5Q8Qu0p9pN96vhWRjV0I9+Q5fP0X8hJPzMKNfz6007N66Gu/Hk3TbLoSGY9AUR3089NCwoyVQznSct4WlQyHkBc1I0YGpcKRy1ws79u5RKc12JA4pTp9h9N1gt26Pu+e+Sfw3haIVjKid5O6LR79u4ijoCnuCAHHIYrDg+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593405; c=relaxed/simple;
-	bh=IYaB4JNIs0vAlAn5xUvZh09Adg+rSrIgI/zzHiuzBPI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOqFZfX6F4hxTYI2sb9Yog+x27iuRcXomteO0aYjTnk/uOR2kp5usDK48W3qZ+9kBZ7aPwls4EFwXfVfmp5C+rLQwLVoGMzjEUYGfjJJSPJG/cYF5vKs3b98/z5Qg45DJoWyY3ZTd3Vj5K7iBKn1/kglLyAsK+TM1HnPn2PiIz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnlXZJF8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761593407; c=relaxed/simple;
+	bh=t2TOiBIkhd1uKqzPmt1GX46rx4bd/kAxHrtp7CTkebE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kv0d+1+1mmPLP05zfLY6kfphIS1Br1iNF6Gms9OGP/OUCSCYqtMMtfgW5TDbHJ5LpRev2BsxgZoPM95TzCoCHBbImIGyPBIwsb3H06FzqO6/WCGVHPrnAFsajp5W6+vG4Yi0NEkrPTU9oAY+s6Iz555yPm6CvweqwdvKQ8zMvtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUd27wGY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnlXZJF8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5CDC4CEFD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUd27wGY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F034C4CEF1;
 	Mon, 27 Oct 2025 19:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761593405;
-	bh=IYaB4JNIs0vAlAn5xUvZh09Adg+rSrIgI/zzHiuzBPI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnlXZJF8Dnn49xCorxzK09gHUW17t/bt+dChjlmM3s1rAdq9B/gAxJDalHfPAQaVr
-	 WpaUSkv8Xm+F5tq/dznps9Gl+To0zD6NESmbBjUWJAMfgwUT42wssLgZ7A68pQtUb8
-	 EObnXvMgM816G257KdyZRFM7az6DixRSh1M9R9PUuwRmlPkMAN445iy68WWChBEGsc
-	 F6/sRI38c+xVpU3AeMqsHU3fwErCpTthTyR5SErk77Awt184DZEKnRiwWTAC38oDuC
-	 IzrSTmUSrBalcT8/tVHIZ3uSvqM/1I4ydRQrmSxCfg60+nphTp8+HmHIinlut/gx1y
-	 l0K0LWD++J41Q==
+	s=k20201202; t=1761593404;
+	bh=t2TOiBIkhd1uKqzPmt1GX46rx4bd/kAxHrtp7CTkebE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nUd27wGYOpq4VGYXnSR1dAOnUFm8Fm/+OJu24TueXX/XgcSpE1bPhU8Iv3BUNdZzY
+	 ia82rfVzKKDkfvD7rw1/eaTHXHq8hayyLFH5kOVP03bUSpVRV5On5UhCCw4WvSFnGy
+	 kAVhI4v543A+RrgWY2X5Jn1sNSCRIoDh2IYYeh7+9bXD/piM97IqW2LgK+4lu3VEaR
+	 QGFLDglUNBodJlysoaqlrNXjHuI9ET0KrAOWGJPvMsdskGD5iyVROoZcgqLyAq5QMl
+	 6vDtPKn9acNjiWkE3ZQHRNC5uUhNnZ1Mnhz9aoYf6vxz4Ts7PP3oZKs8SyYmYwPleh
+	 9tojvSoHhgXhQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,12 +35,10 @@ Cc: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	donald.hunter@gmail.com,
 	ast@fiberby.net
-Subject: [PATCH net-next v2 2/2] tools: ynl: rework the string representation of NlError
-Date: Mon, 27 Oct 2025 12:29:58 -0700
-Message-ID: <20251027192958.2058340-2-kuba@kernel.org>
+Subject: [PATCH net-next v2 1/2] tools: ynl: fix indent issues in the main Python lib
+Date: Mon, 27 Oct 2025 12:29:57 -0700
+Message-ID: <20251027192958.2058340-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027192958.2058340-1-kuba@kernel.org>
-References: <20251027192958.2058340-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,66 +47,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In early days of YNL development dumping the NlMsg on errors
-was quite useful, as the library itself could have been buggy.
-These days increasingly the NlMsg is just taking up screen space
-and means nothing to a typical user. Try to format the errors
-more in line with how YNL C formats its errors strings.
-
-Before:
-  $ ynl --family ethtool  --do channels-set  --json '{}'
-  Netlink error: Invalid argument
-  nl_len = 44 (28) nl_flags = 0x300 nl_type = 2
-	error: -22
-	extack: {'miss-type': 'header'}
-
-  $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
-  Netlink error: Invalid argument
-  nl_len = 88 (72) nl_flags = 0x300 nl_type = 2
-	error: -22
-	extack: {'msg': 'requested channel count exceeds maximum', 'bad-attr': '.tx-count'}
-
-After:
-  $ ynl --family ethtool  --do channels-set  --json '{}'
-  Netlink error: Invalid argument {'miss-type': 'header'}
-
-  $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
-  Netlink error: requested channel count exceeds maximum: Invalid argument {'bad-attr': '.tx-count'}
+Class NlError() and operation_do_attributes() are indented by 2 spaces
+rather than 4 spaces used by the rest of the file.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
 v2:
- - remove an unnecessary condition
-v1: https://lore.kernel.org/20251024215713.1250688-1-kuba@kernel.org
+ - new patch
 
 CC: donald.hunter@gmail.com
 CC: ast@fiberby.net
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index bdcc4f031d39..225baad3c8f8 100644
+index 62383c70ebb9..bdcc4f031d39 100644
 --- a/tools/net/ynl/pyynl/lib/ynl.py
 +++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -105,7 +105,16 @@ from .nlspec import SpecFamily
-         self.error = -nl_msg.error
+@@ -100,12 +100,12 @@ from .nlspec import SpecFamily
+                                   'bitfield32', 'sint', 'uint'])
  
-     def __str__(self):
--        return f"Netlink error: {os.strerror(self.error)}\n{self.nl_msg}"
-+        msg = "Netlink error: "
-+
-+        extack = self.nl_msg.extack.copy() if self.nl_msg.extack else {}
-+        if 'msg' in extack:
-+            msg += extack['msg'] + ': '
-+            del extack['msg']
-+        msg += os.strerror(self.error)
-+        if extack:
-+            msg += ' ' + str(extack)
-+        return msg
+ class NlError(Exception):
+-  def __init__(self, nl_msg):
+-    self.nl_msg = nl_msg
+-    self.error = -nl_msg.error
++    def __init__(self, nl_msg):
++        self.nl_msg = nl_msg
++        self.error = -nl_msg.error
+ 
+-  def __str__(self):
+-    return f"Netlink error: {os.strerror(self.error)}\n{self.nl_msg}"
++    def __str__(self):
++        return f"Netlink error: {os.strerror(self.error)}\n{self.nl_msg}"
  
  
  class ConfigError(Exception):
+@@ -1039,15 +1039,15 @@ genl_family_name_to_id = None
+                     self.check_ntf()
+ 
+     def operation_do_attributes(self, name):
+-      """
+-      For a given operation name, find and return a supported
+-      set of attributes (as a dict).
+-      """
+-      op = self.find_operation(name)
+-      if not op:
+-        return None
++        """
++        For a given operation name, find and return a supported
++        set of attributes (as a dict).
++        """
++        op = self.find_operation(name)
++        if not op:
++            return None
+ 
+-      return op['do']['request']['attributes'].copy()
++        return op['do']['request']['attributes'].copy()
+ 
+     def _encode_message(self, op, vals, flags, req_seq):
+         nl_flags = Netlink.NLM_F_REQUEST | Netlink.NLM_F_ACK
 -- 
 2.51.0
 
