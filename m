@@ -1,158 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488162F0689;
-	Mon, 27 Oct 2025 09:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3A82DEA64
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 09:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761557659; cv=none; b=T3gEZgQgKovehscrZ9sME3JK14QA6l6h+o3VngBzqr7MGdzXNhwvW1jG0xipC6I3vLlDwoLeHfKUIRxIA3CNiNHVrHoXCidCbQ7sIO5UFK1tJTVgkNLK9d7tJcR5gNgvoRk7GYRcxRPNX5ZazuDW+HOyQWT9bsdygDWK9VBmwGQ=
+	t=1761557854; cv=none; b=DxdlhC40UpiwrBbxj+eBMpgeBYnki+l/9avQaGy8V6KKESdEulrelIOTjZ6/Ri3I/BSV2hEAdHiEl1dbSsjmNrJQfOB2jpuvK4QVN+KdcRolFUOsExZKpKFgr/zZ+mCtyyatrTb+SwFzkNf9Kty01vTNLXi8mHyYRrUT5xIRiCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761557659; c=relaxed/simple;
-	bh=jNY7vyah/H0XlZOl9k3qgI+ts9k9GGcIuJnN4Nfa3WI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kg8Ml3kc+09rZxww5v9o71GPTO1jq+fCwea4jgpO3popL/eLQow8eoITacolWPkgQHpf5SqjhU0URja+1R1/Y5nXub6BhN6B8pZg6/LVLBTZXZ4Vhk7NG9HdahnsBGFs1WYxD15s1648FA4QqQKG+da99mNfBCqgyp+ylbOrG50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5zB+tJs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761557854; c=relaxed/simple;
+	bh=rqxKWKvMZE9/vjy0NWZSUP0hbMN7FYhLl2QnYiQ5SAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hxMTo1qEA7ZXJRYgxmWpAQ/TUCncJVaQTDxGHzBGcuDwUn72Wr1Kr6F8aIgNyKkqLLGqLKbHnkaSvH2UShvnOcAujh6gf/7e2zYzNMuMUr+wA4vzrNe+Q8VWa+2XiWZqcLI/CVYP7t6x+A9gpxRyRYccOgwSuoFCc+IQlDOnBYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcAvnc4c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5zB+tJs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416BFC4CEFB;
-	Mon, 27 Oct 2025 09:34:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcAvnc4c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240CDC4CEF1;
+	Mon, 27 Oct 2025 09:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761557658;
-	bh=jNY7vyah/H0XlZOl9k3qgI+ts9k9GGcIuJnN4Nfa3WI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5zB+tJs7ztrUbF52xo2zNWKbTb7K8pN7/5gc0IzjRfkStU/Vexx40f4TYt1IwSzU
-	 nvEEywQG6h217t0r2wFgUwmmRlb9HkiqtRQiy99DroL2CWB+rsNMygzCjmaP8jgj7j
-	 +hyUxM5sRynlpWf6qxkmjRYSFLlfEpqTMDAb8wZWn6zOr/mHTgfYvTNzESGzFvSixd
-	 PxPQqUu7gWznMmDlL/1kv4W4JCm9oXUgF5KEQx3h1u10AEjeLG+yc0UMvrlPTDPJFI
-	 Ns3rrLJQ+g0Z47ZNI04RJ6LOHHTGrXTyn3a2qle61T7FMfD7/m5W61L8rICaBLxxtd
-	 7QjHoWLHQkQPA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Edward Srouji <edwards@nvidia.com>
-Subject: [PATCH mlx5-next 2/2] net/mlx5: Add direct ST mode support for RDMA
-Date: Mon, 27 Oct 2025 11:34:02 +0200
-Message-ID: <20251027-st-direct-mode-v1-2-e0ad953866b6@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027-st-direct-mode-v1-0-e0ad953866b6@nvidia.com>
-References: <20251027-st-direct-mode-v1-0-e0ad953866b6@nvidia.com>
+	s=k20201202; t=1761557854;
+	bh=rqxKWKvMZE9/vjy0NWZSUP0hbMN7FYhLl2QnYiQ5SAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BcAvnc4cbU+7n1pD9lUW7uOZd2l2mkFvKdR/oUu/dJ1iAaQIWKJXsjT6lfyON0RUJ
+	 ovaCJbr5+VWgk1X4It2oq8KYM7nqK2pwVX+I2FowIrZ+ZtEuSPN4RZ1JWgRSCopMgj
+	 NbyvjWQ1Jl3DpgHHGqG6zmJziUjOU1uGnXcxjQ595x7B+565LRZi2LN+XzVZSqfVns
+	 8/HRC3GjrwlK/v/HAi2GAT0FQ60GE6nNCPtteLlm1syrEsOv+/lZtA4V9ySrQfXZaV
+	 Yiz+cBEO4cKQp9AIiUxxYvHAMpLn0VyHcslb2Ff4vVQxNLkAQ6+XxPmq1dBGKtV9Wu
+	 C90+bBArXcIHA==
+Date: Mon, 27 Oct 2025 09:37:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: John Ousterhout <ouster@cs.stanford.edu>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	kuba@kernel.org
+Subject: Re: [PATCH net-next v16 01/14] net: homa: define user-visible API
+ for Homa
+Message-ID: <aP89WhbDEzt24sFG@horms.kernel.org>
+References: <20251015185102.2444-1-ouster@cs.stanford.edu>
+ <20251015185102.2444-2-ouster@cs.stanford.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.15-dev
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251015185102.2444-2-ouster@cs.stanford.edu>
 
-From: Yishai Hadas <yishaih@nvidia.com>
+On Wed, Oct 15, 2025 at 11:50:48AM -0700, John Ousterhout wrote:
+> Note: for man pages, see the Homa Wiki at:
+> https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
+> 
+> Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
-Add support for direct ST mode where ST Table Location equals
-PCI_TPH_LOC_NONE.
+...
 
-In that case, no steering table exists, the steering tag itself will be
-used directly by the SW, FW, HW from the mkey.
+> diff --git a/net/Kconfig b/net/Kconfig
+> index d5865cf19799..92972ff2a78d 100644
+> --- a/net/Kconfig
+> +++ b/net/Kconfig
+> @@ -250,6 +250,7 @@ source "net/bridge/netfilter/Kconfig"
+>  endif # if NETFILTER
+>  
+>  source "net/sctp/Kconfig"
+> +source "net/homa/Kconfig"
+>  source "net/rds/Kconfig"
+>  source "net/tipc/Kconfig"
+>  source "net/atm/Kconfig"
 
-This enables RDMA users to use the current exposed APIs to work in
-direct mode.
+Hi John,
 
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/lib/st.c | 29 ++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+I think that the hunk above needs to wait until a patch
+that adds net/homa/Kconfig. As is, this breaks builds.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-index 47fe215f66bf..ef06fe6cbb51 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-@@ -19,13 +19,16 @@ struct mlx5_st {
- 	struct mutex lock;
- 	struct xa_limit index_limit;
- 	struct xarray idx_xa; /* key == index, value == struct mlx5_st_idx_data */
-+	u8 direct_mode : 1;
- };
- 
- struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *dev)
- {
- 	struct pci_dev *pdev = dev->pdev;
- 	struct mlx5_st *st;
-+	u8 direct_mode = 0;
- 	u16 num_entries;
-+	u32 tbl_loc;
- 	int ret;
- 
- 	if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
-@@ -40,10 +43,16 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *dev)
- 	if (!pdev->tph_cap)
- 		return NULL;
- 
--	num_entries = pcie_tph_get_st_table_size(pdev);
--	/* We need a reserved entry for non TPH cases */
--	if (num_entries < 2)
--		return NULL;
-+	tbl_loc = pcie_tph_get_st_table_loc(pdev);
-+	if (tbl_loc == PCI_TPH_LOC_NONE)
-+		direct_mode = 1;
-+
-+	if (!direct_mode) {
-+		num_entries = pcie_tph_get_st_table_size(pdev);
-+		/* We need a reserved entry for non TPH cases */
-+		if (num_entries < 2)
-+			return NULL;
-+	}
- 
- 	/* The OS doesn't support ST */
- 	ret = pcie_enable_tph(pdev, PCI_TPH_ST_DS_MODE);
-@@ -56,6 +65,10 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *dev)
- 
- 	mutex_init(&st->lock);
- 	xa_init_flags(&st->idx_xa, XA_FLAGS_ALLOC);
-+	st->direct_mode = direct_mode;
-+	if (st->direct_mode)
-+		return st;
-+
- 	/* entry 0 is reserved for non TPH cases */
- 	st->index_limit.min = MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDEX + 1;
- 	st->index_limit.max = num_entries - 1;
-@@ -96,6 +109,11 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem_type,
- 	if (ret)
- 		return ret;
- 
-+	if (st->direct_mode) {
-+		*st_index = tag;
-+		return 0;
-+	}
-+
- 	mutex_lock(&st->lock);
- 
- 	xa_for_each(&st->idx_xa, index, idx_data) {
-@@ -145,6 +163,9 @@ int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
- 	if (!st)
- 		return -EOPNOTSUPP;
- 
-+	if (st->direct_mode)
-+		return 0;
-+
- 	mutex_lock(&st->lock);
- 	idx_data = xa_load(&st->idx_xa, st_index);
- 	if (WARN_ON_ONCE(!idx_data)) {
+Possibly the same is also true of the hunk below,
+but the build didn't get that far.
 
--- 
-2.51.0
-
+> diff --git a/net/Makefile b/net/Makefile
+> index aac960c41db6..71f740e0dc34 100644
+> --- a/net/Makefile
+> +++ b/net/Makefile
+> @@ -43,6 +43,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
+>  obj-y				+= 8021q/
+>  endif
+>  obj-$(CONFIG_IP_SCTP)		+= sctp/
+> +obj-$(CONFIG_HOMA)		+= homa/
+>  obj-$(CONFIG_RDS)		+= rds/
+>  obj-$(CONFIG_WIRELESS)		+= wireless/
+>  obj-$(CONFIG_MAC80211)		+= mac80211/
+> -- 
+> 2.43.0
+> 
