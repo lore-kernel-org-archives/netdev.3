@@ -1,64 +1,64 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F53F2DEA67
-	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 22:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE02E6CD0
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 22:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761603736; cv=none; b=tR7tXzSGf6DzN+MKggKYEmdC5q1NoyqxUIO9goi3KREKQggwT6TnVes9d4QyPVmdkNlljdQiF98q3p6Q2dEgbBQ3YKcvFpd9VL/NVmDpBCH3cEPjFsVmJTkiWWkbM9pk8FSHtux4JmhtRfV0Uo9Y0BcbKy4+UruXOTvhLNt5+Wg=
+	t=1761604177; cv=none; b=twDGObOEIB8oqWM7XR4eOvtzABisM9aGsfBYKTCkvvY0nfX6YPdSWpCoZ21/aChzidwn/0n02V4Y+nBhLXYp67IKfRL+N0S8FL6nbDTEUxs59o/KkyR3xVLF10VOHCRgoswPV1h/5FOBlDyzC+wHkzt2Mz1KShJMAMxmHcH6gd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761603736; c=relaxed/simple;
-	bh=Egn4cV5CnJgU9OUEpru5VJybNcrGCiO3dvs+v1/WofY=;
+	s=arc-20240116; t=1761604177; c=relaxed/simple;
+	bh=0C1yl0AA49JmE9XLwRyxffj0R5guaYcIk3f9PZ1hd+Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pISjbFM5Wps0uEVLotyUSFiK8anjeBjlnY9/EBQB0QYm1GU9LXwsKK+bKxQS9o7M228i8PL+XM5SJj2R2ew4MggIHdFWIM3DA+T4qbqX9y+onkue+OD+Ze+/dJ2q/t+cQuU93Q0/k4kkieX1SSh4Xvhdz4rkKZWNmw+stzZuvdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKn+D6Zm; arc=none smtp.client-ip=209.85.221.44
+	 Content-Type:Content-Disposition:In-Reply-To; b=HPKwh80qcaA51UMN6EbYHPGVhroZiKlyq2iaKE794mqPHxPniadmlPEtseJkXHQ+0z7PCGmidnVtY79Ma6v8uoU6BcGjGl2VaPCehPWyzRGSiCn3oqL+e2lwds8/Tmo5E27H6KmqQ9pFd4FjiN+ErPDM4HAh/mr+mNFQ7eNOLmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JnG2PwBE; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKn+D6Zm"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-40d0c517f90so380739f8f.0
-        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:22:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JnG2PwBE"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d6027158eso83301066b.1
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 15:29:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761603733; x=1762208533; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1761604174; x=1762208974; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TPQWg8YodwV0TasyiuBuXsJUnrrwoBhVKhLf4m0cFkM=;
-        b=XKn+D6ZmrbjLYeIS1bPp384GMSDSjoL+g8iKdKDsVAiAIEEGPFrSnY2wHpBgLkKU67
-         eiM3Jit2aSSDfo6RY2MOd9AwOqfeJwYCLUaqMa0VsA+fVH2nvMgElFywzPL/t8I6+XaM
-         cAhEKh0xQLqrvo93Enns9/FxP2e/xRPyKGixLZTDc0p2K3KpLL8wQJImD562SrH1dFGP
-         bfihBsG3hEGSsHRBT+ekebUWcwX//EC7KZZELM10ghtWywr97YLJ4j47y/JnH855EV6u
-         JBomQzI0+qbugCP6IZY9sInLVtIeABgZckFjEO1pUH4sFYaZ9cB7FP/xfzG+NTWYitFT
-         DWFA==
+        bh=RE56wPPSVhzI0oadNjkluabeK5GwNJ3pnD3l3rW33bI=;
+        b=JnG2PwBETF8wvT2ZcvOCs4655f3/PEA7WPpHBAfeVkYJCJZ/4zu3OPZr8IM28MqeHB
+         XK5M/I+bCzHZ0joMqS6C899uuVIBax7Hll3Poxyw6wKWrw8kynwD8V/S+IzWWTee+/md
+         1ocKTwqHoQu9Smf0VFNevIMrhcJJ4LV58QwOICElPEIXxudBBJNYLj3sle2tWsiVUB/7
+         wyBCJCzY//hEDnTzy1TcWlRD3H9bzhVdrdIKYc49S+3YeHOqwWwHl3vYFPGXKh2SjHZJ
+         wxjpl2849RoxDq3QCN30j5kJuVA4PLsxpTzHOJGUSlH43TMcTv3XS1mh5uYDbRQNVKCy
+         rMYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761603733; x=1762208533;
+        d=1e100.net; s=20230601; t=1761604174; x=1762208974;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TPQWg8YodwV0TasyiuBuXsJUnrrwoBhVKhLf4m0cFkM=;
-        b=U1NtTBG30fYCEZW3V+eyzEhGtQS3iyIyS4wmJC57u9gF48+p6X8FUh9APfKZ845Gio
-         zRt/tMirMI042cpeXyOobWCeOKGWkBWMfD71TexY74JJvqmTCLr4Q/UGmuhAjdlcS2PI
-         colTwtgelSjQ6xAKNFxqcZa6m3+UENF02B/3NXAejqlpnRwxg8/mh9xRCz3FCDPVa0JG
-         +lEVnRKd5YXjy9aTIAwkX2kv5EdqonZb2AJ2pXvIAfSbGm+udHCtfIPaYcXO4OxKMrv1
-         KSNsyOXG/mWBnixFqdFn7LHczsvC3nGmC167KgnW1c5voD20lekOhnIC+BWnwy/rGUCF
-         28mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWR/hu6BsgSCGWokNQCGw5GoCmXryAI+7+oVvGStIFugP09XY/a81wkR0fZDl9mP26d422wTcI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOVC7li7v63rROGHICzho3kVTZ3DqwmTb0iDFcCDpWwOY+p8eZ
-	hDA32op5aIo0qJK62bJjMTVeH5jgR9W4RIB4UUbzWLHJnK15JEkW6yyZ
-X-Gm-Gg: ASbGncunUa7ZgyjPGl5Q/wSbDkzt8bsCiC9vmLmgxhMcWm9aKjix8ADvGBe//mYvUT0
-	0ePyQmajoc7BAl9U/+iZA4hWhZ9siO/sUC00T/nLV25jS7ZtLiRM+fmocsiZMPQfcNCk4da04sM
-	3Cd6CMVPuqcS9n05zDAIzDmCdLE6y/PRiddazA0Ijij4UxquS3IwldpixOdMiXnlURtsVaSmnin
-	X7kJNV6cxIVdxfl4eRT/w5KpavL8oEEvMd+i9xcvhXR69aGQwjKT0LOT9Q+OjKOHowZF/CnV1mn
-	pTUQ4WBXmiLHnD26GS30o1+1hNIRIL9kzO52LITStreOt10rIE+gbK888U60T3+ZxdfibZRklne
-	rSRZMeAHqcAHC/cSaDUKzzenfEK+QNmQwsBFlT8JhfYcc3idpn9fPRb3P/mswD8X6NgIdvbL9M/
-	o0Mxg=
-X-Google-Smtp-Source: AGHT+IFKML31j6wnI6vGTYle4J1PHdCjOW/A3I5JFdqfSeewCWVjPwljp6TGGzZv8i+BCRDqH3AhJQ==
-X-Received: by 2002:a05:600c:1987:b0:471:703:c206 with SMTP id 5b1f17b1804b1-47717e6c391mr5547955e9.5.1761603732680;
-        Mon, 27 Oct 2025 15:22:12 -0700 (PDT)
+        bh=RE56wPPSVhzI0oadNjkluabeK5GwNJ3pnD3l3rW33bI=;
+        b=oviyrb74QDziG2XGvcrskvKvswuVRuiNM6t5M4ZqQ6Dz4K+afO1+htrwfbQRbRaPDe
+         e6bqvYtyACr9P4PjEjvo3FMGyz/zkcDbHEERvJb9G2WOgznmNtTd5NR/aYUsZYumPxZF
+         cpJ1ovvS0c4U0VjbCB+oFvfUdbQ4/ZkyVCVlj/RFLE+TCalP8ACvhEch+uKAFeIA6UWX
+         qI9H/Sew60jlEHomveBg4J8RkD4tKU5O3SZbtOlOWKIvPeYbDd3tpV7EYEQ4U3BFY3hR
+         SoC0vVSVejNt8NRMuRP0XPzkgWzanEXUE5JZq+A8IKpGc7SRw5L4Ta+/d8z36R6EH2PH
+         JJGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUoSPRRZ6p3Ivwms0vHL12entVlN4rAHbDE5uxAx0hL8mio0yx5NH/vDMKgduQL6KNbBevbY4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziyOFri+0aHkzA45XhTdUHA4wrIX0yBCZ9bGEzg9yFLbouI6Ln
+	FU9IqxFmfBZUnEB9IjaZfZac5Ps4UJh7DRoYt36vBS70/vDdD5cKYLqG
+X-Gm-Gg: ASbGncviJU9SrrvsU5VJJq/GlA0umTYsEDs98pNrO18j2Bo6PoihPZdwJr8sksG3Fka
+	qKYIAg1L/tH47RzvXF0yFQJeSEn5tEJDAdiv+iM4h6nN8JSOKleyRWYYra9AqZHfV5/mgr1vkzQ
+	/vt/eoC4bfbc2kQhR0jHfG3/Gi8wm+xIGOB7gKX62+IPpb4K8YM5V2msYu8zke4m8zX8GHINWys
+	2oBLQkyjMOFh9ol+0cVjiWffieflGMPjbwZAkMgn4Hx5M1PrJ4FAaHz3GysW8loZ4Z3rmGBytow
+	j2BtA6d9yNrrZY2k7NIekNKd3OUZQr/ABYeEHJu9Z/z8aZf7XOZd6u2lCk3YL5fhMyDb77sGc0V
+	ar3XYUr+3yuEe7fA+8MLeAoQPJvbqHK6zRan8v04Gr6BHM/fepVrYRBiBVp+gJ+0Jj3m2ePgwwO
+	mnL+w=
+X-Google-Smtp-Source: AGHT+IFNb/PYIFtOJ/7JMMnUbjO9bbIUFWO6ORtTCt2r4/hNn2eMPmn5diQOKKm+4iULlasCLfApLg==
+X-Received: by 2002:a17:907:d8a:b0:b41:873d:e215 with SMTP id a640c23a62f3a-b6dba45b0a1mr82457466b.1.1761604173725;
+        Mon, 27 Oct 2025 15:29:33 -0700 (PDT)
 Received: from skbuf ([2a02:2f04:d406:ee00:3eb9:f316:6516:8b90])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd4924e2sm159570265e9.8.2025.10.27.15.22.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d8ceeaffasm835503466b.45.2025.10.27.15.29.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 15:22:11 -0700 (PDT)
-Date: Tue, 28 Oct 2025 00:22:08 +0200
+        Mon, 27 Oct 2025 15:29:33 -0700 (PDT)
+Date: Tue, 28 Oct 2025 00:29:29 +0200
 From: Vladimir Oltean <olteanv@gmail.com>
 To: Daniel Golle <daniel@makrotopia.org>
 Cc: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
@@ -81,13 +81,13 @@ Cc: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
 	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
 	"Livia M. Rosu" <lrosu@maxlinear.com>,
 	John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net-next v3 01/12] net: dsa: lantiq_gswip: split into
- common and MMIO parts
-Message-ID: <20251027222208.yrbqt5n3mseslu5d@skbuf>
+Subject: Re: [PATCH net-next v3 02/12] net: dsa: lantiq_gswip: support
+ enable/disable learning
+Message-ID: <20251027222929.7fhlf63e2piwityt@skbuf>
 References: <cover.1761521845.git.daniel@makrotopia.org>
  <cover.1761521845.git.daniel@makrotopia.org>
- <ab056e0761db65483e30c0830ba919c09bc101aa.1761521845.git.daniel@makrotopia.org>
- <ab056e0761db65483e30c0830ba919c09bc101aa.1761521845.git.daniel@makrotopia.org>
+ <816b2e277d22dae9b3e9e3c4828309a17a3fad7b.1761521845.git.daniel@makrotopia.org>
+ <816b2e277d22dae9b3e9e3c4828309a17a3fad7b.1761521845.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -96,19 +96,16 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ab056e0761db65483e30c0830ba919c09bc101aa.1761521845.git.daniel@makrotopia.org>
- <ab056e0761db65483e30c0830ba919c09bc101aa.1761521845.git.daniel@makrotopia.org>
+In-Reply-To: <816b2e277d22dae9b3e9e3c4828309a17a3fad7b.1761521845.git.daniel@makrotopia.org>
+ <816b2e277d22dae9b3e9e3c4828309a17a3fad7b.1761521845.git.daniel@makrotopia.org>
 
-On Sun, Oct 26, 2025 at 11:43:54PM +0000, Daniel Golle wrote:
-> Move all parts specific for the MMIO/SoC driver into a module of its own
-> to prepare for supporting MDIO-connected switch ICs.
-> Modify gswip_probe() functions by splitting it into a common function
-> gswip_probe_common() which covers allocating, initializing and registering
-> the DSA switch, while keeping transport-specific regmap initialization as
-> well as PHY firmware loading in the new MMIO/SoC-specific gswip_probe()
-> function.
+On Sun, Oct 26, 2025 at 11:44:03PM +0000, Daniel Golle wrote:
+> Switch API 2.2 or later supports enabling or disabling learning on each
+> port. Implement support for BR_LEARNING bridge flag and announce support
+> for BR_LEARNING on GSWIP 2.2 or later.
 > 
 > Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 > ---
+> v2: initialize supported flags with 0
 
 Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
