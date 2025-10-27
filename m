@@ -1,76 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6823326D57;
-	Mon, 27 Oct 2025 19:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669972DC769
+	for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 19:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761593338; cv=none; b=VNfS4bAzPnoSyCyqRxB4RH/1CBj5epd76Qkv47UUzpPyEf5T5p6FJX9/LzPRy7cevFPO6lRNvrhzOiUcHqnoAjjZXXXIQu7d9og3ZY3YoZ2CWQTUTDaQE25fGft+4obj2jZmecoMWxpZ3q0N0Gq+10BjtODaXukJnrT6VYBc6qg=
+	t=1761593405; cv=none; b=pC9tre57seJ2f8z4cjLBadsKhj3G4rmaOQmC5xe+ejFY5DWAXoAnUzqIJ6ct0frB7qpk6wipOpPMgU4yweOwa2SDMujtPS4VVEKV5fhdOG/6QHxEGzzBQe9Kj4UABZdLt0nYTkUfCCn6CrOSWWHsUgsHIoTcfFOe+QKdgIcKhWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761593338; c=relaxed/simple;
-	bh=PRLEO0PLw/2N3Sj62GQO8zt0wY56DYEiftlRB80ZRtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e1JNydZ6lZ5iwvpvJDN5MFUhbpGnyqAlSLMbt1vo/XnmTFUQDy5IyGvJgUotBSd5FVG6k2tfv6mEpLPmQHilda5pEGkY7NBtt9UO2QyJEO5FYBpwff03aQH+WDqlXtwE9wHFj2/mehc2Y70KBJUFzdVJPfwW/14mwmD+Ae2wXDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rX+RUkwW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761593405; c=relaxed/simple;
+	bh=IYaB4JNIs0vAlAn5xUvZh09Adg+rSrIgI/zzHiuzBPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cOqFZfX6F4hxTYI2sb9Yog+x27iuRcXomteO0aYjTnk/uOR2kp5usDK48W3qZ+9kBZ7aPwls4EFwXfVfmp5C+rLQwLVoGMzjEUYGfjJJSPJG/cYF5vKs3b98/z5Qg45DJoWyY3ZTd3Vj5K7iBKn1/kglLyAsK+TM1HnPn2PiIz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnlXZJF8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rX+RUkwW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0106CC4CEF1;
-	Mon, 27 Oct 2025 19:28:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnlXZJF8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5CDC4CEFD;
+	Mon, 27 Oct 2025 19:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761593338;
-	bh=PRLEO0PLw/2N3Sj62GQO8zt0wY56DYEiftlRB80ZRtw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rX+RUkwWAroJxG71ukLZJgw8N1y8a2TahXJhsSMjF7ECJIOU3VD5Kaj85D18HA33p
-	 cM0RSgAQCvN2qj6JMtqNDIvEjt4euJIoE+ra/g5DAoU5YDRze8q1APKcaxhy489y6C
-	 znaR5FS9uyFdodKMZNXdt/tXQYEPYrGrBsMDHSMjD4+nZ5H/zarWT78sW222sxrMIW
-	 +g5yeW5B8UnjJTd6l8KkFyqyoyjbSSS4L/3rXRNf2ca7ZIU0JoWlhfZDSD0ZqX+iWu
-	 ekPrNsi7iePkhzqSRExidEucBcMetRnjQYL52Rz/QsHjjUJiWZ7qwhCCI9oyeMgcD/
-	 f+Clf+ndTOA5g==
-Date: Mon, 27 Oct 2025 19:28:55 +0000
-From: Simon Horman <horms@kernel.org>
-To: Bagas Sanjaya <bagasdotme@gmail.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Karsten Keil <isdn@linux-pingi.de>
-Subject: Re: [PATCH net] MAINTAINERS: mark ISDN subsystem as orphan
-Message-ID: <aP_H935zm6YwW997@horms.kernel.org>
-References: <20251023092406.56699-1-bagasdotme@gmail.com>
+	s=k20201202; t=1761593405;
+	bh=IYaB4JNIs0vAlAn5xUvZh09Adg+rSrIgI/zzHiuzBPI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mnlXZJF8Dnn49xCorxzK09gHUW17t/bt+dChjlmM3s1rAdq9B/gAxJDalHfPAQaVr
+	 WpaUSkv8Xm+F5tq/dznps9Gl+To0zD6NESmbBjUWJAMfgwUT42wssLgZ7A68pQtUb8
+	 EObnXvMgM816G257KdyZRFM7az6DixRSh1M9R9PUuwRmlPkMAN445iy68WWChBEGsc
+	 F6/sRI38c+xVpU3AeMqsHU3fwErCpTthTyR5SErk77Awt184DZEKnRiwWTAC38oDuC
+	 IzrSTmUSrBalcT8/tVHIZ3uSvqM/1I4ydRQrmSxCfg60+nphTp8+HmHIinlut/gx1y
+	 l0K0LWD++J41Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	donald.hunter@gmail.com,
+	ast@fiberby.net
+Subject: [PATCH net-next v2 2/2] tools: ynl: rework the string representation of NlError
+Date: Mon, 27 Oct 2025 12:29:58 -0700
+Message-ID: <20251027192958.2058340-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251027192958.2058340-1-kuba@kernel.org>
+References: <20251027192958.2058340-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251023092406.56699-1-bagasdotme@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 23, 2025 at 04:24:06PM +0700, Bagas Sanjaya wrote:
-> We have not heard any activities from Karsten in years:
-> 
->   - Last review tag was nine years ago in commit a921e9bd4e22a7
->     ("isdn: i4l: move active-isdn drivers to staging")
->   - Last message on lore was in October 2020 [1].
-> 
-> Furthermore, messages to isdn mailing list bounce.
-> 
-> Mark the subsystem as orphan to reflect these.
-> 
-> [1]: https://lore.kernel.org/all/0ee243a9-9937-ad26-0684-44b18e772662@linux-pingi.de/
-> 
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> ---
-> netdev maintainers: I have sent request message to Karsten off-list prior to
-> sending this patch. Please hold off applying it until a week later when I
-> will inform whether he responds or not.
+In early days of YNL development dumping the NlMsg on errors
+was quite useful, as the library itself could have been buggy.
+These days increasingly the NlMsg is just taking up screen space
+and means nothing to a typical user. Try to format the errors
+more in line with how YNL C formats its errors strings.
 
-FTR, I checked the information in the commit message,
-and my searches match what is written above.
+Before:
+  $ ynl --family ethtool  --do channels-set  --json '{}'
+  Netlink error: Invalid argument
+  nl_len = 44 (28) nl_flags = 0x300 nl_type = 2
+	error: -22
+	extack: {'miss-type': 'header'}
 
-I agree waiting a week is a good plan.
+  $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
+  Netlink error: Invalid argument
+  nl_len = 88 (72) nl_flags = 0x300 nl_type = 2
+	error: -22
+	extack: {'msg': 'requested channel count exceeds maximum', 'bad-attr': '.tx-count'}
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+After:
+  $ ynl --family ethtool  --do channels-set  --json '{}'
+  Netlink error: Invalid argument {'miss-type': 'header'}
+
+  $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
+  Netlink error: requested channel count exceeds maximum: Invalid argument {'bad-attr': '.tx-count'}
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+v2:
+ - remove an unnecessary condition
+v1: https://lore.kernel.org/20251024215713.1250688-1-kuba@kernel.org
+
+CC: donald.hunter@gmail.com
+CC: ast@fiberby.net
+---
+ tools/net/ynl/pyynl/lib/ynl.py | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index bdcc4f031d39..225baad3c8f8 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -105,7 +105,16 @@ from .nlspec import SpecFamily
+         self.error = -nl_msg.error
+ 
+     def __str__(self):
+-        return f"Netlink error: {os.strerror(self.error)}\n{self.nl_msg}"
++        msg = "Netlink error: "
++
++        extack = self.nl_msg.extack.copy() if self.nl_msg.extack else {}
++        if 'msg' in extack:
++            msg += extack['msg'] + ': '
++            del extack['msg']
++        msg += os.strerror(self.error)
++        if extack:
++            msg += ' ' + str(extack)
++        return msg
+ 
+ 
+ class ConfigError(Exception):
+-- 
+2.51.0
 
