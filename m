@@ -1,209 +1,392 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010004.outbound.protection.outlook.com [52.101.46.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665E729E0F8
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 20:28:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761683307; cv=fail; b=TDWgXYW+e8GeRFjRYveggM4BzueGVjieTzyU+KS4s7ohDki2hm6LewPSFL2359EW/NZMmKj806zQXL2+zS/tz0oC6mA/UvZ8xxwn6Gw25Q0c71AShGGMVk6JVBq0IPVZpwknpqvGNZ+jC/IlIZsjDKjKLAE+H71J9TPFQ2LFRCg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761683307; c=relaxed/simple;
-	bh=iYs8v/mZtpcmHggh/IV3ey1sF0rpG6rLXnczUEqc8wI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AQ1MWvekNcl2EGYuXNEDtjxMGEQv6iSGjkTvZBW3QzxBYIe2gtygiwBYKGLfvUn+fGQPz9qo7xqzWO9zcghX8slVWALXkcoW1LduLuwEF6DzlvplEfhf7XWsNM7OSd9jB+0mkuZZhYte1W3bE35iChuPsYAnXx65uExdo2D/vfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mPA2C/yV; arc=fail smtp.client-ip=52.101.46.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189A22C3248
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 20:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761683413; cv=none; b=ERoAQv/D1gL5o1KNUJe+0MdPsFZMhZEFtVu2Tn9L0X5xL75TiY7GQlcEnrIsPqO+28Z+jiv8B6t1VnFEh0BPNIVq439yzxQ+jDzvQwT7rTxoIzx0FIS5NQ1cxrLbl0+14b7myIImZP7WWxV3g1iNjAzOScGTm5/dcjFOIedyHTQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761683413; c=relaxed/simple;
+	bh=mqe32BxQgsZCPQ+P4UOWut6rHaZXjVOuo/FxpA2Ctx8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=iYM65aOxFjz4oSwvw/i4gYVDrj/L8AHEGv5iezsNPyPQdeBmq2rsbP11uz9OJhJMbVSLmN6NaJVLalQJ41li2/CKv3ZLCAqQLYNXcmnQmnSF1DiNtopP8Hqi+IXpJ0+oiiaJ46qMNwbq6W7K4AC63/X2SjCM6JQ3L+rPpJRU1t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tPV9dThi; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mPA2C/yV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uNCLeZp+lY0eMaZ+GTAUelgXALYhRktLTGoaQUiaJC9A/JB15mSbnu90py/cdDbcKSERjUq5C1QgOkSXyvdqa2ETrFK61iLWO/qMkL4CnT/phyuusrIqPoHxC9x81hhTQsEw5nqYMb4OpCvvY/LigOab8XPMkj/kGhhjx5FoFTnrJ9lR1h25G6f+77X+vTGOsuulvLOeh/2olLrvh2FDkIDX/eDSu9kgAGhmrXMdiU/KQZP0z96f5T21rW/VhKPFvxymeY/yrFuk+rJPD7TPtoXE7Yu/GTdlVlwnryBHnKYwPWQdUr5xvRqs4WH8PXOxtThs3f/ic/tJkywbz069pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pctws1esQ4ghnexjr+54ItMfmwZDv5dZt549wLb0l0c=;
- b=WW2E2kM8xR3/+6fnCxWUFz/7tZc5MenRMEj22txh2xEWNNkLs/0V+WgLLcf52abc2sIJv5GNqU8pJC4icY79ri4Tu1PEvM095H35Q35PhT/OV+llyCL45xK64y5+XKmd394pGJm+q7ww/wNQEcMaVv1MEZkbyzk9+BkaeERbEd90DIgOd/4Qg7+gq9GrilTbgGYxWIqz6nHK4weXoJ2eOkpZ9DLxPoFzLw47wBIsOyK5cGPemHngY9MSZUey+RUjHa82Kpg3lb+fKTeRzFf6uQWttB6zG+rQdZqt0pizlnoOl8UFD4ASeWS1YyRTqUpuN/Sm3c0sSuYrmTr3DS7xcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pctws1esQ4ghnexjr+54ItMfmwZDv5dZt549wLb0l0c=;
- b=mPA2C/yVBJQIrulxVuD9jsKSpzocJkLJDQexyqsG6OHPrWKh6gWMbvbWulQMgsmTQlPyCA8HDWNnIqHVufBEsM2xyAGNDbe6JIDgsPikxve7ZlNHy09uO9jjaGs+bbKn7s57ppDfWr0DqX8CitAUiFGJ1xrOVIQj7FUwqAvP60nxZF5Vpq9TCDSDI7iBPgC5dDNjtAzwAMVclqu4ghdELZKW0h4j/bZKfLiZYMadouAosvG47yMYidw/yJ+6O0K9NMclqlqlfnuTG8FrZdIqoDQi2NNC692W0XH4tCh2qbPKQhI1EvP65QFbdJ6pfyGWJUtbMn9QDNcW+nB4EfPOjQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com (2603:10b6:610:148::17)
- by SA1PR12MB6821.namprd12.prod.outlook.com (2603:10b6:806:25c::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Tue, 28 Oct
- 2025 20:28:20 +0000
-Received: from CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2]) by CH3PR12MB7500.namprd12.prod.outlook.com
- ([fe80::7470:5626:d269:2bf2%4]) with mapi id 15.20.9253.018; Tue, 28 Oct 2025
- 20:28:20 +0000
-Message-ID: <40a43641-adfa-4fbe-902b-a6c436f3ccd6@nvidia.com>
-Date: Tue, 28 Oct 2025 22:28:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] net/mlx5: query_mcia_reg fail logging at debug
- severity
-To: Matthew W Carlis <mattc@purestorage.com>, netdev@vger.kernel.org
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- ashishk@purestorage.com, msaggi@purestorage.com, adailey@purestorage.com
-References: <20251028194011.39877-1-mattc@purestorage.com>
- <20251028194011.39877-2-mattc@purestorage.com>
-From: Gal Pressman <gal@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20251028194011.39877-2-mattc@purestorage.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0008.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::11) To CH3PR12MB7500.namprd12.prod.outlook.com
- (2603:10b6:610:148::17)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tPV9dThi"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-27c62320f16so64200805ad.1
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761683410; x=1762288210; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+oSgZR/DeGfNReqLiYBpbTFyaHKgoFvWQBxoglTZQg=;
+        b=tPV9dThigTT2yywy2kFJU5tYNPUKVYuqmFq3aY/vkTqn0K1jBA+nquMlsaBfh3ib22
+         yPzHVQluhIAnmWIgRpJIC/mvtgeHySRMpLXo4Gf+vES5SkjudcbmJwaCNWZ2Qww+2MB+
+         pgiRUNqgaZ+XQHNHRx8zpVqUHCnGWKGqpI3bA8uSNKM3BXNNPD2BP9K/AaAsg3QWHgkD
+         W/lnRPiL7QTs4fOlIA7VEyYU6fOH8dKwUix6VS0x8miPa0wQ6DiR7q4dhMVsoD5lgJ3k
+         oBc05K/OTZgOFgLC4lr3E8kaQVEEE0/8mSyKUv5CFi5pJWcjUrgEjWDkI/K1U6R5jeUJ
+         iuew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761683410; x=1762288210;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7+oSgZR/DeGfNReqLiYBpbTFyaHKgoFvWQBxoglTZQg=;
+        b=BVeIaCo4sVZwGM2T3SvsT5hzt40BDXikMCaDMTlSpoClYRZGQnsnyLyWUiBD1LWMlD
+         ReQDS3rz0Iun93+xrwXM0jWJIyIqMExGL48CPDost7m9m2imJ0+EIPSfJm+S1UcXt1Eu
+         78Qgk4h4JYlQ0/7UB5H8DpPW9u2wweFqOBK4PQ+/Xaub42kzXcQx7LLp2Bua0Dm8hPZy
+         KBBms3AMidFp9v/DMHQSOrfbsuvXle88kqBJFhv8xitcQ+b6UuTjo4H7JICA3L9OPKQA
+         2WUmrqUrcO9DTv/801AeSmojDOWxwMEApns+U8gv5WEtGPfQm/2DJwcAOMkCLI3A09OA
+         3drw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+MajbzCFaj1x5QyC86ywWpUZbRNuKyX8RJcl9BU8NwtOPcbG7K7JScKVLypLtNkBV0naha6U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywpwcyv+REblnLxT8BX6cPZiBoPIyDgX+jLSrvOO4o2exEpYLpW
+	DFDdjN/Yq3GKgg4D8VFZeu4HKp98iSSFAsMiHQHV3bJu7djvpZmN34hX27m11TDn8OA0l0UNSKo
+	CmDWyL1O1SG9p2w==
+X-Google-Smtp-Source: AGHT+IGNcQ/ncV8isD0aNblVmw1PXTQ2wtNzsbqW3MaEqCFQFto6XpAWwSSUT7tMSAUgARAgksCgp+me5MauDQ==
+X-Received: from pllq21.prod.google.com ([2002:a17:902:7895:b0:268:1af:fcff])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:f6b:b0:290:afe9:76ef with SMTP id d9443c01a7336-294deec5341mr3232585ad.40.1761683410163;
+ Tue, 28 Oct 2025 13:30:10 -0700 (PDT)
+Date: Tue, 28 Oct 2025 20:30:05 +0000
+In-Reply-To: <20251028203007.575686-1-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB7500:EE_|SA1PR12MB6821:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc807877-e524-42d2-8af4-08de16608895
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Ni9FclIzOVVLd2gwN1BnZFJ0QnRiRDV3U0puYjg3NXBhUEFnR3JwVWpJeExm?=
- =?utf-8?B?a3dSMk5QZ2lMNWxiYWxEMUtGeFBtNjFvZTBnRklJNVdSNWU0ejJ1RVZjOVJQ?=
- =?utf-8?B?ZjJYOC96UFpvaGp0ZjBreFM0a2lrdUhqOXp4Vjc5Y2dYOFA2N1VjaC8wc1k5?=
- =?utf-8?B?U0VLKzltUlUvVXgzTUs5bDEyeHl3c1hBdURpY0lyRDBnZFZvbUdaVEpOajM2?=
- =?utf-8?B?eEVlN0NEL0RCY2FsalR6allkTnY5dlF1UkxYbDNwU3JiM3dkelFtOTZvZFQ0?=
- =?utf-8?B?bUFydDlKZDBRa25idjFocXFZNWRZSlVqOFFzMnRPc0xDQzZsZzVhYlVxTzk1?=
- =?utf-8?B?R3UxaXFTbC9yVkFOMFQweTFlNnNZVWhZSElMYkpvbGxQNmRqQ01QU3NPbWl4?=
- =?utf-8?B?NUkwZGFnb1htYTV1M0c1QXl2UEdid3I4eTIwUy81eE1EY2pwd2xZajhWdGQ2?=
- =?utf-8?B?VUxnMGkrNFRsOElzbTBOaUxPemFTdiswVmUveUordXFPYmNwdjBERE5HbFdS?=
- =?utf-8?B?YWY2TW1sa3pXQWpldXJBVFBvWlBHN2VCZFRPdlJ3dTc3RFdTblNNWVM3bGxk?=
- =?utf-8?B?dXZjS05aV0cwNXFKelFud0psaGJSQlJ0QlV1aFBUM2xEUjZ1SmpMVWsyc3I3?=
- =?utf-8?B?N0ZxeUU2a3BpVGVDeHlOUEEyaE54Umw5cTMwZ0pJaHUxUUtSemVGVGpwQ1NN?=
- =?utf-8?B?ZUFObXZhdTJVamFSSWtzNUNBeWp6UkthVFFJN083TCtNdS82YUJuemlqcm9N?=
- =?utf-8?B?Y0VDdVBJc1c2Q290U2FFTmpPMFNEK0NJTlhZQWQ3RTByV3drK29wTjIwRTI5?=
- =?utf-8?B?YkllUWU0Z1BQMFcvcGxndVFIRlJvR2FjVjQ5Mit4dE1qcVJJTEt1ZUtJTUZ3?=
- =?utf-8?B?cWxnV094SkUrVnlrazI4VWV5Qm5MaVM2c21Dc01OM0JZK21oQjVJbkRMQ0RE?=
- =?utf-8?B?ZG5MaFdJR2RGVFRmV2dmVndrWXdjSi9iL1hxeDUvWkZJSERESFJkWHE0bkxr?=
- =?utf-8?B?ZDRJNTNRM2FtSTdYY1hlTW4zYlNPZXc2Y2x0VFlXdGVxZk5CQXI4N3dBeW1z?=
- =?utf-8?B?eG9wT2E3WXdpTXh2MnoxSSsreC92ZWpLalhKTDRnVVZsZUErRld1YmRYZWFz?=
- =?utf-8?B?QkY1N1ROWkgyaDN2WjczOVFwc0xTM2lTWjZkVW5GZVVnNVFMYTgranJOVTRC?=
- =?utf-8?B?RGhnRUthSlpvdWJPc1ZnRnRwZHhKZUFKazRrb2NidUsvZUdBMDZQWi9KVkVr?=
- =?utf-8?B?S0FUcHdSbkpMcUpDUURhR25uNkNzQ000eTNaYU9sWFlZVjJpbnNFVGpGUHdU?=
- =?utf-8?B?K25nejROU0M3QXFQSmtrRU9ENWt0cDVkOEVIQS82M2hnNWU5bnB6cUlGWEZI?=
- =?utf-8?B?aUpQeDdOZ1Y0S1kyblZBUlg1NzB1RmF4NkNZek9EWEJCN05SSFA1NlpuUitV?=
- =?utf-8?B?NlZESHViN3lCdWZmN2lrUkpNSHQ5VXlsVkV2R25wbWQzQUJsb2tUMFRWRjJX?=
- =?utf-8?B?SjNNb1ZhZkdjYXVPVWpPS0h4VDVYTG9uMEM1TE1Od2xqYnliQWRGbnNFNWZu?=
- =?utf-8?B?YXVJM3lDMG96bWx6YUNURGVFNEgwTGVvdDBFdWdSdXNMeUUxU1VUcDhFaE9G?=
- =?utf-8?B?SVg4dlZsN1hDOGEvOE9kaDJjTVlPRlRsdkZpbjJoSW95VjM4WVNBRG1EdjZB?=
- =?utf-8?B?MWg1eUNLdWlwcjhoN0V4TW9aelZVVmRLSFo1MGh6a3MxODFNaVg0S3FwcDRs?=
- =?utf-8?B?UWpQYitDU3hhWkprdmFSa1ZsR0EzcE5QUVhIejJVVmh0dTBSVUtJSUJBWWJM?=
- =?utf-8?B?YVZYNlQvU1c4ZkpreTFQQStwVnE4N0pxWTZ5M3FnbW5vaGwrSVJzVmdqUkZR?=
- =?utf-8?B?NDE3dVlrbldZTDB4Ri90TW9RUk5BYW84aVRGVTBEUTJYMytXeUw0aDZrY3NO?=
- =?utf-8?Q?usdds8GgkHhxdjB/+sBha40HlfgHQELo?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7500.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UXdWSUpaTHQ3Ui9IdG55TkZ1c2x6NUtzWlZLZXdxa09WM1oydUt5SFpGamxB?=
- =?utf-8?B?a3JWK3RBQllHZjZQMEJ2Z25GVUd1Y1E3TGwxZ0VjbUE4dDRBYjI4ek9rbUQx?=
- =?utf-8?B?RGpIWmdSS2JTdzJCYlZzQnp0eVh1ZmZVdXFETEJOVFBmektKRE56RE5RL2lo?=
- =?utf-8?B?Skk1aFdNeWx6aFJtVi8zbWdReHFMZnVBYWowMy95cW5jcVlsMFZLb3dHNmFY?=
- =?utf-8?B?RTBaRW9CK2EyOHlWbFNvcDhRUjFHSXZzdGJ4VTNiMzJ2cmlJek9QdjUrZ3NB?=
- =?utf-8?B?cVc0SlUra0hLcCtIbDNRU0Q1LytGZE8zSUdrT1NRaFdMYXluNzVZcjZoZHVM?=
- =?utf-8?B?RU1NaHd6RWF6emJIMGxzd0JQU01NNXRBdTdWdnRLUXNpVnVxUkZLdG1rTFZp?=
- =?utf-8?B?YktnVUx1VkRQdFdMVUZ1ZGlpRUdpcDhCa3Mvc2hFNlVMMkcwRWhhcS85TjZU?=
- =?utf-8?B?MDlLek14N0Q5Y2FiL3phNFlBVHpldWUwRGlWazVRZzYwRUVZektFdDF3aEZW?=
- =?utf-8?B?YlJjOE1BSHkxUVFjT2VIQzZ1ZktNTEJIdmF3WEFuanZnQnhxYmJqK3pKc3E1?=
- =?utf-8?B?SjUyS1UvWklUcHZLZkFid1d3V1lpYnB2a3NRTWYrWVBjR3BPMlA2dmN3MXgx?=
- =?utf-8?B?NXRaMkNLY0NTdWd2YVNWQWNRTDZmSXBGR1NjNkcrUFhRYmZ3N084cTl0bTZF?=
- =?utf-8?B?dHo0OHZqMTRhMVc0K2RCQ1UzSXZQQ1JYcmVGdGdPSmxVdDRYeDUwVmNZem94?=
- =?utf-8?B?alVhNnVVdDJQUHpiQmN4NmJScjRjZE1BNzlIVTlQNFFDTmNuUm1pREMvVk1F?=
- =?utf-8?B?a01TNXhYbkxWdUEzNGUxZ2FUS2J5UkRicmhaLzBFMVZFNHdER0s0VGhiTHkr?=
- =?utf-8?B?QU9OZlNXVVFwbHlWVUxOZWtBakNwSTRGeW9UZ0dVOGNoZXlRSGlBMnR3NHBo?=
- =?utf-8?B?R1pzKzhWckZGcmNPSXJnRUdGSnB0eG54eW9BNHpTenF1bDNQVUxDT3kwdDZ4?=
- =?utf-8?B?eWJMWHRPdzVzbGZxVVJyWmp3Sm1yb1Q5bGNaUk1GR3diNVFwWGV1SXdMNU00?=
- =?utf-8?B?OHNaWEVoVi9LMjNCSnMwS2puQ1NwcVlCTTg5aTB1Q1RVckxNYTFnbXZRTG9U?=
- =?utf-8?B?OHNwd2t3c202RGJhN2xXM1UrYnZ5c01vTlV3N3lYWHluQStLVUthRjI3UWFB?=
- =?utf-8?B?eXFoOGpCR2ZUd0FvNDNzYml3MDBJc0xRaFp5c3ZIN1c0bTJxd2cyTDRjUFBI?=
- =?utf-8?B?cG1aK1NmazNtREtzYVNWcTR5eFdqRk9meUxPd21KOWVFZTFkYnU0TDAxb2N3?=
- =?utf-8?B?Um1HcVJLd2ZGVEhvY01YbG5aVnVwRVZQeUJteFh1VUJJSGhxWFhrZGRMbTIw?=
- =?utf-8?B?ai9hTStZUHVEVXZET3cwVXhUNkorQ3ZkbkVsU2dGMmUzWHhuLzYyc3RRUHox?=
- =?utf-8?B?NG53WkpoTG1GZmliZmFoRExTU0ZnTGhZcVlvZzBtdHRZeVlkVjZmMVF2bmZ5?=
- =?utf-8?B?NGFPbDM3SmVrQ1Jwb2ttY1lLM1pDK2lXWnhRT3dTcVhJSFlGNlg1WmpjRW5S?=
- =?utf-8?B?TEE3NnhGM1BtV1FBb2pMRjl4bm14WVAzazdzMEZHcW4vZS8rb21XbGI2VWNZ?=
- =?utf-8?B?MDRzS1pqQTdiKzFtWG9xSFg3cjlTUE1vL21BUGl3SUFnYlI2OWpQeFF4NDVz?=
- =?utf-8?B?WDNaWmJuU3NkVVFSZitua25vdCt4cFJNRFZMMnNnR0N2NmJISVgwd1ovQ09x?=
- =?utf-8?B?TE9VMTlkb2ROR3paNHhNbTM5b1Z2dWdsclA5SDR4N3RxSEV4Q3plQW9nWG1G?=
- =?utf-8?B?cWRsRXBxWjlLeWg3TUFuOGVNeFp5QmVNNkZXVnNjbklZSzcrZ2RQdzN3dkVm?=
- =?utf-8?B?MUdWWWZrbWtlNENIMDdrQmFzVGQvemdLOElyV093U0lJUmVSQ3lvM0V4KzFR?=
- =?utf-8?B?NVRrNG1zNThaQ2QyN2JhY28vdTRTblg5YVd6WDdwV1ltWHFqQnZBVVI4bW9a?=
- =?utf-8?B?NHFPT0EvT1NoYlQ3MXZTQVBoYnVGKzZWSllUbGxoczg0b0lyQTJ5d1Q1NUZw?=
- =?utf-8?B?YnRLZHZQOEhJRzF6M3RJZllUek1tSk5uMXdUb0loTjZmOFF1ME5Lb21hMHFF?=
- =?utf-8?Q?5KZokq2dX4qAJav50lSuk1w7y?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc807877-e524-42d2-8af4-08de16608895
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7500.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 20:28:20.0894
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K5qN81IS/EB/+MMHRJbVCxrPEBkA2ZsM3ZIhFC6rLYUug2LauLK0GNaaJcFpGrZx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6821
+Mime-Version: 1.0
+References: <20251028203007.575686-1-skhawaja@google.com>
+X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
+Message-ID: <20251028203007.575686-2-skhawaja@google.com>
+Subject: [PATCH net-next v10 1/2] net: Extend NAPI threaded polling to allow
+ kthread based busy polling
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jakub Kicinski <kuba@kernel.org>, "David S . Miller " <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
+	willemb@google.com
+Cc: Joe Damato <joe@dama.to>, mkarsten@uwaterloo.ca, netdev@vger.kernel.org, 
+	skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 28/10/2025 21:40, Matthew W Carlis wrote:
-> Whenever a user or automation runs ethtool -m <eth> or an equivalent
-> to mlx5 device & there is not any SFP module in that device the
-> kernel log is spammed with ""query_mcia_reg failed: status:" which
-> is really not that informative to the user who already knows that
-> their command failed. 
+Add a new state NAPI_STATE_THREADED_BUSY_POLL to the NAPI state enum to
+enable and disable threaded busy polling.
 
-Assuming the user knows why the command failed is a big assumption, most
-users don't. These status errors are indicative of more than one type of
-error.
-And if he knows, I would expect him to not run the command again?
+When threaded busy polling is enabled for a NAPI, enable
+NAPI_STATE_THREADED also.
 
-BTW, we have a bug that returns success in case of an error in module
-EEPROM query so the user doesn't even know that the command failed other
-than seeing the error message.
-We'll push a fix for that in the next few days.
+When the threaded NAPI is scheduled, set NAPI_STATE_IN_BUSY_POLL to
+signal napi_complete_done not to rearm interrupts.
 
-Since the severity is logged at error severity
-> the log message cannot be disabled via dyndbg etc...
-> 
-> Signed-off-by: Matthew W Carlis <mattc@purestorage.com>
-> 
->  100.0% drivers/net/ethernet/mellanox/mlx5/core/
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-> index aa9f2b0a77d3..e1c93a96e479 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-> @@ -310,7 +310,7 @@ static int mlx5_query_module_id(struct mlx5_core_dev *dev, int module_num,
->  
->  	status = MLX5_GET(mcia_reg, out, status);
->  	if (status) {
-> -		mlx5_core_err(dev, "query_mcia_reg failed: status: 0x%x\n",
-> +		mlx5_core_dbg(dev, "query_mcia_reg failed: status: 0x%x\n",
->  			      status);
->  		return -EIO;
->  	}
-> @@ -394,7 +394,7 @@ static int mlx5_query_mcia(struct mlx5_core_dev *dev,
->  
->  	status = MLX5_GET(mcia_reg, out, status);
->  	if (status) {
-> -		mlx5_core_err(dev, "query_mcia_reg failed: status: 0x%x\n",
-> +		mlx5_core_dbg(dev, "query_mcia_reg failed: status: 0x%x\n",
->  			      status);
->  		return -EIO;
->  	}
+Whenever NAPI_STATE_THREADED_BUSY_POLL is unset, the
+NAPI_STATE_IN_BUSY_POLL will be unset, napi_complete_done unsets the
+NAPI_STATE_SCHED_THREADED bit also, which in turn will make the kthread
+go to sleep.
 
-Both of these functions are called from mlx5e_get_module_eeprom() which
-has its own error print regardless, so this doesn't really prevent the
-"spam".
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+---
+ Documentation/netlink/specs/netdev.yaml |  5 ++-
+ Documentation/networking/napi.rst       | 50 ++++++++++++++++++++-
+ include/linux/netdevice.h               |  4 +-
+ include/uapi/linux/netdev.h             |  1 +
+ net/core/dev.c                          | 58 ++++++++++++++++++++-----
+ net/core/dev.h                          |  3 ++
+ net/core/netdev-genl-gen.c              |  2 +-
+ tools/include/uapi/linux/netdev.h       |  1 +
+ 8 files changed, 109 insertions(+), 15 deletions(-)
+
+diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+index e00d3fa1c152..10c412b7433f 100644
+--- a/Documentation/netlink/specs/netdev.yaml
++++ b/Documentation/netlink/specs/netdev.yaml
+@@ -88,7 +88,7 @@ definitions:
+   -
+     name: napi-threaded
+     type: enum
+-    entries: [disabled, enabled]
++    entries: [disabled, enabled, busy-poll]
+ 
+ attribute-sets:
+   -
+@@ -291,7 +291,8 @@ attribute-sets:
+         name: threaded
+         doc: Whether the NAPI is configured to operate in threaded polling
+              mode. If this is set to enabled then the NAPI context operates
+-             in threaded polling mode.
++             in threaded polling mode. If this is set to busy-poll, then the
++             threaded polling mode also busy polls.
+         type: u32
+         enum: napi-threaded
+   -
+diff --git a/Documentation/networking/napi.rst b/Documentation/networking/napi.rst
+index 7dd60366f4ff..4e008efebb35 100644
+--- a/Documentation/networking/napi.rst
++++ b/Documentation/networking/napi.rst
+@@ -263,7 +263,9 @@ are not well known).
+ Busy polling is enabled by either setting ``SO_BUSY_POLL`` on
+ selected sockets or using the global ``net.core.busy_poll`` and
+ ``net.core.busy_read`` sysctls. An io_uring API for NAPI busy polling
+-also exists.
++also exists. Threaded polling of NAPI also has a mode to busy poll for
++packets (:ref:`threaded busy polling<threaded_busy_poll>`) using the NAPI
++processing kthread.
+ 
+ epoll-based busy polling
+ ------------------------
+@@ -426,6 +428,52 @@ Therefore, setting ``gro_flush_timeout`` and ``napi_defer_hard_irqs`` is
+ the recommended usage, because otherwise setting ``irq-suspend-timeout``
+ might not have any discernible effect.
+ 
++.. _threaded_busy_poll:
++
++Threaded NAPI busy polling
++--------------------------
++
++Threaded NAPI busy polling extends threaded NAPI and adds support to do
++continuous busy polling of the NAPI. This can be useful for forwarding or
++AF_XDP applications.
++
++Threaded NAPI busy polling can be enabled on per NIC queue basis using Netlink.
++
++For example, using the following script:
++
++.. code-block:: bash
++
++  $ ynl --family netdev --do napi-set \
++            --json='{"id": 66, "threaded": "busy-poll"}'
++
++The kernel will create a kthread that busy polls on this NAPI.
++
++The user may elect to set the CPU affinity of this kthread to an unused CPU
++core to improve how often the NAPI is polled at the expense of wasted CPU
++cycles. Note that this will keep the CPU core busy with 100% usage.
++
++Once threaded busy polling is enabled for a NAPI, PID of the kthread can be
++retrieved using Netlink so the affinity of the kthread can be set up.
++
++For example, the following script can be used to fetch the PID:
++
++.. code-block:: bash
++
++  $ ynl --family netdev --do napi-get --json='{"id": 66}'
++
++This will output something like following, the pid `258` is the PID of the
++kthread that is polling this NAPI.
++
++.. code-block:: bash
++
++  $ {'defer-hard-irqs': 0,
++     'gro-flush-timeout': 0,
++     'id': 66,
++     'ifindex': 2,
++     'irq-suspend-timeout': 0,
++     'pid': 258,
++     'threaded': 'busy-poll'}
++
+ .. _threaded:
+ 
+ Threaded NAPI
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 7f5aad5cc9a1..07118c0424b8 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -422,11 +422,12 @@ enum {
+ 	NAPI_STATE_NPSVC,		/* Netpoll - don't dequeue from poll_list */
+ 	NAPI_STATE_LISTED,		/* NAPI added to system lists */
+ 	NAPI_STATE_NO_BUSY_POLL,	/* Do not add in napi_hash, no busy polling */
+-	NAPI_STATE_IN_BUSY_POLL,	/* sk_busy_loop() owns this NAPI */
++	NAPI_STATE_IN_BUSY_POLL,	/* Do not rearm NAPI interrupt */
+ 	NAPI_STATE_PREFER_BUSY_POLL,	/* prefer busy-polling over softirq processing*/
+ 	NAPI_STATE_THREADED,		/* The poll is performed inside its own thread*/
+ 	NAPI_STATE_SCHED_THREADED,	/* Napi is currently scheduled in threaded mode */
+ 	NAPI_STATE_HAS_NOTIFIER,	/* Napi has an IRQ notifier */
++	NAPI_STATE_THREADED_BUSY_POLL,	/* The threaded NAPI poller will busy poll */
+ };
+ 
+ enum {
+@@ -441,6 +442,7 @@ enum {
+ 	NAPIF_STATE_THREADED		= BIT(NAPI_STATE_THREADED),
+ 	NAPIF_STATE_SCHED_THREADED	= BIT(NAPI_STATE_SCHED_THREADED),
+ 	NAPIF_STATE_HAS_NOTIFIER	= BIT(NAPI_STATE_HAS_NOTIFIER),
++	NAPIF_STATE_THREADED_BUSY_POLL	= BIT(NAPI_STATE_THREADED_BUSY_POLL),
+ };
+ 
+ enum gro_result {
+diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
+index 48eb49aa03d4..048c8de1a130 100644
+--- a/include/uapi/linux/netdev.h
++++ b/include/uapi/linux/netdev.h
+@@ -80,6 +80,7 @@ enum netdev_qstats_scope {
+ enum netdev_napi_threaded {
+ 	NETDEV_NAPI_THREADED_DISABLED,
+ 	NETDEV_NAPI_THREADED_ENABLED,
++	NETDEV_NAPI_THREADED_BUSY_POLL,
+ };
+ 
+ enum {
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 378c2d010faf..7feb4cad4a71 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -7086,7 +7086,8 @@ static void napi_stop_kthread(struct napi_struct *napi)
+ 		 */
+ 		if ((val & NAPIF_STATE_SCHED_THREADED) ||
+ 		    !(val & NAPIF_STATE_SCHED)) {
+-			new = val & (~NAPIF_STATE_THREADED);
++			new = val & (~(NAPIF_STATE_THREADED |
++				       NAPIF_STATE_THREADED_BUSY_POLL));
+ 		} else {
+ 			msleep(20);
+ 			continue;
+@@ -7110,6 +7111,16 @@ static void napi_stop_kthread(struct napi_struct *napi)
+ 	napi->thread = NULL;
+ }
+ 
++static void napi_set_threaded_state(struct napi_struct *napi,
++				    enum netdev_napi_threaded threaded_mode)
++{
++	bool threaded = threaded_mode != NETDEV_NAPI_THREADED_DISABLED;
++	bool busy_poll = threaded_mode == NETDEV_NAPI_THREADED_BUSY_POLL;
++
++	assign_bit(NAPI_STATE_THREADED, &napi->state, threaded);
++	assign_bit(NAPI_STATE_THREADED_BUSY_POLL, &napi->state, busy_poll);
++}
++
+ int napi_set_threaded(struct napi_struct *napi,
+ 		      enum netdev_napi_threaded threaded)
+ {
+@@ -7136,7 +7147,7 @@ int napi_set_threaded(struct napi_struct *napi,
+ 	} else {
+ 		/* Make sure kthread is created before THREADED bit is set. */
+ 		smp_mb__before_atomic();
+-		assign_bit(NAPI_STATE_THREADED, &napi->state, threaded);
++		napi_set_threaded_state(napi, threaded);
+ 	}
+ 
+ 	return 0;
+@@ -7528,7 +7539,9 @@ void napi_disable_locked(struct napi_struct *n)
+ 		}
+ 
+ 		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
+-		new &= ~(NAPIF_STATE_THREADED | NAPIF_STATE_PREFER_BUSY_POLL);
++		new &= ~(NAPIF_STATE_THREADED |
++			 NAPIF_STATE_THREADED_BUSY_POLL |
++			 NAPIF_STATE_PREFER_BUSY_POLL);
+ 	} while (!try_cmpxchg(&n->state, &val, new));
+ 
+ 	hrtimer_cancel(&n->timer);
+@@ -7740,7 +7753,7 @@ static int napi_thread_wait(struct napi_struct *napi)
+ 	return -1;
+ }
+ 
+-static void napi_threaded_poll_loop(struct napi_struct *napi)
++static void napi_threaded_poll_loop(struct napi_struct *napi, bool busy_poll)
+ {
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+ 	struct softnet_data *sd;
+@@ -7769,22 +7782,47 @@ static void napi_threaded_poll_loop(struct napi_struct *napi)
+ 		}
+ 		skb_defer_free_flush();
+ 		bpf_net_ctx_clear(bpf_net_ctx);
++
++		/* When busy poll is enabled, the old packets are not flushed in
++		 * napi_complete_done. So flush them here.
++		 */
++		if (busy_poll)
++			gro_flush_normal(&napi->gro, HZ >= 1000);
+ 		local_bh_enable();
+ 
++		/* Call cond_resched here to avoid watchdog warnings. */
++		if (repoll || busy_poll) {
++			rcu_softirq_qs_periodic(last_qs);
++			cond_resched();
++		}
++
+ 		if (!repoll)
+ 			break;
+-
+-		rcu_softirq_qs_periodic(last_qs);
+-		cond_resched();
+ 	}
+ }
+ 
+ static int napi_threaded_poll(void *data)
+ {
+ 	struct napi_struct *napi = data;
++	bool want_busy_poll;
++	bool in_busy_poll;
++	unsigned long val;
++
++	while (!napi_thread_wait(napi)) {
++		val = READ_ONCE(napi->state);
++
++		want_busy_poll = val & NAPIF_STATE_THREADED_BUSY_POLL;
++		in_busy_poll = val & NAPIF_STATE_IN_BUSY_POLL;
+ 
+-	while (!napi_thread_wait(napi))
+-		napi_threaded_poll_loop(napi);
++		if (unlikely(val & NAPIF_STATE_DISABLE))
++			want_busy_poll = false;
++
++		if (want_busy_poll != in_busy_poll)
++			assign_bit(NAPI_STATE_IN_BUSY_POLL, &napi->state,
++				   want_busy_poll);
++
++		napi_threaded_poll_loop(napi, want_busy_poll);
++	}
+ 
+ 	return 0;
+ }
+@@ -13094,7 +13132,7 @@ static void run_backlog_napi(unsigned int cpu)
+ {
+ 	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
+ 
+-	napi_threaded_poll_loop(&sd->backlog);
++	napi_threaded_poll_loop(&sd->backlog, false);
+ }
+ 
+ static void backlog_napi_setup(unsigned int cpu)
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 900880e8b5b4..4d872a79bafb 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -317,6 +317,9 @@ static inline void napi_set_irq_suspend_timeout(struct napi_struct *n,
+ 
+ static inline enum netdev_napi_threaded napi_get_threaded(struct napi_struct *n)
+ {
++	if (test_bit(NAPI_STATE_THREADED_BUSY_POLL, &n->state))
++		return NETDEV_NAPI_THREADED_BUSY_POLL;
++
+ 	if (test_bit(NAPI_STATE_THREADED, &n->state))
+ 		return NETDEV_NAPI_THREADED_ENABLED;
+ 
+diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
+index e9a2a6f26cb7..ff20435c45d2 100644
+--- a/net/core/netdev-genl-gen.c
++++ b/net/core/netdev-genl-gen.c
+@@ -97,7 +97,7 @@ static const struct nla_policy netdev_napi_set_nl_policy[NETDEV_A_NAPI_THREADED
+ 	[NETDEV_A_NAPI_DEFER_HARD_IRQS] = NLA_POLICY_FULL_RANGE(NLA_U32, &netdev_a_napi_defer_hard_irqs_range),
+ 	[NETDEV_A_NAPI_GRO_FLUSH_TIMEOUT] = { .type = NLA_UINT, },
+ 	[NETDEV_A_NAPI_IRQ_SUSPEND_TIMEOUT] = { .type = NLA_UINT, },
+-	[NETDEV_A_NAPI_THREADED] = NLA_POLICY_MAX(NLA_U32, 1),
++	[NETDEV_A_NAPI_THREADED] = NLA_POLICY_MAX(NLA_U32, 2),
+ };
+ 
+ /* NETDEV_CMD_BIND_TX - do */
+diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
+index 48eb49aa03d4..048c8de1a130 100644
+--- a/tools/include/uapi/linux/netdev.h
++++ b/tools/include/uapi/linux/netdev.h
+@@ -80,6 +80,7 @@ enum netdev_qstats_scope {
+ enum netdev_napi_threaded {
+ 	NETDEV_NAPI_THREADED_DISABLED,
+ 	NETDEV_NAPI_THREADED_ENABLED,
++	NETDEV_NAPI_THREADED_BUSY_POLL,
+ };
+ 
+ enum {
+-- 
+2.51.1.838.g19442a804e-goog
+
