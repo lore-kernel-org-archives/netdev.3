@@ -1,174 +1,304 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A3124677B
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 14:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050033376A3
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 14:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761661991; cv=none; b=FXhT44ImKv58oX8bvrJ243O8PtrLGK9ssCDNRgLOdHZLWeaZSkuFqXDPHcgdygbwyqcpBY6dDRrucOsn+PXU8IYT/hpJ8LMDh0aryg87C2EIABK3ibo2Rz/DHOh/9wHZLtwxtzB+5o16QBSMCTZx15G1RG4PWp73bijAFN1wyao=
+	t=1761662313; cv=none; b=EJsV1oWpVjrn5+8Te+s+li/zheH++QTlU08wUm4EkmWt7d4vhpkFDJFnGmlronGEzYwGGlloY0bgy/SR8HF5PJ/ljQ2b/kZbaJkBCHZLZ5y6bVXNHWWyADJTyFONXA5C1yabNoXSGAlKoBTZtBOJeOH36z0FRLSP6MBa6KfjRdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761661991; c=relaxed/simple;
-	bh=NEMq1QwVWGTO1PLTTQMmdZ3LbdDaen7sDe5zlw5wwnQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gRmk9uV2RVWMeeo4Ue4YsL8ZfOhSSUYZoGdZhJ2PAuvcU4B51T7as98IOyOas+WBn1AVz7Ef/zdmVMgg0zeexCbZZHS8AC2Ueejn65q8NG7kZIMQJUG8zlFo4wvk1lNQ2hu6N+zcTQ5ykAYJ7ghwqSBI6gMsNx/xAwRRuHH8MDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZT4z4Xby; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761662313; c=relaxed/simple;
+	bh=tVgZHcpk2/8FCFKXjKO9Ef0kvqTf63pD2EKQHrmtnzI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S3lClgCnde9+ppvpJ23g+fstWHLrBb1qqPh5wPfqGWRfNshn6xzwH7sCgO/FK3x+Q7b9YUSnm3P7QT+m7TJbLAgMQSItDTaGRd+q9CXuqEKCyziapBeUKD74uCrWGoAcvtdpp5NWkSuyWSR3AZW2Pm2NuVY9/Hwnj0xAN4GZJhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VHL8TrA6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZT4z4Xby"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-33f9aec69b6so8331569a91.1
-        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761661989; x=1762266789; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=D93iiJ3dCsDGMRKsIegYWo/bl71Ckop0JjDdJuUp4+A=;
-        b=ZT4z4Xby5ruNyGbxO9WS/4pyn+EkcmsCU7RxPCU0ZAosfmpRJJaudgo0Jf62zgKJlH
-         /qKTfQ3CoD2dUd8mUZUY+DQVERgxgfW3UWDf47RyoEJITskwdFyCl0RpPRCICUmh+v92
-         RJs1ErW0ebP2GQvEu0ZBn40AdrWWWq8l/vH8q4GRWe8voOiL/y7frnMF2rfewLRagfUC
-         Vawu/sjnytgrn9Ki7Xb6tTdyTDMvhI3Kcr5x/LjcyQdsfyxnWQS8rgCtSlef90ye2eUI
-         eCMGhXSLqh+Rcg+R5c+8mji3KDAqrjtX9vZvo4NNrqvStUtNhsIR7RXlnShw5+q5DmhB
-         D9lQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VHL8TrA6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761662311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s+GBHHTiKTgP5Cw8Ob+J+fQoanuj4YwsG3gMCqElf5I=;
+	b=VHL8TrA6Fxq9NMw+Kyc+RXygodnnQ74WOi9TQHJOfFCgisySkipM+SDzHllaV0+bj7sK2u
+	ROeOWrNRFMI0/KfTi+9wR0GicZWrlH1IADbFCbVt3We2Rwtox9f4injMykEeUek5ZjvQDf
+	22LEjbuPpfFmIDzSx1ZmSKPGMRY/kR0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-Ky7cXYb6PYuiNN3rN_-0ug-1; Tue, 28 Oct 2025 10:38:29 -0400
+X-MC-Unique: Ky7cXYb6PYuiNN3rN_-0ug-1
+X-Mimecast-MFC-AGG-ID: Ky7cXYb6PYuiNN3rN_-0ug_1761662308
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b6d42c454c2so344775466b.0
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:38:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761661989; x=1762266789;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D93iiJ3dCsDGMRKsIegYWo/bl71Ckop0JjDdJuUp4+A=;
-        b=bgjcFaOylxz9F4r5VfLWL2dbKkV2t59VuI2b7TzsEJZaRtX53sD/0A+pIHUcg7tM5L
-         GUkjBySWMYz71Ey2H7hpCiFdBavFMy3CxSw7r8z5Ca37X6j8/D4eqSvrjYCHslhd7jw7
-         uXcZQZnEuj4eQzPdOAa14HTS+rwWFFdBPQBrRXezJ5dVlyp/UCBu5cncFpef0WSNr8Xg
-         hq9kCSlnVOmhbDCgqV6B/CjqZQbKcl5dN+dH+GlNx/UE47QK5cfZguYj4kpIYPzZhEa0
-         8Ru8DI0QFivt1+YaC8Tde9jxBTYtTGH1FHsPslzb/VwUUxE+FN6Z6qOeAx6YNzV4mTA2
-         8NdA==
-X-Gm-Message-State: AOJu0Yyv/roL3RUfYNaYzAgr2TFvnZ+nvjVHJ8SABP9/SWe/2bZSgBBP
-	FkLUkqeXsPyJaXWK9dfajOKZkt8PO9ev4Qn/E0blhH/168l3w6T84V3VWAxlDw==
-X-Gm-Gg: ASbGncvRdLJ3zFN7CB/sLVVq7VXJZNlCcSxoAyOB5PtZszlLXsgVLUKYP2tkZxEdZ93
-	UFcW8koAB1G5s9ddzNIbEs1T+AXm2GxUto+mMGM0oRqo03bZrUUpihAJYH9OwO1/STxrZhjLhrh
-	kONGN9wO+iPpdjR0XzMq5WjHNAQnwOIKMCmIg8HYKrE0dBasFX0QJNnE/PLDhsi1tr9QodEci9u
-	YLpZY76bRCC/TTuy9/WbIwTsm/VtvBTC6b7rmpXNJ4CtadfNLhJr0xIDjrAVFxn6/0PuB/Xgz2O
-	1nxpGD/ipNKRBV3WnWwv9CT+fA21/UiEyEqRnxGSe3A5IrbDtmFkYBjyLr+MNnFrQPGTVMLhaIj
-	3XBInzzTUx6Xud1lx89seXXYP12DQLd/jjkL7pdn+ZPDH0nqxZso3k6rqNc1GiCbUUZjJPzZRE2
-	uimBUgMqLVEIsYFw==
-X-Google-Smtp-Source: AGHT+IFxazy1uo7lguaYfMUdntQxPnZeb5i61czGYGQ3K0U8mqn48jz+w9wNFW2dtNumYz8Q2nBdZA==
-X-Received: by 2002:a17:90b:3905:b0:338:3221:9dc0 with SMTP id 98e67ed59e1d1-34027c0782dmr4653120a91.37.1761661988872;
-        Tue, 28 Oct 2025 07:33:08 -0700 (PDT)
-Received: from minh.192.168.1.1 ([2001:ee0:4f4c:210:c0a1:2245:cbbf:7e28])
-        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-33fed7d1fdesm12397037a91.5.2025.10.28.07.33.01
+        d=1e100.net; s=20230601; t=1761662308; x=1762267108;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s+GBHHTiKTgP5Cw8Ob+J+fQoanuj4YwsG3gMCqElf5I=;
+        b=cU8q+U3TbFFSpY4F77RBOskz3OjYtJKvRoqv9ueYjnxNr0QzhyAeexnv7h+LcpnQjM
+         wfpvCJaedfvVxaeLiM8Dp/kMCT/M767VEiAFgV+mCt7S5aAGme7r/C1OUOIpBWELUkrP
+         WW9DurEqaCyEFjsvhh0X+OSdomWjZL6zdCC/TCJ1i2/ErY9LsclcGS22eTFlV/0nx2Ga
+         uyXZgsISG9Q5DcK6X3u6e8E5jgu50HUx371eP7NdVK7dAMIj5KIOp6WeNO6BZXf+NK5X
+         /L0mf3DdZ0ZIOPM3yldTMJLWx7QQQY44MeQKGoc3SxYzLyfQklqDBj4GO8dUt9mCU+Ny
+         qetA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8aWSmmW4KUKKfCPzWbCy2cVigIj2h9/fgvHeAV4XE6dZU8Eduex0SRhsjV4ZhdOrZVO4bXsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf6J+wjyoR91KnaguBqphCAOjBBkYFQR5T41/Cc69npeJGs53p
+	YuAoP6DJ+OFZfm5yv1cMImfaQr/vl2ZMdaxCWMw58zsX1wjLfN60JpZoj67OnciBPWSs2OO6nzB
+	wTlm4HgJyBI8gH23/f7qAgQZ2SiSk7MAJLj4jelt4SI4N/76SOJLDtNtSPw==
+X-Gm-Gg: ASbGncv9qT+hvqST1IqQb1rnVJVHjH0YXWtVCFbsf6NONXGI3BX0hZ88CqS+qXt3g67
+	xOOgZQo193rXnl97W0uimYlIfUsms4Mx9idMqlFySyh+wUn6nPBgfy5lojXkZsfjhS1OlPWc0E0
+	gHRQqSz9f1Bcu7bsVAW6HkBK4GblOCFCpqN6oZGYEh98TtbEIJtUlk52poJfF8ivE9rwYLI6BP8
+	LIDcQG0AVsJRQZgimgcztQUxd2fQnAkVeojPYlQBpNLKrhIvnSuMMsM+30PDYsLdYftEp3HINjM
+	zhIDqsKqCBSodh7cvdiCrmZ1t3yOE4fZUQZpXYU2sPxJsIAZHn0F/S2aZ1P/amuB
+X-Received: by 2002:a17:907:972a:b0:b04:830f:822d with SMTP id a640c23a62f3a-b6dba5e2eacmr406988966b.63.1761662308139;
+        Tue, 28 Oct 2025 07:38:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQ7gaoowOrDxQE7SKxipOwlENzJhDMgw5n2DRygPTmZfMSZlW8c820N7yX20yj84I/xNwkKQ==
+X-Received: by 2002:a17:907:972a:b0:b04:830f:822d with SMTP id a640c23a62f3a-b6dba5e2eacmr406985566b.63.1761662307596;
+        Tue, 28 Oct 2025 07:38:27 -0700 (PDT)
+Received: from redhat.com ([31.187.78.209])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7ef6bfd7sm8957970a12.4.2025.10.28.07.38.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 07:33:07 -0700 (PDT)
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gavin Li <gavinl@nvidia.com>,
-	Gavi Teitz <gavi@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Bui Quang Minh <minhquangbui99@gmail.com>,
+        Tue, 28 Oct 2025 07:38:27 -0700 (PDT)
+Date: Tue, 28 Oct 2025 10:38:24 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v6] virtio-net: fix received length check in big packets
-Date: Tue, 28 Oct 2025 21:31:16 +0700
-Message-ID: <20251028143116.4532-1-minhquangbui99@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: Re: [PATCH net] virtio-net: calculate header alignment mask based on
+ features
+Message-ID: <20251028101144-mutt-send-email-mst@kernel.org>
+References: <20251028030341.46023-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028030341.46023-1-jasowang@redhat.com>
 
-Since commit 4959aebba8c0 ("virtio-net: use mtu size as buffer length
-for big packets"), when guest gso is off, the allocated size for big
-packets is not MAX_SKB_FRAGS * PAGE_SIZE anymore but depends on
-negotiated MTU. The number of allocated frags for big packets is stored
-in vi->big_packets_num_skbfrags.
+On Tue, Oct 28, 2025 at 11:03:41AM +0800, Jason Wang wrote:
+> Commit 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
+> switches to check the alignment of the virtio_net_hdr_v1_hash_tunnel
+> even when doing the transmission even if the feature is not
+> negotiated. This will cause 
 
-Because the host announced buffer length can be malicious (e.g. the host
-vhost_net driver's get_rx_bufs is modified to announce incorrect
-length), we need a check in virtio_net receive path. Currently, the
-check is not adapted to the new change which can lead to NULL page
-pointer dereference in the below while loop when receiving length that
-is larger than the allocated one.
 
-This commit fixes the received length check corresponding to the new
-change.
+you mean this causes
 
-Fixes: 4959aebba8c0 ("virtio-net: use mtu size as buffer length for big packets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+>a series performance degradation of pktgen
+> as the skb->data can't satisfy the alignment requirement due to the
+> increase of the header size then virtio-net must prepare at least 2
+> sgs with indirect descriptors which will introduce overheads in the
+
+
+introduces, accordinglt
+
+> device.
+> 
+> Fixing this by calculate the header alignment during probe so when
+> tunnel gso is not negotiated, we can less strict.
+> 
+> Pktgen in guest + XDP_DROP on TAP + vhost_net shows the TX PPS is
+> recovered from 2.4Mpps to 4.45Mpps.
+> 
+> Note that we still need a way to recover the performance when tunnel
+> gso is enabled, probably a new vnet header format.
+
+you mean improve, not recover as such
+
+
+> 
+> Fixes: 56a06bd40fab ("virtio_net: enable gso over UDP tunnel support.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
+> ---
+>  drivers/net/virtio_net.c | 21 +++++++++++++++------
+>  1 file changed, 15 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index 31bd32bdecaf..5b851df749c0 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -441,6 +441,9 @@ struct virtnet_info {
+>  	/* Packet virtio header size */
+>  	u8 hdr_len;
+>  
+> +	/* header alignment */
+> +	size_t hdr_align;
+> +
+
+It makes no sense to have u8 for length but size_t for alignment,
+and u8 would fit in a memory hole we have, anyway.
+
+>  	/* Work struct for delayed refilling if we run low on memory. */
+>  	struct delayed_work refill;
+>  
+> @@ -3308,8 +3311,9 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+>  	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+>  
+>  	can_push = vi->any_header_sg &&
+> -		!((unsigned long)skb->data & (__alignof__(*hdr) - 1)) &&
+> +		!((unsigned long)skb->data & (vi->hdr_align - 1)) &&
+
+
+So let me get it straight.
+We use the alignment check to be able to cast to the correct type.
+The issue is that alignment for the header changed. 
+
+virtio_net_hdr_v1 has 2 byte alignment, but:
+
+
+
+struct virtio_net_hdr_v1_hash {
+        struct virtio_net_hdr_v1 hdr; 
+        __le32 hash_value;
+#define VIRTIO_NET_HASH_REPORT_NONE            0
+#define VIRTIO_NET_HASH_REPORT_IPv4            1
+#define VIRTIO_NET_HASH_REPORT_TCPv4           2
+#define VIRTIO_NET_HASH_REPORT_UDPv4           3
+#define VIRTIO_NET_HASH_REPORT_IPv6            4
+#define VIRTIO_NET_HASH_REPORT_TCPv6           5
+#define VIRTIO_NET_HASH_REPORT_UDPv6           6
+#define VIRTIO_NET_HASH_REPORT_IPv6_EX         7
+#define VIRTIO_NET_HASH_REPORT_TCPv6_EX        8
+#define VIRTIO_NET_HASH_REPORT_UDPv6_EX        9
+        __le16 hash_report; 
+        __le16 padding;
+};      
+
+
+has 4 byte due to hash_value, and accordingly:
+
+
+struct virtio_net_hdr_v1_hash_tunnel {
+        struct virtio_net_hdr_v1_hash hash_hdr;
+        __le16 outer_th_offset;                                
+        __le16 inner_nh_offset;
+};              
+
+
+now is 4 byte aligned so everything is messed up:
+net tends not to be 4 byte aligned.
+
+
+
+
+>  		!skb_header_cloned(skb) && skb_headroom(skb) >= hdr_len;
+> +
+>  	/* Even if we can, don't push here yet as this would skew
+>  	 * csum_start offset below. */
+>  	if (can_push)
+> @@ -6926,15 +6930,20 @@ static int virtnet_probe(struct virtio_device *vdev)
+>  	}
+>  
+>  	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
+> -	    virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO))
+> +	    virtio_has_feature(vdev, VIRTIO_NET_F_HOST_UDP_TUNNEL_GSO)) {
+>  		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash_tunnel);
+> -	else if (vi->has_rss_hash_report)
+> +		vi->hdr_align = __alignof__(struct virtio_net_hdr_v1_hash_tunnel);
+> +	} else if (vi->has_rss_hash_report) {
+>  		vi->hdr_len = sizeof(struct virtio_net_hdr_v1_hash);
+> -	else if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF) ||
+> -		 virtio_has_feature(vdev, VIRTIO_F_VERSION_1))
+> +		vi->hdr_align = __alignof__(struct virtio_net_hdr_v1_hash);
+> +	} else if (virtio_has_feature(vdev, VIRTIO_NET_F_MRG_RXBUF) ||
+> +		virtio_has_feature(vdev, VIRTIO_F_VERSION_1)) {
+>  		vi->hdr_len = sizeof(struct virtio_net_hdr_mrg_rxbuf);
+> -	else
+> +		vi->hdr_align = __alignof__(struct virtio_net_hdr_mrg_rxbuf);
+> +	} else {
+>  		vi->hdr_len = sizeof(struct virtio_net_hdr);
+> +		vi->hdr_align = __alignof__(struct virtio_net_hdr);
+> +	}
+>  
+>  	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO_CSUM))
+>  		vi->rx_tnl_csum = true;
+
+So how about just fixing the root cause then?
+Like this (untested, if you agree pls take over this):
+
 ---
-Changes in v6:
-- Fix the length check
-- Link to v5: https://lore.kernel.org/netdev/20251024150649.22906-1-minhquangbui99@gmail.com/
-Changes in v5:
-- Move the length check to receive_big
-- Link to v4: https://lore.kernel.org/netdev/20251022160623.51191-1-minhquangbui99@gmail.com/
-Changes in v4:
-- Remove unrelated changes, add more comments
-- Link to v3: https://lore.kernel.org/netdev/20251021154534.53045-1-minhquangbui99@gmail.com/
-Changes in v3:
-- Convert BUG_ON to WARN_ON_ONCE
-- Link to v2: https://lore.kernel.org/netdev/20250708144206.95091-1-minhquangbui99@gmail.com/
-Changes in v2:
-- Remove incorrect give_pages call
-- Link to v1: https://lore.kernel.org/netdev/20250706141150.25344-1-minhquangbui99@gmail.com/
----
- drivers/net/virtio_net.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+
+virtio_net: fix alignment for virtio_net_hdr_v1_hash
+
+
+changing alignment of header would mean it's no longer safe to cast a 2
+byte aligned pointer between formats. Use two 16 bit fields to make it 2
+byte aligned as previously.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+-- 
 
 diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index a757cbcab87f..461ad1019c37 100644
+index 31bd32bdecaf..02ce5316f47d 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -910,17 +910,6 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
- 		goto ok;
- 	}
+@@ -2535,6 +2535,13 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	return NULL;
+ }
  
--	/*
--	 * Verify that we can indeed put this data into a skb.
--	 * This is here to handle cases when the device erroneously
--	 * tries to receive more than is possible. This is usually
--	 * the case of a broken device.
--	 */
--	if (unlikely(len > MAX_SKB_FRAGS * PAGE_SIZE)) {
--		net_dbg_ratelimited("%s: too much data\n", skb->dev->name);
--		dev_kfree_skb(skb);
--		return NULL;
--	}
- 	BUG_ON(offset >= PAGE_SIZE);
- 	while (len) {
- 		unsigned int frag_size = min((unsigned)PAGE_SIZE - offset, len);
-@@ -2107,9 +2096,19 @@ static struct sk_buff *receive_big(struct net_device *dev,
- 				   struct virtnet_rq_stats *stats)
- {
- 	struct page *page = buf;
--	struct sk_buff *skb =
--		page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
-+	struct sk_buff *skb;
++static inline u16
++virtio_net_hash_value(const struct virtio_net_hdr_v1_hash *hdr_hash)
++{
++	return __le16_to_cpu(hdr_hash->hash_value_lo) |
++		(__le16_to_cpu(hdr_hash->hash_value_hi) << 16);
++}
 +
-+	/* Make sure that len does not exceed the allocated size in
-+	 * add_recvbuf_big.
-+	 */
-+	if (unlikely(len > (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE)) {
-+		pr_debug("%s: rx error: len %u exceeds allocate size %lu\n",
-+			 dev->name, len,
-+			 (vi->big_packets_num_skbfrags + 1) * PAGE_SIZE);
-+		goto err;
-+	}
+ static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
+ 				struct sk_buff *skb)
+ {
+@@ -2561,7 +2568,7 @@ static void virtio_skb_set_hash(const struct virtio_net_hdr_v1_hash *hdr_hash,
+ 	default:
+ 		rss_hash_type = PKT_HASH_TYPE_NONE;
+ 	}
+-	skb_set_hash(skb, __le32_to_cpu(hdr_hash->hash_value), rss_hash_type);
++	skb_set_hash(skb, virtio_net_hash_value(hdr_hash), rss_hash_type);
+ }
  
-+	skb = page_to_skb(vi, rq, page, 0, len, PAGE_SIZE, 0);
- 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
- 	if (unlikely(!skb))
- 		goto err;
--- 
-2.43.0
+ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
+@@ -3307,6 +3314,10 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+ 
+ 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+ 
++	/* Make sure it's safe to cast between formats */
++	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr));
++	BUILD_BUG_ON(__alignof__(*hdr) != __alignof__(hdr->hash_hdr.hdr));
++
+ 	can_push = vi->any_header_sg &&
+ 		!((unsigned long)skb->data & (__alignof__(*hdr) - 1)) &&
+ 		!skb_header_cloned(skb) && skb_headroom(skb) >= hdr_len;
+@@ -6755,7 +6766,7 @@ static int virtnet_xdp_rx_hash(const struct xdp_md *_ctx, u32 *hash,
+ 		hash_report = VIRTIO_NET_HASH_REPORT_NONE;
+ 
+ 	*rss_type = virtnet_xdp_rss_type[hash_report];
+-	*hash = __le32_to_cpu(hdr_hash->hash_value);
++	*hash = virtio_net_hash_value(hdr_hash);
+ 	return 0;
+ }
+ 
+diff --git a/include/uapi/linux/virtio_net.h b/include/uapi/linux/virtio_net.h
+index 8bf27ab8bcb4..1db45b01532b 100644
+--- a/include/uapi/linux/virtio_net.h
++++ b/include/uapi/linux/virtio_net.h
+@@ -193,7 +193,8 @@ struct virtio_net_hdr_v1 {
+ 
+ struct virtio_net_hdr_v1_hash {
+ 	struct virtio_net_hdr_v1 hdr;
+-	__le32 hash_value;
++	__le16 hash_value_lo;
++	__le16 hash_value_hi;
+ #define VIRTIO_NET_HASH_REPORT_NONE            0
+ #define VIRTIO_NET_HASH_REPORT_IPv4            1
+ #define VIRTIO_NET_HASH_REPORT_TCPv4           2
 
