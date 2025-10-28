@@ -1,259 +1,227 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011027.outbound.protection.outlook.com [40.93.194.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9482C2494FF
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 01:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761615948; cv=none; b=apPK4fwzpcMBrAEZt7znNmEml9/bmeeckrkWi2py/bNjgPPvEYdUqS18XNnX86bLFUEg26XOrR/h6DeXHmEfYMIpE1aZiyDuuTEBQZt2xIQNdOtasH1W5fsLcHizlJmRo+odXBd8NEN0ITDF4d0UR/BAlB0NcxC1NrPZZykQrvg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761615948; c=relaxed/simple;
-	bh=GF+MC882OMnI8S27LLYciURvp0ZasVg7CZfx3nxVP9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ffQtebHZ+uj/hAeRnllWqTtQd+nZVTOJ0djR5ax4P6IT63dk7HwILpJhcFi/Yg456ung4VpB6pwUCJOkxD1ZMwSSr78WHsnprkBFtYd86ZqlRqd8FxfAoGNCNFgr7zG239wFWkgkw8xS7wUYaPnQTaIQ8H+eEAHbnyEd0lWD5Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4Bte/Aj; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5195F215F6B
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 01:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761616141; cv=fail; b=WutOFuIrz7NgjZ51Jv8Tx+22BBsjDvDKj4LHTliOg3z7F/3i6DNoww0zD2JVNJ6fJ5uWb4D/c9HcQgDtDp/yukFzYp+n9QxwKRk5F44xk+pJyygw/Cu9dfOgAUZzlNXjKBODA9nqHSmaX1UY3JwZ0APLohQ7cEM2fjzJg0kg/yo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761616141; c=relaxed/simple;
+	bh=LRhbQopkXDGyHs8+4ZkL94KPmoR/p3+F6O4wXgmJa9g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rnUaNIWvP21XYvhA099i1ZGGHZtZwOlyxX8pfH3Xd4zh7XLKTTX1YJynLCTSzZTX8aGNXVZxxkP00aA7E7521QyxZy4xNBGn5klN1p7FOY1RpXZhPCFrg8/IhV/xKsPFTToTeuOEFhbWEWuiegV427MWly0pwLqtsHmCwxqmXJM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=udUHRTRU; arc=fail smtp.client-ip=40.93.194.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4Bte/Aj"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b6329b6e3b0so5280659a12.1
-        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 18:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761615946; x=1762220746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9tpNWD1OK7YuCBqN99mwKFZZzGomTddAkF6+EFAt55o=;
-        b=O4Bte/AjRy6+2MxCF80R6ZMqXyqPIOI6u+rKhmJfqcIJvKBY3O9qhEP3ipN0iUeJmc
-         mOYn9PiPuowIdXBlasDfRE7m/Un/ljRi2NBGxdceJSESHNH/kGIReIMtihCuy2u1VTlS
-         mnkjdU82X2OB4a6fhtouiiX7p841Dc7eyseCSnqpXC50d7OjHivCRt83F/QWXrj0V3XK
-         73zgjXA+N4k7l6r/s5ln+NQ+Pbq8qafL475d0VO55rHo8U7kSYrqRu4JisPJsexAxQTB
-         G8Uo2AP1A1oboaGyY3a4ukWnmoTRG0eJn4qqT/ob7jpOw7c9lTo806m7s+NVZgnC177W
-         T4FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761615946; x=1762220746;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9tpNWD1OK7YuCBqN99mwKFZZzGomTddAkF6+EFAt55o=;
-        b=Ohr2XQszeO2Frkcal3tN7rRqnBagnO0HXtf98/4MaCej0ek9i7JZWGw5QAiWZaX9ae
-         El9AjvlIxphjq5/Aq5+zgl8cHM1k6GrUWdiOJUpDTrJ/xx0MKADLKQ+ZjfPMe3mNz+nG
-         V962wsswCY11DYtIs92NxFU1/C0M5NeHBw9TH4H0VGrz+GMNeZsNbJPkWu1+FK3rygAK
-         r/aEkvukiEWxjL5ci7eLbDQXZnwABmZS7Z7HNj8IEoD3HOSshXLlZnf88U3J7CNjfvg4
-         asbEo00lC/6wpUARhkCxM5RkSP8YV8u11hOsQquXp1vO6LB5kR0yunH7Cw3hiKENzExU
-         5NVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzqMskbQTdQcHP7ubUAovjWh6JDUPNOidzHSXx4MXWFNheNlWmFT99Hlw/lFJ2I7lD+KIlva4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywDATREdmdEpp9ohkqNJHnyWUWSxIJ9ew2l2RV5FXbY5Udxu5C
-	AjsvEg6vUazI9s4GbB9D8fMUDrmfjSQzEw0x+DPjkQXFjTVH/JlfFtsUL4YuqIz6FPc=
-X-Gm-Gg: ASbGncuKSyk87MH9gqJD4vfPMJdEuKm+rHVE4458l7+TKT9bLMRZPFyldV18NCa2cqq
-	J/V5BE07swdxeao1JDlfo4/gfYrq45W4t3l+9UINnzGRpNbjQhwJmCDVQvxZpOsjxlQIaeD0iqF
-	HHCloonxi4TG0mjbTm/pXg82C6wQNmDkItlTs75Oug2glxop4+Vzo7Z04AfAYm2v33f1qRriB0r
-	mBgpOm3ffd77C7qt+qcdYhzRyawjVATmXm+tNNbkylVDnzLr+Lpdr19bKZJVpsDjI0WjZZEdE37
-	t/Z6lLFfxJdSxYdutRtBFbAU8AJbWp76AIUyi8AmRHxIDWJEABdwfkA8Bn5kRA4XJoOiXpDcq91
-	0Lgk5RJuM8uznTkrnTlwlvBtMs5kQeV8PRSONRQTRPNJf2lW2AUoGSRHb1nHj/+2Wd1F5sbDsj7
-	Op
-X-Google-Smtp-Source: AGHT+IH0lOAi/qG58mWc3adb00/uN60NZKYFZ4tDXmtuyg+Eh2qzzh+KgjeO94z2Zpez7W5wBjLdzg==
-X-Received: by 2002:a17:903:38c8:b0:27d:6995:990d with SMTP id d9443c01a7336-294cc72935emr14333235ad.19.1761615945478;
-        Mon, 27 Oct 2025 18:45:45 -0700 (PDT)
-Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498e495e8sm95878565ad.110.2025.10.27.18.45.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 18:45:44 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id A10954209E50; Tue, 28 Oct 2025 08:45:42 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Networking <netdev@vger.kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Avery Pennarun <apenwarr@worldvisions.ca>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: [PATCH net-next v3] Documentation: ARCnet: Update obsolete contact info
-Date: Tue, 28 Oct 2025 08:44:52 +0700
-Message-ID: <20251028014451.10521-2-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.1
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="udUHRTRU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hIiA1V1WBSdNcYET3gi+o1NRVQhCMKqrZ/qXk1UB7/M0Z6Tzjs5WBq0XRDccIGf5VmN+2zu6ivDHGIGdtVHcHSnn/juz62HZrbVGYM1VdxGz7DDsBCi4aUuENl6AUfDsW40Rft001qLLpQw2zPf6GiVXUAlf0SSVf/cjn0ORllwWwqoznUrzeVqnwmZ68dk57ZvdKXqYcyMsLQcwFjhZ/LSDEb6wErbOHU3WvQLp0SWCQI3SqRff12QgbLo8VKKyVpqjbmarIKhxI9iq8eT27i5sLp1I92M4zcgfMlq+fXWrw1vVNqQyEJ91a0mlcI2Ebxs1G7HKnNai1ANnXlTpbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qyhSZrb58g7/mhkC8mdhCxWJp1P0VyqtpGrXvdFyZyA=;
+ b=PWR6M5O3WsIqtXQVIJ9jPpRX3wtsEJknTIRpT1SRJQg8S6/gC2KGzlxuYH/VEXfPJ0QGrMtN7drn7brauEc9x16pTVhMFpOopdhqS26GC/0psEJtznjqd11inpnC2kr7dMao81YjMYrNESiG7k4v6LhqxHMoUCIliBP3CVz2Y86FkRWsgK9mpIYPWUsik1oPZXjTjt4/V0FMB1cMZO38MPLp0+GMKAR0B9SWVInmu/wVn1p4MFz8dArlSYJGvDk3LhojFVFHnmCqUOdFQXjoJVYHKm40sJRHXGrwqRHPNVusVZ6iCvj7mVFzY1nL61cdrgT7KnbL8AjSE1hhimXE1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=queasysnail.net smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qyhSZrb58g7/mhkC8mdhCxWJp1P0VyqtpGrXvdFyZyA=;
+ b=udUHRTRU4nL32MMfPV+9QpzYNUn7l115T55aIAUEg/3I9YTHTjz9dSZdGcFWgyGsomagVvRKnl6+TfOxbB7U//3Cw6U4Q9b2g/PSAbDncPDmvzj3bxQ/jEJd6giYXrtmUbifeCeVIXN5g+AsAtJFs98jZknFAIv2ABdiLwIzyrIDl7VGu4kIQQNe5muHatK0tenDcfTzmzGzn/RE6Gvf+pluCG3CsYSvIDanFoIOtRqyvDYXZNN6X1m+n5bmYPKaZW3VSDEKK/ztHcSM4WViMlh5R6uF5WxeenXVTg3mVk32NMAzDMQYuq1O8qMD16kl1h7jWhHXbqeBlRd8l3vT4Q==
+Received: from BY1P220CA0020.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:5c3::7)
+ by LV3PR12MB9234.namprd12.prod.outlook.com (2603:10b6:408:1a0::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Tue, 28 Oct
+ 2025 01:48:55 +0000
+Received: from SJ5PEPF00000203.namprd05.prod.outlook.com
+ (2603:10b6:a03:5c3:cafe::d8) by BY1P220CA0020.outlook.office365.com
+ (2603:10b6:a03:5c3::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.19 via Frontend Transport; Tue,
+ 28 Oct 2025 01:49:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF00000203.mail.protection.outlook.com (10.167.244.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.10 via Frontend Transport; Tue, 28 Oct 2025 01:48:54 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Mon, 27 Oct
+ 2025 18:48:38 -0700
+Received: from [172.29.246.187] (10.126.231.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 27 Oct
+ 2025 18:48:34 -0700
+Message-ID: <b92ec23d-f877-4dc3-a95f-c9b66120686c@nvidia.com>
+Date: Tue, 28 Oct 2025 09:47:31 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6570; i=bagasdotme@gmail.com; h=from:subject; bh=GF+MC882OMnI8S27LLYciURvp0ZasVg7CZfx3nxVP9o=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkM8jOl2qfya964IqC5+ljNpGXLn242nnttqu/11EnKG j+knlsKdJSyMIhxMciKKbJMSuRrOr3LSORC+1pHmDmsTCBDGLg4BWAiNbKMDCvbHDJnccXMaVw3 b39xgEqXqbmmjF/2l2052w+2CB6cYMLwT4vxQsU//rrnk43sOz/0fJn6mWvyMfl96qu8E30vfr9 /hx0A
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ipsec v2 2/2] xfrm: Determine inner GSO type from packet
+ inner protocol
+To: Sabrina Dubroca <sd@queasysnail.net>
+CC: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<steffen.klassert@secunet.com>, Cosmin Ratiu <cratiu@nvidia.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+	<edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+References: <20251027025006.46596-1-jianbol@nvidia.com>
+ <20251027025006.46596-3-jianbol@nvidia.com> <aP-QvtNf-Vp5oHLX@krikkit>
+Content-Language: en-US
+From: Jianbo Liu <jianbol@nvidia.com>
+In-Reply-To: <aP-QvtNf-Vp5oHLX@krikkit>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000203:EE_|LV3PR12MB9234:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc3a8cdb-3647-4356-ad60-08de15c426e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eVUzMVJ6RVE3T1ZqejdPRjlrVFg5Tm93TC90VUh1ZzRuM0dXeVhVQU5ndG95?=
+ =?utf-8?B?L2VFeS9mNEJMbU5XUE42Y1l1Ykpaam9RYitiQ3BGcmlKSVlEUUlpa2xNc0I0?=
+ =?utf-8?B?WmRTR2IxaG5jWnhoL2hQai9rRnRWSmhXTkhrdkduenZ5YVY3S3dvNEZtam1z?=
+ =?utf-8?B?M3lBYlRhRkdFY09WNVRJcVR2dHlFYnYyUEVicjJzaUpVcnJ6ZER2RXNyMWlZ?=
+ =?utf-8?B?Wld4WExYQmhrRVhBTTNYQnBhZVRnWndZZEdYbktzS3FpaTRZK2l1aVNiSjRs?=
+ =?utf-8?B?Um55cURwbC9YRVhyeVhmaTdGLzNDaHV2T2NkSk1hc25yMjhXM2NqazBUTUNZ?=
+ =?utf-8?B?dWVwV1FJOElhQ1RLaWxoZzNRZUpKMDhkSFQ0K3JCR01sMm0waVpKYmNOVHFv?=
+ =?utf-8?B?SjZ1YzdsLzNUVTd0V3ZOTEdXaUViSFVhSGlONlE2YThhVWUvbW5xVUZLdVFt?=
+ =?utf-8?B?bnZzcXBaRHhOS3plN3pFNERiR3Q2cmpRTUs4RWM4YzBxcWxSdFEvYnZhUmJk?=
+ =?utf-8?B?OEVMeTRPT3Ywc0UzeW93eFR6dkx6VzNBM1M2NG1zSko0cXRUdlhYYm1EVnlR?=
+ =?utf-8?B?WnY2TmU5SHBXTzg3amM3dTN6SVJkOGVFVnIwSmN2RE50SEdPakFCRlY4WlRz?=
+ =?utf-8?B?bEx5WXJUL1ExMGhmWjN5V1dOd1gyZWVvSzB5WndpUVpwc1RyYzFXL1pIanRE?=
+ =?utf-8?B?M3RKNVRPZXVzOU40SEdROTAxblp5YjJRVUloMmhjRTlGOHpBSDQwNHJyRFl6?=
+ =?utf-8?B?ZUJIZWFFeVpNMjdWNCtSVWdocHkyNjdSbUFpblU1Smxuc01HVlhDZEdIT1cv?=
+ =?utf-8?B?ZFNTcjFJRElYV3NXQjMvWkRtU3h2citLcUNzTGRRbkJwS0ZjN2g5R1lVbGxF?=
+ =?utf-8?B?dFZIQVM5c3NKM1N6ekFuNk9jNGY0dkwxQXNzb2tYT2Z1ckFzTWdjWFovTWJw?=
+ =?utf-8?B?d00yb3h4bmxMUzNRRXF5VmRZQU5UbS9zMHhGNVFRdHdDdWNRbVBOdTVzQTVX?=
+ =?utf-8?B?M2tOSGpGVFRiR1RKL093cFZmMFo3VFNsaFRQZ2xsMTRoYUVTNHlOQnVJUG1y?=
+ =?utf-8?B?RENwR0x0ckxTcjNwZHV5cUQwQ2JHL3oxL1BmVGZaM1YrYzVRMDlhMXp5Z1ZJ?=
+ =?utf-8?B?VWhCYis0c1lhV3ltelkwN1h1V0gzT0hJY0MzbDhHdFZaMFhOVmUxeUgwOFEy?=
+ =?utf-8?B?WXZFQlZSbm45S09MeXBKOTJTc2Q0WkZFTGJvTFRkSm83bDVzdXk1RWwyUG80?=
+ =?utf-8?B?S1VUbDF2MlBoSEtNREk4bjJtQlN5aHlhOUVPczZSQ2JWOFl3V1Jxb1NHazZD?=
+ =?utf-8?B?UkZucFJQbHJ6a1ZwZVJsajdiVE1PdWlZVXNoczBVaUswTUhnenpkQkQweXF4?=
+ =?utf-8?B?VWlrWmErd1FsVGx3MmcvcW81bGkreW9YYUp3dkdZczdsYWV3OEphNGs3aTVh?=
+ =?utf-8?B?V0phUFFTc3ZEb3lOT21reWQxZmNKdDVFcnljWGMwQWUyTGxQd1ljbXI4MGF0?=
+ =?utf-8?B?SVpBVERZZGZkamNnL2RBblV6dldjMzVueE9abkNvZEdQaEdEZTdMbXFQUWUw?=
+ =?utf-8?B?a2hSYzlrRVFGSFlvTjRWQ0R2SUoydHdCQVlONGtnLys2Y1pjMzFRQ3h1S2I1?=
+ =?utf-8?B?NzRDeVBTSUMxUXE2elp6SDlwWkVFamI0UHBvWFFxZ1A0a3BmNzJRbk1lc2py?=
+ =?utf-8?B?ZjJMQ0M0SHo2ZkpTMldBd1JWd0dGdmpQaGcybE9XTnFaMzVRODlPWWJzOFBB?=
+ =?utf-8?B?N1RDb1JGNTVFYVhqZGw0aktoV1RzdnJUbURJOW8wUXdwVmUrRG90MExZdEdB?=
+ =?utf-8?B?WEI5Tll1eldyY2JvTmtaTmhleTVKY1JWa0pxbVJ0aUJ3YlhEZWhHSlhnZVY4?=
+ =?utf-8?B?LzVxMVFZM0U4ZGRrVUp6STBQVHJDZWlHc3Zzb2tjTnFjU0xZcnNNa3ptOTN2?=
+ =?utf-8?B?bVZ2V2ZtQkVBN21aZFZtUUFlRjJHVTV6SEl1clE0Y0RYK3EraUI2UzlSeE91?=
+ =?utf-8?B?RWhSZDl5UG9iT1M0MkxxbUFEMDBjd3ZiT3VaNW5Yb0RNeEFHdmEzRFdIbytT?=
+ =?utf-8?B?Snh2T3VSZU9OMjAyRDVXY3NRdXNzUW40Y3dxZz09?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 01:48:54.2900
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc3a8cdb-3647-4356-ad60-08de15c426e0
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF00000203.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9234
 
-ARCnet docs states that inquiries on the subsystem should be emailed to
-Avery Pennarun <apenwarr@worldvisions.ca>, for whom has been in CREDITS
-since the beginning of kernel git history and her email address is
-unreachable (bounce). The subsystem is now maintained by Michael
-Grzeschik since c38f6ac74c9980 ("MAINTAINERS: add arcnet and take
-maintainership").
 
-In addition, there used to be a dedicated ARCnet mailing list but its
-archive at epistolary.org has been shut down. ARCnet discussion nowadays
-take place in netdev list. The arcnet.com domain mentioned has become
-AIoT (Artificial Intelligence of Things) related Typeform page and
-ARCnet info now resides on arcnet.cc (ARCnet Resource Center) instead.
 
-Update contact information.
+On 10/27/2025 11:33 PM, Sabrina Dubroca wrote:
+> 2025-10-27, 04:40:59 +0200, Jianbo Liu wrote:
+>> The GSO segmentation functions for ESP tunnel mode
+>> (xfrm4_tunnel_gso_segment and xfrm6_tunnel_gso_segment) were
+>> determining the inner packet's L2 protocol type by checking the static
+>> x->inner_mode.family field from the xfrm state.
+>>
+>> This is unreliable. In tunnel mode, the state's actual inner family
+>> could be defined by x->inner_mode.family or by
+>> x->inner_mode_iaf.family. Checking only the former can lead to a
+>> mismatch with the actual packet being processed, causing GSO to create
+>> segments with the wrong L2 header type.
+>>
+>> This patch fixes the bug by deriving the inner mode directly from the
+>> packet's inner protocol stored in XFRM_MODE_SKB_CB(skb)->protocol.
+>>
+>> Fixes: 26dbd66eab80 ("esp: choose the correct inner protocol for GSO on inter address family tunnels")
+>> Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+>> Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+>> ---
+>> V2:
+>>   - Change subject prefix, and send to "ipsec".
+>>   - Add Fixes tag.
+>>
+>>   net/ipv4/esp4_offload.c | 6 ++++--
+>>   net/ipv6/esp6_offload.c | 6 ++++--
+>>   2 files changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+>> index e0d94270da28..05828d4cb6cd 100644
+>> --- a/net/ipv4/esp4_offload.c
+>> +++ b/net/ipv4/esp4_offload.c
+>> @@ -122,8 +122,10 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
+>>   						struct sk_buff *skb,
+>>   						netdev_features_t features)
+>>   {
+>> -	__be16 type = x->inner_mode.family == AF_INET6 ? htons(ETH_P_IPV6)
+>> -						       : htons(ETH_P_IP);
+>> +	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
+>> +					XFRM_MODE_SKB_CB(skb)->protocol);
+> 
+> I don't think this is correct. inner_mode_iaf is not always set by
+> __xfrm_init_state, only when we have a AF_UNSPEC selector, which is
+> not always the case for cross-family tunnels. So we would end up with
+> inner_mode->family = 0 here, and pass the wrong type to
+> skb_eth_gso_segment.
+> 
+> Other users of xfrm_ip2inner_mode (in ip_vti/ip6_vti, xfrmi) only call
+> it when we have an AF_UNSPEC selector, then we know inner_mode_iaf is
+> valid and can be used. Otherwise, the selector (ie x->inner_mode)
+> should have the right family for the packet (and all callers of
+> xfrm_ip2inner_mode use x->inner_mode when the selector is not
+> AF_UNSPEC).
+> 
+> 
+> Maybe it would be better to move the AF_UNSPEC check into
+> xfrm_ip2inner_mode, something like:
+> 
+> static inline const struct xfrm_mode *xfrm_ip2inner_mode(struct xfrm_state *x, int ipproto)
+> {
+> 	if (x->sel.family != AF_UNSPEC)
+> 		return &x->inner_mode;
+> 
+> 	if ((ipproto == IPPROTO_IPIP && x->props.family == AF_INET) ||
+> 	    (ipproto == IPPROTO_IPV6 && x->props.family == AF_INET6))
+> 		return &x->inner_mode;
+> 	else
+> 		return &x->inner_mode_iaf;
+> }
+> 
+> 
+> since that's what all the callers are doing anyway?
+> 
+> Then it would be valid to use xfrm_ip2inner_mode like you're doing.
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
-Changes since v2 [1]:
+It makes sense. I will submit v3 soon. Thanks!
 
-  * Update ARCnet info link (Randy)
-
-[1]: https://lore.kernel.org/linux-doc/20251023025506.23779-1-bagasdotme@gmail.com/
-
- Documentation/networking/arcnet-hardware.rst | 22 ++++-----
- Documentation/networking/arcnet.rst          | 48 +++++---------------
- 2 files changed, 21 insertions(+), 49 deletions(-)
-
-diff --git a/Documentation/networking/arcnet-hardware.rst b/Documentation/networking/arcnet-hardware.rst
-index 3bf7f99cd7bbf0..20e5075d0d0e7d 100644
---- a/Documentation/networking/arcnet-hardware.rst
-+++ b/Documentation/networking/arcnet-hardware.rst
-@@ -4,18 +4,20 @@
- ARCnet Hardware
- ===============
- 
-+:Author: Avery Pennarun <apenwarr@worldvisions.ca>
-+
- .. note::
- 
--   1) This file is a supplement to arcnet.txt.  Please read that for general
-+   1) This file is a supplement to arcnet.rst.  Please read that for general
-       driver configuration help.
-    2) This file is no longer Linux-specific.  It should probably be moved out
-       of the kernel sources.  Ideas?
- 
- Because so many people (myself included) seem to have obtained ARCnet cards
- without manuals, this file contains a quick introduction to ARCnet hardware,
--some cabling tips, and a listing of all jumper settings I can find. Please
--e-mail apenwarr@worldvisions.ca with any settings for your particular card,
--or any other information you have!
-+some cabling tips, and a listing of all jumper settings I can find. If you
-+have any settings for your particular card, and/or any other information you
-+have, do not hesitate to :ref:`email to netdev <arcnet-netdev>`.
- 
- 
- Introduction to ARCnet
-@@ -72,11 +74,10 @@ level of encapsulation is defined by RFC1201, which I call "packet
- splitting," that allows "virtual packets" to grow as large as 64K each,
- although they are generally kept down to the Ethernet-style 1500 bytes.
- 
--For more information on the advantages and disadvantages (mostly the
--advantages) of ARCnet networks, you might try the "ARCnet Trade Association"
--WWW page:
-+For more information on ARCnet networks, visit the "ARCNET Resource Center"
-+WWW page at:
- 
--	http://www.arcnet.com
-+	https://www.arcnet.cc
- 
- 
- Cabling ARCnet Networks
-@@ -3226,9 +3227,6 @@ Settings for IRQ Selection (Lower Jumper Line)
- Other Cards
- ===========
- 
--I have no information on other models of ARCnet cards at the moment.  Please
--send any and all info to:
--
--	apenwarr@worldvisions.ca
-+I have no information on other models of ARCnet cards at the moment.
- 
- Thanks.
-diff --git a/Documentation/networking/arcnet.rst b/Documentation/networking/arcnet.rst
-index 82fce606c0f0bc..cd43a18ad1494b 100644
---- a/Documentation/networking/arcnet.rst
-+++ b/Documentation/networking/arcnet.rst
-@@ -4,6 +4,8 @@
- ARCnet
- ======
- 
-+:Author: Avery Pennarun <apenwarr@worldvisions.ca>
-+
- .. note::
- 
-    See also arcnet-hardware.txt in this directory for jumper-setting
-@@ -30,18 +32,7 @@ Come on, be a sport!  Send me a success report!
- 
- (hey, that was even better than my original poem... this is getting bad!)
- 
--
--.. warning::
--
--   If you don't e-mail me about your success/failure soon, I may be forced to
--   start SINGING.  And we don't want that, do we?
--
--   (You know, it might be argued that I'm pushing this point a little too much.
--   If you think so, why not flame me in a quick little e-mail?  Please also
--   include the type of card(s) you're using, software, size of network, and
--   whether it's working or not.)
--
--   My e-mail address is: apenwarr@worldvisions.ca
-+----
- 
- These are the ARCnet drivers for Linux.
- 
-@@ -59,23 +50,14 @@ ARCnet 2.10 ALPHA, Tomasz's all-new-and-improved RFC1051 support has been
- included and seems to be working fine!
- 
- 
-+.. _arcnet-netdev:
-+
- Where do I discuss these drivers?
- ---------------------------------
- 
--Tomasz has been so kind as to set up a new and improved mailing list.
--Subscribe by sending a message with the BODY "subscribe linux-arcnet YOUR
--REAL NAME" to listserv@tichy.ch.uj.edu.pl.  Then, to submit messages to the
--list, mail to linux-arcnet@tichy.ch.uj.edu.pl.
--
--There are archives of the mailing list at:
--
--	http://epistolary.org/mailman/listinfo.cgi/arcnet
--
--The people on linux-net@vger.kernel.org (now defunct, replaced by
--netdev@vger.kernel.org) have also been known to be very helpful, especially
--when we're talking about ALPHA Linux kernels that may or may not work right
--in the first place.
--
-+ARCnet discussions take place on netdev. Simply send your email to
-+netdev@vger.kernel.org and make sure to Cc: maintainer listed in
-+"ARCNET NETWORK LAYER" heading of Documentation/process/maintainers.rst.
- 
- Other Drivers and Info
- ----------------------
-@@ -523,17 +505,9 @@ can set up your network then:
- It works: what now?
- -------------------
- 
--Send mail describing your setup, preferably including driver version, kernel
--version, ARCnet card model, CPU type, number of systems on your network, and
--list of software in use to me at the following address:
--
--	apenwarr@worldvisions.ca
--
--I do send (sometimes automated) replies to all messages I receive.  My email
--can be weird (and also usually gets forwarded all over the place along the
--way to me), so if you don't get a reply within a reasonable time, please
--resend.
--
-+Send mail following :ref:`arcnet-netdev`. Describe your setup, preferably
-+including driver version, kernel version, ARCnet card model, CPU type, number
-+of systems on your network, and list of software in use.
- 
- It doesn't work: what now?
- --------------------------
-
-base-commit: 5f30bc470672f7b38a60d6641d519f308723085c
--- 
-An old man doll... just what I always wanted! - Clara
+> 
 
