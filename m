@@ -1,75 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4FE1388;
-	Tue, 28 Oct 2025 01:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1D3185E4A;
+	Tue, 28 Oct 2025 01:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761615026; cv=none; b=j9v9DHJIP86LhTDz1uinsrXO5NJPKq6hWyDAVle/2j/ca+Mz+7DMNbCyp8uGcpxGd0yg0BYs9+wWv95uxW7z3rrTqsTq1+vI847Cqjjh0Qv0VuE0MqI/iBjwvRQihbN58j9KsApMRsvZSqoCwAKYLSQZlZJJDLqkxL+pBHlXYKo=
+	t=1761615030; cv=none; b=kWDQMLNjfhZ6TDDrC2RjhupI/H/kXW6O6lV+D1jTSbYG0ZsBhKA++vJ0hY7/hoTo/43l9LD9WK9vCsPvri6C/oA2UEezjLkg7aXOHzgaiQ7gKR4D45hcs8syt+NGrvt//4xDaJwKVLukGbU1OPypi23Zm/wrxqAq/QvALbU/t6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761615026; c=relaxed/simple;
-	bh=eMWI0IDIfjL7fqmnNvq+dSCX3slzTb//Jge4YdkRWHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VtF4jwEXMTMVO2aIQ+IInnoOFrO2eyRZloanwOpugZhoIkdbFvA0w+KYURRmViUX83c9TXXTF7hJCNmXxkS75VJgZBTPxws8NxTAY4cy3mCOY7+zLBP3Ouw4Hn+qpmF5MF+5DCWf9R+j8Eb0jh0CCXlzSK+mK9UlqsyXzRiapsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6nc+2XN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761615030; c=relaxed/simple;
+	bh=Bm2irc7gXUY0CPdzzsQ3acckBICJU4QlM8eFUNd3X5Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ZrTL/VyvKz2/EEuKu91U5oGeS7uQnzmvop4SKJrhqYspIwqoDVYKTJ6QRINgunOZCrfcHb11jdmPEU75EovBhwV4e2wCmasjZpGMrg/TgfFGtdsqIZFIVgwYz4xkzoZ0Eq/mgE1kzfmdjn4+oRciWISO2YTu1GfBdfWB310rqvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hnr26WG3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6nc+2XN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751B4C4CEF1;
-	Tue, 28 Oct 2025 01:30:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hnr26WG3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E557C4CEF1;
+	Tue, 28 Oct 2025 01:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761615025;
-	bh=eMWI0IDIfjL7fqmnNvq+dSCX3slzTb//Jge4YdkRWHY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d6nc+2XN450X/W7Kf6J9ZKKmILICRBXhiv0KGyNNwxnwS+Cg2g2BkKegFp2RRGNtR
-	 xLGxI/5MLjdjJs7zTgHOn7RYU0f3WHsdJgJ9IXCoqHxiHuDnaLuqmFywboH7ikBRKZ
-	 P3aM2zjyG1eKN+vbBj/rYTaSrQD1Nux1zbv3l9PZOYesYe5at7caHfBmjMQkBCtmxb
-	 Lpw6/BqFmmqgyW8UdoNdTdzG6Qn9kr+7P1nn2DGKoxDRQKOzcin9ZO9I4KkmQPAGHG
-	 QqH+D0gsvjNdcPDhUGvsK7d7pDd0LV4wXVFAsxVSfeJVckDqvvRllprdI3y21F0T4H
-	 HbE/ZFRwQk1GQ==
-Date: Mon, 27 Oct 2025 18:30:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: vadim.fedorenko@linux.dev, davem@davemloft.net,
- richardcochran@gmail.com, nick.shi@broadcom.com,
- alexey.makhalov@broadcom.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, jiashengjiangcool@gmail.com, andrew@lunn.ch,
- viswanathiyyappan@gmail.com, wei.fang@nxp.com, rmk+kernel@armlinux.org.uk,
- vladimir.oltean@nxp.com, cjubran@nvidia.com, dtatulea@nvidia.com,
- tariqt@nvidia.com, netdev@vger.kernel.org,
- bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
- florian.fainelli@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com,
- tapas.kundu@broadcom.com, shubham-sg.gupta@broadcom.com,
- karen.wang@broadcom.com, hari-krishna.ginka@broadcom.com
-Subject: Re: [PATCH v3 0/2] ptp/ptp_vmw: enhancements to ptp_vmw
-Message-ID: <20251027183023.45a76082@kernel.org>
-In-Reply-To: <20251023131048.3718441-1-ajay.kaher@broadcom.com>
-References: <20251023131048.3718441-1-ajay.kaher@broadcom.com>
+	s=k20201202; t=1761615030;
+	bh=Bm2irc7gXUY0CPdzzsQ3acckBICJU4QlM8eFUNd3X5Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Hnr26WG3OLnFInlblb0f266rA6wtxVdNFWKC/epftIgZJ7fXAroehIm+TrueFE5IM
+	 daxlCSD8Z8HuN9z/PFR9JGDRwnPt5CAZmGEKyfMIdPXmGMt8V3DoME7GnOOUYzPAhE
+	 bfYXIsykI1KMN5VSL8qjV5FcTRyOZ/FUMV28JQFiiNdj+at8YB5aaOAyf7RIRLm4AX
+	 iobP3RB9fzN/ZZKifiiU6T5DhB31l+EMAF26B0mrakbs57ZUl2dvvGQdPBRkP2X+xW
+	 qZahuqyLgeiKIbbcwLiqTMynhl0my8EBErqLg3hicCuhDjgZBcndqydxadn853f1vi
+	 FF7/G9uD2b5Vg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7131E39D60B9;
+	Tue, 28 Oct 2025 01:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] dt-bindings: net: sparx5: Narrow properly LAN969x
+ register space windows
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176161500826.1653952.7154756553118848296.git-patchwork-notify@kernel.org>
+Date: Tue, 28 Oct 2025 01:30:08 +0000
+References: <20251026101741.20507-2-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20251026101741.20507-2-krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, Steen.Hegelund@microchip.com,
+ daniel.machon@microchip.com, UNGLinuxDriver@microchip.com,
+ lars.povlsen@microchip.com, robert.marko@sartura.hr, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 
-On Thu, 23 Oct 2025 13:10:46 +0000 Ajay Kaher wrote:
-> This series provides:
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 26 Oct 2025 11:17:42 +0100 you wrote:
+> Commit 267bca002c50 ("dt-bindings: net: sparx5: correct LAN969x register
+> space windows") said that LAN969x has exactly two address spaces ("reg"
+> property) but implemented it as 2 or more.  Narrow the constraint to
+> properly express that only two items are allowed, which also matches
+> Linux driver.
 > 
-> - implementation of PTP clock adjustments ops for ptp_vmw driver to
-> adjust its time and frequency, allowing time transfer from a virtual
-> machine to the underlying hypervisor.
+> Fixes: 267bca002c50 ("dt-bindings: net: sparx5: correct LAN969x register space windows")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> - add a module parameter probe_hv_port that allows ptp_vmw driver to
-> be loaded even when ACPI is disabled, by directly probing for the
-> device using VMware hypervisor port commands.
+> [...]
 
-We'd like to get out of the business of representing pure VM clocks
-as PTP devices, see:
-https://lore.kernel.org/20250815113814.5e135318@kernel.org
+Here is the summary with links:
+  - [net,v2] dt-bindings: net: sparx5: Narrow properly LAN969x register space windows
+    https://git.kernel.org/netdev/net/c/210b35d6a7ea
 
-Your driver is already in the tree which is a bit awkward but I'd
-prefer to resolve that discussion before we add any more functionality
-to such clocks.
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
