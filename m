@@ -1,91 +1,125 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74463314AB;
-	Tue, 28 Oct 2025 13:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB27264634
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:20:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761656479; cv=none; b=OtGEfvefoaOfZTgPDF+uqEWMshrAB+WLgcBEiiQdfcyFHgihde3qO5Um0+qayoJGRJ96geSnRERqGYmea6m2nxeyNW4JvPu+4H6Rv8qQBjdyvBxUZeyFUIBagiGun7aT+7gEKWTrp3RsqoIKwiR1j1fiQT3wpDQPZjFuEM9LAck=
+	t=1761657639; cv=none; b=AfdwBHknNRR8DXViQyTJMDu9mBhDKLx0o2dr9FVXuWMQXpXb2gszi6YGCfXZq1yJmD07FLQJMCb5cIzehWk8+jOCJJfCrEfiquzgRKhDdrK0oVxiuMRdaq5+2AD9fdhWiPHo8SvGnJ9P4oAz5AHvORJsFz6dqhfFXEG5eEd3akc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761656479; c=relaxed/simple;
-	bh=Ip0/Cn7Eq8CRmBNQPrUXFmsK1Z7fBv8Q9ArF72Fhztw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XlvqtiBuj5O3tz6GOL/YGC2GiTve6iBhfJCzeefwGoqYI7wvmQ4LqDriC2mPUS703V32wt0qIzz8/Osb3J7Z+/K4bRJSVSNJdnTPcNXZQRKMmCNWAfA6BHUIf5waRRnbi7X0028dupVDRB6MWGumH2/wiHaTo59eMW5bsyUSKTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=v1RUAwQj; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761657639; c=relaxed/simple;
+	bh=OraHByRSkDTKrt5+sOvd0Ht/6LFZDkcv/nCwyeH4DNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+19lSkkA4SjxReg90lCwpg9zwIxl8P3QynLy4N3iju2JtKzs+crpIUNRJQcwYWm30+CSVp3atu33Q1qMRjCIgOAgnpzyUnZHJLqQi1kUOHctiODdYSKZsq3Mpcllul3zG+mPoVxiNwLjGqGSLRWRJGwyUEbQb/LAkdCVnbu1kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CHm/mnj2; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="v1RUAwQj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761656477; x=1793192477;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ip0/Cn7Eq8CRmBNQPrUXFmsK1Z7fBv8Q9ArF72Fhztw=;
-  b=v1RUAwQjzS3HMSe4k2ir4jPY/RJhp7FMWsYjkOacyreF2Ln2FUd++lD3
-   HiNUdTS8AerG6GKL8R3ReV6MUCfxFYz5kGvdzp/PXwHHzFgcLRokUJThU
-   /VN5Jl/N4X5AZbrE6M9M2lQdfBQqm0qggKwtEJFpU9m6yToep6F4WjqiH
-   /cQ1vYVsvgPdFcPnxDMKf0KYkgSIrckTTZyG+QUHRqwKh3JFgTKQOWqqI
-   MFyBIQE5QFzWAvxhFpfyxIJrwyVPmJH3uAHe9/cWoPXAYvIx15+mv2dYb
-   wq8hD0lkUz42qoUSgqb3ekj7yFQSNarNxC0eRiDc14IcrwpYsdsoAoKs8
-   Q==;
-X-CSE-ConnectionGUID: Gg7jUh6qR9u+EJ1jhFrNyQ==
-X-CSE-MsgGUID: pDMRFxr/QW+1zSyrHNClDg==
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="48858559"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 06:01:13 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Tue, 28 Oct 2025 06:00:02 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 28 Oct 2025 06:00:01 -0700
-Date: Tue, 28 Oct 2025 13:58:47 +0100
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: phy:  micrel: lan8842 erratas
-Message-ID: <20251028125847.y2uracj2csvqhxy6@DEN-DL-M31836.microchip.com>
-References: <20251027124026.64232-1-horatiu.vultur@microchip.com>
- <4eefecbe-fa8f-41de-aeae-4d261cce5c1f@lunn.ch>
- <20251028073354.7r5pgrbrcqtqxcjt@DEN-DL-M31836.microchip.com>
- <8b14b2b8-709e-4c83-8028-19ab2df1bac2@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CHm/mnj2"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7a26ea3bf76so7871270b3a.2
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 06:20:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761657637; x=1762262437; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wzLIntGDHL7+P055GuRT7nFuEDkNdk58z2RuQjYnrI8=;
+        b=CHm/mnj2dpn87cmLzHcWzWMEC7+jnqnLJxAqGrvOw4INkKxqRau3eRaSPxvf0uHU4q
+         NpcSHskzE7xCm+jFtev4+ckipvkl26thUpNqSu+02D0zSrw1jKWdGcOHcFjuvCcibV6A
+         md7vijLNpkG/bKCkbKOmOQou8nyMMbB4iVi2cFHMcmZz9k6L8r37goPqD2wZJMVu9M3k
+         OwlB8y7DONRhTKgD4UqMGrHgW+i31yywF0TyNifAUqoReMKyogL1rkZqxRMLel17mN14
+         mxWZiCZa7kjXAG25tTPU3vjYkECJHWJ1xojIfWvVvOo0Gt0InoewiXwNIQY0cKIli7Je
+         rdPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761657637; x=1762262437;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wzLIntGDHL7+P055GuRT7nFuEDkNdk58z2RuQjYnrI8=;
+        b=NpyVothd1ieJFhpuJBv7/hwkeYsHppGKMg6NtCDTvqR3gEYoGBViBAEe+gs5OQBhmS
+         rDIlkKdpwhjtXSxvKjZlw4BNyJPAc/TXiMtLsHQizA/+Wwc5u1zMAOi1Nx72TwxYIeiC
+         WQ9WRQUyH0jAAjMz17XVsQs9Ls1RcB8z2/PUtwL6OoLSVghVyRrj3c0Up/3OBMTHiiRj
+         GtXexF2g+k768EeCd+eiGAI6yg8rn5sV3PkXht6vYyZZn1/WCR5fOg6BPTYDgsOxhlV3
+         WglTLkkv96SQLMp4B8lcUV8aslWjsdB9CqNFBYYfWOu7E3E4mEVg/xgfV5FgVCUtfWUQ
+         l8Bw==
+X-Forwarded-Encrypted: i=1; AJvYcCWv5lSz2ch99IMESZgi02g6P0gY7qNffWYonf4l50JB9vaMY70hPl0Ekbgf8eVgR+/nEUb2rtE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF4DCbSH/dxs/28O7ksP1ntvVdzSMhHpVRS0FILFVQZ3Q6ygG6
+	t/6ba5ukdvXs7NEV48oQO0VmZPuDryBdHlJuJNzZk90Ro0fCJGd6ZYkv
+X-Gm-Gg: ASbGncvLpKUonwNIHaVUhNm/UyQ4a3LbFqrts51zzJmdmi5mA1t9GIujfJ0MAmYtoKQ
+	DBQG7hWwxREyrlS0tVBJPMCxQSa7NC0tM9lb2vDlB3eZwvS3mBaeUmJOMXZqN/O8HBPrJVf+z2B
+	QUI4V44fTleoB19AdCEk59sZqRgEG2rkxJSmvRoKkGpJPtYfy6pfgGHejUTTYacYxJw8L/KjwNY
+	IkXrX/FJpy4Bef6q0GcYPrxy5R0mhG7g3FC3vhp1wbUCyWOWAkjfMEAC52Bn/QTxOp3W/hYgq89
+	2/QN60zYrljVlyZCDeW+uovPpTr1zGLgrmYBOxCwuQPZBdyYdVyCI5TLOb01ZJVIhEs9Hp5bpqq
+	0GpXuUxAQtHZTy1l6olK1PC4FS8FUGERj5zfcRnPstc7t8KYbA+JwfmOysdGJq0C06q8f67ZIak
+	y/
+X-Google-Smtp-Source: AGHT+IE5u7Id+aiml99gQys+AcPpH4Eit68IjE0RkIpz2pZA136//uNZkrUUyLYbvp3Vhsbk8QnGqA==
+X-Received: by 2002:a05:6a00:4b10:b0:7a2:7930:6854 with SMTP id d2e1a72fcca58-7a441bbe8b6mr4307214b3a.13.1761657636780;
+        Tue, 28 Oct 2025 06:20:36 -0700 (PDT)
+Received: from archie.me ([210.87.74.117])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a4140301ecsm11844986b3a.24.2025.10.28.06.20.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 06:20:35 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id E146D4209E50; Tue, 28 Oct 2025 20:20:33 +0700 (WIB)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux Networking <netdev@vger.kernel.org>
+Cc: Breno Leitao <leitao@debian.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Matt Mackall <mpm@selenic.com>,
+	Satyam Sharma <satyam@infradead.org>,
+	Cong Wang <xiyou.wangcong@gmail.com>
+Subject: [PATCH net-next] Documentation: netconsole: Remove obsolete contact people
+Date: Tue, 28 Oct 2025 20:20:27 +0700
+Message-ID: <20251028132027.48102-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <8b14b2b8-709e-4c83-8028-19ab2df1bac2@lunn.ch>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1262; i=bagasdotme@gmail.com; h=from:subject; bh=OraHByRSkDTKrt5+sOvd0Ht/6LFZDkcv/nCwyeH4DNI=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkMh4685/SZl8pvmJU++5ua8Kmnm2r8bY5JrJ3fq23w4 6yZxtWyjlIWBjEuBlkxRZZJiXxNp3cZiVxoX+sIM4eVCWQIAxenAExE/yUjw+xdEx9w7H/gPXmG fn/v9peudQs1/eoZ1evVr59axj91fjwjw+3kG/M2lV+d9uu42qWU41EKmnNVjBcFbelOmGDm/Cd nEjMA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
-The 10/28/2025 13:04, Andrew Lunn wrote:
-> 
-> > > I notice there is no Fixes: tag. So you don't think these are worth
-> > > back porting?
-> >
-> > Definetly I would like to be ported but the issue was there from
-> > beginning when the lan8842 was added, so I was not sure if it is OK to
-> > send it to net.
-> 
-> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> 
-> says:
-> 
-> It must either fix a real bug that bothers people or just add a device ID.
-> 
-> Does this bother people?
+Breno Leitao has been listed in MAINTAINERS as netconsole maintainer
+since 7c938e438c56db ("MAINTAINERS: make Breno the netconsole
+maintainer"), but the documentation says otherwise that bug reports
+should be sent to original netconsole authors.
 
-Yes, I would say so.
+Remove obsolate contact info.
 
-> 
->         Andrew
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+Cc: Matt Mackall <mpm@selenic.com>
+Cc: Satyam Sharma <satyam@infradead.org>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
 
+ Documentation/networking/netconsole.rst | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
+index 59cb9982afe60a..2555e75e5cc1c3 100644
+--- a/Documentation/networking/netconsole.rst
++++ b/Documentation/networking/netconsole.rst
+@@ -19,9 +19,6 @@ Userdata append support by Matthew Wood <thepacketgeek@gmail.com>, Jan 22 2024
+ 
+ Sysdata append support by Breno Leitao <leitao@debian.org>, Jan 15 2025
+ 
+-Please send bug reports to Matt Mackall <mpm@selenic.com>
+-Satyam Sharma <satyam.sharma@gmail.com>, and Cong Wang <xiyou.wangcong@gmail.com>
+-
+ Introduction:
+ =============
+ 
+
+base-commit: 5f30bc470672f7b38a60d6641d519f308723085c
 -- 
-/Horatiu
+An old man doll... just what I always wanted! - Clara
+
