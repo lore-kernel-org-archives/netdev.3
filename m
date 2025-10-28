@@ -1,43 +1,76 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BAC1E1A33
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6805330FC10
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 14:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761659944; cv=none; b=gHTlSrXjaoLlMIMIq8wHGioV1NsX+z/NTxU9OXbDyst1g7ZSOXUeRr/w6QpuEprUdDC0m3+jyDUd6e+8aQCm2YiEUb931u2cTHtvECDZHxHw/ep6v+hCDVRXKay3JJRQZt9W9jNY1u8ne0LRSYX5uBKLLBvmmd21AoTIiov2ibM=
+	t=1761660587; cv=none; b=UlhUnYaDPE0v2Sk7gndiWNAV5JmEvjdLZulihpuyNCsrVyVuM9gVaoMft817UznzFz0yEh7F1uFnCfwHUP0dIHO6+9XJSeQpi7xnVBlAdKMWLRvFhlGmrIQf80pbaDUtnst+Sz36UqqGpm5rYypJ8YQvbjWXtnaoO7FiMqe+fXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761659944; c=relaxed/simple;
-	bh=nRLuX8pY3dyvzjD/sEPuxXQJlhqD7nqLDGP/lt9Zylw=;
+	s=arc-20240116; t=1761660587; c=relaxed/simple;
+	bh=unnUb/eSm49TuPeg6eODeqzKIWef+4vsiWvFR1TFhB8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cjlazZ3nn+ajRbE8gMA6xG2b/TG3vCUQyfD9kxMJsGT/PXzmfGxA6mi1BcLvlI5xTh4KCaHfCr8M8f9ZNL5Qo3zAtuMzBaZvQWvUYxlxBvFzkfmViLhGnwbBt9pp46ip4wS9RXvVI1GP+a/nPHeUvB1bSExQLBPWcubPH0L0Eyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Z64UND9x; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=amc/U9cfzX320d0bG95De3G1Hp9T1OATT+v0w4Twbbk5AJW/EpDa7yEVHPDYKduigGv9KzhV3WYGbMr2kz9sjjt9fqPtKA0kYywXdVA6oViB6VL5IHg30U+Co+LfU7EDZgPrTFo4vYBO0DGplLb28tPA8Ika+urODVf+nxjpNbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OR6irS/Q; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Z64UND9x"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Bgg6DG7CypupFai/a/ImxX2vljkR3xJPIapnRIuzQfw=; b=Z64UND9x/dhuFmPtF1jtkekcQe
-	1/rduzxAFT2QKLYhd4wMZPtMqSrlS2Vn+U/dVE5atR4RoGDUuWlOBeBPx+pgFepedahzeU8LVtW7/
-	szZsRatZIoPLRLpCIy2JLT4fbZwmfrsc/+9EFprf6WBWj1LcCjxne0iGHeEfhYdknubk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vDkDz-00CIeU-AT; Tue, 28 Oct 2025 14:58:59 +0100
-Date: Tue, 28 Oct 2025 14:58:59 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	donald.hunter@gmail.com, ast@fiberby.net
-Subject: Re: [PATCH net-next v2 2/2] tools: ynl: rework the string
- representation of NlError
-Message-ID: <53ad4e54-47c7-4afa-a296-635e10192f8c@lunn.ch>
-References: <20251027192958.2058340-1-kuba@kernel.org>
- <20251027192958.2058340-2-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OR6irS/Q"
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7829fc3b7deso47899637b3.3
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:09:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761660585; x=1762265385; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=unnUb/eSm49TuPeg6eODeqzKIWef+4vsiWvFR1TFhB8=;
+        b=OR6irS/Q0ZbSBhDil9rrWYCoZesNdU52tfuJEmTvs/FtVsg+8aNrk6WgzyLiigqPqZ
+         CbUHBvk2uN+b1ovusH6FY7vAQhypa049pdBSk3qfQ2RWkZzvyrHJi/R04M8ieiSWa9PF
+         FnPkp2PlUr0urRSVUN3vjZKmQhsNrjHRHvqQpUZgPkVK9OsU2pmBFH5Ir1DMKkaujKvI
+         fnTnFmomEF5jaG+sgRY50NM6MOnLZuE8DjYj5JsmFanNlMGeo/h+NdzjLio/5Z+se7Om
+         Sp2Kiy4TxHYa8dVDU6exojH1+xjK5mFcOB79VYVJz4RHhXv4715WHc0zzKCueoZsU8eF
+         QhoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761660585; x=1762265385;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=unnUb/eSm49TuPeg6eODeqzKIWef+4vsiWvFR1TFhB8=;
+        b=dVi9GIWjvF9zt7/YiN2AZOayzokdD8ery0uN48rOhGpKhUnRRb67zFy8uH4dVifQrV
+         XTzO+oeRmTAQhhdblKie5HOujLV0bCONU7wRz9ZXiuvlMt1SOyCiYmTjrO8Tg/JAHldF
+         O8624YGuPwj4eLREC/rIyKMN7eBt+/MF372RLZLG96s9zNV8UzVO1LOtAab/boFbfdYB
+         fl17l5KlE0MWaDMrRHOB7rEG46eJEtlzPU4w7f101YD3+sNqx3QRQMcoZqSK2idpX6yC
+         ZRzmYibHPtDG6w5ElCRhPqi+EAS9Lheh044ZwoyJzVeTaXwWGhDipqiBpTx3mDKOwDQE
+         Xgaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXT8occye1LVF0Lu5HwK1W2bCiS6IWhpZxgXtmgEHPhv0j3OQupjbVs8kFM0EafZoPN8/2byy0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvZQJfskJo8Qs4JUuLsXEyZbaWqoHUuQ3G7TpN1bxb007cIQj9
+	soLwHX7/Th9oIhrn60eeBUg0dQ+5mE/tn50cG8Imr3tW98SEbnyX8KPi
+X-Gm-Gg: ASbGncvV44EVxtcz1AeRmcvMBaFiQfdLTr1b//LwtHrExJOCRKoypr4rLgmAeKMYOCE
+	G3qaXQAOqnL8s0EVD0B6xx7pDblv+ra3y2X9g4LOGW5fRWEpnjdnM4dMjqB0g1U7W6Ic/mYqVMN
+	EkHk0qpt12joMLuDz7hZSJ8d/sbHa0mE8antLdrLJmu8MyjrH8vYZ5PWgOpgtQmIF980sWVrZBO
+	iATm2mdvLA41s1m+izb4Arl2YiJ1AZgiss11kJbLZTYnmjQtuPfvqp1mWGLyvjTRUI0DN265E1V
+	gqbDo/nrkTiXpU96+pCb+VuwfcuE8HErTXsJSg+HkGy+0UA2JstlbWS/L6xI4kgzYTW/Waxu1zH
+	pxSVJjTKNKW/zfRVvreOhAZLFU+U61q+iyQwmEgumgMyumxjCWrP4kADN0MHqpajf+PWLa+lPsT
+	b2dk2iOXu3JafLyFssBU0=
+X-Google-Smtp-Source: AGHT+IEvxs7ohiYNwW7xTxAotIV30qgCydIQJhW/9TRA9i6dkFEwWmMisgvTyOn0Z2/Nz9kzUXhyZA==
+X-Received: by 2002:a05:690c:13:b0:782:f343:62af with SMTP id 00721157ae682-786183cada5mr36711427b3.61.1761660585069;
+        Tue, 28 Oct 2025 07:09:45 -0700 (PDT)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed17dbd8sm28029987b3.15.2025.10.28.07.09.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 07:09:44 -0700 (PDT)
+Date: Tue, 28 Oct 2025 07:09:41 -0700
+From: Richard Cochran <richardcochran@gmail.com>
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	syzbot+c8c0e7ccabd456541612@syzkaller.appspotmail.com
+Subject: Re: [PATCH] ptp: guard ptp_clock_gettime() if neither gettimex64 nor
+Message-ID: <aQDOpeQIU1G4nA1F@hoboy.vegasvil.org>
+References: <20251028095143.396385-1-junjie.cao@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,48 +79,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027192958.2058340-2-kuba@kernel.org>
+In-Reply-To: <20251028095143.396385-1-junjie.cao@intel.com>
 
-On Mon, Oct 27, 2025 at 12:29:58PM -0700, Jakub Kicinski wrote:
-> In early days of YNL development dumping the NlMsg on errors
-> was quite useful, as the library itself could have been buggy.
-> These days increasingly the NlMsg is just taking up screen space
-> and means nothing to a typical user. Try to format the errors
-> more in line with how YNL C formats its errors strings.
-> 
-> Before:
->   $ ynl --family ethtool  --do channels-set  --json '{}'
->   Netlink error: Invalid argument
->   nl_len = 44 (28) nl_flags = 0x300 nl_type = 2
-> 	error: -22
-> 	extack: {'miss-type': 'header'}
-> 
->   $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
->   Netlink error: Invalid argument
->   nl_len = 88 (72) nl_flags = 0x300 nl_type = 2
-> 	error: -22
-> 	extack: {'msg': 'requested channel count exceeds maximum', 'bad-attr': '.tx-count'}
-> 
-> After:
->   $ ynl --family ethtool  --do channels-set  --json '{}'
->   Netlink error: Invalid argument {'miss-type': 'header'}
-> 
->   $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
->   Netlink error: requested channel count exceeds maximum: Invalid argument {'bad-attr': '.tx-count'}
+On Tue, Oct 28, 2025 at 05:51:43PM +0800, Junjie Cao wrote:
+> Syzbot reports a NULL function pointer call on arm64 when
+> ptp_clock_gettime() falls back to ->gettime64() and the driver provides
+> neither ->gettimex64() nor ->gettime64(). This leads to a crash in the
+> posix clock gettime path.
 
-I think as a kernel programmer, i would prefer EINVAL over Invalid
-argument. If i'm going to be digging into the kernel sources to find
-where the error is happening, it is one less translation i need to
-make.
+Drivers must provide a gettime method.
 
->>> print(errno.errorcode[1])
-EPERM
->>> print(errno.errorcode[2])
-ENOENT
->>> print(errno.errorcode[110])
-ETIMEDOUT
+If they do not, then that is a bug in the driver.
 
-I suppose the question is, who is the intended user of ynl? Do we want
-user friendly messages, or kernel developer friendly messages?
-
-	Andrew
+Thanks,
+Richard
