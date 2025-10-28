@@ -1,101 +1,106 @@
-Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D79A3081AC;
-	Tue, 28 Oct 2025 14:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC15221D3E8
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 14:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761661691; cv=none; b=Dt5AzyEYJ3nlXcHcBWiC23KkFR5Zua386W1p99DnzYlzLIQgoS6j/PcwvOb7kBSgnrblW+PL9PTYwM5v5GrFDg58RFxWY/ze5OMJwz/phqmxZLi8dSdNpR4DPrEXz2rusIfzHytVdEchjgDeHvwP9jJVKwQctzT8/x12V7u3tcc=
+	t=1761661896; cv=none; b=Gs5B7zI3a5hFl+Q+it8wA8YrxBw3fgsatuW4KNW+FiORiyFl582Qj8y5Q75A3gIfu5K2U1QI0JfbGlUzvRMw7ZNMiOUIf/FR2f5qVRJAkrMZLW0LIiYWCqF2a7kU2JIi72iRtq0a+wiJRwuUUiA/xLciSSm/MKuIFoL1VI/wXl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761661691; c=relaxed/simple;
-	bh=RPppPMVEQPsh2y1GjpYuNxHxtRlMaDPmxSkKWCrYkjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cw4akZgQhnmaFRR27kqS4BLRKKhMzn+0EbQmnTBXlL6lBtdmiz38sb2dzcCE7EQe+NyymR4wOyu2L4GHoB/G7GOCKSNGlxcrwKTJtzEA4em2c/fTkfGele9nRcwZyuNFAY51gxFCTMlOFPd/C9sBMtXxSP7MeN6dDutXTZRbYPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=ldy13xPC; arc=none smtp.client-ip=178.154.239.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+	s=arc-20240116; t=1761661896; c=relaxed/simple;
+	bh=lSvM53GFft+J8S+6HgqdJu8eZNoSNRi/6wce+FaPoNE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fHp1kkrld1uQpngJAkOosoHv2qCkoOZQ2ydwsPcf7M7zHYTuUPsRng+1GlctDo/DQCZNaKj5NBT1foWNwy9iuwnCxeTJX+/8gMviJWFvP91m7a/397bC7iNrKhVeUIJcyqS9pvrAvP8kSk0gKCtkf7Tjk3FKBmh4ji7doxY6JKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hGyFEA+2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="ldy13xPC"
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:49f:0:640:b99a:0])
-	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 808E180A9D;
-	Tue, 28 Oct 2025 17:27:57 +0300 (MSK)
-Received: from i111667286.ld.yandex.ru (unknown [2a02:6bf:8080:2::1:3d])
-	by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id qReQdZ2b5W20-gMxKwSGD;
-	Tue, 28 Oct 2025 17:27:56 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1761661676;
-	bh=sk8MoiTs5k5APW6gtqgCF2xdeZ/K2hxjvJJvk7+8Gco=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=ldy13xPCco84f30jCUKGJK2uye3U0A4XDxBVSzjuUzDP/hE3rCRahp0ngOdPLzjuO
-	 9bx/+jxFXKx1KQjjHiyT+URHWikCkLFn6JkRaG4GjuFJeQ3NwkPQ5R+417i7hiMKYU
-	 auX0v2/if7KFGUbpkkOUMj63prQGubGFDCe+R4BI=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Andrey Troshin <drtrosh@yandex-team.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrey Troshin <drtrosh@yandex-team.ru>,
-	"David S . Miller" <davem@davemloft.net>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10] ipv6: sr: Fix MAC comparison to be constant-time
-Date: Tue, 28 Oct 2025 17:27:55 +0300
-Message-ID: <20251028142755.2059-1-drtrosh@yandex-team.ru>
-X-Mailer: git-send-email 2.51.0.windows.2
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hGyFEA+2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761661893;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=73/xPfC9sPKYuWBDNGOrntIS8v774C/e1wt54BijNYE=;
+	b=hGyFEA+2qNou4Kab0bzN/De7BVeD2N4vPfemk2obMoAu5zyolB/b6i6x+6650VKtlxkwPd
+	gL6gd7w0GEz5P4SAes75p83y8Wnk4rUsCaKGuGhldCzseLsd0f49LybvUZE4GTnfZFOezK
+	N3QOnncFGfdzJzFsmGPtYEHbsJ7AGDI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-l_GLKNVBO_auji16ib-lKw-1; Tue, 28 Oct 2025 10:31:32 -0400
+X-MC-Unique: l_GLKNVBO_auji16ib-lKw-1
+X-Mimecast-MFC-AGG-ID: l_GLKNVBO_auji16ib-lKw_1761661891
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-477113a50fcso22268665e9.1
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:31:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761661891; x=1762266691;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=73/xPfC9sPKYuWBDNGOrntIS8v774C/e1wt54BijNYE=;
+        b=QLSWhVV4A+s72o/aezpR0xEYtuu8BNOgEykHWvl6AqCkT2DKPauOcUivYeskir27e6
+         UUP1J3M3QMhFmVzvUN8fVg2yxJRZWVeBzv7kH0ZSlLzG3jAen0edtu8EKWGB+/9ypEUa
+         Uko8mWaQy2ziSOmL0DWvXKAnMqgUQxDnpJwRBmTamUX25wxT4ngR1suA9Ap6JFvGPkIx
+         k8Dp3jFd/1zjsFYo+VHfdv+rtd7SKZIT2UgaNdzshoxC1a6rE7dIi1rqcaSSMHb2esAi
+         DRNCncBEUqS5OvYB/Yr1zHx5qABL78dYLfuR/P8XYLPqD4ngQknyA6/jn5RJeJk5+NvO
+         dueQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYkZJyuMutSatBCphNiOQ8i/nJJaTkCSRrYWCzRPl03AzNsHT0d3BhFnAcrkbZQ4NZaK65o6I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT5c2T0FP8+oSs1ksqXmQhvsXvOggSph+iMDwXeLUA0yvuBIVP
+	Qs8GyqwvO3WW1fqpbFOWbOQ4iHFnRQPAGPuRyH4hpmXcpPw30sx6Vm3+GKD1Q0ZjRuz23SRm5Bv
+	EUCAhXU65t6Nda6UVGYh2uuUG5MbktoJSJdW67sMo3NtXfYR9pcDOiR0V4Q==
+X-Gm-Gg: ASbGncu7vAz1IcBTQUzHQml9YizL9gazPp/UMqrZbD8CrWB/YyDpOz6DMTH1Tg5RFzr
+	53thSAzVUNB28n9jYtDaksz3jUcFjRwUEPd90WLTRTu5O+U7uhA003OZ14KO2BPCLZYq3kMhbNq
+	WIHMufTp9ndBpdl/G42juzuDUhMoOm+x67pFaoa4y1xC4CYN+jWdMrFOCLAAwr4rkaFWf01sVXl
+	6a9Ipe+9lywUS6b+HDxZNYQUk/hw6sMOPv5QZqMbxTiPI9qoOlpW+iIoiL7y94ZqlW+IM0xRlQz
+	tLJ3+d/BQz1S4+OzpfJ/FDlSrEeMkJ9GJyadlw9SdNTQvmkfzs0CT4xAU1Hd2dXtPl5xRITlosU
+	weYSeL/HzHBLpUqM6KNejJ/cAxCMmhV5Wycqt2Ca5QsuR21o=
+X-Received: by 2002:a5d:64c3:0:b0:427:928:78a0 with SMTP id ffacd0b85a97d-429a7e9cb6cmr3247925f8f.63.1761661891137;
+        Tue, 28 Oct 2025 07:31:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMOTsGZSXAVq3SjJu/2WS9NseH84hxo6jnqAKfyR6/9FeNPp9QtVjNi6BEGt5SyDkugzoCAA==
+X-Received: by 2002:a5d:64c3:0:b0:427:928:78a0 with SMTP id ffacd0b85a97d-429a7e9cb6cmr3247897f8f.63.1761661890726;
+        Tue, 28 Oct 2025 07:31:30 -0700 (PDT)
+Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b7a94sm24431112f8f.5.2025.10.28.07.31.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 07:31:30 -0700 (PDT)
+Message-ID: <76598660-8b8e-4fe6-974b-5f3eb431a1ec@redhat.com>
+Date: Tue, 28 Oct 2025 15:31:28 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next, v3] net: mana: Support HW link state events
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+Cc: haiyangz@microsoft.com, paulros@microsoft.com, decui@microsoft.com,
+ kys@microsoft.com, wei.liu@kernel.org, edumazet@google.com,
+ davem@davemloft.net, kuba@kernel.org, longli@microsoft.com,
+ ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
+ dipayanroy@linux.microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
+ shradhagupta@linux.microsoft.com, leon@kernel.org, mlevitsk@redhat.com,
+ yury.norov@gmail.com, shirazsaleem@microsoft.com, andrew+netdev@lunn.ch,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <1761270105-27215-1-git-send-email-haiyangz@linux.microsoft.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <1761270105-27215-1-git-send-email-haiyangz@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Eric Biggers <ebiggers@kernel.org>
+On 10/24/25 3:41 AM, Haiyang Zhang wrote:
+> @@ -3243,6 +3278,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
+>  		goto free_indir;
+>  	}
+>  
+> +	netif_carrier_on(ndev);
 
-commit a458b2902115b26a25d67393b12ddd57d1216aaa upstream.
+Why is  the above needed? I thought mana_link_state_handle() should kick
+and set the carrier on as needed???
 
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
-
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20250818202724.15713-1-ebiggers@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Andrey Troshin: backport fix for 5.10]
-Signed-off-by: Andrey Troshin <drtrosh@yandex-team.ru>
----
-Backport fix for CVE-2025-39702
-Link: https://nvd.nist.gov/vuln/detail/CVE-2025-39702
----
- net/ipv6/seg6_hmac.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 4a3f7bb027ed..8bb7f94cba1e 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -35,6 +35,7 @@
- #include <net/xfrm.h>
- 
- #include <crypto/hash.h>
-+#include <crypto/algapi.h>
- #include <crypto/sha.h>
- #include <net/seg6.h>
- #include <net/genetlink.h>
-@@ -270,7 +271,7 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	if (seg6_hmac_compute(hinfo, srh, &ipv6_hdr(skb)->saddr, hmac_output))
- 		return false;
- 
--	if (memcmp(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN) != 0)
-+	if (crypto_memneq(hmac_output, tlv->hmac, SEG6_HMAC_FIELD_LEN))
- 		return false;
- 
- 	return true;
--- 
-2.34.1
+/P
 
