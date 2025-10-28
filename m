@@ -1,118 +1,88 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C165D2765E3;
-	Tue, 28 Oct 2025 13:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761657921; cv=pass; b=fmGbrkrFwIFaSm+IepdyktW/4UR8YbCvMiiyfgSLGtfE565eQavs5WN6HPj05tz4nFRdGrfkyrmZ0HXi9j2VfYcoQnFDE9NdswZ+2jsSnkjcx1cxcQIyLOhGQ7dsAYhmmobD1Um70meQ3+cleyn1bhdeqOfqxdzxAkcuAdxnJH0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761657921; c=relaxed/simple;
-	bh=98jTqZUcQ5Qf4P1DNrN2dsmZVex8R7C740H3NeDUBVI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Cs+20O9UKgFWH9KMG880Jl6i6bNmlJFihvDb7upIHTDW4zJeQUWM85vLHEFmzLulPg1MpeFy/uGrZdjhhU5/0ENjDDHVHC0lLHxdMkWbPfwL+rW5UYN+ERmx4BcKr5Q5hLIjsv+JWXNYnkirMYINSvnzCQFcfaUpnAIejjc/KPY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sjoerd@collabora.com header.b=ZwoIEHXc; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A4621A95D
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761658376; cv=none; b=beKlqmfPsvy3sDjl1z3xWCBbPC76waWPFYduDjGp6btm3ecUyQb5jUHIPdD7uoqHiOpVvrqDcq1+qgQBX9GgBq5MAl1uV0LKa4aelaW1jalwvo8top1yOmydCNXdqSYLaDBpODN5D1DoYa6/qRKK/Yz3wVAXocTiwe2xsKgaCcE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761658376; c=relaxed/simple;
+	bh=aRDT85f2vXpnIMrSCKly3BHwISabax0t5yj2oRXV6jI=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=PPOBiWjl4O8Q9CINl7X4JFXbgHjB6lxka6DJFZOn0ghLwhgGFiOxxjlu/xYfHrmkTrk4X/RG7ht/CR+q2sDnoYDXZC0FY+fi5uAp81nIFKscoqAs5tNtj4fOOHhQGbhKO655kewqE8KbQ/2+PF3R1zW2zX4LOyAMXvx7Ws549z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cCXV96a8; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sjoerd@collabora.com header.b="ZwoIEHXc"
-ARC-Seal: i=1; a=rsa-sha256; t=1761657869; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZCTOLf2S+q8m7fxAVIx8Y+bCTP95emO4YmHpi3NRritxQmxe3ATRHjgeW0BrRIv/SbQdJcPkYSIUlLoL7Sl45gi2zztEIUBUCnLkgM8wr8gLtilOLj+4p0mgiYOXQchJqvmPzkbMfQ+hjVO2mN6HwX4WU2/7ifnbvDnEokHm7os=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1761657869; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8/d3UUUhdWoIZXpk8NwqSpg4DExzAbF8PYQkQhgem3s=; 
-	b=mVNRJGLaKBa+FnpaA60HLtOXJLBTBabrws/EXB4240rOpfhff5FXpf/VNKnYWCwBu00BOQ3NWKiZVwJqhU0Q3gMtrBNyvabfFoH3VOmcPyKqHEO88TmrhOh57Z7cNaIbziW7X/3hIqvD/KY4twXCtuQs4aGT6BhvdTOPnX+n6xw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sjoerd@collabora.com;
-	dmarc=pass header.from=<sjoerd@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1761657869;
-	s=zohomail; d=collabora.com; i=sjoerd@collabora.com;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
-	bh=8/d3UUUhdWoIZXpk8NwqSpg4DExzAbF8PYQkQhgem3s=;
-	b=ZwoIEHXchlDN8s9MvkdPt0IM1C2ZQYDwtGfbijZC9gXXVKG93gOrptfLgnMCk5QN
-	KWqWvywAsKEtYwEZm6+KZfkQE2jPZsK7IM4T470U+hBGQFBMILmP97pYYcSjTIEpo1C
-	3viKQ0jStrCNXpRAwgnP937Ec/N+iwr3jwOZzaVI=
-Received: by mx.zohomail.com with SMTPS id 1761657866228953.45389749315;
-	Tue, 28 Oct 2025 06:24:26 -0700 (PDT)
-Message-ID: <408842eda1caa53247ff759cd9ea75dcab624594.camel@collabora.com>
-Subject: Re: [PATCH 12/15] arm64: dts: mediatek: mt7981b-openwrt-one: Enable
- Ethernet
-From: Sjoerd Simons <sjoerd@collabora.com>
-To: Eric Woudstra <ericwouds@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- "Lucien.Jheng" <lucienzx159@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno	
- <angelogioacchino.delregno@collabora.com>, Ryder Lee
- <ryder.lee@mediatek.com>,  Jianjun Wang <jianjun.wang@mediatek.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Lorenzo Pieralisi	 <lpieralisi@kernel.org>,
- Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	 <kwilczynski@kernel.org>, Manivannan
- Sadhasivam <mani@kernel.org>, Chunfeng Yun	 <chunfeng.yun@mediatek.com>,
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>,
- Lee Jones <lee@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,  "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Lorenzo
- Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>, 
-	kernel@collabora.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, 	linux-pci@vger.kernel.org,
- linux-phy@lists.infradead.org, netdev@vger.kernel.org,  Daniel Golle
- <daniel@makrotopia.org>, Bryan Hinton <bryan@bryanhinton.com>
-Date: Tue, 28 Oct 2025 14:24:19 +0100
-In-Reply-To: <05610ae5-4a8a-47e9-808b-7ff98fade78e@gmail.com>
-References: <20251016-openwrt-one-network-v1-0-de259719b6f2@collabora.com>
-	 <20251016-openwrt-one-network-v1-12-de259719b6f2@collabora.com>
-	 <4f82aa17-1bf8-4d72-bc1f-b32f364e1cf6@lunn.ch>
-	 <8f5335a703905dea9d8d0c1840862a3478da1ca7.camel@collabora.com>
-	 <05610ae5-4a8a-47e9-808b-7ff98fade78e@gmail.com>
-Organization: Collabora
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-5 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cCXV96a8"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3ee15b5435bso4470596f8f.0
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 06:32:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761658373; x=1762263173; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aRDT85f2vXpnIMrSCKly3BHwISabax0t5yj2oRXV6jI=;
+        b=cCXV96a834+U4f/ChsidaJTp88Y3UftHQjU9iIBpcMG0d5BEbUmjYKmE/quWjGwRmr
+         AgD4BALgfl7TAUWUwBv59ZEjnlWxz1SKEb1wmAtXeE9WHWhsdW3uMSkUZhLrCcUNdNl5
+         Cvqpf15pe/S1wbp7IlqSw1DIzFkDaxFDRaB7TuHNJsekgKk1728xAdK6kaIYfv4zeqLk
+         Tk+phT3aquIShJWgWLZQ/WGxkChrP3mnH5haW1DKnDmhASpIac3e6izfZAd47qCLgE+c
+         vCsMPU50VMVjbfs0iCUVF1ZeahllxRitIt6s2thICaKSnaWXUN5ztX1f3q1596MpPzWH
+         TA4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761658373; x=1762263173;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aRDT85f2vXpnIMrSCKly3BHwISabax0t5yj2oRXV6jI=;
+        b=kh/iyqUjw2dl69M9EtYh5CEdeLv8tPyt/DxNgk9+37sc315TCy0iIvu2IO/0fYMRrt
+         qqZ5Tw+zy8MlbRSF4v4leXZ77WyWSTbtGAEHC3+1tSqkwAxT3koNxCHTMUyhSCmZFlSy
+         w3sKpOSK6l51N8Gd8NYNM7WtB0B7FgsTK/5AcwibOknw1Ip7ZGLFdA92EkS4c7Ez/Ulq
+         79LdEp2aI0B47s6oesy9CtRae6Es1QJ2LsB5abAtIXWlzXRaqJ2ER+h30aCWd2XiYncw
+         n75GTICwEysp2AcK6pCzhsr7FY5GtkkbTcxcCaUgCW31+06UYRudVc0L/MMM8BmP4nYB
+         4z4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUw7z9RykZFOTRj21Ug3ikSmAh9JvQXuRIvL1sMCvEDwYh8asA52YYHzdiWRfHJtbgnffSjrMU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnA3SBHUm4hBnyfsGGAYN+97synV3Q4NCL9bRdtDFq/0nf3O+0
+	TBVGoy523l+k3nIZUNwLW3fHTzAoG4xqjBkplWI9KpL9F/I5QbBJU0YX
+X-Gm-Gg: ASbGncsmtf6bDjw81BtKLbJtEujFJ6xyR0690w+3dTxgsFsLYnnX8N97dPleGW3HlMr
+	GRqggjGHAGVPG3ey8L+/4z3yn6lF3RC/bL5wtn4LNV6n96MWGbxSNWu12H5UitjVY10InNJY3Mq
+	O2LW9EcOFGZvlSjHW1Xj0gomy/ekYxAF+/pHe+gLqzLVl7OdZpd6uCCceFDRKbMN272ls9fjsb7
+	+HOm1cACB2urHy33DWW9WMZbp+qegcGji8RCJ4rRGayXIS1CHbhrfazL+L6RloF5GTfgB4yqy+6
+	ii2DpynHaT9ggAl9Pp74oWWxyEYgBi0qrOBfjR3pxv4tD8sXzTdX6G04FeGt+b6Xwjf4r20rYyu
+	ZLSc56iKqEQx9058P4535QzrOkoiv5nbdfuSq3ou8JIV2Wp/zFI/YZuLcDc7JG5AjSLMyXU0BQv
+	pmki4hDLzXvmy4BhqPZxqHjRs=
+X-Google-Smtp-Source: AGHT+IHK8UV0ayblLNGZRsvS3+1r7VGAI1Q6GE/eWCWEeOx7KEL8AVWIGobEhWzr0uViNQ0uiG8GDA==
+X-Received: by 2002:a05:6000:1862:b0:428:3c66:a027 with SMTP id ffacd0b85a97d-429a7e82e51mr3326800f8f.54.1761658373223;
+        Tue, 28 Oct 2025 06:32:53 -0700 (PDT)
+Received: from imac ([2a02:8010:60a0:0:a938:2bbc:5022:a559])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df5c9sm20451746f8f.41.2025.10.28.06.32.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 06:32:52 -0700 (PDT)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  ast@fiberby.net
+Subject: Re: [PATCH net-next v2 1/2] tools: ynl: fix indent issues in the
+ main Python lib
+In-Reply-To: <20251027192958.2058340-1-kuba@kernel.org>
+Date: Tue, 28 Oct 2025 10:50:23 +0000
+Message-ID: <m25xbzqp00.fsf@gmail.com>
+References: <20251027192958.2058340-1-kuba@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain
 
-On Tue, 2025-10-28 at 12:14 +0100, Eric Woudstra wrote:
->=20
->=20
-> On 10/21/25 10:21 PM, Sjoerd Simons wrote:
-> > On Fri, 2025-10-17 at 19:31 +0200, Andrew Lunn wrote:
-> > > > +&mdio_bus {
-> > > > +	phy15: ethernet-phy@f {
-> > > > +		compatible =3D "ethernet-phy-id03a2.a411";
-> > > > +		reg =3D <0xf>;
-> > > > +		interrupt-parent =3D <&pio>;
-> > > > +		interrupts =3D <38 IRQ_TYPE_EDGE_FALLING>;
-> > >=20
-> > > This is probably wrong. PHY interrupts are generally level, not edge.
-> >=20
-> > Sadly i can't find a datasheet for the PHY, so can't really validate th=
-at
-> > easily. Maybe Eric can
-> > comment here as the author of the relevant PHY driver.
-> >=20
-> > I'd note that the mt7986a-bananapi-bpi-r3-mini dts has the same setup f=
-or
-> > this PHY, however that's
-> > ofcourse not authoritative.
-> >=20
->=20
-> Lucien would have access to the correct information about the interrupt.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Thanks! For what it's worth i got around to putting a scope on the line las=
-t
-night. It looks like the interrupt line is pulled down until cleared, so it
-appears it's indeed a Level interrupt as Andrew guessed. But would be great=
- to
-have this confirmed based on the documentation :)
+> Class NlError() and operation_do_attributes() are indented by 2 spaces
+> rather than 4 spaces used by the rest of the file.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
---=20
-Sjoerd Simons <sjoerd@collabora.com>
-Collabora
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
