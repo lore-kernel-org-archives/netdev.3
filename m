@@ -1,121 +1,76 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD9C2D877D
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 23:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4112FF177;
+	Tue, 28 Oct 2025 23:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761695787; cv=none; b=aAEYp9Kal5NGVDs0+DDjGBsu3C324CoO88rXKvwsnzXuzKIlX9PyB91Z1Or7sbwSLnSl4NmxI66XYxyD34kQpNjBVge05oCgNX0NANU8ffeTCN+zAv/4t/12VYvuN7L59IoVVwaSjg4uTeuFAYewyJDqu+zFyhy6Uwx3e3XdTcA=
+	t=1761695805; cv=none; b=u3+JmzF7NYvFGmeRPtM8U9+XvibBetQNWpuGWj7L1IHbUIvgwYlhQacEZEKaf+iS8Xq8PS8x82PzC/SMHMWYnfOBOwvTVijMATyu26dGLnmgMaIM8DHk+0w2Qr0XdURnixzkpm+opvgUGOdWamIGktESj6Cqw77IHh5mo4Z0GOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761695787; c=relaxed/simple;
-	bh=/0N9ORma9yyQz483I8PiFsWtj258v9pM/8bShwWPf8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sIMkjr/3AubZnJjeeCkhydHI/H0W4edgYiwFckO53QVYxhnEAenQ/FaTbHUGmguDOAKNjTgn9D+GCLVIpg6l1ZGFNxq1RxXzrkRkmfm6bOU2752ZsO6KXcN9BVxnguZzLvaWexkzyjAwmBXSkaMTOU9JJcgT4U3rv3M6LOMkM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zXDaDgDc; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1761695805; c=relaxed/simple;
+	bh=r3tatAHPgaGmk+xL/lY2K+oGmVyOYNcBx5cflnPIndE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FXaoWvlqBayRWg/05YiMtNVcEkxgDI9dIt+qNUSFtGhqfC2SPNvB+2hpmlaHpF2V1+9NaxxSzFUnSub3OjfQxIATz3uWx3d2gYzsyZSgFynPoENcZp22uvdZtqWeV9DDCt5dbaZZBNVhOf+m4st4yBNwJFXNj5dAc/9DPKq92WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HIb/lTpf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zXDaDgDc"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-29292eca5dbso86399045ad.0
-        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 16:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761695785; x=1762300585; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/0N9ORma9yyQz483I8PiFsWtj258v9pM/8bShwWPf8E=;
-        b=zXDaDgDcNs9/G07Umlokhtb0jQcHU8suvrh6g7yhS4HmDB2NhynErBQpbdTYqfi4xu
-         VZMM9Q7Oe4W5jOFpaaTuIeUbAi5Nxfd4bZ92hKTJ9TquixmLdyl5LZ5n2uZpP1xS7YN+
-         b5YUp13cQIYpwVGANsa6fzEqAfYkTKKOLlC6BjAhQn3V/mAHvfkN7jtRG4ZEvz93eqXX
-         AZtwd+Fgd2PAQobu8wGBMqlWJ+I1g9QejjLX2n2noN3CNCJU+f4sz0CpxWWHMdvnbcAg
-         JDKCr5zDcCBkYVyleT+0rKqdALKxukxCQkNJIOIPIfnekQRXSDmxwxYpzlHrSN+gKju3
-         ZTJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761695785; x=1762300585;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/0N9ORma9yyQz483I8PiFsWtj258v9pM/8bShwWPf8E=;
-        b=Ftki4cEJse7b7mKKMKkW2DCg2zZb+2+TY/ZvKbPMQ2Czr6Ye1C6ZlneOeeKPFTezbb
-         uqAJw4jC62FnvJ3KZ/AmO9XuZTI6DcyXw06Bvox8BBu/3jaqXCT5ZFtuOahGDanb5LQ4
-         SdrfuILtPylz1KAmI1Kp7H/RRvyEsiUnQ5KXZwuzyKJW4a90PUIA4iXy7uOrJutQnlxl
-         GGp+RQg52XNlflMD+88lTLjd3lrrVXx4prmMQqemQ+GGb+5hQKrFztmi8fHn3JT7NdfS
-         Gknce0UfOfqqloDrXWPr1DGJYs2R0W9foAogiCfXpL+EDN2CocNRbL425mKw/ofAA8dU
-         jqkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPW76Z4Vwcp5t88p/HEzgyg4sOtKEq01EtbsU6oUeMkVKzB92Blj5/xLY7EHfLBAZuRxMpijY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNxg98GGN1vRi+VbcuCF5JVuUoKIBjnMMqbno3ryjdrDZ2w+st
-	wvrS2ELxGrkNZ61dq2WBJjV5NCIW9GwHNqJ8SsNhWajsGtkjeSJvKc5fyJYvuzxy2xNk+Hpv0LI
-	o/DWahS3xQQ5kYRiWarDelTetM5+y4orkyr/MmPIk
-X-Gm-Gg: ASbGnctS7cim4Xi3lXICP4gljx80b7sC3zcUt4PLpGWrO+Y/uF1FYvlotecnQYhIyeF
-	zwOK/EtMOI0wrc0TKbxdTTv29+fNeFuLY2iOPImkiusowC51hgiGRyhFTvOcttsBwj9WdyXForH
-	8nvWRrYTIb69N+778OAgF2PAa2hTOBW3YKY8rdpCb3mJPF+yxWzfVSjpNYQsK15GPUt6rgdm+7I
-	0IKlR2gkWSDLGNjIc7uPGoP9B09eVIQYyzDfrm+qC4J2p33fYOXCpwMPluTLU5JLAMGaVRKsLap
-	Qypbo5vUFVCusxU=
-X-Google-Smtp-Source: AGHT+IFatLYbHgumwd6jQygPW3FigVQRptY1GN8W7MZvNB10udE7xpMJ0tvoBxr9tzO+iQklpZ2J3exztSNO7TP/YHU=
-X-Received: by 2002:a17:903:1ca:b0:290:d0fb:55c0 with SMTP id
- d9443c01a7336-294deee2019mr10424485ad.43.1761695784834; Tue, 28 Oct 2025
- 16:56:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HIb/lTpf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277FAC4CEE7;
+	Tue, 28 Oct 2025 23:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761695804;
+	bh=r3tatAHPgaGmk+xL/lY2K+oGmVyOYNcBx5cflnPIndE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HIb/lTpf1B1fCqU0GhLzxjcgTOOTr3Z8qWIKKcN5yLkM8fHx2zF+ez7SswHLToPQq
+	 r+ZRw2sYyI+XtIg/yebFV8u/0ye1bvYUMqP1VRn00VT9NQtIdWyBIDYuqcnEmIgyVx
+	 uBzG3Fm4d9JR6Cp7jFWfYjvVxPWBP3fpKxAWy2Q/xoAIn1qoK9xnebSDNyVSkPlhxm
+	 KM413pPtGBcBWAwCbHWZAd31mcN9QMNeeig1mUUdeb9P8xOEfDvV2mi6/PB9VMGe/U
+	 cpQGwT6rW9jMnXx/REvq0M4SHmGTBNgpNg/2jLfUlA1FH1yLpK2zFu6HcE+pJnXOY3
+	 AnyjCp2NSGI1Q==
+Date: Tue, 28 Oct 2025 16:56:43 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ Frank.Li@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, richardcochran@gmail.com,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 4/6] net: enetc: add ptp timer binding
+ support for i.MX94
+Message-ID: <20251028165643.7ae07efd@kernel.org>
+In-Reply-To: <20251027014503.176237-5-wei.fang@nxp.com>
+References: <20251027014503.176237-1-wei.fang@nxp.com>
+	<20251027014503.176237-5-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aQDOpeQIU1G4nA1F@hoboy.vegasvil.org> <20251028155318.2537122-1-kuniyu@google.com>
- <20251028161309.596beef2@kernel.org> <cd154e3c-0cac-4ead-a3d0-39dc617efa74@linux.dev>
- <CAAVpQUCYFoKhUn1MU47koeyhD6roCS0YpOFwEikKgj4Z_2M=YQ@mail.gmail.com>
-In-Reply-To: <CAAVpQUCYFoKhUn1MU47koeyhD6roCS0YpOFwEikKgj4Z_2M=YQ@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 28 Oct 2025 16:56:13 -0700
-X-Gm-Features: AWmQ_bkzayhokme2D3DiD1Ejdr_9Y9DyGrBM9QjBOQ-SDBS1bm6E5J5PPfZPDSI
-Message-ID: <CAAVpQUABk5vw=Re4WqhoL0qZ3cDZ98Hg0dsN2OEWF89DzTC_EA@mail.gmail.com>
-Subject: Re: [PATCH] ptp: guard ptp_clock_gettime() if neither gettimex64 nor
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Jakub Kicinski <kuba@kernel.org>, richardcochran@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, junjie.cao@intel.com, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzbot+c8c0e7ccabd456541612@syzkaller.appspotmail.com, 
-	syzkaller-bugs@googlegroups.com, thostet@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 28, 2025 at 4:54=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> On Tue, Oct 28, 2025 at 4:45=E2=80=AFPM Vadim Fedorenko
-> <vadim.fedorenko@linux.dev> wrote:
-> >
-> > On 28.10.2025 23:13, Jakub Kicinski wrote:
-> > > On Tue, 28 Oct 2025 15:51:50 +0000 Kuniyuki Iwashima wrote:
-> > >> From: Richard Cochran <richardcochran@gmail.com>
-> > >> Date: Tue, 28 Oct 2025 07:09:41 -0700
-> > >>> On Tue, Oct 28, 2025 at 05:51:43PM +0800, Junjie Cao wrote:
-> > >>>> Syzbot reports a NULL function pointer call on arm64 when
-> > >>>> ptp_clock_gettime() falls back to ->gettime64() and the driver pro=
-vides
-> > >>>> neither ->gettimex64() nor ->gettime64(). This leads to a crash in=
- the
-> > >>>> posix clock gettime path.
-> > >>>
-> > >>> Drivers must provide a gettime method.
-> > >>>
-> > >>> If they do not, then that is a bug in the driver.
-> > >>
-> > >> AFAICT, only GVE does not have gettime() and settime(), and
-> > >> Tim (CCed) was preparing a fix and mostly ready to post it.
-> > >
-> > > cc: Vadim who promised me a PTP driver test :) Let's make sure we
-> > > tickle gettime/setting in that test..
-> >
-> > Heh, call gettime/settime is easy. But in case of absence of these call=
-backs
-> > the kernel will crash - not sure we can gather good signal in such case=
-?
->
-> At least we could catch it on NIPA.
->
-> but I suggested Tim adding WARN_ON_ONCE(!info->gettime64 &&
-> !info-> getimex64) in ptp_clock_register() so that a developer can
-> notice that even while loading a buggy module.
+On Mon, 27 Oct 2025 09:45:01 +0800 Wei Fang wrote:
+> +	struct device_node *timer_np __free(device_node) = NULL;
 
-Of course this needs to check settime too.
+Please go back to the code from v2.
+
+Quoting documentation:
+
+  Using device-managed and cleanup.h constructs
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  Netdev remains skeptical about promises of all "auto-cleanup" APIs,
+  including even ``devm_`` helpers, historically. They are not the preferred
+  style of implementation, merely an acceptable one.
+  
+  Use of ``guard()`` is discouraged within any function longer than 20 lines,
+  ``scoped_guard()`` is considered more readable. Using normal lock/unlock is
+  still (weakly) preferred.
+  
+  Low level cleanup constructs (such as ``__free()``) can be used when building
+  APIs and helpers, especially scoped iterators. However, direct use of
+  ``__free()`` within networking core and drivers is discouraged.
+  Similar guidance applies to declaring variables mid-function.
+  
+See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
