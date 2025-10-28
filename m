@@ -1,95 +1,149 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58161EE033;
-	Tue, 28 Oct 2025 07:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2DE7494
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761636941; cv=none; b=irBWCp+fG0Fz1//SVd7W7nDqTzE02qLUdTYcQmjv940vAha4jbsIZY7fyUQLJjFfh3Hhbbsny7TI7iH9kQPh8tuLXqq2Oem4XiHBmfzSAlF6eOUKDO75AAQJ8BW0HODCQOqamDuyD3lfbLPsBvrkJtOJCMqIbmp2fmI29DYis3Y=
+	t=1761637163; cv=none; b=Nl8dp26E/kDcpN6nO6vszzXWwQqe7+yduRWQYG8IIPn74VU01fGX0vmFr8tR9Y8tmyR/77XwVvqYP3dUuNoahD+xublFH9YXhQd3x8yovgB7hZkaLFjCI5qCLnwPFLwIaHS5a43zAmGWP5K9XOM2vQfQUxXvzS4EAqaJUsgGiOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761636941; c=relaxed/simple;
-	bh=uLdIGu/opKZqTUfCVdvxeIGlRUtIfnhZ9CWDlHJaLCQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mRKCUxH/U5EzlGZeJYyqy6QjDVnp4SG/3hoskltCB9jLWjCrKClx5DYEp/YPia7/lhXMeUINmHCoF2UUad8LfcZ9qGY2sCPfRJrc7Zh02uCf0H/jd0C03xz007cpNTdEMfcflXfhXq25nA7VswEvxK8IEjVRS7XZXERGnVExY2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wUYWTRfQ; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761637163; c=relaxed/simple;
+	bh=UjeRE3qXwZy7hxTb+9+ah7JknOmhwGh2ga0aK+Okz4o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHx32rUYJhv5xKoVLAZQfHoH+zi8+WQ9D67mLD9zxrBaFgbwUTQTdxCUHfnFAJ8fpg7xh3VS/xKUYLssSfBIQh6acGDPynDXkQ/jnJAGSLXbfh2EAznYnQNi+4jKfBpo7iQ7SFyyTt/MgXlRWm6sXxdazdAIW06x4CA/7TNn3OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JLFyB+kF; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wUYWTRfQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JLFyB+kF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761636939; x=1793172939;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=uLdIGu/opKZqTUfCVdvxeIGlRUtIfnhZ9CWDlHJaLCQ=;
-  b=wUYWTRfQzJbQSZ791aC9uzv3mOlwsvV3dKFVdwMAiXo3tM/9JjO9TUvc
-   LgpxzIaCoh3vP15drghtZrg+7DIAuTUoJm3arj1Gw3p7XJXLF8AQ17nmQ
-   LLR/r0ZYGKBN7JBvpGFtnkz6N+XLYTivSjQOiqXsWIc+5lC46xec3xoi0
-   W4p+CwQVcDvERvOI0Kwa1P0uOzFA6jPf1qCEByemF82SRrjqBZe6FG105
-   KarO82o9UiWhItfDKUX339tbyJdTBouDQLx6Ad0cuLR6YSzKyhoxks24J
-   aAgwyViU0LR1g3NFROY7Li8ebNasse/ASjYAOq4eLVCBfd8iAqCabrvK6
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761637161; x=1793173161;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UjeRE3qXwZy7hxTb+9+ah7JknOmhwGh2ga0aK+Okz4o=;
+  b=JLFyB+kFloC9Avq1vGZxHZ/xIYhfZiG12EDJ6zoH1H6ucm7xMAgbR40I
+   4DhW0ZmUnWFUQtfl2SXBcdMpiBuNucmJZ/9G0Z+BWlM2J561i0jOZ0xP2
+   gsNKTfAnrUG54iot1Vx19e7NfjtsJGcwaK3CtcNX01lIFpKNk2cbOhPbC
+   WS+BxtpLoQkWYkdd2R7ynPAJLiBRqO7bME/FpnX328hNDN13tNUkaXchw
+   CJv5FOuVM7nXAWGvBqoIpRBVYD/7+Zo8/RbcVi9T4PEL5R1hCpzVSYNG5
+   a+UbIMWTuyKY6JUoMIrA30d42hf93ByVtH+YQLO7gpfXd2tjjtqnaBbww
    Q==;
-X-CSE-ConnectionGUID: 6tHLyAsXQCmJ696quaN52w==
-X-CSE-MsgGUID: wH4d5CSfSbi/v+QioxxwCQ==
+X-CSE-ConnectionGUID: 7PdF2zfJRjmKIUje3z66kA==
+X-CSE-MsgGUID: XAHa99g+TEmUd5agPKIOEw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75174225"
 X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
-   d="scan'208";a="215693261"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Oct 2025 00:35:33 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 28 Oct 2025 00:35:08 -0700
-Received: from localhost (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 28 Oct 2025 00:35:08 -0700
-Date: Tue, 28 Oct 2025 08:33:54 +0100
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] net: phy:  micrel: lan8842 erratas
-Message-ID: <20251028073354.7r5pgrbrcqtqxcjt@DEN-DL-M31836.microchip.com>
-References: <20251027124026.64232-1-horatiu.vultur@microchip.com>
- <4eefecbe-fa8f-41de-aeae-4d261cce5c1f@lunn.ch>
+   d="scan'208";a="75174225"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 00:39:21 -0700
+X-CSE-ConnectionGUID: Jb/ny1/iRRK2VB41FAA5DA==
+X-CSE-MsgGUID: 12JVztAaRyCIq/i79Fp5vg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
+   d="scan'208";a="185358734"
+Received: from os-delivery.igk.intel.com ([10.102.21.165])
+  by orviesa008.jf.intel.com with ESMTP; 28 Oct 2025 00:39:17 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	pmenzel@molgen.mpg.de,
+	aleksander.lobakin@intel.com,
+	przemyslaw.kitszel@intel.com,
+	jacob.e.keller@intel.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Subject: [PATCH iwl-next v2] ice: use netif_get_num_default_rss_queues()
+Date: Tue, 28 Oct 2025 08:06:34 +0100
+Message-ID: <20251028070634.2124215-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <4eefecbe-fa8f-41de-aeae-4d261cce5c1f@lunn.ch>
+Content-Transfer-Encoding: 8bit
 
-The 10/27/2025 14:05, Andrew Lunn wrote:
-> 
-> On Mon, Oct 27, 2025 at 01:40:26PM +0100, Horatiu Vultur wrote:
-> > Add two erratas for lan8842. The errata document can be found here [1].
-> > This is fixing the module 2 ("Analog front-end not optimized for
-> > PHY-side shorted center taps") and module 7 ("1000BASE-T PMA EEE TX wake
-> > timer is non-compliant")
-> 
-> Hi Horatiu
+On some high-core systems (like AMD EPYC Bergamo, Intel Clearwater
+Forest) loading ice driver with default values can lead to queue/irq
+exhaustion. It will result in no additional resources for SR-IOV.
 
-Hi Andrew,
+In most cases there is no performance reason for more than half
+num_cpus(). Limit the default value to it using generic
+netif_get_num_default_rss_queues().
 
-> 
-> Could this be split into two patches, since there are two erratas?
+Still, using ethtool the number of queues can be changed up to
+num_online_cpus(). It can be done by calling:
+$ethtool -L ethX combined max_cpu
 
-Yes, I will split them in the next version
+This change affects only the default queue amount.
 
-> 
-> I notice there is no Fixes: tag. So you don't think these are worth
-> back porting?
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
+v1 --> v2:
+ * Follow Olek's comment and switch from custom limiting to the generic
+   netif_...() function.
+ * Add more info in commit message (Paul)
+ * Dropping RB tags, as it is different patch now
+---
+ drivers/net/ethernet/intel/ice/ice_irq.c |  5 +++--
+ drivers/net/ethernet/intel/ice/ice_lib.c | 12 ++++++++----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-Definetly I would like to be ported but the issue was there from
-beginning when the lan8842 was added, so I was not sure if it is OK to
-send it to net.
-
-> 
->         Andrew
-
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index 30801fd375f0..1d9b2d646474 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -106,9 +106,10 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
+ #define ICE_RDMA_AEQ_MSIX 1
+ static int ice_get_default_msix_amount(struct ice_pf *pf)
+ {
+-	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
++	return ICE_MIN_LAN_OICR_MSIX + netif_get_num_default_rss_queues() +
+ 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
+-	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
++	       (ice_is_rdma_ena(pf) ? netif_get_num_default_rss_queues() +
++				      ICE_RDMA_AEQ_MSIX : 0);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index bac481e8140d..e366d089bef9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -159,12 +159,14 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
+ 
+ static u16 ice_get_rxq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_rxq_count(pf), num_online_cpus());
++	return min(ice_get_avail_rxq_count(pf),
++		   netif_get_num_default_rss_queues());
+ }
+ 
+ static u16 ice_get_txq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_txq_count(pf), num_online_cpus());
++	return min(ice_get_avail_txq_count(pf),
++		   netif_get_num_default_rss_queues());
+ }
+ 
+ /**
+@@ -907,13 +909,15 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
+ 		if (vsi->type == ICE_VSI_CHNL)
+ 			vsi->rss_size = min_t(u16, vsi->num_rxq, max_rss_size);
+ 		else
+-			vsi->rss_size = min_t(u16, num_online_cpus(),
++			vsi->rss_size = min_t(u16,
++					      netif_get_num_default_rss_queues(),
+ 					      max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_PF;
+ 		break;
+ 	case ICE_VSI_SF:
+ 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
+-		vsi->rss_size = min_t(u16, num_online_cpus(), max_rss_size);
++		vsi->rss_size = min_t(u16, netif_get_num_default_rss_queues(),
++				      max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_VSI;
+ 		break;
+ 	case ICE_VSI_VF:
 -- 
-/Horatiu
+2.49.0
+
