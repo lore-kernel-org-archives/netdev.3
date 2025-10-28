@@ -1,453 +1,547 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB082C21C3
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 20:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2EC4502F
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 20:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761683415; cv=none; b=IH0AHwr3DkamA6esdNbb0tw7dNOOyj03dEvS+OBUCs/DgBj7t4YMGEKA/8u5dg3IFbBVIIxxV6i1ccCQ1HT36qexu9Sb61YskpJ/Yla6bsgI1KgDleikkgnSi6ZWP1upS+kcXu2ALxyjj5xsq050xNI3IUDXRUniP38MafvWWxc=
+	t=1761684583; cv=none; b=fDmLK7RrR/FFOZtIVpqJz2pKAOK+EjQa7r9fzfLR0D9ceoeLLYbfJKrxDHut6q2Qk3PYOpLchB0jjotmxZEcJXFt2FQjbwP8ox+PmLzS6C4Ql6r40E0CEv0EX6zzpkFFADZxx5/5Kw+eIHJAvWSmaEc8kocI/vfYwrW7W/Pz74k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761683415; c=relaxed/simple;
-	bh=P2oIOr8GX6sqSANmbPHywqeRaxch6Ps8a7GGCBre+PQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DVKjGnLVg945D/X8QG1g4vQKpJLRd2kLgn/C9/5Z2IrdNF60GDChLvZwzK2uH8a77+gfxH1qaAm3koOezqb+7rGfNNXDYxPsBN3pLJOhe8ZMLgkO1gj9Jjuajtib4rdFRBUCVDRXFI8g9uAuhenP7XNraeWzRactSHXwZnFhg8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R4zagWp8; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--skhawaja.bounces.google.com
+	s=arc-20240116; t=1761684583; c=relaxed/simple;
+	bh=3uRVfwobrviSUOQPmVoT1gxf3NUHjqRJW2+JVHbI8OM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aBCFgsUUgY3RKuBGG4bYib7chOXs1/5CJbOjdviE8a7KysbMDA4R2McNWet555vOTSBC6y+o2zVPECo1duq3XTy1dmyfN1bfDwrgrBlMMV16ZbT2FQN2Z6SHkrrysokYPBVkyFxbEPtoSF9FvprF1TqbyNWN2aWmbAXXqKLvCdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BABaMUMQ; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R4zagWp8"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-33d8970ae47so5905529a91.1
-        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:30:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BABaMUMQ"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-783fa3aa122so4813757b3.0
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761683409; x=1762288209; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wSibEWFR6NL1uHIIQIW4gn6GVrzBwxcD5VH5r3nlZZk=;
-        b=R4zagWp8+HNJ6ytVTPqW8Y9BsCAdxCSSov8nt0t5ijPf0VPquW9mQUhocZOB27f8TO
-         dVDPhoflGN47x0EhLuvPusJY+B49BcPK1M6CSCb+YorhhzCdWfwwbxvSNuYqW5lLnzdv
-         G5U9rvmLcSJupM5AycTSP75tERV9T8TJSmnZWzEWOT4rDFV8LP1WnDsr5tC+AmBRcULP
-         MfChGLr7Zoo0/4yLqaK9Nc3UUK8vjxYDjQv6KPqRJCptRK0im0QrOzIFUYkUPZmzKp84
-         5DA0/mQSvf9LRbrrkKdO7RPutF+AjwDdebtI2hrl+1rQ6O9ER8qdqMKP5gOrVYrbP9DJ
-         kzQA==
+        d=gmail.com; s=20230601; t=1761684580; x=1762289380; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sM+8Xpw+fiWwGJwmnf4Q7eFZwklLCg+AbUQ10lHz4xM=;
+        b=BABaMUMQNB/KXyNw/paiUVYKfnF9Die4eOeBjenkNb969xSczf5ybfJFIfoW/IG1iX
+         McRrDaVVC6O3Kvqulq6obbrzCIIeWZqPBpatTMCaFwpGgZ8OsIlLTbFI3/sb/RVPky/c
+         SdcBvsjJh8AdEdaGqJZLFH3srXkaUvtbt7tTeGfdhvnGUJf5KP4zoJQ1JQYO6ZUjyMF1
+         BqSUZb4JcAWwe1RfHfMJ/KBFV5mmusgiZ6MWulj8A3JcQOTC6NmwpPDFUZjv72Gsvrjh
+         Tu4ZGhz1S/3OZ84l2OTPH9leMJJgzMR2pyD6JfbDzO+WJxP8cf0ATWVn2B+XhHHpGG6H
+         w0Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761683409; x=1762288209;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wSibEWFR6NL1uHIIQIW4gn6GVrzBwxcD5VH5r3nlZZk=;
-        b=GmYXnUGb4YF1bpNrzy394fpDLeu3PSVYmhFcz5KYbRVOZ3LMUPVlbwbtJisrkgVcaw
-         61LwazlDidQ0QjlygkQaXJ8zPFT7UzCm9EjdJH0VbHcJ0Pp0f7OPSFPq5/B0jKe88s6x
-         kt+zPY7yz9C6zWn8rGwzVJdeaLPQFOYZKbjSU0VzXYP4d0EG5ZMEmIY+sAEsHxvoX9B5
-         nlcBaYDi4sZQhvQrdCOBJcjWeEONX2Nqcs9IaJ3jaMYp+zsKMqcVTjsTmV1UIswQIs/N
-         +QQv/AILo6k7Aq/p5Dcj3NyM4jwh65HD8BNLw9be6AEqdJxzRY/yibp8N2bdI2xOFc/4
-         g5Zw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBWYq6J5RoRmF7RvXXIIVfgy2qJJp1+c8a/8Zc8C99cTI+jH/KMhHSkZD1lvegNtFVZ7A4Cjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj7MDE+e+3uF6xJwzkdqtFh6a+516FkI15N6zoh5Xif2msTxIP
-	7BZtAt6SEFLEKERk8NjRMkBugltyB6G+7HX2A14S0CK2K49cygBdmbXEU9KM9zV+ZxRmYvSdi/7
-	p4liw8/6FLhiUTA==
-X-Google-Smtp-Source: AGHT+IEHNX/YAFNQ7jWOfx5dJ8vSAG2HALCVrspOSiaHF+M5SHV8QBTJXF2XO0k4j+dDMFg6Ln0dlzcsYqMNCQ==
-X-Received: from pjot4.prod.google.com ([2002:a17:90a:9504:b0:33b:c327:1273])
- (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1c8d:b0:32e:a54a:be5d with SMTP id 98e67ed59e1d1-3403a25a759mr349080a91.2.1761683408708;
- Tue, 28 Oct 2025 13:30:08 -0700 (PDT)
-Date: Tue, 28 Oct 2025 20:30:04 +0000
+        d=1e100.net; s=20230601; t=1761684580; x=1762289380;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sM+8Xpw+fiWwGJwmnf4Q7eFZwklLCg+AbUQ10lHz4xM=;
+        b=IGdf2TVKYtd0rhf8cBtJ6ncOeNczkGzrGDooRuATVHuwOh8+0VXGhtc7IcKO2+2LgZ
+         FbKVm057CwT5m0KPBiZ6Ghv2Ka2+5FkVnPpogrDoub3bJYcTdrNni0TAJYXeSWM4BiSf
+         8+St4YAONmMtD1v9tavwlKUOKeHu8/Hs1BTJVkDuaW3K44WeP8X7YD+WqTbjHlYsBMgQ
+         opTGYGDpGLW8twiSb5dKfdcfX5hdZr4irXXFRDMg/7Y5exyd6Ykg+AokAm/UpvXICVhA
+         pKLi0efLaCFINo8WFhZzXsSbKviljwi4WcpGH0UC/BYIH5BJaEYzZ493bRPn99DkAE34
+         Lhdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFaIxkQODiQHPvM6KijXGbwabNYfGuuYgwq32VyZc/xwNb6R9OktZQnVzsuqWGuCZ0lWnLtGk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZV+W4Jvf1eDFXL0u+rJ9FyFfidWSX5ejOHYIdxjylfASdMNry
+	iMM3ey5OPOvHlmq8M+xc0kEVh1OwpK3O3kyUnsgAxZz3NPULodGqr15J
+X-Gm-Gg: ASbGnct+ntczV+JeLddU4Q3/I3dtRxq7XKcZKzjGZ9KazR9nDSm96pWpewlHqgtGMWD
+	HFuibHpo+bQKGGrCTheH8145jVfVlmXXKDk7x3wLjFEIL4HyNVN24WoEOTP5eGLylMOf3H1AuWC
+	YBUrtRbxc4qk8lo3Wb+NCuX1nIyGz0FcfJOYFG8RGfKBbnR5DVUcHau9Qe3NBm092pYnADRUHeb
+	vUwWWlXOVi4tDkBllUc3l0Q9xshLnFVTKn+GJ9/NsoRYxGw7/UZTvjUIIrGkL4/Gjx6p1WMndKd
+	erEfSJNmrGRnhllvEqHR3mtSYWX83R49LXXBp97WY78oiDFuPG/33DO9Qoe+d9R2Hxg+k6gJvo1
+	yZuK8zCkHVAn2/EC+4criFj1pa4kSCwwzwtCBLEvH2DiLwAxw8t1PDCQwf4PbPsZxBMxf06xyM/
+	p2V2ExaQr3Ah5U6Xs2c2YH89gTpXeEjD/Eoec=
+X-Google-Smtp-Source: AGHT+IGMIk7G4VEIOcnQjRo7HDDcQFq7QrXC6UjkgP+zjw6QKkpZyY4VxxNdWhbQkLBWbXGpSCSzWw==
+X-Received: by 2002:a05:690c:3604:b0:782:9291:493b with SMTP id 00721157ae682-786191d385amr46890717b3.32.1761684580372;
+        Tue, 28 Oct 2025 13:49:40 -0700 (PDT)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:6::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed17ec77sm30280977b3.23.2025.10.28.13.49.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 13:49:40 -0700 (PDT)
+Date: Tue, 28 Oct 2025 13:49:38 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v5 3/4] net: devmem: use niov array for token
+ management
+Message-ID: <aQEsYs5yJC7eXgKS@devvm11784.nha0.facebook.com>
+References: <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-0-47cb85f5259e@meta.com>
+ <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-3-47cb85f5259e@meta.com>
+ <CAHS8izOKWxw=T8zk1jQL6sB8bTSK0HvNxnX=XXYLCAFtuiAwRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
-Message-ID: <20251028203007.575686-1-skhawaja@google.com>
-Subject: [PATCH net-next v10 0/2] Add support to do threaded napi busy poll
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Jakub Kicinski <kuba@kernel.org>, "David S . Miller " <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, almasrymina@google.com, 
-	willemb@google.com
-Cc: Joe Damato <joe@dama.to>, mkarsten@uwaterloo.ca, netdev@vger.kernel.org, 
-	skhawaja@google.com
-Content-Type: text/plain; charset="UTF-8"
-
-Extend the already existing support of threaded napi poll to do continuous
-busy polling.
-
-This is used for doing continuous polling of napi to fetch descriptors
-from backing RX/TX queues for low latency applications. Allow enabling
-of threaded busypoll using netlink so this can be enabled on a set of
-dedicated napis for low latency applications.
-
-Once enabled user can fetch the PID of the kthread doing NAPI polling
-and set affinity, priority and scheduler for it depending on the
-low-latency requirements.
-
-Extend the netlink interface to allow enabling/disabling threaded
-busypolling at individual napi level.
-
-We use this for our AF_XDP based hard low-latency usecase with usecs
-level latency requirement. For our usecase we want low jitter and stable
-latency at P99.
-
-Following is an analysis and comparison of available (and compatible)
-busy poll interfaces for a low latency usecase with stable P99. This can
-be suitable for applications that want very low latency at the expense
-of cpu usage and efficiency.
-
-Already existing APIs (SO_BUSYPOLL and epoll) allow busy polling a NAPI
-backing a socket, but the missing piece is a mechanism to busy poll a
-NAPI instance in a dedicated thread while ignoring available events or
-packets, regardless of the userspace API. Most existing mechanisms are
-designed to work in a pattern where you poll until new packets or events
-are received, after which userspace is expected to handle them.
-
-As a result, one has to hack together a solution using a mechanism
-intended to receive packets or events, not to simply NAPI poll. NAPI
-threaded busy polling, on the other hand, provides this capability
-natively, independent of any userspace API. This makes it really easy to
-setup and manage.
-
-For analysis we use an AF_XDP based benchmarking tool `xsk_rr`. The
-description of the tool and how it tries to simulate the real workload
-is following,
-
-- It sends UDP packets between 2 machines.
-- The client machine sends packets at a fixed frequency. To maintain the
-  frequency of the packet being sent, we use open-loop sampling. That is
-  the packets are sent in a separate thread.
-- The server replies to the packet inline by reading the pkt from the
-  recv ring and replies using the tx ring.
-- To simulate the application processing time, we use a configurable
-  delay in usecs on the client side after a reply is received from the
-  server.
-
-The xsk_rr tool is posted separately as an RFC for tools/testing/selftest.
-
-We use this tool with following napi polling configurations,
-
-- Interrupts only
-- SO_BUSYPOLL (inline in the same thread where the client receives the
-  packet).
-- SO_BUSYPOLL (separate thread and separate core)
-- Threaded NAPI busypoll
-
-System is configured using following script in all 4 cases,
-
-```
-echo 0 | sudo tee /sys/class/net/eth0/threaded
-echo 0 | sudo tee /proc/sys/kernel/timer_migration
-echo off | sudo tee  /sys/devices/system/cpu/smt/control
-
-sudo ethtool -L eth0 rx 1 tx 1
-sudo ethtool -G eth0 rx 1024
-
-echo 0 | sudo tee /proc/sys/net/core/rps_sock_flow_entries
-echo 0 | sudo tee /sys/class/net/eth0/queues/rx-0/rps_cpus
-
- # pin IRQs on CPU 2
-IRQS="$(gawk '/eth0-(TxRx-)?1/ {match($1, /([0-9]+)/, arr); \
-				print arr[0]}' < /proc/interrupts)"
-for irq in "${IRQS}"; \
-	do echo 2 | sudo tee /proc/irq/$irq/smp_affinity_list; done
-
-echo -1 | sudo tee /proc/sys/kernel/sched_rt_runtime_us
-
-for i in /sys/devices/virtual/workqueue/*/cpumask; \
-			do echo $i; echo 1,2,3,4,5,6 > $i; done
-
-if [[ -z "$1" ]]; then
-  echo 400 | sudo tee /proc/sys/net/core/busy_read
-  echo 100 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
-  echo 15000   | sudo tee /sys/class/net/eth0/gro_flush_timeout
-fi
-
-sudo ethtool -C eth0 adaptive-rx off adaptive-tx off rx-usecs 0 tx-usecs 0
-
-if [[ "$1" == "enable_threaded" ]]; then
-  echo 0 | sudo tee /proc/sys/net/core/busy_poll
-  echo 0 | sudo tee /proc/sys/net/core/busy_read
-  echo 100 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
-  echo 15000 | sudo tee /sys/class/net/eth0/gro_flush_timeout
-  NAPI_ID=$(ynl --family netdev --output-json --do queue-get \
-    --json '{"ifindex": '${IFINDEX}', "id": '0', "type": "rx"}' | jq '."napi-id"')
-
-  ynl --family netdev --json '{"id": "'${NAPI_ID}'", "threaded": "busy-poll"}'
-
-  NAPI_T=$(ynl --family netdev --output-json --do napi-get \
-    --json '{"id": "'$NAPI_ID'"}' | jq '."pid"')
-
-  sudo chrt -f  -p 50 $NAPI_T
-
-  # pin threaded poll thread to CPU 2
-  sudo taskset -pc 2 $NAPI_T
-fi
-
-if [[ "$1" == "enable_interrupt" ]]; then
-  echo 0 | sudo tee /proc/sys/net/core/busy_read
-  echo 0 | sudo tee /sys/class/net/eth0/napi_defer_hard_irqs
-  echo 15000 | sudo tee /sys/class/net/eth0/gro_flush_timeout
-fi
-```
-
-To enable various configurations, script can be run as following,
-
-- Interrupt Only
-  ```
-  <script> enable_interrupt
-  ```
-
-- SO_BUSYPOLL (no arguments to script)
-  ```
-  <script>
-  ```
-
-- NAPI threaded busypoll
-  ```
-  <script> enable_threaded
-  ```
-
-Once configured, the workload is run with various configurations using
-following commands. Set period (1/frequency) and delay in usecs to
-produce results for packet frequency and application processing delay.
-
- ## Interrupt Only and SO_BUSYPOLL (inline)
-
-- Server
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-D <IP-dest> -S <IP-src> -M <MAC-dst> -m <MAC-src> -p 54321 -h -v
-```
-
-- Client
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-S <IP-src> -D <IP-dest> -m <MAC-src> -M <MAC-dst> -p 54321 \
-	-P <Period-usecs> -d <Delay-usecs>  -T -l 1 -v
-```
-
- ## SO_BUSYPOLL(done in separate core using recvfrom)
-
-Argument -t spawns a separate thread and continuously calls recvfrom.
-
-- Server
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-D <IP-dest> -S <IP-src> -M <MAC-dst> -m <MAC-src> -p 54321 \
-	-h -v -t
-```
-
-- Client
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-S <IP-src> -D <IP-dest> -m <MAC-src> -M <MAC-dst> -p 54321 \
-	-P <Period-usecs> -d <Delay-usecs>  -T -l 1 -v -t
-```
-
- ## NAPI Threaded Busy Poll
-
-Argument -n skips the recvfrom call as there is no recv kick needed.
-
-- Server
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-D <IP-dest> -S <IP-src> -M <MAC-dst> -m <MAC-src> -p 54321 \
-	-h -v -n
-```
-
-- Client
-```
-sudo chrt -f 50 taskset -c 3-5 ./xsk_rr -o 0 -B 400 -i eth0 -4 \
-	-S <IP-src> -D <IP-dest> -m <MAC-src> -M <MAC-dst> -p 54321 \
-	-P <Period-usecs> -d <Delay-usecs>  -T -l 1 -v -n
-```
-
-| Experiment | interrupts | SO_BUSYPOLL | SO_BUSYPOLL(separate) | NAPI threaded |
-|---|---|---|---|---|
-| 12 Kpkt/s + 0us delay | | | | |
-|  | p5: 12700 | p5: 12900 | p5: 13300 | p5: 12800 |
-|  | p50: 13100 | p50: 13600 | p50: 14100 | p50: 13000 |
-|  | p95: 13200 | p95: 13800 | p95: 14400 | p95: 13000 |
-|  | p99: 13200 | p99: 13800 | p99: 14400 | p99: 13000 |
-| 32 Kpkt/s + 30us delay | | | | |
-|  | p5: 19900 | p5: 16600 | p5: 13100 | p5: 12800 |
-|  | p50: 21100 | p50: 17000 | p50: 13700 | p50: 13000 |
-|  | p95: 21200 | p95: 17100 | p95: 14000 | p95: 13000 |
-|  | p99: 21200 | p99: 17100 | p99: 14000 | p99: 13000 |
-| 125 Kpkt/s + 6us delay | | | | |
-|  | p5: 14600 | p5: 17100 | p5: 13300 | p5: 12900 |
-|  | p50: 15400 | p50: 17400 | p50: 13800 | p50: 13100 |
-|  | p95: 15600 | p95: 17600 | p95: 14000 | p95: 13100 |
-|  | p99: 15600 | p99: 17600 | p99: 14000 | p99: 13100 |
-| 12 Kpkt/s + 78us delay | | | | |
-|  | p5: 14100 | p5: 16700 | p5: 13200 | p5: 12600 |
-|  | p50: 14300 | p50: 17100 | p50: 13900 | p50: 12800 |
-|  | p95: 14300 | p95: 17200 | p95: 14200 | p95: 12800 |
-|  | p99: 14300 | p99: 17200 | p99: 14200 | p99: 12800 |
-| 25 Kpkt/s + 38us delay | | | | |
-|  | p5: 19900 | p5: 16600 | p5: 13000 | p5: 12700 |
-|  | p50: 21000 | p50: 17100 | p50: 13800 | p50: 12900 |
-|  | p95: 21100 | p95: 17100 | p95: 14100 | p95: 12900 |
-|  | p99: 21100 | p99: 17100 | p99: 14100 | p99: 12900 |
-
- ## Observations
-
-- Here without application processing all the approaches give the same
-  latency within 1usecs range and NAPI threaded gives minimum latency.
-- With application processing the latency increases by 3-4usecs when
-  doing inline polling.
-- Using a dedicated core to drive napi polling keeps the latency same
-  even with application processing. This is observed both in userspace
-  and threaded napi (in kernel).
-- Using napi threaded polling in kernel gives lower latency by
-  1-2usecs as compared to userspace driven polling in separate core.
-- Even on a dedicated core, SO_BUSYPOLL adds around 1-2usecs of latency.
-  This is because it doesn't continuously busy poll until events are
-  ready. Instead, it returns after polling only once, requiring the
-  process to re-invoke the syscall for each poll, which requires a new
-  enter/leave kernel cycle and the setup/teardown of the busy poll for
-  every single poll attempt.
-- With application processing userspace will get the packet from recv
-  ring and spend some time doing application processing and then do napi
-  polling. While application processing is happening a dedicated core
-  doing napi polling can pull the packet of the NAPI RX queue and
-  populate the AF_XDP recv ring. This means that when the application
-  thread is done with application processing it has new packets ready to
-  recv and process in recv ring.
-- Napi threaded busy polling in the kernel with a dedicated core gives
-  the consistent P5-P99 latency.
-
-Note well that threaded napi busy-polling has not been shown to yield
-efficiency or throughput benefits. In contrast, dedicating an entire
-core to busy-polling one NAPI (NIC queue) is rather inefficient.
-However, in certain specific use cases, this mechanism results in lower
-packet processing latency. The experimental testing reported here only
-covers those use cases and does not present a comprehensive evaluation
-of threaded napi busy-polling.
-
-Following histogram is generated to measure the time spent in recvfrom
-while using inline thread with SO_BUSYPOLL. The histogram is generated
-using the following bpftrace command. In this experiment there are 32K
-packets per second and the application processing delay is 30usecs. This
-is to measure whether there is significant time spent pulling packets
-from the descriptor queue that it will affect the overall latency if
-done inline.
-
-```
-bpftrace -e '
-        kprobe:xsk_recvmsg {
-                @start[tid] = nsecs;
-        }
-        kretprobe:xsk_recvmsg {
-                if (@start[tid]) {
-                        $sample = (nsecs - @start[tid]);
-                        @xsk_recvfrom_hist = hist($sample);
-                        delete(@start[tid]);
-                }
-        }
-        END { clear(@start);}'
-```
-
-Here in case of inline busypolling around 35 percent of calls are taking
-1-2usecs and around 50 percent are taking 0.5-2usecs.
-
-@xsk_recvfrom_hist:
-[128, 256)         24073 |@@@@@@@@@@@@@@@@@@@@@@                              |
-[256, 512)         55633 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@|
-[512, 1K)          20974 |@@@@@@@@@@@@@@@@@@@                                 |
-[1K, 2K)           34234 |@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@                     |
-[2K, 4K)            3266 |@@@                                                 |
-[4K, 8K)              19 |                                                    |
-
-v10:
- - Added a note to the cover letter suggested by Martin Karsten about
-   the usability of the this feature.
- - Removed the NAPI_STATE_SCHED_THREADED_BUSY_POLL and using
-   NAPI_STATE_IN_BUSY_POLL to return early from napi_complete_done.
- - Fixed grammar and spelling mistakes in documentation and commit
-   messages.
- - Removed the usage of unnecessary atomic operations while enabling and
-   disabling busy poll.
- - Changed the NAPI threaded enum name from busy-poll-enabled to
-   busy-poll.
- - Changed the order in which NAPI threaded and napi threaded busy-poll
-   state bits are set.
- - Updated the Documentation to reflect the enum name change.
-
-v9:
- - Unset NAPI_STATE_THREADED_BUSY_POLL when stopping napi kthread to
-   prevent network disruption as reported by Martin Karsten.
- - Updated napi threaded busy poll enable instructions to use netlink
-   instead of sysfs. This is because the sysfs mechanism to enable napi
-   threaded busy poll is removed.
-
-v8:
- - Fixed selftest build error.
- - Removed support of enabling napi busy poll at device level.
- - Updated documentation to reflect removal of busy poll at device
-   level.
- - Added paragraph in the cover letter mentioning that napi threaded
-   busy polling allows busy polling a NAPI natively independent of API.
- - Added paragraph in the cover letter explaining why SO_BUSYPOLL is
-   still not enough when run in a dedicated core.
-
-v7:
- - Rebased.
-
-v6:
- - Moved threaded in struct netdevice up to fill the cacheline hole.
- - Changed dev_set_threaded to dev_set_threaded_hint and removed the
-   second argument that was always set to true by all the drivers.
-   Exported only dev_set_threaded_hint and made dev_set_threaded core
-   only function. This change is done in a separate commit.
- - Updated documentation comment for threaded in struct netdevice.
- - gro_flush_helper renamed to gro_flush_normal and moved to gro.h. Also
-   used it in kernel/bpf/cpumap.c
- - Updated documentation to explicitly state that the NAPI threaded busy
-   polling would keep the CPU core busy at 100% usage.
- - Updated documentation and commit messages.
-
-v5:
- - Updated experiment data with 'SO_PREFER_BUSY_POLL' usage as
-   suggested.
- - Sent 'Add support to set napi threaded for individual napi'
-   separately. This series depends on top of that patch.
-   https://lore.kernel.org/netdev/20250423201413.1564527-1-skhawaja@google.com/
- - Added a separate patch to use enum for napi threaded state. Updated
-   the nl_netdev python test.
- - Using "write all" semantics when napi settings set at device level.
-   This aligns with already existing behaviour for other settings.
- - Fix comments to make them kdoc compatible.
- - Updated Documentation/networking/net_cachelines/net_device.rst
- - Updated the missed gro_flush modification in napi_complete_done
-
-v4:
- - Using AF_XDP based benchmark for experiments.
- - Re-enable dev level napi threaded busypoll after soft reset.
-
-v3:
- - Fixed calls to dev_set_threaded in drivers
-
-v2:
- - Add documentation in napi.rst.
- - Provide experiment data and usecase details.
- - Update busy_poller selftest to include napi threaded poll testcase.
- - Define threaded mode enum in netlink interface.
- - Included NAPI threaded state in napi config to save/restore.
-
-Samiullah Khawaja (2):
-  net: Extend NAPI threaded polling to allow kthread based busy polling
-  selftests: Add napi threaded busy poll test in `busy_poller`
-
- Documentation/netlink/specs/netdev.yaml       |  5 +-
- Documentation/networking/napi.rst             | 50 +++++++++++++++-
- include/linux/netdevice.h                     |  4 +-
- include/uapi/linux/netdev.h                   |  1 +
- net/core/dev.c                                | 58 +++++++++++++++----
- net/core/dev.h                                |  3 +
- net/core/netdev-genl-gen.c                    |  2 +-
- tools/include/uapi/linux/netdev.h             |  1 +
- tools/testing/selftests/net/busy_poll_test.sh | 24 +++++++-
- tools/testing/selftests/net/busy_poller.c     | 16 ++++-
- 10 files changed, 145 insertions(+), 19 deletions(-)
-
-
-base-commit: bfe62db5422b1a5f25752bd0877a097d436d876d
--- 
-2.51.1.838.g19442a804e-goog
-
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izOKWxw=T8zk1jQL6sB8bTSK0HvNxnX=XXYLCAFtuiAwRw@mail.gmail.com>
+
+On Mon, Oct 27, 2025 at 06:20:20PM -0700, Mina Almasry wrote:
+> On Thu, Oct 23, 2025 at 2:00 PM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
+> >
+
+[...]
+
+> > diff --git a/include/net/sock.h b/include/net/sock.h
+> > index 01ce231603db..1963ab54c465 100644
+> > --- a/include/net/sock.h
+> > +++ b/include/net/sock.h
+> > @@ -350,7 +350,7 @@ struct sk_filter;
+> >    *    @sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
+> >    *    @sk_scm_unused: unused flags for scm_recv()
+> >    *    @ns_tracker: tracker for netns reference
+> > -  *    @sk_user_frags: xarray of pages the user is holding a reference on.
+> > +  *    @sk_devmem_info: the devmem binding information for the socket
+> >    *    @sk_owner: reference to the real owner of the socket that calls
+> >    *               sock_lock_init_class_and_name().
+> >    */
+> > @@ -579,7 +579,11 @@ struct sock {
+> >         struct numa_drop_counters *sk_drop_counters;
+> >         struct rcu_head         sk_rcu;
+> >         netns_tracker           ns_tracker;
+> > -       struct xarray           sk_user_frags;
+> > +       struct {
+> > +               struct xarray                           frags;
+> > +               struct net_devmem_dmabuf_binding        *binding;
+> > +               bool                                    autorelease;
+> 
+> Maybe autorelease should be a property of the binding, no? I can't
+> wrap my head around a binding that has some autorelease sockets and
+> some non-autorelease sockets, semantically.
+> 
+
+Right, it is definitely ill placed here. It never deviates from
+binding->autorelease, so no need for it.
+
+> > +       } sk_devmem_info;
+> >
+> >  #if IS_ENABLED(CONFIG_PROVE_LOCKING) && IS_ENABLED(CONFIG_MODULES)
+> >         struct module           *sk_owner;
+> > diff --git a/net/core/devmem.c b/net/core/devmem.c
+> > index b4c570d4f37a..8f3199fe0f7b 100644
+> > --- a/net/core/devmem.c
+> > +++ b/net/core/devmem.c
+> > @@ -11,6 +11,7 @@
+> >  #include <linux/genalloc.h>
+> >  #include <linux/mm.h>
+> >  #include <linux/netdevice.h>
+> > +#include <linux/skbuff_ref.h>
+> >  #include <linux/types.h>
+> >  #include <net/netdev_queues.h>
+> >  #include <net/netdev_rx_queue.h>
+> > @@ -115,6 +116,29 @@ void net_devmem_free_dmabuf(struct net_iov *niov)
+> >         gen_pool_free(binding->chunk_pool, dma_addr, PAGE_SIZE);
+> >  }
+> >
+> > +static void
+> > +net_devmem_dmabuf_binding_put_urefs(struct net_devmem_dmabuf_binding *binding)
+> > +{
+> > +       int i;
+> > +
+> > +       if (binding->autorelease)
+> > +               return;
+> > +
+> 
+> I think cosmetically it's better to put this check in the caller.
+> 
+
+Sounds good!
+
+> > +       for (i = 0; i < binding->dmabuf->size / PAGE_SIZE; i++) {
+> > +               struct net_iov *niov;
+> > +               netmem_ref netmem;
+> > +
+> > +               niov = binding->vec[i];
+> > +
+> > +               if (!net_is_devmem_iov(niov))
+> > +                       continue;
+> > +
+> 
+> This is an extremely defensive check. I have no idea how we could
+> possibly have a non devmem iov here. Maybe DEBUG_NET_WARN_ON instead?
+> Or remove.
+> 
+
+Makes sense. I did not run into any real issues, I mistakenly borrowed
+this check from the skb->frag handling code... will remove.
+
+> > +               netmem = net_iov_to_netmem(niov);
+> > +               if (atomic_xchg(&niov->uref, 0) > 0)
+> > +                       WARN_ON_ONCE(!napi_pp_put_page(netmem));
+> 
+> This is subtle enough that it can use a comment. Multiple urefs map to
+> only 1 netmem ref.
+> 
+
+Will do.
+
+[...]
+
+> > @@ -291,10 +315,10 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> >                         niov = &owner->area.niovs[i];
+> >                         niov->type = NET_IOV_DMABUF;
+> >                         niov->owner = &owner->area;
+> > +                       atomic_set(&niov->uref, 0);
+> >                         page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
+> >                                                       net_devmem_get_dma_addr(niov));
+> > -                       if (direction == DMA_TO_DEVICE)
+> > -                               binding->vec[owner->area.base_virtual / PAGE_SIZE + i] = niov;
+> > +                       binding->vec[owner->area.base_virtual / PAGE_SIZE + i] = niov;
+> >                 }
+> >
+> >                 virtual += len;
+> > @@ -307,6 +331,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> >                 goto err_free_chunks;
+> >
+> >         list_add(&binding->list, &priv->bindings);
+> > +       binding->autorelease = true;
+> >
+> 
+> So autorelease is indeed a property of the binding. Not sure why a
+> copy exists in sk_devmem_info. Perf optimization to reduce pointer
+> chasing?
+> 
+
+Just stale code from prior design... Originally, I was going to try to
+allow the autorelease == true case to be free of the
+one-binding-per-socket restriction, in which case sk_devmem_info.binding
+would be NULL (or otherwise meaningless). sk_devmem_info.autorelease
+allowed sock_devmem_dontneed to choose the right path even when
+sk_devmem_info.binding == NULL.
+
+...but then I realized we still needed some restriction to avoid sockets
+from steering into different dmabufs with different autorelease configs,
+so kept the one-binding restriction for both modes. I abandoned the
+effort, but forgot to revert this change.
+
+Now I'm realizing that we could relax the restriction more though... We
+could allow sockets to steer into other bindings if they all have the
+same autorelease value? Then we could still use
+sk_devmem_info.binding->autorelease in the sock_devmem_dontneed path and
+relax the restriction to "steering must only be to bindings of the same
+autorelease mode"?
+
+> I thought autorelease would be 'false' by default. I.e. the user gets
+> better perf by default. Maybe this is flipped in the following patch I
+> haven't opened yet.
+> 
+
+That is right, it is in the next patch. I didn't want to change the
+default without also adding the ability to revert back.
+
+> >         return binding;
+> >
+> > diff --git a/net/core/devmem.h b/net/core/devmem.h
+> > index 2ada54fb63d7..7662e9e42c35 100644
+> > --- a/net/core/devmem.h
+> > +++ b/net/core/devmem.h
+> > @@ -61,11 +61,20 @@ struct net_devmem_dmabuf_binding {
+> >
+> >         /* Array of net_iov pointers for this binding, sorted by virtual
+> >          * address. This array is convenient to map the virtual addresses to
+> > -        * net_iovs in the TX path.
+> > +        * net_iovs.
+> >          */
+> >         struct net_iov **vec;
+> >
+> >         struct work_struct unbind_w;
+> > +
+> > +       /* If true, outstanding tokens will be automatically released upon each
+> > +        * socket's close(2).
+> > +        *
+> > +        * If false, then sockets are responsible for releasing tokens before
+> > +        * close(2). The kernel will only release lingering tokens when the
+> > +        * dmabuf is unbound.
+> > +        */
+> 
+> Needs devmem.rst doc update.
+> 
+
+Will do.
+
+> > +       bool autorelease;
+> >  };
+> >
+> >  #if defined(CONFIG_NET_DEVMEM)
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index e7b378753763..595b5a858d03 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -87,6 +87,7 @@
+> >
+> >  #include <linux/unaligned.h>
+> >  #include <linux/capability.h>
+> > +#include <linux/dma-buf.h>
+> >  #include <linux/errno.h>
+> >  #include <linux/errqueue.h>
+> >  #include <linux/types.h>
+> > @@ -151,6 +152,7 @@
+> >  #include <uapi/linux/pidfd.h>
+> >
+> >  #include "dev.h"
+> > +#include "devmem.h"
+> >
+> >  static DEFINE_MUTEX(proto_list_mutex);
+> >  static LIST_HEAD(proto_list);
+> > @@ -1081,6 +1083,57 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+> >  #define MAX_DONTNEED_TOKENS 128
+> >  #define MAX_DONTNEED_FRAGS 1024
+> >
+> > +static noinline_for_stack int
+> > +sock_devmem_dontneed_manual_release(struct sock *sk, struct dmabuf_token *tokens,
+> > +                                   unsigned int num_tokens)
+> > +{
+> > +       unsigned int netmem_num = 0;
+> > +       int ret = 0, num_frags = 0;
+> > +       netmem_ref netmems[16];
+> > +       struct net_iov *niov;
+> > +       unsigned int i, j, k;
+> > +
+> > +       for (i = 0; i < num_tokens; i++) {
+> > +               for (j = 0; j < tokens[i].token_count; j++) {
+> > +                       struct net_iov *niov;
+> > +                       unsigned int token;
+> > +                       netmem_ref netmem;
+> > +
+> > +                       token = tokens[i].token_start + j;
+> > +                       if (token >= sk->sk_devmem_info.binding->dmabuf->size / PAGE_SIZE)
+> > +                               break;
+> > +
+> 
+> This requires some thought. The correct thing to do here is EINVAL
+> without modifying the urefs at all I think. You may need an
+> input-verification loop. Breaking and returning success here is not
+> great, I think.
+> 
+
+Should this also be changed for the other path as well? Right now if
+__xa_erase returns NULL (e.g., user passed in a bad token), then we hit
+"continue" and process the next token... eventually just returning the
+number of tokens that were successfully processed and omitting the wrong
+ones.
+
+> > +                       if (++num_frags > MAX_DONTNEED_FRAGS)
+> > +                               goto frag_limit_reached;
+> > +                       niov = sk->sk_devmem_info.binding->vec[token];
+> > +                       netmem = net_iov_to_netmem(niov);
+> > +
+> > +                       if (!netmem || WARN_ON_ONCE(!netmem_is_net_iov(netmem)))
+> > +                               continue;
+> > +
+> 
+> This check is extremely defensive. There is no way netmem is not a
+> netiov (you just converted it). It's also very hard for it to be NULL.
+> Remove maybe.
+> 
+
+Removing sounds good to me.
+
+> > +                       netmems[netmem_num++] = netmem;
+> > +                       if (netmem_num == ARRAY_SIZE(netmems)) {
+> > +                               for (k = 0; k < netmem_num; k++) {
+> > +                                       niov = netmem_to_net_iov(netmems[k]);
+> 
+> No need to upcast to netmem only to downcast here back to net_iov.
+> Just keep it net_iov?
+> 
+
+Sounds good.
+
+> > +                                       if (atomic_dec_and_test(&niov->uref))
+> > +                                               WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> 
+> I see. So you're only only napi_pp_put_pageing the last uref dec, but
+> why? How about you
+
+Just to minimize cache bus noise from the extra atomic.
+
+> > +                               }
+> > +                               netmem_num = 0;
+> > +                       }
+> 
+> From a quick look, I don't think you need the netmems[] array or this
+> inner loop.
+> 
+> dontneed_autorelease is complicatingly written because it acquires a
+> lock, and we wanted to minimize the lock acquire. You are acquiring no
+> lock here. AFAICT you can just loop over the tokens and free all of
+> them in one (nested) loop.
+
+Oh good point. There is no need to batch at all here.
+
+> 
+> > +                       ret++;
+> > +               }
+> > +       }
+> > +
+> > +frag_limit_reached:
+> > +       for (k = 0; k < netmem_num; k++) {
+> > +               niov = netmem_to_net_iov(netmems[k]);
+> > +               if (atomic_dec_and_test(&niov->uref))
+> > +                       WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> > +       }
+> > +
+> > +       return ret;
+> > +}
+> > +
+> >  static noinline_for_stack int
+> >  sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
+> >                                  unsigned int num_tokens)
+> > @@ -1089,32 +1142,32 @@ sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
+> >         int ret = 0, num_frags = 0;
+> >         netmem_ref netmems[16];
+> >
+> > -       xa_lock_bh(&sk->sk_user_frags);
+> > +       xa_lock_bh(&sk->sk_devmem_info.frags);
+> >         for (i = 0; i < num_tokens; i++) {
+> >                 for (j = 0; j < tokens[i].token_count; j++) {
+> >                         if (++num_frags > MAX_DONTNEED_FRAGS)
+> >                                 goto frag_limit_reached;
+> >
+> >                         netmem_ref netmem = (__force netmem_ref)__xa_erase(
+> > -                               &sk->sk_user_frags, tokens[i].token_start + j);
+> > +                               &sk->sk_devmem_info.frags, tokens[i].token_start + j);
+> >
+> >                         if (!netmem || WARN_ON_ONCE(!netmem_is_net_iov(netmem)))
+> >                                 continue;
+> >
+> >                         netmems[netmem_num++] = netmem;
+> >                         if (netmem_num == ARRAY_SIZE(netmems)) {
+> > -                               xa_unlock_bh(&sk->sk_user_frags);
+> > +                               xa_unlock_bh(&sk->sk_devmem_info.frags);
+> >                                 for (k = 0; k < netmem_num; k++)
+> >                                         WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> >                                 netmem_num = 0;
+> > -                               xa_lock_bh(&sk->sk_user_frags);
+> > +                               xa_lock_bh(&sk->sk_devmem_info.frags);
+> >                         }
+> >                         ret++;
+> >                 }
+> >         }
+> >
+> >  frag_limit_reached:
+> > -       xa_unlock_bh(&sk->sk_user_frags);
+> > +       xa_unlock_bh(&sk->sk_devmem_info.frags);
+> >         for (k = 0; k < netmem_num; k++)
+> >                 WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> >
+> > @@ -1135,6 +1188,12 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+> >             optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
+> >                 return -EINVAL;
+> >
+> > +       /* recvmsg() has never returned a token for this socket, which needs to
+> > +        * happen before we know if the dmabuf has autorelease set or not.
+> > +        */
+> > +       if (!sk->sk_devmem_info.binding)
+> > +               return -EINVAL;
+> > +
+> 
+> Hmm. At first glance I don't think enforcing this condition if
+> binding->autorelease is necessary, no?
+> 
+> If autorelease is on, then we track the tokens the old way, and we
+> don't need a binding, no? If it's off, then we need an associated
+> binding, to look up the urefs array.
+> 
+
+We at least need the binding to know if binding->autorelease is on,
+since without that we don't know whether the tokens are in the xarray or
+binding->vec... but I guess we could also check if the xarray is
+non-empty and infer that autorelease == true from that?
+
+[...]
+
+> > +                               if (binding->autorelease) {
+> > +                                       err = tcp_xa_pool_refill(sk, &tcp_xa_pool,
+> > +                                                                skb_shinfo(skb)->nr_frags - i);
+> > +                                       if (err)
+> > +                                               goto out;
+> > +
+> > +                                       dmabuf_cmsg.frag_token =
+> > +                                               tcp_xa_pool.tokens[tcp_xa_pool.idx];
+> > +                               } else {
+> > +                                       token = net_iov_virtual_addr(niov) >> PAGE_SHIFT;
+> > +                                       dmabuf_cmsg.frag_token = token;
+> > +                               }
+> > +
+> 
+> Consider refactoring this into a helper:
+> 
+> tcp_xa_pool_add(...., autorelease);
+> 
+
+Will do.
+
+> >
+> >                                 /* Will perform the exchange later */
+> > -                               dmabuf_cmsg.frag_token = tcp_xa_pool.tokens[tcp_xa_pool.idx];
+> >                                 dmabuf_cmsg.dmabuf_id = net_devmem_iov_binding_id(niov);
+> >
+> >                                 offset += copy;
+> > @@ -2585,8 +2612,14 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> >                                 if (err)
+> >                                         goto out;
+> >
+> > -                               atomic_long_inc(&niov->pp_ref_count);
+> > -                               tcp_xa_pool.netmems[tcp_xa_pool.idx++] = skb_frag_netmem(frag);
+> > +                               if (sk->sk_devmem_info.autorelease) {
+> > +                                       atomic_long_inc(&niov->pp_ref_count);
+> > +                                       tcp_xa_pool.netmems[tcp_xa_pool.idx++] =
+> > +                                               skb_frag_netmem(frag);
+> > +                               } else {
+> > +                                       if (atomic_inc_return(&niov->uref) == 1)
+> > +                                               atomic_long_inc(&niov->pp_ref_count);
+> 
+> I think we have a helper that does the pp_ref_count increment with a
+> nice name, so we don't have to look into the niov details in this
+> function.
+> 
+> Consider also factoring this into a helper, maybe:
+> 
+> tcp_xa_pool_get_niov(...., tcp_xa_pool, autorelease);
+> 
+
+Sounds good.
+
+> > +                               }
+> >
+> >                                 sent += copy;
+> >
+> > @@ -2596,7 +2629,9 @@ static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> >                         start = end;
+> >                 }
+> >
+> > -               tcp_xa_pool_commit(sk, &tcp_xa_pool);
+> > +               if (sk->sk_devmem_info.autorelease)
+> > +                       tcp_xa_pool_commit(sk, &tcp_xa_pool);
+> > +
+> 
+> Consider doing the autorelease cehck inside of tcp_xa_pool_commit to
+> remove the if statements from this function, maybe nicer.
+> 
+
+Sounds good.
+
+[...]
+
+> -- 
+> Thanks,
+> Mina
+
+Thanks!
+
+-Bobby
