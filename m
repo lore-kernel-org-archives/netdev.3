@@ -1,112 +1,136 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DAD334690
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 13:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2460B335063;
+	Tue, 28 Oct 2025 13:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761658378; cv=none; b=shk5oteO/8tTnQudKfTTOSoiefpH++fGN1TkQQOTy0iV9WsBOiZVTtXtcQbNzZ/aXJB5y5s1MRw6fC4LKN3xLznm/gso388NOfVBwJlU9OGIdSQzUKYk6OvYqCRowc4TEwdPkBAXtDleEYZfk+5hxH4TWKA0UY+3xGEslYpiNsk=
+	t=1761658391; cv=none; b=ZkV7gpEPfR9pH/ktFfXtcN9rsAzmO9BjzrYaj6WmTZqewe9EwVwid+7g6Z5OI/Hme6ZiaiaMVqWQLEHEeXPBlI3uuyc2QuzRtMMGSvjhsa7LRyf4kIy4B8MOcVjhtSbpMkN/jPNHQwjrNsC4e40FobMZ0NJVzGmlM9vu8/mOFag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761658378; c=relaxed/simple;
-	bh=ew04NiQrGcH4etcxyEEAqVpzUFRTolcfu0lhK6arMX0=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=fQRzqWshJ9dDAOXdPzRUnYIG6Gwu4kVmSbIAhgPEbRfNPPYJvAioSqYKl04EYAfEwPx52fGyH2abeXWNPAAhPUYHMDEgFB9rH2K8HYYZtmGzLKaBjDg3wy7yUjrccu3rsZ4PaXYmJ0FbEen+GuueWW+9uwXL5kjcuXmvdXRX+qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tl7Suk0o; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761658391; c=relaxed/simple;
+	bh=zHgFOuY5SFOlmk5HuLBk82BmMu84ypaw7kIZB0Jb67g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kDYzFO+0hQwTB4OtoiFLwXIKBFzD5Wpun20rJFfBYpUzFzjfs1XL5s85+MNyJieF7hpEOIDjByu7ve0Rg/ATjEvqXNljIdgiAJWIL+JVkrfWC+0De5ylVtcN8mTQv6eeblWl14e4oqorPgA55D1CGIs4S345nDVDnBV9dSXdvYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qmEwP7kC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tl7Suk0o"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-475dab5a5acso21251395e9.0
-        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 06:32:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761658375; x=1762263175; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wVMycP0wkgHyNXa+x1Z8cB6hgKt0fEPWvjXVXJxiDjY=;
-        b=Tl7Suk0o7oY2dPFHXRAXFGXtlZXy68/0rW3lWLWu4YOAPokF/pYx/Cs6so2pyD0gkr
-         H6qGhdMa/DRX4CeoaXuuveD3MBLakv597pQ+McN9+NsiJ81aKtraYhYHzcQKVeL0snuB
-         xmr1bsRNvUeSTDax0dB3NnNN1Ahqg/YZbulmEzAI0+AnVn26oT84QQrxWNUiPHf44zvO
-         skygIgc758iCMqOGiGpiyM2HE9UARsy35i5TZeEdO9mCC1CvY/KQEdkHeSrz4RRyowbf
-         umUnHhq8oay/m6jsBfhfw9Z/wGwF/sG6/1RSdiX+J9TSvoN+hZnecEeJmqy3tJy0/A1u
-         U94Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761658375; x=1762263175;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wVMycP0wkgHyNXa+x1Z8cB6hgKt0fEPWvjXVXJxiDjY=;
-        b=v57qrw6i9mQZQWwXi+YPyeIDDbLjGQP8cgOkaw/pzYRbQD+QUCCJvEQ8Y827lxnxsT
-         kTP+SNOgoxAzu38D85wDqw1aRS33+Xkqh6pOMeRBzrnrE8kvehcLNBct3T9G5a13VKoI
-         MyBG6hfSzasC/mUahqAF82+bSxCkJxrINGRES9UduzatRV8adkhoqIMqdyXnpHaiJBU9
-         RA6BgAfAY2Bz2QkGNx3zRIoRevLlNqtfy0WZuOi1cupF7rsomT+waXLY5/kgYOeW2O3n
-         1G7Snzrg/zfZ4rwNZnvyng8HH7UMwA0gMgYAh8SVBxQpwi8+I1xyl3rjVZjDImlxbmB4
-         xuNg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0ae67jDJbRON70HJWK/inKrEzwKUnKkY2eVnS0p78oqi3p/cKCaYuCt9JQByWtOTA3ajEcOY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywgh13beIYb54esVqQOKfVvtDgJS2jOA/padEAp3QXi5xjrUXYG
-	Q4z6NM3bdTFpk3OgUKWafffwayjKudaHxJf9kCqjJ8VJSgXlrw436wBF
-X-Gm-Gg: ASbGncsJepayWqWDzOmLkC7RXmuvdSvlsFECZK8KUakvRvUdOuWGMuJ0MMvBpQWR7HY
-	iK0IaOYVHMy4PUL6hbbTQyY2GeFq+AYmfZb4gRXQcglDkF8pQ535xsIhv7UAYqsSs3kDT7p9LnM
-	HHA4fWHtFF0dxGrNJy3A4CuQzI90WmUMKS8hIDeSLyBiHg9UZOzDEJaJmb6t0wjDYPG+Y7WN5mk
-	2hqI+Y6dsVzarPBq3PJ2Al7IVH/8wtaha44WGXqVD4OILaj3wwrzImspVq6XNpcsDIgKGHATyOi
-	7YtHKmJqGfh+WuH0BfYUL8qx1OO1O9mpDgYzfF5zzopC0PFMyr2RY7mrWM2Q+OF3SFiKcZUnT8h
-	4GBcyFRdlx7Z7C+zXtR/Kur5npZe+jjjb+OG/49p39wZoA1F1MHihtnWhQaJiH6ciytIerCUvfc
-	Z1arOBSKZMBE+N
-X-Google-Smtp-Source: AGHT+IG/GxfVBL74uG27E5a9IkSpfv8HBOZy0FrpVA2mqeaMFegFxoi6+G6ZUSizscPhF+QAajd5MQ==
-X-Received: by 2002:a05:600c:3108:b0:46e:4f25:aace with SMTP id 5b1f17b1804b1-47717def6e9mr32367295e9.6.1761658374691;
-        Tue, 28 Oct 2025 06:32:54 -0700 (PDT)
-Received: from imac ([2a02:8010:60a0:0:a938:2bbc:5022:a559])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd494d5csm200191865e9.9.2025.10.28.06.32.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 06:32:54 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
-  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
-  ast@fiberby.net
-Subject: Re: [PATCH net-next v2 2/2] tools: ynl: rework the string
- representation of NlError
-In-Reply-To: <20251027192958.2058340-2-kuba@kernel.org>
-Date: Tue, 28 Oct 2025 10:51:20 +0000
-Message-ID: <m21pmnqoyf.fsf@gmail.com>
-References: <20251027192958.2058340-1-kuba@kernel.org>
-	<20251027192958.2058340-2-kuba@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qmEwP7kC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C9FC4CEFD;
+	Tue, 28 Oct 2025 13:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761658389;
+	bh=zHgFOuY5SFOlmk5HuLBk82BmMu84ypaw7kIZB0Jb67g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qmEwP7kCXosfzQMpvMsWAoDgsyCyr9vumhoiyjhDQSMhSj//+fr3N8ViVDH/1DqCg
+	 iAMw0x2GF3UG7huzPYCoPAkfzimdyOxCJhjb5mf05XfiEQVYhCFA+4QAFPtts3IlXB
+	 lPdUPauefx0LtL5fiP4/Mj2+61oLsJl41mmeNNYpba65hCxz3HEel+JqqHudtWIHKo
+	 jgkirCJx9EF8ri80XldJOfj3NU3a5MJ7wL09fNTco1ScemLB3nG9W9WRJNRWMeelew
+	 kkwy/5o3D12FZKSUQ+CpGyeYWNpXg5lEx26xNf8uLQm98HShqQbOzn2XDomyCTGTbR
+	 MNaHUqpecxTiQ==
+Date: Tue, 28 Oct 2025 14:33:02 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+	Jeff Layton <jlayton@kernel.org>, Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, 
+	Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, Lennart Poettering <mzxreary@0pointer.de>, 
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
+	Amir Goldstein <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	bpf@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v3 17/70] nstree: add listns()
+Message-ID: <20251028-fenchel-roman-75c1c7e13c93@brauner>
+References: <20251024-work-namespace-nstree-listns-v3-0-b6241981b72b@kernel.org>
+ <20251024-work-namespace-nstree-listns-v3-17-b6241981b72b@kernel.org>
+ <aQCcrqp7qxY8ew8T@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQCcrqp7qxY8ew8T@horms.kernel.org>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Tue, Oct 28, 2025 at 10:36:30AM +0000, Simon Horman wrote:
+> On Fri, Oct 24, 2025 at 12:52:46PM +0200, Christian Brauner wrote:
+> 
+> ...
+> 
+> > diff --git a/kernel/nstree.c b/kernel/nstree.c
+> 
+> ...
+> 
+> > +static ssize_t do_listns(struct klistns *kls)
+> > +{
+> > +	u64 *ns_ids = kls->kns_ids;
+> > +	size_t nr_ns_ids = kls->nr_ns_ids;
+> > +	struct ns_common *ns, *first_ns = NULL;
+> > +	struct ns_tree *ns_tree = NULL;
+> > +	const struct list_head *head;
+> > +	struct user_namespace *user_ns;
+> > +	u32 ns_type;
+> > +	ssize_t ret;
+> > +
+> > +	if (hweight32(kls->ns_type) == 1)
+> > +		ns_type = kls->ns_type;
+> > +	else
+> > +		ns_type = 0;
+> > +
+> > +	if (ns_type) {
+> > +		ns_tree = ns_tree_from_type(ns_type);
+> > +		if (!ns_tree)
+> > +			return -EINVAL;
+> > +	}
+> > +
+> > +	if (kls->last_ns_id) {
+> > +		kls->first_ns = lookup_ns_id_at(kls->last_ns_id + 1, ns_type);
+> > +		if (!kls->first_ns)
+> > +			return -ENOENT;
+> > +		first_ns = kls->first_ns;
+> > +	}
+> > +
+> > +	ret = 0;
+> > +	if (ns_tree)
+> > +		head = &ns_tree->ns_list;
+> > +	else
+> > +		head = &ns_unified_list;
+> > +
+> > +	guard(rcu)();
+> > +	if (!first_ns)
+> > +		first_ns = first_ns_common(head, ns_tree);
+> > +
+> > +	for (ns = first_ns; !ns_common_is_head(ns, head, ns_tree) && nr_ns_ids;
+> > +	     ns = next_ns_common(ns, ns_tree)) {
+> > +		if (kls->ns_type && !(kls->ns_type & ns->ns_type))
+> > +			continue;
+> > +		if (!ns_get_unless_inactive(ns))
+> > +			continue;
+> > +		/* Check permissions */
+> > +		if (!ns->ops)
+> > +			user_ns = NULL;
+> 
+> Hi Christian,
+> 
+> Here it is assumed that ns->ops may be NULL.
+> 
+> > +		else
+> > +			user_ns = ns->ops->owner(ns);
+> > +		if (!user_ns)
+> > +			user_ns = &init_user_ns;
+> > +		if (ns_capable_noaudit(user_ns, CAP_SYS_ADMIN) ||
+> > +		    is_current_namespace(ns) ||
+> > +		    ((ns->ns_type == CLONE_NEWUSER) && ns_capable_noaudit(to_user_ns(ns), CAP_SYS_ADMIN))) {
+> > +			*ns_ids++ = ns->ns_id;
+> > +			nr_ns_ids--;
+> > +			ret++;
+> > +		}
+> > +		if (need_resched())
+> > +			cond_resched_rcu();
+> > +		/* doesn't sleep */
+> > +		ns->ops->put(ns);
+> 
+> And, if so, it isn't clear to me why that wouldn't also be the case here.
 
-> In early days of YNL development dumping the NlMsg on errors
-> was quite useful, as the library itself could have been buggy.
-> These days increasingly the NlMsg is just taking up screen space
-> and means nothing to a typical user. Try to format the errors
-> more in line with how YNL C formats its errors strings.
->
-> Before:
->   $ ynl --family ethtool  --do channels-set  --json '{}'
->   Netlink error: Invalid argument
->   nl_len = 44 (28) nl_flags = 0x300 nl_type = 2
-> 	error: -22
-> 	extack: {'miss-type': 'header'}
->
->   $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
->   Netlink error: Invalid argument
->   nl_len = 88 (72) nl_flags = 0x300 nl_type = 2
-> 	error: -22
-> 	extack: {'msg': 'requested channel count exceeds maximum', 'bad-attr': '.tx-count'}
->
-> After:
->   $ ynl --family ethtool  --do channels-set  --json '{}'
->   Netlink error: Invalid argument {'miss-type': 'header'}
->
->   $ ynl --family ethtool  --do channels-set  --json '{..., "tx-count": 999}'
->   Netlink error: requested channel count exceeds maximum: Invalid argument {'bad-attr': '.tx-count'}
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Right you are. Fixed.
