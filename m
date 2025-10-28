@@ -1,154 +1,159 @@
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236A91A5B8A;
-	Tue, 28 Oct 2025 02:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761618281; cv=none; b=A9r9ip1Q11azkL69rpzGUnBpWxGpzizdiG9gQTGF8svJ47jYgtQkWTh2nHxECJz5v3awxtn1QaEqtH22JrhTkB1ctltTzZXV20CTWzZJ5oDZtYSocveCcaoL8rjpnVMHXMevMF6RPGrDuNp23RVbfu+FzedM7Re8ti2aCO+GvRY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761618281; c=relaxed/simple;
-	bh=q6FNcEVb7r/dd3rY9+bQk6lP5I+i/FtdOTB3/WeN3EQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JZYe2g9Fmoir9DuXH155tCtfzIIzHJULh7Zx7ehaT4OPuAPkjtz+8AmnrPDKiienqSpALYg7R9sMVS0M9ZW2PFjKmY7X8jCrkxFEUPTmC6HLQUwgNpMThpVa5qQ0WzTWHbSGFRwoRV1Gu01hOA+zLYgMCialQSTll7IhnmH2Mjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-c45ff70000001609-8a-6900295ba92a
-Date: Tue, 28 Oct 2025 11:24:21 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	toke@redhat.com, asml.silence@gmail.com, bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
-	ap420073@gmail.com, dtatulea@nvidia.com
-Subject: Re: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to
- confirm its usage as pp for net_iov
-Message-ID: <20251028022421.GA77904@system.software.com>
-References: <20251023074410.78650-1-byungchul@sk.com>
- <20251023074410.78650-2-byungchul@sk.com>
- <CAHS8izPM-s2sL_KyGyUyv37PfZxNLf029DrXpQe8fo637Rn+rw@mail.gmail.com>
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012050.outbound.protection.outlook.com [40.93.195.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD86316F265
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 02:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761618642; cv=fail; b=TrEt9vaCuqqm9NR9u/WDKGGILGjKc6K2wxQ0K6sEiPYBvXbenKrLNT6DKt4BhbdRr6DvedWbsAkzE7CFs472Bxgm0V1qNkocy9hbT0mL+jD8C+PcjYGMIqFlMNcgFaE6suf5pWSHIBuJu8XjPM4VGO9vSP2RT3vfq/lTsAN5/t8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761618642; c=relaxed/simple;
+	bh=oAenVAkH2CAgcZ1Vb9xOcEVFYC1EekwBRXVEK3szIkA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HBPCtM4hLS0k8nUQxVFZPNxAstwo2scDSbOjDDr0IGdeth6eG0V5v0DSHB/eP1wXHoD6zJXiFyutFtJrD722aSj/f32qjtJk+eDcAsHnT2LJ1AO50bIku84MV2mFoI93Giprz6tsn5RikaYWtJ3jW2w4kGhR+8KgjH9ryc2g0fw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Pj3k3a3l; arc=fail smtp.client-ip=40.93.195.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Pj3k3a3l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=A+bSdAyPrHVzgjoZTg/4KRmPr5WabM4jWSkER5D9HiLydqlDQXpxq6xnqGbG1oGF0KbKKi40gMBJUEseDrxbbGcelxSfcRX0owk4GH/bBiuzBAq5xR6tqwD2/AVLPu6sibd8YsftHzATQ3PFv0Tp+7Wwa7NLTT+btZQg00eU0ThN1MEoSVJT+bZyzD6XXhXZqqsQZiyz5TAllWVPz6tBCFqpbZkDBVHDrUdxCzfU+zzTkn3/3lAPl6+qhl7BWbm08t7OAegY7Ho3w0DJeDWqD+BhssnunlMssbRXcTBg4zGN8uCnQsycf8rskR9yMkbDdBGIkAQ/U5hWr2pz6cXzHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iCu7IERhXT7JyWiZlKE/B/sW6mD97OkBka/hh3Jgxkw=;
+ b=aRAHOAjPTY75HrQ2+yUhClYEzYvP4zCnEbZhuiFbEr6KAHwRJJIkm4aX4TBay0TRaVHT/v4RrKxba+BApQ28J2ChqU+xPB+YCEniNzVQLLTN2alSyRAiyu/4is/jo0fWMhhVwZia9nIz/UnGnSV9JWRDooZ16N9zZvF+69RETIJcpfoTH56AekkPojUk87JAlI3bMH3Fa00TigF7ta4cHGERYMK7BP1IBMbCtfQIX39aiqcDB8wLTsRxe5rYNdfIgsqLXqRVrDdwo5Jadr3qLlBZVVtAHZBTQp8SsfCyFafv2ycHzBMymJ8otNpNqN+w62QiO4EHGhrh8n4lHh0t1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iCu7IERhXT7JyWiZlKE/B/sW6mD97OkBka/hh3Jgxkw=;
+ b=Pj3k3a3lXHNF9+/N7KtIW4zuKx+JBexYIEGg1GqF1GzLbaozZTdJmYSBv1rkbapweMFlcY3OGbM3r/NjC/lcw9YmetuRJo+WlvjLWt+q61UeLN0rOAOTfTrBGf624bVKFKxNjJ4ulVnULNs8dOrIORPQcbDk9CCPQVOI4r7VWz0GPpjKs+OofA+wUi9yXEfreKi/vTaTtbjNQFX+wNEdFMhfg130EGSDp2qql8kBcklPd/lizBM9K88AW3+YpHHaQFeHFrc4RNiNJAeBdcTeinbhvhWmIkwFLRrxJPvDczmR5DnqobFmk+AbnOwRnJ99p5b7LIrBIcsZQR9+qnhOfw==
+Received: from MW4PR04CA0214.namprd04.prod.outlook.com (2603:10b6:303:87::9)
+ by CH3PR12MB7548.namprd12.prod.outlook.com (2603:10b6:610:144::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Tue, 28 Oct
+ 2025 02:30:35 +0000
+Received: from MWH0EPF000989EA.namprd02.prod.outlook.com
+ (2603:10b6:303:87:cafe::28) by MW4PR04CA0214.outlook.office365.com
+ (2603:10b6:303:87::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.15 via Frontend Transport; Tue,
+ 28 Oct 2025 02:30:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MWH0EPF000989EA.mail.protection.outlook.com (10.167.241.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.10 via Frontend Transport; Tue, 28 Oct 2025 02:30:34 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 27 Oct
+ 2025 19:30:20 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Mon, 27 Oct 2025 19:30:19 -0700
+Received: from mtl-vdi-603.wap.labs.mlnx (10.127.8.13) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.20 via Frontend
+ Transport; Mon, 27 Oct 2025 19:30:18 -0700
+From: Jianbo Liu <jianbol@nvidia.com>
+To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<steffen.klassert@secunet.com>, <sd@queasysnail.net>
+CC: Jianbo Liu <jianbol@nvidia.com>
+Subject: [PATCH ipsec v3 0/2] xfrm: Correct inner packet family determination
+Date: Tue, 28 Oct 2025 04:22:46 +0200
+Message-ID: <20251028023013.9836-1-jianbol@nvidia.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izPM-s2sL_KyGyUyv37PfZxNLf029DrXpQe8fo637Rn+rw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+++cnXNcro7L6p8SwaKiIGtR9AZSZhCnIjL60EWiDnlqo23F
-	ZqZR4C0qSbOs0LlkYuUyc23a1JWSm5fZ1RbKotLSUrppaYmXmelE8tvD+z7v83s+vAwhaxeH
-	MCptrKDT8mo5JSElPwLzl0cvnaZaWfBqHhgtxRTcHYiHwg8VYhgs7hKBsciO4PfgWxpGq+oR
-	9NU2UPDN1YugIL+fAOPLVBL+WIYIqHR0IfiafY+Cz/XtNNy1bYe2250kPDpXTkD7JTcF6anD
-	BFQNdtOQXGEeCy5NpKHJniGGq0O3CChP/EDDa4eRgtbiUTF0OtNJaDTcIeHntVoC2jIioN40
-	B/qffkdQaykXQf/FGxQ05zhE8KCqmYYsj4mCjtQ2BB5XOwnXfOcpyE3KQDA8MBbZnflbDLl1
-	rXREGJfk9VKc63sPwZXdeSPiWrIvk5y3+omIqzS8pzmT7QRXal7GpXk9BGcrukBxtt4rNPeu
-	5RHFubOHSa7y4zqusqJPxKWndFNRs/dJwmMEtSpO0K1Yf1CitLyzo+Png+N/3DCgRFQ3Mw0F
-	MJhdjR1WHzGp3dbr5Lgm2UW4M6MUjWuKXYK93kG/J5hdim9WXxanIQlDsF00fv4ik0pDDDOL
-	1eC6Zs24R8oCNl5t9XtkrBnhkbwGamIRhBtzPvkBxFioL89DjN8SbCgu/MtMjBfglAe5flYA
-	uxO/TnL5O8xmF+LH9gbRRM9zAbjEETSh5+Eas5fMREGGKQTDFILhP8EwhWBCZBGSqbRxGl6l
-	Xh2mTNCq4sMOHdPY0Njn3T7ji65AvU27nIhlkDxQ2qQeVcrEfJw+QeNEmCHkwdLwXJ9SJo3h
-	E04JumMHdCfUgt6JQhlSPle6qv9kjIw9wscKRwXhuKCb3IqYgJBERMYud/7MyXGHWD1DHS0R
-	Q1kzNocXKnp+7Z8+f2T+jk1b2Ld8x6k1bUHuhj3BVmUBuzBfERu1NXJddDl/8/7W5PUlewce
-	6tc6Ukyr7L4vi7eVhe62JruOHj4duaGzVTtalnX2Qg2fat7xJ8wSckD57JZa8WzaGeNGRp/5
-	q9HYV6VolJN6Ja9YRuj0/D+lH0RNdQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+++c8z/H0fK0rA76IVhEuC4WFb1d0S91CMqKIKigTnVow81k
-	S9GwmLqoRq7ZDZuXVlmZGdKs6Swlnc7ZPWWxyDYzU7pZmUlOa21G5LeH533e3/N+eBlC3kLF
-	MurUA6IuVdAosJSUbliRN297/AT1ggGHBIqrKjHc+JkJ17pqKRiu7AtbFQ4Eg8OvaAjVuxF8
-	b27F8NE1gODyxSECip8aSfhRFSTAWdeH4EPhTQzv3N003LCvh8DVXhLuHa0hoPukB0O+cYSA
-	+uF+GnJry8PgagMNrpI2Cp45zBScCV4hoMbQRUNHXTEGf2WIgt6mfBLarNdJ+Hq2mYCAORHc
-	tmkw9PATguaqGgkMnSjB4D1fJ4E79V4aTrfbMLw1BhC0u7pJODt6DENRjhnByM8wst8ySEFR
-	i59OTOBzfD7Muz59Ifjb119K+BeFBSTva3gg4Z3W1zRvs6fz1eVK3uRrJ3h7xXHM2wdO0Xzn
-	i3uY9xSOkLzzzTLeWftdwufn9eON07ZJV+4VNeoMUZewepdUVdXpQGnHYjI/l1iRAbVEm1AU
-	w7GLOc+tc2REk+wsrtdcjSIas7M5n2+YiOgYNp4rayigTEjKEGwfzT1+YsEmxDBTWC3X4tVG
-	MjIWuOIz/rGMnC1H3K/SVvx3MJlrO98zVkCEoaOl7URkl2DjuGu/mb/2DC7vTtFYVxS7ievI
-	cY3dMJWdyd13tEosaJJ1HMk6jmT9T7KOI9kQWYFi1KkZWkGtWTJfn6LKSlVnzt+zX2tH4ee6
-	emi0oBYNdqxtQiyDFBNlzzQhlZwSMvRZ2ibEMYQiRrayaFQll+0Vsg6Kuv07dekaUd+E4hhS
-	MV22bqu4S87uEw6IKaKYJur+TSVMVKwBOc0hpqz6V8OjKcKRi53PS/2G5PhvwcOy2M2Lg7aG
-	NL0n6fCq5G1bok0LdliowHvmypD4OXB3+Qk4sh5nKo/eNv4Q5EH1WnmuZ47uUrnFbVqj9Bq7
-	Ei58WZo0Kd3uV+6emzzQ6N2cnZQdHbf76YZNj3oWVcS7axpznbkzp4ZOJypIvUpYqCR0euEP
-	GRjoFVgDAAA=
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EA:EE_|CH3PR12MB7548:EE_
+X-MS-Office365-Filtering-Correlation-Id: 069a38c3-0612-4307-c4cd-08de15c9f934
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lJ+dXFGqVnAW/ciHyZgjDe0mNtN/9AJoyiVpyW6GEyl6OiAT8ZamwH8e7okK?=
+ =?us-ascii?Q?tNhAi6S5d1UZP34dEdPMz5pMCNa7fKR1OwHUnsFAN14c8O2qiEMUztJs3ObV?=
+ =?us-ascii?Q?xYk5K4ojKNKvBpFKlhf30u+J3YyeVgABYHJtK47p5oBeLl7U8EE/MRlUIBVY?=
+ =?us-ascii?Q?t7gr6oIKveybhepDSwNeDGeaTk7way0Kh4kbe6EYrETiytIvUadla521uxg+?=
+ =?us-ascii?Q?qsxF74C5nUdqVbeXPKmKr8gF1O1Y/LtxVnCRV+6Ajv35Zwx7ufim9nKcgyo6?=
+ =?us-ascii?Q?8Ng1YW64gL9iy66Vh3p14osjQD8L0xncnTzS2JuCeWgKjYA+pCB1eNcGN6M+?=
+ =?us-ascii?Q?G/nRq9GG1Ce7kFSO+bshqcG3XEg50KyykwJVILS2ieIhlxCmWkGrgXsGur85?=
+ =?us-ascii?Q?JJAyNdyppqe3BPoIA0STWmeXWW7q9gK/R9diOqtFwbrKTuTAvmsaO+pgt+LE?=
+ =?us-ascii?Q?bnElxlNpsqyPP9AJ5U+4R74/b4rkGLqEFWOKaF+Rkkby5da0NajglywEbXNR?=
+ =?us-ascii?Q?TOlg4KLBllmPui3ylYu+LnUKn7+z4RjonVfw7hUSvHjIbMpVA0QB0BZV+z5j?=
+ =?us-ascii?Q?A/lKZ5G+SALD2jrCPtt4moVHhxeaItmWFr7Dby6Hu/VuEdDk3aY+jEgJn1PF?=
+ =?us-ascii?Q?puHAdI83lST6Vnmvm/HfFe9IOpbkacCbZWwYbxdP41/QBAQ2IHYswaUKmivJ?=
+ =?us-ascii?Q?8soJ5wT72ksLxX6d/xSt80n4ngcZOvkkI0wKvqvEQpgAlaRRccpF/A3Y7Ru9?=
+ =?us-ascii?Q?xvnlgWyWdtoQwokyTVAMs2OqtPK1ZpOL4/r/tGziXWga2n/Gml9SUhRbCD2U?=
+ =?us-ascii?Q?rXEfSwhiBaSQ92GF8xoR8U6aBrh2kxN/L5QnbyPrT9+2cqoBdGg1SoCyPTm3?=
+ =?us-ascii?Q?IKYTzN1KpZEXkE60yU5JYyUtYY+BdNyvnDm7RxGnzI3wBU6fNTDc2e+asRBc?=
+ =?us-ascii?Q?LIwmJsjdmOPXUt8meJVZp1EK2Uy3C8sTGa75nRmbAvdyL56wh/+GO8WqAVtg?=
+ =?us-ascii?Q?G2Ubmga8HixXpzfejyb8os2YXefKf+fuTgmK0MyZqnS62Ovf611+M4aWbQK1?=
+ =?us-ascii?Q?I2ov+AysrJvU5cwx+cVRqWSdXKBRMmadLW6R+8BTR/SYa4GhbBV0GBGjEwOT?=
+ =?us-ascii?Q?c8mbzl0HrssUQ7r4JP6jShGYcScF+nfkdpIiAtxtaNi8WXICtVpm0+bzVMYi?=
+ =?us-ascii?Q?JOS0uLIKX2wzfc7WhwG6UVkQsh6WunZM0WjerIF+mVYpzYyBLp6c98JAocFq?=
+ =?us-ascii?Q?NhWP2ygiR9T/w6YRiugQwA8l2FntNdIN4QXmrH0fI4tpw5gPnF3Uv37Epl2e?=
+ =?us-ascii?Q?6XflfHXbz82LKbevmYK0mI2K0BU3C+w9rUnY1tMSIL483Z5sgTe0WtJRpuCN?=
+ =?us-ascii?Q?1kVsuGniUNnlWdAzgRgtyFjKW9rUvkekm305yaAn/1ZR1BcZQsHx9JG4e5a3?=
+ =?us-ascii?Q?oa3kv95QBsWH2DhpBUi02oCHpiZQqI8cbI7HO6WBBkpwGEk6oToK4KyJLSK+?=
+ =?us-ascii?Q?fKGeBf14jW2bD3sy2+pKvdXDUPL93cDuQ5kq/4t5oSCiVHUOMrJitZ61e9tV?=
+ =?us-ascii?Q?AqrrqYul6cyXfVzc7D0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 02:30:34.6021
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 069a38c3-0612-4307-c4cd-08de15c9f934
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000989EA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7548
 
-On Mon, Oct 27, 2025 at 06:25:38PM -0700, Mina Almasry wrote:
-> On Thu, Oct 23, 2025 at 12:44 AM Byungchul Park <byungchul@sk.com> wrote:
-> >
-> > ->pp_magic field in struct page is current used to identify if a page
-> > belongs to a page pool.  However, ->pp_magic will be removed and page
-> > type bit in struct page e.g. PGTY_netpp should be used for that purpose.
-> >
-> > As a preparation, the check for net_iov, that is not page-backed, should
-> > avoid using ->pp_magic since net_iov doens't have to do with page type.
-> > Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
-> > page pool, by making sure nmdesc->pp is NULL otherwise.
-> >
-> > For page-backed netmem, just leave unchanged as is, while for net_iov,
-> > make sure nmdesc->pp is initialized to NULL and use nmdesc->pp for the
-> > check.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > ---
-> >  net/core/devmem.c      |  1 +
-> >  net/core/netmem_priv.h |  8 ++++++++
-> >  net/core/page_pool.c   | 16 ++++++++++++++--
-> >  3 files changed, 23 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/net/core/devmem.c b/net/core/devmem.c
-> > index d9de31a6cc7f..f81b700f1fd1 100644
-> > --- a/net/core/devmem.c
-> > +++ b/net/core/devmem.c
-> > @@ -291,6 +291,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
-> >                         niov = &owner->area.niovs[i];
-> >                         niov->type = NET_IOV_DMABUF;
-> >                         niov->owner = &owner->area;
-> > +                       niov->desc.pp = NULL;
-> 
-> Don't you also need to = NULL the niov allocations in io_uring zcrx,
-> or is that already done? Maybe mention in commit message.
+This series contains two patches addressing issues in the XFRM
+subsystem where the code incorrectly relied on static family fields
+from the xfrm_state instead of determining the family from the actual
+packet being processed.
 
-Yes, that's been already done by kvmalloc_array(__GFP_ZERO).  I want to
-leave a comment explaining that on io_uring side like:
+This was particularly problematic in tunnel mode scenarios when using
+states that could handle different inner families.
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index e5ff49f3425e..f771bb3e756d 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -444,6 +444,10 @@ static int io_zcrx_create_area(struct io_zcrx_ifq *ifq,
- 		area->freelist[i] = i;
- 		atomic_set(&area->user_refs[i], 0);
- 		niov->type = NET_IOV_IOURING;
-+
-+		/* niov->pp is already initialized to NULL by
-+		 * kvmalloc_array(__GFP_ZERO).
-+		 */
- 	}
- 
- 	area->free_count = nr_iovs;
+V3:
+ - Change xfrm_ip2inner_mode for the sel family specified
 
-However, I dropped it as Pavel requested:
+V2:
+ - The original first patch was sent separately to "ipsec-next"
 
-  https://lore.kernel.org/lkml/8d833a3f-ae18-4ea6-9092-ddaa48290a63@gmail.com/
+Jianbo Liu (2):
+  xfrm: Check inner packet family directly from skb_dst
+  xfrm: Determine inner GSO type from packet inner protocol
 
-I will mention it in commit message then.
+ include/net/xfrm.h      | 3 ++-
+ net/ipv4/esp4_offload.c | 6 ++++--
+ net/ipv6/esp6_offload.c | 6 ++++--
+ net/xfrm/xfrm_device.c  | 2 +-
+ net/xfrm/xfrm_output.c  | 2 +-
+ 5 files changed, 12 insertions(+), 7 deletions(-)
 
-> Other than that, looks correct,
-> 
-> Reviewed-by: Mina Almasry <almasrymina@google.com>
+-- 
+2.49.0
 
-Thanks.
-
-	Byungchul
