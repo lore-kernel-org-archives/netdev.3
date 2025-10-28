@@ -1,253 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1171C3F0C
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 06:04:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591971EEA5D
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 06:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761631481; cv=none; b=eD8GA4Fjc5jeQqLGRKyXx+T+gQYn8BNZbTGbUatY44pHmRvgD2G8lgTFfLbaOcupRnyaocesw5bUE1z9D22a6ZUzFwX6RkpTRs6Vj/GZuehERMBvFrG301kCTWpY42zCs2o0pM6I6jBB0dDATXuTlXsXxA/tr9xQJd2xlR+sPYg=
+	t=1761631639; cv=none; b=WCsFu42Qnzu5LBwTrWFBSDJcVZlUB/3Xcs7NvjdX+1DZaE/QttOPWd4a7jx/zhvUzHx1w0ds8lGmkPtvcs9zZkoLD4Aq12S8C6DYOLCeF94lu1uGObNVs1RDbesSLGpnxkImBOUMTdvBH+u3wEcgrVBjlTLPvhLiT2cbSh/M4Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761631481; c=relaxed/simple;
-	bh=9wVKsjciKrTy3D956CfMuajzIEyyIjdi/6fv61U8dRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MhiHDv1+lz0O1u9pVmnOL+C3I6yu3bAht3yV2pe1PXIeUYagBXGaxoZHple865JmcQx86qB3uh08zpO1SpMwMShGz4M/H86829F3HZssec+dXeq33sqV5SA7lhijK67kuyEitsxlHheD72n3M1kN4dfRuI3n4P35IwgQ42ApUn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h0jcydBa; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761631639; c=relaxed/simple;
+	bh=p/IVdnfV4khlgG8mt9Ek8HnxLb8gr48aIdEnvVgP9hQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lb+Dc4j+OHR9v6jNxCATzUozLBYtioqxCRU6VBY/CkXdvHVmOVrkQZ9rFnl2Qx9JtXb119UOUJfhlBk/zlDBRmGf1VxJjR9vP/CwhTNd0BdamYWj8LLoqTG1tc8ImFnLE2mUaVy8X6QBvU180ZlSZXQsT2ZrvAXNSJa8KNtKfG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hj7wno27; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--shivajikant.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h0jcydBa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761631479; x=1793167479;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=9wVKsjciKrTy3D956CfMuajzIEyyIjdi/6fv61U8dRo=;
-  b=h0jcydBapa+hJkH9F+4oS4V/FWAqKm9xQxX0vczQFcyXmy+E8bXSlFwr
-   5Jb5TA1an7vLPDJWiPwwVfOM/Nt56wrFDWOn+G4yQFu3A5k0VaH85INnp
-   2BUD3cX5zWE9ArVjt7EylF1ZXKAWjmRADR3prc2kqN1r4xYQKRXH7POiR
-   bGmBAYRaP1bBetWWQDIzkvxxgIPB1m2OOazK98zPAH8mndWRwsqJ+IsPP
-   wlrNl+r4i2rNDzP06864HPKcNuanUBtVpx9F+RiaNtw+7c4Rvejaha+vd
-   UjYrRHVKo56aE7P9y+ZJs6y0w1MdL6c8/7+/7eBuEOr9AYdXGLFeK/+Bg
-   A==;
-X-CSE-ConnectionGUID: P5eWJXghQ9OkYM0numnjHQ==
-X-CSE-MsgGUID: aiYDGB3DTdyNVEgOgookvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="63425972"
-X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
-   d="scan'208";a="63425972"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2025 23:04:38 -0700
-X-CSE-ConnectionGUID: YBaphMryRBKBlQFK0cdKUw==
-X-CSE-MsgGUID: u6X9RK1bT9qx4LM3uTiYlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
-   d="scan'208";a="190454008"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 27 Oct 2025 23:04:28 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vDcmx-000Io7-2J;
-	Tue, 28 Oct 2025 06:02:52 +0000
-Date: Tue, 28 Oct 2025 13:59:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	David Miller <davem@davemloft.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jacky Huang <ychuang3@nuvoton.com>,
-	Shan-Chun Hung <schung@nuvoton.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Jason Baron <jbaron@akamai.com>, Borislav Petkov <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v5 17/23] iio: mlx90614: Convert to common
- field_{get,prep}() helpers
-Message-ID: <202510281304.RK3J3c3t-lkp@intel.com>
-References: <8ea8d9d6c33d9589e8761f6000639546f1bd5148.1761588465.git.geert+renesas@glider.be>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hj7wno27"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-32edda89a37so4170011a91.1
+        for <netdev@vger.kernel.org>; Mon, 27 Oct 2025 23:07:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761631638; x=1762236438; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CmVDos/iiNyPPLnMuSui3gilQCZYPJzE6253FS771QE=;
+        b=hj7wno27WLVbby/IkvcvFC5uZIcLVyIVF/5jgDm5BetlVfdHIaKtRJRlD5jeYP1oR/
+         yJmRDcB1cHtOun8NaSZD3Mce8Gc1I7coEkJANgqC1TeSo4QgMJZgPfAVUQYNQ2lD4hEv
+         KCtgUVgvGqJQTCar3/f15nHQYk3wuIaj9RiRCpcPoXSYXPjmfBEmccgnWwIQFgv8wiDc
+         Ir2C7dbovrYlKxCfNI658JyAvcrvH0FIQjt8ojGHgojG/ZCNlJQC2TPNLAZILnDVsy1P
+         1WvdF225OJv6pimAMnZ089QsrA4kpEXm7VJ0OpBfUHrszz+5Cvlx/cXnB6b0Z3rEOFk3
+         ADkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761631638; x=1762236438;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CmVDos/iiNyPPLnMuSui3gilQCZYPJzE6253FS771QE=;
+        b=R7GtKLicdMgBeF1PjF2fXIHiIgG5C2mt3KP3ioWfwFNTvrtEp9b3UWrn+mbJGbNfPP
+         /mOmg797os/9eGryaQZg/QhdCNXGY8hGOAmZ5intQ3xZm5kS0q6jYaF3hZf6LSEK2nva
+         8+o8dLTypfttYgi8igIO4VKM4M7CVkwii2auogh+HgG2bS245es6Ir0mwnV//T6BwpRO
+         oo3CQsRzjnZdpcv6toclTM0q+ewAHzNZigiHYVKxDjoqgK8AR+1MuhEd9CjH3T63WDqE
+         LWDiMzhjigzWh6WQYShHGJIW4KwDzYpcI8JVzhNGwtHSXc064+K3QFGFybNhanKm6dWP
+         yHag==
+X-Gm-Message-State: AOJu0YzhgYxDDCnAuToZuXox1kJ5OwEaQ75ZVFmo/6Rr9f05k/9Q0hXT
+	xMekX6ov87GcTidsqevcLNBfFMID1tFGTcgSSh86DO2UhhH68IhWQkmm4+PWD8VVgXyzohul9Cp
+	evZPOY/aLXUyeUiP75vNq+vPElPdk1ZC7JoxWeiQ31tTZNcT8EUTyRH0jp7q5sYKjvHv7/e5x32
+	IYy6kGP2bbSaVdQ4CkEb/nSnCFVSfakXZ9sp43B51x3GvuYXmoXz5QqLWKrwn6iYY=
+X-Google-Smtp-Source: AGHT+IGaVX23m6aKz+/U14LyIgO7cVIrm3f/DehCigVoN0SlevRBtf9aNsZ3mCrLZB6fLV2k/xhHTuo3t/v+3wxW5A==
+X-Received: from pjbch10.prod.google.com ([2002:a17:90a:f40a:b0:33b:ba24:b204])
+ (user=shivajikant job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:280c:b0:32b:bac7:5a41 with SMTP id 98e67ed59e1d1-34027c1c55cmr2663128a91.37.1761631637591;
+ Mon, 27 Oct 2025 23:07:17 -0700 (PDT)
+Date: Tue, 28 Oct 2025 06:07:14 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8ea8d9d6c33d9589e8761f6000639546f1bd5148.1761588465.git.geert+renesas@glider.be>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.838.g19442a804e-goog
+Message-ID: <20251028060714.2970818-1-shivajikant@google.com>
+Subject: [PATCH] net: devmem: Remove dst (ENODEV) check in net_devmem_get_binding
+From: Shivaji Kant <shivajikant@google.com>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Mina Almasry <almasrymina@google.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Pranjal Shrivastava <praan@google.com>, 
+	Shivaji Kant <shivajikant@google.com>, Vedant Mathur <vedantmathur@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Geert,
+The Devmem TX binding lookup function, performs a strict
+check against the socket's destination cache (`dst`) to
+ensure the bound `dmabuf_id` corresponds to the correct
+network device (`dst->dev->ifindex == binding->dev->ifindex`).
 
-kernel test robot noticed the following build warnings:
+However, this check incorrectly fails and returns `-ENODEV`
+if the socket's route cache entry (`dst`) is merely missing
+or expired (`dst == NULL`). This scenario is observed during
+network events, such as when flow steering rules are deleted,
+leading to a temporary route cache invalidation.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on next-20251027]
-[cannot apply to clk/clk-next geert-renesas-devel/next geert-renesas-drivers/renesas-clk linus/master v6.18-rc3]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The parent caller, `tcp_sendmsg_locked()`, is already
+responsible for acquiring or validating the route (`dst_entry`).
+If `dst` is `NULL`, `tcp_sendmsg_locked()` will correctly
+derive the route before transmission.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Geert-Uytterhoeven/clk-at91-pmc-undef-field_-get-prep-before-definition/20251028-025423
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/8ea8d9d6c33d9589e8761f6000639546f1bd5148.1761588465.git.geert%2Brenesas%40glider.be
-patch subject: [PATCH v5 17/23] iio: mlx90614: Convert to common field_{get,prep}() helpers
-config: hexagon-randconfig-001-20251028 (https://download.01.org/0day-ci/archive/20251028/202510281304.RK3J3c3t-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251028/202510281304.RK3J3c3t-lkp@intel.com/reproduce)
+This patch removes the `dst` validation from
+`net_devmem_get_binding()`. The function now only validates
+the existence of the binding and its TX vector, relying on the
+calling context for device/route correctness. This allows
+temporary route cache misses to be handled gracefully by the
+TCP/IP stack without ENODEV error on the Devmem TX path.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510281304.RK3J3c3t-lkp@intel.com/
+Reported-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Vedant Mathur <vedantmathur@google.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Fixes: bd61848900bf ("net: devmem: Implement TX path")
+Signed-off-by: Shivaji Kant <shivajikant@google.com>
+---
+ net/core/devmem.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/temperature/mlx90614.c:177:10: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((chip_info->fir_config_mask), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (chip_info->fir_config_mask)))' (aka 'unsigned short') is always false [-Wtautological-constant-out-of-range-compare]
-     177 |                 ret |= field_prep(chip_info->fir_config_mask, MLX90614_CONST_FIR);
-         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:256:32: note: expanded from macro 'field_prep'
-     256 |         (__builtin_constant_p(mask) ? FIELD_PREP(mask, val)             \
-         |                                       ^~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:115:3: note: expanded from macro 'FIELD_PREP'
-     115 |                 __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:72:53: note: expanded from macro '__BF_FIELD_CHECK'
-      72 |                 BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-      73 |                                  __bf_cast_unsigned(_reg, ~0ull),       \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      74 |                                  _pfx "type of reg too small for mask"); \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:597:22: note: expanded from macro 'compiletime_assert'
-     597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:585:23: note: expanded from macro '_compiletime_assert'
-     585 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |         ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:577:9: note: expanded from macro '__compiletime_assert'
-     577 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
->> drivers/iio/temperature/mlx90614.c:181:9: warning: result of comparison of constant 18446744073709551615 with expression of type 'typeof (_Generic((chip_info->iir_config_mask), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (chip_info->iir_config_mask)))' (aka 'unsigned short') is always false [-Wtautological-constant-out-of-range-compare]
-     181 |         ret |= field_prep(chip_info->iir_config_mask, i);
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:256:32: note: expanded from macro 'field_prep'
-     256 |         (__builtin_constant_p(mask) ? FIELD_PREP(mask, val)             \
-         |                                       ^~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:115:3: note: expanded from macro 'FIELD_PREP'
-     115 |                 __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: ");    \
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:72:53: note: expanded from macro '__BF_FIELD_CHECK'
-      72 |                 BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-      73 |                                  __bf_cast_unsigned(_reg, ~0ull),       \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      74 |                                  _pfx "type of reg too small for mask"); \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:597:22: note: expanded from macro 'compiletime_assert'
-     597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:585:23: note: expanded from macro '_compiletime_assert'
-     585 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |         ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:577:9: note: expanded from macro '__compiletime_assert'
-     577 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   drivers/iio/temperature/mlx90614.c:331:9: warning: result of comparison of constant 4294967295 with expression of type 'typeof (_Generic((chip_info->iir_config_mask), char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0, short: (unsigned short)0, unsigned int: (unsigned int)0, int: (unsigned int)0, unsigned long: (unsigned long)0, long: (unsigned long)0, unsigned long long: (unsigned long long)0, long long: (unsigned long long)0, default: (chip_info->iir_config_mask)))' (aka 'unsigned short') is always false [-Wtautological-constant-out-of-range-compare]
-     331 |                 idx = field_get(chip_info->iir_config_mask, ret) -
-         |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:274:32: note: expanded from macro 'field_get'
-     274 |         (__builtin_constant_p(mask) ? FIELD_GET(mask, reg)              \
-         |                                       ^~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:155:3: note: expanded from macro 'FIELD_GET'
-     155 |                 __BF_FIELD_CHECK(_mask, _reg, 0U, "FIELD_GET: ");       \
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:72:53: note: expanded from macro '__BF_FIELD_CHECK'
-      72 |                 BUILD_BUG_ON_MSG(__bf_cast_unsigned(_mask, _mask) >     \
-         |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-      73 |                                  __bf_cast_unsigned(_reg, ~0ull),       \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      74 |                                  _pfx "type of reg too small for mask"); \
-         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
-   include/linux/compiler_types.h:597:22: note: expanded from macro 'compiletime_assert'
-     597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:585:23: note: expanded from macro '_compiletime_assert'
-     585 |         __compiletime_assert(condition, msg, prefix, suffix)
-         |         ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:577:9: note: expanded from macro '__compiletime_assert'
-     577 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   3 warnings generated.
-
-
-vim +177 drivers/iio/temperature/mlx90614.c
-
-fad65a8fe5b85b Vianney le Clément de Saint-Marcq 2015-03-30  141  
-764589b688a1b0 Crt Mori                          2015-08-17  142  /*
-3d5ead238bc85e Marek Vasut                       2023-05-10  143   * Find the IIR value inside iir_values array and return its position
-764589b688a1b0 Crt Mori                          2015-08-17  144   * which is equivalent to the bit value in sensor register
-764589b688a1b0 Crt Mori                          2015-08-17  145   */
-764589b688a1b0 Crt Mori                          2015-08-17  146  static inline s32 mlx90614_iir_search(const struct i2c_client *client,
-764589b688a1b0 Crt Mori                          2015-08-17  147  				      int value)
-764589b688a1b0 Crt Mori                          2015-08-17  148  {
-3d5ead238bc85e Marek Vasut                       2023-05-10  149  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
-3d5ead238bc85e Marek Vasut                       2023-05-10  150  	struct mlx90614_data *data = iio_priv(indio_dev);
-3d5ead238bc85e Marek Vasut                       2023-05-10  151  	const struct mlx_chip_info *chip_info = data->chip_info;
-764589b688a1b0 Crt Mori                          2015-08-17  152  	int i;
-764589b688a1b0 Crt Mori                          2015-08-17  153  	s32 ret;
-764589b688a1b0 Crt Mori                          2015-08-17  154  
-3d5ead238bc85e Marek Vasut                       2023-05-10  155  	for (i = chip_info->iir_valid_offset;
-3d5ead238bc85e Marek Vasut                       2023-05-10  156  	     i < ARRAY_SIZE(chip_info->iir_values);
-3d5ead238bc85e Marek Vasut                       2023-05-10  157  	     i++) {
-3d5ead238bc85e Marek Vasut                       2023-05-10  158  		if (value == chip_info->iir_values[i])
-764589b688a1b0 Crt Mori                          2015-08-17  159  			break;
-764589b688a1b0 Crt Mori                          2015-08-17  160  	}
-764589b688a1b0 Crt Mori                          2015-08-17  161  
-3d5ead238bc85e Marek Vasut                       2023-05-10  162  	if (i == ARRAY_SIZE(chip_info->iir_values))
-764589b688a1b0 Crt Mori                          2015-08-17  163  		return -EINVAL;
-764589b688a1b0 Crt Mori                          2015-08-17  164  
-764589b688a1b0 Crt Mori                          2015-08-17  165  	/*
-764589b688a1b0 Crt Mori                          2015-08-17  166  	 * CONFIG register values must not be changed so
-764589b688a1b0 Crt Mori                          2015-08-17  167  	 * we must read them before we actually write
-764589b688a1b0 Crt Mori                          2015-08-17  168  	 * changes
-764589b688a1b0 Crt Mori                          2015-08-17  169  	 */
-3d5ead238bc85e Marek Vasut                       2023-05-10  170  	ret = i2c_smbus_read_word_data(client, chip_info->op_eeprom_config1);
-1de953e77b8c8b Crt Mori                          2015-10-02  171  	if (ret < 0)
-764589b688a1b0 Crt Mori                          2015-08-17  172  		return ret;
-764589b688a1b0 Crt Mori                          2015-08-17  173  
-3d5ead238bc85e Marek Vasut                       2023-05-10  174  	/* Modify FIR on parts which have configurable FIR filter */
-3d5ead238bc85e Marek Vasut                       2023-05-10  175  	if (chip_info->fir_config_mask) {
-3d5ead238bc85e Marek Vasut                       2023-05-10  176  		ret &= ~chip_info->fir_config_mask;
-3d5ead238bc85e Marek Vasut                       2023-05-10 @177  		ret |= field_prep(chip_info->fir_config_mask, MLX90614_CONST_FIR);
-3d5ead238bc85e Marek Vasut                       2023-05-10  178  	}
-3d5ead238bc85e Marek Vasut                       2023-05-10  179  
-3d5ead238bc85e Marek Vasut                       2023-05-10  180  	ret &= ~chip_info->iir_config_mask;
-3d5ead238bc85e Marek Vasut                       2023-05-10 @181  	ret |= field_prep(chip_info->iir_config_mask, i);
-1de953e77b8c8b Crt Mori                          2015-10-02  182  
-764589b688a1b0 Crt Mori                          2015-08-17  183  	/* Write changed values */
-3d5ead238bc85e Marek Vasut                       2023-05-10  184  	ret = mlx90614_write_word(client, chip_info->op_eeprom_config1, ret);
-764589b688a1b0 Crt Mori                          2015-08-17  185  	return ret;
-764589b688a1b0 Crt Mori                          2015-08-17  186  }
-764589b688a1b0 Crt Mori                          2015-08-17  187  
-
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index d9de31a6cc7f..1d04754bc756 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -17,6 +17,7 @@
+ #include <net/page_pool/helpers.h>
+ #include <net/page_pool/memory_provider.h>
+ #include <net/sock.h>
++#include <net/tcp.h>
+ #include <trace/events/page_pool.h>
+ 
+ #include "devmem.h"
+@@ -357,7 +358,8 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
+ 							 unsigned int dmabuf_id)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
+-	struct dst_entry *dst = __sk_dst_get(sk);
++	struct net_device *dst_dev;
++	struct dst_entry *dst;
+ 	int err = 0;
+ 
+ 	binding = net_devmem_lookup_dmabuf(dmabuf_id);
+@@ -366,16 +368,35 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
+ 		goto out_err;
+ 	}
+ 
++	rcu_read_lock();
++	dst = __sk_dst_get(sk);
++	/* If dst is NULL (route expired), attempt to rebuild it. */
++	if (unlikely(!dst)) {
++		if (inet_csk(sk)->icsk_af_ops->rebuild_header(sk)) {
++			err = -EHOSTUNREACH;
++			goto out_unlock;
++		}
++		dst = __sk_dst_get(sk);
++		if (unlikely(!dst)) {
++			err = -ENODEV;
++			goto out_unlock;
++		}
++	}
++
+ 	/* The dma-addrs in this binding are only reachable to the corresponding
+ 	 * net_device.
+ 	 */
+-	if (!dst || !dst->dev || dst->dev->ifindex != binding->dev->ifindex) {
++	dst_dev = dst_dev_rcu(dst);
++	if (unlikely(!dst_dev) || unlikely(dst_dev != binding->dev)) {
+ 		err = -ENODEV;
+-		goto out_err;
++		goto out_unlock;
+ 	}
+ 
++	rcu_read_unlock();
+ 	return binding;
+ 
++out_unlock:
++	rcu_read_unlock();
+ out_err:
+ 	if (binding)
+ 		net_devmem_dmabuf_binding_put(binding);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.1.838.g19442a804e-goog
+
