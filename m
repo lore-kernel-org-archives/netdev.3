@@ -1,149 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2DE7494
-	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Received: from chinatelecom.cn (smtpnm6-08.21cn.com [182.42.159.130])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D153E23EAB8
+	for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 07:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.159.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761637163; cv=none; b=Nl8dp26E/kDcpN6nO6vszzXWwQqe7+yduRWQYG8IIPn74VU01fGX0vmFr8tR9Y8tmyR/77XwVvqYP3dUuNoahD+xublFH9YXhQd3x8yovgB7hZkaLFjCI5qCLnwPFLwIaHS5a43zAmGWP5K9XOM2vQfQUxXvzS4EAqaJUsgGiOY=
+	t=1761637327; cv=none; b=ocesoH4rOld4FjO6iheKuEH/D0C9i5Q14ojoTB1pEl5P8w9hHhhEtvlPlVub6QGSrHgKNwsJjVkJmfedQGNSqKUlaOgm1w8o3oqSOyjy5UIlGIzTkTh0y/OIukgCA2U1l0jSktrv9L+laPEhMi6pf3mVpSZv14N+fSFLV1l71ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761637163; c=relaxed/simple;
-	bh=UjeRE3qXwZy7hxTb+9+ah7JknOmhwGh2ga0aK+Okz4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHx32rUYJhv5xKoVLAZQfHoH+zi8+WQ9D67mLD9zxrBaFgbwUTQTdxCUHfnFAJ8fpg7xh3VS/xKUYLssSfBIQh6acGDPynDXkQ/jnJAGSLXbfh2EAznYnQNi+4jKfBpo7iQ7SFyyTt/MgXlRWm6sXxdazdAIW06x4CA/7TNn3OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JLFyB+kF; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JLFyB+kF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761637161; x=1793173161;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UjeRE3qXwZy7hxTb+9+ah7JknOmhwGh2ga0aK+Okz4o=;
-  b=JLFyB+kFloC9Avq1vGZxHZ/xIYhfZiG12EDJ6zoH1H6ucm7xMAgbR40I
-   4DhW0ZmUnWFUQtfl2SXBcdMpiBuNucmJZ/9G0Z+BWlM2J561i0jOZ0xP2
-   gsNKTfAnrUG54iot1Vx19e7NfjtsJGcwaK3CtcNX01lIFpKNk2cbOhPbC
-   WS+BxtpLoQkWYkdd2R7ynPAJLiBRqO7bME/FpnX328hNDN13tNUkaXchw
-   CJv5FOuVM7nXAWGvBqoIpRBVYD/7+Zo8/RbcVi9T4PEL5R1hCpzVSYNG5
-   a+UbIMWTuyKY6JUoMIrA30d42hf93ByVtH+YQLO7gpfXd2tjjtqnaBbww
-   Q==;
-X-CSE-ConnectionGUID: 7PdF2zfJRjmKIUje3z66kA==
-X-CSE-MsgGUID: XAHa99g+TEmUd5agPKIOEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="75174225"
-X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
-   d="scan'208";a="75174225"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 00:39:21 -0700
-X-CSE-ConnectionGUID: Jb/ny1/iRRK2VB41FAA5DA==
-X-CSE-MsgGUID: 12JVztAaRyCIq/i79Fp5vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,260,1754982000"; 
-   d="scan'208";a="185358734"
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by orviesa008.jf.intel.com with ESMTP; 28 Oct 2025 00:39:17 -0700
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	pmenzel@molgen.mpg.de,
-	aleksander.lobakin@intel.com,
-	przemyslaw.kitszel@intel.com,
-	jacob.e.keller@intel.com,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Subject: [PATCH iwl-next v2] ice: use netif_get_num_default_rss_queues()
-Date: Tue, 28 Oct 2025 08:06:34 +0100
-Message-ID: <20251028070634.2124215-1-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1761637327; c=relaxed/simple;
+	bh=606YGgEfIlHDfi6pSUV3ijYpXH8pd+wQknKkEyhPtXs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lp2JX6Q2eG0WjsmRMHijYQ/xvN7EwWkyBhT/wIIm+edSErvEG01sLZM4aL5yVNpClm2GOHp8mUlQi9hSI9ZjIJrJt4tka+BX+EOxO3VbGVOVhHZYMCF5L17djZx/mWBLT/thaoa4LwDPfyt06kuLDEHWK4f0OLsHp5jEkajt2so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.159.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
+HMM_SOURCE_IP:192.168.137.232:0.230931900
+HMM_ATTACHE_NUM:0000
+HMM_SOURCE_TYPE:SMTP
+Received: from clientip-27.148.194.68 (unknown [192.168.137.232])
+	by chinatelecom.cn (HERMES) with SMTP id B3B2D904FDDA;
+	Tue, 28 Oct 2025 15:34:51 +0800 (CST)
+X-189-SAVE-TO-SEND: liyonglong@chinatelecom.cn
+Received: from  ([27.148.194.68])
+	by gateway-ssl-dep-79cdd9d55b-2nzwx with ESMTP id 3256557da404483dac94efec0516385a for kuba@kernel.org;
+	Tue, 28 Oct 2025 15:34:53 CST
+X-Transaction-ID: 3256557da404483dac94efec0516385a
+X-Real-From: liyonglong@chinatelecom.cn
+X-Receive-IP: 27.148.194.68
+X-MEDUSA-Status: 0
+Sender: liyonglong@chinatelecom.cn
+Message-ID: <44342ead-92c9-4467-b5e6-86076684e2ee@chinatelecom.cn>
+Date: Tue, 28 Oct 2025 15:34:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] net: ip: add drop reasons when handling ip
+ fragments
+To: kuba@kernel.org
+Cc: netdev@vger.kernel.org, edumazet@google.com, horms@kernel.org
+References: <1761532365-10202-1-git-send-email-liyonglong@chinatelecom.cn>
+ <1761532365-10202-2-git-send-email-liyonglong@chinatelecom.cn>
+Content-Language: en-US
+From: YonglongLi <liyonglong@chinatelecom.cn>
+In-Reply-To: <1761532365-10202-2-git-send-email-liyonglong@chinatelecom.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On some high-core systems (like AMD EPYC Bergamo, Intel Clearwater
-Forest) loading ice driver with default values can lead to queue/irq
-exhaustion. It will result in no additional resources for SR-IOV.
+Hi Jakub,
 
-In most cases there is no performance reason for more than half
-num_cpus(). Limit the default value to it using generic
-netif_get_num_default_rss_queues().
+Thank you for your response. I'm sorry for the late reply.
+‌My email system seems to have some issues, and I loss  your reply msg.
+I get your response information from web page: https://lore.kernel.org/netdev.
 
-Still, using ethtool the number of queues can be changed up to
-num_online_cpus(). It can be done by calling:
-$ethtool -L ethX combined max_cpu
 
-This change affects only the default queue amount.
+> Personally IDK if this is sufficiently semantically significant
+> to warrant merging. FRAG_FAILED means "unidentified error during
+> fragmentation"? ip_frag_next() only returns -ENOMEM and
+> SKB_DROP_REASON_NOMEM already exists, so just use that.
 
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
-v1 --> v2:
- * Follow Olek's comment and switch from custom limiting to the generic
-   netif_...() function.
- * Add more info in commit message (Paul)
- * Dropping RB tags, as it is different patch now
----
- drivers/net/ethernet/intel/ice/ice_irq.c |  5 +++--
- drivers/net/ethernet/intel/ice/ice_lib.c | 12 ++++++++----
- 2 files changed, 11 insertions(+), 6 deletions(-)
+Yes, I agree. use NOMEM instead of FRAG_FAILED.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
-index 30801fd375f0..1d9b2d646474 100644
---- a/drivers/net/ethernet/intel/ice/ice_irq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_irq.c
-@@ -106,9 +106,10 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
- #define ICE_RDMA_AEQ_MSIX 1
- static int ice_get_default_msix_amount(struct ice_pf *pf)
- {
--	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
-+	return ICE_MIN_LAN_OICR_MSIX + netif_get_num_default_rss_queues() +
- 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
--	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
-+	       (ice_is_rdma_ena(pf) ? netif_get_num_default_rss_queues() +
-+				      ICE_RDMA_AEQ_MSIX : 0);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index bac481e8140d..e366d089bef9 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -159,12 +159,14 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
- 
- static u16 ice_get_rxq_count(struct ice_pf *pf)
- {
--	return min(ice_get_avail_rxq_count(pf), num_online_cpus());
-+	return min(ice_get_avail_rxq_count(pf),
-+		   netif_get_num_default_rss_queues());
- }
- 
- static u16 ice_get_txq_count(struct ice_pf *pf)
- {
--	return min(ice_get_avail_txq_count(pf), num_online_cpus());
-+	return min(ice_get_avail_txq_count(pf),
-+		   netif_get_num_default_rss_queues());
- }
- 
- /**
-@@ -907,13 +909,15 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
- 		if (vsi->type == ICE_VSI_CHNL)
- 			vsi->rss_size = min_t(u16, vsi->num_rxq, max_rss_size);
- 		else
--			vsi->rss_size = min_t(u16, num_online_cpus(),
-+			vsi->rss_size = min_t(u16,
-+					      netif_get_num_default_rss_queues(),
- 					      max_rss_size);
- 		vsi->rss_lut_type = ICE_LUT_PF;
- 		break;
- 	case ICE_VSI_SF:
- 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
--		vsi->rss_size = min_t(u16, num_online_cpus(), max_rss_size);
-+		vsi->rss_size = min_t(u16, netif_get_num_default_rss_queues(),
-+				      max_rss_size);
- 		vsi->rss_lut_type = ICE_LUT_VSI;
- 		break;
- 	case ICE_VSI_VF:
+
+> FRAG_OUTPUT_FAILED means something failed in output so it'd be more
+> meaningful to figure out what failed there, instead of adding
+> a bunch of ${CALLER}_OUTPUT_FAILED
+
+The skb send failed in output() is frag skb, The skb droped outside of output() is the
+origin skb. I think if we want to get detail drop reason we can use kfree_skb_reason
+in output() (maybe anther patch set in future).
+In my opinion, drop reason of the origin skb outside of output() can be not so meaningfull.
+
+
 -- 
-2.49.0
+Li YongLong
 
