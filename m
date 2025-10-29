@@ -1,40 +1,37 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EACB2E5B1D;
-	Wed, 29 Oct 2025 19:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9537264F96;
+	Wed, 29 Oct 2025 19:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761766151; cv=none; b=lJSpHTANw5A0zRwJBEL5asU/PhpJ6pSs9zGgloEzkZid1YbSxFRbMo6CVVQbGTSrYsBnNoF4v+7k/aUZLKaDaJCNM9y7JS6HuoZA3+CDYQWRHEp15mKwsfa8ArvTkoRHBFakp1+7gXFjw4iPWuD/HCCDiJxYGslu4l5S3juQqRk=
+	t=1761767163; cv=none; b=JWDzJJEycwRavx0srq0Ii5KOpp9K8bUhpi1wdAottE/rhaDzN6dlW1ihKD7UmQL+xUh3m02tgAdjaFBXVy6/QAK3RVyR7ikZ0G5Y9aZo4RsPViHZwZiid344HiKdbezUxm/Ik3Tkp3qrxSO9i+usXSOFFPI+bRlds1PE4Y3JFO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761766151; c=relaxed/simple;
-	bh=cn6+LSWhqCb3Iyby4JKZcVRtc6O/oEK/B7/tN5XpHJ8=;
+	s=arc-20240116; t=1761767163; c=relaxed/simple;
+	bh=8ZESPlQtZcsBAgAmsnbAeE+zEGnT9bl/r8Ew2Z2G2v8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=unEN11CpVyXUSq3vOXeYfbTp1Yjcd8ojF8TRGX/X3wRQHjVe5GZJj7Qn1CZMfMNx7LLpTT28Iu2TTGJgucLf82dgSubsVjLZmVOTsK11ZbX6QjO4N+qvaSJ0vqnA5HhXA7SX/tuKb/jZbX/+Hja7JIZ2oSl0DtN5fVgXNozhGJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=er6dy6F0; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=Onrsa2ghxxN1SQmzI74dy7h2SfcXV3vm5Jf2p7p+9bdc4xS8Mt2FkAxqHL6m18n6I5BQvk2C+iu36tM0dD6JXRrMiroQrep1aDI3l6CdPsMK7lbHyzj0EIofXD7+qPdZYMJjdsvWYkxkmOQBMJQ/9x+Iw1L/nqoRKt53B+INNiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GJGexf90; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="er6dy6F0"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C746E1A1748;
-	Wed, 29 Oct 2025 19:29:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 89565606E8;
-	Wed, 29 Oct 2025 19:29:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B7CC4117FD242;
-	Wed, 29 Oct 2025 20:28:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761766144; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=ScvcTy8ozlqmT8s8gsLtsWpW/tRbjYKzmG+MWRwqsow=;
-	b=er6dy6F0AkewbZOEtLIUH1uP7pet6Cc/msERkGQj89coxq5gPxp79ydF7hrtmMaQwPae2e
-	uKdCy801xdNppwVzk/dnqIlmlEooSk/olx+i977JcRUAOAZsVebEvZLagVUJ0GR5gFCoYj
-	1wG5ZcCJvB5MbkqzdG+DEVfkE9enbz3rcHSu3T8DRrGQ5IEFBbaXpBi2/WIWrY/8uFjC58
-	uDQ6O6z2aTI7krrSv6/9WHoGrx8Gg1HrDd7uxWjdQuLgdxX5Gm0kERnj+x6t7h14gCgG5w
-	xU5A0dKajRosGpPsX+Autsu+EYwon2yf2lb9QOA6VLsOi9U/q565lvcFW9s9fQ==
-Message-ID: <45ebd2eb-9b09-43fa-a451-29299b33f06a@bootlin.com>
-Date: Wed, 29 Oct 2025 20:28:51 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GJGexf90"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=WlTdzwiNGenyxsQZTkiMPfopzh3sq++Vf+suBydGokU=; b=GJGexf90/W6Y2IqG/dx6WHeJEc
+	b9etHmb08lbn6zIVvLkvF1YVg5g6httyzqpn+Cz6IgM5UyYKTqetymqLQoIjPtLg3AEYejFsxqN1F
+	5sOD97DiFZLtcq7g0YqwJwg0K71+j/OOk3td1fWlo6uBXGODe2LxbRmADW6dkhaqRNaSGgxvDKuIY
+	M4/eHf/H/JWpyunn7Xzw0Oupqc7ge0FtInmzQNb5LVQxYHwM7hwgJdHtYSMtQUxcNvwqQcbp08F4v
+	Ksd/uu3+FaLto/i9sF17YytaApQSUP9BTDk6BG+6zgqIBHf4W8cIcs4W486HpWKE1/hwv+0zNNW/s
+	LbdNRhCA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vEC7K-00000002eQm-3dWp;
+	Wed, 29 Oct 2025 19:45:58 +0000
+Message-ID: <94b517b7-ff20-463b-a748-12e080840985@infradead.org>
+Date: Wed, 29 Oct 2025 12:45:57 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,126 +39,107 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] net: phy: Add helper for fixing RGMII PHY mode
- based on internal mac delay
-To: Inochi Amaoto <inochiama@gmail.com>, Han Gao <rabenda.cn@gmail.com>,
- Icenowy Zheng <uwu@icenowy.me>, Vivian Wang <wangruikang@iscas.ac.cn>,
- Yao Zi <ziyao@disroot.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- sophgo@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, Yixun Lan <dlan@gentoo.org>,
- Longbin Li <looong.bin@gmail.com>
-References: <20251028003858.267040-1-inochiama@gmail.com>
- <20251028003858.267040-3-inochiama@gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH] docs: kdoc: fix duplicate section warning message
+To: Jacob Keller <jacob.e.keller@intel.com>, Jonathan Corbet
+ <corbet@lwn.net>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251029-jk-fix-kernel-doc-duplicate-return-warning-v1-1-28ed58bec304@intel.com>
 Content-Language: en-US
-In-Reply-To: <20251028003858.267040-3-inochiama@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251029-jk-fix-kernel-doc-duplicate-return-warning-v1-1-28ed58bec304@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hi Jacob,
 
-On 28/10/2025 01:38, Inochi Amaoto wrote:
-> The "phy-mode" property of devicetree indicates whether the PCB has
-> delay now, which means the mac needs to modify the PHY mode based
-> on whether there is an internal delay in the mac.
+On 10/29/25 11:30 AM, Jacob Keller wrote:
+> The python version of the kernel-doc parser emits some strange warnings
+> with just a line number in certain cases:
 > 
-> This modification is similar for many ethernet drivers. To simplify
-> code, define the helper phy_fix_phy_mode_for_mac_delays(speed, mac_txid,
-> mac_rxid) to fix PHY mode based on whether mac adds internal delay.
+> $ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
+> Warning: 174
+> Warning: 184
+> Warning: 190
+> Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
+> Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
+> Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
+> Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
 > 
-> Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-
-Name may be a bit long, but I'm not the best at naming stuff :)
-
-I agree with the logic of that helper,
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
+> I eventually tracked this down to the lone call of emit_msg() in the
+> KernelEntry class, which looks like:
+> 
+>   self.emit_msg(self.new_start_line, f"duplicate section name '{name}'\n")
+> 
+> This looks like all the other emit_msg calls. Unfortunately, the definition
+> within the KernelEntry class takes only a message parameter and not a line
+> number. The intended message is passed as the warning!
+> 
+> Pass the filename to the KernelEntry class, and use this to build the log
+> message in the same way as the KernelDoc class does.
+> 
+> To avoid future errors, mark the warning parameter for both emit_msg
+> definitions as a keyword-only argument. This will prevent accidentally
+> passing a string as the warning parameter in the future.
+> 
+> Also fix the call in dump_section to avoid an unnecessary additional
+> newline.
+> 
+> Fixes: e3b42e94cf10 ("scripts/lib/kdoc/kdoc_parser.py: move kernel entry to a class")
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+> ---
+> We recently discovered this while working on some netdev text
+> infrastructure. All of the duplicate section warnings are not being logged
+> properly, which was confusing the warning comparison logic we have for
+> testing patches in NIPA.
+> 
+> This appears to have been caused by the optimizations in:
+> https://lore.kernel.org/all/cover.1745564565.git.mchehab+huawei@kernel.org/
+> 
+> Before this fix:
+> $ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
+> Warning: 174
+> Warning: 184
+> Warning: 190
+> Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
+> Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
+> Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
+> Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
+> 
+> After this fix:
+> $ ./scripts/kernel-doc -Wall -none 'include/linux/virtio_config.h'
+> Warning: include/linux/virtio_config.h:174 duplicate section name 'Return'
+> Warning: include/linux/virtio_config.h:184 duplicate section name 'Return'
+> Warning: include/linux/virtio_config.h:190 duplicate section name 'Return'
+> Warning: include/linux/virtio_config.h:226 No description found for return value of '__virtio_test_bit'
+> Warning: include/linux/virtio_config.h:259 No description found for return value of 'virtio_has_feature'
+> Warning: include/linux/virtio_config.h:283 No description found for return value of 'virtio_has_dma_quirk'
+> Warning: include/linux/virtio_config.h:392 No description found for return value of 'virtqueue_set_affinity'
+> ---
+>  scripts/lib/kdoc/kdoc_parser.py | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+> 
 
 > ---
->  drivers/net/phy/phy-core.c | 43 ++++++++++++++++++++++++++++++++++++++
->  include/linux/phy.h        |  3 +++
->  2 files changed, 46 insertions(+)
-> 
-> diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-> index 605ca20ae192..4f258fb409da 100644
-> --- a/drivers/net/phy/phy-core.c
-> +++ b/drivers/net/phy/phy-core.c
-> @@ -101,6 +101,49 @@ const char *phy_rate_matching_to_str(int rate_matching)
->  }
->  EXPORT_SYMBOL_GPL(phy_rate_matching_to_str);
->  
-> +/**
-> + * phy_fix_phy_mode_for_mac_delays - Convenience function for fixing PHY
-> + * mode based on whether mac adds internal delay
-> + *
-> + * @interface: The current interface mode of the port
-> + * @mac_txid: True if the mac adds internal tx delay
-> + * @mac_rxid: True if the mac adds internal rx delay
-> + *
-> + * Return fixed PHY mode, or PHY_INTERFACE_MODE_NA if the interface can
-> + * not apply the internal delay
-> + */
-> +phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-> +						bool mac_txid, bool mac_rxid)
-> +{
-> +	if (!phy_interface_mode_is_rgmii(interface))
-> +		return interface;
-> +
-> +	if (mac_txid && mac_rxid) {
-> +		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-> +			return PHY_INTERFACE_MODE_RGMII;
-> +		return PHY_INTERFACE_MODE_NA;
-> +	}
-> +
-> +	if (mac_txid) {
-> +		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-> +			return PHY_INTERFACE_MODE_RGMII_RXID;
-> +		if (interface == PHY_INTERFACE_MODE_RGMII_TXID)
-> +			return PHY_INTERFACE_MODE_RGMII;
-> +		return PHY_INTERFACE_MODE_NA;
-> +	}
-> +
-> +	if (mac_rxid) {
-> +		if (interface == PHY_INTERFACE_MODE_RGMII_ID)
-> +			return PHY_INTERFACE_MODE_RGMII_TXID;
-> +		if (interface == PHY_INTERFACE_MODE_RGMII_RXID)
-> +			return PHY_INTERFACE_MODE_RGMII;
-> +		return PHY_INTERFACE_MODE_NA;
-> +	}
-> +
-> +	return interface;
-> +}
-> +EXPORT_SYMBOL_GPL(phy_fix_phy_mode_for_mac_delays);
-> +
->  /**
->   * phy_interface_num_ports - Return the number of links that can be carried by
->   *			     a given MAC-PHY physical link. Returns 0 if this is
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 3c7634482356..0bc00a4cceb2 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -1813,6 +1813,9 @@ static inline bool phy_is_pseudo_fixed_link(struct phy_device *phydev)
->  	return phydev->is_pseudo_fixed_link;
->  }
->  
-> +phy_interface_t phy_fix_phy_mode_for_mac_delays(phy_interface_t interface,
-> +						bool mac_txid, bool mac_rxid);
-> +
->  int phy_save_page(struct phy_device *phydev);
->  int phy_select_page(struct phy_device *phydev, int page);
->  int phy_restore_page(struct phy_device *phydev, int oldpage, int ret);
+> base-commit: e53642b87a4f4b03a8d7e5f8507fc3cd0c595ea6
+> change-id: 20251029-jk-fix-kernel-doc-duplicate-return-warning-bd57ea39c628
+
+What is that base-commit? I don't have it.
+It doesn't apply to linux-next (I didn't check docs-next).
+It does apply cleanly to kernel v6.18-rc3.
+
+and it does fix the Warning messages to be something useful. Thanks.
+
+We'll have to see if Mauro already has a fix for this. (I reported
+it a couple of weeks ago.)
+If not, then this will need to apply to docs-next AFAIK.
+
+And not a problem with this patch, but those Returns: lines for
+each callback function shouldn't be there as Returns:. This is a
+struct declaration, not a function (or macro) declaration/definition.
+
+Thanks.
+-- 
+~Randy
 
