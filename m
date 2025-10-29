@@ -1,198 +1,412 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013051.outbound.protection.outlook.com [40.107.159.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1F02F0692;
-	Wed, 29 Oct 2025 02:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761703299; cv=fail; b=Tw9q5xugPhJ/5Ab7Zxlaog+ba+aKuO/W6OmQigMJETyLWv//Og+7ZNOxPJu99P6VK2tU0XCcncnf71fszt7kCtQ0TaFd092mCZczHKjItOMr4euKv5LWYFRMzcOvbeQnc1DwW+V5whH+T3rSVqejqYd7WSihDGlIHCvmekiYqV4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761703299; c=relaxed/simple;
-	bh=y5AzvqJBGVK2JRjUw2Ta5A5ORE70zYsTcrawD7NIVfY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NNDibbd1eLwRGBsHapxRilitqf/6JrE9wXZvxXO1tLjCkpLdVJARzC/ivgEA4/LkHpYjD1c0ew7hArvuzbp2OeyTCOLrKNDot0pfeIqQ47xVY96UFHkhtefSCOU2XMO6sSZ9Y8gJPtbo8Q7y41bDOlrkTrJghgBIMcdNovYI32Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ai6wzg1Y; arc=fail smtp.client-ip=40.107.159.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017EA26FD9A
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 02:04:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761703473; cv=none; b=ImOOeAOjXKFQ6iBQ+DDkl826HyK4b9Vfe+SFZ9kzkoC4/BaWVoyB57cH0m8/0S6cil6bW0G+tvjvc7qVwgdOBA3yD+3EvxWr8Y06cSZyqMKrpwJh8Wd4WW/I7xwHti0Mdj8Q2T9Qlg0SyL0JZtWLVLs3RnPaUpuDWiy9YpHI7AU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761703473; c=relaxed/simple;
+	bh=ic2o7D44v91Fm7913b+yMMXAS1NcU+UDnTWA88Wz5Zg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nrqDpVm5mTF2jCCT7rcmzJaewDrzJxqzMxd4n/xPB5kQQfDMPEuy1McHX31MkCXyEME9yL6mNysqRnbAvE+WdRclMNu/pDUqhUVnSPbOV8B0jyqJIrmNht/6/THywW636GmXWNtxWCN0a9ygf3DYtYcEvE3V0OReiSoPb5jksQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o8JVWXpv; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ai6wzg1Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q3y8Bx1Dr0fJa3bFECi0vhOha13MKT+2yFz6BMANMhoqs0kuVOxH7sN9iikMM7Vgc4vewLMA7Nh+8zvH7XSJtf4P7SEpiepD3FzFtWcs2AWO1RzfVAzHvvEksEXU+G7yUJ4iWlLFITUzJ6hwIxUwDf05BvyQlmxN/GAYttTEGQ5hTP12I3PFkQ4DoyRldLL9DGwZ+BPSZ06W1bJ6Z8nkOGTSpiafIDdjBzxu0AHVbQssky+1ytRjVJW9g2f0EHzY7/4ai7uiPqA6IK8wumB6VQojYjGt5mzzlvaWW3U6z4JoLRg/9dOsP6JqKNHa7lzDOMAvfMbm77DtlMbGsw90kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3tIZYSwu3uAvy+ROWhM3Y7k5iPFcOt7S4qI/UVNOhbo=;
- b=WL/7w+er86e8edP5aLN6PNTuDLumCoU4Lv6QnP0B9fiO2L17OrgsrBbPxURjXXHprOZkML86qv0i8BB7I1ZKtQMEYyaK6lFaGHWGUIRvmAMnJ5qjJjkUY538LRgiWuEMRXkpfwTbPgsByMwF4DmSwme/wNcw9bG2f1gZHwO6/UAaOlWQq/NU0PGlmKjngAzqqdE1LNiPzRqT/bYMdIC/JIZ8gh8YzTWwUvoMVn/1w+LwJyiH0gzAs8t3pS/Jr2ThXZ9yzYjIH6RVSPy3lGOEws1FmjZPCpcbLCOPOEJLeMILQbO/tZXI7iZA/QHOWa2L6QXeWBly6d4IH7/nHM2zsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3tIZYSwu3uAvy+ROWhM3Y7k5iPFcOt7S4qI/UVNOhbo=;
- b=Ai6wzg1YxFzdhb8I469tGn1yCLQfLcRRJG3oSya37+JOXGUNJdxABdaVZ97NbD2rhcxViIUstwIXO0Y1RFOmq5Id3MznqJZhnK9hBqwF1hOTA3xTdoAYNZE3KBT/vmbwzTFyFmgyaDx+LMXN7IyZdEOP+m4xeUmdJyuHznAtPrQnwHf+WIiDfRMiJApqlnopGLVOPx7vMwa4rGTa9xeo5C51o6+4bGphG/FYmqg7zKHyG9pizGeHaoGGtw0L8fGvEd4EoDrlYSc8waqe8X/d9ptRlx9iNBXyQ9ROsOOnACxi5ek0CyFb3XD6QCkKAd5J3W/uer4hVzN+KCii8pvtVw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DU4PR04MB11315.eurprd04.prod.outlook.com (2603:10a6:10:5d8::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Wed, 29 Oct
- 2025 02:01:34 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9253.018; Wed, 29 Oct 2025
- 02:01:34 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v4 net-next 6/6] net: enetc: add standalone ENETC support for i.MX94
-Date: Wed, 29 Oct 2025 09:39:00 +0800
-Message-Id: <20251029013900.407583-7-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251029013900.407583-1-wei.fang@nxp.com>
-References: <20251029013900.407583-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0039.apcprd02.prod.outlook.com
- (2603:1096:4:196::9) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o8JVWXpv"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-592f0dba1e6so3809e87.0
+        for <netdev@vger.kernel.org>; Tue, 28 Oct 2025 19:04:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761703469; x=1762308269; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kajl/psTwo1g51TJY+gh/9JVh7qFhmWY8O7ADxUSNL4=;
+        b=o8JVWXpv5AzRxkcmd5mz5OLE+9fR/MDq2JVtGQZ7cvlq1Ntvs85bV2gV74Bw+aSnea
+         r/gNPGbeDuSNvO5EDfKbTupyqyUAS1952znTZLVx+3d98RaYU2fS2yeSxJhELrY3lWx/
+         ODNhaAGbz+UjnYmgNg+6Qm2NETYhetZxJl1PeS8HHvMeOgnZzssAQSOY7SPCoaVIuiw4
+         HeHTgMQizJbTFE8CN+MI/JUmuLDoAeHPAlLlTs71wmD5OnrbCUrNythc6AJY4Fd56h3N
+         W+6AitCHFHTFu44VEPCLo+VZVQ5wBUNzN/RVJmuw6X8djZA3VNqEMdxYaW6hanPxWQQj
+         pnhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761703469; x=1762308269;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kajl/psTwo1g51TJY+gh/9JVh7qFhmWY8O7ADxUSNL4=;
+        b=e3NvPmbf1880tmMeLV2Vc7A27+qnu1MvTSF1KUQY9xwDA52JUJ74LW3eFQ6uY8pv+A
+         Lj/zWHd/0NbzY0ubsjevhG0bWCKCXkvSBsxVLZX5yU8L9TQ13iDjgOWqltkkU/HtsuUI
+         wJwTTCV2NOh2nY1yqlq3vbIkQqMfYjZ+V0T0TKEHDwgZBt2/ijSEvhvJGJhAtUui8klc
+         N2eEFctRIA2JG8vi7hTEnSRmwqMJVd8VVYst1KnsuudRfy490Wk1lx9WzLT8p6ysSpyG
+         gYDH6SZgGVB50sxDiTvVSPLf6Ee3z5H2mFjsA5YwltNI7rZs9ci4NBbSXxi0oxaK06Aa
+         tG1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVKW0/PTw3Lmr/thhUcm/pVReZoyP+m/nZIyc5ABBGsmnP+iUu9nfVj4hqn/nYLEv5WdH40iEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YximRhWJ9f29TXGXsRSQkEZ4JwaB+uXlxHBzGrwJukJJbYTfMR9
+	nqZZQye1EPCdy4tZSwh1ZNnGpc4RYTkIsDjSBYicWGNAXRLqyIFC73IynYSA1RjO2cuXnUDUj3R
+	ZCpmZlEI288QsqzEwT8sZJrcq13PCaxc2QPvYC70M
+X-Gm-Gg: ASbGncv9jqPFIQ+2qrR3cP5ZbM9ceAsH2AEFkye6G1qwwzfONivLJtZMSDJcsfKqPNd
+	UN6tUJzSah1BOurQ6Z0q3j/2uGqvC0deeTIfQkmVjRxfMd/PdcSyYgEVHSMIm1jD45OsAGHHA/O
+	saHXYnKm8vDgEWmllTA6f0wiqvz6oKj5NBLoy30LpRujrFxWZz0lOlJlj099lRi3KQx1IrToseW
+	uWJIqZZ4VC3V9nnJU2c7930PTWaWOWeFft9xYnXwE9kqMrKpKUjNqxqNB8SgIJF7DArNW/HGTP7
+	heXrRQ==
+X-Google-Smtp-Source: AGHT+IHKMV+AJY8Tb1LU+dA/Plrh7jg2FM20W+BAC6x22KvfJu0LccgTFCo8W+4hyXOzGtvDEYoQkgf67T6p75lMfXw=
+X-Received: by 2002:a05:6512:1343:b0:592:f589:b76e with SMTP id
+ 2adb3069b0e04-594133fa923mr141781e87.5.1761703468844; Tue, 28 Oct 2025
+ 19:04:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU4PR04MB11315:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03c896e7-6fb7-4f26-62f4-08de168f1660
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|7416014|19092799006|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?S3hP11j1Rt3+apEmPI4BAQ0cCLqgegdlE3vBVEHjn9hP3cZ8eGW2Sr85V/YF?=
- =?us-ascii?Q?DqnDMyCK0pAoE6uQDt7BC4wwCOQN4QFLsO6RWGqytFVkvNNbgpoMSeqMCfe7?=
- =?us-ascii?Q?odhZYKVyScOs4vS7YjB8mV7SC+cKV2QI11vBLQGONE46rx7xdYwFxTDR3Xum?=
- =?us-ascii?Q?AtUHVS3uUA8BeAhWqgFQS9zwUcbB78yfZIO6qlVWylTpJUy+daG4OtxnxY/g?=
- =?us-ascii?Q?EYfPFOUSwMyntcG/53NhgnBqpEVnOd7udtWjF9RuDx41eJRCOz9EWY3U7B/m?=
- =?us-ascii?Q?dC8gAlB2isKeUDs2MzjN6hLV1k0nFHQu5yy5XfX0mBA2JwW6BqSu2xc3S/cH?=
- =?us-ascii?Q?ze5onwOFPvCqmVn/bhdG9Dosg7QEQbXzFDQMdhL5O0okFl9UgykyrkM2JWjI?=
- =?us-ascii?Q?uMR46kGWfJwTmrzDJ1+BGK2Nc8fW2Ou8Mrd9L+DgG+boTejGjnr3UeA/ibrl?=
- =?us-ascii?Q?qxl4oIklc5xEr/Np3wHkQtSliy9WIeMAlcgxC1mHNH93trD5dLuu17Q6suzn?=
- =?us-ascii?Q?MR5oof/C2/5Z6YoHI+xNpXK2nWMh1znGS2+626NniTe7szweG2cU9/If8jWE?=
- =?us-ascii?Q?XcP7XgTjNkAWb43JAg6X4TLTagT4X3S1IIB8tA0ZxOeh4Y3KiesqKf99RK3l?=
- =?us-ascii?Q?v+a57Ic6V1ua/WrClDupF53uOvpQ/pq26Pk+BdTyUCLd+ruegFPjCD3cMFHz?=
- =?us-ascii?Q?O7WexC+u/ycWK3gqgbPw9Uuo6Sx9Y1FD28FVASZzxn08QqeA+v4tv5Ynv25S?=
- =?us-ascii?Q?vNxXIlgUwBj77cTn9qKRq20qcm1cXNYFJB1L9mixQkbOCpUX6XROU+mX51/G?=
- =?us-ascii?Q?fFenAwqYgKI50iMt38Qd/hwtDr+Dt7QucQQi6Bf2z8//LKAp1WFdC1wrgIZ2?=
- =?us-ascii?Q?GiHafgnr5s7ufQauJ6CPYzAzYYPS6IhOhCMZlmmUe4INy1lykNOy9rvYGRqa?=
- =?us-ascii?Q?ZbKhcijqOyK1KDVcbQ4Oq7fiKZ3APBfm44VA06kez3egobuDegEiAbhpytzU?=
- =?us-ascii?Q?ZJ9aRv8nmmlM0j3f7AiLPALCawNSsXA38XgICBwIZ5K7785oidLu2z464zFh?=
- =?us-ascii?Q?/TOk5qVcDGC4Vym3mKZUdGwotx43a0jwIzshLRcV3rUqFhuLzTHb8LZMv4mR?=
- =?us-ascii?Q?vHFIW9pu32sXEEZMQGcXBLPWhxeSqjqdKWj2hslIFpltpjMvPFcdkoFA6AU9?=
- =?us-ascii?Q?w78/fUUnVkDRv7sOlRDiwpDVq3mAyj6BzDEJb7Y4W/o0OXFIkyUkKRAqnc2m?=
- =?us-ascii?Q?vBuiTFsw6rgAx5U1Yu+esGE8q2NLLKDnyqNFpnxSAXsv3Oy8KhNOgT1RpZlD?=
- =?us-ascii?Q?ynIz+vgQsgTB9iRjmAMhPuMk0UdAT8o3IhyNf7iZCgU7n84Js30PiEW2IlpV?=
- =?us-ascii?Q?n7CczwaDINk5Wn2+2VO+ZjMHbEwBeFTl8DC/ZRcZWkYNoqF4kjpkcxlpJ1q2?=
- =?us-ascii?Q?t2NZM8nAn1Y/xQ+iBZKPFUhLwUxzpuFOayuytyGpVSY1Ubhd9sfS1eYAIwDv?=
- =?us-ascii?Q?Y1o0rYOuI8CuLlF7/j4UFo3tv8bGaNPRzXYt97KGHeHofMI1AkYBlCyrvg?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(19092799006)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dfsAXE9aHGha/04xMYYSvCUT95gN8ZJNeEwlHEQfQ+s6fnur5/T9Asy3sPWL?=
- =?us-ascii?Q?Hs3dg6MxStmAW11WlaBKNPikItG8Xjnk15xHi6pZcUnz45mJZb6IGxjnlzs8?=
- =?us-ascii?Q?6/UprAJXtcmIgHyyhHwYfkr/Ur2bqbkp7mog4YtvYas0zD2Iah013z9Atc+h?=
- =?us-ascii?Q?DodpfFQuQ/7Vbe3W8oIXPEC0SXhbdfNzrsH/VuOmSeAykIQzTWNVZMTJix+l?=
- =?us-ascii?Q?uWAmf7X4QOyR88U5GjqXEkDZMKvLJBod1d1WFz/h0LzkUZ4vnXDFtAOSvvim?=
- =?us-ascii?Q?SIJoYIU5A9q3QBJS08xmnbIMtdCo0pEPsjsoJ6Y2ElZ19S3gRAJeLIVamo88?=
- =?us-ascii?Q?vB4NBstURCkyqsKWaSd4iOIMOrCKH6WGkjH4awhvusiPUzWlbbp30uD3k0mf?=
- =?us-ascii?Q?Avw7zUQjXDUhN49Nh0SXtiepyGVrd6SnQHZL5QPutgdaH8kBidY4vAsWvtOc?=
- =?us-ascii?Q?ICaqdObNj/qfxgwrybkddZPqt5jPnaPNHeNsbEoWFyJWyNtbkpIn4w5T0VUS?=
- =?us-ascii?Q?ww4KphKQwVGyfKGtxSwTWXxuvWLtTYAF51acZifE1Ab2/mO1LZTVFFVSx2+V?=
- =?us-ascii?Q?XHvjwIl2FNji00BixtGEOz99jg0QZMi1rcY+Z3KtxRLjhVYwLCZpifzIIm5l?=
- =?us-ascii?Q?th/TA2xOP8lM3wxLmfmknW/T+VjCaYJPrHChoOxQZpwdAme9j6iuxlJ97bBt?=
- =?us-ascii?Q?3BbeCDDsW8SHdZFc6uOe2/DEbz4DEU+wEpAVHtEd9nqBebbzA1xR3kyggGhm?=
- =?us-ascii?Q?k4dILgPA9l3pgFP5SC6sw90hu6JrZUBvbxBqXj6X3tPEqxOKp1QSHkn1TUrr?=
- =?us-ascii?Q?AMCIXPs2cC0/y4bmP5aiOght6OxE8ETNor7LPLBvBbJyDv0+gJK25kCGcTt4?=
- =?us-ascii?Q?DPJRTTG7vfnMWGtorJD8QXkD9lmnHDowIsmjMPAy3eqs9UAhSDcUA7NP48qQ?=
- =?us-ascii?Q?+7zNAZnddiSlca/v6cCiSgq4O8OAU0CqsW4jvMpuSMoO6TveKzkX/fB9bvGs?=
- =?us-ascii?Q?3S1oSOJgdisA13YpxvLHtXUwJ/ZqNRfcqsp37+wGVSnCxGm1KKTQmiHXCop2?=
- =?us-ascii?Q?DQv1+ZH12S7oVjJVJjYLxprjc/koMDVNIJbfzuWEyOSh8zkkTOCYeDE6kKyu?=
- =?us-ascii?Q?HeIcIQNNTee+tUOecDenk3LI0m2rHnm4wqBxLSSVpuIUPDw1eGlU3SJpixIA?=
- =?us-ascii?Q?UgkCq5KFk93yzAA8cfZGIM59K+AuwC3t7BLgRhid4z6GxMACSsXvxH5siU/h?=
- =?us-ascii?Q?5RcfhfSImAdHfVftKrnmHguyxK8cKq6UMtGqZH4cXpoXj+rw+ngH/l8L63Pn?=
- =?us-ascii?Q?0cAEtCEDDqz74/iaKQQ9jf1Y95E95phHL2eYl0+uNDaD2m4Lr0ngDkFJ+WVv?=
- =?us-ascii?Q?9a9pTvz6MxT3wFtEu7FDBcTncjbilAtJ+50o368i4nHRKuOZaHWiTN7h800L?=
- =?us-ascii?Q?eVB89LTuu3b6vvHGWIemtklo2P2qNpwf8lNCrYKqfR19xelDw0lhYXTpL25s?=
- =?us-ascii?Q?LsOZoxSEYKbrMy82btQ1ktsolvliSRTtvxNCJiTcCdNv4Qaa7yeZRTs+jnN2?=
- =?us-ascii?Q?dSa+WEwH8BYvyZijNAS+TcgKi6KDaOCX1BksvVAJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03c896e7-6fb7-4f26-62f4-08de168f1660
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 02:01:34.7076
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q7CDV8Qljbo4ddOw77p3sgulPGFwzYBuQOYXwAbA9av4X7thN6l4tFSWm3mAS6JQQuG+navLVh7Ib0nhhAWW9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11315
+References: <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-0-47cb85f5259e@meta.com>
+ <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-3-47cb85f5259e@meta.com>
+ <CAHS8izOKWxw=T8zk1jQL6sB8bTSK0HvNxnX=XXYLCAFtuiAwRw@mail.gmail.com> <aQEsYs5yJC7eXgKS@devvm11784.nha0.facebook.com>
+In-Reply-To: <aQEsYs5yJC7eXgKS@devvm11784.nha0.facebook.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 28 Oct 2025 19:04:15 -0700
+X-Gm-Features: AWmQ_bmOjxhyou1022t3z0xWpcvMg2iM9V4h5pa8C_Qo4CzjM-0T66_LWxjniHs
+Message-ID: <CAHS8izOnir-YHPH+R0cQzu1i0HD2Z0csW6qUT8FFXh1PkmHabQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 3/4] net: devmem: use niov array for token management
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Neal Cardwell <ncardwell@google.com>, David Ahern <dsahern@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The revision of i.MX94 ENETC is changed to v4.3, so add this revision to
-enetc_info to support i.MX94 ENETC. And add PTP suspport for i.MX94.
+On Tue, Oct 28, 2025 at 1:49=E2=80=AFPM Bobby Eshleman <bobbyeshleman@gmail=
+.com> wrote:
+...
+> > > @@ -307,6 +331,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+> > >                 goto err_free_chunks;
+> > >
+> > >         list_add(&binding->list, &priv->bindings);
+> > > +       binding->autorelease =3D true;
+> > >
+> >
+> > So autorelease is indeed a property of the binding. Not sure why a
+> > copy exists in sk_devmem_info. Perf optimization to reduce pointer
+> > chasing?
+> >
+>
+> Just stale code from prior design... Originally, I was going to try to
+> allow the autorelease =3D=3D true case to be free of the
+> one-binding-per-socket restriction, in which case sk_devmem_info.binding
+> would be NULL (or otherwise meaningless). sk_devmem_info.autorelease
+> allowed sock_devmem_dontneed to choose the right path even when
+> sk_devmem_info.binding =3D=3D NULL.
+>
+> ...but then I realized we still needed some restriction to avoid sockets
+> from steering into different dmabufs with different autorelease configs,
+> so kept the one-binding restriction for both modes. I abandoned the
+> effort, but forgot to revert this change.
+>
+> Now I'm realizing that we could relax the restriction more though... We
+> could allow sockets to steer into other bindings if they all have the
+> same autorelease value? Then we could still use
+> sk_devmem_info.binding->autorelease in the sock_devmem_dontneed path and
+> relax the restriction to "steering must only be to bindings of the same
+> autorelease mode"?
+>
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc.c         | 4 ++++
- drivers/net/ethernet/freescale/enetc/enetc_ethtool.c | 3 +++
- 2 files changed, 7 insertions(+)
+Hmpf. I indeed forgot to think thoroughly about the case where, for
+some god-forsaken reason, we have bindings on the system with
+different auto-release values.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 3ed0e04eb589..d5e5800b84ef 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -3749,6 +3749,10 @@ static const struct enetc_platform_info enetc_info[] = {
- 	  .dev_id = NXP_ENETC_PPM_DEV_ID,
- 	  .data = &enetc4_ppm_data,
- 	},
-+	{ .revision = ENETC_REV_4_3,
-+	  .dev_id = NXP_ENETC_PF_DEV_ID,
-+	  .data = &enetc4_pf_data,
-+	},
- };
- 
- int enetc_get_driver_data(struct enetc_si *si)
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-index 5ef2c5f3ff8f..3e222321b937 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
-@@ -936,6 +936,9 @@ static int enetc_get_phc_index_by_pdev(struct enetc_si *si)
- 	case ENETC_REV_4_1:
- 		devfn = PCI_DEVFN(24, 0);
- 		break;
-+	case ENETC_REV_4_3:
-+		devfn = PCI_DEVFN(0, 1);
-+		break;
- 	default:
- 		return -1;
- 	}
--- 
-2.34.1
+But now that I think more, I don't fully grasp why that would be a
+problem. I think we can make it all work by making autorelease a
+property of the socket, not the binding:
 
+So if sk->devmem_info.autorelease is on, in recevmsg we store the
+token in the xarray and dontneed frees from the xarray (both can check
+skb->devmem_info.autorelease).
+
+If sk->devmem_info.autorelease is off, then in recvmsg we grab the
+binding from sk->devmem_info.binding, and we do a uref inc and netmem
+get ref, then in dontneed dec uref and napi_pp_put_page if necessary.
+
+The side effect of that is that for the same binding, we may
+simultaneously have refs in the sk->xarray and in the binding->uref,
+because the data landing on the binding sometimes belonged to a socket
+with sk->devmem_info.autorelease on or off, but I don't immediately
+see why that would be a problem. The xarray refs would be removed on
+socket close, the urefs would be freed on unbind.
+
+Doesn't it all work? Or am I insane?
+
+> > I thought autorelease would be 'false' by default. I.e. the user gets
+> > better perf by default. Maybe this is flipped in the following patch I
+> > haven't opened yet.
+> >
+>
+> That is right, it is in the next patch. I didn't want to change the
+> default without also adding the ability to revert back.
+>
+> > >         return binding;
+> > >
+> > > diff --git a/net/core/devmem.h b/net/core/devmem.h
+> > > index 2ada54fb63d7..7662e9e42c35 100644
+> > > --- a/net/core/devmem.h
+> > > +++ b/net/core/devmem.h
+> > > @@ -61,11 +61,20 @@ struct net_devmem_dmabuf_binding {
+> > >
+> > >         /* Array of net_iov pointers for this binding, sorted by virt=
+ual
+> > >          * address. This array is convenient to map the virtual addre=
+sses to
+> > > -        * net_iovs in the TX path.
+> > > +        * net_iovs.
+> > >          */
+> > >         struct net_iov **vec;
+> > >
+> > >         struct work_struct unbind_w;
+> > > +
+> > > +       /* If true, outstanding tokens will be automatically released=
+ upon each
+> > > +        * socket's close(2).
+> > > +        *
+> > > +        * If false, then sockets are responsible for releasing token=
+s before
+> > > +        * close(2). The kernel will only release lingering tokens wh=
+en the
+> > > +        * dmabuf is unbound.
+> > > +        */
+> >
+> > Needs devmem.rst doc update.
+> >
+>
+> Will do.
+>
+> > > +       bool autorelease;
+> > >  };
+> > >
+> > >  #if defined(CONFIG_NET_DEVMEM)
+> > > diff --git a/net/core/sock.c b/net/core/sock.c
+> > > index e7b378753763..595b5a858d03 100644
+> > > --- a/net/core/sock.c
+> > > +++ b/net/core/sock.c
+> > > @@ -87,6 +87,7 @@
+> > >
+> > >  #include <linux/unaligned.h>
+> > >  #include <linux/capability.h>
+> > > +#include <linux/dma-buf.h>
+> > >  #include <linux/errno.h>
+> > >  #include <linux/errqueue.h>
+> > >  #include <linux/types.h>
+> > > @@ -151,6 +152,7 @@
+> > >  #include <uapi/linux/pidfd.h>
+> > >
+> > >  #include "dev.h"
+> > > +#include "devmem.h"
+> > >
+> > >  static DEFINE_MUTEX(proto_list_mutex);
+> > >  static LIST_HEAD(proto_list);
+> > > @@ -1081,6 +1083,57 @@ static int sock_reserve_memory(struct sock *sk=
+, int bytes)
+> > >  #define MAX_DONTNEED_TOKENS 128
+> > >  #define MAX_DONTNEED_FRAGS 1024
+> > >
+> > > +static noinline_for_stack int
+> > > +sock_devmem_dontneed_manual_release(struct sock *sk, struct dmabuf_t=
+oken *tokens,
+> > > +                                   unsigned int num_tokens)
+> > > +{
+> > > +       unsigned int netmem_num =3D 0;
+> > > +       int ret =3D 0, num_frags =3D 0;
+> > > +       netmem_ref netmems[16];
+> > > +       struct net_iov *niov;
+> > > +       unsigned int i, j, k;
+> > > +
+> > > +       for (i =3D 0; i < num_tokens; i++) {
+> > > +               for (j =3D 0; j < tokens[i].token_count; j++) {
+> > > +                       struct net_iov *niov;
+> > > +                       unsigned int token;
+> > > +                       netmem_ref netmem;
+> > > +
+> > > +                       token =3D tokens[i].token_start + j;
+> > > +                       if (token >=3D sk->sk_devmem_info.binding->dm=
+abuf->size / PAGE_SIZE)
+> > > +                               break;
+> > > +
+> >
+> > This requires some thought. The correct thing to do here is EINVAL
+> > without modifying the urefs at all I think. You may need an
+> > input-verification loop. Breaking and returning success here is not
+> > great, I think.
+> >
+>
+> Should this also be changed for the other path as well? Right now if
+> __xa_erase returns NULL (e.g., user passed in a bad token), then we hit
+> "continue" and process the next token... eventually just returning the
+> number of tokens that were successfully processed and omitting the wrong
+> ones.
+>
+
+Ugh. I did not notice that :(
+
+I guess the existing dontneed doesn't handle that well anyway. Lets
+not fix too much in this series. It's fine to carry that behavior in
+the new implementation and if anything improve this in a separate
+patch (for me at least). It'd be a bit weird if the userspace is
+sending us bad tokens anyway, in theory.
+
+> > > +                       if (++num_frags > MAX_DONTNEED_FRAGS)
+> > > +                               goto frag_limit_reached;
+> > > +                       niov =3D sk->sk_devmem_info.binding->vec[toke=
+n];
+> > > +                       netmem =3D net_iov_to_netmem(niov);
+> > > +
+> > > +                       if (!netmem || WARN_ON_ONCE(!netmem_is_net_io=
+v(netmem)))
+> > > +                               continue;
+> > > +
+> >
+> > This check is extremely defensive. There is no way netmem is not a
+> > netiov (you just converted it). It's also very hard for it to be NULL.
+> > Remove maybe.
+> >
+>
+> Removing sounds good to me.
+>
+> > > +                       netmems[netmem_num++] =3D netmem;
+> > > +                       if (netmem_num =3D=3D ARRAY_SIZE(netmems)) {
+> > > +                               for (k =3D 0; k < netmem_num; k++) {
+> > > +                                       niov =3D netmem_to_net_iov(ne=
+tmems[k]);
+> >
+> > No need to upcast to netmem only to downcast here back to net_iov.
+> > Just keep it net_iov?
+> >
+>
+> Sounds good.
+>
+> > > +                                       if (atomic_dec_and_test(&niov=
+->uref))
+> > > +                                               WARN_ON_ONCE(!napi_pp=
+_put_page(netmems[k]));
+> >
+> > I see. So you're only only napi_pp_put_pageing the last uref dec, but
+> > why? How about you
+>
+> Just to minimize cache bus noise from the extra atomic.
+>
+> > > +                               }
+> > > +                               netmem_num =3D 0;
+> > > +                       }
+> >
+> > From a quick look, I don't think you need the netmems[] array or this
+> > inner loop.
+> >
+> > dontneed_autorelease is complicatingly written because it acquires a
+> > lock, and we wanted to minimize the lock acquire. You are acquiring no
+> > lock here. AFAICT you can just loop over the tokens and free all of
+> > them in one (nested) loop.
+>
+> Oh good point. There is no need to batch at all here.
+>
+> >
+> > > +                       ret++;
+> > > +               }
+> > > +       }
+> > > +
+> > > +frag_limit_reached:
+> > > +       for (k =3D 0; k < netmem_num; k++) {
+> > > +               niov =3D netmem_to_net_iov(netmems[k]);
+> > > +               if (atomic_dec_and_test(&niov->uref))
+> > > +                       WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> > > +       }
+> > > +
+> > > +       return ret;
+> > > +}
+> > > +
+> > >  static noinline_for_stack int
+> > >  sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_toke=
+n *tokens,
+> > >                                  unsigned int num_tokens)
+> > > @@ -1089,32 +1142,32 @@ sock_devmem_dontneed_autorelease(struct sock =
+*sk, struct dmabuf_token *tokens,
+> > >         int ret =3D 0, num_frags =3D 0;
+> > >         netmem_ref netmems[16];
+> > >
+> > > -       xa_lock_bh(&sk->sk_user_frags);
+> > > +       xa_lock_bh(&sk->sk_devmem_info.frags);
+> > >         for (i =3D 0; i < num_tokens; i++) {
+> > >                 for (j =3D 0; j < tokens[i].token_count; j++) {
+> > >                         if (++num_frags > MAX_DONTNEED_FRAGS)
+> > >                                 goto frag_limit_reached;
+> > >
+> > >                         netmem_ref netmem =3D (__force netmem_ref)__x=
+a_erase(
+> > > -                               &sk->sk_user_frags, tokens[i].token_s=
+tart + j);
+> > > +                               &sk->sk_devmem_info.frags, tokens[i].=
+token_start + j);
+> > >
+> > >                         if (!netmem || WARN_ON_ONCE(!netmem_is_net_io=
+v(netmem)))
+> > >                                 continue;
+> > >
+> > >                         netmems[netmem_num++] =3D netmem;
+> > >                         if (netmem_num =3D=3D ARRAY_SIZE(netmems)) {
+> > > -                               xa_unlock_bh(&sk->sk_user_frags);
+> > > +                               xa_unlock_bh(&sk->sk_devmem_info.frag=
+s);
+> > >                                 for (k =3D 0; k < netmem_num; k++)
+> > >                                         WARN_ON_ONCE(!napi_pp_put_pag=
+e(netmems[k]));
+> > >                                 netmem_num =3D 0;
+> > > -                               xa_lock_bh(&sk->sk_user_frags);
+> > > +                               xa_lock_bh(&sk->sk_devmem_info.frags)=
+;
+> > >                         }
+> > >                         ret++;
+> > >                 }
+> > >         }
+> > >
+> > >  frag_limit_reached:
+> > > -       xa_unlock_bh(&sk->sk_user_frags);
+> > > +       xa_unlock_bh(&sk->sk_devmem_info.frags);
+> > >         for (k =3D 0; k < netmem_num; k++)
+> > >                 WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> > >
+> > > @@ -1135,6 +1188,12 @@ sock_devmem_dontneed(struct sock *sk, sockptr_=
+t optval, unsigned int optlen)
+> > >             optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
+> > >                 return -EINVAL;
+> > >
+> > > +       /* recvmsg() has never returned a token for this socket, whic=
+h needs to
+> > > +        * happen before we know if the dmabuf has autorelease set or=
+ not.
+> > > +        */
+> > > +       if (!sk->sk_devmem_info.binding)
+> > > +               return -EINVAL;
+> > > +
+> >
+> > Hmm. At first glance I don't think enforcing this condition if
+> > binding->autorelease is necessary, no?
+> >
+> > If autorelease is on, then we track the tokens the old way, and we
+> > don't need a binding, no? If it's off, then we need an associated
+> > binding, to look up the urefs array.
+> >
+>
+> We at least need the binding to know if binding->autorelease is on,
+> since without that we don't know whether the tokens are in the xarray or
+> binding->vec... but I guess we could also check if the xarray is
+> non-empty and infer that autorelease =3D=3D true from that?
+>
+
+I think as above, if autorelease is (only) a property of the sockets,
+then the xarray path works without introducing the socket-to-binding
+mapping restriction, yes?
+
+--=20
+Thanks,
+Mina
