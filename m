@@ -1,65 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3B309EF8
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 23:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB80523D7D4
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 23:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761779634; cv=none; b=EXmFGG6yhZOaXifubXK9P3UC4x0GvBfcPUoxLV8PCt0cYhAMZNDLe5i5623NBfdpyEMPHDngNuzOhZI+ysffvn6f9ev9zBpCyBfoIuo+Fo0fckOJViIufLcKH8iDfrfveg7GrgIiNX6kQxt1nk+U+AITzjHYD/KkN0rqrucAlMI=
+	t=1761779815; cv=none; b=ay9mb1d38XFbSMdxVqM686jKLr4p/KRINwjAlv0FlphXwiORRLVbrBaTeANC1lIa3ngfnYwBK7dEx0OdZc/rrHNmfwARdQcv2Nspp5WQgsJKv6vJcsHx+030WDC9E6eVg7tclLrv/jLZiYVgAFoojhW6CyiwmuCaHMFvXuTwHD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761779634; c=relaxed/simple;
-	bh=SeVDkZlIraS8XA6+quM/yQEwl7cpbqk7o7HvCLpKn9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdB5MgO3POd5ub4tDFtxVQnAGMNtQN1zfUkgzH7PlfokGQr7kOQq3+UsnA5SBfcuD0dsVJt+dKaHgDUfuVUT/tcYuCDxrSou+pY3S8SLOhAi7ZhoqUNvggDxq8mmrS0n5C3M4qZddvy4qFf3EIKeBgvbw2D8GhIH4nW8oULZEcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i3lmr3uJ; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1761779815; c=relaxed/simple;
+	bh=cP/E0UtTvLT5kA+y+5AJ18XhQ9ID9hIrisjBFl98hS0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=buKIkRioEQ7Hb+mmtXjf/lI5OZdcWkmkSawQ8YR6RVYEFUKzEUEyCS7GoQYuLo3lxze15tVAk2lPNMBG8Zy/4iAcgrJ95Wmb1gUV/A3VI0ruE3D6Rl1em+amNWNw85VZDoBdyd4Mn9K4zpKI9OlJ7V74jScTgKG7RaFsnEAoOaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YHIcVqvY; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i3lmr3uJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761779633; x=1793315633;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=SeVDkZlIraS8XA6+quM/yQEwl7cpbqk7o7HvCLpKn9s=;
-  b=i3lmr3uJ55Z3W7iOQ23H4UnKTUDyV1zrg0Knti0ERaDdsZ2iilYYNmUA
-   I57sBL9mMrtKSUabtJND8+bh0q5paC2briI4WCnz8KWV5j/5fJOytZpoc
-   mWMR9yl8/jPGv/vCeHLd+5sOhgE5iR2dnbuzm/XGjiCtCUM+na7WE0V11
-   Q90FlBVOunqszMDOvQL82fclviV/J79f/jBbQ8h5/Fcl6oZqsxeIcA110
-   s7/N9QrQ68xiM8t8MM1h5S3LIGLvATBWF+IQ7VnqspaOvGQ8FCUYrHMJq
-   bOReRpm+TswS6hsxlym8N447npxiUi5UbVhc7m35PWVUP+ZorkedMk7yf
-   w==;
-X-CSE-ConnectionGUID: brr1H6CYT4Oa1Nvjn8R54A==
-X-CSE-MsgGUID: 4MZSwKStS8y7goLV7TyW9A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63817612"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="63817612"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 16:13:47 -0700
-X-CSE-ConnectionGUID: FZzGHJnlQz6ti9ZBCiRebQ==
-X-CSE-MsgGUID: QZESgXiOR+Geia0Z2r39Yg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
-   d="scan'208";a="185729710"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa007.jf.intel.com with ESMTP; 29 Oct 2025 16:13:47 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Alok Tiwari <alok.a.tiwari@oracle.com>,
-	anthony.l.nguyen@intel.com,
-	horms@kernel.org,
-	alok.a.tiwarilinux@gmail.com
-Subject: [PATCH net-next 9/9] igbvf: fix misplaced newline in VLAN add warning message
-Date: Wed, 29 Oct 2025 16:12:16 -0700
-Message-ID: <20251029231218.1277233-10-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20251029231218.1277233-1-anthony.l.nguyen@intel.com>
-References: <20251029231218.1277233-1-anthony.l.nguyen@intel.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YHIcVqvY"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761779810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7GRMsgY5PXoW9VIB8TwvQXxaspHY0XUl81B7+M13ZE8=;
+	b=YHIcVqvYLd6udIjcpeIwb1c2pniuN/1lai3BCqPzvCiJft44SoI8yapz4rG6QpPbjVRm5r
+	OrCRwaCiDv1S8Q61QAWsv1B6Zbdtc2f4Me0+nnoH6rFUhWML88NMoo349Ka4x5oBZNOof0
+	rGj8hYw1YgN9HOxpBjeqRTxiQ8KeH7w=
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	=?UTF-8?q?Stefan=20M=C3=A4tje?= <stefan.maetje@esd.eu>,
+	socketcan@esd.eu,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Axel Forsman <axfo@kvaser.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Subject: [PATCH net-next 0/3] convert can drivers to use ndo_hwtstamp callbacks
+Date: Wed, 29 Oct 2025 23:16:17 +0000
+Message-ID: <20251029231620.1135640-1-vadim.fedorenko@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,32 +52,29 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+The patchset converts generic ioctl implementation into a pair of
+ndo_hwtstamp_get/ndo_hwtstamp_set generic callbacks and replaces
+callbacks in drivers.
 
-Corrected the dev_warn format string:
-- "Vlan id %d\n is not added" -> "Vlan id %d is not added\n"
+Vadim Fedorenko (3):
+  can: convert generic HW timestamp ioctl to ndo_hwtstamp callbacks
+  can: peak_canfd: convert to use ndo_hwtstamp callbacks
+  can: peak_usb: convert to use ndo_hwtstamp callbacks
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/igbvf/netdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/dev.c                     | 45 +++++++++----------
+ drivers/net/can/esd/esd_402_pci-core.c        |  3 +-
+ .../can/kvaser_pciefd/kvaser_pciefd_core.c    |  3 +-
+ drivers/net/can/peak_canfd/peak_canfd.c       | 35 +++++++--------
+ .../net/can/spi/mcp251xfd/mcp251xfd-core.c    |  3 +-
+ drivers/net/can/usb/etas_es58x/es58x_core.c   |  3 +-
+ drivers/net/can/usb/gs_usb.c                  | 20 +++++++--
+ .../net/can/usb/kvaser_usb/kvaser_usb_core.c  |  3 +-
+ drivers/net/can/usb/peak_usb/pcan_usb_core.c  | 39 ++++++++--------
+ include/linux/can/dev.h                       |  6 ++-
+ 10 files changed, 88 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igbvf/netdev.c b/drivers/net/ethernet/intel/igbvf/netdev.c
-index 61dfcd8cb370..ac57212ab02b 100644
---- a/drivers/net/ethernet/intel/igbvf/netdev.c
-+++ b/drivers/net/ethernet/intel/igbvf/netdev.c
-@@ -1235,7 +1235,7 @@ static int igbvf_vlan_rx_add_vid(struct net_device *netdev,
- 	spin_lock_bh(&hw->mbx_lock);
- 
- 	if (hw->mac.ops.set_vfta(hw, vid, true)) {
--		dev_warn(&adapter->pdev->dev, "Vlan id %d\n is not added", vid);
-+		dev_warn(&adapter->pdev->dev, "Vlan id %d is not added\n", vid);
- 		spin_unlock_bh(&hw->mbx_lock);
- 		return -EINVAL;
- 	}
 -- 
-2.47.1
+2.47.3
 
