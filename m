@@ -1,234 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367B72E8E00
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 15:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D44337117;
+	Wed, 29 Oct 2025 15:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761751959; cv=none; b=dwOKKo+a+3y0B50tO17IsCpMitUy3G7JUo/mRykRWI9ZEUw5VnL9JsyyWxX5cIm30ZOjUV7Le6MztCX0JnoEzqDH3tHq7wtbfbC7Qqqka3tKSA+Zhab5Gau5o6lo+igYKe20Q1IeM7Ul6CnMtbkG42SWaQnUBqgF2NMPcwfX+wI=
+	t=1761752309; cv=none; b=uMY9mI8Wp+7fUvHqN1ej72N1kYjgUX/5H4+AbnOtrOkZ56dpSE9cKi36iFRDCwy8ULyzwV0gXQyT6NF9SaUHuCIf95/Oo+zq3V6/VBXDvMMIa7a+QyfcApD3fT+BKySZCK9y6kA9+F9l1od9uldm3bp76g7Z7fEbojrxEldg+KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761751959; c=relaxed/simple;
-	bh=xauAvnk6/GxzHF/WP1wspDkYNiWic6rRsCYaAJRZOBw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxCu8ySEelbXD42cKQuPU2z3F8ofNe8sVfjDuMJqqI73k3n0gVGw69xDOzup0SZqDfJKiW3XrBCtNonPu2JrxwOrqJghawGqncbHFI5a+e24Fp2gkZ/4JR23flti+/3mfRWhq1a3vmnzg1JMCRlyMHNiEIBWOidDivkAkUhBh9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fhsG6ugp; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761752309; c=relaxed/simple;
+	bh=h0yjNbZ9rEgJMPE1DAuciMAwui8RU187z1uWv/LoOek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BsfaeDJsIC5orN28sNRrAQFHaI/zWuwE45Fc78QEbYzpgSiTk9h5t8OS8mXW62Kr/K+uvES79ayIx967LkI+8LVwwJoqkcHNxZZ+wN0YuCDgkWYBVpLOsXH6+7W0SqQKLz7tMWJE+/4QExNonQiaU7GQYKJOcBunvgNPaT5cpu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ax2hQ8rx; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fhsG6ugp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761751957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YkdwrWzGIup7HfmUmpOde8bI+XzMz3fzDOaWpwVeTro=;
-	b=fhsG6ugpr/0M/rrCbR2TGYxAS6D6Uu5ZM3SZyXA3oUZ6xB4qx5oKbGmzwRvr+pAOgRT6ie
-	vYmY6YzyQM91cqGrGzKLhXfRbEnhgbgz0Ma/gHjySm7ABGOL2vEWsKvb5fjRu7MZROg5lX
-	xjjJ59Ns4+Lt8w7TOLcQnKld/C2A8nk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-190-CbrkPr5RPu2ScHyfXUw2Rw-1; Wed,
- 29 Oct 2025 11:32:29 -0400
-X-MC-Unique: CbrkPr5RPu2ScHyfXUw2Rw-1
-X-Mimecast-MFC-AGG-ID: CbrkPr5RPu2ScHyfXUw2Rw_1761751946
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77E741808985;
-	Wed, 29 Oct 2025 15:32:25 +0000 (UTC)
-Received: from p16v.bos2.lab (unknown [10.44.34.31])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 717F11800353;
-	Wed, 29 Oct 2025 15:32:20 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Michal Schmidt <mschmidt@redhat.com>,
-	Petr Oros <poros@redhat.com>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/2] dpll: zl3073x: Specify phase adjustment granularity for pins
-Date: Wed, 29 Oct 2025 16:32:07 +0100
-Message-ID: <20251029153207.178448-3-ivecera@redhat.com>
-In-Reply-To: <20251029153207.178448-1-ivecera@redhat.com>
-References: <20251029153207.178448-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ax2hQ8rx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761752307; x=1793288307;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h0yjNbZ9rEgJMPE1DAuciMAwui8RU187z1uWv/LoOek=;
+  b=Ax2hQ8rxhU70mdFpiCCFfOTfwCaMX5IJy9Laq4vFLXZsLr835cszUCSX
+   LJD5si3JIlKthsu3F14cKiWdWQleYjYdXTpdiqsBAaVR0zgEJtIPuL7vr
+   pD88j0bzMHBT1GzoheC81oV4hQcg7t2xEZ+aIWqPhI8xlojG/Eixt8dE9
+   EQn5zmLuy5YwAK/Tsse21/UpMAWXF8Ae2YehyVMAY8fqvqjaqTXJDFVPR
+   ZaKTQviI/mBn51/raYo15lvUFdYYiFV+N9x1Pectmd8c0v7x3LtZEuzuA
+   hJyPITKNoU9mmyx06haQFI8B6IMSvHBLgROSDhMLvYc9H53E3gxfPl6VX
+   A==;
+X-CSE-ConnectionGUID: nEbJpcAhThOid+/LKIYh7Q==
+X-CSE-MsgGUID: ZMVKevxIQAOIzDTXHp2n5g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="67714471"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="67714471"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 08:38:27 -0700
+X-CSE-ConnectionGUID: zv4HsIMeSQa/JSeFH5jq/w==
+X-CSE-MsgGUID: 9Re0tlPTTPuR8lcp49lyRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,264,1754982000"; 
+   d="scan'208";a="184942610"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 29 Oct 2025 08:38:23 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vE8Fg-000Kjl-0b;
+	Wed, 29 Oct 2025 15:38:20 +0000
+Date: Wed, 29 Oct 2025 23:35:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jason Wang <jasowang@redhat.com>, mst@redhat.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
+Message-ID: <202510292352.dvaYVyZt-lkp@intel.com>
+References: <20251029012434.75576-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029012434.75576-1-jasowang@redhat.com>
 
-Output pins phase adjustment values in the device are expressed
-in half synth clock cycles. Use this number of cycles as output
-pins' phase adjust granularity and simplify both get/set callbacks.
+Hi Jason,
 
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Petr Oros <poros@redhat.com>
-Tested-by: Prathosh Satish <Prathosh.Satish@microchip.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/dpll.c | 58 +++++++++----------------------------
- drivers/dpll/zl3073x/prop.c | 11 +++++++
- 2 files changed, 25 insertions(+), 44 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 93dc93eec79ed..b13eb4e342d58 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -35,6 +35,7 @@
-  * @prio: pin priority <0, 14>
-  * @selectable: pin is selectable in automatic mode
-  * @esync_control: embedded sync is controllable
-+ * @phase_gran: phase adjustment granularity
-  * @pin_state: last saved pin state
-  * @phase_offset: last saved pin phase offset
-  * @freq_offset: last saved fractional frequency offset
-@@ -49,6 +50,7 @@ struct zl3073x_dpll_pin {
- 	u8			prio;
- 	bool			selectable;
- 	bool			esync_control;
-+	s32			phase_gran;
- 	enum dpll_pin_state	pin_state;
- 	s64			phase_offset;
- 	s64			freq_offset;
-@@ -1388,25 +1390,14 @@ zl3073x_dpll_output_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	u32 synth_freq;
- 	s32 phase_comp;
--	u8 out, synth;
-+	u8 out;
- 	int rc;
- 
--	out = zl3073x_output_pin_out_get(pin->id);
--	synth = zl3073x_out_synth_get(zldev, out);
--	synth_freq = zl3073x_synth_freq_get(zldev, synth);
--
--	/* Check synth freq for zero */
--	if (!synth_freq) {
--		dev_err(zldev->dev, "Got zero synth frequency for output %u\n",
--			out);
--		return -EINVAL;
--	}
--
- 	guard(mutex)(&zldev->multiop_lock);
- 
- 	/* Read output configuration */
-+	out = zl3073x_output_pin_out_get(pin->id);
- 	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
- 			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
- 	if (rc)
-@@ -1417,11 +1408,10 @@ zl3073x_dpll_output_pin_phase_adjust_get(const struct dpll_pin *dpll_pin,
- 	if (rc)
- 		return rc;
- 
--	/* Value in register is expressed in half synth clock cycles */
--	phase_comp *= (int)div_u64(PSEC_PER_SEC, 2 * synth_freq);
--
--	/* Reverse two's complement negation applied during 'set' */
--	*phase_adjust = -phase_comp;
-+	/* Convert value to ps and reverse two's complement negation applied
-+	 * during 'set'
-+	 */
-+	*phase_adjust = -phase_comp * pin->phase_gran;
- 
- 	return rc;
- }
-@@ -1437,39 +1427,18 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
--	int half_synth_cycle;
--	u32 synth_freq;
--	u8 out, synth;
-+	u8 out;
- 	int rc;
- 
--	/* Get attached synth */
--	out = zl3073x_output_pin_out_get(pin->id);
--	synth = zl3073x_out_synth_get(zldev, out);
--
--	/* Get synth's frequency */
--	synth_freq = zl3073x_synth_freq_get(zldev, synth);
--
--	/* Value in register is expressed in half synth clock cycles so
--	 * the given phase adjustment a multiple of half synth clock.
--	 */
--	half_synth_cycle = (int)div_u64(PSEC_PER_SEC, 2 * synth_freq);
--
--	if ((phase_adjust % half_synth_cycle) != 0) {
--		NL_SET_ERR_MSG_FMT(extack,
--				   "Phase adjustment value has to be multiple of %d",
--				   half_synth_cycle);
--		return -EINVAL;
--	}
--	phase_adjust /= half_synth_cycle;
--
- 	/* The value in the register is stored as two's complement negation
--	 * of requested value.
-+	 * of requested value and expressed in half synth clock cycles.
- 	 */
--	phase_adjust = -phase_adjust;
-+	phase_adjust = -phase_adjust / pin->phase_gran;
- 
- 	guard(mutex)(&zldev->multiop_lock);
- 
- 	/* Read output configuration */
-+	out = zl3073x_output_pin_out_get(pin->id);
- 	rc = zl3073x_mb_op(zldev, ZL_REG_OUTPUT_MB_SEM, ZL_OUTPUT_MB_SEM_RD,
- 			   ZL_REG_OUTPUT_MB_MASK, BIT(out));
- 	if (rc)
-@@ -1758,9 +1727,10 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	if (IS_ERR(props))
- 		return PTR_ERR(props);
- 
--	/* Save package label & esync capability */
-+	/* Save package label, esync capability and phase adjust granularity */
- 	strscpy(pin->label, props->package_label);
- 	pin->esync_control = props->esync_control;
-+	pin->phase_gran = props->dpll_props.phase_gran;
- 
- 	if (zl3073x_dpll_is_input_pin(pin)) {
- 		rc = zl3073x_dpll_ref_prio_get(pin, &pin->prio);
-diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
-index 4cf7e8aefcb37..9e1fca5cdaf1e 100644
---- a/drivers/dpll/zl3073x/prop.c
-+++ b/drivers/dpll/zl3073x/prop.c
-@@ -208,7 +208,18 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 			DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |
- 			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
- 	} else {
-+		u8 out, synth;
-+		u32 f;
-+
- 		props->dpll_props.type = DPLL_PIN_TYPE_GNSS;
-+
-+		/* The output pin phase adjustment granularity equals half of
-+		 * the synth frequency count.
-+		 */
-+		out = zl3073x_output_pin_out_get(index);
-+		synth = zl3073x_out_synth_get(zldev, out);
-+		f = 2 * zl3073x_synth_freq_get(zldev, synth);
-+		props->dpll_props.phase_gran = f ? div_u64(PSEC_PER_SEC, f) : 1;
- 	}
- 
- 	props->dpll_props.phase_range.min = S32_MIN;
+[auto build test ERROR on net/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Wang/virtio_net-fix-alignment-for-virtio_net_hdr_v1_hash/20251029-092814
+base:   net/main
+patch link:    https://lore.kernel.org/r/20251029012434.75576-1-jasowang%40redhat.com
+patch subject: [PATCH net] virtio_net: fix alignment for virtio_net_hdr_v1_hash
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20251029/202510292352.dvaYVyZt-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251029/202510292352.dvaYVyZt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510292352.dvaYVyZt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from net/packet/af_packet.c:86:
+>> include/linux/virtio_net.h:404:24: error: no member named 'hash_value' in 'struct virtio_net_hdr_v1_hash'
+     404 |         vhdr->hash_hdr.hash_value = 0;
+         |         ~~~~~~~~~~~~~~ ^
+   1 error generated.
+
+
+vim +404 include/linux/virtio_net.h
+
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  376  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  377  /*
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  378   * vlan_hlen always refers to the outermost MAC header. That also
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  379   * means it refers to the only MAC header, if the packet does not carry
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  380   * any encapsulation.
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  381   */
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  382  static inline int
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  383  virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  384  			    struct virtio_net_hdr_v1_hash_tunnel *vhdr,
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  385  			    bool tnl_hdr_negotiated,
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  386  			    bool little_endian,
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  387  			    int vlan_hlen)
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  388  {
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  389  	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  390  	unsigned int inner_nh, outer_th;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  391  	int tnl_gso_type;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  392  	int ret;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  393  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  394  	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  395  						    SKB_GSO_UDP_TUNNEL_CSUM);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  396  	if (!tnl_gso_type)
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  397  		return virtio_net_hdr_from_skb(skb, hdr, little_endian, false,
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  398  					       vlan_hlen);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  399  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  400  	/* Tunnel support not negotiated but skb ask for it. */
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  401  	if (!tnl_hdr_negotiated)
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  402  		return -EINVAL;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  403  
+b2284768c6b32a Jason Wang  2025-10-22 @404          vhdr->hash_hdr.hash_value = 0;
+b2284768c6b32a Jason Wang  2025-10-22  405          vhdr->hash_hdr.hash_report = 0;
+b2284768c6b32a Jason Wang  2025-10-22  406          vhdr->hash_hdr.padding = 0;
+b2284768c6b32a Jason Wang  2025-10-22  407  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  408  	/* Let the basic parsing deal with plain GSO features. */
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  409  	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  410  	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  411  	skb_shinfo(skb)->gso_type |= tnl_gso_type;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  412  	if (ret)
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  413  		return ret;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  414  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  415  	if (skb->protocol == htons(ETH_P_IPV6))
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  416  		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  417  	else
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  418  		hdr->gso_type |= VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  419  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  420  	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_TUNNEL_CSUM)
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  421  		hdr->flags |= VIRTIO_NET_HDR_F_UDP_TUNNEL_CSUM;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  422  
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  423  	inner_nh = skb->inner_network_header - skb_headroom(skb);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  424  	outer_th = skb->transport_header - skb_headroom(skb);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  425  	vhdr->inner_nh_offset = cpu_to_le16(inner_nh);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  426  	vhdr->outer_th_offset = cpu_to_le16(outer_th);
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  427  	return 0;
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  428  }
+a2fb4bc4e2a6a0 Paolo Abeni 2025-07-08  429  
+
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
