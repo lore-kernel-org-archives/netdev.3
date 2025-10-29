@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B68320380;
-	Wed, 29 Oct 2025 08:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A6931D754;
+	Wed, 29 Oct 2025 08:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761725185; cv=none; b=PexS3Cl1hH4ToSo3wvt2sxYOMpzoY9pLAUDe/twUKI72cqflgDYOwbHhxHKPjjdN4cI8N5ab6FXiMjPSp8QQh7Dsdlt4Z/ptyMPBaBzoDB9X5rMqQ5whbZ7UiZh8EbtsMfAjfmsSF/+DtYnanZEFZ5hpK3tBwLx6/DPUxeuXkUY=
+	t=1761725185; cv=none; b=P6wSoF5GeISOuQKS1vH4syDMKJzmuCbC3wCc2pSoS1yUrMvqbd2Nmh6lUyyw4OoGDerHQ4aHzXO2h10C2JTazR1BUQwOkX471WjliUbADVxbJEUjBT4pqIfXJ42RZ2mUy/xuFvphDusF/qLWc1M4xY7a2pDKf4Ub2HochdPdPvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761725185; c=relaxed/simple;
-	bh=nWVHnfvQBRA6ZVCql74XqpzDCs6ZKXaKNS1r6cUtQN8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Gef17QQe91a4lim36cDlpFDMqG9Vmx5JKdmnaAFQXspQF32HLRxcD49hLM6hFAlmGO0a9JgjdlTDHNpwuvUn+Ph2dFAGWvLeChSpVO0IzGFK9MuFXB3eWh63hxjmr35hnQZmkw5SpXhggglVW+AxB1e+Go+8jLqBrkwu5Nu/hwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BF8kseVC; arc=none smtp.client-ip=10.30.226.201
+	bh=lJ1JcnHdvyDKrgvkF/InxR6fht7QWyd7w3ZrjqQQ9h8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SAnpuNg+97MqbJC+NeCPEtyaCUf/7OS9zVQAJ8jcCSSKrsIIFtGdsxH3jH+SwnWYX9/Aw29IyCYlAppEAJZm9tJFvpuZ4nb2O1iQOL3MLWZlCTNSbIz9ncUspkhrZHP+6AnUtigqV+k05972Qb/+1mHzJVYjOFSRWVyUAf0OqMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcRRDlLr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BF8kseVC"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D52D7C4CEFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcRRDlLr"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B5BD8C4CEF7;
 	Wed, 29 Oct 2025 08:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761725184;
-	bh=nWVHnfvQBRA6ZVCql74XqpzDCs6ZKXaKNS1r6cUtQN8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BF8kseVCLTniC7aKmiJggehl13MTS9buvUEBi1IODDz8i9x7mkb/2pAUrQ6JWJ5Fp
-	 ccyrw+Xi1eYUAzCdNP71AW6juFGzIHkGmTN67J4yqiatF9D3IEUrjsZa0uGZrvBhGu
-	 FBfD83EApJvp1ovk2ovM3/0oLc9LfY/ak16lVliSEIfQA8Gllj6/hP0m3q803oQbBr
-	 f+zpd1ciAP54xOFMfYOsjpd1LrmPLEOLOSANJZDhhRPI6Dc6/EGWm4Ir42hI34MX3o
-	 z0nmOgBE4e83z2CdPtanvXAXWERQLc6D+itE4bJAXyKDdDNcXtlkpE1v7SX4q8/4lg
-	 Aw8rCdo7WgNiw==
+	bh=lJ1JcnHdvyDKrgvkF/InxR6fht7QWyd7w3ZrjqQQ9h8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=BcRRDlLr5xYeb2Mi9o3YKmofKe4m49dtHv2WhfJJhMCgLbqSUY72233AvLmZvaUPy
+	 3pT52UGo4jjBvn0oK3rM71NotBEsurzBX771VrzFnLMjXvB7lPJfqCWK5rPgbO5aYK
+	 UbxKQAQ4NyQwlD6Sw89lrTjSXKpofVM0+T2saggVff9fDtySs0RbIB95sYPGe/CjN8
+	 fi58wuMaymqN5D3Dego7LDDhJncmqRcFSExrJ9m+8EC+f4v8GhulkDYShhjdfHWvs7
+	 t8dYGTL9FvLiMcC7Atix+vx6MATfrEohdsGsYzOvBju90ugre34WVuRpN4vs9VSMUo
+	 teU0BawZxWQiA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8FDBCCF9F2;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3A54CCF9EE;
 	Wed, 29 Oct 2025 08:06:24 +0000 (UTC)
 From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
-Date: Wed, 29 Oct 2025 16:06:14 +0800
-Subject: [PATCH net-next 2/4] net: stmmac: socfpga: Enable TBS support for
- Agilex5
+Subject: [PATCH net-next 0/4] net: stmmac: socfpga: Add Agilex5 platform
+ support and enhancements
+Date: Wed, 29 Oct 2025 16:06:12 +0800
+Message-Id: <20251029-agilex5_ext-v1-0-1931132d77d6@altera.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-agilex5_ext-v1-2-1931132d77d6@altera.com>
-References: <20251029-agilex5_ext-v1-0-1931132d77d6@altera.com>
-In-Reply-To: <20251029-agilex5_ext-v1-0-1931132d77d6@altera.com>
+X-B4-Tracking: v=1; b=H4sIAPXKAWkC/x2MUQqAIBAFrxL7nZBCSF0lIkxftRAWKiFId0/6H
+ JiZQhGBEWlsCgU8HPnyFWTbkD2M3yHYVSbVqV52ahBm5xO5X5CTsFKvTuvBOmxUiztg4/zfJvJ
+ IwleL5vf9AEtpE2pnAAAA
+X-Change-ID: 20251029-agilex5_ext-c17bd779cdef
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -56,11 +57,11 @@ Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Rohan G Thomas <rohan.g.thomas@altera.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761725182; l=1189;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761725182; l=1154;
  i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
- bh=xSJKSpzgBUj6X7SaRiqPgyeJfwi6PIzrINgCzQeog7s=;
- b=8SDkbxGig66XtJrELUxq38wXz640VIOzsR/gO+kkHJvQzQZVfXdl5J7m1gsIdbdgDYQZiKbl0
- cKATRITmZzNDbB6AewGNQndYuQwl85NB0G5Y9LEWVUbJ0LywdZ8FRxM
+ bh=lJ1JcnHdvyDKrgvkF/InxR6fht7QWyd7w3ZrjqQQ9h8=;
+ b=DlJCfseSUGZMDjXBw1VVh0mpCeu7xVTb3IZNFGwtIb2gtoPFVZd7U5fHRN6pO+qAd5Jjj6orE
+ q/SIliAdApzAhEVmXtDQZjhmvj49K5KPSkeCRRyKCOfz2udKbhDaMSb
 X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
  pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
 X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
@@ -68,42 +69,34 @@ X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
 X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
 Reply-To: rohan.g.thomas@altera.com
 
-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+This patch series adds support for the Agilex5 EMAC platform to the
+dwmac-socfpga driver.
 
-Agilex5 supports Time-Based Scheduling(TBS) for Tx queue 6 and Tx
-queue 7. This commit enables TBS support for these queues.
+The series includes:
+   - Platform configuration for Agilex5 EMAC
+   - Enabling Time-Based Scheduling (TBS) for Tx queues 6 and 7
+   - Enabling TCP Segmentation Offload(TSO)
+   - Adding hardware-supported cross timestamping using the SMTG IP,
+     allowing precise synchronization between MAC and system time via
+     PTP_SYS_OFFSET_PRECISE.
 
 Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Rohan G Thomas (4):
+      net: stmmac: socfpga: Agilex5 EMAC platform configuration
+      net: stmmac: socfpga: Enable TBS support for Agilex5
+      net: stmmac: socfpga: Enable TSO for Agilex5 platform
+      net: stmmac: socfpga: Add hardware supported cross-timestamp
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 3dae4f3c103802ed1c2cd390634bd5473192d4ee..c02e6fa715bbea2f703bcdeee9d7a41be51ce91c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -473,6 +473,19 @@ static void socfpga_agilex5_setup_plat_dat(struct socfpga_dwmac *dwmac)
- 	socfpga_common_plat_dat(dwmac);
- 
- 	plat_dat->core_type = DWMAC_CORE_XGMAC;
-+
-+	/* Enable TBS */
-+	switch (plat_dat->tx_queues_to_use) {
-+	case 8:
-+		plat_dat->tx_queues_cfg[7].tbs_en = true;
-+		fallthrough;
-+	case 7:
-+		plat_dat->tx_queues_cfg[6].tbs_en = true;
-+		break;
-+	default:
-+		/* Tx Queues 0 - 5 doesn't support TBS on Agilex5 */
-+		break;
-+	}
- }
- 
- static int socfpga_dwmac_probe(struct platform_device *pdev)
+ .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    | 194 +++++++++++++++++++--
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |   5 +
+ 2 files changed, 189 insertions(+), 10 deletions(-)
+---
+base-commit: a8abe8e210c175b1d5a7e53df069e107b65c13cb
+change-id: 20251029-agilex5_ext-c17bd779cdef
 
+Best regards,
 -- 
-2.43.7
+Rohan G Thomas <rohan.g.thomas@altera.com>
 
 
