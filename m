@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBFD1805E;
-	Wed, 29 Oct 2025 20:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF192D23A3;
+	Wed, 29 Oct 2025 20:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761771125; cv=none; b=JGwuhRxNoxp+oY0pdnFXp3mv6Y6bK1HcQFzHHKLCuH8j8+W+Py79rv4WEcQ7Hr8LBmQXAyLWle+dpZemVtDmmCC+639NLbNCVOA2zjRUgfmOkD3l7cieGdd/yYh9kRJue32+Q3dPpY4lCgswCBwwHPU4utdxn3usz99Ri7Zjp4Q=
+	t=1761771125; cv=none; b=aIw1TI+luK09pRNBh16cJGtKzzaL58/MhWLVYPqQ41DrAKoNLzd0nzhO1rt38GOsgRgZqz/QakhDZCTfGfKAdsYHGNOjI5zP2ocIjUzs8l8ZiSQVbwwgD3VHCi7ygcaRDqyVWe2COCj49RSYXk6TpNVYPO+nNoU1c4rJcpelWhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761771125; c=relaxed/simple;
-	bh=Q4r+8tw3iUlpircGyKS82M6l99VZlCjoo2D6/aMSs8Q=;
+	bh=ZvnGd3OsRH5v0uE+BlJB6KcPeJ9Xfxdfkx6mAE1wlyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ol2THUK/WiFSvAcdw+NbqwBvi2gsNN1bcR6f+XTeC6HdGqop1WtmrdCidz5BGqL15kjjiIK1W9HpWvfxtmshPLHDVUoxup740FrIPRjlaaqg1fk7kJqY61RoVJlw3w6gTVHJRsev4xqHNApz1tO7Yy3WHpNQaSeGo4XXEsWid+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=KiUgIivO; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=D3mdg0YbonC7gB4W8vdlAavR0uCS8FT62CyF/fmB7VBDsfpMP1YjITqVTJCvSQVpmoNKato5j8qcZdXiCRejdGWJgD4APXm3+TS7MCy2QQJeRPE4m9j6AR/jc/I52y4Y8zLn2sv8CSTLZWlsilEu6aVM3oACOhYc7W3EM3gg9Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Tdw/8eFX; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="KiUgIivO"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Tdw/8eFX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761771115;
-	bh=Q4r+8tw3iUlpircGyKS82M6l99VZlCjoo2D6/aMSs8Q=;
+	bh=ZvnGd3OsRH5v0uE+BlJB6KcPeJ9Xfxdfkx6mAE1wlyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KiUgIivOJTjUw0ybQWEjWfjAGiYd+9bmrN9hgAkh8NvhP/L6mo562D6QvVpE8QjrB
-	 Cq7OgHSOAKTWH50b8wy3631pAIf1AEEH1bsVVZH31wN/Jzx6dzAEBig8GtNajqRpGU
-	 R6Wh7f8cxmgT0izV0p2tpSHK5eArk72Hvapqi9CG9+OQDyUH9Kskm6QAF4wcPH7Gry
-	 6KDpoy2Qt1WqY022Ykvt8uCieMQmS5lvN9SC6MaQcudQeGK84fK/WCuVME1HPwburj
-	 r4ETTWdiyRPgr71EZCzauW8fNBD2OYpGYyXOsHddUkyivZ4pka/d7AHzalFLK4TJwp
-	 dt1JnVySZcCdw==
+	b=Tdw/8eFXMbGY+seep/Jz0lMMj1hdIQqabslic2z+tUe4+aLGKsXif7rHeizPqsA3m
+	 mai/5qLCIfshhCcibCxE5mft2FYdkZkHCnaADw3jtZJ3ajKK/Fe9wV0KJQeilXvltg
+	 MfA0lZU7P94X8QMxg7YoMnyLAaacldkv6qc5xlf2ZCgkugzDF65s3I4w4PQ4vNHZDT
+	 EAhRtrarcJFL+cK47/88s1ZlB0TgG7L89YmPva+b8Re39aWsrr3K7URAuZhpDyAYTb
+	 S1HKPr+RfVmuL/B7jfas5Os/FP+cyNvc6zv4faVRHa/9ZCIvXbaDWuiGvpP6ddaxEa
+	 BY95QkXWyUcqw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 93211600C1;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 988D6600FF;
 	Wed, 29 Oct 2025 20:51:54 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 13BA0204DBC; Wed, 29 Oct 2025 20:51:30 +0000 (UTC)
+	id D5AE02013B8; Wed, 29 Oct 2025 20:51:29 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v1 06/11] uapi: wireguard: move flag enums
-Date: Wed, 29 Oct 2025 20:51:14 +0000
-Message-ID: <20251029205123.286115-7-ast@fiberby.net>
+Subject: [PATCH net-next v1 01/11] wireguard: netlink: validate nested arrays in policy
+Date: Wed, 29 Oct 2025 20:51:09 +0000
+Message-ID: <20251029205123.286115-2-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251029205123.286115-1-ast@fiberby.net>
 References: <20251029205123.286115-1-ast@fiberby.net>
@@ -60,69 +60,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Move the wg*_flag enums, so that they are defined above the
-attribute set enums, as ynl-gen would place them.
+Use NLA_POLICY_NESTED_ARRAY() to perform nested array validation
+in the policy validation step.
 
-This is an incremental step towards adopting an UAPI header
-generated by ynl-gen. This is split out to keep the patches readable.
-
-This is a trivial patch with no behavioural changes intended.
+The nested policy was already enforced through nla_parse_nested(),
+however extack wasn't passed previously.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- include/uapi/linux/wireguard.h | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/net/wireguard/netlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
-index 3ebfffd61269a..a2815f4f29104 100644
---- a/include/uapi/linux/wireguard.h
-+++ b/include/uapi/linux/wireguard.h
-@@ -15,6 +15,20 @@ enum wgdevice_flag {
- 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
- 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index 67f962eb8b46d..9bc76e1bcba2d 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -27,7 +27,7 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
+ 	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGDEVICE_F_ALL),
+ 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
+ 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
+-	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
++	[WGDEVICE_A_PEERS]		= NLA_POLICY_NESTED_ARRAY(peer_policy),
  };
-+
-+enum wgpeer_flag {
-+	WGPEER_F_REMOVE_ME = 1U << 0,
-+	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
-+	WGPEER_F_UPDATE_ONLY = 1U << 2,
-+	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
-+			 WGPEER_F_UPDATE_ONLY
-+};
-+
-+enum wgallowedip_flag {
-+	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
-+	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
-+};
-+
- enum wgdevice_attribute {
- 	WGDEVICE_A_UNSPEC,
- 	WGDEVICE_A_IFINDEX,
-@@ -29,13 +43,6 @@ enum wgdevice_attribute {
- };
- #define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
  
--enum wgpeer_flag {
--	WGPEER_F_REMOVE_ME = 1U << 0,
--	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
--	WGPEER_F_UPDATE_ONLY = 1U << 2,
--	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
--			 WGPEER_F_UPDATE_ONLY
--};
- enum wgpeer_attribute {
- 	WGPEER_A_UNSPEC,
- 	WGPEER_A_PUBLIC_KEY,
-@@ -52,10 +59,6 @@ enum wgpeer_attribute {
+ static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
+@@ -39,7 +39,7 @@ static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
+ 	[WGPEER_A_LAST_HANDSHAKE_TIME]			= NLA_POLICY_EXACT_LEN(sizeof(struct __kernel_timespec)),
+ 	[WGPEER_A_RX_BYTES]				= { .type = NLA_U64 },
+ 	[WGPEER_A_TX_BYTES]				= { .type = NLA_U64 },
+-	[WGPEER_A_ALLOWEDIPS]				= { .type = NLA_NESTED },
++	[WGPEER_A_ALLOWEDIPS]				= NLA_POLICY_NESTED_ARRAY(allowedip_policy),
+ 	[WGPEER_A_PROTOCOL_VERSION]			= { .type = NLA_U32 }
  };
- #define WGPEER_A_MAX (__WGPEER_A_LAST - 1)
  
--enum wgallowedip_flag {
--	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
--	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
--};
- enum wgallowedip_attribute {
- 	WGALLOWEDIP_A_UNSPEC,
- 	WGALLOWEDIP_A_FAMILY,
+@@ -467,7 +467,7 @@ static int set_peer(struct wg_device *wg, struct nlattr **attrs)
+ 
+ 		nla_for_each_nested(attr, attrs[WGPEER_A_ALLOWEDIPS], rem) {
+ 			ret = nla_parse_nested(allowedip, WGALLOWEDIP_A_MAX,
+-					       attr, allowedip_policy, NULL);
++					       attr, NULL, NULL);
+ 			if (ret < 0)
+ 				goto out;
+ 			ret = set_allowedip(peer, allowedip);
+@@ -593,7 +593,7 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
+ 
+ 		nla_for_each_nested(attr, info->attrs[WGDEVICE_A_PEERS], rem) {
+ 			ret = nla_parse_nested(peer, WGPEER_A_MAX, attr,
+-					       peer_policy, NULL);
++					       NULL, NULL);
+ 			if (ret < 0)
+ 				goto out;
+ 			ret = set_peer(wg, peer);
 -- 
 2.51.0
 
