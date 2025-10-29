@@ -1,114 +1,255 @@
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234252F6187;
-	Wed, 29 Oct 2025 07:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC874C6D;
+	Wed, 29 Oct 2025 07:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761722681; cv=none; b=uarQQUUdWe3Gbyy7HUbasULupgPt7NMqEEyFgwD/YiDXLnQEGolrb7qmuek/LY/ghzw0db9dFyJkObARuhbcsO16Wvgtcoo350fhHWEZshOoSpDQf2D0wZB8g+JZyzzZ/5mOPlRdK0RNsKJVejhfkqAblXCTBeEVOWQrcNFp9RU=
+	t=1761722909; cv=none; b=YN5hZiM7YTcVGby4xnkeAnwPG0aTJvXrDMcEJZCh0OzMZ/uPvOuYiWL34UKOeZa+0nOfvPYL1sS21jnZ76DVUwRIayW94BXH3EYvb/owxIcCQCI8cWWHYAeCK0ZWmdRDnLrLcI0UzhjBMzYHLg6kTsnB5oegrZzkDSSDMJYSqCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761722681; c=relaxed/simple;
-	bh=0GWIkJWV64B/4sVqOqYffExzCyyC5rCoFh2TvigNj/U=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cZZOKJYlIeVJX2VrwjhjeHNON+4QewCo+OT9JEDb0Cc69QjIdfEeDywppZsKhBIaNcnJHcmG3TDQX/obcvPMsNhLi+3w1YQ22QqW9yh9+S8E8b12xKyKVAN/2KGcx0H/0McdEcSwxeE6WZmwd9vCzehUzC98co2BC/Ks5XULTVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=Ualg0jDe; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+	s=arc-20240116; t=1761722909; c=relaxed/simple;
+	bh=IKrMilH0x+w3pVBYhXKASnpatCeKSv405ItmAQMtA/4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lDw1cTo4wBKBFSqICTJSAdDUyrXZo03m8/kfHvaPNHaT/VI7F+I43ExZyBISNaNKfXlwd+qjlB4nW2NxN8LTDAG5UJyGoAPeUAT032lt4hNEeGlo1l9hwWZ3s4gfsF1ka+xQzvq5BkPqaqk4GkXDgoOX+wFyocM+6KM58DXd5MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=s/aR5K49; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="Ualg0jDe"
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 6DA5EA0439;
-	Wed, 29 Oct 2025 08:24:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-type:content-type:date:from:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to; s=mail; bh=DeVVNyLNqKE4Ecf5DaOa6ywawPCDzZ6btyldSlmyF/k=; b=
-	Ualg0jDe4fxNSM08c+2QhvPK2q6/qHw0TScNmS87UiMOCnFj2ME2dT/uab0+Wiba
-	bkV0txAlmnUHKNBWv2tzWWZ7I8kVBV93B6jfhL14pdrfXGMYebO8GA0WDjitLb9F
-	KldrZKxW2q2JhYUgi6Hqp/D5wC6hDLgxxsrBUXdsa3iA0LzfKPChwvdNNSDGMjZt
-	W7jzlvtnWh3tDoxTWi9LbGfhp5iCSg5/mXlzOz+Y8doKf3GYS9Qpbqz4fCazFCZZ
-	nDTzysxggkJvVA43BP+jvsbTg9RhFfNIDhr3I7Es58ClvbosihjIXfLbbhD44CmD
-	PQGko4GmU1mryNcJnc3BcFGHfeklBFd2h7r62i55ZVdsJJF/pyCvG049+sRg8z/Q
-	fzg25CmsBnAb7Y3hhAdtd76PXwFJ0XCShvsyy8H4vyczEmVWe1yZAQWHBkpwch0b
-	PJTTlrutC09uGRdBRywbNxcGw7eSZrVdiPNvgB1FDAPr2+SPXTNo/shlUgCZc3lp
-	NJwgwJd9E9rrcnItdMgfimB1v17e/KszQLM5EUll53xYKLC0nA5Hn2/4MujYFQEb
-	2h7zDhZdn3a4RWWTn6F6pc5kdHaM3/60NJfsdHRkxvKx7Gwq5rEXg/20+4MCszkS
-	27+K1vd5I+x2QtxJHQaX48ou5kmgS0dFTV9d5AALHXY=
-Date: Wed, 29 Oct 2025 08:24:26 +0100
-From: Buday Csaba <buday.csaba@prolan.hu>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	<pabeni@redhat.com>, Philipp Zabel <p.zabel@pengutronix.de>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v4 4/4] net: mdio: reset PHY before attempting
- to access registers in fwnode_mdiobus_register_phy
-Message-ID: <aQHBKitU6Gyjk37e@debianbuilder>
-References: <cover.1761124022.git.buday.csaba@prolan.hu>
- <bebbaef2c6801f6973ea00500a594ed934e40e47.1761124022.git.buday.csaba@prolan.hu>
- <20251028182605.06840664@kernel.org>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="s/aR5K49"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1761722906; x=1793258906;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=IKrMilH0x+w3pVBYhXKASnpatCeKSv405ItmAQMtA/4=;
+  b=s/aR5K49wwOX312rvxgx+ta1vnrTd6Fp0+7FjtbjP7i92xB8W8Ziva2c
+   Vw/9Pliz98aYsaShrSUW1pxglqpnyHCZBThv5zSgfe7oR3jXzyHXaJWl0
+   GOp77VE/L2SdYYFW97Fs4TiRSc+8oZzgPhYyfUG2ubeJutSeIDfh37KNq
+   v8yPEHW46Ez0iqFvVoxiggm67WA4eiSw1iTVQz0zCqS+G2FcYTWjjUP4s
+   7p2zREuhyr+dzfes/EiDuhRpD/vncxFP7QVJxJvQqpK24nEm+6M8izu6g
+   cjSfxlgIpOHAsw8tB6QWlRngfmeBhl0jzc6shfrDbL2sj844+tNyz0BBb
+   g==;
+X-CSE-ConnectionGUID: lh0mYcbFSl+9cvidjQy/DA==
+X-CSE-MsgGUID: VC/bIrsLQlWhs/MxJf3ZLQ==
+X-IronPort-AV: E=Sophos;i="6.19,263,1754982000"; 
+   d="scan'208";a="215747487"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Oct 2025 00:28:24 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 29 Oct 2025 00:28:15 -0700
+Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 29 Oct 2025 00:28:13 -0700
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
+To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
+	<horatiu.vultur@microchip.com>
+Subject: [PATCH net v2 1/2] net: phy: micrel: lan8842 errata
+Date: Wed, 29 Oct 2025 08:24:55 +0100
+Message-ID: <20251029072456.392969-2-horatiu.vultur@microchip.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251029072456.392969-1-horatiu.vultur@microchip.com>
+References: <20251029072456.392969-1-horatiu.vultur@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251028182605.06840664@kernel.org>
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1761722666;VERSION=8000;MC=3785898708;ID=145001;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A296767155F677066
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Tue, Oct 28, 2025 at 06:26:05PM -0700, Jakub Kicinski wrote:
-> On Wed, 22 Oct 2025 11:08:53 +0200 Buday Csaba wrote:
-> > +/* Hard-reset a PHY before registration */
-> > +static int fwnode_reset_phy(struct mii_bus *bus, u32 addr,
-> > +			    struct fwnode_handle *phy_node)
-> > +{
-> > +	struct mdio_device *tmpdev;
-> > +	int err;
-> > +
-> > +	tmpdev = mdio_device_create(bus, addr);
-> > +	if (IS_ERR(tmpdev))
-> > +		return PTR_ERR(tmpdev);
-> > +
-> > +	fwnode_handle_get(phy_node);
-> > +	device_set_node(&tmpdev->dev, phy_node);
-> > +	err = mdio_device_register_reset(tmpdev);
-> > +	if (err) {
-> > +		mdio_device_free(tmpdev);
-> > +		return err;
-> 
-> Should we worry about -EPROBE_DEFER on any of the error paths here?
-> If not maybe consider making this function void? We can add errors
-> back if the caller starts to care.
+Add errata for lan8842. The errata document can be found here [1].
+This is fixing the module 2 ("Analog front-end not optimized for
+PHY-side shorted center taps").
 
-That is a very valid point, thanks! I think I can handle that correctly,
-by propagating that (or any other) error codes to the caller of
-fwnode_mdiobus_register_phy(). fwnode_reset_phy() does nothing that
-would not be expected to occur during the normal registration, so if
-it fails here, it would fail later as well.
+[1] https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/Errata/LAN8842-Errata-DS80001172.pdf
 
-> 
-> > +	}
-> > +
-> > +	if (mdio_device_has_reset(tmpdev)) {
-> > +		dev_info(&bus->dev,
-> > +			 "PHY device at address %d not detected, resetting PHY.",
-> > +			 addr);
-> 
-> IDK if this is still strictly necessary but I guess \n at the end of
-> the info msg would be idiomatic
-> 
+Fixes: 5a774b64cd6a ("net: phy: micrel: Add support for lan8842")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+---
+ drivers/net/phy/micrel.c | 149 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 149 insertions(+)
 
-I will separate the error message to another patch, then the maintainers
-can decide wheter to merge it or not.
-
-Thanks for the feedback!
-I should be able to send v5 soon.
-
-Csaba
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 604b5de0c1581..4b526587093c6 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2853,6 +2853,13 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
+  */
+ #define LAN8814_PAGE_PORT_REGS 5
+ 
++/**
++ * LAN8814_PAGE_POWER_REGS - Selects Extended Page 28.
++ *
++ * This page contains analog control registers and power mode registers.
++ */
++#define LAN8814_PAGE_POWER_REGS 28
++
+ /**
+  * LAN8814_PAGE_SYSTEM_CTRL - Selects Extended Page 31.
+  *
+@@ -5884,6 +5891,143 @@ static int lan8842_probe(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++#define LAN8814_POWER_MGMT_MODE_3_ANEG_MDI		0x13
++#define LAN8814_POWER_MGMT_MODE_4_ANEG_MDIX		0x14
++#define LAN8814_POWER_MGMT_MODE_5_10BT_MDI		0x15
++#define LAN8814_POWER_MGMT_MODE_6_10BT_MDIX		0x15
++#define LAN8814_POWER_MGMT_MODE_7_100BT_TRAIN		0x15
++#define LAN8814_POWER_MGMT_MODE_8_100BT_MDI		0x15
++#define LAN8814_POWER_MGMT_MODE_9_100BT_EEE_MDI_TX	0x15
++#define LAN8814_POWER_MGMT_MODE_10_100BT_EEE_MDI_RX	0x15
++#define LAN8814_POWER_MGMT_MODE_11_100BT_MDIX		0x1b
++#define LAN8814_POWER_MGMT_MODE_12_100BT_EEE_MDIX_TX	0x15
++#define LAN8814_POWER_MGMT_MODE_13_100BT_EEE_MDIX_RX	0x15
++#define LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX	0x1e
++
++#define LAN8814_POWER_MGMT_DLLPD_D			BIT(0)
++#define LAN8814_POWER_MGMT_ADCPD_D			BIT(1)
++#define LAN8814_POWER_MGMT_PGAPD_D			BIT(2)
++#define LAN8814_POWER_MGMT_TXPD_D			BIT(3)
++#define LAN8814_POWER_MGMT_DLLPD_C			BIT(4)
++#define LAN8814_POWER_MGMT_ADCPD_C			BIT(5)
++#define LAN8814_POWER_MGMT_PGAPD_C			BIT(6)
++#define LAN8814_POWER_MGMT_TXPD_C			BIT(7)
++#define LAN8814_POWER_MGMT_DLLPD_B			BIT(8)
++#define LAN8814_POWER_MGMT_ADCPD_B			BIT(9)
++#define LAN8814_POWER_MGMT_PGAPD_B			BIT(10)
++#define LAN8814_POWER_MGMT_TXPD_B			BIT(11)
++#define LAN8814_POWER_MGMT_DLLPD_A			BIT(12)
++#define LAN8814_POWER_MGMT_ADCPD_A			BIT(13)
++#define LAN8814_POWER_MGMT_PGAPD_A			BIT(14)
++#define LAN8814_POWER_MGMT_TXPD_A			BIT(15)
++
++#define LAN8814_POWER_MGMT_C_D		(LAN8814_POWER_MGMT_DLLPD_D | \
++					 LAN8814_POWER_MGMT_ADCPD_D | \
++					 LAN8814_POWER_MGMT_PGAPD_D | \
++					 LAN8814_POWER_MGMT_DLLPD_C | \
++					 LAN8814_POWER_MGMT_ADCPD_C | \
++					 LAN8814_POWER_MGMT_PGAPD_C)
++
++#define LAN8814_POWER_MGMT_B_C_D	(LAN8814_POWER_MGMT_C_D | \
++					 LAN8814_POWER_MGMT_DLLPD_B | \
++					 LAN8814_POWER_MGMT_ADCPD_B | \
++					 LAN8814_POWER_MGMT_PGAPD_B)
++
++#define LAN8814_POWER_MGMT_VAL1		(LAN8814_POWER_MGMT_C_D | \
++					 LAN8814_POWER_MGMT_ADCPD_B | \
++					 LAN8814_POWER_MGMT_PGAPD_B | \
++					 LAN8814_POWER_MGMT_ADCPD_A | \
++					 LAN8814_POWER_MGMT_PGAPD_A)
++
++#define LAN8814_POWER_MGMT_VAL2		LAN8814_POWER_MGMT_C_D
++
++#define LAN8814_POWER_MGMT_VAL3		(LAN8814_POWER_MGMT_C_D | \
++					 LAN8814_POWER_MGMT_DLLPD_B | \
++					 LAN8814_POWER_MGMT_ADCPD_B | \
++					 LAN8814_POWER_MGMT_PGAPD_A)
++
++#define LAN8814_POWER_MGMT_VAL4		(LAN8814_POWER_MGMT_B_C_D | \
++					 LAN8814_POWER_MGMT_ADCPD_A | \
++					 LAN8814_POWER_MGMT_PGAPD_A)
++
++#define LAN8814_POWER_MGMT_VAL5		LAN8814_POWER_MGMT_B_C_D
++
++static int lan8842_erratas(struct phy_device *phydev)
++{
++	int ret;
++
++	/* Magjack center tapped ports */
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_3_ANEG_MDI,
++				    LAN8814_POWER_MGMT_VAL1);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_4_ANEG_MDIX,
++				    LAN8814_POWER_MGMT_VAL1);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_5_10BT_MDI,
++				    LAN8814_POWER_MGMT_VAL1);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_6_10BT_MDIX,
++				    LAN8814_POWER_MGMT_VAL1);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_7_100BT_TRAIN,
++				    LAN8814_POWER_MGMT_VAL2);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_8_100BT_MDI,
++				    LAN8814_POWER_MGMT_VAL3);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_9_100BT_EEE_MDI_TX,
++				    LAN8814_POWER_MGMT_VAL3);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_10_100BT_EEE_MDI_RX,
++				    LAN8814_POWER_MGMT_VAL4);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_11_100BT_MDIX,
++				    LAN8814_POWER_MGMT_VAL5);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_12_100BT_EEE_MDIX_TX,
++				    LAN8814_POWER_MGMT_VAL5);
++	if (ret < 0)
++		return ret;
++
++	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				    LAN8814_POWER_MGMT_MODE_13_100BT_EEE_MDIX_RX,
++				    LAN8814_POWER_MGMT_VAL4);
++	if (ret < 0)
++		return ret;
++
++	return lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
++				     LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX,
++				     LAN8814_POWER_MGMT_VAL4);
++}
++
+ static int lan8842_config_init(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -5896,6 +6040,11 @@ static int lan8842_config_init(struct phy_device *phydev)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* Apply the erratas for this device */
++	ret = lan8842_erratas(phydev);
++	if (ret < 0)
++		return ret;
++
+ 	/* Even if the GPIOs are set to control the LEDs the behaviour of the
+ 	 * LEDs is wrong, they are not blinking when there is traffic.
+ 	 * To fix this it is required to set extended LED mode
+-- 
+2.34.1
 
