@@ -1,151 +1,121 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC28325A2A2
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 14:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DC626C39F;
+	Wed, 29 Oct 2025 14:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761747649; cv=none; b=Ij8yjGYSzoFWNrAoHQFUhik3E3av/WQTMIh7veT7dsD4TNvNsPl/pTp+DtKPhPKwiphPTKZ37NowLv3+dbmtWL1jWoaInJFO7bkB+LarCSv2ujncmqcp5B055Mo2vK35ng1YokbFzL6A21aovaHc8PtLO0RSPxQCCDe1UW2lLT8=
+	t=1761747953; cv=none; b=DsDp0M1uypvLrEbynzel9FYeRkdFL1cphSXBXdGPT2DlgkDfbdZXmo6QpyMKT/njuQ+o26KDqQkowU9K7DTz5J0GyuH2SSPRb4qjxPdZU0eIiXelrqXWUjhzL3vMImXK/N8iFZbxY1IjMlIl+5bDFafnSg/bCqucpZrnpZWKHEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761747649; c=relaxed/simple;
-	bh=am0/YbY3X+EDDZcjCgeLwrDMLb2LpBxcjmr3MpjYeF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ie5tA0DIXgyHJ8T+ZCglMYg1MtYqu8ZEEnVSoMSSUjsCZGjC0er9UUGVKneKeVz2tkVz9CP5WlKmK+V1Y/LRZcZgPYqKmU6skakJ7/PpGK2dITNlAIB7tX006vG1E3e3Cgg+vDv5FyblcPYJ8FdO6OcW8iSFFp3PHWeAZwSA32o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=e4qAsRXa; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+	s=arc-20240116; t=1761747953; c=relaxed/simple;
+	bh=eX4MwDdVNFiSJIUIDmCiZKp9nu2G7K/VXocP8qjTRlw=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=k51XZIZXEFlnu7PQKtXgNFl83Zd5pd5C4a+PmvY7HNgaFwVz/YUHjkmNEI+sZe2AEPg8BAz6mD10tnZ12luGwYnvYpAfTzrBb621hgTTgRa11SCcHlhKdYQhg03SSt8HSJBRFm1DC9jNCTwRMpIuK9MwQNuUEI7UACkpbA/IyIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtnLJZah; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="e4qAsRXa"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-427091cd4fdso4263254f8f.1
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 07:20:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1761747645; x=1762352445; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxBr6UEJhfUdxptPH87yDMGfOKWl61gBXcrB5pzrHm8=;
-        b=e4qAsRXaZCN0Ac957vNDchZDWjuVxpaJLnRYPl+nNoiy10L0woLP3nsMf2HqatRMTf
-         4yxKeUg/oDlk++HNyvAw3tDqui8UMe7vm/yLSUA5RPhm3XIs+TJ8WJ9LhrN6NSoGVA4B
-         uBYyiaNFqnCYFmgIzqu0+kW+gS0HXQvrO+Oj5hLJb5n+8GPeyuzFsQkcAfWYd2N9zioF
-         Bn5Cf38/ITDlzCB+teSgsbPIEu4lAhRjkHzcCqa+bWPFfVRvvomfoL2Ztj6bc+uFkzmG
-         Ttt//U3awXwdxpFkE6JliMARy8fAnEf3AW7BywgR+D7FNYhTotOaUu6eKcv0RE1BCL+2
-         3VPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761747645; x=1762352445;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fxBr6UEJhfUdxptPH87yDMGfOKWl61gBXcrB5pzrHm8=;
-        b=c2AKK/Y+xZGzEjFnSI6t4CH1+xzOXu98TCEA18TxaR7neAa3knhEmEOJjHvXE5BWUD
-         O1N/Hvp+MagTwBNRAC9vYeIusDHTnVHQ2jVVKgoDITcgKZgbomPk80nTSFWSXz4rb/s3
-         W9181TCXMiCpEB7AGuDLwOeAF93EB7bXHPcBM2mM8LrJeeBo73WDecwnKWiwAFQBvqFj
-         62tekcQC0DVZgK7tULapcivMPeIf/Q9b7DsdX/1f3IM1WFe6tp7aVmLwBGWW7xNDY1UD
-         juPDQzDpMeVocp4Hy8YKpkjWsFQa4RFjxLo2R/7rbHWrMR+cRS3fkLSJwaUkcbrsuVNB
-         PLSw==
-X-Forwarded-Encrypted: i=1; AJvYcCX/Y3CB3nQhfkjH4WmpT1iBUw3xh/avJl51K80XKGMadxYOoUCkSh6yTQ2A1bTiUuUN1P+JBWU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOePowQc8dik4iPKkmcsHvIPTa0iqb/bQaqKsrU88wFmulFNUq
-	HW743QqLVRoFWCLzZ2JrYqmMyS+0x6eXp0FqyCJ5wRvMVkps0I2YaexrpvaaOFhpZSU=
-X-Gm-Gg: ASbGnctHRGg2lkWq+W6LDadcPoZK7P2aD4fh8J+WWWfOJ2o6EGh0iUS0/SHPFeJsp2d
-	G5vsqYJAswHkSqdio7SAc5BIlzYH4Lt/TXa2XgZCbvBaJuE8RZ1DrFlvVmyZvILdSFudJrVZ/7X
-	0Ct6ZCtGfbMsTXBWuWBQm0AQ2fJnjTTml+K5vRu3RwVZWWFmy/ZDOiu90fla6oJVn5lvNqKIVc6
-	DDsY7JZ+l2RTnjsTPXU9WDlcqu3yJER58UY/HP4yi9fwenBvTIEZnp7A+PNc20ucC9DjLVEF3C7
-	Bvr8ZVb8ET459BRD8rjArW/bU9hMAJpsyX5SEB5OxKbOjVh+H+vtU6wKO59MF8jrLMlyQdAIik3
-	uxgPXf3DxeMtl9sNQKng7SyBsbV9hQK7mogCOkpamA+yJdZ+pJJsd6vnWdD2D1Equt72oDTCKEH
-	GoN7gnSxSAliBepw5fKpI913ZTT90=
-X-Google-Smtp-Source: AGHT+IHoQJVW3GVryEUbRFPGpnxQkJbTH7OhYAuA7LrZ0+OT2N5eQIcCT1zPMqYvJ4arflxQltQRlg==
-X-Received: by 2002:a05:6000:2001:b0:428:55c3:ced6 with SMTP id ffacd0b85a97d-429aef82eadmr2390550f8f.18.1761747644972;
-        Wed, 29 Oct 2025 07:20:44 -0700 (PDT)
-Received: from jiri-mlt.client.nvidia.com ([140.209.217.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952cbb20sm26388404f8f.18.2025.10.29.07.20.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 07:20:44 -0700 (PDT)
-Date: Wed, 29 Oct 2025 15:20:41 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Ivan Vecera <ivecera@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Michal Schmidt <mschmidt@redhat.com>, Petr Oros <poros@redhat.com>, 
-	Prathosh Satish <Prathosh.Satish@microchip.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Jonathan Corbet <corbet@lwn.net>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Donald Hunter <donald.hunter@gmail.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] dpll: add phase-adjust-gran pin attribute
-Message-ID: <jgebk37r4xs6w4526hjc5u6r7oudanb5ce7v4xlaw2tcswtycx@cvmxkwxvkpek>
-References: <20251024144927.587097-1-ivecera@redhat.com>
- <20251024144927.587097-2-ivecera@redhat.com>
- <20251028183919.785258a9@kernel.org>
- <b3f45ab3-348b-4e3e-95af-5dc16bb1be96@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtnLJZah"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74334C4CEF7;
+	Wed, 29 Oct 2025 14:25:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761747953;
+	bh=eX4MwDdVNFiSJIUIDmCiZKp9nu2G7K/VXocP8qjTRlw=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=rtnLJZah0zkZY3E6GlkRXjyP9ZgcQTQOeXraInstDmxh/JWMNN1qhZVMoM6uCAAjl
+	 zwnFSbvoj5xyi84d88E3+p6/xWog3LorSHHeLWlKN8lpJe7uU00/Lsm4BvqtavBPR6
+	 idp/kNGr3VGLyq7WkqDSwI/aHNXl9LVD9chEboM+4MfCY4jvsFBSENBiDP9eS3gMk8
+	 XM4c4tD5euqtU9yxPlz8avj5nAB5iUbBpKEVt8dI4drAott6zUS+M/1XoXP2QcoLdH
+	 4Ik8K5o6zXtoIpVG2sPIqqVjbCSaLn3VBHPzluBYNwC41G/Xv0YBbXvej8uT8OqO0x
+	 gNDJBviXt7ulw==
+Content-Type: multipart/mixed; boundary="===============7495328656080687778=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b3f45ab3-348b-4e3e-95af-5dc16bb1be96@redhat.com>
+Message-Id: <b13f0f29e5f3308b5b2d973237634a7a7ec7c7be034227a633d6e49ed9f657cd@mail.kernel.org>
+In-Reply-To: <20251029-xsk-v6-12-5a63a64dff98@bootlin.com>
+References: <20251029-xsk-v6-12-5a63a64dff98@bootlin.com>
+Subject: Re: [PATCH bpf-next v6 12/15] selftests/bpf: test_xsk: Don't exit immediately if validate_traffic fails
+From: bot+bpf-ci@kernel.org
+To: bastien.curutchet@bootlin.com,bjorn@kernel.org,magnus.karlsson@intel.com,maciej.fijalkowski@intel.com,jonathan.lemon@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,mykolal@fb.com,shuah@kernel.org,davem@davemloft.net,kuba@kernel.org,hawk@kernel.org
+Cc: thomas.petazzoni@bootlin.com,alexis.lothore@bootlin.com,netdev@vger.kernel.org,bpf@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,bastien.curutchet@bootlin.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed, 29 Oct 2025 14:25:50 +0000 (UTC)
 
-Wed, Oct 29, 2025 at 08:44:52AM +0100, ivecera@redhat.com wrote:
->Hi Kuba,
->
->On 10/29/25 2:39 AM, Jakub Kicinski wrote:
->> On Fri, 24 Oct 2025 16:49:26 +0200 Ivan Vecera wrote:
->> > +      -
->> > +        name: phase-adjust-gran
->> > +        type: s32
->> > +        doc: |
->> > +          Granularity of phase adjustment, in picoseconds. The value of
->> > +          phase adjustment must be a multiple of this granularity.
->> 
->> Do we need this to be signed?
->> 
->To have it unsigned brings a need to use explicit type casting in the core
->and driver's code. The phase adjustment can be both positive and
->negative it has to be signed. The granularity specifies that adjustment
->has to be multiple of granularity value so the core checks for zero
->remainder (this patch) and the driver converts the given adjustment
->value using division by the granularity.
->
->If we would have phase-adjust-gran and corresponding structure fields
->defined as u32 then we have to explicitly cast the granularity to s32
->because for:
-
-I prefer cast. The uapi should be clear. There is not point of having
-negative granularity.
+--===============7495328656080687778==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
->
-><snip>
->s32 phase_adjust, remainder;
->u32 phase_gran = 1000;
->
->phase_adjust = 5000;
->remainder = phase_adjust % phase_gran;
->/* remainder = 0 -> OK for positive adjust */
->
->phase_adjust = -5000;
->remainder = phase_adjust % phase_gran;
->/* remainder = 296
-> * Wrong for negative adjustment because phase_adjust is casted to u32
-> * prior division -> 2^32 - 5000 = 4294962296.
-> * 4294962296 % 1000 = 296
-> */
->
-> remainder = phase_adjust % (s32)phase_gran;
-> /* remainder = 0
->  * Now OK because phase_adjust remains to be s32
->  */
-></snip>
->
->Similarly for division in the driver code if the granularity would be
->u32.
->
->So I have proposed phase adjustment granularity to be s32 to avoid these
->explicit type castings and potential bugs in drivers.
+```
+commit 5ed620bf5df1b2a38af461580d5207eadf5c552e
+Author: Bastien Curutchet (eBPF Foundation) <bastien.curutchet@bootlin.com>
 
-Cast in dpll core, no?
+selftests/bpf: test_xsk: Don't exit immediately if validate_traffic fails
+
+This changes __testapp_validate_traffic() to return TEST_FAILURE instead
+of calling exit_with_error(), and adds cleanup for sockets and umem
+before returning on pthread_barrier_destroy() failure.
+
+> diff --git a/tools/testing/selftests/bpf/test_xsk.c b/tools/testing/selftests/bpf/test_xsk.c
+> index 2c392d5b9..18a6ce648 100644
+> --- a/tools/testing/selftests/bpf/test_xsk.c
+> +++ b/tools/testing/selftests/bpf/test_xsk.c
+> @@ -1772,12 +1772,12 @@ static int __testapp_validate_traffic(struct test_spec *test, struct ifobject *i
+>  	err = test_spec_set_mtu(test, test->mtu);
+>  	if (err) {
+>  		ksft_print_msg("Error, could not set mtu.\n");
+> -		exit_with_error(err);
+> +		return TEST_FAILURE;
+>  	}
+>
+>  	if (ifobj2) {
+>  		if (pthread_barrier_init(&barr, NULL, 2))
+> -			exit_with_error(errno);
+> +			return TEST_FAILURE;
+>  		pkt_stream_reset(ifobj2->xsk->pkt_stream);
+>  	}
+>
+
+[ ... ]
+
+> @@ -1791,8 +1791,11 @@ static int __testapp_validate_traffic(struct test_spec *test, struct ifobject *i
+>
+>  	if (ifobj2) {
+>  		pthread_barrier_wait(&barr);
+> -		if (pthread_barrier_destroy(&barr))
+> -			exit_with_error(errno);
+> +		if (pthread_barrier_destroy(&barr)) {
+> +			clean_sockets(test, ifobj1);
+> +			clean_umem(test, ifobj1, NULL);
+> +			return TEST_FAILURE;
+> +		}
+>
+>  		/*Spawn TX thread */
+>  		pthread_create(&t1, NULL, ifobj2->func_ptr, test);
+
+In __testapp_validate_traffic(), thread t0 is created via pthread_create()
+before the barrier operations. If pthread_barrier_destroy() fails, can this
+leak thread t0?
+
+The pthread_create(&t0, ...) happens earlier in the function. The normal
+execution paths handle t0 via pthread_kill() or pthread_join(), but when
+pthread_barrier_destroy() fails, the new error path calls clean_sockets()
+and clean_umem() but never joins or kills t0 before returning TEST_FAILURE.
+
+The commit message says "Release the resource of the 1st thread if a
+failure happens between its creation and the creation of the second
+thread", but the code only releases sockets and umem.
 
 
->
->Thanks,
->Ivan
->
+```
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+In-Reply-To-Subject: `selftests/bpf: test_xsk: Don't exit immediately if validate_traffic fails`
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18910697393
+
+--===============7495328656080687778==--
