@@ -1,125 +1,131 @@
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B2B253B71;
-	Wed, 29 Oct 2025 07:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACEF17B425
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 08:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761724581; cv=none; b=Da5pvXBM6b28iUKBfM8bHWxcDTvtP5ml0AfpszLO3SQmTTYJ2o1DgTpKj8wOq3TkDBaBz0pqAWUqA7UEPtXHKcpWIneTRNZ/JUe4o59TJUeGV1f5Njn8uJgVHSYljEcjuKDj83JZ6Seo8yeviPtsbGKkLrtNkZ07gRQgpc9jXjg=
+	t=1761724913; cv=none; b=RrOWnNi+Xxmssh8QjjHI/ammJU7bzrGFqciYu8xe8G/kXAAG1NefDNtsb34amKMCpK6KiRnxRy9LBiy1q/8U7lRKH+cWUzvobxVVDhTCO0wtugPABNO8rGU70oi+gvjFbyaNlOD31l3/efTbcLoCZh6dnDYzcvRzWpQy7+QynM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761724581; c=relaxed/simple;
-	bh=yq5i/1jdK4GAdk/5gCKcUxzz6h9TQBP5e3VMa+tJ48c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jYjLMCE13cEGQcWPPRdczCwjhbY6UgBY8Sji3B9l5sfIN+m4ykzT28+mv4MVkfKEE+FWCZsnjlsgzQjh5PTbpneD41Fn5FrEmx/zPEW72PaOh3LTqBTJDVCdSuRxBp3/iFBQfKIcucWpYUAXc+66+PuatCRAm4EoxkNKPhexowo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=34+pqqiA; arc=none smtp.client-ip=113.46.200.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1761724913; c=relaxed/simple;
+	bh=XblybcRGIo+MaPiIPUFDsXB2l+NrAJUe0y9bGK4EbMI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LYvzWd4C/g5+woyuKHgw1VGBwxR7eZrXC2XiB+ckkE30WQObo117weeiiigfPqV7fwFJQVsmK7iqjDWQaLZ7uhb0rVpcHINn31KtYWPhMnhreEnq6ZNVOZ2L902ARQgDOfNxA+x6QetOzsYMbjY5KRoeAYq8lCDAjNOjpSv/y+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SRm2DzsK; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="34+pqqiA"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=vuHKXm+OhQijHCGxbJTJ7gKVGu/cyR9t2WAMa/3qIME=;
-	b=34+pqqiAaUgpKjc0zQxXqV5Ay+UUIAS5jzBDK/oAvbWPu2Bp347b/gH29D8uVWd9xBPWVjC+1
-	hVVt0oGQXvWfZ/QkLnPzub9kgOsrIqZ1DCIfwKFG7+zaeUE4kFvK/ZCie55YGmCeiwqXuDfJFcT
-	W3rf4E+rGPYpl9u+5qeCpjk=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cxKL01jyFz12LFQ;
-	Wed, 29 Oct 2025 15:55:36 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7E08F180B5A;
-	Wed, 29 Oct 2025 15:56:13 +0800 (CST)
-Received: from [10.174.177.19] (10.174.177.19) by
- dggpemf500016.china.huawei.com (7.185.36.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Oct 2025 15:56:12 +0800
-Message-ID: <0feb2a87-b93d-4a99-9180-03a9ccab562e@huawei.com>
-Date: Wed, 29 Oct 2025 15:56:11 +0800
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SRm2DzsK"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761724907; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=w1hOBYBW90TJHltUMB8LG0JU06v8v9HWLD6W9v9CSUc=;
+	b=SRm2DzsKuHGhAlsBg79mvvxqll76stGAvYjSpX9HVzJEw3gvWNRrHCW3nhEaqynj5S9sG9Hp74vjrf2AXyKjnHdqtJ0MlBuE5aGm/uDQ9LrgpkMODIf8VR3E46IGGJ0DZ0K6cnBUWU/uAn+jeOPTCZZZu2K8aMAqI3vYd2shV94=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WrF3g1Z_1761724905 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 29 Oct 2025 16:01:46 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Dust Li <dust.li@linux.alibaba.com>
+Subject: [PATCH net-next v9 0/5] eea: Add basic driver framework for Alibaba Elastic Ethernet Adaptor
+Date: Wed, 29 Oct 2025 16:01:40 +0800
+Message-Id: <20251029080145.18967-1-xuanzhuo@linux.alibaba.com>
+X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: netdevsim: Fix ethtool-coalesce.sh fail by
- installing ethtool-common.sh
-To: Simon Horman <horms@kernel.org>
-CC: <kuba@kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <shuah@kernel.org>,
-	<acardace@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>
-References: <20251027043007.1315917-1-wangliang74@huawei.com>
- <aQD52zzmW1YDC1iH@horms.kernel.org>
-From: Wang Liang <wangliang74@huawei.com>
-In-Reply-To: <aQD52zzmW1YDC1iH@horms.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+X-Git-Hash: 4becde0aa50f
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+
+Add a driver framework for EEA that will be available in the future.
+
+This driver is currently quite minimal, implementing only fundamental
+core functionalities. Key features include: I/O queue management via
+adminq, basic PCI-layer operations, and essential RX/TX data
+communication capabilities. It also supports the creation,
+initialization, and management of network devices (netdev). Furthermore,
+the ring structures for both I/O queues and adminq have been abstracted
+into a simple, unified, and reusable library implementation,
+facilitating future extension and maintenance.
 
 
-在 2025/10/29 1:14, Simon Horman 写道:
-> On Mon, Oct 27, 2025 at 12:30:07PM +0800, Wang Liang wrote:
->> The script "ethtool-common.sh" is not installed in INSTALL_PATH, and
->> triggers some errors when I try to run the test
->> 'drivers/net/netdevsim/ethtool-coalesce.sh':
->>
->>    TAP version 13
->>    1..1
->>    # timeout set to 600
->>    # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
->>    # ./ethtool-coalesce.sh: line 4: ethtool-common.sh: No such file or directory
->>    # ./ethtool-coalesce.sh: line 25: make_netdev: command not found
->>    # ethtool: bad command line argument(s)
->>    # ./ethtool-coalesce.sh: line 124: check: command not found
->>    # ./ethtool-coalesce.sh: line 126: [: -eq: unary operator expected
->>    # FAILED /0 checks
->>    not ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh # exit=1
->>
->> Install this file to avoid this error. After this patch:
->>
->>    TAP version 13
->>    1..1
->>    # timeout set to 600
->>    # selftests: drivers/net/netdevsim: ethtool-coalesce.sh
->>    # PASSED all 22 checks
->>    ok 1 selftests: drivers/net/netdevsim: ethtool-coalesce.sh
->>
->> Fixes: fbb8531e58bd ("selftests: extract common functions in ethtool-common.sh")
->> Signed-off-by: Wang Liang <wangliang74@huawei.com>
->> ---
->>   tools/testing/selftests/drivers/net/netdevsim/Makefile | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/tools/testing/selftests/drivers/net/netdevsim/Makefile b/tools/testing/selftests/drivers/net/netdevsim/Makefile
->> index daf51113c827..653141a654a0 100644
->> --- a/tools/testing/selftests/drivers/net/netdevsim/Makefile
->> +++ b/tools/testing/selftests/drivers/net/netdevsim/Makefile
->> @@ -20,4 +20,6 @@ TEST_PROGS := \
->>   	udp_tunnel_nic.sh \
->>   # end of TEST_PROGS
->>   
->> +TEST_FILES := ethtool-common.sh
->> +
->>   include ../../../lib.mk
-> Hi Wang Liang,
->
-> As per commit f07f91a36090 ("selftests: net: unify the Makefile formats")
-> I think the desired format is as follows (completely untested!):
->
-> TEST_FILES := \
-> 	ethtool-common.sh \
-> # end of TEST_PROGS
+v9:
+    1. some fixes for ethtool from http://lore.kernel.org/all/20251027183754.52fe2a2c@kernel.org
+v8: 1. rename eea_net_tmp to eea_net_init_ctx
+    2. rm code that allocs memory to destroy queues
+    3. some other minor changes
+v7: 1. remove the irrelative code from ethtool commit
+    2. build every commits with W12
+v6: Split the big one commit to five commits
+v5: Thanks for the comments from Kalesh Anakkur Purayil, ALOK TIWARI
+v4: Thanks for the comments from Troy Mitchell, Przemek Kitszel, Andrew Lunn, Kalesh Anakkur Purayil
+v3: Thanks for the comments from Paolo Abenchi
+v2: Thanks for the comments from Simon Horman and Andrew Lunn
+v1: Thanks for the comments from Simon Horman and Andrew Lunn
 
 
-Thanks for the reminder!
 
-I will correct it, and send v2 later.
 
-------
-Best regards
-Wang Liang
+Xuan Zhuo (5):
+  eea: introduce PCI framework
+  eea: introduce ring and descriptor structures
+  eea: probe the netdevice and create adminq
+  eea: create/destroy rx,tx queues for netdevice open and stop
+  eea: introduce ethtool support
 
->
+ MAINTAINERS                                   |   8 +
+ drivers/net/ethernet/Kconfig                  |   1 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/alibaba/Kconfig          |  29 +
+ drivers/net/ethernet/alibaba/Makefile         |   5 +
+ drivers/net/ethernet/alibaba/eea/Makefile     |   9 +
+ drivers/net/ethernet/alibaba/eea/eea_adminq.c | 421 ++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_adminq.h |  70 ++
+ drivers/net/ethernet/alibaba/eea/eea_desc.h   | 156 ++++
+ .../net/ethernet/alibaba/eea/eea_ethtool.c    | 276 ++++++
+ .../net/ethernet/alibaba/eea/eea_ethtool.h    |  50 ++
+ drivers/net/ethernet/alibaba/eea/eea_net.c    | 572 +++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_net.h    | 196 +++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.c    | 587 +++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_pci.h    |  67 ++
+ drivers/net/ethernet/alibaba/eea/eea_ring.c   | 260 ++++++
+ drivers/net/ethernet/alibaba/eea/eea_ring.h   |  91 ++
+ drivers/net/ethernet/alibaba/eea/eea_rx.c     | 786 ++++++++++++++++++
+ drivers/net/ethernet/alibaba/eea/eea_tx.c     | 402 +++++++++
+ 19 files changed, 3987 insertions(+)
+ create mode 100644 drivers/net/ethernet/alibaba/Kconfig
+ create mode 100644 drivers/net/ethernet/alibaba/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/Makefile
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_adminq.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_desc.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ethtool.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_net.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_pci.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_ring.h
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_rx.c
+ create mode 100644 drivers/net/ethernet/alibaba/eea/eea_tx.c
+
+--
+2.32.0.3.g01195cf9f
+
