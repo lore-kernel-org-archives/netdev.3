@@ -1,35 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C773161B3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7303168F2;
 	Wed, 29 Oct 2025 20:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761771129; cv=none; b=NnOHAcaftT9D3A/EN1u43Ex9Rkph48FMiHkO+82Ckfw7yrYpu/4ul0on5rjisA4hQmQbfdXB1700qrsfsRI/QO6JMEFf1yATvvvDzfvr3MHGm3TVjY/z5ZC1rA30YTLAOWR2QkxHfmgregaETMLBzLogpIrRs5OSmPJsJeqBMXo=
+	t=1761771130; cv=none; b=GvD8V2m6AbmhFtySJPklQdvl1O/XT03Cfki5Z+i536tmf887fZ1Xd8Gbjo4WaWFFQV1zj7vbbGoEsrlqJKl6AKLjw5nzjx9F/AO2wBUPRzDaF47BtkUuE+eOKzndgIv9gqFVIRkl3G1stLde+l4FU3NCz2X6YSrL5+v157h/cqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761771129; c=relaxed/simple;
-	bh=KV9UVgCkqouJnikGNIjL29VEwbmmtAbHwtbsaIvTk2s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZoLLE/zinOhAgUU3yVOUzKwI3QOx2KjGhkPHsLXS5NRf065Flukut+TIovtPV+omOHTqs9jbUkP8hprPxiAigs6N5jgMRm4KbGk74VSHKmoXGXJ5NT2csiMRD1vgFDQxFB+wtyZfuD6rNt4FYac1Ntraj+W8xLPDPcYPNPABzsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=FLF1GT7q; arc=none smtp.client-ip=193.104.135.124
+	s=arc-20240116; t=1761771130; c=relaxed/simple;
+	bh=LOfrWk6ONClCwAMyA52kAi+ma98US5uAFAh1afwodTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d+9IF6OrpGcdkivhr2+dsC3r+MJzrdDakNcFr/vVHj/XuT72qUCeNniD/YlzLLdgq4OMuyKel3Nmc0FkmlxbVVykqZLzzi9ljGeuMhXuDFb4cuZnPIl6GY7AJsOT20robUPThR3y76TKjmobQ5MqBN53IZSNzquLLo5syrLFYNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=unybq+cU; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="FLF1GT7q"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="unybq+cU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761771115;
-	bh=KV9UVgCkqouJnikGNIjL29VEwbmmtAbHwtbsaIvTk2s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FLF1GT7qr19AGWmGkFOlLhJpotsQeztnM/cvmXV8BDFjNK0Safqa2JBEE0NdZCC+2
-	 7Z06qImjnZTVd+1WXnBm8YWJ/O3rU+R8oTqcPUR5B6OgKWH50S2XNwoXmQxfYxkNkp
-	 Ic7aPKA20q0BBGhXyJmsqswAMrwopq7AFQLvN3oYPQ8KPFRAZGsDL2FndquGJQOGvJ
-	 0uGi8LSu5NoFsGkuU0sCQRTA0s11dCvOoyDCTXFjxlbxD8Z7iXKDBeyT+kjfWJJJ6p
-	 SqPVZMtpfT4W6OJvHyVu7HnxKRrtp/JonnYZA7IbEYCgwEtL4CgVyC8mmwMK9Mxz0J
-	 +CCtc277b24yQ==
+	bh=LOfrWk6ONClCwAMyA52kAi+ma98US5uAFAh1afwodTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=unybq+cU3lKbzBjiuP2eErccpA1Myxpj+7N3axyMbM8w3GhUh63idw2WV8oCTr2aZ
+	 1GjoOnv8D3gCCNcW6LtrsU+b1yfOVvGctipt+FJ8wzjjNzo/Ui8TlCQ2a/0iuO4GCJ
+	 D2h/icTw7XIIA71JGvqNcpH2Uc/k3054QCoLW0Gwy/TeIPG16XwTz2qqxG/4SXLkrP
+	 AkI9NAI/RdNYcFY9yfu2cyivl92MCas4+j0j95jPlM6rBhPafYCK0rb9w8Ld3zpIo0
+	 MXyttBLOgruB3wXSAK4vyvVD4YPE3dW7NZIzI7GvQotPCDvzTxUswmuYLcJpdRYtrw
+	 RhPoDKjlt6L4A==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 43E3460115;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 3EE3D60114;
 	Wed, 29 Oct 2025 20:51:55 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id CDBD92021CC; Wed, 29 Oct 2025 20:51:29 +0000 (UTC)
+	id EA3EF20308B; Wed, 29 Oct 2025 20:51:29 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -44,10 +45,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v1 00/11] wireguard: netlink: ynl conversion
-Date: Wed, 29 Oct 2025 20:51:08 +0000
-Message-ID: <20251029205123.286115-1-ast@fiberby.net>
+Subject: [PATCH net-next v1 03/11] wireguard: netlink: enable strict genetlink validation
+Date: Wed, 29 Oct 2025 20:51:11 +0000
+Message-ID: <20251029205123.286115-4-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251029205123.286115-1-ast@fiberby.net>
+References: <20251029205123.286115-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,92 +60,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series completes the implementation of YNL for wireguard,
-as previously announced[1].
+Wireguard is a modern enough genetlink family, that it doesn't
+need resv_start_op. It already had policies in place when it was
+first merged, it has also never used the reserved field, or other
+things toggled by resv_start_op.
 
-This series consist of 5 parts:
-1) Patch 01-03 - Misc. changes
-2) Patch    04 - Add YNL specification for wireguard
-3) Patch 05-07 - Transition to a generated UAPI header
-4) Patch    08 - Adds a sample program for the generated C library
-5) Patch 09-11 - Transition to generated netlink policy code
+wireguard-tools have always used zero initialized memory, and
+have never touched the reserved field, neither have any other
+clients I have checked. Closed-source clients are much more
+likely to use the embeddedable library from wireguard-tools,
+than a DIY implementation using uninitialized memory.
 
-The main benefit of having a YNL specification is unlocked after the
-first 2 parts, the RFC version seems to already have spawned a new
-Rust netlink binding[2] using wireguard as it's main example.
-
-Part 3 and 5 validates that the specification is complete and aligned,
-the generated code might have a few warts, but they don't matter too
-much, and are mostly a transitional problem[3].
-
-Part 4 is possible after part 2, but is ordered after part 3,
-as it needs to duplicate the UAPI header in tools/include.
-
-For the non-generated kernel C code the diff stat looks like this:
-
-$ git diff --stat net-next/main..wg-ynl include/ drivers/ \
-	':(exclude)*netlink_gen*'
- drivers/net/wireguard/Makefile  |   1 +
- drivers/net/wireguard/netlink.c |  70 +++---------
- include/uapi/linux/wireguard.h  | 190 ++++++--------------------------
- 3 files changed, 47 insertions(+), 214 deletions(-)
-
-[1] [PATCH net 0/4] tools: ynl-gen: misc fixes + wireguard ynl plan
-    https://lore.kernel.org/r/20250901145034.525518-1-ast@fiberby.net/
-
-[2] https://github.com/one-d-wide/netlink-bindings/
-
-[3] https://lore.kernel.org/r/20251014123201.6ecfd146@kernel.org/
-
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
-v1:
-- Policy arguement to nla_parse_nested() changed to NULL (thanks Johannes).
-- Added attr-cnt-name to the spec, to reduce the diff a bit.
-- Refined the doc in the spec a bit.
-- Reword commit messages a bit.
-- Reordered the patches, and reduced the series from 14 to 11 patches.
+ drivers/net/wireguard/netlink.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-RFC: https://lore.kernel.org/r/20250904-wg-ynl-rfc@fiberby.net/
-
-diff -Naur a/sent/0904/b/0002-wireguard-netlink-validate-nested-arrays-in-policy.patch 0001-wireguard-netlink-validate-nested-arrays-in-policy.patch
-diff -Naur a/sent/0904/b/0001-wireguard-netlink-use-WG_KEY_LEN-in-policies.patch 0002-wireguard-netlink-use-WG_KEY_LEN-in-policies.patch
-diff -Naur a/sent/0904/b/0013-wireguard-netlink-enable-strict-genetlink-validation.patch 0003-wireguard-netlink-enable-strict-genetlink-validation.patch
-diff -Naur a/sent/0904/b/0003-netlink-specs-add-specification-for-wireguard.patch 0004-netlink-specs-add-specification-for-wireguard.patch
-
-
-
-
-
-Asbjørn Sloth Tønnesen (11):
-  wireguard: netlink: validate nested arrays in policy
-  wireguard: netlink: use WG_KEY_LEN in policies
-  wireguard: netlink: enable strict genetlink validation
-  netlink: specs: add specification for wireguard
-  uapi: wireguard: move enum wg_cmd
-  uapi: wireguard: move flag enums
-  uapi: wireguard: generate header with ynl-gen
-  tools: ynl: add sample for wireguard
-  wireguard: netlink: convert to split ops
-  wireguard: netlink: rename netlink handlers
-  wireguard: netlink: generate netlink code
-
- Documentation/netlink/specs/wireguard.yaml | 307 +++++++++++++++++++++
- MAINTAINERS                                |   3 +
- drivers/net/wireguard/Makefile             |   1 +
- drivers/net/wireguard/netlink.c            |  70 +----
- drivers/net/wireguard/netlink_gen.c        |  77 ++++++
- drivers/net/wireguard/netlink_gen.h        |  29 ++
- include/uapi/linux/wireguard.h             | 190 +++----------
- tools/include/uapi/linux/wireguard.h       |  79 ++++++
- tools/net/ynl/samples/.gitignore           |   1 +
- tools/net/ynl/samples/wireguard.c          | 104 +++++++
- 10 files changed, 647 insertions(+), 214 deletions(-)
- create mode 100644 Documentation/netlink/specs/wireguard.yaml
- create mode 100644 drivers/net/wireguard/netlink_gen.c
- create mode 100644 drivers/net/wireguard/netlink_gen.h
- create mode 100644 tools/include/uapi/linux/wireguard.h
- create mode 100644 tools/net/ynl/samples/wireguard.c
-
+diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
+index d36e94220d2c3..024d4a6cc74c6 100644
+--- a/drivers/net/wireguard/netlink.c
++++ b/drivers/net/wireguard/netlink.c
+@@ -631,7 +631,6 @@ static const struct genl_ops genl_ops[] = {
+ static struct genl_family genl_family __ro_after_init = {
+ 	.ops = genl_ops,
+ 	.n_ops = ARRAY_SIZE(genl_ops),
+-	.resv_start_op = WG_CMD_SET_DEVICE + 1,
+ 	.name = WG_GENL_NAME,
+ 	.version = WG_GENL_VERSION,
+ 	.maxattr = WGDEVICE_A_MAX,
 -- 
 2.51.0
 
