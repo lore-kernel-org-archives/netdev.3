@@ -1,214 +1,128 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000FB21579F
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 20:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBFD1805E;
+	Wed, 29 Oct 2025 20:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761771044; cv=none; b=lJBGPqqk2nfBrKpTcyHZVye74cAdYIvEnhY9PR95EUwVn4HdcElesIOlhm9SufkaVOJlOrexRAF+ol1zlHJI3CPKcEHVX5VJaye+YhSkKwUoeaVhYPcoOH1V2TsmM0pfdODdL1JNP9npmYfZpSyCsjH3k3x/OnHCFXNW4dksnOM=
+	t=1761771125; cv=none; b=JGwuhRxNoxp+oY0pdnFXp3mv6Y6bK1HcQFzHHKLCuH8j8+W+Py79rv4WEcQ7Hr8LBmQXAyLWle+dpZemVtDmmCC+639NLbNCVOA2zjRUgfmOkD3l7cieGdd/yYh9kRJue32+Q3dPpY4lCgswCBwwHPU4utdxn3usz99Ri7Zjp4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761771044; c=relaxed/simple;
-	bh=6zjWDKHvDUmCspfnhUpUidENGOH1u4Q7Al0J9CBMnyY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Cxgm6AZr35pzE50MlcFrRMEOA+z+nxfIluKEt2DgFnlQS4Wnr0eNhzvj1NKNhHlXbpQ7BqLaZ79scOkc8ECiLc3ZLWKFnKQqo2WB+MZANs+QQN5oz4e3QExacuguhU6b7kmxbpYY0ZGillzHzsZJT+r2NlMYq2LkaCsexKWknkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XI8NuLpL; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761771125; c=relaxed/simple;
+	bh=Q4r+8tw3iUlpircGyKS82M6l99VZlCjoo2D6/aMSs8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ol2THUK/WiFSvAcdw+NbqwBvi2gsNN1bcR6f+XTeC6HdGqop1WtmrdCidz5BGqL15kjjiIK1W9HpWvfxtmshPLHDVUoxup740FrIPRjlaaqg1fk7kJqY61RoVJlw3w6gTVHJRsev4xqHNApz1tO7Yy3WHpNQaSeGo4XXEsWid+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=KiUgIivO; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XI8NuLpL"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-42708097bbdso47102f8f.3
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 13:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761771041; x=1762375841; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QhItZvJg11h14RqD8DEUafH4SOcvlIckRX4IB4jy1L4=;
-        b=XI8NuLpLMLtEHd1v6jOs/Xn65v1qzCSkyduXna5NyAOEMV2MUSdgrA7FZ2yf99NJ+L
-         Cg6wWp2critoCEpOGrsEIOXUNY5pg8D18lxMh8Kbf/hp0InIFopGWw22y3sdrRSjtonl
-         1UFTzmzq3LHwjIt4LbbZwBTWMbeR61rDOOq1Gdu0W23lhxOlLIGUFW4IxDhZQ3f2FiTp
-         Vjt8KO87WXLRdp1Pre966wgZoXCaDVDVWwOcZhimGrA+8NHDY586ajoE5HlAY3tu9Zy+
-         SoIKY+15ICHdi179rYLfo99ENKogyEetvi05kqa+MhlJiSrPsviYBoGGWJ7fgTZNcPfm
-         N4zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761771041; x=1762375841;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QhItZvJg11h14RqD8DEUafH4SOcvlIckRX4IB4jy1L4=;
-        b=DQPxTUKmpjmkpRmvAS9vffhvs/Uka0sMEl1JdLSm/B3i1mM8T9515pB1OBUioxNZaM
-         93rwJEa721T4/2q2tyfQjpLbVpi+8TZ08PG703L6QTyaeoN/ohhq0uB5vxYHU+Tf9Y6r
-         4Uut/RFVV4EVlrw1GqDGx/fzDBBdpAJU3txBLsHQcNqq5DCj7CF9CYOUg8QbHnrpM3IB
-         WtGMSPXVrUqz3B+c+19lpcBB9nWzQWIbasjrJQCCjhNkLQtSI8uF4jdDCFRSCcR4MCaT
-         aGZiYBkTKZMfXQxL5dLQegUHd7HwH0031TRhpXSCb6JWkXwXMQvvqGeFazScE3NAW1FF
-         X+zA==
-X-Gm-Message-State: AOJu0YzjuZX7DuGlRVU2W2temH/pOodKo6ahVWyJjYw0jjoXfrkhBBOH
-	Z4vNU4HkGC/91e44kwl/pKab3jjMQj+ghTfnJ7eyz1ZV0/2xJNS1tEIo
-X-Gm-Gg: ASbGnctV1ige4Xm9JeaQHAUVaMHt/osu5zCMux0u6C3fbkJu8AqJWt1OK3ThMB3CTyn
-	Ywukj/SNaSKf70OpFVsJSmGqCVLgXKLHFN/Osi6vxyE4ObWoif2GPEdPeVbLEVVdIteTm7pTUvg
-	/HJuKB9bMF00rdud2qN/KAbz3NAfD8qEj5hayuKS53YYeUhkVYytXXCRLmzTjQvIp2QxkbNZ9hz
-	9Hi7zS3AoHkBz23+yRwgWcI94rV8KQb4AX7ZQ0aKhda7CfTsz9ZbPVVxLRIB00l3lXfpnjecdta
-	GLpU0Jo9gAvyCxqdkRuIfbRK+c246ZEvT5urBOkeJD5poUTWE0gz8XhtDErGUlN0gOL9ixD9t8x
-	+cvyGK37ZYH7D0O+KZWfhy11LDgd+6XcxyvusC2Vui5Dtrda/i0Ba8t58akVfM3tseI+MltLvOg
-	RtSlk=
-X-Google-Smtp-Source: AGHT+IFNSHCKQVaEkNNF6OQaV8zGl5KuFF0WiI/XF0XmsBzjv3pnZsHeYY3KYhcSA/ruRUVTWFvagw==
-X-Received: by 2002:a05:6000:2088:b0:3ee:1125:fb68 with SMTP id ffacd0b85a97d-429aef70b89mr2039673f8f.2.1761771040974;
-        Wed, 29 Oct 2025 13:50:40 -0700 (PDT)
-Received: from localhost ([2a03:2880:31ff:8::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952b79absm27775131f8f.3.2025.10.29.13.50.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 13:50:40 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Wed, 29 Oct 2025 13:50:24 -0700
-Subject: [PATCH net] netconsole: Acquire su_mutex before navigating configs
- hierarchy
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="KiUgIivO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1761771115;
+	bh=Q4r+8tw3iUlpircGyKS82M6l99VZlCjoo2D6/aMSs8Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KiUgIivOJTjUw0ybQWEjWfjAGiYd+9bmrN9hgAkh8NvhP/L6mo562D6QvVpE8QjrB
+	 Cq7OgHSOAKTWH50b8wy3631pAIf1AEEH1bsVVZH31wN/Jzx6dzAEBig8GtNajqRpGU
+	 R6Wh7f8cxmgT0izV0p2tpSHK5eArk72Hvapqi9CG9+OQDyUH9Kskm6QAF4wcPH7Gry
+	 6KDpoy2Qt1WqY022Ykvt8uCieMQmS5lvN9SC6MaQcudQeGK84fK/WCuVME1HPwburj
+	 r4ETTWdiyRPgr71EZCzauW8fNBD2OYpGYyXOsHddUkyivZ4pka/d7AHzalFLK4TJwp
+	 dt1JnVySZcCdw==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 93211600C1;
+	Wed, 29 Oct 2025 20:51:54 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id 13BA0204DBC; Wed, 29 Oct 2025 20:51:30 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v1 06/11] uapi: wireguard: move flag enums
+Date: Wed, 29 Oct 2025 20:51:14 +0000
+Message-ID: <20251029205123.286115-7-ast@fiberby.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251029205123.286115-1-ast@fiberby.net>
+References: <20251029205123.286115-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-netconsole-fix-warn-v1-1-0d0dd4622f48@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAA9+AmkC/x2MywoCMQwAf6XkbKANPqq/Ih5KN9WApNLKrlD67
- 4Y9DsPMgM5NuMPNDWi8SpeqBuHgIL+SPhllMQbydAqeIip/c9Ve34xFfrilpphj8bnQ9UiXM1j
- 5aWxuv97BAnjM+Qc58uNzagAAAA==
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Matthew Wood <thepacketgeek@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-There is a race between operations that iterate over the userdata
-cg_children list and concurrent add/remove of userdata items through
-configfs. The update_userdata() function iterates over the
-nt->userdata_group.cg_children list, and count_extradata_entries() also
-iterates over this same list to count nodes.
+Move the wg*_flag enums, so that they are defined above the
+attribute set enums, as ynl-gen would place them.
 
-Quoting from Documentation/filesystems/configfs.rst:
-> A subsystem can navigate the cg_children list and the ci_parent pointer
-> to see the tree created by the subsystem.  This can race with configfs'
-> management of the hierarchy, so configfs uses the subsystem mutex to
-> protect modifications.  Whenever a subsystem wants to navigate the
-> hierarchy, it must do so under the protection of the subsystem
-> mutex.
+This is an incremental step towards adopting an UAPI header
+generated by ynl-gen. This is split out to keep the patches readable.
 
-Without proper locking, if a userdata item is added or removed
-concurrently while these functions are iterating, the list can be
-accessed in an inconsistent state. For example, the list_for_each() loop
-can reach a node that is being removed from the list by list_del_init()
-which sets the nodes' .next pointer to point to itself, so the loop will
-never end (or reach the WARN_ON_ONCE in update_userdata() ).
+This is a trivial patch with no behavioural changes intended.
 
-Fix this by holding the configfs subsystem mutex (su_mutex) during all
-operations that iterate over cg_children.
-This includes:
-- userdatum_value_store() which calls update_userdata() to iterate over
-  cg_children
-- All sysdata_*_enabled_store() functions which call
-  count_extradata_entries() to iterate over cg_children
-
-The su_mutex must be acquired before dynamic_netconsole_mutex to avoid
-potential lock ordering issues, as configfs operations may already hold
-su_mutex when calling into our code.
-
-Fixes: df03f830d099 ("net: netconsole: cache userdata formatted string in netconsole_target")
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/netconsole.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/uapi/linux/wireguard.h | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 194570443493..9e17632e0bc6 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -931,6 +931,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	if (count > MAX_EXTRADATA_VALUE_LEN)
- 		return -EMSGSIZE;
+diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+index 3ebfffd61269a..a2815f4f29104 100644
+--- a/include/uapi/linux/wireguard.h
++++ b/include/uapi/linux/wireguard.h
+@@ -15,6 +15,20 @@ enum wgdevice_flag {
+ 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
+ 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+ };
++
++enum wgpeer_flag {
++	WGPEER_F_REMOVE_ME = 1U << 0,
++	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
++	WGPEER_F_UPDATE_ONLY = 1U << 2,
++	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
++			 WGPEER_F_UPDATE_ONLY
++};
++
++enum wgallowedip_flag {
++	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
++	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
++};
++
+ enum wgdevice_attribute {
+ 	WGDEVICE_A_UNSPEC,
+ 	WGDEVICE_A_IFINDEX,
+@@ -29,13 +43,6 @@ enum wgdevice_attribute {
+ };
+ #define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
  
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
+-enum wgpeer_flag {
+-	WGPEER_F_REMOVE_ME = 1U << 0,
+-	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
+-	WGPEER_F_UPDATE_ONLY = 1U << 2,
+-	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
+-			 WGPEER_F_UPDATE_ONLY
+-};
+ enum wgpeer_attribute {
+ 	WGPEER_A_UNSPEC,
+ 	WGPEER_A_PUBLIC_KEY,
+@@ -52,10 +59,6 @@ enum wgpeer_attribute {
+ };
+ #define WGPEER_A_MAX (__WGPEER_A_LAST - 1)
  
- 	ret = strscpy(udm->value, buf, sizeof(udm->value));
-@@ -944,6 +945,7 @@ static ssize_t userdatum_value_store(struct config_item *item, const char *buf,
- 	ret = count;
- out_unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -969,6 +971,7 @@ static ssize_t sysdata_msgid_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_MSGID);
- 	if (msgid_enabled == curr)
-@@ -989,6 +992,7 @@ static ssize_t sysdata_msgid_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1003,6 +1007,7 @@ static ssize_t sysdata_release_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_RELEASE);
- 	if (release_enabled == curr)
-@@ -1023,6 +1028,7 @@ static ssize_t sysdata_release_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1037,6 +1043,7 @@ static ssize_t sysdata_taskname_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_TASKNAME);
- 	if (taskname_enabled == curr)
-@@ -1057,6 +1064,7 @@ static ssize_t sysdata_taskname_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-@@ -1072,6 +1080,7 @@ static ssize_t sysdata_cpu_nr_enabled_store(struct config_item *item,
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&netconsole_subsys.su_mutex);
- 	mutex_lock(&dynamic_netconsole_mutex);
- 	curr = !!(nt->sysdata_fields & SYSDATA_CPU_NR);
- 	if (cpu_nr_enabled == curr)
-@@ -1100,6 +1109,7 @@ static ssize_t sysdata_cpu_nr_enabled_store(struct config_item *item,
- 	ret = strnlen(buf, count);
- unlock:
- 	mutex_unlock(&dynamic_netconsole_mutex);
-+	mutex_unlock(&netconsole_subsys.su_mutex);
- 	return ret;
- }
- 
-
----
-base-commit: 210b35d6a7ea415494ce75490c4b43b4e717d935
-change-id: 20251028-netconsole-fix-warn-c8f0cf294276
-
-Best regards,
+-enum wgallowedip_flag {
+-	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
+-	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
+-};
+ enum wgallowedip_attribute {
+ 	WGALLOWEDIP_A_UNSPEC,
+ 	WGALLOWEDIP_A_FAMILY,
 -- 
-Gustavo Luiz Duarte <gustavold@gmail.com>
+2.51.0
 
