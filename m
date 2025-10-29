@@ -1,115 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3502E2663
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 09:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F3530F7F5
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 09:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761728518; cv=none; b=X8G6cboeiXrVSYlB0kP80IiiDZvqZgijBoLoPXLJQF8gp0dpLblNs0sszUjQ3TEgnio+c76Fpjpv2sMylhTyQ3CmXcJQNOS4YlQMK464bIkRMXw0jt0KC8qxr6P2Yy3n8HeH0X83H0hZI0OXLVJG6d5pE3nncVYgTebJiBaSoek=
+	t=1761728845; cv=none; b=B32fGWv6+OW9JM4ADCDrE5bHkidYdG74bw/BC8GTXngzoijnzWNVMI8obugmmt1jjYv9v9n3FCQVfA5GbVf2p+REnMzOmm6ySHPu9SZBn7WRMzJ8EaneFZTBUdlb4+hy57vYyE3VhMBquDhYPxpV8ji9RptSNo0d8HG54ncfJTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761728518; c=relaxed/simple;
-	bh=0U0kFLASix37zELIkWNxq8vUqzlq9j+qqfasMEzbtCU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Mo79OqARUrlfaCK2QFY5rel1O6ZWOVvu6FrXXbyEaFRfNfz8J/3TD8tCBcpxnsznfV7hkyG3Ltgz1whLhNnJtLiYx7GI6ZiIpNSveVW0sm8cHaejXR063VyEy0RXFkBy52NR1SATrB5JDX0lb0/j+huWXlNRk87AcOiU8VKukW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WzQ19/Tk; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761728845; c=relaxed/simple;
+	bh=a/0eHzdglTkiqzhJrEZqxDDhD1UW7gDlS/tNpuOlCeA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wtc02dnQCB8zRSJmcb/fy8vDwEy1xUjvkj+YSopKmrJ1WvGPu4dMKfxSsyyANk6X+0TkVXX5XCgoO+QsCYS3S2VK0daPrbTTQNyONHQ25isJ+IvkgnSGsd7rgJjjmTHepL3qiX9CKBug+AGazd+SJjxlON6Ye9DB/7s4gOb3e/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GiBLcPoK; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WzQ19/Tk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761728516;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GiBLcPoK"
+Message-ID: <58de2a18-94da-4018-95f6-2fa4242e231d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761728831;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0U0kFLASix37zELIkWNxq8vUqzlq9j+qqfasMEzbtCU=;
-	b=WzQ19/TkYND7jhNUeVENLQnaScwLJamnqRbgUmcsv2M9qYWhW8cDWvJEemed6eudZIWvHm
-	wCW8rjUvnLgdhmlZq+mXjBCU03t0pspBVAUVEAoE3KuXLCPWCW1z9OLxgKcIEvZlRgAxfr
-	wiQk+ONKtYjwBGvaxOh/peSSpijwGkg=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-131-hamXRya4NAGKj1rem8jcWg-1; Wed, 29 Oct 2025 05:01:53 -0400
-X-MC-Unique: hamXRya4NAGKj1rem8jcWg-1
-X-Mimecast-MFC-AGG-ID: hamXRya4NAGKj1rem8jcWg_1761728512
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b6d546f68a0so648464766b.1
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 02:01:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761728512; x=1762333312;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0U0kFLASix37zELIkWNxq8vUqzlq9j+qqfasMEzbtCU=;
-        b=M8GibEpz5m9LOyyuzrczZdPsRtAd+m7ttyWs8lHCxsdrsivvNNDs0n5Ws5VKW3VSS2
-         uvnjzf6ppcg/BOgWXJZiP3s0MuPRDWj8zWfoci7312SkSRsT+Tew6/6px6upy64Y8sWx
-         vBGSbpsOviYHV+RFtj4zugaUJIUyYH3cUrc7lfFdBAa8hh0xdHQpBxH9fHeHVVCyG0rM
-         YUbdOKCD+BvK8zAaKC/kwn++lJD5VtYKSEj35BfEqR9cRwXg8cASSaulp9P7Qd4qN97R
-         ryHQMx4LsOGwwMhAcSwP7setfECv2+v/MCuuSsijzEbi9YOHKeeYRUzjGfCp2ZxSPM9I
-         D+Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCUx/FCzyVYVc2eoZsJlWJO3GLLbAenjCi2W8S6+PTNtzPDPQAY4GH9LY1abBlD4X0G7Cn2E65o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFEXFrmv9tBcR0DbvIvN5/H2RjP9ELd6QIR7wX8r3VKiQ2P1X3
-	9DJCLF8lFd8VSoBN7Od36peroNYqxuDFWS3abIQjCQHvnaTy9v63nt3dZt20D/kE9cBjpuaXVSE
-	ZjAi5/1HWwNBwQXPaOQkfaDi98VkciIyoGZHrhdZHoxWI8+P6aHnhUI0Wxw==
-X-Gm-Gg: ASbGncviUZJ/Nihkn8jp7gYvp5V3u2tsPR13ZZyV/5/8WxxfiVmXUeoljQQXpUlyKlK
-	ybV0q4JXX7xMLT0RyGkXn4PCSzUqlgpomgwEWU0+laEfmqjiNXeo0fHEFmbLn6+fKDpxOQxBh3/
-	t13pkuSScXxBrHCIsetVAoixSZaQHlUD5FhODLqzLqZy1rVPMsSXI6TDnpSUwrowdOZlbpicBcB
-	D+mW0GhIASevrBaVMKq0ZMMo41WdfOz91q35sHubOwNn708hK9FYORR608qh3cEYJF1gaH2VPMC
-	bHtbqDtrxrePkQJpN/SfwOtNOW1AYLEClZJ1QZ8Z2YHOtX7IklSfnC0BSkc8aeqe5OQahZ4O2SJ
-	tE82EW3e6gNHKtk6BWRUH7ew=
-X-Received: by 2002:a17:907:74e:b0:b6d:961e:fbcd with SMTP id a640c23a62f3a-b703d55d4aamr202755566b.50.1761728512239;
-        Wed, 29 Oct 2025 02:01:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMkTxdQ+/5aKXOuyyh5AS0UFPHYZnXvO/Q6mw+JBd9i8Az/ovnrbFoR0xn/NRL22/zzcs1Fw==
-X-Received: by 2002:a17:907:74e:b0:b6d:961e:fbcd with SMTP id a640c23a62f3a-b703d55d4aamr202751666b.50.1761728511716;
-        Wed, 29 Oct 2025 02:01:51 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d853eeea7sm1373575066b.47.2025.10.29.02.01.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 02:01:50 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 623092EAE5D; Wed, 29 Oct 2025 10:01:48 +0100 (CET)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Adrian Moreno <amorenoz@redhat.com>, netdev@vger.kernel.org
-Cc: kuba@kernel.org, nicolas.dichtel@6wind.com, Adrian Moreno
- <amorenoz@redhat.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Xiao Liang <shaw.leon@gmail.com>,
- Cong Wang <cong.wang@bytedance.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] rtnetlink: honor RTEXT_FILTER_SKIP_STATS in
- IFLA_STATS
-In-Reply-To: <20251029080154.3794720-1-amorenoz@redhat.com>
-References: <20251029080154.3794720-1-amorenoz@redhat.com>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Wed, 29 Oct 2025 10:01:48 +0100
-Message-ID: <875xbydqtf.fsf@toke.dk>
+	bh=TSM+L1NFIiX7SYEcbrIOFFcrQwPjbZGXAyCL3OtPVkc=;
+	b=GiBLcPoKt6ODncrbCkCW6LXXwUQ2jnA+MF1dYONPD2UQmXBSyk1BMO0oiJX66udecbROkD
+	Ecq2tUTd/wbmK+WH3CVW5dQAcpoYXFTOQMVzNcNVxAW7Wk+RJf8ah/jM9/gUPXe7x3ujCY
+	lGZ+o54IZQ5POGdhK8FgUGNo9xUFht4=
+Date: Wed, 29 Oct 2025 17:07:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH net-next 1/3] net: stmmac: Add generic suspend/resume
+ helper for PCI-based controllers
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Yao Zi <ziyao@disroot.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, Philipp Stanner <phasta@kernel.org>,
+ Tiezhu Yang <yangtiezhu@loongson.cn>, Qunqin Zhao <zhaoqunqin@loongson.cn>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Furong Xu <0x1207@gmail.com>,
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+ Jacob Keller <jacob.e.keller@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251028154332.59118-1-ziyao@disroot.org>
+ <20251028154332.59118-2-ziyao@disroot.org>
+ <aQDoZaET4D64KfQA@shell.armlinux.org.uk>
+ <91de05f5-3475-45eb-bbf7-162365186297@linux.dev>
+ <aQHXlbDRAu76m5by@shell.armlinux.org.uk>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yanteng Si <si.yanteng@linux.dev>
+In-Reply-To: <aQHXlbDRAu76m5by@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Adrian Moreno <amorenoz@redhat.com> writes:
 
-> Gathering interface statistics can be a relatively expensive operation
-> on certain systems as it requires iterating over all the cpus.
+在 2025/10/29 下午5:00, Russell King (Oracle) 写道:
+> On Wed, Oct 29, 2025 at 10:27:18AM +0800, Yanteng Si wrote:
+>> 在 2025/10/28 下午11:59, Russell King (Oracle) 写道:
+>>> On Tue, Oct 28, 2025 at 03:43:30PM +0000, Yao Zi wrote:
+>>>> Most glue driver for PCI-based DWMAC controllers utilize similar
+>>>> platform suspend/resume routines. Add a generic implementation to reduce
+>>>> duplicated code.
+>>>>
+>>>> Signed-off-by: Yao Zi<ziyao@disroot.org>
+>>>> ---
+>>>>    drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 +
+>>>>    .../net/ethernet/stmicro/stmmac/stmmac_main.c | 37 +++++++++++++++++++
+>>> I would prefer not to make stmmac_main.c even larger by including bus
+>>> specific helpers there. We already have stmmac_pltfm.c for those which
+>>> use struct platform_device. The logical name would be stmmac_pci.c, but
+>>> that's already taken by a driver.
+>>>
+>>> One way around that would be to rename stmmac_pci.c to dwmac-pci.c
+>>> (glue drivers tend to be named dwmac-foo.c) and then re-use
+>>> stmmac_pci.c for PCI-related stuff in the same way that stmmac_pltfm.c
+>>> is used.
+>>>
+>>> Another idea would be stmmac_libpci.c.
+>> I also don't want stmmac_main.c to grow larger, and I prefer
+>> stmmac_libpci.c instead. Another approach - maybe we can
+>> keep these helper functions in stmmac_pci.c and just declare
+>> them as extern where needed?
+> stmmac_pci.c is itself a glue driver, supporting PCI IDs:
 >
-> RTEXT_FILTER_SKIP_STATS was first introduced [1] to skip AF_INET6
-> statistics from interface dumps and it was then extended [2] to
-> also exclude IFLA_VF_INFO.
+> 	0x0700, 0x1108	- synthetic ID
+> 	0x104a, 0xcc09	- ST Micro MAC
+> 	0x16c3, 0x7102	- Synopsys GMAC5
 >
-> The semantics of the flag does not seem to be limited to AF_INET
-> or VF statistics and having a way to query the interface status
-> (e.g: carrier, address) without retrieving its statistics seems
-> reasonable. So this patch extends the use RTEXT_FILTER_SKIP_STATS
-> to also affect IFLA_STATS.
->
-> [1] https://lore.kernel.org/all/20150911204848.GC9687@oracle.com/
-> [2] https://lore.kernel.org/all/20230611105108.122586-1-gal@nvidia.com/
->
-> Signed-off-by: Adrian Moreno <amorenoz@redhat.com>
+> I don't think we should try to turn a glue driver into a library,
+> even though it would be the easier option (we could reuse
+> CONFIG_STMMAC_PCI.)
 
-Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+I agree with your opinion; let's build a new library.
+
+
+Thanks,
+
+Yanteng
 
