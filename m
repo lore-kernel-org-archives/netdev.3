@@ -1,92 +1,98 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782C2580EE
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 15:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176273081CB
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 15:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761751944; cv=none; b=JHfO7jWCMThHw4GCOPJeaZx1idUs32kD7cmxldFXnOIUubOY9aiJdRXvvcD5FgemhvApdxVHQDHPUXqBU6It5twpqMjyKZFimJ3XAL4i8b+zxEifovYkMKR9MKqTQCQExy33AwIFUTTBL+hWEQZNQcfDlxYv4TED3haLyIzJTDc=
+	t=1761751945; cv=none; b=SOo0MXupc5rgRWs9G5E07GFN5yOl/m0f1pmF6NtfkB4OSVmYk2JpxOl5L0bRLmM27rsW8BpuRMADKiUMCEAIcFomRdS1b+kWgAOn6m/UfL+iUMNgRX/6MQkdQ3zID2ErLK8IZierhOKlMnBDcu1zIC6Iz/x8/J3yGxAmWHNe3VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761751944; c=relaxed/simple;
-	bh=rZ9KpwdCb25wLdoor5bEUUPNL0/IlGb9p3USmph/OTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AoRN8PbKKi0nArBgaaIkfrpHFb9gjHT8MF/2Mm5faNuW39uYLdXvyMKuLXQEjrOMrDhxBOQgGCZjjWqrPZIW4/Tmn543wIDP2rof7JLh6DHIbW7DG6/EHygnKNpTaxgvxaBHgz7R1S9F4vgZP588DAJ/a/3iUMcDLmTNGNw1czE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=txNTXsun; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1761751945; c=relaxed/simple;
+	bh=P7jmvuNkib4Grr1OK/vcBj2d8V6ba4O4XAeWod+DRi0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oaBo7+Qbz2NeMpFF5J0BJ9qwSbf+TeZw0+WE0WAOTINnEsExpEdpFdAVOba0ZsJBq54UuudG1N19iTSxoD4lEM6PjLx+OIUy7jMp/JDyBQBRkjDZflJgK6bLPtSZB8NO4iI3yVdpmnrw5ZoaIvjN24jDdN9iOJj8X8VCsUmhZYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H+sRm8Id; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="txNTXsun"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6AFEFC0DA89;
-	Wed, 29 Oct 2025 15:32:00 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C3712606E8;
-	Wed, 29 Oct 2025 15:32:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2E1C117F8299;
-	Wed, 29 Oct 2025 16:32:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761751939; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=kMrJceTWmN53UT1PewSFVb4RviFH0RPzPzL22omqM6k=;
-	b=txNTXsun1RNXE5oMhI32sx086EmmN/aHvNbQnBpoXl7AK4QbUQXEXBBNgqrfQw9zFIbdrN
-	PX1LK3Ri1VKMgACDqen+T9kHRu2KJgZYbrRJXI+ga2qcV4P7wFLfnNb6+IGDeFhvva4O2T
-	v/0X17NXSAOkbciY7T3+/0fRQq8cZzYjCQ6okWlw4ZGOi+jhGs1Pet0789auvh8JCg5gmi
-	MhRl2YnCVf21nk8jtZHbqzIthM8w6wgLyXXyR5j9BxGzXH2poy/omzMcIuM66+Fd2SqK9L
-	m+2r074paejLimn5tH61qhFJy6hx8rF+t54mXUQzIgM1XfK7gtoAoNTufq5h2A==
-Message-ID: <7ba29151-699e-4e69-9826-9de05714a380@bootlin.com>
-Date: Wed, 29 Oct 2025 16:32:15 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H+sRm8Id"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761751942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4btZVR3J3shEYxkjDsr0KiT1KwXK3qj7K4l0C9+39Bo=;
+	b=H+sRm8Id5LEFaLMmv9LyHxPBtlmyzcMQt3lrp22agjwWKi1T7mbm3aY9GvlflnAHSn53ug
+	IrVWs1V7U4T4JS9x9LCl3FfGGeXVm9zKkjmGZ+hqwYC7M/gm7FHhZS+U1T8XhokmWDKteE
+	pXfgfWobqA9tmMv4BpZYMZdgE9UfFAU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-486-87pWm6YtM2GX0YvnKasBYw-1; Wed,
+ 29 Oct 2025 11:32:16 -0400
+X-MC-Unique: 87pWm6YtM2GX0YvnKasBYw-1
+X-Mimecast-MFC-AGG-ID: 87pWm6YtM2GX0YvnKasBYw_1761751934
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 14AEB180A221;
+	Wed, 29 Oct 2025 15:32:14 +0000 (UTC)
+Received: from p16v.bos2.lab (unknown [10.44.34.31])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 145271800579;
+	Wed, 29 Oct 2025 15:32:08 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] dpll: Add support for phase adjustment granularity
+Date: Wed, 29 Oct 2025 16:32:05 +0100
+Message-ID: <20251029153207.178448-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/4] net: stmmac: socfpga: Agilex5 EMAC platform
- configuration
-To: rohan.g.thomas@altera.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20251029-agilex5_ext-v1-0-1931132d77d6@altera.com>
- <20251029-agilex5_ext-v1-1-1931132d77d6@altera.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20251029-agilex5_ext-v1-1-1931132d77d6@altera.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi Rohan,
+Phase-adjust values are currently limited only by a min-max range. Some
+hardware requires, for certain pin types, that values be multiples of
+a specific granularity, as in the zl3073x driver.
 
-As this patch also impacts other socfpga variants, I gave it a try
-on Cyclone V, all is fine :)
+Patch 1: Adds 'phase-adjust-gran' pin attribute and an appropriate
+         handling
+Patch 2: Adds a support for this attribute into zl3073x driver
 
-On 29/10/2025 09:06, Rohan G Thomas via B4 Relay wrote:
-> From: Rohan G Thomas <rohan.g.thomas@altera.com>
-> 
-> Agilex5 HPS EMAC uses the dwxgmac-3.10a IP, unlike previous socfpga
-> platforms which use dwmac1000 IP. Due to differences in platform
-> configuration, Agilex5 requires a distinct setup.
-> 
-> Introduce a setup_plat_dat() callback in socfpga_dwmac_ops to handle
-> platform-specific setup. This callback is invoked before
-> stmmac_dvr_probe() to ensure the platform data is correctly
-> configured. Also, implemented separate setup_plat_dat() callback for
-> current socfpga platforms and Agilex5.
-> 
-> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+Changes:
+v2:
+* changed type for the attribute to u32 and added explicit cast to s32 during
+  remainder computation (per Jiri's request) 
 
-Thanks for your explanation about the TSE PCS,
+Ivan Vecera (2):
+  dpll: add phase-adjust-gran pin attribute
+  dpll: zl3073x: Specify phase adjustment granularity for pins
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+ Documentation/driver-api/dpll.rst     | 36 +++++++++--------
+ Documentation/netlink/specs/dpll.yaml |  7 ++++
+ drivers/dpll/dpll_netlink.c           | 12 +++++-
+ drivers/dpll/zl3073x/dpll.c           | 58 +++++++--------------------
+ drivers/dpll/zl3073x/prop.c           | 11 +++++
+ include/linux/dpll.h                  |  1 +
+ include/uapi/linux/dpll.h             |  1 +
+ 7 files changed, 65 insertions(+), 61 deletions(-)
 
-Maxime
-
+-- 
+2.51.0
 
