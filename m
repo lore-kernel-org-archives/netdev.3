@@ -1,139 +1,161 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out13.tophost.ch (out13.tophost.ch [46.232.182.222])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0683644B6
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 19:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF0219CD03;
+	Wed, 29 Oct 2025 19:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.222
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761767859; cv=none; b=YbubesYe6Pcp6Nv7byjJ1j1HY7TJ1yojk96/57VQjRWizWqEoZp2C5Dr5Dmp9EZCmZD0dDxlv7FKQ3eJJXt1DVFvdVV7FJrTCGTnByRLJJBzJf2YE1EMkSX5btkn92a5qqL4UgCu8IiYAIUcvLAKY45lNpvrt5QM/0Jp+g+DJy0=
+	t=1761767893; cv=none; b=aKwW8tpf68kGd0+Ax+pSI08g0mmludjaT+nZCGL1njqMKSL8MPlHSJhl/VwOoWzNBoBDENf6GaWMYjQT+XbhJIk6fd+mfvfcfDM70rl0kGWKnR+WRND/KdLf2PgJYKcjOB6HU2GqXOy9VLh7TC96WP55/hOa3dRfhSjizIAmLkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761767859; c=relaxed/simple;
-	bh=+rNIfhn612wSnJwTsWfa3rI2oXBKL1DitnLLKvmVa24=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SyLH6B6S/vh+w70FQKLzIc/iIfjLuEYtIlZP/Z4l0d7+mCpKwyn4l32qKGNpAQvC8y73iV0XXRTEkCaTJwugzmXetnFR9k3UrEQzjxHk3xM2PTHjCbg61aSquGptRXah58mAlvUnY65QH1hMO72QbePGU3If/HgPte4Kxy8dGA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=knuFZdka; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761767893; c=relaxed/simple;
+	bh=ltjoMQkM6SW1fXX8TY/fSWlebanil7DV1Oj2nqP5S98=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gdGKMRE3LZklp92vPgIfkcJUJvAsaJVQ7YKMhB+NJ29dniCufwT9F3NmEHj9o8cCRAtY2a6Pij1J5gxnxL87q0CuIejznj/PaGzsR4VOwk4tT6yuuqqr0DRNW81LKkBnk+fO3hjSceKN8DO3J2yA9mtCQX4SZT7XmbU/cVZylZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=dKs5o5Wn; arc=none smtp.client-ip=46.232.182.222
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="knuFZdka"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-781206cce18so369890b3a.0
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 12:57:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761767856; x=1762372656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N5AE88Ciiu4y1L+Whuiba6HLMWI7gvS/KpyPblrUqXI=;
-        b=knuFZdkavo3jbuzWz+lLMRxkQuCzsSky2G4PW0+DWx8/yWDaGZChYNV6P2mYA7AzPv
-         tp9m/vIfjmCc1zte/F2y5QFwYmww0dntAFzarR7RW652V380u5DAiRBPpo1wK1dWUgqY
-         43ZObmpXPXYVD5HLSa8XwJnyvgM38MTujAFadPluslaJCoqcDd5Mst+MUTTyGQCPFyVN
-         XXaRmScND7qeRHvwEKeQ1Ybd3xmF0cIjb8J7FHSE59DAaF/6rT2jwbQsZD9cUL3+aYMq
-         od6YQpJ5JdNlXErBJJ2U3izfTb5gxulCnKJF36/Mps50lnVL3VD/7rYubSe2ZSRbJvOY
-         Mrbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761767856; x=1762372656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N5AE88Ciiu4y1L+Whuiba6HLMWI7gvS/KpyPblrUqXI=;
-        b=e4Mj7ZqxuZvO9OJBjEHImVeT6/wEYplgPjeZg3s4kwX0JKqzlHEy4XyZEgJGYEVspP
-         D8IwE8TGClOngHgoC8P/u9YF4ToTDaTV9FEWmKgifxPApd4YfEMcEDqK8eY9ZNJ2KTX4
-         z1p88VpetyGvZiOyztA0TowBwCgQmrsymEhuQWHDz2+N93whQel1CzzwNO4YQZ7IZWCT
-         c948eOjuncTqEsLfrWiUZVB6EqOo2VUpGYGFYoQvlzJQLggYP8FygyKR3lC6ouNRlB5/
-         oePH3ZMtJRGvaz2NOO6LmamFg+qJ26p6piALOriqnrzKSGA26n35lsSQKaGRCYVeDviS
-         HCRQ==
-X-Gm-Message-State: AOJu0YygOI2U2XS2HHcchgZ3v2i2Z38sul6JEbnF+ROjAWVRBtJZzT37
-	HivVba2rpJxtQUJf63rMwUYsfzkcEvjmkky1Nf4X52P/Yri1i2U686CMIKq5hPb5qP7bl+rM2B8
-	10tNREVKqL+j8Viv2KfyEUPHWSdSCoXo=
-X-Gm-Gg: ASbGnctSrw3iv7oNUzSMwqRbiJBhBC4hTJ/xCnEkg0Xsh/+ADOcah6pcihaG2H0Axdx
-	dYnMEXeBIlx1goPdcWhX8IBak/2/4HNBA586quxJ753oYHSHMu8VW5EWRCsYQHZoH34M55F7XyR
-	xK11SzCSlNbPEkxXNKVWDQENt+jJjX0EPCLhMCay5kW4BfmQcwQ3DNeiTcl0p/CSaiJcfISty1c
-	j5Z/A1I9+ZcZwyQY70Y18x3uVYDlqVV4OCvUZly+bZFwjJyNxGDgvLkSerIi/TI166hOnaYSg==
-X-Google-Smtp-Source: AGHT+IFNCX0ckOsChso5kJGqid4SLOaalcmgzvE+F5pb8cfkVkc0r3f/yGGJSksDBL4n2c6XJFS70z/v5MFaLPK0zXQ=
-X-Received: by 2002:a05:6a00:3a27:b0:781:1110:f175 with SMTP id
- d2e1a72fcca58-7a61506a504mr866733b3a.14.1761767856388; Wed, 29 Oct 2025
- 12:57:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="dKs5o5Wn"
+Received: from srv125.tophost.ch ([194.150.248.5])
+	by filter3.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vEBxo-002P6Z-FH; Wed, 29 Oct 2025 20:36:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=gIY+isczuoHXgBvOO+aoOxjAT4sGIWT15/l+osGBmmE=; b=dKs5o5WnlSo2lhNafdHUX0Xl6h
+	DaklvUrlmbdf06XPj3PLVp63TZXh4e3HwXGeOW8hfih11euPqG2t6stTMZTQ4gdc1o9H1L3OSstTH
+	//L6ujyHIlT28R+BOv5200Lh1VaGJz7XPMSMo2g2s+Em2anPyuKClcYiu0kxgqsVnb2RNCZ3bdetw
+	4IQNs69hhrxewP+aVZTrJ+Cn0Dk2RFpHIKRCjnbocspM4IujOz1dHv7dSW7oSOdPkROJ6j/lPVOV9
+	Y/N3Co7FxHGstGC9thLeC7ZHZmfMf01rmwr6kvC9vRfWxDGHux0Dw9XZgI7+cVdI8+LEqpRG+TBvI
+	nApxKXKw==;
+Received: from [2001:1680:4957:0:9918:f56f:598b:c8cf] (port=44690 helo=pavilion)
+	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <thomas@wismer.xyz>)
+	id 1vEBxk-0000000BFPq-3rRt;
+	Wed, 29 Oct 2025 20:36:03 +0100
+Date: Wed, 29 Oct 2025 20:35:57 +0100
+From: Thomas Wismer <thomas@wismer.xyz>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Thomas
+ Wismer <thomas.wismer@scs.ch>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] net: pse-pd: tps23881: Add support for
+ TPS23881B
+Message-ID: <20251029203557.286adaec@pavilion>
+In-Reply-To: <aPtZ1jE7D7JI2wic@pengutronix.de>
+References: <20251022220519.11252-2-thomas@wismer.xyz>
+ <20251022220519.11252-4-thomas@wismer.xyz>
+ <aPtZ1jE7D7JI2wic@pengutronix.de>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1761748557.git.lucien.xin@gmail.com> <91ff36185099cd97626a7a8782d756cf3e963c82.1761748557.git.lucien.xin@gmail.com>
- <67b38b36-b6fa-4cab-b14f-8ba271f02065@samba.org>
-In-Reply-To: <67b38b36-b6fa-4cab-b14f-8ba271f02065@samba.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 29 Oct 2025 15:57:25 -0400
-X-Gm-Features: AWmQ_bnwX6EuAJChCufrlpzg_AX6H7XB1Uf5xbfwoMjEpTiQtpfFTcbK0dDvD94
-Message-ID: <CADvbK_f4rN-7bvvwWDVm-B+h6QiSwQbK7EKsWh5kTuHJjuGjTA@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 02/15] net: build socket infrastructure for
- QUIC protocol
-To: Stefan Metzmacher <metze@samba.org>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Moritz Buhl <mbuhl@openbsd.org>, 
-	Tyler Fanelli <tfanelli@redhat.com>, Pengtao He <hepengtao@xiaomi.com>, 
-	Thomas Dreibholz <dreibh@simula.no>, linux-cifs@vger.kernel.org, 
-	Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Paulo Alcantara <pc@manguebit.com>, Tom Talpey <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev, 
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
-	Benjamin Coddington <bcodding@redhat.com>, Steve Dickson <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, 
-	Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, 
-	Jason Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Daniel Stenberg <daniel@haxx.se>, Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
+X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
+X-Spampanel-Domain: smtpout.tophost.ch
+X-Spampanel-Username: 194.150.248.5
+Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
+X-Spampanel-Outgoing-Class: unsure
+X-Spampanel-Outgoing-Evidence: Combined (0.50)
+X-Recommended-Action: accept
+X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
+ 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zAy+
+ i6SmItLXxqJRd5s9GHEhfeXMyWnUQjjMD4JK3Wq2CtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
+ daZjkYv0hq6Ot6Cbd9hg3807OZKQzthz0vNkOX8Em4cj6D/wddIY3ooDH3xmALJ0KCcsszI9W7vD
+ 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
+ L25JS816nuiE0t5pG6MLXGczoanVmeCF7bI0BP7dENKtPTBPq+vGO3Vx+SwwWschmkdvs376y2A4
+ OBi1/UyqO7jQnnICeA+KlS7G8xqewTcs6w6HLg3eq1lKkYVFbZT99AeINpdbOTIWFiLv1jhppNXa
+ xS6MN8xFxlxHZge6OlcoYA//qN5p5dmu6xjQN9nmCfj7VmpmZJyx9iy0UVkVD75IgLollI+8fg4q
+ Ktu8I/h2Z0dHZM6qE0STp2v0JiRE8jha5ZR/nf5efcITxrfNKzy0W9Bd37g8M9SCqD8uOq9nJ+Mm
+ AyVp7BgHET6y8CCeFlQ7QPOIjlkSAfAYMUguLL/iJ9vYqKPILmSoZcvfXhdPMA/OB6L3DS5gd1SE
+ E3USj80Z55NePwA7jxwlhcjVdk/mr85ytrd63MVeviF0i7IZfcqGEigUra+zu74YMVqBb/nqBf/o
+ O9ENx2nriip8WhgYbnEnhEbOEzk5yB9ZHNSFnOUf5Q/AoIx5sTYq7iOI4vCrDScUfr46OzpJNOSz
+ cdwyiT3dKxLhoxcmaInYbR5vlqGvSe+dDtUIqP45C5A7LqP3b1xqO73zx9HsLZFTQ55zlz9aPc+7
+ R744868L+j9WjFdaiDCoaRMMLJurWmXEnoYHaIfVaCHpEB6cFH6WJxE4ZpdasxsGznVQ8gQCuamI
+ BuSMQbm8EO3yB6VDgSYBI/flWeVLIyRMJwJzjdCk/1Dnf1QSo1zEvYJi0O+7gv2MANPskD2hG/WB
+ q49TQI4s7Zk25QzEh4fdO1UVosIGSxnPvA8wgBLtVZogJpSXh3l1gykJmv2lNIo4lDSAwCBIOnEB
+ yG0AYw9A3oZxIE5agCoT+OGQMyqZyz7BkGrhC6ClamPcYkOphAAFfgHXTJlYrv1wUec8VPZi63hI
+ VDdSxAySkA2y1dwxX/fOLxBYDd5BmItKTzNBSIyW/mb8GD9YbxmVCZr9pTSKOJQ0gMAgSDpxAXyp
+ F5LUwHZNY/+yVAGZIWgbevr4I2GfjWs7NecHzbPrZnM57PQ4Zhz+lPAiIO8rB9tRBN1MQm1SbNQ8
+ mfig9wuAva9NlDz7O8ptuOziYJtS9jihx+Za/cV70jOJzN2r4A==
+X-Report-Abuse-To: spam@filter1.tophost.ch
+X-Complaints-To: abuse@filter1.tophost.ch
 
-On Wed, Oct 29, 2025 at 12:22=E2=80=AFPM Stefan Metzmacher <metze@samba.org=
-> wrote:
->
-> Hi Xin,
->
-> > This patch lays the groundwork for QUIC socket support in the kernel.
-> > It defines the core structures and protocol hooks needed to create
-> > QUIC sockets, without implementing any protocol behavior at this stage.
-> >
-> > Basic integration is included to allow building the module via
-> > CONFIG_IP_QUIC=3Dm.
-> >
-> > This provides the scaffolding necessary for adding actual QUIC socket
-> > behavior in follow-up patches.
-> >
-> > Signed-off-by: Pengtao He <hepengtao@xiaomi.com>
-> > Signed-off-by: Xin Long <lucien.xin@gmail.com>
->
-> ...
->
-> > +module_init(quic_init);
-> > +module_exit(quic_exit);
-> > +
-> > +MODULE_ALIAS("net-pf-" __stringify(PF_INET) "-proto-261");
-> > +MODULE_ALIAS("net-pf-" __stringify(PF_INET6) "-proto-261");
->
-> Shouldn't this use MODULE_ALIAS_NET_PF_PROTO(PF_INET, IPPROTO_QUIC)
-> instead?
->
-Hi, Stefan,
+Hi Oleksij,
 
-If we switch to using MODULE_ALIAS_NET_PF_PROTO(), we still need to
-keep using the numeric value 261:
+Many thanks for the review.
 
-  MODULE_ALIAS_NET_PF_PROTO(PF_INET, 261);
-  MODULE_ALIAS_NET_PF_PROTO(PF_INET6, 261);
+On Fri, Oct 24, 2025 at 12:49:58 +0200, Oleksij Rempel wrote:
+> > +		/* skip SRAM load, ROM firmware already
+> > IEEE802.3bt compliant */  
+> 
+> TL;DR:
+> 
+> A more accurate comment would be:
+> /* skip SRAM load, ROM provides Clause 145 hardware-level support */
+> 
+> Longer version:
+> 
+> Please reference IEEE 802.3-2022 (Clause 145) instead of the "IEEE
+> 802.3bt" amendment:
+> - The IEEE 802.3-2022 standard is free for everyone with the IEEE
+> Xplore program.
+> - The "bt" amendment costs money.
+> - Using the free standard helps all community members review this
+> driver.
+[...]
 
-IPPROTO_QUIC is defined as an enum, not a macro. Since
-MODULE_ALIAS_NET_PF_PROTO() relies on __stringify(proto), it can=E2=80=99t
-stringify enum values correctly, and it would generate:
+Good to know that the IEEE 802.3-2022 standard is available free of charge.
+I'm happy to adopt your accurate wording.
 
-  alias:          net-pf-10-proto-IPPROTO_QUIC
-  alias:          net-pf-2-proto-IPPROTO_QUIC
+> [...]
+> > @@ -1422,6 +1442,10 @@ static int tps23881_i2c_probe(struct
+> > i2c_client *client)  
+> [...]
+> >  
+> > -	dev_info(&client->dev, "Firmware revision 0x%x\n", ret);
+> > +	if (ret == 0xFF)
+> > +		dev_warn(&client->dev, "Device entered safe
+> > mode\n");  
+> 
+>                 return -ENODEV; /* Or another appropriate error */
+> 
+> The datasheet states this happens on an "un-recoverable firmware
+> fault." According to the datasheet, when in "Safe Mode," all ports
+> are shut down. The device is not in a functional state to act as a PSE
+> controller.
 
-instead of:
+The datasheets (TPS23881 from May 2023 / TPS23881B from May 2025) state that,
+regarding entering "safe mode", "any channels that are currently powered will
+remain powered, but the majority of the operation will be disabled". Because the
+rest of the driver code assumes the device to be in a functional state, bailing
+out here makes perfect sense.
 
-  alias:          net-pf-10-proto-261
-  alias:          net-pf-2-proto-261
+> > static const struct i2c_device_id tps23881_id[] = {
+> >  	{ "tps23881" },
+> > 	{ }
+> > };
+> > MODULE_DEVICE_TABLE(i2c, tps23881_id);
+> 
+> I guess tps23881_id should be updated too.
 
-Thanks.
+Agreed. I will fix this.
+
+Best regards,
+Thomas
+
