@@ -1,91 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF58B2EDD76;
-	Wed, 29 Oct 2025 23:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117732F25E6
+	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 23:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761779540; cv=none; b=CeEqM4iS2DyAum0jqI9O9EHwhzvD+Xqzis4RaNlDZKgVALeZbEDBcMVMieL/Xq6ttaCMDW4EQvQuo2KfxFHvoEqciz1Timl3vb0rrTIUFhOoEl7Qd2ZSH69T1H9xc8cnVBTQrSTv8JNniIRAkxOHT8c+KeosvlQa0Db1PrZ5+Ho=
+	t=1761779627; cv=none; b=a5bgvitGcYxz1NY+HoHPqfgZOom2hib44FAKj+6/9LWfAjLYfk171m5h3pZaFWp1eadcEDHULV5ISX5riT/RxGyTpy7/psfN1X5Q1JLFDmEmyNlT08d8ymL2T18eufj03dpOYVGQtSrmShex5IPxr8WWn/nJEO1sJvI3la7O05A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761779540; c=relaxed/simple;
-	bh=6BSN0rcgs0DzYKrINPAj7MX3VIGewgEfCuLdqxbHYy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e4y1hTpBxcWA8gdZZsxzCUUWJExwPsSxoX1Iq62YrYRTkSwq2bqhHlbwDYtMcTYrI+BGTRt8aAw29yZQufjzf6BtBojt09QSxfSUlGWP0YVPaM9pRmmXbZt9g/WC2uxwpnwOy9xTXKkhKPp6IR1Vee/YDWoeYEcn58ft2jGIrFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIWpBivi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761779627; c=relaxed/simple;
+	bh=DAkYfmRlyjhKsFZLWKSbdNJmW5wlXaLYXHZQ4JfW8MI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ui8yCV900TYX0lC4Njv8CPwCK2qUrzd4NBKtV7E8RTuZS3vmpqqdirhyRvbynvCZh9rv26XokIs8+VoPgvyDYE/G0qpLbHCuOGfh0p+o4ih3N5lrQEgCcnlDjI/I/jAcy8k28f5JW/V1jrKHrTf0UjGt9vygGvLCNlZSgG0cBO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGhcp+hd; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIWpBivi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E19EC4CEFD;
-	Wed, 29 Oct 2025 23:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761779540;
-	bh=6BSN0rcgs0DzYKrINPAj7MX3VIGewgEfCuLdqxbHYy0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TIWpBiviwQBhOUhXDzqDUdup8/QMGxvPROL3Axo0HLdi0+uNAo7e0NPmiF4jf18hp
-	 Ykbt83g34Uz7CAfh81KcMaE8wzb+eUWnFc7V8yU5E9i22oUoxyenpCTBA3S1wQ2DTQ
-	 ubAMBMBlbLKZ0OIx6ID2Habv5I2lPlWD3g0NM3eFTxyW2mkMQWe9GB31AahtVGfdf6
-	 OJfeRgcv+XiphoWVqMKewDBTR9SGne0SP5NUUoue8koZBiVrWp+z0rQh01bVLwRQ0u
-	 xYpS7kzBaPXwr3jEbKcNovb7X0T4btOx1GiJ022H3VSPyfE806h/kMiDOuNAHo0Uck
-	 qpEhEwg4MH0VA==
-Date: Wed, 29 Oct 2025 16:12:18 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, <bpf@vger.kernel.org>,
- <ast@kernel.org>, <daniel@iogearbox.net>, <netdev@vger.kernel.org>,
- <magnus.karlsson@intel.com>, <aleksander.lobakin@intel.com>,
- <ilias.apalodimas@linaro.org>, <toke@redhat.com>, <lorenzo@kernel.org>,
- <syzbot+ff145014d6b0ce64a173@syzkaller.appspotmail.com>, Ihor Solodrai
- <ihor.solodrai@linux.dev>, Octavian Purdila <tavip@google.com>
-Subject: Re: [PATCH v4 bpf 1/2] xdp: introduce xdp_convert_skb_to_buff()
-Message-ID: <20251029161218.15aef43e@kernel.org>
-In-Reply-To: <aQH5+ojHJ1V9jfk8@boxer>
-References: <20251027121318.2679226-1-maciej.fijalkowski@intel.com>
-	<20251027121318.2679226-2-maciej.fijalkowski@intel.com>
-	<11142984-9bbe-4611-bbe7-fa5494036b8f@kernel.org>
-	<20251028185314.1ad62578@kernel.org>
-	<aQH5+ojHJ1V9jfk8@boxer>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGhcp+hd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761779626; x=1793315626;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DAkYfmRlyjhKsFZLWKSbdNJmW5wlXaLYXHZQ4JfW8MI=;
+  b=HGhcp+hddEdV4sogxDQl9wlyheUDBT66h6VzvgEQXGdAMutbP8eQHVQX
+   hD0m8VGKzFtXB1U4y5rpSwMmmpnzeYX2/npzDN/elxFlB8a1ZQZOz7Ww+
+   eloVon2MmPhc1O8oWe1Le7ckBfF/VYj0S7I1qntJu8BLxdQw+T2SpXiIK
+   kwxyIQyokLKFZhPx1y9seoiLfSL3oUvTueT76FqmFOcsnQiOZ6pCzrhwt
+   1jJCLyM5GhRe3ihRnLcDmWnkHZE7DdiHolay25+cav3+37hjKehymrPlT
+   1DbGTcv/ZJsXbMktOTXD9wKp5FMSKeLEzDmt7pfcDUmfZ7AAXW9q8PfRQ
+   g==;
+X-CSE-ConnectionGUID: 8CmhN1pBRX2EjwnZiui7dA==
+X-CSE-MsgGUID: T41qWumFSTe/sCcgVnnqfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="63817602"
+X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
+   d="scan'208";a="63817602"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 16:13:46 -0700
+X-CSE-ConnectionGUID: 1hcyBpLASV22eVM8+skYZw==
+X-CSE-MsgGUID: FpQUBaheSnqBj3dwmOVyVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
+   d="scan'208";a="185729682"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa007.jf.intel.com with ESMTP; 29 Oct 2025 16:13:46 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 0/9][pull request] Intel Wired LAN Driver Updates 2025-10-29 (ice, i40e, idpf, ixgbe, igbvf)
+Date: Wed, 29 Oct 2025 16:12:07 -0700
+Message-ID: <20251029231218.1277233-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 29 Oct 2025 12:26:50 +0100 Maciej Fijalkowski wrote:
-> > I still think _all_ frags which may end up here are from the per CPU PP
-> > since we CoW the skbs. So:  
-> 
-> Agree!
-> 
-> > 
-> > 	DEBUG_NET_WARN_ON_ONCE(!skb->pp_recycle);
-> > 	xdp->rxq->mem.type = MEM_TYPE_PAGE_POOL;  
-> 
-> This has to be conditional as it is fine to use this helper for
-> MEM_TYPE_PAGE_SHARED, plus the mem type has to be updated per packet.
-> 
-> > ? It is legal to have pp and non-pp frags in a single skb AFAIK.  
-> 
-> Ok, but not in this case where data origins from CoW path.
+For ice:
+Michal converts driver to utilize Page Pool and libeth APIs. Conversion
+is based on similar changes done for iavf in order to simplify buffer
+management, improve maintainability, and increase code reuse across
+Intel Ethernet drivers.
 
-Right.
+Additional details:
+https://lore.kernel.org/intel-wired-lan/20250925092253.1306476-1-michal.kubiak@intel.com/
 
-I guess what I'm saying is that right now we have 4 callers:
- - XDP generic
- - veth
- - devmap 
- - cpumap
-these all go thru skb_pp_cow_data() if skb has frags.
+Alexander adds support for header split, configurable via ethtool.
 
-You're right that in theory someone can call this function
-on a private skb they just constructed (IOW they know they 
-don't need to CoW). But IIUC (1) such caller doesn't exist
-today; (2) why wouldn't that caller run XDP before allocating
-the skb..
+Grzegorz allows for use of 100Mbps on E825C SGMII devices.
 
-So my thinking was to keep this simple for now, used fixed
-MEM_TYPE_PAGE_POOL. Add that DEBUG_WARN() and in the kdoc
-say that we expect the skbs to have gone thru skb_pp_cow_data().
+For i40e:
+Jay Vosburgh avoids sending link state changes to VF if it is already in
+the requested state.
 
-Worry about conditionals when the odd new user appears.
+For idpf:
+Sreedevi removes duplicated defines.
+
+For ixgbe:
+Alok Tiwari fixes some typos.
+
+For igbvf:
+Alok Tiwari fixes output of VLAN warning message.
+
+The following are changes since commit a8abe8e210c175b1d5a7e53df069e107b65c13cb:
+  net: phy: motorcomm: Add support for PHY LEDs on YT8531
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
+
+Alexander Lobakin (1):
+  ice: implement configurable header split for regular Rx
+
+Alok Tiwari (2):
+  ixgbe: fix typos in ixgbe driver comments
+  igbvf: fix misplaced newline in VLAN add warning message
+
+Grzegorz Nitka (1):
+  ice: Allow 100M speed for E825C SGMII device
+
+Jay Vosburgh (1):
+  i40e: avoid redundant VF link state updates
+
+Michal Kubiak (3):
+  ice: remove legacy Rx and construct SKB
+  ice: drop page splitting and recycling
+  ice: switch to Page Pool
+
+Sreedevi Joshi (1):
+  idpf: remove duplicate defines in IDPF_CAP_RSS
+
+ drivers/net/ethernet/intel/Kconfig            |   1 +
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    |  12 +
+ drivers/net/ethernet/intel/ice/ice.h          |   4 +-
+ drivers/net/ethernet/intel/ice/ice_base.c     | 170 +++--
+ drivers/net/ethernet/intel/ice/ice_common.c   |   1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |  37 +-
+ .../net/ethernet/intel/ice/ice_lan_tx_rx.h    |   3 +
+ drivers/net/ethernet/intel/ice/ice_lib.c      |   1 -
+ drivers/net/ethernet/intel/ice/ice_main.c     |  21 +-
+ drivers/net/ethernet/intel/ice/ice_txrx.c     | 710 ++++--------------
+ drivers/net/ethernet/intel/ice/ice_txrx.h     | 132 +---
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c |  65 +-
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h |   9 -
+ drivers/net/ethernet/intel/ice/ice_xsk.c      | 146 +---
+ drivers/net/ethernet/intel/ice/ice_xsk.h      |   6 +-
+ drivers/net/ethernet/intel/ice/virt/queues.c  |   5 +-
+ drivers/net/ethernet/intel/idpf/idpf.h        |   2 -
+ drivers/net/ethernet/intel/igbvf/netdev.c     |   2 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_82599.c    |   4 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c  |   4 +-
+ 20 files changed, 364 insertions(+), 971 deletions(-)
+
+-- 
+2.47.1
+
