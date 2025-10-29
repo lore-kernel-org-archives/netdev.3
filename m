@@ -1,282 +1,256 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011058.outbound.protection.outlook.com [52.101.62.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E703C2E542C
-	for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 14:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761749194; cv=none; b=G2Dhx9JwhfbMzH0cDC/53OJUMB9pko5pT+crGqVgf6ljU8FTT3LnrG0Oc+h2bxzCxu39n94Wqx6eJkADMHqMPwYQITM8Es+FpxqEB4f19nrPwYfQJBIDhY1Fj5nMdPaJ1fz1Zy/KXqNYGHNu7tCuNJzT/y8nkap7chpJtuyVQWU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761749194; c=relaxed/simple;
-	bh=6rF4GLL9pS4cU9IPxVuHd5pEMQDEExDlCv0e5ynD+ZU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tpLv2Egc+uCeTnTho1rM80kl28MfUZeQYE11sk3oYBPVV9yuKiS0euJC+FILrGuSVasaNU2IcYKWrWy9ck3Yq9rCk8bqaNTshYfiQpLaHbQf//l/2lOV2uhpj1+Mmo9rk6UtGyxAOBmicmrm6n20VNZ1Mna8wCRZbn4NXoSh/HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUJrapaJ; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C3B2F7465;
+	Wed, 29 Oct 2025 14:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761749625; cv=fail; b=anEwD2LDQOQpedOdSxVj0HmictWyiUmZNhL9TyUv4hg6dfOYsTMJdf6RCzDM8fS0KEF8uJZGrB99SwaHo5vJFaZO+c9bfnbzZQVp9++oRFKOh+UeeKmQRpE9z088itxKfF4J8A93/7BggobEYd52feoG87Wfbc5zz7ZJKSisRIQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761749625; c=relaxed/simple;
+	bh=YpGvHm9txdPEloDg1lC3S+pGK+n++R4eNPTI4hK4a34=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=c/w3wmdxwHSfaOaLLsL8EP0mXS2IPbHE2KuFy5F9DEQ4fWlJ5DaAu+a8xp2NsrCOOuib6aAoZfZ4ML+qs61TSQXyyXbljRw7zjeOhpAYlcaXR48M8H+JubXH5+puOmqXJmA/zb12Be+lCnq0M+yccNl4Hj+x7TxofIXwxnTK6YY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=Qy2YoGIx; arc=fail smtp.client-ip=52.101.62.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUJrapaJ"
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78617e96ae1so24990617b3.0
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 07:46:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761749192; x=1762353992; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0KB2TDOPveGK6lFN3Xm0rmM8VbnxKm93ZQZfT2ThEx4=;
-        b=gUJrapaJjSKV41XojQJDaby03HkTj1wsO+KNecxIzhAGfZ6k5iKWELdGVDS2dihYxS
-         vTCNgDMW6Poov491Q+59r6xEIsTG2HUGGU9cwrYm4lmMQaXyh4r1r9yzWyqGb9tlbyCF
-         8Yp+B9ldkyCzh89xD+D/MmSu3wyuyqIX/SFhWieQrYsspur4NIlaFHE2cTrf3JDuDrZw
-         M3SLOU/5uvpzUrJDPxtvnY3NHDieNZLXbr6XdsaVjWbfKyRGuQOTvAnWKh0aDIUBySvx
-         V6fhTw6kcyEQMqUaTU859Q+mEtYhb723rqVoDnS8BTRMAknN0+oqmNsRI4E4LpEJJjh1
-         6iLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761749192; x=1762353992;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0KB2TDOPveGK6lFN3Xm0rmM8VbnxKm93ZQZfT2ThEx4=;
-        b=oTcgU0lxs8G9zeemmzIMCsEBwDMOhnG+aqISnka8Ke4OrBQe7oyPHNmGfVwJF9WGwI
-         sVB3H+EQazo9LFsXXA+dwibXyI4B+hB2ll2RNUVcv/TfLPqWK8zs62S7xUh88FvYN4QF
-         IlYMfLWXIPx6nAkjUTVk3pK3Q9S+Soz6zfuLhfgGIvhJnXBqTvTCvWNiOP5/ZJ0SIcOt
-         RiTV7GKqCRjZ1BE9gTYFJzxssytiCyQAGZLyPZpwzbQGO+jAfOD/Ue9Mz92LIbCfqcOW
-         BoO2Fn6zJDUwFMedZd2eHui6y6zcaypQPBz5Bc4YbL8LPiMlZGGvFmuo0rQcMYgWg9z6
-         3ZXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQXNi3n+BWvQ4DR5mdYJzjDpopRY4sn6DnFN6i1ymSsDQafKudTMGWml/vXWdt9ywyS/bvvsE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBHObuDSCmMjRHs/Z8ulg9b//Kte1mL0nwZOQPRVKuWuNlnZuU
-	MjkKq7I6A1/5p8EvTnWzva+lCe2vgjgM+Xfxgznlbe9NnwaMhKs3buTK
-X-Gm-Gg: ASbGnctfLZLimAMN/tFz1d5p+z1JiML4J5WzXYyJgv93pi9e/NGOQ0iU+mlwc7Z8cYd
-	HACrVVZXwAed+ht8avPS5ZB8N0kAcBiM0E807Dz3fzfmyPjWwA97IFYP7xXT9UpnZDIITai5p5T
-	ddTM5apnoOzPIlwTP4v/Cm8Y3tww7ZjkXuIMoxhski36CRmmVjnzKexWJSI0mTvKCuyYmsfounO
-	mQYd6GBlPhqK7JZiJnkbpWxpmZZHHGGHxYkWozk40odJ+mDTF+YaFdCPai3Q89v/IWglGKUVXwK
-	7PC7v6DVytquxME6COb0nJyr654V1+ZhmG/DcbC02DjqD7PEWZYoox4fw8DF90+5TKzfk5YdL/y
-	4YolRgm/3hcIMz4uaKFSwz67FS62tm4V0WI32pvBaByyc8p7oZWtz+2NLqgWTLEEYPGNGWrQRel
-	o1jYfcyNPmR+gR+MdQvW56mWd5e1aW1J3j1Mwx
-X-Google-Smtp-Source: AGHT+IEr0sIdLf9PssBrGinYWfeFT8qXFc+cSs4JUokXl/UIi8NX/JszZEzp0LPPd/6TpUd+ipCSMg==
-X-Received: by 2002:a05:690c:dc9:b0:785:f54a:99e6 with SMTP id 00721157ae682-78628f7a7dbmr32458397b3.32.1761749191693;
-        Wed, 29 Oct 2025 07:46:31 -0700 (PDT)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:4c::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7862e389945sm4977587b3.57.2025.10.29.07.46.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 07:46:31 -0700 (PDT)
-Date: Wed, 29 Oct 2025 07:46:29 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next v5 3/4] net: devmem: use niov array for token
- management
-Message-ID: <aQIoxVO3oICd8U8Q@devvm11784.nha0.facebook.com>
-References: <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-0-47cb85f5259e@meta.com>
- <20251023-scratch-bobbyeshleman-devmem-tcp-token-upstream-v5-3-47cb85f5259e@meta.com>
- <CAHS8izOKWxw=T8zk1jQL6sB8bTSK0HvNxnX=XXYLCAFtuiAwRw@mail.gmail.com>
- <aQEsYs5yJC7eXgKS@devvm11784.nha0.facebook.com>
- <CAHS8izOnir-YHPH+R0cQzu1i0HD2Z0csW6qUT8FFXh1PkmHabQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="Qy2YoGIx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b/dHM0srBi2vVm9sQoRO6TBepYUu6JTuLSgyHDUKfTXpG1zo+l6hCA+zYqg6G+rEf2jg39k06bP3zmCo5duFA0vy+Qzi9UMgbLVJS4iCj2S/gZkTwUdl3JxyRfQuwlfcPb9FpuzUJD7Ln2BfbSb1TgxKSJpe4nrCA9NMkthrIQ4B3mDt275yvzQL7+c4lN5zSL8u4RXXXeGmp0YnSbmoI9s2XPheBO0Fu2yuNMMF8Nnh7MQ0Bi7oE2H/NLI3DHXQ/E9BN3pFEKg3oV6YINVR4vo1n6B7MuOeHVOt9sQMbXcOJNWQrlJFGULxJIwyktOuGhA3DbDPTcdCXlp2wFc63w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a3TTZ92PbAE0e2n5xy4KgPhB7lQBgKZcwRJAIyaRDT8=;
+ b=TTvI1hgph19s3MCf1t9D0IjAlBhRtExiEG8ccUJdtcDrXSD8NgVvNTQIR6lXRpdzCM36yJdmk/XkfCn2V13qBLNiL8CYJwAk9FIWu623DgfFBpFAH8mSQTux8Bvkhh2xMYN7BxAzzj9qZVZHf+UeTHwBWakuzZ1NroOzZ2uzG8r8b6C4tahydXvSN/Qc8DdVLXrvA4GVZN2LxWxZHUsCPRIuuuq/sPR4/GaRn4vB3hErqhDSrxOW4pN5F4RxU9fD8NIGItOmYYDaAspiKzGQrBJBfx4+FzzQazVEeW9l4takxGdoca4kXIDnrbV2o7TmGKvtghJfgdcyK195143Wow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a3TTZ92PbAE0e2n5xy4KgPhB7lQBgKZcwRJAIyaRDT8=;
+ b=Qy2YoGIxdmhNHtC2yfDF4gzeB/zGbZRoVu0s1RFkQzL4XgZA6DDDqwJrLxgp1o9p0IPFxd1FpZpHFXZj76k4gMWBPVlsCGhCcvcvL2GUCemnoczxJkykKzkOj2LJgSSgs2SZEgtaJmrEngImvLQgWes+S3g7HybA1HWU+IAdSo3JtrFsLAoRUULkro/tItKCurw6OViIzwZbE9zcACms8buRKeFPwRF+OE/2JGtCEr3mVyaTugkD60epBbAZEerDG+JzR76T7+E72a0tS8cK1l/Fmw0ANvCyyy0LcFq6Dbj7phNzkR/mMKh/iqbCNfQPC6JuLQig+m5QqFLHhQToWA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from DM6PR03MB5371.namprd03.prod.outlook.com (2603:10b6:5:24c::21)
+ by DM4PR03MB6207.namprd03.prod.outlook.com (2603:10b6:5:39b::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Wed, 29 Oct
+ 2025 14:53:40 +0000
+Received: from DM6PR03MB5371.namprd03.prod.outlook.com
+ ([fe80::8d3c:c90d:40c:7076]) by DM6PR03MB5371.namprd03.prod.outlook.com
+ ([fe80::8d3c:c90d:40c:7076%4]) with mapi id 15.20.9275.013; Wed, 29 Oct 2025
+ 14:53:40 +0000
+Message-ID: <db213912-2250-4d3e-9b2c-a4e36e92e1cb@altera.com>
+Date: Wed, 29 Oct 2025 20:23:30 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/4] net: stmmac: socfpga: Agilex5 EMAC platform
+ configuration
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20251029-agilex5_ext-v1-0-1931132d77d6@altera.com>
+ <20251029-agilex5_ext-v1-1-1931132d77d6@altera.com>
+ <a871daac-364e-4c2c-8343-d458b373e1fd@bootlin.com>
+Content-Language: en-US
+From: "G Thomas, Rohan" <rohan.g.thomas@altera.com>
+In-Reply-To: <a871daac-364e-4c2c-8343-d458b373e1fd@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0135.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d2::11) To DM6PR03MB5371.namprd03.prod.outlook.com
+ (2603:10b6:5:24c::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izOnir-YHPH+R0cQzu1i0HD2Z0csW6qUT8FFXh1PkmHabQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR03MB5371:EE_|DM4PR03MB6207:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1535fa66-2380-4615-1261-08de16faf277
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?L241NnQ1UzEyS0NzeXpPVnc2TXJRVW8rajBwTVRwSkhhaStMc2ZPREJ3VkRW?=
+ =?utf-8?B?REFoMDZOdmxKTFRKUk9peHJPcERUR2crdnF1ZDh5R1FZdENxS1Z5ZklnNEJM?=
+ =?utf-8?B?OFh1Wk9pV3R3SnUwek1uNXRLcjZnT0xlUDdGaUxrV1VxZDdHNzNmS1k0REM3?=
+ =?utf-8?B?aDhaVFA0Kzh0V3k1bURZTkM0eURSYng4S0d2Smp3K3pGQUlGNms1VktpYnl0?=
+ =?utf-8?B?SzRvdlFhd2ZTckNLbWVQTzFOMXQ4ZGY2b1V3THdZcTZCMW4yUzBTdGpzbGdO?=
+ =?utf-8?B?T2NxZTJBSkdPbjcxbzR5UnRxeXNiZVd1SkhnaytSNmNxZEIvZ2twakl0NDdz?=
+ =?utf-8?B?VEZrR2hySW8veVg4TGdDdUwyS0l0Zi94NlFraU9NOUhZOG1tVlBKOVg2MVBp?=
+ =?utf-8?B?NllHMHROa0NwSlN4TXV4c2N5eE1WRmlPcE1GLzNjMGc1c2VjcG9qdGRCMTVE?=
+ =?utf-8?B?QVd1YnpSYlo0NWxPc29QYjh0L2xpbGlOT1RRb0tYeHk0R01LQ2twNzZvUE1n?=
+ =?utf-8?B?bllZeVpaRndYOVlXNmV2L05QMUJMVDc2REtWQWltKzFabnh2NEJ1cWJ1ZGJq?=
+ =?utf-8?B?aFVnZHgrampqbE9xNU1laEZzUG9OSlI2NTE1blVLcW40OWNQSElkRWxwUFVN?=
+ =?utf-8?B?NUYxaFVQVU13UUEwdzdKK1BWN1FhaXRYcmhUZU5iUy9vcHpmNVBzdTR2T21i?=
+ =?utf-8?B?UjJHUndiRnQyUWMxbmt3Ui9kUExrTzdXSlptT0lLcG9oSUhTV0VtV3NiZnNZ?=
+ =?utf-8?B?TVYzclMxa2tUNkJwMUZkWFlwMDlIRWpQZE5GWDlPTE9hRzk4SmtHUVJLZUFz?=
+ =?utf-8?B?ZzF5VWZSc3RPRlYrbkJPenBCRnZrTTB5aXk4bGNKRENHRXRxL3JXMGpoeXVC?=
+ =?utf-8?B?QUpITm5DUUR2a2lVQXhJcDJBTEJmQlhQZjR2RGxtVGluNGhJajdUMDk2U0d5?=
+ =?utf-8?B?ZU9BQkJMdlR1K1NmMFd2MUJ5eU1MNEQ1K1FCbVdlb1FMbit4NVBPdDVIaExE?=
+ =?utf-8?B?Z1hHc0F2bEZWNStKaFIxaUpWYi82aENLOUtKZkwwMDhwZ3V0Nk44ZG5lU0hy?=
+ =?utf-8?B?YllXS0JpNGZLQ05qaVdQOWhsOFFSTm1XY3V3OHBsejg5cElidmpQb3VFRGZt?=
+ =?utf-8?B?c256amtlQ2FhWVJ6ZTRHK2lEZFpmQjRnSXZ5RDRVQ3JjK3ErQnZBWDRpQzdq?=
+ =?utf-8?B?b3JiYmRaUjV6Ui9EbnFPMkorb09EMWYrQW1yZ0pDNGlLZDN5WHVpS1d6Z0FH?=
+ =?utf-8?B?a0VlNEJEWHdDWDFCM0NsQ0xlbjI4QzE0cVdmbFpoMlJiVjRkTmRhT1kwTHZF?=
+ =?utf-8?B?Zy9GQzRuVkxoU3RuT2Y1bERVZXFJYU1nM0w1SGNQOEVFcEtUeWc0WEp3UW5W?=
+ =?utf-8?B?blZrV2txdld3dVZjTFZldHcrSCtsS0NCWFVwOGZoenc5TDlRaUptdmRoQzB6?=
+ =?utf-8?B?ZGJhWFBBcXlkdlNTaTRWUCtJZzhMMWdQZDlQMVFRUDFtRUpvVEEyQVkrUkFv?=
+ =?utf-8?B?TEtJVmYwNk9HTUxrSG8ralBqczNRb2tScThqblFrTy9qMHQxcDZVOFh1MGlG?=
+ =?utf-8?B?L3RnSE1HQzgrcE5ad0k2QmdLd3BJaEZySEdSRS9hd3NZU2ZHaHJDN0o4dE1h?=
+ =?utf-8?B?TXNNQUhieFZ5Ukp5NEdyUER5eFEzSUIrQTFaS09aTXR3b01jZ0YwREtCMzJx?=
+ =?utf-8?B?SGhDc1hmQzcrU21lVWNyYk9vWkloQm95ZnNZRWpKU1EyTXJyODh5em1pY1Zm?=
+ =?utf-8?B?SnRWT2E3cEovUzRTMWN5bFRhWlBaTGNlcW5ZdjhXenlWcHBaOFdDQVRNS2pk?=
+ =?utf-8?B?QlVpQkV5MEMyMXlsRjI2VUxqRHhPRkNYOWh1bUZPMFpIZDVsUHptYVdnMG9l?=
+ =?utf-8?B?bFVxNkZiZ1pkUVBJcXg5WERHN1k1YU94eWZtRjVhZ3NMY3F3c045MGpOWjVO?=
+ =?utf-8?B?UEl3aXl5UGlaakcycldKcnNkcWFOblB4a2kyZnpoeS9VUGJyUU13S2JGaENO?=
+ =?utf-8?B?RFMvMU5RQ2pkc210dDhUUXdacXBudUxwbVlTZENqdUdmTjhxdUs5SDVLcmtK?=
+ =?utf-8?Q?jZmiRQ?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR03MB5371.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWZiNXJVbkJtWWl5TFVVSGNONmVmc0tVSXpFb24xanpwc3FnRUJRSWR2cGRm?=
+ =?utf-8?B?eHN3eEpSNS9vSyt5SWNOTWhqUEpxQllLMWRQRzBwc3IxakFEVU1YYUFWZHJM?=
+ =?utf-8?B?bnNQWkE1eG83NEJBbFlMMW1YMVNUMDU0S2J1MjRXayt4UDZmS1FNUUgzSXo5?=
+ =?utf-8?B?eVI4bmpUL3ZuNytZVUZNRnUrbTdlMFVpZkFaUEM3TWt0blZiTmpZU2NCeDRh?=
+ =?utf-8?B?VHNtSndiTGJlN1NQdjhkbU1ldC9jNnVQd2YvTFMvZUhnMEQ1VVRzb1hGM1FF?=
+ =?utf-8?B?czU3UWV1T1dBcWZzNzZrU3VRc0V3RURFamFlOW5uekZFZVc0aklMR0d4WERF?=
+ =?utf-8?B?MnpWVFUwMzJFMnZmK2M0V0RRemF5d1JhMUcxTzdYSEduaUx3WlV1WCt6Y0Yw?=
+ =?utf-8?B?bDVLMk1hc3QzMDMxaUpnREtjSHdmUnd2MG1pMG5FMEFKQU5vMGxZSHZENzhk?=
+ =?utf-8?B?aXM4ZndMRldLNG5XSnNla3V6TThaa1Y2UUd2cjFjNTdrcUZlbklyeWcrMElv?=
+ =?utf-8?B?dzI0TFEvbzE3OXg4ZUV6Q3Z1Tzdud01pc2FaUWhMWGdYY1VkVzlqZkhUaXBH?=
+ =?utf-8?B?VVZzVGlCaGpOUGlrVXpnNWZMMzBUNTR5UDJYMFlGalIrMVk4QUpubjREVlFD?=
+ =?utf-8?B?eFY3WmlLMUFBRzhOcTZ4ZVh6S3djeWlBQ3JQcGR3RFJXUDVpV3NqZ3lLbTA2?=
+ =?utf-8?B?dCtMb0hCaFgxV3pHaENoZFppM1pLejFqaVZ0cHA5MU8zM0s1UUMrYWY0dkdn?=
+ =?utf-8?B?REhNZ2dON0RkTXc0MW03ckdlOElIWVA4R2JJSU1Pc29hWXVOU0pHMmlwQXBG?=
+ =?utf-8?B?blhtN3BtNFZBdW9MWm5sYkhGeHVwTlZKbEtNMjBKVjAxVVlsWGdzNzd0aFBS?=
+ =?utf-8?B?bHQ5c0pQR2tuUHdUTW1wQ1JQQTcrZ29neTlFNnplR1VKb2txbC9wcWNBYk51?=
+ =?utf-8?B?T3BTUHhETHV2WmJrOG9EQU5BMDJyc2xoSlJkcG5pMndOTkJOY3RISkZhbFpC?=
+ =?utf-8?B?VUV2UTBuNUFGUWtrOFo4TVEwV3QyTi8ySlp3cGZYSTc5eGRmY3gyWXZuNE84?=
+ =?utf-8?B?VTVFZkljRk93NU9FL1o2WGltOVRNeXBObmNiaE1HVXhxSU5vNGxWcVpsb1Vi?=
+ =?utf-8?B?d0x1dnE3YXlJUzMxSkQ5aGhiQlBhNDdvR0g2REp4dmV1R0JMMWFDb0NNenNa?=
+ =?utf-8?B?VysyaEFrUWc2bmNPMTNxM3dBajZSNVFwQmluVEoxbTVRdCtMNE5PSnc1WDZL?=
+ =?utf-8?B?WTJKRXBDQWJHc2ZPRkw0aE1XRVdESi9iQjBwemdKZEZKWnBNeTR6UWpoUFlF?=
+ =?utf-8?B?ajNnNjA0ZUFrekNDMzk1WVRscjZqRHZBbzhvZ0hONThVS0cvZ1M5OWJxSWN6?=
+ =?utf-8?B?ZGFDNmtteUJOSENRVVFKUFFiWTQxTDl2bjJGdmIrSXpSeEhKSzFaaHB6VW4y?=
+ =?utf-8?B?a2FxWExjMjBrb0FaZys2ejJNMXBTeXdqa3cxZDZ5MzJRZWRCM3B0aUFCd05B?=
+ =?utf-8?B?OWtmVFN0QmU1MjB0Uy95MWJJeGtKVUJXTVFZa0dBTlNURU9PbDR6cCtiQnlj?=
+ =?utf-8?B?cnl4OUVxODZ3OElhb3g2c2Z1ZU5Id0lxWkZOdmxpTVI1RGd0SDhNVmludHNE?=
+ =?utf-8?B?RXdCallTenlzRGhBS21YQWR5WSt1TDM0RXFmb1p4UlplejRtNk1GeEpRRm1U?=
+ =?utf-8?B?bnNRSXhqM1Y2b1ZibmlzMjRwZGNmNU12b2ozZDRjMGFadzdUVExvWnZZaGx3?=
+ =?utf-8?B?UkVLUXo4MTFZN3lBbTdVU2ZGMnp4Z1NVRHNZVHVpM25XN1ltRGhKbHZibUdE?=
+ =?utf-8?B?WmZlYUtLanlyM1E3S0ZwdmhJSzgxODRQeFVQT1p5djVWTCtON1NFRlM2cWM1?=
+ =?utf-8?B?eHBCY3cwRWxYd3dPUlFQdDQyN3BZTlhhenErUkF3WG9ITkhxV29WR0hJWW9y?=
+ =?utf-8?B?dytuamg5RmZiMlJiMlZ1MVBCSWNHQWxFR3E3L2h4L0ttdkNnZi80b1cxSndU?=
+ =?utf-8?B?VHlaZ3huQUlNRUJzOWFjak5PaU5aK1RacjNCWnp1TTViYTkyQ1drSVNSL2Fr?=
+ =?utf-8?B?SEVYd0k0TkNra2dVT0VSRm5DektWaEh4TnZwRDJIVWxCTUt4djAyLzZGR2Zl?=
+ =?utf-8?B?OWFzdE5pVDd3VVlOOGtWbVpPcVVrSUg3SFdHdkF4UmxCMmo4cDZ4ZGNOdWNU?=
+ =?utf-8?B?R0E9PQ==?=
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1535fa66-2380-4615-1261-08de16faf277
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR03MB5371.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 14:53:40.2016
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WBe/VXRt+logafozBbEovWTu8uRFWQFUkWTnrPqUChHt/xxP1F1aDFarktkSrAv3KJ8oGMtAVFDoSDvPgvG/Ol2YUJO7sJ7T0lH+V7yqWJs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR03MB6207
 
-On Tue, Oct 28, 2025 at 07:04:15PM -0700, Mina Almasry wrote:
-> On Tue, Oct 28, 2025 at 1:49 PM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
-> ...
-> > > > @@ -307,6 +331,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
-> > > >                 goto err_free_chunks;
-> > > >
-> > > >         list_add(&binding->list, &priv->bindings);
-> > > > +       binding->autorelease = true;
-> > > >
-> > >
-> > > So autorelease is indeed a property of the binding. Not sure why a
-> > > copy exists in sk_devmem_info. Perf optimization to reduce pointer
-> > > chasing?
-> > >
-> >
-> > Just stale code from prior design... Originally, I was going to try to
-> > allow the autorelease == true case to be free of the
-> > one-binding-per-socket restriction, in which case sk_devmem_info.binding
-> > would be NULL (or otherwise meaningless). sk_devmem_info.autorelease
-> > allowed sock_devmem_dontneed to choose the right path even when
-> > sk_devmem_info.binding == NULL.
-> >
-> > ...but then I realized we still needed some restriction to avoid sockets
-> > from steering into different dmabufs with different autorelease configs,
-> > so kept the one-binding restriction for both modes. I abandoned the
-> > effort, but forgot to revert this change.
-> >
-> > Now I'm realizing that we could relax the restriction more though... We
-> > could allow sockets to steer into other bindings if they all have the
-> > same autorelease value? Then we could still use
-> > sk_devmem_info.binding->autorelease in the sock_devmem_dontneed path and
-> > relax the restriction to "steering must only be to bindings of the same
-> > autorelease mode"?
-> >
+Hi Maxime,
+
+On 10/29/2025 7:04 PM, Maxime Chevallier wrote:
+> Hi Rohan,
 > 
-> Hmpf. I indeed forgot to think thoroughly about the case where, for
-> some god-forsaken reason, we have bindings on the system with
-> different auto-release values.
+> On 29/10/2025 09:06, Rohan G Thomas via B4 Relay wrote:
+>> From: Rohan G Thomas <rohan.g.thomas@altera.com>
+>>
+>> Agilex5 HPS EMAC uses the dwxgmac-3.10a IP, unlike previous socfpga
+>> platforms which use dwmac1000 IP. Due to differences in platform
+>> configuration, Agilex5 requires a distinct setup.
+>>
+>> Introduce a setup_plat_dat() callback in socfpga_dwmac_ops to handle
+>> platform-specific setup. This callback is invoked before
+>> stmmac_dvr_probe() to ensure the platform data is correctly
+>> configured. Also, implemented separate setup_plat_dat() callback for
+>> current socfpga platforms and Agilex5.
+>>
+>> Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+>> ---
+>>   .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    | 53 ++++++++++++++++++----
+>>   1 file changed, 43 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>> index 2ff5db6d41ca08a1652d57f3eb73923b9a9558bf..3dae4f3c103802ed1c2cd390634bd5473192d4ee 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+>> @@ -44,6 +44,7 @@
+>>   struct socfpga_dwmac;
+>>   struct socfpga_dwmac_ops {
+>>   	int (*set_phy_mode)(struct socfpga_dwmac *dwmac_priv);
+>> +	void (*setup_plat_dat)(struct socfpga_dwmac *dwmac_priv);
+>>   };
+>>   
+>>   struct socfpga_dwmac {
+>> @@ -441,6 +442,39 @@ static int socfpga_dwmac_init(struct platform_device *pdev, void *bsp_priv)
+>>   	return dwmac->ops->set_phy_mode(dwmac);
+>>   }
+>>   
+>> +static void socfpga_common_plat_dat(struct socfpga_dwmac *dwmac)
+>> +{
+>> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+>> +
+>> +	plat_dat->bsp_priv = dwmac;
+>> +	plat_dat->fix_mac_speed = socfpga_dwmac_fix_mac_speed;
+>> +	plat_dat->init = socfpga_dwmac_init;
+>> +	plat_dat->pcs_init = socfpga_dwmac_pcs_init;
+>> +	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
+>> +	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
+>> +}
+>> +
+>> +static void socfpga_gen5_setup_plat_dat(struct socfpga_dwmac *dwmac)
+>> +{
+>> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+>> +
+>> +	socfpga_common_plat_dat(dwmac);
+>> +
+>> +	plat_dat->core_type = DWMAC_CORE_GMAC;
+>> +
+>> +	/* Rx watchdog timer in dwmac is buggy in this hw */
+>> +	plat_dat->riwt_off = 1;
+>> +}
+>> +
+>> +static void socfpga_agilex5_setup_plat_dat(struct socfpga_dwmac *dwmac)
+>> +{
+>> +	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+>> +
+>> +	socfpga_common_plat_dat(dwmac);
 > 
-> But now that I think more, I don't fully grasp why that would be a
-> problem. I think we can make it all work by making autorelease a
-> property of the socket, not the binding:
+> I"m not familiar with this device (I only have a Cyclone V on hand), does
+> it still make sense to try to instantiate a Lynx (i.e. Altera TSE) PCS
+> for that IP ?
+
+AFAIK, yes it is supported by Agilex V device family also.
+https://www.altera.com/products/ip/a1jui0000049uuomam/triple-speed-ethernet-fpga-ip
+
 > 
-> So if sk->devmem_info.autorelease is on, in recevmsg we store the
-> token in the xarray and dontneed frees from the xarray (both can check
-> skb->devmem_info.autorelease).
-> 
-> If sk->devmem_info.autorelease is off, then in recvmsg we grab the
-> binding from sk->devmem_info.binding, and we do a uref inc and netmem
-> get ref, then in dontneed dec uref and napi_pp_put_page if necessary.
-> 
-> The side effect of that is that for the same binding, we may
-> simultaneously have refs in the sk->xarray and in the binding->uref,
-> because the data landing on the binding sometimes belonged to a socket
-> with sk->devmem_info.autorelease on or off, but I don't immediately
-> see why that would be a problem. The xarray refs would be removed on
-> socket close, the urefs would be freed on unbind.
-> 
-> Doesn't it all work? Or am I insane?
+> Maxime
 > 
 
-No not insane. I think that works really well and will simplify things a
-lot. Let's give that a whirl for the next rev.
+Best Regards,
+Rohan
 
-[...]
-
-> > > >
-> > > > +static noinline_for_stack int
-> > > > +sock_devmem_dontneed_manual_release(struct sock *sk, struct dmabuf_token *tokens,
-> > > > +                                   unsigned int num_tokens)
-> > > > +{
-> > > > +       unsigned int netmem_num = 0;
-> > > > +       int ret = 0, num_frags = 0;
-> > > > +       netmem_ref netmems[16];
-> > > > +       struct net_iov *niov;
-> > > > +       unsigned int i, j, k;
-> > > > +
-> > > > +       for (i = 0; i < num_tokens; i++) {
-> > > > +               for (j = 0; j < tokens[i].token_count; j++) {
-> > > > +                       struct net_iov *niov;
-> > > > +                       unsigned int token;
-> > > > +                       netmem_ref netmem;
-> > > > +
-> > > > +                       token = tokens[i].token_start + j;
-> > > > +                       if (token >= sk->sk_devmem_info.binding->dmabuf->size / PAGE_SIZE)
-> > > > +                               break;
-> > > > +
-> > >
-> > > This requires some thought. The correct thing to do here is EINVAL
-> > > without modifying the urefs at all I think. You may need an
-> > > input-verification loop. Breaking and returning success here is not
-> > > great, I think.
-> > >
-> >
-> > Should this also be changed for the other path as well? Right now if
-> > __xa_erase returns NULL (e.g., user passed in a bad token), then we hit
-> > "continue" and process the next token... eventually just returning the
-> > number of tokens that were successfully processed and omitting the wrong
-> > ones.
-> >
-> 
-> Ugh. I did not notice that :(
-> 
-> I guess the existing dontneed doesn't handle that well anyway. Lets
-> not fix too much in this series. It's fine to carry that behavior in
-> the new implementation and if anything improve this in a separate
-> patch (for me at least). It'd be a bit weird if the userspace is
-> sending us bad tokens anyway, in theory.
-> 
-
-Duly noted. I'll leave that for future work.
-
-[...]
-
-> > > >  static noinline_for_stack int
-> > > >  sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
-> > > >                                  unsigned int num_tokens)
-> > > > @@ -1089,32 +1142,32 @@ sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
-> > > >         int ret = 0, num_frags = 0;
-> > > >         netmem_ref netmems[16];
-> > > >
-> > > > -       xa_lock_bh(&sk->sk_user_frags);
-> > > > +       xa_lock_bh(&sk->sk_devmem_info.frags);
-> > > >         for (i = 0; i < num_tokens; i++) {
-> > > >                 for (j = 0; j < tokens[i].token_count; j++) {
-> > > >                         if (++num_frags > MAX_DONTNEED_FRAGS)
-> > > >                                 goto frag_limit_reached;
-> > > >
-> > > >                         netmem_ref netmem = (__force netmem_ref)__xa_erase(
-> > > > -                               &sk->sk_user_frags, tokens[i].token_start + j);
-> > > > +                               &sk->sk_devmem_info.frags, tokens[i].token_start + j);
-> > > >
-> > > >                         if (!netmem || WARN_ON_ONCE(!netmem_is_net_iov(netmem)))
-> > > >                                 continue;
-> > > >
-> > > >                         netmems[netmem_num++] = netmem;
-> > > >                         if (netmem_num == ARRAY_SIZE(netmems)) {
-> > > > -                               xa_unlock_bh(&sk->sk_user_frags);
-> > > > +                               xa_unlock_bh(&sk->sk_devmem_info.frags);
-> > > >                                 for (k = 0; k < netmem_num; k++)
-> > > >                                         WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
-> > > >                                 netmem_num = 0;
-> > > > -                               xa_lock_bh(&sk->sk_user_frags);
-> > > > +                               xa_lock_bh(&sk->sk_devmem_info.frags);
-> > > >                         }
-> > > >                         ret++;
-> > > >                 }
-> > > >         }
-> > > >
-> > > >  frag_limit_reached:
-> > > > -       xa_unlock_bh(&sk->sk_user_frags);
-> > > > +       xa_unlock_bh(&sk->sk_devmem_info.frags);
-> > > >         for (k = 0; k < netmem_num; k++)
-> > > >                 WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
-> > > >
-> > > > @@ -1135,6 +1188,12 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
-> > > >             optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
-> > > >                 return -EINVAL;
-> > > >
-> > > > +       /* recvmsg() has never returned a token for this socket, which needs to
-> > > > +        * happen before we know if the dmabuf has autorelease set or not.
-> > > > +        */
-> > > > +       if (!sk->sk_devmem_info.binding)
-> > > > +               return -EINVAL;
-> > > > +
-> > >
-> > > Hmm. At first glance I don't think enforcing this condition if
-> > > binding->autorelease is necessary, no?
-> > >
-> > > If autorelease is on, then we track the tokens the old way, and we
-> > > don't need a binding, no? If it's off, then we need an associated
-> > > binding, to look up the urefs array.
-> > >
-> >
-> > We at least need the binding to know if binding->autorelease is on,
-> > since without that we don't know whether the tokens are in the xarray or
-> > binding->vec... but I guess we could also check if the xarray is
-> > non-empty and infer that autorelease == true from that?
-> >
-> 
-> I think as above, if autorelease is (only) a property of the sockets,
-> then the xarray path works without introducing the socket-to-binding
-> mapping restriction, yes?
-
-Indeed, makes sense!
-
-Best,
-Bobby
