@@ -1,167 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922F833FE10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F3F375754;
 	Wed, 29 Oct 2025 12:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761740636; cv=none; b=jz5xUJR3CohAtxRUc5VWgwz4K0huUlXv3qiOjgjSrTsH+hMRtr/QLu0pKX0QjIF6qBJk21XDpen6SC918A4IqrFGY0a7FCzXs+oYkYUbrosP7AfVAwwNxfbNPxSqr6SA1XyyhVasyDioMjSIURKc2kol3rqLNDboENUbiDWLVRU=
+	t=1761740638; cv=none; b=Ce5hFveBBJCZsOkhMk8ORvX2oFyMrRGbFOvb3NnBa3kxZ0lWZ1uXyePbHix++FIcdIcgEbnObzoAI2Bt30xLQbohKGct3vKKj++zzes8y7xVPzpbQI9alOjPNMhMekQw+pS9zQBP7spRzzW5Sisl3rVpwuiJST5mml/OEIlYQ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761740636; c=relaxed/simple;
-	bh=NAhtGlBVfCqrlTfWbGN1zDMklE1n7EKY3e8ekT2vQ0Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JhuOkxSg+BSMdaOjVovTkByBtKg+XT+8tYHzs6brixxq6uavKgSJqxAX4LmQTP3fPRJ99ApA6yLkj8BPx1miLJjhF6Vx7Voc0aP610p0SMMVrAXcaGWtvz/Z31w8SskqymEEeKvfQr0lmqAgs4NFDHZ7gyym3Gew5pJJfySijFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t7f8dpUq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1761740638; c=relaxed/simple;
+	bh=vxXTuWk7/yIZErhv/OIuFmCRYOsKBsV8L4JwDDsuQTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r1oPGKTBxwEQt3tzIa60pwjK7+X2CMwIUkwb8R06ZZVimDPtfpSuXXKG0DowFn3yUdgvcaDgAAv5q9+q2yw02tDb3CS92XqlDd7kYMZl0V8lfYaVpQdp/+srWjVVgKGXMqZPqxaHhTPvGfs4OCTzbDaZ63UB2fAeMmC0KYQ1CEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GLdMTMm5; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t7f8dpUq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1FFC116C6;
-	Wed, 29 Oct 2025 12:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761740636;
-	bh=NAhtGlBVfCqrlTfWbGN1zDMklE1n7EKY3e8ekT2vQ0Y=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=t7f8dpUqrToN/S01fEg9EHPoYdthuRIQm/lkdy+Knu3x+t/dWgLvbKLCWKJ5QTv9j
-	 LPBO6QZmM7Hyqhj0ueNJaMxK/B4zlX3c+WE2fJk6Mn3yODXOK24Cb4UXJVqMxjvjey
-	 7PubgLvGyAlqsVbEvFaQICW6QijkwsHM0nwli8O1o5L3l6h9rF9zrM1sHgaFdsFj1X
-	 1hpMRw2pBm14Aw7DrKAIswbHAd/tRI7E6m3+0oLqn/rQhleQaSCLGJ9zJlc2HBOUyL
-	 7LckxTZQnJ522DmL4HWrC4855gB7JW8gUhSK/XcLv01AwKmJ9kqB1FBkWgArxW7GOl
-	 UyvmvNU4r74YQ==
-From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 29 Oct 2025 13:20:52 +0100
-Subject: [PATCH v4 39/72] selftests/namespaces: first listns() test
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GLdMTMm5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=CA7FHkYc67rF9PMAUrRqXbfA2UpRx4BpJDiWCxDnXP4=; b=GLdMTMm5bKuwGT6dsMDtyHcnO1
+	6nsSNv/3XSOG1T0fzgs8PUg8O2rdUdPFPinJBUHoCi5ID0BYel1+5cAy0BDdzMTdK5JvtL3Py1DWH
+	We30Y8+luWhDKtEVfq4BeAiCsfdXggJpUtLkk/eMAEtmK0wCUamRlNLYVdLNbjT+jUHA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vE5DO-00COt7-Rv; Wed, 29 Oct 2025 13:23:46 +0100
+Date: Wed, 29 Oct 2025 13:23:46 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Andrei Botila <andrei.botila@oss.nxp.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, s32@nxp.com,
+	Christophe Lizzi <clizzi@redhat.com>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Enric Balletbo <eballetb@redhat.com>
+Subject: Re: [PATCH net-next] net: phy: nxp-c45-tja11xx: config_init restore
+ macsec config
+Message-ID: <40c9522b-f761-4ef5-880b-5b11cd4b8ba1@lunn.ch>
+References: <20251029104258.1499069-1-andrei.botila@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-work-namespace-nstree-listns-v4-39-2e6f823ebdc0@kernel.org>
-References: <20251029-work-namespace-nstree-listns-v4-0-2e6f823ebdc0@kernel.org>
-In-Reply-To: <20251029-work-namespace-nstree-listns-v4-0-2e6f823ebdc0@kernel.org>
-To: linux-fsdevel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
- Jeff Layton <jlayton@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, 
- =?utf-8?q?Zbigniew_J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
- Lennart Poettering <mzxreary@0pointer.de>, 
- Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, 
- Amir Goldstein <amir73il@gmail.com>, Tejun Heo <tj@kernel.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Thomas Gleixner <tglx@linutronix.de>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, bpf@vger.kernel.org, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.15-dev-96507
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3148; i=brauner@kernel.org;
- h=from:subject:message-id; bh=NAhtGlBVfCqrlTfWbGN1zDMklE1n7EKY3e8ekT2vQ0Y=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQysfVNMElPMuu0teRxffdT9+ACt4pvvDHf3nEqv9BwP
- nTya//OjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm0BDAy/PRi9viwvK+q5N8d
- 8eWRz3a4nmy4755t/1vwp8HrrVe43Rj+J/H7h/5x1XukuuH6qtmVhb01aWnh5iW/94lo9FabNnZ
- yAgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029104258.1499069-1-andrei.botila@oss.nxp.com>
 
-Test basic listns() functionality with the unified namespace tree.
-List all active namespaces globally.
+On Wed, Oct 29, 2025 at 12:42:58PM +0200, Andrei Botila wrote:
+> Any existing MACsec configuration should be restored when config_init is
+> called.
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- tools/testing/selftests/namespaces/.gitignore    |  1 +
- tools/testing/selftests/namespaces/Makefile      |  3 +-
- tools/testing/selftests/namespaces/listns_test.c | 57 ++++++++++++++++++++++++
- 3 files changed, 60 insertions(+), 1 deletion(-)
+Please could you expand the commit message. Why should they be
+restored? What is clearing them? Why is this part of
+link_change_notify?
 
-diff --git a/tools/testing/selftests/namespaces/.gitignore b/tools/testing/selftests/namespaces/.gitignore
-index 100cc5bfef04..5065f07e92c9 100644
---- a/tools/testing/selftests/namespaces/.gitignore
-+++ b/tools/testing/selftests/namespaces/.gitignore
-@@ -2,3 +2,4 @@ nsid_test
- file_handle_test
- init_ino_test
- ns_active_ref_test
-+listns_test
-diff --git a/tools/testing/selftests/namespaces/Makefile b/tools/testing/selftests/namespaces/Makefile
-index 5cea938cdde8..de708f4df159 100644
---- a/tools/testing/selftests/namespaces/Makefile
-+++ b/tools/testing/selftests/namespaces/Makefile
-@@ -2,9 +2,10 @@
- CFLAGS += -Wall -O0 -g $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- LDLIBS += -lcap
- 
--TEST_GEN_PROGS := nsid_test file_handle_test init_ino_test ns_active_ref_test
-+TEST_GEN_PROGS := nsid_test file_handle_test init_ino_test ns_active_ref_test listns_test
- 
- include ../lib.mk
- 
- $(OUTPUT)/ns_active_ref_test: ../filesystems/utils.c
-+$(OUTPUT)/listns_test: ../filesystems/utils.c
- 
-diff --git a/tools/testing/selftests/namespaces/listns_test.c b/tools/testing/selftests/namespaces/listns_test.c
-new file mode 100644
-index 000000000000..cb42827d3dfe
---- /dev/null
-+++ b/tools/testing/selftests/namespaces/listns_test.c
-@@ -0,0 +1,57 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <linux/nsfs.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+#include "../kselftest_harness.h"
-+#include "../filesystems/utils.h"
-+#include "wrappers.h"
-+
-+/*
-+ * Test basic listns() functionality with the unified namespace tree.
-+ * List all active namespaces globally.
-+ */
-+TEST(listns_basic_unified)
-+{
-+	struct ns_id_req req = {
-+		.size = sizeof(req),
-+		.spare = 0,
-+		.ns_id = 0,
-+		.ns_type = 0,  /* All types */
-+		.spare2 = 0,
-+		.user_ns_id = 0,  /* Global listing */
-+	};
-+	__u64 ns_ids[100];
-+	ssize_t ret;
-+
-+	ret = sys_listns(&req, ns_ids, ARRAY_SIZE(ns_ids), 0);
-+	if (ret < 0) {
-+		if (errno == ENOSYS)
-+			SKIP(return, "listns() not supported");
-+		TH_LOG("listns failed: %s (errno=%d)", strerror(errno), errno);
-+		ASSERT_TRUE(false);
-+	}
-+
-+	/* Should find at least the initial namespaces */
-+	ASSERT_GT(ret, 0);
-+	TH_LOG("Found %zd active namespaces", ret);
-+
-+	/* Verify all returned IDs are non-zero */
-+	for (ssize_t i = 0; i < ret; i++) {
-+		ASSERT_NE(ns_ids[i], 0);
-+		TH_LOG("  [%zd] ns_id: %llu", i, (unsigned long long)ns_ids[i]);
-+	}
-+}
-+
-+TEST_HARNESS_MAIN
+By looking at the code i can see what the change is doing. But it can
+be hard to say why. So the commit message should be mostly about Why?
 
--- 
-2.47.3
+Is this a bug fix and should be back ported?
 
+	Andrew
