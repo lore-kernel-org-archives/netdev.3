@@ -1,63 +1,64 @@
-Received: from out19.tophost.ch (out19.tophost.ch [46.232.182.228])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0802F5A32;
-	Wed, 29 Oct 2025 22:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.232.182.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6122DF154;
+	Wed, 29 Oct 2025 22:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761775524; cv=none; b=tcwOLI5Tp6iukttaEHqL+YWVaVzl/H2pE7iPOyeffgrZCpTryOxoMG7Kr2zTg5jBlc5xOswoYTPjet31nC0rqt+5fIE/8F1Ma9L1Lpj0K142xy0Kr1nmK0K50zCcKxix7ZHsVjlKqWVivN3JgDLEodrIa8l0rl+M5fSNMfQ9AOw=
+	t=1761776003; cv=none; b=rkgN9QyFM7sNnIbNvfHCKcZdqZ11/Nfb+8XFwog3KCNzZ5XR+R5GfhbIUZ7SHhENzYWOi+N8+67n+rOVGVd+prW/N8SbN4HoNl4LjYT2o+uWGt2OSvOLCC6qrimwajDpdSulbNfNcCuzLXK/V33WgSPHRyST9fJG8qRve85Uyzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761775524; c=relaxed/simple;
-	bh=lItdCUYG1d6UQm85Qss0GbZq85EMHtgNMgGd/rNTbxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XTALkVfWCT/u5W7iTyv3ggLz9FfsYbT9DeRZ4CJ3sEvQwJntc1eobb6Xin/Rg5zMlu3zpGRGNPF5D0V0+mwyDTAUYgcwD7TUH4Gw1Wq9qzmapcknWrM3r/w2mXe2YW8D/CDlUgKvD67ZYJY86dR/q1RnLxn0Pbxk/Kl7fc5ziuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz; spf=pass smtp.mailfrom=wismer.xyz; dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b=dOiiR7/C; arc=none smtp.client-ip=46.232.182.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wismer.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wismer.xyz
+	s=arc-20240116; t=1761776003; c=relaxed/simple;
+	bh=tk0EdzYrP4+xqhr8LtNnIX9Zuv7CyrISAzv6c4S1qMk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p+T1wjn7/XVPIOALRh1ol+hzplj4d8axZfmYbwNZfa//3aPaPCXGUdSI/qIKNl26C7BF9W01T4WC4Y4qH/NgdSZUbHno6OcV1nvwlCEg59jF7d9GHDj6Y49g6yPPe21bL82wZ0mHCgyY0RXnJmzFsZmp/hvVdJgn4JpwKkYzyG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bhz9PdNc; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wismer.xyz header.i=@wismer.xyz header.b="dOiiR7/C"
-Received: from srv125.tophost.ch ([194.150.248.5])
-	by filter1.tophost.ch with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1vEDdp-0042tJ-SZ; Wed, 29 Oct 2025 22:23:42 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=wismer.xyz;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QgqV9QPXVsvYbwJwR/tZmtDFiHEZLdUm5PrQpDLHRlU=; b=dOiiR7/Cc5qn2AmTBesQfi8YU5
-	kaZ0DutfrzOBcOxTZIDNZ2wdTcS4mhPHc/7bxUtyv4z78AnkxMeKEgE8FgsseGuGxi5PLhSk7MUZN
-	ZTRT2nl90ZOrTwjKNPACPCVJJzybHCHLVI0neKuIROxSaj0KM9wIfpbpfzWXd5jed7Woop9hJEVya
-	SCR4RzdwajUqr4mydCH/UtOqcWKwuA9Mmxombn+or/gQ2aVQHPyUwDqgypKWcJsQG/T+FB9G1oM41
-	G6VApjYsj++b8YT36Aa/oTlGPXU4+Ltm5QvxIU2hQxIP4rlBj8K/OuYVf7zxEdX7Fb55NvYFvUJQk
-	uHhmIbAQ==;
-Received: from [2001:1680:4957:0:9918:f56f:598b:c8cf] (port=39522 helo=pavilion.lan)
-	by srv125.tophost.ch with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <thomas@wismer.xyz>)
-	id 1vEDdq-0000000Bf5t-0g6g;
-	Wed, 29 Oct 2025 22:23:36 +0100
-From: Thomas Wismer <thomas@wismer.xyz>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Thomas Wismer <thomas@wismer.xyz>,
-	Thomas Wismer <thomas.wismer@scs.ch>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/2] net: pse-pd: Add TPS23881B support
-Date: Wed, 29 Oct 2025 22:23:08 +0100
-Message-ID: <20251029212312.108749-1-thomas@wismer.xyz>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bhz9PdNc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761776003; x=1793312003;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tk0EdzYrP4+xqhr8LtNnIX9Zuv7CyrISAzv6c4S1qMk=;
+  b=Bhz9PdNcrFPUuC75WoD8NPLxC+UKNBtN2IdGaZ+KpJcIw2KUSvpsTrwp
+   zQrcjBQfHfUHwht/HGof2Xkpt5epoTXCUkUkH9Bd4reixVD6A+PBUnf/c
+   C7CY41butooDQlW3h8pz6HEw87CSh2OJfbE/Z5OeYC71WJxoixY5vAKtx
+   s4mvD3300XWsK5J8CylQSJtrRA56eTU2TyPeOpl2HkQ/r3bY2To6d4g05
+   d0N05bxxda7yd0WfVc+98QSVk4EixcPmOJ076sBx3XPe4n1ZSnL43mMG2
+   C4e790FDaOvYMY2UhbbqfOP7K6hY1ys9NNQ2tP7sDbd6W6v2gbSMaGdcN
+   g==;
+X-CSE-ConnectionGUID: /fTJndcTQ0iCONGuw16OZw==
+X-CSE-MsgGUID: 9PhySgQnQh+rgzuyLPjHvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63820764"
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
+   d="scan'208";a="63820764"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Oct 2025 15:13:22 -0700
+X-CSE-ConnectionGUID: XHg/0hAZRsaARltw0wiWfQ==
+X-CSE-MsgGUID: jSw/KGG6RryUgYXfmVbAUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,265,1754982000"; 
+   d="scan'208";a="216643387"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by fmviesa001.fm.intel.com with ESMTP; 29 Oct 2025 15:13:19 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: bpf@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org
+Cc: netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	aleksander.lobakin@intel.com,
+	ilias.apalodimas@linaro.org,
+	toke@redhat.com,
+	lorenzo@kernel.org,
+	kuba@kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v5 bpf 0/2] xdp: fix page_pool leaks
+Date: Wed, 29 Oct 2025 23:13:13 +0100
+Message-Id: <20251029221315.2694841-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,57 +66,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Get-Message-Sender-Via: srv125.tophost.ch: authenticated_id: thomas@wismer.xyz
-X-Authenticated-Sender: srv125.tophost.ch: thomas@wismer.xyz
-X-Spampanel-Domain: smtpout.tophost.ch
-X-Spampanel-Username: 194.150.248.5
-Authentication-Results: tophost.ch; auth=pass smtp.auth=194.150.248.5@smtpout.tophost.ch
-X-Spampanel-Outgoing-Class: unsure
-X-Spampanel-Outgoing-Evidence: Combined (0.50)
-X-Recommended-Action: accept
-X-Filter-ID: 9kzQTOBWQUFZTohSKvQbgI7ZDo5ubYELi59AwcWUnuV5syPzpWv16mXo6WqDDpKEChjzQ3JIZVFF
- 8HV60IETFiu2SmbhJN1U9FKs8X3+Nt208ASTx3o2OZ4zYnDmkLm5Mv/tafLC72ko3Lqe/Da7zHbl
- xp7QWjUgnsevh5dXQOeCn3oZFShGuGVczvnnMQuyCtmoQhY2xrBb8C+tWUvqrqBKsSdhvd/J5sX5
- daZjkYv0hq6Ot6Cbd9hg3807OZKQzthz0vNkOX8Em4cj6D/wdUjFxsH/4KTYIVqFSP1MaBk9W7vD
- 6C469DIPe8wH3iOJ3xyMg3et4b3PQUopDmbZCssYHNuxAmlPRpR5yzngsxCROUzReCS8EpKh0It9
- L25JS816nuiE0t5pG6MLXGczoanVmeCF7bI0BP7dENKtPTBPq+vGO3Vx+SwwWschmkdvs376y2A4
- OBi1/UyqO7jQnnICeA+KlS7G8xqewTcs6w6HLg3eq1lKkYVFbZT99AeINpdbOTIWFiLv1jhppNXa
- xS6MN8xFxlxHZge6OlcoYA//qN5p5dmu6xjQN9nmCfj7VmpmZJyx9iy0UVkVD75IgLollI+8fg4q
- Ktu8I/h2Z0dHZM6qE0STp2v0JiRE8jha5ZR/nf5efcITxrfNKzy0W9Bd37g8M9SCqD8uOq9nJ+Mm
- AyVp7BgHET6y8CCeFlQ7QPOIjlkSAfAYMUguLL/iJ9vYqKPILmSoZcvfXhdPMA/OB6L3DS5gd1SE
- E3USj80Z55NePwA7jxwlhcjVdk/mr85ytrd63MVeviF0i7IZfcqGEigUra+zu74YMVqBb/nqBf/o
- O9ENx2nriip8WhgYbnEnhEbOEzk5yB9ZHNSFnOUf5Q/AoIx5sTYq7iOI4vCrDScUfr46OzpJNOSz
- cdwyiT3dKxLhoxcmaInYbR5vlqGvSe+dDtUIqP45C5A7LqP3b1xqO73zx9HsLZFTQ55zlz9aPc+7
- R744868L+j9WjFdaiDCoaRMMLJurWmXEnoYHaIfVaCHpEB6cFH6WJxE4ZpdasxsGznVQ8gQCuamI
- BuT6nbBE5ChZV4BXMzDRZJe4unb0slCpezWAv8geAoSsO1QSo1zEvYJi0O+7gv2MANPskD2hG/WB
- q49TQI4s7Zk25QzEh4fdO1UVosIGSxnPvA8wgBLtVZogJpSXh3l1gykJmv2lNIo4lDSAwCBIOnEB
- yG0AYw9A3oZxIE5agCoT+LyHJnLBAIRTv7sWoxVUM9BU2lqHZA4o2f8o2ucO3XHWUec8VPZi63hI
- VDdSxAySkA2y1dwxX/fOLxBYDd5BmItKTzNBSIyW/mb8GD9YbxmVCZr9pTSKOJQ0gMAgSDpxAXyp
- F5LUwHZNY/+yVAGZIWgbevr4I2GfjWs7NecHzbPrZnM57PQ4Zhz+lPAiIO8rB9tRBN1MQm1SbNQ8
- mfig9wuAva9NlDz7O8ptuOziYJtS9jihx+Za/cV70jOJzN2r4A==
-X-Report-Abuse-To: spam@filter1.tophost.ch
-X-Complaints-To: abuse@filter1.tophost.ch
 
-This patch series aims at adding support for the TI TPS23881B PoE
-PSE controller.
+v1:
+https://lore.kernel.org/bpf/20251003140243.2534865-1-maciej.fijalkowski@intel.com/
+v1->v2:
+- add skb to xdp_buff converter (Jakub)
+- postpone restoration of veth's xdp_rxq_info mem model (AI)
 
-Changes in v3:
-- Incorporate review comments from Oleksij
-- Link to v2: https://lore.kernel.org/netdev/20251022220519.11252-2-thomas@wismer.xyz/
+v2:
+https://lore.kernel.org/bpf/20251017143103.2620164-1-maciej.fijalkowski@intel.com/T/
+v2->v3:
+- make skb->xdp_buff conversion agnostic of current skb->data position
+  (Toke)
+- do not pull mac header in veth (Toke)
+- use virt_to_head_page() when checking if xdp->data comes from
+  page_pool (Olek)
+- add ack from Toke
 
-Changes in v2:
-- Repost after net-next reopened
-- Split off bugfix commit
-- Improve commit messages
-- Link to v1: https://lore.kernel.org/netdev/20251004180351.118779-2-thomas@wismer.xyz/
+v3:
+https://lore.kernel.org/bpf/20251022125209.2649287-1-maciej.fijalkowski@intel.com/
+v3->v4:
+- include skb->head when calculating packet length (Toke, lkp)
 
-Thomas Wismer (2):
-  net: pse-pd: tps23881: Add support for TPS23881B
-  dt-bindings: pse-pd: ti,tps23881: Add TPS23881B
+v4:
+https://lore.kernel.org/bpf/20251027121318.2679226-1-maciej.fijalkowski@intel.com/
+v4->v5:
+- rely again on sk_buff::pp_recycle when setting mem type on rxq
+  (Jesper, Jakub)
+- add ack from Toke on patch 2 and restore it on patch 1
 
- .../bindings/net/pse-pd/ti,tps23881.yaml      |  1 +
- drivers/net/pse-pd/tps23881.c                 | 69 +++++++++++++++----
- 2 files changed, 55 insertions(+), 15 deletions(-)
+
+Hi,
+
+here we fix page_pool leaks which happen when fragment is released
+within XDP program and memory type is set incorrectly. The reports come
+from syzbot and AF_XDP test suite.
+
+Most of the changes are about pulling out the common code for
+init/prepare xdp_buff based on existing skb and supplying it with
+correct xdp_rxq_info's mem_type that is assigned to xdp_buff. A bit more
+stuff, page_pool related, had to be done on veth side.
+
+Originally, this work was started by Octavian Purdila.
+
+Thanks!
+
+
+Maciej Fijalkowski (2):
+  xdp: introduce xdp_convert_skb_to_buff()
+  veth: update mem type in xdp_buff
+
+ drivers/net/veth.c | 43 ++++++++++++++++++++++++++-----------------
+ include/net/xdp.h  | 25 +++++++++++++++++++++++++
+ net/core/dev.c     | 25 ++++---------------------
+ 3 files changed, 55 insertions(+), 38 deletions(-)
 
 -- 
 2.43.0
