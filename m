@@ -1,51 +1,60 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3506C339B5A;
-	Thu, 30 Oct 2025 08:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA91C37A3A0
+	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 09:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761814254; cv=none; b=Y4Px3yGuNFMU4Fu8na8LnzLO9+NIboIhQmC9Uqjq00RnwdK9Ti4p22YS5lF0+ZSNbNj0t8FBuNG0Fkqqor18W5Vj1CM6ypo6vGNVDbbHdUTJX2aDs7hGo+wPSiZpc0p2KYtde48iG/+K8y7e9KpnBf6C3zpk3dPh7MxulOy2X3w=
+	t=1761815049; cv=none; b=FSFbtUx92kCpyUl1DvHjtxlx7JgQVC+VgD2wHlQGmd3e/BWZHjVMVpvP/DBi1NCksZdWPjtny+xgLb9AyIJ++lwpzQea0NBbiODsRuTyyQ7TqAyTKJ/+opZKiobZSnshsBcUmBxzDIeAWz8huC7NfS5+2QSAfptT+zbtOs9iG3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761814254; c=relaxed/simple;
-	bh=XUfZfKj6nRnDkuEEJo5idgz9v20/kXJKRqv+Tvuh7ME=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=otaagjP3xGB5YKdHFzwKSraReHtKkpBFLLTQdynLhqU0SAtSPO3v5eiecH/VFdFN0+jK8z/+3sVHwDXtsGkGnzyPlcK+4T3mwl7LJzhlRW/16cucniOn4ya0yAZy+6bh7x6j8LI+wheAzqdAUVxYgWbcOq+l11MXpXLjOmb8H04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
-Received: from E0005182LT.eswin.cn (unknown [10.12.96.155])
-	by app1 (Coremail) with SMTP id TAJkCgCHjmu+JgNpOMwJAA--.56198S2;
-	Thu, 30 Oct 2025 16:50:08 +0800 (CST)
-From: weishangjuan@eswincomputing.com
-To: devicetree@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	rmk+kernel@armlinux.org.uk,
-	yong.liang.choong@linux.intel.com,
-	vladimir.oltean@nxp.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	weishangjuan@eswincomputing.com,
-	jan.petrous@oss.nxp.com,
-	inochiama@gmail.com,
-	jszhang@kernel.org,
-	0x1207@gmail.com,
-	boon.khai.ng@altera.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	robh@kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: ningyu@eswincomputing.com,
-	linmin@eswincomputing.com,
-	lizhi2@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com
-Subject: [PATCH] dt-bindings: ethernet: eswin: fix yaml schema issues
-Date: Thu, 30 Oct 2025 16:50:01 +0800
-Message-Id: <20251030085001.191-1-weishangjuan@eswincomputing.com>
-X-Mailer: git-send-email 2.31.1.windows.1
+	s=arc-20240116; t=1761815049; c=relaxed/simple;
+	bh=NQz9mtyQ3kbfgKNwxwkoZhI35YM8EEwYuaM+QW+FjI8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TEO8ynhYrT4lFeqFlHzrfaGJcqVChdjHfTmzDkzdH282+UfeJAxPlDvVdIG3vPd+WHJlP8nWLE0elyzifp2KQV2SLObO7ib1wkSlkdhjOIZRUwlhAeGo7YOuXHBMXqTYc1WoquEOPQPMSB8kzXB/OCuxZlz9mGw3PvGrzESlZeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NRuese9T; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NRuese9T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761815047; x=1793351047;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NQz9mtyQ3kbfgKNwxwkoZhI35YM8EEwYuaM+QW+FjI8=;
+  b=NRuese9TP0pxRzIeFds3pcfIpPJUD3etRdu7D8nseB+aUVrUSScAeU46
+   DyX1ia+DNrIqIg3rTe8gflzsNCBRAexygT2qOqtsYdZo2mTrulWr0cEZ7
+   mIhn2zf/LiZCR9W7rJP4nZ9+Af3wl+V4b93cHEhq+qwjyrprd/ts+ubE4
+   Q9aDkirZkgB9Q7l/DOqMucHRnmr5hFYz6rWV4xdJxcuDuWxLzzoLWn+1m
+   h6GG+k0ahXsT48UFPoaaH7ZpqNdFPLrKaQcq+CdnkEgp+oajpCFM9laoc
+   7Wg4tN8K/aSGG6kW8Al6uf//QyXRmJV2NrPV+9AoDs6EClGCOlUkjIkCq
+   w==;
+X-CSE-ConnectionGUID: d3rz7HIxRfCCTwK8y12hWg==
+X-CSE-MsgGUID: 8TYh1VLXQpuqkckpnC/3fQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63983182"
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="63983182"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 02:04:06 -0700
+X-CSE-ConnectionGUID: iP8AZmHOQtiVpCl0RxZP+w==
+X-CSE-MsgGUID: l5nv9fnAQ7SdSZDvOXwS5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="190235827"
+Received: from os-delivery.igk.intel.com ([10.102.21.165])
+  by orviesa004.jf.intel.com with ESMTP; 30 Oct 2025 02:04:05 -0700
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	pmenzel@molgen.mpg.de,
+	aleksander.lobakin@intel.com,
+	przemyslaw.kitszel@intel.com,
+	jacob.e.keller@intel.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-next v3] ice: use netif_get_num_default_rss_queues()
+Date: Thu, 30 Oct 2025 09:30:53 +0100
+Message-ID: <20251030083053.2166525-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,86 +62,93 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:TAJkCgCHjmu+JgNpOMwJAA--.56198S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZw45tr4DGry3tr13ur15Jwb_yoW5Wr18pa
-	s7G39xJF1rZr17XayxK3W8KF4fJa9xCF4Ykrn7Xr1xX3Z0q3yvv3Wayry5Wa4UCrW8ZF45
-	WFy5Cay0yFyUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBv14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04
-	k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18
-	MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr4
-	1lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l
-	IxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4
-	A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRBOJnUUUUU=
-X-CM-SenderInfo: pzhl2xxdqjy31dq6v25zlqu0xpsx3x1qjou0bp/
 
-From: Shangjuan Wei <weishangjuan@eswincomputing.com>
+On some high-core systems (like AMD EPYC Bergamo, Intel Clearwater
+Forest) loading ice driver with default values can lead to queue/irq
+exhaustion. It will result in no additional resources for SR-IOV.
 
-Due to the detection of errors in the eswin mmc module
-regarding the eswin,hsp-sp-csr attributes in the
-eswin,eic7700-eth.yaml file, the link is as follows:
-https://lore.kernel.org/all/176096011380.22917.1988679321096076522.robh@kernel.org/
-Therefore, the eswin,hsp-sp-csr attributes of the eic7700-eth.yaml file
-regarding eswin and hsp-sp-csr will be changed to the form of:
-items:
-  - items:
-      - description: ...
-      - description: ...
-      - description: ...
-      - description: ...
+In most cases there is no performance reason for more than half
+num_cpus(). Limit the default value to it using generic
+netif_get_num_default_rss_queues().
 
-The MMC,Ethernet,and USB modules of eswin vendor have defined
-eswin,hsp-sp-csr attribute in YAML. In order to be consistent
-with the property description of MMC,USB, I have modified the
-description content of eswin,hsp-sp-csr attribute in Ethernet YAML.
+Still, using ethtool the number of queues can be changed up to
+num_online_cpus(). It can be done by calling:
+$ethtool -L ethX combined $(nproc)
 
-Fixes: 888bd0eca93c("dt-bindings: ethernet: eswin: Document for EIC7700 SoC")
-Reported-by: Rob Herring (Arm) <robh@kernel.org>
-Closes: https://lore.kernel.org/all/176096011380.22917.1988679321096076522.robh@kernel.org/
-Signed-off-by: Shangjuan Wei <weishangjuan@eswincomputing.com>
+This change affects only the default queue amount.
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 ---
- .../bindings/net/eswin,eic7700-eth.yaml       | 20 ++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+v2 --> v3:
+ * use $(nproc) in command example in commit message
 
-diff --git a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-index 9ddbfe219ae2..91e8cd1db67b 100644
---- a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-+++ b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-@@ -69,17 +69,19 @@ properties:
-     enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
+v1 --> v2:
+ * Follow Olek's comment and switch from custom limiting to the generic
+   netif_...() function.
+ * Add more info in commit message (Paul)
+ * Dropping RB tags, as it is different patch now
+---
+ drivers/net/ethernet/intel/ice/ice_irq.c |  5 +++--
+ drivers/net/ethernet/intel/ice/ice_lib.c | 12 ++++++++----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-   eswin,hsp-sp-csr:
-+    description:
-+      HSP CSR is to control and get status of different high-speed peripherals
-+      (such as Ethernet, USB, SATA, etc.) via register, which can tune
-+      board-level's parameters of PHY, etc.
-     $ref: /schemas/types.yaml#/definitions/phandle-array
-     items:
--      - description: Phandle to HSP(High-Speed Peripheral) device
--      - description: Offset of phy control register for internal
--                     or external clock selection
--      - description: Offset of AXI clock controller Low-Power request
--                     register
--      - description: Offset of register controlling TX/RX clock delay
--    description: |
--      High-Speed Peripheral device needed to configure clock selection,
--      clock low-power mode and clock delay.
-+      - items:
-+          - description: Phandle to HSP(High-Speed Peripheral) device
-+          - description: Offset of phy control register for internal
-+                         or external clock selection
-+          - description: Offset of AXI clock controller Low-Power request
-+                         register
-+          - description: Offset of register controlling TX/RX clock delay
-
- required:
-   - compatible
---
-2.17.1
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index 30801fd375f0..1d9b2d646474 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -106,9 +106,10 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
+ #define ICE_RDMA_AEQ_MSIX 1
+ static int ice_get_default_msix_amount(struct ice_pf *pf)
+ {
+-	return ICE_MIN_LAN_OICR_MSIX + num_online_cpus() +
++	return ICE_MIN_LAN_OICR_MSIX + netif_get_num_default_rss_queues() +
+ 	       (test_bit(ICE_FLAG_FD_ENA, pf->flags) ? ICE_FDIR_MSIX : 0) +
+-	       (ice_is_rdma_ena(pf) ? num_online_cpus() + ICE_RDMA_AEQ_MSIX : 0);
++	       (ice_is_rdma_ena(pf) ? netif_get_num_default_rss_queues() +
++				      ICE_RDMA_AEQ_MSIX : 0);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index bac481e8140d..e366d089bef9 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -159,12 +159,14 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
+ 
+ static u16 ice_get_rxq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_rxq_count(pf), num_online_cpus());
++	return min(ice_get_avail_rxq_count(pf),
++		   netif_get_num_default_rss_queues());
+ }
+ 
+ static u16 ice_get_txq_count(struct ice_pf *pf)
+ {
+-	return min(ice_get_avail_txq_count(pf), num_online_cpus());
++	return min(ice_get_avail_txq_count(pf),
++		   netif_get_num_default_rss_queues());
+ }
+ 
+ /**
+@@ -907,13 +909,15 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
+ 		if (vsi->type == ICE_VSI_CHNL)
+ 			vsi->rss_size = min_t(u16, vsi->num_rxq, max_rss_size);
+ 		else
+-			vsi->rss_size = min_t(u16, num_online_cpus(),
++			vsi->rss_size = min_t(u16,
++					      netif_get_num_default_rss_queues(),
+ 					      max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_PF;
+ 		break;
+ 	case ICE_VSI_SF:
+ 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
+-		vsi->rss_size = min_t(u16, num_online_cpus(), max_rss_size);
++		vsi->rss_size = min_t(u16, netif_get_num_default_rss_queues(),
++				      max_rss_size);
+ 		vsi->rss_lut_type = ICE_LUT_VSI;
+ 		break;
+ 	case ICE_VSI_VF:
+-- 
+2.49.0
 
