@@ -1,182 +1,179 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722CE25A34B
-	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 14:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F341B37A3C2;
+	Thu, 30 Oct 2025 14:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761834495; cv=none; b=bHrpk8vUqP133BTAL/nli0fpMZMn7/+C+Y5v1NfOKbw53w3CCrtGxPxDFY4NTRNG8ww3Mle3/7Agxq5NWu8CRGrSAu1RJTBrNjuEXUuWWWzgDaILdugPSR9IPBra8THrYcB3UcqP/0aUaZgsOvow0DW+JwxZkd+RIAJDtkuTk2Y=
+	t=1761834755; cv=none; b=PuPi8iHtQjFDPOYl7r6DPMLuH4aE6ZHzGxTvaqjjs7UtLrPTnR9VIWELuymDRv/O9c46WnCIan/UHDfAQdqG56kgHKfhOEKE3pIM9O1iLG6QTC/Y8uLi6Y+j3ktyh51qN2vOvs3YUSNd9gyz2cz6wx/XU3m9znw5vt5G5sYebCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761834495; c=relaxed/simple;
-	bh=XofufYTIvVz0xFJFDMwmm6sP18q7o2xd40JtSUXhtAs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GK7CWuK1cmxRlOVFtmJr4gEZGp6h+Tnf6PyTkumuDcl5AIXIBEemvkLZzhZfGV9xphjS/ObKDs2R980/bfY/aayDC/EjF5TEfBy3WNDVTP6H9f9hvV2OHHxwqJ2x0Pj/nB+O6I/4Scac9iIAYvEnZ8buRGoudSI8DTxaGpyJyx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FW1r1LY5; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1761834755; c=relaxed/simple;
+	bh=gkH2lxMFOGTlkMaVDMgra9ZABBZcWcp6GHDGbzzQ2gI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b2J3UrJ0eYtoisTfscj5NlEvOUjR1ixbh7JgRwUgEF105g8vQGoD+LkgLKkSOmXMPXDzGPk40sojYVZTFeIOYQT2o/AuYB6WQlB7FEXwl7656dHdZT4WrCf2mrFtYjlS7RtMHB9PAkRK/6mULiuIUDFHZL/1Pdkfa4gjrp+gpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=NWBCJeQK; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FW1r1LY5"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7a4c202a30aso1275097b3a.2
-        for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 07:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761834493; x=1762439293; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cuCA5wWQIDpUIW6qlKdvaKlw1rWMEkNLw7LaZvFkQQE=;
-        b=FW1r1LY5MXOhfTBolumPD7ILbPaooLDt/Aiwoni7dB8VechTrX4GStZhFvQeCAyiBC
-         VTI5QIzXr+rRsb1pFgg788Vqt1EeLm3Vgh5CG0wP26Zhvwv0no54RaRA/rnsM9LWHCDh
-         Bz5PFu5nzhvmUpdSGS4TCJ9VfXAuvqFuOHO2ItydtTlD4DR/R/ig9c+cpePuaTblfVVe
-         PCbGzJKAuIjxFpfGFA/86c+uDt4/DEbZU9OmLfw9iw6sGJ43xiXdXhPfHeCkXF9DMelH
-         9FXmAnBFlf+xDdmpGlAQXr30iChx9Hda+KcmiyJ0GgDYX2JvgidiNIABR8ac6rilqccE
-         j6qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761834493; x=1762439293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cuCA5wWQIDpUIW6qlKdvaKlw1rWMEkNLw7LaZvFkQQE=;
-        b=MRM6DpKS3dfX5oqAkuUSMMTrxvPM3FTBF8e2xyce/Yr6HTMWJSEjqQ2WG3LBQcQRdZ
-         DgZ/4/Ke44scvxxvrzgUPVTO5oOvPcvUQWkq7gsiJIxc5xffoch16U5wWBufRJMKnuJT
-         AlqKAj1aV4waW4oq79kmeOG0kCd3nYuqYWYBP8lz2W0nPHklgg8LEWOt3LiARBNybcG9
-         ar/+Jmk+KCfzAXoAbG1Kx59x/P+zaXyKVcqPclS88NS5xoiZmjoQWxFaYJNjGffWcFWH
-         KGRKLhjN79XyRHhx9LOkdhISK5IRqyg3oUVsWBGar6J2klCuRqHQcp2JfmdYybgI4QHC
-         fXOQ==
-X-Gm-Message-State: AOJu0YzTRRudow317EWnq+tK/dMj7fOId72y+pQmoR4pIn7CK1uwbXtO
-	53DXKWhHvUsPdtP42Mx2MAyMIoOofMxdwqk1u212hRqaeiEGBPRyuxhAuvhFmZB8rlN3HXOHvTa
-	YKW0IWoh/kQq0rtivL3btm1dZ5sBJ1IQ=
-X-Gm-Gg: ASbGncsuEvhkKcviFRgscPrt9nLYp3Lzm0FOqTSVRz9cR33k9HYURTaBZeUXXY+JOAu
-	X6SxymZAU8z7nWPsRxfVpx7lTcTj5DvWdcZDUHPTl4jzIRXv32L93srml/CQ7L3kLu9BgLNLdzL
-	11Kdp306u64HF+yRaRFriN6yGrZHymaZ1v41gNoGVKRLvAdhxWjbd61cstTPPb8x0X8CnPbJAp0
-	el2yGiCHXuTuzm+M4TwXmZg2S2KGpCtkHAjyWQOrC332/7RjmOSmk4BNtVrDBxJ25fIP8o79NuW
-	qn0qbs+3lqNWWIJd2QwpVCEgmNfj
-X-Google-Smtp-Source: AGHT+IGSYvw5mArOho8Chrlid2Yf9zFIgqFqjnuZ41Vc14qeGP9OaC3SkBO5TkyH/r8UCkIM4dvPWepO1U0aCamvif4=
-X-Received: by 2002:a05:6a00:181b:b0:7a3:455e:3fa5 with SMTP id
- d2e1a72fcca58-7a621813833mr5006811b3a.0.1761834493501; Thu, 30 Oct 2025
- 07:28:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="NWBCJeQK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1761834753; x=1793370753;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gkH2lxMFOGTlkMaVDMgra9ZABBZcWcp6GHDGbzzQ2gI=;
+  b=NWBCJeQKgG1LnmZeRKK0uEnKaYr3mDTrbbbQZigB1gGxaWgDzkd1Ut+9
+   bzCtAAF6j7eMzCMoc/QzD196PlTLlE+0BawhEfwK/VmlP/aCiq5g5ERri
+   fKDuxr1LMjhNNwTE7S4MnqcGtJHMw5mPhL64nSULeEuM/xc12Xj9z0Skv
+   FVzeDoxmiTGn5t35PccI9d2o7MrHn1BpEPr1e5aDE8TWOT4LAtcrFMttQ
+   ThZBUd57Bvorrfiw5vgc4dp7mrHh/+f4A/ykod4GrYYUntyNJhUabW9zV
+   WB8+UMAU1mH/QjQXm/5YgNdr2xfkgbpRzyMZ8/L4XCbWfVvw+aFvXkE8u
+   g==;
+X-CSE-ConnectionGUID: KJy2Pai7RkKq6Xlk05XjEA==
+X-CSE-MsgGUID: 8m4Z3GghSJ2ziABezsM1ww==
+X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
+   d="scan'208";a="47837768"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 07:32:32 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Thu, 30 Oct 2025 07:32:01 -0700
+Received: from [10.171.248.18] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 30 Oct 2025 07:31:56 -0700
+Message-ID: <ea7ad70a-73d4-48a5-92cb-9cb73e9be325@microchip.com>
+Date: Thu, 30 Oct 2025 15:31:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1761748557.git.lucien.xin@gmail.com> <91ff36185099cd97626a7a8782d756cf3e963c82.1761748557.git.lucien.xin@gmail.com>
- <67b38b36-b6fa-4cab-b14f-8ba271f02065@samba.org> <CADvbK_f4rN-7bvvwWDVm-B+h6QiSwQbK7EKsWh5kTuHJjuGjTA@mail.gmail.com>
- <b9300291-e828-47fa-b4d1-66934636bd7b@samba.org> <CADvbK_f=E11=dszeJos98RvBY5POXujgT0dFo-LG6QQuGW20Kg@mail.gmail.com>
- <0b65e74c-71bb-494d-9b05-0ee20f27e840@samba.org>
-In-Reply-To: <0b65e74c-71bb-494d-9b05-0ee20f27e840@samba.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 30 Oct 2025 10:28:01 -0400
-X-Gm-Features: AWmQ_blojTdIYKtFmYVhDD9RZMLgIE9kL3y8nlMJgL7u2g9jepaBDc3oSEs4qws
-Message-ID: <CADvbK_cPEnNfcUXaHm3Aub0dkerqnwG4NB_EJ_eQZTc80c28_Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 02/15] net: build socket infrastructure for
- QUIC protocol
-To: Stefan Metzmacher <metze@samba.org>
-Cc: network dev <netdev@vger.kernel.org>, quic@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Moritz Buhl <mbuhl@openbsd.org>, 
-	Tyler Fanelli <tfanelli@redhat.com>, Pengtao He <hepengtao@xiaomi.com>, 
-	Thomas Dreibholz <dreibh@simula.no>, linux-cifs@vger.kernel.org, 
-	Steve French <smfrench@gmail.com>, Namjae Jeon <linkinjeon@kernel.org>, 
-	Paulo Alcantara <pc@manguebit.com>, Tom Talpey <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev, 
-	Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>, 
-	Benjamin Coddington <bcodding@redhat.com>, Steve Dickson <steved@redhat.com>, Hannes Reinecke <hare@suse.de>, 
-	Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, John Ericson <mail@johnericson.me>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe" <alibuda@linux.alibaba.com>, 
-	Jason Baron <jbaron@akamai.com>, illiliti <illiliti@protonmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Daniel Stenberg <daniel@haxx.se>, Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 2/5] net: macb: match skb_reserve(skb,
+ NET_IP_ALIGN) with HW alignment
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Russell King <linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+	<benoit.monin@bootlin.com>, =?UTF-8?Q?Gr=C3=A9gory_Clement?=
+	<gregory.clement@bootlin.com>, Maxime Chevallier
+	<maxime.chevallier@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Vladimir Kondratiev
+	<vladimir.kondratiev@mobileye.com>
+References: <20251023-macb-eyeq5-v3-0-af509422c204@bootlin.com>
+ <20251023-macb-eyeq5-v3-2-af509422c204@bootlin.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Language: en-US, fr
+Organization: microchip
+In-Reply-To: <20251023-macb-eyeq5-v3-2-af509422c204@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 30, 2025 at 10:17=E2=80=AFAM Stefan Metzmacher <metze@samba.org=
-> wrote:
->
-> Am 30.10.25 um 15:13 schrieb Xin Long:
-> > On Thu, Oct 30, 2025 at 7:29=E2=80=AFAM Stefan Metzmacher <metze@samba.=
-org> wrote:
-> >>
-> >> Am 29.10.25 um 20:57 schrieb Xin Long:
-> >>> On Wed, Oct 29, 2025 at 12:22=E2=80=AFPM Stefan Metzmacher <metze@sam=
-ba.org> wrote:
-> >>>>
-> >>>> Hi Xin,
-> >>>>
-> >>>>> This patch lays the groundwork for QUIC socket support in the kerne=
-l.
-> >>>>> It defines the core structures and protocol hooks needed to create
-> >>>>> QUIC sockets, without implementing any protocol behavior at this st=
-age.
-> >>>>>
-> >>>>> Basic integration is included to allow building the module via
-> >>>>> CONFIG_IP_QUIC=3Dm.
-> >>>>>
-> >>>>> This provides the scaffolding necessary for adding actual QUIC sock=
-et
-> >>>>> behavior in follow-up patches.
-> >>>>>
-> >>>>> Signed-off-by: Pengtao He <hepengtao@xiaomi.com>
-> >>>>> Signed-off-by: Xin Long <lucien.xin@gmail.com>
-> >>>>
-> >>>> ...
-> >>>>
-> >>>>> +module_init(quic_init);
-> >>>>> +module_exit(quic_exit);
-> >>>>> +
-> >>>>> +MODULE_ALIAS("net-pf-" __stringify(PF_INET) "-proto-261");
-> >>>>> +MODULE_ALIAS("net-pf-" __stringify(PF_INET6) "-proto-261");
-> >>>>
-> >>>> Shouldn't this use MODULE_ALIAS_NET_PF_PROTO(PF_INET, IPPROTO_QUIC)
-> >>>> instead?
-> >>>>
-> >>> Hi, Stefan,
-> >>>
-> >>> If we switch to using MODULE_ALIAS_NET_PF_PROTO(), we still need to
-> >>> keep using the numeric value 261:
-> >>>
-> >>>     MODULE_ALIAS_NET_PF_PROTO(PF_INET, 261);
-> >>>     MODULE_ALIAS_NET_PF_PROTO(PF_INET6, 261);
-> >>>
-> >>> IPPROTO_QUIC is defined as an enum, not a macro. Since
-> >>> MODULE_ALIAS_NET_PF_PROTO() relies on __stringify(proto), it can=E2=
-=80=99t
-> >>> stringify enum values correctly, and it would generate:
-> >>>
-> >>>     alias:          net-pf-10-proto-IPPROTO_QUIC
-> >>>     alias:          net-pf-2-proto-IPPROTO_QUIC
-> >>
-> >> Yes, now I remember...
-> >>
-> >> Maybe we can use something like this:
-> >>
-> >> -  IPPROTO_QUIC =3D 261,          /* A UDP-Based Multiplexed and Secur=
-e Transport */
-> >> +#define __IPPROTO_QUIC 261     /* A UDP-Based Multiplexed and Secure =
-Transport */
-> >> +  IPPROTO_QUIC =3D __IPPROTO_QUIC,
-> >>
-> >> and then
-> >>
-> >> MODULE_ALIAS_NET_PF_PROTO(PF_INET, __IPPROTO_QUIC)
-> >>
-> >> In order to make things clearer.
-> >>
-> >> What do you think?
-> >>
-> > That might be a good idea to make things clearer later on.
-> >
-> > But for now, I=E2=80=99d prefer not to add something special just for Q=
-UIC in
-> > include/uapi/linux/in.h.  We can revisit it later together with SCTP,
-> > L2TP, and SMC to keep things consistent.
->
-> Ok, maybe this would do it for now?
->
-> MODULE_ALIAS_NET_PF_PROTO(PF_INET, 261); /* IPPROTO_QUIC =3D=3D 261 */
->
-Yep, fine by me. :-)
+On 23/10/2025 at 18:22, Théo Lebrun wrote:
+> If HW is RSC capable, it cannot add dummy bytes at the start of IP
+> packets. Alignment (ie number of dummy bytes) is configured using the
+> RBOF field inside the NCFGR register.
+> 
+> On the software side, the skb_reserve(skb, NET_IP_ALIGN) call must only
+> be done if those dummy bytes are added by the hardware; notice the
+> skb_reserve() is done AFTER writing the address to the device.
+> 
+> We cannot do the skb_reserve() call BEFORE writing the address because
+> the address field ignores the low 2/3 bits. Conclusion: in some cases,
+> we risk not being able to respect the NET_IP_ALIGN value (which is
+> picked based on unaligned CPU access performance).
+> 
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 
-> I'll do the same for IPPROTO_SMBDIRECT...
->
-> metze
+For the record:
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+
+Thanks Théo! Regards,
+   Nicolas
+
+> ---
+>   drivers/net/ethernet/cadence/macb.h      |  3 +++
+>   drivers/net/ethernet/cadence/macb_main.c | 23 ++++++++++++++++++++---
+>   2 files changed, 23 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+> index 5b7d4cdb204d..93e8dd092313 100644
+> --- a/drivers/net/ethernet/cadence/macb.h
+> +++ b/drivers/net/ethernet/cadence/macb.h
+> @@ -537,6 +537,8 @@
+>   /* Bitfields in DCFG6. */
+>   #define GEM_PBUF_LSO_OFFSET                    27
+>   #define GEM_PBUF_LSO_SIZE                      1
+> +#define GEM_PBUF_RSC_OFFSET                    26
+> +#define GEM_PBUF_RSC_SIZE                      1
+>   #define GEM_PBUF_CUTTHRU_OFFSET                        25
+>   #define GEM_PBUF_CUTTHRU_SIZE                  1
+>   #define GEM_DAW64_OFFSET                       23
+> @@ -775,6 +777,7 @@
+>   #define MACB_CAPS_MACB_IS_GEM                  BIT(20)
+>   #define MACB_CAPS_DMA_64B                      BIT(21)
+>   #define MACB_CAPS_DMA_PTP                      BIT(22)
+> +#define MACB_CAPS_RSC                          BIT(23)
+> 
+>   /* LSO settings */
+>   #define MACB_LSO_UFO_ENABLE                    0x01
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 39673f5c3337..be3d0c2313a1 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1300,8 +1300,19 @@ static void gem_rx_refill(struct macb_queue *queue)
+>                          dma_wmb();
+>                          macb_set_addr(bp, desc, paddr);
+> 
+> -                       /* properly align Ethernet header */
+> -                       skb_reserve(skb, NET_IP_ALIGN);
+> +                       /* Properly align Ethernet header.
+> +                        *
+> +                        * Hardware can add dummy bytes if asked using the RBOF
+> +                        * field inside the NCFGR register. That feature isn't
+> +                        * available if hardware is RSC capable.
+> +                        *
+> +                        * We cannot fallback to doing the 2-byte shift before
+> +                        * DMA mapping because the address field does not allow
+> +                        * setting the low 2/3 bits.
+> +                        * It is 3 bits if HW_DMA_CAP_PTP, else 2 bits.
+> +                        */
+> +                       if (!(bp->caps & MACB_CAPS_RSC))
+> +                               skb_reserve(skb, NET_IP_ALIGN);
+>                  } else {
+>                          desc->ctrl = 0;
+>                          dma_wmb();
+> @@ -2773,7 +2784,11 @@ static void macb_init_hw(struct macb *bp)
+>          macb_set_hwaddr(bp);
+> 
+>          config = macb_mdc_clk_div(bp);
+> -       config |= MACB_BF(RBOF, NET_IP_ALIGN);  /* Make eth data aligned */
+> +       /* Make eth data aligned.
+> +        * If RSC capable, that offset is ignored by HW.
+> +        */
+> +       if (!(bp->caps & MACB_CAPS_RSC))
+> +               config |= MACB_BF(RBOF, NET_IP_ALIGN);
+>          config |= MACB_BIT(DRFCS);              /* Discard Rx FCS */
+>          if (bp->caps & MACB_CAPS_JUMBO)
+>                  config |= MACB_BIT(JFRAME);     /* Enable jumbo frames */
+> @@ -4321,6 +4336,8 @@ static void macb_configure_caps(struct macb *bp,
+>                  dcfg = gem_readl(bp, DCFG2);
+>                  if ((dcfg & (GEM_BIT(RX_PKT_BUFF) | GEM_BIT(TX_PKT_BUFF))) == 0)
+>                          bp->caps |= MACB_CAPS_FIFO_MODE;
+> +               if (GEM_BFEXT(PBUF_RSC, gem_readl(bp, DCFG6)))
+> +                       bp->caps |= MACB_CAPS_RSC;
+>                  if (gem_has_ptp(bp)) {
+>                          if (!GEM_BFEXT(TSU, gem_readl(bp, DCFG5)))
+>                                  dev_err(&bp->pdev->dev,
+> 
+> --
+> 2.51.1
+> 
+
