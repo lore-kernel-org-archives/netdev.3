@@ -1,255 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417853321D8
-	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 10:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761820779; cv=fail; b=U6WDsEMK5xmFeSS0FiSKZ+MLwKYUh1vpgxtbrbPPK6vOR5bQdlu5x+4+F22CjY3GgRdthlnwaC6uOLw1a9qjFz8bPDVkZV14UZv1PldoieIsiM/h+feak5FHQ3uCHPOXo2vpWcqDIWCQ6/00lVqywNrKafzyAoC6tqd/zu2WE9I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761820779; c=relaxed/simple;
-	bh=bInHWfFpe6LGuA30upDsP0rNppxTexeaRrsrokwCGVQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IeHszlufHOQ7DtBNgjPwqB+qNmf8d4lSTSagUHNWIfXNYnO9uDneJRa46yK5b0P30YQV2cbCsFx+eij0BsuM4x0xiY8Gjjbz6khWaZJjvZKwRaNcIL11fzeKzhN1CZAxTIbtEcmphNV+jJ3YKEzbAxoAcBBY2qD3RVL7LECpXFg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l91wTmF5; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CA41EF39E
+	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 10:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761821326; cv=none; b=p8x8docglG5Iu1OtuEfI/65FSSTJidJXtXUgvBY97kmpOiF0CU6vypppAKq1CHekuRF2RaMP7lJpw1yrqfohSlTZOhNMk0odij8UIuamc+b1kp5TkQvU3OAxrnquwDx+ClDy2VEK6EVENK10qfGJK7wYATah9LsiSSnGBrjmDqM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1761821326; c=relaxed/simple;
+	bh=YHcuPDlm+qkQ5QgfKKJQYA5ddh8XM07lgZKov2I3JT4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h1PhN12wNYEjoQCY9lRuFK4HFwoLuy/bu2vI8ZlY3hTBnrV1qyE6oteC42I7pX+PcIB/QBnOBHPwp5P59uLMApSDxWwLZVhA4gYr2eM8MvSH5HDHN4YwOX2ofm0sI1J03OU8FGM/8fq33Hd+QsqMR6BAxcXFNfRta+uFhAIG6Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R+iA9jcF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l91wTmF5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761820778; x=1793356778;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=bInHWfFpe6LGuA30upDsP0rNppxTexeaRrsrokwCGVQ=;
-  b=l91wTmF5Syf2vrhLP+TPvFU4Xpf0BuNY47r+pZB6bw2rhXuNk8WBwpDj
-   +Dd3o2eDsKGKT4c6Dysv7q5XcWvEww6ofKpio+24V3S01eHn7rzLgLhl2
-   AtfmKXdg6L+5OCnyuckIeE73ij++fZ1AaoUyd/JAWSUAls8wpW6OJWm38
-   CdTVqnpK3AEXnk/QLF0Ttp0YDAYoJr31pBGTVRQoc/LLTg9duJKPue0n+
-   ljJ3mB3xKu5c4XiAXCiJg5v05hju3OwY/wVWpeGZqIydlSmeT40eqzjYY
-   hFTDZvPpDI6ahcqxpkLNUjHce3mzYYQF1ZaD+sWREZ2ZzUBmF1X3Hu2Oo
-   A==;
-X-CSE-ConnectionGUID: WOXpnK+eQfOM5Qo0MgEpDw==
-X-CSE-MsgGUID: bnxC7/5JTmqj4eKQHkFE5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11597"; a="63991171"
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="63991171"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 03:39:38 -0700
-X-CSE-ConnectionGUID: R67JyesKQQ2ZABMeZnFqyg==
-X-CSE-MsgGUID: T9JrhWQNTPigj5mGaAP9Jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="185579601"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 03:39:37 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 30 Oct 2025 03:39:36 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27 via Frontend Transport; Thu, 30 Oct 2025 03:39:36 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.60) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.27; Thu, 30 Oct 2025 03:39:36 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=menZNFtfYjsApvrwi/fmUDba/D9w2NmLe9G4tMe1tlXlCoKFPSXDRmp9DpXs1fSYV51R0Z2Bx8g8+MgaO0NJ9Y8PAgA7E17UEJWj4ia6L8gNXoBcIpxw66jPJvfdaPgIMJczJeSoSBXcOMNFPbiNIMQevwoXv5MZY1ct5zYUDzqEq//btmSF2fZNncM3/rLVVnu21htyVtWKF0Sq3qV7oCJz68fdwhIPcmDlmBU1VvJeVywRMsuXxCbLD2ja5wk8HiBYLmqA2yz1Z4DJLzaDL6bGXARzBfkV/KVpdOn2n7q6hd8bu3Fb9LMJHyWkst7RaKV2vTcA2UL15DCcZglCmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=czEW/QTGlic+LSLBHgAhgjhksEGYrd4CIgAQ2J8fBjY=;
- b=UF/PqgUb0yBrxgCkahiVit9N/ODLTDqF5KwTjeYcqqYkSJuOIrb0uimpEkexQ8lIMi750rxNMxrnRFU0HsoDZp03BPD6c//+34bVBZUx3SaOGf9XeWSfqp6wj1tn91y7qElkzpYTW47VMsJpP8J1O9rKB7EmWlAsd+8FK8Zu3MXQZg5YYoCCYV1g+eQE4mdqYg0znAGLv+TTOqCp/pJ0ZnaSFXujbrDrhJK4r3wL/d4f7+UjQOaxiE8pW2WeCuys7h+7d5MQ2wVNoh0k34DbRHwsoTG3MhMM5jGwTy7yPCOfr4ug9OuL0/ae7W9J+T5fq8zDQqeS3RNMGsqVSufkfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
- by PH7PR11MB7516.namprd11.prod.outlook.com (2603:10b6:510:275::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Thu, 30 Oct
- 2025 10:39:34 +0000
-Received: from MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6]) by MN6PR11MB8102.namprd11.prod.outlook.com
- ([fe80::15b2:ee05:2ae7:cfd6%6]) with mapi id 15.20.9275.013; Thu, 30 Oct 2025
- 10:39:34 +0000
-Message-ID: <621665db-e881-4adc-8caa-9275a4ed7a50@intel.com>
-Date: Thu, 30 Oct 2025 11:39:30 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next v3] ice: use netif_get_num_default_rss_queues()
-To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, Paul Menzel
-	<pmenzel@molgen.mpg.de>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<aleksander.lobakin@intel.com>, <jacob.e.keller@intel.com>, "Aleksandr
- Loktionov" <aleksandr.loktionov@intel.com>
-References: <20251030083053.2166525-1-michal.swiatkowski@linux.intel.com>
- <370cf4f0-c0a8-480a-939d-33c75961e587@molgen.mpg.de>
- <aQMxvzYqJkwNBYf0@mev-dev.igk.intel.com>
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Content-Language: en-US
-In-Reply-To: <aQMxvzYqJkwNBYf0@mev-dev.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DU2PR04CA0072.eurprd04.prod.outlook.com
- (2603:10a6:10:232::17) To MN6PR11MB8102.namprd11.prod.outlook.com
- (2603:10b6:208:46d::9)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R+iA9jcF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761821323;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8TkuSmqxcerff7GAdgQsfxTUqjLkeyccfdkjHp82P3g=;
+	b=R+iA9jcFqvBYj0rR6USjIf5V7ZSowD4rjEM4pcUwi52RJQNoV7VUm2pJdeboqCVI07SIAU
+	FElCEiYgDNJ1kwNYWy5AwUvuQlHVx6eqB3mHrn2blp3CwvGZqqgGF9vQGurRzvyW8kEgy3
+	MHaRO47zOlvWS+VF6eJcrNT3cK06TGg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-3wqD_S4DMX-J6D2b15eN1g-1; Thu,
+ 30 Oct 2025 06:48:35 -0400
+X-MC-Unique: 3wqD_S4DMX-J6D2b15eN1g-1
+X-Mimecast-MFC-AGG-ID: 3wqD_S4DMX-J6D2b15eN1g_1761821314
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3EE59195606D;
+	Thu, 30 Oct 2025 10:48:34 +0000 (UTC)
+Received: from queeg (unknown [10.43.135.229])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D7BC419560B7;
+	Thu, 30 Oct 2025 10:48:32 +0000 (UTC)
+From: Miroslav Lichvar <mlichvar@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Miroslav Lichvar <mlichvar@redhat.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH net-next] wireguard: queuing: preserve napi_id on decapsulation
+Date: Thu, 30 Oct 2025 11:48:20 +0100
+Message-ID: <20251030104828.4192906-1-mlichvar@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|PH7PR11MB7516:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89e22e78-230c-4cc9-eeb4-08de17a09dd9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NWRRSkEwSzVaaVpXa1U2MlFqUHZ0VlJ0dU15dHBGeXQ5SnpXdWZ3TGhZZkoz?=
- =?utf-8?B?bjlzM3I5aXhnYlhaUUYyUEsxVE5XcVJPNU9OMXFxRXpDdXlFVmdRMjZ5UkRs?=
- =?utf-8?B?TFdyT3JDWDBzUGpYRVl6NnBZckFVTjRMTUo5eFpmZE8wUkdTVGNIdkNsM1V6?=
- =?utf-8?B?K05GNG1FTWtPZ2I3Q25ra3diRVd5VnhNVmtaSFlxNFU3ZlJBM290MDVZNXZ6?=
- =?utf-8?B?VjNWZnFCSEJGbGZLNVgrMUNVQUVFeXRvaHp5V3AzcEMyTDlidjVERzFXbWd4?=
- =?utf-8?B?ZXNFYXk5RFFaTldJQXVTaTZVUVFhd0NscE1pQUxPNlBlVllVS29XU0FhcmEw?=
- =?utf-8?B?ZlFBYjZxRVBIOEt6cXF6Tk83MU1LVUJFMEVZdmhJTVBpcXlnNkJZYVBCdFUv?=
- =?utf-8?B?WDlnOE8zUUZqRlFSb2RyQ0ZkZlNpRWxPZmhEUG9YYTZFdlhKNG9qcVd6TTRM?=
- =?utf-8?B?blRWZEJ2RTA0aW1qWmJBbXlINmRaejU3a21pS1RiUFdqSzk5elVOclVmZnhs?=
- =?utf-8?B?eFJRSUlvWXNGVmwrN2txcWxmU0ZUM1BQQXpYSnNjK1NkUHJEbVlHZC9CbFZU?=
- =?utf-8?B?TUdRRUZBQXVMbk1vbk44cngxdW4vTjk5bUNhd1pGZEdFb0xMNlR2TUJjRlVH?=
- =?utf-8?B?aHhZaGRvQTRTL01HZUszSzdQYkV5Vyt3UGFrdzRhcEk1UzlQemtmMGl1WWZ1?=
- =?utf-8?B?Z2hjb0RmVG5DbXJwSVJTaXpPSEt6VFNLU0VlaStmbnc3aWd4bXUwU04wd253?=
- =?utf-8?B?OG56VG1ZU2RDcG0rNEtLRGcrS2E4a0MyQm9xNjg1a0RsWEVuWjhlRjlYOGhr?=
- =?utf-8?B?ZDZ3bWZrRVM1R0srUFlQZVJLcis2ZmU5eEM4eithRkI5enl1ZEVuRDFGdk5p?=
- =?utf-8?B?NVhUaHZpSHZHVlM0VytXK2tWd29BRldGRmIwd0tpQU5ERjVadmp3VXR3bFlU?=
- =?utf-8?B?c0k1MGxpTkFZOHVPRTdLTWhBc3BIN2kweWM5bVVMZE5MS2F0bTZpM2FZWUt1?=
- =?utf-8?B?RnZ3SEdjR1NZK1V1VmpKNXlNeHRxcDdHNDRvRlgxR21yc01kMGdud3dENjJv?=
- =?utf-8?B?MGN5cS9tVXJDeE5lelNUV1dwa01EdTBraUgxOHBheUJSczI3Yis3K2YwYi9C?=
- =?utf-8?B?UXA2NzNWYlhCdEhqSHhQR2cwdEM3ZDF2amNKbkNodW5tUllmd0YvN3hSNWla?=
- =?utf-8?B?TkVPak9qdlRldEovaktScEZxTFFSSW1RcDhWYWNEN1Y4cUlZczU3aWRtblFy?=
- =?utf-8?B?UjcrbU8rUytkWUhrbUMxakFZYmFQTW50M2Y2ZXNQYlFVcHZ1MDhvV1Rydlkw?=
- =?utf-8?B?V3hpOHl0THhxOVBzaUlzRDVKT2tDR2gwcUhsUFdaNm5DL2pLaUUvZHdWTmsw?=
- =?utf-8?B?WHZLMEpqNWJ0L09KSkhWUXIyaGFDR2k0Szdya3RhMW12YTBDUXJFL2VKUjBy?=
- =?utf-8?B?UjJ0S21WQlNWVUlBaktQbmRWR3hjam5RV2xRMlpVNFFzd05MS1Z0c0g3YlA4?=
- =?utf-8?B?aEFRelREeTdIdmZZN3czTFVnSkhMTlc5WHZEbTVwVzlQN202RHhYdlhwZmtt?=
- =?utf-8?B?dnJiYjVocVNKcHI3N1pCTlMxN1NwaEw4aytEZDdhQkJxMWxHcG00Y0hCbUc0?=
- =?utf-8?B?SnlGeVdEdzdTSWFKei9ENERjV2h1emZoVm9CODNtUDB4RUptY1FQYVhhVjNh?=
- =?utf-8?B?NmFUUGo4bTZDekpWQit1ajdVUVdWR01WNFZkTDIrSjJsOTdITXRDeUR5UXRE?=
- =?utf-8?B?azBxRDRBNEJyajNaUC9jY1k4RWIxRVVoYXYzOWNydWtnRk5uQStlVVJiQklp?=
- =?utf-8?B?bnpVY2pqNFpNTzZtdTdLL1pYdDZNcFVQZWZUK3Q5ZFZiL2dOdXZmd0FWcTRt?=
- =?utf-8?B?bVNKQVpmU0VnOEE5QnE4Y2RuUGVmMDgvd2FuV1RXMENwTitqQ0hsOVRSZmR2?=
- =?utf-8?Q?ELNnko+2SxpM2QSJ6PTmYs8uKHAGNaH9?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MmpkQnFLNXo0V3Q3eDArMWJuYmt0OHNaT3ZKcFBWMWdkeEhwdWdMMmZqWS9Z?=
- =?utf-8?B?V2xwK0wzUFBvWFREaktaUUxRMXV3Rmk3cnhNeGNZWThVSUlLanBKdHY2dllp?=
- =?utf-8?B?bnZXNGZOUTNxcGVRVzh6UjFjY0dSY1JiTkY3enptMExlU2FBYW5IRmNPbnJq?=
- =?utf-8?B?SG5kejY2dHArSGN0dnZETzJrOTlkb2ZKRXZRdnBQVU80NTQ4QWhPcUlDcEl2?=
- =?utf-8?B?TE5jQS8waVRsZXJnWDF1Q0lvMHg0TTJ1YmYxNmhMVERDMkN1SHg1VWxHcWFa?=
- =?utf-8?B?ckVMTTRrcFNkU3VNZ1MzVU5ENDVoSXBpZDlSVTZ6Qmt0Snl5NnhKMHdrb1Bt?=
- =?utf-8?B?VFdEYXk5ZUl2OEFJRFlDQ09IZCtEeWxycTVWUFVRdXVzV1BpcGtDcVpndjl2?=
- =?utf-8?B?bU9QTEc0bGhKTkl3VlRtZFFSamNNc012NEhMQ3BncFZMMElLRlVHaWJYNUpk?=
- =?utf-8?B?VWlqSEZ2ZlpmOUNKQmQyYmJEN2pwUEYxc3AxNnJhQTVJc1RCcjFBNEE1K0s5?=
- =?utf-8?B?amdjME5GR3dtaW1mdTh3VmtHMThnRW84QUZiSE5hSXpiS1YrdDVGUUhiYTZz?=
- =?utf-8?B?RExMSjdia3J6cy9kL2Z4SkJ5ZG01LzBQWmJvRzNYYzVZSUs5L0lHU1dpbC9w?=
- =?utf-8?B?MFJHdi9wSzhKMlV1MkNlYk02dXBZalRMTkxGZmk4RklhNE1CTzgrNXMzelVv?=
- =?utf-8?B?cHRhUmtHRmdLYUZVdzJvdWxkaE41Qml6UTFpdjFVSEd4TTBUdU5uV3kreWIx?=
- =?utf-8?B?Y211RGsxa2ZPMlZCZ1hnN0JFN3pwbDJkelU2eUpzSDl3dUpISDJqc3YxU3pr?=
- =?utf-8?B?NFBZcmZzTEhsOGt4Z082RFYwcldGbCtpdE9ZM21UaFF4YmVtOUkvbUhZNU9Q?=
- =?utf-8?B?bEFBVFFLeWlXSERURDhjT0prR3JCYTJVaTdaRHRUUWJrZVFMenNSVkdlTUFS?=
- =?utf-8?B?cy9sZTFtMkRGWUlVR3NyODJTTTVvVmNSendGNjhtUVQ4L3J6M2xueXY3Y0lt?=
- =?utf-8?B?S0dlcHVHVXFNamlVUkVjZnJqcTVLaFBuRmVvcmN3UlQxaG0yc0FoWFhsem5C?=
- =?utf-8?B?dUpzN3JNZlp3TGFGRUtmS0hyTFpmRXFjKzhMTEx3aEVkdW0rWGl4WTJqS3FR?=
- =?utf-8?B?TVJqT2RkOFMzaFkyeFczVFVJdGNYUHd5R1Y2aVRmYk1FSmUxbGF0YjBUeisv?=
- =?utf-8?B?M3JkOHNoMG9HaERWZEE4VjR6cUtkS3hQTTBxVmhGRUozZmU1dnZsdkhMcXFX?=
- =?utf-8?B?NmNqUmFNM0tIcHJkU1NheHUwMzRYMWNpL1lLQll6bzk3YkN0VVdaUUZyc3Bn?=
- =?utf-8?B?UjdxNExkbUExOXF0US9oTE5nRmdlLysvODZwQWthNGJBdU1JUUtyTXcrRlU4?=
- =?utf-8?B?T2p1ei9aem5Sd2RoaExtZ3N4YXN0cUUyL21VTVRPR2dqTW9FOUpWWGxISjUr?=
- =?utf-8?B?bmpaczh0M3VvcEE0S1B6ajBTTGRUaUplV0t4YnVtTktlMHcxTFY3S0tnMFpo?=
- =?utf-8?B?MkIyZG1BWU53a1RRZlhYSmsxU24yZEVDSENUelEwN1NrVk9MVWdMc3NaUU81?=
- =?utf-8?B?YnRSS1hWY3VGZ2V5WVVuVUdtRW02RGVSc3BEU3QxeVllWXdJWHNOTlhnS3VM?=
- =?utf-8?B?Q3lKemF6cDlWdHNudXRQTnJqaUx3RW9JaSt2V1IzUms0K25DUlZzZzZmUHFo?=
- =?utf-8?B?UUROaXNNNkhHVXovNFBydFYrQWlLN0d6bGMyZzRtTlQwTlgzcFF5cWVFWkEz?=
- =?utf-8?B?RnczSFdDNnkwTkkzbG40VmJxUXVjSGF4QjFUaStPS2dMbEZVUXl6dExKWnlS?=
- =?utf-8?B?V0FQS1lBNjRmcXdKQjRZNW9iQjJTSVdUM3BUWDdYL1U5RnVVdUo3T2Rnbm84?=
- =?utf-8?B?Z1NFZyswTHJ3WjhiWGxjNHd3YzBTa0hoQWR1bHdvTVE2c0dPWVFMbWpkR0pG?=
- =?utf-8?B?NnlsTDlXbnBYcjhuVXErQkxma1hrclhDU3lCalBNVnBoK0JtbFNCRlNEVHRM?=
- =?utf-8?B?OUFaWXZHYmdvZmVxSW10dmRRUHI5Vy9kZzc1SVNoL3ZLOHZXcFNrMzRDcTFq?=
- =?utf-8?B?bDQ1MGlzYm9iLzdwTmRlZGZrWjhLcmVIemhTdldFOVpQMXlSRFZvUk5maFRJ?=
- =?utf-8?B?QVVISDZzZnVoNlNFQWpWTkVVcVBoTWdNN25HRHhtNGRJbkNtSWw2Nlg2TTZx?=
- =?utf-8?B?VVE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89e22e78-230c-4cc9-eeb4-08de17a09dd9
-X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 10:39:34.6134
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QlLRRH5Bsgd2ouhBJy9hvS0PsxLn/gMRWfvFsNLuoCoC82t/vebKczCNt4dgeOZcejmAYIMg2YdH8TPgIaOH2pzk9HCe6z5Riqy5leoADag=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7516
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On 10/30/25 10:37, Michal Swiatkowski wrote:
-> On Thu, Oct 30, 2025 at 10:10:32AM +0100, Paul Menzel wrote:
->> Dear Michal,
->>
->>
->> Thank you for your patch. For the summary, I’d add:
->>
->> ice: Use netif_get_num_default_rss_queues() to decrease queue number
+The socket timestamping option SOF_TIMESTAMPING_OPT_PKTINFO needs the
+skb napi_id in order to provide the index of the device that captured
+the receive hardware timestamp. However, wireguard resets most of the
+skb headers, including the napi_id, which prevents the timestamping
+option from working as expected and applications that rely on it (e.g.
+chrony) from using the captured timestamps.
 
-I would instead just say:
-ice: cap the default number of queues to 64
+Preserve the napi_id in wg_reset_packet() on decapsulation in order to
+make the timestamping option useful with wireguard tunnels and enable
+highly-accurate synchronization.
 
-as this is exactly what happens. Then next paragraph could be:
-Use netif_get_num_default_rss_queues() as a better base (instead of
-the number of CPU cores), but still cap it to 64 to avoid excess IRQs
-assigned to PF (what would leave, in some cases, nothing for VFs).
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Miroslav Lichvar <mlichvar@redhat.com>
+---
 
-sorry for such late nitpicks
-and, see below too
+Notes:
+    This is a minimal change that fixes the described problem for me, but
+    I don't really understand the code well enough to see if there are any
+    major side effects. If there is a better way to fix the option for wg or
+    tunnels in general, please let me know.
 
->>
->> Am 30.10.25 um 09:30 schrieb Michal Swiatkowski:
->>> On some high-core systems (like AMD EPYC Bergamo, Intel Clearwater
->>> Forest) loading ice driver with default values can lead to queue/irq
->>> exhaustion. It will result in no additional resources for SR-IOV.
->>
->> Could you please elaborate how to make the queue/irq exhaustion visible?
->>
-> 
-> What do you mean? On high core system, lets say num_online_cpus()
-> returns 288, on 8 ports card we have online 256 irqs per eqch PF (2k in
-> total). Driver will load with the 256 queues (and irqs) on each PF.
-> Any VFs creation command will fail due to no free irqs available.
+ drivers/net/wireguard/queueing.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-this clearly means this is a -net material,
-even if this commit will be rather unpleasant for backports to stable
+diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
+index 79b6d70de236..bcf03bc01992 100644
+--- a/drivers/net/wireguard/queueing.h
++++ b/drivers/net/wireguard/queueing.h
+@@ -75,6 +75,7 @@ static inline bool wg_check_packet_protocol(struct sk_buff *skb)
+ 
+ static inline void wg_reset_packet(struct sk_buff *skb, bool encapsulating)
+ {
++	unsigned int napi_id = skb_napi_id(skb);
+ 	u8 l4_hash = skb->l4_hash;
+ 	u8 sw_hash = skb->sw_hash;
+ 	u32 hash = skb->hash;
+@@ -84,6 +85,10 @@ static inline void wg_reset_packet(struct sk_buff *skb, bool encapsulating)
+ 		skb->l4_hash = l4_hash;
+ 		skb->sw_hash = sw_hash;
+ 		skb->hash = hash;
++	} else {
++#if defined(CONFIG_NET_RX_BUSY_POLL) || defined(CONFIG_XPS)
++		skb->napi_id = napi_id;
++#endif
+ 	}
+ 	skb->queue_mapping = 0;
+ 	skb->nohdr = 0;
+-- 
+2.51.0
 
-> (echo X > /sys/class/net/ethX/device/sriov_numvfs)
-> 
->>> In most cases there is no performance reason for more than half
->>> num_cpus(). Limit the default value to it using generic
->>> netif_get_num_default_rss_queues().
->>>
->>> Still, using ethtool the number of queues can be changed up to
->>> num_online_cpus(). It can be done by calling:
->>> $ethtool -L ethX combined $(nproc)
->>>
->>> This change affects only the default queue amount.
->>
->> How would you judge the regression potential, that means for people where
->> the defaults work good enough, and the queue number is reduced now?
->>
-> 
-> You can take a look into commit that introduce /2 change in
-> netif_get_num_default_rss_queues() [1]. There is a good justification
-> for such situation. In short, heaving physical core number is just a
-> wasting of CPU resources.
-> 
-> [1] https://lore.kernel.org/netdev/20220315091832.13873-1-ihuguet@redhat.com/
-> 
-[...]
