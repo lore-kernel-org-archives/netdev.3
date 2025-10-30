@@ -1,43 +1,85 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCBA1EF39E;
-	Thu, 30 Oct 2025 10:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526B23002B3
+	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 10:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761821376; cv=none; b=ZqNXuSHXVITV6syRQSr82ofrQcguFon9q9RQup02fIZm4roV/ztLEiy+DeVUcyleTUCcCrJb3kFN+Lv45ikp1mMucvIcxmOh1z1F2TpI3+yxcR6YctMpwN9f0rB5sXaUah4brM0waioQfT4M3WE+miOU5xZVf6m0/4ML59oObcU=
+	t=1761821393; cv=none; b=g8T9cqPPaPd96sAuhULlAlgH6Db5UC1P1V+TySdlsUTR1uZ+1kyMT0ZhkLPja6RYwvM/491Agu76B6zqRpd7UWeDkBSFahckNDBanIDdO98rR+R4uj090pR8vLU+MxRUTHEVpEADos/3Ce+NxM9kS+s3rH6W09kXqNWjUh2Z248=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761821376; c=relaxed/simple;
-	bh=QZIq4QpcjCi+U9bq12x/wte+do2PQHZY3yjvYitMMgo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dIEI/wCs3joL6OdmdNzImUsoylw5SP0n1L6tJLcT0UF4Ofd4VElL27hih4E18XpWd2ZcucX74envDBuhgJaZUFzI/W2URKT7HBuOxna8hTQ/vqxCeYS05bmqN4W4dNE/OMr8t8ffj7CzKrg4Xt3T4dEKx91ofWrRj/NuZgCiKHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KnRZ5xVc; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1761821393; c=relaxed/simple;
+	bh=VTIGLJoqL09T3qdqKCWT95vPfPOyfhp3sKIJURo8kec=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jb2KWDrFyPbt3yLBwlsLDB2Z3FAdz2mA1QI3ARDURc9TzVv+FGFZJrhG2NQuZcKgi1c9RC/6fXrnk3EbyolICyROlwxtAsNk1h9+GKOvuT2A1NeTwmsa2+ddRg5HR7u7QqJYO7fq0DVVUFS9mP2wsFlnD3cnilMdFRAPdpn5yAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVn6MkF5; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KnRZ5xVc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=zHfHVPnhSgO0iB2CVKBRrVMgdptuKxMneZV2BdH/BJs=; t=1761821375; x=1763030975; 
-	b=KnRZ5xVcapfNGamkRzWRX9/Mc+Y1timWLqIrgTVWechY+gnXocE2JvzaIl/XD05XMJubc0s0zyL
-	ea+oWvxMV91hKRkg5uXH1z0GJmFq8zg4pTykzfUUqH3SIwglpQ6ZscVQgjssSHSKE9Dmwv6W5Ytak
-	GOrZ0+hWOg+4yR/Z8TGY5gRqb4EOgw4EL8wl+utcbmEaFBj3jdTNIDq63+MbUNsW5n4H6MiGAYJyI
-	nZAojBsI1mJ0OufT3cV7DggOJxCUpx+5ab2L6CF+2faDib7QC4Bx/Amu23O6fRF71Cblz2CpZICgG
-	+IzlpH2KOZbkRMwjXJkuWI8PObyhvrEpFmFA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vEQDe-0000000GLuF-0oFz;
-	Thu, 30 Oct 2025 11:49:26 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-2025-10-30
-Date: Thu, 30 Oct 2025 11:48:05 +0100
-Message-ID: <20251030104919.12871-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVn6MkF5"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7a2852819a8so865049b3a.3
+        for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 03:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761821392; x=1762426192; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I3p2yqAWOCqYWEXlmFTpGQJoAadTNkNOwJpC5qXOYbs=;
+        b=PVn6MkF5bwbrksfoO7vlX8x/1JzAkAOf/4MbPNeeb3558hEBSyEstX7WP+fuyy8dGe
+         +lSt2nL4K36uzzbfMWgbrv9n2A/JuSyJ+rrG+l0YILSmP6BUTV1z9JY9gPRZie6C/1p8
+         BmP2O0k2d+2GcPKXFKBLdH4C0JIWrt/EBtC7tEf8EHWFzCLR/fF7BYchlMBtmWf0JKSH
+         GjSgLXwRVbD9WqSX7ERxzw0ivWQTpK8oW5H1mo8urSVbxPDuKlwh5DlgEMNXKyhuuFjs
+         Y970H5fbV13iScc4HnGtM+kBCzJK3dmEZwC/suGQskNntYQCWlg/WW3xmFEOr2Im+ybz
+         UT7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761821392; x=1762426192;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=I3p2yqAWOCqYWEXlmFTpGQJoAadTNkNOwJpC5qXOYbs=;
+        b=Xp2y+2Yubz7E/Rg+hecSpAXLUnk+t1vrB0KR9tFpw3BzSJRwJsWFnQow+CZeaSLuLx
+         vGM8H3OE6xIGV8C0I2kaMDJ8abbWkk3/+jFus2+fhJbqvG06Ny1Gqj2iFS1FS3f2Pw3i
+         ahE4p6Fk2dz023NSUTnonvoCqrjnyXv5zoxSFvHCWqCCGVTSKEelNnn7UNFM318iyo7t
+         RZQhPp3eYKgh56sConcZiUccwSqikbBoRUV5VQHI3oerjpMRMJ94wOabaH3+EpsEO5uN
+         YQHvi7XldHxod4I7XKQ2bRNadNraP/N8G3YbhAVxAKxS22qw6hu/J0iX9SVYhgEBip2g
+         GTuw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRrxbLvxMjBl4ftPY/x8NdcZg26rOZ4/PF6MVAZy9qY66Nic/RQvraNmKi31Jg7qWhpiBnRoM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNeHXT5iSiArqzvqj/Of6RCmOeAQTGHo82v3E5uYbOcDu1JWAK
+	xecrF7XfCEEuO8LWyIQNllCJazuSH0ClO/DZsw9brTBGUM9KAm97Cdzi
+X-Gm-Gg: ASbGncuiPBl0qK9bEgS+ImWpGx9y7y9MgYWZd8UlT5xtlngJSl48pEJC3KHhha8ms/H
+	sXKBXefGTIDEgfTueVnR23ysAoHTvnvWzFKSNOIpx35pC0a4lCgAAY52v5FO1N9j/RsnzcqXG9k
+	DdrEUzeE8Uc7kGI0M8WQMJStZxYV/HgXTYvHH1EV82xkJ28tZY84sZfrP+3jQ6NZgwSpfVx9qCa
+	Ru0D9C1awugskAy+7Tf/CSQKW83skmTa7NxDOdONwKEKcTx3Ivwe17TgUEU+gzahWvtgDc8J9gk
+	fOtphsfT3yPFjLfcJq+Dw1FI9ZAn8jnuTSTzDxwSAblUkp26IwdYV3kLqJoKBDmfcmujj1dgGcc
+	hjt6h5hQU3YGKUMztc2UKvez4aw3/CFo5rzWrueAG6c9qatX7hB79f1zTUDk2AWc4n8zMctVqje
+	np0KA8G6dr36WP8GGJXuG8/g==
+X-Google-Smtp-Source: AGHT+IGU7fXKMPGFniTXJxT+Y1B4SNOc8ney/kiF1ZfNDyydbRHCeKanSDnjrz8dd8tokm2NLVK8SQ==
+X-Received: by 2002:a17:902:d512:b0:294:ccc6:cd2c with SMTP id d9443c01a7336-294dee491f3mr72004445ad.22.1761821390964;
+        Thu, 30 Oct 2025 03:49:50 -0700 (PDT)
+Received: from ustb520lab-MS-7E07.. ([115.25.44.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d273cdsm181053915ad.55.2025.10.30.03.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 03:49:50 -0700 (PDT)
+From: Jiaming Zhang <r772577952@gmail.com>
+To: kory.maincent@bootlin.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	r772577952@gmail.com,
+	sdf@fomichev.me,
+	stable@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	vladimir.oltean@nxp.com
+Subject: [PATCH v2] net: core: prevent NULL deref in generic_hwtstamp_ioctl_lower()
+Date: Thu, 30 Oct 2025 10:49:42 +0000
+Message-Id: <20251030104942.18561-1-r772577952@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251030111445.0fe0b313@kmaincent-XPS-13-7390>
+References: <20251030111445.0fe0b313@kmaincent-XPS-13-7390>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,64 +88,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+The ethtool tsconfig Netlink path can trigger a null pointer
+dereference. A call chain such as:
 
-This is the "not quite Halloween" edition, but there's
-nothing scary here ;-) The hrtimer work is maybe more
-than I'd strictly like, but all of the affected features
-turned out to be pretty broken due to long timer slack,
-and it doesn't fundamentally change the behaviour apart
-from using the more precise timers.
+  tsconfig_prepare_data() ->
+  dev_get_hwtstamp_phylib() ->
+  vlan_hwtstamp_get() ->
+  generic_hwtstamp_get_lower() ->
+  generic_hwtstamp_ioctl_lower()
 
-Please pull and let us know if there's any problem.
+results in generic_hwtstamp_ioctl_lower() being called with
+kernel_cfg->ifr as NULL.
 
-Thanks,
-johannes
+The generic_hwtstamp_ioctl_lower() function does not expect a
+NULL ifr and dereferences it, leading to a system crash.
 
+Fix this by adding a NULL check for kernel_cfg->ifr in
+generic_hwtstamp_get/set_lower(). If ifr is NULL, return
+-EOPNOTSUPP to prevent the call to the legacy IOCTL helper.
 
+Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
+Closes: https://lore.kernel.org/lkml/cd6a7056-fa6d-43f8-b78a-f5e811247ba8@linux.dev/T/#mf5df538e21753e3045de98f25aa18d948be07df3
+Signed-off-by: Jiaming Zhang <r772577952@gmail.com>
+---
+ net/core/dev_ioctl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-The following changes since commit a83155cc4ec5dd8c99edb541dc12d3bd8e97eae9:
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index ad54b12d4b4c..a32e1036f12a 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -474,6 +474,10 @@ int generic_hwtstamp_get_lower(struct net_device *dev,
+ 		return err;
+ 	}
+ 
++	/* Netlink path with unconverted lower driver */
++	if (!kernel_cfg->ifr)
++		return -EOPNOTSUPP;
++
+ 	/* Legacy path: unconverted lower driver */
+ 	return generic_hwtstamp_ioctl_lower(dev, SIOCGHWTSTAMP, kernel_cfg);
+ }
+@@ -498,6 +502,10 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
+ 		return err;
+ 	}
+ 
++	/* Netlink path with unconverted lower driver */
++	if (!kernel_cfg->ifr)
++		return -EOPNOTSUPP;
++
+ 	/* Legacy path: unconverted lower driver */
+ 	return generic_hwtstamp_ioctl_lower(dev, SIOCSHWTSTAMP, kernel_cfg);
+ }
+-- 
+2.34.1
 
-  Merge tag 'wireless-2025-10-23' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2025-10-23 17:15:48 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2025-10-30
-
-for you to fetch changes up to 70e8335485966d7d4ed85976dceab52803b151a2:
-
-  wifi: zd1211rw: fix potential memory leak in __zd_usb_enable_rx() (2025-10-30 08:41:10 +0100)
-
-----------------------------------------------------------------
-Couple of new fixes:
- - ath10k: revert a patch that had caused issues on some devices
- - cfg80211/mac80211: use hrtimers for some things where the
-                      precise timing matters
- - zd1211rw: fix a long-standing potential leak
-
-----------------------------------------------------------------
-Abdun Nihaal (1):
-      wifi: zd1211rw: fix potential memory leak in __zd_usb_enable_rx()
-
-Baochen Qiang (1):
-      Revert "wifi: ath10k: avoid unnecessary wait for service ready message"
-
-Benjamin Berg (4):
-      wifi: cfg80211: add an hrtimer based delayed work item
-      wifi: mac80211: use wiphy_hrtimer_work for ttlm_work
-      wifi: mac80211: use wiphy_hrtimer_work for ml_reconf_work
-      wifi: mac80211: use wiphy_hrtimer_work for csa.switch_work
-
-Johannes Berg (1):
-      Merge tag 'ath-current-20251027' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
- drivers/net/wireless/ath/ath10k/wmi.c        | 39 +++++++-------
- drivers/net/wireless/zydas/zd1211rw/zd_usb.c |  1 +
- include/net/cfg80211.h                       | 78 ++++++++++++++++++++++++++++
- net/mac80211/chan.c                          |  2 +-
- net/mac80211/ieee80211_i.h                   |  8 +--
- net/mac80211/link.c                          |  4 +-
- net/mac80211/mlme.c                          | 52 +++++++++----------
- net/wireless/core.c                          | 56 ++++++++++++++++++++
- net/wireless/trace.h                         | 21 ++++++++
- 9 files changed, 209 insertions(+), 52 deletions(-)
