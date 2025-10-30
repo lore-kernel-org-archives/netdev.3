@@ -1,170 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9DB221D9E
-	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 02:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8681D90DD;
+	Thu, 30 Oct 2025 02:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761792802; cv=none; b=WG+w6245NluY/HCMQvA/y5j0C7Jms63tedinlBI73A7/86TxIVOYZZmceP3IovyK+bEpVq0KzB0TGfWECanqDVHEGs8PF5Jmou8E02B6mRBpAVvoPIEO4hSE7dFbcfbYRa79QBCidW+qWmlRLJtwNQdxqY9A1n2g6z7xpQcFY3Y=
+	t=1761793183; cv=none; b=UktoQ5o0WPbdPfjsaTW7XvwhYSxosuML44oZHL6xW6RcCfo7JZH4ysqQ5Z7b8zZIetNw7Qay1q8yUUheMRfH8QBwDBvKBG7A4f5+pXJs5mYDlAn18iUgXzQfad+u5luBz3v4zVvwugUKJZBTVeVEdf8fx8rnVj9RGMzNPFvkMgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761792802; c=relaxed/simple;
-	bh=jzwxuky7qyY30SUTGdO0z8vz+l1kh9dfHf1H3lxmMHc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h5qVH7bnrWIjCY095P2Wx17zKW8EE7hTSMr5BRKg//Ux9FoUkFkvxGtYTnQUXYsshtR2Dd7olXoVG3Iw6Jbq5EZmeB/qr+h7dTCYoO/On1b90HjHWRIBaDrGvY+KPz43Dj9LeaAi+5A5aBpu5DmTd5HW406kNGm3Bj0hhp02C5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G5y1Xe7T; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1761793183; c=relaxed/simple;
+	bh=Z4FwOYA/MldwEQbaY9hWHxKlarFAnNtyi81ff7lqBLM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tfMk7+QeM3QwuoycY1dcGvvdCi2OBxI7YZmXyeIGbjfOcZLmDQMBWOhtZ2eyh4rOhtzPq21UP54PDQnl1osaefnimhgjP9fgws6a3fWsnpHqb9nWq8R9Txyh6TVFSPvzJ3nCKD9aHxvXmYsGApHXrPD9l8/1nFnCiHKItRI2TWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=vbsfuC9X; arc=none smtp.client-ip=113.46.200.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G5y1Xe7T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761792799;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjsYQYRNMIhNAf7/U8NqV3RSAWE80f2s4DbWVuj2fGY=;
-	b=G5y1Xe7Tll67y9r/YZ1gYjHKB7pTtK2RbDKu+vy1o2OMzw917nucoFKHC7o4cfaRwN+oEq
-	orXchljM+B2k/Ckt5q/FslfOS/DF4WC794am3B1nMmGAPEZG9Vmg2cPe+dqeEDprYpqFXT
-	Y8afFk8kiEsH1LK6sgDz5AApk1v1LVA=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-5VLV8zLqPAmJ_ORwqUmpcA-1; Wed, 29 Oct 2025 22:53:17 -0400
-X-MC-Unique: 5VLV8zLqPAmJ_ORwqUmpcA-1
-X-Mimecast-MFC-AGG-ID: 5VLV8zLqPAmJ_ORwqUmpcA_1761792796
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-798920399a6so1520833b3a.0
-        for <netdev@vger.kernel.org>; Wed, 29 Oct 2025 19:53:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761792796; x=1762397596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kjsYQYRNMIhNAf7/U8NqV3RSAWE80f2s4DbWVuj2fGY=;
-        b=Ewb/XZ1tWibE4Bciakflf0/0hhHlFin1nf6dQreKq3iDYM8icQXTLQ7Sme1fCnklfK
-         pCaCzabVgGt0AeQC3TIpzKV7pyLQwgOIRZdgStypQ6bsgOLTaKeGr9mOXyDmVC9zbHuP
-         PKkA6aVGBezNolyu0zmGb3n3BNiEW+0ws6AzWQfr1+dWuIaOD59ymYmhzGDrImtsCGgA
-         PuBXgdMSvMCC/5j1+k1hObk1WKdSJ+BctSToYcD0BsV1Rgvax4QgLJy5t5DtZNg0HQ1n
-         BwT1DR0jZuFYAUlin0bgZPNI7m+VCmr+GykwQ3ugHOEWseWDmmNT3zjWxx6atI5OOnph
-         /tAw==
-X-Gm-Message-State: AOJu0YzvdeK84cR3JwfBWUwSGNHM1+GwrV3ZVsTVU20Yb34iSJJ7O7JO
-	hcwvuZBg6l1UqHQ96+fpRHVpOWlDWBWtrpvmQCahivRhVQU2NR4XQQtSDx98Z90goTHMeYDJ9sV
-	eFCC6GVEfr54PRfxz+zg23RvQ4xQea2ylwC+HnuZZVwH8+FzR2WTrTDnanWsvCzubyPzORb10zA
-	Tb2bTp5PJPPo7nkAUsz2RacYXflfu1FeiV
-X-Gm-Gg: ASbGnctuccDQMBaykTDHNoNmC/ZHnIhl2Q6lxrGWdnzWL3n9ch8+gkEAuY+O85ohpfD
-	O+gR2J5qHKiy0Cc8JqgqBqW5qIF7Ik7czSQPZMr2KfDERT3rP8BUrDFmv3IEZtWI9qQTLaw++CA
-	xuIDfKB/mw3WmMDZSoGzDAPip5QhAwDxqXqONlgYew3wvVo8x7lckZI3Y9
-X-Received: by 2002:a05:6a20:2451:b0:2ab:a456:9b09 with SMTP id adf61e73a8af0-3477bbe375bmr2392920637.15.1761792796509;
-        Wed, 29 Oct 2025 19:53:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IELMHFStV21waj0bP6q/2p08rAPkLlE4mfBjZ3827b23FGQXmJIODmUgsABbPjVg2nksbo5B6+Hm9pb7WvgNkw=
-X-Received: by 2002:a05:6a20:2451:b0:2ab:a456:9b09 with SMTP id
- adf61e73a8af0-3477bbe375bmr2392894637.15.1761792796097; Wed, 29 Oct 2025
- 19:53:16 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="vbsfuC9X"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=yN4Cw98grPeKEFg5pNB+m6iIWvIp3cWZHIUyPfIenTE=;
+	b=vbsfuC9XET+2HODu4FEzZ2m7E/fMvEt9RbeE13q5ubLuYFpkC1cnMHO90l4jR6gQUrXlBn8P7
+	QrsqasZ/n27l9rXAoFxBsB/SaLRZcABI97ByDZ9gyptCft3ogCbcLoR/T83CALJ1/bmOwmJfFRR
+	9MeIeSpgpWHZCV9be7EjZKo=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cxpjL3mjYzmV6g;
+	Thu, 30 Oct 2025 10:59:02 +0800 (CST)
+Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
+	by mail.maildlp.com (Postfix) with ESMTPS id C66EA14013B;
+	Thu, 30 Oct 2025 10:59:31 +0800 (CST)
+Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
+ (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 30 Oct
+ 2025 10:59:30 +0800
+From: Wang Liang <wangliang74@huawei.com>
+To: <kuba@kernel.org>, <andrew@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <pabeni@redhat.com>, <shuah@kernel.org>,
+	<horms@kernel.org>, <sd@queasysnail.net>
+CC: <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
+	<zhangchangzhong@huawei.com>, <wangliang74@huawei.com>
+Subject: [PATCH net] selftests: netdevsim: Fix ethtool-features.sh fail
+Date: Thu, 30 Oct 2025 11:22:03 +0800
+Message-ID: <20251030032203.442961-1-wangliang74@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251029030913.20423-1-xuanzhuo@linux.alibaba.com> <20251029030913.20423-4-xuanzhuo@linux.alibaba.com>
-In-Reply-To: <20251029030913.20423-4-xuanzhuo@linux.alibaba.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 30 Oct 2025 10:53:01 +0800
-X-Gm-Features: AWmQ_bll86rnWy9pG9gq4GCIiPauN6NE6YO3ljaSX-NQc3zI_7ME6G9qYDKXXCw
-Message-ID: <CACGkMEu=Zs-T0WyD7mrWjuRDdufvRiz2DM=98neD+L2npP5_dQ@mail.gmail.com>
-Subject: Re: [PATCH net v4 3/4] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Heng Qi <hengqi@linux.alibaba.com>, Willem de Bruijn <willemb@google.com>, 
-	Jiri Pirko <jiri@resnulli.us>, Alvaro Karsz <alvaro.karsz@solid-run.com>, 
-	virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500016.china.huawei.com (7.185.36.197)
 
-On Wed, Oct 29, 2025 at 11:09=E2=80=AFAM Xuan Zhuo <xuanzhuo@linux.alibaba.=
-com> wrote:
->
-> The commit be50da3e9d4a ("net: virtio_net: implement exact header length
-> guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
-> feature in virtio-net.
->
-> This feature requires virtio-net to set hdr_len to the actual header
-> length of the packet when transmitting, the number of
-> bytes from the start of the packet to the beginning of the
-> transport-layer payload.
->
-> However, in practice, hdr_len was being set using skb_headlen(skb),
-> which is clearly incorrect. This commit fixes that issue.
+The test 'ethtool-features.sh' failed with the below output:
 
-I still think it would be more safe to check the feature and switch to
-the new behaviour if it is set. This seems to be more safe.
+  TAP version 13
+  1..1
+  # timeout set to 600
+  # selftests: drivers/net/netdevsim: ethtool-features.sh
+  # Warning: file ethtool-features.sh is not executable
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # ethtool: bad command line argument(s)
+  # For more information run ethtool -h
+  # FAILED 10/10 checks
+  not ok 1 selftests: drivers/net/netdevsim: ethtool-features.sh # exit=1
 
-But I'm fine if it's agreed that this could be the way to go.
+Similar to commit 18378b0e49d9 ("selftests/damon: Add executable
+permission to test scripts"), the script 'ethtool-features.sh' has no
+executable permission, which leads to the warning 'file
+ethtool-features.sh is not executable'.
 
->
-> Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length gues=
-t feature")
-> Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> ---
->  include/linux/virtio_net.h | 22 ++++++++++++++++------
->  1 file changed, 16 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index 710ae0d2d336..6ef0b737d548 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -217,25 +217,35 @@ static inline int virtio_net_hdr_from_skb(const str=
-uct sk_buff *skb,
->
->         if (skb_is_gso(skb)) {
->                 struct skb_shared_info *sinfo =3D skb_shinfo(skb);
-> +               u16 hdr_len =3D 0;
->
->                 /* In certain code paths (such as the af_packet.c receive=
- path),
->                  * this function may be called without a transport header=
-.
->                  * In this case, we do not need to set the hdr_len.
->                  */
->                 if (skb_transport_header_was_set(skb))
-> -                       hdr->hdr_len =3D __cpu_to_virtio16(little_endian,
-> -                                                        skb_headlen(skb)=
-);
-> +                       hdr_len =3D skb_transport_offset(skb);
->
->                 hdr->gso_size =3D __cpu_to_virtio16(little_endian,
->                                                   sinfo->gso_size);
-> -               if (sinfo->gso_type & SKB_GSO_TCPV4)
-> +               if (sinfo->gso_type & SKB_GSO_TCPV4) {
->                         hdr->gso_type =3D VIRTIO_NET_HDR_GSO_TCPV4;
-> -               else if (sinfo->gso_type & SKB_GSO_TCPV6)
-> +                       if (hdr_len)
-> +                               hdr_len +=3D tcp_hdrlen(skb);
-> +               } else if (sinfo->gso_type & SKB_GSO_TCPV6) {
->                         hdr->gso_type =3D VIRTIO_NET_HDR_GSO_TCPV6;
-> -               else if (sinfo->gso_type & SKB_GSO_UDP_L4)
-> +                       if (hdr_len)
-> +                               hdr_len +=3D tcp_hdrlen(skb);
-> +               } else if (sinfo->gso_type & SKB_GSO_UDP_L4) {
->                         hdr->gso_type =3D VIRTIO_NET_HDR_GSO_UDP_L4;
-> -               else
-> +                       if (hdr_len)
-> +                               hdr_len +=3D sizeof(struct udphdr);
-> +               } else {
->                         return -EINVAL;
-> +               }
-> +
-> +               hdr->hdr_len =3D __cpu_to_virtio16(little_endian, hdr_len=
-);
-> +
->                 if (sinfo->gso_type & SKB_GSO_TCP_ECN)
->                         hdr->gso_type |=3D VIRTIO_NET_HDR_GSO_ECN;
->         } else
-> --
-> 2.32.0.3.g01195cf9f
->
+Old version ethtool (my ethtool version is 5.16) does not support command
+'ethtool --json -k enp1s0', which leads to the output 'ethtool: bad
+command line argument(s)'.
 
-Thanks
+This patch adds executable permission to script 'ethtool-features.sh', and
+check 'ethtool --json -k' support. After this patch:
+
+  TAP version 13
+  1..1
+  # timeout set to 600
+  # selftests: drivers/net/netdevsim: ethtool-features.sh
+  # SKIP: No --json -k support in ethtool
+  ok 1 selftests: drivers/net/netdevsim: ethtool-features.sh
+
+Fixes: 0189270117c3 ("selftests: netdevsim: add a test checking ethtool features")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+---
+ .../selftests/drivers/net/netdevsim/ethtool-features.sh      | 5 +++++
+ 1 file changed, 5 insertions(+)
+ mode change 100644 => 100755 tools/testing/selftests/drivers/net/netdevsim/ethtool-features.sh
+
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/ethtool-features.sh b/tools/testing/selftests/drivers/net/netdevsim/ethtool-features.sh
+old mode 100644
+new mode 100755
+index bc210dc6ad2d..f771dc6839ea
+--- a/tools/testing/selftests/drivers/net/netdevsim/ethtool-features.sh
++++ b/tools/testing/selftests/drivers/net/netdevsim/ethtool-features.sh
+@@ -7,6 +7,11 @@ NSIM_NETDEV=$(make_netdev)
+ 
+ set -o pipefail
+ 
++if ! ethtool --json -k $NSIM_NETDEV > /dev/null 2>&1; then
++	echo "SKIP: No --json -k support in ethtool"
++	exit $ksft_skip
++fi
++
+ FEATS="
+   tx-checksum-ip-generic
+   tx-scatter-gather
+-- 
+2.34.1
 
