@@ -1,60 +1,57 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5F98F5B;
-	Thu, 30 Oct 2025 07:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4E9338586;
+	Thu, 30 Oct 2025 07:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761810766; cv=none; b=cWpEK2Qz6oyQGYG6LSZBkzArRFSZWVummpgmqirteJ177niTbsIz29MaYvUy6eV7tbuXCjJ4M0ixt/yQFrZCi5f9xi3CyrzfER6wBq1y0zKpmQnaPh89rIybNNtBnzegKjymt956cTp1ED31zrM8gCJp0k2NVH8yDh3drMoHXI4=
+	t=1761810779; cv=none; b=KFytBVphMH2BGlm2jEpN7jkas2sdLZB9+o11qhfNeSThkZC+JwuQC+ULU1DOGhQZ4ARIBKN6EG2Kky9GDVSL1lRXfYqrpR0zsTin04QK+qfhjdkxwvF+VfvTHo1HY6vdg82iwaGnkunejOYyJq5k+grRSFnkOL4lijwRzXmhqJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761810766; c=relaxed/simple;
-	bh=4brPCS6Z+GhMLQ+QXdncx2uLcqx1yYNpz/2tWj5/whk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r39gYlbhkuUfU1SMGlVmQ5hOIMceuzj55H1w8jw/y3Rm/HbpvbPBEvDlY5BFGOLrF3N8EopK5jzZMjO2fBMQi1DuT9f1xV8WQc4W9JdHZWoJ+Cuklp1bAUnOvq6TGbN8YlWnsEyCoyyXVSpubQ+oV2UO/JkFoVRIENQ5TEss50E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=RKRZ8ljE; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1761810779; c=relaxed/simple;
+	bh=rd9E5iSzvxo33oLvaoktALb6LQdQLnxTmoWim2N+pGg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fqF21sCimJ+OBmKHUO/TzK9vexDRdHhU/JZCdLLB9kNfUJl163/OGLAWg+i3LfCHPflJYMvvg3z5KNulQg3b/IyACCAWaSqq1lu/CIRPLcHsdNw6KJO4wPsycQ4QLzNiWzfoHfIM3knNUmGAGJVcrmR6qCgRSbGtXqBG795wtqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=rO0FTyqt; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="RKRZ8ljE"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="rO0FTyqt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761810765; x=1793346765;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4brPCS6Z+GhMLQ+QXdncx2uLcqx1yYNpz/2tWj5/whk=;
-  b=RKRZ8ljEKx7Bn4rZ4Vz0EPwiVwoIUnh5ZiNfHldMd5Si7mfX1rgBL201
-   TBtvMhRZ0iV8oRIj69ZP5NZmWE6QGKsFqjQUsqlmv1fpjsSFVoJpvjP7C
-   TFw+BeFxhXgm17EWL7nbS3OvUZlVOsEi5/w6SYM9y0dIC6fLVxQmZL0Y9
-   eRnTqMUpICEr0B8mjQ1pb8VWI7jU8Bpwf42Df+kpHS5Xu3LZU+sqtZpnA
-   qSLLrHxGVjhROSeaOzJVV0ZbniGKf2ZPmkvekrTEzYg4TIk6QRwSL9Vsz
-   NeOKw5Lc5fFHWrbtTpQBS5JLxdIjPHDxIee0lY0F+1sBOdPFHGoYKZr0R
+  t=1761810778; x=1793346778;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rd9E5iSzvxo33oLvaoktALb6LQdQLnxTmoWim2N+pGg=;
+  b=rO0FTyqtEzZg4puqbz86nMVI/e6AyOA4+Gi7CcxcgSH2FUecaCFHTXOT
+   f9BbHIUdr2CEkjqBIgUJ29jFwD/HWTmL5WwglCIhpdMR7DJnOP6HxHx9O
+   mRL8COteraHLPxQA7EQjvq4SZX1YEzLGJYEeTo+GA7QO8XqBwANaoLDmU
+   34I3wnUCKH2MAteMa7jOaWNbqrde1wh7XRuzwBZtJNhunidH8V6g+vxuE
+   YBSpidY/wHn7hcWA8G7yBUjoYb6b6opyVY9oHKNBzUPicOzhXhMr5PNEe
+   EyZx1NJQBaKzHFcAXoUv9vL+CXDZbQ0vSyoPhYFCw6bQhntVznmqx0qxM
    A==;
-X-CSE-ConnectionGUID: GIlKJHtsT5WfM3AzSiISvg==
-X-CSE-MsgGUID: saPEV6GpTTSfiOHD5Sbi4A==
+X-CSE-ConnectionGUID: hWk4P1TPRtmfKCCnTJHFMw==
+X-CSE-MsgGUID: l/orcjqpRh6gLPSU8cHzPA==
 X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="54760039"
+   d="scan'208";a="48455737"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 00:52:44 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2025 00:52:57 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Thu, 30 Oct 2025 00:52:30 -0700
+ 15.1.2507.58; Thu, 30 Oct 2025 00:52:25 -0700
 Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 30 Oct 2025 00:52:28 -0700
+ 15.1.2507.58 via Frontend Transport; Thu, 30 Oct 2025 00:52:23 -0700
 From: Horatiu Vultur <horatiu.vultur@microchip.com>
 To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
 	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
 	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v3 2/2] net: phy: micrel: lan8842 errata
-Date: Thu, 30 Oct 2025 08:49:41 +0100
-Message-ID: <20251030074941.611454-3-horatiu.vultur@microchip.com>
+Subject: [PATCH net v3 0/2] net: phy: micrel: lan8842 erratas
+Date: Thu, 30 Oct 2025 08:49:39 +0100
+Message-ID: <20251030074941.611454-1-horatiu.vultur@microchip.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251030074941.611454-1-horatiu.vultur@microchip.com>
-References: <20251030074941.611454-1-horatiu.vultur@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,67 +61,25 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Add errata for lan8842. The errata document can be found here [1].
-This is fixing the module 7 ("1000BASE-T PMA EEE TX wake PHY-side shorted
-center taps")
+Add two erratas to the lan8842. The errata document can be found here [1]
+The two erratas are:
+- module 2 ("Analog front-end not optimized forPHY-side shorted center taps").
+- module 7 ("1000BASE-T PMA EEE TX wake PHY-side shorted center taps")
 
-[1] https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/Errata/LAN8842-Errata-DS80001172.pdf
+v2->v3
+- fix some register addresses
+- add reviewed-by tag
+v1->v2:
+- split the patch in 2 patches, one patch for each errata
+- rebase on net instead of net-next
 
-Fixes: 5a774b64cd6a ("net: phy: micrel: Add support for lan8842")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
----
- drivers/net/phy/micrel.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+Horatiu Vultur (2):
+  net: phy: micrel: lan8842 errata
+  net: phy: micrel: lan8842 errata
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 504c715b7db90..b0f5941fddb0a 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2835,6 +2835,13 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
-  */
- #define LAN8814_PAGE_PCS_DIGITAL 2
- 
-+/**
-+ * LAN8814_PAGE_EEE - Selects Extended Page 3.
-+ *
-+ * This page contains EEE registers
-+ */
-+#define LAN8814_PAGE_EEE 3
-+
- /**
-  * LAN8814_PAGE_COMMON_REGS - Selects Extended Page 4.
-  *
-@@ -5952,6 +5959,9 @@ static int lan8842_probe(struct phy_device *phydev)
- 
- #define LAN8814_POWER_MGMT_VAL5		LAN8814_POWER_MGMT_B_C_D
- 
-+#define LAN8814_EEE_WAKE_TX_TIMER			0x0e
-+#define LAN8814_EEE_WAKE_TX_TIMER_MAX_VAL		0x1f
-+
- static int lan8842_erratas(struct phy_device *phydev)
- {
- 	int ret;
-@@ -6023,9 +6033,16 @@ static int lan8842_erratas(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
--	return lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
--				     LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX,
--				     LAN8814_POWER_MGMT_VAL4);
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX,
-+				    LAN8814_POWER_MGMT_VAL4);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Refresh time Waketx timer */
-+	return lanphy_write_page_reg(phydev, LAN8814_PAGE_EEE,
-+				     LAN8814_EEE_WAKE_TX_TIMER,
-+				     LAN8814_EEE_WAKE_TX_TIMER_MAX_VAL);
- }
- 
- static int lan8842_config_init(struct phy_device *phydev)
+ drivers/net/phy/micrel.c | 166 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 166 insertions(+)
+
 -- 
 2.34.1
 
