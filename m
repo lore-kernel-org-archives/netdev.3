@@ -1,222 +1,195 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010021.outbound.protection.outlook.com [52.101.69.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725F0283FF1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C7E283FC5;
 	Thu, 30 Oct 2025 14:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761834900; cv=none; b=CjwmDHG3TcAqdb9k4FYrh0/tznPMT/tNQsLBc7Q34EmkBf0bwWwjQ5WhiFXxmMPyT6MkA/Bidw/FBpm7yrkgtnntDGduNq4bRo301QYSZU1Wn+aYagzbKenLA058f94To1aTZ7kcpkHbmqrHBKQ5f5TMdOICvap71YQUALv3Uig=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1761834900; cv=fail; b=HcLbWp/I598zn28lla+njvX/i1pt6bKbnFP1tJutYirgS1A0hIDo7orcfVynYDwWAwaXWAQ/wHKEYyPXC5b/w5pYv0JN7emVvB6F54VvvnWs3p7fgq8miVJb23WnlI4dRSCfnuA/sAgVkX7fk3sVGfe8fIn2jloEbT3o8rkS5+g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761834900; c=relaxed/simple;
-	bh=kzKBgV8r5q8edgixyS3j7wmuBEdehQSVMTJBgW7xz6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CsX7yIZIaXJQW9rTFplDbCam8XnMif61TnMxD/Ny+jhIITUSOv+LfdRmHqDtwGXYOPOr9fLZ/t1gJYsnbiIVCShzxlTBrEmoNnKKB84hskLG/eVMAs6XZVCJQFk8EDzqnRhXXy3GXjN7qIGTypbQkv+al7cNFz1lYoOU/2NU2o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=BfITBlv/; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	bh=GeTcQ7Cr98RzPxeasujjNcocwNmZtG/Gdaik4pF8STA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ple+sviQeOAfNZvqlUlFmW4/QfoQMRdinQyhbryXEG6VF4ZgrYCGcjLJFyBl3qgblfoCuDPMmClSiDexYVEvWIDi7aXDUWTtv+QjWPZMgYePT53qZDmmfMTSChXQYDPcVZjiIlOcw0T/5wXW5fq1zWwmXcCuSGmQpCydxI5BoM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=qHN3p3eB; arc=fail smtp.client-ip=52.101.69.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="BfITBlv/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761834899; x=1793370899;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=kzKBgV8r5q8edgixyS3j7wmuBEdehQSVMTJBgW7xz6E=;
-  b=BfITBlv/T80CUadRIPGXDf6mSx5WZNa3ncao3fpK6ClgGI3cO9M3RlEA
-   MFgdiIrOaQVzFx9NqmKZDtLGS/+/WDzZgD3u5GLcv7Ntd8erYQvcjr1l+
-   U1hIVU5is5s24wN3DCJsjnW5wc3uk6N9J1k+06YhJyXYRrzLDvQLvaJVN
-   0DxeDPSMHiaNExODKpxpt2CtJEPYxZMBk9k4zr/hCWEjVBKSuiPbSVy89
-   wyNKguMB+HNqN+7XgrYGbDbeQUtE19035Pkz9OSB6Nblb1mN6taDuYxmd
-   +HLRDheHmoVe0HopG0OXqPk2DvdATRc5iSiPa+Q24OUltxDMKEIuiBZHP
-   A==;
-X-CSE-ConnectionGUID: iP8P+z7SToStG8EktGUkkw==
-X-CSE-MsgGUID: hH6D5D30RymrOV/Z5QwJMQ==
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="48472823"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2025 07:34:57 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Thu, 30 Oct 2025 07:34:51 -0700
-Received: from [10.171.248.18] (10.10.85.11) by chn-vm-ex02.mchp-main.com
- (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 30 Oct 2025 07:34:45 -0700
-Message-ID: <cd0ae7c8-0df7-443f-a5d3-da2c3aa88582@microchip.com>
-Date: Thu, 30 Oct 2025 15:34:44 +0100
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="qHN3p3eB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lnAVSh3h6Afr3qmN9JarcmBtkr4NKqdnVe3XGvm6mRMWkPQzpYpP3XQocPSx5LhX3Ya/2py1znA1IIVHwy1IFRP+kUc9zsAWPDqx1ZpoFzQNT4Supyr0ztJrvUDlJvOLHke3gv7eD7exLmkNIlZO9s4EvVN24DyT5w3u7IXfftU25tYX4flUs7i7BrEUel+IV4Yyy0VSikTOAFMiLfsJkvZl31X6strWX9bC4cL8AyhcS+KZ8OjqDsy37acOw/KhGsFV4MNbO9XeAXQTueRSuTcSy1QrOaDISq4Ghw0Uh8biFIcbYUnK1rAAs9b/MrmVw7fLjJmaIf3n9XGm1+CpmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=58lNnSobhs9Y81kVbO0FmLxd7z65M6EZZANnq4zBvO8=;
+ b=TrzYw1wXC1zdgcL57QzmQ7lwv34iKDopdjdhLHULsZPsq1NyQ42hLMO7s+jnHciZVpmPE1uhIcBzHO0/+aDruL2babeQYPeKt1LZWL99Qc3eWxlh7x3FuXdM+0cYRQ2JaLqt2ksaMxiVEsOEHkJW+Nv5d8z2hVSPEooS102uJ00pq93oTMgZNz9Y6KtWgBzH39rotwhXpUfZWSUcHRMyFvGRLnHolqTV9MglIPn9rJPmiZZeT20wY040lk5gfWHtotec3CLIl1cR9HhyyR3y3Vh7t4C6a/DcTTyNQL3e13IpwOWzOEM55IWGBKREu2sw/5tSKwAJ9HqoIKg/bO1xDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 131.228.2.241) smtp.rcpttodomain=apple.com smtp.mailfrom=nokia-bell-labs.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nokia-bell-labs.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=58lNnSobhs9Y81kVbO0FmLxd7z65M6EZZANnq4zBvO8=;
+ b=qHN3p3eBILQU0kEle7Wuo81VrOmNRw23udt9svjCrvzYGRWaFBgcg21vx+14WXFgNygGeVRLmUyuUltRWJXPxXcgbs+UYJBN3WOBIajqe783AolDLFN4OXs6lj3KU1E0n8iQrwiiRPlVoOq99sd8nJ1JdfKRLKHxfVSKa1f5GbUAzhqpDK5Besui8OB0HhdnrgJo8kjuwn5sbExX47b6P1ftg+vhyN4Cd7trSBPacUvdNsYRItAchoRsUhe5Q6dGAOvOnG5mK5wysj7a53YkANbizDGpnXxLF2knw3K+5+7krmRy62Mbv8LpGWleIP32CdefGOjGEXi5pOEDYsYbhQ==
+Received: from DUZPR01CA0134.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::9) by AM4PR07MB11070.eurprd07.prod.outlook.com
+ (2603:10a6:20b:6ea::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Thu, 30 Oct
+ 2025 14:34:53 +0000
+Received: from DB5PEPF00014B96.eurprd02.prod.outlook.com
+ (2603:10a6:10:4bc:cafe::66) by DUZPR01CA0134.outlook.office365.com
+ (2603:10a6:10:4bc::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.14 via Frontend Transport; Thu,
+ 30 Oct 2025 14:35:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 131.228.2.241)
+ smtp.mailfrom=nokia-bell-labs.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nokia-bell-labs.com;
+Received-SPF: Pass (protection.outlook.com: domain of nokia-bell-labs.com
+ designates 131.228.2.241 as permitted sender)
+ receiver=protection.outlook.com; client-ip=131.228.2.241;
+ helo=fihe3nok0734.emea.nsn-net.net; pr=C
+Received: from fihe3nok0734.emea.nsn-net.net (131.228.2.241) by
+ DB5PEPF00014B96.mail.protection.outlook.com (10.167.8.234) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9275.10
+ via Frontend Transport; Thu, 30 Oct 2025 14:34:53 +0000
+Received: from sarah.nbl.nsn-rdnet.net (sarah.nbl.nsn-rdnet.net [10.0.73.150])
+	by fihe3nok0734.emea.nsn-net.net (Postfix) with ESMTP id 072DE200D2;
+	Thu, 30 Oct 2025 16:34:51 +0200 (EET)
+From: chia-yu.chang@nokia-bell-labs.com
+To: pabeni@redhat.com,
+	edumazet@google.com,
+	parav@nvidia.com,
+	linux-doc@vger.kernel.org,
+	corbet@lwn.net,
+	horms@kernel.org,
+	dsahern@kernel.org,
+	kuniyu@google.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	dave.taht@gmail.com,
+	jhs@mojatatu.com,
+	kuba@kernel.org,
+	stephen@networkplumber.org,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	liuhangbin@gmail.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ij@kernel.org,
+	ncardwell@google.com,
+	koen.de_schepper@nokia-bell-labs.com,
+	g.white@cablelabs.com,
+	ingemar.s.johansson@ericsson.com,
+	mirja.kuehlewind@ericsson.com,
+	cheshire@apple.com,
+	rs.ietf@gmx.at,
+	Jason_Livingood@comcast.com,
+	vidhi_goel@apple.com
+Cc: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+Subject: [PATCH v5 net-next 09/14] tcp: move increment of num_retrans
+Date: Thu, 30 Oct 2025 15:34:30 +0100
+Message-Id: <20251030143435.13003-10-chia-yu.chang@nokia-bell-labs.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251030143435.13003-1-chia-yu.chang@nokia-bell-labs.com>
+References: <20251030143435.13003-1-chia-yu.chang@nokia-bell-labs.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 4/5] net: macb: rename bp->sgmii_phy field to
- bp->phy
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>, Russell King <linux@armlinux.org.uk>
-CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
-	<benoit.monin@bootlin.com>, =?UTF-8?Q?Gr=C3=A9gory_Clement?=
-	<gregory.clement@bootlin.com>, Maxime Chevallier
-	<maxime.chevallier@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Vladimir Kondratiev
-	<vladimir.kondratiev@mobileye.com>, Andrew Lunn <andrew@lunn.ch>
-References: <20251023-macb-eyeq5-v3-0-af509422c204@bootlin.com>
- <20251023-macb-eyeq5-v3-4-af509422c204@bootlin.com>
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
-Content-Language: en-US, fr
-Organization: microchip
-In-Reply-To: <20251023-macb-eyeq5-v3-4-af509422c204@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B96:EE_|AM4PR07MB11070:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 568399e7-d898-4557-f51b-08de17c17d9b
+X-LD-Processed: 5d471751-9675-428d-917b-70f44f9630b0,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|82310400026|1800799024|36860700013|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?mwdvijW4PN8TIAyTZzUvXU2/nXw42W4IB32LQhhBJBuppJoLszJLl3TTdssd?=
+ =?us-ascii?Q?dX+gVPwf9NLLQ9e46z32rrSWk9Gpj3SrHPivZeZed6m1Uv3He85Mqf2m/BDD?=
+ =?us-ascii?Q?qPxBZapKC01V5n6Dg+laz9CCDwky7xOKrmiHB1glNOnrePo836x45/tjveLj?=
+ =?us-ascii?Q?iaewb7HGLwyu9k//Y20ukt9HxBuu45WIAVfffLxtF6MqvfDru3RnNpgKNJBw?=
+ =?us-ascii?Q?V++vnFnLP08Q6kBSOvNdPdnIsW6GfJKiJREgvAJASFRDOJUrK4a1iwmd0Ywo?=
+ =?us-ascii?Q?ckF6Wqa6wgzc4SItLt2Szs6tktZOBfM2n2p9XzkRI4laMmFROcVfjFDLyt68?=
+ =?us-ascii?Q?tjOlu50Z5w7mOF/tdiWHKLe0BnpS8PxTehRMe0MDYtntsPOiA7YlFqo5Z6x1?=
+ =?us-ascii?Q?C8uvAml/FJKbOsZxp4T59y510f2MhhnF5bOJmq0269ia2dPL960GzCIdyyMM?=
+ =?us-ascii?Q?VYAHCNoNahTEUHctbcg3hYIDKyddI4Rf47+jMbsh0scwAwq/0wBuk0+URDtr?=
+ =?us-ascii?Q?YffZFJ6w531e8as4nF3usWiaH6nF4hHAYj5grnZbgAFEMSYt/bDen6aeSXfZ?=
+ =?us-ascii?Q?fTUD435RBZ07LuwOqCU9ofNTmQ29tduT0zlibKHIlsqM93hs5CxPSPxLfwwv?=
+ =?us-ascii?Q?KzYdsDcM/7OUcXImmomjJkC8pLeAj7pQ6l9jklCy+uKW/U0D5PNhcW5tBt4r?=
+ =?us-ascii?Q?2psaplI+OTKPkusm58VhXXvP32zAOOGFBwPSmx4GYCNfDJPrJefvic+/AvT5?=
+ =?us-ascii?Q?AGZhX+pM+UYo4ENfuRi8b/JZT0sXQYZJ3ZI033xoLJn3FXkWlXCgIrDBCH6a?=
+ =?us-ascii?Q?mwaFbwQAvgA+saROrycocJk+NlRXvjw4ZFy9eDSTtRAoQyi1NtiJbQz1pJ/q?=
+ =?us-ascii?Q?08Qg2JfZr4vBy8b6KUtVRWodq/VuTxX3UIutT3QvLlt9AETMPAfDY2UU57hF?=
+ =?us-ascii?Q?NYa4IziE2fYD0ZdFEHINjcImL3PPsl4xVy5zwr5YcjG+3R9kwcfY+Pwi4Wwr?=
+ =?us-ascii?Q?h7OxxSKeyYK0kDAjAQ0lwEr+BDS3WAOSxw3F45SbVHP3EIkTMNk/cXgtK69d?=
+ =?us-ascii?Q?nFo4nvgpnAiEhCd7TQGu9UYNWXzO++O99efeTW/mJKSvGlfHdDESY5xrmTZk?=
+ =?us-ascii?Q?OVbaSvVBgUFmxUJvcJfwuKuANZyUp+KVAnQID+eSw7lexWhveRr2VXznOM3w?=
+ =?us-ascii?Q?LYzlySnJyAsF/rP3DIVI9qNlrCnle7PutmNt4nEBCkzjJEo/HLKMpRs1k/ri?=
+ =?us-ascii?Q?GKn63xqfH4qimQFu9qha6CUa51i5ot8Oaglkw1rlbA2CLqKyqS0HagxFZyVF?=
+ =?us-ascii?Q?IvvZUYi5a/hMyJTRft8kfRmoiwsVigV+mj9j6Hq96G4iG4aGAblD01gyE4HA?=
+ =?us-ascii?Q?peBmt0XQmAXGwWCBoM1w2YQJUAGEwAawu9rJFnTEe3Pi8k7QpqF8h6QckEzb?=
+ =?us-ascii?Q?v16HvmTlmNL4qJjq/p/9hcfnZPGq/hb+zzPW2tm7l7cTDsEIVWkpLIJ1Oq6x?=
+ =?us-ascii?Q?hkDMXcw/FbuhOO8ve75lWnzqLOY6DJE1+nvujr314YVAtalUXndgihjlEDuj?=
+ =?us-ascii?Q?T5MDSp208R1xJzYUXBz0d0qZCUBkXsMi/ODQA/BU?=
+X-Forefront-Antispam-Report:
+ CIP:131.228.2.241;CTRY:FI;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:fihe3nok0734.emea.nsn-net.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 14:34:53.5767
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 568399e7-d898-4557-f51b-08de17c17d9b
+X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=5d471751-9675-428d-917b-70f44f9630b0;Ip=[131.228.2.241];Helo=[fihe3nok0734.emea.nsn-net.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DB5PEPF00014B96.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR07MB11070
 
-On 23/10/2025 at 18:22, Théo Lebrun wrote:
-> The bp->sgmii_phy field is initialised at probe by init_reset_optional()
-> if bp->phy_interface == PHY_INTERFACE_MODE_SGMII. It gets used by:
->   - zynqmp_config: "cdns,zynqmp-gem" or "xlnx,zynqmp-gem" compatibles.
->   - mpfs_config: "microchip,mpfs-macb" compatible.
->   - versal_config: "xlnx,versal-gem" compatible.
-> 
-> Make name more generic as EyeQ5 requires the PHY in SGMII & RGMII cases.
-> 
-> Drop "for ZynqMP SGMII mode" comment that is already a lie, as it gets
-> used on Microchip platforms as well. And soon it won't be SGMII-only.
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
 
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Before this patch, num_retrans = 0 for the first SYN/ACK and the first
+retransmitted SYN/ACK; however, an upcoming change will need to
+differentiate between those two conditions. This patch moves the
+increment of num_tranns before rtx_syn_ack() so we can distinguish
+between these two cases when making SYN/ACK.
 
-> ---
->   drivers/net/ethernet/cadence/macb.h      |  2 +-
->   drivers/net/ethernet/cadence/macb_main.c | 26 +++++++++++++-------------
->   2 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-> index 05bfa9bd4782..87414a2ddf6e 100644
-> --- a/drivers/net/ethernet/cadence/macb.h
-> +++ b/drivers/net/ethernet/cadence/macb.h
-> @@ -1341,7 +1341,7 @@ struct macb {
-> 
->          struct macb_ptp_info    *ptp_info;      /* macb-ptp interface */
-> 
-> -       struct phy              *sgmii_phy;     /* for ZynqMP SGMII mode */
-> +       struct phy              *phy;
-> 
->          spinlock_t tsu_clk_lock; /* gem tsu clock locking */
->          unsigned int tsu_rate;
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 8b688a6cb2f9..44188e7eee56 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -2965,7 +2965,7 @@ static int macb_open(struct net_device *dev)
-> 
->          macb_init_hw(bp);
-> 
-> -       err = phy_power_on(bp->sgmii_phy);
-> +       err = phy_power_on(bp->phy);
->          if (err)
->                  goto reset_hw;
-> 
-> @@ -2981,7 +2981,7 @@ static int macb_open(struct net_device *dev)
->          return 0;
-> 
->   phy_off:
-> -       phy_power_off(bp->sgmii_phy);
-> +       phy_power_off(bp->phy);
-> 
->   reset_hw:
->          macb_reset_hw(bp);
-> @@ -3013,7 +3013,7 @@ static int macb_close(struct net_device *dev)
->          phylink_stop(bp->phylink);
->          phylink_disconnect_phy(bp->phylink);
-> 
-> -       phy_power_off(bp->sgmii_phy);
-> +       phy_power_off(bp->phy);
-> 
->          spin_lock_irqsave(&bp->lock, flags);
->          macb_reset_hw(bp);
-> @@ -5141,13 +5141,13 @@ static int init_reset_optional(struct platform_device *pdev)
-> 
->          if (bp->phy_interface == PHY_INTERFACE_MODE_SGMII) {
->                  /* Ensure PHY device used in SGMII mode is ready */
-> -               bp->sgmii_phy = devm_phy_optional_get(&pdev->dev, NULL);
-> +               bp->phy = devm_phy_optional_get(&pdev->dev, NULL);
-> 
-> -               if (IS_ERR(bp->sgmii_phy))
-> -                       return dev_err_probe(&pdev->dev, PTR_ERR(bp->sgmii_phy),
-> +               if (IS_ERR(bp->phy))
-> +                       return dev_err_probe(&pdev->dev, PTR_ERR(bp->phy),
->                                               "failed to get SGMII PHY\n");
-> 
-> -               ret = phy_init(bp->sgmii_phy);
-> +               ret = phy_init(bp->phy);
->                  if (ret)
->                          return dev_err_probe(&pdev->dev, ret,
->                                               "failed to init SGMII PHY\n");
-> @@ -5176,7 +5176,7 @@ static int init_reset_optional(struct platform_device *pdev)
->          /* Fully reset controller at hardware level if mapped in device tree */
->          ret = device_reset_optional(&pdev->dev);
->          if (ret) {
-> -               phy_exit(bp->sgmii_phy);
-> +               phy_exit(bp->phy);
->                  return dev_err_probe(&pdev->dev, ret, "failed to reset controller");
->          }
-> 
-> @@ -5184,7 +5184,7 @@ static int init_reset_optional(struct platform_device *pdev)
-> 
->   err_out_phy_exit:
->          if (ret)
-> -               phy_exit(bp->sgmii_phy);
-> +               phy_exit(bp->phy);
-> 
->          return ret;
->   }
-> @@ -5594,7 +5594,7 @@ static int macb_probe(struct platform_device *pdev)
->          mdiobus_free(bp->mii_bus);
-> 
->   err_out_phy_exit:
-> -       phy_exit(bp->sgmii_phy);
-> +       phy_exit(bp->phy);
-> 
->   err_out_free_netdev:
->          free_netdev(dev);
-> @@ -5618,7 +5618,7 @@ static void macb_remove(struct platform_device *pdev)
->          if (dev) {
->                  bp = netdev_priv(dev);
->                  unregister_netdev(dev);
-> -               phy_exit(bp->sgmii_phy);
-> +               phy_exit(bp->phy);
->                  mdiobus_unregister(bp->mii_bus);
->                  mdiobus_free(bp->mii_bus);
-> 
-> @@ -5645,7 +5645,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
->          u32 tmp;
-> 
->          if (!device_may_wakeup(&bp->dev->dev))
-> -               phy_exit(bp->sgmii_phy);
-> +               phy_exit(bp->phy);
-> 
->          if (!netif_running(netdev))
->                  return 0;
-> @@ -5774,7 +5774,7 @@ static int __maybe_unused macb_resume(struct device *dev)
->          int err;
-> 
->          if (!device_may_wakeup(&bp->dev->dev))
-> -               phy_init(bp->sgmii_phy);
-> +               phy_init(bp->phy);
-> 
->          if (!netif_running(netdev))
->                  return 0;
-> 
-> --
-> 2.51.1
-> 
+Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+---
+ net/ipv4/tcp_output.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 71f65bb26675..90a71556b93c 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -4609,6 +4609,7 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
+ 	/* Paired with WRITE_ONCE() in sock_setsockopt() */
+ 	if (READ_ONCE(sk->sk_txrehash) == SOCK_TXREHASH_ENABLED)
+ 		WRITE_ONCE(tcp_rsk(req)->txhash, net_tx_rndhash());
++	WRITE_ONCE(req->num_retrans, req->num_retrans + 1);
+ 	res = af_ops->send_synack(sk, NULL, &fl, req, NULL, TCP_SYNACK_NORMAL,
+ 				  NULL);
+ 	if (!res) {
+@@ -4622,7 +4623,8 @@ int tcp_rtx_synack(const struct sock *sk, struct request_sock *req)
+ 			tcp_sk_rw(sk)->total_retrans++;
+ 		}
+ 		trace_tcp_retransmit_synack(sk, req);
+-		WRITE_ONCE(req->num_retrans, req->num_retrans + 1);
++	} else {
++		WRITE_ONCE(req->num_retrans, req->num_retrans - 1);
+ 	}
+ 	return res;
+ }
+-- 
+2.34.1
 
