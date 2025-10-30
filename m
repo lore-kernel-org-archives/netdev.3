@@ -1,256 +1,131 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1DD338584;
-	Thu, 30 Oct 2025 07:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E6737A3DF
+	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 08:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761810781; cv=none; b=h7+rZoIrbds5RsEgFfyF8IysBBuI1Jaj3sfU0Bbj+xIdP6MuS7a+V81AVOwDHHSDJusLhgklS23cYzHeaT1v8Lv5eRL05G0tC/y8IOyGohsK+AS6is1qkPUo0yCa5hxZsEToxWBTbE2B+CuRYljqC1/79V0rPf4eTq2rmSXoiDQ=
+	t=1761811388; cv=none; b=jCFKXnnFqQmheeJixoWxKXbz9PAErE8OQvSj+ffx9nJXYEO4CMUhy17ciCCZW31TTlfR/l0/BDXRpztlQsQMdpCiMUTCcagGbfz+7xNjDcyfH5626xYU/HWZKE6UVILPl6i+bWVf4ZZipEhM8o5NBqc/85eQB3Y7WnuWDienWOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761810781; c=relaxed/simple;
-	bh=VzTHB6uwUrUYHIbZ6C1sj1SfLBTRnPQuiLbkWA/dx0A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gviwemcsARl2uWrRKzHGRRoRiptNhwqwe6MdLN8eSeAhZBr4Uw8clHM/RtNcJZGBcW7fCC98LqyXpNjD/O2khfLjnG/+tnWVsCQ+hsKjN8w4TMsbOKrqVHz/Hpwnys7BIZWUJT3RkhIeys4Ojg4IPIP6OVgk5QLu743NrbR5n+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=CSKX94O2; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761811388; c=relaxed/simple;
+	bh=+v9TYg0I32wj9TIv39/8XJR+K77d8shcdZ4JpLtQeWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CX99aC7mXFWPV53JRntyS0DiGzxMQHoggZcQ3FMVHm1hxH6c4WV/ChxWN9h0gMNg5HVvpGToeIy8pf4KulGNUEAjw51j+dE3IHdolHqtODxy5+NmEktxP/4UUsXuzNv2rOVMCxtzuCMX+zw5lZjIHoevMB6425Uoy+sRD75pzPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DnWYRW95; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="CSKX94O2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761810780; x=1793346780;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VzTHB6uwUrUYHIbZ6C1sj1SfLBTRnPQuiLbkWA/dx0A=;
-  b=CSKX94O2NB7A49yrLqrRoZetCqbIHJJ4PHNXlPcPXVCCnKigCXcvPw0B
-   HVMZLDEaeFjnDxLwhza90ZDZweuWw5qWnMx1qzGm856e7+z4h0diNj/bh
-   /TouUdh1kqOau28MrC0DRoH52VNqr8622+j3Lb9K97qdhpdmI91ekOrQl
-   QsQfP8FTuaUaygoFXTIoJqQi/HXtLys0FEWzTM3Au0OSJb0rkS7JEXl8O
-   9/owHZSpv8DYv8SCNqqJrwas/vjtzgVavLIYGTG0wAEPEcmiRH4s1ERGP
-   suv4mDQmuBnmesaOcQQe4vwvsOV4O3nM9mk2ddE6AABsIQ0NNOrcoEfhi
-   g==;
-X-CSE-ConnectionGUID: hWk4P1TPRtmfKCCnTJHFMw==
-X-CSE-MsgGUID: CYXbvUIvSlySK+4RULBSVw==
-X-IronPort-AV: E=Sophos;i="6.19,266,1754982000"; 
-   d="scan'208";a="48455738"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2025 00:52:57 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 30 Oct 2025 00:52:28 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 30 Oct 2025 00:52:26 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v3 1/2] net: phy: micrel: lan8842 errata
-Date: Thu, 30 Oct 2025 08:49:40 +0100
-Message-ID: <20251030074941.611454-2-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251030074941.611454-1-horatiu.vultur@microchip.com>
-References: <20251030074941.611454-1-horatiu.vultur@microchip.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DnWYRW95"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761811384;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OGlXAC9k2Rj+4zSzAHyi3VogDCtRFy8S0qEf2+An3Yc=;
+	b=DnWYRW95TGGnVhgDOCyJUJ9ArdTBk72R5Nd0toBX3DIG/d5Qrlyu5Kwn+AHZYm1PqCo/9q
+	HOAiO+/G+vDlwRB/EIWha1s9FtE4zruNrPbIjjurh7ianaG7Y15L8GcMbMCJcn9EzdxPz7
+	aTIYo+OsIZhvEX0WfTbFcCCkdawoqa0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-L5R-6jqxON6vb37Pn_xMpg-1; Thu, 30 Oct 2025 04:03:02 -0400
+X-MC-Unique: L5R-6jqxON6vb37Pn_xMpg-1
+X-Mimecast-MFC-AGG-ID: L5R-6jqxON6vb37Pn_xMpg_1761811381
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4770eded72cso6956525e9.0
+        for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 01:03:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761811381; x=1762416181;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OGlXAC9k2Rj+4zSzAHyi3VogDCtRFy8S0qEf2+An3Yc=;
+        b=pe39PYDnKRZm0O04Pjlf+fstLhOair/Sj4A9P/csTeOAHZP8VKpCFIRuW/Th8muuF/
+         EqlY0ux3YbUX8V4V9gAs3eqAbKVacxf4CHwNVk898W9WteLHGnjSBvzjkm4E4hJQvTVJ
+         KVG5JwtqFlA1do4rKYjMemzbUuK7sHsxZQSDkjpMOt3Kp7FBITjU64DSr9gNNTHtn6Au
+         ujbSBZzUt5SE90nklEJ13tNSQLfOCHoqGCTCQyOg6YiwIokji7j6GmhDFyL7IucaIpVP
+         ZWoF13IH48dv232+bQQcpRuvIPaZsUt4rWTDC3u/8ATieZBCVvMpj4eqwxmeoNkwm3Gl
+         wLbQ==
+X-Gm-Message-State: AOJu0YxXrQ25uTlt8DksDc+jMHaoTTsGj+Wi3lXxlVKdjhCwB04Y7W2p
+	3N1PfpfOurh0jepV+8IX08cy7Ffm/RuX2GfsThjSsgQedmo4SDNe8My42YwhCK80ZRxLwkSJIfu
+	+6jJv8roX19+fd5ObF5FdkTfK8huqvRrfME6zTpQ4D/CbW09fMrbHXFBLpw==
+X-Gm-Gg: ASbGnctCEVRtQ0GgJHnDjW+C2m2TBSXwhvNpMKVkdJM1BZgEvxl3qj1w46N2RgEe91j
+	o7BhXrDV8FFVsKm32nIzsGBguxWk2UcwVQjxhEsub0CkG3b/+tSuhsIF6YkbxpZng4xpCfaDTUo
+	KmmhpHcf39oPFRqXH1wD3O15DDB8Fv3Hc1nHIilHF2UoUQam7is08BVXJdtiwZZXYzlv567Ac+o
+	4dB+hxKnKFjPxj4tlvGpakd18itpoj8oOoP23gr6xDAFP1zQ+NLgTgC1Jkf4jtz95KeGKyutdqI
+	6dunBy7gfIY7ElmBVdAJtNQz4wZL8WrDY1acivfWnUrEyy4C+F6GUWAp9DhmG4ePdLGN
+X-Received: by 2002:a7b:ce96:0:b0:471:611:c1e2 with SMTP id 5b1f17b1804b1-4772622261fmr15795895e9.3.1761811381061;
+        Thu, 30 Oct 2025 01:03:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIk/aVFQrnT9Hu3ayvn/eJjBsnEhmM/97mhlhQ2wqghUOS1OPCyVarI+Iir3/xbIPyjDpwIw==
+X-Received: by 2002:a7b:ce96:0:b0:471:611:c1e2 with SMTP id 5b1f17b1804b1-4772622261fmr15795425e9.3.1761811380513;
+        Thu, 30 Oct 2025 01:03:00 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:152e:9d00:de90:c0da:d265:6f70])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47728999a4bsm24950915e9.2.2025.10.30.01.02.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 01:03:00 -0700 (PDT)
+Date: Thu, 30 Oct 2025 04:02:57 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: netdev@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Alvaro Karsz <alvaro.karsz@solid-run.com>,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net v4 0/4] fixes two virtio-net related bugs.
+Message-ID: <20251030033025-mutt-send-email-mst@kernel.org>
+References: <20251029030913.20423-1-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029030913.20423-1-xuanzhuo@linux.alibaba.com>
 
-Add errata for lan8842. The errata document can be found here [1].
-This is fixing the module 2 ("Analog front-end not optimized for
-PHY-side shorted center taps").
+On Wed, Oct 29, 2025 at 11:09:09AM +0800, Xuan Zhuo wrote:
+> As discussed in http://lore.kernel.org/all/20250919013450.111424-1-xuanzhuo@linux.alibaba.com
+> Commit #1 Move the flags into the existing if condition; the issue is that it introduces a
+> small amount of code duplication.
+> 
+> Commit #3 is new to fix the hdr len in tunnel gso feature.
 
-[1] https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/Errata/LAN8842-Errata-DS80001172.pdf
 
-Fixes: 5a774b64cd6a ("net: phy: micrel: Add support for lan8842")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
----
- drivers/net/phy/micrel.c | 149 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 149 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 604b5de0c1581..504c715b7db90 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -2853,6 +2853,13 @@ static int ksz886x_cable_test_get_status(struct phy_device *phydev,
-  */
- #define LAN8814_PAGE_PORT_REGS 5
- 
-+/**
-+ * LAN8814_PAGE_POWER_REGS - Selects Extended Page 28.
-+ *
-+ * This page contains analog control registers and power mode registers.
-+ */
-+#define LAN8814_PAGE_POWER_REGS 28
-+
- /**
-  * LAN8814_PAGE_SYSTEM_CTRL - Selects Extended Page 31.
-  *
-@@ -5884,6 +5891,143 @@ static int lan8842_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+#define LAN8814_POWER_MGMT_MODE_3_ANEG_MDI		0x13
-+#define LAN8814_POWER_MGMT_MODE_4_ANEG_MDIX		0x14
-+#define LAN8814_POWER_MGMT_MODE_5_10BT_MDI		0x15
-+#define LAN8814_POWER_MGMT_MODE_6_10BT_MDIX		0x16
-+#define LAN8814_POWER_MGMT_MODE_7_100BT_TRAIN		0x17
-+#define LAN8814_POWER_MGMT_MODE_8_100BT_MDI		0x18
-+#define LAN8814_POWER_MGMT_MODE_9_100BT_EEE_MDI_TX	0x19
-+#define LAN8814_POWER_MGMT_MODE_10_100BT_EEE_MDI_RX	0x1a
-+#define LAN8814_POWER_MGMT_MODE_11_100BT_MDIX		0x1b
-+#define LAN8814_POWER_MGMT_MODE_12_100BT_EEE_MDIX_TX	0x1c
-+#define LAN8814_POWER_MGMT_MODE_13_100BT_EEE_MDIX_RX	0x1d
-+#define LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX	0x1e
-+
-+#define LAN8814_POWER_MGMT_DLLPD_D			BIT(0)
-+#define LAN8814_POWER_MGMT_ADCPD_D			BIT(1)
-+#define LAN8814_POWER_MGMT_PGAPD_D			BIT(2)
-+#define LAN8814_POWER_MGMT_TXPD_D			BIT(3)
-+#define LAN8814_POWER_MGMT_DLLPD_C			BIT(4)
-+#define LAN8814_POWER_MGMT_ADCPD_C			BIT(5)
-+#define LAN8814_POWER_MGMT_PGAPD_C			BIT(6)
-+#define LAN8814_POWER_MGMT_TXPD_C			BIT(7)
-+#define LAN8814_POWER_MGMT_DLLPD_B			BIT(8)
-+#define LAN8814_POWER_MGMT_ADCPD_B			BIT(9)
-+#define LAN8814_POWER_MGMT_PGAPD_B			BIT(10)
-+#define LAN8814_POWER_MGMT_TXPD_B			BIT(11)
-+#define LAN8814_POWER_MGMT_DLLPD_A			BIT(12)
-+#define LAN8814_POWER_MGMT_ADCPD_A			BIT(13)
-+#define LAN8814_POWER_MGMT_PGAPD_A			BIT(14)
-+#define LAN8814_POWER_MGMT_TXPD_A			BIT(15)
-+
-+#define LAN8814_POWER_MGMT_C_D		(LAN8814_POWER_MGMT_DLLPD_D | \
-+					 LAN8814_POWER_MGMT_ADCPD_D | \
-+					 LAN8814_POWER_MGMT_PGAPD_D | \
-+					 LAN8814_POWER_MGMT_DLLPD_C | \
-+					 LAN8814_POWER_MGMT_ADCPD_C | \
-+					 LAN8814_POWER_MGMT_PGAPD_C)
-+
-+#define LAN8814_POWER_MGMT_B_C_D	(LAN8814_POWER_MGMT_C_D | \
-+					 LAN8814_POWER_MGMT_DLLPD_B | \
-+					 LAN8814_POWER_MGMT_ADCPD_B | \
-+					 LAN8814_POWER_MGMT_PGAPD_B)
-+
-+#define LAN8814_POWER_MGMT_VAL1		(LAN8814_POWER_MGMT_C_D | \
-+					 LAN8814_POWER_MGMT_ADCPD_B | \
-+					 LAN8814_POWER_MGMT_PGAPD_B | \
-+					 LAN8814_POWER_MGMT_ADCPD_A | \
-+					 LAN8814_POWER_MGMT_PGAPD_A)
-+
-+#define LAN8814_POWER_MGMT_VAL2		LAN8814_POWER_MGMT_C_D
-+
-+#define LAN8814_POWER_MGMT_VAL3		(LAN8814_POWER_MGMT_C_D | \
-+					 LAN8814_POWER_MGMT_DLLPD_B | \
-+					 LAN8814_POWER_MGMT_ADCPD_B | \
-+					 LAN8814_POWER_MGMT_PGAPD_A)
-+
-+#define LAN8814_POWER_MGMT_VAL4		(LAN8814_POWER_MGMT_B_C_D | \
-+					 LAN8814_POWER_MGMT_ADCPD_A | \
-+					 LAN8814_POWER_MGMT_PGAPD_A)
-+
-+#define LAN8814_POWER_MGMT_VAL5		LAN8814_POWER_MGMT_B_C_D
-+
-+static int lan8842_erratas(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* Magjack center tapped ports */
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_3_ANEG_MDI,
-+				    LAN8814_POWER_MGMT_VAL1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_4_ANEG_MDIX,
-+				    LAN8814_POWER_MGMT_VAL1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_5_10BT_MDI,
-+				    LAN8814_POWER_MGMT_VAL1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_6_10BT_MDIX,
-+				    LAN8814_POWER_MGMT_VAL1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_7_100BT_TRAIN,
-+				    LAN8814_POWER_MGMT_VAL2);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_8_100BT_MDI,
-+				    LAN8814_POWER_MGMT_VAL3);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_9_100BT_EEE_MDI_TX,
-+				    LAN8814_POWER_MGMT_VAL3);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_10_100BT_EEE_MDI_RX,
-+				    LAN8814_POWER_MGMT_VAL4);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_11_100BT_MDIX,
-+				    LAN8814_POWER_MGMT_VAL5);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_12_100BT_EEE_MDIX_TX,
-+				    LAN8814_POWER_MGMT_VAL5);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				    LAN8814_POWER_MGMT_MODE_13_100BT_EEE_MDIX_RX,
-+				    LAN8814_POWER_MGMT_VAL4);
-+	if (ret < 0)
-+		return ret;
-+
-+	return lanphy_write_page_reg(phydev, LAN8814_PAGE_POWER_REGS,
-+				     LAN8814_POWER_MGMT_MODE_14_100BTX_EEE_TX_RX,
-+				     LAN8814_POWER_MGMT_VAL4);
-+}
-+
- static int lan8842_config_init(struct phy_device *phydev)
- {
- 	int ret;
-@@ -5896,6 +6040,11 @@ static int lan8842_config_init(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
- 
-+	/* Apply the erratas for this device */
-+	ret = lan8842_erratas(phydev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Even if the GPIOs are set to control the LEDs the behaviour of the
- 	 * LEDs is wrong, they are not blinking when there is traffic.
- 	 * To fix this it is required to set extended LED mode
--- 
-2.34.1
+I think these are completely independent right?
+
+When there is no dependency it is best to send
+patches separately, this way they do not block each other.
+
+
+> 
+> Thanks.
+> 
+> v4:
+>    1. add commit "virtio-net: Ensure hdr_len is not set unless the header is forwarded to the device." @Jason
+> 
+> v3:
+>    1. recode the #3 for tunnel gso, and test it
+> 
+> 
+> 
+> Xuan Zhuo (4):
+>   virtio-net: fix incorrect flags recording in big mode
+>   virtio-net: Ensure hdr_len is not set unless the header is forwarded
+>     to the device.
+>   virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
+>   virtio-net: correct hdr_len handling for tunnel gso
+> 
+>  drivers/net/virtio_net.c   | 16 +++++++++----
+>  include/linux/virtio_net.h | 48 ++++++++++++++++++++++++++++++--------
+>  2 files changed, 49 insertions(+), 15 deletions(-)
+> 
+> --
+> 2.32.0.3.g01195cf9f
 
