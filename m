@@ -1,80 +1,84 @@
-Received: from serv108.segi.ulg.ac.be (serv108.segi.ulg.ac.be [139.165.32.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235A52BF013
-	for <netdev@vger.kernel.org>; Thu, 30 Oct 2025 01:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.165.32.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7213FC2;
+	Thu, 30 Oct 2025 01:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761788709; cv=none; b=GJlCMhOYcXpM/IAhzwb+lV9PObhxxpLbfb85ie+gUwvZh1G5njwnu0WNpyPPXJqs0JNP+zzmPRNethSNfn00BqlOXwX27B5koTM2DKxQmT0Z6JJGHCH2spPydxcA7KqXjF4aii3/jcJH+1p4i5c2AoZjpUTGZZ7KrWNSb6xiSlM=
+	t=1761789038; cv=none; b=JkgSkVfnRURsyyPYOzzQVgib4wh0PPOOMsz/mSYhTtuYvEUyUcq80Qz1OKgVHWBu5Jf2uIxAR6q4nBt99s0z+lSJpKWk8PjdJYx1zQlc80rMkFOqFWHvRqbsMKkPbBPSNoPreG3gIHf0qJrhR3Tlr/Pa6GLhgFUrf2gXOFt4bLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761788709; c=relaxed/simple;
-	bh=gvQ2/8sLam7nJ9g95qzIpQxQ5oGzzw8/vjEsM27A4oQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z933xVWqNZKQsuObFwevykYJAbkIDxhVI2JMmwyJrB/dXBMeLDJwDPflavP+vBlD/uU86EEP+7/WTVQwAlS2NtjugZOp2rzFFXeksjODZ10xsEfjNI4RislEN9ZfHAR16/OXEXo1WtW5CJM8oG7JzzKUXX3abQl+fBxdQOXUzpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be; spf=pass smtp.mailfrom=uliege.be; dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b=x8WO5h9m; arc=none smtp.client-ip=139.165.32.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uliege.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uliege.be
+	s=arc-20240116; t=1761789038; c=relaxed/simple;
+	bh=eU7WGgbGrRXL6YcJBO7A6DdWWT6jGoKto2v87FPSkYU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YtltGTpfE8Vd698E487Gsv8lSDvbSG95+Q6qpVM5ThSnyKqGFIlszDnXNwM1yDEATwH9NsaZbUvx1xSuom7xaY206u8Vlyfr1ewTDpmjgbZB8ysgPtq/AaM/PZtt7zLVe16ehJfh9DHnU9mgLbH0Ja5qyquVVSO/KmtA0WntiDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ohl4oLXA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uliege.be header.i=@uliege.be header.b="x8WO5h9m"
-Received: from [10.20.0.32] (bras-base-tsrvpq3242w-grc-02-70-53-247-144.dsl.bell.ca [70.53.247.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by serv108.segi.ulg.ac.be (Postfix) with ESMTPSA id D2E42200BE45;
-	Thu, 30 Oct 2025 02:38:24 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 serv108.segi.ulg.ac.be D2E42200BE45
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uliege.be;
-	s=ulg20190529; t=1761788308;
-	bh=nwEpSzD8LNPD+3oKTiyONHoWtZJPmcTTuf+jrGUntKg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=x8WO5h9mhFiROplkYjZyR5Iub5tbjNbHdwBb1+5Cop9OsNJSO2stm8V72D4l5POjz
-	 AkPIvYYwCVv47VqGjx9wsrU2RSAZtCh6HDvbmicPUTGczQ09yEdDQbE7M+eTEbGf6K
-	 5W5BRi+zkqZdedfwyJfxqccRfO+QKpI44Id9XyTVjAB7uJrOo01MsFfzLd5kW8hslN
-	 fzPgEmE1mmw1DifM9QA0PPIisauSMn5LaZNaNJQyGQX05In/pEwr8nivYcs5b0Xsaz
-	 kfEEZK7wBw3Mmx+qXNgbloU/gYlGsPsLCjnqUnM6g5lJuzpa+RtWmG/b2jpDqkwDMH
-	 CUcTLlPnYbwHQ==
-Message-ID: <6c8e2c11-2550-43cd-8c02-dd1b19303842@uliege.be>
-Date: Thu, 30 Oct 2025 02:38:22 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ohl4oLXA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B819C4CEF7;
+	Thu, 30 Oct 2025 01:50:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761789038;
+	bh=eU7WGgbGrRXL6YcJBO7A6DdWWT6jGoKto2v87FPSkYU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Ohl4oLXApQ8qLxTi/pvYORGROOnBGx885NYRhMU05HhXQecSFH+sU4OqJk/hqikX7
+	 zfkNVPOCO6D9IzVC3c3n8v33a2gaUP+sueOxi8fFESxk3vHxMcprrFfbDeH625F5pW
+	 oAP4LZP7YfcnrifJrF5pwT7DT/8MQwZXc1olhcVNZZkiuutjV+lY3VwAf+YDMurYsx
+	 On4lcyjpMb2kwAeFxWiuKCNgTjOSmdbIX2qSgCrJha9QTEXXxeyiWVdz8virMZwqQn
+	 bcBPMEMVzxwkotBC/98Sytj92W0Z5U/PmP1pdYkTdMci8dY2DZfNJ8dBfAtq/4JGP0
+	 Q9PfO1ZLpZceQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C213A55ED9;
+	Thu, 30 Oct 2025 01:50:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 0/3] icmp: Add RFC 5837 support
-To: Jakub Kicinski <kuba@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, dsahern@kernel.org, petrm@nvidia.com,
- willemb@google.com, daniel@iogearbox.net, fw@strlen.de,
- ishaangandhi@gmail.com, rbonica@juniper.net, tom@herbertland.com
-References: <20251027082232.232571-1-idosch@nvidia.com>
- <20251028180432.7f73ef56@kernel.org>
-Content-Language: en-US
-From: Justin Iurman <justin.iurman@uliege.be>
-In-Reply-To: <20251028180432.7f73ef56@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V3 0/3] tls: Introduce and use RX async resync request
+ cancel function
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176178901482.3280604.3668884235905347850.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Oct 2025 01:50:14 +0000
+References: <1761508983-937977-1-git-send-email-tariqt@nvidia.com>
+In-Reply-To: <1761508983-937977-1-git-send-email-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: sd@queasysnail.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ saeedm@nvidia.com, leon@kernel.org, mbloch@nvidia.com,
+ john.fastabend@gmail.com, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, gal@nvidia.com, shshitrit@nvidia.com
 
-On 10/29/25 02:04, Jakub Kicinski wrote:
-> On Mon, 27 Oct 2025 10:22:29 +0200 Ido Schimmel wrote:
->> This patchset extends certain ICMP error messages (e.g., "Time
->> Exceeded") with incoming interface information in accordance with RFC
->> 5837 [1]. This is required for more meaningful traceroute results in
->> unnumbered networks. Like other ICMP settings, the feature is controlled
->> via a per-{netns, address family} sysctl. The interface and the
->> implementation are designed to support more ICMP extensions.
-> 
-> Is there supposed to be any relation between the ICMP message attrs
-> and what's provided via IOAM? For interface ID in IOAM we have
-> the ioam6_id attr instead of ifindex.
-> 
-> Would it make sense to add some info about relation to IOAM to the
-> commit msg (or even docs?). Or is it obvious to folks more familiar
-> with IP RFCs than I am?
-> 
-> cc: Justin
+Hello:
 
-I concur with what Ido said in his reply. There is no direct relation 
-between them, unfortunately. The interface ID in IOAM context could be 
-totally different, although one could see the benefit of having the same 
-value.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sun, 26 Oct 2025 22:03:00 +0200 you wrote:
+> Hi,
+> 
+> This is V3. Find previous one here:
+> https://lore.kernel.org/all/1760943954-909301-1-git-send-email-tariqt@nvidia.com/
+> 
+> This series by Shahar introduces RX async resync request cancel function
+> in tls module, and uses it in mlx5e driver.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,V3,1/3] net: tls: Change async resync helpers argument
+    https://git.kernel.org/netdev/net/c/34892cfec0c2
+  - [net,V3,2/3] net: tls: Cancel RX async resync request on rcd_delta overflow
+    https://git.kernel.org/netdev/net/c/c15d5c62ab31
+  - [net,V3,3/3] net/mlx5e: kTLS, Cancel RX async resync request in error flows
+    https://git.kernel.org/netdev/net/c/426e9da3b284
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
