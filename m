@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80B72FD1DD;
-	Fri, 31 Oct 2025 16:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42A22FBDEC;
+	Fri, 31 Oct 2025 16:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761926848; cv=none; b=sXa8u8pLp16P7o+jlZCzvt3vEGz71hsYybA7Ic/Y3eX+yDmU75YnFfzVZCYveVnllSOvsDnTAXNmCKFZyY5NphWeJkpByPdLcea2+hyAuangeFfheSyqNgV1uxWxoQKQzp4/wdeYTw8If+klT1e/cDhex62/qPlUwThS5LLIW98=
+	t=1761926849; cv=none; b=evrKPuNEwSxA75dbYTm9AAvDdChWsOYCwhoB0bCv/FsUU2ZkgKaEb/cFPmZ3Fz2uHEIETCipS/lToauT3zEtej0u2qQZiAx4WCcxyr+Au0bx8/kerosItqVdnwNdwRpA8vrkn9yCdEtk6DCAIda97FhZirqZ7b/YYTpe+DXxtQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761926848; c=relaxed/simple;
-	bh=eTnEqUfZ1QM8rQVdqe622sxSi3uLZoHR6Wimv93HDIk=;
+	s=arc-20240116; t=1761926849; c=relaxed/simple;
+	bh=a6iHhfPZ+WxXWgSSU0GzwY2TxKP9Vf9YncSXeUje4pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AxT5DEUFX49fnzsTmpQrzomhvmbOPzEIAzGUpdIOrzUfUt0ndH4sya+p6lMDcTqND4ChCdk1LvMTjakULSVhIepqhkG/b7+zcEBRyh92DlgvcMH+rcS4w23IccLHC5DHjR3/CyQ9gnq6sQk3l25zZJ/pI0GYpHHM1V2G2KI1heY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=v4yk6fei; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=n9HqwpDW/L3R0NkxG8O/Yqb3SEa165NKP1U3UC1rL7+/N800hFuJomaPVwHx1acazfCG2EAqZy9M6lbOE/UKUHKtJjKnzxBA8lBhySJgLl+zVhbFF6+G3US9dxlacfXA6bvJAzCf6PaMZRUSFlHYcEjzzARB019o4ppmKUgbG6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=E0fTvG5T; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="v4yk6fei"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="E0fTvG5T"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761926832;
-	bh=eTnEqUfZ1QM8rQVdqe622sxSi3uLZoHR6Wimv93HDIk=;
+	bh=a6iHhfPZ+WxXWgSSU0GzwY2TxKP9Vf9YncSXeUje4pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4yk6feiw7nbhJf4pm6xbTJ6j/pFdYbj1RktGh8CXT0l9bsDlVxsLY0oL0EpNWYe5
-	 MGUr1fPi5HVcOmZkyjG6d35GS8eEike+ar2peSRO4Jc487X6q+NiJAqZtEOQAUPyRf
-	 CWm5xuO1VHheIp2TSqdf6J+AXYllO6nWUufhT7ZTJ+uke8pBczVaz1aXLXNwzYqvfg
-	 tQyTr0HpZapshULDeQjmHTZOvdU6vdgxwdeAillU3HHvapKg5LMEF4WQhiF50cE0Zs
-	 Qk2pq8iLvu73XMfT4WARpEpNQeZIljDu1mmUHpG7m4GAQR2FQ2qfAnuyWM51DSPSd/
-	 h7UxmgyzZ8sNw==
+	b=E0fTvG5TkdlhKiJnMScHvfm2P+Pv7qKK5kDZoDuyC/1LhSYXEjapYvYwEGS1MUv85
+	 OzhoW659+DjaDu3fs2QDutzoSfgKWM5Tyh7yMnKGw9P5pF1LzCsGEOV25kBvt6B234
+	 QcYH4y7ixn8u1EilwbwlIWIQmODUB+fgCGKgs9Dy7y1zttYdOMAz9kF7nayZFhuMFf
+	 s8jkVCIRdFokRZEPU2ImW33Ulb+tQEWpfvIpDf2/XHfJMLii1YxXvrpK4AK8Nu7Wml
+	 1A/VOBfBF1KaQYP45PByhfCELDAwL11xp9RSGdVwobDkY2v0K1oH+s5DVC0DSTD78J
+	 RlHW8bvr3eIYA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 76A216012B;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 432DC60112;
 	Fri, 31 Oct 2025 16:07:12 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 665D2203673; Fri, 31 Oct 2025 16:05:43 +0000 (UTC)
+	id 759D4204DBC; Fri, 31 Oct 2025 16:05:44 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 03/11] wireguard: netlink: enable strict genetlink validation
-Date: Fri, 31 Oct 2025 16:05:29 +0000
-Message-ID: <20251031160539.1701943-4-ast@fiberby.net>
+Subject: [PATCH net-next v2 05/11] uapi: wireguard: move enum wg_cmd
+Date: Fri, 31 Oct 2025 16:05:31 +0000
+Message-ID: <20251031160539.1701943-6-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251031160539.1701943-1-ast@fiberby.net>
 References: <20251031160539.1701943-1-ast@fiberby.net>
@@ -60,34 +60,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Wireguard is a modern enough genetlink family, that it doesn't
-need resv_start_op. It already had policies in place when it was
-first merged, it has also never used the reserved field, or other
-things toggled by resv_start_op.
+This patch moves enum wg_cmd to the end of the file, where
+ynl-gen would like to generate it.
 
-wireguard-tools have always used zero initialized memory, and
-have never touched the reserved field, neither have any other
-clients I have checked. Closed-source clients are much more
-likely to use the embeddedable library from wireguard-tools,
-than a DIY implementation using uninitialized memory.
+This is an incremental step towards adopting an UAPI header
+generated by ynl-gen. This is split out to keep the patches readable.
+
+This is a trivial patch with no behavioural changes intended.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/uapi/linux/wireguard.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index db57a74d379b..682678d24a9f 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -633,7 +633,6 @@ static const struct genl_ops genl_ops[] = {
- static struct genl_family genl_family __ro_after_init = {
- 	.ops = genl_ops,
- 	.n_ops = ARRAY_SIZE(genl_ops),
--	.resv_start_op = WG_CMD_SET_DEVICE + 1,
- 	.name = WG_GENL_NAME,
- 	.version = WG_GENL_VERSION,
- 	.maxattr = WGDEVICE_A_MAX,
+diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+index dee4401e0b5d..3ebfffd61269 100644
+--- a/include/uapi/linux/wireguard.h
++++ b/include/uapi/linux/wireguard.h
+@@ -11,13 +11,6 @@
+ 
+ #define WG_KEY_LEN 32
+ 
+-enum wg_cmd {
+-	WG_CMD_GET_DEVICE,
+-	WG_CMD_SET_DEVICE,
+-	__WG_CMD_MAX
+-};
+-#define WG_CMD_MAX (__WG_CMD_MAX - 1)
+-
+ enum wgdevice_flag {
+ 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
+ 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+@@ -73,4 +66,12 @@ enum wgallowedip_attribute {
+ };
+ #define WGALLOWEDIP_A_MAX (__WGALLOWEDIP_A_LAST - 1)
+ 
++enum wg_cmd {
++	WG_CMD_GET_DEVICE,
++	WG_CMD_SET_DEVICE,
++
++	__WG_CMD_MAX
++};
++#define WG_CMD_MAX (__WG_CMD_MAX - 1)
++
+ #endif /* _WG_UAPI_WIREGUARD_H */
 -- 
 2.51.0
 
