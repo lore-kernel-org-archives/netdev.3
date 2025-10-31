@@ -1,80 +1,109 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81022FDC2F
-	for <netdev@vger.kernel.org>; Fri, 31 Oct 2025 17:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC642F6182;
+	Fri, 31 Oct 2025 17:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761931425; cv=none; b=LCjx9uno5TWeeT/u+ssZpugYnHUeTjWuBMk+rwqV3ibh7PYBVHUhYcAPiCIg1QmFMGnjVMytIa4AYs/lUcGySeIdaMav/dt5K+xRfKn6mFHcMJvC36YfWL97sTaNsZlEBf3snbOmdCvXFubWtIR+ANvar8CoVAy/Mk8dlkIAh1U=
+	t=1761931636; cv=none; b=C7qr4gcwvHcTzx/mHDBlLYLx/9kkgu9FBBpBASlkic968LZJZxAvgHBy/VJhm4fAyb93J5dj9ht+SwZcRpmqedfIZG80dof193Aj0WG0j2964vMxfmNC+6U9besDfFJrr5CyfX74m3XvNh9kcaWCxU8qTYt6vKRQOO1ym7mayp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761931425; c=relaxed/simple;
-	bh=6q2NkSh6EvEes0ee9aqz6Mk5HT39PLgzFSFsdCKynDs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sg3xX8qZJ7M6q5umvdMi7vW8mqVl7ATY4ldui74hf2d0K9NyZm4wj7aq7XuFC5nyuQ1bb9/P/HciF9YfDjaVQv01YifsBN1fgMSILuJnYl9WsmAv7hvL2dyuZwPi8qUlwB5+WkihEKUlv8zbtviJh6P5t/XANrygkmjGmoRDnNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=YlG03qKI; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1761931636; c=relaxed/simple;
+	bh=GYem28TIcz0PWGQwlrg2H0OZ4/ZTAm/l/zRLYIjV6ZM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qg2TjuMhyH1gVFktZr47o5TQOMAa17t739r1pxX8IEagmsdgKzKKDZFFpIwIXuV9/dZieVTSZS6r5drQEO23+ry1iqSGpg1EDenZIMVoUaH6jGzI+2vggS4vNqP935o7wmm8oNN1kPbLV7NUoAeNqqdFKE1Y+w4jaIHamDPnRcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CXcS3Dd6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="YlG03qKI"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 0760C4E4141E;
-	Fri, 31 Oct 2025 17:23:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BA21560704;
-	Fri, 31 Oct 2025 17:23:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DA61411818007;
-	Fri, 31 Oct 2025 18:23:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1761931419; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6q2NkSh6EvEes0ee9aqz6Mk5HT39PLgzFSFsdCKynDs=;
-	b=YlG03qKIoTkx0feVDAy0QuYyShELPfDSt9dm2JX1B05UDHCWj5nH7jgEye1xe8foK1ArFS
-	w+LkB3eULvCLBCTNUc3wexzM1e7QDQUSgS0WdruZ+YnMTO+tNTSRk23eHLLfByCqxmOp3J
-	G0wtaOfTbEHPh7Kpf4anCpcDZly2vO6YtjJQAShmKJ3fw/eJUOhpoX2XdFvLCgg9z4zvE5
-	EIaxNViXFpcwm4uthXkR5iSwjmwxF56sSddmV6rx/0BRXKFwdW4fCq8nJbGU4Okbmr1v4D
-	p5+0hBVVckTn7apqyBwcnrQz5fu/VYW91UEVXrm/bKuxs1pkyTEITX/exEcWuA==
-Date: Fri, 31 Oct 2025 18:23:34 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, Marco Crivellari <marco.crivellari@suse.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Sunil Goutham <sgoutham@marvell.com>, Richard
- Cochran <richardcochran@gmail.com>, Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Simon Horman <horms@kernel.org>,
- Jacob Keller <jacob.e.keller@intel.com>,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 5/7] net: thunderx: convert to use ndo_hwtstamp
- callbacks
-Message-ID: <20251031182334.41cb5156@kmaincent-XPS-13-7390>
-In-Reply-To: <20251031004607.1983544-6-vadim.fedorenko@linux.dev>
-References: <20251031004607.1983544-1-vadim.fedorenko@linux.dev>
-	<20251031004607.1983544-6-vadim.fedorenko@linux.dev>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CXcS3Dd6"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 118FFC4CEF1;
+	Fri, 31 Oct 2025 17:27:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761931636;
+	bh=GYem28TIcz0PWGQwlrg2H0OZ4/ZTAm/l/zRLYIjV6ZM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=CXcS3Dd6m4Hq4K2iZHXFSqje7Mp80IrdEFkrTAQmJtn2Kh4QaPCvzJPzaXlH7wR2J
+	 aSlkEj2GQTgRmQ7UjWqIJ39bdlGQZNbEWEmopNN3ewWkRYdkqIRup71wS07eoOIUb4
+	 xBBVN9v7Ltku8GiNXGUKeRhCtaZJvWPcLCYAIm4VssjopEiLyvPgYtEPabfhZL52+n
+	 YrJ8d5Houvi9qT1CNyerui8Rb/kHgp9rkdLGe3IVcE/OXJ47L7+tskAIoyiysouyRd
+	 DfhJVGNhcpUm+Ka5xS6OirqVc912fNSHp1hlYrXuqHJWNjwpoHsecYfyZsVoUk9r8s
+	 oomv4DGDsCHtg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F377ECCF9F8;
+	Fri, 31 Oct 2025 17:27:15 +0000 (UTC)
+From: Rohan G Thomas via B4 Relay <devnull+rohan.g.thomas.altera.com@kernel.org>
+Date: Sat, 01 Nov 2025 01:27:08 +0800
+Subject: [PATCH net-next v2 2/4] net: stmmac: socfpga: Enable TBS support
+ for Agilex5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251101-agilex5_ext-v2-2-a6b51b4dca4d@altera.com>
+References: <20251101-agilex5_ext-v2-0-a6b51b4dca4d@altera.com>
+In-Reply-To: <20251101-agilex5_ext-v2-0-a6b51b4dca4d@altera.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Rohan G Thomas <rohan.g.thomas@altera.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761931634; l=1214;
+ i=rohan.g.thomas@altera.com; s=20250815; h=from:subject:message-id;
+ bh=Rehj3W/2337ILzEH6ON7+yaibhBp9L+MAU32vI9ki2k=;
+ b=7dqHPuanqJE3mi6rIM7SP88BAecpYWdfi2p7QVL22kjPa9vppTpBken6O7JMOAiCZ33oy/ClL
+ snYeN9ZAW/bCTmWX6ZQb9332UdAyyEZAuBZHgHjPjf8hM5qniPffkub
+X-Developer-Key: i=rohan.g.thomas@altera.com; a=ed25519;
+ pk=5yZXkXswhfUILKAQwoIn7m6uSblwgV5oppxqde4g4TY=
+X-Endpoint-Received: by B4 Relay for rohan.g.thomas@altera.com/20250815
+ with auth_id=494
+X-Original-From: Rohan G Thomas <rohan.g.thomas@altera.com>
+Reply-To: rohan.g.thomas@altera.com
 
-On Fri, 31 Oct 2025 00:46:05 +0000
-Vadim Fedorenko <vadim.fedorenko@linux.dev> wrote:
+From: Rohan G Thomas <rohan.g.thomas@altera.com>
 
-> The driver implemented SIOCSHWTSTAMP ioctl command only, but it also
-> stores configuration in private data, so it's possible to report it back
-> to users. Implement both ndo_hwtstamp_set and ndo_hwtstamp_get
-> callbacks.
+Agilex5 supports Time-Based Scheduling(TBS) for Tx queue 6 and Tx
+queue 7. This commit enables TBS support for these queues.
 
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@altera.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-Thank you!
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 5666b01723643984f21b996e7653a36f4dc22e30..4f256f0ae05c15d28e4836d676e2f2c052540184 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -457,6 +457,19 @@ static void socfpga_agilex5_setup_plat_dat(struct socfpga_dwmac *dwmac)
+ 	struct plat_stmmacenet_data *plat_dat = dwmac->plat_dat;
+ 
+ 	plat_dat->core_type = DWMAC_CORE_XGMAC;
++
++	/* Enable TBS */
++	switch (plat_dat->tx_queues_to_use) {
++	case 8:
++		plat_dat->tx_queues_cfg[7].tbs_en = true;
++		fallthrough;
++	case 7:
++		plat_dat->tx_queues_cfg[6].tbs_en = true;
++		break;
++	default:
++		/* Tx Queues 0 - 5 doesn't support TBS on Agilex5 */
++		break;
++	}
+ }
+ 
+ static int socfpga_dwmac_probe(struct platform_device *pdev)
+
+-- 
+2.43.7
+
+
