@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D479229B2A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4E8239573;
 	Fri, 31 Oct 2025 16:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761926844; cv=none; b=cThX659EcfOlZGP1KcHjwHZ20gFEksH8lM3Gj7O9VOurJygoJLVdSS3k8+OL7DYMe3gwqI5CXrB3iSFiU6JGxOJ8UtJX5RDz+aemg2L/S4YDaRggjyValboB/b+3DBMTQp+Vcnv0JxnFD1P+W3wYxedSMx4qBHCDKILyGfEa068=
+	t=1761926844; cv=none; b=ucUI+NW1zrqxH0jepCDr6l/iDdIIkQ8jDroWTJ6pUCbno9jYyp3E8Z9/q6sKqNyGsOLtd3uSbN7MCl5KFWapIQ29+eVmqf9NpjeDKRb+Wrg7ryfJxPgSZrsufHPyAR6FHvCv9t0Iqv1NbMAOtkMKydVX4eVsBEV8rYP8qNsAGg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761926844; c=relaxed/simple;
-	bh=He5ET711S02oLtc1y7hWh0ZqphfBwv5k6IK3wRuetZQ=;
+	bh=A/VzELplGLH6tbz2YTzJX5i/O4BMRGUMhwdYO5PLcn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c6nZgW8sPWOrpm/0us0v2E/4/pUnWuQprJN/qqcYoejsxSkqDKyJmHu9RtLZoyh4RDBDbG+BRNWTKzQL/Na5oy8ArRtphlBthXwIchRQSGMEQRuLUFGFLdg1InQ9db9MDeW/IUDIFh4OV83JaQKJIAVsuyjefchHzQOB92TjrjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Kt4SZWvv; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=j5e0yP3+EK1S8mO+zkd00lo5+aExSVCylvd0PCcKWrq1MVkq4f0qumrErqUUg7pG1Qh29828aLTktO+V+qK25OXLOHpkTM5o0KL8uMHSguZ6EfCJmefduwwMRqY8tJYoyyrlnSw/UstiZlalSTqdv7kattuC43sGiBnUzQFcJ5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=vAapQ0dw; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Kt4SZWvv"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="vAapQ0dw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1761926832;
-	bh=He5ET711S02oLtc1y7hWh0ZqphfBwv5k6IK3wRuetZQ=;
+	bh=A/VzELplGLH6tbz2YTzJX5i/O4BMRGUMhwdYO5PLcn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kt4SZWvvTR8IVk5iQJA/Sepvl7iGP/yuj7ZNEkqKC5oSZo6wjfruvMxPCbWPIeroN
-	 sdHP56ka6XqRt2j/plCoxImmvKpVVaor0i2Xi9+N3xQt8t9BkQbiCvcAnEu8LBqUe/
-	 PNh9NmFU6MNLnXjCX/k3IJ1tddvWuLlNOPjq7kbUZScq9SOOmYwJ+6TqHlWNDyK9c3
-	 GpQMBiqhNwKv8/IOZRTRM9UgkiLUvDkJrKWDNNt7JL8vEUBLNWPCOLprLbaxkpfnGq
-	 4OxehtyMBxCErVSw8xpygv7jSiuK/08fbkhBwAguR+voVlN05sA6dMCD6wR9no5W3A
-	 ng6pbYwINcE/w==
+	b=vAapQ0dwi+zHVSMgwgBlfOW3uUruhqBDnRriId8JFHJObzF3Q6N2pAHHF2RTTiqPk
+	 BfwMQz1wQmKElyadWX5Th48eUG4eoIPNDp2w4tk/TFtSo780PVL+W+h/hb+elqMAsB
+	 305jGfH5QeEAqyNFNlrnlua29V/4OguQRTtsX2zJTIXMDXzXjSEqh6xkmSa34USLKk
+	 cmsUOud6j2PaUv4yACMQSZExRFuqm7I5wEWjkOFqnJrG+5OGt+4AEEgoAHWvgjx6M+
+	 apDr3HAfLky6HT1uBKnJnPeEYdrID5AXSPr7Zu2lFaS+uzEIcejBifBCrvp63QTCgu
+	 lPOJV+f8usnVQ==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 3F23B6010F;
-	Fri, 31 Oct 2025 16:07:12 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id C1D5960109;
+	Fri, 31 Oct 2025 16:07:11 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 42DB7202A39; Fri, 31 Oct 2025 16:05:42 +0000 (UTC)
+	id 020CB203CA2; Fri, 31 Oct 2025 16:05:44 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -45,9 +45,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	wireguard@lists.zx2c4.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 01/11] wireguard: netlink: validate nested arrays in policy
-Date: Fri, 31 Oct 2025 16:05:27 +0000
-Message-ID: <20251031160539.1701943-2-ast@fiberby.net>
+Subject: [PATCH net-next v2 04/11] netlink: specs: add specification for wireguard
+Date: Fri, 31 Oct 2025 16:05:30 +0000
+Message-ID: <20251031160539.1701943-5-ast@fiberby.net>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251031160539.1701943-1-ast@fiberby.net>
 References: <20251031160539.1701943-1-ast@fiberby.net>
@@ -60,66 +60,532 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Use NLA_POLICY_NESTED_ARRAY() to perform nested array validation
-in the policy validation step.
+This patch adds an near[1] complete YNL specification for wireguard,
+documenting the protocol in a machine-readable format, than the
+comment in wireguard.h, and eases usage from C and non-C programming
+languages alike.
 
-The nested policy was already enforced through nla_parse_nested(),
-however extack wasn't passed previously.
+The generated C library will be featured in the next patch, so in
+this patch I will use the in-kernel python client for examples.
+
+This makes the documentation in the UAPI header redundant, and
+it is therefore removed. The in-line documentation in the spec,
+is based on the existing comment in wireguard.h, and once released
+then it will be available in the kernel documentation at:
+  https://docs.kernel.org/netlink/specs/wireguard.html
+  (until then run: make htmldocs)
+
+Generate wireguard.rst from this spec:
+$ make -C tools/net/ynl/generated/ wireguard.rst
+
+Query wireguard interface through pyynl:
+$ sudo ./tools/net/ynl/pyynl/cli.py --family wireguard \
+                                    --dump get-device \
+                                    --json '{"ifindex":3}'
+[{'fwmark': 0,
+  'ifindex': 3,
+  'ifname': 'wg-test',
+  'listen-port': 54318,
+  'peers': [{0: {'allowedips': [{0: {'cidr-mask': 0,
+                                     'family': 2,
+                                     'ipaddr': '0.0.0.0'}},
+                                {0: {'cidr-mask': 0,
+                                     'family': 10,
+                                     'ipaddr': '::'}}],
+                 'endpoint': b'[...]',
+                 'last-handshake-time': {'nsec': 42, 'sec': 42},
+                 'persistent-keepalive-interval': 42,
+                 'preshared-key': '[...]',
+                 'protocol-version': 1,
+                 'public-key': '[...]',
+                 'rx-bytes': 42,
+                 'tx-bytes': 42}}],
+  'private-key': '[...]',
+  'public-key': '[...]'}]
+
+Add another allowed IP prefix:
+$ sudo ./tools/net/ynl/pyynl/cli.py --family wireguard \
+  --do set-device --json '{"ifindex":3,"peers":[
+    {"public-key":"6a df b1 83 a4 ..","allowedips":[
+      {"cidr-mask":0,"family":10,"ipaddr":"::"}]}]}'
+
+[1] As can be seen above, the "endpoint" is only decoded as binary data,
+    as it can't be described fully in YNL. It's a struct sockaddr_in or
+    struct sockaddr_in6 depending on the attribute length.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- drivers/net/wireguard/netlink.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ Documentation/netlink/specs/wireguard.yaml | 307 +++++++++++++++++++++
+ MAINTAINERS                                |   1 +
+ include/uapi/linux/wireguard.h             | 129 ---------
+ 3 files changed, 308 insertions(+), 129 deletions(-)
+ create mode 100644 Documentation/netlink/specs/wireguard.yaml
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index 67f962eb8b46..e4416f23d427 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -18,6 +18,8 @@
- #include <crypto/utils.h>
+diff --git a/Documentation/netlink/specs/wireguard.yaml b/Documentation/netlink/specs/wireguard.yaml
+new file mode 100644
+index 000000000000..f3226fa38095
+--- /dev/null
++++ b/Documentation/netlink/specs/wireguard.yaml
+@@ -0,0 +1,307 @@
++# SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
++---
++name: wireguard
++protocol: genetlink-legacy
++
++doc: |
++  **Netlink protocol to control WireGuard network devices.**
++
++  The below enums and macros are for interfacing with WireGuard,
++  using generic netlink, with family ``WG_GENL_NAME`` and version
++  ``WG_GENL_VERSION``. It defines two commands: get and set.
++  Note that while they share many common attributes, these two
++  commands actually accept a slightly different set of inputs and
++  outputs. These differences are noted under the individual attributes.
++c-family-name: wg-genl-name
++c-version-name: wg-genl-version
++max-by-define: true
++
++definitions:
++  -
++    name-prefix: wg-
++    name: key-len
++    type: const
++    value: 32
++  -
++    name: --kernel-timespec
++    type: struct
++    header: linux/time_types.h
++    members:
++      -
++        name: sec
++        type: u64
++        doc: Number of seconds, since UNIX epoch.
++      -
++        name: nsec
++        type: u64
++        doc: Number of nanoseconds, after the second began.
++  -
++    name: wgdevice-flags
++    name-prefix: wgdevice-f-
++    enum-name: wgdevice-flag
++    type: flags
++    entries:
++      - replace-peers
++  -
++    name: wgpeer-flags
++    name-prefix: wgpeer-f-
++    enum-name: wgpeer-flag
++    type: flags
++    entries:
++      - remove-me
++      - replace-allowedips
++      - update-only
++  -
++    name: wgallowedip-flags
++    name-prefix: wgallowedip-f-
++    enum-name: wgallowedip-flag
++    type: flags
++    entries:
++      - remove-me
++
++attribute-sets:
++  -
++    name: wgdevice
++    enum-name: wgdevice-attribute
++    name-prefix: wgdevice-a-
++    attr-cnt-name: --wgdevice-a-last
++    attributes:
++      -
++        name: unspec
++        type: unused
++        value: 0
++      -
++        name: ifindex
++        type: u32
++      -
++        name: ifname
++        type: string
++        checks:
++          max-len: 15
++      -
++        name: private-key
++        type: binary
++        doc: Set to all zeros to remove.
++        display-hint: hex
++        checks:
++          exact-len: wg-key-len
++      -
++        name: public-key
++        type: binary
++        display-hint: hex
++        checks:
++          exact-len: wg-key-len
++      -
++        name: flags
++        doc: |
++          ``0`` or ``WGDEVICE_F_REPLACE_PEERS`` if all current peers
++          should be removed prior to adding the list below.
++        type: u32
++        enum: wgdevice-flags
++        checks:
++          flags-mask: wgdevice-flags
++      -
++        name: listen-port
++        type: u16
++        doc: Set as ``0`` to choose randomly.
++      -
++        name: fwmark
++        type: u32
++        doc: Set as ``0`` to disable.
++      -
++        name: peers
++        type: indexed-array
++        sub-type: nest
++        nested-attributes: wgpeer
++        doc: The index is set as ``0`` in ``DUMP``, and unused in ``DO``.
++  -
++    name: wgpeer
++    enum-name: wgpeer-attribute
++    name-prefix: wgpeer-a-
++    attr-cnt-name: --wgpeer-a-last
++    attributes:
++      -
++        name: unspec
++        type: unused
++        value: 0
++      -
++        name: public-key
++        type: binary
++        display-hint: hex
++        checks:
++          exact-len: wg-key-len
++      -
++        name: preshared-key
++        type: binary
++        doc: Set as all zeros to remove.
++        display-hint: hex
++        checks:
++          exact-len: wg-key-len
++      -
++        name: flags
++        doc: |
++          ``0`` and/or ``WGPEER_F_REMOVE_ME`` if the specified peer should not
++          exist at the end of the operation, rather than added/updated
++          and/or ``WGPEER_F_REPLACE_ALLOWEDIPS`` if all current allowed IPs
++          of this peer should be removed prior to adding the list below
++          and/or ``WGPEER_F_UPDATE_ONLY`` if the peer should only be set if
++          it already exists.
++        type: u32
++        enum: wgpeer-flags
++        checks:
++          flags-mask: wgpeer-flags
++      -
++        name: endpoint
++        doc: struct sockaddr_in or struct sockaddr_in6
++        type: binary
++        checks:
++          min-len: 16
++      -
++        name: persistent-keepalive-interval
++        type: u16
++        doc: Set as ``0`` to disable.
++      -
++        name: last-handshake-time
++        type: binary
++        struct: --kernel-timespec
++        checks:
++          exact-len: 16
++      -
++        name: rx-bytes
++        type: u64
++      -
++        name: tx-bytes
++        type: u64
++      -
++        name: allowedips
++        type: indexed-array
++        sub-type: nest
++        nested-attributes: wgallowedip
++        doc: The index is set as ``0`` in ``DUMP``, and unused in ``DO``.
++      -
++        name: protocol-version
++        type: u32
++        doc: |
++          Should not be set or used at all by most users of this API,
++          as the most recent protocol will be used when this is unset.
++          Otherwise, must be set to ``1``.
++  -
++    name: wgallowedip
++    enum-name: wgallowedip-attribute
++    name-prefix: wgallowedip-a-
++    attr-cnt-name: --wgallowedip-a-last
++    attributes:
++      -
++        name: unspec
++        type: unused
++        value: 0
++      -
++        name: family
++        type: u16
++        doc: IP family, either ``AF_INET`` or ``AF_INET6``.
++      -
++        name: ipaddr
++        type: binary
++        doc: Either ``struct in_addr`` or ``struct in6_addr``.
++        display-hint: ipv4-or-v6
++        checks:
++          min-len: 4
++      -
++        name: cidr-mask
++        type: u8
++      -
++        name: flags
++        type: u32
++        doc: |
++          ``WGALLOWEDIP_F_REMOVE_ME`` if the specified IP should be
++          removed; otherwise, this IP will be added if it is not
++          already present.
++        enum: wgallowedip-flags
++        checks:
++          flags-mask: wgallowedip-flags
++
++operations:
++  enum-name: wg-cmd
++  name-prefix: wg-cmd-
++  list:
++    -
++      name: get-device
++      value: 0
++      doc: |
++        Retrieve WireGuard device
++        ~~~~~~~~~~~~~~~~~~~~~~~~~
++
++        The command should be called with one but not both of:
++
++        - ``WGDEVICE_A_IFINDEX``
++        - ``WGDEVICE_A_IFNAME``
++
++        The kernel will then return several messages (``NLM_F_MULTI``).
++        It is possible that all of the allowed IPs of a single peer
++        will not fit within a single netlink message. In that case, the
++        same peer will be written in the following message, except it will
++        only contain ``WGPEER_A_PUBLIC_KEY`` and ``WGPEER_A_ALLOWEDIPS``.
++        This may occur several times in a row for the same peer.
++        It is then up to the receiver to coalesce adjacent peers.
++        Likewise, it is possible that all peers will not fit within a
++        single message.
++        So, subsequent peers will be sent in following messages,
++        except those will only contain ``WGDEVICE_A_IFNAME`` and
++        ``WGDEVICE_A_PEERS``. It is then up to the receiver to coalesce
++        these messages to form the complete list of peers.
++
++        While this command does accept the other ``WGDEVICE_A_*``
++        attributes, for compatibility reasons, but they are ignored
++        by this command, and should not be used in requests.
++
++        Since this is an ``NLA_F_DUMP`` command, the final message will
++        always be ``NLMSG_DONE``, even if an error occurs. However, this
++        ``NLMSG_DONE`` message contains an integer error code. It is
++        either zero or a negative error code corresponding to the errno.
++      attribute-set: wgdevice
++      flags: [uns-admin-perm]
++
++      dump:
++        pre: wireguard-nl-get-device-start
++        post: wireguard-nl-get-device-done
++        # request only uses ifindex | ifname, but keep .maxattr as is
++        request: &all-attrs
++          attributes:
++            - ifindex
++            - ifname
++            - private-key
++            - public-key
++            - flags
++            - listen-port
++            - fwmark
++            - peers
++        reply: *all-attrs
++    -
++      name: set-device
++      value: 1
++      doc: |
++        Set WireGuard device
++        ~~~~~~~~~~~~~~~~~~~~
++
++        This command should be called with a wgdevice set, containing one
++        but not both of ``WGDEVICE_A_IFINDEX`` and ``WGDEVICE_A_IFNAME``.
++
++        It is possible that the amount of configuration data exceeds that
++        of the maximum message length accepted by the kernel.
++        In that case, several messages should be sent one after another,
++        with each successive one filling in information not contained in
++        the prior.
++        Note that if ``WGDEVICE_F_REPLACE_PEERS`` is specified in the first
++        message, it probably should not be specified in fragments that come
++        after, so that the list of peers is only cleared the first time but
++        appended after.
++        Likewise for peers, if ``WGPEER_F_REPLACE_ALLOWEDIPS`` is specified
++        in the first message of a peer, it likely should not be specified
++        in subsequent fragments.
++
++        If an error occurs, ``NLMSG_ERROR`` will reply containing an errno.
++      attribute-set: wgdevice
++      flags: [uns-admin-perm]
++
++      do:
++        request: *all-attrs
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1ab7e8746299..65c71728e2c6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27641,6 +27641,7 @@ M:	Jason A. Donenfeld <Jason@zx2c4.com>
+ L:	wireguard@lists.zx2c4.com
+ L:	netdev@vger.kernel.org
+ S:	Maintained
++F:	Documentation/netlink/specs/wireguard.yaml
+ F:	drivers/net/wireguard/
+ F:	tools/testing/selftests/wireguard/
  
- static struct genl_family genl_family;
-+static const struct nla_policy peer_policy[WGPEER_A_MAX + 1];
-+static const struct nla_policy allowedip_policy[WGALLOWEDIP_A_MAX + 1];
+diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+index 8c26391196d5..dee4401e0b5d 100644
+--- a/include/uapi/linux/wireguard.h
++++ b/include/uapi/linux/wireguard.h
+@@ -1,135 +1,6 @@
+ /* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR MIT */
+ /*
+  * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+- *
+- * Documentation
+- * =============
+- *
+- * The below enums and macros are for interfacing with WireGuard, using generic
+- * netlink, with family WG_GENL_NAME and version WG_GENL_VERSION. It defines two
+- * methods: get and set. Note that while they share many common attributes,
+- * these two functions actually accept a slightly different set of inputs and
+- * outputs.
+- *
+- * WG_CMD_GET_DEVICE
+- * -----------------
+- *
+- * May only be called via NLM_F_REQUEST | NLM_F_DUMP. The command should contain
+- * one but not both of:
+- *
+- *    WGDEVICE_A_IFINDEX: NLA_U32
+- *    WGDEVICE_A_IFNAME: NLA_NUL_STRING, maxlen IFNAMSIZ - 1
+- *
+- * The kernel will then return several messages (NLM_F_MULTI) containing the
+- * following tree of nested items:
+- *
+- *    WGDEVICE_A_IFINDEX: NLA_U32
+- *    WGDEVICE_A_IFNAME: NLA_NUL_STRING, maxlen IFNAMSIZ - 1
+- *    WGDEVICE_A_PRIVATE_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+- *    WGDEVICE_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+- *    WGDEVICE_A_LISTEN_PORT: NLA_U16
+- *    WGDEVICE_A_FWMARK: NLA_U32
+- *    WGDEVICE_A_PEERS: NLA_NESTED
+- *        0: NLA_NESTED
+- *            WGPEER_A_PUBLIC_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+- *            WGPEER_A_PRESHARED_KEY: NLA_EXACT_LEN, len WG_KEY_LEN
+- *            WGPEER_A_ENDPOINT: NLA_MIN_LEN(struct sockaddr), struct sockaddr_in or struct sockaddr_in6
+- *            WGPEER_A_PERSISTENT_KEEPALIVE_INTERVAL: NLA_U16
+- *            WGPEER_A_LAST_HANDSHAKE_TIME: NLA_EXACT_LEN, struct __kernel_timespec
+- *            WGPEER_A_RX_BYTES: NLA_U64
+- *            WGPEER_A_TX_BYTES: NLA_U64
+- *            WGPEER_A_ALLOWEDIPS: NLA_NESTED
+- *                0: NLA_NESTED
+- *                    WGALLOWEDIP_A_FAMILY: NLA_U16
+- *                    WGALLOWEDIP_A_IPADDR: NLA_MIN_LEN(struct in_addr), struct in_addr or struct in6_addr
+- *                    WGALLOWEDIP_A_CIDR_MASK: NLA_U8
+- *                0: NLA_NESTED
+- *                    ...
+- *                0: NLA_NESTED
+- *                    ...
+- *                ...
+- *            WGPEER_A_PROTOCOL_VERSION: NLA_U32
+- *        0: NLA_NESTED
+- *            ...
+- *        ...
+- *
+- * It is possible that all of the allowed IPs of a single peer will not
+- * fit within a single netlink message. In that case, the same peer will
+- * be written in the following message, except it will only contain
+- * WGPEER_A_PUBLIC_KEY and WGPEER_A_ALLOWEDIPS. This may occur several
+- * times in a row for the same peer. It is then up to the receiver to
+- * coalesce adjacent peers. Likewise, it is possible that all peers will
+- * not fit within a single message. So, subsequent peers will be sent
+- * in following messages, except those will only contain WGDEVICE_A_IFNAME
+- * and WGDEVICE_A_PEERS. It is then up to the receiver to coalesce these
+- * messages to form the complete list of peers.
+- *
+- * Since this is an NLA_F_DUMP command, the final message will always be
+- * NLMSG_DONE, even if an error occurs. However, this NLMSG_DONE message
+- * contains an integer error code. It is either zero or a negative error
+- * code corresponding to the errno.
+- *
+- * WG_CMD_SET_DEVICE
+- * -----------------
+- *
+- * May only be called via NLM_F_REQUEST. The command should contain the
+- * following tree of nested items, containing one but not both of
+- * WGDEVICE_A_IFINDEX and WGDEVICE_A_IFNAME:
+- *
+- *    WGDEVICE_A_IFINDEX: NLA_U32
+- *    WGDEVICE_A_IFNAME: NLA_NUL_STRING, maxlen IFNAMSIZ - 1
+- *    WGDEVICE_A_FLAGS: NLA_U32, 0 or WGDEVICE_F_REPLACE_PEERS if all current
+- *                      peers should be removed prior to adding the list below.
+- *    WGDEVICE_A_PRIVATE_KEY: len WG_KEY_LEN, all zeros to remove
+- *    WGDEVICE_A_LISTEN_PORT: NLA_U16, 0 to choose randomly
+- *    WGDEVICE_A_FWMARK: NLA_U32, 0 to disable
+- *    WGDEVICE_A_PEERS: NLA_NESTED
+- *        0: NLA_NESTED
+- *            WGPEER_A_PUBLIC_KEY: len WG_KEY_LEN
+- *            WGPEER_A_FLAGS: NLA_U32, 0 and/or WGPEER_F_REMOVE_ME if the
+- *                            specified peer should not exist at the end of the
+- *                            operation, rather than added/updated and/or
+- *                            WGPEER_F_REPLACE_ALLOWEDIPS if all current allowed
+- *                            IPs of this peer should be removed prior to adding
+- *                            the list below and/or WGPEER_F_UPDATE_ONLY if the
+- *                            peer should only be set if it already exists.
+- *            WGPEER_A_PRESHARED_KEY: len WG_KEY_LEN, all zeros to remove
+- *            WGPEER_A_ENDPOINT: struct sockaddr_in or struct sockaddr_in6
+- *            WGPEER_A_PERSISTENT_KEEPALIVE_INTERVAL: NLA_U16, 0 to disable
+- *            WGPEER_A_ALLOWEDIPS: NLA_NESTED
+- *                0: NLA_NESTED
+- *                    WGALLOWEDIP_A_FAMILY: NLA_U16
+- *                    WGALLOWEDIP_A_IPADDR: struct in_addr or struct in6_addr
+- *                    WGALLOWEDIP_A_CIDR_MASK: NLA_U8
+- *                    WGALLOWEDIP_A_FLAGS: NLA_U32, WGALLOWEDIP_F_REMOVE_ME if
+- *                                         the specified IP should be removed;
+- *                                         otherwise, this IP will be added if
+- *                                         it is not already present.
+- *                0: NLA_NESTED
+- *                    ...
+- *                0: NLA_NESTED
+- *                    ...
+- *                ...
+- *            WGPEER_A_PROTOCOL_VERSION: NLA_U32, should not be set or used at
+- *                                       all by most users of this API, as the
+- *                                       most recent protocol will be used when
+- *                                       this is unset. Otherwise, must be set
+- *                                       to 1.
+- *        0: NLA_NESTED
+- *            ...
+- *        ...
+- *
+- * It is possible that the amount of configuration data exceeds that of
+- * the maximum message length accepted by the kernel. In that case, several
+- * messages should be sent one after another, with each successive one
+- * filling in information not contained in the prior. Note that if
+- * WGDEVICE_F_REPLACE_PEERS is specified in the first message, it probably
+- * should not be specified in fragments that come after, so that the list
+- * of peers is only cleared the first time but appended after. Likewise for
+- * peers, if WGPEER_F_REPLACE_ALLOWEDIPS is specified in the first message
+- * of a peer, it likely should not be specified in subsequent fragments.
+- *
+- * If an error occurs, NLMSG_ERROR will reply containing an errno.
+  */
  
- static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- 	[WGDEVICE_A_IFINDEX]		= { .type = NLA_U32 },
-@@ -27,7 +29,7 @@ static const struct nla_policy device_policy[WGDEVICE_A_MAX + 1] = {
- 	[WGDEVICE_A_FLAGS]		= NLA_POLICY_MASK(NLA_U32, __WGDEVICE_F_ALL),
- 	[WGDEVICE_A_LISTEN_PORT]	= { .type = NLA_U16 },
- 	[WGDEVICE_A_FWMARK]		= { .type = NLA_U32 },
--	[WGDEVICE_A_PEERS]		= { .type = NLA_NESTED }
-+	[WGDEVICE_A_PEERS]		= NLA_POLICY_NESTED_ARRAY(peer_policy),
- };
- 
- static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
-@@ -39,7 +41,7 @@ static const struct nla_policy peer_policy[WGPEER_A_MAX + 1] = {
- 	[WGPEER_A_LAST_HANDSHAKE_TIME]			= NLA_POLICY_EXACT_LEN(sizeof(struct __kernel_timespec)),
- 	[WGPEER_A_RX_BYTES]				= { .type = NLA_U64 },
- 	[WGPEER_A_TX_BYTES]				= { .type = NLA_U64 },
--	[WGPEER_A_ALLOWEDIPS]				= { .type = NLA_NESTED },
-+	[WGPEER_A_ALLOWEDIPS]				= NLA_POLICY_NESTED_ARRAY(allowedip_policy),
- 	[WGPEER_A_PROTOCOL_VERSION]			= { .type = NLA_U32 }
- };
- 
-@@ -467,7 +469,7 @@ static int set_peer(struct wg_device *wg, struct nlattr **attrs)
- 
- 		nla_for_each_nested(attr, attrs[WGPEER_A_ALLOWEDIPS], rem) {
- 			ret = nla_parse_nested(allowedip, WGALLOWEDIP_A_MAX,
--					       attr, allowedip_policy, NULL);
-+					       attr, NULL, NULL);
- 			if (ret < 0)
- 				goto out;
- 			ret = set_allowedip(peer, allowedip);
-@@ -593,7 +595,7 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 
- 		nla_for_each_nested(attr, info->attrs[WGDEVICE_A_PEERS], rem) {
- 			ret = nla_parse_nested(peer, WGPEER_A_MAX, attr,
--					       peer_policy, NULL);
-+					       NULL, NULL);
- 			if (ret < 0)
- 				goto out;
- 			ret = set_peer(wg, peer);
+ #ifndef _WG_UAPI_WIREGUARD_H
 -- 
 2.51.0
 
