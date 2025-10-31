@@ -1,125 +1,147 @@
-Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D2E28314E;
-	Fri, 31 Oct 2025 16:07:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879D34F46C;
+	Fri, 31 Oct 2025 16:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761926849; cv=none; b=pyeSri+OnhY3jHE/i/iRF7mQ4CjsMdMyPKiW1aup3mqkVQtw3TeP1+5xPYPhFJfLXoYn7tKVsMsN9JhcM6fkwWzcVorv9mlPPhWAU9X9z/JLaQ39zBvaBcnWnWNdglAwOeCmbr7lP/CF/9IE4F2KXcFvKew165QKRHgVV8OszFs=
+	t=1761926893; cv=none; b=p+yYkcKVqoV8FNRNoUrm167b133MfLytUbu+JacqnA9h94m5jyuxAxnRe+Tb5Jf5gpcXjzF9hY9L+Cq98LdvsPJe+VOgkydK4MwwJRgaxw6SSfSAFTfeNGOyVQvWyy3wCREhOKHSSnh7Ge7eUHqzdR41i3vf9RfLJs79RhFWq4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761926849; c=relaxed/simple;
-	bh=YP/7Az468O3K9xv25TYnGVQmzRYsWPioltt1rTnsRhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fIZ4g6/nyR8VOfZtTcwpJD4RgzbKVoZwDtALklMxHFe91ZYWasIq2eurQ1E6wkiW/Yv41D1Tac0LQYIN+WjQw2QqVYi9ulVABanm2sU5XlpMLj4Xa0lFxjbprWTSeuIFmXazUaB3wXfA9kEJAWMSU09VQKYy0HE59wQ3Fz+z5fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=Znn9uAyB; arc=none smtp.client-ip=193.104.135.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
+	s=arc-20240116; t=1761926893; c=relaxed/simple;
+	bh=DBnRWCc9yOikTyJAePQMQXl8JnrzRu+fPN1hD2Ld8qU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eIRAAy3Cv3mCN0owTp9W7KpkNHE4M9QWuKYpJsfjNNGLN/mxGC507nhKV7iHJADgz4jVdALLlBQtcVc9etJPLt6xC015TAx9uehTdnNOSGcAinmRUswvAKQ0hcIR84Br7oi0H8yA+D137fPjosoTfDDNGsX4HEv5H2ErYtMrT7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNm3q3Fx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="Znn9uAyB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1761926832;
-	bh=YP/7Az468O3K9xv25TYnGVQmzRYsWPioltt1rTnsRhQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Znn9uAyBEEw1yjQRjQ2/2gxm06TplVmAsDIJx7RJN0g1LVodQeSPTBTiq35G0BBfF
-	 SgiQfBa2XgXnT31AKI+Fy8HYuTreEuksDR8dlG2y8yXzWZjQ+Fi7QiWgPoygaCbyE1
-	 dVNKpj/usLmKI1aBA3jDaSthQEvOib6Kbb6N7apFqjSEH7PaZij0isLCwnYEz/Mw7U
-	 OV8MdlzN9mK+AeFOAtlZ71I/L4UUfHvZH4P2aTV82iVoe1YvKgrcwf6TJGlcxWANhL
-	 +xg6qOV6U+WMynZ4y4hFfMtpEUqMuUA14BDItPhjYL3Uyj3OWUi8wqhdd+TqJI9UWg
-	 OUFal7ELAo3HA==
-Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 58CE46012A;
-	Fri, 31 Oct 2025 16:07:12 +0000 (UTC)
-Received: by x201s (Postfix, from userid 1000)
-	id 5FFDB205085; Fri, 31 Oct 2025 16:05:46 +0000 (UTC)
-From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNm3q3Fx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA40C4CEE7;
+	Fri, 31 Oct 2025 16:08:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761926892;
+	bh=DBnRWCc9yOikTyJAePQMQXl8JnrzRu+fPN1hD2Ld8qU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lNm3q3FxkqsL5QWMXLypsadCbVDHoS7srbuL3umgOILAgP2CmodbUjbmVgoYLqLve
+	 gqW5tz1EPBizlAZk5MqElD4DQfIHAxzmtN19JFglozpQKcQGBxYMl7yLPgL06f0Alc
+	 Wmr5T7iw805pUJEirQ0gG/+y+Tb8PrWnxbGm6rEfbp7xc7L8cnr1zQFwXjAnhR1hBH
+	 leAVv9GH6W28+5E2FEe+8vxpWiPWLa7dvgRWsbm9oHb0ZrOKO2qaDT1p5UMDci9pYi
+	 2qfoSEzL1lmFVYHaphzP0WGPUKmYmpipLpz2ALLuOYx0tXFwTP1Ngxt7pTzWQPBIkK
+	 d4ltC1wGy9Gzg==
+Date: Fri, 31 Oct 2025 17:08:09 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	wireguard@lists.zx2c4.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 09/11] wireguard: netlink: convert to split ops
-Date: Fri, 31 Oct 2025 16:05:35 +0000
-Message-ID: <20251031160539.1701943-10-ast@fiberby.net>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251031160539.1701943-1-ast@fiberby.net>
-References: <20251031160539.1701943-1-ast@fiberby.net>
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 11/33] cpuset: Provide lockdep check for cpuset lock held
+Message-ID: <aQTe6X5XXSp8_3z5@localhost.localdomain>
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-12-frederic@kernel.org>
+ <b94f6159-a280-4890-a02a-f19ff808de5b@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b94f6159-a280-4890-a02a-f19ff808de5b@huaweicloud.com>
 
-This patch converts wireguard from using legacy struct genl_ops
-to struct genl_split_ops, by applying the same transformation
-as genl_cmd_full_to_split() would otherwise do at runtime.
+Le Tue, Oct 14, 2025 at 09:29:25PM +0800, Chen Ridong a �crit :
+> 
+> 
+> On 2025/10/14 4:31, Frederic Weisbecker wrote:
+> > cpuset modifies partitions, including isolated, while holding the cpuset
+> > mutex.
+> > 
+> > This means that holding the cpuset mutex is safe to synchronize against
+> > housekeeping cpumask changes.
+> > 
+> > Provide a lockdep check to validate that.
+> > 
+> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> > ---
+> >  include/linux/cpuset.h | 2 ++
+> >  kernel/cgroup/cpuset.c | 7 +++++++
+> >  2 files changed, 9 insertions(+)
+> > 
+> > diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
+> > index 2ddb256187b5..051d36fec578 100644
+> > --- a/include/linux/cpuset.h
+> > +++ b/include/linux/cpuset.h
+> > @@ -18,6 +18,8 @@
+> >  #include <linux/mmu_context.h>
+> >  #include <linux/jump_label.h>
+> >  
+> > +extern bool lockdep_is_cpuset_held(void);
+> > +
+> >  #ifdef CONFIG_CPUSETS
+> >  
+> >  /*
+> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> > index 8595f1eadf23..aa1ac7bcf2ea 100644
+> > --- a/kernel/cgroup/cpuset.c
+> > +++ b/kernel/cgroup/cpuset.c
+> > @@ -279,6 +279,13 @@ void cpuset_full_unlock(void)
+> >  	cpus_read_unlock();
+> >  }
+> >  
+> > +#ifdef CONFIG_LOCKDEP
+> > +bool lockdep_is_cpuset_held(void)
+> > +{
+> > +	return lockdep_is_held(&cpuset_mutex);
+> > +}
+> > +#endif
+> > +
+> >  static DEFINE_SPINLOCK(callback_lock);
+> >  
+> >  void cpuset_callback_lock_irq(void)
+> 
+> Is the lockdep_is_cpuset_held function actually being used?
+> If CONFIG_LOCKDEP is disabled, compilation would fail with an "undefined reference to
+> lockdep_is_cpuset_held" error.
 
-WGDEVICE_A_MAX is swapped for WGDEVICE_A_PEERS, while they are
-currently equivalent, then .maxattr should be the maximum attribute
-that a given command supports, which might not be WGDEVICE_A_MAX.
+Although counter-intuitive, this is how the lockdep_is_held() functions family
+do work.
 
-This is an incremental step towards adopting netlink policy code
-generated by ynl-gen, ensuring that the code and spec is aligned.
+This allows this kind of trick:
 
-This is a trivial patch with no behavioural changes intended.
+if (IS_ENABLED(CONFIG_LOCKDEP))
+   WARN_ON_ONCE(!lockdep_is_held(&some_lock))
 
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- drivers/net/wireguard/netlink.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+This works during the compilation because the prototype of lockdep_is_held()
+is declared. And since the IS_ENABLED() is resolved during compilation as well,
+the conditional code is wiped out and therefore not linked. As a result the
+linker doesn't even look for the definition of lockdep_is_held() and we don't
+need to define an off case that would return a wrong assumption.
 
-diff --git a/drivers/net/wireguard/netlink.c b/drivers/net/wireguard/netlink.c
-index f9bed135000f..7fecc25bd781 100644
---- a/drivers/net/wireguard/netlink.c
-+++ b/drivers/net/wireguard/netlink.c
-@@ -616,28 +616,30 @@ static int wg_set_device(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
- }
- 
--static const struct genl_ops genl_ops[] = {
-+static const struct genl_split_ops wireguard_nl_ops[] = {
- 	{
- 		.cmd = WG_CMD_GET_DEVICE,
- 		.start = wg_get_device_start,
- 		.dumpit = wg_get_device_dump,
- 		.done = wg_get_device_done,
--		.flags = GENL_UNS_ADMIN_PERM
-+		.policy = device_policy,
-+		.maxattr = WGDEVICE_A_PEERS,
-+		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DUMP,
- 	}, {
- 		.cmd = WG_CMD_SET_DEVICE,
- 		.doit = wg_set_device,
--		.flags = GENL_UNS_ADMIN_PERM
-+		.policy = device_policy,
-+		.maxattr = WGDEVICE_A_PEERS,
-+		.flags = GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	}
- };
- 
- static struct genl_family genl_family __ro_after_init = {
--	.ops = genl_ops,
--	.n_ops = ARRAY_SIZE(genl_ops),
-+	.split_ops = wireguard_nl_ops,
-+	.n_split_ops = ARRAY_SIZE(wireguard_nl_ops),
- 	.name = WG_GENL_NAME,
- 	.version = WG_GENL_VERSION,
--	.maxattr = WGDEVICE_A_MAX,
- 	.module = THIS_MODULE,
--	.policy = device_policy,
- 	.netnsok = true
- };
- 
+Thanks.
+
 -- 
-2.51.0
-
+Frederic Weisbecker
+SUSE Labs
