@@ -1,126 +1,166 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2FE2E1743;
-	Fri, 31 Oct 2025 12:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6652E5B0D
+	for <netdev@vger.kernel.org>; Fri, 31 Oct 2025 12:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761913474; cv=none; b=Fk9WNGtBpKbx2C/iL7jS5iegkwp8KLcdlXug7f2TqLchcCddcbzkuWv1REH3dCi6RxnSWQmkITpLzcPmUeETz2hQxCxi/byi9Qtg2cWrhUUdDRp/MZ1hXY7FN7t31swLx0+2e0FCOKg+fga1jSgo0Fj+sOUu63pfrprfQvcreOg=
+	t=1761913496; cv=none; b=khLzVnlcgFqRyyAYBod508GMB+7Y6WsWzkQo/VNReGMVx8RYdj4vBmKyqexazUajth9hqR/AYhdBlEQ2bHtP8Zy6H0/rqdcjbI/IOfDYmPp5WzcIPbeeHCD2VGqiwEwDIm1o+yCqIbaBsvh6L6zQbNztSpC2GM81ikU9G3Nmye4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761913474; c=relaxed/simple;
-	bh=2Nt4r/eYanNf5cDgEn1QKK+iWGBoitcY9r7UXIB3y4g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BNbzs1bIsBwveAfKkQ0I0bPfppMussDMVO7y2RzIHOmd0weAd0CQSEg5JCwFgQKWi8cKlhlkrkZY8PdE3Rx7zMgdDaaZB7xRICexDElxj+/GdPgnjnTEtSQVnH1ZjNjLRe4PdPnGV9vQ1i9S8Agd5Cys4HqRLvZg0xMa1LC6Wfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UkUNUh8c; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1761913496; c=relaxed/simple;
+	bh=Y66ckEvjvtnhjR24BjBtiS57XqFb+Ky669W3IQ8Uc/8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oMR8N6/JWVAVSyq94AG4bkuYJ8H3P6go5gyh+49KgA9wx/qyHeFJP6PUWAxk9nxsL7N8kN5UO+c3Ftl0D+YfI0uGoL7MmwEzvVAzB5ylMm5mbMVvp32zjnj3SQ+ZxG3r2H4v0fgpKHmxXQGNIH+MT0R2c9SB1cMJJq/uJht7Z8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1asyvAI; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UkUNUh8c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1761913473; x=1793449473;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2Nt4r/eYanNf5cDgEn1QKK+iWGBoitcY9r7UXIB3y4g=;
-  b=UkUNUh8c9gg9KCTr5N5Lbd+2H7Zm5767R0FTk9MbCLyASOitbwIxUTku
-   pV5CrCUPPSDZxDgXfPN5izGhjz8CDp9gPd9hIy8pbRgZvYOWRrHPWIRny
-   mQIFa4pKJtYmesgvuMzv/RZohNFnQTgNe+foR5SRfs01ZPwqZEUrW0zi6
-   la4L0Hc3UmBsdckiC3qrCOPkCU8Dv6jd8MPNOQJqB7za38FQc6ixAHuOf
-   xT2MUyQxvvyjqVPzFJNH5p26blRG9t2BkpyYMUQ9M+Uv3ZOm/mKkXDACG
-   28dihNVHbsle5+0fRzmOenM3Xw6FzKh5Uoa2BMGSCX5mGmsRVojySHcRf
-   w==;
-X-CSE-ConnectionGUID: q2s9GN/sQTOoIfDSnWmHng==
-X-CSE-MsgGUID: tyuglKZiToCp+KniprnHRg==
-X-IronPort-AV: E=Sophos;i="6.19,269,1754982000"; 
-   d="scan'208";a="47883659"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 05:24:31 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Fri, 31 Oct 2025 05:23:46 -0700
-Received: from DEN-DL-M31836.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 31 Oct 2025 05:23:44 -0700
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
-To: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>
-Subject: [PATCH net v4 2/2] net: phy: micrel: lan8842 errata
-Date: Fri, 31 Oct 2025 13:16:29 +0100
-Message-ID: <20251031121629.814935-3-horatiu.vultur@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251031121629.814935-1-horatiu.vultur@microchip.com>
-References: <20251031121629.814935-1-horatiu.vultur@microchip.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1asyvAI"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7a271fc7e6bso390573b3a.2
+        for <netdev@vger.kernel.org>; Fri, 31 Oct 2025 05:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761913494; x=1762518294; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kA4eiGvrcUQKapvU5kcBIm2q6gz7Mks5lq1mQ3d3x5w=;
+        b=M1asyvAIekgsKgNoxpzsIYk4I+4cmACA+pT/LGwZpsZZ8NBboZjPeecTe4a/hBNWE3
+         rehYWP99A/GnrZ9Ck0iWT0IzcHzfYoIoTv6NlA5jA7SQx8nJKsxB59oZU6sw5w/3Pn49
+         Sqz+b0MvHZcyxd2UvaJ2P7N7sFnW7U5GbRjIv6U1/OaftXDvGxi8vprR1w3X5EJmsZNe
+         wgz4z+tBfg9h2NUpSNfHbnnTOtnuuU4taSgp0mlA37NyUVF6Wuw2C3VVUCUHCiBVo+KF
+         GQnfULJtsSRuLnVu+s9P81UVMQfffa1pELpldAgrYkCNueVEcE7UwdpeSVSv7DPfMtBE
+         2tJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761913494; x=1762518294;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kA4eiGvrcUQKapvU5kcBIm2q6gz7Mks5lq1mQ3d3x5w=;
+        b=S3cneE2wd3AnaQtRd7RBCBC0e/COsAoeCVU9uHOOU9mynLFbLJIRpRKLxIPPJFyzrB
+         zuKSEMLVzExZ3cUXwv6ON1O3ZArHrejZpUYXz8X5uOr3Bapw+ZC2kgz1/rB5WXNbUfS0
+         UlfKS3uxbiPIcN6CM7+weWa/rmT/pBbO31wsGVDfWqViB3SyvokC4v/2cQaDBhqGmuNg
+         qPalPBpkBL2LXsMcl2GtSLkaBsfvlXPZoJ5/NFEZ8b5GRIw75aScqjIgThlGgGlSZfy8
+         mRsMSPZ9y1nleG5YxUHEK7e0E2HygmaKOPbiVgLpyE3jfS/9Bv7jl2ecrLqYGo9hzRdR
+         aGeg==
+X-Gm-Message-State: AOJu0YyYJ8ApVXhFTvGpZYxW7svTiN1zK3n6qj9zQhbIBnDLk+6GGtDv
+	+3CYwvDDMdBIrvw/aC8TrwX1wA9opTYemqGKlSFb7Ta793wvEE1JVbjQ
+X-Gm-Gg: ASbGncv+Hn/bsyg+Bq5dbI4HXeqwFaxGM0aIQuJERzFvC/Kxbymn1NDodFc/PVgkNBQ
+	Y+Zm5p1pq2bJKzv7dWc1eorxr92yt4pHEQVzdEv83TaZVZfmCzP+NRGWCvlN+7Pc38dn39No3fd
+	JGcj7YyDQZ9fAJkeQUN1TNxnk8IbRuFnXYvAx/7onfTb4YV+7lX0RvUaBPORH4msoE4qudR6MKI
+	dCnptRO0W/k5Kc1avohV1pVAFvqKHGXJlmaXPOjlr7oDhu9uPuU2GtPf1pj6+AusFQ0piDrlS5r
+	cehHxDi5/MYAWq2qAVYqrD/KvIDZqlcqctILn+gAshv//EcZYR29ZAHSolYZNFiZQVSe2PheDeP
+	gpnNCh8ozZpjzPB4D75NK3gTPHeUOlQwVAo+KriBkUi0NPeh4KW1sTOcusjiItmzeWgEuCKGN/e
+	CwWdfS+C8SYOL/W+sX4E7EcOaOkNjYOpnr7c73uxQZvw==
+X-Google-Smtp-Source: AGHT+IF6kAFNrFllQ0zDpOrghfPSaKBaGJtRBoDThOoMjH+SuWUWv1YoOL7AYSxtynciu5SEjAdfdA==
+X-Received: by 2002:a05:6a21:6d9e:b0:244:aefe:71ef with SMTP id adf61e73a8af0-348ccc044b9mr2487003637.6.1761913493991;
+        Fri, 31 Oct 2025 05:24:53 -0700 (PDT)
+Received: from [127.0.1.1] ([2406:7400:10c:5702:8dcc:c993:b9bb:4994])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7db67cbdfsm2086639b3a.49.2025.10.31.05.24.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 05:24:53 -0700 (PDT)
+From: Ranganath V N <vnranganath.20@gmail.com>
+Date: Fri, 31 Oct 2025 17:54:43 +0530
+Subject: [PATCH] net: sched: act_ife: initialize struct tc_ife to fix KMSAN
+ kernel-infoleak
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251031-infoleak-v1-1-9f7250ee33aa@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAIqqBGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDA2ND3cy8tPyc1MRsXYtE85RUs8S0ZEsLcyWg8oKi1LTMCrBR0bG1tQA
+ LhyiFWgAAAA==
+To: Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ skhan@linuxfoundation.org, david.hunter.linux@gmail.com, khalid@kernel.org, 
+ syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com, 
+ Ranganath V N <vnranganath.20@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761913489; l=2758;
+ i=vnranganath.20@gmail.com; s=20250816; h=from:subject:message-id;
+ bh=Y66ckEvjvtnhjR24BjBtiS57XqFb+Ky669W3IQ8Uc/8=;
+ b=33eyT/pXFi3nNGN+9479Hggr+jQ9J6Kl06dy4BiDsIUEPo/wD3BQpTeJuZs/ZUlmJxISzNa/0
+ vXwIWSu4mFSCuhs1QhN+6DvJly7CJrhvTpJbud3CZn/xFzYZkTzaiUR
+X-Developer-Key: i=vnranganath.20@gmail.com; a=ed25519;
+ pk=7mxHFYWOcIJ5Ls8etzgLkcB0M8/hxmOh8pH6Mce5Z1A=
 
-Add errata for lan8842. The errata document can be found here [1].
-This is fixing the module 7 ("1000BASE-T PMA EEE TX wake timer is
-non-compliant")
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-[1] https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/Errata/LAN8842-Errata-DS80001172.pdf
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
 
-Fixes: 5a774b64cd6a ("net: phy: micrel: Add support for lan8842")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
+
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
+
+This change silences the KMSAN report and prevents potential information
+leaks from the kernel memory.
+
+This fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures no infoleak.
+
+Reported-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0c85cae3350b7d486aee
+Tested-by: syzbot+0c85cae3350b7d486aee@syzkaller.appspotmail.com
+Fixes: ef6980b6becb ("introduce IFE action")
+Signed-off-by: Ranganath V N <vnranganath.20@gmail.com>
 ---
- drivers/net/phy/micrel.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+Fix a KMSAN kernel-infoleak detected  by the syzbot .
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 1fa56d4c17937..6a1a424e3b30f 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -5965,6 +5965,9 @@ static int lan8842_probe(struct phy_device *phydev)
+[net?] KMSAN: kernel-infoleak in __skb_datagram_iter
+
+In tcf_ife_dump(), the variable 'opt' was partially initialized using a
+designatied initializer. While the padding bytes are reamined
+uninitialized. nla_put() copies the entire structure into a
+netlink message, these uninitialized bytes leaked to userspace.
+
+Initialize the structure with memset before assigning its fields
+to ensure all members and padding are cleared prior to beign copied.
+---
+ net/sched/act_ife.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 107c6d83dc5c..608ef6cc2224 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -644,13 +644,16 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	unsigned char *b = skb_tail_pointer(skb);
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+-	struct tc_ife opt = {
+-		.index = ife->tcf_index,
+-		.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
+-		.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
+-	};
++	struct tc_ife opt;
+ 	struct tcf_t t;
  
- #define LAN8814_POWER_MGMT_VAL5		LAN8814_POWER_MGMT_B_C_D
- 
-+#define LAN8814_EEE_WAKE_TX_TIMER			0x0e
-+#define LAN8814_EEE_WAKE_TX_TIMER_MAX_VAL		0x1f
++	memset(&opt, 0, sizeof(opt));
++	memset(&t, 0, sizeof(t));
 +
- static const struct lanphy_reg_data short_center_tap_errata[] = {
- 	{ LAN8814_PAGE_POWER_REGS,
- 	  LAN8814_POWER_MGMT_MODE_3_ANEG_MDI,
-@@ -6004,6 +6007,12 @@ static const struct lanphy_reg_data short_center_tap_errata[] = {
- 	  LAN8814_POWER_MGMT_VAL4 },
- };
- 
-+static const struct lanphy_reg_data waketx_timer_errata[] = {
-+	{ LAN8814_PAGE_EEE,
-+	  LAN8814_EEE_WAKE_TX_TIMER,
-+	  LAN8814_EEE_WAKE_TX_TIMER_MAX_VAL },
-+};
++	opt.index = ife->tcf_index,
++	opt.refcnt = refcount_read(&ife->tcf_refcnt) - ref,
++	opt.bindcnt = atomic_read(&ife->tcf_bindcnt) - bind,
 +
- static int lanphy_write_reg_data(struct phy_device *phydev,
- 				 const struct lanphy_reg_data *data,
- 				 size_t num)
-@@ -6022,8 +6031,15 @@ static int lanphy_write_reg_data(struct phy_device *phydev,
- 
- static int lan8842_erratas(struct phy_device *phydev)
- {
--	return lanphy_write_reg_data(phydev, short_center_tap_errata,
-+	int ret;
-+
-+	ret = lanphy_write_reg_data(phydev, short_center_tap_errata,
- 				    ARRAY_SIZE(short_center_tap_errata));
-+	if (ret)
-+		return ret;
-+
-+	return lanphy_write_reg_data(phydev, waketx_timer_errata,
-+				     ARRAY_SIZE(waketx_timer_errata));
- }
- 
- static int lan8842_config_init(struct phy_device *phydev)
+ 	spin_lock_bh(&ife->tcf_lock);
+ 	opt.action = ife->tcf_action;
+ 	p = rcu_dereference_protected(ife->params,
+
+---
+base-commit: d127176862a93c4b3216bda533d2bee170af5e71
+change-id: 20251031-infoleak-8a7de6afc987
+
+Best regards,
 -- 
-2.34.1
+Ranganath V N <vnranganath.20@gmail.com>
 
