@@ -1,141 +1,129 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2DC29B783
-	for <netdev@vger.kernel.org>; Sat,  1 Nov 2025 09:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E0D23C4FD
+	for <netdev@vger.kernel.org>; Sat,  1 Nov 2025 09:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761988484; cv=none; b=QE9D5f3ql74nLa2Lk3Fz24+3incLGZu8OoISP/othqbznPZxeKivfvP7mXKqTeDi0fcO624vDIuVnvRat28jVwh859LNXxD6nZ1z5GT3cybzCQYqQOjVVSyvft/yho33Wk7wcyXfCNlSu14FnBA2bC/Odg/Ar/YF1smR+a7kQYY=
+	t=1761990482; cv=none; b=uFsJVRxe20H35kmiYq9k3etbBJOT1IwyCsFMijH5PBOiU0rJuSf/fZsu3AP7WH6s5zUbccCD0TZLb1Z+EFJt7YlkIoj8ozAj9m18gjhZqxfgTn91I49pWbnBAHL2dJSEG3JHzwLKdu6I388W9bI76J2BmU8sHfQfgf8kdRVvk/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761988484; c=relaxed/simple;
-	bh=bcrlFnjZggziM0QjMVr/YX7dISMIrIzKScqkwXuRVEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GvvzD+NCSWxEpHFujhvPAxkwZuBM3T3J0yVGCYa6LddMgHJTG/NuHOxjGIhTs7Gp4x9X/rWQ0pUgH2/+zcg5w15khwOVAdTH/crTlZHjfMTNyF1lkntGu6ORUaMqnIIF55C6TE/YzyPccvw+gTpQ34pgFcb/nxXfMO5xcKzKpQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZsEDrVzY; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1761990482; c=relaxed/simple;
+	bh=WsMaVYjhEX5xzYsbLkIYbNUU/KAzYM8jBkJPwJqvx+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XgEOSc4+8l7i231exW2Okx16igbYO+Xbz6dqGFxhMVB9AkiV8Kfn8r8GaGOqmSR8XydFf9Aa4vhiVTZAnJ/ORQYT2TFpogKhAB2BbGe+y13mnTZ7Uz2xENLmSjRduJudTuwtzvQ5OJ+pCA1eKdGdfD/aQI8g+kKi4uKOuO1eans=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2KBum1A; arc=none smtp.client-ip=209.85.216.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZsEDrVzY"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b5b823b4f3dso514264466b.3
-        for <netdev@vger.kernel.org>; Sat, 01 Nov 2025 02:14:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2KBum1A"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-33ff5149ae8so2506591a91.3
+        for <netdev@vger.kernel.org>; Sat, 01 Nov 2025 02:48:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761988481; x=1762593281; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bjIH77hSFGTlPjPYXJoBf9VYrU+klsU2kyIOYwEmpag=;
-        b=ZsEDrVzY2Sw7IOsPUFyPEquNjVCBKVmnWv8CvhQqnIXQeq+H3BHzFJk06V8dJmX8mx
-         jUzED/yole49OUO3wPQB0SMnFsN50Zamz40+5u+uNNBJliE53/Xs7rsTJad/myMNzX8Z
-         ykkrhhTowNOpP4XGqdNiyNmrWmcDHv4sfPLVAtFzeren6yPOTsC9AAIKn2vwcC0A4BMn
-         k2urr8yCc4mpTKmaOkm41WP0ajzsZxl7YlymErFfc+6AuG5o3mOcng0R2tIFg0Aaaj1x
-         C0NJhhVAkAlGbDWnFmeWjNGXXcbYOCN5ILwgK1CNa9uW5ijjQVnOtkoSOxN0zvTskwsS
-         CX3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761988481; x=1762593281;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1761990480; x=1762595280; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bjIH77hSFGTlPjPYXJoBf9VYrU+klsU2kyIOYwEmpag=;
-        b=bsO4OPFnKVuP98lUh7wwpjOAQOI1ykH8KOaXyicKBPm211iOQJiLIUYIGTV/ONcXmd
-         4V7ACfelUfPZzf9/qlL5h4f/LRvPB/D2xSv57Ha0Df8e8sP97saxZ2meWxy/OWHXM/QG
-         FDCjbZJK7fqOTnxGtJUs6jttm0kwgB79TamnAo1nMVPMKL/Xwc15esQEt1+zC+V1yIBL
-         O8fg6gcuS2TFmejfaNcaHNXzrVVNWOdGPOKmibtgtoK9EsmHKAKie2aFuajU17CuUE5f
-         gcK5jmHKIYPrI2ponQYF2/fC5ruDHwt2Krr5b55ft+qcJ38GMWgbTrbmn4RtodmerBh7
-         sNUw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/5MUFMeQg54fOyTTYMipaQ/Ki64PF4Xj0+oCj3i5k12z4KoGa8IteSF98ONsJ/yo5ITANP+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDRUx8kTuV6BO30yjgnkHtwyxcHGnsDKzF1c2fAJZramjSSLvc
-	TGb7leqZyeBmPjnLdK+DINxscLHcCAzm8eROh8gx7/slXaRL9BcXpPKn
-X-Gm-Gg: ASbGncsxsYy9Imar9K3MgEywu2DCXK+p5wZHKZR1KZWHSDfv0PAjE83S2hMsvpIk19a
-	d//w9XqWXRQmv/HNlSCSxRNapDsVzJ1h0Xa4rZ58IbUAWqfC7/4NCOtDFNYQFnSOoBmNfhhHre7
-	gBcHT6HpZL68oEV9Gk4agSFfMCLgFm7CJLit0mrSV01aRRDkSEFEmg3yJJUlsJKOKiqsSq/GoJf
-	BnY7U1hgEUs/axnS15i/4kkSLMVHu4TD+d8yOLzxIZmqJexkjLn4yQX5bJxAIpW/fQjCovG8a2N
-	DlfS9WzEbX+rDMqmP0lsPRofRVFDQtccDnVyf3YfB58CZhYdqyCIOHEFL2HFZC1hkm1/AoG6Nye
-	Np618ZsBNSOgx+B7uek4OfKUgyn7qZbL/Z2suAtvreHSu64YZcRugKXMs7Z0M5eQbMXBup8WUkg
-	zyEcSR8ZmjzV0=
-X-Google-Smtp-Source: AGHT+IE4m8jWVnUeKVDtexD4VIUk1rWLovwGz6eGHJUc/54gMaEdRZBIb1qgJ3mc6oZKZWsrxXePlQ==
-X-Received: by 2002:a17:907:3f82:b0:b6d:2773:3dcb with SMTP id a640c23a62f3a-b7070138988mr589022366b.14.1761988480766;
-        Sat, 01 Nov 2025 02:14:40 -0700 (PDT)
+        bh=ys+iXshBYZnizwFhgQPeQbnnGsPPwsLlRfA8FiXKhyI=;
+        b=i2KBum1A1oetCqXn/NH0NnP0kM1of8OivYXErx5FS7wf5Ny6rLV6nSuuL2EeZ39B8W
+         f4Y9NFPAAcVYr6FMaeebliczS9IxyZHoU+XPuceX/CG8SeVQNII4jeHZ3ydiLw1dl2UO
+         yfxMIEkpjrzfmZ5ddQHbkR+VPGJGnsF46AesdYLNDBRustXeFjRqPJGyhDHuOw/DcVcJ
+         hzwYzmzqD8LIdbbiLAV1PQtYA5PaW7WvfQgBlyjUpLOQb4smhQEcS1nMx5tGS/ql5LtM
+         EcLwk0qLrAamMbgUOxo7lvOPf/VZfMbaWo8+VaarpW0ayar61mFa6EiLXH/OzQgdIe9M
+         qtBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761990480; x=1762595280;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ys+iXshBYZnizwFhgQPeQbnnGsPPwsLlRfA8FiXKhyI=;
+        b=lJC4HlQq/shtWXukR2mbw8CDnsO/PpLi8PlSoFubyCMhikc8JIHcr3ZjGKRZ78VRjc
+         X7E6U6ztZkh0aeaIwv8ODSU8IFIkZVXKc+/0FzIl3QrJOCcwXQs/EqkfqnRrrVj8LItn
+         Iq/NtzXGy2H1ilWtJrEUVAcG0mztD/AEt4djklWoPjPc+DCxdHqgsHH4cafqjwclLA24
+         MPoOGuQrA09lkq2YDxfWLTzl7p5De1WKSiTDrtWm580DmUC/0k6h6TsOYD1x1NOOhsvv
+         SlXT8PuB+xvh7KatqXUHl2xHZqOHF0HX5jv3Z6PLvBrbe4nJ78q/P8GFE9vr/x60dvq4
+         NPfg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcL1uuJ3rJsrkIshf1rNj2ZYgMLT6UdCdISCd6PSubet1pLFleUcHDsxiZzvM+7DEH9m/Rnfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+yYaJJ8dXGGFLp/OFWhrNik4xNXLrnxSFzjAGDSzO+mfnud4z
+	MlNPzfQ2SxN4H1Say3z0jMkgH/4VrDYLMQECqvIeAgSpB+zRS27253Es
+X-Gm-Gg: ASbGncvmxisQILTUn2NX3YQNejQnRkQYmP10W9E9rChUhhb9MbGE9rY4iic1hMoIBD2
+	CgSMltwD4rTA33ciDwt6z0guAXz6FYQyG4XNy+28obsmg2bi04wztm+3bGTNmXU/U7KctFdS4wy
+	I9iVh9L/4AhiL/ZbXBRQdbQBZ0LBu4TBNhUNL5GCf1Kn6WVgfn8whmQA+fmvv8GtSdmzs5pBdo7
+	5+5I1/q/fPYaHhDQzDZM3l+gF7CDPdZD6OFzR8Lq09GG3jtCLPWgLPn9cX28iunzTUbh6vNJ4AF
+	HkUcTClYLpNB1vcl0MLLgMbaAB7r95kh9dKFcYbZVbbcAoFXWLFY5K5kC2pbwyM9KqfqnFT9Vyi
+	1iX+rcBif8WfX51WXvWnRs/ahMVZw6cEfZ9fjbw9FcRgvmZ1zJzRW8izAnKdfQL3ZrUvnIeGK/f
+	Ny
+X-Google-Smtp-Source: AGHT+IEuf2OXCpVvj5mt9JoXkTV63btzK3GM762PmBpPq77R+yTBCtQ7CzPQQFc+4UmjQ7/sOnLiHQ==
+X-Received: by 2002:a17:902:e5d2:b0:246:e1b6:f9b0 with SMTP id d9443c01a7336-2951a38af0amr90955605ad.18.1761990480237;
+        Sat, 01 Nov 2025 02:48:00 -0700 (PDT)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b70779a92c9sm409785466b.22.2025.11.01.02.14.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-295268d10e9sm50868325ad.50.2025.11.01.02.47.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Nov 2025 02:14:39 -0700 (PDT)
+        Sat, 01 Nov 2025 02:47:59 -0700 (PDT)
 Received: by archie.me (Postfix, from userid 1000)
-	id 9B9D14209E50; Sat, 01 Nov 2025 16:14:35 +0700 (WIB)
-Date: Sat, 1 Nov 2025 16:14:35 +0700
+	id 64F3D4209E90; Sat, 01 Nov 2025 16:47:56 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Randy Dunlap <rdunlap@infradead.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
 	Linux Networking <netdev@vger.kernel.org>
 Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH net-next 0/6] xfrm docs update
-Message-ID: <aQXPe49BkkZ1W1uM@archie.me>
-References: <20251029082615.39518-1-bagasdotme@gmail.com>
- <7148e00e-14c4-4eb7-a940-112e86902bc2@infradead.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH net-next v2 1/8] Documentation: xfrm_device: Wrap iproute2 snippets in literal code block
+Date: Sat,  1 Nov 2025 16:47:37 +0700
+Message-ID: <20251101094744.46932-2-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251101094744.46932-1-bagasdotme@gmail.com>
+References: <20251101094744.46932-1-bagasdotme@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6h14tAqlT9+a5/Iu"
-Content-Disposition: inline
-In-Reply-To: <7148e00e-14c4-4eb7-a940-112e86902bc2@infradead.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1513; i=bagasdotme@gmail.com; h=from:subject; bh=WsMaVYjhEX5xzYsbLkIYbNUU/KAzYM8jBkJPwJqvx+Y=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJms13Kblm6rb3ryI+T9Q+WPFs0pi1svRc3x2Oq64MTPF 0zlH6+d6ShlYRDjYpAVU2SZlMjXdHqXkciF9rWOMHNYmUCGMHBxCsBEpPMY/kr62J815jXz/FLd 2HP0xr50vrL37DMXPGjLnBejwvieo5KR4e/D+bXTT/7i4HW9dY7Tc9VR2b5lk1fuPj6N0SA9zPy 2OScA
+X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
+Content-Transfer-Encoding: 8bit
 
+iproute2 snippets (ip x) are shown in long-running definition lists
+instead. Format them as literal code blocks that do the semantic job
+better.
 
---6h14tAqlT9+a5/Iu
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ Documentation/networking/xfrm_device.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Fri, Oct 31, 2025 at 09:58:33PM -0700, Randy Dunlap wrote:
-> OK, one small nit. 3 of the section headings end with ':'
-> that should not be there.  See xfrm/index.html:
->=20
-> XFRM Framework
-> XFRM device - offloading the IPsec computations
->   Overview
->   Callbacks to implement
->   Flow
-> XFRM proc - /proc/net/xfrm_* files
-> Transformation Statistics
-> XFRM sync
->   1) Message Structure
->   2) TLVS reflect the different parameters:
->   3) Default configurations for the parameters:
->   4) Message types
->   Exceptions to threshold settings
-> XFRM Syscall
->   /proc/sys/net/core/xfrm_* Variables:
-
-Sure, I'll clean them up in v2.
-
->=20
-> Oh, and could/should
->   Exceptions to threshold settings
-> be numbered, 5) ? It looks odd to be unnumbered.
-
-Ack.
-
-Thanks.
-
---=20
+diff --git a/Documentation/networking/xfrm_device.rst b/Documentation/networking/xfrm_device.rst
+index 122204da0fff69..7a13075b5bf06a 100644
+--- a/Documentation/networking/xfrm_device.rst
++++ b/Documentation/networking/xfrm_device.rst
+@@ -34,7 +34,7 @@ Right now, there are two types of hardware offload that kernel supports.
+ Userland access to the offload is typically through a system such as
+ libreswan or KAME/raccoon, but the iproute2 'ip xfrm' command set can
+ be handy when experimenting.  An example command might look something
+-like this for crypto offload:
++like this for crypto offload::
+ 
+   ip x s add proto esp dst 14.0.0.70 src 14.0.0.52 spi 0x07 mode transport \
+      reqid 0x07 replay-window 32 \
+@@ -42,7 +42,7 @@ like this for crypto offload:
+      sel src 14.0.0.52/24 dst 14.0.0.70/24 proto tcp \
+      offload dev eth4 dir in
+ 
+-and for packet offload
++and for packet offload::
+ 
+   ip x s add proto esp dst 14.0.0.70 src 14.0.0.52 spi 0x07 mode transport \
+      reqid 0x07 replay-window 32 \
+-- 
 An old man doll... just what I always wanted! - Clara
 
---6h14tAqlT9+a5/Iu
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaQXPdwAKCRD2uYlJVVFO
-o7MJAP9oppzWwRobyPNTMy/S+a83Bl9LCyQUEYE9ompFmbp8rQD+PNBr+LTiJ8ac
-5XEpfnhav7RYgjmpzWnVM2z5LwA5agY=
-=jv2q
------END PGP SIGNATURE-----
-
---6h14tAqlT9+a5/Iu--
