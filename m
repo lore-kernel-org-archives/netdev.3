@@ -1,252 +1,116 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334E82FF678;
-	Sat,  1 Nov 2025 19:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F0A1684B0
+	for <netdev@vger.kernel.org>; Sat,  1 Nov 2025 20:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762024856; cv=none; b=iSJUMkL32R+/094n8OO7KA5i+hQPGUW7rNVxSJaspJA+lovf/uMDSzAgdAUA4tLZSj1cRO1R0bXhY4sB92Y6uRdRJqICCyrC0slcKe3FEsUzTyicJOwA1dAxZMwfOZDbD5XNoXIFyTS2m84+38TB3uu5eHBRoF1Z2SHOOFBhpSA=
+	t=1762028194; cv=none; b=Z95lCtzMjmo+1ryREWh4XN6S2DYrWe1kV6bYxFZ7em7JJ1b6bOH11dmCKG0LyCeiEUz//Ix3bTxQFvBcTtEuCTp47R2bPtQ2eMq8CrqxlR6wc6eUI9BZTukDRsQ5aLhkimAyGgIJIT3UctwlC97jeWwc8wOpI3DMcVuvbms9zcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762024856; c=relaxed/simple;
-	bh=KHDhI+OMbYsFp6vu64Dav6dGQ4hKGh0ZnHirB5dDyjg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ccPqIIH4+Rig4vsSRMC7Er+Vsv6ZwUbh/3ZaKN8hsGr0Sgxp0Mi9B37f81LZBReNwCAwaScb+akdD3ByyzqDEw8cbzCVICI+9B+EZhozQE0Mb9VudEgGvX87rhFCBAkAR6mrmu4mSXs+kwjOhTCQKiNbfbtSllT9HlNooibv92Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4Q3V8++I; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y7sVe5FL; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1762028194; c=relaxed/simple;
+	bh=NgY32jHrmDxujixjfxxUJsAupyyE1/qxQpZzA9u0gaU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cCp63A0RQWvHBvoXGo8ztqTunnZHlKZ340jqMolVav575NSROmHL398lCNvjdBgxt3kwNnySwOmIusVDUjvRZu74c2SelKg7IYCaSxPONPFOnUqJJdmiR0QWv3FVcYxB6V/fhochJl/1YWvED7eGUk01Z75wxEcxDEChRmTHYZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L002O9pB; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4Q3V8++I";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y7sVe5FL"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762024852;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zhGK+60JgBD3s2NPs/WG00WWgCrD3JAI9aGx3Giow6U=;
-	b=4Q3V8++IhPzdnCkY/fLpB838bS06LVS94OomrBx0h8qStWpHMqKWCW7j3ayeDgp5U0Lo/o
-	F+eq5PBK+kBuHixm5ic5qF0dA/DUmZ1MrUNzAo7FttEZuPrAzN9Bzo8DxZM1Me6JgPXR42
-	bd7fUT2D+vvzoQ8rYAboiMu1rOqt4/bM+p0UPIVOd13XLnr2+1lXWXq6dN8HEyX63uQvDG
-	YMGO6RzlzV2FncmPvQhB/oqPIK2uK0CKd+qE61wRVtsn0LfBbEhnqql3O3cjOpXguhyt9e
-	L7TETIY2pp3GHotPjDUBWjvuikX2V/O9q40/uAEYspHz64dZunswmNCX7hLAtQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762024852;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zhGK+60JgBD3s2NPs/WG00WWgCrD3JAI9aGx3Giow6U=;
-	b=Y7sVe5FL9smASbvnWfH1rQIQ1Cxz51UnrlRZ8UUXPH2YhpFaoGbhA2mwjMjxokyAuxFRtd
-	t2+fvCz4NdQZAqDA==
-To: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- Josef Bacik <josef@toxicpanda.com>, Jeff Layton <jlayton@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Mike Yuan <me@yhndnzj.com>, Zbigniew
- =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, Lennart Poettering
- <mzxreary@0pointer.de>, Daan De Meyer <daan.j.demeyer@gmail.com>, Aleksa
- Sarai <cyphar@cyphar.com>, Amir Goldstein <amir73il@gmail.com>, Tejun Heo
- <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- bpf@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, netdev@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v4 18/72] nstree: add unified namespace list
-In-Reply-To: <20251029-work-namespace-nstree-listns-v4-18-2e6f823ebdc0@kernel.org>
-References: <20251029-work-namespace-nstree-listns-v4-0-2e6f823ebdc0@kernel.org>
- <20251029-work-namespace-nstree-listns-v4-18-2e6f823ebdc0@kernel.org>
-Date: Sat, 01 Nov 2025 20:20:50 +0100
-Message-ID: <87ecqhy2y5.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L002O9pB"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b4f323cf89bso756328966b.2
+        for <netdev@vger.kernel.org>; Sat, 01 Nov 2025 13:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762028191; x=1762632991; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UY8fhAykEF/ZiZ4HL8RaS16ulFJ7StXJeVUPVb78F9I=;
+        b=L002O9pBj+XyhGSyRVcFULwaEZT/PqMn30D8t4pRGBlxGtQyS7MBvSXZEE5ShjSjPD
+         Im1+WbB/j2aOeXueUXqdG/sp5kso2+05Ln0dVFj3d7QxYoYoNG5lqdEA9lD//wAgWLbo
+         Y/11vTgeTBWyNhpDHNJj/hW1VTxD6GS47iA7l7hJIjpoUZJ35DgKf3q/YCkwzDZmKnqh
+         Qb89Ds8I7nSGgwscMAtN6zmwOMPgvXy8KJWUn1Hxc1DkiCxVyOBa9q7sFBtWB9Lza734
+         3gQ6vBua6Ch+aMuMjaafgv42nGYtx5UgCB0T82w4qzOwMpHw56txgsij8fRkQe0rYaVE
+         0vkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762028191; x=1762632991;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UY8fhAykEF/ZiZ4HL8RaS16ulFJ7StXJeVUPVb78F9I=;
+        b=SCJNAIEMIBUJ9Z+Rv60v6jaeo/dOPQBh+vCKJ/NPKutm1dD8Rxg56DJQKOfb/0LfZu
+         HTD/Vg8Te9TKiSpJbnBw2lD+DZn72asOgBTBSzR8ZmidOLOH9YLMQmZjhBWg8cVaxOBL
+         Eiwm0I0TcmrpAVpcLX6GKhKZGhCoOGL9viBrITlv9kqVzV0wBEMWowcdLATIPVNJq5UK
+         sJwYk3V2FQZqVjxcGYivLBASebtxIZhJHx8VlZp6/4sG0van4DZu7zjOEXjVJ2FDwjBN
+         yVlPZE4zzVvFexZIBNz1U34Jz9Wuc3weVkEFBqyuuNmk0LRtZAkciXdoTHDAOYsyS1HZ
+         QSMw==
+X-Gm-Message-State: AOJu0YzshXlBQ5s20PO0lh1JoL5irbz3SkDp6TNMHtmqYNMlaVI2mxzl
+	D8W7drpjjyA1LnE2N46qc6CBHBxTd0AL9d2TQnEqBeisWI/X1xh2aWWkm0bxXppecRM=
+X-Gm-Gg: ASbGncsUVgfpQsyjanGsEa0hieSEhMsRfOANkNSPEcdxeKMtprcumfXrnvFCKIRnETz
+	Prtz7XESbEmO/gESGsOyG+8Le9fmU87c4KHo5knWMJoYdB+zERAvKJfgQD5CBsIBMp7Fp0yzEWs
+	Ikg2kM/0JpvdAP9xeH7ll/fr4vNsfwv8nbMkgKurMPfqklDgOaCZ8VytmkmirHluTzW/M6f0roi
+	qn27M9+X7DGxzuZ5wSxHGDYXm/kXCUaKKcrpX3ChGuxw2s5FOZtCM90XrSahoCRnmJliyy3Bt7i
+	RlFD+SeQZdwBfaaiV0j0RkCHYITxgs/XwaplL34rWIDJGNVcCS0zVZLJLEn+y27nCh7/iBOV9eP
+	W/2MvQlV3LFg0L5MmSb4V3Nzb5Z2q1+qsgbtrmyFFyLyqpTBuT/bzxhLzPdnRvAytCp9mzyeQIC
+	TN2KS2d0+ZEHdThddA4v756l4T+L2T1YWgDQ==
+X-Google-Smtp-Source: AGHT+IGB7pHaBILf2c3NpKvf8sojA4NRxzvgG1R2KvX/z/p98Y0bkh17Ok5v5PO2TCOEk6VdJjPVag==
+X-Received: by 2002:a17:907:972a:b0:b41:2fd0:2dd4 with SMTP id a640c23a62f3a-b70708738f7mr755907566b.61.1762028190523;
+        Sat, 01 Nov 2025 13:16:30 -0700 (PDT)
+Received: from localhost ([2a02:810d:bb0b:f200:c13a:3288:7fab:6ade])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077975cfesm539241466b.4.2025.11.01.13.16.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 01 Nov 2025 13:16:30 -0700 (PDT)
+From: rafiqul713 <rafiqul713@gmail.com>
+To: netdev@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	linux-staging@lists.linux.dev,
+	rafiqul713 <rafiqul713@gmail.com>
+Subject: [PATCH] [PATCH] staging: rtl8723bs: use ether_addr_equal in rtw_ap.c
+Date: Sat,  1 Nov 2025 21:16:23 +0100
+Message-Id: <20251101201623.185575-1-rafiqul713@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Christian!
+Replace memcmp() with ether_addr_equal() for MAC address comparison.
+This is the preferred and more readable method in network code.
 
-On Wed, Oct 29 2025 at 13:20, Christian Brauner wrote:
-> --- a/kernel/time/namespace.c
-> +++ b/kernel/time/namespace.c
-> @@ -488,6 +488,7 @@ struct time_namespace init_time_ns = {
->  	.ns.ns_owner = LIST_HEAD_INIT(init_time_ns.ns.ns_owner),
->  	.frozen_offsets	= true,
->  	.ns.ns_list_node = LIST_HEAD_INIT(init_time_ns.ns.ns_list_node),
-> +	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_time_ns.ns.ns_unified_list_node),
-
-Sorry that I did not catch that earlier, but
-
-  1) this screws up the proper tabular struct initializer
-
-  2) the churn of touching every compile time struct each time you add a
-     new field and add the same stupid initialization to each of them
-     can be avoided, when you do something like the uncompiled below.
-     You get the idea.
-
-Thanks,
-
-        tglx
+Signed-off-by: rafiqul713 <rafiqul713@gmail.com>
 ---
- fs/namespace.c            |    9 +--------
- include/linux/ns_common.h |   12 ++++++++++++
- init/version-timestamp.c  |    9 +--------
- ipc/msgutil.c             |    9 +--------
- kernel/pid.c              |    8 +-------
- kernel/time/namespace.c   |    9 +--------
- kernel/user.c             |    9 +--------
- 7 files changed, 18 insertions(+), 47 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_ap.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5985,19 +5985,12 @@ SYSCALL_DEFINE4(listmount, const struct
- }
+diff --git a/drivers/staging/rtl8723bs/core/rtw_ap.c b/drivers/staging/rtl8723bs/core/rtw_ap.c
+index 0908f2234f67..7cfd4088ce8e 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_ap.c
++++ b/drivers/staging/rtl8723bs/core/rtw_ap.c
+@@ -6,6 +6,7 @@
+  ******************************************************************************/
  
- struct mnt_namespace init_mnt_ns = {
--	.ns.inum	= ns_init_inum(&init_mnt_ns),
-+	.ns		= NS_COMMON_INIT(init_mnt_ns, 1, 1),
- 	.ns.ops		= &mntns_operations,
- 	.user_ns	= &init_user_ns,
--	.ns.__ns_ref	= REFCOUNT_INIT(1),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
--	.ns.ns_type	= ns_common_type(&init_mnt_ns),
- 	.passive	= REFCOUNT_INIT(1),
- 	.mounts		= RB_ROOT,
- 	.poll		= __WAIT_QUEUE_HEAD_INITIALIZER(init_mnt_ns.poll),
--	.ns.ns_list_node = LIST_HEAD_INIT(init_mnt_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_mnt_ns.ns.ns_unified_list_node),
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_mnt_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_mnt_ns.ns.ns_owner),
- };
+ #include <drv_types.h>
++#include <linux/etherdevice.h>
+ #include <linux/unaligned.h>
  
- static void __init init_mount_tree(void)
---- a/include/linux/ns_common.h
-+++ b/include/linux/ns_common.h
-@@ -129,6 +129,18 @@ struct ns_common {
- 	};
- };
+ void init_mlme_ap_info(struct adapter *padapter)
+@@ -1185,7 +1186,7 @@ int rtw_acl_add_sta(struct adapter *padapter, u8 *addr)
+ 	list_for_each(plist, phead) {
+ 		paclnode = list_entry(plist, struct rtw_wlan_acl_node, list);
  
-+#define NS_COMMON_INIT(nsname, refs, active)						\
-+{											\
-+	.ns_type		= ns_common_type(&nsname),				\
-+	.inum			= ns_init_inum(&nsname),				\
-+	.__ns_ref		= REFCOUNT_INIT(refs),					\
-+	.__ns_ref_active	= ATOMIC_INIT(active),					\
-+	.ns_list_node		= LIST_HEAD_INIT(nsname.ns.ns_list_node),		\
-+	.ns_unified_list_node	= LIST_HEAD_INIT(nsname.ns.ns_unified_list_node),	\
-+	.ns_owner_entry		= LIST_HEAD_INIT(nsname.ns.ns_owner_entry),		\
-+	.ns_owner		= LIST_HEAD_INIT(nsname.ns.ns_owner),			\
-+}
-+
- int __ns_common_init(struct ns_common *ns, u32 ns_type, const struct proc_ns_operations *ops, int inum);
- void __ns_common_free(struct ns_common *ns);
+-		if (!memcmp(paclnode->addr, addr, ETH_ALEN)) {
++		if (ether_addr_equal(paclnode->addr, addr)) {
+ 			if (paclnode->valid == true) {
+ 				added = true;
+ 				break;
+@@ -1238,7 +1239,7 @@ void rtw_acl_remove_sta(struct adapter *padapter, u8 *addr)
+ 		paclnode = list_entry(plist, struct rtw_wlan_acl_node, list);
  
---- a/init/version-timestamp.c
-+++ b/init/version-timestamp.c
-@@ -8,9 +8,7 @@
- #include <linux/utsname.h>
- 
- struct uts_namespace init_uts_ns = {
--	.ns.ns_type = ns_common_type(&init_uts_ns),
--	.ns.__ns_ref = REFCOUNT_INIT(2),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
-+	.ns = NS_COMMON_INIT(init_uts_ns, 2, 1),
- 	.name = {
- 		.sysname	= UTS_SYSNAME,
- 		.nodename	= UTS_NODENAME,
-@@ -20,11 +18,6 @@ struct uts_namespace init_uts_ns = {
- 		.domainname	= UTS_DOMAINNAME,
- 	},
- 	.user_ns = &init_user_ns,
--	.ns.inum = ns_init_inum(&init_uts_ns),
--	.ns.ns_list_node = LIST_HEAD_INIT(init_uts_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_uts_ns.ns.ns_unified_list_node),
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_uts_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_uts_ns.ns.ns_owner),
- #ifdef CONFIG_UTS_NS
- 	.ns.ops = &utsns_operations,
- #endif
---- a/ipc/msgutil.c
-+++ b/ipc/msgutil.c
-@@ -27,18 +27,11 @@ DEFINE_SPINLOCK(mq_lock);
-  * and not CONFIG_IPC_NS.
-  */
- struct ipc_namespace init_ipc_ns = {
--	.ns.__ns_ref = REFCOUNT_INIT(1),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
-+	.ns = NS_COMMON_INIT(init_ipc_ns, 1, 1),
- 	.user_ns = &init_user_ns,
--	.ns.inum = ns_init_inum(&init_ipc_ns),
--	.ns.ns_list_node = LIST_HEAD_INIT(init_ipc_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_ipc_ns.ns.ns_unified_list_node),
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_ipc_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_ipc_ns.ns.ns_owner),
- #ifdef CONFIG_IPC_NS
- 	.ns.ops = &ipcns_operations,
- #endif
--	.ns.ns_type = ns_common_type(&init_ipc_ns),
- };
- 
- struct msg_msgseg {
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -71,18 +71,12 @@ static int pid_max_max = PID_MAX_LIMIT;
-  * the scheme scales to up to 4 million PIDs, runtime.
-  */
- struct pid_namespace init_pid_ns = {
--	.ns.__ns_ref = REFCOUNT_INIT(2),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
-+	.ns = NS_COMMON_INIT(init_pid_ns, 2, 1),
- 	.idr = IDR_INIT(init_pid_ns.idr),
- 	.pid_allocated = PIDNS_ADDING,
- 	.level = 0,
- 	.child_reaper = &init_task,
- 	.user_ns = &init_user_ns,
--	.ns.inum = ns_init_inum(&init_pid_ns),
--	.ns.ns_list_node = LIST_HEAD_INIT(init_pid_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_pid_ns.ns.ns_unified_list_node),
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_pid_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_pid_ns.ns.ns_owner),
- #ifdef CONFIG_PID_NS
- 	.ns.ops = &pidns_operations,
- #endif
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -478,17 +478,10 @@ const struct proc_ns_operations timens_f
- };
- 
- struct time_namespace init_time_ns = {
--	.ns.ns_type	= ns_common_type(&init_time_ns),
--	.ns.__ns_ref	= REFCOUNT_INIT(3),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
-+	.ns		= NS_COMMON_INIT(init_time_ns, 3, 1),
- 	.user_ns	= &init_user_ns,
--	.ns.inum	= ns_init_inum(&init_time_ns),
- 	.ns.ops		= &timens_operations,
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_time_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_time_ns.ns.ns_owner),
- 	.frozen_offsets	= true,
--	.ns.ns_list_node = LIST_HEAD_INIT(init_time_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_time_ns.ns.ns_unified_list_node),
- };
- 
- void __init time_ns_init(void)
---- a/kernel/user.c
-+++ b/kernel/user.c
-@@ -65,16 +65,9 @@ struct user_namespace init_user_ns = {
- 			.nr_extents = 1,
- 		},
- 	},
--	.ns.ns_type = ns_common_type(&init_user_ns),
--	.ns.__ns_ref = REFCOUNT_INIT(3),
--	.ns.__ns_ref_active = ATOMIC_INIT(1),
-+	.ns = NS_COMMON_INIT(init_user_ns, 3, 1),
- 	.owner = GLOBAL_ROOT_UID,
- 	.group = GLOBAL_ROOT_GID,
--	.ns.inum = ns_init_inum(&init_user_ns),
--	.ns.ns_list_node = LIST_HEAD_INIT(init_user_ns.ns.ns_list_node),
--	.ns.ns_unified_list_node = LIST_HEAD_INIT(init_user_ns.ns.ns_unified_list_node),
--	.ns.ns_owner_entry = LIST_HEAD_INIT(init_user_ns.ns.ns_owner_entry),
--	.ns.ns_owner = LIST_HEAD_INIT(init_user_ns.ns.ns_owner),
- #ifdef CONFIG_USER_NS
- 	.ns.ops = &userns_operations,
- #endif
+ 		if (
+-			!memcmp(paclnode->addr, addr, ETH_ALEN) ||
++			ether_addr_equal(paclnode->addr, addr) ||
+ 			is_broadcast_ether_addr(addr)
+ 		) {
+ 			if (paclnode->valid) {
+-- 
+2.34.1
+
