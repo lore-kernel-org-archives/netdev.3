@@ -1,104 +1,118 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0EF1F460B
-	for <netdev@vger.kernel.org>; Sun,  2 Nov 2025 13:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD12173;
+	Sun,  2 Nov 2025 15:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762091728; cv=none; b=k0brkrCNLqz1odhVsRljUMv1p9cHD2+iUcMEGrL0xebCvbW3wVgRYkcpDWmd0101fKLZi5ZIZYmIKI9Tlr0btDeGamYu3aoUfhV3oMnz4MFXIl7GzRaHOF8P+iqdISSBYlHZ8QlYqF1RsFrXlfsfJkkl8gNB2wwGy3y7Kf4S7I8=
+	t=1762097461; cv=none; b=UsLl/rpd4PIws94gWwpErAA4RsISs30juCJfESESirGZTwQB8JAlP6G26Yol99hJnNyrIbV5VobPCXy8o1pSa9cnYgz/KJf40qi4T0wuZ9zIu1MBttBnuU+Flovu/rgWayp/AQz5tsgwhVJD+okDAUO4+bGfJ/7FzZ3FBXFFRw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762091728; c=relaxed/simple;
-	bh=M2IisSCTvrkgv5ctIyTrkxVp3NrBj65m8a0MhyuYjpU=;
+	s=arc-20240116; t=1762097461; c=relaxed/simple;
+	bh=qnTK+aOU/vNr+ZxpzyZw3EjGpE1dHpLR9coBfnOFci4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lr4u0jd+6Vus0yU9XwrxOKiiEXKV16WSaX1wWJysuOuPBnI/jIcMzv1Fst6nIP6Xp8oU/1NfDxm7jgQko1Pnz+6r3RJeYhvnEjBK+4rVachfLqQkxDBVW26t+31l9fPVKRB6Rw42pvV+7cUWtq9c1vuvugJTVRDUVHWxU1wRm6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vFYXv-0007Xl-0u; Sun, 02 Nov 2025 14:55:03 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vFYXt-006ha3-0A;
-	Sun, 02 Nov 2025 14:55:01 +0100
-Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C5D33494550;
-	Fri, 31 Oct 2025 12:19:54 +0000 (UTC)
-Date: Fri, 31 Oct 2025 13:19:51 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Stefan =?utf-8?B?TcOkdGpl?= <stefan.maetje@esd.eu>, socketcan@esd.eu, Manivannan Sadhasivam <mani@kernel.org>, 
-	Thomas Kopp <thomas.kopp@microchip.com>, Oliver Hartkopp <socketcan@hartkopp.net>, 
-	Jimmy Assarsson <extja@kvaser.com>, Axel Forsman <axfo@kvaser.com>, linux-can@vger.kernel.org, 
-	netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	Vladimir Oltean <vladimir.oltean@nxp.com>, Kory Maincent <kory.maincent@bootlin.com>, 
-	Jacob Keller <jacob.e.keller@intel.com>
-Subject: Re: [PATCH net-next 0/3] convert can drivers to use ndo_hwtstamp
- callbacks
-Message-ID: <20251031-fierce-laughing-hummingbird-208a89-mkl@pengutronix.de>
-References: <20251029231620.1135640-1-vadim.fedorenko@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fsSK2QsS2apUVoyYE8x5lnFnOXliKo/D5v6zUPgj0+6quSHX1OsWdJzhPoPTTdRw0WB2rBbq3v7kO0+sNoX8JjjJI8ODlspzcTNL4zy563efqWBMW3fpydE5aX8TawTgAuSG42I0rGQpsdv61yJGHXRxtosvIX1e2R3lSAZWRS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MQUuRtTo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MQUuRtTo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=VBQuMfcb9v6n/12qNVr+mvs1HdGo/dveo2cEaqi032I=; b=MQUuRtTo3eXnXA8tyg9AN1Ae2Z
+	wTWExrS2kIPp3aSkAG/noSr9AF1cTKdwqVkDAx8ipr2sb6QfvhIthiPw2kRJtqAoU3T2XxUUFEmVR
+	g73UnHeAhSVjRBKTF8GXRBk6G30pXHWqtmwIckiAzItb4XShjT7MfZYgU+tmHlpFU908=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vFa2K-00Chtb-36; Sun, 02 Nov 2025 16:30:32 +0100
+Date: Sun, 2 Nov 2025 16:30:32 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tristram.Ha@microchip.com
+Cc: Woojung Huh <woojung.huh@microchip.com>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Oleksij Rempel <linux@rempel-privat.de>,
+	=?utf-8?Q?=C5=81ukasz?= Majewski <lukma@nabladev.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: microchip: Fix reserved multicast address
+ table programming
+Message-ID: <9f8e7666-d78b-418d-b660-82af4d79983e@lunn.ch>
+References: <20251101014803.49842-1-Tristram.Ha@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uok4emd47n6jmrxq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251029231620.1135640-1-vadim.fedorenko@linux.dev>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+In-Reply-To: <20251101014803.49842-1-Tristram.Ha@microchip.com>
 
+> +	/* The reserved multicast address table has 8 entries.  Each entry has
+> +	 * a default value of which port to forward.  It is assumed the host
+> +	 * port is the last port in most of the switches, but that is not the
+> +	 * case for KSZ9477 or maybe KSZ9897.  For LAN937X family the default
+> +	 * port is port 5, the first RGMII port.  It is okay for LAN9370, a
+> +	 * 5-port switch, but may not be correct for the other 8-port
+> +	 * versions.  It is necessary to update the whole table to forward to
+> +	 * the right ports.
+> +	 * Furthermore PTP messages can use a reserved multicast address and
+> +	 * the host will not receive them if this table is not correct.
+> +	 */
+> +	def_port = BIT(dev->info->port_cnt - 1);
+> +	if (is_lan937x(dev))
+> +		def_port = BIT(4);
 
---uok4emd47n6jmrxq
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next 0/3] convert can drivers to use ndo_hwtstamp
- callbacks
-MIME-Version: 1.0
+Why not just def_port = dsa_cpu_ports(ds)?
 
-On 29.10.2025 23:16:17, Vadim Fedorenko wrote:
-> The patchset converts generic ioctl implementation into a pair of
-> ndo_hwtstamp_get/ndo_hwtstamp_set generic callbacks and replaces
-> callbacks in drivers.
+The aim here is to send frames to the CPU. You then don't need the
+comment about different switch versions.
 
-applied to linux-can-next
+> +	for (i = 0; i < 8; i++) {
 
-Thanks,
-Marc
+Please replace the 8 with a #define.
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+> +		if (ports == def_port) {
+> +			/* Change the host port. */
+> +			update = BIT(dev->cpu_port);
+> +
+> +			/* The host port is correct so no need to update the
+> +			 * the whole table but the first entry still needs to
+> +			 * set the Override bit for STP.
+> +			 */
+> +			if (update == def_port && i == 0)
+> +				ports = 0;
+> +		} else if (ports == 0) {
+> +			/* No change to entry. */
+> +			update = 0;
+> +		} else if (ports == (all_ports & ~def_port)) {
+> +			/* This entry does not forward to host port.  But if
+> +			 * the host needs to process protocols like MVRP and
+> +			 * MMRP the host port needs to be set.
+> +			 */
+> +			update = ports & ~BIT(dev->cpu_port);
+> +			update |= def_port;
+> +		} else {
+> +			/* No change to entry. */
+> +			update = ports;
+> +		}
+> +		if (update != ports) {
+> +			data &= ~dev->port_mask;
+> +			data |= update;
+> +			/* Set Override bit for STP in the first entry. */
+> +			if (i == 0)
+> +				data |= ALU_V_OVERRIDE;
 
---uok4emd47n6jmrxq
-Content-Type: application/pgp-signature; name="signature.asc"
+You have already made this comparison once before. Maybe
 
------BEGIN PGP SIGNATURE-----
+	update |= ALU_V_OVERRIDE
 
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkEqWQACgkQDHRl3/mQ
-kZyKaAf/dkrC1Ni82GV4fZJYaXVJXi6U1naARUVYLKAvPCoVAem6NU/tGcrd79G1
-gMKlMmStFT/lai3orSbSLvrgFqpFbwOBJ7BtbMJMhGabU8/DJAS+QdsoSw3ADLNN
-6ontAErIFaHHQn55gM3lQhoYvy8D4gMDEGOaPcvkFPx8tglI5BJllKfOjjQ8+eXb
-kpbw1rNmui+yHLWe4YE8MsCrZ4ZpZmjOZB2YuBBF+m39JvCmo60/DyVwciT3tEhK
-2KLh8mX7T9nMSwOTA+QiI3Hvin8QhcZYV9V5WEyZ2Q7xlMlPmK6U1ITxoX7SuuSP
-On7+XGNvkJ1pUsuAHXPj/Z+8/PTTfQ==
-=jOya
------END PGP SIGNATURE-----
+higher up?
 
---uok4emd47n6jmrxq--
+	Andrew
