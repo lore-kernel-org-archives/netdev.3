@@ -1,66 +1,66 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3230628642D
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 01:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EE02877FA
+	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 01:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762134673; cv=none; b=MrWDWL3Ageqr1lQMB8KvIrq+MZxs9Z6oMHN5G7xOcYX4ytJEMDHBnm3syTJlrm9HuqrmgWR7aDHUVSB/h1MsW3zZTD3+RmGPl8rXK9C2BHMpetYXUDOVnfDHpjg8RDXN5WcsseD/7dns5+NxEwLPywtQYeALPyoPOzzR3G3hkbc=
+	t=1762134674; cv=none; b=lCWe7tFC8PhttAZOkTrXeomLXkYN6kVbxDyM0lIpAulTQh0xZwvy8AaxcAFCYMAHCqjZHW4BNApUAAMuxIk40uWvldai7Zy3QtyrC3ISFZ8sfBRW55sXy7t74BigQID7k6PJejCzWZ78L8IqtsQuljiLLZLUuddNyupy88Asnm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762134673; c=relaxed/simple;
-	bh=Ah+90vlkgOlUyyughdO7zNDVG97YW6CBrkKD+MNo5DQ=;
+	s=arc-20240116; t=1762134674; c=relaxed/simple;
+	bh=xYbBu2fMf0do2Y8PFkgmZ44ePl1qKHbhlD2bXGI6s6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5J0TUtqRqsdauPZRpFBdVEu3I6qMf8kzc3yxYioCe9WCtgGo23dP8KYRDlpvLJyq/YbXCAS3YgMHoHNTx/FPquHpF9SeQcML6W9J3guq8vqKrMfJ4Oy235R47qbWR4fnCLUQPNJpdiYgUu9pA9wiMq2sBJbaDMFHnRJVNzKQ4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gs5/sJeh; arc=none smtp.client-ip=209.85.216.45
+	 MIME-Version; b=reR4ipazuTPVaDpCpuTuDebWGHKvSqEX4ssfwHhPv8FBLsYktXWbelTcEOi34iVjP7OfaHzZL8QNokfUOxCN9oCYx7EDpNuSZAp4MXkwmbTVbbwOPgN6xqQG4Y6OfMldvxHaZ6AjK0JFC2i/YMTzdCzXPqz20CEIJZccYKRfY8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1c19nDS; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gs5/sJeh"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33ff5149ae8so3080539a91.3
-        for <netdev@vger.kernel.org>; Sun, 02 Nov 2025 17:51:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1c19nDS"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-28e7cd6dbc0so49060625ad.0
+        for <netdev@vger.kernel.org>; Sun, 02 Nov 2025 17:51:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762134670; x=1762739470; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762134672; x=1762739472; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hkKTspHYmfWOFM70ifYk5p3S0g4HpZnFTv7ED0DZ6vo=;
-        b=gs5/sJehjPczAUnPl5UQKi8WXsYjITxRso2HCFjwADgMp6z8WLd/+AZ/MAGDhpJdDg
-         x7fh1P1WchoR87r2ziDAuiGIj3emFPjeE6RldggqqyoyeMC8ZFC3BH/JNn9yNzbJTEjx
-         x3J9ryWtnL9g3fHGCl5dvH/vmJyqU9QaHen4V20yprCPVBZqoy7Rz/06zcJitVwMeAkB
-         DwLc4Oy950E9ZN/96RqtXEF2K2KJZQzqIpnJDHQ02aRQ13+qKFclNYI5J6evXvGR73Sv
-         Cq40ayyJunuOxwPLpfTDs4pfSo2mX/DMWUMiUBYfABaOtDtm1hEd61n98OVmrQo0E+ua
-         9XJw==
+        bh=bDAfAMTS/DdBYBQoTuWYXo0/wYkGq/INrH1coTZQ7c0=;
+        b=g1c19nDSzk6Yko1GS4W3qggY2Xm2ixRZqOUUMEPGTfAOwa633tMjzB0FuAMUk4Lv15
+         FjJWrEvJQM/HItaNzy5h7o6epE88b5SeNA+i+6bF2Qi2mn1+KERXwZ5Y1ihmc1DRKhLT
+         qeTfPAaIYSyUA/Gtkeh1IDtowQjJsRfQ2ynARVJbAMy+3QJJqujWwilQgs5uKcFKu3qh
+         QDvhRfXrg0OXZ0yV++024RcKEd2V/o+CSGzb0W7F9fELUoArIcAgXCJtkmxj61N2YoYI
+         0xoq/WeSQoYjZpe7hWjbo1iNB81daISD4AZptpSu60+7gfhRqL6+X2s3vZRzeVhKNN2f
+         WxfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762134670; x=1762739470;
+        d=1e100.net; s=20230601; t=1762134672; x=1762739472;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hkKTspHYmfWOFM70ifYk5p3S0g4HpZnFTv7ED0DZ6vo=;
-        b=Lh7FtiRjQJKNY/SR/hQt+0aUx5jCRCVbeqjpwdSYknu23Or7K275KhNdwssOn22KQV
-         aO8f9rIOMnGSoXG1NbhPvDy9a3dUYo99539m3OeNZdk1CZUlSeS1F2GBrWokk95OA/e0
-         82S+iEJ6MDepU4+3IuL2M5qYSGo9KKvfD/84+rREXaqiEBJFLr/V1FRZLCx2fx62BQSD
-         hidEgyjDBzVIMZfVB01YECyDTK+hVV+apYWT1RBSn8oxZZWwWxCcVtmQo1s7OfaencuE
-         +7BAqTWfLuWzJ0mzzYWW3Pj2HttIDWc7ztI04XLppZ+DhtFdPpVhJ0AmyLXEFys5OkC/
-         7p2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWq/9RKEZ1CbtmbXAHnBQFOI47hZyl11DIL1rSb+8GQn6lyiOUPvd8P7KtAySx90iekd1Y9tOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkEa4ZkpHQOArcS2zYJ4t3IKaF/jruQp917+tzSxyeIC7x9oFp
-	MS22+PgaCB4Gu1nAEcLuQegdYgu3mHh6TW8L9vUeYlkcUjZ/boR0nBO/
-X-Gm-Gg: ASbGncu0TyoR3wKabYHaXE9Xl9dfHxshCImAd9UNaSA4JDekL7jiGd7MgodLSYpFo8t
-	tKPd6AfkuMrKI25ynTkNVQw8urLsYg0BHuoiLvPtgGSzqHAgxQetSB+/LAG3OjDqR2SaO5Omobz
-	8XFDuZEDLpxG0aayWst2E2Q1ekJORYZyCJGx1gXhXXyG8MdHkioA5WIclnOC4pJbvJrWLIUNtVX
-	IpaT6AAi6mOiYn/Top+HeYXh799+npD/KF2ldxx7hVfSzmJxhTtPIEfzo8p89h6r9EScoNdlKkp
-	y1Jkv5isCuZq94zS4DgXcXzWQLsrDjdR/RQO7m50iIjRibfjICI301WntTFgCn1HmEQeaDjAKoY
-	joFdq3DTq8SpyXMuZWfxKSYWKfjJ5c5bAgy8u15qMRorA7xe4o/gF6OWjyridal/hQjjmI0PjQi
-	Qormpu+YHsk+s=
-X-Google-Smtp-Source: AGHT+IFYqMxHMvi7lUWfNqiIwVN9ffiabVUjelb6YerJOXj6/2jPKUMtAkHCDHXwBoUur/VvjPugFw==
-X-Received: by 2002:a17:90b:4988:b0:33d:a0fd:257b with SMTP id 98e67ed59e1d1-3408309d2c8mr13142947a91.36.1762134670266;
-        Sun, 02 Nov 2025 17:51:10 -0800 (PST)
+        bh=bDAfAMTS/DdBYBQoTuWYXo0/wYkGq/INrH1coTZQ7c0=;
+        b=NgG8vP2sSu8dDVWhvduuICJ0NQMeZEO8zkK2d0yqye7tBR4xVH1ZR58RmtAyQhm/Lb
+         yZPzFaSIxQ3HBxyzaAXUkbAIH8bkITzlprIyiPi+2OrQBWqPI5bmJeBiEL/ZUaFhXNbc
+         yG2zzwB9ZMBZ+HLEJJxROP1rmnSFkNRgcerGgpx9Imn4shuw8TbuQPML2/QP6P21m834
+         TRFTk9t4dOcDOF4V1mz40k+pahqxurcT+rhdktgryc+oNo4Jdq5TqgO00QEkvBaP0JIA
+         p4i4XXXOXpDallsihzEdisPTkz8mkxJxRVikOIpKWK/kPhDGSE0/uQ10JdZFGWjvq86z
+         BEPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjC4cdTzpbdMOb2apTr24n3plrE5aGwg8j7xmgBJodryVxK7BrwvI0pFsdFtEJGEWKK6JQRfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbMqKb3rwHwThBEZZZh3RXKOYvfamMEfH3svrar3KYINqnE/oE
+	u4EqvetYY/XZel/b65xKPGOTT5cLoLvUQbRl7ok4KOiMNo3TqW/jl4jK
+X-Gm-Gg: ASbGncu7rzWWIshgAGv9LWhvUh8hwJKcIGFEYyv4/K6+1wyoiO3g5JvTLPFY+vhD5PV
+	QCL7sh9g635gUg1Hn8+MfFfbIsMiGgOHoJa5TBqwJsrQkU8mzXWuE0YHLjF8b1h+VKs/r2wm2s/
+	h4+zXPQb2a9F01s0G2qTFALPjZZHDBD6TTCFmHU8jlLQZaB4tVkg/cAaR/pT3pJPVihIz0E6Rwj
+	CXd5ioe9YLHVmnGcL6yLnOg1nSL6MBlz6mLfu9wBMYbH95I4TLJ/WZnI3UpftcyKMroDbFvrPHc
+	VLFkHMDIVpRCeUJP5Cgg1GcGWFxx8Orf8E8LlkS5Na89iqy/4LvkeamGtv2Xg2HhRFnpWR2dw03
+	ktoxIxql1TB40cACf4oZk2W6PqYGphXUunKN6TH4Q+fp4Y3nzdAVO7aACa/iVErcBSBA7rpV9Tj
+	BO
+X-Google-Smtp-Source: AGHT+IHe3/m/vfP4n8dAnB++a4/roBr54Jczttq+5F/s76Bm2lMbUhEsFeIShoWIP9P2vd3f0r/p2A==
+X-Received: by 2002:a17:903:2302:b0:295:557e:746f with SMTP id d9443c01a7336-295557e7a25mr85614305ad.32.1762134671769;
+        Sun, 02 Nov 2025 17:51:11 -0800 (PST)
 Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3407f096a44sm5613194a91.2.2025.11.02.17.51.04
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3407ef4c263sm4458053a91.3.2025.11.02.17.51.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 17:51:05 -0800 (PST)
+        Sun, 02 Nov 2025 17:51:10 -0800 (PST)
 Received: by archie.me (Postfix, from userid 1000)
-	id 307594264564; Mon, 03 Nov 2025 08:50:58 +0700 (WIB)
+	id 6EA02426D9E0; Mon, 03 Nov 2025 08:50:59 +0700 (WIB)
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation <linux-doc@vger.kernel.org>,
@@ -75,9 +75,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Bagas Sanjaya <bagasdotme@gmail.com>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH net-next v3 5/9] Documentation: xfrm_sync: Trim excess section heading characters
-Date: Mon,  3 Nov 2025 08:50:26 +0700
-Message-ID: <20251103015029.17018-7-bagasdotme@gmail.com>
+Subject: [PATCH net-next v3 9/9] MAINTAINERS: Add entry for XFRM documentation
+Date: Mon,  3 Nov 2025 08:50:30 +0700
+Message-ID: <20251103015029.17018-11-bagasdotme@gmail.com>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251103015029.17018-2-bagasdotme@gmail.com>
 References: <20251103015029.17018-2-bagasdotme@gmail.com>
@@ -87,58 +87,32 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1915; i=bagasdotme@gmail.com; h=from:subject; bh=Ah+90vlkgOlUyyughdO7zNDVG97YW6CBrkKD+MNo5DQ=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkcnJVHvmWefnGBd8VN1e3bu5JWGZapP8nNXGlrtbHL5 sv7d68UO0pZGMS4GGTFFFkmJfI1nd5lJHKhfa0jzBxWJpAhDFycAjCRk7cYGa5zpr1bm2BmGtXP VCEqIXdXuX3r9GWW/w3eeYvMWfXEfhvD/yhNplrRWYnf74VznTz9au3KA5O9dCetcV1rafOk8df GBnYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=870; i=bagasdotme@gmail.com; h=from:subject; bh=xYbBu2fMf0do2Y8PFkgmZ44ePl1qKHbhlD2bXGI6s6k=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJkcnJWJb6OS5AOvvHP2OxbZECTbpOA0/77NUZcNhk9fO Xjs8LraUcrCIMbFICumyDIpka/p9C4jkQvtax1h5rAygQxh4OIUgIlovWT4w/mKLzP/SJjVI7/9 G4ouTcqwuNwt+/6t9d07m9o2b9KYso+RoS3ZLfvA8uk9l7w8Gx8fnXIhKinowSH2n2pbDlx8dfe jOB8A
 X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
 Content-Transfer-Encoding: 8bit
 
-The first section "Message Structure" has excess underline, while the
-second and third one ("TLVS reflect the different parameters" and
-"Default configurations for the parameters") have trailing colon. Trim
-them.
+XFRM patches are supposed to be sent to maintainers under "NETWORKING
+[IPSEC]" heading, but it doesn't cover XFRM docs yet. Add the entry.
 
 Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
 ---
- Documentation/networking/xfrm_sync.rst | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/networking/xfrm_sync.rst b/Documentation/networking/xfrm_sync.rst
-index c811c3edfa571a..de4da4707037ea 100644
---- a/Documentation/networking/xfrm_sync.rst
-+++ b/Documentation/networking/xfrm_sync.rst
-@@ -36,7 +36,7 @@ is not driven by packet arrival.
- - the replay sequence for both inbound and outbound
- 
- 1) Message Structure
------------------------
-+--------------------
- 
- nlmsghdr:aevent_id:optional-TLVs.
- 
-@@ -83,8 +83,8 @@ when going from kernel to user space)
- A program needs to subscribe to multicast group XFRMNLGRP_AEVENTS
- to get notified of these events.
- 
--2) TLVS reflect the different parameters:
-------------------------------------------
-+2) TLVS reflect the different parameters
-+----------------------------------------
- 
- a) byte value (XFRMA_LTIME_VAL)
- 
-@@ -106,8 +106,8 @@ d) expiry timer (XFRMA_ETIMER_THRESH)
-    This is a timer value in milliseconds which is used as the nagle
-    value to rate limit the events.
- 
--3) Default configurations for the parameters:
-----------------------------------------------
-+3) Default configurations for the parameters
-+--------------------------------------------
- 
- By default these events should be turned off unless there is
- at least one listener registered to listen to the multicast
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1ab7e87462993b..6d2906b2600376 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18051,6 +18051,7 @@ L:	netdev@vger.kernel.org
+ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git
++F:	Documentation/networking/xfrm/
+ F:	include/net/xfrm.h
+ F:	include/uapi/linux/xfrm.h
+ F:	net/ipv4/ah4.c
 -- 
 An old man doll... just what I always wanted! - Clara
 
