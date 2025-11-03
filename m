@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7094E3054F8
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 11:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9303054F8
+	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 11:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762170668; cv=none; b=F7hqN7cSyrGnibia9oPCy8XRbMZae2ENxJa0kjOcK9PFcLVl7q88lDI/fxDVgTFUJHVfJnr7HrkCLpIysn0P9ES4SeJPR+T6VzVTy//itqBhLDFVjCj7Z0HsnlNGp+O0lXIo8XW2NdsqwDANg2Y0CIv9MLfaa+iG+WfTUOVOKa4=
+	t=1762170672; cv=none; b=DhB4BraDnoJCoGhqthptihyLu4HCfFzG/40hg/yTXsFhFMIrxZA9z6Nl7sOiLlkyRG4bGujXaS+GD7HgD6gQJ0NnRIDjamijOh6GEBzKLoJThgQo3va5w4dv32/G0C2llsG/t7HZqfINeuNWAHBirkpPV1lkB0QGdNRTqXh5/kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762170668; c=relaxed/simple;
-	bh=lxXAR4f4KcshnXGKSd9sGaiIE73eRyFWMlM7QOPvktY=;
+	s=arc-20240116; t=1762170672; c=relaxed/simple;
+	bh=Vibd5ps+PSRFnQF3jIOYvV/vKKoP4zJIccCzF29G8rg=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=gBsJnyLPXNszGlC5hYAiRhGDGQtctDkxIvnJZUlCrVUCeuPNHxm2HDbPcp7HH0ASxz1U/KO6HTfUx7u+IZQAyqXQOewZw3ND1WvcmrxkrX0wyyg3+rq7LtKQTeJbQICsQKGHvbehkz/nsruAzVidJGxD4QwTddsg1cUZ1NCq08c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=VLRDRUvc; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=tRjUTgrnNoLkUqrdJ1XRDMCbNjGwC9/10lKDFTn5D9Jsuy0LNcToWIgEAGBAP+d6l3ACPrGVHmLuerD2yhoW8KPMUCBLnYZzDyAkMdPs2TXY0dHojNZav7acoi3tZHHVcbd5VhrGHx6axkyqeXOSqCQ+QF5cCQSKNIqOeERZLp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eDlTZlto; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="VLRDRUvc"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eDlTZlto"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kly4N6abxp7aiePb6wwRYSJBZH1/+QjzYw61vq0g2YY=; b=VLRDRUvcQXaTw2J9kkhL41exjg
-	l03aK4H5uo2r3lFc7UW+qkMbskoYLmUNx1vTeQXFsWaGs/dVVrYQMk6ahorUvjrArrwmmMrW259rT
-	d3gYqe06cb7qItzqXKILT6Mt5XgrHxlNNDsoghKsHOBnQRZsL6WTkefxMg6+rwYqZUKRz7iMHwEua
-	FrXmdJ1esBBO2TXfhbNL31mcEW2ySLoGgSM3cn6UgIz8E31IZbecuu7xWNkYUdtqoNrTsmbHoi3Hd
-	PIVdJnkHQ9YKxgv78dtENXBUJYvGAHwn/M9EaCCt1LFsMRmGOUQp6ye+LHFVBOPu3mwoHX3gSD3A8
-	0yD2ZqVQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50026 helo=rmk-PC.armlinux.org.uk)
+	bh=+x67xrOfs+NtjduqtRJxZD8HBELV2D7qvud2IndiqU4=; b=eDlTZltoetN3Hk1dXyigbldu0u
+	gLYRDBWpaj8VhWcsanGsGMOEUnFEmvC66Nj4x1QtyF9BH1Qc/u73b7jubrIw5ZWPWmoKzk3GSGmtL
+	xJ9VYkHMSdMM42Dt1mcLxJSlD11vWe+IaORHyBYfRrUznWsbnT5Hyy7U7dB07Z7+qFT+pT95V8b0G
+	XWTfellsJlbbkChSQwSejkGFdESfUc9XW1T0/bSPpZgSgo6LMOMRm7sDvUaOFtMzQNbTnJWGkGbZz
+	FjQGf64JAQ9Xj87x8/+0Fzjt3KRvSmN7HSRkQXrWz0SxaznipsaFpnMXTXOx7CdEYBEMhIlYm9jnl
+	sc2ueNDQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35376 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vFt56-000000000ho-2CKc;
-	Mon, 03 Nov 2025 11:50:40 +0000
+	id 1vFt5G-000000000iL-006H;
+	Mon, 03 Nov 2025 11:50:50 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vFt52-0000000ChpG-1bsd;
-	Mon, 03 Nov 2025 11:50:36 +0000
+	id 1vFt5C-0000000ChpR-2kAB;
+	Mon, 03 Nov 2025 11:50:46 +0000
 In-Reply-To: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
 References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -60,8 +60,7 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	s32@nxp.com,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next 09/11] net: stmmac: imx: simplify set_intf_mode()
- implementations
+Subject: [PATCH net-next 11/11] net: stmmac: imx: use ->set_phy_intf_sel()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,111 +70,78 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vFt52-0000000ChpG-1bsd@rmk-PC.armlinux.org.uk>
+Message-Id: <E1vFt5C-0000000ChpR-2kAB@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 03 Nov 2025 11:50:36 +0000
+Date: Mon, 03 Nov 2025 11:50:46 +0000
 
-Simplify the set_intf_mode() implementations, testing the phy_intf_sel
-value rather than the PHY interface mode.
+Rather than placing the phy_intf_sel() setup in the ->init() method,
+move it to the new ->set_phy_intf_sel() method.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 67 ++++++-------------
- 1 file changed, 19 insertions(+), 48 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 38 +++++--------------
+ 1 file changed, 10 insertions(+), 28 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index dc28486a7af0..d69be9de4468 100644
+index ae1b73e1bcb2..db288fbd5a4d 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -67,29 +67,15 @@ static int imx8mp_set_intf_mode(struct plat_stmmacenet_data *plat_dat,
- 				u8 phy_intf_sel)
- {
- 	struct imx_priv_data *dwmac = plat_dat->bsp_priv;
--	int val;
--
--	switch (plat_dat->phy_interface) {
--	case PHY_INTERFACE_MODE_MII:
--		val = 0;
--		break;
--	case PHY_INTERFACE_MODE_RMII:
--		val = dwmac->rmii_refclk_ext ? 0 : GPR_ENET_QOS_CLK_TX_CLK_SEL;
--		break;
--	case PHY_INTERFACE_MODE_RGMII:
--	case PHY_INTERFACE_MODE_RGMII_ID:
--	case PHY_INTERFACE_MODE_RGMII_RXID:
--	case PHY_INTERFACE_MODE_RGMII_TXID:
--		val = GPR_ENET_QOS_RGMII_EN;
--		break;
--	default:
--		pr_debug("imx dwmac doesn't support %s interface\n",
--			 phy_modes(plat_dat->phy_interface));
--		return -EINVAL;
--	}
-+	unsigned int val;
- 
--	val |= FIELD_PREP(GPR_ENET_QOS_INTF_SEL_MASK, phy_intf_sel) |
--	       GPR_ENET_QOS_CLK_GEN_EN;
-+	val = FIELD_PREP(GPR_ENET_QOS_INTF_SEL_MASK, phy_intf_sel) |
-+	      GPR_ENET_QOS_CLK_GEN_EN;
-+
-+	if (phy_intf_sel == PHY_INTF_SEL_RMII && !dwmac->rmii_refclk_ext)
-+		val |= GPR_ENET_QOS_CLK_TX_CLK_SEL;
-+	else if (phy_intf_sel == PHY_INTF_SEL_RGMII)
-+		val |= GPR_ENET_QOS_RGMII_EN;
- 
- 	return regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
- 				  GPR_ENET_QOS_INTF_MODE_MASK, val);
-@@ -99,39 +85,24 @@ static int
- imx8dxl_set_intf_mode(struct plat_stmmacenet_data *plat_dat,
- 		      u8 phy_intf_sel)
- {
--	int ret = 0;
--
- 	/* TBD: depends on imx8dxl scu interfaces to be upstreamed */
--	return ret;
-+	return 0;
+@@ -134,36 +134,19 @@ static int imx_dwmac_clks_config(void *priv, bool enabled)
+ 	return ret;
  }
  
- static int imx93_set_intf_mode(struct plat_stmmacenet_data *plat_dat,
- 			       u8 phy_intf_sel)
+-static int imx_dwmac_init(struct platform_device *pdev, void *priv)
++static int imx_set_phy_intf_sel(void *bsp_priv, u8 phy_intf_sel)
  {
- 	struct imx_priv_data *dwmac = plat_dat->bsp_priv;
--	int val, ret;
+-	struct imx_priv_data *dwmac = priv;
+-	phy_interface_t interface;
+-	int phy_intf_sel, ret;
 -
--	switch (plat_dat->phy_interface) {
--	case PHY_INTERFACE_MODE_RMII:
--		if (dwmac->rmii_refclk_ext) {
--			ret = regmap_clear_bits(dwmac->intf_regmap,
--						dwmac->intf_reg_off +
--						MX93_GPR_CLK_SEL_OFFSET,
--						MX93_GPR_ENET_QOS_CLK_SEL_MASK);
--			if (ret)
--				return ret;
+-	if (dwmac->ops->set_intf_mode) {
+-		interface = dwmac->plat_dat->phy_interface;
+-
+-		phy_intf_sel = stmmac_get_phy_intf_sel(interface);
+-		if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
+-		    phy_intf_sel != PHY_INTF_SEL_RGMII &&
+-		    phy_intf_sel != PHY_INTF_SEL_RMII) {
+-			dev_dbg(dwmac->dev,
+-				"imx dwmac doesn't support %s interface\n",
+-				phy_modes(interface));
+-			return phy_intf_sel < 0 ? phy_intf_sel : -EINVAL;
 -		}
--		break;
--	case PHY_INTERFACE_MODE_MII:
--	case PHY_INTERFACE_MODE_RGMII:
--	case PHY_INTERFACE_MODE_RGMII_ID:
--	case PHY_INTERFACE_MODE_RGMII_RXID:
--	case PHY_INTERFACE_MODE_RGMII_TXID:
--		break;
--	default:
--		dev_dbg(dwmac->dev, "imx dwmac doesn't support %s interface\n",
--			phy_modes(plat_dat->phy_interface));
--		return -EINVAL;
-+	unsigned int val;
-+	int ret;
-+
-+	if (phy_intf_sel == PHY_INTF_SEL_RMII && dwmac->rmii_refclk_ext) {
-+		ret = regmap_clear_bits(dwmac->intf_regmap,
-+					dwmac->intf_reg_off +
-+					MX93_GPR_CLK_SEL_OFFSET,
-+					MX93_GPR_ENET_QOS_CLK_SEL_MASK);
-+		if (ret)
-+			return ret;
- 	}
++	struct imx_priv_data *dwmac = bsp_priv;
  
- 	val = FIELD_PREP(MX93_GPR_ENET_QOS_INTF_SEL_MASK, phy_intf_sel) |
+-		ret = dwmac->ops->set_intf_mode(dwmac, phy_intf_sel);
+-		if (ret)
+-			return ret;
+-	}
++	if (!dwmac->ops->set_intf_mode)
++		return 0;
+ 
+-	return 0;
+-}
++	if (phy_intf_sel != PHY_INTF_SEL_GMII_MII &&
++	    phy_intf_sel != PHY_INTF_SEL_RGMII &&
++	    phy_intf_sel != PHY_INTF_SEL_RMII)
++		return -EINVAL;
+ 
+-static void imx_dwmac_exit(struct platform_device *pdev, void *priv)
+-{
+-	/* nothing to do now */
++	return dwmac->ops->set_intf_mode(dwmac, phy_intf_sel);
+ }
+ 
+ static int imx_dwmac_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
+@@ -342,8 +325,7 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 		plat_dat->tx_queues_cfg[i].tbs_en = 1;
+ 
+ 	plat_dat->host_dma_width = dwmac->ops->addr_width;
+-	plat_dat->init = imx_dwmac_init;
+-	plat_dat->exit = imx_dwmac_exit;
++	plat_dat->set_phy_intf_sel = imx_set_phy_intf_sel;
+ 	plat_dat->clks_config = imx_dwmac_clks_config;
+ 	plat_dat->bsp_priv = dwmac;
+ 	dwmac->plat_dat = plat_dat;
 -- 
 2.47.3
 
