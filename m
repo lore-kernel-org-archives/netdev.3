@@ -1,91 +1,56 @@
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EFE3002DD
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 23:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D5830BB90;
+	Mon,  3 Nov 2025 23:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762213467; cv=none; b=l+vzJwrQQOgLEKkOdIkoH/PyRFJ6VKntrk9D+atpUyG+aDfLy2dLupdSu9YhEwiw8kuXPbn1sB0FfX3h7Gx5CD0cljZAri+dFbBLwDFyjSv5IVfFZpRLfJx22D7yb7enqDqZoV2D21egE6uahdYyom/sicE+u6SEIo4jEzdDF5c=
+	t=1762213480; cv=none; b=tcxi8+avm/qCBbI+cf/vo+HJoP35ycRpf0luo9ZlY9NDkuOQQBWzD02lLgaJrzkMiutRc2f5nv0eIEnzxawd3af0ly1zfg4e04C+0BkUfoukJYE6hYbzdqIlN42voP91wcZeGniVhDg8WCRISrW2Y3+zdHwaPfWPrzhvVbFZW+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762213467; c=relaxed/simple;
-	bh=Y6n9uQysouYMPCUaMOJBUSqSTFggZuvD2vskFKtZeJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ey5t+/01rSdQ9MtSNuqjEi1Cnx3odJTskDHbXj+lE2G7cHPepvwEAWQCNyMaZtfrzyuzTxaqozbaVPbDfEoXN3sjwtJMCtsTrIQsIiADopqtRGnl0sC3tps8CYlU6THZDqIaTV7pCO/L4jmcJa0Bck4byXG0n7/ThgU5VFwIxSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JY2CwaGa; arc=none smtp.client-ip=209.85.166.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762213480; c=relaxed/simple;
+	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d/5ltBZRVfL+h5fz36ATLSv8xM15OofV2+yNO6BFYSfBxk0uSu+hEqQmxPJvbOvtAiPWAD44Fq4Ilgc9r5ZxoN4sUtVyQEFLAOM2yGaN5wtm3j9Gw96CJatD7InDFkiOK7h/tUkKzT6UlJWyqdOPNCgOu4rMP54Y0Lz0chfjnRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arUhlo4T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JY2CwaGa"
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-4330e3080bfso16076005ab.2
-        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 15:44:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762213465; x=1762818265; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y6n9uQysouYMPCUaMOJBUSqSTFggZuvD2vskFKtZeJg=;
-        b=JY2CwaGa142DhxgfBJXxiyYPof7YfVLRPcMhBRcU/HCt8X7lo+psiS8OsO1vLKmpCW
-         tsdIo8vDmh0evudvdo5gpV/BC9kZdr72P+7jaFXvGO88KKV9nJUUmBBz2kluIsFskWR/
-         Rxag83WRdozh1A0zZyu83hpJ/nWz5xXdP0iVnwJ8xOYgAJThxMweooIy9phPg40Yn5M2
-         vBoXULyyngGWaN/PHVoKAvO7FhR/FckJy3upmaESCkwyBL7+fkzdR8NLFoSZ9Rj427Qi
-         omhx6/fqG8JqJo8sb5zfm/gQbRkuz2+7rHmkxYC2NG5nwC0ljy44JDV8D/rsB+BE914S
-         fNZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762213465; x=1762818265;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Y6n9uQysouYMPCUaMOJBUSqSTFggZuvD2vskFKtZeJg=;
-        b=b+joB7TTyfJmL/2aWyynpX3s/aDD6zhliXcTMMy483e6UBsnVlxL0o5zG4D9JJOTxU
-         04SjArQq2QO0HuzH1cD43qHcgsHu4Qoj6r3/jeyuFMZn2jGrikig1lNgCB3iNQg6OwRY
-         TZK50a2ugSIRecLX2PnbOhbmFuhm4FKwMCYyze1U81lZD8Tnon2Lk6Bcz6TU0sCRy3hO
-         kK7WxG8Tr7wDAEUYswTvJXcomlduxh6TQRUsuirlZe7pGpMu5+V4Mn+ov+QpB8mCuMBY
-         UrAo9SrwuqGjLk4LC/W3AMUQ9RP91XeDXuS9KYu51IVDMJaogW1jmWyr5A+TVareWyXm
-         6QlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFZeEqn2/mwKnCuxrELKYMRptup9yyzKvmD1NC8u6mQICoyGeeRWge0WFDMv+sFdYUQz56tJc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQUX09u8+d6wWu8tsrH2KGv/xFNec9/EEDErRNakS8ifEGtg4G
-	qrVuotscGsoQYdRyKJS6+/N9Q4tUWM9I0uZRuIulDliK9HWhl/wocVWrg1skmLIxiWtKLc5jpO0
-	eiOPIk+Jgffn5JmO61OLwhdref6sCVhY=
-X-Gm-Gg: ASbGnct62PmwL28JbV61qM3++Eupe/vTI5lnALgcxDgz4QWLQo+7KC+dzXeqk8RC3+O
-	+tbsdnU3Ld6jkGIKAAIO+n75sigfcokOhfvJYkgYGEnArY5acA50/gSVeYOSxhGht/BtNqYMgbe
-	HgkvrvCHE1qNqtEVqfDUVs0Bl/Pgi/ETsYHlRPzikY8MnPeD/670Bx3ZWCNPAiFHcWKsUqLv9op
-	w5x+MBi3YheJ9M/EtL18w+HdwEisPq9xBBWqXBQoq76ihu9XhZXOqi76tcff7S5n7IK6aSXqqs=
-X-Google-Smtp-Source: AGHT+IFNhRs34JdCoFIUNGAK5kaza3jhQFgDrCvZKnXBXB1PKB6pOBzqwopRPsJ72AB1jyGZrF/UDMbdNLxVmWlkcM8=
-X-Received: by 2002:a05:6e02:2302:b0:433:3583:d6e with SMTP id
- e9e14a558f8ab-43335830ef2mr34098115ab.27.1762213465483; Mon, 03 Nov 2025
- 15:44:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arUhlo4T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D4DC116B1;
+	Mon,  3 Nov 2025 23:44:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762213480;
+	bh=51ZuLqa9vgyNyF8Hwj/WsY0DqAHS9YKk1MRGYf4BaQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=arUhlo4TMHF4gzRUEw//blsavMXXIDWpdr0u9EFsI7EnUAvVMrjixCKALg/UCc4Yp
+	 ojW6teEglrQ0PAzUKgUS0p2qIokbKAl5lEPlhM7AZ8PpB4tlNkQRwTPkUDylhsqabC
+	 +xEuY2XHCGdQ0/Z+dU5hqttiQsjK6FYcxsDTL7DuAn9zQidfmNRYQtQ1MJ4yisZ7R6
+	 ATm9rQo1fbvfcTvvUpuFg218s0Akfr0w5cF5wjhmN0G+ZHUoR0htY40M+5GeT/AxcT
+	 1n/3K95ZWLbBffYBPYjavL6P1/zw524xCOzT45eYASd4nCJBUf+RUkHw++KFiIqjnm
+	 V2OuKjiRw1FAQ==
+Date: Mon, 3 Nov 2025 15:44:39 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 RESEND] net/dccp: validate Reset/Close/CloseReq in
+ DCCP_REQUESTING
+Message-ID: <20251103154439.58c3664c@kernel.org>
+In-Reply-To: <20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
+References: <20251102155428.4186946a@kernel.org>
+	<20251103021557.4020515-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251103165256.1712169-1-edumazet@google.com>
-In-Reply-To: <20251103165256.1712169-1-edumazet@google.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 4 Nov 2025 07:43:48 +0800
-X-Gm-Features: AWmQ_blTiss_K2n9gVzeiaYHnCz30aRV59IJkT45Zl6cz_ly-uFCXiRmvHV9yIk
-Message-ID: <CAL+tcoA0=DWr-eQbL39xwVjKb4ZiBtMXBFTB2QPVoDQAzy0AEQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: mark deliver_skb() as unlikely and not inlined
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Eric,
+On Mon,  3 Nov 2025 10:15:57 +0800 Yizhou Zhao wrote:
+> Following your instruction, we read the documentation at https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html.
+> We found that the stable documentation normally requires an upstream
+> commit before inclusion in stable, but here an upstream commit cannot
+> exist because the subsystem was removed. Could you please confirm
+> that this can proceed as a stable-only fix for the affected LTS
+> branches?
 
-On Tue, Nov 4, 2025 at 12:53=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> deliver_skb() should not be inlined as is it not called
-> in the fast path.
-
-IIUC, it can be the fast path only when an af_packet socket attached to
-ptype_all is used because it controls the filters in the rx/tx
-directions? It even could be much hotter than __dev_queue_xmit() when
-multiple af_packet sockets are created?
-
-Thanks,
-Jason
+Yes.
