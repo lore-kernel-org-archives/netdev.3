@@ -1,181 +1,100 @@
-Received: from s1-ba86.socketlabs.email-od.com (s1-ba86.socketlabs.email-od.com [142.0.186.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB547302776
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 18:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.0.186.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6111313E0F
+	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 18:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762195256; cv=none; b=CDAMNTonnc8VeLh01LwJRT7X6UWyoqPzziESjkmgsARDtyb9I2/8uwgTBupwvwZSrlZNmtqIxNaIWJQozB4FrEoT4hs4ssj8WszxzEBKhUaiXpJcQv6P2qzMVtzj1uKBlE4Wa3e041KjpDv5kYLVclekM2zQZ1znFirwg2XbL1o=
+	t=1762195522; cv=none; b=Wgq43/q5mIzxL9+f35R+TFPIvKtn3BJeEyu8Aaeohgt51SfZQL7uulFUd9F/91MgOihROz6hTKIQ73WQ+NLFkAGx4RQdIaS2c87znQNyXV5iU0I/tLdyJZAdVvltiOQ58ae2l7vxlEOhim6AbKRuXBD2d8vXtA3b4N9qBAn9KUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762195256; c=relaxed/simple;
-	bh=glFgkj7MjXsOiAWpn6J+km/RtrCJX6sZXCrhNI2Du3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5ySZYYPaetxpEbs63lRVD6yl+2Z/IzPQxfhwj5kjQfnW7Nd4Q5/Vn8sgQgKo8sc/logYG7X7oY1dMB7F0rPXkhQo0OOdt9e7xoLdco8tTsH4tHdgPYKAMStB8DzitVKTPIQ2kPyolJedhOPrzkTXf6+mvI+hNxcFwPY7qVHPyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com; spf=pass smtp.mailfrom=email-od.com; dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b=PY2/rmOD; arc=none smtp.client-ip=142.0.186.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email-od.com
+	s=arc-20240116; t=1762195522; c=relaxed/simple;
+	bh=prOLPjRhNwhjqEXp1NsT05g66lCbw/24/gxyd8v1xBI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QTt6gyc+YfFD14IZSsi5Ty0nxozxga62+4waVyhrg9QiyfUS5a80SgkscmUt58I35xM6MXkCnNTqtxdP/MIMkn4y5pWdQTZV+SrsOVYL7ZSK8mS9uGGVTEratUJzXxuKUirklK8acsXCrA9vV2P2RvZk2s1p2aLFvc8S+sPdzn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKd7buNi; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b="PY2/rmOD"
-DKIM-Signature: v=1; a=rsa-sha256; d=email-od.com;i=@email-od.com;s=dkim;
-	c=relaxed/relaxed; q=dns/txt; t=1762195255; x=1764787255;
-	h=content-transfer-encoding:content-type:in-reply-to:from:content-language:references:cc:to:subject:mime-version:date:message-id:x-thread-info:subject:to:from:cc:reply-to;
-	bh=U8h7PzoUbT1+X5pM4fvxo+Qt4T0+vhHtCUCRzU9q0Ek=;
-	b=PY2/rmODxjzn5JQu36i2QyKLRXk7RqNlmtGIj9toer9hpPufOT3gq7+nSIyIb4mthHij0UHmMUc0zQfn4hE9KFFpHQYvhWxKLIF3RJQ95F96SOq21DFiaCEU86sbBXWYldkbuX0WGQouUzJSyFjVABQqIvFBwiNr6ozIw4UOIO0=
-X-Thread-Info: NDUwNC4xMi44MTkwOTAwMDIyNGRjZDAubmV0ZGV2PXZnZXIua2VybmVsLm9yZw==
-x-xsSpam: eyJTY29yZSI6MCwiRGV0YWlscyI6IltdIn0=
-Received: from [192.168.0.212] (d4-50-191-215.clv.wideopenwest.com [50.4.215.191])
-	by nalramli.com (Postfix) with ESMTPSA id 5F8E12CE0005;
-	Mon,  3 Nov 2025 12:40:14 -0500 (EST)
-Message-ID: <6c83089b-3e0d-4c72-80a9-8049cff1dd57@nalramli.com>
-Date: Mon, 3 Nov 2025 12:40:14 -0500
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKd7buNi"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-429c82bf86bso2241307f8f.1
+        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 10:45:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762195519; x=1762800319; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Km0NgyANyt85YBiufjQpkK6GzKroUj0XdZqe77+JqE4=;
+        b=OKd7buNislQUxDUHo/kNFRl5hXAGvJEalpSBzJpebvOqggvrN52grnflI+m/AE7Ksx
+         dgLjVWSSKEusJoI+GAqbzCwScs+wej9NebnkLwtEgVSd97DHvaCZocvsjp5jPnyuOceD
+         2y1PX1yvDEcggNexyF5vFPWyxCBgrDrgsf1oB7p/WFqER4r6MWa/SDh1K7rw7eL+C+Bk
+         aTcSBcENxEk+VnEoYjrk+mkY3ZeFmXaGUjoWu7nIdJePdP5HBobIpphOKM5BA3dATPbT
+         +vHanwuJZQ8oBeVC1udeNGuGZqz85mNKy4Aqx9BSg8kxHOqzb+JCujsPk6CNc1ve+FnP
+         fhWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762195519; x=1762800319;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Km0NgyANyt85YBiufjQpkK6GzKroUj0XdZqe77+JqE4=;
+        b=Ojrk17E5ThXrWtViCBQczwm3qI//umm7tDsD49Wurv+M/V1mYdY31Ow+IB6LvhUihQ
+         zghetEEcy7z9ZRubXKFLEMuT5qCJ6Uq0iBjW7Gb3rH0n4Q7f6cWl4HGf1YnNnY5MdwAB
+         0NaKWsKOh2elNxjg2r1eL2E4G++yfhzQBBAWj/NOLS+LzbuXFL3aiemwd3eaeZf17iDQ
+         uhkraAkQ8LQWcM+iNM2YT2GOsz6V8pH7qio/Yf92w0AheOzZcgXvojBZXeXjh4usVS3g
+         DMwWYXeCLEUWve8JNf/EE7Ii/+D6m08UEhgokdL+xFaa2mqAkJ1PV9BbBh/xNGV8hT15
+         g/Uw==
+X-Gm-Message-State: AOJu0YxTEfBRiffHUjIynN183lT24HzUSksk8vOrYeCGkUp136+szlg4
+	pD6r2tTXLfZvNbatJRr5FGrCal+jVVHoyU1cNT3X4BHKeTSw2PzwPK74EKXcl0PbiAvIfB534NP
+	q3voFl77Sciwab9IehMvJ39ecaxJWi4A=
+X-Gm-Gg: ASbGncvoPClcYe9FMpW+W01eXtzWfY5xlx0BbOEbt1elg007rzUUW/62w8UkA8m8t37
+	UqtiIoeM6O1EaMqU8FgxZpp4xVZM9uCVC6n1GfkkT10xPvr8BRkeaViMEVeVyF+OnNUhNnkMJ5Q
+	y3jcVtbIQ8oSq0nkqFXXgCxODsnYbnAUQW1BPaFMqW9VuUBaVIs8sNRKy25FQstMDXO/Ke6X8nF
+	ia5XU8cdwW+nTFflQK40zTmY6JkxSEK3J8LhuPp9jXB4a7s0WIyiGXoZmW77iYdjqpTDSY=
+X-Google-Smtp-Source: AGHT+IEvk+zA0geR2qDyjqC3oQlfMJhvVNIV8FOrMfMM4VmOXelHtHvhLNFBLy3zcYrNjal1D7MOu/Ls7XdvvT9zqUc=
+X-Received: by 2002:a05:6000:1a8e:b0:425:7e38:a09e with SMTP id
+ ffacd0b85a97d-429bd6886e6mr11209655f8f.2.1762195518862; Mon, 03 Nov 2025
+ 10:45:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC ixgbe 1/2] ixgbe: Implement support for ndo_xdp_xmit in skb
- mode
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, lishujin@kuaishou.com,
- xingwanli@kuaishou.com, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- team-kernel@fastly.com, khubert@fastly.com, nalramli@fastly.com
-References: <20251009192831.3333763-1-dev@nalramli.com>
- <20251009192831.3333763-2-dev@nalramli.com> <aQjahdk/fl6EBcso@boxer>
-Content-Language: en-US
-From: "Nabil S. Alramli" <dev@nalramli.com>
-In-Reply-To: <aQjahdk/fl6EBcso@boxer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <176218882404.2759873.8174527156326754449.stgit@ahduyck-xeon-server.home.arpa>
+ <176218925451.2759873.6130399808139758934.stgit@ahduyck-xeon-server.home.arpa>
+ <aQjrQIl-Yo6G_kGv@shell.armlinux.org.uk>
+In-Reply-To: <aQjrQIl-Yo6G_kGv@shell.armlinux.org.uk>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 3 Nov 2025 10:44:41 -0800
+X-Gm-Features: AWmQ_bkEKPJLSrlwheMdrw28zG-Xjm2W32l5UryeNuK65luhnXgr93wr1XunmCk
+Message-ID: <CAKgT0Udv7q-fENNAwGToaVZDiaH1GE9kQhe9HqrPGZnXfFC7bQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 08/11] fbnic: Cleanup handling for link down
+ event statistics
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, kernel-team@meta.com, 
+	andrew+netdev@lunn.ch, hkallweit1@gmail.com, pabeni@redhat.com, 
+	davem@davemloft.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/3/25 11:38, Maciej Fijalkowski wrote:
-> On Thu, Oct 09, 2025 at 03:28:30PM -0400, Nabil S. Alramli wrote:
->> This commit adds support for `ndo_xdp_xmit` in skb mode in the ixgbe
->> ethernet driver, by allowing the call to continue to transmit the packets
->> using `dev_direct_xmit`.
->>
->> Previously, the driver did not support the operation in skb mode. The
->> handler `ixgbe_xdp_xmit` had the following condition:
->>
->> ```
->> 	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) : NULL;
->> 	if (unlikely(!ring))
->> 		return -ENXIO;
->> ```
->>
->> That only works in native mode. In skb mode, `adapter->xdp_prog == NULL` so
->> the call returned an error, which prevented the ability to send packets
->> using `bpf_prog_test_run_opts` with the `BPF_F_TEST_XDP_LIVE_FRAMES` flag.
-> 
-> Hi Nabil,
-> 
-> What stops you from loading a dummy XDP program to interface? This has
-> been an approach that we follow when we want to use anything that utilizes
-> XDP resources (XDP Tx queues).
-> 
+On Mon, Nov 3, 2025 at 9:49=E2=80=AFAM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Mon, Nov 03, 2025 at 09:00:54AM -0800, Alexander Duyck wrote:
+> > @@ -86,10 +86,10 @@ static int fbnic_stop(struct net_device *netdev)
+> >  {
+> >       struct fbnic_net *fbn =3D netdev_priv(netdev);
+> >
+> > +     fbnic_mac_free_irq(fbn->fbd);
+> >       phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
+> >
+> >       fbnic_down(fbn);
+> > -     fbnic_mac_free_irq(fbn->fbd);
+>
+> This change makes no sense to me, and doesn't seem to be described in
+> the commit message.
 
-Hi Maciej,
-
-Thank you for your response. In one use case we have multiple XDP programs
-already loaded on an interface in SKB mode using the dispatcher, and we want
-to use bpf_prog_test_run_opts to egress packets from another XDP program. We
-want to avoid having to unload the dispatcher or be forced to use it in native
-mode. Without this patch, that does not seem possible currently, correct?
-
->>
->> Signed-off-by: Nabil S. Alramli <dev@nalramli.com>
->> ---
->>  drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  8 ++++
->>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 43 +++++++++++++++++--
->>  2 files changed, 47 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->> index e6a380d4929b..26c378853755 100644
->> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
->> @@ -846,6 +846,14 @@ struct ixgbe_ring *ixgbe_determine_xdp_ring(struct ixgbe_adapter *adapter)
->>  	return adapter->xdp_ring[index];
->>  }
->>  
->> +static inline
->> +struct ixgbe_ring *ixgbe_determine_tx_ring(struct ixgbe_adapter *adapter)
->> +{
->> +	int index = ixgbe_determine_xdp_q_idx(smp_processor_id());
->> +
->> +	return adapter->tx_ring[index];
->> +}
->> +
->>  static inline u8 ixgbe_max_rss_indices(struct ixgbe_adapter *adapter)
->>  {
->>  	switch (adapter->hw.mac.type) {
->> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> index 467f81239e12..fed70cbdb1b2 100644
->> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
->> @@ -10748,7 +10748,8 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
->>  	/* During program transitions its possible adapter->xdp_prog is assigned
->>  	 * but ring has not been configured yet. In this case simply abort xmit.
->>  	 */
->> -	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) : NULL;
->> +	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) :
->> +		ixgbe_determine_tx_ring(adapter);
->>  	if (unlikely(!ring))
->>  		return -ENXIO;
->>  
->> @@ -10762,9 +10763,43 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
->>  		struct xdp_frame *xdpf = frames[i];
->>  		int err;
->>  
->> -		err = ixgbe_xmit_xdp_ring(ring, xdpf);
->> -		if (err != IXGBE_XDP_TX)
->> -			break;
->> +		if (adapter->xdp_prog) {
->> +			err = ixgbe_xmit_xdp_ring(ring, xdpf);
->> +			if (err != IXGBE_XDP_TX)
->> +				break;
->> +		} else {
->> +			struct xdp_buff xdp = {0};
->> +			unsigned int metasize = 0;
->> +			unsigned int size = 0;
->> +			unsigned int truesize = 0;
->> +			struct sk_buff *skb = NULL;
->> +
->> +			xdp_convert_frame_to_buff(xdpf, &xdp);
->> +			size = xdp.data_end - xdp.data;
->> +			metasize = xdp.data - xdp.data_meta;
->> +			truesize = SKB_DATA_ALIGN(xdp.data_end - xdp.data_hard_start) +
->> +				   SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
->> +
->> +			skb = napi_alloc_skb(&ring->q_vector->napi, truesize);
->> +			if (likely(skb)) {
->> +				skb_reserve(skb, xdp.data - xdp.data_hard_start);
->> +				skb_put_data(skb, xdp.data, size);
->> +				build_skb_around(skb, skb->data, truesize);
->> +				if (metasize)
->> +					skb_metadata_set(skb, metasize);
->> +				skb->dev = dev;
->> +				skb->queue_mapping = ring->queue_index;
->> +
->> +				err = dev_direct_xmit(skb, ring->queue_index);
->> +				if (!dev_xmit_complete(err))
->> +					break;
->> +			} else {
->> +				break;
->> +			}
->> +
->> +			xdp_return_frame_rx_napi(xdpf);
->> +		}
->> +
->>  		nxmit++;
->>  	}
->>  
->> -- 
->> 2.43.0
->>
->>
-
+It was mostly about just disabling the IRQ before we tear down the
+link in the non-BMC case. Otherwise we run the risk of an interrupt
+firing to indicate that the link is down and incrementing the
+link_down_event counter when we do an ifconfig down and the link was
+intended to be torn down.
