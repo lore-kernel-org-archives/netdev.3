@@ -1,66 +1,33 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from s1-ba86.socketlabs.email-od.com (s1-ba86.socketlabs.email-od.com [142.0.186.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E0C302776
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 18:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB547302776
+	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 18:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=142.0.186.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762194575; cv=none; b=N51x2W6T28cqXMcPoW2d6deCPHX/SHyhbLenjuk2uuP0f63n82bspUonPfXPbJGLO+P219WTnlboLN5OmpFxGaGKchVh6xX/INY0uOFR/DY5dVJULKpOSQjHwFJDKaokS7MpIoVMvBTZaN7Hw6RDveIheu9w1hvIMsYHqcdll7M=
+	t=1762195256; cv=none; b=CDAMNTonnc8VeLh01LwJRT7X6UWyoqPzziESjkmgsARDtyb9I2/8uwgTBupwvwZSrlZNmtqIxNaIWJQozB4FrEoT4hs4ssj8WszxzEBKhUaiXpJcQv6P2qzMVtzj1uKBlE4Wa3e041KjpDv5kYLVclekM2zQZ1znFirwg2XbL1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762194575; c=relaxed/simple;
-	bh=wmAoFKWLR75h67tOzpzFWAsENGf3eJMEMC/hDrfVXjU=;
+	s=arc-20240116; t=1762195256; c=relaxed/simple;
+	bh=glFgkj7MjXsOiAWpn6J+km/RtrCJX6sZXCrhNI2Du3c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mzleMIJ+KkTQqpNlDDlbvd0YXnN/nSyBYvpkswVtZxBHyfdmr8VGCpzpio6ei9AgD8VoaynLkHnILBnS7hDQon059yVVgeEE0kYCWam4IRvUzztANFimgbTTpD8FVbrdFMqIySolWt1jqA0tkc9F01rk8d0JTsrv7UgwVdCvipw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=ukNjzSjM; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	 In-Reply-To:Content-Type; b=Y5ySZYYPaetxpEbs63lRVD6yl+2Z/IzPQxfhwj5kjQfnW7Nd4Q5/Vn8sgQgKo8sc/logYG7X7oY1dMB7F0rPXkhQo0OOdt9e7xoLdco8tTsH4tHdgPYKAMStB8DzitVKTPIQ2kPyolJedhOPrzkTXf6+mvI+hNxcFwPY7qVHPyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com; spf=pass smtp.mailfrom=email-od.com; dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b=PY2/rmOD; arc=none smtp.client-ip=142.0.186.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nalramli.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email-od.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="ukNjzSjM"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29568d93e87so15701375ad.2
-        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 10:29:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1762194573; x=1762799373; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PitSUlDm1go9vcuGwrxc/qigK0RG9QByQoNdiaE+6vo=;
-        b=ukNjzSjMp8FXrdxXksyuuuTwyVobQBLBdIuqVY4PVD8hRIiSVhxXtfN/rGbg5mPauc
-         9+QgzcYCiScNDOeciF5E10LcP9P6z5lluX3sNpf7cpWE3ev+JQHMSwgRPOEU0hHejdvX
-         MpaQoLYHZwJFtGldxlQRPCI798l9eL1n6tarvNCTsV5S+r2qx75ay5OWHQ3L5IZ0fKPr
-         B2jJKUi/4ii6lDq0m3IaPAmcE7Jtjeg/RZTK1TOghh6Js0bolulbvcRCnxyYUUUR7Bvj
-         3kvFM7HiIaikqcmr8FeG822uDwNnIqM7PD4lwC/4nR15qxTKt/eSaMDStw+4iEut4K7T
-         YicQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762194573; x=1762799373;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PitSUlDm1go9vcuGwrxc/qigK0RG9QByQoNdiaE+6vo=;
-        b=cYAjGsstuh1ZLI9WW/KN31iRRhRYMhgGDgOSIJcS4VwqVmev/ksC8HmMugIIuQ57VN
-         IeMNQ8fBERfat+BGbtD4MyDequDzUqjO+P/+ADkAMcwwspVbggFg+hGPRFJ/1qaJBRDR
-         VjwlGh5NSQQza/iUalemn89au2hD+6J6E9K3J8LpOgZN6kkLUPqnG2D8bj97iEszKGLB
-         J3Ok0StFDsMj5z8wdGeA9Pv+Nvdf+9T9pasG6+EVhcRaTPhtu4OPUuz9g0xXOgtZyAZT
-         L8Ia7YSos5rhRw9xXAx9D3T6cmIKagDzZPpCma7qH3SPE/kDTEejewcZBXbtip+JdcOi
-         HisQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoTGZrkvZ9hZ0rkyIUCOrkErrrn/IF/KE/4KfNyu1mTw45zay300uSSkGbgrk8xd6oAaaUgWw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk8ecEoGMKAh8EkTcxPQtRJGcmVew0k5nCDIdaXAWxm80EWxxT
-	0KX2GvZKiFOTQWRonqzUv25er0586J6S7UJ9UIlKIkK+Y0P/wjGGIpsh+L8SWXb4UC8=
-X-Gm-Gg: ASbGnctvsiSsSj5D9H8qLKqfL1ZBZcuket6XNGpBBZue20KMF+w8wKeUXIzaYj5f70p
-	94e/9AGHzGc7v08W8kp7/wT8kk9f67yBdcN9vzHLA2cvM3rLttvY22C63lg2Ks0Mw761QPLPV0W
-	OdmEXIsOBuLJ3JjOnLljmO+3ib9ColkbbQAzigOx6WxwH+4dKU3ThfmGlZnQrCr6sWUOlyJ22UL
-	tgzwENrUQwXKtMLRbSj3oOzFflQASpCTwPjlt3RO23PZm41ihJUw4ADkrp3LOmOVG3+LM0H2gnT
-	Grz3JwWecou2Z3iWuXvWqFGFpxXeAW9fMHIuA6aMF0BaEi19lizosBpsP1f+kOuCoHa8yJSRJlC
-	R46AzdLpny733zE98KjCGcBmcfnPQvjJ8VEtqlV7oz9US1O0IweIP/ihopDgSew9f82uJBKiCZU
-	SUF2CipLPZwCqN+7yDFRiL+/S9rGzTOIJDHPpNR52hnznTxMx+sQ==
-X-Google-Smtp-Source: AGHT+IGW2nkRcJ3o/X5DXan+YDTZlhzqN1S6emKnORTiA21dPoo0N/2D2LoJeQBefEjC3aZZYzoH/g==
-X-Received: by 2002:a17:902:c40f:b0:295:a1a5:baee with SMTP id d9443c01a7336-295a1a5c06cmr51543855ad.4.1762194572902;
-        Mon, 03 Nov 2025 10:29:32 -0800 (PST)
-Received: from [192.168.86.109] ([136.27.45.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2952699c9dbsm130124765ad.84.2025.11.03.10.29.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 10:29:32 -0800 (PST)
-Message-ID: <1f708620-303f-4466-b248-3490a8e9e424@davidwei.uk>
-Date: Mon, 3 Nov 2025 10:29:31 -0800
+	dkim=pass (1024-bit key) header.d=email-od.com header.i=@email-od.com header.b="PY2/rmOD"
+DKIM-Signature: v=1; a=rsa-sha256; d=email-od.com;i=@email-od.com;s=dkim;
+	c=relaxed/relaxed; q=dns/txt; t=1762195255; x=1764787255;
+	h=content-transfer-encoding:content-type:in-reply-to:from:content-language:references:cc:to:subject:mime-version:date:message-id:x-thread-info:subject:to:from:cc:reply-to;
+	bh=U8h7PzoUbT1+X5pM4fvxo+Qt4T0+vhHtCUCRzU9q0Ek=;
+	b=PY2/rmODxjzn5JQu36i2QyKLRXk7RqNlmtGIj9toer9hpPufOT3gq7+nSIyIb4mthHij0UHmMUc0zQfn4hE9KFFpHQYvhWxKLIF3RJQ95F96SOq21DFiaCEU86sbBXWYldkbuX0WGQouUzJSyFjVABQqIvFBwiNr6ozIw4UOIO0=
+X-Thread-Info: NDUwNC4xMi44MTkwOTAwMDIyNGRjZDAubmV0ZGV2PXZnZXIua2VybmVsLm9yZw==
+x-xsSpam: eyJTY29yZSI6MCwiRGV0YWlscyI6IltdIn0=
+Received: from [192.168.0.212] (d4-50-191-215.clv.wideopenwest.com [50.4.215.191])
+	by nalramli.com (Postfix) with ESMTPSA id 5F8E12CE0005;
+	Mon,  3 Nov 2025 12:40:14 -0500 (EST)
+Message-ID: <6c83089b-3e0d-4c72-80a9-8049cff1dd57@nalramli.com>
+Date: Mon, 3 Nov 2025 12:40:14 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,55 +35,147 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] net: io_uring/zcrx: call
- netdev_queue_get_dma_dev() under instance lock
-To: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-References: <20251101022449.1112313-1-dw@davidwei.uk>
- <20251101022449.1112313-3-dw@davidwei.uk>
- <c374df85-23ec-4324-b966-9f2b3a74489a@gmail.com>
- <c8d945a3-4b12-4c04-9c68-4c5ad6173af5@davidwei.uk>
- <7805c473-448a-430c-a53b-a42e8d2c24bf@gmail.com>
+Subject: Re: [RFC ixgbe 1/2] ixgbe: Implement support for ndo_xdp_xmit in skb
+ mode
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, lishujin@kuaishou.com,
+ xingwanli@kuaishou.com, intel-wired-lan@lists.osuosl.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ team-kernel@fastly.com, khubert@fastly.com, nalramli@fastly.com
+References: <20251009192831.3333763-1-dev@nalramli.com>
+ <20251009192831.3333763-2-dev@nalramli.com> <aQjahdk/fl6EBcso@boxer>
 Content-Language: en-US
-From: David Wei <dw@davidwei.uk>
-In-Reply-To: <7805c473-448a-430c-a53b-a42e8d2c24bf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: "Nabil S. Alramli" <dev@nalramli.com>
+In-Reply-To: <aQjahdk/fl6EBcso@boxer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2025-11-03 10:21, Pavel Begunkov wrote:
-> On 11/3/25 17:47, David Wei wrote:
->> On 2025-11-03 05:51, Pavel Begunkov wrote:
->>> On 11/1/25 02:24, David Wei wrote:
->>>> netdev ops must be called under instance lock or rtnl_lock, but
->>>> io_register_zcrx_ifq() isn't doing this for netdev_queue_get_dma_dev().
->>>> Fix this by taking the instance lock using netdev_get_by_index_lock().
->>>>
->>>> Extended the instance lock section to include attaching a memory
->>>> provider. Could not move io_zcrx_create_area() outside, since the dmabuf
->>>> codepath IORING_ZCRX_AREA_DMABUF requires ifq->dev.
->>>
->>> It's probably fine for now, but this nested waiting feels
->>> uncomfortable considering that it could be waiting for other
->>> devices to finish IO via dmabuf fences.
->>>
+On 11/3/25 11:38, Maciej Fijalkowski wrote:
+> On Thu, Oct 09, 2025 at 03:28:30PM -0400, Nabil S. Alramli wrote:
+>> This commit adds support for `ndo_xdp_xmit` in skb mode in the ixgbe
+>> ethernet driver, by allowing the call to continue to transmit the packets
+>> using `dev_direct_xmit`.
 >>
->> Only the dmabuf path requires ifq->dev in io_zcrx_create_area(); I could
->> split this into two and then unlock netdev instance lock between holding
->> a ref and calling net_mp_open_rxq().
+>> Previously, the driver did not support the operation in skb mode. The
+>> handler `ixgbe_xdp_xmit` had the following condition:
 >>
->> So the new ordering would be:
+>> ```
+>> 	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) : NULL;
+>> 	if (unlikely(!ring))
+>> 		return -ENXIO;
+>> ```
 >>
->>    1. io_zcrx_create_area() for !IORING_ZCRX_AREA_DMABUF
->>    2. netdev_get_by_index_lock(), hold netdev ref, unlock netdev
->>    3. io_zcrx_create_area() for IORING_ZCRX_AREA_DMABUF
->>    4. net_mp_open_rxq()
+>> That only works in native mode. In skb mode, `adapter->xdp_prog == NULL` so
+>> the call returned an error, which prevented the ability to send packets
+>> using `bpf_prog_test_run_opts` with the `BPF_F_TEST_XDP_LIVE_FRAMES` flag.
 > 
-> To avoid dragging it on, can you do it as a follow up please? And
-> it's better to avoid splitting on IORING_ZCRX_AREA_DMABUF, either it
-> works for both or it doesn't at all.
+> Hi Nabil,
+> 
+> What stops you from loading a dummy XDP program to interface? This has
+> been an approach that we follow when we want to use anything that utilizes
+> XDP resources (XDP Tx queues).
 > 
 
-Of course, follow ups are always my preference.
+Hi Maciej,
+
+Thank you for your response. In one use case we have multiple XDP programs
+already loaded on an interface in SKB mode using the dispatcher, and we want
+to use bpf_prog_test_run_opts to egress packets from another XDP program. We
+want to avoid having to unload the dispatcher or be forced to use it in native
+mode. Without this patch, that does not seem possible currently, correct?
+
+>>
+>> Signed-off-by: Nabil S. Alramli <dev@nalramli.com>
+>> ---
+>>  drivers/net/ethernet/intel/ixgbe/ixgbe.h      |  8 ++++
+>>  drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 43 +++++++++++++++++--
+>>  2 files changed, 47 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+>> index e6a380d4929b..26c378853755 100644
+>> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+>> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+>> @@ -846,6 +846,14 @@ struct ixgbe_ring *ixgbe_determine_xdp_ring(struct ixgbe_adapter *adapter)
+>>  	return adapter->xdp_ring[index];
+>>  }
+>>  
+>> +static inline
+>> +struct ixgbe_ring *ixgbe_determine_tx_ring(struct ixgbe_adapter *adapter)
+>> +{
+>> +	int index = ixgbe_determine_xdp_q_idx(smp_processor_id());
+>> +
+>> +	return adapter->tx_ring[index];
+>> +}
+>> +
+>>  static inline u8 ixgbe_max_rss_indices(struct ixgbe_adapter *adapter)
+>>  {
+>>  	switch (adapter->hw.mac.type) {
+>> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>> index 467f81239e12..fed70cbdb1b2 100644
+>> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+>> @@ -10748,7 +10748,8 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
+>>  	/* During program transitions its possible adapter->xdp_prog is assigned
+>>  	 * but ring has not been configured yet. In this case simply abort xmit.
+>>  	 */
+>> -	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) : NULL;
+>> +	ring = adapter->xdp_prog ? ixgbe_determine_xdp_ring(adapter) :
+>> +		ixgbe_determine_tx_ring(adapter);
+>>  	if (unlikely(!ring))
+>>  		return -ENXIO;
+>>  
+>> @@ -10762,9 +10763,43 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
+>>  		struct xdp_frame *xdpf = frames[i];
+>>  		int err;
+>>  
+>> -		err = ixgbe_xmit_xdp_ring(ring, xdpf);
+>> -		if (err != IXGBE_XDP_TX)
+>> -			break;
+>> +		if (adapter->xdp_prog) {
+>> +			err = ixgbe_xmit_xdp_ring(ring, xdpf);
+>> +			if (err != IXGBE_XDP_TX)
+>> +				break;
+>> +		} else {
+>> +			struct xdp_buff xdp = {0};
+>> +			unsigned int metasize = 0;
+>> +			unsigned int size = 0;
+>> +			unsigned int truesize = 0;
+>> +			struct sk_buff *skb = NULL;
+>> +
+>> +			xdp_convert_frame_to_buff(xdpf, &xdp);
+>> +			size = xdp.data_end - xdp.data;
+>> +			metasize = xdp.data - xdp.data_meta;
+>> +			truesize = SKB_DATA_ALIGN(xdp.data_end - xdp.data_hard_start) +
+>> +				   SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+>> +
+>> +			skb = napi_alloc_skb(&ring->q_vector->napi, truesize);
+>> +			if (likely(skb)) {
+>> +				skb_reserve(skb, xdp.data - xdp.data_hard_start);
+>> +				skb_put_data(skb, xdp.data, size);
+>> +				build_skb_around(skb, skb->data, truesize);
+>> +				if (metasize)
+>> +					skb_metadata_set(skb, metasize);
+>> +				skb->dev = dev;
+>> +				skb->queue_mapping = ring->queue_index;
+>> +
+>> +				err = dev_direct_xmit(skb, ring->queue_index);
+>> +				if (!dev_xmit_complete(err))
+>> +					break;
+>> +			} else {
+>> +				break;
+>> +			}
+>> +
+>> +			xdp_return_frame_rx_napi(xdpf);
+>> +		}
+>> +
+>>  		nxmit++;
+>>  	}
+>>  
+>> -- 
+>> 2.43.0
+>>
+>>
+
