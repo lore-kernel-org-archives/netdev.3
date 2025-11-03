@@ -1,96 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3730DEAC;
-	Mon,  3 Nov 2025 11:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A4C3054CE;
+	Mon,  3 Nov 2025 11:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762169275; cv=none; b=R9cbITGTKo/wx4g9rMpHZX6EaDK2M5V3Pe0YTykDT3NgySTJX2Q/xA6kCdOUmdqVSMX4hTNzPGK/1owUbf11N315+vPwitItaVA7N+LT0iWPrXiMiPbzZNzxIehfWkyf4uF2d/rxt2ZpvVxZg+Fgrb2yS3TXKvj6FQURHDu+uYY=
+	t=1762169408; cv=none; b=dE3HKoRDKDX210XAh0I+MkoYuIP5zL91NKBBqthcd8QfzVv/IquGDe2xXOksPxTiboekSVBwu+D6kF9QpK8q9BsFdtGaxyGFwqmYcCyhQCu2lbvlZA6ky16RlueZCHVK4YBIXDD6NR8y3SNs+VZMgqrM3pHKmQFO7DiPyGYjAQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762169275; c=relaxed/simple;
-	bh=bCAyE7tmk17boyOhhm5qwpsQaMCqCnHI3pfKUhK/d+4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FcU6fghtgD6msLW8OC9/LWEkswRYJ5TUQ0n/nhS5b8pP129jTLcmbLVY499NJi7qSpJfMaUKS18pvfJGueKAhosBg6CLmaEAm7tv02KHzyJJQZT+iPGulV4D3VHUkVA0ZjUiFHYgxsid4MP/bq8yN6n59OiI7jgEHr/FLDC/Ok0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YaZ0aFlr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762169408; c=relaxed/simple;
+	bh=hjqkskP7rEKOpC0HAWlWuk9UR+qmbWyNfX49a8doCqI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=k6sOHmnm56FI/KaHJ7AwvvZpCxU0T7i3D/N+3gMOclWXghx0CdfVt4hCWt4v65IzIKy5NGs/pxXLhmjryWHYHq/tOE2IGhcpQcIjblS+t8CqcsILa7fPmeeqzcNUSkqa6RwKuhOpBpZqeFbbKp4xPABzCF5Hdsa6p8JnoEHhwVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=FxDwCxq/; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YaZ0aFlr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2A1C116B1;
-	Mon,  3 Nov 2025 11:27:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762169274;
-	bh=bCAyE7tmk17boyOhhm5qwpsQaMCqCnHI3pfKUhK/d+4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YaZ0aFlrmjLdV5jLyEWA8b2zPj7i9z0dEpY7E7rdwB2Ir37Qxszllxd+LNnnKGHpV
-	 7g9uQsnEh6lDmbJfA/j3i7al14HMc1FhKJuhGYP5jeWI4FqTHyNwG4KUR4LgFazakm
-	 9U6Bp0/ktbSbl18fmnOeWWaJYtfsjuu5jQIn2cic/xqnanYb+hX8H1N2l7eiHfwRYw
-	 WlWwRJueDrp/N+huW0lQhpsaThRzloG3shyGhe98eUpBRrQtTyTnupElathvxWorr+
-	 VU2h9Ct67bfNGBcgfYLonCedVqZrKUuW4QK8H0K+yeAQc3FViZrQoKtD29+DH9/Hq9
-	 IHBHH4/ABmXuA==
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 03 Nov 2025 12:27:04 +0100
-Subject: [PATCH 16/16] net/dns_resolver: use credential guards in
- dns_query()
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="FxDwCxq/"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=pO1e3BxesOLdXFEMiUspsLON2Xgnazr0oTkpXmKAlXc=; b=FxDwCxq/M161NLrVbAViDNd8lQ
+	2j9qnONIOgOVEimJgVCyJbB1vse1/oEIP5AWFuE8ZycmGTQw5B43b+PGAVsOJTcMZhO23oEaAQwhZ
+	k07V3tshvT8pQyDdkaOK7DGSCC7BQSEKgS9XrV0qfsmK4kYhEHWUP7IjUZOsQgRPQ/GXIM7Byw5BI
+	E8HbXLvPLRo/5kL7E8yF1TgK5rxEinLcwa9uyCQbo4NZSTyz6ALv4Y2jxvBTUpU1OCcN1UhKgFzF2
+	QGfZ+czSAR4V2yBFWm1SQi/OhpdII0jhWNByO0kmu90W8OyifHI4y2PMLfwRoO27ULhPOBSi2b8Ip
+	iqAADrxg==;
+Received: from [122.175.9.182] (port=20643 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vFsQO-00000006Pzf-2Y0s;
+	Mon, 03 Nov 2025 06:08:37 -0500
+Received: from zimbra.couthit.local (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTPS id 7A72F1784032;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 65CF21781F6A;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id hg8Tri1-CFlx; Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id 3EC801781698;
+	Mon,  3 Nov 2025 16:38:31 +0530 (IST)
+Date: Mon, 3 Nov 2025 16:38:31 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: tony <tony@atomide.com>, robh <robh@kernel.org>, 
+	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
+	richardcochran <richardcochran@gmail.com>, 
+	linux-omap <linux-omap@vger.kernel.org>, 
+	devicetree <devicetree@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
+	pratheesh <pratheesh@ti.com>, Prajith Jayarajan <prajith@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	krishna <krishna@couthit.com>, mohan <mohan@couthit.com>, 
+	pmohan <pmohan@couthit.com>, basharath <basharath@couthit.com>, 
+	afd <afd@ti.com>, m-karicheri2 <m-karicheri2@ti.com>
+Message-ID: <1460283559.152037.1762168111145.JavaMail.zimbra@couthit.local>
+In-Reply-To: <1064878067.81811.1760534965853.JavaMail.zimbra@couthit.local>
+References: <20251013125401.1435486-1-parvathi@couthit.com> <20251013125401.1435486-2-parvathi@couthit.com> <8cfc5ece-6c2e-48d9-a65c-3edbcc9edc39@lunn.ch> <1064878067.81811.1760534965853.JavaMail.zimbra@couthit.local>
+Subject: Re: [PATCH 1/2] arm: dts: ti: Adds device tree nodes for PRU Cores,
+ IEP and eCAP modules of PRU-ICSS2 Instance.
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-work-creds-guards-simple-v1-16-a3e156839e7f@kernel.org>
-References: <20251103-work-creds-guards-simple-v1-0-a3e156839e7f@kernel.org>
-In-Reply-To: <20251103-work-creds-guards-simple-v1-0-a3e156839e7f@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-aio@kvack.org, linux-unionfs@vger.kernel.org, 
- linux-erofs@lists.ozlabs.org, linux-nfs@vger.kernel.org, 
- linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
- cgroups@vger.kernel.org, netdev@vger.kernel.org, 
- Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.15-dev-96507
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1179; i=brauner@kernel.org;
- h=from:subject:message-id; bh=bCAyE7tmk17boyOhhm5qwpsQaMCqCnHI3pfKUhK/d+4=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRyTOz49t81KnHqZTWdoJ9Fp9KfSbosV32dkH//j7TF6
- wVfllVmdpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkoZLhv8td6YzC5sipYZKb
- NNX9Ju62Zvq6u5zZbmpraeA33c0/dzIyHF19l68/b9H/cwesPoX/dN9tnRlh6/AjVdTxeV6q8Y6
- 9rAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - GC141 (Mac)/8.8.15_GA_3968)
+Thread-Topic: Adds device tree nodes for PRU Cores, IEP and eCAP modules of PRU-ICSS2 Instance.
+Thread-Index: E3LIn1f4mOg6FaK5tJjNCk6cQUoE5cdujhE/
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Use credential guards for scoped credential override with automatic
-restoration on scope exit.
+Hi,
 
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
- net/dns_resolver/dns_query.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+>>> +				interrupt-names = "rx", "emac_ptp_tx",
+>>> +								"hsr_ptp_tx";
+>> 
+>> Something looks wrong with the indentation here. The same happens in
+>> at least one other place.
+>> 
+> 
+> we will correct the indentation of the interrupt-names property to properly
+> align the continuation line as shown below.
+> 
+> interrupt-names = "rx", "emac_ptp_tx",
+>                  "hsr_ptp_tx";
+> 
+> We will make sure to address this in all the applicable places and include
+> this fix in the next version.
+> 
+> 
+>>> +&pruss2_mdio {
+>>> +	status = "okay";
+>>> +	pruss2_eth0_phy: ethernet-phy@0 {
+>>> +		reg = <0>;
+>>> +		interrupt-parent = <&gpio3>;
+>>> +		interrupts = <30 IRQ_TYPE_EDGE_FALLING>;
+>>> +	};
+>>> +
+>>> +	pruss2_eth1_phy: ethernet-phy@1 {
+>>> +		reg = <1>;
+>>> +		interrupt-parent = <&gpio3>;
+>>> +		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
+>>> +	};
+>> 
+>> 
+>> PHY interrupts are 99% level, not edge, because they represent an
+>> interrupt controller in the PHY, and you need to clear all the
+>> interrupts in the controller before it deasserts the interrupt pin.
+>> 
+>>    Andrew
+> 
+> 
+> Sure, we will check and come back with more details on this.
+> 
+> 
 
-diff --git a/net/dns_resolver/dns_query.c b/net/dns_resolver/dns_query.c
-index 82b084cc1cc6..53da62984447 100644
---- a/net/dns_resolver/dns_query.c
-+++ b/net/dns_resolver/dns_query.c
-@@ -78,7 +78,6 @@ int dns_query(struct net *net,
- {
- 	struct key *rkey;
- 	struct user_key_payload *upayload;
--	const struct cred *saved_cred;
- 	size_t typelen, desclen;
- 	char *desc, *cp;
- 	int ret, len;
-@@ -124,9 +123,8 @@ int dns_query(struct net *net,
- 	/* make the upcall, using special credentials to prevent the use of
- 	 * add_key() to preinstall malicious redirections
- 	 */
--	saved_cred = override_creds(dns_resolver_cache);
--	rkey = request_key_net(&key_type_dns_resolver, desc, net, options);
--	revert_creds(saved_cred);
-+	scoped_with_creds(dns_resolver_cache)
-+		rkey = request_key_net(&key_type_dns_resolver, desc, net, options);
- 	kfree(desc);
- 	if (IS_ERR(rkey)) {
- 		ret = PTR_ERR(rkey);
+We have reviewed and analysed the code, and confirmed that level
+low can be used for the PHY interrupt, which seems to be a better
+option than using the edge falling.
 
--- 
-2.47.3
+As shown below, the current interrupt configuration reflects a
+level-triggered setup:
 
+root@am57xx-evm:~# cat /proc/interrupts
+           CPU0       CPU1    
+163:          2          0 48057000.gpio  30 Level     4b2b2400.mdio:00
+164:          2          0 48057000.gpio  31 Level     4b2b2400.mdio:01
+
+We can see the IRQ has been changed to Level and the count is incremented
+for every link event.
+
+We will update the interrupt type to IRQ_TYPE_LEVEL_LOW as shown below and
+share the next version.
+
++&pruss2_mdio {
++       status = "okay";
++       pruss2_eth0_phy: ethernet-phy@0 {
++               reg = <0>;
++               interrupt-parent = <&gpio3>;
++               interrupts = <30 IRQ_TYPE_LEVEL_LOW>;
++       };
++
++       pruss2_eth1_phy: ethernet-phy@1 {
++               reg = <1>;
++               interrupt-parent = <&gpio3>;
++               interrupts = <31 IRQ_TYPE_LEVEL_LOW>;
++       };
++};
+
+
+Thanks and Regards,
+Parvathi.
