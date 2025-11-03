@@ -1,292 +1,131 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8282BD5A2;
-	Mon,  3 Nov 2025 19:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6328E126BF7
+	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 20:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762199214; cv=none; b=ZyKfKpNA99E6fyA6AAF7WSIyQxYKTV7eVZHWrIic9bSTJT8pPR+g8kGNpLrn1T4wr0LEbyFx5KK5t7+FgQ23QvgwSJGzETMhLvKGQm6ISCeeKLRelEnOcngV88QKPJb8aq4TjZO4iZqAmk7IHIplxPy6PRnHlFFy1whZGutxs0A=
+	t=1762201159; cv=none; b=JKngq9I+9rFj6AuitWD//QuAn/GGaFHBKUf5q/23rnW/Bg4gE/WhGf7y5dR7DuXqO3+UQ33QYwGRwfx7aGi4EtfKlVWuIUfQexi4hazTCdF6mehx7FcQ+eGBgce9RV3iefQSLnqmujHbpLnSx2nq76vJD+huT+KJPUFw6GKi4Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762199214; c=relaxed/simple;
-	bh=VnQXms8ECBnra6d2GFhjZ7Vb8yzmQJDGv2peaU4vPJQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eH976OmFwBFEdO1l+WAT054GBEh5OYNZJXfqZpr3Q6Drtt1Jq+8hDvuvzRqsvXGQ0WRcmDlGr+R3nAmas4XO1HNMMA+hJvPudtsyxzG46bDESc5CMixnh+UR5expqrnLI5TDwP4c+seTqVlFG8NyjDS3z8ZkxBKg54xPqIZrWYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=jDkzyxCM; arc=none smtp.client-ip=192.19.144.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1762201159; c=relaxed/simple;
+	bh=QCTPnVQY3V7Xqh+AJu8ypwKqT0Kso2fj8Yr6n8lm8T0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mNtSBv4aMralWn4UfQhdOUFZhU6kXKFrzdwubxL6icCP1bqae72mkWNAJdjh/By6WYE3zylFgbwz9QjWNrQI1hfduYO40XNeg+ju3HGMs/ydE0xfWLKXUo3TEJGFgiV5tIbwX1n8dZy8AitxMJyB/nUT+rkVk/bX1HdAqobu1Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q54U1W4t; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="jDkzyxCM"
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id B24F4C00281B;
-	Mon,  3 Nov 2025 11:46:45 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com B24F4C00281B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1762199205;
-	bh=VnQXms8ECBnra6d2GFhjZ7Vb8yzmQJDGv2peaU4vPJQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDkzyxCMNiPFKkvzWwJp0MnzLSuBJoNtn9lz5JJOeWwUuVm5GuH/6sgcuNszffk3j
-	 GDOmAnK5Fqp+g3A6t+NIQmLIQr2f5E/YFb4j0JUeyN/N2tAtT/9+LCPPaRemCh0Egv
-	 S9Hp08ulI6Wl1otXOl3neMERuOhZ6BPRWYJkhEUI=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 864C44002F45;
-	Mon,  3 Nov 2025 14:46:44 -0500 (EST)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Antoine Tenart <atenart@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Yajun Deng <yajun.deng@linux.dev>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next 1/2] net: ethernet: Allow disabling pause on panic
-Date: Mon,  3 Nov 2025 11:46:30 -0800
-Message-Id: <20251103194631.3393020-2-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251103194631.3393020-1-florian.fainelli@broadcom.com>
-References: <20251103194631.3393020-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q54U1W4t"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-42421b1514fso2830247f8f.2
+        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 12:19:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762201155; x=1762805955; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QCTPnVQY3V7Xqh+AJu8ypwKqT0Kso2fj8Yr6n8lm8T0=;
+        b=Q54U1W4tigsKHxZayu/OzE7S8tUWyN9BxK/W8vd06ggPo09UvsE5YGNC5uhfg3V8Vt
+         PqyyL60tSq2ZeFfakvPIVzXBSSzGF2Pyvlg5W7GAmm3O01bvuuX+sCNXZATdCEJWye71
+         gGbWqVwzixcZHiGnRRyfXxo9cnChAeuzaHi7VSPQ/TyRMkcUA9TN3cmLEgS6nKMy7NrD
+         aikRyQhxvTQNCMT0O1MmKB4ntoyOGNsE77oUjw9tCzDntgRo1ScdaFcIg3JxLxAJ37zN
+         QZtu16Ghwd4tMQvm3zCamBP9Sg2futUa7awe1GY+NR6dKc9ub0uE6cmgjqVQVC5gKeYs
+         +ftg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762201155; x=1762805955;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QCTPnVQY3V7Xqh+AJu8ypwKqT0Kso2fj8Yr6n8lm8T0=;
+        b=iuJbkeRkalttTch/hlWX9GF004vI3m7YLX8G+NxFfO/9zkSAlbi2tQHlR+PRVMGXbP
+         93+3s42nHhR+C/tJQMQCIblA6rY9Ipwok14EZGHgXRns2sVGWU8jCojrirqzvKJTGIRN
+         XnwRrWkx/3QJh4b29wRaH0LIa6t+KsnYocqZj5b45CH6Dtwm5DBXdCATpr8VmY3NZGsv
+         I3qMcpig1ZmWmg1d0bt4lwnAgyecD7ANe5kQWMdfgF/Cn22zg8UUg0mifc9tSjvt10RR
+         J8TFPAvo0QIY+AsvveKeda3ioTdyLxZPN33rg5qKXvxZcr64UHY1uoEcvY8pQ1UYbCZs
+         1eCw==
+X-Gm-Message-State: AOJu0YyTYYGe6Vz7ScBMdqD2lkbvnBVlkFLnWqfPXwB/anozuR90a0Y3
+	5DOq8U1Mx3JrBzxsM6hSVQ34c9a6aY45Y4sbXzk55p5ZN6vcLSD43A2DW73SBzsywbFWPO46EtY
+	Sbf2r6qORTr9J0i4mtGhP7kko5AWcnuo=
+X-Gm-Gg: ASbGncuwNo3rV4BpJ3PxwjP/ieD+WYi9Y7TC9zl2SMR9JiD+MEVx7NSSzj8UMMDQBpt
+	3QGYy9n5zZNML2YAhuy6PG1ET5Vcog1lXOWhS8oQvkxMmececkHPqpKlPdnMvd2NyyziVQ78w+U
+	EwEuTBN9asbD+7IwdmuYapS9uUfpTUp/6lTAuHNiWAQAUvHU6tbAsY7H0x3YTqqpsRIdvSJSVC/
+	omVPvLcWsMaYY85MDKFCfoo/0Q21mxnOCK+oADkCB+yxrbzuEoqT/LRe084NX2u90Jc9HEzyVbz
+	Te5T+XoQbLuNKdZ22Q==
+X-Google-Smtp-Source: AGHT+IHg6JgaZDvmFf79UiQ9QOkrQFZPFmVBc6IbZwE0b9DEcda2HGOTglVTW8GwKIXpsW5q7cbbzYxVi5U6E+hFlHQ=
+X-Received: by 2002:a05:6000:258a:b0:429:cd3f:f42f with SMTP id
+ ffacd0b85a97d-429cd3ff727mr6932751f8f.61.1762201154444; Mon, 03 Nov 2025
+ 12:19:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <176218882404.2759873.8174527156326754449.stgit@ahduyck-xeon-server.home.arpa>
+ <176218926115.2759873.9672365918256502904.stgit@ahduyck-xeon-server.home.arpa>
+ <2fabbe4a-754d-40bb-ba10-48ef79df875c@lunn.ch>
+In-Reply-To: <2fabbe4a-754d-40bb-ba10-48ef79df875c@lunn.ch>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Mon, 3 Nov 2025 12:18:38 -0800
+X-Gm-Features: AWmQ_bkjW3_RsvBktUctxrF-j1QkwrJExbPu14Zz_Hw177OE4OgkwRvhgmLujdg
+Message-ID: <CAKgT0UeiLjk=9Ogqy1NU-roz4U32HXHjVs8LqRKEdnPqYNcBjQ@mail.gmail.com>
+Subject: Re: [net-next PATCH v2 09/11] fbnic: Add SW shim for MDIO interface
+ to PMA/PMD and PCS
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, kernel-team@meta.com, 
+	andrew+netdev@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk, 
+	pabeni@redhat.com, davem@davemloft.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Development devices on a lab network might be subject to kernel panics
-and if they have pause frame generation enabled, once the kernel panics,
-the Ethernet controller stops being serviced. This can create a flood of
-pause frames that certain switches are unable to handle resulting a
-completle paralysis of the network.
+On Mon, Nov 3, 2025 at 10:59=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > The interface will consist of 2 PHYs each consisting of a PMA/PMD and a=
+ PCS
+> > located at addresses 0 and 1.
+>
+> I'm missing a bit of architecture here.
+>
+> At least for speeds up to 10G, we have the MAC enumerate what it can
+> do, the PCS enumerates its capabilities, and we read the EERPOM of the
+> SFP to find out what it supports. From that, we can figure out the
+> subset of link modes which are supported, and configure the MAC and
+> PCS as required.
 
-To accomodate for such situation introduce a
-/sys/class/net/<device>/disable_pause_on_panic knob which will disable
-Ethernet pause frame generation upon kernel panic.
+The hardware we have is divisible with multiple entities running it
+parallel. It can be used as a single instance, or multiple. With our
+hardware we have 2 MACs that are sharing a single QSFP connection, but
+the hardware can in theory have 4 MACs sharing a QSFP-DD connection.
+The basic limitation is that underneath each MAC we can support at
+most 2 lanes of traffic, so just the Base-R/R2 modes. Effectively what
+we would end up with is the SFP PHY having to be chained behind the
+internal PHY if there is one. In the case of the CR/KR setups though
+we are usually just running straight from point-to-point with a few
+meter direct attach cable or internal backplane connection.
 
-Note that device driver wishing to make use of that feature need to be
-mindful of the fact that ethtool_ops::set_pauseparam may now be called
-from atomic context.
+So from the MAC we have the XPCS which has support for 2 lanes. To
+support that we will need to have access to 2 PCS instances as the IP
+is divisible to support either 1 or 2 lanes through a single instance.
+Then underneath that is an internal PCS PMA which I plan to merge in
+with the PMA/PMD I am representing here as the RSFEC registers are
+supposed to be a part of the PMA. Again with 2 lanes supported I need
+to access two instances of it for the R2 modes. Then underneath that
+we have the PMD which is configurable on a per-lane basis. Technically
+it is just a SerDes PHY and doesn't have a link detection, it is just
+detecting if there is a signal or not and then kicking off the
+training, but we can essentially just represent it with the phydev so
+that we can report if it is ready to handle the link or not.
 
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- Documentation/ABI/testing/sysfs-class-net | 16 ++++
- include/linux/netdevice.h                 |  1 +
- net/core/net-sysfs.c                      | 34 ++++++++
- net/ethernet/Makefile                     |  3 +-
- net/ethernet/pause_panic.c                | 95 +++++++++++++++++++++++
- 5 files changed, 148 insertions(+), 1 deletion(-)
- create mode 100644 net/ethernet/pause_panic.c
+> What information is missing from this picture that requires the
+> PMA/PMD to be represented? And how is this going to work when we do
+> have access to the SFPs EERPOM?
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net b/Documentation/ABI/testing/sysfs-class-net
-index ebf21beba846..f762ce439203 100644
---- a/Documentation/ABI/testing/sysfs-class-net
-+++ b/Documentation/ABI/testing/sysfs-class-net
-@@ -352,3 +352,19 @@ Description:
- 		0  threaded mode disabled for this dev
- 		1  threaded mode enabled for this dev
- 		== ==================================
-+
-+What:		/sys/class/net/<iface>/disable_pause_on_panic
-+Date:		Nov 2025
-+KernelVersion:	6.20
-+Contact:	netdev@vger.kernel.org
-+Description:
-+		Boolean value to control whether to disable pause frame
-+		generation on panic. This is helpful in environments where
-+		the link partner may incorrect respond to pause frames (e.g.:
-+		improperly configured Ethernet switches)
-+
-+		Possible values:
-+		== ==================================
-+		0  threaded mode disabled for this dev
-+		1  threaded mode enabled for this dev
-+		== ==================================
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 9c1e5042c5e7..7af0944aada2 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2439,6 +2439,7 @@ struct net_device {
- 	bool			proto_down;
- 	bool			irq_affinity_auto;
- 	bool			rx_cpu_rmap_auto;
-+	bool			disable_pause_on_panic;
- 
- 	/* priv_flags_slow, ungrouped to save space */
- 	unsigned long		see_all_hwtstamp_requests:1;
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index ca878525ad7c..c01dc3e200d8 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -770,6 +770,39 @@ static ssize_t threaded_store(struct device *dev,
- }
- static DEVICE_ATTR_RW(threaded);
- 
-+static ssize_t disable_pause_on_panic_show(struct device *dev,
-+					    struct device_attribute *attr,
-+					    char *buf)
-+{
-+	struct net_device *ndev = to_net_dev(dev);
-+	ssize_t ret = -EINVAL;
-+
-+	rcu_read_lock();
-+	if (dev_isalive(ndev))
-+		ret = sysfs_emit(buf, fmt_dec, READ_ONCE(ndev->disable_pause_on_panic));
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+static int modify_disable_pause_on_panic(struct net_device *dev, unsigned long val)
-+{
-+	if (val != 0 && val != 1)
-+		return -EINVAL;
-+
-+	WRITE_ONCE(dev->disable_pause_on_panic, val);
-+
-+	return 0;
-+}
-+
-+static ssize_t disable_pause_on_panic_store(struct device *dev,
-+					     struct device_attribute *attr,
-+					     const char *buf, size_t len)
-+{
-+	return netdev_store(dev, attr, buf, len, modify_disable_pause_on_panic);
-+}
-+static DEVICE_ATTR_RW(disable_pause_on_panic);
-+
- static struct attribute *net_class_attrs[] __ro_after_init = {
- 	&dev_attr_netdev_group.attr,
- 	&dev_attr_type.attr,
-@@ -800,6 +833,7 @@ static struct attribute *net_class_attrs[] __ro_after_init = {
- 	&dev_attr_carrier_up_count.attr,
- 	&dev_attr_carrier_down_count.attr,
- 	&dev_attr_threaded.attr,
-+	&dev_attr_disable_pause_on_panic.attr,
- 	NULL,
- };
- ATTRIBUTE_GROUPS(net_class);
-diff --git a/net/ethernet/Makefile b/net/ethernet/Makefile
-index e03eff94e0db..9b1f3ff8695a 100644
---- a/net/ethernet/Makefile
-+++ b/net/ethernet/Makefile
-@@ -3,4 +3,5 @@
- # Makefile for the Linux Ethernet layer.
- #
- 
--obj-y					+= eth.o
-+obj-y					+= eth.o \
-+					   pause_panic.o
-diff --git a/net/ethernet/pause_panic.c b/net/ethernet/pause_panic.c
-new file mode 100644
-index 000000000000..ed859b443b00
---- /dev/null
-+++ b/net/ethernet/pause_panic.c
-@@ -0,0 +1,95 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Ethernet pause disable on panic handler
-+ *
-+ * This module provides per-device control via sysfs to disable Ethernet flow
-+ * control (pause frames) on individual Ethernet devices when the kernel panics.
-+ * Each device can be configured via /sys/class/net/<device>/disable_pause_on_panic.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/panic_notifier.h>
-+#include <linux/netdevice.h>
-+#include <linux/ethtool.h>
-+#include <linux/notifier.h>
-+#include <linux/if_ether.h>
-+#include <net/net_namespace.h>
-+
-+/*
-+ * Disable pause/flow control on a single Ethernet device.
-+ * This is called from panic context, so we cannot sleep.
-+ * We try to call set_pauseparam, but if it would require sleeping,
-+ * we skip the device rather than risk deadlock.
-+ */
-+static void disable_pause_on_device(struct net_device *dev)
-+{
-+	struct ethtool_pauseparam pause = { };
-+	const struct ethtool_ops *ops;
-+
-+	/* Only proceed if this device has the flag enabled */
-+	if (!READ_ONCE(dev->disable_pause_on_panic))
-+		return;
-+
-+	ops = dev->ethtool_ops;
-+	if (!ops || !ops->set_pauseparam)
-+		return;
-+
-+	/* Prepare pause parameters to disable flow control */
-+	pause.autoneg = 0;
-+	pause.rx_pause = 0;
-+	pause.tx_pause = 0;
-+
-+	/*
-+	 * In panic context, we're in atomic context and cannot sleep.
-+	 * We try to call set_pauseparam directly. If it would sleep,
-+	 * that's a driver bug, but we proceed anyway since we're panicking.
-+	 * The driver's set_pauseparam implementation should ideally handle
-+	 * atomic context, but if it doesn't, we can't do much about it
-+	 * during a panic.
-+	 */
-+	ops->set_pauseparam(dev, &pause);
-+}
-+
-+/*
-+ * Panic notifier to disable pause frames on all Ethernet devices.
-+ * Called in atomic context during kernel panic.
-+ */
-+static int eth_pause_panic_handler(struct notifier_block *this,
-+					unsigned long event, void *ptr)
-+{
-+	struct net_device *dev;
-+
-+	/*
-+	 * Iterate over all network devices in the init namespace.
-+	 * In panic context, we cannot acquire locks that might sleep,
-+	 * so we use RCU iteration.
-+	 * Each device will check its own disable_pause_on_panic flag.
-+	 */
-+	rcu_read_lock();
-+	for_each_netdev_rcu(&init_net, dev) {
-+		/* Reference count might not be available in panic */
-+		if (!dev)
-+			continue;
-+
-+		disable_pause_on_device(dev);
-+	}
-+	rcu_read_unlock();
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block eth_pause_panic_notifier = {
-+	.notifier_call = eth_pause_panic_handler,
-+	.priority = INT_MAX, /* Run as late as possible */
-+};
-+
-+static int __init eth_pause_panic_init(void)
-+{
-+	/* Register panic notifier */
-+	atomic_notifier_chain_register(&panic_notifier_list,
-+				       &eth_pause_panic_notifier);
-+
-+	return 0;
-+}
-+device_initcall(eth_pause_panic_init);
--- 
-2.34.1
-
+The issue is that the firmware is managing the PMD underneath us. As a
+result we don't have full control of the link. One issue we are
+running into is that the FW will start training when it first gets a
+signal and it doesn't block the signal from getting to the PCS. The
+PCS will see the signal and immediately report the link as "up" if the
+quality is good enough. This results in us suddenly seeing the link
+flapping for about 2-3 seconds while the training is happening. So to
+prevent that from happening we are adding the phydev representing the
+PMD to delay the link up by the needed 4 seconds to prevent the link
+flap noise.
