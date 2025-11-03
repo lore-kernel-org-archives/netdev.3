@@ -1,38 +1,37 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4367B34D3A5;
-	Mon,  3 Nov 2025 19:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CACD29ACDB;
+	Mon,  3 Nov 2025 19:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762199209; cv=none; b=nxz06epp4w+QQtATPowIdjoJIifuOQtHlE7A+N8Dj4wpiUcf54GtfY8AAl33abTdtiA7UvGCAHCgUn4jrLPndynqYEqCC88pLiSzT+MU7GUyO+9Wjr9WQ9VyDrKiggVd59iuw3wdCBb7tLb82IFCaKXcdcOkua/dbTlwg5NZnok=
+	t=1762199211; cv=none; b=TegjOENqZGBo0PTbJC0cAs5kjcGvERfgnyy1fQ2bCTghWKgoqGBY3hEgTILjIdbZkbq1p6ng1jrcJ9nqpieOEUbO/rYQW0JZvGQA6pGmy18xqx61jQsvEuKz7UiNZ3LmWLKOgN3EcV8SFtgV6VPY7ZfuWWYpGu8MhPWQzh8c0cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762199209; c=relaxed/simple;
-	bh=Nq8wAi1+vvQBgZVT1V6WqkuBliIzYdqllfMklb/kj10=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IgMlG3PUuc3/l8Pp+2wCee/VYsaj8G4lL377wrNXDbkliIiqAeixTZTL6CjM1jAcWvI/yOBO9m/TLqkIldN+RvsN/jbwt/exMPEiXYug78yiBkH4rT7kVsLdRSXRo/ocO9ct4OJxp06vdWHCJlQg+cayLwTNfa4Fue4qlg7pfTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=F986l98h; arc=none smtp.client-ip=192.19.144.205
+	s=arc-20240116; t=1762199211; c=relaxed/simple;
+	bh=nzL7Ptcfl43WHATFv9Hul72L7iQ+Pvm8RIGVEuUvQxM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FjJqfM7qAHa9fq7fKXKtskadYiW0Pp2OiSbEEy2ZCFmtQackm1EpykhZ8H8bQMeXSfTjwg0sae4pE+sFXUBLrfml5c7k36jCIb/8tI1s+F7sMz0VlKhO07lntTTGrDWtDFOr2QAuYNcMM7RKOaiyJZgSq2E+dAszOjDKcUyglBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UZQKSJwI; arc=none smtp.client-ip=192.19.166.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="F986l98h"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UZQKSJwI"
 Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 0C2BAC0000F3;
-	Mon,  3 Nov 2025 11:46:47 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 0C2BAC0000F3
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 9C99CC000543;
+	Mon,  3 Nov 2025 11:46:44 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 9C99CC000543
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1762199207;
-	bh=Nq8wAi1+vvQBgZVT1V6WqkuBliIzYdqllfMklb/kj10=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F986l98hYVNEiT5SvyktxmIGNwZe35pFPPapz5iK8IwIkHUOSAaN+MOd1Aj3EYkhY
-	 SRV/yrtuTrJVFYnN3ulhj+d4u8UJCXjaBUJq1bEYx5T0hoD0JlaAGoCp8yskf0Th2G
-	 riF3zePJWYgoUs9i6xWv5yEE3o8u6SVZ88y/1jWg=
+	s=dkimrelay; t=1762199204;
+	bh=nzL7Ptcfl43WHATFv9Hul72L7iQ+Pvm8RIGVEuUvQxM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UZQKSJwIWlCFquLJ1IVFDrTEH/rsOaOHGfaXIuDemdcho729oziwrT8nkam+gaQ8m
+	 qNjpQrDZE+7UE9md8ImARGo5sqlx77KujhtXQnYTkfIpBF7i0qkFMS9vzCqjqfngl1
+	 NRbNJBWADfYRDhaPzbfAiCIoeqpVBtv6GpRJa3UM=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id D3AE54002F44;
-	Mon,  3 Nov 2025 14:46:45 -0500 (EST)
+	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 33EE34002F44;
+	Mon,  3 Nov 2025 14:46:43 -0500 (EST)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: bcm-kernel-feedback-list@broadcom.com,
@@ -49,12 +48,10 @@ Cc: bcm-kernel-feedback-list@broadcom.com,
 	Kuniyuki Iwashima <kuniyu@google.com>,
 	Yajun Deng <yajun.deng@linux.dev>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next 2/2] net: bcmgenet: Support calling set_pauseparam from panic context
-Date: Mon,  3 Nov 2025 11:46:31 -0800
-Message-Id: <20251103194631.3393020-3-florian.fainelli@broadcom.com>
+Subject: [PATCH net-next 0/2] Allow disabling pause frames on panic
+Date: Mon,  3 Nov 2025 11:46:29 -0800
+Message-Id: <20251103194631.3393020-1-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251103194631.3393020-1-florian.fainelli@broadcom.com>
-References: <20251103194631.3393020-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,49 +60,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Avoid making sleeping calls that would not be able to complete the MMIO
-writes ignoring pause frame reception and generation at the Ethernet MAC
-controller level.
+This patch set allows disabling pause frame generation upon encountering
+a kernel panic. This has proven to be helpful in lab environments where
+devices are still being worked on, will panic for various reasons, and
+will occasionally take down the entire Ethernet switch they are attached
+to.
 
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/ethernet/broadcom/genet/bcmmii.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+Florian Fainelli (2):
+  net: ethernet: Allow disabling pause on panic
+  net: bcmgenet: Support calling set_pauseparam from panic context
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index 38f854b94a79..de7156b5ecf7 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -75,7 +75,8 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 	reg |= RGMII_LINK;
- 	bcmgenet_ext_writel(priv, reg, EXT_RGMII_OOB_CTRL);
- 
--	spin_lock_bh(&priv->reg_lock);
-+	if (!panic_in_progress())
-+		spin_lock_bh(&priv->reg_lock);
- 	reg = bcmgenet_umac_readl(priv, UMAC_CMD);
- 	reg &= ~((CMD_SPEED_MASK << CMD_SPEED_SHIFT) |
- 		       CMD_HD_EN |
-@@ -88,7 +89,8 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
--	spin_unlock_bh(&priv->reg_lock);
-+	if (!panic_in_progress())
-+		spin_unlock_bh(&priv->reg_lock);
- 
- 	active = phy_init_eee(phydev, 0) >= 0;
- 	bcmgenet_eee_enable_set(dev,
-@@ -139,7 +141,8 @@ void bcmgenet_phy_pause_set(struct net_device *dev, bool rx, bool tx)
- 	linkmode_mod_bit(ETHTOOL_LINK_MODE_Pause_BIT, phydev->advertising, rx);
- 	linkmode_mod_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, phydev->advertising,
- 			 rx | tx);
--	phy_start_aneg(phydev);
-+	if (!panic_in_progress())
-+		phy_start_aneg(phydev);
- 
- 	mutex_lock(&phydev->lock);
- 	if (phydev->link)
+ Documentation/ABI/testing/sysfs-class-net    | 16 ++++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c |  9 +-
+ include/linux/netdevice.h                    |  1 +
+ net/core/net-sysfs.c                         | 34 +++++++
+ net/ethernet/Makefile                        |  3 +-
+ net/ethernet/pause_panic.c                   | 95 ++++++++++++++++++++
+ 6 files changed, 154 insertions(+), 4 deletions(-)
+ create mode 100644 net/ethernet/pause_panic.c
+
 -- 
 2.34.1
 
