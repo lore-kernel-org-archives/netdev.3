@@ -1,84 +1,88 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC0918E3F
-	for <netdev@vger.kernel.org>; Mon,  3 Nov 2025 14:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8A91D7E5C;
+	Mon,  3 Nov 2025 14:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762180237; cv=none; b=hgo1gsL2x7NWdp7XpBMA1KFcMtILdIilxAZBZfb0k/7O1aty3/xJuUsl8zObXip2MfJla/VN5KGODX+geUkzFBNpq9edLaVBje8Dr7UKkg2vo1S9xPxR7/AOl3uosCP4Q91sxcDv3VjgEgiOx940CGoxDGIqWwNkBqyT/OBwJ4E=
+	t=1762180356; cv=none; b=BdkojBbID/P7Z7Hjj2CcKQvg7Un1/te7ICIvi76uihAw99YAIwZbrOmbI4tIry6XC2kz8XKFpRV8FhCd2r29H8+C3HoboJtVhCYC8dIytn0lMUg5e/xTbUr466SCz8+DmIufkWwkPZDE+52IZ5T72CRjRFVrfEdQQVuUcPK33XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762180237; c=relaxed/simple;
-	bh=NZolMgJmw3SWu/joKXEZ2r7zR5on7lJk+Soi1nmwlJ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JKYVnU6vt6P5MYBfEqgAKo6yA4hGu7sFRq6/KtaIhRKyJeGwpAFMOJdNIG985GbF9zxKdXGL7ssGldF1p1r6t1UClqBEEvdRRo8AkPl38N8NgblkkRsJi5YUAaYwgUpvE6T2Z/KmPqP+zg+uuGtTs86HDspnd5nml51H/pxrYOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CcqTrDvF; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1762180356; c=relaxed/simple;
+	bh=FjijuDA4E5Wq4MOBEyRWsWNhUVP8QhoN79MBpayGczI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LGh+W5pCyV456wohr+GBQdPj6txkz8BeomMPU3cFl8rx4C214R5pljExtJJk+X9WkrwacKHSmlDk+utVitOic27QJmlfTdMb32r7yS/LbhCVShSD32pxt12v2cPUY83noezmQ21ce6lVsYuzrd75LjVDqhS8b7gZjTUJuZknGxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOgB7fE/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CcqTrDvF"
-Message-ID: <04d22523-34ed-45f1-ba59-ab8170d749e7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762180233;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SRwPUktMFGp/Comr5LxB75bQkPyJT9fVhB6SL5uplVg=;
-	b=CcqTrDvFulflmHynUwnickQYQCFq4t8CE4PwdAmPujfMOwui7gI8S2olXAhbWue7OCcveD
-	ecbLLXCpe/vGRm6BfXccmU2m7mbp21wGicq/nrW74fVNhbOJDYffL4x8u7J9wtKkckNNTB
-	xjRFzL41d1EnE96DYP/ewai31vzD5Ag=
-Date: Mon, 3 Nov 2025 14:30:26 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOgB7fE/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E884CC4CEE7;
+	Mon,  3 Nov 2025 14:32:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762180355;
+	bh=FjijuDA4E5Wq4MOBEyRWsWNhUVP8QhoN79MBpayGczI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aOgB7fE/048QNi/w3c96EvqQqITq3t5dgd7sO3zyee1uz+chfiFpJ2sEjRD8q+6A6
+	 Qwci25YyMrMKmPNAQuJn8Xd5iioWEKPNxgkhIxKvr3RTuI9Pz0cjmu6znzNdIoxHLd
+	 iuQ9PWUr4j3VE0D0ibAKy9nBU5DiOaNDRdOcmeBB1YD79psAiJ4kXBCSqYgVczrzZX
+	 2NVhUgrOic8FdVxU+MMNkxvh96/mZWS5LV4e5vQ/EgtbF7FFCCGF39yarRN7FP5zvc
+	 3F4xCPRRx2kExD/yqezn0zcwbxIIjY+9Dzy1unbHezBPN6dbItrwMtZVtQSiauY7gK
+	 Yu8Tv/DnxX7XA==
+Date: Mon, 3 Nov 2025 14:32:31 +0000
+From: Simon Horman <horms@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+	Chas Williams <3chas3@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <David.Woodhouse@intel.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	kernel-janitors@vger.kernel.org, Miaoqian Lin <linmq006@gmail.com>
+Subject: Re: [PATCH] atm: solos-pci: Use pointer from memcpy() call for
+ assignment in fpga_tx()
+Message-ID: <aQi8_9-VH5QJSLVF@horms.kernel.org>
+References: <093033d3-0ea3-49a0-83e8-621fc4fe1d24@web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 6/7] net: pch_gbe: convert to use ndo_hwtstamp
- callbacks
-To: Jakub Kicinski <kuba@kernel.org>,
- Kory Maincent <kory.maincent@bootlin.com>
-Cc: Sudarsana Kalluru <skalluru@marvell.com>,
- Manish Chopra <manishc@marvell.com>,
- Marco Crivellari <marco.crivellari@suse.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Sunil Goutham <sgoutham@marvell.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Simon Horman <horms@kernel.org>,
- Jacob Keller <jacob.e.keller@intel.com>,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
-References: <20251031004607.1983544-1-vadim.fedorenko@linux.dev>
- <20251031004607.1983544-7-vadim.fedorenko@linux.dev>
- <20251031183525.5b8b8110@kmaincent-XPS-13-7390>
- <20251031113840.067ef711@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20251031113840.067ef711@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <093033d3-0ea3-49a0-83e8-621fc4fe1d24@web.de>
 
-On 31/10/2025 18:38, Jakub Kicinski wrote:
-> On Fri, 31 Oct 2025 18:35:25 +0100 Kory Maincent wrote:
->>>   	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
->>> -		adapter->hwts_rx_en = 0;
->>> +		adapter->hwts_rx_en = cfg->rx_filter;
->>
->> It seems there is a functional change here.
->>
->>> 		pch_ch_control_write(pdev, SLAVE_MODE | CAP_MODE0);
+On Fri, Oct 31, 2025 at 12:42:09PM +0100, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 31 Oct 2025 12:30:38 +0100
 > 
-> Good catch. Looks like SLAVE | MODE0 translates to 0 | 0
-> so presumably the device doesn't actually support timestamping
-> of V1 L4 SYNC messages? Unclear what to do about this.
-> Maybe let's leave it be? keep the hwts_rx_en = 0; ?
-> Not strictly correct but at least we won't break anything.
+> A pointer was assigned to a variable. The same pointer was used for
+> the destination parameter of a memcpy() call.
+> This function is documented in the way that the same value is returned.
+> Thus convert two separate statements into a direct variable assignment for
+> the return value from a memory copy action.
+> 
+> The source code was transformed by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Ok, it looked like typo as the function actually does the register
-manipulation while it's not doing anything for disabling RX timestamping
-which probably means it's enabled by default.
-But as the code was added back in 2012, and nobody complained, we should 
-probably keep it as is. I'll send v2 shortly.
+Quoting documentation:
+
+1.6.6. Clean-up patches¶
+
+Netdev discourages patches which perform simple clean-ups, which are not in
+the context of other work. For example:
+
+ * Addressing checkpatch.pl, and other trivial coding style warnings
+
+ * Addressing Local variable ordering issues
+
+ * Conversions to device-managed APIs (devm_ helpers)
+
+This is because it is felt that the churn that such changes produce comes
+at a greater cost than the value of such clean-ups.
+
+Conversely, spelling and grammar fixes are not discouraged.
+
+https://docs.kernel.org/6.18-rc4/process/maintainer-netdev.html#clean-up-patches
+
+-- 
+pw-bot: rejected
