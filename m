@@ -1,51 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B1E28DB3
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 01:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D3E13C8EA
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 01:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762218440; cv=none; b=YRWAK5qMPBLQvneSlwS8U7zMwO3Cvs0fEIz6V13vS5a9K/aw+4E/tMT8bOMMI8fM5TeVCq2sPAQ9rX4/VDSIlqdPzPfMIFZ5c/9DkRlQzL4Nf4arsC7VVWuSLCfHCLeRa4FwBtiu+Ewd3U1JKnE/iYil75yWZCCpRa0oYGSQKz4=
+	t=1762218442; cv=none; b=KhDNfA/kddrU2dtw/Q8Cp6mbTunFe4Gq9VA7HiqxSwp/O/MjjpibK+/w2Kshkx5NzKZQt5m9jaTI5cZBTfEB27e67r0VdaGj1iECfFnnU8I5iwxKN+8s9zRCq6HJaPnWc/sJAanIAU8PdK95rEcwVmTrgaEIDq5/abKzDBSv8j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762218440; c=relaxed/simple;
-	bh=sMqd4Rn5l7ALgH1SAW9CMNd5nCCrcLFQbpHnvsaYy2c=;
+	s=arc-20240116; t=1762218442; c=relaxed/simple;
+	bh=T8jfNkDb/siIQTO+2ZUVj1tFtHnX+vuQDLROZgcRr2M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sp1FoI4ylPLn8WBZxUHccO5VsiLGG0Y1wHoJdDt8yS5KYKJOuNuuSXptoFjw+qx40I+84RfvUDvQ9cv1DCkVfqdp1qgL6MsQywVXzDcgn64JRHTUftSTRehsk6WSqIRxb2yJcBhiOIx3KbvQkiSdeUs1GEbN6xy2VBdlx8NEHTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kot97uhb; arc=none smtp.client-ip=192.198.163.10
+	 In-Reply-To:To:Cc; b=s9WNwQEZ0+xKDd3OtFSB03MIXiigj7Q3gNFi1+uhtKI1kgSRYIvvDKUzDCttkKAtz61GEO4gcSoOi2E7yzrbVZAFml++vnuk0VEQXi2lfXWWcltl21Ytmc+9x+gHC920Rww+HVhBYAwJ6h+JApkLV2CvIh7PeRQlQwhja3Y+AFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XWDWOiyC; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kot97uhb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XWDWOiyC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762218439; x=1793754439;
+  t=1762218441; x=1793754441;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=sMqd4Rn5l7ALgH1SAW9CMNd5nCCrcLFQbpHnvsaYy2c=;
-  b=kot97uhb4KMXLEsuB6g/y+BvLzmi4YxF5yBmfW6YTTn/xGR+q/8ZZyBu
-   Njfsuq8SDpEtgOjsqS+6uGocl18m67zLT/qnZ2oho0hVRWxFDD/HIIlBi
-   FGEnJmmSkqX0TzyJpxW9p60QFtYHx7Eja3u3gmSg2XT/MKv/MsVRanduI
-   U5fJRuSlIAhCSwp0yixrvZcQ1whtWWSV+N8kL/QfSH4Ng5qQ18nA1X3nu
-   joe827Zj42lbBm8kcTYJAsye0aThCtsYueLqOPPevk51RfKZ/Ycf/QR5L
-   +eJ6w4e/eR6gHuEcH7HJvEagEH+7ONotQ5opicuZe+LAmAppKh9FckCGm
-   A==;
-X-CSE-ConnectionGUID: 0pXsTGMNTEiDywpphNZINQ==
-X-CSE-MsgGUID: yN3ucfGPTAuiHqnBvm5g0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75656559"
+  bh=T8jfNkDb/siIQTO+2ZUVj1tFtHnX+vuQDLROZgcRr2M=;
+  b=XWDWOiyCz7clpmSQl5/SoArecJIbujnMhQ0QJyrpJgNjctXmGYcVD96W
+   wnjtmFNbbWDVGeSUbbEKQYNzfoMn3ChHRzqd1eS9h0ax/P1FQ8M8ZojjQ
+   vVOh0hE02OTirhPE7sma79EwWoVr8GHNdlDW75ucNt5/wOYgh1YrRCTkH
+   Tcd2yX7dem5fJ30a2G1RhgpArXsmkSW+6uWeQ7d0MJkE5ZG+fBnevR5FY
+   wyWbDboX00p9fMLxnzMVfzIA4/limziqXIVVLUKhhZ9pl5OjZ05yyKOM1
+   YikSj9ikivjPb0DzmUeCGvYhF4TB0bt37+qr0vqqdGZ8lpSU9ylOgNw+e
+   w==;
+X-CSE-ConnectionGUID: 7rItnz3nSZqenkHX7OQJKA==
+X-CSE-MsgGUID: VUc1pJPoSOSkBOgHoAnXPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75656558"
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="75656559"
+   d="scan'208";a="75656558"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 17:07:18 -0800
-X-CSE-ConnectionGUID: m/aHYovERleg59XGjwdrWA==
-X-CSE-MsgGUID: 3XBi+V4pTsuMIQnfvUSlHw==
+X-CSE-ConnectionGUID: cnn9gmiJSvuoSLuzqhNxQQ==
+X-CSE-MsgGUID: 5/OyVRGLS/K6CDVehvXkDQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="217828752"
+   d="scan'208";a="217828759"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.90]) ([10.166.28.90])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 17:07:15 -0800
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Mon, 03 Nov 2025 17:06:46 -0800
-Subject: [PATCH iwl-next 1/9] ice: initialize ring_stats->syncp
+Date: Mon, 03 Nov 2025 17:06:48 -0800
+Subject: [PATCH iwl-next 3/9] ice: use cacheline groups for ice_tx_ring
+ structure
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-jk-refactor-queue-stats-v1-1-164d2ed859b6@intel.com>
+Message-Id: <20251103-jk-refactor-queue-stats-v1-3-164d2ed859b6@intel.com>
 References: <20251103-jk-refactor-queue-stats-v1-0-164d2ed859b6@intel.com>
 In-Reply-To: <20251103-jk-refactor-queue-stats-v1-0-164d2ed859b6@intel.com>
 To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
@@ -64,52 +65,160 @@ To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
  Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.15-dev-f4b34
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1312;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6517;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=sMqd4Rn5l7ALgH1SAW9CMNd5nCCrcLFQbpHnvsaYy2c=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkzOwAM3u4/+PnpYkOfuI6bYSXtkDihrrM4PEpygyaP01
- WaGpPz8jlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACay7CsjQ7P5k2m35gQf/Lv4
- Uec0mQ9HCkU93pmVZ2/XFpl/I/LEB0mGf2oPM1c/m/7Q3nGJc5W3V/K1fWdDrbnD8iM5VXZcEt1
- QyQAA
+ bh=T8jfNkDb/siIQTO+2ZUVj1tFtHnX+vuQDLROZgcRr2M=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkzOwAM6a7W+XThUKW2qJv3t3NFXvYxr/Ep8g3f9j82SK
+ nry9UVKRykLgxgXg6yYIouCQ8jK68YTwrTeOMvBzGFlAhnCwMUpABOpYmRkeF9ymfPq3bTyrznu
+ WRG1uh4v5sqbzFTY0FsfxH/YVWTiDIZ/CoWPK7Md71Re6DkXG/bU6D5ft5ZHWeuXOa0Wf4MW1n3
+ iAwA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The u64_stats_sync structure is empty on 64-bit systems. However, on 32-bit
-systems it contains a seqcount_t which needs to be initialized. While the
-memory is zero-initialized, a lack of u64_stats_init means that lockdep
-won't get initialized properly. Fix this by adding u64_stats_init() calls
-to the rings just after allocation.
+The ice ring structure was reorganized by commit 65124bbf980c ("ice:
+Reorganize tx_buf and ring structs"), and later split into a separate
+ice_tx_ring structure by commit e72bba21355d ("ice: split ice_ring onto
+Tx/Rx separate structs").o
 
-Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
+The ice_tx_ring structure has comments left over from this reorganization
+and split indicating which fields are supposed to belong to which
+cachelines. Unfortunately, these comments are almost completely incorrect.
+
+ * Cacheline 1 spans from the start of the structure to the vsi pointer.
+   This cacheline is correct, and appears to be the only one that is.
+
+ * Cacheline 2 spans from the DMA address down to the xps_state field. The
+   comments indicate it should end at the rcu head field.
+
+ * Cacheline 3 spans from the ice_channel pointer to the end of the struct,
+   and completely contains what is marked as a separate 4th cacheline.
+
+The use of such comments to indicate cache lines is error prone. It is
+extremely likely that the comments will become out of date with future
+refactors. Instead, use __cacheline_group_(begin|end)_aligned() which is
+more explicit. It guarantees that members between the cacheline groups will
+be in distinct cache lines through the use of padding. It additionally
+enables compile time assertions to help prevent new fields from drastically
+re-arranging the cache lines.
+
+There are two main issues if we just replace the existing comments with
+cache line group markers. First, the spinlock_t tx_lock field is 24 bytes
+on most kernels, but is 64 bytes on CONFIG_DEBUG_LOCK_ALLOC kernels.
+Ideally we want to place this field at the start of a cacheline so that
+other fields in the group don't get split across such a debug kernel. While
+optimizing such a debug kernel is not a priority, doing this makes the
+assertions around the cacheline a bit easier to understand.
+
+Remove the out-of-date cacheline comments, and add __cacheline_group
+annotations. These are set to match the existing layout instead of matching
+the original comments. The only change to layout is to re-order the tx_lock
+to be the start of cacheline 3, and move txq_teid to avoid a 4-byte gap in
+the layout.
+
+Ideally, we should profile the Tx hot path and figure out which fields go
+together and re-arrange the cacheline groups, possibly along "read_mostly",
+"readwrite" and "cold" groupings similar to the idpf driver. This has been
+left as an exercise for a later improvement.
+
+Finally, add annotations which check the cacheline sizes. For cacheline 3,
+we enforce that tx_lock is in this cacheline group, and check the size
+based on whether or not the CONFIG_DEBUG_LOCK_ALLOC is enabled. Similar to
+the Rx annotations, these check that the size of each cacheline group
+(excluding padding) is no greater than 64 bytes. This is primarily intended
+to produce compiler failures if developers add or re-arrange fields such
+that cacheline groups exceed the expected 64 byte sizes on x86_64 systems.
+Because the assertions check the size excluding any padding, they should
+behave the same even on systems with larger L1 cacheline sizes.
+
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_txrx.h | 32 +++++++++++++++++++++++++------
+ drivers/net/ethernet/intel/ice/ice_main.c |  1 +
+ 2 files changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index bac481e8140d..e7265e877703 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -398,7 +398,10 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
- 			if (!ring_stats)
- 				goto err_out;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
+index 6c708caf3a91..5350eb832ee5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
+@@ -319,7 +319,7 @@ static inline void ice_rx_ring_struct_check(void)
+ }
  
-+			u64_stats_init(&ring_stats->syncp);
+ struct ice_tx_ring {
+-	/* CL1 - 1st cacheline starts here */
++	__cacheline_group_begin_aligned(cl1);
+ 	struct ice_tx_ring *next;	/* pointer to next ring in q_vector */
+ 	void *desc;			/* Descriptor ring memory */
+ 	struct device *dev;		/* Used for DMA mapping */
+@@ -328,7 +328,9 @@ struct ice_tx_ring {
+ 	struct ice_q_vector *q_vector;	/* Backreference to associated vector */
+ 	struct net_device *netdev;	/* netdev ring maps to */
+ 	struct ice_vsi *vsi;		/* Backreference to associated VSI */
+-	/* CL2 - 2nd cacheline starts here */
++	__cacheline_group_end_aligned(cl1);
 +
- 			WRITE_ONCE(tx_ring_stats[i], ring_stats);
++	__cacheline_group_begin_aligned(cl2);
+ 	dma_addr_t dma;			/* physical address of ring */
+ 	struct xsk_buff_pool *xsk_pool;
+ 	u16 next_to_use;
+@@ -340,15 +342,18 @@ struct ice_tx_ring {
+ 	u16 xdp_tx_active;
+ 	/* stats structs */
+ 	struct ice_ring_stats *ring_stats;
+-	/* CL3 - 3rd cacheline starts here */
+ 	struct rcu_head rcu;		/* to avoid race on free */
+ 	DECLARE_BITMAP(xps_state, ICE_TX_NBITS);	/* XPS Config State */
++	__cacheline_group_end_aligned(cl2);
 +
- 		}
- 
- 		ring->ring_stats = ring_stats;
-@@ -417,6 +420,8 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
- 			if (!ring_stats)
- 				goto err_out;
- 
-+			u64_stats_init(&ring_stats->syncp);
++	__cacheline_group_begin_aligned(cl3);
++	spinlock_t tx_lock;
+ 	struct ice_channel *ch;
+ 	struct ice_ptp_tx *tx_tstamps;
+-	spinlock_t tx_lock;
+-	u32 txq_teid;			/* Added Tx queue TEID */
+-	/* CL4 - 4th cacheline starts here */
+ 	struct ice_tstamp_ring *tstamp_ring;
 +
- 			WRITE_ONCE(rx_ring_stats[i], ring_stats);
- 		}
++	u32 txq_teid;			/* Added Tx queue TEID */
++
+ #define ICE_TX_FLAGS_RING_XDP		BIT(0)
+ #define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
+ #define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
+@@ -356,8 +361,23 @@ struct ice_tx_ring {
+ 	u8 flags;
+ 	u8 dcb_tc;			/* Traffic class of ring */
+ 	u16 quanta_prof_id;
++	__cacheline_group_end_aligned(cl3);
+ } ____cacheline_internodealigned_in_smp;
  
++static inline void ice_tx_ring_struct_check(void)
++{
++	CACHELINE_ASSERT_GROUP_SIZE(struct ice_tx_ring, cl1, 64);
++	CACHELINE_ASSERT_GROUP_SIZE(struct ice_tx_ring, cl2, 64);
++
++	CACHELINE_ASSERT_GROUP_MEMBER(struct ice_tx_ring, cl3, tx_lock);
++#ifdef CONFIG_DEBUG_LOCK_ALLOC
++	/* spinlock_t is larger on DEBUG_LOCK_ALLOC kernels */
++	CACHELINE_ASSERT_GROUP_SIZE(struct ice_tx_ring, cl3, 128);
++#else
++	CACHELINE_ASSERT_GROUP_SIZE(struct ice_tx_ring, cl3, 64);
++#endif
++}
++
+ static inline bool ice_ring_ch_enabled(struct ice_tx_ring *ring)
+ {
+ 	return !!ring->ch;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 4731dbaca9de..645a2113e8aa 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -5917,6 +5917,7 @@ static int __init ice_module_init(void)
+ 	int status = -ENOMEM;
+ 
+ 	ice_rx_ring_struct_check();
++	ice_tx_ring_struct_check();
+ 
+ 	pr_info("%s\n", ice_driver_string);
+ 	pr_info("%s\n", ice_copyright);
 
 -- 
 2.51.0.rc1.197.g6d975e95c9d7
