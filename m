@@ -1,114 +1,121 @@
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32CF215F42;
-	Tue,  4 Nov 2025 15:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F119D2EB5CD
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 15:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762269842; cv=none; b=KmLP72WGULJ3G0SYe0BnXzkJc/dpfAHWqbTiY326LcImgRWcWLLWNwKbIluD55aB9ksWPagPtDkobMcdueL73Tg6imBQjcjoCG7dPnjE/dzPrST9Vbv1CkcPr+akdsUlMO+Bjh5X+OIEnPhDiW09bLu2yqbpFG3iHFXm75gujI8=
+	t=1762270483; cv=none; b=XLmhobrWVMNhNZy9yalYuaaxvTeKnEf7j0iYaecMqh9C6q3Ve2mTar+1QoOPmrilqAKs1URRgrUFC1c6tnlH9gnHdlVNqF8ys2c4cWWGIoq5llupRAUUUyUCitsAEXnWJ4Mr+OnM+f8F0OJFpnI5UMtkjlN2n/v9vdcS/1qWdvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762269842; c=relaxed/simple;
-	bh=i6yZQgYEzBAnE5YGZ2Am83L5vFKe8Mk/y5uubB3v5Wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TC87gsIYV1uQHXQiLDJPegRKSiBMy/VeyDdDj4CmLaPGJ7EyBbtikjBb/fYwHrR7Kls43LuUreay+VvzytDE4Kbd2t+aqP8zv+zZrwwcvSvfA0WFynHPUvO88+tMomB8KeQ4pOrXRj8wLilpztHH58MFCt96752nmyxFS9CjDLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=UmYUdIxw; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+	s=arc-20240116; t=1762270483; c=relaxed/simple;
+	bh=EySwQ2aJa/1OXqPXf2jBcsyoM+JXlvG1QywvDd1KZfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hx+e7FdaXrz7M5x3lumt/bo3zl04mD3R6DTKQ5sjuXIjyFS+ohpiU9L8mVGIiWELxUdYPix1SP+EtVzhGjgiCPRSkRXjbvuDOqtcApQwto8HbXdu1yNURp611QrBV/ucQZeUXgoGzwnF/XiVd0RXLI9//TaOpSSEzh3HXdU8nI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FWPfzR6i; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=exrtg4/y; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="UmYUdIxw"
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 2A2C620D7F;
-	Tue,  4 Nov 2025 16:17:11 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id NSM0mJ7iStq5; Tue,  4 Nov 2025 16:17:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1762269430; bh=i6yZQgYEzBAnE5YGZ2Am83L5vFKe8Mk/y5uubB3v5Wg=;
-	h=From:To:Cc:Subject:Date;
-	b=UmYUdIxwnXcnCaZzz8fVpf7F2c+siUXRErNT7d2Mknf8wE++4qtHCZ4yEUd6KqFul
-	 LKA6MC9mM9FWRLGvMP5rqI9BGQWlhNEMMnvxwlF04U0cOk4qxQlEBbs8Io+aemf7Y/
-	 u+GLxvFBj+tvOW2GOjWSFKtBKb5BglKUkL9Q9GyhgmCl8ATeVH60D0PNvl3o0B1eNU
-	 5mLy25M7/dTaJU+Me+tAeYCShvDm6JUbIbo0paH7zdXdt4/CJnD5JNbmeM+JfFo3ga
-	 CwkNkmdQfQDDCokuFujEeOMmBXOj8+8BH69b+yDOO0nujdPcmn25R4QJnAZkyy/fnj
-	 xlQB00cRY/rUg==
-From: Yao Zi <ziyao@disroot.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FWPfzR6i";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="exrtg4/y"
+Date: Tue, 4 Nov 2025 16:34:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1762270477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EQEppDnHMPH5YJq1uT9VZmGPofKNVsb77C9HX3K1t2s=;
+	b=FWPfzR6iGW33Dz0bgZePuohUu1WrL1eq72Y8eEAF2wgpN+7keigd4RPw4st2VPo9EM188Q
+	YBHd7RVc6WIgT6R7g7B/cl9hWbdJ9jKq4PIiKJWex/C6F1rdd3+ReXL9iJWITEJYFABBp7
+	miEQVNr3yyKNf9vHrcWZm60Ilz5bQxxFa/K6tMqsuPUQwsQWWQu1yrM62+fEmf/GBBberw
+	kbOkOWCQgwgEJxPWOI5ySEoE3STlYlpk9dmg0uPArf3+rM1/6m+JDeg8Z+43Ir0W87Pbzl
+	EyxkEfCrSJ9akLAP5k/tqLj7X9dS+EfKAWLHR8XfjuAAebBQbmVUVqU9Dq/VLg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1762270477;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EQEppDnHMPH5YJq1uT9VZmGPofKNVsb77C9HX3K1t2s=;
+	b=exrtg4/y3hqOT1QmX7i/pqCGAmhQ+6odKrsikiun0bw2LIr8HmP/+B/voYydJ8xmP4+qGj
+	J1Tew3wLzfw6xXDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+	Gal Pressman <gal@nvidia.com>, linux-rt-devel@lists.linux.dev,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Philipp Stanner <phasta@kernel.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Qunqin Zhao <zhaoqunqin@loongson.cn>,
-	Yao Zi <ziyao@disroot.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Jacob Keller <jacob.e.keller@intel.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/3] Unify platform suspend/resume routines for PCI DWMAC glue
-Date: Tue,  4 Nov 2025 15:16:44 +0000
-Message-ID: <20251104151647.3125-1-ziyao@disroot.org>
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH net v2] net: gro_cells: Reduce lock scope in gro_cell_poll
+Message-ID: <20251104153435.ty88xDQt@linutronix.de>
+References: <20251104111201.5eBxkOKb@linutronix.de>
+ <20251104060533.57c1bb79@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251104060533.57c1bb79@kernel.org>
 
-There are currently three PCI-based DWMAC glue drivers in tree,
-stmmac_pci.c, dwmac-intel.c, and dwmac-loongson.c. Both stmmac_pci.c and
-dwmac-intel.c implements the same and duplicated platform suspend/resume
-routines.
+One GRO-cell device's NAPI callback can nest into the GRO-cell of
+another device if the underlying device is also using GRO-cell.
+This is the case for IPsec over vxlan.
+These two GRO-cells are separate devices. From lockdep's point of view
+it is the same because each device is sharing the same lock class and so
+it reports a possible deadlock assuming one device is nesting into
+itself.
 
-This series introduces a new PCI helper library, stmmac_libpci.c,
-providing a pair of helpers, stmmac_pci_plat_{suspend,resume}, and
-replaces the driver-specific implementation with the helpers to reduce
-code duplication. The helper will also simplify the Motorcomm DWMAC glue
-driver which I'm working on.
+Hold the bh_lock only while accessing gro_cell::napi_skbs in
+gro_cell_poll(). This reduces the locking scope and avoids acquiring the
+same lock class multiple times.
 
-The glue driver for Intel controllers isn't covered by the series, since
-its suspend routine doesn't call pci_disable_device() and thus is a
-little different from the new generic helpers.
+Fixes: 25718fdcbdd2 ("net: gro_cells: Use nested-BH locking for gro_cell")
+Reported-by: Gal Pressman <gal@nvidia.com>
+Closes: https://lore.kernel.org/all/66664116-edb8-48dc-ad72-d5223696dd19@nv=
+idia.com/
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+v1=E2=80=A6v2:
+  - Drop the lock and reacquire it again in gro_cell_poll() instead
+    providing the lock class. The addition lock class needs to be
+    registered and unregistered. The latter must not have from the RCU
+    callback. This looks simpler.
+    Reported by Jakub.
 
-I only have Loongson hardware on hand, thus the series is only tested on
-Loongson 3A5000 machine. I could confirm the controller works after
-resume, and WoL works as expected. This shouldn't break stmmac_pci.c,
-either, since the new helpers have the exactly same code as the old
-driver-specific suspend/resume hooks.
+ net/core/gro_cells.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Changed from v2
-- Drop unnecessary "depends on STMMAC_ETH" from STMMAC_LIBPCI
-- Enclose DWMAC_LOONGSON and STMMAC_PCI within "if STMMAC_LIBPCI",
-  instead of depends on the option.
-- Link to v2: https://lore.kernel.org/netdev/20251030041916.19905-1-ziyao@disroot.org/
-
-Changed from v1
-- Separate the new suspend/resume helpers into a new file,
-  stmmac_libpci.c, and provide Kconfig symbol for it
-- Link to v1: https://lore.kernel.org/netdev/20251028154332.59118-1-ziyao@disroot.org/
-
-Yao Zi (3):
-  net: stmmac: Add generic suspend/resume helper for PCI-based
-    controllers
-  net: stmmac: loongson: Use generic PCI suspend/resume routines
-  net: stmmac: pci: Use generic PCI suspend/resume routines
-
- drivers/net/ethernet/stmicro/stmmac/Kconfig   | 13 +++++
- drivers/net/ethernet/stmicro/stmmac/Makefile  |  1 +
- .../ethernet/stmicro/stmmac/dwmac-loongson.c  | 36 ++------------
- .../ethernet/stmicro/stmmac/stmmac_libpci.c   | 48 +++++++++++++++++++
- .../ethernet/stmicro/stmmac/stmmac_libpci.h   | 12 +++++
- .../net/ethernet/stmicro/stmmac/stmmac_pci.c  | 36 ++------------
- 6 files changed, 80 insertions(+), 66 deletions(-)
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/stmmac_libpci.c
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/stmmac_libpci.h
-
--- 
-2.51.2
+diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+index fd57b845de333..a725d21159a6f 100644
+--- a/net/core/gro_cells.c
++++ b/net/core/gro_cells.c
+@@ -60,9 +60,10 @@ static int gro_cell_poll(struct napi_struct *napi, int b=
+udget)
+ 	struct sk_buff *skb;
+ 	int work_done =3D 0;
+=20
+-	__local_lock_nested_bh(&cell->bh_lock);
+ 	while (work_done < budget) {
++		__local_lock_nested_bh(&cell->bh_lock);
+ 		skb =3D __skb_dequeue(&cell->napi_skbs);
++		__local_unlock_nested_bh(&cell->bh_lock);
+ 		if (!skb)
+ 			break;
+ 		napi_gro_receive(napi, skb);
+@@ -71,7 +72,6 @@ static int gro_cell_poll(struct napi_struct *napi, int bu=
+dget)
+=20
+ 	if (work_done < budget)
+ 		napi_complete_done(napi, work_done);
+-	__local_unlock_nested_bh(&cell->bh_lock);
+ 	return work_done;
+ }
+=20
+--=20
+2.51.0
 
