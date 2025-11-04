@@ -1,126 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C93314DE
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 14:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BBA32E73E
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 14:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762268252; cv=none; b=OtAlPyNQ2hhgpfJMI1QNPzdU9p3M7z7YoClvVDO5JTWaozBZ0MI7UjFpT58xiRlru/K4QVSBa93I5K7KbP5iOYX1Fqga7K6TkS1ZuHAT/vQ3PaAKkkGQhBE+C3QTkGBVUBoBcAlxuC2TmpXCDfJIingxdkEdc6wwEoIPXc4YQ8o=
+	t=1762268297; cv=none; b=DKHr/73taUuH2d329pkZ5lJFLcZSq3bpEUAmUing6NG50za7/Mo+oKQfO0X9c+ZYew5S89E3rnAXh88y7GcpcRzJIYG2YzlM3hrSvmSKld39APatOeYgZ08oqCeU62HEfowN0tYplxO2KORotTOCxKd9OYdZGu7UslzyqFGd1tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762268252; c=relaxed/simple;
-	bh=liC8Wm0AyDhrxgcEx+GniQix9bJZ8C2ogFs2WxuC8Y4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgUpXH6f2cCz0C4fUYbmIZyhnZDUxGKlM8U8qZ5+g85UVRjvjSbHPYo6eMM9eU0lN/WS/CIoLp0a5FZuqUwr6YUZA/+3s2fvRqsN6L07MeWu311c8NAtTfWEYj+X7Bv7QsvIthzpNziBhKBqrGHqLP7EfDbTtZrO19uqQVNHjFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fC0uk44p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=aSCKeDRG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762268297; c=relaxed/simple;
+	bh=inDzx/S8cSkg3dwC/uO23c8W2vRyNZzLVUHSMHmPaCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uXDNQwyycnIfchZWs8tTSmNZTPXVYDn3h7eCh4U6hwWe3oneMf7lI6cwyu3jVgFdGVQuvXXSeRJdMnH0hFr2OsWRpTmTKoAHn6pBrG/3SDAuV7S+CdFFYmjsQ/DmNnxhvYZkIofcQYG5vEhCsCTS6n3Eloyq7AC+8p+kyvBsyi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=et2xYnab; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fC0uk44p";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="aSCKeDRG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762268249;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8+Qd7R5Cyqm4zUAEr3+3Wzhvl1Gxm8Bjv3wwIMGw7WE=;
-	b=fC0uk44poyZcGIWRL4J3x45hd4Y2SJRzBBWRi2ZD7+XEPUjczhCupAX4KaK68sSoA/agdK
-	lpy27f3KKBAgh60WRDc3I3OHu64fKjCk3aytc/p9J9hDRijvob18GSKpSAE65d/cqDXfpJ
-	iGBmKazN8+cqXnzSDVF76oChYZVFbPY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-526-t20hNGi2OoirmX4aW58mkQ-1; Tue, 04 Nov 2025 09:57:28 -0500
-X-MC-Unique: t20hNGi2OoirmX4aW58mkQ-1
-X-Mimecast-MFC-AGG-ID: t20hNGi2OoirmX4aW58mkQ_1762268247
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-477113a50fcso46011585e9.1
-        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 06:57:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="et2xYnab"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b714b1290aeso317865466b.2
+        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 06:58:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762268247; x=1762873047; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8+Qd7R5Cyqm4zUAEr3+3Wzhvl1Gxm8Bjv3wwIMGw7WE=;
-        b=aSCKeDRGuDlLNO6aL8yVyRWr7sJEvRna5BplmeCmoMyS/hanAwTKP57KlSH8ChcMLj
-         eSgiCcGjYD7AYq469y9Jfh8zGBKCpUz+j5KhHO5Ogp3D5/CIfL4w/7YFzck2ySGYVsIE
-         38fD3urGWaVG9H4h57ezUWjIPhTVJuAuceKxrVdBoxTj400ArmVERIG/aceRxbpLd2RZ
-         8ICbL3tTkIug3gDN+U/4nONtIiYPDVQ3uz9yJKiFZgSgRvrgVYELPoINoWuZaDXsCmM4
-         3EAd5AgRMNxfCBzaaBPD3DApUmvjBFDPM9hDTEvAoe1Bpl0p40vFI6MHVGZeX1Xj5nBf
-         Deng==
+        d=gmail.com; s=20230601; t=1762268294; x=1762873094; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/l16ttdB2MK5S2rHLIiMDaDf51UWK0TbRnH8/E42ilk=;
+        b=et2xYnab7rTSLTjjg+Z8Pg9S/HksYuq74Ev2MiNyZPZomJX6bSdv9i6vJW1EIMiB7H
+         LcxwGzeFSbDhPkgfM/AzAFM03ZToydeScsJUJNAhG6LrkepAhay8FL/CcVJAoxk57yHb
+         iSgKePHrMuFmx+CFhouuUT49Wx0kbJiYhS9OkIlwVbYS933qfWTZ9kMayukXOxN15IbP
+         qawc/fA6WrLNfbG+ROgzPjEro1H3gb1bmhghS8+ucEbQcD+V7R0JTNcVD8wC+mZHGUH/
+         ZN/T40cU2LlwoJ4BJhXgwXErz7QQ1EOXY1orB4ZJTgZoW7zf5jSD77BHg/B7OzvQBruV
+         sSLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762268247; x=1762873047;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8+Qd7R5Cyqm4zUAEr3+3Wzhvl1Gxm8Bjv3wwIMGw7WE=;
-        b=bKTT9uV6LqyNobqh0mnGwbZmCzH7Nr2WJ+wjlLAtgMVsjzky5szoUBFC5IT+60Bnzt
-         FZR10V0oO4K7V60zEJ8/vSHhOw0jmIr2fScXX+mAFwTSudDhTXFa+0OzxBB3a71VmHJG
-         Aq05FrCGmM6Xk6LVdWgWcD26WGq/2f6uKDkElm0QpKkXTYH9jIsX23KUFLggGePHhhYQ
-         piKyeusvsJBJcQVem4854NZgLqW2VHT8TiK8Oe9kY1dl9AraKeITh0cYIod8SsVM9d8L
-         SFCzRS91Kys+A5R1ziS2i4D71Z5vUkqpqrzmWOZePhxeYAJis65+TcjubJT/TwuwDiIs
-         yVMw==
-X-Forwarded-Encrypted: i=1; AJvYcCWvGvKT6h285BH5pujt+WNpxPKg636iotdpDcu5yXMNE7xG4y7MIMquQeC7xGyrswdXSFAokE0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTQS2ejb+dnB3x9G84+4ExRyFT0FdyswjRaqMMaiPu/H0/kLgE
-	iTR3kxr+I8FwAXrAEHzcU8GP/Caj/fnZM5HJY4qKv5RNHQ1MD3QknlhzUdw4zEvaJ99VYNI8Mpe
-	eWrxzInlYiSCm2ZgZ7zG3UnqWJtYEPER/pCQX6csTAQckLjwaA7miHD7UNQ==
-X-Gm-Gg: ASbGncvCwcVMx0vccj4Ip8qFRwMk/YnpxWhtEVC/tXxGbT5l2bdwYFA/8szCqqHX82o
-	unbnfDUa2Cnzm3Cw7a7H2yVjJBsZoV1oMRjTpTEUZZQWGRuxCheeriwupRTUNP0dbIWqInqrCTO
-	kexiN5cEzi8rnBUL/aaItZrPSDmUv+xAUOYh2d/qkPfsx5aAWNY1Q+96f19Jqz3V1tKjHl0C5CG
-	ZtFJ2G1XxJXc1WRDW7J56e9yU0XJmv8aNTIxFu7Oy45EFryn1ezKC/qvOTJjZktavDBvVR8Ny/j
-	oEgXDeNc5HilmwZ+5fJimaYLGzU32EN5Qyv6K48np+MVkUC7upfYEfHDO+ZoqFBZK5KEyieUPTp
-	AuUOqTK4ZJT09TnDK0VnQFcI4uYKZBp1maIkXt0saCZr6
-X-Received: by 2002:a05:6000:4614:b0:429:c851:69ba with SMTP id ffacd0b85a97d-429c851a81cmr11182537f8f.29.1762268247388;
-        Tue, 04 Nov 2025 06:57:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHuQnp6R0myrfafNWEFW+Ykg5K+hkEdLj39XlL4xzqHcxa8sv0FlMMQNmg0LWUaKKhEKQuY6g==
-X-Received: by 2002:a05:6000:4614:b0:429:c851:69ba with SMTP id ffacd0b85a97d-429c851a81cmr11182506f8f.29.1762268246982;
-        Tue, 04 Nov 2025 06:57:26 -0800 (PST)
-Received: from ?IPV6:2a0d:3341:b8a2:8d10:2aab:5fa:9fa0:d7e6? ([2a0d:3341:b8a2:8d10:2aab:5fa:9fa0:d7e6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1f5be4sm4914239f8f.31.2025.11.04.06.57.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Nov 2025 06:57:26 -0800 (PST)
-Message-ID: <0bee7457-eddc-493f-bdb9-a438347958f9@redhat.com>
-Date: Tue, 4 Nov 2025 15:57:25 +0100
+        d=1e100.net; s=20230601; t=1762268294; x=1762873094;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/l16ttdB2MK5S2rHLIiMDaDf51UWK0TbRnH8/E42ilk=;
+        b=KnWJYTYEetywUuKR+bOK0FYq2WFUHAaBqo8Oyy33xl4VHAgzb6HQhikMOUe4gn05v5
+         EomBONUGhDuN/Z+9c9CkNcU/q+kvk/V2HO60oVu8CD1vvCB6l2KD1POBhKOvldVZaFCC
+         RnUgGGJTQVheZt5UFhbcZHeZq5YDYOYBGAj7JnPRQNRKjt4Xowm4CD33Lywf57cckjHY
+         lmXzNgHpAH5RrF8YBV/KOuuCmWTkmPnQe6t+aVDncMtIXj50riRWNGfRk+2VuHAvrRos
+         BH4uxQ+XFGAPqPyDKwdunEpV8P07qG8x0wIgE2hJuEZ6PE9I6D88VABe7Cle94eSXomf
+         CfYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtaYj14KT1Yts7894koHxCh0AtTYmwr+P/KPEb339SFkrCVfqv2losBv1tfeD+Yfh/lxC8xZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOx1JOIy/QZREulnPXWjvvO4BRWyQm8CyQgFIVxxa0fVgmuwyh
+	0XXVHhuWD63s1y233chzdGQUhm4ln+Snhl8R6T+//V6W8sO0hnl0sO5I
+X-Gm-Gg: ASbGncvg2Krw1YNdJ+vS550vQwDNINU2AbC/5Ejkg7np9WAz4O6gB4BlXqBU1yjHrPP
+	tPYXQpU77hFNe4yv72Nrc6UrsUFjFvUI5sgnUkp7zHBuylho+U29E9f9RrVG3wMQriDfG75pFRy
+	2YgIUIlNR39CaZjF3RZ6irmX1hDds6O3JL3CKQ7/hE8FBSOCwOF39wIuEfbcdpsWAIfIVtIGCHd
+	UwkScrK0KvfTsBeqBWlGsO5+S2ZfztY4lrmt56y/JBIFGmFZZDq9/+x2idXFGr70U2G1MPrpgFU
+	NOKvMeauKfdcewYBwd91ysuKo/xJINssihRCoaFXnQYSsUbVl5VIFzlfje7ap0AVn7KSCSZMDi2
+	xrzVnw87iQm7o2utNAjkrUv6pGpnH2BfHSQSmiDcRFKsTuMBM2SV0ZDqVEDOlL26H1+IQjypQj+
+	m3El/Sv01C7vqNuP7u5Ja4uAuidqFuGt5gHQSXkll135DHeN2JhoR0zt1y4aREGF6bUEXFEF3jl
+	MVtMuc/4Q==
+X-Google-Smtp-Source: AGHT+IFoBSG/LmTvbfsb0CiqfJ3IGEEn0aKFuWDCFW1M6Vz6/5HAUfuq0eiik8IrlE2I5ZwBHF/nxg==
+X-Received: by 2002:a17:906:b00e:b0:b70:7e10:4f4b with SMTP id a640c23a62f3a-b707e104f68mr1269603266b.18.1762268293920;
+        Tue, 04 Nov 2025 06:58:13 -0800 (PST)
+Received: from eric (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723f6e2560sm232681666b.46.2025.11.04.06.58.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 06:58:13 -0800 (PST)
+From: Eric Woudstra <ericwouds@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	Eric Woudstra <ericwouds@gmail.com>
+Subject: [PATCH v16 nf-next 0/3] conntrack: bridge: add double vlan, pppoe and pppoe-in-q
+Date: Tue,  4 Nov 2025 15:57:25 +0100
+Message-ID: <20251104145728.517197-1-ericwouds@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v1 2/2] net/rds: Give each connection its own
- workqueue
-To: Allison Henderson <achender@kernel.org>, netdev@vger.kernel.org
-Cc: allison.henderson@oracle.com
-References: <20251029174609.33778-1-achender@kernel.org>
- <20251029174609.33778-3-achender@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251029174609.33778-3-achender@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/29/25 6:46 PM, Allison Henderson wrote:
-> From: Allison Henderson <allison.henderson@oracle.com>
-> 
-> RDS was written to require ordered workqueues for "cp->cp_wq":
-> Work is executed in the order scheduled, one item at a time.
-> 
-> If these workqueues are shared across connections,
-> then work executed on behalf of one connection blocks work
-> scheduled for a different and unrelated connection.
-> 
-> Luckily we don't need to share these workqueues.
-> While it obviously makes sense to limit the number of
-> workers (processes) that ought to be allocated on a system,
-> a workqueue that doesn't have a rescue worker attached,
-> has a tiny footprint compared to the connection as a whole:
-> A workqueue costs ~800 bytes, while an RDS/IB connection
-> totals ~5 MBytes.
+Conntrack bridge only tracks untagged and 802.1q.
 
-Still a workqueue per connection feels overkill. Have you considered
-moving to WQ_PERCPU for rds_wq? Why does not fit?
+To make the bridge-fastpath experience more similar to the
+forward-fastpath experience, introduce patches for double vlan,
+pppoe and pppoe-in-q tagged packets to bridge conntrack and to
+bridge filter chain.
 
-Thanks,
+Changes in v16:
 
-Paolo
+- Changed nft_chain_filter patch: Only help populating pktinfo offsets,
+   call nft_do_chain() with original network_offset.
+- Changed commit messages.
+- Removed kernel-doc comments.
+
+Changes in v15:
+
+- Do not munge skb->protocol.
+- Introduce nft_set_bridge_pktinfo() helper.
+- Introduce nf_ct_bridge_pre_inner() helper.
+- nf_ct_bridge_pre(): Don't trim on ph->hdr.length, only compare to what
+   ip header claims and return NF_ACCEPT if it does not match.
+- nf_ct_bridge_pre(): Renamed u32 data_len to pppoe_len.
+- nf_ct_bridge_pre(): Reset network_header only when ret == NF_ACCEPT.
+- nf_checksum(_partial)(): Use of skb_network_offset().
+- nf_checksum(_partial)(): Use 'if (WARN_ON()) return 0' instead.
+- nf_checksum(_partial)(): Added comments
+
+Changes in v14:
+
+- nf_checksum(_patial): Use DEBUG_NET_WARN_ON_ONCE(
+   !skb_pointer_if_linear()) instead of pskb_may_pull().
+- nft_do_chain_bridge: Added default case ph->proto is neither
+   ipv4 nor ipv6.
+- nft_do_chain_bridge: only reset network header when ret == NF_ACCEPT.
+
+Changes in v13:
+
+- Do not use pull/push before/after calling nf_conntrack_in() or
+   nft_do_chain().
+- Add patch to correct calculating checksum when skb->data !=
+   skb_network_header(skb).
+
+Changes in v12:
+
+- Only allow tracking this traffic when a conntrack zone is set.
+- nf_ct_bridge_pre(): skb pull/push without touching the checksum,
+   because the pull is always restored with push.
+- nft_do_chain_bridge(): handle the extra header similar to
+   nf_ct_bridge_pre(), using pull/push.
+
+Changes in v11:
+
+- nft_do_chain_bridge(): Proper readout of encapsulated proto.
+- nft_do_chain_bridge(): Use skb_set_network_header() instead of thoff.
+- removed test script, it is now in separate patch.
+
+v10 split from patch-set: bridge-fastpath and related improvements v9
+
+Eric Woudstra (3):
+  netfilter: utils: nf_checksum(_partial) correct data!=networkheader
+  netfilter: bridge: Add conntrack double vlan and pppoe
+  netfilter: nft_chain_filter: Add bridge double vlan and pppoe
+
+ net/bridge/netfilter/nf_conntrack_bridge.c | 92 ++++++++++++++++++----
+ net/netfilter/nft_chain_filter.c           | 58 +++++++++++++-
+ net/netfilter/utils.c                      | 28 +++++--
+ 3 files changed, 153 insertions(+), 25 deletions(-)
+
+-- 
+2.50.0
 
