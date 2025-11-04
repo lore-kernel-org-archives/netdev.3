@@ -1,52 +1,52 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752A920371E
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 01:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336720CCCA
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 01:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762218443; cv=none; b=CYFAalXuMndRsXKvcsDNeYMv9hEuaR+YRKxeYVDlrxafgGk+xr66rJkSYN9M30Fq5eHaK/6FZS4NrjDYfx5g9OiKiYjiDq2SpftIqaEoJRhNi0hUpu+gv8vu0hFAIfIx7SuDjNXNi/X3HSjIaGrHSnlabcNBW3U2tl+3pObyM1M=
+	t=1762218444; cv=none; b=pjGWK3sB6FdQCKndO4evT+Ptf7UM7GIChIvoBcBpkE+ZaHuNokX1RMM4D4s1r88I8xRXEYfm4OSoCSo34oTAsFDFeV/X4zzy7B8RHIWRRNmXB+TBaZHTcCauFA4DWIUGnQjz20rEwjptaFzPFO/7849jMmTL++N0Q2B7IbAWUgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762218443; c=relaxed/simple;
-	bh=vYXOfblKU6E/r5YF7kyNk+CDg83/W3BJmW47Puu9Y1c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ILALLpjxw7nrroesqRLtcB6qWM8dCtdss/Gu/D/+xiRbTA796QlFWddF5D/igZ+7ciztVLzOlUEsbWi7iAEtcXvWkcObE6i2c48UvaTRI2IU+knMKHG+EGZ/Ai7B0t2UmD2olpy2NbEq8Id+siUkCPH1xs7onnIAXIHuceH5yRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IPwx47Td; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1762218444; c=relaxed/simple;
+	bh=fXbu60cFBKrIJEcbeF4F/C66OFQIBm+e3I/RMERzBag=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IQYGa+eLHOoUI/nWvdZlIDY5GYUHnQbkhv2ANooeeUx6cBKuv2MldNge64vBAYtgEdLvbKswqtdmQQ6YDLD1LurWkz93DdMr9mro8tVlIJ+ybj6VYpOaAsfFfPyf/QyhueOzFwiK3S0UGr1EvWdnLZDLEhGVYqn91dZdJn3jwnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jISvvQKM; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IPwx47Td"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jISvvQKM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762218442; x=1793754442;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=vYXOfblKU6E/r5YF7kyNk+CDg83/W3BJmW47Puu9Y1c=;
-  b=IPwx47TdCrzYZ58YXWAu8zvAOs+Rzm8f34wBV1Cma6vlDq/h+7krG2+n
-   5OwDoBT+j0sziZdfBc65PUwBGbaerBXMFX24SjMiGjP5vSUg/0ECFzG6I
-   QHf8EU1WR/eJWfce6T+4vZrTLj7MOUdlfiJA/g6WAAJ0ZVMpYv0KD7W4M
-   mWbHcQP8P/1d4DPmdFVP0iXnaOIcWCBzZL/QuUyP9NTmcfmGDgfbdzIgb
-   zX/XPXecgBsUngo7ORzN3a/t1H8biUOPmE2BVRxpWmgO83U93Pxdn9LmL
-   p/AAtCWHhkkYpTN9JlVygx9INsA78F8BiU2OwY3hyn4fm+/T4DBB115Ss
-   w==;
-X-CSE-ConnectionGUID: Yq+H2qIGQFOIuc3/tdRcRg==
-X-CSE-MsgGUID: QOvW7o1eSj6spHvqkOE3hQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75656557"
+  t=1762218443; x=1793754443;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=fXbu60cFBKrIJEcbeF4F/C66OFQIBm+e3I/RMERzBag=;
+  b=jISvvQKM4Da5dHxn3A6P8q9qQ8EylNxcVMxVKvxMj7zHlfpcbyQmpWax
+   UtluvsceAdLLzxmT+6UTiX5LFdzoe4YeiWfVqLUDjRCwIsvrwLKNYA5Ou
+   ARhM6XZU5DxXmneERPmDY7zQFUbjovKnO52H0uC17VA0zcQq6Menug1u3
+   P2YZcAzO36AU+PE7kur9RU9iy00zvpGPv5B16k2ifF8gBovg+tn05DkFd
+   Lq4CYNzwJPHSZ96P8UtvxMy8/XiPi9wAFyAMV79wauY51H3G6vLKoyxsM
+   hU1L+xgXVvN6AHjv7K0y+8Ex+geQ5ristI8W+k0hGLPVkNp8G5e00svNl
+   Q==;
+X-CSE-ConnectionGUID: czDl23yHRwOajplp28qr9w==
+X-CSE-MsgGUID: JNh9QsmBQZqdXQWy85TqZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="75656560"
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="75656557"
+   d="scan'208";a="75656560"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 17:07:18 -0800
-X-CSE-ConnectionGUID: GXMhBiUnToy8XeyMgMBssQ==
-X-CSE-MsgGUID: J9Eq+1uwQ8OAuM2MpeaIlA==
+X-CSE-ConnectionGUID: llwJixHZTcyo2DAqPiHPRw==
+X-CSE-MsgGUID: DbsYCgsxTimwItY0g0wFjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="217828756"
+   d="scan'208";a="217828748"
 Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.90]) ([10.166.28.90])
   by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 17:07:15 -0800
 From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Mon, 03 Nov 2025 17:06:47 -0800
-Subject: [PATCH iwl-next 2/9] ice: use cacheline groups for ice_rx_ring
- structure
+Subject: [PATCH iwl-next 0/9] ice: properly use u64_stats API for all ring
+ stats
+Date: Mon, 03 Nov 2025 17:06:45 -0800
+Message-Id: <20251103-jk-refactor-queue-stats-v1-0-164d2ed859b6@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,9 +55,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251103-jk-refactor-queue-stats-v1-2-164d2ed859b6@intel.com>
-References: <20251103-jk-refactor-queue-stats-v1-0-164d2ed859b6@intel.com>
-In-Reply-To: <20251103-jk-refactor-queue-stats-v1-0-164d2ed859b6@intel.com>
+X-B4-Tracking: v=1; b=H4sIAKhRCWkC/4XNyw6CMBAF0F8hXTuG6YOHK//DuCh0kPoApQUxh
+ H+3YUVMiMubO/fMxBx1lhw7RBPraLDOtk0IuItYWevmQmBNyIzHXGGMCVxv0FGlS9928OqpJ3B
+ eewc5pRwLIUuKkYX1M1zZcZFPzL7v0NDo2Tk0tXVh/FleDrj0f/UBASFLc6WMpFyo4mgbT/d92
+ T4Wc+BrJ912eHCMJhKoBK8k/Tpi5fBs2xEQgxFpJTSXOink2pnn+Qv2oC8bWAEAAA==
+X-Change-ID: 20251016-jk-refactor-queue-stats-9e721b34ce01
 To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
  Alexander Lobakin <aleksander.lobakin@intel.com>, 
  Tony Nguyen <anthony.l.nguyen@intel.com>, 
@@ -65,169 +67,109 @@ To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
  Jacob Keller <jacob.e.keller@intel.com>
 X-Mailer: b4 0.15-dev-f4b34
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6485;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4788;
  i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=vYXOfblKU6E/r5YF7kyNk+CDg83/W3BJmW47Puu9Y1c=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkzOwAPd6p0eJbp2/63FnPalH0zb4rF8yWd2/aZHrD3HO
- KZKTZLuKGVhEONikBVTZFFwCFl53XhCmNYbZzmYOaxMIEMYuDgFYCL3zjAyvHRwz3HumLnzWXRf
- 2PZDlgIqyYvVDsorcfDNLr4hYrP3OyNDq9LFmS46tQ8figseLLkzZWvHykWMxokHpt7aaH0lpCe
- DEQA=
+ bh=fXbu60cFBKrIJEcbeF4F/C66OFQIBm+e3I/RMERzBag=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkzOwN3yX6WlFTk5nj5ru7frR9rdr7IePu1H21rW/RNWn
+ r8/OFmwo5SFQYyLQVZMkUXBIWTldeMJYVpvnOVg5rAygQxh4OIUgImccGL4zS6V3cDh9jqjXb2h
+ d6Hy+n+nXe8tMZCQslv8Pnfi0s3V2gz/NLaLCHbe/PFFOmblx/+TCu7sk+BcL/VBaNJ3b1vnyZu
+ lGQA=
 X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
  fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 
-The ice ring structure was reorganized back by commit 65124bbf980c ("ice:
-Reorganize tx_buf and ring structs"), and later split into a separate
-ice_rx_ring structure by commit e72bba21355d ("ice: split ice_ring onto
-Tx/Rx separate structs")
+The ice driver has multiple u64 values stored in the ring structures for
+each queue used for statistics. These are accumulated in
+ice_update_vsi_stats(). The packet and byte values are read using the
+u64_stats API from <linux/u64_stats_sync.h>.
 
-The ice_rx_ring structure has comments left over from this prior
-reorganization indicating which fields belong to which cachelines.
-Unfortunately, these comments are not all accurate. The intended layout is
-for x86_64 systems with a 64-byte cache.
+Several non-standard counters are also accumulated in the same function,
+but do not use the u64_stats API. This could result in load/store tears on
+32-bit architectures. Further, since commit 316580b69d0a ("u64_stats:
+provide u64_stats_t type"), the u64 stats API has had u64_stats_t and
+access functions which convert to local64_t on 64-bit architectures.
 
- * Cacheline 1 spans from the start of the struct to the end of the rx_fqes
-   and xdp_buf union. The comments correctly match this.
+The ice driver doesn't use u64_stats_t and these access functions. Thus
+even on 64-bit architectures it could read inconsistent values. This series
+refactors the ice driver to use the updated API. Along the way I noticed
+several other issues and inconsistencies which I have cleaned up,
+summarized below.
 
- * Cacheline 2 spans from hdr_fqes to the end of hdr_truesize, but the
-   comment indicates it should end xdp and xsk union.
+*) The driver never called u64_stats_init, leaving the syncp improperly
+   initialized. Since the field is part of a kzalloc block, this only
+   impacts 32-bit systens with CONFIG_LOCKDEP enabled.
 
- * Cacheline 3 spans from the truesize field to the xsk_pool, but the
-   comment wants this to be from the pkt_ctx down to the rcu head field.
+*) A few locations accessed the packets and byte counts directly without
+   using the u64 stats API.
 
- * Cacheline 4 spans from the rx_hdr_len down to the flags field, but the
-   comment indicates that it starts back at the ice_channel structure
-   pointer.
+*) The prev_pkt integer field is moved out of the stats structure and into
+   the ice_tx_ring structure directly.
 
- * Cacheline 5 is indicated to cover the xdp_rxq. Because this field is
-   aligned to 64 bytes, this is actually true. However, there is a large 45
-   byte gap at the end of cacheline 4.
+*) Cache line comments in ice_tx_ring and ice_rx_ring were out of date and
+   did not match the actual intended layout for systems with 64-bit cache
+   lines. Convert the structures to use __cacheline_group instead of
+   comments.
 
-The use of comments to indicate cachelines is poor design. In practice,
-comments like this quickly become outdated as developers add or remove
-fields, or as other sub-structures change layout and size unexpectedly.
+*) The ice_fetch_u64_stats_per_ring() function took the ice_q_stats by
+   value, defeating the point of using the u64_stats API entirely.
 
-The ice_rx_ring structure *is* 5 cachelines (320 bytes), but ends up having
-quite a lot of empty space at the end just before xdp_rxq.
+To keep the stats increments short, I introduced ice_stats_inc, as
+otherwise each stat increment has to be quite verbose. Similarly a few
+places read only one stat, so I added ice_stats_read for those.
 
-Replace the comments with __cacheline_group_(begin|end)_aligned()
-annotations. These macros enforce alignment to the start of cachelines, and
-enforce padding between groups, thus guaranteeing that a following group
-cannot be part of the same cacheline.
+This version uses struct ice_vsi_(tx|rx)_stats structures defined in
+ice_main.c for the accumulator. I haven't come up with a better solution
+that allows accumulating nicely without this structure. Its a bit
+frustrating as it copies the entries in the ring stats structures but with
+u64 instead of u64_stats_t.
 
-Doing this changes the layout by effectively spreading the padding at the
-tail of cacheline 4 between groups to ensure that the relevant fields are
-kept as separate cachelines on x86_64 systems. For systems with the
-expected cache line size of 64 bytes, the structure size does not change.
-For systems with a larger SMB_CACHE_BYTES size, the structure *will*
-increase in size a fair bit, however we'll now guarantee that each group is
-in a separate cacheline. This has an advantage that updates to fields in
-one group won't trigger cacheline eviction of the other groups. This comes
-at the expense of extra memory footprint for the rings.
+I am also still not entirely certain how the ice_update_vsi_ring_stats()
+function is synchronized in the ice driver. It is called from multiple
+places without an obvious synchronization mechanism. It is ultimately
+called from the service task and from ethtool, and I think it may also be
+called from one of the netdev stats callbacks.
 
-If fields get re-arranged, added, or removed, the alignment and padding
-ensure the relevant fields are kept on separate cache lines. This could
-result in unexpected changes in the structure size due to padding to keep
-cachelines separate.
+I'm open to suggestions on ways to improve this, as I think the result
+still has some ugly logic and a fair amount of near duplicate code.
 
-To catch such changes during early development, add build time compiler
-assertions that check the size of each group to ensure it doesn't exceed 64
-bytes, the expected cache line size. The assertion checks that the size of
-the group excluding any padding at the end is less than the provided size
-of 64 bytes. This type of check will behave the same even on architectures
-with larger cache sizes. The primary aim is to produce a warning if
-developers add fields into a cacheline group which exceeds the size of the
-expected 64 byte groupings.
+I have included the cacheline cleanup in ice_tx_ring and ice_rx_ring here,
+but that could arguably be split to its own series. I only noticed it
+because of attempting to move the prev_pkt field out of the ring stats. I
+replaced the comments with cacheline_group, but I did not make an attempt
+to optimize the existing cachelines. Probably we should experiment with the
+method used in idpf with the 'read-mostly', 'read-write' and 'cold'
+groupings, but doing so will require a more thorough deep dive on
+performance profiling and tuning.
 
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.h | 26 +++++++++++++++++++++-----
- drivers/net/ethernet/intel/ice/ice_main.c |  2 ++
- 2 files changed, 23 insertions(+), 5 deletions(-)
+Jacob Keller (9):
+      ice: initialize ring_stats->syncp
+      ice: use cacheline groups for ice_rx_ring structure
+      ice: use cacheline groups for ice_tx_ring structure
+      ice: move prev_pkt from ice_txq_stats to ice_tx_ring
+      ice: pass pointer to ice_fetch_u64_stats_per_ring
+      ice: remove ice_q_stats struct and use struct_group
+      ice: use u64_stats API to access pkts/bytes in dim sample
+      ice: shorten ring stat names and add accessors
+      ice: convert all ring stats to u64_stats_t
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index e440c55d9e9f..6c708caf3a91 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -236,7 +236,7 @@ struct ice_tstamp_ring {
- } ____cacheline_internodealigned_in_smp;
- 
- struct ice_rx_ring {
--	/* CL1 - 1st cacheline starts here */
-+	__cacheline_group_begin_aligned(cl1);
- 	void *desc;			/* Descriptor ring memory */
- 	struct page_pool *pp;
- 	struct net_device *netdev;	/* netdev ring maps to */
-@@ -253,8 +253,9 @@ struct ice_rx_ring {
- 		struct libeth_fqe *rx_fqes;
- 		struct xdp_buff **xdp_buf;
- 	};
-+	__cacheline_group_end_aligned(cl1);
- 
--	/* CL2 - 2nd cacheline starts here */
-+	__cacheline_group_begin_aligned(cl2);
- 	struct libeth_fqe *hdr_fqes;
- 	struct page_pool *hdr_pp;
- 
-@@ -262,8 +263,9 @@ struct ice_rx_ring {
- 		struct libeth_xdp_buff_stash xdp;
- 		struct libeth_xdp_buff *xsk;
- 	};
-+	__cacheline_group_end_aligned(cl2);
- 
--	/* CL3 - 3rd cacheline starts here */
-+	__cacheline_group_begin_aligned(cl3);
- 	union {
- 		struct ice_pkt_ctx pkt_ctx;
- 		struct {
-@@ -284,7 +286,9 @@ struct ice_rx_ring {
- 	struct ice_ring_stats *ring_stats;
- 
- 	struct rcu_head rcu;		/* to avoid race on free */
--	/* CL4 - 4th cacheline starts here */
-+	__cacheline_group_end_aligned(cl3);
-+
-+	__cacheline_group_begin_aligned(cl4);
- 	struct ice_channel *ch;
- 	struct ice_tx_ring *xdp_ring;
- 	struct ice_rx_ring *next;	/* pointer to next ring in q_vector */
-@@ -298,10 +302,22 @@ struct ice_rx_ring {
- #define ICE_RX_FLAGS_MULTIDEV		BIT(3)
- #define ICE_RX_FLAGS_RING_GCS		BIT(4)
- 	u8 flags;
--	/* CL5 - 5th cacheline starts here */
-+	__cacheline_group_end_aligned(cl4);
-+
-+	__cacheline_group_begin_aligned(cl5);
- 	struct xdp_rxq_info xdp_rxq;
-+	__cacheline_group_end_aligned(cl5);
- } ____cacheline_internodealigned_in_smp;
- 
-+static inline void ice_rx_ring_struct_check(void)
-+{
-+	CACHELINE_ASSERT_GROUP_SIZE(struct ice_rx_ring, cl1, 64);
-+	CACHELINE_ASSERT_GROUP_SIZE(struct ice_rx_ring, cl2, 64);
-+	CACHELINE_ASSERT_GROUP_SIZE(struct ice_rx_ring, cl3, 64);
-+	CACHELINE_ASSERT_GROUP_SIZE(struct ice_rx_ring, cl4, 64);
-+	CACHELINE_ASSERT_GROUP_SIZE(struct ice_rx_ring, cl5, 64);
-+}
-+
- struct ice_tx_ring {
- 	/* CL1 - 1st cacheline starts here */
- 	struct ice_tx_ring *next;	/* pointer to next ring in q_vector */
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index b16ede1f139d..4731dbaca9de 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5916,6 +5916,8 @@ static int __init ice_module_init(void)
- {
- 	int status = -ENOMEM;
- 
-+	ice_rx_ring_struct_check();
-+
- 	pr_info("%s\n", ice_driver_string);
- 	pr_info("%s\n", ice_copyright);
- 
+ drivers/net/ethernet/intel/ice/ice.h          |   3 -
+ drivers/net/ethernet/intel/ice/ice_lib.h      |   6 +
+ drivers/net/ethernet/intel/ice/ice_txrx.h     | 135 ++++++++++++-----
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h |   2 +-
+ drivers/net/ethernet/intel/ice/ice_base.c     |   4 +-
+ drivers/net/ethernet/intel/ice/ice_ethtool.c  |  30 ++--
+ drivers/net/ethernet/intel/ice/ice_lib.c      |  61 ++++++--
+ drivers/net/ethernet/intel/ice/ice_main.c     | 201 +++++++++++++++++---------
+ drivers/net/ethernet/intel/ice/ice_txrx.c     |  45 +++---
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c |   2 +-
+ drivers/net/ethernet/intel/ice/ice_xsk.c      |   4 +-
+ 11 files changed, 331 insertions(+), 162 deletions(-)
+---
+base-commit: 4601e382d0413867dbbb150d90e47352d7b0631e
+change-id: 20251016-jk-refactor-queue-stats-9e721b34ce01
 
--- 
-2.51.0.rc1.197.g6d975e95c9d7
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
