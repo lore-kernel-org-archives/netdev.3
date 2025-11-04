@@ -1,83 +1,46 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7E5337B9D
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 17:15:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECEE1A9FB6;
+	Tue,  4 Nov 2025 17:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762276518; cv=none; b=FySA2egTw4SsKI8IwLM0NJqPdodDcJ92jDAso1PNKGLr8KLZ54w7MXdunp/Cibv0oyMw6SpX6jeqWoYQ+ym6y6rjHf+jg/ARKYsXLUmoYojKPgsU1v7wIFrEmnYkcrGporeGMbirdO4I+ZdYhy9y6mH13fTRSKbCAet7h3Zckog=
+	t=1762276682; cv=none; b=n5e8NFPpe2XOPVylmUQ3g3GNQR/8OHHu/vEkUSuUeeoovHd3nu+iCY13f0mfXW52+a8xPW3vFHETFRn7i/IQA4NiF02LNca2fQaCBjqysT/FvXzbD9JBCWNWskLdCh7KPJRCGH98aNHOQ/6blAHUc31u+Ffd8WAPOB3kDRRwSxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762276518; c=relaxed/simple;
-	bh=qEZNNxTOUWj+zcg0vnAc1UvcumL4jCGCHAXCvkrxe+Q=;
+	s=arc-20240116; t=1762276682; c=relaxed/simple;
+	bh=TxxfLgNl0FPJeswrTvpsrQzjREOxZ088DQIYrzxnypI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UUcP3BS6RD7I+cER3lcSHqMj1i2dg+O2F9TTY5AU2Z4OejGGXimWrIVX4zGeuBblrYADOBxPPdfiq+UoKGTFC64RpB/+Al7VnI7uIw/eh/ODjkCn+voU7GaFhcX8DCNVa3L7+pYxLPq5UkDwSyGTsREzKBib0V54vNaKXIyjVa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mR2Id4A3; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7glesbsb+UqI8dwH5n0r0sgqo5Z+G3H8sKWNj7+sST4YlvZdlDPOnD3P5kVUE4SEyq44fyWUeGnNJn+S80m5WN6rSmNRESrZZyWXnNDi1zWQZH4f0Ho7L3nz3Z8HfFxlCtFSmRC8SzVzd1LbBjgMfspQJk/LCzx0BzUpKh0r6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fxW0ysot; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mR2Id4A3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762276516; x=1793812516;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qEZNNxTOUWj+zcg0vnAc1UvcumL4jCGCHAXCvkrxe+Q=;
-  b=mR2Id4A3ASvHV1R88oqCL49oYGGsQuFIlPepw+Z7qx4kHUPrWBvFrSEs
-   S9Iamydl2PiqzcwQqkCRHl9S6QWcPX3Tfo1aUsQq/0IvkmCfoQEKBT/ir
-   9O2Bvk7INI/d1UISptGIV0PnXrpQU1MMGc3Lg7SORLfa4IokMF3aiqphO
-   ghdRYEnb8cpqh+BcyCI6gdrkZN8hKalCGFrJNqyKyCKbsq+npjifD3kU6
-   ncUbqfmtKRvgkgb0K29fEsOKY405XNpDN3KHmjM35Hq6z2SaxGs1S7J8q
-   TMP9oyAYBsWARo7YwV4Xwph8PbtvsQLtO8EEMunHMQpZ7m8J1Pz21IMvx
-   w==;
-X-CSE-ConnectionGUID: l9SOWb1TSMihlGIr/C0dug==
-X-CSE-MsgGUID: rCbM94NxTNKyC+QwvzhGxQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="68238251"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="68238251"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 09:15:16 -0800
-X-CSE-ConnectionGUID: vztGA+NbS9W0gxtZ66LEGA==
-X-CSE-MsgGUID: CH5E/ovCS6KYtFe/WuZfFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="186896085"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 04 Nov 2025 09:15:07 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vGKbe-000Rf2-1U;
-	Tue, 04 Nov 2025 17:14:25 +0000
-Date: Wed, 5 Nov 2025 01:13:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Srujana Challa <schalla@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>, hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Manish Chopra <manishc@marvell.com>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] devlink: pass extack through to
- devlink_param::get()
-Message-ID: <202511050016.4uxLfNjG-lkp@intel.com>
-References: <20251103194554.3203178-2-daniel.zahka@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fxW0ysot"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1155C4CEF7;
+	Tue,  4 Nov 2025 17:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762276681;
+	bh=TxxfLgNl0FPJeswrTvpsrQzjREOxZ088DQIYrzxnypI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fxW0ysotaGh8nygHONMuKqbu0HDWzP8lAJp4ewtvAr2PoKsmMV5/6M6+0TYsTdWyo
+	 G4VX+cEnZyYTBL6SkDZ+jL7MaYQoKFdw2cXMDL7wlz4ft+N7cWoAByqNDqqvMnJLza
+	 Euw8Z5LVL77LnQgm51K01dDrhItCo3b4X+iS9Q/w6H1SZILs7soNnyryReWPIwkrUW
+	 ekdlZ4DW3w7glJIIKElqCmh5aKlnzeHCxD5lXFyelNfxJngvIDhmYGvDlOu8By6KG1
+	 IfGdrePwWVVWwDnGQ8/31wwAa2GjWV04k2gny5LiNId8wGLBxZ3M3yAiCWhWWK4N5q
+	 Grr5eBnNGeuJg==
+Date: Tue, 4 Nov 2025 17:17:56 +0000
+From: Simon Horman <horms@kernel.org>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	aleksander.lobakin@intel.com, bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Marek Landowski <marek.landowski@intel.com>
+Subject: Re: [PATCH net-next] idpf: add support for IDPF PCI programming
+ interface
+Message-ID: <aQo1RHrDkSxcQm9s@horms.kernel.org>
+References: <20251103224631.595527-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,32 +49,39 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251103194554.3203178-2-daniel.zahka@gmail.com>
+In-Reply-To: <20251103224631.595527-1-anthony.l.nguyen@intel.com>
 
-Hi Daniel,
+On Mon, Nov 03, 2025 at 02:46:30PM -0800, Tony Nguyen wrote:
+> From: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+> 
+> At present IDPF supports only 0x1452 and 0x145C as PF and VF device IDs
+> on our current generation hardware. Future hardware exposes a new set of
+> device IDs for each generation. To avoid adding a new device ID for each
+> generation and to make the driver forward and backward compatible,
+> make use of the IDPF PCI programming interface to load the driver.
+> 
+> Write and read the VF_ARQBAL mailbox register to find if the current
+> device is a PF or a VF.
+> 
+> PCI SIG allocated a new programming interface for the IDPF compliant
+> ethernet network controller devices. It can be found at:
+> https://members.pcisig.com/wg/PCI-SIG/document/20113
+> with the document titled as 'PCI Code and ID Assignment Revision 1.16'
+> or any latest revisions.
+> 
+> Tested this patch by doing a simple driver load/unload on Intel IPU E2000
+> hardware which supports 0x1452 and 0x145C device IDs and new hardware
+> which supports the IDPF PCI programming interface.
+> 
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
+> Signed-off-by: Madhu Chittim <madhu.chittim@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Tested-by: Marek Landowski <marek.landowski@intel.com>
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> ---
+> IWL: https://lore.kernel.org/intel-wired-lan/20250926184533.1872683-1-madhu.chittim@intel.com/
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-[auto build test WARNING on net-next/main]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Zahka/devlink-pass-extack-through-to-devlink_param-get/20251104-034818
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20251103194554.3203178-2-daniel.zahka%40gmail.com
-patch subject: [PATCH net-next v2 1/2] devlink: pass extack through to devlink_param::get()
-config: x86_64-rhel-9.4-bpf (https://download.01.org/0day-ci/archive/20251105/202511050016.4uxLfNjG-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251105/202511050016.4uxLfNjG-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511050016.4uxLfNjG-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: drivers/net/ethernet/intel/ice/devlink/devlink.c:618 function parameter 'extack' not described in 'ice_devlink_tx_sched_layers_get'
->> Warning: drivers/net/ethernet/intel/ice/devlink/devlink.c:1533 function parameter 'extack' not described in 'ice_devlink_local_fwd_get'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
