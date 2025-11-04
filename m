@@ -1,76 +1,76 @@
-Received: from mail-qv1-f99.google.com (mail-qv1-f99.google.com [209.85.219.99])
+Received: from mail-io1-f97.google.com (mail-io1-f97.google.com [209.85.166.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9E42116E9
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 00:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8555D1FE45D
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 00:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762217880; cv=none; b=WXA6+ERRQv8/L9LBM6zqakD4vHPwZVPw76xzZGa/vyhaxBjlt6aCe7Rl1/90xoOAllHP8qGZe3AMi4OfFLO3q1GWpEFCWKlqWUHLaq9egKUmoBWHHcFcP2PMO2zZKYcfDmfyJKcu5EdS59yHclriGZu9h7rnl1WDL10GGNjuIvI=
+	t=1762217881; cv=none; b=m4hwqWp+F9LgwppC674WmqQsVP8b3nGbVC5w16oPyOuSG2yLmOh5QSWBfkfPRzEvLB3krdi+cIp0g2iYfSbvYpLltv9r99PSmRgg79RW+DyrSWErHRNl9XMKBhzakB8S/I9C28qz99So/idZaE7TxBbW1jY6+R4pm2Gya8QlcoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762217880; c=relaxed/simple;
-	bh=8xaBscVDpFt+sAQOtKwD2Apdl4OBANbmuAnF2BsGJuI=;
+	s=arc-20240116; t=1762217881; c=relaxed/simple;
+	bh=R1xYcvg/3llc1kBkc4CRZ6s5Q7xZepna8XACbWOpdWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qt7zXoHvRHZ/0RKgl89dcoK25FwpCf1sygPVuKjaZYqORumxmi9ajdmMXm5svEK4m7AMPwp0y9WSK0mDhO3Eyp3FY2b3VOyPXNPrO/mPbkEog48b1v0uCYqi4QMbIH9Avz82QB0VTL04akRMQCcMz3wjvsZJQEm1XLuVKGyDY0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PtO545S9; arc=none smtp.client-ip=209.85.219.99
+	 MIME-Version; b=WW6j6Zj2DtpFtRIJPXs3QqD4giOVvxHk//wx6ft67m+3IxDuYGeGtqvQEXhYalYvDF83jKTnmo8yC+seiop+T14qBukYtjL6biFwQ9gv0CRJjsjTmJZy9+VYj5KpN7iR36HLWMrLF1XwoAq7c0x+Aekrw4E+jv2Km/oTaIY3qRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VUKEeSLR; arc=none smtp.client-ip=209.85.166.97
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PtO545S9"
-Received: by mail-qv1-f99.google.com with SMTP id 6a1803df08f44-8802b66c811so47503456d6.1
-        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 16:57:58 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VUKEeSLR"
+Received: by mail-io1-f97.google.com with SMTP id ca18e2360f4ac-94359aa7f60so444937539f.0
+        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 16:57:59 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1762217878; x=1762822678;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kji/k/ToSECiBeKuaoy8RCKaIjevC0gsTv8EdQc77UM=;
-        b=Fm/EtgN26T/OEU5FG2xb/HX1OOK9ixI9+muGQTX5oQyi+gD1taIdgXkDxRBIxX2L7L
-         YUKq/2olNgDUNA2nj/uBax1wwAW873I4jzJ53D3GCqrStljJF9W/ab0U1qS1QkRTjwxL
-         obFzCXzjZw4D/fw99x8NMyU4wQb+zc5XOdRg47JKSve7oGvketZEkoB+4US21rJS1/HB
-         YfUOXhuZFNe7+i5CKoAwb75VifXnpc7WZAR+XIc5cAezf1im202tiHinHxt/sVewmDv2
-         8FmWC0DfKsR9diCEHcIrtjjGHBWRdxw41P332ymeUD1idV5bU/kx2t8h7IvLM5Om0XDr
-         jwOA==
-X-Gm-Message-State: AOJu0Yz9HSiO1xMBEG4lzEBmRaLxP+BHr+t/zr3qajteSMBczgwUa3xm
-	RM6aT+9peVj2AfwD1tj4cDcP4E5A9j+ilUldNa4qJQbUJyp06hP0X+KyGpXOcdJcPBxcxGYvqLd
-	ISd9zBWXrjF2Knq8dIibBZ3AfEPx/pyQN8a8D1g91IARm9QfivoVs5iQoOcrddwrZFcGWe3Rqa9
-	U9BDJI9yVuh4CStrI/yIHsnaHhdokL3vVLy5vPVdkfUlfwVyDW68d7hAr+Lrc9BMEdhODDIomD3
-	0YVkarNLWc=
-X-Gm-Gg: ASbGnctqj8ldHbZPKBQxicfr2i1pFpx94yrXVy83Q6Pqo4XJ4F/lHxHt0N8c5jlTHuj
-	XUTiMNewSHD8ICVUoQdXxRbETTslggrxnzYFTbtNWxnnyH8KAeFvdJvaTp0v9l7WPwsR8pAgx7f
-	pvY5PLP2Wx44QPTdFySGoboA1dy2qti1Sn2nEoUyKQVc5bsADWgBRsHGX+2AolayyyBLQzVtgAo
-	mKrayS59jNmUaZOEuF2yYuRzmSXdIlOyKi8XWH7AsZXT3YL4uH0BtTUOZuKIGDLumZA2sSBnLYH
-	KMzl9LC5JepNCDaseSF9gZrus9rjkQMZUYrOsldk4Zp/PTugJ4k2E0cc7RnyQs4FPZE05BVH6rV
-	zY1wgrppGeOWgJAOH0cfeiOWeKgTcaVyVGSSJTm7xz7DZNNr/VF/3gEGolTIlZBKBcpq9858Z65
-	1dflGL/kYxZrYOzPc47uPRyJm85MOz9Y0YJQ==
-X-Google-Smtp-Source: AGHT+IG5bX8Gv4lq9mdwv9k8mmbgJGYeGuzQ01aDfgoLMavVRtpNpaLGn3eM+RjbR4OhaH0AK6YDfyTP2POk
-X-Received: by 2002:ad4:4ea8:0:b0:880:5714:cd2d with SMTP id 6a1803df08f44-8805714cf58mr75130536d6.60.1762217877867;
-        Mon, 03 Nov 2025 16:57:57 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-12.dlp.protect.broadcom.com. [144.49.247.12])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-88060da8b68sm1580506d6.4.2025.11.03.16.57.57
+        bh=kc+FcZJMoAbCnMi7CUmmGSGnd2VoGepgQij5fJuEJdw=;
+        b=f+/017cAwmEtHIvMjYmgBt+w2pSGx9dA8Nxv/p9YfWV2bUGjkLQUfhks2uTKN3GSxB
+         fIl/uN/dm2/+DLAwY2MlIEOX7lMWC82+5PbfMydIX/wLdBRr1QCPylNzl594/BBl3soX
+         O2ufxG5hADakqHnVOdLyj6nUdqcfB6S4MR4lu4ediGyCNy6mURRqoeIGQhpJOLzOoO0S
+         yb+h8HvlvxW9MYPUtmeCFdzHM9DNRGM7pdsg8o0EtO22vOMi5oaOAsikcHA8fD9RsXTh
+         RT02k3RAxh9F6an1ZsH+FI5882p9bFScDN9rwc/lFvZUvU4x2TYifGdeZcM6cNGLjIfr
+         JEzg==
+X-Gm-Message-State: AOJu0YwwjMpTIvQ9Q7dANOn63AaCqo5Ikx85wXso/IXLsZN8mZ7SobjO
+	tUOGV7OznPEr+3DyXES75ECgF+gRibyQNP/GTNm+e2iqaqvdJp1AT60EQyLf8YcaPszZJriFF57
+	nqEtiCvwtnuvJXzSrPl2dcIqnX9w/8DmszQaQftVdkwRq7osp3lfUIocL3oYExSQ5qXrn/iFLfW
+	tceGL38KLz3c1JdsiJqXcNQhGdVhxBc6zdfF/nsp3JBM3uaKPu7rgFEV/Z1qvclOfqk8LzTQ5NA
+	z2KL7uo9M8=
+X-Gm-Gg: ASbGncsMyqmYKS2v5weSySAVzKTLq31z6RIf+7bqWhJYeHCueXJJ/LA9fCDRrAr3eyo
+	8rxcYS+l6u6t8p+SBd6899TP5hKQdpfX0dNgv2VkUffbfw6RNoS7dXXUXVOvi4efOU7hpG91bGD
+	e5MLK2cx1WG78APXr1EEyBl8qaArmwIItaPmWcLnYGUg39IIDsQeaNbmM4wVo0XEyYffoRKKl90
+	iTrTZaR4ah6Co9po2wspbzWAkdegWBqBZ2trMcMaeWEmhht9eeiz+2EUAxEFYrdGp9lK8FBqC64
+	XG5T3TKZ2nCKwpg8h/6vtbIhVQH7j5tdmIp3mpMi7EKkgy1T+0oZpxt4E/y1rQGGlQa6JI/d882
+	0zA63+t1oXGBPQ7dVTFTLv9kRSuNLL7KZQ7ZxOXRnHvpWc9HaV7IpxBgo6nsvj8M7zFl3iaBoid
+	ZWnanZeHjJyOAOnSccJgcMRGXP9sAmTMo=
+X-Google-Smtp-Source: AGHT+IHujFORrOEafbTWU5kr5lOTa6jwCG8CvgE923+N2zkSVtBSgN93YZW64j0En5vn2tjDbpYUxhPaOpUk
+X-Received: by 2002:a05:6e02:440d:10b0:433:209d:feee with SMTP id e9e14a558f8ab-433209e21a2mr147123965ab.13.1762217878515;
+        Mon, 03 Nov 2025 16:57:58 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id e9e14a558f8ab-43335a9019fsm1562945ab.1.2025.11.03.16.57.57
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 03 Nov 2025 16:57:57 -0800 (PST)
+        Mon, 03 Nov 2025 16:57:58 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b5535902495so3754646a12.0
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-781171fe1c5so4905697b3a.0
         for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 16:57:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1762217871; x=1762822671; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1762217876; x=1762822676; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Kji/k/ToSECiBeKuaoy8RCKaIjevC0gsTv8EdQc77UM=;
-        b=PtO545S9/aObyludQ09bDCgog4zpbs5/N9to+BeZS2G86QOWoq2RCmk0FYjo+X6DNK
-         qMnqInskqAEWm/DbDxdHDYptpqFcBe/W+5w6apPUAD4+aprSuLlfJd7pgfnXFstKZgGk
-         2mXtisF4hVJ7Txh66FjU5GxXi3WwhKTuJX/R8=
-X-Received: by 2002:a05:6a21:6da7:b0:344:97a7:8c62 with SMTP id adf61e73a8af0-348cb08f3c9mr20160234637.23.1762217870923;
-        Mon, 03 Nov 2025 16:57:50 -0800 (PST)
-X-Received: by 2002:a05:6a21:6da7:b0:344:97a7:8c62 with SMTP id adf61e73a8af0-348cb08f3c9mr20160207637.23.1762217870526;
-        Mon, 03 Nov 2025 16:57:50 -0800 (PST)
+        bh=kc+FcZJMoAbCnMi7CUmmGSGnd2VoGepgQij5fJuEJdw=;
+        b=VUKEeSLRyZdOSPastmYtr7c4OqUn73g58RLmIsZ62rE+90o47x7yjrqIsp5s1swzfA
+         dhnPLiTBMbBVvF9bOOV1asEOiZMKH01MDv3+/evw7V7jM7eTXLq0OJ74BzlRzxZ/i7/M
+         EE7sx5piSx2tNfphe72GIYW3bQHWGMLIptNrw=
+X-Received: by 2002:a05:6a21:99a1:b0:340:a205:681a with SMTP id adf61e73a8af0-348ca75c051mr17675324637.4.1762217876333;
+        Mon, 03 Nov 2025 16:57:56 -0800 (PST)
+X-Received: by 2002:a05:6a21:99a1:b0:340:a205:681a with SMTP id adf61e73a8af0-348ca75c051mr17675304637.4.1762217875938;
+        Mon, 03 Nov 2025 16:57:55 -0800 (PST)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341599f14bbsm2474553a91.13.2025.11.03.16.57.48
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341599f14bbsm2474553a91.13.2025.11.03.16.57.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 16:57:49 -0800 (PST)
+        Mon, 03 Nov 2025 16:57:55 -0800 (PST)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -80,11 +80,13 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
 	andrew.gospodarek@broadcom.com,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>
-Subject: [PATCH net 2/5] bnxt_en: Fix a possible memory leak in bnxt_ptp_init
-Date: Mon,  3 Nov 2025 16:56:56 -0800
-Message-ID: <20251104005700.542174-3-michael.chan@broadcom.com>
+	Shantiprasad Shettar <shantiprasad.shettar@broadcom.com>,
+	Mohammad Shuab Siddique <mohammad-shuab.siddique@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Subject: [PATCH net 5/5] bnxt_en: Fix warning in bnxt_dl_reload_down()
+Date: Mon,  3 Nov 2025 16:56:59 -0800
+Message-ID: <20251104005700.542174-6-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.45.4
 In-Reply-To: <20251104005700.542174-1-michael.chan@broadcom.com>
 References: <20251104005700.542174-1-michael.chan@broadcom.com>
@@ -97,37 +99,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Shantiprasad Shettar <shantiprasad.shettar@broadcom.com>
 
-In bnxt_ptp_init(), when ptp_clock_register() fails, the driver is
-not freeing the memory allocated for ptp_info->pin_config.  Fix it
-to unconditionally free ptp_info->pin_config in bnxt_ptp_free().
+The existing code calls bnxt_cancel_reservations() after
+bnxt_hwrm_func_drv_unrgtr() in bnxt_dl_reload_down().
+bnxt_cancel_reservations() calls the FW and it will always fail since
+the driver has already unregistered, triggering this warning:
 
-Fixes: caf3eedbcd8d ("bnxt_en: 1PPS support for 5750X family chips")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+bnxt_en 0000:0a:00.0 ens2np0: resc_qcaps failed
+
+Fix it by calling bnxt_clear_reservations() which will skip the
+unnecessary FW call since we have unregistered.
+
+Fixes: 228ea8c187d8 ("bnxt_en: implement devlink dev reload driver_reinit")
+Reviewed-by: Mohammad Shuab Siddique <mohammad-shuab.siddique@broadcom.com>
 Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shantiprasad Shettar <shantiprasad.shettar@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c         | 2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h         | 1 +
+ drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index db81cf6d5289..0abaa2bbe357 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -1051,9 +1051,9 @@ static void bnxt_ptp_free(struct bnxt *bp)
- 	if (ptp->ptp_clock) {
- 		ptp_clock_unregister(ptp->ptp_clock);
- 		ptp->ptp_clock = NULL;
--		kfree(ptp->ptp_info.pin_config);
--		ptp->ptp_info.pin_config = NULL;
- 	}
-+	kfree(ptp->ptp_info.pin_config);
-+	ptp->ptp_info.pin_config = NULL;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index c0e9caa1df73..a625e7c311dd 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12439,7 +12439,7 @@ static int bnxt_try_recover_fw(struct bnxt *bp)
+ 	return -ENODEV;
  }
  
- int bnxt_ptp_init(struct bnxt *bp)
+-static void bnxt_clear_reservations(struct bnxt *bp, bool fw_reset)
++void bnxt_clear_reservations(struct bnxt *bp, bool fw_reset)
+ {
+ 	struct bnxt_hw_resc *hw_resc = &bp->hw_resc;
+ 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 7df46a21dd18..3613a172483a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2941,6 +2941,7 @@ void bnxt_report_link(struct bnxt *bp);
+ int bnxt_update_link(struct bnxt *bp, bool chng_link_state);
+ int bnxt_hwrm_set_pause(struct bnxt *);
+ int bnxt_hwrm_set_link_setting(struct bnxt *, bool, bool);
++void bnxt_clear_reservations(struct bnxt *bp, bool fw_reset);
+ int bnxt_cancel_reservations(struct bnxt *bp, bool fw_reset);
+ int bnxt_hwrm_alloc_wol_fltr(struct bnxt *bp);
+ int bnxt_hwrm_free_wol_fltr(struct bnxt *bp);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+index 02961d93ed35..67ca02d84c97 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
+@@ -461,7 +461,7 @@ static int bnxt_dl_reload_down(struct devlink *dl, bool netns_change,
+ 			rtnl_unlock();
+ 			break;
+ 		}
+-		bnxt_cancel_reservations(bp, false);
++		bnxt_clear_reservations(bp, false);
+ 		bnxt_free_ctx_mem(bp, false);
+ 		break;
+ 	}
 -- 
 2.51.0
 
