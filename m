@@ -1,147 +1,117 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F51125228D
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 16:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0889333372E
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 16:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762273674; cv=none; b=E4lz9jCS+Msh/FpSX8tRhOmsFzgtX1tLX+KTWUHF16H/SmRfsK8uOr68/67CFH6Zbs+2fBT9i4GP6UgpfjsciVMmc4RJk9QtMQsXWQuubrdMyOvfPSUleZTZZgE5WeMmeQ33SYYqB7beoCfkiGs5Ago4uKeudPr1FqMDBJaml0A=
+	t=1762274535; cv=none; b=tsVn06a0AXd+Dvm1wDCzZERh+m8Y1nE4TlGOMh0UJfFMmCKZ5lyhQ8LhvbTG3sZqHStWbJFo3sVtm7Vwe9cgMFrrq5ayawHmbSpCyMGTJSKzZ9LZeMqQdqnxQbw60shERjoqxNsJUX6nTndWs7ObgAcpiebKRnUi2S+8WR9blAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762273674; c=relaxed/simple;
-	bh=Iayg8NfZD5P8SOlhFmx2l5GOCKjidJK2z3fPfNqfG/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bhc45hSoZTrQzXyJeOAVvfMcYfLr+mFPYLs4aDUW4XH7tVaea3MFVkpCPpsVuar8Ya6gHRSpKqvgidJAbYJHDemvxLouxSuguQMWfLy+IbwFHbC6kCY02CAbWePMf3M/VqW0Teo8zkBBMWrCGPoHKHmyOMG/0fM1qqGNNC7faq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIQxwXLH; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762274535; c=relaxed/simple;
+	bh=mo1b9l4bY6uG/Bg+NP+YlpbJo8eMD96kvJ+XbXF6mCA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lSzru4N2HsLAtRX7MLF84XOvxIxrANfPNwMRof90vXOPVZ2ZF9AIjbLtOiKMrShiXIIrtonQgyDWmumQiFmoiQChW5UJTc+0FC3vhXFUvjkxVbqWu07vPcFYZ0d/8etTwMiBod6A+KmNfzBx3kB0LZiST9pCv2JaRVedIp+Kv0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+nVKkoC; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=e4qbjBXr; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIQxwXLH"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-295ceaf8dacso22365105ad.0
-        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 08:27:52 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+nVKkoC";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="e4qbjBXr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762274531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iz6G9rKDATEjuxgyrnRx8l5fumymzofPum53hGum0Bw=;
+	b=Z+nVKkoCkY+4jOaluQ/1odZs1Vje0nDJ9BlC+I6PG1+MEeyD9dphJJLFoFCRUJgISVZ7PN
+	nVxOd6VdCaRftc5u7cO8xg5tYcEkQjDcPUyuoB86Rr1Iya4sHJON21z1f6vu+Xo3StHYk4
+	Ua4ds8nvVRqafSlX481b1InTW3vWgHQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-8rjLdnDXPzmflOUagfCsCw-1; Tue, 04 Nov 2025 11:42:10 -0500
+X-MC-Unique: 8rjLdnDXPzmflOUagfCsCw-1
+X-Mimecast-MFC-AGG-ID: 8rjLdnDXPzmflOUagfCsCw_1762274529
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-b7178ad1a7dso191036666b.1
+        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 08:42:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762273672; x=1762878472; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FVQvxU3MtJVRDiiE8O+W/LOs2kVr8LBYlBC4MjCsxUQ=;
-        b=BIQxwXLHjD6IwwIVs5NgzVhvLxz1g8zHJps6/koWDz1Pj+WaOu3Z6ntlV1Q6rOgwT3
-         B7gtQFjkE9JIdMG95hVH3XhTrYXtM9V6tZ/wMsKgJdgZTyu4AnbTtcDOFEYJnKhkQ+Ep
-         B8DzhsLFeQwWTy4uad1pAjJNuQ0rhqDw+t15x0TzgYDmt+PYfEbHZTXqtTxgvXloyVOE
-         m1tfYHHGtCQZ6kwiPCFUuTnMNPeXyTQnG1OgOLLtFlbGgTT8J7FeS95mTSbchtjKNMa2
-         uiiJnkn2IMLYm/ZBJak0x3DuECeP75M9e2QTvWtWtoijaa2EhDXU/RRej+/fla1UjvzE
-         1Wgw==
+        d=redhat.com; s=google; t=1762274529; x=1762879329; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iz6G9rKDATEjuxgyrnRx8l5fumymzofPum53hGum0Bw=;
+        b=e4qbjBXrjQRgtqNOkrSgFw0ZndzW2yJJRuAgt53155FRniNDdjdmmPRDYfAvWI/ZXc
+         5aQuz6ytZKqdP3/4nVv98+h0Odmpv3p8zB/x8Mm8ytaVnLhjgmAZ9mO4aPruPtgWvMqP
+         AsV11cJekVzdsJwx1tkpvtJGhH9kurP3qrjtd80xgY7RmyK0imEAxy3Mkdqihsn931li
+         esc7iFglqZo6LhmGtGs23seAm3vbt6kIN52Z3atR/REir+1Ge7o6VbNT/UQ+NnoGFROV
+         6lDsoPeoJtPvCldBSo+3QaeyBmoUsJfuY2Zbq0zr/BrVBv5ibImrOSN+VJo6zKZ31MD3
+         nkEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762273672; x=1762878472;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FVQvxU3MtJVRDiiE8O+W/LOs2kVr8LBYlBC4MjCsxUQ=;
-        b=c3Fjj3VEZg745MpCdHwv8yZobayQIwqbbKB7skHJK0oOoFRwktLQaKCfySCXgZKCw0
-         QpKJ88tiOB/71Jh4+opeP3BH3yT3/8MfVJOjOKdOciedCtu/zfeWxnJfcNCyuGvjI5gB
-         K5p7Q/qR/2GcDI+c8JeLtVLOKe6lVFOurmXFq1uHsKAMQvUsj5Om04ZMFQOF/5tUocA2
-         NoYKDFHY90ikCyr5gcqvuY+CbZjt744B9qPVPDfWhsOxHM/BwBneOuQWOp0lkXRhZZyZ
-         7eHUMjCR6Ae0fBHW6ohUWsZB2RpxhIvP8KoWKw9DjPMyGXTv38R5fC4c2NZHBWW9ipRd
-         buXw==
-X-Gm-Message-State: AOJu0YwfxYJ6JUEDDrd62HSxPAOvGD0Oiylao2Wg4bj2xTfQN3r6z9eh
-	BUDuEHKF05XKKTO6C6HGzK4g3WMlyIE+lAezBtBS5rO7wN3M15++FIaY3+TdTSwVIUg=
-X-Gm-Gg: ASbGncuYoY2mNGFKlqDYO9B6Y1m/StctZfoHnFJ88Cxt+yOMICgh3V8Z1YXyBxw6GaH
-	vJOQe6jX8xEoZF2oqJ/cGc8oGT1kXGGyZpjCf/4L3OF4js/3ytvd+xCwc9Q10Lz4rVxFl/yCsgz
-	7HLvT1AwyZK+wZPglooPc/myS81j8sPcdWKrx7uAMmHFWyjsbnV5VulW3Pw10Jxuf5VGOlZ3eaH
-	2cA3OsGfAXBdH91OqHtdylfhhDVxhJklAFoGpArYwh7l2BocFKly+/37zJPCnH8H9N2G6g+tcBL
-	ydhtbkfCwEJEwcCtqOe52aClWlnEHHQ5bVrmT4dmJnzanTHtXa0VTOKqHOt9UtfKooy6IZZZNnl
-	M96Itp1+x+g2bfLCtRbsJ7U6/P2lE4vUFaVInK8FtaOMjsQZNfWddyMcKaP/mBD5/4fy/IxZ6iD
-	yFVQALUoUZWupUgmoqluRtvcXaa0BojMeiNQ==
-X-Google-Smtp-Source: AGHT+IE+tm1Pucm5/HGHWovZCnFRu/Y24vGAaw/VJW9NpEiTU4uV1PLWEQs8K0DVb5/KKD1CgTDVoA==
-X-Received: by 2002:a17:903:2346:b0:295:7806:1d64 with SMTP id d9443c01a7336-2962ad3f167mr2644105ad.25.1762273672106;
-        Tue, 04 Nov 2025 08:27:52 -0800 (PST)
-Received: from localhost.localdomain ([157.51.49.57])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29601a5d181sm32380845ad.85.2025.11.04.08.27.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 08:27:51 -0800 (PST)
-From: Dharanitharan R <dharanitharan725@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	syzbot+b4d5d8faea6996fd@syzkaller.appspotmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Dharanitharan R <dharanitharan725@gmail.com>
-Subject: [PATCH] [PATCH] usb: rtl8150: Initialize buffers to fix KMSAN uninit-value in rtl8150_open
-Date: Tue,  4 Nov 2025 16:27:16 +0000
-Message-ID: <20251104162717.17785-1-dharanitharan725@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1762274529; x=1762879329;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iz6G9rKDATEjuxgyrnRx8l5fumymzofPum53hGum0Bw=;
+        b=IBzsuGdbnOj3ffryCVslK1BK65TfUepWG3eGbmfVcQ5hr24rAKLrNKrXZY+Tlzncuv
+         MpAheN+W3BSRaCHG9l+GSrxJZX6EVBtVKA6JBzLmlDSMMzoY8HXAQAAJsXgyVgRYynJB
+         CUqn2M76KQeUviwsD0KwUOwxtqdvyUJVD3X3KLGsg/mKlhePrrKhckx0mqapETYPywh9
+         ICpJHYNZhCCGlbuzzhIMN9WsAiXtGQlr6sl1eT9HTrkQMPYS2zNNXjuMAM0M9iUo8dQ2
+         g1CboOZHFfLCsdVsJ/IcGY78WNkDfw6DWfJCBdgSIWxVUMtsUTGcHjxZVoT8X0kg1FDQ
+         2cpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDr9xAfwoUtkrfIjKHhqCeM058ZC4e27KH6hAt7XOAjjR8N6QnW8odePsQikNAhiIibY3HW3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf6/SmL4PmUCrW5ANh75xbR1vYgV/k4kyz5cEVnB+Vs5+umu5X
+	FZKmuXWg4zJ5Pafcfa5BQZWgpBdGwW1tMV3N9ZV0bWyZrtqnobjg3Rjw1C/fn/57u+5I+CrjtG6
+	Oofkq9C0F/M6r/6GzDtUHUjZIlV91/GPeRfF3FziWGTdw5xCh9y3teeq4VLuS09dRaePuaB6UTk
+	K44qhoGbLVZP69va8pIZP5AP/iOLAmWjir
+X-Gm-Gg: ASbGnctQKLRnMEweiH5c6ZNryMbkqn00DBy/93jC/X0lQztrrGr6uGNawgThD3zRmdJ
+	sSg6qx3kvjB3w481he7yIEUdYatlgtKgt4x2QEhwJ8rVnEVnhlDtAxhG4TTODIn02Nu6V4Ihh8x
+	usJZL140wyGecfkFV0PCU7O1PC7v/Rq2jfJuAh/0ui2RO5tGDe4n9FAY7i
+X-Received: by 2002:a17:907:a45:b0:b6d:6026:58da with SMTP id a640c23a62f3a-b70704c3da9mr1767561166b.34.1762274529054;
+        Tue, 04 Nov 2025 08:42:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0vPTxs1SeWugV7im7EcI5VaBj9++S0r/jr40HykURiiY/bmOyrm8AGx0cUEymhUuvAEaV34kFForbL9L24ac=
+X-Received: by 2002:a17:907:a45:b0:b6d:6026:58da with SMTP id
+ a640c23a62f3a-b70704c3da9mr1767558866b.34.1762274528715; Tue, 04 Nov 2025
+ 08:42:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251028152856.1554948-1-nhudson@akamai.com> <881d2462-895c-4ee6-a530-957a8dbac072@lunn.ch>
+In-Reply-To: <881d2462-895c-4ee6-a530-957a8dbac072@lunn.ch>
+From: Lei Yang <leiyang@redhat.com>
+Date: Wed, 5 Nov 2025 00:41:31 +0800
+X-Gm-Features: AWmQ_bnmCkT7IJlhGjvwSkQoWY9AS8Yu1GUbwnZJ0xPFuRrPC-rjjG0NUx8Xc98
+Message-ID: <CAPpAL=yN9QLc2svWrtWutvjzXOCgKWLc9smh9RNPS1=hK_Ug8Q@mail.gmail.com>
+Subject: Re: [PATCH v2] vhost: add a new ioctl VHOST_GET_VRING_WORKER_INFO and
+ use in net.c
+To: Nick Hudson <nhudson@akamai.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Max Tottenham <mtottenh@akamai.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Lunn <andrew@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-KMSAN reported an uninitialized value use in rtl8150_open().
-Initialize rx_skb->data and intr_buff before submitting URBs to
-ensure memory is in a defined state.
+Tested this patch with virtio-net regression tests, everything works fine.
 
-Reported-by: syzbot+b4d5d8faea6996fd@syzkaller.appspotmail.com
-Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
----
- drivers/net/usb/rtl8150.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+Tested-by: Lei Yang <leiyang@redhat.com>
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 278e6cb6f4d9..f1a868f0032e 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -719,14 +719,15 @@ static netdev_tx_t rtl8150_start_xmit(struct sk_buff *skb,
- 
- static void set_carrier(struct net_device *netdev)
- {
--	rtl8150_t *dev = netdev_priv(netdev);
--	short tmp;
-+    rtl8150_t *dev = netdev_priv(netdev);
-+    short tmp;
- 
--	get_registers(dev, CSCR, 2, &tmp);
--	if (tmp & CSCR_LINK_STATUS)
--		netif_carrier_on(netdev);
--	else
--		netif_carrier_off(netdev);
-+    /* Only use tmp if get_registers() succeeds */
-+    if (!get_registers(dev, CSCR, 2, &tmp) &&
-+        (tmp & CSCR_LINK_STATUS))
-+        netif_carrier_on(netdev);
-+    else
-+        netif_carrier_off(netdev);
- }
- 
- static int rtl8150_open(struct net_device *netdev)
-@@ -741,6 +742,10 @@ static int rtl8150_open(struct net_device *netdev)
- 
- 	set_registers(dev, IDR, 6, netdev->dev_addr);
- 
-+	/* Fix: initialize memory before using it (KMSAN uninit-value) */
-+	memset(dev->rx_skb->data, 0, RTL8150_MTU);
-+	memset(dev->intr_buff, 0, INTBUFSIZE);
-+
- 	usb_fill_bulk_urb(dev->rx_urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
- 		      dev->rx_skb->data, RTL8150_MTU, read_bulk_callback, dev);
- 	if ((res = usb_submit_urb(dev->rx_urb, GFP_KERNEL))) {
-@@ -749,6 +754,7 @@ static int rtl8150_open(struct net_device *netdev)
- 		dev_warn(&netdev->dev, "rx_urb submit failed: %d\n", res);
- 		return res;
- 	}
-+
- 	usb_fill_int_urb(dev->intr_urb, dev->udev, usb_rcvintpipe(dev->udev, 3),
- 		     dev->intr_buff, INTBUFSIZE, intr_callback,
- 		     dev, dev->intr_interval);
-@@ -759,6 +765,7 @@ static int rtl8150_open(struct net_device *netdev)
- 		usb_kill_urb(dev->rx_urb);
- 		return res;
- 	}
-+
- 	enable_net_traffic(dev);
- 	set_carrier(netdev);
- 	netif_start_queue(netdev);
--- 
-2.43.0
+On Wed, Oct 29, 2025 at 5:14=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Tue, Oct 28, 2025 at 03:28:54PM +0000, Nick Hudson wrote:
+> > The vhost_net (and vhost_sock) drivers create worker tasks to handle
+> > the virtual queues. Provide a new ioctl VHOST_GET_VRING_WORKER_INFO tha=
+t
+> > can be used to determine the PID of these tasks so that, for example,
+> > they can be pinned to specific CPU(s).
+>
+> Could you add something about the lifetime of the PID. How do you know
+> the PID still belongs to the worker by the time you come to use it?
+>
+>         Andrew
+>
 
