@@ -1,218 +1,363 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from sonic301-20.consmr.mail.gq1.yahoo.com (sonic301-20.consmr.mail.gq1.yahoo.com [98.137.64.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18E629405
-	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 00:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861671A2C11
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 00:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.64.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762216050; cv=none; b=GJD4U7aHQ/DvUfMiPFA01Fo3DD7vktgw1ma2MRoOCco3kMVMAQBvpmOFuzqvDQSDRWIrLorH2YrkdyP3QVuCuQRLIsEQvDAR2hcKneZPiE86FjrtShznj3fiJDhTfkA/3Jnza8r92bo+dF2+ciYlPcm1JFnEYS1pSSDzYzDwlWc=
+	t=1762216149; cv=none; b=nEBmvno2MMNkNsigIwAoZwyA7dDX91TnLL2KzbbQt9Sy0Bflwiflk5lPy22dPuhBv7zkwO69HbF6oNt3mVMecuS6SK8hB9cSXJIom6AGn0A6ArCeCPl2ur5KDTvpAyApPV973N6tJSMqzdR2RCCGsf1NWW9gddEVeCfW7eSJHU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762216050; c=relaxed/simple;
-	bh=jFJzHcA+X8LkHNbuVmZxGh+3mvTDvWnafWb05x9a0Z4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t3lxahdGAwVjuo4Rbr3h/2CyIFmg3IjkTVkMdXFrmr4VSWmViNrHURbWubVSuX7FFPtsqQNFWVQR10wTP0pgWEiOn1lBkPr/jjJwBOyL0PfoTR/sU0JoMJaG7V292VMWss65K+lHqV123xjUZvMSVE/UHSH4d2hUEj0kvu0qTSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mkWur/qE; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762216149; c=relaxed/simple;
+	bh=CSy4MCBCDgb9fcvKRUTt7pLCtBnvGK72b9vwibFXUBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UnqQQ8kzi7zllY2VBQseh6etegcHHIxVyuqpPbS6EaIH8WP6A4UP0qc53JlnClb8Q4EU5WEp6mR43mi7qfIXtc0cEVS18Et5kzJczUoMRAtLuqx8jKl89E6HMVCGzCiL2d8O35iZV97gNe6Gvhk8dMTJbWLxg3K3moP+v/g6IKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=oiy0Us6x; arc=none smtp.client-ip=98.137.64.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mkWur/qE"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-429b72691b4so4439329f8f.3
-        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 16:27:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762216047; x=1762820847; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gQck65QFj/6B7pNqaZP0yviObfenPFAfFag69gzgWSo=;
-        b=mkWur/qERgkD/67+SiTi8r7cBzXNuICLynVJn8J3eMPRjoiv6smpYrnxSAiB3Y9ftX
-         OamsWzV20FIyZQt2+IWxPwPG+0m9eXBCg5nx48FtVIP4gjfCXhvq2ooDhkxXJDjAB8b5
-         y33w8wiFLYtrrBoZta4w2Pevsvfuius1UpM/UNPV7QHUNvWPst4jxyG3dNi5Rmlhgi1B
-         0uITt/UCdlG2gYix5q/NUJOlYGZ1caMAtcCgQCWZPUF/EJ0r7x+FGxgemJONnurCyPy2
-         wuMG4WfZT9zMy+0T8iEFlTWQ1rtgWPYTZYWb9O/5JO0arCkGxPM5b2OqTmcPwud7BeKA
-         VMhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762216047; x=1762820847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gQck65QFj/6B7pNqaZP0yviObfenPFAfFag69gzgWSo=;
-        b=RrkDb6VF47hlKbrJ6jhCokJXaZ0GUyuUtHv+trDkpZIkee2gu3lLc+0aHjC6HlMUFQ
-         YHzu+YOcyTqOGam4cksXDHxwVlMr87ggsWTWRzU5bDgWI4sJoa8dX/sd8YGZ12Mgm2jY
-         c5cz7F/lBmFFXjnsdbKuvbg5X/Uy0RoqWsAL0sRmRQfI61A7/AyFVyGzpRmzB+scLCMu
-         RcLrRep/UEkE8zFkB0PGLxhu9rPUAWVhvIKdYQtgWbD+JHk7aJ6ZhaLn1/eH+e1iUZRv
-         FfRla7zsx/ztFzezoG0wupDqCfyqegwIBEcCYAKy7U58McYb1lC2xoOxGRfOk7uieEmF
-         QMnA==
-X-Gm-Message-State: AOJu0Yypl+oBTdTnDUeJEqx50hRGLrSrxYolWqC2iZFlsq7+OsOI6yxa
-	uMhPt85icoABNAkHzoPAx+pnZ1veIUBQ7/cV3FAfL7g5D+M4S4nhpd4zVKI3AClfc1bVdmVj6AO
-	miGs4oLSS4t4X4pVARyDclN1rYBpZu3o=
-X-Gm-Gg: ASbGncs6qrbGp9G7IoOPWAtdZYQTbetOhk4aq9ErLEvcHbDhJ74JVI/jWp8vlw366K4
-	G0DkZ75+RiNCjIoz/drsQUQH0NfdS+iNCr9e0ExU54r0SwLRPhL9wqJrx066J8b7RTsQavUKwzl
-	DXzx/HWmcgv4q3nDdb8yQo47+KPDNFGfTm9ISKEghAYwT6fJcvKutqVqSi6T0CPyj0T9YfC42cR
-	5AdQtiBY2vuyrmHI4cj/Jtgn9Ntk6rlOFShJH15CNaFh6kx8OasVrotPGopCBtvIwKtC07iAE6q
-	Negz0eEAk0Ad6/b4/g==
-X-Google-Smtp-Source: AGHT+IHINJFxI6ttSS2G3JvNxWRiYzSBSX+EpNSmkNv0tXlndOM0zYE1jkJ8RYj/QYPZduubSYa187LokIMAsEyZC+k=
-X-Received: by 2002:a05:6000:2f86:b0:429:8daa:c6b4 with SMTP id
- ffacd0b85a97d-429bd6860d5mr10563325f8f.21.1762216046705; Mon, 03 Nov 2025
- 16:27:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="oiy0Us6x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762216147; bh=oaiUcUp5Hsi9n0Ln3TIg1v2DZX1b7caGKy5J5pPVByY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=oiy0Us6xJtfjF1P+YaDxDV2T/82q3QnDsfA78mLeHGmY0mSAEmOfXyJw9BPg110BewsYQgABrl4qAlUB1MGR6+H/ZO+6DUbFValN5sGecd66nSXFqIE7EAwZxrFtQ+NEUhhGGWjgopAnqYMTdxB7baeff7zVhS9RZ7ZdmfGb0CfYSjoJWR812GQ7xTvbFUAe2rP5WkpMp/BxD8nkA4KGQhP+wCgUGFYunxDQ3/cP8+/kSBC5TI6idXrLOhN3QZbFHNz8R3o5Y4yp7TYYxKX93fGKu4ILnySktwsZHB3roRzgSuEM2pU3MXa5RG12wbsrqXvQMhvzBAMz81L09dvuLA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1762216147; bh=Af0WqtdKCt45GlRMD6dcWr/V1b1h4euQrEfOCibnd7D=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=J3e3jhZlmgSVYZT42RwKTrAnliYAP1NSocNKRYMj0UMj+8Fi91v+5PrRXkWGObNVCtBXQCYvRmcbNO3trYsvlnvcYeN5jjSEk9zqKlchz9G1Uja6Hp6VG3td8Kx93mOy/EO33Z1BuBcCs3TfFtm/CdL23UKQphDJxRusuNU0wnap4lLXxEu0YB7d4YE6qfboXRaF1RsPLxE3QqyJ7y+q9VMr1kZ1jZeo5qncAD5edPE58ZGYgeNzYXTOsSbnjS4KeMMpT9O3dNtAiY6sjVaZxQX+y0njS7QozhDZ3QrysDZ+McaHtDt7vQjLuCJhkbdl1ZMiGZ2TPkm5tnmELcbDUQ==
+X-YMail-OSG: WZa_aNMVM1lLuzCHRR24nt36LWjfpCEArEKZQ8O8qEWkJnjlYfyPMYFbGTigfTt
+ L7LCK6dpnNk.mgRowWwQ.FT0COj5KX54XKkeo3Hx8_5lhr24RsKulvJ_DDkqUjKL6sFE35Vvr_Jo
+ c1J6HLCmsl6Oszqy4kO42kSeoBZS4FmHxQIy1GR88YCKbJNwiK8kSFsL6Px_QqUV1dox1OrxqBJL
+ qu_jOkUC095O1JaF5YNZNxj1ry5Vnej9G0JDsqRYGwC9pnwu8TBTtUtnfjR9DjCsVVLskGnMqFE6
+ nUhc99NRA8MoiWFxPJG.T3Uds_iJ0OfSurzveSkq759JSF2R0xbtTmzE.GUsaIb1Q9Cjb027g6Xm
+ KIby9JoW83oeLLT0ixbobszxqgiQMzJoAFC77BbXwAxPiZLvJzbpy0tbOmObLJT74JpnGd9bQ476
+ KVatrcYnb8kHnz8gmXi0wI_710gJniTtPpNH1s6UGAJ4jubZJs8FKrtHp.5hyBaB6b_qMIQRQWXx
+ ryMeQYW4YmuKU0f4ktKcmUCZbhLxnyXzW.6PZgwLrCF4aeeOoy402.1GsOn_8iUDToaIxBMcyMf4
+ jPujCnmNQLi2MQjNqoFsHwxfvobhD5z9xr3wuuOatHxygnuHOx9ePATFyqp7c_y03a8ZOqfMbpLD
+ 3nV1ABfud4XEUpuop7VUafi58A0Lu6JyvD0CK_Wcwe6DCQcUENMSsLvF7LVqIZQhsR1qEwzUUtrz
+ pOn7lRpKBjKqt2EvWGklued9KbPrtikaz7W4iUtLWVoLnz8MxJH39goX6SpR.k4Ntzniplg6nluO
+ 9HN7I89jwauy2PB4.BIZxeIJMEcZmINHXOI4OQ01BQnTEWpb8e7FjvJtb7tIu88LTLjyiiC__mCl
+ dG5_pBPC7tJLkWdG8z.qjahDueHHoZ4GEYSONldNFAmSMrQ041ER0Eq0CNBn7zpCyLIGxQ5Z3G.T
+ 17NDsHLCDU4gSoyaKHZC9.DzVO1GW3QNdWVp3eDelWOEIea7ihbNl7epAtKOZ1uz577Io7BsFwQE
+ vUW_Nufl0XG_QJkMUvO5kWyolz.X86QWkUWesy_gzpld6vtnzzkFaVDPOYddfJC1_39ZVi1bnqDR
+ ElBd8WWddUgEuKFfR6_C5rNBroWIFnSItZxSTRI4XZu8t4b_daWxSWwaMk1RhfVr03wMzPpahYRP
+ 7tfEJrU6TtSNctFmr8mOFJX5TAm9.Yc_qs8KhYN7pnUVRTcU7He7tOX7hIhpdZX31EFTway7sP8E
+ cEsmeLMMARaSAGgN6ooCfjyuRNls9xV2QZBayT5X3UoNu6uG9z_4jC5GghDpypl2vLLx.x2nFX5D
+ 3jqkQPRmrT1EJ078K1jwBOXSFWAlu_qvde0SKApy6s5L.Rb.pG5URLtXbYQ51HJIi_CGks1reWjd
+ rytwRPwuQTVYqY4jfIqQE7iUSYYeYaquido8So3Yq97YXW1dAwVfRVKdVQuJFBD1_obsSi4LoZKs
+ G_RCMKYCVIQRafJ9tU9sOkYGz9bl7mNM4mMDekHqfk0aDVX16XT3G4D7K3I1kAZBo.R.txjsdAV_
+ gzZSGn_4aJiU_Iwkvc_OfC1cQ5syRg5Fx2Skrr3TGrCSGuOShPa8UA2k9VQ6rzFWumLWVdilU8ZX
+ Rp2.il.htr647R9FVmJ3GGuIFQg3iLvxEU0NIoGAkye1cIe5z_IUKQ5PJ6NQZcJcYu6O6gcN27Fr
+ C.lhlHtlVUV5fcImHOR2xv3OjUAvL6trxNAanY2tuHAQe9bhCAWlJTQ00blDUr4dSkPhQjKB5SrN
+ KR8cimfQIv1GmDYypN2YokBhe7KwA4VCnasKS9WdkQeu2yACwjGFcNmD0ypys5DpW5.6P68VndHO
+ S7WSCbRrJmmEylIKowJfmyARDe4iCF4Myavy29RBdt6t7aYSvgNxw2g_Aj1UzpyLapozOwZHT1AK
+ Mc0FgtRvK_uaBYO6YuGRHRa9wuM_ZQWq9DvMknfwdeotl5GLzIljTCusWCNtVnyxon13L57tIM6A
+ FmofW0IMal9k.RsZnT0I4UoSUxbukUp72u88EvSjlm6N._Web2S8gp3pOE4gLv6LIneTYhbUPURk
+ TTd4bxgjjz98h4nSllp7B0NqWAYdQTUrsqitmQyZdFBc48_yWuMVOqZX.uUNtpZfFfH0ht1m6P.p
+ wtXPakW_vHWLLVwFsU5c0hqGXMu_.UV4hz6ZY0m82rmJTIK.3uBoBJJIS1VAGANzdQPugU9YP0bP
+ Swz.u5XlacqXfJ.VMKU1CM6NUViuSeklB1UegmKlHpQMGEbg0UwreVvBvfJ1gG07lN1hTeKssMv2
+ hZjVsFxnBugHpWoxZ2g--
+X-Sonic-MF: <adelodunolaoluwa@yahoo.com>
+X-Sonic-ID: 116530db-d01c-4738-89fb-a7218f6444b8
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.gq1.yahoo.com with HTTP; Tue, 4 Nov 2025 00:29:07 +0000
+Received: by hermes--production-bf1-58477f5468-2sh44 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID cfe9c5061b0e7e39df76b5fb6784a85a;
+          Tue, 04 Nov 2025 00:08:51 +0000 (UTC)
+Message-ID: <7a162b38-3ff8-4f97-aac3-4fe2ab50fe33@yahoo.com>
+Date: Tue, 4 Nov 2025 01:08:42 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <176218882404.2759873.8174527156326754449.stgit@ahduyck-xeon-server.home.arpa>
- <176218926115.2759873.9672365918256502904.stgit@ahduyck-xeon-server.home.arpa>
- <2fabbe4a-754d-40bb-ba10-48ef79df875c@lunn.ch> <CAKgT0UeiLjk=9Ogqy1NU-roz4U32HXHjVs8LqRKEdnPqYNcBjQ@mail.gmail.com>
- <9628b972-d11f-4517-97db-a4c3c288dbfa@lunn.ch>
-In-Reply-To: <9628b972-d11f-4517-97db-a4c3c288dbfa@lunn.ch>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Mon, 3 Nov 2025 16:26:50 -0800
-X-Gm-Features: AWmQ_bmc6oR3QdpiKUXUj3w2XuCIEQHLfOQFnSzSSWYqaEiUxnhoglGbiO3prIQ
-Message-ID: <CAKgT0UcxyBCZw3TV97EAXi1KQLCX=O+=4ATzR3xyLYFySQG1Sw@mail.gmail.com>
-Subject: Re: [net-next PATCH v2 09/11] fbnic: Add SW shim for MDIO interface
- to PMA/PMD and PCS
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, kernel-team@meta.com, 
-	andrew+netdev@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk, 
-	pabeni@redhat.com, davem@davemloft.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] selftests: af_unix: Add tests for ECONNRESET and EOF
+ semantics
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, linux-kernel-mentees@lists.linuxfoundation.org
+References: <20251101172230.10179-1-adelodunolaoluwa.ref@yahoo.com>
+ <20251101172230.10179-1-adelodunolaoluwa@yahoo.com>
+ <CAAVpQUDL1FB1nFYOZ6QuO+cGTqnpYNSaFtFD=YN742pyspe9ew@mail.gmail.com>
+Content-Language: en-US
+From: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+In-Reply-To: <CAAVpQUDL1FB1nFYOZ6QuO+cGTqnpYNSaFtFD=YN742pyspe9ew@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.24652 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Mon, Nov 3, 2025 at 1:49=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On 11/2/25 08:32, Kuniyuki Iwashima wrote:
+> On Sat, Nov 1, 2025 at 10:23 AM Sunday Adelodun
+> <adelodunolaoluwa@yahoo.com> wrote:
+>> Add selftests to verify and document Linux’s intended behaviour for
+>> UNIX domain sockets (SOCK_STREAM and SOCK_DGRAM) when a peer closes.
+>> The tests verify that:
+>>
+>>   1. SOCK_STREAM returns EOF when the peer closes normally.
+>>   2. SOCK_STREAM returns ECONNRESET if the peer closes with unread data.
+>>   3. SOCK_SEQPACKET returns EOF when the peer closes normally.
+>>   4. SOCK_SEQPACKET returns ECONNRESET if the peer closes with unread data.
+>>   5. SOCK_DGRAM does not return ECONNRESET when the peer closes.
+>>
+>> This follows up on review feedback suggesting a selftest to clarify
+>> Linux’s semantics.
+>>
+>> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+>> Signed-off-by: Sunday Adelodun <adelodunolaoluwa@yahoo.com>
+>> ---
+>>   tools/testing/selftests/net/af_unix/Makefile  |   1 +
+>>   .../selftests/net/af_unix/unix_connreset.c    | 179 ++++++++++++++++++
+>>   2 files changed, 180 insertions(+)
+>>   create mode 100644 tools/testing/selftests/net/af_unix/unix_connreset.c
+>>
+>> diff --git a/tools/testing/selftests/net/af_unix/Makefile b/tools/testing/selftests/net/af_unix/Makefile
+>> index de805cbbdf69..5826a8372451 100644
+>> --- a/tools/testing/selftests/net/af_unix/Makefile
+>> +++ b/tools/testing/selftests/net/af_unix/Makefile
+>> @@ -7,6 +7,7 @@ TEST_GEN_PROGS := \
+>>          scm_pidfd \
+>>          scm_rights \
+>>          unix_connect \
+>> +       unix_connreset \
+> patchwork caught this test is not added to .gitignore.
+> https://patchwork.kernel.org/project/netdevbpf/patch/20251101172230.10179-1-adelodunolaoluwa@yahoo.com/
 >
-> On Mon, Nov 03, 2025 at 12:18:38PM -0800, Alexander Duyck wrote:
-> > On Mon, Nov 3, 2025 at 10:59=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wr=
-ote:
-> > >
-> > > > The interface will consist of 2 PHYs each consisting of a PMA/PMD a=
-nd a PCS
-> > > > located at addresses 0 and 1.
-> > >
-> > > I'm missing a bit of architecture here.
-> > >
-> > > At least for speeds up to 10G, we have the MAC enumerate what it can
-> > > do, the PCS enumerates its capabilities, and we read the EERPOM of th=
-e
-> > > SFP to find out what it supports. From that, we can figure out the
-> > > subset of link modes which are supported, and configure the MAC and
-> > > PCS as required.
-> >
-> > The hardware we have is divisible with multiple entities running it
-> > parallel. It can be used as a single instance, or multiple. With our
-> > hardware we have 2 MACs that are sharing a single QSFP connection, but
-> > the hardware can in theory have 4 MACs sharing a QSFP-DD connection.
-> > The basic limitation is that underneath each MAC we can support at
-> > most 2 lanes of traffic, so just the Base-R/R2 modes. Effectively what
-> > we would end up with is the SFP PHY having to be chained behind the
-> > internal PHY if there is one. In the case of the CR/KR setups though
-> > we are usually just running straight from point-to-point with a few
-> > meter direct attach cable or internal backplane connection.
+> Could you add it to this file ?
 >
-> We need Russell to confirm, but i would expect the SFP driver will
-> enumerate the capabilities of the SFP and include all the -1, -2 and
-> -4 link modes. phylink will then call the pcs_validate, passing this
-> list of link modes. The PCS knows it only supports 1 or 2 lanes, so it
-> will remove all the -4 modes from the list. phylink will also pass the
-> list to the MAC driver, and it can remove any it does not support.
-
-In the drivers the limiting would be done based on the interface at
-the PCS level.  The way I added the 25G, 50G, and 100G features was
-based on the interface type, so that interface type would be what puts
-a limit on the number of lanes supported.
-
-In the actual hardware though the limiting factor is that the PMA/PMD
-is only 2 lanes. The PCS actually supports 4 lanes and is just being
-subdivided to only use 2 of them per MAC.
-
-> It also sounds like you need to ask the firmware about
-> provisioning. Does this instance have access to 1 or 2 lanes? That
-> could be done in either the PCS or the MAC? The .validate can then
-> remove even more link modes.
-
-The way the hardware is setup we always have 2 physical lanes. Where
-we need to decide on using one or two is dependent on which mode it is
-we are wanting to use in software and what our link partner supports.
-For example, on one of our test setups we just have a QSFP-DD loopback
-plug installed and we can configure for whatever we want and link up
-and talk to ourselves.
-
-That actually presents a number of challenges for us as the SFP driver
-currently doesn't understand CMIS, and again we are stuck having to
-emulate the I2C via the driver as it is hidden behind the FW
-interface. This is one of the reasons why we end up currently with the
-FW telling us what the expected link mode/AUI currently is.
-
-> > To
-> > support that we will need to have access to 2 PCS instances as the IP
-> > is divisible to support either 1 or 2 lanes through a single instance.
+> tools/testing/selftests/net/.gitignore
+Oh, thank you for this. will add it
 >
-> Another architecture question.... Should phylink know there are two
-> PCS instances? Or should it see just one? 802.3 defines registers for
-> lanes 0-3, sometimes 0-7, sometimes 0-9, and even 0-19. So a single
-> PCS should be enough for 2 lanes, or 4 lanes.
-
-I'm thinking the driver needs to know about one, but it needs access
-to the registers for both in order to be able to configure the
-multi-lane setup. The issue is that the IP was made so that the vendor
-registers for both lanes need to be configured identical for the 2
-lane modes in order to make the device work. That is why I thought I
-would go ahead and enable both lanes for now, while only connecting
-one of them to the driver.
-
-If we had multiple MACs both of the PCS lanes could have been used in
-parallel for the 1 lane setups, however since we only have one MAC it
-ends up running both lanes. Since that was the case I thought I would
-stick to what would have likely been the layout if we had multiple
-MACs which was to expose both lanes as separate PHYs, but only map the
-device on the first one. That said, if need be I could look at just
-remapping the PCS for the second lane as a MDIO_MMD_VEND1/2. I would
-just have to relocate the RSFEC registers for the second lane and the
-PCS vendor registers to that device.
-
-> > Then underneath that is an internal PCS PMA which I plan to merge in
-> > with the PMA/PMD I am representing here as the RSFEC registers are
-> > supposed to be a part of the PMA. Again with 2 lanes supported I need
-> > to access two instances of it for the R2 modes. Then underneath that
-> > we have the PMD which is configurable on a per-lane basis.
 >
-> There is already some support for pma configuration in pcs-xpcs. See
-> pcs-xpcs-nxp.c.
-
-I was dealing with different IP from different vendors so I didn't
-want to throw the PMD code in with the PCS code. I suppose I could do
-so though if that is what you are suggesting, I would essentially just
-be up-leveling it to the PMA interface.
-
-As it stood I was considering adding an MMD 8 interface to represent
-the PMA on the PCS since that would probably be closer to what we
-actually have going on where the PCS/FEC/PMA block on top is then
-talking to the PMA/PMD which is then doing the equalization and
-training before we send the data over the Direct Attach Copper cable.
-
-I had chosen the phydev route as it already had a good way of handling
-this. I was thinking the phydev could essentially become a fractional
-QSFP bus as it will likely be some time before we could even get
-support for a standard QSFP bus and CMIS upstream.
-
-> > The issue is that the firmware is managing the PMD underneath us. As a
-> > result we don't have full control of the link. One issue we are
-> > running into is that the FW will start training when it first gets a
-> > signal and it doesn't block the signal from getting to the PCS. The
-> > PCS will see the signal and immediately report the link as "up" if the
-> > quality is good enough. This results in us suddenly seeing the link
-> > flapping for about 2-3 seconds while the training is happening. So to
-> > prevent that from happening we are adding the phydev representing the
-> > PMD to delay the link up by the needed 4 seconds to prevent the link
-> > flap noise.
+>>   # end of TEST_GEN_PROGS
+>>
+>>   include ../../lib.mk
+>> diff --git a/tools/testing/selftests/net/af_unix/unix_connreset.c b/tools/testing/selftests/net/af_unix/unix_connreset.c
+>> new file mode 100644
+>> index 000000000000..6f43435d96e2
+>> --- /dev/null
+>> +++ b/tools/testing/selftests/net/af_unix/unix_connreset.c
+>> @@ -0,0 +1,179 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Selftest for AF_UNIX socket close and ECONNRESET behaviour.
+>> + *
+>> + * This test verifies:
+>> + *  1. SOCK_STREAM returns EOF when the peer closes normally.
+>> + *  2. SOCK_STREAM returns ECONNRESET if peer closes with unread data.
+>> + *  3. SOCK_SEQPACKET returns EOF when the peer closes normally.
+>> + *  4. SOCK_SEQPACKET returns ECONNRESET if the peer closes with unread data.
+>> + *  5. SOCK_DGRAM does not return ECONNRESET when the peer closes.
+>> + *
+>> + * These tests document the intended Linux behaviour.
+>> + *
+>> + */
+>> +
+>> +#define _GNU_SOURCE
+>> +#include <stdlib.h>
+>> +#include <string.h>
+>> +#include <fcntl.h>
+>> +#include <unistd.h>
+>> +#include <errno.h>
+>> +#include <sys/socket.h>
+>> +#include <sys/un.h>
+>> +#include "../../kselftest_harness.h"
+>> +
+>> +#define SOCK_PATH "/tmp/af_unix_connreset.sock"
+>> +
+>> +static void remove_socket_file(void)
+>> +{
+>> +       unlink(SOCK_PATH);
+>> +}
+>> +
+>> +FIXTURE(unix_sock)
+>> +{
+>> +       int server;
+>> +       int client;
+>> +       int child;
+>> +};
+>> +
+>> +FIXTURE_VARIANT(unix_sock)
+>> +{
+>> +       int socket_type;
+>> +       const char *name;
+>> +};
+>> +
+>> +/* Define variants: stream and datagram */
+> nit: outdated, maybe simply remove ?
+oh..skipped me.
+will do so.
 >
-> So it seems like you need to extend dw_xpcs_compat with a .get_state
-> callback. You can then have your own implementation which adds this 4
-> second delay, before chaining into xpcs_get_state() to return the true
-> state.
+>> +FIXTURE_VARIANT_ADD(unix_sock, stream) {
+>> +       .socket_type = SOCK_STREAM,
+>> +       .name = "SOCK_STREAM",
+>> +};
+>> +
+>> +FIXTURE_VARIANT_ADD(unix_sock, dgram) {
+>> +       .socket_type = SOCK_DGRAM,
+>> +       .name = "SOCK_DGRAM",
+>> +};
+>> +
+>> +FIXTURE_VARIANT_ADD(unix_sock, seqpacket) {
+>> +       .socket_type = SOCK_SEQPACKET,
+>> +       .name = "SOCK_SEQPACKET",
+>> +};
+>> +
+>> +FIXTURE_SETUP(unix_sock)
+>> +{
+>> +       struct sockaddr_un addr = {};
+>> +       int err;
+>> +
+>> +       addr.sun_family = AF_UNIX;
+>> +       strcpy(addr.sun_path, SOCK_PATH);
+>> +       remove_socket_file();
+>> +
+>> +       self->server = socket(AF_UNIX, variant->socket_type, 0);
+>> +       ASSERT_LT(-1, self->server);
+>> +
+>> +       err = bind(self->server, (struct sockaddr *)&addr, sizeof(addr));
+>> +       ASSERT_EQ(0, err);
+>> +
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET) {
+> patchwork caught mis-alignment here and other places.
+>
+> I'm using this for emacs, and other editors will have a similar config.
+>
+> (setq-default c-default-style "linux")
+>
+> You can check if lines are aligned properly by
+>
+> $ git show --format=email | ./scripts/checkpatch.pl
+>
+>
+>> +               err = listen(self->server, 1);
+>> +               ASSERT_EQ(0, err);
+>> +
+>> +               self->client = socket(AF_UNIX, variant->socket_type, 0);
+> Could you add SOCK_NONBLOCK here too ?
+This is noted
+>
+>> +               ASSERT_LT(-1, self->client);
+>> +
+>> +               err = connect(self->client, (struct sockaddr *)&addr, sizeof(addr));
+>> +               ASSERT_EQ(0, err);
+>> +
+>> +               self->child = accept(self->server, NULL, NULL);
+>> +               ASSERT_LT(-1, self->child);
+>> +       } else {
+>> +               /* Datagram: bind and connect only */
+>> +               self->client = socket(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK, 0);
+>> +               ASSERT_LT(-1, self->client);
+>> +
+>> +               err = connect(self->client, (struct sockaddr *)&addr, sizeof(addr));
+>> +               ASSERT_EQ(0, err);
+>> +       }
+>> +}
+>> +
+>> +FIXTURE_TEARDOWN(unix_sock)
+>> +{
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET)
+>> +               close(self->child);
+>> +
+>> +       close(self->client);
+>> +       close(self->server);
+>> +       remove_socket_file();
+>> +}
+>> +
+>> +/* Test 1: peer closes normally */
+>> +TEST_F(unix_sock, eof)
+>> +{
+>> +       char buf[16] = {};
+>> +       ssize_t n;
+>> +
+>> +       /* Peer closes normally */
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET)
+>> +               close(self->child);
+>> +       else
+>> +               close(self->server);
+>> +
+>> +       n = recv(self->client, buf, sizeof(buf), 0);
+>> +       TH_LOG("%s: recv=%zd errno=%d (%s)", variant->name, n, errno, strerror(errno));
+> errno is undefined if not set, and same for strerror(errno).
+>
+> Also, if ASSERT_XXX() below fails, the same information
+> (test case, errno) is logged.  So, TH_LOG() seems unnecessary.
+>
+> Maybe try modifying the condition below and see how the
+> assertion is logged.
+Oh..thank you. Didn't it through that way.
+I understand.
+I will remove the TH_LOG()'s
+>
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET) {
+>> +               ASSERT_EQ(0, n);
+>> +       } else {
+>> +               ASSERT_EQ(-1, n);
+>> +               ASSERT_EQ(EAGAIN, errno);
+>> +       }
+>> +}
+>> +
+>> +/* Test 2: peer closes with unread data */
+>> +TEST_F(unix_sock, reset_unread)
+>> +{
+>> +       char buf[16] = {};
+>> +       ssize_t n;
+>> +
+>> +       /* Send data that will remain unread by client */
+>> +       send(self->client, "hello", 5, 0);
+>> +       close(self->child);
+>> +
+>> +       n = recv(self->client, buf, sizeof(buf), 0);
+>> +       TH_LOG("%s: recv=%zd errno=%d (%s)", variant->name, n, errno, strerror(errno));
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET) {
+>> +               ASSERT_EQ(-1, n);
+>> +               ASSERT_EQ(ECONNRESET, errno);
+>> +       } else {
+>> +               ASSERT_EQ(-1, n);
+>> +               ASSERT_EQ(EAGAIN, errno);
+>> +       }
+>> +}
+>> +
+>> +/* Test 3: SOCK_DGRAM peer close */
+>> Now Test 2 and Test 3 look identical ;)
 
-Seems like I might need to plug something into the spot where
-xpcs_resolve_pma is called. The code as it stands now is just taking
-the interface and using that to determine the speed after checking the
-PCS for the link. I wonder if I should look at having this actually
-look at the PMA if there is one and then just determine the speed
-based on that.
+seems so, but the only difference is:
+
+close(self->child); is used in Test 2, while
+close(self->server); is used in Test 3.
+Maybe I should find a way to collapse Tests 2 and 3 (if statement might 
+work)
+
+I am just afraid the tests to run will reduce to 6 from 9 and we will have 6
+cases passed as against 7 as before.
+
+What do you think?
+
+>> Thanks!
+>>
+>> +TEST_F(unix_sock, dgram_reset)
+>> +{
+>> +       char buf[16] = {};
+>> +       ssize_t n;
+>> +
+>> +       send(self->client, "hello", 5, 0);
+>> +       close(self->server);
+>> +
+>> +       n = recv(self->client, buf, sizeof(buf), 0);
+>> +       TH_LOG("%s: recv=%zd errno=%d (%s)", variant->name, n, errno, strerror(errno));
+>> +       if (variant->socket_type == SOCK_STREAM ||
+>> +               variant->socket_type == SOCK_SEQPACKET) {
+>> +               ASSERT_EQ(-1, n);
+>> +               ASSERT_EQ(ECONNRESET, errno);
+>> +       } else {
+>> +               ASSERT_EQ(-1, n);
+>> +               ASSERT_EQ(EAGAIN, errno);
+>> +       }
+>> +}
+>> +
+>> +TEST_HARNESS_MAIN
+>> +
+>> --
+>> 2.43.0
+>>
+
