@@ -1,105 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324C9225760;
-	Tue,  4 Nov 2025 02:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FBE26B77B
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 03:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762224636; cv=none; b=r6hzHmsTyz66nFV5ZizfhQCrToaElDOMdgWU78V3jtPMliU4EiS5xaG4tJcbq9kW+r/uBtSmpu4ldSmOkQ1WlItP/zgyr6tyqtdzvZHKEwL9odWZFgVHD7kfN2R1y3LcyoUPkTRjhfNFQQt7yDj/ZWugrSoWYGG1/xt2elrV1hQ=
+	t=1762225762; cv=none; b=Uv8NOytzm4hVfCi/gYVdebtwXT+3bYixXF/ZyV2tWZgLKV0cYzJe3QI+2k+MlwMzWUc5Hz30Vf4vX08edOo/5BkImHU3UHdlVEgOSTAOYFwtbdZF6UMVeQ0j0jbCj2v0W5fna8ZRgDUw+0782ELu+Obrt2XhwDgP5uZOHaJ8zHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762224636; c=relaxed/simple;
-	bh=gMLTiVDDeg6deTR4aZhrgf5MUJq64OEEUKWPcufaXW4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jAVqgFbyqUmOWSirtbrSOlk5CNlyIsKLGR5UJqycosYxlazvrKs/i8KlntPhmpAU/VhJb4wDMDDseO2ASDaoNkeld9xeXMPiKkFp1gIRmedaSjjGpydnVdQhw0mRQiNpAyT7cn7R1iJA8cEwasWeV11SCOebZq3W3xH1tT8rcxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ao9jECMQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762225762; c=relaxed/simple;
+	bh=Xj9j19NUebfhCpN+tKuVusSgp1CaNz+6chYqy4FYeXk=;
+	h=MIME-Version:From:Date:Message-ID:Subject:Cc:Content-Type; b=I3OPFWp0Oht4zkh0SmSOr88wTeZ0udfKjJgoQs72P06HtBEflhq67aGu5KI3yZKh4H70to7lH+D9bPkvO82XcFAv9235ooXOaByZG4ywKq0GVRex/ZM+RKPGSReu4q5ZfWSBnN6wl3xaZXY3jX308yFCvWqxK/8OYCoHR8p2frg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYmuf2Qh; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ao9jECMQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8311C4CEE7;
-	Tue,  4 Nov 2025 02:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762224636;
-	bh=gMLTiVDDeg6deTR4aZhrgf5MUJq64OEEUKWPcufaXW4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ao9jECMQPICwDuz8L5cVaEfKrUlS5nz+j/tJRchAoWfWXnpzCc9sJVUZsfcWKhp3b
-	 6l276j5qgBkszzOCYwMauUB6XkctyH4VPfbU5UEqcnu0DtS5XF8f0vMP9PT70XBoaQ
-	 xpRk4TA57ywHW18zvif0bwmKEO9XgWZYWNzV1uCESSQEW+rAecYm0DJnGnDetXLSwm
-	 u4iFhoRca2D6W8DpHM50JBPOByk5tIS79C/GvPb398WLaIPKP7UCURSa3r622kSLfX
-	 fJ3ErUrF8KRuNwlcLE7LgZeE1iNwkUT1msXkviS/xJmAdR/UA+7mMNe1dagihD8hvp
-	 ONVEMgMK1RU2Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7112B3809A8D;
-	Tue,  4 Nov 2025 02:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYmuf2Qh"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3402942e79cso7111524a91.2
+        for <netdev@vger.kernel.org>; Mon, 03 Nov 2025 19:09:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762225759; x=1762830559; darn=vger.kernel.org;
+        h=cc:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DowcRCBqJVOn8qJbRYvE9kJyC1sCjtRI/WutxQvl+J8=;
+        b=EYmuf2QhbwyeYkHay6dTPfbMVXkjpy/wozX7oqRRLHD6M1qFBCZAVYFt1K7FbEpdLm
+         7hYCBDuEwPwo5/ivpX8WFxDOTzizcDR/Jr+2Kzw0A+rLsoYQ9Rrl0RBTV7eadSbu7Uvf
+         LT53roH6Q4BWOJ/Pt2PW/vGz0hjhkBCpA39fAGQNHedBmxhp6aHmpvq8tWU2sFNmzEEj
+         +2hka72XXCRJcY5j4mQNquZ4hQGQ3vO5K1+UxEnc0IlGZ0V0BDuwhVoWjO3NjLg2nSCC
+         PSSGfpbEMJo6V4XNpBn0dRE4f5QuWGZg5z5cr2fdZCJntPBVHZ1IOYrGVfhY9Z6QIAeH
+         0wqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762225759; x=1762830559;
+        h=cc:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DowcRCBqJVOn8qJbRYvE9kJyC1sCjtRI/WutxQvl+J8=;
+        b=For/MuP5weJQ2UK+u0bliL8GitfPT2l4IAj/8stW+Hu2rIWCNB5XF2cSD8JkfYtrFs
+         MRcEjQzVZrXL7rkjbpunrEVYm/dU3JvZxuyx5JNTukyez2pkhFnatdviBYaASTyhfiJ4
+         GwPr2K4pwmNgo2Omng8fP0ZjOmQt0TRBpWJAhNUMHfw4jdsQsVzmr8U1RrKiPZPeyUQ0
+         uijDv3ffd+Ucl62TD+BQ3vJjrXEjkGulqPzc/n1CyCGuCotBp5lFqtRJccawAQl8Hi5T
+         cGw7UUOXpz7x7I8lqpyggUtUO+ofLyWFa3O8Bv8KthD3011PxPr4/dkvzeea7VkKhKBw
+         DPTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVM425G9Fiq2EfQiR93XPsyt2M0qG/x9ie7wVRznVcQGQFkjQYmTg8bO9WlR7eolQLelNfB3aY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCiqxRiyFa6lCWUXkftRFuLtBdmqHKBSFoT+7EHgxchpkDFkK9
+	JDwEDyvQObkjhT+Pp60e++9QM+iskgHoUmqzJRGcRkbumTpOFuqlxx0t7J/hd4zLuXRPXyL7cWV
+	9VJuc5VFEtxjI9FMiZQWYICrkUIPJ8A8=
+X-Gm-Gg: ASbGncuC5Kzy0j3dx4dnDPkQ0e+IGVcoeissqjwW9BB4+rPc5i2LggYbWLLEDs0XstF
+	r0Y36bHRaffccPmPgkEXcaAAU6HzJ0+RiiklbjqIVmCGjMhX4W9jb+CiXnzotcw8n0iM5Kv2gIp
+	4k0QUVjjzjF65MkwVXwnsAvQpSpDv0FWnH4+2WbXC/tF4ryF+g27ZZDk3h4ExQpl/3YzDrwz148
+	Sa5NphTGiK/6dNoozGkBvyvOr/Y6Myk91+OqHJTVvdw3djVYo6TbNh9mGbpaodaOCRQgpij
+X-Received: by 2002:a17:90b:3fc3:b0:340:d1a1:af6d with SMTP id
+ 98e67ed59e1d1-340d1a1b159mt12839281a91.36.1762225759133; Mon, 03 Nov 2025
+ 19:09:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v8 0/4] ethtool: introduce PHY MSE diagnostics
- UAPI
- and drivers
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176222461025.2304280.9617758063205334203.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Nov 2025 02:50:10 +0000
-References: <20251027122801.982364-1-o.rempel@pengutronix.de>
-In-Reply-To: <20251027122801.982364-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, donald.hunter@gmail.com, corbet@lwn.net,
- hkallweit1@gmail.com, linux@armlinux.org.uk, kory.maincent@bootlin.com,
- maxime.chevallier@bootlin.com, nm@ti.com, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- UNGLinuxDriver@microchip.com, linux-doc@vger.kernel.org, mkubecek@suse.cz,
- roan@protonic.nl
+From: chuang <nashuiliang@gmail.com>
+Date: Tue, 4 Nov 2025 11:09:08 +0800
+X-Gm-Features: AWmQ_bmmVmspnWKkIAYsyL-35hEeKumbw1UYU3ULQnvMFIWT8QTjYME5xwgvfsA
+Message-ID: <CACueBy7yNo4jq4HbiLXn0ez14w8CUTtTpPHmpSB-Ou6jhhNypA@mail.gmail.com>
+Subject: [PATCH net] ipv4: route: Prevent rt_bind_exception() from rebinding
+ stale fnhe
+Cc: Chuang Wang <nashuiliang@gmail.com>, stable@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Networking <netdev@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+From 35dbc9abd8da820007391b707bd2c1a9c99ee67d Mon Sep 17 00:00:00 2001
+From: Chuang Wang <nashuiliang@gmail.com>
+Date: Tue, 4 Nov 2025 02:52:11 +0000
+Subject: [PATCH net] ipv4: route: Prevent rt_bind_exception() from rebinding
+ stale fnhe
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+A race condition exists between fnhe_remove_oldest() and
+rt_bind_exception() where a fnhe that is scheduled for removal can be
+rebound to a new dst.
 
-On Mon, 27 Oct 2025 13:27:57 +0100 you wrote:
-> changes v8:
-> - Drop capability bitfield support from UAPI
-> - Drop channel selection support from user space
-> - Kernel now returns all available channels automatically
-> - Add OA Technical Committee numbers (TC1 / TC12)
-> - Minor doc and type cleanups
-> changes v7:
-> - htmldoc fixes
-> changes v6:
-> - rework the code to use uint instead of u32/u64
-> - use bitset for flags
-> - use nest for each separate channel
-> changes v5:
-> - add struct phy_mse_snapshot and phy_mse_config to the documentation
-> changes v4:
-> - remove -ENETDOWN as expected error value for get_mse_config() and
->   get_mse_snapshot()
-> - fix htmldocs builds
-> - s/__ethtool-a-mse/--ethtool-a-mse
-> changes v3:
-> - add missing ETHTOOL_A_LINKSTATE_MSE_* yaml changes
-> changes v2:
-> - rebase on latest net-next
-> 
-> [...]
+The issue occurs when fnhe_remove_oldest() selects an fnhe (fnheX)
+for deletion, but before it can be flushed and freed via RCU,
+CPU 0 enters rt_bind_exception() and attempts to reuse the entry.
 
-Here is the summary with links:
-  - [net-next,v8,1/4] net: phy: introduce internal API for PHY MSE diagnostics
-    https://git.kernel.org/netdev/net-next/c/abcf6eef90c6
-  - [net-next,v8,2/4] ethtool: netlink: add ETHTOOL_MSG_MSE_GET and wire up PHY MSE access
-    https://git.kernel.org/netdev/net-next/c/e6e93fb01302
-  - [net-next,v8,3/4] net: phy: micrel: add MSE interface support for KSZ9477 family
-    https://git.kernel.org/netdev/net-next/c/335a9660e141
-  - [net-next,v8,4/4] net: phy: dp83td510: add MSE interface support for 10BASE-T1L
-    https://git.kernel.org/netdev/net-next/c/fd93ed77efe4
+CPU 0                             CPU 1
+__mkroute_output()
+  find_exception() [fnheX]
+                                  update_or_create_fnhe()
+                                    fnhe_remove_oldest() [fnheX]
+  rt_bind_exception() [bind dst]
+                                  RCU callback [fnheX freed, dst leak]
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+If rt_bind_exception() successfully binds fnheX to a new dst, the
+newly bound dst will never be properly freed because fnheX will
+soon be released by the RCU callback, leading to a permanent
+reference count leak on the old dst and the device.
 
+This issue manifests as a device reference count leak and a
+warning in dmesg when unregistering the net device:
 
+  unregister_netdevice: waiting for ethX to become free. Usage count = N
+
+Fix this race by clearing 'oldest->fnhe_daddr' before calling
+fnhe_flush_routes(). Since rt_bind_exception() checks this field,
+setting it to zero prevents the stale fnhe from being reused and
+bound to a new dst just before it is freed.
+
+Cc: stable@vger.kernel.org
+Fixes: 67d6d681e15b ("ipv4: make exception cache less predictible")
+Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+---
+ net/ipv4/route.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 6d27d3610c1c..b549d6a57307 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -607,6 +607,11 @@ static void fnhe_remove_oldest(struct
+fnhe_hash_bucket *hash)
+                        oldest_p = fnhe_p;
+                }
+        }
++
++       /* Clear oldest->fnhe_daddr to prevent this fnhe from being
++        * rebound with new dsts in rt_bind_exception().
++        */
++       oldest->fnhe_daddr = 0;
+        fnhe_flush_routes(oldest);
+        *oldest_p = oldest->fnhe_next;
+        kfree_rcu(oldest, rcu);
+--
