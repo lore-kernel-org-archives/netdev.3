@@ -1,289 +1,330 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7BA314A62;
-	Tue,  4 Nov 2025 10:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF69314A7F
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 10:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762251655; cv=none; b=o+h9UD9x+3g3kKkkhOQEBvCr44IiTp+rXfamtA4brV4OsEFqjWwzbd/floHnDf8rJypuFWqtMai//oWcy+gt1KczxEtpKShqExbDgu3B2JjVwLep91e24FRAz1kh+COt+bijtU1NdNwHsh2ag7stjJAFulYYPN3c3O7vuaObbfQ=
+	t=1762252061; cv=none; b=bHN1DoWTl1YwbdsmCpWswb6B26HbgSO3sC4uN3iOSAwXBQQZRz5hLqo85GAXfzf95NQUww+BeY4smYfS4IWJVHGpvfJNQxkxfbKJv6MvzlhRFPNhS6VoC8hIivtlzaOn68WYuKtiXY8vMiL+sx9YKD87A4KxnMUgvT8oC2r+Bfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762251655; c=relaxed/simple;
-	bh=A59m6WsH87WemzrxvkLBiH3gUMQmSkWhT9XCVMqntdE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NyphieQBdhqKDLJHHjfzblWWs6EnDaceEWTPBdsvMn4kMYgsxPjCgDjJX8qv45O+C+K/XekH8PEkst90ecLQDy1MhLGVGTpgSP/1XdplCjaY8XlFu+nEuch15m8V2Yrjk/F1zkKBhuz1nHQdbSOorF698QJsjzDsFe4tSbq9ixs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=mSzNT+Ag; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1762252061; c=relaxed/simple;
+	bh=PXwkPg6t9gZHTPHYFMBxi8xJdrgBYRM08StHpo40yRs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e6ogavbAdtC5JhS+5fZAaTJDBODndd8C4O8deCtDUmL1cuqKfpL17wPyk4Pr80r4RCXHzT1K85UnDoMfdUrZphA0kw+ggEcrFZcAUnYnwb4dNC7FmctHfk77NyP50+LYc6951Gt5QDQNPE2QNbN5Xq3n6XpSPuOTWdA3n2KvJ88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QqLEX14+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BLoCUK+x; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="mSzNT+Ag"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1762251652; x=1793787652;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=A59m6WsH87WemzrxvkLBiH3gUMQmSkWhT9XCVMqntdE=;
-  b=mSzNT+AgBxVrhcvXGUenbUUoci4ilXdZQ7EnA/yAGkxf7VVum/Z9YtJe
-   lASJzt6V/WmZTLrVZbB2UwoRhDGaI6LchGUc/0cudqqrSle91LHe/aeFC
-   TLEm5C5Rl5L4/bw94QPV77a0pT4ItXmDmXkTGFRdIuUWMh0H2ct7LDHnj
-   9Pnw5sl+80u+nnAyUH3LCbEe/LhwPYo3/gDNKdwgBIfg1JtxmNnzqRn0L
-   SKpTmD0CdUnCRN6jdmVpjIlYhy/cQmGBKaeBr3qBmwGozBcsHsxPyNyF2
-   /zCNPrSM4OvaJSmYfa9gu9t9l9LQPgnK7pGMVjSHFC0i1NoNgqNbbcWcw
-   A==;
-X-CSE-ConnectionGUID: 7WIhWbovRpGVq1y6Z5h2hQ==
-X-CSE-MsgGUID: QE6THeQ8QiyK0Bjo1b/vKg==
-X-IronPort-AV: E=Sophos;i="6.19,278,1754982000"; 
-   d="scan'208";a="215997397"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Nov 2025 03:20:50 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 4 Nov 2025 03:20:24 -0700
-Received: from che-ll-i17164.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 4 Nov 2025 03:20:20 -0700
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-To: <Parthiban.Veerasooran@microchip.com>, <piergiorgio.beruto@gmail.com>,
-	<andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Parthiban
- Veerasooran" <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next 1/2] net: phy: phy-c45: add OATC14 10BASE-T1S PHY cable diagnostic support
-Date: Tue, 4 Nov 2025 15:50:12 +0530
-Message-ID: <20251104102013.63967-2-parthiban.veerasooran@microchip.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251104102013.63967-1-parthiban.veerasooran@microchip.com>
-References: <20251104102013.63967-1-parthiban.veerasooran@microchip.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QqLEX14+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BLoCUK+x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762252058;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9BJHzXVXTqUYAlxMYc+x6/745b/YJuqB0StnnaDGEuM=;
+	b=QqLEX14+Arw9P7MXXee4iXBvxtaedbzB8Nw6Erg7M7MewUCDwZcgxAokacLY2MI1Lc+dSj
+	narHjl67aHkvJmT0HGETYt/5c7cW3kv5if16iOQktO5GqpShjasWqyhqfVWD0fDKdNUEh8
+	ZLLDnTVY44BedsqqG9Q4stMGGlIV91I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-FMs1uHEiOGmpUKM5jej81g-1; Tue, 04 Nov 2025 05:27:37 -0500
+X-MC-Unique: FMs1uHEiOGmpUKM5jej81g-1
+X-Mimecast-MFC-AGG-ID: FMs1uHEiOGmpUKM5jej81g_1762252056
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-477212937eeso37497525e9.2
+        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 02:27:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1762252056; x=1762856856; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9BJHzXVXTqUYAlxMYc+x6/745b/YJuqB0StnnaDGEuM=;
+        b=BLoCUK+xUR87ap72Vvb7y6KsDH3z1PvX6Mzd42Qdr+zdPTTXNi6RZ9iqf5Cv79tMBy
+         zurDWT4xAvCQz+xHct1lL3XxkjQiVV9/L4YHZJSuCVoQhFsDW1ZJEBiS8S7UYmkP2du4
+         qAGzsRB1cC54hvUzu/gPGAMZIn/MUA+b9gFMIxSF5M5uA1my/mEDqms9fzthgJ7p+8wU
+         646JeGSEjk8rrCIba+uOPhKn19yDyOiFulk4tEehUETrSry/VxzVEAYyZO8PaPd57y1u
+         7gfaep0TDq5/sugmb/vZPq+gmRIULmF7V9TXpVSBf2NOYV4p8IlaGgrwWl5rzdZljkee
+         tJ5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762252056; x=1762856856;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9BJHzXVXTqUYAlxMYc+x6/745b/YJuqB0StnnaDGEuM=;
+        b=dcsKKofmt+uJ1M68+ts5NNxOuLiA0hs36ArEreP3aD5SvjK1od0d++gcPskpl+U4m7
+         iys1KP9672yZjJftHUEcgvHnJYB1Q1RS7F3bHF047Bqy3yi/MEGNLASHQXob/F40RsTl
+         FvrVTpShmAQQ5LDnWpXT0NtvCYlMSPsCEJoMK79OcSGChso1tyrPcLQ+SAiq49ysnPQv
+         nLZvYh7DvEjWA9O5gwIyyP7o6+H9KV0EjxeqY/t1ufOFYqaakLAm4sptudHzqzTkMYuB
+         V2lZaLqNJ7AEC7aaGEBwedgcqyw27ZFPnElHZaHIzx10TuyCTqek6LH1LprCj2SUtMM4
+         yggQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV+/rC42LiO50HRcEyHp299/tdS2ZB3y4fnyseHdY4qA9xRHzeIePU1EbOQSyTPTG0ByaQoeL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQiV2e+Kv2Ex1xEF9JfOiL02eUQu5JUNiADtzfXxdVilAdw55F
+	NDO7I7T0XjMCNua/WhazmSjjeGO/Tjo0U7F6Bmoiy9C4lIwfhJfbgpGU2SOM7B1BtDZn3rX/327
+	aOobB1iz+Nh+TB+wBYgiD60aaG2oQ2uuQ08kjfiAYfP0rw57wYD8aX/Jj7w==
+X-Gm-Gg: ASbGnctyhzov3d7sMZl7TJ5f737cM6m69Ew8YaPVRkiN1hX+CdmvF1iSuo625UOBAy4
+	m0qhYLrCviHHGDfJznhlvdrvNNJKGjDnOLjWcRplDZdwpncMNEEg6tpzSxvJtQOctYquV2C1fvK
+	FOQo1cLqX9neXqq7iiWrHiO6gaSm7oRLIuLfp6ubyTk/lBHqGXf61T0oJhxEs8wbnjghjrmdDlm
+	F1F86AjNAIfJ0Zmr+WzdMJnzAO5mf77gyxZy2YXnn7MNMWQakSsdyh+tc3Yzasr68s5UUPCqLNV
+	fH3tmtGfB0P3gpwS7qd0AxAFduNdZHMx4uS/XOKI+9BFtHomqTWeSggpZbZ1atJTcrSvIh0OfDW
+	Pba6iclnb8pcTIj4v9pwA7r7Q46HSFdVLDHQWagqOUv4y
+X-Received: by 2002:a05:600c:1f0e:b0:46e:4704:b01e with SMTP id 5b1f17b1804b1-477305a24bcmr155433405e9.8.1762252056297;
+        Tue, 04 Nov 2025 02:27:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDIikHrNRel31D0YOz3lp7mI8RIh/7Fkt/R7xUHROdiwAly3TJjMPIf8hmo3m6Yoq37eLQaQ==
+X-Received: by 2002:a05:600c:1f0e:b0:46e:4704:b01e with SMTP id 5b1f17b1804b1-477305a24bcmr155432885e9.8.1762252055721;
+        Tue, 04 Nov 2025 02:27:35 -0800 (PST)
+Received: from ?IPV6:2a0d:3341:b8a2:8d10:2aab:5fa:9fa0:d7e6? ([2a0d:3341:b8a2:8d10:2aab:5fa:9fa0:d7e6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4773c48daa0sm210093085e9.3.2025.11.04.02.27.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Nov 2025 02:27:35 -0800 (PST)
+Message-ID: <f557c3eb-9177-4e4f-b46e-e83bf938e2b0@redhat.com>
+Date: Tue, 4 Nov 2025 11:27:32 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 04/15] quic: provide family ops for address
+ and protocol
+To: Xin Long <lucien.xin@gmail.com>, network dev <netdev@vger.kernel.org>,
+ quic@lists.linux.dev
+Cc: davem@davemloft.net, kuba@kernel.org, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Stefan Metzmacher <metze@samba.org>,
+ Moritz Buhl <mbuhl@openbsd.org>, Tyler Fanelli <tfanelli@redhat.com>,
+ Pengtao He <hepengtao@xiaomi.com>, Thomas Dreibholz <dreibh@simula.no>,
+ linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>,
+ Namjae Jeon <linkinjeon@kernel.org>, Paulo Alcantara <pc@manguebit.com>,
+ Tom Talpey <tom@talpey.com>, kernel-tls-handshake@lists.linux.dev,
+ Chuck Lever <chuck.lever@oracle.com>, Jeff Layton <jlayton@kernel.org>,
+ Benjamin Coddington <bcodding@redhat.com>, Steve Dickson
+ <steved@redhat.com>, Hannes Reinecke <hare@suse.de>,
+ Alexander Aring <aahringo@redhat.com>, David Howells <dhowells@redhat.com>,
+ Matthieu Baerts <matttbe@kernel.org>, John Ericson <mail@johnericson.me>,
+ Cong Wang <xiyou.wangcong@gmail.com>, "D . Wythe"
+ <alibuda@linux.alibaba.com>, Jason Baron <jbaron@akamai.com>,
+ illiliti <illiliti@protonmail.com>, Sabrina Dubroca <sd@queasysnail.net>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Daniel Stenberg <daniel@haxx.se>,
+ Andy Gospodarek <andrew.gospodarek@broadcom.com>
+References: <cover.1761748557.git.lucien.xin@gmail.com>
+ <204debefcf0329a04ecd03094eb4d428bf9a44f1.1761748557.git.lucien.xin@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <204debefcf0329a04ecd03094eb4d428bf9a44f1.1761748557.git.lucien.xin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support for Open Alliance TC14 (OATC14) 10BASE-T1S PHYs cable
-diagnostic feature.
+On 10/29/25 3:35 PM, Xin Long wrote:
+> +static int quic_v4_flow_route(struct sock *sk, union quic_addr *da, union quic_addr *sa,
+> +			      struct flowi *fl)
+> +{
+> +	struct flowi4 *fl4;
+> +	struct rtable *rt;
+> +
+> +	if (__sk_dst_check(sk, 0))
+> +		return 1;
+> +
+> +	memset(fl, 0x00, sizeof(*fl));
+> +	fl4 = &fl->u.ip4;
+> +	fl4->saddr = sa->v4.sin_addr.s_addr;
+> +	fl4->fl4_sport = sa->v4.sin_port;
+> +	fl4->daddr = da->v4.sin_addr.s_addr;
+> +	fl4->fl4_dport = da->v4.sin_port;
+> +	fl4->flowi4_proto = IPPROTO_UDP;
+> +	fl4->flowi4_oif = sk->sk_bound_dev_if;
+> +
+> +	fl4->flowi4_scope = ip_sock_rt_scope(sk);
+> +	fl4->flowi4_dscp = inet_sk_dscp(inet_sk(sk));
+> +
+> +	rt = ip_route_output_key(sock_net(sk), fl4);
+> +	if (IS_ERR(rt))
+> +		return PTR_ERR(rt);
+> +
+> +	if (!sa->v4.sin_family) {
 
-This patch implements:
-- genphy_c45_oatc14_cable_test_start() to initiate a cable test
-- genphy_c45_oatc14_cable_test_get_status() to retrieve test results
-- Helper function to map PHY cable test status to ethtool result codes
-- Function declarations and exports for use by PHY drivers
+The above check is strange. Any special reason to not use
+quic_v4_is_any_addr()?
 
-This enables ethtool to report ok, open, short, and undetectable cable
-conditions on OATC14 10Base-T1S PHYs.
+> +		sa->v4.sin_family = AF_INET;
+> +		sa->v4.sin_addr.s_addr = fl4->saddr;
+> +	}
+> +	sk_setup_caps(sk, &rt->dst);
+> +	return 0;
+> +}
+> +
+> +static int quic_v6_flow_route(struct sock *sk, union quic_addr *da, union quic_addr *sa,
+> +			      struct flowi *fl)
+> +{
+> +	struct ipv6_pinfo *np = inet6_sk(sk);
+> +	struct ip6_flowlabel *flowlabel;
+> +	struct dst_entry *dst;
+> +	struct flowi6 *fl6;
+> +
+> +	if (__sk_dst_check(sk, np->dst_cookie))
+> +		return 1;
+> +
+> +	memset(fl, 0x00, sizeof(*fl));
+> +	fl6 = &fl->u.ip6;
+> +	fl6->saddr = sa->v6.sin6_addr;
+> +	fl6->fl6_sport = sa->v6.sin6_port;
+> +	fl6->daddr = da->v6.sin6_addr;
+> +	fl6->fl6_dport = da->v6.sin6_port;
+> +	fl6->flowi6_proto = IPPROTO_UDP;
+> +	fl6->flowi6_oif = sk->sk_bound_dev_if;
+> +
+> +	if (inet6_test_bit(SNDFLOW, sk)) {
+> +		fl6->flowlabel = (da->v6.sin6_flowinfo & IPV6_FLOWINFO_MASK);
+> +		if (fl6->flowlabel & IPV6_FLOWLABEL_MASK) {
+> +			flowlabel = fl6_sock_lookup(sk, fl6->flowlabel);
+> +			if (IS_ERR(flowlabel))
+> +				return -EINVAL;
+> +			fl6_sock_release(flowlabel);
+> +		}
+> +	}
+> +
+> +	dst = ip6_dst_lookup_flow(sock_net(sk), sk, fl6, NULL);
+> +	if (IS_ERR(dst))
+> +		return PTR_ERR(dst);
+> +
+> +	if (!sa->v6.sin6_family) {
 
-Open Alliance TC14 10BASE-T1S Advanced Diagnostic PHY Features
-Specification ref:
-https://opensig.org/wp-content/uploads/2025/06/OPEN_Alliance_10BASE-T1S_Advanced_PHY_features_for-automotive_Ethernet_V2.1b.pdf
+(similar question here)
 
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
----
- drivers/net/phy/mdio-open-alliance.h |  36 ++++++++
- drivers/net/phy/phy-c45.c            | 122 +++++++++++++++++++++++++++
- include/linux/phy.h                  |   3 +
- 3 files changed, 161 insertions(+)
+[...]
+> +static int quic_v4_get_mtu_info(struct sk_buff *skb, u32 *info)
+> +{
+> +	struct icmphdr *hdr;
+> +
+> +	hdr = (struct icmphdr *)(skb_network_header(skb) - sizeof(struct icmphdr));
 
-diff --git a/drivers/net/phy/mdio-open-alliance.h b/drivers/net/phy/mdio-open-alliance.h
-index 931e14660d75..db302ff1f39a 100644
---- a/drivers/net/phy/mdio-open-alliance.h
-+++ b/drivers/net/phy/mdio-open-alliance.h
-@@ -43,4 +43,40 @@
- /* Version Identifiers */
- #define OATC14_IDM		0x0a00
- 
-+/*
-+ * Open Alliance TC14 (10BASE-T1S) - Advanced Diagnostic Features Registers
-+ *
-+ * Refer to the OPEN Alliance documentation:
-+ *   https://opensig.org/automotive-ethernet-specifications/
-+ *
-+ * Specification:
-+ *   "10BASE-T1S Advanced Diagnostic PHY Features"
-+ *   https://opensig.org/wp-content/uploads/2025/06/OPEN_Alliance_10BASE-T1S_Advanced_PHY_features_for-automotive_Ethernet_V2.1b.pdf
-+ */
-+/* Advanced Diagnostic Features Capability Register*/
-+#define MDIO_OATC14_ADFCAP		0xcc00
-+#define OATC14_ADFCAP_HDD_CAPABILITY	GENMASK(10, 8)
-+
-+/* Harness Defect Detection Register */
-+#define MDIO_OATC14_HDD			0xcc01
-+#define OATC14_HDD_CONTROL		BIT(15)
-+#define OATC14_HDD_READY		BIT(14)
-+#define OATC14_HDD_START_CONTROL	BIT(13)
-+#define OATC14_HDD_VALID		BIT(2)
-+#define OATC14_HDD_SHORT_OPEN_STATUS	GENMASK(1, 0)
-+
-+/* Bus Short/Open Status:
-+ * 0 0 - no fault; everything is ok. (Default)
-+ * 0 1 - detected as an open or missing termination(s)
-+ * 1 0 - detected as a short or extra termination(s)
-+ * 1 1 - fault but fault type not detectable. More details can be available by
-+ *       vender specific register if supported.
-+ */
-+enum oatc14_hdd_status {
-+	OATC14_HDD_STATUS_CABLE_OK,
-+	OATC14_HDD_STATUS_OPEN,
-+	OATC14_HDD_STATUS_SHORT,
-+	OATC14_HDD_STATUS_NOT_DETECTABLE,
-+};
-+
- #endif /* __MDIO_OPEN_ALLIANCE__ */
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 61670be0f095..6030023bf840 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -7,6 +7,7 @@
- #include <linux/mdio.h>
- #include <linux/mii.h>
- #include <linux/phy.h>
-+#include <linux/ethtool_netlink.h>
- 
- #include "mdio-open-alliance.h"
- #include "phylib-internal.h"
-@@ -1573,3 +1574,124 @@ int genphy_c45_ethtool_set_eee(struct phy_device *phydev,
- 	return ret;
- }
- EXPORT_SYMBOL(genphy_c45_ethtool_set_eee);
-+
-+/**
-+ * oatc14_cable_test_get_result_code - Convert hardware cable test status to
-+ *                                     ethtool result code.
-+ * @status: The hardware-reported cable test status
-+ *
-+ * This helper function maps the OATC14 HDD cable test status to the
-+ * corresponding ethtool cable test result code. It provides a translation
-+ * between the device-specific status values and the standardized ethtool
-+ * result codes.
-+ *
-+ * Return:
-+ * * ETHTOOL_A_CABLE_RESULT_CODE_OK          - Cable is OK
-+ * * ETHTOOL_A_CABLE_RESULT_CODE_OPEN        - Open circuit detected
-+ * * ETHTOOL_A_CABLE_RESULT_CODE_SAME_SHORT  - Short circuit detected
-+ * * ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC      - Status not detectable or invalid
-+ */
-+static int oatc14_cable_test_get_result_code(enum oatc14_hdd_status status)
-+{
-+	switch (status) {
-+	case OATC14_HDD_STATUS_CABLE_OK:
-+		return ETHTOOL_A_CABLE_RESULT_CODE_OK;
-+	case OATC14_HDD_STATUS_OPEN:
-+		return ETHTOOL_A_CABLE_RESULT_CODE_OPEN;
-+	case OATC14_HDD_STATUS_SHORT:
-+		return ETHTOOL_A_CABLE_RESULT_CODE_SAME_SHORT;
-+	case OATC14_HDD_STATUS_NOT_DETECTABLE:
-+	default:
-+		return ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC;
-+	}
-+}
-+
-+/**
-+ * genphy_c45_oatc14_cable_test_get_status - Get status of OATC14 10Base-T1S
-+ *                                           PHY cable test.
-+ * @phydev:   pointer to the PHY device structure
-+ * @finished: pointer to a boolean set true if the test is complete
-+ *
-+ * Retrieves the current status of the OATC14 10Base-T1S PHY cable test.
-+ * This function reads the OATC14 HDD register to determine whether the test
-+ * results are valid and whether the test has finished.
-+ *
-+ * If the test is complete, the function reports the cable test result via
-+ * the ethtool cable test interface using ethnl_cable_test_result(), and then
-+ * clears the test control bit in the PHY register to reset the test state.
-+ *
-+ * Return: 0 on success, or a negative error code on failure (e.g. register
-+ *         read/write error).
-+ */
-+int genphy_c45_oatc14_cable_test_get_status(struct phy_device *phydev,
-+					    bool *finished)
-+{
-+	int ret;
-+	u8 sts;
-+
-+	*finished = false;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_HDD);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!(ret & OATC14_HDD_VALID))
-+		return 0;
-+
-+	*finished = true;
-+
-+	sts = FIELD_GET(OATC14_HDD_SHORT_OPEN_STATUS, ret);
-+
-+	ret = ethnl_cable_test_result(phydev, ETHTOOL_A_CABLE_PAIR_A,
-+				      oatc14_cable_test_get_result_code(sts));
-+	if (ret)
-+		return ret;
-+
-+	return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
-+				  MDIO_OATC14_HDD, OATC14_HDD_CONTROL);
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_cable_test_get_status);
-+
-+/**
-+ * genphy_c45_oatc14_cable_test_start - Start a cable test on an OATC14
-+ *                                      10Base-T1S PHY.
-+ * @phydev: Pointer to the PHY device structure
-+ *
-+ * This function initiates a cable diagnostic test on a Clause 45 OATC14
-+ * 10Base-T1S capable PHY device. It first reads the PHY’s advanced diagnostic
-+ * capability register to check if High Definition Diagnostics (HDD) mode is
-+ * supported. If the PHY does not report HDD capability, cable testing is not
-+ * supported and the function returns -EOPNOTSUPP.
-+ *
-+ * For PHYs that support HDD, the function sets the appropriate control bits in
-+ * the OATC14_HDD register to enable and start the cable diagnostic test.
-+ *
-+ * Return:
-+ * * 0 on success
-+ * * -EOPNOTSUPP if the PHY does not support HDD capability
-+ * * A negative error code on I/O or register access failures
-+ */
-+int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_ADFCAP);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!(ret & OATC14_ADFCAP_HDD_CAPABILITY))
-+		return -EOPNOTSUPP;
-+
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_HDD,
-+			       OATC14_HDD_CONTROL);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_HDD);
-+	if (ret < 0)
-+		return ret;
-+
-+	return phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, MDIO_OATC14_HDD,
-+				OATC14_HDD_START_CONTROL);
-+}
-+EXPORT_SYMBOL(genphy_c45_oatc14_cable_test_start);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index e3474f03cbc1..36457879c677 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2251,6 +2251,9 @@ int genphy_c45_ethtool_get_eee(struct phy_device *phydev,
- int genphy_c45_ethtool_set_eee(struct phy_device *phydev,
- 			       struct ethtool_keee *data);
- int genphy_c45_an_config_eee_aneg(struct phy_device *phydev);
-+int genphy_c45_oatc14_cable_test_start(struct phy_device *phydev);
-+int genphy_c45_oatc14_cable_test_get_status(struct phy_device *phydev,
-+					    bool *finished);
- 
- /* The gen10g_* functions are the old Clause 45 stub */
- int gen10g_config_aneg(struct phy_device *phydev);
--- 
-2.34.1
+Noting the above relies on headers being already pulled in the linear
+part. Later patch will do skb_linarize(), but that looks overkill and
+should hit performance badly. Instead you should use pskb_may_pull() &&
+friends.
+
+> +	if (hdr->type == ICMP_DEST_UNREACH && hdr->code == ICMP_FRAG_NEEDED) {
+> +		*info = ntohs(hdr->un.frag.mtu);
+> +		return 0;
+> +	}
+> +
+> +	/* Defer other types' processing to UDP error handler. */
+> +	return 1;
+> +}
+> +
+> +static int quic_v6_get_mtu_info(struct sk_buff *skb, u32 *info)
+> +{
+> +	struct icmp6hdr *hdr;
+> +
+> +	hdr = (struct icmp6hdr *)(skb_network_header(skb) - sizeof(struct icmp6hdr));
+> +	if (hdr->icmp6_type == ICMPV6_PKT_TOOBIG) {
+> +		*info = ntohl(hdr->icmp6_mtu);
+> +		return 0;
+> +	}
+> +
+> +	/* Defer other types' processing to UDP error handler. */
+> +	return 1;
+> +}
+> +
+> +static u8 quic_v4_get_msg_ecn(struct sk_buff *skb)
+> +{
+> +	return (ip_hdr(skb)->tos & INET_ECN_MASK);
+> +}
+> +
+> +static u8 quic_v6_get_msg_ecn(struct sk_buff *skb)
+> +{
+> +	return (ipv6_get_dsfield(ipv6_hdr(skb)) & INET_ECN_MASK);
+> +}
+> +
+> +static int quic_v4_get_user_addr(struct sock *sk, union quic_addr *a, struct sockaddr *addr,
+> +				 int addr_len)
+> +{
+> +	u32 len = sizeof(struct sockaddr_in);
+> +
+> +	if (addr_len < len || addr->sa_family != AF_INET)
+> +		return 1;
+> +	if (ipv4_is_multicast(quic_addr(addr)->v4.sin_addr.s_addr))
+> +		return 1;
+> +	memcpy(a, addr, len);
+> +	return 0;
+> +}
+
+It looks like the above function is not used in this series?!? (well
+it's called by quic_get_user_addr() which in turn is unsed.
+
+Perhaps drop from here and add later as needed?
+
+Also the name sounds possibly misleading, I read it as it should copy
+data to user-space and return value could possibly be an errnum.
+
+> +static void quic_v4_get_pref_addr(struct sock *sk, union quic_addr *addr, u8 **pp, u32 *plen)
+> +{
+> +	u8 *p = *pp;
+> +
+> +	memcpy(&addr->v4.sin_addr, p, QUIC_ADDR4_LEN);
+> +	p += QUIC_ADDR4_LEN;
+> +	memcpy(&addr->v4.sin_port, p, QUIC_PORT_LEN);
+> +	p += QUIC_PORT_LEN;
+> +	addr->v4.sin_family = AF_INET;
+> +	/* Skip over IPv6 address and port, not used for AF_INET sockets. */
+> +	p += QUIC_ADDR6_LEN;
+> +	p += QUIC_PORT_LEN;
+> +
+> +	if (!addr->v4.sin_port || quic_v4_is_any_addr(addr) ||
+> +	    ipv4_is_multicast(addr->v4.sin_addr.s_addr))
+> +		memset(addr, 0, sizeof(*addr));
+> +	*plen -= (p - *pp);
+> +	*pp = p;
+> +}
+
+Similarly unused?
+
+> +static bool quic_v4_cmp_sk_addr(struct sock *sk, union quic_addr *a, union quic_addr *addr)
+> +{
+> +	if (a->v4.sin_port != addr->v4.sin_port)
+> +		return false;
+> +	if (a->v4.sin_family != addr->v4.sin_family)
+> +		return false;
+> +	if (a->v4.sin_addr.s_addr == htonl(INADDR_ANY) ||
+> +	    addr->v4.sin_addr.s_addr == htonl(INADDR_ANY))
+> +		return true;
+> +	return a->v4.sin_addr.s_addr == addr->v4.sin_addr.s_addr;
+> +}
+> +
+> +static bool quic_v6_cmp_sk_addr(struct sock *sk, union quic_addr *a, union quic_addr *addr)
+> +{
+> +	if (a->v4.sin_port != addr->v4.sin_port)
+> +		return false;
+> +
+> +	if (a->sa.sa_family == AF_INET && addr->sa.sa_family == AF_INET) {
+> +		if (a->v4.sin_addr.s_addr == htonl(INADDR_ANY) ||
+> +		    addr->v4.sin_addr.s_addr == htonl(INADDR_ANY))
+> +			return true;
+> +		return a->v4.sin_addr.s_addr == addr->v4.sin_addr.s_addr;
+> +	}
+> +
+> +	if (a->sa.sa_family != addr->sa.sa_family) {
+> +		if (ipv6_only_sock(sk))
+> +			return false;
+> +		if (a->sa.sa_family == AF_INET6 && ipv6_addr_any(&a->v6.sin6_addr))
+> +			return true;
+> +		if (a->sa.sa_family == AF_INET && addr->sa.sa_family == AF_INET6 &&
+
+Below this code assumes that sa_family is either AF_INET or AF_INET6. If
+such assumtion hold, you should use here, too. and drop the
+'addr->sa.sa_family == AF_INET6' condition.
+
+> +		    ipv6_addr_v4mapped(&addr->v6.sin6_addr) &&
+> +		    addr->v6.sin6_addr.s6_addr32[3] == a->v4.sin_addr.s_addr)
+> +			return true;
+> +		if (addr->sa.sa_family == AF_INET && a->sa.sa_family == AF_INET6 &&
+> +		    ipv6_addr_v4mapped(&a->v6.sin6_addr) &&
+> +		    a->v6.sin6_addr.s6_addr32[3] == addr->v4.sin_addr.s_addr)
+> +			return true;
+
+Nothing this branch does not handle the 'ipv6_addr_any(&addr->v6.sin6_addr)'
+
+/P
 
