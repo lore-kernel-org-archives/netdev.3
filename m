@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264C7239E88;
-	Tue,  4 Nov 2025 01:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599A472614;
+	Tue,  4 Nov 2025 01:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762220445; cv=none; b=hzyIJqe08PWNdpu31wTl1pu0V2SpUYJfo2PdSQjZGzs7tseUnEA6zOa20uZMPcKpQs9eD32I3/jzt2eYKLWl6v949pynKywcrJNUpis5b8++zFEMMoHesk9VQ8E361p+uHV2jG6UF3q+7lRW8zyRxjqd5IZzPVFViWpJLprj+7Y=
+	t=1762221031; cv=none; b=KR7qRbt7c8WZKZ0L7nyrAhFlXGsiCtcqzrMLQyyv2PL9pYaRHlFw5LNK/QtzwXfa3oWTcLM57j5thyjgTrWWOu24tci+KhoN5lUxp1gFeCE1Uh8wkQCiVcst5oVg9hIlnykJCnepNtf/QUNKAyxBgSQeGPvWQ/oED7FlRO1byig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762220445; c=relaxed/simple;
-	bh=73Pjjvc7WLzHbVCXATUaK9SpagUiN43X9DBPaZOQnz8=;
+	s=arc-20240116; t=1762221031; c=relaxed/simple;
+	bh=xyeWkEmQlljnPJHBF9+EF6BPKwFsQyNjI1lK2r9HxhA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IWag2ye+oVKSW4hGjp7aw0o1gKFh4CX3ugXlObmH1lKOQlPffrEAfYeJkdk0e1Xk0qB+8K5IZZkSf+UwK1cvEPquhx4G2RgnUM2IF53+I2nnYQGxB1zRpsqWx2IeoteRHfEjuOm1fMOh1entf403/7bYR6DTM46mLy4r9aTDBwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAUYiWRa; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tIPD/M4Lqut/Tjhzg/vj4xoZeq9r0OQHa/8fakL9ePEeNt5Rd/2Z0abk3idBSYRAntQ5s6sQua41KV+Q2wa8Z6F/oydQKAPAedi7e8zZ7iBpsFOATu7PmPa2MtQ6voj1jkMWxaQHWIUpae8EM1qayaSvoPUCZ2m+f+lno69GvUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhJzu+p/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAUYiWRa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5766C4CEE7;
-	Tue,  4 Nov 2025 01:40:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhJzu+p/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E434AC4CEE7;
+	Tue,  4 Nov 2025 01:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762220444;
-	bh=73Pjjvc7WLzHbVCXATUaK9SpagUiN43X9DBPaZOQnz8=;
+	s=k20201202; t=1762221030;
+	bh=xyeWkEmQlljnPJHBF9+EF6BPKwFsQyNjI1lK2r9HxhA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cAUYiWRao0KXIUiBqw3RkY9Eoy/14k8smbyWGvRTj5Y0JEnWquPNnhyzaBYmWoz9z
-	 BZkCyKQtBQtntxfrk+3UPBY5teQzupdaNxlQmwNpd7isk470pEE19ENU7jI41VDz+e
-	 2r3U7MWYAWH9/eQ+TB7YAG/Cvt6d/uzrGdsiykw33gHOeTE8SDQKOX630CAFXypzpW
-	 DGQAL1or8PHpu3iaUoym2+onJjbqcQp4MzkaYtXD5xEIIoyMciIyxxdkYC69xjdN9F
-	 Z1WLLagbwBTYoOthbq3gkfw6j3CxjNDgUWTOFXd3NM2H/GOddFvF2dqEVqeKNXyug+
-	 FYEXppXcrb9cw==
+	b=hhJzu+p/tRpudvXCM5qq4mUt329iyPbzFNwbtysQsOBoDStgsUXA4Zjy5NPvkh4NC
+	 FNOfOSFyjJCYdsUS+V37PbJZFpZ/zEITfUK1wZuX6BiVeflEYiOqVlp7MiBKdEMah1
+	 nJ2gnQbo5G2vHrxFuz1NCUKsce2/Cy8Lyf5JlmVSEWg/KfkxoxMTs5JX4qleVFrDAP
+	 Z9MpHaZDSGqM30BOsbU47uZJGA19ImzvEwrfN4PHdFw3iDJzHRLq85VABDjv6C39sI
+	 Wzu+M5VBHfNnpk3gIWtfffARBWsmSvwZRh1SvdzJW6YXpnua1FGAwHdGSUK4AcNRFb
+	 5IozqDiVcaTeg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BCD3809A8A;
-	Tue,  4 Nov 2025 01:40:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D923809A8A;
+	Tue,  4 Nov 2025 01:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] sctp: make sctp_transport_init() void
+Subject: Re: [PATCH] net: usb: qmi_wwan: initialize MAC header offset in
+ qmimux_rx_fixup
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176222041899.2285814.807865914343081273.git-patchwork-notify@kernel.org>
-Date: Tue, 04 Nov 2025 01:40:18 +0000
-References: <20251103023619.1025622-1-hehuiwen@kylinos.cn>
-In-Reply-To: <20251103023619.1025622-1-hehuiwen@kylinos.cn>
-To: Huiwen He <hehuiwen@kylinos.cn>
-Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <176222100525.2288210.7982486320595194051.git-patchwork-notify@kernel.org>
+Date: Tue, 04 Nov 2025 01:50:05 +0000
+References: <20251029075744.105113-1-qendrim.maxhuni@garderos.com>
+In-Reply-To: <20251029075744.105113-1-qendrim.maxhuni@garderos.com>
+To: None <qendrim.maxhuni@garderos.com>
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bjorn@mork.no, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  3 Nov 2025 10:36:19 +0800 you wrote:
-> sctp_transport_init() is static and never returns NULL. It is only
-> called by sctp_transport_new(), so change it to void and remove the
-> redundant return value check.
+On Wed, 29 Oct 2025 08:57:44 +0100 you wrote:
+> From: Qendrim Maxhuni <qendrim.maxhuni@garderos.com>
 > 
-> Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-> ---
-> Changes in v2:
-> - Remove the 'fail' label and its path as suggested by Xin Long.
-> - Link to v1: https://lore.kernel.org/all/20251101163656.585550-1-hehuiwen@kylinos.cn
+> Raw IP packets have no MAC header, leaving skb->mac_header uninitialized.
+> This can trigger kernel panics on ARM64 when xfrm or other subsystems
+> access the offset due to strict alignment checks.
+> 
+> Initialize the MAC header to prevent such crashes.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] sctp: make sctp_transport_init() void
-    https://git.kernel.org/netdev/net/c/59b20b15c112
+  - net: usb: qmi_wwan: initialize MAC header offset in qmimux_rx_fixup
+    https://git.kernel.org/netdev/net/c/e120f46768d9
 
 You are awesome, thank you!
 -- 
