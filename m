@@ -1,102 +1,131 @@
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74C42C11EC;
-	Tue,  4 Nov 2025 06:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3C58F7D
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 06:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762239019; cv=none; b=MQnJ7wM8qYLc+91FfHk0Gt2ZXbqmb0YnYuj3CQPmoYoLpjnE59KAwnto1YK0UDT4DhltUcuXne47LMHpqRlsPocQb62C7fRvINNUB5kZSLTHOsjh36Njoo3maKu2XDqvf4g0UUpa6jmK7hEqtLOFVHYpXiGyx4gmx/Vqa20BrB8=
+	t=1762239472; cv=none; b=X+ojbIVrHjl6mxUf/zvRnYugoxRut410pvtwrf6dss+g5x/UQrAgH4el8WdBEJxDTA9F1xjI4IPwcdnFyjl6g+CIMP830cO15EF4DGzNhaQRLcidw1tWsrJbrndQ8z1eKE0ddLAmb8SzjZ+JdFIwxaq4P3CrnooJuyBXHerr+/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762239019; c=relaxed/simple;
-	bh=3590HN+g5RX4oDq7ek2ZvmoAVN56lGJ+5FZuZi6407o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kW2XswtUPrcQN2Y1Sel8Plu9u62JxfvCHgRcVNCB50mJCy1isGYdOjhdHqVN5f7MIrHzc9/vOTjkKv4XdG8S5nejIjv+j2TjFCvj0s4edQCyAdQ7FdrV6Ykf+z66p0CJ4SdqJbfH79YOo7KorwUbMp9hmaWW164haV5HqDbeQDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d0zMS3Cgtz9sSm;
-	Tue,  4 Nov 2025 07:39:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id JVa3bC_JehNO; Tue,  4 Nov 2025 07:39:32 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d0zMS2Q1Zz9sSj;
-	Tue,  4 Nov 2025 07:39:32 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 409D08B76C;
-	Tue,  4 Nov 2025 07:39:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id CzfwR0aRXjyU; Tue,  4 Nov 2025 07:39:32 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AD5B78B763;
-	Tue,  4 Nov 2025 07:39:30 +0100 (CET)
-Message-ID: <01d89f24-8fca-4fc3-9f48-79e28b9663db@csgroup.eu>
-Date: Tue, 4 Nov 2025 07:39:30 +0100
+	s=arc-20240116; t=1762239472; c=relaxed/simple;
+	bh=H0akFcysYtoQMTq6SLErZbIYDBnSs6SR33JYqUBHGPs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ov1ee0vefTmaqd8XdX5gd/PjQwCRrcDyJCQXsRyVSGQkAkiZerdDhml2qGxxpe+9/F78HGKp5flvwm8x2lebXZzNs3t17oknpCIsj1BglGTbzwgBfB3KsSL7nwZC9nzfQzjNUmpLWX4HOaRXxCRfhGnWV2XTjNYwsDAlMRcrPxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=IdN+22Dp; arc=none smtp.client-ip=185.136.65.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="IdN+22Dp"
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20251104061727063a1bbb99000207bb
+        for <netdev@vger.kernel.org>;
+        Tue, 04 Nov 2025 07:17:27 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=kw0zFvKnv/CewtK+Xr1RXZdXV8kS1VzqX7ZfwO3TUrM=;
+ b=IdN+22DpJWY88axdQwz0mu8PUj/V4i4pB69VdJtAzZ5VAxWJfuYo9BW8Z9Y5ZVM1GDvwQh
+ sKfYs+dRda2STHlpTPto/AajshOdCBcEcUhz0rck5rnM1lDNUW59IPkVJNZ66P9rEipjosEv
+ pq30S83CgZeIUanJ1kHZ4vCDkMVh26nIFcFOntlTmz7NGiVCZQECWp9H6S7w3oMjWgbCZYRa
+ X3IOB7kYysx6alVzQi0qGZSK+LvpnAo9Tmp/XxI8ZhBPvFfuyF5TO5y+UypaUldu9VMSvZ4E
+ vyCkd5mdPpFPuD3gTDz0GB62fjNjqpHv0d4rwW9BZQ688H5fcFqNBSaA==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] selftests: net: local_termination: Wait for interfaces to come up
+Date: Tue,  4 Nov 2025 07:17:21 +0100
+Message-ID: <20251104061723.483301-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/10] uaccess: Add
- masked_user_{read/write}_access_begin
-To: Thomas Gleixner <tglx@linutronix.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Andre Almeida <andrealmeid@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>, Eric Dumazet
- <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <cover.1760529207.git.christophe.leroy@csgroup.eu>
- <a4ef0a8e1659805c60fafc8d3b073ecd08117241.1760529207.git.christophe.leroy@csgroup.eu>
- <87bjlyyiii.ffs@tglx>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <87bjlyyiii.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
+It seems that most of the tests prepare the interfaces once before the test
+run (setup_prepare()), rely on setup_wait() to wait for link and only then
+run the test(s).
 
-Le 22/10/2025 à 19:05, Thomas Gleixner a écrit :
-> On Fri, Oct 17 2025 at 12:20, Christophe Leroy wrote:
->> Allthough masked_user_access_begin() is to only be used when reading
->> data from user at the moment, introduce masked_user_read_access_begin()
->> and masked_user_write_access_begin() in order to match
->> user_read_access_begin() and user_write_access_begin().
->>
->> That means masked_user_read_access_begin() is used when user memory is
->> exclusively read during the window, masked_user_write_access_begin()
->> is used when user memory is exclusively writen during the window,
->> masked_user_access_begin() remains and is used when both reads and
->> writes are performed during the open window. Each of them is expected
->> to be terminated by the matching user_read_access_end(),
->> user_write_access_end() and user_access_end().
->>
->> Have them default to masked_user_access_begin() when they are
->> not defined.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> 
-> Can we please coordinate on that vs. the scoped_access() work as this
-> nicely collides all over the place?
+local_termination brings the physical interfaces down and up during test
+run but never wait for them to come up. If the auto-negotiation takes
+some seconds, first test packets are being lost, which leads to
+false-negative test results.
 
-Sure, I will rebase on top of your series.
+Use setup_wait_dev() after corresponding simple_if_init() on physical
+interfaces to make sure auto-negotiation has been completed and test
+packets will not be lost because of the race against link establishment.
 
-Once it is rebased, could you take the non powerpc patches in your tree ?
+The wait has to be done in each individual test because the interfaces
+have to be brough up first and only then we can wait for link (not
+individually, because they are expected to be looped in pairs).
 
-Thanks
-Christophe
+Fixes: 90b9566aa5cd3f ("selftests: forwarding: add a test for local_termination.sh")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ .../selftests/net/forwarding/local_termination.sh      | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index ecd34f364125c..369c8b2c1f4a2 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -430,6 +430,8 @@ standalone()
+ 	h1_create
+ 	h2_create
+ 	macvlan_create $h2
++	setup_wait_dev $h1
++	setup_wait_dev $h2
+ 
+ 	run_test $h1 $h2 $skip_ptp $no_unicast_flt "$h2"
+ 
+@@ -448,6 +450,8 @@ test_bridge()
+ 	bridge_create $vlan_filtering
+ 	simple_if_init br0 $H2_IPV4/24 $H2_IPV6/64
+ 	macvlan_create br0
++	setup_wait_dev $h1
++	setup_wait_dev $h2
+ 
+ 	run_test $h1 br0 $skip_ptp $no_unicast_flt \
+ 		"vlan_filtering=$vlan_filtering bridge"
+@@ -480,6 +484,8 @@ test_vlan()
+ 	h1_vlan_create
+ 	h2_vlan_create
+ 	macvlan_create $h2.100
++	setup_wait_dev $h1
++	setup_wait_dev $h2
+ 
+ 	run_test $h1.100 $h2.100 $skip_ptp $no_unicast_flt "VLAN upper"
+ 
+@@ -505,6 +511,8 @@ vlan_over_bridged_port()
+ 	h2_vlan_create
+ 	bridge_create $vlan_filtering
+ 	macvlan_create $h2.100
++	setup_wait_dev $h1
++	setup_wait_dev $h2
+ 
+ 	run_test $h1.100 $h2.100 $skip_ptp $no_unicast_flt \
+ 		"VLAN over vlan_filtering=$vlan_filtering bridged port"
+@@ -536,6 +544,8 @@ vlan_over_bridge()
+ 	simple_if_init br0
+ 	vlan_create br0 100 vbr0 $H2_IPV4/24 $H2_IPV6/64
+ 	macvlan_create br0.100
++	setup_wait_dev $h1
++	setup_wait_dev $h2
+ 
+ 	if [ $vlan_filtering = 1 ]; then
+ 		bridge vlan add dev $h2 vid 100 master
+-- 
+2.51.1
+
