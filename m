@@ -1,104 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363CA230BD5;
-	Tue,  4 Nov 2025 14:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E0524679F
+	for <netdev@vger.kernel.org>; Tue,  4 Nov 2025 14:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762267698; cv=none; b=ZzFc5f96azyIo5SWm0laAHujkaPMTd+P//i2VAuqpOS+GXHWmg2vAKKOWp/spnrfe/BlwJePqMrQ9AoAUd40RhnUHej8cQnzDYa/mjNPTLlwq95WGCvM0v4AEYMrcItGeAcKvXlz3Hhw+4rn0aynIq6izhOGXfkNj4jSw6/7yjM=
+	t=1762267706; cv=none; b=rjDc2NlGnKwA8kpmKa2cmrmGo/ZIUNpc7HsRDqMpTXtu+w0qSs5XqTM/qmoVe7H5QPGBxuOYDAEhHMdyrU65EFt1ZUU6tKpni3xLCULXLbI1nV6APSpq/cW2Z3iUWSFLCmpU8guyeevPSx3dGotxqVZzPLZAQ0F+wK4tU4Ku/0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762267698; c=relaxed/simple;
-	bh=xCBxlDXzIhVQ/B7058fyymHUafvIparv+hEqSxtneH0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=cO7TfQfnSqfaw16BVH092hJ7Mlr2C4oXcfs9mbhZ3O0Qr2v7Acukd6STJv0dr3NWosxkH1GUJEVLb5exOYI15BJHZmUGe3gHQLEne0ef1jxmHFzsa6UnmVqNi2yIr/8pH8QLRqe3ZFANbnPKnHyvW2Y9RJ4mKLc1SB7BV3rD6i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIMn1mOQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762267706; c=relaxed/simple;
+	bh=JMLaYY6hZzPARYlgwS336pFX+gMN7vDHCCMc++BjmpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c8bqr9XKfIQywwDtSkLmfxmJpvXHPB0fvGv960DeCnKQM9jUfS1bteMrxcwnNKYPwhl7Yl1qJxy49nJ+HxlU+8Ga/Wy3XFEMtWbQcUz2TwpfwzhaGzy03CA4SHNE9rh/sWrUa3wuMOsjOdho+cU1p9Cp+Y9yEbxQ6+lu32kYi+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lpK9nyZm; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIMn1mOQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F802C116B1;
-	Tue,  4 Nov 2025 14:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762267697;
-	bh=xCBxlDXzIhVQ/B7058fyymHUafvIparv+hEqSxtneH0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=SIMn1mOQrQQxcwiBwuWqP29ydZ+FP6EcFaa3okcvWYTrLLh4dqx1Aat7xwUVxgxP0
-	 auydmpD+uvywmyro/TOJ9RZhvxObN1EV6F83xQErcgMXXiRUc2Uwl4SQDZE+kIQItk
-	 bdVmf3q3inpKZN3kfVXj06HMZAYUfhzGptBS36PkdxxrGaIBWjgkrKpRMVHhRlHX0d
-	 E2QCMTyie6s5pamvD/LI5E4V8QktSmB7hH7sB0v+HDD1MyWns7fHxF05+izv/ZK/Lg
-	 HP3m4oD3DqawLom/Qt8t+yXEPUPfxdO0RgXv2csT0YxvTNkgEM/A6orgH+LfIRcH4x
-	 ut3EPx4B99UXQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lpK9nyZm"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-891208f6185so520792585a.1
+        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 06:48:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762267704; x=1762872504; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TYbk9wPxk/JA4+MxrrdLZ/GfKAsrpCoWC70+eUl4rp4=;
+        b=lpK9nyZmhhKVs4MaUwGdwSTH3jpjY2avo4MDRIQ5wFbIO5Lp6laDw2X1rj5LQe5QjX
+         5+0H0RAvSiwas1GTdRFBdguxoK1vTrKbzQ568DJ4NHWmgPF8uNoG2GCBOzQDD6N86uHE
+         k5f52xGDpxZ0N6i2WVXnCR8BP5E5dB/V/IrTkcOsjeEfGAIBvYA243u+4OrTCqa8nP8/
+         toWL2tFpt4wLEgr5wwVVT5kuIPp16zavB0wD7+OLpk2t7UVal3Q00kJgm33k/HeCzmkW
+         gJ6yReeDlpcXjJ3A7UIQ3IFOcgpEYckbC0fCC/e77NJcxwwrtR5ONlGW5oc69M+D4iqQ
+         9lCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762267704; x=1762872504;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TYbk9wPxk/JA4+MxrrdLZ/GfKAsrpCoWC70+eUl4rp4=;
+        b=mgsSM2oJcdYijMe/dLa5WRpYe8Vi2ELBOE8hWNAzjEB/gACTJUjOIZ7n5DYVlLPAz2
+         Rt3XxfcWn7QhjqC9jk+9i3XXi//6m6uM305NGMGSifRzu9XWLag0oumojuQ0nE3uISkX
+         O0B3nQmkf2ph47WZOK70Aokkgri+H1+YhFGNS3CYwOi3S4wk8DR5aquMc0xLIFxQXHv7
+         dxvIHPkEt8O1EfHivtEwxFqlpoTN9vCCllupjeHjFDH3ecdzyTPGRLF+FtLzidYQeNXX
+         KQNOE34aCxShpBA0xTskUU+lCx0B3X7kaAczpEVlENCKFV4sUhmVNyVkXH0Y7qFFjtjV
+         5Bsw==
+X-Forwarded-Encrypted: i=1; AJvYcCU19P0SAMKZGO9cccXPwvDpGq1jSJF2WmqGg9UDNI/+/P4Yewk+jSPot2pUvDzY1hjBMGGOjgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNB4g9X6WkKvPVxi+2lU6b+4NR+uAQ1AsHPeAd0Y8PR67WUTju
+	M81r3patTHBg+4KNPuUH4PrAGmx5267duFZpBffwp+Dzk5EhhJB0Mz0W
+X-Gm-Gg: ASbGncsOGErQ/tp5IBL/IwmyiV+CkLE5bJMtSz7NRQCzUD25p2nov8XQeWK4++/asc7
+	v+8jN7iOg2tBn/5Yd2ILwdJVr1PKFRsh4J3IrsH7OIcoT/MyMxOLdRUD/LZ6oXy3sWOok8czjCi
+	xzh5l/JpjarI3U/htYMvTOWlvDJMUdWfOtV+/hNWWjahLUUBma4YAoEnu5cezw/n26OmTt/QWV9
+	s1ry0c6RtIFHmBlXMigPHQoZ6jHC5D16+t+PzAbe1QqrP9cQ4depipqWYINZDV6sVFuh0wrMm6p
+	9XXKnv5iH0tQK2BY9N/uZc9d6SkSGBfNXAe5err5kmEi7XWVA6BBO+uH7dvkTIKWbUVLvMBmmGN
+	OetX6+MyMdrV5leIpFrWnoTBx44cX3PRB2GQwD5UWn51cvhm3ssuGgcCU+OHRj7ytDFR7qGywBk
+	cMCqZXsMbGMrVv8Sui4On6pQWon4IjeJ6necGNl0JDUjhE24llE+oB60+iLnEU+vKZ0w==
+X-Google-Smtp-Source: AGHT+IGmraHbZP2E2iRwXxMxNgGXM9zhZedCgpJV66vhLBH8PzAO8Dn4btILshzP2e0cEKgwNzEvBA==
+X-Received: by 2002:a05:620a:1a27:b0:886:173f:1b4c with SMTP id af79cd13be357-8ab9ba6fd3emr1982205785a.80.1762267703489;
+        Tue, 04 Nov 2025 06:48:23 -0800 (PST)
+Received: from ?IPV6:2600:4040:93b8:5f00:52dd:c164:4581:b7eb? ([2600:4040:93b8:5f00:52dd:c164:4581:b7eb])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b0f543d90csm198693785a.17.2025.11.04.06.48.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Nov 2025 06:48:23 -0800 (PST)
+Message-ID: <78db1fab-e482-4ebc-82ce-ba84b3f561e2@gmail.com>
+Date: Tue, 4 Nov 2025 09:48:21 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 04 Nov 2025 15:48:10 +0100
-Message-Id: <DDZZRCRHBLVI.MGWBUONLZ94K@kernel.org>
-Subject: Re: [PATCH] firmware_loader: make RUST_FW_LOADER_ABSTRACTIONS
- select FW_LOADER
-Cc: "Alexandre Courbot" <acourbot@nvidia.com>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "Rafael J.
- Wysocki" <rafael@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Andrew
- Lunn" <andrew@lunn.ch>, "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell
- King" <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251104-b4-select-rust-fw-v1-1-afea175dba22@nvidia.com>
- <2025110407-scouting-unpiloted-39f4@gregkh>
-In-Reply-To: <2025110407-scouting-unpiloted-39f4@gregkh>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/2] net/mlx5: implement swp_l4_csum_mode via
+ devlink params
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Srujana Challa <schalla@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Brett Creeley <brett.creeley@amd.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Sunil Goutham <sgoutham@marvell.com>, Linu Cherian <lcherian@marvell.com>,
+ Geetha sowjanya <gakula@marvell.com>, Jerin Jacob <jerinj@marvell.com>,
+ hariprasad <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
+ Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+ Manish Chopra <manishc@marvell.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Dave Ertman <david.m.ertman@intel.com>,
+ Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+ linux-rdma@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org
+References: <20251103194554.3203178-1-daniel.zahka@gmail.com>
+ <20251103194554.3203178-3-daniel.zahka@gmail.com>
+ <mhm4hkz52gmqok56iuiukdcz2kaowvppbqrfi3zxuq67p3otit@5fhpgu2axab2>
+ <db5c46b4-cc66-48bb-aafb-40d83dd3620c@gmail.com>
+ <6aa2f011-3ba5-4614-950d-d8f0ec62222b@gmail.com>
+ <p3pj3mu4mabgninwowqikegeotxgzhc4yptf7qrfhns37bnkoz@ugkbgvlkxqxb>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <p3pj3mu4mabgninwowqikegeotxgzhc4yptf7qrfhns37bnkoz@ugkbgvlkxqxb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue Nov 4, 2025 at 3:35 PM CET, Greg Kroah-Hartman wrote:
-> On Tue, Nov 04, 2025 at 11:04:49PM +0900, Alexandre Courbot wrote:
->> diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmwar=
-e_loader/Kconfig
->> index 752b9a9bea03..15eff8a4b505 100644
->> --- a/drivers/base/firmware_loader/Kconfig
->> +++ b/drivers/base/firmware_loader/Kconfig
->> @@ -38,7 +38,7 @@ config FW_LOADER_DEBUG
->>  config RUST_FW_LOADER_ABSTRACTIONS
->>  	bool "Rust Firmware Loader abstractions"
->>  	depends on RUST
->> -	depends on FW_LOADER=3Dy
->> +	select FW_LOADER
->
-> Please no, select should almost never be used, it causes hard-to-debug
-> issues.
 
-I agree that select can be very annoying at times, but in this case it seem=
-s to
-be the correct thing to do?
 
-For instance for something like:
+On 11/4/25 9:39 AM, Jiri Pirko wrote:
+> Tue, Nov 04, 2025 at 01:51:16PM +0100, daniel.zahka@gmail.com wrote:
+>>
+>> On 11/4/25 6:38 AM, Daniel Zahka wrote:
+>>>
+>>> On 11/4/25 5:14 AM, Jiri Pirko wrote:
+>>>> I did some research. 0/DEVICE_DEFAULT should not be ever reported back
+>>>> from FW. It's purpose is for user to reset to default FW configuration.
+>>>> What's the usecase for that? I think you could just avoid
+>>>> 0/DEVICE_DEFAULT entirely, for both get and set.
+>>> I find that 0/DEVICE_DEFAULT is reported back on my device. I have
+>>> observed this same behavior when using the mstconfig tool for setting the
+>>> parameter too.
+>> e.g.
+>> $ dmesg | grep -i mlx | grep -i firmware
+>> [   10.165767] mlx5_core 0000:01:00.0: firmware version: 28.46.1006
+>>
+>> $ ./mstconfig -d 01:00.0 -b ./mlxconfig_host.db query SWP_L4_CHECKSUM_MODE
+>>
+>> Device #1:
+>> ----------
+>>
+>> Device type:        ConnectX7
+>> Name:               CX71143DMC-CDAE_FB_Ax
+>> Description:        ConnectX-7 Ethernet adapter card; 100 GbE OCP3.0;
+>> Single-port QSFP; Multi Host; 2 Host; PCIe 4.0 x16; Crypto and Secure Boot
+>> Device:             01:00.0
+>>
+>> Configurations:                                          Next Boot
+>>          SWP_L4_CHECKSUM_MODE DEVICE_DEFAULT(0)
+> This is next-boot value. You should query current (--enable_verbosity)
+> to show in param get.
 
-	config MY_DRIVER
-		depends on PCI
-		depends on DRM
-		select AUXILIARY_BUS
-		select FW_LOADER
+I am still seeing that DEVICE_DEFAULT(0) is read back:
 
-In this case MY_DRIVER is only available if PCI and DRM is enabled, which m=
-akes
-sense, there is no reason to show users PCI and DRM drivers if both are
-disabled.
+$ ./mstconfig --enable_verbosity -d 01:00.0 -b ./mlxconfig_host.db query 
+SWP_L4_CHECKSUM_MODE
 
-However, for things like AUXILIARY_BUS and FW_LOADER, I'd argue that they a=
-re
-implementation details of the driver and should be selected if the driver i=
-s
-selected.
+Device #1:
+----------
 
-Otherwise, wouldn't we expect users to know implementation details of drive=
-rs
-before being able to select them?
+Device type:        ConnectX7
+Name:               CX71143DMC-CDAE_FB_Ax
+Description:        ConnectX-7 Ethernet adapter card; 100 GbE OCP3.0; 
+Single-port QSFP; Multi Host; 2 Host; PCIe 4.0 x16; Crypto and Secure Boot
+Device:             01:00.0
+
+Configurations:                  Default             Current       Next Boot
+         SWP_L4_CHECKSUM_MODE DEVICE_DEFAULT(0) DEVICE_DEFAULT(0)    
+DEVICE_DEFAULT(0)
+
