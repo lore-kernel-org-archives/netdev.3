@@ -1,61 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E79D6A33B;
-	Wed,  5 Nov 2025 02:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBFD1E9919;
+	Wed,  5 Nov 2025 02:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762309237; cv=none; b=E2NUhTJq82LKmEJa7BsHts2LVlqKTbkfXot7uVD8VixtNELX1bmgPmV6fPrd5eUZ7W5sk37iDCRy7103i9FByt5/5twLT9pNNIxyU0UXhA2VB0snJJIcZeFTiFFYwCI7/7JbLSZdl2rnE7/sHs/IIXiH2tctL7+yvrvFe5br+7k=
+	t=1762309248; cv=none; b=OQfjnJDV5tBNfqqBF8LdvOgl/BIoRkV/vhptvoC1kV3BYjIyRNCPgj4KdJIf5cZu6cjiyECBmMxKfrCzzuxTEPClYCMrgP2lvCJUt09lHByZGhD/92ngGM1kiaEXsPg88FJs/evWQtWc98T+AYW1zKanScKpvxJ+WcDw4Gc/lAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762309237; c=relaxed/simple;
-	bh=siu99kukBiiervgH6j7Qp18m5/cq8S+7+ud47iygqU8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gesHafLydYpXpbMX4Tr+t5UgGywEa948i8J6jg16lviySWtqGh9e2LbdV6eqd1W/P8iCyrMrsTYCzo3ABHjzotrdeBnasaL0S5FRK/7bPycHsHPdcSJvUZ+ElyEzjwcSG2ocK6xEUe1qRcSxxzNRYIqwEwEtz/CtMicCAX2uuM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axORwLR/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762309248; c=relaxed/simple;
+	bh=Zr+j+565XvfLm2SsJQls3yEiyOWPm+Rp4hCYDk/hfMQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=u4rgIpilgbMYHPwgovdV27ROJpd7+EJdBVRB2aMFgxAVETYerZWlO9u9cWMKCqmakAUBFoo6eesE9wIaWvfORdoSJovhIlbdUOoKOptPCnH5Zfb9dyQy5w1Dx5/lQOhZt70z6qmwXMScTyWaxkJC7QEa898MSNkz0fe39yX6T20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTlt6/mf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axORwLR/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103CDC4CEF7;
-	Wed,  5 Nov 2025 02:20:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TTlt6/mf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C8EC116B1;
+	Wed,  5 Nov 2025 02:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762309236;
-	bh=siu99kukBiiervgH6j7Qp18m5/cq8S+7+ud47iygqU8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=axORwLR/ybOg6tEvjNILFMj8JaFmkVxdMqarGN4x8bHNWc+pApG6JWZ0GE3SMDN3q
-	 s+oSvzV9mUXKrVjxmSzyu+4DyAiFF1mt5qhQ4Gv5MtxLe3cMtA6+NoQ1OTV7O7G5iS
-	 oSEq+ozqc1JRAei+X6UYaGD4rgs3AjxNyPHbeX1JeaoZe7mapwk8bS0r4316B5pDPj
-	 wzPANsrAFmKb+7BKP6NlqGEreMXHB9fpE+TL/Ij4RBOYzZOP568TE/TOYqXFK5u8Li
-	 QvErucOaGSzvoQKU+clJbONyFn/TlCEYiU710qj0FgHvfZTYXbS9R3WjUvNP8VjK3f
-	 f397froJTDmkQ==
-Date: Tue, 4 Nov 2025 18:20:35 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>, Boon Khai Ng
- <boon.khai.ng@altera.com>, Alexis =?UTF-8?B?TG90aG9yw6k=?=
- <alexis.lothore@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Andrew
- Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH net-next v2 1/4] net: altera-tse: Set platform drvdata
- before registering netdev
-Message-ID: <20251104182035.29082775@kernel.org>
-In-Reply-To: <20251103104928.58461-2-maxime.chevallier@bootlin.com>
-References: <20251103104928.58461-1-maxime.chevallier@bootlin.com>
-	<20251103104928.58461-2-maxime.chevallier@bootlin.com>
+	s=k20201202; t=1762309246;
+	bh=Zr+j+565XvfLm2SsJQls3yEiyOWPm+Rp4hCYDk/hfMQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TTlt6/mfwNYAeXcYZVsj04yfi3BxoCxKnbDh12OvrwUbwinCSls2Ya7CGR5y1z6wc
+	 L33AsUzJEkNoiKSPXmfxh0eFHmzssZI3uMzSr5XgmkP8eAOGyMu5hzJojGJ5i/CTrG
+	 LXmAsWHcL2KyCSad6aqSk8gvxKtPYQkNretC3L/J/Osc4Ztpup9Ggqa53ot/5bvnnE
+	 Xghw62eAUx2/MuSatdVi/2lTkz6R6UQH3qZxJS8dNtb+Fp2sjB+yloQ0BcteWU0GZE
+	 kmuROI8uLR/tuEt+hryeFHMcKPjUpaqhqU07S4zDEEq5bq3bzr57KjGWxltrmqMiuZ
+	 fLgyrBpuInHgA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADE89380AA57;
+	Wed,  5 Nov 2025 02:20:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/4] net: altera-tse: Cleanup init sequence
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176230922050.3062547.8083675540294624198.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Nov 2025 02:20:20 +0000
+References: <20251103104928.58461-1-maxime.chevallier@bootlin.com>
+In-Reply-To: <20251103104928.58461-1-maxime.chevallier@bootlin.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, horms@kernel.org,
+ boon.khai.ng@altera.com, alexis.lothore@bootlin.com,
+ thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
-On Mon,  3 Nov 2025 11:49:24 +0100 Maxime Chevallier wrote:
-> We don't have to wait until netdev is registered before setting it as the
-> pdev's drvdata. Move it at netdev alloc time.
+Hello:
 
-FWIW sometimes the late setting of drvdata is done to make sure drvdata
-is NULL if we error out but forget to set ret (so probe returns 0 even
-tho it failed). But the error paths looks fine here so =F0=9F=A4=B7=EF=B8=8F
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  3 Nov 2025 11:49:23 +0100 you wrote:
+> Hi, this is a V2 for Altera TSE cleanup to make sure everything is
+> properly intialized before registering the netdev.
+> 
+> When Altera TSE was converted to phylink, the PCS and phylink creation
+> were added after register_netdev(), which is wrong as this may race
+> with .ndo_open() once the netdev is registered.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/4] net: altera-tse: Set platform drvdata before registering netdev
+    https://git.kernel.org/netdev/net-next/c/687452051886
+  - [net-next,v2,2/4] net: altera-tse: Warn on bad revision at probe time
+    https://git.kernel.org/netdev/net-next/c/dd2619d38d7e
+  - [net-next,v2,3/4] net: altera-tse: Don't use netdev name for the PCS mdio bus
+    https://git.kernel.org/netdev/net-next/c/9350ea63fec6
+  - [net-next,v2,4/4] net: altera-tse: Init PCS and phylink before registering netdev
+    https://git.kernel.org/netdev/net-next/c/055e554b8fff
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
