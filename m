@@ -1,68 +1,68 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A3134EF10
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 20:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FF134846A
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 20:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762374014; cv=none; b=ryn1eUzkdtMOO7w6mtSOQnPEbTJ8b6YMo5TEwnjxPMaulXF5AR//uDUkw+gFWxyGrirXvSJOry6DsSXTkcFzBAmxjmO2I3hMCkYsiqDsg3+odJJsZa7dbd1cn2Ci4n9OGjno4iuGOWR4rDtNbTkCai0iuZBrsI1rtuLCu1wDuaU=
+	t=1762374016; cv=none; b=ajlwvOPw6iaiFXwmyC113stjQuFfoHDlCYFRx7wKVhVipl7ml0swUklEDKY58B7l1lKifYKZFDtiVI+z/5vZrDZPzLbbqBOux8IcYYdyTGyAZrHEf2Z/Rsn0YMXob3k0ngKcam85PNZ0dTL6vmbPV/ahPuNLtHnop7QxkEMZmMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762374014; c=relaxed/simple;
-	bh=s9dOPdDssh9uVh8xXJwS8S9YL3U/YhGMODTknNjjdN4=;
+	s=arc-20240116; t=1762374016; c=relaxed/simple;
+	bh=3T/Hsy7D2ETU3ts6jORrqLbmSWADZQIxylm0XZst7/I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ppHFwx0a8UV30GGHgnoJcQfp/7VEawYpGUIDtf7RiqdssEJ3vWo0p+4K+kvN/MpdPcMMlnX2T4B6rmgrW+PAc+scKEeMld691hfgbLfKyi5QeYBpdyfHWqhuoGWlPlOT8GDTw3NQCB5wppa5hP6ZjVzW/GZNBI1jIbvHu3CE4RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=XVbwjTLW; arc=none smtp.client-ip=209.85.218.47
+	 In-Reply-To:To:Cc; b=P+yI/WwnGA2cN6hf4O8/8wd6R7YeuV3IOFXJEPstQnYZU2Dzjxe+xHBCJf08B8KY21VtaLjecVdQ7jJxzQhpj7JsZvUq98ZXEOF7cWSY7aOJz20tnbBNsZoMyDKuPV2Kibd9w/ee0xfnMuW6idF1oZgXJmUzfIu2m0Uvh+39CGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=WE5QKJ/l; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="XVbwjTLW"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b3c2db014easo42027166b.0
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 12:20:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="WE5QKJ/l"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640aaa89697so291385a12.3
+        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 12:20:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1762374010; x=1762978810; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1762374013; x=1762978813; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BRjMGQekhCJm4Cmv78QCqTEMQUlb7WHtroQaPtNLGo4=;
-        b=XVbwjTLWlBlWH0nRSR0aVDd0DMt7WWMPGooo8JHrqzI6G8/cXtBnOsC6PZqo9EOvHt
-         SsiRhIXfRRB0bEPMAzWvMa0y5w8enYgqjgorIXZFLDQfFCEQ68oxgWnlIGK2bb02WkJ4
-         i4jWSChcUBrnhHuHHVyKFVGCIxOusDW0QpkPx21hkdwh4UJRvjiGAhmw7hc740zCFtEO
-         bBnpxHLhFIYLX8yXIwyJbWun38mvh3qE6HStA85PZ56+a7UImbMf8fJQiohneq4dgtBv
-         CVo3YsJp3TE7zPWd1y4Mo05Sat8ej/8INH1dPztwN+u6CQexVpp1LLBtAFRgeDcILhrZ
-         p8fw==
+        bh=A+Gn/d2JoZxtozCB8xYxnRk8/St3kahnkKyT6VkGXO4=;
+        b=WE5QKJ/l70e6rQ40GtBS/Oyj5jCziP1nTW8/j+lM1FBPoeTBzlXd69By0gLdT7Fed5
+         Xwc6jNcRit1HtZwZxQQkA/L5ck6xojbXsgOVoJvSZAGz9Gb05n7A3kAO0lMweYtiM+gp
+         2e6Elb3Eptoe+8r1cUm3BGzbKGelMrT4acTfPuzdM6hd4m7v+KzZELOEtdnY/JPyAB7E
+         nZobb7UpKzvb8q/XV6tHCqhlDnTU+FBh1wmG51/B6sftl8Yzd6AKp0Vy3Zyru2yI1Byt
+         un282a5XUFlJQU7ImeM+FnprJSdRsmNwXg9/cM6B7E72Y91ktezlbF5xSW2cOS5c8VHJ
+         ELBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762374010; x=1762978810;
+        d=1e100.net; s=20230601; t=1762374013; x=1762978813;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BRjMGQekhCJm4Cmv78QCqTEMQUlb7WHtroQaPtNLGo4=;
-        b=Ucow6pnoTZWhPtAnfBTHyzNXDGIgbzA/naiS3VtbGYhZrmdEtUf0gOjxpc67pWf9Ei
-         ztNbEibdr7mf0cCzGKBnXi0aFgF3bHtID1WSt+fYDl7DVzGpuan+LYLlLgb6UsgSXkyy
-         dS4j0tUmRMxHQDtiQLiNbpXE5P32ve1P+p6nkiT5CsbyXfGzssft08lBMFKO+uYEqVzu
-         eEITdGruZ4YHcrDWO6fgSN52KfqHDN9qa4avu61qeTr3j2eLGx0qruj/0OaVTZ6xbC/s
-         pLPoyzMc/wFROgKj2atlGFeKvID+QIOBYsKGq0jCIp4H9ZaeQlmQScraGv1MHVVzwnfo
-         wVjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVcVwbjqY0qXGqSqF/91F+T8dvqY6eg81bxJ6xwlA3oxWoGknPphmP5f7tt1bB0tAAT3zPS41w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypeXx06UtU3jA2VlpMF9XciBCn7v79RDE9a1DXitpCA1870cr/
-	4i1duVq0PxgQOS04Zv9Vie/rSzw0Ke6STIWGrkFUWiL7lxSqpWZYnVDvjn7NXu+WCgE=
-X-Gm-Gg: ASbGnct8AJ+rl6I6BZzamHYkpj++yma405l0IbkyC8GDS7H63T7tnO7JBKfml6DMhwS
-	GIZ0Zj+QibAdYFrnZ/Vwp1SA12DdJ6Wzqm7017IVJXvcUx8dz3kJf3tb44Z/EM+Ehy0adjMT4TX
-	BolK5EMwkm881y3+tA5uRN2LJQIcAaFOLJLKUiDv2Rwr/17JTVyr4jcHCh9VGlX1UR8QAiqn3x+
-	zvi6iMnRhlzDJ7YSJJ0X55Dg2dB1QgrKNYIb7E8nhjcJLMg500bInFryYag3AoZTYupq5GFFALQ
-	v9vbfJiibQyMd/qwzyAD/R+3IHuG/uTfNpUv4Uni24sfaKmVr6JuhmhCsLg/gBke+58GWDemv/4
-	hJQQCg5eZ+yI4aBsoBh2H+5WZiDrK0pAHuo45cr8xvf9JYFDETDi+/Q3ugCe5rQewVm6tUflcKH
-	Ofbws6LhJDAZZqiLusE81BOcyYJ2qqo08j5BvTK48Jn1vvpQ==
-X-Google-Smtp-Source: AGHT+IEhGhixETesMpLTec3fAJha6wS8Rr/XsZkgmK206DjQaxhuiWXjLA43Y61AwEoN5oCsTubcVg==
-X-Received: by 2002:a17:907:9711:b0:b40:6d68:349a with SMTP id a640c23a62f3a-b72654dd598mr424571966b.39.1762374009704;
-        Wed, 05 Nov 2025 12:20:09 -0800 (PST)
+        bh=A+Gn/d2JoZxtozCB8xYxnRk8/St3kahnkKyT6VkGXO4=;
+        b=JGkL4eCJv01HJJtDXNC2YbeC63zgxYKtywaIjariw3Uun6lUIfr5UxJ6yjCIr7BlR/
+         2lDqF6Vhn4LpdmQAa6M/ZIboVc4NuRAFeVNfzxkfDoux8M82CfQf1aUAhjyaz2YqYFsF
+         Jil2p9nArCnBgU0+CzkjXCgt6YCiX18CjtpkFb70S2+INVIWJyENcnpSV8JbAWa5UvRT
+         2Cu6TMV0q9C6VZKlwD7CvVcZ3eTWiSu3EyElBuhzx9RvuiJOkxQApP8rt0WVSpypZDtM
+         raCQ/hhlv4F4aYa2ZWN05/2OggHKG7otthPvWk/FzsD+3cl610pScIFArGpzx+D66TpU
+         pMXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcOqGznWeoLFxWkuSEFg7uNc5N799nUW0zq0W+EuPTR1OYZT5glxFx0RjjSsFhY3eyscElLZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHoGuLLTEGPeK/xi51owze/gpjuuuh0YNzApgFCsYGytm/cfe/
+	P4315IBHZFOfVDAqI22QxuCbwUZN80AIuZbbRSvOrsXp8kJkGlSAA64ozTCXIgP5nsg=
+X-Gm-Gg: ASbGncstHWJ95nVr3Qp3vJEIgGelBh2Tvc43N6cM0uwhhaYdeaovu3/m23pRY5P5kxA
+	1srZ2wwrowK0H/qGPRNiQOsTqUktTSmwj4zo9u0PZhX1NYVnWB1572XECIip6wxchRlHsJt6XOD
+	Aw7ZOkb+CQOhGanNipe7++koxab8ObZ18WhPpHa7/HJgT4lZltpFC10Ib5kSvkYmLUUKPHlMA5H
+	Pza+NFo4i4udfQIXS7ETWfpOSEF41iMV5DgdJ9pcoQsJL0YrSOF8Yz7EMeu9criiG27rpMI1KPa
+	Wp+NpzlUfRggCHsUHXknH4bsE1+2zgzpLZVD7Gq7HpLAiOWwfW1RrQ4TxJz0v4jzXXphMHBm9V/
+	DXY6d1ejBaAN3Qt619ddfKM12HxBN3kRqq/USuFEUS6V+tWaLVaeBHmggngGjjqasg7k39hNciO
+	potFEDux09UYpoVeSRKFnzAJQXMQYeaA/mr4uWIyOfCwkKNQ==
+X-Google-Smtp-Source: AGHT+IH55QIrXwitElfIiKYgLCa3R/SABjslCUXi1BGuRmgPCsnX+RhPrKYey2s1Zjo0Al85Wp1RBg==
+X-Received: by 2002:a17:907:1c8e:b0:b49:2021:793f with SMTP id a640c23a62f3a-b726553bb4amr477373366b.53.1762374012586;
+        Wed, 05 Nov 2025 12:20:12 -0800 (PST)
 Received: from cloudflare.com (79.184.211.13.ipv4.supernova.orange.pl. [79.184.211.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72896c8127sm45823466b.73.2025.11.05.12.20.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72893342aasm49080266b.3.2025.11.05.12.20.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 12:20:09 -0800 (PST)
+        Wed, 05 Nov 2025 12:20:12 -0800 (PST)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Wed, 05 Nov 2025 21:19:51 +0100
-Subject: [PATCH bpf-next v4 14/16] selftests/bpf: Cover skb metadata access
- after bpf_skb_adjust_room
+Date: Wed, 05 Nov 2025 21:19:53 +0100
+Subject: [PATCH bpf-next v4 16/16] selftests/bpf: Cover skb metadata access
+ after bpf_skb_change_proto
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-skb-meta-rx-path-v4-14-5ceb08a9b37b@cloudflare.com>
+Message-Id: <20251105-skb-meta-rx-path-v4-16-5ceb08a9b37b@cloudflare.com>
 References: <20251105-skb-meta-rx-path-v4-0-5ceb08a9b37b@cloudflare.com>
 In-Reply-To: <20251105-skb-meta-rx-path-v4-0-5ceb08a9b37b@cloudflare.com>
 To: bpf@vger.kernel.org
@@ -91,198 +91,60 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 X-Mailer: b4 0.15-dev-07fe9
 
 Add a test to verify that skb metadata remains accessible after calling
-bpf_skb_adjust_room(), which modifies the packet headroom and can trigger
-head reallocation.
-
-The helper expects an Ethernet frame carrying an IP packet so switch test
-packet identification by source MAC address since we can no longer rely on
-Ethernet proto being set to zero.
+bpf_skb_change_proto(), which modifies packet headroom to accommodate
+different IP header sizes.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- .../bpf/prog_tests/xdp_context_test_run.c          | 25 ++++++---
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 61 ++++++++++++++++++----
- 2 files changed, 71 insertions(+), 15 deletions(-)
+ .../bpf/prog_tests/xdp_context_test_run.c          |  5 +++++
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 25 ++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 97c8f876f673..a3b82cf2f9e9 100644
+index 65735a134abb..ee94c281888a 100644
 --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
 +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -124,10 +124,10 @@ static int send_test_packet(int ifindex)
- 	int n, sock = -1;
- 	__u8 packet[sizeof(struct ethhdr) + TEST_PAYLOAD_LEN];
- 
--	/* The ethernet header is not relevant for this test and doesn't need to
--	 * be meaningful.
--	 */
--	struct ethhdr eth = { 0 };
-+	/* We use the Ethernet header only to identify the test packet */
-+	struct ethhdr eth = {
-+		.h_source = { 0x12, 0x34, 0xDE, 0xAD, 0xBE, 0xEF },
-+	};
- 
- 	memcpy(packet, &eth, sizeof(eth));
- 	memcpy(packet + sizeof(eth), test_payload, TEST_PAYLOAD_LEN);
-@@ -160,8 +160,16 @@ static int write_test_packet(int tap_fd)
- 	__u8 packet[sizeof(struct ethhdr) + TEST_PAYLOAD_LEN];
- 	int n;
- 
--	/* The ethernet header doesn't need to be valid for this test */
--	memset(packet, 0, sizeof(struct ethhdr));
-+	/* The Ethernet header is mostly not relevant. We use it to identify the
-+	 * test packet and some BPF helpers we exercise expect to operate on
-+	 * Ethernet frames carrying IP packets. Pretend that's the case.
-+	 */
-+	struct ethhdr eth = {
-+		.h_source = { 0x12, 0x34, 0xDE, 0xAD, 0xBE, 0xEF },
-+		.h_proto = htons(ETH_P_IP),
-+	};
-+
-+	memcpy(packet, &eth, sizeof(eth));
- 	memcpy(packet + sizeof(struct ethhdr), test_payload, TEST_PAYLOAD_LEN);
- 
- 	n = write(tap_fd, packet, sizeof(packet));
-@@ -484,6 +492,11 @@ void test_xdp_context_tuntap(void)
- 			    skel->progs.helper_skb_vlan_push_pop,
+@@ -502,6 +502,11 @@ void test_xdp_context_tuntap(void)
+ 			    skel->progs.helper_skb_change_head_tail,
  			    NULL, /* tc prio 2 */
  			    &skel->bss->test_pass);
-+	if (test__start_subtest("helper_skb_adjust_room"))
++	if (test__start_subtest("helper_skb_change_proto"))
 +		test_tuntap(skel->progs.ing_xdp,
-+			    skel->progs.helper_skb_adjust_room,
++			    skel->progs.helper_skb_change_proto,
 +			    NULL, /* tc prio 2 */
 +			    &skel->bss->test_pass);
  
  	test_xdp_meta__destroy(skel);
  }
 diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index 04c7487bb350..6edc84d8dc52 100644
+index e0b2e8ed0cc5..0a0f371a2dec 100644
 --- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
 +++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -20,6 +20,10 @@
+@@ -4,6 +4,7 @@
+ #include <linux/if_ether.h>
+ #include <linux/pkt_cls.h>
  
- bool test_pass;
++#include <bpf/bpf_endian.h>
+ #include <bpf/bpf_helpers.h>
+ #include "bpf_kfuncs.h"
  
-+static const __u8 smac_want[ETH_ALEN] = {
-+	0x12, 0x34, 0xDE, 0xAD, 0xBE, 0xEF,
-+};
-+
- static const __u8 meta_want[META_SIZE] = {
- 	0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
- 	0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
-@@ -27,6 +31,11 @@ static const __u8 meta_want[META_SIZE] = {
- 	0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38,
- };
- 
-+static bool check_smac(const struct ethhdr *eth)
-+{
-+	return !__builtin_memcmp(eth->h_source, smac_want, ETH_ALEN);
-+}
-+
- static bool check_metadata(const char *file, int line, __u8 *meta_have)
- {
- 	if (!__builtin_memcmp(meta_have, meta_want, META_SIZE))
-@@ -281,7 +290,7 @@ int ing_xdp_zalloc_meta(struct xdp_md *ctx)
- 	/* Drop any non-test packets */
- 	if (eth + 1 > ctx_ptr(ctx, data_end))
- 		return XDP_DROP;
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		return XDP_DROP;
- 
- 	ret = bpf_xdp_adjust_meta(ctx, -META_SIZE);
-@@ -321,9 +330,9 @@ int ing_xdp(struct xdp_md *ctx)
- 
- 	/* The Linux networking stack may send other packets on the test
- 	 * interface that interfere with the test. Just drop them.
--	 * The test packets can be recognized by their ethertype of zero.
-+	 * The test packets can be recognized by their source MAC address.
- 	 */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		return XDP_DROP;
- 
- 	__builtin_memcpy(data_meta, payload, META_SIZE);
-@@ -343,7 +352,7 @@ int clone_data_meta_survives_data_write(struct __sk_buff *ctx)
- 	if (eth + 1 > ctx_ptr(ctx, data_end))
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	if (meta_have + META_SIZE > eth)
-@@ -373,7 +382,7 @@ int clone_data_meta_survives_meta_write(struct __sk_buff *ctx)
- 	if (eth + 1 > ctx_ptr(ctx, data_end))
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	if (meta_have + META_SIZE > eth)
-@@ -406,7 +415,7 @@ int clone_meta_dynptr_survives_data_slice_write(struct __sk_buff *ctx)
- 	if (!eth)
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	bpf_dynptr_from_skb_meta(ctx, 0, &meta);
-@@ -435,7 +444,7 @@ int clone_meta_dynptr_survives_meta_slice_write(struct __sk_buff *ctx)
- 	if (!eth)
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	bpf_dynptr_from_skb_meta(ctx, 0, &meta);
-@@ -469,7 +478,7 @@ int clone_meta_dynptr_rw_before_data_dynptr_write(struct __sk_buff *ctx)
- 	if (!eth)
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	/* Expect read-write metadata before unclone */
-@@ -511,7 +520,7 @@ int clone_meta_dynptr_rw_before_meta_dynptr_write(struct __sk_buff *ctx)
- 	if (!eth)
- 		goto out;
- 	/* Ignore non-test packets */
--	if (eth->h_proto != 0)
-+	if (!check_smac(eth))
- 		goto out;
- 
- 	/* Expect read-write metadata before unclone */
-@@ -568,4 +577,38 @@ int helper_skb_vlan_push_pop(struct __sk_buff *ctx)
+@@ -645,4 +646,28 @@ int helper_skb_change_head_tail(struct __sk_buff *ctx)
  	return TC_ACT_SHOT;
  }
  
 +SEC("tc")
-+int helper_skb_adjust_room(struct __sk_buff *ctx)
++int helper_skb_change_proto(struct __sk_buff *ctx)
 +{
 +	int err;
 +
-+	/* Grow a 1 byte hole after the MAC header */
-+	err = bpf_skb_adjust_room(ctx, 1, BPF_ADJ_ROOM_MAC, 0);
++	err = bpf_skb_change_proto(ctx, bpf_htons(ETH_P_IPV6), 0);
 +	if (err)
 +		goto out;
 +
 +	if (!check_skb_metadata(ctx))
 +		goto out;
 +
-+	/* Shrink a 1 byte hole after the MAC header */
-+	err = bpf_skb_adjust_room(ctx, -1, BPF_ADJ_ROOM_MAC, 0);
-+	if (err)
-+		goto out;
-+
-+	if (!check_skb_metadata(ctx))
-+		goto out;
-+
-+	/* Grow a 256 byte hole to trigger head reallocation */
-+	err = bpf_skb_adjust_room(ctx, 256, BPF_ADJ_ROOM_MAC, 0);
++	err = bpf_skb_change_proto(ctx, bpf_htons(ETH_P_IP), 0);
 +	if (err)
 +		goto out;
 +
