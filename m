@@ -1,38 +1,38 @@
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824F2334C2B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83104334C33;
 	Wed,  5 Nov 2025 16:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762358886; cv=none; b=g8bBZaCtJsV7a1pMwNpXuzG+SsDqu5xoMh59AIsbwybTzpLxmpN0Cm5LT+vhu+DV5rRe6MUX7g1fslbjNFgaFsEPhz/Ze8QjLZrTvy5bYXlfgYMY7GXVHid55IT0oOlGqbwQ9skiWnkSZJHVZ5koZZbgFTY5v+8JZ9qx00zCjn8=
+	t=1762358886; cv=none; b=RBLkJjKGO/bDlRhSiM8mQddvZ3jpIuwj7EvxfhmNkCPuW0HwPtE4rSPvUUypzEhePyQFHI7eLA45Ts0pJRFPeBK7h39N/rEMybN7pUyCSnxWM5efScBGlMtoqiNPW6iW6oOHHheXo2qh100nZ1HON65BIVYjefC7bjc9zgLqsoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1762358886; c=relaxed/simple;
-	bh=tvxdehWydYA+luFkBIek6+x0FQA6BTszrEUJ2KwGblU=;
+	bh=ZiWQ5REple6VKc4oiJyq/bf1THoa1NpEXakgPmYk1qc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s9cXCgF7LxOZ6WRLewDP0cfPs5ujTZfPyMc+3b3We2GX/OreYj6QJOVhX3nkEz43sol0TiutfB45YOxf/E37AtC4ERVKQ+s02lNzv+1u5Y0QunciUkvbiPrpqQ8o0MkojGMzHwN5x4rM5x/E9SwKGLmYoj1h6KzSW4PpLCJ42Eg=
+	 MIME-Version:Content-Type; b=gtmB2n+qDAh+FqnMbYYlkTZKYoEzvM6+iEVYAwl17GAdm9TmkdpyN7AEp55xmn2IcUw55xwvyYgSkGOQLMFvLoOOwkscxNJFtxOVmsUGzGobmOFQz+CFkVuDi42zJJjJAisTJprtr84OX3gF3iaA2IB/91LKriAYaVIUK9XC5Kg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4d1qrP0Sjmz6L50w;
-	Thu,  6 Nov 2025 00:04:05 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4d1qrR6wqCz6L515;
+	Thu,  6 Nov 2025 00:04:07 +0800 (CST)
 Received: from mscpeml500004.china.huawei.com (unknown [7.188.26.250])
-	by mail.maildlp.com (Postfix) with ESMTPS id AFF791400D9;
-	Thu,  6 Nov 2025 00:07:57 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 9E8A91400D9;
+	Thu,  6 Nov 2025 00:08:00 +0800 (CST)
 Received: from huawei-ThinkCentre-M920t.huawei.com (10.123.122.223) by
  mscpeml500004.china.huawei.com (7.188.26.250) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 5 Nov 2025 19:07:57 +0300
+ 15.2.1544.11; Wed, 5 Nov 2025 19:08:00 +0300
 From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <andrey.bokhanko@huawei.com>, Dmitry Skorodumov
 	<skorodumov.dmitry@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
  S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
  Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 02/14] ipvlan: Send mcasts out directly in ipvlan_xmit_mode_l2()
-Date: Wed, 5 Nov 2025 19:07:06 +0300
-Message-ID: <20251105160713.1727206-3-skorodumov.dmitry@huawei.com>
+Subject: [PATCH net-next 06/14] ipvlan: Support GSO for port -> ipvlan
+Date: Wed, 5 Nov 2025 19:07:10 +0300
+Message-ID: <20251105160713.1727206-7-skorodumov.dmitry@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20251105160713.1727206-1-skorodumov.dmitry@huawei.com>
 References: <20251105160713.1727206-1-skorodumov.dmitry@huawei.com>
@@ -47,78 +47,90 @@ Content-Type: text/plain
 X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
  mscpeml500004.china.huawei.com (7.188.26.250)
 
-Mcasts are sent to external net directly in
-ipvlan_xmit_mode_l2(). The ipvlan_process_multicast()
-for tx-packets just distributes them to local ifaces.
-
-This makes life a bit easier for further patches. When
-out-mcasts should be patched with proper MAC-address.
+If main port interface supports GSO, we need manually segment
+the skb before forwarding it to ipvlan interface.
 
 Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 51 ++++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index 06c1c4fdc4f6..2ff681de8105 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -285,9 +285,10 @@ void ipvlan_process_multicast(struct work_struct *work)
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 18a69b4fb58c..ec53cc0ada3b 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -4,6 +4,7 @@
  
- 		if (tx_pkt) {
- 			if (ipvlan_is_macnat(port)) {
--				/* Inject packet to main dev */
-+				/* Inject as rx-packet to main dev. */
- 				nskb = skb_clone(skb, GFP_ATOMIC);
- 				if (nskb) {
-+					consumed = true;
- 					local_bh_disable();
- 					nskb->pkt_type = pkt_type;
- 					nskb->dev = port->dev;
-@@ -295,17 +296,13 @@ void ipvlan_process_multicast(struct work_struct *work)
- 					local_bh_enable();
- 				}
- 			}
+ #include <linux/ethtool.h>
+ #include <net/netdev_lock.h>
++#include <net/gso.h>
+ 
+ #include "ipvlan.h"
+ 
+@@ -71,6 +72,41 @@ static int ipvlan_set_port_mode(struct ipvl_port *port, u16 nval,
+ 	return err;
+ }
+ 
++static int ipvlan_receive(struct ipvl_dev *ipvlan, struct sk_buff *skb)
++{
++	struct sk_buff *segs;
++	struct sk_buff *nskb;
++	ssize_t mac_hdr_size;
++	int ret, len;
++
++	skb->pkt_type = PACKET_HOST;
++	skb->protocol = eth_type_trans(skb, skb->dev);
++	ipvlan_skb_crossing_ns(skb, ipvlan->dev);
++	ipvlan_mark_skb(skb, ipvlan->phy_dev);
++	if (skb_shinfo(skb)->gso_size == 0) {
++		len = skb->len + ETH_HLEN;
++		ret = netif_rx(skb);
++		ipvlan_count_rx(ipvlan, len, ret == NET_RX_SUCCESS, false);
++		return ret;
++	}
++
++	mac_hdr_size = skb->network_header - skb->mac_header;
++	__skb_push(skb, mac_hdr_size);
++	segs = skb_gso_segment(skb, 0);
++	dev_kfree_skb(skb);
++	if (IS_ERR(segs))
++		return NET_RX_DROP;
++
++	skb_list_walk_safe(segs, segs, nskb) {
++		skb_mark_not_on_list(segs);
++		__skb_pull(segs, mac_hdr_size);
++		len = segs->len + ETH_HLEN;
++		ret = netif_rx(segs);
++		ipvlan_count_rx(ipvlan, len, ret == NET_RX_SUCCESS, false);
++	}
++	return ret;
++}
++
+ static int ipvlan_port_rcv(struct sk_buff *skb, struct net_device *wdev,
+ 			   struct packet_type *pt, struct net_device *orig_wdev)
+ {
+@@ -111,19 +147,8 @@ static int ipvlan_port_rcv(struct sk_buff *skb, struct net_device *wdev,
+ 		goto out;
+ 
+ 	addr = ipvlan_addr_lookup(port, lyr3h, addr_type, true);
+-	if (addr) {
+-		struct ipvl_dev *ipvlan = addr->master;
+-		int ret, len;
 -
--			/* If the packet originated here, send it out. */
--			skb->dev = port->dev;
--			skb->pkt_type = pkt_type;
--			dev_queue_xmit(skb);
--		} else {
--			if (consumed)
--				consume_skb(skb);
--			else
--				kfree_skb(skb);
-+			/* Tx was done in ipvlan_xmit_mode_l2(). */
- 		}
-+		if (consumed)
-+			consume_skb(skb);
-+		else
-+			kfree_skb(skb);
-+
- 		dev_put(dev);
- 		cond_resched();
- 	}
-@@ -764,10 +761,15 @@ static int ipvlan_xmit_mode_l2(struct sk_buff *skb, struct net_device *dev)
- 	}
+-		ipvlan_skb_crossing_ns(skb, ipvlan->dev);
+-		skb->protocol = eth_type_trans(skb, skb->dev);
+-		skb->pkt_type = PACKET_HOST;
+-		ipvlan_mark_skb(skb, port->dev);
+-		len = skb->len + ETH_HLEN;
+-		ret = netif_rx(skb);
+-		ipvlan_count_rx(ipvlan, len, ret == NET_RX_SUCCESS, false);
+-		return NET_RX_SUCCESS;
+-	}
++	if (addr)
++		return ipvlan_receive(addr->master, skb);
  
- 	if (is_multicast_ether_addr(eth->h_dest)) {
--		skb_reset_mac_header(skb);
--		ipvlan_skb_crossing_ns(skb, NULL);
--		ipvlan_multicast_enqueue(ipvlan->port, skb, true);
--		return NET_XMIT_SUCCESS;
-+		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
-+
-+		if (nskb) {
-+			skb_reset_mac_header(nskb);
-+			ipvlan_skb_crossing_ns(nskb, NULL);
-+			ipvlan_multicast_enqueue(ipvlan->port, nskb, true);
-+		}
-+
-+		goto tx_phy_dev;
- 	}
- 
- 	if (ipvlan_is_vepa(ipvlan->port))
+ out:
+ 	dev_kfree_skb(skb);
 -- 
 2.25.1
 
