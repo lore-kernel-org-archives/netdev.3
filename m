@@ -1,68 +1,68 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2043B34EEED
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 20:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE53A34F253
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 20:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762374012; cv=none; b=OtH/baF94JBE+ohULCChDFxMvADCgPH26SSWLcc7qJNI8hRRVMQhUfjZMOoi853Rvn4S4zzV2lNuZw9WXdY/iOc65qh6vdSeIETqYnv6jhp/OxjQzvFys44MQmBj9pAB3MAy9m0z5T6C4mFBij94acnFz3KFpOMPA52Q+ezXFeU=
+	t=1762374014; cv=none; b=CXCXQZ2ugeLJTDLMneNmcCfP6AjxokIDF3PQWLQp7UR8kUvxksgLG6qwofJs1rOZINvIEn77nLVTZ+X+nunhmYU2jJMrw9CihpqQeuURCPm3KyzxGDlrxWsgSPSVcLCV3GKIvmJ+tQvzRcjsGFa86QENJsGXUaOWdEHknTpMx8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762374012; c=relaxed/simple;
-	bh=uhu0sRpXgug9K1t55YK9U9d2pdZu/7f5aErzrjJKfwg=;
+	s=arc-20240116; t=1762374014; c=relaxed/simple;
+	bh=yX6S3LeBCe/qGD/kjGr66cS0rg3xyuUfRHvFHBmpNRA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MldrgltG9nuGeuwevko5GPbzcQZvib//afLJhNjElH4O8DPxxEZ9cRq7ea+jWwUU8l66q9CoHguUBqMQAjvVZNFtUuw1n6VJrC2fbtiVCxXcWAz6Iy758Iy/1aw/gm+tP73JDF1GDCBWCLmwNAuTLbQADiIDLMfYLzy6e4/s1M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=TWKJnZQ4; arc=none smtp.client-ip=209.85.218.46
+	 In-Reply-To:To:Cc; b=jCncbG8/l/msZHjWrODjJoo4vHZMiwvGr6DA6r36aAp1Bjj8ysVP80DGaBfiOlHh8pOA6PMYe8hp3SsxeYqU3E8AI+WFxpLcs4MXz7567Umtvd14OwnNbtQ1H0ZrNZevWMQY2dthKJiLW8gd8YEjCej2sJxVMFBB6jVicKr4jOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=WfPzwjfo; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="TWKJnZQ4"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7260435287so27928466b.3
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 12:20:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="WfPzwjfo"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b6d402422c2so48220666b.2
+        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 12:20:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1762374008; x=1762978808; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1762374011; x=1762978811; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Rv+wMki2mCxR77hpbTFywu+l5+/0oJt0cFCPtAcjVTQ=;
-        b=TWKJnZQ4JZ/i2S6GtW6UevdRKcl+irqGpplLwnxQvSLu8qAxqgNZ9mcRTQB2XObCS9
-         dYJ9lS1fti5liM/K6lUgcX2oDMywe0bVTAGoQZJJAuTUk0UEOP1gKpAJPsHN2R9WnrCw
-         oE9/O/7MRmtSLG52yATK1zXoU+A82LLcmPXdmUqMfIQIeEpIgtYKS471P+vY6HxP3xcx
-         0j3fo/8SZfqJDlavaKALCOUxmK1fBYCMR7u+7Nx2q5kPTtKmFy+yb8D0zAzc38zsBfhE
-         rr582VXLk7rJc2rPxgsLnGcaDHKAAg87ADaerDz/yRg4EhpdOA1l3vJBCabI47weQAlC
-         qhag==
+        bh=RTKVpAsZWOgfkTqkKtVnxh+VrP5InzZE/Rk0DyRN41g=;
+        b=WfPzwjfoJD3w/NvoXL9yRUPHPhgbRasefFk6XiOta9TH5IdN+7HYbibXQ4EnXwTM5v
+         iOypoPC26xnSYpN/LpH88ZPh6ZIen7GF7bMCz9J6dl2W2nbD6OwdpAh2jl8Csk9Ozq6Q
+         2Nia8Y2U6MmCe7j3jm7rVVqlqkm0HYlNyMEmyq2HIMfujyhBHWTyD0GfgTP+V1EOQJ6O
+         Wytzl486i1TF0/lj9hj1tyux6qBF0FwsrBKWmfgLILOyk3Xy6NAsYqT5oz0aK7pva3us
+         H7TyYA5rHNBul2ZHjsT9kKGMP1kES2DTGVglR4qG8ci6vkzlePj8foIf8FVBSVVFXR3M
+         hfhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762374008; x=1762978808;
+        d=1e100.net; s=20230601; t=1762374011; x=1762978811;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rv+wMki2mCxR77hpbTFywu+l5+/0oJt0cFCPtAcjVTQ=;
-        b=Oyg1yRlwxXnK9zKWICEQ8cvsGkCSy62PKSOykQL8uUMv2iuqZEY6DSNYQzzHOfK7Ia
-         Oox/KdFsGlHy9nDDV/yDWe4GTfP4T4ic1Lpok0/t+jDw3PNqk9G4qv1+/jCVD2jf2q3v
-         pKPbLPx/MWjKhPYcYkdrA5uTqcCXFpZWn8nOjxtFriTWnlRFIhq4On+3nbKv0/+sVOIz
-         +UnwOO8GPIi+HyjdFzN4i2vZN7bJu6VArpiA2ADPal2J2mWV5L3SCGOiZx1FIBgZM2oW
-         K9ScUmQSouGha8VPvJZroQMydZAWpbPr7ewPczwm8XzcTokG5xHyXDnt1JA9ZQ2r6LjT
-         SqFw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9RbOPoAkBSDjtAQKz0N2d3uo9Me7Wqd7NTer82bxpewMh/J9O85MxCHVfAXgM2k1yDFiftDY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxA7HZr8JmrStUxqOJLYv5z8uY8Nu3X/2sAAt0onNgQkjluUMwn
-	XsdYdoD/07DzXgFdmWUAaEajxSV/OZvG367adXwqiz9RguMXmHywYzJZc8IaB5D037Y=
-X-Gm-Gg: ASbGncsQkG21ct2YxRiFDRpM2un5ifZ2HIDtPPh1SROqzJ9BTF9Nnw94tXYsfXyl7ae
-	TLZx7SKbAcASTvQiLOHT/E4GlmIrr/Ld1wAQ53SQx9CWjTzhhBM5jzJhi5ft8D9mAyzFNhWZJ1V
-	BGiNwfQbsvPKz1T3NTmTZLHbjGhW8P7i2QNqYp45vZ3pUO9rKzPmbWNb9uv93jgs5TANea5Ov6C
-	oaODs1GQpEXGTzQSwrHFMN1MLpAhnbSQgBhWFREadEEQnxjlTqpE4Hzu8Ti+mLMSEBjucZFY03R
-	0gy/Gg/aGe/dGzdOxboLAyqGKlepcLzU+quhdN3CeyZ9qDFH+2i+3YYYcAQDdyz3UgtSSIfSAUW
-	5bpSJSzTd4MxIp8s6kXOBpZchU9rba4G3OrCyMmfK5xmR9IU4yvu+FoEJ3wZl+4DQV8n/P34Q4U
-	TlbE/Jx71BQToKE8LtMqe1XHHUfPuA5aSX1rqPK+u0kCzdtnXMQYh8qfRQ
-X-Google-Smtp-Source: AGHT+IFJl6cV/igj9ynYt/np2euiEErVUs6ipzRxDpzOrmiIGK5pn6V7TFkRn0BV8m+0B6n5vWZfJA==
-X-Received: by 2002:a17:906:c346:b0:b72:6b3c:1f0d with SMTP id a640c23a62f3a-b726b3c21a3mr289980266b.35.1762374008260;
-        Wed, 05 Nov 2025 12:20:08 -0800 (PST)
+        bh=RTKVpAsZWOgfkTqkKtVnxh+VrP5InzZE/Rk0DyRN41g=;
+        b=HzmotX2G7GzAYVd23O2LZZCbZQhOBv23xmkH6Fc5viyeb+DjS1wtuvcB9Gih0VR8RL
+         WWWjAkYGiZ5WXjOml4W2IdG/crBB1Ka8tFRi35bmZF8fyVHqYj6aYCIkwNXM4tHMKF7h
+         jbCuUiFLSd3KNPFWidb4jNQtgXFynf5rvYFp3Js8RuwgyZWX+9U0m4eLmYbp5DHq3vXU
+         D+04C3LhYJih/cETxOBX67cxRPypoXkPv0oCD10Nmc/D8G1wnV5WbrE2uwzHOkeYggYv
+         nym90MiRz1vfasYZG8pvtFcc1HQH2rrYh8R/xnaHbDWmEFi1Vn9RiDqXvheAoJjkLi1B
+         9P/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX4Au02BUjb2NwCax6RHMN7L/JjKd4WNcqYHu9bJt4fs6E915aRmp1RFc9YIf621aS+myoDXbQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5fLUErR+9MNQG8RYsa+8wPVp+10GIuQ1o1SE6SZiveTY5A0Na
+	2I3fmPPUOHQeU7/FyV08bLYmm0FBZgAFqsAU+cPZX+pvfeIryEnnjrhWWRgXGcDvado=
+X-Gm-Gg: ASbGncuNL479nYbB7XFQQ+NI0fBOf2p3v4xUV+q/OVBH4xYKbDA8+tALtrDtqdP2iVk
+	LK4AzhqDtNQ3XVyQa4Ew7tK9qRdSllBVYhboGlaHfK20FtIZfVg2lUAGFSADLCGojGRrR9zfQ6U
+	AjOtB79Y/GjpLRAknX0Mezd2R7eH11YelkGkmDaBUHRjiAKn0yTHeRc7Qgc6W6xlVfE+2AEvyJd
+	wClsi7ld/qdQuQSoDLfKpazmN1JmgPMYt7d23EgFXRK4ebNvy28duRea/EIzMYFeElEmgfSx4PL
+	WK9OQqtMrva2Jpzgk61DN9awwmq2xVIvpc6guP9PcIIX6XOrezHHaInogDgzAKUumo6uoCFsTYK
+	qT9EgLNAGy+iqpV5gSYlX+caxohoxkYbETYs9gDXqYbiW23cQsiVrbsAJLrbH4Ce0RIkYlwzGi3
+	dezOHCrggXyCp6FV+8EGxE268ah76jsUGo4J7KY5moQnHxtQ==
+X-Google-Smtp-Source: AGHT+IGg27dlDSbiWVRbQqy3px3bm8d2YU3mKmAc2pRhQdIoGpvqtSgKzi/IEON9rHE4kmOeiO1W/w==
+X-Received: by 2002:a17:907:720e:b0:b65:dafc:cd0a with SMTP id a640c23a62f3a-b72655cde5amr403511566b.52.1762374011046;
+        Wed, 05 Nov 2025 12:20:11 -0800 (PST)
 Received: from cloudflare.com (79.184.211.13.ipv4.supernova.orange.pl. [79.184.211.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b728968208esm41400266b.52.2025.11.05.12.20.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72896c7991sm42275266b.71.2025.11.05.12.20.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 12:20:07 -0800 (PST)
+        Wed, 05 Nov 2025 12:20:10 -0800 (PST)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Wed, 05 Nov 2025 21:19:50 +0100
-Subject: [PATCH bpf-next v4 13/16] selftests/bpf: Cover skb metadata access
- after vlan push/pop helper
+Date: Wed, 05 Nov 2025 21:19:52 +0100
+Subject: [PATCH bpf-next v4 15/16] selftests/bpf: Cover skb metadata access
+ after change_head/tail helper
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-skb-meta-rx-path-v4-13-5ceb08a9b37b@cloudflare.com>
+Message-Id: <20251105-skb-meta-rx-path-v4-15-5ceb08a9b37b@cloudflare.com>
 References: <20251105-skb-meta-rx-path-v4-0-5ceb08a9b37b@cloudflare.com>
 In-Reply-To: <20251105-skb-meta-rx-path-v4-0-5ceb08a9b37b@cloudflare.com>
 To: bpf@vger.kernel.org
@@ -91,79 +91,62 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 X-Mailer: b4 0.15-dev-07fe9
 
 Add a test to verify that skb metadata remains accessible after calling
-bpf_skb_vlan_push() and bpf_skb_vlan_pop(), which modify the packet
-headroom.
+bpf_skb_change_head() and bpf_skb_change_tail(), which modify packet
+headroom/tailroom and can trigger head reallocation.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- .../bpf/prog_tests/xdp_context_test_run.c          |  6 +++
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 43 ++++++++++++++++++++++
- 2 files changed, 49 insertions(+)
+ .../bpf/prog_tests/xdp_context_test_run.c          |  5 ++++
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 34 ++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index a129c3057202..97c8f876f673 100644
+index a3b82cf2f9e9..65735a134abb 100644
 --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
 +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -478,6 +478,12 @@ void test_xdp_context_tuntap(void)
- 		test_tuntap_mirred(skel->progs.ing_xdp,
- 				   skel->progs.clone_meta_dynptr_rw_before_meta_dynptr_write,
- 				   &skel->bss->test_pass);
-+	/* Tests for BPF helpers which touch headroom */
-+	if (test__start_subtest("helper_skb_vlan_push_pop"))
+@@ -497,6 +497,11 @@ void test_xdp_context_tuntap(void)
+ 			    skel->progs.helper_skb_adjust_room,
+ 			    NULL, /* tc prio 2 */
+ 			    &skel->bss->test_pass);
++	if (test__start_subtest("helper_skb_change_head_tail"))
 +		test_tuntap(skel->progs.ing_xdp,
-+			    skel->progs.helper_skb_vlan_push_pop,
++			    skel->progs.helper_skb_change_head_tail,
 +			    NULL, /* tc prio 2 */
 +			    &skel->bss->test_pass);
  
  	test_xdp_meta__destroy(skel);
  }
 diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index a70de55c6997..04c7487bb350 100644
+index 6edc84d8dc52..e0b2e8ed0cc5 100644
 --- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
 +++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -44,6 +44,16 @@ static bool check_metadata(const char *file, int line, __u8 *meta_have)
- 
- #define check_metadata(meta_have) check_metadata(__FILE__, __LINE__, meta_have)
- 
-+static bool check_skb_metadata(const char *file, int line, struct __sk_buff *skb)
-+{
-+	__u8 *data_meta = ctx_ptr(skb, data_meta);
-+	__u8 *data = ctx_ptr(skb, data);
-+
-+	return data_meta + META_SIZE <= data && (check_metadata)(file, line, data_meta);
-+}
-+
-+#define check_skb_metadata(skb) check_skb_metadata(__FILE__, __LINE__, skb)
-+
- SEC("tc")
- int ing_cls(struct __sk_buff *ctx)
- {
-@@ -525,4 +535,37 @@ int clone_meta_dynptr_rw_before_meta_dynptr_write(struct __sk_buff *ctx)
+@@ -611,4 +611,38 @@ int helper_skb_adjust_room(struct __sk_buff *ctx)
  	return TC_ACT_SHOT;
  }
  
 +SEC("tc")
-+int helper_skb_vlan_push_pop(struct __sk_buff *ctx)
++int helper_skb_change_head_tail(struct __sk_buff *ctx)
 +{
 +	int err;
 +
-+	/* bpf_skb_vlan_push assumes HW offload for primary VLAN tag. Only
-+	 * secondary tag push triggers an actual MAC header modification.
-+	 */
-+	err = bpf_skb_vlan_push(ctx, 0, 42);
-+	if (err)
-+		goto out;
-+	err = bpf_skb_vlan_push(ctx, 0, 207);
++	/* Reserve 1 extra in the front for packet data */
++	err = bpf_skb_change_head(ctx, 1, 0);
 +	if (err)
 +		goto out;
 +
 +	if (!check_skb_metadata(ctx))
 +		goto out;
 +
-+	err = bpf_skb_vlan_pop(ctx);
++	/* Reserve 256 extra bytes in the front to trigger head reallocation */
++	err = bpf_skb_change_head(ctx, 256, 0);
 +	if (err)
 +		goto out;
-+	err = bpf_skb_vlan_pop(ctx);
++
++	if (!check_skb_metadata(ctx))
++		goto out;
++
++	/* Reserve 4k extra bytes in the back to trigger head reallocation */
++	err = bpf_skb_change_tail(ctx, ctx->len + 4096, 0);
 +	if (err)
 +		goto out;
 +
