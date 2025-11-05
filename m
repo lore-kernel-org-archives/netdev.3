@@ -1,76 +1,54 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5B9322DA8
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 16:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA77253F13;
+	Wed,  5 Nov 2025 16:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762359096; cv=none; b=l5Bxb7pEOL+blDT9jOpNQPPwJ0ufbhnYpAB4bBGmdgVvBwy4CaiGpcHlfnC+DOVUzdox2WE4MvWvLqDVjOUoWAuahvaoqgYoggrFGEm/+1YlpvAnC/7kmf0JEM8RnxqXLI1pnHGQaSnWsBEX2K4boDEYrQEwIA3OEVWu9vncIoo=
+	t=1762359121; cv=none; b=OfRFC8ejSKDzlw2l3wCjN5APuTL/W3PSTDZzte7LB/HIM64hjfMKJWS22ZPR2Yghn/ldOx9f71H/j8rhtnHp1d8E9OOeXxGqTFJC1kgRYpuzjSeJHbzpakv2w+Hj/jpLT/WbWhnNmawwVrlsEiteEAr3xaw9O+9+InAkc9RKEF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762359096; c=relaxed/simple;
-	bh=W3rIEqDAjFHWAwm+pwB74Wz+AVL3IfQgKO4Y4lo7W2o=;
+	s=arc-20240116; t=1762359121; c=relaxed/simple;
+	bh=2BGjkh/JekalauIHx1gD91uKZot6shrPhBrecXqX97M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nY3EzZNLUt5k3GnyU3IqXv0gV0PaAcf+UewI2iFP3X24snOVXMRB1CF5CQfTtj9ZemCk5PcOclhx+jFmut/dYeWt4S379k4Yi0WbR1SA8Cfhqnoc8q7yVA2psluOmeOWw+OCTT/YhldggUFdQVcnVdc4O9PzSfn/Q076MYMCcPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YHbDbLIt; arc=none smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=M/lT97jovS64eYoUmHDescAE3bzgEu2aQo89alxQifh3C2H0T7X5p8QEzMO9QLFr8XApJf7BWmhuuiaZYH3RLrzhfZBKLcaCzt9LnXOxypT/5gM60pHMsMk2eEDnKDhGv3jQXT8OaHmFikOqJ7rn1dMkIMfe1J/j/mqdC3PyU5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PhYWs65n; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YHbDbLIt"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-63fc8c337f2so22923d50.0
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 08:11:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762359093; x=1762963893; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymZ6xdXrqo7vWAgf0QChueJMpmkC1T045PA4GVzRwIo=;
-        b=YHbDbLItjw4+eMXKEAHsY2z6+TDNrzIu7JCue8TYKGBW5rNDBDA4JyyM/UgPjyAf4M
-         5MqkGFSQxKclN7aJD+qGLJCYV8vCTg6YPemfsPJrI3AV/XQJqcMzkaKNo0t8msTKlFda
-         e0pVYvImharsbSWHL60w2PP/PvzOKgwAoZzx3jTNCWMoPWQBzVE8Htct92I7j5p4HMZE
-         BhFEFcR3GXgmVF4F6OGJ1AgDCO4C0Dk3QKjpQlQJvUykVFNLhQIEiM9DB7tiQ78fkYeL
-         41nBDihiXKZ3pD+aMvDrHd4Kdyc90F8YhaprnNZCz7GEXfN1+UFPvh2qp+b46wLn+QxX
-         /s6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762359093; x=1762963893;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ymZ6xdXrqo7vWAgf0QChueJMpmkC1T045PA4GVzRwIo=;
-        b=hByMAAO5bRADCZWTheJq3Xj6Czd/YPhq4SiZeayA5eehdHMWEcP0cH1gY/W7n+yYLR
-         75KFUiBJQZvZq0MnX7JOMCsJL0xy5jd+jyvnGjvl9nBedu+7mkvf/r0AVCBxgnLAymKl
-         KV8NCP6i1mP2ROwBSX6hcLsU61KGIyNP88XWIefojKwltRsKIn8P62NsTnhHm9a/K7uL
-         cJsKOYdgbMx3f9yB/UlnqpwNh75lKtfKSxILgYVRfYUJgktZJQ8gC0mL98JWhHvI/C9/
-         3aWrofSiZ3o5CysgEJJdOl85NnYvLHCn6pgA4fMUDnR+Bz6lqvKovT5n6ajmSUFVkE5l
-         /Kow==
-X-Forwarded-Encrypted: i=1; AJvYcCUIw3V37GS+ynmct4iHRPq1k5XdSdMsw4b+NQNDPxT7GKnEoAjlu+m/WQrVu87LLuaaQ0R0KbE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXsdvQ+CIj9DsnVjan0AvGKIf7+wcGihdihvV6x1yssEKsMFTK
-	jw2mF7hebaYp74FhNe05Pk/hre31r+x8XR2hybBDuvWp8CZtE1JIi7cD
-X-Gm-Gg: ASbGncsDteHp0Z/FrTW/P0K3FJlgPfp7VotclBDRaYGyL11RkmT7qspP11mlY0eWkJ3
-	/fR+KhJV4F7O7oQBE5B4AIAMJjxNJojtvYmDQyM2r6oSbRtWgQDSpkxSz0CTaQo8B9oPn5DKBQd
-	fAnt3vFaAAZ4HH8kt/GIW0fGRwIOcZoD6hXb01QjPEBRqeK+tz9UHUinYcWZVQsV6zvdx89nE1q
-	ddnHU+E/WWoIk26AZ1tAz+dxme+fqr2owGkRaj8diPca6OHuuBEOjSMOHU1EQk3XJEKl223oFTC
-	yxVsVv9gTR9KGg5wuEZFWUq+bZZJdfmhz7r5e4VJe3EK7Jhf6amWoC74674lakuXobfz4+Ci23h
-	vK27cnU+6SdUBN553F72bYMWL3tC1i0w0Fe1XDvu5OtrT2qAWM+vN4r4DbZTg7UF8yE2k7uhxY7
-	WHulgXIPbSBVN1pZDeItJEvtft5vLSgjvfZEc=
-X-Google-Smtp-Source: AGHT+IFO1Aj58ygyCOlI2zA+lUSTMddFikFOwBkJL3a+he6zkxfPMBnlF0h5B3IACmlOERHv2GNjEQ==
-X-Received: by 2002:a05:690c:9a0a:b0:786:581d:f24b with SMTP id 00721157ae682-786a41e29cemr57871067b3.47.1762359092678;
-        Wed, 05 Nov 2025 08:11:32 -0800 (PST)
-Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:7::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-78691d8f0b4sm20313777b3.4.2025.11.05.08.11.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 08:11:32 -0800 (PST)
-Date: Wed, 5 Nov 2025 08:11:26 -0800
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net] selftests/vsock: avoid false-positives when checking
- dmesg
-Message-ID: <aQt3LitYPBcD0MM+@devvm11784.nha0.facebook.com>
-References: <20251104-vsock-vmtest-dmesg-fix-v1-1-80c8db3f5dfe@meta.com>
- <oqglacowaadnhai4ts4pn4khaumxyoedqb5pieiwsvkqtk7cpr@ltjbthajbxyq>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PhYWs65n"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=kAPfZ/9MFmLoAqOWOpsnTOjNLSyhV2aPcNiujD83BJc=; b=PhYWs65nWStFmCuntFQp5x8y0W
+	z1/+ZZtX0EssZ7haGojfzLcd9XBfEgvf3u0S1D3e31RoBTasG/9ktaEe29ZUGdH+/XAxnLWzaDMei
+	Q+59Cm+jAbp3h8jB4oUkrnSe5pycJ2QBq+bk8pMnJy1tE1D6MSsrxHI14DV47063qPh8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vGfko-00D0s4-EZ; Wed, 05 Nov 2025 16:48:58 +0100
+Date: Wed, 5 Nov 2025 16:48:58 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc: Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	linux-leds@vger.kernel.org, netdev@vger.kernel.org,
+	Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: Re: [PATCH leds v2 00/10] Add support for offloading netdev trigger
+ to HW + example implementation for Turris Omnia
+Message-ID: <b7454a3f-fac8-4789-a3ef-baf341aea8f0@lunn.ch>
+References: <20210601005155.27997-1-kabel@kernel.org>
+ <CA+V-a8tW9tWw=-fFHXSvYPeipd8+ADUuQj7DGuKP-xwDrdAbyQ@mail.gmail.com>
+ <7d510f5f-959c-49b7-afca-c02009898ef2@lunn.ch>
+ <CA+V-a8ve0eKmBWuxGgVd_8uzy0mkBm=qDq2U8V7DpXhvHTFFww@mail.gmail.com>
+ <87875554-1747-4b0e-9805-aed1a4c69a82@lunn.ch>
+ <CA+V-a8vv=5yRDD-fRMohTiJ=8j-1Nq-Q7iU16Opoe0PywFb6Zg@mail.gmail.com>
+ <bd95b778-a062-47b1-a386-e4561ef0c8cd@lunn.ch>
+ <CA+V-a8uB2WxU74mhkZ3SCpcty4T10Y3MOAf-SkodLCkp-_-AGA@mail.gmail.com>
+ <CA+V-a8snRfFrZeuJ7QSt==B5vWAyTpHzdNj0Jx6oz_aaozbGYQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,59 +57,27 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <oqglacowaadnhai4ts4pn4khaumxyoedqb5pieiwsvkqtk7cpr@ltjbthajbxyq>
+In-Reply-To: <CA+V-a8snRfFrZeuJ7QSt==B5vWAyTpHzdNj0Jx6oz_aaozbGYQ@mail.gmail.com>
 
-On Wed, Nov 05, 2025 at 12:16:42PM +0100, Stefano Garzarella wrote:
-> On Tue, Nov 04, 2025 at 01:50:50PM -0800, Bobby Eshleman wrote:
-> > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > 
-> > Sometimes VMs will have some intermittent dmesg warnings that are
-> > unrelated to vsock. Change the dmesg parsing to filter on strings
-> > containing 'vsock' to avoid false positive failures that are unrelated
-> > to vsock. The downside is that it is possible for some vsock related
-> > warnings to not contain the substring 'vsock', so those will be missed.
-> > 
-> > Fixes: a4a65c6fe08b ("selftests/vsock: add initial vmtest.sh for vsock")
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> > Previously was part of the series:
-> > https://lore.kernel.org/all/20251022-vsock-selftests-fixes-and-improvements-v1-0-edeb179d6463@meta.com/
-> > ---
-> > tools/testing/selftests/vsock/vmtest.sh | 8 ++++----
-> > 1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> > index edacebfc1632..e1732f236d14 100755
-> > --- a/tools/testing/selftests/vsock/vmtest.sh
-> > +++ b/tools/testing/selftests/vsock/vmtest.sh
-> > @@ -389,9 +389,9 @@ run_test() {
-> > 	local rc
-> > 
-> > 	host_oops_cnt_before=$(dmesg | grep -c -i 'Oops')
-> > -	host_warn_cnt_before=$(dmesg --level=warn | wc -l)
-> > +	host_warn_cnt_before=$(dmesg --level=warn | grep -c -i 'vsock')
-> > 	vm_oops_cnt_before=$(vm_ssh -- dmesg | grep -c -i 'Oops')
-> > -	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | wc -l)
-> > +	vm_warn_cnt_before=$(vm_ssh -- dmesg --level=warn | grep -c -i 'vsock')
-> > 
-> > 	name=$(echo "${1}" | awk '{ print $1 }')
-> > 	eval test_"${name}"
-> > @@ -403,7 +403,7 @@ run_test() {
-> > 		rc=$KSFT_FAIL
-> > 	fi
-> > 
-> > -	host_warn_cnt_after=$(dmesg --level=warn | wc -l)
-> > +	host_warn_cnt_after=$(dmesg --level=warn | grep -c -i vsock)
+> Sorry for the delayed response.
 > 
-> In the previous hunk we quoted 'vsock', but here and in the next we did
-> not. Can we be consistent at least in the same patch ?
-> 
-> The rest LGTM.
-> 
-> Stefano
+> I started investigating adding PHY leds. In page 53 section "4.2.27
+> LED Behavior" [0] we have an option for LED0/1 combine feature
+> disable. For this is it OK to add a new DT property?
 
-Just sent the update, sorry for the oversight.
+Why do you need a new property?
 
-Best,
-Bobby
+You just need to set this bit depending on what has been selected via
+/sys/class/led.
+
+And if the user asks for a mode which the hardware does not supported,
+the core will fall back to use on/off and blink the LED itself.
+
+PHY LEDs are the wild west. Every vendor has its own idea what is
+important, and adds features which other vendors don't have. But that
+does not mean we need to support all the features in Linux. So the
+core has a reasonable set of features which we expect most PHYs can
+support. I don't want to add more features unless you have a big
+business case it is needed, and other PHY also have the same feature.
+
+     Andrew
