@@ -1,291 +1,82 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70A12367B3
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 00:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CCF34D396;
+	Wed,  5 Nov 2025 00:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762303595; cv=none; b=mPiQO2/ZJ4j3hhpn/C1LNz9oMbfqBpoKFuA7jGgBBEzbG+R59SoJBTMJBc9nTCWXkl3AEp+w6AKpGa1XB1/oMef/8Z5Yk1W6UpD5URIzFJflAFdlItvnTBiG058vWL0XsHool/n1cBMg6ZzJirqHYC+EzoNPcQO43GAdUveZPEo=
+	t=1762303689; cv=none; b=FA4W8/0vkGpPNpqJRP7tHLKIE6py/gbrTE0h2Ze1krWWoqloH1BDXiWsgc3c3NOkliGqQn6di9IkwWHEC3U3vu78Q52ONrjQyd7RRW2W5rXBm4TxjL0ld/Wsrxqv3WsnXPx2AdAJBs0MM3vjgWOePj7wxaFBhwCHg94q509iq9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762303595; c=relaxed/simple;
-	bh=QK7dX00M8Jg/onYsQPjhAdFQtssDUJ0UQljG+F4NwI4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B4TxQwWO+1pFiqvjb6mULUnshCFd1VDCI0NWfYGlPwWwekOtr30b5a2X+vDGMgAhh9OIi3/NEwpcOGjY1QvqhjbDvWG565lFxxIib76PywrbBdV+zMcDzcj2lnpFJdr1QfoNBvIqXuWDVTxea+UN5dSn4p/9SCOh8zb17mJdhIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=akw19Abp; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762303689; c=relaxed/simple;
+	bh=hUdQ8XRuP4ZBbUv7bDFNV7qCPPD1JefMdtZdnxWjraA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DW0nvThGfALaPLGAwdpn5Vl7u/NQfNuiO8QU8vwMiqmcpFFDB7bTdXOkO7np9y0T4f1OZAj9fyYf7Tj6fwSI5pncs+Y1iGIF0WXWeMMRfLA427DJszI1KQKzwk9+m/9caTRCRDGyhfu6nKTuUj8FUPnDJOYr0V+NkL3yb5ojNsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvEGlh9U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="akw19Abp"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-33b9dc8d517so5566927a91.0
-        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 16:46:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762303593; x=1762908393; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xXdfuXEyYCSjpACOy8ivhFG7mh9YLIGOopMLdxt74zc=;
-        b=akw19AbpzHDaXfBCRYfqUGDx8coKx6J97HywA1LD29sdhvk3TAzmK3BkXHb/1FslKu
-         q4rF6J4tyGFnVHec6iyqUbKmoVKNMUNVOtjNinztQ02Z7pdYE3Tyz9RkFOuCm65odbZ3
-         q3UKK0VRzFRTBkB4VugdduWlM60mIUcmWnVs/g3aEXn2oIG9SUWJshylpwXVe9TBi9qo
-         hrWO6TGV/0jaWc4yDVnFxXzHnY+Nq1MNWrfESd0hpIlZWW24oLHq9NvYdJCGV8Go4dTw
-         EzwnZzCT0bRbOfP7k9J3KPgV4fXEAW3Vh4m2zk9cXw46EY4Hu7SdfoeTcm9z0+9YWWIi
-         AYcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762303593; x=1762908393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xXdfuXEyYCSjpACOy8ivhFG7mh9YLIGOopMLdxt74zc=;
-        b=BqIx1DqqKdR0ZFp1ma3QhqwR+E8T79XqchbLtPnAz8Apa+i7VXlcZavqEfgR5ku8i+
-         +j1YDTCJrrkctRIivaxPVnFvIIqOV2NdhO12z0GRC1qG5PZ9yRsFNyti1pnTxz3v6VYI
-         lBSONXcTWs3Ic2QpSOSC7LMRUWUC5wM6gMeEAs+tB5Fj9Qth0N06Kkd93yJVxAi0mBhM
-         4QxyXrEaC3ZzA0MuOqq4KOwfyPK+TBACSfw9NLjeLXcKEsACX6xlE1+PfhDjhwrfGJ2q
-         iwdkaHsgzVKa0MRuhhbzY56D54rxXEhIRlGel4nlD81Uebx2zNQd5lFVcCN8ghUlcOdJ
-         PVcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXVjZ19ImtbhDZzrQwudVYn3LrX3G2/HCpSWvAMhxZQhBsf/bpvfa8ROgr3fxoTlFAJMWcUfQc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyiw7LLJzHwVyoaIrSQ14SSbqJ+dDVFHkZQAWCdLe6FuQA/Gy44
-	12ngi+n8ha2QE4d0hXaTrIW77l1ar+crzmXNJXuOz1hZ958k6N3BbFyMNI6RXIAB4ImPiSVZhUp
-	oX0kVJhb/tJGMYwCNUn01nKxxq7pAykU=
-X-Gm-Gg: ASbGncsUBkXBws20x4VY68WH56yPC/EXZw2orGnWrTcKEf/vqxmCaUzt1M2XAb2nF4S
-	aiALV+X5ji8thjtSpQP0xiJqg2k+EkbG+PmoWLa56BUUU8GVIVWlWWfB7pUEjtf2XWfsLDW7a3p
-	JBdrNo0OekL25kyn/mWwtmxry/zYAvZavetoLx/XsjkLrmnWznnpeIA0tmoSUo6UUvVr477RfNB
-	Q8CAVTc5g5A4iEBLQ80MN4xjhbOzWZ416W36N9zq6mRD7wOgKVqWq9jyafUYKQS8aZqSR6z1DUN
-X-Google-Smtp-Source: AGHT+IHqrPTO438NQAMkf/XDaqLLvBN91MM/ltPzOSvF9R3C/E74okJU9TRrQTl4J+eFhQEFIVIoxZMoj6Dwi1L5XuA=
-X-Received: by 2002:a17:90b:582e:b0:32e:6fae:ba52 with SMTP id
- 98e67ed59e1d1-341a6c1e406mr1412213a91.6.1762303593093; Tue, 04 Nov 2025
- 16:46:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvEGlh9U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E835C4CEF7;
+	Wed,  5 Nov 2025 00:48:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762303687;
+	bh=hUdQ8XRuP4ZBbUv7bDFNV7qCPPD1JefMdtZdnxWjraA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=pvEGlh9UW20vstKql4/xpmryNKumj2hSDGRL2pvI3bA5VULfZRiP4Yoi+5pEZZhwL
+	 PGmseipdQsauexbYagQAtw9H6RtbeNs69VqxZp/cyuWXPLXFCMCqlaZeR1sc3IWQJB
+	 4ux4PA99p4gm9nB/la6y3ekAJU2I0VV6WAhmrLBdMxveNJwrvm45SyuPkbK2SI8JWp
+	 hp9ZbFjPQkyA5CAsaxhBGFXDd4XqpURIcZfE6b13RyAqp+9Mi2w3lBJzZomvAExEtE
+	 mpeQg9J0KFoel0iofyrmpSpWOemdCfAhspQ2O+OKIoykfB/R+Q3NiBVgzzeZ83LGSY
+	 ESBuYy4f+7OJQ==
+Date: Tue, 4 Nov 2025 16:48:04 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Hangbin Liu <liuhangbin@gmail.com>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jan Stancek
+ <jstancek@redhat.com>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ =?UTF-8?B?QXNiasO4cm4=?= Sloth =?UTF-8?B?VMO4bm5lc2Vu?= <ast@fiberby.net>,
+ Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, Ido
+ Schimmel <idosch@nvidia.com>, Guillaume Nault <gnault@redhat.com>, Petr
+ Machata <petrm@nvidia.com>, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] netlink: specs: update rt-rule src/dst
+ attribute types to support IPv4 addresses
+Message-ID: <20251104164804.540a9b8d@kernel.org>
+In-Reply-To: <aQnG8IYsY3oyYekf@fedora>
+References: <20251029082245.128675-1-liuhangbin@gmail.com>
+	<20251029082245.128675-3-liuhangbin@gmail.com>
+	<20251029163742.3d96c18d@kernel.org>
+	<aQnG8IYsY3oyYekf@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251104172652.1746988-1-ameryhung@gmail.com> <20251104172652.1746988-5-ameryhung@gmail.com>
- <CAEf4BzbqEsZbO4AjKn7iRQCzKVSD0db9WdG7uKXMCA_4ueFYig@mail.gmail.com> <CAMB2axNi1SRT5=SuRZJayt+az6GM63w++T6stwHEHXHfdMce_Q@mail.gmail.com>
-In-Reply-To: <CAMB2axNi1SRT5=SuRZJayt+az6GM63w++T6stwHEHXHfdMce_Q@mail.gmail.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Tue, 4 Nov 2025 16:46:17 -0800
-X-Gm-Features: AWmQ_bnqCa_p9Fq8mNorYc26Xaa218oJDAFar8ROmG6oXG-GVkull2R4bCd_zuU
-Message-ID: <CAEf4BzaQ=z8qG0q5UgquzPuF5LwWB2wqUHtdnL72kN2PkmK_9Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v5 4/7] libbpf: Add support for associating BPF
- program with struct_ops
-To: Amery Hung <ameryhung@gmail.com>
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, alexei.starovoitov@gmail.com, 
-	andrii@kernel.org, daniel@iogearbox.net, tj@kernel.org, martin.lau@kernel.org, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 4, 2025 at 3:39=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wro=
-te:
->
-> On Tue, Nov 4, 2025 at 3:27=E2=80=AFPM Andrii Nakryiko
-> <andrii.nakryiko@gmail.com> wrote:
-> >
-> > On Tue, Nov 4, 2025 at 9:27=E2=80=AFAM Amery Hung <ameryhung@gmail.com>=
- wrote:
-> > >
-> > > Add low-level wrapper and libbpf API for BPF_PROG_ASSOC_STRUCT_OPS
-> > > command in the bpf() syscall.
-> > >
-> > > Signed-off-by: Amery Hung <ameryhung@gmail.com>
-> > > ---
-> > >  tools/lib/bpf/bpf.c      | 19 +++++++++++++++++++
-> > >  tools/lib/bpf/bpf.h      | 21 +++++++++++++++++++++
-> > >  tools/lib/bpf/libbpf.c   | 30 ++++++++++++++++++++++++++++++
-> > >  tools/lib/bpf/libbpf.h   | 16 ++++++++++++++++
-> > >  tools/lib/bpf/libbpf.map |  2 ++
-> > >  5 files changed, 88 insertions(+)
-> > >
-> > > diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
-> > > index b66f5fbfbbb2..21b57a629916 100644
-> > > --- a/tools/lib/bpf/bpf.c
-> > > +++ b/tools/lib/bpf/bpf.c
-> > > @@ -1397,3 +1397,22 @@ int bpf_prog_stream_read(int prog_fd, __u32 st=
-ream_id, void *buf, __u32 buf_len,
-> > >         err =3D sys_bpf(BPF_PROG_STREAM_READ_BY_FD, &attr, attr_sz);
-> > >         return libbpf_err_errno(err);
-> > >  }
-> > > +
-> > > +int bpf_prog_assoc_struct_ops(int prog_fd, int map_fd,
-> > > +                             struct bpf_prog_assoc_struct_ops_opts *=
-opts)
-> > > +{
-> > > +       const size_t attr_sz =3D offsetofend(union bpf_attr, prog_ass=
-oc_struct_ops);
-> > > +       union bpf_attr attr;
-> > > +       int err;
-> > > +
-> > > +       if (!OPTS_VALID(opts, bpf_prog_assoc_struct_ops_opts))
-> > > +               return libbpf_err(-EINVAL);
-> > > +
-> > > +       memset(&attr, 0, attr_sz);
-> > > +       attr.prog_assoc_struct_ops.map_fd =3D map_fd;
-> > > +       attr.prog_assoc_struct_ops.prog_fd =3D prog_fd;
-> > > +       attr.prog_assoc_struct_ops.flags =3D OPTS_GET(opts, flags, 0)=
-;
-> > > +
-> > > +       err =3D sys_bpf(BPF_PROG_ASSOC_STRUCT_OPS, &attr, attr_sz);
-> > > +       return libbpf_err_errno(err);
-> > > +}
-> > > diff --git a/tools/lib/bpf/bpf.h b/tools/lib/bpf/bpf.h
-> > > index e983a3e40d61..1f9c28d27795 100644
-> > > --- a/tools/lib/bpf/bpf.h
-> > > +++ b/tools/lib/bpf/bpf.h
-> > > @@ -733,6 +733,27 @@ struct bpf_prog_stream_read_opts {
-> > >  LIBBPF_API int bpf_prog_stream_read(int prog_fd, __u32 stream_id, vo=
-id *buf, __u32 buf_len,
-> > >                                     struct bpf_prog_stream_read_opts =
-*opts);
-> > >
-> > > +struct bpf_prog_assoc_struct_ops_opts {
-> > > +       size_t sz;
-> > > +       __u32 flags;
-> > > +       size_t :0;
-> > > +};
-> > > +#define bpf_prog_assoc_struct_ops_opts__last_field flags
-> > > +
-> > > +/**
-> > > + * @brief **bpf_prog_assoc_struct_ops** associates a BPF program wit=
-h a
-> > > + * struct_ops map.
-> > > + *
-> > > + * @param prog_fd FD for the BPF program
-> > > + * @param map_fd FD for the struct_ops map to be associated with the=
- BPF program
-> > > + * @param opts optional options, can be NULL
-> > > + *
-> > > + * @return 0 on success; negative error code, otherwise (errno is al=
-so set to
-> > > + * the error code)
-> > > + */
-> > > +LIBBPF_API int bpf_prog_assoc_struct_ops(int prog_fd, int map_fd,
-> > > +                                        struct bpf_prog_assoc_struct=
-_ops_opts *opts);
-> > > +
-> > >  #ifdef __cplusplus
-> > >  } /* extern "C" */
-> > >  #endif
-> > > diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> > > index fbe74686c97d..260e1feaa665 100644
-> > > --- a/tools/lib/bpf/libbpf.c
-> > > +++ b/tools/lib/bpf/libbpf.c
-> > > @@ -13891,6 +13891,36 @@ int bpf_program__set_attach_target(struct bp=
-f_program *prog,
-> > >         return 0;
-> > >  }
-> > >
-> > > +int bpf_program__assoc_struct_ops(struct bpf_program *prog, struct b=
-pf_map *map,
-> > > +                                 struct bpf_prog_assoc_struct_ops_op=
-ts *opts)
-> > > +{
-> > > +       int prog_fd;
-> > > +
-> > > +       prog_fd =3D bpf_program__fd(prog);
-> > > +       if (prog_fd < 0) {
-> > > +               pr_warn("prog '%s': can't associate BPF program witho=
-ut FD (was it loaded?)\n",
-> > > +                       prog->name);
-> > > +               return -EINVAL;
-> > > +       }
-> > > +
-> > > +       if (prog->type =3D=3D BPF_PROG_TYPE_STRUCT_OPS) {
-> > > +               pr_warn("prog '%s': can't associate struct_ops progra=
-m\n", prog->name);
-> > > +               return -EINVAL;
-> > > +       }
-> > > +
-> > > +       if (map->fd < 0) {
-> >
-> > heh, this is a bug. we use create_placeholder_fd() to create fixed FDs
-> > associated with maps, and later we replace them with the real
-> > underlying BPF map kernel objects. It's all details, but the point is
-> > that this won't detect map that wasn't created. Use bpf_map__fd()
-> > instead, it handles that correctly.
->
-> I saw quite a few libbpf API doing this check (e.g., bpf_map__pin(),
-> bpf_link__update_map(), bpf_map__attach_struct_ops()). Should we also
-> fix them?
+On Tue, 4 Nov 2025 09:27:12 +0000 Hangbin Liu wrote:
+> On Wed, Oct 29, 2025 at 04:37:42PM -0700, Jakub Kicinski wrote:
+> > On Wed, 29 Oct 2025 08:22:44 +0000 Hangbin Liu wrote:  
+> > >        -
+> > >          name: dst
+> > > -        type: u32
+> > > +        type: binary
+> > > +        display-hint: ipv4
+> > >        -
+> > >          name: src
+> > > -        type: u32
+> > > +        type: binary
+> > > +        display-hint: ipv4  
+> > 
+> > This will be annoying For C / C++, and you didn't set the max len 
+> > so I think we'll also have to malloc each time. Do we not support
+> > display-hint for scalars?  
+> 
+> Hi Jakub,
+> 
+> I just realize that most of the address/src/dst in rt-addr/route are
+> dual stack. The same with FRA_DST. We can't simply change binary to u32.
+> So can we keep this u32 -> binary change?
 
-yep, probably :)
-
->
-> >
-> > > +               pr_warn("map '%s': can't associate BPF map without FD=
- (was it created?)\n", map->name);
-> > > +               return -EINVAL;
-> > > +       }
-> > > +
-> > > +       if (!bpf_map__is_struct_ops(map)) {
-> > > +               pr_warn("map '%s': can't associate non-struct_ops map=
-\n", map->name);
-> > > +               return -EINVAL;
-> > > +       }
-> > > +
-> > > +       return bpf_prog_assoc_struct_ops(prog_fd, map->fd, opts);
-> > > +}
-> > > +
-> > >  int parse_cpu_mask_str(const char *s, bool **mask, int *mask_sz)
-> > >  {
-> > >         int err =3D 0, n, len, start, end =3D -1;
-> > > diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-> > > index 5118d0a90e24..45720b7c2aaa 100644
-> > > --- a/tools/lib/bpf/libbpf.h
-> > > +++ b/tools/lib/bpf/libbpf.h
-> > > @@ -1003,6 +1003,22 @@ LIBBPF_API int
-> > >  bpf_program__set_attach_target(struct bpf_program *prog, int attach_=
-prog_fd,
-> > >                                const char *attach_func_name);
-> > >
-> > > +struct bpf_prog_assoc_struct_ops_opts; /* defined in bpf.h */
-> > > +
-> > > +/**
-> > > + * @brief **bpf_program__assoc_struct_ops()** associates a BPF progr=
-am with a
-> > > + * struct_ops map.
-> > > + *
-> > > + * @param prog BPF program
-> > > + * @param map struct_ops map to be associated with the BPF program
-> > > + * @param opts optional options, can be NULL
-> > > + *
-> > > + * @return error code; or 0 if no error occurred.
-> >
-> > we normally specify returns like so:
-> >
-> > @return 0, on success; negative error code, otherwise
-> >
-> > keep it consistent?
->
-> Okay. Will change.
->
-> BTW. The return comment is copied from bpf_program__set_attach_target().
-
-well, we should strive for consistency :)
-
->
-> >
-> > > + */
-> > > +LIBBPF_API int
-> > > +bpf_program__assoc_struct_ops(struct bpf_program *prog, struct bpf_m=
-ap *map,
-> > > +                             struct bpf_prog_assoc_struct_ops_opts *=
-opts);
-> > > +
-> > >  /**
-> > >   * @brief **bpf_object__find_map_by_name()** returns BPF map of
-> > >   * the given name, if it exists within the passed BPF object
-> > > diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
-> > > index 8ed8749907d4..84fb90a016c9 100644
-> > > --- a/tools/lib/bpf/libbpf.map
-> > > +++ b/tools/lib/bpf/libbpf.map
-> > > @@ -451,4 +451,6 @@ LIBBPF_1.7.0 {
-> > >         global:
-> > >                 bpf_map__set_exclusive_program;
-> > >                 bpf_map__exclusive_program;
-> > > +               bpf_prog_assoc_struct_ops;
-> > > +               bpf_program__assoc_struct_ops;
-> > >  } LIBBPF_1.6.0;
-> > > --
-> > > 2.47.3
-> > >
+Ah, should have looked at more context..
+Yes, and in that case without the display-hint?
