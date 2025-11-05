@@ -1,174 +1,129 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8233F280339
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 18:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C642836AF;
+	Wed,  5 Nov 2025 18:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762367508; cv=none; b=Q+Pl8sXJpfisaQ8ftYcdOszTp1ygu+5aIDNlE2H9Cra41yh8SgSe2XIYjzjAAxw8SOb3tNLsc6xah4OuykN3G/xqJ31SisY+ws0p4YgQChgCA3c8xDMtat86FTvJbZ1Ma8Sx1YIqIUMXabEJZMndeAiYkqmjQZfLoiPl3ukNHeM=
+	t=1762367581; cv=none; b=M45/7DubwCarLNX/VeR0FXSlxYuH5+IpjF3thjmfLgdzxLayL1bLDjuOSpXjkCUzsc5VqVqO+nnRLYnpq06xPdTYls8QIvIyc7QuAuMCZr7Iq05bplL86s6YfVcqxFE86CaGgvjRt4slcHOW7yC/TPwzO2g+FE3UxYztNWpwk7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762367508; c=relaxed/simple;
-	bh=cSUvPFHauqZYS/CgsZ8XBajx3T1TWYSiO6rHtLaKjfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SFS9bnep10r4h0DD+ZNKi3etRxoJwkJuB9d9O5iIqJSXnxCSNiIqabbeshDhcqb4ZWF1peZSM9Yi4vTpVPF+I2JKCc9fL3zHNTuw2awbZLasjBzVL0UeHFtgRbwxC7Em0pTW6ph/uLOd1//eeQbYnwuhSOOqAG7NskK29lIFVYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=moYvwvA2; arc=none smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1762367581; c=relaxed/simple;
+	bh=YPqkNXL4NHX4RHOQWGnzf+GIF8t49H/f/uCLLW+fk58=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eusxrt0/gI5mvaBXytGy4Jp5jdbFc41b4ZvghCEIeMdcQtRcKAyv6FL7GjZii2dJICrego0Y4vJO0IPwbPb72RFacWuQH/BWSnhiIBShWHE7VMwBGcWM9LGrX0kL6+0Bml+BK2GDVLSf8zLbT72keVshvQN0cdI9hSFFETok3v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=ou3sV+P9; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="moYvwvA2"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63d0692136bso195808d50.1
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 10:31:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762367505; x=1762972305; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zlbREYCC7hZZFYU/7VKZMqA+QAfKisdyFnGiY5+x3Ac=;
-        b=moYvwvA27zXvENPapH0CaBNoJCOO2eyxO4MW9MSUXnxSYepCGfx5rRQ6FgVuG/lt2X
-         45x4G+Ctsj8Hd0Sg2DAqgO2m2eBINFzXrXkUfARBiR+MH1y1hthM4QYAJ+EERt2F+Z0g
-         wX/5Ev8R59JN71QtkO808CVEmEcRE+s7rVj237LHFL/lap/bLtD7Rgqgq7H/cNKNYQiR
-         rOKj0LOmWWseMg8CnEPFyxf4Q3cGbn1yxP7CEYni0kG0XWZbLLRwzHOxcenHcWPP/ry5
-         54ewXiBejpDc5AbWydwntAfQzC8b489rHVa2OhSvIoaJ4jI9xRCOGosICz6iRgRsD7+U
-         XY9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762367505; x=1762972305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zlbREYCC7hZZFYU/7VKZMqA+QAfKisdyFnGiY5+x3Ac=;
-        b=iaYAKo+mU35I4Y4zbxvxtE2URegAAa9hY5bHf655tNcVxh8qNbl6vYln5xJa75t/PT
-         EcTStRk5h8DaH0N/0abPxk8c8ofp8eztoJIVtXu5vql+awb6IyVRbOZj+DHMKvsEOTL4
-         wQQuohVQ1AO6Rzi6cvrEV8yQCeTw29iiOGpkMfGzx00YHnZqmrM9GEN5wo6rvqObMZ65
-         rFho8PNyXsjZ9/hK66oLSa4g0AEiTW6Q5FdDwQV3OCQwqk56G/9Wrj9pVUw5VXf9olbC
-         VtKPCpWy03fA6Ybkxffqk5bXbFrJfB8TouAhn5jDeEsfRWfDN5lWAbGc1cwMcJjOTYdK
-         HXnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIM9GEOgASO/gvZhz1RFwxofrd6uC+uu+9UxHz15rfr5p6R0QR++G+09U1Se0GDzmuFkVZ9wQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzanrqBOGZjPl/sRNmPnnOVXifESHbu5TkIrQF5I9LB+IiWC+vU
-	QkJMMARVFxaxxWRPaT3TEM0D1l4DaYgLwzUkJCFl4/zJMDlP8xuMghDn8G3undOmDvOcVE9EreQ
-	Z5sjh2WZDD2uYTwgKuj91f6mpWEu1hac63PTmqQhm
-X-Gm-Gg: ASbGnctJtSLh083CpSUPHuxAgyAd4FPdPZo4IqTA/pffX+FFQX/RdetrEKuq7iuUzXK
-	TZC+ucE8JbkCCM7gEo2trvXFMrbA+VtgdXdSo6n09yPq7JnVCmIQaZwC7PaKb4SlsEN8+qqrqdp
-	xyUm+8w2uzvBDllHqQtMNVE+WNpf8QKehs1crr8ucybxmjq3zcp+GarBGjsb+eAT0xH4hLWnnuX
-	qpk3012iDPaFDmsDj7YDG1Y2Y1Z0SjxxDzpg3T7MgY8hDXwncPOSjHyd1tmihnqsjCfsFU/yyRc
-	hU+e1eqI9+qmJGEj3CD90YXb7di9SYqzuiY3
-X-Google-Smtp-Source: AGHT+IEOY8cyE6iEXUXwkiFxfgFzq5OVSEUXJFxiV5kaSFWjZNeby5wEMszhmBL8q+8wcQrvfgB84R8XK2eZFBODVvM=
-X-Received: by 2002:a53:c05a:0:10b0:636:d4ab:a507 with SMTP id
- 956f58d0204a3-63fd34ccd13mr3319244d50.16.1762367505139; Wed, 05 Nov 2025
- 10:31:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="ou3sV+P9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1762367570;
+	bh=YPqkNXL4NHX4RHOQWGnzf+GIF8t49H/f/uCLLW+fk58=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ou3sV+P9ZLQE6Hoixp/XsfzkKhEldNeTXAHmCSdMU2Y+PGbvQ8kSbL/ymcSx5wvLB
+	 C4uNj8V+LANN/Cs6Y+jpOaMvevs9pRxu/SHOea6cdPyCVh2pDLJcWTE7PHgm8AuN4K
+	 e6P+xRsj4q2RjuC/AwzBc4zAu1NiDu5e9JrR4wq9TGNbO4cnz3RaSXpZpq3DkSWJKZ
+	 sAjZjVvhSyo3NPuG8oqk4YdNpXLIK9E2x53sN/xJNbsEKx31afuUEV8lvuJTLcxk7h
+	 o0Iw99jIw0v5+SD0Ogu+CpZHC/BsPoL3KZAhLAhux5PbRbIP3Qa9LP/fiXxjeT5bFk
+	 9p6ZjQ2yzWYAQ==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 63BED600BF;
+	Wed,  5 Nov 2025 18:32:47 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id 4C03B2052FD; Wed, 05 Nov 2025 18:32:25 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jordan Rife <jordan@jrife.io>
+Subject: [PATCH net-next v3 06/11] uapi: wireguard: move flag enums
+Date: Wed,  5 Nov 2025 18:32:15 +0000
+Message-ID: <20251105183223.89913-7-ast@fiberby.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251105183223.89913-1-ast@fiberby.net>
+References: <20251105183223.89913-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251022182301.1005777-1-joshwash@google.com> <20251022182301.1005777-3-joshwash@google.com>
- <20251023171445.2d470bb3@kernel.org> <CAJcM6BFTb+ASBwO+5sMfLZyyO4+MhWKp3AweXMJrgis9P7ygag@mail.gmail.com>
-In-Reply-To: <CAJcM6BFTb+ASBwO+5sMfLZyyO4+MhWKp3AweXMJrgis9P7ygag@mail.gmail.com>
-From: Ankit Garg <nktgrg@google.com>
-Date: Wed, 5 Nov 2025 10:31:32 -0800
-X-Gm-Features: AWmQ_bkub-0DPZQYHW6NWgclx5Hi6PlhiC9qH2yVCOKIyjJd37QVjH-PxzZDmqc
-Message-ID: <CAJcM6BE7qg464oLOJZtVEdYjaki422fxvUWFsA_=CjOAJeqZ_g@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/3] gve: Allow ethtool to configure rx_buf_len
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Joshua Washington <joshwash@google.com>, netdev@vger.kernel.org, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Jordan Rhee <jordanrhee@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Ziwei Xiao <ziweixiao@google.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:XDP (eXpress Data Path):Keyword:(?:b|_)xdp(?:b|_)" <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 24, 2025 at 11:17=E2=80=AFAM Ankit Garg <nktgrg@google.com> wro=
-te:
->
-> On Thu, Oct 23, 2025 at 5:14=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> >
-> > On Wed, 22 Oct 2025 11:22:24 -0700 Joshua Washington wrote:
-> > > +     if (priv->rx_cfg.packet_buffer_size !=3D SZ_2K) {
-> > > +             netdev_warn(dev,
-> > > +                         "XDP is not supported for Rx buf len %d. Se=
-t Rx buf len to %d before using XDP.\n",
-> > > +                         priv->rx_cfg.packet_buffer_size, SZ_2K);
-> > > +             return -EOPNOTSUPP;
-> > > +     }
-> >
-> > Please plumb extack thru to here. It's inside struct netdev_bpf
-> >
->
-> Using extack just for this log will make it inconsistent with other
-> logs in this method. Would it be okay if I send a fast follow patch to
-> use exstack in this method and others?
->
-> > >       max_xdp_mtu =3D priv->rx_cfg.packet_buffer_size - sizeof(struct=
- ethhdr);
-> > >       if (priv->queue_format =3D=3D GVE_GQI_QPL_FORMAT)
-> > >               max_xdp_mtu -=3D GVE_RX_PAD;
-> > > @@ -2050,6 +2057,44 @@ bool gve_header_split_supported(const struct g=
-ve_priv *priv)
-> > >               priv->queue_format =3D=3D GVE_DQO_RDA_FORMAT && !priv->=
-xdp_prog;
-> > >  }
-> > >
-> > > +int gve_set_rx_buf_len_config(struct gve_priv *priv, u32 rx_buf_len,
-> > > +                           struct netlink_ext_ack *extack,
-> > > +                           struct gve_rx_alloc_rings_cfg *rx_alloc_c=
-fg)
-> > > +{
-> > > +     u32 old_rx_buf_len =3D rx_alloc_cfg->packet_buffer_size;
-> > > +
-> > > +     if (rx_buf_len =3D=3D old_rx_buf_len)
-> > > +             return 0;
-> > > +
-> > > +     if (!gve_is_dqo(priv)) {
-> > > +             NL_SET_ERR_MSG_MOD(extack,
-> > > +                                "Modifying Rx buf len is only suppor=
-ted with DQO format");
-> > > +             return -EOPNOTSUPP;
-> > > +     }
-> > > +
-> > > +     if (priv->xdp_prog && rx_buf_len !=3D SZ_2K) {
-> > > +             NL_SET_ERR_MSG_MOD(extack,
-> > > +                                "Rx buf len can only be 2048 when XD=
-P is on");
-> > > +             return -EINVAL;
-> > > +     }
-> > > +
-> > > +     if (rx_buf_len > priv->max_rx_buffer_size) {
-> >
-> > This check looks kinda pointless given the check right below against
-> > the exact sizes?
-> >
->
-> My intent was to code defensively against device accidently advertising
-> anything in [2k+1,4k) as max buffer size. I will remove this check.
->
+Move the wg*_flag enums, so that they are defined above the
+attribute set enums, as ynl-gen would place them.
 
-After taking another look, an additional check is still needed to
-handle scenario when device doesn't advertise support for 4k buffers.
-I reworked this check (and added a comment) in v2 which hopefully
-conveys the intent better.
+This is an incremental step towards adopting an UAPI header
+generated by ynl-gen. This is split out to keep the patches readable.
 
+This is a trivial patch with no behavioural changes intended.
 
-> > > +             NL_SET_ERR_MSG_FMT_MOD(extack,
-> > > +                                    "Rx buf len exceeds the max supp=
-orted value of %u",
-> > > +                                    priv->max_rx_buffer_size);
-> > > +             return -EINVAL;
-> > > +     }
-> > > +
-> > > +     if (rx_buf_len !=3D SZ_2K && rx_buf_len !=3D SZ_4K) {
-> > > +             NL_SET_ERR_MSG_MOD(extack,
-> > > +                                "Rx buf len can only be 2048 or 4096=
-");
-> > > +             return -EINVAL;
-> > > +     }
-> > > +     rx_alloc_cfg->packet_buffer_size =3D rx_buf_len;
-> > > +
-> > > +     return 0;
-> > > +}
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
+---
+ include/uapi/linux/wireguard.h | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/include/uapi/linux/wireguard.h b/include/uapi/linux/wireguard.h
+index 3ebfffd61269..a2815f4f2910 100644
+--- a/include/uapi/linux/wireguard.h
++++ b/include/uapi/linux/wireguard.h
+@@ -15,6 +15,20 @@ enum wgdevice_flag {
+ 	WGDEVICE_F_REPLACE_PEERS = 1U << 0,
+ 	__WGDEVICE_F_ALL = WGDEVICE_F_REPLACE_PEERS
+ };
++
++enum wgpeer_flag {
++	WGPEER_F_REMOVE_ME = 1U << 0,
++	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
++	WGPEER_F_UPDATE_ONLY = 1U << 2,
++	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
++			 WGPEER_F_UPDATE_ONLY
++};
++
++enum wgallowedip_flag {
++	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
++	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
++};
++
+ enum wgdevice_attribute {
+ 	WGDEVICE_A_UNSPEC,
+ 	WGDEVICE_A_IFINDEX,
+@@ -29,13 +43,6 @@ enum wgdevice_attribute {
+ };
+ #define WGDEVICE_A_MAX (__WGDEVICE_A_LAST - 1)
+ 
+-enum wgpeer_flag {
+-	WGPEER_F_REMOVE_ME = 1U << 0,
+-	WGPEER_F_REPLACE_ALLOWEDIPS = 1U << 1,
+-	WGPEER_F_UPDATE_ONLY = 1U << 2,
+-	__WGPEER_F_ALL = WGPEER_F_REMOVE_ME | WGPEER_F_REPLACE_ALLOWEDIPS |
+-			 WGPEER_F_UPDATE_ONLY
+-};
+ enum wgpeer_attribute {
+ 	WGPEER_A_UNSPEC,
+ 	WGPEER_A_PUBLIC_KEY,
+@@ -52,10 +59,6 @@ enum wgpeer_attribute {
+ };
+ #define WGPEER_A_MAX (__WGPEER_A_LAST - 1)
+ 
+-enum wgallowedip_flag {
+-	WGALLOWEDIP_F_REMOVE_ME = 1U << 0,
+-	__WGALLOWEDIP_F_ALL = WGALLOWEDIP_F_REMOVE_ME
+-};
+ enum wgallowedip_attribute {
+ 	WGALLOWEDIP_A_UNSPEC,
+ 	WGALLOWEDIP_A_FAMILY,
+-- 
+2.51.0
+
