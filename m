@@ -1,160 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3892735971B
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 21:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F90359F8F;
+	Wed,  5 Nov 2025 21:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762376839; cv=none; b=PwQ6rsKvU5wFp8F2LujeX4/uVCcDWoq7IFn9NMomXKwWyIjzd+AJEipgY3B17FK7klkgrb/zHjcyfPronffGqKXcJ94gOqO7P6XqbSkP/D5NKyLDLl0o/Wr1Z5SV2rJWKem1oB6SuRY8iIPrtmaRmq1l3vq4Y9IHumBZilc4S9Y=
+	t=1762376840; cv=none; b=LTjd+Ab+pli75Act9HbyF3TcydtMKFJy5788BTrf50e26MEpGmOsilbKxII1dMSL9RTH8/iBHjVITdgCzDPTv3LWHuh7Dh61DcGMbCZiK/m2VznyFcQlaHkiPDuszsG6Os3QMLfc5FMqdetd9HGRuKqCxZOagxasDFepQVDvufo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762376839; c=relaxed/simple;
-	bh=iqxIG0ZzVgcJVaH4z2Ckbzsoowt78usB4UinxMgSWn0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s9QpB10kCp1Lz4acuCn/XAKiARcUNdNqzGyD4beEA9WoaXdMYxWZF6AiJvGHE0OTtjiLpX6La0Xo+sdV7wrdohwr0sSQvfHKJzlwWTo9Om98rWy244RsPVEbFOqDqN1bpZjye3Jlx2braYZSnM+YQ9K81y0hUF5rZwZl93RN5Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WsnSOrQR; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1762376840; c=relaxed/simple;
+	bh=Rz519K4RzNFN9C7FTifkrc2s4js15D9og5elk9stWlE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hOjYBwXqSogA4KMDjY3UjeaSePNR5twPcbJxA9UBSPeZ7fDv6BjKB7NWmBcRQGlm5vU54yRe8/y47SMIfRmy82SqBkcIZcC1+bOsX2jOb/lfnXPWvj4DJxK5LpAcF8RUgUQgzeysoDPq7QDZ4bpAjr+j8jtjj5FEU7OHxJW7PRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TIAbm/F3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WsnSOrQR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762376838; x=1793912838;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=iqxIG0ZzVgcJVaH4z2Ckbzsoowt78usB4UinxMgSWn0=;
-  b=WsnSOrQRZIZ5s22Ghdm4/nA+baK3Y2hOaE/lQ/Bdzq/5Lz3fxypchHZq
-   daQPRIqdLC3mO+D2lZLYaXyrz5jWVADQK0fck/fvRGfMcIZCjfr9g6Sey
-   uqyMpuVgkGFevxcje6Xe6S30LJ+qHBsZbm4xOEXS6Y1kmUO9jZnL9une7
-   9zFY8NSQkXeO9WM/pOlvuOI5P7TrkIHx44AGifdzVcuRxQmZ2HlD8bL2D
-   Whub3BA0bGUpFXeY0Vkgn7NpR4G+TcOx/szWiBX5Zl2rV5fFLvSa8OCzS
-   ZeIP5ieNrq9Xu4qrry2UwE9KZzMjbQRWV8xxKd9B9IJX89fvg4j7q+exI
-   w==;
-X-CSE-ConnectionGUID: yyMgZL7hQ/aDZ+kKuEBuxA==
-X-CSE-MsgGUID: hVPEj8XKSvWu+voIyY8EoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="64201032"
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
-   d="scan'208";a="64201032"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 13:07:13 -0800
-X-CSE-ConnectionGUID: qKtUDBLQRuqwpU1PgQolPA==
-X-CSE-MsgGUID: HM/ECcWmTxSV4sivYoZHIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,282,1754982000"; 
-   d="scan'208";a="187513290"
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.90]) ([10.166.28.90])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2025 13:07:13 -0800
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 05 Nov 2025 13:06:36 -0800
-Subject: [PATCH iwl-next v2 4/9] ice: move prev_pkt from ice_txq_stats to
- ice_tx_ring
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIAbm/F3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798D5C116D0;
+	Wed,  5 Nov 2025 21:07:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762376840;
+	bh=Rz519K4RzNFN9C7FTifkrc2s4js15D9og5elk9stWlE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TIAbm/F3lkoEFLNp3ZLWekoviyl6iWh5KqGoC3jN5pAXOi5L/sWwbTneX1Sd1f2Kl
+	 7zL5xqMjp906phdgY3w8G4Loes9IQaHO6Jg1QGxIqMQsUXfkKAHhFb1mPBnHUnse7X
+	 h2mJe/zjqzeSRH2cgUsMRXuxYaohkVkO/lgKbv6DBati8qhfwhtKaoi7hBjPHR4dMv
+	 8b9ApEnTcxqi22/RVPbXSqTskMNkQjcdP1Pb7XbijRLMlZfhJpdGLk1g9A53gP9snv
+	 vGCzTSX8nxacEQ8fa/P2hESWu04ejojFuxjWPxaXBvPpcyAYLwEkBrNtfCM7qw2bfC
+	 Dnzv5/9V3vOew==
+From: Frederic Weisbecker <frederic@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 25/31] sched: Switch the fallback task allowed cpumask to HK_TYPE_DOMAIN
+Date: Wed,  5 Nov 2025 22:03:41 +0100
+Message-ID: <20251105210348.35256-26-frederic@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251105210348.35256-1-frederic@kernel.org>
+References: <20251105210348.35256-1-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-jk-refactor-queue-stats-v2-4-8652557f9572@intel.com>
-References: <20251105-jk-refactor-queue-stats-v2-0-8652557f9572@intel.com>
-In-Reply-To: <20251105-jk-refactor-queue-stats-v2-0-8652557f9572@intel.com>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- Jacob Keller <jacob.e.keller@intel.com>
-X-Mailer: b4 0.15-dev-f4b34
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3185;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=iqxIG0ZzVgcJVaH4z2Ckbzsoowt78usB4UinxMgSWn0=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhkzuPfW9PBIP+B9+8Vh1S8rTff+l9u8p5bzRxVnGcx/EJ
- rwy7j7WUcrCIMbFICumyKLgELLyuvGEMK03znIwc1iZQIYwcHEKwESW9TAyfHgicjAx4sKjos2x
- 4cps/9arf9ERj5zzbmEXj0U/T8HKAwz/VLh+Kq54+XRnWbuE618hmy6OJ548mxzeVxWZPfq1/9s
- 6VgA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+Content-Transfer-Encoding: 8bit
 
-The prev_pkt field in ice_txq_stats is used by ice_check_for_hung_subtask
-as a way to detect potential Tx hangs due to missed interrupts.
+Tasks that have all their allowed CPUs offline don't want their affinity
+to fallback on either nohz_full CPUs or on domain isolated CPUs. And
+since nohz_full implies domain isolation, checking the latter is enough
+to verify both.
 
-The value is based on the packet count, but its an int and not really a
-"statistic". The value is signed so that we can use -1 as a "no work
-pending" value. A following change is going to refactor the stats to all
-use the u64_stat_t type and accessor functions. Leaving prev_pkt as the
-lone int feels a bit strange.
+Therefore exclude domain isolation from fallback task affinity.
 
-Instead, move it out of ice_txq_stats and place it in the ice_tx_ring. We
-have 8 bytes still available in the 3rd cacheline, so this move saves a
-small amount of memory. It also shouldn't impact the Tx path heavily since
-its only accessed during initialization and the hang subtask.
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.h | 3 ++-
- drivers/net/ethernet/intel/ice/ice_main.c | 6 +++---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ include/linux/mmu_context.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index 5350eb832ee5..f1fe1775baed 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -138,7 +138,6 @@ struct ice_txq_stats {
- 	u64 restart_q;
- 	u64 tx_busy;
- 	u64 tx_linearize;
--	int prev_pkt; /* negative if no pending Tx descriptors */
- };
- 
- struct ice_rxq_stats {
-@@ -354,6 +353,8 @@ struct ice_tx_ring {
- 
- 	u32 txq_teid;			/* Added Tx queue TEID */
- 
-+	int prev_pkt; /* negative if no pending Tx descriptors */
-+
- #define ICE_TX_FLAGS_RING_XDP		BIT(0)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG1	BIT(1)
- #define ICE_TX_FLAGS_RING_VLAN_L2TAG2	BIT(2)
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 645a2113e8aa..df5da7b4ec62 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -160,7 +160,7 @@ static void ice_check_for_hang_subtask(struct ice_pf *pf)
- 			 * pending work.
- 			 */
- 			packets = ring_stats->stats.pkts & INT_MAX;
--			if (ring_stats->tx_stats.prev_pkt == packets) {
-+			if (tx_ring->prev_pkt == packets) {
- 				/* Trigger sw interrupt to revive the queue */
- 				ice_trigger_sw_intr(hw, tx_ring->q_vector);
- 				continue;
-@@ -170,8 +170,8 @@ static void ice_check_for_hang_subtask(struct ice_pf *pf)
- 			 * to ice_get_tx_pending()
- 			 */
- 			smp_rmb();
--			ring_stats->tx_stats.prev_pkt =
--			    ice_get_tx_pending(tx_ring) ? packets : -1;
-+			tx_ring->prev_pkt =
-+				ice_get_tx_pending(tx_ring) ? packets : -1;
- 		}
- 	}
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index ad76768a4232..30073ed9ca99 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -499,7 +499,7 @@ int ice_setup_tx_ring(struct ice_tx_ring *tx_ring)
- 
- 	tx_ring->next_to_use = 0;
- 	tx_ring->next_to_clean = 0;
--	tx_ring->ring_stats->tx_stats.prev_pkt = -1;
-+	tx_ring->prev_pkt = -1;
- 	return 0;
- 
- err:
-
+diff --git a/include/linux/mmu_context.h b/include/linux/mmu_context.h
+index ac01dc4eb2ce..ed3dd0f3fe19 100644
+--- a/include/linux/mmu_context.h
++++ b/include/linux/mmu_context.h
+@@ -24,7 +24,7 @@ static inline void leave_mm(void) { }
+ #ifndef task_cpu_possible_mask
+ # define task_cpu_possible_mask(p)	cpu_possible_mask
+ # define task_cpu_possible(cpu, p)	true
+-# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_TICK)
++# define task_cpu_fallback_mask(p)	housekeeping_cpumask(HK_TYPE_DOMAIN)
+ #else
+ # define task_cpu_possible(cpu, p)	cpumask_test_cpu((cpu), task_cpu_possible_mask(p))
+ #endif
 -- 
-2.51.0.rc1.197.g6d975e95c9d7
+2.51.0
 
