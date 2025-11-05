@@ -1,194 +1,96 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84A0313E31;
-	Wed,  5 Nov 2025 12:20:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391A1314A6D
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 12:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762345253; cv=none; b=VR/icKdtiJbJI9nd0w7vAclBHb7E5joouPZvlwqyATzZgjox3OQnlUXg9Ew4oxK6kY7pqCiUIIQSsUtoScBdZpqO6yYiP3doW+8zfrWaooxdpQxuqlG15ku6uBQ/BoZ3AzGLMxwM2WnXwRO82NVKeI+t8Ncz7t0dFR/uvv97DMY=
+	t=1762345616; cv=none; b=LeWXoR4IgbFHu+wQfnhDZ2u0zMrcaZdsZHjzytwQn8bmTS1wEbrDxmYOQZO75WVTjapqHvA+4YoPMU2CVb/SpcI+pHp/tH6UR3N5p2MY6P471EBVC84Xcx6ghfPg2gNlqY3NVMXpNruyQUi2Yk4/T3reKsqKJnWEUWEtKt10eHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762345253; c=relaxed/simple;
-	bh=pyj7qmTNusavoGNLjBlRIX6WmyKsA8DEisK3Oj50t1Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VKTfZJJcnvAjqnuDGzPCbH4PeVs5dG9F8EobtcDVdYVKE42TyJ8e9pkA2N6Ph/s6kwcPv2/7cfSz+76of94m/A0Qjeanm/UM88dy+3iC0aLfk0Kj2HXbFPYPE7VHgoM+R+ZlHejEtzpAriA5wvxxq/1X4BTHecENlEkPyeLOLOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=NWaEqdOq; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1762345616; c=relaxed/simple;
+	bh=fcuYPwU4TimMOTUunc+Hh3TCgMbgiRZ/hYuPF3TLqsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOhL/edhEl28wIJB2EOy2SdatPdBNnF5IvPXxpxtHrL1OL5Q8yGSYJuybdbQr3SyJcg9l67kS/wliYG4QBkWgZJvc+/arKXX/7wC1XcQ9EtuANkHasi/UhgttBZ3zBfJKqQirq1rPOWaFstn3KbAfjA2xoFUkN4pfTVWrWJlq3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cA8ICoLX; arc=none smtp.client-ip=74.125.224.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="NWaEqdOq"
-Received: from [129.217.186.196] ([129.217.186.196])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.18.1.10/8.18.1.10) with ESMTPSA id 5A5CKhKS015951
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 5 Nov 2025 13:20:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1762345244;
-	bh=pyj7qmTNusavoGNLjBlRIX6WmyKsA8DEisK3Oj50t1Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NWaEqdOqA55eD06DUC/Xu7qlP3AN/sellLyO/Udk+lUeTnVtfol793XYfhiwXhhSU
-	 sWEKT/jtMunSqDkg/WC/VoyJPa6T7w2OyNuvSFu1Poa7DT4nqRHHFQM7/IGgs/vjSL
-	 Yicj0pgwwkn58JUD3j+cQrZu6WE1Pz2kExpUjRZU=
-Message-ID: <be77736d-6fde-4f48-b774-f7067a826656@tu-dortmund.de>
-Date: Wed, 5 Nov 2025 13:20:43 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cA8ICoLX"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-63cf0df1abbso6980431d50.2
+        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 04:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762345614; x=1762950414; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xVOeN58zyeFjjSDLTxwag0zpnGdW/6CES9AXGiQ47G0=;
+        b=cA8ICoLXD5g6uGkujkgcH2gcWCe5qI+QKM2uu+96hO4hH7SeXyLPsBQ0oSW1JTv171
+         TbZLVBlDyQF5E5gOEv8057dejt/iRAE+stBUjXzpnxwoKqez9k/6pks3YdRgCkHTSbaZ
+         s/9y2rU9AjMiQS2RJgS3ICilBnmnVBluOkD6S2biLI2jT1/tUXDYFjH9CN5r0TQ6iTgy
+         MTDV+NbLNba/ymmHiRWKOFPA/0js3g68+0aN5TBXpWgbPgNhkZDjeHe86oX9OZNapG74
+         T1EKRGGdIYFBEsUzhHToc5Yh75I8Y6ax6iNuEXaIewQriD8ssWVLU3AQiIRjaPBWv0Ea
+         MJ9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762345614; x=1762950414;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xVOeN58zyeFjjSDLTxwag0zpnGdW/6CES9AXGiQ47G0=;
+        b=UWeLDd5PEaEh0ivXesIOyN2adYWJhls02x7T3lMt0f+GNRQIPjRSMC7QBmR+xs8mrX
+         QU8tqg4vnLrI5JNFyAK4ebBgiVCrye8CBvs5DbyJMzETXlWIC1a+1XYbXWLGhEwTTaND
+         L+nQC6eSv5MODhvaGgHOu0JPm8P2q6m/ZLSjLmZCoK3i6I0KHwqVXkB2ivMKddIR5Mge
+         nddTqPE+6H8cYb0Q/pMd7+LRbSxXs99hNvwmIbvRlsvcIt31+D2uIYwhQCW6iOyvEjiY
+         eDa4kT01yv4iSZEA63HMvFNgbAuiF/Oi0+8886VFBaxBEUFeldTZezuC2gtj/93qitnm
+         1Ncw==
+X-Gm-Message-State: AOJu0YyEi0dujT3evm2tR71Kse7F+sZUuEAIPJqPWJaubDYvRtSqAqzp
+	EOAY/NcQV6MVI8laviiEWd1pGEO+A6Dv/ENcV2ITwaLb5B/FMYlx8eRB
+X-Gm-Gg: ASbGncssRJmZTuxrHCEjcmG/ZffbDTb5KNH4ah7J5s9LcQDXCzncvXQioGBSOMiuijs
+	7FclYNzb2T5rxsiPz5Hl31IUykRW6oihUH0HYCJcqe027kiXdBMXXgqXjVEHyQz+GcHjC9Z226L
+	23QdZeG2xcp6oK/ZRT1r6DLEJtJrrEgb2Ki35vL25S72+nTQaxLXTiwrdKDKoVgKTefbxvfpGqJ
+	Z7C8qd1Mx6kHWQBlsUjODMv8w/Bn8wrk84suUDj+6bDobiY4lD0XbH3NjFcBFeyvSOv8XYdpK6b
+	vbbC1rUvjOOgxAz9WbZn/Mbr+LZ38U6ONK5Sq2wltE+TY5KvfReK4T0/Jbrq+EyW+8pQKFqwmEv
+	bLiUGO1PevnkrniW2b8xSzdCQ6cc8FOd2VJU7b69Ca7iBYuIo2SVLMb9IuGuiPsiY/yCK8PUa6v
+	AOARgu/gwmV2nVIfh4W78v4HKLtsuevQ==
+X-Google-Smtp-Source: AGHT+IEFlvx4JyuDk5g+CiYUHaEWVZiY2cIIua5bWi3AU8zL57bRa1V38yrfBU1JtU0MOAk5bZ8jnA==
+X-Received: by 2002:a05:690e:d45:b0:63f:bc75:6ead with SMTP id 956f58d0204a3-63fd34b5560mr2320123d50.9.1762345614071;
+        Wed, 05 Nov 2025 04:26:54 -0800 (PST)
+Received: from hoboy.vegasvil.org ([2600:1700:2430:6f6f:e2d5:5eff:fea5:802f])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7869202ed97sm18637177b3.57.2025.11.05.04.26.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 04:26:53 -0800 (PST)
+Date: Wed, 5 Nov 2025 04:26:50 -0800
+From: Richard Cochran <richardcochran@gmail.com>
+To: Tim Hostetler <thostet@google.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, Kuniyuki Iwashima <kuniyu@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: Re: [PATCH net-next v2] ptp: Return -EINVAL on ptp_clock_register if
+ required ops are NULL
+Message-ID: <aQtCis59KXvcQSqO@hoboy.vegasvil.org>
+References: <20251104225915.2040080-1-thostet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v1 1/1] usbnet: Add support for Byte Queue Limits
- (BQL)
-To: Eric Dumazet <edumazet@google.com>
-Cc: oneukum@suse.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251104161327.41004-1-simon.schippers@tu-dortmund.de>
- <20251104161327.41004-2-simon.schippers@tu-dortmund.de>
- <CANn89iL6MjvOc8qEQpeQJPLX0Y3X0HmqNcmgHL4RzfcijPim5w@mail.gmail.com>
- <66d22955-bb20-44cf-8ad3-743ae272fec7@tu-dortmund.de>
- <CANn89i+oGnt=Gpo1hZh+8uaEoK3mKLQY-gszzHWC+A2enXa7Tw@mail.gmail.com>
-Content-Language: en-US
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-In-Reply-To: <CANn89i+oGnt=Gpo1hZh+8uaEoK3mKLQY-gszzHWC+A2enXa7Tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251104225915.2040080-1-thostet@google.com>
 
-On 11/5/25 12:28, Eric Dumazet wrote:
-> On Wed, Nov 5, 2025 at 2:35 AM Simon Schippers
-> <simon.schippers@tu-dortmund.de> wrote:
->>
->> On 11/4/25 18:00, Eric Dumazet wrote:
->>> On Tue, Nov 4, 2025 at 8:14 AM Simon Schippers
->>> <simon.schippers@tu-dortmund.de> wrote:
->>>>
->>>> The usbnet driver currently relies on fixed transmit queue lengths, which
->>>> can lead to bufferbloat and large latency spikes under load -
->>>> particularly with cellular modems.
->>>> This patch adds support for Byte Queue Limits (BQL) to dynamically manage
->>>> the transmit queue size and reduce latency without sacrificing
->>>> throughput.
->>>>
->>>> Testing was performed on various devices using the usbnet driver for
->>>> packet transmission:
->>>>
->>>> - DELOCK 66045: USB3 to 2.5 GbE adapter (ax88179_178a)
->>>> - DELOCK 61969: USB2 to 1 GbE adapter (asix)
->>>> - Quectel RM520: 5G modem (qmi_wwan)
->>>> - USB2 Android tethering (cdc_ncm)
->>>>
->>>> No performance degradation was observed for iperf3 TCP or UDP traffic,
->>>> while latency for a prioritized ping application was significantly
->>>> reduced. For example, using the USB3 to 2.5 GbE adapter, which was fully
->>>> utilized by iperf3 UDP traffic, the prioritized ping was improved from
->>>> 1.6 ms to 0.6 ms. With the same setup but with a 100 Mbit/s Ethernet
->>>> connection, the prioritized ping was improved from 35 ms to 5 ms.
->>>>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>> ---
->>>>  drivers/net/usb/usbnet.c | 8 ++++++++
->>>>  1 file changed, 8 insertions(+)
->>>>
->>>> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
->>>> index 62a85dbad31a..1994f03a78ad 100644
->>>> --- a/drivers/net/usb/usbnet.c
->>>> +++ b/drivers/net/usb/usbnet.c
->>>> @@ -831,6 +831,7 @@ int usbnet_stop(struct net_device *net)
->>>>
->>>>         clear_bit(EVENT_DEV_OPEN, &dev->flags);
->>>>         netif_stop_queue (net);
->>>> +       netdev_reset_queue(net);
->>>>
->>>>         netif_info(dev, ifdown, dev->net,
->>>>                    "stop stats: rx/tx %lu/%lu, errs %lu/%lu\n",
->>>> @@ -939,6 +940,7 @@ int usbnet_open(struct net_device *net)
->>>>         }
->>>>
->>>>         set_bit(EVENT_DEV_OPEN, &dev->flags);
->>>> +       netdev_reset_queue(net);
->>>>         netif_start_queue (net);
->>>>         netif_info(dev, ifup, dev->net,
->>>>                    "open: enable queueing (rx %d, tx %d) mtu %d %s framing\n",
->>>> @@ -1500,6 +1502,7 @@ netdev_tx_t usbnet_start_xmit(struct sk_buff *skb, struct net_device *net)
->>>>         case 0:
->>>>                 netif_trans_update(net);
->>>>                 __usbnet_queue_skb(&dev->txq, skb, tx_start);
->>>> +               netdev_sent_queue(net, skb->len);
->>>>                 if (dev->txq.qlen >= TX_QLEN (dev))
->>>>                         netif_stop_queue (net);
->>>>         }
->>>> @@ -1563,6 +1566,7 @@ static inline void usb_free_skb(struct sk_buff *skb)
->>>>  static void usbnet_bh(struct timer_list *t)
->>>>  {
->>>>         struct usbnet           *dev = timer_container_of(dev, t, delay);
->>>> +       unsigned int bytes_compl = 0, pkts_compl = 0;
->>>>         struct sk_buff          *skb;
->>>>         struct skb_data         *entry;
->>>>
->>>> @@ -1574,6 +1578,8 @@ static void usbnet_bh(struct timer_list *t)
->>>>                                 usb_free_skb(skb);
->>>>                         continue;
->>>>                 case tx_done:
->>>> +                       bytes_compl += skb->len;
->>>> +                       pkts_compl++;
->>>>                         kfree(entry->urb->sg);
->>>>                         fallthrough;
->>>>                 case rx_cleanup:
->>>> @@ -1584,6 +1590,8 @@ static void usbnet_bh(struct timer_list *t)
->>>>                 }
->>>>         }
->>>>
->>>> +       netdev_completed_queue(dev->net, pkts_compl, bytes_compl);
->>>> +
->>>>         /* restart RX again after disabling due to high error rate */
->>>>         clear_bit(EVENT_RX_KILL, &dev->flags);
->>>>
->>>
->>> I think this is racy. usbnet_bh() can run from two different contexts,
->>> at the same time (from two cpus)
->>>
->>> 1) From process context :
->>> usbnet_bh_work()
->>>
->>> 2) From a timer. (dev->delay)
->>>
->>>
->>> To use BQL, you will need to add mutual exclusion.
->>
->> Yeah, I missed that.
->>
->> I guess synchronizing with the lock of the sk_buff_head dev->done makes
->> sense? The same locking is also done right before in skb_dequeue.
+On Tue, Nov 04, 2025 at 02:59:15PM -0800, Tim Hostetler wrote:
+> ptp_clock should never be registered unless it stubs one of gettimex64()
+> or gettime64() and settime64(). WARN_ON_ONCE and error out if either set
+> of function pointers is null.
 > 
-> Or only protect the netdev_completed_queue(dev->net, pkts_compl,
-> bytes_compl) call,
-> adding a specific/dedicated spinlock for this purpose.
+> For consistency, n_alarm validation is also folded into the
+> WARN_ON_ONCE.
 > 
-> spin_lock_bh(&dev->bql_spinlock);
-> netdev_completed_queue(dev->net, pkts_compl, bytes_compl);
-> spin_unlock_bh(&dev->bql_spinlock);
-> 
-> I am assuming no usbnet driver is setting dev->lltx = true (or plan to
-> in the future)
-> so usbnet_start_xmit() is protected by HARD_TX_LOCK() already.
+> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> Signed-off-by: Tim Hostetler <thostet@google.com>
 
-Yes, I also want to only protect the netdev_completed_queue(dev->net,
-pkts_compl, bytes_compl) call. However, I am wondering what you mean with
-
-spin_lock_bh(&dev->bql_spinlock)
-...
-
-
-Do we want to protect against usbnet_start_xmit()? Maybe I am missing
-something, but other BQL implementations also do not seem to protect
-against their respective ndo_start_xmit.
-
-
-My approach would just protect against usbnet_bh calls from another
-context with the same locking as skb_dequeue():
-
-spin_lock_irqsave(&list->lock, flags);
-netdev_completed_queue(dev->net, pkts_compl, bytes_compl);
-spin_unlock_irqrestore(&list->lock, flags);
-
-Thanks!
+Acked-by: Richard Cochran <richardcochran@gmail.com>
