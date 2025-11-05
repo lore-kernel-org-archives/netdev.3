@@ -1,48 +1,35 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10F22D7B9;
-	Wed,  5 Nov 2025 02:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157371F5435
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 02:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762308010; cv=none; b=aujnMq8BrP1uPZbnu7ku1JMdPdzGw/ENJwxbclbuhB+hPhNYsOq2Dx14991SGvp1Rx5q7qWC2J+NEom857RcjWRGViVKoAw4h49hyqAaqF4O0lddvE19xLVkoAo+9snJ0sglnRWEO54K3ARu8zj4e0TGYHjSNT01XHzLogiknL0=
+	t=1762308040; cv=none; b=Rb3ZUTW8SgAN1Q0WaWlR2e6zOnOVsSDiQRameuoGY7f1qD/uKU6wiHt0Ll4OX+9hu96xUbkf8oqmTZBpDsAgfyDriYyPWf9Ac5D3FTUzIqxzIzh4qRSNoNn3cU47RRw3lLiaO9bNx52GAeBbJVEMHnOeIamXq7/U1NKS2diMce4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762308010; c=relaxed/simple;
-	bh=3kt7N0J6IspO8ZgzfJnnIsQKWxjvDO8QpbGBYBRox4g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=a1e0C+j2m0YUcvsMME/A9l1/5Vud4zBmpRboZozd6zNoe7ODgmDxZlJXmIBaZk4h5hwWw5F8g8UsJOYwzfhSTKnEPCzDK7hkTXHda7YGGVOiKshtX0nsmLNRY6RoJ9MznFvKzRZ+rUPdbgurFGvwdOMEyhq+fptyIpnlEfXs+y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=A/EiWSTd; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1762308040; c=relaxed/simple;
+	bh=RX3ZvKbnzqatsB+1JNX6VtLEHq7v8KvfV5ThlftqE4A=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HpWtSxcY8PudYykmTE4AdEqDo7XRZmZPhhF0IbgjFop4lfKyo7dvJD2CcE9F1DugAaIJSkd8hBKuVlu2ILScC0MmKdSbvgD0QbWFWozXj1jQmdWaHmDVNwm3z1WbAemqSTMaTvSo6kGy6M/o4zshdb6upsgJbRqv4Xz4Wnp2d5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIb7afxg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="A/EiWSTd"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=kxoskMR4j+GqhKLlnLSTcpV0pUXxjgv9zK324E17fAU=;
-	b=A/EiWSTd2b89EzcWmmELJyb2PQywCfApC63q8RDwYgXhyHihhl1fg25PYKezyhw0EspNaJlNI
-	FBFdRXBMPBfVwWlzsEwQFs3yH+vRoUobepyen+GcO24kKiYkvK6qwZHWwoxYj3vVTtyVZyXwazH
-	MytrBUk0IWyQLvzB8RQ6hJI=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d1T4b1Fg8zKm70;
-	Wed,  5 Nov 2025 09:58:23 +0800 (CST)
-Received: from dggpemf500016.china.huawei.com (unknown [7.185.36.197])
-	by mail.maildlp.com (Postfix) with ESMTPS id CD5C0180044;
-	Wed,  5 Nov 2025 09:59:58 +0800 (CST)
-Received: from huawei.com (10.50.85.128) by dggpemf500016.china.huawei.com
- (7.185.36.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
- 2025 09:59:57 +0800
-From: Wang Liang <wangliang74@huawei.com>
-To: <jhs@mojatatu.com>, <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <pctammela@mojatatu.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<yuehaibing@huawei.com>, <zhangchangzhong@huawei.com>,
-	<wangliang74@huawei.com>
-Subject: [PATCH net] net/sched: Fix possible infinite loop in qdisc_tree_reduce_backlog()
-Date: Wed, 5 Nov 2025 10:22:13 +0800
-Message-ID: <20251105022213.1981982-1-wangliang74@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIb7afxg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A775BC4CEF7;
+	Wed,  5 Nov 2025 02:00:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762308039;
+	bh=RX3ZvKbnzqatsB+1JNX6VtLEHq7v8KvfV5ThlftqE4A=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=nIb7afxgeDwpXayPhN7HvZU+eIqdHgCPBSiHg8mZSIJTLZOigviRIB+xNFv/fC2Yt
+	 SUZrKlNgHznc36Gz7XSfrYi2pHjLTrh/XPkMwmc1OEmIfj1bNpfQV1sJs6r2R7QlW2
+	 OOgYnHMaaSQkNB7sWiSqbw2D8/hyQlEPGWMhkY+/Fpnd0WekT+qjbhck+2+QJ358sy
+	 YsCQW52pQ7dFIApzf3x/+YcA6KxPcgExZ5b1UUpOSnhoGooK7F0qexLrAUAgoyJEW9
+	 Uf3NDx4+kaGvGU/38Z8DjM5xAQhQ56QOgBREZy8gc/zTcbg/L2BLXr2JISRq56NtGm
+	 bzdgkC9m2Kd5Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD39380AA57;
+	Wed,  5 Nov 2025 02:00:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,80 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500016.china.huawei.com (7.185.36.197)
+Subject: Re: [PATCH net-next v2] ti: netcp: convert to ndo_hwtstamp callbacks
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176230801349.3058815.8002127925280609699.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Nov 2025 02:00:13 +0000
+References: <20251103172902.3538392-1-vadim.fedorenko@linux.dev>
+In-Reply-To: <20251103172902.3538392-1-vadim.fedorenko@linux.dev>
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ kory.maincent@bootlin.com, vladimir.oltean@nxp.com
 
-A soft lockup issue was observed with following log:
+Hello:
 
-  watchdog: BUG: soft lockup - CPU#1 stuck for 104s! [tc:94]
-  CPU: 1 UID: 0 PID: 94 Comm: tc Tainted: G L 6.18.0-rc4-00007-gc9cfc122f037 #425 PREEMPT(voluntary)
-  RIP: 0010:qdisc_match_from_root+0x0/0x70
-  Call Trace:
-   <TASK>
-   qdisc_tree_reduce_backlog+0xec/0x110
-   fq_change+0x2e0/0x6a0
-   qdisc_create+0x138/0x4e0
-   tc_modify_qdisc+0x5b9/0x9d0
-   rtnetlink_rcv_msg+0x15a/0x400
-   netlink_rcv_skb+0x55/0x100
-   netlink_unicast+0x257/0x380
-   netlink_sendmsg+0x1e2/0x420
-   ____sys_sendmsg+0x313/0x340
-   ___sys_sendmsg+0x82/0xd0
-   __sys_sendmsg+0x6c/0xd0
-   </TASK>
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The issue can be reproduced by:
-  tc qdisc add dev eth0 root noqueue
-  tc qdisc add dev eth0 handle ffff:0 ingress
-  tc qdisc add dev eth0 handle ffe0:0 parent ffff:a fq
+On Mon,  3 Nov 2025 17:29:02 +0000 you wrote:
+> Convert TI NetCP driver to use ndo_hwtstamp_get()/ndo_hwtstamp_set()
+> callbacks. The logic is slightly changed, because I believe the original
+> logic was not really correct. Config reading part is using the very
+> first module to get the configuration instead of iterating over all of
+> them and keep the last one as the configuration is supposed to be identical
+> for all modules. HW timestamp config set path is now trying to configure
+> all modules, but in case of error from one module it adds extack
+> message. This way the configuration will be as synchronized as possible.
+> 
+> [...]
 
-A fq qdisc was created in __tc_modify_qdisc(), when the input parent major
-'ffff' is equal to the ingress qdisc handle major and the complete parent
-handle is not TC_H_ROOT or TC_H_INGRESS, which leads to a infinite loop in
-qdisc_tree_reduce_backlog().
+Here is the summary with links:
+  - [net-next,v2] ti: netcp: convert to ndo_hwtstamp callbacks
+    https://git.kernel.org/netdev/net-next/c/3f02b8272557
 
-The infinite loop scenario:
-
-  qdisc_tree_reduce_backlog
-
-    // init sch is fq qdisc, parent is ffff000a
-    while ((parentid = sch->parent)) {
-
-      // query qdisc by handle ffff0000
-      sch = qdisc_lookup_rcu(qdisc_dev(sch), TC_H_MAJ(parentid));
-
-      // return ingress qdisc, sch->parent is fffffff1
-      if (sch == NULL) {
-      ...
-    }
-
-Commit 2e95c4384438 ("net/sched: stop qdisc_tree_reduce_backlog on
-TC_H_ROOT") break the loop only when parent TC_H_ROOT is reached. However,
-qdisc_lookup_rcu() will return the same qdisc when input an ingress qdisc
-with major 'ffff'. If the parent TC_H_INGRESS is reached, also break the
-loop.
-
-Fixes: 2e95c4384438 ("net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
----
- net/sched/sch_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 1e058b46d3e1..b4d6fe6b6812 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -784,7 +784,7 @@ void qdisc_tree_reduce_backlog(struct Qdisc *sch, int n, int len)
- 	drops = max_t(int, n, 0);
- 	rcu_read_lock();
- 	while ((parentid = sch->parent)) {
--		if (parentid == TC_H_ROOT)
-+		if (parentid == TC_H_ROOT || parentid == TC_H_INGRESS)
- 			break;
- 
- 		if (sch->flags & TCQ_F_NOPARENT)
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
