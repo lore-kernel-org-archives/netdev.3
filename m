@@ -1,136 +1,120 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0809F31DDAF
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 13:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF3B321F51
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 13:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762349517; cv=none; b=twO/MdodY+e3jhRvDbGA6LjBy8o2CdAnl76M5mZOUdvOo0IKWeZeBt73MfFAGGV4t+jzJ5bhXU7LXn5bYh+7IdQxaIkGcr9w2hoTO5sddAd8gxTE++5nPJXorNw2+NZ0JAKqht3w8c82D8LybPgF2FfnREIh5g2HJ9JNyzUYwC4=
+	t=1762349596; cv=none; b=PIEdtg/FN9pVx1LGOfTs3+UaBC2Q4u7eSTic6SXiw29YbwhncdExUMwimD/rU1M3Ec0yll1ekOZaNHLJcO28oqZZyoFgdyNP99j58whSCV89saA9uFHUMtQOEViMA38bdoXosXCR5SO6D4by40acoqH0FWWUP3Dr1AE5rUPPGCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762349517; c=relaxed/simple;
-	bh=MP3cL1oYebmC+ikDcuXun/rbIUAB+b6coo4qpDEgtAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p4Otkbf8+2hnAN88Paq4LNIPPtwWE9F+kMT9RJDTgGrTtQygXUuMOvYDyjQhBMg1PMVvqSkOhfdIYQBUxOQTYDdX1J1Je9LWUxfjEpScJ24lc5F82sQ3ORCRzB9Hpg2ZA4MtkWjhGU4B0hO3UAsnPNi7uk+4mRe0MslcRyRIN9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZKOzkVFR; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762349596; c=relaxed/simple;
+	bh=GNQH7xtNMfbLhh+/Rx1SO+VjrtVuKFJMQRUmoses+iM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vGr3ilJ0G0B4DU0YEv+OXnHH4BGtR8lRLsQ8An620+J5JMLWIquZZfj3vURuBfe1qsBDlyk4qjB8dKhVkl8bLiCQiwaNBkP1m9uGO0TF/HT5oyKO/amngDSCN+5m0ZPhxSbcFLuCbygI1pcCa6QfTzTwKNCPiv2JiVJ5E4fq/HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lZEwQFVw; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZKOzkVFR"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7ad1cd0db3bso1586502b3a.1
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 05:31:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762349515; x=1762954315; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9q7NmFAvFvN7/b+XYPKzCuzMXs5E1SZ+dhFSeIfp7eA=;
-        b=ZKOzkVFRQferQLJYfz8FK7HIiOFsLQT+TiB/ghnk2mkOtNzSqpBUyHvXqQ10cajnWS
-         qJ2JnlbTV/4cG/yZaUxP0cfU6i7rxg8M+V6cYUL4R1w4GlH2d3XjD7XndNAUm8poJx2f
-         2Rgg6qM4JHgNggQfAf1s6n5tpdK6amjrJhNjvsxlXtCF42hMTN/nDRpxyNwD3+iFOI8Y
-         lyHOUt0md0KHUuSpwNp39fG4SDS6BpOAHUhyfOhn46dNJ5ZLvOmSLdHIYjkX+ef2jgN9
-         lfkRHOgOEh+Qj1I2AQVz/N5vQw0tjUSF/MUdLEcBOiSaiI+eWYAvAZj/nWzq97Mz1qUV
-         qZNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762349515; x=1762954315;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9q7NmFAvFvN7/b+XYPKzCuzMXs5E1SZ+dhFSeIfp7eA=;
-        b=q++IpU8lbm9cj65hjadz6Yjzln0O3fZnTU1dDWzrtR/6PnWIT0I/PyLM5by10+RQ5Y
-         L5pOxBfvja9pA3EBhQpmP4BLJAUYBp3Bs6S/cbzgGaEXslLUt8jq0N04DWcCHVtwzStZ
-         wcVXyOLSfQ82NZeeZz/9dEeVyhHKDYw+q25acv8qUn7SNXA4+8w3uHh839QauyhKPLuU
-         MN8iNN3zkq95ppgW2ocMZACxN/2BRnxZd5TIVTZPeHq5Ubfxwhn5rPsMVYAbQuTnAkl8
-         kz0JM6Kxc5NQd656p+/8qAms8hD83WRrfs2roIwDQzhgrHyO94ZGCpnTlc2V/Ep2LHIu
-         uj4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUB/7QAMlh6GgKS4Er7ganHBpWCZoG62cTZMiuF/vtq0+TJxqO2T7MHXU+8p3P8D95aX5GiRoQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRS7x6DeYSdSRQz1ZyKnQUYnz7wkJu0TsLYPqwHa1Oh/Gk0tm8
-	HLqnh+U+WnA0xj0snlhXE99aN5Eul4V69843mSJIk7t8MCT1U+c2OSHR
-X-Gm-Gg: ASbGncsBACV2PgjuS09jWqrN066B+F3cCy13bqXGH+XC2ryivqRrs5guZA8DWsGUwo3
-	BhczoOVGMweEsn/mAUeCXF7525GaL+JREm0D3ZVwbgQ9N1jqv35/sIl0HgGYnfNl5jXe7UisGey
-	i3ZXVQFERsuShrJJVtHFXEqstMdj2h9PpwdrIqZSa3s7tMOEt9fX9UoylFOCNAi1Ucnmn6+rMxn
-	x4diS/xlWhWHx1lgICyVbLYD80rWuxRmb6E7Y838EBJGJ9SZ8fQgD5jDGBKy97/GMgRiDqUdvJp
-	nzkgBpAhjJiw29X3quYWvCcOiqVlnPw/+1QHngv5TApkoqVBMN5Wie8/XsFkYc/4D2FfEBi5asi
-	dHqqqIg6ES76f1AFJi2/qnOPjL3vTfVGBr5eTHsY4fR5dan2DpSWLqBqEYKDOkQ+qOf4BaYm5aN
-	ovA3oZP+W2ITgPBp8C/adZtXvJfAWYNWswKb5sxddyq9jBA++Z
-X-Google-Smtp-Source: AGHT+IEOr6yEZt6Lg0Vg3/B7D14110LC9/cBO37o4H78DD0sx6yTnN4rQct43XksS1O46eS9oX2C9w==
-X-Received: by 2002:a05:6a00:2e91:b0:7ad:de47:f685 with SMTP id d2e1a72fcca58-7ae1e6c6a14mr4949434b3a.17.1762349515131;
-        Wed, 05 Nov 2025 05:31:55 -0800 (PST)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd382ad96sm6419447b3a.22.2025.11.05.05.31.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 05:31:54 -0800 (PST)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hkallweit1@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>
-Subject: [PATCH net-next v1] net: phy: qt2025: Wait until PHY becomes ready
-Date: Wed,  5 Nov 2025 22:31:26 +0900
-Message-ID: <20251105133126.3221948-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lZEwQFVw"
+Message-ID: <f28ee997-ed08-4123-83ab-3496e88ed815@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762349592;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CWTdo+5hh7NJLBSq727BtkQgikxX1L8tZgXBZ8gCACs=;
+	b=lZEwQFVw9yNQ9sk2uxKkuOyaETin+DkFDuEXGq5+e4abmbd20pBco6LsT84eYK1xLwQhgv
+	J6VVRJ69UlEhfF8dutp0qviMGTPx5DCc5P4OLZ9rDfraoxiNLb3dqNZaMXkZxzJyfGxGDX
+	kkTbe5Cit9WwwD6xAiC01i99DgisL0A=
+Date: Wed, 5 Nov 2025 13:33:08 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 1/7] bnx2x: convert to use ndo_hwtstamp
+ callbacks
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Manish Chopra <manishc@marvell.com>,
+ Marco Crivellari <marco.crivellari@suse.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Sunil Goutham <sgoutham@marvell.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Simon Horman <horms@kernel.org>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
+References: <20251103150952.3538205-1-vadim.fedorenko@linux.dev>
+ <20251103150952.3538205-2-vadim.fedorenko@linux.dev>
+ <20251104173737.3f655692@kernel.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20251104173737.3f655692@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Wait until a PHY becomes ready in the probe callback by
-using read_poll_timeout function.
+On 05/11/2025 01:37, Jakub Kicinski wrote:
+> On Mon,  3 Nov 2025 15:09:46 +0000 Vadim Fedorenko wrote:
+>> -static int bnx2x_hwtstamp_ioctl(struct bnx2x *bp, struct ifreq *ifr)
+>> +static int bnx2x_hwtstamp_set(struct net_device *dev,
+>> +			      struct kernel_hwtstamp_config *config,
+>> +			      struct netlink_ext_ack *extack)
+>>   {
+>> -	struct hwtstamp_config config;
+>> +	struct bnx2x *bp = netdev_priv(dev);
+>>   	int rc;
+>>   
+>> -	DP(BNX2X_MSG_PTP, "HWTSTAMP IOCTL called\n");
+>> -
+>> -	if (copy_from_user(&config, ifr->ifr_data, sizeof(config)))
+>> -		return -EFAULT;
+>> +	DP(BNX2X_MSG_PTP, "HWTSTAMP SET called\n");
+>>   
+>>   	DP(BNX2X_MSG_PTP, "Requested tx_type: %d, requested rx_filters = %d\n",
+>> -	   config.tx_type, config.rx_filter);
+>> +	   config->tx_type, config->rx_filter);
+>>   
+>>   	bp->hwtstamp_ioctl_called = true;
+>> -	bp->tx_type = config.tx_type;
+>> -	bp->rx_filter = config.rx_filter;
+>> +	bp->tx_type = config->tx_type;
+>> +	bp->rx_filter = config->rx_filter;
+>>   
+>>   	rc = bnx2x_configure_ptp_filters(bp);
+> 
+> bnx2x_configure_ptp_filters() may return -ERANGE if settings were not applied.
+> This may already be semi-broken but with the get in place we will make
+> it even worse.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
-
-drivers/net/phy/qt2025.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-index 0b9400dcb4c1..aaaead6512a0 100644
---- a/drivers/net/phy/qt2025.rs
-+++ b/drivers/net/phy/qt2025.rs
-@@ -12,6 +12,7 @@
- use kernel::c_str;
- use kernel::error::code;
- use kernel::firmware::Firmware;
-+use kernel::io::poll::read_poll_timeout;
- use kernel::net::phy::{
-     self,
-     reg::{Mmd, C45},
-@@ -19,6 +20,7 @@
- };
- use kernel::prelude::*;
- use kernel::sizes::{SZ_16K, SZ_8K};
-+use kernel::time::Delta;
- 
- kernel::module_phy_driver! {
-     drivers: [PhyQT2025],
-@@ -93,7 +95,13 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
-         // The micro-controller will start running from SRAM.
-         dev.write(C45::new(Mmd::PCS, 0xe854), 0x0040)?;
- 
--        // TODO: sleep here until the hw becomes ready.
-+        read_poll_timeout(
-+            || dev.read(C45::new(Mmd::PCS, 0xd7fd)),
-+            |val| *val != 0x00 && *val != 0x10,
-+            Delta::from_millis(50),
-+            Delta::from_secs(3),
-+        )?;
-+
-         Ok(())
-     }
- 
-
-base-commit: 89aec171d9d1ab168e43fcf9754b82e4c0aef9b9
--- 
-2.43.0
+Ah, you mean in case of -ERANGE we will still have new filter
+configuration set in bp object? It's easy to fix, but it will be
+some kind of change of behavior. If it's acceptable, I'm happy to send 
+v3 of the patchset.>
+>>   	if (rc)
+>>   		return rc;
+>>   
+>> -	config.rx_filter = bp->rx_filter;
+>> +	config->rx_filter = bp->rx_filter;
+>> +
+>> +	return 0;
+>> +}
+>>   
+>> -	return copy_to_user(ifr->ifr_data, &config, sizeof(config)) ?
+>> -		-EFAULT : 0;
+>> +static int bnx2x_hwtstamp_get(struct net_device *dev,
+>> +			      struct kernel_hwtstamp_config *config)
+>> +{
+>> +	struct bnx2x *bp = netdev_priv(dev);
+>> +
+>> +	config->rx_filter = bp->rx_filter;
+>> +	config->tx_type = bp->tx_type;
+>> +
+>> +	return 0;
+>>   }
 
