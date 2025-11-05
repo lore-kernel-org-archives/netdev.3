@@ -1,67 +1,67 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D6F24DCED
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 01:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA442586E8
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 01:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762305808; cv=none; b=nuP7dreEWusWuDQnvqrM3fiywP5AzxLTL0BP2PyH2BnrnU3o3sLxjLwedqvqhEOfxvgBz9tludSkNk2mikdLcSSLJaFhWhMR/WK46Uhu4HXZ9202o6pesgV6IMmWdRMIIfCt49r8YFpQY2EX5UosCg9wDEI6k6lKaYG8FZ/0Dg4=
+	t=1762305810; cv=none; b=NflsG/ATnqMysPAfIK5QW3jszGlwKpDolabWzZS870ZXzWH7tB8hQNs54EVvpTLaEhR+AHsDnEDojCqrX0J+9ycI3WHDBsXuXIg0O/O2uUn3NBb+RMsbBUOLXUlWDeYfh0BwGhQIAdeoGKzDbxrJpjidmNJTE0M5bpfoXVM5B+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762305808; c=relaxed/simple;
-	bh=ieGYJI9ziUHUQcaSbEmkTTmHhUJOCFMJhOBD52u6LIY=;
+	s=arc-20240116; t=1762305810; c=relaxed/simple;
+	bh=yCIkyL0h8kHUFJCTSyMV+CAW54KfpLm6K2H45fUhKZI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=izZAVxKfvHKSHrAOcvEPWogMG+ySElIMop3KXwfo50KM2ICuLfJjpnKXWOFGyq11iKG+445CJZ2SxQuJ0q0EUERrWoDUObqsxt/PyXtvIA+Sd/ZSW7+vJqPgGdtnnd5DIKyHk90EkMiHQP4BSojvkS0YpzuHu9c4xJByoJm4fhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gquzvXsb; arc=none smtp.client-ip=209.85.128.172
+	 In-Reply-To:To:Cc; b=aFYSvWyX42NgQ5/uovyfgGCsxldLLfslrOD3AdNAQSsivT3F8yV3edJyBkWBwwl80Pzxi6BV11WHVKgI5eHmn/h4Qz4q5VVTpaEAcn1v2yAH4++CQhvyaA8Mq/I05M1y2L2g8nPrmtzwhqEXeiNyj+QMjEDKffBqSY/emWnc+AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBqY/or0; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gquzvXsb"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-781014f4e12so84095287b3.1
-        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 17:23:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dBqY/or0"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-786a317fe78so6631227b3.2
+        for <netdev@vger.kernel.org>; Tue, 04 Nov 2025 17:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762305805; x=1762910605; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762305807; x=1762910607; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1xpyNjvOpzHicrhK6zjCao8v8pSlxTbvuW+wenQI8Ik=;
-        b=gquzvXsbpH+UxQYzNFEyFFmZpA15dmESjWOQQRbU8XpfWAPckLWiXHikV0Ir4jyqvz
-         txrb8YotTyfsJymCjh3YcnSMa2ghZz7K13rzsA/1DfBLBLZhR56Y0EZm1TrjWVhRuzGP
-         ZGDTj4rBD3T6FzTdoZWYOPiTHFBHAaI+/zt3i2ZtwEJIwjJHuqSlxZtEr2TOT+iD34Vr
-         sUthM1OqBCrolHAQYVcukEJeQSEoGZTfhPlPG5kHHPvNm6Y4i63yjBlV2bEBWAgnesL+
-         pI2t2JxhxAnnMum+M/eTM192fC/xYelvdtyI6Qs6I8Ib3DIE4wTDPEMo33l7FD3f2lGL
-         Ll3w==
+        bh=++wGl6enUw/dRP6YEy+waldxVwK8Dc+ChAEagCck49g=;
+        b=dBqY/or07iDvxPtc+MG+dOBb+UIttyvVsX0qd+7HffYqxVfQuf53ekC5v0nGmVUigx
+         aVG2aoDMq4LwMvj5T/RQZpbaTAnPhC06C8/aN/W90TaJ4NmPLNhQhVS3F24GdHLPpBin
+         Mucifdvh2YQiiN+FuzxetELN5cBdZKNrmKCK9intXQItXjPZ7P45q0mHRNyAFhHcCQyk
+         +m7a0jvuryS25COdeiFxA7OetXAOzCny1nS2ZjQ9wqeMSuCUXPna4T36aiQbG0q8NB7T
+         5OQdDr72xb2W9acG45zbK+x53HeiWqh5QJYP/rY2H6gRtBu0IXp2C+wygRQ7J3u6IMw9
+         CuuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762305805; x=1762910605;
+        d=1e100.net; s=20230601; t=1762305807; x=1762910607;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1xpyNjvOpzHicrhK6zjCao8v8pSlxTbvuW+wenQI8Ik=;
-        b=Q91MzExa1H94Zcg9ReVwaaXh+KTasdnN2V4/Cnt2TIgCjWGvBi04OkuACzxpI0+qK/
-         8twajNm7FUM2TdHEg3rzfpz0qONiijZ3vYEWFaa6SyCNgRHwTursRU4O5jUzviKQtgkt
-         sl+4jbqzh8ZwafTq1BI/55NFbhTY4FNVxmweUHVE+EqZo0uIdaDp0UhL4pdnVwopyaOf
-         sBmO4AFuBWqwtbqjdVzrMbaHreomauWuozzcH8CwpxF2vNLIRRq+wNDvm6NktnvyUdfv
-         s4KlBufnX4ma0BXAkF4EgT3HTJz07pkQrJ5K8Vy6+8N6jCkvUwg/C4y63k7NKbHWn/vV
-         Jqmw==
-X-Gm-Message-State: AOJu0YzNdlIM2UVs9TI/Ps6WNTSsub/OF0SDzcYWwsvY6QdbAY/xjlk1
-	7Ii7Og/I739v4dXTp/eJlFMtQwYbqnFFCX8qXI7I96Bvlayonw+9zanK
-X-Gm-Gg: ASbGncsIOhx4nrMn5snBAppvBQCIVIPvSWxK6FqFpfGoMa+UKHwAmsQbLJpuzTRT+Jo
-	+U5ucGBUijMMvc2dv3IHR3ubZ7ZTh4sCbKVJgKM+ZtC7XkynfwTeWuibsWv081ft9hF2OVq1iZg
-	U1QqstvbBAtPKyBgJVEiSIIArbKA7LvKbptzFHm3JNcGavaEr1gF7VX5P16NbGoGfen6IwrvIyn
-	1efCEqtqAU5dqBaDmP6/4/bBQYd5SPR8RvJ6XLDBufu1qoQFkW1TOj+CKbR7/6wtzgMFn1ag3FK
-	/RMbaJBGXMPgPIA3FbzjYw2G/7Q20C8vqKlJ7kjdCDKbLNp7l0L7B+TbJ0JX+XQDaoaJkLpDupU
-	RTtlbKALyRXLuq04gj4UOPaeUIAz/WrD8mKiGFvipapTjriL/dyeJEMEbYGA3JiPcrU/fKXteCN
-	Jcow6RHNgzCi0=
-X-Google-Smtp-Source: AGHT+IEUvytYvHi/IO2KX++l2Q23Drlof8YVKuhjSICzsPMFHeHVGstmHJL/UBXx/ejfmWw6Z9oZFQ==
-X-Received: by 2002:a53:c04f:0:20b0:63f:c019:23ee with SMTP id 956f58d0204a3-63fd34cd657mr1283126d50.21.1762305804817;
-        Tue, 04 Nov 2025 17:23:24 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63fc95dc03asm1300572d50.20.2025.11.04.17.23.24
+        bh=++wGl6enUw/dRP6YEy+waldxVwK8Dc+ChAEagCck49g=;
+        b=de/M7jMdWxL4bSH5z7N10kAZnaPZUO9eObml9EulOBju1czYY1cmXtyIu+eKOH9B1j
+         hBZkLtNte8aBUKyy3Vea1ulUhI4y48RKoo8pXMcE5fzl1WpTNrCtp8Vl+nrnQdpw3h3L
+         lyX6/AOzmcedRRyYzxHTYlIPdZMRkO10gxsDRpgr3Vj3OgEZR8cx7mIXGCP0YyMvOBjO
+         bK+rJkzatEhYWaPyTEal7yLlO+UaD90Smsd9biO1jLrHD3jQAsQsfhOI06NPZVKR6Ksq
+         DBacnXJuFpXGv1waSa+t1QNUQE6Mvu6fKpo5PIn+Ak3icQM+B6YgMQcipeM290sY1BmE
+         4JzA==
+X-Gm-Message-State: AOJu0YxmL9G84SnovH/gAM4uDbNNO0AN0UxE2VqUXsv99FGq4Zvag9oz
+	SvGnU256+c9eqfekpmekcGfGyuxHvmiJ7m1Ln9g1VMh6CoSU/fOQaKVi
+X-Gm-Gg: ASbGncuzdFJKcU6Wb/Sc8PRMXZdCnQvuK3u12+5+P4EPb+Mj18CjaVuD6XAxEbIAQc0
+	VHFnria8UTPdKRTPtPt+IrQT1tCXH2JNq7FrClwQeG7Gl2Ao1AbjFDSn5ObdLMc+qXLoOTCoi7i
+	Pet8Ja8fJo27TKzjMVFM2tsnvPa+U2vyefFjgKn1yiXCALcn2af7rzkkHul9ZY7l0SCblEus7n+
+	0qMtyhMdrvGodN3iKtB43ZTHciLx/ZQYrjEoMFfARehoV9b3CSZhutE4dEi0m+CVrYawPVLc4o+
+	pnsCgRvlT71pcnUsUld63Z8oRfZv63PVKWyxPr1bwqPd4EKMyj+V7rX8fPtDHTk2wRzBR6Su8JB
+	12J/ANYOPNedPD3xvXv0VXCa1Dp6c2hT8n1VFznY3aKPSh/cWgU0E+bK1Cp8E8YPSDhJFAg2hrM
+	w2+6EDWqYxpbM=
+X-Google-Smtp-Source: AGHT+IEQJ9WEsquzTbokNdx5L6vycggE3/QvpfsVJ9sSnQ7RONk0w2fr5nFci2oGs61wzZsC3j65UQ==
+X-Received: by 2002:a05:690c:6111:b0:786:61c6:7e71 with SMTP id 00721157ae682-786a41b3d21mr16312747b3.33.1762305806699;
+        Tue, 04 Nov 2025 17:23:26 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:74::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-78691d8ef92sm14967307b3.5.2025.11.04.17.23.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 17:23:24 -0800 (PST)
+        Tue, 04 Nov 2025 17:23:26 -0800 (PST)
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Tue, 04 Nov 2025 17:23:21 -0800
-Subject: [PATCH net-next v6 2/6] net: devmem: refactor sock_devmem_dontneed
- for autorelease split
+Date: Tue, 04 Nov 2025 17:23:23 -0800
+Subject: [PATCH net-next v6 4/6] net: devmem: add SO_DEVMEM_AUTORELEASE for
+ autorelease control
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-2-ea98cf4d40b3@meta.com>
+Message-Id: <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-4-ea98cf4d40b3@meta.com>
 References: <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-0-ea98cf4d40b3@meta.com>
 In-Reply-To: <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-0-ea98cf4d40b3@meta.com>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -89,103 +89,148 @@ X-Mailer: b4 0.14.3
 
 From: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Refactor sock_devmem_dontneed() in preparation for supporting both
-autorelease and manual token release modes.
+Add SO_DEVMEM_AUTORELEASE socket option to allow applications to
+control token release behavior on a per-socket basis.
 
-Split the function into two parts:
-- sock_devmem_dontneed(): handles input validation, token allocation,
-  and copying from userspace
-- sock_devmem_dontneed_autorelease(): performs the actual token release
-  via xarray lookup and page pool put
+The socket option accepts boolean values (0 or 1):
+- 1 (true): outstanding tokens are automatically released when the
+  socket closes
+- 0 (false): outstanding tokens are released when the dmabuf is unbound
 
-This separation allows a future commit to add a parallel
-sock_devmem_dontneed_manual_release() function that uses a different
-token tracking mechanism (per-niov reference counting) without
-duplicating the input validation logic.
+The option can only be changed when the socket has no outstanding
+tokens, enforced by checking:
+1. The frags xarray is empty (no tokens in autorelease mode)
+2. The outstanding_urefs counter is zero (no tokens in manual mode)
 
-The refactoring is purely mechanical with no functional change. Only
-intended to minimize the noise in subsequent patches.
+This restriction prevents inconsistent token tracking state between
+acquisition and release calls. If either condition fails, setsockopt
+returns -EBUSY.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
+The default state is autorelease off.
+
 Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 ---
- net/core/sock.c | 52 ++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+ include/uapi/asm-generic/socket.h       |  2 ++
+ net/core/sock.c                         | 51 +++++++++++++++++++++++++++++++++
+ net/ipv4/tcp.c                          |  2 +-
+ tools/include/uapi/asm-generic/socket.h |  2 ++
+ 4 files changed, 56 insertions(+), 1 deletion(-)
 
+diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
+index 53b5a8c002b1..59302318bb34 100644
+--- a/include/uapi/asm-generic/socket.h
++++ b/include/uapi/asm-generic/socket.h
+@@ -150,6 +150,8 @@
+ #define SO_INQ			84
+ #define SCM_INQ			SO_INQ
+ 
++#define SO_DEVMEM_AUTORELEASE	85
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
 diff --git a/net/core/sock.c b/net/core/sock.c
-index 7a9bbc2afcf0..5562f517d889 100644
+index 465645c1d74f..27af476f3cd3 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1082,30 +1082,13 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
- #define MAX_DONTNEED_FRAGS 1024
+@@ -1160,6 +1160,46 @@ sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
+ 	return ret;
+ }
  
- static noinline_for_stack int
--sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
-+sock_devmem_dontneed_autorelease(struct sock *sk, struct dmabuf_token *tokens,
-+				 unsigned int num_tokens)
- {
--	unsigned int num_tokens, i, j, k, netmem_num = 0;
--	struct dmabuf_token *tokens;
-+	unsigned int i, j, k, netmem_num = 0;
- 	int ret = 0, num_frags = 0;
- 	netmem_ref netmems[16];
- 
--	if (!sk_is_tcp(sk))
--		return -EBADF;
--
--	if (optlen % sizeof(*tokens) ||
--	    optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
--		return -EINVAL;
--
--	num_tokens = optlen / sizeof(*tokens);
--	tokens = kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
--	if (!tokens)
--		return -ENOMEM;
--
--	if (copy_from_sockptr(tokens, optval, optlen)) {
--		kvfree(tokens);
--		return -EFAULT;
--	}
--
- 	xa_lock_bh(&sk->sk_user_frags);
- 	for (i = 0; i < num_tokens; i++) {
- 		for (j = 0; j < tokens[i].token_count; j++) {
-@@ -1135,6 +1118,35 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
- 	for (k = 0; k < netmem_num; k++)
- 		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
- 
-+	return ret;
-+}
-+
 +static noinline_for_stack int
-+sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
++sock_devmem_set_autorelease(struct sock *sk, sockptr_t optval, unsigned int optlen)
 +{
-+	struct dmabuf_token *tokens;
-+	unsigned int num_tokens;
-+	int ret;
++	int val;
 +
 +	if (!sk_is_tcp(sk))
 +		return -EBADF;
 +
-+	if (optlen % sizeof(*tokens) ||
-+	    optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
++	if (optlen < sizeof(int))
 +		return -EINVAL;
 +
-+	num_tokens = optlen / sizeof(*tokens);
-+	tokens = kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
-+	if (!tokens)
-+		return -ENOMEM;
-+
-+	if (copy_from_sockptr(tokens, optval, optlen)) {
-+		kvfree(tokens);
++	if (copy_from_sockptr(&val, optval, sizeof(val)))
 +		return -EFAULT;
++
++	/* Validate that val is 0 or 1 */
++	if (val != 0 && val != 1)
++		return -EINVAL;
++
++	sockopt_lock_sock(sk);
++
++	/* Can only change autorelease if:
++	 * 1. No tokens in the frags xarray (autorelease mode)
++	 * 2. No outstanding urefs (manual release mode)
++	 */
++	if (!xa_empty(&sk->sk_devmem_info.frags)) {
++		sockopt_release_sock(sk);
++		return -EBUSY;
 +	}
 +
-+	ret = sock_devmem_dontneed_autorelease(sk, tokens, num_tokens);
++	if (atomic_read(&sk->sk_devmem_info.outstanding_urefs) > 0) {
++		sockopt_release_sock(sk);
++		return -EBUSY;
++	}
 +
- 	kvfree(tokens);
- 	return ret;
++	sk->sk_devmem_info.autorelease = !!val;
++
++	sockopt_release_sock(sk);
++	return 0;
++}
++
+ static noinline_for_stack int
+ sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+ {
+@@ -1351,6 +1391,9 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ #ifdef CONFIG_PAGE_POOL
+ 	case SO_DEVMEM_DONTNEED:
+ 		return sock_devmem_dontneed(sk, optval, optlen);
++
++	case SO_DEVMEM_AUTORELEASE:
++		return sock_devmem_set_autorelease(sk, optval, optlen);
+ #endif
+ 	case SO_SNDTIMEO_OLD:
+ 	case SO_SNDTIMEO_NEW:
+@@ -2208,6 +2251,14 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 		v.val = READ_ONCE(sk->sk_txrehash);
+ 		break;
+ 
++#ifdef CONFIG_PAGE_POOL
++	case SO_DEVMEM_AUTORELEASE:
++		if (!sk_is_tcp(sk))
++			return -EBADF;
++		v.val = sk->sk_devmem_info.autorelease;
++		break;
++#endif
++
+ 	default:
+ 		/* We implement the SO_SNDLOWAT etc to not be settable
+ 		 * (1003.1g 7).
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 052875c1b547..8226ba892b36 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -496,7 +496,7 @@ void tcp_init_sock(struct sock *sk)
+ 	xa_init_flags(&sk->sk_devmem_info.frags, XA_FLAGS_ALLOC1);
+ 	sk->sk_devmem_info.binding = NULL;
+ 	atomic_set(&sk->sk_devmem_info.outstanding_urefs, 0);
+-	sk->sk_devmem_info.autorelease = true;
++	sk->sk_devmem_info.autorelease = false;
  }
+ EXPORT_IPV6_MOD(tcp_init_sock);
+ 
+diff --git a/tools/include/uapi/asm-generic/socket.h b/tools/include/uapi/asm-generic/socket.h
+index f333a0ac4ee4..9710a3d7cc4d 100644
+--- a/tools/include/uapi/asm-generic/socket.h
++++ b/tools/include/uapi/asm-generic/socket.h
+@@ -147,6 +147,8 @@
+ 
+ #define SO_PASSRIGHTS		83
+ 
++#define SO_DEVMEM_AUTORELEASE	85
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
 
 -- 
 2.47.3
