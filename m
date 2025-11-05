@@ -1,143 +1,78 @@
-Received: from localhost.localdomain (unknown [147.136.157.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6E02DEA61;
-	Wed,  5 Nov 2025 11:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=147.136.157.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49912303C86;
+	Wed,  5 Nov 2025 11:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762343207; cv=none; b=tp+8GXOp+MhtJ9IptEtzG79C1mVGiHc6SPq9r/6xPReAx2OvELXOdx+ItEYNSHZkNzM8KNYu/ZErIfckHi1vI9mwRhXcIdcALgoR2ZIVOd+eLEOqI36ziCOI1UGNC9fXoUSyCM1Jm/NfTM0Eu5NYlfuAxSPTEq2Ovbi9fFYmyVQ=
+	t=1762343253; cv=none; b=lPTaKXkJ6iU+aj1OiT+tLXOcLFOr4jhvwwTIHtrTNwZHkBqutZsbFnt24YTvaRgY8c7G98XB/84Uubyp/wtHAMHma/sECsLt8AH/1X+O6/V6LAHC8sX/z3t9oa7QSckJhGcm2vO6gmDqtjVX0OgMX9fg5L8sCqIGv6yVvhYWLUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762343207; c=relaxed/simple;
-	bh=fiKRi3GH6r/B8XX9d8B5w8Dvfv11FfmscbTJItgzweg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ncgk1dDYZsFjd92gjWS4Fgm7TD0suos552uveYx63eGCiJvRGsDhkvHvkoF7sQfCwZODd9BM20BniEyEoGku62cYctOg1SA5C3aOGBFWUiU/VRMLzh/+jS4XT6VyDWiToTSx2bBxDlXohPgNGs9eXSsvV+Kr4giQaYIHAvBaTgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev; spf=none smtp.mailfrom=localhost.localdomain; arc=none smtp.client-ip=147.136.157.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=localhost.localdomain
-Received: by localhost.localdomain (Postfix, from userid 1007)
-	id ABCB78B2A0B; Wed,  5 Nov 2025 19:37:59 +0800 (+08)
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: mptcp@lists.linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v4 0/3] mptcp: Fix conflicts between MPTCP and sockmap
-Date: Wed,  5 Nov 2025 19:36:06 +0800
-Message-ID: <20251105113625.148900-1-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1762343253; c=relaxed/simple;
+	bh=rByHzTDi8GNI4VjgdYw6keFPO0iICIg6fPIKaXxnABc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBv7OAqipFCw/wMBSjsS6RMIZiI09VFU82CecTiUmRf/Tp74MmYrjuCL7y1MxcCfSwWUXJfbojgvYdYyYct4/B5atC494NTEt9xzsu2PoqaV9vCu+uamjVw5vvgiyiEIb/kiKwdFsR7X4qJ3xNaWMg3heKZBTmNMAJshTGhGdz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cg86LLZm; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cg86LLZm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B72C4CEF8;
+	Wed,  5 Nov 2025 11:47:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762343252;
+	bh=rByHzTDi8GNI4VjgdYw6keFPO0iICIg6fPIKaXxnABc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cg86LLZmZvaS640pryi2nqiIXgCYl+2loDa4wCmigGCPFYqxEfdcimuJQegQBKLAn
+	 JGstJyrE36Z4DWcgmjabR46+0HuqdLlqRni49TyrctQC1j4h4vpBFUJBR0FSZ0rVKA
+	 5Po69MmtyqZ9aLUudcv3EHLqYOUrGuf78Pu8h/wbMd2JJWDv/kOB9q5e04GWVidQrz
+	 VCQ8+Dg68EWSX772eUT2G/9LNmmGMPkFkh+2DCdQKikNpQFI6fr1N1PrhCeSCun97l
+	 Ro396elp4sC7nvfAmLsaTQJSPyWgw9SXl/kXx6Vy5MNioKQ2GtoXeosAXztX/pe9y7
+	 2PpLayzOKdcbA==
+Date: Wed, 5 Nov 2025 11:47:29 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jiawen Wu <jiawenwu@trustnetic.com>
+Cc: netdev@vger.kernel.org, 'Andrew Lunn' <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	'Eric Dumazet' <edumazet@google.com>,
+	'Jakub Kicinski' <kuba@kernel.org>,
+	'Paolo Abeni' <pabeni@redhat.com>,
+	'Mengyuan Lou' <mengyuanlou@net-swift.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: libwx: fix device bus LAN ID
+Message-ID: <aQs5UeY214tiuL3f@horms.kernel.org>
+References: <B60A670C1F52CB8E+20251104062321.40059-1-jiawenwu@trustnetic.com>
+ <aQsf2tTu3_FAeRic@horms.kernel.org>
+ <093901dc4e3b$b753c630$25fb5290$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <093901dc4e3b$b753c630$25fb5290$@trustnetic.com>
 
-Overall, we encountered a warning [1] that can be triggered by running the
-selftest I provided.
+On Wed, Nov 05, 2025 at 06:05:29PM +0800, Jiawen Wu wrote:
+> On Wed, Nov 5, 2025 5:59 PM, Simon Horman wrote:
+> > On Tue, Nov 04, 2025 at 02:23:21PM +0800, Jiawen Wu wrote:
+> > > The device bus LAN ID was obtained from PCI_FUNC(), but when a PF
+> > > port is passthrough to a virtual machine, the function number may not
+> > > match the actual port index on the device. This could cause the driver
+> > > to perform operations such as LAN reset on the wrong port.
+> > >
+> > > Fix this by reading the LAN ID from port status register.
+> > >
+> > > Fixes: a34b3e6ed8fb ("net: txgbe: Store PCI info")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> > 
+> > Hi Jiawen Wu,
+> > 
+> > I am wondering if these devises also support port swapping (maybe LAN
+> > Function Select bit of FACTPS). And if so, does it need to be taken into
+> > account here?
+> 
+> Does not support yet, thanks. :)
 
-sockmap works by replacing sk_data_ready, recvmsg, sendmsg operations and
-implementing fast socket-level forwarding logic:
-1. Users can obtain file descriptors through userspace socket()/accept()
-   interfaces, then call BPF syscall to perform these replacements.
-2. Users can also use the bpf_sock_hash_update helper (in sockops programs)
-   to replace handlers when TCP connections enter ESTABLISHED state
-  (BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB/BPF_SOCK_OPS_ACTIVE_ESTABLISHED_CB)
+Thanks, in that case this patch looks good to me.
 
-However, when combined with MPTCP, an issue arises: MPTCP creates subflow
-sk's and performs TCP handshakes, so the BPF program obtains subflow sk's
-and may incorrectly replace their sk_prot. We need to reject such
-operations. In patch 1, we set psock_update_sk_prot to NULL in the
-subflow's custom sk_prot.
-
-Additionally, if the server's listening socket has MPTCP enabled and the
-client's TCP also uses MPTCP, we should allow the combination of subflow
-and sockmap. This is because the latest Golang programs have enabled MPTCP
-for listening sockets by default [2]. For programs already using sockmap,
-upgrading Golang should not cause sockmap functionality to fail.
-
-Patch 2 prevents the WARNING from occurring.
-
-
-[1] truncated warning:
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 388 at net/mptcp/protocol.c:68 \
-mptcp_stream_accept+0x34c/0x380
-Modules linked in:
-RIP: 0010:mptcp_stream_accept+0x34c/0x380
-RSP: 0018:ffffc90000cf3cf8 EFLAGS: 00010202
-PKRU: 55555554
-Call Trace:
- <TASK>
- do_accept+0xeb/0x190
- ? __x64_sys_pselect6+0x61/0x80
- ? _raw_spin_unlock+0x12/0x30
- ? alloc_fd+0x11e/0x190
- __sys_accept4+0x8c/0x100
- __x64_sys_accept+0x1f/0x30
- x64_sys_call+0x202f/0x20f0
- do_syscall_64+0x72/0x9a0
- ? switch_fpu_return+0x60/0xf0
- ? irqentry_exit_to_user_mode+0xdb/0x1e0
- ? irqentry_exit+0x3f/0x50
- ? clear_bhb_loop+0x50/0xa0
- ? clear_bhb_loop+0x50/0xa0
- ? clear_bhb_loop+0x50/0xa0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- </TASK>
----[ end trace 0000000000000000 ]---
-
-[2]: https://go-review.googlesource.com/c/go/+/607715
-
----
-v3 -> v4: Addressed questions from Matthieu and Paolo, explained sockmap's
-          operational mechanism, and finalized the changes
-v2 -> v3: Adopted Jakub Sitnicki's suggestions - atomic retrieval of
-          sk_family is required
-v1 -> v2: Had initial discussion with Matthieu on sockmap and MPTCP
-          technical details
-
-v3: https://lore.kernel.org/bpf/20251023125450.105859-1-jiayuan.chen@linux.dev/
-v2: https://lore.kernel.org/bpf/20251020060503.325369-1-jiayuan.chen@linux.dev/T/#t
-v1: https://lore.kernel.org/mptcp/a0a2b87119a06c5ffaa51427a0964a05534fe6f1@linux.dev/T/#t
-
-Jiayuan Chen (3):
-  mptcp: disallow MPTCP subflows from sockmap
-  net,mptcp: fix proto fallback detection with BPF
-  selftests/bpf: Add mptcp test with sockmap
-
- net/mptcp/protocol.c                          |   6 +-
- net/mptcp/subflow.c                           |   8 +
- .../testing/selftests/bpf/prog_tests/mptcp.c  | 150 ++++++++++++++++++
- .../selftests/bpf/progs/mptcp_sockmap.c       |  43 +++++
- 4 files changed, 205 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/bpf/progs/mptcp_sockmap.c
-
-
-base-commit: 89aec171d9d1ab168e43fcf9754b82e4c0aef9b9
--- 
-2.43.0
+Reviewed-by: Simon Horman <horms@kernel.org>
 
