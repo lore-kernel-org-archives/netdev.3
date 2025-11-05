@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2756514A8E
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 02:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662629463
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 02:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762309830; cv=none; b=HEIwC9LKZTk7//pLRJlEIIGS8mm/IKmh8VT8nLnF2EB/kLLafiJXEzS1npdfiMVzrPITRSYs6lP49pGNQiaEE4fHDLV/QzuoArJDQuO3JncT3Im3YPMt2cy14G6KnT925CyotQ/WZx04sbww2QObHGNigo10KsSvwxLyuR4XSnI=
+	t=1762309921; cv=none; b=H5vdevy1aL6GbjWPd8bsE1ou+QWtFFJQPRElBVAorQscElz+Q5uqQ6YQSZFGIlQi3gk2bwdJebV5mDYLlx8IYrSNw6oPjS5O3LNxM8NUElIi8ndI8xdoVfmKcRp7zHm5UnE3s0hgHd862Uqc8blIEE2tDgZEKwsRtCf5Hr/cpZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762309830; c=relaxed/simple;
-	bh=bQOzSQvNbzdGQPklRvcil44cM6pFiQzeZeHosNNfvcc=;
+	s=arc-20240116; t=1762309921; c=relaxed/simple;
+	bh=N66lmHQ41ZDXetSBgvIvh3usb9oXxS7iym9uIs0RMFM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rRmZXPl5yRI3qbYAidcDkHlHSXcxm7SWc7sFN+0mT/Mlk2o/3iEurgQaOlmqH9qZGJzBIW5pF4PkcUgBKCUDYo/J/6H+gFH0otrmXYA2rwapR/8Ao1KHXlbccYDtH/BxImXkOmmGDovCyDQ81CSmBVt5EPezPB9V4nvIum3Fk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIvtc6Lq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=pU+Q801+AmADRE6l8GZYSAINvAVAJ6snyS/AhCg42uR5UKoh6+yAOXa9HoqL7is1w5hiKmUYMouaaQEW3xNDzLPtD4GG4shOJkN3TSVpONkBNnX52LQq60XkYS3oK4oha+g76B9YhVRGfOcDJX2J4IE+7H/yzpxDSmcww5LGWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f52iJApX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIvtc6Lq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4DAC4CEF7;
-	Wed,  5 Nov 2025 02:30:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f52iJApX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7009C4CEF7;
+	Wed,  5 Nov 2025 02:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762309829;
-	bh=bQOzSQvNbzdGQPklRvcil44cM6pFiQzeZeHosNNfvcc=;
+	s=k20201202; t=1762309921;
+	bh=N66lmHQ41ZDXetSBgvIvh3usb9oXxS7iym9uIs0RMFM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nIvtc6LqIfLFYinQoIaHxlMUrq8wPRdx01P+TKN4gYUGSLW/63TYX+e1xwo52U44+
-	 dfDNz5kEdgoKvfbPeDFsLGJfiVjvr4QXhnHgz0D/TWQ+CiCA+kf/OErQwYiwS+PL/w
-	 ntLGWbf85n86vjKO6dfEwfO3Z6zVKuIrRPPLbxBh3jxjKrpc6N1UGes8yhdGA5FJjd
-	 tP0CdqbnSXckVsOT1rN7WSEvcOLdm1eWAOfmFtx+2AdJVE0tGqIqZpjYlwSbsjzZZR
-	 btMyNcbUdCJ0QCoPOvS5UMb3/k1ntcUOfO4CvPmXlLd8DUZWuHNDq1wnpjdXmQHhJf
-	 EDFzEMuK4MICw==
-Date: Tue, 4 Nov 2025 18:30:28 -0800
+	b=f52iJApXniSnJG23KU5Oz+PgjvuiRtr+krHr/tt3GTouhQj548TRkgfRflFebtszu
+	 LhNWS9yekrzDAqRuxdjntOyeR560iDOI/X5MAMpjNO38HOiB+dXiDlWelGWfWIHRkd
+	 5ObftU5iDrmvL1Z/i6zUGpEJbigiNjVMUZaxTvQlXHmZ/rXIg/MC+oJpqN34AVgG+A
+	 p8pOtPmfsGzFHOhSrB4pAADf5Qmc2ZSBvph1JnaWxj+eDQEP+EpJRG04ZezurbfCpA
+	 k8oiKnnpqT6/19f/KpfKt35hnV1J/JQwk3UNisk/lkaVXxCdTdUhYA/XPagWtYOkLG
+	 rj7T4yKvb//QQ==
+Date: Tue, 4 Nov 2025 18:32:00 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
  <pabeni@redhat.com>, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org, Xuegang Lu
- <xuegang.lu@airoha.com>
-Subject: Re: [PATCH net-next 1/2] net: airoha: Add the capability to consume
- out-of-order DMA tx descriptors
-Message-ID: <20251104183028.7412aba6@kernel.org>
-In-Reply-To: <20251103-airoha-tx-linked-list-v1-1-baa07982cc30@kernel.org>
+ linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: airoha: Reorganize airoha_queue
+ struct
+Message-ID: <20251104183200.41b4b853@kernel.org>
+In-Reply-To: <20251103-airoha-tx-linked-list-v1-2-baa07982cc30@kernel.org>
 References: <20251103-airoha-tx-linked-list-v1-0-baa07982cc30@kernel.org>
-	<20251103-airoha-tx-linked-list-v1-1-baa07982cc30@kernel.org>
+	<20251103-airoha-tx-linked-list-v1-2-baa07982cc30@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,38 +48,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 03 Nov 2025 11:27:55 +0100 Lorenzo Bianconi wrote:
-> +		__list_del_entry(&e->list);
-> +		list_add_tail(&e->list, &tx_list);
+On Mon, 03 Nov 2025 11:27:56 +0100 Lorenzo Bianconi wrote:
+> Do not allocate memory for rx-only fields for hw tx queues and for tx-only
+> fields for hw rx queues.
 
-list_move_tail()
-
-> +		e->skb = i ? NULL : skb;
-> +		e->dma_addr = addr;
-> +		e->dma_len = len;
-> +
-> +		e = list_first_entry(&q->tx_list, struct airoha_queue_entry,
-> +				     list);
-> +		index = e - q->entry;
->  
->  		val = FIELD_PREP(QDMA_DESC_LEN_MASK, len);
->  		if (i < nr_frags - 1)
-
-> @@ -2029,10 +2020,14 @@ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
->  	return NETDEV_TX_OK;
->  
->  error_unmap:
-> -	for (i--; i >= 0; i--) {
-> -		index = (q->head + i) % q->ndesc;
-> -		dma_unmap_single(dev->dev.parent, q->entry[index].dma_addr,
-> -				 q->entry[index].dma_len, DMA_TO_DEVICE);
-> +	while (!list_empty(&tx_list)) {
-> +		e = list_first_entry(&tx_list, struct airoha_queue_entry,
-> +				     list);
-> +		__list_del_entry(&e->list);
-> +		dma_unmap_single(dev->dev.parent, e->dma_addr, e->dma_len,
-> +				 DMA_TO_DEVICE);
-> +		e->dma_addr = 0;
-> +		list_add_tail(&e->list, &q->tx_list);
-
-and here
+Could you share more details (pahole)
+Given that napi_struct is in the same struct, 20B is probably not going
+to make much difference?
