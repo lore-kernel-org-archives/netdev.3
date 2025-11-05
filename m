@@ -1,162 +1,159 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23233FE2B
-	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 19:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48594276058
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 19:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762371601; cv=none; b=rnMqhMJYrICrBsbD3o96cAvR2scW7dG+0jHNwGIQjVvkALr7JvWVD56Tw6b7Vf1lQfhiQbje9jcMZg2URLm+E/CIPW1G3BaUfaJKJOztvlkpd+c1ksCFPpUOEhGSPeJ2XakW6NaHEd4U3fSOTogo+VLZxCWB1KLw4hEEsmGdkQA=
+	t=1762372056; cv=none; b=KP4a7qW6MmtztfXgqUJzdB+K9xXhGqmsrQBC1tCkYHUQ/IAOPHH7yK9atDsFJ9RfYBYLv7N197fUTkBIX+RBXs4lj+K+2p3hPZpq3Agfbq54MAV01TrjVMB3Wm/qHFln2qcTb4haNhXntFYL3vcUVqS21G7I9g6MidILAIO7zVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762371601; c=relaxed/simple;
-	bh=+SOyxLJBOfbSw/MqBDPVxoL7LcgQEUyR14RhOCQVl6U=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rVhTdQH6ZtbpJrpdXUErfnL7BuH9KFU93ygb+W2B1RURo0L0ySZ6gR+k7Alb/vqr5IEfS1VbHyxDCOG6hOVEJrV7FsAylc+ucQ/1cRyMUv+6Xxgmxlu/G5LyGQUZSSj5qA7O0Xlm3N/DMZukSYYp0P41Z0n0qNFirdu4bkpnl68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aftX8lFz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhU5gOa3; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762372056; c=relaxed/simple;
+	bh=YNlyk3L+J5C+s+XKkHVgo/Wr2fGJFKUz94e2clMbd50=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=na6f3Yo8RF41SbHJRCKk0/ljpgSKbJTTcxv+7bL1Qmib1u0BnySYBHA5Vi1LtWx6jRPtOBtZzaou306x5l7J+E4NHyjturj8UBe2dvIdacfQ45cmdGGM2U18USKYydIDusSZOhmNK2sKEwlx0PDEGVlk1HAD3cGeg2qM1O2qRGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gd6vQHkv; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aftX8lFz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhU5gOa3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762371599;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7kizs9xJ2GRG/rLXAdsJnM3tvDx/8JZcjC0BTEZZ5WY=;
-	b=aftX8lFz9UJpOrwvJjkImzXtLw0nRbORi73U1W28gadrOmYhjZxCVDWL7/TpmnWVy0I3W/
-	1JnyXOrcR6tWtdvfNHqXcV2caDgvofqZPJu2B5iecJZrHY2RhnRFCzUOYZD7hactTz4xvL
-	fTEAkfY6qbZVmNlk7W2v77t2gRGgDks=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-AtWsY_UROWqCyhbdHBGIkw-1; Wed, 05 Nov 2025 14:39:57 -0500
-X-MC-Unique: AtWsY_UROWqCyhbdHBGIkw-1
-X-Mimecast-MFC-AGG-ID: AtWsY_UROWqCyhbdHBGIkw_1762371597
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-892637a3736so48752785a.1
-        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 11:39:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gd6vQHkv"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so240631b3a.1
+        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 11:47:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762371597; x=1762976397; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7kizs9xJ2GRG/rLXAdsJnM3tvDx/8JZcjC0BTEZZ5WY=;
-        b=bhU5gOa352yz6IMZNQMetzfE9fawz8lYejcR/dsPOJRFkYjWHgw9vmAiwAPDrfVHNe
-         1SkuKfO9+wuixdu8J62kqL1yuPNN4UxT85BcWZYpR0d5mcq0muQGq7GOs9hlUDoDamn9
-         qDc8zCFQs2kW8KY1q+oIEKTtdFq2w/PfUdDP4pQKE2gJTBF9krK+GdbUpi3/mnhS0E9c
-         4bG9g8VDvW0JJvR67KQxZ4wEoWwbQfPWMP6aIb76vC2J1+no6tS5u8gwhyanuQ7TQk41
-         XtldFp/Mq83IHfqtsAD6FFGYQ6dLzZPs7AdY8DQItDo+idRaRcXQZmkTlx2fJPZR63dO
-         eX2g==
+        d=gmail.com; s=20230601; t=1762372054; x=1762976854; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pc0FN+/I3AZzMO/MbuUc282ojIxRA6xlQUdIwWUfgfw=;
+        b=Gd6vQHkvFwNpP7I+OfAlz/QvcpAMNSPZJ/UE2k2k7p66pXKS7zBmVQA2oqVUUNXBi1
+         tU5jegO9hZ8dXCGUw4L51/UQiUUaVEiHNPSM5/tQ+yKtQV4ANGm7hVoR9MMaxLOpvtHM
+         Kxb3aQWoq0qHsxa6l3+539AEit2fjmTItdxwkLOzP2FtGv7m5ADjrDsY0Uc3gQpquq/k
+         /OCXIPFy4zxoWz4f8bdG2xNOQl7iOU0xeVzOwjrmfV/OjNPb6UTdjl7dl9deaTZNcM8u
+         qrQIw0rOzrN0prJr7eLthN+xshrK730AnzR9modlJ75Gd6TQJlJEzdcRJlGoaLxNsUU9
+         FpgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762371597; x=1762976397;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7kizs9xJ2GRG/rLXAdsJnM3tvDx/8JZcjC0BTEZZ5WY=;
-        b=MTAnSkzpKxId5Z+2bm1qEjgPEiWCB5LJz4KzhEb+OQ43NckZ1aXDncyWLNikZpx2S+
-         JAgzLRVgU9sCFXDjTd1e7RKYridiI/oehEfesLfha0j1Mw4harSTVL2qZZ/+uXPk6Q8h
-         K83vJOoZugitU1lZEXi7wynV6TgrOLZoV5d32Nip4g0+TqXLwEfYi+hLPQpund+dIL7I
-         ZyBCXm1deeQdkVOtgBj5PcwE3fB3LDGRgXyPE+JNo9x60qbSriVHCrSjoycC/6ly/tC3
-         ZrefAXtw7NUpW3zJl3/wVTlNmpdpZi/K+GDIwOYtXs2fpOtExUcCPUq1sTZ8IYmLqfys
-         VwbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVHVucnsSyrr2gFKOzq2hobwZ5qp5oUuf4H8iuONbJlVQmrWpXtDoBXH0BPlUnI74BomYKyYEo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDC3j6MyuJ2/WdMgi038jFqoC4gdwN9MuVjhwZfDNHhWbh4rUA
-	Bn5pZ2ueseBdNERdCVttiFiVxqJqWtccBU9dS+QC68BuU5r3Eu4AKlc2ITEFNLzHB26NI7PT5x0
-	giHTCbtfb3l68zRJwc5VGp1vF+ux5oWJMAZs7zgdsMv+MG0GULTdo2sHEmA==
-X-Gm-Gg: ASbGncssdCUKrR1WYAXKIH6i1ob7a9eqNdQaV4GBOPQKfTaugM8g7bpq1u9/5zzZizA
-	HTEq4YCxxy2JNCjZ6oqvNm3k9fythCjL7nQM8qEVvGQ3fKZBKPhMJRH0dOu6xF7yNjpqum4aNOJ
-	7Re/sBxOBLkWK7E8uva54BD3nonQfQ0kkl2bc9dP/YaBuQnjnbgQ0kBkxfYZuTl4V00ymjwYWj/
-	btAMGbfhQQrOmXnyHQUeROfGuBLerk3fcdyjzbTTFjpUqzVDvG+WVuxSeR5it0Bsn0JqJtxRogF
-	hES3PwRs0ovIvLJDUNPqM64czkInr0T/tIXk90OPPeWDJDO5IbEu4yshaMYvpfvvuPDrrDxwtwF
-	NWb61ty3SKeR8FVEoGNHjCYSSUMxZZ5gU8wEIMXMjjcTQjQ==
-X-Received: by 2002:a05:620a:460f:b0:89f:7109:185f with SMTP id af79cd13be357-8b220af7c8dmr589562185a.31.1762371597244;
-        Wed, 05 Nov 2025 11:39:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFd9eT2YzuyaD6xKA1zXzyy0WWTMe4/Y4jwbmI24djGe/tYf+EHmXjHRZnQzj3cSXaGnWo3FQ==
-X-Received: by 2002:a05:620a:460f:b0:89f:7109:185f with SMTP id af79cd13be357-8b220af7c8dmr589555485a.31.1762371596761;
-        Wed, 05 Nov 2025 11:39:56 -0800 (PST)
-Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2355c2797sm30330485a.10.2025.11.05.11.39.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Nov 2025 11:39:55 -0800 (PST)
-From: Waiman Long <llong@redhat.com>
-X-Google-Original-From: Waiman Long <longman@redhat.com>
-Message-ID: <74c2751a-4de6-49fb-b675-dc3c7f6e0bef@redhat.com>
-Date: Wed, 5 Nov 2025 14:39:53 -0500
+        d=1e100.net; s=20230601; t=1762372054; x=1762976854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pc0FN+/I3AZzMO/MbuUc282ojIxRA6xlQUdIwWUfgfw=;
+        b=l+RWQJEvB6ML3va7vFLulb1bYCNRHe1/F70bIbl6M6WxzZDzljGFd0o8NBNFcAAuoA
+         QZN4Sc/+bMMm5GxSBGojmZIBlUyy4kW6vdCJveM/YHbabGHkSSwmvbj+qdDBBATEbIov
+         TxnyhjCzkaMAci5TgHEJpVsJ+SMcP7c9+C60uruXLh3BJWYZVlA20QyQGkWJeJoj7WoH
+         PVVkHg7xxGJnV8Kq/0tLBPA+QRK/banMhlwm+S4KctOYN4/D//n91aaRAGbSqs7KPFPl
+         au/YxhH2xkJmVTvH8HfDjkM2a+mgna5u3K8FMT0iOSwAshuXrr1foXXXPYUZGPHVNUTE
+         oKhg==
+X-Gm-Message-State: AOJu0YzZScUvXVUvEawHqQ+eO80AR3rRowHXieXdQAZw/v0R+fL/NB/x
+	5b0dRKrd3Fk/T2vJhPMYqmnJd+c1iVaSj21L7aXxTkOa8/E8K85KOo31Bv4OWecYR4U=
+X-Gm-Gg: ASbGnctqNF+nCjb/a9qUu9jIUqTHwRb6ueJ1eh4aT4FIstawr1Vutd61ZcvSUJJSpfI
+	zm7gzkoI00b0FXf6Y6EgufFXNOu83EZ6rQXinhR7L1QMk8MpPsZQGqBXHjD3sOQ8A90j9Qp0leN
+	FHRVfM9In7g9V5j3PwJ+vjoIa7CRNN/SnEgKLGTQ2csT0AfWho1auWR62ssL6I1JEfk1kq2Mbsu
+	d3gihODdbQM9Z7bxvPbd32/Pbw0nEXXxudPK/QFagae1H4mD7h8G4XBnwgBJDnhIWDzrahCcCvE
+	ZUY8i9Tn/FZtxuPAC6Fix+Mi2PG1+11OuWqxHqfbfeNu7atvCqX6iWcr8cTwUzb/iIHOdoopjHz
+	rRT+NjSRehtyoKwMyIKpLFHo0AveT209sjQD5qILCDZwhkZr9PCZuJNFAb5Q/pCPrKdqIPk8NT5
+	HYR+HhCqgHgoVS3DPTvnHzA4SZOFqnkbpxKg==
+X-Google-Smtp-Source: AGHT+IHJpP9bapYPglMlfmm6IXmUqTnI5kVgW0ucw6cjGqKTOT0Vhmqm015lIYvwtPjQlOKQ2Izyeg==
+X-Received: by 2002:a05:6a00:179a:b0:772:6856:e663 with SMTP id d2e1a72fcca58-7af705c8325mr788080b3a.8.1762372054297;
+        Wed, 05 Nov 2025 11:47:34 -0800 (PST)
+Received: from localhost.localdomain ([157.50.7.195])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7af7f84fc12sm237777b3a.2.2025.11.05.11.47.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 11:47:33 -0800 (PST)
+From: Dharanitharan R <dharanitharan725@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	gregkh@linuxfoundation.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	syzbot+b4d5d8faea6996fd@syzkaller.appspotmail.com,
+	Dharanitharan R <dharanitharan725@gmail.com>
+Subject: [PATCH v2] usb: rtl8150: Initialize buffers to fix KMSAN uninit-value in rtl8150_open
+Date: Wed,  5 Nov 2025 19:47:05 +0000
+Message-ID: <20251105194705.2123-1-dharanitharan725@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-To: Frederic Weisbecker <frederic@kernel.org>, Waiman Long <llong@redhat.com>
-Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
- <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
- cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-14-frederic@kernel.org>
- <ea2d3e0e-b1ee-4b58-a93a-b9d127258e75@redhat.com>
- <aQtxMYmwzfg2NW1O@localhost.localdomain>
-Content-Language: en-US
-In-Reply-To: <aQtxMYmwzfg2NW1O@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/5/25 10:45 AM, Frederic Weisbecker wrote:
->>> +	if (!trial)
->>> +		return -ENOMEM;
->>> +
->>> +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), mask);
->>> +	if (!cpumask_intersects(trial, cpu_online_mask)) {
->>> +		kfree(trial);
->>> +		return -EINVAL;
->>> +	}
->>> +
->>> +	if (!housekeeping.flags)
->>> +		static_branch_enable(&housekeeping_overridden);
->>> +
->>> +	if (!(housekeeping.flags & BIT(type)))
->>> +		old = housekeeping_cpumask_dereference(type);
->>> +	else
->>> +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | BIT(type));
->>> +	rcu_assign_pointer(housekeeping.cpumasks[type], trial);
->>> +
->>> +	synchronize_rcu();
->>> +
->>> +	kfree(old);
->> If "isolcpus" boot command line option is set, old can be a pointer to the
->> boot time memblock area which isn't a pointer that can be handled by the
->> slab allocator AFAIU. I don't know the exact consequence, but it may not be
->> good. One possible solution I can think of is to make HK_TYPE_DOMAIN and
->> HK_TYPE_DOMAIN_ROOT point to the same memblock pointer and don't pass the
->> old HK_TYPE_DOMAIN pointer to kfree() if it matches HK_TYPE_DOMAIN_BOOT one.
->> Alternatively, we can just set the HK_TYPE_DOMAIN_BOOT pointer at boot and
->> make HK_TYPE_DOMAIN falls back to HK_TYPE_DOMAIN_BOOT if not set.
-> Have a look at housekeeping_init() which reallocates the memblock
-> allocated memory with kmalloc to avoid these troubles.
+KMSAN reported an uninitialized value use in rtl8150_open().
+Initialize rx_skb->data and intr_buff before submitting URBs to
+ensure memory is in a defined state.
 
-Ah your previous patch of this series did that. I was thinking about the 
-existing kernel code at the time. So you can ignore that comment.
+Changes in v2:
+ - Fixed whitespace and indentation (checkpatch clean)
+ - Corrected syzbot tag
 
-Thanks,
-Longman
+Reported-by: syzbot+b4d5d8faea6996fd@syzkaller.appspotmail.com
+Signed-off-by: Dharanitharan R <dharanitharan725@gmail.com>
+---
+ drivers/net/usb/rtl8150.c | 34 +++++++++++++++-------------------
+ 1 file changed, 15 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index f1a868f0032e..a7116d03c3d3 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -735,33 +735,30 @@ static int rtl8150_open(struct net_device *netdev)
+ 	rtl8150_t *dev = netdev_priv(netdev);
+ 	int res;
+ 
+-	if (dev->rx_skb == NULL)
+-		dev->rx_skb = pull_skb(dev);
+-	if (!dev->rx_skb)
+-		return -ENOMEM;
+-
+ 	set_registers(dev, IDR, 6, netdev->dev_addr);
+ 
+ 	/* Fix: initialize memory before using it (KMSAN uninit-value) */
+ 	memset(dev->rx_skb->data, 0, RTL8150_MTU);
+ 	memset(dev->intr_buff, 0, INTBUFSIZE);
+ 
+-	usb_fill_bulk_urb(dev->rx_urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
+-		      dev->rx_skb->data, RTL8150_MTU, read_bulk_callback, dev);
+-	if ((res = usb_submit_urb(dev->rx_urb, GFP_KERNEL))) {
+-		if (res == -ENODEV)
+-			netif_device_detach(dev->netdev);
++	usb_fill_bulk_urb(dev->rx_urb, dev->udev,
++			  usb_rcvbulkpipe(dev->udev, 1),
++			  dev->rx_skb->data, RTL8150_MTU,
++			  read_bulk_callback, dev);
++
++	res = usb_submit_urb(dev->rx_urb, GFP_KERNEL);
++	if (res) {
+ 		dev_warn(&netdev->dev, "rx_urb submit failed: %d\n", res);
+ 		return res;
+ 	}
+ 
+-	usb_fill_int_urb(dev->intr_urb, dev->udev, usb_rcvintpipe(dev->udev, 3),
+-		     dev->intr_buff, INTBUFSIZE, intr_callback,
+-		     dev, dev->intr_interval);
+-	if ((res = usb_submit_urb(dev->intr_urb, GFP_KERNEL))) {
+-		if (res == -ENODEV)
+-			netif_device_detach(dev->netdev);
+-		dev_warn(&netdev->dev, "intr_urb submit failed: %d\n", res);
++	usb_fill_int_urb(dev->intr_urb, dev->udev,
++			 usb_rcvintpipe(dev->udev, 3),
++			 dev->intr_buff, INTBUFSIZE,
++			 intr_callback, dev, dev->intr_interval);
++
++	res = usb_submit_urb(dev->intr_urb, GFP_KERNEL);
++	if (res) {
+ 		usb_kill_urb(dev->rx_urb);
+ 		return res;
+ 	}
+@@ -769,8 +766,7 @@ static int rtl8150_open(struct net_device *netdev)
+ 	enable_net_traffic(dev);
+ 	set_carrier(netdev);
+ 	netif_start_queue(netdev);
+-
+-	return res;
++	return 0;
+ }
+ 
+ static int rtl8150_close(struct net_device *netdev)
+-- 
+2.43.0
 
