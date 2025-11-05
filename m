@@ -1,152 +1,133 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E127533E349;
-	Wed,  5 Nov 2025 17:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFF0336EF7
+	for <netdev@vger.kernel.org>; Wed,  5 Nov 2025 17:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762365378; cv=none; b=UZ58drBrdeqk54b5C6Jc161v7FrGRCmzl4iSnGfbAMapLuwqSVJeLLaNkM+qwl+OVmQC6Xc3ldZb/0ZKaxjZvjzGY+F/MqrvyWS2qflf5z07djmkY8ImH4bKyzQRJckHxuRosIRTCqeDbAzPZqXFckzN0Xy6fFP2NLLNvpfbCNs=
+	t=1762365576; cv=none; b=KN/7LwOdiuR59MUw4wLHCfVgnlle1DgVplrKpuMwiXrxCljLG+4Mx6KigxdiWr2PjrEi3wWtubng4RkKqr9ttTZu9y+nMr9E6+C6/yoksYYfmSKEosXC+UL0A7mZuoXfQzzCwfvGxZdxdMRiwMGsYGSGu7gnBjdZ89EbsmCyTiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762365378; c=relaxed/simple;
-	bh=pXhFBrRqbkZGWVJSQbl82X0IMtNkqqdvvuHaYAuVWzE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o768sjQN529B+gr6WFFgI2922CMNohQ+iqlgM8Gh6MJt/q8608Hn4LDO1H0ePsgQnKMCAbExyLHEQqrEy0/UqfQmw0ia8T4yiR4LLtLN+yrbnuNQCwkA4r8bx7iqWB7d0bNbmN2MKqYtn4Jl2c66UuLWGoLRW+VKkcVuCX8KgIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L0Tc/caI; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1762365576; c=relaxed/simple;
+	bh=Nnp1wDC3H73w3jI8NtJcSVR2N83rdAhx/dtATqrWYag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fv+wUZCB8DMtkjQApJpGVZvNLKKxjMvzqJVnNc1aGtT7bqtX+15DrKUT67ipoXGuGhrnUVmZiwVNJVoCTBTugHdaq3qhqWeg2WoX2B0rIHZH+kB/b/r/1+b2dSBWOu8CIOF/dy8c5WPqxgXX7AFQnXlQtf4uawy4tiMmfxGyrvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wtm5i7Ve; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L0Tc/caI"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5G6xPT019164;
-	Wed, 5 Nov 2025 17:56:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=6vSe7hmXkk4DxxtQOctnFl27rZ2U
-	jZN3dQir/9Prrv4=; b=L0Tc/caIuC5Ya2IqZJReOjSYPkhtZFYBgYlL/olZD1Yk
-	2H0vTVLp1DAaM2PPrEGekjobC9h2Sp403HZyYJRnQqnskzp7ZEmX4/OvLlpW1kdW
-	tPq+UFmmEMBDtkYqNwwICU8n0Bcz5zO3yzzfUaaLLveEyICaWIPMO5rzRyMfNRtn
-	2QyNV9V2CDWQqV6caKN8BMTcLaEp3z0jdFeeBZK8057yrxx7dHu1rLtp9Mp39DtQ
-	Jx4RhrlB71KAm1qqAoGkyAla6NDvwXttgqUAviWvWGLOvOfGMDk+xXsZh5BribwL
-	39SK2kKyQ6OI2bfcESpwxyArBokBOLlK7+mz4CIBag==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v22dda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 17:56:01 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A5Hsru8007406;
-	Wed, 5 Nov 2025 17:56:01 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59v22dd4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 17:56:00 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5GWvKE012872;
-	Wed, 5 Nov 2025 17:56:00 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5y8216n5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Nov 2025 17:55:59 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A5HtuBW38207750
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Nov 2025 17:55:56 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4648720043;
-	Wed,  5 Nov 2025 17:55:56 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 131B720040;
-	Wed,  5 Nov 2025 17:55:56 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Nov 2025 17:55:56 +0000 (GMT)
-From: Gerd Bayer <gbayer@linux.ibm.com>
-Subject: [PATCH RFC 0/2] mlx5/pci: Fix enablement of PCIe AtomicOp Requests
-Date: Wed, 05 Nov 2025 18:55:12 +0100
-Message-Id: <20251105-mlxatomics-v1-0-10c71649e08d@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wtm5i7Ve"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-786a822e73aso521877b3.3
+        for <netdev@vger.kernel.org>; Wed, 05 Nov 2025 09:59:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762365574; x=1762970374; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zSHtYrMJfyWXNB5+D7qGmo5liVfUAPUmYconSQ05yJA=;
+        b=Wtm5i7Vel6og71cIYNi68wga2ylq1eSG/Yhr/KPEnj+sHZCTbCPH/BDgN+LYIacV8L
+         skAnPmPwk4Eq8LfFcNj/KAz3bxnQfryS83ZS8mxM/pRUehxODb3wQhjs1uRRVXtKD9e3
+         8UNcK6mT7yf7agUTYTdUEWqrnLhOFsqKzwcsp01gtWEWpk5T3qEUz6nxByKQ0DJkpwK2
+         d+LL5dDSB8eSgK36DMExPxtwDq2/GiG2e+8hNze0WH3Iats5Xv8ipySifO952J1Uf0Fm
+         +EpbAKeOuGqhSpdNO9E7cZf1Pp7ocaGLOZzN4N6pu8letXaCjkrOYHWc/4egXZ00I1NQ
+         nabQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762365574; x=1762970374;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zSHtYrMJfyWXNB5+D7qGmo5liVfUAPUmYconSQ05yJA=;
+        b=lmTdnoNs87dCJZMwGn3h2H/gCChEJodw6ew/3BXy3lugOHlUyazJP8Le2dfeu2OE19
+         CKNeeO7QPd2Zhqf0hY3ismaJJK7xarS5S2y1pR3drREplbyRDu6xik3JKk4rAXiqi7L1
+         mLDNwuPE5zw0IO30m1hIi9IGQPom+2gl1quY4iBBQq4w+CZfQNdx85f+oW50lhUnStMR
+         8QQ7xCTAmmXJwKch3jQdnh70sL2ucU1tZVxmlFc0nVZToaMMzfTK3ZpN5SfJW+TFDd9a
+         1wj+5OkMy/gR+qhrJcIDXYzZbDzsbDQeYEx3MHqXy7zEOztiJI9aJtKQKaDfdyPVKOPW
+         16PA==
+X-Forwarded-Encrypted: i=1; AJvYcCWd1n1EtUU4rS/AzByxPU6I2t6TS7mYJMYVW6BVJIO1ag6GTEpbUC2/ygdNDm+jXQsp4gdgc+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ3wKJAfWbQw192b5SqplVXU8heg1JT+mlccb4hAFaeXgTa6Bo
+	E4tvuIRWX5P+OMmfM+SR/vIPOj+1I6S1CR0izPATu71UWfg1TMoHkVng
+X-Gm-Gg: ASbGnctCZotIKAvuSM7nbwWBTEDGqREtI7BQK2IYXS8CgmPtlU5SLPrj9rx+sZL/M7L
+	ilc69gVPqx507Whl4XXH58GzWnyzlM+khKqp3AKgzpmdjw6tSQWmU4FFYnZJK2s1UyKTK9mo38s
+	P+sBCIi+tio6bGFCRPyS/oItMQ9A0f4mDtRkqdOrwYCyjH8ycNrrOaE5lMo483S5M5GSNP6NUjt
+	J1TlnIQS9PMunEVqG9cOWoUsLxRg5KjEstmMMk5h10ezh9ORwcUX3M9AHIJ/8fnV8iKYVcwTVXq
+	rqKXH1fdLK+R4hnDqToQa7flEA1Ds0r94KJmRuFCcsMfW+ZQ8wmf4em+2lV2ZgBrEcLoiV9B2IR
+	WRqTK0ynvV90Lhl624vKQlroGb6NhVEtpsZhLfnAsLR0hRBWvE8Sz4ex7WKYIxwHXpoy4pB+K6q
+	S9aCRHr7mZCu61n21Wj+H6QxB5NH0Y6WEC5NbF
+X-Google-Smtp-Source: AGHT+IHHyTsN8YO880iJh6XJa9T07Q+L4vBMRDgiJVACQ1JdCPPRDqaW0LijeD633oiPcNo5B7xioA==
+X-Received: by 2002:a05:690c:fc2:b0:787:1aba:3081 with SMTP id 00721157ae682-7871aba3718mr18241127b3.58.1762365573471;
+        Wed, 05 Nov 2025 09:59:33 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:59::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-787b13b6954sm735637b3.5.2025.11.05.09.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 09:59:32 -0800 (PST)
+Date: Wed, 5 Nov 2025 09:59:31 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stanislav Fomichev <stfomichev@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	David Ahern <dsahern@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v6 5/6] net: devmem: document
+ SO_DEVMEM_AUTORELEASE socket option
+Message-ID: <aQuQg2bNj9NYNW6j@devvm11784.nha0.facebook.com>
+References: <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-0-ea98cf4d40b3@meta.com>
+ <20251104-scratch-bobbyeshleman-devmem-tcp-token-upstream-v6-5-ea98cf4d40b3@meta.com>
+ <aQuKi535hyWMLBX4@mini-arch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAICPC2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1NDAyMT3dycisSS/NzM5GJdU3Mjy1SLxDQzgyRLJaCGgqLUtMwKsGHRSkF
- uzkqxtbUAv0zjuGEAAAA=
-X-Change-ID: 20251024-mlxatomics-5729e8af60b9
-To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-        Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Cc: Jay Cornwall <Jay.Cornwall@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Alexander Schmidt <alexs@linux.ibm.com>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gerd Bayer <gbayer@linux.ibm.com>
-X-Mailer: b4 0.14.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NYVXY3HGMWwgEGswIr28G_DNa6H2wtYd
-X-Proofpoint-ORIG-GUID: jvohXOaYyF8P3KT2DJXIt7oafp4JqYqd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX1xx+pmLj+xv+
- 6yFwQQhA7xOzwJqauLtgXbTRXUELJtN4acDyh/WqL1CnzhrDOe98l5SAl4Vy5DMf7n2dw3MaHI1
- eBr8C9aDqg0cLfBwzCcGHUYqfCrKRjjj9/zOoF/NbEteiF185ZqkHKWCCZM6vbjRz0zVBVAOyyu
- ubR7I8VRFLkk7mONVLONGLohlMdZmRsFFOmsz+Ki3vMmr7L9fudZ4zO0M1KM17xkMeDMiYszE7g
- j/c5jbOXEPNGlHEBGprLH4I3hTWv9pQ1DTa5nLFg9zeYRAQ8E9AM0QBxwW5v3aFXqpgJcW/Yd3E
- t27byNwSJz2V6Pxe4KYrQtTnQpW2Q9jBs53ZH9JjipTppAryEv5R/7bi9CeqvcUGdKxjFw4Isip
- Zo+WfmwcSqcMUzb0IZKDeNI99f9UCQ==
-X-Authority-Analysis: v=2.4 cv=H8HWAuYi c=1 sm=1 tr=0 ts=690b8fb1 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=DldPwnUYV5aijb35eRkA:9 a=QEXdDO2ut3YA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-05_07,2025-11-03_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
- impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQuKi535hyWMLBX4@mini-arch>
 
-As I promised in
-https://lore.kernel.org/linux-pci/9c7c4217171fb56c505dc90b8c73b2ce079207a9.camel@linux.ibm.com/#t
-here's an RFC patch proposing to correct the usage of
-pci_enable_atomic_ops_to_root() in the Ethernet and InfiniBand drivers
-for Mellanox/NVidia devices.
+On Wed, Nov 05, 2025 at 09:34:03AM -0800, Stanislav Fomichev wrote:
+> On 11/04, Bobby Eshleman wrote:
+> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > 
+> 
+> [..]
+> 
+> > +Autorelease Control
+> > +~~~~~~~~~~~~~~~~~~~
+> 
+> Have you considered an option to have this flag on the dmabuf binding
+> itself? This will let us keep everything in ynl and not add a new socket
+> option. I think also semantically, this is a property of the binding
+> and not the socket? (not sure what's gonna happen if we have
+> autorelease=on and autorelease=off sockets receiving to the same
+> dmabuf)
 
-With this fix, AtomicOp Requests would only be enabled if a root-port
-correctly announced its capability to support all AtomicOps including
-the optional 128bit CAS - as the drivers intend to.
+This was our initial instinct too and was the implementation in the
+prior version, but we opted for a socket-based property because it
+simplifies backwards compatibility with multi-binding steering rules. In
+this case, where bindings may have different autorelease settings, the
+recv path would need to error out once any binding with different
+autorelease value was detected, because the dont_need path doesn't have
+any context to know if any specific token is part of the socket's xarray
+(autorelease=on) or part of the binding->vec (autorelease=off).
 
-That said, on the only x86 system that I can test this on, it appears
-that UEFI is already enabling AtomicOp Requests for the ConnectX-6 Dx
-card in that system.
+At the socket level we can just prevent the mode switch by counting
+outstanding references... to do this at the binding level, I think we
+have to revert back to the ethtool approach we experimented with earlier
+(trying to resolve steering rules to queues, and then check their
+binding->autorelease values and make sure they are consistent).
 
-Overall, both the enablement of PCIe AtomicOps by core PCI code, and
-their usage by (very few) device drivers, appear to be in need of some
-attention?
+This should work out off the box for mixed-modes, given then outstanding
+ref rule.
 
-Thanks,
-Gerd
+Probably should add a test for specifically that...
 
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
----
-Gerd Bayer (2):
-      net/mlx5: Request PCIe AtomicOps enabled for all 3 sizes
-      ib/mlx5: Request PCIe AtomicOps enabled for all 3 sizes
-
- drivers/infiniband/hw/mlx5/data_direct.c       | 6 +++---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
----
-base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
-change-id: 20251024-mlxatomics-5729e8af60b9
-
-Best regards,
--- 
-Gerd Bayer <gbayer@linux.ibm.com>
-
+Best,
+Bobby
