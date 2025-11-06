@@ -1,70 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7B262FFC;
-	Fri,  7 Nov 2025 01:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E5F262FFC
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 01:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762479205; cv=none; b=nStleW1gBe8G2B6xWPAy59Od0OpBk++EcIHVKznRDsK2EkGOUo+kXRVQCmbrBxdUAPM/YaTeeH6wUYZKGrpBDrFLSYuD7CAKmNaaV4zIC/yavtLF7RtwJ6mSDHOXPV+BnZeFxXAqohTVjNIkyDaVvXc8ponHoktDDn8LDMtvzik=
+	t=1762479235; cv=none; b=UOfAHGNMpB5kvNGnm99QRLJQYiD7aHlaeDjsqw0F7V4gV3ftYdOx0pUCQcS/7C+4AFPLLrfHlt+RfN/32UOPhlUzB/togTZMABEwEVQM9C8x+iWzdhbXgh0M4Yu3qEXhqteKWO+ACd8sySHVxRLNSfTeOu/sVUGaPrz5gtgO1uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762479205; c=relaxed/simple;
-	bh=PK7Z65DZGnYLDCAiL5Ph+9HVPYcOYAtAYKPp1a9+thY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgUwFDBhe1NDhbiAJVuQSTbzL7w0PyTuMqJXUdKAgNPsW9yveaz+0k6QSqaX0RO+ucxV6RJk1qtL7DB9rwEey5x+CJCJEjCTOeeS/748HZHnDQxdPyWS2fQOXRn0rsQsNMejEp7a+oSBWlKZqDUPdA5JYYilR7VcoCpKqwNV3JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZDtFRxT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762479235; c=relaxed/simple;
+	bh=s4//rXzDBRVBNwADTTn5nejLJJDM9DaWd5NHxwgbfFk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=vBfwqhafmimvKGAfXTq1GF85mv7C96Hqu1w0Ztalwi7Z9VufI3VN2XbrBcDkxesN/ux9Y/jAM8/FR/OHrZHvtukHXTsPcXdn0HVF6/ukWalqmGotqLLXTOwOxfmg+v1kHoPVH7+us92f7bIuiamngWhluEzTPj8sKy/x76rlr+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azuCJLZD; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZDtFRxT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2743CC116C6;
-	Fri,  7 Nov 2025 01:33:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762479205;
-	bh=PK7Z65DZGnYLDCAiL5Ph+9HVPYcOYAtAYKPp1a9+thY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HZDtFRxTxzd3xikS/f+aycu7YIXmI9UGBNqjJz6+mH/rWmM5sdTd2jsJMxzcCdzq2
-	 hyDD7hww9hoFo5X224lwyesdTFd3RRyYt3gp0GGgs7Uhe+GOyUeZZj+wSkl469Kh3q
-	 TSiNFhkZ6AAHXrCeg54DIWesWe6qwatLr5UXZ5XhbnUmacVzzwf79bZz9Zms3ooyP4
-	 kcRrom2suZUgXqhwfDEcvFI1pUj4YyTVaUX2gMSPvI/uC0JfIDRpT/WRkIDWLW9HBm
-	 82ZMVREYe5M7qwXkVriF+ggbDIg/oN1dLDh3xCTKsX1Ko0LLnuHQ4/BSTEO0jOzvab
-	 LPE5mWFmXkW7g==
-Date: Thu, 6 Nov 2025 17:33:20 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
- dtatulea@nvidia.com
-Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
- page pool for net_iov not page-backed
-Message-ID: <20251106173320.2f8e683a@kernel.org>
-In-Reply-To: <20251103075108.26437-2-byungchul@sk.com>
-References: <20251103075108.26437-1-byungchul@sk.com>
-	<20251103075108.26437-2-byungchul@sk.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azuCJLZD"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6399328ff1fso419979a12.0
+        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 17:33:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762479232; x=1763084032; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=s4//rXzDBRVBNwADTTn5nejLJJDM9DaWd5NHxwgbfFk=;
+        b=azuCJLZDrK7XHpNTBl5dUynyjRxkmd7I7TaFfGN4CTX4slSOY0jvJXksqcGPFE8Pyz
+         psRfUu/H4av079oQPJdR0COdE9nr1Kves2VsOzHSYN+IPSH6w+ijJ14RyjCzYV2qt3y/
+         0y6RGdxbmn9v3/ltBV842Lvzef+CLhzNDpKsWIO3uWElYrMv7XF+vTcBr+jHKk8ljTJh
+         iYbhWSSAlYtMy0rtouzjCYb6XG/ilzu9ibptsIfCeY/eqiUgiqedHxGurR0XjnSC5ZFb
+         GmSqfEF9E0zSa4Hp+LAeYmA+7YiKOaLXrJvy9C5VIZLpEetvBk4GaDnwdViB/JXrriTJ
+         hmPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762479232; x=1763084032;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s4//rXzDBRVBNwADTTn5nejLJJDM9DaWd5NHxwgbfFk=;
+        b=mfbTsfebqgMokpWSMuW7OsGEgUf2T6DdjK+AtyAgMCKOG1ONku6xM3i2NPgxNMfmi+
+         RTj1EeKkgs8UyCASJmJy461V4bYj19vRoeIOJ5dvLyhRzoll7a1WCLND3JfhU8dya3uD
+         aJHapmaZz0d38qUQbUv6HxLOw1IiqMQ0hfKo5APD6ib/E/B0vjXq24SDYfRPzo6SPxEN
+         60kTgvHl9tresVoJwM+ccWui84s4P9DmWU1jYRgelsw5blFXUpuGK5gGLmoK7sXOpsXq
+         w3JGd5IsFPy5D/ozlFZAwI6ElLOA61OlBzFF3AsCO2xGYkHXl66e7S5nW23w1vqIG9Xb
+         ToWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWIpYmzbg2xBFhWOpCwFXzKSc7co5u26LvFjVMjtWAeDl4NlcXNhp9I1qWqSvc2afg2v6NwL54=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc9kSiFy0Mm1lOhAsc6zFU0UwyeJSxsOq0qPRuK+9s9OYC0gM3
+	rMEHl299PmVwI35wsL5GLsMhfmqBsKQibTVp0aPXFZ13tlqLv4i+IdWVBQZjMCKBCS0P1aXKd7r
+	g34Ba+uQ9NtzCM8swnIi5q9vaHj/npBk=
+X-Gm-Gg: ASbGncsF0ufnUBpd5ztNJRu0OO7DCZLqwO+FareVwBAxCaWbNVm6p4RucE9GFpSy0Gz
+	Er41FH4uhGHpf8crRt5OW1Z5FIsagdbolQ0BvhS2VN/4jvZOxQYwsWVinRuYTe5lQIEEcv1/kfn
+	W30CIMCr+FkX8C4+KUe3Bjh55GbhUYysnAGV2g+MsxmARqjc8pMiPpqUbf60FnRgQ8J+y766l43
+	enj8R25ZbVXdE0LkJ7jgh8f8raAbgt4Yp9s21iIeHrGzFSzMClGr5N5rWwpnaKWX8nk4DanDK30
+	MbBF4xmjqZtjAV/aSw53GHqVhNXBqLXDRQ==
+X-Google-Smtp-Source: AGHT+IFs0p/ZshE8oSECFwYJl2O8ACKc9M/8ieJ8+hrmMK00uOd/hgBZgPKKUSuUkRJGeii5nbJkqvK+f3dDoKjW+Mc=
+X-Received: by 2002:a05:6402:1446:b0:640:96fe:c7bb with SMTP id
+ 4fb4d7f45d1cf-6413f0f3f18mr1383801a12.28.1762479231677; Thu, 06 Nov 2025
+ 17:33:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20251028174222.1739954-1-viswanathiyyappan@gmail.com>
+ <20251028174222.1739954-2-viswanathiyyappan@gmail.com> <20251030192018.28dcd830@kernel.org>
+ <CAPrAcgPD0ZPNPOivpX=69qC88-AAeW+Jy=oy-6+PP8jDxzNabA@mail.gmail.com>
+ <20251104164625.5a18db43@kernel.org> <CAPrAcgMXw5e6mi1tU=c7UaQdcKZhhC8j-y9woQk0bk8SeV4+8A@mail.gmail.com>
+ <20251106141259.60e48f1e@kernel.org>
+In-Reply-To: <20251106141259.60e48f1e@kernel.org>
+From: I Viswanath <viswanathiyyappan@gmail.com>
+Date: Fri, 7 Nov 2025 01:33:38 +0530
+X-Gm-Features: AWmQ_bkJ2FriPSSvVAi2fzsx9ERxZ0UVfTFti4bNiLHi8cCqoPmyaQ1vev0pUMY
+Message-ID: <CAPrAcgMtF0cKkJ3RAGbCPozcK7YRdnYOg_tp98kLsXb_nQ9ycg@mail.gmail.com>
+Subject: Re: [RFC/RFT PATCH net-next v3 1/2] net: Add ndo_write_rx_config and
+ helper structs and functions:
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
+	horms@kernel.org, sdf@fomichev.me, kuniyu@google.com, ahmed.zaki@intel.com, 
+	aleksander.lobakin@intel.com, jacob.e.keller@intel.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
+	david.hunter.linux@gmail.com, khalid@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon,  3 Nov 2025 16:51:07 +0900 Byungchul Park wrote:
-> However, for net_iov not
-> page-backed, the identification cannot be based on the page_type.
-> Instead, nmdesc->pp can be used to see if it belongs to a page pool, by
-> making sure nmdesc->pp is NULL otherwise.
+On Fri, 7 Nov 2025 at 03:43, Jakub Kicinski <kuba@kernel.org> wrote:
+> The objective is just to simplify the driver. Avoid the state
+> management and work scheduling in every driver that needs to the config
+> async. IOW we just want to give drivers an ndo_set_rx_mode that can
+> sleep.
 
-Please explain why. Isn't the type just a value in a field?
-Which net_iov could also set accordingly.. ?
+Fair enough. I will start working on v4 with virtio_net
