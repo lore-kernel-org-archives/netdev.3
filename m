@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE51332914
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 12:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC7432C951
+	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 12:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762433604; cv=none; b=uKCPfAe8Q/7W0f191UwjPUKbuQ253XjV6Am/kR1IASbkQ+SmGwvjihzX6XVSNNVK4w0gEnA6CsdrqpQ02D6ks0y9PssaGRXgU2St79jf8Rn8G67x7PW2KzLPZ/u/5RypUwDB1Eh/54WlpnPUDCR/lTZoSiM5TX25mhVYN2liWrs=
+	t=1762433605; cv=none; b=ZET1cmE3naD+fQ599D79yp0uCBV7uFYTSnF0cPA3LclbERoD2BwhJvrQhNEhTWxInVoz/DoQWpbofxo4MVvdVDwGWdXF5aQVXN/vOPuMTvXSwq9tFCuxtP7g6HnGfN47YCKV12+looziV0w5CZr2QcjEcaDi5ND5AUiAfTaA1WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762433604; c=relaxed/simple;
-	bh=IAaIMkOnqP2yloVzJOFVv/QTLiRSqkCSV8+zencdd4s=;
+	s=arc-20240116; t=1762433605; c=relaxed/simple;
+	bh=DgaEBzJVE0diUpcGF2jdqQ0yAib13/RGrDpfzFmIiKQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cJ5LXp7HmpQvO7YByAljERwrBJ43/qemXT7QuGTob2jw2nAxMTm66AayZDVKWGAa67xYiLBIl3kFabS0iQVU4WQgwIIRFxfyGaExGICM98SuxSlJtEFenP4fLWqkCYhdwDS83umzfxVgQ9Pjtsmims8TLnJL+OLU45El59rPUqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1zH71d0M; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=HFImQ+OtET1qJ7qmnzM8oeH+YTRH5mrbw9jlYmxXM0kB6/O8G/uZAn3i0d4dEosjQmWutmk2svWEoKTzrerrLRwqfDepWku45XCkIFfQSx6TdXlU1sbMQQmqZGRx4BsbeP2I3jeTap5cLVOueTykQFDdWOa2eY4rGmwKstTBZAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g3EOW+eG; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1zH71d0M"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g3EOW+eG"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id DFD004E414CE;
-	Thu,  6 Nov 2025 12:53:20 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 56FEC1A18F6;
+	Thu,  6 Nov 2025 12:53:19 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AFD316068C;
-	Thu,  6 Nov 2025 12:53:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B08AE11851002;
-	Thu,  6 Nov 2025 13:53:18 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2B4CB6068C;
+	Thu,  6 Nov 2025 12:53:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CED71185102A;
+	Thu,  6 Nov 2025 13:53:17 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762433600; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1762433598; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=UTk0YczWZdiIENouofLZQdqIekWw5Y2Zi1fG/iQ0Rt4=;
-	b=1zH71d0M/LpIaFgT6oh7yWVAu/kdssPt1TBo5Txmn1r6h6qEHJATGLa4gz/v+gzcVPSaxH
-	9I6m3I6h6eVO5p9BEJfd+m9PFwgZqfmt9C0IlNsLCLZFCUD2qsSfw8bJSNxgu8umSWoMWJ
-	mLBmy4RfjSH3n8pK/4BZ0B1XhMuF9QsBCWYpTfV8N0ce70VKrJyjfFNbREQQVl3E1sGfZb
-	FQOzKI5JD0EaWdyYOTHiqWrHLZSHQ8yAQUYZzOruxat1/0XMq15xvwuaJ28hDgl4KwCwDR
-	NkF79fvUNiUEvp0V2QgwB/775zVcVrxdcUjbN/l0Yer0UmdiLSYM2cY5pjX9cQ==
+	bh=U52A0foBkCvgyCUwDdVQ7zTmGiYooyVZixhAGJ0JZp4=;
+	b=g3EOW+eGxuVNT5I+V9nxHKZM18Y6DjUN+oYkr6K8uOh0+Z5Rng0mL9EF/XsCp3l0I4El5Z
+	RvoQOXMJ/w7MKzF3mkM3EGSlvcRbULcte5qOoyAzckRtS5hgQ43f4QMtxnnZaxGvukc7PZ
+	5HdWDsprEhGYHT5dja3XpvBzXtsTdzI9zi6PPfSSpte81N4lXW8XNBE2KpoNStGU6GnfF1
+	IQ3XYO6Xh5vATkXfiqEQEFUksRAI/rzX4MLVG/CX1wcwfaUDv5/vPPvbyhvkmgA5d7oGG/
+	FYUnzoyFn6oXilNo/lrzmIMR/lmQ/Hr6M35hI+dM5WURyht8M+NMzffiZq9oAg==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Thu, 06 Nov 2025 13:53:10 +0100
-Subject: [PATCH net v2 3/4] net: dsa: microchip: Ensure a ksz_irq is
- initialized before freeing it
+Date: Thu, 06 Nov 2025 13:53:09 +0100
+Subject: [PATCH net v2 2/4] net: dsa: microchip: ptp: Fix checks on
+ irq_find_mapping()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251106-ksz-fix-v2-3-07188f608873@bootlin.com>
+Message-Id: <20251106-ksz-fix-v2-2-07188f608873@bootlin.com>
 References: <20251106-ksz-fix-v2-0-07188f608873@bootlin.com>
 In-Reply-To: <20251106-ksz-fix-v2-0-07188f608873@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -62,45 +62,34 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-Sometimes ksz_irq_free() can be called on uninitialized ksz_irq (for
-example when ksz_ptp_irq_setup() fails). It leads to freeing
-uninitialized IRQ numbers and/or domains.
+irq_find_mapping() returns a positive IRQ number or 0 if no IRQ is found
+but it never returns a negative value. However, during the PTP IRQ setup,
+we verify that its returned value isn't negative.
 
-Ensure that IRQ numbers or domains aren't null before freeing them.
-In our case the IRQ number of an initialized ksz_irq is never 0. Indeed,
-it's either the device's IRQ number and we enter the IRQ setup only when
-this dev->irq is strictly positive, or a virtual IRQ assigned with
-irq_create_mapping() which returns strictly positive IRQ numbers.
+Fix the irq_find_mapping() check to enter the error path when 0 is
+returned. Return -EINVAL in such case.
 
-Fixes: e1add7dd6183 ("net: dsa: microchip: use common irq routines for girq and pirq")
+Fixes: cc13ab18b201 ("net: dsa: microchip: ptp: enable interrupt for timestamping")
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 3a4516d32aa5f99109853ed400e64f8f7e2d8016..4f5e2024442692adefc69d47e82381a3c3bda184 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2858,14 +2858,16 @@ static void ksz_irq_free(struct ksz_irq *kirq)
- {
- 	int irq, virq;
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 35fc21b1ee48a47daa278573bfe8749c7b42c731..c8bfbe5e2157323ecf29149d1907b77e689aa221 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1139,8 +1139,8 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ 		irq_create_mapping(ptpirq->domain, irq);
  
--	free_irq(kirq->irq_num, kirq);
-+	if (kirq->irq_num)
-+		free_irq(kirq->irq_num, kirq);
- 
- 	for (irq = 0; irq < kirq->nirqs; irq++) {
- 		virq = irq_find_mapping(kirq->domain, irq);
- 		irq_dispose_mapping(virq);
+ 	ptpirq->irq_num = irq_find_mapping(port->pirq.domain, PORT_SRC_PTP_INT);
+-	if (ptpirq->irq_num < 0) {
+-		ret = ptpirq->irq_num;
++	if (!ptpirq->irq_num) {
++		ret = -EINVAL;
+ 		goto out;
  	}
  
--	irq_domain_remove(kirq->domain);
-+	if (kirq->domain)
-+		irq_domain_remove(kirq->domain);
- }
- 
- static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
 
 -- 
 2.51.0
