@@ -1,162 +1,213 @@
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010035.outbound.protection.outlook.com [52.101.85.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16D53043A1
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 13:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762437508; cv=none; b=RYzijwRGWpgK5N31NW6MD/dS84oEPR1J7nYz1iFQZ059lgmQsaT7DE6nuyJsNa91lpm7LKOmTUpnUILOUob9HE8XOU0y6Yr4/wTVOVC2hWcFIQaW2YJQrhoCsIdMgwNO6EtP7UsTXbuIxCeu9mut99ScJxe9G7oUSlso2+OIW10=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762437508; c=relaxed/simple;
-	bh=zrM2PCMHTJ+hS4n00Wujxh07B+51gM7047RGagXqk+I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OjKc2bVapFmOXR398XoDy+E5xFNrd5vYSw2F7c9C4w88kheRrs/pRjvSceaHQFMcKZA45wOZzOhvuKw60U27a5oWsOroV6cYTLmqmdSMpFgNUynpuzrIb42utJFB+ZRyPB+lolTQ00SIobUQud+N20bAOZdWv3hdh54CTVeNSzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+nzBUd6; arc=none smtp.client-ip=209.85.216.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC21339B20;
+	Thu,  6 Nov 2025 14:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762438074; cv=fail; b=MW6OAqlIH/mcm+qXWjzawoDpnqoWZ7MJ6STUS0c/8yH1hBhdc4mJQ8Q9SPFG7cmXD4KaOqFnyPQGiqQaIzQi7CUbLuOqoZhFCJF/UsEbIiJEfVxSMij88CzGeCSqcuExbb4Xw/GF68hJX4hY3ZuLsF+4BvSZPaXxrph7OwZ2PFk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762438074; c=relaxed/simple;
+	bh=x8ChqIFBtNtGBkPsj5Ezm1fqVaaA9vk3D6FSUYk9+F4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dYI1tZdxSPoTiv6btxXmqBwJ1gsHrxTudYAX4c5VcoYtqHU9D14SlhpVrIv+S6va3TOqZKkRoHBGjn+3TJBwALDKNjvVL8xU3bG5feYLEnZ04qQ3iIktmxvd+84S3JL+I6slca93KNOxqb7m9x+c1izlPrLrhqksgkPk8KZhQTw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=dI/fvh56; arc=fail smtp.client-ip=52.101.85.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+nzBUd6"
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-3307e8979f2so191787a91.2
-        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 05:58:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762437505; x=1763042305; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=95xsXqtqpxl4DVLujugvMY+qm/mCPkORVkUJK+NXUMI=;
-        b=O+nzBUd6+r9GxAqI32uBqtQmyEBhnQE3u+EoZ0D/4Wd/HXpWS5t4UorVeRlex5VW8p
-         oJWb6qhWSczZzyJvaCkeso4buVy/8erhpvVZXKJkWrH2Ltozq5LC9L0Ye73Y+K3xO6Zb
-         7NMUs/oktERoFqSIcqHpDIUDZ+THVPIQmNG3IY6hf8RPfHZh6quHEfzGQdTy5gcSBMic
-         GBIkTsONaVYyzXGqG6vEWBVPRLIjHRsCFyh3BHP4s5WCU2BxWWBOzdSDox+jNOdhM6Zs
-         sLlNtywhbnKofX4yOupyZRwEqtONIHYr5SnZIW5rSlmo7HspSgj8+1z9M8TsHBQKa64O
-         kbhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762437505; x=1763042305;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=95xsXqtqpxl4DVLujugvMY+qm/mCPkORVkUJK+NXUMI=;
-        b=Gvb/RQljsgQ4dOpdEkFsE+TXAPTOIMZaxU1Gem9StDLhB0FmXgetmhTzSyaLnrNbnu
-         gR+IdVhdsr6n2UQOKDDGfXyl0fiWWC/4oLRrjZd53k6Bt/zaVjnyVCCgxolVTbjj+26g
-         F8klXMfgLfo0eKEoCnT6mZViwon/LGmzN8oVS8LJXJUnELTGaHod5rrAKmYNOdSJi2zJ
-         VRHVTFAn8kbTpRd40ll+49UUeh1J2Dg839/YVASOBFr0RJDzWnEZzkAolB5+Bv0jNRP6
-         XPnLRIYcAbhwW6N2dlqs+NL8XFhpEbXJcNjnHNbABuVoqBtmLPPOcq/zWZcfm4VC9WzY
-         K/eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVu0Ruq7zhCTunz23vj2AfMpDbAnOulDOjKoue7OV8rCxUtFH5aEGfuW50Ix/faFm5v93iEVhA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfqOcE1AjhIxpfootrUXKfqiL5nYIBc4LGsUaBigp9M9CubiMz
-	sBTD3oG/GNgyWUDJsWGrKeP4sfQ0w0dzsuITvW+MVGyCgjCO1sY6ba8m
-X-Gm-Gg: ASbGncvyUB7EcTNKHglFUd4j441iG5xsvwHvtp64zt4QD9g2S+e25SIzW67yxmHTINW
-	SSf38JdsIuM4i+KFFC0XicyyYh8H8oV8j3NMVkvM9D1BV+eHOvNtTW30k0/yH1qAWakJq/UPApL
-	s2wIcxpHu7w/RtwY4x2moqsw7JLUJitHLDi1vWLQxs3cHrc4M3NKyY+Dozz1oayRxqbSoxwzsuG
-	gKT4IxZfmJiX4LM4iq42O+Lpq0ndd3kd+d9EqKlOzpOAR4ntohI1hYhTkoaFO9Z/WReVwZhT/Kt
-	E+Gzh0K31Q3Mdlpl3k85as7GxMNynVOYDxMg5aY96Haz7J71+PNSGgIBZAnTVG15NJG8v4grTCQ
-	C7ldIfhPXGh/czZSGSMIG3pZqVJkeJKuOeFqdWOv79d4TWea7ViTciUB1uoOfsVAn
-X-Google-Smtp-Source: AGHT+IGIBN1A6WXIAp5cV5s9HGkIYojkGlgq6bso3e+lR+1LOUXP0gknbBO0nEL/1V/95+m6CD5B4Q==
-X-Received: by 2002:a17:90b:4c4f:b0:340:b8f2:24f6 with SMTP id 98e67ed59e1d1-341cf343082mr2159229a91.2.1762437505042;
-        Thu, 06 Nov 2025 05:58:25 -0800 (PST)
-Received: from user.. ([58.206.232.74])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a68bf37bsm6439593a91.7.2025.11.06.05.58.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 05:58:24 -0800 (PST)
-From: clingfei <clf700383@gmail.com>
-X-Google-Original-From: clingfei <1599101385@qq.com>
-To: horms@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	herbert@gondor.apana.org.au,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	steffen.klassert@secunet.com,
-	eadavis@qq.com,
-	ssrane_b23@ee.vjti.ac.in,
-	syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	clf700383@gmail.com
-Subject: [PATCH 3/3] net: key: Validate address family in set_ipsecrequest()
-Date: Thu,  6 Nov 2025 21:56:58 +0800
-Message-Id: <20251106135658.866481-4-1599101385@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251106135658.866481-1-1599101385@qq.com>
-References: <20251106135658.866481-1-1599101385@qq.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="dI/fvh56"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jYT8VyymX+908on7omvV3o9lQJw4OFM50oZwLz4n3lm0v1dYfBP62UW2eAqoaM/xKdE+4EzV8sGNm23nR5XRPOSPKJ7z8zciaOrD9Sii91Ang2rHSvrogpGzkwvT2ePgDgWGH6M+MWlfQPzInq83+k4MJ1CHPedOp9AGeUJyF4O8VPwtROGZXfvUP5aGjKgNH+SEzmEOxkJt3Wfn3zac41CJTCt3erjwvPb2C2G8MifbH9rkVkjpkJQnghVOvJ1awvcmbGSh4Es65spSeYUhXjLzUl/uG3bPrfwvnEiMvvLLQbHDAHzeYu5rjT1njwFpPPpRof6oZgT2hyLaA175tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u4EbhKCiWxuD5zYdGwwRvzVhNkdpoX6nvdzcVFONdsQ=;
+ b=RWnxZ9FBs07GB1Accj8qfALC2/ILaWR4SrVUJSZYJ5UqnPd8f7o8SEuEOF4tMB30oEfvt22cmgmg+dlvhj6j8lGjnc1QQn5CmYvGKb0C0Sgna/jkJYHfG0TTACbdjd9lXro6Jv/vhxpx6NOX1JXmIiWBvQRIH7t4mROUA2QR6pKj3INHriJUR4Hln0GFynIfyOMYjNp6H2q1ABiD7SQKpdzFi2dDiJVr9O5CsR0rpA0nzgcnwBViqRfFm3cMTxa6V9tvL+/To1v9Fbks+qqe54aSWDwOYThswuT4cgn9PxxsKzhC05ZNXu07vrbyqtRocxMvd25c79DUhF3WtYtOdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microchip.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u4EbhKCiWxuD5zYdGwwRvzVhNkdpoX6nvdzcVFONdsQ=;
+ b=dI/fvh56euI78xySEH4flrkFR3VBjcYHqfEKseun8yxI2TcI7ZSSm6twLZWu6R9wN3Cak6FDqvE84SO/3B7k39l6/hivPXjtbIWJSRSAq+Q7Yf80nkbRR0942JSmL/M5aYEohDmC6DTlMEyttoag2qneXpj58TrAfxvpkgl9JEJ2oWRKQ51TuE7Lg/rus/Ii61h0pIhLZpPyqsif64nno+9Hy+hunN5Jh7XnH6VZNSPTEWxZS7n8fBN2vwODCGxUGC+AtzGjGK2F8hVLQCWXTHhu42sWvTjS1F+6Mo4x94xrQbI3DuWFerTFU3e33K1iDSFznqapusZo5aEGw0W3ZQ==
+Received: from DS7PR11MB6102.namprd11.prod.outlook.com (2603:10b6:8:85::18) by
+ SN7PR11MB6750.namprd11.prod.outlook.com (2603:10b6:806:266::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Thu, 6 Nov
+ 2025 14:07:49 +0000
+Received: from DS7PR11MB6102.namprd11.prod.outlook.com
+ ([fe80::5cb3:77bf:ac73:f559]) by DS7PR11MB6102.namprd11.prod.outlook.com
+ ([fe80::5cb3:77bf:ac73:f559%4]) with mapi id 15.20.9298.010; Thu, 6 Nov 2025
+ 14:07:48 +0000
+From: <Divya.Koppera@microchip.com>
+To: <Horatiu.Vultur@microchip.com>, <andrew@lunn.ch>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<Horatiu.Vultur@microchip.com>
+Subject: RE: [PATCH net] net: phy: micrel: lan8814 fix reset of the QSGMII
+ interface
+Thread-Topic: [PATCH net] net: phy: micrel: lan8814 fix reset of the QSGMII
+ interface
+Thread-Index: AQHcTvzsV5ZWzyHBhkikJvRFurJrobTlryIA
+Date: Thu, 6 Nov 2025 14:07:47 +0000
+Message-ID:
+ <DS7PR11MB61021B86D4A1146873712160E2C2A@DS7PR11MB6102.namprd11.prod.outlook.com>
+References: <20251106090637.2030625-1-horatiu.vultur@microchip.com>
+In-Reply-To: <20251106090637.2030625-1-horatiu.vultur@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS7PR11MB6102:EE_|SN7PR11MB6750:EE_
+x-ms-office365-filtering-correlation-id: 531fa8c2-044b-464e-3ccd-08de1d3ddd43
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|1800799024|38070700021|7053199007;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?OlxWXHBKs1ZylGLncPmiOUTW6rMKuPvJCU85QLEvZCvvYy56BX3Oy5QDukOH?=
+ =?us-ascii?Q?u4cFbWVXkgae4b2MNn2pI4lIeIfC+IyichOJSQz1rvKW7SPoaFxXvaJjKLkl?=
+ =?us-ascii?Q?E0r3AwgLE/kzVZ/Td4G9j0s86OTZmd+xMVwcSnuKyywVtGA23hs9VDz0qRA4?=
+ =?us-ascii?Q?MVHRSxpHaIFdGJZafNtUYa5kZQepj7XulPnstUeW1jVHf4YiDpskzJ1RbB2w?=
+ =?us-ascii?Q?O3GuSUsTU6t4VZ83n3iK7rAgc2x+uCuQt5xMu1Q9jjNLoSFhuJ4sNyZ4x/uN?=
+ =?us-ascii?Q?2bx2x8GA24dR13LFgGl6Ho9Tnhjbyl6MRKKN0PrQ+OKOLGqlYQNPkS8cy+yM?=
+ =?us-ascii?Q?FB5BQ5zRFlyLd+NKhRs+JsEZ7WIQBLZHZv3R8TkZTtyUox6DmOd9eZ134oR6?=
+ =?us-ascii?Q?zB7S/cAl40mkFwVrnmR1xiRQ3cLSTLV1SzKXo85Z7BofbaFaKiSryDiwoiMX?=
+ =?us-ascii?Q?8d4sczzU7BqoL0D7dHawMWY3ir3D/bVdDmnJ6CJd4L4xP9tXVsXzOHcJPHNx?=
+ =?us-ascii?Q?OZcqabRSHyvOqewhqrHS2oMPxtqVbgTrnMiCRXcdJWrnw0neMN0FInUfiwtL?=
+ =?us-ascii?Q?F41OPlrDXscCYY9LibcjyV/81BN9N7XccWBDimmGC5AgQHJAFK+uJ0aqRpym?=
+ =?us-ascii?Q?TFxGRtKZwbThuaugoC/H3QvkltgqMU36ZEUBOlR/HSEsw9yWgrEDcH8U24mw?=
+ =?us-ascii?Q?+H5L9ZfqFzkBJKPeJu/MFuqksGpO7qjzW04cHCDDjXPgjtNJk9JmHL8SWSZc?=
+ =?us-ascii?Q?6n6AyTNmmMXwMmpa7rDwRp8sH/ueFV2dDwG2TdESjcDs1Fzsc5BIKQjZnv4U?=
+ =?us-ascii?Q?zpfoQPmKeCVe6J8+ywjqEDrZsk1bHRx6fJr3GUpiZKc3TIoyrC2UPhFx8bij?=
+ =?us-ascii?Q?7lkFPrWJu666qeqdjg7gcguJAUsq4aN8WVd6hY3hkc45J+j5taOkPeW9oSkB?=
+ =?us-ascii?Q?bFinsDS+taODLRwk+lIo425Uv4F2pPaYnk7BDS1e20PcgKlhVCGJDpKG49dI?=
+ =?us-ascii?Q?p6XHNqDDvA1+bLxxzymEOAUsi0cLBZFrfCtPrNryzEBVeNcJFCkAfTT6UA1e?=
+ =?us-ascii?Q?PBbLUtoT/2r/UDq/b9r2aQN52Ft/GLCX/szRKSdi3pWHkPD2bIw/4gaA3JF2?=
+ =?us-ascii?Q?LBtKwZC7YCNXJ13V/gw2gWOCN98iUljrtFeiA2O2kRY2aiCu4SFiFW27h3eC?=
+ =?us-ascii?Q?9Oljo2nUBO5swcaetBlY+saX1/W4E8B+pSEF97pKpfcbcp2zvvJg6ITRuqKb?=
+ =?us-ascii?Q?dZp7aIQWZXKO7WkyASI8tz+9TrTWhiGdsBJ9z4hcr8ZeXhnVL8PF147jTN+Y?=
+ =?us-ascii?Q?DxA4piiANcYpGuofe1lGmWsOmHnsk+d/AoO7Nyrv8O97Uv5nDNeCLcV3sqp8?=
+ =?us-ascii?Q?nURlMxz5o3lJ+zOhQOFb+T+J92Q3rNfiqom+mD1crQHuy+IEJluG0ymuwS/8?=
+ =?us-ascii?Q?R/L0rshGrjoRg9xpiyIwwkzBnMFKeqxtTCoahUY2oZke5/JDSSrm9EYzAFMp?=
+ =?us-ascii?Q?SUYgOdg7q88rwZN7qyUVdUuyahZcvB9Qgoa0?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB6102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700021)(7053199007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?t4Aaokz/HOPNYNLQmcCVkfOrARi7gHZLpkPhtMMqniBvEz2IeRGib5kraT/V?=
+ =?us-ascii?Q?3yjYULFEJsALJ8S5CBMnYVn8gxDs19wxHTiFWtCB8HXFCx07NeNEHIEF9udf?=
+ =?us-ascii?Q?e7Fwpi9dUchIWjbf1pws5W8b9kwCO10Fn9m0jistUNSfdp4c5AB7ALnIBHjN?=
+ =?us-ascii?Q?5Vo7y71eDPnX/bwGoCPonhQJOIHO7KpQ/4n4qEDQWIfh7WyIU8LZBrrqQS+z?=
+ =?us-ascii?Q?ceCEgRLgk2JsjS7j980Qd9oCBzFFJxhIxKJmAVEqE7Fv6PZOioi3QSzs6cGw?=
+ =?us-ascii?Q?pJwCwMX4KvnrFcAzt0Xs3fFcqhyM2sBrvVXuC0VP2wF0+6DwdvS/+aCZ9uJ0?=
+ =?us-ascii?Q?VkhWdGavL/ubj7V1P4JVt70grIRHXTTIWvO2UFjUgt/k/sYv9/hjPDez6d6e?=
+ =?us-ascii?Q?NKHWEP3aOyxwsJIXHra659TqKLlgMn953zyXiD6QXeXV6ti4okdT5K0DktK8?=
+ =?us-ascii?Q?SRbjLEcCj9tkleXGNoaOfL6umItlap5DRW3B+l7l15eqzFFQZJnpM/tOZmEj?=
+ =?us-ascii?Q?OjZBMX5b7QqxdYsurfl9VPnGfukkOsn6+hl2ntfjC2rmxeIbQ5X+KDUUZOtw?=
+ =?us-ascii?Q?fEYGQ8ixhN6n0yqruJKN1krqcODWNXaaclnAFa9ZF1x3bWH/38Og5564OcXs?=
+ =?us-ascii?Q?edOW3B/KomjD7IJOK3RqYedhbKUML9EOEbPwS6/jZm1RzVP2a8dkVYg7dltv?=
+ =?us-ascii?Q?6quidI7AANs3yhbbP6ysm+pVScXhgMiU/VexkLQ7KkLP099ePaEi2Di4hHkq?=
+ =?us-ascii?Q?cWRvNMRi/nruOdGj+3/8qR14N+WnQN23N9ofgnFmNko4tzdYG04OR0f9HUxK?=
+ =?us-ascii?Q?K44YE6qytiByE7/4NW5vrbJey/pf9Y0jwBYtPxfE/SjDkU4C4LvJkvjJPISn?=
+ =?us-ascii?Q?EE1ZBkbcAtMoHht9NN0jzppLO5oEaKsF8nJ5pYfnQz9DLxgMzsXqq03wFaUs?=
+ =?us-ascii?Q?CzL3sesKjbDLwNw8iQq/Uvh9HUwhv5oknlxDN2efyNA6QOD+Lbe0ZXJckfWZ?=
+ =?us-ascii?Q?ygmQCiyu44GTN8yq8c/1R8DH5iUVi30PxjNuNisuieOh/OZmYdSzRaRWAZ9I?=
+ =?us-ascii?Q?LWKf5z92kPZ2D4TD5btGTmTw5LSIkox7ncWY+mqGWBYSCt2iByCr8ijL0ODW?=
+ =?us-ascii?Q?txG+lmWUXTOMrh0cZC0Ktbu1Ss1Aza4pOYKWtG997Lk+xbJVZKr08lHZFwYR?=
+ =?us-ascii?Q?PNUjEc8eqp0XpwqyRRWj9S5Nn4gDl+AEiNPy5IauYkcLciUleL4whZHg+3Wy?=
+ =?us-ascii?Q?XH/YGRB1tzMDjg1dh392aiHfXjqBDYLuuRUW6wtTvJFnXHqJXbkbRjyOaYu1?=
+ =?us-ascii?Q?F4DgVtbHawHeSQMN/avD+Esb/JfdhwNZXdNWAm7ZJXBeGyyPpctvlwDfaySJ?=
+ =?us-ascii?Q?ygjjivXFSID+Mdni357BNTITKfD7TqDbyB9cX20jCoczu1D8Q1rvkBBIBpnS?=
+ =?us-ascii?Q?CPKPg++aUMRvb9tWHijEjHyrefUXcWEZaHNBNVfLIDwHj+syqX2IkrgHbXZC?=
+ =?us-ascii?Q?I77LbpjH1lTuaWd6BIsdXBmX4O/SXctqBYmiUPkpFo4Y/02mdg0N/pZhx6yn?=
+ =?us-ascii?Q?eHNQXryEU/KTYMr6XfpoGXfmCjv5p7s7ueR3rn4V?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: microchip.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB6102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 531fa8c2-044b-464e-3ccd-08de1d3ddd43
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2025 14:07:47.3979
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CL5CVisTbRgaM4t5GIHwDncBftyhLEgFGIXXJgCfWSrvLdIKTuFhM4xu8cD5A4NcvIU76P6Pj+H9PKcjV1GdUBnE/RuEQAU6AEsl3lxAfl4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6750
 
-From: SHAURYA RANE <ssrane_b23@ee.vjti.ac.in>
 
-Hi syzbot,
 
-Please test the following patch.
-
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-
-Thanks,
-Shaurya Rane
-
-From 123c5ac9ba261681b58a6217409c94722fde4249 Mon Sep 17 00:00:00 2001
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Date: Sun, 19 Oct 2025 23:18:30 +0530
-Subject: [PATCH] net: key: Validate address family in set_ipsecrequest()
-
-syzbot reported a kernel BUG in set_ipsecrequest() due to an
-skb_over_panic when processing XFRM_MSG_MIGRATE messages.
-
-The root cause is that set_ipsecrequest() does not validate the
-address family parameter before using it to calculate buffer sizes.
-When an unsupported family value (such as 0) is passed,
-pfkey_sockaddr_len() returns 0, leading to incorrect size calculations.
-
-In pfkey_send_migrate(), the buffer size is calculated based on
-pfkey_sockaddr_pair_size(), which uses pfkey_sockaddr_len(). When
-family=0, this returns 0, so only sizeof(struct sadb_x_ipsecrequest)
-(16 bytes) is allocated per entry. However, set_ipsecrequest() is
-called multiple times in a loop (once for old_family, once for
-new_family, for each migration bundle), repeatedly calling skb_put_zero()
-with 16 bytes each time.
-
-This causes the tail pointer to exceed the end pointer of the skb,
-triggering skb_over_panic:
-  tail: 0x188 (392 bytes)
-  end:  0x180 (384 bytes)
-
-Fix this by validating that pfkey_sockaddr_len() returns a non-zero
-value before proceeding with buffer operations. This ensures proper
-size calculations and prevents buffer overflow. Checking socklen
-instead of just family==0 provides comprehensive validation for all
-unsupported address families.
-
-Reported-by: syzbot+be97dd4da14ae88b6ba4@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=be97dd4da14ae88b6ba4
-Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of
-endpoint address(es)")
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
----
- net/key/af_key.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index cfda15a5aa4d..93c20a31e03d 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3529,7 +3529,11 @@ static int set_ipsecrequest(struct sk_buff *skb,
- 	if (!family)
- 		return -EINVAL;
- 
--	size_req = sizeof(struct sadb_x_ipsecrequest) +
-+    /* Reject invalid/unsupported address families */
-+    if (!socklen)
-+        return -EINVAL;
-+
-+    size_req = sizeof(struct sadb_x_ipsecrequest) +
- 		   pfkey_sockaddr_pair_size(family);
- 
- 	rq = skb_put_zero(skb, size_req);
--- 
-2.34.1
+> -----Original Message-----
+> From: Horatiu Vultur <horatiu.vultur@microchip.com>
+> Sent: Thursday, November 6, 2025 2:37 PM
+> To: andrew@lunn.ch; hkallweit1@gmail.com; linux@armlinux.org.uk;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; Divya Koppera - I30481
+> <Divya.Koppera@microchip.com>
+> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Horatiu Vultur =
+-
+> M31836 <Horatiu.Vultur@microchip.com>
+> Subject: [PATCH net] net: phy: micrel: lan8814 fix reset of the QSGMII
+> interface
+>=20
+> The lan8814 is a quad-phy and it is using QSGMII towards the MAC.
+> The problem is that everytime when one of the ports is configured then th=
+e
+> PCS is reseted for all the PHYs. Meaning that the other ports can loose t=
+raffic
+> until the link is establish again.
+> To fix this, do the reset one time for the entire PHY package.
+>=20
+> Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
+> Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+> ---
+>  drivers/net/phy/micrel.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c index
+> 6a1a424e3b30f..01c87c9b77020 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -4380,12 +4380,6 @@ static int lan8814_config_init(struct phy_device
+> *phydev)  {
+>  	struct kszphy_priv *lan8814 =3D phydev->priv;
+>=20
+> -	/* Reset the PHY */
+> -	lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
+> -			       LAN8814_QSGMII_SOFT_RESET,
+> -			       LAN8814_QSGMII_SOFT_RESET_BIT,
+> -			       LAN8814_QSGMII_SOFT_RESET_BIT);
+> -
+>  	/* Disable ANEG with QSGMII PCS Host side */
+>  	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+>  			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG, @@ -
+> 4471,6 +4465,12 @@ static int lan8814_probe(struct phy_device *phydev)
+>  			      addr, sizeof(struct lan8814_shared_priv));
+>=20
+>  	if (phy_package_init_once(phydev)) {
+> +		/* Reset the PHY */
+> +		lanphy_modify_page_reg(phydev,
+> LAN8814_PAGE_COMMON_REGS,
+> +				       LAN8814_QSGMII_SOFT_RESET,
+> +				       LAN8814_QSGMII_SOFT_RESET_BIT,
+> +				       LAN8814_QSGMII_SOFT_RESET_BIT);
+> +
+>  		err =3D lan8814_release_coma_mode(phydev);
+>  		if (err)
+>  			return err;
+> --
+> 2.34.1
+Reviewed-by: Divya Koppera <Divya.Koppera@microchip.com >
 
