@@ -1,122 +1,141 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-qv1-f74.google.com (mail-qv1-f74.google.com [209.85.219.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D312E973A
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 11:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B072E36F4
+	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 11:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762427321; cv=none; b=CUNL1wFE7rkXRzSasI+YoN9HlSPJJax7ySsFExZvO44Nvb3y8aMJyisphnVh75T97HjlbyrUu+W9qU7zzELtoIvNL8m0hVNBhCZaGyQNmbwNrx+6tp0tnnsTcapEePy1+HsHXMv3qfBD89jYFY+x5pZhB17frQbWVmE3+DNE/lk=
+	t=1762427458; cv=none; b=i8+YXSU1rS8uIFvCv0zkZhQmIym/hoVOkBfpCkTZBPJzLtHY1a1ZHDJVESCq1YRaz0o3EXT2T1j2XiSXQme5d3VpHgSX2oa/Jgc4fM86MzHglk0HhYtEBUe+sixGOA1GIXA2+Vc+upIrbFa61srN+gvFfWL/u55fXj6/cpL59E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762427321; c=relaxed/simple;
-	bh=PXhPi+1hjJwewKP9F5q/Fq4A6lOFuf7yfuMD/xspVc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EHYQXVeL81tcNLlnqSRMYuoxbVG1j3+fUA/NGTXugCLHIz9kLc3l7fyg6lW0A8QUHmwNkRKdwkqkINBN5awb95pCTtdWLA/FY7LtpPWm7SRPg2arQLKOrO74YYxlhLz5ZuRZ6q5eMQbS6+QhaQBxlZrpdgDE5GLCuTxK5cR5JRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHL+/B5m; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762427458; c=relaxed/simple;
+	bh=tAI8Q2VQOP1M0t9cojCav7iOanc94w70F3EoQQif6F8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hAPMErKPbzZm0cHaXz+umwrAFEoPn9DWJUjq+i/CTwL2JA7VyS1D9SPPxmTCgTvlunyfiMkUEerJgsX1LpFsnTKStSfxhcJT9BmR298tMzZec1dZIZ6sYVco3iIrlrU5kbBFVbuCNU6yeKXBGWDXVrqx+deKg/FYyOxjJHZu9kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d9haBjz4; arc=none smtp.client-ip=209.85.219.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHL+/B5m"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4710683a644so5712565e9.0
-        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 03:08:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d9haBjz4"
+Received: by mail-qv1-f74.google.com with SMTP id 6a1803df08f44-88022ad6eb3so11912876d6.2
+        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 03:10:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762427318; x=1763032118; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3smk6GeMQLyg2bWpqf+opFvd8OFCVzmfS4zTn2VVngo=;
-        b=NHL+/B5mvjXpeuKKe4fkmjixR7Nm80lIkURNcityRDYr+D5pkL1GNX9f+cIT1HbnK5
-         fIpG8yLJ5JAhuBaLZAISDF9jIzv6un2EbKUyjcAEiUie88cyD1+cfzRlegYGxW5bjGWG
-         vAA5/sWSADsQY596hceHBxGsqR6UOR1ApH5S7ukBdPOitdjqWuUuL+pFYFPKJjtnssIj
-         wIdLP2Z2lJRhPm59pJ3E6evFOghju2DEVWiLc8wecJqLLrrF57AQnsbEhuIbmbwqqNrI
-         s0f9K2HaUHtBkAtHEGmPWowo2jTfaoyTAvpKsgyIGhq6Hn0qUDbmks5YZTK3Qs9DW8Lw
-         L0Og==
+        d=google.com; s=20230601; t=1762427456; x=1763032256; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AJh9nlvIb1NUYusHvALs3oLC3pLWQsHRGhFBXTcThlI=;
+        b=d9haBjz40jSYStnv0+W11F4YELt4wzPBM7jkIB54zcS4BgYWhzmRbc8L15ceBHJiud
+         qaYkZUvs3VkKJn9i264pOKGWKDk8r0eRLydaryzawkkAsYVfKZ5kkzmUTY/IyKKYZYF3
+         r6hcnOodcGkRagG/y/zQ4rfn736HXZoGSwQqk3PIlOHGTgSb0JP1TSVIvKW0nDIyoT2V
+         wfh/nAW0TNP6UCgZ1zPTOjeRNrHwzAJd2RfcFiKWaOs/ExlZK/xBnwpIsk4aFe/ZmCM5
+         vb4t5tlwWR4F2VfPxwT8xVdxrC/9AZ6WEwFvLb4CJKsu1+jywo4fan0UpD5h6S5ikz/a
+         svLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762427318; x=1763032118;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3smk6GeMQLyg2bWpqf+opFvd8OFCVzmfS4zTn2VVngo=;
-        b=LRwuvMgN1FHEW+K1k/tNu66ra6dNaYgYFwARVDDY7vPp1Tf+QquWR18v+MzszqtF3j
-         pcOqoj8d2EJw4VlvDXUPYnPvM8j+UUWxhHhlrIvyUzrh8vBTcmJfgOGJVXz8JSjdhab6
-         fCc49PDflwrv730ZY5Y8FApli712JxfEZXTpWbVbxYRIfKFExKcd5utvs0tIR66wG+Qq
-         5jGe2vBfA5O11KQ+RJqv7BwCksZJkDa+K28ndcW0m3QYUhwqVhyc3AirJgytWaLv6Wbz
-         0kg43l03/f27/XTk+QKEoUqHaajjiMkdA3rEp1Hx9zVvVaahzl0+MBJ4HX+NaX7HdlKt
-         igFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKKJ07S8KPkUgEd5SRblMzcXsb2p/fILws7rmwmKlkbMGsG/RfvthXmOwPIBU4mzV8lNlYal8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKmB9gsTgwZ4KrhLo+ri45F4kGQNHmB2ye6AZGnVu0tV00cxGn
-	HxQ6gKuKkoHtM82LaZ0BnFQ5og/hbUdEeicjIInNKe9SNVxaLblbsqL9
-X-Gm-Gg: ASbGncviBX7pfbUn2ic9JE6SMesgs2L8srZ7mkPuuUdtANCm78o6aeKMZoNMCCdrd0F
-	xhFta1fij6RlRz0i8jLLyxYdzZwBpEqCBEysHyqXbuvVB5/7ywnszKczejmNKoIdBsW6lpaMQah
-	5LdDotDLAc1nkr3HP7KeMNGCSNG/41qHl79rNn6lG2QGtaFanh4sG/e1xbNpXMdEBwtmuRWBHsm
-	+NQ4dgk5okvCnIV1XgQKvg8YxN6MwQqaweQmzHt6hXm7k5Fr/XtUh3LogxZKYvHTuY5MUyWoyfZ
-	+vkY0XDNh094wqTnYwDWg1OihAj+cEYu4mcouZ4WnsvBPZ6DoDcecd/9W4ERps0lligGsquRQb4
-	J5Q2tcxug7nS8cf6f2mVsvJ98iNrrGLGBkSjI8+I2kL3sdUtz1txYEc1vaAGyx3/CyXk9MXH+25
-	kA3xHecqtlcQ8djozIX18/ou8VzxBzoZLacbzBxtqKCsAInK8EfyPfvWtRCDqVBw==
-X-Google-Smtp-Source: AGHT+IFUsWMoUQp2LAQBvEqelZeh8+i2mx6qm6o3gPPvtfcki9Q9yd5em3sUzeuAg53ANmu2/8izdQ==
-X-Received: by 2002:a05:600c:4c27:b0:477:14ba:28da with SMTP id 5b1f17b1804b1-4776201cbb8mr15583175e9.5.1762427318220;
-        Thu, 06 Nov 2025 03:08:38 -0800 (PST)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce2cde0sm102571845e9.15.2025.11.06.03.08.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 03:08:37 -0800 (PST)
-Message-ID: <4ab9d277-97ef-414d-bb5d-910fd8964c2b@gmail.com>
-Date: Thu, 6 Nov 2025 11:08:35 +0000
+        d=1e100.net; s=20230601; t=1762427456; x=1763032256;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AJh9nlvIb1NUYusHvALs3oLC3pLWQsHRGhFBXTcThlI=;
+        b=CYwlXKk2CLgqzFByrRz4u4i+a8Qgwsc1VUNZj+9UzaUyrV5x/a3fNUdJ5B2p7oaK2t
+         i28Jwjyhor+j0ubJEewWGL92QXMWKwiLY29XS/o4sTa585Z3AJt39vMbnvBFL0t7WJvc
+         4mJimOAEUyFKvcNaHeoswMovUdCJG5R9u+zrRGqeXH7bulyatNV18zdqyE1kijlVFlFc
+         5ZPMdPxUGsxorZ/zeS0Q1zF7aXOBnZq1aELbHplj816Mbz0c4afIvf+UlBZbKPEC2MsQ
+         knCUlwbqXBvSzHSvwOOxbLXNujvq+hQkWCjSlGz6sEfH8Dhx8NzD5GF0QmMsV5NtzCGx
+         41WA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0WezhnDPZqbb7hvPuNjB9tnpBdEs0zpqFJYJ/ynKilDly8TH9AEvnJ2YG83Lxt2Y2N0QrwfI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI6vl4pOQWXT+sqd+JEHIGvTquXKbikj6iOktopNLTZLp7dzxU
+	neOwvgGprpb3jEzeU6NUhOdoCjGUkjEUATPTEVg0safhyd6dJ2PahhTVPj2e2aSSpU5W6NEAuxq
+	sRJ5lN6vLajjv1w==
+X-Google-Smtp-Source: AGHT+IGVo7/dDVCuJA3dc6A+9VeI8XnelyInDICd+gSfqcJmcsuYAeFhzdnTzqFeRuzFiIyMDc8EqILvXjLSMg==
+X-Received: from qvbmu9.prod.google.com ([2002:a05:6214:3289:b0:880:2244:8a90])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ad4:5fc9:0:b0:880:4c01:ef16 with SMTP id 6a1803df08f44-8807112a291mr76202786d6.8.1762427456172;
+ Thu, 06 Nov 2025 03:10:56 -0800 (PST)
+Date: Thu,  6 Nov 2025 11:10:54 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC mm v5 2/2] mm: introduce a new page type for page pool in
- page type
-To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
- netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
- leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
- brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
- usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
- almasrymina@google.com, toke@redhat.com, bpf@vger.kernel.org,
- linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
- ap420073@gmail.com, dtatulea@nvidia.com
-References: <20251103075108.26437-1-byungchul@sk.com>
- <20251103075108.26437-3-byungchul@sk.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20251103075108.26437-3-byungchul@sk.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.2.1026.g39e6a42477-goog
+Message-ID: <20251106111054.3288127-1-edumazet@google.com>
+Subject: [PATCH net] sctp: prevent possible shift-out-of-bounds in sctp_transport_update_rto
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+	Xin Long <lucien.xin@gmail.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com, 
+	Daniel Borkmann <daniel@iogearbox.net>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/3/25 07:51, Byungchul Park wrote:
-> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-> determine if a page belongs to a page pool.  However, with the planned
-> removal of ->pp_magic, we should instead leverage the page_type in
-> struct page, such as PGTY_netpp, for this purpose.
-> 
-> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> netmem_clear_pp_magic().
-> 
-> This work was inspired by the following link:
-> 
-> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-> 
-> While at it, move the sanity check for page pool to on free.
+syzbot reported a possible shift-out-of-bounds [1]
 
-Looks good to me
+Blamed commit added rto_alpha_max and rto_beta_max set to 1000.
 
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+It is unclear if some sctp users are setting very large rto_alpha
+and/or rto_beta.
 
+In order to prevent user regression, perform the test at run time.
+
+Also add READ_ONCE() annotations as sysctl values can change under us.
+
+[1]
+
+UBSAN: shift-out-of-bounds in net/sctp/transport.c:509:41
+shift exponent 64 is too large for 32-bit type 'unsigned int'
+CPU: 0 UID: 0 PID: 16704 Comm: syz.2.2320 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+  ubsan_epilogue lib/ubsan.c:233 [inline]
+  __ubsan_handle_shift_out_of_bounds+0x27f/0x420 lib/ubsan.c:494
+  sctp_transport_update_rto.cold+0x1c/0x34b net/sctp/transport.c:509
+  sctp_check_transmitted+0x11c4/0x1c30 net/sctp/outqueue.c:1502
+  sctp_outq_sack+0x4ef/0x1b20 net/sctp/outqueue.c:1338
+  sctp_cmd_process_sack net/sctp/sm_sideeffect.c:840 [inline]
+  sctp_cmd_interpreter net/sctp/sm_sideeffect.c:1372 [inline]
+
+Fixes: b58537a1f562 ("net: sctp: fix permissions for rto_alpha and rto_beta knobs")
+Reported-by: syzbot+f8c46c8b2b7f6e076e99@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/690c81ae.050a0220.3d0d33.014e.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+---
+ net/sctp/transport.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+index 0d48c61fe6adefc1a9c56ca1b8ab00072825d9e6..0c56d9673cc137e3f1a64311e79bd41db2cb1282 100644
+--- a/net/sctp/transport.c
++++ b/net/sctp/transport.c
+@@ -486,6 +486,7 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+ 
+ 	if (tp->rttvar || tp->srtt) {
+ 		struct net *net = tp->asoc->base.net;
++		unsigned int rto_beta, rto_alpha;
+ 		/* 6.3.1 C3) When a new RTT measurement R' is made, set
+ 		 * RTTVAR <- (1 - RTO.Beta) * RTTVAR + RTO.Beta * |SRTT - R'|
+ 		 * SRTT <- (1 - RTO.Alpha) * SRTT + RTO.Alpha * R'
+@@ -497,10 +498,14 @@ void sctp_transport_update_rto(struct sctp_transport *tp, __u32 rtt)
+ 		 * For example, assuming the default value of RTO.Alpha of
+ 		 * 1/8, rto_alpha would be expressed as 3.
+ 		 */
+-		tp->rttvar = tp->rttvar - (tp->rttvar >> net->sctp.rto_beta)
+-			+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> net->sctp.rto_beta);
+-		tp->srtt = tp->srtt - (tp->srtt >> net->sctp.rto_alpha)
+-			+ (rtt >> net->sctp.rto_alpha);
++		rto_beta = READ_ONCE(net->sctp.rto_beta);
++		if (rto_beta < 32)
++			tp->rttvar = tp->rttvar - (tp->rttvar >> rto_beta)
++				+ (((__u32)abs((__s64)tp->srtt - (__s64)rtt)) >> rto_beta);
++		rto_alpha = READ_ONCE(net->sctp.rto_alpha);
++		if (rto_alpha < 32)
++			tp->srtt = tp->srtt - (tp->srtt >> rto_alpha)
++				+ (rtt >> rto_alpha);
+ 	} else {
+ 		/* 6.3.1 C2) When the first RTT measurement R is made, set
+ 		 * SRTT <- R, RTTVAR <- R/2.
 -- 
-Pavel Begunkov
+2.51.2.1026.g39e6a42477-goog
 
