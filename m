@@ -1,120 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D691A30AAB7
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 09:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B1030ACF6
+	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 09:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762419924; cv=none; b=n/9lWpwxkEE4+6qANnLvRJyUbf1+tv5Ng/FeIlo1VmsTJnqKvqK6tBP7R7oiiJbkPaHpRhyh3cHPauVe353sL74PA20jT+euvOEAeXNlGYVE127A+nIgbRvgRfuOyC9FDV/9nI8oG8dmDj06sRL0VEOYz/jsQ2TsA09c7bn6oHw=
+	t=1762420009; cv=none; b=PG/M1F2j7CwxgUX8adY9T5ItfHNIG18SGQL2TYwP2/xCAF8YE6Sg+NT8IVh7sKPTS80Mtt3lHGE7gpptA0TBiR44xn8QlCshxiwWNxe7e+AnPSH2l5OXYOdSsM3Uz9NvIECp+KIdzzBmMSeoy9lcRvZx5kkCYETrtpXray4bpto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762419924; c=relaxed/simple;
-	bh=hZ+GsPkKN1xnfuv8yHnCdYhnGV8I07dQkQgK+RpyRUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LphkSJ8/nbVHXDCo55/5A0yamkPrV2Ey0rzu3EPY2ShbvSFypo9mrR3yhrIviJO8hsaJkRmn+uVKaf4wRk9EnB2jbMqBHH6SqxdCxv5q12hCPBA7CVcOH8BVcASQFJ3fDElY0o9EUqhN6l6jSYorl5sMij/aMek1yv0Fjk0HeFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eJa0aXdK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=EkavMKQh; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1762420009; c=relaxed/simple;
+	bh=i3D2gBal5+YbLDjTq5ytrhJTTHuFXbJwZnfo0rk6QCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ApU/pbHYEXNI39F/x8IaWOGerjXGa8ej9ywksGTYr1PR1bgRyFf/V72pmAH1ZUPCAgVdSpiheiQj3b9BcrVXgjDEf3T4j9avwpNZt+RlsNT5na/bYOlSKJNe3C1fTzq6M06SMIqC/QDLfX8ONHYX+84E25cuyWXjHbGZvv9r1Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SPP5WUE+; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eJa0aXdK";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="EkavMKQh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762419920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZVVWReHzjccMkJIoRCRx58qRrx3kfa4v7Yjth4dJqLs=;
-	b=eJa0aXdKSzSM/OY22rl2hlbgtZM2n88yIOrrN7kT/2Ff6JOxig0vn4p149chD+THcBSLbS
-	Hs6Uv6OCA4XRgu7No6msj27H9OldqHt6veSXx1ivOZULbpG11DmRCyF6koldGWGvLqaq7G
-	C4xxmnG2T5PTAguX1TgchxG97w8p/hU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-q8-24V29M_y-7kxfsq9s_Q-1; Thu, 06 Nov 2025 04:05:17 -0500
-X-MC-Unique: q8-24V29M_y-7kxfsq9s_Q-1
-X-Mimecast-MFC-AGG-ID: q8-24V29M_y-7kxfsq9s_Q_1762419916
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-47740c1442dso5001205e9.1
-        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 01:05:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762419916; x=1763024716; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVVWReHzjccMkJIoRCRx58qRrx3kfa4v7Yjth4dJqLs=;
-        b=EkavMKQh3ZqL1Hti1j9E6szS2fxXyO3Yo3ffCZ+JpscXys2ZZtN437XN3l+u5cqJya
-         j9UHb3ellV4b/nLFbZ5BqEjQMwwGIEe+WVi5Ez7uQkuFLiIaEQLuihn8RCFyv0trVBf/
-         5Qg4JtOoavoC9TwWI2x4Yo0oxSgoJCWkaWKJhDtp4ARawJVV9hwBBesaOnMxSxI0wD5C
-         QyYuM0lmfmFqkAbznvfTB6KQz0hp32r9uTxtQzomB31oKIFohUh4o6WDAHTiixnR8AiN
-         +6Es3M2k3RKxlVkhqOI2KvMXbvwf5LyWZZSqrLLOWF8Csjn0juiz9MAcydDnTYZroyuT
-         5VaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762419916; x=1763024716;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVVWReHzjccMkJIoRCRx58qRrx3kfa4v7Yjth4dJqLs=;
-        b=EImviZHzZvpES8/FiAfrKfsRWYf+hTfy9NlHGXOLkGx4En1VPk78blwCqF4DbSSbbe
-         RC7Y8pIc2UBFFI8TW6Qq+XAXPN0tVDuW68D3Ly1m3pnHpPRc/OToO5h4TX52hCHkSrAm
-         lz/iZSWiLLISP8+BtAVhKKBF/VvFgpKtX8CIFJAGbS4PzOmhvsUpWQAi0URqcY/386oM
-         VzyjPojfi5mZeogOaDmZzZg7dhi5n3rTtfLiFum5hPupCTL+pZnLp29uom3NqT09wxol
-         vGeKnPtsM4E39hVpJ1nC9YiWolw8eoMDYUA/4/1f3pPy+Hm2U2Ml+Cyen13/M/SvOcw/
-         in/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVUwfc0QFJAG77fcqUyisVPw6bkK4yOl787bo4or8PkxOyGHE0oo0cOo7LB36mXbnIFtvH5aYM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGU8B/gweDRUgPl6MQNEThkpSII9XAnOWYtHzS97irJotMLP7j
-	NeR4r8f44B4X7PEqd5Dn/3dORUsrI+zRL+RQkyPPs33EZEvlieun+58c7h30vNMhdF7x11NXo+C
-	COz+LfH3V0pYinB3HvQdswyItyVDfmipDLDMwBYjKgGexkjoLXg+gQEIzNw==
-X-Gm-Gg: ASbGncsCleWja+ImhvkuFufEaL4oTm8MxYzFJcKpqNEHndbNzxCkE9vme1eXtLD1lJi
-	25ZJlKIHOa+AXBFfOEeDzTzUNeFchhZYkl+vBHkV5sgzKRvaEwh5QoVdtxPWsxXzd1HHRu1mch4
-	1dbSNaHuiCdUzwALqbuHPhHjjhdfuUv3IvRudRI+Y0+ksVABzEVleHyT2cKfQ4TeYRkTFkvekYW
-	ybVdkNwWpshi5ARv3+23OKui//VCm1bR/pkstRfxSfyGuzK113uI7lSywDRCD78K7CZkys6aHF3
-	T6LmFS6YNXS5YQ6MRzDgy9n2exq/HV5mSu/P2EuYgC++S+IPKy93LcZR/Nt0HXT84Iu8pbtZmLe
-	fWQ==
-X-Received: by 2002:a05:600c:35d1:b0:477:542a:7ed1 with SMTP id 5b1f17b1804b1-4775cde5a28mr66445055e9.19.1762419915852;
-        Thu, 06 Nov 2025 01:05:15 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFuoU0KPtmSEkjEUR2VzH3YlJ8/xQZ1jtaiohdKFeznqvN40OCPAbZhkOL6kWmnEONW+fIqRg==
-X-Received: by 2002:a05:600c:35d1:b0:477:542a:7ed1 with SMTP id 5b1f17b1804b1-4775cde5a28mr66444755e9.19.1762419915467;
-        Thu, 06 Nov 2025 01:05:15 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.155.83])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47763da0242sm11361145e9.0.2025.11.06.01.05.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 01:05:14 -0800 (PST)
-Message-ID: <8ef591e6-9b05-4c7b-8d75-82ced4dd2f31@redhat.com>
-Date: Thu, 6 Nov 2025 10:05:13 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SPP5WUE+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762420008; x=1793956008;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i3D2gBal5+YbLDjTq5ytrhJTTHuFXbJwZnfo0rk6QCQ=;
+  b=SPP5WUE+vfBjEiPoy++ElM3TpbgziThabb5mq56MOpiDVGnCBlyIph9n
+   1wZA+eeRhOGVeVsp93dbWmGi10Hv1zYbDanzG/64XImytfENEO9ugpZ4N
+   5bU/tNmfiSouOPOl7FRTGoueCta1MRq7TS0J5qpQ3LhNvLu27t9rluRup
+   6RlMqfDGfQ4x15FdbVBDgHuUuGkqeRFuRPpZe4qp/xajptrTVI3QL0KhH
+   imaFz6jRAnyaN7w8t/5u7YNJ+t9SBmLlE558+MgGTtUxNQFOnDpUIKX13
+   irTyWAkPQUjl22JlbBk758H/YTGw0g5Cu77zqLRZ8sulGkXQRiie9JFBO
+   A==;
+X-CSE-ConnectionGUID: xTNw6S2UQYq8cZpxZTj0+A==
+X-CSE-MsgGUID: jeWns44WRSWBC8d2z5TuMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="63756658"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="63756658"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 01:06:47 -0800
+X-CSE-ConnectionGUID: 2/NgE5SQQ6eOREXwCKlqMw==
+X-CSE-MsgGUID: zC1S65aLSVeEoNWP8khe0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="218366584"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 06 Nov 2025 01:06:44 -0800
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vGvx3-000Tha-2Z;
+	Thu, 06 Nov 2025 09:06:41 +0000
+Date: Thu, 6 Nov 2025 17:06:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 09/11] net: stmmac: ingenic: simplify x2000
+ mac_set_mode()
+Message-ID: <202511061640.PHWz6zWt-lkp@intel.com>
+References: <E1vGdXJ-0000000CloA-3yVc@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: add prefetch() in skb_defer_free_flush()
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
-References: <20251106085500.2438951-1-edumazet@google.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251106085500.2438951-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1vGdXJ-0000000CloA-3yVc@rmk-PC.armlinux.org.uk>
 
-On 11/6/25 9:55 AM, Eric Dumazet wrote:
-> skb_defer_free_flush() is becoming more important these days.
-> 
-> Add a prefetch operation to reduce latency a bit on some
-> platforms like AMD EPYC 7B12.
-> 
-> On more recent cpus, a stall happens when reading skb_shinfo().
-> Avoiding it will require a more elaborate strategy.
+Hi Russell,
 
-For my education, how do you catch such stalls? looking for specific
-perf events? Or just based on cycles spent in a given function/chunk of
-code?
+kernel test robot noticed the following build warnings:
 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+[auto build test WARNING on net-next/main]
 
-Just to avoid doubts on my thoughts about this patch:
+url:    https://github.com/intel-lab-lkp/linux/commits/Russell-King-Oracle/net-stmmac-ingenic-move-ingenic_mac_init/20251106-015834
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/E1vGdXJ-0000000CloA-3yVc%40rmk-PC.armlinux.org.uk
+patch subject: [PATCH net-next 09/11] net: stmmac: ingenic: simplify x2000 mac_set_mode()
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20251106/202511061640.PHWz6zWt-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511061640.PHWz6zWt-lkp@intel.com/reproduce)
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511061640.PHWz6zWt-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c:128:13: warning: variable 'val' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+     128 |         } else if (phy_intf_sel == PHY_INTF_SEL_RGMII) {
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c:142:2: note: uninitialized use occurs here
+     142 |         val |= FIELD_PREP(MACPHYC_PHY_INFT_MASK, phy_intf_sel);
+         |         ^~~
+   drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c:128:9: note: remove the 'if' if its condition is always true
+     128 |         } else if (phy_intf_sel == PHY_INTF_SEL_RGMII) {
+         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c:123:18: note: initialize the variable 'val' to silence this warning
+     123 |         unsigned int val;
+         |                         ^
+         |                          = 0
+   1 warning generated.
+
+
+vim +128 drivers/net/ethernet/stmicro/stmmac/dwmac-ingenic.c
+
+   118	
+   119	static int x2000_mac_set_mode(struct plat_stmmacenet_data *plat_dat,
+   120				      u8 phy_intf_sel)
+   121	{
+   122		struct ingenic_mac *mac = plat_dat->bsp_priv;
+   123		unsigned int val;
+   124	
+   125		if (phy_intf_sel == PHY_INTF_SEL_RMII) {
+   126			val = FIELD_PREP(MACPHYC_TX_SEL_MASK, MACPHYC_TX_SEL_ORIGIN) |
+   127			      FIELD_PREP(MACPHYC_RX_SEL_MASK, MACPHYC_RX_SEL_ORIGIN);
+ > 128		} else if (phy_intf_sel == PHY_INTF_SEL_RGMII) {
+   129			if (mac->tx_delay == 0)
+   130				val = FIELD_PREP(MACPHYC_TX_SEL_MASK, MACPHYC_TX_SEL_ORIGIN);
+   131			else
+   132				val = FIELD_PREP(MACPHYC_TX_SEL_MASK, MACPHYC_TX_SEL_DELAY) |
+   133				      FIELD_PREP(MACPHYC_TX_DELAY_MASK, (mac->tx_delay + 9750) / 19500 - 1);
+   134	
+   135			if (mac->rx_delay == 0)
+   136				val |= FIELD_PREP(MACPHYC_RX_SEL_MASK, MACPHYC_RX_SEL_ORIGIN);
+   137			else
+   138				val |= FIELD_PREP(MACPHYC_RX_SEL_MASK, MACPHYC_RX_SEL_DELAY) |
+   139					   FIELD_PREP(MACPHYC_RX_DELAY_MASK, (mac->rx_delay + 9750) / 19500 - 1);
+   140		}
+   141	
+   142		val |= FIELD_PREP(MACPHYC_PHY_INFT_MASK, phy_intf_sel);
+   143	
+   144		/* Update MAC PHY control register */
+   145		return regmap_update_bits(mac->regmap, 0, mac->soc_info->mask, val);
+   146	}
+   147	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
