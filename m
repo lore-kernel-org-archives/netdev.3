@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412E63191D3;
-	Thu,  6 Nov 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934F73370F3
+	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762440066; cv=none; b=eJytfkQXOnFVfjqmAmnpSV8QPIkyAVTGxh5r/2zMsFbhnydJr4dBU3C7W2kP0i3qceiMcfS58UGobpCeAAu47+B9SgjHz8Uy0U5ETONpY2xdcqNv1pkceZ+S/R/hDWBUKrLcvFHbyZQNWmfk7sblDTsgUI4jOtj0PRwtkwsTHVk=
+	t=1762440315; cv=none; b=Y8KQvx+GMt9Y/B14rfgUkGx8MFp0e5wfmEM7ui1ZWExXjLJ4u3pI4QSwpDQrIFMPQAhgGHogfew3dTmAjCcqVPgAxZceDvAgv4Fva3rnMujmGaPc10Qlh4BXoj59+IQyEAEzVkS9mThG9DWvB48XgdhqbF+wjhBc+MYguYKR6qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762440066; c=relaxed/simple;
-	bh=jZwU5Q5k5Hv/99JNHI6SHIbM5weSSTkab1oATNjTjEY=;
+	s=arc-20240116; t=1762440315; c=relaxed/simple;
+	bh=Q80581Prc+3nrPb4F5jxrxXb/jXURIh0xCGvL+3q5cE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d9mYifAKZH5a49uQjXp8LMRoloWmkHtA6PwkwO6Zg63lLFX4JIdjAy/r3tyGAluaeve9exmmUUVY3OAH0u1onX2UIeq0U5zjPrNPFHSrrZu8DnYzNt/1tRy6qpHNSA5D+jBydDrzP3EFzd3qnPGdQw2rQKlaDVtOE2yyADeXC2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUuuZgH7; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=PKgEC2erJKebRrTBOefoCkljRJ+0K2d4aqdBrvpJQHap/eQaeLKMWBcBPGFA8eI5ogbiqWYE6aXeoXdFbhyEPmtaMAk93+wuB3x1mY/NUV2aKnymurEdrfseeMQ/y6HbGPwIO7+GZeToPo7Qv1Uc/DGRaaBI7vdg2kbvel0Msyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4LcPUPS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUuuZgH7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FEAC4CEF7;
-	Thu,  6 Nov 2025 14:41:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4LcPUPS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40846C4CEF7;
+	Thu,  6 Nov 2025 14:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762440066;
-	bh=jZwU5Q5k5Hv/99JNHI6SHIbM5weSSTkab1oATNjTjEY=;
+	s=k20201202; t=1762440314;
+	bh=Q80581Prc+3nrPb4F5jxrxXb/jXURIh0xCGvL+3q5cE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fUuuZgH7+fyp15S3A7Zbg1vGuRp32+ExBwYBM6a1kdDdLZufYKcjsfL1dUi6OXttk
-	 uKep1rFjt1Swu7d9oTmBxfENFcdX2oE+eao/ViC6aD2jugUjy546rNTtsXx6CXoCOC
-	 /Gfs1bFJ8m27MWOXpjH7i16lZTF1dFfmDtOxdg0Ck7yo5Tgakq/PHVHk+nkDGOwKPw
-	 M4HKxlznv1QRXOmZ1JyGaLI5p+eWM5ywj1dQrSmM8nk9PjtWuKWLmW+HZX89Ei7Dgs
-	 BMM0lDVNeV96YcivP4VDH0RKcGxlJ+PK+sHv1j8bw3ydwglfM7MxuA3nSQ6LKLgY/f
-	 7sPu99YISlZbA==
-Date: Thu, 6 Nov 2025 06:41:04 -0800
+	b=u4LcPUPS9a7VUoS/wGMOOZbcXmB6Ue2Z/QXhmTU9xN76lIn6Wv4ix20xwGvlxi2vK
+	 xZSGQq5NZS081TYAc7xGcz/hj954eFUWD9BFJ0v3RIpg/cmIqQH9BkxozO0pyYeGmk
+	 ZzccXxGMuJevsdeFrvIo+CB88m5/h9oMqefwcPKAi3o67EnihhYRga8rvxs90O6TpZ
+	 7b4BGJvtcxePho0uxeyA4Bp41AfGbjS6Bj33Kub9dY63KJWxBlSb/jNgRvOoczRwvr
+	 uWovGYjgDubBhv1zsjHZjZQ5SnisFkr0UwGlqtmfnPGrI+uQxa258fRGOG4NzKy8m0
+	 som2daZobqYMw==
+Date: Thu, 6 Nov 2025 06:45:12 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Hangbin Liu <liuhangbin@gmail.com>
 Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, "David
@@ -34,45 +34,49 @@ Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>, "David
  Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jan Stancek
  <jstancek@redhat.com>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
  =?UTF-8?B?QXNiasO4cm4=?= Sloth =?UTF-8?B?VMO4bm5lc2Vu?= <ast@fiberby.net>,
- Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, Ido
- Schimmel <idosch@nvidia.com>, Guillaume Nault <gnault@redhat.com>, Petr
- Machata <petrm@nvidia.com>, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] netlink: specs: update rt-rule src/dst
- attribute types to support IPv4 addresses
-Message-ID: <20251106064104.135b73de@kernel.org>
-In-Reply-To: <aQwJLKka-_pBGq_g@fedora>
-References: <20251029082245.128675-1-liuhangbin@gmail.com>
-	<20251029082245.128675-3-liuhangbin@gmail.com>
-	<20251029163742.3d96c18d@kernel.org>
-	<aQnG8IYsY3oyYekf@fedora>
-	<20251104164804.540a9b8d@kernel.org>
-	<aQsDA7ufLlIwSf1h@fedora>
-	<20251105161319.0591f96e@kernel.org>
-	<aQwJLKka-_pBGq_g@fedora>
+ Stanislav Fomichev <sdf@fomichev.me>, Ido Schimmel <idosch@nvidia.com>,
+ Guillaume Nault <gnault@redhat.com>, Petr Machata <petrm@nvidia.com>
+Subject: Re: [PATCHv2 net-next 3/3] tools: ynl: add YNL test framework
+Message-ID: <20251106064512.086e9cb9@kernel.org>
+In-Reply-To: <aQwKmZ6vF9dWZzqa@fedora>
+References: <20251105082841.165212-1-liuhangbin@gmail.com>
+	<20251105082841.165212-4-liuhangbin@gmail.com>
+	<20251105183313.66a8637e@kernel.org>
+	<aQwKmZ6vF9dWZzqa@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 6 Nov 2025 02:34:20 +0000 Hangbin Liu wrote:
-> > > The display-hint is required; otherwise, the displayed src and dst fi=
-elds
-> > > appear as binary data, and setting the rule=E2=80=99s src/dst values =
-also fails. I
-> > > haven=E2=80=99t checked the code yet, but with
-> > >   - display-hint: ipv4
-> > > the IPv6 addresses are also displayed correctly :) =20
-> >=20
-> > Heh, we should have called the hint "ip" in that case :) =20
->=20
-> I saw the display hit supports "ipv4-or-v6",=20
+On Thu, 6 Nov 2025 02:40:25 +0000 Hangbin Liu wrote:
+> On Wed, Nov 05, 2025 at 06:33:13PM -0800, Jakub Kicinski wrote:
+> > On Wed,  5 Nov 2025 08:28:41 +0000 Hangbin Liu wrote:  
+> > > Add a test framework for YAML Netlink (YNL) tools, covering both CLI and
+> > > ethtool functionality. The framework includes:
+> > > 
+> > > 1) cli: family listing, netdev, ethtool, rt-* families, and nlctrl
+> > >    operations
+> > > 2) ethtool: device info, statistics, ring/coalesce/pause parameters, and
+> > >    feature gettings
+> > > 
+> > > The current YNL syntax is a bit obscure, and end users may not always know
+> > > how to use it. This test framework provides usage examples and also serves
+> > > as a regression test to catch potential breakages caused by future changes.  
+> > 
+> > And how would we run all the tests in the new directory?
+> > 
+> > Since we have two test files we need some way to run all.  
+> 
+> I didn't get your requirement. We can run them one by one in the test folder.
+> 
+>  # ./test_ynl_cli.sh
+>  # ./test_ynl_ethtool.sh
+> 
+> Do you want to use a wrapper to run the 2 tests? e.g.
+>  # ./run_all_ynl_tests.sh
 
-Ah!
-
-> but genetlink-c.yaml doesn't have "ipv4-or-v6". Do you know why?
-
-Probably just wasn't used until now. It should be in all the schemas.
+Or make run_tests, like ksft
