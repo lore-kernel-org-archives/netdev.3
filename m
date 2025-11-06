@@ -1,129 +1,254 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E47730CDA4
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 11:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A28A3101DC;
+	Thu,  6 Nov 2025 11:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762429676; cv=none; b=mm2ezvtL+Jehjs5w2wzjQVbOQhN1bGjTlkMOF0Tk43e23Vn6TOi6zNKWy/iTJNil6vcxqjUel9w8r6vLtQOrfn5n//BgiD9kiPXXT2igQW2fduQM87ZVvz4/5CKQInvAXuJY/kJgOLpSiOl16DZsnqGbx4wWq+yzAiuDMGT7eN4=
+	t=1762429805; cv=none; b=XSEOHY1D3xP3j0aiVM+K+8yI6/ZDgPRTMZTcBGjgKgODGJ3gElcNATPbtU7EvMwCgZdfVo3+zkjqESVFzSrChwjkrbejJtnzEjIejNnVIOAbr/6L9aqGovNIgW9Ib2DOC/6CooMjvsLS2NGdDlA1P2axw3iM0odPaDqR1P1D0Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762429676; c=relaxed/simple;
-	bh=D0ESafiFnrAHx1xAZJLjIGxN45DgsIeRyNfJcnFl56Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fJF1auzsVRsA9m3B9ZW0BWTklkoy7203TwecwUS/7f+XkJQ9ix/vNqRmj9AEB4jcAsC1MN7gRn05h76M5nEhmRgg6lKkmENhihUheFkWJM1UGtd6AEEWUE0TphPxV+CzpMMWDm+Oz7DsUchnzFg8wnAuYVwspUmYS5sVlEZNYzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UUaY63x1; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QykzFlY0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UUaY63x1";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QykzFlY0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762429674;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0JviuZOYT5VOJubSBo7kcaUm1NAOOfzcTxwXg/1vMe4=;
-	b=UUaY63x1cO40/wbCYMQ3MnWBd+yJ9BQtSze8PMeRUOQht3AwVqCdMW3ks+YqsBq+jWkkFi
-	KE/m9umDapcOvE7SqvDtTqvMaMG4I2Up9rFSBFitVJVxB19K88+mttfKDLocGJeJbllB/h
-	o3kVEcJmW1iYpK0HigSVjVauCPRqfS0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-5EWsAsVVMDiUo_j7Hzw6Kw-1; Thu, 06 Nov 2025 06:47:52 -0500
-X-MC-Unique: 5EWsAsVVMDiUo_j7Hzw6Kw-1
-X-Mimecast-MFC-AGG-ID: 5EWsAsVVMDiUo_j7Hzw6Kw_1762429672
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-429c5f1e9faso674599f8f.3
-        for <netdev@vger.kernel.org>; Thu, 06 Nov 2025 03:47:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762429672; x=1763034472; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0JviuZOYT5VOJubSBo7kcaUm1NAOOfzcTxwXg/1vMe4=;
-        b=QykzFlY0LZCuy3V4UnKJjHEt87nA2uZY8ivl9Bs6bCXUVr0Wtjg/AW8OF41QPjaUY5
-         SxQpQm+u7NDV7tYxnmmBBbs9y/ofVzOskLTsMHAIupmjBmEVQslSYEY2m8uDkDrxw05t
-         0UwORE/od097juxNbnNi0yt/TBKQvwr2bykKtxT7z3RFaSRvdHtoPvX8j9zDM2DzUvKx
-         1v+duEob9eLRj1cHep5PESbsYVFgvD0Wp1RquD+IgNorrZg/En6uH/zqHs7UB5Ta/JRX
-         JuWG3OVfMRaeQioyzF8GBxYUlbJT7z8+y4mnaI/EpFa9bs8U4KiQS3TrUTP96l2DVX79
-         HX1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762429672; x=1763034472;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0JviuZOYT5VOJubSBo7kcaUm1NAOOfzcTxwXg/1vMe4=;
-        b=jxvsq/L111DWCjUC+Q1d266Ji5cVIA1hbqv5ekL001VhRtXvWVCzTWB4fjeSfY2uM3
-         gl0nZUtXyM+L/bTRL/r6MtUzkGAQiHK7Wyj/Ea0jHdAZz6KpOwxzTSmU9G5Bvg8Vt3x9
-         v88TPMVsaOY2/+gP51Kw8cDcAcxqnTLeJ0CQCu6X1RBt3U8z8X9A9fE1IvzXPQYEMb7Y
-         Ywl7fTamt+YAMFFIe8FICWhfSjaQ16rYYZsuSq5XLOw+DVfiwG6b01Kl4Fzs1JA4WOTV
-         f6mcIBPtLlC7WlHFxzUDDBHIp5t7WYHQKVpCl7B2zMDffaSzK7hLxrjrAvHmHCGWklmo
-         yoxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUgMrT0o1AYUxnkfI5vIeTAZ4GB2/wZAe654N6MBMSJCQY0LI6lo3hlqalPd1w9CVxDSdamf5k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwRlVxyht2O2JJVhIw6dJASMuCgSuCHx8SgaY5mxgjiOQ6pkmn2
-	P7nE8XeSqUYngMlImLzuvFKMiKItvwgZko6k4VUOc/YYc5SoZfOWIX7n+UO6f91ZAorPCRM1pSJ
-	ff47QOtsQ82XBVQBWDL6mfg+ohYOJoYQltjgCj0rBwlmuIZBO+cIGJVPWFw==
-X-Gm-Gg: ASbGncuhDCASDpT73UB2KpeJuHgKScJfa7yFw9ehR/BqK9WHSV8SPqUFDPRD5A6LoK+
-	yeuJkuGD/I+I4YCNq3j4GMp+DhSl9wLt4bzo7Cv0jvrGuB4wZs8hGaTkgMuFs3E3j0ux1EQgj2R
-	8XyZynsLGxToFpLfq19th4v66hLimyIs6YRxMod0mGCKqzNo7+Yq0MswRGCFqNx4lnHK9lUSYrG
-	hcvQbkbiio+dFNeHwIZdHltFbhdOb2fvgmQkbW7iwT8uWqgi56mO6FgFImtCHpUo3D2FebZ3Ec2
-	karIPagH+5DNSEfOd8i+kXWDAcgUgbey9kVNIFDB4aBWQvEf/skunr3PNc898sCCU7C6y8xqzn0
-	qog==
-X-Received: by 2002:a5d:584a:0:b0:429:d0f0:6dd1 with SMTP id ffacd0b85a97d-429e33396cemr6850995f8f.58.1762429671738;
-        Thu, 06 Nov 2025 03:47:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHyM0CqjbrXAtnYkiBBxwxzEmqQL7alB7xzeOenRekpIf1Zfq6usduu0337jFWK1+wDdZonKw==
-X-Received: by 2002:a5d:584a:0:b0:429:d0f0:6dd1 with SMTP id ffacd0b85a97d-429e33396cemr6850974f8f.58.1762429671254;
-        Thu, 06 Nov 2025 03:47:51 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.155.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429eb49c2fdsm4632849f8f.39.2025.11.06.03.47.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 03:47:50 -0800 (PST)
-Message-ID: <981dbc10-0833-418e-b389-93e0daee8acf@redhat.com>
-Date: Thu, 6 Nov 2025 12:47:48 +0100
+	s=arc-20240116; t=1762429805; c=relaxed/simple;
+	bh=fcju2KL6HfO0NoLFgdd2flZ1YHYvh2/fvlhLhAc9ihw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gA7o1EfuqscgPnvgr+l1D4zGyhE9JCKadCkySXYgcrTA0/3ft0lhCYPvMu534ZbFvQCYlGqH2W5JgXjaOoEsgtb8WsSLawOqRFz5WuMBmGD93c3ZpMssAEieuOfnQixfiGH7B/xjT7glZoDS8K+7vOLeZidc8q3aI63cFMiJXf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d2KmR2KScz9sSq;
+	Thu,  6 Nov 2025 12:32:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id dbnuwnZTfd4H; Thu,  6 Nov 2025 12:32:23 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d2KmK2sQ3z9sSj;
+	Thu,  6 Nov 2025 12:32:17 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 49CEC8B77B;
+	Thu,  6 Nov 2025 12:32:17 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id NxNpllOkh-J7; Thu,  6 Nov 2025 12:32:17 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 740078B78F;
+	Thu,  6 Nov 2025 12:32:16 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Darren Hart <dvhart@infradead.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Andre Almeida" <andrealmeid@igalia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 06/10] powerpc/uaccess: Remove {allow/prevent}_{read/write/read_write}_{from/to/}_user()
+Date: Thu,  6 Nov 2025 12:31:24 +0100
+Message-ID: <cd40a84ef85c26e2017730bb491631aa701dbe54.1762427933.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <cover.1762427933.git.christophe.leroy@csgroup.eu>
+References: <cover.1762427933.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 08/14] tcp: accecn: retransmit downgraded SYN
- in AccECN negotiation
-To: chia-yu.chang@nokia-bell-labs.com, edumazet@google.com, parav@nvidia.com,
- linux-doc@vger.kernel.org, corbet@lwn.net, horms@kernel.org,
- dsahern@kernel.org, kuniyu@google.com, bpf@vger.kernel.org,
- netdev@vger.kernel.org, dave.taht@gmail.com, jhs@mojatatu.com,
- kuba@kernel.org, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
- donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
- ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
- g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
- mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
- Jason_Livingood@comcast.com, vidhi_goel@apple.com
-References: <20251030143435.13003-1-chia-yu.chang@nokia-bell-labs.com>
- <20251030143435.13003-9-chia-yu.chang@nokia-bell-labs.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251030143435.13003-9-chia-yu.chang@nokia-bell-labs.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5385; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=fcju2KL6HfO0NoLFgdd2flZ1YHYvh2/fvlhLhAc9ihw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWTytGvJqyis8VimY+Bl2hUyL/T7hr5VeYvuX8gLN3Y2r GmIP+bcUcrCIMbFICumyHL8P/euGV1fUvOn7tKHmcPKBDKEgYtTACaiU8rIsGvavIyK6M3XFY50 LpoTeGfdwblrL67i+X5kQ7FNxU9zXR+Gv9JGZYXrxO8ozzmprXDyxryFat7l558s+HRhr1F4+oe pzHwA
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
+Content-Transfer-Encoding: 8bit
 
-On 10/30/25 3:34 PM, chia-yu.chang@nokia-bell-labs.com wrote:
-> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
-> 
-> Based on AccECN spec (RFC9768), if the sender of an AccECN SYN
-> (the TCP Client) times out before receiving the SYN/ACK, it SHOULD
-> attempt to negotiate the use of AccECN at least one more time by
-> continuing to set all three TCP ECN flags (AE,CWR,ECE) = (1,1,1) on
-> the first retransmitted SYN (using the usual retransmission time-outs).
-> 
-> If this first retransmission also fails to be acknowledged, in
-> deployment scenarios where AccECN path traversal might be problematic,
-> the TCP Client SHOULD send subsequent retransmissions of the SYN with
-> the three TCP-ECN flags cleared (AE,CWR,ECE) = (0,0,0).
-> 
-> Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+The six following functions have become simple single-line fonctions
+that do not have much added value anymore:
+- allow_read_from_user()
+- allow_write_to_user()
+- allow_read_write_user()
+- prevent_read_from_user()
+- prevent_write_to_user()
+- prevent_read_write_user()
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Directly call allow_user_access() and prevent_user_access(), it doesn't
+reduce the readability and it removes unnecessary middle functions.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: New
+---
+ arch/powerpc/include/asm/kup.h     | 47 ------------------------------
+ arch/powerpc/include/asm/uaccess.h | 30 +++++++++----------
+ 2 files changed, 15 insertions(+), 62 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 3963584ac1cf1..4a4145a244f29 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -131,53 +131,6 @@ static __always_inline void kuap_assert_locked(void)
+ 		kuap_get_and_assert_locked();
+ }
+ 
+-static __always_inline void allow_read_from_user(const void __user *from, unsigned long size)
+-{
+-	allow_user_access(NULL, KUAP_READ);
+-}
+-
+-static __always_inline void allow_write_to_user(void __user *to, unsigned long size)
+-{
+-	allow_user_access(to, KUAP_WRITE);
+-}
+-
+-static __always_inline void allow_read_write_user(void __user *to, const void __user *from,
+-						  unsigned long size)
+-{
+-	allow_user_access(to, KUAP_READ_WRITE);
+-}
+-
+-static __always_inline void prevent_read_from_user(const void __user *from, unsigned long size)
+-{
+-	prevent_user_access(KUAP_READ);
+-}
+-
+-static __always_inline void prevent_write_to_user(void __user *to, unsigned long size)
+-{
+-	prevent_user_access(KUAP_WRITE);
+-}
+-
+-static __always_inline void prevent_read_write_user(void __user *to, const void __user *from,
+-						    unsigned long size)
+-{
+-	prevent_user_access(KUAP_READ_WRITE);
+-}
+-
+-static __always_inline void prevent_current_access_user(void)
+-{
+-	prevent_user_access(KUAP_READ_WRITE);
+-}
+-
+-static __always_inline void prevent_current_read_from_user(void)
+-{
+-	prevent_user_access(KUAP_READ);
+-}
+-
+-static __always_inline void prevent_current_write_to_user(void)
+-{
+-	prevent_user_access(KUAP_WRITE);
+-}
+-
+ #endif /* !__ASSEMBLER__ */
+ 
+ #endif /* _ASM_POWERPC_KUAP_H_ */
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 3e622e647d622..7846ee59e3747 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -45,14 +45,14 @@
+ 	do {							\
+ 		__label__ __pu_failed;				\
+ 								\
+-		allow_write_to_user(__pu_addr, __pu_size);	\
++		allow_user_access(__pu_addr, KUAP_WRITE);	\
+ 		__put_user_size_goto(__pu_val, __pu_addr, __pu_size, __pu_failed);	\
+-		prevent_write_to_user(__pu_addr, __pu_size);	\
++		prevent_user_access(KUAP_WRITE);		\
+ 		__pu_err = 0;					\
+ 		break;						\
+ 								\
+ __pu_failed:							\
+-		prevent_write_to_user(__pu_addr, __pu_size);	\
++		prevent_user_access(KUAP_WRITE);		\
+ 		__pu_err = -EFAULT;				\
+ 	} while (0);						\
+ 								\
+@@ -302,9 +302,9 @@ do {								\
+ 								\
+ 	might_fault();					\
+ 	barrier_nospec();					\
+-	allow_read_from_user(__gu_addr, __gu_size);		\
++	allow_user_access(NULL, KUAP_READ);		\
+ 	__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err);	\
+-	prevent_read_from_user(__gu_addr, __gu_size);		\
++	prevent_user_access(KUAP_READ);				\
+ 	(x) = (__typeof__(*(ptr)))__gu_val;			\
+ 								\
+ 	__gu_err;						\
+@@ -331,9 +331,9 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
+ 	unsigned long ret;
+ 
+ 	barrier_nospec();
+-	allow_read_write_user(to, from, n);
++	allow_user_access(to, KUAP_READ_WRITE);
+ 	ret = __copy_tofrom_user(to, from, n);
+-	prevent_read_write_user(to, from, n);
++	prevent_user_access(KUAP_READ_WRITE);
+ 	return ret;
+ }
+ #endif /* __powerpc64__ */
+@@ -343,9 +343,9 @@ static inline unsigned long raw_copy_from_user(void *to,
+ {
+ 	unsigned long ret;
+ 
+-	allow_read_from_user(from, n);
++	allow_user_access(NULL, KUAP_READ);
+ 	ret = __copy_tofrom_user((__force void __user *)to, from, n);
+-	prevent_read_from_user(from, n);
++	prevent_user_access(KUAP_READ);
+ 	return ret;
+ }
+ 
+@@ -354,9 +354,9 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	unsigned long ret;
+ 
+-	allow_write_to_user(to, n);
++	allow_user_access(to, KUAP_WRITE);
+ 	ret = __copy_tofrom_user(to, (__force const void __user *)from, n);
+-	prevent_write_to_user(to, n);
++	prevent_user_access(KUAP_WRITE);
+ 	return ret;
+ }
+ 
+@@ -367,9 +367,9 @@ static inline unsigned long __clear_user(void __user *addr, unsigned long size)
+ 	unsigned long ret;
+ 
+ 	might_fault();
+-	allow_write_to_user(addr, size);
++	allow_user_access(addr, KUAP_WRITE);
+ 	ret = __arch_clear_user(addr, size);
+-	prevent_write_to_user(addr, size);
++	prevent_user_access(KUAP_WRITE);
+ 	return ret;
+ }
+ 
+@@ -397,9 +397,9 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
+ {
+ 	if (check_copy_size(from, n, true)) {
+ 		if (access_ok(to, n)) {
+-			allow_write_to_user(to, n);
++			allow_user_access(to, KUAP_WRITE);
+ 			n = copy_mc_generic((void __force *)to, from, n);
+-			prevent_write_to_user(to, n);
++			prevent_user_access(KUAP_WRITE);
+ 		}
+ 	}
+ 
+-- 
+2.49.0
 
