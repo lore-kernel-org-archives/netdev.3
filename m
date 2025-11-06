@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66C34D4D4
-	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 22:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B5334E765
+	for <netdev@vger.kernel.org>; Thu,  6 Nov 2025 22:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762469613; cv=none; b=S/HUNHXFoHUc0/TWxHcwG5HRt4A2MHsCrfpiqq0Vh9Inj64ByFF7qpA3bk/3Cl0HQfTFJzf4H1oijJQuTPqYDypKcovpfOJlBu5P3RXLcETWPL14h0s4Wl5CJPBua9NVmx1aNue1YEBPqYLmrmdOGjhNHw8mPooR2l6iuHN+aVY=
+	t=1762469614; cv=none; b=GukBeXzLIJL8UHLqADcK9mXCfeL3oc3lyocQfJ8mz649JV8k54Sl+TULpRcfpylo7Tm0FUUdD+L1J/sQolG3R/Hlg8lumIzWAid2TX0wU/NgTl9cBBmtkcH25MweuRaDLswhXrozXJdO4wlNiTbHnciNKRYy4P0nteHKrDZgiK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762469613; c=relaxed/simple;
-	bh=FZZUtG0Rdcyp6RAfUOI3Ai+wkHMfwEE+ubnmmZ5okCU=;
+	s=arc-20240116; t=1762469614; c=relaxed/simple;
+	bh=eRtF1eoq3aNMN7edOPaMEOmjVG/kLGmebJlsw097HKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIDIPv5KOvf4WNyaYitpmawwHxgv2nmVlDqDD0oePcHstAzHt97nDSbjUhRUELj/vtA6hmdnEsCW2hdWOnwf1pRtVVa7KRcMrvDIFfntuhjrMzF3pEroKSW0SRmf1nclv87lCJHwtkvtLQlabYuyyzCcWHpyK98DdPnxoY9bq2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l+sk9C9I; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=E3XAPOr8xn5NwN8j++7NorxmHgEx6kJORnXt8rM6//5untHQRVVWLN/eHPgRN9N23MC+zJLyqPItxF5L6PnBc4V65p4lv9A49F0Q3EQ5mOsrKZCpTrsgl+yzJPjsPZCivhM09m0TcJVo1AYhMOENM2BhWM9aVxsZFSpnv0CdPwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hUrMDu3+; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l+sk9C9I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hUrMDu3+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762469611; x=1794005611;
+  t=1762469613; x=1794005613;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FZZUtG0Rdcyp6RAfUOI3Ai+wkHMfwEE+ubnmmZ5okCU=;
-  b=l+sk9C9IcvTNNI/GA15VLI8CsicGyO5TuombUJwOLVMp+Om87R9Awx4i
-   AzfvbZsBYXvdFhHitnHCiLDeWIFipiBSs5srfHB2cqGmlSaoEx5GPgaZZ
-   bYhK10KdqDe3AGeaV5neWA4/SJNlIWVnBfjtB4yd3b9od4PR0ZwmaEcva
-   StmHtHYu1YnS2x84chmAU09vkYOP1tUr9iW75p+WD6gO67hv3WGWDSmgB
-   8TizZgh577yhHUvt9xwIoOerAcfjHWxjbJ8Y5jsFTBzLIXCBlA01Ew+Ux
-   9bflP4pxkcU6Vxz4kF3/mKDpQWj1StdI7Lqxeuf+3e1nilJehDVEbiLyP
-   w==;
-X-CSE-ConnectionGUID: NnsGmkZBQF2UQi6srAGv4Q==
-X-CSE-MsgGUID: 8z6uwqYbRp2lrQHf3xceeg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64715898"
+  bh=eRtF1eoq3aNMN7edOPaMEOmjVG/kLGmebJlsw097HKU=;
+  b=hUrMDu3+J1GPrhqN9KMMjRVrG11rxQ+wrBGWEtDlDV7paAniE1SXjtE6
+   McCDz8h6O0CXCEdQdz9OBbQX5zznDuE1VitFTtpIR42HB0FD8q680/RJG
+   imyVrofPIdqNs32E0JNVcMIOQ9fxunh1TpHzrncmlX+GNwm9VHDAGz3mO
+   W/kD3wsTuLHWm5AVfNooBz+GEv/sdtJQzlsiB1tVNgqjVQXlUyHbtfe3i
+   tH3AGRTwqTGHUbnZ79Ng1A1STQVEL9AreeO4QNiQTNn+cQl4Mi08Xox/M
+   X/T2s58yQveUePr12ABAlW3NSfGyZHhi0m6LwYFvtKgm+ktPIsuviK2rD
+   g==;
+X-CSE-ConnectionGUID: wUliz9TvRZKF2z94h2DzEQ==
+X-CSE-MsgGUID: 2QBaYjf+Ra6LTQoLLSzbPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="64715900"
 X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
-   d="scan'208";a="64715898"
+   d="scan'208";a="64715900"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 14:53:30 -0800
-X-CSE-ConnectionGUID: ZBIE0ojzSwuODYHkr1rrew==
-X-CSE-MsgGUID: qXyamga4Qci1pUlUXRUy/Q==
+X-CSE-ConnectionGUID: hi8VhdNOT1CYvW4FHff2QA==
+X-CSE-MsgGUID: cmfuNb0/QeW1jiK36a6NWg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.19,285,1754982000"; 
-   d="scan'208";a="188602827"
+   d="scan'208";a="188602833"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Nov 2025 14:53:29 -0800
+  by fmviesa010.fm.intel.com with ESMTP; 06 Nov 2025 14:53:30 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -55,14 +55,10 @@ Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	jacob.e.keller@intel.com,
 	horms@kernel.org,
 	Dan Nowlin <dan.nowlin@intel.com>,
-	Jie Wang <jie1x.wang@intel.com>,
-	Junfeng Guo <junfeng.guo@intel.com>,
-	Qi Zhang <qi.z.zhang@intel.com>,
-	Ting Xu <ting.xu@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next 4/8] ice: add virtchnl definitions and static data for GTP RSS
-Date: Thu,  6 Nov 2025 14:53:13 -0800
-Message-ID: <20251106225321.1609605-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 6/8] ice: improve TCAM priority handling for RSS profiles
+Date: Thu,  6 Nov 2025 14:53:15 -0800
+Message-ID: <20251106225321.1609605-7-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20251106225321.1609605-1-anthony.l.nguyen@intel.com>
 References: <20251106225321.1609605-1-anthony.l.nguyen@intel.com>
@@ -76,477 +72,218 @@ Content-Transfer-Encoding: 8bit
 
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-Add virtchnl protocol header and field definitions for advanced RSS
-configuration including GTPC, GTPU, L2TPv2, ECPRI, PPP, GRE, and IP
-fragment headers.
+Enhance TCAM priority logic to avoid conflicts between RSS profiles
+with overlapping PTGs and attributes.
 
-- Define new virtchnl protocol header types
-- Add RSS field selectors for tunnel protocols
-- Extend static mapping arrays for protocol field matching
-- Add L2TPv2 session ID and length+session ID field support
+Track used PTG and attribute combinations.
+Ensure higher-priority profiles override lower ones.
+Add helper for setting TCAM flags and masks.
 
-This provides the foundational definitions needed for VF RSS
-configuration of tunnel protocols.
+Ensure RSS rule consistency and prevent unintended matches.
 
 Co-developed-by: Dan Nowlin <dan.nowlin@intel.com>
 Signed-off-by: Dan Nowlin <dan.nowlin@intel.com>
-Co-developed-by: Jie Wang <jie1x.wang@intel.com>
-Signed-off-by: Jie Wang <jie1x.wang@intel.com>
-Co-developed-by: Junfeng Guo <junfeng.guo@intel.com>
-Signed-off-by: Junfeng Guo <junfeng.guo@intel.com>
-Co-developed-by: Qi Zhang <qi.z.zhang@intel.com>
-Signed-off-by: Qi Zhang <qi.z.zhang@intel.com>
-Co-developed-by: Ting Xu <ting.xu@intel.com>
-Signed-off-by: Ting Xu <ting.xu@intel.com>
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_vf_lib.h |  48 +++++
- drivers/net/ethernet/intel/ice/virt/rss.c   | 219 +++++++++++++++++++-
- include/linux/avf/virtchnl.h                |  50 +++++
- 3 files changed, 316 insertions(+), 1 deletion(-)
+ .../net/ethernet/intel/ice/ice_flex_pipe.c    | 91 ++++++++++++++++---
+ .../net/ethernet/intel/ice/ice_flex_type.h    |  1 +
+ 2 files changed, 78 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index b00708907176..7a9c75d1d07c 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -53,6 +53,46 @@ struct ice_mdd_vf_events {
- 	u16 last_printed;
- };
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+index c8cb492fddf4..c0dbec369366 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
++++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+@@ -3577,6 +3577,19 @@ ice_move_vsi(struct ice_hw *hw, enum ice_block blk, u16 vsi, u16 vsig,
+ 	return 0;
+ }
  
-+enum ice_hash_ip_ctx_type {
-+	ICE_HASH_IP_CTX_IP = 0,
-+	ICE_HASH_IP_CTX_IP_ESP,
-+	ICE_HASH_IP_CTX_IP_UDP_ESP,
-+	ICE_HASH_IP_CTX_IP_AH,
-+	ICE_HASH_IP_CTX_IP_PFCP,
-+	ICE_HASH_IP_CTX_IP_UDP,
-+	ICE_HASH_IP_CTX_IP_TCP,
-+	ICE_HASH_IP_CTX_IP_SCTP,
-+	ICE_HASH_IP_CTX_MAX,
-+};
++/**
++ * ice_set_tcam_flags - set TCAM flag don't care mask
++ * @mask: mask for flags
++ * @dc_mask: pointer to the don't care mask
++ */
++static void ice_set_tcam_flags(u16 mask, u8 dc_mask[ICE_TCAM_KEY_VAL_SZ])
++{
++	u16 inverted_mask = ~mask;
 +
-+struct ice_vf_hash_ip_ctx {
-+	struct ice_rss_hash_cfg ctx[ICE_HASH_IP_CTX_MAX];
-+};
++	/* flags are lowest u16 */
++	put_unaligned_le16(inverted_mask, dc_mask);
++}
 +
-+enum ice_hash_gtpu_ctx_type {
-+	ICE_HASH_GTPU_CTX_EH_IP = 0,
-+	ICE_HASH_GTPU_CTX_EH_IP_UDP,
-+	ICE_HASH_GTPU_CTX_EH_IP_TCP,
-+	ICE_HASH_GTPU_CTX_UP_IP,
-+	ICE_HASH_GTPU_CTX_UP_IP_UDP,
-+	ICE_HASH_GTPU_CTX_UP_IP_TCP,
-+	ICE_HASH_GTPU_CTX_DW_IP,
-+	ICE_HASH_GTPU_CTX_DW_IP_UDP,
-+	ICE_HASH_GTPU_CTX_DW_IP_TCP,
-+	ICE_HASH_GTPU_CTX_MAX,
-+};
-+
-+struct ice_vf_hash_gtpu_ctx {
-+	struct ice_rss_hash_cfg ctx[ICE_HASH_GTPU_CTX_MAX];
-+};
-+
-+struct ice_vf_hash_ctx {
-+	struct ice_vf_hash_ip_ctx v4;
-+	struct ice_vf_hash_ip_ctx v6;
-+	struct ice_vf_hash_gtpu_ctx ipv4;
-+	struct ice_vf_hash_gtpu_ctx ipv6;
-+};
-+
- /* Structure to store fdir fv entry */
- struct ice_fdir_prof_info {
- 	struct ice_parser_profile prof;
-@@ -66,6 +106,12 @@ struct ice_vf_qs_bw {
- 	u8 tc;
- };
+ /**
+  * ice_rem_chg_tcam_ent - remove a specific TCAM entry from change list
+  * @hw: pointer to the HW struct
+@@ -3647,6 +3660,9 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
+ 	if (!p)
+ 		return -ENOMEM;
  
-+/* Structure to store RSS field vector entry */
-+struct ice_rss_prof_info {
-+	struct ice_parser_profile prof;
-+	bool symm;
-+};
++	/* set don't care masks for TCAM flags */
++	ice_set_tcam_flags(tcam->attr.mask, dc_msk);
 +
- /* VF operations */
- struct ice_vf_ops {
- 	enum ice_disq_rst_src reset_type;
-@@ -106,6 +152,8 @@ struct ice_vf {
- 	u16 ctrl_vsi_idx;
- 	struct ice_vf_fdir fdir;
- 	struct ice_fdir_prof_info fdir_prof_info[ICE_MAX_PTGS];
-+	struct ice_rss_prof_info rss_prof_info[ICE_MAX_PTGS];
-+	struct ice_vf_hash_ctx hash_ctx;
- 	u64 rss_hashcfg;		/* RSS hash configuration */
- 	struct ice_sw *vf_sw_id;	/* switch ID the VF VSIs connect to */
- 	struct virtchnl_version_info vf_ver;
-diff --git a/drivers/net/ethernet/intel/ice/virt/rss.c b/drivers/net/ethernet/intel/ice/virt/rss.c
-index cbdbb32d512b..ee0d1ec32d56 100644
---- a/drivers/net/ethernet/intel/ice/virt/rss.c
-+++ b/drivers/net/ethernet/intel/ice/virt/rss.c
-@@ -36,6 +36,11 @@ static const struct ice_vc_hdr_match_type ice_vc_hdr_list[] = {
- 	{VIRTCHNL_PROTO_HDR_ESP,	ICE_FLOW_SEG_HDR_ESP},
- 	{VIRTCHNL_PROTO_HDR_AH,		ICE_FLOW_SEG_HDR_AH},
- 	{VIRTCHNL_PROTO_HDR_PFCP,	ICE_FLOW_SEG_HDR_PFCP_SESSION},
-+	{VIRTCHNL_PROTO_HDR_GTPC,	ICE_FLOW_SEG_HDR_GTPC},
-+	{VIRTCHNL_PROTO_HDR_L2TPV2,	ICE_FLOW_SEG_HDR_L2TPV2},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,	ICE_FLOW_SEG_HDR_IPV_FRAG},
-+	{VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG,	ICE_FLOW_SEG_HDR_IPV_FRAG},
-+	{VIRTCHNL_PROTO_HDR_GRE,        ICE_FLOW_SEG_HDR_GRE},
- };
+ 	status = ice_tcam_write_entry(hw, blk, tcam->tcam_idx, tcam->prof_id,
+ 				      tcam->ptg, vsig, 0, tcam->attr.flags,
+ 				      vl_msk, dc_msk, nm_msk);
+@@ -3672,6 +3688,34 @@ ice_prof_tcam_ena_dis(struct ice_hw *hw, enum ice_block blk, bool enable,
+ 	return status;
+ }
  
- struct ice_vc_hash_field_match_type {
-@@ -87,8 +92,125 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
- 		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
--	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
-+	{VIRTCHNL_PROTO_HDR_IPV4,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_FRAG_PKID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_ID)},
-+	{VIRTCHNL_PROTO_HDR_IPV4,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST),
-+		ICE_FLOW_HASH_IPV4},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
-+		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_FRAG_PKID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_ID)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		ICE_FLOW_HASH_IPV4 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_PROT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV4_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_PROT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV4_CHKSUM)},
- 	{VIRTCHNL_PROTO_HDR_IPV6, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_SRC),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_SA)},
- 	{VIRTCHNL_PROTO_HDR_IPV6, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_DST),
-@@ -110,6 +232,35 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		ICE_FLOW_HASH_IPV6 | BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PROT)},
- 	{VIRTCHNL_PROTO_HDR_IPV6, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PROT),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG_PKID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_ID)},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_DST),
-+		ICE_FLOW_HASH_IPV6_PRE64},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_SRC),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_SA)},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_DST),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_DA)},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PROT),
-+		ICE_FLOW_HASH_IPV6_PRE64 |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_SRC) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PROT),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_SA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PROT)},
-+	{VIRTCHNL_PROTO_HDR_IPV6,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_DST) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_IPV6_PROT),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PRE64_DA) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_IPV6_PROT)},
- 	{VIRTCHNL_PROTO_HDR_TCP,
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_SRC_PORT),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_SRC_PORT)},
-@@ -120,6 +271,25 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_SRC_PORT) |
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_DST_PORT),
- 		ICE_FLOW_HASH_TCP_PORT},
-+	{VIRTCHNL_PROTO_HDR_TCP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_TCP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_SRC_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_TCP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_DST_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_TCP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_TCP_CHKSUM),
-+		ICE_FLOW_HASH_TCP_PORT |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_TCP_CHKSUM)},
- 	{VIRTCHNL_PROTO_HDR_UDP,
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_SRC_PORT),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_SRC_PORT)},
-@@ -130,6 +300,25 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_SRC_PORT) |
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_DST_PORT),
- 		ICE_FLOW_HASH_UDP_PORT},
-+	{VIRTCHNL_PROTO_HDR_UDP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_UDP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_SRC_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_UDP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_DST_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_UDP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_UDP_CHKSUM),
-+		ICE_FLOW_HASH_UDP_PORT |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_UDP_CHKSUM)},
- 	{VIRTCHNL_PROTO_HDR_SCTP,
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_SRC_PORT),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_SRC_PORT)},
-@@ -140,6 +329,25 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_SRC_PORT) |
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_DST_PORT),
- 		ICE_FLOW_HASH_SCTP_PORT},
-+	{VIRTCHNL_PROTO_HDR_SCTP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_SCTP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_SRC_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_SCTP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_CHKSUM),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_DST_PORT) |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_CHKSUM)},
-+	{VIRTCHNL_PROTO_HDR_SCTP,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_SRC_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_DST_PORT) |
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_SCTP_CHKSUM),
-+		ICE_FLOW_HASH_SCTP_PORT |
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_SCTP_CHKSUM)},
- 	{VIRTCHNL_PROTO_HDR_PPPOE,
- 		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_PPPOE_SESS_ID),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_PPPOE_SESS_ID)},
-@@ -155,6 +363,15 @@ ice_vc_hash_field_match_type ice_vc_hash_field_list[] = {
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_AH_SPI)},
- 	{VIRTCHNL_PROTO_HDR_PFCP, FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_PFCP_SEID),
- 		BIT_ULL(ICE_FLOW_FIELD_IDX_PFCP_SEID)},
-+	{VIRTCHNL_PROTO_HDR_GTPC,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_GTPC_TEID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_GTPC_TEID)},
-+	{VIRTCHNL_PROTO_HDR_L2TPV2,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_L2TPV2_SESS_ID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_L2TPV2_SESS_ID)},
-+	{VIRTCHNL_PROTO_HDR_L2TPV2,
-+		FIELD_SELECTOR(VIRTCHNL_PROTO_HDR_L2TPV2_LEN_SESS_ID),
-+		BIT_ULL(ICE_FLOW_FIELD_IDX_L2TPV2_LEN_SESS_ID)},
- };
++/**
++ * ice_ptg_attr_in_use - determine if PTG and attribute pair is in use
++ * @ptg_attr: pointer to the PTG and attribute pair to check
++ * @ptgs_used: bitmap that denotes which PTGs are in use
++ * @attr_used: array of PTG and attributes pairs already used
++ * @attr_cnt: count of entries in the attr_used array
++ *
++ * Return: true if the PTG and attribute pair is in use, false otherwise.
++ */
++static bool
++ice_ptg_attr_in_use(struct ice_tcam_inf *ptg_attr, unsigned long *ptgs_used,
++		    struct ice_tcam_inf *attr_used[], u16 attr_cnt)
++{
++	u16 i;
++
++	if (!test_bit(ptg_attr->ptg, ptgs_used))
++		return false;
++
++	/* the PTG is used, so now look for correct attributes */
++	for (i = 0; i < attr_cnt; i++)
++		if (attr_used[i]->ptg == ptg_attr->ptg &&
++		    attr_used[i]->attr.flags == ptg_attr->attr.flags &&
++		    attr_used[i]->attr.mask == ptg_attr->attr.mask)
++			return true;
++
++	return false;
++}
++
+ /**
+  * ice_adj_prof_priorities - adjust profile based on priorities
+  * @hw: pointer to the HW struct
+@@ -3684,10 +3728,16 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 			struct list_head *chg)
+ {
+ 	DECLARE_BITMAP(ptgs_used, ICE_XLT1_CNT);
++	struct ice_tcam_inf **attr_used;
+ 	struct ice_vsig_prof *t;
+-	int status;
++	u16 attr_used_cnt = 0;
++	int status = 0;
+ 	u16 idx;
+ 
++	attr_used = kcalloc(ICE_MAX_PTG_ATTRS, sizeof(*attr_used), GFP_KERNEL);
++	if (!attr_used)
++		return -ENOMEM;
++
+ 	bitmap_zero(ptgs_used, ICE_XLT1_CNT);
+ 	idx = vsig & ICE_VSIG_IDX_M;
+ 
+@@ -3705,11 +3755,15 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 		u16 i;
+ 
+ 		for (i = 0; i < t->tcam_count; i++) {
++			bool used;
++
+ 			/* Scan the priorities from newest to oldest.
+ 			 * Make sure that the newest profiles take priority.
+ 			 */
+-			if (test_bit(t->tcam[i].ptg, ptgs_used) &&
+-			    t->tcam[i].in_use) {
++			used = ice_ptg_attr_in_use(&t->tcam[i], ptgs_used,
++						   attr_used, attr_used_cnt);
++
++			if (used && t->tcam[i].in_use) {
+ 				/* need to mark this PTG as never match, as it
+ 				 * was already in use and therefore duplicate
+ 				 * (and lower priority)
+@@ -3719,9 +3773,8 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 							       &t->tcam[i],
+ 							       chg);
+ 				if (status)
+-					return status;
+-			} else if (!test_bit(t->tcam[i].ptg, ptgs_used) &&
+-				   !t->tcam[i].in_use) {
++					goto free_attr_used;
++			} else if (!used && !t->tcam[i].in_use) {
+ 				/* need to enable this PTG, as it in not in use
+ 				 * and not enabled (highest priority)
+ 				 */
+@@ -3730,15 +3783,21 @@ ice_adj_prof_priorities(struct ice_hw *hw, enum ice_block blk, u16 vsig,
+ 							       &t->tcam[i],
+ 							       chg);
+ 				if (status)
+-					return status;
++					goto free_attr_used;
+ 			}
+ 
+ 			/* keep track of used ptgs */
+-			__set_bit(t->tcam[i].ptg, ptgs_used);
++			set_bit(t->tcam[i].ptg, ptgs_used);
++			if (attr_used_cnt < ICE_MAX_PTG_ATTRS)
++				attr_used[attr_used_cnt++] = &t->tcam[i];
++			else
++				ice_debug(hw, ICE_DBG_INIT, "Warn: ICE_MAX_PTG_ATTRS exceeded\n");
+ 		}
+ 	}
+ 
+-	return 0;
++free_attr_used:
++	kfree(attr_used);
++	return status;
+ }
  
  /**
-diff --git a/include/linux/avf/virtchnl.h b/include/linux/avf/virtchnl.h
-index 5be1881abbb6..11bdab5522fd 100644
---- a/include/linux/avf/virtchnl.h
-+++ b/include/linux/avf/virtchnl.h
-@@ -1253,6 +1253,17 @@ enum virtchnl_proto_hdr_type {
- 	VIRTCHNL_PROTO_HDR_ESP,
- 	VIRTCHNL_PROTO_HDR_AH,
- 	VIRTCHNL_PROTO_HDR_PFCP,
-+	VIRTCHNL_PROTO_HDR_GTPC,
-+	VIRTCHNL_PROTO_HDR_ECPRI,
-+	VIRTCHNL_PROTO_HDR_L2TPV2,
-+	VIRTCHNL_PROTO_HDR_PPP,
-+	/* IPv4 and IPv6 Fragment header types are only associated to
-+	 * VIRTCHNL_PROTO_HDR_IPV4 and VIRTCHNL_PROTO_HDR_IPV6 respectively,
-+	 * cannot be used independently.
-+	 */
-+	VIRTCHNL_PROTO_HDR_IPV4_FRAG,
-+	VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG,
-+	VIRTCHNL_PROTO_HDR_GRE,
+@@ -3821,11 +3880,15 @@ ice_add_prof_id_vsig(struct ice_hw *hw, enum ice_block blk, u16 vsig, u64 hdl,
+ 		p->vsig = vsig;
+ 		p->tcam_idx = t->tcam[i].tcam_idx;
+ 
++		/* set don't care masks for TCAM flags */
++		ice_set_tcam_flags(t->tcam[i].attr.mask, dc_msk);
++
+ 		/* write the TCAM entry */
+ 		status = ice_tcam_write_entry(hw, blk, t->tcam[i].tcam_idx,
+ 					      t->tcam[i].prof_id,
+-					      t->tcam[i].ptg, vsig, 0, 0,
+-					      vl_msk, dc_msk, nm_msk);
++					      t->tcam[i].ptg, vsig, 0,
++					      t->tcam[i].attr.flags, vl_msk,
++					      dc_msk, nm_msk);
+ 		if (status) {
+ 			devm_kfree(ice_hw_to_dev(hw), p);
+ 			goto err_ice_add_prof_id_vsig;
+@@ -4139,9 +4202,6 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
+ 	u16 vsi_num;
+ 	int status;
+ 
+-	if (blk != ICE_BLK_FD)
+-		return -EINVAL;
+-
+ 	vsi_num = ice_get_hw_vsi_num(hw, dest_vsi);
+ 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
+ 	if (status) {
+@@ -4150,6 +4210,9 @@ ice_flow_assoc_fdir_prof(struct ice_hw *hw, enum ice_block blk,
+ 		return status;
+ 	}
+ 
++	if (blk != ICE_BLK_FD)
++		return 0;
++
+ 	vsi_num = ice_get_hw_vsi_num(hw, fdir_vsi);
+ 	status = ice_add_prof_id_flow(hw, blk, vsi_num, hdl);
+ 	if (status) {
+diff --git a/drivers/net/ethernet/intel/ice/ice_flex_type.h b/drivers/net/ethernet/intel/ice/ice_flex_type.h
+index 817beca591e0..80c9e7c749c2 100644
+--- a/drivers/net/ethernet/intel/ice/ice_flex_type.h
++++ b/drivers/net/ethernet/intel/ice/ice_flex_type.h
+@@ -187,6 +187,7 @@ struct ice_prof_map {
  };
  
- /* Protocol header field within a protocol header. */
-@@ -1275,6 +1286,7 @@ enum virtchnl_proto_hdr_field {
- 	VIRTCHNL_PROTO_HDR_IPV4_DSCP,
- 	VIRTCHNL_PROTO_HDR_IPV4_TTL,
- 	VIRTCHNL_PROTO_HDR_IPV4_PROT,
-+	VIRTCHNL_PROTO_HDR_IPV4_CHKSUM,
- 	/* IPV6 */
- 	VIRTCHNL_PROTO_HDR_IPV6_SRC =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_IPV6),
-@@ -1282,18 +1294,34 @@ enum virtchnl_proto_hdr_field {
- 	VIRTCHNL_PROTO_HDR_IPV6_TC,
- 	VIRTCHNL_PROTO_HDR_IPV6_HOP_LIMIT,
- 	VIRTCHNL_PROTO_HDR_IPV6_PROT,
-+	/* IPV6 Prefix */
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX32_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX32_DST,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX40_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX40_DST,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX48_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX48_DST,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX56_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX56_DST,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX64_DST,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX96_SRC,
-+	VIRTCHNL_PROTO_HDR_IPV6_PREFIX96_DST,
- 	/* TCP */
- 	VIRTCHNL_PROTO_HDR_TCP_SRC_PORT =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_TCP),
- 	VIRTCHNL_PROTO_HDR_TCP_DST_PORT,
-+	VIRTCHNL_PROTO_HDR_TCP_CHKSUM,
- 	/* UDP */
- 	VIRTCHNL_PROTO_HDR_UDP_SRC_PORT =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_UDP),
- 	VIRTCHNL_PROTO_HDR_UDP_DST_PORT,
-+	VIRTCHNL_PROTO_HDR_UDP_CHKSUM,
- 	/* SCTP */
- 	VIRTCHNL_PROTO_HDR_SCTP_SRC_PORT =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_SCTP),
- 	VIRTCHNL_PROTO_HDR_SCTP_DST_PORT,
-+	VIRTCHNL_PROTO_HDR_SCTP_CHKSUM,
- 	/* GTPU_IP */
- 	VIRTCHNL_PROTO_HDR_GTPU_IP_TEID =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_GTPU_IP),
-@@ -1317,6 +1345,28 @@ enum virtchnl_proto_hdr_field {
- 	VIRTCHNL_PROTO_HDR_PFCP_S_FIELD =
- 		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_PFCP),
- 	VIRTCHNL_PROTO_HDR_PFCP_SEID,
-+	/* GTPC */
-+	VIRTCHNL_PROTO_HDR_GTPC_TEID =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_GTPC),
-+	/* ECPRI */
-+	VIRTCHNL_PROTO_HDR_ECPRI_MSG_TYPE =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_ECPRI),
-+	VIRTCHNL_PROTO_HDR_ECPRI_PC_RTC_ID,
-+	/* IPv4 Dummy Fragment */
-+	VIRTCHNL_PROTO_HDR_IPV4_FRAG_PKID =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_IPV4_FRAG),
-+	/* IPv6 Extension Fragment */
-+	VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG_PKID =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_IPV6_EH_FRAG),
-+	/* GTPU_DWN/UP */
-+	VIRTCHNL_PROTO_HDR_GTPU_DWN_QFI =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_GTPU_EH_PDU_DWN),
-+	VIRTCHNL_PROTO_HDR_GTPU_UP_QFI =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_GTPU_EH_PDU_UP),
-+	/* L2TPv2 */
-+	VIRTCHNL_PROTO_HDR_L2TPV2_SESS_ID =
-+		PROTO_HDR_FIELD_START(VIRTCHNL_PROTO_HDR_L2TPV2),
-+	VIRTCHNL_PROTO_HDR_L2TPV2_LEN_SESS_ID,
- };
+ #define ICE_INVALID_TCAM	0xFFFF
++#define ICE_MAX_PTG_ATTRS	1024
  
- struct virtchnl_proto_hdr {
+ struct ice_tcam_inf {
+ 	u16 tcam_idx;
 -- 
 2.47.1
 
