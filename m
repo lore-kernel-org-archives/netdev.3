@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AB71DA61B
-	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 00:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C41D61BC
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 00:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762474147; cv=none; b=E1KmGse54Wfl0NnvR/qxYWIr4O21la5vXjFunc6SX1tTUSoSLkBpCOTh7kQ77yqsywEc0FGd67yXfe3q/xD+hwgqW2sTbXQgS1G1DNQ0F33gavu9nBxRHRpEbWs37mVMvkIoKpCyFBPvTAjIxvMbeeig4YW402wm4SYOTHIMzuc=
+	t=1762474149; cv=none; b=kGk2Gqepj05Bd9i98bb3DthAlks0ru36J5/b9Sghhg+ZarAWFKtRIvnd8SOtJ5YIPXzN+7B4k8pkBzF5trS+GDEoiVfZzde/06rqDzr6Rczp/yvZqm+amifzK+dz9ez+GYJc6AP8kERYYO045jgFd1wBK0IuCbuMQ2SfrwD/APY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762474147; c=relaxed/simple;
-	bh=7Lf1HKuzM8jTLEwL0wDVgoNMHjOWjp4U41beFLcA96E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EYqflIZJslJYDjeKttKcdKn040erRDBIc4ApxFYsUBZjtLhiX4LnHs6xkYCxsnWWJxVhJEx4Opv4WOfUYEaZXmyk3VCQfWB5VSE1f8Wa+hFzBC8jfmb/MNliO8zxL/wjDYk2/WsZrbvtNHXInzAeTMI0VAIpHym6BYDagBwlISk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPVy953p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762474149; c=relaxed/simple;
+	bh=oP81PNwkIIKElhU0yfZftLgi3jPdmpAqHiqEHx34yyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LNC7e2BtS/8X2Wb57aF6TiJdSnnhrUb6N78q2s1U3vh8d/0fSNlpYEWK+IF8Ydh8nOk4CokysvkJNzNgAoHzfz4SmJAD6p2R3DwTbTDMNmNmoCut+4j0bqK9KKEDOCPxj480t/Q8c0VYHwxd7l8JZ5V85stgwvd4CSXBmU7yQC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kf6RUULZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPVy953p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076E5C4CEFB;
-	Fri,  7 Nov 2025 00:09:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kf6RUULZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED825C4CEFB;
+	Fri,  7 Nov 2025 00:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762474146;
-	bh=7Lf1HKuzM8jTLEwL0wDVgoNMHjOWjp4U41beFLcA96E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qPVy953pFw+TmHdYhDc/aDhG1fhsU0pzMBRI+ynW3IK7R4CgbMnH3TyqMr37VyKNx
-	 nqbCZYmhk00tBqqoGWsAfELbPzRL/odw7HfJhSrRV1qfwfbv73vnGEsdy+U8vFgyI7
-	 p5oQ/RJMqQsdzQCuS3JwbvnnM25F8MtE2KVC6t0TFaHUi4gpkeAA3lyE7BSdr8qTuA
-	 VQIh33zOpOMZEFkB+sb5vVp6JmIvMsi7LJxKteGjHOo2d/t0tlH3vSsBgNAyZEBAJE
-	 QcphhABl85e1baV+ZIag5n5wfqfSDYCbvg/R3OVSOmmzoJEXGUu2dXjrlv0gvAiJ7Q
-	 KTchw9rpWzw8A==
+	s=k20201202; t=1762474148;
+	bh=oP81PNwkIIKElhU0yfZftLgi3jPdmpAqHiqEHx34yyE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kf6RUULZUiMrEiWjOsUrfVROdWM6mVSrl2h6PhXmtIV5GGzbE0hkUPcU/cpkbUhVu
+	 skm6HwYWfuhed9s+fNKwnfJmz/3YmNTK8lbWaDhhJGTCITly/24nWvYbYbz6Pt5XWT
+	 lwTJ8JuuhpiqM6eYWosKswumt8yWr3WbmCGdJMuHhdqfVSSIbAld+jhBxOUunOWlrU
+	 4sVQ//a+qgxdTypUFKxUfn49ulnqvBen+niINHW9C70i9pfSAAWRhUd4KsBoPeS/Ep
+	 alSo8DZ6qG+qlQsfcogWJhSvRww4LbFRs6erTfLUG7bQCpZkgFGKErihkIzCIjOOi4
+	 CQ3GvOJqmftzw==
 From: Saeed Mahameed <saeed@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -36,11 +37,14 @@ Cc: Saeed Mahameed <saeedm@nvidia.com>,
 	Gal Pressman <gal@nvidia.com>,
 	Leon Romanovsky <leonro@nvidia.com>,
 	Jiri Pirko <jiri@nvidia.com>,
-	mbloch@nvidia.com
-Subject: [PATCH net-next V2 0/3] devlink eswitch inactive mode
-Date: Thu,  6 Nov 2025 16:08:28 -0800
-Message-ID: <20251107000831.157375-1-saeed@kernel.org>
+	mbloch@nvidia.com,
+	Adithya Jayachandran <ajayachandra@nvidia.com>
+Subject: [PATCH net-next V2 2/3] net/mlx5: MPFS, add support for dynamic enable/disable
+Date: Thu,  6 Nov 2025 16:08:30 -0800
+Message-ID: <20251107000831.157375-3-saeed@kernel.org>
 X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251107000831.157375-1-saeed@kernel.org>
+References: <20251107000831.157375-1-saeed@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,60 +55,238 @@ Content-Transfer-Encoding: 8bit
 
 From: Saeed Mahameed <saeedm@nvidia.com>
 
-v1->v2:
-  - Introduce new devlink mode instead of state, Jiri's suggestion.
-  - Address kernel robot issues reported in v1.
-      no previous prototype for 'mlx5_mpfs_enable'
+MPFS (Multi PF Switch) is enabled by default in Multi-Host environments,
+the driver keeps a list of desired unicast mac addresses of all vports
+(vfs/Sfs) and applied to HW via L2_table FW command.
 
-v1: https://lore.kernel.org/all/20251016013618.2030940-1-saeed@kernel.org/
+Add API to dynamically apply the list of MACs to HW when needed for next
+patches, to utilize this new API in devlink eswitch active/in-active uAPI.
 
-Before having traffic flow through an eswitch, a user may want to have the
-ability to block traffic towards the FDB until FDB is fully programmed and the
-user is ready to send traffic to it. For example: when two eswitches are present
-for vports in a multi-PF setup, one eswitch may take over the traffic from the
-other when the user chooses. Before this take over, a user may want to first
-program the inactive eswitch and then once ready redirect traffic to this new
-eswitch.
+Issue: 4314625
+Change-Id: I185c144319e514f787811f556888e1b727bdbf35
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Adithya Jayachandran <ajayachandra@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+---
+ .../ethernet/mellanox/mlx5/core/lib/mpfs.c    | 115 +++++++++++++++---
+ .../ethernet/mellanox/mlx5/core/lib/mpfs.h    |   9 ++
+ 2 files changed, 107 insertions(+), 17 deletions(-)
 
-This series introduces a user-configurable mode for an eswitch that allows
-dynamically switching between active and inactive modes. When inactive, traffic
-does not flow through the eswitch. While inactive, steering pipeline
-configuration can be done (e.g. adding TC rules, discovering representors,
-enabling the desired SDN modes such as bridge/OVS/DPDK/etc). Once configuration
-is completed, a user can set the eswitch mode to active and have traffic flow
-through. This allows admins to upgrade forwarding pipeline rules with very
-minimal downtime and packet drops.
-
-A user can start the eswitch in switchdev or switchdev_inactive mode.
-
-Active: Traffic is enabled on this eswitch FDB.
-Inactive: Traffic is ignored/dropped on this eswitch FDB.
-
-An example use case:
-$ devlink dev eswitch set pci/0000:08:00.1 mode switchdev_inactive
-Setup FDB pipeline and netdev representors
-...
-Once ready to start receiving traffic
-$ devlink dev eswitch set pci/0000:08:00.1 mode switchdev
-
-Saeed Mahameed (3):
-  devlink: Introduce switchdev_inactive eswitch mode
-  net/mlx5: MPFS, add support for dynamic enable/disable
-  net/mlx5: E-Switch, support eswitch inactive mode
-
- Documentation/netlink/specs/devlink.yaml      |   2 +
- .../devlink/devlink-eswitch-attr.rst          |  13 ++
- .../mellanox/mlx5/core/esw/adj_vport.c        |  15 +-
- .../net/ethernet/mellanox/mlx5/core/eswitch.h |   6 +
- .../mellanox/mlx5/core/eswitch_offloads.c     | 194 +++++++++++++++++-
- .../net/ethernet/mellanox/mlx5/core/fs_core.c |   5 +
- .../ethernet/mellanox/mlx5/core/lib/mpfs.c    | 115 +++++++++--
- .../ethernet/mellanox/mlx5/core/lib/mpfs.h    |   9 +
- include/linux/mlx5/fs.h                       |   1 +
- include/uapi/linux/devlink.h                  |   1 +
- net/devlink/netlink_gen.c                     |   2 +-
- 11 files changed, 325 insertions(+), 38 deletions(-)
-
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.c
+index 4450091e181a..f27b5adb9606 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.c
+@@ -65,13 +65,14 @@ static int del_l2table_entry_cmd(struct mlx5_core_dev *dev, u32 index)
+ /* UC L2 table hash node */
+ struct l2table_node {
+ 	struct l2addr_node node;
+-	u32                index; /* index in HW l2 table */
++	int                index; /* index in HW l2 table */
+ 	int                ref_count;
+ };
+ 
+ struct mlx5_mpfs {
+ 	struct hlist_head    hash[MLX5_L2_ADDR_HASH_SIZE];
+ 	struct mutex         lock; /* Synchronize l2 table access */
++	bool                 enabled;
+ 	u32                  size;
+ 	unsigned long        *bitmap;
+ };
+@@ -114,6 +115,8 @@ int mlx5_mpfs_init(struct mlx5_core_dev *dev)
+ 		return -ENOMEM;
+ 	}
+ 
++	mpfs->enabled = true;
++
+ 	dev->priv.mpfs = mpfs;
+ 	return 0;
+ }
+@@ -135,7 +138,7 @@ int mlx5_mpfs_add_mac(struct mlx5_core_dev *dev, u8 *mac)
+ 	struct mlx5_mpfs *mpfs = dev->priv.mpfs;
+ 	struct l2table_node *l2addr;
+ 	int err = 0;
+-	u32 index;
++	int index;
+ 
+ 	if (!mpfs)
+ 		return 0;
+@@ -148,30 +151,34 @@ int mlx5_mpfs_add_mac(struct mlx5_core_dev *dev, u8 *mac)
+ 		goto out;
+ 	}
+ 
+-	err = alloc_l2table_index(mpfs, &index);
+-	if (err)
+-		goto out;
+-
+ 	l2addr = l2addr_hash_add(mpfs->hash, mac, struct l2table_node, GFP_KERNEL);
+ 	if (!l2addr) {
+ 		err = -ENOMEM;
+-		goto hash_add_err;
++		goto out;
+ 	}
+ 
+-	err = set_l2table_entry_cmd(dev, index, mac);
+-	if (err)
+-		goto set_table_entry_err;
++	index = -1;
++
++	if (mpfs->enabled) {
++		err = alloc_l2table_index(mpfs, &index);
++		if (err)
++			goto hash_del;
++		err = set_l2table_entry_cmd(dev, index, mac);
++		if (err)
++			goto free_l2table_index;
++		mlx5_core_dbg(dev, "MPFS entry %pM, set @index (%d)\n",
++			      l2addr->node.addr, l2addr->index);
++	}
+ 
+ 	l2addr->index = index;
+ 	l2addr->ref_count = 1;
+ 
+ 	mlx5_core_dbg(dev, "MPFS mac added %pM, index (%d)\n", mac, index);
+ 	goto out;
+-
+-set_table_entry_err:
+-	l2addr_hash_del(l2addr);
+-hash_add_err:
++free_l2table_index:
+ 	free_l2table_index(mpfs, index);
++hash_del:
++	l2addr_hash_del(l2addr);
+ out:
+ 	mutex_unlock(&mpfs->lock);
+ 	return err;
+@@ -183,7 +190,7 @@ int mlx5_mpfs_del_mac(struct mlx5_core_dev *dev, u8 *mac)
+ 	struct mlx5_mpfs *mpfs = dev->priv.mpfs;
+ 	struct l2table_node *l2addr;
+ 	int err = 0;
+-	u32 index;
++	int index;
+ 
+ 	if (!mpfs)
+ 		return 0;
+@@ -200,12 +207,86 @@ int mlx5_mpfs_del_mac(struct mlx5_core_dev *dev, u8 *mac)
+ 		goto unlock;
+ 
+ 	index = l2addr->index;
+-	del_l2table_entry_cmd(dev, index);
++	if (index >= 0) {
++		del_l2table_entry_cmd(dev, index);
++		free_l2table_index(mpfs, index);
++		mlx5_core_dbg(dev, "MPFS entry %pM, deleted @index (%d)\n",
++			      mac, index);
++	}
+ 	l2addr_hash_del(l2addr);
+-	free_l2table_index(mpfs, index);
+ 	mlx5_core_dbg(dev, "MPFS mac deleted %pM, index (%d)\n", mac, index);
+ unlock:
+ 	mutex_unlock(&mpfs->lock);
+ 	return err;
+ }
+ EXPORT_SYMBOL(mlx5_mpfs_del_mac);
++
++int mlx5_mpfs_enable(struct mlx5_core_dev *dev)
++{
++	struct mlx5_mpfs *mpfs = dev->priv.mpfs;
++	struct l2table_node *l2addr;
++	struct hlist_node *n;
++	int err = 0;
++
++	if (!mpfs)
++		return -ENODEV;
++
++	mutex_lock(&mpfs->lock);
++	if (mpfs->enabled)
++		goto out;
++	mpfs->enabled = true;
++	mlx5_core_dbg(dev, "MPFS enabling mpfs\n");
++
++	mlx5_mpfs_foreach(l2addr, n, mpfs) {
++		u32 index;
++
++		err = alloc_l2table_index(mpfs, &index);
++		if (err) {
++			mlx5_core_err(dev, "Failed to allocated MPFS index for %pM, err(%d)\n",
++				      l2addr->node.addr, err);
++			goto out;
++		}
++
++		err = set_l2table_entry_cmd(dev, index, l2addr->node.addr);
++		if (err) {
++			mlx5_core_err(dev, "Failed to set MPFS l2table entry for %pM index=%d, err(%d)\n",
++				      l2addr->node.addr, index, err);
++			free_l2table_index(mpfs, index);
++			goto out;
++		}
++
++		l2addr->index = index;
++		mlx5_core_dbg(dev, "MPFS entry %pM, set @index (%d)\n",
++			      l2addr->node.addr, l2addr->index);
++	}
++out:
++	mutex_unlock(&mpfs->lock);
++	return err;
++}
++
++void mlx5_mpfs_disable(struct mlx5_core_dev *dev)
++{
++	struct mlx5_mpfs *mpfs = dev->priv.mpfs;
++	struct l2table_node *l2addr;
++	struct hlist_node *n;
++
++	if (!mpfs)
++		return;
++
++	mutex_lock(&mpfs->lock);
++	if (!mpfs->enabled)
++		goto unlock;
++	mlx5_mpfs_foreach(l2addr, n, mpfs) {
++		if (l2addr->index < 0)
++			continue;
++		del_l2table_entry_cmd(dev, l2addr->index);
++		free_l2table_index(mpfs, l2addr->index);
++		mlx5_core_dbg(dev, "MPFS entry %pM, deleted @index (%d)\n",
++			      l2addr->node.addr, l2addr->index);
++		l2addr->index = -1;
++	}
++	mpfs->enabled = false;
++	mlx5_core_dbg(dev, "MPFS disabled\n");
++unlock:
++	mutex_unlock(&mpfs->lock);
++}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.h
+index 4a293542a7aa..be0ccdd5a0aa 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/mpfs.h
+@@ -45,6 +45,10 @@ struct l2addr_node {
+ 	u8                addr[ETH_ALEN];
+ };
+ 
++#define mlx5_mpfs_foreach(hs, tmp, mpfs) \
++	for (int j = 0; j < MLX5_L2_ADDR_HASH_SIZE; j++) \
++		hlist_for_each_entry_safe(hs, tmp, &(mpfs)->hash[j], node.hlist)
++
+ #define for_each_l2hash_node(hn, tmp, hash, i) \
+ 	for (i = 0; i < MLX5_L2_ADDR_HASH_SIZE; i++) \
+ 		hlist_for_each_entry_safe(hn, tmp, &(hash)[i], hlist)
+@@ -82,11 +86,16 @@ struct l2addr_node {
+ })
+ 
+ #ifdef CONFIG_MLX5_MPFS
++struct mlx5_core_dev;
+ int  mlx5_mpfs_init(struct mlx5_core_dev *dev);
+ void mlx5_mpfs_cleanup(struct mlx5_core_dev *dev);
++int mlx5_mpfs_enable(struct mlx5_core_dev *dev);
++void mlx5_mpfs_disable(struct mlx5_core_dev *dev);
+ #else /* #ifndef CONFIG_MLX5_MPFS */
+ static inline int  mlx5_mpfs_init(struct mlx5_core_dev *dev) { return 0; }
+ static inline void mlx5_mpfs_cleanup(struct mlx5_core_dev *dev) {}
++static inline int mlx5_mpfs_enable(struct mlx5_core_dev *dev) { return 0; }
++static inline void mlx5_mpfs_disable(struct mlx5_core_dev *dev) {}
+ #endif
+ 
+ #endif
 -- 
 2.51.1
 
