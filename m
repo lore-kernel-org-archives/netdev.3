@@ -1,59 +1,59 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0BC1A3179
-	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 16:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA7925291B
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 16:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762531241; cv=none; b=u2G6lpbve7fu9J9iAXDNSFhM40/JaMonDXLKHPnQaju/IQFhH4M1PEM8BVEFCIWLaxowXPIizClf246n4ajs4tr4RH7mgVJdgBQmPwa5hBtv6+IbofKf6ZbEN6F8OeDICimW0cQ2K+i3CAB2fHUaJdQDic/RpBYhj9a9zU3Afyg=
+	t=1762531468; cv=none; b=BeMG3kvKVY4+eUzOmAFMc079lN2Zv0sNOZnCYp0kPBCOdKNwxFJZDsT1v+3123QrJjf4560UEKCqkisOj8L7RLeSqHTvIT2AQKCymG8I1P9iayg65jgYsedG/xz3NldaXyFLzNTXLOUbbWzenPXl3+n8wxBF44Mx8bweuYhUAaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762531241; c=relaxed/simple;
-	bh=erRiwf/H0DJobTUclpjvrIKXSICoT7jx0oxAMM1hJaQ=;
+	s=arc-20240116; t=1762531468; c=relaxed/simple;
+	bh=xuH/Gs9ceCRxwjHeY5Pde+rCzIIpWzsNhw8y8vlXS90=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t+tRXNAwL7Ov1AHqWOPDNjVy7kNpPTRGwV8ieOPtJy8xffITsLKUiRe48K33PXfbLeEGA1OAVzmoHvFOtAfJPV+sbIWGbIZG7p+CfXoyZc73rT1la0CIly9var4FuupDlsg4ytrSyO0yg2AFiqPMqtbQr6UDPG20d8WkbD9zn1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CrZAY3hi; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=GNEfN+YD3mIRvbQrMQn5AzfieOTrqWqte07U3Jq+bV/3vvroZDHO6xLklTNzioiKhPTBupOUqjhQNipsdlZDYcSv0b4hFzuf9SolHAryijnZRW18LIEWqpRDWPWI+a9ZokcJQbQfJPE0m93SqBUWB4L8KqCnPH54Mein/XUfMUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbWNVCh6; arc=none smtp.client-ip=209.85.166.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CrZAY3hi"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8801f4e308dso8607656d6.0
-        for <netdev@vger.kernel.org>; Fri, 07 Nov 2025 08:00:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbWNVCh6"
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-4330ef18d8aso7241155ab.0
+        for <netdev@vger.kernel.org>; Fri, 07 Nov 2025 08:04:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762531238; x=1763136038; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1762531466; x=1763136266; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=erRiwf/H0DJobTUclpjvrIKXSICoT7jx0oxAMM1hJaQ=;
-        b=CrZAY3hi34ZiAFwEMgQHbE6HqV2NKhEHzEnxaYGRg/15UpvPqCzf+g++W1n9/1+H1C
-         KFlU/NUprywgs7bstTdremdmX+5qfvIrjuIEtDMXCv7JVgqozywdT8u/m87LCUm5E8cs
-         M2HWZdnNR0aeM4yFpymUkjxQz8kJA41JpsluaaovpuUhhT/Hd5Ap9EPuUJL7773gJ3Oj
-         ATFgXj+m9vIfYEByWCiurywHyT0jggUjcdcnbv+wiSNU2zSudpqf6LP02e0V/5LQSTzi
-         lYrcYeHb6Ok7Oz5P6YlMTJONF6taY7kBR4YGFu48qV15H2yJQUjmihL3SKHjPXhKc9eB
-         kDdA==
+        bh=xuH/Gs9ceCRxwjHeY5Pde+rCzIIpWzsNhw8y8vlXS90=;
+        b=BbWNVCh6SQeCMfv9OIjKLU69yFwwqXy9dblJhzuqlA+XsL7GspvlAc5lRy+9PNKKHw
+         NisazOs/8WFxlSktKa6Mx6rPswvsoYevU0/+KBE8dzatN6BKcWx3M2/DcMPj0LHo8JKE
+         AAJN8R4gNhv3rlbZ1q7DKjmjHdKOG2H+QVX+nP7+mXtjzaME319LdmxcEykMppO/Ggmx
+         qOeljooi8QrnDPEx5ap04QKmQdMIIqVWDdgyLDaldRJGaxwk9YHwFR292ze2q4xooQRX
+         t9WuLKl+ueed/nBYPVxbuRzX1tbst1TkTlFMydlbgyoot1MQtTQzoFueh1AdFpn/UTNv
+         ZwvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762531238; x=1763136038;
+        d=1e100.net; s=20230601; t=1762531466; x=1763136266;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=erRiwf/H0DJobTUclpjvrIKXSICoT7jx0oxAMM1hJaQ=;
-        b=h/ertIojPBpOP0/fLZgEYc2s3oZ0lubNAB1Tombq0rEen8ZO6CkH5ry/qUk7+/tFS0
-         iS+7d/hFdhiX/iJlbmLPA2LBTvlcMhmdAXin2HiJbeJ7FZ1X8XvH1kEoP9lbzx8h2ajU
-         Oa1BqfxZFQGxYhv/tvygqM1W+4VXyiGcR5CkR46cmMMv7vjUtMwU5EgpUpf1Od/3S0vi
-         1hGEWneT6tk9goV6hYUwD+w7amdhzbu6u/b/9IlHPsXX5K1tojsClGVJWj8FdJumiJ8P
-         QLUUUeZ/KAnS1/Q9bxF8XP6J/e+Gp5fl//n+GajIenkmutLkwJDKJpW2wFjcPyvXhSEU
-         bGKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVuXR2V1txainAGZxeJ1edyVwTHSzk8FGPZSJSzFeq7KAQ6KSQJAxM0HIkEXypueeJi/t3l6jc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+iXKFj8BMaWEMsZgJVBnoK25++ylBeat85tR4K4e3XEL14FZ0
-	PMNycXBVTkbtZufWL9z7W7iwRAntvF1u69LnXoHsPmX+8uoGGooVmfnrqFhNUmpxDZaUvQlyl8i
-	ZfwzlD7N9Msy0WLb2l+KQ15y6uSB9kmEaD+ltm8SI
-X-Gm-Gg: ASbGncu5Eo8OTWu2pP/CN2bnbwT/OgGkklA4MH7POxFT7qw54VOi8tYRxvwZBrXOUvJ
-	VCfaObwTLMwl8hnGjEm+JsKb41ycHwEvNtFhzRUWlmoRD1HoX+VxE7GztWkMJ4FFbsY1wH/FIq/
-	hTl6QI5YuM+WVcvHlPvZGlS87bB+Yz0a0fLTRBYSnMaxeFgPJwyvO8o3rue57ggk68njOECKHG7
-	tP5BPblSS6kqezk29i16BsXlttpdvHzqfvRioTRpNmjwKwEjfx4Me1GrJWH
-X-Google-Smtp-Source: AGHT+IHIuHahaG1lyHk02T9VszvlGamnHMHGuqMQ4MKUDQap3agaUlf0rUwO9dXShO3EqF24cTvgJA2eAKBmGpVnwwk=
-X-Received: by 2002:ad4:5d62:0:b0:880:4f0d:e07c with SMTP id
- 6a1803df08f44-881766cd890mr48619956d6.30.1762531237958; Fri, 07 Nov 2025
- 08:00:37 -0800 (PST)
+        bh=xuH/Gs9ceCRxwjHeY5Pde+rCzIIpWzsNhw8y8vlXS90=;
+        b=YW/0zGj5/gf3ZMZfV5DxBTCVTlu+3Ib5OQsqGI7E0ZT79Kfyd1H5cbzZAQosiVXfvz
+         suITTA0Rb4yyNVzJF9NRoZYQg9s/kYezxY6tx3vuABvL9OflgfojZBxX9rIRa0DKlPhr
+         GfAJwHp5hSPfANpIoRHXKrvnqgkuu2Ahgxdi2gfHZEODGPjhwwZ7AFj8vEXY2KGxQ3pN
+         /RGaWTHoREegXK4P1hSHD6PO9/9FSfyjEdFYtAWEPXqfNYRwS9Vt6YM6bC8h4XHeHlKs
+         BTO7u6yv0Fu26w4C6UPVdwRKnkb22s8aa1hlYfHEEzgXFdAVz6Sq4KMEIqONXTbZptCG
+         LzSA==
+X-Forwarded-Encrypted: i=1; AJvYcCWjznDTYJHXjCxwmhrK7Ok7s+js05OCyUPoiJMvdbcP4EFW6m9xrpBLBcT2R5SMgp655S88cco=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIvnEoRZhz+hilPZQGElmIxIEVFKCFc3AqeKrVLpF0TjL8LdHs
+	gLm4Di/zgfeOvXx/1pPlorvQdjsqeMhVMgNV+BTMo/OuRMEZT3bIig6g/+huIoIODMmA6OHe1Ll
+	poipX3+Gs6a+T+U7rhk7/jSa0ONczO8U=
+X-Gm-Gg: ASbGncu3AVu8KwQQQgbVFhe11YsABguIVg3QnXeCMnjX9W2fYpi9QBoSYB9JeEf/5xD
+	lqkQlBpkMUuO8fTHBwNFZtlhPZeYoPRxOuuV9HfLIPdhga5oFuEr6QsDBPQ75BpRnk+uwcf910n
+	BPhnRSA8NMMG5BetjBGghld3u58gzPFjfZbe4xgSgIBk2SLJza2a6aCnq9CmxaeEwENnX108Mwz
+	P4vqiv2XCLDnNkpIJzioeTGvpZ4sTCVYZ71Cw09Uy31TGVzYwycyp2Brdkuyf9RLjvxhU1sSw0=
+X-Google-Smtp-Source: AGHT+IEIvIpUkmWvOy3jJnVPepX0plWjymPuF8DRlrXs+Tq8y3TtjSFLJcU+JsSbh0/pzwDn7nxqE9p4eJhA0PU97s0=
+X-Received: by 2002:a05:6e02:156d:b0:433:2cc0:f852 with SMTP id
+ e9e14a558f8ab-4335f45be3emr46442195ab.26.1762531466151; Fri, 07 Nov 2025
+ 08:04:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,14 +62,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20251106202935.1776179-1-edumazet@google.com> <20251106202935.1776179-4-edumazet@google.com>
  <CAL+tcoBEEjO=-yvE7ZJ4sB2smVBzUht1gJN85CenJhOKV2nD7Q@mail.gmail.com>
- <CANn89i+fN=Qda_J52dEZGtXbD-hwtVdTQmQGhNW_m_Ys-JFJSA@mail.gmail.com> <CAL+tcoBGSvdoHUO6JD2ggxx3zUY=Mgms+wKSp3GkLN-pLO3=RA@mail.gmail.com>
-In-Reply-To: <CAL+tcoBGSvdoHUO6JD2ggxx3zUY=Mgms+wKSp3GkLN-pLO3=RA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 7 Nov 2025 08:00:26 -0800
-X-Gm-Features: AWmQ_bmUxjn6W-PH_Q2Gg1QihCKipVhKodHuqRUzwPh6gicr-N4dfCv99dRU9mw
-Message-ID: <CANn89iJcWc+Qi7xVcsnLOA1q9qjtqZLL5W4YQg=SND3tX=sLgw@mail.gmail.com>
+ <CANn89i+fN=Qda_J52dEZGtXbD-hwtVdTQmQGhNW_m_Ys-JFJSA@mail.gmail.com>
+ <CAL+tcoBGSvdoHUO6JD2ggxx3zUY=Mgms+wKSp3GkLN-pLO3=RA@mail.gmail.com> <CANn89iJcWc+Qi7xVcsnLOA1q9qjtqZLL5W4YQg=SND3tX=sLgw@mail.gmail.com>
+In-Reply-To: <CANn89iJcWc+Qi7xVcsnLOA1q9qjtqZLL5W4YQg=SND3tX=sLgw@mail.gmail.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Sat, 8 Nov 2025 00:03:50 +0800
+X-Gm-Features: AWmQ_bn0oYBShbSAG28HpRj_asu7OA5ejCsnZxCPg2uWrbmQNTpWO7NCZhTqEuM
+Message-ID: <CAL+tcoCmpzJ_z4DCvcoWok2LrR9vL2An8j3zi5XHOjiSity3jg@mail.gmail.com>
 Subject: Re: [PATCH net-next 3/3] net: increase skb_defer_max default to 128
-To: Jason Xing <kerneljasonxing@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
 Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
 	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
@@ -77,32 +78,44 @@ Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 7, 2025 at 7:50=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.co=
-m> wrote:
+On Sat, Nov 8, 2025 at 12:00=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> On Fri, Nov 7, 2025 at 11:47=E2=80=AFPM Eric Dumazet <edumazet@google.com=
-> wrote:
-> >
-> > On Fri, Nov 7, 2025 at 7:37=E2=80=AFAM Jason Xing <kerneljasonxing@gmai=
-l.com> wrote:
-> > >
-> > > On Fri, Nov 7, 2025 at 4:30=E2=80=AFAM Eric Dumazet <edumazet@google.=
+> On Fri, Nov 7, 2025 at 7:50=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.=
 com> wrote:
-> > > >
-> > > > skb_defer_max value is very conservative, and can be increased
-> > > > to avoid too many calls to kick_defer_list_purge().
-> > > >
-> > > > Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > >
-> > > I was thinking if we ought to enlarge NAPI_SKB_CACHE_SIZE() to 128 as
-> > > well since the freeing skb happens in the softirq context, which I
-> > > came up with when I was doing the optimization for af_xdp. That is
-> > > also used to defer freeing skb to obtain some improvement in
-> > > performance. I'd like to know your opinion on this, thanks in advance=
-!
 > >
-> > Makes sense. I even had a patch like this in my queue ;)
+> > On Fri, Nov 7, 2025 at 11:47=E2=80=AFPM Eric Dumazet <edumazet@google.c=
+om> wrote:
+> > >
+> > > On Fri, Nov 7, 2025 at 7:37=E2=80=AFAM Jason Xing <kerneljasonxing@gm=
+ail.com> wrote:
+> > > >
+> > > > On Fri, Nov 7, 2025 at 4:30=E2=80=AFAM Eric Dumazet <edumazet@googl=
+e.com> wrote:
+> > > > >
+> > > > > skb_defer_max value is very conservative, and can be increased
+> > > > > to avoid too many calls to kick_defer_list_purge().
+> > > > >
+> > > > > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > > >
+> > > > I was thinking if we ought to enlarge NAPI_SKB_CACHE_SIZE() to 128 =
+as
+> > > > well since the freeing skb happens in the softirq context, which I
+> > > > came up with when I was doing the optimization for af_xdp. That is
+> > > > also used to defer freeing skb to obtain some improvement in
+> > > > performance. I'd like to know your opinion on this, thanks in advan=
+ce!
+> > >
+> > > Makes sense. I even had a patch like this in my queue ;)
+> >
+> > Great to hear that. Look forward to seeing it soon :)
 >
-> Great to hear that. Look forward to seeing it soon :)
+> Oh please go ahead !
 
-Oh please go ahead !
+Okay, thanks for letting me post this minor change. I just thought you
+wanted to do this on your own :P
+
+Will do it soon :)
+
+Thanks,
+Jason
