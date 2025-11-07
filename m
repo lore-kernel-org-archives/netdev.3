@@ -1,94 +1,166 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F1C4A0C;
-	Fri,  7 Nov 2025 00:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A571D61BC
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 00:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762473977; cv=none; b=buKjeVzW32rI4EkRLth49xlx8Qb/W8exjMrHVyqTBLcyJa/BpYUtS7xbLXU4DD2TyQrmmuJfNlbKogsojzOUrdv5kgfTt+WDVKakjrz38HF/yuePs3UH0SsAblhHWJgu4SjVO10F7qsKAEIaycpmFzTB6yTH9DRwkYfwASRmGKw=
+	t=1762474147; cv=none; b=XY5tdePWVxXnBKootyO90S8/PaRrzE82HKZcnWfPbuSOfUNs1o6PjjFhjsMOCfqY2YUwfjnokwZfP0A6ODsMPVzEFmF4ntDdElpYsMSpToCfUKEBKD21W2otP2shS955+YnZyiunpoiuzrV9F0IvHgtTeRYZkIYZSTnBWhYEDs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762473977; c=relaxed/simple;
-	bh=lAEFtF4IVOn7eBjUXI7mHzgCxFs5I6xmj63FmnOrf+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=acRucjui8xdXrGjFrES6KZVlffT9/m4S1XElRbyEiqhJo6aDlBfEZFgrO1EuonWn3xtG11xk3ubdnRL6bKrJT/b+Jiq2ixpL6oV5tPkx6P5j8iQJPvZpv/ohqASyMe57Z7EfMVPNiHKXBjgbPssW9oGrDpndxd1aEO8i4xwdapQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id A7ED7601A1; Fri,  7 Nov 2025 01:06:13 +0100 (CET)
-Date: Fri, 7 Nov 2025 01:06:13 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Eric Woudstra <ericwouds@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	bridge@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH v16 nf-next 3/3] netfilter: nft_chain_filter: Add bridge
- double vlan and pppoe
-Message-ID: <aQ039Zn_r9woDImN@strlen.de>
-References: <20251104145728.517197-1-ericwouds@gmail.com>
- <20251104145728.517197-4-ericwouds@gmail.com>
+	s=arc-20240116; t=1762474147; c=relaxed/simple;
+	bh=qB3UJgZKO4pLe2klvg11v11rwr3rwA7JmxvTY26QNQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g183KZ4KznGFU0Arg7xSzBJQT3xwSB5bjMyKJsQMlZZwcFDqVQAorrQ0xAWc80SjHu4M5/cZ69yxkrx/fN54qnjLR4wNkG06XPux49KmbznMRv1HqnzXrP7G46UR5Dd+6FiYys5ODezhbk6UzgfLOuLPevw6jVXDynOeoljGb94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHPWiBb8; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHPWiBb8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98D1C4CEF7;
+	Fri,  7 Nov 2025 00:09:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762474147;
+	bh=qB3UJgZKO4pLe2klvg11v11rwr3rwA7JmxvTY26QNQ4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cHPWiBb8w6xGY1z3MKBl7xEJVUxf3YiS3wCY607WD3Sy/X7mhlwNq5v9KyRoNeRE5
+	 hRafIHvJUSHnDTg84FWfPoMHwAnyD3a1zVQKv5AzbVfJaR0opqnQcqpllsDrfsx/j7
+	 tSKodvNTxY2oNTCwXvrsa7dPslXxJpoFY0pE3e8oPRsGV6aW+IdN6nobwuv66IRzfw
+	 fAIhiCMndf1EmyaNcigHpP6U/phMWnxCw6+AeYk0rxDCCg/qC4rPLjbMydBY/hsa8B
+	 Ege+3o/MFSd0CdAmqNCglbFNu0RjyX8aLkbsWAoif/jLU7X/r73M5U/bYuR9aZTmLq
+	 YQqeyUukcn5lA==
+From: Saeed Mahameed <saeed@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	netdev@vger.kernel.org,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	mbloch@nvidia.com
+Subject: [PATCH net-next V2 1/3] devlink: Introduce switchdev_inactive eswitch mode
+Date: Thu,  6 Nov 2025 16:08:29 -0800
+Message-ID: <20251107000831.157375-2-saeed@kernel.org>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20251107000831.157375-1-saeed@kernel.org>
+References: <20251107000831.157375-1-saeed@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104145728.517197-4-ericwouds@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Eric Woudstra <ericwouds@gmail.com> wrote:
-> In nft_do_chain_bridge() pktinfo is only fully populated for plain packets
-> and packets encapsulated in single 802.1q or 802.1ad.
-> 
-> When implementing the software bridge-fastpath and testing all possible
-> encapulations, there can be more encapsulations:
-> 
-> The packet could (also) be encapsulated in PPPoE, or the packet could be
-> encapsulated in an inner 802.1q, combined with an outer 802.1ad or 802.1q
-> encapsulation.
-> 
-> nft_flow_offload_eval() also examines the L4 header, with the L4 protocol
-> known from the conntrack-tuplehash. To access the header it uses
-> nft_thoff(), but for these packets it returns zero.
-> 
-> Introduce nft_set_bridge_pktinfo() to help populate pktinfo with the
-> offsets, without setting pkt->tprot and the corresponding pkt->flags.
-> 
-> This will not change rule processing, but does make these offsets
-> available for code that is not checking pkt->flags to use the offsets,
-> like nft_flow_offload_eval().
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-Thanks.  I think this is fine and we can extend/change this later on.
+Adds DEVLINK_ESWITCH_MODE_SWITCHDEV_INACTIVE attribute to UAPI and
+documentation.
 
-> +	case htons(ETH_P_8021Q): {
-> +		struct vlan_hdr *vhdr;
-> +
-> +		if (!pskb_may_pull(skb, VLAN_HLEN))
-> +			return -1;
-> +		vhdr = (struct vlan_hdr *)(skb->data);
-> +		*proto = vhdr->h_vlan_encapsulated_proto;
-> +		skb_set_network_header(skb, VLAN_HLEN);
+Before having traffic flow through an eswitch, a user may want to have the
+ability to block traffic towards the FDB until FDB is fully programmed and
+the user is ready to send traffic to it. For example: when two eswitches
+are present for vports in a multi-PF setup, one eswitch may take over the
+traffic from the other when the user chooses.
+Before this take over, a user may want to first program the inactive
+eswitch and then once ready redirect traffic to this new eswitch.
 
-Could you move the skb_set_network_header() calls
-to places where we know that we have an ip/ipv6 proto
-in the upper header?
+switchdev modes transition semantics:
 
-You already return the length of the encap header
-anyway, might as well restrict the skb nh update
-to when it will be useful.
+legacy->switchdev_inactive: Create switchdev mode normally, traffic not
+  allowed to flow yet.
 
-Or was there another reason to do it this way?
+switchdev_inactive->switchdev: Enable traffic to flow.
 
-If you prefer you can only resend this patch, I believe there
-are two different use cases:
+switchdev->switchdev_inactive: Block traffic on the FDB, FDB and
+  representros state and content is preserved.
 
-This patch as requirement for future ft offload of ip/ip6 packets
-in bridged pppoe/qinq and this patch as starting point to eventually
-allow 'ip saddr 1.2.3.4' to auto-match for PPPoE, Vlan, etc.
+When eswitch is configured to this mode, traffic is ignored/dropped on
+this eswitch FDB, while current configuration is kept, e.g FDB rules and
+netdev representros are kept available, FDB programming is allowed.
+
+Example:
+ # start inactive switchdev
+devlink dev eswitch set pci/0000:08:00.1 mode switchdev_inactive
+ # setup TC rules, representors etc ..
+ # activate
+devlink dev eswitch set pci/0000:08:00.1 mode switchdev
+
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+---
+ Documentation/netlink/specs/devlink.yaml            |  2 ++
+ .../networking/devlink/devlink-eswitch-attr.rst     | 13 +++++++++++++
+ include/uapi/linux/devlink.h                        |  1 +
+ net/devlink/netlink_gen.c                           |  2 +-
+ 4 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+index 3db59c965869..426d5aa7d955 100644
+--- a/Documentation/netlink/specs/devlink.yaml
++++ b/Documentation/netlink/specs/devlink.yaml
+@@ -99,6 +99,8 @@ definitions:
+         name: legacy
+       -
+         name: switchdev
++      -
++        name: switchdev-inactive
+   -
+     type: enum
+     name: eswitch-inline-mode
+diff --git a/Documentation/networking/devlink/devlink-eswitch-attr.rst b/Documentation/networking/devlink/devlink-eswitch-attr.rst
+index 08bb39ab1528..eafe09abc40c 100644
+--- a/Documentation/networking/devlink/devlink-eswitch-attr.rst
++++ b/Documentation/networking/devlink/devlink-eswitch-attr.rst
+@@ -39,6 +39,10 @@ The following is a list of E-Switch attributes.
+          rules.
+        * ``switchdev`` allows for more advanced offloading capabilities of
+          the E-Switch to hardware.
++       * ``switchdev_inactive`` switchdev mode but starts inactive, doesn't allow traffic
++         until explicitly activated. This mode is useful for orchestrators that
++         want to prepare the device in switchdev mode but only activate it when
++         all configurations are done.
+    * - ``inline-mode``
+      - enum
+      - Some HWs need the VF driver to put part of the packet
+@@ -74,3 +78,12 @@ Example Usage
+ 
+     # enable encap-mode with legacy mode
+     $ devlink dev eswitch set pci/0000:08:00.0 mode legacy inline-mode none encap-mode basic
++
++    # start switchdev mode in inactive state
++    $ devlink dev eswitch set pci/0000:08:00.0 mode switchdev_inactive
++
++    # setup switchdev configurations, representors, FDB entries, etc..
++    ...
++
++    # activate switchdev mode to allow traffic
++    $ devlink dev eswitch set pci/0000:08:00.0 mode switchdev
+diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
+index bcad11a787a5..157f11d3fb72 100644
+--- a/include/uapi/linux/devlink.h
++++ b/include/uapi/linux/devlink.h
+@@ -181,6 +181,7 @@ enum devlink_sb_threshold_type {
+ enum devlink_eswitch_mode {
+ 	DEVLINK_ESWITCH_MODE_LEGACY,
+ 	DEVLINK_ESWITCH_MODE_SWITCHDEV,
++	DEVLINK_ESWITCH_MODE_SWITCHDEV_INACTIVE,
+ };
+ 
+ enum devlink_eswitch_inline_mode {
+diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+index 9fd00977d59e..5ad435aee29d 100644
+--- a/net/devlink/netlink_gen.c
++++ b/net/devlink/netlink_gen.c
+@@ -229,7 +229,7 @@ static const struct nla_policy devlink_eswitch_get_nl_policy[DEVLINK_ATTR_DEV_NA
+ static const struct nla_policy devlink_eswitch_set_nl_policy[DEVLINK_ATTR_ESWITCH_ENCAP_MODE + 1] = {
+ 	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+-	[DEVLINK_ATTR_ESWITCH_MODE] = NLA_POLICY_MAX(NLA_U16, 1),
++	[DEVLINK_ATTR_ESWITCH_MODE] = NLA_POLICY_MAX(NLA_U16, 2),
+ 	[DEVLINK_ATTR_ESWITCH_INLINE_MODE] = NLA_POLICY_MAX(NLA_U8, 3),
+ 	[DEVLINK_ATTR_ESWITCH_ENCAP_MODE] = NLA_POLICY_MAX(NLA_U8, 1),
+ };
+-- 
+2.51.1
+
