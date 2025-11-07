@@ -1,264 +1,171 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012055.outbound.protection.outlook.com [52.101.48.55])
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010016.outbound.protection.outlook.com [52.103.72.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F218027;
-	Fri,  7 Nov 2025 05:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189D5F50F;
+	Fri,  7 Nov 2025 05:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762492868; cv=fail; b=q+PaFbjLnBIDI4AdCVVeSA4V1pWX3Ob8bLzagKFhdBQfrYLizWa4CH9dsqmUTFZ/5yPTDPVpVcSx9oRv1AL+blL3IQe8kpc7ulrEyhOBgy3h/i4AedYxJ6G05olfEp43rmHNFPsMcNQlb1TjE4lo9uStog8kIul82KRCYtBx6Vc=
+	t=1762492891; cv=fail; b=FalrJFKhhxyoVZZRnz2BsNFM5XhFr8cOYViGh2Kj9IYS/oxVtiz5M7Fji76AhyCE2NNDRI40bqW3RPLXSQzxMlg489731BfFWC2KzC99osVANFGM/yS+H5NPC10ngLpU8MUV6L2ATL/OifHKSI4e31dZ66O/uRrksYHSyHmFscA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762492868; c=relaxed/simple;
-	bh=42aLsQWPX9GpvrJ4VchRNpQfGSYqWtift4CFE7srJTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=G2l9Rewg8WJq45FpiKqHJ8qciioQvs1hXNgyD4eRD9CcKxhDPLx/ee3QSW966BJm7vPkUnomsnEGKeqD0414r/Pd+DrSXDBv424hV7kPXnSYxGckZt5G/+wv1KiARz9CcwC/JRcnIZWMAnmZXaIzVf/SyRbbKMzlzJk5UinZtwM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bUYbPEpz; arc=fail smtp.client-ip=52.101.48.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1762492891; c=relaxed/simple;
+	bh=iTC9PV62inXYrplfJqHp0Cdlv5QGy9Es8y0pftrTgpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z8QmWxDbYnKP+Aek/Ck4UBBdd0DJybFl5iz4Lrms8Y8RG8qZ3WCh3AYtrnnNf+pKp1Dkz+kq9y2axt41cRMmItLfsGmLDkuuCwEPN1KowH087RFWGintc3kuGf5B38ep+0IvYGv3N+BtGWGfPoKgVSgL2vg3ucrhxrjIwjZJiRY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=JLaCvzYK; arc=fail smtp.client-ip=52.103.72.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bUYbPEpz"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="JLaCvzYK"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Bf6VPvewMzo+Lacw5dYokA4TbWivRbzN+GKHd9hNs6+L1DhiDZckDvnrCo7rs4sapJd+pbUEcTB9HqLy1nnPZbb98naZPSwdNOl7FN6QQmtmaHENvFPpQInGAmIwkIveJCBVxakD5STdq8ty1DP4iwvg2oS15dqNuOb0LnhdfLZcb3BjHsK9Lx0cSH8PzRb1XsSSGC3TayfLzOW8L+8EhWLCWQwKGV6NJkMnpCf05Aq4xnXSWIL9Y1exlkZSb+BcGgrA/Rgd57VLj+C6f5DQx6rz4mMvGkWgyDLTT54b1vH+32R28wnOLzWOzVcr2xb31Nn2AigPkKiLMvMKD/qnrw==
+ b=ca/WMDbsmCxilaiuykTNGx92UvjY+w1jBAGQiad2KZAfWLPEPqJK4YxMUZgqi3dH0Gk0sQ0M4p86S5TCBTCeCN+dB9bGHMtQ93/N9V0jjfIS8E2qFnmQmIxUn459Gf3G2CvLdigh0Z5nGHjkntvjygRmBWLgRYhz/4+iTirC52N5HlRf4HP5wOXh20dClKZPli4fKZ/uL4m9ZsxzNAbftidBs1B5U/WZQDa6Y1y7rQoGPsYommPpifXTZxeiMoRLIzDLDaLpVXdFQ3Z6Vj352srVDPoSGvAYJ77gnn3L5E36LGFlr8Y1AOH7UsvBAmLP0ivApAMtQqKBkcrekTGt7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TVPGlQJ0M/KRbfyvK17QhtW1ZSvAEC0y3fEim22WwMc=;
- b=ZA3boQVt85bHpMyYI6+n+ldga7OeIcFOWPEEMFx2prTeIkVgREct+dMrG8rXpUHuq1r4mhQ5EMM1eJ1iYdI5te8U8zdWXzHDl7Ojsb01aULx6PlSsKt7v7pyK1PwKKSN1e9ZkY6RskX6ryd6GAyoqqi3yQmS1clhnjWfvLAc/qy75m9iQxSkpQn6xy1WY/wsIMCdcD9ZYAmTcEtSfxG6fYNWEfGlPMBL9p8QGuxQ6pOXyo93ZBA4f4IOt33KtTzPac1tR8eeXol0yEh0ecgufFt3CL7Tw0tLx5+lsgVyg2Amu9tg9PkPFIpGvUDEHehLHjpgSHFKF1mqK64XUq01fQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ bh=09axz0DRSTcUp8RpZndO0LfoBeJ4RuE7OADsJDv0ddU=;
+ b=tNBSSB+qlrKJT8FSg5gI1KkRb+HrqksPTymOpSEiGhw0Ax5W39USdZMr7vK1krMiv1OC3+lfXHGf9wFRPDjIB2fSgeOEqT2Spea8mkcaVQ02mSeC26GS7KY7hjK74jyPflbiyfcQ0Avgj8pOzU4aYCSx3kkWu9d4LQLaSkQ1NZm12VKd+SB+MQZU09G4nHTZOe6HxMEBJDtBXxaeR8YLKm6pUnOb8n0EJYZI4UlKW19yfjijXW8DP8CeWu7MdBjsiY2fR0JuzUTe3Fy6iEbh+UaocY5TV69JTqI9HSNsJGsQ7c45JguNdzyYu7YMYxpwQuEA/kJkhwGSr2JwDi4uDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TVPGlQJ0M/KRbfyvK17QhtW1ZSvAEC0y3fEim22WwMc=;
- b=bUYbPEpzDrnii/2SAobzotAmDN6M6ZPCtf4QHqrXUhPXpqkp5j+fd7MIkwcVnhlaQOZa1MTRLWxgE4u61nPxea1SMZ1xrV+TixWycJmgIalc1didueZ2M+ztX88b4LocaCLtfbNM5TMs6YS+7jaXrzr1JmTXoxnzqCfxMq+660QPxEMwB5ltZigUseOR1U3rK2bJCAvuAldw/INfXXvUG8pVgRSs+uhUJjzt8+dfe046ivB3VIt7PmXzEt55qMtmZMAVsVdtlGDpGfl/jFVU5032az/QRxc9wbcgipOvrW2m8dBOcXNAb3gGuiW5cvZ0hjR2LkIaAf/0WYrzNa/fkw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB7914.namprd12.prod.outlook.com (2603:10b6:510:27d::13)
- by DM4PR12MB5843.namprd12.prod.outlook.com (2603:10b6:8:66::11) with
+ bh=09axz0DRSTcUp8RpZndO0LfoBeJ4RuE7OADsJDv0ddU=;
+ b=JLaCvzYK9NfbNfKOOt6RFt/lV6q0wcDNHU4FRf6GJSZ/BOPWeRMTB5jrjFP9tGdd9ReeQWdCceg/9sG0dBrmqgiMRn4pmBbPNXE3lNaWefnSfOjgglPHfTmSMqFPPCMm55kVKX5Gpy6yOQQIfcByOdNPMOnVHc7KkKTpFe/sWeQtAN1xzhl11akgmCHSMM0Vj+h63wD5/dmkZHu9rj5UOi2+6v1x5x79H6t27js37x/LP+4spZByRf9IFli1RSpfe6eKRoAqBvwA6/L471hlckvnplM6n3smTv/czmG5xeKsSnUHZwThl6kk7iDKvSFNNE+2lvIXieTc2JB54oqi7A==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by ME0PR01MB9633.ausprd01.prod.outlook.com (2603:10c6:220:248::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.9; Fri, 7 Nov
- 2025 05:21:02 +0000
-Received: from PH7PR12MB7914.namprd12.prod.outlook.com
- ([fe80::8998:fe5c:833c:f378]) by PH7PR12MB7914.namprd12.prod.outlook.com
- ([fe80::8998:fe5c:833c:f378%3]) with mapi id 15.20.9298.006; Fri, 7 Nov 2025
- 05:21:02 +0000
-From: Kai-Heng Feng <kaihengf@nvidia.com>
-To: irusskikh@marvell.com
-Cc: Kai-Heng Feng <kaihengf@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
+ 2025 05:21:23 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
+ 05:21:22 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: linux-kernel@vger.kernel.org
+Cc: pmladek@suse.com,
+	rostedt@goodmis.org,
+	andriy.shevchenko@linux.intel.com,
+	akpm@linux-foundation.org,
+	tiwai@suse.com,
+	perex@perex.cz,
+	linux-sound@vger.kernel.org,
+	mchehab@kernel.org,
+	awalls@md.metrocast.net,
+	linux-media@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: aquantia: Add missing descriptor cache invalidation on ATL2
-Date: Fri,  7 Nov 2025 13:20:48 +0800
-Message-ID: <20251107052052.42126-1-kaihengf@nvidia.com>
-X-Mailer: git-send-email 2.50.1
+	Junrui Luo <moonafterrain@outlook.com>
+Subject: [PATCH 3/4] media: ivtv: use scnprintf_append for i2c adapter name
+Date: Fri,  7 Nov 2025 13:16:15 +0800
+Message-ID:
+ <SYBPR01MB7881E898640B21ECD10A9F4BAFC3A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20251107051616.21606-1-moonafterrain@outlook.com>
+References: <20251107051616.21606-1-moonafterrain@outlook.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0020.apcprd02.prod.outlook.com
- (2603:1096:4:195::7) To PH7PR12MB7914.namprd12.prod.outlook.com
- (2603:10b6:510:27d::13)
+X-ClientProxiedBy: PH7P223CA0001.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:510:338::22) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20251107051616.21606-4-moonafterrain@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB7914:EE_|DM4PR12MB5843:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a5ba6a9-7d16-46cc-aef8-08de1dbd7119
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|ME0PR01MB9633:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f934f3f-0ac7-4e65-21a8-08de1dbd7c59
+X-MS-Exchange-SLBlob-MailProps:
+	02NmSoc12Dc43FlQvP2yewYSt45NTkBZi1kInfGnmyOToGMRrMBbgeq2dn7geSo3MUgl9QfPNupmAV3CydcWoCzop8xWgb1ZbQ8pfjPE7YIja9c8A2ud00S8XwsOu0VxKxmNR9MkbwBYgUOGvBJIqfRb4jaYn+hB3puoBsufCf2VdYhyKMNAlTQtWpU5VmBYbkHNzRGj5Yht/Jaz1MK+o1daOAhPdp4N/GuXo+tTc1f40HKeVqWYdzzoWxHCWXOt59wtx5QAyMusHZr4igFS2eKTrcL5EpXMvknCLDask7j65Gc9Rikv0+V5KyhlOOF3Y328l9U/IWobVSirssQlPCtRaNmAXcTC00HEoHju9vmcu32IW0VFDS8ttORRDskO1OOWenkTJV3+6WUUZcqWELxuueCxZBDRKAcWZEkwwMgmPB/edFCD3UGJbTTqBYgy7dH+zlzjjA+QzC6ghyXNPT87yZhyenHzTAsRP/Z13uRep5ftrXNyjYMW7dRKvb21nQJLMFipYO27JIQURtbam32HsDWW6dmztqbBLpVSuNURsY3bCdB+HY8iXm0kv8endPMx7MSATR084n0gZGWuwjlRu3wHgyzrrDEaLabzMQ8Vet+GdWv6z80YrPJA6XJOQn6mLBIAsHsiYW4R+q9q6Mou4lcHDR7va6hPrpbbW5ceJZNnuzr5nMG3Ho69kx2S8oI4oMLmC2o6YPliPHGPYEolHgj9T/rriuqfEak1V25tJ3OQzeZps5HYFiSCHCpn
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|51005399006|5072599009|461199028|8060799015|23021999003|15080799012|19110799012|3412199025|440099028|40105399003|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FtD79VETZGtBEpYV4nV81OHslcrWO4miica17Naem6WbaiRRfdTqts3Z3gJY?=
- =?us-ascii?Q?sjXKgbW8PJr08RdiTH4m+xAGBGt7djxOlkR/gvsbAEL7bCTFtdsb3b2j2tTG?=
- =?us-ascii?Q?MDBlLLuH2H5v/GLptJ9kPha0zkyZQx7hqP64yogdojlZOrjJwFtrsAP84sxu?=
- =?us-ascii?Q?AyRuD3fToTTIgluO5QUT3z6JMkE1AVvhfzYIWNcFm7g+3VhkxWNn03PrLh1f?=
- =?us-ascii?Q?hTFMPxYSKUSkgP37Mqy9QUp4W1VETdjKSglC0+tBDaWNysIvvJqY+Qh2iSek?=
- =?us-ascii?Q?jfsLh+3sxVQ8o3hLjoqWFath9Q6oroWAbVMY+46wsRCKw9dwgu5v6evheC0I?=
- =?us-ascii?Q?OzR9QaEnV1h6neX3XfNO34h+FFYPTMD11qfIHlEenL/dgyWDXS3emQwU9QgY?=
- =?us-ascii?Q?99h3/dvU1c57Kwyh+lvAKqQp3iXvwuFVBIip6rYPmouwKEWgjTeRTqXbMAcY?=
- =?us-ascii?Q?wmDFEgRGn/XmmjqUhE3kDCPhIPA640a0RzeKpeK7h3+pqZgPJA/8sdHgSQFO?=
- =?us-ascii?Q?tiS1rfzj2IgSOUN6IR7xQUylmYO52E0pIF+bTF3fnCBpbx8J6xe6HVlZ5FCa?=
- =?us-ascii?Q?oAwOTXbzB3GsAC1bh28LQVLPIDsGzr52Tcu5bZBouxPpoIWbgtwVNlklirpO?=
- =?us-ascii?Q?URdA+ppEAC4G7OaaSRoWGPPwczayDgrgaBi+Q2R76rufim8MFAOAhuPg3kK4?=
- =?us-ascii?Q?nr0wG18TSpWGUosjpuAhCL5fY+sW3Vw8OOVGbWYtmjkFrY018PQ10xQKIG52?=
- =?us-ascii?Q?RAYMHuyA4hHMO906bLwJRKsMX3SuZnRecPHzjJSorFmHfnBfFGy04KJ/xFWD?=
- =?us-ascii?Q?IF6cZqfl7Kz4hjmFOPb7Ti8dT0P7f2HE4aQC1LrUMxwb8Ta/jqNLURYyFbuc?=
- =?us-ascii?Q?TrYSavsfhQgHomhYJFJwRrDMiqyEt+vy7X7jZh7e/KO45B25L4kxAO31M3m1?=
- =?us-ascii?Q?19BMhUwMxoUJ8i+dU2OyZaHXpu0taumMVhJ8h4acp33RUW56pVvkuo5o6H5n?=
- =?us-ascii?Q?bqX2Q3i9cdnoxt1XD8OUfYP28bP2AnMXO73p9EsR+VDWtj3DP3e3x3hENFWR?=
- =?us-ascii?Q?Tvz/l09ATaMRlt7fK3Xbe0qTYMogq4mENzv60vAR9HVHBQIVce/4su95TT/s?=
- =?us-ascii?Q?l3IB35/5xGgDC89W+SszBYfCr6QLBSAzg78roHHCwbwD9Kde9wL3t1tdtUfr?=
- =?us-ascii?Q?zElnM9AVwoNnF1U595KATTLuupSLiTByUQoSbcpUw244PKvKK0qoCkdi8ik9?=
- =?us-ascii?Q?yCawa/CKxUwurd7PMbjt8l3XzNiF4nT+IcTTHDfMxAfx5wjNwJ/ubpAt7Idi?=
- =?us-ascii?Q?cWVEKhfKoo47IIt5nnM6PaZkq8rvKdqpNl/1EU1r2jXldN2fniqj0f8g7W1d?=
- =?us-ascii?Q?MyAJ2Le+N8Yn8XUCWDU+Wszyr0YgEoa3g6nJ6Cwn6XY04Gp4Yytj4v3HsX2V?=
- =?us-ascii?Q?p2sZqGg5pWF/mnw8ScY3Pb3aG1VmelnW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB7914.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+	=?us-ascii?Q?fi95URHs1v2cLilqsvrTTAs+d6YS3KDjo3Oz0z8h0B2O5PadO0NSgRNm5q9i?=
+ =?us-ascii?Q?kqz2kW5fkdyTL+20bDo7k1Uh+wu2m5R8vqY51Ocupg5PHlvIr4Fe3JeNL/7M?=
+ =?us-ascii?Q?prLGZ2dU3yBmd3OrXiuo9fLwETh84FFWrKwIFQEaXimTfPKOaYsQ7uQQlBwX?=
+ =?us-ascii?Q?E+7v/uuJ37OkeGHMWFGi7n8IKeq/BfcHu84Z9eBxodevIb7wE9kkB3pLawjJ?=
+ =?us-ascii?Q?DKaJgcAJc/fH3ZRwem7jeSAFvs3yJGFNndmXYH8zDJwhUcgDflPpWqLtQKR2?=
+ =?us-ascii?Q?EKKWUGrrrPv6hG4vPaz8DPnvYlHyArZj7l6dKbl2yYYRjS+y5+c3AK5TNWEu?=
+ =?us-ascii?Q?SMFD+/V+t7NDpR7ynkdgBFM0XKi/5bySHjXdj7oVxj50VSc47R9N+MtESJuq?=
+ =?us-ascii?Q?bJXxlcMlxJmP5SNn9COTeUfKF5W/E+ejx7ZTWE/Swr4jdRRoJEebbeUCUCAS?=
+ =?us-ascii?Q?SuRl4aZoaa2VaHOvOpW2qLcxDzlY1g6L4TZK8mtUdZlPelyh5rnOM3+IuQHN?=
+ =?us-ascii?Q?PCSZ1FobGRgFMypngwAm4uOP4WhclBWhgzbbV6ueKE5lk8zRskJrcHjRYVKe?=
+ =?us-ascii?Q?pS31j9fOTow9hb13973eJF76b5yeZ2Uf/C1q/6Jnvi+Uu+/likGS03u5J08P?=
+ =?us-ascii?Q?L1UTgtEpLXArj0EiodRcfpNZfleSBCGzTkjzhG9DWYki7UlFt51IIMmVHoYM?=
+ =?us-ascii?Q?D2d+I5vlUKbWIaDCbdEvNkg+DqQ/neOXgfkuBXgHklsGWwzibeuK23QOcLjy?=
+ =?us-ascii?Q?lNCyy35bXb0Vi0StlOABYaDy5du+V+WHDJjf8YjKnCO28h0fbnzG2x/5KOn6?=
+ =?us-ascii?Q?HxTPugC2SYLNrNT14BNkXigTZMiKweiAVDQRpRUMgJE+4iw0v9b9SlKsyS3S?=
+ =?us-ascii?Q?X3nEfvXMcYHHV9VlAgIvj6l5vXqSfDk2hNKxwViWMZHEyYaS1m+vv7Ceg98K?=
+ =?us-ascii?Q?dxrcqGQ22VpTcoYIHyLfUdOrV/pdZ+0e1ons/AnZec2baCTes4xI3gzmn+ij?=
+ =?us-ascii?Q?xq8tXajmC5i1HX0LjorW2r2olFoLgri1v94k+Y1mwHYTVmQ0iCvPwJAW0SGY?=
+ =?us-ascii?Q?CRXi0TNxKvWjk0HWFrN4hGrGLuHvpMeWMTa52Dfn6yzRByjdICOhhBrbAHUS?=
+ =?us-ascii?Q?dwwr+mxXKwERScXhDWix2OJddGmpsv+5LWlC8Sp73gNEWo8y0iRCUS9ey64E?=
+ =?us-ascii?Q?nAkrcZOYX0hJgooTUkWQS/5QPNXrrBeI5Ip2rA=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ouakD30LhlZHUTlJdVbNlrKHAX7NULpbCG60zNFy6nKjSr1SJ3MNURlEuZM7?=
- =?us-ascii?Q?AAO6qdcrTPKYhiONufhPUfP39kPEfK7Fhm7zZ6Qamkg0ylroCc1REv1WA/wp?=
- =?us-ascii?Q?PVyFMA8rJps2px2XJGCIf/Hz19rmS7TsBSSH9bE9pPmlLMf7d2Utcoh/tlr5?=
- =?us-ascii?Q?ZkM+VdFgsAjG/c6bDmJuvsWBqJxZCdViAj0nKR7apjIT/j+//vXKEeSPyKSr?=
- =?us-ascii?Q?gIdD2jCtthJd2PJAEqqRF4KFa0wW9ZZj/C0/Ea7uJldz8l3ieHqusvwkHze1?=
- =?us-ascii?Q?5KXfWHH/DkYlrSEASWNfw+JD9PhkSiZUR99Vwl0xX4Y1VmL18qSscd0qSiLb?=
- =?us-ascii?Q?5VHn+U7dWnbc1kxV3WzroSsx9thfX8lRPLLmRF/F07VHcCxI1hjc0YoL/Rlw?=
- =?us-ascii?Q?pgCGA5Ka56PWHC2Cz5kb/S5AaEesWA18rb56AQ1PZxpPe9KGFSwFb8AKpw0r?=
- =?us-ascii?Q?dco9K9IUurUaOFVmUy94/uN8MEFkzlamruGoq57pUu67BJiAWlu3HEf9yiA3?=
- =?us-ascii?Q?3lwDKzQUuYyELc3JZJ6v808I0XDZ2jJPgyaj4REzIlmv7YAoWvQiiawD3GT4?=
- =?us-ascii?Q?GZjhHo8M3K3Ubhd/GVnRWr47qq9ZQwuQ7sgGXYN44O7k1FNJxUEj4wg7Yoqf?=
- =?us-ascii?Q?f9CBrubZyGJeFIAzDXew129anoFf2dm7gH6QlV0cB1vJtQK0+xlRVUZzHCtd?=
- =?us-ascii?Q?5O2bHQRv2gLYe97fzE0UfQA9zFZ7s9hwIsJF69WrO4P1yuKebk3xUBw2MZP3?=
- =?us-ascii?Q?KqLtKen+RXI3g2PyC1QmEqHPaKmu5w9OUQNYlKP0mXKcFEYlzEbVejJ/nshM?=
- =?us-ascii?Q?aPRWZuO4EinSY5Lyjy+nsQT7BMJzSby+vzzNdsCaNhFhGK/lRe5JZIMVLu+N?=
- =?us-ascii?Q?j07K0Qt9FKJfLo5mlbtFZ5i5a5XVfEKmBEI8REZt2LS1pUWhYZxDsOE1gq8W?=
- =?us-ascii?Q?uT9zP3MEefz1RtutmKRTT7Wntd67boGVRzkrdfV+oyFYbpidQsT+WyUFPNTg?=
- =?us-ascii?Q?GiZQQVg48FMU/bcXF9nJOWboBMbG4U9y+YVuC3l2wBuSp5b+q25b/As+ukvm?=
- =?us-ascii?Q?67N2v1Vn+05OtE4nXTezdBmko5i4+IoUc/SFPnQ8pbB1f0GUUtDuKveXY4ig?=
- =?us-ascii?Q?6IY09/DlF0ivPu201dWFv9xiTF8lT2tfbzuS5hoYjD7NDxNhVltrUGG8Zsq4?=
- =?us-ascii?Q?ZqaMqrKCG4SSlRM0ugDHdzliAJyUESxXaq8bVvAdJzDkkeYCcZpq11fR8JAB?=
- =?us-ascii?Q?DQObBM5BRO+IAdhBAhHaAylL1oBJUEMVSgtiaJN8mIcXvX8JVj+/VIu4J7xF?=
- =?us-ascii?Q?hzZ6V53LFJay4SqdriU/BvIZ6LFYfkBqh8/KsCY7VOknzYKrWjP22S4wD1+z?=
- =?us-ascii?Q?ZIBO36SoLcSn6gFn7D0llQLeB0/f2KxSa5Mb2ILX46mydyTGt4hvtq8OLKem?=
- =?us-ascii?Q?xMI+ZQVcxJKS0al/4xjLn4RN1Z/Ay8Gn1WxmnLYJAiaOhmfRhb2Vri/TAlu9?=
- =?us-ascii?Q?oL2F74e3mWu8bEAhhJ8AoZ9ZfoUbUSePp+PIYsWzWsKSJ9Ve3aI6JtMBg0Zi?=
- =?us-ascii?Q?V57GCfvNPmPuns4TUHOzaUQTgh7E3AB3hgD1k+Zb?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a5ba6a9-7d16-46cc-aef8-08de1dbd7119
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB7914.namprd12.prod.outlook.com
+	=?us-ascii?Q?i504Nevx3UPYznU/S0CAzfqr2pVLpQBrIqLehNCDDrqeU9FdB8pNInWUBHED?=
+ =?us-ascii?Q?sqt/C/+ue8whX6IEhDVDAcw4DlwgpEhLRmRBraLGF6IYOfpMukx1A0TZ9c1o?=
+ =?us-ascii?Q?gn/PfNUgoHYBYu+dJbXS8CBNT457S98RboZwm5q6e54o0MpEDBInPkX6AQ2f?=
+ =?us-ascii?Q?5DsnkJzRUoKg500QZ+YjeajTupy06V51snrMtOhn7joPFMPk+n3FrNzTpJQB?=
+ =?us-ascii?Q?nlJzoL+PbqMXmcxbV8Py2B5u0UpGfjEjbSYegCEGievEEXm91GZKwPVFnAfI?=
+ =?us-ascii?Q?dtghF7AbcIokfIWGHmz1/kOH+QSR8DTFIUewD424qT3iOYLJcoa4ZVVXjpgD?=
+ =?us-ascii?Q?L17mqcc5du0/WvIaUpVd4RoLsP2oo7bnEG2/s9R7H833GNnmoy7vje9uic1n?=
+ =?us-ascii?Q?GPb52gCGfld2hALyDP0XPc4GH7lVsTXyG7Kd0B7i7Hq0CL+0XAHIg06CLLUB?=
+ =?us-ascii?Q?Z8W3wXhmBf3hpVA10aOou70b6/ctK9DM6GZ/RtlX95drNNpPSY7MEfWixMsC?=
+ =?us-ascii?Q?mBHGhGSWrmrlArUpPMlXUEu5emRNz5+Ps6xyHK7XdPn6hwuF/1zeFC/bhEsU?=
+ =?us-ascii?Q?uHhEmk6T0mOt+fWCR7duFSf5ptk1PZZZyeLzf+t15/+TujDC9wS3JMROti5o?=
+ =?us-ascii?Q?KyNn3PvASJkbIbVFdoa4/PceUhIkgiaUUkc7+UAgSMNW9o6aD/wAkEbv+oBm?=
+ =?us-ascii?Q?++ureCgUIkT+DnHcROF9unsiod2DrCsmqHGXXnySRwKU834K72LTCPiRPK8o?=
+ =?us-ascii?Q?c14Bbkl4ze95YPbwYZQ25D2YQ2d/S9zyyGwTok69olKoKRP25mbQ3nwNaFxe?=
+ =?us-ascii?Q?Un2kVTCNXOR76cktOltiMeTuUL7tp5jTWbAS0D0uKopH3773QqAJRGMjAA6H?=
+ =?us-ascii?Q?ZLKa4E7dULuusjwCC9Z5sKOzqs9RtVzoLYp+AiojOul4elI7HLS3+ebBSm56?=
+ =?us-ascii?Q?pG8AKgFHZmakp5kYAwk96Tk1dn5t3URqANlNXkgYv89P+1ip9CAPkbJUPDjQ?=
+ =?us-ascii?Q?IM9O2jBQm0QO8S5JQxsgZ7rYnbRi3LUV/w5WqOAOmLAf01e7eIlTfvAqm/7Z?=
+ =?us-ascii?Q?HT++euYJbQfo3zaYdTv+89yEthHDkaQytVum/j2qVON6r8ilvFt9eCb7xKXZ?=
+ =?us-ascii?Q?eFduAtBd+kcSBj5SauVfAmjchqELubqE7ptVtKtr4IM2cqg9Z8z7skJT9g1H?=
+ =?us-ascii?Q?7dpc0sAle+DaaoRaaFqFDNfHcdaYxrqwkYBit4vVlqZ2QexFgezJFPNX/Otn?=
+ =?us-ascii?Q?7MuC/Zn4Jfoh2qORJJDD?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f934f3f-0ac7-4e65-21a8-08de1dbd7c59
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 05:21:01.9667
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 05:21:20.9374
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NlGtNhoNPc5KP9UaDSpSudJxxnyKXYp9XK+dG7x7aMRLbsMjfC+kIbPAkinPW4AvbjFd03mjXWUV3TY1QXaxDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5843
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME0PR01MB9633
 
-ATL2 hardware was missing descriptor cache invalidation in hw_stop(),
-causing SMMU translation faults during device shutdown and module removal.
+Replace sprintf(itv->i2c_adap.name + strlen(...), ...) with
+scnprintf_append() for building the i2c adapter name. This provides
+proper bounds checking and improves code readability.
 
-Commit 7a1bb49461b1 ("net: aquantia: fix potential IOMMU fault after
-driver unbind") and commit ed4d81c4b3f2 ("net: aquantia: when cleaning
-hw cache it should be toggled") fixed cache invalidation for ATL B0, but
-ATL2 was left with only interrupt disabling. This allowed hardware to
-write to cached descriptors after DMA memory was unmapped, triggering
-SMMU faults.
-
-Add shared aq_hw_invalidate_descriptor_cache() helper and use it in both
-ATL B0 and ATL2 hw_stop() implementations for consistent behavior.
-
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- .../ethernet/aquantia/atlantic/aq_hw_utils.c  | 22 +++++++++++++++++++
- .../ethernet/aquantia/atlantic/aq_hw_utils.h  |  1 +
- .../aquantia/atlantic/hw_atl/hw_atl_b0.c      | 19 +---------------
- .../aquantia/atlantic/hw_atl2/hw_atl2.c       |  2 +-
- 4 files changed, 25 insertions(+), 19 deletions(-)
+ drivers/media/pci/ivtv/ivtv-i2c.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-index 1921741f7311..18b08277d2e1 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.c
-@@ -15,6 +15,7 @@
+diff --git a/drivers/media/pci/ivtv/ivtv-i2c.c b/drivers/media/pci/ivtv/ivtv-i2c.c
+index 28cb22d6a892..a12c6b9fb4a7 100644
+--- a/drivers/media/pci/ivtv/ivtv-i2c.c
++++ b/drivers/media/pci/ivtv/ivtv-i2c.c
+@@ -711,8 +711,7 @@ int init_ivtv_i2c(struct ivtv *itv)
+ 	itv->i2c_algo.data = itv;
+ 	itv->i2c_adap.algo_data = &itv->i2c_algo;
  
- #include "aq_hw.h"
- #include "aq_nic.h"
-+#include "hw_atl/hw_atl_llh.h"
+-	sprintf(itv->i2c_adap.name + strlen(itv->i2c_adap.name), " #%d",
+-		itv->instance);
++	scnprintf_append(itv->i2c_adap.name, sizeof(itv->i2c_adap.name), " #%d", itv->instance);
+ 	i2c_set_adapdata(&itv->i2c_adap, &itv->v4l2_dev);
  
- void aq_hw_write_reg_bit(struct aq_hw_s *aq_hw, u32 addr, u32 msk,
- 			 u32 shift, u32 val)
-@@ -81,6 +82,27 @@ void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value)
- 		lo_hi_writeq(value, hw->mmio + reg);
- }
- 
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw)
-+{
-+	int err;
-+	u32 val;
-+
-+	/* Invalidate Descriptor Cache to prevent writing to the cached
-+	 * descriptors and to the data pointer of those descriptors
-+	 */
-+	hw_atl_rdm_rx_dma_desc_cache_init_tgl(hw);
-+
-+	err = aq_hw_err_from_flags(hw);
-+	if (err)
-+		goto err_exit;
-+
-+	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
-+				  hw, val, val == 1, 1000U, 10000U);
-+
-+err_exit:
-+	return err;
-+}
-+
- int aq_hw_err_from_flags(struct aq_hw_s *hw)
- {
- 	int err = 0;
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-index ffa6e4067c21..d89c63d88e4a 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw_utils.h
-@@ -35,6 +35,7 @@ u32 aq_hw_read_reg(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg(struct aq_hw_s *hw, u32 reg, u32 value);
- u64 aq_hw_read_reg64(struct aq_hw_s *hw, u32 reg);
- void aq_hw_write_reg64(struct aq_hw_s *hw, u32 reg, u64 value);
-+int aq_hw_invalidate_descriptor_cache(struct aq_hw_s *hw);
- int aq_hw_err_from_flags(struct aq_hw_s *hw);
- int aq_hw_num_tcs(struct aq_hw_s *hw);
- int aq_hw_q_per_tc(struct aq_hw_s *hw);
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-index 493432d036b9..c7895bfb2ecf 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_b0.c
-@@ -1198,26 +1198,9 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
- 
- static int hw_atl_b0_hw_stop(struct aq_hw_s *self)
- {
--	int err;
--	u32 val;
--
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL_B0_INT_MASK);
- 
--	/* Invalidate Descriptor Cache to prevent writing to the cached
--	 * descriptors and to the data pointer of those descriptors
--	 */
--	hw_atl_rdm_rx_dma_desc_cache_init_tgl(self);
--
--	err = aq_hw_err_from_flags(self);
--
--	if (err)
--		goto err_exit;
--
--	readx_poll_timeout_atomic(hw_atl_rdm_rx_dma_desc_cache_init_done_get,
--				  self, val, val == 1, 1000U, 10000U);
--
--err_exit:
--	return err;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- int hw_atl_b0_hw_ring_tx_stop(struct aq_hw_s *self, struct aq_ring_s *ring)
-diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-index b0ed572e88c6..0ce9caae8799 100644
---- a/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl2/hw_atl2.c
-@@ -759,7 +759,7 @@ static int hw_atl2_hw_stop(struct aq_hw_s *self)
- {
- 	hw_atl_b0_hw_irq_disable(self, HW_ATL2_INT_MASK);
- 
--	return 0;
-+	return aq_hw_invalidate_descriptor_cache(self);
- }
- 
- static struct aq_stats_s *hw_atl2_utils_get_hw_stats(struct aq_hw_s *self)
+ 	itv->i2c_client = ivtv_i2c_client_template;
 -- 
-2.43.0
+2.51.1.dirty
 
