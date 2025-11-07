@@ -1,61 +1,80 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012052.outbound.protection.outlook.com [52.101.53.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A960B3B2A0;
-	Fri,  7 Nov 2025 03:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762487811; cv=none; b=P1T8tRYtKAr+wFgpHnloVmVFdxrUdVKDhmgyuIaOKNnbdo+565+kbpxphKFVonNlWTu0IpiEspFDb27Pyk78cFaYwhH3XK8+Ot0cGrHHX2QVfyTZ32ofbbAU7TJ20VmfppYdHJYNrdbi24Ni0Pj+F1ghNzM24Ucw8s19jXfh488=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762487811; c=relaxed/simple;
-	bh=w8bZZpRIfWcZ/ClO6LtwdifwLGrQ6Y/HYTbKrL+TT4o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B5CEoCM9PHOsgJPQYP/ZzhOYEKst/WEkpSB5TiNkf3P+iJVA3CEC/IW9SGS3kZsWzg/4dvc+QmeRBBYV6QxVhhtiwwYQsZsC4dNwvLL36KIDKJBxyohoeLXVDsGs4jdFgUnoX3TUYAPdMLNb68zlRqbpt9XvibZ2ovryljN9+Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=PPXBByAI; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D06179DA
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 04:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762488954; cv=fail; b=WESLAYKib2AqGY57nyEiTE51iyuOEMibS40SvAnFkacCYwVPi2kRmG0zzWK9gAtYHwGaMkCTGZWvyayohCZ5A9yXmYExWiLSrViioQaShBk7wK7QeLUbVR7/e52zMCpg0Nw9dqF5TfOai/DPIu4DpLHphgisr9TkT3LU4ONsx74=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762488954; c=relaxed/simple;
+	bh=ZbxRft/0mstgBKHIbWf66aWllljvCsg1UhxuYkrFCyg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QQGnyuuRAZE+iiqTzhKdiDi1xcqQaCYIoM69xva5i0bLK4JPyk6sqTsPCcSJQCbnoFZYfkvey7FgDWe+ZLQbzkKKaVpOVpHdC4Nt/0U6JvhBQJfaCx3dRkhc1vqMMaNzc5RkFi6JzipxTmkXVCL5Qi0ft+oG+0xjZ+Ry+hlpsaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TN6MJn8J; arc=fail smtp.client-ip=52.101.53.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="PPXBByAI"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762487799; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=ZQg60SO66iaHBJXVNoWgRh4WO8Da+p0zlJt0rN39ags=;
-	b=PPXBByAIsPNRiJpQRSWQNN4F+A+nLcAuJEg9hMkoD66lakPMuwjHQC717mqocUONXqyvZ9jwqVY+7uSnePBe77aag8RrgkUUprYmHYMmR3XJtMwsVOD7nVacgrbyTTOGfwNpLULpRgP4SYfwQrF35Zk1FWbNwxiH2m7WPCtYlBk=
-Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WrrauMm_1762487797 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 07 Nov 2025 11:56:38 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	sdf@google.com,
-	haoluo@google.com,
-	yhs@fb.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kpsingh@kernel.org,
-	jolsa@kernel.org,
-	mjambigi@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	wintera@linux.ibm.com,
-	dust.li@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com
-Cc: bpf@vger.kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	sidraya@linux.ibm.com,
-	jaka@linux.ibm.com
-Subject: [PATCH bpf-next v5 2/3] net/smc: bpf: Introduce generic hook for handshake flow
-Date: Fri,  7 Nov 2025 11:56:31 +0800
-Message-ID: <20251107035632.115950-3-alibuda@linux.alibaba.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20251107035632.115950-1-alibuda@linux.alibaba.com>
-References: <20251107035632.115950-1-alibuda@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TN6MJn8J"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WQp4n6js8Pv9ANHMgl9LOHDxaPgjXneJtYEFiOEYLYuksbPeOx+CE+b6fLCiWg5oHrr343FO37XVA1VfiC5nvp3uyaVEjdmhVDFrtqSaUcdalxjXm4KOpviENH/opiK0KCG3sVdUkN1XfNc1W+QOxU8AujH6J+vI60nml+WSm/SNQsex0lEEIG6ouecb2NQqBT6zZHTYo1I8yEYspaEVnbNves5yB4QJqNoMQROMeDKugsX3xxLF3fm14xg1wuIrKVrHPvp4PXLdpCIxOG/txScMQMYOAjTo0m6fPLLAdWsZytRRj/83BoZGVxA138iRkoOykZUN88+y5w5MXas0YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GnbWxh0T9y8ixlMLueODx0uCgrASMMuvtQS14cY0Bzk=;
+ b=nMic124GkpEKZU2ZTFSo4cXhu4PZBbTTY3I2/2ZqMGtB804F5DZnxZlQdut+mVYmCyG8AufZlFJGteEHrT7PYGX9GL5d4NN3I0+zbIyuUtcorAbV7Ar+3FyQ203/SwktZYKV4PVXns3uYEA7Cuy63DsErsg9FYPeY45cQNnnCJ1kR9n8bva/LJkkE+YHpQpgh5GtDmQbKwZ1EEX5Lp6H+cgksClJi7k6f7n/0Ftn8SjLEQxomNRrxPYJQm5ZeHhbplGfXK5ymLLoHzWCvT2OwgS07QrG8kKbNNQxrUlihkaSyMwHN2JQzRZAlD2fnIehiOi38xATTYobMBzbzFGLiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GnbWxh0T9y8ixlMLueODx0uCgrASMMuvtQS14cY0Bzk=;
+ b=TN6MJn8JZUAsM3ipW8ozVfgX9mS3fe+uwRxJTY7T6OYrEPEseCEJeAAzzz9jn4baJozkiKvUoazJgSaMWU73z9ib4x/oRrjiCIGkFIeFOA3TrupP83zHcqACVwa78WuP0crsYn0sgSC0bsHOonhpJrw8Jhwau2PTVDphODmedmp/FuCCQaopWnD20gm9YX1QSFY7OQeHRfrfG8U0h4KzL8T5h6h/55sptZWbqXWhwUqFzVAevZt+tLGfZ1HXByN/999mfotbSmvNVTNt3dBZuY2NOCYY2pwqcpIwN+VXf2HDfT2670810HEd2mYn79u+htX+vVUV3G/pOV83ajq9GQ==
+Received: from SJ0PR13CA0212.namprd13.prod.outlook.com (2603:10b6:a03:2c1::7)
+ by DS7PR12MB5789.namprd12.prod.outlook.com (2603:10b6:8:74::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Fri, 7 Nov
+ 2025 04:15:45 +0000
+Received: from MWH0EPF000A6733.namprd04.prod.outlook.com
+ (2603:10b6:a03:2c1::4) by SJ0PR13CA0212.outlook.office365.com
+ (2603:10b6:a03:2c1::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.10 via Frontend Transport; Fri,
+ 7 Nov 2025 04:15:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ MWH0EPF000A6733.mail.protection.outlook.com (10.167.249.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9298.6 via Frontend Transport; Fri, 7 Nov 2025 04:15:45 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
+ 2025 20:15:35 -0800
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 6 Nov
+ 2025 20:15:34 -0800
+Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 6 Nov
+ 2025 20:15:32 -0800
+From: Daniel Jurgens <danielj@nvidia.com>
+To: <netdev@vger.kernel.org>, <mst@redhat.com>, <jasowang@redhat.com>,
+	<pabeni@redhat.com>
+CC: <virtualization@lists.linux.dev>, <parav@nvidia.com>,
+	<shshitrit@nvidia.com>, <yohadt@nvidia.com>, <xuanzhuo@linux.alibaba.com>,
+	<eperezma@redhat.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<jgg@ziepe.ca>, <kevin.tian@intel.com>, <kuba@kernel.org>,
+	<andrew+netdev@lunn.ch>, <edumazet@google.com>, Daniel Jurgens
+	<danielj@nvidia.com>
+Subject: [PATCH net-next v9 00/12] virtio_net: Add ethtool flow rules support
+Date: Thu, 6 Nov 2025 22:15:10 -0600
+Message-ID: <20251107041523.1928-1-danielj@nvidia.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,564 +82,210 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A6733:EE_|DS7PR12MB5789:EE_
+X-MS-Office365-Filtering-Correlation-Id: 247ed8c3-edc9-4fe5-ebfc-08de1db452ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?C8aiW72crSvuYzh5OuPPd6FS7xw+biUUlIaIScNI4LyhPsrh0IZ0+s45cszg?=
+ =?us-ascii?Q?iTbE8Na84gOt/9wwYgVa04d/GbvoTRkytAE+8NTBsuasCF0tNwPZEil8MmPh?=
+ =?us-ascii?Q?doX4WGrinmQldjVRgLvxMbOMK/jgPlur1u8t9+assIBWo8vHglk2oGCPwTCh?=
+ =?us-ascii?Q?kI1tpLbhXAyRmshFdSRe97YtSjwDEFAY1aBGQNqB43sxSRYdqDIepDQ7j3Zm?=
+ =?us-ascii?Q?cUzPxQcM4n5uUmPvAcqN7v1qhSd2qu4AJFm31qJhkTdeoVJ7Ey957CogFg/r?=
+ =?us-ascii?Q?vCTin05fHKBCCKJkrYB31gGil70t3IXeOLlmftiS9+Q5idP3eXpfyQB+gtu1?=
+ =?us-ascii?Q?NrmUB5B83CmDBA4STGRSnxq6EDZByWVMHDuezDnQarjgbPazwhFboD11OAPu?=
+ =?us-ascii?Q?wNRpYyuYL1pbcDYjYwX3dJMT56/5Vn6owZwfnz/5cN4g2lDJ654QZ8abYllj?=
+ =?us-ascii?Q?yAAd0LV2ofd/R1kV7HI5qEjZ3YqjFjo22687UI5IoLP7ydA0r0RWwevMPDq0?=
+ =?us-ascii?Q?keriCZetHXaA41DjW6NzVsXy6e0VgC8uTt5TaBfj6G29Mi4oXvmDseCkkxEV?=
+ =?us-ascii?Q?UpDVVrKqGOnMQyl4J+Ugzg2dnOJ+k/kvFYql9nSMWC8YhtAOquTfl1qNdUR0?=
+ =?us-ascii?Q?hDjfgTNwwawEW8haJBQHFuxBsUPXtAzorGb7GqvpDEmPQFx/cn8+z6dDh1fo?=
+ =?us-ascii?Q?/nd06lM5LLMSCgxlolVvppYLt5zormaJWMCMZUG9kxpNSNKgRV4ZGIGDJCZF?=
+ =?us-ascii?Q?o7nk4FfYeOxuC8DdtuELJPOGcRU2ZdphbPV5iFrhmioaukvCyRf4G04Mmbuj?=
+ =?us-ascii?Q?yV0gSN3hvt/kb/c6VviMhMMvpM47RlKLjrE1wfMnObpkrRBzIjvaXNEQIfip?=
+ =?us-ascii?Q?35q7JyG4HT0dy65O8LujSOboJ6uJ2R3Ctrqg6yNgcdvorCregJEevwQLd/KI?=
+ =?us-ascii?Q?VIvqQkH0BQLH9IJ/mTPFPZkCfr/r5NepC67hpd3f01fai/8ZW0yeEy1iM4m3?=
+ =?us-ascii?Q?99jF+zJAmlIofF9VMS97DW3fowRELmn6Sw/z8YsYPc5n73slPJFEP49J4OxZ?=
+ =?us-ascii?Q?ZMoOzkV77m3Zt8/dpiknPRF3Rkd2BnMuXeBewRQSzv3n9pKRW2CQuSOiwjUT?=
+ =?us-ascii?Q?+VKGYukqWefECwf+zJJhXDn7h0w9fucgm8dnmuuoXTtIJtGU2limpBXbSZma?=
+ =?us-ascii?Q?NzDaNQIxNXK4zeCYAdO4EmwDK09ZZ+YUO9g+KTP49wuOIUnDqTT8R8oENEqY?=
+ =?us-ascii?Q?WEso5mniYBwcfB2ivNsJLmj/PUW5Cluz/MD37FylDWCNAWliZ7dOj/CNtfcm?=
+ =?us-ascii?Q?jc1q/6pBqH/xLIlcb8hGPKgOIo1Htu5CuMLRYVx2JHo350JFZ9VUeo1wYVwE?=
+ =?us-ascii?Q?s90dSIu2Af6Mr7IRgNqh4iRqs38aaCLSExlg1isgL3MuxUsPshufM8u0Xv6q?=
+ =?us-ascii?Q?kUlAwuv6hWclIJsYL6fn9NA17uYtLAlf2MrQolyB5cqQ30wM9YDFKN4pAqeh?=
+ =?us-ascii?Q?2vT1TT+tylj+pqN869H+6JvwVzErTGS3GtZ4aSjGCovP3aqzmQkpEP7XX3xc?=
+ =?us-ascii?Q?jSWacwTpkK16quN0CqxknJl0fOk1kciUVxHRxOu8?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 04:15:45.4975
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 247ed8c3-edc9-4fe5-ebfc-08de1db452ee
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A6733.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5789
 
-The introduction of IPPROTO_SMC enables eBPF programs to determine
-whether to use SMC based on the context of socket creation, such as
-network namespaces, PID and comm name, etc.
+This series implements ethtool flow rules support for virtio_net using the
+virtio flow filter (FF) specification. The implementation allows users to
+configure packet filtering rules through ethtool commands, directing
+packets to specific receive queues, or dropping them based on various
+header fields.
 
-As a subsequent enhancement, to introduce a new generic hook that
-allows decisions on whether to use SMC or not at runtime, including
-but not limited to local/remote IP address or ports.
+The series starts with infrastructure changes to expose virtio PCI admin
+capabilities and object management APIs. It then creates the virtio_net
+directory structure and implements the flow filter functionality with support
+for:
 
-User can write their own implememtion via bpf_struct_ops now to choose
-whether to use SMC or not before TCP 3rd handshake to be comleted.
+- Layer 2 (Ethernet) flow rules
+- IPv4 and IPv6 flow rules  
+- TCP and UDP flow rules (both IPv4 and IPv6)
+- Rule querying and management operations
 
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Setting, deleting and viewing flow filters, -1 action is drop, positive
+integers steer to that RQ:
+
+$ ethtool -u ens9
+4 RX rings available
+Total 0 rules
+
+$ ethtool -U ens9 flow-type ether src 1c:34:da:4a:33:dd action 0
+Added rule with ID 0
+$ ethtool -U ens9 flow-type udp4 dst-port 5001 action 3
+Added rule with ID 1
+$ ethtool -U ens9 flow-type tcp6 src-ip fc00::2 dst-port 5001 action 2
+Added rule with ID 2
+$ ethtool -U ens9 flow-type ip4 src-ip 192.168.51.101 action 1
+Added rule with ID 3
+$ ethtool -U ens9 flow-type ip6 dst-ip fc00::1 action -1
+Added rule with ID 4
+$ ethtool -U ens9 flow-type ip6 src-ip fc00::2 action -1
+Added rule with ID 5
+$ ethtool -U ens9 delete 4
+$ ethtool -u ens9
+4 RX rings available
+Total 5 rules
+
+Filter: 0
+        Flow Type: Raw Ethernet
+        Src MAC addr: 1C:34:DA:4A:33:DD mask: 00:00:00:00:00:00
+        Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+        Ethertype: 0x0 mask: 0xFFFF
+        Action: Direct to queue 0
+
+Filter: 1
+        Rule Type: UDP over IPv4
+        Src IP addr: 0.0.0.0 mask: 255.255.255.255
+        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+        TOS: 0x0 mask: 0xff
+        Src port: 0 mask: 0xffff
+        Dest port: 5001 mask: 0x0
+        Action: Direct to queue 3
+
+Filter: 2
+        Rule Type: TCP over IPv6
+        Src IP addr: fc00::2 mask: ::
+        Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+        Traffic Class: 0x0 mask: 0xff
+        Src port: 0 mask: 0xffff
+        Dest port: 5001 mask: 0x0
+        Action: Direct to queue 2
+
+Filter: 3
+        Rule Type: Raw IPv4
+        Src IP addr: 192.168.51.101 mask: 0.0.0.0
+        Dest IP addr: 0.0.0.0 mask: 255.255.255.255
+        TOS: 0x0 mask: 0xff
+        Protocol: 0 mask: 0xff
+        L4 bytes: 0x0 mask: 0xffffffff
+        Action: Direct to queue 1
+
+Filter: 5
+        Rule Type: Raw IPv6
+        Src IP addr: fc00::2 mask: ::
+        Dest IP addr: :: mask: ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff
+        Traffic Class: 0x0 mask: 0xff
+        Protocol: 0 mask: 0xff
+        L4 bytes: 0x0 mask: 0xffffffff
+        Action: Drop
+
 ---
- include/net/netns/smc.h |   3 +
- include/net/smc.h       |  53 +++++++++++++++
- net/ipv4/tcp_output.c   |  31 +++++----
- net/smc/Kconfig         |  10 +++
- net/smc/Makefile        |   1 +
- net/smc/af_smc.c        |   9 +++
- net/smc/smc_hs_bpf.c    | 140 ++++++++++++++++++++++++++++++++++++++++
- net/smc/smc_hs_bpf.h    |  31 +++++++++
- net/smc/smc_sysctl.c    |  91 ++++++++++++++++++++++++++
- 9 files changed, 355 insertions(+), 14 deletions(-)
- create mode 100644 net/smc/smc_hs_bpf.c
- create mode 100644 net/smc/smc_hs_bpf.h
+v2: https://lore.kernel.org/netdev/20250908164046.25051-1-danielj@nvidia.com/
+  - Fix sparse warnings
+  - Fix memory leak on subsequent failure to allocate
+  - Fix some Typos
 
-diff --git a/include/net/netns/smc.h b/include/net/netns/smc.h
-index fc752a50f91b..d66bfd392254 100644
---- a/include/net/netns/smc.h
-+++ b/include/net/netns/smc.h
-@@ -17,6 +17,9 @@ struct netns_smc {
- #ifdef CONFIG_SYSCTL
- 	struct ctl_table_header		*smc_hdr;
- #endif
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+	struct smc_hs_ctrl __rcu	*hs_ctrl;
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
- 	unsigned int			sysctl_autocorking_size;
- 	unsigned int			sysctl_smcr_buf_type;
- 	int				sysctl_smcr_testlink_time;
-diff --git a/include/net/smc.h b/include/net/smc.h
-index 08bee529ed8d..bfdc4c41f019 100644
---- a/include/net/smc.h
-+++ b/include/net/smc.h
-@@ -17,6 +17,8 @@
- #include <linux/wait.h>
- #include <linux/dibs.h>
- 
-+struct tcp_sock;
-+struct inet_request_sock;
- struct sock;
- 
- #define SMC_MAX_PNETID_LEN	16	/* Max. length of PNET id */
-@@ -50,4 +52,55 @@ struct smcd_dev {
- 	u8 going_away : 1;
- };
- 
-+#define SMC_HS_CTRL_NAME_MAX 16
-+
-+enum {
-+	/* ops can be inherit from init_net */
-+	SMC_HS_CTRL_FLAG_INHERITABLE = 0x1,
-+
-+	SMC_HS_CTRL_ALL_FLAGS = SMC_HS_CTRL_FLAG_INHERITABLE,
-+};
-+
-+struct smc_hs_ctrl {
-+	/* private */
-+
-+	struct list_head list;
-+	struct module *owner;
-+
-+	/* public */
-+
-+	/* unique name */
-+	char name[SMC_HS_CTRL_NAME_MAX];
-+	int flags;
-+
-+	/* Invoked before computing SMC option for SYN packets.
-+	 * We can control whether to set SMC options by returning various value.
-+	 * Return 0 to disable SMC, or return any other value to enable it.
-+	 */
-+	int (*syn_option)(struct tcp_sock *tp);
-+
-+	/* Invoked before Set up SMC options for SYN-ACK packets
-+	 * We can control whether to respond SMC options by returning various
-+	 * value. Return 0 to disable SMC, or return any other value to enable
-+	 * it.
-+	 */
-+	int (*synack_option)(const struct tcp_sock *tp,
-+			     struct inet_request_sock *ireq);
-+};
-+
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+#define smc_call_hsbpf(init_val, tp, func, ...) ({				\
-+	typeof(init_val) __ret = (init_val);					\
-+	struct smc_hs_ctrl *ctrl;						\
-+	rcu_read_lock();							\
-+	ctrl = rcu_dereference(sock_net((struct sock *)(tp))->smc.hs_ctrl);	\
-+	if (ctrl && ctrl->func)							\
-+		__ret = ctrl->func(tp, ##__VA_ARGS__);				\
-+	rcu_read_unlock();							\
-+	__ret;									\
-+})
-+#else
-+#define smc_call_hsbpf(init_val, tp, ...)  ({ (void)(tp); (init_val); })
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
-+
- #endif	/* _SMC_H */
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 7f5df7a71f62..479afb714bdf 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -40,6 +40,7 @@
- #include <net/tcp.h>
- #include <net/tcp_ecn.h>
- #include <net/mptcp.h>
-+#include <net/smc.h>
- #include <net/proto_memory.h>
- #include <net/psp.h>
- 
-@@ -802,34 +803,36 @@ static void tcp_options_write(struct tcphdr *th, struct tcp_sock *tp,
- 	mptcp_options_write(th, ptr, tp, opts);
- }
- 
--static void smc_set_option(const struct tcp_sock *tp,
-+static void smc_set_option(struct tcp_sock *tp,
- 			   struct tcp_out_options *opts,
- 			   unsigned int *remaining)
- {
- #if IS_ENABLED(CONFIG_SMC)
--	if (static_branch_unlikely(&tcp_have_smc)) {
--		if (tp->syn_smc) {
--			if (*remaining >= TCPOLEN_EXP_SMC_BASE_ALIGNED) {
--				opts->options |= OPTION_SMC;
--				*remaining -= TCPOLEN_EXP_SMC_BASE_ALIGNED;
--			}
-+	if (static_branch_unlikely(&tcp_have_smc) && tp->syn_smc) {
-+		tp->syn_smc = !!smc_call_hsbpf(1, tp, syn_option);
-+		/* re-check syn_smc */
-+		if (tp->syn_smc &&
-+		    *remaining >= TCPOLEN_EXP_SMC_BASE_ALIGNED) {
-+			opts->options |= OPTION_SMC;
-+			*remaining -= TCPOLEN_EXP_SMC_BASE_ALIGNED;
- 		}
- 	}
- #endif
- }
- 
- static void smc_set_option_cond(const struct tcp_sock *tp,
--				const struct inet_request_sock *ireq,
-+				struct inet_request_sock *ireq,
- 				struct tcp_out_options *opts,
- 				unsigned int *remaining)
- {
- #if IS_ENABLED(CONFIG_SMC)
--	if (static_branch_unlikely(&tcp_have_smc)) {
--		if (tp->syn_smc && ireq->smc_ok) {
--			if (*remaining >= TCPOLEN_EXP_SMC_BASE_ALIGNED) {
--				opts->options |= OPTION_SMC;
--				*remaining -= TCPOLEN_EXP_SMC_BASE_ALIGNED;
--			}
-+	if (static_branch_unlikely(&tcp_have_smc) && tp->syn_smc && ireq->smc_ok) {
-+		ireq->smc_ok = !!smc_call_hsbpf(1, tp, synack_option, ireq);
-+		/* re-check smc_ok */
-+		if (ireq->smc_ok &&
-+		    *remaining >= TCPOLEN_EXP_SMC_BASE_ALIGNED) {
-+			opts->options |= OPTION_SMC;
-+			*remaining -= TCPOLEN_EXP_SMC_BASE_ALIGNED;
- 		}
- 	}
- #endif
-diff --git a/net/smc/Kconfig b/net/smc/Kconfig
-index 99ecd59d1f4b..325addf83cc6 100644
---- a/net/smc/Kconfig
-+++ b/net/smc/Kconfig
-@@ -19,3 +19,13 @@ config SMC_DIAG
- 	  smcss.
- 
- 	  if unsure, say Y.
-+
-+config SMC_HS_CTRL_BPF
-+	bool "Generic eBPF hook for SMC handshake flow"
-+	depends on SMC && BPF_SYSCALL
-+	default y
-+	help
-+	  SMC_HS_CTRL_BPF enables support to register generic eBPF hook for SMC
-+	  handshake flow, which offer much greater flexibility in modifying the behavior
-+	  of the SMC protocol stack compared to a complete kernel-based approach. Select
-+	  this option if you want filtring the handshake process via eBPF programs.
-\ No newline at end of file
-diff --git a/net/smc/Makefile b/net/smc/Makefile
-index 0e754cbc38f9..b7f540a4ebea 100644
---- a/net/smc/Makefile
-+++ b/net/smc/Makefile
-@@ -6,3 +6,4 @@ smc-y := af_smc.o smc_pnet.o smc_ib.o smc_clc.o smc_core.o smc_wr.o smc_llc.o
- smc-y += smc_cdc.o smc_tx.o smc_rx.o smc_close.o smc_ism.o smc_netlink.o smc_stats.o
- smc-y += smc_tracepoint.o smc_inet.o
- smc-$(CONFIG_SYSCTL) += smc_sysctl.o
-+smc-$(CONFIG_SMC_HS_CTRL_BPF) += smc_hs_bpf.o
-\ No newline at end of file
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 77b99e8ef35a..890b36e90ba7 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -58,6 +58,7 @@
- #include "smc_tracepoint.h"
- #include "smc_sysctl.h"
- #include "smc_inet.h"
-+#include "smc_hs_bpf.h"
- 
- static DEFINE_MUTEX(smc_server_lgr_pending);	/* serialize link group
- 						 * creation on server
-@@ -3600,8 +3601,16 @@ static int __init smc_init(void)
- 		pr_err("%s: smc_inet_init fails with %d\n", __func__, rc);
- 		goto out_ulp;
- 	}
-+	rc = bpf_smc_hs_ctrl_init();
-+	if (rc) {
-+		pr_err("%s: bpf_smc_hs_ctrl_init fails with %d\n", __func__,
-+		       rc);
-+		goto out_inet;
-+	}
- 	static_branch_enable(&tcp_have_smc);
- 	return 0;
-+out_inet:
-+	smc_inet_exit();
- out_ulp:
- 	tcp_unregister_ulp(&smc_ulp_ops);
- out_ib:
-diff --git a/net/smc/smc_hs_bpf.c b/net/smc/smc_hs_bpf.c
-new file mode 100644
-index 000000000000..063d23d85850
---- /dev/null
-+++ b/net/smc/smc_hs_bpf.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  Shared Memory Communications over RDMA (SMC-R) and RoCE
-+ *
-+ *  Generic hook for SMC handshake flow.
-+ *
-+ *  Copyright IBM Corp. 2016
-+ *  Copyright (c) 2025, Alibaba Inc.
-+ *
-+ *  Author: D. Wythe <alibuda@linux.alibaba.com>
-+ */
-+
-+#include <linux/bpf_verifier.h>
-+#include <linux/bpf.h>
-+#include <linux/btf.h>
-+#include <linux/rculist.h>
-+
-+#include "smc_hs_bpf.h"
-+
-+static DEFINE_SPINLOCK(smc_hs_ctrl_list_lock);
-+static LIST_HEAD(smc_hs_ctrl_list);
-+
-+static int smc_hs_ctrl_reg(struct smc_hs_ctrl *ctrl)
-+{
-+	int ret = 0;
-+
-+	spin_lock(&smc_hs_ctrl_list_lock);
-+	/* already exist or duplicate name */
-+	if (smc_hs_ctrl_find_by_name(ctrl->name))
-+		ret = -EEXIST;
-+	else
-+		list_add_tail_rcu(&ctrl->list, &smc_hs_ctrl_list);
-+	spin_unlock(&smc_hs_ctrl_list_lock);
-+	return ret;
-+}
-+
-+static void smc_hs_ctrl_unreg(struct smc_hs_ctrl *ctrl)
-+{
-+	spin_lock(&smc_hs_ctrl_list_lock);
-+	list_del_rcu(&ctrl->list);
-+	spin_unlock(&smc_hs_ctrl_list_lock);
-+
-+	/* Ensure that all readers to complete */
-+	synchronize_rcu();
-+}
-+
-+struct smc_hs_ctrl *smc_hs_ctrl_find_by_name(const char *name)
-+{
-+	struct smc_hs_ctrl *ctrl;
-+
-+	list_for_each_entry_rcu(ctrl, &smc_hs_ctrl_list, list) {
-+		if (strcmp(ctrl->name, name) == 0)
-+			return ctrl;
-+	}
-+	return NULL;
-+}
-+
-+static int __smc_bpf_stub_set_tcp_option(struct tcp_sock *tp) { return 1; }
-+static int __smc_bpf_stub_set_tcp_option_cond(const struct tcp_sock *tp,
-+					      struct inet_request_sock *ireq)
-+{
-+	return 1;
-+}
-+
-+static struct smc_hs_ctrl __smc_bpf_hs_ctrl = {
-+	.syn_option	= __smc_bpf_stub_set_tcp_option,
-+	.synack_option	= __smc_bpf_stub_set_tcp_option_cond,
-+};
-+
-+static int smc_bpf_hs_ctrl_init(struct btf *btf) { return 0; }
-+
-+static int smc_bpf_hs_ctrl_reg(void *kdata, struct bpf_link *link)
-+{
-+	if (link)
-+		return -EOPNOTSUPP;
-+
-+	return smc_hs_ctrl_reg(kdata);
-+}
-+
-+static void smc_bpf_hs_ctrl_unreg(void *kdata, struct bpf_link *link)
-+{
-+	smc_hs_ctrl_unreg(kdata);
-+}
-+
-+static int smc_bpf_hs_ctrl_init_member(const struct btf_type *t,
-+				       const struct btf_member *member,
-+				       void *kdata, const void *udata)
-+{
-+	const struct smc_hs_ctrl *u_ctrl;
-+	struct smc_hs_ctrl *k_ctrl;
-+	u32 moff;
-+
-+	u_ctrl = (const struct smc_hs_ctrl *)udata;
-+	k_ctrl = (struct smc_hs_ctrl *)kdata;
-+
-+	moff = __btf_member_bit_offset(t, member) / 8;
-+	switch (moff) {
-+	case offsetof(struct smc_hs_ctrl, name):
-+		if (bpf_obj_name_cpy(k_ctrl->name, u_ctrl->name,
-+				     sizeof(u_ctrl->name)) <= 0)
-+			return -EINVAL;
-+		return 1;
-+	case offsetof(struct smc_hs_ctrl, flags):
-+		if (u_ctrl->flags & ~SMC_HS_CTRL_ALL_FLAGS)
-+			return -EINVAL;
-+		k_ctrl->flags = u_ctrl->flags;
-+		return 1;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct bpf_func_proto *
-+bpf_smc_hs_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
-+{
-+	return bpf_base_func_proto(func_id, prog);
-+}
-+
-+static const struct bpf_verifier_ops smc_bpf_verifier_ops = {
-+	.get_func_proto		= bpf_smc_hs_func_proto,
-+	.is_valid_access	= bpf_tracing_btf_ctx_access,
-+};
-+
-+static struct bpf_struct_ops bpf_smc_hs_ctrl_ops = {
-+	.name		= "smc_hs_ctrl",
-+	.init		= smc_bpf_hs_ctrl_init,
-+	.reg		= smc_bpf_hs_ctrl_reg,
-+	.unreg		= smc_bpf_hs_ctrl_unreg,
-+	.cfi_stubs	= &__smc_bpf_hs_ctrl,
-+	.verifier_ops	= &smc_bpf_verifier_ops,
-+	.init_member	= smc_bpf_hs_ctrl_init_member,
-+	.owner		= THIS_MODULE,
-+};
-+
-+int bpf_smc_hs_ctrl_init(void)
-+{
-+	return register_bpf_struct_ops(&bpf_smc_hs_ctrl_ops, smc_hs_ctrl);
-+}
-diff --git a/net/smc/smc_hs_bpf.h b/net/smc/smc_hs_bpf.h
-new file mode 100644
-index 000000000000..f5f1807c079e
---- /dev/null
-+++ b/net/smc/smc_hs_bpf.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ *  Shared Memory Communications over RDMA (SMC-R) and RoCE
-+ *
-+ *  Generic hook for SMC handshake flow.
-+ *
-+ *  Copyright IBM Corp. 2016
-+ *  Copyright (c) 2025, Alibaba Inc.
-+ *
-+ *  Author: D. Wythe <alibuda@linux.alibaba.com>
-+ */
-+
-+#ifndef __SMC_HS_CTRL
-+#define __SMC_HS_CTRL
-+
-+#include <net/smc.h>
-+
-+/* Find hs_ctrl by the target name, which required to be a c-string.
-+ * Return NULL if no such ctrl was found,otherwise, return a valid ctrl.
-+ *
-+ * Note: Caller MUST ensure it's was invoked under rcu_read_lock.
-+ */
-+struct smc_hs_ctrl *smc_hs_ctrl_find_by_name(const char *name);
-+
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+int bpf_smc_hs_ctrl_init(void);
-+#else
-+static inline int bpf_smc_hs_ctrl_init(void) { return 0; }
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
-+
-+#endif /* __SMC_HS_CTRL */
-diff --git a/net/smc/smc_sysctl.c b/net/smc/smc_sysctl.c
-index 2fab6456f765..918516734468 100644
---- a/net/smc/smc_sysctl.c
-+++ b/net/smc/smc_sysctl.c
-@@ -12,12 +12,14 @@
- 
- #include <linux/init.h>
- #include <linux/sysctl.h>
-+#include <linux/bpf.h>
- #include <net/net_namespace.h>
- 
- #include "smc.h"
- #include "smc_core.h"
- #include "smc_llc.h"
- #include "smc_sysctl.h"
-+#include "smc_hs_bpf.h"
- 
- static int min_sndbuf = SMC_BUF_MIN_SIZE;
- static int min_rcvbuf = SMC_BUF_MIN_SIZE;
-@@ -30,6 +32,69 @@ static int links_per_lgr_max = SMC_LINKS_ADD_LNK_MAX;
- static int conns_per_lgr_min = SMC_CONN_PER_LGR_MIN;
- static int conns_per_lgr_max = SMC_CONN_PER_LGR_MAX;
- 
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+static int smc_net_replace_smc_hs_ctrl(struct net *net, const char *name)
-+{
-+	struct smc_hs_ctrl *ctrl = NULL;
-+
-+	rcu_read_lock();
-+	/* null or empty name ask to clear current ctrl */
-+	if (name && name[0]) {
-+		ctrl = smc_hs_ctrl_find_by_name(name);
-+		if (!ctrl) {
-+			rcu_read_unlock();
-+			return -EINVAL;
-+		}
-+		/* no change, just return */
-+		if (ctrl == rcu_dereference(net->smc.hs_ctrl)) {
-+			rcu_read_unlock();
-+			return 0;
-+		}
-+		if (!bpf_try_module_get(ctrl, ctrl->owner)) {
-+			rcu_read_unlock();
-+			return -EBUSY;
-+		}
-+	}
-+	/* xhcg old ctrl with the new one atomically */
-+	ctrl = unrcu_pointer(xchg(&net->smc.hs_ctrl, RCU_INITIALIZER(ctrl)));
-+	/* release old ctrl */
-+	if (ctrl)
-+		bpf_module_put(ctrl, ctrl->owner);
-+
-+	rcu_read_unlock();
-+	return 0;
-+}
-+
-+static int proc_smc_hs_ctrl(const struct ctl_table *ctl, int write,
-+			    void *buffer, size_t *lenp, loff_t *ppos)
-+{
-+	struct net *net = container_of(ctl->data, struct net, smc.hs_ctrl);
-+	char val[SMC_HS_CTRL_NAME_MAX];
-+	const struct ctl_table tbl = {
-+		.data = val,
-+		.maxlen = SMC_HS_CTRL_NAME_MAX,
-+	};
-+	struct smc_hs_ctrl *ctrl;
-+	int ret;
-+
-+	rcu_read_lock();
-+	ctrl = rcu_dereference(net->smc.hs_ctrl);
-+	if (ctrl)
-+		memcpy(val, ctrl->name, sizeof(ctrl->name));
-+	else
-+		val[0] = '\0';
-+	rcu_read_unlock();
-+
-+	ret = proc_dostring(&tbl, write, buffer, lenp, ppos);
-+	if (ret)
-+		return ret;
-+
-+	if (write)
-+		ret = smc_net_replace_smc_hs_ctrl(net, val);
-+	return ret;
-+}
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
-+
- static struct ctl_table smc_table[] = {
- 	{
- 		.procname       = "autocorking_size",
-@@ -99,6 +164,15 @@ static struct ctl_table smc_table[] = {
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+	{
-+		.procname	= "hs_ctrl",
-+		.data		= &init_net.smc.hs_ctrl,
-+		.mode		= 0644,
-+		.maxlen		= SMC_HS_CTRL_NAME_MAX,
-+		.proc_handler	= proc_smc_hs_ctrl,
-+	},
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
- };
- 
- int __net_init smc_sysctl_net_init(struct net *net)
-@@ -109,6 +183,16 @@ int __net_init smc_sysctl_net_init(struct net *net)
- 	table = smc_table;
- 	if (!net_eq(net, &init_net)) {
- 		int i;
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+		struct smc_hs_ctrl *ctrl;
-+
-+		rcu_read_lock();
-+		ctrl = rcu_dereference(init_net.smc.hs_ctrl);
-+		if (ctrl && ctrl->flags & SMC_HS_CTRL_FLAG_INHERITABLE &&
-+		    bpf_try_module_get(ctrl, ctrl->owner))
-+			rcu_assign_pointer(net->smc.hs_ctrl, ctrl);
-+		rcu_read_unlock();
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
- 
- 		table = kmemdup(table, sizeof(smc_table), GFP_KERNEL);
- 		if (!table)
-@@ -139,6 +223,9 @@ int __net_init smc_sysctl_net_init(struct net *net)
- 	if (!net_eq(net, &init_net))
- 		kfree(table);
- err_alloc:
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+	smc_net_replace_smc_hs_ctrl(net, NULL);
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
- 	return -ENOMEM;
- }
- 
-@@ -148,6 +235,10 @@ void __net_exit smc_sysctl_net_exit(struct net *net)
- 
- 	table = net->smc.smc_hdr->ctl_table_arg;
- 	unregister_net_sysctl_table(net->smc.smc_hdr);
-+#if IS_ENABLED(CONFIG_SMC_HS_CTRL_BPF)
-+	smc_net_replace_smc_hs_ctrl(net, NULL);
-+#endif /* CONFIG_SMC_HS_CTRL_BPF */
-+
- 	if (!net_eq(net, &init_net))
- 		kfree(table);
- }
+v3: https://lore.kernel.org/netdev/20250923141920.283862-1-danielj@nvidia.com/
+  - Added admin_ops to virtio_device kdoc.
+
+v4:
+  - Fixed double free bug inserting flows
+  - Fixed incorrect protocol field check parsing ip4 headers.
+  - (u8 *) changed to (void *)
+  - Added kdoc comments to UAPI changes.
+  - No longer split up virtio_net.c
+  - Added config op to execute admin commands.
+      - virtio_pci assigns vp_modern_admin_cmd_exec to this callback.
+  - Moved admin command API to new core file virtio_admin_commands.c
+
+v5: 
+  - Fixed compile error
+  - Fixed static analysis warning on () after macro
+  - Added missing fields to kdoc comments
+  - Aligned parameter name between prototype and kdoc
+
+v6:
+  - Fix sparse warning "array of flexible structures" Jakub K/Simon H
+  - Use new variable and validate ff_mask_size before set_cap. MST
+
+v7:
+  - Change virtnet_ff_init to return a value. Allow -EOPNOTSUPP. Xuan
+  - Set ff->ff_{caps, mask, actions} NULL in error path. Paolo Abini
+  - Move for (int i removal hung back a patch. Paolo Abini
+
+v8
+  - Removed unused num_classifiers. Jason Wang
+  - Use real_ff_mask_size when setting the selector caps. Jason Wang
+
+v9:
+  - Set err to -ENOMEM after alloc failures in virtnet_ff_init. Simon H
+
+Daniel Jurgens (12):
+  virtio_pci: Remove supported_cap size build assert
+  virtio: Add config_op for admin commands
+  virtio: Expose generic device capability operations
+  virtio: Expose object create and destroy API
+  virtio_net: Query and set flow filter caps
+  virtio_net: Create a FF group for ethtool steering
+  virtio_net: Implement layer 2 ethtool flow rules
+  virtio_net: Use existing classifier if possible
+  virtio_net: Implement IPv4 ethtool flow rules
+  virtio_net: Add support for IPv6 ethtool steering
+  virtio_net: Add support for TCP and UDP ethtool rules
+  virtio_net: Add get ethtool flow rules ops
+
+ drivers/net/virtio_net.c               | 1144 ++++++++++++++++++++++++
+ drivers/virtio/Makefile                |    2 +-
+ drivers/virtio/virtio_admin_commands.c |  165 ++++
+ drivers/virtio/virtio_pci_common.h     |    1 -
+ drivers/virtio/virtio_pci_modern.c     |   10 +-
+ include/linux/virtio_admin.h           |  125 +++
+ include/linux/virtio_config.h          |    6 +
+ include/uapi/linux/virtio_net_ff.h     |  156 ++++
+ include/uapi/linux/virtio_pci.h        |    7 +-
+ 9 files changed, 1605 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/virtio/virtio_admin_commands.c
+ create mode 100644 include/linux/virtio_admin.h
+ create mode 100644 include/uapi/linux/virtio_net_ff.h
+
 -- 
-2.45.0
+2.50.1
 
