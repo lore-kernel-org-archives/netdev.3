@@ -1,110 +1,219 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3395B2BEC3A
-	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 14:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49AC02E040D
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 14:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762525796; cv=none; b=jm5JbT+hZ/+u1A/WHSzzipJrxWv4ck5bPpK8N088y2WnYslD0kzE1HA2ogGNCydIB6y4n7xn3NwN0M+Enk5wv05CxDtpqkiiANjdhFkFQcq3OjSlne0pYnU7SajThn/WotGP2yiAsAu8pXMi4WKP4aX2u+bS9ZOCeSwxgRD6PAI=
+	t=1762525871; cv=none; b=ZEzxHKVlfrr5cnQntTjmaHpmo8Pfq3A1mBSTTNWnFaUz824r3gVRD5KTeZWkbVRxAszvEUnT+j9CjADmgD2OaGIr580L4gpDQkVdUOOJCFDtWACYcqXXqZPnWM5JUiLmJ7+CPig7vx6Y01JkL8+KGURzDbtx9EtoRnaoOZHwV5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762525796; c=relaxed/simple;
-	bh=XvGsdko66qV0k4xPDbTZEbgpVLrPEiw4KDoSeNOMQLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UfDVKDWS3SQdiIROxG1BeHdIEvxjDuX0I91G6kJtzXwAKCD6dE2TArsnM/EUmsSqLCwopmwppH0rGEgzx6MITsFKopjZhapAH4ZxSgs2MvcyhX8nrJ5hE8lz/fpM5+LaQd2Z8z46wcn1TIbUUdel5+zkRz/Wu/TVuPFym6HPKX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=b1duxy+3; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1762525871; c=relaxed/simple;
+	bh=4ACT8X04sb6fAW3+47LxhHcq7/anCem7+kuAeIdPdiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AffLtG00dMNPCkoOCDam66sm2PiJrkMXb3oI1bwQacRR9kF3i0Cw/dQNk2Wo6/tAtNJJHvvxQrYbG6XuUzU0jBT67/FxNxeOB57roACzmdalYAgWEoR3loo2QJxZEqAyVHgeqNbNjZJ6Fjf+cNOxzmt8vrV5xjntHGeUOTSgUDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PUaP2ILJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mLk97YuD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="b1duxy+3"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4775dbde730so816955e9.3
-        for <netdev@vger.kernel.org>; Fri, 07 Nov 2025 06:29:54 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PUaP2ILJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mLk97YuD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762525868;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xL9UWKNVFseJyc8ZZEBbh4eUS+K/pGNVZX2OMNyP0Mg=;
+	b=PUaP2ILJ0eQ7Swrjje1R9Enx6fEu/eFwiizD1/g6u+KeU9oBWkJ2BXtSQyVAEUtWpYd6TV
+	Mo4Ps0o+PCM3J8q+jzOAsI3j04Im1OqJzxkf3h1dRex4m4UBMtvtfWWrTWOvbNfeIcTQxL
+	hwWce1AbQ77tbZbZogywWSaGQtd5AfE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-ks4FB9TfOZqwsgbrK-_4iA-1; Fri, 07 Nov 2025 09:31:03 -0500
+X-MC-Unique: ks4FB9TfOZqwsgbrK-_4iA-1
+X-Mimecast-MFC-AGG-ID: ks4FB9TfOZqwsgbrK-_4iA_1762525862
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-b72ad85ee9aso98474566b.3
+        for <netdev@vger.kernel.org>; Fri, 07 Nov 2025 06:31:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1762525793; x=1763130593; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lbC/1Hpq7o/Ra6ELN2FjkqwvxvOMfaKVKbbN5oM3SG4=;
-        b=b1duxy+3hKK0BfAK5A7WV1yR4kgsqrv1BjByUvUD1qDe3isGlzB0geoJsGPDReidbJ
-         tact/2ZroRbNzRMGVtN8X2hzRJ45YNTJxzvKbL0tfbAd3Q2b/PohO2H+e3sK+YX90ViW
-         DmH6A2i0NcdDr6xkUAyrqwQw7KS77xzosFyBCD0HqqKJQ1DpwKsMMw7qcqoyMi8vBgO8
-         n9393z+Afwmuv4eSD6T4BMqt1q5klbOtNtNFdRBFkzm7g2DMsFo9+cFt5Tr13QZ311nX
-         S91eOc0LfWyG7lmHIRuJL/WeJBiXSfV8jHMaIu/8QsuSAAE5bx1rH1Pek3jG40McBDyn
-         GWHg==
+        d=redhat.com; s=google; t=1762525862; x=1763130662; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xL9UWKNVFseJyc8ZZEBbh4eUS+K/pGNVZX2OMNyP0Mg=;
+        b=mLk97YuDYnfIMKSd3JKJTZrltUK5pFbg40ErvP8RuWFTwQaOgCdWIEABTiQkxTvgXS
+         IN+8xcaiO2Wz70H8leqWjgwlAEPtfBF3tc6Z+k9ZLfvPbevMmJr1cf/HTHrx+xhWNy/N
+         SfvR8k3VQSudhECmQeU+1VtiePzpZ1tjOwtPWXn4HLsfEOh+/o6rgNlYLYjXyjluVs2X
+         bKmdLt9Rq6A1RIBuHeJ39twkX3f+84ZaJyagUzUEfANjCBv+sGJ5w6efmik0heIpsSOn
+         OiNEPO/8OI1eLrPOHRWuRR7I8VfRE7+ynJEsWqEY3HVsZCqt14548/7O9I06rwb9mArS
+         DpyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762525793; x=1763130593;
-        h=content-transfer-encoding:in-reply-to:organization:content-language
-         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lbC/1Hpq7o/Ra6ELN2FjkqwvxvOMfaKVKbbN5oM3SG4=;
-        b=JhdU3spJwCieMbgInLIVeOxXMOnehR7V/Qbx4/Gd9r/S2g3yvA3tLdlrmEbSjDUoRu
-         0S3r3+f5Zlh2q35GqYg7FJvFobGzI8T1sRr2i+CDzu7glB7cC6UvMOE9MimQwpQ51J2a
-         IW9Gsl7Wt2hHqw8sLo30k4K/bKstee2sCT2MakJipJskRV858E/XxGxmP50tzp4DMlb1
-         O/DZiyJM7KmebRx4vWW4F3oiQlTkrxocB+Gjq394WYztCY8yVWnxye0aLK5srvkqIyeY
-         BJuckD/PhExBQwmdui61Mc5DTCGWjQERzSmeg5Z7EtQXxru3iZpfKmmfrv4/I0I9LJh+
-         hdYg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSF5QnOY7pFo+jeMayYm1l00ybPb9XskwqO6Xa+w/ElaShbtTAQuEXKdq50W1373V2w5hirL8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzCPVFGO7WSyQgMJAnpMd3DAdjTyluD3LPWxOYX3O9Pr0a5eMW
-	N6Ez5k7mOef8GVLk1y7QLKRtHmIqXg7iRLCQcVCfv+bNDFhPzpGeB8aDgU+imaenBFw=
-X-Gm-Gg: ASbGncs1sUYH9WJLRbbW38XjpgljNPmnl6MVQYXXZKhW4usPfAlDS4O1YmaJEWXqVo3
-	5T2ebk5VgUSk8HzxrLJA8lpXmEJAgS1V53FEn4kNuLWkqxRnP/pFI+jIX/j6UegrSM8nK3V0uyi
-	iWIRdafWh2bRXK5cESUiEbbgH+ougAkmyqSaIFj8HUqyiRyChaUcxlgVzep2p5lydwi1Y7psvSc
-	4HwkibKYkiSf+htJrrXt83Y4NMLc+28rJgJGqnoFI9wb9HWsYfm+r1ck3nXorMELfHMgHXJm1pL
-	/2gEUs6PY7q58lcseNWufhjETECV42e3/JHmyXaIKzG6jLZ/soGedFMlTTiYURnUTASehQN88pw
-	ZeT/YVhuff1byOqv5QmoRdBRua6abFW02HO4xM8gnHHHf+Cpf3i9D70sUOAybME9qdKVLFN6dwq
-	wSyaWWxJcbYmQF2BaoiyqR0tR1uhGZZwHZ1JCW20QkoHOuopfCf8eo
-X-Google-Smtp-Source: AGHT+IG4ZjHnXCuG0GuJe+Qpgn+2EINgD25KAbdNWOHQHh4CYicR+hBGZc/dgFvG6Y5w2mfK0LAsaw==
-X-Received: by 2002:a05:600c:8010:b0:477:362c:1716 with SMTP id 5b1f17b1804b1-4776bcd518amr15045685e9.6.1762525793425;
-        Fri, 07 Nov 2025 06:29:53 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:b41:c160:6a1d:efff:fe52:1959? ([2a01:e0a:b41:c160:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac675cad2sm5737777f8f.29.2025.11.07.06.29.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Nov 2025 06:29:52 -0800 (PST)
-Message-ID: <a249ba44-a339-4f67-89a0-af08f9464c05@6wind.com>
-Date: Fri, 7 Nov 2025 15:29:52 +0100
+        d=1e100.net; s=20230601; t=1762525862; x=1763130662;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xL9UWKNVFseJyc8ZZEBbh4eUS+K/pGNVZX2OMNyP0Mg=;
+        b=lc34Kmq8AJLEhlqrzBrybMYhGriDfp0WSVblT/JzQOMLfxGA3Ex+Y7fdjLjZyteiED
+         Jgu7E2y4+ll2rwqsGYojfh5cuZlTPxU4912uBFsYLIjTOeb2eWy9t37K3nyd/jbKW0QF
+         sd9L7GsDG1HkVRHCVMVcaJCBOjankLUYnCTMv5jg410xiNlZMKxsOMCwfhdskENVzh8X
+         Ge13Rdl3IpMhNwvOlAA6d0I0hXl6+8JUc+sE51N+RcWysvItTObXAmYXmpvjaDbsxEWv
+         GxFSRcPkUCmazZTciYch1r1lBZ3hPpSEYoRjKgA/VnCxo95xI+QDpl9joXh5CWSpE6vp
+         Z79Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXzCOx/9XlCdqQOBBLyQDU/cJ96GKk+ds99OkupSawxxMR4pK7jtg6g2aSoGh0w3C9v01vzUwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYbVXRVqVHWIlXpZdNNAOTNRNlk0XTgHhsYySyJqSj9fJOqWfE
+	HtaxCvZK5hzhK6iXF3xfCAe9ttqdjd5Ov9IMFRYe+jJCAq2Mm99Q2ZkEyfSXpqiV+Su3e3TavPJ
+	XcmTIl8TA+2eJoguuC/OASHrbzStmK3NUNf6HOR076+YGm3iS7oD/xEO0PQ==
+X-Gm-Gg: ASbGncuys+L4bGU4vSGwcldoc+NNSiWE9al5KITr77o+OUHE7GCGkTYfOiCKCJb0hW3
+	pwXz1n+R1Cu5ztkWqFm7Uq/R+4gheaen0owui9y14IOf2KlrNcrXzg98LLQu/REkFrOqXWEO4bw
+	LB4oe0cTfLe00f92b+YW1fLu5K+V5+5AdJm/iCyarizqsk5ztZm0YjBYC9S+NEPV/wbpDmZCLev
+	Im4gTOZ5RtXhQ+XGwvbFOuE2fhOqDSgtrk99FgHppIMGwN2GBT/cVYWZWfn61Zeb0fXW7e2jdAV
+	7Cnd0N14u/Hj8p1Gw8Yrk2oEGW47vQnQQWInwTBoeIpKhdcHercwLoM/rlBmaC8fo8/llQh2nSb
+	eibef/lYuxkmZmzhv7t/l0iNLTm2IdMaVdQionLnZdcf8uL8VmGk=
+X-Received: by 2002:a17:907:9713:b0:b70:b4db:ae83 with SMTP id a640c23a62f3a-b72c0db4a61mr338299366b.60.1762525862100;
+        Fri, 07 Nov 2025 06:31:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVGP6jVhYiYdDeDEvDFwhwEthJq43aCkNDIhOMB5uynFpxGPUKrXfFtjd4lbRPq2WOuVI1vw==
+X-Received: by 2002:a17:907:9713:b0:b70:b4db:ae83 with SMTP id a640c23a62f3a-b72c0db4a61mr338295766b.60.1762525861624;
+        Fri, 07 Nov 2025 06:31:01 -0800 (PST)
+Received: from sgarzare-redhat (host-79-46-200-153.retail.telecomitalia.it. [79.46.200.153])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bfa11295sm256401966b.67.2025.11.07.06.30.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Nov 2025 06:31:01 -0800 (PST)
+Date: Fri, 7 Nov 2025 15:30:58 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
+	Bryan Tan <bryan-bt.tan@broadcom.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-hyperv@vger.kernel.org, berrange@redhat.com, Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next v8 06/14] vsock/virtio: add netns to virtio
+ transport common
+Message-ID: <4d365ifyw5ncyboonznnnm6ua7psyt3ripzpvtyd35qa5zsgwv@f2kfgzgoc26c>
+References: <20251023-vsock-vmtest-v8-0-dea984d02bb0@meta.com>
+ <20251023-vsock-vmtest-v8-6-dea984d02bb0@meta.com>
+ <hkwlp6wpiik35zesxqfe6uw7m6uayd4tcbvrg55qhhej3ox33q@lah2dwed477g>
+ <aQ1e3/DZbgnYw4Ja@devvm11784.nha0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net] bonding: fix mii_status when slave is down
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@google.com>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Stanislav Fomichev <sdf@fomichev.me>,
- netdev@vger.kernel.org
-References: <20251106180252.3974772-1-nicolas.dichtel@6wind.com>
- <7a6372b3-b170-49b9-ae62-eb0d1266bd6c@lunn.ch>
- <80576ce0-7383-4b46-bd3a-3ecb0837007e@6wind.com>
- <fbc92957-4cf4-4687-bc2d-ed09cedf8572@lunn.ch>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <fbc92957-4cf4-4687-bc2d-ed09cedf8572@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aQ1e3/DZbgnYw4Ja@devvm11784.nha0.facebook.com>
 
-Le 07/11/2025 à 14:55, Andrew Lunn a écrit :
-> On Fri, Nov 07, 2025 at 09:10:58AM +0100, Nicolas Dichtel wrote:
->> Le 07/11/2025 à 03:36, Andrew Lunn a écrit :
->>> On Thu, Nov 06, 2025 at 07:02:52PM +0100, Nicolas Dichtel wrote:
->>>> netif_carrier_ok() doesn't check if the slave is up. Before the below
->>>> commit, netif_running() was also checked.
->>>
->>> I assume you have a device which is reporting carrier, despite being
->>> admin down? That is pretty unusual, and suggests its PHY handing is
->>> broken. What device is it? You might want to also fix it.
->> Yes, one slave is put down administratively. Before the mentioned commit, the
->> status was correctly reported; it's no longer the case.
->> It's a regression.
-> 
-> I agree with your fix, but i would also like to know more about the
-> interfaces you are testing on. We should probably fix that device as
-> well. What is it?
-There is no bug. It is manually put down by one of our internal tests.
+On Thu, Nov 06, 2025 at 06:52:15PM -0800, Bobby Eshleman wrote:
+>On Thu, Nov 06, 2025 at 05:20:05PM +0100, Stefano Garzarella wrote:
+>> On Thu, Oct 23, 2025 at 11:27:45AM -0700, Bobby Eshleman wrote:
+>> > From: Bobby Eshleman <bobbyeshleman@meta.com>
+>> >
+>> > Enable network namespace support in the virtio-vsock common transport
+>> > layer by declaring namespace pointers in the transmit and receive
+>> > paths.
+>> >
+>> > The changes include:
+>> > 1. Add a 'net' field to virtio_vsock_pkt_info to carry the namespace
+>> >   pointer for outgoing packets.
+>> > 2. Store the namespace and namespace mode in the skb control buffer when
+>> >   allocating packets (except for VIRTIO_VSOCK_OP_RST packets which do
+>> >   not have an associated socket).
+>> > 3. Retrieve namespace information from skbs on the receive path for
+>> >   lookups using vsock_find_connected_socket_net() and
+>> >   vsock_find_bound_socket_net().
+>> >
+>> > This allows users of virtio transport common code
+>> > (vhost-vsock/virtio-vsock) to later enable namespace support.
+>> >
+>> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>> > ---
+>> > Changes in v7:
+>> > - add comment explaining the !vsk case in 
+>> > virtio_transport_alloc_skb()
+>> > ---
+>> > include/linux/virtio_vsock.h            |  1 +
+>> > net/vmw_vsock/virtio_transport_common.c | 21 +++++++++++++++++++--
+>> > 2 files changed, 20 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+>> > index 29290395054c..f90646f82993 100644
+>> > --- a/include/linux/virtio_vsock.h
+>> > +++ b/include/linux/virtio_vsock.h
+>> > @@ -217,6 +217,7 @@ struct virtio_vsock_pkt_info {
+>> > 	u32 remote_cid, remote_port;
+>> > 	struct vsock_sock *vsk;
+>> > 	struct msghdr *msg;
+>> > +	struct net *net;
+>> > 	u32 pkt_len;
+>> > 	u16 type;
+>> > 	u16 op;
+>> > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> > index dcc8a1d5851e..b8e52c71920a 100644
+>> > --- a/net/vmw_vsock/virtio_transport_common.c
+>> > +++ b/net/vmw_vsock/virtio_transport_common.c
+>> > @@ -316,6 +316,15 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
+>> > 					 info->flags,
+>> > 					 zcopy);
+>> >
+>> > +	/*
+>> > +	 * If there is no corresponding socket, then we don't have a
+>> > +	 * corresponding namespace. This only happens For VIRTIO_VSOCK_OP_RST.
+>> > +	 */
+>>
+>> So, in virtio_transport_recv_pkt() should we check that `net` is not set?
+>>
+>> Should we set it to NULL here?
+>>
+>
+>Sounds good to me.
+>
+>> > +	if (vsk) {
+>> > +		virtio_vsock_skb_set_net(skb, info->net);
+>>
+>> Ditto here about the net refcnt, can the net disappear?
+>> Should we use get_net() in some way, or the socket will prevent that?
+>>
+>
+>As long as the socket has an outstanding skb it can't be destroyed and
+>so will have a reference to the net, that is after skb_set_owner_w() and
+>freeing... so I think this is okay.
+>
+>But, maybe we could simplify the implied relationship between skb, sk,
+>and net by removing the VIRTIO_VSOCK_SKB_CB(skb)->net entirely, and only
+>ever referring to sock_net(skb->sk)? I remember originally having a
+>reason for adding it to the cb, but my hunch is it that it was probably
+>some confusion over the !vsk case.
+>
+>WDYT?
 
-Nicolas
+If vsk == NULL, I'm expecting that also skb->sk is not valid, right?
+
+Indeed we call skb_set_owner_w() only if vsk != NULL in 
+virtio_transport_alloc_skb().
+
+Maybe we need to change virtio_transport_recv_pkt() where the `net` 
+should be passed in some way by the caller, so maybe this is the reason 
+why you needed it in the cb. But also in that case, I think we can get 
+the `net` in some way and pass it to virtio_transport_recv_pkt() and 
+avoid the change in the cb:
+- vsock_lookpback.c in vsock_loopback_work() we can use vsock->net
+- vhost/vsock.c in vhost_vsock_handle_tx_kick(), ditto we can use 
+   vsock->net
+- virtio_transport.c we can just pass always the dummy_net
+
+Same fot the net_mode.
+
+Maybe the real problem is in the send_pkt callbacks, where the skb is 
+used to get the socket, but as you mention, I think in this path 
+skb_set_owner_w() is already called, so we can get that info from there 
+in some way.
+
+Not sure, but yeah, if we can remove that, it will be much clear IMO.
+
+Thanks,
+Stefano
+
