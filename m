@@ -1,146 +1,110 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234DE32AAA6;
-	Fri,  7 Nov 2025 14:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3395B2BEC3A
+	for <netdev@vger.kernel.org>; Fri,  7 Nov 2025 14:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762525763; cv=none; b=qlDxcc1GGaDgcfB0L5JLIeap1KRwLjOT40ecmDKNn7UO0tVkXcEEE17MPjeYZR86fWFmdJYVzbuKgWlFhCIX3jhu8S06bBVjVWtnin66/ToFUjvRIq6qxgG1KLapjaGE167FsfcpwUw6yrkVPBG0NzblbvUmYKa9ulrpQYnLxxY=
+	t=1762525796; cv=none; b=jm5JbT+hZ/+u1A/WHSzzipJrxWv4ck5bPpK8N088y2WnYslD0kzE1HA2ogGNCydIB6y4n7xn3NwN0M+Enk5wv05CxDtpqkiiANjdhFkFQcq3OjSlne0pYnU7SajThn/WotGP2yiAsAu8pXMi4WKP4aX2u+bS9ZOCeSwxgRD6PAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762525763; c=relaxed/simple;
-	bh=JqjnfKDgDHq4xuF42pw13rGt2sQ3HARkK+mwbuvbDEo=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=EqJ4jgFSHXHpzOEsu1HKNjxyzl9v9kYbqD/Ww2TvctcliNpHKp4ERQKd77Xr2o8493hCK6Svr87h7TMflgS5tY/k5PGpH07qVorBm9bo0VvnMmsDARKtvdtkrs9JZdX5+UKOWtbWuDcv8ZGkOKjSN1JlhHsCvwTHBAEOO18FPOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mUh+PqO/; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1762525796; c=relaxed/simple;
+	bh=XvGsdko66qV0k4xPDbTZEbgpVLrPEiw4KDoSeNOMQLU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UfDVKDWS3SQdiIROxG1BeHdIEvxjDuX0I91G6kJtzXwAKCD6dE2TArsnM/EUmsSqLCwopmwppH0rGEgzx6MITsFKopjZhapAH4ZxSgs2MvcyhX8nrJ5hE8lz/fpM5+LaQd2Z8z46wcn1TIbUUdel5+zkRz/Wu/TVuPFym6HPKX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=b1duxy+3; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mUh+PqO/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UNUNVWueIqfGuC4q5BrFUll2X9rFfz6vDMrrsI3WK28=; b=mUh+PqO/42Lq4W0yI56eLnB7Cc
-	qQYVjtem/VcvMPqciPOVyqDQeM0f72dRfNFFiT/vOuMxfw1KKtIEDw5sAsPJqVkM7W9h8TivB/v7L
-	YSwZwRCmWvWaLv4A0PSth2CHtY8JXln8CGDrdsjMvMrZyXo8Z5cxZa1A/ybwuQkHVEKMSPZLegXYX
-	fGUpGRuuVKT9e9x/8bhwAevOxpCeokZa/Ltk68/E3q/Wce5caGe7xvdgMTSd05g9xMabuPRVF5ZFl
-	RaG28mPSMlvs+ec6RepJ3uK+EaqmsIOgerdyeUZocWTZMEIipqgSBgwIEIC+HguWC1b00SO0JFUVL
-	InW0hLAw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:47696 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vHNSa-000000006ik-3X6d;
-	Fri, 07 Nov 2025 14:29:05 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vHNSW-0000000DkSz-1TB4;
-	Fri, 07 Nov 2025 14:29:00 +0000
-In-Reply-To: <aQ4ByErmsnAPSHIL@shell.armlinux.org.uk>
-References: <aQ4ByErmsnAPSHIL@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emil Renner Berthing <kernel@esmil.dk>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Minda Chen <minda.chen@starfivetech.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	netdev@vger.kernel.org,
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 12/16] net: stmmac: stm32: use PHY_INTF_SEL_x to
- select PHY interface
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="b1duxy+3"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4775dbde730so816955e9.3
+        for <netdev@vger.kernel.org>; Fri, 07 Nov 2025 06:29:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1762525793; x=1763130593; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lbC/1Hpq7o/Ra6ELN2FjkqwvxvOMfaKVKbbN5oM3SG4=;
+        b=b1duxy+3hKK0BfAK5A7WV1yR4kgsqrv1BjByUvUD1qDe3isGlzB0geoJsGPDReidbJ
+         tact/2ZroRbNzRMGVtN8X2hzRJ45YNTJxzvKbL0tfbAd3Q2b/PohO2H+e3sK+YX90ViW
+         DmH6A2i0NcdDr6xkUAyrqwQw7KS77xzosFyBCD0HqqKJQ1DpwKsMMw7qcqoyMi8vBgO8
+         n9393z+Afwmuv4eSD6T4BMqt1q5klbOtNtNFdRBFkzm7g2DMsFo9+cFt5Tr13QZ311nX
+         S91eOc0LfWyG7lmHIRuJL/WeJBiXSfV8jHMaIu/8QsuSAAE5bx1rH1Pek3jG40McBDyn
+         GWHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762525793; x=1763130593;
+        h=content-transfer-encoding:in-reply-to:organization:content-language
+         :from:references:cc:to:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lbC/1Hpq7o/Ra6ELN2FjkqwvxvOMfaKVKbbN5oM3SG4=;
+        b=JhdU3spJwCieMbgInLIVeOxXMOnehR7V/Qbx4/Gd9r/S2g3yvA3tLdlrmEbSjDUoRu
+         0S3r3+f5Zlh2q35GqYg7FJvFobGzI8T1sRr2i+CDzu7glB7cC6UvMOE9MimQwpQ51J2a
+         IW9Gsl7Wt2hHqw8sLo30k4K/bKstee2sCT2MakJipJskRV858E/XxGxmP50tzp4DMlb1
+         O/DZiyJM7KmebRx4vWW4F3oiQlTkrxocB+Gjq394WYztCY8yVWnxye0aLK5srvkqIyeY
+         BJuckD/PhExBQwmdui61Mc5DTCGWjQERzSmeg5Z7EtQXxru3iZpfKmmfrv4/I0I9LJh+
+         hdYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWSF5QnOY7pFo+jeMayYm1l00ybPb9XskwqO6Xa+w/ElaShbtTAQuEXKdq50W1373V2w5hirL8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzCPVFGO7WSyQgMJAnpMd3DAdjTyluD3LPWxOYX3O9Pr0a5eMW
+	N6Ez5k7mOef8GVLk1y7QLKRtHmIqXg7iRLCQcVCfv+bNDFhPzpGeB8aDgU+imaenBFw=
+X-Gm-Gg: ASbGncs1sUYH9WJLRbbW38XjpgljNPmnl6MVQYXXZKhW4usPfAlDS4O1YmaJEWXqVo3
+	5T2ebk5VgUSk8HzxrLJA8lpXmEJAgS1V53FEn4kNuLWkqxRnP/pFI+jIX/j6UegrSM8nK3V0uyi
+	iWIRdafWh2bRXK5cESUiEbbgH+ougAkmyqSaIFj8HUqyiRyChaUcxlgVzep2p5lydwi1Y7psvSc
+	4HwkibKYkiSf+htJrrXt83Y4NMLc+28rJgJGqnoFI9wb9HWsYfm+r1ck3nXorMELfHMgHXJm1pL
+	/2gEUs6PY7q58lcseNWufhjETECV42e3/JHmyXaIKzG6jLZ/soGedFMlTTiYURnUTASehQN88pw
+	ZeT/YVhuff1byOqv5QmoRdBRua6abFW02HO4xM8gnHHHf+Cpf3i9D70sUOAybME9qdKVLFN6dwq
+	wSyaWWxJcbYmQF2BaoiyqR0tR1uhGZZwHZ1JCW20QkoHOuopfCf8eo
+X-Google-Smtp-Source: AGHT+IG4ZjHnXCuG0GuJe+Qpgn+2EINgD25KAbdNWOHQHh4CYicR+hBGZc/dgFvG6Y5w2mfK0LAsaw==
+X-Received: by 2002:a05:600c:8010:b0:477:362c:1716 with SMTP id 5b1f17b1804b1-4776bcd518amr15045685e9.6.1762525793425;
+        Fri, 07 Nov 2025 06:29:53 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:b41:c160:6a1d:efff:fe52:1959? ([2a01:e0a:b41:c160:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac675cad2sm5737777f8f.29.2025.11.07.06.29.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Nov 2025 06:29:52 -0800 (PST)
+Message-ID: <a249ba44-a339-4f67-89a0-af08f9464c05@6wind.com>
+Date: Fri, 7 Nov 2025 15:29:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net] bonding: fix mii_status when slave is down
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Stanislav Fomichev <sdf@fomichev.me>,
+ netdev@vger.kernel.org
+References: <20251106180252.3974772-1-nicolas.dichtel@6wind.com>
+ <7a6372b3-b170-49b9-ae62-eb0d1266bd6c@lunn.ch>
+ <80576ce0-7383-4b46-bd3a-3ecb0837007e@6wind.com>
+ <fbc92957-4cf4-4687-bc2d-ed09cedf8572@lunn.ch>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <fbc92957-4cf4-4687-bc2d-ed09cedf8572@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vHNSW-0000000DkSz-1TB4@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 07 Nov 2025 14:29:00 +0000
 
-Convert dwmac-stm32 to use the PHY_INTF_SEL_x definitions.
+Le 07/11/2025 à 14:55, Andrew Lunn a écrit :
+> On Fri, Nov 07, 2025 at 09:10:58AM +0100, Nicolas Dichtel wrote:
+>> Le 07/11/2025 à 03:36, Andrew Lunn a écrit :
+>>> On Thu, Nov 06, 2025 at 07:02:52PM +0100, Nicolas Dichtel wrote:
+>>>> netif_carrier_ok() doesn't check if the slave is up. Before the below
+>>>> commit, netif_running() was also checked.
+>>>
+>>> I assume you have a device which is reporting carrier, despite being
+>>> admin down? That is pretty unusual, and suggests its PHY handing is
+>>> broken. What device is it? You might want to also fix it.
+>> Yes, one slave is put down administratively. Before the mentioned commit, the
+>> status was correctly reported; it's no longer the case.
+>> It's a regression.
+> 
+> I agree with your fix, but i would also like to know more about the
+> interfaces you are testing on. We should probably fix that device as
+> well. What is it?
+There is no bug. It is manually put down by one of our internal tests.
 
-For stm32mp1, the original definitions used constant 0 (GMII, 0 << 21),
-BIT(21) (RGMII, 1 << 21) and BIT(23) (RMII, 4 << 21) to define these,
-but from the values it can be clearly seen that these are the
-PHY_INTF_SEL_x inputs to the dwmac.
-
-For stm32mp2, the original definitions cover a bitfield 6:4 in the
-SYSCFG Ethernet1 control register (according to documentation) and use
-the PHY_INTF_SEL_x values.
-
-Use the common dwmac definitions for the PHY interface selection field
-by adding the bitfield mask, and using FIELD_PREP() for the bitfield
-values.
-
-This removes this incorrect use of BIT().
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/dwmac-stm32.c | 20 +++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-index 6c179911ef3f..1545772419d5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-@@ -47,9 +47,13 @@
-  *------------------------------------------
-  */
- #define SYSCFG_PMCR_ETH_SEL_MII		BIT(20)
--#define SYSCFG_PMCR_ETH_SEL_RGMII	BIT(21)
--#define SYSCFG_PMCR_ETH_SEL_RMII	BIT(23)
--#define SYSCFG_PMCR_ETH_SEL_GMII	0
-+#define SYSCFG_PMCR_PHY_INTF_SEL_MASK	GENMASK(23, 21)
-+#define SYSCFG_PMCR_ETH_SEL_RGMII	\
-+	FIELD_PREP(SYSCFG_PMCR_PHY_INTF_SEL_MASK, PHY_INTF_SEL_RGMII)
-+#define SYSCFG_PMCR_ETH_SEL_RMII	\
-+	FIELD_PREP(SYSCFG_PMCR_PHY_INTF_SEL_MASK, PHY_INTF_SEL_RMII)
-+#define SYSCFG_PMCR_ETH_SEL_GMII	\
-+	FIELD_PREP(SYSCFG_PMCR_PHY_INTF_SEL_MASK, PHY_INTF_SEL_GMII_MII)
- #define SYSCFG_MCU_ETH_SEL_MII		0
- #define SYSCFG_MCU_ETH_SEL_RMII		1
- 
-@@ -60,9 +64,13 @@
- #define SYSCFG_ETHCR_ETH_CLK_SEL	BIT(1)
- #define SYSCFG_ETHCR_ETH_REF_CLK_SEL	BIT(0)
- 
--#define SYSCFG_ETHCR_ETH_SEL_MII	0
--#define SYSCFG_ETHCR_ETH_SEL_RGMII	BIT(4)
--#define SYSCFG_ETHCR_ETH_SEL_RMII	BIT(6)
-+#define SYSCFG_ETHCR_ETH_SEL_MASK	GENMASK(6, 4)
-+#define SYSCFG_ETHCR_ETH_SEL_MII	FIELD_PREP(SYSCFG_ETHCR_ETH_SEL_MASK, \
-+						   PHY_INTF_SEL_GMII_MII)
-+#define SYSCFG_ETHCR_ETH_SEL_RGMII	FIELD_PREP(SYSCFG_ETHCR_ETH_SEL_MASK, \
-+						   PHY_INTF_SEL_RGMII)
-+#define SYSCFG_ETHCR_ETH_SEL_RMII	FIELD_PREP(SYSCFG_ETHCR_ETH_SEL_MASK, \
-+						   PHY_INTF_SEL_RMII)
- 
- /* STM32MPx register definitions
-  *
--- 
-2.47.3
-
+Nicolas
