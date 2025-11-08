@@ -1,113 +1,128 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21B8228CBC
-	for <netdev@vger.kernel.org>; Sat,  8 Nov 2025 16:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E7F3A8F7;
+	Sat,  8 Nov 2025 16:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762617725; cv=none; b=jInkdh6Nlzd4WoOOLaMsztmp0wujlj1/BEHy1Sj6lhfcN3K/lW77nlUvM/SCmM85qakd2PNs23aoMH8n0vDbQqfFtKSl35EoJBaaSNaFXHQQz3Q7XuQdB6PVAuarxrVlzK5mLabDEmDkZJq2gBxSApqsGd0dJmycZaZkiapflGM=
+	t=1762619822; cv=none; b=WBM/MP1NdMdMHmI88+OOm8kcwUqgE7bvBmiY0OTyiSceaq2/jLAYLlshswuCyTOleNF0Y/E/i7fi2FYGSqScfjirNXWJBEks7qw/grXTEgoJWEGNQzap4PrZQUOidWXJPDeJSJrwJFHQUzltzFYhpBjX4jtjIYFB6Lr7upeI9RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762617725; c=relaxed/simple;
-	bh=oHgjWws1DBoTOYU7ER4ATIFMREmAxgb84D48zVV5FD8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZjBoQaoe0vj9iEEH2boHOE4nDMrp7mEHUG8rriKI9oMlM4h6fYfH2BT4twQ/dEkI4fetyXVUaxH/+zf+bQ3BRI8hUZi3RKGrLZp7sOT3lVd0HTthTyeK8MzYBPqiz7J9tBVXp1w6dtD8ma/0ba8T/QFJbvrKGMl7laNR5kwxhnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkMf05om; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762619822; c=relaxed/simple;
+	bh=LVT/aIc2AON71l19ykVx0Fj5Bo0LsiK+P1KP4yuRAkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pJ2QJm5Osjs6gv6p0XZ+MkY/RHtSOHxWXqWxw7q2OFKbHB0/1J1QgylMhU7wb4LAI7+gtpCmXzvFyZfkyrX+K2tS4TCho3QjpZsGtEarYD2fPQj2G8VFJt56OIo7/HQ+IVwhUM8WF7tAHPSY9ws45FY5xhnm2gApCvlHkTDy4N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UogX/wtW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkMf05om"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7a9c64dfa6eso1303005b3a.3
-        for <netdev@vger.kernel.org>; Sat, 08 Nov 2025 08:02:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762617722; x=1763222522; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=golzAGu/U48hdgp+/GOKuXZcnB4/AsbzkE6v0RidcZk=;
-        b=CkMf05om2Vg00vdJ06rUhgEfh+e6dwVRfhLlnYsa8Z5CtlplWPMkFWtPvn2If8z7WS
-         +g+XeMeqp+cszK1pdutUhoBLlvrAGhujpZlNI/LG6dc21YGhqB7dDVepQ3nkwcwGpL07
-         mMMBx/MTYs+ldOHIeafzi3uV8nYeFAjLU3tgVwOqSlzSD6X47sYlgWV3QsMPddeED21N
-         ZCR4nGepg1o1cTgllW6sZpPxsMsXLOO+CgcIocAvXcvK4uGwcmDLdq1qA1ktDth0dRKm
-         Ed9siiIBSO7s6E7Juq7y7ETuYcVVxhsxQbn8S/h3n0/r2H5YjRmEXu33lw7C5kvpEqCK
-         bS6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762617722; x=1763222522;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=golzAGu/U48hdgp+/GOKuXZcnB4/AsbzkE6v0RidcZk=;
-        b=MidZNXoeYT5pkB1FblVQV5gCiYqVDyfDNutviW0MWjPlm9qfU9VhBGfN9ZT87uVWnC
-         scBr1WNH5G6LVVWQIBCUyITsi/URXTWJKQPqdi9S5feDr7dNQYqua3MQHTINamJZTutS
-         PfpLZCcLGy7wYfZL9CLAAujXrNYgLEnllCZPsrvCGcDlorzx8mpHA2nbRqFer42PaIAs
-         zK6028xJS4B8YuBMq/pqEkYMjrxpUvqhaycEKGf07keunCEGGauv93ckOAvUaOx9Y5Df
-         9sM6XyGt1UkeC2xdYS00Cmv9NjhVMDvdd8QlGC7RarD2C2Df5CRz/Y7GGstgU22bEGuX
-         tDjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXv4hCbn+6QbBiqf8v1aUDEEEvlpn1vrE9ZXfaPp2d6aZmAZbEutjZynfQhbJigzQNYliImiQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdQjuWCQUEkLSYnsOl0VmydQCwJDRuYxz0frhbw8Aqtis8QQTn
-	7ltexoLLyXmK2ZXyIvjTFcNfkYrlQcSzGiOkJAfXVLpAP/USLXZpfOQTouqFpiON
-X-Gm-Gg: ASbGncuI9sTZgRL2a055QuBAl2nPkUUh3OnqwDY1HjiyrJWBQo4+dh/zNkgkR5jqtBt
-	LNkR/RuZtCRjPmsPE9egp3N+hBvdFTJvaYZapgkkMm0h1PNFgjXA/bNRVV3EsFROO/Z7sIn8dFm
-	YNBjIJIeyaJdvZqYYIocTD+mRoEd/iLv7PirZxreQ5Xi51EqEEA0N7k/dDSzeS97+NnNtMi4kly
-	UsyduiPXg9zBbeLVfqsPuBxpY+jNvMcrLLC8xBquUwZh5RWj/r8R2oLGfO9jAG16LV+OnACv2vJ
-	R8SJg3tPZY0FhsPxjsRROtzVRD2ObcoIl4CPf8slbVayp91p7C7RtkxC+hs4YlU0ihmXbEOMFtY
-	xwCjSA7Py4c+aYTwGTFXkAI50W3HjEgal3VisPgr7YoCpE8lZuLYc13xNR3T5L6DSDBYhCfCAmn
-	NFXxZPij0=
-X-Google-Smtp-Source: AGHT+IH+Vi5K6pMe8JfFAOXim3vTcOSLSn5qC8SzCV1Ipfc/i/Us/WTXuuK7P37jiIt7Ll9os7AY0g==
-X-Received: by 2002:a17:90b:2708:b0:340:f7d6:dc70 with SMTP id 98e67ed59e1d1-3436cb89b05mr3302246a91.13.1762617722221;
-        Sat, 08 Nov 2025 08:02:02 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:7::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-343727dcf3dsm2104024a91.19.2025.11.08.08.02.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Nov 2025 08:02:02 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Sat, 08 Nov 2025 08:01:03 -0800
-Subject: [PATCH net-next v4 12/12] selftests/vsock: disable shellcheck
- SC2317 and SC2119
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UogX/wtW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334C7C16AAE;
+	Sat,  8 Nov 2025 16:36:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762619820;
+	bh=LVT/aIc2AON71l19ykVx0Fj5Bo0LsiK+P1KP4yuRAkc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UogX/wtWXGveHNi5Em0vXRdgXw47JbmHjtRNDT1sbxetQOrviyCtRRnWBqFBMbyh/
+	 DjfLPBul3iwbBViop268FCO1X1Sh345YbI0xD7QH4rTBGwV82ApQ0uo2HcEKGi91i5
+	 T4ixlSoOkS0aVHfEw9wTUDzdVlg0EaYv2veGEEN1nqtVnvmtluIvThF2BBVEE1TaM1
+	 QGbzZOo1waADecLNENgmjqFwpPd9DYb2PyR5hYc8tAaA0JxPFDiCnP6fgXIQXFkjRT
+	 SD1Ls0Pi+qbphltPr0kHJO6ywttC7sqMeeAlEglbSC0OZ+gpunSTmLV6lib5M45Qo0
+	 nbhdv69juwlqQ==
+Date: Sat, 8 Nov 2025 16:36:55 +0000
+From: Simon Horman <horms@kernel.org>
+To: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Ally Heev <allyheev@gmail.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [Intel-wired-lan] [PATCH v3] net: ethernet: fix uninitialized
+ pointers with free attribute
+Message-ID: <aQ9xp9pchMwml30P@horms.kernel.org>
+References: <20251106-aheev-uninitialized-free-attr-net-ethernet-v3-1-ef2220f4f476@gmail.com>
+ <575bfdb1-8fc4-4147-8af7-33c40e619b66@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251108-vsock-selftests-fixes-and-improvements-v4-12-d5e8d6c87289@meta.com>
-References: <20251108-vsock-selftests-fixes-and-improvements-v4-0-d5e8d6c87289@meta.com>
-In-Reply-To: <20251108-vsock-selftests-fixes-and-improvements-v4-0-d5e8d6c87289@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, Shuah Khan <shuah@kernel.org>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <575bfdb1-8fc4-4147-8af7-33c40e619b66@intel.com>
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Thu, Nov 06, 2025 at 03:07:26PM +0100, Alexander Lobakin wrote:
+> From: Ally Heev <allyheev@gmail.com>
+> Date: Thu, 06 Nov 2025 17:25:48 +0530
+> 
+> > Uninitialized pointers with `__free` attribute can cause undefined
+> > behavior as the memory assigned randomly to the pointer is freed
+> > automatically when the pointer goes out of scope.
+> > 
+> > It is better to initialize and assign pointers with `__free`
+> > attribute in one statement to ensure proper scope-based cleanup.
+> > 
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+> > Signed-off-by: Ally Heev <allyheev@gmail.com>
+> > ---
+> > Changes in v3:
+> > - fixed style issues
+> > - Link to v2: https://lore.kernel.org/r/20251106-aheev-uninitialized-free-attr-net-ethernet-v2-1-048da0c5d6b6@gmail.com
+> > 
+> > Changes in v2:
+> > - fixed non-pointer initialization to NULL
+> > - NOTE: drop v1
+> > - Link to v1: https://lore.kernel.org/r/20251105-aheev-uninitialized-free-attr-net-ethernet-v1-1-f6ea84bbd750@gmail.com
+> > ---
+> >  drivers/net/ethernet/intel/ice/ice_flow.c       | 5 +++--
+> >  drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 5 +++--
+> >  2 files changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
+> > index 6d5c939dc8a515c252cd2b77d155b69fa264ee92..3590dacf3ee57879b3809d715e40bb290e40c4aa 100644
+> > --- a/drivers/net/ethernet/intel/ice/ice_flow.c
+> > +++ b/drivers/net/ethernet/intel/ice/ice_flow.c
+> > @@ -1573,12 +1573,13 @@ ice_flow_set_parser_prof(struct ice_hw *hw, u16 dest_vsi, u16 fdir_vsi,
+> >  			 struct ice_parser_profile *prof, enum ice_block blk)
+> >  {
+> >  	u64 id = find_first_bit(prof->ptypes, ICE_FLOW_PTYPE_MAX);
+> > -	struct ice_flow_prof_params *params __free(kfree);
+> >  	u8 fv_words = hw->blk[blk].es.fvw;
+> >  	int status;
+> >  	int i, idx;
+> >  
+> > -	params = kzalloc(sizeof(*params), GFP_KERNEL);
+> > +	struct ice_flow_prof_params *params __free(kfree) =
+> > +		kzalloc(sizeof(*params), GFP_KERNEL);
+> 
+> Please don't do it that way. It's not C++ with RAII and
+> declare-where-you-use.
+> Just leave the variable declarations where they are, but initialize them
+> with `= NULL`.
+> 
+> Variable declarations must be in one block and sorted from the longest
+> to the shortest.
+> 
+> But most important, I'm not even sure how you could trigger an
+> "undefined behaviour" here. Both here and below the variable tagged with
+> `__free` is initialized right after the declaration block, before any
+> return. So how to trigger an UB here?
 
-Disable shellcheck rules SC2317 and SC2119. These rules are being
-triggered due to false positives. For SC2317, many `return
-"${KSFT_PASS}"` lines are reported as unreachable, even though they are
-executed during normal runs. For SC2119, the fact that
-log_guest/log_host accept either stdin or arguments triggers SC2119,
-despite being valid.
+FWIIW, I'd prefer if we sidestepped this discussion entirely
+by not using __free [1] in this driver.
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- tools/testing/selftests/vsock/vmtest.sh | 2 ++
- 1 file changed, 2 insertions(+)
+It seems to me that for both functions updated by this
+patch that can easily be achieved using an idiomatic
+goto label to free on error.
 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 42e155b45602..c7b270dd77a9 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -7,6 +7,8 @@
- #		* virtme-ng
- #		* busybox-static (used by virtme-ng)
- #		* qemu	(used by virtme-ng)
-+#
-+# shellcheck disable=SC2317,SC2119
- 
- readonly SCRIPT_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
- readonly KERNEL_CHECKOUT=$(realpath "${SCRIPT_DIR}"/../../../../)
+[1] https://docs.kernel.org/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
 
--- 
-2.47.3
-
+...
