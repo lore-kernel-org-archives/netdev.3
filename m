@@ -1,76 +1,69 @@
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929802798F3
-	for <netdev@vger.kernel.org>; Sat,  8 Nov 2025 18:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D173199D8
+	for <netdev@vger.kernel.org>; Sat,  8 Nov 2025 18:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762625676; cv=none; b=pWVlGg1oZF8s1Tx5aYAeonF2ifn61Ee4dwOjEr8fWXGSGZKNV+L672vcty9BBrqzTCffpjNOTyK89cVXtp5JUFLQruYLMVmJBz3HB3RlRTAZDw2o/cy1dPzYmgL/cchB5uzTbxWxZLsAUIpcwwpKzH1NptF8D/aS3wWXFjJJaeo=
+	t=1762626313; cv=none; b=RoDB4K5AgHdBBGlelq9gxVit0KW022Qh7aqpFXO3TnH7jrjim9ZtDYikd+EdbK8iOID6jUgkihKTDDh3+JALf3jirCHsTY39QT8XzQGdeTo5ya412Lk6Q8wG991XRDWKPXnYjGgEba0mpmMt3ignCiTTxlm79mllR2W7A32IIus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762625676; c=relaxed/simple;
-	bh=swDa2PQ3bTyqse4dDEsB5XLEJB58Uvr9Sg1pgYPVJH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAWvKJRWNGnIagulQcCiSgNhw4CuWmPk9EAZXbwMmcYoLYssmMzE8SdJbWWWl01Xrln9MpVMENlq+UYqvbQ0qYZiti7BYX/zhcZG7mZKqIzJ+n70JSm4p09rz7qiAn+O4vehYqjUYuDdzQjP5fhUUkxxs+CWvBfdWfdduSZJBtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=lFuXdxqG; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	s=arc-20240116; t=1762626313; c=relaxed/simple;
+	bh=OGxf28Ekd12gM5+tjODLefvhvfrvhPeU6fcrodsZnxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t5RY5vAjh61fBj7A3T894GD48pIt7kY6ygoXaBuAoKWncYJAuFw9+mFM+pPS/glDDZca7uGNJ9UsnDFPMsvQG3bRJdFws3J00Q3+uVeIxzgQ0Xdt/Tk3FGt2fZCgKy1Tv+/7Ckuj8QpBTJlcBpYbSegQJ6uPimyQ4nN4LuNjaeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=rDON74Ns; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="lFuXdxqG"
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-3e41b6469f5so909836fac.2
-        for <netdev@vger.kernel.org>; Sat, 08 Nov 2025 10:14:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="rDON74Ns"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-297e982506fso6291015ad.2
+        for <netdev@vger.kernel.org>; Sat, 08 Nov 2025 10:25:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1762625673; x=1763230473; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DnnUSLvFMGOvFxx4OXBj7KUZH0qTnU4jvHFzpkOE1No=;
-        b=lFuXdxqGZEFXllwBeQpYE6ufBepM8cKTh54NxsXx9R8NGA6VXznl7eNZCoCQPmGsbR
-         m45/1JTzj/bMY6qKbnXQ1jck7vRu0Dkwqf3HBKOHJDEfw78AuuLVlaxt7d2HnW4EhDQg
-         ryBP2jKuJzN60iTVUf1vdnFX6yKvPfbIX5XtN/lebIl040/nvytmssJvHZrcNhlTWrlK
-         u0cdd1Cj2YQn/XuZuDLX0WecmdYbFjvcPdF9/pUbJG1rtqmJ92DsR7pF96eTeay5fFna
-         4YtKMti/vDkkC8KDWejsRwfRUncSMRzyMso1jM+3P8KmrfZOBWgIfSV8J5Zf1PHGtimT
-         upUA==
+        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1762626311; x=1763231111; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pQV4GnxUWhH7PFGCxN2Nr0zgy8swadymqAEd1586zsA=;
+        b=rDON74Ns9jTc3CyICEFzIHM73bdux+GFo5c05x7MOI4U8uDjipLizBor1il2rEInlz
+         GgN1G12P/qVidlueGJlnG6LIkuCTor8DS99DVJWLVSuxHgTYOw2mmHV0C01EXtTUP58v
+         B6mAJqML/m3ARj7M95u1XyUwbLjhcrTlgVQVsSE35sjM2eAKz4PIA85ydCYreQ7dhzPA
+         lAlQwaKGwwSfyZk+dqxtfeuTSEuAwlxszi7sYWLCOnRFVT7hf38G0KH+BimJz8zHvyIt
+         yqqu8uOen3Unxf7GUTPzPkJhs/9+MPU9UuzseCgBPe3tzbaVZOEwJ579pjMLTd8zV5xH
+         g2Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762625673; x=1763230473;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DnnUSLvFMGOvFxx4OXBj7KUZH0qTnU4jvHFzpkOE1No=;
-        b=r3EqWhi6Ke/Uf+i566q/F5yUOhN3G1Dc5bF4ODQNSe+C8V+0xZx7A/pqU9Y88/seUu
-         avm1fcSUYtw4RXoPyt1PON9qDrwHjJZrekBxBKlfokn36fT4o8P4sB4ECC/JnMdXUZ8Z
-         mpIsnSyumaFTzdWiCiW0UK8mK6WLNZdNtmTYhTqAPtHigcx2Nk9Ls5mZb+MSgtC11pQy
-         rDnjLXT4Be3ZtPyYXnXl+T7FBpLFq7jrygJkFHnRdkncwcU1X4alG/092Z7gxw0p116s
-         IqDUuUBWn8V097ZSTyTv4NnjfRDrwXa05WTkUOIF0/qgTE0S2QN+OyQ+6dnzN1q7RKk6
-         PILA==
-X-Forwarded-Encrypted: i=1; AJvYcCXeu9h5vp4gnV83qegqqRqPCzxeFx8VC63TYmvBLQAR/+CDAcDjZyWvfju4b+KcB1/ZDySnu8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGdijQMOtgXUxje5KYS1AGlR6fMH03ajQiUEVVkMbDTllvF6sU
-	gQhFUPZE8ADNjrqFboKtTgF4oNGjHzpCFRCXqq67bCjuCyGyHr1UqfMACy40mJom6ZK1iLiCqQA
-	f/mS+
-X-Gm-Gg: ASbGncswTguFalVwTlnh2Pk0/w2Vi940Qw9S09XaBNr3n/qubBTQk9r29AWwhZdccJH
-	NTqNXJrVJtpW6EsTlkIlX4a+51int1bUzZl+BnLa0KjphVRiuFrUM9HkxDMuyaAwlg5Q6mA01dO
-	WaeK6TqQz01QndgGNyvMBNfvTjnYM6ujWu4gR/vx92BLLZ6x+BMyeV5kvLsZYuNtsrmnrxQfg1i
-	tn6hiFCa8Gaqvz90X3ERGjtGRQbaiWOP0OKeikwhxBDtzavXbXZl+3g4mSfKwjmSQtUz7lyCx92
-	CDYuiBOg6iRSX3EukU3UBvnEtuLthO1LcJCQKdb4Hd7qTPsI9i+g4chG7Pz/THJxR4tSO96QoIu
-	GVF86ImyWtDto+SR9ylg/OliIqYpCjrzlqwH2WRgwEHPbMVlprymA92wq/D/lbpPBsg3JyTCVO4
-	CGUrn8y5izPobKBQ4leyYOx5HdZH7ahA==
-X-Google-Smtp-Source: AGHT+IGrBUhsgwfE9g87Lzu8eUXccxeW06jeYL+x3OkNB5Kh/GkA4Z86GFd2cImWj5hklQQV94fRJg==
-X-Received: by 2002:a05:6871:2b84:b0:3e7:dd0a:31cd with SMTP id 586e51a60fabf-3e7dd0a3747mr366357fac.30.1762625672793;
-        Sat, 08 Nov 2025 10:14:32 -0800 (PST)
-Received: from localhost ([2a03:2880:12ff:4c::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c6f0f0b21fsm3297035a34.1.2025.11.08.10.14.32
+        d=1e100.net; s=20230601; t=1762626311; x=1763231111;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pQV4GnxUWhH7PFGCxN2Nr0zgy8swadymqAEd1586zsA=;
+        b=I/9ekJ+/Iv/Q7ESqCKqRKGxebuojPU5IehAfe60xvoD7qJHDRbvQmPl3q8C2a4k2YD
+         Za7R/VBolMRiIOd8LljtKXWn1hHHLOzLqu9tKwkVltiuLO4S6LIIh86XNaqnBoGCBAdL
+         3LYYSGDcSQTJhnPqDmSRQYLaR4FCMm4nPamEjPR9cjWTCQ/84MJimX7x1rf6APDN/Zqr
+         L0oo0bZgcEn+B0n2fNcdw/vocofHuamwGbEKElnQssx//W7Dq7HtD/5mR0fPgv41lSDQ
+         ZbInDwDKZjBmohXl+N6v+nXVm06Y7UVdzBmyfpuFSs+cRiQvIp2T4Y0Me5Xl2XKvvKK7
+         HHeQ==
+X-Gm-Message-State: AOJu0YxnBH5n7NvGIuugCPDoKzLQQZxeQyDj1gfJejAeuyOpOZdFunIo
+	b6VXfKmB6idW/4c779XM9xqsFgwLR6nbttINO7rhadqpsMlarT2JbNMrVb8mU0zZHnZSl1LMNy8
+	dLIsprTA=
+X-Gm-Gg: ASbGncvCvzmMXtxvmLRFghmPfEMUMVhJqzVgXtqyRzeLLFM0aSlk1xW6AIit8LMm0jk
+	joVvzMxuOSTkPRrs9zuZyS6e7rkl7LowHc5kEUQ658Nqxlw/7PEN8nneeeL73uBCVsCOjIGnggi
+	zHUxZEBEkZLwt9eGVZhPzRv0Xp/5udqC5nUXsQLE9JX5j+hURYJHeIb35fQaQQkkpooDddM9+jg
+	CgrryRr0rGYtr2sQIoMF/NuoxmAT1rjiGmXpNbs/DdoVRQQbtjHb/WmKLyBLO5n4qZ2P/mxVkNT
+	9hL+o37Le5LJuYPGqdesxV48FeVJa4Y1bDIiBjM75QTYWUQQllLrizfaZPTsKUB1VhTWQKFYZEM
+	zlWAPiLZt2yv48Lv8YP0FOtiAJ4xs9c9J/5Wo4v7mvOwNkDrgT+u1SgkGU5VdGi9F1PwSMYI7wl
+	k/NqTi6azFOlRU3SL5TWTq9qohMK14EYYm3KXuPVMGLnZ6vTV6Yw==
+X-Google-Smtp-Source: AGHT+IEZtrtIN/j5JMwINA5KqZYQWuaeHH6Xks9rn0T/YvaIRWGE/56QDYRgNPxkG4s1i3oHKnm+uQ==
+X-Received: by 2002:a17:903:2f88:b0:295:24c3:8b49 with SMTP id d9443c01a7336-297e56cf5bemr44199895ad.46.1762626311417;
+        Sat, 08 Nov 2025 10:25:11 -0800 (PST)
+Received: from phoenix.lan (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2965096b8ffsm94870795ad.21.2025.11.08.10.25.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Nov 2025 10:14:32 -0800 (PST)
-From: David Wei <dw@davidwei.uk>
-To: io-uring@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Subject: [PATCH v6 4/5] io_uring/zcrx: add io_fill_zcrx_offsets()
-Date: Sat,  8 Nov 2025 10:14:22 -0800
-Message-ID: <20251108181423.3518005-5-dw@davidwei.uk>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251108181423.3518005-1-dw@davidwei.uk>
-References: <20251108181423.3518005-1-dw@davidwei.uk>
+        Sat, 08 Nov 2025 10:25:11 -0800 (PST)
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: netdev@vger.kernel.org
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Subject: [PATCH] netshaper: ignore build result
+Date: Sat,  8 Nov 2025 10:25:08 -0800
+Message-ID: <20251108182508.25559-1-stephen@networkplumber.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,52 +72,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a helper io_fill_zcrx_offsets() that sets the constant offsets in
-struct io_uring_zcrx_offsets returned to userspace.
+If netshaper is built locally, ignore the result.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
 ---
- io_uring/zcrx.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ netshaper/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 netshaper/.gitignore
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 3fba3bbff570..49990c89ce95 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -345,6 +345,13 @@ static void io_zcrx_get_niov_uref(struct net_iov *niov)
- 	atomic_inc(io_get_user_counter(niov));
- }
- 
-+static void io_fill_zcrx_offsets(struct io_uring_zcrx_offsets *offsets)
-+{
-+	offsets->head = offsetof(struct io_uring, head);
-+	offsets->tail = offsetof(struct io_uring, tail);
-+	offsets->rqes = ALIGN(sizeof(struct io_uring), L1_CACHE_BYTES);
-+}
-+
- static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
- 				 struct io_zcrx_ifq *ifq,
- 				 struct io_uring_zcrx_ifq_reg *reg,
-@@ -356,7 +363,8 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
- 	void *ptr;
- 	int ret;
- 
--	off = ALIGN(sizeof(struct io_uring), L1_CACHE_BYTES);
-+	io_fill_zcrx_offsets(&reg->offsets);
-+	off = reg->offsets.rqes;
- 	size = off + sizeof(struct io_uring_zcrx_rqe) * reg->rq_entries;
- 	if (size > rd->size)
- 		return -EINVAL;
-@@ -372,9 +380,6 @@ static int io_allocate_rbuf_ring(struct io_ring_ctx *ctx,
- 	ifq->rq_ring = (struct io_uring *)ptr;
- 	ifq->rqes = (struct io_uring_zcrx_rqe *)(ptr + off);
- 
--	reg->offsets.head = offsetof(struct io_uring, head);
--	reg->offsets.tail = offsetof(struct io_uring, tail);
--	reg->offsets.rqes = off;
- 	return 0;
- }
- 
+diff --git a/netshaper/.gitignore b/netshaper/.gitignore
+new file mode 100644
+index 00000000..ec490216
+--- /dev/null
++++ b/netshaper/.gitignore
+@@ -0,0 +1 @@
++netshaper
 -- 
-2.47.3
+2.51.0
 
